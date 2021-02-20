@@ -1,9 +1,9 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-02-19 15:16:24
+ * @LastEditTime: 2021-02-20 10:34:06
  * @LastEditors: Please set LastEditors
- * @Description: 系统静态路由
+ * @Description: 系统静态路由.
  * @FilePath: \rise\src\router\index.js
  */
 /* eslint-disable no-undef */
