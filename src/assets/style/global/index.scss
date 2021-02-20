@@ -1,0 +1,239 @@
+@charset "utf-8";
+@import './variables.scss';
+/*-----------------------------------------------
+ |                                              |
+ |         项目全局scss。作为全局引入，对项目做      |
+ |         样式基本控制                           |
+ |                                              |
+ ------------------------------------------------
+*/
+*{
+  box-sizing: border-box;
+  font-size: 12px;
+  font-family: '微软雅黑';
+  &::-webkit-scrollbar {
+        width:9px;
+        height:9px;
+    }
+    &::-webkit-scrollbar-track {
+        width: 6px;
+        background-color:#e4e4e5;
+        -webkit-border-radius: 2em;
+        -moz-border-radius: 2em;
+        border-radius:2em;
+    }
+      &::-webkit-scrollbar-thumb {
+      background-color:#d0d2d3;
+      background-clip:padding-box;
+      min-height:28px;
+      -webkit-border-radius: 2em;
+      -moz-border-radius: 2em;
+      border-radius:2em;
+    }
+}
+input::-webkit-outer-spin-button,input::-webkit-inner-spin-button {
+  -webkit-appearance: none !important;
+  margin: 0;
+}
+html,body{
+  height: 100%;
+  overflow: hidden;
+  background-color: $color-background;
+  color:$color-font;
+}
+body,div,ul,ol,dl,dt,dd,li,dl,h1,h2,h3,h4,p{
+  margin:0;
+  padding:0;
+  font-style:normal;
+}
+ul,li{
+  list-style: none;
+}
+a{
+  text-decoration: none;
+}
+
+/*-------------------------------------
+ |                                     |
+ |             .font(10-30)            |
+ |                                     |
+ ---------------------------------------
+*/
+@for $i from 10 through 30{
+  .font#{$i}{
+    font-size: #{$i}px;
+  }
+}
+/*-------------------------------------
+ |                                     |
+ |             .margin/padding(0-100)   |
+ |                                     |
+ ---------------------------------------
+*/
+@for $i from 0 through 100{
+  .padding#{$i}{
+    padding: #{$i}px;
+  }
+  .padding-top#{$i}{
+    padding-top: #{$i}px;
+  }
+  .padding-bottom#{$i}{
+    padding-bottom: #{$i}px;
+  }
+  .padding-left#{$i}{
+    padding-left: #{$i}px;
+  }
+  .padding-right#{$i}{
+    padding-right: #{$i}px;
+  }
+  .margin#{$i}{
+    margin: #{$i}px;
+  }
+  .margin-left#{$i}{
+    margin-left: #{$i}px;
+  }
+  .margin-right#{$i}{
+    margin-right: #{$i}px;
+  }
+  .margin-bottom#{$i}{
+    margin-bottom: #{$i}px;
+  }
+  .margin-top#{$i}{
+    margin-top: #{$i}px;
+  }
+}
+/*-------------------------------------
+ |                                     |
+ |             常用class                |
+ |                                     |
+ ---------------------------------------
+*/
+
+
+/*-------------------------------------
+ |                                     |
+ |             分页往右                 |
+ |                                     |
+ ---------------------------------------
+*/
+.pagenation{
+  text-align: right;
+}
+/*-------------------------------------
+ |                                     |
+ |             强行控制表格中的element    |
+ |                                     |
+ ---------------------------------------
+*/
+.el-table__row{
+  .el-input{
+    height: $input-height24!important;
+    .el-input__inner{
+      height: $input-height24!important;
+      line-height: $input-height24!important;
+    }
+  }
+}
+.underline{
+  //text-decoration: underline;
+  color: $color-blue;
+  cursor: pointer;
+}
+.floatleft{
+  float: left;
+}
+.floatright{
+  float: right;
+}
+.cursor{
+  cursor: pointer;
+  &:hover{
+    opacity: 0.7;
+  }
+}
+.font-weight{
+  font-weight: bold;
+}
+.tableTextAreaBorderNone{
+  .el-textarea__inner{
+    border:none;
+    font-size: 12px;
+    height: 100%;
+    width: 100%;
+  }
+}
+.tableTextAreaTransparent{
+  .el-textarea__inner{
+    background-color: transparent;
+    resize:none;
+  }
+}
+.border-bottom-none{
+  border-bottom: none!important;
+}
+.border-top-none{
+  border-top: none!important;
+}
+.tableTitle {
+  position: relative;
+  .rightBtn {
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    .iFromBtn {
+      margin-left: 10px;
+    }
+  }
+}
+.overflowhidden{
+  overflow: hidden;
+}
+.echarts-padding10{
+  padding: 0px!important;
+  .content{
+      padding: 10px!important;
+  }
+}
+.echarts-padding0{
+  padding: 0px!important;
+  .content{
+      padding: 0px!important;
+  }
+}
+.padding-right12{
+  padding-right: 12px!important;
+}
+.content-container{
+  overflow: hidden!important;
+}
+.noscroll{
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  z-index: 99;
+  padding-top: 40px;
+}
+.center{
+  height: 100%;
+  display: table;
+  width: 100%;
+  text-align: center;
+  span{
+    display: table-cell;
+    vertical-align: middle;
+    font-size: 14px;
+  }
+}
+
+.box-shadow-none{
+  .el-input__inner{
+    box-shadow: none!important;
+  }
+}
+
+.is-leaf:last-child{
+  border-right: none;
+}
+.bule {
+  color: $color-blue;
+}
