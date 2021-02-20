@@ -237,3 +237,16 @@ a{
 .bule {
   color: $color-blue;
 }
+
+/*-------------------------------------
+ |                                     |
+ |   强行控制element中的selectoptions    |
+ |                                     |
+ ---------------------------------------
+*/
+.el-select-dropdown{
+  top: 124px!important;
+  .popper__arrow{
+    display: none!important;
+  }
+}
