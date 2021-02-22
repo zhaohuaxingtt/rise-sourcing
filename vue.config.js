@@ -62,7 +62,9 @@ module.exports = {
           'vue-router':'VueRouter',
           'axios':'axios',
           "moment": "moment",
-          'element-ui':'ELEMENT'
+          'element-ui':'ELEMENT',
+          'vue-i18n': 'VueI18n',
+          'i18n': 'i18n'
         };
         //开启gizp压缩
         config.plugins.push(new CompressionPlugin({
