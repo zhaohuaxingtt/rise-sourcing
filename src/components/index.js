@@ -8,7 +8,9 @@
  */
 import iInput from '../components/iInput'
 import iSelect from '../components/iSelect'
+import iTabs from '../components/iTabs'
 export {
   iInput,
-  iSelect
+  iSelect,
+  iTabs
 }
