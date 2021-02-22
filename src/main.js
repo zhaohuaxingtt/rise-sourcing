@@ -13,8 +13,10 @@ import store from './store'
 import '@/assets/style/global/index.scss'
 import './utils/mydirect'
 Vue.config.productionTip = false
+
 new Vue({
   router,
   store,
+  i18n,
   render: h => h(App),
 }).$mount('#app')
