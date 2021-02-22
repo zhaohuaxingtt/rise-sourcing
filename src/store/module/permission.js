@@ -1,12 +1,12 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-02-19 15:19:26
+ * @LastEditTime: 2021-02-22 16:54:49
  * @LastEditors: Please set LastEditors
  * @Description: 用户信息保存。
  * @FilePath: \rise\src\store\module\permission.js
  */
-const routerLayout = ()=> import('@/layout/routerLayout.vue')
+const routerLayout = ()=> import('@/layout/default.vue')
 import {staticRouter} from '@/router'
 const getVuerouter = function(router){
   const res = []
