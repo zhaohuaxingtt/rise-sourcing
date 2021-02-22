@@ -31,6 +31,31 @@
           </template>
         </icard>
       </el-col>
+      <el-col :span="24">
+        <icard title="iCard">
+          <el-row slot="components" :gutter="20">
+            <el-col :span="8">
+              <iCard title="title">
+                <div>body</div>
+              </iCard>
+            </el-col>
+            <el-col :span="8">
+              <iCard title="title">
+                <template v-slot:header-control>
+                  <el-button size="mini">button1</el-button>
+                  <el-button size="mini">button2</el-button>
+                </template>
+                <div>body</div>
+              </iCard>
+            </el-col>
+            <el-col :span="8">
+              <iCard>
+                <div>body</div>
+              </iCard>
+            </el-col>
+          </el-row>
+        </icard>
+      </el-col>
     </el-row>
     <el-row>
       <el-col>
@@ -67,7 +92,7 @@
   </div>
 </template>
 <script>
-import { iInput, iSelect, iButton } from "@/components";
+import { iInput, iSelect, iButton, iCard } from "@/components";
 import icard from "./components/title";
 import {tabelTile} from './components/data'
 import {TabelData} from '@/api/ui'
@@ -76,7 +101,8 @@ export default {
     icard,
     iInput,
     iSelect,
-    iButton
+    iButton,
+    iCard
   },
   data(){
     return {

@@ -9,8 +9,10 @@
 import iInput from '../components/iInput'
 import iSelect from '../components/iSelect'
 import iButton from '../components/iButton'
+import iCard from '../components/iCard'
 export {
   iInput,
   iSelect,
-  iButton
+  iButton,
+  iCard
 }
