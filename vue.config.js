@@ -95,11 +95,11 @@ module.exports = {
     https: false,
     hotOnly: true,
     proxy:{
-      '/mockapi':{
-        target:'https://www.fastmock.site/mock/5cd3e97d6126b18b5e16f3e499489335',
+      '/mock':{
+        target:'https://www.fastmock.site/mock',
         changeOrigin:true,
         pathRewrite:{
-          "^/api": "/api"
+          "^/mock": "/mock"
         }
       }
     }

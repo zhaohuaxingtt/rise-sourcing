@@ -121,6 +121,43 @@ a{
 }
 /*-------------------------------------
  |                                     |
+ |             强行控制element 表格      |
+ |                                     |
+ ---------------------------------------
+*/
+.el-table{
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  .el-table__header{
+    background-color: $color-table-header;
+    tr{
+      background-color: transparent;
+    }
+  }
+  th{
+    padding: 9px 0;
+    background-color: transparent;
+  }
+  tr{
+    &:nth-child(even){
+      background-color: $color-table-td;
+    }
+  }
+}
+/*-------------------------------------
+ |                                     |
+ |    强行控制element checkbox & radio  |
+ |                                     |
+ ---------------------------------------
+*/
+.el-checkbox__inner{
+  border:1px solid $color-blue
+}
+.el-radio__inner{
+  border:1px solid $color-blue
+}
+/*-------------------------------------
+ |                                     |
  |             强行控制表格中的element    |
  |                                     |
  ---------------------------------------
