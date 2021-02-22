@@ -9,8 +9,7 @@
 */
 *{
   box-sizing: border-box;
-  font-size: 12px;
-  font-family: '微软雅黑';
+  font-family: 'Arial',"Microsoft YaHei";
   &::-webkit-scrollbar {
         width:9px;
         height:9px;
@@ -40,6 +39,7 @@ html,body{
   overflow: hidden;
   background-color: $color-background;
   color:$color-font;
+  font-size: 12px;
 }
 body,div,ul,ol,dl,dt,dd,li,dl,h1,h2,h3,h4,p{
   margin:0;

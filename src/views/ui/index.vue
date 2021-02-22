@@ -1,13 +1,13 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-19 14:29:21
- * @LastEditTime: 2021-02-22 11:55:14
+ * @LastEditTime: 2021-02-22 15:39:15
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\ui\index.vue
 -->
 <template>
-  <div class="padding20">
+  <div class="padding20 scorll">
     <span class="font14 blue"
       >RISE
       公共UI组件展示界面，基于element的二次封装，当前element版本：1.15.0</span
@@ -28,6 +28,14 @@
           <template slot="components">
             <el-checkbox checked>checkboxItems</el-checkbox>
             <el-checkbox>checkboxItemsOther</el-checkbox>
+          </template>
+        </icard>
+      </el-col>
+    </el-row>
+    <el-row>
+      <el-col>
+        <icard title="el-radio">
+          <template slot="components">
             <el-radio-group  v-model="radio">
                <el-radio label="1">radio</el-radio>
                <el-radio label="2">radiother</el-radio>
@@ -45,10 +53,21 @@
         </icard>
       </el-col>
     </el-row>
+    <el-row>
+      <el-col :span='24'>
+        <icard title="iButton">
+          <iButton slot="components">iButton example</iButton>
+          <iButton slot="components" loading>iButton loading</iButton>
+          <iButton slot="components" :loading='loading' @click="repeatClick" icon='el-icon-delete'>iButton NoRepeat Submit</iButton>
+          <iButton slot="components" size='mini'>Mini iButton example</iButton>
+          <iButton slot="components" size='mini' loading>Mini iButton example</iButton>
+        </icard>
+      </el-col>
+    </el-row>
   </div>
 </template>
 <script>
-import { iInput, iSelect } from "@/components";
+import { iInput, iSelect, iButton } from "@/components";
 import icard from "./components/title";
 import {tabelTile} from './components/data'
 import {TabelData} from '@/api/ui'
@@ -57,19 +76,36 @@ export default {
     icard,
     iInput,
     iSelect,
+    iButton
   },
   data(){
     return {
       tabelTile,
       TabelData:[],
-      radio:1
+      radio:1,
+      loading:false
     }
   },
   created(){
     TabelData().then(res=>{
       this.TabelData = res.data
     })
+  },
+  methods:{
+    repeatClick(){
+      console.log('you have clicked the button')
+      this.loading = !this.loading
+      //just like ajax 
+      setTimeout(() => {
+        this.loading = !this.loading
+      }, 3000);
+    }
   }
 };
 </script>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+  .scorll{
+    overflow-y: scroll;
+    height: 100%;
+  }
+</style>
