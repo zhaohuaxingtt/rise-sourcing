@@ -7,16 +7,19 @@
  * @FilePath: \rise\src\views\home\index.vue
 -->
 <template>
-<div>
-  hello rise ...
-</div>
+	<div>
+		hello rise ...
+	</div>
 </template>
 <script>
-export default{
-  data(){
-    return{}
-  }
-}
+	export default {
+		data() {
+			return {}
+		},
+		methods: {
+		
+		}
+	}
 </script>
 <style lang='scss' scoped>
 </style>
