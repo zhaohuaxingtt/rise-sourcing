@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-02-23 14:22:16
- * @LastEditTime: 2021-02-23 15:08:47
+ * @LastEditTime: 2021-02-23 15:27:07
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\auto.js
