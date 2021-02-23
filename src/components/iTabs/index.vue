@@ -45,7 +45,7 @@
 	.el-tabs--border-card {
 		border-radius: 10px;
 		overflow: hidden;
-
+		box-shadow: $btn-box-shadow;
 		::v-deep .el-tabs__nav {
 			width: 100%;
 			display: flex;
