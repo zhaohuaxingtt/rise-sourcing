@@ -2,7 +2,7 @@
  * @Author: ldh  
  * @Date: 2021-02-22 11:32:08  
  * @Last Modified by: ldh
- * @Last Modified time: 2021-02-22 15:18:44
+ * @Last Modified time: 2021-02-23 10:06:28
  */
 <template>
   <div class="card">
@@ -44,6 +44,7 @@ export default {
 .card {
   box-shadow: $btn-box-shadow;
   border-radius: 6px;
+  background: $color-white;
 
   .card__header {
     display: flex;
