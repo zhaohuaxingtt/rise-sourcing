@@ -1,5 +1,5 @@
 <template>
-  <svg class="icon" :style="{ fontSize: `${ size }px` }" aria-hidden="true">
+  <svg class="icon" aria-hidden="true">
     <use :xlink:href="`#${ name }`"></use>
   </svg>
 </template>
@@ -9,10 +9,6 @@ export default {
   props: {
     name: {
       type: String
-    },
-    size: {
-      type: Number || String,
-      default: 16
     }
   }
 }
