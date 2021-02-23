@@ -11,10 +11,12 @@ import iSelect from '../components/iSelect'
 import iTabs from '../components/iTabs'
 import iButton from '../components/iButton'
 import iCard from '../components/iCard'
+import icon from '../components/icon'
 export {
   iInput,
   iSelect,
   iButton,
   iCard,
-  iTabs
+  iTabs,
+  icon
 }

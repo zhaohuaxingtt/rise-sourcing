@@ -106,6 +106,16 @@
 				</icard>
 			</el-col>
 		</el-row>
+    <el-row>
+      <el-col :span="24">
+				<icard title="icon">
+          <div class="icon-box" slot="components" v-for="(name, $index) in iconList" :key="$index">
+            <icon size="30" :name="name" />
+            <p>{{ name }}</p>
+          </div>
+				</icard>
+			</el-col>
+    </el-row>
 	</div>
 </template>
 <script>
@@ -114,7 +124,8 @@
 		iSelect,
 		iButton,
 		iCard,
-		iTabs
+		iTabs,
+    icon
 	} from "@/components";
 	import icard from "./components/title";
 	import {
@@ -130,14 +141,16 @@
 			iSelect,
 			iButton,
 			iCard,
-			iTabs
+			iTabs,
+      icon
 		},
 		data() {
 			return {
 				tabelTile,
 				TabelData: [],
 				radio: 1,
-				loading: false
+				loading: false,
+        iconList: ['iconhomeweixuanzhong', 'iconcaidanshouqi', 'iconxiaoxi', 'iconsousudingbu', 'iconcaidanzhankai']
 			}
 		},
 		created() {
@@ -162,4 +175,17 @@
 		overflow-y: scroll;
 		height: 100%;
 	}
+  .icon-box {
+    width: 120px;
+    display: inline-block;
+    text-align: center;
+
+    svg + p {
+      margin-top: 20px;
+    }
+
+    & + & {
+      margin-left: 20px;
+    }
+  }
 </style>
