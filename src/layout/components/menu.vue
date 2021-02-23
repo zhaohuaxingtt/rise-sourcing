@@ -6,3 +6,13 @@
  * @Description: 项目菜单。
  * @FilePath: \rise\src\layout\components\menu.vue
 -->
+<template>
+<div>
+</div>
+</template>
+<script>
+export default{
+}
+</script>
+<style lang='scss' scoped>
+</style>

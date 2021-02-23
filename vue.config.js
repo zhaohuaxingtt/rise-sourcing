@@ -3,6 +3,10 @@ const path = require('path')
 const resolve = dir => path.join(__dirname,dir)
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 const CompressionPlugin = require("compression-webpack-plugin");
+const px2rem = require('postcss-px2rem')
+const postcss = px2rem({
+  remUnit: 16
+})
 module.exports = {
   outputDir: 'dist',
   assetsDir: 'static',
@@ -82,10 +86,14 @@ module.exports = {
     extract: false,
     sourceMap:process.env.NODE_ENV !== 'production',
     requireModuleExtension:true,
+    lintOnSave: true,
     loaderOptions:{
       sass:{
         implementation: require('sass'),
         additionalData:`@import "@/assets/style/global/variables.scss";`
+      },
+      postcss:{
+        plugins:{postcss}
       }
     }
   },
