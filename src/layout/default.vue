@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2020-07-22 14:56:34
- * @LastEditTime: 2021-02-23 15:26:27
+ * @LastEditTime: 2021-02-23 15:54:39
  * @LastEditors: Please set LastEditors
  * @Description: 项目默认layout
  * @FilePath: \test\src\layout\default.vue
@@ -25,4 +25,14 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+.content{
+  height: 100%;
+  width: 100%;
+  .app-content{
+    padding-left: 100px;
+    padding-top: 100px;
+    height: 100%;
+    width: 100%;
+  }
+}
 </style>
