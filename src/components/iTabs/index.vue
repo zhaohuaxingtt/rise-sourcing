@@ -33,6 +33,7 @@
 				font-size: 20px;
 				color: $color-header-iocn;
 			}
+
 			.is-active {
 				color: #000000;
 			}
@@ -66,8 +67,8 @@
 
 			.is-active {
 				color: $color-blue;
-				border-radius: 0 10px 0 0;
-				box-shadow: 2px 0px 6px -3px grey;
+				border-radius: 10px 10px 0 0;
+				box-shadow: 0px 0px 10px 2px rgba(27, 29, 33, 0.08);
 			}
 		}
 
