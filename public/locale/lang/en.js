@@ -7,6 +7,7 @@
   
   i18n.setLocaleMessage('en', {
     'all': 'all',
-    'search': 'search'
+    'search': 'search',
+    'setting': 'setting'
   })
 }))
