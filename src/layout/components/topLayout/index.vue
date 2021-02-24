@@ -21,10 +21,11 @@
     </div>
     <div class="setting">
       <icon class="icon" name="iconSetting" />
-      <span>{{ $t('setting') }}</span>
+      <span>{{ $t('setting') | capitalizeFilter }}</span>
     </div>
-    <div class="language">
-      <icon class="icon" name="iconzhongyingwenzhuanhuanzhong" />
+    <div class="language" @click="handleChangeLang">
+      <icon v-if="lang === 'zh'" class="icon" name="iconzhongyingwenzhuanhuanzhong" />
+      <icon v-else class="icon" name="iconzhongyingwenzhuanhuanying" />
     </div>
     <div class="message">
       <icon class="icon" name="iconxiaoxi" />
@@ -41,9 +42,25 @@ export default{
     pInput,
     icon
   },
+  filters: {
+    capitalizeFilter(val) {
+      return typeof val === 'string' ? val.slice(0, 1).toUpperCase() + val.slice(1).toLowerCase() : val
+    }
+  },
   data() {
     return {
+      lang: '',
       search: ''
+    }
+  },
+  created() {
+    this.lang = localStorage.getItem('lang')
+  },
+  methods: {
+    handleChangeLang() {
+      this.lang = this.lang === 'zh' ? 'en' : 'zh'
+      localStorage.setItem('lang', this.lang)
+      this.$i18n.locale = this.lang
     }
   }
 }
