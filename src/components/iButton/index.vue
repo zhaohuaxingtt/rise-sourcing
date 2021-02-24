@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-22 13:59:24
- * @LastEditTime: 2021-02-22 15:49:40
+ * @LastEditTime: 2021-02-24 15:01:25
  * @LastEditors: Please set LastEditors
  * @Description: 项目中使用到的按钮集合。
  * @FilePath: \rise\src\components\iButton\index.vue
@@ -23,6 +23,10 @@ export default{
     color: $color-blue;
     .el-icon-loading{
       color:$color-blue;
+    }
+    &:hover{
+      background-color: $color-blue;
+      color:$color-white;
     }
 }
 .el-button--mini{
