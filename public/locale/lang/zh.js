@@ -7,6 +7,7 @@
   
   i18n.setLocaleMessage('zh', {
     'all': '全部',
-    'search': '搜索'
+    'search': '搜索',
+    'setting': '设置'
   })
 }))

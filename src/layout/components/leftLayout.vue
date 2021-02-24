@@ -1,21 +1,23 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-22 16:47:54
- * @LastEditTime: 2021-02-23 18:14:49
+ * @LastEditTime: 2021-02-23 19:53:20
  * @LastEditors: Please set LastEditors
  * @Description: 界面左边的按钮切换菜单栏。
  * @FilePath: \rise\src\layout\components\leftLayout.vue
 -->
 <template>
 <div class="leftLayout">
-  <img class="logo" src="../../../src/assets/images/rise.png" alt="">
-  <div :class="iconChangeClass" class="centerBtn">
-    <span @click="active(items.key)" v-for='(items,index) in iconDataList' :key='index' :class="{transparent:items.active}">
-      <icon :name='items.icon'></icon>
-    </span>
-  </div>
-  <div class="btn-button">
-    <img src="../../../src/assets/images/leftContent.png" alt="">
+  <div class="content">
+    <img class="logo" src="../../../src/assets/images/rise.png" alt="">
+    <div :class="iconChangeClass" class="centerBtn">
+      <span @click="active(items.key)" v-for='(items,index) in iconDataList' :key='index' :class="{transparent:items.active}">
+        <icon :name='items.icon'></icon>
+      </span>
+    </div>
+    <div class="btn-button">
+      <img src="../../../src/assets/images/leftContent.png" alt="">
+    </div>
   </div>
 </div>
 </template>
@@ -43,6 +45,14 @@ export default{
 }
 </script>
 <style lang='scss' scoped>
+  .content{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+  }
   .leftLayout{
     width: 100px;
     background-color: $color-white;
@@ -53,10 +63,6 @@ export default{
     z-index: 10;
     padding-top: 30px;
     padding-bottom: 30px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-direction: column;
     .type-first{
       span{
         &:nth-child(2){
