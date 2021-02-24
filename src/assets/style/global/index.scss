@@ -284,8 +284,10 @@ a{
  ---------------------------------------
 */
 .el-select-dropdown{
-  top: 124px!important;
   .popper__arrow{
     display: none!important;
   }
+}
+.el-dialog__body{
+  padding: 10px 20px;
 }
