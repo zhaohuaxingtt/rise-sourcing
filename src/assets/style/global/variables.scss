@@ -112,6 +112,15 @@ $font-size24:24px;
     visibility: hidden;
   }
 }
+.clearFloat{
+  &::after{
+    content: "";
+    display: block;
+    height: 0;
+    clear:both;
+    visibility: hidden;
+  }
+}
 /*-------------------------------------
  |                                     |
  |             界面宽度                 |

@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-02-24 09:47:32
- * @LastEditTime: 2021-02-24 09:53:27
+ * @LastEditTime: 2021-02-24 14:21:05
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsign\home\components\data.js
@@ -17,5 +17,5 @@ export const tableTitle = [
   {props:'h',name:'信息单类型'},
   {props:'i',name:'信息单状态'},
   {props:'j',name:'询价资料状态'},
-  {props:'k',name:'每车用量状态'},
+  {props:'k',name:'每车用量状态'}
 ]

@@ -116,8 +116,9 @@ a{
  |                                     |
  ---------------------------------------
 */
-.pagenation{
+.el-pagination{
   text-align: right;
+  margin-top: 10px;
 }
 /*-------------------------------------
  |                                     |
@@ -128,6 +129,7 @@ a{
 .el-table{
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
+  font-size: 14px;
   .el-table__header{
     background-color: $color-table-header;
     tr{
