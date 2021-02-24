@@ -63,7 +63,9 @@
 				<el-tab-pane label="detailsTab1">
 					<detailsTab1></detailsTab1>
 				</el-tab-pane>
-				<el-tab-pane label="Metarial">内容2</el-tab-pane>
+				<el-tab-pane label="Metarial">
+					内容2
+				</el-tab-pane>
 				<el-tab-pane label="Jsdker">内容3</el-tab-pane>
 				<el-tab-pane label="Jsdker">内容4</el-tab-pane>
 				<el-tab-pane label="Jsdker">内容5</el-tab-pane>
@@ -92,7 +94,7 @@
 			iCard,
 			iTabs,
 			icon,
-			detailsTab1
+			detailsTab1,
 		},
 		data() {
 			return {

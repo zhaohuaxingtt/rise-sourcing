@@ -21,7 +21,7 @@
 			<span>0312</span>
 		</div>
 		<div>
-			<iButton>设置工艺组</iButton>
+			<!-- <iButton>设置工艺组</iButton> -->
 		</div>
 	</div>
 </template>
