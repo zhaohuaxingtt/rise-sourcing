@@ -63,10 +63,12 @@
 				<el-tab-pane label="detailsTab1">
 					<detailsTab1></detailsTab1>
 				</el-tab-pane>
-				<el-tab-pane label="Metarial">
-					内容2
+				<el-tab-pane :label="$t('partsign.enquiry')">
+					<enquiry />
 				</el-tab-pane>
-				<el-tab-pane label="Jsdker">内容3</el-tab-pane>
+				<el-tab-pane :label="$t('partsign.usage')">
+					<usage />
+				</el-tab-pane>
 				<el-tab-pane label="Jsdker">内容4</el-tab-pane>
 				<el-tab-pane label="Jsdker">内容5</el-tab-pane>
 			</iTabs>
@@ -87,6 +89,8 @@
 		icon
 	} from '@/components';
 	import detailsTab1 from './components/detailsTab1'
+	import enquiry from './components/enquiry'
+	import usage from './components/usage'
 	export default {
 		components: {
 			iPage,
@@ -95,6 +99,8 @@
 			iTabs,
 			icon,
 			detailsTab1,
+			enquiry,
+			usage
 		},
 		data() {
 			return {

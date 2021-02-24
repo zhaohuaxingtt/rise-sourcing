@@ -8,6 +8,10 @@
   i18n.setLocaleMessage('zh', {
     'all': '全部',
     'search': '搜索',
-    'setting': '设置'
+    'setting': '设置',
+    'partsign': {
+      'enquiry': '询价资料',
+      'usage': '每车用量'
+    }
   })
 }))

@@ -8,6 +8,10 @@
   i18n.setLocaleMessage('en', {
     'all': 'all',
     'search': 'search',
-    'setting': 'setting'
+    'setting': 'setting',
+    'partsign': {
+      'enquiry': 'enquiry',
+      'usage': 'usage'
+    }
   })
 }))

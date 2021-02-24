@@ -53,7 +53,6 @@ export default{
   },
   created() {
     this.lang = localStorage.getItem('lang')
-    console.log(this)
   },
   methods: {
     handleChangeLang() {

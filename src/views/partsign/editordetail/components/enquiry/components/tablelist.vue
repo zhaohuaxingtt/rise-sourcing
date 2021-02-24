@@ -7,7 +7,7 @@
         <template>
           <iButton v-if="item.prop === 'preview'" @click="preview(item)">预览</iButton>
           <iButton v-if="item.prop === 'download'" @click="download(item)">下载</iButton>
-          <iButton v-if="item.prop === 'log'" @click="log(item)">下载</iButton>
+          <iButton v-if="item.prop === 'log'" @click="log(item)">查看</iButton>
         </template>
       </el-table-column>
     </template>
