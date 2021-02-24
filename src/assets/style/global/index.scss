@@ -108,8 +108,33 @@ a{
  |                                     |
  ---------------------------------------
 */
-
-
+/*-------------------------------------
+ |                                     |
+ |            flex布局class                |
+ |                                     |
+ ---------------------------------------
+*/
+.flex{
+	display: flex;
+}
+.flex-center-center{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+.flex-align-center{
+	display: flex;
+	align-items: center;
+}
+.flex-between-center{
+	display: flex;
+	justify-content: space-between;
+}
+.flex-between-center-center{
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
 /*-------------------------------------
  |                                     |
  |             分页往右                 |
