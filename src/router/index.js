@@ -29,7 +29,12 @@ export const staticRouter = [
         path:'/partsign',
         name:'partsign',
         component:()=> import('@/views/partsign/home')
-      }
+      },
+	  {
+	    path:'/editordetail',
+	    name:'editordetail',
+	    component:()=> import('@/views/partsign/editordetail')
+	  }
     ]
   },
   {
