@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-02-20 11:39:09
+ * @LastEditTime: 2021-02-24 09:47:00
  * @LastEditors: Please set LastEditors
  * @Description: 系统静态路由.
  * @FilePath: \rise\src\router\index.js
@@ -18,12 +18,17 @@ export const staticRouter = [
     path: '/',
     name: 'index',
     component: () => import('@/layout/default'),
-    redirect: '/index',
+    redirect: '/partsign',
     children: [
       {
         path:'/index',
         name:'home',
         component:() => import('@/views/home')
+      },
+      {
+        path:'/partsign',
+        name:'partsign',
+        component:()=> import('@/views/partsign/home')
       }
     ]
   },

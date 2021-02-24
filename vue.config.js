@@ -86,7 +86,6 @@ module.exports = {
     extract: false,
     sourceMap:process.env.NODE_ENV !== 'production',
     requireModuleExtension:true,
-    lintOnSave: true,
     loaderOptions:{
       sass:{
         implementation: require('sass'),
