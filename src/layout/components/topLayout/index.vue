@@ -9,7 +9,7 @@
 <template>
 <div class="topLayout">
   <div class="left">
-    <pInput v-model="search" />
+    <pInput v-model="search" :placeholder="$t('search') | capitalizeFilter" />
   </div>
   <div class="right">
     <div class="user">
@@ -37,15 +37,13 @@
 import pInput from './input.vue';
 import { icon } from '@/components';
 
+import mixins from '@/utils/mixins'
+
 export default{
+  mixins: [mixins],
   components: {
     pInput,
     icon
-  },
-  filters: {
-    capitalizeFilter(val) {
-      return typeof val === 'string' ? val.slice(0, 1).toUpperCase() + val.slice(1).toLowerCase() : val
-    }
   },
   data() {
     return {
@@ -55,6 +53,7 @@ export default{
   },
   created() {
     this.lang = localStorage.getItem('lang')
+    console.log(this)
   },
   methods: {
     handleChangeLang() {
