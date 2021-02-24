@@ -1,5 +1,5 @@
 <template>
-  <iInput class="search" :placeholder="$t('search')" :value="value" @input="handleInput">
+  <iInput class="search" :placeholder="placeholder" :value="value" @input="handleInput">
     <icon class="icon" slot="prefix" name="iconsousudingbu" />
   </iInput>
 </template>
@@ -14,6 +14,10 @@ export default {
   },
   props: {
     value: {
+      type: String || Number,
+      default: ''
+    },
+    placeholder: {
       type: String || Number,
       default: ''
     }
