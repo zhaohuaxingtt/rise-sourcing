@@ -19,7 +19,7 @@
 <script>
 import topLayout from './components/topLayout'
 import menuLayout from './components/menu'
-import LeftLayout from './components/leftLayout.vue';
+import LeftLayout from './components/leftLayout';
 export default {
   components:{topLayout,menuLayout,LeftLayout}
 };
