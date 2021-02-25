@@ -31,7 +31,7 @@ export const staticRouter = [
         component: () => import("@/views/partsign/home"),
       },
       {
-        path: "/editordetail",
+        path: "/partsign/editordetail",//零件签收详情
         name: "editordetail",
         component: () => import("@/views/partsign/editordetail"),
       },
@@ -44,7 +44,12 @@ export const staticRouter = [
         path: "/partsrfq",
         name: "partsrfq",
         component: () => import("@/views/partsrfq/home"),
-      }
+      },
+	  {
+		  path: "/partsrfq/editordetail",//RFQ详情
+		  name: "editordetail",
+		  component: () => import("@/views/partsrfq/editordetail"),
+	  }
     ],
   },
   {
