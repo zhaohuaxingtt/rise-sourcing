@@ -1,7 +1,7 @@
 <template>
-  <div class="enquiry">
+  <div class="usage">
     <div class="header">
-      <iButton>查看全部版本</iButton>
+      <iButton @click="version">查看全部版本</iButton>
     </div>
     <div class="body">
       <tablelist class="table" :tableData="tableListData" :tableTitle="tableTitle"></tablelist>
@@ -34,15 +34,18 @@ export default {
     // getTableList(){
     //   getTabelData().then(res=>this.tableListData = res.data)
     // }
+    version() {
+      window.open('/#/version', '_blank', 'width=900,height=600,menubar=no,toolbar=no,status=no,scrollbars=yes')
+    }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.enquiry {
+.usage {
   .body {
     margin-top: 12px;
-
+    
     .pagination {
       text-align: right;
       margin-top: 12px;

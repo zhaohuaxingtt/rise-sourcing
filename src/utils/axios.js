@@ -1,12 +1,12 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-02-23 09:57:39
+ * @LastEditTime: 2021-02-24 18:07:33
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\utils\axios.js
  */
-// import { iMessage } from '@/components';
+import { iMessage } from '@/components';
 import {getToken,removeToken,setToken,setRefreshToken} from '@/utils'
 import store from '@/store'
  export default function httpRequest(baseUrl='',timeOut=15000) {
@@ -38,7 +38,7 @@ import store from '@/store'
       if(response.data && response.data.code == 200){
         return Promise.resolve(response.data);
       }else{
-        //iMessage.error(response.data.message)
+        iMessage.error(response.data.message)
       }
     },(error)=> {
       switch (error.response.status) {
@@ -58,7 +58,7 @@ import store from '@/store'
         default:
            //防止多次提示,多个请求同时失败！上一个提示还存在时候，先不做提示。
           if(document.getElementsByClassName('el-message').length == 0){
-            //iMessage.error(error.message)
+            iMessage.error(error.message)
           }
           break;
       }

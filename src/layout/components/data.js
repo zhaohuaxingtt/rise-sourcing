@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-23 16:43:12
- * @LastEditTime: 2021-02-23 17:21:47
+ * @LastEditTime: 2021-02-25 10:01:30
  * @LastEditors: Please set LastEditors
  * @Description: components data and function
  * @FilePath: \rise\src\layout\components\data.js
@@ -12,16 +12,19 @@
    {
      icon:'iconhomeweixuanzhong',
      active:true,
-     key:'first'
+     key:'first',
+     path:'/partsign'
    },
    {
     icon:'iconworkbenchxuanzhong',
     active:false,
-    key:'tow'
+    key:'tow',
+    path:'/partsprocure'
   },
   {
     icon:'iconcommonfunctionweixuanzhong',
     active:false,
-    key:'three'
+    key:'three',
+    path:'/partsrfq'
   }
  ]

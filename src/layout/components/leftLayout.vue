@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-22 16:47:54
- * @LastEditTime: 2021-02-23 19:53:20
+ * @LastEditTime: 2021-02-25 09:58:01
  * @LastEditors: Please set LastEditors
  * @Description: 界面左边的按钮切换菜单栏。
  * @FilePath: \rise\src\layout\components\leftLayout.vue
@@ -11,7 +11,7 @@
   <div class="content">
     <img class="logo" src="../../../src/assets/images/rise.png" alt="">
     <div :class="iconChangeClass" class="centerBtn">
-      <span @click="active(items.key)" v-for='(items,index) in iconDataList' :key='index' :class="{transparent:items.active}">
+      <span @click="active(items)" v-for='(items,index) in iconDataList' :key='index' :class="{transparent:items.active}">
         <icon :name='items.icon'></icon>
       </span>
     </div>
@@ -35,10 +35,13 @@ export default{
   methods:{
     active(key){
       this.iconChangeClass = '';
-      if( key == 'first') this.iconChangeClass = 'type-first';
-      if( key == 'three') this.iconChangeClass = 'type-last';
+      if( key.key == 'first') this.iconChangeClass = 'type-first';
+      if( key.key == 'three') this.iconChangeClass = 'type-last';
       this.iconDataList.forEach(items=>{
-        if (items.key == key){items.active = true} else {items.active = false}
+        if (items.key == key.key){items.active = true} else {items.active = false}
+      })
+      this.$router.push({
+        path:key.path
       })
     }
   }
