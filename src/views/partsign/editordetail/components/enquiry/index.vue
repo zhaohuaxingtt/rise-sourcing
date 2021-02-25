@@ -4,13 +4,15 @@
       <iButton>查看全部版本</iButton>
     </div>
     <div class="body">
-      <tablelist class="table" :tableData="tableListData" :tableTitle="tableTitle"></tablelist>
+      <tablelist class="table" :tableData="tableListData" :tableTitle="tableTitle" :loading="loading"></tablelist>
       <el-pagination
-        class="pagination"
+        @size-change="handleSizeChange($event, getEnquiryList)"
+        @current-change="handleCurrentChange($event, getEnquiryList)"
         background
-        layout="prev, pager, next"
-        :total="1000">
-      </el-pagination>
+        :page-sizes="page.pageSizes"
+        :page-size="page.pageSize"
+        :layout="page.layout"
+        :total="page.total" />
     </div>
   </div>
 </template>
@@ -19,21 +21,32 @@
 import { iButton } from '@/components'
 import tablelist from './components/tablelist'
 import { tableTitle } from './components/data'
-// import { getTabelData } from '@/api/partsign/home'
+import { getEnquiryList } from '@/api/partsign/editordetail'
+import { pageMixins } from '@/utils/pageMixins'
 
 export default {
   components: { tablelist, iButton },
+  mixins: [ pageMixins ],
   data() {
     return {
       tableTitle,
-      tableListData: []
+      tableListData: [],
+      loading: false
     }
   },
-  // created(){this.getTableList()},
+  created() {
+    this.getEnquiryList()
+  },
   methods: {
-    // getTableList(){
-    //   getTabelData().then(res=>this.tableListData = res.data)
-    // }
+    getEnquiryList() {
+      this.loading = true
+      getEnquiryList({})
+        .then(res => { 
+          this.tableListData = res.data
+          this.loading = false
+        })
+        .catch(() => this.loading = false)
+    }
   }
 }
 </script>

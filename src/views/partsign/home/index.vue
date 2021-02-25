@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-24 09:17:57
- * @LastEditTime: 2021-02-24 16:55:05
+ * @LastEditTime: 2021-02-25 11:58:32
  * @LastEditors: Please set LastEditors
  * @Description: 零件签收列表界面.
  * @FilePath: \rise\src\views\partsign\index.vue
@@ -38,38 +38,23 @@
       <!------------------------------------------------------------------------>
       <!--                  转派弹出框                                         --->
       <!------------------------------------------------------------------------>
-      <el-dialog title="新建信息单转派" :visible.sync="diologChangeItems" width="400px" @close='clearDiolog'>
-        <div class="changeContent">
-          <span class="fontSize14">采购员：</span>
-          <iSelect v-model='inquiryBuyer' placeholder='请选择询价采购员'>
-            <el-option v-for="(items,index) in inquiryBuyerList" :key='index' :value='JSON.stringify(items)' :label="items.label"/>
-          </iSelect>
-        </div>
-        <span slot="footer" class="dialog-footer">
-          <iButton @click="diologChangeItems = false">取 消</iButton>
-          <iButton @click="sureChangeItems">确 定</iButton>
-        </span>
-      </el-dialog>
+      <changeItems v-model="diologChangeItems" @sure='sureChangeItems'></changeItems>
       <!------------------------------------------------------------------------>
       <!--                  退回弹出框                                         --->
       <!------------------------------------------------------------------------>
-      <el-dialog title="新建信息单退回" :visible.sync="diologBack" width="400px" @close='clearDiolog'>
-         <iInput v-model='backmark' show-word-limit class="textarea" :autosize='{minRows:4}' placeholder='请填写退回理由，退回理由为必填' maxLength='200' type='textarea'></iInput>
-         <span slot="footer" class="dialog-footer">
-          <iButton @click="diologBack = false">取 消</iButton>
-          <iButton @click="sureBackmark">确 定</iButton>
-        </span>
-      </el-dialog>
+      <backItems v-model='diologBack' @sure='sureBackmark'></backItems>
   </iPage>
 </template>
 <script>
-import {iPage,iButton,iCard,iMessage,iInput,iSelect} from '@/components'
+import {iPage,iButton,iCard,iMessage} from '@/components'
 import tablelist from './components/tablelist'
 import {tableTitle} from './components/data'
 import {getTabelData,getInquiryBuyerList} from '@/api/partsign/home'
 import {pageMixins} from '@/utils/pageMixins'
+import backItems from './components/backItems'
+import changeItems from './components/changeItems'
 export default{
-  components:{iPage,tablelist,iButton,iCard,iInput,iSelect},
+  components:{iPage,tablelist,iButton,iCard,backItems,changeItems},
   mixins:[pageMixins],
   data(){
     return {
@@ -85,14 +70,9 @@ export default{
     }
   },
   created(){
-    this.getTableList()
-    this.getInquiryBuyerListFn()
+    this.getTableList()    
   },
   methods:{
-    //获取询价采购员数据。
-    getInquiryBuyerListFn(){
-      getInquiryBuyerList().then(res=>this.inquiryBuyerList = res.data)
-    },
     //获取表格数据
     getTableList(){
       this.tableLoading = true
@@ -117,29 +97,17 @@ export default{
       if(this.selectTableData.length == 0) return iMessage.warn('抱歉，您当前还未选择您需要转派的信息单！')
       this.diologChangeItems = true;
     },
-    sureBackmark(){
-      if(this.backmark == '') return iMessage.warn('抱歉，您当前还未填写退回理由！')
+    sureBackmark(val){
+      console.log('your message:',val)
       this.diologBack = false
     },
-    sureChangeItems(){
+    sureChangeItems(val){
+      console.log('your select data is',JSON.parse(val))
       this.diologChangeItems = false
-    },
-    clearDiolog(){
-      this.backmark = ''
     }
   }
 }
 </script>
 <style lang='scss' scoped>
-  .changeContent{
-    display: flex;
-    padding: 20px 10px 20px 10px;
-    span{
-      display: inline-block;
-      width: 80px;
-      font-size: 14px;
-      height: 35px;
-      line-height: 35px;
-    }
-  }
+
 </style>
