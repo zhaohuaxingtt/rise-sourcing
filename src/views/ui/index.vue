@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-19 14:29:21
- * @LastEditTime: 2021-02-23 09:56:28
+ * @LastEditTime: 2021-02-25 16:52:37
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\ui\index.vue
@@ -116,6 +116,11 @@
 				</icard>
 			</el-col>
     </el-row>
+		<el-row>
+			<icard title='iSearch'>
+				<iSearch slot="components">s</iSearch>
+			</icard>
+		</el-row>
 	</div>
 </template>
 <script>
@@ -125,15 +130,12 @@
 		iButton,
 		iCard,
 		iTabs,
-    icon
+    icon,
+		iSearch
 	} from "@/components";
 	import icard from "./components/title";
-	import {
-		tabelTile
-	} from './components/data'
-	import {
-		TabelData
-	} from '@/api/ui'
+	import { tabelTile } from './components/data'
+	import { TabelData } from '@/api/ui'
 	export default {
 		components: {
 			icard,
@@ -142,7 +144,8 @@
 			iButton,
 			iCard,
 			iTabs,
-      icon
+      icon,
+			iSearch
 		},
 		data() {
 			return {

@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-24 09:17:57
- * @LastEditTime: 2021-02-25 11:58:32
+ * @LastEditTime: 2021-02-25 13:58:57
  * @LastEditors: Please set LastEditors
  * @Description: 零件签收列表界面.
  * @FilePath: \rise\src\views\partsign\index.vue
@@ -49,7 +49,7 @@
 import {iPage,iButton,iCard,iMessage} from '@/components'
 import tablelist from './components/tablelist'
 import {tableTitle} from './components/data'
-import {getTabelData,getInquiryBuyerList} from '@/api/partsign/home'
+import {getTabelData} from '@/api/partsign/home'
 import {pageMixins} from '@/utils/pageMixins'
 import backItems from './components/backItems'
 import changeItems from './components/changeItems'
@@ -100,10 +100,12 @@ export default{
     sureBackmark(val){
       console.log('your message:',val)
       this.diologBack = false
+      this.getTableList()
     },
     sureChangeItems(val){
       console.log('your select data is',JSON.parse(val))
       this.diologChangeItems = false
+      this.getTableList()
     }
   }
 }

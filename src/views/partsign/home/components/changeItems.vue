@@ -1,13 +1,13 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-25 11:24:15
- * @LastEditTime: 2021-02-25 11:59:40
+ * @LastEditTime: 2021-02-25 13:55:32
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsign\home\components\changeItems.vue
 -->
 <template>
-      <el-dialog title="新建信息单转派" :visible.sync="value" width="400px" @close='clearDiolog'>
+      <el-dialog :title="title" :visible.sync="value" width="400px" @close='clearDiolog'>
         <div class="changeContent">
           <span class="fontSize14">采购员：</span>
           <iSelect v-model='inquiryBuyer' placeholder='请选择询价采购员'>
@@ -16,7 +16,7 @@
         </div>
         <span slot="footer" class="dialog-footer">
           <iButton @click="$emit('input',false)">取 消</iButton>
-          <iButton @click="sureChangeItems">确 定</iButton>
+          <iButton :loading='repeatClick' @click="sureChangeItems">确 定</iButton>
         </span>
       </el-dialog>
 </template>
@@ -26,7 +26,9 @@ import {getInquiryBuyerList} from '@/api/partsign/home'
 export default{
   components:{iSelect,iButton},
   props:{
-    value:{type:Boolean}
+    title:{type:String,default:'新件信息单转派'},
+    value:{type:Boolean},
+    repeatClick:Boolean
   },
   data(){
     return {inquiryBuyer:'',inquiryBuyerList:[]}

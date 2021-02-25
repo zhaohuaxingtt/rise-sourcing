@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:08
- * @LastEditTime: 2021-02-24 15:28:12
+ * @LastEditTime: 2021-02-25 16:52:16
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\components\index.js
@@ -14,6 +14,7 @@ import iButton from '../components/iButton'
 import iCard from '../components/iCard'
 import icon from '../components/icon'
 import iPage from '../components/iPage'
+import iSearch from '../components/iSearch'
 const iMessageBox = (content='',title='温馨提示',options={}) => {
   return MessageBox.confirm(content,title,Object.assign({zIndex:20000},options))
 }
@@ -50,5 +51,6 @@ export {
   icon,
   iPage,
   iMessage,
-  iMessageBox
+  iMessageBox,
+  iSearch
 }
