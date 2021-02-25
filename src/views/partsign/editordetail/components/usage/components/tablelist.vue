@@ -1,5 +1,5 @@
 <template>
-  <el-table :data='tableData'>
+  <el-table :data="tableData" v-loading="loading">
     <el-table-column type="selection" align="center"></el-table-column>
     <el-table-column type="index"></el-table-column>
     <template v-for="(item, $index) in tableTitle">
@@ -18,6 +18,10 @@ export default {
     tableTitle: { 
       type: Array,
       default: () => ([])
+    },
+    loading: {
+      type: Boolean,
+      defalut: false
     }
   }
 }
