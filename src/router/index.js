@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-02-25 16:47:28
+ * @LastEditTime: 2021-02-25 17:40:05
  * @LastEditors: Please set LastEditors
  * @Description: 系统静态路由.
  * @FilePath: \rise\src\router\index.js
@@ -10,7 +10,7 @@
 /* eslint-disable no-undef */
 const routerPush = VueRouter.prototype.push;
 VueRouter.prototype.push = function push(location) {
-  return routerPush.call(this, location).catch((error) => error);
+	return routerPush.call(this, location).catch((error) => error);
 };
 Vue.use(VueRouter);
 export const staticRouter = [
@@ -44,7 +44,12 @@ export const staticRouter = [
         path: "/partsrfq",
         name: "partsrfq",
         component: () => import("@/views/partsrfq/home"),
-      }
+      },
+      {
+				path: "/partsrfq/editordetail", //RFQ详情
+				name: "editordetail",
+				component: () => import("@/views/partsrfq/editordetail"),
+			}
     ],
   },
   {
@@ -81,5 +86,5 @@ export const staticRouter = [
 
 // eslint-disable-next-line no-undef
 export default new VueRouter({
-  routes: staticRouter,
+	routes: staticRouter,
 });

@@ -45,7 +45,6 @@
 		flex-wrap: wrap;
 		>div{
 			width: 25%;
-			
 		}
 		.name{
 			display: flex;

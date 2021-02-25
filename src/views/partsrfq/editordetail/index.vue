@@ -8,10 +8,15 @@
 -->
 <template>
 <div>
+	<rfqPending></rfqPending>
 </div>
 </template>
 <script>
+	import rfqPending from './components/rfqPending'
 export default{
+	components:{
+		rfqPending
+	}
 }
 </script>
 <style lang='scss' scoped>

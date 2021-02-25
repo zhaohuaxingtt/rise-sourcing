@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-19 14:29:21
- * @LastEditTime: 2021-02-25 16:52:37
+ * @LastEditTime: 2021-02-25 17:43:03
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\ui\index.vue
@@ -118,7 +118,9 @@
     </el-row>
 		<el-row>
 			<icard title='iSearch'>
-				<iSearch slot="components">s</iSearch>
+				<iSearch slot="components">
+					<div></div>
+				</iSearch>
 			</icard>
 		</el-row>
 	</div>
