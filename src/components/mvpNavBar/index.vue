@@ -5,32 +5,31 @@
 * @Description: mvp顶部导航栏
  -->
 <template>
-	<div class="nav flex-align-center">
+	<div class="nav flex-align-center" :class="[center && 'justify-center',right && 'justify-right']">
 		<div v-for="(item,index) in list" :key="index" @click="change(item,index)">
 			<span class="name" :class="index==activeIndex && 'active'">{{item.name}}</span>
 			<!-- <span class="circle" v-show="item.message>0">{{item.message}}</span> -->
 			<el-badge class="badge" :max="99" :hidden="!item.message" :value="item.message"></el-badge>
 		</div>
-		<div class="menu">
-			<icon name="iconxiaoxi"></icon>
-		</div>
 	</div>
 </template>
 
 <script>
-	import {
-		icon
-	} from "@/components"
 	export default {
-		components: {
-			icon
-		},
 		data() {
 			return {
 				activeIndex: 0,
 			}
 		},
 		props: {
+			center: {
+				type: Boolean,
+				default: false
+			},
+			right: {
+				type: Boolean,
+				default: false
+			},
 			list: {
 				type: Array,
 				default: () => [{
@@ -50,7 +49,8 @@
 					name: "定点管理",
 					message: 0
 				}]
-			}
+			},
+
 		},
 		methods: {
 			// 切换nav
@@ -99,8 +99,13 @@
 			}
 		}
 
-		.menu {
-			font-size: 20px;
-		}
+	}
+
+	.justify-center {
+		justify-content: center;
+	}
+
+	.justify-right {
+		justify-content: flex-end;
 	}
 </style>
