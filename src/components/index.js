@@ -14,6 +14,7 @@ import iButton from '../components/iButton'
 import iCard from '../components/iCard'
 import icon from '../components/icon'
 import iPage from '../components/iPage'
+import mvpNavBar from "../components/mvpNavBar"
 const iMessageBox = (content='',title='温馨提示',options={}) => {
   return MessageBox.confirm(content,title,Object.assign({zIndex:20000},options))
 }
@@ -50,5 +51,6 @@ export {
   icon,
   iPage,
   iMessage,
-  iMessageBox
+  iMessageBox,
+  mvpNavBar
 }
