@@ -6,8 +6,4 @@
  * @Description: 系统mixins
  * @FilePath: \rise\src\utils\mixins.js
  */
-import * as filters from './filters'
-
-export default {
-  filters
-}
+export default {}
