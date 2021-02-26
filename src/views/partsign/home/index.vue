@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-24 09:17:57
- * @LastEditTime: 2021-02-26 10:38:56
+ * @LastEditTime: 2021-02-26 14:06:33
  * @LastEditors: Please set LastEditors
  * @Description: 零件签收列表界面.
  * @FilePath: \rise\src\views\partsign\index.vue
@@ -34,7 +34,7 @@
       <!------------------------------------------------------------------------>
       <!--                  表格分页                                          --->
       <!------------------------------------------------------------------------>
-      <el-pagination
+      <iPagination
         @size-change="handleSizeChange($event, getTableList)"
         @current-change="handleCurrentChange($event, getTableList)"
         background
@@ -59,7 +59,7 @@
   </iPage>
 </template>
 <script>
-import { iPage, iButton, iCard, iMessage } from "@/components";
+import { iPage, iButton, iCard, iMessage ,iPagination} from "@/components";
 import tablelist from "./components/tablelist";
 import { tableTitle } from "./components/data";
 import { getTabelData } from "@/api/partsign/home";
@@ -68,7 +68,7 @@ import backItems from "./components/backItems";
 import changeItems from "./components/changeItems";
 import { mvpNavBar } from "@/components";
 export default {
-  components: { iPage, tablelist, iButton, iCard, backItems, changeItems ,mvpNavBar},
+  components: { iPage, tablelist, iButton, iCard, backItems, changeItems ,mvpNavBar,iPagination},
   mixins: [pageMixins],
   data() {
     return {

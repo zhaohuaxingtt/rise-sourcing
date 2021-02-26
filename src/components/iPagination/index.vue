@@ -1,6 +1,6 @@
 <template>
   <div class="i-pagination clearFloat">
-    <p class="page-info" v-if="showPageInfo">显示<span class="item">{{ firstCount }}</span>条到第<span class="item">{{ lastCount }}</span>条记录，共<span class="item">{{ $props.total }}</span>条记录</p>
+    <p class="page-info" v-if="showPageInfo">显示<span class="item">{{ currentPage }}</span>条到第<span class="item">{{ lastCount }}</span>条记录，共<span class="item">{{ $props.total }}</span>条记录</p>
     <el-pagination class="pagination" ref="pagination" v-bind="$props" v-on="$listeners" :layout="_layout" @current-change="handleCurrentChange" @size-change="handleSizeChange" >
       <slot></slot>
     </el-pagination>
@@ -9,23 +9,12 @@
 
 <script>
 import { Pagination } from 'element-ui';
-
 export default {
   props: {
     ...Pagination.props,
     showPageInfo: { type: Boolean, default: true },
     prevText: { type: String, default: '上一页' },
     nextText: { type: String, default: '下一页' }
-  },
-  computed: {
-    _layout() {
-      let arr = this.layout.split(',')
-      arr = arr.filter(item => {
-        return item.trim() !== 'total'
-      })
-
-      return arr.join(',')
-    }
   },
   data() {
     return {
@@ -45,7 +34,6 @@ export default {
     handleCurrentChange(currentPage) {
       this.$emit('update:currentPage', currentPage)
       this.$emit('current-change', currentPage)
-
       this.$nextTick(() => this.updateCount(currentPage, this.pageSize, this.total))
     },
     handleSizeChange(pageSize) {

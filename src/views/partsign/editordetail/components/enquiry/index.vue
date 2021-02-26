@@ -1,3 +1,11 @@
+<!--
+ * @Author: your name
+ * @Date: 2021-02-24 16:57:16
+ * @LastEditTime: 2021-02-26 13:54:52
+ * @LastEditors: your name
+ * @Description: In User Settings Edit
+ * @FilePath: \rise\src\views\partsign\editordetail\components\enquiry\index.vue
+-->
 <template>
   <div class="enquiry">
     <div class="header">
@@ -11,7 +19,7 @@
         background
         :current-page.sync="page.size"
         :page-sizes="page.pageSizes"
-        :page-size.sync="page.pageSize"
+        :page-size.sync="page.page"
         :layout="page.layout"
         :total="page.total" />
     </div>
