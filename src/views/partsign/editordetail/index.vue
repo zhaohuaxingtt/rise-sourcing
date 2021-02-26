@@ -21,13 +21,13 @@
 		</div>
 		<!-- 零件详情内容 -->
 		<iCard class="partsDetail">
-			<partInfo icons :title="partTitle" :data="data"></partInfo>
+			<partInfo icons :title="partTitle" :data="partDetails"></partInfo>
 		</iCard>
 		<!-- 零件详情tab页 -->
 		<div class="iTabs">
 			<iTabs-list type="border-card">
 				<el-tab-pane label="信息单详情">
-					<partInfo :title="partDetailTitle" :data="data2"></partInfo>
+					<partInfo :title="partDetailTitle" :data="partInfos"></partInfo>
 				</el-tab-pane>
 				<el-tab-pane :label="$t('partsign.enquiry')">
 					<enquiry />
@@ -83,14 +83,8 @@
 				partTitle: partTitle, //tab页零件详情数据
 				diologChangeItems: false, //转派弹窗
 				diologBack: false, //退回弹窗
-				data: {
-					c: "12321fff",
-					b: "的撒旦"
-				},
-				data2: {
-					c: "12321fff",
-					b: "的撒旦"
-				}
+				partDetails: {},//零件信息
+				partInfos: {},//信息单详情
 			};
 		},
 		created() {
@@ -99,7 +93,8 @@
 		methods: {
 			getPartInfo() {
 				getPartInfo().then(res=>{
-					console.log(res);
+					this.partDetails=res.data
+					this.partInfos=res.data
 				})
 			},
 			//签收
