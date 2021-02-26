@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-24 09:30:41
- * @LastEditTime: 2021-02-24 10:28:41
+ * @LastEditTime: 2021-02-26 17:08:30
  * @LastEditors: Please set LastEditors
  * @Description: 界面根组件
  * @FilePath: \rise\src\components\iPage\index.vue
@@ -19,7 +19,7 @@ export default{
   .routerpage{
     height: 100%;
     width: 100%;
-    padding: 40px;
+    padding: 30px 40px 30px 40px;
     overflow-y: scroll;
   }
 </style>

@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:08
- * @LastEditTime: 2021-02-24 15:28:12
+ * @LastEditTime: 2021-02-26 18:25:32
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\components\index.js
@@ -16,6 +16,7 @@ import iCard from '../components/iCard'
 import icon from '../components/icon'
 import iPage from '../components/iPage'
 import iPagination from '../components/iPagination'
+import iSearch from '../components/iSearch'
 import mvpNavBar from "../components/mvpNavBar"
 import partInfo from "../components/partInfo"
 const iMessageBox = (content='',title='温馨提示',options={}) => {
@@ -58,5 +59,6 @@ export {
   iMessageBox,
   iPagination,
   mvpNavBar,
+  iSearch,
   partInfo
 }

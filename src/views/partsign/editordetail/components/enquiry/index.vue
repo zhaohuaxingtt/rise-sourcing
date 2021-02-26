@@ -1,3 +1,11 @@
+<!--
+ * @Author: your name
+ * @Date: 2021-02-24 16:57:16
+ * @LastEditTime: 2021-02-26 14:56:25
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: \rise\src\views\partsign\editordetail\components\enquiry\index.vue
+-->
 <template>
   <div class="enquiry">
     <div class="header clearFloat">

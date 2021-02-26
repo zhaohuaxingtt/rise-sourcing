@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-22 13:59:24
- * @LastEditTime: 2021-02-24 15:01:25
+ * @LastEditTime: 2021-02-26 14:53:37
  * @LastEditors: Please set LastEditors
  * @Description: 项目中使用到的按钮集合。
  * @FilePath: \rise\src\components\iButton\index.vue
@@ -21,6 +21,7 @@ export default{
     padding: 9px 20px;
     font-size: 16px;
     color: $color-blue;
+    min-width: 100px;
     .el-icon-loading{
       color:$color-blue;
     }
