@@ -5,7 +5,7 @@
 * @Description: mvp顶部导航栏
  -->
 <template>
-	<div class="nav flex-align-center">
+	<div class="nav flex-align-center" :class="[center && 'justify-center',right && 'justify-right']">
 		<div v-for="(item,index) in list" :key="index" @click="change(item,index)">
 			<span class="name" :class="index==activeIndex && 'active'">{{item.name}}</span>
 			<!-- <span class="circle" v-show="item.message>0">{{item.message}}</span> -->
@@ -22,8 +22,19 @@
 			}
 		},
 		props: {
+<<<<<<< HEAD
 			center:Boolean,
 			right:Boolean,
+=======
+			center: {
+				type: Boolean,
+				default: false
+			},
+			right: {
+				type: Boolean,
+				default: false
+			},
+>>>>>>> 281adb0df0c7816bea0a992c6a31c887643279be
 			list: {
 				type: Array,
 				default: () => [{
@@ -43,7 +54,8 @@
 					name: "定点管理",
 					message: 0
 				}]
-			}
+			},
+
 		},
 		methods: {
 			// 切换nav
@@ -92,8 +104,13 @@
 			}
 		}
 
-		.menu {
-			font-size: 20px;
-		}
+	}
+
+	.justify-center {
+		justify-content: center;
+	}
+
+	.justify-right {
+		justify-content: flex-end;
 	}
 </style>
