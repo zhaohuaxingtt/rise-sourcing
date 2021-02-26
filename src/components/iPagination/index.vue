@@ -1,7 +1,7 @@
 <template>
   <div class="i-pagination clearFloat">
-    <p class="page-info" v-if="showPageInfo">显示<span class="item">{{ currentPage }}</span>条到第<span class="item">{{ lastCount }}</span>条记录，共<span class="item">{{ $props.total }}</span>条记录</p>
-    <el-pagination class="pagination" ref="pagination" v-bind="$props" v-on="$listeners" :layout="_layout" @current-change="handleCurrentChange" @size-change="handleSizeChange" >
+    <p class="page-info" v-if="showPageInfo">显示<span class="item">{{ total > 0 ? (currentPage - 1) * pageSize + 1 : 0 }}</span>条到第<span class="item">{{ total > 0 ? (currentPage * pageSize > total ? (currentPage * pageSize - (currentPage * pageSize - total)) : currentPage * pageSize) : 0 }}</span>条记录，共<span class="item">{{ $props.total }}</span>条记录</p>
+    <el-pagination class="pagination" v-bind="$props" v-on="$listeners">
       <slot></slot>
     </el-pagination>
   </div>
@@ -15,46 +15,6 @@ export default {
     showPageInfo: { type: Boolean, default: true },
     prevText: { type: String, default: '上一页' },
     nextText: { type: String, default: '下一页' }
-  },
-  data() {
-    return {
-      firstCount: 0,
-      lastCount: 0
-    }
-  },
-  watch: {
-    total(total) {
-      this.$nextTick(() => this.updateCount(this.currentPage, this.pageSize, total))
-    }
-  },
-  mounted() {
-    this.updateCount(this.currentPage, this.pageSize, this.total)
-  },
-  methods: {
-    handleCurrentChange(currentPage) {
-      this.$emit('update:currentPage', currentPage)
-      this.$emit('current-change', currentPage)
-      this.$nextTick(() => this.updateCount(currentPage, this.pageSize, this.total))
-    },
-    handleSizeChange(pageSize) {
-      this.$emit('update:pageSize', pageSize)
-      this.$emit('size-change', pageSize)
-
-      this.$nextTick(() => this.updateCount(this.currentPage, pageSize, this.total))
-    },
-    updateCount(currentPage, pageSize, total) {
-      this.firstCount = total > 0 ? (currentPage - 1) * pageSize + 1 : 0
-      const ideal = currentPage * pageSize
-      if (total > 0) {
-        if (ideal < total) {
-          this.lastCount = ideal
-        } else {
-          this.lastCount = ideal - (ideal - total)
-        }
-      } else {
-        this.lastCount = 0
-      }
-    }
   }
 }
 </script>
@@ -78,6 +38,7 @@ export default {
 
   ::v-deep .pagination {
     padding: 0;
+    margin-top: 15px;
 
     .el-pager {
       .more {
@@ -86,6 +47,7 @@ export default {
         padding: 0!important;
         min-width: 1em!important;
         width: 1em!important;
+        background: transparent!important;
       }
 
       .el-icon-more::before {

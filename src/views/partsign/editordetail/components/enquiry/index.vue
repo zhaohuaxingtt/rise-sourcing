@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-24 16:57:16
- * @LastEditTime: 2021-02-26 13:54:52
- * @LastEditors: your name
+ * @LastEditTime: 2021-02-26 14:56:25
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsign\editordetail\components\enquiry\index.vue
 -->
@@ -17,9 +17,9 @@
         @size-change="handleSizeChange($event, getEnquiryList)"
         @current-change="handleCurrentChange($event, getEnquiryList)"
         background
-        :current-page.sync="page.size"
+        :current-page="page.size"
         :page-sizes="page.pageSizes"
-        :page-size.sync="page.page"
+        :page-size="page.page"
         :layout="page.layout"
         :total="page.total" />
     </div>

@@ -136,6 +136,13 @@
 				</iSearch>
 			</icard>
 		</el-row>
+		<el-row>
+			<el-col :span="16">
+				<icard title="iPagination">
+					<iPagination background slot="components" :current-page.sync="page.size" :page-size.sync="page.page" :total="105" :page-sizes="[5, 10, 20,]" :layout="page.layout"/>
+				</icard>
+			</el-col>
+		</el-row>
 	</div>
 </template>
 <script>
@@ -146,11 +153,14 @@
 		iCard,
 		iTabs,
     icon,
-		iSearch
+		iSearch,
+		iPagination
 	} from "@/components";
 	import icard from "./components/title";
 	import { tabelTile } from './components/data'
 	import { TabelData } from '@/api/ui'
+	import Input from '../../layout/components/topLayout/input.vue';
+	import { pageMixins } from '@/utils/pageMixins'
 	export default {
 		components: {
 			icard,
@@ -160,8 +170,11 @@
 			iCard,
 			iTabs,
       icon,
-			iSearch
+			iSearch,
+			iPagination,
+			Input
 		},
+		mixins: [ pageMixins ],
 		data() {
 			return {
 				tabelTile,

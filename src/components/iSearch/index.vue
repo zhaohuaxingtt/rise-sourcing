@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 16:34:49
- * @LastEditTime: 2021-02-26 14:52:47
+ * @LastEditTime: 2021-02-26 15:01:33
  * @LastEditors: Please set LastEditors
  * @Description: 界面中存在的搜索区域，公共组件。
  * @FilePath: \rise\src\components\iSearch\index.vue
@@ -9,8 +9,8 @@
 <template>
   <iCard>
     <div class="iSearch-content">
-      <div class="operation">
-        <iButton>打开</iButton>
+      <div class="operation cursor">
+        <i class="el-icon-arrow-up icon"></i>
       </div>
       <div class="serch">
         <slot></slot>
@@ -19,12 +19,19 @@
   </iCard>
 </template>
 <script>
-import {iCard,iButton} from '../index'
+import {iCard} from '../index'
 export default{
-  components:{iCard,iButton}
+  components:{iCard}
 }
 </script>
 <style lang='scss' scoped>
+  .icon{
+    font-size: 18px;
+    color:#D3D3DB;
+    &:hover{
+      color:$color-blue;
+    }
+  }
   .iSearch-content{
     overflow:hidden;
     .serch{margin-right: 30px;height:auto;overflow: hidden;
