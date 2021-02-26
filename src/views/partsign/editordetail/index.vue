@@ -27,7 +27,9 @@
 		<div class="iTabs">
 			<iTabs-list type="border-card">
 				<el-tab-pane label="信息单详情">
-					<partInfo :title="partDetailTitle" :data="partInfos"></partInfo>
+					<iCard>
+						<partInfo :title="partDetailTitle" :data="partInfos"></partInfo>
+					</iCard>
 				</el-tab-pane>
 				<el-tab-pane :label="$t('partsign.enquiry')">
 					<enquiry />

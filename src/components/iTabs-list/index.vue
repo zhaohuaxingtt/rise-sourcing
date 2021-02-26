@@ -16,7 +16,6 @@
 <style lang="scss" scoped>
 	.el-tabs--border-card {
 		border-radius: none;
-		overflow: hidden;
 		border: none;
 		box-shadow: none;
 		overflow: visible;
@@ -56,11 +55,17 @@
 		}
 
 		.el-tabs__content {
-			box-shadow: $btn-box-shadow;
-			border-radius: 10px;
-			padding: 32px 60px;
+			box-shadow: none;
+			border-radius: 0;
+			padding: 0;
 			margin-top: 15px;
-			background-color: #FFFFFF;
+			background-color: transparent;
+			overflow: visible;
+			// box-shadow: $btn-box-shadow;
+			// border-radius: 10px;
+			// padding: 32px 60px;
+			// margin-top: 15px;
+			// background-color: #FFFFFF;
 		}
 	}
 </style>
