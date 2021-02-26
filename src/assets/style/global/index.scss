@@ -325,3 +325,9 @@ a{
 .el-dialog__body{
   padding: 10px 20px;
 }
+
+.link {
+  color: $color-blue;
+  text-decoration: underline;
+  cursor: pointer;
+}

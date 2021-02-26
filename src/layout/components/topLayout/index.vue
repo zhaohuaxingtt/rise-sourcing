@@ -40,7 +40,7 @@ import { icon } from '@/components';
 import filters from '@/utils/filters'
 
 export default{
-  mixins: [filters],
+  mixins: [ filters ],
   components: {
     pInput,
     icon
