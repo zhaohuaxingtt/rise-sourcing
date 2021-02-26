@@ -1,14 +1,16 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-24 09:17:57
- * @LastEditTime: 2021-02-25 17:41:35
+ * @LastEditTime: 2021-02-26 10:31:20
  * @LastEditors: Please set LastEditors
  * @Description: 零件签收列表界面.
  * @FilePath: \rise\src\views\partsign\index.vue
 -->
 <template>
   <iPage>
-    <mvpNavBar @change="change"></mvpNavBar>
+    <div>
+      <mvpNavBar @change="change"></mvpNavBar>
+    </div>
     <!------------------------------------------------------------------------>
     <!--                  table模块，向外入参表格数据，表头                    --->
     <!------------------------------------------------------------------------>
@@ -37,8 +39,9 @@
         @current-change="handleCurrentChange($event, getTableList)"
         background
         :page-sizes="page.pageSizes"
-        :page-size="page.pageSize"
+        :page-size="page.page"
         :layout="page.layout"
+        :current-page='page.size'
         :total="page.total"
       />
     </iCard>

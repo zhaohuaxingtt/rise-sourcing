@@ -1,7 +1,7 @@
 <!--
 * @author:shujie
 * @Date: 2021-2-25 16:13:25
-* @LastEditors: shujie
+ * @LastEditors: Please set LastEditors
 * @Description: mvp顶部导航栏
  -->
 <template>
@@ -11,26 +11,19 @@
 			<!-- <span class="circle" v-show="item.message>0">{{item.message}}</span> -->
 			<el-badge class="badge" :max="99" :hidden="!item.message" :value="item.message"></el-badge>
 		</div>
-		<div class="menu">
-			<icon name="iconxiaoxi"></icon>
-		</div>
 	</div>
 </template>
 
 <script>
-	import {
-		icon
-	} from "@/components"
 	export default {
-		components: {
-			icon
-		},
 		data() {
 			return {
 				activeIndex: 0,
 			}
 		},
 		props: {
+			center:Boolean,
+			right:Boolean,
 			list: {
 				type: Array,
 				default: () => [{
