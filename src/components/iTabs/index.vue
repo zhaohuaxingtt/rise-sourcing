@@ -64,7 +64,6 @@ export default {
           "el-tabs": true,
           "el-tabs--card": type === "card",
           "el-tabs-default": true,
-          "el-tabs-notauto": stretch === false && type === "border-card",
           [`el-tabs--${tabPosition}`]: true,
           "el-tabs--border-card": type === "border-card",
         }}
@@ -137,25 +136,25 @@ export default {
 }
 
 // 如果stretch为false 修改标题栏背景色
-.el-tabs-notauto {
-  ::v-deep .el-tabs__header {
-    background-color: #ffffff;
+// .el-tabs-notauto {
+//   ::v-deep .el-tabs__header {
+//     background-color: #ffffff;
 
-    .el-tabs__item {
-      min-width: 200px;
-      text-align: center;
-      background-color: #f5f7fa;
-      //   border-radius: 0px 10px 0 0;
-      box-shadow: 10px 0px 10px 2px rgba(27, 29, 33, 0.08);
-    }
+//     .el-tabs__item {
+//       min-width: 200px;
+//       text-align: center;
+//       background-color: #f5f7fa;
+//       //   border-radius: 0px 10px 0 0;
+//       box-shadow: 10px 0px 10px 2px rgba(27, 29, 33, 0.08);
+//     }
 
-    .is-active {
-      background-color: #ffffff;
-      box-shadow: 0px 0px 10px 2px rgba(27, 29, 33, 0.08);
+//     .is-active {
+//       background-color: #ffffff;
+//       box-shadow: 0px 0px 10px 2px rgba(27, 29, 33, 0.08);
 
-      //   border-radius: 0px 10px 0 0;
-      z-index: 10;
-    }
-  }
-}
+//       //   border-radius: 0px 10px 0 0;
+//       z-index: 10;
+//     }
+//   }
+// }
 </style>
