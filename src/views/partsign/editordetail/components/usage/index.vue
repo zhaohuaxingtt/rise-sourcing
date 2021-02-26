@@ -5,12 +5,13 @@
     </div>
     <div class="body">
       <tablelist class="table" :tableData="tableListData" :tableTitle="tableTitle" :loading="loading"></tablelist>
-      <el-pagination
+      <iPagination
         @size-change="handleSizeChange($event, getEnquiryList)"
         @current-change="handleCurrentChange($event, getEnquiryList)"
         background
+        :current-page="page.size"
         :page-sizes="page.pageSizes"
-        :page-size="page.pageSize"
+        :page-size="page.page"
         :layout="page.layout"
         :total="page.total" />
     </div>
@@ -19,14 +20,14 @@
 </template>
 
 <script>
-import { iButton } from '@/components'
+import { iButton, iPagination } from '@/components'
 import tablelist from './components/tablelist'
 import { tableTitle } from './components/data'
 import { getEnquiryList } from '@/api/partsign/editordetail'
 import { pageMixins } from '@/utils/pageMixins'
 
 export default {
-  components: { tablelist, iButton },
+  components: { tablelist, iButton, iPagination },
   mixins: [ pageMixins ],
   data() {
     return {

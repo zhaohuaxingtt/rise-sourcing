@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-19 14:29:21
- * @LastEditTime: 2021-02-26 15:48:00
+ * @LastEditTime: 2021-02-26 18:27:13
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\ui\index.vue
@@ -68,32 +68,32 @@
 			</el-col>
 		</el-row>
 		<el-row>
-			<el-col :span='24'>
+			<el-col :span="24">
 				<icard title="el-tabel">
-					<el-table slot="components" :data='TabelData'>
-						<el-table-column v-for="(items,index) in tabelTile" :key="index" align='center' :label="items.name" :prop="items.key"></el-table-column>
+					<el-table slot="components" :data="TabelData">
+						<el-table-column v-for="(items, index) in tabelTile" :key="index" align="center" :label="items.name" :prop="items.key"></el-table-column>
 					</el-table>
 				</icard>
 			</el-col>
 		</el-row>
 		<el-row>
-			<el-col :span='24'>
+			<el-col :span="24">
 				<icard title="iButton">
 					<iButton slot="components">iButton example</iButton>
 					<iButton slot="components" loading>iButton loading</iButton>
-					<iButton slot="components" :loading='loading' @click="repeatClick" icon='el-icon-delete'>iButton NoRepeat Submit</iButton>
-					<iButton slot="components" size='mini'>Mini iButton example</iButton>
-					<iButton slot="components" size='mini' loading>Mini iButton example</iButton>
+					<iButton slot="components" :loading="loading" @click="repeatClick" icon="el-icon-delete">iButton NoRepeat Submit</iButton>
+					<iButton slot="components" size="mini">Mini iButton example</iButton>
+					<iButton slot="components" size="mini" loading>Mini iButton example</iButton>
 				</icard>
 			</el-col>
 		</el-row>
 		<el-row>
 			<el-col :span="8">
 				<icard title="iTabs(border-card)">
-					<iTabs type="border-card" slot="components">
+					<iTabs type="border-card" slot="components" stretch>
 						<el-tab-pane label="Category">内容1</el-tab-pane>
 						<el-tab-pane label="Metarial">内容2</el-tab-pane>
-						<el-tab-pane label="Jsdker">内容3</el-tab-pane>
+						<el-tab-pane label="Metarial">内容3</el-tab-pane>
 					</iTabs>
 				</icard>
 			</el-col>
@@ -106,16 +106,16 @@
 				</icard>
 			</el-col>
 		</el-row>
-    <el-row>
-      <el-col :span="24">
-				<icard title="icon">
-          <div class="icon-box" slot="components" v-for="(name, $index) in iconList" :key="$index">
-            <icon size="30" :name="name" />
-            <p>{{ name }}</p>
-          </div>
+		<el-row>
+			<el-col :span="12">
+				<icard title="iTabs-list">
+					<iTabs-list type="border-card" slot="components">
+						<el-tab-pane label="材料清单">内容1</el-tab-pane>
+						<el-tab-pane label="供应商">内容2</el-tab-pane>
+					</iTabs-list>
 				</icard>
 			</el-col>
-    </el-row>
+		</el-row>
 		<el-row>
 			<icard title='iSearch'>
 				<iSearch slot="components">
@@ -159,11 +159,19 @@
 					</el-form>
 				</iSearch>
 			</icard>
+			<el-col :span="24">
+				<iCard title="partInfo">
+					<partInfo icons :title="tabelTile" :data="partInfoData"></partInfo>
+				</iCard>
+			</el-col>
 		</el-row>
 		<el-row>
-			<el-col :span="16">
-				<icard title="iPagination">
-					<iPagination background slot="components" :current-page.sync="page.size" :page-size.sync="page.page" :total="105" :page-sizes="[5, 10, 20,]" :layout="page.layout"/>
+			<el-col :span="24">
+				<icard title="icon">
+					<div class="icon-box" slot="components" v-for="(name, $index) in iconList" :key="$index">
+						<icon size="30" :name="name" />
+						<p>{{ name }}</p>
+					</div>
 				</icard>
 			</el-col>
 		</el-row>
@@ -176,15 +184,17 @@
 		iButton,
 		iCard,
 		iTabs,
-    icon,
-		iSearch,
-		iPagination
+		iTabsList,
+		icon,
+		partInfo
 	} from "@/components";
 	import icard from "./components/title";
-	import { tabelTile } from './components/data'
-	import { TabelData } from '@/api/ui'
-	import Input from '../../layout/components/topLayout/input.vue';
-	import { pageMixins } from '@/utils/pageMixins'
+	import {
+		tabelTile
+	} from "./components/data";
+	import {
+		TabelData
+	} from "@/api/ui";
 	export default {
 		components: {
 			icard,
@@ -193,36 +203,42 @@
 			iButton,
 			iCard,
 			iTabs,
-      icon,
-			iSearch,
-			iPagination,
-			Input
+			icon,
+			iTabsList,
+			partInfo
 		},
-		mixins: [ pageMixins ],
 		data() {
 			return {
 				tabelTile,
 				TabelData: [],
 				radio: 1,
 				loading: false,
-        iconList: ['iconhomeweixuanzhong', 'iconcaidanshouqi', 'iconxiaoxi', 'iconsousudingbu', 'iconcaidanzhankai']
-			}
+				iconList: [
+					"iconhomeweixuanzhong",
+					"iconcaidanshouqi",
+					"iconxiaoxi",
+					"iconsousudingbu",
+					"iconcaidanzhankai",
+				],
+				partInfoTitle:[{key:"a",name:"零件信息"}],
+				partInfoData:{a:"D232121FF"}
+			};
 		},
 		created() {
-			TabelData().then(res => {
-				this.TabelData = res.data
-			})
+			TabelData().then((res) => {
+				this.TabelData = res.data;
+			});
 		},
 		methods: {
 			repeatClick() {
-				console.log('you have clicked the button')
-				this.loading = !this.loading
-				//just like ajax 
+				console.log("you have clicked the button");
+				this.loading = !this.loading;
+				//just like ajax
 				setTimeout(() => {
-					this.loading = !this.loading
+					this.loading = !this.loading;
 				}, 3000);
-			}
-		}
+			},
+		},
 	};
 </script>
 <style lang="scss" scoped>
@@ -230,17 +246,18 @@
 		overflow-y: scroll;
 		height: 100%;
 	}
-  .icon-box {
-    width: 120px;
-    display: inline-block;
-    text-align: center;
 
-    svg + p {
-      margin-top: 20px;
-    }
+	.icon-box {
+		width: 120px;
+		display: inline-block;
+		text-align: center;
 
-    & + & {
-      margin-left: 20px;
-    }
-  }
+		svg+p {
+			margin-top: 20px;
+		}
+
+		&+& {
+			margin-left: 20px;
+		}
+	}
 </style>

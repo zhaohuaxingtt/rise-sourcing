@@ -45,7 +45,6 @@ export default {
   box-shadow: $btn-box-shadow;
   border-radius: 6px;
   background: $color-white;
-
   .card__header {
     display: flex;
     align-items: center;
@@ -59,7 +58,7 @@ export default {
   }
 
   .card__body {
-    padding: 20px;
+    padding: 32px 50px;
   }
 }
 </style>

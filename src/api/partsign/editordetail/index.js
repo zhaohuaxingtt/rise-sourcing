@@ -16,3 +16,11 @@ export function getEnquiryList(parmars) {
     data: parmars
   })
 }
+// 零件详细信息
+export function getPartInfo(parmars) {
+  return requst({
+    url: 'https://www.fastmock.site/mock/5cd3e97d6126b18b5e16f3e499489335/api/partsign/getPartInfo',
+    method: 'GET',
+    data: parmars
+  })
+}

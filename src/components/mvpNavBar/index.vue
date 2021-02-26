@@ -35,11 +35,11 @@
 				default: () => [{
 					value: 1,
 					name: "零件签收",
-					message: 1
+					message: 0
 				}, {
 					value: 2,
 					name: "采购项目建立",
-					message: 123
+					message: 0
 				}, {
 					value: 3,
 					name: "RFQ执行",

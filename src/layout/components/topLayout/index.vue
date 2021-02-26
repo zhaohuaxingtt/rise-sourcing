@@ -37,10 +37,10 @@
 import pInput from './input.vue';
 import { icon } from '@/components';
 
-import mixins from '@/utils/mixins'
+import filters from '@/utils/filters'
 
 export default{
-  mixins: [mixins],
+  mixins: [ filters ],
   components: {
     pInput,
     icon

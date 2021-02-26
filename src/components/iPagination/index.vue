@@ -1,20 +1,21 @@
 <template>
   <div class="i-pagination clearFloat">
     <p class="page-info" v-if="showPageInfo">显示<span class="item">{{ total > 0 ? (currentPage - 1) * pageSize + 1 : 0 }}</span>条到第<span class="item">{{ total > 0 ? (currentPage * pageSize > total ? (currentPage * pageSize - (currentPage * pageSize - total)) : currentPage * pageSize) : 0 }}</span>条记录，共<span class="item">{{ $props.total }}</span>条记录</p>
-    <el-pagination class="pagination" v-bind="$props" v-on="$listeners">
+    <el-pagination class="pagination" v-bind="$props" v-on="$listeners" :prevText="prevText ? prevText : $t('pagination.prev') | capitalizeFilter" :nextText="nextText ? nextText : $t('pagination.next') | capitalizeFilter">
       <slot></slot>
     </el-pagination>
   </div>
 </template>
 
 <script>
-import { Pagination } from 'element-ui';
+import { Pagination } from 'element-ui'
+import filters from '@/utils/filters'
+
 export default {
+  mixins: [ filters ],
   props: {
     ...Pagination.props,
-    showPageInfo: { type: Boolean, default: true },
-    prevText: { type: String, default: '上一页' },
-    nextText: { type: String, default: '下一页' }
+    showPageInfo: { type: Boolean, default: true }
   }
 }
 </script>

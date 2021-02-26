@@ -9,6 +9,10 @@
     'all': 'all',
     'search': 'search',
     'setting': 'setting',
+    'pagination': {
+      'prev': 'prev',
+      'next': 'next'
+    },
     'partsign': {
       'enquiry': 'enquiry',
       'usage': 'usage'
