@@ -22,10 +22,6 @@
 			}
 		},
 		props: {
-<<<<<<< HEAD
-			center:Boolean,
-			right:Boolean,
-=======
 			center: {
 				type: Boolean,
 				default: false
@@ -34,7 +30,6 @@
 				type: Boolean,
 				default: false
 			},
->>>>>>> 281adb0df0c7816bea0a992c6a31c887643279be
 			list: {
 				type: Array,
 				default: () => [{

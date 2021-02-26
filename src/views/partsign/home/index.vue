@@ -1,16 +1,15 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-24 09:17:57
- * @LastEditTime: 2021-02-26 10:31:20
+ * @LastEditTime: 2021-02-26 10:38:56
  * @LastEditors: Please set LastEditors
  * @Description: 零件签收列表界面.
  * @FilePath: \rise\src\views\partsign\index.vue
 -->
 <template>
-<<<<<<< HEAD
   <iPage>
-    <div>
-      <mvpNavBar @change="change"></mvpNavBar>
+    <div class="margin-bottom20">
+      <mvpNavBar @change="change" right></mvpNavBar>
     </div>
     <!------------------------------------------------------------------------>
     <!--                  table模块，向外入参表格数据，表头                    --->
@@ -58,39 +57,6 @@
     <!------------------------------------------------------------------------>
     <backItems v-model="diologBack" @sure="sureBackmark"></backItems>
   </iPage>
-=======
-	<iPage>
-		<mvpNavBar @change="change" right></mvpNavBar>
-		<!------------------------------------------------------------------------>
-		<!--                  table模块，向外入参表格数据，表头                    --->
-		<!------------------------------------------------------------------------>
-		<div class="margin-bottom20 clearFloat">
-			<div class="floatright">
-				<iButton @click='save'>签收</iButton>
-				<iButton @click="openDiologBack">退回</iButton>
-				<iButton @click="openDiologChangeItems">转派</iButton>
-			</div>
-		</div>
-		<!------------------------------------------------------------------------>
-		<!--                  table模块，向外入参表格数据，表头                    --->
-		<!------------------------------------------------------------------------>
-		<iCard>
-			<tablelist :tableData='tableListData' :tableTitle='tableTitle' :tableLoading='tableLoading' @handleSelectionChange='handleSelectionChange'></tablelist>
-			<!------------------------------------------------------------------------>
-			<!--                  表格分页                                          --->
-			<!------------------------------------------------------------------------>
-			<el-pagination @size-change="handleSizeChange($event,getTableList)" @current-change="handleCurrentChange($event,getTableList)" background :page-sizes="page.pageSizes" :page-size="page.pageSize" :layout="page.layout" :total="page.total" />
-		</iCard>
-		<!------------------------------------------------------------------------>
-		<!--                  转派弹出框                                         --->
-		<!------------------------------------------------------------------------>
-		<changeItems v-model="diologChangeItems" @sure='sureChangeItems'></changeItems>
-		<!------------------------------------------------------------------------>
-		<!--                  退回弹出框                                         --->
-		<!------------------------------------------------------------------------>
-		<backItems v-model='diologBack' @sure='sureBackmark'></backItems>
-	</iPage>
->>>>>>> 281adb0df0c7816bea0a992c6a31c887643279be
 </template>
 <script>
 import { iPage, iButton, iCard, iMessage } from "@/components";
