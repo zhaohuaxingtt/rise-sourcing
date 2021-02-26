@@ -15,6 +15,7 @@ import iButton from '../components/iButton'
 import iCard from '../components/iCard'
 import icon from '../components/icon'
 import iPage from '../components/iPage'
+import iPagination from '../components/iPagination'
 import mvpNavBar from "../components/mvpNavBar"
 import partInfo from "../components/partInfo"
 const iMessageBox = (content='',title='温馨提示',options={}) => {
@@ -55,6 +56,7 @@ export {
   iPage,
   iMessage,
   iMessageBox,
+  iPagination,
   mvpNavBar,
   partInfo
 }
