@@ -36,6 +36,7 @@
 				border: none;
 				padding: 0px 10px;
 				font-size: 16px;
+				margin-right: 10px;
 			}
 
 			.is-active {
