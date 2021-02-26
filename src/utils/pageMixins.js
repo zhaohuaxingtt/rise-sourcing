@@ -15,7 +15,7 @@
          page:10,   //每页多少条
          pageSizes:[10,20,50,100], //每页条数切换
          size:1,    //当前页
-         layout:"total, sizes, prev, pager, next, jumper"
+         layout:"sizes, prev, pager, next, jumper"
        }
      }
    },

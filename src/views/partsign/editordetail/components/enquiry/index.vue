@@ -9,9 +9,9 @@
         @size-change="handleSizeChange($event, getEnquiryList)"
         @current-change="handleCurrentChange($event, getEnquiryList)"
         background
-        :current-page.sync="page.size"
+        :current-page="page.size"
         :page-sizes="page.pageSizes"
-        :page-size.sync="page.pageSize"
+        :page-size="page.page"
         :layout="page.layout"
         :total="page.total" />
     </div>
