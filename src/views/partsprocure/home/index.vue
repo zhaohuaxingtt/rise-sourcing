@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 09:50:42
- * @LastEditTime: 2021-02-25 12:00:19
+ * @LastEditTime: 2021-02-25 13:59:33
  * @LastEditors: Please set LastEditors
  * @Description: 零件采购项目建立首页。
  * @FilePath: \rise\src\views\partsprocure\home\index.vue
@@ -17,7 +17,7 @@
         <iButton>取消零件采购</iButton>
         <iButton>批量维护</iButton>
         <iButton>启动询价</iButton>
-        <iButton @click="changeItems">转派</iButton>
+        <iButton @click="openDiologChangeItems">转派</iButton>
       </div>
     </div>
     <!------------------------------------------------------------------------>
@@ -37,30 +37,49 @@
         :layout="page.layout"
         :total="page.total"/>
     </iCard>
+      <!------------------------------------------------------------------------>
+      <!--                  转派弹出框                                         --->
+      <!------------------------------------------------------------------------>
+      <changeItems v-model="diologChangeItems" @sure='sureChangeItems' title='零件采购项目转派'></changeItems>
   </iPage>
 </template>
 <script>
-import {iPage,iButton,iCard} from '@/components'
+import {iPage,iButton,iCard,iMessage} from '@/components'
 import {pageMixins} from '@/utils/pageMixins'
 import {tableTitle} from './component/data'
 import tablelist from '../../partsign/home/components/tablelist'
 import {getTabelData} from '@/api/partsprocure/home'
+import changeItems from '../../partsign/home/components/changeItems'
 export default{
-  components:{iPage,iButton,iCard,tablelist},
+  components:{iPage,iButton,iCard,tablelist,changeItems},
   mixins:[pageMixins],
   data(){
     return {
       tableListData:[],
       tableLoading:false,
-      tableTitle:tableTitle
+      tableTitle:tableTitle,
+      selectTableData:[],
+      diologChangeItems:false
     }
   },
   created(){
     this.getTableListFn();
   },
   methods:{
+    //转派
+    openDiologChangeItems(){
+      if(this.selectTableData.length == 0) return iMessage.warn('抱歉，您当前还未选择您需要转派的零件采购项目！')
+      this.diologChangeItems = true;
+    },
+    //确认转派弹窗值。
+    sureChangeItems(val){
+      console.log(val)
+      this.diologChangeItems = false;
+      this.getTableListFn()
+    },
+    //表格选中值集
     handleSelectionChange(val){
-
+      this.selectTableData = val
     },
     getTableListFn(){
       this.tableLoading = true
