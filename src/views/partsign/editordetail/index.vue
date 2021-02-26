@@ -61,6 +61,9 @@
 		partDetailTitle,
 		partTitle
 	} from "./components/data"
+	import {
+		getPartInfo
+	} from "@/api/partsign/editordetail"
 	export default {
 		components: {
 			iPage,
@@ -90,7 +93,15 @@
 				}
 			};
 		},
+		created() {
+			this.getPartInfo()
+		},
 		methods: {
+			getPartInfo() {
+				getPartInfo().then(res=>{
+					console.log(res);
+				})
+			},
 			//签收
 			save() {
 				iMessage.success('签收成功')
@@ -115,7 +126,7 @@
 			},
 			// 返回
 			back() {
-
+				this.$router.go(-1);
 			}
 		}
 	};
@@ -139,7 +150,8 @@
 		margin-top: 23px;
 		z-index: 10;
 	}
-	.iTabs{
+
+	.iTabs {
 		margin-top: 15px;
 	}
 </style>
