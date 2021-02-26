@@ -1,13 +1,15 @@
 <template>
-  <el-table :data="tableData" v-loading="loading">
+  <el-table class="table" :data="tableData" v-loading="loading">
     <el-table-column type="selection" align="center"></el-table-column>
-    <el-table-column type="index"></el-table-column>
+    <el-table-column type="index" align="center" label="#"></el-table-column>
     <template v-for="(item, $index) in tableTitle">
       <el-table-column :key="$index" align="center" :label="item.name" :prop="item.prop">
         <template>
-          <iButton v-if="item.prop === 'preview'" @click="preview(item)">预览</iButton>
-          <iButton v-if="item.prop === 'download'" @click="download(item)">下载</iButton>
-          <iButton v-if="item.prop === 'log'" @click="log(item)">查看</iButton>
+          <div class="operation" v-if="item.prop === 'operation'">
+            <span class="link">预览</span>
+            <span class="link">下载</span>
+            <span class="link">查看日志</span>
+          </div>
         </template>
       </el-table-column>
     </template>
@@ -44,5 +46,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
+.table {
+  .operation {
+    .link + .link {
+      margin-left: 44px;
+    }
+  }
+}
 </style>

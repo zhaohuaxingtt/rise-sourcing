@@ -1,11 +1,16 @@
 <template>
   <div class="enquiry">
-    <div class="header">
-      <iButton>查看全部版本</iButton>
+    <div class="header clearFloat">
+      <span class="title">附件列表 （当前版本V1）</span>
+      <div class="control">
+        <iButton>查看全部版本</iButton>
+        <iButton>导出</iButton>
+      </div>
     </div>
-    <div class="body">
+    <div class="body margin-top27">
       <tablelist class="table" :tableData="tableListData" :tableTitle="tableTitle" :loading="loading"></tablelist>
       <iPagination
+        class="pagination"
         @size-change="handleSizeChange($event, getEnquiryList)"
         @current-change="handleCurrentChange($event, getEnquiryList)"
         background
@@ -54,12 +59,34 @@ export default {
 
 <style lang="scss" scoped>
 .enquiry {
-  .body {
-    margin-top: 12px;
+  .header {
+    position: relative;
 
+    .title {
+      font-size: 18px;
+      font-weight: bold;
+      color: #001847;
+    }
+
+    .control {
+      position: absolute;
+      top: 50%;
+      right: 0;
+      transform: translate(0, -50%);
+
+      .el-button {
+        font-weight: bold;
+
+        & + .el-button {
+          margin-left: 30px;
+        }
+      }
+    }
+  }
+
+  .body {
     .pagination {
-      text-align: right;
-      margin-top: 12px;
+      margin-top: 30px;
     }
   }
 }
