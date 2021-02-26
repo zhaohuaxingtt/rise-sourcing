@@ -48,6 +48,7 @@ export default {
         padding: 0!important;
         min-width: 1em!important;
         width: 1em!important;
+        background: transparent!important;
       }
 
       .el-icon-more::before {
