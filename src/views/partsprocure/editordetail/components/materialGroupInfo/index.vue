@@ -1,3 +1,11 @@
+<!--
+ * @Author: your name
+ * @Date: 2021-03-01 10:29:09
+ * @LastEditTime: 2021-03-01 15:58:53
+ * @LastEditors: your name
+ * @Description: In User Settings Edit
+ * @FilePath: \rise\src\views\partsprocure\editordetail\components\materialGroupInfo\index.vue
+-->
 <template>
   <div class="material-group-info">
     <el-row v-for="(infoChunk, $chunkIndex) in infoChunks" :key="$chunkIndex" class="row">
@@ -22,10 +30,10 @@
 import { infos } from './data'
 import { chunk } from 'lodash'
 
-import { iButton, iSelect } from '@/components'
+import { iButton } from '@/components'
 
 export default {
-  components: { iButton, iSelect },
+  components: { iButton },
   data() {
     return {
       infoChunks: [],

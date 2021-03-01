@@ -1,3 +1,11 @@
+<!--
+ * @Author: your name
+ * @Date: 2021-02-24 17:57:52
+ * @LastEditTime: 2021-03-01 15:54:15
+ * @LastEditors: your name
+ * @Description: In User Settings Edit
+ * @FilePath: \rise\src\views\partsign\editordetail\components\usage\index.vue
+-->
 <template>
   <div class="usage">
     <div class="header clearFloat">
@@ -27,7 +35,7 @@
 <script>
 import { iButton, iPagination } from '@/components'
 import versionDialog from '../versionDialog'
-import tablelist from '@/views/partsign/home/components/tablelist'
+import tablelist from '@/views/partsign/home/components/tableList'
 import { tableTitle } from './components/data'
 import { getUsage } from '@/api/partsign/editordetail'
 import { pageMixins } from '@/utils/pageMixins'

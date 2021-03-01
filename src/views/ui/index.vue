@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-19 14:29:21
- * @LastEditTime: 2021-02-26 18:27:13
+ * @LastEditTime: 2021-03-01 15:58:31
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\ui\index.vue
@@ -185,15 +185,14 @@
 		iCard,
 		iTabs,
 		iTabsList,
-		icon,
-		partInfo
+		icon
 	} from "@/components";
 	import icard from "./components/title";
 	import {
 		tabelTile
 	} from "./components/data";
 	import {
-		TabelData
+		getTableList
 	} from "@/api/ui";
 	export default {
 		components: {
@@ -204,8 +203,7 @@
 			iCard,
 			iTabs,
 			icon,
-			iTabsList,
-			partInfo
+			iTabsList
 		},
 		data() {
 			return {
@@ -225,7 +223,7 @@
 			};
 		},
 		created() {
-			TabelData().then((res) => {
+			getTableList().then((res) => {
 				this.TabelData = res.data;
 			});
 		},

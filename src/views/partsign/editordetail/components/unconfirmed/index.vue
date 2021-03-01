@@ -21,7 +21,7 @@
 
 <script>
 import { iButton } from '@/components'
-import tablelist from '@/views/partsign/home/components/tablelist'
+import tablelist from '@/views/partsign/home/components/tableList'
 import { tableTitle } from './components/data'
 import backItems from '@/views/partsign/home/components/backItems'
 import { getUnconfirmed } from '@/api/partsign/editordetail'

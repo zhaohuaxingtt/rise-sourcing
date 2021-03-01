@@ -20,7 +20,7 @@
 
 <script>
 import { iPagination, iDialog } from '@/components'
-import tablelist from '@/views/partsign/home/components/tablelist'
+import tablelist from '@/views/partsign/home/components/tableList'
 import { tableTitle } from './components/data'
 import { pageMixins } from '@/utils/pageMixins'
 

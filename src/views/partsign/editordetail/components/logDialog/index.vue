@@ -1,3 +1,11 @@
+<!--
+ * @Author: your name
+ * @Date: 2021-03-01 11:49:10
+ * @LastEditTime: 2021-03-01 15:53:54
+ * @LastEditors: your name
+ * @Description: In User Settings Edit
+ * @FilePath: \rise\src\views\partsign\editordetail\components\logDialog\index.vue
+-->
 <template>
   <iDialog class="dialog" title="日志查看" v-bind="$props" :visible.sync="visible" v-on="$listeners">
     <div class="body">
@@ -20,7 +28,7 @@
 
 <script>
 import { iPagination, iDialog } from '@/components'
-import tablelist from '@/views/partsign/home/components/tablelist'
+import tablelist from '@/views/partsign/home/components/tableList'
 import { tableTitle } from './components/data'
 import { pageMixins } from '@/utils/pageMixins'
 
