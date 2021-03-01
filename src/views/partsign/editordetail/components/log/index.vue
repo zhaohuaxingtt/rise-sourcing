@@ -7,7 +7,7 @@
       </div>
     </div>
     <div class="body margin-top27">
-      <tablelist class="table" :tableData="tableListData" :tableTitle="tableTitle" :loading="loading"></tablelist>
+      <tablelist class="table" index :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="loading"></tablelist>
       <iPagination
         class="pagination"
         @size-change="handleSizeChange($event, getUsage)"
@@ -26,7 +26,7 @@
 <script>
 import { iButton, iPagination } from '@/components'
 import versionDialog from '../versionDialog'
-import tablelist from './components/tablelist'
+import tablelist from '@/views/partsign/home/components/tablelist'
 import { tableTitle } from './components/data'
 import { getUsage } from '@/api/partsign/editordetail'
 import { pageMixins } from '@/utils/pageMixins'

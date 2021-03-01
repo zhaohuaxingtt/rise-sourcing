@@ -8,7 +8,7 @@
       </div>
     </div>
     <div class="body margin-top27">
-      <tablelist class="table" :tableData="tableListData" :tableTitle="tableTitle" :loading="loading"></tablelist>
+      <tablelist class="table" index :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="loading"></tablelist>
     </div>
     <div class="footer margin-top30">
       <div class="control">
@@ -21,7 +21,7 @@
 
 <script>
 import { iButton } from '@/components'
-import tablelist from './components/tablelist'
+import tablelist from '@/views/partsign/home/components/tablelist'
 import { tableTitle } from './components/data'
 import backItems from '@/views/partsign/home/components/backItems'
 import { getUnconfirmed } from '@/api/partsign/editordetail'

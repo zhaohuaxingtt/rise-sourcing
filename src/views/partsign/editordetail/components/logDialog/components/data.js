@@ -1,6 +1,6 @@
 export const tableTitle = [
-  { prop: 'a', name: '操作' },
-  { prop: 'b', name: '发生时间' },
-  { prop: 'c', name: '操作人' },
-  { prop: 'd', name: '备注' }
+  { props: 'a', name: '操作' },
+  { props: 'b', name: '发生时间' },
+  { props: 'c', name: '操作人' },
+  { props: 'd', name: '备注' }
 ]
