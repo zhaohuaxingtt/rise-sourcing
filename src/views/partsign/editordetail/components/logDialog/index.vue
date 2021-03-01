@@ -1,7 +1,7 @@
 <template>
-  <el-dialog class="dialog" title="日志查看" v-bind="$props" :visible.sync="visible" v-on="$listeners">
+  <iDialog class="dialog" title="日志查看" v-bind="$props" :visible.sync="visible" v-on="$listeners">
     <div class="body">
-      <tablelist v-show="visible" class="table" :tableData="tableListData" :tableTitle="tableTitle" :loading="loading"></tablelist>
+      <tablelist index :selection="false" height="100%" v-show="visible" class="table" :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="loading"></tablelist>
     </div>
     <div slot="footer" class="footer">
       <iPagination
@@ -15,21 +15,20 @@
         :layout="page.layout"
         :total="page.total" />
     </div>
-  </el-dialog>
+  </iDialog>
 </template>
 
 <script>
-import { Dialog } from 'element-ui'
-import { iPagination } from '@/components'
-import tablelist from './components/tablelist'
+import { iPagination, iDialog } from '@/components'
+import tablelist from '@/views/partsign/home/components/tablelist'
 import { tableTitle } from './components/data'
 import { pageMixins } from '@/utils/pageMixins'
 
 export default {
-  components: { tablelist, iPagination },
+  components: { tablelist, iPagination, iDialog },
   mixins: [ pageMixins ],
   props: {
-    ...Dialog.props,
+    ...iDialog.props,
     visible: {
       type: Boolean,
       default: false
@@ -51,12 +50,13 @@ export default {
 
 <style lang="scss" scoped>
 .dialog {
-  @mixin pdlr {
-    padding-left: 36px;
-    padding-right: 36px;
+  @mixin pdtb($top: 0, $bottom: 0) {
+    padding-top: $top;
+    padding-bottom: $bottom;
   }
 
   ::v-deep .el-dialog {
+    width: 1745px!important;
     position: absolute;
     margin: 0!important;
     top: 50%;
@@ -69,39 +69,11 @@ export default {
     }
 
     .el-dialog__header {
-      padding: 30px 0;
-      @include pdlr;
-
-      .el-dialog__title {
-        font-size: 18px;
-        font-weight: bold;
-        line-height: 25px;
-      }
-
-      .el-dialog__headerbtn {
-        transition: 150ms all;
-        width: 24px;
-        height: 24px;
-        background: #A0BFFC;
-        border-radius: 50%;
-        top: 27px;
-        right: 25px;
-
-        &:hover {
-          background: $color-blue;
-        }
-
-        i {
-          line-height: 24px;
-          color: $color-white;
-          font-weight: bold;
-        }
-      }
+      @include pdtb(30px, 30px);
     }
 
     .el-dialog__body {
-      padding: 6px 0 0;
-      @include pdlr;
+      @include pdtb(6px, 0);
     }
 
     .pagination {
@@ -109,10 +81,8 @@ export default {
     }
 
     .el-dialog__footer {
-      padding: 28px 0;
-      @include pdlr;
+       @include pdtb(28px, 28px);
     }
   }
 }
-
 </style>

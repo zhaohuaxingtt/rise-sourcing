@@ -1,7 +1,7 @@
 <!--
- * @Author: your name
+ * @Author: yuszhou
  * @Date: 2021-02-25 11:24:15
- * @LastEditTime: 2021-03-01 10:04:24
+ * @LastEditTime: 2021-03-01 11:20:32
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsign\home\components\changeItems.vue

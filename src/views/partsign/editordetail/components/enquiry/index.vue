@@ -28,8 +28,8 @@
         :layout="page.layout"
         :total="page.total" />
     </div>
-    <logDialog width="90%" :visible.sync="logVisible" />
-    <versionDialog width="90%" :visible.sync="versionVisible" />
+    <logDialog :visible.sync="logVisible" />
+    <versionDialog :visible.sync="versionVisible" />
   </div>
 </template>
 
