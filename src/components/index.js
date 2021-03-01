@@ -17,8 +17,6 @@ import icon from '../components/icon'
 import iPage from '../components/iPage'
 import iPagination from '../components/iPagination'
 import iSearch from '../components/iSearch'
-import mvpNavBar from "../components/mvpNavBar"
-import partInfo from "../components/partInfo"
 import logDialog from '../components/logDialog'
 import iNavMvp from "../components/iNav-mvp"
 import iEditorInfo from "../components/iEditor-info"
@@ -63,7 +61,6 @@ export {
   iPagination,
   iNavMvp,
   iSearch,
-  partInfo,
   logDialog,
   iEditorInfo
 }
