@@ -14,21 +14,21 @@
 				<iButton @click="save">签收</iButton>
 				<iButton @click="openDiologBack">退回</iButton>
 				<iButton @click="back">返回</iButton>
-				<!-- 	<span>
+				<span>
 					<icon name="icondatabaseweixuanzhong"></icon>
-				</span> -->
+				</span>
 			</div>
 		</div>
 		<!-- 零件详情内容 -->
 		<iCard class="partsDetail">
-			<iEditor-info icons :title="partTitle" :data="partDetails"></iEditor-info>
+			<partInfo icons :title="partTitle" :data="partDetails"></partInfo>
 		</iCard>
 		<!-- 零件详情tab页 -->
 		<div class="iTabs">
 			<iTabs-list type="border-card">
 				<el-tab-pane label="信息单详情">
 					<iCard>
-						<iEditor-info :title="partDetailTitle" :data="partInfos"></iEditor-info>
+						<partInfo :title="partDetailTitle" :data="partInfos"></partInfo>
 					</iCard>
 				</el-tab-pane>
 				<el-tab-pane :label="$t('partsign.enquiry')">
@@ -59,9 +59,9 @@
 		iCard,
 		iTabsList,
 		icon,
-		iEditorInfo,
 		iMessage,
 	} from "@/components";
+	import partInfo from "./components/partInfo";
 	import enquiry from "./components/enquiry";
 	import usage from "./components/usage";
 	import backItems from "../home/components/backItems";
@@ -81,7 +81,7 @@
 			iCard,
 			iTabsList,
 			icon,
-			iEditorInfo,
+			partInfo,
 			enquiry,
 			usage,
 			backItems,
