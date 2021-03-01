@@ -14,21 +14,21 @@
 				<iButton @click="save">签收</iButton>
 				<iButton @click="openDiologBack">退回</iButton>
 				<iButton @click="back">返回</iButton>
-			<!-- 	<span>
+				<!-- 	<span>
 					<icon name="icondatabaseweixuanzhong"></icon>
 				</span> -->
 			</div>
 		</div>
 		<!-- 零件详情内容 -->
 		<iCard class="partsDetail">
-			<partInfo icons :title="partTitle" :data="partDetails"></partInfo>
+			<iEditor-info icons :title="partTitle" :data="partDetails"></iEditor-info>
 		</iCard>
 		<!-- 零件详情tab页 -->
 		<div class="iTabs">
 			<iTabs-list type="border-card">
 				<el-tab-pane label="信息单详情">
 					<iCard>
-						<partInfo :title="partDetailTitle" :data="partInfos"></partInfo>
+						<iEditor-info :title="partDetailTitle" :data="partInfos"></iEditor-info>
 					</iCard>
 				</el-tab-pane>
 				<el-tab-pane :label="$t('partsign.enquiry')">
@@ -52,7 +52,7 @@
 		iCard,
 		iTabsList,
 		icon,
-		partInfo,
+		iEditorInfo,
 		iMessage
 	} from "@/components";
 	import enquiry from "./components/enquiry";
@@ -73,7 +73,7 @@
 			iCard,
 			iTabsList,
 			icon,
-			partInfo,
+			iEditorInfo,
 			enquiry,
 			usage,
 			backItems,
@@ -85,8 +85,8 @@
 				partTitle: partTitle, //tab页零件详情数据
 				diologChangeItems: false, //转派弹窗
 				diologBack: false, //退回弹窗
-				partDetails: {},//零件信息
-				partInfos: {},//信息单详情
+				partDetails: {}, //零件信息
+				partInfos: {}, //信息单详情
 			};
 		},
 		created() {
@@ -94,9 +94,9 @@
 		},
 		methods: {
 			getPartInfo() {
-				getPartInfo().then(res=>{
-					this.partDetails=res.data
-					this.partInfos=res.data
+				getPartInfo().then(res => {
+					this.partDetails = res.data
+					this.partInfos = res.data
 				})
 			},
 			//签收

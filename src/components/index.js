@@ -17,8 +17,8 @@ import icon from '../components/icon'
 import iPage from '../components/iPage'
 import iPagination from '../components/iPagination'
 import iSearch from '../components/iSearch'
-import mvpNavBar from "../components/mvpNavBar"
-import partInfo from "../components/partInfo"
+import iNavMvp from "../components/iNav-mvp"
+import iEditorInfo from "../components/iEditor-info"
 const iMessageBox = (content='',title='温馨提示',options={}) => {
   return MessageBox.confirm(content,title,Object.assign({zIndex:20000},options))
 }
@@ -58,7 +58,7 @@ export {
   iMessage,
   iMessageBox,
   iPagination,
-  mvpNavBar,
+  iNavMvp,
   iSearch,
-  partInfo
+  iEditorInfo
 }

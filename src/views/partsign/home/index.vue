@@ -9,7 +9,7 @@
 <template>
   <iPage>
     <div class="margin-bottom20">
-      <mvpNavBar @change="change" right></mvpNavBar>
+      <iNav-mvp @change="change" right></iNav-mvp>
     </div>
     <!------------------------------------------------------------------------>
     <!--                  table模块，向外入参表格数据，表头                    --->
@@ -101,9 +101,9 @@ import { getTabelData } from "@/api/partsign/home";
 import { pageMixins } from "@/utils/pageMixins";
 import backItems from "./components/backItems";
 import changeItems from "./components/changeItems";
-import { mvpNavBar } from "@/components";
+import { iNavMvp } from "@/components";
 export default {
-  components: { iPage, tablelist, iButton, iCard, backItems, changeItems ,mvpNavBar,iPagination,iSearch,iInput,iSelect},
+  components: { iPage, tablelist, iButton, iCard, backItems, changeItems ,iNavMvp,iPagination,iSearch,iInput,iSelect},
   mixins: [pageMixins],
   data() {
     return {
