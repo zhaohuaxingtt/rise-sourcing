@@ -1,14 +1,13 @@
 <template>
   <div class="usage">
     <div class="header clearFloat">
-      <span class="title">每车用量 （V3）</span>
+      <span class="title">操作日志</span>
       <div class="control">
-        <iButton @click="version">查看全部版本</iButton>
         <iButton>导出</iButton>
       </div>
     </div>
     <div class="body margin-top27">
-      <tablelist index class="table" :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="loading"></tablelist>
+      <tablelist class="table" index :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="loading"></tablelist>
       <iPagination
         class="pagination"
         @size-change="handleSizeChange($event, getUsage)"

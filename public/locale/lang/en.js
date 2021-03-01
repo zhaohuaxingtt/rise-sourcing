@@ -15,7 +15,8 @@
     },
     'partsign': {
       'enquiry': 'enquiry',
-      'usage': 'usage'
+      'usage': 'usage',
+      'log': 'log'
     }
   })
 }))

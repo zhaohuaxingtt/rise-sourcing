@@ -1,7 +1,7 @@
 <template>
   <iDialog class="dialog" title="日志查看" v-bind="$props" :visible.sync="visible" v-on="$listeners">
     <div class="body">
-      <tablelist v-show="visible" class="table" :tableData="tableListData" :tableTitle="tableTitle" :loading="loading"></tablelist>
+      <tablelist index :selection="false" height="100%" v-show="visible" class="table" :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="loading"></tablelist>
     </div>
     <div slot="footer" class="footer">
       <iPagination
@@ -20,7 +20,7 @@
 
 <script>
 import { iPagination, iDialog } from '@/components'
-import tablelist from './components/tablelist'
+import tablelist from '@/views/partsign/home/components/tablelist'
 import { tableTitle } from './components/data'
 import { pageMixins } from '@/utils/pageMixins'
 

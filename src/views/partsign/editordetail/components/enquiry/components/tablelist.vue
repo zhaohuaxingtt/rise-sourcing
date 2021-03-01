@@ -1,5 +1,5 @@
 <template>
-  <el-table class="table" :data="tableData" v-loading="loading">
+  <el-table class="table" :data="tableData" v-loading="tableLoading" @selection-change="handleSelectionChange">
     <el-table-column type="selection" align="center"></el-table-column>
     <el-table-column type="index" align="center" label="#"></el-table-column>
     <template v-for="(item, $index) in tableTitle">
@@ -17,11 +17,13 @@
 </template>
 
 <script>
+import tablelist from '@/views/partsign/home/components/tablelist'
 import { iButton } from '@/components'
 
 export default {
   components: { iButton },
   props:{
+    ...tablelist.props,
     tableData: { 
       type: Array,
       default: () => ([])
@@ -36,11 +38,13 @@ export default {
     }
   },
   methods: {
+    handleSelectionChange(val){
+      this.$emit('handleSelectionChange', val)
+    },
     preview() {},
     download() {},
     log() {
       this.$emit('log')
-      // window.open('/#/log', '_blank', 'width=900,height=600,menubar=no,toolbar=no,status=no,scrollbars=yes')
     }
   }
 }

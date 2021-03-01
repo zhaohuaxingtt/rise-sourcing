@@ -4,33 +4,36 @@
       <span class="title">待确认版本</span>
       <div class="control">
         <iButton>同意</iButton>
-        <iButton>拒绝</iButton>
+        <iButton @click="visible = true">拒绝</iButton>
       </div>
     </div>
     <div class="body margin-top27">
-      <tablelist class="table" :tableData="tableListData" :tableTitle="tableTitle" :loading="loading"></tablelist>
+      <tablelist class="table" index :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="loading"></tablelist>
     </div>
     <div class="footer margin-top30">
       <div class="control">
         <iButton>导出</iButton>
       </div>
     </div>
+    <backItems class="backItems" v-model="visible" title="拒绝" @sure="refuseSure" />
   </div>
 </template>
 
 <script>
 import { iButton } from '@/components'
-import tablelist from './components/tablelist'
+import tablelist from '@/views/partsign/home/components/tablelist'
 import { tableTitle } from './components/data'
+import backItems from '@/views/partsign/home/components/backItems'
 import { getUnconfirmed } from '@/api/partsign/editordetail'
 
 export default {
-  components: { tablelist, iButton },
+  components: { tablelist, iButton, backItems },
   data() {
     return {
       tableTitle,
       tableListData: [],
-      loading: false
+      loading: false,
+      visible: false
     }
   },
   created() {
@@ -47,9 +50,7 @@ export default {
         })
         .catch(() => this.loading = false)
     },
-    version() {
-      window.open('/#/version', '_blank', 'width=900,height=600,menubar=no,toolbar=no,status=no,scrollbars=yes')
-    }
+    refuseSure() {}
   }
 }
 </script>
@@ -82,6 +83,21 @@ export default {
   .footer {
     .control {
       text-align: right;
+    }
+  }
+
+  .backItems {
+    ::v-deep .el-dialog {
+      width: 878px!important;
+
+      .el-dialog__body {
+        // padding-top: 0;
+        // padding-bottom: 0;
+      }
+
+      textarea {
+        height: 274px!important;
+      }
     }
   }
 }
