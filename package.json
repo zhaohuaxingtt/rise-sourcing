@@ -10,7 +10,8 @@
     "build:win:uat": "vue-cli-service build --mode uat",
     "build:win:prod": "vue-cli-service build --mode prod",
     "lint": "vue-cli-service lint",
-    "report": "vue-cli-service build --mode sit --report"
+    "report": "vue-cli-service build --mode sit --report",
+    "macdev": "npm run start:win:dev"
   },
   "dependencies": {
     "core-js": "^3.6.5"
