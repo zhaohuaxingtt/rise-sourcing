@@ -11,8 +11,8 @@
       <tablelist class="table" :tableData="tableListData" :tableTitle="tableTitle" :loading="loading"></tablelist>
       <iPagination
         class="pagination"
-        @size-change="handleSizeChange($event, getPartInfo)"
-        @current-change="handleCurrentChange($event, getPartInfo)"
+        @size-change="handleSizeChange($event, getUsage)"
+        @current-change="handleCurrentChange($event, getUsage)"
         background
         :current-page="page.size"
         :page-sizes="page.pageSizes"
