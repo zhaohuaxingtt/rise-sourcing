@@ -17,7 +17,7 @@ import icon from '../components/icon'
 import iPage from '../components/iPage'
 import iPagination from '../components/iPagination'
 import iSearch from '../components/iSearch'
-import logDialog from '../components/logDialog'
+import iLogDialog from '../components/iLogDialog'
 import iNavMvp from "../components/iNav-mvp"
 import iEditorInfo from "../components/iEditor-info"
 const iMessageBox = (content='',title='温馨提示',options={}) => {
@@ -61,6 +61,6 @@ export {
   iPagination,
   iNavMvp,
   iSearch,
-  logDialog,
+  iLogDialog,
   iEditorInfo
 }
