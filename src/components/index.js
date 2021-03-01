@@ -10,14 +10,14 @@ import {MessageBox,Message} from 'element-ui'
 import iInput from '../components/iInput'
 import iSelect from '../components/iSelect'
 import iTabs from '../components/iTabs'
-import iTabsList from "../components/iTabs-list"
+import iTabsList from "../components/iTabsList"
 import iButton from '../components/iButton'
 import iCard from '../components/iCard'
 import icon from '../components/icon'
 import iPage from '../components/iPage'
 import iPagination from '../components/iPagination'
 import iSearch from '../components/iSearch'
-import iNavMvp from "../components/iNav-mvp"
+import iNavMvp from "../components/iNavMvp"
 import iDialog from '../components/iDialog'
 const iMessageBox = (content='',title='温馨提示',options={}) => {
   return MessageBox.confirm(content,title,Object.assign({zIndex:20000},options))
