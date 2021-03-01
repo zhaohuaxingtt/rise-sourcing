@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-24 09:17:57
- * @LastEditTime: 2021-02-26 17:16:00
+ * @LastEditTime: 2021-03-01 15:50:20
  * @LastEditors: Please set LastEditors
  * @Description: 零件签收列表界面.
  * @FilePath: \rise\src\views\partsign\index.vue
@@ -12,7 +12,7 @@
       <iNav-mvp @change="change" right></iNav-mvp>
     </div>
     <!------------------------------------------------------------------------>
-    <!--                  table模块，向外入参表格数据，表头                    --->
+    <!--                  search 搜索模块                                   --->
     <!------------------------------------------------------------------------>
     <iSearch class="margin-bottom20">
       <el-form>
@@ -65,6 +65,7 @@
         :tableTitle="tableTitle"
         :tableLoading="tableLoading"
         @handleSelectionChange="handleSelectionChange"
+        @openPage='openPage'
       ></tablelist>
       <!------------------------------------------------------------------------>
       <!--                  表格分页                                          --->
@@ -95,7 +96,7 @@
 </template>
 <script>
 import { iPage, iButton, iCard, iMessage ,iPagination,iSearch,iInput,iSelect} from "@/components";
-import tablelist from "./components/tablelist";
+import tablelist from "./components/tableList";
 import { tableTitle } from "./components/data";
 import { getTabelData } from "@/api/partsign/home";
 import { pageMixins } from "@/utils/pageMixins";
@@ -122,6 +123,11 @@ export default {
     this.getTableList();
   },
   methods: {
+    openPage(){
+      this.$router.push({
+        path:'/partsign/editordetail'
+      })
+    },
     //获取表格数据
     getTableList() {
       this.tableLoading = true;

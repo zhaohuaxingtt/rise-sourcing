@@ -1,21 +1,17 @@
 <!--
 * @author:shujie
 * @Date: 2021-2-26 14:23:00
-* @LastEditors: shujie
+ * @LastEditors: Please set LastEditors
 * @Description: In User Settings Edit
  -->
 <template>
-	<div>
-		<ul class="partDetail flex-align-center">
-			<li class="partDetailList flex-align-center" v-for="(item, index) in title" :key="index">
+	<li class="partDetailList flex-align-center">
 				<p class="flex-align-center">
 					<icon name="icondian" v-if="icons"></icon>
 					<span class="title">{{item.name}}</span>
 				</p>
 				<span class="content">{{data[item.key]}}</span>
 			</li>
-		</ul>
-	</div>
 </template>
 
 <script>

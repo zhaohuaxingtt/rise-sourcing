@@ -1,10 +1,10 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-24 09:42:07
- * @LastEditTime: 2021-02-24 19:13:51
+ * @LastEditTime: 2021-03-01 15:49:40
  * @LastEditors: Please set LastEditors
  * @Description: 零件签收-table组件。
- * @FilePath: \rise\src\views\partsign\components\tablelist.vue
+ * @FilePath: \rise\src\views\partsign\components\tableList.vue
 -->
 <template>
   <el-table :data='tableData' v-loading='tableLoading' @selection-change="handleSelectionChange">
@@ -29,9 +29,7 @@ export default{
       this.$emit('handleSelectionChange',val)
     },
     openPage(){
-      this.$router.push({
-        path:'/editordetail'
-      })
+      this.$emit('openPage')
     }
   }
 }

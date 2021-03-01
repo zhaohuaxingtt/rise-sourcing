@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-02-25 17:40:05
+ * @LastEditTime: 2021-03-01 14:42:05
  * @LastEditors: Please set LastEditors
  * @Description: 系统静态路由.
  * @FilePath: \rise\src\router\index.js
@@ -29,7 +29,7 @@ export const staticRouter = [{
 				component: () => import("@/views/partsign/home"),
 			},
 			{
-				path: "/editordetail",
+				path: "/partsign/editordetail",
 				name: "editordetail",
 				component: () => import("@/views/partsign/editordetail"),
 			},
@@ -37,6 +37,11 @@ export const staticRouter = [{
 				path: "/partsprocure",
 				name: "partsprocure",
 				component: () => import("@/views/partsprocure/home"),
+			},
+			{
+				path: "/partsprocure/editordetail",
+				name: "partsprocure",
+				component: () => import("@/views/partsprocure/editordetail"),
 			},
 			{
 				path: "/partsrfq",
