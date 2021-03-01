@@ -13,4 +13,49 @@ export default{
 }
 </script>
 <style lang='scss' scoped>
+::v-deep .el-dialog {
+  border-radius: 10px;
+
+  @mixin pdlr {
+    padding-left: 40px;
+    padding-right: 40px;
+  }
+
+  .el-dialog__header {
+    padding: 30px 0;
+    @include pdlr;
+
+    .el-dialog__title {
+      font-size: 18px;
+      font-weight: bold;
+      line-height: 25px;
+    }
+
+    .el-dialog__headerbtn {
+      transition: 150ms all;
+      width: 24px;
+      height: 24px;
+      background: #A0BFFC;
+      border-radius: 50%;
+      top: 27px;
+      right: 25px;
+
+      &:hover {
+        background: $color-blue;
+      }
+
+      i {
+        line-height: 24px;
+        color: $color-white;
+        font-weight: bold;
+      }
+    }
+  }
+
+  .el-dialog__header,
+  .el-dialog__body,
+  .el-dialog__footer {
+    @include pdlr;
+  }
+}
 </style>

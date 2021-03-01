@@ -28,20 +28,22 @@
         :layout="page.layout"
         :total="page.total" />
     </div>
-    <iLogDialog width="90%" :visible.sync="logVisible" />
-    <iVersionDialog width="90%" :visible.sync="versionVisible" />
+    <logDialog width="90%" :visible.sync="logVisible" />
+    <versionDialog width="90%" :visible.sync="versionVisible" />
   </div>
 </template>
 
 <script>
-import { iButton, iPagination, iLogDialog, iVersionDialog } from '@/components'
+import { iButton, iPagination } from '@/components'
+import logDialog from '../logDialog'
+import versionDialog from '../versionDialog'
 import tablelist from './components/tablelist'
 import { tableTitle } from './components/data'
 import { getEnquiryList } from '@/api/partsign/editordetail'
 import { pageMixins } from '@/utils/pageMixins'
 
 export default {
-  components: { tablelist, iButton, iPagination, iLogDialog, iVersionDialog },
+  components: { tablelist, iButton, iPagination, logDialog, versionDialog },
   mixins: [ pageMixins ],
   data() {
     return {
