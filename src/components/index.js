@@ -19,6 +19,7 @@ import iPagination from '../components/iPagination'
 import iSearch from '../components/iSearch'
 import mvpNavBar from "../components/mvpNavBar"
 import partInfo from "../components/partInfo"
+import logDialog from '../components/logDialog'
 const iMessageBox = (content='',title='温馨提示',options={}) => {
   return MessageBox.confirm(content,title,Object.assign({zIndex:20000},options))
 }
@@ -60,5 +61,6 @@ export {
   iPagination,
   mvpNavBar,
   iSearch,
-  partInfo
+  partInfo,
+  logDialog
 }
