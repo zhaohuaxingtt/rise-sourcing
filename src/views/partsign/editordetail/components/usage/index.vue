@@ -20,7 +20,7 @@
         :layout="page.layout"
         :total="page.total" />
     </div>
-    <versionDialog width="90%" :visible.sync="versionVisible" />
+    <versionDialog :visible.sync="versionVisible" />
   </div>
 </template>
 
