@@ -14,9 +14,9 @@
 				<iButton @click="save">签收</iButton>
 				<iButton @click="openDiologBack">退回</iButton>
 				<iButton @click="back">返回</iButton>
-				<span>
+			<!-- 	<span>
 					<icon name="icondatabaseweixuanzhong"></icon>
-				</span>
+				</span> -->
 			</div>
 		</div>
 		<!-- 零件详情内容 -->
