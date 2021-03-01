@@ -24,3 +24,19 @@ export function getPartInfo(parmars) {
     data: parmars
   })
 }
+// 零件详情-每车用量
+export function getUsage(parmars) {
+  return requst({
+    url: 'https://www.fastmock.site/mock/5cd3e97d6126b18b5e16f3e499489335/api/partsign/getUsage',
+    method: 'GET',
+    data: parmars
+  })
+}
+// 零件详情-待确认版本
+export function getUnconfirmed(parmars) {
+  return requst({
+    url: 'https://www.fastmock.site/mock/5cd3e97d6126b18b5e16f3e499489335/api/partsign/getUnconfirmed',
+    method: 'GET',
+    data: parmars
+  })
+}

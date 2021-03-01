@@ -16,7 +16,7 @@
       </div>
     </div>
     <div class="body margin-top27">
-      <tablelist class="table" :tableData="tableListData" :tableTitle="tableTitle" :loading="loading"></tablelist>
+      <tablelist class="table" :tableData="tableListData" :tableTitle="tableTitle" :loading="loading" @log="log"></tablelist>
       <iPagination
         class="pagination"
         @size-change="handleSizeChange($event, getEnquiryList)"
@@ -28,24 +28,26 @@
         :layout="page.layout"
         :total="page.total" />
     </div>
+    <logDialog width="90%" :visible.sync="logVisible"></logDialog>
   </div>
 </template>
 
 <script>
-import { iButton, iPagination } from '@/components'
+import { iButton, iPagination, logDialog } from '@/components'
 import tablelist from './components/tablelist'
 import { tableTitle } from './components/data'
 import { getEnquiryList } from '@/api/partsign/editordetail'
 import { pageMixins } from '@/utils/pageMixins'
 
 export default {
-  components: { tablelist, iButton, iPagination },
+  components: { tablelist, iButton, iPagination, logDialog },
   mixins: [ pageMixins ],
   data() {
     return {
       tableTitle,
       tableListData: [],
-      loading: false
+      loading: false,
+      logVisible: false
     }
   },
   created() {
@@ -60,6 +62,9 @@ export default {
           this.loading = false
         })
         .catch(() => this.loading = false)
+    },
+    log() {
+      this.logVisible = true;
     }
   }
 }
@@ -81,14 +86,6 @@ export default {
       top: 50%;
       right: 0;
       transform: translate(0, -50%);
-
-      .el-button {
-        font-weight: bold;
-
-        & + .el-button {
-          margin-left: 30px;
-        }
-      }
     }
   }
 

@@ -1,5 +1,5 @@
 <template>
-  <el-table :data="tableData" v-loading="loading">
+  <el-table height="100%" :data="tableData" v-loading="loading">
     <el-table-column type="selection" align="center"></el-table-column>
     <el-table-column type="index" align="center" label="#"></el-table-column>
     <template v-for="(item, $index) in tableTitle">
