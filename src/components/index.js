@@ -17,11 +17,10 @@ import icon from '../components/icon'
 import iPage from '../components/iPage'
 import iPagination from '../components/iPagination'
 import iSearch from '../components/iSearch'
-import mvpNavBar from "../components/mvpNavBar"
-import partInfo from "../components/partInfo"
-import logDialog from '../components/logDialog'
+import iLogDialog from '../components/iLogDialog'
 import iNavMvp from "../components/iNav-mvp"
 import iEditorInfo from "../components/iEditor-info"
+import iVersionDialog from '../components/iVersionDialog'
 const iMessageBox = (content='',title='温馨提示',options={}) => {
   return MessageBox.confirm(content,title,Object.assign({zIndex:20000},options))
 }
@@ -63,7 +62,7 @@ export {
   iPagination,
   iNavMvp,
   iSearch,
-  partInfo,
-  logDialog,
-  iEditorInfo
+  iLogDialog,
+  iEditorInfo,
+  iVersionDialog
 }

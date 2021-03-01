@@ -59,22 +59,6 @@ export const staticRouter = [{
 		component: () => import("@/views/ui"),
 	},
 	{
-		path: "/log",
-		name: "log",
-		meta: {
-			title: "日志",
-		},
-		component: () => import("@/views/log"),
-	},
-	{
-		path: '/version',
-		name: 'log',
-		meta: {
-			title: '版本',
-		},
-		component: () => import('@/views/version')
-	},
-	{
 		path: '*',
 		name: '404',
 		meta: {
