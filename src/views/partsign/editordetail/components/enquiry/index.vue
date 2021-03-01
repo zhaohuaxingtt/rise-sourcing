@@ -11,7 +11,7 @@
     <div class="header clearFloat">
       <span class="title">附件列表 （当前版本V1）</span>
       <div class="control">
-        <iButton>查看全部版本</iButton>
+        <iButton @click="version">查看全部版本</iButton>
         <iButton>导出</iButton>
       </div>
     </div>
@@ -28,26 +28,28 @@
         :layout="page.layout"
         :total="page.total" />
     </div>
-    <iLogDialog width="90%" :visible.sync="logVisible"></iLogDialog>
+    <iLogDialog width="90%" :visible.sync="logVisible" />
+    <iVersionDialog width="90%" :visible.sync="versionVisible" />
   </div>
 </template>
 
 <script>
-import { iButton, iPagination, iLogDialog } from '@/components'
+import { iButton, iPagination, iLogDialog, iVersionDialog } from '@/components'
 import tablelist from './components/tablelist'
 import { tableTitle } from './components/data'
 import { getEnquiryList } from '@/api/partsign/editordetail'
 import { pageMixins } from '@/utils/pageMixins'
 
 export default {
-  components: { tablelist, iButton, iPagination, iLogDialog },
+  components: { tablelist, iButton, iPagination, iLogDialog, iVersionDialog },
   mixins: [ pageMixins ],
   data() {
     return {
       tableTitle,
       tableListData: [],
       loading: false,
-      logVisible: false
+      logVisible: false,
+      versionVisible: false
     }
   },
   created() {
@@ -63,8 +65,11 @@ export default {
         })
         .catch(() => this.loading = false)
     },
+    version() {
+      this.versionVisible = true
+    },
     log() {
-      this.logVisible = true;
+      this.logVisible = true
     }
   }
 }

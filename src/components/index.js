@@ -20,6 +20,7 @@ import iSearch from '../components/iSearch'
 import iLogDialog from '../components/iLogDialog'
 import iNavMvp from "../components/iNav-mvp"
 import iEditorInfo from "../components/iEditor-info"
+import iVersionDialog from '../components/iVersionDialog'
 const iMessageBox = (content='',title='温馨提示',options={}) => {
   return MessageBox.confirm(content,title,Object.assign({zIndex:20000},options))
 }
@@ -62,5 +63,6 @@ export {
   iNavMvp,
   iSearch,
   iLogDialog,
-  iEditorInfo
+  iEditorInfo,
+  iVersionDialog
 }

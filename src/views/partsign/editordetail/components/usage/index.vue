@@ -3,7 +3,7 @@
     <div class="header clearFloat">
       <span class="title">每车用量 （V3）</span>
       <div class="control">
-        <iButton>查看全部版本</iButton>
+        <iButton @click="version">查看全部版本</iButton>
         <iButton>导出</iButton>
       </div>
     </div>
@@ -20,25 +20,26 @@
         :layout="page.layout"
         :total="page.total" />
     </div>
-    </div>
+    <iVersionDialog width="90%" :visible.sync="versionVisible" />
   </div>
 </template>
 
 <script>
-import { iButton, iPagination } from '@/components'
+import { iButton, iPagination, iVersionDialog } from '@/components'
 import tablelist from './components/tablelist'
 import { tableTitle } from './components/data'
 import { getUsage } from '@/api/partsign/editordetail'
 import { pageMixins } from '@/utils/pageMixins'
 
 export default {
-  components: { tablelist, iButton, iPagination },
+  components: { tablelist, iButton, iPagination, iVersionDialog },
   mixins: [ pageMixins ],
   data() {
     return {
       tableTitle,
       tableListData: [],
-      loading: false
+      loading: false,
+      versionVisible: false
     }
   },
   created() {
@@ -55,8 +56,8 @@ export default {
         .catch(() => this.loading = false)
     },
     version() {
-      window.open('/#/version', '_blank', 'width=900,height=600,menubar=no,toolbar=no,status=no,scrollbars=yes')
-    }
+      this.versionVisible = true
+    },
   }
 }
 </script>
