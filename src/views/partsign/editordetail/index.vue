@@ -47,6 +47,11 @@
             <usage />
           </iCard>
         </el-tab-pane>
+        <el-tab-pane :label="$t('partsign.log')">
+          <iCard class="card">
+            <log />
+          </iCard>
+        </el-tab-pane>
       </iTabs-list>
     </div>
     <!-- 转派弹出框 -->
@@ -73,6 +78,7 @@ import usage from "./components/usage";
 import backItems from "../home/components/backItems";
 import changeItems from "../home/components/changeItems";
 import unconfirmed from "./components/unconfirmed";
+import log from "./components/log";
 import { partDetailTitle, partTitle } from "./components/data";
 import { getPartInfo } from "@/api/partsign/editordetail";
 export default {
@@ -88,6 +94,7 @@ export default {
     backItems,
     changeItems,
     unconfirmed,
+    log
   },
   data() {
     return {

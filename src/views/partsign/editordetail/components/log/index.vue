@@ -1,56 +1,63 @@
 <template>
   <div class="usage">
     <div class="header clearFloat">
-      <span class="title">待确认版本</span>
-      <div class="control">
-        <iButton>同意</iButton>
-        <iButton @click="visible = true">拒绝</iButton>
-      </div>
-    </div>
-    <div class="body margin-top27">
-      <tablelist class="table" :tableData="tableListData" :tableTitle="tableTitle" :loading="loading"></tablelist>
-    </div>
-    <div class="footer margin-top30">
+      <span class="title">操作日志</span>
       <div class="control">
         <iButton>导出</iButton>
       </div>
     </div>
-    <backItems class="backItems" v-model="visible" title="拒绝" @sure="refuseSure" />
+    <div class="body margin-top27">
+      <tablelist class="table" :tableData="tableListData" :tableTitle="tableTitle" :loading="loading"></tablelist>
+      <iPagination
+        class="pagination"
+        @size-change="handleSizeChange($event, getUsage)"
+        @current-change="handleCurrentChange($event, getUsage)"
+        background
+        :current-page="page.size"
+        :page-sizes="page.pageSizes"
+        :page-size="page.page"
+        :layout="page.layout"
+        :total="page.total" />
+    </div>
+    <versionDialog :visible.sync="versionVisible" />
   </div>
 </template>
 
 <script>
-import { iButton } from '@/components'
+import { iButton, iPagination } from '@/components'
+import versionDialog from '../versionDialog'
 import tablelist from './components/tablelist'
 import { tableTitle } from './components/data'
-import backItems from '@/views/partsign/home/components/backItems'
-import { getUnconfirmed } from '@/api/partsign/editordetail'
+import { getUsage } from '@/api/partsign/editordetail'
+import { pageMixins } from '@/utils/pageMixins'
 
 export default {
-  components: { tablelist, iButton, backItems },
+  components: { tablelist, iButton, iPagination, versionDialog },
+  mixins: [ pageMixins ],
   data() {
     return {
       tableTitle,
       tableListData: [],
       loading: false,
-      visible: false
+      versionVisible: false
     }
   },
   created() {
-    this.getUnconfirmed()
+    this.getUsage()
   },
   methods: {
-    getUnconfirmed() {
+    getUsage() {
       this.loading = true
-      getUnconfirmed({})
+      getUsage({})
         .then(res => {
           this.tableListData = res.data
           this.loading = false
-          this.$emit('after-get-unconfirmed', !!this.tableListData.length)
         })
         .catch(() => this.loading = false)
     },
-    refuseSure() {}
+    version() {
+      this.versionVisible = true
+    },
   }
 }
 </script>
@@ -77,27 +84,6 @@ export default {
  .body {
     .pagination {
       margin-top: 30px;
-    }
-  }
-
-  .footer {
-    .control {
-      text-align: right;
-    }
-  }
-
-  .backItems {
-    ::v-deep .el-dialog {
-      width: 878px!important;
-
-      .el-dialog__body {
-        // padding-top: 0;
-        // padding-bottom: 0;
-      }
-
-      textarea {
-        height: 274px!important;
-      }
     }
   }
 }
