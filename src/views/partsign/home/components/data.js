@@ -1,7 +1,7 @@
 /*
- * @Author: your name
+ * @Author: yuszhou
  * @Date: 2021-02-24 09:47:32
- * @LastEditTime: 2021-02-25 09:40:08
+ * @LastEditTime: 2021-03-01 11:20:46
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsign\home\components\data.js

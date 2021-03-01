@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 09:50:42
- * @LastEditTime: 2021-02-25 13:59:33
+ * @LastEditTime: 2021-03-01 11:19:22
  * @LastEditors: Please set LastEditors
  * @Description: 零件采购项目建立首页。
  * @FilePath: \rise\src\views\partsprocure\home\index.vue
@@ -11,24 +11,25 @@
     <!------------------------------------------------------------------------>
     <!--                  table模块，向外入参表格数据，表头                    --->
     <!------------------------------------------------------------------------>
-    <div class="margin-bottom20 clearFloat">
-      <div class="floatright">
-        <iButton>生成Fs/GsNr</iButton>
-        <iButton>取消零件采购</iButton>
-        <iButton>批量维护</iButton>
-        <iButton>启动询价</iButton>
-        <iButton @click="openDiologChangeItems">转派</iButton>
-      </div>
-    </div>
+    <iCard>
     <!------------------------------------------------------------------------>
     <!--                  table模块，向外入参表格数据，表头                    --->
     <!------------------------------------------------------------------------>
-    <iCard>
+      <div class="margin-bottom20 clearFloat">
+        <span class="font18 font-weight">新建信息单签收</span>
+        <div class="floatright">
+          <iButton>生成Fs/GsNr</iButton>
+          <iButton>取消零件采购</iButton>
+          <iButton>批量维护</iButton>
+          <iButton>启动询价</iButton>
+          <iButton @click="openDiologChangeItems">转派</iButton>
+        </div>
+      </div>
       <tablelist :tableData='tableListData' :tableTitle='tableTitle' :tableLoading='tableLoading' @handleSelectionChange='handleSelectionChange'></tablelist>
       <!------------------------------------------------------------------------>
       <!--                  表格分页                                          --->
       <!------------------------------------------------------------------------>
-      <el-pagination
+      <iPagination
         @size-change="handleSizeChange($event,getTableListFn)"
         @current-change="handleCurrentChange($event,getTableListFn)"
         background
@@ -44,14 +45,14 @@
   </iPage>
 </template>
 <script>
-import {iPage,iButton,iCard,iMessage} from '@/components'
+import {iPage,iButton,iCard,iMessage,iPagination} from '@/components'
 import {pageMixins} from '@/utils/pageMixins'
 import {tableTitle} from './component/data'
 import tablelist from '../../partsign/home/components/tablelist'
 import {getTabelData} from '@/api/partsprocure/home'
 import changeItems from '../../partsign/home/components/changeItems'
 export default{
-  components:{iPage,iButton,iCard,tablelist,changeItems},
+  components:{iPage,iButton,iCard,tablelist,changeItems,iPagination},
   mixins:[pageMixins],
   data(){
     return {
