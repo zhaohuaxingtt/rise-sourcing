@@ -20,19 +20,20 @@
         :layout="page.layout"
         :total="page.total" />
     </div>
-    <iVersionDialog width="90%" :visible.sync="versionVisible" />
+    <versionDialog width="90%" :visible.sync="versionVisible" />
   </div>
 </template>
 
 <script>
-import { iButton, iPagination, iVersionDialog } from '@/components'
+import { iButton, iPagination } from '@/components'
+import versionDialog from '../versionDialog'
 import tablelist from './components/tablelist'
 import { tableTitle } from './components/data'
 import { getUsage } from '@/api/partsign/editordetail'
 import { pageMixins } from '@/utils/pageMixins'
 
 export default {
-  components: { tablelist, iButton, iPagination, iVersionDialog },
+  components: { tablelist, iButton, iPagination, versionDialog },
   mixins: [ pageMixins ],
   data() {
     return {
