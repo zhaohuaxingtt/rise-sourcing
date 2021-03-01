@@ -1,7 +1,7 @@
 <!--
- * @Author: your name
+ * @Author: yuszhou
  * @Date: 2021-02-20 14:35:10
- * @LastEditTime: 2021-02-20 16:36:31
+ * @LastEditTime: 2021-03-01 10:23:29
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\components\iSelect\index.vue

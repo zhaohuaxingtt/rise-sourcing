@@ -1,24 +1,24 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-25 11:24:30
- * @LastEditTime: 2021-02-25 13:54:50
+ * @LastEditTime: 2021-03-01 10:03:59
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsign\home\components\backItems.vue
 -->
 <template>
-    <el-dialog :title="title" :visible.sync="value" width="400px" @close='clearDiolog'>
+    <iDialog :title="title" :visible.sync="value" width="400px" @close='clearDiolog'>
          <iInput v-model='backmark' show-word-limit class="textarea" :autosize='{minRows:4}' placeholder='请填写退回理由，退回理由为必填' maxLength='200' type='textarea'></iInput>
          <span slot="footer" class="dialog-footer">
           <iButton @click="$emit('input',false)">取 消</iButton>
           <iButton :loading='repeatClick' @click="sureBackmark">确 定</iButton>
         </span>
-      </el-dialog>
+      </iDialog>
 </template>
 <script>
-import {iInput,iButton,iMessage} from '@/components' 
+import {iInput,iButton,iMessage,iDialog} from '@/components' 
 export default{
-  components:{iInput,iButton},
+  components:{iInput,iButton,iDialog},
   props:{
     value:{type:Boolean},
     title:{type:String,default:'新件信息单退回'},
