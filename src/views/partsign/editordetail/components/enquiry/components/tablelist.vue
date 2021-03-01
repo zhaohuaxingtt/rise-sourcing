@@ -8,7 +8,7 @@
           <div class="operation" v-if="item.prop === 'operation'">
             <span class="link">预览</span>
             <span class="link">下载</span>
-            <span class="link">查看日志</span>
+            <span class="link" @click="log">查看日志</span>
           </div>
         </template>
       </el-table-column>
@@ -39,7 +39,8 @@ export default {
     preview() {},
     download() {},
     log() {
-      window.open('/#/log', '_blank', 'width=900,height=600,menubar=no,toolbar=no,status=no,scrollbars=yes')
+      this.$emit('log')
+      // window.open('/#/log', '_blank', 'width=900,height=600,menubar=no,toolbar=no,status=no,scrollbars=yes')
     }
   }
 }

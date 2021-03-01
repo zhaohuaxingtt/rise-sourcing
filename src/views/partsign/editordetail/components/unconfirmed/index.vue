@@ -1,39 +1,31 @@
 <template>
   <div class="usage">
     <div class="header clearFloat">
-      <span class="title">每车用量 （V3）</span>
+      <span class="title">待确认版本</span>
       <div class="control">
-        <iButton>查看全部版本</iButton>
-        <iButton>导出</iButton>
+        <iButton>同意</iButton>
+        <iButton>拒绝</iButton>
       </div>
     </div>
     <div class="body margin-top27">
       <tablelist class="table" :tableData="tableListData" :tableTitle="tableTitle" :loading="loading"></tablelist>
-      <iPagination
-        class="pagination"
-        @size-change="handleSizeChange($event, getPartInfo)"
-        @current-change="handleCurrentChange($event, getPartInfo)"
-        background
-        :current-page="page.size"
-        :page-sizes="page.pageSizes"
-        :page-size="page.page"
-        :layout="page.layout"
-        :total="page.total" />
     </div>
+    <div class="footer margin-top30">
+      <div class="control">
+        <iButton>导出</iButton>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import { iButton, iPagination } from '@/components'
+import { iButton } from '@/components'
 import tablelist from './components/tablelist'
 import { tableTitle } from './components/data'
-import { getUsage } from '@/api/partsign/editordetail'
-import { pageMixins } from '@/utils/pageMixins'
+import { getUnconfirmed } from '@/api/partsign/editordetail'
 
 export default {
-  components: { tablelist, iButton, iPagination },
-  mixins: [ pageMixins ],
+  components: { tablelist, iButton },
   data() {
     return {
       tableTitle,
@@ -42,15 +34,16 @@ export default {
     }
   },
   created() {
-    this.getUsage()
+    this.getUnconfirmed()
   },
   methods: {
-    getUsage() {
+    getUnconfirmed() {
       this.loading = true
-      getUsage({})
+      getUnconfirmed({})
         .then(res => {
           this.tableListData = res.data
           this.loading = false
+          this.$emit('after-get-unconfirmed', !!this.tableListData.length)
         })
         .catch(() => this.loading = false)
     },
@@ -83,6 +76,12 @@ export default {
  .body {
     .pagination {
       margin-top: 30px;
+    }
+  }
+
+  .footer {
+    .control {
+      text-align: right;
     }
   }
 }

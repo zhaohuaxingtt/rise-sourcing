@@ -27,15 +27,22 @@
 		<div class="iTabs">
 			<iTabs-list type="border-card">
 				<el-tab-pane label="信息单详情">
-					<iCard>
+					<iCard class="card">
 						<partInfo :title="partDetailTitle" :data="partInfos"></partInfo>
 					</iCard>
 				</el-tab-pane>
 				<el-tab-pane :label="$t('partsign.enquiry')">
-					<enquiry />
+          <iCard>
+            <enquiry />
+          </iCard>
 				</el-tab-pane>
 				<el-tab-pane :label="$t('partsign.usage')">
-					<usage />
+          <iCard v-if="showUnconfirmed" class="card">
+            <unconfirmed @after-get-unconfirmed="afterGetUnconfirmed" />
+          </iCard>
+          <iCard class="card">
+					  <usage />
+          </iCard>
 				</el-tab-pane>
 			</iTabs-list>
 		</div>
@@ -55,10 +62,11 @@
 		partInfo,
 		iMessage
 	} from "@/components";
-	import enquiry from "./components/enquiry";
-	import usage from "./components/usage";
+	import enquiry from './components/enquiry'
+	import usage from './components/usage'
 	import backItems from '../home/components/backItems'
 	import changeItems from '../home/components/changeItems'
+  import unconfirmed from './components/unconfirmed'
 	import {
 		partDetailTitle,
 		partTitle
@@ -77,7 +85,8 @@
 			enquiry,
 			usage,
 			backItems,
-			changeItems
+			changeItems,
+      unconfirmed
 		},
 		data() {
 			return {
@@ -87,6 +96,7 @@
 				diologBack: false, //退回弹窗
 				partDetails: {},//零件信息
 				partInfos: {},//信息单详情
+        showUnconfirmed: true, // 显示待确认版本
 			};
 		},
 		created() {
@@ -121,6 +131,10 @@
 				console.log('your select data is', JSON.parse(val))
 				this.diologChangeItems = false
 			},
+      // 待确认版本回调
+      afterGetUnconfirmed(status) {
+        this.showUnconfirmed = status
+      },
 			// 返回
 			back() {
 				this.$router.go(-1);
@@ -151,4 +165,8 @@
 	.iTabs {
 		margin-top: 15px;
 	}
+
+  .card + .card {
+    margin-top: 29px;
+  }
 </style>
