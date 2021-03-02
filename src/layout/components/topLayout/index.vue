@@ -13,7 +13,7 @@
   </div>
   <div class="right">
     <div class="user">
-      <div class="icon"></div>
+      <el-avatar class="icon" src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3729239676,1542549068&fm=26&gp=0.jpg"></el-avatar>
       <div class="info">
         <p class="name">Kong Pengfei</p>
         <p class="dept">CSP</p>
@@ -105,11 +105,12 @@ export default{
         .icon {
           width: 52px;
           height: 52px;
-          border-radius: 50%;
-          background: url('https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3729239676,1542549068&fm=26&gp=0.jpg') no-repeat;
-          background-size: auto 52px;
-          background-position: center;
-          box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+
+          ::v-deep img {
+            position: relative;
+            left: 50%;
+            transform: translate(-50%, 0);
+          }
         }
 
         .info {
