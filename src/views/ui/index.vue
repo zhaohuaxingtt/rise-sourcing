@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-19 14:29:21
- * @LastEditTime: 2021-03-02 14:58:55
+ * @LastEditTime: 2021-03-02 19:08:01
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\ui\index.vue
@@ -178,7 +178,7 @@
 		<el-row>
 			<el-col :span='24'>
 				<iCard class="margin-bottom20">
-					<iFormGroup :row="4" inline :rules="rules" icon>
+					<iFormGroup :row="4" inline :rules="rules" icon class="noMargin">
 							<div class="flex-between-center">
 								<iFormItem label="零件号：" name="test">
 									<iInput></iInput>

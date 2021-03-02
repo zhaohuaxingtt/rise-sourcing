@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-03-01 17:17:17
- * @LastEditTime: 2021-03-02 14:58:17
+ * @LastEditTime: 2021-03-02 19:04:56
  * @LastEditors: Please set LastEditors
  * @Description: 为不同的宽度item做出UI还原
  * @FilePath: \rise\src\components\iFromItem\index.vue
@@ -41,6 +41,7 @@ export default{
   }
   .icon_self{
     .el-form-item__label{
+      padding-left: 28px;
       position: relative;
       &::before{
           content: "";
@@ -50,8 +51,8 @@ export default{
           background-color: #1660F1;
           display: inline-block;
           position: absolute;
-          left: -28px;
-          top: 14px;
+          left: 0px;
+          top: 15px;
           z-index: 2;
       }
       &::after{
@@ -62,8 +63,8 @@ export default{
           background-color: #DBE5FF;
           display: inline-block;
           position: absolute;
-          left: -28px;
-          top: 10px;
+          left: 0px;
+          top: 11px;
           z-index: 1;
       }
     }
