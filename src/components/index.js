@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:08
- * @LastEditTime: 2021-02-26 18:25:32
+ * @LastEditTime: 2021-03-02 14:29:33
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\components\index.js
@@ -19,6 +19,9 @@ import iPagination from '../components/iPagination'
 import iSearch from '../components/iSearch'
 import iNavMvp from "../components/iNavMvp"
 import iDialog from '../components/iDialog'
+import iFormGroup from '../components/iPageItemsGroup/iFormGroup'
+import iFormItem from '../components/iPageItemsGroup/iFormItem'
+import iText from '../components/iPageItemsGroup/iText'
 const iMessageBox = (content='',title='温馨提示',options={}) => {
   return MessageBox.confirm(content,title,Object.assign({zIndex:20000},options))
 }
@@ -47,6 +50,8 @@ message.prototype.error = (message)=>{
 }
 const iMessage = new message()
 export {
+  iFormGroup,
+  iFormItem,
   iInput,
   iSelect,
   iButton,
@@ -60,5 +65,6 @@ export {
   iPagination,
   iNavMvp,
   iSearch,
-  iDialog
+  iDialog,
+  iText
 }
