@@ -5,13 +5,16 @@
 * @Description: In User Settings Edit
  -->
 <template>
-	<li class="partDetailList flex-align-center">
-				<p class="flex-align-center">
-					<icon name="icondian" v-if="icons"></icon>
-					<span class="title">{{item.name}}</span>
-				</p>
-				<span class="content">{{data[item.key]}}</span>
-			</li>
+	<ul class="partDetail flex-align-center">
+		<li class="partDetailList flex-align-center" v-for="(item,index) in title" :key="index">
+			<p class="flex-align-center">
+				<icon name="icondian" v-if="icons"></icon>
+				<span class="title">{{item.name}}</span>
+			</p>
+			<span class="content">{{data[item.key]}}</span>
+		</li>
+	</ul>
+	
 </template>
 
 <script>
@@ -24,7 +27,7 @@
 		},
 		data() {
 			return {
-				
+
 			}
 		},
 		props: {
@@ -34,11 +37,11 @@
 			},
 			title: {
 				type: Array,
-				default:()=>[]
+				default: () => []
 			},
-			data:{
-				type:Object,
-				default:()=>{}
+			data: {
+				type: Object,
+				default: () => {}
 			}
 		}
 	}
@@ -52,6 +55,7 @@
 			// width: 33.33%;
 			margin-top: 36px;
 			margin-right: 120px;
+
 			>p {
 				min-width: 202px;
 				font-size: 16px;
