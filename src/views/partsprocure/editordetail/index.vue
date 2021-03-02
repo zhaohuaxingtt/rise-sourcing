@@ -93,7 +93,9 @@
       <el-tab-pane label="材料组信息"></el-tab-pane>
       <el-tab-pane label="零件产量计划"></el-tab-pane>
       <el-tab-pane label="图纸和TP详情页"></el-tab-pane>
-      <el-tab-pane label="物流要求"></el-tab-pane>
+      <el-tab-pane label="物流要求">
+		  <logistics></logistics>
+	  </el-tab-pane>
       <el-tab-pane label="申请目标价"></el-tab-pane>
       <el-tab-pane label="备注信息"></el-tab-pane>
       <el-tab-pane label="SCB"></el-tab-pane>
@@ -112,8 +114,9 @@ import {
   iButton,
   iTabsList
 } from "@/components";
+import logistics from "./components/logistics"
 export default {
-  components: { iPage, iFormGroup, iFormItem, iCard, iText, iSelect ,iButton,iTabsList},
+  components: { iPage, iFormGroup, iFormItem, iCard, iText, iSelect ,iButton,iTabsList,logistics},
 };
 </script>
 <style lang="scss" scoped>
