@@ -14,16 +14,30 @@
 				<span class="title">物流标准</span>
 			</div>
 			<iFormGroup row="4" icon inline>
-				<div class="flex-align-center aa margin-top20">
-					<iFormItem label="供货方式" name="test">
-						<iText>
-						</iText>
-					</iFormItem>
-					<iFormItem label="负责人" name="test">
-						<iText>
-						</iText>
-					</iFormItem>
-				</div>
+				<iFormItem label="供货方式" name="test">
+					<iText>
+					</iText>
+				</iFormItem>
+				<iFormItem label="负责人" name="test">
+					<iText>
+					</iText>
+				</iFormItem>
+				<iFormItem label="供货方式" name="test">
+					<iText>
+					</iText>
+				</iFormItem>
+				<iFormItem label="负责人" name="test">
+					<iText>
+					</iText>
+				</iFormItem>
+				<iFormItem label="供货方式" name="test">
+					<iText>
+					</iText>
+				</iFormItem>
+				<iFormItem label="负责人" name="test">
+					<iText>
+					</iText>
+				</iFormItem>
 			</iFormGroup>
 		</iCard>
 		<iCard>
@@ -31,80 +45,62 @@
 				<span class="title">参考包装</span>
 			</div>
 			<iFormGroup row="4" icon inline>
-				<div class="flex-between-center margin-top20">
-					<iFormItem label="参考包装长(mm)" name="test">
-						<iText>
-						</iText>
-					</iFormItem>
-					<iFormItem label="参考包装宽(mm)" name="test">
-						<iText>
-						</iText>
-					</iFormItem>
-					<iFormItem label="参考包装高(mm)" name="test">
-						<iText>
-						</iText>
-					</iFormItem>
-					<iFormItem label="装箱撒" name="test">
-						<iText>
-						</iText>
-					</iFormItem>
-				</div>
-				<div class="flex-between-center">
-					<iFormItem label="参考车型" name="test">
-						<iText>
-						</iText>
-					</iFormItem>
-					<iFormItem label="参考零件号" name="test">
-						<iText>
-						</iText>
-					</iFormItem>
-					<iFormItem label="参考零件名" name="test">
-						<iText>
-						</iText>
-					</iFormItem>
-					<iFormItem label="参考包装器具类型" name="test">
-						<iText>
-						</iText>
-					</iFormItem>
-				</div>
-				<div class="flex-between-center">
-					<iFormItem label="毛重(KG)" name="test">
-						<iText>
-						</iText>
-					</iFormItem>
-					<iFormItem label="参考包装单价(元)" name="test">
-						<iText>
-						</iText>
-					</iFormItem>
-				</div>
-				<div class="flex-between-center">
-					<iFormItem label="毛重(KG)" name="test">
-						<iText>
-						</iText>
-					</iFormItem>
-					<iFormItem label="参考包装单价(元)" name="test">
-						<iText>
-						</iText>
-					</iFormItem>
-				</div>
+				<iFormItem label="参考包装长(mm)" name="test">
+					<iText>
+					</iText>
+				</iFormItem>
+				<iFormItem label="参考包装宽(mm)" name="test">
+					<iText>
+					</iText>
+				</iFormItem>
+				<iFormItem label="参考包装高(mm)" name="test">
+					<iText>
+					</iText>
+				</iFormItem>
+				<iFormItem label="装箱撒" name="test">
+					<iText>
+					</iText>
+				</iFormItem>
+				<iFormItem label="参考车型" name="test">
+					<iText>
+					</iText>
+				</iFormItem>
+				<iFormItem label="参考零件号" name="test">
+					<iText>
+					</iText>
+				</iFormItem>
+				<iFormItem label="参考零件名" name="test">
+					<iText>
+					</iText>
+				</iFormItem>
+				<iFormItem label="参考包装器具类型" name="test">
+					<iText>
+					</iText>
+				</iFormItem>
+				<iFormItem label="毛重(KG)" name="test">
+					<iText>
+					</iText>
+				</iFormItem>
+				<iFormItem label="参考包装单价(元)" name="test">
+					<iText>
+					</iText>
+				</iFormItem>
 			</iFormGroup>
 		</iCard>
 		<iCard>
 			<div class="header">
 				<span class="title">SAIC VOLKSWAGEN库存_小时</span>
 			</div>
-			<iFormGroup row="3" icon inline>
-				<div class="margin-top20 flex-between-center">
-					<iFormItem label="SAIC VOLKSWAGEN库存_小时" name="test">
-						<iText>
-						</iText>
-					</iFormItem>
-					<iFormItem label="SAIC VOLKSWAGEN空箱操作_小时" name="test">
-						<iText>
-						</iText>
-					</iFormItem>
-					<div class="aa"></div>
-				</div>
+			<iFormGroup row="4" icon inline>
+				<iFormItem label="SAIC VOLKSWAGEN库存_小时" name="test">
+					<iText>
+					</iText>
+				</iFormItem>
+				<iFormItem label="SAIC VOLKSWAGEN空箱操作_小时" name="test">
+					<iText>
+					</iText>
+				</iFormItem>
+				<div class="aa"></div>
 			</iFormGroup>
 		</iCard>
 	</div>
@@ -137,9 +133,5 @@
 			font-weight: bold;
 			color: #001847;
 		}
-	}
-
-	.aa {
-		width: 376px;
 	}
 </style>
