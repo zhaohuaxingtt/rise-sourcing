@@ -9,7 +9,7 @@
 <template>
   <el-table :height="height" :data='tableData' v-loading='tableLoading' @selection-change="handleSelectionChange">
     <el-table-column v-if="selection" type='selection' width="50" align='center'></el-table-column>
-    <el-table-column v-if='index' type='index' width='50' align='center' label='#'></el-table-column>
+    <el-table-column v-if='index' type='index' width='50' align='center' :label='indexLabel'></el-table-column>
     <template v-for="(items,index) in tableTitle">
       <el-table-column :key="index" align='center' v-if='items.props == "b"' :prop="items.props" :label="items.name">
         <template slot-scope="row"><span class="openLinkText cursor" @click="openPage">{{row.row.b}}</span></template>
@@ -26,6 +26,7 @@ export default{
     tableLoading:{type:Boolean,default:false},
     selection:{type:Boolean,default:true},
     index:{type:Boolean,default:false},
+    indexLabel:{type:String,default:'#'},
     height:{type:Number||String}
   },
   methods:{

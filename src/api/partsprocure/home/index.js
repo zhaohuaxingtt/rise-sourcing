@@ -17,3 +17,19 @@ export function getTabelData(parmars){
     data:parmars
   })
 }
+
+export function getYearScope(params) {
+  return requst({
+    url:'https://www.fastmock.site/mock/5cd3e97d6126b18b5e16f3e499489335/api/getYearScope',
+    method:'GET',
+    data:params
+  })
+}
+
+export function getOutputPlan(params) {
+  return requst({
+    url:'https://www.fastmock.site/mock/5cd3e97d6126b18b5e16f3e499489335/api/getOutputPlan',
+    method:'GET',
+    data:params
+  })
+}
