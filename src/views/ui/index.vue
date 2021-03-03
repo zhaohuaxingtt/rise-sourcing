@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-19 14:29:21
- * @LastEditTime: 2021-03-02 19:08:01
+ * @LastEditTime: 2021-03-03 14:18:40
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\ui\index.vue
@@ -179,7 +179,6 @@
 			<el-col :span='24'>
 				<iCard class="margin-bottom20">
 					<iFormGroup :row="4" inline :rules="rules" icon class="noMargin">
-							<div class="flex-between-center">
 								<iFormItem label="零件号：" name="test">
 									<iInput></iInput>
 								</iFormItem>
@@ -192,12 +191,10 @@
 								<iFormItem label="签收日期：" name="test">
 									<iInput></iInput>
 								</iFormItem>
-							</div>
 					</iFormGroup>
 				</iCard>
 				<iCard>
 				<iFormGroup :row="3" inline icon>
-						<div class="flex-between-center">
 							<iFormItem label="零件号：" name="test">
 								<iInput></iInput>
 							</iFormItem>
@@ -207,8 +204,6 @@
 							<iFormItem label="询价采购员：" name="test">
 								<iInput></iInput>
 							</iFormItem>
-						</div>
-						<div class="flex-between-center">
 							<iFormItem label="零件号：" name="test">
 								<iText>test</iText>
 							</iFormItem>
@@ -218,7 +213,6 @@
 							<iFormItem label="询价采购员：" name="test">
 								<iInput></iInput>
 							</iFormItem>
-						</div>
 				</iFormGroup>
 				</iCard>
 			</el-col>
