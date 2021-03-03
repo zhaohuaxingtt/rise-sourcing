@@ -76,9 +76,8 @@
 						<iText>
 						</iText>
 					</iFormItem>
-					<div style="width: 50%;"></div>
 				</div>
-				<div class="">
+				<div class="flex-between-center">
 					<iFormItem label="毛重(KG)" name="test">
 						<iText>
 						</iText>
@@ -94,8 +93,8 @@
 			<div class="header">
 				<span class="title">SAIC VOLKSWAGEN库存_小时</span>
 			</div>
-			<iFormGroup row="4" icon inline>
-				<div class="margin-top20">
+			<iFormGroup row="3" icon inline>
+				<div class="margin-top20 flex-between-center">
 					<iFormItem label="SAIC VOLKSWAGEN库存_小时" name="test">
 						<iText>
 						</iText>
@@ -104,6 +103,7 @@
 						<iText>
 						</iText>
 					</iFormItem>
+					<div class="aa"></div>
 				</div>
 			</iFormGroup>
 		</iCard>
@@ -140,8 +140,6 @@
 	}
 
 	.aa {
-		>div{
-			flex: 1;
-		}
+		width: 376px;
 	}
 </style>
