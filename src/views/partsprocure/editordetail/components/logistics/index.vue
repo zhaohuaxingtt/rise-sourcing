@@ -14,7 +14,7 @@
 				<span class="title">物流标准</span>
 			</div>
 			<iFormGroup row="4" icon inline>
-				<div class="flex-between-center margin-top20">
+				<div class="flex-align-center aa margin-top20">
 					<iFormItem label="供货方式" name="test">
 						<iText>
 						</iText>
@@ -44,9 +44,11 @@
 						<iText>
 						</iText>
 					</iFormItem>
+					<iFormItem label="装箱撒" name="test">
+						<iText>
+						</iText>
+					</iFormItem>
 				</div>
-			</iFormGroup>
-			<iFormGroup row="4" icon inline>
 				<div class="flex-between-center">
 					<iFormItem label="参考车型" name="test">
 						<iText>
@@ -60,9 +62,22 @@
 						<iText>
 						</iText>
 					</iFormItem>
+					<iFormItem label="参考包装器具类型" name="test">
+						<iText>
+						</iText>
+					</iFormItem>
 				</div>
-			</iFormGroup>
-			<iFormGroup row="4" icon inline>
+				<div class="flex-between-center">
+					<iFormItem label="毛重(KG)" name="test">
+						<iText>
+						</iText>
+					</iFormItem>
+					<iFormItem label="参考包装单价(元)" name="test">
+						<iText>
+						</iText>
+					</iFormItem>
+					<div style="width: 50%;"></div>
+				</div>
 				<div class="">
 					<iFormItem label="毛重(KG)" name="test">
 						<iText>
@@ -125,6 +140,8 @@
 	}
 
 	.aa {
-		flex-wrap: wrap;
+		>div{
+			flex: 1;
+		}
 	}
 </style>
