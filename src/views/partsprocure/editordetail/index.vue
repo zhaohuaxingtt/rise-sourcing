@@ -96,7 +96,9 @@
       <el-tab-pane label="物流要求">
 		  <logistics></logistics>
 	  </el-tab-pane>
-      <el-tab-pane label="申请目标价"></el-tab-pane>
+      <el-tab-pane label="申请目标价">
+		  <targePrice></targePrice>
+	  </el-tab-pane>
       <el-tab-pane label="备注信息"></el-tab-pane>
       <el-tab-pane label="SCB"></el-tab-pane>
       <el-tab-pane label="重要操作日志"></el-tab-pane>
@@ -115,8 +117,9 @@ import {
   iTabsList
 } from "@/components";
 import logistics from "./components/logistics"
+import targePrice from "./components/targetPrice"
 export default {
-  components: { iPage, iFormGroup, iFormItem, iCard, iText, iSelect ,iButton,iTabsList,logistics},
+  components: { iPage, iFormGroup, iFormItem, iCard, iText, iSelect ,iButton,iTabsList,logistics,targePrice},
 };
 </script>
 <style lang="scss" scoped>

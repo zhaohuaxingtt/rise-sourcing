@@ -54,10 +54,10 @@
 		.partDetailList {
 			// width: 33.33%;
 			margin-top: 36px;
-			margin-right: 120px;
+			margin-right: 137px;
 
 			>p {
-				min-width: 202px;
+				width: 202px;
 				font-size: 16px;
 
 				span {
