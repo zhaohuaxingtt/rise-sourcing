@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2021-03-02 16:01:42
+ * @LastEditTime: 2021-03-03 15:20:07
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsprocure\editordetail\index.vue
@@ -22,7 +22,7 @@
       <!--                  基本信息区域                                       --->
       <!------------------------------------------------------------------------>
     <iCard>
-      <iFormGroup row="4" inline :rules="rules">
+      <iFormGroup row="1" inline :rules="rules">
         <div class="row">
           <div class="col">
             <iFormItem label="零件号：" name="test">
@@ -133,6 +133,7 @@ export default {
     width: 395px;
     border-right: 1px solid $color-border;
     margin-right: 10px;
+    padding-right: 20px;
     &:last-child {
       margin-right: 0px;
       border-right: none;

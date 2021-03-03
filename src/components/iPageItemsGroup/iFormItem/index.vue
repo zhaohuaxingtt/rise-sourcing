@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-03-01 17:17:17
- * @LastEditTime: 2021-03-03 15:09:04
+ * @LastEditTime: 2021-03-03 15:14:54
  * @LastEditors: Please set LastEditors
  * @Description: 为不同的宽度item做出UI还原
  * @FilePath: \rise\src\components\iFromItem\index.vue
@@ -13,14 +13,14 @@ export default{
 }
 </script>
 <style lang='scss' scoped>
-
-  .row4{
+  @for $i from 1 through 6{
+  .row#{$i}{
     margin-bottom: 25px;
     margin-right: 60px;
-    width: calc((100% - 3*60px) / 4);
+    width: calc((100% - (#{$i} - 1) *60px) / #{$i});
     display: flex;
     float: left;
-    &:nth-child(4n){
+    &:nth-child(#{$i}n){
       margin-right: 0px;
     }
     ::v-deep.el-form-item__label{
@@ -34,65 +34,6 @@ export default{
       flex: 1;
     }
   }
-  .row3{
-    margin-bottom: 25px;
-    margin-right: 100px;
-    width: calc((100% - 2*100px) / 3);
-    margin-bottom: 25px;
-    display: flex;
-    float: left;
-    &:nth-child(3n){
-      margin-right: 0px;
-    }
-    ::v-deep.el-form-item__label{
-      width: 200px;
-      text-align: left;
-      font-size: 16px;
-      color: #4B4B4C;
-    }
-    ::v-deep.el-form-item__content{
-      flex: 1;
-    }
-  }
-  .row2{
-    margin-bottom: 25px;
-    margin-right: 100px;
-    width: calc((100% - 1*100px) / 2);
-    margin-bottom: 25px;
-    display: flex;
-    float: left;
-    &:nth-child(2n){
-      margin-right: 0px;
-    }
-    ::v-deep.el-form-item__label{
-      width: 200px;
-      text-align: left;
-      font-size: 16px;
-      color: #4B4B4C;
-    }
-    ::v-deep.el-form-item__content{
-      flex: 1;
-    }
-  }
-  .row1{
-    margin-bottom: 25px;
-    margin-right: 100px;
-    width: calc((100% - 0*100px) / 1);
-    margin-bottom: 25px;
-    display: flex;
-    float: left;
-    &:nth-child(1n){
-      margin-right: 0px;
-    }
-    ::v-deep.el-form-item__label{
-      width: 200px;
-      text-align: left;
-      font-size: 16px;
-      color: #4B4B4C;
-    }
-    ::v-deep.el-form-item__content{
-      flex: 1;
-    }
   }
   .icon_self{
     .el-form-item__label{
