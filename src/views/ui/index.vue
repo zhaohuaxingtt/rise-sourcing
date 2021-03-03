@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-19 14:29:21
- * @LastEditTime: 2021-03-03 14:18:40
+ * @LastEditTime: 2021-03-03 15:09:24
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\ui\index.vue
@@ -210,7 +210,38 @@
 							<iFormItem label="FSNR/GSNR/SPNR：" name="test">
 								<iInput></iInput>
 							</iFormItem>
+				</iFormGroup>
+				<iFormGroup :row="2" inline icon>
+							<iFormItem label="零件号：" name="test">
+								<iInput></iInput>
+							</iFormItem>
+							<iFormItem label="FSNR/GSNR/SPNR：" name="test">
+								<iInput></iInput>
+							</iFormItem>
 							<iFormItem label="询价采购员：" name="test">
+								<iInput></iInput>
+							</iFormItem>
+							<iFormItem label="零件号：" name="test">
+								<iText>test</iText>
+							</iFormItem>
+							<iFormItem label="FSNR/GSNR/SPNR：" name="test">
+								<iInput></iInput>
+							</iFormItem>
+				</iFormGroup>
+					<iFormGroup :row="1" inline icon>
+							<iFormItem label="零件号：" name="test">
+								<iInput></iInput>
+							</iFormItem>
+							<iFormItem label="FSNR/GSNR/SPNR：" name="test">
+								<iInput></iInput>
+							</iFormItem>
+							<iFormItem label="询价采购员：" name="test">
+								<iInput></iInput>
+							</iFormItem>
+							<iFormItem label="零件号：" name="test">
+								<iText>test</iText>
+							</iFormItem>
+							<iFormItem label="FSNR/GSNR/SPNR：" name="test">
 								<iInput></iInput>
 							</iFormItem>
 				</iFormGroup>
