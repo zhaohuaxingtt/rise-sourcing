@@ -72,7 +72,9 @@
         <el-tab-pane label="⽬标价">
           <target-price/>
         </el-tab-pane>
-        <el-tab-pane label="参考产量"></el-tab-pane>
+        <el-tab-pane label="参考产量">
+          <reference-output/>
+        </el-tab-pane>
         <el-tab-pane label="物流要求"></el-tab-pane>
         <el-tab-pane label="询价附件"></el-tab-pane>
         <el-tab-pane label="BOM单信息"></el-tab-pane>
@@ -85,6 +87,7 @@
 <script>
 import {iCard, iFormGroup, iFormItem, iText, iInput, iButton, iTabsList} from "@/components";
 import targetPrice from './components/targetPrice'
+import referenceOutput from './components/referenceOutput'
 
 export default {
   components: {
@@ -95,7 +98,8 @@ export default {
     iInput,
     iButton,
     iTabsList,
-    targetPrice
+    targetPrice,
+    referenceOutput
   },
   data() {
     return {
