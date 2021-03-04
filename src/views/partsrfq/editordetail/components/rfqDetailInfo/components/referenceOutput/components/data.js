@@ -5,7 +5,6 @@
  * @Description: In User Settings Edit
  */
 export const partsProductionTableTitle = [
-    {props:'0',name:'编号'},
     {props:'a',name:'FS号'},
     {props:'b',name:'采购⼯⼚'},
     {props:'c',name:'零件号'},
@@ -22,7 +21,6 @@ export const partsProductionTableTitle = [
 ]
 
 export const timePlanableTitle = [
-    {props:'0',name:'编号'},
     {props:'a',name:'FS号'},
     {props:'b',name:'采购⼯⼚'},
     {props:'c',name:'零件号'},

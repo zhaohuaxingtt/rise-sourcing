@@ -12,6 +12,8 @@
           :tableTitle="tableTitle"
           :tableLoading="tableLoading"
           @handleSelectionChange="handleSelectionChange"
+          :index="true"
+          :hide-open-page="true"
       ></tablelist>
       <!------------------------------------------------------------------------>
       <!--                  表格分页                                          --->
@@ -32,9 +34,10 @@
 
 <script>
 import {iCard, iButton, iPagination} from "@/components";
-import tablelist from './tablelist'
+import tablelist from 'pages/partsrfq/components/tablelist'
 import {timePlanableTitle} from "./data";
 import {pageMixins} from "@/utils/pageMixins";
+import {getTimeLineList} from "@/api/partsfcq/editordetail";
 
 export default {
   components: {
@@ -52,8 +55,16 @@ export default {
       selectTableData: []
     };
   },
+  created() {
+    this.getTableList();
+  },
   methods: {
-    exports() {
+    getTableList() {
+      this.tableLoading = true;
+      getTimeLineList().then((res) => {
+        this.tableListData = res.data;
+        this.tableLoading = false;
+      });
     },
     //修改表格改动列
     handleSelectionChange(val) {

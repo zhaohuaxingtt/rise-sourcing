@@ -39,7 +39,7 @@
 
 <script>
 import {iCard, iButton, iPagination} from "@/components";
-import tablelist from './components/tablelist'
+import tablelist from 'pages/partsrfq/components/tablelist'
 import {tableTitle} from "./components/data";
 import {pageMixins} from "@/utils/pageMixins";
 import {getLogisticsRequirementsList} from "@/api/partsfcq/editordetail";

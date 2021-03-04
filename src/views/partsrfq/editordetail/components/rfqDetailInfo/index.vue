@@ -10,24 +10,28 @@
       <el-tab-pane label="物流要求">
         <logistics-requirements/>
       </el-tab-pane>
-      <el-tab-pane label="询价附件"></el-tab-pane>
+      <el-tab-pane label="询价附件">
+        <inquiry-attachment/>
+      </el-tab-pane>
       <el-tab-pane label="BOM单信息"></el-tab-pane>
     </iTabsList>
   </div>
 </template>
 
 <script>
-import {iCard, iFormGroup, iFormItem, iText, iInput, iButton, iTabsList} from "@/components";
+import {iTabsList} from "@/components";
 import targetPrice from './components/targetPrice'
 import referenceOutput from './components/referenceOutput'
 import logisticsRequirements from './components/logisticsRequirements'
+import inquiryAttachment from './components/inquiryAttachment'
 
 export default {
   components: {
     iTabsList,
     targetPrice,
     referenceOutput,
-    logisticsRequirements
+    logisticsRequirements,
+    inquiryAttachment
   },
   data() {
     return {

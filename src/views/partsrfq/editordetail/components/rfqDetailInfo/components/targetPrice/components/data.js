@@ -5,8 +5,7 @@
  * @Description: In User Settings Edit
  */
 export const tableTitle = [
-    {props:'0',name:'编号'},
-    {props:'a',name:'零件名'},
+    {props:'a',name:'零件号'},
     {props:'b',name:'零件名（中）'},
     {props:'c',name:'申请类别'},
     {props:'d',name:'期望目标价'},
