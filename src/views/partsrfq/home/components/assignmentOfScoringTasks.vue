@@ -1,16 +1,15 @@
 <!--
- * @Author: yuszhou
- * @Date: 2021-02-25 11:24:15
- * @LastEditTime: 2021-03-01 11:20:32
+ * @Author: moxuan
+ * @Date: 2021-03-04 11:24:15
+ * @LastEditTime: 2021-03-04 11:24:15
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
- * @FilePath: \rise\src\views\partsign\home\components\changeItems.vue
 -->
 <template>
   <iDialog :title="title" :visible.sync="value" width="80%" @close='clearDiolog'>
     <div class="changeContent">
       <div class="margin-bottom20 clearFloat">
-        <div class="floatright">
+        <div class="floatright title-button-box">
           <iButton @click="edit">编辑</iButton>
           <iButton @click="save">保存</iButton>
         </div>
@@ -24,7 +23,6 @@
     </div>
     <span slot="footer" class="dialog-footer">
           <iButton @click="$emit('input',false)">取 消</iButton>
-          <iButton :loading='repeatClick' @click="sureChangeItems">确 定</iButton>
         </span>
   </iDialog>
 </template>
@@ -68,19 +66,21 @@ export default{
     clearDiolog(){
       this.$emit('input',false)
     },
-    sureChangeItems(){
+    edit() {},
+    save() {
       if(this.selectTableData.length == '') return iMessage.warn('抱歉！您当前还未选择！')
       this.$emit('sure',JSON.parse(this.selectTableData))
-    },
-    edit() {},
-    save() {}
+    }
   }
 }
 </script>
 <style lang='scss' scoped>
 .changeContent{
   padding: 0px 10px 20px 10px;
-
+  .title-button-box{
+    margin-top: -60px;
+    margin-right: 30px;
+  }
 }
 </style>
 

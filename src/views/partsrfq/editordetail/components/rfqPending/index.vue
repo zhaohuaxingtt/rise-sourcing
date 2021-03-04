@@ -5,28 +5,24 @@
 * @Description: RFQ待办事项
  -->
 <template>
-<!--  <iTabs type="border-card" stretch>
+  <iTabsList type="border-card">
     <el-tab-pane label="零件清单">
-      <partsList />
+      <partDetailList></partDetailList>
     </el-tab-pane>
     <el-tab-pane label="BDL列表"> BDL列表 </el-tab-pane>
     <el-tab-pane label="CBD设置"> CBD设置 </el-tab-pane>
     <el-tab-pane label="模具预算申请"> 模具预算申请 </el-tab-pane>
     <el-tab-pane label="技术交流会"> 技术交流会 </el-tab-pane>
-  </iTabs>-->
-  <div>
-    RFQ待办事项
-  </div>
+  </iTabsList>
 </template>
 
 <script>
-import { icon, iTabs } from "@/components";
-import partsList from "./components/partsList";
+import { iTabsList } from "@/components";
+import partDetailList from "./components/partDetailList";
 export default {
   components: {
-    //iTabs,
-    //icon,
-    //partsList,
+    iTabsList,
+    partDetailList,
   },
   data() {
     return {};

@@ -2,7 +2,6 @@
   <div>
     <iCard>
       <div class="margin-bottom20 clearFloat">
-        <span class="font18 font-weight">时间计划</span>
         <div class="floatright">
           <iButton @click="exports">导出</iButton>
         </div>
@@ -11,9 +10,9 @@
           :tableData="tableListData"
           :tableTitle="tableTitle"
           :tableLoading="tableLoading"
-          @handleSelectionChange="handleSelectionChange"
           :index="true"
-          :hide-open-page="true"
+          @handleSelectionChange="handleSelectionChange"
+          @openPage='openPage'
       ></tablelist>
       <!------------------------------------------------------------------------>
       <!--                  表格分页                                          --->
@@ -28,6 +27,12 @@
           :current-page='page.size'
           :total="page.total"
       />
+      <!------------------------------------------------------------------------>
+      <!--                  详情弹出框                                         --->
+      <!------------------------------------------------------------------------>
+      <detail-dialog
+          v-model="detailDialog"
+      />
     </iCard>
   </div>
 </template>
@@ -35,33 +40,39 @@
 <script>
 import {iCard, iButton, iPagination} from "@/components";
 import tablelist from 'pages/partsrfq/components/tablelist'
-import {timePlanableTitle} from "./data";
+import {tableTitle} from "./components/data";
 import {pageMixins} from "@/utils/pageMixins";
-import {getTimeLineList} from "@/api/partsfcq/editordetail";
+import {getLogisticsRequirementsList} from "@/api/partsfcq/editordetail";
+import detailDialog from './components/detail'
 
 export default {
   components: {
     iCard,
     iButton,
     iPagination,
-    tablelist
+    tablelist,
+    detailDialog
   },
   mixins: [pageMixins],
   data() {
     return {
       tableListData: [],
-      tableTitle: timePlanableTitle,
+      tableTitle: tableTitle,
       tableLoading: false,
-      selectTableData: []
+      selectTableData: [],
+      detailDialog: false
     };
   },
   created() {
     this.getTableList();
   },
   methods: {
+    exports() {
+    },
+    //获取表格数据
     getTableList() {
       this.tableLoading = true;
-      getTimeLineList().then((res) => {
+      getLogisticsRequirementsList().then((res) => {
         this.tableListData = res.data;
         this.tableLoading = false;
       });
@@ -70,6 +81,9 @@ export default {
     handleSelectionChange(val) {
       this.selectTableData = val;
     },
+    openPage() {
+      this.detailDialog = true
+    }
   }
 }
 </script>

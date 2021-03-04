@@ -12,6 +12,8 @@
           :tableTitle="tableTitle"
           :tableLoading="tableLoading"
           @handleSelectionChange="handleSelectionChange"
+          :index="true"
+          open-page-props="c"
       ></tablelist>
       <!------------------------------------------------------------------------>
       <!--                  表格分页                                          --->
@@ -32,9 +34,10 @@
 
 <script>
 import {iCard, iButton, iPagination} from "@/components";
-import tablelist from './tablelist'
+import tablelist from 'pages/partsrfq/components/tablelist'
 import {partsProductionTableTitle} from "./data";
 import {pageMixins} from "@/utils/pageMixins";
+import {getPartsProductionList} from "@/api/partsfcq/editordetail";
 
 export default {
   components: {
@@ -52,7 +55,17 @@ export default {
       selectTableData: []
     };
   },
+  created() {
+    this.getTableList();
+  },
   methods: {
+    getTableList() {
+      this.tableLoading = true;
+      getPartsProductionList().then((res) => {
+        this.tableListData = res.data;
+        this.tableLoading = false;
+      });
+    },
     exports() {
     },
     //修改表格改动列
