@@ -42,7 +42,7 @@ import {iCard, iButton, iPagination} from "@/components";
 import tablelist from 'pages/partsrfq/components/tablelist'
 import {tableTitle} from "./components/data";
 import {pageMixins} from "@/utils/pageMixins";
-import {getLogisticsRequirementsList} from "@/api/partsfcq/editordetail";
+import {getLogisticsRequirementsList} from "@/api/partsrfq/editordetail";
 import detailDialog from './components/detail'
 
 export default {
