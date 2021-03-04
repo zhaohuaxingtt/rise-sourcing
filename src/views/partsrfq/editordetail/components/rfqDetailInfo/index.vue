@@ -13,16 +13,18 @@
             <iFormItem label="RFQ名称：" name="test">
               <iText></iText>
             </iFormItem>
-            <div>
-              <iFormItem label="EP：" name="test">
+
+            <iFormItem>
+              <iFormItem label="EP：" name="test" row='2' class="mb0">
                 <iInput v-if="editStatus"></iInput>
                 <iText v-else></iText>
               </iFormItem>
-              <iFormItem label="MQ：" name="test">
+              <iFormItem label="MQ：" name="test" row='2' class="mb0">
                 <iInput v-if="editStatus"></iInput>
                 <iText v-else></iText>
               </iFormItem>
-            </div>
+            </iFormItem>
+
 
             <iFormItem label="当前轮次：" name="test">
               <iText></iText>
@@ -75,7 +77,9 @@
         <el-tab-pane label="参考产量">
           <reference-output/>
         </el-tab-pane>
-        <el-tab-pane label="物流要求"></el-tab-pane>
+        <el-tab-pane label="物流要求">
+          <logistics-requirements/>
+        </el-tab-pane>
         <el-tab-pane label="询价附件"></el-tab-pane>
         <el-tab-pane label="BOM单信息"></el-tab-pane>
       </iTabsList>
@@ -88,6 +92,7 @@
 import {iCard, iFormGroup, iFormItem, iText, iInput, iButton, iTabsList} from "@/components";
 import targetPrice from './components/targetPrice'
 import referenceOutput from './components/referenceOutput'
+import logisticsRequirements from './components/logisticsRequirements'
 
 export default {
   components: {
@@ -99,7 +104,8 @@ export default {
     iButton,
     iTabsList,
     targetPrice,
-    referenceOutput
+    referenceOutput,
+    logisticsRequirements
   },
   data() {
     return {
@@ -125,26 +131,26 @@ export default {
   overflow: hidden;
   display: flex;
   justify-content: space-between;
-
   .col {
-    width: 480px;
+    width: 33.33%;
     border-right: 1px solid $color-border;
-    margin-right: 10px;
+    margin-right: 40px;
     padding-right: 20px;
-
     &:last-child {
       margin-right: 0px;
       border-right: none;
     }
   }
-
   .items {
     width: 300px;
   }
-
   .edit-button-row {
     float: right;
     margin-top: 60px;
+  }
+
+  .mb0 {
+    margin-bottom: 0px;
   }
 }
 </style>
