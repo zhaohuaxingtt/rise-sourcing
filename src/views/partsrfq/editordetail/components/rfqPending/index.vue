@@ -18,7 +18,7 @@
 
 <script>
 import { iTabsList } from "@/components";
-import partDetailList from "./components/partDetailList";
+import partDetailList from "./components/partDetaiList";
 export default {
   components: {
     iTabsList,
