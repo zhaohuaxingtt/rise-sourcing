@@ -7,83 +7,104 @@
  * @FilePath: \rise\src\views\partsprocure\editordetail\components\materialGroupInfo\index.vue
 -->
 <template>
-  <div class="material-group-info">
-    <el-row v-for="(infoChunk, $chunkIndex) in infoChunks" :key="$chunkIndex" class="row">
-      <el-col v-for="(info, $index) in infoChunk" :key="$index" class="col" :span="6">
-        <div class="view">
-          <div class="label">
-            <span>{{ info.label }}：</span>
-          </div>
-          <div class="detail">
-            <span v-if="info.key !== 'e'">{{ info.value }}</span>
-          </div>
-        </div>
-      </el-col>
-      <el-col v-if="$chunkIndex === infoChunks.length - 1" class="col" :span="6">
-         <iButton @click="setMaterialGroup">设置工艺组</iButton>
-      </el-col>
-    </el-row>
-  </div>
+  <iCard class="materialGroupInfo" tabCard>
+    <template v-slot:header-control>
+      <iButton v-if="!setMaterialGroupStatus" @click="setMaterialGroup">设置工艺组</iButton>
+      <iButton v-if="!setMaterialGroupStatus" @click="log">日志</iButton>
+      <iButton v-if="setMaterialGroupStatus" @click="confirmMaterialGroup">确认</iButton>
+      <iButton v-if="setMaterialGroupStatus" @click="back">返回</iButton>
+    </template>
+    <div class="body">
+      <infos />
+      <div v-if="setMaterialGroupStatus">
+        <tablelist 
+          class="table margin-top20" 
+          index 
+          indexLabel="编号" 
+          :tableData="tableListData" 
+          :tableTitle="tableTitle" 
+          :tableLoading="loading"
+          @handleSelectionChange="handleSelectionChange" />
+        <iPagination
+          class="pagination margin-top30"
+          @size-change="handleSizeChange($event, getUsage)"
+          @current-change="handleCurrentChange($event, getUsage)"
+          background
+          :current-page="page.size"
+          :page-sizes="page.pageSizes"
+          :page-size="page.page"
+          :layout="page.layout"
+          :total="page.total" />
+      </div>
+    </div>
+    <logDialog :visible.sync="logVisible" />
+  </iCard>
 </template>
 
 <script>
-import { infos } from './data'
-import { chunk } from 'lodash'
-
-import { iButton } from '@/components'
+import { tableTitle } from './components/data'
+import { iButton, iCard, iPagination, iMessage } from '@/components'
+import infos from './components/infos'
+import tablelist from '@/views/partsign/home/components/tableList'
+import { pageMixins } from '@/utils/pageMixins'
+import { getTabelData } from "@/api/partsprocure/home"
+import logDialog from "@/views/partsign/editordetail/components/logDialog"
 
 export default {
-  components: { iButton },
+  components: { iButton, iCard, iPagination, tablelist, infos, logDialog },
+  mixins: [ pageMixins ],
   data() {
     return {
-      infoChunks: [],
+      tableTitle,
+      loading: false,
+      tableListData: [],
       setMaterialGroupStatus: false,
-      form: {
-        e: ''
-      }
+      multipleSelection: [],
+      logVisible: false
     }
-  },
-  created() {
-    this.infoChunks = chunk(infos, 4)
   },
   methods: {
     setMaterialGroup() {
-      this.setMaterialGroupStatus = true;
+      this.setMaterialGroupStatus = true
+
+      this.getTabelData()
+    },
+    confirmMaterialGroup() {
+      if (this.multipleSelection.length !== 1) {
+        iMessage.warn('抱歉，此处必须选择一条工艺组数据')
+        return
+      }
+
+      iMessage.success('设置成功')
+      this.back()
+    },
+    getTabelData() {
+      this.loading = true
+
+      getTabelData()
+        .then(res => {
+          this.tableListData = res.data
+          this.loading = false
+        })
+        .catch(() => this.loading = false)
+    },
+    handleSelectionChange(list) {
+      this.multipleSelection = list
+    },
+    log() {
+      this.logVisible = true
+    },
+    back() {
+      this.setMaterialGroupStatus = false
+      this.tableListData = []
+      this.loading = false
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.material-group-info {
-  padding: 20px;
-  background: #fff;
-
-  .row {
-    .col {
-      padding: 0 10px;
-      margin-bottom: 20px;
-
-      &:first-of-type {
-        padding-left: 0;
-      }
-
-      &:last-of-type {
-        padding-right: 0;
-      }
-    }
-  }
-
-  .view {
-    .label {
-      display: table-cell;
-      width: 200px;
-    }
-
-    .detail {
-      display: table-cell;
-      word-break: break-all;
-    }
-  }
+.materialGroupInfo {
+  
 }
 </style>
