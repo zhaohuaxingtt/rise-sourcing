@@ -13,7 +13,9 @@
       <el-tab-pane label="询价附件">
         <inquiry-attachment/>
       </el-tab-pane>
-      <el-tab-pane label="BOM单信息"></el-tab-pane>
+      <el-tab-pane label="BOM单信息">
+        <bom-list/>
+      </el-tab-pane>
     </iTabsList>
   </div>
 </template>
@@ -24,6 +26,7 @@ import targetPrice from './components/targetPrice'
 import referenceOutput from './components/referenceOutput'
 import logisticsRequirements from './components/logisticsRequirements'
 import inquiryAttachment from './components/inquiryAttachment'
+import bomList from './components/bom'
 
 export default {
   components: {
@@ -31,7 +34,8 @@ export default {
     targetPrice,
     referenceOutput,
     logisticsRequirements,
-    inquiryAttachment
+    inquiryAttachment,
+    bomList
   },
   data() {
     return {
