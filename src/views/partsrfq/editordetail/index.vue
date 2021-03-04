@@ -27,12 +27,82 @@
 				</span>
       </div>
     </div>
+    <i-card class="margin-bottom20 margin-top20">
+      <!------------------------------------------------------------------------>
+      <!--                  基本信息区域                                       --->
+      <!------------------------------------------------------------------------>
+      <div class="baseinfo-title">基础信息</div>
+      <iFormGroup row="1" inline :rules="rules">
+        <div class="row">
+          <div class="col">
+            <iFormItem label="RFQ编号：" name="test">
+              <iText></iText>
+            </iFormItem>
+            <iFormItem label="RFQ名称：" name="test">
+              <iText></iText>
+            </iFormItem>
+
+            <iFormItem>
+              <iFormItem label="EP：" name="test" row='2' class="mb0">
+                <iInput v-if="editStatus"></iInput>
+                <iText v-else></iText>
+              </iFormItem>
+              <iFormItem label="MQ：" name="test" row='2' class="mb0">
+                <iInput v-if="editStatus"></iInput>
+                <iText v-else></iText>
+              </iFormItem>
+            </iFormItem>
+
+
+            <iFormItem label="当前轮次：" name="test">
+              <iText></iText>
+            </iFormItem>
+            <iFormItem label="本轮报价截⽌时间：" name="test">
+              <iText></iText>
+            </iFormItem>
+          </div>
+          <div class="col">
+            <iFormItem label="RFQ状态：" name="test">
+              <iText></iText>
+            </iFormItem>
+            <iFormItem label="询价采购员：" name="test">
+              <iText></iText>
+            </iFormItem>
+            <iFormItem label="PL：" name="test">
+              <iInput v-if="editStatus"></iInput>
+              <iText v-else></iText>
+            </iFormItem>
+            <iFormItem label="本轮状态：" name="test">
+              <iText></iText>
+            </iFormItem>
+            <iFormItem label="轮次类型：" name="test">
+              <iText></iText>
+            </iFormItem>
+          </div>
+          <div class="col">
+            <iFormItem label="创建⽇期：" name="test">
+              <iText></iText>
+            </iFormItem>
+            <iFormItem label="LINIE：" name="test">
+              <iText></iText>
+            </iFormItem>
+            <iFormItem label="CF：" name="test">
+              <iInput v-if="editStatus"></iInput>
+              <iText v-else></iText>
+            </iFormItem>
+            <div class="edit-button-row">
+              <i-button @click="edit">{{ !editStatus ? '编辑' : '保存' }}</i-button>
+            </div>
+          </div>
+        </div>
+      </iFormGroup>
+    </i-card>
     <rfqPending v-if="navActivtyValue === 1 || navActivtyValue === ''"></rfqPending>
     <rfq-detail-info v-if="navActivtyValue === 2"></rfq-detail-info>
   </iPage>
 </template>
 <script>
-import {iNavMvp, iButton, iPage, icon} from "@/components";
+import {iNavMvp, iButton, iPage, icon, iCard, iFormGroup, iFormItem, iText, iInput,} from "@/components";
 import rfqPending from './components/rfqPending'
 import rfqDetailInfo from './components/rfqDetailInfo'
 
@@ -42,6 +112,11 @@ export default {
     iButton,
     iPage,
     icon,
+    iCard,
+    iFormGroup,
+    iFormItem,
+    iText,
+    iInput,
     rfqPending,
     rfqDetailInfo
   },
@@ -61,7 +136,8 @@ export default {
           value: 3,
           name: "谈判助手",
         }
-      ]
+      ],
+      editStatus: false
     }
   },
   methods: {
@@ -78,7 +154,10 @@ export default {
     createAFixedPointApplication() {
 
     },
-    log() {}
+    log() {},
+    edit() {
+      this.editStatus = !this.editStatus
+    }
   }
 }
 </script>
@@ -101,5 +180,40 @@ export default {
       margin-left: 30px;
     }
   }
+}
+.row {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  justify-content: space-between;
+  .col {
+    width: 33.33%;
+    border-right: 1px solid $color-border;
+    margin-right: 40px;
+    padding-right: 20px;
+    &:last-child {
+      margin-right: 0px;
+      border-right: none;
+    }
+  }
+  .items {
+    width: 300px;
+  }
+  .edit-button-row {
+    float: right;
+    margin-top: 60px;
+  }
+
+  .mb0 {
+    margin-bottom: 0px;
+  }
+}
+.baseinfo-title{
+  font-size: 18px;
+  font-weight: bold;
+  line-height: 21px;
+  color: #131523;
+  margin-bottom: 10px;
 }
 </style>
