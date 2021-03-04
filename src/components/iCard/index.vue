@@ -2,10 +2,10 @@
  * @Author: ldh  
  * @Date: 2021-02-22 11:32:08  
  * @Last Modified by: ldh
- * @Last Modified time: 2021-02-23 10:06:28
+ * @Last Modified time: 2021-03-03 17:49:47
  */
 <template>
-  <div class="card">
+  <div class="card" :class="{ tabCard }">
     <div class="card__header" :style="{ paddingBottom: $slots.default ? '0px': '25px', ...headerStyle }" v-if="$slots.header || header">
       <slot name="header">{{ header }}</slot>
     </div>
@@ -35,7 +35,11 @@ export default {
     headerControl: {},
     headerStyle: {},
     titleStyle: {},
-    bodyStyle: {}
+    bodyStyle: {},
+    tabCard: {
+      type: Boolean,
+      default: false
+    }
   }
 };
 </script>
@@ -59,6 +63,22 @@ export default {
 
   .card__body {
     padding: 32px 50px;
+  }
+}
+
+.tabCard {
+  .card__header {
+    padding: 30px 40px 0!important;
+
+    .title {
+      color: $color-font;
+      font-size: 18px;
+      font-weight: bold;
+      line-height: 25px;
+    }
+  }
+  .card__body {
+    padding: 30px 40px!important;
   }
 }
 </style>

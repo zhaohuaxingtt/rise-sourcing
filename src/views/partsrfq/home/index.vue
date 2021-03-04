@@ -14,7 +14,7 @@
     <!------------------------------------------------------------------------>
     <!--                  search 搜索模块                                   --->
     <!------------------------------------------------------------------------>
-    <iSearch class="margin-bottom20">
+    <iSearch class="margin-bottom20" :icon="true">
       <el-form>
         <el-form-item label="零件号">
           <iInput placeholder='请输入零件号,FSNR,RFQ编号'></iInput>
