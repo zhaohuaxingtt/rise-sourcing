@@ -1,16 +1,16 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2021-03-03 15:20:07
+ * @LastEditTime: 2021-03-04 09:53:57
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsprocure\editordetail\index.vue
 -->
 <template>
   <iPage>
-      <!------------------------------------------------------------------------>
-      <!--                  详情页头部保存区域                                  --->
-      <!------------------------------------------------------------------------>
+    <!------------------------------------------------------------------------>
+    <!--                  详情页头部保存区域                                  --->
+    <!------------------------------------------------------------------------>
     <div class="margin-bottom20 clearFloat">
       <span class="font18 font-weight">零件采购项目</span>
       <div class="floatright">
@@ -18,9 +18,9 @@
         <iButton @click="openDiologBack">退回</iButton>
       </div>
     </div>
-      <!------------------------------------------------------------------------>
-      <!--                  基本信息区域                                       --->
-      <!------------------------------------------------------------------------>
+    <!------------------------------------------------------------------------>
+    <!--                  基本信息区域                                       --->
+    <!------------------------------------------------------------------------>
     <iCard>
       <iFormGroup row="1" inline :rules="rules">
         <div class="row">
@@ -73,7 +73,7 @@
             </iFormItem>
           </div>
           <div class="col">
-            <iFormItem label="签收日期：" name="test">
+            <iFormItem  label="签收日期：" name="test">
               <iText></iText>
             </iFormItem>
             <iFormItem label="SOP日期：" name="test">
@@ -89,13 +89,13 @@
         </div>
       </iFormGroup>
     </iCard>
-    <iTabsList class="margin-top20" type='border-card'>
+    <iTabsList class="margin-top20" type="border-card">
       <el-tab-pane label="材料组信息"></el-tab-pane>
       <el-tab-pane label="零件产量计划"></el-tab-pane>
       <el-tab-pane label="图纸和TP详情页"></el-tab-pane>
       <el-tab-pane label="物流要求">
-		  <logistics></logistics>
-	  </el-tab-pane>
+        <logistics></logistics>
+      </el-tab-pane>
       <el-tab-pane label="申请目标价"></el-tab-pane>
       <el-tab-pane label="备注信息"></el-tab-pane>
       <el-tab-pane label="SCB"></el-tab-pane>
@@ -112,11 +112,21 @@ import {
   iText,
   iSelect,
   iButton,
-  iTabsList
+  iTabsList,
 } from "@/components";
-import logistics from "./components/logistics"
+import logistics from "./components/logistics";
 export default {
-  components: { iPage, iFormGroup, iFormItem, iCard, iText, iSelect ,iButton,iTabsList,logistics},
+  components: {
+    iPage,
+    iFormGroup,
+    iFormItem,
+    iCard,
+    iText,
+    iSelect,
+    iButton,
+    iTabsList,
+    logistics,
+  },
 };
 </script>
 <style lang="scss" scoped>

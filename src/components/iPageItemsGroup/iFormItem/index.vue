@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-03-01 17:17:17
- * @LastEditTime: 2021-03-03 15:14:54
+ * @LastEditTime: 2021-03-04 11:07:41
  * @LastEditors: Please set LastEditors
  * @Description: 为不同的宽度item做出UI还原
  * @FilePath: \rise\src\components\iFromItem\index.vue
@@ -9,7 +9,15 @@
 <script>
 import {FormItem} from 'element-ui'
 export default{
-  extends:FormItem
+  extends:FormItem,
+  props:{
+    row:{type:Number}
+  },
+  mounted(){
+    if(this.row){
+      this.$el.classList.add('row_line'+this.row)
+    }
+  }
 }
 </script>
 <style lang='scss' scoped>
@@ -28,6 +36,28 @@ export default{
       text-align: left;
       font-size: 16px;
       color: #4B4B4C;
+    }
+    ::v-deep.el-form-item__content{
+      text-align: right;
+      flex: 1;
+    }
+  }
+  }
+  @for $i from 1 through 6{
+  .row_line#{$i}{
+    margin-bottom: 25px;
+    margin-right: 30px;
+    width: calc((100% - (#{$i} - 1) *30px) / #{$i});
+    display: flex;
+    float: left;
+    &:nth-child(#{$i}n){
+      margin-right: 0px;
+    }
+    ::v-deep.el-form-item__label{
+      text-align: left;
+      font-size: 16px;
+      color: #4B4B4C;
+      width: 80px;
     }
     ::v-deep.el-form-item__content{
       text-align: right;
