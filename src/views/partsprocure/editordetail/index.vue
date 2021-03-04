@@ -90,15 +90,24 @@
       </iFormGroup>
     </iCard>
     <iTabsList class="margin-top20" type='border-card'>
-      <el-tab-pane label="材料组信息"></el-tab-pane>
-      <el-tab-pane label="零件产量计划"></el-tab-pane>
-      <el-tab-pane label="图纸和TP详情页"></el-tab-pane>
+      <el-tab-pane label="材料组信息">
+        <materialGroupInfo />
+      </el-tab-pane>
+      <el-tab-pane label="零件产量计划">
+        <outputPlan />
+        <outputRecord class="margin-top20" />
+        <usage class="margin-top20" />
+      </el-tab-pane>
+      <el-tab-pane label="图纸和TP详情页">
+        <drawing />
+        <sheet class="margin-top20" />
+      </el-tab-pane>
       <el-tab-pane label="物流要求">
-		  <logistics></logistics>
-	  </el-tab-pane>
+        <logistics></logistics>
+      </el-tab-pane>
       <el-tab-pane label="申请目标价">
-		  <targePrice></targePrice>
-	  </el-tab-pane>
+        <targePrice></targePrice>
+      </el-tab-pane>
       <el-tab-pane label="备注信息"></el-tab-pane>
       <el-tab-pane label="SCB"></el-tab-pane>
       <el-tab-pane label="重要操作日志"></el-tab-pane>
@@ -118,8 +127,31 @@ import {
 } from "@/components";
 import logistics from "./components/logistics"
 import targePrice from "./components/targetPrice"
+import materialGroupInfo from './components/materialGroupInfo'
+import outputPlan from './components/outputPlan/outputPlan'
+import outputRecord from './components/outputPlan/outputRecord'
+import usage from './components/outputPlan/usage'
+import drawing from './components/drawingSheet/drawing'
+import sheet from './components/drawingSheet/sheet'
 export default {
-  components: { iPage, iFormGroup, iFormItem, iCard, iText, iSelect ,iButton,iTabsList,logistics,targePrice},
+  components: {
+    iPage, 
+    iFormGroup, 
+    iFormItem, 
+    iCard, 
+    iText, 
+    iSelect,
+    iButton,
+    iTabsList,
+    logistics,
+    targePrice,
+    materialGroupInfo,
+    outputPlan,
+    outputRecord,
+    usage,
+    drawing,
+    sheet
+  },
 };
 </script>
 <style lang="scss" scoped>

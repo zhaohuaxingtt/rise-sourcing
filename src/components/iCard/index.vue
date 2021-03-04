@@ -2,7 +2,7 @@
  * @Author: ldh  
  * @Date: 2021-02-22 11:32:08  
  * @Last Modified by: ldh
- * @Last Modified time: 2021-03-03 16:29:46
+ * @Last Modified time: 2021-03-03 17:49:47
  */
 <template>
   <div class="card" :class="{ tabCard }">
@@ -68,7 +68,7 @@ export default {
 
 .tabCard {
   .card__header {
-    padding: 20px 40px 0!important;
+    padding: 30px 40px 0!important;
 
     .title {
       color: $color-font;
