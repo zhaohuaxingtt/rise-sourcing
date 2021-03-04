@@ -117,7 +117,6 @@
 		iFormGroup,
 		iFormItem,
 		iText,
-		icon,
 		iButton,
 		iInput,
 	} from "@/components";
@@ -135,7 +134,6 @@
 			iFormGroup,
 			iFormItem,
 			iText,
-			icon,
 			iButton,
 			iInput,
 			tablelist
