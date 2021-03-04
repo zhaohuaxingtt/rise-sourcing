@@ -75,6 +75,7 @@
 				<iInput type="textarea" rows="6" resize="none" v-model="remarks"></iInput>
 			</iFormItem>
 		</iFormGroup>
+		<tablelist :tableData='tableListData' :tableTitle='rwTitle' :loading='tableLoading' @handleSelectionChange='handleSelectionChange'></tablelist>
 		<div class="line"></div>
 		<!-- 申请RW价 -->
 		<div class="header flex-between-center-center">
@@ -106,7 +107,7 @@
 				<iInput type="textarea" rows="6" resize="none" v-model="reasons"></iInput>
 			</iFormItem>
 		</iFormGroup>
-		<tablelist :tableData='tableListData' :tableTitle='tableTitle' :loading='tableLoading' @handleSelectionChange ='handleSelectionChange'></tablelist>
+		<tablelist :tableData='tableListData' :tableTitle='rwTitle' :loading='tableLoading' @handleSelectionChange='handleSelectionChange'></tablelist>
 	</iCard>
 </template>
 
@@ -121,7 +122,10 @@
 		iInput,
 	} from "@/components";
 	import tablelist from "./components/tablelist";
-	import {tableTitle} from './components/data';
+	import {
+		rwTitle,
+		targeTitle
+	} from './components/data';
 	import {
 		getTabelData
 	} from '@/api/partsprocure/home'
@@ -144,7 +148,8 @@
 				tableLoading: false,
 				selectTableData: [],
 				tableListData: [],
-				tableTitle:tableTitle
+				rwTitle: rwTitle,
+				targeTitle:targeTitle
 			}
 		},
 		created() {
