@@ -2,17 +2,25 @@
   <div>
     <iCard>
       <div class="margin-bottom20 clearFloat">
-        <span class="font18 font-weight">时间计划</span>
-        <div class="floatright">
-          <iButton @click="exports">导出</iButton>
-        </div>
+        <iFormGroup inline icon>
+          <iFormItem label="创建日期" name="test">
+            <i-text>2020-12-10</i-text>
+          </iFormItem>
+          <iFormItem label="导入时间" name="test">
+            <i-text >2020-12-10</i-text>
+          </iFormItem>
+          <div class="floatright margin-top5">
+            <iButton @click="readEffectiveBOM">读取有效BOM</iButton>
+            <iButton @click="exports">导出</iButton>
+          </div>
+        </iFormGroup>
       </div>
       <tablelist
           :tableData="tableListData"
           :tableTitle="tableTitle"
           :tableLoading="tableLoading"
-          @handleSelectionChange="handleSelectionChange"
           :index="true"
+          @handleSelectionChange="handleSelectionChange"
           :hide-open-page="true"
       ></tablelist>
       <!------------------------------------------------------------------------>
@@ -33,24 +41,28 @@
 </template>
 
 <script>
-import {iCard, iButton, iPagination} from "@/components";
+import {iCard, iButton, iPagination, iFormGroup, iFormItem, iText} from "@/components";
 import tablelist from 'pages/partsrfq/components/tablelist'
-import {timePlanableTitle} from "./data";
+import {tableTitle} from "./components/data";
 import {pageMixins} from "@/utils/pageMixins";
-import {getTimeLineList} from "@/api/partsfcq/editordetail";
+import {getBomList} from "@/api/partsfcq/editordetail";
+
 
 export default {
   components: {
     iCard,
     iButton,
     iPagination,
+    iFormGroup,
+    iFormItem,
+    iText,
     tablelist
   },
   mixins: [pageMixins],
   data() {
     return {
       tableListData: [],
-      tableTitle: timePlanableTitle,
+      tableTitle: tableTitle,
       tableLoading: false,
       selectTableData: []
     };
@@ -59,17 +71,25 @@ export default {
     this.getTableList();
   },
   methods: {
+    //获取表格数据
     getTableList() {
       this.tableLoading = true;
-      getTimeLineList().then((res) => {
+      getBomList().then((res) => {
         this.tableListData = res.data;
         this.tableLoading = false;
       });
+    },
+    readEffectiveBOM() {
+    },
+    exports() {
     },
     //修改表格改动列
     handleSelectionChange(val) {
       this.selectTableData = val;
     },
+    openPage() {
+      this.detailDialog = true
+    }
   }
 }
 </script>
