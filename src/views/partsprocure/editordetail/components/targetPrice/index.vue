@@ -61,6 +61,8 @@
 		</iFormGroup>
 		<iFormGroup row="2" icon inline>
 			<iFormItem label="申请类型" name="test">
+				<iText>
+				</iText>
 			</iFormItem>
 			<iFormItem label="期望目标价" name="test">
 				<iText>
