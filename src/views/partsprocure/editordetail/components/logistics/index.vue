@@ -22,25 +22,9 @@
 					<iText>
 					</iText>
 				</iFormItem>
-				<iFormItem label="供货方式" name="test">
-					<iText>
-					</iText>
-				</iFormItem>
-				<iFormItem label="负责人" name="test">
-					<iText>
-					</iText>
-				</iFormItem>
-				<iFormItem label="供货方式" name="test">
-					<iText>
-					</iText>
-				</iFormItem>
-				<iFormItem label="负责人" name="test">
-					<iText>
-					</iText>
-				</iFormItem>
 			</iFormGroup>
 		</iCard>
-		<iCard>
+		<iCard  class="margin-top20">
 			<div class="header">
 				<span class="title">参考包装</span>
 			</div>
@@ -87,7 +71,7 @@
 				</iFormItem>
 			</iFormGroup>
 		</iCard>
-		<iCard>
+		<iCard  class="margin-top20">
 			<div class="header">
 				<span class="title">SAIC VOLKSWAGEN库存_小时</span>
 			</div>
@@ -100,7 +84,6 @@
 					<iText>
 					</iText>
 				</iFormItem>
-				<div class="aa"></div>
 			</iFormGroup>
 		</iCard>
 	</div>
@@ -128,6 +111,7 @@
 
 <style scoped="scoped" lang="scss">
 	.header {
+		margin-bottom: 20px;
 		.title {
 			font-size: 18px;
 			font-weight: bold;
