@@ -1,12 +1,13 @@
 <template>
-  <iCard class="outputRecord" tabCard>
+  <iCard class="outputRecord" tabCard title="图纸">
     <template v-slot:header-control>
-      <iButton>更新至询价产量</iButton>
+      <iButton>删除</iButton>
+      <iButton>上传附件</iButton>
     </template>
     <div class="body">
       <tablelist
-        class="table" 
-        :selection="false"
+        class="table"
+        index
         indexLabel="编号" 
         :tableData="tableListData" 
         :tableTitle="tableTitle" 
@@ -29,7 +30,7 @@
 import { iCard, iButton, iPagination } from '@/components'
 import tablelist from '@/views/partsign/home/components/tableList'
 import { pageMixins } from '@/utils/pageMixins'
-import { outputRecordTableTitle as tableTitle } from './data'
+import { tableTitle } from './data'
 
 export default {
   components: { iCard, iButton, tablelist, iPagination },
@@ -41,6 +42,8 @@ export default {
       tableListData: [],
     }
   },
+  methods: {
+  }
 }
 </script>
 

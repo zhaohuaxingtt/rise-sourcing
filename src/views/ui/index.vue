@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-19 14:29:21
- * @LastEditTime: 2021-03-03 15:09:24
+ * @LastEditTime: 2021-03-04 10:51:13
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\ui\index.vue
@@ -179,8 +179,13 @@
 			<el-col :span='24'>
 				<iCard class="margin-bottom20">
 					<iFormGroup :row="4" inline :rules="rules" icon class="noMargin">
-								<iFormItem label="零件号：" name="test">
-									<iInput></iInput>
+								<iFormItem>
+										<iFormItem :row='2' label="QC" name="test">
+											<iInput></iInput>
+										</iFormItem>
+										<iFormItem :row='2' label="QD" name="test">
+											<iInput></iInput>
+										</iFormItem>
 								</iFormItem>
 								<iFormItem label="FSNR/GSNR/SPNR：" name="test">
 									<iInput></iInput>
@@ -229,7 +234,7 @@
 							</iFormItem>
 				</iFormGroup>
 					<iFormGroup :row="1" inline icon>
-							<iFormItem label="零件号：" name="test">
+							<iFormItem label="零件号：">
 								<iInput></iInput>
 							</iFormItem>
 							<iFormItem label="FSNR/GSNR/SPNR：" name="test">
@@ -241,8 +246,9 @@
 							<iFormItem label="零件号：" name="test">
 								<iText>test</iText>
 							</iFormItem>
-							<iFormItem label="FSNR/GSNR/SPNR：" name="test">
-								<iInput></iInput>
+							<iFormItem label="" name="test">
+								<iFormItem :row='2' label="1" name="test"><iText>test</iText></iFormItem>
+								<iFormItem :row='2' label="1" name="test"><iText>test</iText></iFormItem>
 							</iFormItem>
 				</iFormGroup>
 				</iCard>

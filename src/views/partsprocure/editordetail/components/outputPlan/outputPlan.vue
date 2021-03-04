@@ -7,7 +7,6 @@
       <tablelist
         class="table" 
         :selection="false"
-        indexLabel="编号" 
         :tableData="tableListData" 
         :tableTitle="tableTitle" 
         :tableLoading="loading" />
@@ -19,17 +18,15 @@
 import { iCard, iButton } from '@/components'
 import tablelist from '@/views/partsign/home/components/tableList'
 import { getYearScope, getOutputPlan } from '@/api/partsprocure/home'
+import { outputPlanTableTitle as tableTitle } from './data'
+import { cloneDeep } from 'lodash'
 
 export default {
   components: { iCard, iButton, tablelist },
   data() {
     return {
       loading: false,
-      tableTitle: [
-        { props: 'a', name: '年份' },
-        { props: 'b', name: 'SUM' },
-        { props: 'c', name: '版本号' }
-      ],
+      tableTitle: cloneDeep(tableTitle),
       tableListData: [
         { 'a': '产量（PC）' }
       ],
