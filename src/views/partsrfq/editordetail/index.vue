@@ -190,7 +190,7 @@ export default {
   .col {
     width: 33.33%;
     border-right: 1px solid $color-border;
-    margin-right: 40px;
+    margin-right: 20px;
     padding-right: 20px;
     &:last-child {
       margin-right: 0px;
