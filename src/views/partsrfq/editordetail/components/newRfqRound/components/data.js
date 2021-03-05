@@ -10,3 +10,10 @@ export const tableTitle = [
     {props:'c',name:'MBDL'},
     {props:'select',name:'CBD选择'}
 ]
+
+
+export const tableTitle2 = [
+    {props:'a',name:'SAP号'},
+    {props:'b',name:'供应商名称'},
+    {props:'c',name:'MBDL'}
+]
