@@ -9,7 +9,7 @@
     <el-tab-pane label="零件清单">
       <partDetailList></partDetailList>
     </el-tab-pane>
-    <el-tab-pane label="BDL列表"> BDL列表 </el-tab-pane>
+    <el-tab-pane label="BDL列表"> <BDL></BDL> </el-tab-pane>
     <el-tab-pane label="供应商评分">
       <supplier-score />
     </el-tab-pane>
