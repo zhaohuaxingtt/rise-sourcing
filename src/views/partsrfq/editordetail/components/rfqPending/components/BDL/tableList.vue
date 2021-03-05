@@ -75,16 +75,4 @@
 	.look {
 		font-size: 28px;
 	}
-
-	.el-select {
-		margin: 2px 0;
-	}
-
-	::v-deep .el-table__row .el-input {
-		height: 35px !important;
-
-		.el-input__inner {
-			height: 35px !important;
-		}
-	}
 </style>
