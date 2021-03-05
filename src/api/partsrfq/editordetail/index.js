@@ -75,3 +75,11 @@ export function getBomList(parmars) {
     data: parmars
   })
 }
+
+export function getSupplierRatingAttachment(parmars) {
+  return requst({
+    url: 'https://www.fastmock.site/mock/5cd3e97d6126b18b5e16f3e499489335/api/partfcq/getInquiryAttachmentTableList',
+    method: 'GET',
+    data: parmars
+  })
+}
