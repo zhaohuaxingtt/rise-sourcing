@@ -17,32 +17,15 @@
 </template>
 
 <script>
-	// import tablelist from '@/views/partsign/home/components/tableList'
+	import tablelist from '@/views/partsign/home/components/tableList'
 	export default {
 		props: {
-			// ...tablelist.props,
-			tableData: {
-				type: Array,
-				default: () => []
-			},
-			tableTitle: {
-				type: Array,
-				default: () => []
-			},
-			loading: {
-				type: Boolean,
-				defalut: false
-			}
+			...tablelist.props,
 		},
 		methods: {
 			handleSelectionChange(val) {
 				this.$emit('handleSelectionChange', val)
-			},
-			// preview() {},
-			// download() {},
-			// log() {
-			//   this.$emit('log')
-			// }
+			}
 		}
 	}
 </script>
