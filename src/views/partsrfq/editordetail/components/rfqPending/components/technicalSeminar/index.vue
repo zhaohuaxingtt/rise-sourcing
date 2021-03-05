@@ -1,6 +1,12 @@
 <template>
   <div>
     <iCard>
+      <div class="margin-bottom5 clearFloat">
+        <div class="floatright">
+          <iButton @click="addSupplier">添加供应商</iButton>
+          <iButton @click="sendToMyEmail">发送至我的邮件</iButton>
+        </div>
+      </div>
       <div class="margin-bottom20 clearFloat">
         <span class="font18 font-weight">会议基本信息</span>
       </div>
@@ -39,7 +45,7 @@
 </template>
 
 <script>
-import {iCard, iPagination} from "@/components";
+import {iCard, iPagination, iButton} from "@/components";
 import tablelist from 'pages/partsrfq/components/tablelist'
 import {tableTitle} from "./components/data";
 import {pageMixins} from "@/utils/pageMixins";
@@ -52,6 +58,7 @@ export default {
   components: {
     iCard,
     iPagination,
+    iButton,
     tablelist,
     supplierMaterialPreparation,
     otherMeetingInformation
@@ -81,6 +88,10 @@ export default {
     },
     recall() {
     },
+    addSupplier() {
+
+    },
+    sendToMyEmail() {},
     //修改表格改动列
     handleSelectionChange(val) {
       this.selectTableData = val;
