@@ -1,5 +1,5 @@
 <template>
-  <iCard class="outputRecord" tabCard collapse>
+  <iCard class="outputRecord" tabCard collapse title="零件产量记录">
     <template v-slot:header-control>
       <iButton>更新至询价产量</iButton>
     </template>
@@ -7,7 +7,6 @@
       <tablelist
         class="table"
         index
-        indexLabel="编号" 
         :tableData="tableListData" 
         :tableTitle="tableTitle" 
         :tableLoading="loading" />
