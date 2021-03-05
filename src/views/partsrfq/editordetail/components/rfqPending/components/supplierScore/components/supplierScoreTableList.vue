@@ -50,11 +50,11 @@ export default {
     handleSelectionChange(val) {
       this.$emit('handleSelectionChange', val)
     },
-    openPage() {
-      this.$emit('openPage')
+    openViewPage() {
+      this.$emit('openViewPage')
     },
-    openPage2() {
-      this.$emit('openPage2')
+    openEditPage() {
+      this.$emit('openEditPage')
     },
     isArray
   }

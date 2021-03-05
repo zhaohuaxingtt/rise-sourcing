@@ -8,8 +8,9 @@
         :tableTitle="tableTitle"
         :tableLoading="tableLoading"
         @handleSelectionChange="handleSelectionChange"
-        :hide-open-page="true"
         :index="true"
+        @openViewPage="openViewPage"
+        @openEditPage="openEditPage"
     ></tablelist>
     <!------------------------------------------------------------------------>
     <!--                  表格分页                                          --->
@@ -65,6 +66,8 @@ export default {
     uploadAttachments() {
 
     },
+    openViewPage() {},
+    openEditPage() {},
     //修改表格改动列
     handleSelectionChange(val) {
       this.selectTableData = val;
