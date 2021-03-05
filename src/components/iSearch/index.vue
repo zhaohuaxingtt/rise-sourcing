@@ -7,7 +7,7 @@
  * @FilePath: \rise\src\components\iSearch\index.vue
 -->
 <template>
-  <iCard>
+  <iCard :title="title" :tabCard="tabCard">
     <div class="iSearch-content" :class="{hiden:hidens}">
       <div class="operation">
         <slot name='button'>
@@ -28,7 +28,14 @@ import {iCard,iButton} from '../index'
 export default{
   components:{iCard,iButton},
   props:{
-    icon:Boolean
+    icon:Boolean,
+    title: {
+      type: String
+    },
+    tabCard: {
+      type: Boolean,
+      default: false
+    }
   },
   data(){
     return {

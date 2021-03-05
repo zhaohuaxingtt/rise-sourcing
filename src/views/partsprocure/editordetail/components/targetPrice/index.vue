@@ -77,7 +77,7 @@
 				<iInput type="textarea" rows="6" resize="none" v-model="remarks"></iInput>
 			</iFormItem>
 		</iFormGroup>
-		<tablelist :tableData='tableListData' :tableTitle='rwTitle' :loading='tableLoading' @handleSelectionChange='handleSelectionChange'></tablelist>
+		<tablelist :tableData='tableListData' :tableTitle='targeTitle' :loading='tableLoading' @handleSelectionChange='handleSelectionChange'></tablelist>
 		<div class="line"></div>
 		<!-- 申请RW价 -->
 		<div class="header flex-between-center-center">

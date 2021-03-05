@@ -48,6 +48,7 @@
           :tableLoading="tableLoading"
           @handleSelectionChange="handleSelectionChange"
           @openPage='openPage'
+          :index="true"
       ></tablelist>
       <!------------------------------------------------------------------------>
       <!--                  表格分页                                          --->

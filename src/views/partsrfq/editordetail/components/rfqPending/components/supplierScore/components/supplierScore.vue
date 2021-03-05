@@ -1,21 +1,16 @@
 <template>
-
   <iCard>
     <div class="margin-bottom20 clearFloat">
-      <span class="font18 font-weight">询价附件</span>
-      <div class="floatright">
-        <iButton @click="deleteItems">删除</iButton>
-        <iButton @click="uploadAttachments">上传附件</iButton>
-        <iButton @click="notifyAllSuppliers">通知全部供应商</iButton>
-        <iButton @click="notifySuppliersWhoHaveQuoted">通知已报价供应商</iButton>
-      </div>
+      <span class="font18 font-weight">供应商评分</span>
     </div>
     <tablelist
         :tableData="tableListData"
         :tableTitle="tableTitle"
         :tableLoading="tableLoading"
         @handleSelectionChange="handleSelectionChange"
-        :hide-open-page="true"
+        :index="true"
+        @openViewPage="openViewPage"
+        @openEditPage="openEditPage"
     ></tablelist>
     <!------------------------------------------------------------------------>
     <!--                  表格分页                                          --->
@@ -34,16 +29,15 @@
 </template>
 
 <script>
-import {iCard, iButton, iPagination} from "@/components";
-import tablelist from 'pages/partsrfq/components/tablelist'
-import {inquiryAttachmentTableTitle} from "./data";
+import {iCard, iPagination} from "@/components";
+import tablelist from './supplierScoreTableList'
+import {supplierScoreTitle} from "./data";
 import {pageMixins} from "@/utils/pageMixins";
-import {getInquiryAttachmentTableList} from "@/api/partsrfq/editordetail";
+import {getSupplierRatingAttachment} from "@/api/partsrfq/editordetail";
 
 export default {
   components: {
     iCard,
-    iButton,
     iPagination,
     tablelist
   },
@@ -51,7 +45,7 @@ export default {
   data() {
     return {
       tableListData: [],
-      tableTitle: inquiryAttachmentTableTitle,
+      tableTitle: supplierScoreTitle,
       tableLoading: false,
       selectTableData: []
     };
@@ -62,7 +56,7 @@ export default {
   methods: {
     getTableList() {
       this.tableLoading = true;
-      getInquiryAttachmentTableList().then((res) => {
+      getSupplierRatingAttachment().then((res) => {
         this.tableListData = res.data;
         this.tableLoading = false;
       });
@@ -72,10 +66,8 @@ export default {
     uploadAttachments() {
 
     },
-    notifyAllSuppliers() {
-    },
-    notifySuppliersWhoHaveQuoted() {
-    },
+    openViewPage() {},
+    openEditPage() {},
     //修改表格改动列
     handleSelectionChange(val) {
       this.selectTableData = val;
