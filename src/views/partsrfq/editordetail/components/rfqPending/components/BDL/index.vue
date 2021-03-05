@@ -5,82 +5,84 @@
 * @Description: BDL列表
  -->
 <template>
-	<iCard>
-		<div class="header flex-between-center">
-			<div class="input">
-				<iInput placeholder="请输入查询供应商名称,厂商..." suffix-icon="el-icon-search" v-model="searchKey"></iInput>
-			</div>
-			<div>
-				<iButton>保存</iButton>
-				<iButton>删除供应商</iButton>
-				<iButton>添加自定义评分项</iButton>
-				<iButton @click="log">日志</iButton>
-			</div>
-		</div>
-		<tableList :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="tableLoading" 
-		@handleSelectionChange="handleSelectionChange"
-		@openPage="openPage"
-		@log="log"></tableList>
-		<logDialog :visible.sync="logVisible" />
-	</iCard>
+  <iCard>
+    <div class="header flex-between-center">
+      <div class="input">
+        <iInput placeholder="请输入查询供应商名称,厂商..." suffix-icon="el-icon-search" v-model="searchKey"></iInput>
+      </div>
+      <div>
+        <iButton>保存</iButton>
+        <iButton>删除供应商</iButton>
+        <iButton>添加自定义评分项</iButton>
+        <iButton @click="log">日志</iButton>
+      </div>
+    </div>
+    <tableList :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="tableLoading"
+               @handleSelectionChange="handleSelectionChange"
+               @openPage="openPage"
+               @log="log"></tableList>
+    <logDialog :visible.sync="logVisible"/>
+  </iCard>
 </template>
 
 <script>
-	import {iCard,iButton,iInput} from "@/components"
-	import tableList from "./tableList"
-	import {tableTitle} from "./data"
-	import { getTabelData } from "@/api/partsign/home";
-	import logDialog from '@/views/partsign/editordetail/components/logDialog'
-	export default {
-		components: {
-			iCard,
-			tableList,
-			iButton,
-			iInput,
-			logDialog
-		},
-		data() {
-			return {
-				tableTitle,
-				tableData: [],
-				tableLoading:false,
-				searchKey:"",
-				logVisible: false,
-			}
-		},
-		created() {
-			this.getTableList()
-		},
-		methods: {
-			
-			//获取表格数据
-			getTableList() {
-			  this.tableLoading = true;
-			  getTabelData().then((res) => {
-			    this.tableListData = res.data;
-			    this.tableLoading = false;
-			  });
-			},
-			//修改表格改动列
-			handleSelectionChange(val) {
-				this.selectTableData = val;
-			},
-			// 跳转
-			openPage() {
+import {iCard, iButton, iInput} from "@/components"
+import tableList from "./tableList"
+import {tableTitle} from "./data"
+import {getTabelData} from "@/api/partsign/home";
+import logDialog from '@/views/partsign/editordetail/components/logDialog'
 
-			},
-			log() {
-			  this.logVisible = true
-			}
-		}
-	}
+export default {
+  components: {
+    iCard,
+    tableList,
+    iButton,
+    iInput,
+    logDialog
+  },
+  data() {
+    return {
+      tableTitle,
+      tableData: [],
+      tableLoading: false,
+      searchKey: "",
+      logVisible: false,
+    }
+  },
+  created() {
+    this.getTableList()
+  },
+  methods: {
+
+    //获取表格数据
+    getTableList() {
+      this.tableLoading = true;
+      getTabelData().then((res) => {
+        this.tableListData = res.data;
+        this.tableLoading = false;
+      });
+    },
+    //修改表格改动列
+    handleSelectionChange(val) {
+      this.selectTableData = val;
+    },
+    // 跳转
+    openPage() {
+
+    },
+    log() {
+      this.logVisible = true
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped>
-	.header{
-		margin-bottom: 20px;
-		.input{
-			width: 250px;
-		}
-	}
+.header {
+  margin-bottom: 20px;
+
+  .input {
+    width: 250px;
+  }
+}
 </style>

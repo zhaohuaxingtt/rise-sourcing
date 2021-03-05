@@ -42,21 +42,15 @@
               <iText></iText>
             </iFormItem>
 
-            <iFormItem>
-              <iFormItem label="EP：" name="test" row='2' class="mb0">
-                <iInput v-if="editStatus"></iInput>
-                <iText v-else></iText>
-              </iFormItem>
-              <iFormItem label="MQ：" name="test" row='2' class="mb0">
-                <iInput v-if="editStatus"></iInput>
-                <iText v-else></iText>
-              </iFormItem>
+            <iFormItem label="EP：" name="test">
+              <iInput v-if="editStatus"></iInput>
+              <iText v-else></iText>
+            </iFormItem>
+            <iFormItem label="MQ：" name="test">
+              <iInput v-if="editStatus"></iInput>
+              <iText v-else></iText>
             </iFormItem>
 
-
-            <iFormItem label="当前轮次：" name="test">
-              <iText></iText>
-            </iFormItem>
             <iFormItem label="本轮报价截⽌时间：" name="test">
               <iText></iText>
             </iFormItem>
@@ -68,11 +62,11 @@
             <iFormItem label="询价采购员：" name="test">
               <iText></iText>
             </iFormItem>
-            <iFormItem label="PL：" name="test">
+            <iFormItem label="MQ：" name="test">
               <iInput v-if="editStatus"></iInput>
               <iText v-else></iText>
             </iFormItem>
-            <iFormItem label="本轮状态：" name="test">
+            <iFormItem label="当前轮次：" name="test">
               <iText></iText>
             </iFormItem>
             <iFormItem label="轮次类型：" name="test">
@@ -89,6 +83,9 @@
             <iFormItem label="CF：" name="test">
               <iInput v-if="editStatus"></iInput>
               <iText v-else></iText>
+            </iFormItem>
+            <iFormItem label="本轮状态：" name="test">
+              <iText></iText>
             </iFormItem>
             <div class="edit-button-row">
               <i-button @click="edit">{{ !editStatus ? '编辑' : '保存' }}</i-button>
@@ -208,7 +205,6 @@ export default {
   }
   .edit-button-row {
     float: right;
-    margin-top: 60px;
   }
 
   .mb0 {

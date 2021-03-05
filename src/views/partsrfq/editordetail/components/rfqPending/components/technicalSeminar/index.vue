@@ -2,9 +2,7 @@
   <div>
     <iCard>
       <div class="margin-bottom20 clearFloat">
-        <div class="floatright">
-          <iButton @click="exports">导出</iButton>
-        </div>
+        <span class="font18 font-weight">会议基本信息</span>
       </div>
       <tablelist
           :tableData="tableListData"
@@ -12,8 +10,8 @@
           :tableLoading="tableLoading"
           :index="true"
           @handleSelectionChange="handleSelectionChange"
-          @openPage='openPage'
-          open-page-props="b"
+          open-page-props="d"
+          customOpenPageWord="查看"
       ></tablelist>
       <!------------------------------------------------------------------------>
       <!--                  表格分页                                          --->
@@ -28,31 +26,35 @@
           :current-page='page.size'
           :total="page.total"
       />
-      <!------------------------------------------------------------------------>
-      <!--                  详情弹出框                                         --->
-      <!------------------------------------------------------------------------>
-      <detail-dialog
-          v-model="detailDialog"
-      />
     </iCard>
+    <!------------------------------------------------------------------------>
+    <!--                  供应商材料准备                                      --->
+    <!------------------------------------------------------------------------>
+    <supplier-material-preparation class="margin-top20"/>
+    <!------------------------------------------------------------------------>
+    <!--                  会议其它信息                                      --->
+    <!------------------------------------------------------------------------>
+    <other-meeting-information class="margin-top20"/>
   </div>
 </template>
 
 <script>
-import {iCard, iButton, iPagination} from "@/components";
+import {iCard, iPagination} from "@/components";
 import tablelist from 'pages/partsrfq/components/tablelist'
 import {tableTitle} from "./components/data";
 import {pageMixins} from "@/utils/pageMixins";
-import {getLogisticsRequirementsList} from "@/api/partsrfq/editordetail";
-import detailDialog from './components/detail'
+import {getBomList} from "@/api/partsrfq/editordetail";
+import supplierMaterialPreparation from './components/supplierMaterialPreparation'
+import otherMeetingInformation from './components/otherMeetingInformation'
+
 
 export default {
   components: {
     iCard,
-    iButton,
     iPagination,
     tablelist,
-    detailDialog
+    supplierMaterialPreparation,
+    otherMeetingInformation
   },
   mixins: [pageMixins],
   data() {
@@ -60,23 +62,24 @@ export default {
       tableListData: [],
       tableTitle: tableTitle,
       tableLoading: false,
-      selectTableData: [],
-      detailDialog: false
+      selectTableData: []
     };
   },
   created() {
     this.getTableList();
   },
   methods: {
-    exports() {
-    },
     //获取表格数据
     getTableList() {
       this.tableLoading = true;
-      getLogisticsRequirementsList().then((res) => {
+      getBomList().then((res) => {
         this.tableListData = res.data;
         this.tableLoading = false;
       });
+    },
+    submit() {
+    },
+    recall() {
     },
     //修改表格改动列
     handleSelectionChange(val) {
