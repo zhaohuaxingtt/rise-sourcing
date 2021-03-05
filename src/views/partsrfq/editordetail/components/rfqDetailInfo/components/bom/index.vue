@@ -45,7 +45,7 @@ import {iCard, iButton, iPagination, iFormGroup, iFormItem, iText} from "@/compo
 import tablelist from 'pages/partsrfq/components/tablelist'
 import {tableTitle} from "./components/data";
 import {pageMixins} from "@/utils/pageMixins";
-import {getBomList} from "@/api/partsfcq/editordetail";
+import {getBomList} from "@/api/partsrfq/editordetail";
 
 
 export default {

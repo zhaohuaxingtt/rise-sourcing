@@ -99,12 +99,14 @@
     </i-card>
     <rfqPending v-if="navActivtyValue === 1 || navActivtyValue === ''"></rfqPending>
     <rfq-detail-info v-if="navActivtyValue === 2"></rfq-detail-info>
+    <new-rfq-round v-model="newRfqRoundDialog"/>
   </iPage>
 </template>
 <script>
 import {iNavMvp, iButton, iPage, icon, iCard, iFormGroup, iFormItem, iText, iInput,} from "@/components";
 import rfqPending from './components/rfqPending'
 import rfqDetailInfo from './components/rfqDetailInfo'
+import newRfqRound from './components/newRfqRound'
 
 export default {
   components: {
@@ -118,7 +120,8 @@ export default {
     iText,
     iInput,
     rfqPending,
-    rfqDetailInfo
+    rfqDetailInfo,
+    newRfqRound
   },
   data() {
     return {
@@ -137,7 +140,8 @@ export default {
           name: "谈判助手",
         }
       ],
-      editStatus: false
+      editStatus: false,
+      newRfqRoundDialog: false
     }
   },
   methods: {
@@ -147,7 +151,9 @@ export default {
     save() {
 
     },
-    newRfq() {},
+    newRfq() {
+      this.newRfqRoundDialog = true
+    },
     sendInquiry() {},
     endInquiry() {},
     transferNegotiation() {},

@@ -4,5 +4,5 @@
  * @LastEditTime: 2021-02-25 11:08:48
  * @LastEditors: Please set LastEditors
  * @Description: fcq列表
- * @FilePath: \rise\src\api\partsfcq\home\index.js
+ * @FilePath: \rise\src\api\partsrfq\home\index.js
  */

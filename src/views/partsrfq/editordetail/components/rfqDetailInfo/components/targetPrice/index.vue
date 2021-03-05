@@ -37,7 +37,7 @@ import {iCard, iButton, iPagination} from "@/components";
 import tablelist from 'pages/partsrfq/components/tablelist'
 import {tableTitle} from "./components/data";
 import {pageMixins} from "@/utils/pageMixins";
-import {getTargetPriceList} from "@/api/partsfcq/editordetail";
+import {getTargetPriceList} from "@/api/partsrfq/editordetail";
 
 export default {
   components: {

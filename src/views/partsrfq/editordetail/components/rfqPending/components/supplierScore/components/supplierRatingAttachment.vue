@@ -1,13 +1,10 @@
 <template>
-
   <iCard>
     <div class="margin-bottom20 clearFloat">
-      <span class="font18 font-weight">询价附件</span>
+      <span class="font18 font-weight">供应商评分附件</span>
       <div class="floatright">
         <iButton @click="deleteItems">删除</iButton>
         <iButton @click="uploadAttachments">上传附件</iButton>
-        <iButton @click="notifyAllSuppliers">通知全部供应商</iButton>
-        <iButton @click="notifySuppliersWhoHaveQuoted">通知已报价供应商</iButton>
       </div>
     </div>
     <tablelist
@@ -16,6 +13,7 @@
         :tableLoading="tableLoading"
         @handleSelectionChange="handleSelectionChange"
         :hide-open-page="true"
+        :index="true"
     ></tablelist>
     <!------------------------------------------------------------------------>
     <!--                  表格分页                                          --->
@@ -36,9 +34,9 @@
 <script>
 import {iCard, iButton, iPagination} from "@/components";
 import tablelist from 'pages/partsrfq/components/tablelist'
-import {inquiryAttachmentTableTitle} from "./data";
+import {supplierRatingAttachmentTitle} from "./data";
 import {pageMixins} from "@/utils/pageMixins";
-import {getInquiryAttachmentTableList} from "@/api/partsrfq/editordetail";
+import {getSupplierRatingAttachment} from "@/api/partsrfq/editordetail";
 
 export default {
   components: {
@@ -51,7 +49,7 @@ export default {
   data() {
     return {
       tableListData: [],
-      tableTitle: inquiryAttachmentTableTitle,
+      tableTitle: supplierRatingAttachmentTitle,
       tableLoading: false,
       selectTableData: []
     };
@@ -62,7 +60,7 @@ export default {
   methods: {
     getTableList() {
       this.tableLoading = true;
-      getInquiryAttachmentTableList().then((res) => {
+      getSupplierRatingAttachment().then((res) => {
         this.tableListData = res.data;
         this.tableLoading = false;
       });
@@ -71,10 +69,6 @@ export default {
     },
     uploadAttachments() {
 
-    },
-    notifyAllSuppliers() {
-    },
-    notifySuppliersWhoHaveQuoted() {
     },
     //修改表格改动列
     handleSelectionChange(val) {

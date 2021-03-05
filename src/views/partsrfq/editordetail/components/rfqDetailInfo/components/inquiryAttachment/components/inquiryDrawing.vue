@@ -34,7 +34,7 @@ import {iCard, iButton, iPagination} from "@/components";
 import tablelist from 'pages/partsrfq/components/tablelist'
 import {inquiryDrawingTableTitle} from "./data";
 import {pageMixins} from "@/utils/pageMixins";
-import {getInquiryDrawingTableList} from "@/api/partsfcq/editordetail";
+import {getInquiryDrawingTableList} from "@/api/partsrfq/editordetail";
 
 export default {
   components: {

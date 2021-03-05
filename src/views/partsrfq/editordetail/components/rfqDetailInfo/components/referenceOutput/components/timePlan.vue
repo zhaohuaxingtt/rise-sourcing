@@ -37,7 +37,7 @@ import {iCard, iButton, iPagination} from "@/components";
 import tablelist from 'pages/partsrfq/components/tablelist'
 import {timePlanableTitle} from "./data";
 import {pageMixins} from "@/utils/pageMixins";
-import {getTimeLineList} from "@/api/partsfcq/editordetail";
+import {getTimeLineList} from "@/api/partsrfq/editordetail";
 
 export default {
   components: {
