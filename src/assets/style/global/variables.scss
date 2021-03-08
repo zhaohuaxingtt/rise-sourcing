@@ -74,6 +74,10 @@ $font-size24:24px;
   box-shadow: 0px 0px 3px rgba(0, 38, 98, 0.15);;
   border-color: transparent;
 }
+@mixin textarea_inner {
+  box-shadow: 0px 0px 3px rgba(0, 38, 98, 0.15);;
+  border-color: transparent;
+}
 /*-------------------------------------
  |                                     |
  |             上下左右居中              |
