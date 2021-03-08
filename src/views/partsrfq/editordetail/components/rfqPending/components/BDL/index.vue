@@ -8,7 +8,7 @@
   <iCard>
     <div class="header flex-between-center">
       <div class="input">
-        <iInput placeholder="请输入查询供应商名称,厂商..." suffix-icon="el-icon-search" v-model="searchKey"></iInput>
+        <iInput placeholder="请输入查询供应商名称,厂商..." suffix-icon="iconfont iconshaixuankuangsousuo" v-model="searchKey"></iInput>
       </div>
       <div>
         <iButton>保存</iButton>
@@ -83,6 +83,11 @@ export default {
 
   .input {
     width: 250px;
+	::v-deep .iconshaixuankuangsousuo{
+		font-size: 12px;
+	}
+	
   }
 }
+
 </style>
