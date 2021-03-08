@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-22 16:46:47
- * @LastEditTime: 2021-03-08 10:30:36
+ * @LastEditTime: 2021-03-08 10:37:10
  * @LastEditors: Please set LastEditors
  * @Description: 存在于界面上方的组件。
  * @FilePath: \rise\src\layout\components\topLayout.vue
@@ -115,7 +115,7 @@ export default{
         .info {
           margin-left: 26px;
           .name {
-            font-size: 20px;
+            font-size: 16px;
             line-height: 20px;
           }
           .dept {
@@ -128,7 +128,7 @@ export default{
       }
 
       .setting {
-        font-size: 20px;
+        font-size: 16px;
         margin-left: 30px;
         cursor: pointer;
         display: flex;
