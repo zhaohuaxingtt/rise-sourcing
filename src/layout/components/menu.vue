@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-22 16:50:10
- * @LastEditTime: 2021-03-08 15:09:28
+ * @LastEditTime: 2021-03-08 15:19:42
  * @LastEditors: Please set LastEditors
  * @Description: 项目菜单。
  * @FilePath: \rise\src\layout\components\menu.vue
@@ -12,6 +12,7 @@
       :class="{ items: true, active: items.active }"
       v-for="(items, index) in menuData"
       :key="index"
+      @click="active(items)"
     >
       <icon
         v-if='items.active'
@@ -38,6 +39,17 @@ export default {
       menuData: menuData,
     };
   },
+  methods:{
+    active(items){
+      this.menuData.forEach(key=>{
+        if(key.key == items.key){
+          key.active = true
+        }else{
+          key.active = false;
+        }
+      })
+    }
+  }
 };
 </script>
 <style lang="scss" scoped>
@@ -57,7 +69,6 @@ export default {
     span{
       color: #5f6f8f;
       font-size: 20px;
-      font-weight: 400;
     }
     .icon{
       font-size: 20px;
@@ -72,6 +83,11 @@ export default {
     background: #1660f1;
     span{
       color:white
+    }
+    &:hover{
+      span{
+        color: white;
+      }
     }
   }
 }

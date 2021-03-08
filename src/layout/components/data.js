@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-23 16:43:12
- * @LastEditTime: 2021-03-08 14:23:12
+ * @LastEditTime: 2021-03-08 15:11:51
  * @LastEditors: Please set LastEditors
  * @Description: components data and function
  * @FilePath: \rise\src\layout\components\data.js
@@ -33,18 +33,22 @@
  export const menuData = [
    {
      label:'菜单测试目录',
-     active:true
+     active:true,
+     key:1
    },
    {
     label:'菜单测试目录',
-    active:false
+    active:false,
+    key:2
   },
   {
     label:'菜单测试目录',
-    active:false
+    active:false,
+    key:3
   },
   {
     label:'菜单测试目录',
-    active:false
+    active:false,
+    key:4
   }
  ]
