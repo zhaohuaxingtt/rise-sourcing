@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2020-07-22 14:56:34
- * @LastEditTime: 2021-03-08 10:31:52
+ * @LastEditTime: 2021-03-08 14:26:25
  * @LastEditors: Please set LastEditors
  * @Description: 项目默认layout
  * @FilePath: \test\src\layout\default.vue
@@ -9,8 +9,9 @@
 <template>
   <div class="content">
     <topLayout></topLayout>
-    <menuLayout></menuLayout>
-    <leftLayout></leftLayout>
+    <leftLayout>
+      <menuLayout></menuLayout>
+    </leftLayout>
     <div class="app-content">
       <router-view></router-view>
     </div>

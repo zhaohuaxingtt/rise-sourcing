@@ -1,22 +1,34 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-22 16:47:54
- * @LastEditTime: 2021-02-25 09:58:01
+ * @LastEditTime: 2021-03-08 14:09:20
  * @LastEditors: Please set LastEditors
  * @Description: 界面左边的按钮切换菜单栏。
  * @FilePath: \rise\src\layout\components\leftLayout.vue
 -->
 <template>
-<div class="leftLayout">
-  <div class="content">
-    <img class="logo" src="../../../src/assets/images/rise.png" alt="">
-    <div :class="iconChangeClass" class="centerBtn">
-      <span @click="active(items)" v-for='(items,index) in iconDataList' :key='index' :class="{transparent:items.active}">
-        <icon :name='items.icon'></icon>
-      </span>
+<div>
+  <div class="leftLayout">
+    <div class="content">
+      <img class="logo" src="../../../src/assets/images/rise.png" alt="">
+      <div :class="iconChangeClass" class="centerBtn">
+        <span @click="active(items)" v-for='(items,index) in iconDataList' :key='index' :class="{transparent:items.active}">
+          <icon :name='items.icon'></icon>
+        </span>
+      </div>
+      <div class="btn-button">
+        <img src="../../../src/assets/images/leftContent.png" alt="">
+      </div>
     </div>
-    <div class="btn-button">
-      <img src="../../../src/assets/images/leftContent.png" alt="">
+  </div>
+  <div class="leftLayout menuLayout">
+    <icon name='iconcaidanzhankai' :class="{menu:true,hiddenMenu:hiddenMenu,delay:!hiddenMenu}" @click.native="hiddenMenu=!hiddenMenu"></icon>
+    <div :class="{meunContent:true,showMenuContent:hiddenMenu,delay:hiddenMenu}">
+      <div class="meunTopContent">
+        <span>Workbench</span>
+        <icon name='iconcaidanshouqi' :class="{menu:true}" @click.native="hiddenMenu=!hiddenMenu"></icon>
+      </div>
+      <slot></slot>
     </div>
   </div>
 </div>
@@ -29,7 +41,8 @@ export default{
   data(){
     return {
       iconDataList:iconData,
-      iconChangeClass:'type-first'
+      iconChangeClass:'type-first',
+      hiddenMenu:false
     }
   },
   methods:{
@@ -48,6 +61,9 @@ export default{
 }
 </script>
 <style lang='scss' scoped>
+  .delay{
+    transition-delay: 0.4s!important;
+  }
   .content{
     display: flex;
     align-items: center;
@@ -64,8 +80,22 @@ export default{
     top: 0px;
     left: 0px;
     z-index: 10;
-    padding-top: 30px;
+    padding-top: 11px;
     padding-bottom: 30px;
+    .menu{
+      position: absolute;
+      top: 10px;
+      font-size: 38px;
+      left: 91px;
+      cursor: pointer;
+      transition: all 0.3s;
+      opacity: 1;
+      transform: translateX(0px);
+    }
+    .hiddenMenu{  
+      opacity: 0;
+      transform: translateX(-30px);
+    } 
     .type-first{
       span{
         &:nth-child(2){
@@ -123,7 +153,7 @@ export default{
     }
     .logo{
       width: 63px;
-      height: 33px;
+      height: 32px;
       display: block;
       margin: 0 auto;
       cursor: pointer;
@@ -140,6 +170,43 @@ export default{
         display: inline-block;
         height: 100%;
         width: 100%;
+      }
+    }
+  }
+  .menuLayout{
+    z-index: 9!important;
+    .meunContent{
+      position: absolute;
+      left: 0px;
+      top: 0px;
+      height: 100%;
+      width: 386px;
+      background: #EEF2FB;
+      box-shadow: 0px 0px 20px rgba(95, 98, 111, 0.16);
+      transform: translateX(-368px);
+      transition: all 0.5s;
+    }
+    .showMenuContent{
+      transform: translateX(101px);
+      .meunTopContent{
+        height: 60px;
+        padding-left: 40px;
+        line-height: 60px;
+        position: relative;
+        overflow: hidden;
+        span{
+          font-size: 24px;
+          font-weight: bold;
+          color: #001847;
+        }
+        .menu{
+            position: absolute;
+            top: 10px;
+            right: -10px;
+            left: inherit;
+            font-size: 38px;
+            cursor: pointer;
+        }
       }
     }
   }
