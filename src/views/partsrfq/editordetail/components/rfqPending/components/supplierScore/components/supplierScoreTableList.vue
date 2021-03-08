@@ -13,8 +13,8 @@
         <el-table-column :label="items.name" :key="index" align="center">
           <template v-for="(items2, index2) in items.list">
             <el-table-column :key="index2" align='center' v-if="items2.props === 'i'" :prop="items2.props" :label="items2.name">
-              <template slot-scope="row">
-                <span class="openLinkText cursor" @click="openPage2">编辑</span>
+              <template>
+                <span class="openLinkText cursor" @click="openEditPage">编辑</span>
               </template>
             </el-table-column>
             <el-table-column :key="index2" align='center' v-else :label="items2.name" :prop="items2.props"></el-table-column>
@@ -24,8 +24,8 @@
       <template v-else>
         <el-table-column :key="index" align='center' v-if="items.props === 'd'" :prop="items.props"
                          :label="items.name">
-          <template slot-scope="row">
-            <span class="openLinkText cursor" @click="openPage">查看</span>
+          <template>
+            <span class="openLinkText cursor" @click="openViewPage">查看</span>
           </template>
         </el-table-column>
         <el-table-column :key="index" align='center' v-else :label="items.name" :prop="items.props"></el-table-column>

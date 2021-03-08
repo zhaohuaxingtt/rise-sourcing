@@ -19,6 +19,8 @@
           :tableTitle="tableTitle"
           :tableLoading="tableLoading"
           @handleSelectionChange="handleSelectionChange"
+          :index="true"
+          :select-props="['a','b','c']"
       ></tablelist>
     </div>
     <span slot="footer" class="dialog-footer">
@@ -28,7 +30,7 @@
 </template>
 <script>
 import {iButton,iMessage,iDialog} from '@/components'
-import tablelist from "pages/partsrfq/home/components/tableList";
+import tablelist from "pages/partsrfq/components/tablelist";
 import {assignmentOfScroingTasksTableTitle} from "pages/partsrfq/home/components/data";
 import {getTabelData} from "@/api/partsign/home";
 
@@ -48,7 +50,7 @@ export default{
     }
   },
   created(){
-
+    this.getTableList()
   },
   methods:{
     //获取表格数据

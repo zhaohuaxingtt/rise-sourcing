@@ -48,6 +48,7 @@
           :tableLoading="tableLoading"
           @handleSelectionChange="handleSelectionChange"
           @openPage='openPage'
+          open-page-props="b"
           :index="true"
       ></tablelist>
       <!------------------------------------------------------------------------>
@@ -75,7 +76,7 @@
 </template>
 <script>
 import {iPage, iButton, iCard, iMessage, iPagination, iSearch, iInput, iSelect, iNavMvp} from "@/components";
-import tablelist from "pages/partsrfq/home/components/tableList";
+import tablelist from "pages/partsrfq/components/tablelist";
 import assignmentOfScoringTasks from "pages/partsrfq/home/components/assignmentOfScoringTasks";
 import {pageMixins} from "@/utils/pageMixins";
 import {tableTitle} from "pages/partsrfq/home/components/data";

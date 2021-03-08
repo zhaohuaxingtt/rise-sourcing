@@ -180,6 +180,20 @@ a{
   td{
     padding:9px 0px;
   }
+  // table里面 select样式调整
+  .el-table__row .el-input {
+  	height: 35px !important;
+  
+  	.el-input__inner {
+  		height: 35px !important;
+  	}
+  }
+  .el-select {
+  	margin: 2px 0;
+  }
+  .el-input{
+	  margin: 2px 0;
+  }
 }
 /*-------------------------------------
  |                                     |

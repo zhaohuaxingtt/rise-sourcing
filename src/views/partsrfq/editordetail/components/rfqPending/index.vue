@@ -11,11 +11,15 @@
     </el-tab-pane>
     <el-tab-pane label="BDL列表"> <BDL></BDL> </el-tab-pane>
     <el-tab-pane label="供应商评分">
-      <supplier-score />
+      <supplier-score/>
     </el-tab-pane>
     <el-tab-pane label="CBD设置"> CBD设置 </el-tab-pane>
-    <el-tab-pane label="模具预算申请"> 模具预算申请 </el-tab-pane>
-    <el-tab-pane label="技术交流会"> 技术交流会 </el-tab-pane>
+    <el-tab-pane label="模具预算申请">
+      <mold-budget-application/>
+    </el-tab-pane>
+    <el-tab-pane label="技术交流会">
+      <technical-seminar/>
+    </el-tab-pane>
   </iTabsList>
 </template>
 
@@ -24,12 +28,17 @@ import { iTabsList } from "@/components";
 import partDetailList from "./components/partDetaiList";
 import BDL from "./components/BDL";
 import supplierScore from "./components/supplierScore";
+import moldBudgetApplication from "./components/moldBudgetApplication";
+import technicalSeminar from "./components/technicalSeminar";
+
 export default {
   components: {
     iTabsList,
     partDetailList,
     BDL,
     supplierScore,
+    moldBudgetApplication,
+    technicalSeminar
   },
   data() {
     return {};

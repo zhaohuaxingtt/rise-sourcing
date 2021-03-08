@@ -33,12 +33,21 @@
         </iFormItem>
       </iFormGroup>
       <tablelist
+          v-if="identityStatus === 1"
           :tableData="tableListData"
           :tableTitle="tableTitleComputed"
           :tableLoading="tableLoading"
           :index="true"
           @handleSelectionChange="handleSelectionChange"
-          :hide-open-page="true"
+          :select-props="['d']"
+      ></tablelist>
+      <tablelist
+          v-else
+          :tableData="tableListData"
+          :tableTitle="tableTitleComputed"
+          :tableLoading="tableLoading"
+          :index="true"
+          @handleSelectionChange="handleSelectionChange"
       ></tablelist>
       <!------------------------------------------------------------------------>
       <!--                  表格分页                                          --->
@@ -58,7 +67,7 @@
 </template>
 <script>
 import {iButton, iMessage, iDialog, iFormGroup, iFormItem, iSelect, iPagination} from '@/components'
-import tablelist from './components/tablelist1'
+import tablelist from 'pages/partsrfq/components/tablelist'
 import {pageMixins} from "@/utils/pageMixins";
 import {tableTitle, tableTitle2} from "./components/data";
 import {getNewRfqRoundList} from "@/api/partsrfq/editordetail";
@@ -77,7 +86,7 @@ export default {
       tableListData: [],
       tableLoading: false,
       selectTableData: [],
-      identityStatus: 2
+      identityStatus: 1
     }
   },
   created() {
