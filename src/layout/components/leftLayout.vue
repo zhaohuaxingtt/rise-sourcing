@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-22 16:47:54
- * @LastEditTime: 2021-03-08 16:40:06
+ * @LastEditTime: 2021-03-08 17:15:23
  * @LastEditors: Please set LastEditors
  * @Description: 界面左边的按钮切换菜单栏。
  * @FilePath: \rise\src\layout\components\leftLayout.vue
@@ -79,7 +79,7 @@ export default{
     position: fixed;
     top: 0px;
     left: 0px;
-    z-index: 9999;
+    z-index: 999;
     padding-top: 11px;
     padding-bottom: 30px;
     .menu{
@@ -174,7 +174,7 @@ export default{
     }
   }
   .menuLayout{
-    z-index: 9998!important;
+    z-index: 998!important;
     .meunContent{
       position: absolute;
       left: 0px;
