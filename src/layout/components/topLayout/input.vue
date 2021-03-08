@@ -8,7 +8,7 @@
 -->
 <template>
   <iInput class="search" :placeholder="placeholder" :value="value" @input="handleInput">
-    <icon class="icon" slot="prefix" name="iconsousudingbu" />
+    <icon symbol class="icon" slot="prefix" name="iconsousudingbu" />
   </iInput>
 </template>
 

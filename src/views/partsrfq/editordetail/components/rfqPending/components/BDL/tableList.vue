@@ -25,7 +25,7 @@
 			<el-table-column :key="index" align='center' v-else-if='item.props == "i"' :prop="item.props" :label="item.name">
 				<template>
 					<span class="cursor look">
-						<icon name="icongongyingshangshituliebiao"></icon>
+						<icon symbol name="icongongyingshangshituliebiao"></icon>
 					</span>
 				</template>
 			</el-table-column>

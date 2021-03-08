@@ -4,21 +4,21 @@
 			<div class="list flex-between-center margin-bottom75">
 				<div>
 					<p>
-						<icon name="iconbeizhuxinxi"></icon>
+						<icon symbol name="iconbeizhuxinxi"></icon>
 						<span>询价采购员备注</span>
 					</p>
 					<iInput type="textarea" rows="8" resize="none" v-model="remarkMsg.buyer"></iInput>
 				</div>
 				<div>
 					<p>
-						<icon name="iconbeizhuxinxi"></icon>
+						<icon symbol name="iconbeizhuxinxi"></icon>
 						<span>Linie备注</span>
 					</p>
 					<iInput type="textarea" rows="8" resize="none" v-model="remarkMsg.linie" disabled></iInput>
 				</div>
 				<div>
 					<p>
-						<icon name="iconbeizhuxinxi"></icon>
+						<icon symbol name="iconbeizhuxinxi"></icon>
 						<span>CS*1备注</span>
 					</p>
 					<iInput type="textarea" rows="8" resize="none" v-model="remarkMsg.cs" disabled></iInput>
@@ -31,21 +31,21 @@
 			<div class="list flex-between-center margin-bottom40">
 				<div>
 					<p>
-						<icon name="iconbeizhuxinxi"></icon>
+						<icon symbol name="iconbeizhuxinxi"></icon>
 						<span>询价采购员上会备注</span>
 					</p>
 					<iInput type="textarea" rows="8" resize="none" v-model="remarkMsg.onBuyer"></iInput>
 				</div>
 				<div>
 					<p>
-						<icon name="iconbeizhuxinxi"></icon>
+						<icon symbol name="iconbeizhuxinxi"></icon>
 						<span>Linie上会备注</span>
 					</p>
 					<iInput type="textarea" rows="8" resize="none" v-model="remarkMsg.onLinie" disabled></iInput>
 				</div>
 				<div>
 					<p>
-						<icon name="iconbeizhuxinxi"></icon>
+						<icon symbol name="iconbeizhuxinxi"></icon>
 						<span>CS*1上会备注</span>
 					</p>
 					<iInput type="textarea" rows="8" resize="none" v-model="remarkMsg.onCs" disabled></iInput>

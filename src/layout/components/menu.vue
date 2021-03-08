@@ -14,18 +14,18 @@
       :key="index"
       @click="active(items)"
     >
-      <icon
+      <icon symbol
         v-if='items.active'
         class="icon margin-right20 leftIconActive"
         name="iconxunyuandingdianxuanzhong"
       ></icon>
-      <icon
+      <icon symbol
         v-else
         class="icon margin-right20 leftIconHiden"
         name="iconxunyuandingdianweixuanzhong"
       ></icon>
       <span>{{ items.label }}</span>
-      <icon class="icon floatright margin-top32" v-if="!items.active" name="iconmuluweixuanzhongshijiantou"></icon>
+      <icon symbol class="icon floatright margin-top32" v-if="!items.active" name="iconmuluweixuanzhongshijiantou"></icon>
     </li>
   </ul>
 </template>

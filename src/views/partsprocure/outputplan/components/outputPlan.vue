@@ -1,7 +1,7 @@
 <template>
   <iCard class="outputPlan tabCard" title="询价产量计划" tabCard collapse>
     <template v-slot:header-control>
-      <iButton>保存</iButton>
+      <iButton @click="save">保存</iButton>
     </template>
     <div class="body">
       <el-table
@@ -12,8 +12,8 @@
             <div slot="header">
               <iSelect v-model="startYear" class="select">
                 <el-option
-                  v-for="item in years"
-                  :key="item"
+                  v-for="(item, $index) in years"
+                  :key="$index"
                   :label="item"
                   :value="item" />
               </iSelect>
@@ -69,6 +69,8 @@ export default {
       } finally {
         this.loading = false
       }
+    },
+    save() {
     }
   }
 }

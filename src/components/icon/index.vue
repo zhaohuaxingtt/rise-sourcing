@@ -1,12 +1,17 @@
 <template>
-  <svg class="icon" :color='color' aria-hidden="true">
+  <svg v-if="symbol" class="icon" :color='color' aria-hidden="true">
     <use :xlink:href="`#${ name }`"></use>
   </svg>
+  <i v-else class="iconfont" :class="name"></i>
 </template>
 
 <script>
 export default {
   props: {
+    symbol: {
+      type: Boolean,
+      default: false
+    },
     name: {
       type: String
     },

@@ -15,10 +15,10 @@
 				<iButton @click="openDiologBack">退回</iButton>
 				<iButton @click="back">返回</iButton>
 				<span>
-					<icon name="iconrizhi"></icon>
+					<icon symbol name="iconrizhi"></icon>
 				</span>
 			<!-- 	<span>
-					<icon name="icondatabaseweixuanzhong"></icon>
+					<icon symbol name="icondatabaseweixuanzhong"></icon>
 				</span> -->
 			</div>
 		</div>

@@ -8,7 +8,7 @@
 	<ul class="partDetail flex-align-center">
 		<li class="partDetailList flex-align-center" v-for="(item,index) in title" :key="index">
 			<p class="flex-align-center">
-				<icon name="icondian" v-if="icons"></icon>
+				<icon symbol name="icondian" v-if="icons"></icon>
 				<span class="title">{{item.name}}</span>
 			</p>
 			<span class="content">{{data[item.key]}}</span>
