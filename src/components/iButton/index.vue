@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-22 13:59:24
- * @LastEditTime: 2021-02-26 14:53:37
+ * @LastEditTime: 2021-03-08 18:16:48
  * @LastEditors: Please set LastEditors
  * @Description: 项目中使用到的按钮集合。
  * @FilePath: \rise\src\components\iButton\index.vue
@@ -28,6 +28,13 @@ export default{
     &:hover{
       background-color: $color-blue;
       color:$color-white;
+    }
+}
+.is-disabled{
+  color: #ACB8CF;
+   &:hover{
+      background-color: $color-btn-background;
+      color:#ACB8CF;
     }
 }
 .el-button--mini{
