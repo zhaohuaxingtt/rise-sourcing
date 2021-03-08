@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-22 16:46:47
- * @LastEditTime: 2021-02-23 15:13:30
+ * @LastEditTime: 2021-03-08 10:30:36
  * @LastEditors: Please set LastEditors
  * @Description: 存在于界面上方的组件。
  * @FilePath: \rise\src\layout\components\topLayout.vue
@@ -65,7 +65,7 @@ export default{
 </script>
 <style lang='scss' scoped>
   .topLayout{
-    height: 97px;
+    height: 60px;
     width: 100%;
     min-width: 1400px;
     background-color: $color-white;
@@ -79,8 +79,8 @@ export default{
     left: 0;
 
     .left {
-      height: 97px;
-      line-height: 97px;
+      height: 60px;
+      line-height: 60px;
       padding-left: 60px;
 
       
@@ -90,21 +90,20 @@ export default{
       position: absolute;
       top: 0;
       right: 0;
-      height: 97px;
+      height: 60px;
       color: $color-header-black;
       padding-right: 33px;
       display: flex;
       align-items: center;
 
       .user {
-        height: 97px;
-        line-height: 97px;
+        height: 60px;
+        line-height: 60px;
         display: flex;
         align-items: center;
-
         .icon {
-          width: 52px;
-          height: 52px;
+          width: 44px;
+          height: 44px;
 
           ::v-deep img {
             position: relative;
@@ -115,12 +114,10 @@ export default{
 
         .info {
           margin-left: 26px;
-
           .name {
             font-size: 20px;
             line-height: 20px;
           }
-
           .dept {
             margin-top: 4px;
             font-size: 16px;
@@ -139,7 +136,7 @@ export default{
 
         
         .icon {
-          font-size: 28px;
+          font-size: 25px;
         }
 
         span {
@@ -155,7 +152,7 @@ export default{
 
         .icon {
           line-height: 97px;
-          font-size: 28px;
+          font-size: 25px;
         }
       }
     }

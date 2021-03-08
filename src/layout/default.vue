@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2020-07-22 14:56:34
- * @LastEditTime: 2021-02-23 15:54:39
+ * @LastEditTime: 2021-03-08 10:31:52
  * @LastEditors: Please set LastEditors
  * @Description: 项目默认layout
  * @FilePath: \test\src\layout\default.vue
@@ -30,7 +30,7 @@ export default {
   width: 100%;
   .app-content{
     padding-left: 100px;
-    padding-top: 100px;
+    padding-top: 60px;
     height: 100%;
     width: 100%;
   }
