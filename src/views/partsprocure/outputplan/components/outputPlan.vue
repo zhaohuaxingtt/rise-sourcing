@@ -9,7 +9,7 @@
         v-loading="loading">
         <template v-for="(items, $index) in tableTitle">
           <el-table-column :key="$index" align="center" v-if="$index == 1" :prop="items.props" :label="items.name">
-            <div slot="header">
+            <template v-slot:header>
               <iSelect v-model="startYear" class="select">
                 <el-option
                   v-for="(item, $index) in years"
@@ -17,7 +17,7 @@
                   :label="item"
                   :value="item" />
               </iSelect>
-            </div>
+            </template>
             <iInput class="input" />
           </el-table-column>
           <el-table-column v-if="$index == 0" :key="$index" align="center" :label="items.name" :prop="items.props"></el-table-column>
@@ -32,12 +32,13 @@
 
 <script>
 import { iCard, iButton, iSelect, iInput } from '@/components'
+import logButton from '@/views/partsign/editordetail/components/logButton'
 import { getYearScope, getOutputPlan } from '@/api/partsprocure/home'
 import { outputPlanTableTitle as tableTitle } from './data'
 import { cloneDeep } from 'lodash'
 
 export default {
-  components: { iCard, iButton, iSelect, iInput },
+  components: { iCard, iButton, iSelect, iInput, logButton },
   data() {
     return {
       loading: false,
