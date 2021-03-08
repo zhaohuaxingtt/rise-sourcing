@@ -223,6 +223,9 @@ a{
     }
   }
 }
+.el-table th.gutter {
+	display: table-cell !important;//解决错位
+}
 .underline{
   //text-decoration: underline;
   color: $color-blue;
