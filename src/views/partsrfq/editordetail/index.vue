@@ -23,7 +23,7 @@
         <iButton @click="createAFixedPointApplication">创建定点申请</iButton>
         <iButton @click="log">日志</iButton>
         <span>
-					<icon name="icondatabaseweixuanzhong"></icon>
+					<icon symbol name="icondatabaseweixuanzhong"></icon>
 				</span>
       </div>
     </div>

@@ -13,7 +13,7 @@
       <img class="logo" src="../../../src/assets/images/rise.png" alt="">
       <div :class="iconChangeClass" class="centerBtn">
         <span @click="active(items)" v-for='(items,index) in iconDataList' :key='index' :class="{transparent:items.active}">
-          <icon :name='items.icon'></icon>
+          <icon symbol :name='items.icon'></icon>
         </span>
       </div>
       <div class="btn-button">
@@ -22,11 +22,11 @@
     </div>
   </div>
   <div class="leftLayout menuLayout">
-    <icon name='iconcaidanzhankai' :class="{menu:true,hiddenMenu:hiddenMenu,delay:!hiddenMenu}" @click.native="hiddenMenu=!hiddenMenu"></icon>
+    <icon symbol name='iconcaidanzhankai' :class="{menu:true,hiddenMenu:hiddenMenu,delay:!hiddenMenu}" @click.native="hiddenMenu=!hiddenMenu"></icon>
     <div :class="{meunContent:true,showMenuContent:hiddenMenu,delay:hiddenMenu}">
       <div class="meunTopContent">
         <span>Workbench</span>
-        <icon name='iconcaidanshouqi' :class="{menu:true,hiddenMenu:hiddenMenu}" @click.native="hiddenMenu=!hiddenMenu"></icon>
+        <icon symbol name='iconcaidanshouqi' :class="{menu:true,hiddenMenu:hiddenMenu}" @click.native="hiddenMenu=!hiddenMenu"></icon>
       </div>
       <slot></slot>
     </div>

@@ -20,16 +20,16 @@
       </div>
     </div>
     <div class="setting">
-      <icon class="icon" name="iconSetting" />
+      <icon symbol class="icon" name="iconSetting" />
       <span>{{ $t('setting') | capitalizeFilter }}</span>
     </div>
     <div class="language" @click="handleChangeLang">
-      <icon v-if="lang === 'zh'" class="icon" name="iconzhongyingwenzhuanhuanzhong" />
-      <icon v-else class="icon" name="iconzhongyingwenzhuanhuanying" />
+      <icon symbol v-if="lang === 'zh'" class="icon" name="iconzhongyingwenzhuanhuanzhong" />
+      <icon symbol v-else class="icon" name="iconzhongyingwenzhuanhuanying" />
     </div>
     <div class="message">
       <el-badge :value="message" :hidden="!message">
-        <icon class="icon" name="iconxiaoxi" />
+        <icon symbol class="icon" name="iconxiaoxi" />
       </el-badge>
     </div>
   </div>

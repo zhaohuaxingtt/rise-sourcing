@@ -169,7 +169,7 @@
 			<el-col :span="24">
 				<icard title="icon">
 					<div class="icon-box" slot="components" v-for="(name, $index) in iconList" :key="$index">
-						<icon size="30" :name="name" />
+						<icon symbol size="30" :name="name" />
 						<p>{{ name }}</p>
 					</div>
 				</icard>
