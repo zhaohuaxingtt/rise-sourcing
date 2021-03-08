@@ -4,7 +4,7 @@
       <span class="font18 font-weight">批量维护：3QG820005L</span>
       <div class="floatright">
         <span>
-					<icon symbol symbol name="icondatabaseweixuanzhong" class="font18"></icon>
+					<icon symbol name="icondatabaseweixuanzhong" class="font18"></icon>
 				</span>
       </div>
     </div>

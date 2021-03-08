@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-23 16:43:12
- * @LastEditTime: 2021-03-08 15:11:51
+ * @LastEditTime: 2021-03-08 16:39:33
  * @LastEditors: Please set LastEditors
  * @Description: components data and function
  * @FilePath: \rise\src\layout\components\data.js
@@ -11,18 +11,21 @@
  export const iconData = [
    {
      icon:'iconhomeweixuanzhong',
+     acIcon:'iconhomexuanzhong',
      active:true,
      key:'first',
      path:'/partsign'
    },
    {
-    icon:'iconworkbenchxuanzhong',
+    icon:'iconworkbenchweixuanzhong',
+    acIcon:'iconworkbenchxuanzhong',
     active:false,
     key:'tow',
     path:'/partsprocure'
   },
   {
     icon:'iconcommonfunctionweixuanzhong',
+    acIcon:'iconcommonfunctionxuanzhong',
     active:false,
     key:'three',
     path:'/partsrfq'

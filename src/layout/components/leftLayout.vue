@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-22 16:47:54
- * @LastEditTime: 2021-03-08 14:53:14
+ * @LastEditTime: 2021-03-08 16:40:06
  * @LastEditors: Please set LastEditors
  * @Description: 界面左边的按钮切换菜单栏。
  * @FilePath: \rise\src\layout\components\leftLayout.vue
@@ -13,7 +13,7 @@
       <img class="logo" src="../../../src/assets/images/rise.png" alt="">
       <div :class="iconChangeClass" class="centerBtn">
         <span @click="active(items)" v-for='(items,index) in iconDataList' :key='index' :class="{transparent:items.active}">
-          <icon symbol :name='items.icon'></icon>
+          <icon symbol :name='items.active?items.acIcon:items.icon'></icon>
         </span>
       </div>
       <div class="btn-button">
