@@ -28,7 +28,9 @@
       <icon v-else class="icon" name="iconzhongyingwenzhuanhuanying" />
     </div>
     <div class="message">
-      <icon class="icon" name="iconxiaoxi" />
+      <el-badge :value="message" :hidden="!message">
+        <icon class="icon" name="iconxiaoxi" />
+      </el-badge>
     </div>
   </div>
 </div>
@@ -48,7 +50,8 @@ export default{
   data() {
     return {
       lang: '',
-      search: ''
+      search: '',
+      message: 2
     }
   },
   created() {
@@ -153,6 +156,21 @@ export default{
         .icon {
           line-height: 97px;
           font-size: 25px;
+        }
+      }
+    }
+
+    .message {
+      ::v-deep .el-badge {
+        .el-badge__content {
+          background: #E30D0D;
+          top: auto;
+          bottom: -3px;
+          min-width: 25px;
+          height: 25px;
+          padding: 0;
+          font-size: 14px;
+          text-align: center;
         }
       }
     }

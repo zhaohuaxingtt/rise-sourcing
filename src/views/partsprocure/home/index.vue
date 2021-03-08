@@ -65,7 +65,7 @@
         <div class="floatright">
           <iButton>生成Fs/GsNr</iButton>
           <iButton>取消零件采购</iButton>
-          <iButton>批量维护</iButton>
+          <iButton @click="openBatchmiantain">批量维护</iButton>
           <iButton>启动询价</iButton>
           <iButton @click="openDiologChangeItems">转派</iButton>
         </div>
@@ -138,6 +138,11 @@ export default{
         this.tableListData = res.data;
         this.tableLoading = false
         }).catch(()=>this.tableLoading=false)
+    },
+    openBatchmiantain() {
+      this.$router.push({
+        path:'/partsprocure/batchmiantain'
+      })
     }
   }
 }
