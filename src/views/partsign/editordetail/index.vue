@@ -15,8 +15,11 @@
 				<iButton @click="openDiologBack">退回</iButton>
 				<iButton @click="back">返回</iButton>
 				<span>
-					<icon name="icondatabaseweixuanzhong"></icon>
+					<icon name="iconrizhi"></icon>
 				</span>
+			<!-- 	<span>
+					<icon name="icondatabaseweixuanzhong"></icon>
+				</span> -->
 			</div>
 		</div>
 		<!-- 零件详情内容 -->
@@ -160,6 +163,7 @@
 			>span {
 				font-size: 20px;
 				margin-left: 30px;
+				// opacity: 0.5;
 			}
 		}
 	}
