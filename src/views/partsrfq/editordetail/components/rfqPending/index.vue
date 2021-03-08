@@ -13,7 +13,7 @@
     <el-tab-pane label="供应商评分">
       <supplier-score/>
     </el-tab-pane>
-    <el-tab-pane label="CBD设置"> CBD设置 </el-tab-pane>
+    <!-- <el-tab-pane label="CBD设置"> CBD设置 </el-tab-pane> -->
     <el-tab-pane label="模具预算申请">
       <mold-budget-application/>
     </el-tab-pane>
