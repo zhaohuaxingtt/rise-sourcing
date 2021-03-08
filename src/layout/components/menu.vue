@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-22 16:50:10
- * @LastEditTime: 2021-03-08 14:33:35
+ * @LastEditTime: 2021-03-08 15:09:28
  * @LastEditors: Please set LastEditors
  * @Description: 项目菜单。
  * @FilePath: \rise\src\layout\components\menu.vue
@@ -14,14 +14,17 @@
       :key="index"
     >
       <icon
-        :name="
-          items.active
-            ? iconxunyuandingdianxuanzhong
-            : iconxunyuandingdianweixuanzhong
-        "
+        v-if='items.active'
+        class="icon margin-right20 leftIconActive"
+        name="iconxunyuandingdianxuanzhong"
+      ></icon>
+      <icon
+        v-else
+        class="icon margin-right20 leftIconHiden"
+        name="iconxunyuandingdianweixuanzhong"
       ></icon>
       <span>{{ items.label }}</span>
-      <icon name="iconmuluweixuanzhongshijiantou"></icon>
+      <icon class="icon floatright margin-top32" v-if="!items.active" name="iconmuluweixuanzhongshijiantou"></icon>
     </li>
   </ul>
 </template>
@@ -49,10 +52,20 @@ export default {
     height: 84px;
     padding-left: 40px;
     line-height: 84px;
+    padding-right: 30px;
+    cursor: pointer;
     span{
       color: #5f6f8f;
       font-size: 20px;
       font-weight: 400;
+    }
+    .icon{
+      font-size: 20px;
+    }
+    &:hover{
+      span{
+        color: #1660f1; 
+      } 
     }
   }
   .active {
