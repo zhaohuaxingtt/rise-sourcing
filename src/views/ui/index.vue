@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-19 14:29:21
- * @LastEditTime: 2021-03-04 10:51:13
+ * @LastEditTime: 2021-03-08 18:04:23
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\ui\index.vue
@@ -84,6 +84,7 @@
 					<iButton slot="components" :loading="loading" @click="repeatClick" icon="el-icon-delete">iButton NoRepeat Submit</iButton>
 					<iButton slot="components" size="mini">Mini iButton example</iButton>
 					<iButton slot="components" size="mini" loading>Mini iButton example</iButton>
+					<iButton slot="components" size="mini" disabled>iButton disabled</iButton>
 				</icard>
 			</el-col>
 		</el-row>
