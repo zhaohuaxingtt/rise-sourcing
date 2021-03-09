@@ -12,14 +12,14 @@
 			<div class="btnList">
 				<iButton @click="openDiologChangeItems">转派</iButton>
 				<iButton @click="save">签收</iButton>
-				<iButton @click="openDiologBack">退回</iButton>
+				<iButton @click="openDiologBack" disabled>退回</iButton>
 				<iButton @click="back">返回</iButton>
 				<span>
-					<icon symbol name="iconrizhi"></icon>
+					<icon symbol name="iconrizhiwuzi"></icon>
 				</span>
-			<!-- 	<span>
+				<span>
 					<icon symbol name="icondatabaseweixuanzhong"></icon>
-				</span> -->
+				</span>
 			</div>
 		</div>
 		<!-- 零件详情内容 -->
