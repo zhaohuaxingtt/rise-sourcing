@@ -1,33 +1,47 @@
 <template>
-  <div class="usage">
+  <iCard class="usage">
     <div class="header clearFloat">
       <span class="title">待确认版本</span>
       <div class="control">
-        <iButton>同意</iButton>
+        <iButton @click="confirm">确认</iButton>
         <iButton @click="visible = true">拒绝</iButton>
-      </div>
-    </div>
-    <div class="body margin-top27">
-      <tablelist class="table" index :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="loading"></tablelist>
-    </div>
-    <div class="footer margin-top30">
-      <div class="control">
         <iButton>导出</iButton>
       </div>
     </div>
+    <div class="body margin-top27">
+      <tableList class="table" index :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="loading">
+        <template #a="scope">
+          <span class="link-underline" @click="preview">{{ scope.row.a }}</span>
+        </template>
+      </tableList>
+    </div>
+    <div class="footer margin-top30">
+      <iPagination
+        class="pagination"
+        @size-change="handleSizeChange($event, getUsage)"
+        @current-change="handleCurrentChange($event, getUsage)"
+        background
+        :current-page="page.size"
+        :page-sizes="page.pageSizes"
+        :page-size="page.page"
+        :layout="page.layout"
+        :total="page.total" />
+    </div>
     <backItems class="backItems" v-model="visible" title="拒绝" @sure="refuseSure" />
-  </div>
+  </iCard>
 </template>
 
 <script>
-import { iButton } from '@/components'
-import tablelist from '@/views/partsign/home/components/tableList'
-import { tableTitle } from './components/data'
+import { iCard, iButton, iPagination } from '@/components'
+import tableList from './tableList'
+import { unconfirmedTableTitle as tableTitle } from './data'
 import backItems from '@/views/partsign/home/components/backItems'
 import { getUnconfirmed } from '@/api/partsign/editordetail'
+import { pageMixins } from '@/utils/pageMixins'
 
 export default {
-  components: { tablelist, iButton, backItems },
+  components: { iCard, iButton, iPagination, tableList, backItems },
+  mixins: [ pageMixins ],
   data() {
     return {
       tableTitle,
@@ -50,6 +64,7 @@ export default {
         })
         .catch(() => this.loading = false)
     },
+    confirm() {},
     refuseSure() {}
   }
 }
@@ -97,6 +112,11 @@ export default {
 
       textarea {
         height: 274px!important;
+      }
+
+      .el-dialog__footer {
+        padding-top: 45px;
+        padding-bottom: 60px;
       }
     }
   }

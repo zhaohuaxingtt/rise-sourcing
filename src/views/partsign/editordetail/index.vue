@@ -38,9 +38,7 @@
 					<enquiry />
 				</el-tab-pane>
 				<el-tab-pane :label="$t('partsign.usage')">
-					<iCard v-if="showUnconfirmed" class="card">
-						<unconfirmed @after-get-unconfirmed="afterGetUnconfirmed" />
-					</iCard>
+					<unconfirmed />
 					<iCard class="card">
 						<usage />
 					</iCard>
@@ -104,7 +102,6 @@
 				diologBack: false, //退回弹窗
 				partDetails: {}, //零件信息
 				partInfos: {}, //信息单详情
-				showUnconfirmed: true, // 显示待确认版本
 			};
 		},
 		created() {
@@ -138,10 +135,6 @@
 			sureChangeItems(val) {
 				console.log("your select data is", JSON.parse(val));
 				this.diologChangeItems = false;
-			},
-			// 待确认版本回调
-			afterGetUnconfirmed(status) {
-				this.showUnconfirmed = status;
 			},
 			// 返回
 			back() {
