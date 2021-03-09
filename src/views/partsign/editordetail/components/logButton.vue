@@ -22,7 +22,7 @@ export default {
   .icon {
     width: 20px;
     height: 20px;
-    vertical-align: middle;
+    vertical-align: top;
 
     & + span {
       margin-left: 4px;
@@ -30,7 +30,9 @@ export default {
   }
 
   span {
+    display: inline-block;
     font-size: 14px;
+    height: 20px;
     line-height: 20px;
     color: $color-blue;
   }
