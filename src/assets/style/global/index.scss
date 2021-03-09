@@ -350,6 +350,9 @@ a{
 }
 .link {
   color: $color-blue;
-  text-decoration: underline;
   cursor: pointer;
+}
+.link-underline {
+  @extend .link;
+  text-decoration: underline;
 }

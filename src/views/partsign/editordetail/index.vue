@@ -35,9 +35,7 @@
 					</iCard>
 				</el-tab-pane>
 				<el-tab-pane :label="$t('partsign.enquiry')">
-					<iCard>
-						<enquiry />
-					</iCard>
+					<enquiry />
 				</el-tab-pane>
 				<el-tab-pane :label="$t('partsign.usage')">
 					<iCard v-if="showUnconfirmed" class="card">
@@ -47,11 +45,11 @@
 						<usage />
 					</iCard>
 				</el-tab-pane>
-				<el-tab-pane :label="$t('partsign.log')">
+				<!-- <el-tab-pane :label="$t('partsign.log')">
           <iCard class="card">
             <log />
           </iCard>
-        </el-tab-pane>
+        </el-tab-pane> -->
 			</iTabs-list>
 		</div>
 		<!-- 转派弹出框 -->
@@ -75,7 +73,7 @@
 	import backItems from "../home/components/backItems";
 	import changeItems from "../home/components/changeItems";
 	import unconfirmed from "./components/unconfirmed";
-	import log from './components/log';
+	// import log from './components/log';
 	import {
 		partDetailTitle,
 		partTitle
@@ -96,7 +94,7 @@
 			backItems,
 			changeItems,
 			unconfirmed,
-			log
+			// log
 		},
 		data() {
 			return {
