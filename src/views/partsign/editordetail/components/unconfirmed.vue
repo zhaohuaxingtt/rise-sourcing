@@ -11,7 +11,7 @@
     <div class="body margin-top27">
       <tableList class="table" index :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="loading">
         <template #a="scope">
-          <span class="link-underline" @click="preview">{{ scope.row.a }}</span>
+          <span class="link-underline">{{ scope.row.a }}</span>
         </template>
       </tableList>
     </div>

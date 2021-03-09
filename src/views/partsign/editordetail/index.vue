@@ -39,9 +39,7 @@
 				</el-tab-pane>
 				<el-tab-pane :label="$t('partsign.usage')">
 					<unconfirmed />
-					<iCard class="card">
-						<usage />
-					</iCard>
+					<usage class="margin-top30" />
 				</el-tab-pane>
 				<!-- <el-tab-pane :label="$t('partsign.log')">
           <iCard class="card">
@@ -166,9 +164,5 @@
 
 	.iTabs {
 		margin-top: 15px;
-	}
-
-	.card+.card {
-		margin-top: 29px;
 	}
 </style>

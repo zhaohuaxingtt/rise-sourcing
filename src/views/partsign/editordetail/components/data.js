@@ -63,3 +63,27 @@ export const unconfirmedTableTitle = [
   { props: 'd', name: '推送时间' },
   { props: 'e', name: '版本状态' }
 ]
+
+export const usageTableTitle = [
+  { props: 'a', name: '车型大类' },
+  { props: 'b', name: '发动机类型' },
+  { props: 'c', name: '电池容量' },
+	{ props: 'd', name: '变速箱类型' },
+  { props: 'e', name: '车型等级' },
+  { props: 'f', name: '其他信息' },
+  { props: 'g', name: '每车用量' }
+]
+
+export const versionDialogTableTitle = [
+  { props: 'a', name: '版本号' },
+  { props: 'b', name: '操作人' },
+  { props: 'c', name: '推送时间' },
+  { props: 'd', name: '版本状态' }
+]
+
+export const logTableTitle = [
+	{ props: 'a', name: '操作' },
+  { props: 'b', name: '发生时间' },
+  { props: 'c', name: '操作人' },
+  { props: 'd', name: '备注' }
+]
