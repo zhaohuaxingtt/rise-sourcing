@@ -11,10 +11,10 @@
     <el-table-column type="selection" align="center"></el-table-column>
     <el-table-column type="index" align="center" label="#"></el-table-column>
     <template v-for="(item, $index) in tableTitle">
-      <el-table-column :key="$index" align="center" :label="item.name" :prop="item.prop">
+      <el-table-column :key="$index" align="center" :label="item.name" :prop="item.props">
         <template v-slot="scope">
-          <slot v-if="$scopedSlots[item.prop] || $slots[item.prop]" :name="item.prop" :row="scope.row"></slot>
-          <div v-else>{{ scope.row[item.prop] }}</div>
+          <slot v-if="$scopedSlots[item.props] || $slots[item.props]" :name="item.props" :row="scope.row"></slot>
+          <div v-else>{{ scope.row[item.props] }}</div>
         </template>
       </el-table-column>
     </template>

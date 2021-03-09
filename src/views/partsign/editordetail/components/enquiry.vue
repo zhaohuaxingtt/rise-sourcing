@@ -38,9 +38,9 @@
 
 <script>
 import { iCard, iButton, iPagination, iMessage } from '@/components'
-import versionDialog from '../versionDialog'
-import tableList from './components/tableList'
-import { tableTitle } from './components/data'
+import versionDialog from './versionDialog'
+import tableList from './tableList'
+import { enquiryTableTitle as tableTitle } from './data'
 import { getEnquiryList } from '@/api/partsign/editordetail'
 import { pageMixins } from '@/utils/pageMixins'
 

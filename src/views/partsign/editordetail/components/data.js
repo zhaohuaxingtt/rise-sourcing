@@ -48,3 +48,10 @@ export const partDetailTitle=[
 	{key:'sa',name:'零件类型代码'},
 	{key:'ta',name:'深度国产化备注'},
 ]
+
+export const enquiryTableTitle = [
+	{ props: 'a', name: '文件名' },
+  { props: 'b', name: '文件大小（MB）' },
+  { props: 'c', name: '上传日期' },
+  { props: 'd', name: '上传人' }
+]
