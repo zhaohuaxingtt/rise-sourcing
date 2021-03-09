@@ -32,13 +32,12 @@
 
 <script>
 import { iCard, iButton, iSelect, iInput } from '@/components'
-import logButton from '@/views/partsign/editordetail/components/logButton'
 import { getYearScope, getOutputPlan } from '@/api/partsprocure/home'
 import { outputPlanTableTitle as tableTitle } from './data'
 import { cloneDeep } from 'lodash'
 
 export default {
-  components: { iCard, iButton, iSelect, iInput, logButton },
+  components: { iCard, iButton, iSelect, iInput },
   data() {
     return {
       loading: false,

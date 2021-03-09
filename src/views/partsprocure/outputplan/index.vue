@@ -3,7 +3,8 @@
     <div class="margin-bottom20 clearFloat">
       <span class="font18 font-weight">批量维护：3QG820005L</span>
       <div class="floatright">
-        <span>
+        <logButton />
+        <span class="margin-left20">
 					<icon symbol name="icondatabaseweixuanzhong" class="font18"></icon>
 				</span>
       </div>
@@ -19,12 +20,14 @@ import { iPage, icon } from '@/components'
 import outputPlan from './components/outputPlan'
 import outputRecord from './components/outputRecord'
 import usage from './components/usage'
+import logButton from '@/views/partsign/editordetail/components/logButton'
 
 export default {
-  components: { iPage, icon, outputPlan, outputRecord, usage }
+  components: { iPage, icon, outputPlan, outputRecord, usage, logButton }
 }
 </script>
 
 <style lang="scss" scoped>
-
+.outputPlan {
+}
 </style>
