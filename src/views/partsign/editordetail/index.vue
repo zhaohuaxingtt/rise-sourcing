@@ -39,8 +39,8 @@
           <enquiry />
         </el-tab-pane>
         <el-tab-pane :label="$t('partsign.usage')">
-          <unconfirmed />
-          <usage class="margin-top30" />
+          <unconfirmed class="unconfirmed" />
+          <usage class="usage" />
         </el-tab-pane>
         <!-- <el-tab-pane :label="$t('partsign.log')">
           <iCard class="card">
@@ -62,10 +62,10 @@
 import { iPage, iButton, iCard, iTabsList, icon, iMessage } from "@/components";
 import partInfo from "./components/partInfo";
 import enquiry from "./components/enquiry";
-import usage from "./components/usage";
+import usage from "./components/usage/usage";
+import unconfirmed from "./components/usage/unconfirmed";
 import backItems from "../home/components/backItems";
 import changeItems from "../home/components/changeItems";
-import unconfirmed from "./components/unconfirmed";
 // import log from './components/log';
 import { partDetailTitle, partTitle } from "./components/data";
 import { getPartInfo } from "@/api/partsign/editordetail";
@@ -162,5 +162,9 @@ export default {
 
 .iTabs {
   margin-top: 15px;
+}
+
+.unconfirmed + .usage {
+	margin-top: 30px;
 }
 </style>

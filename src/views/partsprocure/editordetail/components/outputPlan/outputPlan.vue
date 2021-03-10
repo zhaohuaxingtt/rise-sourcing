@@ -4,8 +4,8 @@
       <iButton>保存</iButton>
     </template>
     <div class="body">
-      <tablelist
-        class="table" 
+      <tableList
+        class="table"
         :selection="false"
         :tableData="tableListData" 
         :tableTitle="tableTitle" 
@@ -16,13 +16,13 @@
 
 <script>
 import { iCard, iButton } from '@/components'
-import tablelist from '@/views/partsign/home/components/tableList'
+import tableList from '@/views/partsign/editordetail/components/tableList'
 import { getYearScope, getOutputPlan } from '@/api/partsprocure/home'
 import { outputPlanTableTitle as tableTitle } from './data'
 import { cloneDeep } from 'lodash'
 
 export default {
-  components: { iCard, iButton, tablelist },
+  components: { iCard, iButton, tableList },
   data() {
     return {
       loading: false,

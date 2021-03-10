@@ -8,7 +8,7 @@
 -->
 <template>
   <el-table class="table" :data="tableData" v-loading="tableLoading" @selection-change="handleSelectionChange">
-    <el-table-column type="selection" align="center"></el-table-column>
+    <el-table-column v-if="selection" type="selection" align="center"></el-table-column>
     <el-table-column v-if="index" type="index" align="center" :label="indexLabel"></el-table-column>
     <template v-for="(item, $index) in tableTitle">
       <el-table-column :key="$index" align="center" :label="item.name" :prop="item.props">
@@ -36,15 +36,19 @@ export default {
     },
     loading: {
       type: Boolean,
-      defalut: false
+      default: false
     },
-    index: {
+    selection: {
       type: Boolean,
       default: true
     },
+    index: {
+      type: Boolean,
+      default: false
+    },
     indexLabel: {
       type: String,
-      defalut: '#'
+      default: '#'
     }
   },
   methods: {

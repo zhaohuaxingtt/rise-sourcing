@@ -34,9 +34,9 @@
 
 <script>
 import { iCard, iButton, iPagination } from '@/components'
-import versionDialog from './versionDialog'
-import tableList from './tableList'
-import { usageTableTitle as tableTitle } from './data'
+import versionDialog from '../versionDialog'
+import tableList from '../tableList'
+import { usageTableTitle as tableTitle } from '../data'
 import { getUsage } from '@/api/partsign/editordetail'
 import { pageMixins } from '@/utils/pageMixins'
 

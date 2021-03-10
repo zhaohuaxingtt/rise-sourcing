@@ -1,7 +1,7 @@
 <template>
   <iCard class="usage" tabCard title="零件每车用量（当前版本：V1）">
     <div class="body">
-      <tablelist
+      <tableList
         class="table"
         index
         :tableData="tableListData" 
@@ -23,12 +23,12 @@
 
 <script>
 import { iCard, iPagination } from '@/components'
-import tablelist from '@/views/partsign/home/components/tableList'
+import tableList from '@/views/partsign/editordetail/components/tableList'
 import { pageMixins } from '@/utils/pageMixins'
 import { usageTableTitle as tableTitle } from './data'
 
 export default {
-  components: { iCard, tablelist, iPagination },
+  components: { iCard, tableList, iPagination },
   mixins: [ pageMixins ],
   data() {
     return {

@@ -4,7 +4,7 @@
       <iButton>更新至询价产量</iButton>
     </template>
     <div class="body">
-      <tablelist
+      <tableList
         class="table"
         index
         indexLabel="编号" 
@@ -27,14 +27,14 @@
 
 <script>
 import { iCard, iButton, iPagination } from '@/components'
-import tablelist from '@/views/partsign/home/components/tableList'
+import tableList from '@/views/partsign/editordetail/components/tableList'
 import { getYearScope, getOutputPlan } from '@/api/partsprocure/home'
 import { pageMixins } from '@/utils/pageMixins'
 import { outputRecordTableTitle as tableTitle } from './data'
 import { cloneDeep } from 'lodash'
 
 export default {
-  components: { iCard, iButton, tablelist, iPagination },
+  components: { iCard, iButton, tableList, iPagination },
   mixins: [ pageMixins ],
   data() {
     return {

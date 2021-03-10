@@ -16,7 +16,7 @@
       </div>
     </div>
     <div class="body margin-top27">
-      <tableList class="table" :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="loading" @handleSelectionChange="handleSelectionChange">
+      <tableList class="table" index :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="loading" @handleSelectionChange="handleSelectionChange">
         <template #a="scope">
           <span class="link-underline" @click="preview">{{ scope.row.a }}</span>
         </template>

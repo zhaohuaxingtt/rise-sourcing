@@ -1,5 +1,5 @@
 <template>
-  <iCard class="usage">
+  <iCard v-if="display" class="usage">
     <div class="header clearFloat">
       <span class="title">待确认版本</span>
       <div class="control">
@@ -33,8 +33,8 @@
 
 <script>
 import { iCard, iButton, iPagination } from '@/components'
-import tableList from './tableList'
-import { unconfirmedTableTitle as tableTitle } from './data'
+import tableList from '../tableList'
+import { unconfirmedTableTitle as tableTitle } from '../data'
 import backItems from '@/views/partsign/home/components/backItems'
 import { getUnconfirmed } from '@/api/partsign/editordetail'
 import { pageMixins } from '@/utils/pageMixins'
@@ -44,6 +44,8 @@ export default {
   mixins: [ pageMixins ],
   data() {
     return {
+      show: false,
+      display: true,
       tableTitle,
       tableListData: [],
       loading: false,
@@ -60,7 +62,7 @@ export default {
         .then(res => {
           this.tableListData = res.data
           this.loading = false
-          this.$emit('after-get-unconfirmed', !!this.tableListData.length)
+          this.display = !!this.tableListData.length
         })
         .catch(() => this.loading = false)
     },
