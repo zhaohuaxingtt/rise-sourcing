@@ -9,13 +9,14 @@
 		<!-- 零件详情操作按钮 -->
 		<div class="pageTitle flex-between-center-center">
 			<span>3QG810005L</span>
-			<div class="btnList">
+			<div class="btnList flex-align-center">
 				<iButton @click="openDiologChangeItems">转派</iButton>
 				<iButton @click="save">签收</iButton>
 				<iButton @click="openDiologBack" disabled>退回</iButton>
 				<iButton @click="back">返回</iButton>
-				<span>
+				<span class="flex-align-center">
 					<icon symbol name="iconrizhiwuzi"></icon>
+					<span class="log">日志</span>
 				</span>
 				<span>
 					<icon symbol name="icondatabaseweixuanzhong"></icon>
@@ -48,10 +49,10 @@
 					</iCard>
 				</el-tab-pane>
 				<el-tab-pane :label="$t('partsign.log')">
-          <iCard class="card">
-            <log />
-          </iCard>
-        </el-tab-pane>
+					<iCard class="card">
+						<log />
+					</iCard>
+				</el-tab-pane>
 			</iTabs-list>
 		</div>
 		<!-- 转派弹出框 -->
@@ -162,8 +163,14 @@
 		.btnList {
 			>span {
 				font-size: 20px;
-				margin-left: 30px;
+				margin-left: 20px;
+
 				// opacity: 0.5;
+				.log {
+					font-size: 16px;
+					color: #1660F1;
+					margin-left: 5px;
+				}
 			}
 		}
 	}
