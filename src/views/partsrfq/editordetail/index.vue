@@ -21,7 +21,10 @@
         <iButton @click="endInquiry">结束本轮询价</iButton>
         <iButton @click="transferNegotiation">转谈判</iButton>
         <iButton @click="createAFixedPointApplication">创建定点申请</iButton>
-        <iButton @click="log">日志</iButton>
+        <iButton type="text" @click="createAFixedPointApplication">
+          <icon symbol name="iconrizhiwuzi" class="log-icon"/>
+          <span class="log-word">日志</span>
+        </iButton>
         <span>
 					<icon symbol name="icondatabaseweixuanzhong"></icon>
 				</span>
@@ -217,5 +220,12 @@ export default {
   line-height: 21px;
   color: #131523;
   margin-bottom: 10px;
+}
+.log-icon{
+  font-size: 20px;
+}
+.log-word{
+  color: $color-blue;
+  margin-left: 4px;
 }
 </style>

@@ -4,7 +4,7 @@
       <el-tab-pane label="⽬标价">
         <target-price/>
       </el-tab-pane>
-      <el-tab-pane label="参考产量">
+      <el-tab-pane label="参考产量及时间计划">
         <reference-output/>
       </el-tab-pane>
       <el-tab-pane label="物流要求">

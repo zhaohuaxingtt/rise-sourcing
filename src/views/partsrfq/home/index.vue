@@ -16,14 +16,17 @@
     <!------------------------------------------------------------------------>
     <iSearch class="margin-bottom20" :icon="true">
       <el-form>
-        <el-form-item label="零件号">
-          <iInput placeholder='请输入零件号,FSNR,RFQ编号'></iInput>
+        <el-form-item label="零件号/FSNR/RFQ/采购员">
+          <iInput placeholder='请输入查询'></iInput>
         </el-form-item>
         <el-form-item label="车型项目">
-          <iSelect placeholder='请选择车型项目'></iSelect>
+          <iSelect placeholder='请选择'></iSelect>
         </el-form-item>
         <el-form-item label="零件项目类型">
-          <iSelect placeholder='零件项目类型'></iSelect>
+          <iSelect placeholder='请选择'></iSelect>
+        </el-form-item>
+        <el-form-item label="RFQ状态">
+          <iSelect placeholder='请选择'></iSelect>
         </el-form-item>
       </el-form>
     </iSearch>
@@ -154,7 +157,8 @@ export default {
     },
     toTop() {
 
-    }
+    },
+    change(){}
   }
 }
 </script>

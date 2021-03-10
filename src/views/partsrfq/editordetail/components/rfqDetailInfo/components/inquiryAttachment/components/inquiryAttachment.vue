@@ -15,7 +15,9 @@
         :tableTitle="tableTitle"
         :tableLoading="tableLoading"
         @handleSelectionChange="handleSelectionChange"
-        :hide-open-page="true"
+        :index="true"
+        open-page-props="a"
+        @openPage="handleOpenPage"
     ></tablelist>
     <!------------------------------------------------------------------------>
     <!--                  表格分页                                          --->
@@ -80,6 +82,7 @@ export default {
     handleSelectionChange(val) {
       this.selectTableData = val;
     },
+    handleOpenPage() {}
   }
 }
 </script>
