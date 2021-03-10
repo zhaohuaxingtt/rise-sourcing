@@ -1,22 +1,21 @@
 <!--
  * @Author: your name
- * @Date: 2021-02-24 17:57:52
- * @LastEditTime: 2021-03-01 15:54:15
+ * @Date: 2021-03-01 15:52:14
+ * @LastEditTime: 2021-03-01 15:53:46
  * @LastEditors: your name
  * @Description: In User Settings Edit
- * @FilePath: \rise\src\views\partsign\editordetail\components\usage\index.vue
+ * @FilePath: \rise\src\views\partsign\editordetail\components\log\index.vue
 -->
 <template>
   <div class="usage">
     <div class="header clearFloat">
-      <span class="title">每车用量 （V3）</span>
+      <span class="title">操作日志</span>
       <div class="control">
-        <iButton @click="version">查看全部版本</iButton>
         <iButton>导出</iButton>
       </div>
     </div>
     <div class="body margin-top27">
-      <tablelist index class="table" :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="loading"></tablelist>
+      <tableList class="table" index :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="loading" />
       <iPagination
         class="pagination"
         @size-change="handleSizeChange($event, getUsage)"
@@ -28,27 +27,24 @@
         :layout="page.layout"
         :total="page.total" />
     </div>
-    <versionDialog :visible.sync="versionVisible" />
   </div>
 </template>
 
 <script>
 import { iButton, iPagination } from '@/components'
-import versionDialog from '../versionDialog'
-import tablelist from '@/views/partsign/home/components/tableList'
-import { tableTitle } from './components/data'
+import tableList from './tableList'
+import { logTableTitle as tableTitle } from './data'
 import { getUsage } from '@/api/partsign/editordetail'
 import { pageMixins } from '@/utils/pageMixins'
 
 export default {
-  components: { tablelist, iButton, iPagination, versionDialog },
+  components: { tableList, iButton, iPagination },
   mixins: [ pageMixins ],
   data() {
     return {
       tableTitle,
       tableListData: [],
-      loading: false,
-      versionVisible: false
+      loading: false
     }
   },
   created() {
@@ -63,10 +59,7 @@ export default {
           this.loading = false
         })
         .catch(() => this.loading = false)
-    },
-    version() {
-      this.versionVisible = true
-    },
+    }
   }
 }
 </script>

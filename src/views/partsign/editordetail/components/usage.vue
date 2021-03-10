@@ -1,21 +1,22 @@
 <!--
  * @Author: your name
- * @Date: 2021-03-01 15:52:14
- * @LastEditTime: 2021-03-01 15:53:46
+ * @Date: 2021-02-24 17:57:52
+ * @LastEditTime: 2021-03-01 15:54:15
  * @LastEditors: your name
  * @Description: In User Settings Edit
- * @FilePath: \rise\src\views\partsign\editordetail\components\log\index.vue
+ * @FilePath: \rise\src\views\partsign\editordetail\components\usage\index.vue
 -->
 <template>
-  <div class="usage">
+  <iCard class="usage">
     <div class="header clearFloat">
-      <span class="title">操作日志</span>
+      <span class="title">每车用量（当前版本：V3）</span>
       <div class="control">
+        <iButton @click="version">查看全部版本</iButton>
         <iButton>导出</iButton>
       </div>
     </div>
     <div class="body margin-top27">
-      <tablelist class="table" index :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="loading"></tablelist>
+      <tableList index class="table" :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="loading" />
       <iPagination
         class="pagination"
         @size-change="handleSizeChange($event, getUsage)"
@@ -28,19 +29,19 @@
         :total="page.total" />
     </div>
     <versionDialog :visible.sync="versionVisible" />
-  </div>
+  </iCard>
 </template>
 
 <script>
-import { iButton, iPagination } from '@/components'
-import versionDialog from '../versionDialog'
-import tablelist from '@/views/partsign/home/components/tableList'
-import { tableTitle } from './components/data'
+import { iCard, iButton, iPagination } from '@/components'
+import versionDialog from './versionDialog'
+import tableList from './tableList'
+import { usageTableTitle as tableTitle } from './data'
 import { getUsage } from '@/api/partsign/editordetail'
 import { pageMixins } from '@/utils/pageMixins'
 
 export default {
-  components: { tablelist, iButton, iPagination, versionDialog },
+  components: { iCard, iButton, iPagination, tableList, versionDialog },
   mixins: [ pageMixins ],
   data() {
     return {

@@ -7,16 +7,20 @@
  * @FilePath: \rise\src\views\partsign\editordetail\components\enquiry\index.vue
 -->
 <template>
-  <div class="enquiry">
+  <iCard class="enquiry">
     <div class="header clearFloat">
       <span class="title">附件列表 （当前版本V1）</span>
       <div class="control">
         <iButton @click="version">查看全部版本</iButton>
-        <iButton>导出</iButton>
+        <iButton @click="download">下载</iButton>
       </div>
     </div>
     <div class="body margin-top27">
-      <tablelist class="table" :tableData="tableListData" :tableTitle="tableTitle" :loading="loading" @log="log"></tablelist>
+      <tableList class="table" :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="loading" @handleSelectionChange="handleSelectionChange">
+        <template #a="scope">
+          <span class="link-underline" @click="preview">{{ scope.row.a }}</span>
+        </template>
+      </tableList>
       <iPagination
         class="pagination"
         @size-change="handleSizeChange($event, getEnquiryList)"
@@ -28,30 +32,28 @@
         :layout="page.layout"
         :total="page.total" />
     </div>
-    <logDialog :visible.sync="logVisible" />
     <versionDialog :visible.sync="versionVisible" />
-  </div>
+  </iCard>
 </template>
 
 <script>
-import { iButton, iPagination } from '@/components'
-import logDialog from '../logDialog'
-import versionDialog from '../versionDialog'
-import tablelist from './components/tablelist'
-import { tableTitle } from './components/data'
+import { iCard, iButton, iPagination, iMessage } from '@/components'
+import versionDialog from './versionDialog'
+import tableList from './tableList'
+import { enquiryTableTitle as tableTitle } from './data'
 import { getEnquiryList } from '@/api/partsign/editordetail'
 import { pageMixins } from '@/utils/pageMixins'
 
 export default {
-  components: { tablelist, iButton, iPagination, logDialog, versionDialog },
+  components: { iCard, iButton, iPagination, tableList, versionDialog },
   mixins: [ pageMixins ],
   data() {
     return {
       tableTitle,
       tableListData: [],
       loading: false,
-      logVisible: false,
-      versionVisible: false
+      versionVisible: false,
+      multipleSelection: []
     }
   },
   created() {
@@ -70,9 +72,15 @@ export default {
     version() {
       this.versionVisible = true
     },
-    log() {
-      this.logVisible = true
-    }
+    handleSelectionChange(list) {
+      this.multipleSelection = list
+    },
+    download() {
+      if (!this.multipleSelection.length) {
+        iMessage.warn('请选择需要下载文件')
+      }
+    },
+    preview() {},
   }
 }
 </script>

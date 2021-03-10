@@ -1,15 +1,7 @@
-<!--
- * @Author: your name
- * @Date: 2021-03-01 11:49:10
- * @LastEditTime: 2021-03-01 15:53:54
- * @LastEditors: your name
- * @Description: In User Settings Edit
- * @FilePath: \rise\src\views\partsign\editordetail\components\logDialog\index.vue
--->
 <template>
-  <iDialog class="dialog" title="日志查看" v-bind="$props" :visible.sync="visible" v-on="$listeners">
+  <iDialog class="dialog" title="全部版本" v-bind="$props" :visible.sync="visible" v-on="$listeners">
     <div class="body">
-      <tablelist index :selection="false" height="100%" v-show="visible" class="table" :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="loading"></tablelist>
+      <tableList index height="100%" :selection="false" v-show="visible" class="table" :tableData="tableListData" :tableTitle="tableTitle" :loading="loading" />
     </div>
     <div slot="footer" class="footer">
       <iPagination
@@ -28,12 +20,12 @@
 
 <script>
 import { iPagination, iDialog } from '@/components'
-import tablelist from '@/views/partsign/home/components/tableList'
-import { tableTitle } from './components/data'
+import tableList from './tableList'
+import { versionDialogTableTitle as tableTitle } from './data'
 import { pageMixins } from '@/utils/pageMixins'
 
 export default {
-  components: { tablelist, iPagination, iDialog },
+  components: { tableList, iPagination, iDialog },
   mixins: [ pageMixins ],
   props: {
     ...iDialog.props,

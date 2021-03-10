@@ -11,13 +11,10 @@
     <el-table-column type="selection" align="center"></el-table-column>
     <el-table-column type="index" align="center" label="#"></el-table-column>
     <template v-for="(item, $index) in tableTitle">
-      <el-table-column :key="$index" align="center" :label="item.name" :prop="item.prop">
-        <template>
-          <div class="operation" v-if="item.prop === 'operation'">
-            <span class="link">预览</span>
-            <span class="link">下载</span>
-            <span class="link" @click="log">查看日志</span>
-          </div>
+      <el-table-column :key="$index" align="center" :label="item.name" :prop="item.props">
+        <template v-slot="scope">
+          <slot v-if="$scopedSlots[item.props] || $slots[item.props]" :name="item.props" :row="scope.row"></slot>
+          <div v-else>{{ scope.row[item.props] }}</div>
         </template>
       </el-table-column>
     </template>
@@ -26,6 +23,7 @@
 
 <script>
 import tablelist from '@/views/partsign/home/components/tableList'
+
 export default {
   props:{
     ...tablelist.props,
@@ -45,22 +43,11 @@ export default {
   methods: {
     handleSelectionChange(val){
       this.$emit('handleSelectionChange', val)
-    },
-    preview() {},
-    download() {},
-    log() {
-      this.$emit('log')
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.table {
-  .operation {
-    .link + .link {
-      margin-left: 44px;
-    }
-  }
-}
+
 </style>
