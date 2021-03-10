@@ -28,12 +28,18 @@
           <i-select></i-select>
         </template>
       </el-table-column>
+      <el-table-column :key="index" align='center' v-else-if='items.props === iconProps' :prop="items.props"
+                       :label="items.name">
+        <template>
+          <slot name="icon"></slot>
+        </template>
+      </el-table-column>
       <el-table-column :key="index" align='center' v-else :label="items.name" :prop="items.props"></el-table-column>
     </template>
   </el-table>
 </template>
 <script>
-import {iInput, iSelect} from '@/components'
+import {iInput, iSelect } from '@/components'
 
 export default {
   props: {
@@ -50,6 +56,7 @@ export default {
         return []
       }
     },
+    iconProps: {type: String, default: ''},
     customOpenPageWord: {type: String, default: ''}
   },
   components: {
@@ -70,14 +77,19 @@ export default {
 .openLinkText {
   color: $color-blue;
 }
+
 .el-select {
   margin: 2px 0;
 }
+
 ::v-deep .el-table__row .el-input {
   height: 35px !important;
 
   .el-input__inner {
     height: 35px !important;
   }
+}
+.icon{
+  color: $color-blue;
 }
 </style>

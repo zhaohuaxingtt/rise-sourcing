@@ -34,9 +34,9 @@
       <div class="margin-bottom20 clearFloat">
         <span class="font18 font-weight">RFQ综合管理</span>
         <div class="floatright">
+          <iButton @click="activateRfq">激活RFQ</iButton>
           <iButton @click="newRfq">新建RFQ</iButton>
           <iButton @click="closeRfq">关闭RFQ</iButton>
-          <iButton @click="activateRfq">激活RFQ</iButton>
           <iButton @click="assignmentOfScoringTasks">转派评分任务</iButton>
           <iButton @click="transferNegotiation">转谈判</iButton>
           <iButton @click="createAFixedPointApplication">创建定点申请</iButton>
@@ -48,9 +48,14 @@
           :tableLoading="tableLoading"
           @handleSelectionChange="handleSelectionChange"
           @openPage='openPage'
-          open-page-props="b"
+          open-page-props="a"
           :index="true"
-      ></tablelist>
+          icon-props="action"
+      >
+        <template v-slot:icon>
+          <icon class="icon icon-color-active"  name="iconliebiaoyizhiding" @click="toTop"></icon>
+        </template>
+      </tablelist>
       <!------------------------------------------------------------------------>
       <!--                  表格分页                                          --->
       <!------------------------------------------------------------------------>
@@ -75,7 +80,7 @@
 
 </template>
 <script>
-import {iPage, iButton, iCard, iMessage, iPagination, iSearch, iInput, iSelect, iNavMvp} from "@/components";
+import {iPage, iButton, iCard, iMessage, iPagination, iSearch, iInput, iSelect, iNavMvp, icon} from "@/components";
 import tablelist from "pages/partsrfq/components/tablelist";
 import assignmentOfScoringTasks from "pages/partsrfq/home/components/assignmentOfScoringTasks";
 import {pageMixins} from "@/utils/pageMixins";
@@ -93,6 +98,7 @@ export default {
     iSearch,
     iInput,
     iSelect,
+    icon,
     assignmentOfScoringTasks
   },
   mixins: [pageMixins],
@@ -127,7 +133,9 @@ export default {
       this.selectTableData = val;
     },
     newRfq() {
-
+      this.$router.push({
+        path: '/partsrfq/editordetail'
+      })
     },
     closeRfq() {
 
@@ -143,9 +151,15 @@ export default {
     transferNegotiation() {
     },
     createAFixedPointApplication() {
+    },
+    toTop() {
+
     }
   }
 }
 </script>
 <style lang='scss' scoped>
+.icon-color-active{
+  color: $color-blue;
+}
 </style>
