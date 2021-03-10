@@ -17,9 +17,8 @@
     <div class="body">
       <infos />
       <div v-if="setMaterialGroupStatus">
-        <tablelist 
-          class="table margin-top20" 
-          index 
+        <tableList 
+          class="table margin-top20"
           indexLabel="编号" 
           :tableData="tableListData" 
           :tableTitle="tableTitle" 
@@ -45,13 +44,13 @@
 import { tableTitle } from './components/data'
 import { iButton, iCard, iPagination, iMessage } from '@/components'
 import infos from './components/infos'
-import tablelist from '@/views/partsign/home/components/tableList'
+import tableList from '@/views/partsign/editordetail/components/tableList'
 import { pageMixins } from '@/utils/pageMixins'
 import { getTabelData } from "@/api/partsprocure/home"
 import logDialog from "@/views/partsign/editordetail/components/logDialog"
 
 export default {
-  components: { iButton, iCard, iPagination, tablelist, infos, logDialog },
+  components: { iButton, iCard, iPagination, tableList, infos, logDialog },
   mixins: [ pageMixins ],
   data() {
     return {

@@ -9,12 +9,11 @@
 <template>
   <el-table class="table" :data="tableData" v-loading="tableLoading" @selection-change="handleSelectionChange">
     <el-table-column type="selection" align="center"></el-table-column>
-    <el-table-column type="index" align="center" label="#"></el-table-column>
+    <el-table-column v-if="index" type="index" align="center" :label="indexLabel"></el-table-column>
     <template v-for="(item, $index) in tableTitle">
       <el-table-column :key="$index" align="center" :label="item.name" :prop="item.props">
-        <template v-slot="scope">
-          <slot v-if="$scopedSlots[item.props] || $slots[item.props]" :name="item.props" :row="scope.row"></slot>
-          <div v-else>{{ scope.row[item.props] }}</div>
+        <template v-if="$scopedSlots[item.props] || $slots[item.props]" v-slot="scope">
+          <slot :name="item.props" :row="scope.row"></slot>
         </template>
       </el-table-column>
     </template>
@@ -38,6 +37,14 @@ export default {
     loading: {
       type: Boolean,
       defalut: false
+    },
+    index: {
+      type: Boolean,
+      default: true
+    },
+    indexLabel: {
+      type: String,
+      defalut: '#'
     }
   },
   methods: {
