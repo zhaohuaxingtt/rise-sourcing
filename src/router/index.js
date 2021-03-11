@@ -62,7 +62,12 @@ export const staticRouter = [{
 				path: "/partsrfq/editordetail", //RFQ详情
 				name: "editordetail",
 				component: () => import("@/views/partsrfq/editordetail"),
-			}
+			},
+			{
+				path: "/report",
+				name: "report",
+				component: () => import("@/views/report"),
+			},
 		],
 	},
 	{
