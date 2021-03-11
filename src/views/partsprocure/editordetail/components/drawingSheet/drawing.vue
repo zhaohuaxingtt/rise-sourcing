@@ -5,13 +5,17 @@
       <iButton>上传附件</iButton>
     </template>
     <div class="body">
-      <tablelist
+      <tableList
         class="table"
         index
         indexLabel="编号" 
         :tableData="tableListData" 
         :tableTitle="tableTitle" 
-        :tableLoading="loading" />
+        :tableLoading="loading">
+        <template #a="scope">
+          <span class="link-underline" @click="preview">{{ scope.row.a }}</span>
+        </template>
+      </tableList>
       <iPagination
         class="pagination margin-top30"
         @size-change="handleSizeChange($event, getUsage)"
@@ -28,12 +32,12 @@
 
 <script>
 import { iCard, iButton, iPagination } from '@/components'
-import tablelist from '@/views/partsign/home/components/tableList'
+import tableList from '@/views/partsign/editordetail/components/tableList'
 import { pageMixins } from '@/utils/pageMixins'
 import { tableTitle } from './data'
 
 export default {
-  components: { iCard, iButton, tablelist, iPagination },
+  components: { iCard, iButton, tableList, iPagination },
   mixins: [ pageMixins ],
   data() {
     return {
