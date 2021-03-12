@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-03-01 14:42:05
+ * @LastEditTime: 2021-03-10 15:29:12
  * @LastEditors: Please set LastEditors
  * @Description: 系统静态路由.
  * @FilePath: \rise\src\router\index.js
@@ -82,6 +82,14 @@ export const staticRouter = [{
 			title: "公用组件管理",
 		},
 		component: () => import("@/views/ui"),
+	},
+	{
+		path: "/login",
+		name: "login",
+		meta: {
+			title: "登录",
+		},
+		component: () => import("@/views/login"),
 	},
 	{
 		path: '*',
