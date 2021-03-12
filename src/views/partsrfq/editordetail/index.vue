@@ -15,7 +15,6 @@
         <iNav-mvp @change="changeNav" :list="navList" class="ml30"></iNav-mvp>
       </div>
       <div class="btnList">
-        <iButton @click="save">保存</iButton>
         <iButton @click="newRfq">新建RFQ轮次</iButton>
         <iButton @click="sendInquiry">发出询价</iButton>
         <iButton @click="endInquiry">结束本轮询价</iButton>
@@ -147,9 +146,6 @@ export default {
   methods: {
     changeNav(item, index) {
       this.navActivtyValue = item.value
-    },
-    save() {
-
     },
     newRfq() {
       this.newRfqRoundDialog = true
