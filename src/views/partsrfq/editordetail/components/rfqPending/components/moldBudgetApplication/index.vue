@@ -13,7 +13,6 @@
           :tableLoading="tableLoading"
           :index="true"
           @handleSelectionChange="handleSelectionChange"
-          open-page-props="c"
           input-props="f"
       ></tablelist>
       <!------------------------------------------------------------------------>
