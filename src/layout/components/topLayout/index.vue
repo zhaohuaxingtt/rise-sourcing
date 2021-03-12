@@ -80,7 +80,7 @@ export default{
     position: fixed;
     top: 0;
     left: 0;
-	z-index: 9999;
+	z-index: 888;
     .left {
       height: 60px;
       line-height: 60px;
