@@ -22,6 +22,7 @@ import iDialog from '../components/iDialog'
 import iFormGroup from '../components/iPageItemsGroup/iFormGroup'
 import iFormItem from '../components/iPageItemsGroup/iFormItem'
 import iText from '../components/iPageItemsGroup/iText'
+import iDrawer from "../components/iDrawer"
 const iMessageBox = (content='',title='温馨提示',options={}) => {
   return MessageBox.confirm(content,title,Object.assign({zIndex:20000},options))
 }
@@ -66,5 +67,6 @@ export {
   iNavMvp,
   iSearch,
   iDialog,
-  iText
+  iText,
+  iDrawer
 }
