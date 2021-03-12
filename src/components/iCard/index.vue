@@ -2,15 +2,16 @@
  * @Author: ldh  
  * @Date: 2021-02-22 11:32:08  
  * @Last Modified by: ldh
- * @Last Modified time: 2021-03-04 19:09:27
+ * @Last Modified time: 2021-03-10 15:45:25
  */
 <template>
   <div class="card" :class="{ tabCard }">
-    <div class="card__header" :style="{ ...headerStyle }" v-if="$slots.header || header">
+    <div class="cardHeader" :class="{ default: !$slots.default }" :style="{ ...headerStyle }" v-if="$slots.header || header">
       <slot name="header">{{ header }}</slot>
     </div>
     <div 
-      class="card__header" 
+      class="cardHeader"
+      :class="{ defaultPadding: !$slots.default }"
       :style="{ justifyContent: title ? 'space-between' : 'flex-end', ...headerStyle }" 
       v-else-if="title || $slots['header-control'] || headerControl"
       >
@@ -24,7 +25,7 @@
     </div>
     <el-collapse-transition>
       <div v-show="collapseValue" v-if="$slots.default">
-        <div class="card__body" :style="{ paddingTop: !!($slots.header || header || title || $slots['header-control'] || headerControl) ? '0px': '30px', ...bodyStyle }">
+        <div class="cardBody" :class="bodyStyle" :style="{ paddingTop: !($slots.header || header || title || $slots['header-control'] || headerControl) || 0 }">
           <slot></slot>
         </div>
       </div>
@@ -71,11 +72,15 @@ export default {
   box-shadow: $btn-box-shadow;
   border-radius: 6px;
   background: $color-white;
-  .card__header {
+  .defaultPadding {
+    padding: 30px 40px;
+  }
+
+  .cardHeader {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 20px 20px 0px;
+    padding: 30px 40px;
 
     div,
     span {
@@ -105,14 +110,14 @@ export default {
     }
   }
 
-  .card__body {
+  .cardBody {
     height: 100%;
-    padding: 0 40px 30px;
+    padding: 30px 40px;
   }
 }
 
 .tabCard {
-  .card__header {
+  .cardHeader {
     padding: 30px 40px 25px;
 
     .title {
