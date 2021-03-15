@@ -10,7 +10,7 @@
     <div class="pageTitle flex-between-center-center">
       <span>3QG810005L</span>
       <div class="btnList flex-align-center">
-        <iButton @click="openDiologChangeItems">转派</iButton>
+        <iButton @click="openDiologChangeItems" v-permission='BTN_PARTSIGN_ZHUANPAI'>转派</iButton>
         <iButton @click="save">签收</iButton>
         <iButton @click="openDiologBack" disabled>退回</iButton>
         <iButton @click="back">返回</iButton>
@@ -30,7 +30,7 @@
     <!-- 零件详情tab页 -->
     <div class="iTabs">
       <iTabs-list type="border-card">
-        <el-tab-pane label="信息单详情">
+        <el-tab-pane label="信息单详情" >
           <iCard>
             <partInfo :title="partDetailTitle" :data="partInfos"></partInfo>
           </iCard>

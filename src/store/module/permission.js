@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-02-22 16:54:49
+ * @LastEditTime: 2021-03-12 17:58:53
  * @LastEditors: Please set LastEditors
  * @Description: 用户信息保存。
  * @FilePath: \rise\src\store\module\permission.js
@@ -32,7 +32,8 @@ const state = {
   vueRouter:[],
   //系统登录用户信息。存入store，前台不存储用户的敏感信息。
   userInfo:{},
-  roleList:''
+  roleList:'',
+  whiteBtnList:[]
 };
 const mutations = {
   SET_MENU_LIST(state,data){
