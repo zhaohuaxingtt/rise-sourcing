@@ -182,7 +182,7 @@ export default {
       }
       const res = await editRfqData(req)
       if (res.code == 200) {
-        iMessage.success("置顶成功")
+        setType === '1 ' ? iMessage.success("置顶成功") : iMessage.success("已取消置顶")
       }
     },
     change() {

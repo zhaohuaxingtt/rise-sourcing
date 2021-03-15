@@ -16,7 +16,7 @@ export const tableTitle = [
     {props:'quotations',name:'已报价供应商'},
     {props:'currentRoundsStatus',name:'RFQ状态'},
     {props:'endDate',name:'报价截至日期'},
-    {props:'j',name:'询价采购员'},
+    {props:'buyerName',name:'询价采购员'},
     {props:'linieNameZh',name:'LINIE'},
     {props:'tpGradeStatus',name:'TP评分状态'},
     {props:'mqGradeStatus',name:'MQ评分状态'},
