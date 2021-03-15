@@ -30,8 +30,8 @@
       </el-table-column>
       <el-table-column :key="index" align='center' v-else-if='items.props === iconProps' :prop="items.props"
                        :label="items.name">
-        <template>
-          <slot name="icon"></slot>
+        <template slot-scope="scope">
+          <slot name="icon" :data="scope.row"></slot>
         </template>
       </el-table-column>
       <el-table-column :key="index" align='center' v-else :label="items.name" :prop="items.props"></el-table-column>
