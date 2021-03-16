@@ -40,6 +40,12 @@
           :total="page.total"
       />
     </iCard>
+    <!------------------------------------------------------------------------>
+    <!--                  备注弹框                                          --->
+    <!------------------------------------------------------------------------>
+    <tpb-remarks
+        v-model="dialogRemarks"
+    />
   </i-page>
 
 </template>
@@ -50,6 +56,7 @@ import tablelist from './supplierScoreTableList'
 import {partScroingTitle} from "./data";
 import {pageMixins} from "@/utils/pageMixins";
 import {getSupplierRatingAttachment} from "@/api/partsrfq/editordetail";
+import tpbRemarks from './tpbRemarks'
 
 export default {
   components: {
@@ -58,7 +65,8 @@ export default {
     iPagination,
     iButton,
     icon,
-    tablelist
+    tablelist,
+    tpbRemarks
   },
   mixins: [pageMixins],
   data() {
@@ -66,7 +74,8 @@ export default {
       tableListData: [],
       tableTitle: partScroingTitle,
       tableLoading: false,
-      selectTableData: []
+      selectTableData: [],
+      dialogRemarks: false
     };
   },
   created() {
@@ -86,6 +95,7 @@ export default {
 
     },
     openMultiHeaderPropsPage() {
+      this.dialogRemarks = true
     },
     //修改表格改动列
     handleSelectionChange(val) {
