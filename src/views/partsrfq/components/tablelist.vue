@@ -11,15 +11,15 @@
     <template v-for="(items,index) in tableTitle">
       <el-table-column :key="index" align='center' v-if='items.props === openPageProps' :prop="items.props"
                        :label="items.name">
-        <template slot-scope="row">
+        <template slot-scope="scope">
             <span class="openLinkText cursor"
-                  @click="openPage">{{ customOpenPageWord ? customOpenPageWord : row.row[openPageProps] }}</span>
+                  @click="openPage(scope.row[items.props])">{{ customOpenPageWord ? customOpenPageWord : scope.row[openPageProps] }}</span>
         </template>
       </el-table-column>
-      <el-table-column :key="index" align='center' v-else-if='items.props === inputProps' :prop="items.props"
+      <el-table-column :key="index" align='center' v-else-if='inputProps.includes(items.props)' :prop="items.props"
                        :label="items.name">
-        <template>
-          <i-input/>
+        <template slot-scope="scope">
+          <i-input v-model="scope.row[items.props]"/>
         </template>
       </el-table-column>
       <el-table-column :key="index" align='center' v-else-if='selectProps.includes(items.props)' :prop="items.props"
@@ -39,7 +39,7 @@
   </el-table>
 </template>
 <script>
-import {iInput, iSelect } from '@/components'
+import {iInput, iSelect} from '@/components'
 
 export default {
   props: {
@@ -50,7 +50,11 @@ export default {
     index: {type: Boolean, default: false},
     height: {type: Number || String},
     openPageProps: {type: String, default: ''},
-    inputProps: {type: String, default: ''},
+    inputProps: {
+      type: Array, default: () => {
+        return []
+      }
+    },
     selectProps: {
       type: Array, default: () => {
         return []
@@ -67,8 +71,8 @@ export default {
     handleSelectionChange(val) {
       this.$emit('handleSelectionChange', val)
     },
-    openPage() {
-      this.$emit('openPage')
+    openPage(params) {
+      this.$emit('openPage', params)
     }
   }
 }
@@ -89,7 +93,8 @@ export default {
     height: 35px !important;
   }
 }
-.icon{
+
+.icon {
   color: $color-blue;
 }
 </style>

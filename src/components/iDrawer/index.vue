@@ -1,23 +1,27 @@
 <template>
-	<div class="drawer" :class="type?'showMenuList':'hideMenuList'">
+	<div class="drawer" :class="visible?'showMenuList':'hideMenuList'">
 		<slot></slot>
 	</div>
 </template>
 
 <script>
 	export default {
-		data() {
-			return {
-				type:false
+		props: {
+			visible: {
+				type: Boolean,
+				default: false
 			}
 		},
-		props: {
-			
+		mounted() {
+			document.body.appendChild(this.$el)
 		},
 		methods:{
 			// 显示任务菜单
 			show() {
-				this.type = !this.type
+				this.$emit('visible:updated', true)
+			},
+			close() {
+				this.$emit('visible:updated', false)
 			}
 		},
 	}
@@ -26,12 +30,12 @@
 <style lang="scss" scoped>
 	.drawer {
 		width: 400px;
-		transition: all .5s;
+		transition: right .3s ease-in-out;
 		position: absolute;
 		right: -400px;
 		top: 0;
 		min-height: 100vh;
-		z-index: -1;
+		z-index: 99;
 		background: #FFFFFF;
 		box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.08);
 	}

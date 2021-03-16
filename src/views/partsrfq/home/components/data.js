@@ -7,7 +7,7 @@
  * @FilePath: \rise\src\views\partsrfq\home\components\data.js
  */
 export const tableTitle = [
-    {props:'rfqId',name:'RFQ编号'},
+    {props:'id',name:'RFQ编号'},
     {props:'rfqName',name:'RFQ名称'},
     {props:'rfqType',name:'RFQ类型'},
     {props:'createDate',name:'创建日期'},

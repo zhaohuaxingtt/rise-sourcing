@@ -13,6 +13,12 @@
       'prev': 'prev',
       'next': 'next'
     },
+    'topLayout': {
+      'message': {
+        'notice': 'notice',
+        'message': 'message'
+      }
+    },
     'partsign': {
       'enquiry': 'enquiry',
       'usage': 'usage',

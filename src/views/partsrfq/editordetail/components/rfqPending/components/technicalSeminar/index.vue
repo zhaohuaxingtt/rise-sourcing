@@ -18,6 +18,7 @@
           @handleSelectionChange="handleSelectionChange"
           open-page-props="d"
           customOpenPageWord="查看"
+          @openPage="openPage"
       ></tablelist>
       <!------------------------------------------------------------------------>
       <!--                  表格分页                                          --->
@@ -41,6 +42,18 @@
     <!--                  会议其它信息                                      --->
     <!------------------------------------------------------------------------>
     <other-meeting-information class="margin-top20"/>
+    <!------------------------------------------------------------------------>
+    <!--                  图纸弹框                                      --->
+    <!------------------------------------------------------------------------>
+    <drawing-dialog
+        v-model="dialogDrawing"
+    />
+    <!------------------------------------------------------------------------>
+    <!--                  添加供应商弹框                                      --->
+    <!------------------------------------------------------------------------>
+    <add-supplier-dialog
+        v-model="dialogAddSupplier"
+    />
   </div>
 </template>
 
@@ -52,6 +65,8 @@ import {pageMixins} from "@/utils/pageMixins";
 import {getBomList} from "@/api/partsrfq/editordetail";
 import supplierMaterialPreparation from './components/supplierMaterialPreparation'
 import otherMeetingInformation from './components/otherMeetingInformation'
+import drawingDialog from './components/drawingDialog'
+import addSupplierDialog from './components/addSupplierDialog'
 
 
 export default {
@@ -61,7 +76,9 @@ export default {
     iButton,
     tablelist,
     supplierMaterialPreparation,
-    otherMeetingInformation
+    otherMeetingInformation,
+    drawingDialog,
+    addSupplierDialog
   },
   mixins: [pageMixins],
   data() {
@@ -69,7 +86,9 @@ export default {
       tableListData: [],
       tableTitle: tableTitle,
       tableLoading: false,
-      selectTableData: []
+      selectTableData: [],
+      dialogDrawing: false,
+      dialogAddSupplier: false
     };
   },
   created() {
@@ -89,15 +108,16 @@ export default {
     recall() {
     },
     addSupplier() {
-
+      this.dialogAddSupplier = true
     },
-    sendToMyEmail() {},
+    sendToMyEmail() {
+    },
     //修改表格改动列
     handleSelectionChange(val) {
       this.selectTableData = val;
     },
     openPage() {
-      this.detailDialog = true
+      this.dialogDrawing = true
     }
   }
 }

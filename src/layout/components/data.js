@@ -55,3 +55,8 @@
     key:4
   }
  ]
+
+export const messageTypeMap = {
+  '4': 'notice',
+  '5': 'message'
+}

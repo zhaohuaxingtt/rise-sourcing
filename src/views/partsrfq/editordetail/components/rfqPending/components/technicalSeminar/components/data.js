@@ -10,3 +10,9 @@ export const tableTitle = [
     {props:'c',name:'零件名称'},
     {props:'d',name:'图纸'}
 ]
+
+export const addSupplierTitle = [
+    {props:'a',name:'供应商SAP号'},
+    {props:'b',name:'供应商名称'},
+    {props:'c',name:'MBDL'}
+]

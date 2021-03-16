@@ -10,7 +10,7 @@
             <i-text >2020-12-10</i-text>
           </iFormItem>
           <div class="floatright margin-top5">
-            <iButton @click="readEffectiveBOM">读取有效BOM</iButton>
+            <iButton @click="readEffectiveBOM" disabled>读取有效BOM</iButton>
             <iButton @click="exports">导出</iButton>
           </div>
         </iFormGroup>

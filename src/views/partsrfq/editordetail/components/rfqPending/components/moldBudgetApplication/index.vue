@@ -13,7 +13,7 @@
           :tableLoading="tableLoading"
           :index="true"
           @handleSelectionChange="handleSelectionChange"
-          input-props="f"
+          :input-props="['f']"
       ></tablelist>
       <!------------------------------------------------------------------------>
       <!--                  表格分页                                          --->
