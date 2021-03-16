@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-24 09:17:57
- * @LastEditTime: 2021-03-01 15:50:20
+ * @LastEditTime: 2021-03-16 16:57:28
  * @LastEditors: Please set LastEditors
  * @Description: 零件签收列表界面.
  * @FilePath: \rise\src\views\partsign\index.vue
@@ -35,16 +35,22 @@
 							<iSelect placeholder='请选择信息分类'></iSelect>
 				</el-form-item>
         <el-form-item label="信息单状态">
-						<iSelect placeholder='请选择信息单状态'></iSelect>
+						<iSelect placeholder='请选择信息单状态'>
+               <el-option :value="items.value" v-for="(items,index) in typeOfxxd" :key="index">{{items.label}}</el-option>
+            </iSelect>
 				</el-form-item>
         <el-form-item label="信息单流水号">
 						<iInput placeholder='请填写信息单流水号'></iInput>
 				</el-form-item>
         <el-form-item label="询价资料状态">
-						<iSelect placeholder='请选择询价资料状态'></iSelect>
+						<iSelect placeholder='请选择询价资料状态'>
+              <el-option :value="items.value" v-for="(items,index) in typeOfxjzl" :key="index">{{items.label}}</el-option>
+            </iSelect>
 				</el-form-item>
         <el-form-item label="每车用量状态">
-						<iSelect placeholder='请选择没车用量状态'></iSelect>
+						<iSelect placeholder='请选择没车用量状态'>
+              <el-option :value="items.value" v-for="(items,index) in typeOfmcylzt" :key="index">{{items.label}}</el-option>
+            </iSelect>
 				</el-form-item>
       </el-form>
     </iSearch>
@@ -53,7 +59,7 @@
       <!--                  table模块，向外入参表格数据，表头                    --->
       <!------------------------------------------------------------------------>
       <div class="margin-bottom20 clearFloat">
-        <span class="font18 font-weight">新建信息单签收</span>
+        <span class="font18 font-weight">新件信息单签收</span>
         <div class="floatright">
           <iButton @click="save">签收</iButton>
           <iButton @click="openDiologBack">退回</iButton>
@@ -97,7 +103,7 @@
 <script>
 import { iPage, iButton, iCard, iMessage ,iPagination,iSearch,iInput,iSelect} from "@/components";
 import tablelist from "./components/tableList";
-import { tableTitle } from "./components/data";
+import { tableTitle,typeOfxxd,typeOfxjzl,typeOfmcylzt } from "./components/data";
 import { getTabelData } from "@/api/partsign/home";
 import { pageMixins } from "@/utils/pageMixins";
 import backItems from "./components/backItems";
@@ -108,6 +114,9 @@ export default {
   mixins: [pageMixins],
   data() {
     return {
+      typeOfmcylzt:typeOfmcylzt,
+      typeOfxjzl:typeOfxjzl,
+      typeOfxxd:typeOfxxd,
       tableListData: [],
       tableTitle: tableTitle,
       tableLoading: false,
@@ -117,6 +126,11 @@ export default {
       backmark: "",
       inquiryBuyer: "",
       inquiryBuyerList: [],
+      form:{
+        attachmentStatus:'',//询价资料状态
+        dept:'',//设计科室
+        id:''//信息单流水号
+      }
     };
   },
   created() {
@@ -132,7 +146,7 @@ export default {
     getTableList() {
       this.tableLoading = true;
       getTabelData().then((res) => {
-        this.tableListData = res.data;
+        this.tableListData = res.data.list;
         this.tableLoading = false;
       });
     },

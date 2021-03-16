@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-02-24 18:07:33
+ * @LastEditTime: 2021-03-16 16:37:00
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\utils\axios.js
@@ -35,7 +35,7 @@ import store from '@/store'
     });
 
     instance.interceptors.response.use(function (response) {
-      if(response.data && response.data.code == 200){
+      if(response.data && response.data.code == 0){
         return Promise.resolve(response.data);
       }else{
         iMessage.error(response.data.message)

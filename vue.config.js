@@ -110,6 +110,13 @@ module.exports = {
         pathRewrite:{
           "^/mock": "/mock"
         }
+      },
+      '/TpInfo':{
+        target:'http://10.13.38.100:8086',
+        changeOrigin:true,
+        pathRewrite:{
+          "^/TpInfo": "/TpInfo"
+        }
       }
     }
   }

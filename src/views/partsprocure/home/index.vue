@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 09:50:42
- * @LastEditTime: 2021-03-01 15:51:27
+ * @LastEditTime: 2021-03-15 14:54:00
  * @LastEditors: Please set LastEditors
  * @Description: 零件采购项目建立首页。
  * @FilePath: \rise\src\views\partsprocure\home\index.vue
@@ -49,11 +49,6 @@
         <el-form-item label="采购工厂">
 						<iSelect placeholder='请选择采购工厂'></iSelect>
 				</el-form-item>
-        <el-form-item label="显示自己">
-						<div class="checkBox">
-              <el-checkbox></el-checkbox>
-            </div>
-				</el-form-item>
       </el-form>
     </iSearch>
     <iCard>
@@ -61,7 +56,7 @@
     <!--                  table模块，向外入参表格数据，表头                    --->
     <!------------------------------------------------------------------------>
       <div class="margin-bottom20 clearFloat">
-        <span class="font18 font-weight">新建信息单签收</span>
+        <span class="font18 font-weight">新建采购项目</span>
         <div class="floatright">
           <iButton>生成Fs/GsNr</iButton>
           <iButton>取消零件采购</iButton>
