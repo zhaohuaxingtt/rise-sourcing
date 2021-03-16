@@ -13,6 +13,12 @@
       'prev': '上一页',
       'next': '下一页'
     },
+    'topLayout': {
+      'message': {
+        'notice': '通知',
+        'message': '消息'
+      }
+    },
     'partsign': {
       'enquiry': '询价资料',
       'usage': '每车用量',

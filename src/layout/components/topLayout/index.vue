@@ -30,40 +30,48 @@
 				<icon symbol v-else class="icon" name="iconzhongyingwenzhuanhuanying" />
 			</div>
 			<div class="message" @click="showMessage">
-				<el-badge :value="message" :hidden="!message">
+				<el-badge :value="messageCount" :hidden="!messageCount">
 					<icon symbol class="icon" name="iconxiaoxi" />
 				</el-badge>
 			</div>
 		</div>
 		<!-- 消息列表 -->
-		<iDrawer ref="drawer"></iDrawer>
+		<drawer :visible="drawerVisible" @afterClear="afterClear" />
 	</div>
 </template>
 <script>
 	import pInput from './input.vue';
 	import {
-		icon,
-		iDrawer
+		icon
 	} from '@/components';
+  import drawer from '../message/drawer'
 	import filters from '@/utils/filters'
+	import { getCountInMail } from '@/api/layout/topLayout'
 
 	export default {
 		mixins: [filters],
 		components: {
 			pInput,
 			icon,
-			iDrawer
+			drawer
 		},
 		data() {
 			return {
 				lang: '',
 				search: '',
-				message: 2,
-				msgType: false
+				msgType: false,
+        drawerVisible: false,
+				messageCount: 0,
+				messageLoading: false,
+				messageData: {
+					notice: [],
+					message: []
+				}
 			}
 		},
 		created() {
 			this.lang = localStorage.getItem('lang')
+			this.getCountInMail()
 		},
 		methods: {
 			handleChangeLang() {
@@ -73,7 +81,17 @@
 			},
 			// 显示消息列表
 			showMessage() {
-				this.$refs.drawer.show()
+        this.drawerVisible = !this.drawerVisible
+			},
+			// 获取消息数目
+			getCountInMail() {
+				getCountInMail({ receiverId: '1001' })
+					.then(res => {
+						this.messageCount = res.data
+					})
+			},
+			afterClear() {
+				this.getCountInMail()
 			}
 		}
 	}
