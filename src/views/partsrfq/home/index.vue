@@ -42,7 +42,8 @@
           <iButton @click="editRfq('01')">关闭RFQ</iButton>
           <iButton @click="assignmentOfScoringTasks">转派评分任务</iButton>
           <iButton @click="editRfq('06')">转谈判</iButton>
-          <!--          <iButton @click="createAFixedPointApplication">创建定点申请</iButton>-->
+          <iButton disabled>创建定点申请</iButton>
+          <iButton @click="exportTable">导出</iButton>
         </div>
       </div>
       <tablelist
@@ -164,10 +165,8 @@ export default {
         updateType,
         tmRfqIdList: idList
       }
-      const res = await editRfqData(req)
-      if (res.code == 200) {
-        iMessage.success("修改成功")
-      }
+      await editRfqData(req)
+      iMessage.success("修改成功")
     },
     assignmentOfScoringTasks() {
       if (this.selectTableData.length == 0)
@@ -180,15 +179,16 @@ export default {
         setType,
         tmRfqIdList: [row.rfqId]
       }
-      const res = await editRfqData(req)
-      if (res.code == 200) {
-        setType === '1 ' ? iMessage.success("置顶成功") : iMessage.success("已取消置顶")
-      }
+      await editRfqData(req)
+      setType === '1 ' ? iMessage.success("置顶成功") : iMessage.success("已取消置顶")
     },
     change() {
     },
     handleSearchReset() {
       this.form = {}
+    },
+    exportTable() {
+
     }
   }
 }

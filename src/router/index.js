@@ -64,6 +64,11 @@ export const staticRouter = [{
 				component: () => import("@/views/partsrfq/editordetail"),
 			},
 			{
+				path: "/partsrfq/editordetail/partScoring", //零件评分
+				name: "editordetailPartScoring",
+				component: () => import("@/views/partsrfq/editordetail/components/rfqPending/components/supplierScore/components/partScoring"),
+			},
+			{
 				path: "/report",
 				name: "report",
 				component: () => import("@/views/report"),

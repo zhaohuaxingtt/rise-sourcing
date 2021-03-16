@@ -12,9 +12,9 @@
       <template v-if="items.list && isArray(items.list)">
         <el-table-column :label="items.name" :key="index" align="center">
           <template v-for="(items2, index2) in items.list">
-            <el-table-column :key="index2" align='center' v-if="items2.props === 'i'" :prop="items2.props" :label="items2.name">
+            <el-table-column :key="index2" align='center' v-if="items2.props === multiHeaderProps" :prop="items2.props" :label="items2.name">
               <template>
-                <span class="openLinkText cursor" @click="openEditPage">编辑</span>
+                <span class="openLinkText cursor" @click="openMultiHeaderPropsPage">{{multiHeaderPropsText}}</span>
               </template>
             </el-table-column>
             <el-table-column :key="index2" align='center' v-else :label="items2.name" :prop="items2.props"></el-table-column>
@@ -22,10 +22,10 @@
         </el-table-column>
       </template>
       <template v-else>
-        <el-table-column :key="index" align='center' v-if="items.props === 'd'" :prop="items.props"
+        <el-table-column :key="index" align='center' v-if="items.props === actionProps" :prop="items.props"
                          :label="items.name">
           <template>
-            <span class="openLinkText cursor" @click="openViewPage">查看</span>
+            <span class="openLinkText cursor" @click="openActionPropsPage">查看</span>
           </template>
         </el-table-column>
         <el-table-column :key="index" align='center' v-else :label="items.name" :prop="items.props"></el-table-column>
@@ -44,17 +44,20 @@ export default {
     selection: {type: Boolean, default: true},
     index: {type: Boolean, default: false},
     height: {type: Number || String},
-    hideOpenPage: {type: Boolean, default: false}
+    hideOpenPage: {type: Boolean, default: false},
+    multiHeaderProps: {type: String, default: 'i'},
+    actionProps: {type: String, default: 'd'},
+    multiHeaderPropsText: {type: String, default: '编辑'},
   },
   methods: {
     handleSelectionChange(val) {
       this.$emit('handleSelectionChange', val)
     },
-    openViewPage() {
-      this.$emit('openViewPage')
+    openActionPropsPage() {
+      this.$emit('openActionPropsPage')
     },
-    openEditPage() {
-      this.$emit('openEditPage')
+    openMultiHeaderPropsPage() {
+      this.$emit('openMultiHeaderPropsPage')
     },
     isArray
   }

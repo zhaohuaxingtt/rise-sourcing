@@ -7,7 +7,7 @@
 export const supplierScoreTitle = [
     {props: 'a', name: 'SVW号'},
     {props: 'b', name: '供应商名'},
-    {props: 'c', name: '供应商⽣产场地'},
+    {props: 'c', name: '供应商生产场地'},
     {props: 'd', name: '零件评分'},
     {
         name: 'TPB',
@@ -28,4 +28,25 @@ export const supplierRatingAttachmentTitle = [
     {props: 'd', name: '上传人'},
     {props: 'e', name: '操作'},
     {props: 'f', name: '日志'}
+]
+
+
+export const partScroingTitle = [
+    {props: 'a', name: '零件号'},
+    {props: 'b', name: 'FS号'},
+    {props: 'c', name: '采购工厂'},
+    {props: 'd', name: '零件名称（中）'},
+    {props: 'e', name: '零件名称（德）'},
+    {props: 'f', name: '车型项目'},
+    {props: 'g', name: '相关车型'},
+    {
+        name: 'TPB',
+        list: [
+            {props: 'h', name: '评分'},
+            {props: 'i', name: '外部开发费（元）'},
+            {props: 'j', name: '增加的认可费（元）'},
+            {props: 'k', name: '认可周期（周）'},
+            {props: 'l', name: '备注'},
+        ]
+    }
 ]

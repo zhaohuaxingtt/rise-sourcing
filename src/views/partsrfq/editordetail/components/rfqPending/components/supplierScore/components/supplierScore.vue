@@ -9,8 +9,8 @@
         :tableLoading="tableLoading"
         @handleSelectionChange="handleSelectionChange"
         :index="true"
-        @openViewPage="openViewPage"
-        @openEditPage="openEditPage"
+        @openActionPropsPage="openActionPropsPage"
+        @openMultiHeaderPropsPage="openMultiHeaderPropsPage"
     ></tablelist>
     <!------------------------------------------------------------------------>
     <!--                  表格分页                                          --->
@@ -66,8 +66,12 @@ export default {
     uploadAttachments() {
 
     },
-    openViewPage() {},
-    openEditPage() {},
+    openActionPropsPage() {
+      this.$router.push({
+        path: '/partsrfq/editordetail/partScoring'
+      })
+    },
+    openMultiHeaderPropsPage() {},
     //修改表格改动列
     handleSelectionChange(val) {
       this.selectTableData = val;
