@@ -14,19 +14,19 @@
     <!------------------------------------------------------------------------>
     <!--                  search 搜索模块                                   --->
     <!------------------------------------------------------------------------>
-    <iSearch class="margin-bottom20" :icon="true">
+    <iSearch class="margin-bottom20" :icon="true" @reset="handleSearchReset" @sure="getTableList">
       <el-form>
         <el-form-item label="零件号/FSNR/RFQ/采购员">
-          <iInput placeholder='请输入查询'></iInput>
+          <iInput placeholder='请输入查询' v-model="form.searchConditions"></iInput>
         </el-form-item>
         <el-form-item label="车型项目">
-          <iSelect placeholder='请选择'></iSelect>
+          <iSelect placeholder='请选择' v-model="form.carType"></iSelect>
         </el-form-item>
         <el-form-item label="零件项目类型">
-          <iSelect placeholder='请选择'></iSelect>
+          <iSelect placeholder='请选择' v-model="form.partType"></iSelect>
         </el-form-item>
         <el-form-item label="RFQ状态">
-          <iSelect placeholder='请选择'></iSelect>
+          <iSelect placeholder='请选择' v-model="form.rfqStatus"></iSelect>
         </el-form-item>
       </el-form>
     </iSearch>
@@ -37,12 +37,13 @@
       <div class="margin-bottom20 clearFloat">
         <span class="font18 font-weight">RFQ综合管理</span>
         <div class="floatright">
-          <iButton @click="activateRfq">激活RFQ</iButton>
+          <iButton @click="editRfq('02')">激活RFQ</iButton>
           <iButton @click="newRfq">新建RFQ</iButton>
-          <iButton @click="closeRfq">关闭RFQ</iButton>
+          <iButton @click="editRfq('01')">关闭RFQ</iButton>
           <iButton @click="assignmentOfScoringTasks">转派评分任务</iButton>
-          <iButton @click="transferNegotiation">转谈判</iButton>
-          <iButton @click="createAFixedPointApplication">创建定点申请</iButton>
+          <iButton @click="editRfq('06')">转谈判</iButton>
+          <iButton disabled>创建定点申请</iButton>
+          <iButton @click="exportTable">导出</iButton>
         </div>
       </div>
       <tablelist
@@ -53,10 +54,12 @@
           @openPage='openPage'
           open-page-props="a"
           :index="true"
-          icon-props="action"
+          icon-props="topRecordId"
       >
-        <template v-slot:icon>
-          <icon class="icon icon-color-active"  name="iconliebiaoyizhiding" @click="toTop"></icon>
+        <template v-slot:icon="scope">
+          <icon class="icon icon-color-active" name="iconliebiaoyizhiding" @click="toTop(scope.data)"
+                v-if="scope.data.topRecordId > 1"></icon>
+          <icon class="icon" name="iconliebiaoyizhiding" @click="toTop(scope.data)" v-else></icon>
         </template>
       </tablelist>
       <!------------------------------------------------------------------------>
@@ -88,7 +91,7 @@ import tablelist from "pages/partsrfq/components/tablelist";
 import assignmentOfScoringTasks from "pages/partsrfq/home/components/assignmentOfScoringTasks";
 import {pageMixins} from "@/utils/pageMixins";
 import {tableTitle} from "pages/partsrfq/home/components/data";
-import {getTabelData} from "@/api/partsign/home";
+import {getRfqDataList, editRfqData} from "@/api/partsrfq/home";
 
 export default {
   components: {
@@ -111,7 +114,13 @@ export default {
       tableTitle: tableTitle,
       tableLoading: false,
       selectTableData: [],
-      diologAssignmentOfScroingTasks: false
+      diologAssignmentOfScroingTasks: false,
+      form: {
+        searchConditions: '',
+        carType: '',
+        partType: '',
+        rfqStatus: ''
+      }
     };
   },
   created() {
@@ -124,12 +133,17 @@ export default {
       })
     },
     //获取表格数据
-    getTableList() {
+    async getTableList() {
       this.tableLoading = true;
-      getTabelData().then((res) => {
-        this.tableListData = res.data;
-        this.tableLoading = false;
-      });
+      const req = {
+        userId: 12321,
+        current: this.page.size,
+        size: this.page.page,
+        ...this.form
+      }
+      const res = await getRfqDataList(req)
+      this.tableListData = res.data;
+      this.tableLoading = false;
     },
     //修改表格改动列
     handleSelectionChange(val) {
@@ -140,30 +154,47 @@ export default {
         path: '/partsrfq/editordetail'
       })
     },
-    closeRfq() {
-
-    },
-    activateRfq() {
-
+    async editRfq(updateType) {
+      if (this.selectTableData.length === 0) {
+        return iMessage.warn("抱歉，您当前还未选择任务！");
+      }
+      const idList = this.selectTableData.map(item => {
+        return item.rfqId
+      })
+      const req = {
+        updateType,
+        tmRfqIdList: idList
+      }
+      await editRfqData(req)
+      iMessage.success("修改成功")
     },
     assignmentOfScoringTasks() {
       if (this.selectTableData.length == 0)
         return iMessage.warn("抱歉，您当前还未选择您需要转派的评分任务！");
       this.diologAssignmentOfScroingTasks = true
     },
-    transferNegotiation() {
+    async toTop(row) {
+      const setType = row.topRecordId > 1 ? '0' : '1'
+      const req = {
+        setType,
+        tmRfqIdList: [row.rfqId]
+      }
+      await editRfqData(req)
+      setType === '1 ' ? iMessage.success("置顶成功") : iMessage.success("已取消置顶")
     },
-    createAFixedPointApplication() {
+    change() {
     },
-    toTop() {
+    handleSearchReset() {
+      this.form = {}
+    },
+    exportTable() {
 
-    },
-    change(){}
+    }
   }
 }
 </script>
 <style lang='scss' scoped>
-.icon-color-active{
+.icon-color-active {
   color: $color-blue;
 }
 </style>

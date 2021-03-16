@@ -7,22 +7,21 @@
  * @FilePath: \rise\src\views\partsrfq\home\components\data.js
  */
 export const tableTitle = [
-    {props:'a',name:'RFQ编号'},
-    {props:'b',name:'RFQ名称'},
-    {props:'c',name:'RFQ类型'},
-    {props:'d',name:'创建日期'},
-    {props:'e',name:'当前轮次'},
-    {props:'f',name:'已询价供应商'},
-    {props:'g',name:'已报价供应商'},
-    {props:'h',name:'RFQ状态'},
-    {props:'i',name:'报价截至日期'},
-    {props:'j',name:'询价采购员'},
-    {props:'k',name:'LINIEl'},
-    {props:'l',name:'TP评分状态'},
-    {props:'m',name:'MQ评分状态'},
-    {props:'n',name:'车型项目'},
-    {props:'o',name:'CF目标价状态'},
-    {props:'action',name:''},
+    {props:'rfqId',name:'RFQ编号'},
+    {props:'rfqName',name:'RFQ名称'},
+    {props:'rfqType',name:'RFQ类型'},
+    {props:'createDate',name:'创建日期'},
+    {props:'currentRounds',name:'当前轮次'},
+    {props:'suppliers',name:'已询价供应商'},
+    {props:'quotations',name:'已报价供应商'},
+    {props:'currentRoundsStatus',name:'RFQ状态'},
+    {props:'endDate',name:'报价截至日期'},
+    {props:'buyerName',name:'询价采购员'},
+    {props:'linieNameZh',name:'LINIE'},
+    {props:'tpGradeStatus',name:'TP评分状态'},
+    {props:'mqGradeStatus',name:'MQ评分状态'},
+    {props:'targetGradeStatus',name:'目标价状态'},
+    {props:'topRecordId',name:''},
 ]
 
 export const assignmentOfScroingTasksTableTitle = [
