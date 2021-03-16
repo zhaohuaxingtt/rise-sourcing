@@ -22,9 +22,10 @@
 			</el-table-column>
 
 
-			<el-table-column :key="index" align='center' v-else-if='item.props == "i"' :prop="item.props" :label="item.name">
-				<template>
-					<span class="cursor look">
+			<el-table-column :key="index" align='center' v-else-if='item.props == "i"' :prop="item.props"
+				:label="item.name">
+				<template slot-scope="scope">
+					<span class="cursor look" @click="onJump360(scope.row)">
 						<icon symbol name="icongongyingshangshituliebiao"></icon>
 					</span>
 				</template>
@@ -40,12 +41,12 @@
 	import tablelist from '@/views/partsign/home/components/tableList'
 	import {
 		iSelect,
-		icon
+		icon,
 	} from "@/components"
 	export default {
 		components: {
 			iSelect,
-			icon
+			icon,
 		},
 		props: {
 			...tablelist.props,
@@ -60,6 +61,10 @@
 			},
 			openPage() {
 				this.$emit('openPage')
+			},
+			onJump360(row) {
+				console.log(row);
+				window.open("https://www.baidu.com/")
 			}
 		}
 	}
