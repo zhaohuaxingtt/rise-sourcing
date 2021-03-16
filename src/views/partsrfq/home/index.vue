@@ -52,7 +52,7 @@
           :tableLoading="tableLoading"
           @handleSelectionChange="handleSelectionChange"
           @openPage='openPage'
-          open-page-props="a"
+          open-page-props="id"
           :index="true"
           icon-props="topRecordId"
       >
@@ -127,9 +127,9 @@ export default {
     this.getTableList();
   },
   methods: {
-    openPage() {
+    openPage(id) {
       this.$router.push({
-        path: '/partsrfq/editordetail'
+        path: `/partsrfq/editordetail?id=${id}`
       })
     },
     //获取表格数据
@@ -159,11 +159,14 @@ export default {
         return iMessage.warn("抱歉，您当前还未选择任务！");
       }
       const idList = this.selectTableData.map(item => {
-        return item.rfqId
+        return item.id
       })
       const req = {
-        updateType,
-        tmRfqIdList: idList
+        updateRfqStatusPackage: {
+          updateType,
+          tmRfqIdList: idList,
+          userId: 12321
+        }
       }
       await editRfqData(req)
       iMessage.success("修改成功")
@@ -176,8 +179,11 @@ export default {
     async toTop(row) {
       const setType = row.topRecordId > 1 ? '0' : '1'
       const req = {
-        setType,
-        tmRfqIdList: [row.rfqId]
+        rfqSetTopPackage: {
+          setType,
+          rfqId: row.id,
+          userId: 12321
+        },
       }
       await editRfqData(req)
       setType === '1 ' ? iMessage.success("置顶成功") : iMessage.success("已取消置顶")

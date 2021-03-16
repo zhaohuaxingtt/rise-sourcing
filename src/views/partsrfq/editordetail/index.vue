@@ -29,7 +29,7 @@
 				</span>
       </div>
     </div>
-    <i-card class="margin-bottom20 margin-top20">
+    <i-card class="margin-bottom20 margin-top20" :loading="baseInfoLoading">
       <!------------------------------------------------------------------------>
       <!--                  基本信息区域                                       --->
       <!------------------------------------------------------------------------>
@@ -37,57 +37,57 @@
       <iFormGroup row="1" inline :rules="rules">
         <div class="row">
           <div class="col">
-            <iFormItem label="RFQ编号：" name="test">
-              <iText></iText>
+            <iFormItem label="RFQ编号：" name="id">
+              <iText>{{ baseInfo.id }}</iText>
             </iFormItem>
-            <iFormItem label="RFQ名称：" name="test">
-              <iText></iText>
-            </iFormItem>
-
-            <iFormItem label="EP：" name="test">
-              <iInput v-if="editStatus"></iInput>
-              <iText v-else></iText>
-            </iFormItem>
-            <iFormItem label="MQ：" name="test">
-              <iInput v-if="editStatus"></iInput>
-              <iText v-else></iText>
+            <iFormItem label="RFQ名称：" name="rfqName">
+              <iText>{{ baseInfo.rfqName }}</iText>
             </iFormItem>
 
-            <iFormItem label="本轮报价截⽌时间：" name="test">
-              <iText></iText>
+            <iFormItem label="EP：" name="ep">
+              <iInput v-if="editStatus" v-model="baseInfo.ep"></iInput>
+              <iText v-else>{{ baseInfo.ep }}</iText>
+            </iFormItem>
+            <iFormItem label="CF：" name="cf">
+              <iInput v-if="editStatus" v-model="baseInfo.cf"></iInput>
+              <iText v-else>{{ baseInfo.cf }}</iText>
+            </iFormItem>
+
+            <iFormItem label="本轮报价截⽌时间：" name="endDate">
+              <iText>{{ baseInfo.endDate }}</iText>
             </iFormItem>
           </div>
           <div class="col">
-            <iFormItem label="RFQ状态：" name="test">
-              <iText></iText>
+            <iFormItem label="RFQ状态：" name="statusName">
+              <iText>{{ baseInfo.statusName }}</iText>
             </iFormItem>
-            <iFormItem label="询价采购员：" name="test">
-              <iText></iText>
+            <iFormItem label="询价采购员：" name="buyerName">
+              <iText>{{ baseInfo.buyerName }}</iText>
             </iFormItem>
-            <iFormItem label="MQ：" name="test">
-              <iInput v-if="editStatus"></iInput>
-              <iText v-else></iText>
+            <iFormItem label="MQ：" name="mq">
+              <iInput v-if="editStatus" v-model="baseInfo.mq"></iInput>
+              <iText v-else>{{ baseInfo.mq }}</iText>
             </iFormItem>
-            <iFormItem label="当前轮次：" name="test">
-              <iText></iText>
+            <iFormItem label="当前轮次：" name="currentRounds">
+              <iText>{{ baseInfo.currentRounds }}</iText>
             </iFormItem>
-            <iFormItem label="轮次类型：" name="test">
-              <iText></iText>
+            <iFormItem label="轮次类型：" name="roudsType">
+              <iText>{{ baseInfo.roudsType }}</iText>
             </iFormItem>
           </div>
           <div class="col">
-            <iFormItem label="创建⽇期：" name="test">
-              <iText></iText>
+            <iFormItem label="创建日期：" name="createDate">
+              <iText>{{ baseInfo.createDate }}</iText>
             </iFormItem>
-            <iFormItem label="LINIE：" name="test">
-              <iText></iText>
+            <iFormItem label="LINIE：" name="linieNameZh">
+              <iText>{{ baseInfo.linieNameZh }}</iText>
             </iFormItem>
-            <iFormItem label="CF：" name="test">
-              <iInput v-if="editStatus"></iInput>
-              <iText v-else></iText>
+            <iFormItem label="PL：" name="test">
+              <iInput v-if="editStatus" v-model="baseInfo.pl"></iInput>
+              <iText v-else>{{ baseInfo.pl }}</iText>
             </iFormItem>
             <iFormItem label="本轮状态：" name="test">
-              <iText></iText>
+              <iText>{{ baseInfo.currentRoundsStatus }}</iText>
             </iFormItem>
             <div class="edit-button-row">
               <i-button @click="edit">{{ !editStatus ? '编辑' : '保存' }}</i-button>
@@ -102,10 +102,11 @@
   </iPage>
 </template>
 <script>
-import {iNavMvp, iButton, iPage, icon, iCard, iFormGroup, iFormItem, iText, iInput,} from "@/components";
+import {iNavMvp, iButton, iPage, icon, iCard, iFormGroup, iFormItem, iText, iInput, iMessage,} from "@/components";
 import rfqPending from './components/rfqPending'
 import rfqDetailInfo from './components/rfqDetailInfo'
 import newRfqRound from './components/newRfqRound'
+import {getRfqDataList, editRfqData} from "@/api/partsrfq/home";
 
 export default {
   components: {
@@ -140,25 +141,63 @@ export default {
         }
       ],
       editStatus: false,
-      newRfqRoundDialog: false
+      newRfqRoundDialog: false,
+      baseInfo: {},
+      baseInfoLoading: false
     }
   },
+  created() {
+    this.getBaseInfo()
+  },
   methods: {
-    changeNav(item, index) {
+    async getBaseInfo() {
+      const query = this.$route.query
+      const req = {
+        userId: 12321,
+        rfqId: Number(query.id)
+      }
+      const res = await getRfqDataList(req)
+      this.baseInfo = res.data[0]
+    },
+    changeNav(item) {
       this.navActivtyValue = item.value
     },
     newRfq() {
       this.newRfqRoundDialog = true
     },
-    sendInquiry() {},
-    endInquiry() {},
-    transferNegotiation() {},
+    sendInquiry() {
+    },
+    endInquiry() {
+    },
+    transferNegotiation() {
+    },
     createAFixedPointApplication() {
 
     },
-    log() {},
+    log() {
+    },
     edit() {
       this.editStatus = !this.editStatus
+      if (!this.editStatus) {
+        this.save()
+      }
+    },
+    async save() {
+      this.baseInfoLoading = true
+      const query = this.$route.query
+      const req = {
+        updateRfqInfoPackage: {
+          userId: 12321,
+          rfqId: Number(query.id),
+          cf: this.baseInfo.cf,
+          ep: this.baseInfo.ep,
+          mq: this.baseInfo.mq,
+          pl: this.baseInfo.pl,
+        }
+      }
+      await editRfqData(req)
+      this.baseInfoLoading = false
+      iMessage.success("保存成功")
     }
   }
 }
@@ -183,25 +222,30 @@ export default {
     }
   }
 }
+
 .row {
   width: 100%;
   height: 100%;
   overflow: hidden;
   display: flex;
   justify-content: space-between;
+
   .col {
     width: 33.33%;
     border-right: 1px solid $color-border;
     margin-right: 20px;
     padding-right: 20px;
+
     &:last-child {
       margin-right: 0px;
       border-right: none;
     }
   }
+
   .items {
     width: 300px;
   }
+
   .edit-button-row {
     float: right;
   }
@@ -210,17 +254,20 @@ export default {
     margin-bottom: 0px;
   }
 }
-.baseinfo-title{
+
+.baseinfo-title {
   font-size: 18px;
   font-weight: bold;
   line-height: 21px;
   color: #131523;
   margin-bottom: 10px;
 }
-.log-icon{
+
+.log-icon {
   font-size: 20px;
 }
-.log-word{
+
+.log-word {
   color: $color-blue;
   margin-left: 4px;
 }

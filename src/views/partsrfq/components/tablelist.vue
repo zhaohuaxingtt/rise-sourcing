@@ -11,9 +11,9 @@
     <template v-for="(items,index) in tableTitle">
       <el-table-column :key="index" align='center' v-if='items.props === openPageProps' :prop="items.props"
                        :label="items.name">
-        <template slot-scope="row">
+        <template slot-scope="scope">
             <span class="openLinkText cursor"
-                  @click="openPage">{{ customOpenPageWord ? customOpenPageWord : row.row[openPageProps] }}</span>
+                  @click="openPage(scope.row[items.props])">{{ customOpenPageWord ? customOpenPageWord : scope.row[openPageProps] }}</span>
         </template>
       </el-table-column>
       <el-table-column :key="index" align='center' v-else-if='inputProps.includes(items.props)' :prop="items.props"
@@ -71,8 +71,8 @@ export default {
     handleSelectionChange(val) {
       this.$emit('handleSelectionChange', val)
     },
-    openPage() {
-      this.$emit('openPage')
+    openPage(params) {
+      this.$emit('openPage', params)
     }
   }
 }
