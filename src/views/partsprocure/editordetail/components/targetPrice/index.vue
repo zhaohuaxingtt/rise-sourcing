@@ -60,16 +60,6 @@
 			</iFormItem>
 		</iFormGroup>
 		<iFormGroup row="2" icon inline>
-			<iFormItem label="申请类型" name="test">
-				<iText>
-				</iText>
-			</iFormItem>
-			<iFormItem label="期望目标价" name="test">
-				<iText>
-				</iText>
-			</iFormItem>
-		</iFormGroup>
-		<iFormGroup row="2" icon inline>
 			<iFormItem label="申请原因" name="test">
 				<iInput type="textarea" rows="6" resize="none" v-model="reasons"></iInput>
 			</iFormItem>

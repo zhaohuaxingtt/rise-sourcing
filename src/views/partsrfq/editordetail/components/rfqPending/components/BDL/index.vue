@@ -13,14 +13,15 @@
       <div>
         <iButton>保存</iButton>
         <iButton>删除供应商</iButton>
-        <iButton>添加自定义评分项</iButton>
+        <iButton @click="addCustom">添加自定义评分项</iButton>
         <iButton @click="log">日志</iButton>
       </div>
     </div>
     <tableList :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="tableLoading"
                @handleSelectionChange="handleSelectionChange"
                @openPage="openPage"
-               @log="log"></tableList>
+               @log="log" 
+			   ref="table"></tableList>
     <logDialog :visible.sync="logVisible"/>
   </iCard>
 </template>
@@ -45,7 +46,7 @@ export default {
       tableTitle,
       tableData: [],
       tableLoading: false,
-      searchKey: "",
+      searchKey: "",//搜索关键词	
       logVisible: false,
     }
   },
@@ -72,7 +73,11 @@ export default {
     },
     log() {
       this.logVisible = true
-    }
+    },
+	// 添加自定义项目
+	addCustom(){
+		this.$refs.table.addCustom()
+	}
   }
 }
 </script>

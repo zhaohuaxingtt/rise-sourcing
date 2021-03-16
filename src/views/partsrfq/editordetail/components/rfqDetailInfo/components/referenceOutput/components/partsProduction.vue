@@ -14,6 +14,7 @@
           @handleSelectionChange="handleSelectionChange"
           :index="true"
           open-page-props="c"
+          @openPage="openPage"
       ></tablelist>
       <!------------------------------------------------------------------------>
       <!--                  表格分页                                          --->
@@ -72,6 +73,11 @@ export default {
     handleSelectionChange(val) {
       this.selectTableData = val;
     },
+    openPage() {
+      this.$router.push({
+        path: '/partsprocure/editordetail'
+      })
+    }
   }
 }
 </script>

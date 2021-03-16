@@ -68,7 +68,8 @@ module.exports = {
           "moment": "moment",
           'element-ui':'ELEMENT',
           'vue-i18n': 'VueI18n',
-          'i18n': 'i18n'
+          'i18n': 'i18n',
+          'Ellipsis': 'Ellipsis'
         };
         //开启gizp压缩
         config.plugins.push(new CompressionPlugin({

@@ -4,16 +4,26 @@
       <div class="margin-bottom20 clearFloat">
         <span class="font18 font-weight">时间计划</span>
         <div class="floatright">
+          <template v-if="!editStatus">
+            <iButton @click="edit">编辑</iButton>
+          </template>
+          <template v-else>
+            <iButton @click="save">保存</iButton>
+            <iButton @click="back">返回</iButton>
+          </template>
+
           <iButton @click="exports">导出</iButton>
         </div>
       </div>
       <tablelist
+          v-if="showTable"
           :tableData="tableListData"
           :tableTitle="tableTitle"
           :tableLoading="tableLoading"
           @handleSelectionChange="handleSelectionChange"
           :index="true"
           :hide-open-page="true"
+          :input-props="inputProps"
       ></tablelist>
       <!------------------------------------------------------------------------>
       <!--                  表格分页                                          --->
@@ -52,7 +62,10 @@ export default {
       tableListData: [],
       tableTitle: timePlanableTitle,
       tableLoading: false,
-      selectTableData: []
+      selectTableData: [],
+      editStatus: false,
+      inputProps: [],
+      showTable: true
     };
   },
   created() {
@@ -70,6 +83,25 @@ export default {
     handleSelectionChange(val) {
       this.selectTableData = val;
     },
+    edit() {
+      this.editStatus = true
+      this.inputProps = ['i', 'j', 'k']
+      this.showTable = false
+      this.$nextTick(() => {
+        this.showTable = true
+      })
+    },
+    save() {
+      console.log(this.tableListData)
+    },
+    back() {
+      this.editStatus = false
+      this.inputProps = []
+      this.showTable = false
+      this.$nextTick(() => {
+        this.showTable = true
+      })
+    }
   }
 }
 </script>

@@ -5,9 +5,8 @@
 * @Description: BDL列表JS
  */
 export const tableTitle = [
-    {props:'a',name:'SAP号'},
-    {props:'b',name:'供应商名称'},
-    {props:'c',name:'供应商产地(选择)'},
+    {props:'a',name:'供应商SAP号'},
+    {props:'c',name:'供应商生产场地'},
     {props:'d',name:'MBDL'},
     {props:'e',name:'是否验证CBD'},
     {props:'f',name:'质量'},

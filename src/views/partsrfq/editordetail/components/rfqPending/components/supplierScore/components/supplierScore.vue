@@ -9,8 +9,8 @@
         :tableLoading="tableLoading"
         @handleSelectionChange="handleSelectionChange"
         :index="true"
-        @openViewPage="openViewPage"
-        @openEditPage="openEditPage"
+        @openActionPropsPage="openActionPropsPage"
+        @openMultiHeaderPropsPage="openMultiHeaderPropsPage"
     ></tablelist>
     <!------------------------------------------------------------------------>
     <!--                  表格分页                                          --->
@@ -25,6 +25,12 @@
         :current-page='page.size'
         :total="page.total"
     />
+    <!------------------------------------------------------------------------>
+    <!--                  备注弹框                                          --->
+    <!------------------------------------------------------------------------>
+    <tpb-remarks
+        v-model="dialogRemarks"
+    />
   </iCard>
 </template>
 
@@ -34,12 +40,14 @@ import tablelist from './supplierScoreTableList'
 import {supplierScoreTitle} from "./data";
 import {pageMixins} from "@/utils/pageMixins";
 import {getSupplierRatingAttachment} from "@/api/partsrfq/editordetail";
+import tpbRemarks from './tpbRemarks'
 
 export default {
   components: {
     iCard,
     iPagination,
-    tablelist
+    tablelist,
+    tpbRemarks
   },
   mixins: [pageMixins],
   data() {
@@ -47,7 +55,8 @@ export default {
       tableListData: [],
       tableTitle: supplierScoreTitle,
       tableLoading: false,
-      selectTableData: []
+      selectTableData: [],
+      dialogRemarks: false
     };
   },
   created() {
@@ -66,8 +75,14 @@ export default {
     uploadAttachments() {
 
     },
-    openViewPage() {},
-    openEditPage() {},
+    openActionPropsPage() {
+      this.$router.push({
+        path: '/partsrfq/editordetail/partScoring'
+      })
+    },
+    openMultiHeaderPropsPage() {
+      this.dialogRemarks = true
+    },
     //修改表格改动列
     handleSelectionChange(val) {
       this.selectTableData = val;

@@ -1,19 +1,10 @@
-<!--
- * @Author: moxuan
- * @Date: 2021-03-04 11:24:15
- * @LastEditTime: 2021-03-04 11:24:15
- * @LastEditors: Please set LastEditors
- * @Description: In User Settings Edit
--->
+
 <template>
   <iDialog :title="title" :visible.sync="value" width="80%" @close='clearDiolog'>
     <div class="changeContent">
       <div class="margin-bottom20 clearFloat">
         <div class="floatright title-button-box">
-          <iButton @click="add">添加</iButton>
-          <iButton @click="deleteItems">删除</iButton>
           <iButton @click="save">保存</iButton>
-          <iButton @click="transfer">转派</iButton>
         </div>
       </div>
       <tablelist
@@ -22,7 +13,6 @@
           :tableLoading="tableLoading"
           @handleSelectionChange="handleSelectionChange"
           :index="true"
-          :select-props="['a','b','c']"
       ></tablelist>
     </div>
     <span slot="footer" class="dialog-footer">
@@ -33,20 +23,20 @@
 <script>
 import {iButton,iMessage,iDialog} from '@/components'
 import tablelist from "pages/partsrfq/components/tablelist";
-import {assignmentOfScroingTasksTableTitle} from "pages/partsrfq/home/components/data";
+import {addSupplierTitle} from "./data"
 import {getTabelData} from "@/api/partsign/home";
 
 export default{
   components:{iButton,iDialog, tablelist},
   props:{
-    title:{type:String,default:'转派评分任务'},
+    title:{type:String,default:'添加供应商'},
     value:{type:Boolean},
     repeatClick:Boolean
   },
   data(){
     return {
       tableListData: [],
-      tableTitle: assignmentOfScroingTasksTableTitle,
+      tableTitle: addSupplierTitle,
       tableLoading: false,
       selectTableData: []
     }
@@ -54,7 +44,7 @@ export default{
   created(){
     this.getTableList()
   },
-  methods:{
+  methods: {
     //获取表格数据
     getTableList() {
       this.tableLoading = true;
@@ -67,16 +57,13 @@ export default{
     handleSelectionChange(val) {
       this.selectTableData = val;
     },
-    clearDiolog(){
-      this.$emit('input',false)
+    clearDiolog() {
+      this.$emit('input', false)
     },
-    add() {},
-    deleteItems() {},
     save() {
-      if(this.selectTableData.length == '') return iMessage.warn('抱歉！您当前还未选择！')
-      this.$emit('sure',JSON.parse(this.selectTableData))
-    },
-    transfer() {}
+      if (this.selectTableData.length == '') return iMessage.warn('抱歉！您当前还未选择！')
+      this.$emit('sure', JSON.parse(this.selectTableData))
+    }
   }
 }
 </script>
