@@ -41,7 +41,8 @@
               <iText>{{ baseInfo.id }}</iText>
             </iFormItem>
             <iFormItem label="RFQ名称：" name="rfqName">
-              <iText>{{ baseInfo.rfqName }}</iText>
+              <iInput v-if="editStatus" v-model="baseInfo.rfqName"></iInput>
+              <iText v-else>{{ baseInfo.rfqName }}</iText>
             </iFormItem>
 
             <iFormItem label="EP：" name="ep">
@@ -193,11 +194,14 @@ export default {
           ep: this.baseInfo.ep,
           mq: this.baseInfo.mq,
           pl: this.baseInfo.pl,
+          rfqName: this.baseInfo.rfqName,
         }
       }
-      await editRfqData(req)
+      const res = await editRfqData(req)
+      if(res.code == 0) {
+        iMessage.success("保存成功")
+      }
       this.baseInfoLoading = false
-      iMessage.success("保存成功")
     }
   }
 }
