@@ -118,7 +118,15 @@ module.exports = {
         pathRewrite:{
           "^/tpInfoApi": ""
         }
-      }
+      },
+      '/commonApi':{ //向东，common模块的api地址
+        target:'http://10.13.38.100:8083',
+        changeOrigin:true,
+        pathRewrite:{
+          "^/commonApi": ""
+        }
+      },
+      
     }
   }
 }
