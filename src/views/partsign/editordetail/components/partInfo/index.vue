@@ -11,17 +11,19 @@
 				<icon symbol name="icondian" v-if="icons"></icon>
 				<span class="title">{{item.name}}</span>
 			</p>
-			<span class="content">{{data[item.key]}}</span>
+			<span class="content" v-if="item.key=='createDate' || item.key=='drawingDate'" >{{date(data[item.key])}}</span>
+			<span class="content" v-else>{{data[item.key]}}</span>
 		</li>
 	</ul>
-	
 </template>
 
 <script>
 	import {
 		icon
 	} from "@/components"
+	import filters from "@/utils/filters"
 	export default {
+		mixins:["filters"],
 		components: {
 			icon
 		},
@@ -29,6 +31,9 @@
 			return {
 
 			}
+		},
+		computed:{
+			
 		},
 		props: {
 			icons: {
@@ -43,7 +48,12 @@
 				type: Object,
 				default: () => {}
 			}
-		}
+		},
+		methods: {
+			date(date) {
+				return window.moment(date).format('YYYY-MM-DD')
+			}
+		},
 	}
 </script>
 
