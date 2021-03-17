@@ -1,5 +1,5 @@
 <template>
-  <iDialog class="dialog" title="全部版本" v-bind="$props" :visible.sync="visible" v-on="$listeners">
+  <iDialog class="dialog" title="每车用量（当前版本：v3）" v-bind="$props" :visible.sync="visible" v-on="$listeners">
     <div class="body">
       <tableList index height="100%" :selection="false" v-show="visible" class="table" :tableData="tableListData" :tableTitle="tableTitle" :loading="loading" />
     </div>
@@ -21,7 +21,7 @@
 <script>
 import { iPagination, iDialog } from '@/components'
 import tableList from './tableList'
-import { versionDialogTableTitle as tableTitle } from './data'
+import { volumeDialogTableTitle as tableTitle } from './data'
 import { pageMixins } from '@/utils/pageMixins'
 
 export default {

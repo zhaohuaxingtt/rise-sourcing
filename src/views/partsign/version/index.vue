@@ -8,7 +8,11 @@
         </div>
       </div>
       <div class="body margin-top25">
-        <tableList index height="100%" :selection="false" class="table" :tableData="tableListData" :tableTitle="tableTitle" :loading="loading" />
+        <tableList index height="100%" :selection="false" class="table" :tableData="tableListData" :tableTitle="tableTitle" :loading="loading">
+          <template #version="scope">
+            <span class="link-underline" @click="volume">{{ scope.row.version }}</span>
+          </template>
+        </tableList>
       </div>
       <div class="footer">
         <iPagination

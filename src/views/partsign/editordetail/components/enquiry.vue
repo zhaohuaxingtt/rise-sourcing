@@ -32,13 +32,13 @@
         :layout="page.layout"
         :total="page.totalCount" />
     </div>
-    <!-- <versionDialog :visible.sync="versionVisible" /> -->
+    <!-- <volumeDialog :visible.sync="volumeVisible" /> -->
   </iCard>
 </template>
 
 <script>
 import { iCard, iButton, iPagination, iMessage } from '@/components'
-// import versionDialog from './versionDialog'
+// import volumeDialog from './volumeDialog'
 import tableList from './tableList'
 import { enquiryTableTitle as tableTitle } from './data'
 import { getEnquiryList } from '@/api/partsign/editordetail'
@@ -52,7 +52,7 @@ export default {
       tableTitle,
       tableListData: [],
       loading: false,
-      versionVisible: false,
+      volumeVisible: false,
       multipleSelection: []
     }
   },
@@ -70,7 +70,7 @@ export default {
         .catch(() => this.loading = false)
     },
     version() {
-      // this.versionVisible = true
+      // this.volumeVisible = true
       this.$router.push({
         path:'/partsign/version'
       })

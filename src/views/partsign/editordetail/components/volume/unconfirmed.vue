@@ -5,13 +5,13 @@
       <div class="control">
         <iButton @click="confirm">确认</iButton>
         <iButton @click="visible = true">拒绝</iButton>
-        <iButton>导出</iButton>
+        <iButton @click="download">导出</iButton>
       </div>
     </div>
     <div class="body margin-top27">
-      <tableList class="table" index :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="loading">
-        <template #a="scope">
-          <span class="link-underline">{{ scope.row.a }}</span>
+      <tableList class="table" index :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="loading" @handleSelectionChange="handleSelectionChange">
+        <template #version="scope">
+          <span class="link-underline" @click="volume">{{ scope.row.version }}</span>
         </template>
       </tableList>
     </div>
@@ -28,6 +28,7 @@
         :total="page.totalCount" />
     </div>
     <backItems class="backItems" v-model="visible" title="拒绝" @sure="refuseSure" />
+    <volumeDialog :visible.sync="volumeVisible" />
   </iCard>
 </template>
 
@@ -39,9 +40,10 @@ import backItems from '@/views/partsign/home/components/backItems'
 import { getUnconfirmed } from '@/api/partsign/editordetail'
 import { pageMixins } from '@/utils/pageMixins'
 import { iMessage } from '../../../../../components'
+import volumeDialog from '../volumeDialog'
 
 export default {
-  components: { iCard, iButton, iPagination, tableList, backItems },
+  components: { iCard, iButton, iPagination, tableList, backItems, volumeDialog },
   mixins: [ pageMixins ],
   data() {
     return {
@@ -49,8 +51,10 @@ export default {
       display: true,
       tableTitle,
       tableListData: [],
+      multipleSelection: [],
       loading: false,
-      visible: false
+      visible: false,
+      volumeVisible: false
     }
   },
   created() {
@@ -67,11 +71,24 @@ export default {
         })
         .catch(() => this.loading = false)
     },
+    handleSelectionChange(list) {
+      this.multipleSelection = list
+    },
     confirm() {
+      if (!this.multipleSelection.length) return iMessage.warn('请选择需要确认的版本')
       iMessage.success('操作成功')
     },
     refuseSure() {
       this.visible = false
+    },
+    download() {
+      if (!this.multipleSelection.length) return iMessage.warn('请选择需要导出的版本')
+      iMessage.error('文件服务异常')
+    },
+    volume() {
+      this.volumeVisible = true
+      console.log(this.volumeVisible)
+      // this.$router.
     }
   }
 }
