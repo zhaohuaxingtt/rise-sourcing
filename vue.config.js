@@ -69,7 +69,9 @@ module.exports = {
           'element-ui':'ELEMENT',
           'vue-i18n': 'VueI18n',
           'i18n': 'i18n',
-          'Ellipsis': 'Ellipsis'
+          'Ellipsis': 'Ellipsis',
+          'SockJS': 'SockJS',
+          'Stomp': 'Stomp'
         };
         //开启gizp压缩
         config.plugins.push(new CompressionPlugin({
