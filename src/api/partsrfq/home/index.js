@@ -6,7 +6,7 @@
  */
 
 import axios from '@/utils/axios'
-const requst = axios(process.env.VUE_APP_BASE_MOCK)
+const requst = axios(process.env.VUE_APP_RFQ)
 export function getRfqDataList(parmars) {
     return requst({
         url: '/rfqs/findByRfqs',

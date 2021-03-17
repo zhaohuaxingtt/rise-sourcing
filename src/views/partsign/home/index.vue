@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-24 09:17:57
- * @LastEditTime: 2021-03-17 13:14:15
+ * @LastEditTime: 2021-03-17 15:21:58
  * @LastEditors: Please set LastEditors
  * @Description: 零件签收列表界面.
  * @FilePath: \rise\src\views\partsign\index.vue
@@ -88,7 +88,7 @@
       />
     </iCard>
     <!------------------------------------------------------------------------>
-    <!--                  转派弹出框                                         --->
+    <!--                  转派弹出框                                        --->
     <!------------------------------------------------------------------------>
     <changeItems
       v-model="diologChangeItems"
