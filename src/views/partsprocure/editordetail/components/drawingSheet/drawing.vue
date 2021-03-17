@@ -29,8 +29,8 @@
       </tableList>
       <iPagination
         class="pagination margin-top30"
-        @size-change="handleSizeChange($event, getUsage)"
-        @current-change="handleCurrentChange($event, getUsage)"
+        @size-change="handleSizeChange($event, getTable)"
+        @current-change="handleCurrentChange($event, getTable)"
         background
         :current-page="page.size"
         :page-sizes="page.pageSizes"
