@@ -34,6 +34,11 @@ export const staticRouter = [{
 				component: () => import("@/views/partsign/editordetail"),
 			},
 			{
+				path: "/partsign/version",
+				name: "version",
+				component: () => import("@/views/partsign/version"),
+			},
+			{
 				path: "/partsprocure",
 				name: "partsprocure",
 				component: () => import("@/views/partsprocure/home"),

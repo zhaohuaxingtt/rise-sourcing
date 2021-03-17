@@ -14,7 +14,7 @@
       :limit="1"
       accept=".xlsx,.pdf,.docx"
   >
-    <iButton>{{buttonText}}</iButton>
+    <iButton :loading="uploadButtonLoading">{{buttonText}}</iButton>
   </el-upload>
 </template>
 <script>
@@ -27,12 +27,7 @@ export default {
   props: {
     buttonText: {type: String, default: '上传附件'},
     repeatClick: Boolean,
-    fileList: {
-      type: Array,
-      default: () => {
-        return []
-      }
-    }
+    uploadButtonLoading: {type: Boolean, default: false}
   },
   data() {
     return {}

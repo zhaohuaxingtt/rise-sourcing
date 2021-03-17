@@ -9,14 +9,14 @@ import axios from '@/utils/axios'
 const requst = axios(process.env.VUE_APP_RFQ)
 export function getRfqDataList(parmars) {
     return requst({
-        url: '/rfqs/findByRfqs',
+        url: '/api/rfqs/findByRfqs',
         method: 'POST',
         data: parmars
     })
 }
 export function editRfqData(parmars) {
     return requst({
-        url: '/rfqs/updateRfq',
+        url: '/api/rfqs/updateRfq',
         method: 'PATCH',
         data: parmars
     })

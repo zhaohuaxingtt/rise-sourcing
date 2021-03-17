@@ -21,7 +21,7 @@
     },
     'partsign': {
       'enquiry': '询价资料',
-      'usage': '每车用量',
+      'volume': '每车用量',
       'log': '操作日志'
     }
   })

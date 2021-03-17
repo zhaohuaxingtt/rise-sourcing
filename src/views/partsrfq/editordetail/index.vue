@@ -20,7 +20,7 @@
         <iButton @click="updateRfqStatus('05')">结束本轮询价</iButton>
         <iButton @click="updateRfqStatus('03')">转谈判</iButton>
         <iButton @click="createAFixedPointApplication" disabled>创建定点申请</iButton>
-        <iButton type="text" @click="createAFixedPointApplication">
+        <iButton type="text">
           <icon symbol name="iconrizhiwuzi" class="log-icon"/>
           <span class="log-word">日志</span>
         </iButton>
@@ -60,7 +60,7 @@
           </div>
           <div class="col">
             <iFormItem label="RFQ状态：" name="statusName">
-              <iText>{{ baseInfo.statusName }}</iText>
+              <iText>{{ baseInfo.currentStatus }}</iText>
             </iFormItem>
             <iFormItem label="询价采购员：" name="buyerName">
               <iText>{{ baseInfo.buyerName }}</iText>
@@ -158,9 +158,13 @@ export default {
         userId: 12321,
         rfqId: Number(query.id)
       }
-      const res = await getRfqDataList(req)
-      this.baseInfo = res.data[0]
-      this.baseInfoLoading = false
+      try {
+        const res = await getRfqDataList(req)
+        this.baseInfo = res.data[0]
+        this.baseInfoLoading = false
+      } catch {
+        this.baseInfoLoading = false
+      }
     },
     changeNav(item) {
       this.navActivtyValue = item.value
@@ -180,10 +184,6 @@ export default {
       const res = await editRfqData(req)
       iMessage.success(res.desZh)
       this.getBaseInfo()
-    },
-    endInquiry() {
-    },
-    transferNegotiation() {
     },
     createAFixedPointApplication() {
 

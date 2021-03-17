@@ -46,6 +46,9 @@ export default {
       if (val) {
         this.initMessageData()
         this.queryByPage()
+      } else {
+        this.loading = false
+        if (this.queryByPageSource) this.queryByPageSource.cancel()
       }
     }
   },

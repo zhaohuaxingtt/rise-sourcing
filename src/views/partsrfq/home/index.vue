@@ -139,13 +139,17 @@ export default {
       this.tableLoading = true;
       const req = {
         userId: 12321,
-        current: this.page.size,
-        size: this.page.page,
+        current: this.page.currPage,
+        size: this.page.pageSize,
         ...this.form
       }
-      const res = await getRfqDataList(req)
-      this.tableListData = res.data;
-      this.tableLoading = false;
+      try {
+        const res = await getRfqDataList(req)
+        this.tableListData = res.data;
+        this.tableLoading = false;
+      } catch {
+        this.tableLoading = false;
+      }
     },
     //修改表格改动列
     handleSelectionChange(val) {

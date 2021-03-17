@@ -38,9 +38,9 @@
         <el-tab-pane :label="$t('partsign.enquiry')">
           <enquiry />
         </el-tab-pane>
-        <el-tab-pane :label="$t('partsign.usage')">
+        <el-tab-pane :label="$t('partsign.volume')">
           <unconfirmed class="unconfirmed" />
-          <usage class="usage" />
+          <volume class="volume" />
         </el-tab-pane>
         <!-- <el-tab-pane :label="$t('partsign.log')">
           <iCard class="card">
@@ -62,8 +62,8 @@
 import { iPage, iButton, iCard, iTabsList, icon, iMessage } from "@/components";
 import partInfo from "./components/partInfo";
 import enquiry from "./components/enquiry";
-import usage from "./components/usage/usage";
-import unconfirmed from "./components/usage/unconfirmed";
+import volume from "./components/volume/volume";
+import unconfirmed from "./components/volume/unconfirmed";
 import backItems from "../home/components/backItems";
 import changeItems from "../home/components/changeItems";
 // import log from './components/log';
@@ -78,7 +78,7 @@ export default {
     icon,
     partInfo,
     enquiry,
-    usage,
+    volume,
     backItems,
     changeItems,
     unconfirmed,
@@ -230,7 +230,7 @@ export default {
   margin-top: 15px;
 }
 
-.unconfirmed + .usage {
+.unconfirmed + .volume {
 	margin-top: 30px;
 }
 </style>

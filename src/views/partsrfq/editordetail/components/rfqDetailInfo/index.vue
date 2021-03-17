@@ -1,7 +1,7 @@
 <template>
   <div>
     <iTabsList class="margin-top20" type='border-card'>
-      <el-tab-pane label="⽬标价">
+      <el-tab-pane label="目标价">
         <target-price/>
       </el-tab-pane>
       <el-tab-pane label="参考产量及时间计划">
