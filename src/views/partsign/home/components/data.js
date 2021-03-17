@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-24 09:47:32
- * @LastEditTime: 2021-03-17 20:24:46
+ * @LastEditTime: 2021-03-17 22:29:57
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsign\home\components\data.js
@@ -14,9 +14,9 @@ export const tableTitle = [
   {props:'projectCarType',name:'车型项目'},
   {props:'tpDeptNum',name:'设计科室'},
   {props:'tpPrincepalName',name:'工程师'},
-  {props:'tpInforType',name:'信息单类型'},
+  {props:'tpInfoType',name:'信息单类型'},
   {props:'status',name:'信息单状态'},
-  {props:'attachmentStatu',name:'询价资料状态'},
+  {props:'attachmentStatus',name:'询价资料状态'},
   {props:'partDosageStatus',name:'每车用量状态'}
 ]
 //form
