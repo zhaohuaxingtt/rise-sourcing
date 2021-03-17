@@ -158,9 +158,13 @@ export default {
         userId: 12321,
         rfqId: Number(query.id)
       }
-      const res = await getRfqDataList(req)
-      this.baseInfo = res.data[0]
-      this.baseInfoLoading = false
+      try {
+        const res = await getRfqDataList(req)
+        this.baseInfo = res.data[0]
+        this.baseInfoLoading = false
+      } catch {
+        this.baseInfoLoading = false
+      }
     },
     changeNav(item) {
       this.navActivtyValue = item.value
