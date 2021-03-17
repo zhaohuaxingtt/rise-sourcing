@@ -98,7 +98,7 @@ export default {
   },
   methods: {
     getPartInfo() {
-		this.partDetails =  localStorage.getItem('tpPartInfoVO') || {};
+		this.partDetails = JSON.parse(localStorage.getItem('tpPartInfoVO')) || {};
     },
     //签收
     save() {
