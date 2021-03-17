@@ -21,7 +21,7 @@
     },
     'partsign': {
       'enquiry': 'enquiry',
-      'usage': 'usage',
+      'volume': 'volume',
       'log': 'log'
     }
   })

@@ -1,6 +1,6 @@
 <template>
-  <iPage id="taskCenterHome" class="home">
-    <div id="header">
+  <iPage id="taskCenterHome" class="home" v-loading="loading">
+    <div id="header" class="header">
       <div class="margin-bottom20 clearFloat">
         <span class="font18 font-weight">任务中心</span>
         <div class="floatright">
@@ -11,8 +11,8 @@
         </div>
       </div>
       <tabs v-model="type" @tab-click="handleTypeChange">
-        <tabPane label="全部" name="all" />
-        <tabPane :label="chunk.label" :name="chunk.type" v-for="(chunk, $chunkIndex) in data" :key="$chunkIndex" />
+        <tabPane :label="$t('all')" name="all" />
+        <tabPane :label="$i18n.locale === 'zh' ? taskType.taskTypeZhName : taskType.taskTypeEngName" :name="taskType.taskTypeCode" v-for="(taskType, $index) in taskTypeList" :key="$index" />
       </tabs>
       <iSearch class="search margin-top10" icon>
         <el-form>
@@ -44,13 +44,16 @@ import { iPage, icon, iSearch, iInput } from '@/components'
 import card from './components/card'
 import tabs from './components/tabs'
 import tabPane from './components/tabPane'
+import { getAllTaskType } from '@/api/taskcenter/home'
 
 export default {
   components: { iPage, icon, iSearch, iInput, card, tabs, tabPane },
   data() {
     return {
+      loading: false,
       type: 'all',
       search: '',
+      taskTypeList: [],
       data: [
         {
           type: 'xunyuan',
@@ -80,6 +83,8 @@ export default {
         list: [ {}, {}, {}, {}, {} ]
       })
     }
+
+    // this.getAllTaskType()
   },
   mounted() {
     this.initScroll()
@@ -87,6 +92,8 @@ export default {
     window.addEventListener('resize', () => {
       this.initScroll()
     })
+
+    this.scrollDom.style.paddingRight = `${ parseFloat(this.getStyle(this.scrollDom, 'padding-right')) - (this.scrollDom.offsetWidth - this.scrollDom.clientWidth) }px`
   },
   methods: {
     getStyle(dom, style) {
@@ -110,8 +117,6 @@ export default {
       this.scrollDom.style.height = `${ taskCenterHeight - taskCenterPaddingTop - headerHeight - 4 }px`
 
       this.contentDomList = this.data.map(item => this.scrollDom.querySelector(`#${ item.type }`))
-
-      this.scrollDom.style.paddingRight = `${ parseFloat(this.getStyle(this.scrollDom, 'padding-right')) - (this.scrollDom.offsetWidth - this.scrollDom.clientWidth) }px`
     },
     handleTypeChange(val) {
       const dom = this.scrollDom.querySelector(`#${ val }`)
@@ -148,6 +153,17 @@ export default {
           break;
         }
       }
+    },
+    getAllTaskType() {
+      this.loading = true
+
+      getAllTaskType()
+        .then(res => {
+          this.taskTypeList = res.data
+
+          this.loading = false
+        })
+        .catch(() => this.loading = false)
     }
   }
 }
@@ -156,6 +172,11 @@ export default {
 <style lang="scss" scoped>
 .home {
   overflow: hidden;
+
+  .header {
+    position: relative;
+    z-index: 1;
+  }
 
   .scroll {
     position: absolute;

@@ -7,7 +7,7 @@
  * @FilePath: \rise\src\views\partsign\editordetail\components\log\index.vue
 -->
 <template>
-  <div class="usage">
+  <div class="log">
     <div class="header clearFloat">
       <span class="title">操作日志</span>
       <div class="control">
@@ -18,8 +18,8 @@
       <tableList class="table" index :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="loading" />
       <iPagination
         class="pagination"
-        @size-change="handleSizeChange($event, getUsage)"
-        @current-change="handleCurrentChange($event, getUsage)"
+        @size-change="handleSizeChange($event, getVolume)"
+        @current-change="handleCurrentChange($event, getVolume)"
         background
         :current-page="page.size"
         :page-sizes="page.pageSizes"
@@ -34,7 +34,7 @@
 import { iButton, iPagination } from '@/components'
 import tableList from './tableList'
 import { logTableTitle as tableTitle } from './data'
-import { getUsage } from '@/api/partsign/editordetail'
+import { getVolume } from '@/api/partsign/editordetail'
 import { pageMixins } from '@/utils/pageMixins'
 
 export default {
@@ -48,12 +48,12 @@ export default {
     }
   },
   created() {
-    this.getUsage()
+    this.getVolume()
   },
   methods: {
-    getUsage() {
+    getVolume() {
       this.loading = true
-      getUsage({})
+      getVolume({})
         .then(res => {
           this.tableListData = res.data
           this.loading = false
@@ -65,7 +65,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.usage {
+.log {
   .header {
     position: relative;
 

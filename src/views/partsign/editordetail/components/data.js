@@ -50,28 +50,28 @@ export const partDetailTitle=[
 ]
 
 export const enquiryTableTitle = [
-	{ props: 'a', name: '文件名' },
+	{ props: 'tpPartAttachmentPath', name: '文件名' },
   { props: 'b', name: '文件大小（MB）' },
   { props: 'c', name: '上传日期' },
   { props: 'd', name: '上传人' }
 ]
 
 export const unconfirmedTableTitle = [
-  { props: 'a', name: '版本号' },
-  { props: 'b', name: '信息流水单号' },
-  { props: 'c', name: '维护人' },
-  { props: 'd', name: '推送时间' },
-  { props: 'e', name: '版本状态' }
+  { props: 'version', name: '版本号' },
+  { props: 'tpPartId', name: '信息流水单号' },
+  { props: 'operator', name: '维护人' },
+  { props: 'publishDate', name: '推送时间' },
+  { props: 'status', name: '版本状态' }
 ]
 
-export const usageTableTitle = [
-  { props: 'a', name: '车型大类' },
-  { props: 'b', name: '发动机类型' },
-  { props: 'c', name: '电池容量' },
-	{ props: 'd', name: '变速箱类型' },
-  { props: 'e', name: '车型等级' },
-  { props: 'f', name: '其他信息' },
-  { props: 'g', name: '每车用量' }
+export const volumeTableTitle = [
+  { props: 'carCategory', name: '车型大类' },
+  { props: 'engineType', name: '发动机类型' },
+  { props: 'chargeVolume', name: '电池容量' },
+	{ props: 'gearboxType', name: '变速箱类型' },
+  { props: 'carGrade', name: '车型等级' },
+  { props: 'otherInfo', name: '其他信息' },
+  { props: 'volume', name: '每车用量' }
 ]
 
 export const versionDialogTableTitle = [
