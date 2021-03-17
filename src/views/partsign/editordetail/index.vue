@@ -32,7 +32,7 @@
       <iTabs-list type="border-card">
         <el-tab-pane label="信息单详情" >
           <iCard>
-            <partInfo :title="partDetailTitle" :data="partDetails"></partInfo>
+            <partInfo :title="item" :data="partDetails" v-for="(item,index) in partDetailTitle" :key="index"></partInfo>
           </iCard>
         </el-tab-pane>
         <el-tab-pane :label="$t('partsign.enquiry')">
