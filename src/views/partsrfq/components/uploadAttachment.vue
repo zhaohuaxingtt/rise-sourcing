@@ -40,7 +40,9 @@ export default {
     repeatClick: Boolean,
     fileList: {
       type: Array,
-      default: []
+      default: () => {
+        return []
+      }
     }
   },
   data() {
