@@ -112,11 +112,11 @@ module.exports = {
           "^/mock": "/mock"
         }
       },
-      '/TpInfo':{
+      '/tpInfoApi':{ //刘攀宏服务地址
         target:'http://10.13.38.100:8086',
         changeOrigin:true,
         pathRewrite:{
-          "^/TpInfo": "/TpInfo"
+          "^/tpInfoApi": ""
         }
       }
     }

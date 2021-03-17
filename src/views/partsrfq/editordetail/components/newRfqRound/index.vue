@@ -57,10 +57,10 @@
           @current-change="handleCurrentChange($event, getTableList)"
           background
           :page-sizes="page.pageSizes"
-          :page-size="page.page"
+          :page-size="page.pageSize"
           :layout="page.layout"
-          :current-page='page.size'
-          :total="page.total"
+          :current-page='page.currPage'
+          :total="page.totalCount"
       />
     </div>
   </iDialog>

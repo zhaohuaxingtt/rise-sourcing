@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-24 09:17:57
- * @LastEditTime: 2021-03-16 16:57:28
+ * @LastEditTime: 2021-03-17 13:14:15
  * @LastEditors: Please set LastEditors
  * @Description: 零件签收列表界面.
  * @FilePath: \rise\src\views\partsign\index.vue
@@ -81,10 +81,10 @@
         @current-change="handleCurrentChange($event, getTableList)"
         background
         :page-sizes="page.pageSizes"
-        :page-size="page.page"
+        :page-size="page.pageSize"
         :layout="page.layout"
-        :current-page='page.size'
-        :total="page.total"
+        :current-page='page.currPage'
+        :total="page.totalCount"
       />
     </iCard>
     <!------------------------------------------------------------------------>
@@ -146,8 +146,14 @@ export default {
     getTableList() {
       this.tableLoading = true;
       getTabelData().then((res) => {
-        this.tableListData = res.data.list;
         this.tableLoading = false;
+        this.page.currPage = res.data.currPage
+        this.page.pageSize = res.data.pageSize
+        this.page.totalCount = res.data.totalCount
+        this.tableListData = res.data.list;
+      }).catch(err=>{
+        this.tableLoading = false;
+        this.tableListData = []
       });
     },
     //修改表格改动列

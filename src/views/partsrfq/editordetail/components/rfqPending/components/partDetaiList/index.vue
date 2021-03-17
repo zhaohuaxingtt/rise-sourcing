@@ -15,7 +15,7 @@
 			@handleSelectionChange="handleSelectionChange" @openPage="openPage"></tableList>
 		<iPagination @size-change="handleSizeChange($event, getTableList)"
 			@current-change="handleCurrentChange($event, getTableList)" background :page-sizes="page.pageSizes"
-			:page-size="page.pageSize" :layout="page.layout" :total="page.total"></iPagination>
+			:page-size="page.pageSize" :layout="page.layout" :total="page.totalCount"></iPagination>
 		<di class="addFs flex-align-center">
 			<iButton @click="addFsList">添加</iButton>
 		</di>
@@ -23,7 +23,7 @@
 			@handleSelectionChange="handleSelectionChange" @openPage="openPage"></tableList>
 		<iPagination @size-change="handleSizeChange($event, getTableList)"
 			@current-change="handleCurrentChange($event, getTableList)" background :page-sizes="page.pageSizes"
-			:page-size="page.pageSize" :layout="page.layout" :total="page.total"></iPagination>
+			:page-size="page.pageSize" :layout="page.layout" :total="page.totalCount"></iPagination>
 		<!-- 新申请财务目标价 -->
 		<applyPrice ref="applyPrice"></applyPrice>
 	</iCard>

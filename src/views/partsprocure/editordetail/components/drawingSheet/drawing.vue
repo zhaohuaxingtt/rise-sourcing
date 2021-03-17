@@ -23,9 +23,9 @@
         background
         :current-page="page.size"
         :page-sizes="page.pageSizes"
-        :page-size="page.page"
+        :page-size="page.pageSize"
         :layout="page.layout"
-        :total="page.total" />
+        :total="page.totalCount" />
     </div>
   </iCard>
 </template>

@@ -7,8 +7,6 @@
 
 import axios from '@/utils/axios'
 const requst = axios(process.env.VUE_APP_BASE_MOCK)
-
-
 export function getRfqDataList(parmars) {
     return requst({
         url: '/rfqs/findByRfqs',
@@ -16,7 +14,6 @@ export function getRfqDataList(parmars) {
         data: parmars
     })
 }
-
 export function editRfqData(parmars) {
     return requst({
         url: '/rfqs/updateRfq',

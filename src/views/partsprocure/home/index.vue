@@ -76,7 +76,7 @@
         :page-sizes="page.pageSizes"
         :page-size="page.pageSize"
         :layout="page.layout"
-        :total="page.total"/>
+        :total="page.totalCount"/>
     </iCard>
       <!------------------------------------------------------------------------>
       <!--                  转派弹出框                                         --->
