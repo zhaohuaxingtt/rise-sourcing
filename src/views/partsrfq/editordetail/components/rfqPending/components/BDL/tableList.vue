@@ -2,7 +2,7 @@
 * @author:shujie
 * @Date: 2021-3-5 10:56:32
  * @LastEditors: Please set LastEditors
-* @Description: BDL表格
+* @Description: BDL表格数据
  -->
 <template>
 	<el-table class="table" :data="tableData" v-loading="tableLoading" @selection-change="handleSelectionChange">

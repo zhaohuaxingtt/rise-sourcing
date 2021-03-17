@@ -41,7 +41,7 @@
           <iButton @click="newRfq">新建RFQ</iButton>
           <iButton @click="editRfq('01')">关闭RFQ</iButton>
           <iButton @click="assignmentOfScoringTasks">转派评分任务</iButton>
-          <iButton @click="editRfq('06')">转谈判</iButton>
+          <iButton @click="editRfq('03')">转谈判</iButton>
           <iButton disabled>创建定点申请</iButton>
           <iButton @click="exportTable">导出</iButton>
         </div>
@@ -54,12 +54,14 @@
           @openPage='openPage'
           open-page-props="id"
           :index="true"
-          icon-props="topRecordId"
+          icon-props="recordId"
       >
         <template v-slot:icon="scope">
-          <icon class="icon icon-color-active" name="iconliebiaoyizhiding" @click="toTop(scope.data)"
-                v-if="scope.data.topRecordId > 1"></icon>
-          <icon class="icon" name="iconliebiaoyizhiding" @click="toTop(scope.data)" v-else></icon>
+          <div @click="toTop(scope.data)" class="icon-style">
+            <icon class="icon icon-color-active" name="iconliebiaoyizhiding"
+                  v-if="scope.data.recordId > 1"></icon>
+            <icon class="icon" name="iconliebiaoyizhiding" v-else></icon>
+          </div>
         </template>
       </tablelist>
       <!------------------------------------------------------------------------>
@@ -168,8 +170,11 @@ export default {
           userId: 12321
         }
       }
-      await editRfqData(req)
-      iMessage.success("修改成功")
+      const res = await editRfqData(req)
+      if (res.code == 0) {
+        iMessage.success("修改成功")
+      }
+      this.getTableList()
     },
     assignmentOfScoringTasks() {
       if (this.selectTableData.length == 0)
@@ -177,7 +182,8 @@ export default {
       this.diologAssignmentOfScroingTasks = true
     },
     async toTop(row) {
-      const setType = row.topRecordId > 1 ? '0' : '1'
+      console.log(11111)
+      const setType = row.recordId > 1 ? '0' : '1'
       const req = {
         rfqSetTopPackage: {
           setType,
@@ -185,8 +191,11 @@ export default {
           userId: 12321
         },
       }
-      await editRfqData(req)
-      setType === '1 ' ? iMessage.success("置顶成功") : iMessage.success("已取消置顶")
+      const res = await editRfqData(req)
+      if (res.code == 0) {
+        setType === '1' ? iMessage.success("置顶成功") : iMessage.success("已取消置顶")
+      }
+      this.getTableList()
     },
     change() {
     },
@@ -202,5 +211,9 @@ export default {
 <style lang='scss' scoped>
 .icon-color-active {
   color: $color-blue;
+}
+
+.icon-style {
+  cursor: pointer;
 }
 </style>

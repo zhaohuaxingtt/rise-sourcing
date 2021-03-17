@@ -14,14 +14,14 @@ export const tableTitle = [
     {props:'currentRounds',name:'当前轮次'},
     {props:'suppliers',name:'已询价供应商'},
     {props:'quotations',name:'已报价供应商'},
-    {props:'currentRoundsStatus',name:'RFQ状态'},
+    {props:'currentStatus',name:'RFQ状态'},
     {props:'endDate',name:'报价截至日期'},
     {props:'buyerName',name:'询价采购员'},
     {props:'linieNameZh',name:'LINIE'},
     {props:'tpGradeStatus',name:'TP评分状态'},
     {props:'mqGradeStatus',name:'MQ评分状态'},
     {props:'targetGradeStatus',name:'目标价状态'},
-    {props:'topRecordId',name:''},
+    {props:'recordId',name:''},
 ]
 
 export const assignmentOfScroingTasksTableTitle = [
