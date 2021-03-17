@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-24 09:17:57
- * @LastEditTime: 2021-03-17 20:44:57
+ * @LastEditTime: 2021-03-17 22:09:16
  * @LastEditors: Please set LastEditors
  * @Description: 零件签收列表界面.
  * @FilePath: \rise\src\views\partsign\index.vue
@@ -160,7 +160,7 @@ export default {
     //获取表格数据
     getTableList() {
       this.tableLoading = true;
-      getTabelData().then((res) => {
+      getTabelData({...this.form,...this.page}).then((res) => {
         this.tableLoading = false;
         this.page.currPage = res.data.tpRecordsSenarioResult.currPage
         this.page.pageSize = res.data.tpRecordsSenarioResult.pageSize

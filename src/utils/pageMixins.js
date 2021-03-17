@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-24 14:28:34
- * @LastEditTime: 2021-03-17 20:10:32
+ * @LastEditTime: 2021-03-17 22:10:44
  * @LastEditors: Please set LastEditors
  * @Description: 针对所有的分页插件，实行方法混入。
  * @FilePath: \rise\src\utils\pageMixins.js
@@ -12,7 +12,7 @@
      return {
        page:{
          totalCount:0, //总页数
-         pageSize:1,   //每页多少条
+         pageSize:10,   //每页多少条
          pageSizes:[10,20,50,100], //每页条数切换
          currPage:1,    //当前页
          layout:"sizes, prev, pager, next, jumper"
