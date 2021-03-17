@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-24 09:17:57
- * @LastEditTime: 2021-03-18 00:28:37
+ * @LastEditTime: 2021-03-18 00:37:44
  * @LastEditors: Please set LastEditors
  * @Description: 零件签收列表界面.
  * @FilePath: \rise\src\views\partsign\index.vue
@@ -115,7 +115,6 @@ import backItems from "./components/backItems";
 import changeItems from "./components/changeItems";
 import { iNavMvp } from "@/components";
 import local from '@/utils/localstorage'
-import {excelExport} from '@/utils/filedowLoad'
 export default {
   components: { iPage, tablelist, iButton, iCard, backItems, changeItems ,iNavMvp,iPagination,iSearch,iInput,iSelect},
   mixins: [pageMixins],
@@ -167,7 +166,6 @@ export default {
         this.page.pageSize = res.data.tpRecordsSenarioResult.pageSize
         this.page.totalCount = res.data.tpRecordsSenarioResult.totalCount
         this.tableListData = this.translateDataToRender(res.data.tpRecordsSenarioResult.tpRecordList);
-        excelExport(this.tableListData,this.tableTitle);
       }).catch(err=>{
         this.tableLoading = false;
         this.tableListData = [];
