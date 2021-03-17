@@ -36,7 +36,7 @@
           </iCard>
         </el-tab-pane>
         <el-tab-pane :label="$t('partsign.enquiry')">
-          <enquiry />
+          <enquiry :data="partDetails.partAttachmentList" />
         </el-tab-pane>
         <el-tab-pane :label="$t('partsign.volume')">
           <unconfirmed class="unconfirmed" />
@@ -98,7 +98,7 @@ export default {
   },
   methods: {
     getPartInfo() {
-		this.partDetails =  localStorage.getItem('tpPartInfoVO') || {};
+		this.partDetails = JSON.parse(localStorage.getItem('tpPartInfoVO')) || {};
     },
     //签收
     save() {

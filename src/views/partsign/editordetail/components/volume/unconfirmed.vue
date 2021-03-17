@@ -4,14 +4,17 @@
       <span class="title">待确认版本</span>
       <div class="control">
         <iButton @click="confirm">确认</iButton>
-        <iButton @click="visible = true">拒绝</iButton>
+        <iButton @click="reject">拒绝</iButton>
         <iButton @click="download">导出</iButton>
       </div>
     </div>
     <div class="body margin-top27">
-      <tableList class="table" index :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="loading" @handleSelectionChange="handleSelectionChange">
+      <tableList class="table" index :tableData="data" :tableTitle="tableTitle" :tableLoading="loading" @handleSelectionChange="handleSelectionChange">
         <template #version="scope">
           <span class="link-underline" @click="volume">{{ scope.row.version }}</span>
+        </template>
+        <template #publishDate="scope">
+          <span>{{ scope.row.publishDate | dateFilter }}</span>
         </template>
       </tableList>
     </div>
@@ -41,10 +44,17 @@ import { getUnconfirmed } from '@/api/partsign/editordetail'
 import { pageMixins } from '@/utils/pageMixins'
 import { iMessage } from '../../../../../components'
 import volumeDialog from '../volumeDialog'
+import filters from '@/utils/filters'
 
 export default {
   components: { iCard, iButton, iPagination, tableList, backItems, volumeDialog },
-  mixins: [ pageMixins ],
+  mixins: [ pageMixins, filters ],
+  props: {
+    data: {
+      type: Array,
+      default: () => ([])
+    }
+  },
   data() {
     return {
       show: false,
@@ -58,18 +68,18 @@ export default {
     }
   },
   created() {
-    this.getUnconfirmed()
+    // this.getUnconfirmed()
   },
   methods: {
     getUnconfirmed() {
-      this.loading = true
-      getUnconfirmed({})
-        .then(res => {
-          this.tableListData = res.data
-          this.loading = false
-          this.display = !!this.tableListData.length
-        })
-        .catch(() => this.loading = false)
+      // this.loading = true
+      // getUnconfirmed({})
+      //   .then(res => {
+      //     this.tableListData = res.data
+      //     this.loading = false
+      //     this.display = !!this.tableListData.length
+      //   })
+      //   .catch(() => this.loading = false)
     },
     handleSelectionChange(list) {
       this.multipleSelection = list
@@ -77,6 +87,10 @@ export default {
     confirm() {
       if (!this.multipleSelection.length) return iMessage.warn('请选择需要确认的版本')
       iMessage.success('操作成功')
+    },
+    reject() {
+      if (!this.multipleSelection.length) return iMessage.warn('请选择需要拒绝的版本')
+      this.visible = false
     },
     refuseSure() {
       this.visible = false
@@ -87,8 +101,6 @@ export default {
     },
     volume() {
       this.volumeVisible = true
-      console.log(this.volumeVisible)
-      // this.$router.
     }
   }
 }

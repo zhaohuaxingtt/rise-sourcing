@@ -10,7 +10,10 @@
       <div class="body margin-top25">
         <tableList index height="100%" :selection="false" class="table" :tableData="tableListData" :tableTitle="tableTitle" :loading="loading">
           <template #version="scope">
-            <span class="link-underline" @click="volume">{{ scope.row.version }}</span>
+            <span class="link-underline" @click="volume(scope.row)">{{ scope.row.version }}</span>
+          </template>
+          <template #publishDate="scope">
+            <span>{{ scope.row.publishDate | dateFilter }}</span>
           </template>
         </tableList>
       </div>
@@ -24,29 +27,40 @@
           :page-sizes="page.pageSizes"
           :page-size="page.pageSize"
           :layout="page.layout"
-          :total="page.totalCount" />
+          :total="tableListData ? tableListData.length : 0" />
       </div>
     </iCard>
+    <volumeDialog :visible.sync="volumeVisible" :data="volumeData" />
   </iPage>
 </template>
 
 <script>
 import { iPage, iCard, iButton, iPagination } from '@/components'
 import tableList from '@/views/partsign/editordetail/components/tableList'
+import volumeDialog from '@/views/partsign/editordetail/components/volumeDialog'
 import { tableTitle } from './components/data'
 import { pageMixins } from '@/utils/pageMixins'
+import filters from '@/utils/filters'
+import local from '@/utils/localstorage'
 
 export default {
-  components: { iPage, iCard, iButton, iPagination, tableList },
-  mixins: [ pageMixins ],
+  components: { iPage, iCard, iButton, iPagination, tableList, volumeDialog },
+  mixins: [ pageMixins, filters ],
   data() {
     return {
       tableTitle,
-      tableListData: []
+      tableListData: [],
+      volumeVisible: false,
+      volumeData: {}
     }
   },
   created() {
-    this.getTable()
+    // this.getTable()
+    try {
+      this.tableListData = JSON.parse(local.get('tpPartInfoVO')).partPerCaVerList
+    } catch(e) {
+      this.tableListData = []
+    }
   },
   methods: {
     getTable() {
@@ -55,6 +69,10 @@ export default {
         this.loading = false
         this.page.totalCount = 0
       }, 1000)
+    },
+    volume(data) {
+      this.volumeVisible = true
+      this.volumeData = data
     },
     back() {
       this.$router.go(-1)
