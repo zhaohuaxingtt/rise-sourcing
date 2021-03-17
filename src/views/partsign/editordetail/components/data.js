@@ -18,7 +18,7 @@ export const partTitle = [
   {key:'k',name:'信息单状态'},
 ]
 export const partDetailTitle=[
-	{key:'b',name:'设计工程师姓名'},
+	[{key:'b',name:'设计工程师姓名'},
 	{key:'c',name:'零件名（英）'},
 	{key:'stuffNumber',name:'采购员工号'}, 
 	
@@ -58,37 +58,51 @@ export const partDetailTitle=[
 	{key:'lccDegreeNum',name:'深度国产化代码'},
 	{key:'isLCC',name:'是否深度国产化'},
 	
-	{key:'lccMemo',name:'深度国产化备注'},
-	{key:'tradePropertyNum',name:'零件贸易属性代码'},
-	{key:'tradePropertyDescriptionZh',name:'零件贸易属性描述(中)'},
-	
-	{key:'tradePropertyDescriptionDe',name:'零件贸易属性描述(德)'},
-	{key:'tradePropertyDescriptionEn',name:'零件贸易属性描述(英)'},
-	{key:'machiningDegreeNum',name:'零件加工程度代码'},
-	
-	{key:'machiningDegreeDescriptionZh',name:'零件加工程度(中)'},
-	{key:'machiningDegreeDescriptionDe',name:'零件加工程度(德)'},
-	{key:'machiningDegreeDescriptionEn',name:'零件加工程度(英)'},
-	
-	{key:'',name:'零件沿用性质代码'},
-	
-	{key:'inheritedPropertyDescriptionZh',name:'零件沿用性质描述(中)'},
-	{key:'inheritedPropertyDescriptionDe',name:'零件沿用性质描述(德)'},
-	{key:'inheritedPropertyDescriptionEn',name:'零件沿用性质描述(英)'},
-	
-	{key:'platformPropertyNum',name:'零件平台性质代码'},
-	
-	{key:'platformPropertyDescriptionZh',name:'零件平台性质描述(中)'},
-	{key:'platformPropertyDescriptionDe',name:'零件平台性质描述(德)'},
-	{key:'platformPropertyDescriptionEn',name:'零件平台性质描述(英)'},
-	
-	{key:'tpPartSheetMemo',name:'新建信息单备注'},
-	{key:'partNum1',name:'零件号第一部分'},
-	{key:'partNum2',name:'零件号第二部分'},
-	
-	{key:'partNum3',name:'零件号第三部分'},
-	{key:'partNum4',name:'零件号第四部分'},
-	{key:'partNum5',name:'零件号第五部分'},
+	{key:'lccMemo',name:'深度国产化备注'}],
+	[
+		{key:'tradePropertyNum',name:'零件贸易属性代码'},
+	],
+	[
+		{key:'tradePropertyDescriptionZh',name:'零件贸易属性描述(中)'},
+		
+		{key:'tradePropertyDescriptionDe',name:'零件贸易属性描述(德)'},
+		{key:'tradePropertyDescriptionEn',name:'零件贸易属性描述(英)'},
+	],
+	[
+		{key:'machiningDegreeNum',name:'零件加工程度代码'},
+	],
+	[
+		{key:'machiningDegreeDescriptionZh',name:'零件加工程度(中)'},
+		{key:'machiningDegreeDescriptionDe',name:'零件加工程度(德)'},
+		{key:'machiningDegreeDescriptionEn',name:'零件加工程度(英)'},
+	],
+	[
+		{key:'',name:'零件沿用性质代码'},
+	],
+	[
+		{key:'inheritedPropertyDescriptionZh',name:'零件沿用性质描述(中)'},
+		{key:'inheritedPropertyDescriptionDe',name:'零件沿用性质描述(德)'},
+		{key:'inheritedPropertyDescriptionEn',name:'零件沿用性质描述(英)'},
+	],
+	[
+		{key:'platformPropertyNum',name:'零件平台性质代码'},
+	],
+	[
+		{key:'platformPropertyDescriptionZh',name:'零件平台性质描述(中)'},
+		{key:'platformPropertyDescriptionDe',name:'零件平台性质描述(德)'},
+		{key:'platformPropertyDescriptionEn',name:'零件平台性质描述(英)'},
+	],
+	[
+		{key:'tpPartSheetMemo',name:'新建信息单备注'},
+	],
+	[
+		{key:'partNum1',name:'零件号第一部分'},
+		{key:'partNum2',name:'零件号第二部分'},
+		
+		{key:'partNum3',name:'零件号第三部分'},
+		{key:'partNum4',name:'零件号第四部分'},
+		{key:'partNum5',name:'零件号第五部分'},
+	]	
 ]
 
 export const enquiryTableTitle = [
