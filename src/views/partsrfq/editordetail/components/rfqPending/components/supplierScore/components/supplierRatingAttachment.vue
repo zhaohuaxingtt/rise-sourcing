@@ -28,6 +28,14 @@
         :current-page='page.currPage'
         :total="page.totalCount"
     />
+    <!------------------------------------------------------------------------>
+    <!--                  附件上传                                          --->
+    <!------------------------------------------------------------------------>
+    <upload-attachment
+        v-model="dialogUploadAttachment"
+        :fileList="attachmentList"
+        @submit="uploadAttachmentSubmit"
+    />
   </iCard>
 </template>
 
@@ -37,13 +45,15 @@ import tablelist from 'pages/partsrfq/components/tablelist'
 import {supplierRatingAttachmentTitle} from "./data";
 import {pageMixins} from "@/utils/pageMixins";
 import {getSupplierRatingAttachment} from "@/api/partsrfq/editordetail";
+import uploadAttachment from 'pages/partsrfq/components/uploadAttachment'
 
 export default {
   components: {
     iCard,
     iButton,
     iPagination,
-    tablelist
+    tablelist,
+    uploadAttachment
   },
   mixins: [pageMixins],
   data() {
@@ -51,7 +61,9 @@ export default {
       tableListData: [],
       tableTitle: supplierRatingAttachmentTitle,
       tableLoading: false,
-      selectTableData: []
+      selectTableData: [],
+      dialogUploadAttachment: false,
+      attachmentList: []
     };
   },
   created() {
@@ -68,12 +80,17 @@ export default {
     deleteItems() {
     },
     uploadAttachments() {
-
+      this.dialogUploadAttachment = true
+      this.attachmentList = []
     },
     //修改表格改动列
     handleSelectionChange(val) {
       this.selectTableData = val;
     },
+    uploadAttachmentSubmit() {
+      this.dialogUploadAttachment = false
+      this.getTableList()
+    }
   }
 }
 </script>
