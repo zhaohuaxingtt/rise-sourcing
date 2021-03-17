@@ -112,7 +112,7 @@ module.exports = {
           "^/mock": "/mock"
         }
       },
-      '/tpInfoApi':{ //刘攀宏服务地址
+      '/tpInfoApi':{ //高攀宏服务地址
         target:'http://10.13.38.100:8086',
         changeOrigin:true,
         pathRewrite:{
