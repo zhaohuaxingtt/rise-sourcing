@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-24 09:42:07
- * @LastEditTime: 2021-03-17 20:29:28
+ * @LastEditTime: 2021-03-17 20:41:07
  * @LastEditors: Please set LastEditors
  * @Description: 零件签收-table组件。
  * @FilePath: \rise\src\views\partsign\components\tableList.vue
@@ -11,10 +11,10 @@
     <el-table-column v-if="selection" type='selection' width="50" align='center'></el-table-column>
     <el-table-column v-if='index' type='index' width='50' align='center' :label='indexLabel'></el-table-column>
     <template v-for="(items,index) in tableTitle">
-      <el-table-column :key="index" align='center' v-if='items.props == activeItems' :prop="items.props" :label="items.name">
-        <template slot-scope="row"><span class="openLinkText cursor" @click="openPage">{{row.row.b}}</span></template>
+      <el-table-column :key="index" align='center' v-if='items.props == "partNum"' :prop="items.props" :label="items.name">
+        <template slot-scope="row"><span class="openLinkText cursor" @click="openPage(row.row)">{{row.row.partNum}}</span></template>
       </el-table-column>
-      <el-table-column :key="index" align='center' v-else :label="items.name" :prop="items.props"></el-table-column>
+      <el-table-column :key="index" align='center'  v-else :label="items.name" :prop="items.props"></el-table-column>
     </template>
   </el-table>
 </template>
@@ -34,8 +34,8 @@ export default{
     handleSelectionChange(val){
       this.$emit('handleSelectionChange',val)
     },
-    openPage(){
-      this.$emit('openPage')
+    openPage(e){
+      this.$emit('openPage',e)
     }
   }
 }

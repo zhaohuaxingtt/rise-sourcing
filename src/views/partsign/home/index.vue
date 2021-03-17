@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-24 09:17:57
- * @LastEditTime: 2021-03-17 20:28:09
+ * @LastEditTime: 2021-03-17 20:44:57
  * @LastEditors: Please set LastEditors
  * @Description: 零件签收列表界面.
  * @FilePath: \rise\src\views\partsign\index.vue
@@ -76,7 +76,7 @@
         :tableLoading="tableLoading"
         @handleSelectionChange="handleSelectionChange"
         @openPage='openPage'
-        activeItems='tpPartID'
+        :activeItems='"partNum"'
       ></tablelist>
       <!------------------------------------------------------------------------>
       <!--                  表格分页                                          --->
@@ -114,6 +114,7 @@ import { pageMixins } from "@/utils/pageMixins";
 import backItems from "./components/backItems";
 import changeItems from "./components/changeItems";
 import { iNavMvp } from "@/components";
+import local from '@/utils/localstorage'
 export default {
   components: { iPage, tablelist, iButton, iCard, backItems, changeItems ,iNavMvp,iPagination,iSearch,iInput,iSelect},
   mixins: [pageMixins],
@@ -137,7 +138,8 @@ export default {
     this.getTableList();
   },
   methods: {
-    openPage(){
+    openPage(val){
+      local.set('tpPartInfoVO',JSON.stringify(val))
       this.$router.push({
         path:'/partsign/editordetail'
       })
