@@ -16,17 +16,17 @@
       </div>
     </div>
     <div class="body margin-top27">
-      <tableList index class="table" :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="loading" />
+      <tableList index class="table" :tableData="data" :tableTitle="tableTitle" :tableLoading="loading" />
       <iPagination
         class="pagination"
         @size-change="handleSizeChange($event, getVolume)"
         @current-change="handleCurrentChange($event, getVolume)"
         background
-        :current-page="page.size"
+        :current-page="page.currPage"
         :page-sizes="page.pageSizes"
         :page-size="page.pageSize"
         :layout="page.layout"
-        :total="page.totalCount" />
+        :total="data ? data.length : 0" />
     </div>
     <!-- <volumeDialog :visible.sync="versionVisible" /> -->
   </iCard>
@@ -43,6 +43,12 @@ import { pageMixins } from '@/utils/pageMixins'
 export default {
   components: { iCard, iButton, iPagination, tableList },
   mixins: [ pageMixins ],
+  props: {
+    data: {
+      type: Array,
+      default: () => ([])
+    }
+  },
   data() {
     return {
       tableTitle,

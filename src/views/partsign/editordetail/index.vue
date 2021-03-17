@@ -36,7 +36,7 @@
           </iCard>
         </el-tab-pane>
         <el-tab-pane :label="$t('partsign.enquiry')">
-          <enquiry />
+          <enquiry :data="partDetails.partAttachmentList" />
         </el-tab-pane>
         <el-tab-pane :label="$t('partsign.volume')">
           <unconfirmed class="unconfirmed" />

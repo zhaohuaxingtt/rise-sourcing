@@ -92,7 +92,7 @@ export const partDetailTitle=[
 ]
 
 export const enquiryTableTitle = [
-	{ props: 'tpPartAttachmentPath', name: '文件名' },
+	{ props: 'tpPartAttachmentName', name: '文件名' },
   { props: 'b', name: '文件大小（MB）' },
   { props: 'c', name: '上传日期' },
   { props: 'd', name: '上传人' }

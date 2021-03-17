@@ -1,7 +1,7 @@
 <template>
-  <iDialog class="dialog" title="每车用量（当前版本：v3）" v-bind="$props" :visible.sync="visible" v-on="$listeners">
+  <iDialog class="dialog" :title="`每车用量（当前版本：${ data.version }）`" v-bind="$props" :visible.sync="visible" v-on="$listeners">
     <div class="body">
-      <tableList index height="100%" :selection="false" v-show="visible" class="table" :tableData="tableListData" :tableTitle="tableTitle" :loading="loading" />
+      <tableList index height="100%" :selection="false" v-show="visible" class="table" :tableData="data.partVolumePerCarList" :tableTitle="tableTitle" :loading="loading" />
     </div>
     <div slot="footer" class="footer">
       <iPagination
@@ -9,11 +9,11 @@
         @size-change="handleSizeChange($event, getEnquiryList)"
         @current-change="handleCurrentChange($event, getEnquiryList)"
         background
-        :current-page="page.size"
+        :current-page="page.currPage"
         :page-sizes="page.pageSizes"
         :page-size="page.pageSize"
         :layout="page.layout"
-        :total="page.totalCount" />
+        :total="data.partVolumePerCarList ? data.partVolumePerCarList.length : 0" />
     </div>
   </iDialog>
 </template>
@@ -32,6 +32,10 @@ export default {
     visible: {
       type: Boolean,
       default: false
+    },
+    data: {
+      type: Object,
+      default: () => ({})
     }
   },
   watch: {

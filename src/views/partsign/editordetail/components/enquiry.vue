@@ -16,9 +16,12 @@
       </div>
     </div>
     <div class="body margin-top27">
-      <tableList class="table" index :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="loading" @handleSelectionChange="handleSelectionChange">
+      <tableList class="table" index :tableData="data" :tableTitle="tableTitle" :tableLoading="loading" @handleSelectionChange="handleSelectionChange">
         <template #a="scope">
           <span class="link-underline" @click="preview">{{ scope.row.a }}</span>
+        </template>
+        <template #c="scope">
+          <span>{{ scope.row.c }}</span>
         </template>
       </tableList>
       <iPagination
@@ -47,6 +50,12 @@ import { pageMixins } from '@/utils/pageMixins'
 export default {
   components: { iCard, iButton, iPagination, tableList },
   mixins: [ pageMixins ],
+  props: {
+    data: {
+      type: Array,
+      default: () => ([])
+    }
+  },
   data() {
     return {
       tableTitle,
