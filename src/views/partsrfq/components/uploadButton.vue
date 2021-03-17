@@ -26,13 +26,7 @@ export default {
   },
   props: {
     buttonText: {type: String, default: '上传附件'},
-    repeatClick: Boolean,
-    fileList: {
-      type: Array,
-      default: () => {
-        return []
-      }
-    }
+    repeatClick: Boolean
   },
   data() {
     return {}
