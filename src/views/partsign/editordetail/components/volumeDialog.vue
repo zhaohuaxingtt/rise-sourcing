@@ -1,5 +1,5 @@
 <template>
-  <iDialog class="dialog" :title="`每车用量（当前版本：${ data.version }）`" v-bind="$props" :visible.sync="visible" v-on="$listeners">
+  <iDialog class="dialog" :title="`每车用量（当前版本：${ data.versionNum }）`" v-bind="$props" :visible.sync="visible" v-on="$listeners">
     <div class="body">
       <tableList index height="100%" :selection="false" v-show="visible" class="table" :tableData="data.partVolumePerCarList" :tableTitle="tableTitle" :loading="loading" />
     </div>
