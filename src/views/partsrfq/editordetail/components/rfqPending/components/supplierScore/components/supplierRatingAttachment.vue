@@ -4,7 +4,10 @@
       <span class="font18 font-weight">供应商评分附件</span>
       <div class="floatright">
         <iButton @click="deleteItems">删除</iButton>
-        <upload-button @uploadedCallback="uploadAttachments" class="margin-left8"/>
+        <upload-button
+            @uploadedCallback="uploadAttachments"
+            :upload-button-loading="uploadAttachmentsButtonLoading"
+            class="margin-left8"/>
       </div>
     </div>
     <tablelist
@@ -55,7 +58,8 @@ export default {
       tableLoading: false,
       selectTableData: [],
       dialogUploadAttachment: false,
-      attachmentList: []
+      attachmentList: [],
+      uploadAttachmentsButtonLoading: false
     };
   },
   created() {
@@ -77,10 +81,12 @@ export default {
     },
     uploadAttachments() {
       this.tableLoading = true
-      setTimeout(()=> {
+      this.uploadAttachmentsButtonLoading = true
+      setTimeout(() => {
         iMessage.error('附件上传失败')
-        this.tableLoading =false
-      },2000)
+        this.tableLoading = false
+        this.uploadAttachmentsButtonLoading = false
+      }, 2000)
     }
   }
 }
