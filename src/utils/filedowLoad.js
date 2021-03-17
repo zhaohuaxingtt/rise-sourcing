@@ -1,13 +1,13 @@
 /*
  * @Author: your name
  * @Date: 2021-03-17 23:40:36
- * @LastEditTime: 2021-03-18 00:33:44
+ * @LastEditTime: 2021-03-18 00:36:05
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\utils\filedowLoad.js
  */
 
-export function excelExport(data,title){
+export function excelExport(data,title,fileName= new Date().getTime()){
   try {
     if (!data&&!title) return console.warn('没有可以下载的信息')
     let worksheet = window.XLSX.utils.aoa_to_sheet(translateData(data,title))
@@ -21,7 +21,7 @@ export function excelExport(data,title){
     let tmpDown = new Blob([s2ab(s)], { type: '' })
     const href =  document.createElement('a')
     href.setAttribute('href',URL.createObjectURL(tmpDown))
-    href.setAttribute('download',new Date().getFullYear()+'.xlsx')
+    href.setAttribute('download',fileName+'.xlsx')
     document.body.appendChild(href)
     href.click()
     setTimeout(() => {
