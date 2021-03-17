@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-24 09:17:57
- * @LastEditTime: 2021-03-17 15:21:58
+ * @LastEditTime: 2021-03-17 20:28:09
  * @LastEditors: Please set LastEditors
  * @Description: 零件签收列表界面.
  * @FilePath: \rise\src\views\partsign\index.vue
@@ -17,39 +17,43 @@
     <iSearch class="margin-bottom20">
       <el-form>
         <el-form-item label="零件号">
-						<iInput placeholder='请输入零件号'></iInput>
+						<iInput v-model="form.partNum" placeholder='请输入零件号'></iInput>
 				</el-form-item>
         <el-form-item label="零件名（中）">
-						<iInput placeholder='请输入零件名（中）'></iInput>
+						<iInput v-model="form.partNameZh" placeholder='请输入零件名（中）'></iInput>
 				</el-form-item>
         <el-form-item label="设计科室">
-						<iSelect placeholder='请选择设计科室'></iSelect>
+						<iInput v-model="form.dept" placeholder='请填写设计科室'></iInput>
 				</el-form-item>
         <el-form-item label="工程师">
-							<iSelect placeholder='请选择工程师'></iSelect>
+							<iInput placeholder='请填写工程师'></iInput>
 				</el-form-item>
         <el-form-item label="车型项目">
-							<iSelect placeholder='请选择车型项目'></iSelect>
+							<iSelect v-model="form.projectCarType" placeholder='请选择车型项目'>
+                <!-- <el-option :value="items.value" :label="items.label" v-for="(items,index) in fromGroup.projectCarType" :key="index"></el-option> -->
+              </iSelect>
 				</el-form-item>
         <el-form-item label="信息单分类">
-							<iSelect placeholder='请选择信息分类'></iSelect>
+							<iSelect v-model="form.tpInfoType" placeholder='请选择信息分类'>
+                <!-- <el-option :value="items.value" :label="items.label" v-for="(items,index) in fromGroup.tpInfoType" :key="index"></el-option> -->
+              </iSelect>
 				</el-form-item>
         <el-form-item label="信息单状态">
-						<iSelect placeholder='请选择信息单状态'>
-               <el-option :value="items.value" v-for="(items,index) in typeOfxxd" :key="index">{{items.label}}</el-option>
+						<iSelect v-model="form.status" placeholder='请选择信息单状态'>
+               <!-- <el-option :value="items.value" :label="items.label" v-for="(items,index) in fromGroup.status" :key="index"></el-option> -->
             </iSelect>
 				</el-form-item>
         <el-form-item label="信息单流水号">
-						<iInput placeholder='请填写信息单流水号'></iInput>
+						<iInput v-model="form.id" placeholder='请填写信息单流水号'></iInput>
 				</el-form-item>
         <el-form-item label="询价资料状态">
-						<iSelect placeholder='请选择询价资料状态'>
-              <el-option :value="items.value" v-for="(items,index) in typeOfxjzl" :key="index">{{items.label}}</el-option>
+						<iSelect v-model="form.attachmentStatus" placeholder='请选择询价资料状态'>
+              <!-- <el-option :value="items.value" :label="items.label" v-for="(items,index) in fromGroup.attachmentStatus" :key="index"></el-option> -->
             </iSelect>
 				</el-form-item>
         <el-form-item label="每车用量状态">
-						<iSelect placeholder='请选择没车用量状态'>
-              <el-option :value="items.value" v-for="(items,index) in typeOfmcylzt" :key="index">{{items.label}}</el-option>
+						<iSelect v-model="form.partDosageStatus" placeholder='请选择没车用量状态'>
+              <!-- <el-option :value="items.value" :label="items.label" v-for="(items,index) in fromGroup.partDosageStatus" :key="index"></el-option> -->
             </iSelect>
 				</el-form-item>
       </el-form>
@@ -72,6 +76,7 @@
         :tableLoading="tableLoading"
         @handleSelectionChange="handleSelectionChange"
         @openPage='openPage'
+        activeItems='tpPartID'
       ></tablelist>
       <!------------------------------------------------------------------------>
       <!--                  表格分页                                          --->
@@ -103,8 +108,8 @@
 <script>
 import { iPage, iButton, iCard, iMessage ,iPagination,iSearch,iInput,iSelect} from "@/components";
 import tablelist from "./components/tableList";
-import { tableTitle,typeOfxxd,typeOfxjzl,typeOfmcylzt } from "./components/data";
-import { getTabelData } from "@/api/partsign/home";
+import { tableTitle,form,fromGroup } from "./components/data";
+import { getTabelData,getPageGroup,qstuihui } from "@/api/partsign/home";
 import { pageMixins } from "@/utils/pageMixins";
 import backItems from "./components/backItems";
 import changeItems from "./components/changeItems";
@@ -114,9 +119,6 @@ export default {
   mixins: [pageMixins],
   data() {
     return {
-      typeOfmcylzt:typeOfmcylzt,
-      typeOfxjzl:typeOfxjzl,
-      typeOfxxd:typeOfxxd,
       tableListData: [],
       tableTitle: tableTitle,
       tableLoading: false,
@@ -126,14 +128,12 @@ export default {
       backmark: "",
       inquiryBuyer: "",
       inquiryBuyerList: [],
-      form:{
-        attachmentStatus:'',//询价资料状态
-        dept:'',//设计科室
-        id:''//信息单流水号
-      }
+      form:form,
+      fromGroup:fromGroup
     };
   },
   created() {
+    this.getPageGroup();
     this.getTableList();
   },
   methods: {
@@ -142,15 +142,28 @@ export default {
         path:'/partsign/editordetail'
       })
     },
+    //获取上方group信息
+    getPageGroup(){
+      getPageGroup(this.form.userId).then(res=>{
+        this.fromGroup = res.data
+      })
+    },
+    translateDataToRender(data){
+      let newMap = []
+      data.forEach(element => {
+        newMap.push({...element.tpPartInfoVO,...{partAttachmentList:element.partAttachmentList},...{partPerCaVerList:element.partPerCaVerList}});
+      });
+      return newMap
+    }, 
     //获取表格数据
     getTableList() {
       this.tableLoading = true;
       getTabelData().then((res) => {
         this.tableLoading = false;
-        this.page.currPage = res.data.currPage
-        this.page.pageSize = res.data.pageSize
-        this.page.totalCount = res.data.totalCount
-        this.tableListData = res.data.list;
+        this.page.currPage = res.data.tpRecordsSenarioResult.currPage
+        this.page.pageSize = res.data.tpRecordsSenarioResult.pageSize
+        this.page.totalCount = res.data.tpRecordsSenarioResult.totalCount
+        this.tableListData = this.translateDataToRender(res.data.tpRecordsSenarioResult.tpRecordList);
       }).catch(err=>{
         this.tableLoading = false;
         this.tableListData = []

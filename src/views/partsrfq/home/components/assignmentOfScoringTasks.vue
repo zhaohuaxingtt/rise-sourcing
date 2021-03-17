@@ -1,7 +1,7 @@
 <!--
  * @Author: moxuan
  * @Date: 2021-03-04 11:24:15
- * @LastEditTime: 2021-03-04 11:24:15
+ * @LastEditTime: 2021-03-17 19:13:08
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
 -->
@@ -50,7 +50,7 @@ export default{
     }
   },
   created(){
-    this.getTableList()
+    //this.getTableList()
   },
   methods:{
     //获取表格数据
