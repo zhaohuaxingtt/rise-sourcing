@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-24 09:47:32
- * @LastEditTime: 2021-03-17 22:29:57
+ * @LastEditTime: 2021-03-18 00:41:20
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsign\home\components\data.js
@@ -30,6 +30,6 @@ export const form = {
   projectCarType:'',//车型项目
   status:'',//信息单状态
   tpInfoType:'',//信息单分类
-  userId:''
+  userId:'12314'
 }
 export const fromGroup = JSON.parse(JSON.stringify(form))
