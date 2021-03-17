@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-24 09:17:57
- * @LastEditTime: 2021-03-17 18:56:58
+ * @LastEditTime: 2021-03-17 20:28:09
  * @LastEditors: Please set LastEditors
  * @Description: 零件签收列表界面.
  * @FilePath: \rise\src\views\partsign\index.vue
@@ -30,17 +30,17 @@
 				</el-form-item>
         <el-form-item label="车型项目">
 							<iSelect v-model="form.projectCarType" placeholder='请选择车型项目'>
-                <el-option :value="items.value" :label="items.label" v-for="(items,index) in fromGroup.projectCarType" :key="index"></el-option>
+                <!-- <el-option :value="items.value" :label="items.label" v-for="(items,index) in fromGroup.projectCarType" :key="index"></el-option> -->
               </iSelect>
 				</el-form-item>
         <el-form-item label="信息单分类">
 							<iSelect v-model="form.tpInfoType" placeholder='请选择信息分类'>
-                <el-option :value="items.value" :label="items.label" v-for="(items,index) in fromGroup.tpInfoType" :key="index"></el-option>
+                <!-- <el-option :value="items.value" :label="items.label" v-for="(items,index) in fromGroup.tpInfoType" :key="index"></el-option> -->
               </iSelect>
 				</el-form-item>
         <el-form-item label="信息单状态">
 						<iSelect v-model="form.status" placeholder='请选择信息单状态'>
-               <el-option :value="items.value" :label="items.label" v-for="(items,index) in fromGroup.status" :key="index"></el-option>
+               <!-- <el-option :value="items.value" :label="items.label" v-for="(items,index) in fromGroup.status" :key="index"></el-option> -->
             </iSelect>
 				</el-form-item>
         <el-form-item label="信息单流水号">
@@ -48,12 +48,12 @@
 				</el-form-item>
         <el-form-item label="询价资料状态">
 						<iSelect v-model="form.attachmentStatus" placeholder='请选择询价资料状态'>
-              <el-option :value="items.value" :label="items.label" v-for="(items,index) in fromGroup.attachmentStatus" :key="index"></el-option>
+              <!-- <el-option :value="items.value" :label="items.label" v-for="(items,index) in fromGroup.attachmentStatus" :key="index"></el-option> -->
             </iSelect>
 				</el-form-item>
         <el-form-item label="每车用量状态">
 						<iSelect v-model="form.partDosageStatus" placeholder='请选择没车用量状态'>
-              <el-option :value="items.value" :label="items.label" v-for="(items,index) in fromGroup.partDosageStatus" :key="index"></el-option>
+              <!-- <el-option :value="items.value" :label="items.label" v-for="(items,index) in fromGroup.partDosageStatus" :key="index"></el-option> -->
             </iSelect>
 				</el-form-item>
       </el-form>
@@ -76,6 +76,7 @@
         :tableLoading="tableLoading"
         @handleSelectionChange="handleSelectionChange"
         @openPage='openPage'
+        activeItems='tpPartID'
       ></tablelist>
       <!------------------------------------------------------------------------>
       <!--                  表格分页                                          --->
@@ -147,15 +148,22 @@ export default {
         this.fromGroup = res.data
       })
     },
+    translateDataToRender(data){
+      let newMap = []
+      data.forEach(element => {
+        newMap.push({...element.tpPartInfoVO,...{partAttachmentList:element.partAttachmentList},...{partPerCaVerList:element.partPerCaVerList}});
+      });
+      return newMap
+    }, 
     //获取表格数据
     getTableList() {
       this.tableLoading = true;
-      getTabelData({...this.form,...this.pageParmars()}).then((res) => {
+      getTabelData().then((res) => {
         this.tableLoading = false;
-        this.page.currPage = res.data.currPage
-        this.page.pageSize = res.data.pageSize
-        this.page.totalCount = res.data.totalCount
-        this.tableListData = res.data.list;
+        this.page.currPage = res.data.tpRecordsSenarioResult.currPage
+        this.page.pageSize = res.data.tpRecordsSenarioResult.pageSize
+        this.page.totalCount = res.data.tpRecordsSenarioResult.totalCount
+        this.tableListData = this.translateDataToRender(res.data.tpRecordsSenarioResult.tpRecordList);
       }).catch(err=>{
         this.tableLoading = false;
         this.tableListData = []

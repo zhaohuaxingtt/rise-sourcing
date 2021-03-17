@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-24 09:55:16
- * @LastEditTime: 2021-03-17 18:54:26
+ * @LastEditTime: 2021-03-17 20:14:37
  * @LastEditors: Please set LastEditors
  * @Description: 零件号签收列表
  * @FilePath: \rise\src\api\partsign\home\index.js
@@ -12,7 +12,7 @@ const requst = axios(process.env.VUE_APP_PARTS)
 //获取信息单列表接口。
 export function getTabelData(parmars){
   return requst({
-    url:'/tp-records',
+    url:'/tp-records?tpRecordsSenario.currPage=1&tpRecordsSenario.pageSize=1',
     method:'GET',
     params:{
       tpRecordsSenario:parmars
