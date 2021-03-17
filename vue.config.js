@@ -114,7 +114,7 @@ module.exports = {
           "^/mock": "/mock"
         }
       },
-      '/tpInfoApi':{ //刘攀宏服务地址
+      '/tpInfoApi':{ //高攀弘服务地址
         target:'http://10.13.38.100:8086',
         changeOrigin:true,
         pathRewrite:{
@@ -128,7 +128,7 @@ module.exports = {
           "^/commonApi": ""
         }
       },
-      '/rfqApi':{ //文鹏，rfq模块的api地址
+      '/rfqApi':{ //周德华，rfq模块的api地址
         target:'http://10.13.38.100:8888',
         changeOrigin:true,
         pathRewrite:{

@@ -7,7 +7,7 @@
  * @FilePath: \rise\src\views\partsign\editordetail\components\enquiry\components\tablelist.vue
 -->
 <template>
-  <el-table class="table" :data="tableData" v-loading="tableLoading" @selection-change="handleSelectionChange">
+  <el-table class="table" :height="height" :data="tableData" v-loading="tableLoading" @selection-change="handleSelectionChange">
     <el-table-column v-if="selection" type="selection" align="center"></el-table-column>
     <el-table-column v-if="index" type="index" align="center" :label="indexLabel"></el-table-column>
     <template v-for="(item, $index) in tableTitle">
@@ -49,11 +49,14 @@ export default {
     indexLabel: {
       type: String,
       default: '#'
+    },
+    height: {
+      type: String
     }
   },
   methods: {
-    handleSelectionChange(val){
-      this.$emit('handleSelectionChange', val)
+    handleSelectionChange(list){
+      this.$emit('handleSelectionChange', list)
     }
   }
 }

@@ -4,10 +4,10 @@
  * @LastEditTime: 2021-03-01 15:54:15
  * @LastEditors: your name
  * @Description: In User Settings Edit
- * @FilePath: \rise\src\views\partsign\editordetail\components\usage\index.vue
+ * @FilePath: \rise\src\views\partsign\editordetail\components\volume\index.vue
 -->
 <template>
-  <iCard class="usage">
+  <iCard class="volume">
     <div class="header clearFloat">
       <span class="title">每车用量（当前版本：V3）</span>
       <div class="control">
@@ -19,8 +19,8 @@
       <tableList index class="table" :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="loading" />
       <iPagination
         class="pagination"
-        @size-change="handleSizeChange($event, getUsage)"
-        @current-change="handleCurrentChange($event, getUsage)"
+        @size-change="handleSizeChange($event, getVolume)"
+        @current-change="handleCurrentChange($event, getVolume)"
         background
         :current-page="page.size"
         :page-sizes="page.pageSizes"
@@ -36,8 +36,8 @@
 import { iCard, iButton, iPagination } from '@/components'
 import versionDialog from '../versionDialog'
 import tableList from '../tableList'
-import { usageTableTitle as tableTitle } from '../data'
-import { getUsage } from '@/api/partsign/editordetail'
+import { volumeTableTitle as tableTitle } from '../data'
+import { getVolume } from '@/api/partsign/editordetail'
 import { pageMixins } from '@/utils/pageMixins'
 
 export default {
@@ -52,12 +52,12 @@ export default {
     }
   },
   created() {
-    this.getUsage()
+    this.getVolume()
   },
   methods: {
-    getUsage() {
+    getVolume() {
       this.loading = true
-      getUsage({})
+      getVolume({})
         .then(res => {
           this.tableListData = res.data
           this.loading = false
@@ -72,7 +72,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.usage {
+.volume {
   .header {
     position: relative;
 

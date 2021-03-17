@@ -32,20 +32,20 @@
         :layout="page.layout"
         :total="page.totalCount" />
     </div>
-    <versionDialog :visible.sync="versionVisible" />
+    <!-- <versionDialog :visible.sync="versionVisible" /> -->
   </iCard>
 </template>
 
 <script>
 import { iCard, iButton, iPagination, iMessage } from '@/components'
-import versionDialog from './versionDialog'
+// import versionDialog from './versionDialog'
 import tableList from './tableList'
 import { enquiryTableTitle as tableTitle } from './data'
 import { getEnquiryList } from '@/api/partsign/editordetail'
 import { pageMixins } from '@/utils/pageMixins'
 
 export default {
-  components: { iCard, iButton, iPagination, tableList, versionDialog },
+  components: { iCard, iButton, iPagination, tableList },
   mixins: [ pageMixins ],
   data() {
     return {
@@ -70,7 +70,10 @@ export default {
         .catch(() => this.loading = false)
     },
     version() {
-      this.versionVisible = true
+      // this.versionVisible = true
+      this.$router.push({
+        path:'/partsign/version'
+      })
     },
     handleSelectionChange(list) {
       this.multipleSelection = list

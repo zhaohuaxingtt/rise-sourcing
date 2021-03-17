@@ -1,5 +1,5 @@
 <template>
-  <iCard v-if="display" class="usage">
+  <iCard v-if="display" class="unconfirmed">
     <div class="header clearFloat">
       <span class="title">待确认版本</span>
       <div class="control">
@@ -18,10 +18,10 @@
     <div class="footer margin-top30">
       <iPagination
         class="pagination"
-        @size-change="handleSizeChange($event, getUsage)"
-        @current-change="handleCurrentChange($event, getUsage)"
+        @size-change="handleSizeChange($event, getVolume)"
+        @current-change="handleCurrentChange($event, getVolume)"
         background
-        :current-page="page.size"
+        :current-page="page.currentPage"
         :page-sizes="page.pageSizes"
         :page-size="page.pageSize"
         :layout="page.layout"
@@ -38,6 +38,7 @@ import { unconfirmedTableTitle as tableTitle } from '../data'
 import backItems from '@/views/partsign/home/components/backItems'
 import { getUnconfirmed } from '@/api/partsign/editordetail'
 import { pageMixins } from '@/utils/pageMixins'
+import { iMessage } from '../../../../../components'
 
 export default {
   components: { iCard, iButton, iPagination, tableList, backItems },
@@ -66,14 +67,18 @@ export default {
         })
         .catch(() => this.loading = false)
     },
-    confirm() {},
-    refuseSure() {}
+    confirm() {
+      iMessage.success('操作成功')
+    },
+    refuseSure() {
+      this.visible = false
+    }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.usage {
+.unconfirmed {
   .header {
     position: relative;
 

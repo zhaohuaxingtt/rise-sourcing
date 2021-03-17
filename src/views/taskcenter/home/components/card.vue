@@ -3,10 +3,7 @@
     <template #header>
       <div class="header">
         <div class="title font-weight">寻源执行</div>
-        <div class="type">
-          <icon class="icon" symbol name="iconbiaoqian" />
-          <span class="font-weight">寻源</span>
-        </div>
+        <tag class="tag">寻源执行</tag>
       </div>
     </template>
     <div class="body">
@@ -33,9 +30,10 @@
 
 <script>
 import { iCard, icon } from '@/components'
+import tag from './tag'
 
 export default {
-  components: { iCard, icon }
+  components: { iCard, icon, tag }
 }
 </script>
 
@@ -72,26 +70,10 @@ export default {
       line-height: 22px;
     }
 
-    .type {
+    .tag {
       position: absolute;
-      width: 88px;
-      height: 32px;
       top: 20px;
       right: -4px;
-
-      .icon {
-        width: 88px;
-        height: 32px;
-      }
-
-      span {
-        position: absolute;
-        left: 50%;
-        transform: translate(-50%, 0);
-        font-size: 16px;
-        height: 28px;
-        line-height: 28px;
-      }
     }
   }
 

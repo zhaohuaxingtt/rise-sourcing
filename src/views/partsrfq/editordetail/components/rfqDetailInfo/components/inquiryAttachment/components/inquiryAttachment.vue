@@ -1,11 +1,13 @@
 <template>
-
   <iCard>
     <div class="margin-bottom20 clearFloat">
       <span class="font18 font-weight">询价附件</span>
       <div class="floatright">
         <iButton @click="deleteItems">删除</iButton>
-        <upload-button @uploadedCallback="uploadAttachments" class="margin-left8 margin-right8"/>
+        <upload-button
+            @uploadedCallback="uploadAttachments"
+            :upload-button-loading="uploadAttachmentsButtonLoading"
+            class="margin-left8 margin-right8"/>
         <iButton @click="notifyAllSuppliers">通知全部供应商</iButton>
         <iButton @click="notifySuppliersWhoHaveQuoted">通知已报价供应商</iButton>
       </div>
@@ -57,7 +59,8 @@ export default {
       tableListData: [],
       tableTitle: inquiryAttachmentTableTitle,
       tableLoading: false,
-      selectTableData: []
+      selectTableData: [],
+      uploadAttachmentsButtonLoading: false
     };
   },
   created() {
@@ -75,10 +78,12 @@ export default {
     },
     uploadAttachments() {
       this.tableLoading = true
-      setTimeout(()=> {
+      this.uploadAttachmentsButtonLoading = true
+      setTimeout(() => {
         iMessage.error('附件上传失败')
-        this.tableLoading =false
-      },2000)
+        this.tableLoading = false
+        this.uploadAttachmentsButtonLoading = false
+      }, 2000)
     },
     notifyAllSuppliers() {
     },
@@ -88,7 +93,8 @@ export default {
     handleSelectionChange(val) {
       this.selectTableData = val;
     },
-    handleOpenPage() {}
+    handleOpenPage() {
+    }
   }
 }
 </script>
