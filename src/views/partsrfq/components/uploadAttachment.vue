@@ -16,7 +16,7 @@
           :limit="1"
           accept=".xlsx"
       >
-        <el-button size="small" type="primary">点击上传</el-button>
+        <iButton>点击上传</iButton>
         <div slot="tip" class="el-upload__tip">只能上传.xlsx文件</div>
       </el-upload>
     </div>
@@ -38,12 +38,10 @@ export default {
     title: {type: String, default: '上传'},
     value: {type: Boolean},
     repeatClick: Boolean,
-    props:{
-      fileList: {
-        type: Array,
-        default: []
-      }
-    },
+    fileList: {
+      type: Array,
+      default: []
+    }
   },
   data() {
     return {
