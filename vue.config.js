@@ -132,7 +132,7 @@ module.exports = {
         target:'http://10.13.38.100:8888',
         changeOrigin:true,
         pathRewrite:{
-          "^/commonApi": ""
+          "^/rfqApi": ""
         }
       },
     }
