@@ -4,7 +4,7 @@
  * @LastEditors: Please set LastEditors
 * @Description: In User Settings Edit
  -->
-<template>
+<template>	
 	<iFormGroup row="3" inline :icon="icons">
 		<iFormItem :label="item.name" name="test" :class="item.isBlock && 'block'" v-for="(item,index) in title"
 			:key="index">
