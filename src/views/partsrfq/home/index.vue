@@ -37,11 +37,11 @@
       <div class="margin-bottom20 clearFloat">
         <span class="font18 font-weight">RFQ综合管理</span>
         <div class="floatright">
-          <iButton @click="editRfq('02')">激活RFQ</iButton>
+          <iButton @click="editRfq('02')" :loading="activateButtonLoading">激活RFQ</iButton>
           <iButton @click="newRfq">新建RFQ</iButton>
-          <iButton @click="editRfq('01')">关闭RFQ</iButton>
+          <iButton @click="editRfq('01')" :loading="closeButtonLoading">关闭RFQ</iButton>
           <iButton @click="assignmentOfScoringTasks">转派评分任务</iButton>
-          <iButton @click="editRfq('03')">转谈判</iButton>
+          <iButton @click="editRfq('03')" :loading="transferNegotiationButtonLoading">转谈判</iButton>
           <iButton disabled>创建定点申请</iButton>
           <iButton @click="exportTable">导出</iButton>
         </div>
@@ -122,7 +122,10 @@ export default {
         carType: '',
         partType: '',
         rfqStatus: ''
-      }
+      },
+      activateButtonLoading: false,
+      closeButtonLoading: false,
+      transferNegotiationButtonLoading: false
     };
   },
   created() {
@@ -174,7 +177,9 @@ export default {
           userId: 12321
         }
       }
+      this.setOperationButtonLoading(updateType, true)
       const res = await editRfqData(req)
+      this.setOperationButtonLoading(updateType, false)
       iMessage.success(res.desZh)
       this.getTableList()
     },
@@ -203,6 +208,19 @@ export default {
     },
     exportTable() {
 
+    },
+    setOperationButtonLoading(updateType, boolean) {
+      switch (updateType) {
+        case '01':
+          this.closeButtonLoading = boolean
+          break;
+        case '02':
+          this.activateButtonLoading = boolean
+          break;
+        case '03':
+          this.transferNegotiationButtonLoading = boolean
+          break;
+      }
     }
   }
 }

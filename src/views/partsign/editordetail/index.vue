@@ -32,7 +32,7 @@
       <iTabs-list type="border-card">
         <el-tab-pane label="信息单详情" >
           <iCard>
-            <partInfo :title="partDetailTitle" :data="partInfos"></partInfo>
+            <partInfo :title="partDetailTitle" :data="partDetails"></partInfo>
           </iCard>
         </el-tab-pane>
         <el-tab-pane :label="$t('partsign.enquiry')">
@@ -68,7 +68,7 @@ import backItems from "../home/components/backItems";
 import changeItems from "../home/components/changeItems";
 // import log from './components/log';
 import { partDetailTitle, partTitle } from "./components/data";
-import { getPartInfo } from "@/api/partsign/editordetail";
+// import { getPartInfo } from "@/api/partsign/editordetail";
 export default {
   components: {
     iPage,
@@ -90,8 +90,7 @@ export default {
       partTitle: partTitle, //tab页零件详情数据
       diologChangeItems: false, //转派弹窗
       diologBack: false, //退回弹窗
-      partDetails: {}, //零件信息
-      partInfos: {}, //信息单详情
+      partDetails: {}, //零件信息单详情
     };
   },
   created() {
@@ -99,76 +98,7 @@ export default {
   },
   methods: {
     getPartInfo() {
-      getPartInfo().then((res) => {
-        this.partDetails =  {
-            "aekoNum": "aekoNum",
-            "carModelID": "carModelID",
-            "carPlatformID": "carPlatformID",
-            "createDate": "2021-03-17T08:49:06.620Z",
-            "creatorName": "creatorName",
-            "creatorNum": "creatorNum",
-            "cscMeetingRequiredDate": "2021-03-17T08:49:06.620Z",
-            "drawingDate": "drawingDate",
-            "farbeNum": "farbeNum",
-            "inheritedCarModel": "inheritedCarModel",
-            "inheritedPropertyDescriptionDe": "inheritedPropertyDescriptionDe",
-            "inheritedPropertyDescriptionEn": "inheritedPropertyDescriptionEn",
-            "inheritedPropertyDescriptionZh": "inheritedPropertyDescriptionZh",
-            "inheritedPropertyNum": "inheritedPropertyDescriptionEn",
-            "isBMG": true,
-            "isLCC": true,
-            "isSecondTier": true,
-            "isTLPassed": true,
-            "lccDegreeNum": "lccDegreeNum",
-            "lccMemo": "lccMemo",
-            "machiningDegreeDescriptionDe": "machiningDegreeDescriptionDe",
-            "machiningDegreeDescriptionEn": "machiningDegreeDescriptionEn",
-            "machiningDegreeDescriptionZh": "machiningDegreeDescriptionZh",
-            "machiningDegreeNum": 0,
-            "material": "material",
-            "optionalPart": "optionalPart",
-            "partDerived": "partDerived",
-            "partNameCn": "partNameCn",
-            "partNameDe": "partNameDe",
-            "partNameEn": "partNameEn",
-            "partNum": "partNum",
-            "partNum1": "partNum1",
-            "partNum2": "partNum2",
-            "partNum3": "partNum3",
-            "partNum4": "partNum4",
-            "partNum5": "partNum5",
-            "partTypeName": "partTypeName",
-            "partTypeNum": 0,
-            "platformPropertyDescriptionDe": "platformPropertyDescriptionDe",
-            "platformPropertyDescriptionEn": "platformPropertyDescriptionEn",
-            "platformPropertyDescriptionZh": "platformPropertyDescriptionZh",
-            "platformPropertyNum": 0,
-            "productClasses": "productClasses",
-            "productGroupNum": "productGroupNum",
-            "projectID": "projectID",
-            "reasonForLackOfMaterial": "reasonForLackOfMaterial",
-            "replacedPartNum": "replacedPartNum",
-            "size": "size",
-            "specialRequirement": "specialRequirement",
-            "stuffNumber": "stuffNumber",
-            "tlAuditDate": "2021-03-17T08:49:06.620Z",
-            "tlAuditMemo": "tlAuditMemo",
-            "tlAuditorName": "tlAuditorName",
-            "tlAuditorNum": "tlAuditorNum",
-            "tpDeptNum": "tpDeptNum",
-            "tpInforType": "tpInforType",
-            "tpPartID": "tpPartID",
-            "tpPartSheetMemo": "tpPartSheetMemo",
-            "tpPrincepalName": "tpPrincepalName",
-            "tpPrincepalNum": "tpPrincepalNum",
-            "tradePropertyDescriptionDe": "tradePropertyDescriptionDe",
-            "tradePropertyDescriptionEn": "tradePropertyDescriptionEn",
-            "tradePropertyDescriptionZh": "tradePropertyDescriptionZh",
-            "tradePropertyNum": 0,
-            "weight": "weight"
-          };
-        this.partInfos = this.partDetails;
-      });
+		this.partDetails =  localStorage.getItem('tpPartInfoVO') || {};
     },
     //签收
     save() {
