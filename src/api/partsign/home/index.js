@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-24 09:55:16
- * @LastEditTime: 2021-03-17 22:08:05
+ * @LastEditTime: 2021-03-18 00:52:58
  * @LastEditors: Please set LastEditors
  * @Description: 零件号签收列表
  * @FilePath: \rise\src\api\partsign\home\index.js
@@ -25,7 +25,9 @@ export function getPageGroup(userId){
     url:'/tp-records',
     method:'POST',
     data:{
-      groupStatSenario:userId
+      groupStatSenario:{
+        userId:userId
+      }
     }
   })
 }

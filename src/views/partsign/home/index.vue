@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-24 09:17:57
- * @LastEditTime: 2021-03-18 00:37:44
+ * @LastEditTime: 2021-03-18 01:51:36
  * @LastEditors: Please set LastEditors
  * @Description: 零件签收列表界面.
  * @FilePath: \rise\src\views\partsign\index.vue
@@ -14,7 +14,7 @@
     <!------------------------------------------------------------------------>
     <!--                  search 搜索模块                                   --->
     <!------------------------------------------------------------------------>
-    <iSearch class="margin-bottom20">
+    <iSearch class="margin-bottom20" @sure='sure' @reset='reset'>
       <el-form>
         <el-form-item label="零件号">
 						<iInput v-model="form.partNum" placeholder='请输入零件号'></iInput>
@@ -30,17 +30,17 @@
 				</el-form-item>
         <el-form-item label="车型项目">
 							<iSelect v-model="form.projectCarType" placeholder='请选择车型项目'>
-                <!-- <el-option :value="items.value" :label="items.label" v-for="(items,index) in fromGroup.projectCarType" :key="index"></el-option> -->
+                <el-option :value="items.key" :label="items.value" v-for="(items,index) in getGroupList('project_car_type')" :key="index"></el-option>
               </iSelect>
 				</el-form-item>
         <el-form-item label="信息单分类">
 							<iSelect v-model="form.tpInfoType" placeholder='请选择信息分类'>
-                <!-- <el-option :value="items.value" :label="items.label" v-for="(items,index) in fromGroup.tpInfoType" :key="index"></el-option> -->
+                <el-option :value="items.key" :label="items.value" v-for="(items,index) in getGroupList('tp_info_type')" :key="index"></el-option>
               </iSelect>
 				</el-form-item>
         <el-form-item label="信息单状态">
 						<iSelect v-model="form.status" placeholder='请选择信息单状态'>
-               <!-- <el-option :value="items.value" :label="items.label" v-for="(items,index) in fromGroup.status" :key="index"></el-option> -->
+               <el-option :value="items.key" :label="items.value" v-for="(items,index) in getGroupList('status')" :key="index"></el-option>
             </iSelect>
 				</el-form-item>
         <el-form-item label="信息单流水号">
@@ -48,12 +48,12 @@
 				</el-form-item>
         <el-form-item label="询价资料状态">
 						<iSelect v-model="form.attachmentStatus" placeholder='请选择询价资料状态'>
-              <!-- <el-option :value="items.value" :label="items.label" v-for="(items,index) in fromGroup.attachmentStatus" :key="index"></el-option> -->
+              <el-option :value="items.key" :label="items.value" v-for="(items,index) in getGroupList('attachment_status')" :key="index"></el-option>
             </iSelect>
 				</el-form-item>
         <el-form-item label="每车用量状态">
 						<iSelect v-model="form.partDosageStatus" placeholder='请选择没车用量状态'>
-              <!-- <el-option :value="items.value" :label="items.label" v-for="(items,index) in fromGroup.partDosageStatus" :key="index"></el-option> -->
+              <el-option :value="items.key" :label="items.value" v-for="(items,index) in getGroupList('part_dosage_status')" :key="index"></el-option>
             </iSelect>
 				</el-form-item>
       </el-form>
@@ -130,7 +130,7 @@ export default {
       inquiryBuyer: "",
       inquiryBuyerList: [],
       form:form,
-      fromGroup:fromGroup
+      fromGroup:[]
     };
   },
   created() {
@@ -138,6 +138,22 @@ export default {
     this.getTableList();
   },
   methods: {
+    sure(){this.getTableList()},
+    reset(){
+      for(let i in this.form){
+        if(i !== "userId"){
+          this.form[i] = ''
+        }
+      }
+      this.getTableList()
+    },
+    getGroupList(key){
+      if(this.fromGroup.length>0) { 
+       let obj =  this.fromGroup.find(items=>items.name == key)
+       if(!obj) return []
+       return obj.infoList 
+      }
+    },
     openPage(val){
       local.set('tpPartInfoVO',JSON.stringify(val))
       this.$router.push({
@@ -147,7 +163,7 @@ export default {
     //获取上方group信息
     getPageGroup(){
       getPageGroup(this.form.userId).then(res=>{
-        this.fromGroup = res.data
+        this.fromGroup = res.data.groupStatSenarioResult.groupStatInfoList
       })
     },
     translateDataToRender(data){
@@ -179,7 +195,7 @@ export default {
     save() {
       if (this.selectTableData.length == 0)
         return iMessage.warn("抱歉，您当前还未选择您需要签收的信息单！");
-      console.log(this.selectTableData);
+      
     },
     //退回
     openDiologBack() {
