@@ -171,9 +171,7 @@ export default {
         }
       }
       const res = await editRfqData(req)
-      if (res.code == 0) {
-        iMessage.success("修改成功")
-      }
+      iMessage.success(res.desZh)
       this.getTableList()
     },
     assignmentOfScoringTasks() {
@@ -182,7 +180,6 @@ export default {
       this.diologAssignmentOfScroingTasks = true
     },
     async toTop(row) {
-      console.log(11111)
       const setType = row.recordId > 1 ? '0' : '1'
       const req = {
         rfqSetTopPackage: {
@@ -192,9 +189,7 @@ export default {
         },
       }
       const res = await editRfqData(req)
-      if (res.code == 0) {
-        setType === '1' ? iMessage.success("置顶成功") : iMessage.success("已取消置顶")
-      }
+      iMessage.success(res.desZh)
       this.getTableList()
     },
     change() {

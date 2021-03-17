@@ -16,10 +16,10 @@
       </div>
       <div class="btnList">
         <iButton @click="newRfq">新建RFQ轮次</iButton>
-        <iButton @click="sendInquiry">发出询价</iButton>
-        <iButton @click="endInquiry">结束本轮询价</iButton>
-        <iButton @click="transferNegotiation">转谈判</iButton>
-        <iButton @click="createAFixedPointApplication">创建定点申请</iButton>
+        <iButton @click="updateRfqStatus('04')">发出询价</iButton>
+        <iButton @click="updateRfqStatus('05')">结束本轮询价</iButton>
+        <iButton @click="updateRfqStatus('03')">转谈判</iButton>
+        <iButton @click="createAFixedPointApplication" disabled>创建定点申请</iButton>
         <iButton type="text" @click="createAFixedPointApplication">
           <icon symbol name="iconrizhiwuzi" class="log-icon"/>
           <span class="log-word">日志</span>
@@ -29,7 +29,7 @@
 				</span>
       </div>
     </div>
-    <i-card class="margin-bottom20 margin-top20" :loading="baseInfoLoading">
+    <i-card class="margin-bottom20 margin-top20" v-loading="baseInfoLoading">
       <!------------------------------------------------------------------------>
       <!--                  基本信息区域                                       --->
       <!------------------------------------------------------------------------>
@@ -152,6 +152,7 @@ export default {
   },
   methods: {
     async getBaseInfo() {
+      this.baseInfoLoading = true
       const query = this.$route.query
       const req = {
         userId: 12321,
@@ -159,6 +160,7 @@ export default {
       }
       const res = await getRfqDataList(req)
       this.baseInfo = res.data[0]
+      this.baseInfoLoading = false
     },
     changeNav(item) {
       this.navActivtyValue = item.value
@@ -166,7 +168,18 @@ export default {
     newRfq() {
       this.newRfqRoundDialog = true
     },
-    sendInquiry() {
+    async updateRfqStatus(updateType) {
+      const query = this.$route.query
+      const req = {
+        updateRfqStatusPackage: {
+          updateType,
+          tmRfqIdList: [Number(query.id)],
+          userId: 12321
+        }
+      }
+      const res = await editRfqData(req)
+      iMessage.success(res.desZh)
+      this.getBaseInfo()
     },
     endInquiry() {
     },
@@ -184,7 +197,6 @@ export default {
       }
     },
     async save() {
-      this.baseInfoLoading = true
       const query = this.$route.query
       const req = {
         updateRfqInfoPackage: {
@@ -198,10 +210,8 @@ export default {
         }
       }
       const res = await editRfqData(req)
-      if(res.code == 0) {
-        iMessage.success("保存成功")
-      }
-      this.baseInfoLoading = false
+      iMessage.success(res.desZh)
+      this.getBaseInfo()
     }
   }
 }

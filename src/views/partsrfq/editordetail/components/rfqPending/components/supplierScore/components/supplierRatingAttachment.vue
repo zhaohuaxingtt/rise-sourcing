@@ -4,7 +4,7 @@
       <span class="font18 font-weight">供应商评分附件</span>
       <div class="floatright">
         <iButton @click="deleteItems">删除</iButton>
-        <iButton @click="uploadAttachments">上传附件</iButton>
+        <upload-button @uploadedCallback="uploadAttachments" class="margin-left8"/>
       </div>
     </div>
     <tablelist
@@ -32,18 +32,20 @@
 </template>
 
 <script>
-import {iCard, iButton, iPagination} from "@/components";
+import {iCard, iButton, iPagination, iMessage} from "@/components";
 import tablelist from 'pages/partsrfq/components/tablelist'
 import {supplierRatingAttachmentTitle} from "./data";
 import {pageMixins} from "@/utils/pageMixins";
 import {getSupplierRatingAttachment} from "@/api/partsrfq/editordetail";
+import uploadButton from 'pages/partsrfq/components/uploadButton'
 
 export default {
   components: {
     iCard,
     iButton,
     iPagination,
-    tablelist
+    tablelist,
+    uploadButton
   },
   mixins: [pageMixins],
   data() {
@@ -51,7 +53,9 @@ export default {
       tableListData: [],
       tableTitle: supplierRatingAttachmentTitle,
       tableLoading: false,
-      selectTableData: []
+      selectTableData: [],
+      dialogUploadAttachment: false,
+      attachmentList: []
     };
   },
   created() {
@@ -67,13 +71,17 @@ export default {
     },
     deleteItems() {
     },
-    uploadAttachments() {
-
-    },
     //修改表格改动列
     handleSelectionChange(val) {
       this.selectTableData = val;
     },
+    uploadAttachments() {
+      this.tableLoading = true
+      setTimeout(()=> {
+        iMessage.error('附件上传失败')
+        this.tableLoading =false
+      },2000)
+    }
   }
 }
 </script>
