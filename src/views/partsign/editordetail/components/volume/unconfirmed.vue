@@ -9,12 +9,15 @@
       </div>
     </div>
     <div class="body margin-top27">
-      <tableList class="table" index :tableData="data" :tableTitle="tableTitle" :tableLoading="loading" @handleSelectionChange="handleSelectionChange">
+      <tableList class="table" index :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="loading" @handleSelectionChange="handleSelectionChange">
         <template #version="scope">
           <span class="link-underline" @click="volume">{{ scope.row.version }}</span>
         </template>
         <template #publishDate="scope">
           <span>{{ scope.row.publishDate | dateFilter }}</span>
+        </template>
+        <template #versionStatus="scope">
+          <span>{{ scope.row.versionStatus | statusFilter }}</span>
         </template>
       </tableList>
     </div>
@@ -40,19 +43,26 @@ import { iCard, iButton, iPagination } from '@/components'
 import tableList from '../tableList'
 import { unconfirmedTableTitle as tableTitle } from '../data'
 import backItems from '@/views/partsign/home/components/backItems'
-import { getUnconfirmed } from '@/api/partsign/editordetail'
+import { getPerCarDosage } from '@/api/partsign/editordetail'
 import { pageMixins } from '@/utils/pageMixins'
 import { iMessage } from '../../../../../components'
 import volumeDialog from '../volumeDialog'
 import filters from '@/utils/filters'
+import { excelExport } from '@/utils/filedowLoad'
 
 export default {
   components: { iCard, iButton, iPagination, tableList, backItems, volumeDialog },
   mixins: [ pageMixins, filters ],
   props: {
     data: {
-      type: Array,
-      default: () => ([])
+      type: Object,
+      default: () => ({})
+    }
+  },
+  filters: {
+    statusFilter(val) {
+      const map = { '0': '未确认', '1': '已确认' }
+      return map[val + '']
     }
   },
   data() {
@@ -68,18 +78,19 @@ export default {
     }
   },
   created() {
-    // this.getUnconfirmed()
+    this.getPerCarDosage()
   },
   methods: {
-    getUnconfirmed() {
-      // this.loading = true
-      // getUnconfirmed({})
-      //   .then(res => {
-      //     this.tableListData = res.data
-      //     this.loading = false
-      //     this.display = !!this.tableListData.length
-      //   })
-      //   .catch(() => this.loading = false)
+    getPerCarDosage() {
+      this.loading = true
+
+      getPerCarDosage({ tpId: this.data.tpPartID, status: '0', ...this.page })
+        .then(res => {
+          this.tableListData = res.data.tpRecordList
+          this.loading = false
+          this.display = !!this.tableListData.length
+        })
+        .catch(() => this.loading = false)
     },
     handleSelectionChange(list) {
       this.multipleSelection = list
@@ -97,7 +108,7 @@ export default {
     },
     download() {
       if (!this.multipleSelection.length) return iMessage.warn('请选择需要导出的版本')
-      iMessage.error('文件服务异常')
+      excelExport(this.multipleSelection, this.tableTitle)
     },
     volume() {
       this.volumeVisible = true

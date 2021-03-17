@@ -99,11 +99,11 @@ export const enquiryTableTitle = [
 ]
 
 export const unconfirmedTableTitle = [
-  { props: 'version', name: '版本号' },
-  { props: 'tpPartId', name: '信息流水单号' },
-  { props: 'operator', name: '维护人' },
+  { props: 'versionNum', name: '版本号' },
+  { props: 'tpId', name: '信息流水单号' },
+  { props: 'maintainerId', name: '维护人' },
   { props: 'publishDate', name: '推送时间' },
-  { props: 'status', name: '版本状态' }
+  { props: 'versionStatus', name: '版本状态' }
 ]
 
 export const volumeTableTitle = [
