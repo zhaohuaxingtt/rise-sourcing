@@ -5,7 +5,7 @@
       <span class="font18 font-weight">询价附件</span>
       <div class="floatright">
         <iButton @click="deleteItems">删除</iButton>
-        <iButton @click="uploadAttachments">上传附件</iButton>
+        <upload-button @uploadedCallback="uploadAttachments" class="margin-left8 margin-right8"/>
         <iButton @click="notifyAllSuppliers">通知全部供应商</iButton>
         <iButton @click="notifySuppliersWhoHaveQuoted">通知已报价供应商</iButton>
       </div>
@@ -36,18 +36,20 @@
 </template>
 
 <script>
-import {iCard, iButton, iPagination} from "@/components";
+import {iCard, iButton, iPagination, iMessage} from "@/components";
 import tablelist from 'pages/partsrfq/components/tablelist'
 import {inquiryAttachmentTableTitle} from "./data";
 import {pageMixins} from "@/utils/pageMixins";
 import {getInquiryAttachmentTableList} from "@/api/partsrfq/editordetail";
+import uploadButton from 'pages/partsrfq/components/uploadButton'
 
 export default {
   components: {
     iCard,
     iButton,
     iPagination,
-    tablelist
+    tablelist,
+    uploadButton
   },
   mixins: [pageMixins],
   data() {
@@ -72,7 +74,11 @@ export default {
     deleteItems() {
     },
     uploadAttachments() {
-
+      this.tableLoading = true
+      setTimeout(()=> {
+        iMessage.error('附件上传失败')
+        this.tableLoading =false
+      },2000)
     },
     notifyAllSuppliers() {
     },
