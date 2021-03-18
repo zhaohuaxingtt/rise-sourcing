@@ -35,6 +35,7 @@ import {iButton, iMessage, iDialog} from '@/components'
 import tablelist from "pages/partsrfq/components/tablelist";
 import {assignmentOfScroingTasksTableTitle} from "pages/partsrfq/home/components/data";
 import {editRfqData} from "@/api/partsrfq/home";
+import {getDictByCode} from "@/api/dictionary";
 
 export default {
   components: {iButton, iDialog, tablelist},
@@ -45,7 +46,7 @@ export default {
     rfqId: {
       required: true,
       type: Array, default: () => {
-
+        return []
       }
     }
   },
@@ -62,17 +63,7 @@ export default {
   },
   created() {
     this.getTableList()
-    this.selectPropsOptionsObject = {
-      deptType: [
-        {code: 1, name: 1}
-      ],
-      deptNum: [
-        {code: 1, name: 1}
-      ],
-      graderId: [
-        {code: 1, name: 1}
-      ]
-    }
+    this.getDeptType()
   },
   methods: {
     //获取表格数据
@@ -114,6 +105,14 @@ export default {
     //修改表格改动列
     handleSelectionChange(val) {
       this.selectTableData = val;
+    },
+    async getDeptType() {
+      const res = await getDictByCode('score_dept')
+      this.selectPropsOptionsObject = {
+        deptType: res.data[0].subDictResultVo,
+        deptNum: [],
+        graderId: []
+      }
     }
   }
 }
