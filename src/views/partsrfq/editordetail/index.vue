@@ -107,7 +107,7 @@ import {iNavMvp, iButton, iPage, icon, iCard, iFormGroup, iFormItem, iText, iInp
 import rfqPending from './components/rfqPending'
 import rfqDetailInfo from './components/rfqDetailInfo'
 import newRfqRound from './components/newRfqRound'
-import {getRfqDataList, editRfqData} from "@/api/partsrfq/home";
+import {getRfqDataList, editRfqData, addRfq} from "@/api/partsrfq/home";
 
 export default {
   components: {
@@ -152,18 +152,24 @@ export default {
   },
   methods: {
     async getBaseInfo() {
-      this.baseInfoLoading = true
       const query = this.$route.query
-      const req = {
-        userId: 12321,
-        rfqId: Number(query.id)
-      }
-      try {
-        const res = await getRfqDataList(req)
-        this.baseInfo = res.data[0]
-        this.baseInfoLoading = false
-      } catch {
-        this.baseInfoLoading = false
+      if (query.id) {
+        this.baseInfoLoading = true
+        const req = {
+          rfqMangerInfosPackage: {
+            userId: 12321,
+            rfqId: Number(query.id)
+          }
+        }
+        try {
+          const res = await getRfqDataList(req)
+          this.baseInfo = res.data[0]
+          this.baseInfoLoading = false
+        } catch {
+          this.baseInfoLoading = false
+        }
+      } else {
+        this.editStatus = true
       }
     },
     changeNav(item) {
@@ -198,20 +204,36 @@ export default {
     },
     async save() {
       const query = this.$route.query
-      const req = {
-        updateRfqInfoPackage: {
-          userId: 12321,
-          rfqId: Number(query.id),
-          cf: this.baseInfo.cf,
-          ep: this.baseInfo.ep,
-          mq: this.baseInfo.mq,
-          pl: this.baseInfo.pl,
-          rfqName: this.baseInfo.rfqName,
-        }
+      const params = {
+        userId: 12321,
+        cf: this.baseInfo.cf,
+        ep: this.baseInfo.ep,
+        mq: this.baseInfo.mq,
+        pl: this.baseInfo.pl,
+        rfqName: this.baseInfo.rfqName,
       }
-      const res = await editRfqData(req)
-      iMessage.success(res.desZh)
-      this.getBaseInfo()
+      if (query.id) {
+        const req = {
+          updateRfqInfoPackage: {
+            rfqId: Number(query.id),
+            ...params
+          }
+        }
+        const res = await editRfqData(req)
+        iMessage.success(res.desZh)
+        this.getBaseInfo()
+      } else {
+        const req = {
+          insertRfcPackage: {
+            ...params
+          }
+        }
+        const res = await addRfq(req)
+        iMessage.success(res.desZh)
+        this.$router.push({
+          path: `/partsrfq/editordetail?id=${res.data.rfqId}`
+        })
+      }
     }
   }
 }
