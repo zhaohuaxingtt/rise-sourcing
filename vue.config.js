@@ -133,6 +133,14 @@ module.exports = {
         changeOrigin:true,
         pathRewrite:{
           "^/rfqApi": ""
+        },
+        '/wsApi': {
+          target: 'ws://10.160.137.37:8014',
+          changeOrigin: true,
+          ws: true,
+          pathRewrite:{
+            "^/wsApi": ""
+          },
         }
       },
     }
