@@ -22,6 +22,7 @@
           :tableLoading="tableLoading"
           :index="true"
           :select-props="selectProps"
+          :select-props-options-object="selectPropsOptionsObject"
       ></tablelist>
     </div>
     <span slot="footer" class="dialog-footer">
@@ -55,11 +56,23 @@ export default {
       tableLoading: false,
       selectTableData: [],
       selectProps: [],
+      selectPropsOptionsObject: [],
       showStatus: true
     }
   },
   created() {
     this.getTableList()
+    this.selectPropsOptionsObject = {
+      deptType: [
+        {code: 1, name: 1}
+      ],
+      deptNum: [
+        {code: 1, name: 1}
+      ],
+      graderId: [
+        {code: 1, name: 1}
+      ]
+    }
   },
   methods: {
     //获取表格数据
