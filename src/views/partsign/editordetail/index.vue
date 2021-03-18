@@ -14,10 +14,7 @@
         <iButton @click="save">签收</iButton>
         <iButton @click="openDiologBack" disabled>退回</iButton>
         <iButton @click="back">返回</iButton>
-        <span class="flex-align-center">
-          <icon symbol name="iconrizhiwuzi"></icon>
-          <span class="log">日志</span>
-        </span>
+        <logButton class="margin-left20" @click="log" />
         <span>
           <icon symbol name="icondatabaseweixuanzhong"></icon>
         </span>
@@ -71,6 +68,7 @@ import { partDetailTitle, partTitle } from "./components/data";
 // import { getPartInfo } from "@/api/partsign/editordetail";
 import {qstuihui} from "@/api/partsign/home";
 import {signTpInfo} from "../home/components/data"
+import logButton from '@/views/partsign/editordetail/components/logButton'
 export default {
   components: {
     iPage,
@@ -84,7 +82,7 @@ export default {
     backItems,
     changeItems,
     unconfirmed,
-    // log
+    logButton
   },
   data() {
     return {
@@ -142,6 +140,9 @@ export default {
     back() {
       this.$router.go(-1);
     },
+    log() {
+      window.open(`/#/log?recordId=${ this.partDetails.tpPartID }`, '_blank')
+    }
   },
 };
 </script>

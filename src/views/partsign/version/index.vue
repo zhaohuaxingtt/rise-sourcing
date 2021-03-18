@@ -3,9 +3,9 @@
     <iCard class="card">
       <div class="header clearFloat">
         <span class="title">全部版本</span>
-        <div class="control">
+        <!-- <div class="control">
           <iButton @click="back">返回</iButton>
-        </div>
+        </div> -->
       </div>
       <div class="body margin-top25">
         <tableList index height="100%" :selection="false" class="table" :tableData="tableListData" :tableTitle="tableTitle" :loading="loading">
@@ -74,9 +74,9 @@ export default {
       this.volumeVisible = true
       this.volumeData = data
     },
-    back() {
-      this.$router.go(-1)
-    }
+    // back() {
+    //   this.$router.go(-1)
+    // }
   }
 }
 </script>
