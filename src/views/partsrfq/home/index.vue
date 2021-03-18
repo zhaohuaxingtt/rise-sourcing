@@ -230,7 +230,8 @@ export default {
       this.getTableList()
     },
     exportTable() {
-
+      if (this.selectTableData.length == 0)
+        return iMessage.warn('请选择需要导出的数据')
     },
     setOperationButtonLoading(updateType, boolean) {
       switch (updateType) {
