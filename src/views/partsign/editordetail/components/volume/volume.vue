@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-24 17:57:52
- * @LastEditTime: 2021-03-18 03:05:07
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-03-01 15:54:15
+ * @LastEditors: your name
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsign\editordetail\components\volume\index.vue
 -->
@@ -33,14 +33,14 @@
 </template>
 
 <script>
-import { iCard, iButton, iPagination,iMessage } from '@/components'
+import { iCard, iButton, iPagination, iMessage } from '@/components'
 // import volumeDialog from '../versionDialog'
 import tableList from '../tableList'
 import { volumeTableTitle as tableTitle } from '../data'
-import { getVolume } from '@/api/partsign/editordetail'
 import { pageMixins } from '@/utils/pageMixins'
 import { getPerCarDosage } from '@/api/partsign/editordetail'
 import { excelExport } from '@/utils/filedowLoad'
+
 export default {
   components: { iCard, iButton, iPagination, tableList },
   mixins: [ pageMixins ],
@@ -70,8 +70,7 @@ export default {
     },
     getPerCarDosage() {
       this.loading = true
-      // this.data.tpPartID
-      getPerCarDosage({ tpId: '41513', status: '1', ...this.page })
+      getPerCarDosage({ tpId: this.data.tpPartID, status: '1', ...this.page })
         .then(res => {
           const source = res.data.tpRecordList;
           source.sort((a, b) => { +window.moment(b.dealTime) - +window.moment(a.dealTime) })
@@ -88,7 +87,8 @@ export default {
     },
     version() {
       // this.versionVisible = true
-      this.$router.push('/partsign/version')
+      window.open('/#/partsign/version', '_blank')
+      // this.$router.push('/partsign/version')
     },
     handleSelectionChange(list) {
       this.multipleSelection = list

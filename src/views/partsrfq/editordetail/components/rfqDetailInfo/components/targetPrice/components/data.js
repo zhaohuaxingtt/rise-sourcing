@@ -5,15 +5,15 @@
  * @Description: In User Settings Edit
  */
 export const tableTitle = [
-    {props:'a',name:'零件号'},
-    {props:'b',name:'零件名（中）'},
-    {props:'c',name:'申请类别'},
-    {props:'d',name:'期望目标价'},
-    {props:'e',name:'Lc_A'},
-    {props:'f',name:'Lc_B '},
-    {props:'g',name:'Skd_A'},
-    {props:'h',name:'Skd_B'},
-    {props:'i',name:'Ckd Duty%'},
-    {props:'j',name:'Ckd Ex-Work'},
-    {props:'k',name:'Skdlanede'}
+    {props:'partNum',name:'零件号'},
+    {props:'partNameZh',name:'零件名（中）'},
+    {props:'applyType',name:'申请类别'},
+    {props:'lcPrice',name:'期望目标价'},
+    {props:'lcAPrice',name:'LC_A'},
+    {props:'f',name:'LC_B '},
+    {props:'skdAPrice',name:'SKD_A'},
+    {props:'h',name:'SKD_B'},
+    {props:'ckdDuty',name:'CKD Duty%'},
+    {props:'ckdExwork',name:'CKD EX-Work'},
+    {props:'k',name:'SKDLANEDE'}
 ]

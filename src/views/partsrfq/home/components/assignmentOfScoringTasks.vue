@@ -23,6 +23,7 @@
           :index="true"
           :select-props="selectProps"
           :select-props-options-object="selectPropsOptionsObject"
+          @handleSelectChange="handleSelectChange"
       ></tablelist>
     </div>
     <span slot="footer" class="dialog-footer">
@@ -35,7 +36,7 @@ import {iButton, iMessage, iDialog} from '@/components'
 import tablelist from "pages/partsrfq/components/tablelist";
 import {assignmentOfScroingTasksTableTitle} from "pages/partsrfq/home/components/data";
 import {editRfqData} from "@/api/partsrfq/home";
-import {getDictByCode} from "@/api/dictionary";
+import {getDictByCode, getDeptByDeptType} from "@/api/dictionary";
 
 export default {
   components: {iButton, iDialog, tablelist},
@@ -109,10 +110,37 @@ export default {
     async getDeptType() {
       const res = await getDictByCode('score_dept')
       this.selectPropsOptionsObject = {
-        deptType: res.data[0].subDictResultVo,
-        deptNum: [],
-        graderId: []
+        0: {
+          deptType: res.data[0].subDictResultVo,
+          deptNum: [],
+          graderId: []
+        },
+        1: {
+          deptType: res.data[0].subDictResultVo,
+          deptNum: [],
+          graderId: []
+        },
+        2: {
+          deptType: res.data[0].subDictResultVo,
+          deptNum: [],
+          graderId: []
+        }
       }
+    },
+    async handleSelectChange(res) {
+      switch (res.type) {
+        case 'deptType':
+          this.selectPropsOptionsObject[res.index].deptNum = (await getDeptByDeptType(res.val)).data
+          this.tableListData[res.index].deptNum = ''
+          this.tableListData[res.index].graderId = ''
+          break;
+        case 'deptNum':
+          this.tableListData[res.index].graderId = ''
+          this.selectPropsOptionsObject[res.index].graderId = [
+          ]
+          break;
+      }
+      console.log(this.selectPropsOptionsObject);
     }
   }
 }
