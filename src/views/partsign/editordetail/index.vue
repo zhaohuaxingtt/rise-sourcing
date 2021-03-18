@@ -69,7 +69,8 @@ import changeItems from "../home/components/changeItems";
 // import log from './components/log';
 import { partDetailTitle, partTitle } from "./components/data";
 // import { getPartInfo } from "@/api/partsign/editordetail";
-import {qstuihui} from "@/api/partsign/home"
+import {qstuihui} from "@/api/partsign/home";
+import {signTpInfo} from "../home/components/data"
 export default {
   components: {
     iPage,
@@ -103,11 +104,18 @@ export default {
     },
     //签收
     save() {
-		let data={
-			signTpInfoDTO:""
+		// 签收退回新建信息单入参
+		let  data = {
+			csFReceiveDate: "", //签收/退回时间
+			csFReceiveDeptNum: "", //签收人/退回人部门
+			csFReceiveMemo: "", //备注
+			csFReceiveName: "", //签收人/退回人姓名
+			csFReceiveNum: "", //签收人/退回人工号
+			isCSFAccepted: "", //0：退回；1：签收；
+			partSerialNum: "" //零件信息单流水号
 		}
 		qstuihui(data).then(res=>{
-			iMessage.success("签收失败");
+			iMessage.success("签收成功");
 		}).catch(()=>{
 			iMessage.error("签收失败");
 		})

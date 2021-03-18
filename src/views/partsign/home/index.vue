@@ -52,7 +52,7 @@
             </iSelect>
 				</el-form-item>
         <el-form-item label="每车用量状态">
-						<iSelect v-model="form.partDosageStatus" placeholder='请选择没车用量状态'>
+						<iSelect v-model="form.partDosageStatus" placeholder='请选择每车用量状态'>
               <!-- <el-option :value="items.value" :label="items.label" v-for="(items,index) in fromGroup.partDosageStatus" :key="index"></el-option> -->
             </iSelect>
 				</el-form-item>
