@@ -141,6 +141,7 @@
 		created() {
 			this.getTableListFn();
 		},
+		computed: {},
 		methods: {
 			openPage() {
 				this.$router.push({
@@ -154,20 +155,16 @@
 			},
 			//确认转派弹窗值。
 			sureChangeItems(val) {
-				let purchasePrjectId = []
-				this.selectTableData.map(res => {
-					purchasePrjectId.push(res.purchasePrjectId)
-				})
 				let transfer = {
 					buyerName: JSON.parse(val).label,
-					purchaseProjectIds: purchasePrjectId
+					purchaseProjectIds: this.getPurchasePrjectId()
 				}
 				changeProcure({
 					transfer
 				}).then(res => {
 					this.diologChangeItems = false;
 					this.getTableListFn()
-				}).catch(()=>{
+				}).catch(() => {
 					this.diologChangeItems = false;
 				})
 			},
@@ -206,38 +203,38 @@
 			},
 			// 取消零件采购
 			cancel(backmark) {
-				let purchasePrjectId = []
-				this.selectTableData.map(res => {
-					purchasePrjectId.push(res.purchasePrjectId)
-				})
 				let cancel = {
 					cancelRemark: backmark,
-					purchaseProjectIds: purchasePrjectId
+					purchaseProjectIds: this.getPurchasePrjectId()
 				}
 				changeProcure({
 					cancel
 				}).then(res => {
-					this.diologBack=false
+					this.diologBack = false
 					this.getTableListFn()
-				}).catch(()=>{
-					this.diologBack=false
+				}).catch(() => {
+					this.diologBack = false
 				})
 			},
 			// 生成fs号
-			creatFs(){
+			creatFs() {
 				if (this.selectTableData.length == 0) return iMessage.warn('抱歉，您当前还未选择您需要生成FS号的零件采购项目！')
-				let purchasePrjectId = []
-				this.selectTableData.map(res => {
-					purchasePrjectId.push(res.purchasePrjectId)
-				})
 				let fs = {
-					purchaseProjectIds: purchasePrjectId
+					purchaseProjectIds: this.getPurchasePrjectId()
 				}
 				changeProcure({
 					fs
 				}).then(res => {
 					this.getTableListFn()
 				})
+			},
+			// 获取选中零件号ID
+			getPurchasePrjectId() {
+				let purchasePrjectId = []
+				this.selectTableData.map(res => {
+					purchasePrjectId.push(res.purchasePrjectId)
+				})
+				return purchasePrjectId
 			},
 			openBatchmiantain() {
 				this.$router.push({
