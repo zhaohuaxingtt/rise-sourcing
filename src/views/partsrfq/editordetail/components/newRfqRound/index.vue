@@ -10,32 +10,33 @@
     <div class="changeContent">
       <div class="clearFloat">
         <div class="floatright title-button-box">
-          <template v-if="identityStatus === 1">
-            <iButton @click="edit">保存</iButton>
-            <iButton>发送询价</iButton>
+          <template v-if="roundType === 0">
+            <iButton>保存并发出询价</iButton>
           </template>
           <template v-else>
-            <iButton @click="edit">保存</iButton>
             <iButton>保存并创建</iButton>
           </template>
         </div>
       </div>
-      <iFormGroup inline icon>
+      <iFormGroup inline icon >
         <iFormItem label="轮次类型" name="test">
-          <i-select></i-select>
+          <i-select v-model="roundType">
+            <el-option v-for="(items,index) in roundTypeList" :key='index' :value='items.value' :label="items.label"/>
+          </i-select>
         </iFormItem>
         <iFormItem label="本轮报价起止时间" name="test" v-if="identityStatus === 1">
           <div class="flex">
-            <i-select></i-select>
-            <div class="margin-left20 margin-right20">-</div>
-            <i-select></i-select>
+            <el-date-picker type="date" placeholder="请选择" v-model="startTime"></el-date-picker>
           </div>
+        </iFormItem>
+        <iFormItem label="" name="test" v-if="identityStatus === 1">
+          <el-date-picker type="date" placeholder="请选择" v-model="endTime"></el-date-picker>
         </iFormItem>
       </iFormGroup>
       <tablelist
-          v-if="identityStatus === 1"
+          v-if="roundType === 0"
           :tableData="tableListData"
-          :tableTitle="tableTitleComputed"
+          :tableTitle="tableTitle"
           :tableLoading="tableLoading"
           :index="true"
           @handleSelectionChange="handleSelectionChange"
@@ -44,7 +45,7 @@
       <tablelist
           v-else
           :tableData="tableListData"
-          :tableTitle="tableTitleComputed"
+          :tableTitle="tableTitle2"
           :tableLoading="tableLoading"
           :index="true"
           @handleSelectionChange="handleSelectionChange"
@@ -86,16 +87,20 @@ export default {
       tableListData: [],
       tableLoading: false,
       selectTableData: [],
-      identityStatus: 1
+      identityStatus: 1,
+      roundType: 0,
+      roundTypeList: [
+        {label: '普通轮次', value: 0},
+        {label: '在线竞价 ', value: 1},
+      ],
+      startTime: '',
+      endTime: '',
+      tableTitle,
+      tableTitle2
     }
   },
   created() {
     this.getTableList();
-  },
-  computed: {
-    tableTitleComputed() {
-      return this.identityStatus === 1 ? tableTitle : tableTitle2
-    }
   },
   methods: {
     //获取表格数据
@@ -109,9 +114,6 @@ export default {
     sureChangeItems() {
       if (this.selectTableData.length == '') return iMessage.warn('抱歉！您当前还未选择！')
       this.$emit('sure', JSON.parse(this.selectTableData))
-    },
-    edit() {
-      this.editStatus = !this.editStatus
     },
     clearDiolog() {
       this.$emit('input', false)
@@ -138,6 +140,10 @@ export default {
   .title-button-box {
     margin-top: -60px;
     margin-right: 30px;
+  }
+
+  .inline-block {
+    display: inline-block;
   }
 }
 </style>
