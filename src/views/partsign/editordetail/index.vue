@@ -69,6 +69,7 @@ import changeItems from "../home/components/changeItems";
 // import log from './components/log';
 import { partDetailTitle, partTitle } from "./components/data";
 // import { getPartInfo } from "@/api/partsign/editordetail";
+import {qstuihui} from "@/api/partsign/home"
 export default {
   components: {
     iPage,
@@ -102,7 +103,14 @@ export default {
     },
     //签收
     save() {
-      iMessage.success("签收成功");
+		let data={
+			signTpInfoDTO:""
+		}
+		qstuihui(data).then(res=>{
+			iMessage.success("签收失败");
+		}).catch(()=>{
+			iMessage.error("签收失败");
+		})
     },
     //退回
     openDiologBack() {
