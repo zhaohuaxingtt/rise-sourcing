@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-22 16:46:47
- * @LastEditTime: 2021-03-08 10:37:10
+ * @LastEditTime: 2021-03-18 03:09:58
  * @LastEditors: Please set LastEditors
  * @Description: 存在于界面上方的组件。
  * @FilePath: \rise\src\layout\components\topLayout.vue
@@ -71,7 +71,7 @@
 		},
 		created() {
 			this.lang = localStorage.getItem('lang')
-			this.getCountInMail()
+			//this.getCountInMail()
 		},
 		methods: {
 			handleChangeLang() {

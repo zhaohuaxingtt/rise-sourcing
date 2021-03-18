@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-24 17:57:52
- * @LastEditTime: 2021-03-01 15:54:15
- * @LastEditors: your name
+ * @LastEditTime: 2021-03-18 03:05:07
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsign\editordetail\components\volume\index.vue
 -->
@@ -12,7 +12,7 @@
       <span class="title">每车用量（当前版本：{{ versionNum }}）</span>
       <div class="control">
         <iButton @click="version">查看全部版本</iButton>
-        <iButton>导出</iButton>
+        <iButton @click="download">导出</iButton>
       </div>
     </div>
     <div class="body margin-top27">
@@ -33,14 +33,14 @@
 </template>
 
 <script>
-import { iCard, iButton, iPagination } from '@/components'
+import { iCard, iButton, iPagination,iMessage } from '@/components'
 // import volumeDialog from '../versionDialog'
 import tableList from '../tableList'
 import { volumeTableTitle as tableTitle } from '../data'
 import { getVolume } from '@/api/partsign/editordetail'
 import { pageMixins } from '@/utils/pageMixins'
 import { getPerCarDosage } from '@/api/partsign/editordetail'
-
+import { excelExport } from '@/utils/filedowLoad'
 export default {
   components: { iCard, iButton, iPagination, tableList },
   mixins: [ pageMixins ],
@@ -64,6 +64,10 @@ export default {
     this.getPerCarDosage()
   },
   methods: {
+    download() {
+      if (!this.multipleSelection.length) return iMessage.warn('请选择需要导出的版本')
+      excelExport(this.multipleSelection, this.tableTitle)
+    },
     getPerCarDosage() {
       this.loading = true
       // this.data.tpPartID

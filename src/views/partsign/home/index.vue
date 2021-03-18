@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-24 09:17:57
- * @LastEditTime: 2021-03-18 01:51:36
+ * @LastEditTime: 2021-03-18 02:37:11
  * @LastEditors: Please set LastEditors
  * @Description: 零件签收列表界面.
  * @FilePath: \rise\src\views\partsign\index.vue
@@ -195,6 +195,7 @@ export default {
     save() {
       if (this.selectTableData.length == 0)
         return iMessage.warn("抱歉，您当前还未选择您需要签收的信息单！");
+        this.getTableList()
       
     },
     //退回
