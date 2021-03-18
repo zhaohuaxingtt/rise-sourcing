@@ -39,7 +39,7 @@
           <enquiry :data="partDetails.partAttachmentList" />
         </el-tab-pane>
         <el-tab-pane :label="$t('partsign.volume')">
-          <unconfirmed class="unconfirmed" />
+          <unconfirmed class="unconfirmed" :data="partDetails" />
           <volume class="volume" />
         </el-tab-pane>
         <!-- <el-tab-pane :label="$t('partsign.log')">

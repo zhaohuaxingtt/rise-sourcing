@@ -7,7 +7,7 @@
  * @FilePath: \rise\src\api\partsign\editordetail\index.js
  */
 import axios from '@/utils/axios'
-const requst = axios(process.env.VUE_APP_BASE_MOCK)
+const requst = axios(process.env.VUE_APP_PARTS)
 
 export function getEnquiryList(parmars) {
   return requst({
@@ -38,5 +38,14 @@ export function getUnconfirmed(parmars) {
     url: 'https://www.fastmock.site/mock/5cd3e97d6126b18b5e16f3e499489335/api/partsign/getUnconfirmed',
     method: 'GET',
     data: parmars
+  })
+}
+
+// 获取零件详情-每车用量
+export function getPerCarDosage(params) {
+  return requst({
+    url: '/tp-records/perCarDosage',
+    method: 'POST',
+    data: params
   })
 }

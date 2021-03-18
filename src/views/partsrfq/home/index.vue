@@ -141,14 +141,19 @@ export default {
     async getTableList() {
       this.tableLoading = true;
       const req = {
-        userId: 12321,
-        current: this.page.currPage,
-        size: this.page.pageSize,
-        ...this.form
+        rfqMangerInfosPackage: {
+          userId: 12321,
+          current: this.page.currPage,
+          size: this.page.pageSize,
+          ...this.form
+        }
       }
       try {
         const res = await getRfqDataList(req)
         this.tableListData = res.data;
+        this.page.currPage = res.currPage
+        this.page.pageSize = res.pageSize
+        this.page.totalCount = res.totalCount
         this.tableLoading = false;
       } catch {
         this.tableLoading = false;
@@ -205,6 +210,7 @@ export default {
     },
     handleSearchReset() {
       this.form = {}
+      this.getTableList()
     },
     exportTable() {
 

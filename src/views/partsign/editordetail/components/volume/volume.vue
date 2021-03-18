@@ -9,14 +9,14 @@
 <template>
   <iCard class="volume">
     <div class="header clearFloat">
-      <span class="title">每车用量（当前版本：V3）</span>
+      <span class="title">每车用量（当前版本：{{ versionNum }}）</span>
       <div class="control">
         <iButton @click="version">查看全部版本</iButton>
         <iButton>导出</iButton>
       </div>
     </div>
     <div class="body margin-top27">
-      <tableList index class="table" :tableData="data" :tableTitle="tableTitle" :tableLoading="loading" />
+      <tableList index class="table" :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="loading" @handleSelectionChange="handleSelectionChange" />
       <iPagination
         class="pagination"
         @size-change="handleSizeChange($event, getVolume)"
@@ -39,34 +39,46 @@ import tableList from '../tableList'
 import { volumeTableTitle as tableTitle } from '../data'
 import { getVolume } from '@/api/partsign/editordetail'
 import { pageMixins } from '@/utils/pageMixins'
+import { getPerCarDosage } from '@/api/partsign/editordetail'
 
 export default {
   components: { iCard, iButton, iPagination, tableList },
   mixins: [ pageMixins ],
   props: {
     data: {
-      type: Array,
-      default: () => ([])
+      type: Object,
+      default: () => ({})
     }
   },
   data() {
     return {
       tableTitle,
       tableListData: [],
+      multipleSelection: [],
       loading: false,
+      versionNum: 'V1'
       // versionVisible: false
     }
   },
   created() {
-    this.getVolume()
+    this.getPerCarDosage()
   },
   methods: {
-    getVolume() {
+    getPerCarDosage() {
       this.loading = true
-      getVolume({})
+      // this.data.tpPartID
+      getPerCarDosage({ tpId: '41513', status: '1', ...this.page })
         .then(res => {
-          this.tableListData = res.data
+          const source = res.data.tpRecordList;
+          source.sort((a, b) => { +window.moment(b.dealTime) - +window.moment(a.dealTime) })
+          if (source[0]) {
+            this.versionNum = source[0].versionNum
+            this.tableListData = source.filter(item => item.versionNum === source[0].versionNum)
+          } else {
+            this.tableListData = []
+          }
           this.loading = false
+          this.display = !!this.tableListData.length
         })
         .catch(() => this.loading = false)
     },
@@ -74,6 +86,13 @@ export default {
       // this.versionVisible = true
       this.$router.push('/partsign/version')
     },
+    handleSelectionChange(list) {
+      this.multipleSelection = list
+    },
+    download() {
+      if (!this.multipleSelection.length) return iMessage.warn('请选择需要导出的每车用量')
+      excelExport(this.multipleSelection, this.tableTitle)
+    }
   }
 }
 </script>
