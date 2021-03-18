@@ -57,7 +57,7 @@ export const tableTitle = [{
 	}
 ]
 
-//form
+//零件采购列表入参
 export const form = {
 	'search.buyerName': '', //询价采购员
 	'search.cartypeCategory': '', //车型大类

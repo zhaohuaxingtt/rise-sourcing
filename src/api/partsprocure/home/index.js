@@ -17,6 +17,14 @@ export function getTabelData(parmars){
   })
 }
 
+//修改零件采购项目相关信息
+export function changeProcure(parmars){
+  return requst({
+    url:'/api/part-src-prjs',
+    method:'PATCH',
+    data:parmars
+  })
+}
 export function getYearScope(params) {
   return requst({
     url:'https://www.fastmock.site/mock/5cd3e97d6126b18b5e16f3e499489335/api/getYearScope',
