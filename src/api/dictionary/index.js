@@ -11,3 +11,10 @@ export function getDictByCode(code) {
         method: 'GET'
     })
 }
+
+export function getDeptByDeptType(type) {
+    return requst({
+        url: `/dept?type=${type}`,
+        method: 'GET'
+    })
+}
