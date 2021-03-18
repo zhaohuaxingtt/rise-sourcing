@@ -14,7 +14,7 @@ export const partTitle = [
   {key:'projectCarType',name:'车型项目'},
   {key:'tpInforType',name:'信息单类型'},
   {key:'tpPartID',name:'新建信息单流水号'},
-  {key:'',name:'采购员'},
+  {key:'stuffNumber',name:'采购员'},
   {key:'status',name:'信息单状态'},
 ]
 export const partDetailTitle=[

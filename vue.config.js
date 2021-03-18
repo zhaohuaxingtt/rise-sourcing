@@ -1,28 +1,27 @@
-
 const path = require('path')
-const resolve = dir => path.join(__dirname,dir)
+const resolve = dir => path.join(__dirname, dir)
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 const CompressionPlugin = require("compression-webpack-plugin");
 const px2rem = require('postcss-px2rem')
 const postcss = px2rem({
-  remUnit: 16
+	remUnit: 16
 })
 module.exports = {
-  outputDir: 'dist',
-  assetsDir: 'static',
-  filenameHashing: true,
-  lintOnSave: process.env.NODE_ENV !== 'production',
-  productionSourceMap: false,
-  parallel: require("os").cpus().length > 1,
-  chainWebpack:config =>{
-    config.plugins.delete('preload')
-    config.plugins.delete('prefetch')
-    config.optimization.minimize(true)
-    config.resolve.symlinks(true)
-    //定义全局别名
-    config.resolve.alias
-            .set('@', resolve('src'))
-            .set('pages',resolve('src/views'))
+	outputDir: 'dist',
+	assetsDir: 'static',
+	filenameHashing: true,
+	lintOnSave: process.env.NODE_ENV !== 'production',
+	productionSourceMap: false,
+	parallel: require("os").cpus().length > 1,
+	chainWebpack: config => {
+		config.plugins.delete('preload')
+		config.plugins.delete('prefetch')
+		config.optimization.minimize(true)
+		config.resolve.symlinks(true)
+		//定义全局别名
+		config.resolve.alias
+			.set('@', resolve('src'))
+			.set('pages', resolve('src/views'))
 
     config.optimization.splitChunks({
                 chunks: 'all',
@@ -142,7 +141,14 @@ module.exports = {
         pathRewrite:{
           "^/wsApi": ""
         }
-      }
+      },
+      '/dictionaryApi': { // 数据字典api地址
+				target: 'http://10.122.18.166:8011',
+				changeOrigin: true,
+				pathRewrite: {
+					"^/dictionaryApi": ""
+				}
+			}
     }
   }
 }

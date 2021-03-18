@@ -7,14 +7,13 @@
  * @FilePath: \rise\src\api\partsprocure\home\index.js
  */
 import axios from '@/utils/axios'
-const requst = axios(process.env.VUE_APP_BASE_MOCK)
-
+const requst = axios(process.env.VUE_APP_PART_PROCURE)
 //获取零件采购列表。
 export function getTabelData(parmars){
   return requst({
-    url:'https://www.fastmock.site/mock/5cd3e97d6126b18b5e16f3e499489335/api/ui/table',
-    method:'POST',
-    data:parmars
+    url:'/api/part-src-prjs',
+    method:'GET',
+    params:parmars
   })
 }
 
