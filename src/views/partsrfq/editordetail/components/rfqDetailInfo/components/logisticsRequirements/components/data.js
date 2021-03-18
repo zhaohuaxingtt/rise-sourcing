@@ -5,13 +5,13 @@
  * @Description: In User Settings Edit
  */
 export const tableTitle = [
-    {props:'a',name:'零件号'},
-    {props:'b',name:'FS / GS号'},
-    {props:'c',name:'零件名称'},
-    {props:'d',name:'负责⼈'},
-    {props:'e',name:'负责⼈邮箱'},
-    {props:'f',name:'负责⼈电话'},
-    {props:'g',name:'供货⽅式'},
-    {props:'h',name:'参考零件号'},
-    {props:'i',name:'参考零件名'}
+    {props:'partNum',name:'零件号'},
+    {props:'rfqPlanId',name:'FS / GS号'},
+    {props:'partNameZh',name:'零件名称'},
+    {props:'direcorId',name:'负责人'},
+    {props:'direcorEmail',name:'负责⼈邮箱'},
+    {props:'direcorTel',name:'负责人电话'},
+    {props:'supplyType',name:'供货方式'},
+    {props:'referencePartNum',name:'参考零件号'},
+    {props:'referencePartName',name:'参考零件名'}
 ]
