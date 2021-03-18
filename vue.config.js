@@ -141,8 +141,23 @@ module.exports = {
 				changeOrigin: true,
 				pathRewrite: {
 					"^/rfqApi": ""
+				},
+				'/wsApi': {
+					target: 'ws://10.160.137.37:8014',
+					changeOrigin: true,
+					ws: true,
+					pathRewrite: {
+						"^/wsApi": ""
+					},
 				}
 			},
+			'/dictionaryApi': { // 数据字典api地址
+				target: 'http://10.122.18.166:8011',
+				changeOrigin: true,
+				pathRewrite: {
+					"^/dictionaryApi": ""
+				}
+			}
 		}
 	}
 }

@@ -47,6 +47,7 @@
   import drawer from '../message/drawer'
 	import filters from '@/utils/filters'
 	import { getCountInMail } from '@/api/layout/topLayout'
+	import { socket } from '@/utils/socket'
 
 	export default {
 		mixins: [filters],
@@ -72,6 +73,13 @@
 		created() {
 			this.lang = localStorage.getItem('lang')
 			this.getCountInMail()
+
+
+			socket('1001').connect({}, () => {}, () => {})
+
+			// socket.connect({}, () => {
+			// 	console.log('test')
+			// }, () => {})
 		},
 		methods: {
 			handleChangeLang() {

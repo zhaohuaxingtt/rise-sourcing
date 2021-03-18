@@ -10,7 +10,7 @@
     <div class="changeContent">
       <div class="clearFloat">
         <div class="floatright title-button-box">
-          <template v-if="roundType === 0">
+          <template v-if="roundType === '00'">
             <iButton>保存并发出询价</iButton>
           </template>
           <template v-else>
@@ -21,20 +21,20 @@
       <iFormGroup inline icon >
         <iFormItem label="轮次类型" name="test">
           <i-select v-model="roundType">
-            <el-option v-for="(items,index) in roundTypeList" :key='index' :value='items.value' :label="items.label"/>
+            <el-option v-for="items in roundTypeOptions" :key='items.code' :value='items.code' :label="items.name"/>
           </i-select>
         </iFormItem>
-        <iFormItem label="本轮报价起止时间" name="test" v-if="identityStatus === 1">
+        <iFormItem label="本轮报价起止时间" name="test" v-if="roundType === '00'">
           <div class="flex">
             <el-date-picker type="date" placeholder="请选择" v-model="startTime"></el-date-picker>
           </div>
         </iFormItem>
-        <iFormItem label="" name="test" v-if="identityStatus === 1">
+        <iFormItem label="" name="test" v-if="roundType === '00'">
           <el-date-picker type="date" placeholder="请选择" v-model="endTime"></el-date-picker>
         </iFormItem>
       </iFormGroup>
       <tablelist
-          v-if="roundType === 0"
+          v-if="roundType === '00'"
           :tableData="tableListData"
           :tableTitle="tableTitle"
           :tableLoading="tableLoading"
@@ -72,6 +72,7 @@ import tablelist from 'pages/partsrfq/components/tablelist'
 import {pageMixins} from "@/utils/pageMixins";
 import {tableTitle, tableTitle2} from "./components/data";
 import {getNewRfqRoundList} from "@/api/partsrfq/editordetail";
+import {findBySearches} from "@/api/partsrfq/home";
 
 export default {
   components: {iButton, iDialog, iFormGroup, iFormItem, iSelect, tablelist, iPagination},
@@ -87,12 +88,8 @@ export default {
       tableListData: [],
       tableLoading: false,
       selectTableData: [],
-      identityStatus: 1,
-      roundType: 0,
-      roundTypeList: [
-        {label: '普通轮次', value: 0},
-        {label: '在线竞价 ', value: 1},
-      ],
+      roundType: '',
+      roundTypeOptions: [],
       startTime: '',
       endTime: '',
       tableTitle,
@@ -100,6 +97,7 @@ export default {
     }
   },
   created() {
+    this.getRoundTypeOptions()
     this.getTableList();
   },
   methods: {
@@ -121,6 +119,11 @@ export default {
     handleSelectionChange(val) {
       this.selectTableData = val;
     },
+    async getRoundTypeOptions() {
+      const res = await findBySearches('04')
+      this.roundTypeOptions = res.data
+      this.roundType = this.roundTypeOptions[0].code
+    }
   }
 }
 </script>

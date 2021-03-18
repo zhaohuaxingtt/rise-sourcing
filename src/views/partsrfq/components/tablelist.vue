@@ -13,7 +13,9 @@
                        :label="items.name">
         <template slot-scope="scope">
             <span class="openLinkText cursor"
-                  @click="openPage(scope.row[items.props])">{{ customOpenPageWord ? customOpenPageWord : scope.row[openPageProps] }}</span>
+                  @click="openPage(scope.row[items.props])">{{
+                customOpenPageWord ? customOpenPageWord : scope.row[openPageProps]
+              }}</span>
         </template>
       </el-table-column>
       <el-table-column :key="index" align='center' v-else-if='inputProps.includes(items.props)' :prop="items.props"
@@ -24,8 +26,11 @@
       </el-table-column>
       <el-table-column :key="index" align='center' v-else-if='selectProps.includes(items.props)' :prop="items.props"
                        :label="items.name">
-        <template>
-          <i-select></i-select>
+        <template slot-scope="scope">
+          <i-select v-model="scope.row[items.props]">
+            <el-option v-for="items in selectPropsOptionsObject[items.props]" :key='items.code' :value='items.code'
+                       :label="items.name"/>
+          </i-select>
         </template>
       </el-table-column>
       <el-table-column :key="index" align='center' v-else-if='items.props === iconProps' :prop="items.props"
@@ -58,6 +63,11 @@ export default {
     selectProps: {
       type: Array, default: () => {
         return []
+      }
+    },
+    selectPropsOptionsObject: {
+      type: Object, default: () => {
+        return {}
       }
     },
     iconProps: {type: String, default: ''},
