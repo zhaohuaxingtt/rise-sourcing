@@ -1,13 +1,12 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-24 09:47:32
- * @LastEditTime: 2021-03-18 02:31:18
+ * @LastEditTime: 2021-03-18 19:39:44
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsign\home\components\data.js
  */
 
-import {qstuihui} from '@/api/partsign/home'
 export const tableTitle = [
   {props:'tpPartID',name:'信息单流水号'},
   {props:'partNum',name:'零件号'},
@@ -35,8 +34,3 @@ export const form = {
   userId:'1'
 }
 export const fromGroup = JSON.parse(JSON.stringify(form))
-
-
-export function qianshou(userIdList){
-  return qstuihui()
-}

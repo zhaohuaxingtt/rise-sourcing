@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-22 16:46:47
- * @LastEditTime: 2021-03-18 03:09:58
+ * @LastEditTime: 2021-03-18 19:13:36
  * @LastEditors: Please set LastEditors
  * @Description: 存在于界面上方的组件。
  * @FilePath: \rise\src\layout\components\topLayout.vue
@@ -47,6 +47,7 @@
   import drawer from '../message/drawer'
 	import filters from '@/utils/filters'
 	import { getCountInMail } from '@/api/layout/topLayout'
+	import { socket } from '@/utils/socket'
 
 	export default {
 		mixins: [filters],
@@ -71,7 +72,11 @@
 		},
 		created() {
 			this.lang = localStorage.getItem('lang')
-			//this.getCountInMail()
+			// this.getCountInMail()
+			// socket('1001').connect({}, () => {}, () => {})
+			// socket.connect({}, () => {
+			// 	console.log('test')
+			// }, () => {})
 		},
 		methods: {
 			handleChangeLang() {

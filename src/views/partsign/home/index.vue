@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-24 09:17:57
- * @LastEditTime: 2021-03-18 02:37:11
+ * @LastEditTime: 2021-03-18 19:39:19
  * @LastEditors: Please set LastEditors
  * @Description: 零件签收列表界面.
  * @FilePath: \rise\src\views\partsign\index.vue
@@ -108,8 +108,8 @@
 <script>
 import { iPage, iButton, iCard, iMessage ,iPagination,iSearch,iInput,iSelect} from "@/components";
 import tablelist from "./components/tableList";
-import { tableTitle,form,fromGroup } from "./components/data";
-import { getTabelData,getPageGroup,qstuihui } from "@/api/partsign/home";
+import { tableTitle,form } from "./components/data";
+import { getTabelData,getPageGroup,patchRecords } from "@/api/partsign/home";
 import { pageMixins } from "@/utils/pageMixins";
 import backItems from "./components/backItems";
 import changeItems from "./components/changeItems";
@@ -138,6 +138,24 @@ export default {
     this.getTableList();
   },
   methods: {
+    translateDataToservice(data){
+      const idList = []
+      data.forEach(items=>idList.push(items.tpPartID))
+      return idList
+    },
+    patchRecords(type,dataList){
+      patchRecords({
+        isCSFAccepted:type,
+        partSerialNum:this.translateDataToservice(dataList),
+        csFReceiveMemo:this.backmark
+      }).then(res=>{
+        if(res.data){
+          this.getTableList()
+          if(type == 0){this.diologBack = false;}
+        }
+      })
+    },
+    //查询重置
     sure(){this.getTableList()},
     reset(){
       for(let i in this.form){
@@ -195,14 +213,13 @@ export default {
     save() {
       if (this.selectTableData.length == 0)
         return iMessage.warn("抱歉，您当前还未选择您需要签收的信息单！");
-        this.getTableList()
-      
+        this.patchRecords(1,this.selectTableData)
     },
     //退回
     openDiologBack() {
       if (this.selectTableData.length == 0)
         return iMessage.warn("抱歉，您当前还未选择您需要退回的信息单！");
-      this.diologBack = true;
+        this.diologBack = true;
     },
     //转派
     openDiologChangeItems() {
@@ -210,15 +227,14 @@ export default {
         return iMessage.warn("抱歉，您当前还未选择您需要转派的信息单！");
       this.diologChangeItems = true;
     },
+    //退回
     sureBackmark(val) {
-      console.log("your message:", val);
-      this.diologBack = false;
-      this.getTableList();
+      this.backmark = val
+      this.patchRecords(0,this.selectTableData)
     },
+    //转派
     sureChangeItems(val) {
-      console.log("your select data is", JSON.parse(val));
-      this.diologChangeItems = false;
-      this.getTableList();
+      this.patchRecords(3,this.selectTableData)
     },
   },
 };

@@ -115,7 +115,7 @@ module.exports = {
         }
       },
       '/tpInfoApi':{ //高攀弘服务地址
-        target:'http://10.13.38.100:8086',
+        target:'http://10.13.38.100:8023',
         changeOrigin:true,
         pathRewrite:{
           "^/tpInfoApi": ""
@@ -135,6 +135,14 @@ module.exports = {
           "^/rfqApi": ""
         }
       },
+      '/wsApi': {
+        target: 'ws://10.160.137.37:8014',
+        changeOrigin: true,
+        ws: true,
+        pathRewrite:{
+          "^/wsApi": ""
+        }
+      }
     }
   }
 }
