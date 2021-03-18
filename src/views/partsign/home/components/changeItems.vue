@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 11:24:15
- * @LastEditTime: 2021-03-18 02:38:19
+ * @LastEditTime: 2021-03-18 20:31:34
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsign\home\components\changeItems.vue
@@ -11,7 +11,7 @@
         <div class="changeContent">
           <span class="fontSize14">采购员：</span>
           <iSelect v-model='inquiryBuyer' placeholder='请选择询价采购员'>
-            <el-option v-for="(items,index) in inquiryBuyerList" :key='index' :value='JSON.stringify(items)' :label="items.label"/>
+            <el-option v-for="(items,index) in inquiryBuyerList" :key='index' :value='items.id' :label="items.nameZh"/>
           </iSelect>
         </div>
         <span slot="footer" class="dialog-footer">
@@ -22,7 +22,7 @@
 </template>
 <script>
 import {iSelect,iButton,iMessage,iDialog} from '@/components'
-import {getInquiryBuyerList} from '@/api/partsign/home'
+import {purchaseUsers} from '@/api/usercenter'
 export default{
   components:{iSelect,iButton,iDialog},
   props:{
@@ -39,7 +39,7 @@ export default{
   methods:{
     //获取询价采购员数据。
     getInquiryBuyerListFn(){
-      getInquiryBuyerList().then(res=>this.inquiryBuyerList = res.data)
+      purchaseUsers({userId:1}).then(res=>this.inquiryBuyerList = res.data)
     },
     clearDiolog(){
       this.inquiryBuyer = ''
