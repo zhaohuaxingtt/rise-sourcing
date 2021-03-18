@@ -21,3 +21,18 @@ export function editRfqData(parmars) {
         data: parmars
     })
 }
+
+export function addRfq(parmars) {
+    return requst({
+        url: '/api/rfqs/insertRfq',
+        method: 'PATCH',
+        data: parmars
+    })
+}
+
+export function findBySearches(type) {
+    return requst({
+        url: `/api/rfqs/findBySearches/${type}`,
+        method: 'GET'
+    })
+}

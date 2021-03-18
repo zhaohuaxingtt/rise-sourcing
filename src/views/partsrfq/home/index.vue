@@ -20,13 +20,19 @@
           <iInput placeholder='请输入查询' v-model="form.searchConditions"></iInput>
         </el-form-item>
         <el-form-item label="车型项目">
-          <iSelect placeholder='请选择' v-model="form.carType"></iSelect>
+          <iSelect placeholder='请选择' v-model="form.carType">
+            <el-option v-for="items in carTypeOptions" :key='items.code' :value='items.code' :label="items.name"/>
+          </iSelect>
         </el-form-item>
         <el-form-item label="零件项目类型">
-          <iSelect placeholder='请选择' v-model="form.partType"></iSelect>
+          <iSelect placeholder='请选择' v-model="form.partType">
+            <el-option v-for="items in partTypeOptions" :key='items.code' :value='items.code' :label="items.name"/>
+          </iSelect>
         </el-form-item>
         <el-form-item label="RFQ状态">
-          <iSelect placeholder='请选择' v-model="form.rfqStatus"></iSelect>
+          <iSelect placeholder='请选择' v-model="form.rfqStatus">
+            <el-option v-for="items in rfqStatusOptions" :key='items.code' :value='items.code' :label="items.name"/>
+          </iSelect>
         </el-form-item>
       </el-form>
     </iSearch>
@@ -82,6 +88,7 @@
       <!------------------------------------------------------------------------>
       <assignment-of-scoring-tasks
           v-model="diologAssignmentOfScroingTasks"
+          :rfq-id="assignmentRfqIdList"
       />
     </iCard>
   </iPage>
@@ -93,7 +100,7 @@ import tablelist from "pages/partsrfq/components/tablelist";
 import assignmentOfScoringTasks from "pages/partsrfq/home/components/assignmentOfScoringTasks";
 import {pageMixins} from "@/utils/pageMixins";
 import {tableTitle} from "pages/partsrfq/home/components/data";
-import {getRfqDataList, editRfqData} from "@/api/partsrfq/home";
+import {getRfqDataList, editRfqData, findBySearches} from "@/api/partsrfq/home";
 
 export default {
   components: {
@@ -125,11 +132,18 @@ export default {
       },
       activateButtonLoading: false,
       closeButtonLoading: false,
-      transferNegotiationButtonLoading: false
+      transferNegotiationButtonLoading: false,
+      carTypeOptions: [],
+      partTypeOptions: [],
+      rfqStatusOptions: [],
+      assignmentRfqIdList: []
     };
   },
   created() {
-    this.getTableList();
+    this.getTableList()
+    this.getCarTypeOptions()
+    this.getPartTypeOptions()
+    this.getRfqStatusOptions()
   },
   methods: {
     openPage(id) {
@@ -192,6 +206,9 @@ export default {
       if (this.selectTableData.length == 0)
         return iMessage.warn("抱歉，您当前还未选择您需要转派的评分任务！");
       this.diologAssignmentOfScroingTasks = true
+      this.assignmentRfqIdList = this.selectTableData.map(item => {
+        return item.id
+      })
     },
     async toTop(row) {
       const setType = row.recordId > 1 ? '0' : '1'
@@ -227,6 +244,18 @@ export default {
           this.transferNegotiationButtonLoading = boolean
           break;
       }
+    },
+    async getCarTypeOptions() {
+      const res = await findBySearches('01')
+      this.carTypeOptions = res.data
+    },
+    async getPartTypeOptions() {
+      const res = await findBySearches('02')
+      this.partTypeOptions = res.data
+    },
+    async getRfqStatusOptions() {
+      const res = await findBySearches('03')
+      this.rfqStatusOptions = res.data
     }
   }
 }

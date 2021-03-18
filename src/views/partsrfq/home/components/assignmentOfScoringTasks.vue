@@ -15,12 +15,13 @@
         </div>
       </div>
       <tablelist
+          v-if="showStatus"
+          @handleSelectionChange="handleSelectionChange"
           :tableData="tableListData"
           :tableTitle="tableTitle"
           :tableLoading="tableLoading"
-          @handleSelectionChange="handleSelectionChange"
           :index="true"
-          :select-props="['a','b','c']"
+          :select-props="selectProps"
       ></tablelist>
     </div>
     <span slot="footer" class="dialog-footer">
@@ -29,57 +30,86 @@
   </iDialog>
 </template>
 <script>
-import {iButton,iMessage,iDialog} from '@/components'
+import {iButton, iMessage, iDialog} from '@/components'
 import tablelist from "pages/partsrfq/components/tablelist";
 import {assignmentOfScroingTasksTableTitle} from "pages/partsrfq/home/components/data";
-import {getTabelData} from "@/api/partsign/home";
+import {editRfqData} from "@/api/partsrfq/home";
 
-export default{
-  components:{iButton,iDialog, tablelist},
-  props:{
-    title:{type:String,default:'转派评分任务'},
-    value:{type:Boolean},
-    repeatClick:Boolean
+export default {
+  components: {iButton, iDialog, tablelist},
+  props: {
+    title: {type: String, default: '转派评分任务'},
+    value: {type: Boolean},
+    repeatClick: Boolean,
+    rfqId: {
+      required: true,
+      type: Array, default: () => {
+
+      }
+    }
   },
-  data(){
+  data() {
     return {
       tableListData: [],
       tableTitle: assignmentOfScroingTasksTableTitle,
       tableLoading: false,
-      selectTableData: []
+      selectTableData: [],
+      selectProps: [],
+      showStatus: true
     }
   },
-  created(){
-    //this.getTableList()
+  created() {
+    this.getTableList()
   },
-  methods:{
+  methods: {
     //获取表格数据
     getTableList() {
-      this.tableLoading = true;
-      getTabelData().then((res) => {
-        this.tableListData = res.data;
-        this.tableLoading = false;
-      });
+      this.tableListData = [
+        {deptType: '', deptNum: '', graderId: ''},
+        {deptType: '', deptNum: '', graderId: ''},
+        {deptType: '', deptNum: '', graderId: ''},
+      ]
+    },
+    clearDiolog() {
+      this.$emit('input', false)
+    },
+    edit() {
+      this.showStatus = false
+      this.selectProps = ['deptType', 'deptNum', 'graderId']
+      this.$nextTick(() => {
+        this.showStatus = true
+      })
+    },
+    async save() {
+      if (this.selectTableData.length == '') return iMessage.warn('抱歉！您当前还未选择！')
+      const req = {
+        ratingInfoPackage: {
+          ratingInfoList: this.selectTableData,
+          rfqId: this.rfqId,
+          userId: 12321,
+        }
+      }
+      const res = await editRfqData(req)
+      iMessage.success(res.desZh)
+      this.showStatus = false
+      this.selectProps = []
+      this.$nextTick(() => {
+        this.showStatus = true
+      })
+      this.$emit('sure', JSON.parse(this.selectTableData))
     },
     //修改表格改动列
     handleSelectionChange(val) {
       this.selectTableData = val;
-    },
-    clearDiolog(){
-      this.$emit('input',false)
-    },
-    edit() {},
-    save() {
-      if(this.selectTableData.length == '') return iMessage.warn('抱歉！您当前还未选择！')
-      this.$emit('sure',JSON.parse(this.selectTableData))
     }
   }
 }
 </script>
 <style lang='scss' scoped>
-.changeContent{
+.changeContent {
   padding: 0px 10px 20px 10px;
-  .title-button-box{
+
+  .title-button-box {
     margin-top: -60px;
     margin-right: 30px;
   }

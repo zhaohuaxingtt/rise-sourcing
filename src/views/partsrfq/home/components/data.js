@@ -25,7 +25,7 @@ export const tableTitle = [
 ]
 
 export const assignmentOfScroingTasksTableTitle = [
-    {props:'a',name:'部门评分类型'},
-    {props:'b',name:'部门编号'},
-    {props:'c',name:'评分人'},
+    {props:'deptType',name:'部门评分类型'},
+    {props:'deptNum',name:'部门编号'},
+    {props:'graderId',name:'评分人'},
 ]
