@@ -27,8 +27,8 @@
       <el-table-column :key="index" align='center' v-else-if='selectProps.includes(items.props)' :prop="items.props"
                        :label="items.name">
         <template slot-scope="scope">
-          <i-select v-model="scope.row[items.props]">
-            <el-option v-for="items in selectPropsOptionsObject[items.props]" :key='items.code' :value='items.code'
+          <i-select v-model="scope.row[items.props]" @change="(val)=>handleSelectChange(items.props,val, scope.$index)">
+            <el-option v-for="items in selectPropsOptionsObject[scope.$index][items.props]" :key='items.code' :value='items.code'
                        :label="items.name"/>
           </i-select>
         </template>
@@ -80,6 +80,14 @@ export default {
   methods: {
     handleSelectionChange(val) {
       this.$emit('handleSelectionChange', val)
+    },
+    handleSelectChange(type, val, index) {
+      const res = {
+        type,
+        val,
+        index
+      }
+      this.$emit('handleSelectChange', res)
     },
     openPage(params) {
       this.$emit('openPage', params)

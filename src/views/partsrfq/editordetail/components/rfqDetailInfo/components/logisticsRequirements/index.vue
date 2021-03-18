@@ -43,8 +43,8 @@ import {iCard, iButton, iPagination} from "@/components";
 import tablelist from 'pages/partsrfq/components/tablelist'
 import {tableTitle} from "./components/data";
 import {pageMixins} from "@/utils/pageMixins";
-import {getLogisticsRequirementsList} from "@/api/partsrfq/editordetail";
 import detailDialog from './components/detail'
+import {getRfqDataList} from "@/api/partsrfq/home";
 
 export default {
   components: {
@@ -71,12 +71,29 @@ export default {
     exports() {
     },
     //获取表格数据
-    getTableList() {
+    async getTableList() {
       this.tableLoading = true;
-      getLogisticsRequirementsList().then((res) => {
-        this.tableListData = res.data;
-        this.tableLoading = false;
-      });
+      const id = this.$route.query.id
+      if (id) {
+        const req = {
+          otherInfoPackage: {
+            findType: '02',
+            rfqId: id,
+            current: this.page.currPage,
+            size: this.page.pageSize,
+          }
+        }
+        try {
+          const res = await getRfqDataList(req)
+          this.tableListData = res.data;
+          this.page.currPage = res.currPage
+          this.page.pageSize = res.pageSize
+          this.page.totalCount = res.totalCount
+          this.tableLoading = false;
+        } catch {
+          this.tableLoading = false;
+        }
+      }
     },
     //修改表格改动列
     handleSelectionChange(val) {
