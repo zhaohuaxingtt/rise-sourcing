@@ -7,7 +7,7 @@
  * @FilePath: \rise\src\views\partsign\home\components\changeItems.vue
 -->
 <template>
-      <iDialog :title="title" :visible.sync="value" width="400px" @close='clearDiolog'>
+      <iDialog :title="title" :visible.sync="value" width="400px" @close='clearDiolog' top="40vh">
         <div class="changeContent">
           <span class="fontSize14">采购员：</span>
           <iSelect v-model='inquiryBuyer' placeholder='请选择询价采购员'>
