@@ -53,6 +53,7 @@
 					<el-radio label="2">radiother</el-radio>
 					<el-radio label="3">radiother</el-radio>
 				</el-radio-group>
+				<span class="start">*</span>
 			</iFormItem>
 			<iFormItem label="期望目标价" name="test">
 				<iText>
@@ -178,5 +179,12 @@
 		background-color: #CDDAF0;
 		margin-top: 30px;
 		margin-bottom: 36px;
+	}
+	.start{
+		font-size: 30px;
+		position: absolute;
+		left: -90px;
+		top: 4px;
+		color: red;
 	}
 </style>
