@@ -40,7 +40,7 @@
           :tableLoading="tableLoading"
           :index="true"
           @handleSelectionChange="handleSelectionChange"
-          :select-props="['d']"
+          :select-props="['cbdLevel']"
           :select-props-options-object="selectPropsOptionsObject"
       ></tablelist>
       <tablelist
@@ -131,7 +131,7 @@ export default {
     async getCbdList() {
       const res = await getDictByCode('cbd_level')
       this.selectPropsOptionsObject = {
-        d: res.data[0].subDictResultVo
+        cbdLevel: res.data[0].subDictResultVo
       }
     }
   }

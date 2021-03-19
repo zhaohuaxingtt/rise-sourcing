@@ -26,7 +26,7 @@ import targetPrice from './components/targetPrice'
 import referenceOutput from './components/referenceOutput'
 import logisticsRequirements from './components/logisticsRequirements'
 import inquiryAttachment from './components/inquiryAttachment'
-import bomList from './components/bom'
+// import bomList from './components/bom'
 
 export default {
   components: {
@@ -35,7 +35,7 @@ export default {
     referenceOutput,
     logisticsRequirements,
     inquiryAttachment,
-    bomList
+    //bomList
   },
   data() {
     return {
