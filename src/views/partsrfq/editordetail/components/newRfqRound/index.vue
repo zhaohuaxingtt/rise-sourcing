@@ -18,7 +18,7 @@
           </template>
         </div>
       </div>
-      <iFormGroup inline icon >
+      <iFormGroup inline icon>
         <iFormItem label="轮次类型" name="test">
           <i-select v-model="roundType">
             <el-option v-for="items in roundTypeOptions" :key='items.code' :value='items.code' :label="items.name"/>
@@ -41,6 +41,7 @@
           :index="true"
           @handleSelectionChange="handleSelectionChange"
           :select-props="['d']"
+          :select-props-options-object="selectPropsOptionsObject"
       ></tablelist>
       <tablelist
           v-else
@@ -73,6 +74,7 @@ import {pageMixins} from "@/utils/pageMixins";
 import {tableTitle, tableTitle2} from "./components/data";
 import {getNewRfqRoundList} from "@/api/partsrfq/editordetail";
 import {findBySearches} from "@/api/partsrfq/home";
+import {getDictByCode} from "@/api/dictionary";
 
 export default {
   components: {iButton, iDialog, iFormGroup, iFormItem, iSelect, tablelist, iPagination},
@@ -93,12 +95,14 @@ export default {
       startTime: '',
       endTime: '',
       tableTitle,
-      tableTitle2
+      tableTitle2,
+      selectPropsOptionsObject: {}
     }
   },
   created() {
     this.getRoundTypeOptions()
-    this.getTableList();
+    this.getTableList()
+    this.getCbdList()
   },
   methods: {
     //获取表格数据
@@ -123,6 +127,12 @@ export default {
       const res = await findBySearches('04')
       this.roundTypeOptions = res.data
       this.roundType = this.roundTypeOptions[0].code
+    },
+    async getCbdList() {
+      const res = await getDictByCode('cbd_level')
+      this.selectPropsOptionsObject = {
+        d: res.data[0].subDictResultVo
+      }
     }
   }
 }

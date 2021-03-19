@@ -13,9 +13,9 @@
       <el-tab-pane label="询价附件">
         <inquiry-attachment/>
       </el-tab-pane>
-      <el-tab-pane label="BOM单信息">
+<!--      <el-tab-pane label="BOM单信息">
         <bom-list/>
-      </el-tab-pane>
+      </el-tab-pane>-->
     </iTabsList>
   </div>
 </template>
