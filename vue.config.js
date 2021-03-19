@@ -145,7 +145,7 @@ module.exports = {
 				}
 			},
 			'/wsApi': {
-				target: 'ws://10.160.137.37:8014',
+				target: 'ws://10.160.143.37:8014',
 				changeOrigin: true,
 				ws: true,
 				pathRewrite: {
