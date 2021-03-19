@@ -45,7 +45,7 @@ import {iCard, iButton, iPagination, iFormGroup, iFormItem, iText} from "@/compo
 import tablelist from 'pages/partsrfq/components/tablelist'
 import {tableTitle} from "./components/data";
 import {pageMixins} from "@/utils/pageMixins";
-import {getBomList} from "@/api/partsrfq/editordetail";
+import {getRfqDataList} from "@/api/partsrfq/home";
 
 
 export default {
@@ -72,12 +72,29 @@ export default {
   },
   methods: {
     //获取表格数据
-    getTableList() {
+    async getTableList() {
       this.tableLoading = true;
-      getBomList().then((res) => {
-        this.tableListData = res.data;
-        this.tableLoading = false;
-      });
+      const id = this.$route.query.id
+      if (id) {
+        const req = {
+          otherInfoPackage: {
+            findType: '04',
+            rfqId: id,
+            current: this.page.currPage,
+            size: this.page.pageSize,
+          }
+        }
+        try {
+          const res = await getRfqDataList(req)
+          this.tableListData = res.data;
+          this.page.currPage = res.currPage
+          this.page.pageSize = res.pageSize
+          this.page.totalCount = res.totalCount
+          this.tableLoading = false;
+        } catch {
+          this.tableLoading = false;
+        }
+      }
     },
     readEffectiveBOM() {
     },

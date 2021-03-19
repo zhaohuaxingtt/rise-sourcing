@@ -24,6 +24,7 @@
           :select-props="selectProps"
           :select-props-options-object="selectPropsOptionsObject"
           @handleSelectChange="handleSelectChange"
+          :is-select-options-linkage="true"
       ></tablelist>
     </div>
     <span slot="footer" class="dialog-footer">

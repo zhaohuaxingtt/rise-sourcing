@@ -7,7 +7,7 @@
 <template>
   <el-table :height="height" :data='tableData' v-loading='tableLoading' @selection-change="handleSelectionChange">
     <el-table-column v-if="selection" type='selection' width="50" align='center'></el-table-column>
-    <el-table-column v-if='index' type='index' width='50' align='center' label='#'></el-table-column>
+    <el-table-column v-if='index' type='index' width='50' align='center' label='编号'></el-table-column>
     <template v-for="(items,index) in tableTitle">
       <el-table-column :key="index" align='center' v-if='items.props === openPageProps' :prop="items.props"
                        :label="items.name">
@@ -24,12 +24,21 @@
           <i-input v-model="scope.row[items.props]"/>
         </template>
       </el-table-column>
-      <el-table-column :key="index" align='center' v-else-if='selectProps.includes(items.props)' :prop="items.props"
+      <el-table-column :key="index" align='center' v-else-if='isSelectOptionsLinkage && selectProps.includes(items.props)' :prop="items.props"
                        :label="items.name">
         <template slot-scope="scope">
           <i-select v-model="scope.row[items.props]" @change="(val)=>handleSelectChange(items.props,val, scope.$index)">
-            <el-option v-for="items in selectPropsOptionsObject[scope.$index][items.props]" :key='items.code' :value='items.code'
+            <el-option v-for="items in selectPropsOptionsObject[scope.$index][items.props]" :key='items.code'
+                       :value='items.code'
                        :label="items.name"/>
+          </i-select>
+        </template>
+      </el-table-column>
+      <el-table-column :key="index" align='center' v-else-if='!isSelectOptionsLinkage && selectProps.includes(items.props)' :prop="items.props"
+                       :label="items.name">
+        <template slot-scope="scope">
+          <i-select v-model="scope.row[items.props]">
+            <el-option v-for="items in selectPropsOptionsObject[items.props]" :key='items.code' :value='items.code' :label="items.name"/>
           </i-select>
         </template>
       </el-table-column>
@@ -69,6 +78,9 @@ export default {
       type: Object, default: () => {
         return {}
       }
+    },
+    isSelectOptionsLinkage: {
+      type: Boolean, default: false
     },
     iconProps: {type: String, default: ''},
     customOpenPageWord: {type: String, default: ''}
