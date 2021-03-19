@@ -44,7 +44,7 @@ import { iPage, icon, iSearch, iInput } from '@/components'
 import card from './components/card'
 import tabs from './components/tabs'
 import tabPane from './components/tabPane'
-import { getAllTaskType } from '@/api/taskcenter/home'
+import { getCountInfo, getTaskList } from '@/api/taskcenter/home'
 
 export default {
   components: { iPage, icon, iSearch, iInput, card, tabs, tabPane },
@@ -84,7 +84,8 @@ export default {
       })
     }
 
-    // this.getAllTaskType()
+    this.getCountInfo()
+    this.getTaskList()
   },
   mounted() {
     this.initScroll()
@@ -154,16 +155,18 @@ export default {
         }
       }
     },
-    getAllTaskType() {
-      this.loading = true
+    getCountInfo() {
+      // this.loading = true
 
-      getAllTaskType()
+      getCountInfo({ userId: '1231' })
         .then(res => {
-          this.taskTypeList = res.data
-
-          this.loading = false
+          console.log(res)
+          // this.loading = false
         })
         .catch(() => this.loading = false)
+    },
+    getTaskList() {
+      getTaskList({  })
     }
   }
 }

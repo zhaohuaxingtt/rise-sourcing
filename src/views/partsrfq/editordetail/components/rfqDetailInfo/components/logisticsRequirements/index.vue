@@ -13,7 +13,7 @@
           :index="true"
           @handleSelectionChange="handleSelectionChange"
           @openPage='openPage'
-          open-page-props="b"
+          open-page-props="rfqPlanId"
       ></tablelist>
       <!------------------------------------------------------------------------>
       <!--                  表格分页                                          --->

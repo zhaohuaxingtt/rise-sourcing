@@ -82,6 +82,11 @@ export const staticRouter = [{
 				path: "/taskcenter",
 				name: "taskcenter",
 				component: () => import("@/views/taskcenter/home"),
+			},
+			{
+				path: "/log",
+				name: "log",
+				component: () => import("@/views/log/home"),
 			}
 		],
 	},

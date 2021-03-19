@@ -14,7 +14,7 @@
 		<!------------------------------------------------------------------------>
 		<!--                  search 搜索模块                                   --->
 		<!------------------------------------------------------------------------>
-		<iSearch class="margin-bottom20" @sure="getTableListFn()" @reset="reset">
+		<iSearch class="margin-bottom20" @sure="sure" @reset="reset">
 			<el-form>
 				<el-form-item label="零件号">
 					<iInput placeholder='请输入零件号,多个逗号分隔' v-model="form['search.partNum']"></iInput>
@@ -36,7 +36,7 @@
 				<el-form-item label="零件状态">
 					<iSelect placeholder='请选择零件状态' v-model="form['search.partStatus']"></iSelect>
 				</el-form-item>
-			<!-- 	<el-form-item label="信息单状态">
+				<!-- 	<el-form-item label="信息单状态">
 					<iSelect placeholder='请选择信息单状态' v-model="form['']"></iSelect>
 				</el-form-item> -->
 				<el-form-item label="车型大类">
@@ -60,8 +60,8 @@
 			<div class="margin-bottom20 clearFloat">
 				<span class="font18 font-weight">新建采购项目</span>
 				<div class="floatright">
-					<iButton>生成Fs/GsNr</iButton>
-					<iButton>取消零件采购</iButton>
+					<iButton @click="creatFs">生成Fs/GsNr</iButton>
+					<iButton @click="openDiologBack">取消零件采购</iButton>
 					<iButton @click="openBatchmiantain">批量维护</iButton>
 					<iButton>启动询价</iButton>
 					<iButton @click="openDiologChangeItems">转派</iButton>
@@ -81,6 +81,7 @@
 		<!--                  转派弹出框                                         --->
 		<!------------------------------------------------------------------------>
 		<changeItems v-model="diologChangeItems" @sure='sureChangeItems' title='零件采购项目转派'></changeItems>
+		<backItems v-model="diologBack" @sure="cancel"></backItems>
 	</iPage>
 </template>
 <script>
@@ -98,6 +99,7 @@
 	import {
 		pageMixins
 	} from '@/utils/pageMixins'
+	import backItems from "@/views/partsign/home/components/backItems";
 	import {
 		tableTitle,
 		form,
@@ -105,7 +107,8 @@
 	} from './component/data'
 	import tablelist from '../../partsign/home/components/tableList'
 	import {
-		getTabelData
+		getTabelData,
+		changeProcure
 	} from '@/api/partsprocure/home'
 	import changeItems from '../../partsign/home/components/changeItems'
 	export default {
@@ -120,7 +123,8 @@
 			iNavMvp,
 			iSearch,
 			iInput,
-			iSelect
+			iSelect,
+			backItems
 		},
 		data() {
 			return {
@@ -130,12 +134,14 @@
 				selectTableData: [],
 				diologChangeItems: false,
 				form: form,
-				fromGroup:fromGroup
+				fromGroup: fromGroup,
+				diologBack: false, //退回
 			}
 		},
 		created() {
 			this.getTableListFn();
 		},
+		computed: {},
 		methods: {
 			openPage() {
 				this.$router.push({
@@ -149,9 +155,18 @@
 			},
 			//确认转派弹窗值。
 			sureChangeItems(val) {
-				console.log(val)
-				this.diologChangeItems = false;
-				this.getTableListFn()
+				let transfer = {
+					buyerName: JSON.parse(val).label,
+					purchaseProjectIds: this.getPurchasePrjectId()
+				}
+				changeProcure({
+					transfer
+				}).then(res => {
+					this.diologChangeItems = false;
+					this.getTableListFn()
+				}).catch(() => {
+					this.diologChangeItems = false;
+				})
 			},
 			//表格选中值集
 			handleSelectionChange(val) {
@@ -160,8 +175,8 @@
 			// 获取零件采购项目相关信息
 			getTableListFn() {
 				this.tableLoading = true
-				this.form['search.size']=this.page.pageSize
-				this.form['search.current']=this.page.currPage
+				this.form['search.size'] = this.page.pageSize
+				this.form['search.current'] = this.page.currPage
 				getTabelData(this.form).then(res => {
 					this.tableLoading = false
 					this.page.currPage = res.data.pageData.pageNum
@@ -170,12 +185,56 @@
 					this.tableListData = res.data.pageData.data
 				}).catch(() => this.tableLoading = false)
 			},
-			// 充值搜索条件
-			reset(){
+			// 查询
+			sure() {
+				this.getTableListFn()
+			},
+			// 重置搜索条件
+			reset() {
 				for (let i in this.form) {
-					this.form[i]=""
+					this.form[i] = ""
 				}
 				this.getTableListFn()
+			},
+			//退回
+			openDiologBack() {
+				if (this.selectTableData.length == 0) return iMessage.warn('抱歉，您当前还未选择您需要取消的零件采购项目！')
+				this.diologBack = true;
+			},
+			// 取消零件采购
+			cancel(backmark) {
+				let cancel = {
+					cancelRemark: backmark,
+					purchaseProjectIds: this.getPurchasePrjectId()
+				}
+				changeProcure({
+					cancel
+				}).then(res => {
+					this.diologBack = false
+					this.getTableListFn()
+				}).catch(() => {
+					this.diologBack = false
+				})
+			},
+			// 生成fs号
+			creatFs() {
+				if (this.selectTableData.length == 0) return iMessage.warn('抱歉，您当前还未选择您需要生成FS号的零件采购项目！')
+				let fs = {
+					purchaseProjectIds: this.getPurchasePrjectId()
+				}
+				changeProcure({
+					fs
+				}).then(res => {
+					this.getTableListFn()
+				})
+			},
+			// 获取选中零件号ID
+			getPurchasePrjectId() {
+				let purchasePrjectId = []
+				this.selectTableData.map(res => {
+					purchasePrjectId.push(res.purchasePrjectId)
+				})
+				return purchasePrjectId
 			},
 			openBatchmiantain() {
 				this.$router.push({

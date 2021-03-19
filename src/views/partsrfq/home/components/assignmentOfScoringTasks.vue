@@ -37,6 +37,7 @@ import tablelist from "pages/partsrfq/components/tablelist";
 import {assignmentOfScroingTasksTableTitle} from "pages/partsrfq/home/components/data";
 import {editRfqData} from "@/api/partsrfq/home";
 import {getDictByCode, getDeptByDeptType} from "@/api/dictionary";
+import {getGraderIdByDept} from "@/api/usercenter";
 
 export default {
   components: {iButton, iDialog, tablelist},
@@ -136,8 +137,12 @@ export default {
           break;
         case 'deptNum':
           this.tableListData[res.index].graderId = ''
-          this.selectPropsOptionsObject[res.index].graderId = [
-          ]
+          this.selectPropsOptionsObject[res.index].graderId = (await getGraderIdByDept(res.val)).data.map(item => {
+            return {
+              code: item.id,
+              name: item.userName
+            }
+          })
           break;
       }
       console.log(this.selectPropsOptionsObject);
