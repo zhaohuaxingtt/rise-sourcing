@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 11:24:30
- * @LastEditTime: 2021-03-01 12:05:58
+ * @LastEditTime: 2021-03-18 22:50:13
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsign\home\components\backItems.vue
@@ -10,8 +10,8 @@
     <iDialog :title="title" :visible.sync="value" width="400px" @close='clearDiolog'>
          <iInput v-model='backmark' show-word-limit class="textarea" :autosize='{minRows:4}' placeholder='请填写理由，该输入框为必填' maxLength='200' type='textarea'></iInput>
          <span slot="footer" class="dialog-footer">
+           <iButton @click="$emit('input',false)">取 消</iButton>
           <iButton :loading='repeatClick' @click="sureBackmark">确 定</iButton>
-          <iButton @click="$emit('input',false)">取 消</iButton>
         </span>
       </iDialog>
 </template>

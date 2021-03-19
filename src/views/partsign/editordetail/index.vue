@@ -12,7 +12,7 @@
       <div class="btnList flex-align-center">
         <iButton @click="openDiologChangeItems" v-permission='BTN_PARTSIGN_ZHUANPAI'>转派</iButton>
         <iButton @click="save">签收</iButton>
-        <iButton @click="openDiologBack" disabled>退回</iButton>
+        <iButton @click="openDiologBack">退回</iButton>
         <iButton @click="back">返回</iButton>
         <span class="flex-align-center">
           <icon symbol name="iconrizhiwuzi"></icon>
@@ -59,7 +59,7 @@
   </iPage>
 </template>
 <script>
-import { iPage, iButton, iCard, iTabsList, icon, iMessage } from "@/components";
+import { iPage, iButton, iCard, iTabsList, icon, iMessage ,iMessageBox} from "@/components";
 import partInfo from "./components/partInfo";
 import enquiry from "./components/enquiry";
 import volume from "./components/volume/volume";
@@ -69,8 +69,7 @@ import changeItems from "../home/components/changeItems";
 // import log from './components/log';
 import { partDetailTitle, partTitle } from "./components/data";
 // import { getPartInfo } from "@/api/partsign/editordetail";
-import {qstuihui} from "@/api/partsign/home";
-import {signTpInfo} from "../home/components/data"
+import {patchRecords} from "@/api/partsign/home";
 export default {
   components: {
     iPage,
@@ -93,6 +92,7 @@ export default {
       diologChangeItems: false, //转派弹窗
       diologBack: false, //退回弹窗
       partDetails: {}, //零件信息单详情
+      backmark:''
     };
   },
   created() {
@@ -104,21 +104,10 @@ export default {
     },
     //签收
     save() {
-		// 签收退回新建信息单入参
-		let  data = {
-			csFReceiveDate: "", //签收/退回时间
-			csFReceiveDeptNum: "", //签收人/退回人部门
-			csFReceiveMemo: "", //备注
-			csFReceiveName: "", //签收人/退回人姓名
-			csFReceiveNum: "", //签收人/退回人工号
-			isCSFAccepted: "", //0：退回；1：签收；
-			partSerialNum: "" //零件信息单流水号
-		}
-		qstuihui(data).then(res=>{
-			iMessage.success("签收成功");
-		}).catch(()=>{
-			iMessage.error("签收失败");
-		})
+       if (	this.partDetails.status == 1) return iMessage.warn("抱歉，您选中的单据中存在已签收的信息单，不能批量签收！");
+      iMessageBox('您是否确认对新件信息单进行签收？').then(res=>{
+        this.patchRecords(1)
+      })
     },
     //退回
     openDiologBack() {
@@ -130,17 +119,42 @@ export default {
     },
     // 确定退回
     sureBackmark(val) {
-      console.log("your message:", val);
+      console.log(val)
+      this.backMark = val
       this.diologBack = false;
+      this.patchRecords(0)
     },
     // 确定转派
     sureChangeItems(val) {
-      console.log("your select data is", JSON.parse(val));
       this.diologChangeItems = false;
+      this.patchRecordsForTranslate(val)
     },
     // 返回
     back() {
       this.$router.go(-1);
+    },
+    //签收退回
+    patchRecords(type){
+      patchRecords({signTpInfoGroup:{
+        isCSFAccepted:type,
+        tpIds:[this.partDetails.tpPartID],
+        csFReceiveMemo:this.backMark
+      }}).then(res=>{
+        if(res.data){
+          iMessage.success('操作成功')
+        }
+      })
+    },
+    //转派
+    patchRecordsForTranslate(id){
+      patchRecords({transferTpInfoGroup:{
+        tpIds:[this.partDetails.tpPartID],
+        userId:id
+      }}).then(res=>{
+        if(res.data){
+          iMessage.success('操作成功')
+        }
+      })
     },
   },
 };

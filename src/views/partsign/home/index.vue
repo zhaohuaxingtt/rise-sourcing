@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-24 09:17:57
- * @LastEditTime: 2021-03-18 20:02:53
+ * @LastEditTime: 2021-03-18 22:59:46
  * @LastEditors: Please set LastEditors
  * @Description: 零件签收列表界面.
  * @FilePath: \rise\src\views\partsign\index.vue
@@ -115,6 +115,7 @@ import backItems from "./components/backItems";
 import changeItems from "./components/changeItems";
 import { iNavMvp } from "@/components";
 import local from '@/utils/localstorage'
+import { iMessageBox } from '../../../components';
 export default {
   components: { iPage, tablelist, iButton, iCard, backItems, changeItems ,iNavMvp,iPagination,iSearch,iInput,iSelect},
   mixins: [pageMixins],
@@ -143,15 +144,28 @@ export default {
       data.forEach(items=>idList.push(items.tpPartID))
       return idList
     },
+    //签收退回
     patchRecords(type,dataList){
-      patchRecords({
+      patchRecords({signTpInfoGroup:{
         isCSFAccepted:type,
-        partSerialNum:this.translateDataToservice(dataList),
+        tpIds:this.translateDataToservice(dataList),
         csFReceiveMemo:this.backmark
-      }).then(res=>{
+      }}).then(res=>{
         if(res.data){
+          iMessage.success('操作成功')
           this.getTableList()
-          if(type == 0){this.diologBack = false;}
+        }
+      })
+    },
+    //转派
+    patchRecordsForTranslate(id,dataList){
+      patchRecords({transferTpInfoGroup:{
+        tpIds:this.translateDataToservice(dataList),
+        userId:id
+      }}).then(res=>{
+        if(res.data){
+          iMessage.success('操作成功')
+          this.getTableList()
         }
       })
     },
@@ -211,30 +225,33 @@ export default {
     },
     //签收
     save() {
-      if (this.selectTableData.length == 0)
-        return iMessage.warn("抱歉，您当前还未选择您需要签收的信息单！");
+      if (this.selectTableData.length == 0) return iMessage.warn("抱歉，您当前还未选择您需要签收的信息单！");
+      if (this.selectTableData.find(items=>items.status == 1)) return iMessage.warn("抱歉，您选中的单据中存在已签收的信息单，不能批量签收！");
+      iMessageBox('您是否确认对新件信息单进行签收？').then(res=>{
         this.patchRecords(1,this.selectTableData)
+      })
     },
     //退回
     openDiologBack() {
-      if (this.selectTableData.length == 0)
-        return iMessage.warn("抱歉，您当前还未选择您需要退回的信息单！");
-        this.diologBack = true;
+      if (this.selectTableData.length == 0) return iMessage.warn("抱歉，您当前还未选择您需要退回的信息单！");
+      if (this.selectTableData.find(items=>items.status == 1)) return iMessage.warn("抱歉，您选中的单据中存在已签收的信息单，不能批量签收！");
+      this.diologBack = true;
     },
     //转派
     openDiologChangeItems() {
-      if (this.selectTableData.length == 0)
-        return iMessage.warn("抱歉，您当前还未选择您需要转派的信息单！");
+      if (this.selectTableData.length == 0) return iMessage.warn("抱歉，您当前还未选择您需要转派的信息单！");
       this.diologChangeItems = true;
     },
     //退回
     sureBackmark(val) {
       this.backmark = val
       this.patchRecords(0,this.selectTableData)
+      this.diologBack = false
     },
     //转派
     sureChangeItems(val) {
-      this.patchRecords(3,this.selectTableData)
+      this.patchRecordsForTranslate(val,this.selectTableData)
+      this.diologChangeItems = false
     },
   },
 };

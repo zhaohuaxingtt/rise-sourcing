@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 11:24:15
- * @LastEditTime: 2021-03-18 20:31:34
+ * @LastEditTime: 2021-03-18 22:47:30
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsign\home\components\changeItems.vue
@@ -47,6 +47,7 @@ export default{
     },
     sureChangeItems(){
       if(this.inquiryBuyer == '') return iMessage.warn('抱歉！您当前还未选择询价采购员！')
+      console.log(this.inquiryBuyer)
       this.$emit('sure',this.inquiryBuyer)
     }
   }
