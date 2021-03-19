@@ -31,12 +31,18 @@
 </template>
 <script>
 import { icon } from "@/components";
-import { menuData } from "./data";
+// import { menuData } from "./data";
 export default {
   components: { icon },
+  props: {
+    menuData: {
+      props: Array,
+      default: () => ([])
+    }
+  },
   data() {
     return {
-      menuData: menuData,
+      // menuData: menuData,
     };
   },
   methods:{
@@ -47,6 +53,10 @@ export default {
         }else{
           key.active = false;
         }
+
+        this.$router.push({
+          path:key.path
+        })
       })
     }
   }

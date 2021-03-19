@@ -2,14 +2,14 @@
   <iCard class="card">
     <template #header>
       <div class="header">
-        <div class="title font-weight">寻源执行</div>
-        <tag class="tag">寻源执行</tag>
+        <div class="title font-weight">{{ title }}</div>
+        <tag class="tag">{{ tag }}</tag>
       </div>
     </template>
     <div class="body">
       <div>
         <div class="backlog">
-          <div class="num color-red font-weight">3</div>
+          <div class="num color-red font-weight">{{ data.expireNo }}</div>
           <div class="title">
             <icon class="icon" symbol name="iconyuqidaiban" />
             <span class="font-weight">逾期待办</span>
@@ -17,7 +17,7 @@
         </div>
         <div class="line colo-cyan">/</div>
         <div class="backlog">
-          <div class="num colo-cyan font-weight">7</div>
+          <div class="num colo-cyan font-weight">{{ data.waitNo }}</div>
           <div class="title">
             <icon class="icon" symbol name="iconjinridaiban" />
             <span class="font-weight">今日待办</span>
@@ -33,7 +33,19 @@ import { iCard, icon } from '@/components'
 import tag from './tag'
 
 export default {
-  components: { iCard, icon, tag }
+  components: { iCard, icon, tag },
+  props: {
+    data: {
+      type: Object,
+      default: () => ({})
+    },
+    tag: {
+      type: String
+    },
+    title: {
+      type: String
+    }
+  }
 }
 </script>
 
@@ -45,6 +57,8 @@ export default {
 
   position: relative;
   border-radius: 10px;
+  cursor: pointer;
+  user-select: none;
 
   .color-red {
     color: $color-red;

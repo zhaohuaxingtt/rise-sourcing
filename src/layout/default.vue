@@ -10,7 +10,9 @@
   <div class="content">
     <topLayout></topLayout>
     <leftLayout>
-      <menuLayout></menuLayout>
+      <template v-slot="scope">
+        <menuLayout :menuData="scope.menuData"></menuLayout>
+      </template>
     </leftLayout>
     <div class="app-content">
       <router-view></router-view>

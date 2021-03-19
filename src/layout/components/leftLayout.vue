@@ -28,7 +28,7 @@
         <span>Workbench</span>
         <icon symbol name='iconcaidanshouqi' :class="{menu:true,hiddenMenu:hiddenMenu}" @click.native="hiddenMenu=!hiddenMenu"></icon>
       </div>
-      <slot></slot>
+      <slot :menuData="menuData"></slot>
     </div>
   </div>
 </div>
@@ -42,7 +42,8 @@ export default{
     return {
       iconDataList:iconData,
       iconChangeClass:'type-first',
-      hiddenMenu:false
+      hiddenMenu:false,
+      menuData: []
     }
   },
   methods:{
@@ -51,8 +52,12 @@ export default{
       if( key.key == 'first') this.iconChangeClass = 'type-first';
       if( key.key == 'three') this.iconChangeClass = 'type-last';
       this.iconDataList.forEach(items=>{
-        if (items.key == key.key){items.active = true} else {items.active = false}
+        if (items.key == key.key) {
+          items.active = true
+          this.menuData = items.menuData
+        } else {items.active = false}
       })
+      
       this.$router.push({
         path:key.path
       })

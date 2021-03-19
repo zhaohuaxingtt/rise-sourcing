@@ -12,7 +12,7 @@
       </div>
       <tabs v-model="type" @tab-click="handleTypeChange">
         <tabPane :label="$t('all')" name="all" />
-        <tabPane :label="$i18n.locale === 'zh' ? taskType.taskTypeZhName : taskType.taskTypeEngName" :name="taskType.taskTypeCode" v-for="(taskType, $index) in taskTypeList" :key="$index" />
+        <tabPane :label="taskTypeFloatMap[taskType].name || taskType" :name="taskType" v-for="(task, taskType) in taskGroup" :key="taskType" />
       </tabs>
       <iSearch class="search margin-top10" icon>
         <el-form>
@@ -24,13 +24,15 @@
         </el-form>
       </iSearch>
     </div>
-    <div id="scroll" class="scroll" @scroll="scrollGet($event)">
-      <div class="content padding-top20" :id="chunk.type" v-for="(chunk, $chunkIndex) in data" :key="$chunkIndex">
-        <div class="chunk">
-          <div class="title font-weight" :class="{ current: type === chunk.type }">{{ chunk.label }}</div>
-          <div class="row clearFloat margin-top20">
-            <div class="col" v-for="(item, $itemIndex) in chunk.list" :key="$itemIndex">
-              <card />
+    <div class="scrollBox">
+      <div id="scroll" class="scroll" @scroll="scrollGet($event)">
+        <div class="content padding-top20" :id="`dom_${ taskType }`" v-for="(task, taskType) in taskGroup" :key="taskType">
+          <div class="chunk">
+            <div class="title font-weight" :class="{ current: type == taskType }">{{ taskTypeFloatMap[taskType].name || taskType }}</div>
+            <div class="row clearFloat margin-top20">
+              <div class="col" v-for="(item, $index) in task" :key="$index">
+                <card :data="item" :tag="taskTypeFloatMap[taskType].name || taskType" :title="taskTypeFloatMap[item.taskTypeCode].name"/>
+              </div>
             </div>
           </div>
         </div>
@@ -44,7 +46,8 @@ import { iPage, icon, iSearch, iInput } from '@/components'
 import card from './components/card'
 import tabs from './components/tabs'
 import tabPane from './components/tabPane'
-import { getCountInfo, getTaskList } from '@/api/taskcenter/home'
+import { getCountInfo } from '@/api/taskcenter/home'
+import { getDictByCode } from '@/api/dictionary';
 
 export default {
   components: { iPage, icon, iSearch, iInput, card, tabs, tabPane },
@@ -72,29 +75,25 @@ export default {
       timeOut: {
         timer: 0,
         scroll: 0
-      }
+      },
+      taskTypeFloatMap: {},
+      taskTypeTree: [],
+      taskGroup: {}
     }
   },
   created() {
-    for(let i = 2; i < 30; i++) {
-      this.data.push({
-        type: `songyang${ i }`,
-        label: `送样${ i }`,
-        list: [ {}, {}, {}, {}, {} ]
-      })
-    }
-
-    this.getCountInfo()
-    this.getTaskList()
+    this.getData()
   },
   mounted() {
     this.initScroll()
 
+    const basePdr = parseFloat(this.getStyle(this.scrollDom, 'padding-right'))
     window.addEventListener('resize', () => {
       this.initScroll()
+      this.scrollDom.style.paddingRight = `${ basePdr - (this.scrollDom.offsetWidth - this.scrollDom.clientWidth) }px`
     })
 
-    this.scrollDom.style.paddingRight = `${ parseFloat(this.getStyle(this.scrollDom, 'padding-right')) - (this.scrollDom.offsetWidth - this.scrollDom.clientWidth) }px`
+    this.scrollDom.style.paddingRight = `${ basePdr - (this.scrollDom.offsetWidth - this.scrollDom.clientWidth) }px`
   },
   methods: {
     getStyle(dom, style) {
@@ -117,10 +116,10 @@ export default {
       this.scrollDom = taskCenterDom.querySelector('#scroll')
       this.scrollDom.style.height = `${ taskCenterHeight - taskCenterPaddingTop - headerHeight - 4 }px`
 
-      this.contentDomList = this.data.map(item => this.scrollDom.querySelector(`#${ item.type }`))
+      this.contentDomList = Object.keys(this.taskGroup).map(key => this.scrollDom.querySelector(`#dom_${ key }`))
     },
     handleTypeChange(val) {
-      const dom = this.scrollDom.querySelector(`#${ val }`)
+      const dom = this.scrollDom.querySelector(`#dom_${ val }`)
       this.block = true
         
       if (val === 'all') {
@@ -129,7 +128,7 @@ export default {
           behavior: 'smooth'
         })
       } else {
-        dom && dom.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'start' })
+        dom && this.scrollDom.scrollTo({ top: dom.offsetTop, behavior: 'smooth' })
       }
     },
     scrollGet(e) {
@@ -150,23 +149,52 @@ export default {
       for (let i = 0, dom; (dom = this.contentDomList[i++]); ) {
         const domRect = dom.getBoundingClientRect()
         if (scrollTop <= (dom.offsetTop + domRect.height - domRect.height * 0.2)) {
-          this.type = this.data[i - 1].type
+          this.type = dom.id.replace(/dom_/, '')
           break;
         }
       }
     },
-    getCountInfo() {
-      // this.loading = true
+    async getData() {
+      try {
+        this.loading = true
+        const dictRes = await getDictByCode('12')
+        const dict = dictRes.data
+        this.taskTypeFloatMap = {}
+        if (dict && dict[0] && Array.isArray(dict[0].subDictResultVo)) {
+          console.log(dict[0])
+          dict[0].subDictResultVo.forEach(item => {
+            this.taskTypeFloatMap[item.code] = { name: item.name }
 
-      getCountInfo({ userId: '1231' })
-        .then(res => {
-          console.log(res)
-          // this.loading = false
+            if (Array.isArray(item.subDictResultVo)) {
+              item.subDictResultVo.forEach(child => {
+                this.taskTypeFloatMap[child.code] = { name: child.name, parent: { code: item.code, name: item.name } }
+              })
+            }
+          })
+        }
+
+        const listRes = await getCountInfo({ userNum: '1' })
+        const list = listRes.data
+        this.taskGroup = {}
+        list.forEach(task => {
+          if (this.taskTypeFloatMap[task.taskTypeCode]) {
+            const parent = this.taskTypeFloatMap[task.taskTypeCode].parent
+            if (parent) {
+              if (!Reflect.has(this.taskGroup, parent.code + '')) {
+                this.$set(this.taskGroup, parent.code + '', [])
+              }
+
+              this.taskGroup[parent.code].push(task)
+            }
+          }
         })
-        .catch(() => this.loading = false)
-    },
-    getTaskList() {
-      getTaskList({  })
+
+        this.$nextTick(() => this.initScroll())
+      } catch(e) {
+        console.error(e)
+      } finally {
+        this.loading = false
+      }
     }
   }
 }
@@ -176,16 +204,29 @@ export default {
 .home {
   overflow: hidden;
 
+  ::v-deep .el-loading-mask {
+    z-index: 2;
+  }
+
   .header {
     position: relative;
     z-index: 1;
   }
 
-  .scroll {
-    position: absolute;
-    overflow-x: hidden;
-    overflow-y: scroll;
-    padding-right: 40px;
+  .scrollBox {
+    position: relative;
+    left: 0;
+    width: calc(100% + 40px);
+
+    .scroll {
+      position: absolute;
+      overflow-x: hidden;
+      overflow-y: auto;
+      padding-right: 40px;
+      left: 0;
+      right: 0;
+      font-size: 16px;
+    }
   }
 
   .row {
@@ -224,6 +265,8 @@ export default {
   }
 
   .content {
+    position: relative;
+
     .chunk {
       .title {
         font-size: 20px;

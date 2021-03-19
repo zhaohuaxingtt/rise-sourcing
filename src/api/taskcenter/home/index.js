@@ -1,11 +1,10 @@
 import axios from '@/utils/axios'
 const requst = axios(process.env.VUE_APP_COMMON)
 
-export function getCountInfo(parmars) {
+export function getCountInfo(params) {
   return requst({
-    url: '/task/inner/getCountInfo',
-    method: 'GET',
-    data: parmars
+    url: `/task/inner/getCountInfo/${ params.userNum }`,
+    method: 'GET'
   })
 }
 

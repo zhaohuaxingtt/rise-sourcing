@@ -14,21 +14,31 @@
      acIcon:'iconhomexuanzhong',
      active:true,
      key:'first',
-     path:'/partsign'
+     path:'/partsign',
+     menuData: []
    },
    {
     icon:'iconworkbenchweixuanzhong',
     acIcon:'iconworkbenchxuanzhong',
     active:false,
     key:'tow',
-    path:'/partsprocure'
+    path:'/partsprocure',
+    menuData: []
   },
   {
     icon:'iconcommonfunctionweixuanzhong',
     acIcon:'iconcommonfunctionxuanzhong',
     active:false,
     key:'three',
-    path:'/partsrfq'
+    path:'/partsrfq',
+    menuData: [
+      {
+        label:'任务中心',
+        active: false,
+        key:1,
+        path:'/taskcenter',
+      },
+    ]
   }
  ]
 
