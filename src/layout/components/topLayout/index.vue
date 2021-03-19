@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-22 16:46:47
- * @LastEditTime: 2021-03-18 19:13:36
+ * @LastEditTime: 2021-03-19 16:02:15
  * @LastEditors: Please set LastEditors
  * @Description: 存在于界面上方的组件。
  * @FilePath: \rise\src\layout\components\topLayout.vue
@@ -47,7 +47,7 @@
   import drawer from '../message/drawer'
 	import filters from '@/utils/filters'
 	import { getCountInMail } from '@/api/layout/topLayout'
-	import { socket } from '@/utils/socket'
+	import {messageSocket} from '@/api/socket'
 
 	export default {
 		mixins: [filters],
@@ -58,6 +58,7 @@
 		},
 		data() {
 			return {
+				socketVm:'',
 				lang: '',
 				search: '',
 				msgType: false,
@@ -72,13 +73,21 @@
 		},
 		created() {
 			this.lang = localStorage.getItem('lang')
-			// this.getCountInMail()
-			// socket('1001').connect({}, () => {}, () => {})
-			// socket.connect({}, () => {
-			// 	console.log('test')
-			// }, () => {})
+			this.getMessageBysocket('1001')
+			// close testing...
+					setTimeout(() => {
+					this.socketVm.close();
+				}, 5000);
 		},
 		methods: {
+			getMessageBysocket(userId){
+				messageSocket(userId).then(({res,vm})=>{
+					//vm 为当前websocket实列
+					this.socketVm = vm
+					//res 为websocket触发的值
+					console.log('--------res------------',res)
+				})
+			},
 			handleChangeLang() {
 				this.lang = this.lang === 'zh' ? 'en' : 'zh'
 				localStorage.setItem('lang', this.lang)

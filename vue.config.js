@@ -68,9 +68,7 @@ module.exports = {
 			'element-ui': 'ELEMENT',
 			'vue-i18n': 'VueI18n',
 			'i18n': 'i18n',
-			'Ellipsis': 'Ellipsis',
-			'SockJS': 'SockJS',
-			'Stomp': 'Stomp'
+			'Ellipsis': 'Ellipsis'
 		};
 		//开启gizp压缩
 		config.plugins.push(new CompressionPlugin({
@@ -145,7 +143,7 @@ module.exports = {
 				}
 			},
 			'/wsApi': {
-				target: 'ws://10.160.137.37:8014',
+				target: 'ws://10.160.143.37:8014',
 				changeOrigin: true,
 				ws: true,
 				pathRewrite: {
