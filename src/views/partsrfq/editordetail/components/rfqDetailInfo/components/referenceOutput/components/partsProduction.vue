@@ -38,7 +38,7 @@ import {iCard, iButton, iPagination} from "@/components";
 import tablelist from 'pages/partsrfq/components/tablelist'
 import {partsProductionTableTitle} from "./data";
 import {pageMixins} from "@/utils/pageMixins";
-import {getPartsProductionList} from "@/api/partsrfq/editordetail";
+import {getRfqDataList} from "@/api/partsrfq/home";
 
 export default {
   components: {
@@ -60,12 +60,29 @@ export default {
     this.getTableList();
   },
   methods: {
-    getTableList() {
+    async getTableList() {
       this.tableLoading = true;
-      getPartsProductionList().then((res) => {
-        this.tableListData = res.data;
-        this.tableLoading = false;
-      });
+      const id = this.$route.query.id
+      if (id) {
+        const req = {
+          otherInfoPackage: {
+            findType: '01',
+            rfqId: id,
+            current: this.page.currPage,
+            size: this.page.pageSize,
+          }
+        }
+        try {
+          const res = await getRfqDataList(req)
+          this.tableListData = res.data;
+          this.page.currPage = res.currPage
+          this.page.pageSize = res.pageSize
+          this.page.totalCount = res.totalCount
+          this.tableLoading = false;
+        } catch {
+          this.tableLoading = false;
+        }
+      }
     },
     exports() {
     },
