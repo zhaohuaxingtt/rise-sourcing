@@ -163,7 +163,7 @@ export default {
         }
         try {
           const res = await getRfqDataList(req)
-          this.baseInfo = res.data[0]
+          this.baseInfo = res.data.getRfqInfoVO.rfqVOList[0]
           this.baseInfoLoading = false
         } catch {
           this.baseInfoLoading = false

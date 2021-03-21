@@ -6,7 +6,7 @@
  */
 export const tableTitle = [
     {props:'partNum',name:'零件号'},
-    {props:'rfqPlanId',name:'FS / GS号'},
+    {props:'fsGsNum',name:'FS / GS号'},
     {props:'partNameZh',name:'零件名称'},
     {props:'direcorId',name:'负责人'},
     {props:'direcorEmail',name:'负责⼈邮箱'},

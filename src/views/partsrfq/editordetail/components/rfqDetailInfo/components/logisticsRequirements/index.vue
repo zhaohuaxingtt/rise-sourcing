@@ -13,7 +13,8 @@
           :index="true"
           @handleSelectionChange="handleSelectionChange"
           @openPage='openPage'
-          open-page-props="rfqPlanId"
+          :openPageGetRowData="true"
+          open-page-props="fsGsNum"
       ></tablelist>
       <!------------------------------------------------------------------------>
       <!--                  表格分页                                          --->
@@ -33,18 +34,20 @@
       <!------------------------------------------------------------------------>
       <detail-dialog
           v-model="detailDialog"
+          :data-info="detailInfo"
       />
     </iCard>
   </div>
 </template>
 
 <script>
-import {iCard, iButton, iPagination} from "@/components";
+import {iCard, iButton, iPagination, iMessage} from "@/components";
 import tablelist from 'pages/partsrfq/components/tablelist'
 import {tableTitle} from "./components/data";
 import {pageMixins} from "@/utils/pageMixins";
 import detailDialog from './components/detail'
 import {getRfqDataList} from "@/api/partsrfq/home";
+import {excelExport} from "@/utils/filedowLoad";
 
 export default {
   components: {
@@ -61,7 +64,8 @@ export default {
       tableTitle: tableTitle,
       tableLoading: false,
       selectTableData: [],
-      detailDialog: false
+      detailDialog: false,
+      detailInfo: []
     };
   },
   created() {
@@ -69,6 +73,9 @@ export default {
   },
   methods: {
     exports() {
+      if (this.selectTableData.length == 0)
+        return iMessage.warn('请选择需要导出的数据')
+      excelExport(this.selectTableData, this.tableTitle)
     },
     //获取表格数据
     async getTableList() {
@@ -85,10 +92,10 @@ export default {
         }
         try {
           const res = await getRfqDataList(req)
-          this.tableListData = res.data;
-          this.page.currPage = res.currPage
-          this.page.pageSize = res.pageSize
-          this.page.totalCount = res.totalCount
+          this.tableListData = res.data.partLogisticRequirementList.partLogisticRequirementsVOList;
+          this.page.currPage = res.data.partLogisticRequirementList.pageNum
+          this.page.pageSize = res.data.partLogisticRequirementList.pageSize
+          this.page.totalCount = res.data.partLogisticRequirementList.total
           this.tableLoading = false;
         } catch {
           this.tableLoading = false;
@@ -99,8 +106,26 @@ export default {
     handleSelectionChange(val) {
       this.selectTableData = val;
     },
-    openPage() {
+    openPage(row) {
       this.detailDialog = true
+      this.getDetailData(row)
+    },
+    async getDetailData(row) {
+      try {
+        const id = this.$route.query.id
+        const req = {
+          otherInfoPackage: {
+            findType: '09',
+            rfqId: id,
+            partNum: row.partNum
+          }
+        }
+        const res = await getRfqDataList(req)
+        this.detailInfo = res.data.partLogisticRequirementVO
+        this.detailInfo.fsGsNum = row.fsGsNum
+      } catch {
+        this.detailInfo = {}
+      }
     }
   }
 }

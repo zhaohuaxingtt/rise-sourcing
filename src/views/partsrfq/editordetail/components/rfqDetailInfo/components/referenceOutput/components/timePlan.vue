@@ -43,11 +43,12 @@
 </template>
 
 <script>
-import {iCard, iButton, iPagination} from "@/components";
+import {iCard, iButton, iPagination, iMessage} from "@/components";
 import tablelist from 'pages/partsrfq/components/tablelist'
 import {timePlanableTitle} from "./data";
 import {pageMixins} from "@/utils/pageMixins";
-import {getRfqDataList} from "@/api/partsrfq/home";
+import {getRfqDataList, editRfqData} from "@/api/partsrfq/home";
+import {excelExport} from "@/utils/filedowLoad";
 
 export default {
   components: {
@@ -86,10 +87,10 @@ export default {
         }
         try {
           const res = await getRfqDataList(req)
-          this.tableListData = res.data;
-          this.page.currPage = res.currPage
-          this.page.pageSize = res.pageSize
-          this.page.totalCount = res.totalCount
+          this.tableListData = res.data.timePlanVO.timePlanVOList;
+          this.page.currPage = res.data.timePlanVO.pageNum
+          this.page.pageSize = res.data.timePlanVO.pageSize
+          this.page.totalCount = res.data.timePlanVO.total
           this.tableLoading = false;
         } catch {
           this.tableLoading = false;
@@ -102,23 +103,45 @@ export default {
     },
     edit() {
       this.editStatus = true
-      this.inputProps = ['i', 'j', 'k']
-      this.showTable = false
-      this.$nextTick(() => {
-        this.showTable = true
-      })
+      this.inputProps = ['svwFirst', 'svwRequestEm', 'svwRequestOts']
+      this.reRenderTable()
     },
-    save() {
-      console.log(this.tableListData)
+    async save() {
+      const reqList = this.tableListData.map(item => {
+        return {
+          userId: 12321,
+          id: item.id,
+          svwFirst: item.svwFirst,
+          svwRequestEm: item.svwRequestEm,
+          svwRequestOts: item.svwRequestOts,
+        }
+      })
+      const req = {
+        updateTimePlanPackage: reqList
+      }
+      const res = await editRfqData(req)
+      iMessage.success(res.desZh)
+      this.editStatus = false
+      this.inputProps = []
+      this.reRenderTable()
+      this.getTableList()
     },
     back() {
       this.editStatus = false
       this.inputProps = []
+      this.reRenderTable()
+    },
+    reRenderTable() {
       this.showTable = false
       this.$nextTick(() => {
         this.showTable = true
       })
-    }
+    },
+    exports() {
+      if (this.selectTableData.length == 0)
+        return iMessage.warn('请选择需要导出的数据')
+      excelExport(this.selectTableData, this.tableTitle)
+    },
   }
 }
 </script>

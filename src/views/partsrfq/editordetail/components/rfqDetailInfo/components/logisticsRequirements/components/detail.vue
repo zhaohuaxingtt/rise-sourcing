@@ -6,13 +6,13 @@
  * @Description: In User Settings Edit
 -->
 <template>
-  <iDialog :title="title" :visible.sync="value" width="90%" @close='clearDiolog'>
+  <iDialog :title="dataInfo.fsGsNum" :visible.sync="value" width="90%" @close='clearDiolog'>
     <div class="changeContent">
-      <div class="clearFloat">
+<!--      <div class="clearFloat">
         <div class="floatright title-button-box">
           <iButton @click="edit">{{ editStatus ? '保存' : '编辑' }}</iButton>
         </div>
-      </div>
+      </div>-->
       <div>
         <div class="form-title">物流标准</div>
         <iFormGroup :row="4" inline icon>
@@ -92,13 +92,12 @@
   </iDialog>
 </template>
 <script>
-import {iButton, iMessage, iDialog, iFormGroup, iFormItem, iInput, iText} from '@/components'
+import {iMessage, iDialog, iFormGroup, iFormItem, iInput, iText} from '@/components'
 
 
 export default {
-  components: {iButton, iDialog, iFormGroup, iFormItem, iInput, iText},
+  components: { iDialog, iFormGroup, iFormItem, iInput, iText},
   props: {
-    title: {type: String, default: 'FS20-33788'},
     value: {type: Boolean},
     repeatClick: Boolean,
     dataInfo: {
@@ -112,9 +111,6 @@ export default {
     return {
       editStatus: false
     }
-  },
-  created() {
-
   },
   methods: {
     sureChangeItems() {

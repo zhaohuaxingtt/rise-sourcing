@@ -13,7 +13,7 @@
           :tableLoading="tableLoading"
           @handleSelectionChange="handleSelectionChange"
           :index="true"
-          open-page-props="c"
+          open-page-props="ninePartNum"
           @openPage="openPage"
       ></tablelist>
       <!------------------------------------------------------------------------>
@@ -34,11 +34,12 @@
 </template>
 
 <script>
-import {iCard, iButton, iPagination} from "@/components";
+import {iCard, iButton, iPagination, iMessage} from "@/components";
 import tablelist from 'pages/partsrfq/components/tablelist'
 import {partsProductionTableTitle} from "./data";
 import {pageMixins} from "@/utils/pageMixins";
 import {getRfqDataList} from "@/api/partsrfq/home";
+import {excelExport} from "@/utils/filedowLoad";
 
 export default {
   components: {
@@ -66,7 +67,7 @@ export default {
       if (id) {
         const req = {
           otherInfoPackage: {
-            findType: '01',
+            findType: '05',
             rfqId: id,
             current: this.page.currPage,
             size: this.page.pageSize,
@@ -74,10 +75,10 @@ export default {
         }
         try {
           const res = await getRfqDataList(req)
-          this.tableListData = res.data;
-          this.page.currPage = res.currPage
-          this.page.pageSize = res.pageSize
-          this.page.totalCount = res.totalCount
+          this.tableListData = res.data.partOutputPlanVO.partOutputPlanVOList;
+          this.page.currPage = res.data.partOutputPlanVO.pageNum
+          this.page.pageSize = res.data.partOutputPlanVO.pageSize
+          this.page.totalCount = res.data.partOutputPlanVO.total
           this.tableLoading = false;
         } catch {
           this.tableLoading = false;
@@ -85,6 +86,9 @@ export default {
       }
     },
     exports() {
+      if (this.selectTableData.length == 0)
+        return iMessage.warn('请选择需要导出的数据')
+      excelExport(this.selectTableData, this.tableTitle)
     },
     //修改表格改动列
     handleSelectionChange(val) {

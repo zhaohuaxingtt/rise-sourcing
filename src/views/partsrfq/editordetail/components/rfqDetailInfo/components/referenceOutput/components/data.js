@@ -5,31 +5,31 @@
  * @Description: In User Settings Edit
  */
 export const partsProductionTableTitle = [
-    {props:'a',name:'FS号'},
-    {props:'b',name:'采购⼯⼚'},
-    {props:'c',name:'零件号'},
-    {props:'d',name:'零件名称'},
+    {props:'rfqPlanId',name:'FS号'},
+    {props:'procureFactory',name:'采购工厂'},
+    {props:'ninePartNum',name:'零件号'},
+    {props:'partNameZh',name:'零件名称'},
     {props:'e',name:'单位'},
-    {props:'f',name:'2020'},
-    {props:'g',name:'2021'},
-    {props:'h',name:'2022'},
-    {props:'i',name:'2023'},
-    {props:'j',name:'2024'},
-    {props:'k',name:'2025'},
+    {props:'year',name:'2020'},
+    {props:'year1',name:'2021'},
+    {props:'year2',name:'2022'},
+    {props:'year3',name:'2023'},
+    {props:'year4',name:'2024'},
+    {props:'year5',name:'2025'},
     {props:'l',name:'Sum'},
-    {props:'m',name:'版本号'},
+    {props:'versionNum',name:'版本号'},
 ]
 
 export const timePlanableTitle = [
-    {props:'a',name:'FS号'},
-    {props:'b',name:'采购⼯⼚'},
-    {props:'c',name:'零件号'},
-    {props:'d',name:'零件名（中）'},
-    {props:'e',name:'⻋型项⽬PVS'},
-    {props:'f',name:'⻋型项⽬0S'},
-    {props:'g',name:'⻋型项⽬ 起步⽣产'},
-    {props:'h',name:'⻋型 ⽣产年限'},
-    {props:'i',name:'SVW要求⾸次试模'},
-    {props:'j',name:'SVW要求EM（周）'},
-    {props:'k',name:'SVW要求OTS(周)'}
+    {props:'fsNum',name:'FS号'},
+    {props:'procureFactoryId',name:'采购工厂'},
+    {props:'partNum',name:'零件号'},
+    {props:'partZh',name:'零件名（中）'},
+    {props:'cartypeProPvs',name:'车型项目PVS'},
+    {props:'cartypePro0s',name:'车型项目0S'},
+    {props:'cartypeProSop',name:'车型项目SOP'},
+    {props:'productiveLife',name:'车型生产年限'},
+    {props:'svwFirst',name:'SVW要求首次试模'},
+    {props:'svwRequestEm',name:'SVW要求EM（周）'},
+    {props:'svwRequestOts',name:'SVW要求OTS(周)'}
 ]

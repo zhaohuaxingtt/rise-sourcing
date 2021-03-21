@@ -33,11 +33,12 @@
 </template>
 
 <script>
-import {iCard, iButton, iPagination} from "@/components";
+import {iCard, iButton, iPagination, iMessage} from "@/components";
 import tablelist from 'pages/partsrfq/components/tablelist'
 import {tableTitle} from "./components/data";
 import {pageMixins} from "@/utils/pageMixins";
 import {getRfqDataList} from "@/api/partsrfq/home";
+import {excelExport} from "@/utils/filedowLoad";
 
 export default {
   components: {
@@ -73,10 +74,10 @@ export default {
         }
         try {
           const res = await getRfqDataList(req)
-          this.tableListData = res.data;
-          this.page.currPage = res.currPage
-          this.page.pageSize = res.pageSize
-          this.page.totalCount = res.totalCount
+          this.tableListData = res.data.rfqCfPriceVO.rfqCfPriceVOList;
+          this.page.currPage = res.data.rfqCfPriceVO.pageNum
+          this.page.pageSize = res.data.rfqCfPriceVO.pageSize
+          this.page.totalCount = res.data.rfqCfPriceVO.total
           this.tableLoading = false;
         } catch {
           this.tableLoading = false;
@@ -84,6 +85,9 @@ export default {
       }
     },
     exports() {
+      if (this.selectTableData.length == 0)
+        return iMessage.warn('请选择需要导出的数据')
+      excelExport(this.selectTableData, this.tableTitle)
     },
     //修改表格改动列
     handleSelectionChange(val) {

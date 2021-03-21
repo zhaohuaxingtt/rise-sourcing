@@ -13,7 +13,7 @@
                        :label="items.name">
         <template slot-scope="scope">
             <span class="openLinkText cursor"
-                  @click="openPage(scope.row[items.props])">{{
+                  @click="openPage(openPageGetRowData ?  scope.row : scope.row[items.props])">{{
                 customOpenPageWord ? customOpenPageWord : scope.row[openPageProps]
               }}</span>
         </template>
@@ -24,7 +24,8 @@
           <i-input v-model="scope.row[items.props]"/>
         </template>
       </el-table-column>
-      <el-table-column :key="index" align='center' v-else-if='isSelectOptionsLinkage && selectProps.includes(items.props)' :prop="items.props"
+      <el-table-column :key="index" align='center'
+                       v-else-if='isSelectOptionsLinkage && selectProps.includes(items.props)' :prop="items.props"
                        :label="items.name">
         <template slot-scope="scope">
           <i-select v-model="scope.row[items.props]" @change="(val)=>handleSelectChange(items.props,val, scope.$index)">
@@ -34,11 +35,13 @@
           </i-select>
         </template>
       </el-table-column>
-      <el-table-column :key="index" align='center' v-else-if='!isSelectOptionsLinkage && selectProps.includes(items.props)' :prop="items.props"
+      <el-table-column :key="index" align='center'
+                       v-else-if='!isSelectOptionsLinkage && selectProps.includes(items.props)' :prop="items.props"
                        :label="items.name">
         <template slot-scope="scope">
           <i-select v-model="scope.row[items.props]">
-            <el-option v-for="items in selectPropsOptionsObject[items.props]" :key='items.code' :value='items.code' :label="items.name"/>
+            <el-option v-for="items in selectPropsOptionsObject[items.props]" :key='items.code' :value='items.code'
+                       :label="items.name"/>
           </i-select>
         </template>
       </el-table-column>
@@ -83,7 +86,8 @@ export default {
       type: Boolean, default: false
     },
     iconProps: {type: String, default: ''},
-    customOpenPageWord: {type: String, default: ''}
+    customOpenPageWord: {type: String, default: ''},
+    openPageGetRowData: {type: Boolean, default: false},
   },
   components: {
     iInput,

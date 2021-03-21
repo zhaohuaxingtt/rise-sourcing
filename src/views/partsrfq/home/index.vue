@@ -101,6 +101,7 @@ import assignmentOfScoringTasks from "pages/partsrfq/home/components/assignmentO
 import {pageMixins} from "@/utils/pageMixins";
 import {tableTitle} from "pages/partsrfq/home/components/data";
 import {getRfqDataList, editRfqData, findBySearches} from "@/api/partsrfq/home";
+import {excelExport} from "@/utils/filedowLoad";
 
 export default {
   components: {
@@ -164,10 +165,10 @@ export default {
       }
       try {
         const res = await getRfqDataList(req)
-        this.tableListData = res.data;
-        this.page.currPage = res.currPage
-        this.page.pageSize = res.pageSize
-        this.page.totalCount = res.totalCount
+        this.tableListData = res.data.getRfqInfoVO.rfqVOList;
+        this.page.currPage = res.data.getRfqInfoVO.pageNum
+        this.page.pageSize = res.data.getRfqInfoVO.pageSize
+        this.page.totalCount = res.data.getRfqInfoVO.total
         this.tableLoading = false;
       } catch {
         this.tableLoading = false;
@@ -232,6 +233,7 @@ export default {
     exportTable() {
       if (this.selectTableData.length == 0)
         return iMessage.warn('请选择需要导出的数据')
+      excelExport(this.selectTableData, this.tableTitle)
     },
     setOperationButtonLoading(updateType, boolean) {
       switch (updateType) {
