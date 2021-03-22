@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-22 16:46:47
- * @LastEditTime: 2021-03-19 16:02:15
+ * @LastEditTime: 2021-03-22 15:02:37
  * @LastEditors: Please set LastEditors
  * @Description: 存在于界面上方的组件。
  * @FilePath: \rise\src\layout\components\topLayout.vue
@@ -74,10 +74,6 @@
 		created() {
 			this.lang = localStorage.getItem('lang')
 			this.getMessageBysocket('1001')
-			// close testing...
-					setTimeout(() => {
-					this.socketVm.close();
-				}, 5000);
 		},
 		methods: {
 			getMessageBysocket(userId){

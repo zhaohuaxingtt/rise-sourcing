@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 11:24:15
- * @LastEditTime: 2021-03-18 22:47:30
+ * @LastEditTime: 2021-03-22 14:30:57
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsign\home\components\changeItems.vue
@@ -39,7 +39,7 @@ export default{
   methods:{
     //获取询价采购员数据。
     getInquiryBuyerListFn(){
-      purchaseUsers({userId:1}).then(res=>this.inquiryBuyerList = res.data)
+      purchaseUsers({userId:1}).then(res=>this.inquiryBuyerList = res.data || [])
     },
     clearDiolog(){
       this.inquiryBuyer = ''
