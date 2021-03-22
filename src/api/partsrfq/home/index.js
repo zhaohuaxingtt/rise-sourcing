@@ -14,6 +14,7 @@ export function getRfqDataList(parmars) {
         data: parmars
     })
 }
+
 export function editRfqData(parmars) {
     return requst({
         url: '/api/rfqs/updateRfq',

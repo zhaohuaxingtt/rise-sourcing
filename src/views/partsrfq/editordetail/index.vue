@@ -225,6 +225,7 @@ export default {
       } else {
         const req = {
           insertRfcPackage: {
+            operationType: '2',
             ...params
           }
         }

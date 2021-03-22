@@ -1,84 +1,27 @@
-/*
- * @Author: moxuan
- * @Date: 2021-03-03 17:07:22
- * @LastEditTime: 2021-02-25 11:08:48
- * @LastEditors: Please set LastEditors
- * @Description: rfq列表
- */
 import axios from '@/utils/axios'
-const requst = axios(process.env.VUE_APP_BASE_MOCK)
+const requst = axios(process.env.VUE_APP_RFQ)
 
 
-export function getNewRfqRoundList(parmars) {
+export function getAllSupplier(parmars) {
   return requst({
-    url: 'https://www.fastmock.site/mock/5cd3e97d6126b18b5e16f3e499489335/api/partfcq/getLogisticsRequirements',
-    method: 'GET',
+    url: '/api/getAllSupplier',
+    method: 'POST',
     data: parmars
   })
 }
 
-
-export function getTargetPriceList(parmars) {
+export function getAllAnnex(parmars) {
   return requst({
-    url: 'https://www.fastmock.site/mock/5cd3e97d6126b18b5e16f3e499489335/api/partfcq/getLogisticsRequirements',
-    method: 'GET',
+    url: '/api/getAllAnnex',
+    method: 'POST',
     data: parmars
   })
 }
 
-export function getPartsProductionList(parmars) {
+export function deleteAnnex(parmars) {
   return requst({
-    url: 'https://www.fastmock.site/mock/5cd3e97d6126b18b5e16f3e499489335/api/partfcq/getLogisticsRequirements',
-    method: 'GET',
-    data: parmars
-  })
-}
-
-export function getTimeLineList(parmars) {
-  return requst({
-    url: 'https://www.fastmock.site/mock/5cd3e97d6126b18b5e16f3e499489335/api/partfcq/getLogisticsRequirements',
-    method: 'GET',
-    data: parmars
-  })
-}
-
-
-export function getLogisticsRequirementsList(parmars) {
-  return requst({
-    url: 'https://www.fastmock.site/mock/5cd3e97d6126b18b5e16f3e499489335/api/partfcq/getLogisticsRequirements',
-    method: 'GET',
-    data: parmars
-  })
-}
-
-export function getInquiryAttachmentTableList(parmars) {
-  return requst({
-    url: 'https://www.fastmock.site/mock/5cd3e97d6126b18b5e16f3e499489335/api/partfcq/getInquiryAttachmentTableList',
-    method: 'GET',
-    data: parmars
-  })
-}
-
-export function getInquiryDrawingTableList(parmars) {
-  return requst({
-    url: 'https://www.fastmock.site/mock/5cd3e97d6126b18b5e16f3e499489335/api/partfcq/getInquiryAttachmentTableList',
-    method: 'GET',
-    data: parmars
-  })
-}
-
-export function getBomList(parmars) {
-  return requst({
-    url: 'https://www.fastmock.site/mock/5cd3e97d6126b18b5e16f3e499489335/api/partfcq/getInquiryAttachmentTableList',
-    method: 'GET',
-    data: parmars
-  })
-}
-
-export function getSupplierRatingAttachment(parmars) {
-  return requst({
-    url: 'https://www.fastmock.site/mock/5cd3e97d6126b18b5e16f3e499489335/api/partfcq/getInquiryAttachmentTableList',
-    method: 'GET',
+    url: '/api/deleteAnnex',
+    method: 'POST',
     data: parmars
   })
 }

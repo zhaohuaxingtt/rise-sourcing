@@ -62,7 +62,6 @@ import {iCard, iPagination, iButton} from "@/components";
 import tablelist from 'pages/partsrfq/components/tablelist'
 import {tableTitle} from "./components/data";
 import {pageMixins} from "@/utils/pageMixins";
-import {getBomList} from "@/api/partsrfq/editordetail";
 import supplierMaterialPreparation from './components/supplierMaterialPreparation'
 import otherMeetingInformation from './components/otherMeetingInformation'
 import drawingDialog from './components/drawingDialog'
@@ -98,10 +97,7 @@ export default {
     //获取表格数据
     getTableList() {
       this.tableLoading = true;
-      getBomList().then((res) => {
-        this.tableListData = res.data;
-        this.tableLoading = false;
-      });
+
     },
     submit() {
     },

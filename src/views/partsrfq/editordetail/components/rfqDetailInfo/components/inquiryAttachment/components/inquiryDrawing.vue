@@ -37,7 +37,7 @@ import {iCard, iButton, iPagination} from "@/components";
 import tablelist from 'pages/partsrfq/components/tablelist'
 import {inquiryDrawingTableTitle} from "./data";
 import {pageMixins} from "@/utils/pageMixins";
-import {getInquiryDrawingTableList} from "@/api/partsrfq/editordetail";
+
 
 export default {
   components: {
@@ -61,10 +61,7 @@ export default {
   methods: {
     getTableList() {
       this.tableLoading = true;
-      getInquiryDrawingTableList().then((res) => {
-        this.tableListData = res.data;
-        this.tableLoading = false;
-      });
+
     },
     download() {
     },
