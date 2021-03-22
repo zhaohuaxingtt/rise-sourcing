@@ -66,6 +66,7 @@ import supplierMaterialPreparation from './components/supplierMaterialPreparatio
 import otherMeetingInformation from './components/otherMeetingInformation'
 import drawingDialog from './components/drawingDialog'
 import addSupplierDialog from './components/addSupplierDialog'
+import {getAllRfqParts} from "@/api/partsrfq/editordetail";
 
 
 export default {
@@ -95,9 +96,24 @@ export default {
   },
   methods: {
     //获取表格数据
-    getTableList() {
-      this.tableLoading = true;
-
+    async getTableList() {
+      const id = this.$route.query.id
+      if (id) {
+        this.tableLoading = true;
+        try {
+          const req = {
+            rfqId: id
+          }
+          const res = await getAllRfqParts(req)
+          this.tableListData = res.data;
+          this.page.currPage = res.data.rfqCfPriceVO.pageNum
+          this.page.pageSize = res.data.rfqCfPriceVO.pageSize
+          this.page.totalCount = res.data.rfqCfPriceVO.total
+          this.tableLoading = false;
+        } catch {
+          this.tableLoading = false;
+        }
+      }
     },
     submit() {
     },

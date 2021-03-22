@@ -1,4 +1,3 @@
-
 <template>
   <iDialog :title="title" :visible.sync="value" width="80%" @close='clearDiolog'>
     <div class="changeContent">
@@ -21,19 +20,19 @@
   </iDialog>
 </template>
 <script>
-import {iButton,iMessage,iDialog} from '@/components'
+import {iButton, iMessage, iDialog} from '@/components'
 import tablelist from "pages/partsrfq/components/tablelist";
 import {addSupplierTitle} from "./data"
-import {getTabelData} from "@/api/partsign/home";
+import {getAllRfqSupplier} from "@/api/partsrfq/editordetail";
 
-export default{
-  components:{iButton,iDialog, tablelist},
-  props:{
-    title:{type:String,default:'添加供应商'},
-    value:{type:Boolean},
-    repeatClick:Boolean
+export default {
+  components: {iButton, iDialog, tablelist},
+  props: {
+    title: {type: String, default: '添加供应商'},
+    value: {type: Boolean},
+    repeatClick: Boolean
   },
-  data(){
+  data() {
     return {
       tableListData: [],
       tableTitle: addSupplierTitle,
@@ -41,17 +40,29 @@ export default{
       selectTableData: []
     }
   },
-  created(){
+  created() {
     this.getTableList()
   },
   methods: {
     //获取表格数据
-    getTableList() {
-      this.tableLoading = true;
-      getTabelData().then((res) => {
-        this.tableListData = res.data;
-        this.tableLoading = false;
-      });
+    async getTableList() {
+      const id = this.$route.query.id
+      if (id) {
+        this.tableLoading = true;
+        try {
+          const req = {
+            rfqId: id
+          }
+          const res = await getAllRfqSupplier(req)
+          this.tableListData = res.data;
+          this.page.currPage = res.data.rfqCfPriceVO.pageNum
+          this.page.pageSize = res.data.rfqCfPriceVO.pageSize
+          this.page.totalCount = res.data.rfqCfPriceVO.total
+          this.tableLoading = false;
+        } catch {
+          this.tableLoading = false;
+        }
+      }
     },
     //修改表格改动列
     handleSelectionChange(val) {
@@ -68,9 +79,10 @@ export default{
 }
 </script>
 <style lang='scss' scoped>
-.changeContent{
+.changeContent {
   padding: 0px 10px 20px 10px;
-  .title-button-box{
+
+  .title-button-box {
     margin-top: -60px;
     margin-right: 30px;
   }

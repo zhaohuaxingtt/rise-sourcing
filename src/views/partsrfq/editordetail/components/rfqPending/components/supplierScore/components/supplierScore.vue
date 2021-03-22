@@ -64,9 +64,9 @@ export default {
   },
   methods: {
     async getTableList() {
-      this.tableLoading = true;
       const id = this.$route.query.id
       if (id) {
+        this.tableLoading = true;
         try {
           const req = {
             rfqId: id

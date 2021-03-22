@@ -79,9 +79,9 @@ export default {
     },
     //获取表格数据
     async getTableList() {
-      this.tableLoading = true;
       const id = this.$route.query.id
       if (id) {
+        this.tableLoading = true;
         const req = {
           otherInfoPackage: {
             findType: '02',
@@ -117,7 +117,7 @@ export default {
           otherInfoPackage: {
             findType: '09',
             rfqId: id,
-            partNum: row.partNum
+            fsGsNum: row.fsGsNum
           }
         }
         const res = await getRfqDataList(req)
