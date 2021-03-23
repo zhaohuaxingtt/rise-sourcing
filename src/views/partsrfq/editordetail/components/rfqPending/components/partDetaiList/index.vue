@@ -36,16 +36,10 @@
 		iPagination,
 	} from "@/components";
 	import tableList from "@/views/partsign/home/components/tableList";
-	import {
-		tableTitle
-	} from "./data";
-	import {
-		getTabelData
-	} from "@/api/partsign/home";
-	import {
-		pageMixins
-	} from "@/utils/pageMixins";
-	import applyPrice from "./compoents/applyPrice"
+	import {tableTitle,form} from "@/views/partsprocure/home/component/data";
+	import {getTabelData} from '@/api/partsprocure/home';
+	import {pageMixins} from "@/utils/pageMixins";
+	import applyPrice from "./compoents/applyPrice";
 	export default {
 		mixins: [pageMixins],
 		components: {
@@ -57,7 +51,7 @@
 		},
 		created() {
 			this.getTableList();
-			this.getConfirmTableList();
+			// this.getConfirmTableList();
 		},
 		data() {
 			return {
@@ -68,6 +62,7 @@
 				confirmTableLoading: false,
 				handleSelectArr: [], //选中添加零件清单数据
 				applyPriceShow: false, //显示财务申请价
+				form:form,
 			};
 		},
 		methods: {
@@ -88,11 +83,16 @@
 			},
 			//获取表格数据
 			getTableList() {
-				this.tableLoading = true;
-				getTabelData().then((res) => {
-					this.tableListData = res.data;
-					this.tableLoading = false;
-				});
+				this.tableLoading = true
+				this.form['search.size'] = this.page.pageSize
+				this.form['search.current'] = this.page.currPage
+				getTabelData(this.form).then(res => {
+					this.tableLoading = false
+					this.page.currPage = res.data.pageData.pageNum
+					this.page.pageSize = res.data.pageData.pageSize
+					this.page.totalCount = res.data.pageData.total
+					this.tableListData = res.data.pageData.data
+				}).catch(() => this.tableLoading = false)
 			},
 			// 获取已确认表格数据
 			getConfirmTableList() {},

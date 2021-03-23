@@ -14,10 +14,20 @@
 		<div class="margin-bottom20 clearFloat">
 			<span class="font18 font-weight">零件采购项目</span>
 			<div class="floatright">
+				<iButton @click="start">启动项目</iButton>
+				<iButton @click="creatFs">生成FS/GSNR</iButton>
+				<iButton @click="openDiologBack">取消零件采购项目</iButton>
+				<iButton @click="save">拆分采购工厂</iButton>
+				<iButton @click="openDiologClose">结束项目</iButton>
 				<iButton @click="save">保存</iButton>
-				<iButton @click="openDiologBack">退回</iButton>
+				<iButton @click="back">返回</iButton>
+				<logButton class="margin-left20" @click="log" />
+				<span>
+					<icon symbol name="icondatabaseweixuanzhong"></icon>
+				</span>
 			</div>
 		</div>
+		
 		<!------------------------------------------------------------------------>
 		<!--                  基本信息区域                                       --->
 		<!------------------------------------------------------------------------>
@@ -26,64 +36,86 @@
 				<div class="row">
 					<div class="col">
 						<iFormItem label="零件号：" name="test">
-							<iText></iText>
+							<iText>
+								{{infoDetail.infoDetail}}
+							</iText>
 						</iFormItem>
 						<iFormItem label="零件名称（中）：" name="test">
-							<iText></iText>
+							<iText>
+								{{infoDetail.partNameZh}}
+							</iText>
 						</iFormItem>
 						<iFormItem label="零件项目类型：" name="test">
-							<iSelect></iSelect>
+							<iSelect v-model="infoDetail.partPrejectType">
+
+							</iSelect>
 						</iFormItem>
 						<iFormItem label="采购工厂：" name="test">
-							<iSelect></iSelect>
+							<iSelect v-model="infoDetail.procureFactory"></iSelect>
 						</iFormItem>
 						<iFormItem label="Common Sourcing：" name="test">
-							<iSelect></iSelect>
+							<iSelect v-model="infoDetail.commonSourcing"></iSelect>
 						</iFormItem>
 					</div>
 					<div class="col">
 						<iFormItem label="FSNR/GSNR/SPNR：" name="test">
-							<iText></iText>
+							<iText>
+								{{infoDetail.commonSourcing}}
+							</iText>
 						</iFormItem>
 						<iFormItem label="零件名称（德）：" name="test">
-							<iText></iText>
+							<iText>
+								{{infoDetail.partNameDe}}
+							</iText>
 						</iFormItem>
-						<iFormItem label="事件类型：" name="test">
-							<iSelect></iSelect>
+						<iFormItem label="零件类型：" name="test">
+							<iSelect>
+
+							</iSelect>
 						</iFormItem>
 						<iFormItem label="单位：" name="test">
-							<iSelect></iSelect>
+							<iSelect v-model="infoDetail.unit"></iSelect>
 						</iFormItem>
 						<iFormItem label="MTZ零件：" name="test">
-							<iSelect></iSelect>
+							<iSelect v-model="infoDetail.mtzPart"></iSelect>
 						</iFormItem>
 					</div>
 					<div class="col">
 						<iFormItem label="询价采购员：" name="test">
-							<iText></iText>
+							<iText>
+								{{infoDetail.buyerName}}
+							</iText>
 						</iFormItem>
 						<iFormItem label="LINIE部门：" name="test">
-							<iSelect></iSelect>
+							<iSelect v-model="infoDetaillinieDept"></iSelect>
 						</iFormItem>
 						<iFormItem label="LINIE：" name="test">
-							<iSelect></iSelect>
+							<iSelect v-model="infoDetail.linieName"></iSelect>
 						</iFormItem>
 						<iFormItem label="CF控制员：" name="test">
-							<iSelect></iSelect>
+							<iSelect v-model="infoDetail.cfController"></iSelect>
 						</iFormItem>
 					</div>
 					<div class="col">
 						<iFormItem label="签收日期：" name="test">
-							<iText></iText>
+							<iText>
+								{{infoDetail.signDate}}
+							</iText>
 						</iFormItem>
 						<iFormItem label="SOP日期：" name="test">
-							<iText></iText>
+							<iText>
+								{{infoDetail.sopDate}}
+							</iText>
 						</iFormItem>
 						<iFormItem label="零件状态：" name="test">
-							<iText></iText>
+							<iText>
+								{{infoDetail.partStatus}}
+							</iText>
 						</iFormItem>
 						<iFormItem label="BMG：" name="test">
-							<iText></iText>
+							<iText>
+								{{infoDetail.bmg}}
+							</iText>
 						</iFormItem>
 					</div>
 				</div>
@@ -103,15 +135,18 @@
 				<sheet class="margin-top20" />
 			</el-tab-pane>
 			<el-tab-pane label="物流要求">
-				<logistics></logistics>
+				<logistics :infoItem="infoItem"></logistics>
 			</el-tab-pane>
 			<el-tab-pane label="申请目标价">
 				<targePrice></targePrice>
 			</el-tab-pane>
 			<el-tab-pane label="备注信息">
-				<remarks></remarks>
+				<remarks :partNum="infoItem.partNum"></remarks>
 			</el-tab-pane>
 		</iTabsList>
+		<backItems v-model="diologBack" @sure="cancel" title="取消零件采购"></backItems>
+		<!-- 结束项目 -->
+		<backItems v-model="diologClose" @sure="cancel" title="结束项目"></backItems>
 	</iPage>
 </template>
 <script>
@@ -134,6 +169,18 @@
 	import drawing from './components/drawingSheet/drawing'
 	import sheet from './components/drawingSheet/sheet'
 	import remarks from "./components/remarks"
+	import backItems from "@/views/partsign/home/components/backItems";
+	import {
+		getPageGroup
+	} from "@/api/partsign/home";
+	import logButton from '@/views/partsign/editordetail/components/logButton'
+	import {
+		getTabelData,
+		changeProcure
+	} from '@/api/partsprocure/home'
+	import {
+		infoDetail
+	} from './components/data'
 	export default {
 		components: {
 			iPage,
@@ -152,8 +199,119 @@
 			usage,
 			drawing,
 			sheet,
-			remarks
+			remarks,
+			logButton,
+			backItems
 		},
+		data() {
+			return {
+				infoItem: {},
+				infoDetail: infoDetail, //顶部详情数据
+				fromGroup: {}, //上方筛选列表
+				diologBack: false, //取消零件采购
+				diologClose:false,//结束项目
+			}
+		},
+		created() {
+			this.infoItem = JSON.parse(this.$route.query.item)
+			this.getDatail()
+			// this.getPageGroup()
+		},
+		methods: {
+			// 获取详情数据
+			getDatail() {
+				let data = {
+					'detailBaseReq.partNum': this.infoItem.partNum
+				}
+				getTabelData(data).then(res => {
+					this.infoDetail = res.data.detailData
+				})
+			},
+			//获取上方group信息
+			getPageGroup() {
+				getPageGroup(1).then(res => {
+					this.fromGroup = res.data.groupStatSenarioResult.groupStatInfoList
+				})
+			},
+			// 启动项目
+			start() {
+				let start = {
+					operator: "112",
+					purchaseProjectIds: [this.infoItem.purchasePrjectId] 
+				}
+				changeProcure({
+					start
+				}).then(res => {
+					this.getDatail()
+				})
+			},
+			//退回
+			openDiologClose() {
+				this.diologClose = true;
+			},
+			// 结束项目
+			close(backmark){
+				let close = {
+					closeRemark:backmark,
+					operator: "112",
+					purchaseProjectIds: [this.infoItem.purchasePrjectId] 
+				}
+				changeProcure({
+					close
+				}).then(res => {
+					this.getDatail()
+				})
+			},
+			//修改详情。
+			save(val) {
+				let baseInfo = this.infoDetail
+				changeProcure({
+					baseInfo
+				}).then(res => {
+					this.diologChangeItems = false;
+					this.getDatail()
+				}).catch(() => {
+					this.diologChangeItems = false;
+				})
+			},
+			// 生成fs号
+			creatFs() {
+				let fs = {
+					purchaseProjectIds: [this.infoItem.purchasePrjectId] 
+				}
+				changeProcure({
+					fs
+				}).then(res => {
+					this.getDatail()
+				})
+			},
+			//退回
+			openDiologBack() {
+				this.diologBack = true;
+			},
+			// 取消零件采购
+			cancel(backmark) {
+				let cancel = {
+					cancelRemark: backmark,
+					purchaseProjectIds: [this.infoItem.purchasePrjectId] 
+				}
+				changeProcure({
+					cancel
+				}).then(res => {
+					this.diologBack = false
+					this.getDatail()
+				}).catch(() => {
+					this.diologBack = false
+				})
+			},
+			// 返回
+			back(){
+				this.$router.go(-1)
+			},			// 查看日志
+			log() {
+				window.open(`/#/log?recordId=${ this.infoDetail.purchasePrjectId }`, '_blank')
+			}
+		}
 	};
 </script>
 <style lang="scss" scoped>

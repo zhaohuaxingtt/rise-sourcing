@@ -63,7 +63,7 @@
 					<iButton @click="creatFs">生成Fs/GsNr</iButton>
 					<iButton @click="openDiologBack">取消零件采购</iButton>
 					<iButton @click="openBatchmiantain">批量维护</iButton>
-					<iButton>启动询价</iButton>
+					<iButton @click="start">启动询价</iButton>
 					<iButton @click="openDiologChangeItems">转派</iButton>
 				</div>
 			</div>
@@ -81,7 +81,7 @@
 		<!--                  转派弹出框                                         --->
 		<!------------------------------------------------------------------------>
 		<changeItems v-model="diologChangeItems" @sure='sureChangeItems' title='零件采购项目转派'></changeItems>
-		<backItems v-model="diologBack" @sure="cancel"></backItems>
+		<backItems v-model="diologBack" @sure="cancel" title="取消零件采购"></backItems>
 	</iPage>
 </template>
 <script>
@@ -110,6 +110,9 @@
 		getTabelData,
 		changeProcure
 	} from '@/api/partsprocure/home'
+	import {
+		getPageGroup
+	} from "@/api/partsign/home";
 	import changeItems from '../../partsign/home/components/changeItems'
 	export default {
 		mixins: [pageMixins],
@@ -140,12 +143,23 @@
 		},
 		created() {
 			this.getTableListFn();
+			this.getPageGroup()
 		},
 		computed: {},
 		methods: {
-			openPage() {
+			// 跳转详情
+			openPage(item) {
 				this.$router.push({
-					path: '/partsprocure/editordetail'
+					path: '/partsprocure/editordetail',
+					query: {
+						item: JSON.stringify(item)
+					}
+				})
+			},
+			//获取上方group信息
+			getPageGroup() {
+				getPageGroup(1).then(res => {
+					this.fromGroup = res.data.groupStatSenarioResult.groupStatInfoList
 				})
 			},
 			//转派
@@ -215,6 +229,10 @@
 				}).catch(() => {
 					this.diologBack = false
 				})
+			},
+			// 启动零件项目采购
+			start() {
+				
 			},
 			// 生成fs号
 			creatFs() {
