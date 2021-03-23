@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2020-07-22 14:56:34
- * @LastEditTime: 2021-03-23 12:48:54
+ * @LastEditTime: 2021-03-23 12:58:45
  * @LastEditors: Please set LastEditors
  * @Description: 项目默认layout
  * @FilePath: \test\src\layout\default.vue
@@ -10,7 +10,7 @@
   <div class="content">
     <topLayout></topLayout>
     <leftLayout>
-      <template slot="scope">
+      <template slot="menu">
         <menuLayout :menuData="menuList" ></menuLayout>
       </template>
     </leftLayout>

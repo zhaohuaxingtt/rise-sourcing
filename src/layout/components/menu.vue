@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-22 16:50:10
- * @LastEditTime: 2021-03-23 12:44:08
+ * @LastEditTime: 2021-03-23 13:32:46
  * @LastEditors: Please set LastEditors
  * @Description: 项目菜单。
  * @FilePath: \rise\src\layout\components\menu.vue
@@ -47,9 +47,8 @@ export default {
         }else{
           key.active = false;
         }
-
         this.$router.push({
-          path:key.path
+          path:key.url
         })
       })
     }
