@@ -21,9 +21,18 @@ export default function socket({baseUrl,url}) {
     }
     sockJs.onmessage  = (data)=>{vm.vmcallBack({res:data,vm:sockJs})}
     sockJs.onclose = ()=>{console.log('socket closed!')}
+    sockJs.onerror = error => {
+      vm.errorCallBack(error)
+    }
   }
 }
 socket.prototype.vmcallBack = null
+socket.prototype.errorCallBack = null
 socket.prototype.then = function(callBack){
   this.vmcallBack = callBack
+  return this
+}
+socket.prototype.catch = function(callBack) {
+  this.errorCallBack = callBack
+  return this
 }
