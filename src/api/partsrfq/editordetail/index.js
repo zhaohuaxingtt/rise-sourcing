@@ -47,7 +47,7 @@ export function uploadRfqAnnex(parmars) {
 /*模具预算申请*/
 export function getModelBudgetList(parmars) {
     return requst({
-        url: '/api/getModelBudgetList',
+        url: '/api/modelbudget/getModelBudgetList',
         method: 'POST',
         data: parmars
     })
@@ -55,7 +55,7 @@ export function getModelBudgetList(parmars) {
 
 export function submitMoldBudget(parmars) {
     return requst({
-        url: '/api/submitMoldBudget',
+        url: '/api/modelbudget/submitMoldBudget',
         method: 'POST',
         data: parmars
     })
@@ -63,7 +63,7 @@ export function submitMoldBudget(parmars) {
 
 export function cancelMoldBudget(parmars) {
     return requst({
-        url: '/api/cancelMoldBudget',
+        url: '/api/modelbudget/cancelMoldBudget',
         method: 'POST',
         data: parmars
     })

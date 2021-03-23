@@ -4,7 +4,7 @@
       <div class="margin-bottom5 clearFloat">
         <div class="floatright">
           <iButton @click="addSupplier">添加供应商</iButton>
-          <iButton @click="sendToMyEmail">发送至我的邮件</iButton>
+          <iButton @click="sendToMyEmail">发送至我的邮箱</iButton>
         </div>
       </div>
       <div class="margin-bottom20 clearFloat">

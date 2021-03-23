@@ -98,11 +98,30 @@ export default {
     openPage(row) {
       const rfqId = this.$route.query.id;
       const rfqPlanId = row.rfqPlanId;
-      const purchasePrjectId = row.purchaseTargetId;
+      const purchasePrjectId = row.purchasePrjectId;
+      const purchasingRequirementId = row.purchasingRequirementId
       const partNum = row.ninePartNum
+      const tab= 'outputPlan'
+      const req = {
+        rfqId,
+        rfqPlanId,
+        purchasePrjectId,
+        purchasingRequirementId,
+        partNum,
+        tab
+      }
+      const params = this.serialize(req)
       this.$router.push({
-        path: `/partsprocure/editordetail?partNum=${partNum}&tab=outputPlan`
+        path: `/partsprocure/editordetail?${params}`
       })
+    },
+    serialize(data) {
+      let str = ''
+      for (let key in data) {
+        str += key + '=' + encodeURIComponent(data[key]) + '&'
+      }
+      str = str.replace(/&$/, '')
+      return str
     }
   }
 }

@@ -9,7 +9,7 @@
     <iFormGroup :row="3" inline icon class="label-zero" v-model="dynamicForm" v-if="showStatus">
       <template v-for="(item,index) of dynamicForm.baseInfo">
         <iFormItem label=" " :name="index" :key="index">
-          <iInput type="textarea" :rows="4" resize="none" placeholder="请输入" v-model="item.value" maxlength="100"></iInput>
+          <iInput type="textarea" :rows="4" resize="none" placeholder="请输入" v-model="item.value" maxlength="100"  show-word-limit></iInput>
         </iFormItem>
       </template>
     </iFormGroup>

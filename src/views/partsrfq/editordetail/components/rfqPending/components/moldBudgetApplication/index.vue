@@ -82,18 +82,21 @@ export default {
       }
     },
     async submit() {
-      const req = {
-        moldBudgetDTOs: this.selectTableData
-      }
+      this.selectTableData = this.selectTableData.map(item => {
+        item.approvalStatus = 'submitted'
+        return item
+      })
+      const req = this.selectTableData
       const res = await submitMoldBudget(req)
       res.result ? iMessage.success(res.desZh) : iMessage.error(res.desZh)
       this.getTableList()
     },
     async recall() {
-      const moldBugetIds = this.selectTableData.map(item => {
-        return item.id
+      this.selectTableData = this.selectTableData.map(item => {
+        item.approvalStatus = 'revoked'
+        return item
       })
-      const req = {moldBugetIds}
+      const req = this.selectTableData
       const res = await cancelMoldBudget(req)
       res.result ? iMessage.success(res.desZh) : iMessage.error(res.desZh)
       this.getTableList()
