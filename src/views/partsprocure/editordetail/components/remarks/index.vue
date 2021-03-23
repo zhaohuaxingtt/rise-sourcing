@@ -7,25 +7,25 @@
 						<icon symbol name="iconbeizhuxinxi"></icon>
 						<span>询价采购员备注</span>
 					</p>
-					<iInput type="textarea" rows="8" resize="none" v-model="remarkMsg.buyer"></iInput>
+					<iInput type="textarea" rows="8" resize="none" v-model="infoDetail.buyerName"></iInput>
 				</div>
 				<div>
 					<p>
 						<icon symbol name="iconbeizhuxinxi"></icon>
 						<span>Linie备注</span>
 					</p>
-					<iInput type="textarea" rows="8" resize="none" v-model="remarkMsg.linie" disabled></iInput>
+					<iInput type="textarea" rows="8" resize="none" v-model="infoDetail.linieMemo" disabled></iInput>
 				</div>
 				<div>
 					<p>
 						<icon symbol name="iconbeizhuxinxi"></icon>
 						<span>CS*1备注</span>
 					</p>
-					<iInput type="textarea" rows="8" resize="none" v-model="remarkMsg.cs" disabled></iInput>
+					<iInput type="textarea" rows="8" resize="none" v-model="infoDetail.cs1Memo" disabled></iInput>
 				</div>
 				<!-- 保存 -->
 				<span class="save">
-					<iButton>保存</iButton>
+					<iButton @click="save">保存</iButton>
 				</span>
 			</div>
 			<div class="list flex-between-center margin-bottom40">
@@ -34,21 +34,21 @@
 						<icon symbol name="iconbeizhuxinxi"></icon>
 						<span>询价采购员上会备注</span>
 					</p>
-					<iInput type="textarea" rows="8" resize="none" v-model="remarkMsg.onBuyer"></iInput>
+					<iInput type="textarea" rows="8" resize="none" v-model="infoDetail.buyerName"></iInput>
 				</div>
 				<div>
 					<p>
 						<icon symbol name="iconbeizhuxinxi"></icon>
 						<span>Linie上会备注</span>
 					</p>
-					<iInput type="textarea" rows="8" resize="none" v-model="remarkMsg.onLinie" disabled></iInput>
+					<iInput type="textarea" rows="8" resize="none" v-model="infoDetail.linieMeetMemo" disabled></iInput>
 				</div>
 				<div>
 					<p>
 						<icon symbol name="iconbeizhuxinxi"></icon>
 						<span>CS*1上会备注</span>
 					</p>
-					<iInput type="textarea" rows="8" resize="none" v-model="remarkMsg.onCs" disabled></iInput>
+					<iInput type="textarea" rows="8" resize="none" v-model="infoDetail.csfMeetMemo" disabled></iInput>
 				</div>
 			</div>
 		</iCard>
@@ -56,6 +56,10 @@
 </template>
 
 <script>
+	import {getTabelData,changeProcure} from '@/api/partsprocure/home'
+	import {
+		infoDetail
+	} from '../data'
 	import {
 		iCard,
 		icon,
@@ -72,16 +76,40 @@
 		},
 		data() {
 			return {
-				remarkMsg: {
-					buyer: "",
-					linie: "",
-					cs: "",
-					onBuyer: "",
-					onLinie: "",
-					onCs: ""
-				}
+				infoDetail:infoDetail
 			}
 		},
+		props:{
+			partNum:{
+				type:String,
+				default:""
+			}
+		},
+		created() {
+			this.getDatail()
+		},
+		methods:{
+			// 获取备注信息
+			getDatail(){
+				console.log(this.partNum);
+				let data={
+					'detailBaseReq.partNum':this.partNum,
+				}
+				getTabelData(data).then(res=>{
+					this.infoDetail=res.data.detailData
+				})
+			},
+			//修改详情。
+			save(val) {
+				let baseInfo=this.infoDetail
+				changeProcure({baseInfo}).then(res => {
+					this.diologChangeItems = false;
+					this.getDatail()
+				}).catch(() => {
+					this.diologChangeItems = false;
+				})
+			},
+		}
 	}
 </script>
 
