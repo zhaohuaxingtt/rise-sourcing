@@ -6,6 +6,13 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "20557553",
+      "name": "信息提示",
+      "font_class": "xinxitishi",
+      "unicode": "e632",
+      "unicode_decimal": 58930
+    },
+    {
       "icon_id": "20294443",
       "name": "会议报名（消息列表）",
       "font_class": "huiyibaomingxiaoxiliebiao",
