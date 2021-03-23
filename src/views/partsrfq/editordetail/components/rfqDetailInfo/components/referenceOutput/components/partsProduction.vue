@@ -15,6 +15,7 @@
           :index="true"
           open-page-props="ninePartNum"
           @openPage="openPage"
+          :openPageGetRowData="true"
       ></tablelist>
       <!------------------------------------------------------------------------>
       <!--                  表格分页                                          --->
@@ -94,9 +95,13 @@ export default {
     handleSelectionChange(val) {
       this.selectTableData = val;
     },
-    openPage(id) {
+    openPage(row) {
+      const rfqId = this.$route.query.id;
+      const rfqPlanId = row.rfqPlanId;
+      const purchasePrjectId = row.purchaseTargetId;
+      const partNum = row.ninePartNum
       this.$router.push({
-        path: `/partsprocure/editordetail?partNum=${id}&tab=outputPlan`
+        path: `/partsprocure/editordetail?partNum=${partNum}&tab=outputPlan`
       })
     }
   }

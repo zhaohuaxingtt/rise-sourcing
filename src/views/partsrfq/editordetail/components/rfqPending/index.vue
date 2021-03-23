@@ -5,26 +5,15 @@
 * @Description: RFQ待办事项
  -->
 <template>
-  <iTabsList type="border-card">
-    <el-tab-pane label="零件清单">
-      <partDetailList></partDetailList>
-    </el-tab-pane>
-    <el-tab-pane label="BDL列表"> <BDL></BDL> </el-tab-pane>
-    <el-tab-pane label="供应商评分">
-      <supplier-score/>
-    </el-tab-pane>
-    <!-- <el-tab-pane label="CBD设置"> CBD设置 </el-tab-pane> -->
-    <el-tab-pane label="模具预算申请">
-      <mold-budget-application/>
-    </el-tab-pane>
-    <el-tab-pane label="技术交流会">
-      <technical-seminar/>
+  <iTabsList type="border-card" @tab-click="handleTabClick">
+    <el-tab-pane :label="item.label" v-for="item of tabList" :key="item.label">
+      <component :is="item.component" v-if="activityTabLabel === item.label"/>
     </el-tab-pane>
   </iTabsList>
 </template>
 
 <script>
-import { iTabsList } from "@/components";
+import {iTabsList} from "@/components";
 import partDetailList from "./components/partDetaiList";
 import BDL from "./components/BDL";
 import supplierScore from "./components/supplierScore";
@@ -41,8 +30,22 @@ export default {
     technicalSeminar
   },
   data() {
-    return {};
+    return {
+      activityTabLabel: '零件清单',
+      tabList: [
+        {label: '零件清单', component: 'partDetailList'},
+        {label: 'BDL列表', component: 'BDL'},
+        {label: '供应商评分', component: 'supplierScore'},
+        {label: '模具预算申请', component: 'moldBudgetApplication'},
+        {label: '技术交流会', component: 'technicalSeminar'},
+      ]
+    };
   },
+  methods: {
+    handleTabClick(target) {
+      this.activityTabLabel = target.label
+    }
+  }
 };
 </script>
 
