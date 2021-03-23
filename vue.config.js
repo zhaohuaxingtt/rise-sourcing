@@ -164,6 +164,13 @@ module.exports = {
 					"^/usercenterApi": ""
 				}
 			},
+			'/partsProcureApi': { // partsProcure.../许睿
+				target: 'http://10.122.18.166:8018',
+				changeOrigin: true,
+				pathRewrite: {
+					"^/partsProcureApi": ""
+				}
+			},
 		}
 	}
 }
