@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-24 09:55:16
- * @LastEditTime: 2021-03-23 13:39:19
+ * @LastEditTime: 2021-03-23 13:45:45
  * @LastEditors: Please set LastEditors
  * @Description: 零件号签收列表
  * @FilePath: \rise\src\api\partsign\home\index.js
@@ -34,7 +34,7 @@ export function getPageGroup(userId){
 //签收和退回新建信息单
 export function patchRecords(data){
   return requst({
-    url:'/tp-records',
+    url:'/tp-records/tpInfo',
     method:'PATCH',
     data:data
   })
