@@ -9,14 +9,14 @@ export const partsProductionTableTitle = [
     {props:'procureFactory',name:'采购工厂'},
     {props:'ninePartNum',name:'零件号'},
     {props:'partNameZh',name:'零件名称'},
-    {props:'e',name:'单位'},
+    {props:'unit',name:'单位'},
     {props:'year',name:'2020'},
     {props:'year1',name:'2021'},
     {props:'year2',name:'2022'},
     {props:'year3',name:'2023'},
     {props:'year4',name:'2024'},
     {props:'year5',name:'2025'},
-    {props:'l',name:'Sum'},
+    {props:'sum',name:'Sum'},
     {props:'versionNum',name:'版本号'},
 ]
 

@@ -13,7 +13,6 @@
           :index="true"
           @handleSelectionChange="handleSelectionChange"
           @openPage='openPage'
-          :openPageGetRowData="true"
           open-page-props="fsGsNum"
       ></tablelist>
       <!------------------------------------------------------------------------>
@@ -106,23 +105,23 @@ export default {
     handleSelectionChange(val) {
       this.selectTableData = val;
     },
-    openPage(row) {
+    openPage(fsGsNum) {
       this.detailDialog = true
-      this.getDetailData(row)
+      this.getDetailData(fsGsNum)
     },
-    async getDetailData(row) {
+    async getDetailData(fsGsNum) {
       try {
         const id = this.$route.query.id
         const req = {
           otherInfoPackage: {
             findType: '09',
             rfqId: id,
-            fsGsNum: row.fsGsNum
+            fsGsNum
           }
         }
         const res = await getRfqDataList(req)
         this.detailInfo = res.data.partLogisticRequirementVO
-        this.detailInfo.fsGsNum = row.fsGsNum
+        this.detailInfo.fsGsNum = fsGsNum
       } catch {
         this.detailInfo = {}
       }

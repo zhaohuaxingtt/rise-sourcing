@@ -94,9 +94,9 @@ export default {
     handleSelectionChange(val) {
       this.selectTableData = val;
     },
-    openPage() {
+    openPage(id) {
       this.$router.push({
-        path: '/partsprocure/editordetail'
+        path: `/partsprocure/editordetail?partNum=${id}&tab=outputPlan`
       })
     }
   }
