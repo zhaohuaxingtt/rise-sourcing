@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2021-03-23 15:40:32
+ * @LastEditTime: 2021-03-23 16:15:12
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsprocure\editordetail\index.vue
@@ -155,7 +155,16 @@
     <!--                  拆分采购工厂                                       --->
     <!------------------------------------------------------------------------>
     <iDialog class="dialog" :visible.sync="splitPurchBoolean">
-      <template slot="title"><span class="el-dialog__title">拆分采购工厂</span></template>
+      <template slot="title">
+				<span class="el-dialog__title">拆分采购工厂</span>
+				<el-tooltip effect="light">
+					<i class="iconxinxitishi iconfont color"></i>
+					<template slot='content'>
+						保存后将按照您所维护的工厂份<br/>额拆分询价产量。 如果已经维护<br/>车型产量，请确保为该零件的所<br/>有工厂产量。
+					</template>
+				</el-tooltip>
+				<iButton class="float-right marginleft300">保存</iButton>
+			</template>
       <template>
           <el-table
             :height="height"
@@ -163,6 +172,7 @@
             v-loading="tableLoading"
             @selection-change="handleSelectionChange"
 						width='500'
+						class="margin-right30"
           >
             <el-table-column
               type="selection"
@@ -369,6 +379,21 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+.color{
+	color:$color-table-header;
+	position: relative;
+	left:20px;
+	top: 1px;
+	cursor: pointer;
+	&:hover{
+		color: $color-blue;
+	}
+}
+.marginleft300{
+	position: relative;
+	left: 620px;
+	top: -5px;
+}
 .row {
   width: 100%;
   height: 100%;
