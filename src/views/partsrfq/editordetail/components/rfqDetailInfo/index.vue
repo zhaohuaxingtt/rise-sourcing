@@ -1,21 +1,9 @@
 <template>
   <div>
-    <iTabsList class="margin-top20" type='border-card'>
-      <el-tab-pane label="目标价">
-        <target-price/>
+    <iTabsList class="margin-top20" type='border-card' @tab-click="handleTabClick">
+      <el-tab-pane :label="item.label" v-for="item of tabList" :key="item.label">
+        <component :is="item.component" v-if="activityTabLabel === item.label"/>
       </el-tab-pane>
-      <el-tab-pane label="参考产量及时间计划">
-        <reference-output/>
-      </el-tab-pane>
-      <el-tab-pane label="物流要求">
-        <logistics-requirements/>
-      </el-tab-pane>
-      <el-tab-pane label="询价附件">
-        <inquiry-attachment/>
-      </el-tab-pane>
-<!--      <el-tab-pane label="BOM单信息">
-        <bom-list/>
-      </el-tab-pane>-->
     </iTabsList>
   </div>
 </template>
@@ -39,10 +27,21 @@ export default {
   },
   data() {
     return {
-      editStatus: false
+      editStatus: false,
+      activityTabLabel: '目标价',
+      tabList: [
+        {label: '目标价', component: 'targetPrice'},
+        {label: '参考产量及时间计划', component: 'referenceOutput'},
+        {label: '物流要求', component: 'logisticsRequirements'},
+        {label: '询价附件', component: 'inquiryAttachment'},
+      ]
     }
   },
-  methods: {}
+  methods: {
+    handleTabClick(target) {
+      this.activityTabLabel = target.label
+    }
+  }
 }
 </script>
 

@@ -10,10 +10,10 @@ export const tableTitle = [
     {props:'applyType',name:'申请类别'},
     {props:'lcPrice',name:'期望目标价'},
     {props:'lcAPrice',name:'LC_A'},
-    {props:'f',name:'LC_B '},
+    {props:'lcBPrice',name:'LC_B '},
     {props:'skdAPrice',name:'SKD_A'},
-    {props:'h',name:'SKD_B'},
+    {props:'skdBPrice',name:'SKD_B'},
     {props:'ckdDuty',name:'CKD Duty%'},
     {props:'ckdExwork',name:'CKD EX-Work'},
-    {props:'k',name:'SKDLANEDE'}
+    {props:'skdLanede',name:'SKDLANEDE'}
 ]
