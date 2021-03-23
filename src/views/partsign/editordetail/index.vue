@@ -36,14 +36,9 @@
           <enquiry :data="partDetails.partAttachmentList" />
         </el-tab-pane>
         <el-tab-pane :label="$t('partsign.volume')">
-          <unconfirmed class="unconfirmed" :data="partDetails" />
-          <volume class="volume" />
+          <unconfirmed ref="unconfirmed" class="unconfirmed" :data="partDetails" @updateVersion="updateVersion" />
+          <volume ref="volume" class="volume" :data="partDetails" />
         </el-tab-pane>
-        <!-- <el-tab-pane :label="$t('partsign.log')">
-          <iCard class="card">
-            <log />
-          </iCard>
-        </el-tab-pane> -->
       </iTabs-list>
     </div>
     <!-- 转派弹出框 -->
@@ -63,7 +58,6 @@ import volume from "./components/volume/volume";
 import unconfirmed from "./components/volume/unconfirmed";
 import backItems from "../home/components/backItems";
 import changeItems from "../home/components/changeItems";
-// import log from './components/log';
 import { partDetailTitle, partTitle } from "./components/data";
 // import { getPartInfo } from "@/api/partsign/editordetail";
 import {patchRecords} from "@/api/partsign/home";
@@ -156,7 +150,11 @@ export default {
     },
     log() {
       window.open(`/#/log?recordId=${ this.partDetails.tpPartID }`, '_blank')
-    }
+    },
+    updateVersion() {
+      this.$refs.unconfirmed.getPerCarDosageVersion()
+      this.$refs.volume.getVolume()
+    },
   },
 };
 </script>

@@ -26,7 +26,7 @@
         :page-sizes="page.pageSizes"
         :page-size="page.pageSize"
         :layout="page.layout"
-        :total="data ? data.length : 0" />
+        :total="page.totalCount" />
     </div>
     <!-- <volumeDialog :visible.sync="versionVisible" /> -->
   </iCard>
@@ -38,7 +38,7 @@ import { iCard, iButton, iPagination, iMessage } from '@/components'
 import tableList from '../tableList'
 import { volumeTableTitle as tableTitle } from '../data'
 import { pageMixins } from '@/utils/pageMixins'
-import { getPerCarDosage } from '@/api/partsign/editordetail'
+import { getPerCarDosageVersion, getPerCarDosageInfo } from '@/api/partsign/editordetail'
 import { excelExport } from '@/utils/filedowLoad'
 
 export default {
@@ -56,38 +56,54 @@ export default {
       tableListData: [],
       multipleSelection: [],
       loading: false,
-      versionNum: 'V1'
+      versionNum: '',
+      carTypeConfigId: '',
       // versionVisible: false
     }
   },
   created() {
-    this.getPerCarDosage()
+    this.getVolume()
   },
   methods: {
-    download() {
-      if (!this.multipleSelection.length) return iMessage.warn('请选择需要导出的版本')
-      excelExport(this.multipleSelection, this.tableTitle)
-    },
-    getPerCarDosage() {
+    async getVolume() {
       this.loading = true
-      getPerCarDosage({ tpId: this.data.tpPartID, status: '1', ...this.page })
-        .then(res => {
-          const source = res.data.tpRecordList;
-          source.sort((a, b) => { +window.moment(b.dealTime) - +window.moment(a.dealTime) })
-          if (source[0]) {
-            this.versionNum = source[0].versionNum
-            this.tableListData = source.filter(item => item.versionNum === source[0].versionNum)
-          } else {
-            this.tableListData = []
+
+      try {
+        if (!this.versionNum || !this.carTypeConfigId) {
+          const versionRes = await getPerCarDosageVersion({
+            "currPage": 1,
+            "pageSize": 10,
+            "status": 1,
+            "tpId": this.data.tpPartID
+          })
+
+          this.versionNum = 'V1'
+          if (versionRes.data && Array.isArray(versionRes.data.tpRecordList) && versionRes.data.tpRecordList[0]) {
+            this.carTypeConfigId = versionRes.data.tpRecordList[0].carTypeConfigId
+            this.versionNum = versionRes.data.tpRecordList[0].versionNum || 'V1'
           }
-          this.loading = false
-          this.display = !!this.tableListData.length
+        }
+
+        const infoRes = await getPerCarDosageInfo({
+          carTypeConfigId: this.carTypeConfigId,
+          versionNum: this.versionNum,
+          currPage: this.page.currPage,
+          pageSize: this.page.pageSize,
+          status: 1,
+          tpId: 12390
         })
-        .catch(() => this.loading = false)
+
+        this.tableListData = infoRes.data.tpRecordList
+        this.page.totalCount = infoRes.data.totalCount
+      } catch(e) {
+        console.error(e)
+      } finally {
+        this.loading = false
+      }
     },
     version() {
       // this.versionVisible = true
-      window.open('/#/partsign/version', '_blank')
+      window.open(`/#/partsign/version?tpId=${ this.data.tpPartID }`, '_blank')
       // this.$router.push('/partsign/version')
     },
     handleSelectionChange(list) {

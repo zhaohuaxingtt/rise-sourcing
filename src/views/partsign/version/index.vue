@@ -8,9 +8,9 @@
         </div> -->
       </div>
       <div class="body margin-top25">
-        <tableList index height="100%" :selection="false" class="table" :tableData="tableListData" :tableTitle="tableTitle" :loading="loading">
-          <template #version="scope">
-            <span class="link-underline" @click="volume(scope.row)">{{ scope.row.version }}</span>
+        <tableList index height="100%" :selection="false" class="table" :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="loading">
+          <template #versionNum="scope">
+            <span class="link-underline" @click="volume(scope.row)">{{ scope.row.versionNum }}</span>
           </template>
           <template #publishDate="scope">
             <span>{{ scope.row.publishDate | dateFilter }}</span>
@@ -20,8 +20,8 @@
       <div class="footer">
         <iPagination
           class="pagination"
-          @size-change="handleSizeChange($event, getTable)"
-          @current-change="handleCurrentChange($event, getTable)"
+          @size-change="handleSizeChange($event, getPerCarDosageVersion)"
+          @current-change="handleCurrentChange($event, getPerCarDosageVersion)"
           background
           :current-page="page.currPage"
           :page-sizes="page.pageSizes"
@@ -30,49 +30,53 @@
           :total="tableListData ? tableListData.length : 0" />
       </div>
     </iCard>
-    <volumeDialog :visible.sync="volumeVisible" :data="volumeData" />
+    <volumeDialog :visible.sync="volumeVisible" :volumeParams="volumeParams" />
   </iPage>
 </template>
 
 <script>
-import { iPage, iCard, iButton, iPagination } from '@/components'
+import { iPage, iCard, iPagination } from '@/components'
 import tableList from '@/views/partsign/editordetail/components/tableList'
 import volumeDialog from '@/views/partsign/editordetail/components/volumeDialog'
+import { getPerCarDosageVersion } from '@/api/partsign/editordetail'
 import { tableTitle } from './components/data'
 import { pageMixins } from '@/utils/pageMixins'
 import filters from '@/utils/filters'
-import local from '@/utils/localstorage'
 
 export default {
-  components: { iPage, iCard, iButton, iPagination, tableList, volumeDialog },
+  components: { iPage, iCard, iPagination, tableList, volumeDialog },
   mixins: [ pageMixins, filters ],
   data() {
     return {
       tableTitle,
       tableListData: [],
       volumeVisible: false,
-      volumeData: {}
+      volumeParams: {}
     }
   },
   created() {
-    // this.getTable()
-    try {
-      this.tableListData = JSON.parse(local.get('tpPartInfoVO')).partPerCaVerList
-    } catch(e) {
-      this.tableListData = []
-    }
+    this.tpId = this.$route.query.tpId
+    this.getPerCarDosageVersion()
   },
   methods: {
-    getTable() {
+    getPerCarDosageVersion() {
       this.loading = true
-      setTimeout(() => {
-        this.loading = false
-        this.page.totalCount = 0
-      }, 1000)
+      getPerCarDosageVersion({
+        "currPage": this.page.currPage,
+        "pageSize": this.page.pageSize,
+        "status": 1,
+        "tpId": this.tpId
+      })
+        .then(res => {
+          this.tableListData = res.data.tpRecordList
+          this.page.totalCount = res.data.totalCount
+          this.loading = false
+        })
+        .catch(() => this.loading = false)
     },
     volume(data) {
       this.volumeVisible = true
-      this.volumeData = data
+      this.volumeParams = { ...data, tpId: this.tpId }
     },
     // back() {
     //   this.$router.go(-1)

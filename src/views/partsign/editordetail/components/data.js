@@ -121,23 +121,23 @@ export const unconfirmedTableTitle = [
 ]
 
 export const volumeTableTitle = [
-  { props: 'carCategory', name: '车型大类' },
+  { props: 'cartypeCategory', name: '车型大类' },
   { props: 'engineType', name: '发动机类型' },
-  { props: 'chargeVolume', name: '电池容量' },
-	{ props: 'gearboxType', name: '变速箱类型' },
-  { props: 'carGrade', name: '车型等级' },
+  { props: 'batteryCapacity', name: '电池容量' },
+	{ props: 'gearType', name: '变速箱类型' },
+  { props: 'cartypeLevel', name: '车型等级' },
   { props: 'otherInfo', name: '其他信息' },
-  { props: 'volume', name: '每车用量' }
+  { props: 'perCarDosage', name: '每车用量' }
 ]
 
 export const volumeDialogTableTitle = [
-  { props: 'carCategory', name: '车型大类' },
+  { props: 'cartypeCategory', name: '车型大类' },
   { props: 'engineType', name: '发动机类型' },
-  { props: 'chargeVolume', name: '电池容量' },
-	{ props: 'gearboxType', name: '变速箱类型' },
-  { props: 'carGrade', name: '车型等级' },
+  { props: 'batteryCapacity', name: '电池容量' },
+	{ props: 'gearType', name: '变速箱类型' },
+  { props: 'cartypeLevel', name: '车型等级' },
   { props: 'otherInfo', name: '其他信息' },
-  { props: 'volume', name: '每车用量' }
+  { props: 'perCarDosage', name: '每车用量' }
 ]
 
 export const logTableTitle = [
