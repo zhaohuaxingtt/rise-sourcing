@@ -7,7 +7,7 @@
 <template>
   <el-table :height="height" :data='tableData' v-loading='tableLoading' @selection-change="handleSelectionChange">
     <el-table-column v-if="selection" type='selection' width="50" align='center'></el-table-column>
-    <el-table-column v-if='index' type='index' width='50' align='center' label='#'></el-table-column>
+    <el-table-column v-if='index' type='index' width='50' align='center' label='编号'></el-table-column>
     <template v-for="(items,index) in tableTitle">
       <template v-if="items.list && isArray(items.list)">
         <el-table-column :label="items.name" :key="index" align="center">
@@ -45,8 +45,8 @@ export default {
     index: {type: Boolean, default: false},
     height: {type: Number || String},
     hideOpenPage: {type: Boolean, default: false},
-    multiHeaderProps: {type: String, default: 'i'},
-    actionProps: {type: String, default: 'd'},
+    multiHeaderProps: {type: String, default: 'tpbMemo'},
+    actionProps: {type: String, default: 'action'},
     multiHeaderPropsText: {type: String, default: '编辑'},
   },
   methods: {

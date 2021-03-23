@@ -39,7 +39,7 @@ import {iCard, iButton, iPagination, iMessage} from "@/components";
 import tablelist from 'pages/partsrfq/components/tablelist'
 import {supplierRatingAttachmentTitle} from "./data";
 import {pageMixins} from "@/utils/pageMixins";
-import {getSupplierRatingAttachment} from "@/api/partsrfq/editordetail";
+import {getAllAnnex, deleteAnnex} from "@/api/partsrfq/editordetail";
 import uploadButton from 'pages/partsrfq/components/uploadButton'
 
 export default {
@@ -66,14 +66,33 @@ export default {
     this.getTableList();
   },
   methods: {
-    getTableList() {
-      this.tableLoading = true;
-      getSupplierRatingAttachment().then((res) => {
-        this.tableListData = res.data;
-        this.tableLoading = false;
-      });
+    async getTableList() {
+      const id = this.$route.query.id
+      if (id) {
+        this.tableLoading = true;
+        try {
+          const req = {
+            rfqId: id
+          }
+          const res = await getAllAnnex(req)
+          this.tableListData = res.data;
+          this.page.currPage = res.data.rfqCfPriceVO.pageNum
+          this.page.pageSize = res.data.rfqCfPriceVO.pageSize
+          this.page.totalCount = res.data.rfqCfPriceVO.total
+          this.tableLoading = false;
+        } catch {
+          this.tableLoading = false;
+        }
+      }
     },
-    deleteItems() {
+    async deleteItems() {
+      const annexIds = this.selectTableData.map(item => {
+        return item.id
+      })
+      const req = {annexIds}
+      const res = await deleteAnnex(req)
+      iMessage.success(res.desZh)
+      this.getTableList()
     },
     //修改表格改动列
     handleSelectionChange(val) {

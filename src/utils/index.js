@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-02-19 16:12:38
+ * @LastEditTime: 2021-03-22 17:47:00
  * @LastEditors: Please set LastEditors
  * @Description: 公共utils部分
  * @FilePath: \rise\src\utils\index.js
@@ -22,23 +22,23 @@ export function getCookie(cookieName) {
 }
 //获取token
 export function getToken() {
-  return localStoreage.get(process.env.VUE_APP_TOKEN_NAME)
+  return getCookie(process.env.VUE_APP_TOKEN_NAME)
 }
 //settoken
 export function setToken(tokenData) {
-  return localStoreage.set(process.env.VUE_APP_TOKEN_NAME, tokenData)
+  return setCookie(process.env.VUE_APP_TOKEN_NAME, tokenData)
 }
 //removeoken
 export function removeToken() {
-  return localStoreage.remove(process.env.VUE_APP_TOKEN_NAME)
+  return removeCookie(process.env.VUE_APP_TOKEN_NAME)
 }
 //获取token
 export function getRefreshToken() {
-  return localStoreage.get(process.env.VUE_APP_REFRESH_TOKEN_NAME)
+  return getCookie(process.env.VUE_APP_REFRESH_TOKEN_NAME)
 }
 //settoken
 export function setRefreshToken(tokenData) {
-  return localStoreage.set(process.env.VUE_APP_REFRESH_TOKEN_NAME, tokenData)
+  return setCookie(process.env.VUE_APP_REFRESH_TOKEN_NAME, tokenData)
 }
 //removeoken
 export function removeRefreshToken() {

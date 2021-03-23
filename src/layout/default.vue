@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2020-07-22 14:56:34
- * @LastEditTime: 2021-03-08 14:26:25
+ * @LastEditTime: 2021-03-23 12:58:45
  * @LastEditors: Please set LastEditors
  * @Description: 项目默认layout
  * @FilePath: \test\src\layout\default.vue
@@ -10,8 +10,8 @@
   <div class="content">
     <topLayout></topLayout>
     <leftLayout>
-      <template v-slot="scope">
-        <menuLayout :menuData="scope.menuData"></menuLayout>
+      <template slot="menu">
+        <menuLayout :menuData="menuList" ></menuLayout>
       </template>
     </leftLayout>
     <div class="app-content">
@@ -24,7 +24,13 @@ import topLayout from './components/topLayout/'
 import menuLayout from './components/menu'
 import LeftLayout from './components/leftLayout'
 export default {
-  components:{topLayout,menuLayout,LeftLayout}
+  components:{topLayout,menuLayout,LeftLayout},
+  computed: {
+    // eslint-disable-next-line no-undef
+    ...Vuex.mapState({
+      menuList: (state) => state.permission.menuList,
+    })
+  },
 };
 </script>
 <style lang="scss" scoped>

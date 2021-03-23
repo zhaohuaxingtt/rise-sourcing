@@ -55,7 +55,7 @@ import {iCard, iPagination, iPage, icon, iButton} from "@/components";
 import tablelist from './supplierScoreTableList'
 import {partScroingTitle} from "./data";
 import {pageMixins} from "@/utils/pageMixins";
-import {getSupplierRatingAttachment} from "@/api/partsrfq/editordetail";
+
 import tpbRemarks from './tpbRemarks'
 
 export default {
@@ -84,10 +84,7 @@ export default {
   methods: {
     getTableList() {
       this.tableLoading = true;
-      getSupplierRatingAttachment().then((res) => {
-        this.tableListData = res.data;
-        this.tableLoading = false;
-      });
+
     },
     deleteItems() {
     },

@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-25 10:09:50
- * @LastEditTime: 2021-02-25 10:10:24
+ * @LastEditTime: 2021-03-23 12:34:12
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsrfq\editordetail\index.vue
@@ -136,10 +136,10 @@ export default {
           value: 2,
           name: "详情信息",
         },
-        {
-          value: 3,
-          name: "谈判助手",
-        }
+        // {
+        //   value: 3,
+        //   name: "谈判助手",
+        // }
       ],
       editStatus: false,
       newRfqRoundDialog: false,
@@ -225,6 +225,7 @@ export default {
       } else {
         const req = {
           insertRfcPackage: {
+            operationType: '2',
             ...params
           }
         }

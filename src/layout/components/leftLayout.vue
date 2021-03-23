@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-22 16:47:54
- * @LastEditTime: 2021-03-08 17:15:23
+ * @LastEditTime: 2021-03-23 12:58:36
  * @LastEditors: Please set LastEditors
  * @Description: 界面左边的按钮切换菜单栏。
  * @FilePath: \rise\src\layout\components\leftLayout.vue
@@ -28,7 +28,7 @@
         <span>Workbench</span>
         <icon symbol name='iconcaidanshouqi' :class="{menu:true,hiddenMenu:hiddenMenu}" @click.native="hiddenMenu=!hiddenMenu"></icon>
       </div>
-      <slot :menuData="menuData"></slot>
+      <slot name="menu"></slot>
     </div>
   </div>
 </div>
@@ -42,8 +42,7 @@ export default{
     return {
       iconDataList:iconData,
       iconChangeClass:'type-first',
-      hiddenMenu:false,
-      menuData: []
+      hiddenMenu:false
     }
   },
   methods:{
@@ -54,7 +53,6 @@ export default{
       this.iconDataList.forEach(items=>{
         if (items.key == key.key) {
           items.active = true
-          this.menuData = items.menuData
         } else {items.active = false}
       })
       

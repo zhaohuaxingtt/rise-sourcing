@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-03-10 15:22:16
- * @LastEditTime: 2021-03-12 14:23:21
+ * @LastEditTime: 2021-03-22 19:21:50
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\login\index.vue
@@ -18,17 +18,21 @@
               <el-input v-model="passWord" autocomplete="off" type="password" :readonly="readonly" @focus="stopAutoComplate"></el-input>
             </el-form-item>
           </el-form>
-          <el-button class="button" @click="login">登录</el-button>
+          <el-button :loading='loading' class="button" @click="login">登录</el-button>
         </div>
     </div>
 </template>
 <script>
+import {iMessage} from '@/components'
+import {login} from '@/api/usercenter'
+import {setToken} from '@/utils'
 export default{
   data(){
     return {
       userName:'',
       passWord:'',
-      readonly:true
+      readonly:true,
+      loading:false
     }
   },
   watch:{
@@ -41,8 +45,16 @@ export default{
   },
   methods:{
     login(){
-      this.$router.replace({
-        path:'/partsign'
+      if(this.passWord == '' || this.userName == '') return iMessage.error('抱歉，用户名或密码不能为空！')
+      this.loading = true
+      login({userName:this.userName,passWord:this.passWord}).then(res=>{
+        this.loading = false
+        setToken(res.data.token)
+        this.$router.replace({
+          path:'/partsign'
+        })
+      }).catch(()=>{
+        this.loading = false
       })
     },
     stopAutoComplate(){

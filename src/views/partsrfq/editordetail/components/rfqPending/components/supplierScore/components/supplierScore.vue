@@ -39,8 +39,8 @@ import {iCard, iPagination} from "@/components";
 import tablelist from './supplierScoreTableList'
 import {supplierScoreTitle} from "./data";
 import {pageMixins} from "@/utils/pageMixins";
-import {getSupplierRatingAttachment} from "@/api/partsrfq/editordetail";
 import tpbRemarks from './tpbRemarks'
+import {getAllSupplier} from "@/api/partsrfq/editordetail";
 
 export default {
   components: {
@@ -63,12 +63,24 @@ export default {
     this.getTableList();
   },
   methods: {
-    getTableList() {
-      this.tableLoading = true;
-      getSupplierRatingAttachment().then((res) => {
-        this.tableListData = res.data;
-        this.tableLoading = false;
-      });
+    async getTableList() {
+      const id = this.$route.query.id
+      if (id) {
+        this.tableLoading = true;
+        try {
+          const req = {
+            rfqId: id
+          }
+          const res = await getAllSupplier(req)
+          this.tableListData = res.data;
+          this.page.currPage = res.data.rfqCfPriceVO.pageNum
+          this.page.pageSize = res.data.rfqCfPriceVO.pageSize
+          this.page.totalCount = res.data.rfqCfPriceVO.total
+          this.tableLoading = false;
+        } catch {
+          this.tableLoading = false;
+        }
+      }
     },
     deleteItems() {
     },

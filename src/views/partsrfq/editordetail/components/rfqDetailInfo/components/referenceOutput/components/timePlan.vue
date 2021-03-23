@@ -74,9 +74,9 @@ export default {
   },
   methods: {
     async getTableList() {
-      this.tableLoading = true;
       const id = this.$route.query.id
       if (id) {
+        this.tableLoading = true;
         const req = {
           otherInfoPackage: {
             findType: '07',

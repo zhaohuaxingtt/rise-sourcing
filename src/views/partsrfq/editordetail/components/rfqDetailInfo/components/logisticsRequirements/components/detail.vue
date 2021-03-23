@@ -16,7 +16,7 @@
       <div>
         <div class="form-title">物流标准</div>
         <iFormGroup :row="4" inline icon>
-          <iFormItem label="供货方式：" name="test">
+          <iFormItem label="INBOUND物流方式：" name="test">
             <iInput v-if="editStatus"></iInput>
             <i-text v-else>{{dataInfo.supplyType}}</i-text>
           </iFormItem>
@@ -24,67 +24,152 @@
             <iInput v-if="editStatus"></iInput>
             <i-text v-else>{{dataInfo.direcorId}}</i-text>
           </iFormItem>
+          <iFormItem label="ZP：" name="test">
+            <iInput v-if="editStatus"></iInput>
+            <i-text v-else>{{dataInfo.zp}}</i-text>
+          </iFormItem>
+          <iFormItem label="特殊零件类型：" name="test">
+            <iInput v-if="editStatus"></iInput>
+            <i-text v-else>{{dataInfo.specialPartType}}</i-text>
+          </iFormItem>
         </iFormGroup>
       </div>
       <div>
         <div class="form-title">参考包装</div>
-        <iFormGroup :row="4" inline icon>
-          <iFormItem label="参考包装长（mm）" name="test">
+        <iFormGroup :row="1" inline icon>
+          <iFormItem label="包装负责人" name="test">
             <iInput v-if="editStatus"></iInput>
-            <i-text v-else>{{dataInfo.referencePackageLength}}</i-text>
+            <i-text v-else>{{dataInfo.partPackgeRequirements.direcorId}}</i-text>
+          </iFormItem>
+        </iFormGroup>
+        <iFormGroup :row="4" inline icon>
+          <iFormItem label="入场包装名称" name="test">
+            <iInput v-if="editStatus"></iInput>
+            <i-text v-else>{{dataInfo.partPackgeRequirements.admissionPackgeName}}</i-text>
+          </iFormItem>
+        </iFormGroup>
+        <iFormGroup :row="4" inline icon>
+          <iFormItem label="入库器具长（mm）" name="test">
+            <iInput v-if="editStatus"></iInput>
+            <i-text v-else>{{dataInfo.partPackgeRequirements.warehousingAppliancesLength}}</i-text>
+          </iFormItem>
+          <iFormItem label="入库器具宽（mm）" name="test">
+            <iInput v-if="editStatus"></iInput>
+            <i-text v-else>{{dataInfo.partPackgeRequirements.warehousingAppliancesWidth}}</i-text>
           </iFormItem>
           <iFormItem label="参考包装宽（mm）" name="test">
             <iInput v-if="editStatus"></iInput>
             <i-text v-else>{{dataInfo.referencePackageWidth}}</i-text>
           </iFormItem>
-          <iFormItem label="参考包装⾼（mm）" name="test">
+          <iFormItem label="入库器具装箱数" name="test">
             <iInput v-if="editStatus"></iInput>
-            <i-text v-else>{{dataInfo.referencePackageHeight}}</i-text>
-          </iFormItem>
-          <iFormItem label="装箱数" name="test">
-            <iInput v-if="editStatus"></iInput>
-            <i-text v-else>{{dataInfo.packingCount}}</i-text>
+            <i-text v-else>{{dataInfo.partPackgeRequirements.warehousingAppliancesCount}}</i-text>
           </iFormItem>
         </iFormGroup>
         <iFormGroup :row="4" inline icon>
-          <iFormItem label="参考车型" name="test">
+          <iFormItem label="入库器具型号" name="test">
             <iInput v-if="editStatus"></iInput>
-            <i-text v-else>{{dataInfo.referenceCarType}}</i-text>
+            <i-text v-else>{{dataInfo}}</i-text>
           </iFormItem>
-          <iFormItem label="参考零件号" name="test">
+          <iFormItem label="入库器具类型" name="test">
             <iInput v-if="editStatus"></iInput>
-            <i-text v-else>{{dataInfo.referencePartNum}}</i-text>
+            <i-text v-else>{{dataInfo}}}</i-text>
           </iFormItem>
-          <iFormItem label="参考零件名" name="test">
+          <iFormItem label="入库器具综合单价（RMB）" name="test">
             <iInput v-if="editStatus"></iInput>
-            <i-text v-else>{{dataInfo.referencePartName}}</i-text>
+            <i-text v-else>{{dataInfo}}</i-text>
           </iFormItem>
-          <iFormItem label="参考包装器具类型" name="test">
+          <iFormItem label="入库器具租金（RMB/DAY）" name="test">
             <iInput v-if="editStatus"></iInput>
-            <i-text v-else>{{dataInfo.referenceAppliancesType}}</i-text>
+            <i-text v-else>{{dataInfo}}</i-text>
           </iFormItem>
         </iFormGroup>
         <iFormGroup :row="4" inline icon>
-          <iFormItem label="毛重（KG）" name="test">
+          <iFormItem label="入库包装毛重（KG）" name="test">
             <iInput v-if="editStatus"></iInput>
-            <i-text v-else>{{dataInfo.grossWeight}}</i-text>
+            <i-text v-else>{{dataInfo}}</i-text>
           </iFormItem>
-          <iFormItem label="参考包装单价（元）" name="test">
+          <iFormItem label="入库器具返程折叠比" name="test">
             <iInput v-if="editStatus"></iInput>
-            <i-text v-else>{{dataInfo.referencePerPackagePrice}}</i-text>
+            <i-text v-else>{{dataInfo}}}</i-text>
+          </iFormItem>
+          <iFormItem label="入库器具寿命" name="test">
+            <iInput v-if="editStatus"></iInput>
+            <i-text v-else>{{dataInfo}}</i-text>
+          </iFormItem>
+          <iFormItem label="入库基础年维修费率" name="test">
+            <iInput v-if="editStatus"></iInput>
+            <i-text v-else>{{dataInfo}}</i-text>
           </iFormItem>
         </iFormGroup>
-      </div>
-      <div>
-        <div class="form-title">SAIC VOLKSWAGEN库存_⼩时</div>
-        <iFormGroup :row="2" inline icon>
-          <iFormItem label="SAIC VOLKSWAGEN库存_小时" name="test">
+        <iFormGroup :row="4" inline icon>
+          <iFormItem label="箱内周转材料综合价格" name="test">
             <iInput v-if="editStatus"></iInput>
-            <i-text v-else>{{dataInfo.stockHours}}</i-text>
+            <i-text v-else>{{dataInfo}}</i-text>
           </iFormItem>
-          <iFormItem label="SAIC VOLKSWAGEN空箱操作_小时" name="test">
+          <iFormItem label="箱内周转材料综合寿命" name="test">
             <iInput v-if="editStatus"></iInput>
-            <i-text v-else>{{dataInfo.emptycaseHours}}</i-text>
+            <i-text v-else>{{dataInfo}}}</i-text>
+          </iFormItem>
+        </iFormGroup>
+        <iFormGroup :row="4" inline icon>
+          <iFormItem label="前段包装名称" name="test">
+            <iInput v-if="editStatus"></iInput>
+            <i-text v-else>{{dataInfo}}</i-text>
+          </iFormItem>
+        </iFormGroup>
+        <iFormGroup :row="4" inline icon>
+          <iFormItem label="翻箱前器具长（mm）" name="test">
+            <iInput v-if="editStatus"></iInput>
+            <i-text v-else>{{dataInfo}}</i-text>
+          </iFormItem>
+          <iFormItem label="翻箱前器具宽（mm）" name="test">
+            <iInput v-if="editStatus"></iInput>
+            <i-text v-else>{{dataInfo}}</i-text>
+          </iFormItem>
+          <iFormItem label="翻箱前器具高（mm）" name="test">
+            <iInput v-if="editStatus"></iInput>
+            <i-text v-else>{{dataInfo}}</i-text>
+          </iFormItem>
+          <iFormItem label="翻箱前器具数" name="test">
+            <iInput v-if="editStatus"></iInput>
+            <i-text v-else>{{dataInfo}}</i-text>
+          </iFormItem>
+        </iFormGroup>
+        <iFormGroup :row="4" inline icon>
+          <iFormItem label="翻箱前器具号" name="test">
+            <iInput v-if="editStatus"></iInput>
+            <i-text v-else>{{dataInfo}}</i-text>
+          </iFormItem>
+          <iFormItem label="翻箱前器具类型" name="test">
+            <iInput v-if="editStatus"></iInput>
+            <i-text v-else>{{dataInfo}}</i-text>
+          </iFormItem>
+          <iFormItem label="翻箱前器具综合单价（RMB）" name="test">
+            <iInput v-if="editStatus"></iInput>
+            <i-text v-else>{{dataInfo}}</i-text>
+          </iFormItem>
+          <iFormItem label="翻箱前器具租金（RMB/DAY）" name="test">
+            <iInput v-if="editStatus"></iInput>
+            <i-text v-else>{{dataInfo}}</i-text>
+          </iFormItem>
+        </iFormGroup>
+        <iFormGroup :row="4" inline icon>
+          <iFormItem label="翻箱前包装毛重（KG）" name="test">
+            <iInput v-if="editStatus"></iInput>
+            <i-text v-else>{{dataInfo}}</i-text>
+          </iFormItem>
+          <iFormItem label="翻箱前器具返程折叠比" name="test">
+            <iInput v-if="editStatus"></iInput>
+            <i-text v-else>{{dataInfo}}</i-text>
+          </iFormItem>
+          <iFormItem label="翻箱前器具寿命" name="test">
+            <iInput v-if="editStatus"></iInput>
+            <i-text v-else>{{dataInfo}}</i-text>
+          </iFormItem>
+          <iFormItem label="翻箱前基础年维修率" name="test">
+            <iInput v-if="editStatus"></iInput>
+            <i-text v-else>{{dataInfo}}</i-text>
           </iFormItem>
         </iFormGroup>
       </div>

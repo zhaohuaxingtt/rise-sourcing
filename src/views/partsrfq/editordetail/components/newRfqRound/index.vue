@@ -72,7 +72,6 @@ import {iButton, iMessage, iDialog, iFormGroup, iFormItem, iSelect, iPagination}
 import tablelist from 'pages/partsrfq/components/tablelist'
 import {pageMixins} from "@/utils/pageMixins";
 import {tableTitle, tableTitle2} from "./components/data";
-import {getNewRfqRoundList} from "@/api/partsrfq/editordetail";
 import {findBySearches} from "@/api/partsrfq/home";
 import {getDictByCode} from "@/api/dictionary";
 
@@ -108,10 +107,7 @@ export default {
     //获取表格数据
     getTableList() {
       this.tableLoading = true;
-      getNewRfqRoundList().then((res) => {
-        this.tableListData = res.data;
-        this.tableLoading = false;
-      });
+
     },
     sureChangeItems() {
       if (this.selectTableData.length == '') return iMessage.warn('抱歉！您当前还未选择！')
