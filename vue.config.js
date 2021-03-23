@@ -158,13 +158,12 @@ module.exports = {
 				}
 			},
 			'/usercenterApi': { // usercenter.../唐开雄
-				target: 'http://10.122.18.166:8015',
+				target: 'http://10.160.143.241:8015',
 				changeOrigin: true,
 				pathRewrite: {
 					"^/usercenterApi": ""
 				}
 			},
-
 		}
 	}
 }
