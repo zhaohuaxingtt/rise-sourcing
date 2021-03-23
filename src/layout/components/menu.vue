@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-22 16:50:10
- * @LastEditTime: 2021-03-08 15:19:42
+ * @LastEditTime: 2021-03-23 12:44:08
  * @LastEditors: Please set LastEditors
  * @Description: 项目菜单。
  * @FilePath: \rise\src\layout\components\menu.vue
@@ -24,14 +24,13 @@
         class="icon margin-right20 leftIconHiden"
         name="iconxunyuandingdianweixuanzhong"
       ></icon>
-      <span>{{ items.label }}</span>
+      <span>{{ items.name }}</span>
       <icon symbol class="icon floatright margin-top32" v-if="!items.active" name="iconmuluweixuanzhongshijiantou"></icon>
     </li>
   </ul>
 </template>
 <script>
 import { icon } from "@/components";
-// import { menuData } from "./data";
 export default {
   components: { icon },
   props: {
@@ -39,11 +38,6 @@ export default {
       props: Array,
       default: () => ([])
     }
-  },
-  data() {
-    return {
-      // menuData: menuData,
-    };
   },
   methods:{
     active(items){

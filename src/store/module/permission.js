@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-03-22 20:06:02
+ * @LastEditTime: 2021-03-23 12:50:42
  * @LastEditors: Please set LastEditors
  * @Description: 用户信息保存。
  * @FilePath: \rise\src\store\module\permission.js
@@ -28,7 +28,7 @@ const getVuerouter = function(router){
   return res
 }
 const state = {
-  menuList: [],
+  menuList: [{name:"新件信息单管理"},{name:"零件采购项目管理"},{name:"RFQ管理"}],
   vueRouter:[],
   //系统登录用户信息。存入store，前台不存储用户的敏感信息。
   roleList:'',
