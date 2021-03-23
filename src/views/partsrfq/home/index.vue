@@ -124,7 +124,7 @@ export default {
       tableTitle: tableTitle,
       tableLoading: false,
       selectTableData: [],
-      diologAssignmentOfScroingTasks: false,
+      diologAssignmentOfScroingTasks: true,
       form: {
         searchConditions: '',
         carType: '',
