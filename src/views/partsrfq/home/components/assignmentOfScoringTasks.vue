@@ -61,7 +61,7 @@ export default {
       tableLoading: false,
       selectTableData: [],
       selectProps: ['deptType', 'deptNum', 'graderId'],
-      selectPropsOptionsObject: [],
+      selectPropsOptionsObject: {},
       showStatus: true,
       deptTypeList: []
     }
@@ -84,7 +84,7 @@ export default {
       }
       const res = await editRfqData(req)
       res.result ? iMessage.success(res.desZh) : iMessage.error(res.desZh)
-      this.$emit('sure', JSON.parse(this.selectTableData))
+      this.$emit('sure', this.selectTableData)
     },
     //修改表格改动列
     handleSelectionChange(val) {
@@ -98,13 +98,21 @@ export default {
       const newObj = JSON.parse(JSON.stringify(this.selectPropsOptionsObject))
       switch (res.type) {
         case 'deptType':
-          newObj[res.index].deptNum = (await getDeptByDeptType(res.val)).data
-          this.tableListData[res.index].deptNum = ''
-          this.tableListData[res.index].graderId = ''
+          newObj[res.time].deptNum = (await getDeptByDeptType(res.val)).data
+          this.tableListData.map(item => {
+            if (item.time === res.time) {
+              item.deptNum = ''
+              item.graderId = ''
+            }
+          })
           break;
         case 'deptNum':
-          this.tableListData[res.index].graderId = ''
-          newObj[res.index].graderId = (await getGraderIdByDept(res.val)).data.map(item => {
+          this.tableListData.map(item => {
+            if (item.time === res.time) {
+              item.graderId = ''
+            }
+          })
+          newObj[res.time].graderId = (await getGraderIdByDept(res.val)).data.map(item => {
             return {
               code: item.id,
               name: item.userName
@@ -115,11 +123,11 @@ export default {
       this.selectPropsOptionsObject = newObj
     },
     add() {
-      const length = this.tableListData.length
+      const time = new Date().getTime()
       this.tableListData.push({
-        deptType: '', deptNum: '', graderId: '', index: length
+        deptType: '', deptNum: '', graderId: '', time: time
       })
-      this.selectPropsOptionsObject[length] = {
+      this.selectPropsOptionsObject[time] = {
         deptType: this.deptTypeList,
         deptNum: [],
         graderId: []
@@ -130,10 +138,10 @@ export default {
         return iMessage.warn("抱歉，您当前还未选择！");
       }
       const indexList = this.selectTableData.map(item => {
-        return item.index
+        return item.time
       })
-      this.tableListData =  this.tableListData.filter(item => {
-        if (!indexList.includes(item.index)) {
+      this.tableListData = this.tableListData.filter(item => {
+        if (!indexList.includes(item.time)) {
           return item
         }
       })
