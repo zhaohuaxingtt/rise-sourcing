@@ -67,6 +67,6 @@
  ]
 
 export const messageTypeMap = {
-  '4': 'notice',
-  '5': 'message'
+  '4': 'message',
+  '5': 'notice'
 }
