@@ -7,21 +7,21 @@
 						<icon symbol name="iconbeizhuxinxi"></icon>
 						<span>询价采购员备注</span>
 					</p>
-					<iInput type="textarea" rows="8" resize="none" v-model="infoDetail.buyerName"></iInput>
+					<iInput type="textarea" rows="8" resize="none" v-model="detailData.csfMemo"></iInput>
 				</div>
 				<div>
 					<p>
 						<icon symbol name="iconbeizhuxinxi"></icon>
 						<span>Linie备注</span>
 					</p>
-					<iInput type="textarea" rows="8" resize="none" v-model="infoDetail.linieMemo" disabled></iInput>
+					<iInput type="textarea" rows="8" resize="none" v-model="detailData.linieMemo" disabled></iInput>
 				</div>
 				<div>
 					<p>
 						<icon symbol name="iconbeizhuxinxi"></icon>
 						<span>CS*1备注</span>
 					</p>
-					<iInput type="textarea" rows="8" resize="none" v-model="infoDetail.cs1Memo" disabled></iInput>
+					<iInput type="textarea" rows="8" resize="none" v-model="detailData.cs1Memo" disabled></iInput>
 				</div>
 				<!-- 保存 -->
 				<span class="save">
@@ -34,21 +34,21 @@
 						<icon symbol name="iconbeizhuxinxi"></icon>
 						<span>询价采购员上会备注</span>
 					</p>
-					<iInput type="textarea" rows="8" resize="none" v-model="infoDetail.buyerName"></iInput>
+					<iInput type="textarea" rows="8" resize="none" v-model="detailData.csfMeetMemo"></iInput>
 				</div>
 				<div>
 					<p>
 						<icon symbol name="iconbeizhuxinxi"></icon>
 						<span>Linie上会备注</span>
 					</p>
-					<iInput type="textarea" rows="8" resize="none" v-model="infoDetail.linieMeetMemo" disabled></iInput>
+					<iInput type="textarea" rows="8" resize="none" v-model="detailData.linieMeetMemo" disabled></iInput>
 				</div>
 				<div>
 					<p>
 						<icon symbol name="iconbeizhuxinxi"></icon>
 						<span>CS*1上会备注</span>
 					</p>
-					<iInput type="textarea" rows="8" resize="none" v-model="infoDetail.csfMeetMemo" disabled></iInput>
+					<iInput type="textarea" rows="8" resize="none" v-model="detailData.csfMeetMemo" disabled></iInput>
 				</div>
 			</div>
 		</iCard>
@@ -58,7 +58,7 @@
 <script>
 	import {getTabelData,changeProcure} from '@/api/partsprocure/home'
 	import {
-		infoDetail
+		detailData
 	} from '../data'
 	import {
 		iCard,
@@ -76,32 +76,22 @@
 		},
 		data() {
 			return {
-				infoDetail:infoDetail
 			}
 		},
 		props:{
-			partNum:{
-				type:String,
-				default:""
+			detailData:{
+				type:Object,
+				default:()=>{
+					return detailData
+				}
 			}
 		},
 		created() {
-			this.getDatail()
 		},
 		methods:{
-			// 获取备注信息
-			getDatail(){
-				console.log(this.partNum);
-				let data={
-					'detailBaseReq.partNum':this.partNum,
-				}
-				getTabelData(data).then(res=>{
-					this.infoDetail=res.data.detailData
-				})
-			},
-			//修改详情。
+			//修改详情里面备注。
 			save(val) {
-				let baseInfo=this.infoDetail
+				let baseInfo=this.detailData
 				changeProcure({baseInfo}).then(res => {
 					this.diologChangeItems = false;
 					this.getDatail()

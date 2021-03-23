@@ -158,7 +158,7 @@
 			},
 			//获取上方group信息
 			getPageGroup() {
-				getPageGroup(1).then(res => {
+				getPageGroup(12314).then(res => {
 					this.fromGroup = res.data.groupStatSenarioResult.groupStatInfoList
 				})
 			},

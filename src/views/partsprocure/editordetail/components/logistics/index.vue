@@ -14,14 +14,29 @@
 				<span class="title">物流标准</span>
 			</div>
 			<iFormGroup row="4" icon inline>
-				<iFormItem label="供货方式" name="test">
+				<!-- <iFormItem label="供货方式" name="test">
 					<iText>
 						{{infoDetail.supplyType}}
+					</iText>
+				</iFormItem> -->
+				<iFormItem label="INBOUND物流方式1" name="test">
+					<iText>
+						blank
 					</iText>
 				</iFormItem>
 				<iFormItem label="负责人" name="test">
 					<iText>
 						{{infoDetail.direcorId}}
+					</iText>
+				</iFormItem>
+				<iFormItem label="ZP" name="test">
+					<iText>
+						blank
+					</iText>
+				</iFormItem>
+				<iFormItem label="特殊零件类型" name="test">
+					<iText>
+						blank
 					</iText>
 				</iFormItem>
 			</iFormGroup>
@@ -31,6 +46,170 @@
 				<span class="title">参考包装</span>
 			</div>
 			<iFormGroup row="4" icon inline>
+				<iFormItem label="包装负责人" name="test">
+					<iText>
+						blank
+					</iText>
+				</iFormItem>
+			</iFormGroup>
+			<iFormGroup row="4" icon inline>
+				<iFormItem label="入场包装名称" name="test">
+					<iText>
+						blank
+					</iText>
+				</iFormItem>
+			</iFormGroup>
+			<iFormGroup row="4" icon inline>
+				<iFormItem label="入库器具长(mn)" name="test">
+					<iText>
+						blank
+					</iText>
+				</iFormItem>
+				<iFormItem label="入库器具宽(mn)" name="test">
+					<iText>
+						blank
+					</iText>
+				</iFormItem>
+				<iFormItem label="参考包装高(mn)" name="test">
+					<iText>
+						blank
+					</iText>
+				</iFormItem>
+				<iFormItem label="入库器具长装箱数" name="test">
+					<iText>
+						blank
+					</iText>
+				</iFormItem>
+				
+				<iFormItem label="入库器具型号" name="test">
+					<iText>
+						blank
+					</iText>
+				</iFormItem>
+				<iFormItem label="入库器具型号" name="test">
+					<iText>
+						blank
+					</iText>
+				</iFormItem>
+				<iFormItem label="入库器具类型" name="test">
+					<iText>
+						blank
+					</iText>
+				</iFormItem>
+				<iFormItem label="入库器具综合单价(RMB)" name="test">
+					<iText>
+						blank
+					</iText>
+				</iFormItem>
+				<iFormItem label="入库器具租金(RMB/DAY)" name="test">
+					<iText>
+						blank
+					</iText>
+				</iFormItem>
+				
+				<iFormItem label="入库包装毛重(KG)" name="test">
+					<iText>
+						blank
+					</iText>
+				</iFormItem>
+				<iFormItem label="入库器具返程折叠比" name="test">
+					<iText>
+						blank
+					</iText>
+				</iFormItem>
+				<iFormItem label="入库器具寿命" name="test">
+					<iText>
+						blank
+					</iText>
+				</iFormItem>
+				<iFormItem label="入库基础年维修费率" name="test">
+					<iText>
+						blank
+					</iText>
+				</iFormItem>
+				<iFormItem label="箱内周转材料综合价格" name="test">
+					<iText>
+						blank
+					</iText>
+				</iFormItem>
+				<iFormItem label="箱内周转材料综合寿命" name="test">
+					<iText>
+						blank
+					</iText>
+				</iFormItem>
+			</iFormGroup>
+			<iFormGroup row="4" icon inline>
+				<iFormItem label="前段包装名称" name="test">
+					<iText>
+						blank
+					</iText>
+				</iFormItem>	
+			</iFormGroup>
+			
+			<iFormGroup row="4" icon inline>
+				<iFormItem label="翻箱前器具长(nm)" name="test">
+					<iText>
+						blank
+					</iText>
+				</iFormItem>
+				<iFormItem label="翻箱前器具宽(nm)" name="test">
+					<iText>
+						blank
+					</iText>
+				</iFormItem>
+				<iFormItem label="翻箱前器具高(nm)" name="test">
+					<iText>
+						blank
+					</iText>
+				</iFormItem>
+				<iFormItem label="翻箱前器具箱数" name="test">
+					<iText>
+						blank
+					</iText>
+				</iFormItem>
+				<iFormItem label="翻箱前器具型号" name="test">
+					<iText>
+						blank
+					</iText>
+				</iFormItem>
+				<iFormItem label="翻箱前器具类型" name="test">
+					<iText>
+						blank
+					</iText>
+				</iFormItem>
+				<iFormItem label="翻箱前器具综合单价(RMB)" name="test">
+					<iText>
+						blank
+					</iText>
+				</iFormItem>
+				<iFormItem label="翻箱前器具租金(RMB/DAY)" name="test">
+					<iText>
+						blank
+					</iText>
+				</iFormItem>
+				<iFormItem label="翻箱前包装毛重(KG)" name="test">
+					<iText>
+						blank
+					</iText>
+				</iFormItem>
+				<iFormItem label="翻箱前器具返程折叠比	" name="test">
+					<iText>
+						blank
+					</iText>
+				</iFormItem>
+				<iFormItem label="翻箱前器具寿命" name="test">
+					<iText>
+						blank
+					</iText>
+				</iFormItem>
+				<iFormItem label="翻箱前基础年维修费率" name="test">
+					<iText>
+						blank
+					</iText>
+				</iFormItem>
+			</iFormGroup>
+			<!-- <iFormGroup row="4" icon inline>
+				
 				<iFormItem label="参考包装长(mm)" name="test">
 					<iText>
 						{{infoDetail.referencePackageLength}}
@@ -81,9 +260,9 @@
 						{{infoDetail.referencePerPackagePrice}}
 					</iText>
 				</iFormItem>
-			</iFormGroup>
+			</iFormGroup> -->
 		</iCard>
-		<iCard class="margin-top20">
+		<!-- <iCard class="margin-top20">
 			<div class="header">
 				<span class="title">SAIC VOLKSWAGEN库存_小时</span>
 			</div>
@@ -99,7 +278,7 @@
 					</iText>
 				</iFormItem>
 			</iFormGroup>
-		</iCard>
+		</iCard> -->
 	</div>
 </template>
 

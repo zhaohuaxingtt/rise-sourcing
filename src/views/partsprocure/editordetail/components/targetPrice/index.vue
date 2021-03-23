@@ -10,32 +10,36 @@
 		<iFormGroup row="3" icon inline>
 			<iFormItem label="LC_B" name="test">
 				<iText>
+					{{targetprice.lcBPrice}}
 				</iText>
 			</iFormItem>
 			<iFormItem label="SKD_B" name="test">
 				<iText>
+					{{targetprice.skdBPrice}}
 				</iText>
 			</iFormItem>
 		</iFormGroup>
 		<iFormGroup row="3" icon inline>
 			<iFormItem label="LC_A" name="test">
 				<iText>
+					{{targetprice.lcAPrice}}
 				</iText>
 			</iFormItem>
 			<iFormItem label="SKD_A" name="test">
 				<iText>
+					{{targetprice.skdAPrice}}
 				</iText>
 			</iFormItem>
 		</iFormGroup>
 		<iFormGroup row="3" icon inline>
 			<iFormItem label="CKD Duty(%)" name="test">
-				<iInput></iInput>
+				<iInput v-model="targetprice.ckdDuty"></iInput>
 			</iFormItem>
-			<iFormItem label="CKD EX_Word" name="test">
-				<iInput></iInput>
+			<iFormItem label="CKD EX_Work" name="test">
+				<iInput v-model="targetprice.ckdExwork"></iInput>
 			</iFormItem>
 			<iFormItem label="CKDLANDEN" name="test">
-				<iInput></iInput>
+				<iInput v-model="targetprice.ckdLanded"></iInput>
 			</iFormItem>
 		</iFormGroup>
 		<div class="line"></div>
@@ -48,24 +52,25 @@
 		</div>
 		<iFormGroup row="2" icon inline>
 			<iFormItem label="申请类型" name="test">
-				<el-radio-group v-model="radio">
-					<el-radio label="1">radio</el-radio>
-					<el-radio label="2">radiother</el-radio>
-					<el-radio label="3">radiother</el-radio>
+				<el-radio-group v-model="tableListData.applyType">
+					<el-radio label="1">LC</el-radio>
+					<el-radio label="2">SDK</el-radio>
+					<el-radio label="3">CKD_LANDED</el-radio>
 				</el-radio-group>
 				<span class="start">*</span>
 			</iFormItem>
 			<iFormItem label="期望目标价" name="test">
 				<iText>
+					{{tableListData.lcPrice}}
 				</iText>
 			</iFormItem>
 		</iFormGroup>
 		<iFormGroup row="2" icon inline>
 			<iFormItem label="申请原因" name="test">
-				<iInput type="textarea" rows="6" resize="none" v-model="reasons"></iInput>
+				<iInput type="textarea" rows="6" resize="none" v-model="tableListData.applyReason"></iInput>
 			</iFormItem>
 			<iFormItem label="申请备注" name="test">
-				<iInput type="textarea" rows="6" resize="none" v-model="remarks"></iInput>
+				<iInput type="textarea" rows="6" resize="none" v-model="tableListData.applyMemo"></iInput>
 			</iFormItem>
 		</iFormGroup>
 		<tablelist :tableData='tableListData' :tableTitle='targeTitle' :loading='tableLoading' @handleSelectionChange='handleSelectionChange'></tablelist>
@@ -114,6 +119,7 @@
 		iInput,
 	} from "@/components";
 	import tablelist from "./components/tablelist";
+	import targetprice from '../data'
 	import {
 		rwTitle,
 		targeTitle
@@ -131,11 +137,19 @@
 			iInput,
 			tablelist
 		},
+		props:{
+			targetprice:{
+				type:Object,
+				default:()=>{
+					return targetprice
+				}
+			}
+		},
 		data() {
 			return {
-				radio: 1,
-				reasons: "", //申请原因
-				remarks: "", //申请备注
+				// radio: 1,
+				// reasons: "", //申请原因
+				// remarks: "", //申请备注
 				tableLoading: false,
 				selectTableData: [],
 				tableListData: [],
