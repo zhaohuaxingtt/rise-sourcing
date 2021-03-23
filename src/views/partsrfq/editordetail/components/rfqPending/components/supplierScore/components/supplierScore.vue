@@ -30,17 +30,19 @@
     <!------------------------------------------------------------------------>
     <tpb-remarks
         v-model="dialogRemarks"
+        @submit="handleRemarksSubmit"
+        :memo="selectedRowData.tpbMemo"
     />
   </iCard>
 </template>
 
 <script>
-import {iCard, iPagination} from "@/components";
+import {iCard, iPagination, iMessage} from "@/components";
 import tablelist from './supplierScoreTableList'
 import {supplierScoreTitle} from "./data";
 import {pageMixins} from "@/utils/pageMixins";
 import tpbRemarks from './tpbRemarks'
-import {getAllSupplier} from "@/api/partsrfq/editordetail";
+import {getAllSupplier, setTpbMemo} from "@/api/partsrfq/editordetail";
 
 export default {
   components: {
@@ -56,7 +58,8 @@ export default {
       tableTitle: supplierScoreTitle,
       tableLoading: false,
       selectTableData: [],
-      dialogRemarks: false
+      dialogRemarks: false,
+      selectedRowData: {}
     };
   },
   created() {
@@ -69,13 +72,14 @@ export default {
         this.tableLoading = true;
         try {
           const req = {
-            rfqId: id
+            rfqId: id,
+            userId: 12321
           }
           const res = await getAllSupplier(req)
-          this.tableListData = res.data;
-          this.page.currPage = res.data.rfqCfPriceVO.pageNum
-          this.page.pageSize = res.data.rfqCfPriceVO.pageSize
-          this.page.totalCount = res.data.rfqCfPriceVO.total
+          this.tableListData = res.records;
+          this.page.currPage = res.current
+          this.page.pageSize = res.size
+          this.page.totalCount = res.total
           this.tableLoading = false;
         } catch {
           this.tableLoading = false;
@@ -92,13 +96,29 @@ export default {
         path: '/partsrfq/editordetail/partScoring'
       })
     },
-    openMultiHeaderPropsPage() {
+    openMultiHeaderPropsPage(row) {
+      this.selectedRowData = row
       this.dialogRemarks = true
     },
     //修改表格改动列
     handleSelectionChange(val) {
       this.selectTableData = val;
     },
+    async handleRemarksSubmit(memo) {
+      const req = {
+        memo,
+        supplierId: this.selectedRowData.id,
+        rfqId: this.$route.query.id
+      }
+      const res = await setTpbMemo(req)
+      if (res.result) {
+        iMessage.success(res.desZh)
+        this.dialogRemarks = false
+        this.getTableList()
+      } else {
+        iMessage.error(res.desZh)
+      }
+    }
   }
 }
 </script>

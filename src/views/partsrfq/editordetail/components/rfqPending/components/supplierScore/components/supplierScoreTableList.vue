@@ -13,8 +13,8 @@
         <el-table-column :label="items.name" :key="index" align="center">
           <template v-for="(items2, index2) in items.list">
             <el-table-column :key="index2" align='center' v-if="items2.props === multiHeaderProps" :prop="items2.props" :label="items2.name">
-              <template>
-                <span class="openLinkText cursor" @click="openMultiHeaderPropsPage">{{multiHeaderPropsText}}</span>
+              <template slot-scope="scope">
+                <span class="openLinkText cursor" @click="openMultiHeaderPropsPage(scope.row)">{{multiHeaderPropsText}}</span>
               </template>
             </el-table-column>
             <el-table-column :key="index2" align='center' v-else :label="items2.name" :prop="items2.props"></el-table-column>
@@ -56,8 +56,8 @@ export default {
     openActionPropsPage() {
       this.$emit('openActionPropsPage')
     },
-    openMultiHeaderPropsPage() {
-      this.$emit('openMultiHeaderPropsPage')
+    openMultiHeaderPropsPage(row) {
+      this.$emit('openMultiHeaderPropsPage', row)
     },
     isArray
   }

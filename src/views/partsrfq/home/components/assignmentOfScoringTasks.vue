@@ -97,7 +97,7 @@ export default {
         }
       }
       const res = await editRfqData(req)
-      iMessage.success(res.desZh)
+      res.result ? iMessage.success(res.desZh) : iMessage.error(res.desZh)
       this.showStatus = false
       this.selectProps = []
       this.$nextTick(() => {

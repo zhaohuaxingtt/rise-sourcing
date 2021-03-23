@@ -6,8 +6,8 @@
   <iDialog :title="title" :visible.sync="value" width="878px" @close='clearDiolog'>
     <div class="changeContent">
       <iFormGroup row="1" icon>
-        <iFormItem label="" name="test">
-          <i-input type="textarea" :rows="8" resize="none" placeholder="请输入备注"></i-input>
+        <iFormItem label="" name="memo">
+          <i-input type="textarea" :rows="8" resize="none" placeholder="请输入备注" v-model="memo"></i-input>
         </iFormItem>
       </iFormGroup>
     </div>
@@ -31,17 +31,19 @@ export default {
   props: {
     title: {type: String, default: '备注'},
     value: {type: Boolean},
-    repeatClick: Boolean
+    repeatClick: Boolean,
+    memo: {type: String, default: ''}
   },
   data() {
-    return {}
+    return {
+    }
   },
   methods: {
     clearDiolog() {
       this.$emit('input', false)
     },
     submit() {
-      this.$emit('submit')
+      this.$emit('submit', this.memo)
     }
   }
 }

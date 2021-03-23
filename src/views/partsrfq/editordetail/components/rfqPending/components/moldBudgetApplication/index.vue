@@ -67,13 +67,14 @@ export default {
         this.tableLoading = true;
         try {
           const req = {
-            rfqId: id
+            rfqId: id,
+            userId: 12321
           }
           const res = await getModelBudgetList(req)
-          this.tableListData = res.data;
-          this.page.currPage = res.data.rfqCfPriceVO.pageNum
-          this.page.pageSize = res.data.rfqCfPriceVO.pageSize
-          this.page.totalCount = res.data.rfqCfPriceVO.total
+          this.tableListData = res.records;
+          this.page.currPage = res.current
+          this.page.pageSize = res.size
+          this.page.totalCount = res.total
           this.tableLoading = false;
         } catch {
           this.tableLoading = false;
@@ -85,7 +86,7 @@ export default {
         moldBudgetDTOs: this.selectTableData
       }
       const res = await submitMoldBudget(req)
-      iMessage.success(res.desZh)
+      res.result ? iMessage.success(res.desZh) : iMessage.error(res.desZh)
       this.getTableList()
     },
     async recall() {
@@ -94,7 +95,7 @@ export default {
       })
       const req = {moldBugetIds}
       const res = await cancelMoldBudget(req)
-      iMessage.success(res.desZh)
+      res.result ? iMessage.success(res.desZh) : iMessage.error(res.desZh)
       this.getTableList()
     },
     //修改表格改动列
