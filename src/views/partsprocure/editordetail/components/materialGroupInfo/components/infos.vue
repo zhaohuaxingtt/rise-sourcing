@@ -10,19 +10,34 @@
 
 <script>
 import { infos } from './data'
-import { chunk } from 'lodash'
+import { chunk, cloneDeep } from 'lodash'
 import { iFormGroup, iFormItem, iText } from '@/components'
 
 export default {
   components: { iFormGroup, iFormItem, iText },
+  props: {
+    data: {
+      type: Object,
+      default: () => ({})
+    }
+  },
+  watch: {
+    data: {
+      handler(data) {
+        const _infos = cloneDeep(infos)
+        _infos.forEach(item => {
+          item.value = data[item.key]
+        })
+        this.infoChunks = chunk(_infos, 3)
+      },
+      deep: true
+    }
+  },
   data() {
     return {
       infoChunks: []
     }
-  },
-  created() {
-    this.infoChunks = chunk(infos, 3)
-  },
+  }
 }
 </script>
 
