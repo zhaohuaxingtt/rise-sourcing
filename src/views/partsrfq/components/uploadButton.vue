@@ -44,7 +44,7 @@ export default {
         const res = await uploadImg(formData)
         this.uploadLoading = false
         this.$emit('uploadedCallback', res)*/
-      this.$emit('uploadedCallback')
+      this.$emit('uploadedCallback', content)
     },
   }
 }

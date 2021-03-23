@@ -35,11 +35,11 @@
 </template>
 
 <script>
-import {iCard, iButton, iPagination, iMessage} from "@/components";
+import {iCard, iButton, iPagination, iMessage, iMessageBox} from "@/components";
 import tablelist from 'pages/partsrfq/components/tablelist'
 import {supplierRatingAttachmentTitle} from "./data";
 import {pageMixins} from "@/utils/pageMixins";
-import {getAllAnnex, deleteAnnex} from "@/api/partsrfq/editordetail";
+import {getAllAnnex, deleteAnnex, uploadRfqAnnex} from "@/api/partsrfq/editordetail";
 import uploadButton from 'pages/partsrfq/components/uploadButton'
 
 export default {
@@ -86,27 +86,35 @@ export default {
         }
       }
     },
-    async deleteItems() {
-      const annexIds = this.selectTableData.map(item => {
-        return item.id
+    deleteItems() {
+      iMessageBox('是否确认删除?').then(async () => {
+        const annexIds = this.selectTableData.map(item => {
+          return item.id
+        })
+        const req = {annexIds}
+        const res = await deleteAnnex(req)
+        res.result ? iMessage.success(res.desZh) : iMessage.error(res.desZh)
+        this.getTableList()
       })
-      const req = {annexIds}
-      const res = await deleteAnnex(req)
-      res.result ? iMessage.success(res.desZh) : iMessage.error(res.desZh)
-      this.getTableList()
     },
     //修改表格改动列
     handleSelectionChange(val) {
       this.selectTableData = val;
     },
-    uploadAttachments() {
-      this.tableLoading = true
-      this.uploadAttachmentsButtonLoading = true
-      setTimeout(() => {
-        iMessage.error('附件上传失败')
+    async uploadAttachments(content) {
+      const id = this.$route.query.id
+      if (id) {
+        this.tableLoading = true
+        this.uploadAttachmentsButtonLoading = true
+        const formData = new FormData()
+        formData.append('file', content.file)
+        formData.append('rfqId', id)
+        formData.append('userId', 12321)
+        const res = await uploadRfqAnnex(formData)
+        res.result ? iMessage.success(res.desZh) : iMessage.error(res.desZh)
         this.tableLoading = false
         this.uploadAttachmentsButtonLoading = false
-      }, 2000)
+      }
     }
   }
 }

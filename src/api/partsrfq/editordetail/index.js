@@ -5,7 +5,7 @@ const requst = axios(process.env.VUE_APP_RFQ)
 /*供应商评分*/
 export function getAllSupplier(parmars) {
     return requst({
-        url: '/api/getAllSupplier',
+        url: '/api/supplier/getAllSupplier',
         method: 'POST',
         data: parmars
     })
@@ -13,7 +13,7 @@ export function getAllSupplier(parmars) {
 
 export function getAllAnnex(parmars) {
     return requst({
-        url: '/api/getAllAnnex',
+        url: '/api/supplier/getAllAnnex',
         method: 'POST',
         data: parmars
     })
@@ -21,7 +21,7 @@ export function getAllAnnex(parmars) {
 
 export function deleteAnnex(parmars) {
     return requst({
-        url: '/api/deleteAnnex',
+        url: '/api/supplier/deleteAnnex',
         method: 'POST',
         data: parmars
     })
@@ -29,7 +29,7 @@ export function deleteAnnex(parmars) {
 
 export function setTpbMemo(parmars) {
     return requst({
-        url: '/api/setTpbMemo',
+        url: '/api/supplier/setTpbMemo',
         method: 'POST',
         data: parmars
     })
@@ -37,7 +37,7 @@ export function setTpbMemo(parmars) {
 
 export function uploadRfqAnnex(parmars) {
     return requst({
-        url: '/api/uploadRfqAnnex',
+        url: '/api/supplier/uploadRfqAnnex',
         method: 'POST',
         data: parmars
     })
