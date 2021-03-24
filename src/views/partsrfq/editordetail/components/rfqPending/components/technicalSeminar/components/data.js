@@ -5,10 +5,10 @@
  * @Description: In User Settings Edit
  */
 export const tableTitle = [
-    {props:'a',name:'⻋型'},
-    {props:'b',name:'零件号'},
-    {props:'c',name:'零件名称'},
-    {props:'d',name:'图纸'}
+    {props:'carType',name:'车型'},
+    {props:'partNum',name:'零件号'},
+    {props:'partName',name:'零件名称'},
+    {props:'action',name:'图纸'}
 ]
 
 export const addSupplierTitle = [
