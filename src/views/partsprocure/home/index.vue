@@ -318,7 +318,6 @@ export default {
     },
     // 取消零件采购
     cancel(backmark) {
-		console.log(this.selectTableData);
       let cancel = {
         cancelRemark: backmark,
         purchaseProjectIds: this.getPurchasePrjectId(),

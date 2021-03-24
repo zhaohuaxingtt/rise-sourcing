@@ -42,9 +42,6 @@
 		rfqAddPart,
 		changeProcure
 	} from '@/api/partsprocure/home';
-	// import {
-	// 	targetPriceDetail
-	// } from '@views/partsprocure/editordetail/components/targetPrice/components/data';
 	import {
 		pageMixins
 	} from "@/utils/pageMixins";

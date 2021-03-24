@@ -63,12 +63,6 @@
 			iButton
 		},
 		props: {
-			targetprice: {
-				type: Object,
-				default: () => {
-					return targetPriceDetail
-				}
-			},
 			handleSelectArr:{
 				type:Object,
 				default:()=>{
@@ -83,7 +77,8 @@
 				tableLoading: false,
 				selectTableData: [],
 				tableListData: [],
-				targeTitle: targeTitle
+				targeTitle: targeTitle,
+				targetprice:targetPriceDetail
 			}
 		},
 		methods: {
