@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-03-23 21:08:43
+ * @LastEditTime: 2021-03-24 14:37:17
  * @LastEditors: Please set LastEditors
  * @Description: 公共utils部分
  * @FilePath: \rise\src\utils\index.js
@@ -102,4 +102,12 @@ export function permissionTitle(key,titleList){
     newTitleList = a
   }
   return newTitleList
+}
+export function serialize(data) {
+  let str = ''
+  for (let key in data) {
+    str += key + '=' + encodeURIComponent(data[key]) + '&'
+  }
+  str = str.replace(/&$/, '')
+  return str
 }

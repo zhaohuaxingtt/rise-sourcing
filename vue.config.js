@@ -128,7 +128,7 @@ module.exports = {
 				}
 			},
 			'/commonApi': { //向东，common模块的api地址
-				target: 'http://10.13.38.100:8083',
+				target: 'http://10.160.138.243:8014',
 				changeOrigin: true,
 				pathRewrite: {
 					"^/commonApi": ""
@@ -143,7 +143,7 @@ module.exports = {
 				}
 			},
 			'/wsApi': {
-				target: 'ws://10.160.143.37:8014',
+				target: 'ws://10.160.138.243:8014',
 				changeOrigin: true,
 				ws: true,
 				pathRewrite: {
@@ -163,6 +163,13 @@ module.exports = {
 				changeOrigin: true,
 				pathRewrite: {
 					"^/usercenterApi": ""
+				}
+			},
+			'/partsProcureApi': { // partsProcure.../许睿
+				target: 'http://10.122.18.166:8018',
+				changeOrigin: true,
+				pathRewrite: {
+					"^/partsProcureApi": ""
 				}
 			},
 		}

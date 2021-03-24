@@ -15,8 +15,10 @@
         :tableTitle="tableTitle"
         :tableLoading="tableLoading"
         @handleSelectionChange="handleSelectionChange"
-        :hide-open-page="true"
         :index="true"
+        openPageProps="fileName"
+        :openPageGetRowData="true"
+        @openPage="handleDownload"
     ></tablelist>
     <!------------------------------------------------------------------------>
     <!--                  表格分页                                          --->
@@ -35,11 +37,11 @@
 </template>
 
 <script>
-import {iCard, iButton, iPagination, iMessage} from "@/components";
+import {iCard, iButton, iPagination, iMessage, iMessageBox} from "@/components";
 import tablelist from 'pages/partsrfq/components/tablelist'
 import {supplierRatingAttachmentTitle} from "./data";
 import {pageMixins} from "@/utils/pageMixins";
-import {getAllAnnex, deleteAnnex} from "@/api/partsrfq/editordetail";
+import {getAllAnnex, deleteAnnex, uploadRfqAnnex} from "@/api/partsrfq/editordetail";
 import uploadButton from 'pages/partsrfq/components/uploadButton'
 
 export default {
@@ -72,40 +74,60 @@ export default {
         this.tableLoading = true;
         try {
           const req = {
-            rfqId: id
+            fileType: 1,
+            rfqId: id,
+            userId: 12321
           }
           const res = await getAllAnnex(req)
-          this.tableListData = res.data;
-          this.page.currPage = res.data.rfqCfPriceVO.pageNum
-          this.page.pageSize = res.data.rfqCfPriceVO.pageSize
-          this.page.totalCount = res.data.rfqCfPriceVO.total
+          this.tableListData = res.records;
+          this.page.currPage = res.current
+          this.page.pageSize = res.size
+          this.page.totalCount = res.total
           this.tableLoading = false;
         } catch {
           this.tableLoading = false;
         }
       }
     },
-    async deleteItems() {
-      const annexIds = this.selectTableData.map(item => {
-        return item.id
+    deleteItems() {
+      iMessageBox('是否确认删除?').then(async () => {
+        const annexIds = this.selectTableData.map(item => {
+          return item.id
+        })
+        const req = {annexIds}
+        const res = await deleteAnnex(req)
+        res.result ? iMessage.success(res.desZh) : iMessage.error(res.desZh)
+        this.getTableList()
       })
-      const req = {annexIds}
-      const res = await deleteAnnex(req)
-      iMessage.success(res.desZh)
-      this.getTableList()
     },
     //修改表格改动列
     handleSelectionChange(val) {
       this.selectTableData = val;
     },
-    uploadAttachments() {
-      this.tableLoading = true
-      this.uploadAttachmentsButtonLoading = true
-      setTimeout(() => {
-        iMessage.error('附件上传失败')
+    async uploadAttachments(content) {
+      const id = this.$route.query.id
+      if (id) {
+        this.tableLoading = true
+        this.uploadAttachmentsButtonLoading = true
+        const formData = new FormData()
+        formData.append('file', content.file)
+        formData.append('fileType', 1)
+        formData.append('rfqId', id)
+        formData.append('userId', 12321)
+        const res = await uploadRfqAnnex(formData)
+        res.result ? iMessage.success(res.desZh) : iMessage.error(res.desZh)
         this.tableLoading = false
         this.uploadAttachmentsButtonLoading = false
-      }, 2000)
+        this.getTableList()
+      }
+    },
+    handleDownload(row) {
+      const url = row.filePath
+      const a = document.createElement('a');
+      a.setAttribute('download', '')
+      a.setAttribute('href', url);
+      a.setAttribute('target', '_blank');
+      a.click();
     }
   }
 }

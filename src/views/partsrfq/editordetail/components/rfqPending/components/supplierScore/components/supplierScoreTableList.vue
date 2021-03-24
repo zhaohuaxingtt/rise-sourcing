@@ -13,8 +13,8 @@
         <el-table-column :label="items.name" :key="index" align="center">
           <template v-for="(items2, index2) in items.list">
             <el-table-column :key="index2" align='center' v-if="items2.props === multiHeaderProps" :prop="items2.props" :label="items2.name">
-              <template>
-                <span class="openLinkText cursor" @click="openMultiHeaderPropsPage">{{multiHeaderPropsText}}</span>
+              <template slot-scope="scope">
+                <span class="openLinkText cursor" @click="openMultiHeaderPropsPage(scope.row)">{{multiHeaderPropsText}}</span>
               </template>
             </el-table-column>
             <el-table-column :key="index2" align='center' v-else :label="items2.name" :prop="items2.props"></el-table-column>
@@ -24,8 +24,8 @@
       <template v-else>
         <el-table-column :key="index" align='center' v-if="items.props === actionProps" :prop="items.props"
                          :label="items.name">
-          <template>
-            <span class="openLinkText cursor" @click="openActionPropsPage">查看</span>
+          <template slot-scope="scope">
+            <span class="openLinkText cursor" @click="openActionPropsPage(scope.row)">查看</span>
           </template>
         </el-table-column>
         <el-table-column :key="index" align='center' v-else :label="items.name" :prop="items.props"></el-table-column>
@@ -53,11 +53,11 @@ export default {
     handleSelectionChange(val) {
       this.$emit('handleSelectionChange', val)
     },
-    openActionPropsPage() {
-      this.$emit('openActionPropsPage')
+    openActionPropsPage(row) {
+      this.$emit('openActionPropsPage', row)
     },
-    openMultiHeaderPropsPage() {
-      this.$emit('openMultiHeaderPropsPage')
+    openMultiHeaderPropsPage(row) {
+      this.$emit('openMultiHeaderPropsPage', row)
     },
     isArray
   }

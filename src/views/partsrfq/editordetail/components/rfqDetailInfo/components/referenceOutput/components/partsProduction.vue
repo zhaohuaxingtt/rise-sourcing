@@ -41,6 +41,7 @@ import {partsProductionTableTitle} from "./data";
 import {pageMixins} from "@/utils/pageMixins";
 import {getRfqDataList} from "@/api/partsrfq/home";
 import {excelExport} from "@/utils/filedowLoad";
+import {serialize} from '@/utils'
 
 export default {
   components: {
@@ -98,10 +99,21 @@ export default {
     openPage(row) {
       const rfqId = this.$route.query.id;
       const rfqPlanId = row.rfqPlanId;
-      const purchasePrjectId = row.purchaseTargetId;
+      const purchasePrjectId = row.purchasePrjectId;
+      const purchasingRequirementId = row.purchasingRequirementId
       const partNum = row.ninePartNum
+      const tab = 'outputPlan'
+      const req = {
+        rfqId,
+        rfqPlanId,
+        purchasePrjectId,
+        purchasingRequirementId,
+        partNum,
+        tab
+      }
+      const params = serialize(req)
       this.$router.push({
-        path: `/partsprocure/editordetail?partNum=${partNum}&tab=outputPlan`
+        path: `/partsprocure/editordetail?${params}`
       })
     }
   }

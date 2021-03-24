@@ -1,8 +1,8 @@
 export const inquiryAttachmentTableTitle = [
-    {props:'a',name:'文件名称'},
-    {props:'b',name:'大小（MB）'},
-    {props:'c',name:'上传日期'},
-    {props:'d',name:'上传⼈'}
+    {props:'fileName',name:'文件名称'},
+    {props:'fileSize',name:'大小（MB）'},
+    {props:'createDate',name:'上传日期'},
+    {props:'createBy',name:'上传⼈'}
 ]
 
 export const inquiryDrawingTableTitle = [

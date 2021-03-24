@@ -38,12 +38,12 @@
 </template>
 
 <script>
-import {iCard, iButton, iPagination, iMessage} from "@/components";
+import {iCard, iButton, iPagination, iMessage, iMessageBox} from "@/components";
 import tablelist from 'pages/partsrfq/components/tablelist'
 import {inquiryAttachmentTableTitle} from "./data";
 import {pageMixins} from "@/utils/pageMixins";
 import uploadButton from 'pages/partsrfq/components/uploadButton'
-import {getRfqDataList} from "@/api/partsrfq/home";
+import {deleteAnnex, getAllAnnex, uploadRfqAnnex} from "@/api/partsrfq/editordetail";
 
 export default {
   components: {
@@ -72,19 +72,16 @@ export default {
       if (id) {
         this.tableLoading = true;
         const req = {
-          otherInfoPackage: {
-            findType: '03',
-            rfqId: id,
-            current: this.page.currPage,
-            size: this.page.pageSize,
-          }
+          fileType: 2,
+          rfqId: id,
+          userId: 12321
         }
         try {
-          const res = await getRfqDataList(req)
-          this.tableListData = res.data;
-          this.page.currPage = res.currPage
-          this.page.pageSize = res.pageSize
-          this.page.totalCount = res.totalCount
+          const res = await getAllAnnex(req)
+          this.tableListData = res.records;
+          this.page.currPage = res.current
+          this.page.pageSize = res.size
+          this.page.totalCount = res.total
           this.tableLoading = false;
         } catch {
           this.tableLoading = false;
@@ -92,15 +89,32 @@ export default {
       }
     },
     deleteItems() {
+      iMessageBox('是否确认删除?').then(async () => {
+        const annexIds = this.selectTableData.map(item => {
+          return item.id
+        })
+        const req = {annexIds}
+        const res = await deleteAnnex(req)
+        res.result ? iMessage.success(res.desZh) : iMessage.error(res.desZh)
+        this.getTableList()
+      })
     },
-    uploadAttachments() {
-      this.tableLoading = true
-      this.uploadAttachmentsButtonLoading = true
-      setTimeout(() => {
-        iMessage.error('附件上传失败')
+    async uploadAttachments(content) {
+      const id = this.$route.query.id
+      if (id) {
+        this.tableLoading = true
+        this.uploadAttachmentsButtonLoading = true
+        const formData = new FormData()
+        formData.append('file', content.file)
+        formData.append('fileType', 2)
+        formData.append('rfqId', id)
+        formData.append('userId', 12321)
+        const res = await uploadRfqAnnex(formData)
+        res.result ? iMessage.success(res.desZh) : iMessage.error(res.desZh)
         this.tableLoading = false
         this.uploadAttachmentsButtonLoading = false
-      }, 2000)
+        this.getTableList()
+      }
     },
     notifyAllSuppliers() {
     },

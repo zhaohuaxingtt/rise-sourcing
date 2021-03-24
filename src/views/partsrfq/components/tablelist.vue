@@ -28,8 +28,9 @@
                        v-else-if='isSelectOptionsLinkage && selectProps.includes(items.props)' :prop="items.props"
                        :label="items.name">
         <template slot-scope="scope">
-          <i-select v-model="scope.row[items.props]" @change="(val)=>handleSelectChange(items.props,val, scope.$index)">
-            <el-option v-for="items in selectPropsOptionsObject[scope.$index][items.props]" :key='items.code'
+          <i-select v-model="scope.row[items.props]"
+                    @change="(val)=>handleSelectChange(items.props,val, scope.row.time)">
+            <el-option v-for="items in selectPropsOptionsObject[scope.row.time][items.props]" :key='items.code'
                        :value='items.code'
                        :label="items.name"/>
           </i-select>
@@ -97,11 +98,11 @@ export default {
     handleSelectionChange(val) {
       this.$emit('handleSelectionChange', val)
     },
-    handleSelectChange(type, val, index) {
+    handleSelectChange(type, val, time) {
       const res = {
         type,
         val,
-        index
+        time
       }
       this.$emit('handleSelectChange', res)
     },

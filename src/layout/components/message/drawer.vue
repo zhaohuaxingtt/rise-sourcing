@@ -8,7 +8,7 @@
             <span class="clear font-size14" @click="handleClearByChunk(key)">清除</span>
           </div>
           <transition-group name="item" tag="card">
-            <card class="card" v-for="item in items" :key="item.id" :data="item" @handleClear="handleClear(item, items)" />
+            <card class="card" v-for="item in items" :key="item.remark" :data="item" @handleClear="handleClear(item, items)" />
           </transition-group>
         </div>
       </template>
@@ -19,7 +19,7 @@
 <script>
 import { iDrawer, iMessage } from '@/components'
 import card from './card'
-import { queryByPage, batchLogicDeleteMsgById } from '@/api/layout/topLayout'
+import { queryByPage, readById, batchReadById } from '@/api/layout/topLayout'
 import { messageTypeMap } from '../data'
 import axios from 'axios'
 
@@ -76,14 +76,24 @@ export default {
             Array.isArray(list) && list.push(item)
           })
 
+          this.$emit('updateMessageCount')
           this.loading = false
         })
         .catch(() => this.loading = false)
     },
 
+    unshift(data) {
+      const list = this.messageData[`${ messageTypeMap[data.type] }`]
+      Array.isArray(list) && list.unshift(data)
+    },
+
     // 清除消息
     handleClear(data, list) {
-      this.batchLogicDeleteMsgById([ data.id ])
+      readById({
+        msgId: data.remark,
+        readType: 1,
+        userId: '1001'
+      })
         .then(() => {
           for (let i = 0, item; (item = list[i++]); ) {
             if (item === data) {
@@ -99,28 +109,40 @@ export default {
     // 清除消息块
     handleClearByChunk(key) {
       if (!this.messageData[key].length) return
+      const inMailType = key === 'notice' ? 5 : 4
 
-      this.batchLogicDeleteMsgById(this.messageData[key].map(item => item.id))
+      batchReadById({
+        inMailType,
+        readType: 1,
+        userId: '1001'
+      })
         .then(() => {
           this.messageData[key] = []
 
           this.$emit('afterClear')
         })
+
+      // this.batchLogicDeleteMsgById(this.messageData[key].map(item => item.remark))
+      //   .then(() => {
+      //     this.messageData[key] = []
+
+      //     this.$emit('afterClear')
+      //   })
     },
 
     // 删除请求
-    batchLogicDeleteMsgById(ids) {
-      return new Promise(resolve => {
-        batchLogicDeleteMsgById({ ids: ids.join(',') })
-        .then(res => {
-          // if (!res) {
-          //   return iMessage.error('清除失败')
-          // }
+    // batchLogicDeleteMsgById(ids) {
+    //   return new Promise(resolve => {
+    //     batchLogicDeleteMsgById({ ids: ids.join(',') })
+    //     .then(res => {
+    //       // if (!res) {
+    //       //   return iMessage.error('清除失败')
+    //       // }
 
-          resolve()
-        })
-      })
-    }
+    //       resolve()
+    //     })
+    //   })
+    // }
   }
 }
 </script>

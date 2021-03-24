@@ -36,7 +36,8 @@
 			</div>
 		</div>
 		<!-- 消息列表 -->
-		<drawer :visible="drawerVisible" @afterClear="afterClear" />
+		<drawer ref="drawer" :visible="drawerVisible" @afterClear="afterClear" @updateMessageCount="getCountInMail" />
+		<notify ref="notify" v-if="!drawerVisible" />
 	</div>
 </template>
 <script>
@@ -45,20 +46,24 @@
 		icon
 	} from '@/components';
   import drawer from '../message/drawer'
+	import notify from '../message/notify'
 	import filters from '@/utils/filters'
 	import { getCountInMail } from '@/api/layout/topLayout'
-	import {messageSocket} from '@/api/socket'
+	import { messageSocket } from '@/api/socket'
 
 	export default {
 		mixins: [filters],
 		components: {
 			pInput,
 			icon,
-			drawer
+			drawer,
+			notify
 		},
 		data() {
 			return {
 				socketVm:'',
+				timer: 0,
+				reconnectTimer: 0,
 				lang: '',
 				search: '',
 				msgType: false,
@@ -68,21 +73,75 @@
 				messageData: {
 					notice: [],
 					message: []
-				}
+				},
+				isClose: true
 			}
 		},
 		created() {
 			this.lang = localStorage.getItem('lang')
-			this.getMessageBysocket('1001')
+			this.getCountInMail()
+			this.getMessageBySocket('1001')
+		},
+		beforeDestroy() {
+			this.socketVm && this.socketVm.close()
 		},
 		methods: {
-			getMessageBysocket(userId){
-				messageSocket(userId).then(({res,vm})=>{
-					//vm 为当前websocket实列
-					this.socketVm = vm
-					//res 为websocket触发的值
-					console.log('--------res------------',res)
-				})
+			getMessageBySocket(userId) {
+				messageSocket(userId)
+					.then(({ res, vm }) => {
+						this.socketVm = vm
+						this.isClose = false
+
+						window.addEventListener("beforeunload", () => {
+							vm.close()
+						})
+
+						document.addEventListener("visibilitychange", () => {
+							if (document.hidden) {
+								this.timer = setTimeout(() => {
+									vm.close()
+									this.isClose = true
+								}, 180000)
+							} else {
+								clearTimeout(this.timer)
+								if (this.isClose) {
+									this.reconnectMessageSocket()
+								}
+							}
+						});
+
+						try {
+							const data = JSON.parse(res.data)
+							const msgTxt = data.msgTxt
+							if (msgTxt) {
+								if (msgTxt.type == '4' || msgTxt.type == '5') {
+									if (this.drawerVisible) {
+										this.$refs.drawer.unshift(msgTxt)
+									} else {
+										this.$refs.notify.unshift(msgTxt)
+									}
+									
+									if (msgTxt.type == '5') this.messageCount += 1
+								}
+							}
+						} catch(e) {
+							console.log(e)
+						}
+					})
+					.catch(e => {
+						this.reconnectMessageSocket()
+					})
+			},
+			reconnectMessageSocket() {
+				if (!this.isClose) {
+          return;
+        }
+
+				clearTimeout(this.reconnectTimer)
+
+				this.reconnectTimer = setTimeout(() => {
+					this.getMessageBySocket('1001')
+				}, 4000)
 			},
 			handleChangeLang() {
 				this.lang = this.lang === 'zh' ? 'en' : 'zh'
@@ -95,7 +154,7 @@
 			},
 			// 获取消息数目
 			getCountInMail() {
-				getCountInMail({ receiverId: '1001' })
+				getCountInMail({ receiverId: '1001', inMailType: 5 })
 					.then(res => {
 						this.messageCount = res.data
 					})

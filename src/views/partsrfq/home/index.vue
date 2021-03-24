@@ -200,7 +200,7 @@ export default {
       this.setOperationButtonLoading(updateType, true)
       const res = await editRfqData(req)
       this.setOperationButtonLoading(updateType, false)
-      iMessage.success(res.desZh)
+      res.result ? iMessage.success(res.desZh) : iMessage.error(res.desZh)
       this.getTableList()
     },
     assignmentOfScoringTasks() {
@@ -221,7 +221,7 @@ export default {
         },
       }
       const res = await editRfqData(req)
-      iMessage.success(res.desZh)
+      res.result ? iMessage.success(res.desZh) : iMessage.error(res.desZh)
       this.getTableList()
     },
     change() {
