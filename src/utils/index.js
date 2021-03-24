@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-03-24 14:37:17
+ * @LastEditTime: 2021-03-24 16:59:29
  * @LastEditors: Please set LastEditors
  * @Description: 公共utils部分
  * @FilePath: \rise\src\utils\index.js
@@ -94,13 +94,13 @@ export function closeCliantClearStoreage(){
 export function permissionTitle(key,titleList){
   const permissionMap = store.state.permission.whiteBtnList[key]
   let newTitleList = JSON.parse(JSON.stringify(titleList))
-  if(permissionMap){
-    const a = []
-    titleList.forEach(element => {
-       if(permissionMap.fieldList.find(items=>items.fieldName == element.props)) a.push(element)
-    });
-    newTitleList = a
-  }
+  // if(permissionMap){
+  //   const a = []
+  //   titleList.forEach(element => {
+  //      if(permissionMap.fieldList.find(items=>items.fieldName == element.props)) a.push(element)
+  //   });
+  //   newTitleList = a
+  // }
   return newTitleList
 }
 export function serialize(data) {

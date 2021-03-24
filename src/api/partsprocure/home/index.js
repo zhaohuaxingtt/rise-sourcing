@@ -1,12 +1,13 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-25 11:07:22
- * @LastEditTime: 2021-02-25 11:08:48
+ * @LastEditTime: 2021-03-24 15:52:27
  * @LastEditors: Please set LastEditors
  * @Description: 零件采购项目创建模块API
  * @FilePath: \rise\src\api\partsprocure\home\index.js
  */
 import axios from '@/utils/axios'
+import store from '@/store'
 const requst = axios(process.env.VUE_APP_PART_PROCURE)
 //获取零件采购列表。
 export function getTabelData(parmars){
@@ -23,6 +24,17 @@ export function changeProcure(parmars){
     url:'/api/part-src-prjs',
     method:'PATCH',
     data:parmars
+  })
+}
+
+//启动询价
+export function insertRfq(parmars){
+  return requst({
+    url:'/api/rfqs/insertRfq',
+    method:'PATCH',
+    data:{
+      insertRfcPackage:{...parmars,...{operationType:3,userId:store.state.permission.userInfo.userId || '',userName:store.state.permission.userInfo.userName}}
+    }
   })
 }
 export function getYearScope(params) {
