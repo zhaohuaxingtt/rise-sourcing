@@ -15,8 +15,10 @@
         :tableTitle="tableTitle"
         :tableLoading="tableLoading"
         @handleSelectionChange="handleSelectionChange"
-        :hide-open-page="true"
         :index="true"
+        openPageProps="fileName"
+        :openPageGetRowData="true"
+        @openPage="handleDownload"
     ></tablelist>
     <!------------------------------------------------------------------------>
     <!--                  表格分页                                          --->
@@ -116,6 +118,14 @@ export default {
         this.uploadAttachmentsButtonLoading = false
         this.getTableList()
       }
+    },
+    handleDownload(row) {
+      const url = row.filePath
+      const a = document.createElement('a');
+      a.setAttribute('download', '')
+      a.setAttribute('href', url);
+      a.setAttribute('target', '_blank');
+      a.click();
     }
   }
 }

@@ -11,7 +11,6 @@
       :on-success="handleAvatarSuccess"
       :before-upload="beforeAvatarUpload"
       :http-request="myUpload"
-      :limit="1"
       accept=".xlsx,.pdf,.docx"
   >
     <iButton :loading="uploadButtonLoading">{{buttonText}}</iButton>
