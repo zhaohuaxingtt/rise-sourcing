@@ -44,26 +44,6 @@ export const detailData = {
 	sopDate: "", //SOP时间
 	unit: "", //单位	
 }
-// 申请目标价
-export const targetprice = {
-	cfTargetPriceDetail: {
-		lcAPrice: "", //LC A价
-		lcBPrice: "", //LC B价
-		skdAPrice:"",//	SKD A价
-		skdBPrice:"",//SKD B价
-		ckdDuty:"",//CKD关税
-		ckdExwork:"",//	CKD出厂价格
-		ckdLanded:"",//	CKD到岸费
-		applyMemo:"",//	申请备注
-		applyReason:"",//申请原因
-		applyType:"",//	申请类型
-		lcPrice:"",//期望目标价
-	},
-	rwApplication:{
-		
-	}
-
-}
 // 采购项目拆分表头
 export const splitPurchTitle = [{
 		name: '采购工厂名称',

@@ -75,6 +75,15 @@
                 ></el-option>
               </iSelect>
             </iFormItem>
+			<iFormItem label="支付条款：" name="test">
+			  <iSelect v-model="detailData.payClause"><el-option
+			      :value="item.value"
+			      :label="item.label"
+			      v-for="(item, index) in getGroupList('pay_clause')"
+			      :key="index"
+			    ></el-option>
+			  </iSelect>
+			</iFormItem>
           </div>
           <div class="col">
             <iFormItem label="FSNR/GSNR/SPNR：" name="test">
@@ -88,7 +97,7 @@
               </iText>
             </iFormItem>
             <iFormItem label="零件类型：" name="test">
-              <iSelect>
+              <iSelect v-model="detailData.partType">
                 <el-option
                   :value="item.value"
                   :label="item.label"
@@ -108,7 +117,14 @@
               </iSelect>
             </iFormItem>
             <iFormItem label="MTZ零件：" name="test">
-              <iSelect v-model="detailData.mtzPart"></iSelect>
+              <iSelect v-model="detailData.mtz">
+				  <el-option
+				    :value="item.value"
+				    :label="item.label"
+				    v-for="(item, index) in getGroupList('mtz')"
+				    :key="index"
+				  ></el-option>
+			  </iSelect>
             </iFormItem>
           </div>
           <div class="col">
@@ -118,7 +134,7 @@
               </iText>
             </iFormItem>
             <iFormItem label="LINIE部门：" name="test">
-              <iSelect v-model="detailDatalinieDept">
+              <iSelect v-model="detailData.linieDept">
                 <el-option
                   :value="item.value"
                   :label="item.label"
@@ -138,8 +154,7 @@
               </iSelect>
             </iFormItem>
             <iFormItem label="CF控制员：" name="test">
-              <iSelect v-model="detailData.cfController">
-                <el-option
+              <iSelect v-model="detailData.cfController"><el-option
                   :value="item.value"
                   :label="item.label"
                   v-for="(item, index) in getGroupList('cf_controller')"
@@ -147,6 +162,15 @@
                 ></el-option>
               </iSelect>
             </iFormItem>
+			<iFormItem label="货币：" name="test">
+			  <iSelect v-model="detailData.currencyId"><el-option
+			      :value="item.value"
+			      :label="item.label"
+			      v-for="(item, index) in getGroupList('currency_id')"
+			      :key="index"
+			    ></el-option>
+			  </iSelect>
+			</iFormItem>
           </div>
           <div class="col">
             <iFormItem label="签收日期：" name="test">
@@ -169,6 +193,15 @@
                 {{ detailData.bmg }}
               </iText>
             </iFormItem>
+			<iFormItem label="采购条款：" name="test">
+			  <iSelect v-model="detailData.purchaseClause"><el-option
+			      :value="item.value"
+			      :label="item.label"
+			      v-for="(item, index) in getGroupList('purchase_clause')"
+			      :key="index"
+			    ></el-option>
+			  </iSelect>
+			</iFormItem>
           </div>
         </div>
       </iFormGroup>
@@ -190,7 +223,7 @@
         <logistics :infoItem="infoItem"></logistics>
       </el-tab-pane>
       <el-tab-pane label="申请目标价">
-        <targePrice></targePrice>
+        <targePrice @refresh="getDatail"></targePrice>
       </el-tab-pane>
       <el-tab-pane label="备注信息">
         <remarks :partNum="infoItem.partNum"></remarks>
@@ -313,7 +346,7 @@ export default {
     return {
       infoItem: {},
       detailData: detailData, //顶部详情数据
-      targetprice: {}, //申请目标价数据
+      targetprice:{} , //申请目标价数据
       fromGroup: [], //上方筛选列表
       diologBack: false, //取消零件采购
       diologClose: false, //结束项目
@@ -344,7 +377,9 @@ export default {
       };
       getTabelData(data).then((res) => {
         this.detailData = res.data.detailData;
-        this.targetprice = res.data.targetprice;
+		if (res.data.targetprice) {
+			this.targetprice = res.data.targetprice
+		}
       });
     },
     //获取上方group信息

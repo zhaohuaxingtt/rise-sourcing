@@ -27,7 +27,7 @@
 				</el-form-item>
 				<el-form-item label="询价采购员">
 					<iSelect placeholder='请选择询价采购员' v-model="form['search.buyerName']">
-						<!-- <el-option :value="item.value" :label="item.label" v-for="(item,index) in getGroupList()" :key="index"></el-option> -->
+						<el-option :value="item.value" :label="item.label" v-for="(item,index) in getGroupList('buyer_name')" :key="index"></el-option>
 					</iSelect>
 				</el-form-item>
 				<el-form-item label="LINIE">
