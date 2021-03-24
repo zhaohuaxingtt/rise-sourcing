@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 09:50:42
- * @LastEditTime: 2021-03-15 14:54:00
+ * @LastEditTime: 2021-03-24 16:09:59
  * @LastEditors: Please set LastEditors
  * @Description: 零件采购项目建立首页。
  * @FilePath: \rise\src\views\partsprocure\home\index.vue
@@ -70,7 +70,7 @@
 					<iButton @click="creatFs">生成Fs/GsNr</iButton>
 					<iButton @click="openDiologBack">取消零件采购</iButton>
 					<iButton @click="openBatchmiantain">批量维护</iButton>
-					<iButton @click="start">启动询价</iButton>
+					<iButton @click="start" :loading='startLoding'>启动询价</iButton>
 					<iButton @click="openDiologChangeItems">转派</iButton>
 				</div>
 			</div>
@@ -115,7 +115,8 @@
 	import tablelist from '../../partsign/home/components/tableList'
 	import {
 		getTabelData,
-		changeProcure
+		changeProcure,
+		insertRfq
 	} from '@/api/partsprocure/home'
 	import {
 		getPageGroup
@@ -146,13 +147,13 @@
 				form: form,
 				fromGroup: [],
 				diologBack: false, //退回
+				startLoding:false
 			}
 		},
 		created() {
 			this.getTableListFn();
 			this.getPageGroup()
 		},
-		computed: {},
 		methods: {
 			// 跳转详情
 			openPage(item) {
@@ -237,13 +238,33 @@
 					this.diologBack = false
 				})
 			},
-			// 启动零件项目采购
-			start() {
-				this.$router.push({
-					path:"/partsrfq/editordetail",
-					query:{
-						id:"87645962288"
+			/*********************************************************************
+			 *   												启动询价模块
+			 *********************************************************************/
+			validateStart(){
+				return new Promise((r)=>{
+					if(this.selectTableData.length == 0){r(false);iMessage.warn(`抱歉，您当前还未选择需要启动询价的采购项目！`);return}
+					if(this.selectTableData.find(items=>items.fsnrGsnrNum == '')) {r(false);iMessage.warn(`抱歉，当前采购项目中存在还未生成FSNR的数据，无法为您启动询价！`);return}
+					r(true)
+				})
+			},
+			async start() {
+				if(!await this.validateStart()) return
+				this.startLoding = true
+				insertRfq({rfqPartDTOList:this.selectTableData}).then(res=>{
+					this.startLoding = false
+					if(res.data && res.data.rfqId){
+							this.$router.push({
+							path:"/partsrfq/editordetail",
+							query:{
+								id:res.rfqId
+							}
+						})
+					}else{
+						iMessage.warn(res.desZh)
 					}
+				}).catch(err=>{
+					this.startLoding = false
 				})
 			},
 			// 生成fs号

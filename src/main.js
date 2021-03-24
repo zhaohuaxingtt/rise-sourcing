@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:06
- * @LastEditTime: 2021-03-23 20:35:48
+ * @LastEditTime: 2021-03-24 16:24:12
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\main.js
@@ -12,7 +12,7 @@ import App from './App.vue'
 import store from './store'
 import '@/assets/style/global/index.scss'
 import './utils/mydirect'
-import './permission' 
+// import './permission' 
 require('./auto').init()
 Vue.config.productionTip = false
 new Vue({
