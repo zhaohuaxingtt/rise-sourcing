@@ -168,9 +168,9 @@
 				<materialGroupInfo />
 			</el-tab-pane>
 			<el-tab-pane label="零件产量计划">
-				<outputPlan :params="infoItem" />
-				<outputRecord class="margin-top20" />
-				<usage class="margin-top20" />
+				<outputPlan ref="outputPlan" :params="infoItem" />
+				<outputRecord ref="outputRecord" class="margin-top20" :params="infoItem" />
+				<usage ref="usage" class="margin-top20" />
 			</el-tab-pane>
 			<el-tab-pane label="图纸和TP详情页">
 				<drawing :params="infoItem" />
@@ -414,6 +414,12 @@
 					"_blank"
 				);
 			},
+      // 更新页签
+      updateTabs() {
+        this.$refs.outputPlan.getData()
+        this.$refs.outputRecord.getData()
+        this.$refs.usage.getData()
+      },
 		},
 	};
 </script>
