@@ -22,8 +22,8 @@
       <div class="footer" >
         <iPagination
           class="pagination"
-          @size-change="handleSizeChange($event, getTable)"
-          @current-change="handleCurrentChange($event, getTable)"
+          @size-change="handleSizeChange($event, queryByPage)"
+          @current-change="handleCurrentChange($event, queryByPage)"
           background
           :current-page="page.currPage"
           :page-sizes="page.pageSizes"
