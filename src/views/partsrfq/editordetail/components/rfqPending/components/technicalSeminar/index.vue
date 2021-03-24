@@ -16,9 +16,10 @@
           :tableLoading="tableLoading"
           :index="true"
           @handleSelectionChange="handleSelectionChange"
-          open-page-props="d"
+          open-page-props="action"
           customOpenPageWord="查看"
           @openPage="openPage"
+          :openPageGetRowData="true"
       ></tablelist>
       <!------------------------------------------------------------------------>
       <!--                  表格分页                                          --->
@@ -37,11 +38,11 @@
     <!------------------------------------------------------------------------>
     <!--                  供应商材料准备                                      --->
     <!------------------------------------------------------------------------>
-    <supplier-material-preparation class="margin-top20"/>
+    <supplier-material-preparation class="margin-top20" ref="supplierMaterialPreparation"/>
     <!------------------------------------------------------------------------>
     <!--                  会议其它信息                                      --->
     <!------------------------------------------------------------------------>
-    <other-meeting-information class="margin-top20"/>
+    <other-meeting-information class="margin-top20" ref="otherMeetingInformation"/>
     <!------------------------------------------------------------------------>
     <!--                  图纸弹框                                      --->
     <!------------------------------------------------------------------------>
@@ -52,13 +53,14 @@
     <!--                  添加供应商弹框                                      --->
     <!------------------------------------------------------------------------>
     <add-supplier-dialog
+        @save="handleAddSupplierSave"
         v-model="dialogAddSupplier"
     />
   </div>
 </template>
 
 <script>
-import {iCard, iPagination, iButton} from "@/components";
+import {iCard, iPagination, iButton, iMessage} from "@/components";
 import tablelist from 'pages/partsrfq/components/tablelist'
 import {tableTitle} from "./components/data";
 import {pageMixins} from "@/utils/pageMixins";
@@ -66,7 +68,7 @@ import supplierMaterialPreparation from './components/supplierMaterialPreparatio
 import otherMeetingInformation from './components/otherMeetingInformation'
 import drawingDialog from './components/drawingDialog'
 import addSupplierDialog from './components/addSupplierDialog'
-import {getAllRfqParts} from "@/api/partsrfq/editordetail";
+import {getAllRfqParts, addTechnology} from "@/api/partsrfq/editordetail";
 
 
 export default {
@@ -88,7 +90,8 @@ export default {
       tableLoading: false,
       selectTableData: [],
       dialogDrawing: false,
-      dialogAddSupplier: false
+      dialogAddSupplier: false,
+      addSupplierList: []
     };
   },
   created() {
@@ -102,13 +105,14 @@ export default {
         this.tableLoading = true;
         try {
           const req = {
-            rfqId: id
+            rfqId: id,
+            userId: 12321
           }
           const res = await getAllRfqParts(req)
-          this.tableListData = res.data;
-          this.page.currPage = res.data.rfqCfPriceVO.pageNum
-          this.page.pageSize = res.data.rfqCfPriceVO.pageSize
-          this.page.totalCount = res.data.rfqCfPriceVO.total
+          this.tableListData = res.records;
+          this.page.currPage = res.current
+          this.page.pageSize = res.size
+          this.page.totalCount = res.total
           this.tableLoading = false;
         } catch {
           this.tableLoading = false;
@@ -122,7 +126,32 @@ export default {
     addSupplier() {
       this.dialogAddSupplier = true
     },
-    sendToMyEmail() {
+    async sendToMyEmail() {
+      const id = this.$route.query.id
+      const supplierMaterialPreparationData = this.$refs.supplierMaterialPreparation.dynamicForm.baseInfo
+      const otherMeetingInformationData = this.$refs.otherMeetingInformation.form
+      const meetingStuffList = supplierMaterialPreparationData.map(item => {
+        return item.value
+      })
+      const supplierIdList = this.addSupplierList.map(item => {
+        return item.id
+      })
+      const partNumsList = this.selectTableData.map(item => {
+        return item.partNum
+      })
+      const req = {
+        rfqId: id,
+        userId: 12321,
+        // eslint-disable-next-line no-undef
+        meetingDate: moment(otherMeetingInformationData.meetingDate).format('YYYY-MM-DD'),
+        meetingLocation: otherMeetingInformationData.meetingLocation,
+        memo: otherMeetingInformationData.memo,
+        meetingStuff: meetingStuffList.join(','),
+        supplierId: supplierIdList,
+        partNums: partNumsList,
+      }
+      const res = await addTechnology(req)
+      res.result ? iMessage.success(res.desZh) : iMessage.error(res.desZh)
     },
     //修改表格改动列
     handleSelectionChange(val) {
@@ -130,6 +159,9 @@ export default {
     },
     openPage() {
       this.dialogDrawing = true
+    },
+    handleAddSupplierSave(list) {
+      this.addSupplierList = list
     }
   }
 }

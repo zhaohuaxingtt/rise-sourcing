@@ -13,7 +13,8 @@
         :tableLoading="tableLoading"
         @handleSelectionChange="handleSelectionChange"
         :index="true"
-        open-page-props="b"
+        open-page-props="fileName"
+        :openPageGetRowData="true"
         @openPage="handleOpenPage"
     ></tablelist>
     <!------------------------------------------------------------------------>
@@ -37,6 +38,7 @@ import {iCard, iButton, iPagination} from "@/components";
 import tablelist from 'pages/partsrfq/components/tablelist'
 import {inquiryDrawingTableTitle} from "./data";
 import {pageMixins} from "@/utils/pageMixins";
+import {getAllAnnex} from "@/api/partsrfq/editordetail";
 
 
 export default {
@@ -59,9 +61,26 @@ export default {
     this.getTableList();
   },
   methods: {
-    getTableList() {
-      this.tableLoading = true;
-
+    async getTableList() {
+      const id = this.$route.query.id
+      if (id) {
+        this.tableLoading = true;
+        const req = {
+          fileType: 3,
+          rfqId: id,
+          userId: 12321
+        }
+        try {
+          const res = await getAllAnnex(req)
+          this.tableListData = res.records;
+          this.page.currPage = res.current
+          this.page.pageSize = res.size
+          this.page.totalCount = res.total
+          this.tableLoading = false;
+        } catch {
+          this.tableLoading = false;
+        }
+      }
     },
     download() {
     },
@@ -69,7 +88,14 @@ export default {
     handleSelectionChange(val) {
       this.selectTableData = val;
     },
-    handleOpenPage() {}
+    handleOpenPage(row) {
+      const url = row.filePath
+      const a = document.createElement('a');
+      a.setAttribute('download', '')
+      a.setAttribute('href', url);
+      a.setAttribute('target', '_blank');
+      a.click();
+    }
   }
 }
 </script>

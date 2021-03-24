@@ -80,7 +80,7 @@ export function getSupplierAllParts(parmars) {
 /*技术交流会*/
 export function getAllRfqParts(parmars) {
     return requst({
-        url: '/api/getAllRfqParts',
+        url: '/api/technology/getAllRfqParts',
         method: 'POST',
         data: parmars
     })
@@ -89,7 +89,23 @@ export function getAllRfqParts(parmars) {
 
 export function getAllRfqSupplier(parmars) {
     return requst({
-        url: '/api/getAllRfqSupplier',
+        url: '/api/technology/getAllRfqSupplier',
+        method: 'POST',
+        data: parmars
+    })
+}
+
+export function addTechnology(parmars) {
+    return requst({
+        url: '/api/technology/addTechnology',
+        method: 'POST',
+        data: parmars
+    })
+}
+
+export function getPic(parmars) {
+    return requst({
+        url: '/api/technology/getPic',
         method: 'POST',
         data: parmars
     })
