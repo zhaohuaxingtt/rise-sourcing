@@ -16,18 +16,18 @@
       </div>
     </div>
     <div class="body margin-top27">
-      <tableList class="table" index :tableData="data" :tableTitle="tableTitle" :tableLoading="loading" @handleSelectionChange="handleSelectionChange">
-        <template #a="scope">
-          <span class="link-underline" @click="preview">{{ scope.row.a }}</span>
+      <tableList class="table" index :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="loading" @handleSelectionChange="handleSelectionChange">
+        <template #tpPartAttachmentName="scope">
+          <span class="link-underline" @click="preview">{{ scope.row.tpPartAttachmentName }}</span>
         </template>
-        <template #c="scope">
+        <!-- <template #c="scope">
           <span>{{ scope.row.c }}</span>
-        </template>
+        </template> -->
       </tableList>
       <iPagination
         class="pagination"
-        @size-change="handleSizeChange($event, getEnquiryList)"
-        @current-change="handleCurrentChange($event, getEnquiryList)"
+        @size-change="handleSizeChange($event, getInfoAnnexPage)"
+        @current-change="handleCurrentChange($event, getInfoAnnexPage)"
         background
         :current-page="page.size"
         :page-sizes="page.pageSizes"
@@ -74,10 +74,11 @@ export default {
       getInfoAnnexPage({
         currPage: this.page.currPage,
         pageSize: this.page.pageSize,
-        // purchasingRequirementTargetId: 
+        purchasingRequirementTargetId: this.data.purchasingRequirementTargetId
       })
         .then(res => { 
-          this.tableListData = res.data
+          this.tableListData = res.data.tpRecordList
+          this.page.totalCount = res.data.totalCount || 0
           this.loading = false
         })
         .catch(() => this.loading = false)
