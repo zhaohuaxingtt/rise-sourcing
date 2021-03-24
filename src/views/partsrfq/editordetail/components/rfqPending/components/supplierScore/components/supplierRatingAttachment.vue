@@ -74,6 +74,7 @@ export default {
         this.tableLoading = true;
         try {
           const req = {
+            fileType: 1,
             rfqId: id,
             userId: 12321
           }
@@ -110,6 +111,7 @@ export default {
         this.uploadAttachmentsButtonLoading = true
         const formData = new FormData()
         formData.append('file', content.file)
+        formData.append('fileType', 1)
         formData.append('rfqId', id)
         formData.append('userId', 12321)
         const res = await uploadRfqAnnex(formData)
