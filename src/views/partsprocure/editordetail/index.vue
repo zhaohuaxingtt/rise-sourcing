@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2021-03-23 16:15:12
+ * @LastEditTime: 2021-03-23 19:03:35
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsprocure\editordetail\index.vue
@@ -45,14 +45,19 @@
                 {{ infoDetail.partNameZh }}
               </iText>
             </iFormItem>
-            <iFormItem label="零件项目类型：" name="test">
-              <iSelect v-model="infoDetail.partPrejectType"> </iSelect>
+            <iFormItem label="零件名称（德）：" name="test">
+              <iText>
+                {{ infoDetail.partNameZh }}
+              </iText>
             </iFormItem>
             <iFormItem label="采购工厂：" name="test">
               <iSelect v-model="infoDetail.procureFactory"></iSelect>
             </iFormItem>
             <iFormItem label="Common Sourcing：" name="test">
               <iSelect v-model="infoDetail.commonSourcing"></iSelect>
+            </iFormItem>
+						<iFormItem label="支付条款：" name="test">
+              <iSelect></iSelect>
             </iFormItem>
           </div>
           <div class="col">
@@ -61,19 +66,20 @@
                 {{ infoDetail.commonSourcing }}
               </iText>
             </iFormItem>
-            <iFormItem label="零件名称（德）：" name="test">
-              <iText>
-                {{ infoDetail.partNameDe }}
-              </iText>
+            <iFormItem label="零件项目类型：" name="test">
+              <iSelect v-model="infoDetail.partPrejectType"> </iSelect>
+            </iFormItem>
+            <iFormItem label="车型项目名称：" name="test">
+              <iSelect> </iSelect>
             </iFormItem>
             <iFormItem label="零件类型：" name="test">
               <iSelect> </iSelect>
             </iFormItem>
-            <iFormItem label="单位：" name="test">
-              <iSelect v-model="infoDetail.unit"></iSelect>
-            </iFormItem>
             <iFormItem label="MTZ零件：" name="test">
-              <iSelect v-model="infoDetail.mtzPart"></iSelect>
+              <iText>{{ infoDetail.mtzPart }}</iText>
+            </iFormItem>
+						<iFormItem label="货币：" name="test">
+              <iSelect></iSelect>
             </iFormItem>
           </div>
           <div class="col">
@@ -91,8 +97,14 @@
             <iFormItem label="CF控制员：" name="test">
               <iSelect v-model="infoDetail.cfController"></iSelect>
             </iFormItem>
+            <iFormItem label="单位：" name="test">
+              <iSelect v-model="infoDetail.unit"></iSelect>
+            </iFormItem>
           </div>
           <div class="col">
+						<iFormItem label="采购条款：" name="test">
+              <iSelect></iSelect>
+            </iFormItem>
             <iFormItem label="签收日期：" name="test">
               <iText>
                 {{ infoDetail.signDate }}
@@ -156,45 +168,50 @@
     <!------------------------------------------------------------------------>
     <iDialog class="dialog" :visible.sync="splitPurchBoolean">
       <template slot="title">
-				<span class="el-dialog__title">拆分采购工厂</span>
-				<el-tooltip effect="light">
-					<i class="iconxinxitishi iconfont color"></i>
-					<template slot='content'>
-						保存后将按照您所维护的工厂份<br/>额拆分询价产量。 如果已经维护<br/>车型产量，请确保为该零件的所<br/>有工厂产量。
-					</template>
-				</el-tooltip>
-				<iButton class="float-right marginleft300">保存</iButton>
-			</template>
+        <span class="el-dialog__title">拆分采购工厂</span>
+        <el-tooltip effect="light">
+          <i class="iconxinxitishi iconfont color"></i>
+          <template slot="content">
+            保存后将按照您所维护的工厂份<br />额拆分询价产量。 如果已经维护<br />车型产量，请确保为该零件的所<br />有工厂产量。
+          </template>
+        </el-tooltip>
+        <iButton class="float-right marginleft300">保存</iButton>
+      </template>
       <template>
-          <el-table
-            :height="height"
-            :data="splitPurchList"
-            v-loading="tableLoading"
-            @selection-change="handleSelectionChange"
-						width='500'
-						class="margin-right30"
-          >
+        <el-table
+          :height="height"
+          :data="splitPurchList"
+          v-loading="tableLoading"
+          @selection-change="handleSelectionChange"
+          width="500"
+          class="margin-right30"
+        >
+          <el-table-column
+            type="selection"
+            width="50"
+            align="center"
+          ></el-table-column>
+          <template v-for="(items, index) in splitPurchTitle">
             <el-table-column
-              type="selection"
-              width="50"
-              align="center"
+              :key="index"
+              v-if="items.props == 'name'"
+              :label="items.name"
+              :prop="items.props"
+              width="200"
             ></el-table-column>
-            <template v-for="(items, index) in splitPurchTitle">
-              <el-table-column
-                :key="index"
-                v-if="items.props == 'name'"
-                :label="items.name"
-                :prop="items.props"
-								width="200"
-              ></el-table-column>
-              <el-table-column v-else :key="index" :label="items.name" width="150">
-                <template slot-scope="scope">
-                  <iInput v-model="scope.row[items.props]"></iInput>
-                </template>
-              </el-table-column>
-            </template>
-						<el-table-column></el-table-column>
-          </el-table>
+            <el-table-column
+              v-else
+              :key="index"
+              :label="items.name"
+              width="150"
+            >
+              <template slot-scope="scope">
+                <iInput v-model="scope.row[items.props]"></iInput>
+              </template>
+            </el-table-column>
+          </template>
+          <el-table-column></el-table-column>
+        </el-table>
       </template>
     </iDialog>
   </iPage>
@@ -379,20 +396,20 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-.color{
-	color:$color-table-header;
-	position: relative;
-	left:20px;
-	top: 1px;
-	cursor: pointer;
-	&:hover{
-		color: $color-blue;
-	}
+.color {
+  color: $color-table-header;
+  position: relative;
+  left: 20px;
+  top: 1px;
+  cursor: pointer;
+  &:hover {
+    color: $color-blue;
+  }
 }
-.marginleft300{
-	position: relative;
-	left: 620px;
-	top: -5px;
+.marginleft300 {
+  position: relative;
+  left: 620px;
+  top: -5px;
 }
 .row {
   width: 100%;

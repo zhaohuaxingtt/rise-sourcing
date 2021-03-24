@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-24 09:17:57
- * @LastEditTime: 2021-03-18 22:59:46
+ * @LastEditTime: 2021-03-23 21:04:32
  * @LastEditors: Please set LastEditors
  * @Description: 零件签收列表界面.
  * @FilePath: \rise\src\views\partsign\index.vue
@@ -9,7 +9,7 @@
 <template>
   <iPage>
     <div class="margin-bottom20">
-      <iNav-mvp @change="change" right></iNav-mvp>
+      <iNav-mvp @change="change" right v-permission='PERMISSION_TEST'></iNav-mvp>
     </div>
     <!------------------------------------------------------------------------>
     <!--                  search 搜索模块                                   --->
