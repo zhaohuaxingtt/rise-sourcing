@@ -12,7 +12,7 @@ export const tableTitle = [
 ]
 
 export const addSupplierTitle = [
-    {props:'a',name:'供应商SAP号'},
-    {props:'b',name:'供应商名称'},
-    {props:'c',name:'MBDL'}
+    {props:'sapNum',name:'供应商SAP号'},
+    {props:'supplierName',name:'供应商名称'},
+    {props:'isMbdl',name:'MBDL'}
 ]
