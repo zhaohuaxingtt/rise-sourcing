@@ -50,8 +50,9 @@
 			applyPrice,
 		},
 		created() {
-			this.getTableList();
 			// this.getConfirmTableList();
+			this.rfqId=this.$route.query.id
+			this.getTableList();
 		},
 		data() {
 			return {
@@ -63,6 +64,7 @@
 				handleSelectArr: [], //选中添加零件清单数据
 				applyPriceShow: false, //显示财务申请价
 				form:form,
+				rfqId:"",
 			};
 		},
 		methods: {
@@ -83,9 +85,20 @@
 			},
 			//获取表格数据
 			getTableList() {
-				this.tableLoading = true
+				this.confirmTableLoading = true
 				this.form['search.size'] = this.page.pageSize
 				this.form['search.current'] = this.page.currPage
+				this.form['search.rfqId']=this.rfqId
+				this.form.['search.partStatus']='12'
+				getTabelData(this.form).then(res => {
+					this.confirmTableLoading = false
+					this.page.currPage = res.data.pageData.pageNum
+					this.page.pageSize = res.data.pageData.pageSize
+					this.page.totalCount = res.data.pageData.total
+					this.confirmTableListData = res.data.pageData.data
+				}).catch(() => this.confirmTableLoading = false)
+				
+				this.form.['search.partStatus']='13'
 				getTabelData(this.form).then(res => {
 					this.tableLoading = false
 					this.page.currPage = res.data.pageData.pageNum

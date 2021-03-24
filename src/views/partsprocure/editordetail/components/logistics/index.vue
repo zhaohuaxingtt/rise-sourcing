@@ -13,31 +13,21 @@
 			<div class="header">
 				<span class="title">物流标准</span>
 			</div>
-			<iFormGroup row="4" icon inline>
-				<!-- <iFormItem label="供货方式" name="test">
-					<iText>
-						{{infoDetail.supplyType}}
-					</iText>
-				</iFormItem> -->
+			<iFormGroup :row="4" inline icon>
 				<iFormItem label="INBOUND物流方式1" name="test">
-					<iText>
-						blank
-					</iText>
+					<i-text>{{dataInfo.supplyType}}</i-text>
 				</iFormItem>
 				<iFormItem label="负责人" name="test">
-					<iText>
-						{{infoDetail.direcorId}}
-					</iText>
+
+					<i-text>{{dataInfo.direcorId}}</i-text>
 				</iFormItem>
 				<iFormItem label="ZP" name="test">
-					<iText>
-						blank
-					</iText>
+
+					<i-text>{{dataInfo.zp}}</i-text>
 				</iFormItem>
 				<iFormItem label="特殊零件类型" name="test">
-					<iText>
-						blank
-					</iText>
+
+					<i-text>{{dataInfo.specialPartType}}</i-text>
 				</iFormItem>
 			</iFormGroup>
 		</iCard>
@@ -45,240 +35,143 @@
 			<div class="header">
 				<span class="title">参考包装</span>
 			</div>
-			<iFormGroup row="4" icon inline>
+			<iFormGroup :row="4" inline icon>
 				<iFormItem label="包装负责人" name="test">
-					<iText>
-						blank
-					</iText>
+
+					<i-text>{{dataInfo.partPackgeRequirements.direcorId}}</i-text>
 				</iFormItem>
 			</iFormGroup>
-			<iFormGroup row="4" icon inline>
+			<iFormGroup :row="4" inline icon>
 				<iFormItem label="入场包装名称" name="test">
-					<iText>
-						blank
-					</iText>
+
+					<i-text>{{dataInfo.partPackgeRequirements.admissionPackgeName}}</i-text>
 				</iFormItem>
 			</iFormGroup>
-			<iFormGroup row="4" icon inline>
-				<iFormItem label="入库器具长(mn)" name="test">
-					<iText>
-						blank
-					</iText>
+			<iFormGroup :row="4" inline icon>
+				<iFormItem label="入库器具长（mm）" name="test">
+
+					<i-text>{{dataInfo.partPackgeRequirements.warehousingAppliancesLength}}</i-text>
 				</iFormItem>
-				<iFormItem label="入库器具宽(mn)" name="test">
-					<iText>
-						blank
-					</iText>
+				<iFormItem label="入库器具宽（mm）" name="test">
+
+					<i-text>{{dataInfo.partPackgeRequirements.warehousingAppliancesWidth}}</i-text>
 				</iFormItem>
-				<iFormItem label="参考包装高(mn)" name="test">
-					<iText>
-						blank
-					</iText>
+				<iFormItem label="参考包装宽（mm）" name="test">
+
+					<i-text>{{dataInfo.referencePackageWidth}}</i-text>
 				</iFormItem>
-				<iFormItem label="入库器具长装箱数" name="test">
-					<iText>
-						blank
-					</iText>
+				<iFormItem label="入库器具装箱数" name="test">
+
+					<i-text>{{dataInfo.partPackgeRequirements.warehousingAppliancesCount}}</i-text>
 				</iFormItem>
-				
+			</iFormGroup>
+			<iFormGroup :row="4" inline icon>
 				<iFormItem label="入库器具型号" name="test">
-					<iText>
-						blank
-					</iText>
-				</iFormItem>
-				<iFormItem label="入库器具型号" name="test">
-					<iText>
-						blank
-					</iText>
+
+					<i-text>{{dataInfo.partPackgeRequirements.warehousingAppliancesModel}}</i-text>
 				</iFormItem>
 				<iFormItem label="入库器具类型" name="test">
-					<iText>
-						blank
-					</iText>
+
+					<i-text>{{dataInfo.partPackgeRequirements.warehousingAppliancesType}}</i-text>
 				</iFormItem>
-				<iFormItem label="入库器具综合单价(RMB)" name="test">
-					<iText>
-						blank
-					</iText>
+				<iFormItem label="入库器具综合单价（RMB）" name="test">
+
+					<i-text>{{dataInfo.partPackgeRequirements.warehousingPerAppliancesPrice}}</i-text>
 				</iFormItem>
-				<iFormItem label="入库器具租金(RMB/DAY)" name="test">
-					<iText>
-						blank
-					</iText>
+				<iFormItem label="入库器具租金（RMB/DAY）" name="test">
+
+					<i-text>{{dataInfo.partPackgeRequirements.warehousingAppliancesRent}}</i-text>
 				</iFormItem>
-				
-				<iFormItem label="入库包装毛重(KG)" name="test">
-					<iText>
-						blank
-					</iText>
+			</iFormGroup>
+			<iFormGroup :row="4" inline icon>
+				<iFormItem label="入库包装毛重（KG）" name="test">
+
+					<i-text>{{dataInfo.partPackgeRequirements.warehousingAppliancesGrossWeight}}</i-text>
 				</iFormItem>
 				<iFormItem label="入库器具返程折叠比" name="test">
-					<iText>
-						blank
-					</iText>
+
+					<i-text>{{dataInfo.partPackgeRequirements.warehousingAppliancesFoldingReturnRatio}}</i-text>
 				</iFormItem>
 				<iFormItem label="入库器具寿命" name="test">
-					<iText>
-						blank
-					</iText>
+
+					<i-text>{{dataInfo.partPackgeRequirements.warehousingAppliancesLife}}</i-text>
 				</iFormItem>
 				<iFormItem label="入库基础年维修费率" name="test">
-					<iText>
-						blank
-					</iText>
+
+					<i-text>{{dataInfo.partPackgeRequirements.warehousingAppliancesAnnualMaintenanceRate}}</i-text>
 				</iFormItem>
+			</iFormGroup>
+			<iFormGroup :row="4" inline icon>
 				<iFormItem label="箱内周转材料综合价格" name="test">
-					<iText>
-						blank
-					</iText>
+
+					<i-text>{{dataInfo.partPackgeRequirements.warehousingMaterialComprehensivePrice}}</i-text>
 				</iFormItem>
 				<iFormItem label="箱内周转材料综合寿命" name="test">
-					<iText>
-						blank
-					</iText>
+
+					<i-text>{{dataInfo.partPackgeRequirements.warehousingMaterialLife}}</i-text>
 				</iFormItem>
 			</iFormGroup>
-			<iFormGroup row="4" icon inline>
+			<iFormGroup :row="4" inline icon>
 				<iFormItem label="前段包装名称" name="test">
-					<iText>
-						blank
-					</iText>
-				</iFormItem>	
+
+					<i-text>{{dataInfo.partPackgeRequirements.frontPackgeName}}</i-text>
+				</iFormItem>
 			</iFormGroup>
-			
-			<iFormGroup row="4" icon inline>
-				<iFormItem label="翻箱前器具长(nm)" name="test">
-					<iText>
-						blank
-					</iText>
+			<iFormGroup :row="4" inline icon>
+				<iFormItem label="翻箱前器具长（mm）" name="test">
+
+					<i-text>{{dataInfo.partPackgeRequirements.turnoverAppliancesLength}}</i-text>
 				</iFormItem>
-				<iFormItem label="翻箱前器具宽(nm)" name="test">
-					<iText>
-						blank
-					</iText>
+				<iFormItem label="翻箱前器具宽（mm）" name="test">
+
+					<i-text>{{dataInfo.partPackgeRequirements.turnoverAppliancesWidth}}</i-text>
 				</iFormItem>
-				<iFormItem label="翻箱前器具高(nm)" name="test">
-					<iText>
-						blank
-					</iText>
+				<iFormItem label="翻箱前器具高（mm）" name="test">
+
+					<i-text>{{dataInfo.partPackgeRequirements.turnoverPackageHeight}}</i-text>
 				</iFormItem>
-				<iFormItem label="翻箱前器具箱数" name="test">
-					<iText>
-						blank
-					</iText>
+				<iFormItem label="翻箱前器具数" name="test">
+
+					<i-text>{{dataInfo.partPackgeRequirements.turnoverAppliancesCount}}</i-text>
 				</iFormItem>
-				<iFormItem label="翻箱前器具型号" name="test">
-					<iText>
-						blank
-					</iText>
+			</iFormGroup>
+			<iFormGroup :row="4" inline icon>
+				<iFormItem label="翻箱前器具号" name="test">
+
+					<i-text>{{dataInfo.partPackgeRequirements.turnoverAppliancesModel}}</i-text>
 				</iFormItem>
 				<iFormItem label="翻箱前器具类型" name="test">
-					<iText>
-						blank
-					</iText>
+
+					<i-text>{{dataInfo.partPackgeRequirements.turnoverAppliancesType}}</i-text>
 				</iFormItem>
-				<iFormItem label="翻箱前器具综合单价(RMB)" name="test">
-					<iText>
-						blank
-					</iText>
+				<iFormItem label="翻箱前器具综合单价（RMB）" name="test">
+
+					<i-text>{{dataInfo.partPackgeRequirements.turnoverPerAppliancesPrice}}</i-text>
 				</iFormItem>
-				<iFormItem label="翻箱前器具租金(RMB/DAY)" name="test">
-					<iText>
-						blank
-					</iText>
+				<iFormItem label="翻箱前器具租金（RMB/DAY）" name="test">
+
+					<i-text>{{dataInfo.partPackgeRequirements.turnoverAppliancesRent}}</i-text>
 				</iFormItem>
-				<iFormItem label="翻箱前包装毛重(KG)" name="test">
-					<iText>
-						blank
-					</iText>
+			</iFormGroup>
+			<iFormGroup :row="4" inline icon>
+				<iFormItem label="翻箱前包装毛重（KG）" name="test">
+
+					<i-text>{{dataInfo.partPackgeRequirements.turnoverAppliancesGrossWeight}}</i-text>
 				</iFormItem>
-				<iFormItem label="翻箱前器具返程折叠比	" name="test">
-					<iText>
-						blank
-					</iText>
+				<iFormItem label="翻箱前器具返程折叠比" name="test">
+
+					<i-text>{{dataInfo.partPackgeRequirements.turnoverAppliancesFoldingReturnRatio}}</i-text>
 				</iFormItem>
 				<iFormItem label="翻箱前器具寿命" name="test">
-					<iText>
-						blank
-					</iText>
+
+					<i-text>{{dataInfo.partPackgeRequirements.turnoverAppliancesLife}}</i-text>
 				</iFormItem>
-				<iFormItem label="翻箱前基础年维修费率" name="test">
-					<iText>
-						blank
-					</iText>
+				<iFormItem label="翻箱前基础年维修率" name="test">
+
+					<i-text>{{dataInfo.partPackgeRequirements.turnoverAppliancesAnnualMaintenanceRate}}</i-text>
 				</iFormItem>
 			</iFormGroup>
-			<!-- <iFormGroup row="4" icon inline>
-				
-				<iFormItem label="参考包装长(mm)" name="test">
-					<iText>
-						{{infoDetail.referencePackageLength}}
-					</iText>
-				</iFormItem>
-				<iFormItem label="参考包装宽(mm)" name="test">
-					<iText>
-						{{infoDetailreferencePackageWidth}}
-					</iText>
-				</iFormItem>
-				<iFormItem label="参考包装高(mm)" name="test">
-					<iText>
-						{{infoDetail.referencePackageHeight}}
-					</iText>
-				</iFormItem>
-				<iFormItem label="装箱数" name="test">
-					<iText>
-						{{infoDetail.packingCount}}
-					</iText>
-				</iFormItem>
-				<iFormItem label="参考车型" name="test">
-					<iText>
-						{{infoDetail.referenceCarType}}
-					</iText>
-				</iFormItem>
-				<iFormItem label="参考零件号" name="test">
-					<iText>
-						{{infoDetail.referencePartNum}}
-					</iText>
-				</iFormItem>
-				<iFormItem label="参考零件名" name="test">
-					<iText>
-						{{infoDetail.referencePartName}}
-					</iText>
-				</iFormItem>
-				<iFormItem label="参考包装器具类型" name="test">
-					<iText>
-						{{infoDetail.referenceAppliancesType}}
-					</iText>
-				</iFormItem>
-				<iFormItem label="毛重(KG)" name="test">
-					<iText>
-						{{infoDetail.grossWeight}}
-					</iText>
-				</iFormItem>
-				<iFormItem label="参考包装单价(元)" name="test">
-					<iText>
-						{{infoDetail.referencePerPackagePrice}}
-					</iText>
-				</iFormItem>
-			</iFormGroup> -->
 		</iCard>
-		<!-- <iCard class="margin-top20">
-			<div class="header">
-				<span class="title">SAIC VOLKSWAGEN库存_小时</span>
-			</div>
-			<iFormGroup row="4" icon inline>
-				<iFormItem label="SAIC VOLKSWAGEN库存_小时" name="test">
-					<iText>
-						{{infoDetail.stockHours}}
-					</iText>
-				</iFormItem>
-				<iFormItem label="SAIC VOLKSWAGEN空箱操作_小时" name="test">
-					<iText>
-						{{infoDetail.emptycaseHours}}
-					</iText>
-				</iFormItem>
-			</iFormGroup>
-		</iCard> -->
 	</div>
 </template>
 
@@ -301,16 +194,54 @@
 		},
 		data() {
 			return {
-				infoDetail:{},//物流详情
+				//物流详情
+				dataInfo: {
+					supplyType:"",
+					direcorId:"",
+					ZP:"",
+					specialPartType:"",
+					referencePackageWidth:"",
+					partPackgeRequirements:{
+						admissionPackgeName:"",
+						direcorId:"",
+						warehousingAppliancesLength:"",
+						warehousingAppliancesWidth:"",
+						warehousingAppliancesCount:"",
+						warehousingAppliancesModel:"",
+						warehousingAppliancesType:"",
+						warehousingPerAppliancesPrice:"",
+						warehousingAppliancesRent:"",
+						warehousingAppliancesGrossWeight:"",
+						warehousingAppliancesFoldingReturnRatio:"",
+						warehousingAppliancesLife:"",
+						warehousingAppliancesAnnualMaintenanceRate:"",
+						warehousingMaterialComprehensivePrice:"",
+						warehousingMaterialLife:"",
+						frontPackgeName:"",
+						turnoverAppliancesLength:"",
+						turnoverAppliancesWidth:"",
+						turnoverPackageHeight:"",
+						turnoverAppliancesCount:"",
+						turnoverAppliancesModel:"",
+						turnoverAppliancesType:"",
+						turnoverPerAppliancesPrice:"",
+						turnoverAppliancesRent:"",
+						turnoverAppliancesGrossWeight:"",
+						turnoverAppliancesFoldingReturnRatio:"",
+						turnoverAppliancesLife:"",
+						turnoverAppliancesAnnualMaintenanceRate:""
+					},
+					
+				}, 
 			};
 		},
 		created() {
 			this.getLogistics()
 		},
-		props:{
-			infoItem:{
-				type:Object,
-				default:()=>{}
+		props: {
+			infoItem: {
+				type: Object,
+				default: () => {}
 			}
 		},
 		methods: {
@@ -318,13 +249,16 @@
 			getLogistics() {
 				console.log(this.infoItem);
 				let otherInfoPackage = {
-					findType:'02',
+					findType: '02',
 					partNum: this.infoItem.partNum,
 					rfqId: this.infoItem.rfqId,
 					rfqPlanId: this.infoItem.fsnrGsnrNum,
 				}
-				getRfqDataList({otherInfoPackage}).then(res=>{
-					this.infoDetail=res.data.partLogisticRequirementVO
+				getRfqDataList({
+					otherInfoPackage
+				}).then(res => {
+					this.dataInfo = res.data.partLogisticRequirementVO
+					
 				})
 			}
 

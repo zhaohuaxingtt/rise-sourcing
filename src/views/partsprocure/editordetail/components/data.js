@@ -58,6 +58,9 @@ export const targetprice = {
 		applyReason:"",//申请原因
 		applyType:"",//	申请类型
 		lcPrice:"",//期望目标价
+	},
+	rwApplication:{
+		
 	}
 
 }

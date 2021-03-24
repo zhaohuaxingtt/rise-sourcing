@@ -91,8 +91,8 @@
 		methods:{
 			//修改详情里面备注。
 			save(val) {
-				let baseInfo=this.detailData
-				changeProcure({baseInfo}).then(res => {
+				let detailData=this.detailData
+				changeProcure({detailData}).then(res => {
 					this.diologChangeItems = false;
 					this.getDatail()
 				}).catch(() => {

@@ -27,29 +27,36 @@
 				</el-form-item>
 				<el-form-item label="询价采购员">
 					<iSelect placeholder='请选择询价采购员' v-model="form['search.buyerName']">
-						<!-- <el-option :value="items.value" :label="items.label" v-for="(items,index) in fromGroup.tpInfoType" :key="index"></el-option> -->
+						<!-- <el-option :value="item.value" :label="item.label" v-for="(item,index) in getGroupList()" :key="index"></el-option> -->
 					</iSelect>
 				</el-form-item>
 				<el-form-item label="LINIE">
 					<iInput placeholder='请填写LINIE' v-model="form['search.linieName']"></iInput>
 				</el-form-item>
 				<el-form-item label="零件状态">
-					<iSelect placeholder='请选择零件状态' v-model="form['search.partStatus']"></iSelect>
+					<iSelect placeholder='请选择零件状态' v-model="form['search.partStatus']">
+						<el-option :value="item.value" :label="item.label" v-for="(item,index) in getGroupList('part_status')" :key="index"></el-option>
+					</iSelect>
 				</el-form-item>
-				<!-- 	<el-form-item label="信息单状态">
-					<iSelect placeholder='请选择信息单状态' v-model="form['']"></iSelect>
-				</el-form-item> -->
 				<el-form-item label="车型大类">
-					<iSelect placeholder='请选择车型' v-model="form['search.cartypeCategory']"></iSelect>
+					<iSelect placeholder='请选择车型' v-model="form['search.cartypeCategory']">
+						<el-option :value="item.value" :label="item.label" v-for="(item,index) in getGroupList('cartype_category')" :key="index"></el-option>
+					</iSelect>
 				</el-form-item>
 				<el-form-item label="车型项目">
-					<iSelect placeholder='请选择车型项目' v-model="form['search.cartypeProjectZh']"></iSelect>
+					<iSelect placeholder='请选择车型项目' v-model="form['search.cartypeProjectZh']">
+						<el-option :value="item.value" :label="item.label" v-for="(item,index) in getGroupList('cartype_project_zh')" :key="index"></el-option>
+					</iSelect>
 				</el-form-item>
 				<el-form-item label="零件项目类型">
-					<iSelect placeholder='请选择零件项目类型' v-model="form['search.partPrejectType']"></iSelect>
+					<iSelect placeholder='请选择零件项目类型' v-model="form['search.partPrejectType']">
+						<el-option :value="item.value" :label="item.label" v-for="(item,index) in getGroupList('part_preject_type')" :key="index"></el-option>
+					</iSelect>
 				</el-form-item>
 				<el-form-item label="采购工厂">
-					<iSelect placeholder='请选择采购工厂' v-model="form['search.procureFactory']"></iSelect>
+					<iSelect placeholder='请选择采购工厂' v-model="form['search.procureFactory']">
+						<el-option :value="item.value" :label="item.label" v-for="(item,index) in getGroupList('procure_factory')" :key="index"></el-option>
+					</iSelect>
 				</el-form-item>
 			</el-form>
 		</iSearch>
@@ -137,7 +144,7 @@
 				selectTableData: [],
 				diologChangeItems: false,
 				form: form,
-				fromGroup: fromGroup,
+				fromGroup: [],
 				diologBack: false, //退回
 			}
 		},
@@ -232,7 +239,12 @@
 			},
 			// 启动零件项目采购
 			start() {
-				
+				this.$router.push({
+					path:"/partsrfq/editordetail",
+					query:{
+						id:"87645962288"
+					}
+				})
 			},
 			// 生成fs号
 			creatFs() {
@@ -254,6 +266,15 @@
 				})
 				return purchasePrjectId
 			},
+			// 查询fliter数据
+			getGroupList(key) {
+				if (this.fromGroup.length > 0) {
+					let obj = this.fromGroup.find(items => items.name == key)
+					if (!obj) return []
+					return obj.infoList
+				}
+			},
+			// 跳转批量维护
 			openBatchmiantain() {
 				this.$router.push({
 					path: '/partsprocure/batchmiantain'

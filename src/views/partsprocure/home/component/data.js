@@ -61,7 +61,9 @@ export const tableTitle = [{
 export const form = {
 	'search.buyerName': '', //询价采购员
 	'search.cartypeCategory': '', //车型大类
+	'search.cartypeProjectNum':'',//车型项目编号	
 	'search.cartypeProjectZh': '', //车型项目
+	'search.categoryCode':'',//材料组编号
 	'search.fsnrGsnrNum': "", //FSNR/GSNR/SPNR
 	'search.linieName': '', //LINIE
 	'search.partNameZh': '', //零件名称(中)
@@ -69,5 +71,12 @@ export const form = {
 	'search.partPrejectType': '', //零件项目类型
 	'search.partStatus': '', //零件状态
 	'search.procureFactory': '', //采购工厂
+	'search.projectStatus':'',//采购项目状态
+	'search.rfqId':'',//rfq编号
+	'search.size':'',
+	'search.current':""
 }
-export const fromGroup = JSON.parse(JSON.stringify(form))
+export const fromGroup = {
+	
+	
+}
