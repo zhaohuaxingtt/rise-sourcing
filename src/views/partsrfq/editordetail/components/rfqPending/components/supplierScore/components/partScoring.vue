@@ -22,7 +22,7 @@
           @handleSelectionChange="handleSelectionChange"
           :index="true"
           @openMultiHeaderPropsPage="openMultiHeaderPropsPage"
-          multi-header-props="l"
+          multi-header-props="tpbMemo"
           multi-header-props-text="查看"
           action-props=""
       ></tablelist>
@@ -45,6 +45,8 @@
     <!------------------------------------------------------------------------>
     <tpb-remarks
         v-model="dialogRemarks"
+        :memo="selectedRowData.tpbMemo"
+        :disabled="true"
     />
   </i-page>
 
@@ -55,8 +57,8 @@ import {iCard, iPagination, iPage, icon, iButton} from "@/components";
 import tablelist from './supplierScoreTableList'
 import {partScroingTitle} from "./data";
 import {pageMixins} from "@/utils/pageMixins";
-
 import tpbRemarks from './tpbRemarks'
+import {getSupplierAllParts} from "@/api/partsrfq/editordetail";
 
 export default {
   components: {
@@ -75,24 +77,44 @@ export default {
       tableTitle: partScroingTitle,
       tableLoading: false,
       selectTableData: [],
-      dialogRemarks: false
+      dialogRemarks: false,
+      selectedRowData: []
     };
   },
   created() {
     this.getTableList();
   },
   methods: {
-    getTableList() {
-      this.tableLoading = true;
-
+    async getTableList() {
+      const rfqId = this.$route.query.rfqId
+      const supplierId = this.$route.query.supplierId
+      if (rfqId && supplierId) {
+        this.tableLoading = true;
+        try {
+          const req = {
+            supplierId,
+            rfqId,
+            userId: 12321
+          }
+          const res = await getSupplierAllParts(req)
+          this.tableListData = res.records;
+          this.page.currPage = res.current
+          this.page.pageSize = res.size
+          this.page.totalCount = res.total
+          this.tableLoading = false;
+        } catch {
+          this.tableLoading = false;
+        }
+      }
     },
     deleteItems() {
     },
     uploadAttachments() {
 
     },
-    openMultiHeaderPropsPage() {
+    openMultiHeaderPropsPage(row) {
       this.dialogRemarks = true
+      this.selectedRowData = row
     },
     //修改表格改动列
     handleSelectionChange(val) {
@@ -122,10 +144,12 @@ export default {
     }
   }
 }
-.log-icon{
+
+.log-icon {
   font-size: 20px;
 }
-.log-word{
+
+.log-word {
   color: $color-blue;
   margin-left: 4px;
 }

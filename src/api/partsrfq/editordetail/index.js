@@ -69,6 +69,14 @@ export function cancelMoldBudget(parmars) {
     })
 }
 
+export function getSupplierAllParts(parmars) {
+    return requst({
+        url: '/api/supplier/getAllParts',
+        method: 'POST',
+        data: parmars
+    })
+}
+
 /*技术交流会*/
 export function getAllRfqParts(parmars) {
     return requst({

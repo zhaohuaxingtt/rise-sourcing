@@ -114,6 +114,7 @@ export default {
         res.result ? iMessage.success(res.desZh) : iMessage.error(res.desZh)
         this.tableLoading = false
         this.uploadAttachmentsButtonLoading = false
+        this.getTableList()
       }
     }
   }

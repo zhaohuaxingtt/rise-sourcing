@@ -24,8 +24,8 @@
       <template v-else>
         <el-table-column :key="index" align='center' v-if="items.props === actionProps" :prop="items.props"
                          :label="items.name">
-          <template>
-            <span class="openLinkText cursor" @click="openActionPropsPage">查看</span>
+          <template slot-scope="scope">
+            <span class="openLinkText cursor" @click="openActionPropsPage(scope.row)">查看</span>
           </template>
         </el-table-column>
         <el-table-column :key="index" align='center' v-else :label="items.name" :prop="items.props"></el-table-column>
@@ -53,8 +53,8 @@ export default {
     handleSelectionChange(val) {
       this.$emit('handleSelectionChange', val)
     },
-    openActionPropsPage() {
-      this.$emit('openActionPropsPage')
+    openActionPropsPage(row) {
+      this.$emit('openActionPropsPage', row)
     },
     openMultiHeaderPropsPage(row) {
       this.$emit('openMultiHeaderPropsPage', row)

@@ -88,3 +88,12 @@ export function closeCliantClearStoreage(){
     }
   }
 }
+
+export function serialize(data) {
+  let str = ''
+  for (let key in data) {
+    str += key + '=' + encodeURIComponent(data[key]) + '&'
+  }
+  str = str.replace(/&$/, '')
+  return str
+}

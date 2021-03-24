@@ -43,6 +43,7 @@ import {supplierScoreTitle} from "./data";
 import {pageMixins} from "@/utils/pageMixins";
 import tpbRemarks from './tpbRemarks'
 import {getAllSupplier, setTpbMemo} from "@/api/partsrfq/editordetail";
+import {serialize} from '@/utils'
 
 export default {
   components: {
@@ -91,9 +92,15 @@ export default {
     uploadAttachments() {
 
     },
-    openActionPropsPage() {
+    openActionPropsPage(row) {
+      const rfqId = this.$route.query.id
+      const supplierId = row.id
+      const params = serialize({
+        rfqId,
+        supplierId
+      })
       this.$router.push({
-        path: '/partsrfq/editordetail/partScoring'
+        path: `/partsrfq/editordetail/partScoring?${params}`
       })
     },
     openMultiHeaderPropsPage(row) {

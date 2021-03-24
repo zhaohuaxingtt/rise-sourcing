@@ -7,12 +7,12 @@
     <div class="changeContent">
       <iFormGroup row="1" icon>
         <iFormItem label="" name="memo">
-          <i-input type="textarea" :rows="8" resize="none" placeholder="请输入备注" v-model="memo"></i-input>
+          <i-input type="textarea" :rows="8" resize="none" placeholder="请输入备注" v-model="memo" :disabled="disabled"></i-input>
         </iFormItem>
       </iFormGroup>
     </div>
     <span slot="footer" class="dialog-footer">
-       <iButton @click="submit">确认</iButton>
+       <iButton @click="submit" v-if="!disabled">确认</iButton>
        <iButton @click="clearDiolog">取消</iButton>
     </span>
   </iDialog>
@@ -32,11 +32,11 @@ export default {
     title: {type: String, default: '备注'},
     value: {type: Boolean},
     repeatClick: Boolean,
-    memo: {type: String, default: ''}
+    memo: {type: String, default: ''},
+    disabled: {type: Boolean, default: false}
   },
   data() {
-    return {
-    }
+    return {}
   },
   methods: {
     clearDiolog() {

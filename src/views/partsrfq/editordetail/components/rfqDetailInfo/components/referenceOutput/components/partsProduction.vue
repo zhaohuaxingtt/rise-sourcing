@@ -41,6 +41,7 @@ import {partsProductionTableTitle} from "./data";
 import {pageMixins} from "@/utils/pageMixins";
 import {getRfqDataList} from "@/api/partsrfq/home";
 import {excelExport} from "@/utils/filedowLoad";
+import {serialize} from '@/utils'
 
 export default {
   components: {
@@ -101,7 +102,7 @@ export default {
       const purchasePrjectId = row.purchasePrjectId;
       const purchasingRequirementId = row.purchasingRequirementId
       const partNum = row.ninePartNum
-      const tab= 'outputPlan'
+      const tab = 'outputPlan'
       const req = {
         rfqId,
         rfqPlanId,
@@ -110,18 +111,10 @@ export default {
         partNum,
         tab
       }
-      const params = this.serialize(req)
+      const params = serialize(req)
       this.$router.push({
         path: `/partsprocure/editordetail?${params}`
       })
-    },
-    serialize(data) {
-      let str = ''
-      for (let key in data) {
-        str += key + '=' + encodeURIComponent(data[key]) + '&'
-      }
-      str = str.replace(/&$/, '')
-      return str
     }
   }
 }
