@@ -89,7 +89,7 @@
 				this.form['search.size'] = this.page.pageSize
 				this.form['search.current'] = this.page.currPage
 				this.form['search.rfqId']=this.rfqId
-				this.form.['search.partStatus']='12'
+				this.form['search.partStatus']='12'
 				getTabelData(this.form).then(res => {
 					this.confirmTableLoading = false
 					this.page.currPage = res.data.pageData.pageNum
@@ -98,7 +98,7 @@
 					this.confirmTableListData = res.data.pageData.data
 				}).catch(() => this.confirmTableLoading = false)
 				
-				this.form.['search.partStatus']='13'
+				this.form['search.partStatus']='13'
 				getTabelData(this.form).then(res => {
 					this.tableLoading = false
 					this.page.currPage = res.data.pageData.pageNum
