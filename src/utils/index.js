@@ -102,6 +102,8 @@ export function permissionTitle(key,titleList){
   // }
   return newTitleList
 }
+
+//序列化url参数传递
 export function serialize(data) {
   let str = ''
   for (let key in data) {

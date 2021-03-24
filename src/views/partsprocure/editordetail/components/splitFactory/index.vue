@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-03-24 18:12:23
- * @LastEditTime: 2021-03-24 22:38:58
+ * @LastEditTime: 2021-03-24 23:09:48
  * @LastEditors: Please set LastEditors
  * @Description: 拆分采购工厂
  * @FilePath: \rise\src\views\partsprocure\editordetail\components\splitFactory\index.vue
@@ -83,7 +83,9 @@ export default{
   mixins:[pageMixins],
   props:{
     splitPurchBoolean:Boolean,
-    purchaseProjectId:String
+    purchaseProjectId:String,
+    updateTabs:Function,
+    close:Function
   },
   components:{iDialog,iButton,iPagination,iInput},
   created(){
@@ -130,7 +132,7 @@ export default{
      })
     },
     fixedTo(data){
-      data.forEach(items=>{items.share = Number(items.share).toFixed(2)})
+      JSON.parse(JSON.stringify(data)).forEach(items=>{items.share = Number(items.share).toFixed(2)})
       return data
     },
     translateDataForService(){
@@ -148,6 +150,10 @@ export default{
               if(res.data){
                 this.btnLoding = false
                 iMessage.success("操作成功！")
+                this.updateTabs()
+                this.close()
+              }else{
+                iMessage.warn(res.desZh)
               }
       }).then(err=>{this.btnLoding = false})
     },

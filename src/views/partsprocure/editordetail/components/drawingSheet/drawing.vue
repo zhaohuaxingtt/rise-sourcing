@@ -32,8 +32,8 @@
       </tableList>
       <iPagination
         class="pagination margin-top30"
-        @size-change="handleSizeChange($event, getTable)"
-        @current-change="handleCurrentChange($event, getTable)"
+        @size-change="handleSizeChange($event, getInfoAnnexPage)"
+        @current-change="handleCurrentChange($event, getInfoAnnexPage)"
         background
         :current-page="page.currPage"
         :page-sizes="page.pageSizes"
@@ -85,9 +85,8 @@ export default {
         iMessage.error(`${ this.$i18n.locale === 'zh' ? res.desZh : res.desEn }`)
       } else {
         iMessage.success(`${ file.name } 上传成功`)
+        this.getInfoAnnexPage()
       }
-      
-      this.getTable()
     },
     uploadError(err, file) {
       this.uploadLoading = false
@@ -95,14 +94,16 @@ export default {
     },
     getInfoAnnexPage() {
       this.loading = true
+      
       getInfoAnnexPage({
         currPage: this.page.currPage,
         pageSize: this.page.pageSize,
         purchasingRequirementTargetId: this.params.purchasingRequirementTargetId || '192321'
       })
         .then(res => { 
+          console.log(res.data)
           this.tableListData = res.data.tpRecordList
-          this.page.totalCount = res.data.totalCount
+          this.page.totalCount = res.data.totalCount || 0
           this.loading = false
         })
         .catch(() => this.loading = false)
@@ -123,7 +124,8 @@ export default {
           this.multipleSelection = []
         })
         .catch(() => this.deleteLoading = false)
-    }
+    },
+    preview() {}
   }
 }
 </script>

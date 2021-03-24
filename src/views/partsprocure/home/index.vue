@@ -200,7 +200,7 @@ import {
 } from "@/components";
 import { pageMixins } from "@/utils/pageMixins";
 import backItems from "@/views/partsign/home/components/backItems";
-import { tableTitle, form, fromGroup } from "./component/data";
+import { tableTitle, form, fromGroup } from "./components/data";
 import tablelist from "../../partsign/home/components/tableList";
 import {
   getTabelData,

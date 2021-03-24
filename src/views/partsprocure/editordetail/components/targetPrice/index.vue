@@ -147,39 +147,37 @@
 			tablelist
 		},
 		props: {
-			targetprice: {
-				type: Object,
-				default: () => {
-					return targetPriceDetail
-				}
+			purchaseProjectId: {
+				type: String
 			}
 		},
 		data() {
 			return {
-				// radio: 1,
-				// reasons: "", //申请原因
-				// remarks: "", //申请备注
 				tableLoading: false,
 				selectTableData: [],
 				tableListData: [],
 				targeRwData:[],//rw记录
 				rwTitle: rwTitle,
-				targeTitle: targeTitle
+				targeTitle: targeTitle,
+				targetprice:targetPriceDetail
 			}
 		},
 		created() {
-			// 申请财务目标价
-			this.tableListData=[this.targetprice.cfTargetPriceDetail]
-			this.targeRwData=[this.targetprice.rwApplication]
+			this.targePriceDetail()
 		},
 		methods: {
-			getTableListFn() {
-				this.tableLoading = true
-				getTabelData().then(res => {
-					this.tableListData = res.data;
-					this.tableLoading = false
-				}).catch(() => this.tableLoading = false)
+			// 获取申请目标价数据
+			targePriceDetail(){
+				let data = {
+					"cfTargetpriceReq.purchaseProjectId": this.purchaseProjectId,
+				};
+				getTabelData(data).then((res) => {
+					this.detailData = res.data.targetprice;
+					this.tableListData=[this.targetprice.cfTargetPriceDetail]
+					this.targeRwData=[this.targetprice.rwApplication]
+				});
 			},
+			
 			//表格选中值集
 			handleSelectionChange(val) {
 				this.selectTableData = val
@@ -187,27 +185,27 @@
 			// 保存 ,申请财务目标价
 			save() {
 				let targetprice = {
-					operator: this.targetprice.operator,
-					purchaseProjectIds: this.targetprice.purchasePrjectId,
+					// operator: this.targetprice.operator,
+					purchaseProjectIds: this.purchaseProjectId,
 					cfTargetPriceDetail: this.targetprice.cfTargetPriceDetail,
 				};
 				changeProcure({
 					targetprice,
 				}).then((res) => {
-					this.$emit('refresh')
+					this.targePriceDetail()
 				});
 			},
 			//申请RW目标价
 			targeRw(){
 				let targetprice = {
-					operator: this.targetprice.operator,
-					purchaseProjectIds: this.targetprice.purchasePrjectId,
+					// operator: this.targetprice.operator,
+					purchaseProjectIds: this.purchaseProjectId,
 					rwApplication: this.targetprice.rwApplication,
 				};
 				changeProcure({
 					targetprice,
 				}).then((res) => {
-					this.$emit('refresh')
+					this.targePriceDetail()
 				});
 			}
 		}

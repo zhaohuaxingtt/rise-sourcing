@@ -247,7 +247,6 @@
 		methods: {
 			// 获取物流信息
 			getLogistics() {
-				console.log(this.infoItem);
 				let otherInfoPackage = {
 					findType: '02',
 					partNum: this.infoItem.partNum,

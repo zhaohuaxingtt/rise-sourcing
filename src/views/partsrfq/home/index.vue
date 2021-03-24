@@ -48,6 +48,7 @@
           <iButton @click="editRfq('01')" :loading="closeButtonLoading">关闭RFQ</iButton>
           <iButton @click="assignmentOfScoringTasks">转派评分任务</iButton>
           <iButton @click="editRfq('03')" :loading="transferNegotiationButtonLoading">转谈判</iButton>
+          <iButton @click="editRfq('04')" :loading="transferInquiryButtonLoading">转询价</iButton>
           <iButton disabled>创建定点申请</iButton>
           <iButton @click="exportTable">导出</iButton>
         </div>
@@ -134,6 +135,7 @@ export default {
       activateButtonLoading: false,
       closeButtonLoading: false,
       transferNegotiationButtonLoading: false,
+      transferInquiryButtonLoading: false,
       carTypeOptions: [],
       partTypeOptions: [],
       rfqStatusOptions: [],
@@ -245,6 +247,9 @@ export default {
           break;
         case '03':
           this.transferNegotiationButtonLoading = boolean
+          break;
+        case '04':
+          this.transferInquiryButtonLoading = boolean
           break;
       }
     },

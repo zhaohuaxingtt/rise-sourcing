@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2021-03-24 20:31:40
+ * @LastEditTime: 2021-03-24 23:07:57
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsprocure\editordetail\index.vue
@@ -215,9 +215,9 @@
         <materialGroupInfo />
       </el-tab-pane>
       <el-tab-pane label="零件产量计划">
-        <outputPlan :params="infoItem" />
-        <outputRecord class="margin-top20" />
-        <usage class="margin-top20" />
+        <outputPlan ref="outputPlan" :params="infoItem" />
+        <outputRecord ref="outputRecord" class="margin-top20" />
+        <usage ref='usage' class="margin-top20" />
       </el-tab-pane>
       <el-tab-pane label="图纸和TP详情页">
         <drawing :params="infoItem" />
@@ -244,7 +244,12 @@
       @sure="cancel"
       title="结束项目"
     ></backItems>
-    <splitFactory :splitPurchBoolean='splitPurchBoolean' :purchaseProjectId='purchaseProjectId'></splitFactory>
+    <splitFactory
+      :splitPurchBoolean="splitPurchBoolean"
+      :purchaseProjectId="purchaseProjectId"
+      :update='updateTabs'
+      :close='splitPurch'
+    ></splitFactory>
   </iPage>
 </template>
 <script>
@@ -271,8 +276,8 @@ import backItems from "@/views/partsign/home/components/backItems";
 import { getPageGroup } from "@/api/partsign/home";
 import logButton from "@/views/partsign/editordetail/components/logButton";
 import { getTabelData, changeProcure } from "@/api/partsprocure/home";
-import {detailData} from "./components/data";
-import splitFactory from './components/splitFactory'
+import { detailData } from "./components/data";
+import splitFactory from "./components/splitFactory";
 export default {
   components: {
     iPage,
@@ -294,7 +299,7 @@ export default {
     remarks,
     logButton,
     backItems,
-    splitFactory
+    splitFactory,
   },
   data() {
     return {
@@ -305,12 +310,12 @@ export default {
       diologBack: false, //取消零件采购
       diologClose: false, //结束项目
       splitPurchBoolean: false,
-      purchaseProjectId:''
+      purchaseProjectId: "",
     };
   },
   created() {
     this.infoItem = JSON.parse(this.$route.query.item);
-    this.purchaseProjectId = this.infoItem.purchasePrjectId
+    this.purchaseProjectId = this.infoItem.purchasePrjectId;
     this.getDatail();
     this.getPageGroup();
   },
@@ -430,6 +435,12 @@ export default {
         "_blank"
       );
     },
+    // 更新页签
+    updateTabs() {
+      this.$refs.outputPlan.getData();
+      this.$refs.outputRecord.getData();
+      this.$refs.usage.getData();
+    }
   },
 };
 </script>

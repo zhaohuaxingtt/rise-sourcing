@@ -18,7 +18,8 @@
         :tableLoading="tableLoading"
         @handleSelectionChange="handleSelectionChange"
         :index="true"
-        open-page-props="a"
+        open-page-props="fileName"
+        :openPageGetRowData="true"
         @openPage="handleOpenPage"
     ></tablelist>
     <!------------------------------------------------------------------------>
@@ -124,7 +125,13 @@ export default {
     handleSelectionChange(val) {
       this.selectTableData = val;
     },
-    handleOpenPage() {
+    handleOpenPage(row) {
+      const url = row.filePath
+      const a = document.createElement('a');
+      a.setAttribute('download', '')
+      a.setAttribute('href', url);
+      a.setAttribute('target', '_blank');
+      a.click();
     }
   }
 }
