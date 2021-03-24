@@ -14,47 +14,47 @@
 		<!------------------------------------------------------------------------>
 		<!--                  search 搜索模块                                   --->
 		<!------------------------------------------------------------------------>
-		<iSearch class="margin-bottom20" @sure="sure" @reset="reset">
+		<iSearch class="margin-bottom20" @sure="sure" @reset="reset" :resetKey="PARTSPROCURE_RESET" :searchKey="PARTSPROCURE_CONFIRM">
 			<el-form>
 				<el-form-item label="零件号">
-					<iInput placeholder='请输入零件号,多个逗号分隔' v-model="form['search.partNum']"></iInput>
+					<iInput placeholder='请输入零件号,多个逗号分隔' v-model="form['search.partNum']" v-permission=""></iInput>
 				</el-form-item>
 				<el-form-item label="零件名（中）">
-					<iInput placeholder='请输入零件名（中）' v-model="form['search.partNameZh']"></iInput>
+					<iInput placeholder='请输入零件名（中）' v-model="form['search.partNameZh']" v-permission=""></iInput>
 				</el-form-item>
 				<el-form-item label="FSNR/GSNR/SPNR">
-					<iInput placeholder='请输入FSNR/GSNR/SPNR' v-model="form['search.fsnrGsnrNum']"></iInput>
+					<iInput placeholder='请输入FSNR/GSNR/SPNR' v-model="form['search.fsnrGsnrNum']" v-permission=""></iInput>
 				</el-form-item>
 				<el-form-item label="询价采购员">
-					<iSelect placeholder='请选择询价采购员' v-model="form['search.buyerName']">
+					<iSelect placeholder='请选择询价采购员' v-model="form['search.buyerName']" v-permission="">
 						<!-- <el-option :value="item.value" :label="item.label" v-for="(item,index) in getGroupList()" :key="index"></el-option> -->
 					</iSelect>
 				</el-form-item>
 				<el-form-item label="LINIE">
-					<iInput placeholder='请填写LINIE' v-model="form['search.linieName']"></iInput>
+					<iInput placeholder='请填写LINIE' v-model="form['search.linieName']" v-permission=""></iInput>
 				</el-form-item>
 				<el-form-item label="零件状态">
-					<iSelect placeholder='请选择零件状态' v-model="form['search.partStatus']">
+					<iSelect placeholder='请选择零件状态' v-model="form['search.partStatus']" v-permission="">
 						<el-option :value="item.value" :label="item.label" v-for="(item,index) in getGroupList('part_status')" :key="index"></el-option>
 					</iSelect>
 				</el-form-item>
 				<el-form-item label="车型大类">
-					<iSelect placeholder='请选择车型' v-model="form['search.cartypeCategory']">
+					<iSelect placeholder='请选择车型' v-model="form['search.cartypeCategory']" v-permission="">
 						<el-option :value="item.value" :label="item.label" v-for="(item,index) in getGroupList('cartype_category')" :key="index"></el-option>
 					</iSelect>
 				</el-form-item>
 				<el-form-item label="车型项目">
-					<iSelect placeholder='请选择车型项目' v-model="form['search.cartypeProjectZh']">
+					<iSelect placeholder='请选择车型项目' v-model="form['search.cartypeProjectZh']" v-permission="">
 						<el-option :value="item.value" :label="item.label" v-for="(item,index) in getGroupList('cartype_project_zh')" :key="index"></el-option>
 					</iSelect>
 				</el-form-item>
 				<el-form-item label="零件项目类型">
-					<iSelect placeholder='请选择零件项目类型' v-model="form['search.partPrejectType']">
+					<iSelect placeholder='请选择零件项目类型' v-model="form['search.partPrejectType']" v-permission="">
 						<el-option :value="item.value" :label="item.label" v-for="(item,index) in getGroupList('part_preject_type')" :key="index"></el-option>
 					</iSelect>
 				</el-form-item>
 				<el-form-item label="采购工厂">
-					<iSelect placeholder='请选择采购工厂' v-model="form['search.procureFactory']">
+					<iSelect placeholder='请选择采购工厂' v-model="form['search.procureFactory']" v-permission="">
 						<el-option :value="item.value" :label="item.label" v-for="(item,index) in getGroupList('procure_factory')" :key="index"></el-option>
 					</iSelect>
 				</el-form-item>

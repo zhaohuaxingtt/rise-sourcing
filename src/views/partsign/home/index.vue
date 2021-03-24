@@ -18,7 +18,7 @@
     <!------------------------------------------------------------------------>
     <!--                  search 搜索模块                                   --->
     <!------------------------------------------------------------------------>
-    <iSearch class="margin-bottom20" @sure="sure" @reset="reset" :resetKey="PARTSIGN_RESETBUTTON" :searchKey:"PARTSIGN_CONFIRMBUTTON">
+    <iSearch class="margin-bottom20" @sure="sure" @reset="reset" :resetKey="PARTSIGN_RESETBUTTON" :searchKey="PARTSIGN_CONFIRMBUTTON">
       <el-form>
         <el-form-item label="零件号" >
           <iInput v-model="form.partNum" placeholder="请输入零件号" v-permission="PARTSIGN_PARTNUM"></iInput>
