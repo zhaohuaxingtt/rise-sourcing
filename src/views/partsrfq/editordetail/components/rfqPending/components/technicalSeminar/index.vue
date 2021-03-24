@@ -147,7 +147,8 @@ export default {
         meetingLocation: otherMeetingInformationData.meetingLocation,
         memo: otherMeetingInformationData.memo,
         meetingStuff: meetingStuffList.join(','),
-        supplierId: supplierIdList,
+        //supplierIds: supplierIdList,
+        supplierIds: ['11'],
         partNums: partNumsList,
       }
       const res = await addTechnology(req)

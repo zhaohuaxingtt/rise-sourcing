@@ -20,9 +20,9 @@
         <template #tpPartAttachmentName="scope">
           <span class="link-underline" @click="preview">{{ scope.row.tpPartAttachmentName }}</span>
         </template>
-        <!-- <template #c="scope">
-          <span>{{ scope.row.c }}</span>
-        </template> -->
+        <template #updateDate="scope">
+          <span>{{ scope.row.updateDate | dateFilter }}</span>
+        </template>
       </tableList>
       <iPagination
         class="pagination"
@@ -46,10 +46,11 @@ import tableList from './tableList'
 import { enquiryTableTitle as tableTitle } from './data'
 import { getInfoAnnexPage } from '@/api/partsign/editordetail'
 import { pageMixins } from '@/utils/pageMixins'
+import filters from '@/utils/filters'
 
 export default {
   components: { iCard, iButton, iPagination, tableList },
-  mixins: [ pageMixins ],
+  mixins: [ pageMixins, filters ],
   props: {
     data: {
       type: Array,
