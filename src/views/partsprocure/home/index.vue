@@ -200,7 +200,7 @@ import {
 } from "@/components";
 import { pageMixins } from "@/utils/pageMixins";
 import backItems from "@/views/partsign/home/components/backItems";
-import { tableTitle, form, fromGroup } from "./component/data";
+import { tableTitle, form, fromGroup } from "./components/data";
 import tablelist from "../../partsign/home/components/tableList";
 import {
   getTabelData,
@@ -318,6 +318,7 @@ export default {
     },
     // 取消零件采购
     cancel(backmark) {
+		console.log(this.selectTableData);
       let cancel = {
         cancelRemark: backmark,
         purchaseProjectIds: this.getPurchasePrjectId(),

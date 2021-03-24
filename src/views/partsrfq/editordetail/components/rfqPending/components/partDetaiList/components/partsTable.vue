@@ -39,11 +39,11 @@
 				tableLoading: false,
 				tableListData: [],
 				parmarsNotHasRfq: JSON.parse(JSON.stringify(form)),
-				handleSelectArr: []
+				handleSelectArr: [],
+				tableTitle,
 			}
 		},
 		created() {
-			console.log(this.tableTitle);
 			this.getTableList()
 		},
 		methods: {
@@ -53,7 +53,7 @@
 				this.parmarsNotHasRfq['search.current'] = this.page.currPage
 				this.parmarsNotHasRfq['search.rfqId'] = this.rfqId
 				this.parmarsNotHasRfq['search.partStatus'] = '13'
-				getTabelData(this.form).then(res => {
+				getTabelData(this.parmarsNotHasRfq).then(res => {
 					this.tableLoading = false
 					this.page.currPage = res.data.pageData.pageNum
 					this.page.pageSize = res.data.pageData.pageSize
@@ -65,8 +65,14 @@
 			handleSelectionChange(e) {
 				this.handleSelectArr = e;
 			},
-			openPage() {
-				console.log(1);
+			// 跳转详情
+			openPage(item) {
+			  this.$router.push({
+			    path: "/partsprocure/editordetail",
+			    query: {
+			      item: JSON.stringify(item),
+			    },
+			  });
 			},
 		}
 	}

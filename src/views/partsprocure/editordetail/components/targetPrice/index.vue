@@ -156,9 +156,6 @@
 		},
 		data() {
 			return {
-				// radio: 1,
-				// reasons: "", //申请原因
-				// remarks: "", //申请备注
 				tableLoading: false,
 				selectTableData: [],
 				tableListData: [],
