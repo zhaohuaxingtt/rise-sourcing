@@ -412,6 +412,9 @@ export default {
     openBatchmiantain() {
       this.$router.push({
         path: "/partsprocure/batchmiantain",
+		query:{
+			ids:this.getPurchasePrjectId()
+		} 
       });
     },
   },
