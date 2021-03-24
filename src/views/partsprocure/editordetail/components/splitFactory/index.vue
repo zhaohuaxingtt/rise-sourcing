@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-03-24 18:12:23
- * @LastEditTime: 2021-03-24 23:09:48
+ * @LastEditTime: 2021-03-24 23:16:34
  * @LastEditors: Please set LastEditors
  * @Description: 拆分采购工厂
  * @FilePath: \rise\src\views\partsprocure\editordetail\components\splitFactory\index.vue
@@ -132,8 +132,9 @@ export default{
      })
     },
     fixedTo(data){
-      JSON.parse(JSON.stringify(data)).forEach(items=>{items.share = Number(items.share).toFixed(2)})
-      return data
+      const newData = JSON.parse(JSON.stringify(data))
+      newData.forEach(items=>{items.share = Number(items.share).toFixed(2)})
+      return newData
     },
     translateDataForService(){
       return {
