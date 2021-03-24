@@ -37,7 +37,11 @@ export function putPerCarDosage(params) {
 }
 
 // 获取附件信息
-export function getInfoAnnexPage() {
-
+export function getInfoAnnexPage(params) {
+  return requst({
+    url: '/tp-records/tpInfo/getInfoAnnexPage',
+    method: 'POST',
+    data: params
+  })
 }
 

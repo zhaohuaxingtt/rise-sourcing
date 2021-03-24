@@ -178,13 +178,13 @@
         <materialGroupInfo />
       </el-tab-pane>
       <el-tab-pane label="零件产量计划">
-        <outputPlan />
+        <outputPlan :params="infoItem" />
         <outputRecord class="margin-top20" />
         <usage class="margin-top20" />
       </el-tab-pane>
       <el-tab-pane label="图纸和TP详情页">
-        <drawing />
-        <sheet class="margin-top20" />
+        <drawing :params="infoItem" />
+        <sheet class="margin-top20" :params="infoItem" />
       </el-tab-pane>
       <el-tab-pane label="物流要求">
         <logistics :infoItem="infoItem"></logistics>

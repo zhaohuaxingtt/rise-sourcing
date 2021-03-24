@@ -1,11 +1,11 @@
 <template>
-  <iCard class="outputRecord" tabCard title="图纸">
+  <iCard class="outputRecord" tabCard title="询价附件">
     <template v-slot:header-control>
       <iButton class="deleteBtn" @click="handleDelete" :loading="deleteLoading">删除</iButton>
       <el-upload 
         class="uploadBtn" 
         multiple
-        :action="action"
+        :action="`${ action }?purchasingApplyTargetId=${ params.purchasingRequirementTargetId || '192321' }`"
         :show-file-list="false" 
         :before-upload="beforeUpload"
         :on-success="uploadSuccess"
@@ -23,8 +23,11 @@
         :tableTitle="tableTitle" 
         :tableLoading="loading"
         @handleSelectionChange="handleSelectionChange">
-        <template #a="scope">
-          <span class="link-underline" @click="preview">{{ scope.row.a }}</span>
+        <template #tpPartAttachmentName="scope">
+          <span class="link-underline" @click="preview">{{ scope.row.tpPartAttachmentName }}</span>
+        </template>
+        <template #updateDate="scope">
+          <span>{{ scope.row.updateDate | dateFilter }}</span>
         </template>
       </tableList>
       <iPagination
@@ -32,7 +35,7 @@
         @size-change="handleSizeChange($event, getTable)"
         @current-change="handleCurrentChange($event, getTable)"
         background
-        :current-page="page.size"
+        :current-page="page.currPage"
         :page-sizes="page.pageSizes"
         :page-size="page.pageSize"
         :layout="page.layout"
@@ -46,23 +49,31 @@ import { iCard, iButton, iPagination, iMessage } from '@/components'
 import tableList from '@/views/partsign/editordetail/components/tableList'
 import { pageMixins } from '@/utils/pageMixins'
 import { tableTitle } from './data'
+import { getInfoAnnexPage, deleteFile } from "@/api/partsprocure/editordetail";
+import filters from '@/utils/filters'
 
 export default {
   components: { iCard, iButton, tableList, iPagination },
-  mixins: [ pageMixins ],
+  mixins: [ pageMixins, filters ],
+  props: {
+    params: {
+      type: Object,
+      require: true
+    }
+  },
   data() {
     return {
       loading: false,
       uploadLoading: false,
       deleteLoading: false,
-      action: '', // 上传api
+      action: '/tpInfoApi/tp-records/tpInfo/file', // 上传api
       tableTitle,
       tableListData: [],
-      multipleSelection: []
+      multipleSelection: [],
     }
   },
   created() {
-    this.getTable()
+    this.getInfoAnnexPage()
   },
   methods: {
     beforeUpload() {
@@ -70,19 +81,31 @@ export default {
     },
     uploadSuccess(res, file) {
       this.uploadLoading = false
-      iMessage.success(`${ file.name } 上传成功`)
+      if (res.code != 200) {
+        iMessage.error(`${ this.$i18n.locale === 'zh' ? res.desZh : res.desEn }`)
+      } else {
+        iMessage.success(`${ file.name } 上传成功`)
+      }
+      
       this.getTable()
     },
     uploadError(err, file) {
       this.uploadLoading = false
       iMessage.error(`${ file.name } 上传失败`)
     },
-    getTable() {
+    getInfoAnnexPage() {
       this.loading = true
-      const timer = setTimeout(() => {
-        this.loading = false
-        this.page.totalCount = 0
-      }, 1000)
+      getInfoAnnexPage({
+        currPage: this.page.currPage,
+        pageSize: this.page.pageSize,
+        purchasingRequirementTargetId: this.params.purchasingRequirementTargetId || '192321'
+      })
+        .then(res => { 
+          this.tableListData = res.data.tpRecordList
+          this.page.totalCount = res.data.totalCount
+          this.loading = false
+        })
+        .catch(() => this.loading = false)
     },
     handleSelectionChange(list) {
       this.multipleSelection = list
@@ -91,19 +114,15 @@ export default {
       if (!this.multipleSelection.length) return iMessage.warn('请选择需要删除的图纸')
 
       // 后端删除
-      // this.deleteLoading = true
-      // delete(this.multipleSelection.map(item => item.id))
-      //   .then(res => {
-      //     iMessage.success('删除成功')
-      //     this.getTable()
-      //     this.deleteLoading = false
-      //     this.multipleSelection = []
-      //   })
-      //   .catch(() => this.deleteLoading = false)
-
-      // 前端删除
-      this.tableListData = this.tableListData.filter(item => !this.multipleSelection.includes(item))
-      this.multipleSelection = []
+      this.deleteLoading = true
+      deleteFile({ ids: this.multipleSelection.map(item => item.id) })
+        .then(res => {
+          iMessage.success('删除成功')
+          this.getInfoAnnexPage()
+          this.deleteLoading = false
+          this.multipleSelection = []
+        })
+        .catch(() => this.deleteLoading = false)
     }
   }
 }

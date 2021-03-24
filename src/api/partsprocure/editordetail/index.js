@@ -1,5 +1,8 @@
 import axios from '@/utils/axios'
-const requst = axios(process.env.VUE_APP_PARTSPROCURE)
+const requst = axios(process.env.VUE_APP_PARTS)
+// VUE_APP_PARTSPROCURE
+// VUE_APP_PART_PROCURE wenpeng
+// VUE_APP_PARTS
 
 // 采购项目-获取材料组信息
 export function getMaterialGroup(params){
@@ -28,3 +31,41 @@ export function putMaterialGroup(params){
   })
 }
 
+// 获取tp单数据
+export function getTpInfo(params){
+  return requst({
+    url: '/tp-records/tpInfo',
+    method: 'POST',
+    data:{
+      tpRecordsScenes: params
+    }
+  })
+}
+
+// 获取附件
+export function getInfoAnnexPage(params) {
+  return requst({
+    url: '/tp-records/tpInfo/getInfoAnnexPage',
+    method: 'POST',
+    data: params
+  })
+}
+
+// 删除附件
+export function deleteFile(params) {
+  return requst({
+    url: '/tp-records/tpInfo/file',
+    method: 'DELETE',
+    params: params
+  })
+}
+
+// 获取产量计划
+export function getOutputPlan(params) {
+  return requst({
+    url: '/api/part-src-prjs',
+    method: 'GET',
+    params: params
+    // partOutputPlanReqDTO.purchaseProjectId
+  })
+}
