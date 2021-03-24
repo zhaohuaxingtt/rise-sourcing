@@ -12,7 +12,7 @@ import App from './App.vue'
 import store from './store'
 import '@/assets/style/global/index.scss'
 import './utils/mydirect'
-import './permission' 
+// import './permission' 
 require('./auto').init()
 Vue.config.productionTip = false
 new Vue({

@@ -19,11 +19,7 @@
 		<di class="addFs flex-align-center">
 			<iButton @click="addFsList">添加</iButton>
 		</di>
-		<tableList :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="tableLoading"
-			@handleSelectionChange="handleSelectionChange" @openPage="openPage"></tableList>
-		<iPagination @size-change="handleSizeChange($event, getTableList)"
-			@current-change="handleCurrentChange($event, getTableList)" background :page-sizes="page.pageSizes"
-			:page-size="page.pageSize" :layout="page.layout" :total="page.totalCount"></iPagination>
+		<partsTable  :rfqId="rfqId"></partsTable>
 		<!-- 新申请财务目标价 -->
 		<applyPrice ref="applyPrice"></applyPrice>
 	</iCard>
@@ -36,10 +32,18 @@
 		iPagination,
 	} from "@/components";
 	import tableList from "@/views/partsign/home/components/tableList";
-	import {tableTitle,form} from "@/views/partsprocure/home/component/data";
-	import {getTabelData} from '@/api/partsprocure/home';
-	import {pageMixins} from "@/utils/pageMixins";
-	import applyPrice from "./compoents/applyPrice";
+	import {
+		tableTitle,
+		form
+	} from "@/views/partsprocure/home/components/data";
+	import {
+		getTabelData
+	} from '@/api/partsprocure/home';
+	import {
+		pageMixins
+	} from "@/utils/pageMixins";
+	import applyPrice from "./components/applyPrice";
+	import partsTable from './components/partsTable'
 	export default {
 		mixins: [pageMixins],
 		components: {
@@ -48,10 +52,11 @@
 			tableList,
 			iPagination,
 			applyPrice,
+			partsTable
 		},
 		created() {
 			// this.getConfirmTableList();
-			this.rfqId=this.$route.query.id
+			this.rfqId = this.$route.query.id
 			this.getTableList();
 		},
 		data() {
@@ -63,9 +68,9 @@
 				confirmTableLoading: false,
 				handleSelectArr: [], //选中添加零件清单数据
 				applyPriceShow: false, //显示财务申请价
-				parmarsHasRfq:JSON.parse(JSON.stringify(form)),
-				parmarsNotHasRfq:JSON.parse(JSON.stringify(form)),
-				rfqId:"",
+				parmarsHasRfq: JSON.parse(JSON.stringify(form)),
+				// parmarsNotHasRfq: JSON.parse(JSON.stringify(form)),
+				rfqId: "",
 			};
 		},
 		methods: {
@@ -89,8 +94,8 @@
 				this.confirmTableLoading = true
 				this.parmarsHasRfq['search.size'] = this.page.pageSize
 				this.parmarsHasRfq['search.current'] = this.page.currPage
-				this.parmarsHasRfq['search.rfqId']=this.rfqId
-				this.parmarsHasRfq['search.partStatus']='12'
+				this.parmarsHasRfq['search.rfqId'] = this.rfqId
+				this.parmarsHasRfq['search.partStatus'] = '12'
 				getTabelData(this.form).then(res => {
 					this.confirmTableLoading = false
 					this.page.currPage = res.data.pageData.pageNum
@@ -98,17 +103,17 @@
 					this.page.totalCount = res.data.pageData.total
 					this.confirmTableListData = res.data.pageData.data
 				}).catch(() => this.confirmTableLoading = false)
-				this.parmarsNotHasRfq['search.size'] = this.page.pageSize
-				this.parmarsNotHasRfq['search.current'] = this.page.currPage
-				this.parmarsNotHasRfq['search.rfqId']=this.rfqId
-				this.parmarsNotHasRfq['search.partStatus']='12'
-				getTabelData(this.form).then(res => {
-					this.tableLoading = false
-					this.page.currPage = res.data.pageData.pageNum
-					this.page.pageSize = res.data.pageData.pageSize
-					this.page.totalCount = res.data.pageData.total
-					this.tableListData = res.data.pageData.data
-				}).catch(() => this.tableLoading = false)
+				// this.parmarsNotHasRfq['search.size'] = this.page.pageSize
+				// this.parmarsNotHasRfq['search.current'] = this.page.currPage
+				// this.parmarsNotHasRfq['search.rfqId'] = this.rfqId
+				// this.parmarsNotHasRfq['search.partStatus'] = '12'
+				// getTabelData(this.form).then(res => {
+				// 	this.tableLoading = false
+				// 	this.page.currPage = res.data.pageData.pageNum
+				// 	this.page.pageSize = res.data.pageData.pageSize
+				// 	this.page.totalCount = res.data.pageData.total
+				// 	this.tableListData = res.data.pageData.data
+				// }).catch(() => this.tableLoading = false)
 			},
 			// 获取已确认表格数据
 			getConfirmTableList() {},
@@ -117,7 +122,7 @@
 				this.$refs.applyPrice.show()
 			},
 			// 再次申请财务目标价
-			againApply(){
+			againApply() {
 				this.$refs.applyPrice.againShow()
 			}
 		},

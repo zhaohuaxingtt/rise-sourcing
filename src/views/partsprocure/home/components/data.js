@@ -76,7 +76,3 @@ export const form = {
 	'search.size':'',
 	'search.current':""
 }
-export const fromGroup = {
-	
-	
-}
