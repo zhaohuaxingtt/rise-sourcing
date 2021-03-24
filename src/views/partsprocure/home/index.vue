@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 09:50:42
- * @LastEditTime: 2021-03-24 17:56:06
+ * @LastEditTime: 2021-03-24 17:59:49
  * @LastEditors: Please set LastEditors
  * @Description: 零件采购项目建立首页。
  * @FilePath: \rise\src\views\partsprocure\home\index.vue
@@ -374,6 +374,9 @@ export default {
           this.startLoding = false;
         });
     },
+    /*********************************************************************
+     *   												end
+     *********************************************************************/
     // 生成fs号
     creatFs() {
       if (this.selectTableData.length == 0)
@@ -414,7 +417,7 @@ export default {
   },
 };
 </script>
-<style lang='scss' scoped>
+<style lang="scss" scoped>
 .checkBox {
   position: relative;
   top: 30px;

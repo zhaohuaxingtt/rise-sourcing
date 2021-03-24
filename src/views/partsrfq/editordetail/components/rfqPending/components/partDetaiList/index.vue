@@ -63,7 +63,8 @@
 				confirmTableLoading: false,
 				handleSelectArr: [], //选中添加零件清单数据
 				applyPriceShow: false, //显示财务申请价
-				form:form,
+				parmarsHasRfq:JSON.parse(JSON.stringify(form)),
+				parmarsNotHasRfq:JSON.parse(JSON.stringify(form)),
 				rfqId:"",
 			};
 		},
@@ -86,10 +87,10 @@
 			//获取表格数据
 			getTableList() {
 				this.confirmTableLoading = true
-				this.form['search.size'] = this.page.pageSize
-				this.form['search.current'] = this.page.currPage
-				this.form['search.rfqId']=this.rfqId
-				this.form['search.partStatus']='12'
+				this.parmarsHasRfq['search.size'] = this.page.pageSize
+				this.parmarsHasRfq['search.current'] = this.page.currPage
+				this.parmarsHasRfq['search.rfqId']=this.rfqId
+				this.parmarsHasRfq['search.partStatus']='12'
 				getTabelData(this.form).then(res => {
 					this.confirmTableLoading = false
 					this.page.currPage = res.data.pageData.pageNum
@@ -97,8 +98,10 @@
 					this.page.totalCount = res.data.pageData.total
 					this.confirmTableListData = res.data.pageData.data
 				}).catch(() => this.confirmTableLoading = false)
-				
-				this.form['search.partStatus']='13'
+				this.parmarsNotHasRfq['search.size'] = this.page.pageSize
+				this.parmarsNotHasRfq['search.current'] = this.page.currPage
+				this.parmarsNotHasRfq['search.rfqId']=this.rfqId
+				this.parmarsNotHasRfq['search.partStatus']='12'
 				getTabelData(this.form).then(res => {
 					this.tableLoading = false
 					this.page.currPage = res.data.pageData.pageNum
