@@ -40,9 +40,6 @@ export default {
       selectTableData: []
     }
   },
-  created() {
-    this.getTableList()
-  },
   methods: {
     //获取表格数据
     async getTableList() {
@@ -54,10 +51,10 @@ export default {
             rfqId: id
           }
           const res = await getAllRfqSupplier(req)
-          this.tableListData = res.data;
-          this.page.currPage = res.data.rfqCfPriceVO.pageNum
-          this.page.pageSize = res.data.rfqCfPriceVO.pageSize
-          this.page.totalCount = res.data.rfqCfPriceVO.total
+          this.tableListData = res.records;
+          this.page.currPage = res.current
+          this.page.pageSize = res.size
+          this.page.totalCount = res.total
           this.tableLoading = false;
         } catch {
           this.tableLoading = false;
@@ -74,6 +71,11 @@ export default {
     save() {
       if (this.selectTableData.length == '') return iMessage.warn('抱歉！您当前还未选择！')
       this.$emit('sure', JSON.parse(this.selectTableData))
+    }
+  },
+  watch: {
+    value() {
+      this.getTableList()
     }
   }
 }

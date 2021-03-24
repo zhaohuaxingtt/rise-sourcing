@@ -40,8 +40,7 @@ export function putPerCarDosage(params) {
 export function getInfoAnnexPage(params) {
   return requst({
     url: '/tp-records/tpInfo/getInfoAnnexPage',
-    method: 'POST',
-    data: params
+    method: 'GET',
+    params: params
   })
 }
-
