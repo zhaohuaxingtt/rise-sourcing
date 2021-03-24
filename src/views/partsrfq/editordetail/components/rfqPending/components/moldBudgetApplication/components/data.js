@@ -6,10 +6,10 @@
  */
 export const tableTitle = [
     {props:'purchaseTargetId',name:'零件号'},
-    {props:'b',name:'FSNR/GSNR'},
-    {props:'c',name:'RFQ编号'},
-    {props:'createDate',name:'申请日期'},
-    {props:'e',name:'车型项目'},
+    {props:'fsnrGsnrNum',name:'FSNR/GSNR'},
+    {props:'rfqId',name:'RFQ编号'},
+    {props:'applyTime',name:'申请日期'},
+    {props:'cartypeProjectZh',name:'车型项目'},
     {props:'pricing',name:'投资预算（RMB）'},
     {props:'csfPDiretorId',name:'CSF(P)负责⼈'},
     {props:'approvalStatus',name:'审批状态'},

@@ -11,7 +11,6 @@
       :on-success="handleAvatarSuccess"
       :before-upload="beforeAvatarUpload"
       :http-request="myUpload"
-      :limit="1"
       accept=".xlsx,.pdf,.docx"
   >
     <iButton :loading="uploadButtonLoading">{{buttonText}}</iButton>
@@ -44,7 +43,7 @@ export default {
         const res = await uploadImg(formData)
         this.uploadLoading = false
         this.$emit('uploadedCallback', res)*/
-      this.$emit('uploadedCallback')
+      this.$emit('uploadedCallback', content)
     },
   }
 }

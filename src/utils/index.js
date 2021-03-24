@@ -1,11 +1,12 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-03-22 17:47:00
+ * @LastEditTime: 2021-03-24 14:37:17
  * @LastEditors: Please set LastEditors
  * @Description: 公共utils部分
  * @FilePath: \rise\src\utils\index.js
  */
+import store from '../store'
 import localStoreage from './localstorage'
 import jsencrypt from 'jsencrypt'
 export function setCookie(cookieName, cookieData) {
@@ -87,4 +88,26 @@ export function closeCliantClearStoreage(){
       removeRefreshToken()
     }
   }
+}
+
+//表头数据权限过滤
+export function permissionTitle(key,titleList){
+  const permissionMap = store.state.permission.whiteBtnList[key]
+  let newTitleList = JSON.parse(JSON.stringify(titleList))
+  if(permissionMap){
+    const a = []
+    titleList.forEach(element => {
+       if(permissionMap.fieldList.find(items=>items.fieldName == element.props)) a.push(element)
+    });
+    newTitleList = a
+  }
+  return newTitleList
+}
+export function serialize(data) {
+  let str = ''
+  for (let key in data) {
+    str += key + '=' + encodeURIComponent(data[key]) + '&'
+  }
+  str = str.replace(/&$/, '')
+  return str
 }

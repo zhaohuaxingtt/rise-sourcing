@@ -9,43 +9,35 @@
 import axios from '@/utils/axios'
 const requst = axios(process.env.VUE_APP_PARTS)
 
-export function getEnquiryList(parmars) {
-  return requst({
-    url: 'https://www.fastmock.site/mock/5cd3e97d6126b18b5e16f3e499489335/api/partsign/getEnquiryList',
-    method: 'GET',
-    data: parmars
-  })
-}
-// 零件详细信息
-export function getPartInfo(parmars) {
-  return requst({
-    url: 'https://www.fastmock.site/mock/5cd3e97d6126b18b5e16f3e499489335/api/partsign/getPartInfo',
-    method: 'GET',
-    data: parmars
-  })
-}
-// 零件详情-每车用量
-export function getVolume(parmars) {
-  return requst({
-    url: 'https://www.fastmock.site/mock/5cd3e97d6126b18b5e16f3e499489335/api/partsign/getUsage',
-    method: 'GET',
-    data: parmars
-  })
-}
-// 零件详情-待确认版本
-export function getUnconfirmed(parmars) {
-  return requst({
-    url: 'https://www.fastmock.site/mock/5cd3e97d6126b18b5e16f3e499489335/api/partsign/getUnconfirmed',
-    method: 'GET',
-    data: parmars
-  })
-}
-
 // 获取零件详情-每车用量
-export function getPerCarDosage(params) {
+export function getPerCarDosageInfo(params) {
   return requst({
-    url: '/tp-records/perCarDosage',
+    url: '/tp-records/perCarDosage/info',
     method: 'POST',
     data: params
   })
 }
+
+// 获取零件详情-获取所有版本
+export function getPerCarDosageVersion(params) {
+  return requst({
+    url: '/tp-records/perCarDosage/version',
+    method: 'POST',
+    data: params
+  })
+}
+
+// 确认/拒绝/导出每车用量信息
+export function putPerCarDosage(params) {
+  return requst({
+    url: '/tp-records/perCarDosage',
+    method: 'PUT',
+    params: params
+  })
+}
+
+// 获取附件信息
+export function getInfoAnnexPage() {
+
+}
+
