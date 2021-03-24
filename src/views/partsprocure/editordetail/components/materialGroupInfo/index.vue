@@ -10,7 +10,7 @@
   <iCard class="materialGroupInfo" tabCard v-loading="loading">
     <template v-slot:header-control>
       <iButton v-if="!setMaterialGroupStatus" @click="setMaterialGroup">设置工艺组</iButton>
-      <iButton v-if="!setMaterialGroupStatus" @click="log">日志</iButton>
+      <!-- <iButton v-if="!setMaterialGroupStatus" @click="log">日志</iButton> -->
       <iButton v-if="setMaterialGroupStatus" @click="confirmMaterialGroup" :loading="confirmLoading">确认</iButton>
       <iButton v-if="setMaterialGroupStatus" @click="back">返回</iButton>
     </template>

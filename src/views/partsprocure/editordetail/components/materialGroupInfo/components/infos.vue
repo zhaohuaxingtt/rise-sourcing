@@ -37,6 +37,13 @@ export default {
     return {
       infoChunks: []
     }
+  },
+  created() {
+    const _infos = cloneDeep(infos)
+    _infos.forEach(item => {
+      item.value = this.data[item.key]
+    })
+    this.infoChunks = chunk(_infos, 3)
   }
 }
 </script>
