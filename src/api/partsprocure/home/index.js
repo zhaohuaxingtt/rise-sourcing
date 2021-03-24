@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-25 11:07:22
- * @LastEditTime: 2021-03-24 15:52:27
+ * @LastEditTime: 2021-03-24 17:16:42
  * @LastEditors: Please set LastEditors
  * @Description: 零件采购项目创建模块API
  * @FilePath: \rise\src\api\partsprocure\home\index.js
@@ -33,7 +33,7 @@ export function insertRfq(parmars){
     url:'/api/rfqs/insertRfq',
     method:'PATCH',
     data:{
-      insertRfcPackage:{...parmars,...{operationType:3,userId:store.state.permission.userInfo.userId || '',userName:store.state.permission.userInfo.userName}}
+      insertRfcPackage:{...parmars,...{operationType:3,userId:store.state.permission.userInfo.id || '',userName:store.state.permission.userInfo.userName}}
     }
   })
 }
