@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-03-24 16:59:29
+ * @LastEditTime: 2021-03-24 22:09:29
  * @LastEditors: Please set LastEditors
  * @Description: 公共utils部分
  * @FilePath: \rise\src\utils\index.js
@@ -69,7 +69,6 @@ export const math = window.math.create(window.math.all, {
 export function _getMathNumber(lamda) {
   return Number(math.format(math.evaluate(lamda), 14))
 }
-
 export function password(str,publicKey){
   const mathRsa = new jsencrypt()
   mathRsa.setPublicKey('-----BEGIN PUBLIC KEY-----'+publicKey+'-----END PUBLIC KEY-----')

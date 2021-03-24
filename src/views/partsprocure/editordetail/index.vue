@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2021-03-24 14:48:24
+ * @LastEditTime: 2021-03-24 20:31:40
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsprocure\editordetail\index.vue
@@ -75,15 +75,16 @@
                 ></el-option>
               </iSelect>
             </iFormItem>
-			<iFormItem label="支付条款：" name="test">
-			  <iSelect v-model="detailData.payClause"><el-option
-			      :value="item.value"
-			      :label="item.label"
-			      v-for="(item, index) in getGroupList('pay_clause')"
-			      :key="index"
-			    ></el-option>
-			  </iSelect>
-			</iFormItem>
+            <iFormItem label="支付条款：" name="test">
+              <iSelect v-model="detailData.payClause"
+                ><el-option
+                  :value="item.value"
+                  :label="item.label"
+                  v-for="(item, index) in getGroupList('pay_clause')"
+                  :key="index"
+                ></el-option>
+              </iSelect>
+            </iFormItem>
           </div>
           <div class="col">
             <iFormItem label="FSNR/GSNR/SPNR：" name="test">
@@ -118,13 +119,13 @@
             </iFormItem>
             <iFormItem label="MTZ零件：" name="test">
               <iSelect v-model="detailData.mtz">
-				  <el-option
-				    :value="item.value"
-				    :label="item.label"
-				    v-for="(item, index) in getGroupList('mtz')"
-				    :key="index"
-				  ></el-option>
-			  </iSelect>
+                <el-option
+                  :value="item.value"
+                  :label="item.label"
+                  v-for="(item, index) in getGroupList('mtz')"
+                  :key="index"
+                ></el-option>
+              </iSelect>
             </iFormItem>
           </div>
           <div class="col">
@@ -154,7 +155,8 @@
               </iSelect>
             </iFormItem>
             <iFormItem label="CF控制员：" name="test">
-              <iSelect v-model="detailData.cfController"><el-option
+              <iSelect v-model="detailData.cfController"
+                ><el-option
                   :value="item.value"
                   :label="item.label"
                   v-for="(item, index) in getGroupList('cf_controller')"
@@ -162,15 +164,16 @@
                 ></el-option>
               </iSelect>
             </iFormItem>
-			<iFormItem label="货币：" name="test">
-			  <iSelect v-model="detailData.currencyId"><el-option
-			      :value="item.value"
-			      :label="item.label"
-			      v-for="(item, index) in getGroupList('currency_id')"
-			      :key="index"
-			    ></el-option>
-			  </iSelect>
-			</iFormItem>
+            <iFormItem label="货币：" name="test">
+              <iSelect v-model="detailData.currencyId"
+                ><el-option
+                  :value="item.value"
+                  :label="item.label"
+                  v-for="(item, index) in getGroupList('currency_id')"
+                  :key="index"
+                ></el-option>
+              </iSelect>
+            </iFormItem>
           </div>
           <div class="col">
             <iFormItem label="签收日期：" name="test">
@@ -193,15 +196,16 @@
                 {{ detailData.bmg }}
               </iText>
             </iFormItem>
-			<iFormItem label="采购条款：" name="test">
-			  <iSelect v-model="detailData.purchaseClause"><el-option
-			      :value="item.value"
-			      :label="item.label"
-			      v-for="(item, index) in getGroupList('purchase_clause')"
-			      :key="index"
-			    ></el-option>
-			  </iSelect>
-			</iFormItem>
+            <iFormItem label="采购条款：" name="test">
+              <iSelect v-model="detailData.purchaseClause"
+                ><el-option
+                  :value="item.value"
+                  :label="item.label"
+                  v-for="(item, index) in getGroupList('purchase_clause')"
+                  :key="index"
+                ></el-option>
+              </iSelect>
+            </iFormItem>
           </div>
         </div>
       </iFormGroup>
@@ -240,57 +244,7 @@
       @sure="cancel"
       title="结束项目"
     ></backItems>
-    <!------------------------------------------------------------------------>
-    <!--                  拆分采购工厂                                       --->
-    <!------------------------------------------------------------------------>
-    <iDialog class="dialog" :visible.sync="splitPurchBoolean">
-      <template slot="title">
-        <span class="el-dialog__title">拆分采购工厂</span>
-        <el-tooltip effect="light">
-          <i class="iconxinxitishi iconfont color"></i>
-          <template slot="content">
-            保存后将按照您所维护的工厂份<br />额拆分询价产量。 如果已经维护<br />车型产量，请确保为该零件的所<br />有工厂产量。
-          </template>
-        </el-tooltip>
-        <iButton class="float-right marginleft300">保存</iButton>
-      </template>
-      <template>
-        <el-table
-          :height="height"
-          :data="splitPurchList"
-          v-loading="tableLoading"
-          @selection-change="handleSelectionChange"
-          width="500"
-          class="margin-right30"
-        >
-          <el-table-column
-            type="selection"
-            width="50"
-            align="center"
-          ></el-table-column>
-          <template v-for="(items, index) in splitPurchTitle">
-            <el-table-column
-              :key="index"
-              v-if="items.props == 'name'"
-              :label="items.name"
-              :prop="items.props"
-              width="200"
-            ></el-table-column>
-            <el-table-column
-              v-else
-              :key="index"
-              :label="items.name"
-              width="150"
-            >
-              <template slot-scope="scope">
-                <iInput v-model="scope.row[items.props]"></iInput>
-              </template>
-            </el-table-column>
-          </template>
-          <el-table-column></el-table-column>
-        </el-table>
-      </template>
-    </iDialog>
+    <splitFactory :splitPurchBoolean='splitPurchBoolean' :purchaseProjectId='purchaseProjectId'></splitFactory>
   </iPage>
 </template>
 <script>
@@ -303,7 +257,6 @@ import {
   iSelect,
   iButton,
   iTabsList,
-  iDialog,
 } from "@/components";
 import logistics from "./components/logistics";
 import targePrice from "./components/targetPrice";
@@ -318,7 +271,8 @@ import backItems from "@/views/partsign/home/components/backItems";
 import { getPageGroup } from "@/api/partsign/home";
 import logButton from "@/views/partsign/editordetail/components/logButton";
 import { getTabelData, changeProcure } from "@/api/partsprocure/home";
-import { detailData, splitPurchTitle } from "./components/data";
+import {detailData} from "./components/data";
+import splitFactory from './components/splitFactory'
 export default {
   components: {
     iPage,
@@ -340,32 +294,27 @@ export default {
     remarks,
     logButton,
     backItems,
-    iDialog,
+    splitFactory
   },
   data() {
     return {
       infoItem: {},
       detailData: detailData, //顶部详情数据
-      targetprice:{} , //申请目标价数据
+      targetprice: {}, //申请目标价数据
       fromGroup: [], //上方筛选列表
       diologBack: false, //取消零件采购
       diologClose: false, //结束项目
       splitPurchBoolean: false,
-      splitPurchList: [],
-      selectSplitPurchList: [],
-      splitPurchTitle: splitPurchTitle,
+      purchaseProjectId:''
     };
   },
   created() {
     this.infoItem = JSON.parse(this.$route.query.item);
+    this.purchaseProjectId = this.infoItem.purchasePrjectId
     this.getDatail();
     this.getPageGroup();
   },
   methods: {
-    // ----------打开拆分采购工厂模块-----------------------
-    handleSelectionChange(val) {
-      this.selectSplitPurchList = val;
-    },
     splitPurch() {
       this.splitPurchBoolean = !this.splitPurchBoolean;
     },
@@ -377,9 +326,9 @@ export default {
       };
       getTabelData(data).then((res) => {
         this.detailData = res.data.detailData;
-		if (res.data.targetprice) {
-			this.targetprice = res.data.targetprice
-		}
+        if (res.data.targetprice) {
+          this.targetprice = res.data.targetprice;
+        }
       });
     },
     //获取上方group信息
@@ -485,24 +434,6 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-.color {
-  color: $color-table-header;
-  position: relative;
-  left: 20px;
-  top: 1px;
-  cursor: pointer;
-
-  &:hover {
-    color: $color-blue;
-  }
-}
-
-.marginleft300 {
-  position: relative;
-  left: 620px;
-  top: -5px;
-}
-
 .row {
   width: 100%;
   height: 100%;

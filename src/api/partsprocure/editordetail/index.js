@@ -1,5 +1,6 @@
 import axios from '@/utils/axios'
 const requst = axios(process.env.VUE_APP_PARTS)
+const requstPartResource = axios(process.env.VUE_APP_DIC)
 // VUE_APP_PARTSPROCURE
 // VUE_APP_PART_PROCURE wenpeng
 // VUE_APP_PARTS
@@ -67,5 +68,14 @@ export function getOutputPlan(params) {
     method: 'GET',
     params: params
     // partOutputPlanReqDTO.purchaseProjectId
+  })
+}
+
+//拆分采购工厂
+export function purchaseFactory(params){
+  return requstPartResource({
+    url: '/purchaseFactory',
+    method: 'GET',
+    params: params
   })
 }

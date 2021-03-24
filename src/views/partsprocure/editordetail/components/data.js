@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-02-25 10:10:50
- * @LastEditTime: 2021-03-23 15:30:58
+ * @LastEditTime: 2021-03-24 19:41:51
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsprocure\editordetail\components\data.js
@@ -45,12 +45,13 @@ export const detailData = {
 	unit: "", //单位	
 }
 // 采购项目拆分表头
-export const splitPurchTitle = [{
+export const splitPurchTitle = [
+	{
 		name: '采购工厂名称',
-		props: "name"
+		props: "factoryName"
 	},
 	{
 		name: '产量占比（%）',
-		props: "persent"
+		props: "share"
 	}
 ]
