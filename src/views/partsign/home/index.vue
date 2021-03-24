@@ -18,25 +18,25 @@
     <!------------------------------------------------------------------------>
     <!--                  search 搜索模块                                   --->
     <!------------------------------------------------------------------------>
-    <iSearch class="margin-bottom20" @sure="sure" @reset="reset">
+    <iSearch class="margin-bottom20" @sure="sure" @reset="reset" :resetKey="PARTSIGN_RESETBUTTON" :searchKey="PARTSIGN_CONFIRMBUTTON">
       <el-form>
-        <el-form-item label="零件号">
-          <iInput v-model="form.partNum" placeholder="请输入零件号"></iInput>
+        <el-form-item label="零件号" >
+          <iInput v-model="form.partNum" placeholder="请输入零件号" v-permission="PARTSIGN_PARTNUM"></iInput>
         </el-form-item>
         <el-form-item label="零件名（中）">
           <iInput
             v-model="form.partNameZh"
-            placeholder="请输入零件名（中）"
+            placeholder="请输入零件名（中）" v-permission="PARTSIGN_PARTNAMEZH"
           ></iInput>
         </el-form-item>
         <el-form-item label="设计科室">
-          <iInput v-model="form.dept" placeholder="请填写设计科室"></iInput>
+          <iInput v-model="form.dept" placeholder="请填写设计科室" v-permission="PARTSIGN_DESIGNDEPARTMENT"></iInput>
         </el-form-item>
         <el-form-item label="工程师">
-          <iInput placeholder="请填写工程师"></iInput>
+          <iInput placeholder="请填写工程师" v-permission="PARTSIGN_ENGINEER"></iInput>
         </el-form-item>
         <el-form-item label="车型项目">
-          <iSelect v-model="form.projectCarType" placeholder="请选择车型项目">
+          <iSelect v-model="form.projectCarType" placeholder="请选择车型项目" v-permission="PARTSIGN_MODELPROJECT">
             <el-option
               :value="items.key"
               :label="items.value"
@@ -46,7 +46,7 @@
           </iSelect>
         </el-form-item>
         <el-form-item label="信息单分类">
-          <iSelect v-model="form.tpInfoType" placeholder="请选择信息分类">
+          <iSelect v-model="form.tpInfoType" placeholder="请选择信息分类" v-permission="PARTSIGN_INFORMATIONCLASSIFICATION">
             <el-option
               :value="items.key"
               :label="items.value"
@@ -56,7 +56,7 @@
           </iSelect>
         </el-form-item>
         <el-form-item label="信息单状态">
-          <iSelect v-model="form.status" placeholder="请选择信息单状态">
+          <iSelect v-model="form.status" placeholder="请选择信息单状态" v-permission="PARTSIGN_INFORMATIONSTATUS">
             <el-option
               :value="items.key"
               :label="items.value"
@@ -66,12 +66,12 @@
           </iSelect>
         </el-form-item>
         <el-form-item label="信息单流水号">
-          <iInput v-model="form.id" placeholder="请填写信息单流水号"></iInput>
+          <iInput v-model="form.id" placeholder="请填写信息单流水号" v-permission="PARTSIGN_PARTINFOID"></iInput>
         </el-form-item>
         <el-form-item label="询价资料状态">
           <iSelect
             v-model="form.attachmentStatus"
-            placeholder="请选择询价资料状态"
+            placeholder="请选择询价资料状态" v-permission="PARTSIGN_INQUIRYSTATUS"
           >
             <el-option
               :value="items.key"
@@ -84,7 +84,7 @@
         <el-form-item label="每车用量状态">
           <iSelect
             v-model="form.partDosageStatus"
-            placeholder="请选择没车用量状态"
+            placeholder="请选择没车用量状态" v-permission="PARTSIGN_USAGEVEHICLE"
           >
             <el-option
               :value="items.key"
@@ -103,9 +103,9 @@
       <div class="margin-bottom20 clearFloat">
         <span class="font18 font-weight">新件信息单签收</span>
         <div class="floatright">
-          <iButton @click="save">签收</iButton>
-          <iButton @click="openDiologBack">退回</iButton>
-          <iButton @click="openDiologChangeItems">转派</iButton>
+          <iButton @click="save" v-permission="PARTSIGN_SIGNBUTTON">签收</iButton>
+          <iButton @click="openDiologBack" v-permission="PARTSIGN_BACKBUTTON">退回</iButton>
+          <iButton @click="openDiologChangeItems" v-permission="PARTSIGN_TRANSFERBUTTON">转派</iButton>
         </div>
       </div>
       <tablelist

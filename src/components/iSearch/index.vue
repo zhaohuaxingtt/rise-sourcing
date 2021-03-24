@@ -11,8 +11,8 @@
     <div class="iSearch-content" :class="{hiden:hidens}">
       <div class="operation">
         <slot name='button'>
-          <iButton @click="$emit('sure')">查询</iButton>
-          <iButton @click="$emit('reset')">重置</iButton>
+          <iButton @click="$emit('sure')" v-permission="searchKey">查询</iButton>
+          <iButton @click="$emit('reset')" v-permission="resetKey">重置</iButton>
         </slot>
         <i @click="hidens=!hidens" v-if='!icon' class="el-icon-arrow-up icon margin-left20 cursor" :class="{rotate:hidens}"></i>
       </div>
@@ -28,6 +28,8 @@ import {iCard,iButton} from '../index'
 export default{
   components:{iCard,iButton},
   props:{
+    searchKey: String,
+    resetKey: String,
     icon:Boolean,
     title: {
       type: String

@@ -44,7 +44,7 @@ import { iCard, iButton, iPagination, iMessage } from '@/components'
 // import volumeDialog from './volumeDialog'
 import tableList from './tableList'
 import { enquiryTableTitle as tableTitle } from './data'
-import { getEnquiryList } from '@/api/partsign/editordetail'
+import { getInfoAnnexPage } from '@/api/partsign/editordetail'
 import { pageMixins } from '@/utils/pageMixins'
 
 export default {
@@ -66,12 +66,16 @@ export default {
     }
   },
   created() {
-    this.getEnquiryList()
+    this.getInfoAnnexPage()
   },
   methods: {
-    getEnquiryList() {
+    getInfoAnnexPage() {
       this.loading = true
-      getEnquiryList({})
+      getInfoAnnexPage({
+        currPage: this.page.currPage,
+        pageSize: this.page.pageSize,
+        // purchasingRequirementTargetId: 
+      })
         .then(res => { 
           this.tableListData = res.data
           this.loading = false

@@ -17,12 +17,18 @@
 <script>
 import { iCard, iButton } from '@/components'
 import tableList from '@/views/partsign/editordetail/components/tableList'
-import { getYearScope, getOutputPlan } from '@/api/partsprocure/home'
+import { getYearScope, getOutputPlan } from '@/api/partsprocure/editordetail'
 import { outputPlanTableTitle as tableTitle } from './data'
 import { cloneDeep } from 'lodash'
 
 export default {
   components: { iCard, iButton, tableList },
+  props: {
+    params: {
+      type: Object,
+      require: true
+    }
+  },
   data() {
     return {
       loading: false,
@@ -40,7 +46,9 @@ export default {
       try {
         this.loading = true
         const { data: years } = await getYearScope({})
-        const res = await getOutputPlan({})
+        const res = await getOutputPlan({
+          'partOutputPlanReqDTO.purchaseProjectId': this.params.purchaseProjectId
+        })
 
         this.tableTitle.splice(1, 0, ...years.map(year => ({ props: year + '', name: year + '' })))
         
