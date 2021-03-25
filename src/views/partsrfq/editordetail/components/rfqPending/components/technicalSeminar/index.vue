@@ -141,6 +141,10 @@ export default {
       const partNumsList = this.selectTableData.map(item => {
         return item.partNum
       })
+      if(supplierIdList.length === 0) {
+        iMessage.warn('请添加供应商!')
+        return
+      }
       const req = {
         rfqId: id,
         userId: 12321,
@@ -149,8 +153,7 @@ export default {
         meetingLocation: otherMeetingInformationData.meetingLocation,
         memo: otherMeetingInformationData.memo,
         meetingStuff: meetingStuffList.join(','),
-        //supplierIds: supplierIdList,
-        supplierIds: ['11'],
+        supplierIds: supplierIdList,
         partNums: partNumsList,
       }
       const res = await addTechnology(req)
