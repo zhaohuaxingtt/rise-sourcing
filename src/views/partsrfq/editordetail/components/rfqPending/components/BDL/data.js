@@ -1,16 +1,16 @@
 /*
 * @author:shujie
 * @Date: 2021-3-5 10:56:22
-* @LastEditors: shujie
+ * @LastEditors: Please set LastEditors
 * @Description: BDL列表JS
  */
 export const tableTitle = [
-    {props:'a',name:'供应商SAP号'},
-    {props:'c',name:'供应商生产场地'},
-    {props:'d',name:'MBDL'},
-    {props:'e',name:'是否验证CBD'},
-    {props:'f',name:'质量'},
-    {props:'g',name:'成本'},
-    {props:'h',name:'交付'},
+    {props:'sapNum',name:'供应商SAP号'},
+    {props:'pupplierProductionPlace',name:'供应商生产场地'},
+    {props:'isMbdl',name:'MBDL'},
+    {props:'isCheckCbd',name:'是否验证CBD'},
+    {props:'supplierQualityGrade',name:'质量'},
+    {props:'supplierCostGrade',name:'成本'},
+    {props:'supplierDeliverGrade',name:'交付'},
     {props:'i',name:'供应商360°视图'}
   ]

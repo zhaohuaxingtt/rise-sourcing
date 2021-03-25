@@ -17,16 +17,19 @@
         <iButton @click="log">日志</iButton>
       </div>
     </div>
-    <tableList :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="tableLoading"
+    <tableList :tableData="tableData" :tableTitle="tableTitle" :tableLoading="tableLoading"
                @handleSelectionChange="handleSelectionChange"
                @openPage="openPage"
                @log="log" ref="table"></tableList>
+    <iPagination @size-change="handleSizeChange($event, getTableList)"
+			@current-change="handleCurrentChange($event, getTableList)" background :page-sizes="page.pageSizes"
+			:page-size="page.pageSize" :layout="page.layout" :total="page.totalCount"></iPagination>
     <logDialog :visible.sync="logVisible"/>
   </iCard>
 </template>
 
 <script>
-import {iCard, iButton, iInput} from "@/components"
+import {iCard, iButton, iInput,iPagination} from "@/components"
 import tableList from "./tableList"
 import {tableTitle} from "./data"
 import {getBdlList} from "@/api/partsrfq/editordetail";
@@ -39,7 +42,8 @@ export default {
     tableList,
     iButton,
     iInput,
-    logDialog
+    logDialog,
+    iPagination
   },
   data() {
     return {
