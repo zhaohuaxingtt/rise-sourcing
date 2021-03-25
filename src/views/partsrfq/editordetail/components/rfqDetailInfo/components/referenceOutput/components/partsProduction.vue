@@ -99,8 +99,8 @@ export default {
     openPage(row) {
       const rfqId = this.$route.query.id;
       const rfqPlanId = row.rfqPlanId;
-      const purchasePrjectId = row.purchasePrjectId;
-      const purchasingRequirementId = row.purchasingRequirementId
+      const purchasePrjectId = row.purchaseProjectId;
+      const purchasingRequirementId = row.purchasingRequirementTargetId
       const partNum = row.ninePartNum
       const tab = 'outputPlan'
       const req = {

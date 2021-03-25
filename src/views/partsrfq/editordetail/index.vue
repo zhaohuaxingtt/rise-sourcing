@@ -16,7 +16,7 @@
       </div>
       <div class="btnList">
         <iButton @click="newRfq">新建RFQ轮次</iButton>
-        <iButton @click="updateRfqStatus('04')">发出询价</iButton>
+        <iButton @click="updateRfqStatus('06')">发出询价</iButton>
         <iButton @click="updateRfqStatus('05')">结束本轮询价</iButton>
         <iButton @click="updateRfqStatus('03')">转谈判</iButton>
         <iButton @click="createAFixedPointApplication" disabled>创建定点申请</iButton>
@@ -54,7 +54,7 @@
               <iText v-else>{{ baseInfo.cf }}</iText>
             </iFormItem>
 
-            <iFormItem label="本轮报价截⽌时间：" name="endDate">
+            <iFormItem label="本轮报价截止时间：" name="endDate">
               <iText>{{ baseInfo.endDate }}</iText>
             </iFormItem>
           </div>
@@ -73,7 +73,7 @@
               <iText>{{ baseInfo.currentRounds }}</iText>
             </iFormItem>
             <iFormItem label="轮次类型：" name="roudsType">
-              <iText>{{ baseInfo.roudsType }}</iText>
+              <iText>{{ baseInfo.roudsType === '00' ? '普通轮次' : '在线轮次' }}</iText>
             </iFormItem>
           </div>
           <div class="col">
@@ -88,7 +88,7 @@
               <iText v-else>{{ baseInfo.pl }}</iText>
             </iFormItem>
             <iFormItem label="本轮状态：" name="test">
-              <iText>{{ baseInfo.currentRoundsStatus }}</iText>
+              <iText>{{ baseInfo.currentRoundsStatus}}</iText>
             </iFormItem>
             <div class="edit-button-row">
               <i-button @click="edit">{{ !editStatus ? '编辑' : '保存' }}</i-button>
@@ -99,7 +99,7 @@
     </i-card>
     <rfqPending v-if="navActivtyValue === 1 || navActivtyValue === ''"></rfqPending>
     <rfq-detail-info v-if="navActivtyValue === 2"></rfq-detail-info>
-    <new-rfq-round v-model="newRfqRoundDialog"/>
+    <new-rfq-round v-model="newRfqRoundDialog" @refreshBaseInfo="getBaseInfo"/>
   </iPage>
 </template>
 <script>

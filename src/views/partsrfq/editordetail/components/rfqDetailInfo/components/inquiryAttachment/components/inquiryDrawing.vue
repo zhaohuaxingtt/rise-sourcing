@@ -13,7 +13,7 @@
         :tableLoading="tableLoading"
         @handleSelectionChange="handleSelectionChange"
         :index="true"
-        open-page-props="fileName"
+        open-page-props="tpPartAttachmentName"
         :openPageGetRowData="true"
         @openPage="handleOpenPage"
     ></tablelist>
@@ -34,11 +34,11 @@
 </template>
 
 <script>
-import {iCard, iButton, iPagination} from "@/components";
+import {iCard, iButton, iPagination, iMessage} from "@/components";
 import tablelist from 'pages/partsrfq/components/tablelist'
 import {inquiryDrawingTableTitle} from "./data";
 import {pageMixins} from "@/utils/pageMixins";
-import {getAllAnnex} from "@/api/partsrfq/editordetail";
+import {getRfqDataList} from "@/api/partsrfq/home";
 
 
 export default {
@@ -66,16 +66,19 @@ export default {
       if (id) {
         this.tableLoading = true;
         const req = {
-          fileType: 3,
-          rfqId: id,
-          userId: 12321
+          otherInfoPackage: {
+            findType: '12',
+            rfqId: id,
+            current: this.page.currPage,
+            size: this.page.pageSize,
+          }
         }
         try {
-          const res = await getAllAnnex(req)
-          this.tableListData = res.records;
-          this.page.currPage = res.current
-          this.page.pageSize = res.size
-          this.page.totalCount = res.total
+          const res = await getRfqDataList(req)
+          this.tableListData = res.data.inquiryDrawingsVO.inquiryDrawingsVOList;
+          this.page.currPage = res.data.inquiryDrawingsVO.pageNum
+          this.page.pageSize = res.data.inquiryDrawingsVO.pageSize
+          this.page.totalCount = res.data.inquiryDrawingsVO.total
           this.tableLoading = false;
         } catch {
           this.tableLoading = false;
@@ -83,6 +86,8 @@ export default {
       }
     },
     download() {
+      if (this.selectTableData.length == 0)
+        return iMessage.warn('请选择')
     },
     //修改表格改动列
     handleSelectionChange(val) {

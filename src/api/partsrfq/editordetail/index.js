@@ -110,3 +110,14 @@ export function getPic(parmars) {
         data: parmars
     })
 }
+
+//getBdl
+export function getBdlList(parmars){
+    return requst({
+        url: '/api/rfqs/findByRfqs',
+        method: 'POST',
+        data: {
+            otherInfoPackage:parmars
+        }
+    })
+}
