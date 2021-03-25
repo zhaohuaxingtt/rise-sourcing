@@ -17,7 +17,12 @@ export function getTabelData(parmars){
     params:parmars
   })
 }
-
+export function getAllTable(parmars){
+  return requst({
+    url:'/api/part-src-prjs?'+parmars,
+    method:'GET'
+  })
+}
 //修改零件采购项目相关信息
 export function changeProcure(parmars){
   return requst({

@@ -1,8 +1,8 @@
 export const tableTitle = [
-  { props: 'a', name: '零件号' },
-  { props: 'b', name: '零件名（中）' },
-  { props: 'c', name: '零件名（德）' },
-  { props: 'd', name: '车型项目' },
+  { props: 'partNum', name: '零件号' },
+  { props: 'partNameZh', name: '零件名（中）' },
+  { props: 'partNameDe', name: '零件名（德）' },
+  { props: 'cartypeProjectZh', name: '车型项目' },
   { props: 'd', name: '开始年份' },
   { props: 'e', name: '+0' },
   { props: 'f', name: '+1' },

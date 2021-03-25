@@ -86,11 +86,10 @@
 		iButton,
 		iSearch,
 		iSelect,
-		iCard
 	} from '@/components'
 	import outputPlan from './components/outputPlan'
 	import {
-		getTabelData,
+		// getAllTable,
 		changeProcure
 	} from "@/api/partsprocure/home";
 	import {
@@ -102,12 +101,11 @@
 			iButton,
 			iSearch,
 			iSelect,
-			iCard,
 			outputPlan
 		},
 		data() {
 			return {
-				purchaseProjectIds: [],
+				// purchaseProjectIds: [],
 				fromGroup: [],
 				batch: {
 					linieDept: "",
@@ -119,20 +117,17 @@
 			}
 		},
 		created() {
-			this.purchaseProjectIds = this.$route.query.ids;
+			// this.purchaseProjectIds = this.$route.query.ids;
 			this.getData()
 			this.getPageGroup()
 		},
 		methods: {
-			// 获取批量数据
-			getData() {
-				getTabelData({
-						'partOutputPlanByBatchFacadeDTO.purchaseProjectIds': JSON.stringify(this.purchaseProjectIds)
-					})
-					.then((res) => {
-						this.detailData = res.data.partOutputPlanResDTO;
-					})
-			},
+			// // 获取批量数据
+			// getData() {
+			// 	getAllTable(this.getIds(this.purchaseProjectIds)).then((res) => {
+			// 			this.detailData = res.data.partOutPutPlanBatchs;
+			// 		})
+			// },
 			//获取上方group信息
 			getPageGroup() {
 				getPageGroup(12314).then((res) => {
@@ -147,6 +142,14 @@
 					return obj.infoList;
 				}
 			},
+			// // 组装请求ids\
+			// getIds(arr){
+			// 	let url = ''
+			// 	for (let i = 0; i < arr.length; i++) {
+			// 		url += 'partOutputPlanByBatchFacadeDTO.purchaseProjectIds='+arr[i]+(i == arr.length-1?'':"&")
+			// 	}
+			// 	return url
+			// }
 		}
 	}
 </script>

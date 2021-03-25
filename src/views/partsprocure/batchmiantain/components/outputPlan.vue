@@ -26,7 +26,7 @@ import { iCard, iPagination } from '@/components'
 import tablelist from '@/views/partsign/home/components/tableList'
 import { pageMixins } from '@/utils/pageMixins'
 import { tableTitle } from './data'
-
+import {getAllTable} from "@/api/partsprocure/home";
 export default {
   components: { iCard, tablelist, iPagination },
   mixins: [ pageMixins ],
@@ -35,9 +35,28 @@ export default {
       loading: false,
       tableTitle,
       tableListData: [],
+	  purchaseProjectIds:[]
     }
   },
+  created() {
+  	this.purchaseProjectIds = this.$route.query.ids;
+	this.getData()
+  },
   methods: {
+	  // 获取批量数据
+	  getData() {
+	  	getAllTable(this.getIds(this.purchaseProjectIds)).then((res) => {
+	  			this.tableListData = res.data.partOutPutPlanBatchs;
+	  		})
+	  },
+	  // 组装请求ids\
+	  getIds(arr){
+	  	let url = ''
+	  	for (let i = 0; i < arr.length; i++) {
+	  		url += 'partOutputPlanByBatchFacadeDTO.purchaseProjectIds='+arr[i]+(i == arr.length-1?'':"&")
+	  	}
+	  	return url
+	  }
   }
 }
 </script>
