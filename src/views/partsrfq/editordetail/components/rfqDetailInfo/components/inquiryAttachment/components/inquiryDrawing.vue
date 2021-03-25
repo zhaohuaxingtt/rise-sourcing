@@ -75,7 +75,7 @@ export default {
         }
         try {
           const res = await getRfqDataList(req)
-          this.tableListData = res.data.inquiryDrawingsVO.inquiryDrawingsVOList;
+          this.tableListData = res.data.inquiryDrawingsVO.inquiryDrawingsVOS;
           this.page.currPage = res.data.inquiryDrawingsVO.pageNum
           this.page.pageSize = res.data.inquiryDrawingsVO.pageSize
           this.page.totalCount = res.data.inquiryDrawingsVO.total
