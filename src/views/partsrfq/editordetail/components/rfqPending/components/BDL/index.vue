@@ -1,7 +1,7 @@
 <!--
 * @author:shujie
 * @Date: 2021-3-5 10:56:32
-* @LastEditors: shujie
+ * @LastEditors: Please set LastEditors
 * @Description: BDL列表
  -->
 <template>
@@ -20,8 +20,7 @@
     <tableList :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="tableLoading"
                @handleSelectionChange="handleSelectionChange"
                @openPage="openPage"
-               @log="log" 
-			   ref="table"></tableList>
+               @log="log" ref="table"></tableList>
     <logDialog :visible.sync="logVisible"/>
   </iCard>
 </template>
@@ -30,10 +29,11 @@
 import {iCard, iButton, iInput} from "@/components"
 import tableList from "./tableList"
 import {tableTitle} from "./data"
-import {getTabelData} from "@/api/partsign/home";
+import {getBdlList} from "@/api/partsrfq/editordetail";
 import logDialog from '@/views/partsign/editordetail/components/logDialog'
-
+import {pageMixins} from '@/utils/pageMixins'
 export default {
+  mixins:[pageMixins],
   components: {
     iCard,
     tableList,
@@ -48,18 +48,33 @@ export default {
       tableLoading: false,
       searchKey: "",//搜索关键词	
       logVisible: false,
+      rfqId:''
     }
   },
   created() {
+    this.rfqId = this.$route.query.id
     this.getTableList()
   },
   methods: {
-
-    //获取表格数据
+    /**************************
+     * 获取bdl列表
+     **************************/
+    translateParmars(){
+      return {
+        rfqId:this.rfqId,
+        size:this.page.pageSize,
+        current:this.page.currPage,
+        findType:11
+      }
+    },
     getTableList() {
       this.tableLoading = true;
-      getTabelData().then((res) => {
-        this.tableListData = res.data;
+      getBdlList(this.translateParmars()).then((res) => {
+        if(res.data && res.data.rfqBdlVO && res.data.rfqBdlVO.rfqBdlVOList){
+          this.tableData = res.data.rfqBdlVO.rfqBdlVOList
+        }
+        this.tableLoading = false;
+      }).catch(err=>{
         this.tableLoading = false;
       });
     },
