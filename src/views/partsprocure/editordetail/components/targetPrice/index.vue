@@ -185,9 +185,10 @@
 			// 保存 ,申请财务目标价
 			save() {
 				let targetprice = {
-					// operator: this.targetprice.operator,
+					// operator: "0",
 					purchaseProjectIds: this.purchaseProjectId,
 					cfTargetPriceDetail: this.targetprice.cfTargetPriceDetail,
+					rwApplication:null
 				};
 				changeProcure({
 					targetprice,
@@ -201,6 +202,7 @@
 					// operator: this.targetprice.operator,
 					purchaseProjectIds: this.purchaseProjectId,
 					rwApplication: this.targetprice.rwApplication,
+					cfTargetPriceDetail:null
 				};
 				changeProcure({
 					targetprice,

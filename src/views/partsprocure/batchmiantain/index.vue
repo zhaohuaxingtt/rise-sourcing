@@ -26,8 +26,8 @@
 					</iSelect>
 				</el-form-item>
 				<el-form-item label="LINIE部门">
-					<iSelect v-model="batch.linieDept">
-						<el-option :value="item.value" :label="item.label"
+					<iSelect v-model="linie">
+						<el-option :value="item" :label="item.value"
 							v-for="(item, index) in getGroupList('linie_dept')" :key="index"></el-option>
 					</iSelect>
 				</el-form-item>
@@ -44,8 +44,8 @@
 					</iSelect>
 				</el-form-item>
 				<el-form-item label="车型项目">
-					<iSelect placeholder="请选择车型项目" v-model="batch.cartypeProjectZh">
-						<el-option :value="item.value" :label="item.label"
+					<iSelect placeholder="请选择车型项目" v-model="cartypeProject">
+						<el-option :value="item" :label="item.value"
 							v-for="(item, index) in getGroupList('cartype_project_zh')" :key="index"></el-option>
 					</iSelect>
 				</el-form-item>
@@ -63,8 +63,7 @@
 				</el-form-item>
 				<el-form-item label="CF控制员">
 					<iSelect placeholder="请选择车型项目" v-model="batch.cfController">
-						<el-option :value="item.value" :label="item.label"
-							v-for="(item, index) in getGroupList('cf_controller')" :key="index"></el-option>
+						<el-option :value="item.value" :label="item.label" v-for="(item, index) in getGroupList('cf_controller')" :key="index"></el-option>
 					</iSelect>
 				</el-form-item>
 			</el-form>
@@ -76,10 +75,14 @@
 		<iSearch class="margin-bottom20" title="材料组工艺设置" tabCard icon>
 			<el-form>
 				<el-form-item label="材料组">
-					<iSelect placeholder="请选择"></iSelect>
+					<iSelect placeholder="请选择" v-model="stuff.categoryCode">
+						<el-option :value="item.value" :label="item.value" v-for="(item, index) in getGroupList('category_name')" :key="index"></el-option>
+					</iSelect>
 				</el-form-item>
 				<el-form-item label="工艺">
-					<iSelect placeholder="请选择"></iSelect>
+					<iSelect placeholder="请选择" v-model="stuffObj">
+						<el-option :value="item"  :label="item.value" v-for="(item, index) in getGroupList('stuff_name')" :key="index"></el-option>
+					</iSelect>
 				</el-form-item>
 			</el-form>
 			<template slot="button">
@@ -120,21 +123,35 @@
 				batch: {
 					part_preject_type: "",
 					linieDept: "",
-					linieName: "",
+					linieName: "",//value
+					linieNum:"",//key
 					partType: "",
-					cartypeProjectZh: "",
+					cartypeProjectZh: "",//value
+					cartypeProjectNum:"",//key
 					procureFactory: "",
 					cfController: "",
 					unit: "",
 					purchaseProjectIds: [],
 				},
 				stuff: {
-					stuffName: "",
-					stuffCode: "",
+					stuffName: "",//value
+					stuffCode:"",//key
+					categoryCode:"",
+				},
+				linie:{
+					key:"",
+					value:""
+				},
+				cartypeProject:{
+					key:"",
+					value:""
+				},
+				stuffObj:{
+					key:"",
+					value:""
 				},
 				selectTableData: [],
 				startLoding: false,
-
 			}
 		},
 		created() {
@@ -158,16 +175,20 @@
 			//选中零件采购数据
 			handleSelectionChange(e) {
 				this.selectTableData = e
+				let  arr=[]
+				this.selectTableData.map(res => {
+					arr.push(res.purchaseProjectId)
+				})
+				this.batch.purchaseProjectIds=arr
 			},
 			// 批量修改
 			save() {
-				this.selectTableData.map(res => {
-					this.batch.purchaseProjectIds.push(res.purchaseProjectId)
-				})
 				if (this.batch.purchaseProjectIds.length == 0) {
 					iMessage.warn("请选择需要修改的零件采购项目")
 					return
 				}
+				this.pushKey()
+				// 复制参数对应key
 				let batch = {
 					...this.batch,
 					...this.stuff
@@ -179,8 +200,18 @@
 						iMessage.success("修改成功")
 						this.reset()
 						this.resetStuff()
+					}else{
+						iMessage.error(res.desZh)
 					}
 				})
+			},
+			pushKey(){
+				this.stuff.stuffName=this.stuff.value
+				this.stuff.stuffCode=this.stuff.key
+				this.batch.cartypeProjectZh=this.cartypeProject.value
+				this.batch.cartypeProjectNum=this.cartypeProject.key
+				this.batch.linieDept=this.linie.value
+				this.batch.linieNum=this.linie.key
 			},
 			// 重置采购信息数据
 			reset() {
@@ -195,7 +226,8 @@
 			// 重置stuff数据
 			resetStuff() {
 				this.stuff.stuffName = ""
-				this.stuff.stuffCode = ""
+				this.stuff.categoryCode = ""
+				this.stuff.stuffCode=""
 			},
 			// 生成fs号
 			creatFs() {
@@ -211,6 +243,8 @@
 				}).then((res) => {
 					if (res.data) {
 						iMessage.success("操作成功")
+					}else{
+						iMessage.error(res.desZh)
 					}
 				});
 			},

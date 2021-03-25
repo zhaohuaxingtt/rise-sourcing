@@ -7,9 +7,10 @@
       <tablelist
         class="table"
         index
-        :tableData="tableListData" 
-        :tableTitle="tableTitle" 
-        :tableLoading="loading" />
+        :tableData="tableListData"
+        :tableTitle="tableTitle"
+        :tableLoading="loading"
+      />
       <iPagination
         class="pagination margin-top30"
         @size-change="handleSizeChange($event, getData)"
@@ -19,48 +20,58 @@
         :page-sizes="page.pageSizes"
         :page-size="page.pageSize"
         :layout="page.layout"
-        :total="page.totalCount" />
+        :total="page.totalCount"
+      />
     </div>
   </iCard>
 </template>
 
 <script>
-import { iCard, iButton, iPagination } from '@/components'
-import tablelist from '@/views/partsign/home/components/tableList'
-import { pageMixins } from '@/utils/pageMixins'
-import { volumeTableTitle as tableTitle } from './data'
-import { getPerCarDosageVersion, getPerCarDosageInfo } from '@/api/partsign/editordetail'
+import { iCard, iButton, iPagination } from "@/components";
+import tablelist from "@/views/partsign/home/components/tableList";
+import { pageMixins } from "@/utils/pageMixins";
+import { usageTableTitle as tableTitle } from "./data";
+import {
+  getPerCarDosageVersion,
+  getPerCarDosageInfo,
+} from "@/api/partsign/editordetail";
 
 export default {
   components: { iCard, iButton, tablelist, iPagination },
-  mixins: [ pageMixins ],
+  mixins: [pageMixins],
   data() {
     return {
       loading: false,
       tableTitle,
       tableListData: [],
-    }
+    };
   },
   created() {
-    this.getData()
+    this.getData();
   },
   methods: {
     async getData() {
-      this.loading = true
+      this.loading = true;
 
       try {
         if (!this.versionNum || !this.carTypeConfigId) {
           const versionRes = await getPerCarDosageVersion({
-            "currPage": 1,
-            "pageSize": 10,
-            "status": 1,
-            "tpId": this.params.purchasingRequirementId
-          })
+            currPage: 1,
+            pageSize: 10,
+            status: 1,
+            tpId: this.params.purchasingRequirementId,
+          });
 
-          this.versionNum = 'V1'
-          if (versionRes.data && Array.isArray(versionRes.data.tpRecordList) && versionRes.data.tpRecordList[0]) {
-            this.carTypeConfigId = versionRes.data.tpRecordList[0].carTypeConfigId
-            this.versionNum = versionRes.data.tpRecordList[0].versionNum || 'V1'
+          this.versionNum = "V1";
+          if (
+            versionRes.data &&
+            Array.isArray(versionRes.data.tpRecordList) &&
+            versionRes.data.tpRecordList[0]
+          ) {
+            this.carTypeConfigId =
+              versionRes.data.tpRecordList[0].carTypeConfigId;
+            this.versionNum =
+              versionRes.data.tpRecordList[0].versionNum || "V1";
           }
         }
 
@@ -70,19 +81,19 @@ export default {
           currPage: this.page.currPage,
           pageSize: this.page.pageSize,
           status: 1,
-          tpId: this.params.purchasingRequirementId
-        })
+          tpId: this.params.purchasingRequirementId,
+        });
 
-        this.tableListData = infoRes.data.tpRecordList
-        this.page.totalCount = infoRes.data.totalCount
-      } catch(e) {
-        console.error(e)
+        this.tableListData = infoRes.data.tpRecordList;
+        this.page.totalCount = infoRes.data.totalCount;
+      } catch (e) {
+        console.error(e);
       } finally {
-        this.loading = false
+        this.loading = false;
       }
     },
-  }
-}
+  },
+};
 </script>
 
 <style lang="scss" scoped>

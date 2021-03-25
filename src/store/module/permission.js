@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-03-23 20:41:05
+ * @LastEditTime: 2021-03-25 23:20:12
  * @LastEditors: Please set LastEditors
  * @Description: 用户信息保存。
  * @FilePath: \rise\src\store\module\permission.js
@@ -26,6 +26,17 @@ const getVuerouter = function(router){
     res.push(data)
   });
   return res
+}
+//初始化菜单，新增active字段和默认选中第一个点亮
+function initMeun(data){
+  data.forEach((items,index)=>{
+    if(index == 0){
+      items['active'] = true
+    }else{
+      items['active'] = false
+    }
+  })
+  return data
 }
 const state = {
   menuList: [],
@@ -57,7 +68,7 @@ const actions = {
     return new Promise((r,j)=>{
       getSystemMeun().then(res=>{
         if(res.code == 200 && res.data) {
-          commit('SET_MENU_LIST',res.data.menuList);
+          commit('SET_MENU_LIST',initMeun(res.data.menuList));
           commit('SET_WIHTEBTN_LIST',res.data.resourceList);
           r(res.data.menuList)
         }else{

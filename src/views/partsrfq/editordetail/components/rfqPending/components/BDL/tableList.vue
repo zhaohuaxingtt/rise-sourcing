@@ -5,32 +5,30 @@
 * @Description: BDL表格数据
  -->
 <template>
-	<el-table class="table" :data="tableData" v-loading="tableLoading" @selection-change="handleSelectionChange">
-		<el-table-column type="selection" align="center"></el-table-column>
+	<el-table class="table" ref='multipleTable' :data="tableData" v-loading="tableLoading" @selection-change="handleSelectionChange" :row-style="rowStyle" :row-class-name='rowClassName'>
+		<el-table-column type="selection" align="center" :selectable="selectable">
+		</el-table-column>
 		<el-table-column type="index" align="center" label="#"></el-table-column>
 		<template v-for="(item, index) in tableTitle">
-			<el-table-column :key="index" align="center" v-if="item.props == 'b'" :prop="item.props" :label="item.name">
+			<el-table-column :key="index" align="center" v-if="item.props == 'supplierNameZh'" :prop="item.props" :label="item.name">
 				<template slot-scope="scope">
-					<span class="openLinkText cursor" @click="openPage">{{scope.row.b}}</span>
+					<span class="openLinkText cursor" @click="openPage">{{scope.row.supplierNameZh}}</span>
 				</template>
 			</el-table-column>
-
-			<el-table-column :key="index" align="center" v-if="item.props == 'c'" :prop="item.props" :label="item.name">
+			<!-- <el-table-column :key="index" align="center" v-if="item.props == 'c'" :prop="item.props" :label="item.name">
 				<template>
 					<iSelect></iSelect>
 				</template>
-			</el-table-column>
-
-			<el-table-column :key="index" align="center" v-if="item.props == 'add'" :prop="item.props"
+			</el-table-column> -->
+			<el-table-column :key="index" align="center" v-else-if="item.props == 'userDefinedGrade'" :prop="item.props"
 				:label="item.name">
 				<template v-slot:header>
 					<iInput v-model="addTitle"></iInput>
 				</template>
 				<template slot-scope="scope">
-					<iInput v-model="scope.row.add"></iInput>
+					<iInput v-model="scope.row.userDefinedGrade"></iInput>
 				</template>
 			</el-table-column>
-
 			<el-table-column :key="index" align="center" v-else-if="item.props == 'i'" :prop="item.props"
 				:label="item.name">
 				<template slot-scope="scope">
@@ -39,23 +37,30 @@
 					</span>
 				</template>
 			</el-table-column>
-
 			<el-table-column v-else :key="index" align="center" :label="item.name" :prop="item.props">
+				<template slot-scope="scope">
+					<span v-if="item.props == 'isMbdl'">
+						{{scope.row[item.props]?'M':''}}
+					</span>
+					<span v-else-if="item.props == 'isCheckCbd'">
+						{{scope.row[item.props]?"是":"否"}}
+					</span>
+					<span v-else>
+						{{scope.row[item.props]}}
+					</span>
+				</template>
 			</el-table-column>
 		</template>
 	</el-table>
 </template>
-
 <script>
 	import tablelist from "@/views/partsign/home/components/tableList";
 	import {
-		iSelect,
 		icon,
 		iInput
 	} from "@/components";
 	export default {
 		components: {
-			iSelect,
 			icon,
 			iInput,
 		},
@@ -71,16 +76,49 @@
 				addTitle: "",
 			};
 		},
+		watch:{
+			'tableData':function(val){
+				if(val.length>0){
+					this.$nextTick(()=>{
+						this.toggleSelection()
+					})
+				}
+			}
+		},
 		methods: {
+			toggleSelection() {
+				this.tableData.forEach(items=>{
+					if(items.isMbdl){
+						this.$refs.multipleTable.toggleRowSelection(items);
+					}
+				})
+      },
+			rowClassName({row,index}){
+				if(row.isMbdl){
+					return 'BDL'
+				}
+			},
+			rowStyle({row,index}){
+				if(row.isMbdl){
+					return {
+						backgroundColor:'#F8F8FA'
+					}
+				}
+			},
+			selectable(row,index){
+				if(row.isMbdl){
+					return false
+				}else{
+					return true
+				}
+			},
 			handleSelectionChange(val) {
-				console.log(val);
 				this.$emit("handleSelectionChange", val);
 			},
 			openPage() {
 				this.$emit("openPage");
 			},
 			onJump360(row) {
-				console.log(row);
 				window.open("https://www.baidu.com/");
 			},
 			// 添加自定义项目
@@ -89,7 +127,7 @@
 					this.tableTitle.splice(4, 1);
 				} else {
 					let obj = {
-						props: "add",
+						props: "userDefinedGrade",
 						name: ""
 					};
 					this.tableTitle.splice(4, 0, obj);
