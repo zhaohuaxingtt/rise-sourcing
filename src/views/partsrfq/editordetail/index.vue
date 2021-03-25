@@ -11,7 +11,7 @@
     <!-- rfq详情操作按钮 -->
     <div class="pageTitle flex-between-center-center">
       <div class="flex nav-box">
-        <span>新建RFQ</span>
+        <span>{{ $route.query.id ? $route.query.id : '新建RFQ' }}</span>
         <iNav-mvp @change="changeNav" :list="navList" class="ml30"></iNav-mvp>
       </div>
       <div class="btnList">
