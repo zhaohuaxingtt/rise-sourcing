@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-22 16:46:47
- * @LastEditTime: 2021-03-25 22:41:33
+ * @LastEditTime: 2021-03-25 23:53:11
  * @LastEditors: Please set LastEditors
  * @Description: 存在于界面上方的组件。
  * @FilePath: \rise\src\layout\components\topLayout.vue
@@ -17,7 +17,7 @@
 					src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3729239676,1542549068&fm=26&gp=0.jpg">
 				</el-avatar>
 				<div class="info">
-					<p class="name">{{userInfo.nameZh}}</p>
+					<p class="name">{{userInfo.nameZh || 'admin'}}</p>
 					<p class="dept">CSP</p>
 				</div>
 			</div>
