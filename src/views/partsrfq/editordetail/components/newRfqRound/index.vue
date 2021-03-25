@@ -12,7 +12,7 @@
         <div class="floatright title-button-box">
           <template v-if="roundType === '00'">
             <iButton @click="save">保存</iButton>
-            <iButton @click="updateRfqStatus('04')" :disabled="!saveStaus">发送询价</iButton>
+            <iButton @click="updateRfqStatus('06')" :disabled="!saveStaus">发送询价</iButton>
           </template>
           <template v-else>
             <iButton @click="saveAndCreate">保存并创建</iButton>
@@ -182,6 +182,7 @@ export default {
         }
         const res = await addRfq(req)
         res.result ? iMessage.success(res.desZh) : iMessage.error(res.desZh)
+        this.$emit('refreshBaseInfo')
       }
     },
     async updateRfqStatus(updateType) {
