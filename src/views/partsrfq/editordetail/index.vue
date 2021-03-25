@@ -20,7 +20,7 @@
         <iButton @click="updateRfqStatus('05')">结束本轮询价</iButton>
         <iButton @click="updateRfqStatus('03')">转谈判</iButton>
         <iButton @click="createAFixedPointApplication" disabled>创建定点申请</iButton>
-        <iButton type="text">
+        <iButton type="text" @click="toLogPage">
           <icon symbol name="iconrizhiwuzi" class="log-icon"/>
           <span class="log-word">日志</span>
         </iButton>
@@ -88,7 +88,7 @@
               <iText v-else>{{ baseInfo.pl }}</iText>
             </iFormItem>
             <iFormItem label="本轮状态：" name="test">
-              <iText>{{ baseInfo.currentRoundsStatus}}</iText>
+              <iText>{{ baseInfo.currentRoundsStatus }}</iText>
             </iFormItem>
             <div class="edit-button-row">
               <i-button @click="edit">{{ !editStatus ? '编辑' : '保存' }}</i-button>
@@ -234,6 +234,12 @@ export default {
         this.$router.push({
           path: `/partsrfq/editordetail?id=${res.data.rfqId}`
         })
+      }
+    },
+    toLogPage() {
+      const id = this.$route.query.id
+      if (id) {
+        window.open(`/#/log?recordId=${id}`, '_blank')
       }
     }
   }
