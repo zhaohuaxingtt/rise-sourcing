@@ -53,7 +53,7 @@
 						let  arr=res.data.partOutPutPlanBatchs
 						arr.forEach(res => {
 							res.outputPlanList.forEach((val, i) => {
-								res. ['year' + i] = val.outPut
+								res['year' + i] = val.outPut
 							})
 							res.startYear = res.outputPlanList[0].year
 						})

@@ -38,7 +38,7 @@ import { iCard, iButton, iPagination, iMessage } from '@/components'
 import tableList from '../tableList'
 import { volumeTableTitle as tableTitle } from '../data'
 import { pageMixins } from '@/utils/pageMixins'
-import { getPerCarDosageVersion, getPerCarDosageInfo } from '@/api/partsign/editordetail'
+import { getPerCarDosageVersion, getPerCarDosageInfo } from '@/api/partsprocure/editordetail'
 import { excelExport } from '@/utils/filedowLoad'
 
 export default {

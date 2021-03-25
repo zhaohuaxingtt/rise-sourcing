@@ -94,12 +94,12 @@ export default {
       this.selectTableData = val;
     },
     handleOpenPage(row) {
-      const url = row.filePath
+      /*const url = row.filePath
       const a = document.createElement('a');
       a.setAttribute('download', '')
       a.setAttribute('href', url);
       a.setAttribute('target', '_blank');
-      a.click();
+      a.click();*/
     }
   }
 }
