@@ -1,13 +1,13 @@
 export const outputPlanTableTitle = [
-  { props: 'a', name: '年份' },
-  { props: 'b', name: 'SUM' },
-  { props: 'c', name: '版本号' }
+  { props: 'pc', name: '年份' },
+  { props: 'totalOutput', name: 'SUM' },
+  { props: 'versionNum', name: '版本号' }
 ]
 
 export const outputRecordTableTitle = [
-  { props: 'a', name: 'SUM' },
-  { props: 'b', name: '版本号' },
-  { props: 'c', name: '更新原因' }
+  { props: 'totalOutput', name: 'SUM' },
+  { props: 'versionNum', name: '版本号' },
+  { props: 'updateReason', name: '更新原因' }
 ]
 
 export const usageTableTitle = [

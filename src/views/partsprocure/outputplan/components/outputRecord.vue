@@ -12,8 +12,8 @@
         :tableLoading="loading" />
       <iPagination
         class="pagination margin-top30"
-        @size-change="handleSizeChange($event, getUsage)"
-        @current-change="handleCurrentChange($event, getUsage)"
+        @size-change="handleSizeChange($event, getData)"
+        @current-change="handleCurrentChange($event, getData)"
         background
         :current-page="page.size"
         :page-sizes="page.pageSizes"
@@ -27,7 +27,7 @@
 <script>
 import { iCard, iButton, iPagination } from '@/components'
 import tablelist from '@/views/partsign/home/components/tableList'
-import { getYearScope, getOutputPlan } from '@/api/partsprocure/home'
+import { getOutputPlan } from '@/api/partsprocure/editordetail'
 import { pageMixins } from '@/utils/pageMixins'
 import { outputRecordTableTitle as tableTitle } from './data'
 import { cloneDeep } from 'lodash'
@@ -40,22 +40,61 @@ export default {
       loading: false,
       tableTitle: cloneDeep(tableTitle),
       tableListData: [],
+      multipleSelection: []
     }
   },
   created() {
-    this.getOutputRecord()
+    this.getData()
   },
   methods: {
-    async getOutputRecord() {
-      try {
-        this.loading = true
-        const { data: years } = await getYearScope({})
-        const res = await getOutputPlan({})
+    getData() {
+      this.loading = true
 
-        this.tableTitle.unshift(...years.map(year => ({ props: year + '', name: year + '' })))
-      } finally {
-        this.loading = false
-      }
+      getOutputPlan({
+        'partRecordPageReqDTO.current': this.page.currPage,
+        'partRecordPageReqDTO.purchaseProjectId': '1374304053550661634',
+        // this.params.purchasePrjectId,
+        'partRecordPageReqDTO.size': this.page.pageSize
+      }).
+        then(res => {
+          if (res.data && res.data.partRecordResPageDTO) {
+            if (Array.isArray(res.data.partRecordResPageDTO.records) && res.data.partRecordResPageDTO.records[0] && Array.isArray(res.data.partRecordResPageDTO.records[0].outputPlanList)) {
+              res.data.partRecordResPageDTO.records[0].outputPlanList.forEach((planData, index) => {
+                this.tableTitle.splice(index, 0, { props: planData.year, name: planData.year })
+              })
+
+              this.tableListData = res.data.partRecordResPageDTO.records.map(item => {
+                const result = {
+                  totalOutput: item.totalOutput,
+                  versionNum: item.versionNum,
+                  updateReason: item.updateReason,
+                  outputPlanList: item.outputPlanList,
+                  info: {
+                    partNum: item.partNum
+                  }
+                }
+
+                item.outputPlanList.forEach(planData => {
+                  result[planData.year] = planData.output
+                })
+
+                return result
+              })
+            }
+
+            this.page.totalCount = res.data.partRecordResPageDTO.total || 0
+          }
+
+          this.loading = false
+        })
+        .catch(() => this.loading = false)
+    },
+    handleSelectionChange(list) {
+      this.multipleSelection = list
+    },
+    updateOutput() {
+      if (this.multipleSelection.length !== 1) return iMessage.warn('请选择一条计划更新至询价产量')
+      this.$emit('updateOutput', this.multipleSelection[0])
     }
   }
 }

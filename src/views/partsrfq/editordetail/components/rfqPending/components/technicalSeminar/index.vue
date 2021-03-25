@@ -48,6 +48,7 @@
     <!------------------------------------------------------------------------>
     <drawing-dialog
         v-model="dialogDrawing"
+        :drawing-list="drawingList"
     />
     <!------------------------------------------------------------------------>
     <!--                  添加供应商弹框                                      --->
@@ -68,7 +69,7 @@ import supplierMaterialPreparation from './components/supplierMaterialPreparatio
 import otherMeetingInformation from './components/otherMeetingInformation'
 import drawingDialog from './components/drawingDialog'
 import addSupplierDialog from './components/addSupplierDialog'
-import {getAllRfqParts, addTechnology} from "@/api/partsrfq/editordetail";
+import {getAllRfqParts, addTechnology, getPic} from "@/api/partsrfq/editordetail";
 
 
 export default {
@@ -91,7 +92,8 @@ export default {
       selectTableData: [],
       dialogDrawing: false,
       dialogAddSupplier: false,
-      addSupplierList: []
+      addSupplierList: [],
+      drawingList: []
     };
   },
   created() {
@@ -139,6 +141,10 @@ export default {
       const partNumsList = this.selectTableData.map(item => {
         return item.partNum
       })
+      if(supplierIdList.length === 0) {
+        iMessage.warn('请添加供应商!')
+        return
+      }
       const req = {
         rfqId: id,
         userId: 12321,
@@ -147,8 +153,7 @@ export default {
         meetingLocation: otherMeetingInformationData.meetingLocation,
         memo: otherMeetingInformationData.memo,
         meetingStuff: meetingStuffList.join(','),
-        //supplierIds: supplierIdList,
-        supplierIds: ['11'],
+        supplierIds: supplierIdList,
         partNums: partNumsList,
       }
       const res = await addTechnology(req)
@@ -158,11 +163,19 @@ export default {
     handleSelectionChange(val) {
       this.selectTableData = val;
     },
-    openPage() {
+    openPage(row) {
       this.dialogDrawing = true
+      this.getPic(row)
     },
     handleAddSupplierSave(list) {
       this.addSupplierList = list
+    },
+    async getPic(row) {
+      this.drawingList = []
+      const req = {
+        partNum: row.partNum
+      }
+      this.drawingList = await getPic(req)
     }
   }
 }

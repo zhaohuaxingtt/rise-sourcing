@@ -5,7 +5,7 @@
 <template>
   <iDialog :title="title" :visible.sync="value" width="878px" @close='clearDiolog'>
     <div class="changeContent">
-     图纸
+      <img :src="item" v-for="item of drawingList" :key="item" class="img-style"/>
     </div>
     <span slot="footer" class="dialog-footer">
        <iButton @click="clearDiolog">取消</iButton>
@@ -23,7 +23,12 @@ export default {
   props: {
     title: {type: String, default: '图纸'},
     value: {type: Boolean},
-    repeatClick: Boolean
+    repeatClick: Boolean,
+    drawingList: {
+      type: Array, default: () => {
+        return []
+      }
+    }
   },
   data() {
     return {}
@@ -38,6 +43,15 @@ export default {
 <style lang='scss' scoped>
 .changeContent {
   padding: 0 10px 20px 10px;
+}
+
+.img-style {
+  width: 100%;
+  display: block;
+}
+
+.img-style + .img-style {
+  margin-top: 10px;
 }
 </style>
 
