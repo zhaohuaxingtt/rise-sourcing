@@ -43,7 +43,7 @@ export default {
       this.$emit('input', false)
     },
     submit() {
-      if(this.memo == '') return iMessage.warn('抱歉，备注不能为空！')
+      if(this.memo == '' || this.memo == null) return iMessage.warn('抱歉，备注不能为空！')
       this.$emit('submit', this.memo)
     }
   }
