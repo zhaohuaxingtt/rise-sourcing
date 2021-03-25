@@ -3,7 +3,7 @@
  * @Date: 2021-03-16 17:24:15
 -->
 <template>
-  <iDialog :title="title" :visible.sync="value" width="878px" @close='clearDiolog'>
+  <iDialog :title="title" :visible.sync="value" width="400px" @close='clearDiolog'>
     <div class="changeContent">
       <iFormGroup row="1" icon>
         <iFormItem label="" name="memo">
@@ -18,7 +18,7 @@
   </iDialog>
 </template>
 <script>
-import {iButton, iDialog, iFormGroup, iFormItem, iInput} from '@/components'
+import {iButton, iDialog, iFormGroup, iFormItem, iInput, iMessage} from '@/components'
 
 export default {
   components: {
@@ -43,6 +43,7 @@ export default {
       this.$emit('input', false)
     },
     submit() {
+      if(this.memo == '') return iMessage.warn('抱歉，备注不能为空！')
       this.$emit('submit', this.memo)
     }
   }
