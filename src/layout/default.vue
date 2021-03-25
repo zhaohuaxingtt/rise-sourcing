@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2020-07-22 14:56:34
- * @LastEditTime: 2021-03-23 12:58:45
+ * @LastEditTime: 2021-03-25 23:15:21
  * @LastEditors: Please set LastEditors
  * @Description: 项目默认layout
  * @FilePath: \test\src\layout\default.vue
@@ -9,9 +9,9 @@
 <template>
   <div class="content">
     <topLayout></topLayout>
-    <leftLayout>
+    <leftLayout ref='pup'>
       <template slot="menu">
-        <menuLayout :menuData="menuList" ></menuLayout>
+        <menuLayout :menuData="menuList" @activeMeun='activeMeun'></menuLayout>
       </template>
     </leftLayout>
     <div class="app-content">
@@ -31,6 +31,11 @@ export default {
       menuList: (state) => state.permission.menuList,
     })
   },
+  methods:{
+    activeMeun(){
+      this.$refs.pup.hideMeun()
+    }
+  }
 };
 </script>
 <style lang="scss" scoped>

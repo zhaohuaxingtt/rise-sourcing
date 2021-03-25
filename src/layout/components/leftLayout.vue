@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-22 16:47:54
- * @LastEditTime: 2021-03-23 12:58:36
+ * @LastEditTime: 2021-03-25 23:51:07
  * @LastEditors: Please set LastEditors
  * @Description: 界面左边的按钮切换菜单栏。
  * @FilePath: \rise\src\layout\components\leftLayout.vue
@@ -41,24 +41,27 @@ export default{
   data(){
     return {
       iconDataList:iconData,
-      iconChangeClass:'type-first',
+      iconChangeClass:'',
       hiddenMenu:false
     }
+  },
+  provide(){
+    return this
   },
   methods:{
     active(key){
       this.iconChangeClass = '';
       if( key.key == 'first') this.iconChangeClass = 'type-first';
+      if( key.key == 'tow') this.iconChangeClass = 'type-tow';
       if( key.key == 'three') this.iconChangeClass = 'type-last';
       this.iconDataList.forEach(items=>{
         if (items.key == key.key) {
           items.active = true
         } else {items.active = false}
       })
-      
-      this.$router.push({
-        path:key.path
-      })
+    },
+    hideMeun(){
+      this.hiddenMenu = !this.hiddenMenu
     }
   }
 }
@@ -94,6 +97,7 @@ export default{
       transition: all 0.3s;
       opacity: 1;
       transform: translateX(0px);
+      border-radius: 0px;
     }
     .hiddenMenu{  
       opacity: 0;
@@ -102,20 +106,24 @@ export default{
     .type-first{
       span{
         &:nth-child(2){
-          border-bottom-right-radius: 0px;
+          border-top-right-radius: 15px;
+        }
+      }
+    }
+    .type-tow{
+      span{
+        &:nth-child(1){
+          border-bottom-right-radius: 15px;
         }
         &:nth-child(3){
-          border-top-right-radius: 0px;
+          border-top-right-radius: 15px;
         }
       }
     }
     .type-last{
       span{
        &:nth-child(2){
-           border-top-right-radius: 0px;
-        }
-        &:nth-child(1){
-           border-bottom-right-radius: 0px;
+           border-bottom-right-radius: 15px;
         }
       }
     }
@@ -132,18 +140,10 @@ export default{
         text-align: center;
         line-height: 120px;
         background-color:$color-white;
-         border-bottom-right-radius: 15px;
-         border-top-right-radius: 15px;
-         font-size: 28px;
+        font-size: 28px;
         cursor: pointer;
         transition: all 0.2s;
         color:#001847;
-        &:nth-child(1){
-          border-top-right-radius: 0px;
-        }
-        &:nth-child(3){
-          border-bottom-right-radius: 0px;
-        }
       }
       .transparent{
         background-color:transparent;

@@ -7,91 +7,98 @@
  * @FilePath: \rise\src\views\partsrfq\home\index.vue
 -->
 <template>
-  <iPage>
-    <div class="margin-bottom20">
-      <iNav-mvp @change="change" right></iNav-mvp>
-    </div>
-    <!------------------------------------------------------------------------>
-    <!--                  search 搜索模块                                   --->
-    <!------------------------------------------------------------------------>
-    <iSearch class="margin-bottom20" :icon="true" @reset="handleSearchReset" @sure="getTableList">
-      <el-form>
-        <el-form-item label="零件号/FSNR/RFQ/采购员">
-          <iInput placeholder='请输入查询' v-model="form.searchConditions"></iInput>
-        </el-form-item>
-        <el-form-item label="车型项目">
-          <iSelect placeholder='请选择' v-model="form.carType">
-            <el-option v-for="items in carTypeOptions" :key='items.code' :value='items.code' :label="items.name"/>
-          </iSelect>
-        </el-form-item>
-        <el-form-item label="零件项目类型">
-          <iSelect placeholder='请选择' v-model="form.partType">
-            <el-option v-for="items in partTypeOptions" :key='items.code' :value='items.code' :label="items.name"/>
-          </iSelect>
-        </el-form-item>
-        <el-form-item label="RFQ状态">
-          <iSelect placeholder='请选择' v-model="form.rfqStatus">
-            <el-option v-for="items in rfqStatusOptions" :key='items.code' :value='items.code' :label="items.name"/>
-          </iSelect>
-        </el-form-item>
-      </el-form>
-    </iSearch>
-    <iCard>
-      <!------------------------------------------------------------------------>
-      <!--                  table模块，向外入参表格数据，表头                    --->
-      <!------------------------------------------------------------------------>
-      <div class="margin-bottom20 clearFloat">
-        <span class="font18 font-weight">RFQ综合管理</span>
-        <div class="floatright">
-          <iButton @click="editRfq('02')" :loading="activateButtonLoading">激活RFQ</iButton>
-          <iButton @click="newRfq">新建RFQ</iButton>
-          <iButton @click="editRfq('01')" :loading="closeButtonLoading">关闭RFQ</iButton>
-          <iButton @click="assignmentOfScoringTasks">转派评分任务</iButton>
-          <iButton @click="editRfq('03')" :loading="transferNegotiationButtonLoading">转谈判</iButton>
-          <iButton @click="editRfq('04')" :loading="transferInquiryButtonLoading">转询价</iButton>
-          <iButton disabled>创建定点申请</iButton>
-          <iButton @click="exportTable">导出</iButton>
-        </div>
-      </div>
-      <tablelist
-          :tableData="tableListData"
-          :tableTitle="tableTitle"
-          :tableLoading="tableLoading"
-          @handleSelectionChange="handleSelectionChange"
-          @openPage='openPage'
-          open-page-props="id"
-          :index="true"
-          icon-props="recordId"
-      >
-        <template v-slot:icon="scope">
-          <div @click="toTop(scope.data)" class="icon-style">
-            <icon class="icon icon-color-active" name="iconliebiaoyizhiding"
-                  v-if="scope.data.recordId > 1"></icon>
-            <icon class="icon" name="iconliebiaoyizhiding" v-else></icon>
+  <iPage class="partsrfqHome">
+    <el-tabs v-model="tab" class="tab">
+      <el-tab-pane label="寻源执行" name="source">
+        <div>
+          <div class="margin-bottom33">
+            <iNav-mvp @change="change" right></iNav-mvp>
           </div>
-        </template>
-      </tablelist>
-      <!------------------------------------------------------------------------>
-      <!--                  表格分页                                          --->
-      <!------------------------------------------------------------------------>
-      <iPagination
-          @size-change="handleSizeChange($event, getTableList)"
-          @current-change="handleCurrentChange($event, getTableList)"
-          background
-          :page-sizes="page.pageSizes"
-          :page-size="page.pageSize"
-          :layout="page.layout"
-          :current-page='page.currPage'
-          :total="page.totalCount"
-      />
-      <!------------------------------------------------------------------------>
-      <!--                  转派评分任务弹出框                                   --->
-      <!------------------------------------------------------------------------>
-      <assignment-of-scoring-tasks
-          v-model="diologAssignmentOfScroingTasks"
-          :rfq-id="assignmentRfqIdList"
-      />
-    </iCard>
+          <!------------------------------------------------------------------------>
+          <!--                  search 搜索模块                                   --->
+          <!------------------------------------------------------------------------>
+          <iSearch class="margin-bottom20" :icon="true" @reset="handleSearchReset" @sure="getTableList">
+            <el-form>
+              <el-form-item label="零件号/FSNR/RFQ/采购员">
+                <iInput placeholder='请输入查询' v-model="form.searchConditions"></iInput>
+              </el-form-item>
+              <el-form-item label="车型项目">
+                <iSelect placeholder='请选择' v-model="form.carType">
+                  <el-option v-for="items in carTypeOptions" :key='items.code' :value='items.code' :label="items.name"/>
+                </iSelect>
+              </el-form-item>
+              <el-form-item label="零件项目类型">
+                <iSelect placeholder='请选择' v-model="form.partType">
+                  <el-option v-for="items in partTypeOptions" :key='items.code' :value='items.code' :label="items.name"/>
+                </iSelect>
+              </el-form-item>
+              <el-form-item label="RFQ状态">
+                <iSelect placeholder='请选择' v-model="form.rfqStatus">
+                  <el-option v-for="items in rfqStatusOptions" :key='items.code' :value='items.code' :label="items.name"/>
+                </iSelect>
+              </el-form-item>
+            </el-form>
+          </iSearch>
+          <iCard>
+            <!------------------------------------------------------------------------>
+            <!--                  table模块，向外入参表格数据，表头                    --->
+            <!------------------------------------------------------------------------>
+            <div class="margin-bottom20 clearFloat">
+              <span class="font18 font-weight">RFQ综合管理</span>
+              <div class="floatright">
+                <iButton @click="editRfq('02')" :loading="activateButtonLoading">激活RFQ</iButton>
+                <iButton @click="newRfq">新建RFQ</iButton>
+                <iButton @click="editRfq('01')" :loading="closeButtonLoading">关闭RFQ</iButton>
+                <iButton @click="assignmentOfScoringTasks">转派评分任务</iButton>
+                <iButton @click="editRfq('03')" :loading="transferNegotiationButtonLoading">转谈判</iButton>
+                <iButton @click="editRfq('04')" :loading="transferInquiryButtonLoading">转询价</iButton>
+                <iButton disabled>创建定点申请</iButton>
+                <iButton @click="exportTable">导出</iButton>
+              </div>
+            </div>
+            <tablelist
+                :tableData="tableListData"
+                :tableTitle="tableTitle"
+                :tableLoading="tableLoading"
+                @handleSelectionChange="handleSelectionChange"
+                @openPage='openPage'
+                open-page-props="id"
+                :index="true"
+                icon-props="recordId"
+            >
+              <template v-slot:icon="scope">
+                <div @click="toTop(scope.data)" class="icon-style">
+                  <icon class="icon icon-color-active" name="iconliebiaoyizhiding"
+                        v-if="scope.data.recordId > 1"></icon>
+                  <icon class="icon" name="iconliebiaoyizhiding" v-else></icon>
+                </div>
+              </template>
+            </tablelist>
+            <!------------------------------------------------------------------------>
+            <!--                  表格分页                                          --->
+            <!------------------------------------------------------------------------>
+            <iPagination
+                @size-change="handleSizeChange($event, getTableList)"
+                @current-change="handleCurrentChange($event, getTableList)"
+                background
+                :page-sizes="page.pageSizes"
+                :page-size="page.pageSize"
+                :layout="page.layout"
+                :current-page='page.currPage'
+                :total="page.totalCount"
+            />
+            <!------------------------------------------------------------------------>
+            <!--                  转派评分任务弹出框                                   --->
+            <!------------------------------------------------------------------------>
+            <assignment-of-scoring-tasks
+                v-model="diologAssignmentOfScroingTasks"
+                :rfq-id="assignmentRfqIdList"
+            />
+          </iCard>
+        </div>
+      </el-tab-pane>
+      <!-- <el-tab-pane label="进度监控" name="progress"></el-tab-pane> -->
+    </el-tabs>
   </iPage>
 
 </template>
@@ -139,7 +146,8 @@ export default {
       carTypeOptions: [],
       partTypeOptions: [],
       rfqStatusOptions: [],
-      assignmentRfqIdList: []
+      assignmentRfqIdList: [],
+      tab: 'source'
     };
   },
   created() {
@@ -275,5 +283,45 @@ export default {
 
 .icon-style {
   cursor: pointer;
+}
+
+.partsrfqHome {
+  position: relative;
+
+  .tab {
+    ::v-deep .el-tabs__header {
+      position: absolute;
+      top: 20px;
+      transform: translate(0, 5px);
+      z-index: 1;
+
+      .el-tabs__nav-wrap::after {
+        background: transparent;
+      }
+
+      .el-tabs__active-bar {
+        height: 3px;
+        background: $color-blue;
+        border-radius: 2px;
+      }
+
+      .el-tabs__item {
+        font-size: 18px;
+        color: #000000;
+        opacity: 0.42;
+        height: 35px;
+        line-height: 35px;
+
+        & + & {
+          padding: 0 25px;
+        }
+      }
+      
+      .is-active {
+        opacity: 1;
+        font-weight: bold;
+      }
+    }
+  }
 }
 </style>

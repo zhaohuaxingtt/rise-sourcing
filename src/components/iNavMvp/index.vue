@@ -13,7 +13,6 @@
 		</div>
 	</div>
 </template>
-
 <script>
 	export default {
 		data() {
@@ -35,30 +34,34 @@
 				default: () => [{
 					value: 1,
 					name: "零件签收",
-					message: 0
+					message: 0,
+					url:'/partsign'
 				}, {
 					value: 2,
 					name: "采购项目建立",
-					message: 0
+					message: 0,
+					url:'/partsprocure'
 				}, {
 					value: 3,
 					name: "RFQ执行",
-					message: 0
-				}, {
-					value: 4,
-					name: "定点管理",
-					message: 0
+					message: 0,
+					url:'/partsrfq'
 				}]
 			},
 
 		},
+		created(){
+			//由于当前组件存在于业务组件中，他的选中只需要在加载的时候去路由上取值和当前的list对比即可
+			this.list.forEach((items,index)=>{
+				if(items.url == this.$route.path) this.activeIndex = index
+			})
+		},
 		methods: {
 			// 切换nav
 			change(item, index) {
-				if (index != this.activeIndex) {
-					this.activeIndex = index
-					this.$emit('change', item)
-				}
+				this.$router.push({
+					path:item.url
+				})
 			}
 		}
 	}

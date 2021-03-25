@@ -1,147 +1,153 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-24 09:17:57
- * @LastEditTime: 2021-03-24 14:48:51
+ * @LastEditTime: 2021-03-25 22:43:56
  * @LastEditors: Please set LastEditors
  * @Description: 零件签收列表界面.
  * @FilePath: \rise\src\views\partsign\index.vue
 -->
 <template>
-  <iPage>
-    <div class="margin-bottom20">
-      <iNav-mvp
-        @change="change"
-        right
-        v-permission="PERMISSION_TEST"
-      ></iNav-mvp>
-    </div>
-    <!------------------------------------------------------------------------>
-    <!--                  search 搜索模块                                   --->
-    <!------------------------------------------------------------------------>
-    <iSearch class="margin-bottom20" @sure="sure" @reset="reset" :resetKey="PARTSIGN_RESETBUTTON" :searchKey="PARTSIGN_CONFIRMBUTTON">
-      <el-form>
-        <el-form-item label="零件号" >
-          <iInput v-model="form.partNum" placeholder="请输入零件号" v-permission="PARTSIGN_PARTNUM"></iInput>
-        </el-form-item>
-        <el-form-item label="零件名（中）">
-          <iInput
-            v-model="form.partNameZh"
-            placeholder="请输入零件名（中）" v-permission="PARTSIGN_PARTNAMEZH"
-          ></iInput>
-        </el-form-item>
-        <el-form-item label="设计科室">
-          <iInput v-model="form.dept" placeholder="请填写设计科室" v-permission="PARTSIGN_DESIGNDEPARTMENT"></iInput>
-        </el-form-item>
-        <el-form-item label="工程师">
-          <iInput placeholder="请填写工程师" v-permission="PARTSIGN_ENGINEER"></iInput>
-        </el-form-item>
-        <el-form-item label="车型项目">
-          <iSelect v-model="form.projectCarType" placeholder="请选择车型项目" v-permission="PARTSIGN_MODELPROJECT">
-            <el-option
-              :value="items.key"
-              :label="items.value"
-              v-for="(items, index) in getGroupList('project_car_type')"
-              :key="index"
-            ></el-option>
-          </iSelect>
-        </el-form-item>
-        <el-form-item label="信息单分类">
-          <iSelect v-model="form.tpInfoType" placeholder="请选择信息分类" v-permission="PARTSIGN_INFORMATIONCLASSIFICATION">
-            <el-option
-              :value="items.key"
-              :label="items.value"
-              v-for="(items, index) in getGroupList('tp_info_type')"
-              :key="index"
-            ></el-option>
-          </iSelect>
-        </el-form-item>
-        <el-form-item label="信息单状态">
-          <iSelect v-model="form.status" placeholder="请选择信息单状态" v-permission="PARTSIGN_INFORMATIONSTATUS">
-            <el-option
-              :value="items.key"
-              :label="items.value"
-              v-for="(items, index) in getGroupList('status')"
-              :key="index"
-            ></el-option>
-          </iSelect>
-        </el-form-item>
-        <el-form-item label="信息单流水号">
-          <iInput v-model="form.id" placeholder="请填写信息单流水号" v-permission="PARTSIGN_PARTINFOID"></iInput>
-        </el-form-item>
-        <el-form-item label="询价资料状态">
-          <iSelect
-            v-model="form.attachmentStatus"
-            placeholder="请选择询价资料状态" v-permission="PARTSIGN_INQUIRYSTATUS"
-          >
-            <el-option
-              :value="items.key"
-              :label="items.value"
-              v-for="(items, index) in getGroupList('attachment_status')"
-              :key="index"
-            ></el-option>
-          </iSelect>
-        </el-form-item>
-        <el-form-item label="每车用量状态">
-          <iSelect
-            v-model="form.partDosageStatus"
-            placeholder="请选择没车用量状态" v-permission="PARTSIGN_USAGEVEHICLE"
-          >
-            <el-option
-              :value="items.key"
-              :label="items.value"
-              v-for="(items, index) in getGroupList('part_dosage_status')"
-              :key="index"
-            ></el-option>
-          </iSelect>
-        </el-form-item>
-      </el-form>
-    </iSearch>
-    <iCard>
-      <!------------------------------------------------------------------------>
-      <!--                  table模块，向外入参表格数据，表头                    --->
-      <!------------------------------------------------------------------------>
-      <div class="margin-bottom20 clearFloat">
-        <span class="font18 font-weight">新件信息单签收</span>
-        <div class="floatright">
-          <iButton @click="save" v-permission="PARTSIGN_SIGNBUTTON">签收</iButton>
-          <iButton @click="openDiologBack" v-permission="PARTSIGN_BACKBUTTON">退回</iButton>
-          <iButton @click="openDiologChangeItems" v-permission="PARTSIGN_TRANSFERBUTTON">转派</iButton>
+  <iPage class="partsignHome">
+    <el-tabs v-model="tab" class="tab">
+      <el-tab-pane label="寻源执行" name="source">
+        <div>
+          <div class="margin-bottom33">
+            <iNav-mvp
+              @change="change"
+              right
+            ></iNav-mvp>
+          </div>
+          <!------------------------------------------------------------------------>
+          <!--                  search 搜索模块                                   --->
+          <!------------------------------------------------------------------------>
+          <iSearch class="margin-bottom20" @sure="sure" @reset="reset" :resetKey="PARTSIGN_RESETBUTTON" :searchKey="PARTSIGN_CONFIRMBUTTON">
+            <el-form>
+              <el-form-item label="零件号" >
+                <iInput v-model="form.partNum" placeholder="请输入零件号" v-permission="PARTSIGN_PARTNUM"></iInput>
+              </el-form-item>
+              <el-form-item label="零件名（中）">
+                <iInput
+                  v-model="form.partNameZh"
+                  placeholder="请输入零件名（中）" v-permission="PARTSIGN_PARTNAMEZH"
+                ></iInput>
+              </el-form-item>
+              <el-form-item label="设计科室">
+                <iInput v-model="form.dept" placeholder="请填写设计科室" v-permission="PARTSIGN_DESIGNDEPARTMENT"></iInput>
+              </el-form-item>
+              <el-form-item label="工程师">
+                <iInput placeholder="请填写工程师" v-permission="PARTSIGN_ENGINEER"></iInput>
+              </el-form-item>
+              <el-form-item label="车型项目">
+                <iSelect v-model="form.projectCarType" placeholder="请选择车型项目" v-permission="PARTSIGN_MODELPROJECT">
+                  <el-option
+                    :value="items.key"
+                    :label="items.value"
+                    v-for="(items, index) in getGroupList('project_car_type')"
+                    :key="index"
+                  ></el-option>
+                </iSelect>
+              </el-form-item>
+              <el-form-item label="信息单分类">
+                <iSelect v-model="form.tpInfoType" placeholder="请选择信息分类" v-permission="PARTSIGN_INFORMATIONCLASSIFICATION">
+                  <el-option
+                    :value="items.key"
+                    :label="items.value"
+                    v-for="(items, index) in getGroupList('tp_info_type')"
+                    :key="index"
+                  ></el-option>
+                </iSelect>
+              </el-form-item>
+              <el-form-item label="信息单状态">
+                <iSelect v-model="form.status" placeholder="请选择信息单状态" v-permission="PARTSIGN_INFORMATIONSTATUS">
+                  <el-option
+                    :value="items.key"
+                    :label="items.value"
+                    v-for="(items, index) in getGroupList('status')"
+                    :key="index"
+                  ></el-option>
+                </iSelect>
+              </el-form-item>
+              <el-form-item label="信息单流水号">
+                <iInput v-model="form.id" placeholder="请填写信息单流水号" v-permission="PARTSIGN_PARTINFOID"></iInput>
+              </el-form-item>
+              <el-form-item label="询价资料状态">
+                <iSelect
+                  v-model="form.attachmentStatus"
+                  placeholder="请选择询价资料状态" v-permission="PARTSIGN_INQUIRYSTATUS"
+                >
+                  <el-option
+                    :value="items.key"
+                    :label="items.value"
+                    v-for="(items, index) in getGroupList('attachment_status')"
+                    :key="index"
+                  ></el-option>
+                </iSelect>
+              </el-form-item>
+              <el-form-item label="每车用量状态">
+                <iSelect
+                  v-model="form.partDosageStatus"
+                  placeholder="请选择没车用量状态" v-permission="PARTSIGN_USAGEVEHICLE"
+                >
+                  <el-option
+                    :value="items.key"
+                    :label="items.value"
+                    v-for="(items, index) in getGroupList('part_dosage_status')"
+                    :key="index"
+                  ></el-option>
+                </iSelect>
+              </el-form-item>
+            </el-form>
+          </iSearch>
+          <iCard>
+            <!------------------------------------------------------------------------>
+            <!--                  table模块，向外入参表格数据，表头                    --->
+            <!------------------------------------------------------------------------>
+            <div class="margin-bottom20 clearFloat">
+              <span class="font18 font-weight">新件信息单签收</span>
+              <div class="floatright">
+                <iButton @click="save" v-permission="PARTSIGN_SIGNBUTTON">签收</iButton>
+                <iButton @click="openDiologBack" v-permission="PARTSIGN_BACKBUTTON">退回</iButton>
+                <iButton @click="openDiologChangeItems" v-permission="PARTSIGN_TRANSFERBUTTON">转派</iButton>
+              </div>
+            </div>
+            <tablelist
+              :tableData="tableListData"
+              :tableTitle="tableTitle"
+              :tableLoading="tableLoading"
+              @handleSelectionChange="handleSelectionChange"
+              @openPage="openPage"
+              :activeItems="'partNum'"
+            >
+            </tablelist>
+            <!------------------------------------------------------------------------>
+            <!--                  表格分页                                          --->
+            <!------------------------------------------------------------------------>
+            <iPagination
+              @size-change="handleSizeChange($event, getTableList)"
+              @current-change="handleCurrentChange($event, getTableList)"
+              background
+              :page-sizes="page.pageSizes"
+              :page-size="page.pageSize"
+              :layout="page.layout"
+              :current-page="page.currPage"
+              :total="page.totalCount"
+            />
+          </iCard>
+          <!------------------------------------------------------------------------>
+          <!--                  转派弹出框                                        --->
+          <!------------------------------------------------------------------------>
+          <changeItems
+            v-model="diologChangeItems"
+            @sure="sureChangeItems"
+          ></changeItems>
+          <!------------------------------------------------------------------------>
+          <!--                  退回弹出框                                         --->
+          <!------------------------------------------------------------------------>
+          <backItems v-model="diologBack" @sure="sureBackmark"></backItems>
         </div>
-      </div>
-      <tablelist
-        :tableData="tableListData"
-        :tableTitle="tableTitle"
-        :tableLoading="tableLoading"
-        @handleSelectionChange="handleSelectionChange"
-        @openPage="openPage"
-        :activeItems="'partNum'"
-      >
-      </tablelist>
-      <!------------------------------------------------------------------------>
-      <!--                  表格分页                                          --->
-      <!------------------------------------------------------------------------>
-      <iPagination
-        @size-change="handleSizeChange($event, getTableList)"
-        @current-change="handleCurrentChange($event, getTableList)"
-        background
-        :page-sizes="page.pageSizes"
-        :page-size="page.pageSize"
-        :layout="page.layout"
-        :current-page="page.currPage"
-        :total="page.totalCount"
-      />
-    </iCard>
-    <!------------------------------------------------------------------------>
-    <!--                  转派弹出框                                        --->
-    <!------------------------------------------------------------------------>
-    <changeItems
-      v-model="diologChangeItems"
-      @sure="sureChangeItems"
-    ></changeItems>
-    <!------------------------------------------------------------------------>
-    <!--                  退回弹出框                                         --->
-    <!------------------------------------------------------------------------>
-    <backItems v-model="diologBack" @sure="sureBackmark"></backItems>
+      </el-tab-pane>
+      <!-- <el-tab-pane label="进度监控" name="progress"></el-tab-pane> -->
+    </el-tabs>
   </iPage>
 </template>
 <script>
@@ -192,6 +198,7 @@ export default {
       inquiryBuyerList: [],
       form: form,
       fromGroup: [],
+      tab: 'source'
     };
   },
   created() {
@@ -346,4 +353,44 @@ export default {
   },
 };
 </script>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.partsignHome {
+  position: relative;
+
+  .tab {
+    ::v-deep .el-tabs__header {
+      position: absolute;
+      top: 20px;
+      transform: translate(0, 5px);
+      z-index: 1;
+
+      .el-tabs__nav-wrap::after {
+        background: transparent;
+      }
+
+      .el-tabs__active-bar {
+        height: 3px;
+        background: $color-blue;
+        border-radius: 2px;
+      }
+
+      .el-tabs__item {
+        font-size: 18px;
+        color: #000000;
+        opacity: 0.42;
+        height: 35px;
+        line-height: 35px;
+
+        & + & {
+          padding: 0 25px;
+        }
+      }
+      
+      .is-active {
+        opacity: 1;
+        font-weight: bold;
+      }
+    }
+  }
+}
+</style>

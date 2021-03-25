@@ -1,7 +1,7 @@
 <template>
   <iCard class="outputPlan tabCard" title="询价产量计划" tabCard>
     <template v-slot:header-control>
-      <iButton>保存</iButton>
+      <iButton @click="handleSave" :loading="saveLoading">保存</iButton>
     </template>
     <div class="body">
       <tableList
@@ -17,9 +17,10 @@
 <script>
 import { iCard, iButton } from '@/components'
 import tableList from '@/views/partsign/editordetail/components/tableList'
-import { getYearScope, getOutputPlan } from '@/api/partsprocure/editordetail'
+import { getOutputPlan, updateOutputPlan } from '@/api/partsprocure/editordetail'
 import { outputPlanTableTitle as tableTitle } from './data'
 import { cloneDeep } from 'lodash'
+import { iMessage } from '../../../../../components'
 
 export default {
   components: { iCard, iButton, tableList },
@@ -32,33 +33,82 @@ export default {
   data() {
     return {
       loading: false,
+      saveLoading: false,
       tableTitle: cloneDeep(tableTitle),
       tableListData: [
-        { 'a': '产量（PC）' }
-      ],
+        { pc: '产量（PC）', info: {} }
+      ]
     }
   },
   created() {
-    this.getOutputPlan()
+    this.getData()
   },
   methods: {
-    async getOutputPlan() {
-      try {
-        this.loading = true
-        const { data: years } = await getYearScope({})
-        const res = await getOutputPlan({
-          'partOutputPlanReqDTO.purchaseProjectId': this.params.purchaseProjectId
-        })
+    getData() {
+      this.loading = true
+      getOutputPlan({
+        'partOutputPlanReqDTO.purchaseProjectId': '1374304053550661634'
+        // this.params.purchasePrjectId
+      })
+        .then((res) => {
+          this.tableTitle = cloneDeep(tableTitle)
+          this.tableListData = [
+            { pc: '产量（PC）', info: {} }
+          ]
 
-        this.tableTitle.splice(1, 0, ...years.map(year => ({ props: year + '', name: year + '' })))
-        
-        this.$set(this.tableListData[0], 'b', Object.keys(res.data).reduce((acc, key) => {
-          this.tableListData[0][key + ''] = res.data[key] || 0
-          return window.math.add(acc, window.math.bignumber(res.data[key] || 0))
-        }, 0).toString())
-      } finally {
-        this.loading = false
-      }
+          if (res.data && res.data.partRecordsResDTO) {
+            if (Array.isArray(res.data.partRecordsResDTO.outputPlanList)) {
+              res.data.partRecordsResDTO.outputPlanList.forEach((planData, index) => {
+                this.tableTitle.splice(1 + index, 0, { props: planData.year, name: planData.year })
+                this.tableListData[0][planData.year] = planData.output
+                this.tableListData[0].info[planData.year] = planData
+              })
+
+              this.tableListData[0].totalOutput = res.data.partRecordsResDTO.totalOutput
+              this.tableListData[0].versionNum = res.data.partRecordsResDTO.versionNum
+              this.tableListData[0].outputPlanList = res.data.partRecordsResDTO.outputPlanList
+              this.tableListData[0].info.partNumpartNum = res.data.partRecordsResDTO.partNum
+              // this.tableListData[0].info.id = res.data.partRecordsResDTO.id
+              // this.tableListData[0].info.output = res.data.partRecordsResDTO.output
+              // this.tableListData[0].info.purchaseProjectId = res.data.partRecordsResDTO.purchaseProjectId
+            }
+          }
+          this.loading = false
+        })
+        .catch(() => this.loading = false)
+    },
+    updateOutput(data) {
+      this.tableTitle = cloneDeep(tableTitle)
+      this.tableListData = [
+        { pc: '产量（PC）', info: this.tableListData[0].info }
+      ]
+      
+      data.outputPlanList.forEach((planData, index) => {
+        this.tableTitle.splice(1 + index, 0, { props: planData.year, name: planData.year })
+        this.tableListData[0][planData.year] = planData.output
+        this.tableListData[0].info[planData.year] = planData
+      })
+
+      this.tableListData[0].totalOutput = data.totalOutput
+      this.tableListData[0].versionNum = data.versionNum
+      this.tableListData[0].outputPlanList = data.outputPlanList
+    },
+    handleSave() {
+      this.saveLoading = true
+      updateOutputPlan({
+        partOutputPlanInsertFacadeDTOS: this.tableListData[0].outputPlanList
+      })
+        .then(res => {
+          if (res.code == 200) {
+            iMessage.success(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
+            this.getData()
+          } else {
+            iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
+          }
+          
+          this.saveLoading = false
+        })
+        .catch(() => this.saveLoading = false)
     }
   }
 }

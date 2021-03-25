@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-22 16:50:10
- * @LastEditTime: 2021-03-23 13:32:46
+ * @LastEditTime: 2021-03-25 23:17:01
  * @LastEditors: Please set LastEditors
  * @Description: 项目菜单。
  * @FilePath: \rise\src\layout\components\menu.vue
@@ -40,16 +40,19 @@ export default {
     }
   },
   methods:{
+    //路由跳转，如果当前点击的是一个已经被激活的菜单，则不作操作
     active(items){
+      this.$emit('activeMeun')
+      if(items.active) return
       this.menuData.forEach(key=>{
-        if(key.key == items.key){
+        if(key.id == items.id){
           key.active = true
         }else{
           key.active = false;
         }
-        this.$router.push({
-          path:key.url
-        })
+      })
+      this.$router.push({
+          path:items.url
       })
     }
   }

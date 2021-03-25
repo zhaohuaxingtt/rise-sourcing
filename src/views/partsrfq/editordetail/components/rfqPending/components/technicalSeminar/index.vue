@@ -48,6 +48,7 @@
     <!------------------------------------------------------------------------>
     <drawing-dialog
         v-model="dialogDrawing"
+        :drawing-list="drawingList"
     />
     <!------------------------------------------------------------------------>
     <!--                  添加供应商弹框                                      --->
@@ -68,7 +69,7 @@ import supplierMaterialPreparation from './components/supplierMaterialPreparatio
 import otherMeetingInformation from './components/otherMeetingInformation'
 import drawingDialog from './components/drawingDialog'
 import addSupplierDialog from './components/addSupplierDialog'
-import {getAllRfqParts, addTechnology} from "@/api/partsrfq/editordetail";
+import {getAllRfqParts, addTechnology, getPic} from "@/api/partsrfq/editordetail";
 
 
 export default {
@@ -91,7 +92,8 @@ export default {
       selectTableData: [],
       dialogDrawing: false,
       dialogAddSupplier: false,
-      addSupplierList: []
+      addSupplierList: [],
+      drawingList: []
     };
   },
   created() {
@@ -158,11 +160,19 @@ export default {
     handleSelectionChange(val) {
       this.selectTableData = val;
     },
-    openPage() {
+    openPage(row) {
       this.dialogDrawing = true
+      this.getPic(row)
     },
     handleAddSupplierSave(list) {
       this.addSupplierList = list
+    },
+    async getPic(row) {
+      this.drawingList = []
+      const req = {
+        partNum: row.partNum
+      }
+      this.drawingList = await getPic(req)
     }
   }
 }

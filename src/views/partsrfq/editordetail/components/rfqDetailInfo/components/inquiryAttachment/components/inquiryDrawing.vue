@@ -75,7 +75,7 @@ export default {
         }
         try {
           const res = await getRfqDataList(req)
-          this.tableListData = res.data.inquiryDrawingsVO.inquiryDrawingsVOList;
+          this.tableListData = res.data.inquiryDrawingsVO.inquiryDrawingsVOS;
           this.page.currPage = res.data.inquiryDrawingsVO.pageNum
           this.page.pageSize = res.data.inquiryDrawingsVO.pageSize
           this.page.totalCount = res.data.inquiryDrawingsVO.total
@@ -94,12 +94,12 @@ export default {
       this.selectTableData = val;
     },
     handleOpenPage(row) {
-      const url = row.filePath
+      /*const url = row.filePath
       const a = document.createElement('a');
       a.setAttribute('download', '')
       a.setAttribute('href', url);
       a.setAttribute('target', '_blank');
-      a.click();
+      a.click();*/
     }
   }
 }

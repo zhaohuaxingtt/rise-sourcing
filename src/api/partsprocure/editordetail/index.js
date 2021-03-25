@@ -71,6 +71,33 @@ export function getOutputPlan(params) {
   })
 }
 
+// 更新产量计划
+export function updateOutputPlan(params) {
+  return requst({
+    url: '/api/part-src-prjs',
+    method: 'POST',
+    data: params
+  })
+}
+
+// 获取零件详情-每车用量
+export function getPerCarDosageInfo(params) {
+  return requst({
+    url: '/tp-records/perCarDosage/info',
+    method: 'POST',
+    data: params
+  })
+}
+
+// 获取零件详情-获取所有版本
+export function getPerCarDosageVersion(params) {
+  return requst({
+    url: '/tp-records/perCarDosage/version',
+    method: 'POST',
+    data: params
+  })
+}
+
 //拆分采购工厂
 export function purchaseFactory(params){
   return requstPartResource({

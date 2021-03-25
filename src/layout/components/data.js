@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-23 16:43:12
- * @LastEditTime: 2021-03-08 16:39:33
+ * @LastEditTime: 2021-03-25 23:39:29
  * @LastEditors: Please set LastEditors
  * @Description: components data and function
  * @FilePath: \rise\src\layout\components\data.js
@@ -12,7 +12,7 @@
    {
      icon:'iconhomeweixuanzhong',
      acIcon:'iconhomexuanzhong',
-     active:true,
+     active:false,
      key:'first',
      path:'/partsign',
      menuData: []
