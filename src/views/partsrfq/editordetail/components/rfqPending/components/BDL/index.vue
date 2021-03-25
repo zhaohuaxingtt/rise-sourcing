@@ -14,7 +14,6 @@
         <iButton>保存</iButton>
         <iButton>删除供应商</iButton>
         <iButton @click="addCustom">添加自定义评分项</iButton>
-        <iButton @click="log">日志</iButton>
       </div>
     </div>
     <tableList :tableData="tableData" :tableTitle="tableTitle" :tableLoading="tableLoading"
