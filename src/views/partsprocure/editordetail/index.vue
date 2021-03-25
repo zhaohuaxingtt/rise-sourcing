@@ -212,7 +212,7 @@
     </iCard>
     <iTabsList class="margin-top20" type="border-card">
       <el-tab-pane label="材料组信息">
-        <materialGroupInfo />
+        <materialGroupInfo :params="infoItem"/>
       </el-tab-pane>
       <el-tab-pane label="零件产量计划">
         <outputPlan ref="outputPlan" :params="infoItem" />

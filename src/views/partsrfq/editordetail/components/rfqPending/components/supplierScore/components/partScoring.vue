@@ -5,7 +5,7 @@
         <span>零件评分</span>
       </div>
       <div class="btnList">
-        <iButton type="text">
+        <iButton type="text" @click="log">
           <icon symbol name="iconrizhiwuzi" class="log-icon"/>
           <span class="log-word">日志</span>
         </iButton>
@@ -120,6 +120,9 @@ export default {
     handleSelectionChange(val) {
       this.selectTableData = val;
     },
+    log() {
+      window.open(`/#/log?recordId=`, '_blank')
+    }
   }
 }
 </script>

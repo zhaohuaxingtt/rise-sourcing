@@ -91,7 +91,10 @@ export default {
 
     },
     log() {
-      this.logVisible = true
+      // this.logVisible = true
+      log() {
+      window.open(`/#/log?recordId=${ this.partDetails.tpPartID }`, '_blank')
+    },
     },
 	// 添加自定义项目
 	addCustom(){

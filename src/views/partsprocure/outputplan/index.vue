@@ -3,14 +3,14 @@
     <div class="margin-bottom20 clearFloat">
       <span class="font18 font-weight">批量维护：3QG820005L</span>
       <div class="floatright">
-        <logButton />
+        <logButton @click="log" />
         <span class="margin-left20">
 					<icon symbol name="icondatabaseweixuanzhong" class="font18"></icon>
 				</span>
       </div>
     </div>
-    <outputPlan />
-    <outputRecord class="margin-top20" />
+    <outputPlan @updateStartYear="updateStartYear" />
+    <outputRecord ref="outputRecord" class="margin-top20" />
     <volume class="margin-top20" />
   </iPage>
 </template>
@@ -23,7 +23,15 @@ import volume from './components/volume'
 import logButton from '@/views/partsign/editordetail/components/logButton'
 
 export default {
-  components: { iPage, icon, outputPlan, outputRecord, volume, logButton }
+  components: { iPage, icon, outputPlan, outputRecord, volume, logButton },
+  methods: {
+    updateStartYear(startYear) {
+      this.$refs.outputRecord.updateStartYear(startYear)
+    },
+    log() {
+      window.open(`/#/log?recordId=`, '_blank')
+    }
+  }
 }
 </script>
 

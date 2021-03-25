@@ -28,7 +28,7 @@
 import { iCard, iButton, iPagination } from '@/components'
 import tablelist from '@/views/partsign/home/components/tableList'
 import { pageMixins } from '@/utils/pageMixins'
-import { usageTableTitle as tableTitle } from './data'
+import { volumeTableTitle as tableTitle } from './data'
 import { getPerCarDosageVersion, getPerCarDosageInfo } from '@/api/partsign/editordetail'
 
 export default {

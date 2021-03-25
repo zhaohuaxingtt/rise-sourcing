@@ -4,7 +4,7 @@
       <div class="margin-bottom20 clearFloat">
         <span class="font18 font-weight">任务中心</span>
         <div class="floatright">
-          <logButton />
+          <logButton @click="log" />
           <span class="margin-left20">
             <icon symbol name="icondatabaseweixuanzhong" class="font18"></icon>
           </span>
@@ -195,6 +195,9 @@ export default {
       } finally {
         this.loading = false
       }
+    },
+    log() {
+      window.open(`/#/log?recordId=`, '_blank')
     }
   }
 }

@@ -10,7 +10,7 @@ export const outputRecordTableTitle = [
   { props: 'updateReason', name: '更新原因' }
 ]
 
-export const usageTableTitle = [
+export const volumeTableTitle = [
   { props: 'a', name: '零件号' },
   { props: 'b', name: '零件名（中）' },
   { props: 'c', name: '零件名（德）' },

@@ -49,6 +49,7 @@ import tableList from '@/views/partsign/editordetail/components/tableList'
 import { pageMixins } from '@/utils/pageMixins'
 import { getMaterialGroup, getMeterialStuff, putMaterialGroup } from "@/api/partsprocure/editordetail"
 import logDialog from "@/views/partsign/editordetail/components/logDialog"
+import { mapState } from 'vuex'
 
 export default {
   components: { iButton, iCard, iPagination, tableList, infos, logDialog },
@@ -58,6 +59,9 @@ export default {
       type: Object,
       require: true
     }
+  },
+  computed: {
+    ...mapState(['userInfo'])
   },
   data() {
     return {
@@ -83,7 +87,7 @@ export default {
   },
   methods: {
     getMaterialGroup() {
-      getMaterialGroup({ id: 50050001 })
+      getMaterialGroup({ categoryCode: this.params.categoryCode })
         .then(res => {
           this.info = res.data
           this.loading = false
@@ -91,7 +95,7 @@ export default {
         .catch(() => this.loading = false)
     },
     setMaterialGroup() {
-      // if (!this.info.id) return iMessage.warn("缺失有效的材料组id")
+      // if (!this.params.id) return iMessage.warn("缺失有效的材料组id")
       this.setMaterialGroupStatus = true
 
       this.getStuff()
@@ -105,7 +109,7 @@ export default {
         id: 50050001,
         stuffCode: data.stuffCode,
         stuffId: data.id,
-        updateBy: 1
+        updateBy: this.userInfo.id
       })
         .then(res => {
           if (res.code == 200) {
@@ -123,7 +127,7 @@ export default {
       this.tableLoading = true
 
       getMeterialStuff({
-        categoryId: 50050001,
+        partNum: this.params.partNum,
       })
         .then(res => {
           this.tableListData = res.data

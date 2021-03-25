@@ -20,7 +20,7 @@
         <iButton @click="updateRfqStatus('05')">结束本轮询价</iButton>
         <iButton @click="updateRfqStatus('03')">转谈判</iButton>
         <iButton @click="createAFixedPointApplication" disabled>创建定点申请</iButton>
-        <iButton type="text">
+        <iButton type="text" @click="log">
           <icon symbol name="iconrizhiwuzi" class="log-icon"/>
           <span class="log-word">日志</span>
         </iButton>
@@ -195,6 +195,7 @@ export default {
 
     },
     log() {
+      window.open(`/#/log?recordId=`, '_blank')
     },
     edit() {
       this.editStatus = !this.editStatus

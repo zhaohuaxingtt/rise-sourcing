@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import { iCard, iButton, iPagination } from '@/components'
+import { iCard, iButton, iPagination, iMessage } from '@/components'
 import tablelist from '@/views/partsign/home/components/tableList'
 import { getOutputPlan } from '@/api/partsprocure/editordetail'
 import { pageMixins } from '@/utils/pageMixins'
@@ -40,7 +40,8 @@ export default {
       loading: false,
       tableTitle: cloneDeep(tableTitle),
       tableListData: [],
-      multipleSelection: []
+      multipleSelection: [],
+      startYear: ''
     }
   },
   created() {
@@ -54,7 +55,8 @@ export default {
         'partRecordPageReqDTO.current': this.page.currPage,
         'partRecordPageReqDTO.purchaseProjectId': '1374304053550661634',
         // this.params.purchasePrjectId,
-        'partRecordPageReqDTO.size': this.page.pageSize
+        'partRecordPageReqDTO.size': this.page.pageSize,
+        'partRecordPageReqDTO.year': this.startYear
       }).
         then(res => {
           if (res.data && res.data.partRecordResPageDTO) {
@@ -95,6 +97,10 @@ export default {
     updateOutput() {
       if (this.multipleSelection.length !== 1) return iMessage.warn('请选择一条计划更新至询价产量')
       this.$emit('updateOutput', this.multipleSelection[0])
+    },
+    updateStartYear(startYear) {
+      this.startYear = startYear
+      this.getData()
     }
   }
 }
