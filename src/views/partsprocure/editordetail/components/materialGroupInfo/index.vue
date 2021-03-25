@@ -53,6 +53,12 @@ import logDialog from "@/views/partsign/editordetail/components/logDialog"
 export default {
   components: { iButton, iCard, iPagination, tableList, infos, logDialog },
   mixins: [ pageMixins ],
+  props: {
+    params: {
+      type: Object,
+      require: true
+    }
+  },
   data() {
     return {
       tableTitle,
@@ -73,10 +79,11 @@ export default {
   },
   created() {
     this.getMaterialGroup()
+    console.log(JSON.parse(this.$route.query.item))
   },
   methods: {
     getMaterialGroup() {
-      getMaterialGroup({ id: 1 })
+      getMaterialGroup({ id: 50050001 })
         .then(res => {
           this.info = res.data
           this.loading = false
@@ -84,7 +91,7 @@ export default {
         .catch(() => this.loading = false)
     },
     setMaterialGroup() {
-      if (!this.info.id) return iMessage.warn("缺失有效的材料组id")
+      // if (!this.info.id) return iMessage.warn("缺失有效的材料组id")
       this.setMaterialGroupStatus = true
 
       this.getStuff()
@@ -95,15 +102,20 @@ export default {
 
       this.confirmLoading = true
       putMaterialGroup({
-        id: 1,
+        id: 50050001,
         stuffCode: data.stuffCode,
         stuffId: data.id,
-        // updateBy: userId
+        updateBy: 1
       })
-        .then(() => {
-          iMessage.success('设置成功')
-          this.confirmLoading = false
-          this.back()
+        .then(res => {
+          if (res.code == 200) {
+            iMessage.success(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
+            this.confirmLoading = false
+            this.getMaterialGroup()
+            this.back()
+          } else {
+            iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
+          }
         })
         .catch(() => this.confirmLoading = false)
     },
@@ -111,7 +123,7 @@ export default {
       this.tableLoading = true
 
       getMeterialStuff({
-        categoryId: 1,
+        categoryId: 50050001,
       })
         .then(res => {
           this.tableListData = res.data

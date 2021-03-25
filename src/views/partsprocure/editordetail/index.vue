@@ -216,8 +216,8 @@
       </el-tab-pane>
       <el-tab-pane label="零件产量计划">
         <outputPlan ref="outputPlan" :params="infoItem" />
-        <outputRecord ref="outputRecord" class="margin-top20" />
-        <usage ref='usage' class="margin-top20" />
+        <outputRecord ref="outputRecord" class="margin-top20" :params="infoItem" @updateOutput="updateOutput" />
+        <volume ref="volume" class="margin-top20" :params="infoItem" />
       </el-tab-pane>
       <el-tab-pane label="图纸和TP详情页">
         <drawing :params="infoItem" />
@@ -268,7 +268,7 @@ import targePrice from "./components/targetPrice";
 import materialGroupInfo from "./components/materialGroupInfo";
 import outputPlan from "./components/outputPlan/outputPlan";
 import outputRecord from "./components/outputPlan/outputRecord";
-import usage from "./components/outputPlan/usage";
+import volume from "./components/outputPlan/volume";
 import drawing from "./components/drawingSheet/drawing";
 import sheet from "./components/drawingSheet/sheet";
 import remarks from "./components/remarks";
@@ -293,7 +293,7 @@ export default {
     materialGroupInfo,
     outputPlan,
     outputRecord,
-    usage,
+    volume,
     drawing,
     sheet,
     remarks,
@@ -435,12 +435,16 @@ export default {
         "_blank"
       );
     },
-    // 更新页签
-    updateTabs() {
-      this.$refs.outputPlan.getData();
-      this.$refs.outputRecord.getData();
-      this.$refs.usage.getData();
-    }
+    // 更新至询价产量
+		updateOutput(data) {
+			this.$refs.outputPlan.updateOutput(data)
+		},
+		// 更新页签
+		updateTabs() {
+			this.$refs.outputPlan.getData()
+			this.$refs.outputRecord.getData()
+			this.$refs.volume.getData()
+		},
   },
 };
 </script>

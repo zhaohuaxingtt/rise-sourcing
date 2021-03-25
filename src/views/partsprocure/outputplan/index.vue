@@ -11,7 +11,7 @@
     </div>
     <outputPlan />
     <outputRecord class="margin-top20" />
-    <usage class="margin-top20" />
+    <volume class="margin-top20" />
   </iPage>
 </template>
 
@@ -19,11 +19,11 @@
 import { iPage, icon } from '@/components'
 import outputPlan from './components/outputPlan'
 import outputRecord from './components/outputRecord'
-import usage from './components/usage'
+import volume from './components/volume'
 import logButton from '@/views/partsign/editordetail/components/logButton'
 
 export default {
-  components: { iPage, icon, outputPlan, outputRecord, usage, logButton }
+  components: { iPage, icon, outputPlan, outputRecord, volume, logButton }
 }
 </script>
 
