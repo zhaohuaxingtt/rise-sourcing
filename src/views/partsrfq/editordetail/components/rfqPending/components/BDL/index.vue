@@ -112,9 +112,9 @@ export default {
 
   .input {
     width: 250px;
-	::v-deep .iconshaixuankuangsousuo{
-		font-size: 12px;
-	}
+    ::v-deep .iconshaixuankuangsousuo {
+      font-size: 12px;
+    }
 	
   }
 }
