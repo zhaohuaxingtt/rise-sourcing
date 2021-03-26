@@ -44,7 +44,7 @@ import {pageMixins} from "@/utils/pageMixins";
 import tpbRemarks from './tpbRemarks'
 import {getAllSupplier, setTpbMemo} from "@/api/partsrfq/editordetail";
 import {serialize} from '@/utils'
-
+import store from '@/store'
 export default {
   components: {
     iCard,
@@ -74,7 +74,7 @@ export default {
         try {
           const req = {
             rfqId: id,
-            userId: 12321
+            userId:store.state.permission.userInfo.id
           }
           const res = await getAllSupplier(req)
           this.tableListData = res.records;

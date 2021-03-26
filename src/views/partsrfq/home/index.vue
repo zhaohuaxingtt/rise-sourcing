@@ -1,7 +1,7 @@
 <!--
  * @Author: moxuan
  * @Date: 2021-02-25 09:59:25
- * @LastEditTime: 2021-03-17 19:27:17
+ * @LastEditTime: 2021-03-26 00:37:33
  * @LastEditors: Please set LastEditors
  * @Description: RFQ模块首页
  * @FilePath: \rise\src\views\partsrfq\home\index.vue
@@ -29,12 +29,14 @@
               </el-form-item>
               <el-form-item label="零件项目类型">
                 <iSelect placeholder='请选择' v-model="form.partType">
-                  <el-option v-for="items in partTypeOptions" :key='items.code' :value='items.code' :label="items.name"/>
+                  <el-option v-for="items in partTypeOptions" :key='items.code' :value='items.code'
+                             :label="items.name"/>
                 </iSelect>
               </el-form-item>
               <el-form-item label="RFQ状态">
                 <iSelect placeholder='请选择' v-model="form.rfqStatus">
-                  <el-option v-for="items in rfqStatusOptions" :key='items.code' :value='items.code' :label="items.name"/>
+                  <el-option v-for="items in rfqStatusOptions" :key='items.code' :value='items.code'
+                             :label="items.name"/>
                 </iSelect>
               </el-form-item>
             </el-form>
@@ -46,12 +48,19 @@
             <div class="margin-bottom20 clearFloat">
               <span class="font18 font-weight">RFQ综合管理</span>
               <div class="floatright">
+                <!--激活RFQ：仅前期采购员有该按钮权限。已经关闭的RFQ，如果需要再次打开时，点击该键-->
                 <iButton @click="editRfq('02')" :loading="activateButtonLoading">激活RFQ</iButton>
+                <!--新建RFQ：点击该键，系统会跳到下一界面。具体新建RFQ见另一user story，当RFQ类型为FS时，仅前期采购员有该按钮权限-->
                 <iButton @click="newRfq">新建RFQ</iButton>
+                <!--关闭RFQ：仅前期采购员有该按钮权限。以下情况可关闭：RFQ零件状态是全部定点或全部结束，当前RFQ没有零件-->
                 <iButton @click="editRfq('01')" :loading="closeButtonLoading">关闭RFQ</iButton>
+                <!--转派评分任务：选中RFQ之后，可以手动转派任务给EP/MQ同事-->
                 <iButton @click="assignmentOfScoringTasks">转派评分任务</iButton>
+                <!--转谈判：只会出现在前期采购员界面-->
                 <iButton @click="editRfq('03')" :loading="transferNegotiationButtonLoading">转谈判</iButton>
+                <!--转询价：只会出现在专业采购员界面-->
                 <iButton @click="editRfq('04')" :loading="transferInquiryButtonLoading">转询价</iButton>
+                <!--创建定点申请：在列表中选择RFQ，点击该键，会跳转到定点申请创建页面，RFQ的内容会自动带入到定点申请的各页签中-->
                 <iButton disabled>创建定点申请</iButton>
                 <iButton @click="exportTable">导出</iButton>
               </div>
@@ -110,7 +119,7 @@ import {pageMixins} from "@/utils/pageMixins";
 import {tableTitle} from "pages/partsrfq/home/components/data";
 import {getRfqDataList, editRfqData, findBySearches} from "@/api/partsrfq/home";
 import {excelExport} from "@/utils/filedowLoad";
-
+import store from '@/store'
 export default {
   components: {
     iPage,
@@ -167,7 +176,7 @@ export default {
       this.tableLoading = true;
       const req = {
         rfqMangerInfosPackage: {
-          userId: 12321,
+          userId:12321,
           current: this.page.currPage,
           size: this.page.pageSize,
           ...this.form
@@ -204,7 +213,7 @@ export default {
         updateRfqStatusPackage: {
           updateType,
           tmRfqIdList: idList,
-          userId: 12321
+          userId:store.state.permission.userInfo.id
         }
       }
       this.setOperationButtonLoading(updateType, true)
@@ -316,7 +325,7 @@ export default {
           padding: 0 25px;
         }
       }
-      
+
       .is-active {
         opacity: 1;
         font-weight: bold;

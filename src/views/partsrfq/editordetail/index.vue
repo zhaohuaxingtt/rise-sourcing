@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-25 10:09:50
- * @LastEditTime: 2021-03-23 12:34:12
+ * @LastEditTime: 2021-03-26 00:03:07
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsrfq\editordetail\index.vue
@@ -12,7 +12,10 @@
     <div class="pageTitle flex-between-center-center">
       <div class="flex nav-box">
         <span>{{ $route.query.id ? $route.query.id : '新建RFQ' }}</span>
-        <iNav-mvp @change="changeNav" :list="navList" class="ml30"></iNav-mvp>
+        <iTabsList type="border-card" @tab-click="changeNav" class="nav-style">
+          <el-tab-pane :label="item.label" v-for="item of navList" :key="item.label">
+          </el-tab-pane>
+        </iTabsList>
       </div>
       <div class="btnList">
         <iButton @click="newRfq">新建RFQ轮次</iButton>
@@ -97,21 +100,31 @@
         </div>
       </iFormGroup>
     </i-card>
-    <rfqPending v-if="navActivtyValue === 1 || navActivtyValue === ''"></rfqPending>
-    <rfq-detail-info v-if="navActivtyValue === 2"></rfq-detail-info>
+    <rfqPending v-if="navActivtyValue === '待办事项' || navActivtyValue === ''"></rfqPending>
+    <rfq-detail-info v-if="navActivtyValue === '详情信息'"></rfq-detail-info>
     <new-rfq-round v-model="newRfqRoundDialog" @refreshBaseInfo="getBaseInfo"/>
   </iPage>
 </template>
 <script>
-import {iNavMvp, iButton, iPage, icon, iCard, iFormGroup, iFormItem, iText, iInput, iMessage,} from "@/components";
+import {
+  iButton,
+  iPage,
+  icon,
+  iCard,
+  iFormGroup,
+  iFormItem,
+  iText,
+  iInput,
+  iMessage,
+  iTabsList
+} from "@/components";
 import rfqPending from './components/rfqPending'
 import rfqDetailInfo from './components/rfqDetailInfo'
 import newRfqRound from './components/newRfqRound'
 import {getRfqDataList, editRfqData, addRfq} from "@/api/partsrfq/home";
-
+import store from '@/store'
 export default {
   components: {
-    iNavMvp,
     iButton,
     iPage,
     icon,
@@ -120,6 +133,7 @@ export default {
     iFormItem,
     iText,
     iInput,
+    iTabsList,
     rfqPending,
     rfqDetailInfo,
     newRfqRound
@@ -129,16 +143,13 @@ export default {
       navActivtyValue: '',
       navList: [
         {
-          value: 1,
-          name: "待办事项",
+          label: "待办事项",
         },
         {
-          value: 2,
-          name: "详情信息",
+          label: "详情信息",
         },
         // {
-        //   value: 3,
-        //   name: "谈判助手",
+        //   label: "谈判助手",
         // }
       ],
       editStatus: false,
@@ -157,7 +168,7 @@ export default {
         this.baseInfoLoading = true
         const req = {
           rfqMangerInfosPackage: {
-            userId: 12321,
+            userId:store.state.permission.userInfo.id,
             rfqId: Number(query.id)
           }
         }
@@ -172,8 +183,8 @@ export default {
         this.editStatus = true
       }
     },
-    changeNav(item) {
-      this.navActivtyValue = item.value
+    changeNav(target) {
+      this.navActivtyValue = target.label
     },
     newRfq() {
       this.newRfqRoundDialog = true
@@ -184,7 +195,7 @@ export default {
         updateRfqStatusPackage: {
           updateType,
           tmRfqIdList: [Number(query.id)],
-          userId: 12321
+          userId:store.state.permission.userInfo.id
         }
       }
       const res = await editRfqData(req)
@@ -206,7 +217,7 @@ export default {
     async save() {
       const query = this.$route.query
       const params = {
-        userId: 12321,
+        userId:store.state.permission.userInfo.id,
         cf: this.baseInfo.cf,
         ep: this.baseInfo.ep,
         mq: this.baseInfo.mq,
@@ -314,5 +325,11 @@ export default {
 .log-word {
   color: $color-blue;
   margin-left: 4px;
+}
+
+.nav-style{
+  display: flex;
+  align-items: center;
+  margin-left: 20px;
 }
 </style>

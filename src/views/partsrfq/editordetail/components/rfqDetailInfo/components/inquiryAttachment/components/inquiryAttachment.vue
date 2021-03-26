@@ -8,7 +8,9 @@
             @uploadedCallback="uploadAttachments"
             :upload-button-loading="uploadAttachmentsButtonLoading"
             class="margin-left8 margin-right8"/>
+        <!-- 暂不做，后端暂无接口：用户可以选择“通知全部供应商”，询价附件会发送给当前RFQ BDL中所选择的全部供应商-->
         <iButton @click="notifyAllSuppliers">通知全部供应商</iButton>
+        <!-- 暂不做，后端暂无接口：用户选择“通知已报价供应商”，系统会根据RFQ的报价记录，发给有有效报价的供应商-->
         <iButton @click="notifySuppliersWhoHaveQuoted">通知已报价供应商</iButton>
       </div>
     </div>
@@ -45,7 +47,7 @@ import {inquiryAttachmentTableTitle} from "./data";
 import {pageMixins} from "@/utils/pageMixins";
 import uploadButton from 'pages/partsrfq/components/uploadButton'
 import {deleteAnnex, getAllAnnex, uploadRfqAnnex} from "@/api/partsrfq/editordetail";
-
+import store from '@/store'
 export default {
   components: {
     iCard,
@@ -75,7 +77,7 @@ export default {
         const req = {
           fileType: 2,
           rfqId: id,
-          userId: 12321
+          userId:store.state.permission.userInfo.id
         }
         try {
           const res = await getAllAnnex(req)
@@ -109,7 +111,7 @@ export default {
         formData.append('file', content.file)
         formData.append('fileType', 2)
         formData.append('rfqId', id)
-        formData.append('userId', 12321)
+        formData.append('userId', store.state.permission.userInfo.id)
         const res = await uploadRfqAnnex(formData)
         res.result ? iMessage.success(res.desZh) : iMessage.error(res.desZh)
         this.tableLoading = false

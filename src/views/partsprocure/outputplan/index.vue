@@ -9,9 +9,9 @@
 				</span>
       </div>
     </div>
-    <outputPlan @updateStartYear="updateStartYear" />
-    <outputRecord ref="outputRecord" class="margin-top20" />
-    <volume class="margin-top20" />
+    <outputPlan :params="params" @updateStartYear="updateStartYear" />
+    <outputRecord ref="outputRecord" class="margin-top20" :params="params" />
+    <volume class="margin-top20" :params="params" />
   </iPage>
 </template>
 
@@ -24,6 +24,14 @@ import logButton from '@/views/partsign/editordetail/components/logButton'
 
 export default {
   components: { iPage, icon, outputPlan, outputRecord, volume, logButton },
+  data() {
+    return {
+      params: {}
+    }
+  },
+  created() {
+    this.params = this.$route.query
+  },
   methods: {
     updateStartYear(startYear) {
       this.$refs.outputRecord.updateStartYear(startYear)

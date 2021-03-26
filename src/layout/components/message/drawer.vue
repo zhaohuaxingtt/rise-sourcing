@@ -22,7 +22,7 @@ import card from './card'
 import { queryByPage, readById, batchReadById } from '@/api/layout/topLayout'
 import { messageTypeMap } from '../data'
 import axios from 'axios'
-
+import store from '@/store'
 export default {
   components: { iDrawer, card },
   props: {
@@ -52,6 +52,12 @@ export default {
       }
     }
   },
+  computed: {
+    // eslint-disable-next-line no-undef
+    ...Vuex.mapState({
+      userInfo: state => state.permission.userInfo,
+    })
+  },
   methods: {
     initMessageData() {
 			this.messageData = {
@@ -66,7 +72,7 @@ export default {
       if (this.queryByPageSource) this.queryByPageSource.cancel()
       this.queryByPageSource = axios.CancelToken.source()
 
-      queryByPage({ receiverId: '1001' }, { cancelToken: this.queryByPageSource.token })
+      queryByPage({ receiverId: this.userInfo.id }, { cancelToken: this.queryByPageSource.token })
         .then(res => {
           const source = Array.isArray(res.data) ? res.data : []
           
@@ -92,7 +98,7 @@ export default {
       readById({
         msgId: data.remark,
         readType: 1,
-        userId: '1001'
+        userId: store.state.permission.userInfo.id
       })
         .then(() => {
           for (let i = 0, item; (item = list[i++]); ) {
@@ -114,7 +120,7 @@ export default {
       batchReadById({
         inMailType,
         readType: 1,
-        userId: '1001'
+        userId: store.state.permission.userInfo.id
       })
         .then(() => {
           this.messageData[key] = []
