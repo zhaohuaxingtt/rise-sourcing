@@ -76,7 +76,9 @@
 				this.$router.push({
 					path:"/partsprocure/outputplan",
 					query:{
-						purchaseProjectId:item.purchaseProjectId
+						purchaseProjectId:item.purchaseProjectId,
+						purchasingRequirementId:item.purchasingRequirementId,
+						partNum:item.partNum
 					}
 				})
 			}

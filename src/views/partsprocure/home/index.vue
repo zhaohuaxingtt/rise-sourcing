@@ -186,6 +186,7 @@
 			},
 			//确认转派弹窗值。
 			sureChangeItems(val) {
+				console.log(val);
 				let transfer = {
 					buyerName: JSON.parse(val).label,
 					purchaseProjectIds: this.getPurchasePrjectId(),
