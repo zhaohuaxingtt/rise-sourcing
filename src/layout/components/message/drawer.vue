@@ -52,6 +52,12 @@ export default {
       }
     }
   },
+  computed: {
+    // eslint-disable-next-line no-undef
+    ...Vuex.mapState({
+      userInfo: state => state.permission.userInfo,
+    })
+  },
   methods: {
     initMessageData() {
 			this.messageData = {
@@ -66,7 +72,7 @@ export default {
       if (this.queryByPageSource) this.queryByPageSource.cancel()
       this.queryByPageSource = axios.CancelToken.source()
 
-      queryByPage({ receiverId: '1001' }, { cancelToken: this.queryByPageSource.token })
+      queryByPage({ receiverId: this.userInfo.id }, { cancelToken: this.queryByPageSource.token })
         .then(res => {
           const source = Array.isArray(res.data) ? res.data : []
           

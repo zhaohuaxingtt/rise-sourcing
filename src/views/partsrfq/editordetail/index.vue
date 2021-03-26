@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-25 10:09:50
- * @LastEditTime: 2021-03-26 15:12:30
+ * @LastEditTime: 2021-03-26 15:45:10
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsrfq\editordetail\index.vue
@@ -12,7 +12,7 @@
     <div class="pageTitle flex-between-center-center">
       <div class="flex nav-box">
         <span>{{ $route.query.id ? $route.query.id : '新建RFQ' }}</span>
-        <iNav-mvp @change="changeNav" :list="navList" class="ml30"></iNav-mvp>
+        <iNavMvp :list='navList' @change="changeNav"></iNavMvp>
       </div>
       <div class="btnList">
         <iButton @click="newRfq">新建RFQ轮次</iButton>
@@ -74,7 +74,7 @@
               <iText>{{ baseInfo.currentRounds }}</iText>
             </iFormItem>
             <iFormItem label="轮次类型：" name="roudsType">
-              <iText>{{ baseInfo.roudsType === '00' ? '普通轮次' : '在线轮次' }}</iText>
+              <iText>{{ baseInfo.roudsType === '00' ? '普通轮次' : '在线竞价' }}</iText>
             </iFormItem>
           </div>
           <div class="col">
@@ -104,7 +104,18 @@
   </iPage>
 </template>
 <script>
-import {iNavMvp, iButton, iPage, icon, iCard, iFormGroup, iFormItem, iText, iInput, iMessage,} from "@/components";
+import {
+  iButton,
+  iPage,
+  icon,
+  iCard,
+  iFormGroup,
+  iFormItem,
+  iText,
+  iInput,
+  iMessage,
+  iNavMvp
+} from "@/components";
 import rfqPending from './components/rfqPending'
 import rfqDetailInfo from './components/rfqDetailInfo'
 import newRfqRound from './components/newRfqRound'
@@ -112,7 +123,6 @@ import {getRfqDataList, editRfqData, addRfq} from "@/api/partsrfq/home";
 import store from '@/store'
 export default {
   components: {
-    iNavMvp,
     iButton,
     iPage,
     icon,
@@ -123,20 +133,24 @@ export default {
     iInput,
     rfqPending,
     rfqDetailInfo,
-    newRfqRound
+    newRfqRound,
+    iNavMvp
   },
   data() {
     return {
       navActivtyValue: '',
       navList: [
         {
-          value: 1,
           name: "待办事项",
+          value:1
         },
         {
-          value: 2,
           name: "详情信息",
+          value:2
         },
+        // {
+        //   label: "谈判助手",
+        // }
       ],
       editStatus: false,
       newRfqRoundDialog: false,
@@ -173,7 +187,6 @@ export default {
       }
     },
     changeNav(item) {
-      console.log('11111111111111')
       this.navActivtyValue = item.value
     },
     newRfq() {
@@ -315,5 +328,11 @@ export default {
 .log-word {
   color: $color-blue;
   margin-left: 4px;
+}
+
+.nav-style{
+  display: flex;
+  align-items: center;
+  margin-left: 20px;
 }
 </style>

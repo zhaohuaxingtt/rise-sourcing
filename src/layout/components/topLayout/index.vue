@@ -159,7 +159,7 @@
 			},
 			// 获取消息数目
 			getCountInMail() {
-				getCountInMail({ receiverId: '1001', inMailType: 5 })
+				getCountInMail({ receiverId: this.userInfo.id, inMailType: 5 })
 					.then(res => {
 						this.messageCount = res.data
 					})

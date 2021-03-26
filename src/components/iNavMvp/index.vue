@@ -39,7 +39,7 @@
 					url:'/partsprocure'
 				}, {
 					value: 3,
-					name: "RFQ执行",
+					name: "RFQ管理",
 					message: 0,
 					url:'/partsrfq'
 				}]
@@ -65,7 +65,6 @@
 				this.$emit('change',item)
 				this.activeIndex = item.value - 1
 				if(this.routerPage){
-					console.log('routers')
 					this.$router.push({
 						path:item.url
 					})

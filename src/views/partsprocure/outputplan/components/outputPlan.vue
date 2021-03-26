@@ -43,6 +43,12 @@ import { cloneDeep } from 'lodash'
 
 export default {
   components: { iCard, iButton, iSelect, iInput },
+  props: {
+    params: {
+      type: Object,
+      require: true
+    }
+  },
   data() {
     return {
       loading: false,
