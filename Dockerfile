@@ -1,6 +1,6 @@
 FROM DOCKER_REGISTRY/rhscl/nginx-112-rhel7:latest
-ARG URLPATH
-ENV $URLPATH URLPATH
+ARG URL_PATH
+ENV $URLPATH URL_PATH
 RUN echo '环境变量URL：' + $URLPATH
 COPY ./dist /usr/share/nginx/html/
 COPY ./env.sh /usr/share/
