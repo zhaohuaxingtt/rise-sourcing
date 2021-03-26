@@ -61,6 +61,8 @@ export default {
         then(res => {
           if (res.data && res.data.partRecordResPageDTO) {
             if (Array.isArray(res.data.partRecordResPageDTO.records) && res.data.partRecordResPageDTO.records[0] && Array.isArray(res.data.partRecordResPageDTO.records[0].outputPlanList)) {
+              this.tableTitle = cloneDeep(tableTitle)
+              
               res.data.partRecordResPageDTO.records[0].outputPlanList.forEach((planData, index) => {
                 this.tableTitle.splice(index, 0, { props: planData.year, name: planData.year })
               })
