@@ -31,7 +31,7 @@
 import { iCard, iPagination } from "@/components";
 import tableList from "@/views/partsign/editordetail/components/tableList";
 import { pageMixins } from "@/utils/pageMixins";
-import { usageTableTitle as tableTitle } from "./data";
+import { volumeTableTitle as tableTitle } from "./data";
 import {
   getPerCarDosageVersion,
   getPerCarDosageInfo,

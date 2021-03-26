@@ -168,12 +168,13 @@
 		</iCard>
 		<iTabsList class="margin-top20" type="border-card">
 			<el-tab-pane label="材料组信息">
-				<materialGroupInfo />
-			</el-tab-pane>
-			<el-tab-pane label="零件产量计划">
-				<outputPlan ref="outputPlan" :params="infoItem" />
-				<outputRecord ref="outputRecord" class="margin-top20" />
-			</el-tab-pane>
+        <materialGroupInfo :params="infoItem"/>
+      </el-tab-pane>
+      <el-tab-pane label="零件产量计划">
+        <outputPlan ref="outputPlan" :params="infoItem" />
+        <outputRecord ref="outputRecord" class="margin-top20" :params="infoItem" @updateOutput="updateOutput" />
+        <volume ref="volume" class="margin-top20" :params="infoItem" />
+      </el-tab-pane>
 			<el-tab-pane label="图纸和TP详情页">
 				<drawing :params="infoItem" />
 				<sheet class="margin-top20" :params="infoItem" />
@@ -212,6 +213,7 @@
 	import materialGroupInfo from "./components/materialGroupInfo";
 	import outputPlan from "./components/outputPlan/outputPlan";
 	import outputRecord from "./components/outputPlan/outputRecord";
+	import volume from "./components/outputPlan/volume";
 	import drawing from "./components/drawingSheet/drawing";
 	import sheet from "./components/drawingSheet/sheet";
 	import remarks from "./components/remarks";
@@ -243,6 +245,7 @@
 			materialGroupInfo,
 			outputPlan,
 			outputRecord,
+			volume,
 			drawing,
 			sheet,
 			remarks,

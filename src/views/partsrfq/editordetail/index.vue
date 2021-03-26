@@ -195,6 +195,7 @@ export default {
 
     },
     log() {
+      window.open(`/#/log?recordId=`, '_blank')
     },
     edit() {
       this.editStatus = !this.editStatus
