@@ -1,12 +1,12 @@
-set -x
 ###
  # @Author: yuszhou
  # @Date: 2021-03-24 12:03:30
- # @LastEditTime: 2021-03-26 18:45:26
+ # @LastEditTime: 2021-03-26 18:51:41
  # @LastEditors: Please set LastEditors
  # @Description: In User Settings Edit
  # @FilePath: \rise\env.sh
 ### 
+set -x
 set -e
 publicPath="/etc/nginx/nginx.conf"
 echo ${publicPath}
