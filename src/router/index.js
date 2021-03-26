@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-03-26 14:55:47
+ * @LastEditTime: 2021-03-10 15:29:12
  * @LastEditors: Please set LastEditors
  * @Description: 系统静态路由.
  * @FilePath: \rise\src\router\index.js
@@ -118,6 +118,5 @@ export const staticRouter = [{
 
 // eslint-disable-next-line no-undef
 export default new VueRouter({
-	routes: staticRouter,
-	mode:'history'
+	routes: staticRouter
 });

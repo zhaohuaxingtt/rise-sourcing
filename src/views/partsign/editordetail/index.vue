@@ -149,7 +149,7 @@ export default {
       })
     },
     log() {
-      window.open(`/log?recordId=${ this.partDetails.tpPartID }`, '_blank')
+      window.open(`/#/log?recordId=${ this.partDetails.tpPartID }`, '_blank')
     },
     updateVersion() {
       this.$refs.unconfirmed.getPerCarDosageVersion()

@@ -103,7 +103,7 @@ export default {
     },
     version() {
       // this.versionVisible = true
-      window.open(`/partsign/version?tpId=${ this.data.tpPartID }`, '_blank')
+      window.open(`/#/partsign/version?tpId=${ this.data.tpPartID }`, '_blank')
       // this.$router.push('/partsign/version')
     },
     handleSelectionChange(list) {

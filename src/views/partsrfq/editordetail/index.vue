@@ -209,7 +209,7 @@ export default {
 
     },
     log() {
-      window.open(`/log?recordId=`, '_blank')
+      window.open(`/#/log?recordId=`, '_blank')
     },
     edit() {
       this.editStatus = !this.editStatus
@@ -254,7 +254,7 @@ export default {
     toLogPage() {
       const id = this.$route.query.id
       if (id) {
-        window.open(`/log?recordId=${id}`, '_blank')
+        window.open(`/#/log?recordId=${id}`, '_blank')
       }
     }
   }

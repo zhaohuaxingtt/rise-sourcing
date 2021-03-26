@@ -392,7 +392,7 @@
 			}, // 查看日志
 			log() {
 				window.open(
-					`/log?recordId=${this.detailData.purchasePrjectId}`,
+					`/#/log?recordId=${this.detailData.purchasePrjectId}`,
 					"_blank"
 				);
 			},

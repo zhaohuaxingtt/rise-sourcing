@@ -121,7 +121,7 @@ export default {
       this.selectTableData = val;
     },
     log() {
-      window.open(`/log?recordId=`, '_blank')
+      window.open(`/#/log?recordId=`, '_blank')
     }
   }
 }
