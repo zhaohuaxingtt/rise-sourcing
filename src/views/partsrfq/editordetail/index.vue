@@ -55,8 +55,8 @@
               <iText v-else>{{ baseInfo.cf }}</iText>
             </iFormItem>
 
-            <iFormItem label="本轮报价截止时间：" name="endDate">
-              <iText>{{ baseInfo.endDate }}</iText>
+            <iFormItem label="本轮报价截止时间：" name="currentRoundsEndTime">
+              <iText>{{ baseInfo.currentRoundsEndTime }}</iText>
             </iFormItem>
           </div>
           <div class="col">

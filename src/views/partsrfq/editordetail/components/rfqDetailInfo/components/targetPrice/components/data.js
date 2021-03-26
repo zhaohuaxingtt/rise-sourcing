@@ -15,5 +15,5 @@ export const tableTitle = [
     {props:'skdBPrice',name:'SKD_B'},
     {props:'ckdDuty',name:'CKD Duty%'},
     {props:'ckdExwork',name:'CKD EX-Work'},
-    {props:'skdLanede',name:'SKDLANEDE'}
+    {props:'skdLanede',name:'CKDLANDED'}
 ]
