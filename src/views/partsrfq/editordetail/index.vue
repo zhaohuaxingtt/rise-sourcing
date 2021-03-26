@@ -143,16 +143,13 @@ export default {
       navActivtyValue: '',
       navList: [
         {
-          value: 1,
           label: "待办事项",
         },
         {
-          value: 2,
           label: "详情信息",
         },
         // {
-        //   value: 3,
-        //   name: "谈判助手",
+        //   label: "谈判助手",
         // }
       ],
       editStatus: false,
