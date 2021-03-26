@@ -1,7 +1,7 @@
 <!--
  * @Author: moxuan
  * @Date: 2021-02-25 09:59:25
- * @LastEditTime: 2021-03-26 00:37:33
+ * @LastEditTime: 2021-03-26 15:33:31
  * @LastEditors: Please set LastEditors
  * @Description: RFQ模块首页
  * @FilePath: \rise\src\views\partsrfq\home\index.vue
@@ -12,7 +12,7 @@
       <el-tab-pane label="寻源执行" name="source">
         <div>
           <div class="margin-bottom33">
-            <iNav-mvp @change="change" right></iNav-mvp>
+            <iNav-mvp @change="change" right routerPage></iNav-mvp>
           </div>
           <!------------------------------------------------------------------------>
           <!--                  search 搜索模块                                   --->

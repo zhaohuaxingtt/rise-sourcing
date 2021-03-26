@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-25 10:09:50
- * @LastEditTime: 2021-03-26 00:03:07
+ * @LastEditTime: 2021-03-26 15:12:30
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsrfq\editordetail\index.vue
@@ -20,6 +20,7 @@
         <iButton @click="updateRfqStatus('05')">结束本轮询价</iButton>
         <iButton @click="updateRfqStatus('03')">转谈判</iButton>
         <iButton @click="createAFixedPointApplication" disabled>创建定点申请</iButton>
+        <iButton @click="backPage">返回</iButton>
         <iButton type="text" @click="toLogPage">
           <icon symbol name="iconrizhiwuzi" class="log-icon"/>
           <span class="log-word">日志</span>
@@ -136,10 +137,6 @@ export default {
           value: 2,
           name: "详情信息",
         },
-        // {
-        //   value: 3,
-        //   name: "谈判助手",
-        // }
       ],
       editStatus: false,
       newRfqRoundDialog: false,
@@ -151,6 +148,9 @@ export default {
     this.getBaseInfo()
   },
   methods: {
+    backPage(){
+      this.$route.back()
+    },
     async getBaseInfo() {
       const query = this.$route.query
       if (query.id) {
@@ -173,6 +173,7 @@ export default {
       }
     },
     changeNav(item) {
+      console.log('11111111111111')
       this.navActivtyValue = item.value
     },
     newRfq() {

@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-24 09:17:57
- * @LastEditTime: 2021-03-25 22:43:56
+ * @LastEditTime: 2021-03-26 15:31:49
  * @LastEditors: Please set LastEditors
  * @Description: 零件签收列表界面.
  * @FilePath: \rise\src\views\partsign\index.vue
@@ -12,10 +12,7 @@
       <el-tab-pane label="寻源执行" name="source">
         <div>
           <div class="margin-bottom33">
-            <iNav-mvp
-              @change="change"
-              right
-            ></iNav-mvp>
+            <iNavMvp @change="change" right routerPage></iNavMvp>
           </div>
           <!------------------------------------------------------------------------>
           <!--                  search 搜索模块                                   --->
@@ -320,7 +317,7 @@ export default {
           "抱歉，您选中的单据中存在已签收的信息单，不能批量签收！"
         );
       iMessageBox("您是否确认对新件信息单进行签收？").then((res) => {
-        this.patchRecords(1, this.selectTableData);
+        this.patchRecords(2, this.selectTableData);
       });
     },
     //退回
@@ -342,7 +339,7 @@ export default {
     //退回
     sureBackmark(val) {
       this.backmark = val;
-      this.patchRecords(0, this.selectTableData);
+      this.patchRecords(3, this.selectTableData);
       this.diologBack = false;
     },
     //转派

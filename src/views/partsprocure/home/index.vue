@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 09:50:42
- * @LastEditTime: 2021-03-24 17:59:49
+ * @LastEditTime: 2021-03-26 15:33:16
  * @LastEditors: Please set LastEditors
  * @Description: 零件采购项目建立首页。
  * @FilePath: \rise\src\views\partsprocure\home\index.vue
@@ -9,7 +9,7 @@
 <template>
 	<iPage>
 		<div class="margin-bottom20">
-			<iNav-mvp @change="change" right></iNav-mvp>
+			<iNav-mvp @change="change" right routerPage></iNav-mvp>
 		</div>
 		<!------------------------------------------------------------------------>
 		<!--                  search 搜索模块                                   --->
