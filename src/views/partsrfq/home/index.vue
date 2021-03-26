@@ -1,7 +1,7 @@
 <!--
  * @Author: moxuan
  * @Date: 2021-02-25 09:59:25
- * @LastEditTime: 2021-03-17 19:27:17
+ * @LastEditTime: 2021-03-26 00:37:33
  * @LastEditors: Please set LastEditors
  * @Description: RFQ模块首页
  * @FilePath: \rise\src\views\partsrfq\home\index.vue
@@ -110,7 +110,7 @@ import {pageMixins} from "@/utils/pageMixins";
 import {tableTitle} from "pages/partsrfq/home/components/data";
 import {getRfqDataList, editRfqData, findBySearches} from "@/api/partsrfq/home";
 import {excelExport} from "@/utils/filedowLoad";
-
+import store from '@/store'
 export default {
   components: {
     iPage,
@@ -167,7 +167,7 @@ export default {
       this.tableLoading = true;
       const req = {
         rfqMangerInfosPackage: {
-          userId: 12321,
+          userId:12321,
           current: this.page.currPage,
           size: this.page.pageSize,
           ...this.form
@@ -204,7 +204,7 @@ export default {
         updateRfqStatusPackage: {
           updateType,
           tmRfqIdList: idList,
-          userId: 12321
+          userId:store.state.permission.userInfo.id
         }
       }
       this.setOperationButtonLoading(updateType, true)

@@ -70,7 +70,7 @@ import otherMeetingInformation from './components/otherMeetingInformation'
 import drawingDialog from './components/drawingDialog'
 import addSupplierDialog from './components/addSupplierDialog'
 import {getAllRfqParts, addTechnology, getPic} from "@/api/partsrfq/editordetail";
-
+import store from '@/store'
 
 export default {
   components: {
@@ -108,7 +108,7 @@ export default {
         try {
           const req = {
             rfqId: id,
-            userId: 12321
+            userId:store.state.permission.userInfo.id
           }
           const res = await getAllRfqParts(req)
           this.tableListData = res.records;
@@ -147,7 +147,7 @@ export default {
       }
       const req = {
         rfqId: id,
-        userId: 12321,
+        userId:store.state.permission.userInfo.id,
         // eslint-disable-next-line no-undef
         meetingDate: moment(otherMeetingInformationData.meetingDate).format('YYYY-MM-DD'),
         meetingLocation: otherMeetingInformationData.meetingLocation,

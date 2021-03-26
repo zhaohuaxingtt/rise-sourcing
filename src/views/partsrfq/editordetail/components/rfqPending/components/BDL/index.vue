@@ -11,7 +11,7 @@
         <iInput placeholder="请输入查询供应商名称,厂商..." suffix-icon="iconfont iconshaixuankuangsousuo" v-model="searchKey"></iInput>
       </div>
       <div>
-        <iButton>保存</iButton>
+        <iButton @click="saveBdl">保存</iButton>
         <iButton>删除供应商</iButton>
         <iButton @click="addCustom">添加自定义评分项</iButton>
       </div>
@@ -59,6 +59,11 @@ export default {
     this.getTableList()
   },
   methods: {
+    /**************************
+     * 获取bdl列表
+     * 需求：
+     **************************/
+    saveBdl(){},
     /**************************
      * 获取bdl列表
      **************************/

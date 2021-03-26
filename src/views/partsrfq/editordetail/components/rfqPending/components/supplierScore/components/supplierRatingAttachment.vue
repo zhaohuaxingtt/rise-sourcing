@@ -43,7 +43,7 @@ import {supplierRatingAttachmentTitle} from "./data";
 import {pageMixins} from "@/utils/pageMixins";
 import {getAllAnnex, deleteAnnex, uploadRfqAnnex} from "@/api/partsrfq/editordetail";
 import uploadButton from 'pages/partsrfq/components/uploadButton'
-
+import store from '@/store'
 export default {
   components: {
     iCard,
@@ -76,7 +76,7 @@ export default {
           const req = {
             fileType: 1,
             rfqId: id,
-            userId: 12321
+            userId:store.state.permission.userInfo.id
           }
           const res = await getAllAnnex(req)
           this.tableListData = res.records;
@@ -113,7 +113,7 @@ export default {
         formData.append('file', content.file)
         formData.append('fileType', 1)
         formData.append('rfqId', id)
-        formData.append('userId', 12321)
+        formData.append('userId', store.state.permission.userInfo.id)
         const res = await uploadRfqAnnex(formData)
         res.result ? iMessage.success(res.desZh) : iMessage.error(res.desZh)
         this.tableLoading = false

@@ -1,7 +1,7 @@
 <!--
  * @Author: moxuan
  * @Date: 2021-03-05 17:24:15
- * @LastEditTime: 2021-03-05 17:24:15
+ * @LastEditTime: 2021-03-26 00:03:52
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
 -->
@@ -75,7 +75,7 @@ import tablelist from './components/tablelist'
 import {pageMixins} from "@/utils/pageMixins";
 import {tableTitle, tableTitle2} from "./components/data";
 import {findBySearches, getRfqDataList, addRfq, editRfqData} from "@/api/partsrfq/home";
-
+import store from '@/store'
 export default {
   components: {iButton, iDialog, iFormGroup, iFormItem, iSelect, tablelist, iPagination},
   mixins: [pageMixins],
@@ -152,7 +152,7 @@ export default {
       if (id) {
         const req = {
           dblRoundDTOPackage: {
-            userId: 12321,
+            userId:store.state.permission.userInfo.id,
             startTime: this.startTime,
             endTime: this.endTime,
             rfqId: id,
@@ -174,7 +174,7 @@ export default {
       if (id) {
         const req = {
           dblRoundDTOPackage: {
-            userId: 12321,
+            userId:store.state.permission.userInfo.id,
             rfqId: id,
             roundsType: this.roundType,
             bdlInfos: this.selectTableData
@@ -191,7 +191,7 @@ export default {
         updateRfqStatusPackage: {
           updateType,
           tmRfqIdList: [Number(query.id)],
-          userId: 12321
+          userId:store.state.permission.userInfo.id
         }
       }
       const res = await editRfqData(req)

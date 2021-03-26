@@ -22,7 +22,7 @@ import card from './card'
 import { queryByPage, readById, batchReadById } from '@/api/layout/topLayout'
 import { messageTypeMap } from '../data'
 import axios from 'axios'
-
+import store from '@/store'
 export default {
   components: { iDrawer, card },
   props: {
@@ -92,7 +92,7 @@ export default {
       readById({
         msgId: data.remark,
         readType: 1,
-        userId: '1001'
+        userId: store.state.permission.userInfo.id
       })
         .then(() => {
           for (let i = 0, item; (item = list[i++]); ) {
@@ -114,7 +114,7 @@ export default {
       batchReadById({
         inMailType,
         readType: 1,
-        userId: '1001'
+        userId: store.state.permission.userInfo.id
       })
         .then(() => {
           this.messageData[key] = []

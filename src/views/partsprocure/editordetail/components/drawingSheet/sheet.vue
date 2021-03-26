@@ -1,3 +1,11 @@
+<!--
+ * @Author: your name
+ * @Date: 2021-03-04 11:13:18
+ * @LastEditTime: 2021-03-26 00:02:17
+ * @LastEditors: your name
+ * @Description: In User Settings Edit
+ * @FilePath: \rise\src\views\partsprocure\editordetail\components\drawingSheet\sheet.vue
+-->
 <template>
   <iCard class="outputRecord" tabCard :title="`信息单流水号：${ data.tpPartID || '' }`" v-loading="loading">
     <div class="body">
@@ -18,7 +26,7 @@ import { items } from './data'
 import { cloneDeep } from 'lodash'
 import filters from '@/utils/filters'
 import { getTpInfo } from "@/api/partsprocure/editordetail";
-
+import store from '@/store'
 export default {
   components: { iCard, iFormGroup, iFormItem, iText },
   mixins: [ filters ],
@@ -69,7 +77,7 @@ export default {
       this.loading = true
       getTpInfo({
         id: this.params.purchasingRequirementId,
-        userId: '1001'
+        userId:store.state.permission.userInfo.id
       })
         .then(res => {
           this.data = (res.data.tpRecordsSenarioResult && res.data.tpRecordsSenarioResult.tpRecordList && res.data.tpRecordsSenarioResult.tpRecordList[0]) || {}

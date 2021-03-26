@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-25 10:09:50
- * @LastEditTime: 2021-03-23 12:34:12
+ * @LastEditTime: 2021-03-26 00:03:07
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsrfq\editordetail\index.vue
@@ -108,7 +108,7 @@ import rfqPending from './components/rfqPending'
 import rfqDetailInfo from './components/rfqDetailInfo'
 import newRfqRound from './components/newRfqRound'
 import {getRfqDataList, editRfqData, addRfq} from "@/api/partsrfq/home";
-
+import store from '@/store'
 export default {
   components: {
     iNavMvp,
@@ -157,7 +157,7 @@ export default {
         this.baseInfoLoading = true
         const req = {
           rfqMangerInfosPackage: {
-            userId: 12321,
+            userId:store.state.permission.userInfo.id,
             rfqId: Number(query.id)
           }
         }
@@ -184,7 +184,7 @@ export default {
         updateRfqStatusPackage: {
           updateType,
           tmRfqIdList: [Number(query.id)],
-          userId: 12321
+          userId:store.state.permission.userInfo.id
         }
       }
       const res = await editRfqData(req)
@@ -205,7 +205,7 @@ export default {
     async save() {
       const query = this.$route.query
       const params = {
-        userId: 12321,
+        userId:store.state.permission.userInfo.id,
         cf: this.baseInfo.cf,
         ep: this.baseInfo.ep,
         mq: this.baseInfo.mq,

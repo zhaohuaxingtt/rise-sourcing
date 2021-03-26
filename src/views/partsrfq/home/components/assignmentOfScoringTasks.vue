@@ -1,7 +1,7 @@
 <!--
  * @Author: moxuan
  * @Date: 2021-03-04 11:24:15
- * @LastEditTime: 2021-03-17 19:13:08
+ * @LastEditTime: 2021-03-26 00:10:28
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
 -->
@@ -40,7 +40,7 @@ import {assignmentOfScroingTasksTableTitle} from "pages/partsrfq/home/components
 import {editRfqData} from "@/api/partsrfq/home";
 import {getDictByCode, getDeptByDeptType} from "@/api/dictionary";
 import {getGraderIdByDept} from "@/api/usercenter";
-
+import store from '@/store'
 export default {
   components: {iButton, iDialog, tablelist},
   props: {
@@ -79,7 +79,7 @@ export default {
         ratingInfoPackage: {
           ratingInfoList: this.selectTableData,
           rfqId: this.rfqId,
-          userId: 12321,
+          userId:store.state.permission.userInfo.id,
         }
       }
       const res = await editRfqData(req)

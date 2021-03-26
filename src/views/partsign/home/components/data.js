@@ -1,11 +1,12 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-24 09:47:32
- * @LastEditTime: 2021-03-23 21:05:42
+ * @LastEditTime: 2021-03-26 00:01:46
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsign\home\components\data.js
  */
+import store from '@/store'
 import {permissionTitle} from '@/utils'
 export const tableTitle = permissionTitle("PERMISSION_TESTTABLE",[
   {props:'tpPartID',name:'信息单流水号'},
@@ -31,6 +32,6 @@ export const form = {
   projectCarType:'',//车型项目
   status:'',//信息单状态
   tpInfoType:'',//信息单分类
-  userId:'1'
+  userId:store.state.permission.userInfo.id
 }
 export const fromGroup = JSON.parse(JSON.stringify(form))
