@@ -4,7 +4,7 @@
       <div class="margin-bottom20 clearFloat">
         <span class="font18 font-weight">任务中心</span>
         <div class="floatright">
-          <logButton @click="log" />
+          <!-- <logButton @click="log" /> -->
           <span class="margin-left20">
             <icon symbol name="icondatabaseweixuanzhong" class="font18"></icon>
           </span>
@@ -80,6 +80,12 @@ export default {
       taskTypeTree: [],
       taskGroup: {}
     }
+  },
+  computed: {
+    // eslint-disable-next-line no-undef
+    ...Vuex.mapState({
+      userInfo: state => state.permission.userInfo,
+    })
   },
   created() {
     this.getData()
@@ -161,7 +167,6 @@ export default {
         const dict = dictRes.data
         this.taskTypeFloatMap = {}
         if (dict && dict[0] && Array.isArray(dict[0].subDictResultVo)) {
-          console.log(dict[0])
           dict[0].subDictResultVo.forEach(item => {
             this.taskTypeFloatMap[item.code] = { name: item.name }
 
@@ -173,7 +178,7 @@ export default {
           })
         }
 
-        const listRes = await getCountInfo({ userNum: '1' })
+        const listRes = await getCountInfo({ userNum: this.userInfo.id })
         const list = listRes.data
         this.taskGroup = {}
         list.forEach(task => {
@@ -196,9 +201,9 @@ export default {
         this.loading = false
       }
     },
-    log() {
-      window.open(`/#/log?recordId=`, '_blank')
-    }
+    // log() {
+    //   window.open(`/#/log?recordId=`, '_blank')
+    // }
   }
 }
 </script>
