@@ -2,12 +2,12 @@ import axios from '@/utils/axios'
 const requst = axios(process.env.VUE_APP_PARTS)
 const requstPartResource = axios(process.env.VUE_APP_DIC)
 // VUE_APP_PARTSPROCURE
-// VUE_APP_PART_PROCURE wenpeng
 // VUE_APP_PARTS
 
+const requstPartsProcure = axios(process.env.VUE_APP_PARTSPROCURE)
 // 采购项目-获取材料组信息
 export function getMaterialGroup(params){
-  return requst({
+  return requstPartsProcure({
     url: '/materialGroup',
     method: 'GET',
     params: params
@@ -16,7 +16,7 @@ export function getMaterialGroup(params){
 
 // 采购项目-获取材料组信息
 export function getMeterialStuff(params){
-  return requst({
+  return requstPartsProcure({
     url: '/meterialStuff',
     method: 'GET',
     params: params
@@ -25,7 +25,7 @@ export function getMeterialStuff(params){
 
 // 设置工艺组
 export function putMaterialGroup(params){
-  return requst({
+  return requstPartsProcure({
     url: '/materialGroup',
     method: 'PUT',
     params: params
@@ -61,19 +61,19 @@ export function deleteFile(params) {
   })
 }
 
+const requstPartProcure = axios(process.env.VUE_APP_PART_PROCURE)
 // 获取产量计划
 export function getOutputPlan(params) {
-  return requst({
+  return requstPartProcure({
     url: '/api/part-src-prjs',
     method: 'GET',
     params: params
-    // partOutputPlanReqDTO.purchaseProjectId
   })
 }
 
 // 更新产量计划
 export function updateOutputPlan(params) {
-  return requst({
+  return requstPartProcure({
     url: '/api/part-src-prjs',
     method: 'POST',
     data: params

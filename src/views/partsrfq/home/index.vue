@@ -1,7 +1,7 @@
 <!--
  * @Author: moxuan
  * @Date: 2021-02-25 09:59:25
- * @LastEditTime: 2021-03-26 00:37:33
+ * @LastEditTime: 2021-03-26 15:33:31
  * @LastEditors: Please set LastEditors
  * @Description: RFQ模块首页
  * @FilePath: \rise\src\views\partsrfq\home\index.vue
@@ -12,7 +12,7 @@
       <el-tab-pane label="寻源执行" name="source">
         <div>
           <div class="margin-bottom33">
-            <iNav-mvp @change="change" right></iNav-mvp>
+            <iNav-mvp @change="change" right routerPage></iNav-mvp>
           </div>
           <!------------------------------------------------------------------------>
           <!--                  search 搜索模块                                   --->
@@ -120,6 +120,7 @@ import {tableTitle} from "pages/partsrfq/home/components/data";
 import {getRfqDataList, editRfqData, findBySearches} from "@/api/partsrfq/home";
 import {excelExport} from "@/utils/filedowLoad";
 import store from '@/store'
+
 export default {
   components: {
     iPage,
@@ -176,7 +177,7 @@ export default {
       this.tableLoading = true;
       const req = {
         rfqMangerInfosPackage: {
-          userId:12321,
+          userId: store.state.permission.userInfo.id,
           current: this.page.currPage,
           size: this.page.pageSize,
           ...this.form
@@ -213,7 +214,7 @@ export default {
         updateRfqStatusPackage: {
           updateType,
           tmRfqIdList: idList,
-          userId:store.state.permission.userInfo.id
+          userId: store.state.permission.userInfo.id
         }
       }
       this.setOperationButtonLoading(updateType, true)
@@ -236,7 +237,7 @@ export default {
         rfqSetTopPackage: {
           setType,
           rfqId: row.id,
-          userId: 12321
+          userId: store.state.permission.userInfo.id
         },
       }
       const res = await editRfqData(req)

@@ -34,8 +34,8 @@ export const partScroingTitle = [
     {props: 'partNum', name: '零件号'},
     {props: 'fsNum', name: 'FS号'},
     {props: 'purchasingFactory', name: '采购工厂'},
-    {props: 'partName', name: '零件名称（中）'},
-    {props: 'e', name: '零件名称（德）'},
+    {props: 'partNameZh', name: '零件名称（中）'},
+    {props: 'partNameDe', name: '零件名称（德）'},
     {props: 'carProjectType', name: '车型项目'},
     {props: 'relatedModels', name: '相关车型'},
     {

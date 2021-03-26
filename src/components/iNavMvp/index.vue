@@ -15,12 +15,8 @@
 </template>
 <script>
 	export default {
-		data() {
-			return {
-				activeIndex: 0,
-			}
-		},
 		props: {
+			routerPage:Boolean,
 			center: {
 				type: Boolean,
 				default: false
@@ -43,25 +39,36 @@
 					url:'/partsprocure'
 				}, {
 					value: 3,
-					name: "RFQ执行",
+					name: "RFQ管理",
 					message: 0,
 					url:'/partsrfq'
 				}]
 			},
 
 		},
+		data() {
+			return {
+				activeIndex: 0,
+			}
+		},
 		created(){
 			//由于当前组件存在于业务组件中，他的选中只需要在加载的时候去路由上取值和当前的list对比即可
-			this.list.forEach((items,index)=>{
-				if(items.url == this.$route.path) this.activeIndex = index
-			})
+			if(this.routerPage){
+				this.list.forEach((items,index)=>{
+					if(items.url == this.$route.path) this.activeIndex = index
+				})
+			}
 		},
 		methods: {
 			// 切换nav
 			change(item, index) {
-				this.$router.push({
-					path:item.url
-				})
+				this.$emit('change',item)
+				this.activeIndex = item.value - 1
+				if(this.routerPage){
+					this.$router.push({
+						path:item.url
+					})
+				}
 			}
 		}
 	}

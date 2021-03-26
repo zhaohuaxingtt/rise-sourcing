@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-25 10:09:50
- * @LastEditTime: 2021-03-26 00:03:07
+ * @LastEditTime: 2021-03-26 15:50:36
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsrfq\editordetail\index.vue
@@ -12,10 +12,7 @@
     <div class="pageTitle flex-between-center-center">
       <div class="flex nav-box">
         <span>{{ $route.query.id ? $route.query.id : '新建RFQ' }}</span>
-        <iTabsList type="border-card" @tab-click="changeNav" class="nav-style">
-          <el-tab-pane :label="item.label" v-for="item of navList" :key="item.label">
-          </el-tab-pane>
-        </iTabsList>
+        <iNavMvp :list='navList' @change="changeNav"></iNavMvp>
       </div>
       <div class="btnList">
         <iButton @click="newRfq">新建RFQ轮次</iButton>
@@ -23,6 +20,7 @@
         <iButton @click="updateRfqStatus('05')">结束本轮询价</iButton>
         <iButton @click="updateRfqStatus('03')">转谈判</iButton>
         <iButton @click="createAFixedPointApplication" disabled>创建定点申请</iButton>
+        <iButton @click="backPage">返回</iButton>
         <iButton type="text" @click="toLogPage">
           <icon symbol name="iconrizhiwuzi" class="log-icon"/>
           <span class="log-word">日志</span>
@@ -76,12 +74,16 @@
               <iText>{{ baseInfo.currentRounds }}</iText>
             </iFormItem>
             <iFormItem label="轮次类型：" name="roudsType">
-              <iText>{{ baseInfo.roudsType === '00' ? '普通轮次' : '在线轮次' }}</iText>
+              <iText>
+                <template v-if="baseInfo.roudsType === '00'">普通轮次</template>
+                <template v-else-if="baseInfo.roudsType === '01'">在线竞价</template>
+                <template v-else></template>
+              </iText>
             </iFormItem>
           </div>
           <div class="col">
             <iFormItem label="创建日期：" name="createDate">
-              <iText>{{ baseInfo.createDate }}</iText>
+              <iText>{{ $route.query.id ? baseInfo.createDate : moment().format('YYYY-MM-DD') }}</iText>
             </iFormItem>
             <iFormItem label="LINIE：" name="linieNameZh">
               <iText>{{ baseInfo.linieNameZh }}</iText>
@@ -100,8 +102,8 @@
         </div>
       </iFormGroup>
     </i-card>
-    <rfqPending v-if="navActivtyValue === '待办事项' || navActivtyValue === ''"></rfqPending>
-    <rfq-detail-info v-if="navActivtyValue === '详情信息'"></rfq-detail-info>
+    <rfqPending v-if="navActivtyValue === 1 || navActivtyValue === ''"></rfqPending>
+    <rfq-detail-info v-if="navActivtyValue === 2"></rfq-detail-info>
     <new-rfq-round v-model="newRfqRoundDialog" @refreshBaseInfo="getBaseInfo"/>
   </iPage>
 </template>
@@ -116,7 +118,7 @@ import {
   iText,
   iInput,
   iMessage,
-  iTabsList
+  iNavMvp
 } from "@/components";
 import rfqPending from './components/rfqPending'
 import rfqDetailInfo from './components/rfqDetailInfo'
@@ -133,20 +135,22 @@ export default {
     iFormItem,
     iText,
     iInput,
-    iTabsList,
     rfqPending,
     rfqDetailInfo,
-    newRfqRound
+    newRfqRound,
+    iNavMvp
   },
   data() {
     return {
       navActivtyValue: '',
       navList: [
         {
-          label: "待办事项",
+          name: "待办事项",
+          value:1
         },
         {
-          label: "详情信息",
+          name: "详情信息",
+          value:2
         },
         // {
         //   label: "谈判助手",
@@ -162,6 +166,9 @@ export default {
     this.getBaseInfo()
   },
   methods: {
+    backPage(){
+      this.$router.back()
+    },
     async getBaseInfo() {
       const query = this.$route.query
       if (query.id) {
@@ -183,8 +190,8 @@ export default {
         this.editStatus = true
       }
     },
-    changeNav(target) {
-      this.navActivtyValue = target.label
+    changeNav(item) {
+      this.navActivtyValue = item.value
     },
     newRfq() {
       this.newRfqRoundDialog = true
@@ -253,7 +260,9 @@ export default {
       if (id) {
         window.open(`/#/log?recordId=${id}`, '_blank')
       }
-    }
+    },
+    // eslint-disable-next-line no-undef
+    moment
   }
 }
 </script>

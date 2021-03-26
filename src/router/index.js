@@ -118,5 +118,5 @@ export const staticRouter = [{
 
 // eslint-disable-next-line no-undef
 export default new VueRouter({
-	routes: staticRouter,
+	routes: staticRouter
 });

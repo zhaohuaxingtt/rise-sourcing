@@ -1,13 +1,13 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2021-03-26 00:25:04
+ * @LastEditTime: 2021-03-26 15:57:09
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsprocure\editordetail\index.vue
 -->
 <template>
-	<iPage>
+	<iPage class="partsprocureEditordetail">
 		<!------------------------------------------------------------------------>
 		<!--                  详情页头部保存区域                                  --->
 		<!------------------------------------------------------------------------>
@@ -31,7 +31,7 @@
 		<!------------------------------------------------------------------------>
 		<!--                  基本信息区域                                       --->
 		<!------------------------------------------------------------------------>
-		<iCard>
+		<iCard class="card" title="基础信息" collapse>
 			<iFormGroup row="1" inline :rules="rules">
 				<div class="row">
 					<div class="col">
@@ -416,6 +416,17 @@
 	};
 </script>
 <style lang="scss" scoped>
+.partsprocureEditordetail {
+	.card {
+		::v-deep .cardHeader {
+			.title {
+				color: #131523;
+				font-weight: bold;
+			}
+		}
+	}
+}
+
 	.row {
 		width: 100%;
 		height: 100%;

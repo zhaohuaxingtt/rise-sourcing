@@ -1,7 +1,7 @@
 <template>
   <iPage class="outputPlan">
     <div class="margin-bottom20 clearFloat">
-      <span class="font18 font-weight">批量维护：3QG820005L</span>
+      <span class="font18 font-weight">批量维护：{{ params.partNum }}</span>
       <div class="floatright">
         <logButton @click="log" />
         <span class="margin-left20">
