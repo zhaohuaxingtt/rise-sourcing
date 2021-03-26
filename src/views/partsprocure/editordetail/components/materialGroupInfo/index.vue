@@ -108,7 +108,7 @@ export default {
 
       this.confirmLoading = true
       putMaterialGroup({
-        id: 50050001,
+        id: this.info.id,
         stuffCode: data.stuffCode,
         stuffId: data.id,
         updateBy: this.userInfo.id
