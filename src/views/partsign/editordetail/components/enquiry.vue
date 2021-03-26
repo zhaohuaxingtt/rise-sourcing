@@ -89,7 +89,7 @@ export default {
       // this.$router.push({
       //   path:'/partsign/version'
       // })
-      window.open('/#/partsign/version', '_blank')
+      window.open('/partsign/version', '_blank')
     },
     handleSelectionChange(list) {
       this.multipleSelection = list

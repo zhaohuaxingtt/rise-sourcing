@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2021-03-26 00:25:04
+ * @LastEditTime: 2021-03-26 15:57:09
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsprocure\editordetail\index.vue
@@ -392,7 +392,7 @@
 			}, // 查看日志
 			log() {
 				window.open(
-					`/#/log?recordId=${this.detailData.purchasePrjectId}`,
+					`/log?recordId=${this.detailData.purchasePrjectId}`,
 					"_blank"
 				);
 			},
