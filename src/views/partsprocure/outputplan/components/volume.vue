@@ -46,7 +46,8 @@ export default {
       loading: false,
       tableTitle,
       tableListData: [],
-      multipleSelection: []
+      multipleSelection: [],
+      carTypeConfigId: ''
     };
   },
   created() {
