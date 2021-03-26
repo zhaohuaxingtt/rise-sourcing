@@ -76,7 +76,7 @@
               <iText>{{ baseInfo.currentRounds }}</iText>
             </iFormItem>
             <iFormItem label="轮次类型：" name="roudsType">
-              <iText>{{ baseInfo.roudsType === '00' ? '普通轮次' : '在线轮次' }}</iText>
+              <iText>{{ baseInfo.roudsType === '00' ? '普通轮次' : '在线竞价' }}</iText>
             </iFormItem>
           </div>
           <div class="col">
