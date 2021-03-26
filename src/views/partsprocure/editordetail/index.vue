@@ -7,7 +7,7 @@
  * @FilePath: \rise\src\views\partsprocure\editordetail\index.vue
 -->
 <template>
-	<iPage>
+	<iPage class="partsprocureEditordetail">
 		<!------------------------------------------------------------------------>
 		<!--                  详情页头部保存区域                                  --->
 		<!------------------------------------------------------------------------>
@@ -31,7 +31,7 @@
 		<!------------------------------------------------------------------------>
 		<!--                  基本信息区域                                       --->
 		<!------------------------------------------------------------------------>
-		<iCard>
+		<iCard class="card" title="基础信息" collapse>
 			<iFormGroup row="1" inline :rules="rules">
 				<div class="row">
 					<div class="col">
@@ -405,6 +405,17 @@
 	};
 </script>
 <style lang="scss" scoped>
+.partsprocureEditordetail {
+	.card {
+		::v-deep .cardHeader {
+			.title {
+				color: #131523;
+				font-weight: bold;
+			}
+		}
+	}
+}
+
 	.row {
 		width: 100%;
 		height: 100%;
