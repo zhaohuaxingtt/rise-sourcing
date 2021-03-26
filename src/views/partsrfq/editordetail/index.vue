@@ -74,12 +74,16 @@
               <iText>{{ baseInfo.currentRounds }}</iText>
             </iFormItem>
             <iFormItem label="轮次类型：" name="roudsType">
-              <iText>{{ baseInfo.roudsType === '00' ? '普通轮次' : '在线竞价' }}</iText>
+              <iText>
+                <template v-if="baseInfo.roudsType === '00'">普通轮次</template>
+                <template v-else-if="baseInfo.roudsType === '01'">在线竞价</template>
+                <template v-else></template>
+              </iText>
             </iFormItem>
           </div>
           <div class="col">
             <iFormItem label="创建日期：" name="createDate">
-              <iText>{{ baseInfo.createDate }}</iText>
+              <iText>{{ $route.query.id ? baseInfo.createDate : moment().format('YYYY-MM-DD') }}</iText>
             </iFormItem>
             <iFormItem label="LINIE：" name="linieNameZh">
               <iText>{{ baseInfo.linieNameZh }}</iText>
@@ -256,7 +260,9 @@ export default {
       if (id) {
         window.open(`/log?recordId=${id}`, '_blank')
       }
-    }
+    },
+    // eslint-disable-next-line no-undef
+    moment
   }
 }
 </script>
