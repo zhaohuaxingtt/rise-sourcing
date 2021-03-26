@@ -43,7 +43,7 @@
 					url:'/partsprocure'
 				}, {
 					value: 3,
-					name: "RFQ执行",
+					name: "RFQ管理",
 					message: 0,
 					url:'/partsrfq'
 				}]
