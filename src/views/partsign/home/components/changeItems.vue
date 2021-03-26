@@ -48,7 +48,6 @@ export default{
     },
     sureChangeItems(){
       if(this.inquiryBuyer == '') return iMessage.warn('抱歉！您当前还未选择询价采购员！')
-      console.log(this.inquiryBuyer)
       this.$emit('sure',this.inquiryBuyer)
     }
   }

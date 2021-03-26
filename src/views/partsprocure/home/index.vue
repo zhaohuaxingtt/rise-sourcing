@@ -174,7 +174,7 @@
 			},
 			//获取上方group信息
 			getPageGroup() {
-				getPageGroup(12314).then((res) => {
+				getPageGroup().then((res) => {
 					this.fromGroup = res.data.groupStatSenarioResult.groupStatInfoList;
 				});
 			},
@@ -186,9 +186,8 @@
 			},
 			//确认转派弹窗值。
 			sureChangeItems(val) {
-				console.log(val);
 				let transfer = {
-					buyerName: JSON.parse(val).label,
+					buyerName: val,
 					purchaseProjectIds: this.getPurchasePrjectId(),
 				};
 				changeProcure({

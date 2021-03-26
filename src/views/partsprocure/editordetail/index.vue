@@ -37,7 +37,7 @@
 					<div class="col">
 						<iFormItem label="零件号：" name="test">
 							<iText>
-								{{ detailData.detailData }}
+								{{ detailData.partNum }}
 							</iText>
 						</iFormItem>
 						<iFormItem label="零件名称（中）：" name="test">
@@ -76,7 +76,7 @@
 					<div class="col">
 						<iFormItem label="FSNR/GSNR/SPNR：" name="test">
 							<iText>
-								{{ detailData.commonSourcing }}
+								{{ detailData.fsnrGsnrNum }}
 							</iText>
 						</iFormItem>
 						<iFormItem label="零件名称（德）：" name="test">
@@ -186,7 +186,7 @@
 				<targePrice :purchaseProjectId="purchaseProjectId"></targePrice>
 			</el-tab-pane>
 			<el-tab-pane label="备注信息">
-				<remarks :partNum="infoItem.partNum"></remarks>
+				<remarks :detailData="detailData"></remarks>
 			</el-tab-pane>
 		</iTabsList>
 		<backItems v-model="diologBack" @sure="cancel" title="取消零件采购"></backItems>
@@ -290,7 +290,7 @@
 			},
 			//获取上方group信息
 			getPageGroup() {
-				getPageGroup(12314).then((res) => {
+				getPageGroup().then((res) => {
 					this.fromGroup = res.data.groupStatSenarioResult.groupStatInfoList;
 				});
 			},
@@ -311,7 +311,12 @@
 				changeProcure({
 					start,
 				}).then((res) => {
-					this.getDatail();
+					if (res.data) {
+						iMessage.success("操作成功")
+						this.getDatail();
+					}else{
+						iMessage.error(res.desZh)
+					}
 				});
 			},
 			//退回
@@ -328,7 +333,12 @@
 				changeProcure({
 					close,
 				}).then((res) => {
-					this.getDatail();
+					if (res.data) {
+						this.getDatail();
+						iMessage.success("操作成功")
+					}else{
+						iMessage.error(res.desZh)
+					}
 				});
 			},
 			//修改详情。
@@ -338,12 +348,13 @@
 						detailData,
 					})
 					.then((res) => {
-						this.diologChangeItems = false;
-						this.getDatail();
+						if (res.data) {
+							iMessage.success("保存成功")
+							this.getDatail();
+						}else{
+							iMessage.error(res.desZh)
+						}
 					})
-					.catch(() => {
-						this.diologChangeItems = false;
-					});
 			},
 			// 生成fs号
 			creatFs() {
