@@ -1,13 +1,13 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-02-19 15:19:26
+ * @LastEditTime: 2021-03-25 23:20:12
  * @LastEditors: Please set LastEditors
  * @Description: 用户信息保存。
  * @FilePath: \rise\src\store\module\permission.js
  */
-const routerLayout = ()=> import('@/layout/routerLayout.vue')
-import {staticRouter} from '@/router'
+import {getUserInfoByToken,getSystemMeun} from '@/api/usercenter'
+const routerLayout = ()=> import('@/layout/default.vue')
 const getVuerouter = function(router){
   const res = []
   router.forEach(element => {
@@ -27,12 +27,23 @@ const getVuerouter = function(router){
   });
   return res
 }
+//初始化菜单，新增active字段和默认选中第一个点亮
+function initMeun(data){
+  data.forEach((items,index)=>{
+    if(index == 0){
+      items['active'] = true
+    }else{
+      items['active'] = false
+    }
+  })
+  return data
+}
 const state = {
   menuList: [],
   vueRouter:[],
   //系统登录用户信息。存入store，前台不存储用户的敏感信息。
-  userInfo:{},
-  roleList:''
+  roleList:'',
+  whiteBtnList:[]
 };
 const mutations = {
   SET_MENU_LIST(state,data){
@@ -46,13 +57,52 @@ const mutations = {
   },
   SET_ROLE_INFO(state,data){
     state.roleList = data
+  },
+  SET_WIHTEBTN_LIST(state,data){
+    state.whiteBtnList = data
   }
 };
 const actions = {
   // 通过异步方式获取菜单。
   getPermissinInfo({commit}){
+    return new Promise((r,j)=>{
+      getSystemMeun().then(res=>{
+        if(res.code == 200 && res.data) {
+          commit('SET_MENU_LIST',initMeun(res.data.menuList));
+          commit('SET_WIHTEBTN_LIST',res.data.resourceList);
+          r(res.data.menuList)
+        }else{
+          commit('SET_MENU_LIST',[]);
+          commit('SET_WIHTEBTN_LIST',[]);
+          j()
+        }
+      }).catch(err=>{
+        commit('SET_MENU_LIST',[]);
+        commit('SET_WIHTEBTN_LIST',[]);
+        j()
+      })
+    })
   },
   userInfoByToken({commit}){ //根据token获取用户信息
+      // eslint-disable-next-line no-debugger
+      return new Promise((resole,reject)=>{
+        getUserInfoByToken().then(res=>{
+          // eslint-disable-next-line no-debugger
+          if(res.code == 200 && res.data){
+            commit('SET_USER_INFO',res.data)
+            commit('SET_ROLE_INFO',res.data.userName)
+            resole(res.data)
+          }else{
+            commit('SET_USER_INFO',{})
+            commit('SET_ROLE_INFO',{})
+            reject({})
+          }
+        }).catch(err=>{
+          commit('SET_USER_INFO',{})
+          commit('SET_ROLE_INFO',{})
+          reject(err)
+        })
+      })
   },
   setUserInfo({commit},data){
   },

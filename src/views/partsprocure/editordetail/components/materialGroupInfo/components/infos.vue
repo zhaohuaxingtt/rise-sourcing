@@ -1,0 +1,54 @@
+<template>
+  <div class="infos">
+    <iFormGroup v-for="(infoChunk, $chunkIndex) in infoChunks" :key="$chunkIndex" row="3" class="infos" inline icon>
+      <iFormItem v-for="(info, $index) in infoChunk" :key="$index" class="item" :label="`${ info.label }：`">
+        <iText class="text">{{ info.value }}</iText>
+      </iFormItem>
+    </iFormGroup>
+  </div>
+</template>
+
+<script>
+import { infos } from './data'
+import { chunk, cloneDeep } from 'lodash'
+import { iFormGroup, iFormItem, iText } from '@/components'
+
+export default {
+  components: { iFormGroup, iFormItem, iText },
+  props: {
+    data: {
+      type: Object,
+      default: () => ({})
+    }
+  },
+  watch: {
+    data: {
+      handler(data) {
+        const _infos = cloneDeep(infos)
+        _infos.forEach(item => {
+          item.value = data[item.key]
+        })
+        this.infoChunks = chunk(_infos, 3)
+      },
+      deep: true
+    }
+  },
+  data() {
+    return {
+      infoChunks: []
+    }
+  },
+  created() {
+    const _infos = cloneDeep(infos)
+    _infos.forEach(item => {
+      item.value = this.data[item.key]
+    })
+    this.infoChunks = chunk(_infos, 3)
+  }
+}
+</script>
+
+<style lang="scss" scoped>
+.infos {
+}
+</style>

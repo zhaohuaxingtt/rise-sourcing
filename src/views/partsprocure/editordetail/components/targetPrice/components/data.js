@@ -1,0 +1,85 @@
+/*
+ * @author:shujie
+ * @Date: 2021-3-3 17:19:13
+ * @LastEditors: shujie
+ * @Description: In User Settings Edit
+ */
+export const targeTitle = [{
+		props: 'applyDate',
+		name: '申请日期'
+	},
+	{
+		props: 'applyType',
+		name: '申请类型'
+	},
+	{
+		props: 'c',
+		name: 'CF负责人'
+	},
+	{
+		props: 'd',
+		name: '申请类别'
+	},
+	{
+		props: 'lcPrice',
+		name: '期望目标价'
+	},
+	{
+		props: 'f',
+		name: '申请状态'
+	},
+]
+export const rwTitle = [{
+		props: 'applyDate',
+		name: '申请日期'
+	},
+	{
+		props: 'applyType',
+		name: '申请类型'
+	},
+	{
+		props: 'price',
+		name: 'RW价'
+	},
+	{
+		props: 'applyStatus',
+		name: '申请状态'
+	}
+]
+// 申请目标价信息
+export const targetPriceDetail = {
+	cfTargetPriceDetail: {
+		lcBPrice: "",
+		skdBPrice: "",
+		lcAPrice: "",
+		skdAPrice: "",
+		ckdDuty: "",
+		ckdExwork: "",
+		ckdLanded: "",
+		applyType: "",
+		applyReason: "",
+		applyMemo: "",
+	},
+	operator: "", //操作人
+	purchasePrjectId: "", //采购项目ID
+	rwApplication: {
+		applyDate: "", //申请时间
+		applyNum: "", //RW价申请编号
+		applyStatus: "", //申请状态
+		applyType: "", //	申请类型
+		currencyId: "", //货币类型ID
+		currencyName: "", //货币名
+		employeeId: "", //申请人ID)
+		exchangeRate: "", //货币汇率
+		fsnrGsnrNum: "", //采购申请号
+		id: "", //RW价申请表ID
+		isResponsed: "", //是否回应
+		memo: "", //备注
+		price: "", //欧洲参考价格
+		priority: "", //	紧急程度
+		purchaseTargetId: "", //采购对象id
+		responseDate: "", //回复时间
+		tmPartInfoId: "", //零件信息ID
+		unitName: "", //单位名
+	}
+}

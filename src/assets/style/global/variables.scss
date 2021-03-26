@@ -5,8 +5,6 @@
  |                                              |
  ------------------------------------------------
 */
-
-
 /*-------------------------------------
  |                                     |
  |              color                  |
@@ -25,21 +23,27 @@ $color-dropdown-background:#F5F5F5;
 $color-green:#05BB8B;         //草绿色
 $color-blue:#1763F7;          //蓝色 
 $color-blue-light:#0EBADD;    //浅蓝色
-$color-border:#E0E6ED;        //线条颜色    
-$color-font:#4D4F5C;          //文字主色
+$color-border:rgba(197, 206, 229, 0.5);        //线条颜色    
+$color-font:#000000;          //文字主色
 $color-font-light:#8B8B8B;     //浅色文字颜色   
 $color-background:#F8F9FA;     //界面背景底色
 $color-header-iocn:#828491;
 $color-delete:red;
 $color-update:red;
-$color-border:#F0F0F0;
+$color-table-header:rgb(22,96,241,0.1);
+$color-table-td:rgb(22,96,241,0.03);
+$color-scroll-bar:#E2EAFC;
+$color-btn-background:#EEF2FB;
+$color-header-black: #0D2451;
+$color-header-gray: #8C98AC;
+$color-black:#000000;
 /*-------------------------------------
  |                                     |
  |             文字字号                 |
  |                                     |
  ---------------------------------------
 */
-$font-size10:10px;
+$font-size10:10px;/*no*/
 $font-size12:12px;
 $font-size14:14px;
 $font-size16:16px;
@@ -65,6 +69,15 @@ $font-size24:24px;
   -webkit-box-orient:vertical;
   -webkit-line-clamp:2;
 };
+@mixin input_inner {
+  height: 35px;
+  box-shadow: 0px 0px 3px rgba(0, 38, 98, 0.15);;
+  border-color: transparent;
+}
+@mixin textarea_inner {
+  box-shadow: 0px 0px 3px rgba(0, 38, 98, 0.15);;
+  border-color: transparent;
+}
 /*-------------------------------------
  |                                     |
  |             上下左右居中              |
@@ -103,6 +116,15 @@ $font-size24:24px;
     visibility: hidden;
   }
 }
+.clearFloat{
+  &::after{
+    content: "";
+    display: block;
+    height: 0;
+    clear:both;
+    visibility: hidden;
+  }
+}
 /*-------------------------------------
  |                                     |
  |             界面宽度                 |
@@ -119,8 +141,8 @@ $font-size24:24px;
  |                                     |
  ---------------------------------------
 */
-$input-box-shadow:3px 2px 6px -1px rgba(128,128,128,0.44);
-$btn-box-shadow:1px 2px 8px -3px grey;
+$input-box-shadow: 0px 0px 3px rgba(0, 38, 98, 0.15);
+$btn-box-shadow:0px 0px 20px rgba(27, 29, 33, 0.08);
 
 /*-------------------------------------
  |                                     |
@@ -128,5 +150,5 @@ $btn-box-shadow:1px 2px 8px -3px grey;
  |                                     |
  ---------------------------------------
 */
-$input-height:32px;
+$input-height:35px;
 $input-height24:23px;

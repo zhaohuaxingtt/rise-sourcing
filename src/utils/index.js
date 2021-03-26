@@ -1,11 +1,12 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-02-19 16:12:38
+ * @LastEditTime: 2021-03-24 22:09:29
  * @LastEditors: Please set LastEditors
  * @Description: 公共utils部分
  * @FilePath: \rise\src\utils\index.js
  */
+import store from '../store'
 import localStoreage from './localstorage'
 import jsencrypt from 'jsencrypt'
 export function setCookie(cookieName, cookieData) {
@@ -22,23 +23,23 @@ export function getCookie(cookieName) {
 }
 //获取token
 export function getToken() {
-  return localStoreage.get(process.env.VUE_APP_TOKEN_NAME)
+  return getCookie(process.env.VUE_APP_TOKEN_NAME)
 }
 //settoken
 export function setToken(tokenData) {
-  return localStoreage.set(process.env.VUE_APP_TOKEN_NAME, tokenData)
+  return setCookie(process.env.VUE_APP_TOKEN_NAME, tokenData)
 }
 //removeoken
 export function removeToken() {
-  return localStoreage.remove(process.env.VUE_APP_TOKEN_NAME)
+  return removeCookie(process.env.VUE_APP_TOKEN_NAME)
 }
 //获取token
 export function getRefreshToken() {
-  return localStoreage.get(process.env.VUE_APP_REFRESH_TOKEN_NAME)
+  return getCookie(process.env.VUE_APP_REFRESH_TOKEN_NAME)
 }
 //settoken
 export function setRefreshToken(tokenData) {
-  return localStoreage.set(process.env.VUE_APP_REFRESH_TOKEN_NAME, tokenData)
+  return setCookie(process.env.VUE_APP_REFRESH_TOKEN_NAME, tokenData)
 }
 //removeoken
 export function removeRefreshToken() {
@@ -68,7 +69,6 @@ export const math = window.math.create(window.math.all, {
 export function _getMathNumber(lamda) {
   return Number(math.format(math.evaluate(lamda), 14))
 }
-
 export function password(str,publicKey){
   const mathRsa = new jsencrypt()
   mathRsa.setPublicKey('-----BEGIN PUBLIC KEY-----'+publicKey+'-----END PUBLIC KEY-----')
@@ -87,4 +87,28 @@ export function closeCliantClearStoreage(){
       removeRefreshToken()
     }
   }
+}
+
+//表头数据权限过滤
+export function permissionTitle(key,titleList){
+  const permissionMap = store.state.permission.whiteBtnList[key]
+  let newTitleList = JSON.parse(JSON.stringify(titleList))
+  // if(permissionMap){
+  //   const a = []
+  //   titleList.forEach(element => {
+  //      if(permissionMap.fieldList.find(items=>items.fieldName == element.props)) a.push(element)
+  //   });
+  //   newTitleList = a
+  // }
+  return newTitleList
+}
+
+//序列化url参数传递
+export function serialize(data) {
+  let str = ''
+  for (let key in data) {
+    str += key + '=' + encodeURIComponent(data[key]) + '&'
+  }
+  str = str.replace(/&$/, '')
+  return str
 }

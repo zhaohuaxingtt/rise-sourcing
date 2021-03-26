@@ -9,8 +9,7 @@
 */
 *{
   box-sizing: border-box;
-  font-size: 12px;
-  font-family: '微软雅黑';
+  font-family: 'Arial',"Microsoft YaHei";
   &::-webkit-scrollbar {
         width:9px;
         height:9px;
@@ -40,6 +39,8 @@ html,body{
   overflow: hidden;
   background-color: $color-background;
   color:$color-font;
+  font-size: 12px;
+  letter-spacing: 1px;
 }
 body,div,ul,ol,dl,dt,dd,li,dl,h1,h2,h3,h4,p{
   margin:0;
@@ -104,20 +105,108 @@ a{
 }
 /*-------------------------------------
  |                                     |
+ |           组件间距class名                |
+ |                                     |
+ ---------------------------------------
+*/
+/*-------------------------------------
+ |                                     |
  |             常用class                |
  |                                     |
  ---------------------------------------
 */
-
-
+/*-------------------------------------
+ |                                     |
+ |            flex布局class                |
+ |                                     |
+ ---------------------------------------
+*/
+.flex{
+	display: flex;
+}
+.flex-center-center{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+.flex-align-center{
+	display: flex;
+	align-items: center;
+}
+.flex-between-center{
+	display: flex;
+	justify-content: space-between;
+}
+.flex-between-center-center{
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
 /*-------------------------------------
  |                                     |
  |             分页往右                 |
  |                                     |
  ---------------------------------------
 */
-.pagenation{
+.el-pagination{
   text-align: right;
+  margin-top: 10px;
+}
+/*-------------------------------------
+ |                                     |
+ |             强行控制element 表格      |
+ |                                     |
+ ---------------------------------------
+*/
+.el-table{
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  font-size: 14px;
+  .cell{overflow: inherit;}
+  .el-table__header{
+    background-color: $color-table-header;
+    tr{
+      background-color: transparent;
+    }
+  }
+  th{
+    padding: 9px 0;
+    background-color: transparent;
+  }
+  tr{
+    &:nth-child(even){
+      background-color: $color-table-td;
+    }
+  }
+  td{
+    padding:9px 0px;
+  }
+  // table里面 select样式调整
+  .el-table__row .el-input {
+  	height: 35px !important;
+  
+  	.el-input__inner {
+  		height: 35px !important;
+  	}
+  }
+  .el-select {
+  	margin: 2px 0;
+  }
+  .el-input{
+	  margin: 2px 0;
+  }
+}
+/*-------------------------------------
+ |                                     |
+ |    强行控制element checkbox & radio  |
+ |                                     |
+ ---------------------------------------
+*/
+.el-checkbox__inner{
+  border:1px solid $color-blue
+}
+.el-radio__inner{
+  border:1px solid $color-blue
 }
 /*-------------------------------------
  |                                     |
@@ -133,6 +222,9 @@ a{
       line-height: $input-height24!important;
     }
   }
+}
+.el-table th.gutter {
+	display: table-cell !important;//解决错位
 }
 .underline{
   //text-decoration: underline;
@@ -236,4 +328,102 @@ a{
 }
 .bule {
   color: $color-blue;
+}
+
+/*-------------------------------------
+ |                                     |
+ |   强行控制element中的selectoptions    |
+ |                                     |
+ ---------------------------------------
+*/
+.el-select-dropdown{
+  .popper__arrow{
+    display: none!important;
+  }
+}
+.el-dialog__body{
+  padding-top: 0px!important;
+  padding-bottom: 0px!important;
+}
+.font-weight{
+  font-weight: 600;
+}
+.link {
+  color: $color-blue;
+  cursor: pointer;
+}
+.link-underline {
+  @extend .link;
+  text-decoration: underline;
+}
+/*-------------------------------------
+ |                                     |
+ |   强行控制element中的MessageBox样式    |
+ |                                     |
+ ---------------------------------------
+*/
+.el-message-box{
+	padding: 30px 30px 20px;
+	width: 420px;
+	height: 216px;
+	background: #FFFFFF;
+	box-shadow: 0px 0px 20px rgba(27, 29, 33, 0.08);
+	border-radius: 10px !important;
+	.el-message-box__header{
+		padding: 0;
+		.el-message-box__title{
+			font-size: 18px;
+			font-weight:bold;
+			font-family: Arial;
+		}
+		.el-message-box__headerbtn{
+			transition: 150ms all;
+			width: 24px;
+			height: 24px;
+			background: #A0BFFC;
+			border-radius: 50%;
+			top: 0px;
+			right: 0px;
+					
+			&:hover {
+			  background: $color-blue;
+			}
+					
+			i {
+			  line-height: 24px;
+			  color: $color-white;
+			  font-weight: bold;
+			}
+		}
+			
+	}
+	.el-message-box__content{
+		padding: 0;
+		margin-top: 34px;
+		font-size: 14px;
+		color: #000000;
+	}
+	.el-message-box__btns{
+		margin-top: 53px;
+		padding: 0;
+		.el-button {
+			background-color: $color-btn-background;
+			font-size: 16px;
+			color:$color-blue;
+			border: none;
+			letter-spacing: 2px;
+			border-radius: 5px;
+			&:hover{
+			  background-color: $color-blue;
+			  color:$color-white;
+			}
+		}
+		.el-button--small{
+			padding: 9px 36px;
+		}
+		& button:nth-child(2){
+			margin-left: 30px;
+		}
+		
+	}
 }

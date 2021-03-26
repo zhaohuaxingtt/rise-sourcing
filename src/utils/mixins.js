@@ -6,6 +6,4 @@
  * @Description: 系统mixins
  * @FilePath: \rise\src\utils\mixins.js
  */
-
-
- 
+export default {}

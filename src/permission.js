@@ -1,14 +1,14 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:06
- * @LastEditTime: 2021-02-19 15:04:53
+ * @LastEditTime: 2021-03-26 16:18:48
  * @LastEditors: Please set LastEditors
  * @Description: 项目中登录时候获取整个项目的权限以及token.
  * @FilePath: \rise\src\permission.js
  */
 import router from "./router";
 import store from "@/store";
-import { getToken } from "@/utils";
+import { getToken,removeToken } from "@/utils";
 // eslint-disable-next-line no-unused-vars
 const whiteList = ["/login",'/ui'];
 router.beforeEach((to, from, next) => {
@@ -27,23 +27,37 @@ router.beforeEach((to, from, next) => {
             store
               .dispatch("getPermissinInfo")
               .then((res) => {
-                router.addRoutes(res);
+                if(res.length == 0){
+                  removeToken()
+                  next("/login");
+                }
+                //router.addRoutes(res);
                 router.replace({path:to.path,query:to.query});
               }).catch(()=>{
                 console.warn('警告：获取菜单或解析菜单错误！已为您重定向到登录界面.')
-                store.dispatch('loginOut').then(()=>{
-                  next("/login");
-                }).catch(()=>{
-                  next("/login");
-                })
+                /*************************************
+                 * 测试逻辑，先将本地的token清除掉之后重定向
+                 *************************************/
+                removeToken()
+                next("/login");
+                /*************************************
+                 * 正确逻辑，先退出登录一次，再重定向到登录
+                 *************************************/
+                // store.dispatch('loginOut').then(()=>{
+                //   next("/login");
+                // }).catch(()=>{
+                //   next("/login");
+                // })
               })
           })
           .catch(() => {
-            store.dispatch('loginOut').then(()=>{
-              next("/login");
-            }).catch(()=>{
-              next("/login");
-            })                                                                    
+            removeToken()
+            next("/login");
+            // store.dispatch('loginOut').then(()=>{
+            //   next("/login");
+            // }).catch(()=>{
+            //   next("/login");
+            // })                                                                    
           });
       } else {
         next();
