@@ -46,16 +46,11 @@ export default {
         {value: ''},
         {value: ''},
       ]
-      if (this.dynamicForm.baseInfo.length < 9) {
-        this.dynamicForm.baseInfo.push(...inputTemplate)
-        this.showStatus = false
-        this.$nextTick(() => {
-          this.showStatus = true
-        })
-      } else {
-        iMessage.warn('已添加到上限')
-        return false
-      }
+      this.dynamicForm.baseInfo.push(...inputTemplate)
+      this.showStatus = false
+      this.$nextTick(() => {
+        this.showStatus = true
+      })
     }
   }
 }
