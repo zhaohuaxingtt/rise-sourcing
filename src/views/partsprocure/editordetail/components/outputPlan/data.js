@@ -18,8 +18,7 @@ export const volumeTableTitle = [
   { props: 'e', name: '发动机配置' },
   { props: 'f', name: '变速箱配置' },
   { props: 'g', name: '等级配置' },
-  { props: 'h', name: '等级配置' },
   { props: 'i', name: '其他配置' },
   { props: 'j', name: '配置比例' },
-  { props: 'k', name: '用量' }
+  { props: 'perCarDosage', name: '用量' }
 ]
