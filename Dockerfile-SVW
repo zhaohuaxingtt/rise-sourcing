@@ -1,4 +1,4 @@
-FROM DOCKER_REGISTRY/rhscl/nginx-112-rhel7:latest
+FROM ci-dev-docker.art.ocp.csvw.com/library/nginx-118:latest
 ARG URL_PATH
 ENV $URL_PATH URL_PATH
 RUN echo '环境变量URL：' + $URL_PATH
