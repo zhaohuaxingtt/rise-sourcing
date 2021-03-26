@@ -11,9 +11,9 @@ export const outputRecordTableTitle = [
 ]
 
 export const volumeTableTitle = [
-  { props: 'a', name: '零件号' },
-  { props: 'b', name: '零件名（中）' },
-  { props: 'c', name: '零件名（德）' },
+  { props: 'partNum', name: '零件号' },
+  { props: 'partNameCn', name: '零件名（中）' },
+  { props: 'partNameDe', name: '零件名（德）' },
   { props: 'd', name: '配置编码' },
   { props: 'e', name: '发动机配置' },
   { props: 'f', name: '变速箱配置' },
