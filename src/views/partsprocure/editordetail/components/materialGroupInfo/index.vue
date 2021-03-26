@@ -97,10 +97,10 @@ export default {
         .catch(() => this.loading = false)
     },
     setMaterialGroup() {
-      // if (!this.params.id) return iMessage.warn("缺失有效的材料组id")
+      if (!this.params.partNum) return iMessage.warn("缺失有效的零件编号")
       this.setMaterialGroupStatus = true
 
-      this.getStuff()
+      this.getMeterialStuff()
     },
     confirmMaterialGroup() {
       if (this.multipleSelection.length !== 1) return iMessage.warn('抱歉，此处必须选择一条工艺组数据')
