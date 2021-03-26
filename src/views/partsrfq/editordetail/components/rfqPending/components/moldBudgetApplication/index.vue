@@ -38,7 +38,7 @@ import tablelist from 'pages/partsrfq/components/tablelist'
 import {tableTitle} from "./components/data";
 import {pageMixins} from "@/utils/pageMixins";
 import {getModelBudgetList, submitMoldBudget, cancelMoldBudget} from "@/api/partsrfq/editordetail";
-
+import store from '@/store'
 
 export default {
   components: {
@@ -68,7 +68,7 @@ export default {
         try {
           const req = {
             rfqId: id,
-            userId: 12321
+            userId:store.state.permission.userInfo.id
           }
           const res = await getModelBudgetList(req)
           this.tableListData = res.records;

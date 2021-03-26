@@ -49,7 +49,7 @@ import {timePlanableTitle} from "./data";
 import {pageMixins} from "@/utils/pageMixins";
 import {getRfqDataList, editRfqData} from "@/api/partsrfq/home";
 import {excelExport} from "@/utils/filedowLoad";
-
+import store from '@/store'
 export default {
   components: {
     iCard,
@@ -109,7 +109,7 @@ export default {
     async save() {
       const reqList = this.tableListData.map(item => {
         return {
-          userId: 12321,
+          userId:store.state.permission.userInfo.id,
           id: item.id,
           svwFirst: item.svwFirst,
           svwRequestEm: item.svwRequestEm,

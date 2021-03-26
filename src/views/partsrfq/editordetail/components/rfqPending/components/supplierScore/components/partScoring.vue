@@ -59,7 +59,7 @@ import {partScroingTitle} from "./data";
 import {pageMixins} from "@/utils/pageMixins";
 import tpbRemarks from './tpbRemarks'
 import {getSupplierAllParts} from "@/api/partsrfq/editordetail";
-
+import store from '@/store'
 export default {
   components: {
     iCard,
@@ -94,7 +94,7 @@ export default {
           const req = {
             supplierId,
             rfqId,
-            userId: 12321
+            userId:store.state.permission.userInfo.id
           }
           const res = await getSupplierAllParts(req)
           this.tableListData = res.records;

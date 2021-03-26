@@ -5,7 +5,7 @@
 * @Description: BDL表格数据
  -->
 <template>
-	<el-table class="table" ref='multipleTable' :data="tableData" v-loading="tableLoading" @selection-change="handleSelectionChange" :row-style="rowStyle" :row-class-name='rowClassName'>
+	<el-table class="table" ref='multipleTable' :data="tableData" v-loading="tableLoading" @selection-change="handleSelectionChange" :row-style="rowStyle">
 		<el-table-column type="selection" align="center" :selectable="selectable">
 		</el-table-column>
 		<el-table-column type="index" align="center" label="#"></el-table-column>
@@ -86,6 +86,7 @@
 			}
 		},
 		methods: {
+			//自动选中MBDL里面的数据
 			toggleSelection() {
 				this.tableData.forEach(items=>{
 					if(items.isMbdl){
@@ -93,11 +94,7 @@
 					}
 				})
       },
-			rowClassName({row,index}){
-				if(row.isMbdl){
-					return 'BDL'
-				}
-			},
+			//为mbdl的数据新增一个背景颜色
 			rowStyle({row,index}){
 				if(row.isMbdl){
 					return {
@@ -105,6 +102,7 @@
 					}
 				}
 			},
+			//为mbdl的checkBox新增不能选中的功能
 			selectable(row,index){
 				if(row.isMbdl){
 					return false
@@ -142,9 +140,7 @@
 	.openLinkText {
 		color: $color-blue;
 	}
-
 	.operation {}
-
 	.look {
 		font-size: 28px;
 	}

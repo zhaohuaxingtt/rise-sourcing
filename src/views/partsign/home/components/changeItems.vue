@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 11:24:15
- * @LastEditTime: 2021-03-23 20:00:31
+ * @LastEditTime: 2021-03-26 00:00:53
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsign\home\components\changeItems.vue
@@ -23,6 +23,7 @@
 <script>
 import {iSelect,iButton,iMessage,iDialog} from '@/components'
 import {purchaseUsers} from '@/api/usercenter'
+import store from '@/store'
 export default{
   components:{iSelect,iButton,iDialog},
   props:{
@@ -39,7 +40,7 @@ export default{
   methods:{
     //获取询价采购员数据。
     getInquiryBuyerListFn(){
-      purchaseUsers({userId:1}).then(res=>this.inquiryBuyerList = res.data || [])
+      purchaseUsers({userId:store.state.permission.userInfo.id}).then(res=>this.inquiryBuyerList = res.data || [])
     },
     clearDiolog(){
       this.inquiryBuyer = ''
