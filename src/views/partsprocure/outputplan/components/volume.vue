@@ -41,6 +41,12 @@ import { excelExport } from '@/utils/filedowLoad'
 export default {
   components: { iCard, iButton, tablelist, iPagination },
   mixins: [pageMixins],
+  props: {
+    params: {
+      type: Object,
+      require: true
+    }
+  },
   data() {
     return {
       loading: false,
