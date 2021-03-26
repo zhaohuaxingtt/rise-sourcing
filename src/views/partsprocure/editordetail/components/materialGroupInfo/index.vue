@@ -49,7 +49,6 @@ import tableList from '@/views/partsign/editordetail/components/tableList'
 import { pageMixins } from '@/utils/pageMixins'
 import { getMaterialGroup, getMeterialStuff, putMaterialGroup } from "@/api/partsprocure/editordetail"
 import logDialog from "@/views/partsign/editordetail/components/logDialog"
-import { mapState } from 'vuex'
 
 export default {
   components: { iButton, iCard, iPagination, tableList, infos, logDialog },
@@ -61,7 +60,10 @@ export default {
     }
   },
   computed: {
-    ...mapState(['userInfo'])
+    // eslint-disable-next-line no-undef
+    ...Vuex.mapState({
+      userInfo: state => state.permission.userInfo,
+    })
   },
   data() {
     return {

@@ -1,7 +1,7 @@
 <template>
   <iCard class="volume" tabCard title="零件每车用量" collapse>
     <template v-slot:header-control>
-      <iButton>导出</iButton>
+      <iButton @click="download">导出</iButton>
     </template>
     <div class="body">
       <tablelist
@@ -10,6 +10,7 @@
         :tableData="tableListData"
         :tableTitle="tableTitle"
         :tableLoading="loading"
+        @handleSelectionChange="handleSelectionChange"
       />
       <iPagination
         class="pagination margin-top30"
@@ -27,7 +28,7 @@
 </template>
 
 <script>
-import { iCard, iButton, iPagination } from "@/components";
+import { iCard, iButton, iPagination, iMessage } from "@/components";
 import tablelist from "@/views/partsign/home/components/tableList";
 import { pageMixins } from "@/utils/pageMixins";
 import { volumeTableTitle as tableTitle } from "./data";
@@ -35,6 +36,7 @@ import {
   getPerCarDosageVersion,
   getPerCarDosageInfo,
 } from "@/api/partsign/editordetail";
+import { excelExport } from '@/utils/filedowLoad'
 
 export default {
   components: { iCard, iButton, tablelist, iPagination },
@@ -44,6 +46,7 @@ export default {
       loading: false,
       tableTitle,
       tableListData: [],
+      multipleSelection: []
     };
   },
   created() {
@@ -92,6 +95,13 @@ export default {
         this.loading = false;
       }
     },
+    handleSelectionChange(list) {
+      this.multipleSelection = list
+    },
+    download() {
+      if (!this.multipleSelection.length) return iMessage.warn('请选择需要导出的每车用量')
+      excelExport(this.multipleSelection, this.tableTitle)
+    }
   },
 };
 </script>
