@@ -55,8 +55,8 @@
               <iText v-else>{{ baseInfo.cf }}</iText>
             </iFormItem>
 
-            <iFormItem label="本轮报价截止时间：" name="endDate">
-              <iText>{{ baseInfo.endDate }}</iText>
+            <iFormItem label="本轮报价截止时间：" name="currentRoundsEndTime">
+              <iText>{{ baseInfo.currentRoundsEndTime }}</iText>
             </iFormItem>
           </div>
           <div class="col">
@@ -125,6 +125,7 @@ import rfqDetailInfo from './components/rfqDetailInfo'
 import newRfqRound from './components/newRfqRound'
 import {getRfqDataList, editRfqData, addRfq} from "@/api/partsrfq/home";
 import store from '@/store'
+
 export default {
   components: {
     iButton,
@@ -146,11 +147,11 @@ export default {
       navList: [
         {
           name: "待办事项",
-          value:1
+          value: 1
         },
         {
           name: "详情信息",
-          value:2
+          value: 2
         },
         // {
         //   label: "谈判助手",
@@ -166,7 +167,7 @@ export default {
     this.getBaseInfo()
   },
   methods: {
-    backPage(){
+    backPage() {
       this.$router.back()
     },
     async getBaseInfo() {
@@ -175,7 +176,7 @@ export default {
         this.baseInfoLoading = true
         const req = {
           rfqMangerInfosPackage: {
-            userId:store.state.permission.userInfo.id,
+            userId: store.state.permission.userInfo.id,
             rfqId: Number(query.id)
           }
         }
@@ -202,7 +203,7 @@ export default {
         updateRfqStatusPackage: {
           updateType,
           tmRfqIdList: [Number(query.id)],
-          userId:store.state.permission.userInfo.id
+          userId: store.state.permission.userInfo.id
         }
       }
       const res = await editRfqData(req)
@@ -210,7 +211,6 @@ export default {
       this.getBaseInfo()
     },
     createAFixedPointApplication() {
-
     },
     log() {
       window.open(`/#/log?recordId=`, '_blank')
@@ -224,7 +224,7 @@ export default {
     async save() {
       const query = this.$route.query
       const params = {
-        userId:store.state.permission.userInfo.id,
+        userId: store.state.permission.userInfo.id,
         cf: this.baseInfo.cf,
         ep: this.baseInfo.ep,
         mq: this.baseInfo.mq,
@@ -244,6 +244,7 @@ export default {
       } else {
         const req = {
           insertRfcPackage: {
+            userName: store.state.permission.userInfo.userName,
             operationType: '2',
             ...params
           }
@@ -253,6 +254,7 @@ export default {
         this.$router.push({
           path: `/partsrfq/editordetail?id=${res.data.rfqId}`
         })
+        this.getBaseInfo()
       }
     },
     toLogPage() {
@@ -336,7 +338,7 @@ export default {
   margin-left: 4px;
 }
 
-.nav-style{
+.nav-style {
   display: flex;
   align-items: center;
   margin-left: 20px;
