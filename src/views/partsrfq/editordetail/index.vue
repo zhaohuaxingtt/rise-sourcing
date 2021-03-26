@@ -12,7 +12,10 @@
     <div class="pageTitle flex-between-center-center">
       <div class="flex nav-box">
         <span>{{ $route.query.id ? $route.query.id : '新建RFQ' }}</span>
-        <iNav-mvp @change="changeNav" :list="navList" class="ml30"></iNav-mvp>
+        <iTabsList type="border-card" @tab-click="changeNav" class="nav-style">
+          <el-tab-pane :label="item.label" v-for="item of navList" :key="item.label">
+          </el-tab-pane>
+        </iTabsList>
       </div>
       <div class="btnList">
         <iButton @click="newRfq">新建RFQ轮次</iButton>
@@ -97,13 +100,24 @@
         </div>
       </iFormGroup>
     </i-card>
-    <rfqPending v-if="navActivtyValue === 1 || navActivtyValue === ''"></rfqPending>
-    <rfq-detail-info v-if="navActivtyValue === 2"></rfq-detail-info>
+    <rfqPending v-if="navActivtyValue === '待办事项' || navActivtyValue === ''"></rfqPending>
+    <rfq-detail-info v-if="navActivtyValue === '详情信息'"></rfq-detail-info>
     <new-rfq-round v-model="newRfqRoundDialog" @refreshBaseInfo="getBaseInfo"/>
   </iPage>
 </template>
 <script>
-import {iNavMvp, iButton, iPage, icon, iCard, iFormGroup, iFormItem, iText, iInput, iMessage,} from "@/components";
+import {
+  iButton,
+  iPage,
+  icon,
+  iCard,
+  iFormGroup,
+  iFormItem,
+  iText,
+  iInput,
+  iMessage,
+  iTabsList
+} from "@/components";
 import rfqPending from './components/rfqPending'
 import rfqDetailInfo from './components/rfqDetailInfo'
 import newRfqRound from './components/newRfqRound'
@@ -111,7 +125,6 @@ import {getRfqDataList, editRfqData, addRfq} from "@/api/partsrfq/home";
 import store from '@/store'
 export default {
   components: {
-    iNavMvp,
     iButton,
     iPage,
     icon,
@@ -120,6 +133,7 @@ export default {
     iFormItem,
     iText,
     iInput,
+    iTabsList,
     rfqPending,
     rfqDetailInfo,
     newRfqRound
@@ -130,11 +144,11 @@ export default {
       navList: [
         {
           value: 1,
-          name: "待办事项",
+          label: "待办事项",
         },
         {
           value: 2,
-          name: "详情信息",
+          label: "详情信息",
         },
         // {
         //   value: 3,
@@ -172,8 +186,8 @@ export default {
         this.editStatus = true
       }
     },
-    changeNav(item) {
-      this.navActivtyValue = item.value
+    changeNav(target) {
+      this.navActivtyValue = target.label
     },
     newRfq() {
       this.newRfqRoundDialog = true
@@ -314,5 +328,11 @@ export default {
 .log-word {
   color: $color-blue;
   margin-left: 4px;
+}
+
+.nav-style{
+  display: flex;
+  align-items: center;
+  margin-left: 20px;
 }
 </style>

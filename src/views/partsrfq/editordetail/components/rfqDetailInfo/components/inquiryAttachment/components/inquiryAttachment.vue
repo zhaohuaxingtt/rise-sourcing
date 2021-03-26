@@ -8,7 +8,9 @@
             @uploadedCallback="uploadAttachments"
             :upload-button-loading="uploadAttachmentsButtonLoading"
             class="margin-left8 margin-right8"/>
+        <!-- 暂不做，后端暂无接口：用户可以选择“通知全部供应商”，询价附件会发送给当前RFQ BDL中所选择的全部供应商-->
         <iButton @click="notifyAllSuppliers">通知全部供应商</iButton>
+        <!-- 暂不做，后端暂无接口：用户选择“通知已报价供应商”，系统会根据RFQ的报价记录，发给有有效报价的供应商-->
         <iButton @click="notifySuppliersWhoHaveQuoted">通知已报价供应商</iButton>
       </div>
     </div>
