@@ -1,7 +1,7 @@
 <template>
   <iCard class="outputPlan tabCard" title="询价产量计划" tabCard collapse>
     <template v-slot:header-control>
-      <iButton @click="handleSave">保存</iButton>
+      <iButton @click="handleSave" :loading="saveLoading">保存</iButton>
     </template>
     <div class="body">
       <el-table
@@ -46,6 +46,7 @@ export default {
   data() {
     return {
       loading: false,
+      saveLoading: false,
       years: [],
       startYear: '',
       tableTitle: cloneDeep(tableTitle),
