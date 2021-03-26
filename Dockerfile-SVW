@@ -1,7 +1,4 @@
 FROM ci-dev-docker.art.ocp.csvw.com/library/nginx-118:latest
-ARG URL_PATH
-ENV $URL_PATH URL_PATH
-RUN echo '环境变量URL：' + $URL_PATH
 COPY ./dist/ /usr/share/nginx/html/
 COPY ./env.sh /usr/share/
 COPY ./nginx.conf /etc/nginx/nginx.conf
