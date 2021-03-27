@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 15:12:41
- * @LastEditTime: 2021-02-25 16:06:04
+ * @LastEditTime: 2021-03-27 18:51:43
  * @LastEditors: Please set LastEditors
  * @Description: 零件采购项目批量维护界面
  * @FilePath: \rise\src\views\partsprocure\batchmiantain\index.vue
@@ -19,7 +19,7 @@
 		</div>
 		<iSearch class="margin-bottom20" title="采购项目信息" tabCard>
 			<el-form>
-				<el-form-item label="零件采购项目">
+				<el-form-item label="零件采购项目类型">
 					<iSelect placeholder="请选择" v-model="batch.part_preject_type">
 						<el-option :value="item.value" :label="item.label"
 							v-for="(item, index) in getGroupList('part_preject_type')" :key="index"></el-option>
@@ -81,7 +81,7 @@
 				</el-form-item>
 				<el-form-item label="工艺">
 					<iSelect placeholder="请选择" v-model="stuffObj">
-						<el-option :value="item"  :label="item.value" v-for="(item, index) in getGroupList('stuff_name')" :key="index"></el-option>
+						<el-option :value="item.code"  :label="item.value" v-for="(item, index) in getGroupList('stuff_name')" :key="index"></el-option>
 					</iSelect>
 				</el-form-item>
 			</el-form>
