@@ -122,7 +122,6 @@
 	import {
 		tableTitle,
 		form,
-		fromGroup
 	} from "./components/data";
 	import tablelist from "../../partsign/home/components/tableList";
 	import {
@@ -134,6 +133,7 @@
 		getPageGroup
 	} from "@/api/partsign/home";
 	import changeItems from "../../partsign/home/components/changeItems";
+	import store from '@/store'
 	export default {
 		mixins: [pageMixins],
 		components: {
@@ -179,7 +179,7 @@
 			},
 			//获取上方group信息
 			getPageGroup() {
-				getPageGroup().then((res) => {
+				getPageGroup(this.$store.state.permission.userInfo.id).then((res) => {
 					this.fromGroup = res.data.groupStatSenarioResult.groupStatInfoList;
 				});
 			},
