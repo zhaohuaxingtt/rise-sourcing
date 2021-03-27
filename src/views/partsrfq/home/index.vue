@@ -1,7 +1,7 @@
 <!--
  * @Author: moxuan
  * @Date: 2021-02-25 09:59:25
- * @LastEditTime: 2021-03-26 15:33:31
+ * @LastEditTime: 2021-03-27 21:41:09
  * @LastEditors: Please set LastEditors
  * @Description: RFQ模块首页
  * @FilePath: \rise\src\views\partsrfq\home\index.vue
@@ -9,7 +9,7 @@
 <template>
   <iPage class="partsrfqHome">
     <el-tabs v-model="tab" class="tab">
-      <el-tab-pane label="寻源执行" name="source">
+      <el-tab-pane :label="$t('partsignLanguage.XunYuanZhiXing')" name="source">
         <div>
           <div class="margin-bottom33">
             <iNav-mvp @change="change" right routerPage></iNav-mvp>

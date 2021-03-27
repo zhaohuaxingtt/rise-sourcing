@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-24 09:17:57
- * @LastEditTime: 2021-03-27 20:05:54
+ * @LastEditTime: 2021-03-27 21:44:28
  * @LastEditors: Please set LastEditors
  * @Description: 零件签收列表界面.
  * @FilePath: \rise\src\views\partsign\index.vue
@@ -9,7 +9,7 @@
 <template>
   <iPage class="partsignHome">
     <el-tabs v-model="tab" class="tab">
-      <el-tab-pane label="寻源执行" name="source">
+      <el-tab-pane :label="$t('partsignLanguage.XunYuanZhiXing')" name="source">
         <div>
           <div class="margin-bottom33">
             <iNavMvp @change="change" right routerPage></iNavMvp>
@@ -102,9 +102,9 @@
             <div class="margin-bottom20 clearFloat">
               <span class="font18 font-weight">新件信息单签收</span>
               <div class="floatright">
-                <iButton @click="save" v-permission="PARTSIGN_SIGNBUTTON">{{$t('QianShou')}}</iButton>
-                <iButton @click="openDiologBack" v-permission="PARTSIGN_BACKBUTTON">{{$t('TuiHui')}}</iButton>
-                <iButton @click="openDiologChangeItems" v-permission="PARTSIGN_TRANSFERBUTTON">{{$t('ZhuanPai')}}</iButton>
+                <iButton @click="save" v-permission="PARTSIGN_SIGNBUTTON">{{$t('partsignLanguage.QianShou')}}</iButton>
+                <iButton @click="openDiologBack" v-permission="PARTSIGN_BACKBUTTON">{{$t('partsignLanguage.TuiHui')}}</iButton>
+                <iButton @click="openDiologChangeItems" v-permission="PARTSIGN_TRANSFERBUTTON">{{$t('partsignLanguage.ZhuanPai')}}</iButton>
               </div>
             </div>
             <tablelist

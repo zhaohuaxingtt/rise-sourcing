@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 09:50:42
- * @LastEditTime: 2021-03-26 15:35:01
+ * @LastEditTime: 2021-03-27 21:41:01
  * @LastEditors: Please set LastEditors
  * @Description: 零件采购项目建立首页。
  * @FilePath: \rise\src\views\partsprocure\home\index.vue
@@ -9,7 +9,7 @@
 <template>
   <iPage class="partsprocureHome">
     <el-tabs v-model="tab" class="tab">
-      <el-tab-pane label="寻源执行" name="source">
+      <el-tab-pane :label="$t('partsignLanguage.XunYuanZhiXing')" name="source">
         <div>
           <div class="margin-bottom33">
             <iNav-mvp @change="change" right routerPage></iNav-mvp>

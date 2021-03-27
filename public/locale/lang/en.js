@@ -49,10 +49,11 @@
             'RFQLINIE': 'Linie',
             'RFQTPSCORESTATUS': 'TpStatus',
             'RFQMQSCORESTATUS': 'MqStatus',
-            'RFQTARGETPRICESTATUS': 'PriceStatus',
+            'RFQTARGETPRICESTATUS': 'TargetStatus',
             'RFQPARTNUMBERFSNRRFQBUYER': 'PartNumber/fsnr/rfq/buyer',
-            'RFQMODELPROJECT': 'Model',
-            'RFQPARTITEMTYPE': 'PartType',
+            'RFQMODELPROJECT': 'ModelProject',
+            'RFQPARTITEMTYPE': 'ItemType',
+            'RFQPLEASECHOOSE': 'Please Choose',
             'RFQPLEASEENTERQUERY': 'Please Enter Query',
             'RFQRFQINTEGRATEDMANAGEMENT': 'Rfq Integrated Management',
         },
@@ -64,20 +65,21 @@
           'PARTSPROCURESTARTINQUIRY': 'Start Inquiry',
           'PARTSPROCURETRANSFER': 'Transfer',
           'PARTSPROCUREFSNFGSNFSPNR': 'FSNF/GSNF/SPNR',
-          'PARTSPROCUREPARTNUMBER': 'Part Number',
-          'PARTSPROCUREPARTNAMEZH': 'Part Name (ZH)',
-          'PARTSPROCUREPARTNAMEDE': 'Part Name (DE)',
+          'PARTSPROCUREPARTNUMBER': 'Number',
+          'PARTSPROCUREPARTNAMEZH': 'Name (ZH)',
+          'PARTSPROCUREPARTNAMEDE': 'Name (DE)',
           'PARTSPROCUREPURCHASINGFACTORY': 'Purchasing Factory',
-          'PARTSPROCUREPARTITEMTYPE': 'Part Item Type',
+          'PARTSPROCUREPARTITEMTYPE': 'Item Type',
           'PARTSPROCUREVEHICLECATEGORIES': 'Vehicle Categories',
           'PARTSPROCUREMODELPROJECT': 'Model Project',
-          'PARTSPROCUREPARTSTATUS': 'Part Status',
+          'PARTSPROCUREPARTSTATUS': 'Status',
           'PARTSPROCUREINQUIRYBUYER': 'Inquiry Buyer',
           'PARTSPROCURELINIE': 'Linie',
           'PARTSPROCURECF': 'Cf',
-          'PARTSPROCURE': 'Please Enter The Part Number, Separated By Multiple Commas',
+          'PARTSPROCURE': 'Please Enter The Number, Separated By Multiple Commas',
           'PLEENTER': 'Please Enter',
           'CHOOSE': 'Please Choose',
+          "CF":'CF'
         },
     
     'partsignLanguage':{
@@ -90,13 +92,13 @@
     
     'XunYuanZhiXing':'Sourcing Execution',    //寻源执行
     'JinDuJianKong':'Progress Monitoring',    //进度监控
-    'LingJianQianShou':'Part Signing',    //零件签收
+    'LingJianQianShou':'Signing',    //零件签收
     'CaiGouXiangMuJianLi':'Procurement Project Establishment',    //采购项目建立
     'RfqguanLi':'Rfq Management',    //RFQ管理
     'DingDianGuanLi':'Point Management',    //定点管理
     'RiZhi':'Log',    //日志
-    'LingJianHao':'Part Number',    //零件号
-    'LingJianMingChengZH':'Part Name (zh)',    //零件名称（中）
+    'LingJianHao':'Number',    //零件号
+    'LingJianMingChengZH':'Name (zh)',    //零件名称（中）
     'SheJiKeShi':'Design Department',    //设计科室
     'GongChengShi':'Engineer',    //工程师
     'CheXingXiangMu':'Model Project',    //车型项目
@@ -114,9 +116,9 @@
     'QianShou':'Sign For',    //签收
     'TuiHui':'Return',    //退回
     //'XinXiDanLiuShuiHao':'Information Single Serial Number',    //信息单流水号
-    //'LingJianHao':'Part Number',    //零件号
-    'LingJianMingZH':'Part Name (zh)',    //零件名（中）
-    'LingJianMingDE':'Part Name (de）',    //零件名（德）
+    //'LingJianHao':'Number',    //零件号
+    'LingJianMingZH':'Name (zh)',    //零件名（中）
+    'LingJianMingDE':'Name (de）',    //零件名（德）
     //'CheXingXiangMu':'Model Project',    //车型项目
     //'SheJiKeShi':'Design Department',    //设计科室
     //'GongChengShi':'Engineer',    //工程师

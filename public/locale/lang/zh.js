@@ -79,6 +79,7 @@
       'PARTSPROCURE': '请输入零件号，多个逗号分隔',
       'PLEENTER': '请输入',
       'CHOOSE': '请选择',
+      "CF":'CF'
     },
     'partsignLanguage':{
          //

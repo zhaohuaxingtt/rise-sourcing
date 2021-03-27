@@ -7,7 +7,7 @@
 <template>
 	<div class="nav flex-align-center" :class="[center && 'justify-center',right && 'justify-right']">
 		<div v-for="(item,index) in list" :key="index" @click="change(item,index)">
-			<span class="name" :class="index==activeIndex && 'active'">{{item.name}}</span>
+			<span class="name" :class="index==activeIndex && 'active'">{{$t(item.key)}}</span>
 			<!-- <span class="circle" v-show="item.message>0">{{item.message}}</span> -->
 			<el-badge class="badge" :max="99" :hidden="!item.message" :value="item.message"></el-badge>
 		</div>
@@ -31,17 +31,20 @@
 					value: 1,
 					name: "零件签收",
 					message: 0,
-					url:'/partsign'
+					url:'/partsign',
+					key:"partsignLanguage.LingJianQianShou"
 				}, {
 					value: 2,
 					name: "采购项目建立",
 					message: 0,
-					url:'/partsprocure'
+					url:'/partsprocure',
+					key:"partsignLanguage.CaiGouXiangMuJianLi"
 				}, {
 					value: 3,
 					name: "RFQ管理",
 					message: 0,
-					url:'/partsrfq'
+					url:'/partsrfq',
+					key:"partsignLanguage.RfqguanLi"
 				}]
 			},
 
