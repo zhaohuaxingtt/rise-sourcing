@@ -13,19 +13,19 @@ export const targeTitle = [{
 		name: '申请类型'
 	},
 	{
-		props: 'c',
+		props: 'cfOwnerId',
 		name: 'CF负责人'
 	},
 	{
-		props: 'd',
+		props: 'applyCategory',
 		name: '申请类别'
 	},
 	{
-		props: 'lcPrice',
+		props: 'expTargetpri',
 		name: '期望目标价'
 	},
 	{
-		props: 'f',
+		props: 'applyStatus',
 		name: '申请状态'
 	},
 ]

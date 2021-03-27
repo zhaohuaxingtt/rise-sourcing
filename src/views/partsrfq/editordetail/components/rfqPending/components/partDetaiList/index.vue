@@ -133,6 +133,12 @@
 			//获取表格数据
 			getTableList() {
 				this.confirmTableLoading = true
+				// let data={
+				// 	'search.size' : this.page.pageSize,
+				// 	'search.current' :this.page.currPage,
+				// 	'search.rfqId' : this.rfqId,
+				// 	'search.partStatus': '12',
+				// }
 				this.parmarsHasRfq['search.size'] = this.page.pageSize
 				this.parmarsHasRfq['search.current'] = this.page.currPage
 				this.parmarsHasRfq['search.rfqId'] = this.rfqId
@@ -171,4 +177,7 @@
 		height: 85px;
 		justify-content: flex-end;
 	}
+	//  thead .el-table-column--selection .cell{
+	//   display: none;
+	// }
 </style>

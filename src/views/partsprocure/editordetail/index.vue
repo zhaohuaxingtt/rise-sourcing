@@ -66,7 +66,7 @@
 								</el-option>
 							</iSelect>
 						</iFormItem>
-						<iFormItem label="支付条款：" name="test">
+						<iFormItem label="支付条款：" name="test" v-if="detailData.partType=='BD'">
 							<iSelect v-model="detailData.payClause" v-permission="PARTSPROCURE_EDITORDETAIL_NUMBEROFPAYMENT">
 								<el-option :value="item.value" :label="item.label"
 									v-for="(item, index) in getGroupList('pay_clause')" :key="index"></el-option>
@@ -127,7 +127,7 @@
 									v-for="(item, index) in getGroupList('cf_controller')" :key="index"></el-option>
 							</iSelect>
 						</iFormItem>
-						<iFormItem label="货币：" name="test">
+						<iFormItem label="货币：" name="test" v-if="detailData.partType=='BD'">
 							<iSelect v-model="detailData.currencyId" v-permission="PARTSPROCURE_EDITORDETAIL_CURRENCY">
 								<el-option :value="item.value" :label="item.label"
 									v-for="(item, index) in getGroupList('currency_id')" :key="index"></el-option>
@@ -155,7 +155,7 @@
 								{{ detailData.bmg }}
 							</iText>
 						</iFormItem>
-						<iFormItem label="采购条款：" name="test">
+						<iFormItem label="采购条款：" name="test" v-if="detailData.partType=='BD'">
 							<iSelect v-model="detailData.purchaseClause" v-permission="PARTSPROCURE_EDITORDETAIL_PURCHASETERMS">
 								<el-option :value="item.value" :label="item.label"
 									v-for="(item, index) in getGroupList('purchase_clause')" :key="index">
@@ -343,7 +343,12 @@
 			},
 			//修改详情。
 			save(val) {
-				let detailData = this.detailData;
+				let detailData = {}
+				for (let i in this.detailData) {
+					if (i!="csfMemo" && i!="linieMemo" && i!="cs1Memo" && i!="csfMeetMemo" && i!="linieMeetMemo" && i!="cs1MeetMemo") {
+						detailData[i]=this.detailData[i]
+					}
+				}
 				changeProcure({
 						detailData,
 					})
