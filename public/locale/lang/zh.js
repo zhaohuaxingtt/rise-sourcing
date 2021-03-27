@@ -6,6 +6,8 @@
   'use strict'
   
   i18n.setLocaleMessage('zh', {
+    'delete':"删除",
+    'XXDLSH':"信息单流水号",  //信息单流水号
     'all': '全部',
     'search': '搜索',
     'setting': '设置',
