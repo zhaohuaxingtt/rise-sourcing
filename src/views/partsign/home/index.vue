@@ -102,9 +102,9 @@
             <div class="margin-bottom20 clearFloat">
               <span class="font18 font-weight">新件信息单签收</span>
               <div class="floatright">
-                <iButton @click="save" v-permission="PARTSIGN_SIGNBUTTON">签收</iButton>
-                <iButton @click="openDiologBack" v-permission="PARTSIGN_BACKBUTTON">退回</iButton>
-                <iButton @click="openDiologChangeItems" v-permission="PARTSIGN_TRANSFERBUTTON">转派</iButton>
+                <iButton @click="save" v-permission="PARTSIGN_SIGNBUTTON">{{$t('QianShou')}}</iButton>
+                <iButton @click="openDiologBack" v-permission="PARTSIGN_BACKBUTTON">{{$t('TuiHui')}}</iButton>
+                <iButton @click="openDiologChangeItems" v-permission="PARTSIGN_TRANSFERBUTTON">{{$t('ZhuanPai')}}</iButton>
               </div>
             </div>
             <tablelist

@@ -198,8 +198,6 @@
 				}).then(res => {
 					if (res.data) {
 						iMessage.success("修改成功")
-						this.reset()
-						this.resetStuff()
 					}else{
 						iMessage.error(res.desZh)
 					}
