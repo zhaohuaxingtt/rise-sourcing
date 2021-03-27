@@ -5,7 +5,7 @@
  * @Description: In User Settings Edit
  */
 export const tableTitle = [
-    {props:'purchaseTargetId',name:'零件号'},
+    {props:'partNum',name:'零件号'},
     {props:'fsnrGsnrNum',name:'FSNR/GSNR'},
     {props:'rfqId',name:'RFQ编号'},
     {props:'applyTime',name:'申请日期'},
