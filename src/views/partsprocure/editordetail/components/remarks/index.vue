@@ -7,25 +7,25 @@
 						<icon symbol name="iconbeizhuxinxi"></icon>
 						<span>询价采购员备注</span>
 					</p>
-					<iInput type="textarea" rows="8" resize="none" v-model="detailData.csfMemo"></iInput>
+					<iInput type="textarea" rows="8" resize="none" v-model="detailData.csfMemo" v-permission="PARTSPROCURE_EDITORDETAIL_REMARKS_INQUIRYREMARKS"></iInput>
 				</div>
 				<div>
 					<p>
 						<icon symbol name="iconbeizhuxinxi"></icon>
 						<span>Linie备注</span>
 					</p>
-					<iInput type="textarea" rows="8" resize="none" v-model="detailData.linieMemo" disabled></iInput>
+					<iInput type="textarea" rows="8" resize="none" v-model="detailData.linieMemo" disabled v-permission="PARTSPROCURE_EDITORDETAIL_REMARKS_LINIENOTES"></iInput>
 				</div>
 				<div>
 					<p>
 						<icon symbol name="iconbeizhuxinxi"></icon>
 						<span>CS*1备注</span>
 					</p>
-					<iInput type="textarea" rows="8" resize="none" v-model="detailData.cs1Memo" disabled></iInput>
+					<iInput type="textarea" rows="8" resize="none" v-model="detailData.cs1Memo" disabled v-permission="PARTSPROCURE_EDITORDETAIL_REMARKS_CS1REMARKS"></iInput>
 				</div>
 				<!-- 保存 -->
 				<span class="save">
-					<iButton @click="save">保存</iButton>
+					<iButton @click="save" v-permission="PARTSPROCURE_EDITORDETAIL_REMARKS_SAVE">保存</iButton>
 				</span>
 			</div>
 			<div class="list flex-between-center margin-bottom40">
@@ -34,21 +34,21 @@
 						<icon symbol name="iconbeizhuxinxi"></icon>
 						<span>询价采购员上会备注</span>
 					</p>
-					<iInput type="textarea" rows="8" resize="none" v-model="detailData.csfMeetMemo"></iInput>
+					<iInput type="textarea" rows="8" resize="none" v-model="detailData.csfMeetMemo" v-permission="PARTSPROCURE_EDITORDETAIL_REMARKS_REMARKSMEETING"></iInput>
 				</div>
 				<div>
 					<p>
 						<icon symbol name="iconbeizhuxinxi"></icon>
 						<span>Linie上会备注</span>
 					</p>
-					<iInput type="textarea" rows="8" resize="none" v-model="detailData.linieMeetMemo" disabled></iInput>
+					<iInput type="textarea" rows="8" resize="none" v-model="detailData.linieMeetMemo" disabled v-permission="PARTSPROCURE_EDITORDETAIL_REMARKS_LINIENOTES"></iInput>
 				</div>
 				<div>
 					<p>
 						<icon symbol name="iconbeizhuxinxi"></icon>
 						<span>CS*1上会备注</span>
 					</p>
-					<iInput type="textarea" rows="8" resize="none" v-model="detailData.csfMeetMemo" disabled></iInput>
+					<iInput type="textarea" rows="8" resize="none" v-model="detailData.csfMeetMemo" disabled v-permission="PARTSPROCURE_EDITORDETAIL_REMARKS_CS1NOTES"></iInput>
 				</div>
 			</div>
 		</iCard>
