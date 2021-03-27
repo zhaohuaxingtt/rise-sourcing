@@ -11,8 +11,8 @@
     <div class="header clearFloat">
       <span class="title">每车用量（当前版本：{{ versionNum }}）</span>
       <div class="control">
-        <iButton @click="version">查看全部版本</iButton>
-        <iButton @click="download">导出</iButton>
+        <iButton @click="version" v-permission="PARTSIGN_EDITORDETAIL_VOLUME_ALL">查看全部版本</iButton>
+        <iButton @click="download" v-permission="PARTSIGN_EDITORDETAIL_VOLUME_EXPORT">导出</iButton>
       </div>
     </div>
     <div class="body margin-top27">

@@ -3,9 +3,9 @@
     <div class="header clearFloat">
       <span class="title">待确认版本</span>
       <div class="control">
-        <iButton @click="confirm" :loading="confirmLoading">确认</iButton>
-        <iButton @click="reject">拒绝</iButton>
-        <iButton @click="download">导出</iButton>
+        <iButton @click="confirm" :loading="confirmLoading" v-permission="PARTSIGN_EDITORDETAIL_UNCONFIRMED_CONFIRM">确认</iButton>
+        <iButton @click="reject" v-permission="PARTSIGN_EDITORDETAIL_UNCONFIRMED_REFUSE">拒绝</iButton>
+        <iButton @click="download" v-permission="PARTSIGN_EDITORDETAIL_UNCONFIRMED_EXPORT">导出</iButton>
       </div>
     </div>
     <div class="body margin-top27">

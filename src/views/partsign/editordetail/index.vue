@@ -10,10 +10,10 @@
     <div class="pageTitle flex-between-center-center">
       <span>3QG810005L</span>
       <div class="btnList flex-align-center">
-        <iButton @click="openDiologChangeItems" v-permission='BTN_PARTSIGN_ZHUANPAI'>转派</iButton>
-        <iButton @click="save">签收</iButton>
-        <iButton @click="openDiologBack">退回</iButton>
-        <iButton @click="back">返回</iButton>
+        <iButton @click="openDiologChangeItems" v-permission='PARTSIGN_EDITORDETAIL_TRANSFERBUTTON'>转派</iButton>
+        <iButton @click="save" v-permission="PARTSIGN_EDITORDETAIL_SIGNBUTTON">签收</iButton>
+        <iButton @click="openDiologBack" v-permission="PARTSIGN_EDITORDETAIL_BACKBUTTON">退回</iButton>
+        <iButton @click="back" v-permission="PARTSIGN_EDITORDETAIL_RETURN">返回</iButton>
         <logButton class="margin-left20" @click="log" />
         <span>
           <icon symbol name="icondatabaseweixuanzhong"></icon>
