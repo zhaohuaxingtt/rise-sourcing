@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-25 10:09:50
- * @LastEditTime: 2021-03-26 15:50:36
+ * @LastEditTime: 2021-03-27 13:40:26
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsrfq\editordetail\index.vue
@@ -168,7 +168,7 @@ export default {
   },
   methods: {
     backPage() {
-      this.$router.back()
+      this.$router.go(-1)
     },
     async getBaseInfo() {
       const query = this.$route.query
