@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-24 09:17:57
- * @LastEditTime: 2021-03-27 11:42:20
+ * @LastEditTime: 2021-03-27 20:05:54
  * @LastEditors: Please set LastEditors
  * @Description: 零件签收列表界面.
  * @FilePath: \rise\src\views\partsign\index.vue
@@ -19,16 +19,16 @@
           <!------------------------------------------------------------------------>
           <iSearch class="margin-bottom20" @sure="sure" @reset="reset" :resetKey="PARTSIGN_RESETBUTTON" :searchKey="PARTSIGN_CONFIRMBUTTON">
             <el-form>
-              <el-form-item label="零件号" >
+              <el-form-item :label="$t('partsignLanguage.LingJianHao')">
                 <iInput v-model="form.partNum" placeholder="请输入零件号" v-permission="PARTSIGN_PARTNUM"></iInput>
               </el-form-item>
-              <el-form-item label="零件名（中）">
+              <el-form-item :label="$t('partsignLanguage.LingJianMingChengZH')">
                 <iInput
                   v-model="form.partNameZh"
                   placeholder="请输入零件名（中）" v-permission="PARTSIGN_PARTNAMEZH"
                 ></iInput>
               </el-form-item>
-              <el-form-item label="设计科室">
+                <el-form-item :label="$t('partsignLanguage.SheJiKeShi')">
                 <iInput v-model="form.dept" placeholder="请填写设计科室" v-permission="PARTSIGN_DESIGNDEPARTMENT"></iInput>
               </el-form-item>
               <el-form-item label="工程师">
@@ -237,6 +237,8 @@ export default {
         if (res.data) {
           iMessage.success("操作成功");
           this.getTableList();
+        }else{
+          iMessage.success(res.desZh);
         }
       });
     },
