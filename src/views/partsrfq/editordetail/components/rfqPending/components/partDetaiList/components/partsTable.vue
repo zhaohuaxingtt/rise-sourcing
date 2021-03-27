@@ -1,11 +1,22 @@
 <template>
-	<div class="notPushRfq">
-		<tableList :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="tableLoading"
-			@handleSelectionChange="handleSelectionChange" @openPage="openPage"></tableList>
-		<iPagination @size-change="handleSizeChange($event, getTableList)"
-			@current-change="handleCurrentChange($event, getTableList)" background :page-sizes="page.pageSizes"
-			:page-size="page.pageSize" :layout="page.layout" :total="page.totalCount"></iPagination>
-	</div>
+  <div class="notPushRfq">
+    <tableList
+      :tableData="tableListData"
+      :tableTitle="tableTitle"
+      :tableLoading="tableLoading"
+      @handleSelectionChange="handleSelectionChange"
+      @openPage="openPage"
+    ></tableList>
+    <iPagination
+      @size-change="handleSizeChange($event, getTableList)"
+      @current-change="handleCurrentChange($event, getTableList)"
+      background
+      :page-sizes="page.pageSizes"
+      :page-size="page.pageSize"
+      :layout="page.layout"
+      :total="page.totalCount"
+    ></iPagination>
+  </div>
 </template>
 
 <script>

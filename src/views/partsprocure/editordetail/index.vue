@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2021-03-26 15:57:09
+ * @LastEditTime: 2021-03-27 13:41:02
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsprocure\editordetail\index.vue
@@ -404,7 +404,7 @@
 			},
 			// 返回
 			back() {
-				this.$router.back();
+				this.$router.go(-1);
 			}, // 查看日志
 			log() {
 				window.open(
