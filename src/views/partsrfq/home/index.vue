@@ -17,24 +17,24 @@
           <!------------------------------------------------------------------------>
           <!--                  search 搜索模块                                   --->
           <!------------------------------------------------------------------------>
-          <iSearch class="margin-bottom20" :icon="true" @reset="handleSearchReset" @sure="getTableList">
+          <iSearch class="margin-bottom20" :icon="true" @reset="handleSearchReset" @sure="getTableList" :resetKey="PARTSRFQ_RESET" :searchKey="PARTSRFQ_SEARCH">
             <el-form>
               <el-form-item label="零件号/FSNR/RFQ/采购员">
-                <iInput placeholder='请输入查询' v-model="form.searchConditions"></iInput>
+                <iInput placeholder='请输入查询' v-model="form.searchConditions" v-permission="PARTSRFQ_SEARCHBOX"></iInput>
               </el-form-item>
               <el-form-item label="车型项目">
-                <iSelect placeholder='请选择' v-model="form.carType">
+                <iSelect placeholder='请选择' v-model="form.carType" v-permission="PARTSRFQ_MODELPROJECT">
                   <el-option v-for="items in carTypeOptions" :key='items.code' :value='items.code' :label="items.name"/>
                 </iSelect>
               </el-form-item>
               <el-form-item label="零件项目类型">
-                <iSelect placeholder='请选择' v-model="form.partType">
+                <iSelect placeholder='请选择' v-model="form.partType" v-permission="PARTSRFQ_PARTITEMTYPE">
                   <el-option v-for="items in partTypeOptions" :key='items.code' :value='items.code'
                              :label="items.name"/>
                 </iSelect>
               </el-form-item>
               <el-form-item label="RFQ状态">
-                <iSelect placeholder='请选择' v-model="form.rfqStatus">
+                <iSelect placeholder='请选择' v-model="form.rfqStatus" v-permission="PARTSRFQ_RFQSTATUS">
                   <el-option v-for="items in rfqStatusOptions" :key='items.code' :value='items.code'
                              :label="items.name"/>
                 </iSelect>
@@ -49,20 +49,20 @@
               <span class="font18 font-weight">RFQ综合管理</span>
               <div class="floatright">
                 <!--激活RFQ：仅前期采购员有该按钮权限。已经关闭的RFQ，如果需要再次打开时，点击该键-->
-                <iButton @click="editRfq('02')" :loading="activateButtonLoading">激活RFQ</iButton>
+                <iButton @click="editRfq('02')" :loading="activateButtonLoading" v-permission="PARTSRFQ_ACTIVATERFQ">激活RFQ</iButton>
                 <!--新建RFQ：点击该键，系统会跳到下一界面。具体新建RFQ见另一user story，当RFQ类型为FS时，仅前期采购员有该按钮权限-->
-                <iButton @click="newRfq">新建RFQ</iButton>
+                <iButton @click="newRfq"  v-permission="PARTSRFQ_NEWRFQ">新建RFQ</iButton>
                 <!--关闭RFQ：仅前期采购员有该按钮权限。以下情况可关闭：RFQ零件状态是全部定点或全部结束，当前RFQ没有零件-->
-                <iButton @click="editRfq('01')" :loading="closeButtonLoading">关闭RFQ</iButton>
+                <iButton @click="editRfq('01')" :loading="closeButtonLoading" v-permission="PARTSRFQ_CLOSERFQ">关闭RFQ</iButton>
                 <!--转派评分任务：选中RFQ之后，可以手动转派任务给EP/MQ同事-->
-                <iButton @click="assignmentOfScoringTasks">转派评分任务</iButton>
+                <iButton @click="assignmentOfScoringTasks" v-permission="PARTSRFQ_ASSIGNMENTTASKS">转派评分任务</iButton>
                 <!--转谈判：只会出现在前期采购员界面-->
-                <iButton @click="editRfq('03')" :loading="transferNegotiationButtonLoading">转谈判</iButton>
+                <iButton @click="editRfq('03')" :loading="transferNegotiationButtonLoading" v-permission="PARTSRFQ_TRANSFERNEGOTIATION">转谈判</iButton>
                 <!--转询价：只会出现在专业采购员界面-->
-                <iButton @click="editRfq('04')" :loading="transferInquiryButtonLoading">转询价</iButton>
+                <iButton @click="editRfq('04')" :loading="transferInquiryButtonLoading" v-permission="PARTSRFQ_REINQUIRY">转询价</iButton>
                 <!--创建定点申请：在列表中选择RFQ，点击该键，会跳转到定点申请创建页面，RFQ的内容会自动带入到定点申请的各页签中-->
-                <iButton disabled>创建定点申请</iButton>
-                <iButton @click="exportTable">导出</iButton>
+                <iButton disabled v-permission="PARTSRFQ_CREATEAPPLICATION">创建定点申请</iButton>
+                <iButton @click="exportTable" v-permission="PARTSRFQ_EXPORT">导出</iButton>
               </div>
             </div>
             <tablelist

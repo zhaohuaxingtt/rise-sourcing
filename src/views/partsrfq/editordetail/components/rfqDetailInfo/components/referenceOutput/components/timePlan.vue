@@ -5,14 +5,14 @@
         <span class="font18 font-weight">时间计划</span>
         <div class="floatright">
           <template v-if="!editStatus">
-            <iButton @click="edit">编辑</iButton>
+            <iButton @click="edit" v-permission="PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_TIMEPLAN_EDIT">编辑</iButton>
           </template>
           <template v-else>
-            <iButton @click="save">保存</iButton>
-            <iButton @click="back">返回</iButton>
+            <iButton @click="save" v-permission="PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_TIMEPLAN_SAVE">保存</iButton>
+            <iButton @click="back" v-permission="PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_TIMEPLAN_BACK">返回</iButton>
           </template>
 
-          <iButton @click="exports">导出</iButton>
+          <iButton @click="exports" v-permission="PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_TIMEPLAN_EXPORTS">导出</iButton>
         </div>
       </div>
       <tablelist
