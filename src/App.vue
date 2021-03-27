@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:06
- * @LastEditTime: 2021-02-25 09:28:58
+ * @LastEditTime: 2021-03-27 16:55:29
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\App.vue
@@ -12,7 +12,17 @@
   </div>
 </template>
 <script>
-export default {};
+export default {
+  mounted(){
+      //检测路由变化，为路由无法跳转做补救措施 
+      window.addEventListener('hashchange', () => {
+        let currentPath = window.location.hash.slice(1)
+        if (this.$route.path !== currentPath) {
+          this.$router.push(currentPath)
+        }
+      }, false)
+  }
+};
 </script>
 <style lang="scss" scopde>
 .app {

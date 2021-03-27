@@ -167,25 +167,25 @@
 			</iFormGroup>
 		</iCard>
 		<iTabsList class="margin-top20" type="border-card">
-			<el-tab-pane label="材料组信息">
+			<el-tab-pane label="材料组信息" v-permission="">
         <materialGroupInfo :params="infoItem"/>
       </el-tab-pane>
-      <el-tab-pane label="零件产量计划">
+      <el-tab-pane label="零件产量计划" v-permission="">
         <outputPlan ref="outputPlan" :params="infoItem" />
         <outputRecord ref="outputRecord" class="margin-top20" :params="infoItem" @updateOutput="updateOutput" />
         <volume ref="volume" class="margin-top20" :params="infoItem" />
       </el-tab-pane>
-			<el-tab-pane label="图纸和TP详情页">
+			<el-tab-pane label="图纸和TP详情页" v-permission="">
 				<drawing :params="infoItem" />
 				<sheet class="margin-top20" :params="infoItem" />
 			</el-tab-pane>
-			<el-tab-pane label="物流要求">
+			<el-tab-pane label="物流要求" v-permission="">
 				<logistics :infoItem="infoItem"></logistics>
 			</el-tab-pane>
-			<el-tab-pane label="申请目标价">
+			<el-tab-pane label="申请目标价" v-permission="">
 				<targePrice :purchaseProjectId="purchaseProjectId"></targePrice>
 			</el-tab-pane>
-			<el-tab-pane label="备注信息">
+			<el-tab-pane label="备注信息" v-permission="">
 				<remarks :detailData="detailData"></remarks>
 			</el-tab-pane>
 		</iTabsList>

@@ -83,7 +83,7 @@
               <el-form-item label="每车用量状态">
                 <iSelect
                   v-model="form.partDosageStatus"
-                  placeholder="请选择没车用量状态" v-permission="PARTSIGN_USAGEVEHICLE"
+                  placeholder="请选择每车用量状态" v-permission="PARTSIGN_USAGEVEHICLE"
                 >
                   <el-option
                     :value="items.key"

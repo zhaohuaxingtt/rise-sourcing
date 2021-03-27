@@ -7,7 +7,7 @@
 <template>
 	<iCard>
 		<div class="header flex-align-center">
-			<iButton v-permission="PARTSRFQ_EDITORDETAIL_PARTDETAILIST_DELETE">删除</iButton>
+			<iButton v-permission="PARTSRFQ_EDITORDETAIL_PARTDETAILIST_DELETE">{{$t('delete')}}</iButton>
 			<iButton @click="showApplyPrice" v-permission="PARTSRFQ_EDITORDETAIL_PARTDETAILIST_NEWPRICE">新申请财务目标价</iButton>
 			<iButton @click="againApply" v-permission="PARTSRFQ_EDITORDETAIL_PARTDETAILIST_REAPPLYPRICE">再新申请财务目标价</iButton>
 		</div>
