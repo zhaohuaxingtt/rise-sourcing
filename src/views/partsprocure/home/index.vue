@@ -352,6 +352,10 @@
 			},
 			// 跳转批量维护
 			openBatchmiantain() {
+				if (this.selectTableData.length == 0)
+					return iMessage.warn(
+						"抱歉，您当前还未选择您需要生批量维护的项目！"
+					);
 				this.$router.push({
 					path: "/partsprocure/batchmiantain",
 					query: {

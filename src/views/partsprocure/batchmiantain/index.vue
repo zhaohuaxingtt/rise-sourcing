@@ -206,12 +206,14 @@
 				})
 			},
 			pushKey(){
-				this.stuff.stuffName=this.stuff.value
-				this.stuff.stuffCode=this.stuff.key
+				this.stuff.stuffName=this.stuffObj.value
+				this.stuff.stuffCode=this.stuffObj.key
 				this.batch.cartypeProjectZh=this.cartypeProject.value
 				this.batch.cartypeProjectNum=this.cartypeProject.key
 				this.batch.linieDept=this.linie.value
 				this.batch.linieNum=this.linie.key
+				console.log(this.stuff);
+				console.log(this.stuffObj);
 			},
 			// 重置采购信息数据
 			reset() {
