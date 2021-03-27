@@ -57,7 +57,8 @@
       'RFQPLEASEENTERQUERY': '请输入查询',
       'RFQRFQINTEGRATEDMANAGEMENT': 'RFQ综合管理',
     },
-        //
+    'partsignLanguage':{
+         //
     /*
     <!------------------------------------------------------------------------>
     <!--                                                                   --->
@@ -72,7 +73,7 @@
     'DingDianGuanLi':'定点管理',    //定点管理
     'RiZhi':'日志',    //日志
     'LingJianHao':'零件号',    //零件号
-    'LingJianMingCheng（zhong）':'零件名称（中）',    //零件名称（中）
+    'LingJianMingChengZH':'零件名称（中）',    //零件名称（中）
     'SheJiKeShi':'设计科室',    //设计科室
     'GongChengShi':'工程师',    //工程师
     'CheXingXiangMu':'车型项目',    //车型项目
@@ -91,8 +92,8 @@
     'TuiHui':'退回',    //退回
     //'XinXiDanLiuShuiHao':'信息单流水号',    //信息单流水号
     //'LingJianHao':'零件号',    //零件号
-    'LingJianMing（zhong）':'零件名（中）',    //零件名（中）
-    'LingJianMing（de）':'零件名（德）',    //零件名（德）
+    'LingJianMingZH':'零件名（中）',    //零件名（中）
+    'LingJianMingDE':'零件名（德）',    //零件名（德）
     //'CheXingXiangMu':'车型项目',    //车型项目
     //'SheJiKeShi':'设计科室',    //设计科室
     //'GongChengShi':'工程师',    //工程师
@@ -111,5 +112,7 @@
     <!------------------------------------------------------------------------>
     */
     //
+    }
+     
   })
 }))
