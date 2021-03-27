@@ -70,17 +70,17 @@
     'ZhuanPai':'转派',    //转派
     'QianShou':'签收',    //签收
     'TuiHui':'退回',    //退回
-    'XinXiDanLiuShuiHao':'信息单流水号',    //信息单流水号
-    'LingJianHao':'零件号',    //零件号
+    //'XinXiDanLiuShuiHao':'信息单流水号',    //信息单流水号
+    //'LingJianHao':'零件号',    //零件号
     'LingJianMing（zhong）':'零件名（中）',    //零件名（中）
     'LingJianMing（de）':'零件名（德）',    //零件名（德）
-    'CheXingXiangMu':'车型项目',    //车型项目
-    'SheJiKeShi':'设计科室',    //设计科室
-    'GongChengShi':'工程师',    //工程师
+    //'CheXingXiangMu':'车型项目',    //车型项目
+    //'SheJiKeShi':'设计科室',    //设计科室
+    //'GongChengShi':'工程师',    //工程师
     'XinXiDanLeiXing':'信息单类型',    //信息单类型
-    'XinXiDanZhuangTai':'信息单状态',    //信息单状态
-    'XunJiaZiLiaoZhuangTai':'询价资料状态',    //询价资料状态
-    'MeiCheYongLiangZhuangTai':'每车用量状态',    //每车用量状态
+    //'XinXiDanZhuangTai':'信息单状态',    //信息单状态
+    //'XunJiaZiLiaoZhuangTai':'询价资料状态',    //询价资料状态
+    //'MeiCheYongLiangZhuangTai':'每车用量状态',    //每车用量状态
     'XianShiDiTiaoDaoTiaoJiLuGongTiaoJiLu':'显示第    条到    条记录，共    条记录',    //显示第    条到    条记录，共    条记录
     'ShangYiYe':'上一页',    //上一页
     'XiaYiYe':'下一页',    //下一页
