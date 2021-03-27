@@ -11,10 +11,11 @@
     <div class="iSearch-content" :class="{hiden:hidens}">
       <div class="operation">
         <slot name='button'>
-          <iButton @click="$emit('sure')" v-permission="searchKey">查询</iButton>
-          <iButton @click="$emit('reset')" v-permission="resetKey">重置</iButton>
+          <iButton @click="$emit('sure')" v-permission="searchKey">{{ $t('rfq.RFQINQUIRE') }}</iButton>
+          <iButton @click="$emit('reset')" v-permission="resetKey">{{ $t('rfq.RFQRESET') }}</iButton>
         </slot>
-        <i @click="hidens=!hidens" v-if='!icon' class="el-icon-arrow-up icon margin-left20 cursor" :class="{rotate:hidens}"></i>
+        <i @click="hidens=!hidens" v-if='!icon' class="el-icon-arrow-up icon margin-left20 cursor"
+           :class="{rotate:hidens}"></i>
       </div>
       <div class="serch">
         <slot>
@@ -24,13 +25,14 @@
   </iCard>
 </template>
 <script>
-import {iCard,iButton} from '../index'
-export default{
-  components:{iCard,iButton},
-  props:{
+import {iCard, iButton} from '../index'
+
+export default {
+  components: {iCard, iButton},
+  props: {
     searchKey: String,
     resetKey: String,
-    icon:Boolean,
+    icon: Boolean,
     title: {
       type: String
     },
@@ -39,56 +41,78 @@ export default{
       default: false
     }
   },
-  data(){
+  data() {
     return {
-      hidens:false
+      hidens: false
     }
   }
 }
 </script>
 <style lang='scss' scoped>
-  .iSearch-content{
-    transition: max-height .5s;
-    max-height: 500px;
-    overflow:hidden;
-    .serch{margin-right: 250px;height:auto;overflow: hidden;
-      ::v-deep .el-form-item{
-        margin-bottom: 2px;
-        width: 220px;
-        float: left;
-        margin-right: 50px;
-        padding-left: 2px;
-        padding-top: 5px;
-        padding-bottom: 5px;
-        .el-form-item__label{
-          font-size: 14px;
-          color:$color-black;
-          font-weight: 400;
-          line-height: 14px;
-          margin-bottom: 8px;
-        }
-        .el-form-item__content{
-          line-height: inherit;
-        }
+.iSearch-content {
+  transition: max-height .5s;
+  max-height: 500px;
+  overflow: hidden;
+
+  .serch {
+    margin-right: 250px;
+    height: auto;
+    overflow: hidden;
+
+    ::v-deep .el-form-item {
+      margin-bottom: 2px;
+      width: 220px;
+      float: left;
+      margin-right: 50px;
+      padding-left: 2px;
+      padding-top: 5px;
+      padding-bottom: 5px;
+
+      .el-form-item__label {
+        font-size: 14px;
+        color: $color-black;
+        font-weight: 400;
+        line-height: 14px;
+        margin-bottom: 8px;
       }
-     }
-    .operation{float: right;width: 250px;display: flex;margin-top: 22px;text-align: right;}
+
+      .el-form-item__content {
+        line-height: inherit;
+      }
+    }
   }
-  .el-icon-arrow-up{
-      transition: all 0.5s;
-      height: 15px;
-      position: relative;
-      top:8px;
-    }
-    .rotate{transform: rotate(180deg);color:$color-blue;}
-    .icon{
-      font-size: 20px;
-      color:#D3D3DB;
-      &:hover{
-        color:$color-blue;
-      }
-    }
-    .hiden{
-      max-height: 70px;
-    }
+
+  .operation {
+    float: right;
+    width: 250px;
+    display: flex;
+    margin-top: 22px;
+    text-align: right;
+  }
+}
+
+.el-icon-arrow-up {
+  transition: all 0.5s;
+  height: 15px;
+  position: relative;
+  top: 8px;
+}
+
+.rotate {
+  transform: rotate(180deg);
+  color: $color-blue;
+}
+
+.icon {
+  font-size: 20px;
+  color: #D3D3DB;
+
+  &:hover {
+    color: $color-blue;
+  }
+}
+
+.hiden {
+  max-height: 70px;
+}
 </style>

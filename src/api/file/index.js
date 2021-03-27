@@ -6,6 +6,6 @@ export function downloadFile(parmars) {
     return requst({
         url: '/download',
         method: 'POST',
-        params: parmars
+        data: parmars
     })
 }
