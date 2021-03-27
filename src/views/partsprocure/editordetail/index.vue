@@ -343,7 +343,12 @@
 			},
 			//修改详情。
 			save(val) {
-				let detailData = this.detailData;
+				let detailData = {}
+				for (let i in this.detailData) {
+					if (i!="csfMemo" && i!="linieMemo" && i!="cs1Memo" && i!="csfMeetMemo" && i!="linieMeetMemo" && i!="cs1MeetMemo") {
+						detailData[i]=this.detailData[i]
+					}
+				}
 				changeProcure({
 						detailData,
 					})

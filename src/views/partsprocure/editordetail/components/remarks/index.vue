@@ -48,7 +48,7 @@
 						<icon symbol name="iconbeizhuxinxi"></icon>
 						<span>CS*1上会备注</span>
 					</p>
-					<iInput type="textarea" rows="8" resize="none" v-model="detailData.csfMeetMemo" disabled></iInput>
+					<iInput type="textarea" rows="8" resize="none" v-model="detailData.cs1MeetMemo" disabled></iInput>
 				</div>
 			</div>
 		</iCard>
@@ -64,7 +64,8 @@
 		iCard,
 		icon,
 		iInput,
-		iButton
+		iButton,
+		iMessage
 	} from "@/components"
 
 	export default {
@@ -87,14 +88,24 @@
 			}
 		},
 		created() {
+			
 		},
 		methods:{
 			//修改详情里面备注。
 			save(val) {
-				let detailData=this.detailData
+				let detailData={
+					csfMemo:this.detailData.csfMemo,
+					csfMeetMemo:this.detailData.csfMeetMemo,
+					purchasePrjectId:this.detailData.purchasePrjectId
+				}
 				changeProcure({detailData}).then(res => {
+					if (res.data) {
+						iMessage.success("修改成功")
+						this.getDatail()
+					}else{
+						iMessage.error(res.desZh)
+					}
 					this.diologChangeItems = false;
-					this.getDatail()
 				}).catch(() => {
 					this.diologChangeItems = false;
 				})

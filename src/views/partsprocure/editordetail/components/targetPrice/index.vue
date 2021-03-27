@@ -185,8 +185,7 @@
 			// 保存 ,申请财务目标价
 			save() {
 				let targetprice = {
-					// operator: "0",
-					purchaseProjectIds: this.purchaseProjectId,
+					purchaseProjectId: this.purchaseProjectId,
 					cfTargetPriceDetail: this.targetprice.cfTargetPriceDetail,
 					rwApplication:null
 				};
@@ -200,7 +199,7 @@
 			targeRw(){
 				let targetprice = {
 					// operator: this.targetprice.operator,
-					purchaseProjectIds: this.purchaseProjectId,
+					purchaseProjectId: this.purchaseProjectId,
 					rwApplication: this.targetprice.rwApplication,
 					cfTargetPriceDetail:null
 				};

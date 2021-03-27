@@ -303,7 +303,7 @@
 							this.$router.push({
 								path: "/partsrfq/editordetail",
 								query: {
-									id: res.rfqId,
+									id: res.data.rfqId,
 								},
 							});
 						} else {
