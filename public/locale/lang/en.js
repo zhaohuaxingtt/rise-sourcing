@@ -25,7 +25,37 @@
       'volume': 'volume',
       'log': 'log'
     },
-
+    'rfq': {
+      'RFQACTIVATERFQ': 'Activate Rfq',
+      'RFQNEWRFQ': 'New Rfq',
+      'RFQCLOSERFQ': 'Close Rfq',
+      'RFQASSIGNMENTOFSCORINGTASKS': 'Assignment Of Scoring Tasks',
+      'RFQTRANSFERNEGOTIATION': 'Transfer Negotiation',
+      'RFQREINQUIRY': 'Re-inquiry',
+      'RFQCREATEAFIXEDPOINTAPPLICATION': 'Create A Fixed-point Application',
+      'RFQEXPORT': 'Export',
+      'RFQINQUIRE': 'Inquire',
+      'RFQRESET': 'Reset',
+      'RFQRFQNUMBER': 'Rfq Number',
+      'RFQRFQNAME': 'Rfq Name',
+      'RFQRFQTYPE': 'Rfq Type',
+      'RFQCREATIONDATE': 'Creation Date',
+      'RFQCURRENTROUND': 'Current Round',
+      'RFQSUPPLIERSHAVEBEENINQUIRED': 'Suppliers Have Been Inquired',
+      'RFQQUOTEDSUPPLIER': 'Quoted Supplier',
+      'RFQRFQSTATUS': 'Rfq Status',
+      'RFQQUOTATIONDEADLINE': 'Quotation Deadline',
+      'RFQINQUIRYBUYER': 'Inquiry Buyer',
+      'RFQLINIE': 'Linie',
+      'RFQTPSCORESTATUS': 'Tp Score Status',
+      'RFQMQSCORESTATUS': 'Mq Score Status',
+      'RFQTARGETPRICESTATUS': 'Target Price Status',
+      'RFQPARTNUMBERFSNRRFQBUYER': 'Part Number/fsnr/rfq/buyer',
+      'RFQMODELPROJECT': 'Model Project',
+      'RFQPARTITEMTYPE': 'Part Item Type',
+      'RFQPLEASEENTERQUERY': 'Please Enter Query',
+      'RFQRFQINTEGRATEDMANAGEMENT': 'Rfq Integrated Management',
+    },
         //
     /*
     <!------------------------------------------------------------------------>
@@ -58,17 +88,17 @@
     'ZhuanPai':'Transfer',    //转派
     'QianShou':'Sign For',    //签收
     'TuiHui':'Return',    //退回
-    'XinXiDanLiuShuiHao':'Information Single Serial Number',    //信息单流水号
-    'LingJianHao':'Part Number',    //零件号
+    //'XinXiDanLiuShuiHao':'Information Single Serial Number',    //信息单流水号
+    //'LingJianHao':'Part Number',    //零件号
     'LingJianMing（zhong）':'Part Name (zh)',    //零件名（中）
     'LingJianMing（de）':'Part Name (de）',    //零件名（德）
-    'CheXingXiangMu':'Model Project',    //车型项目
-    'SheJiKeShi':'Design Department',    //设计科室
-    'GongChengShi':'Engineer',    //工程师
+    //'CheXingXiangMu':'Model Project',    //车型项目
+    //'SheJiKeShi':'Design Department',    //设计科室
+    //'GongChengShi':'Engineer',    //工程师
     'XinXiDanLeiXing':'Information Sheet Type',    //信息单类型
-    'XinXiDanZhuangTai':'Information Sheet Status',    //信息单状态
-    'XunJiaZiLiaoZhuangTai':'Inquiry Data Status',    //询价资料状态
-    'MeiCheYongLiangZhuangTai':'Usage Status Per Vehicle',    //每车用量状态
+    //'XinXiDanZhuangTai':'Information Sheet Status',    //信息单状态
+    //'XunJiaZiLiaoZhuangTai':'Inquiry Data Status',    //询价资料状态
+    //'MeiCheYongLiangZhuangTai':'Usage Status Per Vehicle',    //每车用量状态
     'XianShiDiTiaoDaoTiaoJiLuGongTiaoJiLu':'Display Records From Records To Records In Total',    //显示第    条到    条记录，共    条记录
     'ShangYiYe':'Previous Page',    //上一页
     'XiaYiYe':'Next Page',    //下一页

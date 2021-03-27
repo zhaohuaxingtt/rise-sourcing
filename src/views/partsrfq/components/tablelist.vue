@@ -7,10 +7,10 @@
 <template>
   <el-table :height="height" :data='tableData' v-loading='tableLoading' @selection-change="handleSelectionChange">
     <el-table-column v-if="selection" type='selection' width="50" align='center'></el-table-column>
-    <el-table-column v-if='index' type='index' width='50' align='center' label='编号'></el-table-column>
+    <el-table-column v-if='index' type='index' width='50' align='center' label='#'></el-table-column>
     <template v-for="(items,index) in tableTitle">
       <el-table-column :key="index" align='center' v-if='items.props === openPageProps' :prop="items.props"
-                       :label="items.name">
+                       :label="items.key ? $t(items.key) : items.name">
         <template slot-scope="scope">
             <span class="openLinkText cursor"
                   @click="openPage(openPageGetRowData ?  scope.row : scope.row[items.props])">{{
@@ -52,7 +52,8 @@
           <slot name="icon" :data="scope.row"></slot>
         </template>
       </el-table-column>
-      <el-table-column :key="index" align='center' v-else :label="items.name" :prop="items.props"></el-table-column>
+      <el-table-column :key="index" align='center' v-else :label="items.key ? $t(items.key) : items.name"
+                       :prop="items.props"></el-table-column>
     </template>
   </el-table>
 </template>

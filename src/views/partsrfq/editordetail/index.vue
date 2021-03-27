@@ -19,7 +19,9 @@
         <iButton @click="updateRfqStatus('06')" v-permission="PARTSRFQ_EDITORDETAIL_SENDINQUIRY">发出询价</iButton>
         <iButton @click="updateRfqStatus('05')" v-permission="PARTSRFQ_EDITORDETAIL_ENDQUOTATION">结束本轮询价</iButton>
         <iButton @click="updateRfqStatus('03')" v-permission="PARTSRFQ_EDITORDETAIL_TRANSFERNEGOTIATION">转谈判</iButton>
-        <iButton @click="createAFixedPointApplication" disabled v-permission="PARTSRFQ_EDITORDETAIL_CREATEAPPLICATION">创建定点申请</iButton>
+        <iButton @click="createAFixedPointApplication" disabled v-permission="PARTSRFQ_EDITORDETAIL_CREATEAPPLICATION">
+          创建定点申请
+        </iButton>
         <iButton @click="backPage">返回</iButton>
         <iButton type="text" @click="toLogPage">
           <icon symbol name="iconrizhiwuzi" class="log-icon"/>
@@ -42,7 +44,8 @@
               <iText v-permission="PARTSRFQ_EDITORDETAIL_RFQNUMBER">{{ baseInfo.id }}</iText>
             </iFormItem>
             <iFormItem label="RFQ名称：" name="rfqName">
-              <iInput v-if="editStatus" v-model="baseInfo.rfqName" v-permission="PARTSRFQ_EDITORDETAIL_RFQNAME"></iInput>
+              <iInput v-if="editStatus" v-model="baseInfo.rfqName"
+                      v-permission="PARTSRFQ_EDITORDETAIL_RFQNAME"></iInput>
               <iText v-else v-permission="PARTSRFQ_EDITORDETAIL_RFQNAME">{{ baseInfo.rfqName }}</iText>
             </iFormItem>
 
@@ -75,15 +78,19 @@
             </iFormItem>
             <iFormItem label="轮次类型：" name="roudsType">
               <iText>
-                <template v-if="baseInfo.roudsType === '00'" v-permission="PARTSRFQ_EDITORDETAIL_ROUNDTYPE">普通轮次</template>
-                <template v-else-if="baseInfo.roudsType === '01'" v-permission="PARTSRFQ_EDITORDETAIL_ROUNDTYPE">在线竞价</template>
+                <template v-if="baseInfo.roudsType === '00'" v-permission="PARTSRFQ_EDITORDETAIL_ROUNDTYPE">普通轮次
+                </template>
+                <template v-else-if="baseInfo.roudsType === '01'" v-permission="PARTSRFQ_EDITORDETAIL_ROUNDTYPE">在线竞价
+                </template>
                 <template v-else v-permission="PARTSRFQ_EDITORDETAIL_ROUNDTYPE"></template>
               </iText>
             </iFormItem>
           </div>
           <div class="col">
             <iFormItem label="创建日期：" name="createDate">
-              <iText v-permission="PARTSRFQ_EDITORDETAIL_CREATIONDATE">{{ $route.query.id ? baseInfo.createDate : moment().format('YYYY-MM-DD') }}</iText>
+              <iText v-permission="PARTSRFQ_EDITORDETAIL_CREATIONDATE">
+                {{ $route.query.id ? baseInfo.createDate : moment().format('YYYY-MM-DD') }}
+              </iText>
             </iFormItem>
             <iFormItem label="LINIE：" name="linieNameZh">
               <iText v-permission="PARTSRFQ_EDITORDETAIL_LINE">{{ baseInfo.linieNameZh }}</iText>
@@ -182,7 +189,12 @@ export default {
         }
         try {
           const res = await getRfqDataList(req)
-          this.baseInfo = res.data.getRfqInfoVO.rfqVOList[0]
+          const resList = res.data.getRfqInfoVO.rfqVOList
+          if (resList.length > 0) {
+            this.baseInfo = res.data.getRfqInfoVO.rfqVOList[0]
+          } else {
+            this.baseInfo = ''
+          }
           this.baseInfoLoading = false
         } catch {
           this.baseInfoLoading = false
