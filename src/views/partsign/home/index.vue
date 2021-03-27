@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-24 09:17:57
- * @LastEditTime: 2021-03-26 15:31:49
+ * @LastEditTime: 2021-03-27 11:42:20
  * @LastEditors: Please set LastEditors
  * @Description: 零件签收列表界面.
  * @FilePath: \rise\src\views\partsign\index.vue
@@ -159,7 +159,7 @@ import {
   iSelect,
 } from "@/components";
 import tablelist from "./components/tableList";
-import { tableTitle, form } from "./components/data";
+import { tableTitle, form ,needTranslate} from "./components/data";
 import { getTabelData, getPageGroup, patchRecords } from "@/api/partsign/home";
 import { pageMixins } from "@/utils/pageMixins";
 import backItems from "./components/backItems";
@@ -195,14 +195,31 @@ export default {
       inquiryBuyerList: [],
       form: form,
       fromGroup: [],
-      tab: 'source'
+      tab: 'source',
+      needTranslate:needTranslate
     };
   },
   created() {
     this.getPageGroup();
     this.getTableList();
   },
+  provide(){
+    return {
+      vm:this
+    }
+  },
   methods: {
+    //在跳转到详情界面之前，需要将数据格式化为中文。
+    translateDataForDetail(v){
+      this.needTranslate.forEach(element => {
+        if(v[element.name]){
+          const result = this.getGroupList(element.key).find(i=>i.key == v[element.name])
+          v[element.name] = result?result.value:""
+        }
+      });
+      console.log(v)
+      return v
+    },
     translateDataToservice(data) {
       const idList = [];
       data.forEach((items) => idList.push(items.tpPartID));
@@ -257,7 +274,7 @@ export default {
       }
     },
     openPage(val) {
-      local.set("tpPartInfoVO", JSON.stringify(val));
+      local.set("tpPartInfoVO", JSON.stringify(this.translateDataForDetail(val)));
       this.$router.push({
         path: "/partsign/editordetail",
       });

@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-24 09:47:32
- * @LastEditTime: 2021-03-26 00:01:46
+ * @LastEditTime: 2021-03-27 14:42:33
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsign\home\components\data.js
@@ -11,7 +11,7 @@ import {permissionTitle} from '@/utils'
 export const tableTitle = permissionTitle("PERMISSION_TESTTABLE",[
   {props:'tpPartID',name:'信息单流水号'},
   {props:'partNum',name:'零件号'},
-  {props:'cpartNameCn',name:'零件名（中）'},
+  {props:'partNameCn',name:'零件名（中）'},
   {props:'partNameDe',name:'零件名（德）'},
   {props:'projectCarType',name:'车型项目'},
   {props:'tpDeptNum',name:'设计科室'},
@@ -21,6 +21,10 @@ export const tableTitle = permissionTitle("PERMISSION_TESTTABLE",[
   {props:'attachmentStatus',name:'询价资料状态'},
   {props:'partDosageStatus',name:'每车用量状态'}
 ])
+export const needTranslate = [
+  {name:'projectCarType',key:'project_car_type'},
+  {name:'tpInfoType',key:'tp_info_type'}
+]
 //form
 export const form = {
   attachmentStatus:'',//询价资料状态

@@ -1,7 +1,7 @@
 /*
  * @Author: shujie
  * @Date: 2021-02-24 10:17:53
- * @LastEditTime: 2021-02-24 10:17:53
+ * @LastEditTime: 2021-03-27 11:44:06
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsign\editordetail\components\data.js
@@ -12,7 +12,7 @@ export const partTitle = [
   {key:'partNameEn',name:'零件名（德）'},
   {key:'inheritedCarModel',name:'车型大类'},
   {key:'projectCarType',name:'车型项目'},
-  {key:'tpInforType',name:'信息单类型'},
+  {key:'tpInfoType',name:'信息单类型'},
   {key:'tpPartID',name:'新建信息单流水号'},
   {key:'stuffNumber',name:'采购员'},
   {key:'status',name:'信息单状态'},
