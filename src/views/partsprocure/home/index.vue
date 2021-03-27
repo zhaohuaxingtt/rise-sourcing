@@ -20,58 +20,67 @@
           <iSearch class="margin-bottom20" @sure="sure" @reset="reset" :resetKey="PARTSPROCURE_RESET"
                    :searchKey="PARTSPROCURE_CONFIRM">
             <el-form>
-              <el-form-item label="零件号">
-                <iInput placeholder="请输入零件号,多个逗号分隔" v-model="form['search.partNum']"
+              <el-form-item :label="$t('partsprocure.PARTSPROCUREPARTNUMBER')">
+                <iInput :placeholder="$t('partsprocure.PARTSPROCURE')" v-model="form['search.partNum']"
                         v-permission="PARTSPROCURE_PARTNUMBER"></iInput>
               </el-form-item>
-              <el-form-item label="零件名（中）">
-                <iInput placeholder="请输入零件名（中）" v-model="form['search.partNameZh']"
+              <el-form-item :label="$t('partsprocure.PARTSPROCUREPARTNAMEZH')">
+                <iInput :placeholder="$t('partsprocure.PLEENTER') + $t('partsprocure.PARTSPROCUREPARTNAMEZH')"
+                        v-model="form['search.partNameZh']"
                         v-permission="PARTSPROCURE_PARTNAMEZH"></iInput>
               </el-form-item>
-              <el-form-item label="FSNR/GSNR/SPNR">
-                <iInput placeholder="请输入FSNR/GSNR/SPNR" v-model="form['search.fsnrGsnrNum']"
+              <el-form-item :label="$t('partsprocure.PARTSPROCUREFSNFGSNFSPNR')">
+                <iInput :placeholder="$t('partsprocure.PLEENTER') + $t('partsprocure.PARTSPROCUREFSNFGSNFSPNR')"
+                        v-model="form['search.fsnrGsnrNum']"
                         v-permission="PARTSPROCURE_FSINPUT">
                 </iInput>
               </el-form-item>
-              <el-form-item label="询价采购员">
-                <iInput placeholder="请输入询价采购员" v-model="form['search.buyerName']"
+              <el-form-item :label="$t('partsprocure.PARTSPROCUREINQUIRYBUYER')">
+                <iInput :placeholder="$t('partsprocure.PLEENTER') + $t('partsprocure.PARTSPROCUREINQUIRYBUYER')"
+                        v-model="form['search.buyerName']"
                         v-permission="PARTSPROCURE_INQUIRYBUYER">
                 </iInput>
               </el-form-item>
-              <el-form-item label="LINIE">
-                <iInput placeholder="请填写LINIE" v-model="form['search.linieName']"
+              <el-form-item :label="$t('partsprocure.PARTSPROCURELINIE')">
+                <iInput :placeholder="$t('partsprocure.PLEENTER') + $t('partsprocure.PARTSPROCURELINIE')"
+                        v-model="form['search.linieName']"
                         v-permission="PARTSPROCURE_LINIEINPUT"></iInput>
               </el-form-item>
-              <el-form-item label="零件状态">
-                <iSelect placeholder="请选择零件状态" v-model="form['search.partStatus']"
+              <el-form-item :label="$t('partsprocure.PARTSPROCUREPARTSTATUS')">
+                <iSelect :placeholder="$t('partsprocure.CHOOSE') + $t('partsprocure.PARTSPROCUREPARTSTATUS')"
+                         v-model="form['search.partStatus']"
                          v-permission="PARTSPROCURE_PARTSTATUS">
                   <el-option :value="item.value" :label="item.label"
                              v-for="(item, index) in getGroupList('part_status')" :key="index"></el-option>
                 </iSelect>
               </el-form-item>
-              <el-form-item label="车型大类">
-                <iSelect placeholder="请选择车型" v-model="form['search.cartypeCategory']"
+              <el-form-item :label="$t('partsprocure.PARTSPROCUREVEHICLECATEGORIES')">
+                <iSelect :placeholder="$t('partsprocure.CHOOSE') + $t('partsprocure.PARTSPROCUREVEHICLECATEGORIES')"
+                         v-model="form['search.cartypeCategory']"
                          v-permission="PARTSPROCURE_VEHICLECATEGORIES">
                   <el-option :value="item.value" :label="item.label"
                              v-for="(item, index) in getGroupList('cartype_category')" :key="index"></el-option>
                 </iSelect>
               </el-form-item>
-              <el-form-item label="车型项目">
-                <iSelect placeholder="请选择车型项目" v-model="form['search.cartypeProjectZh']"
+              <el-form-item :label="$t('partsprocure.PARTSPROCUREMODELPROJECT')">
+                <iSelect :placeholder="$t('partsprocure.CHOOSE') + $t('partsprocure.PARTSPROCUREMODELPROJECT')"
+                         v-model="form['search.cartypeProjectZh']"
                          v-permission="PARTSPROCURE_MODELPROJECT">
                   <el-option :value="item.value" :label="item.label"
                              v-for="(item, index) in getGroupList('cartype_project_zh')" :key="index"></el-option>
                 </iSelect>
               </el-form-item>
-              <el-form-item label="零件项目类型">
-                <iSelect placeholder="请选择零件项目类型" v-model="form['search.partPrejectType']"
+              <el-form-item :label="$t('partsprocure.PARTSPROCUREPARTITEMTYPE')">
+                <iSelect :placeholder="$t('partsprocure.CHOOSE') + $t('partsprocure.PARTSPROCUREPARTITEMTYPE')"
+                         v-model="form['search.partPrejectType']"
                          v-permission="PARTSPROCURE_PARTITEMTYPE">
                   <el-option :value="item.value" :label="item.label"
                              v-for="(item, index) in getGroupList('part_preject_type')" :key="index"></el-option>
                 </iSelect>
               </el-form-item>
-              <el-form-item label="采购工厂">
-                <iSelect placeholder="请选择采购工厂" v-model="form['search.procureFactory']"
+              <el-form-item :label="$t('partsprocure.PARTSPROCUREPURCHASINGFACTORY')">
+                <iSelect :placeholder="$t('partsprocure.CHOOSE') + $t('partsprocure.PARTSPROCUREPURCHASINGFACTORY')"
+                         v-model="form['search.procureFactory']"
                          v-permission="PARTSPROCURE_PURCHASINGFACTORY">
                   <el-option :value="item.value" :label="item.label"
                              v-for="(item, index) in getGroupList('procure_factory')" :key="index"></el-option>
@@ -86,11 +95,21 @@
             <div class="margin-bottom20 clearFloat">
               <span class="font18 font-weight"> {{ $t('partsprocure.PARTSPROCURENEWPROCUREMENTPROJECT') }}</span>
               <div class="floatright">
-                <iButton @click="creatFs" v-permission="PARTSPROCURE_GENERATEFSBUTTON"> {{ $t('partsprocure.PARTSPROCUREGENERATEFSGSNR') }}</iButton>
-                <iButton @click="openDiologBack" v-permission="PARTSPROCURE_CANCELPROCUREMENTITEMS">{{ $t('partsprocure.PARTSPROCURECANCELPARTSPURCHASE') }}</iButton>
-                <iButton @click="openBatchmiantain" v-permission="PARTSPROCURE_BATCHMAINTENANCE">{{ $t('partsprocure.PARTSPROCUREBATCHMAINTENANCE') }}</iButton>
-                <iButton @click="start" :loading="startLoding" v-permission="PARTSPROCURE_STARTINQUIRY">{{ $t('partsprocure.PARTSPROCURESTARTINQUIRY') }}</iButton>
-                <iButton @click="openDiologChangeItems" v-permission="PARTSPROCURE_TRANSFER">{{ $t('partsprocure.PARTSPROCURETRANSFER') }}</iButton>
+                <iButton @click="creatFs" v-permission="PARTSPROCURE_GENERATEFSBUTTON">
+                  {{ $t('partsprocure.PARTSPROCUREGENERATEFSGSNR') }}
+                </iButton>
+                <iButton @click="openDiologBack" v-permission="PARTSPROCURE_CANCELPROCUREMENTITEMS">
+                  {{ $t('partsprocure.PARTSPROCURECANCELPARTSPURCHASE') }}
+                </iButton>
+                <iButton @click="openBatchmiantain" v-permission="PARTSPROCURE_BATCHMAINTENANCE">
+                  {{ $t('partsprocure.PARTSPROCUREBATCHMAINTENANCE') }}
+                </iButton>
+                <iButton @click="start" :loading="startLoding" v-permission="PARTSPROCURE_STARTINQUIRY">
+                  {{ $t('partsprocure.PARTSPROCURESTARTINQUIRY') }}
+                </iButton>
+                <iButton @click="openDiologChangeItems" v-permission="PARTSPROCURE_TRANSFER">
+                  {{ $t('partsprocure.PARTSPROCURETRANSFER') }}
+                </iButton>
               </div>
             </div>
             <tablelist :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="tableLoading"

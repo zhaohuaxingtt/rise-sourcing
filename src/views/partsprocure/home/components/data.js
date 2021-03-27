@@ -9,51 +9,63 @@
 
 export const tableTitle = [{
 		props: 'fsnrGsnrNum',
-		name: 'FSNF/GSNF/SPNR'
+		name: 'FSNF/GSNF/SPNR',
+		key: 'partsprocure.PARTSPROCURENEWPROCUREMENTPROJECT',
 	},
 	{
 		props: 'partNum',
-		name: '零件号'
+		name: '零件号',
+		key: 'partsprocure.PARTSPROCUREPARTNUMBER',
 	},
 	{
 		props: 'partNameZh',
-		name: '零件名（中）'
+		name: '零件名（中）',
+		key: 'partsprocure.PARTSPROCUREPARTNAMEZH',
 	},
 	{
 		props: 'partNameDe',
-		name: '零件名（德）'
+		name: '零件名（德）',
+		key: 'partsprocure.PARTSPROCUREPARTNAMEDE',
 	},
 	{
 		props: 'procureFactory',
-		name: '采购工厂'
+		name: '采购工厂',
+		key: 'partsprocure.PARTSPROCUREPURCHASINGFACTORY',
 	},
 	{
 		props: 'partPrejectType',
-		name: '零件项目类型'
+		name: '零件项目类型',
+		key: 'partsprocure.PARTSPROCUREPARTITEMTYPE',
 	},
 	{
 		props: 'cartypeCategory',
-		name: '车型大类'
+		name: '车型大类',
+		key: 'partsprocure.PARTSPROCUREVEHICLECATEGORIES',
 	},
 	{
 		props: 'cartypeProjectZh',
-		name: '车型项目'
+		name: '车型项目',
+		key: 'partsprocure.PARTSPROCUREMODELPROJECT',
 	},
 	{
 		props: 'partStatus',
-		name: '零件状态'
+		name: '零件状态',
+		key: 'partsprocure.PARTSPROCUREPARTSTATUS',
 	},
 	{
 		props: 'buyerName',
-		name: '询价采购员'
+		name: '询价采购员',
+		key: 'partsprocure.PARTSPROCUREINQUIRYBUYER',
 	},
 	{
 		props: 'linieName',
-		name: 'LINIE'
+		name: 'LINIE',
+		key: 'partsprocure.PARTSPROCURELINIE',
 	},
 	{
 		props: 'cfController',
-		name: 'CF'
+		name: 'CF',
+		key: 'partsprocure.CF',
 	}
 ]
 

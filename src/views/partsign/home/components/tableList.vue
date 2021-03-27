@@ -11,16 +11,16 @@
     <el-table-column v-if="selection" type='selection' width="50" align='center'></el-table-column>
     <el-table-column v-if='index' type='index' width='50' align='center' :label='indexLabel'></el-table-column>
     <template v-for="(items,index) in tableTitle">
-      <el-table-column :key="index" align='center' v-if='items.props == activeItems' :prop="items.props" :label="items.name">
+      <el-table-column :key="index" align='center' v-if='items.props == activeItems' :prop="items.props" :label="items.key ? $t(items.key) : items.name">
         <template slot-scope="row"><span class="openLinkText cursor" @click="openPage(row.row)">{{row.row[activeItems]}}</span></template>
       </el-table-column>
-      <el-table-column :key="index" align='center'  v-else-if='items.props == "projectCarType" || items.props == "tpInfoType"' :label="items.name" :prop="items.props">
+      <el-table-column :key="index" align='center'  v-else-if='items.props == "projectCarType" || items.props == "tpInfoType"' :label="items.key ? $t(items.key) : items.name" :prop="items.props">
         <template slot-scope="scope">
           <span v-if='items.props == "projectCarType"'>{{translateData('project_car_type',scope.row[items.props])}}</span>
           <span v-else>{{translateData('tp_info_type',scope.row[items.props])}}</span>
         </template>
       </el-table-column>
-      <el-table-column :key="index" align='center'  v-else :label="items.name" :prop="items.props"></el-table-column>
+      <el-table-column :key="index" align='center'  v-else :label="items.key ? $t(items.key) : items.name" :prop="items.props"></el-table-column>
     </template>
   </el-table>
 </template>
