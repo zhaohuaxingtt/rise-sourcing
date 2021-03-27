@@ -257,7 +257,7 @@
 				getRfqDataList({
 					otherInfoPackage
 				}).then(res => {
-					if (res.data.partLogisticRequirementVO) {
+					if (res.data) {
 						this.dataInfo = res.data.partLogisticRequirementVO
 					}
 				})
