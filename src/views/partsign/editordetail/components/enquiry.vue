@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-24 16:57:16
- * @LastEditTime: 2021-03-22 17:50:54
+ * @LastEditTime: 2021-03-27 17:45:21
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsign\editordetail\components\enquiry\index.vue
@@ -47,7 +47,7 @@ import { enquiryTableTitle as tableTitle } from './data'
 import { getInfoAnnexPage } from '@/api/partsign/editordetail'
 import { pageMixins } from '@/utils/pageMixins'
 import filters from '@/utils/filters'
-
+import {download} from '@/api/taskcenter/home'
 export default {
   components: { iCard, iButton, iPagination, tableList },
   mixins: [ pageMixins, filters ],
@@ -78,7 +78,9 @@ export default {
         purchasingRequirementTargetId: this.data.purchasingRequirementTargetId
       })
         .then(res => { 
-          this.tableListData = res.data.tpRecordList
+          if(res.data){
+            this.tableListData = res.data.tpRecordList
+          }
           this.page.totalCount = res.data.totalCount || 0
           this.loading = false
         })
@@ -98,6 +100,7 @@ export default {
       if (!this.multipleSelection.length) {
         iMessage.warn('请选择需要下载文件')
       }
+      download({fileList:[""]})
     },
     preview() {},
   }

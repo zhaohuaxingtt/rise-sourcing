@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-24 17:57:52
- * @LastEditTime: 2021-03-01 15:54:15
- * @LastEditors: your name
+ * @LastEditTime: 2021-03-27 17:08:31
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsign\editordetail\components\volume\index.vue
 -->
@@ -76,14 +76,12 @@ export default {
             "status": 1,
             "tpId": this.data.tpPartID
           })
-
           this.versionNum = 'V1'
           if (versionRes.data && Array.isArray(versionRes.data.tpRecordList) && versionRes.data.tpRecordList[0]) {
             this.carTypeConfigId = versionRes.data.tpRecordList[0].carTypeConfigId
             this.versionNum = versionRes.data.tpRecordList[0].versionNum || 'V1'
           }
         }
-
         const infoRes = await getPerCarDosageInfo({
           carTypeConfigId: this.carTypeConfigId,
           versionNum: this.versionNum,
@@ -92,11 +90,12 @@ export default {
           status: 1,
           tpId: 12390
         })
-
-        this.tableListData = infoRes.data.tpRecordList
-        this.page.totalCount = infoRes.data.totalCount
+        if(infoRes.data){
+          this.tableListData = infoRes.data.tpRecordList
+          this.page.totalCount = infoRes.data.totalCount
+        }
       } catch(e) {
-        console.error(e)
+        console.warn(e)
       } finally {
         this.loading = false
       }
