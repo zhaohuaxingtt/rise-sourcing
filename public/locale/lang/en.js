@@ -53,6 +53,7 @@
             'RFQPARTNUMBERFSNRRFQBUYER': 'Part Number/fsnr/rfq/buyer',
             'RFQMODELPROJECT': 'Model Project',
             'RFQPARTITEMTYPE': 'Part Item Type',
+            'RFQPLEASECHOOSE': 'Please Choose',
             'RFQPLEASEENTERQUERY': 'Please Enter Query',
             'RFQRFQINTEGRATEDMANAGEMENT': 'Rfq Integrated Management',
         },
