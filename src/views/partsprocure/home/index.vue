@@ -21,50 +21,50 @@
             :searchKey="PARTSPROCURE_CONFIRM">
             <el-form>
               <el-form-item label="零件号">
-                <iInput placeholder="请输入零件号,多个逗号分隔" v-model="form['search.partNum']" v-permission=""></iInput>
+                <iInput placeholder="请输入零件号,多个逗号分隔" v-model="form['search.partNum']" v-permission="PARTSPROCURE_PARTNUMBER"></iInput>
               </el-form-item>
               <el-form-item label="零件名（中）">
-                <iInput placeholder="请输入零件名（中）" v-model="form['search.partNameZh']" v-permission=""></iInput>
+                <iInput placeholder="请输入零件名（中）" v-model="form['search.partNameZh']" v-permission="PARTSPROCURE_PARTNAMEZH"></iInput>
               </el-form-item>
               <el-form-item label="FSNR/GSNR/SPNR">
-                <iInput placeholder="请输入FSNR/GSNR/SPNR" v-model="form['search.fsnrGsnrNum']" v-permission="">
+                <iInput placeholder="请输入FSNR/GSNR/SPNR" v-model="form['search.fsnrGsnrNum']" v-permission="PARTSPROCURE_FSINPUT">
                 </iInput>
               </el-form-item>
               <el-form-item label="询价采购员">
-                <iSelect placeholder="请选择询价采购员" v-model="form['search.buyerName']">
+                <iSelect placeholder="请选择询价采购员" v-model="form['search.buyerName']" v-permission="PARTSPROCURE_INQUIRYBUYER">
                   <el-option :value="item.value" :label="item.label"
                     v-for="(item, index) in getGroupList('buyer_name')" :key="index"></el-option>
                 </iSelect>
               </el-form-item>
               <el-form-item label="LINIE">
-                <iInput placeholder="请填写LINIE" v-model="form['search.linieName']" v-permission=""></iInput>
+                <iInput placeholder="请填写LINIE" v-model="form['search.linieName']" v-permission="PARTSPROCURE_LINIEINPUT"></iInput>
               </el-form-item>
               <el-form-item label="零件状态">
-                <iSelect placeholder="请选择零件状态" v-model="form['search.partStatus']" v-permission="">
+                <iSelect placeholder="请选择零件状态" v-model="form['search.partStatus']" v-permission="PARTSPROCURE_PARTSTATUS">
                   <el-option :value="item.value" :label="item.label"
                     v-for="(item, index) in getGroupList('part_status')" :key="index"></el-option>
                 </iSelect>
               </el-form-item>
               <el-form-item label="车型大类">
-                <iSelect placeholder="请选择车型" v-model="form['search.cartypeCategory']" v-permission="">
+                <iSelect placeholder="请选择车型" v-model="form['search.cartypeCategory']" v-permission="PARTSPROCURE_VEHICLECATEGORIES">
                   <el-option :value="item.value" :label="item.label"
                     v-for="(item, index) in getGroupList('cartype_category')" :key="index"></el-option>
                 </iSelect>
               </el-form-item>
               <el-form-item label="车型项目">
-                <iSelect placeholder="请选择车型项目" v-model="form['search.cartypeProjectZh']" v-permission="">
+                <iSelect placeholder="请选择车型项目" v-model="form['search.cartypeProjectZh']" v-permission="PARTSPROCURE_MODELPROJECT">
                   <el-option :value="item.value" :label="item.label"
                     v-for="(item, index) in getGroupList('cartype_project_zh')" :key="index"></el-option>
                 </iSelect>
               </el-form-item>
               <el-form-item label="零件项目类型">
-                <iSelect placeholder="请选择零件项目类型" v-model="form['search.partPrejectType']" v-permission="">
+                <iSelect placeholder="请选择零件项目类型" v-model="form['search.partPrejectType']" v-permission="PARTSPROCURE_PARTITEMTYPE">
                   <el-option :value="item.value" :label="item.label"
                     v-for="(item, index) in getGroupList('part_preject_type')" :key="index"></el-option>
                 </iSelect>
               </el-form-item>
               <el-form-item label="采购工厂">
-                <iSelect placeholder="请选择采购工厂" v-model="form['search.procureFactory']" v-permission="">
+                <iSelect placeholder="请选择采购工厂" v-model="form['search.procureFactory']" v-permission="PARTSPROCURE_PURCHASINGFACTORY">
                   <el-option :value="item.value" :label="item.label"
                     v-for="(item, index) in getGroupList('procure_factory')" :key="index"></el-option>
                 </iSelect>
@@ -78,11 +78,11 @@
             <div class="margin-bottom20 clearFloat">
               <span class="font18 font-weight">新建采购项目</span>
               <div class="floatright">
-                <iButton @click="creatFs">生成Fs/GsNr</iButton>
-                <iButton @click="openDiologBack">取消零件采购</iButton>
-                <iButton @click="openBatchmiantain">批量维护</iButton>
-                <iButton @click="start" :loading="startLoding">启动询价</iButton>
-                <iButton @click="openDiologChangeItems">转派</iButton>
+                <iButton @click="creatFs" v-permission="PARTSPROCURE_GENERATEFSBUTTON">生成Fs/GsNr</iButton>
+                <iButton @click="openDiologBack" v-permission="PARTSPROCURE_CANCELPROCUREMENTITEMS">取消零件采购</iButton>
+                <iButton @click="openBatchmiantain" v-permission="PARTSPROCURE_BATCHMAINTENANCE">批量维护</iButton>
+                <iButton @click="start" :loading="startLoding" v-permission="PARTSPROCURE_STARTINQUIRY">启动询价</iButton>
+                <iButton @click="openDiologChangeItems" v-permission="PARTSPROCURE_TRANSFER">转派</iButton>
               </div>
             </div>
             <tablelist :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="tableLoading"
