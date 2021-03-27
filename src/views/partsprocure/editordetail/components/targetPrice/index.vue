@@ -53,9 +53,9 @@
 		<iFormGroup row="2" icon inline>
 			<iFormItem label="申请类型" name="test" v-permission="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_SQLX">
 				<el-radio-group v-model="targetprice.cfTargetPriceDetail.applyType">
-					<el-radio label="1">LC</el-radio>
-					<el-radio label="2">SDK</el-radio>
-					<el-radio label="3">CKD_LANDED</el-radio>
+					<el-radio label="LC">LC</el-radio>
+					<el-radio label="SDK">SDK</el-radio>
+					<el-radio label="CKD_LANDED">CKD_LANDED</el-radio>
 				</el-radio-group>
 				<span class="start">*</span>
 			</iFormItem>
@@ -159,7 +159,9 @@
 				targeRwData:[],//rw记录
 				rwTitle: rwTitle,
 				targeTitle: targeTitle,
-				targetprice:targetPriceDetail
+				targetprice:targetPriceDetail,
+				cfTableData:[],//cf表格数据
+				rwTableData:[],//RW表格数据
 			}
 		},
 		created() {
@@ -172,15 +174,15 @@
 					"cfTargetpriceReq.purchaseProjectId": this.purchaseProjectId,
 				};
 				getTabelData(data).then((res) => {
-					this.detailData = res.data.targetprice;
-					this.tableListData=[this.targetprice.cfTargetPriceDetail]
-					this.targeRwData=[this.targetprice.rwApplication]
+					let price=res.data.targetprice
+					this.detailData = price;
+					this.tableListData=[price.cfTargetPriceDetail]
+					this.targeRwData=[price.rwApplication]
 				});
 			},
-			
 			//表格选中值集
 			handleSelectionChange(val) {
-				this.selectTableData = val
+				// this.selectTableData = val
 			},
 			// 保存 ,申请财务目标价
 			save() {
@@ -192,7 +194,12 @@
 				changeProcure({
 					targetprice,
 				}).then((res) => {
-					this.targePriceDetail()
+					if (res.data) {
+						iMessage.success("操作成功")
+						this.targePriceDetail()
+					}else{
+						iMessage.error(res.desZh)
+					}
 				});
 			},
 			//申请RW目标价

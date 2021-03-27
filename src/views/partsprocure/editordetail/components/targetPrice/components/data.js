@@ -21,11 +21,11 @@ export const targeTitle = [{
 		name: '申请类别'
 	},
 	{
-		props: 'lcPrice',
+		props: 'f',
 		name: '期望目标价'
 	},
 	{
-		props: 'f',
+		props: 'applyStatus',
 		name: '申请状态'
 	},
 ]
