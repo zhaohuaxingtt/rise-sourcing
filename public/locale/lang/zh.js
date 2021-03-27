@@ -55,6 +55,7 @@
       'RFQPARTITEMTYPE': '零件项目类型',
       'RFQPLEASECHOOSE': '请选择',
       'RFQPLEASEENTERQUERY': '请输入查询',
+      'RFQRFQINTEGRATEDMANAGEMENT': 'RFQ综合管理',
     },
         //
     /*

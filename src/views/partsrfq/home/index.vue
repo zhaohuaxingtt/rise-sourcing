@@ -51,14 +51,14 @@
             <!--                  table模块，向外入参表格数据，表头                    --->
             <!------------------------------------------------------------------------>
             <div class="margin-bottom20 clearFloat">
-              <span class="font18 font-weight">RFQ综合管理</span>
+              <span class="font18 font-weight">{{ $t('rfq.RFQRFQINTEGRATEDMANAGEMENT') }}</span>
               <div class="floatright">
                 <!--激活RFQ：仅前期采购员有该按钮权限。已经关闭的RFQ，如果需要再次打开时，点击该键-->
                 <iButton @click="editRfq('02')" :loading="activateButtonLoading" v-permission="PARTSRFQ_ACTIVATERFQ">
                   {{ $t('rfq.RFQACTIVATERFQ') }}
                 </iButton>
                 <!--新建RFQ：点击该键，系统会跳到下一界面。具体新建RFQ见另一user story，当RFQ类型为FS时，仅前期采购员有该按钮权限-->
-                <iButton @click="newRfq" v-permission="PARTSRFQ_NEWRFQ">{{ $t('rfq.RFQNEWRFQ') }}</iButton>
+                <iButton @click="newRfq" v-permission="PARTSRFQ_NEWRFQ">{{ $t('rfq.RFQNEWRFQ')}}</iButton>
                 <!--关闭RFQ：仅前期采购员有该按钮权限。以下情况可关闭：RFQ零件状态是全部定点或全部结束，当前RFQ没有零件-->
                 <iButton @click="editRfq('01')" :loading="closeButtonLoading" v-permission="PARTSRFQ_CLOSERFQ">
                   {{ $t('rfq.RFQCLOSERFQ') }}
@@ -69,17 +69,17 @@
                 </iButton>
                 <!--转谈判：只会出现在前期采购员界面-->
                 <iButton @click="editRfq('03')" :loading="transferNegotiationButtonLoading"
-                         v-permission="PARTSRFQ_TRANSFERNEGOTIATION">{{ $t('rfq.RFQTRANSFERNEGOTIATION') }}
+                         v-permission="PARTSRFQ_TRANSFERNEGOTIATION">{{ $t('rfq.RFQTRANSFERNEGOTIATION')}}
                 </iButton>
                 <!--转询价：只会出现在专业采购员界面-->
                 <iButton @click="editRfq('04')" :loading="transferInquiryButtonLoading"
-                         v-permission="PARTSRFQ_REINQUIRY">{{ $t('rfq.RFQREINQUIRY') }}
+                         v-permission="PARTSRFQ_REINQUIRY">{{ $t('rfq.RFQREINQUIRY')}}
                 </iButton>
                 <!--创建定点申请：在列表中选择RFQ，点击该键，会跳转到定点申请创建页面，RFQ的内容会自动带入到定点申请的各页签中-->
                 <iButton disabled v-permission="PARTSRFQ_CREATEAPPLICATION">
-                  {{ $t('rfq.RFQCREATEAFIXEDPOINTAPPLICATION') }}
+                  {{ $t('rfq.RFQCREATEAFIXEDPOINTAPPLICATION')}}
                 </iButton>
-                <iButton @click="exportTable" v-permission="PARTSRFQ_EXPORT">{{ $t('rfq.RFQEXPORT') }}</iButton>
+                <iButton @click="exportTable" v-permission="PARTSRFQ_EXPORT">{{ $t('rfq.RFQEXPORT')}}</iButton>
               </div>
             </div>
             <tablelist

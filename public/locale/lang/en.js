@@ -54,6 +54,7 @@
       'RFQMODELPROJECT': 'Model Project',
       'RFQPARTITEMTYPE': 'Part Item Type',
       'RFQPLEASEENTERQUERY': 'Please Enter Query',
+      'RFQRFQINTEGRATEDMANAGEMENT': 'Rfq Integrated Management',
     },
         //
     /*
