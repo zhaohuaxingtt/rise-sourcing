@@ -5,8 +5,7 @@
       <el-upload 
         class="uploadBtn" 
         multiple
-        name="multipartFile"
-        :action="`${ action }?applicationName=rise`"
+        :action="`${ action }?purchasingApplyTargetId=${ params.purchasingRequirementTargetId }`"
         :show-file-list="false" 
         :before-upload="beforeUpload"
         :on-success="uploadSuccess"
@@ -67,7 +66,7 @@ export default {
       loading: false,
       uploadLoading: false,
       deleteLoading: false,
-      action: '/commonApi/upload', // 上传api
+      action: '/tpInfoApi/tp-records/tpInfo/file', // 上传api
       tableTitle,
       tableListData: [],
       multipleSelection: [],
@@ -99,7 +98,7 @@ export default {
       getInfoAnnexPage({
         currPage: this.page.currPage,
         pageSize: this.page.pageSize,
-        purchasingRequirementTargetId: this.params.purchasingRequirementTargetId || '192321'
+        purchasingRequirementTargetId: this.params.purchasingRequirementTargetId
       })
         .then(res => { 
           console.log(res.data)
