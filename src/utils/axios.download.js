@@ -45,10 +45,10 @@ export default function httpRequest(baseUrl='',timeOut=15000) {
       if (!response) {
         return
       }
-      let type = response.headers['content-disposition'] ? response.headers['content-disposition'].split('.')[1] : 'xls'
+      let type = response.headers['content-disposition'] ? response.headers['content-disposition'].split('.')[1] : 'zip'
       let blob = new Blob([response.data], { type: fileType[type] })
 
-      let fileName = response.headers["fname"]==undefined?`${new Date().toLocaleDateString()}.xls`:decodeURIComponent(response.headers["fname"]);
+      let fileName = response.headers["fname"]==undefined?`${new Date().toLocaleDateString()}.zip`:decodeURIComponent(response.headers["fname"]);
      // 如果是ie则按照saveBlob的方式来下载数据
       if (navigator.msSaveBlob) {
           return navigator.msSaveBlob(blob, fileName)
