@@ -125,6 +125,7 @@
 		iText,
 		iButton,
 		iInput,
+		iMessage
 	} from "@/components";
 	import tablelist from "./components/tablelist";
 	import {

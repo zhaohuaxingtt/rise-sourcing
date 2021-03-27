@@ -31,10 +31,8 @@
                 </iInput>
               </el-form-item>
               <el-form-item label="询价采购员">
-                <iSelect placeholder="请选择询价采购员" v-model="form['search.buyerName']" v-permission="PARTSPROCURE_INQUIRYBUYER">
-                  <el-option :value="item.value" :label="item.label"
-                    v-for="(item, index) in getGroupList('buyer_name')" :key="index"></el-option>
-                </iSelect>
+				  <iInput placeholder="请输入询价采购员" v-model="form['search.buyerName']" v-permission="PARTSPROCURE_INQUIRYBUYER">
+				  </iInput>
               </el-form-item>
               <el-form-item label="LINIE">
                 <iInput placeholder="请填写LINIE" v-model="form['search.linieName']" v-permission="PARTSPROCURE_LINIEINPUT"></iInput>
