@@ -25,7 +25,19 @@
       'volume': 'volume',
       'log': 'log'
     },
-
+    'rfq': {
+      'RFQACTIVATERFQ': 'Activate Rfq',
+      'RFQNEWRFQ': 'New Rfq',
+      'RFQCLOSERFQ': 'Close Rfq',
+      'RFQASSIGNMENTOFSCORINGTASKS': 'Assignment Of Scoring Tasks',
+      'RFQTRANSFERNEGOTIATION': 'Transfer Negotiation',
+      'RFQREINQUIRY': 'Re-inquiry',
+      'RFQCREATEAFIXEDPOINTAPPLICATION': 'Create A Fixed-point Application',
+      'RFQEXPORT': 'Export',
+      'RFQINQUIRE': 'Inquire',
+      'RFQRESET': 'Reset',
+      'RFQRFQNUMBER': 'Rfq Number',
+    },
         //
     /*
     <!------------------------------------------------------------------------>

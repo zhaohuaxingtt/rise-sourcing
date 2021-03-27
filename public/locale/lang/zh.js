@@ -25,6 +25,19 @@
       'volume': '每车用量',
       'log': '操作日志'
     },
+    'rfq': {
+      'RFQACTIVATERFQ': '激活RFQ',
+      'RFQNEWRFQ': '新建RFQ',
+      'RFQCLOSERFQ': '关闭RFQ',
+      'RFQASSIGNMENTOFSCORINGTASKS': '转派评分任务',
+      'RFQTRANSFERNEGOTIATION': '转谈判',
+      'RFQREINQUIRY': '转询价',
+      'RFQCREATEAFIXEDPOINTAPPLICATION': '创建定点申请',
+      'RFQEXPORT': '导出',
+      'RFQINQUIRE': '查询',
+      'RFQRESET': '重置',
+      'RFQRFQNUMBER': 'RFQ编号',
+    },
         //
     /*
     <!------------------------------------------------------------------------>
