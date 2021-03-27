@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 15:12:41
- * @LastEditTime: 2021-03-27 18:51:43
+ * @LastEditTime: 2021-03-27 19:18:38
  * @LastEditors: Please set LastEditors
  * @Description: 零件采购项目批量维护界面
  * @FilePath: \rise\src\views\partsprocure\batchmiantain\index.vue
@@ -75,13 +75,13 @@
 		<iSearch class="margin-bottom20" title="材料组工艺设置" tabCard icon>
 			<el-form>
 				<el-form-item label="材料组">
-					<iSelect placeholder="请选择" v-model="stuff.categoryCode">
-						<el-option :value="item.value" :label="item.value" v-for="(item, index) in getGroupList('category_name')" :key="index"></el-option>
+					<iSelect placeholder="请选择" v-model="stuff.categoryCode" @change="changeSelect">
+						<el-option :value="item.key" :label="item.value" v-for="(item, index) in getGroupList('category_name')" :key="index"></el-option>
 					</iSelect>
 				</el-form-item>
 				<el-form-item label="工艺">
-					<iSelect placeholder="请选择" v-model="stuffObj">
-						<el-option :value="item.code"  :label="item.value" v-for="(item, index) in getGroupList('stuff_name')" :key="index"></el-option>
+					<iSelect placeholder="请选择先材料组" v-model="stuffObj">
+						<el-option :value="item"  :label="item.value" v-for="(item, index) in getGroupList('stuff_name')" :key="index"></el-option>
 					</iSelect>
 				</el-form-item>
 			</el-form>
@@ -158,6 +158,32 @@
 			this.getPageGroup()
 		},
 		methods: {
+			changeSelect(val){
+				if(val == '600000'){
+					this.fromGroup.find(items=>items.name == 'stuff_name').infoList = [
+							{
+							value:'安全电器件-电镀',
+							key:'600000'
+						},
+						{
+							value:'安全电器件-注塑',
+							key:'600000'
+						}
+					]
+					
+				}else{
+					this.fromGroup.find(items=>items.name == 'stuff_name').infoList = [
+						{
+							value:'空调控制头-抛光',
+							key:'600001'
+						},
+						{
+							value:'空调控制头-焊接',
+							key:'600003'
+						}
+					]
+				}
+			},
 			//获取上方group信息
 			getPageGroup() {
 				getPageGroup(this.$store.state.permission.userInfo.id).then((res) => {
