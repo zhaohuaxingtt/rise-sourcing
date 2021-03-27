@@ -4,28 +4,28 @@
 		<div class="header flex-between-center-center">
 			<span class="title">价格明细</span>
 			<div class="control">
-				<iButton  @click="save">保存</iButton>
+				<iButton  @click="save" v-permission="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_SAVE">保存</iButton>
 			</div>
 		</div>
 		<iFormGroup row="3" icon inline>
-			<iFormItem label="LC_B" name="test">
+			<iFormItem label="LC_B" name="test" v-permission="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_LC_B">
 				<iText>
 					{{targetprice.cfTargetPriceDetail.lcBPrice}}
 				</iText>
 			</iFormItem>
-			<iFormItem label="SKD_B" name="test">
+			<iFormItem label="SKD_B" name="test" v-permission="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_SKD_B">
 				<iText>
 					{{targetprice.cfTargetPriceDetail.skdBPrice}}
 				</iText>
 			</iFormItem>
 		</iFormGroup>
 		<iFormGroup row="3" icon inline>
-			<iFormItem label="LC_A" name="test">
+			<iFormItem label="LC_A" name="test" v-permission="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_LC_A">
 				<iText>
 					{{targetprice.cfTargetPriceDetail.lcAPrice}}
 				</iText>
 			</iFormItem>
-			<iFormItem label="SKD_A" name="test">
+			<iFormItem label="SKD_A" name="test" v-permission="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_SKD_A">
 				<iText>
 					{{targetprice.cfTargetPriceDetail.skdAPrice}}
 				</iText>
@@ -33,13 +33,13 @@
 		</iFormGroup>
 		<iFormGroup row="3" icon inline>
 			<iFormItem label="CKD Duty(%)" name="test">
-				<iInput v-model="targetprice.cfTargetPriceDetail.ckdDuty"></iInput>
+				<iInput v-model="targetprice.cfTargetPriceDetail.ckdDuty" v-permission="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_CKD_Duty"></iInput>
 			</iFormItem>
 			<iFormItem label="CKD EX_Work" name="test">
-				<iInput v-model="targetprice.cfTargetPriceDetail.ckdExwork"></iInput>
+				<iInput v-model="targetprice.cfTargetPriceDetail.ckdExwork" v-permission="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_CKD_EX"></iInput>
 			</iFormItem>
 			<iFormItem label="CKDLANDEN" name="test">
-				<iInput v-model="targetprice.cfTargetPriceDetail.ckdLanded"></iInput>
+				<iInput v-model="targetprice.cfTargetPriceDetail.ckdLanded" v-permission="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_CKD_LANDED"></iInput>
 			</iFormItem>
 		</iFormGroup>
 		<div class="line"></div>
@@ -47,30 +47,30 @@
 		<div class="header flex-between-center-center">
 			<span class="title">申请财务目标价</span>
 			<div class="control">
-				<iButton @click="save">申请</iButton>
+				<iButton @click="save" v-permission="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_APPLY">申请</iButton>
 			</div>
 		</div>
 		<iFormGroup row="2" icon inline>
-			<iFormItem label="申请类型" name="test">
+			<iFormItem label="申请类型" name="test" v-permission="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_SQLX">
 				<el-radio-group v-model="targetprice.cfTargetPriceDetail.applyType">
-					<el-radio label="1">LC</el-radio>
-					<el-radio label="2">SDK</el-radio>
-					<el-radio label="3">CKD_LANDED</el-radio>
+					<el-radio label="LC">LC</el-radio>
+					<el-radio label="SDK">SDK</el-radio>
+					<el-radio label="CKD_LANDED">CKD_LANDED</el-radio>
 				</el-radio-group>
 				<span class="start">*</span>
 			</iFormItem>
-			<iFormItem label="期望目标价" name="test">
+			<iFormItem label="期望目标价" name="test" v-permission="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_QWMBJ">
 				<iText>
 					{{targetprice.cfTargetPriceDetail.lcPrice}}
 				</iText>
 			</iFormItem>
 		</iFormGroup>
 		<iFormGroup row="2" icon inline>
-			<iFormItem label="申请原因" name="test">
+			<iFormItem label="申请原因" name="test" v-permission="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_SQYY">
 				<iInput type="textarea" rows="6" resize="none" v-model="targetprice.cfTargetPriceDetail.applyReason">
 				</iInput>
 			</iFormItem>
-			<iFormItem label="申请备注" name="test">
+			<iFormItem label="申请备注" name="test" v-permission="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_SQBZ">
 				<iInput type="textarea" rows="6" resize="none" v-model="targetprice.cfTargetPriceDetail.applyMemo">
 				</iInput>
 			</iFormItem>
@@ -82,10 +82,10 @@
 		<div class="header flex-between-center-center">
 			<span class="title">申请RW价</span>
 			<div class="control">
-				<iButton @click="targeRw">申请</iButton>
+				<iButton @click="targeRw" v-permission="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_RWAPPLY">申请</iButton>
 			</div>
 		</div>
-		<iFormGroup row="2" icon inline>
+		<iFormGroup row="2" icon inline v-permission="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_APPLYRWTXT">
 			<iFormItem label="最新RW价" name="test">
 				<iText>
 					{{targetprice.rwApplication.price}}
@@ -109,7 +109,7 @@
 		</iFormGroup>
 		<iFormGroup row="1" icon inline>
 			<iFormItem label="申请备注" name="test">
-				<iInput type="textarea" rows="6" resize="none" v-model="targetprice.rwApplication.memo"></iInput>
+				<iInput type="textarea" rows="6" resize="none" v-model="targetprice.rwApplication.memo" v-permission="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_RWAPPLYREMARK"></iInput>
 			</iFormItem>
 		</iFormGroup>
 		<tablelist :tableData='targeRwData' :tableTitle='rwTitle' :loading='tableLoading'
@@ -125,6 +125,7 @@
 		iText,
 		iButton,
 		iInput,
+		iMessage
 	} from "@/components";
 	import tablelist from "./components/tablelist";
 	import {
@@ -159,7 +160,9 @@
 				targeRwData:[],//rw记录
 				rwTitle: rwTitle,
 				targeTitle: targeTitle,
-				targetprice:targetPriceDetail
+				targetprice:targetPriceDetail,
+				cfTableData:[],//cf表格数据
+				rwTableData:[],//RW表格数据
 			}
 		},
 		created() {
@@ -172,35 +175,39 @@
 					"cfTargetpriceReq.purchaseProjectId": this.purchaseProjectId,
 				};
 				getTabelData(data).then((res) => {
-					this.detailData = res.data.targetprice;
-					this.tableListData=[this.targetprice.cfTargetPriceDetail]
-					this.targeRwData=[this.targetprice.rwApplication]
+					let price=res.data.targetprice
+					this.detailData = price;
+					this.tableListData=[price.cfTargetPriceDetail]
+					this.targeRwData=[price.rwApplication]
 				});
 			},
-			
 			//表格选中值集
 			handleSelectionChange(val) {
-				this.selectTableData = val
+				// this.selectTableData = val
 			},
 			// 保存 ,申请财务目标价
 			save() {
 				let targetprice = {
-					// operator: "0",
-					purchaseProjectIds: this.purchaseProjectId,
+					purchaseProjectId: this.purchaseProjectId,
 					cfTargetPriceDetail: this.targetprice.cfTargetPriceDetail,
 					rwApplication:null
 				};
 				changeProcure({
 					targetprice,
 				}).then((res) => {
-					this.targePriceDetail()
+					if (res.data) {
+						iMessage.success("操作成功")
+						this.targePriceDetail()
+					}else{
+						iMessage.error(res.desZh)
+					}
 				});
 			},
 			//申请RW目标价
 			targeRw(){
 				let targetprice = {
 					// operator: this.targetprice.operator,
-					purchaseProjectIds: this.purchaseProjectId,
+					purchaseProjectId: this.purchaseProjectId,
 					rwApplication: this.targetprice.rwApplication,
 					cfTargetPriceDetail:null
 				};

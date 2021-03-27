@@ -1,7 +1,7 @@
 <template>
   <iCard class="outputRecord" tabCard title="询价附件">
     <template v-slot:header-control>
-      <iButton class="deleteBtn" @click="handleDelete" :loading="deleteLoading">删除</iButton>
+      <iButton class="deleteBtn" @click="handleDelete" :loading="deleteLoading" v-permission="PARTSPROCURE_EDITORDETAIL_DRAWINGSHEET_HANDLEDELETE">删除</iButton>
       <el-upload 
         class="uploadBtn" 
         multiple
@@ -11,7 +11,7 @@
         :on-success="uploadSuccess"
         :on-error="uploadError"
         accept=".pdf,.xlsx,.docx">
-          <iButton :loading="uploadLoading">上传附件</iButton>
+          <iButton :loading="uploadLoading" v-permission="PARTSPROCURE_EDITORDETAIL_DRAWINGSHEET_HANDLEUPLOAD">上传附件</iButton>
       </el-upload>
     </template>
     <div class="body">

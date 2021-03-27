@@ -44,7 +44,7 @@ export const tableTitle = [{
 		name: '零件状态'
 	},
 	{
-		props: 'preLinieName',
+		props: 'buyerName',
 		name: '询价采购员'
 	},
 	{

@@ -1,22 +1,22 @@
 /*
  * @Author: shujie
  * @Date: 2021-02-24 10:17:53
- * @LastEditTime: 2021-03-27 11:44:06
+ * @LastEditTime: 2021-03-27 15:11:04
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsign\editordetail\components\data.js
  */
 export const partTitle = [
-  {key:'partNum',name:'零件号'},
-  {key:'partNameCn',name:'零件名（中）'},
-  {key:'partNameEn',name:'零件名（德）'},
-  {key:'inheritedCarModel',name:'车型大类'},
-  {key:'projectCarType',name:'车型项目'},
-  {key:'tpInfoType',name:'信息单类型'},
-  {key:'tpPartID',name:'新建信息单流水号'},
-  {key:'stuffNumber',name:'采购员'},
-  {key:'status',name:'信息单状态'},
-]
+	{key:'partNum',name:'零件号',permissionKey:'PARTSIGN_EDITORDETAIL_PARTNUMBER'},
+	{key:'partNameCn',name:'零件名（中）',permissionKey:'PARTSIGN_EDITORDETAIL_PARTNAMEZH'},
+	{key:'partNameEn',name:'零件名（德）',permissionKey:'PARTSIGN_EDITORDETAIL_PARTNAMEGER'},
+	{key:'inheritedCarModel',name:'车型大类',permissionKey:'PARTSIGN_EDITORDETAIL_VEHICLECATEGORIES'},
+	{key:'projectCarType',name:'车型项目',permissionKey:'PARTSIGN_EDITORDETAIL_MODELPROJECT'},
+	{key:'tpInforType',name:'信息单类型',permissionKey:'PARTSIGN_EDITORDETAIL_INFORMATIONCLASSIFICATION'},
+	{key:'tpPartID',name:'新建信息单流水号',permissionKey:'PARTSIGN_EDITORDETAIL_INFORMATIONSERIALNUMBER'},
+	{key:'stuffNumber',name:'采购员',permissionKey:'PARTSIGN_EDITORDETAIL_BUYER'},
+	{key:'status',name:'信息单状态',permissionKey:'PARTSIGN_DETAIL_INFORMATIONSTATUS'},
+  ]
 export const partDetailTitle=[
 	[{key:'tpPrincepalName',name:'设计工程师姓名'},
 	{key:'partNameEn',name:'零件名（英）'},

@@ -12,9 +12,9 @@
 		<div class="margin-bottom20 clearFloat">
 			<span class="font18 font-weight">批量维护零件采购项目</span>
 			<div class="floatright">
-				<iButton @click="back">返回</iButton>
-				<iButton @click="creatFs">生成FS号</iButton>
-				<iButton @click="start" :loading="startLoding">启动询价</iButton>
+				<iButton @click="back" v-permission="PARTSPROCURE_BATCHMIANTAIN_SAVE">返回</iButton>
+				<iButton @click="creatFs" v-permission="PARTSPROCURE_BATCHMIANTAIN_GENERATEFSNUMBER">生成FS号</iButton>
+				<iButton @click="start" :loading="startLoding" v-permission="PARTSPROCURE_BATCHMIANTAIN_STARTINQUIRY">启动询价</iButton>
 			</div>
 		</div>
 		<iSearch class="margin-bottom20" title="采购项目信息" tabCard>
@@ -68,8 +68,8 @@
 				</el-form-item>
 			</el-form>
 			<template slot="button">
-				<iButton @click="save">确认</iButton>
-				<iButton @click="reset">重置</iButton>
+				<iButton @click="save" v-permission="PARTSPROCURE_BATCHMIANTAIN_PURCHASINGCONFIRM">确认</iButton>
+				<iButton @click="reset" v-permission="PARTSPROCURE_BATCHMIANTAIN_PURCHASERESET">重置</iButton>
 			</template>
 		</iSearch>
 		<iSearch class="margin-bottom20" title="材料组工艺设置" tabCard icon>
@@ -86,8 +86,8 @@
 				</el-form-item>
 			</el-form>
 			<template slot="button">
-				<iButton @click="save">确认</iButton>
-				<iButton @click="resetStuff">重置</iButton>
+				<iButton @click="save" v-permission="PARTSPROCURE_BATCHMIANTAIN_MATERIALGROUPCONFIRM">确认</iButton>
+				<iButton @click="resetStuff" v-permission="PARTSPROCURE_BATCHMIANTAIN_MATERIALGROUPRESET">重置</iButton>
 			</template>
 		</iSearch>
 		<outputPlan class="margin-bottom20" @handleSelectionChange="handleSelectionChange" />
