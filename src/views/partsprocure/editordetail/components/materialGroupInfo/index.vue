@@ -11,8 +11,8 @@
     <template v-slot:header-control>
       <iButton v-if="!setMaterialGroupStatus" @click="setMaterialGroup" v-permission="PARTSPROCURE_EDITORDETAIL_SETPROCESSGROUP">设置工艺组</iButton>
       <!-- <iButton v-if="!setMaterialGroupStatus" @click="log">日志</iButton> -->
-      <iButton v-if="setMaterialGroupStatus" @click="confirmMaterialGroup" :loading="confirmLoading">确认</iButton>
-      <iButton v-if="setMaterialGroupStatus" @click="back">返回</iButton>
+      <iButton v-if="setMaterialGroupStatus" @click="confirmMaterialGroup" :loading="confirmLoading" v-permission="PARTSPROCURE_EDITORDETAIL_MATERIALGROUPINFO_CONFIRM">确认</iButton>
+      <iButton v-if="setMaterialGroupStatus" @click="back" v-permission="PARTSPROCURE_EDITORDETAIL_MATERIALGROUPINFO_BACK">返回</iButton>
     </template>
     <div class="body">
       <infos :data="info" />
