@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-03-04 11:13:18
- * @LastEditTime: 2021-03-26 00:02:17
- * @LastEditors: your name
+ * @LastEditTime: 2021-03-27 20:56:23
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsprocure\editordetail\components\drawingSheet\sheet.vue
 -->
@@ -76,7 +76,7 @@ export default {
 
       this.loading = true
       getTpInfo({
-        id: this.params.purchasingRequirementId,
+        purchasingRequirementId: this.params.purchasingRequirementId,
         userId:store.state.permission.userInfo.id
       })
         .then(res => {
