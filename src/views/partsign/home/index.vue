@@ -9,7 +9,7 @@
 <template>
   <iPage class="partsignHome">
     <el-tabs v-model="tab" class="tab">
-      <el-tab-pane label="寻源执行" name="source">
+      <el-tab-pane :label="$t('XunYuanZhiXing')" name="source">
         <div>
           <div class="margin-bottom33">
             <iNavMvp @change="change" right routerPage></iNavMvp>
