@@ -167,25 +167,25 @@
 			</iFormGroup>
 		</iCard>
 		<iTabsList class="margin-top20" type="border-card">
-			<el-tab-pane label="材料组信息" v-permission="">
+			<el-tab-pane label="材料组信息" v-permission="PARTSPROCURE_EDITORDETAIL_MATERIALGROUPINFORMATION">
         <materialGroupInfo :params="infoItem"/>
       </el-tab-pane>
-      <el-tab-pane label="零件产量计划" v-permission="">
+      <el-tab-pane label="零件产量计划" v-permission="PARTSPROCURE_EDITORDETAIL_PARTSPRODUCTIONPLAN">
         <outputPlan ref="outputPlan" :params="infoItem" />
         <outputRecord ref="outputRecord" class="margin-top20" :params="infoItem" @updateOutput="updateOutput" />
         <volume ref="volume" class="margin-top20" :params="infoItem" />
       </el-tab-pane>
-			<el-tab-pane label="图纸和TP详情页" v-permission="">
+			<el-tab-pane label="图纸和TP详情页" v-permission="PARTSPROCURE_EDITORDETAIL_DRAWINGSANDTPDETAILSPAGE">
 				<drawing :params="infoItem" />
 				<sheet class="margin-top20" :params="infoItem" />
 			</el-tab-pane>
-			<el-tab-pane label="物流要求" v-permission="">
+			<el-tab-pane label="物流要求" v-permission="PARTSPROCURE_EDITORDETAIL_LOGISTICSREQUIREMENTS">
 				<logistics :infoItem="infoItem"></logistics>
 			</el-tab-pane>
-			<el-tab-pane label="申请目标价" v-permission="">
+			<el-tab-pane label="申请目标价" v-permission="PARTSPROCURE_EDITORDETAIL_APPLYFORTARGETPRICE">
 				<targePrice :purchaseProjectId="purchaseProjectId"></targePrice>
 			</el-tab-pane>
-			<el-tab-pane label="备注信息" v-permission="">
+			<el-tab-pane label="备注信息" v-permission="PARTSPROCURE_EDITORDETAIL_REMARKSINFORMATION">
 				<remarks :detailData="detailData"></remarks>
 			</el-tab-pane>
 		</iTabsList>

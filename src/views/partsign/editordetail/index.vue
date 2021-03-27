@@ -27,15 +27,15 @@
     <!-- 零件详情tab页 -->
     <div class="iTabs">
       <iTabs-list type="border-card">
-        <el-tab-pane label="信息单详情" v-permission="">
+        <el-tab-pane label="信息单详情" v-permission="PARTSIGN_EDITORDETAIL_INFORMATIONSHEETDETAILS">
           <iCard>
             <partInfo :title="item" :data="partDetails" v-for="(item,index) in partDetailTitle" :key="index"></partInfo>
           </iCard>
         </el-tab-pane>
-        <el-tab-pane :label="$t('partsign.enquiry')" v-permission="">
+        <el-tab-pane :label="$t('partsign.enquiry')" v-permission="PARTSIGN_EDITORDETAIL_INQUIRYINFORMATION">
           <enquiry :data="partDetails" />
         </el-tab-pane>
-        <el-tab-pane :label="$t('partsign.volume')" v-permission="">
+        <el-tab-pane :label="$t('partsign.volume')" v-permission="PARTSIGN_EDITORDETAIL_USAGEPERVEHICLE">
           <unconfirmed ref="unconfirmed" class="unconfirmed" :data="partDetails" @updateVersion="updateVersion" />
           <volume ref="volume" class="volume" :data="partDetails" />
         </el-tab-pane>

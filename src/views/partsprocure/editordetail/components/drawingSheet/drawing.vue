@@ -5,7 +5,8 @@
       <el-upload 
         class="uploadBtn" 
         multiple
-        :action="`${ action }?purchasingApplyTargetId=${ params.purchasingRequirementTargetId || '192321' }`"
+        name="multipartFile"
+        :action="`${ action }?applicationName=rise`"
         :show-file-list="false" 
         :before-upload="beforeUpload"
         :on-success="uploadSuccess"
@@ -66,7 +67,7 @@ export default {
       loading: false,
       uploadLoading: false,
       deleteLoading: false,
-      action: '/tpInfoApi/tp-records/tpInfo/file', // 上传api
+      action: '/commonApi/upload', // 上传api
       tableTitle,
       tableListData: [],
       multipleSelection: [],
