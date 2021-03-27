@@ -2,7 +2,7 @@
   <iPage class="log">
     <div class="margin-bottom20 clearFloat">
       <div class="floatright">
-        <iButton @click="download">导出</iButton>
+        <iButton @click="download" v-permission="LOG_HOME_DOWNLOAD">导出</iButton>
         <span class="margin-left20">
 					<icon symbol name="icondatabaseweixuanzhong" class="font18"></icon>
 				</span>

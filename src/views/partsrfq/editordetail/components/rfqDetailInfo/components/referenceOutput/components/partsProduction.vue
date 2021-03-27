@@ -4,7 +4,7 @@
       <div class="margin-bottom20 clearFloat">
         <span class="font18 font-weight">零件产量</span>
         <div class="floatright">
-          <iButton @click="exports">导出</iButton>
+          <iButton @click="exports" v-permission="PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_EXPORTS">导出</iButton>
         </div>
       </div>
       <tablelist

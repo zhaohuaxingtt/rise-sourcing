@@ -11,7 +11,7 @@
     <div class="header clearFloat">
       <span class="title">操作日志</span>
       <div class="control">
-        <iButton>导出</iButton>
+        <iButton v-permission="LOG_HOME_DOWNLOAD">导出</iButton>
       </div>
     </div>
     <div class="body margin-top27">

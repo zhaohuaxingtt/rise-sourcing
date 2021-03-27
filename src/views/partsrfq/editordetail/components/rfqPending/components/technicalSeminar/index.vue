@@ -3,8 +3,8 @@
     <iCard>
       <div class="margin-bottom5 clearFloat">
         <div class="floatright">
-          <iButton @click="addSupplier">添加供应商</iButton>
-          <iButton @click="sendToMyEmail">发送至我的邮箱</iButton>
+          <iButton @click="addSupplier" v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_TECHNICALSEMINAR_ADDSUPPLIER">添加供应商</iButton>
+          <iButton @click="sendToMyEmail" v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_TECHNICALSEMINAR_SENDTOMYEMAIL">发送至我的邮箱</iButton>
         </div>
       </div>
       <div class="margin-bottom20 clearFloat">
