@@ -4,7 +4,7 @@
       <div class="margin-bottom20 clearFloat">
         <span class="font18 font-weight">财务⽬标价</span>
         <div class="floatright">
-          <iButton @click="exports">导出</iButton>
+          <iButton @click="exports" v-permission="PARTSRFQ_EDITORDETAIL_EXPORT">导出</iButton>
         </div>
       </div>
       <tablelist

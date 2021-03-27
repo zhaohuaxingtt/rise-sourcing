@@ -20,18 +20,18 @@
         </div>
       </div>
       <iFormGroup inline icon>
-        <iFormItem label="轮次类型" name="test">
+        <iFormItem label="轮次类型" name="test" v-permission="PARTSRFQ_EDITORDETAIL_NEWRFQROUND_ROUNDTYPE">
           <i-select v-model="roundType" @change="handleSelectChange">
             <el-option v-for="items in roundTypeOptions" :key='items.code' :value='items.code' :label="items.name"/>
           </i-select>
         </iFormItem>
         <iFormItem label="本轮报价起止时间" name="test" v-if="roundType === '00'">
           <div class="flex">
-            <el-date-picker type="date" placeholder="请选择" v-model="startTime"></el-date-picker>
+            <el-date-picker type="date" placeholder="请选择" v-model="startTime" v-permission="PARTSRFQ_EDITORDETAIL_NEWRFQROUND_STARTTIME"></el-date-picker>
           </div>
         </iFormItem>
         <iFormItem label="" name="test" v-if="roundType === '00'">
-          <el-date-picker type="date" placeholder="请选择" v-model="endTime"></el-date-picker>
+          <el-date-picker type="date" placeholder="请选择" v-model="endTime" v-permission="PARTSRFQ_EDITORDETAIL_NEWRFQROUND_ENDTIME"></el-date-picker>
         </iFormItem>
       </iFormGroup>
       <tablelist
