@@ -14,14 +14,14 @@
         <iButton @click="save" v-permission="PARTSIGN_EDITORDETAIL_SIGNBUTTON">签收</iButton>
         <iButton @click="openDiologBack" v-permission="PARTSIGN_EDITORDETAIL_BACKBUTTON">退回</iButton>
         <iButton @click="back" v-permission="PARTSIGN_EDITORDETAIL_RETURN">返回</iButton>
-        <logButton class="margin-left20" @click="log" />
+        
         <span>
           <icon symbol name="icondatabaseweixuanzhong"></icon>
         </span>
       </div>
     </div>
     <!-- 零件详情内容 -->
-    <iCard class="partsDetail">
+    <iCard class="partsDetail" v-permission="PARTSIGN_EDITORDETAIL_ALLTXT">
       <partInfo icons :title="partTitle" :data="partDetails"></partInfo>
     </iCard>
     <!-- 零件详情tab页 -->

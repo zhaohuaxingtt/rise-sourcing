@@ -77,7 +77,7 @@
             resize="none"
             v-model="detailData.linieMeetMemo"
             disabled
-            v-permission="PARTSPROCURE_EDITORDETAIL_REMARKS_LINIENOTES"
+            v-permission="PARTSPROCURE_EDITORDETAIL_REMARKS_LINIEMEETINGNOTES"
           ></iInput>
         </div>
         <div>

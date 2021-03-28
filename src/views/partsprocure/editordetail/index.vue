@@ -21,7 +21,7 @@
 				<iButton @click="openDiologClose" v-permission="PARTSPROCURE_EDITORDETAIL_ENDPROJECT">结束项目</iButton>
 				<iButton @click="save" v-permission="PARTSPROCURE_EDITORDETAIL_BASICINFOSAVE">保存</iButton>
 				<iButton @click="back" v-permission="PARTSPROCURE_EDITORDETAIL_RETURN">返回</iButton>
-				<logButton class="margin-left20" @click="log" />
+				<logButton class="margin-left20" @click="log" v-permission="PARTSPROCURE_EDITORDETAIL_LOG"/>
 				<span>
 					<icon symbol name="icondatabaseweixuanzhong"></icon>
 				</span>

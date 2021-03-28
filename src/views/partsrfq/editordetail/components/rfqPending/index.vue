@@ -6,7 +6,7 @@
  -->
 <template>
   <iTabsList type="border-card" @tab-click="handleTabClick">
-    <el-tab-pane :label="item.label" v-for="item of tabList" :key="item.label">
+    <el-tab-pane :label="item.label" v-for="item of tabList" :key="item.label" v-permisstion='item.permissionKey'>
       <component :is="item.component" v-if="activityTabLabel === item.label"/>
     </el-tab-pane>
   </iTabsList>
@@ -33,11 +33,11 @@ export default {
     return {
       activityTabLabel: '零件清单',
       tabList: [
-        {label: '零件清单', component: 'partDetailList'},
-        {label: 'BDL列表', component: 'BDL'},
-        {label: '供应商评分', component: 'supplierScore'},
-        {label: '模具预算申请', component: 'moldBudgetApplication'},
-        {label: '技术交流会', component: 'technicalSeminar'},
+        {label: '零件清单', component: 'partDetailList',permissionKey:'PARTSRFQ_EDITORDETAIL_PARTDETAILIST_INDEXPAGE'},
+        {label: 'BDL列表', component: 'BDL',permissionKey:'PARTSRFQ_EDITORDETAIL_RFQPENDING_INDEXPAGE'},
+        {label: '供应商评分', component: 'supplierScore',permissionKey:'PARTSRFQ_EDITORDETAIL_RFQPENDING_SUPPLIERSCORE_PARTSCORING_INDEXPAGE'},
+        {label: '模具预算申请', component: 'moldBudgetApplication',permissionKey:'PARTSRFQ_EDITORDETAIL_RFQPENDING_MOLDBUDGETAPPLICATION_INDEXPAGE'},
+        {label: '技术交流会', component: 'technicalSeminar',permissionKey:'PARTSRFQ_EDITORDETAIL_RFQPENDING_TECHNICALSEMINAR_BASICINFORMATIONMEETING_INDEXPAGE'},
       ]
     };
   },

@@ -1,7 +1,7 @@
 <template>
   <iCard class="volume" tabCard title="零件每车用量" collapse>
     <template v-slot:header-control>
-      <iButton @click="download">导出</iButton>
+      <iButton @click="download" v-permission="PARTSPROCURE_OUTPUTPLAN_OUTPUTRECORD_EXPORT">导出</iButton>
     </template>
     <div class="body">
       <tablelist

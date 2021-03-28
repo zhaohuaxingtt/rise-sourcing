@@ -23,7 +23,7 @@
           创建定点申请
         </iButton>
         <iButton @click="backPage">返回</iButton>
-        <iButton type="text" @click="toLogPage">
+        <iButton type="text" @click="toLogPage" v-permission="PARTSRFQ_EDITORDETAIL_LOG">
           <icon symbol name="iconrizhiwuzi" class="log-icon"/>
           <span class="log-word">日志</span>
         </iButton>
@@ -103,7 +103,7 @@
               <iText v-permission="PARTSRFQ_EDITORDETAIL_CURRENTSTATE">{{ baseInfo.currentRoundsStatus }}</iText>
             </iFormItem>
             <div class="edit-button-row">
-              <i-button @click="edit">{{ !editStatus ? '编辑' : '保存' }}</i-button>
+              <i-button @click="edit" v-permission="PARTSRFQ_EDITORDETAIL_SAVE">{{ !editStatus ? '编辑' : '保存' }}</i-button>
             </div>
           </div>
         </div>

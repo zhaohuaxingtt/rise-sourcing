@@ -10,7 +10,7 @@
     <div class="changeContent">
       <div class="margin-bottom20 clearFloat">
         <div class="floatright title-button-box">
-          <iButton @click="add">添加</iButton>
+          <iButton @click="add" v-permission="PARTSRFQ_ASSIGNMENTOFSCORINGTASKS_SAVE">添加</iButton>
           <iButton @click="deleteItems">删除</iButton>
           <iButton @click="save">转派</iButton>
         </div>
