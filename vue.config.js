@@ -128,7 +128,7 @@ module.exports = {
 				}
 			},
 			'/commonApi': { //向东，common模块的api地址
-				target: 'http://10.122.18.65:8014',
+				target: 'http://10.122.18.166:8014',
 				changeOrigin: true,
 				pathRewrite: {
 					"^/commonApi": ""
@@ -173,7 +173,7 @@ module.exports = {
 				}
 			},
 			'/fileApi': { // file 文件上传下载
-				target: 'http://10.122.18.65:8014',
+				target: 'http://10.122.18.166:8014',
 				changeOrigin: true,
 				pathRewrite: {
 					"^/fileApi": ""

@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-24 09:47:32
- * @LastEditTime: 2021-03-27 14:42:33
+ * @LastEditTime: 2021-03-28 14:10:06
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsign\home\components\data.js
@@ -14,6 +14,7 @@ export const tableTitle = permissionTitle("PERMISSION_TESTTABLE",[
   {props:'partNameCn',name:'零件名（中）'},
   {props:'partNameDe',name:'零件名（德）'},
   {props:'projectCarType',name:'车型项目'},
+  {props:'buyerName',name:'采购员'},
   {props:'tpDeptNum',name:'设计科室'},
   {props:'tpPrincepalName',name:'工程师'},
   {props:'tpInfoType',name:'信息单类型'},
