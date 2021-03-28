@@ -11,9 +11,9 @@
         <iInput placeholder="请输入查询供应商名称,厂商..." suffix-icon="iconfont iconshaixuankuangsousuo" v-model="searchKey"></iInput>
       </div>
       <div>
-        <iButton @click="saveBdl">保存</iButton>
-        <iButton>删除供应商</iButton>
-        <iButton @click="addCustom">添加自定义评分项</iButton>
+        <iButton @click="saveBdl" v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_BDLSAVEBDL">保存</iButton>
+        <iButton v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_DELETESUPPLIER">删除供应商</iButton>
+        <iButton @click="addCustom" v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_ADDCUSTOM">添加自定义评分项</iButton>
       </div>
     </div>
     <tableList :tableData="tableData" :tableTitle="tableTitle" :tableLoading="tableLoading"

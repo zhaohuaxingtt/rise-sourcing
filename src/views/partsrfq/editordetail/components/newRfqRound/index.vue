@@ -11,11 +11,11 @@
       <div class="clearFloat">
         <div class="floatright title-button-box">
           <template v-if="roundType === '00'">
-            <iButton @click="save">保存</iButton>
-            <iButton @click="updateRfqStatus('06')" :disabled="!saveStaus">发送询价</iButton>
+            <iButton @click="save" v-permission="PARTSRFQ_EDITORDETAIL_NEWRFQROUND_SAVE">保存</iButton>
+            <iButton @click="updateRfqStatus('06')" :disabled="!saveStaus" v-permission="PARTSRFQ_EDITORDETAIL_NEWRFQROUND_SAND">发送询价</iButton>
           </template>
           <template v-else>
-            <iButton @click="saveAndCreate">保存并创建</iButton>
+            <iButton @click="saveAndCreate" v-permission="PARTSRFQ_EDITORDETAIL_NEWRFQROUND_SAVEANDCREATE">保存并创建</iButton>
           </template>
         </div>
       </div>
