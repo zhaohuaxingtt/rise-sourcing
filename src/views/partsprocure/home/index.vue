@@ -50,7 +50,7 @@
                 <iSelect :placeholder="$t('partsprocure.CHOOSE') + $t('partsprocure.PARTSPROCUREPARTSTATUS')"
                          v-model="form['search.partStatus']"
                          v-permission="PARTSPROCURE_PARTSTATUS">
-                  <el-option value="" label="全部"></el-option>
+                  <el-option value="" :label="$t('all') | capitalizeFilter"></el-option>
                   <el-option :value="item.value" :label="item.label"
                              v-for="(item, index) in getGroupList('part_status')" :key="index"></el-option>
                 </iSelect>
@@ -59,7 +59,7 @@
                 <iSelect :placeholder="$t('partsprocure.CHOOSE') + $t('partsprocure.PARTSPROCUREVEHICLECATEGORIES')"
                          v-model="form['search.cartypeCategory']"
                          v-permission="PARTSPROCURE_VEHICLECATEGORIES">
-                  <el-option value="" label="全部"></el-option>
+                  <el-option value="" :label="$t('all') | capitalizeFilter"></el-option>
                   <el-option :value="item.value" :label="item.label"
                              v-for="(item, index) in getGroupList('cartype_category')" :key="index"></el-option>
                 </iSelect>
@@ -68,7 +68,7 @@
                 <iSelect :placeholder="$t('partsprocure.CHOOSE') + $t('partsprocure.PARTSPROCUREMODELPROJECT')"
                          v-model="form['search.cartypeProjectZh']"
                          v-permission="PARTSPROCURE_MODELPROJECT">
-                  <el-option value="" label="全部"></el-option>
+                  <el-option value="" :label="$t('all') | capitalizeFilter"></el-option>
                   <el-option :value="item.value" :label="item.label"
                              v-for="(item, index) in getGroupList('cartype_project_zh')" :key="index"></el-option>
                 </iSelect>
@@ -77,7 +77,7 @@
                 <iSelect :placeholder="$t('partsprocure.CHOOSE') + $t('partsprocure.PARTSPROCUREPARTITEMTYPE')"
                          v-model="form['search.partPrejectType']"
                          v-permission="PARTSPROCURE_PARTITEMTYPE">
-                  <el-option value="" label="全部"></el-option>
+                  <el-option value="" :label="$t('all') | capitalizeFilter"></el-option>
                   <el-option :value="item.value" :label="item.label"
                              v-for="(item, index) in getGroupList('part_preject_type')" :key="index"></el-option>
                 </iSelect>
@@ -86,7 +86,7 @@
                 <iSelect :placeholder="$t('partsprocure.CHOOSE') + $t('partsprocure.PARTSPROCUREPURCHASINGFACTORY')"
                          v-model="form['search.procureFactory']"
                          v-permission="PARTSPROCURE_PURCHASINGFACTORY">
-                  <el-option value="" label="全部"></el-option>
+                  <el-option value="" :label="$t('all') | capitalizeFilter"></el-option>
                   <el-option :value="item.value" :label="item.label"
                              v-for="(item, index) in getGroupList('procure_factory')" :key="index"></el-option>
                 </iSelect>
@@ -169,9 +169,10 @@ import {
 } from "@/api/partsign/home";
 import changeItems from "../../partsign/home/components/changeItems";
 import store from '@/store'
+import filters from "@/utils/filters";
 
 export default {
-  mixins: [pageMixins],
+  mixins: [pageMixins, filters],
   components: {
     iPage,
     iButton,
