@@ -113,7 +113,7 @@
     'ZhongZhi':'Reset',    //重置
     'XinJianXinXiDanQianShou':'Receipt Of New Information Sheet',    //新件信息单签收
     'ZhuanPai':'Transfer',    //转派
-    'QianShou':'Sign For',    //签收
+    'QianShou':'Sign',    //签收
     'TuiHui':'Return',    //退回
     //'XinXiDanLiuShuiHao':'Information Single Serial Number',    //信息单流水号
     //'LingJianHao':'Number',    //零件号

@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 16:34:49
- * @LastEditTime: 2021-02-26 18:22:11
+ * @LastEditTime: 2021-03-28 17:35:28
  * @LastEditors: Please set LastEditors
  * @Description: 界面中存在的搜索区域，公共组件。
  * @FilePath: \rise\src\components\iSearch\index.vue
@@ -11,8 +11,8 @@
     <div class="iSearch-content" :class="{hiden:hidens}">
       <div class="operation">
         <slot name='button'>
-          <iButton @click="$emit('sure')" v-permission="searchKey">{{ $t('rfq.RFQINQUIRE') }}</iButton>
-          <iButton @click="$emit('reset')" v-permission="resetKey">{{ $t('rfq.RFQRESET') }}</iButton>
+          <iButton @click="$emit('sure')" :v-permission="searchKey">{{ $t('rfq.RFQINQUIRE') }}</iButton>
+          <iButton @click="$emit('reset')" :v-permission="resetKey">{{ $t('rfq.RFQRESET') }}</iButton>
         </slot>
         <i @click="hidens=!hidens" v-if='!icon' class="el-icon-arrow-up icon margin-left20 cursor"
            :class="{rotate:hidens}"></i>

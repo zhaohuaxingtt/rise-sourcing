@@ -14,7 +14,7 @@
         <iButton @click="save" v-permission="PARTSIGN_EDITORDETAIL_SIGNBUTTON">签收</iButton>
         <iButton @click="openDiologBack" v-permission="PARTSIGN_EDITORDETAIL_BACKBUTTON">退回</iButton>
         <iButton @click="back" v-permission="PARTSIGN_EDITORDETAIL_RETURN">返回</iButton>
-        
+        <logButton class="margin-left20" @click="log"  v-permission="PARTSIGN_EDITORDETAIL_LOGBUTTON"/>
         <span>
           <icon symbol name="icondatabaseweixuanzhong"></icon>
         </span>

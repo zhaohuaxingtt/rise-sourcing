@@ -27,12 +27,14 @@
               <el-form-item :label="$t('rfq.RFQMODELPROJECT')">
                 <iSelect :placeholder="$t('rfq.RFQPLEASECHOOSE')" v-model="form.carType"
                          v-permission="PARTSRFQ_MODELPROJECT">
+                  <el-option value="" :label="$t('all') | capitalizeFilter"></el-option>
                   <el-option v-for="items in carTypeOptions" :key='items.code' :value='items.code' :label="items.name"/>
                 </iSelect>
               </el-form-item>
               <el-form-item :label="$t('rfq.RFQPARTITEMTYPE')">
                 <iSelect :placeholder="$t('rfq.RFQPLEASECHOOSE')" v-model="form.partType"
                          v-permission="PARTSRFQ_PARTITEMTYPE">
+                  <el-option value="" :label="$t('all') | capitalizeFilter"></el-option>
                   <el-option v-for="items in partTypeOptions" :key='items.code' :value='items.code'
                              :label="items.name"/>
                 </iSelect>
@@ -40,6 +42,7 @@
               <el-form-item :label="$t('rfq.RFQRFQSTATUS')">
                 <iSelect :placeholder="$t('rfq.RFQPLEASECHOOSE')" v-model="form.rfqStatus"
                          v-permission="PARTSRFQ_RFQSTATUS">
+                  <el-option value="" :label="$t('all') | capitalizeFilter"></el-option>
                   <el-option v-for="items in rfqStatusOptions" :key='items.code' :value='items.code'
                              :label="items.name"/>
                 </iSelect>
@@ -137,6 +140,7 @@ import {tableTitle} from "pages/partsrfq/home/components/data";
 import {getRfqDataList, editRfqData, findBySearches} from "@/api/partsrfq/home";
 import {excelExport} from "@/utils/filedowLoad";
 import store from '@/store'
+import filters from "@/utils/filters";
 
 export default {
   components: {
@@ -152,7 +156,7 @@ export default {
     icon,
     assignmentOfScoringTasks
   },
-  mixins: [pageMixins],
+  mixins: [pageMixins, filters],
   data() {
     return {
       tableListData: [],
