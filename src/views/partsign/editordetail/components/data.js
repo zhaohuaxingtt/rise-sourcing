@@ -7,7 +7,7 @@
  * @FilePath: \rise\src\views\partsign\editordetail\components\data.js
  */
 export const partTitle = [
-	{key:'partNum',name:'零件号',permissionKey:'PARTSIGN_EDITORDETAIL_PARTNUMBER',languageKey:'LingJianHao'},
+	{key:'partNum',name:'零件号',permissionKey:'PARTSIGN_EDITORDETAIL_PARTNUMBER'},
 	{key:'partNameCn',name:'零件名（中）',permissionKey:'PARTSIGN_EDITORDETAIL_PARTNAMEZH'},
 	{key:'partNameEn',name:'零件名（德）',permissionKey:'PARTSIGN_EDITORDETAIL_PARTNAMEGER'},
 	{key:'inheritedCarModel',name:'车型大类',permissionKey:'PARTSIGN_EDITORDETAIL_VEHICLECATEGORIES'},

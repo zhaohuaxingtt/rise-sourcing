@@ -21,7 +21,7 @@
       </div>
     </div>
     <!-- 零件详情内容 -->
-    <iCard class="partsDetail">
+    <iCard class="partsDetail" v-permission="PARTSIGN_EDITORDETAIL_ALLTXT">
       <partInfo icons :title="partTitle" :data="partDetails"></partInfo>
     </iCard>
     <!-- 零件详情tab页 -->
