@@ -1,5 +1,5 @@
 <template>
-  <i-card>
+  <i-card v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_TECHNICALSEMINAR_INDEXPAGE">
     <div class="margin-bottom20 clearFloat">
       <span class="font18 font-weight">供应商材料准备</span>
       <div class="floatright">
