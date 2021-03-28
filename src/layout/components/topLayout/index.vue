@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-22 16:46:47
- * @LastEditTime: 2021-03-28 21:57:02
+ * @LastEditTime: 2021-03-28 23:07:23
  * @LastEditors: Please set LastEditors
  * @Description: 存在于界面上方的组件。
  * @FilePath: \rise\src\layout\components\topLayout.vue
@@ -113,6 +113,7 @@ export default {
 		loginOut(){
 			removeToken();
 			window.location.href = '/login'
+			window.location.reload()
 		},
     getMessageBySocket(userId) {
       messageSocket(userId)
