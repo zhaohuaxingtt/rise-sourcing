@@ -3,11 +3,11 @@
     <div class="margin-bottom20 clearFloat">
       <span class="font18 font-weight">供应商评分附件</span>
       <div class="floatright">
-        <iButton @click="deleteItems">删除</iButton>
+        <iButton @click="deleteItems" v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_SUPPLIERSCORE_PARTSCORING_DELETE">删除</iButton>
         <upload-button
             @uploadedCallback="uploadAttachments"
             :upload-button-loading="uploadAttachmentsButtonLoading"
-            class="margin-left8"/>
+            class="margin-left8" v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_SUPPLIERSCORE_PARTSCORING_UPLOAD"/>
       </div>
     </div>
     <tablelist

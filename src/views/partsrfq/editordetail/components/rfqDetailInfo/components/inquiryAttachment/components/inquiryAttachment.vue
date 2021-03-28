@@ -9,8 +9,8 @@
         <upload-button
             @uploadedCallback="uploadAttachments"
             :upload-button-loading="uploadAttachmentsButtonLoading"
-            class="margin-left8 margin-right8"/>
-        <iButton @click="download">下载</iButton>
+            class="margin-left8 margin-right8"  v-permission="PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_INQUIRYATTACHMENT_INQUIRYATTACHMENT_UPLOADBUTTON"/>
+        <iButton @click="download" v-permission="PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_INQUIRYATTACHMENT_INQUIRYATTACHMENT_DOWNLOADBUTTON">下载</iButton>
         <!-- 暂不做，后端暂无接口：用户可以选择“通知全部供应商”，询价附件会发送给当前RFQ BDL中所选择的全部供应商-->
         <iButton @click="notifyAllSuppliers"
                  v-permission="PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_INQUIRYATTACHMENT_INQUIRYATTACHMENT_NOTIFYALL">

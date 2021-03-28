@@ -1,5 +1,5 @@
 <template>
-  <i-card>
+  <i-card v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_TECHNICALSEMINAR_OTHERMEETINGINFORMATION_OTHER">
     <div class="margin-bottom20 clearFloat">
       <span class="font18 font-weight">会议其它信息</span>
     </div>
