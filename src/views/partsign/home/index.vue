@@ -36,7 +36,7 @@
               </el-form-item>
               <el-form-item label="车型项目">
                 <iSelect v-model="form.projectCarType" placeholder="请选择车型项目" v-permission="PARTSIGN_MODELPROJECT">
-                  <el-option value="" label="全部"></el-option>
+                  <el-option value="" :label="$t('all') | capitalizeFilter"></el-option>
                   <el-option
                     :value="items.key"
                     :label="items.value"
@@ -47,7 +47,7 @@
               </el-form-item>
               <el-form-item label="信息单分类">
                 <iSelect v-model="form.tpInfoType" placeholder="请选择信息分类" v-permission="PARTSIGN_INFORMATIONCLASSIFICATION">
-                  <el-option value="" label="全部"></el-option>
+                  <el-option value="" :label="$t('all') | capitalizeFilter"></el-option>
                   <el-option
                     :value="items.key"
                     :label="items.value"
@@ -58,7 +58,7 @@
               </el-form-item>
               <el-form-item label="信息单状态">
                 <iSelect v-model="form.status" placeholder="请选择信息单状态" v-permission="PARTSIGN_INFORMATIONSTATUS">
-                  <el-option value="" label="全部"></el-option>
+                  <el-option value="" :label="$t('all') | capitalizeFilter"></el-option>
                   <el-option
                     :value="items.key"
                     :label="items.value"
@@ -75,7 +75,7 @@
                   v-model="form.attachmentStatus"
                   placeholder="请选择询价资料状态" v-permission="PARTSIGN_INQUIRYSTATUS"
                 >
-                  <el-option value="" label="全部"></el-option>
+                  <el-option value="" :label="$t('all') | capitalizeFilter"></el-option>
                   <el-option
                     :value="items.key"
                     :label="items.value"
@@ -89,7 +89,7 @@
                   v-model="form.partDosageStatus"
                   placeholder="请选择每车用量状态" v-permission="PARTSIGN_USAGEVEHICLE"
                 >
-                  <el-option value="" label="全部"></el-option>
+                  <el-option value="" :label="$t('all') | capitalizeFilter"></el-option>
                   <el-option
                     :value="items.key"
                     :label="items.value"
@@ -172,6 +172,7 @@ import changeItems from "./components/changeItems";
 import { iNavMvp } from "@/components";
 import local from "@/utils/localstorage";
 import { iMessageBox } from "../../../components";
+import filters from "@/utils/filters";
 export default {
   components: {
     iPage,
@@ -186,7 +187,7 @@ export default {
     iInput,
     iSelect,
   },
-  mixins: [pageMixins],
+  mixins: [pageMixins, filters],
   data() {
     return {
       tableListData: [],
