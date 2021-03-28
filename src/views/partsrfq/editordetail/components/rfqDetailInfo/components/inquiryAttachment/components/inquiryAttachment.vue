@@ -154,10 +154,11 @@ export default {
       })
       const req = {
         applicationName: 'rise',
-        fileList
+        fileList,
+        /*applicationName: 'common-function-test',
+        fileList: ['test (4).txt']*/
       }
-      const res = await downloadFile(req)
-      res.result ? iMessage.success(res.desZh) : iMessage.error(res.desZh)
+      await downloadFile(req)
     }
   }
 }
