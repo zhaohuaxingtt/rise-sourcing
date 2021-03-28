@@ -1,17 +1,17 @@
 <template>
   <iCard class="outputRecord" tabCard title="询价附件">
     <template v-slot:header-control>
-      <iButton class="deleteBtn" @click="handleDelete" :loading="deleteLoading">删除</iButton>
+      <iButton class="deleteBtn" @click="handleDelete" :loading="deleteLoading" v-permission="PARTSPROCURE_EDITORDETAIL_DRAWINGSHEET_HANDLEDELETE">删除</iButton>
       <el-upload 
         class="uploadBtn" 
         multiple
-        :action="`${ action }?purchasingApplyTargetId=${ params.purchasingRequirementTargetId || '192321' }`"
+        :action="`${ action }?purchasingApplyTargetId=${ params.purchasingRequirementTargetId }`"
         :show-file-list="false" 
         :before-upload="beforeUpload"
         :on-success="uploadSuccess"
         :on-error="uploadError"
         accept=".pdf,.xlsx,.docx">
-          <iButton :loading="uploadLoading">上传附件</iButton>
+          <iButton :loading="uploadLoading" v-permission="PARTSPROCURE_EDITORDETAIL_DRAWINGSHEET_HANDLEUPLOAD">上传附件</iButton>
       </el-upload>
     </template>
     <div class="body">
@@ -98,7 +98,7 @@ export default {
       getInfoAnnexPage({
         currPage: this.page.currPage,
         pageSize: this.page.pageSize,
-        purchasingRequirementTargetId: this.params.purchasingRequirementTargetId || '192321'
+        purchasingRequirementTargetId: this.params.purchasingRequirementTargetId
       })
         .then(res => { 
           console.log(res.data)

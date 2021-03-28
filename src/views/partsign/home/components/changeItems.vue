@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 11:24:15
- * @LastEditTime: 2021-03-26 00:00:53
+ * @LastEditTime: 2021-03-28 00:30:34
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsign\home\components\changeItems.vue
@@ -11,7 +11,10 @@
         <div class="changeContent">
           <span class="fontSize14">采购员：</span>
           <iSelect v-model='inquiryBuyer' placeholder='请选择询价采购员'>
-            <el-option v-for="(items,index) in inquiryBuyerList" :key='index' :value='items.id' :label="items.nameZh"/>
+            <!-- <el-option v-for="(items,index) in inquiryBuyerList" :key='index' :value='items.id' :label="items.nameZh"/> -->
+            <!-- <el-option value='12' label="12"></el-option> -->
+            <el-option value='12' label="采购员12"></el-option>
+            <el-option value='13' label="采购员13"></el-option>
           </iSelect>
         </div>
         <span slot="footer" class="dialog-footer">

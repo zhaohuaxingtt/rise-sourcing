@@ -3,7 +3,7 @@
     <iCard>
       <div class="margin-bottom20 clearFloat">
         <div class="floatright">
-          <iButton @click="exports">导出</iButton>
+          <iButton @click="exports" v-permission="PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_LOGISTICSREQUIREMENTS_EXPORT">导出</iButton>
         </div>
       </div>
       <tablelist

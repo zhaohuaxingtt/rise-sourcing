@@ -1,7 +1,7 @@
 <template>
   <iCard class="outputRecord" tabCard collapse title="零件产量记录">
     <template v-slot:header-control>
-      <iButton>更新至询价产量</iButton>
+      <iButton v-permission="PARTSPROCURE_OUTPUTPLAN_OUTPUTRECORD_UPDATE">更新至询价产量</iButton>
     </template>
     <div class="body">
       <tablelist

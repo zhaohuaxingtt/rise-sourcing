@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 15:12:41
- * @LastEditTime: 2021-02-25 16:06:04
+ * @LastEditTime: 2021-03-27 19:18:38
  * @LastEditors: Please set LastEditors
  * @Description: 零件采购项目批量维护界面
  * @FilePath: \rise\src\views\partsprocure\batchmiantain\index.vue
@@ -12,14 +12,14 @@
 		<div class="margin-bottom20 clearFloat">
 			<span class="font18 font-weight">批量维护零件采购项目</span>
 			<div class="floatright">
-				<iButton @click="back">返回</iButton>
-				<iButton @click="creatFs">生成FS号</iButton>
-				<iButton @click="start" :loading="startLoding">启动询价</iButton>
+				<iButton @click="back" v-permission="PARTSPROCURE_BATCHMIANTAIN_SAVE">返回</iButton>
+				<iButton @click="creatFs" v-permission="PARTSPROCURE_BATCHMIANTAIN_GENERATEFSNUMBER">生成FS号</iButton>
+				<iButton @click="start" :loading="startLoding" v-permission="PARTSPROCURE_BATCHMIANTAIN_STARTINQUIRY">启动询价</iButton>
 			</div>
 		</div>
 		<iSearch class="margin-bottom20" title="采购项目信息" tabCard>
 			<el-form>
-				<el-form-item label="零件采购项目">
+				<el-form-item label="零件采购项目类型">
 					<iSelect placeholder="请选择" v-model="batch.part_preject_type">
 						<el-option :value="item.value" :label="item.label"
 							v-for="(item, index) in getGroupList('part_preject_type')" :key="index"></el-option>
@@ -68,26 +68,26 @@
 				</el-form-item>
 			</el-form>
 			<template slot="button">
-				<iButton @click="save">确认</iButton>
-				<iButton @click="reset">重置</iButton>
+				<iButton @click="save" v-permission="PARTSPROCURE_BATCHMIANTAIN_PURCHASINGCONFIRM">确认</iButton>
+				<iButton @click="reset" v-permission="PARTSPROCURE_BATCHMIANTAIN_PURCHASERESET">重置</iButton>
 			</template>
 		</iSearch>
 		<iSearch class="margin-bottom20" title="材料组工艺设置" tabCard icon>
 			<el-form>
 				<el-form-item label="材料组">
-					<iSelect placeholder="请选择" v-model="stuff.categoryCode">
-						<el-option :value="item.value" :label="item.value" v-for="(item, index) in getGroupList('category_name')" :key="index"></el-option>
+					<iSelect placeholder="请选择" v-model="stuff.categoryCode" @change="changeSelect">
+						<el-option :value="item.key" :label="item.value" v-for="(item, index) in getGroupList('category_name')" :key="index"></el-option>
 					</iSelect>
 				</el-form-item>
 				<el-form-item label="工艺">
-					<iSelect placeholder="请选择" v-model="stuffObj">
+					<iSelect placeholder="请选择先材料组" v-model="stuffObj">
 						<el-option :value="item"  :label="item.value" v-for="(item, index) in getGroupList('stuff_name')" :key="index"></el-option>
 					</iSelect>
 				</el-form-item>
 			</el-form>
 			<template slot="button">
-				<iButton @click="save">确认</iButton>
-				<iButton @click="resetStuff">重置</iButton>
+				<iButton @click="save" v-permission="PARTSPROCURE_BATCHMIANTAIN_MATERIALGROUPCONFIRM">确认</iButton>
+				<iButton @click="resetStuff" v-permission="PARTSPROCURE_BATCHMIANTAIN_MATERIALGROUPRESET">重置</iButton>
 			</template>
 		</iSearch>
 		<outputPlan class="margin-bottom20" @handleSelectionChange="handleSelectionChange" />
@@ -158,9 +158,35 @@
 			this.getPageGroup()
 		},
 		methods: {
+			changeSelect(val){
+				if(val == '600000'){
+					this.fromGroup.find(items=>items.name == 'stuff_name').infoList = [
+							{
+							value:'安全电器件-电镀',
+							key:'600000'
+						},
+						{
+							value:'安全电器件-注塑',
+							key:'600000'
+						}
+					]
+					
+				}else{
+					this.fromGroup.find(items=>items.name == 'stuff_name').infoList = [
+						{
+							value:'空调控制头-抛光',
+							key:'600001'
+						},
+						{
+							value:'空调控制头-焊接',
+							key:'600003'
+						}
+					]
+				}
+			},
 			//获取上方group信息
 			getPageGroup() {
-				getPageGroup(12314).then((res) => {
+				getPageGroup(this.$store.state.permission.userInfo.id).then((res) => {
 					this.fromGroup = res.data.groupStatSenarioResult.groupStatInfoList;
 				});
 			},
@@ -198,20 +224,20 @@
 				}).then(res => {
 					if (res.data) {
 						iMessage.success("修改成功")
-						this.reset()
-						this.resetStuff()
 					}else{
 						iMessage.error(res.desZh)
 					}
 				})
 			},
 			pushKey(){
-				this.stuff.stuffName=this.stuff.value
-				this.stuff.stuffCode=this.stuff.key
+				this.stuff.stuffName=this.stuffObj.value
+				this.stuff.stuffCode=this.stuffObj.key
 				this.batch.cartypeProjectZh=this.cartypeProject.value
 				this.batch.cartypeProjectNum=this.cartypeProject.key
 				this.batch.linieDept=this.linie.value
 				this.batch.linieNum=this.linie.key
+				console.log(this.stuff);
+				console.log(this.stuffObj);
 			},
 			// 重置采购信息数据
 			reset() {

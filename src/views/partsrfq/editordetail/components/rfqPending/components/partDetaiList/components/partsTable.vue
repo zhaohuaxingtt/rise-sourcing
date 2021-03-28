@@ -1,11 +1,22 @@
 <template>
-	<div class="notPushRfq">
-		<tableList :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="tableLoading"
-			@handleSelectionChange="handleSelectionChange" @openPage="openPage"></tableList>
-		<iPagination @size-change="handleSizeChange($event, getTableList)"
-			@current-change="handleCurrentChange($event, getTableList)" background :page-sizes="page.pageSizes"
-			:page-size="page.pageSize" :layout="page.layout" :total="page.totalCount"></iPagination>
-	</div>
+  <div class="notPushRfq">
+    <tableList
+      :tableData="tableListData"
+      :tableTitle="tableTitle"
+      :tableLoading="tableLoading"
+      @handleSelectionChange="handleSelectionChange"
+      @openPage="openPage"
+    ></tableList>
+    <iPagination
+      @size-change="handleSizeChange($event, getTableList)"
+      @current-change="handleCurrentChange($event, getTableList)"
+      background
+      :page-sizes="page.pageSizes"
+      :page-size="page.pageSize"
+      :layout="page.layout"
+      :total="page.totalCount"
+    ></iPagination>
+  </div>
 </template>
 
 <script>
@@ -39,7 +50,7 @@
 				tableLoading: false,
 				tableListData: [],
 				parmarsNotHasRfq: JSON.parse(JSON.stringify(form)),
-				handleSelectArr: [],
+				// handleSelectArr: [],
 				tableTitle,
 			}
 		},
@@ -63,23 +74,24 @@
 			},
 			// 待选零件
 			handleSelectionChange(e) {
-				this.handleSelectArr = e;
+				this.$emit('targetHand', e)
+				// this.handleSelectArr = e;
 			},
 			// 跳转详情
 			openPage(item) {
-			  this.$router.push({
-			    path: "/partsprocure/editordetail",
-			    query: {
-			      item: JSON.stringify(item),
-			    },
-			  });
+				this.$router.push({
+					path: "/partsprocure/editordetail",
+					query: {
+						item: JSON.stringify(item),
+					},
+				});
 			},
 		}
 	}
 </script>
 
 <style lang="scss" scoped>
-	.notPushRfq{
+	.notPushRfq {
 		width: 100%;
 	}
 </style>

@@ -44,6 +44,7 @@ import {pageMixins} from "@/utils/pageMixins";
 import {getAllAnnex, deleteAnnex, uploadRfqAnnex} from "@/api/partsrfq/editordetail";
 import uploadButton from 'pages/partsrfq/components/uploadButton'
 import store from '@/store'
+import {downloadFile} from "@/api/file";
 export default {
   components: {
     iCard,
@@ -121,13 +122,12 @@ export default {
         this.getTableList()
       }
     },
-    handleDownload(row) {
-      const url = row.filePath
-      const a = document.createElement('a');
-      a.setAttribute('download', '')
-      a.setAttribute('href', url);
-      a.setAttribute('target', '_blank');
-      a.click();
+    async handleDownload(row) {
+      const req = {
+        applicationName: 'rise',
+        fileList: [row.fileName]
+      }
+      await downloadFile(req)
     }
   }
 }

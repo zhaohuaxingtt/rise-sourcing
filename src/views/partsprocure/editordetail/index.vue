@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2021-03-26 15:57:09
+ * @LastEditTime: 2021-03-27 13:41:02
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsprocure\editordetail\index.vue
@@ -14,13 +14,13 @@
 		<div class="margin-bottom20 clearFloat">
 			<span class="font18 font-weight">零件采购项目</span>
 			<div class="floatright">
-				<iButton @click="start">启动项目</iButton>
-				<iButton @click="creatFs">生成FS/GSNR</iButton>
-				<iButton @click="openDiologBack">取消零件采购项目</iButton>
-				<iButton @click="splitPurch">拆分采购工厂</iButton>
-				<iButton @click="openDiologClose">结束项目</iButton>
-				<iButton @click="save">保存</iButton>
-				<iButton @click="back">返回</iButton>
+				<iButton @click="start" v-permission="PARTSPROCURE_EDITORDETAIL_STARTUP">启动项目</iButton>
+				<iButton @click="creatFs" v-permission="PARTSPROCURE_EDITORDETAIL_GENERATEFSGSNR">生成FS/GSNR</iButton>
+				<iButton @click="openDiologBack" v-permission="PARTSPROCURE_EDITORDETAIL_CANCELITEMS">取消零件采购项目</iButton>
+				<iButton @click="splitPurch" v-permission="PARTSPROCURE_EDITORDETAIL_SPLITFACTORY">拆分采购工厂</iButton>
+				<iButton @click="openDiologClose" v-permission="PARTSPROCURE_EDITORDETAIL_ENDPROJECT">结束项目</iButton>
+				<iButton @click="save" v-permission="PARTSPROCURE_EDITORDETAIL_BASICINFOSAVE">保存</iButton>
+				<iButton @click="back" v-permission="PARTSPROCURE_EDITORDETAIL_RETURN">返回</iButton>
 				<logButton class="margin-left20" @click="log" />
 				<span>
 					<icon symbol name="icondatabaseweixuanzhong"></icon>
@@ -36,38 +36,38 @@
 				<div class="row">
 					<div class="col">
 						<iFormItem label="零件号：" name="test">
-							<iText>
+							<iText v-permission="PARTSPROCURE_EDITORDETAIL_PARTNUMBER">
 								{{ detailData.partNum }}
 							</iText>
 						</iFormItem>
 						<iFormItem label="零件名称（中）：" name="test">
-							<iText>
+							<iText v-permission="PARTSPROCURE_EDITORDETAIL_PARTNAMEZH">
 								{{ detailData.partNameZh }}
 							</iText>
 						</iFormItem>
 						<iFormItem label="零件项目类型：" name="test">
-							<iSelect v-model="detailData.partPrejectType">
+							<iSelect v-model="detailData.partPrejectType" v-permission="PARTSPROCURE_EDITORDETAIL_EVENTITEMTYPE">
 								<el-option :value="item.value" :label="item.label"
 									v-for="(item, index) in getGroupList('part_preject_type')" :key="index">
 								</el-option>
 							</iSelect>
 						</iFormItem>
 						<iFormItem label="采购工厂：" name="test">
-							<iSelect v-model="detailData.procureFactory">
+							<iSelect v-model="detailData.procureFactory" v-permission="PARTSPROCURE_EDITORDETAIL_PURCHASINGFACTORY">
 								<el-option :value="item.value" :label="item.label"
 									v-for="(item, index) in getGroupList('procure_factory')" :key="index">
 								</el-option>
 							</iSelect>
 						</iFormItem>
 						<iFormItem label="Common Sourcing：" name="test">
-							<iSelect v-model="detailData.commonSourcing">
+							<iSelect v-model="detailData.commonSourcing" v-permission="PARTSPROCURE_EDITORDETAIL_COMMONSOURCING">
 								<el-option :value="item.value" :label="item.label"
 									v-for="(item, index) in getGroupList('is_common_sourcing')" :key="index">
 								</el-option>
 							</iSelect>
 						</iFormItem>
-						<iFormItem label="支付条款：" name="test">
-							<iSelect v-model="detailData.payClause">
+						<iFormItem label="支付条款：" name="test" v-if="detailData.partType=='BD'">
+							<iSelect v-model="detailData.payClause" v-permission="PARTSPROCURE_EDITORDETAIL_NUMBEROFPAYMENT">
 								<el-option :value="item.value" :label="item.label"
 									v-for="(item, index) in getGroupList('pay_clause')" :key="index"></el-option>
 							</iSelect>
@@ -75,29 +75,29 @@
 					</div>
 					<div class="col">
 						<iFormItem label="FSNR/GSNR/SPNR：" name="test">
-							<iText>
+							<iText v-permission="PARTSPROCURE_EDITORDETAIL_FSNRGSNRSPNR">
 								{{ detailData.fsnrGsnrNum }}
 							</iText>
 						</iFormItem>
 						<iFormItem label="零件名称（德）：" name="test">
-							<iText>
+							<iText v-permission="PARTSPROCURE_EDITORDETAIL_PARTNUMBERGER">
 								{{ detailData.partNameDe }}
 							</iText>
 						</iFormItem>
 						<iFormItem label="零件类型：" name="test">
-							<iSelect v-model="detailData.partType">
+							<iSelect v-model="detailData.partType" v-permission="PARTSPROCURE_EDITORDETAIL_PARTTYPE">
 								<el-option :value="item.value" :label="item.label"
 									v-for="(item, index) in getGroupList('part_type')" :key="index"></el-option>
 							</iSelect>
 						</iFormItem>
 						<iFormItem label="单位：" name="test">
-							<iSelect v-model="detailData.unit">
+							<iSelect v-model="detailData.unit" v-permission="PARTSPROCURE_EDITORDETAIL_UNIT">
 								<el-option :value="item.value" :label="item.label"
 									v-for="(item, index) in getGroupList('unit')" :key="index"></el-option>
 							</iSelect>
 						</iFormItem>
 						<iFormItem label="MTZ零件：" name="test">
-							<iSelect v-model="detailData.mtz">
+							<iSelect v-model="detailData.mtz" v-permission="PARTSPROCURE_EDITORDETAIL_MTZPARTS">
 								<el-option :value="item.value" :label="item.label"
 									v-for="(item, index) in getGroupList('mtz')" :key="index"></el-option>
 							</iSelect>
@@ -105,30 +105,30 @@
 					</div>
 					<div class="col">
 						<iFormItem label="询价采购员：" name="test">
-							<iText>
+							<iText v-permission="PARTSPROCURE_EDITORDETAIL_INQUIRYBUYER">
 								{{ detailData.buyerName }}
 							</iText>
 						</iFormItem>
 						<iFormItem label="LINIE部门：" name="test">
-							<iSelect v-model="detailData.linieDept">
+							<iSelect v-model="detailData.linieDept" v-permission="PARTSPROCURE_EDITORDETAIL_LINEDEPARTMENT">
 								<el-option :value="item.value" :label="item.label"
 									v-for="(item, index) in getGroupList('linie_dept')" :key="index"></el-option>
 							</iSelect>
 						</iFormItem>
 						<iFormItem label="LINIE：" name="test">
-							<iSelect v-model="detailData.linieName">
+							<iSelect v-model="detailData.linieName" v-permission="PARTSPROCURE_EDITORDETAIL_LINE">
 								<el-option :value="item.value" :label="item.label"
 									v-for="(item, index) in getGroupList('linie_name')" :key="index"></el-option>
 							</iSelect>
 						</iFormItem>
 						<iFormItem label="CF控制员：" name="test">
-							<iSelect v-model="detailData.cfController">
+							<iSelect v-model="detailData.cfController" v-permission="PARTSPROCURE_EDITORDETAIL_CFCONTROLLER">
 								<el-option :value="item.value" :label="item.label"
 									v-for="(item, index) in getGroupList('cf_controller')" :key="index"></el-option>
 							</iSelect>
 						</iFormItem>
-						<iFormItem label="货币：" name="test">
-							<iSelect v-model="detailData.currencyId">
+						<iFormItem label="货币：" name="test" v-if="detailData.partType=='BD'">
+							<iSelect v-model="detailData.currencyId" v-permission="PARTSPROCURE_EDITORDETAIL_CURRENCY">
 								<el-option :value="item.value" :label="item.label"
 									v-for="(item, index) in getGroupList('currency_id')" :key="index"></el-option>
 							</iSelect>
@@ -136,27 +136,27 @@
 					</div>
 					<div class="col">
 						<iFormItem label="签收日期：" name="test">
-							<iText>
+							<iText v-permission="PARTSPROCURE_EDITORDETAIL_DATEOFRECEIPT">
 								{{ detailData.signDate }}
 							</iText>
 						</iFormItem>
 						<iFormItem label="SOP日期：" name="test">
-							<iText>
+							<iText v-permission="PARTSPROCURE_EDITORDETAIL_SOPDATE">
 								{{ detailData.sopDate }}
 							</iText>
 						</iFormItem>
 						<iFormItem label="零件状态：" name="test">
-							<iText>
+							<iText v-permission="PARTSPROCURE_EDITORDETAIL_PARTSTATUS">
 								{{ detailData.partStatus }}
 							</iText>
 						</iFormItem>
 						<iFormItem label="BMG：" name="test">
-							<iText>
+							<iText v-permission="PARTSPROCURE_EDITORDETAIL_BMG">
 								{{ detailData.bmg }}
 							</iText>
 						</iFormItem>
-						<iFormItem label="采购条款：" name="test">
-							<iSelect v-model="detailData.purchaseClause">
+						<iFormItem label="采购条款：" name="test" v-if="detailData.partType=='BD'">
+							<iSelect v-model="detailData.purchaseClause" v-permission="PARTSPROCURE_EDITORDETAIL_PURCHASETERMS">
 								<el-option :value="item.value" :label="item.label"
 									v-for="(item, index) in getGroupList('purchase_clause')" :key="index">
 								</el-option>
@@ -167,25 +167,25 @@
 			</iFormGroup>
 		</iCard>
 		<iTabsList class="margin-top20" type="border-card">
-			<el-tab-pane label="材料组信息">
+			<el-tab-pane label="材料组信息" v-permission="PARTSPROCURE_EDITORDETAIL_MATERIALGROUPINFORMATION">
         <materialGroupInfo :params="infoItem"/>
       </el-tab-pane>
-      <el-tab-pane label="零件产量计划">
+      <el-tab-pane label="零件产量计划" v-permission="PARTSPROCURE_EDITORDETAIL_PARTSPRODUCTIONPLAN">
         <outputPlan ref="outputPlan" :params="infoItem" />
         <outputRecord ref="outputRecord" class="margin-top20" :params="infoItem" @updateOutput="updateOutput" />
         <volume ref="volume" class="margin-top20" :params="infoItem" />
       </el-tab-pane>
-			<el-tab-pane label="图纸和TP详情页">
+			<el-tab-pane label="图纸和TP详情页" v-permission="PARTSPROCURE_EDITORDETAIL_DRAWINGSANDTPDETAILSPAGE">
 				<drawing :params="infoItem" />
 				<sheet class="margin-top20" :params="infoItem" />
 			</el-tab-pane>
-			<el-tab-pane label="物流要求">
+			<el-tab-pane label="物流要求" v-permission="PARTSPROCURE_EDITORDETAIL_LOGISTICSREQUIREMENTS">
 				<logistics :infoItem="infoItem"></logistics>
 			</el-tab-pane>
-			<el-tab-pane label="申请目标价">
+			<el-tab-pane label="申请目标价" v-permission="PARTSPROCURE_EDITORDETAIL_APPLYFORTARGETPRICE">
 				<targePrice :purchaseProjectId="purchaseProjectId"></targePrice>
 			</el-tab-pane>
-			<el-tab-pane label="备注信息">
+			<el-tab-pane label="备注信息" v-permission="PARTSPROCURE_EDITORDETAIL_REMARKSINFORMATION">
 				<remarks :detailData="detailData"></remarks>
 			</el-tab-pane>
 		</iTabsList>
@@ -290,7 +290,7 @@
 			},
 			//获取上方group信息
 			getPageGroup() {
-				getPageGroup().then((res) => {
+				getPageGroup(this.$store.state.permission.userInfo.id).then((res) => {
 					this.fromGroup = res.data.groupStatSenarioResult.groupStatInfoList;
 				});
 			},
@@ -343,7 +343,12 @@
 			},
 			//修改详情。
 			save(val) {
-				let detailData = this.detailData;
+				let detailData = {}
+				for (let i in this.detailData) {
+					if (i!="csfMemo" && i!="linieMemo" && i!="cs1Memo" && i!="csfMeetMemo" && i!="linieMeetMemo" && i!="cs1MeetMemo") {
+						detailData[i]=this.detailData[i]
+					}
+				}
 				changeProcure({
 						detailData,
 					})
@@ -399,7 +404,7 @@
 			},
 			// 返回
 			back() {
-				this.$router.back();
+				this.$router.go(-1);
 			}, // 查看日志
 			log() {
 				window.open(

@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-24 09:17:57
- * @LastEditTime: 2021-03-26 15:31:49
+ * @LastEditTime: 2021-03-27 21:44:28
  * @LastEditors: Please set LastEditors
  * @Description: 零件签收列表界面.
  * @FilePath: \rise\src\views\partsign\index.vue
@@ -9,7 +9,7 @@
 <template>
   <iPage class="partsignHome">
     <el-tabs v-model="tab" class="tab">
-      <el-tab-pane label="寻源执行" name="source">
+      <el-tab-pane :label="$t('partsignLanguage.XunYuanZhiXing')" name="source">
         <div>
           <div class="margin-bottom33">
             <iNavMvp @change="change" right routerPage></iNavMvp>
@@ -19,16 +19,16 @@
           <!------------------------------------------------------------------------>
           <iSearch class="margin-bottom20" @sure="sure" @reset="reset" :resetKey="PARTSIGN_RESETBUTTON" :searchKey="PARTSIGN_CONFIRMBUTTON">
             <el-form>
-              <el-form-item label="零件号" >
+              <el-form-item :label="$t('partsignLanguage.LingJianHao')">
                 <iInput v-model="form.partNum" placeholder="请输入零件号" v-permission="PARTSIGN_PARTNUM"></iInput>
               </el-form-item>
-              <el-form-item label="零件名（中）">
+              <el-form-item :label="$t('partsignLanguage.LingJianMingChengZH')">
                 <iInput
                   v-model="form.partNameZh"
                   placeholder="请输入零件名（中）" v-permission="PARTSIGN_PARTNAMEZH"
                 ></iInput>
               </el-form-item>
-              <el-form-item label="设计科室">
+                <el-form-item :label="$t('partsignLanguage.SheJiKeShi')">
                 <iInput v-model="form.dept" placeholder="请填写设计科室" v-permission="PARTSIGN_DESIGNDEPARTMENT"></iInput>
               </el-form-item>
               <el-form-item label="工程师">
@@ -83,7 +83,7 @@
               <el-form-item label="每车用量状态">
                 <iSelect
                   v-model="form.partDosageStatus"
-                  placeholder="请选择没车用量状态" v-permission="PARTSIGN_USAGEVEHICLE"
+                  placeholder="请选择每车用量状态" v-permission="PARTSIGN_USAGEVEHICLE"
                 >
                   <el-option
                     :value="items.key"
@@ -102,9 +102,9 @@
             <div class="margin-bottom20 clearFloat">
               <span class="font18 font-weight">新件信息单签收</span>
               <div class="floatright">
-                <iButton @click="save" v-permission="PARTSIGN_SIGNBUTTON">签收</iButton>
-                <iButton @click="openDiologBack" v-permission="PARTSIGN_BACKBUTTON">退回</iButton>
-                <iButton @click="openDiologChangeItems" v-permission="PARTSIGN_TRANSFERBUTTON">转派</iButton>
+                <iButton @click="save" v-permission="PARTSIGN_SIGNBUTTON">{{$t('partsignLanguage.QianShou')}}</iButton>
+                <iButton @click="openDiologBack" v-permission="PARTSIGN_BACKBUTTON">{{$t('partsignLanguage.TuiHui')}}</iButton>
+                <iButton @click="openDiologChangeItems" v-permission="PARTSIGN_TRANSFERBUTTON">{{$t('partsignLanguage.ZhuanPai')}}</iButton>
               </div>
             </div>
             <tablelist
@@ -159,7 +159,7 @@ import {
   iSelect,
 } from "@/components";
 import tablelist from "./components/tableList";
-import { tableTitle, form } from "./components/data";
+import { tableTitle, form ,needTranslate} from "./components/data";
 import { getTabelData, getPageGroup, patchRecords } from "@/api/partsign/home";
 import { pageMixins } from "@/utils/pageMixins";
 import backItems from "./components/backItems";
@@ -195,14 +195,31 @@ export default {
       inquiryBuyerList: [],
       form: form,
       fromGroup: [],
-      tab: 'source'
+      tab: 'source',
+      needTranslate:needTranslate
     };
   },
   created() {
     this.getPageGroup();
     this.getTableList();
   },
+  provide(){
+    return {
+      vm:this
+    }
+  },
   methods: {
+    //在跳转到详情界面之前，需要将数据格式化为中文。
+    translateDataForDetail(v){
+      this.needTranslate.forEach(element => {
+        if(v[element.name]){
+          const result = this.getGroupList(element.key).find(i=>i.key == v[element.name])
+          v[element.name] = result?result.value:""
+        }
+      });
+      console.log(v)
+      return v
+    },
     translateDataToservice(data) {
       const idList = [];
       data.forEach((items) => idList.push(items.tpPartID));
@@ -220,6 +237,8 @@ export default {
         if (res.data) {
           iMessage.success("操作成功");
           this.getTableList();
+        }else{
+          iMessage.success(res.desZh);
         }
       });
     },
@@ -257,7 +276,7 @@ export default {
       }
     },
     openPage(val) {
-      local.set("tpPartInfoVO", JSON.stringify(val));
+      local.set("tpPartInfoVO", JSON.stringify(this.translateDataForDetail(val)));
       this.$router.push({
         path: "/partsign/editordetail",
       });

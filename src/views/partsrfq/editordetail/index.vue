@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-25 10:09:50
- * @LastEditTime: 2021-03-26 15:50:36
+ * @LastEditTime: 2021-03-27 13:40:26
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsrfq\editordetail\index.vue
@@ -15,11 +15,13 @@
         <iNavMvp :list='navList' @change="changeNav"></iNavMvp>
       </div>
       <div class="btnList">
-        <iButton @click="newRfq">新建RFQ轮次</iButton>
-        <iButton @click="updateRfqStatus('06')">发出询价</iButton>
-        <iButton @click="updateRfqStatus('05')">结束本轮询价</iButton>
-        <iButton @click="updateRfqStatus('03')">转谈判</iButton>
-        <iButton @click="createAFixedPointApplication" disabled>创建定点申请</iButton>
+        <iButton @click="newRfq" v-permission="PARTSRFQ_EDITORDETAIL_NEWRFQROUND">新建RFQ轮次</iButton>
+        <iButton @click="updateRfqStatus('06')" v-permission="PARTSRFQ_EDITORDETAIL_SENDINQUIRY">发出询价</iButton>
+        <iButton @click="updateRfqStatus('05')" v-permission="PARTSRFQ_EDITORDETAIL_ENDQUOTATION">结束本轮询价</iButton>
+        <iButton @click="updateRfqStatus('03')" v-permission="PARTSRFQ_EDITORDETAIL_TRANSFERNEGOTIATION">转谈判</iButton>
+        <iButton @click="createAFixedPointApplication" disabled v-permission="PARTSRFQ_EDITORDETAIL_CREATEAPPLICATION">
+          创建定点申请
+        </iButton>
         <iButton @click="backPage">返回</iButton>
         <iButton type="text" @click="toLogPage">
           <icon symbol name="iconrizhiwuzi" class="log-icon"/>
@@ -39,61 +41,66 @@
         <div class="row">
           <div class="col">
             <iFormItem label="RFQ编号：" name="id">
-              <iText>{{ baseInfo.id }}</iText>
+              <iText v-permission="PARTSRFQ_EDITORDETAIL_RFQNUMBER">{{ baseInfo.id }}</iText>
             </iFormItem>
             <iFormItem label="RFQ名称：" name="rfqName">
-              <iInput v-if="editStatus" v-model="baseInfo.rfqName"></iInput>
-              <iText v-else>{{ baseInfo.rfqName }}</iText>
+              <iInput v-if="editStatus" v-model="baseInfo.rfqName"
+                      v-permission="PARTSRFQ_EDITORDETAIL_RFQNAME"></iInput>
+              <iText v-else v-permission="PARTSRFQ_EDITORDETAIL_RFQNAME">{{ baseInfo.rfqName }}</iText>
             </iFormItem>
 
             <iFormItem label="EP：" name="ep">
-              <iInput v-if="editStatus" v-model="baseInfo.ep"></iInput>
-              <iText v-else>{{ baseInfo.ep }}</iText>
+              <iInput v-if="editStatus" v-model="baseInfo.ep" v-permission="PARTSRFQ_EDITORDETAIL_EP"></iInput>
+              <iText v-else v-permission="PARTSRFQ_EDITORDETAIL_EP">{{ baseInfo.ep }}</iText>
             </iFormItem>
             <iFormItem label="CF：" name="cf">
-              <iInput v-if="editStatus" v-model="baseInfo.cf"></iInput>
-              <iText v-else>{{ baseInfo.cf }}</iText>
+              <iInput v-if="editStatus" v-model="baseInfo.cf" v-permission="PARTSRFQ_EDITORDETAIL_CF"></iInput>
+              <iText v-else v-permission="PARTSRFQ_EDITORDETAIL_CF">{{ baseInfo.cf }}</iText>
             </iFormItem>
 
             <iFormItem label="本轮报价截止时间：" name="currentRoundsEndTime">
-              <iText>{{ baseInfo.currentRoundsEndTime }}</iText>
+              <iText v-permission="PARTSRFQ_EDITORDETAIL_DEADLINEQUOTATIONS">{{ baseInfo.currentRoundsEndTime }}</iText>
             </iFormItem>
           </div>
           <div class="col">
             <iFormItem label="RFQ状态：" name="statusName">
-              <iText>{{ baseInfo.currentStatus }}</iText>
+              <iText v-permission="PARTSRFQ_EDITORDETAIL_RFQSTATUS">{{ baseInfo.currentStatus }}</iText>
             </iFormItem>
             <iFormItem label="询价采购员：" name="buyerName">
-              <iText>{{ baseInfo.buyerName }}</iText>
+              <iText v-permission="PARTSRFQ_EDITORDETAIL_INQUIRYBUYER">{{ baseInfo.buyerName }}</iText>
             </iFormItem>
             <iFormItem label="MQ：" name="mq">
-              <iInput v-if="editStatus" v-model="baseInfo.mq"></iInput>
-              <iText v-else>{{ baseInfo.mq }}</iText>
+              <iInput v-if="editStatus" v-model="baseInfo.mq" v-permission="PARTSRFQ_EDITORDETAIL_MQ"></iInput>
+              <iText v-else v-permission="PARTSRFQ_EDITORDETAIL_MQ">{{ baseInfo.mq }}</iText>
             </iFormItem>
             <iFormItem label="当前轮次：" name="currentRounds">
-              <iText>{{ baseInfo.currentRounds }}</iText>
+              <iText v-permission="PARTSRFQ_EDITORDETAIL_CURRENTROUND">{{ baseInfo.currentRounds }}</iText>
             </iFormItem>
             <iFormItem label="轮次类型：" name="roudsType">
               <iText>
-                <template v-if="baseInfo.roudsType === '00'">普通轮次</template>
-                <template v-else-if="baseInfo.roudsType === '01'">在线竞价</template>
-                <template v-else></template>
+                <template v-if="baseInfo.roudsType === '00'" v-permission="PARTSRFQ_EDITORDETAIL_ROUNDTYPE">普通轮次
+                </template>
+                <template v-else-if="baseInfo.roudsType === '01'" v-permission="PARTSRFQ_EDITORDETAIL_ROUNDTYPE">在线竞价
+                </template>
+                <template v-else v-permission="PARTSRFQ_EDITORDETAIL_ROUNDTYPE"></template>
               </iText>
             </iFormItem>
           </div>
           <div class="col">
             <iFormItem label="创建日期：" name="createDate">
-              <iText>{{ $route.query.id ? baseInfo.createDate : moment().format('YYYY-MM-DD') }}</iText>
+              <iText v-permission="PARTSRFQ_EDITORDETAIL_CREATIONDATE">
+                {{ $route.query.id ? baseInfo.createDate : moment().format('YYYY-MM-DD') }}
+              </iText>
             </iFormItem>
             <iFormItem label="LINIE：" name="linieNameZh">
-              <iText>{{ baseInfo.linieNameZh }}</iText>
+              <iText v-permission="PARTSRFQ_EDITORDETAIL_LINE">{{ baseInfo.linieNameZh }}</iText>
             </iFormItem>
             <iFormItem label="PL：" name="test">
-              <iInput v-if="editStatus" v-model="baseInfo.pl"></iInput>
-              <iText v-else>{{ baseInfo.pl }}</iText>
+              <iInput v-if="editStatus" v-model="baseInfo.pl" v-permission="PARTSRFQ_EDITORDETAIL_PL"></iInput>
+              <iText v-else v-permission="PARTSRFQ_EDITORDETAIL_PL">{{ baseInfo.pl }}</iText>
             </iFormItem>
             <iFormItem label="本轮状态：" name="test">
-              <iText>{{ baseInfo.currentRoundsStatus }}</iText>
+              <iText v-permission="PARTSRFQ_EDITORDETAIL_CURRENTSTATE">{{ baseInfo.currentRoundsStatus }}</iText>
             </iFormItem>
             <div class="edit-button-row">
               <i-button @click="edit">{{ !editStatus ? '编辑' : '保存' }}</i-button>
@@ -168,7 +175,7 @@ export default {
   },
   methods: {
     backPage() {
-      this.$router.back()
+      this.$router.go(-1)
     },
     async getBaseInfo() {
       const query = this.$route.query
@@ -182,7 +189,12 @@ export default {
         }
         try {
           const res = await getRfqDataList(req)
-          this.baseInfo = res.data.getRfqInfoVO.rfqVOList[0]
+          const resList = res.data.getRfqInfoVO.rfqVOList
+          if (resList.length > 0) {
+            this.baseInfo = res.data.getRfqInfoVO.rfqVOList[0]
+          } else {
+            this.baseInfo = ''
+          }
           this.baseInfoLoading = false
         } catch {
           this.baseInfoLoading = false

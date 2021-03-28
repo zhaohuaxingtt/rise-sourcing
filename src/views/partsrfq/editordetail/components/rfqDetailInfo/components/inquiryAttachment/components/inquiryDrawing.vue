@@ -39,6 +39,7 @@ import tablelist from 'pages/partsrfq/components/tablelist'
 import {inquiryDrawingTableTitle} from "./data";
 import {pageMixins} from "@/utils/pageMixins";
 import {getRfqDataList} from "@/api/partsrfq/home";
+import {downloadFile} from "@/api/file";
 
 
 export default {
@@ -85,9 +86,19 @@ export default {
         }
       }
     },
-    download() {
+    async download() {
       if (this.selectTableData.length == 0)
         return iMessage.warn('请选择')
+      const fileList = this.selectTableData.map(item => {
+        return item.fileName
+      })
+      const req = {
+        applicationName: 'rise',
+        fileList,
+        /*applicationName: 'common-function-test',
+        fileList: ['test (4).txt']*/
+      }
+      await downloadFile(req)
     },
     //修改表格改动列
     handleSelectionChange(val) {

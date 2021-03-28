@@ -3,16 +3,24 @@
     <div class="margin-bottom20 clearFloat">
       <span class="font18 font-weight">询价附件</span>
       <div class="floatright">
-        <iButton @click="deleteItems">删除</iButton>
+        <iButton @click="deleteItems"
+                 v-permission="PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_INQUIRYATTACHMENT_INQUIRYATTACHMENT_DELETE">删除
+        </iButton>
         <upload-button
             @uploadedCallback="uploadAttachments"
             :upload-button-loading="uploadAttachmentsButtonLoading"
             class="margin-left8 margin-right8"/>
         <iButton @click="download">下载</iButton>
         <!-- 暂不做，后端暂无接口：用户可以选择“通知全部供应商”，询价附件会发送给当前RFQ BDL中所选择的全部供应商-->
-        <iButton @click="notifyAllSuppliers">通知全部供应商</iButton>
+        <iButton @click="notifyAllSuppliers"
+                 v-permission="PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_INQUIRYATTACHMENT_INQUIRYATTACHMENT_NOTIFYALL">
+          通知全部供应商
+        </iButton>
         <!-- 暂不做，后端暂无接口：用户选择“通知已报价供应商”，系统会根据RFQ的报价记录，发给有有效报价的供应商-->
-        <iButton @click="notifySuppliersWhoHaveQuoted">通知已报价供应商</iButton>
+        <iButton @click="notifySuppliersWhoHaveQuoted"
+                 v-permission="PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_INQUIRYATTACHMENT_INQUIRYATTACHMENT_NOTIFYQUOTED">
+          通知已报价供应商
+        </iButton>
       </div>
     </div>
     <tablelist
@@ -49,6 +57,7 @@ import {pageMixins} from "@/utils/pageMixins";
 import uploadButton from 'pages/partsrfq/components/uploadButton'
 import {deleteAnnex, getAllAnnex, uploadRfqAnnex} from "@/api/partsrfq/editordetail";
 import store from '@/store'
+import {downloadFile} from '@/api/file'
 
 export default {
   components: {
@@ -137,9 +146,19 @@ export default {
       a.setAttribute('target', '_blank');
       a.click();
     },
-    download() {
+    async download() {
       if (this.selectTableData.length == 0)
         return iMessage.warn('请选择')
+      const fileList = this.selectTableData.map(item => {
+        return item.fileName
+      })
+      const req = {
+        applicationName: 'rise',
+        fileList,
+        /*applicationName: 'common-function-test',
+        fileList: ['test (4).txt']*/
+      }
+      await downloadFile(req)
     }
   }
 }

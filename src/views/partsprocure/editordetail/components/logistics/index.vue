@@ -237,6 +237,7 @@
 		},
 		created() {
 			this.getLogistics()
+			console.log(this.infoItem);
 		},
 		props: {
 			infoItem: {
@@ -248,16 +249,17 @@
 			// 获取物流信息
 			getLogistics() {
 				let otherInfoPackage = {
-					findType: '02',
+					findType: '09',
 					partNum: this.infoItem.partNum,
 					rfqId: this.infoItem.rfqId,
-					rfqPlanId: this.infoItem.fsnrGsnrNum,
+					fsGsNum: this.infoItem.fsnrGsnrNum,
 				}
 				getRfqDataList({
 					otherInfoPackage
 				}).then(res => {
-					this.dataInfo = res.data.partLogisticRequirementVO
-					
+					if (res.data) {
+						this.dataInfo = res.data.partLogisticRequirementVO
+					}
 				})
 			}
 
