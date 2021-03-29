@@ -118,17 +118,20 @@ export default {
         this.getTableList()
       })
     },
-    async uploadAttachments(content) {
+    async uploadAttachments(data, size) {
       const id = this.$route.query.id
       if (id) {
         this.tableLoading = true
         this.uploadAttachmentsButtonLoading = true
-        const formData = new FormData()
-        formData.append('file', content.file)
-        formData.append('fileType', 2)
-        formData.append('rfqId', id)
-        formData.append('userId', store.state.permission.userInfo.id)
-        const res = await uploadRfqAnnex(formData)
+        const req = {
+          rfqId: id,
+          userId: store.state.permission.userInfo.id,
+          fileType: 2,
+          fileName: data.fileName,
+          fileSize: size,
+          filePath: data.filePath
+        }
+        const res = await uploadRfqAnnex(req)
         this.resultMessage(res)
         this.tableLoading = false
         this.uploadAttachmentsButtonLoading = false

@@ -15,7 +15,7 @@
           :tableLoading="tableLoading"
           :index="true"
           @handleSelectionChange="handleSelectionChange"
-          :input-props="['pricing']"
+          :input-props="['budget']"
       ></tablelist>
       <!------------------------------------------------------------------------>
       <!--                  表格分页                                          --->
