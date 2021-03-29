@@ -109,7 +109,7 @@ export default {
         })
         const req = {annexIds}
         const res = await deleteAnnex(req)
-        res.result ? iMessage.success(res.desZh) : iMessage.error(res.desZh)
+        res.result ? iMessage.success(this.$i18n.locale === 'zh' ? res.desZh : res.desEn) : iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
         this.getTableList()
       })
     },
@@ -124,7 +124,7 @@ export default {
         formData.append('rfqId', id)
         formData.append('userId', store.state.permission.userInfo.id)
         const res = await uploadRfqAnnex(formData)
-        res.result ? iMessage.success(res.desZh) : iMessage.error(res.desZh)
+        res.result ? iMessage.success(this.$i18n.locale === 'zh' ? res.desZh : res.desEn) : iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
         this.tableLoading = false
         this.uploadAttachmentsButtonLoading = false
         this.getTableList()

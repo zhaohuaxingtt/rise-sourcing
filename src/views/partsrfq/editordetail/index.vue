@@ -12,7 +12,10 @@
     <div class="pageTitle flex-between-center-center">
       <div class="flex nav-box">
         <span>{{ $route.query.id ? $route.query.id : '新建RFQ' }}</span>
-        <iNavMvp :list='navList' @change="changeNav"></iNavMvp>
+        <iTabsList type="border-card" @tab-click="changeNav" class="nav-style">
+          <el-tab-pane :label="item.label" v-for="item of navList" :key="item.label">
+          </el-tab-pane>
+        </iTabsList>
       </div>
       <div class="btnList">
         <iButton @click="newRfq" v-permission="PARTSRFQ_EDITORDETAIL_NEWRFQROUND">新建RFQ轮次</iButton>
@@ -103,14 +106,17 @@
               <iText v-permission="PARTSRFQ_EDITORDETAIL_CURRENTSTATE">{{ baseInfo.currentRoundsStatus }}</iText>
             </iFormItem>
             <div class="edit-button-row">
-              <i-button @click="edit" v-permission="PARTSRFQ_EDITORDETAIL_SAVE">{{ !editStatus ? '编辑' : '保存' }}</i-button>
+              <i-button @click="edit" v-permission="PARTSRFQ_EDITORDETAIL_SAVE">{{
+                  !editStatus ? '编辑' : '保存'
+                }}
+              </i-button>
             </div>
           </div>
         </div>
       </iFormGroup>
     </i-card>
-    <rfqPending v-if="navActivtyValue === 1 || navActivtyValue === ''"></rfqPending>
-    <rfq-detail-info v-if="navActivtyValue === 2"></rfq-detail-info>
+    <rfqPending v-if="navActivtyValue === '待办事项' || navActivtyValue === ''"></rfqPending>
+    <rfq-detail-info v-if="navActivtyValue === '详情信息'"></rfq-detail-info>
     <new-rfq-round v-model="newRfqRoundDialog" @refreshBaseInfo="getBaseInfo"/>
   </iPage>
 </template>
@@ -125,7 +131,7 @@ import {
   iText,
   iInput,
   iMessage,
-  iNavMvp
+  iTabsList
 } from "@/components";
 import rfqPending from './components/rfqPending'
 import rfqDetailInfo from './components/rfqDetailInfo'
@@ -146,19 +152,17 @@ export default {
     rfqPending,
     rfqDetailInfo,
     newRfqRound,
-    iNavMvp
+    iTabsList
   },
   data() {
     return {
       navActivtyValue: '',
       navList: [
         {
-          name: "待办事项",
-          value: 1
+          label: "待办事项",
         },
         {
-          name: "详情信息",
-          value: 2
+          label: "详情信息",
         },
         // {
         //   label: "谈判助手",
@@ -203,8 +207,8 @@ export default {
         this.editStatus = true
       }
     },
-    changeNav(item) {
-      this.navActivtyValue = item.value
+    changeNav(target) {
+      this.navActivtyValue = target.label
     },
     newRfq() {
       this.newRfqRoundDialog = true
@@ -219,7 +223,7 @@ export default {
         }
       }
       const res = await editRfqData(req)
-      res.result ? iMessage.success(res.desZh) : iMessage.error(res.desZh)
+      this.resultMessage(res)
       this.getBaseInfo()
     },
     createAFixedPointApplication() {
@@ -228,8 +232,13 @@ export default {
       window.open(`/#/log?recordId=`, '_blank')
     },
     edit() {
+      const rfqName = this.baseInfo.rfqName
+      if (!rfqName && this.editStatus) {
+        iMessage.warn('RFQ名称不能为空')
+        return false
+      }
       this.editStatus = !this.editStatus
-      if (!this.editStatus) {
+      if (!this.editStatus && rfqName) {
         this.save()
       }
     },
@@ -251,7 +260,7 @@ export default {
           }
         }
         const res = await editRfqData(req)
-        res.result ? iMessage.success(res.desZh) : iMessage.error(res.desZh)
+        res.result ? iMessage.success(this.$i18n.locale === 'zh' ? res.desZh : res.desEn) : iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
         this.getBaseInfo()
       } else {
         const req = {
@@ -262,7 +271,7 @@ export default {
           }
         }
         const res = await addRfq(req)
-        res.result ? iMessage.success(res.desZh) : iMessage.error(res.desZh)
+        res.result ? iMessage.success(this.$i18n.locale === 'zh' ? res.desZh : res.desEn) : iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
         this.$router.push({
           path: `/partsrfq/editordetail?id=${res.data.rfqId}`
         })

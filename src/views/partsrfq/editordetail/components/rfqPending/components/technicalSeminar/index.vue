@@ -157,7 +157,7 @@ export default {
         partNums: partNumsList,
       }
       const res = await addTechnology(req)
-      res.result ? iMessage.success(res.desZh) : iMessage.error(res.desZh)
+      res.result ? iMessage.success(this.$i18n.locale === 'zh' ? res.desZh : res.desEn) : iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
     },
     //修改表格改动列
     handleSelectionChange(val) {
