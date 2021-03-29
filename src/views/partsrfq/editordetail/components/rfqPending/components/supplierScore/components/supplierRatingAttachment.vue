@@ -50,6 +50,7 @@ import {getAllAnnex, deleteAnnex} from "@/api/partsrfq/editordetail";
 import uploadButton from 'pages/partsrfq/components/uploadButton'
 import store from '@/store'
 import {downloadFile} from "@/api/file";
+import {rfqCommonFunMixins} from "pages/partsrfq/components/commonFun";
 
 export default {
   components: {
@@ -59,7 +60,7 @@ export default {
     tablelist,
     uploadButton
   },
-  mixins: [pageMixins],
+  mixins: [pageMixins, rfqCommonFunMixins],
   data() {
     return {
       tableListData: [],
@@ -103,7 +104,7 @@ export default {
         })
         const req = {annexIds}
         const res = await deleteAnnex(req)
-        res.result ? iMessage.success(this.$i18n.locale === 'zh' ? res.desZh : res.desEn) : iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
+        this.resultMessage(res)
         this.getTableList()
       })
     },
@@ -117,7 +118,6 @@ export default {
         this.tableLoading = true
         this.uploadAttachmentsButtonLoading = true
         console.log(data);
-        // res.result ? iMessage.success(this.$i18n.locale === 'zh' ? res.desZh : res.desEn) : iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
         this.tableLoading = false
         this.uploadAttachmentsButtonLoading = false
         this.getTableList()
