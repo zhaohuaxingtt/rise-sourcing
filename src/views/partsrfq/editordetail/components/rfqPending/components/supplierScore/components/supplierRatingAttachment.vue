@@ -46,7 +46,7 @@ import {iCard, iButton, iPagination, iMessage, iMessageBox} from "@/components";
 import tablelist from 'pages/partsrfq/components/tablelist'
 import {supplierRatingAttachmentTitle} from "./data";
 import {pageMixins} from "@/utils/pageMixins";
-import {getAllAnnex, deleteAnnex} from "@/api/partsrfq/editordetail";
+import {getAllAnnex, deleteAnnex, uploadRfqAnnex} from "@/api/partsrfq/editordetail";
 import uploadButton from 'pages/partsrfq/components/uploadButton'
 import store from '@/store'
 import {downloadFile} from "@/api/file";
@@ -112,12 +112,21 @@ export default {
     handleSelectionChange(val) {
       this.selectTableData = val;
     },
-    async uploadAttachments(data) {
+    async uploadAttachments(data, size) {
       const id = this.$route.query.id
       if (id) {
         this.tableLoading = true
         this.uploadAttachmentsButtonLoading = true
-        console.log(data);
+        const req = {
+          rfqId: id,
+          userId: store.state.permission.userInfo.id,
+          fileType: 1,
+          fileName: data.fileName,
+          fileSize: size,
+          filePath: data.filePath
+        }
+        const res = await uploadRfqAnnex(req)
+        this.resultMessage(res)
         this.tableLoading = false
         this.uploadAttachmentsButtonLoading = false
         this.getTableList()
