@@ -9,6 +9,7 @@
 import axios from '@/utils/axios'
 import store from '@/store'
 const requst = axios(process.env.VUE_APP_PART_PROCURE)
+const scouringFast = axios(process.env.VUE_APP_PARTPROCUREAPIFAST)
 //获取零件采购列表。
 export function getTabelData(parmars){
   return requst({
@@ -17,6 +18,15 @@ export function getTabelData(parmars){
     params:parmars
   })
 }
+// 获取零件采购 group下拉数据
+export function getProcureGroup(parmars){
+	return requst({
+		url:"/api/part-src-prjs/drop-down-box-infos",
+		method:'POST',
+		data:parmars
+	})
+}
+
 export function getAllTable(parmars){
   return requst({
     url:'/api/part-src-prjs?'+parmars,
@@ -52,6 +62,7 @@ export function rfqAddPart(parmars){
     }
   })
 }
+
 export function getYearScope(params) {
   return requst({
     url:'https://www.fastmock.site/mock/5cd3e97d6126b18b5e16f3e499489335/api/getYearScope',
