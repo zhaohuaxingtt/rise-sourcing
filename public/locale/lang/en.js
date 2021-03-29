@@ -50,7 +50,7 @@
             'RFQTPSCORESTATUS': 'TpStatus',
             'RFQMQSCORESTATUS': 'MqStatus',
             'RFQTARGETPRICESTATUS': 'TargetStatus',
-            'RFQPARTNUMBERFSNRRFQBUYER': 'PartNumber/fsnr/rfq/buyer',
+            'RFQPARTNUMBERFSNRRFQBUYER': 'PartNumber/fsnr/rfqNumber/buyer',
             'RFQMODELPROJECT': 'ModelProject',
             'RFQPARTITEMTYPE': 'ItemType',
             'RFQPLEASECHOOSE': 'Please Choose',
