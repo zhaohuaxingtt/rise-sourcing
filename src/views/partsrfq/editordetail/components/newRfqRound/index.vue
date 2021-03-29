@@ -6,16 +6,19 @@
  * @Description: In User Settings Edit
 -->
 <template>
-  <iDialog :title="title" :visible.sync="value" width="90%" @close='clearDiolog'>
+  <iDialog :title="title" :visible.sync="value" width="90%" @close='clearDiolog' z-index="1000">
     <div class="changeContent">
       <div class="clearFloat">
         <div class="floatright title-button-box">
           <template v-if="roundType === '00'">
             <iButton @click="save" v-permission="PARTSRFQ_EDITORDETAIL_NEWRFQROUND_SAVE">保存</iButton>
-            <iButton @click="updateRfqStatus('06')" :disabled="!saveStaus" v-permission="PARTSRFQ_EDITORDETAIL_NEWRFQROUND_SAND">发送询价</iButton>
+            <iButton @click="updateRfqStatus('06')" :disabled="!saveStaus"
+                     v-permission="PARTSRFQ_EDITORDETAIL_NEWRFQROUND_SAND">发送询价
+            </iButton>
           </template>
           <template v-else>
-            <iButton @click="saveAndCreate" v-permission="PARTSRFQ_EDITORDETAIL_NEWRFQROUND_SAVEANDCREATE">保存并创建</iButton>
+            <iButton @click="saveAndCreate" v-permission="PARTSRFQ_EDITORDETAIL_NEWRFQROUND_SAVEANDCREATE">保存并创建
+            </iButton>
           </template>
         </div>
       </div>
@@ -27,11 +30,13 @@
         </iFormItem>
         <iFormItem label="本轮报价起止时间" name="test" v-if="roundType === '00'">
           <div class="flex">
-            <el-date-picker type="date" placeholder="请选择" v-model="startTime" v-permission="PARTSRFQ_EDITORDETAIL_NEWRFQROUND_STARTTIME"></el-date-picker>
+            <el-date-picker type="date" placeholder="请选择" v-model="startTime"
+                            v-permission="PARTSRFQ_EDITORDETAIL_NEWRFQROUND_STARTTIME"></el-date-picker>
           </div>
         </iFormItem>
         <iFormItem label="" name="test" v-if="roundType === '00'">
-          <el-date-picker type="date" placeholder="请选择" v-model="endTime" v-permission="PARTSRFQ_EDITORDETAIL_NEWRFQROUND_ENDTIME"></el-date-picker>
+          <el-date-picker type="date" placeholder="请选择" v-model="endTime"
+                          v-permission="PARTSRFQ_EDITORDETAIL_NEWRFQROUND_ENDTIME"></el-date-picker>
         </iFormItem>
       </iFormGroup>
       <tablelist
@@ -76,9 +81,11 @@ import {pageMixins} from "@/utils/pageMixins";
 import {tableTitle, tableTitle2} from "./components/data";
 import {findBySearches, getRfqDataList, addRfq, editRfqData} from "@/api/partsrfq/home";
 import store from '@/store'
+import {rfqCommonFunMixins} from "pages/partsrfq/components/commonFun";
+
 export default {
   components: {iButton, iDialog, iFormGroup, iFormItem, iSelect, tablelist, iPagination},
-  mixins: [pageMixins],
+  mixins: [pageMixins, rfqCommonFunMixins],
   props: {
     title: {type: String, default: '新建RFQ轮次'},
     value: {type: Boolean},
@@ -152,7 +159,7 @@ export default {
       if (id) {
         const req = {
           dblRoundDTOPackage: {
-            userId:store.state.permission.userInfo.id,
+            userId: store.state.permission.userInfo.id,
             startTime: this.startTime,
             endTime: this.endTime,
             rfqId: id,
@@ -161,12 +168,9 @@ export default {
           }
         }
         const res = await addRfq(req)
-        if (res.result) {
+        this.resultMessage(res, ()=>{
           this.saveStaus = true
-          iMessage.success(res.desZh)
-        } else {
-          iMessage.error(res.desZh)
-        }
+        })
       }
     },
     async saveAndCreate() {
@@ -174,14 +178,14 @@ export default {
       if (id) {
         const req = {
           dblRoundDTOPackage: {
-            userId:store.state.permission.userInfo.id,
+            userId: store.state.permission.userInfo.id,
             rfqId: id,
             roundsType: this.roundType,
             bdlInfos: this.selectTableData
           }
         }
         const res = await addRfq(req)
-        res.result ? iMessage.success(res.desZh) : iMessage.error(res.desZh)
+        this.resultMessage(res)
         this.$emit('refreshBaseInfo')
       }
     },
@@ -191,11 +195,11 @@ export default {
         updateRfqStatusPackage: {
           updateType,
           tmRfqIdList: [Number(query.id)],
-          userId:store.state.permission.userInfo.id
+          userId: store.state.permission.userInfo.id
         }
       }
       const res = await editRfqData(req)
-      res.result ? iMessage.success(res.desZh) : iMessage.error(res.desZh)
+      this.resultMessage(res)
     },
     initTimeData() {
       if (this.roundType === '00') {
@@ -211,7 +215,7 @@ export default {
       }
     },
     setTableRowSelected() {
-      this.$nextTick(()=>{
+      this.$nextTick(() => {
         this.tableListData.map(item => {
           if (item.isChecked) {
             this.$refs.multipleTable.$refs.newRoundTable.toggleRowSelection(item, true)
@@ -231,7 +235,8 @@ export default {
   }
 }
 </script>
-<style lang='scss' scoped>
+
+<style scoped lang='scss'>
 .changeContent {
   padding: 0 10px 20px 10px;
 

@@ -5,19 +5,22 @@
 <template>
   <el-upload
       class="upload"
-      action="1"
+      action="/fileApi/upload"
       :show-file-list="false"
+      :data="{ applicationName: 'rise' }"
+      name="multipartFile"
       with-credentials
       :on-success="handleAvatarSuccess"
       :before-upload="beforeAvatarUpload"
       :http-request="myUpload"
       accept=".xlsx,.pdf,.docx"
   >
-    <iButton :loading="uploadButtonLoading">{{buttonText}}</iButton>
+    <iButton :loading="uploadButtonLoading">{{ buttonText }}</iButton>
   </el-upload>
 </template>
 <script>
 import {iButton} from '@/components'
+import {uploadFile} from "@/api/file/upload";
 
 export default {
   components: {
@@ -37,13 +40,11 @@ export default {
     handleAvatarSuccess() {
     },
     async myUpload(content) {
-      /*  this.uploadLoading = true
-        let formData = new FormData()
-        formData.append('upfile', content.file)
-        const res = await uploadImg(formData)
-        this.uploadLoading = false
-        this.$emit('uploadedCallback', res)*/
-      this.$emit('uploadedCallback', content)
+      const formData = new FormData()
+      formData.append('multipartFile', content.file)
+      formData.append('applicationName', 'rise')
+      const res = await uploadFile(formData)
+      this.$emit('uploadedCallback', res.data[0], content.file.size)
     },
   }
 }

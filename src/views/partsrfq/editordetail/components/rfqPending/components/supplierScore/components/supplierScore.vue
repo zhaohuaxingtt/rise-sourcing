@@ -45,6 +45,8 @@ import tpbRemarks from './tpbRemarks'
 import {getAllSupplier, setTpbMemo} from "@/api/partsrfq/editordetail";
 import {serialize} from '@/utils'
 import store from '@/store'
+import {rfqCommonFunMixins} from "pages/partsrfq/components/commonFun";
+
 export default {
   components: {
     iCard,
@@ -52,7 +54,7 @@ export default {
     tablelist,
     tpbRemarks
   },
-  mixins: [pageMixins],
+  mixins: [pageMixins, rfqCommonFunMixins],
   data() {
     return {
       tableListData: [],
@@ -74,7 +76,7 @@ export default {
         try {
           const req = {
             rfqId: id,
-            userId:store.state.permission.userInfo.id
+            userId: store.state.permission.userInfo.id
           }
           const res = await getAllSupplier(req)
           this.tableListData = res.records;
@@ -118,13 +120,10 @@ export default {
         rfqId: this.$route.query.id
       }
       const res = await setTpbMemo(req)
-      if (res.result) {
-        iMessage.success(res.desZh)
+      this.resultMessage(res, () => {
         this.dialogRemarks = false
         this.getTableList()
-      } else {
-        iMessage.error(res.desZh)
-      }
+      })
     }
   }
 }

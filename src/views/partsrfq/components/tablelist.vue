@@ -52,6 +52,12 @@
           <slot name="icon" :data="scope.row"></slot>
         </template>
       </el-table-column>
+      <el-table-column :key="index" align='center' v-else-if='items.props === fileSizeProps' :prop="items.props"
+                       :label="items.name">
+        <template slot-scope="scope">
+          {{ scope.row[items.props] ? scope.row[items.props] / 1024 / 1024 : '' }}
+        </template>
+      </el-table-column>
       <el-table-column :key="index" align='center' v-else :label="items.key ? $t(items.key) : items.name"
                        :prop="items.props"></el-table-column>
     </template>
@@ -90,6 +96,7 @@ export default {
     iconProps: {type: String, default: ''},
     customOpenPageWord: {type: String, default: ''},
     openPageGetRowData: {type: Boolean, default: false},
+    fileSizeProps: {type: String, default: 'fileSize'},
   },
   components: {
     iInput,

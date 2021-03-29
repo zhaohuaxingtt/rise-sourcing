@@ -10,6 +10,7 @@ export const tableTitle = [
     {props:'id',name:'RFQ编号', key: 'rfq.RFQRFQNUMBER'},
     {props:'rfqName',name:'RFQ名称', key: 'rfq.RFQRFQNAME'},
     {props:'rfqType',name:'RFQ类型', key: 'rfq.RFQRFQTYPE'},
+    {props:'carType',name:'车型项目', key: 'rfq.RFQMODELPROJECT'},
     {props:'createDate',name:'创建日期', key: 'rfq.RFQCREATIONDATE'},
     {props:'currentRounds',name:'当前轮次', key: 'rfq.RFQCURRENTROUND'},
     {props:'suppliers',name:'已询价供应商', key: 'rfq.RFQSUPPLIERSHAVEBEENINQUIRED'},

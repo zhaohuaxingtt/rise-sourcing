@@ -3,7 +3,9 @@
     <div class="margin-bottom20 clearFloat">
       <span class="font18 font-weight">供应商评分附件</span>
       <div class="floatright">
-        <iButton @click="deleteItems" v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_SUPPLIERSCORE_PARTSCORING_DELETE">删除</iButton>
+        <iButton @click="deleteItems" v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_SUPPLIERSCORE_PARTSCORING_DELETE">
+          删除
+        </iButton>
         <upload-button
             @uploadedCallback="uploadAttachments"
             :upload-button-loading="uploadAttachmentsButtonLoading"
@@ -45,6 +47,8 @@ import {getAllAnnex, deleteAnnex, uploadRfqAnnex} from "@/api/partsrfq/editordet
 import uploadButton from 'pages/partsrfq/components/uploadButton'
 import store from '@/store'
 import {downloadFile} from "@/api/file";
+import {rfqCommonFunMixins} from "pages/partsrfq/components/commonFun";
+
 export default {
   components: {
     iCard,
@@ -53,7 +57,7 @@ export default {
     tablelist,
     uploadButton
   },
-  mixins: [pageMixins],
+  mixins: [pageMixins, rfqCommonFunMixins],
   data() {
     return {
       tableListData: [],
@@ -77,7 +81,7 @@ export default {
           const req = {
             fileType: 1,
             rfqId: id,
-            userId:store.state.permission.userInfo.id
+            userId: store.state.permission.userInfo.id
           }
           const res = await getAllAnnex(req)
           this.tableListData = res.records;
@@ -97,7 +101,7 @@ export default {
         })
         const req = {annexIds}
         const res = await deleteAnnex(req)
-        res.result ? iMessage.success(res.desZh) : iMessage.error(res.desZh)
+        this.resultMessage(res)
         this.getTableList()
       })
     },
@@ -105,18 +109,21 @@ export default {
     handleSelectionChange(val) {
       this.selectTableData = val;
     },
-    async uploadAttachments(content) {
+    async uploadAttachments(data, size) {
       const id = this.$route.query.id
       if (id) {
         this.tableLoading = true
         this.uploadAttachmentsButtonLoading = true
-        const formData = new FormData()
-        formData.append('file', content.file)
-        formData.append('fileType', 1)
-        formData.append('rfqId', id)
-        formData.append('userId', store.state.permission.userInfo.id)
-        const res = await uploadRfqAnnex(formData)
-        res.result ? iMessage.success(res.desZh) : iMessage.error(res.desZh)
+        const req = {
+          rfqId: id,
+          userId: store.state.permission.userInfo.id,
+          fileType: 1,
+          fileName: data.fileName,
+          fileSize: size,
+          filePath: data.filePath
+        }
+        const res = await uploadRfqAnnex(req)
+        this.resultMessage(res)
         this.tableLoading = false
         this.uploadAttachmentsButtonLoading = false
         this.getTableList()

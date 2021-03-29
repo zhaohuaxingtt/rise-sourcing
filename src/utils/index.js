@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-03-27 23:38:44
+ * @LastEditTime: 2021-03-29 18:18:07
  * @LastEditors: Please set LastEditors
  * @Description: 公共utils部分
  * @FilePath: \rise\src\utils\index.js
@@ -11,7 +11,7 @@ import localStoreage from './localstorage'
 import jsencrypt from 'jsencrypt'
 export function setCookie(cookieName, cookieData) {
   // eslint-disable-next-line no-undef
-  Cookies.set(cookieName, cookieData, { domain: process.env.VUE_APP_ROOT_DOMAIN })
+  return Cookies.set(cookieName, cookieData, { domain: process.env.VUE_APP_ROOT_DOMAIN })
 }
 export function removeCookie(cookieName) {
   // eslint-disable-next-line no-undef

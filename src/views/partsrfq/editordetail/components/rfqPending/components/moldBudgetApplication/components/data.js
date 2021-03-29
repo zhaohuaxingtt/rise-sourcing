@@ -10,8 +10,8 @@ export const tableTitle = [
     {props:'rfqId',name:'RFQ编号'},
     {props:'applyTime',name:'申请日期'},
     {props:'cartypeProjectZh',name:'车型项目'},
-    {props:'pricing',name:'投资预算（RMB）'},
-    {props:'csfPDiretorId',name:'CSF(P)负责⼈'},
+    {props:'budget',name:'投资预算（RMB）'},
+    {props:'csfPDiretor',name:'CSF(P)负责⼈'},
     {props:'approvalStatus',name:'审批状态'},
     {props:'approvalComments',name:'审批意见'}
 ]

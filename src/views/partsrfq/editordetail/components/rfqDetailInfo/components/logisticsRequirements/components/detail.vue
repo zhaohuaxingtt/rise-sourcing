@@ -188,7 +188,9 @@ export default {
     dataInfo: {
       type: Object,
       default: () => {
-        return {}
+        return {
+          partPackgeRequirements: {}
+        }
       }
     }
   },
