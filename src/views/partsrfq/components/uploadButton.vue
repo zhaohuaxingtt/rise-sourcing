@@ -15,7 +15,7 @@
       :http-request="myUpload"
       accept=".xlsx,.pdf,.docx"
   >
-    <iButton :loading="uploadButtonLoading">{{buttonText}}</iButton>
+    <iButton :loading="uploadButtonLoading">{{ buttonText }}</iButton>
   </el-upload>
 </template>
 <script>
@@ -44,7 +44,7 @@ export default {
       formData.append('multipartFile', content.file)
       formData.append('applicationName', 'rise')
       const res = await uploadFile(formData)
-      this.$emit('uploadedCallback', res.data[0])
+      this.$emit('uploadedCallback', res.data[0], content.file.size)
     },
   }
 }
