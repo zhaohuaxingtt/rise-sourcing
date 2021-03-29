@@ -5,7 +5,7 @@
 * @Description: In User Settings Edit
  -->
 <template>
-  <iPage>
+  <iPage v-permission="PARTSIGN_EDITORDETAIL_INDEXPAGE">
     <!-- 零件详情操作按钮 -->
     <div class="pageTitle flex-between-center-center">
       <span>3QG810005L</span>

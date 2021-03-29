@@ -8,7 +8,7 @@
 -->
 
 <template>
-	<iPage class="batchmiantain">
+	<iPage class="batchmiantain" v-permission="PARTSPROCURE_BATCHMIANTAIN_INDEXPAGE">
 		<div class="margin-bottom20 clearFloat">
 			<span class="font18 font-weight">批量维护零件采购项目</span>
 			<div class="floatright">

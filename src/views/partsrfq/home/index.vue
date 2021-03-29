@@ -7,7 +7,7 @@
  * @FilePath: \rise\src\views\partsrfq\home\index.vue
 -->
 <template>
-  <iPage class="partsrfqHome">
+  <iPage class="partsrfqHome" v-permission="PARTSRFQ_INDEXPAGE">
     <el-tabs v-model="tab" class="tab">
       <el-tab-pane :label="$t('partsignLanguage.XunYuanZhiXing')" name="source">
         <div>

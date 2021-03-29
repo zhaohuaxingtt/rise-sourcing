@@ -7,7 +7,7 @@
  * @FilePath: \rise\src\views\partsprocure\editordetail\index.vue
 -->
 <template>
-	<iPage class="partsprocureEditordetail">
+	<iPage class="partsprocureEditordetail" v-permission="PARTSPROCURE_EDITORDETAIL_INDEXPAGE">
 		<!------------------------------------------------------------------------>
 		<!--                  详情页头部保存区域                                  --->
 		<!------------------------------------------------------------------------>

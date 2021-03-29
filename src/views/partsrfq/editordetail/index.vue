@@ -7,7 +7,7 @@
  * @FilePath: \rise\src\views\partsrfq\editordetail\index.vue
 -->
 <template>
-  <iPage>
+  <iPage v-permission="PARTSRFQ_EDITORDETAIL_INDEXPAGE">
     <!-- rfq详情操作按钮 -->
     <div class="pageTitle flex-between-center-center">
       <div class="flex nav-box">
