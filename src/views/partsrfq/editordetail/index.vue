@@ -12,7 +12,10 @@
     <div class="pageTitle flex-between-center-center">
       <div class="flex nav-box">
         <span>{{ $route.query.id ? $route.query.id : '新建RFQ' }}</span>
-        <iNavMvp :list='navList' @change="changeNav"></iNavMvp>
+        <iTabsList type="border-card" @tab-click="changeNav" class="nav-style">
+          <el-tab-pane :label="item.label" v-for="item of navList" :key="item.label">
+          </el-tab-pane>
+        </iTabsList>
       </div>
       <div class="btnList">
         <iButton @click="newRfq" v-permission="PARTSRFQ_EDITORDETAIL_NEWRFQROUND">新建RFQ轮次</iButton>
@@ -112,8 +115,8 @@
         </div>
       </iFormGroup>
     </i-card>
-    <rfqPending v-if="navActivtyValue === 1 || navActivtyValue === ''"></rfqPending>
-    <rfq-detail-info v-if="navActivtyValue === 2"></rfq-detail-info>
+    <rfqPending v-if="navActivtyValue === '待办事项' || navActivtyValue === ''"></rfqPending>
+    <rfq-detail-info v-if="navActivtyValue === '详情信息'"></rfq-detail-info>
     <new-rfq-round v-model="newRfqRoundDialog" @refreshBaseInfo="getBaseInfo"/>
   </iPage>
 </template>
@@ -128,7 +131,7 @@ import {
   iText,
   iInput,
   iMessage,
-  iNavMvp
+  iTabsList
 } from "@/components";
 import rfqPending from './components/rfqPending'
 import rfqDetailInfo from './components/rfqDetailInfo'
@@ -149,19 +152,17 @@ export default {
     rfqPending,
     rfqDetailInfo,
     newRfqRound,
-    iNavMvp
+    iTabsList
   },
   data() {
     return {
       navActivtyValue: '',
       navList: [
         {
-          name: "待办事项",
-          value: 1
+          label: "待办事项",
         },
         {
-          name: "详情信息",
-          value: 2
+          label: "详情信息",
         },
         // {
         //   label: "谈判助手",
@@ -206,8 +207,8 @@ export default {
         this.editStatus = true
       }
     },
-    changeNav(item) {
-      this.navActivtyValue = item.value
+    changeNav(target) {
+      this.navActivtyValue = target.label
     },
     newRfq() {
       this.newRfqRoundDialog = true
