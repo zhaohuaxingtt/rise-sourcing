@@ -169,9 +169,9 @@ export default {
         const res = await addRfq(req)
         if (res.result) {
           this.saveStaus = true
-          iMessage.success(res.desZh)
+          iMessage.success(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
         } else {
-          iMessage.error(res.desZh)
+          iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
         }
       }
     },
@@ -187,7 +187,7 @@ export default {
           }
         }
         const res = await addRfq(req)
-        res.result ? iMessage.success(res.desZh) : iMessage.error(res.desZh)
+        res.result ? iMessage.success(this.$i18n.locale === 'zh' ? res.desZh : res.desEn) : iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
         this.$emit('refreshBaseInfo')
       }
     },
@@ -201,7 +201,7 @@ export default {
         }
       }
       const res = await editRfqData(req)
-      res.result ? iMessage.success(res.desZh) : iMessage.error(res.desZh)
+      res.result ? iMessage.success(this.$i18n.locale === 'zh' ? res.desZh : res.desEn) : iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
     },
     initTimeData() {
       if (this.roundType === '00') {

@@ -223,7 +223,7 @@ export default {
         }
       }
       const res = await editRfqData(req)
-      res.result ? iMessage.success(res.desZh) : iMessage.error(res.desZh)
+      this.resultMessage(res)
       this.getBaseInfo()
     },
     createAFixedPointApplication() {
@@ -260,7 +260,7 @@ export default {
           }
         }
         const res = await editRfqData(req)
-        res.result ? iMessage.success(res.desZh) : iMessage.error(res.desZh)
+        res.result ? iMessage.success(this.$i18n.locale === 'zh' ? res.desZh : res.desEn) : iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
         this.getBaseInfo()
       } else {
         const req = {
@@ -271,7 +271,7 @@ export default {
           }
         }
         const res = await addRfq(req)
-        res.result ? iMessage.success(res.desZh) : iMessage.error(res.desZh)
+        res.result ? iMessage.success(this.$i18n.locale === 'zh' ? res.desZh : res.desEn) : iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
         this.$router.push({
           path: `/partsrfq/editordetail?id=${res.data.rfqId}`
         })

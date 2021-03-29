@@ -123,7 +123,7 @@
 							this.getTableList()
 							this.$refs.applyPrice.getTableList()
 						} else {
-							iMessage.warn(res.desZh);
+							iMessage.warn(this.$i18n.locale === 'zh' ? res.desZh : res.desEn);
 						}
 					})
 					.catch((err) => {

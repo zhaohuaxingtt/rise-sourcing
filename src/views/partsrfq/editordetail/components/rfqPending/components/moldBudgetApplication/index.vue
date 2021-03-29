@@ -88,7 +88,7 @@ export default {
       })
       const req = this.selectTableData
       const res = await submitMoldBudget(req)
-      res.result ? iMessage.success(res.desZh) : iMessage.error(res.desZh)
+      res.result ? iMessage.success(this.$i18n.locale === 'zh' ? res.desZh : res.desEn) : iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
       this.getTableList()
     },
     async recall() {
@@ -98,7 +98,7 @@ export default {
       })
       const req = this.selectTableData
       const res = await cancelMoldBudget(req)
-      res.result ? iMessage.success(res.desZh) : iMessage.error(res.desZh)
+      res.result ? iMessage.success(this.$i18n.locale === 'zh' ? res.desZh : res.desEn) : iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
       this.getTableList()
     },
     //修改表格改动列

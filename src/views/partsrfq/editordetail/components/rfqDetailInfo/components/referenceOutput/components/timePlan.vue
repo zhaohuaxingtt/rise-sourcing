@@ -120,7 +120,7 @@ export default {
         updateTimePlanPackage: reqList
       }
       const res = await editRfqData(req)
-      res.result ? iMessage.success(res.desZh) : iMessage.error(res.desZh)
+      res.result ? iMessage.success(this.$i18n.locale === 'zh' ? res.desZh : res.desEn) : iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
       this.editStatus = false
       this.inputProps = []
       this.reRenderTable()

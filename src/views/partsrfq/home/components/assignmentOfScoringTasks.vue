@@ -41,6 +41,9 @@ import {editRfqData} from "@/api/partsrfq/home";
 import {getDictByCode, getDeptByDeptType} from "@/api/dictionary";
 import {getGraderIdByDept} from "@/api/usercenter";
 import store from '@/store'
+import {rfqCommonFunMixins} from "pages/partsrfq/components/commonFun";
+
+
 export default {
   components: {iButton, iDialog, tablelist},
   props: {
@@ -54,6 +57,7 @@ export default {
       }
     }
   },
+  mixins: [rfqCommonFunMixins],
   data() {
     return {
       tableListData: [],
@@ -83,7 +87,7 @@ export default {
         }
       }
       const res = await editRfqData(req)
-      res.result ? iMessage.success(res.desZh) : iMessage.error(res.desZh)
+      this.resultMessage(res)
       this.$emit('sure', this.selectTableData)
     },
     //修改表格改动列

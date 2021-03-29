@@ -141,6 +141,7 @@ import {getRfqDataList, editRfqData, findBySearches} from "@/api/partsrfq/home";
 import {excelExport} from "@/utils/filedowLoad";
 import store from '@/store'
 import filters from "@/utils/filters";
+import {rfqCommonFunMixins} from "pages/partsrfq/components/commonFun";
 
 export default {
   components: {
@@ -156,7 +157,7 @@ export default {
     icon,
     assignmentOfScoringTasks
   },
-  mixins: [pageMixins, filters],
+  mixins: [pageMixins, filters, rfqCommonFunMixins],
   data() {
     return {
       tableListData: [],
@@ -241,7 +242,7 @@ export default {
       this.setOperationButtonLoading(updateType, true)
       const res = await editRfqData(req)
       this.setOperationButtonLoading(updateType, false)
-      res.result ? iMessage.success(res.desZh) : iMessage.error(res.desZh)
+      this.resultMessage(res)
       this.getTableList()
     },
     assignmentOfScoringTasks() {
@@ -262,7 +263,7 @@ export default {
         },
       }
       const res = await editRfqData(req)
-      res.result ? iMessage.success(res.desZh) : iMessage.error(res.desZh)
+      this.resultMessage(res)
       this.getTableList()
     },
     change() {
