@@ -50,7 +50,7 @@
       'RFQTPSCORESTATUS': 'TP评分状态',
       'RFQMQSCORESTATUS': 'MQ评分状态',
       'RFQTARGETPRICESTATUS': '目标价状态',
-      'RFQPARTNUMBERFSNRRFQBUYER': '零件号/FSNR/RFQ/采购员',
+      'RFQPARTNUMBERFSNRRFQBUYER': '零件号/FSNR/RFQ编号/采购员',
       'RFQMODELPROJECT': '车型项目',
       'RFQPARTITEMTYPE': '零件项目类型',
       'RFQPLEASECHOOSE': '请选择',
