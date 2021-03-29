@@ -127,6 +127,13 @@ module.exports = {
 					"^/partProcureApi": ""
 				}
 			},
+			'/partProcureApiFast': { //赵文鹏快速通道服务地址 临时
+				target: 'http://10.122.18.166:8825',
+				changeOrigin: true,
+				pathRewrite: {
+					"^/partProcureApiFast": ""
+				}
+			},
 			'/commonApi': { //向东，common模块的api地址
 				target: 'http://10.122.18.65:8014',
 				changeOrigin: true,
@@ -134,7 +141,6 @@ module.exports = {
 					"^/commonApi": ""
 				}
 			},
-
 			'/rfqApi': { //周德华，rfq模块的api地址
 				target: 'http://10.122.18.166:8025',
 				changeOrigin: true,
