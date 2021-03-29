@@ -9,8 +9,12 @@
         <upload-button
             @uploadedCallback="uploadAttachments"
             :upload-button-loading="uploadAttachmentsButtonLoading"
-            class="margin-left8 margin-right8"  v-permission="PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_INQUIRYATTACHMENT_INQUIRYATTACHMENT_UPLOADBUTTON"/>
-        <iButton @click="download" v-permission="PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_INQUIRYATTACHMENT_INQUIRYATTACHMENT_DOWNLOADBUTTON">下载</iButton>
+            class="margin-left8 margin-right8"
+            v-permission="PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_INQUIRYATTACHMENT_INQUIRYATTACHMENT_UPLOADBUTTON"/>
+        <iButton @click="download"
+                 v-permission="PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_INQUIRYATTACHMENT_INQUIRYATTACHMENT_DOWNLOADBUTTON">
+          下载
+        </iButton>
         <!-- 暂不做，后端暂无接口：用户可以选择“通知全部供应商”，询价附件会发送给当前RFQ BDL中所选择的全部供应商-->
         <iButton @click="notifyAllSuppliers"
                  v-permission="PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_INQUIRYATTACHMENT_INQUIRYATTACHMENT_NOTIFYALL">
@@ -58,6 +62,7 @@ import uploadButton from 'pages/partsrfq/components/uploadButton'
 import {deleteAnnex, getAllAnnex, uploadRfqAnnex} from "@/api/partsrfq/editordetail";
 import store from '@/store'
 import {downloadFile} from '@/api/file'
+import {rfqCommonFunMixins} from "pages/partsrfq/components/commonFun";
 
 export default {
   components: {
@@ -67,7 +72,7 @@ export default {
     tablelist,
     uploadButton
   },
-  mixins: [pageMixins],
+  mixins: [pageMixins, rfqCommonFunMixins],
   data() {
     return {
       tableListData: [],
@@ -109,7 +114,7 @@ export default {
         })
         const req = {annexIds}
         const res = await deleteAnnex(req)
-        res.result ? iMessage.success(this.$i18n.locale === 'zh' ? res.desZh : res.desEn) : iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
+        this.resultMessage(res)
         this.getTableList()
       })
     },
@@ -124,7 +129,7 @@ export default {
         formData.append('rfqId', id)
         formData.append('userId', store.state.permission.userInfo.id)
         const res = await uploadRfqAnnex(formData)
-        res.result ? iMessage.success(this.$i18n.locale === 'zh' ? res.desZh : res.desEn) : iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
+        this.resultMessage(res)
         this.tableLoading = false
         this.uploadAttachmentsButtonLoading = false
         this.getTableList()

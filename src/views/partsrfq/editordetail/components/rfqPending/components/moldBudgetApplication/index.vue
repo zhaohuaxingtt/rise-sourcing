@@ -3,8 +3,10 @@
     <iCard>
       <div class="margin-bottom20 clearFloat">
         <div class="floatright">
-          <iButton @click="submit" v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_MOLDBUDGETAPPLICATION_SUBMIT">提交</iButton>
-          <iButton @click="recall" v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_MOLDBUDGETAPPLICATION_RECALL">撤回</iButton>
+          <iButton @click="submit" v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_MOLDBUDGETAPPLICATION_SUBMIT">提交
+          </iButton>
+          <iButton @click="recall" v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_MOLDBUDGETAPPLICATION_RECALL">撤回
+          </iButton>
         </div>
       </div>
       <tablelist
@@ -39,6 +41,7 @@ import {tableTitle} from "./components/data";
 import {pageMixins} from "@/utils/pageMixins";
 import {getModelBudgetList, submitMoldBudget, cancelMoldBudget} from "@/api/partsrfq/editordetail";
 import store from '@/store'
+import {rfqCommonFunMixins} from "pages/partsrfq/components/commonFun";
 
 export default {
   components: {
@@ -47,7 +50,7 @@ export default {
     iPagination,
     tablelist
   },
-  mixins: [pageMixins],
+  mixins: [pageMixins, rfqCommonFunMixins],
   data() {
     return {
       tableListData: [],
@@ -68,7 +71,7 @@ export default {
         try {
           const req = {
             rfqId: id,
-            userId:store.state.permission.userInfo.id
+            userId: store.state.permission.userInfo.id
           }
           const res = await getModelBudgetList(req)
           this.tableListData = res.records;
@@ -88,7 +91,7 @@ export default {
       })
       const req = this.selectTableData
       const res = await submitMoldBudget(req)
-      res.result ? iMessage.success(this.$i18n.locale === 'zh' ? res.desZh : res.desEn) : iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
+      this.resultMessage(res)
       this.getTableList()
     },
     async recall() {
@@ -98,7 +101,7 @@ export default {
       })
       const req = this.selectTableData
       const res = await cancelMoldBudget(req)
-      res.result ? iMessage.success(this.$i18n.locale === 'zh' ? res.desZh : res.desEn) : iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
+      this.resultMessage(res)
       this.getTableList()
     },
     //修改表格改动列
