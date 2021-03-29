@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-03-10 15:22:16
- * @LastEditTime: 2021-03-26 16:29:41
+ * @LastEditTime: 2021-03-29 18:18:45
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\login\index.vue
@@ -47,11 +47,12 @@ export default{
     login(){
       if(this.passWord == '' || this.userName == '') return iMessage.error('抱歉，用户名或密码不能为空！')
       this.loading = true
-      login({userName:this.userName,passWord:this.passWord}).then(async res=>{
+      login({userName:this.userName,passWord:this.passWord}).then(res=>{
         this.loading = false
-        await setToken(res.data.token)
-        this.$router.replace({
-          path:'/partsign'
+        setToken(res.data.token).then(()=>{
+          this.$router.replace({
+            path:'/partsign'
+          })
         })
       }).catch(()=>{
         this.loading = false
