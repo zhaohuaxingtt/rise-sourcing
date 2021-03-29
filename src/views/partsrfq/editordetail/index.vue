@@ -103,7 +103,10 @@
               <iText v-permission="PARTSRFQ_EDITORDETAIL_CURRENTSTATE">{{ baseInfo.currentRoundsStatus }}</iText>
             </iFormItem>
             <div class="edit-button-row">
-              <i-button @click="edit" v-permission="PARTSRFQ_EDITORDETAIL_SAVE">{{ !editStatus ? '编辑' : '保存' }}</i-button>
+              <i-button @click="edit" v-permission="PARTSRFQ_EDITORDETAIL_SAVE">{{
+                  !editStatus ? '编辑' : '保存'
+                }}
+              </i-button>
             </div>
           </div>
         </div>
@@ -228,8 +231,13 @@ export default {
       window.open(`/#/log?recordId=`, '_blank')
     },
     edit() {
+      const rfqName = this.baseInfo.rfqName
+      if (!rfqName && this.editStatus) {
+        iMessage.warn('RFQ名称不能为空')
+        return false
+      }
       this.editStatus = !this.editStatus
-      if (!this.editStatus) {
+      if (!this.editStatus && rfqName) {
         this.save()
       }
     },
