@@ -94,11 +94,11 @@ export default {
       } else {
         clearTimeout(this.timer)
         iMessage.success(`${ file.name } 上传成功`)
-        this.fileList.push({ tpPartAttachmentName: res.data[0].fileName, tpPartAttachmentPath: res.data[0].filePath, size: file.size })
+        this.fileList.push({ tpPartAttachmentName: res.data[0].fileName, tpPartAttachmentPath: res.data[0].filePath, size: (file.size / 1024 / 1024).toFixed(3) })
         this.timer = setTimeout(() => {
           this.patchTpRecords()
           clearTimeout(this.timer)
-        }, 500)
+        }, 700)
       }
     },
     uploadError(err, file) {
