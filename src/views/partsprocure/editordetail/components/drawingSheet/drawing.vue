@@ -1,11 +1,14 @@
 <template>
   <iCard class="outputRecord" tabCard title="询价附件">
     <template v-slot:header-control>
+      <iButton @click="handleDownload" :loading="downloadLoading" v-permission="PARTSPROCURE_EDITORDETAIL_DRAWINGSHEET_HANDDOWNLOAD">下载</iButton>
       <iButton class="deleteBtn" @click="handleDelete" :loading="deleteLoading" v-permission="PARTSPROCURE_EDITORDETAIL_DRAWINGSHEET_HANDLEDELETE">删除</iButton>
       <el-upload 
         class="uploadBtn" 
         multiple
-        :action="`${ action }?purchasingApplyTargetId=${ params.purchasingRequirementTargetId }`"
+        :action="action"
+        :data="{ applicationName: 'procurereq-service' }"
+        name="multipartFile"
         :show-file-list="false" 
         :before-upload="beforeUpload"
         :on-success="uploadSuccess"
@@ -24,7 +27,7 @@
         :tableLoading="loading"
         @handleSelectionChange="handleSelectionChange">
         <template #tpPartAttachmentName="scope">
-          <span class="link-underline" @click="preview">{{ scope.row.tpPartAttachmentName }}</span>
+          <span class="link-underline" @click="preview(scope.row)">{{ scope.row.tpPartAttachmentName }}</span>
         </template>
         <template #updateDate="scope">
           <span>{{ scope.row.updateDate | dateFilter }}</span>
@@ -49,8 +52,9 @@ import { iCard, iButton, iPagination, iMessage } from '@/components'
 import tableList from '@/views/partsign/editordetail/components/tableList'
 import { pageMixins } from '@/utils/pageMixins'
 import { tableTitle } from './data'
-import { getInfoAnnexPage, deleteFile } from "@/api/partsprocure/editordetail";
+import { getInfoAnnexPage, deleteFile, patchTpRecords } from "@/api/partsprocure/editordetail";
 import filters from '@/utils/filters'
+import { downloadFile } from "@/api/file";
 
 export default {
   components: { iCard, iButton, tableList, iPagination },
@@ -65,18 +69,22 @@ export default {
     return {
       loading: false,
       uploadLoading: false,
+      downloadLoading: false,
       deleteLoading: false,
-      action: '/tpInfoApi/tp-records/tpInfo/file', // 上传api
+      action: '/fileApi/upload', // 上传api
       tableTitle,
       tableListData: [],
       multipleSelection: [],
+      fileList: [],
+      timer: 0
     }
   },
   created() {
     this.getInfoAnnexPage()
   },
   methods: {
-    beforeUpload() {
+    beforeUpload(res) {
+      console.log(res)
       this.uploadLoading = true
     },
     uploadSuccess(res, file) {
@@ -84,13 +92,34 @@ export default {
       if (res.code != 200) {
         iMessage.error(`${ this.$i18n.locale === 'zh' ? res.desZh : res.desEn }`)
       } else {
+        clearTimeout(this.timer)
         iMessage.success(`${ file.name } 上传成功`)
-        this.getInfoAnnexPage()
+        this.fileList.push({ tpPartAttachmentName: res.data[0].fileName, tpPartAttachmentPath: res.data[0].filePath, size: file.size })
+        this.timer = setTimeout(() => {
+          this.patchTpRecords()
+          clearTimeout(this.timer)
+        }, 500)
       }
     },
     uploadError(err, file) {
       this.uploadLoading = false
       iMessage.error(`${ file.name } 上传失败`)
+    },
+    patchTpRecords() {
+      patchTpRecords({
+        enquiryAttachmentFacadeDTO: {
+          partAttachmentList: this.fileList,
+          tpNewPartID: this.params.purchasingRequirementId
+        }
+      })
+        .then(res => {
+          if (res.code == 200) {
+            this.getInfoAnnexPage()
+          } else {
+            iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
+          }
+        })
+        .catch(() => {})
     },
     getInfoAnnexPage() {
       this.loading = true
@@ -112,7 +141,7 @@ export default {
       this.multipleSelection = list
     },
     handleDelete() {
-      if (!this.multipleSelection.length) return iMessage.warn('请选择需要删除的图纸')
+      if (!this.multipleSelection.length) return iMessage.warn('请选择需要删除的附件')
 
       // 后端删除
       this.deleteLoading = true
@@ -125,7 +154,23 @@ export default {
         })
         .catch(() => this.deleteLoading = false)
     },
-    preview() {}
+    preview(row) {
+      downloadFile({
+        applicationName: 'procurereq-service',
+        fileList: row.tpPartAttachmentName
+      })
+    },
+    async handleDownload() {
+      if (!this.multipleSelection.length) return iMessage.warn("请选择需要下载的附件")
+
+      this.downloadLoading = true
+      await downloadFile({
+        applicationName: 'procurereq-service',
+        fileList: this.multipleSelection.map(item => item.tpPartAttachmentName).join('&fileList=')
+      })
+
+      this.downloadLoading = false
+    }
   }
 }
 </script>
