@@ -11,7 +11,7 @@ import localStoreage from './localstorage'
 import jsencrypt from 'jsencrypt'
 export function setCookie(cookieName, cookieData) {
   // eslint-disable-next-line no-undef
-  Cookies.set(cookieName, cookieData, { domain: process.env.VUE_APP_ROOT_DOMAIN })
+  return Cookies.set(cookieName, cookieData, { domain: process.env.VUE_APP_ROOT_DOMAIN })
 }
 export function removeCookie(cookieName) {
   // eslint-disable-next-line no-undef
