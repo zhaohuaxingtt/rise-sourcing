@@ -22,7 +22,7 @@
 				</template>
 			</el-table-column> -->
 			<el-table-column :key="index" align="center" v-else-if="item.props == 'userDefinedGrade'" :prop="item.props"
-				:label="item.name">
+				:label="$t(item.key)">
 				<template v-slot:header>
 					<iInput v-model="addTitle"></iInput>
 				</template>
@@ -31,14 +31,14 @@
 				</template>
 			</el-table-column>
 			<el-table-column :key="index" align="center" v-else-if="item.props == 'i'" :prop="item.props"
-				:label="item.name">
+				:label="$t(item.key)">
 				<template slot-scope="scope">
 					<span class="cursor look" @click="onJump360(scope.row)">
 						<icon symbol name="icongongyingshangshituliebiao"></icon>
 					</span>
 				</template>
 			</el-table-column>
-			<el-table-column v-else :key="index" align="center" :label="item.name" :prop="item.props">
+			<el-table-column v-else :key="index" align="center" :label="$t(item.key)" :prop="item.props">
 				<template slot-scope="scope">
 					<span v-if="item.props == 'isMbdl'">
 						{{scope.row[item.props]?'M':''}}
