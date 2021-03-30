@@ -23,7 +23,7 @@ export const partsProductionTableTitle = [
 ]
 
 export const timePlanableTitle = [
-// export const timePlanableTitle = permissionTitle("PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_TIMEPLAN_TIMELIST",[
+//export const timePlanableTitle = permissionTitle("PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_TIMEPLAN_TIMELIST",[
     {props:'fsNum',name:'FS号'},
     {props:'procureFactoryId',name:'采购工厂'},
     {props:'partNum',name:'零件号'},

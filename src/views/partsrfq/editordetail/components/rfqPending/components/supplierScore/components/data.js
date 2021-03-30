@@ -5,7 +5,8 @@
  * @Description: In User Settings Edit
  */
 import {permissionTitle} from '@/utils'
-export const supplierScoreTitle = permissionTitle("PARTSRFQ_EDITORDETAIL_RFQPENDING_SUPPLIERSCORE_PARTSCORING_VIEWREMARK",[
+export const supplierScoreTitle = [
+//export const supplierScoreTitle = permissionTitle("PARTSRFQ_EDITORDETAIL_RFQPENDING_SUPPLIERSCORE_PARTSCORING_VIEWREMARK",[
     {props: 'svwCode', name: 'SVW号'},
     {props: 'shortNameZh', name: '供应商名'},
     {props: 'companyAddress', name: '供应商生产场地'},
@@ -20,7 +21,7 @@ export const supplierScoreTitle = permissionTitle("PARTSRFQ_EDITORDETAIL_RFQPEND
             {props: 'tpbMemo', name: '备注'},
         ]
     }
-])
+]
 
 export const supplierRatingAttachmentTitle = [
     {props: 'fileName', name: '文件名称'},
