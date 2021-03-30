@@ -37,7 +37,7 @@
           :total="page.totalCount" />
       </div>
     </div>
-    <logDialog :visible.sync="logVisible" />
+    <!-- <logDialog :visible.sync="logVisible" /> -->
   </iCard>
 </template>
 
@@ -48,10 +48,11 @@ import infos from './components/infos'
 import tableList from '@/views/partsign/editordetail/components/tableList'
 import { pageMixins } from '@/utils/pageMixins'
 import { getMaterialGroup, getMeterialStuff, putMaterialGroup } from "@/api/partsprocure/editordetail"
-import logDialog from "@/views/partsign/editordetail/components/logDialog"
+// import logDialog from "@/views/partsign/editordetail/components/logDialog"
 
 export default {
-  components: { iButton, iCard, iPagination, tableList, infos, logDialog },
+  components: { iButton, iCard, iPagination, tableList, infos },
+  // logDialog
   mixins: [ pageMixins ],
   props: {
     params: {
@@ -68,14 +69,14 @@ export default {
   data() {
     return {
       tableTitle,
-      loading: false,
-      tableLoading: false,
-      tableListData: [],
-      setMaterialGroupStatus: false,
-      multipleSelection: [],
-      logVisible: false,
-      info: {},
-      confirmLoading: false
+      loading: false, // 主loading
+      tableLoading: false, // 工艺组表格loading
+      tableListData: [], // 工艺组表格数据
+      setMaterialGroupStatus: false, // 工艺组表格显隐状态
+      multipleSelection: [], // 工艺组多选项
+      // logVisible: false,
+      info: {}, // 材料组数据
+      confirmLoading: false // 确认按钮loading
     }
   },
   watch: {
@@ -85,10 +86,12 @@ export default {
   },
   created() {
     this.getMaterialGroup()
-    console.log(JSON.parse(this.$route.query.item))
   },
   methods: {
+    // 获取材料组数据
     getMaterialGroup() {
+      if (!this.params.categoryCode) return iMessage.warn("缺失工艺组编号，请先设置零件对应的工艺组")
+      this.loading = true
       getMaterialGroup({ categoryCode: this.params.categoryCode })
         .then(res => {
           this.info = res.data || {}
@@ -96,12 +99,14 @@ export default {
         })
         .catch(() => this.loading = false)
     },
+    // 设置工艺组
     setMaterialGroup() {
       if (!this.params.partNum) return iMessage.warn("缺失有效的零件编号")
       this.setMaterialGroupStatus = true
 
       this.getMeterialStuff()
     },
+    // 设置工艺组请求
     confirmMaterialGroup() {
       if (this.multipleSelection.length !== 1) return iMessage.warn('抱歉，此处必须选择一条工艺组数据')
       const data = this.multipleSelection[0]
@@ -126,6 +131,7 @@ export default {
         })
         .catch(() => this.confirmLoading = false)
     },
+    // 获取零件可选的工艺组数据
     getMeterialStuff() {
       this.tableLoading = true
 
@@ -139,12 +145,15 @@ export default {
         })
         .catch(() => this.tableLoading = false)
     },
+    // 表格多选
     handleSelectionChange(list) {
       this.multipleSelection = list
     },
-    log() {
-      this.logVisible = true
-    },
+    // 日志
+    // log() {
+    //   this.logVisible = true
+    // },
+    // 返回
     back() {
       this.setMaterialGroupStatus = false
       this.tableListData = []
