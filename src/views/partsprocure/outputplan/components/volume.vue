@@ -94,8 +94,10 @@ export default {
           tpId: this.params.purchasingRequirementId,
         });
 
-        this.tableListData = infoRes.data.tpRecordList;
-        this.page.totalCount = infoRes.data.totalCount;
+        if (infoRes.data) {
+          this.tableListData = infoRes.data.tpRecordList;
+          this.page.totalCount = infoRes.data.totalCount;
+        }
       } catch (e) {
         console.error(e);
       } finally {
