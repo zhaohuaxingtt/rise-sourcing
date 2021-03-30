@@ -77,7 +77,7 @@ export function getSupplierAllParts(parmars) {
     })
 }
 
-/*技术交流会*/
+/*技术交底会*/
 export function getAllRfqParts(parmars) {
     return requst({
         url: '/api/technology/getAllRfqParts',

@@ -153,7 +153,7 @@
 						</iFormItem>
 					</div>
 					<div class="col">
-						<iFormItem :label="$('LK_QIANSHOURIQI')+':'" name="test">
+						<iFormItem :label="$t('LK_QIANSHOURIQI')+':'" name="test">
 							<iText v-permission="PARTSPROCURE_EDITORDETAIL_DATEOFRECEIPT">
 								{{ detailData.signDate }}
 							</iText>

@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-24 09:17:57
- * @LastEditTime: 2021-03-30 14:49:05
+ * @LastEditTime: 2021-03-30 15:29:23
  * @LastEditors: Please set LastEditors
  * @Description: 零件签收列表界面.
  * @FilePath: \rise\src\views\partsign\index.vue
@@ -106,7 +106,7 @@
             <!------------------------------------------------------------------------>
             <div class="margin-bottom20 clearFloat">
               <!--<span class="font18 font-weight">新件信息单签收</span>-->
-	      <span class="font18 font-weight">{{$t('LK_XINJIANXINXIDANQIANSHOU')}}</span>
+	            <span class="font18 font-weight">{{$t('LK_XINJIANXINXIDANQIANSHOU')}}</span>
               <div class="floatright">
                 <iButton @click="save" v-permission="PARTSIGN_SIGNBUTTON">{{$t('partsignLanguage.QianShou')}}</iButton>
                 <iButton @click="openDiologBack" v-permission="PARTSIGN_BACKBUTTON">{{$t('partsignLanguage.TuiHui')}}</iButton>
@@ -228,7 +228,6 @@ export default {
           }
         }
       });
-      console.log(v)
       return v
     },
     translateDataToservice(data) {
