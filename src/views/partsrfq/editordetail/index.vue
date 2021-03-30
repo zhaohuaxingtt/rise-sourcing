@@ -107,7 +107,7 @@
             </iFormItem>
             <div class="edit-button-row">
               <i-button @click="edit" v-permission="PARTSRFQ_EDITORDETAIL_SAVE">{{
-                  !editStatus ? `$t('LK_BIANJI')` : $t('LK_BAOCUN')
+                  !editStatus ? $t('LK_BIANJI') : $t('LK_BAOCUN')
                 }}
               </i-button>
             </div>
