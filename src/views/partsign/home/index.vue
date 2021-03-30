@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-24 09:17:57
- * @LastEditTime: 2021-03-30 15:29:23
+ * @LastEditTime: 2021-03-30 17:06:55
  * @LastEditors: Please set LastEditors
  * @Description: 零件签收列表界面.
  * @FilePath: \rise\src\views\partsign\index.vue
@@ -17,26 +17,51 @@
           <!------------------------------------------------------------------------>
           <!--                  search 搜索模块                                   --->
           <!------------------------------------------------------------------------>
-          <iSearch class="margin-bottom20" @sure="sure" @reset="reset" :resetKey="PARTSIGN_RESETBUTTON" :searchKey="PARTSIGN_CONFIRMBUTTON">
+          <iSearch
+            class="margin-bottom20"
+            @sure="sure"
+            @reset="reset"
+            :resetKey="PARTSIGN_RESETBUTTON"
+            :searchKey="PARTSIGN_CONFIRMBUTTON"
+          >
             <el-form>
               <el-form-item :label="$t('partsignLanguage.LingJianHao')">
-                <iInput v-model="form.partNum" placeholder="请输入零件号" v-permission="PARTSIGN_PARTNUM"></iInput>
+                <iInput
+                  v-model="form.partNum"
+                  placeholder="请输入零件号"
+                  v-permission="PARTSIGN_PARTNUM"
+                ></iInput>
               </el-form-item>
               <el-form-item :label="$t('partsignLanguage.LingJianMingChengZH')">
                 <iInput
                   v-model="form.partNameZh"
-                  placeholder="请输入零件名（中）" v-permission="PARTSIGN_PARTNAMEZH"
+                  placeholder="请输入零件名（中）"
+                  v-permission="PARTSIGN_PARTNAMEZH"
                 ></iInput>
               </el-form-item>
-                <el-form-item :label="$t('partsignLanguage.SheJiKeShi')">
-                <iInput v-model="form.dept" placeholder="请填写设计科室" v-permission="PARTSIGN_DESIGNDEPARTMENT"></iInput>
+              <el-form-item :label="$t('partsignLanguage.SheJiKeShi')">
+                <iInput
+                  v-model="form.dept"
+                  placeholder="请填写设计科室"
+                  v-permission="PARTSIGN_DESIGNDEPARTMENT"
+                ></iInput>
               </el-form-item>
               <el-form-item :label="$t('LK_GONGCHENGSHI')">
-                <iInput placeholder="请填写工程师" v-permission="PARTSIGN_ENGINEER"></iInput>
+                <iInput
+                  placeholder="请填写工程师"
+                  v-permission="PARTSIGN_ENGINEER"
+                ></iInput>
               </el-form-item>
               <el-form-item :label="$t('LK_CHEXINGXIANGMU')">
-                <iSelect v-model="form.projectCarType" placeholder="请选择车型项目" v-permission="PARTSIGN_MODELPROJECT">
-                  <el-option value="" :label="$t('all') | capitalizeFilter"></el-option>
+                <iSelect
+                  v-model="form.projectCarType"
+                  placeholder="请选择车型项目"
+                  v-permission="PARTSIGN_MODELPROJECT"
+                >
+                  <el-option
+                    value=""
+                    :label="$t('all') | capitalizeFilter"
+                  ></el-option>
                   <el-option
                     :value="items.key"
                     :label="items.value"
@@ -46,8 +71,15 @@
                 </iSelect>
               </el-form-item>
               <el-form-item :label="$t('LK_XINXIDANFENLEI')">
-                <iSelect v-model="form.tpInfoType" placeholder="请选择信息分类" v-permission="PARTSIGN_INFORMATIONCLASSIFICATION">
-                  <el-option value="" :label="$t('all') | capitalizeFilter"></el-option>
+                <iSelect
+                  v-model="form.tpInfoType"
+                  placeholder="请选择信息分类"
+                  v-permission="PARTSIGN_INFORMATIONCLASSIFICATION"
+                >
+                  <el-option
+                    value=""
+                    :label="$t('all') | capitalizeFilter"
+                  ></el-option>
                   <el-option
                     :value="items.key"
                     :label="items.value"
@@ -57,8 +89,15 @@
                 </iSelect>
               </el-form-item>
               <el-form-item :label="$t('LK_XINXIDANZHUANGTAI')">
-                <iSelect v-model="form.status" placeholder="请选择信息单状态" v-permission="PARTSIGN_INFORMATIONSTATUS">
-                  <el-option value="" :label="$t('all') | capitalizeFilter"></el-option>
+                <iSelect
+                  v-model="form.status"
+                  placeholder="请选择信息单状态"
+                  v-permission="PARTSIGN_INFORMATIONSTATUS"
+                >
+                  <el-option
+                    value=""
+                    :label="$t('all') | capitalizeFilter"
+                  ></el-option>
                   <el-option
                     :value="items.key"
                     :label="items.value"
@@ -68,14 +107,22 @@
                 </iSelect>
               </el-form-item>
               <el-form-item :label="$t('LK_XINXIDANLIUSHUIHAO')">
-                <iInput v-model="form.id" placeholder="请填写信息单流水号" v-permission="PARTSIGN_PARTINFOID"></iInput>
+                <iInput
+                  v-model="form.id"
+                  placeholder="请填写信息单流水号"
+                  v-permission="PARTSIGN_PARTINFOID"
+                ></iInput>
               </el-form-item>
               <el-form-item :label="$t('LK_XUNJIAZILIAOZHUANGTAI')">
                 <iSelect
                   v-model="form.attachmentStatus"
-                  placeholder="请选择询价资料状态" v-permission="PARTSIGN_INQUIRYSTATUS"
+                  placeholder="请选择询价资料状态"
+                  v-permission="PARTSIGN_INQUIRYSTATUS"
                 >
-                  <el-option value="" :label="$t('all') | capitalizeFilter"></el-option>
+                  <el-option
+                    value=""
+                    :label="$t('all') | capitalizeFilter"
+                  ></el-option>
                   <el-option
                     :value="items.key"
                     :label="items.value"
@@ -87,9 +134,13 @@
               <el-form-item :label="$t('LK_MEICHEYONGLIANGZHUANGTAI')">
                 <iSelect
                   v-model="form.partDosageStatus"
-                  placeholder="请选择每车用量状态" v-permission="PARTSIGN_USAGEVEHICLE"
+                  placeholder="请选择每车用量状态"
+                  v-permission="PARTSIGN_USAGEVEHICLE"
                 >
-                  <el-option value="" :label="$t('all') | capitalizeFilter"></el-option>
+                  <el-option
+                    value=""
+                    :label="$t('all') | capitalizeFilter"
+                  ></el-option>
                   <el-option
                     :value="items.key"
                     :label="items.value"
@@ -106,11 +157,23 @@
             <!------------------------------------------------------------------------>
             <div class="margin-bottom20 clearFloat">
               <!--<span class="font18 font-weight">新件信息单签收</span>-->
-	            <span class="font18 font-weight">{{$t('LK_XINJIANXINXIDANQIANSHOU')}}</span>
+              <span class="font18 font-weight">{{
+                $t("LK_XINJIANXINXIDANQIANSHOU")
+              }}</span>
               <div class="floatright">
-                <iButton @click="save" v-permission="PARTSIGN_SIGNBUTTON">{{$t('partsignLanguage.QianShou')}}</iButton>
-                <iButton @click="openDiologBack" v-permission="PARTSIGN_BACKBUTTON">{{$t('partsignLanguage.TuiHui')}}</iButton>
-                <iButton @click="openDiologChangeItems" v-permission="PARTSIGN_TRANSFERBUTTON">{{$t('partsignLanguage.ZhuanPai')}}</iButton>
+                <iButton @click="save" v-permission="PARTSIGN_SIGNBUTTON">{{
+                  $t("partsignLanguage.QianShou")
+                }}</iButton>
+                <iButton
+                  @click="openDiologBack"
+                  v-permission="PARTSIGN_BACKBUTTON"
+                  >{{ $t("partsignLanguage.TuiHui") }}</iButton
+                >
+                <iButton
+                  @click="openDiologChangeItems"
+                  v-permission="PARTSIGN_TRANSFERBUTTON"
+                  >{{ $t("partsignLanguage.ZhuanPai") }}</iButton
+                >
               </div>
             </div>
             <tablelist
@@ -165,7 +228,7 @@ import {
   iSelect,
 } from "@/components";
 import tablelist from "./components/tableList";
-import { tableTitle, form ,needTranslate} from "./components/data";
+import { tableTitle, form, needTranslate } from "./components/data";
 import { getTabelData, getPageGroup, patchRecords } from "@/api/partsign/home";
 import { pageMixins } from "@/utils/pageMixins";
 import backItems from "./components/backItems";
@@ -202,33 +265,35 @@ export default {
       inquiryBuyerList: [],
       form: form,
       fromGroup: [],
-      tab: 'source',
-      needTranslate:needTranslate
+      tab: "source",
+      needTranslate: needTranslate,
     };
   },
   created() {
     this.getPageGroup();
     this.getTableList();
   },
-  provide(){
+  provide() {
     return {
-      vm:this
-    }
+      vm: this,
+    };
   },
   methods: {
     //在跳转到详情界面之前，需要将数据格式化为中文。
-    translateDataForDetail(v){
-      this.needTranslate.forEach(element => {
-        if(v[element.name]){
+    translateDataForDetail(v) {
+      this.needTranslate.forEach((element) => {
+        if (v[element.name]) {
           try {
-            const result = this.getGroupList(element.key).find(i=>i.key == v[element.name])
-            v[element.name] = result?result.value:""
+            const result = this.getGroupList(element.key).find(
+              (i) => i.key == v[element.name]
+            );
+            v[element.name] = result ? result.value : "";
           } catch (error) {
-             v[element.name] = ""
+            v[element.name] = "";
           }
         }
       });
-      return v
+      return v;
     },
     translateDataToservice(data) {
       const idList = [];
@@ -247,7 +312,7 @@ export default {
         if (res.data) {
           iMessage.success("操作成功");
           this.getTableList();
-        }else{
+        } else {
           iMessage.success(res.desZh);
         }
       });
@@ -286,7 +351,10 @@ export default {
       }
     },
     openPage(val) {
-      local.set("tpPartInfoVO", JSON.stringify(this.translateDataForDetail(val)));
+      local.set(
+        "tpPartInfoVO",
+        JSON.stringify(this.translateDataForDetail(val))
+      );
       this.$router.push({
         path: "/partsign/editordetail",
       });
@@ -406,12 +474,10 @@ export default {
         opacity: 0.42;
         height: 35px;
         line-height: 35px;
-
         & + & {
           padding: 0 25px;
         }
       }
-      
       .is-active {
         opacity: 1;
         font-weight: bold;
