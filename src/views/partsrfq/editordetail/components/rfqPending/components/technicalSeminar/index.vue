@@ -3,12 +3,12 @@
     <iCard>
       <div class="margin-bottom5 clearFloat">
         <div class="floatright">
-          <iButton @click="addSupplier" v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_TECHNICALSEMINAR_ADDSUPPLIER">添加供应商</iButton>
-          <iButton @click="sendToMyEmail" v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_TECHNICALSEMINAR_SENDTOMYEMAIL">发送至我的邮箱</iButton>
+          <iButton @click="addSupplier" v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_TECHNICALSEMINAR_ADDSUPPLIER">{{ $t('LK_TIANJIAGONGYINGSHANG') }}</iButton>
+          <iButton @click="sendToMyEmail" v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_TECHNICALSEMINAR_SENDTOMYEMAIL">{{ $t('LK_FASONGZHIWODEYOUXIANG') }}</iButton>
         </div>
       </div>
       <div class="margin-bottom20 clearFloat">
-        <span class="font18 font-weight">会议基本信息</span>
+        <span class="font18 font-weight">{{ $t('LK_HUIYIJIBENXINXI') }}</span>
       </div>
       <tablelist
           :tableData="tableListData"
@@ -157,7 +157,7 @@ export default {
         partNums: partNumsList,
       }
       const res = await addTechnology(req)
-      res.result ? iMessage.success(res.desZh) : iMessage.error(res.desZh)
+      res.result ? iMessage.success(this.$i18n.locale === 'zh' ? res.desZh : res.desEn) : iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
     },
     //修改表格改动列
     handleSelectionChange(val) {

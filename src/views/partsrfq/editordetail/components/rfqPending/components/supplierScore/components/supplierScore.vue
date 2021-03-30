@@ -1,7 +1,7 @@
 <template>
   <iCard>
     <div class="margin-bottom20 clearFloat">
-      <span class="font18 font-weight">供应商评分</span>
+      <span class="font18 font-weight">{{ $t('LK_GONGYINGSHANGPINGFEN') }}</span>
     </div>
     <tablelist
         :tableData="tableListData"
@@ -45,6 +45,8 @@ import tpbRemarks from './tpbRemarks'
 import {getAllSupplier, setTpbMemo} from "@/api/partsrfq/editordetail";
 import {serialize} from '@/utils'
 import store from '@/store'
+import {rfqCommonFunMixins} from "pages/partsrfq/components/commonFun";
+
 export default {
   components: {
     iCard,
@@ -52,7 +54,7 @@ export default {
     tablelist,
     tpbRemarks
   },
-  mixins: [pageMixins],
+  mixins: [pageMixins, rfqCommonFunMixins],
   data() {
     return {
       tableListData: [],
@@ -119,11 +121,11 @@ export default {
       }
       const res = await setTpbMemo(req)
       if (res.result) {
-        iMessage.success(res.desZh)
+        iMessage.success(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
         this.dialogRemarks = false
         this.getTableList()
       } else {
-        iMessage.error(res.desZh)
+        iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
       }
     }
   }

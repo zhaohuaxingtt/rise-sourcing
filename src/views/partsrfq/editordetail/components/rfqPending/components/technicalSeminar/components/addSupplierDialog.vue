@@ -3,7 +3,7 @@
     <div class="changeContent">
       <div class="margin-bottom20 clearFloat">
         <div class="floatright title-button-box">
-          <iButton @click="save">保存</iButton>
+          <iButton @click="save">{{$t('LK_BAOCUN')}}</iButton>
         </div>
       </div>
       <tablelist

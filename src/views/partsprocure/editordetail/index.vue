@@ -12,15 +12,15 @@
 		<!--                  详情页头部保存区域                                  --->
 		<!------------------------------------------------------------------------>
 		<div class="margin-bottom20 clearFloat">
-			<span class="font18 font-weight">零件采购项目</span>
+			<span class="font18 font-weight">{{ $t('LK_LINGJIANCAIGOUXIANGMU') }}</span>
 			<div class="floatright">
-				<iButton @click="start" v-permission="PARTSPROCURE_EDITORDETAIL_STARTUP">启动项目</iButton>
-				<iButton @click="creatFs" v-permission="PARTSPROCURE_EDITORDETAIL_GENERATEFSGSNR">生成FS/GSNR</iButton>
-				<iButton @click="openDiologBack" v-permission="PARTSPROCURE_EDITORDETAIL_CANCELITEMS">取消零件采购项目</iButton>
-				<iButton @click="splitPurch" v-permission="PARTSPROCURE_EDITORDETAIL_SPLITFACTORY">拆分采购工厂</iButton>
-				<iButton @click="openDiologClose" v-permission="PARTSPROCURE_EDITORDETAIL_ENDPROJECT">结束项目</iButton>
-				<iButton @click="save" v-permission="PARTSPROCURE_EDITORDETAIL_BASICINFOSAVE">保存</iButton>
-				<iButton @click="back" v-permission="PARTSPROCURE_EDITORDETAIL_RETURN">返回</iButton>
+				<iButton @click="start" v-permission="PARTSPROCURE_EDITORDETAIL_STARTUP">{{ $t('LK_QIDONGXIANGMU') }}</iButton>
+				<iButton @click="creatFs" v-permission="PARTSPROCURE_EDITORDETAIL_GENERATEFSGSNR">{{ $t('LK_SHENGCHENGFS_GSNR') }}</iButton>
+				<iButton @click="openDiologBack" v-permission="PARTSPROCURE_EDITORDETAIL_CANCELITEMS">{{ $t('LK_QUXIAOLINGJIANCAIGOUXIANGMU') }}</iButton>
+				<iButton @click="splitPurch" v-permission="PARTSPROCURE_EDITORDETAIL_SPLITFACTORY">{{ $t('LK_QIDONGXIANGMU') }}</iButton>
+				<iButton @click="openDiologClose" v-permission="PARTSPROCURE_EDITORDETAIL_ENDPROJECT">{{ $t('LK_JIESHUXIANGMU') }}</iButton>
+				<iButton @click="save" v-permission="PARTSPROCURE_EDITORDETAIL_BASICINFOSAVE">{{ $t('LK_BAOCUN') }}</iButton>
+				<iButton @click="back" v-permission="PARTSPROCURE_EDITORDETAIL_RETURN">{{ $t('LK_FANHUI') }}</iButton>
 				<logButton class="margin-left20" @click="log" v-permission="PARTSPROCURE_EDITORDETAIL_LOG"/>
 				<span>
 					<icon symbol name="icondatabaseweixuanzhong"></icon>
@@ -35,24 +35,24 @@
 			<iFormGroup row="1" inline :rules="rules">
 				<div class="row">
 					<div class="col">
-						<iFormItem label="零件号：" name="test">
+						<iFormItem :label="$t('LK_LINGJIANHAO')+':'" name="test">
 							<iText v-permission="PARTSPROCURE_EDITORDETAIL_PARTNUMBER">
 								{{ detailData.partNum }}
 							</iText>
 						</iFormItem>
-						<iFormItem label="零件名称（中）：" name="test">
+						<iFormItem :label="$t('LK_LINGJIANMINGZHONG')+':'" name="test">
 							<iText v-permission="PARTSPROCURE_EDITORDETAIL_PARTNAMEZH">
 								{{ detailData.partNameZh }}
 							</iText>
 						</iFormItem>
-						<iFormItem label="零件项目类型：" name="test">
+						<iFormItem :label="$t('LK_LINGJIANXIANGMULEIXING')+':'" name="test">
 							<iSelect v-model="detailData.partPrejectType" v-permission="PARTSPROCURE_EDITORDETAIL_EVENTITEMTYPE">
 								<el-option :value="item.value" :label="item.label"
 									v-for="(item, index) in getGroupList('part_preject_type')" :key="index">
 								</el-option>
 							</iSelect>
 						</iFormItem>
-						<iFormItem label="采购工厂：" name="test">
+						<iFormItem :label="$t('LK_CAIGOUGONGCHANG')+':'" name="test">
 							<iSelect v-model="detailData.procureFactory" v-permission="PARTSPROCURE_EDITORDETAIL_PURCHASINGFACTORY">
 								<el-option :value="item.value" :label="item.label"
 									v-for="(item, index) in getGroupList('procure_factory')" :key="index">
@@ -66,7 +66,7 @@
 								</el-option>
 							</iSelect>
 						</iFormItem>
-						<iFormItem label="支付条款：" name="test" v-if="detailData.partType=='BD'">
+						<iFormItem :label="$t('LK_ZHIFUTIAOKUAN')+':'" name="test" v-if="detailData.partType=='BD'">
 							<iSelect v-model="detailData.payClause" v-permission="PARTSPROCURE_EDITORDETAIL_NUMBEROFPAYMENT">
 								<el-option :value="item.value" :label="item.label"
 									v-for="(item, index) in getGroupList('pay_clause')" :key="index"></el-option>
@@ -79,24 +79,24 @@
 								{{ detailData.fsnrGsnrNum }}
 							</iText>
 						</iFormItem>
-						<iFormItem label="零件名称（德）：" name="test">
+						<iFormItem :label="$t('LK_LINGJIANMINGCHENGDE')+':'" name="test">
 							<iText v-permission="PARTSPROCURE_EDITORDETAIL_PARTNUMBERGER">
 								{{ detailData.partNameDe }}
 							</iText>
 						</iFormItem>
-						<iFormItem label="零件类型：" name="test">
+						<iFormItem :label="$t('LK_LINGJIANLEIXING')+':'" name="test">
 							<iSelect v-model="detailData.partType" v-permission="PARTSPROCURE_EDITORDETAIL_PARTTYPE">
 								<el-option :value="item.value" :label="item.label"
 									v-for="(item, index) in getGroupList('part_type')" :key="index"></el-option>
 							</iSelect>
 						</iFormItem>
-						<iFormItem label="单位：" name="test">
+						<iFormItem :label="$t('LK_DANWEI')+':'" name="test">
 							<iSelect v-model="detailData.unit" v-permission="PARTSPROCURE_EDITORDETAIL_UNIT">
 								<el-option :value="item.value" :label="item.label"
 									v-for="(item, index) in getGroupList('unit')" :key="index"></el-option>
 							</iSelect>
 						</iFormItem>
-						<iFormItem label="MTZ零件：" name="test">
+						<iFormItem :label="$t('LK_MTZLINGJIAN')+':'" name="test">
 							<iSelect v-model="detailData.mtz" v-permission="PARTSPROCURE_EDITORDETAIL_MTZPARTS">
 								<el-option :value="item.value" :label="item.label"
 									v-for="(item, index) in getGroupList('mtz')" :key="index"></el-option>
@@ -104,12 +104,12 @@
 						</iFormItem>
 					</div>
 					<div class="col">
-						<iFormItem label="询价采购员：" name="test">
+						<iFormItem :label="$t('LK_XUNJIACAIGOUYUAN')+':'" name="test">
 							<iText v-permission="PARTSPROCURE_EDITORDETAIL_INQUIRYBUYER">
 								{{ detailData.buyerName }}
 							</iText>
 						</iFormItem>
-						<iFormItem label="LINIE部门：" name="test">
+						<iFormItem :label="$t('LK_LINIEBUMEN')+':'" name="test">
 							<iSelect v-model="detailData.linieDept" v-permission="PARTSPROCURE_EDITORDETAIL_LINEDEPARTMENT">
 								<el-option :value="item.value" :label="item.label"
 									v-for="(item, index) in getGroupList('linie_dept')" :key="index"></el-option>
@@ -127,7 +127,7 @@
 									v-for="(item, index) in getGroupList('cf_controller')" :key="index"></el-option>
 							</iSelect>
 						</iFormItem>
-						<iFormItem label="货币：" name="test" v-if="detailData.partType=='BD'">
+						<iFormItem :label="$t('LK_HUOBI')+':'" name="test" v-if="detailData.partType=='BD'">
 							<iSelect v-model="detailData.currencyId" v-permission="PARTSPROCURE_EDITORDETAIL_CURRENCY">
 								<el-option :value="item.value" :label="item.label"
 									v-for="(item, index) in getGroupList('currency_id')" :key="index"></el-option>
@@ -135,17 +135,17 @@
 						</iFormItem>
 					</div>
 					<div class="col">
-						<iFormItem label="签收日期：" name="test">
+						<iFormItem :label="$('LK_QIANSHOURIQI')+':'" name="test">
 							<iText v-permission="PARTSPROCURE_EDITORDETAIL_DATEOFRECEIPT">
 								{{ detailData.signDate }}
 							</iText>
 						</iFormItem>
-						<iFormItem label="SOP日期：" name="test">
+						<iFormItem :label="$t('LK_SOPRIQI')+':'" name="test">
 							<iText v-permission="PARTSPROCURE_EDITORDETAIL_SOPDATE">
 								{{ detailData.sopDate }}
 							</iText>
 						</iFormItem>
-						<iFormItem label="零件状态：" name="test">
+						<iFormItem :label="$t('LK_LINGJIANZHUANGTAI')+':'" name="test">
 							<iText v-permission="PARTSPROCURE_EDITORDETAIL_PARTSTATUS">
 								{{ detailData.partStatus }}
 							</iText>
@@ -155,7 +155,7 @@
 								{{ detailData.bmg }}
 							</iText>
 						</iFormItem>
-						<iFormItem label="采购条款：" name="test" v-if="detailData.partType=='BD'">
+						<iFormItem :label="$t('LK_CAIGOUTIAOKUAN')+':'" name="test" v-if="detailData.partType=='BD'">
 							<iSelect v-model="detailData.purchaseClause" v-permission="PARTSPROCURE_EDITORDETAIL_PURCHASETERMS">
 								<el-option :value="item.value" :label="item.label"
 									v-for="(item, index) in getGroupList('purchase_clause')" :key="index">
@@ -167,10 +167,10 @@
 			</iFormGroup>
 		</iCard>
 		<iTabsList class="margin-top20" type="border-card">
-			<el-tab-pane label="材料组信息" v-permission="PARTSPROCURE_EDITORDETAIL_MATERIALGROUPINFORMATION">
+			<el-tab-pane :label="$t('LK_CAILIAOZUXINXI')" v-permission="PARTSPROCURE_EDITORDETAIL_MATERIALGROUPINFORMATION">
         <materialGroupInfo :params="infoItem"/>
       </el-tab-pane>
-      <el-tab-pane label="零件产量计划" v-permission="PARTSPROCURE_EDITORDETAIL_PARTSPRODUCTIONPLAN">
+      <el-tab-pane :label="$t('LK_LINGJIANCHANLIANGJIHUA')" v-permission="PARTSPROCURE_EDITORDETAIL_PARTSPRODUCTIONPLAN">
         <outputPlan ref="outputPlan" :params="infoItem" />
         <outputRecord ref="outputRecord" class="margin-top20" :params="infoItem" @updateOutput="updateOutput" />
         <volume ref="volume" class="margin-top20" :params="infoItem" />
@@ -179,19 +179,19 @@
 				<drawing :params="infoItem" />
 				<sheet class="margin-top20" :params="infoItem" />
 			</el-tab-pane>
-			<el-tab-pane label="物流要求" v-permission="PARTSPROCURE_EDITORDETAIL_LOGISTICSREQUIREMENTS">
+			<el-tab-pane :label="$t('LK_WULIUYAOQIU')" v-permission="PARTSPROCURE_EDITORDETAIL_LOGISTICSREQUIREMENTS">
 				<logistics :infoItem="infoItem"></logistics>
 			</el-tab-pane>
-			<el-tab-pane label="申请目标价" v-permission="PARTSPROCURE_EDITORDETAIL_APPLYFORTARGETPRICE">
+			<el-tab-pane :label="$t('LK_SHENQINGMUBIAOJIA')" v-permission="PARTSPROCURE_EDITORDETAIL_APPLYFORTARGETPRICE">
 				<targePrice :purchaseProjectId="purchaseProjectId"></targePrice>
 			</el-tab-pane>
-			<el-tab-pane label="备注信息" v-permission="PARTSPROCURE_EDITORDETAIL_REMARKSINFORMATION">
+			<el-tab-pane :label="$t('LK_BEIZHUXINXI')" v-permission="PARTSPROCURE_EDITORDETAIL_REMARKSINFORMATION">
 				<remarks :detailData="detailData"></remarks>
 			</el-tab-pane>
 		</iTabsList>
-		<backItems v-model="diologBack" @sure="cancel" title="取消零件采购"></backItems>
+		<backItems v-model="diologBack" @sure="cancel" :title="$t('LK_QUXIAOLINGJIANCAIGOUXIANGMU')"></backItems>
 		<!-- 结束项目 -->
-		<backItems v-model="diologClose" @sure="cancel" title="结束项目"></backItems>
+		<backItems v-model="diologClose" @sure="cancel" :title="$t('LK_JIESHUXIANGMU')"></backItems>
 		<splitFactory :splitPurchBoolean="splitPurchBoolean" :purchaseProjectId="purchaseProjectId" :update='updateTabs'
 			:close='splitPurch'></splitFactory>
 	</iPage>

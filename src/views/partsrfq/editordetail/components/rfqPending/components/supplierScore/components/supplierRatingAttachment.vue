@@ -1,13 +1,18 @@
 <template>
   <iCard>
     <div class="margin-bottom20 clearFloat">
-      <span class="font18 font-weight">供应商评分附件</span>
+      <span class="font18 font-weight">{{ $t('LK_GONGYINGSHANGPINGFENFUJIAN') }}</span>
       <div class="floatright">
-        <iButton @click="deleteItems" v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_SUPPLIERSCORE_PARTSCORING_DELETE">删除</iButton>
+                <iButton @click="deleteItems" v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_SUPPLIERSCORE_PARTSCORING_DELETE">{{ $t('LK_SHANCHU') }}</iButton>
+                <upload-button
+                    @uploadedCallback="uploadAttachments"
+                    :upload-button-loading="uploadAttachmentsButtonLoading"
+                    class="margin-left8" v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_SUPPLIERSCORE_PARTSCORING_UPLOAD"/>
+<!--        <iButton @click="deleteItems">{{ $t('LK_SHANCHU') }}</iButton>
         <upload-button
             @uploadedCallback="uploadAttachments"
             :upload-button-loading="uploadAttachmentsButtonLoading"
-            class="margin-left8" v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_SUPPLIERSCORE_PARTSCORING_UPLOAD"/>
+            class="margin-left8"/>-->
       </div>
     </div>
     <tablelist
@@ -41,10 +46,11 @@ import {iCard, iButton, iPagination, iMessage, iMessageBox} from "@/components";
 import tablelist from 'pages/partsrfq/components/tablelist'
 import {supplierRatingAttachmentTitle} from "./data";
 import {pageMixins} from "@/utils/pageMixins";
-import {getAllAnnex, deleteAnnex, uploadRfqAnnex} from "@/api/partsrfq/editordetail";
+import {getAllAnnex, deleteAnnex} from "@/api/partsrfq/editordetail";
 import uploadButton from 'pages/partsrfq/components/uploadButton'
 import store from '@/store'
 import {downloadFile} from "@/api/file";
+
 export default {
   components: {
     iCard,
@@ -77,7 +83,7 @@ export default {
           const req = {
             fileType: 1,
             rfqId: id,
-            userId:store.state.permission.userInfo.id
+            userId: store.state.permission.userInfo.id
           }
           const res = await getAllAnnex(req)
           this.tableListData = res.records;
@@ -97,7 +103,7 @@ export default {
         })
         const req = {annexIds}
         const res = await deleteAnnex(req)
-        res.result ? iMessage.success(res.desZh) : iMessage.error(res.desZh)
+        res.result ? iMessage.success(this.$i18n.locale === 'zh' ? res.desZh : res.desEn) : iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
         this.getTableList()
       })
     },
@@ -105,18 +111,13 @@ export default {
     handleSelectionChange(val) {
       this.selectTableData = val;
     },
-    async uploadAttachments(content) {
+    async uploadAttachments(data) {
       const id = this.$route.query.id
       if (id) {
         this.tableLoading = true
         this.uploadAttachmentsButtonLoading = true
-        const formData = new FormData()
-        formData.append('file', content.file)
-        formData.append('fileType', 1)
-        formData.append('rfqId', id)
-        formData.append('userId', store.state.permission.userInfo.id)
-        const res = await uploadRfqAnnex(formData)
-        res.result ? iMessage.success(res.desZh) : iMessage.error(res.desZh)
+        console.log(data);
+        // res.result ? iMessage.success(this.$i18n.locale === 'zh' ? res.desZh : res.desEn) : iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
         this.tableLoading = false
         this.uploadAttachmentsButtonLoading = false
         this.getTableList()

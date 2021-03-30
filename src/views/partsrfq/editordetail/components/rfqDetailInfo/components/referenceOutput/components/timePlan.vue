@@ -2,17 +2,17 @@
   <div>
     <iCard>
       <div class="margin-bottom20 clearFloat">
-        <span class="font18 font-weight">时间计划</span>
+        <span class="font18 font-weight">{{ $t('LK_SHIJIANJIHUA') }}</span>
         <div class="floatright">
           <template v-if="!editStatus">
-            <iButton @click="edit" v-permission="PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_TIMEPLAN_EDIT">编辑</iButton>
+            <iButton @click="edit" v-permission="PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_TIMEPLAN_EDIT">{{ $t('LK_BIANJI') }}</iButton>
           </template>
           <template v-else>
-            <iButton @click="save" v-permission="PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_TIMEPLAN_SAVE">保存</iButton>
-            <iButton @click="back" v-permission="PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_TIMEPLAN_BACK">返回</iButton>
+            <iButton @click="save" v-permission="PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_TIMEPLAN_SAVE">{{ $t('LK_BAOCUN') }}</iButton>
+            <iButton @click="back" v-permission="PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_TIMEPLAN_BACK">{{ $t('LK_FANHUI') }}</iButton>
           </template>
 
-          <iButton @click="exports" v-permission="PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_TIMEPLAN_EXPORTS">导出</iButton>
+          <iButton @click="exports" v-permission="PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_TIMEPLAN_EXPORTS">{{ $t('LK_DAOCHU') }}</iButton>
         </div>
       </div>
       <tablelist
@@ -120,7 +120,7 @@ export default {
         updateTimePlanPackage: reqList
       }
       const res = await editRfqData(req)
-      res.result ? iMessage.success(res.desZh) : iMessage.error(res.desZh)
+      res.result ? iMessage.success(this.$i18n.locale === 'zh' ? res.desZh : res.desEn) : iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
       this.editStatus = false
       this.inputProps = []
       this.reRenderTable()

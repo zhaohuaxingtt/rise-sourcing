@@ -31,10 +31,10 @@
                 <el-form-item :label="$t('partsignLanguage.SheJiKeShi')">
                 <iInput v-model="form.dept" placeholder="请填写设计科室" v-permission="PARTSIGN_DESIGNDEPARTMENT"></iInput>
               </el-form-item>
-              <el-form-item label="工程师">
+              <el-form-item :label="$t('LK_GONGCHENGSHI')">
                 <iInput placeholder="请填写工程师" v-permission="PARTSIGN_ENGINEER"></iInput>
               </el-form-item>
-              <el-form-item label="车型项目">
+              <el-form-item :label="$t('LK_CHEXINGXIANGMU')">
                 <iSelect v-model="form.projectCarType" placeholder="请选择车型项目" v-permission="PARTSIGN_MODELPROJECT">
                   <el-option value="" :label="$t('all') | capitalizeFilter"></el-option>
                   <el-option
@@ -45,7 +45,7 @@
                   ></el-option>
                 </iSelect>
               </el-form-item>
-              <el-form-item label="信息单分类">
+              <el-form-item :label="$t('LK_XINXIDANFENLEI')">
                 <iSelect v-model="form.tpInfoType" placeholder="请选择信息分类" v-permission="PARTSIGN_INFORMATIONCLASSIFICATION">
                   <el-option value="" :label="$t('all') | capitalizeFilter"></el-option>
                   <el-option
@@ -56,7 +56,7 @@
                   ></el-option>
                 </iSelect>
               </el-form-item>
-              <el-form-item label="信息单状态">
+              <el-form-item :label="$t('LK_XINXIDANZHUANGTAI')">
                 <iSelect v-model="form.status" placeholder="请选择信息单状态" v-permission="PARTSIGN_INFORMATIONSTATUS">
                   <el-option value="" :label="$t('all') | capitalizeFilter"></el-option>
                   <el-option
@@ -67,10 +67,10 @@
                   ></el-option>
                 </iSelect>
               </el-form-item>
-              <el-form-item label="信息单流水号">
+              <el-form-item :label="$t('LK_XINXIDANLIUSHUIHAO')">
                 <iInput v-model="form.id" placeholder="请填写信息单流水号" v-permission="PARTSIGN_PARTINFOID"></iInput>
               </el-form-item>
-              <el-form-item label="询价资料状态">
+              <el-form-item :label="$t('LK_XUNJIAZILIAOZHUANGTAI')">
                 <iSelect
                   v-model="form.attachmentStatus"
                   placeholder="请选择询价资料状态" v-permission="PARTSIGN_INQUIRYSTATUS"
@@ -84,7 +84,7 @@
                   ></el-option>
                 </iSelect>
               </el-form-item>
-              <el-form-item label="每车用量状态">
+              <el-form-item :label="$t('LK_MEICHEYONGLIANGZHUANGTAI')">
                 <iSelect
                   v-model="form.partDosageStatus"
                   placeholder="请选择每车用量状态" v-permission="PARTSIGN_USAGEVEHICLE"
@@ -105,7 +105,8 @@
             <!--                  table模块，向外入参表格数据，表头                    --->
             <!------------------------------------------------------------------------>
             <div class="margin-bottom20 clearFloat">
-              <span class="font18 font-weight">新件信息单签收</span>
+              <!--<span class="font18 font-weight">新件信息单签收</span>-->
+	      <span class="font18 font-weight">{{$t('LK_XINJIANXINXIDANQIANSHOU')}}</span>
               <div class="floatright">
                 <iButton @click="save" v-permission="PARTSIGN_SIGNBUTTON">{{$t('partsignLanguage.QianShou')}}</iButton>
                 <iButton @click="openDiologBack" v-permission="PARTSIGN_BACKBUTTON">{{$t('partsignLanguage.TuiHui')}}</iButton>

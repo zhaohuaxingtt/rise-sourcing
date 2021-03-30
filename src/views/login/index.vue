@@ -47,9 +47,9 @@ export default{
     login(){
       if(this.passWord == '' || this.userName == '') return iMessage.error('抱歉，用户名或密码不能为空！')
       this.loading = true
-      login({userName:this.userName,passWord:this.passWord}).then(res=>{
+      login({userName:this.userName,passWord:this.passWord}).then(async res=>{
         this.loading = false
-        setToken(res.data.token)
+        await setToken(res.data.token)
         this.$router.replace({
           path:'/partsign'
         })

@@ -43,6 +43,15 @@ export function getTpInfo(params){
   })
 }
 
+// 关联附件用
+export function patchTpRecords(params) {
+  return requst({
+    url: '/tp-records',
+    method: 'PATCH',
+    data: params
+  })
+}
+
 // 获取附件
 export function getInfoAnnexPage(params) {
   return requst({

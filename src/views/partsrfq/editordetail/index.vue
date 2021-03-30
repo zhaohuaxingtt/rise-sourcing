@@ -11,21 +11,24 @@
     <!-- rfq详情操作按钮 -->
     <div class="pageTitle flex-between-center-center">
       <div class="flex nav-box">
-        <span>{{ $route.query.id ? $route.query.id : '新建RFQ' }}</span>
-        <iNavMvp :list='navList' @change="changeNav"></iNavMvp>
+        <span>{{ $route.query.id ? $route.query.id : $t('LK_XINJIANRFQ') }}</span>
+        <iTabsList type="border-card" @tab-click="changeNav" class="nav-style">
+          <el-tab-pane :label="item.label" v-for="item of navList" :key="item.label">
+          </el-tab-pane>
+        </iTabsList>
       </div>
       <div class="btnList">
-        <iButton @click="newRfq" v-permission="PARTSRFQ_EDITORDETAIL_NEWRFQROUND">新建RFQ轮次</iButton>
-        <iButton @click="updateRfqStatus('06')" v-permission="PARTSRFQ_EDITORDETAIL_SENDINQUIRY">发出询价</iButton>
-        <iButton @click="updateRfqStatus('05')" v-permission="PARTSRFQ_EDITORDETAIL_ENDQUOTATION">结束本轮询价</iButton>
-        <iButton @click="updateRfqStatus('03')" v-permission="PARTSRFQ_EDITORDETAIL_TRANSFERNEGOTIATION">转谈判</iButton>
+        <iButton @click="newRfq" v-permission="PARTSRFQ_EDITORDETAIL_NEWRFQROUND">{{ $t('LK_XINJIANRFQLUNCI') }}</iButton>
+        <iButton @click="updateRfqStatus('06')" v-permission="PARTSRFQ_EDITORDETAIL_SENDINQUIRY">{{ $t('LK_FACHUXUNJIA') }}</iButton>
+        <iButton @click="updateRfqStatus('05')" v-permission="PARTSRFQ_EDITORDETAIL_ENDQUOTATION">{{ $t('LK_JIESHUBENLUNXUNJIA') }}</iButton>
+        <iButton @click="updateRfqStatus('03')" v-permission="PARTSRFQ_EDITORDETAIL_TRANSFERNEGOTIATION">{{ $t('LK_ZHUANTANPAN') }}</iButton>
         <iButton @click="createAFixedPointApplication" disabled v-permission="PARTSRFQ_EDITORDETAIL_CREATEAPPLICATION">
-          创建定点申请
+          {{ $t('LK_CHUANGJIANDINGDIANSHENQING') }}
         </iButton>
-        <iButton @click="backPage">返回</iButton>
+        <iButton @click="backPage">{{ $t('LK_FANHUI') }}</iButton>
         <iButton type="text" @click="toLogPage" v-permission="PARTSRFQ_EDITORDETAIL_LOG">
           <icon symbol name="iconrizhiwuzi" class="log-icon"/>
-          <span class="log-word">日志</span>
+          <span class="log-word">{{ $t('LK_RIZHI') }}</span>
         </iButton>
         <span>
 					<icon symbol name="icondatabaseweixuanzhong"></icon>
@@ -36,14 +39,14 @@
       <!------------------------------------------------------------------------>
       <!--                  基本信息区域                                       --->
       <!------------------------------------------------------------------------>
-      <div class="baseinfo-title">基础信息</div>
+      <div class="baseinfo-title">{{ $t('LK_JICHUXINXI') }}</div>
       <iFormGroup row="1" inline :rules="rules">
         <div class="row">
           <div class="col">
-            <iFormItem label="RFQ编号：" name="id">
+            <iFormItem :label="$t('LK_RFQBIANHAO')+':'" name="id">
               <iText v-permission="PARTSRFQ_EDITORDETAIL_RFQNUMBER">{{ baseInfo.id }}</iText>
             </iFormItem>
-            <iFormItem label="RFQ名称：" name="rfqName">
+            <iFormItem :label="$t('LK_RFQMINGCHENG')+':'" name="rfqName">
               <iInput v-if="editStatus" v-model="baseInfo.rfqName"
                       v-permission="PARTSRFQ_EDITORDETAIL_RFQNAME"></iInput>
               <iText v-else v-permission="PARTSRFQ_EDITORDETAIL_RFQNAME">{{ baseInfo.rfqName }}</iText>
@@ -63,20 +66,20 @@
             </iFormItem>
           </div>
           <div class="col">
-            <iFormItem label="RFQ状态：" name="statusName">
+            <iFormItem :label="$t('LK_RFQZHUANGTAI')+':'" name="statusName">
               <iText v-permission="PARTSRFQ_EDITORDETAIL_RFQSTATUS">{{ baseInfo.currentStatus }}</iText>
             </iFormItem>
-            <iFormItem label="询价采购员：" name="buyerName">
+            <iFormItem :label="$t('LK_XUNJIACAIGOUYUAN')+':'" name="buyerName">
               <iText v-permission="PARTSRFQ_EDITORDETAIL_INQUIRYBUYER">{{ baseInfo.buyerName }}</iText>
             </iFormItem>
             <iFormItem label="MQ：" name="mq">
               <iInput v-if="editStatus" v-model="baseInfo.mq" v-permission="PARTSRFQ_EDITORDETAIL_MQ"></iInput>
               <iText v-else v-permission="PARTSRFQ_EDITORDETAIL_MQ">{{ baseInfo.mq }}</iText>
             </iFormItem>
-            <iFormItem label="当前轮次：" name="currentRounds">
+            <iFormItem :label="$t('LK_DANGQIANLUNCI')+':'" name="currentRounds">
               <iText v-permission="PARTSRFQ_EDITORDETAIL_CURRENTROUND">{{ baseInfo.currentRounds }}</iText>
             </iFormItem>
-            <iFormItem label="轮次类型：" name="roudsType">
+            <iFormItem :label="$t('LK_LUNCILEIXING')+':'" name="roudsType">
               <iText>
                 <template v-if="baseInfo.roudsType === '00'" v-permission="PARTSRFQ_EDITORDETAIL_ROUNDTYPE">普通轮次
                 </template>
@@ -87,7 +90,7 @@
             </iFormItem>
           </div>
           <div class="col">
-            <iFormItem label="创建日期：" name="createDate">
+            <iFormItem :label="$t('LK_CHUANGJIANRIQI')+':'" name="createDate">
               <iText v-permission="PARTSRFQ_EDITORDETAIL_CREATIONDATE">
                 {{ $route.query.id ? baseInfo.createDate : moment().format('YYYY-MM-DD') }}
               </iText>
@@ -103,14 +106,17 @@
               <iText v-permission="PARTSRFQ_EDITORDETAIL_CURRENTSTATE">{{ baseInfo.currentRoundsStatus }}</iText>
             </iFormItem>
             <div class="edit-button-row">
-              <i-button @click="edit" v-permission="PARTSRFQ_EDITORDETAIL_SAVE">{{ !editStatus ? '编辑' : '保存' }}</i-button>
+              <i-button @click="edit" v-permission="PARTSRFQ_EDITORDETAIL_SAVE">{{
+                  !editStatus ? `$t('LK_BIANJI')` : $t('LK_BAOCUN')
+                }}
+              </i-button>
             </div>
           </div>
         </div>
       </iFormGroup>
     </i-card>
-    <rfqPending v-if="navActivtyValue === 1 || navActivtyValue === ''"></rfqPending>
-    <rfq-detail-info v-if="navActivtyValue === 2"></rfq-detail-info>
+    <rfqPending v-if="navActivtyValue === '待办事项' || navActivtyValue === ''"></rfqPending>
+    <rfq-detail-info v-if="navActivtyValue === '详情信息'"></rfq-detail-info>
     <new-rfq-round v-model="newRfqRoundDialog" @refreshBaseInfo="getBaseInfo"/>
   </iPage>
 </template>
@@ -125,7 +131,7 @@ import {
   iText,
   iInput,
   iMessage,
-  iNavMvp
+  iTabsList
 } from "@/components";
 import rfqPending from './components/rfqPending'
 import rfqDetailInfo from './components/rfqDetailInfo'
@@ -146,19 +152,17 @@ export default {
     rfqPending,
     rfqDetailInfo,
     newRfqRound,
-    iNavMvp
+    iTabsList
   },
   data() {
     return {
       navActivtyValue: '',
       navList: [
         {
-          name: "待办事项",
-          value: 1
+          label: "待办事项",
         },
         {
-          name: "详情信息",
-          value: 2
+          label: "详情信息",
         },
         // {
         //   label: "谈判助手",
@@ -203,8 +207,8 @@ export default {
         this.editStatus = true
       }
     },
-    changeNav(item) {
-      this.navActivtyValue = item.value
+    changeNav(target) {
+      this.navActivtyValue = target.label
     },
     newRfq() {
       this.newRfqRoundDialog = true
@@ -219,7 +223,7 @@ export default {
         }
       }
       const res = await editRfqData(req)
-      res.result ? iMessage.success(res.desZh) : iMessage.error(res.desZh)
+      this.resultMessage(res)
       this.getBaseInfo()
     },
     createAFixedPointApplication() {
@@ -228,8 +232,13 @@ export default {
       window.open(`/#/log?recordId=`, '_blank')
     },
     edit() {
+      const rfqName = this.baseInfo.rfqName
+      if (!rfqName && this.editStatus) {
+        iMessage.warn('RFQ名称不能为空')
+        return false
+      }
       this.editStatus = !this.editStatus
-      if (!this.editStatus) {
+      if (!this.editStatus && rfqName) {
         this.save()
       }
     },
@@ -251,7 +260,7 @@ export default {
           }
         }
         const res = await editRfqData(req)
-        res.result ? iMessage.success(res.desZh) : iMessage.error(res.desZh)
+        res.result ? iMessage.success(this.$i18n.locale === 'zh' ? res.desZh : res.desEn) : iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
         this.getBaseInfo()
       } else {
         const req = {
@@ -262,7 +271,7 @@ export default {
           }
         }
         const res = await addRfq(req)
-        res.result ? iMessage.success(res.desZh) : iMessage.error(res.desZh)
+        res.result ? iMessage.success(this.$i18n.locale === 'zh' ? res.desZh : res.desEn) : iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
         this.$router.push({
           path: `/partsrfq/editordetail?id=${res.data.rfqId}`
         })

@@ -10,10 +10,10 @@
     <div class="pageTitle flex-between-center-center">
       <span>3QG810005L</span>
       <div class="btnList flex-align-center">
-        <iButton @click="openDiologChangeItems" v-permission='PARTSIGN_EDITORDETAIL_TRANSFERBUTTON'>转派</iButton>
-        <iButton @click="save" v-permission="PARTSIGN_EDITORDETAIL_SIGNBUTTON">签收</iButton>
-        <iButton @click="openDiologBack" v-permission="PARTSIGN_EDITORDETAIL_BACKBUTTON">退回</iButton>
-        <iButton @click="back" v-permission="PARTSIGN_EDITORDETAIL_RETURN">返回</iButton>
+        <iButton @click="openDiologChangeItems" v-permission='PARTSIGN_EDITORDETAIL_TRANSFERBUTTON'>{{ $t('LK_ZHUANPAI') }}</iButton>
+        <iButton @click="save" v-permission="PARTSIGN_EDITORDETAIL_SIGNBUTTON">{{ $t('LK_QIANSHOU') }}</iButton>
+        <iButton @click="openDiologBack" v-permission="PARTSIGN_EDITORDETAIL_BACKBUTTON">{{ $t('LK_TUIHUI') }}</iButton>
+        <iButton @click="back" v-permission="PARTSIGN_EDITORDETAIL_RETURN">{{ $t('LK_FANHUI') }}</iButton>
         <logButton class="margin-left20" @click="log"  v-permission="PARTSIGN_EDITORDETAIL_LOGBUTTON"/>
         <span>
           <icon symbol name="icondatabaseweixuanzhong"></icon>
@@ -27,15 +27,15 @@
     <!-- 零件详情tab页 -->
     <div class="iTabs">
       <iTabs-list type="border-card">
-        <el-tab-pane label="信息单详情" v-permission="PARTSIGN_EDITORDETAIL_INFORMATIONSHEETDETAILS">
+        <el-tab-pane :label="$t('LK_XINXIDANXIANGQING')" v-permission="PARTSIGN_EDITORDETAIL_INFORMATIONSHEETDETAILS">
           <iCard>
             <partInfo :title="item" :data="partDetails" v-for="(item,index) in partDetailTitle" :key="index"></partInfo>
           </iCard>
         </el-tab-pane>
-        <el-tab-pane :label="$t('partsign.enquiry')" v-permission="PARTSIGN_EDITORDETAIL_INQUIRYINFORMATION">
+        <el-tab-pane :label="$t('LK_XUNJIAZILIAO')" v-permission="PARTSIGN_EDITORDETAIL_INQUIRYINFORMATION">
           <enquiry :data="partDetails" />
         </el-tab-pane>
-        <el-tab-pane :label="$t('partsign.volume')" v-permission="PARTSIGN_EDITORDETAIL_USAGEPERVEHICLE">
+        <el-tab-pane :label="$t('LK_MEICHEYONGLIANG')" v-permission="PARTSIGN_EDITORDETAIL_USAGEPERVEHICLE">
           <unconfirmed ref="unconfirmed" class="unconfirmed" :data="partDetails" @updateVersion="updateVersion" />
           <volume ref="volume" class="volume" :data="partDetails" />
         </el-tab-pane>

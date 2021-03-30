@@ -12,7 +12,7 @@
       </iFormGroup>
     </div>
     <span slot="footer" class="dialog-footer">
-       <iButton @click="submit" v-if="!disabled">确认</iButton>
+       <iButton @click="submit" v-if="!disabled">{{ $t('LK_QUEREN') }}</iButton>
        <iButton @click="clearDiolog">取消</iButton>
     </span>
   </iDialog>
