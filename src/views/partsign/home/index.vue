@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-24 09:17:57
- * @LastEditTime: 2021-03-30 15:29:23
+ * @LastEditTime: 2021-03-30 15:46:07
  * @LastEditors: Please set LastEditors
  * @Description: 零件签收列表界面.
  * @FilePath: \rise\src\views\partsign\index.vue
@@ -406,12 +406,10 @@ export default {
         opacity: 0.42;
         height: 35px;
         line-height: 35px;
-
         & + & {
           padding: 0 25px;
         }
       }
-      
       .is-active {
         opacity: 1;
         font-weight: bold;
