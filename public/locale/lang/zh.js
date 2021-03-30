@@ -152,7 +152,7 @@
     'LK_ZAISHENQINGCAIWUMUBIAOJIA': '再申请财务目标价',//再申请财务目标价
     'LK_YUANPEICHANG': '原配厂',//原配厂
     'LK_YONGLIANG': '用量',//用量
-    'LK_YIXUNJIACAIGOUYUANSHANGHUIBEIZHU': '易询价采购员上会备注',//易询价采购员上会备注
+    'LK_YIXUNJIACAIGOUYUANSHANGHUIBEIZHU': '询价采购员上会备注',//易询价采购员上会备注
     'LK_YIXUNJIAGONGYINGSHANG': '已询价供应商',//已询价供应商
     'LK_YIBAOJIAGONGYINGSHANG': '已报价供应商',//已报价供应商
     'LK_YAOQIUCSCHUIYIRIQI': '要求CSC会议日期',//要求CSC会议日期
