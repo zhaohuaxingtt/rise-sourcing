@@ -125,8 +125,8 @@
         </div>
       </iFormGroup>
     </i-card>
-    <rfqPending v-if="navActivtyValue === '待办事项' || navActivtyValue === ''"></rfqPending>
-    <rfq-detail-info v-if="navActivtyValue === '详情信息'"></rfq-detail-info>
+    <rfqPending v-if="navActivtyValue === '0' || navActivtyValue === ''"></rfqPending>
+    <rfq-detail-info v-if="navActivtyValue === '1'"></rfq-detail-info>
     <new-rfq-round v-model="newRfqRoundDialog" @refreshBaseInfo="getBaseInfo"/>
   </iPage>
 </template>
@@ -222,7 +222,7 @@ export default {
       }
     },
     changeNav(target) {
-      this.navActivtyValue = target.label
+      this.navActivtyValue = target.index
     },
     newRfq() {
       this.newRfqRoundDialog = true
