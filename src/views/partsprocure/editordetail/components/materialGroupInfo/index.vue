@@ -112,7 +112,7 @@ export default {
         stuffCode: data.stuffCode,
         stuffId: data.id,
         updateBy: this.userInfo.id,
-        partNum: this.params.partNum
+        partNums: [ this.params.partNum ]
       })
         .then(res => {
           if (res.code == 200) {
