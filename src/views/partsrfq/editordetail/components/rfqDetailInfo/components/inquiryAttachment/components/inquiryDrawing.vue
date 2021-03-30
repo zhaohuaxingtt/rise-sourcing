@@ -104,13 +104,12 @@ export default {
     handleSelectionChange(val) {
       this.selectTableData = val;
     },
-    handleOpenPage(row) {
-      /*const url = row.filePath
-      const a = document.createElement('a');
-      a.setAttribute('download', '')
-      a.setAttribute('href', url);
-      a.setAttribute('target', '_blank');
-      a.click();*/
+    async handleOpenPage(row) {
+      const req = {
+        applicationName: 'rise',
+        fileList: [row.fileName]
+      }
+      await downloadFile(req)
     }
   }
 }
