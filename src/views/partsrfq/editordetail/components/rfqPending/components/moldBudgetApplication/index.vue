@@ -3,15 +3,8 @@
     <iCard>
       <div class="margin-bottom20 clearFloat">
         <div class="floatright">
-<<<<<<< HEAD
           <iButton @click="submit" v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_MOLDBUDGETAPPLICATION_SUBMIT">{{ $t('LK_TIJIAO') }}</iButton>
           <iButton @click="recall" v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_MOLDBUDGETAPPLICATION_RECALL">{{ $t('LK_CHEHUI') }}</iButton>
-=======
-          <iButton @click="submit" v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_MOLDBUDGETAPPLICATION_SUBMIT">提交
-          </iButton>
-          <iButton @click="recall" v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_MOLDBUDGETAPPLICATION_RECALL">撤回
-          </iButton>
->>>>>>> 4a340613ff0e8cb8f3e2054f5c7e8fe07f92b6f0
         </div>
       </div>
       <tablelist

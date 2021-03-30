@@ -4,6 +4,7 @@
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  */
+import {permissionTitle} from '@/utils'
 export const tableTitle = [
     {props:'carType',name:'车型',key: 'LK_CHEXING'},
     {props:'partNum',name:'零件号',key: 'LK_LINGJIANHAO'},

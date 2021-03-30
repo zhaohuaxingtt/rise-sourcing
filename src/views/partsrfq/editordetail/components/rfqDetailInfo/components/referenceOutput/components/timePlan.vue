@@ -5,14 +5,25 @@
         <span class="font18 font-weight">{{ $t('LK_SHIJIANJIHUA') }}</span>
         <div class="floatright">
           <template v-if="!editStatus">
-            <iButton @click="edit" v-permission="PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_TIMEPLAN_EDIT">{{ $t('LK_BIANJI') }}</iButton>
+            <iButton @click="edit" v-permission="PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_TIMEPLAN_EDIT">{{
+                $t('LK_BIANJI')
+              }}
+            </iButton>
           </template>
           <template v-else>
-            <iButton @click="save" v-permission="PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_TIMEPLAN_SAVE">{{ $t('LK_BAOCUN') }}</iButton>
-            <iButton @click="back" v-permission="PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_TIMEPLAN_BACK">{{ $t('LK_FANHUI') }}</iButton>
+            <iButton @click="save" v-permission="PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_TIMEPLAN_SAVE">{{
+                $t('LK_BAOCUN')
+              }}
+            </iButton>
+            <iButton @click="back" v-permission="PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_TIMEPLAN_BACK">{{
+                $t('LK_FANHUI')
+              }}
+            </iButton>
           </template>
 
-          <iButton @click="exports" v-permission="PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_TIMEPLAN_EXPORTS">{{ $t('LK_DAOCHU') }}</iButton>
+          <iButton @click="exports" v-permission="PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_TIMEPLAN_EXPORTS">
+            {{ $t('LK_DAOCHU') }}
+          </iButton>
         </div>
       </div>
       <tablelist
@@ -111,11 +122,11 @@ export default {
     async save() {
       const reqList = this.tableListData.map(item => {
         return {
-          userId:store.state.permission.userInfo.id,
+          userId: store.state.permission.userInfo.id,
           id: item.id,
-          svwFirst: item.svwFirst,
-          svwRequestEm: item.svwRequestEm,
-          svwRequestOts: item.svwRequestOts,
+          svwFirst: Number(item.svwFirst) ? Number(item.svwFirst) : 0,
+          svwRequestEm: Number(item.svwRequestEm) ? Number(item.svwRequestEm) : 0,
+          svwRequestOts: Number(item.svwRequestOts) ? Number(item.svwRequestOts) : 0,
         }
       })
       const req = {

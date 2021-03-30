@@ -1,3 +1,4 @@
+import {permissionTitle} from '@/utils'
 export const inquiryAttachmentTableTitle = [
     {props:'fileName',name:'文件名称', key: 'LK_WENJIANMINGCHENG'},
     {props:'fileSize',name:'大小（MB）', key: 'LK_DAXIAOMB'},

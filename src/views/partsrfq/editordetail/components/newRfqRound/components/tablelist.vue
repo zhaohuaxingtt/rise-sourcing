@@ -1,7 +1,7 @@
 <template>
   <el-table :height="height" :data='tableData' v-loading='tableLoading' @selection-change="handleSelectionChange" ref="newRoundTable">
     <el-table-column v-if="selection" type='selection' width="50" align='center'></el-table-column>
-    <el-table-column v-if='index' type='index' width='50' align='center' :label='$t('LK_BIANHAO')'></el-table-column>
+    <el-table-column v-if='index' type='index' width='50' align='center' :label="$t('LK_BIANHAO')"></el-table-column>
     <template v-for="(items,index) in tableTitle">
       <el-table-column :key="index" align='center' v-if='items.props === openPageProps' :prop="items.props"
                        :label="items.name">

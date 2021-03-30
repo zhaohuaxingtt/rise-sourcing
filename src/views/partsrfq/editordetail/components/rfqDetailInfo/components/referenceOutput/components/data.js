@@ -4,6 +4,7 @@
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  */
+import {permissionTitle} from '@/utils'
 export const partsProductionTableTitle = [
     {props:'rfqPlanId',name:'FS号',key: 'LK_FSHAO'},
     {props:'procureFactory',name:'采购工厂',key: 'LK_CAIGOUGONGCHANG'},

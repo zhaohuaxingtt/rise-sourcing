@@ -6,7 +6,7 @@
  -->
 <template>
   <iTabsList type="border-card" @tab-click="handleTabClick">
-    <el-tab-pane :label="item.label" v-for="item of tabList" :key="item.label" v-permisstion='item.permissionKey'>
+    <el-tab-pane :label="$t(item.key)" v-for="item of tabList" :key="item.label" v-permisstion='item.permissionKey'>
       <component :is="item.component" v-if="activityTabLabel === item.label"/>
     </el-tab-pane>
   </iTabsList>
@@ -33,11 +33,11 @@ export default {
     return {
       activityTabLabel: '零件清单',
       tabList: [
-        {label: '零件清单', component: 'partDetailList',permissionKey:'PARTSRFQ_EDITORDETAIL_PARTDETAILIST_INDEXPAGE'},
-        {label: 'BDL列表', component: 'BDL',permissionKey:'PARTSRFQ_EDITORDETAIL_RFQPENDING_INDEXPAGE'},
-        {label: '供应商评分', component: 'supplierScore',permissionKey:'PARTSRFQ_EDITORDETAIL_RFQPENDING_SUPPLIERSCORE_PARTSCORING_INDEXPAGE'},
-        {label: '模具预算申请', component: 'moldBudgetApplication',permissionKey:'PARTSRFQ_EDITORDETAIL_RFQPENDING_MOLDBUDGETAPPLICATION_INDEXPAGE'},
-        {label: '技术交流会', component: 'technicalSeminar',permissionKey:'PARTSRFQ_EDITORDETAIL_RFQPENDING_TECHNICALSEMINAR_BASICINFORMATIONMEETING_INDEXPAGE'},
+        {label: '零件清单', component: 'partDetailList',permissionKey:'PARTSRFQ_EDITORDETAIL_PARTDETAILIST_INDEXPAGE',key:'LK_LINGJIANQINGDAN'},
+        {label: 'BDL列表', component: 'BDL',permissionKey:'PARTSRFQ_EDITORDETAIL_RFQPENDING_INDEXPAGE',key:'LK_BDLLIEBIAO'},
+        {label: '供应商评分', component: 'supplierScore',permissionKey:'PARTSRFQ_EDITORDETAIL_RFQPENDING_SUPPLIERSCORE_PARTSCORING_INDEXPAGE',key:'LK_GONGYINGSHANGPINGFEN'},
+        {label: '模具预算申请', component: 'moldBudgetApplication',permissionKey:'PARTSRFQ_EDITORDETAIL_RFQPENDING_MOLDBUDGETAPPLICATION_INDEXPAGE',key:'LK_MOJUYUSUANSHENQING'},
+        {label: '技术交流会', component: 'technicalSeminar',permissionKey:'PARTSRFQ_EDITORDETAIL_RFQPENDING_TECHNICALSEMINAR_BASICINFORMATIONMEETING_INDEXPAGE',key:'LK_JISHUJIAOLIUHUI'},
       ]
     };
   },

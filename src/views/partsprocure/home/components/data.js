@@ -6,8 +6,9 @@
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsprocure\home\component\data.js
  */
-
+import {permissionTitle} from '@/utils'
 export const tableTitle = [{
+//export const tableTitle = permissionTitle("PARTSPROCURE_PARTSPROCURELIST",[{
 		props: 'fsnrGsnrNum',
 		name: 'FSNF/GSNF/SPNR',
 		key: 'partsprocure.PARTSPROCURENEWPROCUREMENTPROJECT',
@@ -33,12 +34,12 @@ export const tableTitle = [{
 		key: 'partsprocure.PARTSPROCUREPURCHASINGFACTORY',
 	},
 	{
-		props: 'partPrejectType',
+		props: 'partPrejectTypeName',
 		name: '零件项目类型',
 		key: 'partsprocure.PARTSPROCUREPARTITEMTYPE',
 	},
 	{
-		props: 'cartypeCategory',
+		props: 'cartypeCategoryName',
 		name: '车型大类',
 		key: 'partsprocure.PARTSPROCUREVEHICLECATEGORIES',
 	},
@@ -48,7 +49,7 @@ export const tableTitle = [{
 		key: 'partsprocure.PARTSPROCUREMODELPROJECT',
 	},
 	{
-		props: 'partStatus',
+		props: 'partStatusName',
 		name: '零件状态',
 		key: 'partsprocure.PARTSPROCUREPARTSTATUS',
 	},
@@ -58,7 +59,7 @@ export const tableTitle = [{
 		key: 'partsprocure.PARTSPROCUREINQUIRYBUYER',
 	},
 	{
-		props: 'linieName',
+		props: 'linieNameZh',
 		name: 'LINIE',
 		key: 'partsprocure.PARTSPROCURELINIE',
 	},

@@ -19,7 +19,9 @@
     <tableList :tableData="tableData" :tableTitle="tableTitle" :tableLoading="tableLoading"
                @handleSelectionChange="handleSelectionChange"
                @openPage="openPage"
-               @log="log" ref="table"></tableList>
+               @log="log" ref="table"
+               @handleSelect="handleSelect"
+               @handleSelectAll="handleSelectAll"></tableList>
     <iPagination @size-change="handleSizeChange($event, getTableList)"
 			@current-change="handleCurrentChange($event, getTableList)" background :page-sizes="page.pageSizes"
 			:page-size="page.pageSize" :layout="page.layout" :total="page.totalCount"></iPagination>
@@ -51,7 +53,10 @@ export default {
       tableLoading: false,
       searchKey: "",//搜索关键词	
       logVisible: false,
-      rfqId:''
+      rfqId:'',
+      selectTableData: [],
+      editSelectTableDataCache: [],
+      noEditSelectTableDataCache: []
     }
   },
   created() {
@@ -63,15 +68,16 @@ export default {
      * 获取bdl列表
      * 需求：
      **************************/
-    saveBdl(){
-		
-	},
+    saveBdl() {
+      this.multipleSelectionCache = []
+    },
     /**************************
      * 获取bdl列表
      **************************/
     translateParmars(){
       return {
-        rfqId:this.rfqId,
+        rfqId:'249356903498256384',
+        // this.rfqId || 
         size:this.page.pageSize,
         current:this.page.currPage,
         findType:11
@@ -83,6 +89,16 @@ export default {
         if(res.data && res.data.rfqBdlVO && res.data.rfqBdlVO.rfqBdlVOList){
           this.tableData = res.data.rfqBdlVO.rfqBdlVOList
         }
+        this.tableData = [{supplierId: 1}, {supplierId: 2}, {supplierId: 3}, {supplierId: 4}, {supplierId: 5}, {supplierId: 6}]
+
+        this.tableData.forEach(item => {
+          if (item.isEdit) {
+            if (this.editSelectTableDataCache.some(cacheItem => cacheItem.supplierId === item.supplierId)) this.$nextTick(() => this.$refs.table.$refs.multipleTable.toggleRowSelection(item, true))
+          } else {
+            if (this.noEditSelectTableDataCache.some(cacheItem => cacheItem.supplierId === item.supplierId)) this.$nextTick(() => this.$refs.table.$refs.multipleTable.toggleRowSelection(item, true))
+          }
+        })
+        
         this.tableLoading = false;
       }).catch(err=>{
         this.tableLoading = false;
@@ -90,7 +106,48 @@ export default {
     },
     //修改表格改动列
     handleSelectionChange(val) {
-      this.selectTableData = val;
+      // this.selectTableData = val
+      const editSelectTableData = [] // 没有保存过的bdl
+      const noEditSelectTableData = [] // 保存过的bdl
+      for (let i = 0, item; (item = val[i++]); ) {
+        item.isEdit ?
+          editSelectTableData.push(item) :
+          noEditSelectTableData.push(item)
+      }
+
+      // 用于保存操作的cache列表
+      this.editSelectTableDataCache = this.editSelectTableDataCache.concat(
+        editSelectTableData.filter(item => !this.editSelectTableDataCache.some(cacheItem => cacheItem.supplierId === item.supplierId))
+      )
+
+      // 用于删除操作的cache列表
+      this.noEditSelectTableDataCache = this.noEditSelectTableDataCache.concat(
+        noEditSelectTableData.filter(item => !this.noEditSelectTableDataCache.some(cacheItem => cacheItem.supplierId === item.supplierId))
+      )
+    },
+    handleSelect(selection, row) {
+      if (!selection.includes(row)) { // 从cache中删除
+        row.isEdit ?
+          this.editSelectTableDataCache = this.editSelectTableDataCache.filter(item => item.supplierId !== row.supplierId) :
+          this.noEditSelectTableDataCache = this.noEditSelectTableDataCache.filter(item => item.supplierId !== row.supplierId)
+      }
+    },
+    handleSelectAll(selection) {
+      if (selection.length !== this.tableData.length) { // 当前页取消选中操作
+        const editNoSelectTableData = [] // 没有保存过的bdl
+        const noEditNoSelectTableData = [] // 保存过的bdl
+        for (let i = 0, item; (item = this.tableData[i++]); ) {
+          item.isEdit ?
+            editNoSelectTableData.push(item) :
+            noEditNoSelectTableData.push(item)
+        }
+
+        // 用于保存操作的cache列表
+        this.editSelectTableDataCache = this.editSelectTableDataCache.filter(cacheItem => !editNoSelectTableData.some(item => item.supplierId === cacheItem.supplierId))
+
+        // 用于删除操作的cache列表
+        this.noEditSelectTableDataCache = this.noEditSelectTableDataCache.filter(cacheItem => !noEditNoSelectTableData.some(item => item.supplierId === cacheItem.supplierId))
+      }
     },
     // 跳转
     openPage() {
