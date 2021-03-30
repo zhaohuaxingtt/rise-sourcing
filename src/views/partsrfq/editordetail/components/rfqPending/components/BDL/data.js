@@ -4,7 +4,8 @@
  * @LastEditors: Please set LastEditors
 * @Description: BDL列表JS
  */
-export const tableTitle = [
+import {permissionTitle} from '@/utils'
+export const tableTitle = permissionTitle("PARTSRFQ_EDITORDETAIL_RFQPENDING_LIST_360VIEWCOLUMN",[
     {props:'sapNum',name:'供应商SAP号'},
     {props:'supplierNameZh',name:'供应商名称'},
     {props:'pupplierProductionPlace',name:'供应商生产场地'},
@@ -14,4 +15,4 @@ export const tableTitle = [
     {props:'supplierCostGrade',name:'成本'},
     {props:'supplierDeliverGrade',name:'交付'},
     {props:'i',name:'供应商360°视图'}
-  ]
+  ])
