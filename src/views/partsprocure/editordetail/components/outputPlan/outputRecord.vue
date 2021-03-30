@@ -60,8 +60,7 @@ export default {
 
       getOutputPlan({
         'partRecordPageReqDTO.current': this.page.currPage,
-        'partRecordPageReqDTO.purchaseProjectId': '1374304053550661634',
-        // this.params.purchasePrjectId,
+        'partRecordPageReqDTO.purchaseProjectId': this.params.purchasePrjectId,
         'partRecordPageReqDTO.size': this.page.pageSize
       }).
         then(res => {
