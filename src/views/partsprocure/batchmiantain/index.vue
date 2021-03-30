@@ -31,7 +31,7 @@
 							v-for="(item, index) in getGroupList('linie_dept')" :key="index"></el-option>
 					</iSelect>
 				</el-form-item>
-				<el-form-item label="LINIE">
+				<el-form-item label="LINIE" value-key="key">
 					<iSelect v-model="linie">
 						<el-option :value="item" :label="item.name"
 							v-for="(item, index) in getGroupList('linie_name')" :key="index"></el-option>
@@ -44,7 +44,7 @@
 					</iSelect>
 				</el-form-item>
 				<el-form-item :label="$t('LK_CHEXINGXIANGMU')">
-					<iSelect  v-model="cartypeProject.key" value-key="value">
+					<iSelect  v-model="cartypeProject" value-key="key">
 						<el-option :value="item" :label="item.name"
 							v-for="(item, index) in getGroupList('cartype_project_zh')" :key="index"></el-option>
 					</iSelect>
@@ -80,13 +80,13 @@
 					</iSelect>
 				</el-form-item>
 				<el-form-item :label="$t('LK_GONGYI')">
-					<iSelect placeholder="请选择先材料组" v-model="stuffObj">
+					<iSelect placeholder="请选择先材料组" v-model="stuffObj" value-key="stuffCode">
 						<el-option :value="item"  :label="item.stuffName" v-for="(item, index) in stuffArr" :key="index"></el-option>
 					</iSelect>
 				</el-form-item>
 			</el-form>
 			<template slot="button">
-				<iButton @click="save" v-permission="PARTSPROCURE_BATCHMIANTAIN_MATERIALGROUPCONFIRM">{{ $t('LK_QUEREN') }}</iButton>
+				<iButton @click="putMaterialGroup" v-permission="PARTSPROCURE_BATCHMIANTAIN_MATERIALGROUPCONFIRM">{{ $t('LK_QUEREN') }}</iButton>
 				<iButton @click="resetStuff" v-permission="PARTSPROCURE_BATCHMIANTAIN_MATERIALGROUPRESET">{{ $t('LK_ZHONGZHI') }}</iButton>
 			</template>
 		</iSearch>
@@ -107,7 +107,7 @@
 		insertRfq,
 		getProcureGroup,
 	} from "@/api/partsprocure/home";
-	import {materialGroupByLinie,getStuffByCategory} from "@/api/partsprocure/editordetail";
+	import {materialGroupByLinie,getStuffByCategory,putMaterialGroup} from "@/api/partsprocure/editordetail";
 	import {
 		getPageGroup
 	} from "@/api/partsign/home";
@@ -142,17 +142,18 @@
 					stuffCode:"",//key
 					categoryCode:"",
 				},
-				linie:{
+				linie:{ //专业采购员
 					key:"",
-					value:""
+					name:""
 				},
-				cartypeProject:{
+				cartypeProject:{ //车型项目
 					key:"",
 					name:""
 				},
 				stuffObj:{
-					key:"",
-					name:""
+					id:"",
+					stuffCode:"",
+					stuffName:""
 				},
 				selectTableData: [],
 				startLoding: false,
@@ -190,10 +191,30 @@
 			// 获取工艺组数据
 			changeSelect(val){
 				let data={
-					categoryId:val.id 
+					categoryId:val
 				}
 				getStuffByCategory(data).then(res=>{
 					this.stuffArr=res.data || []
+				})
+			},
+			// 设置工艺组
+			putMaterialGroup(){
+				if (this.batch.purchaseProjectIds.length == 0) {
+					iMessage.warn("请选择需要设置的零件采购项目")
+					return
+				}
+				let data={
+					id :this.stuff.categoryCode,
+					partNums :this.batch.purchaseProjectIds,
+					stuffCode:this.stuffObj.stuffCode,
+					stuffId:this.stuffObj.id
+				}
+				getStuffByCategory(data).then(res=>{
+					if (res.data) {
+						iMessage.success("设置成功")
+					}else{
+						iMessage.error(res.desZh)
+					}
 				})
 			},
 			//选中零件采购数据
@@ -228,8 +249,8 @@
 				})
 			},
 			pushKey(){
-				this.stuff.stuffName=this.stuffObj.name
-				this.stuff.stuffCode=this.stuffObj.key
+				this.stuff.stuffName=this.stuffObj.stuffName
+				this.stuff.stuffCode=this.stuffObj.stuffCode
 				this.batch.cartypeProjectZh=this.cartypeProject.name
 				this.batch.cartypeProjectNum=this.cartypeProject.key
 				this.batch.linieDept=this.linie.name
