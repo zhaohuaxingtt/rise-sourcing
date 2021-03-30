@@ -37,7 +37,7 @@ export default {
         {label: 'BDL列表', component: 'BDL',permissionKey:'PARTSRFQ_EDITORDETAIL_RFQPENDING_INDEXPAGE'},
         {label: '供应商评分', component: 'supplierScore',permissionKey:'PARTSRFQ_EDITORDETAIL_RFQPENDING_SUPPLIERSCORE_PARTSCORING_INDEXPAGE'},
         {label: '模具预算申请', component: 'moldBudgetApplication',permissionKey:'PARTSRFQ_EDITORDETAIL_RFQPENDING_MOLDBUDGETAPPLICATION_INDEXPAGE'},
-        {label: '技术交流会', component: 'technicalSeminar',permissionKey:'PARTSRFQ_EDITORDETAIL_RFQPENDING_TECHNICALSEMINAR_BASICINFORMATIONMEETING_INDEXPAGE'},
+        {label: '技术交底会', component: 'technicalSeminar',permissionKey:'PARTSRFQ_EDITORDETAIL_RFQPENDING_TECHNICALSEMINAR_BASICINFORMATIONMEETING_INDEXPAGE'},
       ]
     };
   },
