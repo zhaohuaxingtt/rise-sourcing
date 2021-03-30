@@ -441,7 +441,7 @@ export default {
     },
     //转派
     sureChangeItems(val) {
-      this.patchRecordsForTranslate(val, this.selectTableData);
+      this.patchRecordsForTranslate(val.id, this.selectTableData);
       this.diologChangeItems = false;
     },
   },
