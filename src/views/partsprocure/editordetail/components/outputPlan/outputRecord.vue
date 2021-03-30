@@ -1,13 +1,13 @@
 <template>
   <iCard class="outputRecord" tabCard>
     <template v-slot:header-control>
-      <iButton @click="updateOutput" v-permission="PARTSPROCURE_EDITORDETAIL_OUTPUTPLAN_OUTPUTRECORD_UPDATE">更新至询价产量</iButton>
+      <iButton @click="updateOutput" v-permission="PARTSPROCURE_EDITORDETAIL_OUTPUTPLAN_OUTPUTRECORD_UPDATE">{{ $t('LK_GENGXINZHIXUNJIACHANLIANG') }}</iButton>
     </template>
     <div class="body">
       <tableList
         class="table"
         index
-        indexLabel="编号" 
+        :indexLabel="$t('LK_BIANHAO')" 
         :tableData="tableListData" 
         :tableTitle="tableTitle" 
         :tableLoading="loading"

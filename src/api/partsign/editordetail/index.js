@@ -44,3 +44,12 @@ export function getInfoAnnexPage(params) {
     params: params
   })
 }
+
+// 获取附件信息
+export function getVolume(params) {
+  return requst({
+    url: '/tp-records/tpInfo/getVolume',
+    method: 'GET',
+    params: params
+  })
+}

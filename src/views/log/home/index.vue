@@ -1,5 +1,5 @@
 <template>
-  <iPage class="log">
+  <iPage class="log" v-permission="LOG_HOME_INDEXPAGE">
     <div class="margin-bottom20 clearFloat">
       <div class="floatright">
         <iButton @click="download" v-permission="LOG_HOME_DOWNLOAD">导出</iButton>

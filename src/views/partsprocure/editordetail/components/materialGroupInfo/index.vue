@@ -9,17 +9,17 @@
 <template>
   <iCard class="materialGroupInfo" tabCard v-loading="loading">
     <template v-slot:header-control>
-      <iButton v-if="!setMaterialGroupStatus" @click="setMaterialGroup" v-permission="PARTSPROCURE_EDITORDETAIL_SETPROCESSGROUP">设置工艺组</iButton>
+      <iButton v-if="!setMaterialGroupStatus" @click="setMaterialGroup" v-permission="PARTSPROCURE_EDITORDETAIL_SETPROCESSGROUP">{{ $t('LK_SHEZHIGONGYIZU') }}</iButton>
       <!-- <iButton v-if="!setMaterialGroupStatus" @click="log">日志</iButton> -->
-      <iButton v-if="setMaterialGroupStatus" @click="confirmMaterialGroup" :loading="confirmLoading" v-permission="PARTSPROCURE_EDITORDETAIL_MATERIALGROUPINFO_CONFIRM">确认</iButton>
-      <iButton v-if="setMaterialGroupStatus" @click="back" v-permission="PARTSPROCURE_EDITORDETAIL_MATERIALGROUPINFO_BACK">返回</iButton>
+      <iButton v-if="setMaterialGroupStatus" @click="confirmMaterialGroup" :loading="confirmLoading" v-permission="PARTSPROCURE_EDITORDETAIL_MATERIALGROUPINFO_CONFIRM">{{ $t('LK_QUEREN') }}</iButton>
+      <iButton v-if="setMaterialGroupStatus" @click="back" v-permission="PARTSPROCURE_EDITORDETAIL_MATERIALGROUPINFO_BACK">{{ $t('LK_FANHUI') }}</iButton>
     </template>
     <div class="body">
       <infos :data="info" />
       <div v-if="setMaterialGroupStatus">
         <tableList 
           class="table margin-top20"
-          indexLabel="编号" 
+          :indexLabel="$t('LK_BIANHAO')" 
           :tableData="tableListData" 
           :tableTitle="tableTitle" 
           :tableLoading="tableLoading"

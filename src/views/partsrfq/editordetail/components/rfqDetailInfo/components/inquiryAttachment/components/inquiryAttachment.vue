@@ -1,10 +1,10 @@
 <template>
   <iCard>
     <div class="margin-bottom20 clearFloat">
-      <span class="font18 font-weight">询价附件</span>
+      <span class="font18 font-weight">{{ $t('LK_XUNJIAFUJIAN') }}</span>
       <div class="floatright">
         <iButton @click="deleteItems"
-                 v-permission="PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_INQUIRYATTACHMENT_INQUIRYATTACHMENT_DELETE">删除
+                 v-permission="PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_INQUIRYATTACHMENT_INQUIRYATTACHMENT_DELETE">{{ $t('LK_SHANCHU') }}
         </iButton>
         <upload-button
             @uploadedCallback="uploadAttachments"
@@ -13,7 +13,7 @@
             v-permission="PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_INQUIRYATTACHMENT_INQUIRYATTACHMENT_UPLOADBUTTON"/>
         <iButton @click="download"
                  v-permission="PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_INQUIRYATTACHMENT_INQUIRYATTACHMENT_DOWNLOADBUTTON">
-          下载
+          {{ $t('LK_XIAZAI') }}
         </iButton>
         <!-- 暂不做，后端暂无接口：用户可以选择“通知全部供应商”，询价附件会发送给当前RFQ BDL中所选择的全部供应商-->
         <iButton @click="notifyAllSuppliers"
@@ -23,7 +23,7 @@
         <!-- 暂不做，后端暂无接口：用户选择“通知已报价供应商”，系统会根据RFQ的报价记录，发给有有效报价的供应商-->
         <iButton @click="notifySuppliersWhoHaveQuoted"
                  v-permission="PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_INQUIRYATTACHMENT_INQUIRYATTACHMENT_NOTIFYQUOTED">
-          通知已报价供应商
+          {{ $t('LK_TONGZHIQUANBUGONGYINGSHANG') }}
         </iButton>
       </div>
     </div>

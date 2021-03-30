@@ -2,9 +2,9 @@
   <iPage class="version">
     <iCard class="card">
       <div class="header clearFloat">
-        <span class="title">全部版本</span>
+        <span class="title">{{ $t('LK_QUANBUBANBEN') }}</span>
         <!-- <div class="control">
-          <iButton @click="back">返回</iButton>
+          <iButton @click="back">{{ $t('LK_FANHUI') }}</iButton>
         </div> -->
       </div>
       <div class="body margin-top25">

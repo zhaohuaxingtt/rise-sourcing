@@ -9,7 +9,7 @@
 <template>
     <iDialog class="dialog" :visible.sync="splitPurchBoolean">
       <template slot="title">
-        <span class="el-dialog__title">拆分采购工厂</span>
+        <span class="el-dialog__title">{{ $t('LK_CHAIFENCAIGOUGONGCHANG') }}</span>
         <el-tooltip effect="light">
           <i class="iconxinxitishi iconfont color"></i>
           <template slot="content">

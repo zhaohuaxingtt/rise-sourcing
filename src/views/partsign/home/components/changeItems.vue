@@ -9,7 +9,7 @@
 <template>
       <iDialog :title="title" :visible.sync="value" width="400px" @close='clearDiolog' top="40vh">
         <div class="changeContent">
-          <span class="fontSize14">采购员：</span>
+          <span class="fontSize14">${{ $t('LK_CAIGOUYUAN') }}：</span>
           <iSelect v-model='inquiryBuyer' placeholder='请选择询价采购员'>
             <!-- <el-option v-for="(items,index) in inquiryBuyerList" :key='index' :value='items.id' :label="items.nameZh"/> -->
             <!-- <el-option value='12' label="12"></el-option> -->

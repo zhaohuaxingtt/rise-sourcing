@@ -3,12 +3,12 @@
     <iCard>
       <div class="margin-bottom5 clearFloat">
         <div class="floatright">
-          <iButton @click="addSupplier" v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_TECHNICALSEMINAR_ADDSUPPLIER">添加供应商</iButton>
-          <iButton @click="sendToMyEmail" v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_TECHNICALSEMINAR_SENDTOMYEMAIL">发送至我的邮箱</iButton>
+          <iButton @click="addSupplier" v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_TECHNICALSEMINAR_ADDSUPPLIER">{{ $t('LK_TIANJIAGONGYINGSHANG') }}</iButton>
+          <iButton @click="sendToMyEmail" v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_TECHNICALSEMINAR_SENDTOMYEMAIL">{{ $t('LK_FASONGZHIWODEYOUXIANG') }}</iButton>
         </div>
       </div>
       <div class="margin-bottom20 clearFloat">
-        <span class="font18 font-weight">会议基本信息</span>
+        <span class="font18 font-weight">{{ $t('LK_HUIYIJIBENXINXI') }}</span>
       </div>
       <tablelist
           :tableData="tableListData"

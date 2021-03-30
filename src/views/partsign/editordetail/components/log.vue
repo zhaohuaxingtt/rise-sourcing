@@ -9,9 +9,9 @@
 <template>
   <div class="log">
     <div class="header clearFloat">
-      <span class="title">操作日志</span>
+      <span class="title">{{ $t('partsign.log') }}</span>
       <div class="control">
-        <iButton v-permission="LOG_HOME_DOWNLOAD">导出</iButton>
+        <iButton v-permission="LOG_HOME_DOWNLOAD">{{ $t('LK_DAOCHU') }}</iButton>
       </div>
     </div>
     <div class="body margin-top27">

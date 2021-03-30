@@ -8,16 +8,16 @@
 -->
 
 <template>
-	<iPage class="batchmiantain">
+	<iPage class="batchmiantain" v-permission="PARTSPROCURE_BATCHMIANTAIN_INDEXPAGE">
 		<div class="margin-bottom20 clearFloat">
-			<span class="font18 font-weight">批量维护零件采购项目</span>
+			<span class="font18 font-weight">{{ $t('LK_PILIANGWEIHULINGJIANCAIGOUXIANGMU') }}</span>
 			<div class="floatright">
-				<iButton @click="back" v-permission="PARTSPROCURE_BATCHMIANTAIN_SAVE">返回</iButton>
-				<iButton @click="creatFs" v-permission="PARTSPROCURE_BATCHMIANTAIN_GENERATEFSNUMBER">生成FS号</iButton>
-				<iButton @click="start" :loading="startLoding" v-permission="PARTSPROCURE_BATCHMIANTAIN_STARTINQUIRY">启动询价</iButton>
+				<iButton @click="back" v-permission="PARTSPROCURE_BATCHMIANTAIN_SAVE">{{ $t('LK_FANHUI') }}</iButton>
+				<iButton @click="creatFs" v-permission="PARTSPROCURE_BATCHMIANTAIN_GENERATEFSNUMBER">{{ $t('LK_SHENGCHENGFSHAO') }}</iButton>
+				<iButton @click="start" :loading="startLoding" v-permission="PARTSPROCURE_BATCHMIANTAIN_STARTINQUIRY">{{ $t('LK_QIDONGXUNJIA') }}</iButton>
 			</div>
 		</div>
-		<iSearch class="margin-bottom20" title="采购项目信息" tabCard>
+		<iSearch class="margin-bottom20" :title="$t('LK_CAIGOUXIANGMUXINXI')" tabCard>
 			<el-form>
 				<el-form-item label="零件采购项目类型">
 					<iSelect placeholder="请选择" v-model="batch.part_preject_type">
@@ -25,7 +25,7 @@
 							v-for="(item, index) in getGroupList('part_preject_type')" :key="index"></el-option>
 					</iSelect>
 				</el-form-item>
-				<el-form-item label="LINIE部门">
+				<el-form-item :label="$t('LK_LINIEBUMEN')">
 					<iSelect v-model="linie">
 						<el-option :value="item" :label="item.value"
 							v-for="(item, index) in getGroupList('linie_dept')" :key="index"></el-option>
@@ -37,25 +37,25 @@
 							v-for="(item, index) in getGroupList('linie_name')" :key="index"></el-option>
 					</iSelect>
 				</el-form-item>
-				<el-form-item label="零件类型">
+				<el-form-item :label="$t('LK_LINGJIANLEIXING')">
 					<iSelect v-model="batch.partType">
 						<el-option :value="item.value" :label="item.label"
 							v-for="(item, index) in getGroupList('part_type')" :key="index"></el-option>
 					</iSelect>
 				</el-form-item>
-				<el-form-item label="车型项目">
+				<el-form-item :label="$t('LK_CHEXINGXIANGMU')">
 					<iSelect placeholder="请选择车型项目" v-model="cartypeProject">
 						<el-option :value="item" :label="item.value"
 							v-for="(item, index) in getGroupList('cartype_project_zh')" :key="index"></el-option>
 					</iSelect>
 				</el-form-item>
-				<el-form-item label="采购工厂">
+				<el-form-item :label="$t('LK_CAIGOUGONGCHANG')">
 					<iSelect placeholder="请选择车型项目" v-model="batch.procureFactory">
 						<el-option :value="item.value" :label="item.label"
 							v-for="(item, index) in getGroupList('procure_factory')" :key="index"></el-option>
 					</iSelect>
 				</el-form-item>
-				<el-form-item label="单位">
+				<el-form-item :label="$t('LK_DANWEI')">
 					<iSelect placeholder="请选择车型项目" v-model="batch.unit">
 						<el-option :value="item.value" :label="item.label" v-for="(item, index) in getGroupList('unit')"
 							:key="index"></el-option>
@@ -68,26 +68,26 @@
 				</el-form-item>
 			</el-form>
 			<template slot="button">
-				<iButton @click="save" v-permission="PARTSPROCURE_BATCHMIANTAIN_PURCHASINGCONFIRM">确认</iButton>
-				<iButton @click="reset" v-permission="PARTSPROCURE_BATCHMIANTAIN_PURCHASERESET">重置</iButton>
+				<iButton @click="save" v-permission="PARTSPROCURE_BATCHMIANTAIN_PURCHASINGCONFIRM">{{ $t('LK_QUEREN') }}</iButton>
+				<iButton @click="reset" v-permission="PARTSPROCURE_BATCHMIANTAIN_PURCHASERESET">{{ $t('LK_ZHONGZHI') }}</iButton>
 			</template>
 		</iSearch>
-		<iSearch class="margin-bottom20" title="材料组工艺设置" tabCard icon>
+		<iSearch class="margin-bottom20" :title="$t('LK_CAILIAOZUGONGYISHEZHI')" tabCard icon>
 			<el-form>
-				<el-form-item label="材料组">
-					<iSelect placeholder="请选择" v-model="stuff.categoryCode" @change="changeSelect">
+				<el-form-item :label="$t('LK_CAILIAOZU')">
+					<iSelect :placeholder="$('LK_QINGXUANZE')" v-model="stuff.categoryCode" @change="changeSelect">
 						<el-option :value="item.key" :label="item.value" v-for="(item, index) in getGroupList('category_name')" :key="index"></el-option>
 					</iSelect>
 				</el-form-item>
-				<el-form-item label="工艺">
+				<el-form-item :label="$t('LK_GONGYI')">
 					<iSelect placeholder="请选择先材料组" v-model="stuffObj">
 						<el-option :value="item"  :label="item.value" v-for="(item, index) in getGroupList('stuff_name')" :key="index"></el-option>
 					</iSelect>
 				</el-form-item>
 			</el-form>
 			<template slot="button">
-				<iButton @click="save" v-permission="PARTSPROCURE_BATCHMIANTAIN_MATERIALGROUPCONFIRM">确认</iButton>
-				<iButton @click="resetStuff" v-permission="PARTSPROCURE_BATCHMIANTAIN_MATERIALGROUPRESET">重置</iButton>
+				<iButton @click="save" v-permission="PARTSPROCURE_BATCHMIANTAIN_MATERIALGROUPCONFIRM">{{ $t('LK_QUEREN') }}</iButton>
+				<iButton @click="resetStuff" v-permission="PARTSPROCURE_BATCHMIANTAIN_MATERIALGROUPRESET">{{ $t('LK_ZHONGZHI') }}</iButton>
 			</template>
 		</iSearch>
 		<outputPlan class="margin-bottom20" @handleSelectionChange="handleSelectionChange" />

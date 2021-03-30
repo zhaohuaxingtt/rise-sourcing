@@ -11,13 +11,13 @@
 	<div class="logistics">
 		<iCard>
 			<div class="header">
-				<span class="title">物流标准</span>
+				<span class="title">{{ $t('LK_WULIUBIAOZHUN') }}</span>
 			</div>
 			<iFormGroup :row="4" inline icon>
-				<iFormItem label="INBOUND物流方式1" name="test">
+				<iFormItem :label="$t('LK_INBOUNDWULIUFANGSHI')+'1'" name="test">
 					<i-text>{{dataInfo.supplyType}}</i-text>
 				</iFormItem>
-				<iFormItem label="负责人" name="test">
+				<iFormItem :label="$t('LK_FUZEREN')" name="test">
 
 					<i-text>{{dataInfo.direcorId}}</i-text>
 				</iFormItem>
@@ -25,7 +25,7 @@
 
 					<i-text>{{dataInfo.zp}}</i-text>
 				</iFormItem>
-				<iFormItem label="特殊零件类型" name="test">
+				<iFormItem :label="$t('LK_TESHULINGJIANLEIXING')" name="test">
 
 					<i-text>{{dataInfo.specialPartType}}</i-text>
 				</iFormItem>
@@ -33,16 +33,16 @@
 		</iCard>
 		<iCard class="margin-top20">
 			<div class="header">
-				<span class="title">参考包装</span>
+				<span class="title">{{ $t('LK_CANKAOBAOZHUANG') }}</span>
 			</div>
 			<iFormGroup :row="4" inline icon>
-				<iFormItem label="包装负责人" name="test">
+				<iFormItem :label="$t('LK_BAOZHUANGFUZEREN')" name="test">
 
 					<i-text>{{dataInfo.partPackgeRequirements.direcorId}}</i-text>
 				</iFormItem>
 			</iFormGroup>
 			<iFormGroup :row="4" inline icon>
-				<iFormItem label="入场包装名称" name="test">
+				<iFormItem :label="$t('LK_RUCHANGBAOZHUANGMINGCHENG')" name="test">
 
 					<i-text>{{dataInfo.partPackgeRequirements.admissionPackgeName}}</i-text>
 				</iFormItem>
@@ -56,7 +56,7 @@
 
 					<i-text>{{dataInfo.partPackgeRequirements.warehousingAppliancesWidth}}</i-text>
 				</iFormItem>
-				<iFormItem label="参考包装宽（mm）" name="test">
+				<iFormItem :label="$t('LK_CANKAOBAOZHUANGKUANMM')" name="test">
 
 					<i-text>{{dataInfo.referencePackageWidth}}</i-text>
 				</iFormItem>
