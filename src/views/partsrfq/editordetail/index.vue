@@ -18,10 +18,20 @@
         </iTabsList>
       </div>
       <div class="btnList">
-        <iButton @click="newRfq" v-permission="PARTSRFQ_EDITORDETAIL_NEWRFQROUND">{{ $t('LK_XINJIANRFQLUNCI') }}</iButton>
-        <iButton @click="updateRfqStatus('06')" v-permission="PARTSRFQ_EDITORDETAIL_SENDINQUIRY">{{ $t('LK_FACHUXUNJIA') }}</iButton>
-        <iButton @click="updateRfqStatus('05')" v-permission="PARTSRFQ_EDITORDETAIL_ENDQUOTATION">{{ $t('LK_JIESHUBENLUNXUNJIA') }}</iButton>
-        <iButton @click="updateRfqStatus('03')" v-permission="PARTSRFQ_EDITORDETAIL_TRANSFERNEGOTIATION">{{ $t('LK_ZHUANTANPAN') }}</iButton>
+        <iButton @click="newRfq" v-permission="PARTSRFQ_EDITORDETAIL_NEWRFQROUND">{{
+            $t('LK_XINJIANRFQLUNCI')
+          }}
+        </iButton>
+        <iButton @click="updateRfqStatus('06')" v-permission="PARTSRFQ_EDITORDETAIL_SENDINQUIRY">{{
+            $t('LK_FACHUXUNJIA')
+          }}
+        </iButton>
+        <iButton @click="updateRfqStatus('05')" v-permission="PARTSRFQ_EDITORDETAIL_ENDQUOTATION">
+          {{ $t('LK_JIESHUBENLUNXUNJIA') }}
+        </iButton>
+        <iButton @click="updateRfqStatus('03')" v-permission="PARTSRFQ_EDITORDETAIL_TRANSFERNEGOTIATION">
+          {{ $t('LK_ZHUANTANPAN') }}
+        </iButton>
         <iButton @click="createAFixedPointApplication" disabled v-permission="PARTSRFQ_EDITORDETAIL_CREATEAPPLICATION">
           {{ $t('LK_CHUANGJIANDINGDIANSHENQING') }}
         </iButton>
@@ -190,7 +200,7 @@ export default {
         const req = {
           rfqMangerInfosPackage: {
             userId: store.state.permission.userInfo.id,
-            rfqId: Number(query.id)
+            rfqId: query.id
           }
         }
         try {
@@ -220,7 +230,7 @@ export default {
       const req = {
         updateRfqStatusPackage: {
           updateType,
-          tmRfqIdList: [Number(query.id)],
+          tmRfqIdList: [query.id],
           userId: store.state.permission.userInfo.id
         }
       }
@@ -257,7 +267,7 @@ export default {
       if (query.id) {
         const req = {
           updateRfqInfoPackage: {
-            rfqId: Number(query.id),
+            rfqId: query.id,
             ...params
           }
         }

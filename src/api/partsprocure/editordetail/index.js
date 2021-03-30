@@ -39,7 +39,6 @@ export function getMeterialStuff(params){
     params: params
   })
 }
-
 // 设置工艺组
 export function putMaterialGroup(params){
   return requstPartsProcure({

@@ -194,7 +194,7 @@ export default {
       const req = {
         updateRfqStatusPackage: {
           updateType,
-          tmRfqIdList: [Number(query.id)],
+          tmRfqIdList: [query.id],
           userId: store.state.permission.userInfo.id
         }
       }
