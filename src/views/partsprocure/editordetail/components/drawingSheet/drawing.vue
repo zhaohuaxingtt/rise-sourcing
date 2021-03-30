@@ -84,7 +84,7 @@ export default {
   },
   methods: {
     beforeUpload(res) {
-      console.log(res)
+      // console.log(res)
       this.uploadLoading = true
     },
     uploadSuccess(res, file) {
@@ -130,7 +130,7 @@ export default {
         purchasingRequirementTargetId: this.params.purchasingRequirementTargetId
       })
         .then(res => { 
-          console.log(res.data)
+          // console.log(res.data)
           this.tableListData = res.data.tpRecordList
           this.page.totalCount = res.data.totalCount || 0
           this.loading = false

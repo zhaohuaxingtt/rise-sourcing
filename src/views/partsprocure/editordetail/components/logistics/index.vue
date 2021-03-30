@@ -237,7 +237,7 @@
 		},
 		created() {
 			this.getLogistics()
-			console.log(this.infoItem);
+			// console.log(this.infoItem);
 		},
 		props: {
 			infoItem: {

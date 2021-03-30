@@ -85,7 +85,7 @@ export default {
   },
   created() {
     this.getMaterialGroup()
-    console.log(JSON.parse(this.$route.query.item))
+    // console.log(JSON.parse(this.$route.query.item))
   },
   methods: {
     getMaterialGroup() {
