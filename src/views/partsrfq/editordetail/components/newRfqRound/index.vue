@@ -81,10 +81,11 @@ import {pageMixins} from "@/utils/pageMixins";
 import {tableTitle, tableTitle2} from "./components/data";
 import {findBySearches, getRfqDataList, addRfq, editRfqData} from "@/api/partsrfq/home";
 import store from '@/store'
+import {rfqCommonFunMixins} from "pages/partsrfq/components/commonFun";
 
 export default {
   components: {iButton, iDialog, iFormGroup, iFormItem, iSelect, tablelist, iPagination},
-  mixins: [pageMixins],
+  mixins: [pageMixins, rfqCommonFunMixins],
   props: {
     title: {type: String, default: '新建RFQ轮次'},
     value: {type: Boolean},
@@ -167,12 +168,9 @@ export default {
           }
         }
         const res = await addRfq(req)
-        if (res.result) {
+        this.resultMessage(res, ()=>{
           this.saveStaus = true
-          iMessage.success(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
-        } else {
-          iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
-        }
+        })
       }
     },
     async saveAndCreate() {
@@ -187,7 +185,7 @@ export default {
           }
         }
         const res = await addRfq(req)
-        res.result ? iMessage.success(this.$i18n.locale === 'zh' ? res.desZh : res.desEn) : iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
+        this.resultMessage(res)
         this.$emit('refreshBaseInfo')
       }
     },
@@ -201,7 +199,7 @@ export default {
         }
       }
       const res = await editRfqData(req)
-      res.result ? iMessage.success(this.$i18n.locale === 'zh' ? res.desZh : res.desEn) : iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
+      this.resultMessage(res)
     },
     initTimeData() {
       if (this.roundType === '00') {

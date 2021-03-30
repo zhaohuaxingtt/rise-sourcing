@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-03-10 15:22:16
- * @LastEditTime: 2021-03-26 16:29:41
+ * @LastEditTime: 2021-03-29 18:23:29
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\login\index.vue
@@ -51,7 +51,7 @@ export default{
         this.loading = false
         await setToken(res.data.token)
         this.$router.replace({
-          path:'/partsign'
+            path:'/partsign'
         })
       }).catch(()=>{
         this.loading = false

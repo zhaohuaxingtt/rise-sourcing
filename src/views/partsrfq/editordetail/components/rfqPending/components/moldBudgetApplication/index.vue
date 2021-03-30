@@ -3,8 +3,15 @@
     <iCard>
       <div class="margin-bottom20 clearFloat">
         <div class="floatright">
+<<<<<<< HEAD
           <iButton @click="submit" v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_MOLDBUDGETAPPLICATION_SUBMIT">{{ $t('LK_TIJIAO') }}</iButton>
           <iButton @click="recall" v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_MOLDBUDGETAPPLICATION_RECALL">{{ $t('LK_CHEHUI') }}</iButton>
+=======
+          <iButton @click="submit" v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_MOLDBUDGETAPPLICATION_SUBMIT">提交
+          </iButton>
+          <iButton @click="recall" v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_MOLDBUDGETAPPLICATION_RECALL">撤回
+          </iButton>
+>>>>>>> 4a340613ff0e8cb8f3e2054f5c7e8fe07f92b6f0
         </div>
       </div>
       <tablelist
@@ -13,7 +20,7 @@
           :tableLoading="tableLoading"
           :index="true"
           @handleSelectionChange="handleSelectionChange"
-          :input-props="['pricing']"
+          :input-props="['budget']"
       ></tablelist>
       <!------------------------------------------------------------------------>
       <!--                  表格分页                                          --->
@@ -39,6 +46,7 @@ import {tableTitle} from "./components/data";
 import {pageMixins} from "@/utils/pageMixins";
 import {getModelBudgetList, submitMoldBudget, cancelMoldBudget} from "@/api/partsrfq/editordetail";
 import store from '@/store'
+import {rfqCommonFunMixins} from "pages/partsrfq/components/commonFun";
 
 export default {
   components: {
@@ -47,7 +55,7 @@ export default {
     iPagination,
     tablelist
   },
-  mixins: [pageMixins],
+  mixins: [pageMixins, rfqCommonFunMixins],
   data() {
     return {
       tableListData: [],
@@ -68,7 +76,7 @@ export default {
         try {
           const req = {
             rfqId: id,
-            userId:store.state.permission.userInfo.id
+            userId: store.state.permission.userInfo.id
           }
           const res = await getModelBudgetList(req)
           this.tableListData = res.records;
@@ -88,7 +96,7 @@ export default {
       })
       const req = this.selectTableData
       const res = await submitMoldBudget(req)
-      res.result ? iMessage.success(this.$i18n.locale === 'zh' ? res.desZh : res.desEn) : iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
+      this.resultMessage(res)
       this.getTableList()
     },
     async recall() {
@@ -98,7 +106,7 @@ export default {
       })
       const req = this.selectTableData
       const res = await cancelMoldBudget(req)
-      res.result ? iMessage.success(this.$i18n.locale === 'zh' ? res.desZh : res.desEn) : iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
+      this.resultMessage(res)
       this.getTableList()
     },
     //修改表格改动列

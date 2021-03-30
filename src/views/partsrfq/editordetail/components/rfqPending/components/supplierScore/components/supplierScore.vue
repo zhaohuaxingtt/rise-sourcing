@@ -76,7 +76,7 @@ export default {
         try {
           const req = {
             rfqId: id,
-            userId:store.state.permission.userInfo.id
+            userId: store.state.permission.userInfo.id
           }
           const res = await getAllSupplier(req)
           this.tableListData = res.records;
@@ -120,13 +120,10 @@ export default {
         rfqId: this.$route.query.id
       }
       const res = await setTpbMemo(req)
-      if (res.result) {
-        iMessage.success(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
+      this.resultMessage(res, () => {
         this.dialogRemarks = false
         this.getTableList()
-      } else {
-        iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
-      }
+      })
     }
   }
 }

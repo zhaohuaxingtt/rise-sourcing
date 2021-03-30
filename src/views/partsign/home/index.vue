@@ -7,7 +7,7 @@
  * @FilePath: \rise\src\views\partsign\index.vue
 -->
 <template>
-  <iPage class="partsignHome">
+  <iPage class="partsignHome" v-permission="PARTSIGN_INDEXPAGE">
     <el-tabs v-model="tab" class="tab">
       <el-tab-pane :label="$t('partsignLanguage.XunYuanZhiXing')" name="source">
         <div>

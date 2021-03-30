@@ -71,6 +71,7 @@ import drawingDialog from './components/drawingDialog'
 import addSupplierDialog from './components/addSupplierDialog'
 import {getAllRfqParts, addTechnology, getPic} from "@/api/partsrfq/editordetail";
 import store from '@/store'
+import {rfqCommonFunMixins} from "pages/partsrfq/components/commonFun";
 
 export default {
   components: {
@@ -83,7 +84,7 @@ export default {
     drawingDialog,
     addSupplierDialog
   },
-  mixins: [pageMixins],
+  mixins: [pageMixins, rfqCommonFunMixins],
   data() {
     return {
       tableListData: [],
@@ -157,7 +158,7 @@ export default {
         partNums: partNumsList,
       }
       const res = await addTechnology(req)
-      res.result ? iMessage.success(this.$i18n.locale === 'zh' ? res.desZh : res.desEn) : iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
+      this.resultMessage(res)
     },
     //修改表格改动列
     handleSelectionChange(val) {

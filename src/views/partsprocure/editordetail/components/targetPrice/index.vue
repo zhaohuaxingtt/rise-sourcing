@@ -33,13 +33,13 @@
 		</iFormGroup>
 		<iFormGroup row="3" icon inline>
 			<iFormItem label="CKD Duty(%)" name="test">
-				<iInput v-model="targetprice.cfTargetPriceDetail.ckdDuty" v-permission="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_CKD_Duty"></iInput>
+				<iInput v-model="targetprice.cfTargetPriceDetail.ckdDuty" onkeyup="value=value.replace(/[^\d]/g,'')" maxlength="3" v-permission="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_CKD_Duty"></iInput>
 			</iFormItem>
 			<iFormItem label="CKD EX_Work" name="test">
-				<iInput v-model="targetprice.cfTargetPriceDetail.ckdExwork" v-permission="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_CKD_EX"></iInput>
+				<iInput v-model="targetprice.cfTargetPriceDetail.ckdExwork" onkeyup="value=value.replace(/[^\d]/g,'')"  maxlength="15" v-permission="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_CKD_EX"></iInput>
 			</iFormItem>
 			<iFormItem label="CKDLANDEN" name="test">
-				<iInput v-model="targetprice.cfTargetPriceDetail.ckdLanded" v-permission="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_CKD_LANDED"></iInput>
+				<iInput v-model="targetprice.cfTargetPriceDetail.ckdLanded" onkeyup="value=value.replace(/[^\d]/g,'')"  maxlength="15" v-permission="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_CKD_LANDED"></iInput>
 			</iFormItem>
 		</iFormGroup>
 		<div class="line"></div>
@@ -59,7 +59,7 @@
 				</el-radio-group>
 				<span class="start">*</span>
 			</iFormItem>
-			<iFormItem :label="$t('LK_QIWANGMUBIAOJIA')" name="test" v-permission="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_QWMBJ">
+			<iFormItem :label="$t('LK_QIWANGMUBIAOJIA')" name="test"  v-permission="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_QWMBJ">
 				<iText>
 					{{targetprice.cfTargetPriceDetail.lcPrice}}
 				</iText>
@@ -67,11 +67,11 @@
 		</iFormGroup>
 		<iFormGroup row="2" icon inline>
 			<iFormItem :label="$t('LK_SHENQINGYUANYIN')" name="test" v-permission="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_SQYY">
-				<iInput type="textarea" rows="6" resize="none" v-model="targetprice.cfTargetPriceDetail.applyReason">
+				<iInput type="textarea" rows="6" resize="none" maxlength="500" v-model="targetprice.cfTargetPriceDetail.applyReason">
 				</iInput>
 			</iFormItem>
 			<iFormItem :label="$t('LK_SHENQINGBEIZHU')" name="test" v-permission="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_SQBZ">
-				<iInput type="textarea" rows="6" resize="none" v-model="targetprice.cfTargetPriceDetail.applyMemo">
+				<iInput type="textarea" rows="6" resize="none" maxlength="1000" v-model="targetprice.cfTargetPriceDetail.applyMemo">
 				</iInput>
 			</iFormItem>
 		</iFormGroup>
@@ -109,7 +109,7 @@
 		</iFormGroup>
 		<iFormGroup row="1" icon inline>
 			<iFormItem :label="$t('LK_SHENQINGBEIZHU')" name="test">
-				<iInput type="textarea" rows="6" resize="none" v-model="targetprice.rwApplication.memo" v-permission="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_RWAPPLYREMARK"></iInput>
+				<iInput type="textarea" rows="6" resize="none" maxlength="1000" v-model="targetprice.rwApplication.memo" v-permission="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_RWAPPLYREMARK"></iInput>
 			</iFormItem>
 		</iFormGroup>
 		<tablelist :tableData='targeRwData' :tableTitle='rwTitle' :loading='tableLoading'

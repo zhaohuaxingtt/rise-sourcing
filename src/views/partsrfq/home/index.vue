@@ -7,7 +7,7 @@
  * @FilePath: \rise\src\views\partsrfq\home\index.vue
 -->
 <template>
-  <iPage class="partsrfqHome">
+  <iPage class="partsrfqHome" v-permission="PARTSRFQ_INDEXPAGE">
     <el-tabs v-model="tab" class="tab">
       <el-tab-pane :label="$t('partsignLanguage.XunYuanZhiXing')" name="source">
         <div>
@@ -20,7 +20,7 @@
           <iSearch class="margin-bottom20" :icon="true" @reset="handleSearchReset" @sure="getTableList"
                    :resetKey="PARTSRFQ_RESET" :searchKey="PARTSRFQ_SEARCH">
             <el-form>
-              <el-form-item :label="$t('rfq.RFQPARTNUMBERFSNRRFQBUYER')">
+              <el-form-item :label="$t('rfq.RFQPARTNUMBERFSNRRFQBUYER')" style="width: 200px">
                 <iInput :placeholder="$t('rfq.RFQPLEASEENTERQUERY')" v-model="form.searchConditions"
                         v-permission="PARTSRFQ_SEARCHBOX"></iInput>
               </el-form-item>

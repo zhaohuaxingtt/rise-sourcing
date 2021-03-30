@@ -7,7 +7,7 @@
  * @FilePath: \rise\src\views\partsrfq\editordetail\index.vue
 -->
 <template>
-  <iPage>
+  <iPage v-permission="PARTSRFQ_EDITORDETAIL_INDEXPAGE">
     <!-- rfq详情操作按钮 -->
     <div class="pageTitle flex-between-center-center">
       <div class="flex nav-box">
@@ -138,6 +138,7 @@ import rfqDetailInfo from './components/rfqDetailInfo'
 import newRfqRound from './components/newRfqRound'
 import {getRfqDataList, editRfqData, addRfq} from "@/api/partsrfq/home";
 import store from '@/store'
+import {rfqCommonFunMixins} from "pages/partsrfq/components/commonFun";
 
 export default {
   components: {
@@ -154,6 +155,7 @@ export default {
     newRfqRound,
     iTabsList
   },
+  mixins: [rfqCommonFunMixins],
   data() {
     return {
       navActivtyValue: '',
@@ -260,7 +262,7 @@ export default {
           }
         }
         const res = await editRfqData(req)
-        res.result ? iMessage.success(this.$i18n.locale === 'zh' ? res.desZh : res.desEn) : iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
+        this.resultMessage(res)
         this.getBaseInfo()
       } else {
         const req = {
@@ -271,7 +273,7 @@ export default {
           }
         }
         const res = await addRfq(req)
-        res.result ? iMessage.success(this.$i18n.locale === 'zh' ? res.desZh : res.desEn) : iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
+        this.resultMessage(res)
         this.$router.push({
           path: `/partsrfq/editordetail?id=${res.data.rfqId}`
         })

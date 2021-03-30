@@ -50,6 +50,8 @@ import {pageMixins} from "@/utils/pageMixins";
 import {getRfqDataList, editRfqData} from "@/api/partsrfq/home";
 import {excelExport} from "@/utils/filedowLoad";
 import store from '@/store'
+import {rfqCommonFunMixins} from "pages/partsrfq/components/commonFun";
+
 export default {
   components: {
     iCard,
@@ -57,7 +59,7 @@ export default {
     iPagination,
     tablelist
   },
-  mixins: [pageMixins],
+  mixins: [pageMixins, rfqCommonFunMixins],
   data() {
     return {
       tableListData: [],
@@ -120,7 +122,7 @@ export default {
         updateTimePlanPackage: reqList
       }
       const res = await editRfqData(req)
-      res.result ? iMessage.success(this.$i18n.locale === 'zh' ? res.desZh : res.desEn) : iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
+      this.resultMessage(res)
       this.editStatus = false
       this.inputProps = []
       this.reRenderTable()
