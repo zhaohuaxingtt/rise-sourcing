@@ -10,17 +10,17 @@
     <div class="changeContent">
 <!--      <div class="clearFloat">
         <div class="floatright title-button-box">
-          <iButton @click="edit">{{ editStatus ? '保存' : '编辑' }}</iButton>
+          <iButton @click="edit">{{ editStatus ? $t('LK_BAOCUN') : $t('LK_BIANJI') }}</iButton>
         </div>
       </div>-->
       <div>
-        <div class="form-title">物流标准</div>
+        <div class="form-title">{{ $t('LK_WULIUBIAOZHUN') }}</div>
         <iFormGroup :row="4" inline icon>
-          <iFormItem label="INBOUND物流方式1：" name="test">
+          <iFormItem :label="$t('LK_INBOUNDWULIUFANGSHI')" name="test">
             <iInput v-if="editStatus"></iInput>
             <i-text v-else>{{dataInfo.supplyType}}</i-text>
           </iFormItem>
-          <iFormItem label="负责人：" name="test">
+          <iFormItem :label="$t('LK_FUZEREN')" name="test">
             <iInput v-if="editStatus"></iInput>
             <i-text v-else>{{dataInfo.direcorId}}</i-text>
           </iFormItem>
@@ -28,22 +28,22 @@
             <iInput v-if="editStatus"></iInput>
             <i-text v-else>{{dataInfo.zp}}</i-text>
           </iFormItem>
-          <iFormItem label="特殊零件类型：" name="test">
+          <iFormItem :label="$t('LK_TESHULINGJIANLEIXING')" name="test">
             <iInput v-if="editStatus"></iInput>
             <i-text v-else>{{dataInfo.specialPartType}}</i-text>
           </iFormItem>
         </iFormGroup>
       </div>
       <div>
-        <div class="form-title">参考包装</div>
+        <div class="form-title">{{$t('LK_CANKAOBAOZHUANG')}}</div>
         <iFormGroup :row="4" inline icon>
-          <iFormItem label="包装负责人" name="test">
+          <iFormItem :label="$t('LK_BAOZHUANGFUZEREN')" name="test">
             <iInput v-if="editStatus"></iInput>
             <i-text v-else>{{dataInfo.partPackgeRequirements.direcorId}}</i-text>
           </iFormItem>
         </iFormGroup>
         <iFormGroup :row="4" inline icon>
-          <iFormItem label="入场包装名称" name="test">
+          <iFormItem :label="$t('LK_RUCHANGBAOZHUANGMINGCHENG')" name="test">
             <iInput v-if="editStatus"></iInput>
             <i-text v-else>{{dataInfo.partPackgeRequirements.admissionPackgeName}}</i-text>
           </iFormItem>
@@ -57,7 +57,7 @@
             <iInput v-if="editStatus"></iInput>
             <i-text v-else>{{dataInfo.partPackgeRequirements.warehousingAppliancesWidth}}</i-text>
           </iFormItem>
-          <iFormItem label="参考包装宽（mm）" name="test">
+          <iFormItem :label="$t('LK_CANKAOBAOZHUANGKUANMM')" name="test">
             <iInput v-if="editStatus"></iInput>
             <i-text v-else>{{dataInfo.referencePackageWidth}}</i-text>
           </iFormItem>
@@ -188,7 +188,9 @@ export default {
     dataInfo: {
       type: Object,
       default: () => {
-        return {}
+        return {
+          partPackgeRequirements: {}
+        }
       }
     }
   },

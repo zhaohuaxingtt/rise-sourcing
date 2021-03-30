@@ -4,7 +4,9 @@
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  */
+import {permissionTitle} from '@/utils'
 export const partsProductionTableTitle = [
+//export const partsProductionTableTitle = permissionTitle("PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_TIMEPLAN_PRODUCTIONLIST",[
     {props:'rfqPlanId',name:'FS号'},
     {props:'procureFactory',name:'采购工厂'},
     {props:'ninePartNum',name:'零件号'},
@@ -21,6 +23,7 @@ export const partsProductionTableTitle = [
 ]
 
 export const timePlanableTitle = [
+//export const timePlanableTitle = permissionTitle("PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_TIMEPLAN_TIMELIST",[
     {props:'fsNum',name:'FS号'},
     {props:'procureFactoryId',name:'采购工厂'},
     {props:'partNum',name:'零件号'},

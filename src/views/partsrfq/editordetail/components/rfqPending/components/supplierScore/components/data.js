@@ -4,7 +4,9 @@
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  */
+import {permissionTitle} from '@/utils'
 export const supplierScoreTitle = [
+//export const supplierScoreTitle = permissionTitle("PARTSRFQ_EDITORDETAIL_RFQPENDING_SUPPLIERSCORE_PARTSCORING_VIEWREMARK",[
     {props: 'svwCode', name: 'SVW号'},
     {props: 'shortNameZh', name: '供应商名'},
     {props: 'companyAddress', name: '供应商生产场地'},

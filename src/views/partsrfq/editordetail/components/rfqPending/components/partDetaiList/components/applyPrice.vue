@@ -1,12 +1,12 @@
 <template>
-	<iDialog class="dialog" title="申请财务目标价" :visible.sync="applyPriceShow">
+	<iDialog class="dialog" :title="$t('LK_SHENQINGCAIWUMUBIAOJIA')" :visible.sync="applyPriceShow">
 		<div class="btn">
-			<iButton v-if="againApply" @click="save">重新申请</iButton>
+			<iButton v-if="againApply" @click="save">{{ $t('LK_ZHONGXINSHENQING') }}</iButton>
 			<iButton v-else @click="save">申请</iButton>
 		</div>
 		
 		<iFormGroup row="2" icon inline>
-			<iFormItem label="申请类型" name="test">
+			<iFormItem :label="$t('LK_SHENQINGLEIXING')" name="test">
 				<el-radio-group v-model="targetprice.cfTargetPriceDetail.applyType">
 					<el-radio label="1">LC</el-radio>
 					<el-radio label="2">SDK</el-radio>
@@ -14,18 +14,18 @@
 				</el-radio-group>
 				<span class="start">*</span>
 			</iFormItem>
-			<iFormItem label="期望目标价" name="test">
+			<iFormItem :label="$t('LK_QIWANGMUBIAOJIA')" name="test">
 				<iText>
 					{{targetprice.cfTargetPriceDetail.lcPrice}}
 				</iText>
 			</iFormItem>
 		</iFormGroup>
 		<iFormGroup row="2" icon inline>
-			<iFormItem label="申请原因" name="test">
+			<iFormItem :label="$t('LK_SHENQINGYUANYIN')" name="test">
 				<iInput type="textarea" rows="6" resize="none" v-model="targetprice.cfTargetPriceDetail.applyReason">
 				</iInput>
 			</iFormItem>
-			<iFormItem label="申请备注" name="test">
+			<iFormItem :label="$t('LK_SHENQINGBEIZHU')" name="test">
 				<iInput type="textarea" rows="6" resize="none" v-model="targetprice.cfTargetPriceDetail.applyMemo">
 				</iInput>
 			</iFormItem>

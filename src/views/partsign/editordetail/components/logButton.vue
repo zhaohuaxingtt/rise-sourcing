@@ -1,7 +1,7 @@
 <template>
   <div class="logButton" @click="$emit('click')">
     <icon symbol name="iconrizhiwuzi" class="icon" />
-    <span>日志</span>
+    <span>{{ $t('LK_RIZHI') }}</span>
   </div>
 </template>
 

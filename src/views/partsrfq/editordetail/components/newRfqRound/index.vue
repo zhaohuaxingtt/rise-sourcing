@@ -13,7 +13,7 @@
           <template v-if="roundType === '00'">
             <iButton @click="save" v-permission="PARTSRFQ_EDITORDETAIL_NEWRFQROUND_SAVE">保存</iButton>
             <iButton @click="updateRfqStatus('06')" :disabled="!saveStaus"
-                     v-permission="PARTSRFQ_EDITORDETAIL_NEWRFQROUND_SAND">发送询价
+                     v-permission="PARTSRFQ_EDITORDETAIL_NEWRFQROUND_SAND">{{ $t('LK_FASONGXUNJIA') }}
             </iButton>
           </template>
           <template v-else>
@@ -23,12 +23,12 @@
         </div>
       </div>
       <iFormGroup inline icon>
-        <iFormItem label="轮次类型" name="test" v-permission="PARTSRFQ_EDITORDETAIL_NEWRFQROUND_ROUNDTYPE">
+        <iFormItem :label="$t('LK_LUNCILEIXING')" name="test" v-permission="PARTSRFQ_EDITORDETAIL_NEWRFQROUND_ROUNDTYPE">
           <i-select v-model="roundType" @change="handleSelectChange">
             <el-option v-for="items in roundTypeOptions" :key='items.code' :value='items.code' :label="items.name"/>
           </i-select>
         </iFormItem>
-        <iFormItem label="本轮报价起止时间" name="test" v-if="roundType === '00'">
+        <iFormItem :label="$t('LK_BENLUNBAOJIAQIZHISHIJIAN')" name="test" v-if="roundType === '00'">
           <div class="flex">
             <el-date-picker type="date" placeholder="请选择" v-model="startTime"
                             v-permission="PARTSRFQ_EDITORDETAIL_NEWRFQROUND_STARTTIME"></el-date-picker>

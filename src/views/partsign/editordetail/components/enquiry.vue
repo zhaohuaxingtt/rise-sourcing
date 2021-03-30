@@ -9,10 +9,10 @@
 <template>
   <iCard class="enquiry">
     <div class="header clearFloat">
-      <span class="title">附件列表 （当前版本V1）</span>
+      <span class="title">{{ $t('LK_FUJIANLIEBIAO') }} （当前版本V1）</span>
       <div class="control">
-        <iButton @click="version" v-permission="PARTSIGN_EDITORDETAIL_ENQUIRY_ALL">查看全部版本</iButton>
-        <iButton @click="download" v-permission="PARTSIGN_EDITORDETAIL_ENQUIRY_DOWNLOAD">下载</iButton>
+        <iButton @click="version" v-permission="PARTSIGN_EDITORDETAIL_ENQUIRY_ALL">{{ $t('LK_CHAKANQUANBUBANBEN') }}</iButton>
+        <iButton @click="download" v-permission="PARTSIGN_EDITORDETAIL_ENQUIRY_DOWNLOAD">{{ $t('LK_XIAZAI') }}</iButton>
       </div>
     </div>
     <div class="body margin-top27">

@@ -3,7 +3,7 @@
     <iCard>
       <div class="margin-bottom20 clearFloat">
         <iFormGroup inline icon>
-          <iFormItem label="创建日期" name="test">
+          <iFormItem :label="$t('LK_CHUANGJIANRIQI')" name="test">
             <i-text>2020-12-10</i-text>
           </iFormItem>
           <iFormItem label="导入时间" name="test">
@@ -11,7 +11,7 @@
           </iFormItem>
           <div class="floatright margin-top5">
             <iButton @click="readEffectiveBOM" disabled>读取有效BOM</iButton>
-            <iButton @click="exports">导出</iButton>
+            <iButton @click="exports">{{$t('LK_DAOCHU')}}</iButton>
           </div>
         </iFormGroup>
       </div>

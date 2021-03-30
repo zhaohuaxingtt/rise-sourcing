@@ -1,8 +1,8 @@
 <template>
-  <iCard class="outputRecord" tabCard title="询价附件">
+  <iCard class="outputRecord" tabCard :title="$t('LK_XUNJIAFUJIAN')">
     <template v-slot:header-control>
-      <iButton @click="handleDownload" :loading="downloadLoading" v-permission="PARTSPROCURE_EDITORDETAIL_DRAWINGSHEET_HANDDOWNLOAD">下载</iButton>
-      <iButton class="deleteBtn" @click="handleDelete" :loading="deleteLoading" v-permission="PARTSPROCURE_EDITORDETAIL_DRAWINGSHEET_HANDLEDELETE">删除</iButton>
+      <iButton @click="handleDownload" :loading="downloadLoading" v-permission="PARTSPROCURE_EDITORDETAIL_DRAWINGSHEET_HANDDOWNLOAD">{{ $t('LK_XIAZAI') }}</iButton>
+      <iButton class="deleteBtn" @click="handleDelete" :loading="deleteLoading" v-permission="PARTSPROCURE_EDITORDETAIL_DRAWINGSHEET_HANDLEDELETE">{{ $t('LK_SHANCHU') }}</iButton>
       <el-upload 
         class="uploadBtn" 
         multiple
@@ -14,14 +14,14 @@
         :on-success="uploadSuccess"
         :on-error="uploadError"
         accept=".pdf,.xlsx,.docx">
-          <iButton :loading="uploadLoading" v-permission="PARTSPROCURE_EDITORDETAIL_DRAWINGSHEET_HANDLEUPLOAD">上传附件</iButton>
+          <iButton :loading="uploadLoading" v-permission="PARTSPROCURE_EDITORDETAIL_DRAWINGSHEET_HANDLEUPLOAD">{{ $t('LK_SHANGCHUANFUJIAN') }}</iButton>
       </el-upload>
     </template>
     <div class="body">
       <tableList
         class="table"
         index
-        indexLabel="编号" 
+        :indexLabel="$t('LK_BIANHAO')" 
         :tableData="tableListData" 
         :tableTitle="tableTitle" 
         :tableLoading="loading"

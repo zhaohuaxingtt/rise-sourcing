@@ -5,14 +5,15 @@
 * @Description: BDL表格数据
  -->
 <template>
-	<el-table class="table" ref='multipleTable' :data="tableData" v-loading="tableLoading" @selection-change="handleSelectionChange" :row-style="rowStyle">
+	<el-table class="table" ref='multipleTable' :data="tableData" v-loading="tableLoading" @selection-change="handleSelectionChange" @select="handleSelect" @select-all="handleSelectAll" :row-style="rowStyle">
 		<el-table-column type="selection" align="center" :selectable="selectable">
 		</el-table-column>
 		<el-table-column type="index" align="center" label="#"></el-table-column>
 		<template v-for="(item, index) in tableTitle">
 			<el-table-column :key="index" align="center" v-if="item.props == 'supplierNameZh'" :prop="item.props" :label="item.name">
 				<template slot-scope="scope">
-					<span class="openLinkText cursor" @click="openPage">{{scope.row.supplierNameZh}}</span>
+					<!-- <span class="openLinkText cursor" @click="openPage">{{scope.row.supplierNameZh}}</span> -->
+					<span>{{ scope.row.supplierNameZh }}</span>
 				</template>
 			</el-table-column>
 			<!-- <el-table-column :key="index" align="center" v-if="item.props == 'c'" :prop="item.props" :label="item.name">
@@ -132,6 +133,12 @@
 				}
 				this.addCustomShow = !this.addCustomShow;
 			},
+			handleSelect(selection, row) {
+				this.$emit('handleSelect', selection, row)
+			},
+			handleSelectAll(selection) {
+				this.$emit('handleSelectAll', selection)
+			}
 		},
 	};
 </script>

@@ -6,7 +6,9 @@
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsrfq\home\components\data.js
  */
+import {permissionTitle} from '@/utils'
 export const tableTitle = [
+//export const tableTitle = permissionTitle("PARTSRFQ_RFQLIST",[
     {props:'id',name:'RFQ编号', key: 'rfq.RFQRFQNUMBER'},
     {props:'rfqName',name:'RFQ名称', key: 'rfq.RFQRFQNAME'},
     {props:'rfqType',name:'RFQ类型', key: 'rfq.RFQRFQTYPE'},

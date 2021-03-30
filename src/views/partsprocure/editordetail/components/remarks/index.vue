@@ -5,7 +5,7 @@
         <div>
           <p>
             <icon symbol name="iconbeizhuxinxi"></icon>
-            <span>询价采购员备注</span>
+            <span>{{ $t('LK_XUNJIACAIGOUYUANBEIZHU') }}</span>
           </p>
           <iInput
             type="textarea"
@@ -18,7 +18,7 @@
         <div>
           <p>
             <icon symbol name="iconbeizhuxinxi"></icon>
-            <span>Linie备注</span>
+            <span>{{ $t('LK_LINIEBEIZHU') }}</span>
           </p>
           <iInput
             type="textarea"
@@ -32,7 +32,7 @@
         <div>
           <p>
             <icon symbol name="iconbeizhuxinxi"></icon>
-            <span>CS*1备注</span>
+            <span>{{ $t('LK_CS_1BEIZHU') }}</span>
           </p>
           <iInput
             type="textarea"
@@ -48,7 +48,7 @@
           <iButton
             @click="save"
             v-permission="PARTSPROCURE_EDITORDETAIL_REMARKS_SAVE"
-            >保存</iButton
+            >{{ $t('LK_BAOCUN') }}</iButton
           >
         </span>
       </div>
@@ -56,7 +56,7 @@
         <div>
           <p>
             <icon symbol name="iconbeizhuxinxi"></icon>
-            <span>询价采购员上会备注</span>
+            <span>{{ $t('LK_YIXUNJIACAIGOUYUANSHANGHUIBEIZHU') }}</span>
           </p>
           <iInput
             type="textarea"
@@ -69,7 +69,7 @@
         <div>
           <p>
             <icon symbol name="iconbeizhuxinxi"></icon>
-            <span>Linie上会备注</span>
+            <span>{{ $t('LK_LINIESHANGHUIBEIZHU') }}</span>
           </p>
           <iInput
             type="textarea"
@@ -83,7 +83,7 @@
         <div>
           <p>
             <icon symbol name="iconbeizhuxinxi"></icon>
-            <span>CS*1上会备注</span>
+            <span>{{ $t('LK_CS_1SHANGHUIBEIZHU') }}</span>
           </p>
           <iInput
             type="textarea"

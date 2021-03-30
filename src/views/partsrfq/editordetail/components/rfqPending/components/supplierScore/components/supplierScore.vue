@@ -1,7 +1,7 @@
 <template>
   <iCard>
     <div class="margin-bottom20 clearFloat">
-      <span class="font18 font-weight">供应商评分</span>
+      <span class="font18 font-weight">{{ $t('LK_GONGYINGSHANGPINGFEN') }}</span>
     </div>
     <tablelist
         :tableData="tableListData"

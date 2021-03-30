@@ -4,7 +4,7 @@
     <div class="margin-bottom20 clearFloat">
       <span class="font18 font-weight">询价图纸</span>
       <div class="floatright">
-        <iButton @click="download" v-permission="PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_INQUIRYATTACHMENT_INQUIRYATTACHMENT_DRAWINGDOWNLOAD">下载</iButton>
+        <iButton @click="download" v-permission="PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_INQUIRYATTACHMENT_INQUIRYATTACHMENT_DRAWINGDOWNLOAD">{{ $t('LK_XIAZAI') }}</iButton>
       </div>
     </div>
     <tablelist

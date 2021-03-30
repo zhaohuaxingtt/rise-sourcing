@@ -2,12 +2,12 @@
   <i-page>
     <div class="pageTitle flex-between-center-center">
       <div class="flex nav-box">
-        <span>零件评分</span>
+        <span>{{ $t('LK_LINGJIANPINGFEN') }}</span>
       </div>
       <div class="btnList">
         <iButton type="text" @click="log">
           <icon symbol name="iconrizhiwuzi" class="log-icon"/>
-          <span class="log-word">日志</span>
+          <span class="log-word">{{ $t('LK_RIZHI') }}</span>
         </iButton>
         <span>
 					<icon symbol name="icondatabaseweixuanzhong"></icon>
