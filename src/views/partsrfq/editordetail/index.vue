@@ -230,7 +230,7 @@ export default {
       const req = {
         updateRfqStatusPackage: {
           updateType,
-          tmRfqIdList: [Number(query.id)],
+          tmRfqIdList: [query.id],
           userId: store.state.permission.userInfo.id
         }
       }
@@ -267,7 +267,7 @@ export default {
       if (query.id) {
         const req = {
           updateRfqInfoPackage: {
-            rfqId: Number(query.id),
+            rfqId: query.id,
             ...params
           }
         }
