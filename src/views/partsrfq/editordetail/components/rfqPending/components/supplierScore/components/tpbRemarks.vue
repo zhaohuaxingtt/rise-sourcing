@@ -4,6 +4,10 @@
 -->
 <template>
   <iDialog :title="title" :visible.sync="value" width="400px" @close='clearDiolog'>
+    <div slot="title" class="title">
+      <div class="text">{{title}}</div>
+      <div class="star" v-if="!disabled">*</div>
+    </div>
     <div class="changeContent">
       <iFormGroup row="1" icon>
         <iFormItem label="" name="memo">
@@ -50,6 +54,23 @@ export default {
 }
 </script>
 <style lang='scss' scoped>
+.title{
+  position: relative;
+  display: inline-block;
+  .text{
+    font-size: 18px;
+    font-weight: bold;
+    line-height: 25px;
+  }
+  .star{
+    position: absolute;
+    right: -15px;
+    top: 0;
+    font-size: 30px;
+    color: red;
+  }
+}
+
 .changeContent {
   padding: 0 10px 20px 10px;
 }

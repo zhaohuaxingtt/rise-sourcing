@@ -18,7 +18,7 @@ export const tableTitle = [
     {props:'suppliers',name:'已询价供应商', key: 'rfq.RFQSUPPLIERSHAVEBEENINQUIRED'},
     {props:'quotations',name:'已报价供应商', key: 'rfq.RFQQUOTEDSUPPLIER'},
     {props:'currentStatus',name:'RFQ状态', key: 'rfq.RFQRFQSTATUS'},
-    {props:'endDate',name:'报价截至日期', key: 'rfq.RFQQUOTATIONDEADLINE'},
+    {props:'currentRoundsEndTime',name:'报价截至日期', key: 'rfq.RFQQUOTATIONDEADLINE'},
     {props:'buyerName',name:'询价采购员', key: 'rfq.RFQINQUIRYBUYER'},
     {props:'linieNameZh',name:'LINIE', key: 'rfq.RFQLINIE'},
     {props:'tpGradeStatus',name:'TP评分状态', key: 'rfq.RFQTPSCORESTATUS'},
