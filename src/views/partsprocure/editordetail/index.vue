@@ -301,9 +301,7 @@
 				let data = {
 					"detailBaseReq.purchaseProjectId": this.purchasePrjectId,
 				};
-				console.log(data)
 				getTabelData(data).then((res) => {
-					console.log(res);
 					this.detailData = res.data.detailData;
 					if (res.data.targetprice) {
 						this.targetprice = res.data.targetprice;

@@ -23,7 +23,7 @@ export default {
   },
   watch: {
     data: {
-      handler(data) {
+      handler(data) { // 字段绑定值
         const _infos = cloneDeep(infos)
         _infos.forEach(item => {
           item.value = data[item.key]
@@ -39,6 +39,7 @@ export default {
     }
   },
   created() {
+    // 字段分行
     const _infos = cloneDeep(infos)
     _infos.forEach(item => {
       item.value = this.data[item.key]
