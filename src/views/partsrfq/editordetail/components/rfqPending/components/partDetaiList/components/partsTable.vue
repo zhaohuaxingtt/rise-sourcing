@@ -1,3 +1,11 @@
+<!--
+ * @Author: your name
+ * @Date: 2021-03-26 18:37:44
+ * @LastEditTime: 2021-03-30 23:22:32
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqPending\components\partDetaiList\components\partsTable.vue
+-->
 <template>
   <div class="notPushRfq">
     <tableList
@@ -63,7 +71,7 @@
 				this.parmarsNotHasRfq['search.size'] = this.page.pageSize
 				this.parmarsNotHasRfq['search.current'] = this.page.currPage
 				this.parmarsNotHasRfq['search.rfqId'] = this.rfqId
-				this.parmarsNotHasRfq['search.partStatus'] = '13'
+				this.parmarsNotHasRfq['search.projectStatus'] = '11'
 				getTabelData(this.parmarsNotHasRfq).then(res => {
 					this.tableLoading = false
 					this.page.currPage = res.data.pageData.pageNum
