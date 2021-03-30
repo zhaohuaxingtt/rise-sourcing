@@ -91,27 +91,13 @@ export default {
         }
         this.tableData = [{supplierId: 1}, {supplierId: 2}, {supplierId: 3}, {supplierId: 4}, {supplierId: 5}, {supplierId: 6}]
 
-        this.editSelectTableDataCache = this.editSelectTableDataCache.filter(
-          cacheItem => !this.tableData.some(item => {
-            return item.isEdit ? item.supplierId === cacheItem.supplierId : undefined
-          })
-        )
-
-        this.noEditSelectTableDataCache = this.noEditSelectTableDataCachel.filter(
-          cacheItem => !this.tableData.some(item => {
-            return !item.isEdit ? item.supplierId === cacheItem.supplierId : undefined
-          })
-        )
-
-        // this.tableData.forEach(item => {
-        //   if (item.isEdit) {
-        //     if (this.editSelectTableDataCache.some(cacheItem => cacheItem.supplierId === item.supplierId)) this.$nextTick(() => this.$refs.table.$refs.multipleTable.toggleRowSelection(item, true))
-        //   } else {
-        //     if (this.noEditSelectTableDataCache.some(cacheItem => cacheItem.supplierId === item.supplierId)) this.$nextTick(() => this.$refs.table.$refs.multipleTable.toggleRowSelection(item, true))
-        //   }
-        // })
-        
-        // toggleRowSelection
+        this.tableData.forEach(item => {
+          if (item.isEdit) {
+            if (this.editSelectTableDataCache.some(cacheItem => cacheItem.supplierId === item.supplierId)) this.$nextTick(() => this.$refs.table.$refs.multipleTable.toggleRowSelection(item, true))
+          } else {
+            if (this.noEditSelectTableDataCache.some(cacheItem => cacheItem.supplierId === item.supplierId)) this.$nextTick(() => this.$refs.table.$refs.multipleTable.toggleRowSelection(item, true))
+          }
+        })
         
         this.tableLoading = false;
       }).catch(err=>{
