@@ -8,7 +8,7 @@
  */
 //零件采购详情数据
 export const detailData = {
-	bmg: false, //Boolean
+	bmg: "", //Boolean
 	buyerName: "", //询价采购员（即前期采购员）
 	cartypeCategory: "", //车型大类
 	cartypeProjectNum: "", //	车型项目编号

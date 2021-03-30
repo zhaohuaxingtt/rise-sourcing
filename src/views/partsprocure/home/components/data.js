@@ -34,12 +34,12 @@ export const tableTitle = [{
 		key: 'partsprocure.PARTSPROCUREPURCHASINGFACTORY',
 	},
 	{
-		props: 'partPrejectTypeName',
+		props: 'partPrejectType',
 		name: '零件项目类型',
 		key: 'partsprocure.PARTSPROCUREPARTITEMTYPE',
 	},
 	{
-		props: 'cartypeCategoryName',
+		props: 'cartypeCategory',
 		name: '车型大类',
 		key: 'partsprocure.PARTSPROCUREVEHICLECATEGORIES',
 	},
@@ -59,12 +59,12 @@ export const tableTitle = [{
 		key: 'partsprocure.PARTSPROCUREINQUIRYBUYER',
 	},
 	{
-		props: 'linieNameZh',
+		props: 'linieName',
 		name: 'LINIE',
 		key: 'partsprocure.PARTSPROCURELINIE',
 	},
 	{
-		props: 'cfController',
+		props: 'cfControllerZh',
 		name: 'CF',
 		key: 'partsprocure.CF',
 	}
