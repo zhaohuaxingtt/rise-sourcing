@@ -5,7 +5,7 @@
  * @Description: In User Settings Edit
  */
 import {permissionTitle} from '@/utils'
-export const partsProductionTableTitle = [
+export const partsProductionTableTitle = permissionTitle("PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_TIMEPLAN_PRODUCTIONLIST",[
     {props:'rfqPlanId',name:'FS号',key: 'LK_FSHAO'},
     {props:'procureFactory',name:'采购工厂',key: 'LK_CAIGOUGONGCHANG'},
     {props:'ninePartNum',name:'零件号',key: 'LK_LINGJIANHAO'},
@@ -19,9 +19,9 @@ export const partsProductionTableTitle = [
     {props:'year5',name:'2025'},
     {props:'sum',name:'Sum'},
     {props:'versionNum',name:'版本号',key: 'LK_BANBENHAO'},
-]
+])
 
-export const timePlanableTitle = [
+export const timePlanableTitle = permissionTitle("PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_TIMEPLAN_TIMELIST",[
     {props:'fsNum',name:'FS号',key: 'LK_FSHAO'},
     {props:'procureFactoryId',name:'采购工厂',key: 'LK_CAIGOUGONGCHANG'},
     {props:'partNum',name:'零件号',key: 'LK_LINGJIANHAO'},
@@ -33,4 +33,4 @@ export const timePlanableTitle = [
     {props:'svwFirst',name:'SVW要求首次试模',key: 'LK_BANBENHAO'},
     {props:'svwRequestEm',name:'SVW要求EM（周）',key: 'LK_SVWYAOQIUEMZHOU'},
     {props:'svwRequestOts',name:'SVW要求OTS(周)',key: 'LK_SVWYAOQIUOTSZHOU'}
-]
+])
