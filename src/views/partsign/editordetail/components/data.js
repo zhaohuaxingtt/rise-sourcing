@@ -106,43 +106,43 @@ export const partDetailTitle=[
 ]
 
 export const enquiryTableTitle = [
-	{ props: 'tpPartAttachmentName', name: '文件名' },
-  { props: 'size', name: '文件大小（MB）' },
-  { props: 'updateDate', name: '上传日期' },
-  { props: 'updateBy', name: '上传人' }
+  { props: 'tpPartAttachmentName', name: '文件名', key: 'LK_WENJIANMING' },
+  { props: 'size', name: '文件大小（MB）', key: 'LK_WENJIANDAXIAOMB' },
+  { props: 'updateDate', name: '上传日期', key: 'LK_SHANGCHUANRIQI' },
+  { props: 'updateBy', name: '上传人', key: 'LK_SHANGCHUANREN' }
 ]
 
 export const unconfirmedTableTitle = [
-  { props: 'versionNum', name: '版本号' },
-  { props: 'tpId', name: '信息流水单号' },
-  { props: 'maintainerId', name: '维护人' },
-  { props: 'publishDate', name: '推送时间' },
-  { props: 'versionStatus', name: '版本状态' }
+  { props: 'versionNum', name: '版本号', key: 'LK_BANBENHAO' },
+  { props: 'tpId', name: '信息流水单号', key: 'LK_XINXILIUSHUIDANHAO' },
+  { props: 'maintainerId', name: '维护人', key: 'LK_WEIHUREN' },
+  { props: 'publishDate', name: '推送时间', key: 'LK_TUISONGSHIJIAN' },
+  { props: 'versionStatus', name: '版本状态', key: 'LK_BANBENZHUANGTAI' }
 ]
 
 export const volumeTableTitle = [
-  { props: 'cartypeCategory', name: '车型大类' },
-  { props: 'engineType', name: '发动机类型' },
-  { props: 'batteryCapacity', name: '电池容量' },
-	{ props: 'gearType', name: '变速箱类型' },
-  { props: 'cartypeLevel', name: '车型等级' },
-  { props: 'otherInfo', name: '其他信息' },
-  { props: 'perCarDosage', name: '每车用量' }
+  { props: 'cartypeCategory', name: '车型大类', key: 'LK_CHEXINGDALEI' },
+  { props: 'engineType', name: '发动机类型', key: 'LK_FADONGJILEIXING' },
+  { props: 'batteryCapacity', name: '电池容量', key: 'LK_DIANCHIRONGLIANG' },
+  { props: 'gearType', name: '变速箱类型', key: 'LK_BIANSUXIANGLEIXING' },
+  { props: 'cartypeLevel', name: '车型等级', key: 'LK_CHEXINGDENGJI' },
+  { props: 'otherInfo', name: '其他信息', key: 'LK_QITAXINXI' },
+  { props: 'perCarDosage', name: '每车用量', key: 'LK_MEICHEYONGLIANG' }
 ]
 
 export const volumeDialogTableTitle = [
-  { props: 'cartypeCategory', name: '车型大类' },
-  { props: 'engineType', name: '发动机类型' },
-  { props: 'batteryCapacity', name: '电池容量' },
-	{ props: 'gearType', name: '变速箱类型' },
-  { props: 'cartypeLevel', name: '车型等级' },
-  { props: 'otherInfo', name: '其他信息' },
-  { props: 'perCarDosage', name: '每车用量' }
+  { props: 'cartypeCategory', name: '车型大类', key: 'LK_CHEXINGDALEI' },
+  { props: 'engineType', name: '发动机类型', key: 'LK_FADONGJILEIXING' },
+  { props: 'batteryCapacity', name: '电池容量', key: 'LK_DIANCHIRONGLIANG' },
+  { props: 'gearType', name: '变速箱类型', key: 'LK_BIANSUXIANGLEIXING' },
+  { props: 'cartypeLevel', name: '车型等级', key: 'LK_CHEXINGDENGJI' },
+  { props: 'otherInfo', name: '其他信息', key: 'LK_QITAXINXI' },
+  { props: 'perCarDosage', name: '每车用量', key: 'LK_MEICHEYONGLIANG' }
 ]
 
 export const logTableTitle = [
-	{ props: 'a', name: '操作' },
+  { props: 'a', name: '操作', key: 'LK_CAOZUO' },
   { props: 'b', name: '发生时间' },
-  { props: 'c', name: '操作人' },
-  { props: 'd', name: '备注' }
+  { props: 'c', name: '操作人', key: 'LK_CAOZUOREN' },
+  { props: 'd', name: '备注', key: 'LK_BEIZHU' }
 ]

@@ -4,7 +4,8 @@
       <span class="font18 font-weight">{{ $t('LK_XUNJIAFUJIAN') }}</span>
       <div class="floatright">
         <iButton @click="deleteItems"
-                 v-permission="PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_INQUIRYATTACHMENT_INQUIRYATTACHMENT_DELETE">{{ $t('LK_SHANCHU') }}
+                 v-permission="PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_INQUIRYATTACHMENT_INQUIRYATTACHMENT_DELETE">
+          {{ $t('LK_SHANCHU') }}
         </iButton>
         <upload-button
             @uploadedCallback="uploadAttachments"
@@ -12,6 +13,7 @@
             class="margin-left8 margin-right8"
             v-permission="PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_INQUIRYATTACHMENT_INQUIRYATTACHMENT_UPLOADBUTTON"/>
         <iButton @click="download"
+                 :loading="downloadLoading"
                  v-permission="PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_INQUIRYATTACHMENT_INQUIRYATTACHMENT_DOWNLOADBUTTON">
           {{ $t('LK_XIAZAI') }}
         </iButton>
@@ -79,7 +81,8 @@ export default {
       tableTitle: inquiryAttachmentTableTitle,
       tableLoading: false,
       selectTableData: [],
-      uploadAttachmentsButtonLoading: false
+      uploadAttachmentsButtonLoading: false,
+      downloadLoading: false
     };
   },
   created() {
@@ -146,13 +149,12 @@ export default {
     handleSelectionChange(val) {
       this.selectTableData = val;
     },
-    handleOpenPage(row) {
-      const url = row.filePath
-      const a = document.createElement('a');
-      a.setAttribute('download', '')
-      a.setAttribute('href', url);
-      a.setAttribute('target', '_blank');
-      a.click();
+    async handleOpenPage(row) {
+      const req = {
+        applicationName: 'rise',
+        fileList: [row.fileName]
+      }
+      await downloadFile(req)
     },
     async download() {
       if (this.selectTableData.length == 0)
@@ -162,11 +164,11 @@ export default {
       })
       const req = {
         applicationName: 'rise',
-        fileList,
-        /*applicationName: 'common-function-test',
-        fileList: ['test (4).txt']*/
+        fileList
       }
+      this.downloadLoading = true
       await downloadFile(req)
+      this.downloadLoading = false
     }
   }
 }

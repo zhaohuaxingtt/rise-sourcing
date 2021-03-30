@@ -2,7 +2,7 @@
   <iCard
     class="volume"
     tabCard
-    :title="`$t('LK_LINGJIANMEICHEYONGLIANG')（当前版本：${versionNum}）`"
+    :title="`${$t('LK_LINGJIANMEICHEYONGLIANG')}（当前版本：${versionNum}）`"
   >
     <div class="body">
       <tableList
@@ -93,8 +93,10 @@ export default {
           tpId: this.params.purchasingRequirementId,
         });
 
-        this.tableListData = infoRes.data.tpRecordList;
-        this.page.totalCount = infoRes.data.totalCount;
+        if (infoRes.data) {
+          this.tableListData = infoRes.data.tpRecordList;
+          this.page.totalCount = infoRes.data.totalCount;
+        }
       } catch (e) {
         console.error(e);
       } finally {

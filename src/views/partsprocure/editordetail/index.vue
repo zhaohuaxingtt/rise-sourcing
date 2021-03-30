@@ -23,7 +23,6 @@
 			CANCEL("14", "已取消"),
 			START("15", "已启动"),
 			NOT_START("16", "未启动"); -->
-
 		<div class="margin-bottom20 clearFloat">
 			<span class="font18 font-weight">{{ $t('LK_LINGJIANCAIGOUXIANGMU') }}</span>
 			<div class="floatright">
@@ -204,7 +203,7 @@
 				<logistics :infoItem="infoItem"></logistics>
 			</el-tab-pane>
 			<el-tab-pane :label="$t('LK_SHENQINGMUBIAOJIA')" v-permission="PARTSPROCURE_EDITORDETAIL_APPLYFORTARGETPRICE">
-				<targePrice :purchaseProjectId="purchaseProjectId"></targePrice>
+				<targePrice :purchaseProjectId="purchasePrjectId"></targePrice>
 			</el-tab-pane>
 			<el-tab-pane :label="$t('LK_BEIZHUXINXI')" v-permission="PARTSPROCURE_EDITORDETAIL_REMARKSINFORMATION">
 				<remarks :detailData="detailData"></remarks>
@@ -213,7 +212,7 @@
 		<backItems v-model="diologBack" @sure="cancel" :title="$t('LK_QUXIAOLINGJIANCAIGOUXIANGMU')"></backItems>
 		<!-- 结束项目 -->
 		<backItems v-model="diologClose" @sure="cancel" :title="$t('LK_JIESHUXIANGMU')"></backItems>
-		<splitFactory :splitPurchBoolean="splitPurchBoolean" :purchaseProjectId="purchaseProjectId" :update='updateTabs'
+		<splitFactory :splitPurchBoolean="splitPurchBoolean" :purchaseProjectId="purchasePrjectId" :update='updateTabs'
 			:close='splitPurch'></splitFactory>
 	</iPage>
 </template>
@@ -283,12 +282,12 @@
 				diologBack: false, //取消零件采购
 				diologClose: false, //结束项目
 				splitPurchBoolean: false,
-				purchaseProjectId: "",
+				purchasePrjectId: "",
 			};
 		},
 		created() {
 			this.infoItem = JSON.parse(this.$route.query.item);
-			this.purchaseProjectId = this.infoItem.purchasePrjectId;
+			this.purchasePrjectId = this.infoItem.purchasePrjectId;
 			this.getDatail();
 			this.getPageGroup();
 		},
@@ -300,7 +299,7 @@
 			// 获取详情数据
 			getDatail() {
 				let data = {
-					"detailBaseReq.partNum": this.infoItem.partNum,
+					"detailBaseReq.purchaseProjectId": this.purchasePrjectId,
 				};
 				getTabelData(data).then((res) => {
 					this.detailData = res.data.detailData;

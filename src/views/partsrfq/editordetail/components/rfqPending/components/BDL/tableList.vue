@@ -5,12 +5,12 @@
 * @Description: BDL表格数据
  -->
 <template>
-	<el-table class="table" ref='multipleTable' :data="tableData" v-loading="tableLoading" @selection-change="handleSelectionChange" @select="handleSelect" @select-all="handleSelectAll" :row-style="rowStyle">
+	<el-table :stripe="false" class="table" ref='multipleTable' :data="tableData" v-loading="tableLoading" @selection-change="handleSelectionChange" @select="handleSelect" @select-all="handleSelectAll" :row-style="rowStyle">
 		<el-table-column type="selection" align="center" :selectable="selectable">
 		</el-table-column>
 		<el-table-column type="index" align="center" label="#"></el-table-column>
 		<template v-for="(item, index) in tableTitle">
-			<el-table-column :key="index" align="center" v-if="item.props == 'supplierNameZh'" :prop="item.props" :label="item.name">
+			<el-table-column :key="index" align="center" v-if="item.props == 'supplierNameZh'" :prop="item.props" :label="$t(item.key)">
 				<template slot-scope="scope">
 					<!-- <span class="openLinkText cursor" @click="openPage">{{scope.row.supplierNameZh}}</span> -->
 					<span>{{ scope.row.supplierNameZh }}</span>
@@ -27,7 +27,7 @@
 					<iInput v-model="addTitle"></iInput>
 				</template>
 				<template slot-scope="scope">
-					<iInput v-model="scope.row.userDefinedGrade"></iInput>
+					<iInput v-model="scope.row.userDefinedGrade" @input="handleInput($event, scope.row)"></iInput>
 				</template>
 			</el-table-column>
 			<el-table-column :key="index" align="center" v-else-if="item.props == 'i'" :prop="item.props"
@@ -40,8 +40,8 @@
 			</el-table-column>
 			<el-table-column v-else :key="index" align="center" :label="item.name" :prop="item.props">
 				<template slot-scope="scope">
-					<span v-if="item.props == 'isMbdl'">
-						{{scope.row[item.props]?'M':''}}
+					<span v-if="item.props == 'bdlType'">
+						{{scope.row[item.props] == '2'?'M':''}}
 					</span>
 					<span v-else-if="item.props == 'isCheckCbd'">
 						{{scope.row[item.props]?"是":"否"}}
@@ -97,15 +97,15 @@
       },
 			//为mbdl的数据新增一个背景颜色
 			rowStyle({row,index}){
-				if(row.isMbdl){
+				if(row.bdlType == '2' || !row.isEdit){
 					return {
-						backgroundColor:'#F8F8FA'
+						backgroundColor:'#F2F6FF'
 					}
 				}
 			},
 			//为mbdl的checkBox新增不能选中的功能
 			selectable(row,index){
-				if(row.isMbdl){
+				if(row.bdlType == '2'){
 					return false
 				}else{
 					return true
@@ -138,6 +138,15 @@
 			},
 			handleSelectAll(selection) {
 				this.$emit('handleSelectAll', selection)
+			},
+			handleInput(value, row) {
+				row.userDefinedGrade = value
+					.replace(/[^\d.]/g, "")
+					.replace(/^\.*/g, "")
+					.replace(".", "$#$")
+					.replace(/\./g, "")
+					.replace("$#$", ".")
+					.replace(/^0+([0-9].*)/, "$1")
 			}
 		},
 	};
@@ -150,5 +159,11 @@
 	.operation {}
 	.look {
 		font-size: 28px;
+	}
+
+	.table {
+		::v-deep tr:nth-child(even) {
+			background-color: #FFF;
+		}
 	}
 </style>

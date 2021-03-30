@@ -1,14 +1,14 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-25 10:14:46
- * @LastEditTime: 2021-03-30 16:27:21
+ * @LastEditTime: 2021-03-30 23:30:43
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsprocure\home\component\data.js
  */
 import {permissionTitle} from '@/utils'
-export const tableTitle = [{
-//export const tableTitle = permissionTitle("PARTSPROCURE_PARTSPROCURELIST",[{
+// export const tableTitle = [{
+export const tableTitle = permissionTitle("PARTSPROCURE_PARTSPROCURELIST",[{
 		props: 'fsnrGsnrNum',
 		name: 'FSNF/GSNF/SPNR',
 		key: 'partsprocure.PARTSPROCURENEWPROCUREMENTPROJECT',
@@ -49,8 +49,8 @@ export const tableTitle = [{
 		key: 'partsprocure.PARTSPROCUREMODELPROJECT',
 	},
 	{
-		props: 'partStatus',
-		name: '项目状态',
+		props: 'partStatusName',
+		name: '零件状态',
 		key: 'partsprocure.PARTSPROCUREPARTSTATUS',
 	},
 	{
@@ -64,11 +64,11 @@ export const tableTitle = [{
 		key: 'partsprocure.PARTSPROCURELINIE',
 	},
 	{
-		props: 'cfController',
+		props: 'cfControllerZh',
 		name: 'CF',
 		key: 'partsprocure.CF',
 	}
-]
+])
 
 //零件采购列表入参
 export const form = {

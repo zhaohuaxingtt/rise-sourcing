@@ -51,7 +51,7 @@
 									:placeholder="$t('partsprocure.CHOOSE') + $t('partsprocure.PARTSPROCUREPARTSTATUS')"
 									v-model="form['search.partStatus']" v-permission="PARTSPROCURE_PARTSTATUS">
 									<el-option value="" :label="$t('all') | capitalizeFilter"></el-option>
-									<el-option :value="item.value" :label="item.label"
+									<el-option :value="item.key" :label="item.name"
 										v-for="(item, index) in getGroupList('part_status')" :key="index"></el-option>
 								</iSelect>
 							</el-form-item>
@@ -61,7 +61,7 @@
 									v-model="form['search.cartypeCategory']"
 									v-permission="PARTSPROCURE_VEHICLECATEGORIES">
 									<el-option value="" :label="$t('all') | capitalizeFilter"></el-option>
-									<el-option :value="item.value" :label="item.label"
+									<el-option :value="item.key" :label="item.name"
 										v-for="(item, index) in getGroupList('cartype_category')" :key="index">
 									</el-option>
 								</iSelect>
@@ -71,7 +71,7 @@
 									:placeholder="$t('partsprocure.CHOOSE') + $t('partsprocure.PARTSPROCUREMODELPROJECT')"
 									v-model="form['search.cartypeProjectZh']" v-permission="PARTSPROCURE_MODELPROJECT">
 									<el-option value="" :label="$t('all') | capitalizeFilter"></el-option>
-									<el-option :value="item.value" :label="item.label"
+									<el-option :value="item.key" :label="item.name"
 										v-for="(item, index) in getGroupList('cartype_project_zh')" :key="index">
 									</el-option>
 								</iSelect>
@@ -81,7 +81,7 @@
 									:placeholder="$t('partsprocure.CHOOSE') + $t('partsprocure.PARTSPROCUREPARTITEMTYPE')"
 									v-model="form['search.partPrejectType']" v-permission="PARTSPROCURE_PARTITEMTYPE">
 									<el-option value="" :label="$t('all') | capitalizeFilter"></el-option>
-									<el-option :value="item.value" :label="item.label"
+									<el-option :value="item.key" :label="item.name"
 										v-for="(item, index) in getGroupList('part_preject_type')" :key="index">
 									</el-option>
 								</iSelect>
@@ -92,7 +92,7 @@
 									v-model="form['search.procureFactory']"
 									v-permission="PARTSPROCURE_PURCHASINGFACTORY">
 									<el-option value="" :label="$t('all') | capitalizeFilter"></el-option>
-									<el-option :value="item.value" :label="item.label"
+									<el-option :value="item.key" :label="item.name"
 										v-for="(item, index) in getGroupList('procure_factory')" :key="index">
 									</el-option>
 								</iSelect>
@@ -106,7 +106,7 @@
 						<div class="margin-bottom20 clearFloat">
 							<span class="font18 font-weight">
 								{{ $t('partsprocure.PARTSPROCURENEWPROCUREMENTPROJECT') }}</span>
-							<div class="floatright">
+							<div class="floatright">	
 								<iButton @click="creatFs" v-permission="PARTSPROCURE_GENERATEFSBUTTON">
 									{{ $t('partsprocure.PARTSPROCUREGENERATEFSGSNR') }}
 								</iButton>
@@ -173,9 +173,6 @@
 		insertRfq,
 		getProcureGroup
 	} from "@/api/partsprocure/home";
-	import {
-		getPageGroup
-	} from "@/api/partsign/home";
 	import changeItems from "../../partsign/home/components/changeItems";
 	import store from '@/store'
 	import filters from "@/utils/filters";
@@ -211,7 +208,7 @@
 		},
 		created() {
 			this.getTableListFn();
-			this.getPageGroup();
+			this.getProcureGroup();
 		},
 		methods: {
 			// 跳转详情
@@ -224,11 +221,26 @@
 				});
 			},
 			//获取上方group信息
-			getPageGroup() {
-				// this.$store.state.permission.userInfo.id
-				getProcureGroup().then((res) => {
-					// this.fromGroup = res.data.groupStatSenarioResult.groupStatInfoList;
-				});
+			// part_status --零件状态
+			// cartype_category --车型类型
+			// cartype_project_zh --车型项目
+			// part_preject_type --零件项目类型
+			// procure_factory   --采购工厂
+			// purchase_clause   --采购条款
+			// part_type         --零件类型
+			// unit              --单位
+			// pay_clause        --支付条款
+			// currency_id       --币种
+			// linie_dept        --Linie部门A
+			// linie_name        --Line
+			// cf_controller     --Cf控制员
+			// is_common_sourcing--Sourcing
+			// buyer_name        --询价采购员
+			getProcureGroup() {
+				let types=["part_status","cartype_project_zh","cartype_category","part_preject_type","procure_factory"]
+				getProcureGroup({types}).then((res) => {
+					this.fromGroup = res.data;
+				});	
 			},
 			//转派
 			openDiologChangeItems() {
@@ -239,7 +251,8 @@
 			//确认转派弹窗值。
 			sureChangeItems(val) {
 				let transfer = {
-					buyerName: val,
+					buyerName: val.nameZh,
+					buyerId:val.id,
 					purchaseProjectIds: this.getPurchasePrjectId(),
 				};
 				changeProcure({
@@ -392,9 +405,9 @@
 			// 查询fliter数据
 			getGroupList(key) {
 				if (this.fromGroup.length > 0) {
-					let obj = this.fromGroup.find((items) => items.name == key);
+					let obj = this.fromGroup.find((items) => items.type == key);
 					if (!obj) return [];
-					return obj.infoList;
+					return obj.list;
 				}
 			},
 			// 跳转批量维护

@@ -459,7 +459,12 @@
         'LK_CBDSHEZHI': 'CBD Setting',//CBD设置
         'LK_BOMDANXINXI': 'BOM information',//BOM单信息
         'LK_BDLLIEBIAO': 'BDL List',//BDL列表
-        'LK_AEKOHAO': 'Aeko No.'//Aeko号
+        'LK_AEKOHAO': 'Aeko No.',//Aeko号
+        'LK_QINGSHURULINGJIANHAO':'Please Enter',//请输入零件号
+        'LK_QINGSHURULINGJIANMING':'Please Enter',//请输入零件名（中）
+        'LK_QINGTIANXIESHEJIKESHI':'Please Enter',//请填写设计科室
+        'LK_QINGTIANXIEGONGCHENGSHI':'Please Enter',//请填写工程师
+        'LK_QINGTIANXIEXINXIDANLIUSHUIHAO':'Please Enter'//请填写信息单流水号
 
         /*
         <!------------------------------------------------------------------------>

@@ -6,8 +6,8 @@
  -->
 <template>
   <iTabsList type="border-card" @tab-click="handleTabClick">
-    <el-tab-pane :label="item.label" v-for="item of tabList" :key="item.label" v-permisstion='item.permissionKey'>
-      <component :is="item.component" v-if="activityTabLabel === item.label"/>
+    <el-tab-pane :label="$t(item.key)" v-for="item of tabList" :key="item.label" v-permisstion='item.permissionKey'>
+      <component :is="item.component" v-if="activityTabIndex === item.index"/>
     </el-tab-pane>
   </iTabsList>
 </template>
@@ -31,19 +31,49 @@ export default {
   },
   data() {
     return {
-      activityTabLabel: '零件清单',
+      activityTabIndex: '0',
       tabList: [
-        {label: '零件清单', component: 'partDetailList',permissionKey:'PARTSRFQ_EDITORDETAIL_PARTDETAILIST_INDEXPAGE'},
-        {label: 'BDL列表', component: 'BDL',permissionKey:'PARTSRFQ_EDITORDETAIL_RFQPENDING_INDEXPAGE'},
-        {label: '供应商评分', component: 'supplierScore',permissionKey:'PARTSRFQ_EDITORDETAIL_RFQPENDING_SUPPLIERSCORE_PARTSCORING_INDEXPAGE'},
-        {label: '模具预算申请', component: 'moldBudgetApplication',permissionKey:'PARTSRFQ_EDITORDETAIL_RFQPENDING_MOLDBUDGETAPPLICATION_INDEXPAGE'},
-        {label: '技术交底会', component: 'technicalSeminar',permissionKey:'PARTSRFQ_EDITORDETAIL_RFQPENDING_TECHNICALSEMINAR_BASICINFORMATIONMEETING_INDEXPAGE'},
+        {
+          index: '0',
+          label: '零件清单',
+          component: 'partDetailList',
+          permissionKey: 'PARTSRFQ_EDITORDETAIL_PARTDETAILIST_INDEXPAGE',
+          key: 'LK_LINGJIANQINGDAN'
+        },
+        {
+          index: '1',
+          label: 'BDL列表',
+          component: 'BDL',
+          permissionKey: 'PARTSRFQ_EDITORDETAIL_RFQPENDING_INDEXPAGE',
+          key: 'LK_BDLLIEBIAO'
+        },
+        {
+          index: '2',
+          label: '供应商评分',
+          component: 'supplierScore',
+          permissionKey: 'PARTSRFQ_EDITORDETAIL_RFQPENDING_SUPPLIERSCORE_PARTSCORING_INDEXPAGE',
+          key: 'LK_GONGYINGSHANGPINGFEN'
+        },
+        {
+          index: '3',
+          label: '模具预算申请',
+          component: 'moldBudgetApplication',
+          permissionKey: 'PARTSRFQ_EDITORDETAIL_RFQPENDING_MOLDBUDGETAPPLICATION_INDEXPAGE',
+          key: 'LK_MOJUYUSUANSHENQING'
+        },
+        {
+          index: '4',
+          label: '技术交流会',
+          component: 'technicalSeminar',
+          permissionKey: 'PARTSRFQ_EDITORDETAIL_RFQPENDING_TECHNICALSEMINAR_BASICINFORMATIONMEETING_INDEXPAGE',
+          key: 'LK_JISHUJIAOLIUHUI'
+        },
       ]
     };
   },
   methods: {
     handleTabClick(target) {
-      this.activityTabLabel = target.label
+      this.activityTabIndex = target.index
     }
   }
 };
