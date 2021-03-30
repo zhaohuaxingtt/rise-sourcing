@@ -1,13 +1,13 @@
 export const outputPlanTableTitle = [
-  { props: 'pc', name: '年份' },
+  { props: 'pc', name: '年份', key: 'LK_NIANFEN' },
   { props: 'totalOutput', name: 'SUM' },
-  { props: 'versionNum', name: '版本号' }
+  { props: 'versionNum', name: '版本号', key: 'LK_BANBENHAO' }
 ]
 
 export const outputRecordTableTitle = [
   { props: 'totalOutput', name: 'SUM' },
-  { props: 'versionNum', name: '版本号' },
-  { props: 'updateReason', name: '更新原因' }
+  { props: 'versionNum', name: '版本号', key: 'LK_BANBENHAO' },
+  { props: 'updateReason', name: '更新原因', key: 'LK_GENGXINYUANYIN' }
 ]
 
 export const volumeTableTitle = [
