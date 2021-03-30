@@ -69,9 +69,8 @@ export default {
     getData() {
       this.loading = true
       getOutputPlan({
-        'partOutputPlanReqDTO.purchaseProjectId': '1374304053550661634',
+        'partOutputPlanReqDTO.purchaseProjectId': this.params.purchasePrjectId,
         'partOutputPlanReqDTO.year': this.startYear || undefined
-        // this.params.purchasePrjectId
       })
         .then((res) => {
           this.tableTitle = cloneDeep(tableTitle)
