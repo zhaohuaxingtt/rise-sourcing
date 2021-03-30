@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-24 09:17:57
- * @LastEditTime: 2021-03-30 14:49:05
+ * @LastEditTime: 2021-03-30 14:49:55
  * @LastEditors: Please set LastEditors
  * @Description: 零件签收列表界面.
  * @FilePath: \rise\src\views\partsign\index.vue
@@ -228,7 +228,6 @@ export default {
           }
         }
       });
-      console.log(v)
       return v
     },
     translateDataToservice(data) {
