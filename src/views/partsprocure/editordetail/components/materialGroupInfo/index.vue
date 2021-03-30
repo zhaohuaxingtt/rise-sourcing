@@ -10,7 +10,7 @@
   <iCard class="materialGroupInfo" tabCard v-loading="loading">
     <template v-slot:header-control>
       <iButton v-if="!setMaterialGroupStatus" @click="setMaterialGroup" v-permission="PARTSPROCURE_EDITORDETAIL_SETPROCESSGROUP">{{ $t('LK_SHEZHIGONGYIZU') }}</iButton>
-      <!-- <iButton v-if="!setMaterialGroupStatus" @click="log">日志</iButton> -->
+      <iButton disabled>查找工艺组供应商</iButton>
       <iButton v-if="setMaterialGroupStatus" @click="confirmMaterialGroup" :loading="confirmLoading" v-permission="PARTSPROCURE_EDITORDETAIL_MATERIALGROUPINFO_CONFIRM">{{ $t('LK_QUEREN') }}</iButton>
       <iButton v-if="setMaterialGroupStatus" @click="back" v-permission="PARTSPROCURE_EDITORDETAIL_MATERIALGROUPINFO_BACK">{{ $t('LK_FANHUI') }}</iButton>
     </template>
@@ -91,7 +91,7 @@ export default {
     getMaterialGroup() {
       getMaterialGroup({ categoryCode: this.params.categoryCode })
         .then(res => {
-          this.info = res.data
+          this.info = res.data || {}
           this.loading = false
         })
         .catch(() => this.loading = false)
