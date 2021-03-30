@@ -13,15 +13,25 @@
       <div class="flex nav-box">
         <span>{{ $route.query.id ? $route.query.id : $t('LK_XINJIANRFQ') }}</span>
         <iTabsList type="border-card" @tab-click="changeNav" class="nav-style">
-          <el-tab-pane :label="item.label" v-for="item of navList" :key="item.label">
+          <el-tab-pane :label="$t(item.key)" v-for="item of navList" :key="item.label">
           </el-tab-pane>
         </iTabsList>
       </div>
       <div class="btnList">
-        <iButton @click="newRfq" v-permission="PARTSRFQ_EDITORDETAIL_NEWRFQROUND">{{ $t('LK_XINJIANRFQLUNCI') }}</iButton>
-        <iButton @click="updateRfqStatus('06')" v-permission="PARTSRFQ_EDITORDETAIL_SENDINQUIRY">{{ $t('LK_FACHUXUNJIA') }}</iButton>
-        <iButton @click="updateRfqStatus('05')" v-permission="PARTSRFQ_EDITORDETAIL_ENDQUOTATION">{{ $t('LK_JIESHUBENLUNXUNJIA') }}</iButton>
-        <iButton @click="updateRfqStatus('03')" v-permission="PARTSRFQ_EDITORDETAIL_TRANSFERNEGOTIATION">{{ $t('LK_ZHUANTANPAN') }}</iButton>
+        <iButton @click="newRfq" v-permission="PARTSRFQ_EDITORDETAIL_NEWRFQROUND">{{
+            $t('LK_XINJIANRFQLUNCI')
+          }}
+        </iButton>
+        <iButton @click="updateRfqStatus('06')" v-permission="PARTSRFQ_EDITORDETAIL_SENDINQUIRY">{{
+            $t('LK_FACHUXUNJIA')
+          }}
+        </iButton>
+        <iButton @click="updateRfqStatus('05')" v-permission="PARTSRFQ_EDITORDETAIL_ENDQUOTATION">
+          {{ $t('LK_JIESHUBENLUNXUNJIA') }}
+        </iButton>
+        <iButton @click="updateRfqStatus('03')" v-permission="PARTSRFQ_EDITORDETAIL_TRANSFERNEGOTIATION">
+          {{ $t('LK_ZHUANTANPAN') }}
+        </iButton>
         <iButton @click="createAFixedPointApplication" disabled v-permission="PARTSRFQ_EDITORDETAIL_CREATEAPPLICATION">
           {{ $t('LK_CHUANGJIANDINGDIANSHENQING') }}
         </iButton>
@@ -162,9 +172,11 @@ export default {
       navList: [
         {
           label: "待办事项",
+          key: 'LK_DAIBANSHIXIANG'
         },
         {
           label: "详情信息",
+          key: 'LK_XIANGQINGXINXI'
         },
         // {
         //   label: "谈判助手",
@@ -190,7 +202,7 @@ export default {
         const req = {
           rfqMangerInfosPackage: {
             userId: store.state.permission.userInfo.id,
-            rfqId: Number(query.id)
+            rfqId: query.id
           }
         }
         try {
@@ -220,7 +232,7 @@ export default {
       const req = {
         updateRfqStatusPackage: {
           updateType,
-          tmRfqIdList: [Number(query.id)],
+          tmRfqIdList: [query.id],
           userId: store.state.permission.userInfo.id
         }
       }
@@ -257,7 +269,7 @@ export default {
       if (query.id) {
         const req = {
           updateRfqInfoPackage: {
-            rfqId: Number(query.id),
+            rfqId: query.id,
             ...params
           }
         }

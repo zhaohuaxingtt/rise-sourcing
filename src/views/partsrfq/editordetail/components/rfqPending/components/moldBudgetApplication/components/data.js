@@ -5,13 +5,13 @@
  * @Description: In User Settings Edit
  */
 export const tableTitle = [
-    {props:'partNum',name:'零件号'},
-    {props:'fsnrGsnrNum',name:'FSNR/GSNR'},
-    {props:'rfqId',name:'RFQ编号'},
-    {props:'applyTime',name:'申请日期'},
-    {props:'cartypeProjectZh',name:'车型项目'},
-    {props:'budget',name:'投资预算（RMB）'},
-    {props:'csfPDiretor',name:'CSF(P)负责⼈'},
-    {props:'approvalStatus',name:'审批状态'},
-    {props:'approvalComments',name:'审批意见'}
+    {props:'partNum',name:'零件号',key: 'LK_LINGJIANHAO'},
+    {props:'fsnrGsnrNum',name:'FSNR/GSNR',key: 'FSNR/GSNR'},
+    {props:'rfqId',name:'RFQ编号',key: 'LK_RFQBIANHAO'},
+    {props:'applyTime',name:'申请日期',key: 'LK_SHENQINGRIQI'},
+    {props:'cartypeProjectZh',name:'车型项目',key: 'LK_CHEXINGXIANGMU'},
+    {props:'budget',name:'投资预算（RMB）',key: 'LK_TOUZIYUSUAN'},
+    {props:'csfPDiretor',name:'CSF(P)负责⼈',key: 'LK_FUZEREN'},
+    {props:'approvalStatus',name:'审批状态',key: 'LK_SHENPIZHUANGTAI'},
+    {props:'approvalComments',name:'审批意见',key: 'LK_SHENPIYIJIAN'}
 ]

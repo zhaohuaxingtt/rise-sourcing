@@ -7,14 +7,14 @@ import axios from '@/utils/axios'
 const requst = axios(process.env.VUE_APP_DIC)
 export function getDictByCode(code) {
     return requst({
-        url: `/baseinfo/dict?code=${code}`,
+        url: `/dict?code=${code}`,
         method: 'GET'
     })
 }
 
 export function getDeptByDeptType(type) {
     return requst({
-        url: `/baseinfo/dept?type=${type}`,
+        url: `/dept?type=${type}`,
         method: 'GET'
     })
 }

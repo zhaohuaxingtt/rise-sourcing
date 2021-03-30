@@ -18,7 +18,7 @@ export const tableTitle = permissionTitle("PARTSRFQ_RFQLIST",[
     {props:'suppliers',name:'已询价供应商', key: 'rfq.RFQSUPPLIERSHAVEBEENINQUIRED'},
     {props:'quotations',name:'已报价供应商', key: 'rfq.RFQQUOTEDSUPPLIER'},
     {props:'currentStatus',name:'RFQ状态', key: 'rfq.RFQRFQSTATUS'},
-    {props:'endDate',name:'报价截至日期', key: 'rfq.RFQQUOTATIONDEADLINE'},
+    {props:'currentRoundsEndTime',name:'报价截至日期', key: 'rfq.RFQQUOTATIONDEADLINE'},
     {props:'buyerName',name:'询价采购员', key: 'rfq.RFQINQUIRYBUYER'},
     {props:'linieNameZh',name:'LINIE', key: 'rfq.RFQLINIE'},
     {props:'tpGradeStatus',name:'TP评分状态', key: 'rfq.RFQTPSCORESTATUS'},
@@ -28,7 +28,7 @@ export const tableTitle = permissionTitle("PARTSRFQ_RFQLIST",[
 ])
 
 export const assignmentOfScroingTasksTableTitle = [
-    {props:'deptType',name:'部门评分类型'},
-    {props:'deptNum',name:'部门编号'},
-    {props:'graderId',name:'评分人'},
+    {props:'deptType',name:'部门评分类型', key: 'LK_BUMENPINGFENLEIXING'},
+    {props:'deptNum',name:'部门编号', key: 'LK_BUMENBIANHAO'},
+    {props:'graderId',name:'评分人', key: 'LK_PINGFENREN'},
 ]
