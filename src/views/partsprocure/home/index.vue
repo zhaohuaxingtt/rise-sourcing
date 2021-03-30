@@ -106,7 +106,7 @@
 						<div class="margin-bottom20 clearFloat">
 							<span class="font18 font-weight">
 								{{ $t('partsprocure.PARTSPROCURENEWPROCUREMENTPROJECT') }}</span>
-							<div class="floatright">
+							<div class="floatright">	
 								<iButton @click="creatFs" v-permission="PARTSPROCURE_GENERATEFSBUTTON">
 									{{ $t('partsprocure.PARTSPROCUREGENERATEFSGSNR') }}
 								</iButton>

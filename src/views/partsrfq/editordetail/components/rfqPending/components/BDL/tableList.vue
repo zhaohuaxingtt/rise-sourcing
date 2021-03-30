@@ -10,7 +10,7 @@
 		</el-table-column>
 		<el-table-column type="index" align="center" label="#"></el-table-column>
 		<template v-for="(item, index) in tableTitle">
-			<el-table-column :key="index" align="center" v-if="item.props == 'supplierNameZh'" :prop="item.props" :label="item.name">
+			<el-table-column :key="index" align="center" v-if="item.props == 'supplierNameZh'" :prop="item.props" :label="$t(item.key)">
 				<template slot-scope="scope">
 					<!-- <span class="openLinkText cursor" @click="openPage">{{scope.row.supplierNameZh}}</span> -->
 					<span>{{ scope.row.supplierNameZh }}</span>

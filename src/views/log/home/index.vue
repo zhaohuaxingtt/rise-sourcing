@@ -2,7 +2,7 @@
   <iPage class="log" v-permission="LOG_HOME_INDEXPAGE">
     <div class="margin-bottom20 clearFloat">
       <div class="floatright">
-        <iButton @click="download" v-permission="LOG_HOME_DOWNLOAD">导出</iButton>
+        <iButton @click="download" v-permission="LOG_HOME_DOWNLOAD">{{ $t('LK_DAOCHU') }}</iButton>
         <span class="margin-left20">
 					<icon symbol name="icondatabaseweixuanzhong" class="font18"></icon>
 				</span>
@@ -10,7 +10,7 @@
     </div>
     <iCard class="card">
       <div class="header clearFloat">
-        <span class="title">日志</span>
+        <span class="title">{{ $t('LK_RIZHI') }}</span>
       </div>
       <div class="body margin-top25">
         <tableList index height="100%" class="table" :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="loading" @handleSelectionChange="handleSelectionChange">

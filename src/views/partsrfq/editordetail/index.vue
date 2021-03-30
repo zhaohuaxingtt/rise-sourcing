@@ -13,7 +13,7 @@
       <div class="flex nav-box">
         <span>{{ $route.query.id ? $route.query.id : $t('LK_XINJIANRFQ') }}</span>
         <iTabsList type="border-card" @tab-click="changeNav" class="nav-style">
-          <el-tab-pane :label="item.label" v-for="item of navList" :key="item.label">
+          <el-tab-pane :label="$t(item.key)" v-for="item of navList" :key="item.label">
           </el-tab-pane>
         </iTabsList>
       </div>
@@ -172,9 +172,11 @@ export default {
       navList: [
         {
           label: "待办事项",
+          key: 'LK_DAIBANSHIXIANG'
         },
         {
           label: "详情信息",
+          key: 'LK_XIANGQINGXINXI'
         },
         // {
         //   label: "谈判助手",
@@ -230,7 +232,7 @@ export default {
       const req = {
         updateRfqStatusPackage: {
           updateType,
-          tmRfqIdList: [Number(query.id)],
+          tmRfqIdList: [query.id],
           userId: store.state.permission.userInfo.id
         }
       }
@@ -267,7 +269,7 @@ export default {
       if (query.id) {
         const req = {
           updateRfqInfoPackage: {
-            rfqId: Number(query.id),
+            rfqId: query.id,
             ...params
           }
         }

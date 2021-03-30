@@ -5,9 +5,9 @@
  * @Description: In User Settings Edit
  */
 export const tableTitle = [
-    {props:'a',name:'零件号'},
-    {props:'b',name:'零件名（中）'},
-    {props:'c',name:'零件名（德）'},
-    {props:'d',name:'Bezug类型'},
-    {props:'e',name:'⽤量'}
+    {props:'a',name:'零件号',key: 'LK_LINGJIANHAO'},
+    {props:'b',name:'零件名（中）', key: 'LK_LINGJIANMINGZHONG'},
+    {props:'c',name:'零件名（德）', key: 'LK_LINGJIANMINGDE'},
+    {props:'d',name:'Bezug类型', key: 'LK_GONGYINGSHANGMINGCHENG'},
+    {props:'e',name:'⽤量', key: 'LK_GONGYINGSHANGMINGCHENG'}
 ]
