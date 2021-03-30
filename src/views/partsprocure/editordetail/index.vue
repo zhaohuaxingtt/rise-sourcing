@@ -23,7 +23,6 @@
 			CANCEL("14", "已取消"),
 			START("15", "已启动"),
 			NOT_START("16", "未启动"); -->
-
 		<div class="margin-bottom20 clearFloat">
 			<span class="font18 font-weight">{{ $t('LK_LINGJIANCAIGOUXIANGMU') }}</span>
 			<div class="floatright">
