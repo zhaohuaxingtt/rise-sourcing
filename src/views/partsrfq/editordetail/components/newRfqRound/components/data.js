@@ -7,7 +7,7 @@
 export const tableTitle = [
     {props:'sapNum',name:'SAP号', key: 'SAP号'},
     {props:'supplierNameZh',name:'供应商名称', key: 'LK_GONGYINGSHANGMINGCHENG'},
-    {props:'isMbdl',name:'MBDL', key: 'MBDL'},
+    {props:'isMbdl',name:'MBDL', key: 'LK_MBDL'},
     {props:'cbdTemplateId',name:'CBD选择', key: 'LK_CBDXUANZE'}
 ]
 
@@ -15,5 +15,5 @@ export const tableTitle = [
 export const tableTitle2 = [
     {props:'sapNum',name:'SAP号', key: 'SAP号'},
     {props:'supplierNameZh',name:'供应商名称', key: 'LK_GONGYINGSHANGMINGCHENG'},
-    {props:'isMbdl',name:'MBDL', key: 'MBDL'}
+    {props:'isMbdl',name:'MBDL', key: 'LK_MBDL'}
 ]

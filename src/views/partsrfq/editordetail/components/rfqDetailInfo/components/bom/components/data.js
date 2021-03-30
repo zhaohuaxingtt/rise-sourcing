@@ -9,5 +9,5 @@ export const tableTitle = [
     {props:'b',name:'零件名（中）', key: 'LK_LINGJIANMINGZHONG'},
     {props:'c',name:'零件名（德）', key: 'LK_LINGJIANMINGDE'},
     {props:'d',name:'Bezug类型', key: 'LK_GONGYINGSHANGMINGCHENG'},
-    {props:'e',name:'⽤量', key: '⽤量'}
+    {props:'e',name:'⽤量', key: 'LK_GONGYINGSHANGMINGCHENG'}
 ]
