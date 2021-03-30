@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-25 10:14:46
- * @LastEditTime: 2021-02-25 11:04:41
+ * @LastEditTime: 2021-03-30 16:27:21
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsprocure\home\component\data.js
@@ -50,7 +50,7 @@ export const tableTitle = [{
 	},
 	{
 		props: 'partStatus',
-		name: '零件状态',
+		name: '项目状态',
 		key: 'partsprocure.PARTSPROCUREPARTSTATUS',
 	},
 	{
