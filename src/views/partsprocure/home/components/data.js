@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-25 10:14:46
- * @LastEditTime: 2021-03-30 16:27:21
+ * @LastEditTime: 2021-02-25 11:04:41
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsprocure\home\component\data.js
@@ -34,12 +34,12 @@ export const tableTitle = [{
 		key: 'partsprocure.PARTSPROCUREPURCHASINGFACTORY',
 	},
 	{
-		props: 'partPrejectType',
+		props: 'partPrejectTypeName',
 		name: '零件项目类型',
 		key: 'partsprocure.PARTSPROCUREPARTITEMTYPE',
 	},
 	{
-		props: 'cartypeCategory',
+		props: 'cartypeCategoryName',
 		name: '车型大类',
 		key: 'partsprocure.PARTSPROCUREVEHICLECATEGORIES',
 	},
@@ -49,8 +49,8 @@ export const tableTitle = [{
 		key: 'partsprocure.PARTSPROCUREMODELPROJECT',
 	},
 	{
-		props: 'partStatus',
-		name: '项目状态',
+		props: 'partStatusName',
+		name: '零件状态',
 		key: 'partsprocure.PARTSPROCUREPARTSTATUS',
 	},
 	{
@@ -59,7 +59,7 @@ export const tableTitle = [{
 		key: 'partsprocure.PARTSPROCUREINQUIRYBUYER',
 	},
 	{
-		props: 'linieName',
+		props: 'linieNameZh',
 		name: 'LINIE',
 		key: 'partsprocure.PARTSPROCURELINIE',
 	},
