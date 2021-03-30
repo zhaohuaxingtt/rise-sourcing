@@ -9,7 +9,6 @@
 import axios from '@/utils/axios'
 import store from '@/store'
 const requst = axios(process.env.VUE_APP_PART_PROCURE)
-const scouringFast = axios(process.env.VUE_APP_PARTPROCUREAPIFAST)
 //获取零件采购列表。
 export function getTabelData(parmars){
   return requst({
