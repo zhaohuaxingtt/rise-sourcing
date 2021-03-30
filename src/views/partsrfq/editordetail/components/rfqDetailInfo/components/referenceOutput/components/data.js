@@ -5,8 +5,8 @@
  * @Description: In User Settings Edit
  */
 import {permissionTitle} from '@/utils'
-export const partsProductionTableTitle = [
-//export const partsProductionTableTitle = permissionTitle("PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_TIMEPLAN_PRODUCTIONLIST",[
+// export const partsProductionTableTitle = [
+export const partsProductionTableTitle = permissionTitle("PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_TIMEPLAN_PRODUCTIONLIST",[
     {props:'rfqPlanId',name:'FS号'},
     {props:'procureFactory',name:'采购工厂'},
     {props:'ninePartNum',name:'零件号'},
@@ -20,10 +20,10 @@ export const partsProductionTableTitle = [
     {props:'year5',name:'2025'},
     {props:'sum',name:'Sum'},
     {props:'versionNum',name:'版本号'},
-]
+])
 
-export const timePlanableTitle = [
-//export const timePlanableTitle = permissionTitle("PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_TIMEPLAN_TIMELIST",[
+// export const timePlanableTitle = [
+export const timePlanableTitle = permissionTitle("PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_TIMEPLAN_TIMELIST",[
     {props:'fsNum',name:'FS号'},
     {props:'procureFactoryId',name:'采购工厂'},
     {props:'partNum',name:'零件号'},
@@ -35,4 +35,4 @@ export const timePlanableTitle = [
     {props:'svwFirst',name:'SVW要求首次试模'},
     {props:'svwRequestEm',name:'SVW要求EM（周）'},
     {props:'svwRequestOts',name:'SVW要求OTS(周)'}
-]
+])
