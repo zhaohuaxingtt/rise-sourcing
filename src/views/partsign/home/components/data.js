@@ -9,18 +9,18 @@
 import store from '@/store'
 import {permissionTitle} from '@/utils'
 export const tableTitle = permissionTitle("PERMISSION_TESTTABLE",[
-  {props:'tpPartID',name:'信息单流水号'},
-  {props:'partNum',name:'零件号'},
-  {props:'partNameCn',name:'零件名（中）'},
-  {props:'partNameDe',name:'零件名（德）'},
-  {props:'projectCarType',name:'车型项目'},
-  {props:'buyerName',name:'采购员'},
-  {props:'tpDeptNum',name:'设计科室'},
-  {props:'tpPrincepalName',name:'工程师'},
-  {props:'tpInfoType',name:'信息单类型'},
-  {props:'status',name:'信息单状态'},
-  {props:'attachmentStatus',name:'询价资料状态'},
-  {props:'partDosageStatus',name:'每车用量状态'}
+  {props:'tpPartID',name:'信息单流水号',key: 'LK_XINXIDANLIUSHUIHAO' },
+  {props:'partNum',name:'零件号',key: 'LK_LINGJIANHAO'},
+  {props:'partNameCn',name:'零件名（中）',key: 'LK_LINGJIANMINGZHONG'},
+  {props:'partNameDe',name:'零件名（德）',key: 'LK_LINGJIANMINGDE'},
+  {props:'projectCarType',name:'车型项目',key: 'LK_CHEXINGXIANGMU'},
+  {props:'buyerName',name:'采购员',key: 'LK_CAIGOUYUAN'},
+  {props:'tpDeptNum',name:'设计科室',key: 'LK_SHEJIKESHI'},
+  {props:'tpPrincepalName',name:'工程师',key: 'LK_GONGCHENGSHI'},
+  {props:'tpInfoType',name:'信息单类型',key: 'LK_XINXIDANLEIXING'},
+  {props:'status',name:'信息单状态',key: 'LK_XINXIDANZHUANGTAI'},
+  {props:'attachmentStatus',name:'询价资料状态',key: 'LK_XUNJIAZILIAOZHUANGTAI'},
+  {props:'partDosageStatus',name:'每车用量状态',key: 'LK_MEICHEYONGLIANGZHUANGTAI'}
 ])
 export const needTranslate = [
   {name:'projectCarType',key:'project_car_type'},

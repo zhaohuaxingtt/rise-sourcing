@@ -53,7 +53,7 @@ export default {
   methods: {
     getVolume() {
       this.loading = true
-      getVolume({})
+      getVolume({ ...this.pageMixins?.page })
         .then(res => {
           this.tableListData = res.data
           this.loading = false
