@@ -6,7 +6,8 @@
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsrfq\home\components\data.js
  */
-export const tableTitle = [
+import {permissionTitle} from '@/utils'
+export const tableTitle = permissionTitle("PARTSRFQ_RFQLIST",[
     {props:'id',name:'RFQ编号', key: 'rfq.RFQRFQNUMBER'},
     {props:'rfqName',name:'RFQ名称', key: 'rfq.RFQRFQNAME'},
     {props:'rfqType',name:'RFQ类型', key: 'rfq.RFQRFQTYPE'},
@@ -23,7 +24,7 @@ export const tableTitle = [
     {props:'mqGradeStatus',name:'MQ评分状态', key: 'rfq.RFQMQSCORESTATUS'},
     {props:'targetGradeStatus',name:'目标价状态', key: 'rfq.RFQTARGETPRICESTATUS'},
     {props:'recordId',name:''},
-]
+])
 
 export const assignmentOfScroingTasksTableTitle = [
     {props:'deptType',name:'部门评分类型'},
