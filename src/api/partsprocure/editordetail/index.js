@@ -23,6 +23,14 @@ export function materialGroupByLinie(params){
 	})
 }
 
+//根据材料组编号查询工艺组
+export function getStuffByCategory(params){
+	return requstPartsProcure({
+		url:"/getStuffByCategory",
+		method:"GET",
+		params:params
+	})
+}
 // 采购项目-获取材料组信息
 export function getMeterialStuff(params){
   return requstPartsProcure({

@@ -20,50 +20,50 @@
 		<iSearch class="margin-bottom20" :title="$t('LK_CAIGOUXIANGMUXINXI')" tabCard>
 			<el-form>
 				<el-form-item label="零件采购项目类型">
-					<iSelect placeholder="请选择" v-model="batch.part_preject_type">
-						<el-option :value="item.value" :label="item.label"
+					<iSelect  v-model="batch.part_preject_type">
+						<el-option :value="item.key" :label="item.name"
 							v-for="(item, index) in getGroupList('part_preject_type')" :key="index"></el-option>
 					</iSelect>
 				</el-form-item>
 				<el-form-item :label="$t('LK_LINIEBUMEN')">
-					<iSelect v-model="linie">
-						<el-option :value="item" :label="item.value"
+					<iSelect v-model="batch.linieDept">
+						<el-option :value="item.key" :label="item.name"
 							v-for="(item, index) in getGroupList('linie_dept')" :key="index"></el-option>
 					</iSelect>
 				</el-form-item>
 				<el-form-item label="LINIE">
-					<iSelect v-model="batch.linieName">
-						<el-option :value="item.value" :label="item.label"
+					<iSelect v-model="linie">
+						<el-option :value="item" :label="item.name"
 							v-for="(item, index) in getGroupList('linie_name')" :key="index"></el-option>
 					</iSelect>
 				</el-form-item>
 				<el-form-item :label="$t('LK_LINGJIANLEIXING')">
 					<iSelect v-model="batch.partType">
-						<el-option :value="item.value" :label="item.label"
+						<el-option :value="item.key" :label="item.name"
 							v-for="(item, index) in getGroupList('part_type')" :key="index"></el-option>
 					</iSelect>
 				</el-form-item>
 				<el-form-item :label="$t('LK_CHEXINGXIANGMU')">
-					<iSelect placeholder="请选择车型项目" v-model="cartypeProject">
-						<el-option :value="item" :label="item.value"
+					<iSelect  v-model="cartypeProject.key" value-key="value">
+						<el-option :value="item" :label="item.name"
 							v-for="(item, index) in getGroupList('cartype_project_zh')" :key="index"></el-option>
 					</iSelect>
 				</el-form-item>
 				<el-form-item :label="$t('LK_CAIGOUGONGCHANG')">
-					<iSelect placeholder="请选择车型项目" v-model="batch.procureFactory">
-						<el-option :value="item.value" :label="item.label"
+					<iSelect  v-model="batch.procureFactory">
+						<el-option :value="item.key" :label="item.name"
 							v-for="(item, index) in getGroupList('procure_factory')" :key="index"></el-option>
 					</iSelect>
 				</el-form-item>
 				<el-form-item :label="$t('LK_DANWEI')">
-					<iSelect placeholder="请选择车型项目" v-model="batch.unit">
-						<el-option :value="item.value" :label="item.label" v-for="(item, index) in getGroupList('unit')"
+					<iSelect  v-model="batch.unit">
+						<el-option :value="item.key" :label="item.name" v-for="(item, index) in getGroupList('unit')"
 							:key="index"></el-option>
 					</iSelect>
 				</el-form-item>
 				<el-form-item label="CF控制员">
-					<iSelect placeholder="请选择车型项目" v-model="batch.cfController">
-						<el-option :value="item.value" :label="item.label" v-for="(item, index) in getGroupList('cf_controller')" :key="index"></el-option>
+					<iSelect v-model="batch.cfController">
+						<el-option :value="item.key" :label="item.name" v-for="(item, index) in getGroupList('cf_controller')" :key="index"></el-option>
 					</iSelect>
 				</el-form-item>
 			</el-form>
@@ -75,13 +75,13 @@
 		<iSearch class="margin-bottom20" :title="$t('LK_CAILIAOZUGONGYISHEZHI')" tabCard icon>
 			<el-form>
 				<el-form-item :label="$t('LK_CAILIAOZU')">
-					<iSelect :placeholder="$('LK_QINGXUANZE')" v-model="stuff.categoryCode" @change="changeSelect">
-						<el-option :value="item.key" :label="item.value" v-for="(item, index) in getGroupList('category_name')" :key="index"></el-option>
+					<iSelect :placeholder="$t('LK_QINGXUANZE')" v-model="stuff.categoryCode" @change="changeSelect">
+						<el-option :value="item.id" :label="item.categoryNameZh" v-for="(item, index) in category" :key="index"></el-option>
 					</iSelect>
 				</el-form-item>
 				<el-form-item :label="$t('LK_GONGYI')">
 					<iSelect placeholder="请选择先材料组" v-model="stuffObj">
-						<el-option :value="item"  :label="item.value" v-for="(item, index) in getGroupList('stuff_name')" :key="index"></el-option>
+						<el-option :value="item"  :label="item.stuffName" v-for="(item, index) in stuffArr" :key="index"></el-option>
 					</iSelect>
 				</el-form-item>
 			</el-form>
@@ -104,8 +104,10 @@
 	import outputPlan from './components/outputPlan'
 	import {
 		changeProcure,
-		insertRfq
+		insertRfq,
+		getProcureGroup,
 	} from "@/api/partsprocure/home";
+	import {materialGroupByLinie,getStuffByCategory} from "@/api/partsprocure/editordetail";
 	import {
 		getPageGroup
 	} from "@/api/partsign/home";
@@ -120,6 +122,8 @@
 		data() {
 			return {
 				fromGroup: [],
+				category:[],//材料组数据
+				stuffArr:[],//工艺组数据
 				batch: {
 					part_preject_type: "",
 					linieDept: "",
@@ -131,7 +135,7 @@
 					procureFactory: "",
 					cfController: "",
 					unit: "",
-					purchaseProjectIds: [],
+					purchaseProjectIds: [],//采购项目id
 				},
 				stuff: {
 					stuffName: "",//value
@@ -144,59 +148,53 @@
 				},
 				cartypeProject:{
 					key:"",
-					value:""
+					name:""
 				},
 				stuffObj:{
 					key:"",
-					value:""
+					name:""
 				},
 				selectTableData: [],
 				startLoding: false,
 			}
 		},
 		created() {
-			this.getPageGroup()
+			this.getProcureGroup();
+			this.getMaterialGroupByLinie()
 		},
 		methods: {
-			changeSelect(val){
-				if(val == '600000'){
-					this.fromGroup.find(items=>items.name == 'stuff_name').infoList = [
-							{
-							value:'安全电器件-电镀',
-							key:'600000'
-						},
-						{
-							value:'安全电器件-注塑',
-							key:'600000'
-						}
-					]
-					
-				}else{
-					this.fromGroup.find(items=>items.name == 'stuff_name').infoList = [
-						{
-							value:'空调控制头-抛光',
-							key:'600001'
-						},
-						{
-							value:'空调控制头-焊接',
-							key:'600003'
-						}
-					]
-				}
-			},
 			//获取上方group信息
-			getPageGroup() {
-				getPageGroup(this.$store.state.permission.userInfo.id).then((res) => {
-					this.fromGroup = res.data.groupStatSenarioResult.groupStatInfoList;
+			getProcureGroup() {
+				let types=["part_preject_type","linie_dept","linie_name","part_type","cartype_project_zh","procure_factory","unit","cf_controller"]
+				getProcureGroup({types}).then((res) => {
+					this.fromGroup = res.data;
 				});
 			},
 			// 查询fliter数据
 			getGroupList(key) {
 				if (this.fromGroup.length > 0) {
-					let obj = this.fromGroup.find((items) => items.name == key);
+					let obj = this.fromGroup.find((items) => items.type == key);
 					if (!obj) return [];
-					return obj.infoList;
+					return obj.list;
 				}
+			},
+			// 获取材料组数据
+			getMaterialGroupByLinie(){
+				let data={
+					LinieId:this.$store.state.permission.userInfo.id
+				}
+				materialGroupByLinie(data).then(res=>{
+					this.category=res.data || []
+				})
+			},
+			// 获取工艺组数据
+			changeSelect(val){
+				let data={
+					categoryId:val.id 
+				}
+				getStuffByCategory(data).then(res=>{
+					this.stuffArr=res.data || []
+				})
 			},
 			//选中零件采购数据
 			handleSelectionChange(e) {
@@ -230,14 +228,12 @@
 				})
 			},
 			pushKey(){
-				this.stuff.stuffName=this.stuffObj.value
+				this.stuff.stuffName=this.stuffObj.name
 				this.stuff.stuffCode=this.stuffObj.key
-				this.batch.cartypeProjectZh=this.cartypeProject.value
+				this.batch.cartypeProjectZh=this.cartypeProject.name
 				this.batch.cartypeProjectNum=this.cartypeProject.key
-				this.batch.linieDept=this.linie.value
+				this.batch.linieDept=this.linie.name
 				this.batch.linieNum=this.linie.key
-				console.log(this.stuff);
-				console.log(this.stuffObj);
 			},
 			// 重置采购信息数据
 			reset() {
@@ -254,6 +250,7 @@
 				this.stuff.stuffName = ""
 				this.stuff.categoryCode = ""
 				this.stuff.stuffCode=""
+				
 			},
 			// 生成fs号
 			creatFs() {

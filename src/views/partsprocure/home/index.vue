@@ -173,9 +173,6 @@
 		insertRfq,
 		getProcureGroup
 	} from "@/api/partsprocure/home";
-	import {
-		getPageGroup
-	} from "@/api/partsign/home";
 	import changeItems from "../../partsign/home/components/changeItems";
 	import store from '@/store'
 	import filters from "@/utils/filters";
@@ -211,7 +208,7 @@
 		},
 		created() {
 			this.getTableListFn();
-			this.getPageGroup();
+			this.getProcureGroup();
 		},
 		methods: {
 			// 跳转详情
@@ -224,8 +221,22 @@
 				});
 			},
 			//获取上方group信息
-			getPageGroup() {
-				// this.$store.state.permission.userInfo.id
+			// part_status --零件状态
+			// cartype_category --车型类型
+			// cartype_project_zh --车型项目
+			// part_preject_type --零件项目类型
+			// procure_factory   --采购工厂
+			// purchase_clause   --采购条款
+			// part_type         --零件类型
+			// unit              --单位
+			// pay_clause        --支付条款
+			// currency_id       --币种
+			// linie_dept        --Linie部门A
+			// linie_name        --Line
+			// cf_controller     --Cf控制员
+			// is_common_sourcing--Sourcing
+			// buyer_name        --询价采购员
+			getProcureGroup() {
 				let types=["part_status","cartype_project_zh","cartype_category","part_preject_type","procure_factory"]
 				getProcureGroup({types}).then((res) => {
 					this.fromGroup = res.data;
