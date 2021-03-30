@@ -13,6 +13,7 @@
             class="margin-left8 margin-right8"
             v-permission="PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_INQUIRYATTACHMENT_INQUIRYATTACHMENT_UPLOADBUTTON"/>
         <iButton @click="download"
+                 :loading="downloadLoading"
                  v-permission="PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_INQUIRYATTACHMENT_INQUIRYATTACHMENT_DOWNLOADBUTTON">
           {{ $t('LK_XIAZAI') }}
         </iButton>
@@ -80,7 +81,8 @@ export default {
       tableTitle: inquiryAttachmentTableTitle,
       tableLoading: false,
       selectTableData: [],
-      uploadAttachmentsButtonLoading: false
+      uploadAttachmentsButtonLoading: false,
+      downloadLoading: false
     };
   },
   created() {
@@ -164,7 +166,9 @@ export default {
         applicationName: 'rise',
         fileList
       }
+      this.downloadLoading = true
       await downloadFile(req)
+      this.downloadLoading = false
     }
   }
 }

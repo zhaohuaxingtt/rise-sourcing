@@ -4,7 +4,11 @@
     <div class="margin-bottom20 clearFloat">
       <span class="font18 font-weight">询价图纸</span>
       <div class="floatright">
-        <iButton @click="download" v-permission="PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_INQUIRYATTACHMENT_INQUIRYATTACHMENT_DRAWINGDOWNLOAD">{{ $t('LK_XIAZAI') }}</iButton>
+        <iButton @click="download"
+                 :loading="downloadLoading"
+                 v-permission="PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_INQUIRYATTACHMENT_INQUIRYATTACHMENT_DRAWINGDOWNLOAD">
+          {{ $t('LK_XIAZAI') }}
+        </iButton>
       </div>
     </div>
     <tablelist
@@ -55,7 +59,8 @@ export default {
       tableListData: [],
       tableTitle: inquiryDrawingTableTitle,
       tableLoading: false,
-      selectTableData: []
+      selectTableData: [],
+      downloadLoading: false
     };
   },
   created() {
@@ -109,7 +114,9 @@ export default {
         applicationName: 'rise',
         fileList: [row.fileName]
       }
+      this.downloadLoading = true
       await downloadFile(req)
+      this.downloadLoading = false
     }
   }
 }
