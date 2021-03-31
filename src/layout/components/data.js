@@ -37,6 +37,7 @@
         active: false,
         key:1,
         path:'/taskcenter',
+        languagekey: 'LK_RENWUZHONGXIN'
       },
     ]
   }

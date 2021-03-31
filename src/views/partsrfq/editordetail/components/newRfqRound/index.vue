@@ -6,18 +6,18 @@
  * @Description: In User Settings Edit
 -->
 <template>
-  <iDialog :title="title" :visible.sync="value" width="90%" @close='clearDiolog' z-index="1000">
+  <iDialog :title="$t(title)" :visible.sync="value" width="90%" @close='clearDiolog' z-index="1000">
     <div class="changeContent">
       <div class="clearFloat">
         <div class="floatright title-button-box">
           <template v-if="roundType === '00'">
-            <iButton @click="save" v-permission="PARTSRFQ_EDITORDETAIL_NEWRFQROUND_SAVE">保存</iButton>
+            <iButton @click="save" v-permission="PARTSRFQ_EDITORDETAIL_NEWRFQROUND_SAVE">{{$t('LK_BAOCUN')}}</iButton>
             <iButton @click="updateRfqStatus('06')" :disabled="!saveStaus"
                      v-permission="PARTSRFQ_EDITORDETAIL_NEWRFQROUND_SAND">{{ $t('LK_FASONGXUNJIA') }}
             </iButton>
           </template>
           <template v-else>
-            <iButton @click="saveAndCreate" v-permission="PARTSRFQ_EDITORDETAIL_NEWRFQROUND_SAVEANDCREATE">保存并创建
+            <iButton @click="saveAndCreate" v-permission="PARTSRFQ_EDITORDETAIL_NEWRFQROUND_SAVEANDCREATE">{{ $t('LK_BAOCUNBINGCHUANGJIAN') }}
             </iButton>
           </template>
         </div>
@@ -87,7 +87,8 @@ export default {
   components: {iButton, iDialog, iFormGroup, iFormItem, iSelect, tablelist, iPagination},
   mixins: [pageMixins, rfqCommonFunMixins],
   props: {
-    title: {type: String, default: '新建RFQ轮次'},
+    // title: {type: String, default: '新建RFQ轮次'},
+    title: {type: String, default: 'LK_XINJIANRFQLUNCI'},
     value: {type: Boolean},
     repeatClick: Boolean
   },

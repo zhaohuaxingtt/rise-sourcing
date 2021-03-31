@@ -4,7 +4,7 @@
     <el-table-column v-if='index' type='index' width='50' align='center' :label="$t('LK_BIANHAO')"></el-table-column>
     <template v-for="(items,index) in tableTitle">
       <el-table-column :key="index" align='center' v-if='items.props === openPageProps' :prop="items.props"
-                       :label="items.name">
+                       :label="$t(items.key)">
         <template slot-scope="scope">
             <span class="openLinkText cursor"
                   @click="openPage(openPageGetRowData ?  scope.row : scope.row[items.props])">{{
@@ -12,22 +12,22 @@
               }}</span>
         </template>
       </el-table-column>
-      <el-table-column :key="index" align='center' :label="items.name" v-else-if="items.props === 'isMbdl'">
+      <el-table-column :key="index" align='center' :label="$t(items.key)" v-else-if="items.props === 'isMbdl'">
         <template slot-scope="scope">
           {{scope.row.isMbdl ? 'M' : ''}}
         </template>
       </el-table-column>
       <el-table-column :key="index" align='center'
                        v-else-if='selectProps.includes(items.props)' :prop="items.props"
-                       :label="items.name">
+                       :label="$t(items.key)">
         <template slot-scope="scope">
           <i-select v-model="scope.row[items.props]">
             <el-option v-for="items in scope.row.roundCbdVOS" :key='items.id' :value='items.id'
-                       :label="items.name"/>
+                       :label="$t(items.key)"/>
           </i-select>
         </template>
       </el-table-column>
-      <el-table-column :key="index" align='center' v-else :label="items.name" :prop="items.props"></el-table-column>
+      <el-table-column :key="index" align='center' v-else :label="$t(items.key)" :prop="items.props"></el-table-column>
     </template>
   </el-table>
 </template>

@@ -6,10 +6,12 @@
         <iButton @click="add" v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_TECHNICALSEMINAR_ADD">添加</iButton>
       </div>
     </div>
-    <iFormGroup :row="3" inline icon class="label-zero" v-model="dynamicForm" v-if="showStatus" v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_TECHNICALSEMINAR_DESTEXT">
+    <iFormGroup :row="3" inline icon class="label-zero" v-model="dynamicForm" v-if="showStatus"
+                v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_TECHNICALSEMINAR_DESTEXT">
       <template v-for="(item,index) of dynamicForm.baseInfo">
         <iFormItem label=" " :name="index" :key="index">
-          <iInput type="textarea" :rows="4" resize="none" :placeholder="$t('LK_QINGSHURU')" v-model="item.value" maxlength="100"  show-word-limit></iInput>
+          <iInput type="textarea" :rows="4" resize="none" :placeholder="item.placeholder" v-model="item.value"
+                  maxlength="100" show-word-limit></iInput>
         </iFormItem>
       </template>
     </iFormGroup>
@@ -32,9 +34,9 @@ export default {
       showStatus: true,
       dynamicForm: {
         baseInfo: [
-          {value: ''},
-          {value: ''},
-          {value: ''},
+          {value: '', placeholder: '供应商公司介绍'},
+          {value: '', placeholder: '供应商产品概要'},
+          {value: '', placeholder: '供应商timeline'},
         ]
       }
     }
@@ -42,15 +44,20 @@ export default {
   methods: {
     add() {
       const inputTemplate = [
-        {value: ''},
-        {value: ''},
-        {value: ''},
+        {value: '', placeholder: '供应商公司介绍'},
+        {value: '', placeholder: '供应商产品概要'},
+        {value: '', placeholder: '供应商timeline'},
       ]
-      this.dynamicForm.baseInfo.push(...inputTemplate)
-      this.showStatus = false
-      this.$nextTick(() => {
-        this.showStatus = true
-      })
+      if (this.dynamicForm.baseInfo.length < 12) {
+        this.dynamicForm.baseInfo.push(...inputTemplate)
+        this.showStatus = false
+        this.$nextTick(() => {
+          this.showStatus = true
+        })
+      } else {
+        iMessage.warn('已添加到上限')
+        return false
+      }
     }
   }
 }

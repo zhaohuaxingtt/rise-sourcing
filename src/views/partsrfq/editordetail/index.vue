@@ -71,7 +71,7 @@
               <iText v-else v-permission="PARTSRFQ_EDITORDETAIL_CF">{{ baseInfo.cf }}</iText>
             </iFormItem>
 
-            <iFormItem label="本轮报价截止时间：" name="currentRoundsEndTime">
+            <iFormItem :label="$t('LK_BENLUNBAOJIAJIEZHISHIJIAN')+':'" name="currentRoundsEndTime">
               <iText v-permission="PARTSRFQ_EDITORDETAIL_DEADLINEQUOTATIONS">{{ baseInfo.currentRoundsEndTime }}</iText>
             </iFormItem>
           </div>
@@ -91,9 +91,9 @@
             </iFormItem>
             <iFormItem :label="$t('LK_LUNCILEIXING')+':'" name="roudsType">
               <iText>
-                <template v-if="baseInfo.roudsType === '00'" v-permission="PARTSRFQ_EDITORDETAIL_ROUNDTYPE">普通轮次
+                <template v-if="baseInfo.roudsType === '00'" v-permission="PARTSRFQ_EDITORDETAIL_ROUNDTYPE">{{$t('LK_PUTONGLUNCI')}}
                 </template>
-                <template v-else-if="baseInfo.roudsType === '01'" v-permission="PARTSRFQ_EDITORDETAIL_ROUNDTYPE">在线竞价
+                <template v-else-if="baseInfo.roudsType === '01'" v-permission="PARTSRFQ_EDITORDETAIL_ROUNDTYPE">{{$t('LK_ZAIXIANJINGJIA')}}
                 </template>
                 <template v-else v-permission="PARTSRFQ_EDITORDETAIL_ROUNDTYPE"></template>
               </iText>
@@ -112,7 +112,7 @@
               <iInput v-if="editStatus" v-model="baseInfo.pl" v-permission="PARTSRFQ_EDITORDETAIL_PL"></iInput>
               <iText v-else v-permission="PARTSRFQ_EDITORDETAIL_PL">{{ baseInfo.pl }}</iText>
             </iFormItem>
-            <iFormItem label="本轮状态：" name="test">
+            <iFormItem :label="$t('LK_BENLUNZHUANGTAI')+':'" name="test">
               <iText v-permission="PARTSRFQ_EDITORDETAIL_CURRENTSTATE">{{ baseInfo.currentRoundsStatus }}</iText>
             </iFormItem>
             <div class="edit-button-row">
@@ -125,9 +125,9 @@
         </div>
       </iFormGroup>
     </i-card>
-    <rfqPending v-if="navActivtyValue === '0' || navActivtyValue === ''"></rfqPending>
-    <rfq-detail-info v-if="navActivtyValue === '1'"></rfq-detail-info>
-    <new-rfq-round v-model="newRfqRoundDialog" @refreshBaseInfo="getBaseInfo"/>
+    <rfqPending v-if="(navActivtyValue === '0' || navActivtyValue === '') && tabShowStatus"></rfqPending>
+    <rfq-detail-info v-if="navActivtyValue === '1' && tabShowStatus"></rfq-detail-info>
+    <new-rfq-round v-model="newRfqRoundDialog" @refreshBaseInfo="getBaseInfo" v-if="tabShowStatus"/>
   </iPage>
 </template>
 <script>
@@ -185,7 +185,8 @@ export default {
       editStatus: false,
       newRfqRoundDialog: false,
       baseInfo: {},
-      baseInfoLoading: false
+      baseInfoLoading: false,
+      tabShowStatus: true
     }
   },
   created() {
@@ -290,6 +291,10 @@ export default {
           path: `/partsrfq/editordetail?id=${res.data.rfqId}`
         })
         this.getBaseInfo()
+        this.tabShowStatus = false
+        this.$nextTick(() => {
+          this.tabShowStatus = true
+        })
       }
     },
     toLogPage() {

@@ -2,7 +2,7 @@
   <iPage id="taskCenterHome" class="home" v-loading="loading">
     <div id="header" class="header">
       <div class="margin-bottom20 clearFloat">
-        <span class="font18 font-weight">任务中心</span>
+        <span class="font18 font-weight">{{$t('LK_RENWUZHONGXIN')}}</span>
         <div class="floatright">
           <!-- <logButton @click="log" /> -->
           <span class="margin-left20">
@@ -16,7 +16,7 @@
       </tabs>
       <iSearch class="search margin-top10" icon>
         <el-form>
-          <el-form-item label="场景名称/任务名称">
+          <el-form-item :label="$t('LK_CHANGJIANGMINGCHNEG')">
             <iInput v-model="search" class="input" placeholder="请输入查询">
               <icon slot="suffix" name="iconshaixuankuangsousuo" />
             </iInput>

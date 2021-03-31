@@ -103,71 +103,71 @@
           </iFormItem>
         </iFormGroup>
         <iFormGroup :row="4" inline icon>
-          <iFormItem label="箱内周转材料综合价格" name="test">
+          <iFormItem :label="$t('LK_XIANGNEIZHOUZHUANCAILIAOZONGHEJIAGE')" name="test">
             <iInput v-if="editStatus"></iInput>
             <i-text v-else>{{dataInfo.partPackgeRequirements.warehousingMaterialComprehensivePrice}}</i-text>
           </iFormItem>
-          <iFormItem label="箱内周转材料综合寿命" name="test">
+          <iFormItem :label="$t('LK_XIANGNEIZHOUZHUANCAILIAOZONGHESHOUMING')" name="test">
             <iInput v-if="editStatus"></iInput>
             <i-text v-else>{{dataInfo.partPackgeRequirements.warehousingMaterialLife}}</i-text>
           </iFormItem>
         </iFormGroup>
         <iFormGroup :row="4" inline icon>
-          <iFormItem label="前段包装名称" name="test">
+          <iFormItem :label="$t('LK_QIANDUANBAOZHUANGMINGCHENG')" name="test">
             <iInput v-if="editStatus"></iInput>
             <i-text v-else>{{dataInfo.partPackgeRequirements.frontPackgeName}}</i-text>
           </iFormItem>
         </iFormGroup>
         <iFormGroup :row="4" inline icon>
-          <iFormItem label="翻箱前器具长（mm）" name="test">
+          <iFormItem :label="$t('LK_FANXIANGQIANQIJUZHANGMM')" name="test">
             <iInput v-if="editStatus"></iInput>
             <i-text v-else>{{dataInfo.partPackgeRequirements.turnoverAppliancesLength}}</i-text>
           </iFormItem>
-          <iFormItem label="翻箱前器具宽（mm）" name="test">
+          <iFormItem :label="$t('LK_FANXIANGQIANQIJUKUANMM')" name="test">
             <iInput v-if="editStatus"></iInput>
             <i-text v-else>{{dataInfo.partPackgeRequirements.turnoverAppliancesWidth}}</i-text>
           </iFormItem>
-          <iFormItem label="翻箱前器具高（mm）" name="test">
+          <iFormItem :label="$t('LK_FANXIANGQIANQIJUGAOMM')" name="test">
             <iInput v-if="editStatus"></iInput>
             <i-text v-else>{{dataInfo.partPackgeRequirements.turnoverPackageHeight}}</i-text>
           </iFormItem>
-          <iFormItem label="翻箱前器具数" name="test">
+          <iFormItem :label="$t('LK_FANXIANGQIANQIJUSHU')" name="test">
             <iInput v-if="editStatus"></iInput>
             <i-text v-else>{{dataInfo.partPackgeRequirements.turnoverAppliancesCount}}</i-text>
           </iFormItem>
         </iFormGroup>
         <iFormGroup :row="4" inline icon>
-          <iFormItem label="翻箱前器具号" name="test">
+          <iFormItem :label="$t('LK_FANXIANGQIANQIJUHAO')" name="test">
             <iInput v-if="editStatus"></iInput>
             <i-text v-else>{{dataInfo.partPackgeRequirements.turnoverAppliancesModel}}</i-text>
           </iFormItem>
-          <iFormItem label="翻箱前器具类型" name="test">
+          <iFormItem :label="$t('LK_FANXIANGQIANQIJULEIXING')" name="test">
             <iInput v-if="editStatus"></iInput>
             <i-text v-else>{{dataInfo.partPackgeRequirements.turnoverAppliancesType}}</i-text>
           </iFormItem>
-          <iFormItem label="翻箱前器具综合单价（RMB）" name="test">
+          <iFormItem :label="$t('LK_FANXIANGQIANQIJUZONGHEDANJIARMB')" name="test">
             <iInput v-if="editStatus"></iInput>
             <i-text v-else>{{dataInfo.partPackgeRequirements.turnoverPerAppliancesPrice}}</i-text>
           </iFormItem>
-          <iFormItem label="翻箱前器具租金（RMB/DAY）" name="test">
+          <iFormItem :label="$t('LK_FANXIANGQIANQIJUZUJINRMBDAY')" name="test">
             <iInput v-if="editStatus"></iInput>
             <i-text v-else>{{dataInfo.partPackgeRequirements.turnoverAppliancesRent}}</i-text>
           </iFormItem>
         </iFormGroup>
         <iFormGroup :row="4" inline icon>
-          <iFormItem label="翻箱前包装毛重（KG）" name="test">
+          <iFormItem :label="$t('LK_FANXIANGQIANBAOZHUANGMAOZHONGKG')" name="test">
             <iInput v-if="editStatus"></iInput>
             <i-text v-else>{{dataInfo.partPackgeRequirements.turnoverAppliancesGrossWeight}}</i-text>
           </iFormItem>
-          <iFormItem label="翻箱前器具返程折叠比" name="test">
+          <iFormItem :label="$t('LK_FANXIANGQIANQIJUFANCHENGSHEDIEBI')" name="test">
             <iInput v-if="editStatus"></iInput>
             <i-text v-else>{{dataInfo.partPackgeRequirements.turnoverAppliancesFoldingReturnRatio}}</i-text>
           </iFormItem>
-          <iFormItem label="翻箱前器具寿命" name="test">
+          <iFormItem :label="$t('LK_FANXIANGQIANQIJUSHOUMING')" name="test">
             <iInput v-if="editStatus"></iInput>
             <i-text v-else>{{dataInfo.partPackgeRequirements.turnoverAppliancesLife}}</i-text>
           </iFormItem>
-          <iFormItem label="翻箱前基础年维修率" name="test">
+          <iFormItem :label="$t('LK_FANXIANGQIANJICHUNIANWEIXIULÜ')" name="test">
             <iInput v-if="editStatus"></iInput>
             <i-text v-else>{{dataInfo.partPackgeRequirements.turnoverAppliancesAnnualMaintenanceRate}}</i-text>
           </iFormItem>

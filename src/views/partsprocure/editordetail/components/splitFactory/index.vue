@@ -16,7 +16,7 @@
             保存后将按照您所维护的工厂份<br />额拆分询价产量。 如果已经维护<br />车型产量，请确保为该零件的所<br />有工厂产量。
           </template>
         </el-tooltip>
-        <iButton class="float-right marginleft300" @click='save' :btnLoding='btnLoding'>保存</iButton>
+        <iButton class="float-right marginleft300" @click='save' :btnLoding='btnLoding'>{{ $t('LK_BAOCUN') }}</iButton>
       </template>
       <template>
         <el-form ref='form'>

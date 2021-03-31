@@ -6,11 +6,11 @@
           <iFormItem :label="$t('LK_CHUANGJIANRIQI')" name="test">
             <i-text>2020-12-10</i-text>
           </iFormItem>
-          <iFormItem label="导入时间" name="test">
+          <iFormItem :label="$t('LK_DAORUSHIJIAN')" name="test">
             <i-text >2020-12-10</i-text>
           </iFormItem>
           <div class="floatright margin-top5">
-            <iButton @click="readEffectiveBOM" disabled>读取有效BOM</iButton>
+            <iButton @click="readEffectiveBOM" disabled>{{ $t('LK_DUQUYOUXIAODOM') }}</iButton>
             <iButton @click="exports">{{$t('LK_DAOCHU')}}</iButton>
           </div>
         </iFormGroup>

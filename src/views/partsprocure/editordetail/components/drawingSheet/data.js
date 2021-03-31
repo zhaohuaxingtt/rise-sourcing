@@ -14,13 +14,13 @@ export const items = [
     { props: 'creatorNum', name: '创建人工号', key: 'LK_CHUANGJIANRENGONGHAO' },
     { props: 'creatorName', name: '创建人姓名', key: 'LK_CHUANGJIANRENXINGMING' },
     { props: 'dept', name: '设计科室', key: 'LK_SHEJIKESHI' },
-    { props: 'a8', name: '设计工程师工号', key: 'LK_SHANGCHUANREN' },
+    { props: 'a8', name: '设计工程师工号', key: 'LK_SHEJIGONGCHENGSHIHAO' },
     { props: 'a9', name: '设计工程师姓名', key: 'LK_SHEJIGONGCHENGSHIXINGMING' },
     { props: 'partNameCn', name: '零件名（中）', key: 'LK_LINGJIANMINGZHONG' },
     { props: 'partNameDe', name: '零件名（德）', key: 'LK_LINGJIANMINGDE' },
     { props: 'partNameEn', name: '零件名（英）', key: 'LK_LINGJIANMINGYING' },
     { props: 'partNum', name: '零件号', key: 'LK_LINGJIANHAO' },
-    { props: 'tpPartID', name: '新件信息流水单号', key: 'LK_SHANGCHUANREN' }
+    { props: 'tpPartID', name: '新件信息流水单号', key: 'LK_XINJIANXINXILIUSHUIDANHAO' }
   ],
   [
     { props: 'partNum1', name: '零件号第一部分', key: 'LK_LINGJIANHAODIYIBUFEN' },
@@ -40,10 +40,10 @@ export const items = [
     { props: 'productGroupNum', name: '原配厂', key: 'LK_YUANPEICHANG' },
     { props: 'isSecondTier', name: '是否二次件', key: 'LK_SHIFOUERCIJIAN' },
     { props: 'partDerived', name: '从零件派生', key: 'LK_CONGLINGJIANPAISHENG' },
-    { props: 'replacedPartNum', name: '被替代零件' },
-    { props: 'isBMG', name: 'BMG' },
+    { props: 'replacedPartNum', name: '被替代零件', key: 'LK_BEITIDAILINGJIAN' },
+    { props: 'isBMG', name: 'BMG',key: 'LK_BMG'  },
     { props: 'partTypeName', name: '零件类型', key: 'LK_LINGJIANLEIXING' },
     { props: 'partTypeNum', name: '零件类型代码', key: 'LK_LINGJIANLEIXINGDAIMA' },
-    { props: 'projectCarType', name: '项目车型' }
+    { props: 'projectCarType', name: '项目车型', key: 'LK_XIANGMUCHEXING' }
   ]
 ]
