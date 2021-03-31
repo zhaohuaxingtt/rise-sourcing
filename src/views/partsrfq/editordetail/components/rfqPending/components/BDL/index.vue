@@ -88,7 +88,7 @@ export default {
       this.saveLoading = true
       updateRfq({
         updateRfqBdlPackage: {
-          rfqId: '20',
+          rfqId: this.rfqId,
           updateType: "2",
           userId: this.userInfo.id,
           bdlInfoList: this.editSelectTableDataCache.map(item => ({
@@ -136,7 +136,7 @@ export default {
      **************************/
     translateParmars(){
       return {
-        rfqId:'20',
+        rfqId:this.rfqId,
         // this.rfqId || 
         size:this.page.pageSize,
         current:this.page.currPage,
@@ -226,7 +226,7 @@ export default {
       this.saveLoading = true
       updateRfq({
         updateRfqBdlPackage: {
-          rfqId: '20',
+          rfqId: this.rfqId,
           updateType: "1",
           userId: this.userInfo.id,
           bdlInfoList: this.tableData.map(item => ({
