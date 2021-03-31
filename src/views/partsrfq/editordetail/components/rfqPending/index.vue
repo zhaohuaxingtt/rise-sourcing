@@ -63,7 +63,7 @@ export default {
         },
         {
           index: '4',
-          label: '技术交流会',
+          label: '技术交底会',
           component: 'technicalSeminar',
           permissionKey: 'PARTSRFQ_EDITORDETAIL_RFQPENDING_TECHNICALSEMINAR_BASICINFORMATIONMEETING_INDEXPAGE',
           key: 'LK_JISHUJIAOLIUHUI'

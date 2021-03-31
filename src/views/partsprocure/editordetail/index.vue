@@ -126,14 +126,13 @@
 							</iText>
 						</iFormItem>
 						<iFormItem :label="$t('LK_LINIEBUMEN')+':'" name="test">
-							<iSelect v-model="detailData.linieDept"
-								v-permission="PARTSPROCURE_EDITORDETAIL_LINEDEPARTMENT">
+							<iSelect v-model="detailData.linieDept" v-permission="PARTSPROCURE_EDITORDETAIL_LINEDEPARTMENT" :disabled="!detailData.categoryCode" @click="tips">
 								<el-option :value="item.value" :label="item.label"
 									v-for="(item, index) in getGroupList('linie_dept')" :key="index"></el-option>
 							</iSelect>
 						</iFormItem>
 						<iFormItem label="LINIE：" name="test">
-							<iSelect v-model="detailData.linieName" v-permission="PARTSPROCURE_EDITORDETAIL_LINE">
+							<iSelect v-model="detailData.linieName" v-permission="PARTSPROCURE_EDITORDETAIL_LINE" :disabled="!detailData.categoryCode">
 								<el-option :value="item.value" :label="item.label"
 									v-for="(item, index) in getGroupList('linie_name')" :key="index"></el-option>
 							</iSelect>
@@ -238,13 +237,10 @@
 	import sheet from "./components/drawingSheet/sheet";
 	import remarks from "./components/remarks";
 	import backItems from "@/views/partsign/home/components/backItems";
-	import {
-		getPageGroup
-	} from "@/api/partsign/home";
 	import logButton from "@/views/partsign/editordetail/components/logButton";
 	import {
 		getTabelData,
-		changeProcure
+		changeProcure,getProcureGroup
 	} from "@/api/partsprocure/home";
 	import {
 		detailData
@@ -289,7 +285,7 @@
 			this.infoItem = JSON.parse(this.$route.query.item);
 			this.purchasePrjectId = this.infoItem.purchasePrjectId;
 			this.getDatail();
-			this.getPageGroup();
+			this.getProcureGroup();
 		},
 		methods: {
 			splitPurch() {
@@ -308,11 +304,11 @@
 					}
 				});
 			},
-			//获取上方group信息
-			getPageGroup() {
-				getPageGroup(this.$store.state.permission.userInfo.id).then((res) => {
-					this.fromGroup = res.data.groupStatSenarioResult.groupStatInfoList;
-				});
+			getProcureGroup() {
+				let types=["part_status","cartype_project_zh","cartype_category","part_preject_type","procure_factory"]
+				getProcureGroup({types}).then((res) => {
+					this.fromGroup = res.data;
+				});	
 			},
 			// 查询fliter数据
 			getGroupList(key) {
@@ -437,6 +433,10 @@
 			updateTabs() {
 				this.$refs.outputPlan.getData();
 				this.$refs.outputRecord.getData();
+			},
+			// 下拉框逻辑提示
+			tips(){
+				iMessage.warn("请先设置材料组信息")
 			}
 		},
 	};

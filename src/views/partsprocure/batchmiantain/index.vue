@@ -31,22 +31,19 @@
 							v-for="(item, index) in getGroupList('linie_dept')" :key="index"></el-option>
 					</iSelect>
 				</el-form-item>
-				<el-form-item label="LINIE" value-key="key">
-					<iSelect v-model="linie">
-						<el-option :value="item" :label="item.name"
-							v-for="(item, index) in getGroupList('linie_name')" :key="index"></el-option>
+				<el-form-item label="LINIE">
+					<iSelect v-model="linie" value-key="key">
+						<el-option :value="item" :label="item.name" v-for="(item, index) in getGroupList('linie_name')" :key="index"></el-option>
 					</iSelect>
 				</el-form-item>
 				<el-form-item :label="$t('LK_LINGJIANLEIXING')">
 					<iSelect v-model="batch.partType">
-						<el-option :value="item.key" :label="item.name"
-							v-for="(item, index) in getGroupList('part_type')" :key="index"></el-option>
+						<el-option :value="item.key" :label="item.name" v-for="(item, index) in getGroupList('part_type')" :key="index"></el-option>
 					</iSelect>
 				</el-form-item>
 				<el-form-item :label="$t('LK_CHEXINGXIANGMU')">
 					<iSelect  v-model="cartypeProject" value-key="key">
-						<el-option :value="item" :label="item.name"
-							v-for="(item, index) in getGroupList('cartype_project_zh')" :key="index"></el-option>
+						<el-option :value="item" :label="item.name" v-for="(item, index) in getGroupList('cartype_project_zh')" :key="index"></el-option>
 					</iSelect>
 				</el-form-item>
 				<el-form-item :label="$t('LK_CAIGOUGONGCHANG')">
@@ -75,7 +72,7 @@
 		<iSearch class="margin-bottom20" :title="$t('LK_CAILIAOZUGONGYISHEZHI')" tabCard icon>
 			<el-form>
 				<el-form-item :label="$t('LK_CAILIAOZU')">
-					<iSelect :placeholder="$t('LK_QINGXUANZE')" v-model="categoryObj"  @change="changeSelect" value-key="id">
+					<iSelect :placeholder="$t('LK_QINGXUANZE')" v-model="categoryObj"  @change="changeSelect" value-key="categoryCode">
 						<el-option :value="item" :label="item.categoryNameZh" v-for="(item, index) in category" :key="index"></el-option>
 					</iSelect>
 				</el-form-item>
@@ -104,9 +101,11 @@
 	import outputPlan from './components/outputPlan'
 	import {
 		changeProcure,
-		insertRfq,
 		getProcureGroup,
 	} from "@/api/partsprocure/home";
+  import {
+    insertRfq
+  } from "@/api/partsrfq/home";
 	import {materialGroupByLinie,getStuffByCategory,putMaterialGroup} from "@/api/partsprocure/editordetail";
 	import {
 		getPageGroup
@@ -142,29 +141,10 @@
 					unit:"",//单位
 					purchaseProjectIds: [],//采购项目id
 				},
-				stuff: {
-					id:"",
-					stuffCode:"",
-					stuffName:""
-				},
-				categoryObj:{
-					categoryNameZh:"",
-					id:""
-				},
-				linie:{ //专业采购员
-					key:"",
-					name:""
-				},
-				cartypeProject:{ //车型项目
-					key:"",
-					name:""
-				},
-				// stuffObj:{
-				// 	id:"",
-				// 	stuffCode:"",
-				// 	stuffName:""
-				// },
-				
+				stuff: {},
+				categoryObj:{},
+				linie:{ },//专业采购员
+				cartypeProject:{},//车型项目
 				selectTableData: [],
 				startLoding: false,
 			}
@@ -261,9 +241,9 @@
 				this.batch.stuffId=this.stuff.id
 				this.batch.cartypeProjectZh=this.cartypeProject.name
 				this.batch.cartypeProjectNum=this.cartypeProject.key
-				this.batch.linieDept=this.linie.name
+				this.batch.linieName=this.linie.name
 				this.batch.linieNum=this.linie.key
-				this.batch.categoryCode=this.categoryObj.id
+				this.batch.categoryCode=this.categoryObj.categoryCode
 				this.batch.categoryName=this.categoryObj.categoryNameZh
 			},
 			// 重置采购信息数据
@@ -275,12 +255,14 @@
 						this.batch[i] = "";
 					}
 				}
+				this.linie={}
+				this.cartypeProject={}
 			},
 			// 重置stuff数据
 			resetStuff() {
-				this.stuff.stuffName = ""
-				this.stuff.categoryCode = ""
-				this.stuff.stuffCode=""
+				this.categoryObj={}
+				this.stuff={}
+				this.stuffArr=[]
 				
 			},
 			// 生成fs号

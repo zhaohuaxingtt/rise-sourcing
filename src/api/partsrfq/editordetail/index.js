@@ -2,6 +2,16 @@ import axios from '@/utils/axios'
 
 const requst = axios(process.env.VUE_APP_RFQ)
 
+/*零件清单*/
+//获取零件采购列表。
+export function getPartSrcPrjs(parmars){
+    return requst({
+        url:'/api/part-src-prjs',
+        method:'GET',
+        params:parmars
+    })
+}
+
 /*供应商评分*/
 export function getAllSupplier(parmars) {
     return requst({

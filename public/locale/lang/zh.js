@@ -72,7 +72,8 @@
       'PARTSPROCUREPARTITEMTYPE': '零件项目类型',
       'PARTSPROCUREVEHICLECATEGORIES': '车型大类',
       'PARTSPROCUREMODELPROJECT': '车型项目',
-      'PARTSPROCUREPARTSTATUS': '项目状态',
+      'PARTSPROCUREPARTSTATUS': '零件状态',
+      'PARTSPROCURESTATUS': '状态',
       'PARTSPROCUREINQUIRYBUYER': '询价采购员',
       'PARTSPROCURELINIE': 'LINIE',
       'PARTSPROCURECF': 'CF',
@@ -324,7 +325,7 @@
     'LK_JIESHUBENLUNXUNJIA': '结束本轮询价',//结束本轮询价
     'LK_JIAOFU': '交付',//交付
     'LK_JIAGEMINGXI': '价格明细',//价格明细
-    'LK_JISHUJIAOLIUHUI': '技术交流会',//技术交流会
+    'LK_JISHUJIAOLIUHUI': '技术交底会',//技术交底会
     'LK_JIHUORFQ': '激活RFQ',//激活RFQ
     'LK_JICHUXINXI': '基础信息',//基础信息
     'LK_HUOBI': '货币',//货币
@@ -430,9 +431,10 @@
     'LK_BANBENZHUANGTAI': '版本状态',//版本状态
     'LK_BANBENHAO': '版本号',//版本号
     'LK_TPPINGFENZHUANGTAI': 'TP评分状态',//TP评分状态
-    'LK_SWHAO': 'sw号',//sw号
+    'LK_SWHAO': 'SVW号',//sw号
     'LK_SVWYAOQIUOTSZHOU': 'SVW要求OTS（周）',//SVW要求OTS（周）
     'LK_SVWYAOQIUEMZHOU': 'SVW要求EM（周）',//SVW要求EM（周）
+    'LK_SVWSHIMO': 'SVW要求首次试模',//SVW要求EM（周）
     'LK_SUM': 'SUM',//SUM
     'LK_SOPRIQI': 'SOP日期',//SOP日期
     'LK_SAICVOLKSWAGENKUCUN_XIAOSHI': 'SAIC VOLKSWAGEN库存_小时',//SAIC VOLKSWAGEN库存_小时

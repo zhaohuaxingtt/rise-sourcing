@@ -72,7 +72,8 @@
             'PARTSPROCUREPARTITEMTYPE': 'Item Type',
             'PARTSPROCUREVEHICLECATEGORIES': 'Vehicle Categories',
             'PARTSPROCUREMODELPROJECT': 'Model Project',
-            'PARTSPROCUREPARTSTATUS': 'Status',
+            'PARTSPROCUREPARTSTATUS': 'Part Status',
+            'PARTSPROCURESTATUS': 'Status',
             'PARTSPROCUREINQUIRYBUYER': 'Inquiry Buyer',
             'PARTSPROCURELINIE': 'Linie',
             'PARTSPROCURECF': 'Cf',
@@ -322,7 +323,7 @@
         'LK_JIESHUBENLUNXUNJIA': 'Finish RFQ round',//结束本轮询价
         'LK_JIAOFU': 'Delivery',//交付
         'LK_JIAGEMINGXI': 'Price Details',//价格明细
-        'LK_JISHUJIAOLIUHUI': 'Techonology Meeting',//技术交流会
+        'LK_JISHUJIAOLIUHUI': 'Techonology Meeting',//技术交底会
         'LK_JIHUORFQ': 'Activate RFQ',//激活RFQ
         'LK_JICHUXINXI': 'Basic information',//基础信息
         'LK_HUOBI': 'Currency',//货币
@@ -431,6 +432,7 @@
         'LK_SWHAO': 'sw No.',//sw号
         'LK_SVWYAOQIUOTSZHOU': 'SVW required OTS (week)',//SVW要求OTS（周）
         'LK_SVWYAOQIUEMZHOU': 'SVW required EM (week)',//SVW要求EM（周）
+        'LK_SVWSHIMO': 'SVW requires the first trial',//SVW要求EM（周）
         'LK_SUM': 'SUM',//SUM
         'LK_SOPRIQI': 'SOP Date',//SOP日期
         'LK_SAICVOLKSWAGENKUCUN_XIAOSHI': 'SAIC VOLKASWAGEN Stock_Hour',//SAIC VOLKSWAGEN库存_小时
