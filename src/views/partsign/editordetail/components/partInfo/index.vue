@@ -6,8 +6,8 @@
  -->
 <template>	
 	<iFormGroup row="3" inline :icon="icons">
-		<iFormItem :label="item.name" name="test" :class="item.isBlock && 'block'" v-for="(item,index) in title"
-			:key="index"  :v-permission="item.permissionKey">
+		<iFormItem name="test" :class="item.isBlock && 'block'" v-for="(item,index) in title"
+			:key="index" :label="$t(item.language)" :v-permission="item.permissionKey">
 			<iText v-if="item.key=='createDate' || item.key=='drawingDate'">
 				{{data[item.key] | dateFilter}}
 			</iText>

@@ -1,7 +1,7 @@
 <template>
   <div>
     <iTabsList class="margin-top20" type='border-card' @tab-click="handleTabClick">
-      <el-tab-pane :label="item.label" v-for="item of tabList" :key="item.label" v-permisstion='item.permissionKey'>
+      <el-tab-pane :label="$t(item.keystring)" v-for="item of tabList" :key="item.label" v-permisstion='item.permissionKey'>
         <component :is="item.component" v-if="activityTabIndex === item.index"/>
       </el-tab-pane>
     </iTabsList>
@@ -34,25 +34,29 @@ export default {
           index: '0',
           label: '目标价',
           component: 'targetPrice',
-          permissionKey: 'PARTSRFQ_EDITORDETAIL_TARGETPRICE_INDEXPAGE'
+          permissionKey: 'PARTSRFQ_EDITORDETAIL_TARGETPRICE_INDEXPAGE',
+          keystring: 'LK_MUBIAOJIA'
         },
         {
           index: '1',
           label: '参考产量及时间计划',
           component: 'referenceOutput',
-          permissionKey: 'PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_TIMEPLAN_INDEXPAGE'
+          permissionKey: 'PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_TIMEPLAN_INDEXPAGE',
+          keystring: 'LK_CANKAOCHANLIANGJISHIJIANJIHUA'
         },
         {
           index: '2',
           label: '物流要求',
           component: 'logisticsRequirements',
-          permissionKey: 'PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_LOGISTICSREQUIREMENTS_INDEXPAGE'
+          permissionKey: 'PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_LOGISTICSREQUIREMENTS_INDEXPAGE',
+          keystring: 'LK_WULIUYAOQIU'
         },
         {
           index: '3',
           label: '询价附件',
           component: 'inquiryAttachment',
-          permissionKey: 'PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_INQUIRYATTACHMENT_INQUIRYATTACHMENT_INDEXPAGE'
+          permissionKey: 'PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_INQUIRYATTACHMENT_INQUIRYATTACHMENT_INDEXPAGE',
+          keystring: 'LK_XUNJIAFUJIAN'
         },
       ]
     }
