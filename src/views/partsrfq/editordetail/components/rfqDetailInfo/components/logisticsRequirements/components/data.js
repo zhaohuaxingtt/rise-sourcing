@@ -13,5 +13,5 @@ export const tableTitle = [
     {props:'direcorTel',name:'负责人电话',key: 'LK_FUZERENDIANHUA'},
     {props:'supplyType',name:'供货方式',key: 'LK_GONGHUOFANGSHI'},
     {props:'referencePartNum',name:'参考零件号',key: 'LK_CANKAOLINGJIANHAO'},
-    {props:'referencePartName',name:'参考零件名',key: 'LK_LINGJIANHAO'}
+    {props:'referencePartName',name:'参考零件名',key: 'LK_CANKAOLINGJIANMING'}
 ]

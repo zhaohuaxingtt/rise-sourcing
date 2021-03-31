@@ -6,7 +6,7 @@
  * @Description: In User Settings Edit
 -->
 <template>
-  <iDialog :title="title" :visible.sync="value" width="90%" @close='clearDiolog' z-index="1000">
+  <iDialog :title="$t(title)" :visible.sync="value" width="90%" @close='clearDiolog' z-index="1000">
     <div class="changeContent">
       <div class="clearFloat">
         <div class="floatright title-button-box">
@@ -87,7 +87,8 @@ export default {
   components: {iButton, iDialog, iFormGroup, iFormItem, iSelect, tablelist, iPagination},
   mixins: [pageMixins, rfqCommonFunMixins],
   props: {
-    title: {type: String, default: '新建RFQ轮次'},
+    // title: {type: String, default: '新建RFQ轮次'},
+    title: {type: String, default: 'LK_XINJIANRFQLUNCI'},
     value: {type: Boolean},
     repeatClick: Boolean
   },

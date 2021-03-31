@@ -91,9 +91,9 @@
             </iFormItem>
             <iFormItem :label="$t('LK_LUNCILEIXING')+':'" name="roudsType">
               <iText>
-                <template v-if="baseInfo.roudsType === '00'" v-permission="PARTSRFQ_EDITORDETAIL_ROUNDTYPE">普通轮次
+                <template v-if="baseInfo.roudsType === '00'" v-permission="PARTSRFQ_EDITORDETAIL_ROUNDTYPE">{{$t('LK_PUTONGLUNCI')}}
                 </template>
-                <template v-else-if="baseInfo.roudsType === '01'" v-permission="PARTSRFQ_EDITORDETAIL_ROUNDTYPE">在线竞价
+                <template v-else-if="baseInfo.roudsType === '01'" v-permission="PARTSRFQ_EDITORDETAIL_ROUNDTYPE">{{$t('LK_ZAIXIANJINGJIA')}}
                 </template>
                 <template v-else v-permission="PARTSRFQ_EDITORDETAIL_ROUNDTYPE"></template>
               </iText>
