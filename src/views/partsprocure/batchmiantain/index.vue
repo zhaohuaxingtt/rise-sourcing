@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 15:12:41
- * @LastEditTime: 2021-03-27 19:18:38
+ * @LastEditTime: 2021-03-31 17:36:43
  * @LastEditors: Please set LastEditors
  * @Description: 零件采购项目批量维护界面
  * @FilePath: \rise\src\views\partsprocure\batchmiantain\index.vue
@@ -27,13 +27,16 @@
 				</el-form-item>
 				<el-form-item :label="$t('LK_LINIEBUMEN')">
 					<iSelect v-model="batch.linieDept">
-						<el-option :value="item.key" :label="item.name"
-							v-for="(item, index) in getGroupList('linie_dept')" :key="index"></el-option>
+						<!-- <el-option :value="item.key" :label="item.name"
+							v-for="(item, index) in getGroupList('linie_dept')" :key="index"></el-option> -->
+						<el-option value="15" label="专业采购股"></el-option>
 					</iSelect>
 				</el-form-item>
 				<el-form-item label="LINIE">
 					<iSelect v-model="linie" value-key="key">
-						<el-option :value="item" :label="item.name" v-for="(item, index) in getGroupList('linie_name')" :key="index"></el-option>
+						<!-- <el-option :value="item" :label="item.name" v-for="(item, index) in getGroupList('linie_name')" :key="index"></el-option> -->
+						<el-option value="16" label="郝连水"></el-option>
+            <el-option value="17" label="郭建立"></el-option>
 					</iSelect>
 				</el-form-item>
 				<el-form-item :label="$t('LK_LINGJIANLEIXING')">

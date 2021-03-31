@@ -45,11 +45,10 @@
 				</span>
       </div>
     </div>
-    <i-card class="margin-bottom20 margin-top20" v-loading="baseInfoLoading">
+    <iCard collapse class="margin-bottom20 margin-top20" :title="$t('LK_JICHUXINXI')" v-loading="baseInfoLoading">
       <!------------------------------------------------------------------------>
       <!--                  基本信息区域                                       --->
       <!------------------------------------------------------------------------>
-      <div class="baseinfo-title">{{ $t('LK_JICHUXINXI') }}</div>
       <iFormGroup row="1" inline :rules="rules">
         <div class="row">
           <div class="col">
@@ -126,7 +125,7 @@
           </div>
         </div>
       </iFormGroup>
-    </i-card>
+    </iCard>
     <rfqPending v-if="(navActivtyValue === '0' || navActivtyValue === '') && tabShowStatus"></rfqPending>
     <rfq-detail-info v-if="navActivtyValue === '1' && tabShowStatus"></rfq-detail-info>
     <new-rfq-round v-model="newRfqRoundDialog" @refreshBaseInfo="getBaseInfo" v-if="tabShowStatus"/>
