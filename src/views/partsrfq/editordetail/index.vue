@@ -11,7 +11,7 @@
     <!-- rfq详情操作按钮 -->
     <div class="pageTitle flex-between-center-center">
       <div class="flex nav-box">
-        <span>{{ $route.query.id ? $route.query.id : $t('LK_XINJIANRFQ') }}</span>
+        <span>{{ $route.query.id ? 'RFQ' : $t('LK_XINJIANRFQ') }}</span>
         <iTabsList type="border-card" @tab-click="changeNav" class="nav-style">
           <el-tab-pane :label="$t(item.key)" v-for="item of navList" :key="item.label">
           </el-tab-pane>

@@ -460,7 +460,7 @@
 		'LK_CSFPFUZEREN': 'CSF（P）负责人', //CSF（P）负责人
 		'LK_CS_1SHANGHUIBEIZHU': 'CS*1上会备注', //CS*1上会备注
 		'LK_CS_1BEIZHU': 'CS*1备注', //CS*1备注
-		'LK_CFFUZEREN': 'CF负责人', //CF负责人
+		'LK_CFFUZEREN': 'CSF(P)负责人', //CF负责人
 		'LK_CBDXUANZE': 'CBD选择', //CBD选择
 		'LK_CBDSHEZHI': 'CBD设置', //CBD设置
 		'LK_BOMDANXINXI': 'BOM单信息', //BOM单信息
