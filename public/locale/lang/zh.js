@@ -434,6 +434,7 @@
     'LK_SWHAO': 'SVW号',//sw号
     'LK_SVWYAOQIUOTSZHOU': 'SVW要求OTS（周）',//SVW要求OTS（周）
     'LK_SVWYAOQIUEMZHOU': 'SVW要求EM（周）',//SVW要求EM（周）
+    'LK_SVWSHIMO': 'SVW要求首次试模',//SVW要求EM（周）
     'LK_SUM': 'SUM',//SUM
     'LK_SOPRIQI': 'SOP日期',//SOP日期
     'LK_SAICVOLKSWAGENKUCUN_XIAOSHI': 'SAIC VOLKSWAGEN库存_小时',//SAIC VOLKSWAGEN库存_小时
