@@ -468,8 +468,20 @@
     'LK_QINGSHURULINGJIANMING':'请输入零件名（中）',//请输入零件名（中）
     'LK_QINGTIANXIESHEJIKESHI':'请填写设计科室',//请填写设计科室
     'LK_QINGTIANXIEGONGCHENGSHI':'请填写工程师',//请填写工程师
-    'LK_QINGTIANXIEXINXIDANLIUSHUIHAO':'请填写信息单流水号'//请填写信息单流水号
-
+    'LK_QINGTIANXIEXINXIDANLIUSHUIHAO':'请填写信息单流水号', //请填写信息单流水号
+    'LK_RIHZICHAKAN':'日志查看', //日志查看
+    'LK_CFKONGZHIYUAN':'CF控制员', //CF控制员
+    'LK_RUKUQIJUCHANG':'入库器具长（mm）', //入库器具长（mm）
+    'LK_RUKUQIJUKUAN':'入库器具宽（mm） ', //入库器具宽（mm） 
+    'LK_RUKUQIJUZHUANGXIANGSHU':'入库器具装箱数', //入库器具装箱数
+    'LK_RUKUQIJUZHONGHEDANJIA':'入库器具综合单价', //入库器具综合单价
+    'LK_RUKUBAOZHUANGMAOZHONG':'入库包装毛重（KG）', //入库包装毛重（KG）
+    'LK_RUKUQIJUSHOUMING':'入库器具寿命', //入库器具寿命
+    'LK_RUKUJICHUNIANWEIXIUFEILV':'入库基础年维修费率', //入库基础年维修费率
+    'LK_XIANGNEIZHOUZHUANCAILIAOZHONGHEJIAGE':'翻箱前器具综合单价（RMB）', //箱内周转材料综合价格 
+    'LK_FASHENGSHIJIAN':'发生时间', //发生时间  
+    // 'LK_XIANGNEIZHOUZHUANCAILIAOZHONGHEJIAGE':'箱内周转材料综合价格', //箱内周转材料综合价格 
+    // 'LK_XIANGNEIZHOUZHUANCAILIAOZHONGHEJIAGE':'箱内周转材料综合价格', //箱内周转材料综合价格 
     /*
     <!------------------------------------------------------------------------>
     <!--                                                                   --->

@@ -96,7 +96,7 @@
 
 					<i-text>{{dataInfo.partPackgeRequirements.warehousingAppliancesLife}}</i-text>
 				</iFormItem>
-				<iFormItem label="入库基础年维修费率" name="test">
+				<iFormItem :label="$t('LK_RUKUJICHUNIANWEIXIUFEILV')" name="test">
 
 					<i-text>{{dataInfo.partPackgeRequirements.warehousingAppliancesAnnualMaintenanceRate}}</i-text>
 				</iFormItem>

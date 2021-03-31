@@ -466,8 +466,18 @@
         'LK_QINGSHURULINGJIANMING':'Please Enter',//请输入零件名（中）
         'LK_QINGTIANXIESHEJIKESHI':'Please Enter',//请填写设计科室
         'LK_QINGTIANXIEGONGCHENGSHI':'Please Enter',//请填写工程师
-        'LK_QINGTIANXIEXINXIDANLIUSHUIHAO':'Please Enter'//请填写信息单流水号
-
+        'LK_QINGTIANXIEXINXIDANLIUSHUIHAO':'Please Enter',//请填写信息单流水号
+        'LK_RIHZICHAKAN':'Show Log', //日志查看
+        'LK_CFKONGZHIYUAN':'CF Controller', //CF控制员
+        'LK_RUKUQIJUCHANG':'nbound Equipment Length (mm)', //入库器具长（mm）
+        'LK_RUKUQIJUKUAN':'Inbound Equipment Width (mm) ', //入库器具宽（mm） 
+        'LK_RUKUQIJUZHUANGXIANGSHU':'Inbound Equipment Load Number', //入库器具装箱数
+        'LK_RUKUQIJUZHONGHEDANJIA':'Inbound Equipment Net Unit Price', //入库器具综合单价
+        'LK_RUKUBAOZHUANGMAOZHONG':'Inbound Packaging Gross Weight (Kg)', //入库包装毛重（KG）
+        'LK_RUKUQIJUSHOUMING':'Inbound Equipment Useful Life', //入库器具寿命
+        'LK_RUKUJICHUNIANWEIXIUFEILV':'Inbound Annual Repair Base Rate', //入库基础年维修费率
+        'LK_FASHENGSHIJIAN':'Occurred Time', //发生时间 
+        // 'LK_XIANGNEIZHOUZHUANCAILIAOZHONGHEJIAGE':'翻箱前器具综合单价（RMB）', //箱内周转材料综合价格 
         /*
         <!------------------------------------------------------------------------>
         <!--                                                                   --->

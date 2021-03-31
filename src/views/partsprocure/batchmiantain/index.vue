@@ -58,7 +58,7 @@
 							:key="index"></el-option>
 					</iSelect>
 				</el-form-item>
-				<el-form-item label="CF控制员">
+				<el-form-item :label="$t('LK_CFKONGZHIYUAN')">
 					<iSelect v-model="batch.cfController">
 						<el-option :value="item.key" :label="item.name" v-for="(item, index) in getGroupList('cf_controller')" :key="index"></el-option>
 					</iSelect>

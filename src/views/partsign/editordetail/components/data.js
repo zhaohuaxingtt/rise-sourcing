@@ -142,7 +142,7 @@ export const volumeDialogTableTitle = [
 
 export const logTableTitle = [
   { props: 'a', name: '操作', key: 'LK_CAOZUO' },
-  { props: 'b', name: '发生时间' },
+  { props: 'b', name: '发生时间', key: 'LK_FASHENGSHIJIAN' },
   { props: 'c', name: '操作人', key: 'LK_CAOZUOREN' },
   { props: 'd', name: '备注', key: 'LK_BEIZHU' }
 ]
