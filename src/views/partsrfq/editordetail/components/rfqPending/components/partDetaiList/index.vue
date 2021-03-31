@@ -7,7 +7,10 @@
 <template>
   <iCard>
     <div class="header flex-align-center">
-      <iButton v-permission="PARTSRFQ_EDITORDETAIL_PARTDETAILIST_DELETE">{{ $t('delete') }}</iButton>
+      <iButton @click="deleteItems" v-permission="PARTSRFQ_EDITORDETAIL_PARTDETAILIST_DELETE">{{
+          $t('delete')
+        }}
+      </iButton>
       <iButton @click="showApplyPrice" v-permission="PARTSRFQ_EDITORDETAIL_PARTDETAILIST_NEWPRICE">
         {{ $t('LK_XINSHENQINGCAIWUMUBIAOJIA') }}
       </iButton>
@@ -43,7 +46,8 @@ import {
   getPartSrcPrjs,
 } from '@/api/partsrfq/editordetail';
 import {
-  addRfq
+  addRfq,
+  editRfqData
 } from '@/api/partsrfq/home';
 import {
   pageMixins
@@ -132,9 +136,9 @@ export default {
             this.addLoding = false;
             if (res.data && res.data.rfqId) {
               this.getTableList()
-              this.$refs.applyPrice.getTableList()
-              this.$refs.partsTable.getTableList()
               this.resultMessage(res)
+              //this.$refs.applyPrice.getTableList()
+              this.$refs.partsTable.getTableList()
             } else {
               this.resultMessage(res)
             }
@@ -170,6 +174,22 @@ export default {
     againApply() {
       this.$refs.applyPrice.againShow()
     },
+    async deleteItems() {
+      const idList = this.handleSelectArr.map(item => {
+        return item.id
+      })
+      const req = {
+        deletePartPackage: {
+          userId: store.state.permission.userInfo.id,
+          rfqId: this.rfqId,
+          idList
+        }
+      }
+      const res = await editRfqData(req)
+      this.resultMessage(res)
+      this.getTableList()
+      this.$refs.partsTable.getTableList()
+    }
   },
 };
 </script>
