@@ -5,7 +5,7 @@
 * @Description: BDL表格数据
  -->
 <template>
-	<el-table :stripe="false" class="table" ref='multipleTable' :data="tableData" v-loading="tableLoading" @selection-change="handleSelectionChange" @select="handleSelect" @select-all="handleSelectAll" :row-style="rowStyle">
+	<el-table :stripe="false" class="table" ref='multipleTable' :data="tableData" :empty-text="$t('LK_ZANWUSHUJU')" v-loading="tableLoading" @selection-change="handleSelectionChange" @select="handleSelect" @select-all="handleSelectAll" :row-style="rowStyle">
 		<el-table-column type="selection" align="center" :selectable="selectable">
 		</el-table-column>
 		<el-table-column type="index" align="center" label="#"></el-table-column>

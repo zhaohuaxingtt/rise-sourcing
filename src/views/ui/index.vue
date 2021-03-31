@@ -70,7 +70,7 @@
 		<el-row>
 			<el-col :span="24">
 				<icard title="el-tabel">
-					<el-table slot="components" :data="TabelData">
+					<el-table slot="components" :data="TabelData" :empty-text="$t('LK_ZANWUSHUJU')">
 						<el-table-column v-for="(items, index) in tabelTile" :key="index" align="center" :label="items.name" :prop="items.key"></el-table-column>
 					</el-table>
 				</icard>
