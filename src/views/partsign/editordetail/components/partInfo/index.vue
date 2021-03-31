@@ -32,11 +32,6 @@
 			iFormItem,
 			iText,
 		},
-		data() {
-			return {
-
-			}
-		},
 		props: {
 			icons: {
 				type: Boolean,
