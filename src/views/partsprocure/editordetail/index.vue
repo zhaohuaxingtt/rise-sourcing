@@ -34,11 +34,14 @@
 				<iButton @click="start" v-permission="PARTSPROCURE_EDITORDETAIL_STARTUP"
 					v-if="detailData.status == '16'">{{ $t("LK_QIDONGXIANGMU") }}</iButton>
 				<iButton @click="creatFs" v-permission="PARTSPROCURE_EDITORDETAIL_GENERATEFSGSNR">
-					{{ $t("LK_SHENGCHENGFS_GSNR") }}</iButton>
+					{{ $t("LK_SHENGCHENGFS_GSNR") }}
+				</iButton>
 				<iButton @click="openDiologBack" v-permission="PARTSPROCURE_EDITORDETAIL_CANCELITEMS">
-					{{ $t("LK_QUXIAOLINGJIANCAIGOUXIANGMU") }}</iButton>
+					{{ $t("LK_QUXIAOLINGJIANCAIGOUXIANGMU") }}
+				</iButton>
 				<iButton @click="splitPurchFn" v-permission="PARTSPROCURE_EDITORDETAIL_SPLITFACTORY">
-					{{ $t("LK_CHAIFENCAIGOUGONGCHANG") }}</iButton>
+					{{ $t("LK_CHAIFENCAIGOUGONGCHANG") }}
+				</iButton>
 				<iButton @click="openDiologClose" v-permission="PARTSPROCURE_EDITORDETAIL_ENDPROJECT"
 					v-if="detailData.status != '16'">{{ $t("LK_JIESHUXIANGMU") }}</iButton>
 				<iButton @click="save" v-permission="PARTSPROCURE_EDITORDETAIL_BASICINFOSAVE">{{ $t("LK_BAOCUN") }}
@@ -85,16 +88,17 @@
 							</iSelect>
 						</iFormItem>
 						<iFormItem label="Common Sourcing：" name="test">
-							<iSelect v-model="detailData.commonSourcing"
+							<iSelect v-model="detailData.isCommonSourcing"
 								v-permission="PARTSPROCURE_EDITORDETAIL_COMMONSOURCING">
 								<!-- <el-option :value="item.key" :label="item.name"
 									v-for="(item, index) in getGroupList('is_common_sourcing')" :key="index">
 								</el-option> -->
-								<el-option value="true" label="是"></el-option>
-								<el-option value="false" label="否"></el-option>
+								<el-option :value="true" label="是"></el-option>
+								<el-option :value="false" label="否"></el-option>
 							</iSelect>
 						</iFormItem>
-						<iFormItem :label="$t('LK_ZHIFUTIAOKUAN') + ':'" name="test" v-if="detailData.partType == 'BD'">
+						<iFormItem :label="$t('LK_ZHIFUTIAOKUAN') + ':'" name="test"
+							v-show="detailData.partType == '47'">
 							<iSelect v-model="detailData.payClause"
 								v-permission="PARTSPROCURE_EDITORDETAIL_NUMBEROFPAYMENT">
 								<el-option :value="item.key" :label="item.name"
@@ -122,15 +126,15 @@
 						<iFormItem :label="$t('LK_DANWEI') + ':'" name="test">
 							<iSelect v-model="detailData.unit" v-permission="PARTSPROCURE_EDITORDETAIL_UNIT">
 								<el-option :value="item.key" :label="item.name"
-									v-for="(item, index) in getGroupList('unit')" :key="index"></el-option>
+									v-for="(item, index) in getGroupList('all_unit')" :key="index"></el-option>
 							</iSelect>
 						</iFormItem>
 						<iFormItem :label="$t('LK_MTZLINGJIAN') + ':'" name="test">
 							<iSelect v-model="detailData.mtz" v-permission="PARTSPROCURE_EDITORDETAIL_MTZPARTS">
 								<!-- <el-option :value="item.key" :label="item.name"
 									v-for="(item, index) in getGroupList('mtz')" :key="index"></el-option> -->
-								<el-option value="true" label="是"></el-option>
-								<el-option value="false" label="否"></el-option>
+								<el-option :value="true" label="是"></el-option>
+								<el-option :value="false" label="否"></el-option>
 							</iSelect>
 						</iFormItem>
 					</div>
@@ -158,10 +162,10 @@
 							<iSelect v-model="detailData.cfController"
 								v-permission="PARTSPROCURE_EDITORDETAIL_CFCONTROLLER">
 								<el-option :value="item.key" :label="item.name"
-									v-for="(item, index) in getGroupList('cf_controller')" :key="index"></el-option>
+									v-for="(item, index) in getGroupList('all_cf_controller')" :key="index"></el-option>
 							</iSelect>
 						</iFormItem>
-						<iFormItem :label="$t('LK_HUOBI') + ':'" name="test" v-if="detailData.partType == 'BD'">
+						<iFormItem :label="$t('LK_HUOBI') + ':'" name="test" v-show="detailData.partType == '47'">
 							<iSelect v-model="detailData.currencyId" v-permission="PARTSPROCURE_EDITORDETAIL_CURRENCY">
 								<el-option :value="item.key" :label="item.name"
 									v-for="(item, index) in getGroupList('currency_id')" :key="index"></el-option>
@@ -190,7 +194,7 @@
 							</iText>
 						</iFormItem>
 						<iFormItem :label="$t('LK_CAIGOUTIAOKUAN') + ':'" name="test"
-							v-if="detailData.partType == 'BD'">
+							v-show="detailData.partType == '47'">
 							<iSelect v-model="detailData.purchaseClause"
 								v-permission="PARTSPROCURE_EDITORDETAIL_PURCHASETERMS">
 								<el-option :value="item.key" :label="item.name"
