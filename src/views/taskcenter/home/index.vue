@@ -16,7 +16,7 @@
       </tabs>
       <iSearch class="search margin-top10" icon>
         <el-form>
-          <el-form-item label="场景名称/任务名称">
+          <el-form-item :label="$t('LK_CHANGJIANGMINGCHNEG')">
             <iInput v-model="search" class="input" placeholder="请输入查询">
               <icon slot="suffix" name="iconshaixuankuangsousuo" />
             </iInput>

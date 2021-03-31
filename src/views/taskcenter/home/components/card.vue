@@ -12,7 +12,7 @@
           <div class="num color-red font-weight">{{ data.expireNo }}</div>
           <div class="title">
             <icon class="icon" symbol name="iconyuqidaiban" />
-            <span class="font-weight">逾期待办</span>
+            <span class="font-weight">{{$t("LK_YUQIDAIBAN")}}</span>
           </div>
         </div>
         <div class="line colo-cyan">/</div>
@@ -20,7 +20,7 @@
           <div class="num colo-cyan font-weight">{{ data.waitNo }}</div>
           <div class="title">
             <icon class="icon" symbol name="iconjinridaiban" />
-            <span class="font-weight">今日待办</span>
+            <span class="font-weight">{{ $t('LK_JINRIDAIBAN') }}</span>
           </div>
         </div>
       </div>

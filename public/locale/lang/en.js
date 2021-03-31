@@ -492,6 +492,15 @@
         'LK_DUQUYOUXIAODOM':'Read Valid BOM', //读取有效BOM 
         'LK_XUNJIATUZHI':'Inquiry Blueprint', //询价图纸  
         'LK_RENWUZHONGXIN':'Task Center', //任务中心 
+        'LK_CHANGJIANGMINGCHNEG':'Task Name', //场景名称/任务名称   
+        'LK_YUQIDAIBAN':'Overdue', //逾期待办
+        'LK_JINRIDAIBAN':'Due Today', //今日待办
+        'LK_SHENGMINGJISHUBANBEN':'Display Public UI Components, Based on second seal of element, current element version', //公共UI组件展示界面，基于element的二次封装，当前element版本
+        'LK_DIANJISHANGCHUAN':'Click to Upload', //点击上传
+        'LK_XINJIANXINXILIUSHUIDANHAO':'New Tp Sequence No.', //新件信息流水单号
+        'LK_XIANGMUCHEXING':'Project Car Type', //项目车型
+        'LK_BMG':'BMG', //BMG
+        'LK_BEITIDAILINGJIAN':'Replaced Parts', //被替代零件
         // 'LK_XIANGNEIZHOUZHUANCAILIAOZHONGHEJIAGE':'翻箱前器具综合单价（RMB）', //箱内周转材料综合价格 
         /*
         <!------------------------------------------------------------------------>

@@ -495,6 +495,15 @@
     'LK_DUQUYOUXIAODOM':'读取有效BOM', //读取有效BOM   
     'LK_XUNJIATUZHI':'询价图纸', //询价图纸   
     'LK_RENWUZHONGXIN':'任务中心', //任务中心   
+    'LK_CHANGJIANGMINGCHNEG':'场景名称/任务名称', //场景名称/任务名称    
+    'LK_YUQIDAIBAN':'逾期待办', //逾期待办
+    'LK_JINRIDAIBAN':'今日待办', //今日待办
+    'LK_SHENGMINGJISHUBANBEN':'公共UI组件展示界面，基于element的二次封装，当前element版本', //公共UI组件展示界面，基于element的二次封装，当前element版本
+    'LK_DIANJISHANGCHUAN':'点击上传', //点击上传
+    'LK_XINJIANXINXILIUSHUIDANHAO':'新件信息流水单号', //新件信息流水单号
+    'LK_XIANGMUCHEXING':'项目车型', //项目车型
+    'LK_BMG':'BMG', //BMG
+    'LK_BEITIDAILINGJIAN':'被替代零件', //被替代零件
     // 'LK_XIANGNEIZHOUZHUANCAILIAOZHONGHEJIAGE':'箱内周转材料综合价格', //箱内周转材料综合价格 
     // 'LK_XIANGNEIZHOUZHUANCAILIAOZHONGHEJIAGE':'箱内周转材料综合价格', //箱内周转材料综合价格 
     /*

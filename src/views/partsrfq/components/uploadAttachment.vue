@@ -16,7 +16,7 @@
           :limit="1"
           accept=".xlsx"
       >
-        <iButton>点击上传</iButton>
+        <iButton>{{$t('LK_DIANJISHANGCHUAN')}}</iButton>
         <div slot="tip" class="el-upload__tip">只能上传.xlsx文件</div>
       </el-upload>
     </div>
