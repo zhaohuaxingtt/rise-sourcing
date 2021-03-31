@@ -196,7 +196,7 @@
 		'LK_TUIHUI': '退回', //退回
 		'LK_TUISONGSHIJIAN': '推送时间', //推送时间
 		'LK_TUZHIRIQI': '图纸日期', //图纸日期
-		'LK_TUZHIHETPDANXIANGQING': '图纸和TP单详情', //图纸和TP单详情
+		'LK_TUZHIHETPDANXIANGQING': '图纸和信息单详情', //图纸和信息单详情
 		'LK_TUZHI': '图纸', //图纸
 		'LK_TOUZIYUSUAN': '投资预算', //投资预算
 		'LK_TONGZHIYIBAOJIAGONGYINGSHANG': '通知已报价供应商', //通知已报价供应商
