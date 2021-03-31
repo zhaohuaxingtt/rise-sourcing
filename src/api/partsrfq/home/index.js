@@ -6,7 +6,10 @@
  */
 
 import axios from '@/utils/axios'
+import store from "@/store";
+
 const requst = axios(process.env.VUE_APP_RFQ)
+
 export function getRfqDataList(parmars) {
     return requst({
         url: '/api/rfqs/findByRfqs',
@@ -35,5 +38,23 @@ export function findBySearches(type) {
     return requst({
         url: `/api/rfqs/findBySearches/${type}`,
         method: 'GET'
+    })
+}
+
+//启动询价
+export function insertRfq(parmars) {
+    return requst({
+        url: '/api/rfqs/insertRfq',
+        method: 'PATCH',
+        data: {
+            insertRfcPackage: {
+                ...parmars,
+                ...{
+                    operationType: '3',
+                    userId: store.state.permission.userInfo.id || '',
+                    userName: store.state.permission.userInfo.userName
+                }
+            }
+        }
     })
 }
