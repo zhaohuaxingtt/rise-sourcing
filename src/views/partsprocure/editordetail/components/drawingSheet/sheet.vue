@@ -10,7 +10,7 @@
   <iCard class="outputRecord" tabCard :title="`${ $t('LK_XINXIDANLIUSHUIHAO') }：${ this.params.purchasingRequirementId || '' }`" v-loading="loading">
     <div class="body">
       <iFormGroup v-for="(chunk, $index) in items" :key="$index" :row="3" inline>
-        <iFormItem v-for="item in chunk" :key="item.props" :label="item.name">
+        <iFormItem v-for="item in chunk" :key="item.props" :label="$t(item.key)">
           <iText v-if="item.props === 'status'">{{ value | statusFilter }}</iText>
           <iText v-else-if="item.props === 'createDate' || item.props === 'drawingDate'">{{ value | dateFilter }}</iText>
           <iText v-else>{{ value }}</iText>
