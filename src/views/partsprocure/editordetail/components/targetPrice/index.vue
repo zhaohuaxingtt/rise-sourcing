@@ -38,7 +38,7 @@
 			<iFormItem label="CKD EX_Work" name="test">
 				<iInput v-model="targetprice.cfTargetPriceDetail.ckdExwork" onkeyup="value=value.replace(/[^\d]/g,'')"  maxlength="15" v-permission="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_CKD_EX"></iInput>
 			</iFormItem>
-			<iFormItem label="CKDLANDEN" name="test">
+			<iFormItem label="CKDLANDED" name="test">
 				<iInput v-model="targetprice.cfTargetPriceDetail.ckdLanded" onkeyup="value=value.replace(/[^\d]/g,'')"  maxlength="15" v-permission="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_CKD_LANDED"></iInput>
 			</iFormItem>
 		</iFormGroup>
@@ -200,14 +200,12 @@
 				changeProcure({
 					targetprice,
 				}).then((res) => {
-					iMessage.success("操作成功")
-					this.targePriceDetail()
-					// if (res.data) {
-					// 	iMessage.success("操作成功")
-					// 	this.targePriceDetail()
-					// }else{
-					// 	iMessage.error(res.desZh)
-					// }
+					if (res.data) {
+						iMessage.success("操作成功")
+						this.targePriceDetail()
+					}else{
+						iMessage.error(res.desZh)
+					}
 				});
 			},
 			//申请RW目标价

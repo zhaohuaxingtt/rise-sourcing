@@ -8,9 +8,9 @@
 		<iFormGroup row="2" icon inline>
 			<iFormItem :label="$t('LK_SHENQINGLEIXING')" name="test">
 				<el-radio-group v-model="targetprice.cfTargetPriceDetail.applyType">
-					<el-radio label="1">LC</el-radio>
-					<el-radio label="2">SDK</el-radio>
-					<el-radio label="3">CKD_LANDED</el-radio>
+					<el-radio label="LC">LC</el-radio>
+					<el-radio label="SDK">SDK</el-radio>
+					<el-radio label="CKD_LANDED">CKD_LANDED</el-radio>
 				</el-radio-group>
 				<span class="start">*</span>
 			</iFormItem>
@@ -50,6 +50,7 @@
 		targetPriceDetail
 	} from '@/views/partsprocure/editordetail/components/targetPrice/components/data';
 	import {
+		getTabelData,
 		changeProcure
 	} from '@/api/partsprocure/home'
 	export default {
@@ -85,8 +86,7 @@
 			// 申请财务目标价
 			save() {
 				let targetprice = {
-					// operator: this.handleSelectArr.operator,
-					purchaseProjectIds: this.handleSelectArr.purchasePrjectId,
+					purchaseProjectIds: this.handleSelectArr[0].purchasePrjectId,
 					cfTargetPriceDetail: this.targetprice.cfTargetPriceDetail,
 				};
 				changeProcure({
@@ -101,9 +101,22 @@
 				this.applyPriceShow = true
 			},
 			againShow(){
-				this.tableListData=[this.targetprice.cfTargetPriceDetail]
 				this.againApply=true
 				this.applyPriceShow = true
+				let data = {
+					"cfTargetpriceReq.purchaseProjectId": this.handleSelectArr[0].purchasePrjectId,
+				};
+				getTabelData(data).then((res) => {
+					let price=res.data.targetprice
+					if (price.cfTargetPriceDetail) {
+						this.targetprice.cfTargetPriceDetail=price.cfTargetPriceDetail
+						this.tableListData=[price.cfTargetPriceDetail]
+					}
+					if (price.rwApplication) {
+						this.targetprice.rwApplication=price.rwApplication
+						this.targeRwData=[price.rwApplication]
+					}
+				});
 			},
 			handleSelectionChange(e) {
 				this.$emit('targetHand',e)

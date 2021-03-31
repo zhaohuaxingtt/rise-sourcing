@@ -1,14 +1,17 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2021-03-31 20:50:55
+ * @LastEditTime: 2021-03-31 21:55:41
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsprocure\editordetail\index.vue
 -->
 <template>
-	<iPage class="partsprocureEditordetail" v-permission="PARTSPROCURE_EDITORDETAIL_INDEXPAGE">
-		<!-- 零件状态：
+  <iPage
+    class="partsprocureEditordetail"
+    v-permission="PARTSPROCURE_EDITORDETAIL_INDEXPAGE"
+  >
+    <!-- 零件状态：
 			1：无采购项目编号 
 			2：未加入RFQ
 			3：已加入RFQ  
@@ -17,7 +20,7 @@
 			6：已定点
 			7：已结束 
 			8：已取消  -->
-		<!-- 零件采购项目状态： 
+    <!-- 零件采购项目状态： 
 			NO_RFQ("11", "未加入RFQ"),
 			HAS_RFQ("12", "已加入RFQ"),
 			APPLICATION_DESIGNAT("13", "已申请定点"),
@@ -26,68 +29,116 @@
 			END("16", "已结束"),
 			CANCEL("17", "已取消");
 			; -->
-		<div class="margin-bottom20 clearFloat">
-			<span class="font18 font-weight">{{
+    <div class="margin-bottom20 clearFloat">
+      <span class="font18 font-weight">{{
         $t("LK_LINGJIANCAIGOUXIANGMU")
       }}</span>
-			<div class="floatright">
-				<iButton @click="start" v-permission="PARTSPROCURE_EDITORDETAIL_STARTUP"
-					v-if="detailData.status == '16'">{{ $t("LK_QIDONGXIANGMU") }}</iButton>
-				<iButton @click="creatFs" v-permission="PARTSPROCURE_EDITORDETAIL_GENERATEFSGSNR">
-					{{ $t("LK_SHENGCHENGFS_GSNR") }}</iButton>
-				<iButton @click="openDiologBack" v-permission="PARTSPROCURE_EDITORDETAIL_CANCELITEMS">
-					{{ $t("LK_QUXIAOLINGJIANCAIGOUXIANGMU") }}</iButton>
-				<iButton @click="splitPurchFn" v-permission="PARTSPROCURE_EDITORDETAIL_SPLITFACTORY">
-					{{ $t("LK_CHAIFENCAIGOUGONGCHANG") }}</iButton>
-				<iButton @click="openDiologClose" v-permission="PARTSPROCURE_EDITORDETAIL_ENDPROJECT"
-					v-if="detailData.status != '16'">{{ $t("LK_JIESHUXIANGMU") }}</iButton>
-				<iButton @click="save" v-permission="PARTSPROCURE_EDITORDETAIL_BASICINFOSAVE">{{ $t("LK_BAOCUN") }}
-				</iButton>
-				<iButton @click="back" v-permission="PARTSPROCURE_EDITORDETAIL_RETURN">{{ $t("LK_FANHUI") }}</iButton>
-				<logButton class="margin-left20" @click="log" v-permission="PARTSPROCURE_EDITORDETAIL_LOG" />
-				<span>
-					<icon symbol name="icondatabaseweixuanzhong"></icon>
-				</span>
-			</div>
-		</div>
+      <div class="floatright">
+        <iButton
+          @click="start"
+          v-permission="PARTSPROCURE_EDITORDETAIL_STARTUP"
+          v-if="detailData.status == '16'"
+          >{{ $t("LK_QIDONGXIANGMU") }}</iButton
+        >
+        <iButton
+          @click="creatFs"
+          v-permission="PARTSPROCURE_EDITORDETAIL_GENERATEFSGSNR"
+        >
+          {{ $t("LK_SHENGCHENGFS_GSNR") }}
+        </iButton>
+        <iButton
+          @click="openDiologBack"
+          v-permission="PARTSPROCURE_EDITORDETAIL_CANCELITEMS"
+        >
+          {{ $t("LK_QUXIAOLINGJIANCAIGOUXIANGMU") }}
+        </iButton>
+        <iButton
+          @click="splitPurchFn"
+          v-permission="PARTSPROCURE_EDITORDETAIL_SPLITFACTORY"
+        >
+          {{ $t("LK_CHAIFENCAIGOUGONGCHANG") }}
+        </iButton>
+        <iButton
+          @click="openDiologClose"
+          v-permission="PARTSPROCURE_EDITORDETAIL_ENDPROJECT"
+          v-if="detailData.status != '16'"
+          >{{ $t("LK_JIESHUXIANGMU") }}</iButton
+        >
+        <iButton
+          @click="save"
+          v-permission="PARTSPROCURE_EDITORDETAIL_BASICINFOSAVE"
+          >{{ $t("LK_BAOCUN") }}
+        </iButton>
+        <iButton
+          @click="back"
+          v-permission="PARTSPROCURE_EDITORDETAIL_RETURN"
+          >{{ $t("LK_FANHUI") }}</iButton
+        >
+        <logButton
+          class="margin-left20"
+          @click="log"
+          v-permission="PARTSPROCURE_EDITORDETAIL_LOG"
+        />
+        <span>
+          <icon symbol name="icondatabaseweixuanzhong"></icon>
+        </span>
+      </div>
+    </div>
 
-		<!------------------------------------------------------------------------>
-		<!--                  基本信息区域                                       --->
-		<!------------------------------------------------------------------------>
-		<iCard class="card" title="基础信息" collapse>
-			<iFormGroup row="1" inline :rules="rules">
-				<div class="row">
-					<div class="col">
-						<iFormItem :label="$t('LK_LINGJIANHAO') + ':'" name="test">
-							<iText v-permission="PARTSPROCURE_EDITORDETAIL_PARTNUMBER">
-								{{ detailData.partNum }}
-							</iText>
-						</iFormItem>
-						<iFormItem :label="$t('LK_LINGJIANMINGZHONG') + ':'" name="test">
-							<iText v-permission="PARTSPROCURE_EDITORDETAIL_PARTNAMEZH">
-								{{ detailData.partNameZh }}
-							</iText>
-						</iFormItem>
-						<iFormItem :label="$t('LK_LINGJIANXIANGMULEIXING') + ':'" name="test">
-							<iSelect v-model="detailData.partPrejectType"
-								v-permission="PARTSPROCURE_EDITORDETAIL_EVENTITEMTYPE">
-								<el-option :value="item.key" :label="item.name"
-									v-for="(item, index) in getGroupList('all_part_project_type')" :key="index">
-								</el-option>
-							</iSelect>
-						</iFormItem>
-						<iFormItem :label="$t('LK_CAIGOUGONGCHANG') + ':'" name="test">
-							<iSelect v-model="detailData.procureFactory"
-								v-permission="PARTSPROCURE_EDITORDETAIL_PURCHASINGFACTORY">
-								<el-option :value="item.key" :label="item.name"
-									v-for="(item, index) in getGroupList('procure_factory')" :key="index">
-								</el-option>
-							</iSelect>
-						</iFormItem>
-						<iFormItem label="Common Sourcing：" name="test">
-							<iSelect v-model="detailData.commonSourcing"
-								v-permission="PARTSPROCURE_EDITORDETAIL_COMMONSOURCING">
-								<!-- <el-option :value="item.key" :label="item.name"
+    <!------------------------------------------------------------------------>
+    <!--                  基本信息区域                                       --->
+    <!------------------------------------------------------------------------>
+    <iCard class="card" title="基础信息" collapse>
+      <iFormGroup row="1" inline :rules="rules">
+        <div class="row">
+          <div class="col">
+            <iFormItem :label="$t('LK_LINGJIANHAO') + ':'" name="test">
+              <iText v-permission="PARTSPROCURE_EDITORDETAIL_PARTNUMBER">
+                {{ detailData.partNum }}
+              </iText>
+            </iFormItem>
+            <iFormItem :label="$t('LK_LINGJIANMINGZHONG') + ':'" name="test">
+              <iText v-permission="PARTSPROCURE_EDITORDETAIL_PARTNAMEZH">
+                {{ detailData.partNameZh }}
+              </iText>
+            </iFormItem>
+            <iFormItem
+              :label="$t('LK_LINGJIANXIANGMULEIXING') + ':'"
+              name="test"
+            >
+              <iSelect
+                v-model="detailData.partPrejectType"
+                v-permission="PARTSPROCURE_EDITORDETAIL_EVENTITEMTYPE"
+              >
+                <el-option
+                  :value="item.key"
+                  :label="item.name"
+                  v-for="(item, index) in getGroupList('all_part_project_type')"
+                  :key="index"
+                >
+                </el-option>
+              </iSelect>
+            </iFormItem>
+            <iFormItem :label="$t('LK_CAIGOUGONGCHANG') + ':'" name="test">
+              <iSelect
+                v-model="detailData.procureFactory"
+                v-permission="PARTSPROCURE_EDITORDETAIL_PURCHASINGFACTORY"
+              >
+                <el-option
+                  :value="item.key"
+                  :label="item.name"
+                  v-for="(item, index) in getGroupList('procure_factory')"
+                  :key="index"
+                >
+                </el-option>
+              </iSelect>
+            </iFormItem>
+            <iFormItem label="Common Sourcing：" name="test">
+              <iSelect
+                v-model="detailData.isCommonSourcing"
+                v-permission="PARTSPROCURE_EDITORDETAIL_COMMONSOURCING"
+              >
+                <!-- <el-option :value="item.key" :label="item.name"
 									v-for="(item, index) in getGroupList('is_common_sourcing')" :key="index">
 								</el-option> -->
                 <el-option :value="true" label="是"></el-option>
@@ -97,7 +148,7 @@
             <iFormItem
               :label="$t('LK_ZHIFUTIAOKUAN') + ':'"
               name="test"
-              v-if="detailData.partType == 'BD'"
+              v-show="detailData.partType == '47'"
             >
               <iSelect
                 v-model="detailData.payClause"
@@ -172,9 +223,12 @@
                 v-model="detailData.linieDept"
                 v-permission="PARTSPROCURE_EDITORDETAIL_LINEDEPARTMENT"
               >
-                <!-- <el-option :value="item.key" :label="item.name"
-									v-for="(item, index) in getGroupList('linie_dept')" :key="index"></el-option> -->
-                <el-option value="15" label="专业采购股"></el-option>
+                <el-option
+                  :value="item.key"
+                  :label="item.name"
+                  v-for="(item, index) in getGroupList('linie_dept')"
+                  :key="index"
+                ></el-option>
               </iSelect>
             </iFormItem>
             <iFormItem label="LINIE：" name="test">
@@ -183,10 +237,12 @@
                 v-model="detailData.linieName"
                 v-permission="PARTSPROCURE_EDITORDETAIL_LINE"
               >
-                <!-- <el-option :value="item.key" :label="item.name"
-									v-for="(item, index) in getGroupList('linie_name')" :key="index"></el-option> -->
-                <el-option value="16" label="郝连水"></el-option>
-                <el-option value="17" label="郭建立"></el-option>
+                <el-option
+                  :value="item.key"
+                  :label="item.name"
+                  v-for="(item, index) in getGroupList('linie_name')"
+                  :key="index"
+                ></el-option>
               </iSelect>
             </iFormItem>
             <iFormItem :label="$t('LK_CFKONGZHIYUAN') + ':'" name="test">
@@ -194,21 +250,18 @@
                 v-model="detailData.cfController"
                 v-permission="PARTSPROCURE_EDITORDETAIL_CFCONTROLLER"
               >
-                <!-- <el-option
+                <el-option
                   :value="item.key"
                   :label="item.name"
-                  v-for="(item, index) in getGroupList('cf_controller')"
+                  v-for="(item, index) in getGroupList('all_cf_controller')"
                   :key="index"
-                ></el-option> -->
-									<el-option value="TEMP_CF_CONTROL_ZPF" label="赵鹏飞"></el-option>
-									<el-option value="TEMP_CF_CONTROL_ZS" label="张三"></el-option>
-									<el-option value="TEMP_CF_CONTROL_LS" label="李四"></el-option>
+                ></el-option>
               </iSelect>
             </iFormItem>
             <iFormItem
               :label="$t('LK_HUOBI') + ':'"
               name="test"
-              v-if="detailData.partType == 'BD'"
+              v-show="detailData.partType == '47'"
             >
               <iSelect
                 v-model="detailData.currencyId"
@@ -250,7 +303,7 @@
             <iFormItem
               :label="$t('LK_CAIGOUTIAOKUAN') + ':'"
               name="test"
-              v-if="detailData.partType == 'BD'"
+              v-show="detailData.partType == '47'"
             >
               <iSelect
                 v-model="detailData.purchaseClause"
@@ -332,7 +385,8 @@
       :splitPurchBoolean="splitPurch"
       :purchaseProjectId="purchasePrjectId"
       :update="updateTabs"
-    ></splitFactory>
+    >
+    </splitFactory>
   </iPage>
 </template>
 <script>
@@ -578,38 +632,38 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-	.partsprocureEditordetail {
-		.card {
-			::v-deep .cardHeader {
-				.title {
-					color: #131523;
-					font-weight: bold;
-				}
-			}
-		}
-	}
+.partsprocureEditordetail {
+  .card {
+    ::v-deep .cardHeader {
+      .title {
+        color: #131523;
+        font-weight: bold;
+      }
+    }
+  }
+}
 
-	.row {
-		width: 100%;
-		height: 100%;
-		overflow: hidden;
-		display: flex;
-		justify-content: space-between;
+.row {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  justify-content: space-between;
 
-		.col {
-			width: 395px;
-			border-right: 1px solid $color-border;
-			margin-right: 10px;
-			padding-right: 20px;
+  .col {
+    width: 395px;
+    border-right: 1px solid $color-border;
+    margin-right: 10px;
+    padding-right: 20px;
 
-			&:last-child {
-				margin-right: 0px;
-				border-right: none;
-			}
-		}
+    &:last-child {
+      margin-right: 0px;
+      border-right: none;
+    }
+  }
 
-		.items {
-			width: 300px;
-		}
-	}
+  .items {
+    width: 300px;
+  }
+}
 </style>
