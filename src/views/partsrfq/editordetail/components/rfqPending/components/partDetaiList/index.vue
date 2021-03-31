@@ -21,7 +21,7 @@
     <div class="addFs flex-align-center">
       <iButton @click="start" :loading="addLoding" v-permission="PARTSRFQ_EDITORDETAIL_PARTDETAILIST_ADD">添加</iButton>
     </div>
-    <partsTable :rfqId="rfqId" @targetHand="waitSelect"></partsTable>
+    <partsTable ref="partsTable" :rfqId="rfqId" @targetHand="waitSelect"></partsTable>
     <!-- 新申请财务目标价 -->
     <applyPrice ref="applyPrice" @refresh="getTableList" :handleSelectArr="handleSelectArr"></applyPrice>
   </iCard>
@@ -133,6 +133,8 @@ export default {
             if (res.data && res.data.rfqId) {
               this.getTableList()
               this.$refs.applyPrice.getTableList()
+              this.$refs.partsTable.getTableList()
+              this.resultMessage(res)
             } else {
               this.resultMessage(res)
             }
