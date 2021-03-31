@@ -480,6 +480,11 @@
     'LK_RUKUJICHUNIANWEIXIUFEILV':'入库基础年维修费率', //入库基础年维修费率
     'LK_XIANGNEIZHOUZHUANCAILIAOZHONGHEJIAGE':'翻箱前器具综合单价（RMB）', //箱内周转材料综合价格 
     'LK_FASHENGSHIJIAN':'发生时间', //发生时间  
+    'LK_RUKUQIJUXINGHAO':'入库器具型号', //入库器具型号  
+    'LK_RUKUQIJULEIXING':'入库器具类型', //入库器具类型  
+    'LK_RUKUQIJUZHONGHEDANJIA':'入库器具综合单价', //入库器具综合单价  
+    'LK_RUKUQIJUZHONGHEDANJIARMB':'入库器具综合单价（RMB）', //入库器具综合单价  
+    'LK_RUKUQIJUZUJINRMBDAY':'入库器具租金（RMB/DAY）', //入库器具综合单价  
     // 'LK_XIANGNEIZHOUZHUANCAILIAOZHONGHEJIAGE':'箱内周转材料综合价格', //箱内周转材料综合价格 
     // 'LK_XIANGNEIZHOUZHUANCAILIAOZHONGHEJIAGE':'箱内周转材料综合价格', //箱内周转材料综合价格 
     /*
