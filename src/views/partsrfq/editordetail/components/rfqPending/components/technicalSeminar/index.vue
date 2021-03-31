@@ -170,6 +170,8 @@ export default {
     },
     handleAddSupplierSave(list) {
       this.addSupplierList = list
+      this.dialogAddSupplier = false
+      iMessage.success('已保存')
     },
     async getPic(row) {
       this.drawingList = []

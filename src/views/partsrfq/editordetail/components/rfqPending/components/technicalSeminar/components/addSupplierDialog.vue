@@ -3,7 +3,7 @@
     <div class="changeContent">
       <div class="margin-bottom20 clearFloat">
         <div class="floatright title-button-box">
-          <iButton @click="save">{{$t('LK_BAOCUN')}}</iButton>
+          <iButton @click="save">{{ $t('LK_BAOCUN') }}</iButton>
         </div>
       </div>
       <tablelist
@@ -69,7 +69,10 @@ export default {
       this.$emit('input', false)
     },
     save() {
-      if (this.selectTableData.length == '') return iMessage.warn('抱歉！您当前还未选择！')
+      if (this.selectTableData.length == '') {
+        iMessage.warn('抱歉！您当前还未选择！')
+        return false
+      }
       this.$emit('sure', JSON.parse(this.selectTableData))
     }
   },
