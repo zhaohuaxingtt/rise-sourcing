@@ -18,7 +18,8 @@
         </iTabsList>
       </div>
       <div class="btnList">
-        <iButton @click="newRfq" v-permission="PARTSRFQ_EDITORDETAIL_NEWRFQROUND">{{
+        <iButton :loading="newRfqOpenValidateLoading" @click="newRfq" v-permission="PARTSRFQ_EDITORDETAIL_NEWRFQROUND">
+          {{
             $t('LK_XINJIANRFQLUNCI')
           }}
         </iButton>
@@ -188,7 +189,8 @@ export default {
       baseInfo: {},
       baseInfoLoading: false,
       tabShowStatus: true,
-      newRfqRoundList: []
+      newRfqRoundList: [],
+      newRfqOpenValidateLoading: false
     }
   },
   created() {
@@ -228,15 +230,17 @@ export default {
       this.navActivtyValue = target.index
     },
     async newRfq() {
+      this.newRfqOpenValidateLoading = true
       const pendingPartsList = this.$store.state.rfq.pendingPartsList
       await this.getNewRoundList()
       if (pendingPartsList.length === 0 || this.newRfqRoundList.length === 0) {
         iMessage.warn('RFQ零件或者RFQ供应商为空，不能创建RFQ轮次')
+        this.newRfqOpenValidateLoading = false
         return false
       } else {
+        this.newRfqOpenValidateLoading = false
         this.newRfqRoundDialog = true
       }
-
     },
     async updateRfqStatus(updateType) {
       const query = this.$route.query
@@ -320,12 +324,16 @@ export default {
           otherInfoPackage: {
             findType: '10',
             rfqId: id,
-            current: 10,
-            size: 1,
+            current: 1,
+            size: 10,
           }
         }
-        const res = await getRfqDataList(req)
-        this.newRfqRoundList = res.data.rfqRoundBdlVO.rfqBdlVOList;
+        try {
+          const res = await getRfqDataList(req)
+          this.newRfqRoundList = res.data.rfqRoundBdlVO.rfqBdlVOList;
+        } catch {
+          this.newRfqOpenValidateLoading = false
+        }
       }
     },
     // eslint-disable-next-line no-undef

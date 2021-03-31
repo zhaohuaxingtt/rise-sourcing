@@ -14,11 +14,11 @@ export const volumeTableTitle = [
   { props: 'partNum', name: '零件号', key: 'LK_LINGJIANHAO' },
   { props: 'partNameCn', name: '零件名（中）', key: 'LK_LINGJIANMINGCHENGZHONG' },
   { props: 'partNameDe', name: '零件名（德）', key: 'LK_LINGJIANMINGDE' },
-  { props: 'd', name: '配置编码', key: 'LK_PEIZHIBIANMA' },
-  { props: 'e', name: '发动机配置', key: 'LK_FADONGJIPEIZHI' },
-  { props: 'f', name: '变速箱配置', key: 'LK_BIANSUXIANGPEIZHI' },
-  { props: 'g', name: '等级配置', key: 'LK_DENGJIPEIZHI' },
-  { props: 'i', name: '其他配置', key: 'LK_QITAPEIZHI' },
-  { props: 'j', name: '配置比例', key: 'LK_PEIZHIBILI' },
+  // { props: 'd', name: '配置编码', key: 'LK_PEIZHIBIANMA' },
+  { props: 'engineType', name: '发动机配置', key: 'LK_FADONGJIPEIZHI'  },
+  { props: 'gearType', name: '变速箱配置', key: 'LK_BIANSUXIANGPEIZHI' },
+  { props: 'cartypeLevel', name: '等级配置', key: 'LK_DENGJIPEIZHI' },
+  { props: 'otherConf', name: '其他配置', key: 'LK_QITAPEIZHI' },
+  { props: 'ratio', name: '配置比例', key: 'LK_PEIZHIBILI'  },
   { props: 'perCarDosage', name: '用量', key: 'LK_YONGLIANG' }
 ]
