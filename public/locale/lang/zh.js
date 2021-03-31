@@ -324,7 +324,7 @@
     'LK_JIESHUBENLUNXUNJIA': '结束本轮询价',//结束本轮询价
     'LK_JIAOFU': '交付',//交付
     'LK_JIAGEMINGXI': '价格明细',//价格明细
-    'LK_JISHUJIAOLIUHUI': '技术交流会',//技术交流会
+    'LK_JISHUJIAOLIUHUI': '技术交底会',//技术交底会
     'LK_JIHUORFQ': '激活RFQ',//激活RFQ
     'LK_JICHUXINXI': '基础信息',//基础信息
     'LK_HUOBI': '货币',//货币

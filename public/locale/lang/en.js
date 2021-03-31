@@ -322,7 +322,7 @@
         'LK_JIESHUBENLUNXUNJIA': 'Finish RFQ round',//结束本轮询价
         'LK_JIAOFU': 'Delivery',//交付
         'LK_JIAGEMINGXI': 'Price Details',//价格明细
-        'LK_JISHUJIAOLIUHUI': 'Techonology Meeting',//技术交流会
+        'LK_JISHUJIAOLIUHUI': 'Techonology Meeting',//技术交底会
         'LK_JIHUORFQ': 'Activate RFQ',//激活RFQ
         'LK_JICHUXINXI': 'Basic information',//基础信息
         'LK_HUOBI': 'Currency',//货币
