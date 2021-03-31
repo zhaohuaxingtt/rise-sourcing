@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2021-03-27 13:41:02
+ * @LastEditTime: 2021-03-31 15:52:01
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsprocure\editordetail\index.vue
@@ -32,7 +32,7 @@
 				<iButton @click="start" v-permission="PARTSPROCURE_EDITORDETAIL_STARTUP" v-if="detailData.status=='16'">{{ $t('LK_QIDONGXIANGMU') }}</iButton>
 				<iButton @click="creatFs" v-permission="PARTSPROCURE_EDITORDETAIL_GENERATEFSGSNR">{{ $t('LK_SHENGCHENGFS_GSNR') }}</iButton>
 				<iButton @click="openDiologBack" v-permission="PARTSPROCURE_EDITORDETAIL_CANCELITEMS">{{ $t('LK_QUXIAOLINGJIANCAIGOUXIANGMU') }}</iButton>
-				<iButton @click="splitPurch" v-permission="PARTSPROCURE_EDITORDETAIL_SPLITFACTORY">{{ $t('LK_CHAIFENCAIGOUGONGCHANG') }}</iButton>
+				<iButton @click="splitPurchFn" v-permission="PARTSPROCURE_EDITORDETAIL_SPLITFACTORY">{{ $t('LK_CHAIFENCAIGOUGONGCHANG') }}</iButton>
 				<iButton @click="openDiologClose" v-permission="PARTSPROCURE_EDITORDETAIL_ENDPROJECT" v-if="detailData.status!='16'">{{ $t('LK_JIESHUXIANGMU') }}</iButton>
 				<iButton @click="save" v-permission="PARTSPROCURE_EDITORDETAIL_BASICINFOSAVE">{{ $t('LK_BAOCUN') }}</iButton>
 				<iButton @click="back" v-permission="PARTSPROCURE_EDITORDETAIL_RETURN">{{ $t('LK_FANHUI') }}</iButton>
@@ -217,8 +217,7 @@
 		<!-- 结束项目 -->
 		<backItems v-model="diologClose" @sure="close" :title="$t('LK_JIESHUXIANGMU')"></backItems>
 		<!--  -->
-		<splitFactory :splitPurchBoolean="splitPurchBoolean" :purchaseProjectId="purchasePrjectId" :update='updateTabs'
-			:close='splitPurch'></splitFactory>
+		<splitFactory :splitPurchBoolean="splitPurch" :purchaseProjectId="purchasePrjectId" :update='updateTabs'></splitFactory>
 	</iPage>
 </template>
 <script>
@@ -283,7 +282,9 @@
 				fromGroup: [], //上方筛选列表
 				diologBack: false, //取消零件采购
 				diologClose: false, //结束项目
-				splitPurchBoolean: false,//拆分采购工厂
+				splitPurch:{
+					splitPurchBoolean:false
+				},//拆分采购工厂
 				purchasePrjectId: "",
 			};
 		},
@@ -294,10 +295,7 @@
 			this.getProcureGroup();
 		},
 		methods: {
-			// 显示拆分采购工厂
-			splitPurch() {
-				this.splitPurchBoolean = !this.splitPurchBoolean;
-			},
+			splitPurchFn(){this.splitPurch.splitPurchBoolean = true},
 			//---------------------------------------------------
 			// 获取详情数据
 			getDatail() {
