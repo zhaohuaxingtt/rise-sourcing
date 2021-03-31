@@ -22,7 +22,7 @@
 				<el-form-item :label="$t('LK_LINGJIANCAIGOUXIANGMULEIXING')">
 					<iSelect  v-model="batch.part_preject_type">
 						<el-option :value="item.key" :label="item.name"
-							v-for="(item, index) in getGroupList('part_preject_type')" :key="index"></el-option>
+							v-for="(item, index) in getGroupList('all_part_project_type')" :key="index"></el-option>
 					</iSelect>
 				</el-form-item>
 				<el-form-item :label="$t('LK_LINIEBUMEN')">
@@ -38,7 +38,7 @@
 				</el-form-item>
 				<el-form-item :label="$t('LK_LINGJIANLEIXING')">
 					<iSelect v-model="batch.partType">
-						<el-option :value="item.key" :label="item.name" v-for="(item, index) in getGroupList('part_type')" :key="index"></el-option>
+						<el-option :value="item.key" :label="item.name" v-for="(item, index) in getGroupList('all_part_type')" :key="index"></el-option>
 					</iSelect>
 				</el-form-item>
 				<el-form-item :label="$t('LK_CHEXINGXIANGMU')">
@@ -49,18 +49,18 @@
 				<el-form-item :label="$t('LK_CAIGOUGONGCHANG')">
 					<iSelect  v-model="batch.procureFactory">
 						<el-option :value="item.key" :label="item.name"
-							v-for="(item, index) in getGroupList('procure_factory')" :key="index"></el-option>
+							v-for="(item, index) in getGroupList('all_procure_factory')" :key="index"></el-option>
 					</iSelect>
 				</el-form-item>
 				<el-form-item :label="$t('LK_DANWEI')">
 					<iSelect  v-model="batch.unit">
-						<el-option :value="item.key" :label="item.name" v-for="(item, index) in getGroupList('unit')"
+						<el-option :value="item.key" :label="item.name" v-for="(item, index) in getGroupList('all_unit')"
 							:key="index"></el-option>
 					</iSelect>
 				</el-form-item>
 				<el-form-item :label="$t('LK_CFKONGZHIYUAN')">
 					<iSelect v-model="batch.cfController">
-						<el-option :value="item.key" :label="item.name" v-for="(item, index) in getGroupList('cf_controller')" :key="index"></el-option>
+						<el-option :value="item.key" :label="item.name" v-for="(item, index) in getGroupList('all_cf_controller')" :key="index"></el-option>
 					</iSelect>
 				</el-form-item>
 			</el-form>
@@ -156,7 +156,7 @@
 		methods: {
 			//获取上方group信息
 			getProcureGroup() {
-				let types=["part_preject_type","linie_dept","linie_name","part_type","cartype_project_zh","procure_factory","unit","cf_controller"]
+				let types=["part_project_type","linie_dept","linie_name","all_part_type","cartype_project_zh","all_procure_factory","all_unit","all_cf_controller"]
 				getProcureGroup({types}).then((res) => {
 					this.fromGroup = res.data;
 				});

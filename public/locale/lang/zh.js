@@ -488,7 +488,7 @@
 		'LK_RUKUQIJUZUJINRMBDAY': '入库器具租金（RMB/DAY）', //入库器具综合单价  
 		'LK_BENLUNBAOJIAJIEZHISHIJIAN': '本轮报价截止时间', //本轮报价截止时间  
 		'LK_BENLUNZHUANGTAI': '本轮状态', //本轮状态  
-		'LK_ZAICISHENGQINGCAIWUMUBIAOJIA': '再新申请财务目标价', //再新申请财务目标价  
+		'LK_ZAICISHENGQINGCAIWUMUBIAOJIA': '再申请财务目标价', //再新申请财务目标价
 		'LK_QINGSHURUCHANXUANGONGYINGSHANGMINGCHENG': '请输入查询供应商名称', //请输入查询供应商名称  
 		'LK_LINGJIANCAIGOUXIANGMULEIXING': '零件采购项目类型', //零件采购项目类型  
 		'LK_DUQUYOUXIAODOM': '读取有效BOM', //读取有效BOM   
@@ -578,6 +578,7 @@
     'LK_TIAODI': '条到第', // 条到第
     'LK_TIAOJILU': '条记录', // 条记录
     'LK_GONG': '共', // 共
+		'LK_ZHUANGTAI': '状态',//状态
 		/*
 		<!------------------------------------------------------------------------>
 		<!--                                                                   --->

@@ -81,9 +81,11 @@
                     :placeholder="$t('partsprocure.CHOOSE') + $t('partsprocure.PARTSPROCUREPARTITEMTYPE')"
                     v-model="form['search.partPrejectType']" v-permission="PARTSPROCURE_PARTITEMTYPE">
                   <el-option value="" :label="$t('all') | capitalizeFilter"></el-option>
-                  <el-option :value="item.key" :label="item.name"
+                 <!-- <el-option :value="item.key" :label="item.name"
                              v-for="(item, index) in getGroupList('part_preject_type')" :key="index">
-                  </el-option>
+                  </el-option> -->
+				  <el-option value="FS小零件" label="FS小零件"></el-option>
+				  <el-option value="Zp7" label="Zp7"></el-option>
                 </iSelect>
               </el-form-item>
               <el-form-item :label="$t('partsprocure.PARTSPROCUREPURCHASINGFACTORY')">

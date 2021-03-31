@@ -122,16 +122,18 @@
 			},
 			// 添加自定义项目
 			addCustom() {
-				if (this.addCustomShow) {
-					this.tableTitle.splice(4, 1);
-				} else {
-					let obj = {
-						props: "userDefinedGrade",
-						name: ""
-					};
-					this.tableTitle.splice(4, 0, obj);
+				if (!this.addTitle) {
+					if (this.addCustomShow) {
+						this.tableTitle.splice(4, 1);
+					} else {
+						let obj = {
+							props: "userDefinedGrade",
+							name: ""
+						};
+						this.tableTitle.splice(4, 0, obj);
+					}
+					this.addCustomShow = !this.addCustomShow;
 				}
-				this.addCustomShow = !this.addCustomShow;
 			},
 			handleSelect(selection, row) {
 				this.$emit('handleSelect', selection, row)

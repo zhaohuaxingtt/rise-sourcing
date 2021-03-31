@@ -11,7 +11,7 @@
 		<el-table-column type="selection" align="center"></el-table-column>
 		<el-table-column type="index" align="center" label="#"></el-table-column>
 		<template v-for="(item, index) in tableTitle">
-			<el-table-column :key="index" align='center' :label="item.name" :prop="item.props"></el-table-column>
+			<el-table-column :key="index" align='center' :label="$t(item.key)" :prop="item.props"></el-table-column>
 		</template>
 	</el-table>
 </template>

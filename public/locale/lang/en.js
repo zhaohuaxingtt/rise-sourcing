@@ -571,6 +571,8 @@
         'LK_TIAODI': 'to', // 条到第
         'LK_TIAOJILU': 'records', // 条记录
         'LK_GONG': 'total', // 共
+		'LK_ZHUANGTAI': 'Status',//状态
+
 
         // 'LK_XIANGNEIZHOUZHUANCAILIAOZHONGHEJIAGE':'翻箱前器具综合单价（RMB）', //箱内周转材料综合价格 
         /*
