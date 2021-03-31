@@ -15,7 +15,7 @@
         v-permission="PARTSPROCURE_EDITORDETAIL_SETPROCESSGROUP"
         >{{ $t("LK_SHEZHIGONGYIZU") }}</iButton
       >
-      <iButton disabled>查找工艺组供应商</iButton>
+      <iButton disabled>{{ $t('LK_CHAZHAOGONGYIZUGONGYINGSHANG') }}</iButton>
       <iButton
         v-if="setMaterialGroupStatus"
         @click="confirmMaterialGroup"

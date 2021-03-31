@@ -11,7 +11,7 @@
       <iButton @click="showApplyPrice" v-permission="PARTSRFQ_EDITORDETAIL_PARTDETAILIST_NEWPRICE">
         {{ $t('LK_XINSHENQINGCAIWUMUBIAOJIA') }}
       </iButton>
-      <iButton @click="againApply" v-permission="PARTSRFQ_EDITORDETAIL_PARTDETAILIST_REAPPLYPRICE">再新申请财务目标价</iButton>
+      <iButton @click="againApply" v-permission="PARTSRFQ_EDITORDETAIL_PARTDETAILIST_REAPPLYPRICE">{{ $t('LK_ZAICISHENGQINGCAIWUMUBIAOJIA') }}</iButton>
     </div>
     <tableList :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="confirmTableLoading"
                @handleSelectionChange="handleSelectionChange" @openPage="openPage"></tableList>
