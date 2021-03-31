@@ -430,7 +430,7 @@
     'LK_BANBENZHUANGTAI': '版本状态',//版本状态
     'LK_BANBENHAO': '版本号',//版本号
     'LK_TPPINGFENZHUANGTAI': 'TP评分状态',//TP评分状态
-    'LK_SWHAO': 'sw号',//sw号
+    'LK_SWHAO': 'SVW号',//sw号
     'LK_SVWYAOQIUOTSZHOU': 'SVW要求OTS（周）',//SVW要求OTS（周）
     'LK_SVWYAOQIUEMZHOU': 'SVW要求EM（周）',//SVW要求EM（周）
     'LK_SUM': 'SUM',//SUM
