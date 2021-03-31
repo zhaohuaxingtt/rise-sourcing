@@ -78,8 +78,7 @@
 					query:{
 						purchaseProjectId:item.purchaseProjectId,
 						purchasingRequirementId:item.purchasingRequirementId,
-						partNum:item.partNum,
-						purchasingRequirementObjectId:item.purchasingRequirementObjectId
+						partNum:item.partNum
 					}
 				})
 			}
