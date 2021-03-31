@@ -176,9 +176,14 @@
 				};
 				getTabelData(data).then((res) => {
 					let price=res.data.targetprice
-					this.detailData = price;
-					this.tableListData=[price.cfTargetPriceDetail]
-					this.targeRwData=[price.rwApplication]
+					if (price.cfTargetPriceDetail) {
+						this.targetprice.cfTargetPriceDetail=price.cfTargetPriceDetail
+						this.tableListData=[price.cfTargetPriceDetail]
+					}
+					if (price.rwApplication) {
+						this.targetprice.rwApplication=price.rwApplication
+						this.targeRwData=[price.rwApplication]
+					}
 				});
 			},
 			//表格选中值集
@@ -195,12 +200,14 @@
 				changeProcure({
 					targetprice,
 				}).then((res) => {
-					if (res.data) {
-						iMessage.success("操作成功")
-						this.targePriceDetail()
-					}else{
-						iMessage.error(res.desZh)
-					}
+					iMessage.success("操作成功")
+					this.targePriceDetail()
+					// if (res.data) {
+					// 	iMessage.success("操作成功")
+					// 	this.targePriceDetail()
+					// }else{
+					// 	iMessage.error(res.desZh)
+					// }
 				});
 			},
 			//申请RW目标价
