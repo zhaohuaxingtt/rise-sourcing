@@ -11,9 +11,15 @@
         <iInput :placeholder="$t('LK_QINGSHURUCHANXUANGONGYINGSHANGMINGCHENG')" suffix-icon="iconfont iconshaixuankuangsousuo" v-model="searchKey"></iInput>
       </div>
       <div>
-        <iButton @click="handleSave" v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_BDLSAVEBDL" :loading="saveLoading">{{ $t('LK_BAOCUN') }}</iButton>
-        <iButton @click="handleDelete" v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_DELETESUPPLIER" :loading="deleteLoading">{{ $t('LK_SHANCHUGONGYINGSHANG') }}</iButton>
-        <iButton @click="addCustom" v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_ADDCUSTOM">{{ $t('LK_TIANJIAZIDINGYIPINGFENXIANG') }}</iButton>
+        <div v-if="!addCustomStatus">
+          <iButton @click="handleSave" v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_BDLSAVEBDL" :loading="saveLoading">{{ $t('LK_BAOCUN') }}</iButton>
+          <iButton @click="handleDelete" v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_DELETESUPPLIER" :loading="deleteLoading">{{ $t('LK_SHANCHUGONGYINGSHANG') }}</iButton>
+          <iButton @click="addCustom" v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_ADDCUSTOM">{{ $t('LK_TIANJIAZIDINGYIPINGFENXIANG') }}</iButton>
+        </div>
+        <div v-else>
+          <iButton @click="handleSaveCustom" v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_SAVECUSTOM">{{ $t('LK_BAOCUN') }}</iButton>
+          <iButton @click="handleBack" v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_BACKCUSTOM">{{ $t('LK_FANHUI') }}</iButton>
+        </div>
       </div>
     </div>
     <tableList :tableData="tableData.filter(item => !searchKey || item.supplierNameZh.toLowerCase().includes(searchKey.trim().toLowerCase()))" :tableTitle="tableTitle" :tableLoading="tableLoading"
@@ -64,7 +70,8 @@ export default {
       editSelectTableDataCache: [],
       noEditSelectTableDataCache: [],
       saveLoading: false,
-      deleteLoading: false
+      deleteLoading: false,
+      addCustomStatus: false
     }
   },
   created() {
@@ -81,7 +88,8 @@ export default {
       this.saveLoading = true
       updateRfq({
         updateRfqBdlPackage: {
-          rfqId: '19',
+          rfqId: this.rfqId,
+          updateType: "2",
           userId: this.userInfo.id,
           bdlInfoList: this.editSelectTableDataCache.map(item => ({
             ...item,
@@ -128,7 +136,7 @@ export default {
      **************************/
     translateParmars(){
       return {
-        rfqId:'19',
+        rfqId:this.rfqId,
         // this.rfqId || 
         size:this.page.pageSize,
         current:this.page.currPage,
@@ -140,10 +148,11 @@ export default {
       getBdlList(this.translateParmars()).then((res) => {
         if(res.data && res.data.rfqBdlVO && res.data.rfqBdlVO.rfqBdlVOList){
           this.tableData = res.data.rfqBdlVO.rfqBdlVOList || []
+          this.page.totalCount = res.data.rfqBdlVO.total || 0
 
-          if (this.tableData[0] && this.tableData[0].userDefinedGradeField) {
+          if (this.tableData[0] && this.tableData[0].userDefinedGradeFiled) {
             this.$refs.table.addCustom()
-            this.$refs.table.addTitle = this.tableData[0].userDefinedGradeField
+            this.$refs.table.addTitle = this.tableData[0].userDefinedGradeFiled
           }
         }
 
@@ -162,7 +171,7 @@ export default {
     },
     //修改表格改动列
     handleSelectionChange(val) {
-      // this.selectTableData = val
+      this.selectTableData = val
       const editSelectTableData = [] // 没有保存过的bdl
       const noEditSelectTableData = [] // 保存过的bdl
       for (let i = 0, item; (item = val[i++]); ) {
@@ -213,10 +222,41 @@ export default {
       // this.logVisible = true
       window.open(`/#/log?recordId=${ this.partDetails.tpPartID }`, '_blank')
     },
-	// 添加自定义项目
-	addCustom(){
-		this.$refs.table.addCustom()
-	}
+    handleSaveCustom() {
+      this.saveLoading = true
+      updateRfq({
+        updateRfqBdlPackage: {
+          rfqId: this.rfqId,
+          updateType: "1",
+          userId: this.userInfo.id,
+          bdlInfoList: this.tableData.map(item => ({
+            ...item,
+            userDefinedGradeField: this.$refs.table.addTitle || undefined,
+            userDefinedGrader: item.userDefinedGrader
+          }))
+        }
+      })
+        .then(res => {
+          if (res.code == 200) {
+            this.getTableList()
+            this.editSelectTableDataCache = []
+            this.addCustomStatus = false
+          } else {
+            iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
+          }
+
+          this.saveLoading = false
+        })
+        .catch(() => this.saveLoading = false)
+    },
+    handleBack() {
+      this.addCustomStatus = false
+    },
+    // 添加自定义项目
+    addCustom(){
+      this.addCustomStatus = true
+      this.$refs.table.addCustom()
+    }
   }
 }
 </script>
