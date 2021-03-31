@@ -8,7 +8,7 @@
   <iPage v-permission="PARTSIGN_EDITORDETAIL_INDEXPAGE">
     <!-- 零件详情操作按钮 -->
     <div class="pageTitle flex-between-center-center">
-      <span>3QG810005L</span>
+      <span>{{partDetails.partNum || ''}}</span>
       <div class="btnList flex-align-center">
         <iButton :disabled='tpInfoStuats' @click="openDiologChangeItems" v-permission='PARTSIGN_EDITORDETAIL_TRANSFERBUTTON'>{{ $t('LK_ZHUANPAI') }}</iButton>
         <iButton :disabled='tpInfoStuats' @click="save" v-permission="PARTSIGN_EDITORDETAIL_SIGNBUTTON">{{ $t('LK_QIANSHOU') }}</iButton>
