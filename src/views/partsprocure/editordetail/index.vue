@@ -166,9 +166,9 @@
 								{{ detailData.sopDate }}
 							</iText>
 						</iFormItem>
-						<iFormItem :label="$t('LK_LINGJIANZHUANGTAI')+':'" name="test">
+						<iFormItem :label="$t('partsprocure.PARTSPROCUREPARTSTATUSNAME')+':'" name="test">
 							<iText v-permission="PARTSPROCURE_EDITORDETAIL_PARTSTATUS">
-								{{ detailData.partStatus }}
+								{{ detailData.statusName }}
 							</iText>
 						</iFormItem>
 						<iFormItem label="BMG：" name="test">

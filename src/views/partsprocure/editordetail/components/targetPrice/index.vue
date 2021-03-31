@@ -172,7 +172,7 @@
 			// 获取申请目标价数据
 			targePriceDetail(){
 				let data = {
-					"cfTargetpriceReq.purchaseTargetId": this.purchaseProjectId,
+					"cfTargetpriceReq.purchaseProjectId": this.purchaseProjectId,
 				};
 				getTabelData(data).then((res) => {
 					let price=res.data.targetprice
