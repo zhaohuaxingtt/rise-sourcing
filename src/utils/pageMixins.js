@@ -11,7 +11,7 @@
    data(){
      return {
        page:{
-         totalCount:0, //总页数
+         totalCount:0, //总条数
          pageSize:10,   //每页多少条
          pageSizes:[10,20,50,100], //每页条数切换
          currPage:1,    //当前页
