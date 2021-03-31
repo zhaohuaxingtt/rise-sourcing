@@ -14,7 +14,7 @@
 				<span class="title">{{ $t('LK_WULIUBIAOZHUN') }}</span>
 			</div>
 			<iFormGroup :row="4" inline icon>
-				<iFormItem :label="$t('LK_INBOUNDWULIUFANGSHI')+'1'" name="test">
+				<iFormItem :label="$t('LK_INBOUNDWULIUFANGSHI')" name="test">
 					<i-text>{{dataInfo.supplyType}}</i-text>
 				</iFormItem>
 				<iFormItem :label="$t('LK_FUZEREN')" name="test">
