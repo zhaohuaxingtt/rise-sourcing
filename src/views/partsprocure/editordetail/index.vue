@@ -309,7 +309,7 @@
 				});
 			},
 			getProcureGroup() {
-				let types=["part_status","cartype_project_zh","cartype_category","part_preject_type","procure_factory",]
+				let types=["part_status","cartype_project_zh","cartype_category","part_project_type","procure_factory",]
 				getProcureGroup({types}).then((res) => {
 					this.fromGroup = res.data;
 				});	
