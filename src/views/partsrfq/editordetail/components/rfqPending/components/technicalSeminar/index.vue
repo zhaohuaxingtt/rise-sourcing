@@ -54,7 +54,7 @@
     <!--                  添加供应商弹框                                      --->
     <!------------------------------------------------------------------------>
     <add-supplier-dialog
-        @save="handleAddSupplierSave"
+        @sure="handleAddSupplierSave"
         v-model="dialogAddSupplier"
     />
   </div>
