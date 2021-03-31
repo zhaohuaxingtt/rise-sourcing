@@ -15,7 +15,7 @@ export const detailData = {
 	cartypeProjectZh: "", //	 车型项目
 	categoryCode: "", //	 材料组编号
 	cfController: "", //	integer($int64) CF控制员
-	commonSourcing: "", //	
+	isCommonSourcing: "", //	
 	cs1MeetMemo: "", //	 cs1上会备注
 	cs1Memo: "", //	 cs*1备注
 	csfMeetMemo: "", //	 csf上会备注

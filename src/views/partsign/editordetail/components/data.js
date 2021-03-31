@@ -1,7 +1,7 @@
 /*
  * @Author: shujie
  * @Date: 2021-02-24 10:17:53
- * @LastEditTime: 2021-03-27 15:11:04
+ * @LastEditTime: 2021-03-31 21:22:12
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsign\editordetail\components\data.js
@@ -12,7 +12,7 @@ export const partTitle = [
 	{key:'partNameEn',name:'零件名（德）',permissionKey:'PARTSIGN_EDITORDETAIL_PARTNAMEGER', language: 'LK_LINGJIANMINGYING'},
 	{key:'inheritedCarModel',name:'车型大类',permissionKey:'PARTSIGN_EDITORDETAIL_VEHICLECATEGORIES', language: 'LK_CHEXINGDALEI'},
 	{key:'projectCarType',name:'车型项目',permissionKey:'PARTSIGN_EDITORDETAIL_MODELPROJECT', language: 'LK_CHEXINGXIANGMU'},
-	{key:'tpInforType',name:'信息单类型',permissionKey:'PARTSIGN_EDITORDETAIL_INFORMATIONCLASSIFICATION', language: 'LK_XINXIDANLEIXING'},
+	{key:'status',name:'信息单类型',permissionKey:'PARTSIGN_EDITORDETAIL_INFORMATIONCLASSIFICATION', language: 'LK_XINXIDANLEIXING'},
 	{key:'tpPartID',name:'新建信息单流水号',permissionKey:'PARTSIGN_EDITORDETAIL_INFORMATIONSERIALNUMBER', language: 'LK_XINJIANXINXIDANLIUSHUIHAO'},
 	{key:'stuffNumber',name:'采购员',permissionKey:'PARTSIGN_EDITORDETAIL_BUYER', language: 'LK_CAIGOUYUAN'},
 	{key:'status',name:'信息单状态',permissionKey:'PARTSIGN_DETAIL_INFORMATIONSTATUS', language: 'LK_XINXIDANZHUANGTAI'},
