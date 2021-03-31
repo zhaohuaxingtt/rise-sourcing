@@ -9,9 +9,14 @@
     <iFormGroup :row="3" inline icon class="label-zero" v-model="dynamicForm" v-if="showStatus"
                 v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_TECHNICALSEMINAR_DESTEXT">
       <template v-for="(item,index) of dynamicForm.baseInfo">
-        <iFormItem label=" " :name="index" :key="index">
+        <iFormItem label=" " :name="index" :key="index" class="form-item-style">
           <iInput type="textarea" :rows="4" resize="none" :placeholder="item.placeholder" v-model="item.value"
                   maxlength="100" show-word-limit></iInput>
+          <div @click="deleteItems(index+ 1)"
+               v-if="(index+1)%3 === 0">
+            <icon symbol name="iconguanbixiaoxiliebiaokapiannei" class="delete-icon">
+            </icon>
+          </div>
         </iFormItem>
       </template>
     </iFormGroup>
@@ -19,7 +24,7 @@
 </template>
 
 <script>
-import {iCard, iButton, iFormGroup, iFormItem, iInput, iMessage} from '@/components'
+import {iCard, iButton, iFormGroup, iFormItem, iInput, iMessage, icon} from '@/components'
 
 export default {
   components: {
@@ -27,7 +32,8 @@ export default {
     iButton,
     iFormGroup,
     iFormItem,
-    iInput
+    iInput,
+    icon
   },
   data() {
     return {
@@ -58,6 +64,13 @@ export default {
         iMessage.warn('已添加到上限')
         return false
       }
+    },
+    deleteItems(index) {
+      if (this.dynamicForm.baseInfo.length === 3) {
+        iMessage.warn('不能删除，至少保留一条!')
+      } else {
+        this.dynamicForm.baseInfo.splice(index - 3, 3)
+      }
     }
   }
 }
@@ -66,5 +79,19 @@ export default {
 <style lang="scss">
 .label-zero .el-form-item__label {
   width: 0 !important;
+}
+
+.form-item-style {
+  position: relative;
+}
+
+.delete-icon {
+  position: absolute;
+  right: -30px;
+  top: 30px;
+  color: #DFE7FA;
+  cursor: pointer;
+  font-size: 20px;
+  z-index: 999;
 }
 </style>

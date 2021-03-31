@@ -46,13 +46,13 @@
                     :placeholder="$t('partsprocure.PLEENTER') + $t('partsprocure.PARTSPROCURELINIE')"
                     v-model="form['search.linieName']" v-permission="PARTSPROCURE_LINIEINPUT"></iInput>
               </el-form-item>
-              <el-form-item :label="$t('partsprocure.PARTSPROCUREPARTSTATUS')">
+              <el-form-item :label="$t('partsprocure.PARTSPROCUREPARTSTATUSNAME')">
                 <iSelect
                     :placeholder="$t('partsprocure.CHOOSE') + $t('partsprocure.PARTSPROCUREPARTSTATUS')"
                     v-model="form['search.partStatus']" v-permission="PARTSPROCURE_PARTSTATUS">
                   <el-option value="" :label="$t('all') | capitalizeFilter"></el-option>
                   <el-option :value="item.key" :label="item.name"
-                             v-for="(item, index) in getGroupList('part_status')" :key="index"></el-option>
+                             v-for="(item, index) in getGroupList('project_status')" :key="index"></el-option>
                 </iSelect>
               </el-form-item>
               <el-form-item :label="$t('partsprocure.PARTSPROCUREVEHICLECATEGORIES')">
@@ -81,7 +81,7 @@
                     :placeholder="$t('partsprocure.CHOOSE') + $t('partsprocure.PARTSPROCUREPARTITEMTYPE')"
                     v-model="form['search.partPrejectType']" v-permission="PARTSPROCURE_PARTITEMTYPE">
                   <el-option value="" :label="$t('all') | capitalizeFilter"></el-option>
-                  <el-option :value="item.key" :label="item.name"
+                 <el-option :value="item.key" :label="item.name"
                              v-for="(item, index) in getGroupList('part_preject_type')" :key="index">
                   </el-option>
                 </iSelect>
@@ -236,7 +236,7 @@ export default {
     // is_common_sourcing--Sourcing
     // buyer_name        --询价采购员
     getProcureGroup() {
-      let types = ["part_status", "cartype_project_zh", "cartype_category", "part_preject_type", "procure_factory"]
+      let types = ["project_status", "cartype_project_zh", "cartype_category", "part_preject_type", "procure_factory"]
       getProcureGroup({types}).then((res) => {
         this.fromGroup = res.data;
       });

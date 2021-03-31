@@ -42,8 +42,10 @@ import {tableTitle} from "./data"
 import {getBdlList, updateRfq} from "@/api/partsrfq/editordetail";
 import logDialog from '@/views/partsign/editordetail/components/logDialog'
 import {pageMixins} from '@/utils/pageMixins'
+import {rfqCommonFunMixins} from "pages/partsrfq/components/commonFun";
+
 export default {
-  mixins:[pageMixins],
+  mixins:[pageMixins, rfqCommonFunMixins],
   components: {
     iCard,
     tableList,
@@ -102,8 +104,9 @@ export default {
           if (res.code == 200) {
             this.getTableList()
             this.editSelectTableDataCache = []
+            this.resultMessage(res)
           } else {
-            iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
+            this.resultMessage(res)
           }
 
           this.saveLoading = false
@@ -123,8 +126,9 @@ export default {
           if (res.code == 200) {
             this.getTableList()
             this.noEditSelectTableDataCache = []
+            this.resultMessage(res)
           } else {
-            iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
+            this.resultMessage(res)
           }
 
           this.deleteLoading = false
@@ -241,8 +245,9 @@ export default {
             this.getTableList()
             this.editSelectTableDataCache = []
             this.addCustomStatus = false
+            this.resultMessage(res)
           } else {
-            iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
+            this.resultMessage(res)
           }
 
           this.saveLoading = false

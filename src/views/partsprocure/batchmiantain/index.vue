@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 15:12:41
- * @LastEditTime: 2021-03-27 19:18:38
+ * @LastEditTime: 2021-03-31 17:36:43
  * @LastEditors: Please set LastEditors
  * @Description: 零件采购项目批量维护界面
  * @FilePath: \rise\src\views\partsprocure\batchmiantain\index.vue
@@ -22,23 +22,26 @@
 				<el-form-item :label="$t('LK_LINGJIANCAIGOUXIANGMULEIXING')">
 					<iSelect  v-model="batch.part_preject_type">
 						<el-option :value="item.key" :label="item.name"
-							v-for="(item, index) in getGroupList('part_preject_type')" :key="index"></el-option>
+							v-for="(item, index) in getGroupList('all_part_project_type')" :key="index"></el-option>
 					</iSelect>
 				</el-form-item>
 				<el-form-item :label="$t('LK_LINIEBUMEN')">
 					<iSelect v-model="batch.linieDept">
-						<el-option :value="item.key" :label="item.name"
-							v-for="(item, index) in getGroupList('linie_dept')" :key="index"></el-option>
+						<!-- <el-option :value="item.key" :label="item.name"
+							v-for="(item, index) in getGroupList('linie_dept')" :key="index"></el-option> -->
+						<el-option value="15" label="专业采购股"></el-option>
 					</iSelect>
 				</el-form-item>
 				<el-form-item label="LINIE">
 					<iSelect v-model="linie" value-key="key">
-						<el-option :value="item" :label="item.name" v-for="(item, index) in getGroupList('linie_name')" :key="index"></el-option>
+						<!-- <el-option :value="item" :label="item.name" v-for="(item, index) in getGroupList('linie_name')" :key="index"></el-option> -->
+						<el-option value="16" label="郝连水"></el-option>
+            <el-option value="17" label="郭建立"></el-option>
 					</iSelect>
 				</el-form-item>
 				<el-form-item :label="$t('LK_LINGJIANLEIXING')">
 					<iSelect v-model="batch.partType">
-						<el-option :value="item.key" :label="item.name" v-for="(item, index) in getGroupList('part_type')" :key="index"></el-option>
+						<el-option :value="item.key" :label="item.name" v-for="(item, index) in getGroupList('all_part_type')" :key="index"></el-option>
 					</iSelect>
 				</el-form-item>
 				<el-form-item :label="$t('LK_CHEXINGXIANGMU')">
@@ -49,18 +52,18 @@
 				<el-form-item :label="$t('LK_CAIGOUGONGCHANG')">
 					<iSelect  v-model="batch.procureFactory">
 						<el-option :value="item.key" :label="item.name"
-							v-for="(item, index) in getGroupList('procure_factory')" :key="index"></el-option>
+							v-for="(item, index) in getGroupList('all_procure_factory')" :key="index"></el-option>
 					</iSelect>
 				</el-form-item>
 				<el-form-item :label="$t('LK_DANWEI')">
 					<iSelect  v-model="batch.unit">
-						<el-option :value="item.key" :label="item.name" v-for="(item, index) in getGroupList('unit')"
+						<el-option :value="item.key" :label="item.name" v-for="(item, index) in getGroupList('all_unit')"
 							:key="index"></el-option>
 					</iSelect>
 				</el-form-item>
 				<el-form-item :label="$t('LK_CFKONGZHIYUAN')">
 					<iSelect v-model="batch.cfController">
-						<el-option :value="item.key" :label="item.name" v-for="(item, index) in getGroupList('cf_controller')" :key="index"></el-option>
+						<el-option :value="item.key" :label="item.name" v-for="(item, index) in getGroupList('all_cf_controller')" :key="index"></el-option>
 					</iSelect>
 				</el-form-item>
 			</el-form>
@@ -156,7 +159,7 @@
 		methods: {
 			//获取上方group信息
 			getProcureGroup() {
-				let types=["part_preject_type","linie_dept","linie_name","part_type","cartype_project_zh","procure_factory","unit","cf_controller"]
+				let types=["part_project_type","linie_dept","linie_name","all_part_type","cartype_project_zh","all_procure_factory","all_unit","all_cf_controller"]
 				getProcureGroup({types}).then((res) => {
 					this.fromGroup = res.data;
 				});

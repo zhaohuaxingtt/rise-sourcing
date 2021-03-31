@@ -9,6 +9,7 @@
 <template>
   <iCard class="enquiry">
     <div class="header clearFloat">
+      <!-- <span class="title">{{ $t('LK_FUJIANLIEBIAO') }} （{{ $t('LK_DANGQIANBANBEN') }}: V1）</span> -->
       <span class="title">{{ $t('LK_FUJIANLIEBIAO') }} （{{ $t('LK_DANGQIANBANBEN') }}: V1）</span>
       <div class="control">
         <iButton @click="version" v-permission="PARTSIGN_EDITORDETAIL_ENQUIRY_ALL">{{ $t('LK_CHAKANQUANBUBANBEN') }}</iButton>

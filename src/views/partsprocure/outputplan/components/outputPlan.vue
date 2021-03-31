@@ -5,6 +5,7 @@
     </template>
     <div class="body">
       <el-table
+        :empty-text="$t('LK_ZANWUSHUJU')"
         :data="tableListData"
         v-loading="loading"
         ref="table">
