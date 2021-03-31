@@ -1,13 +1,13 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-03-24 18:12:23
- * @LastEditTime: 2021-03-24 23:16:34
+ * @LastEditTime: 2021-03-31 15:53:28
  * @LastEditors: Please set LastEditors
  * @Description: 拆分采购工厂
  * @FilePath: \rise\src\views\partsprocure\editordetail\components\splitFactory\index.vue
 -->
 <template>
-    <iDialog class="dialog" :visible.sync="splitPurchBoolean">
+    <iDialog class="dialog" :visible="splitPurchBoolean.splitPurchBoolean" @close='close'>
       <template slot="title">
         <span class="el-dialog__title">{{ $t('LK_CHAIFENCAIGOUGONGCHANG') }}</span>
         <el-tooltip effect="light">
@@ -16,7 +16,7 @@
             保存后将按照您所维护的工厂份<br />额拆分询价产量。 如果已经维护<br />车型产量，请确保为该零件的所<br />有工厂产量。
           </template>
         </el-tooltip>
-        <iButton class="float-right marginleft300" @click='save' :btnLoding='btnLoding'>保存</iButton>
+        <iButton class="float-right marginleft300" @click='save' :btnLoding='btnLoding'>{{ $t('LK_BAOCUN') }}</iButton>
       </template>
       <template>
         <el-form ref='form'>
@@ -84,8 +84,7 @@ export default{
   props:{
     splitPurchBoolean:Boolean,
     purchaseProjectId:String,
-    updateTabs:Function,
-    close:Function
+    updateTabs:Function
   },
   components:{iDialog,iButton,iPagination,iInput},
   created(){
@@ -101,6 +100,9 @@ export default{
     }
   },
   methods:{
+    close(){
+      this.splitPurchBoolean.splitPurchBoolean = false
+    },
     validateNumberPersiont(){
      return new Promise((r)=>{
         if(this.selectSplitPurchList.length == 0){

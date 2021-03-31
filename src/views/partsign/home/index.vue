@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-24 09:17:57
- * @LastEditTime: 2021-03-30 17:06:55
+ * @LastEditTime: 2021-03-31 16:23:13
  * @LastEditors: Please set LastEditors
  * @Description: 零件签收列表界面.
  * @FilePath: \rise\src\views\partsign\index.vue
@@ -108,7 +108,7 @@
               </el-form-item>
               <el-form-item :label="$t('LK_XINXIDANLIUSHUIHAO')">
                 <iInput
-                  v-model="form.id"
+                  v-model="form.tpId"
                   :placeholder="$t('LK_QINGTIANXIEXINXIDANLIUSHUIHAO')"
                   v-permission="PARTSIGN_PARTINFOID"
                 ></iInput>

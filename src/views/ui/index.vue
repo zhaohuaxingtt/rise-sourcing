@@ -9,7 +9,7 @@
 <template>
 	<div class="padding20 scorll">
 		<span class="font14 blue">RISE
-			公共UI组件展示界面，基于element的二次封装，当前element版本：1.15.0</span>
+			{{$t('LK_SHENGMINGJISHUBANBEN')}}：1.15.0</span>
 		<el-row class="margin0 padding0">
 			<el-col :span="8">
 				<icard title="iInput">

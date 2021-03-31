@@ -91,9 +91,11 @@
             </iFormItem>
             <iFormItem :label="$t('LK_LUNCILEIXING')+':'" name="roudsType">
               <iText>
-                <template v-if="baseInfo.roudsType === '00'" v-permission="PARTSRFQ_EDITORDETAIL_ROUNDTYPE">普通轮次
+                <template v-if="baseInfo.roudsType === '00'" v-permission="PARTSRFQ_EDITORDETAIL_ROUNDTYPE">
+                  {{ $t('LK_PUTONGLUNCI') }}
                 </template>
-                <template v-else-if="baseInfo.roudsType === '01'" v-permission="PARTSRFQ_EDITORDETAIL_ROUNDTYPE">在线竞价
+                <template v-else-if="baseInfo.roudsType === '01'" v-permission="PARTSRFQ_EDITORDETAIL_ROUNDTYPE">
+                  {{ $t('LK_ZAIXIANJINGJIA') }}
                 </template>
                 <template v-else v-permission="PARTSRFQ_EDITORDETAIL_ROUNDTYPE"></template>
               </iText>
@@ -125,9 +127,9 @@
         </div>
       </iFormGroup>
     </i-card>
-    <rfqPending v-if="navActivtyValue === '0' || navActivtyValue === ''"></rfqPending>
-    <rfq-detail-info v-if="navActivtyValue === '1'"></rfq-detail-info>
-    <new-rfq-round v-model="newRfqRoundDialog" @refreshBaseInfo="getBaseInfo"/>
+    <rfqPending v-if="(navActivtyValue === '0' || navActivtyValue === '') && tabShowStatus"></rfqPending>
+    <rfq-detail-info v-if="navActivtyValue === '1' && tabShowStatus"></rfq-detail-info>
+    <new-rfq-round v-model="newRfqRoundDialog" @refreshBaseInfo="getBaseInfo" v-if="tabShowStatus"/>
   </iPage>
 </template>
 <script>
@@ -185,7 +187,9 @@ export default {
       editStatus: false,
       newRfqRoundDialog: false,
       baseInfo: {},
-      baseInfoLoading: false
+      baseInfoLoading: false,
+      tabShowStatus: true,
+      newRfqRoundList: []
     }
   },
   created() {
@@ -224,8 +228,16 @@ export default {
     changeNav(target) {
       this.navActivtyValue = target.index
     },
-    newRfq() {
-      this.newRfqRoundDialog = true
+    async newRfq() {
+      const pendingPartsList = this.$store.state.rfq.pendingPartsList
+      await this.getNewRoundList()
+      if (pendingPartsList.length === 0 || this.newRfqRoundList.length === 0) {
+        iMessage.warn('RFQ零件或者RFQ供应商为空，不能创建RFQ轮次')
+        return false
+      } else {
+        this.newRfqRoundDialog = true
+      }
+
     },
     async updateRfqStatus(updateType) {
       const query = this.$route.query
@@ -290,12 +302,31 @@ export default {
           path: `/partsrfq/editordetail?id=${res.data.rfqId}`
         })
         this.getBaseInfo()
+        this.tabShowStatus = false
+        this.$nextTick(() => {
+          this.tabShowStatus = true
+        })
       }
     },
     toLogPage() {
       const id = this.$route.query.id
       if (id) {
         window.open(`/#/log?recordId=${id}`, '_blank')
+      }
+    },
+    async getNewRoundList() {
+      const id = this.$route.query.id
+      if (id) {
+        const req = {
+          otherInfoPackage: {
+            findType: '10',
+            rfqId: id,
+            current: 10,
+            size: 1,
+          }
+        }
+        const res = await getRfqDataList(req)
+        this.newRfqRoundList = res.data.rfqRoundBdlVO.rfqBdlVOList;
       }
     },
     // eslint-disable-next-line no-undef

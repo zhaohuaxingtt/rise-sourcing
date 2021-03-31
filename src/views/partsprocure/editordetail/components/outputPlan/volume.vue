@@ -2,7 +2,7 @@
   <iCard
     class="volume"
     tabCard
-    :title="`${$t('LK_LINGJIANMEICHEYONGLIANG')}（当前版本：${versionNum}）`"
+    :title="`${$t('LK_LINGJIANMEICHEYONGLIANG')}（${ $t('LK_DANGQIANBANBEN') } ：${versionNum}）`"
   >
     <div class="body">
       <tableList

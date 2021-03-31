@@ -1,7 +1,7 @@
 <template>
-  <iCard class="outputPlan tabCard" title="询价产量计划" tabCard collapse v-permission="PARTSPROCURE_OUTPUTPLAN_OUTPUTRECORD_INDEXPAGE">
+  <iCard class="outputPlan tabCard" :title="$t('LK_XUNJIACHANLIANGJIHUA')" tabCard collapse v-permission="PARTSPROCURE_OUTPUTPLAN_OUTPUTRECORD_INDEXPAGE">
     <template v-slot:header-control>
-      <iButton @click="handleSave" :loading="saveLoading" v-permission="PARTSPROCURE_OUTPUTPLAN_OUTPUTRECORD_SAVE">保存</iButton>
+      <iButton @click="handleSave" :loading="saveLoading" v-permission="PARTSPROCURE_OUTPUTPLAN_OUTPUTRECORD_SAVE">{{$t('LK_BAOCUN')}}</iButton>
     </template>
     <div class="body">
       <el-table

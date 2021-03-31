@@ -11,7 +11,7 @@
          <iInput v-model='backmark' show-word-limit class="textarea" :autosize='{minRows:4}' placeholder='请填写理由，该输入框为必填' maxLength='200' type='textarea'></iInput>
          <span slot="footer" class="dialog-footer">
            <iButton @click="$emit('input',false)">取 消</iButton>
-          <iButton :loading='repeatClick' @click="sureBackmark">确 定</iButton>
+          <iButton :loading='repeatClick' @click="sureBackmark">{{$t('LK_QUEREN')}}</iButton>
         </span>
       </iDialog>
 </template>

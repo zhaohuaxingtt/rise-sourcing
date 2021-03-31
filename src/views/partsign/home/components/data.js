@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-24 09:47:32
- * @LastEditTime: 2021-03-28 23:14:24
+ * @LastEditTime: 2021-03-31 16:22:32
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsign\home\components\data.js
@@ -30,7 +30,7 @@ export const needTranslate = [
 export const form = {
   attachmentStatus:'',//询价资料状态
   dept:'',//设计科室
-  id:'',//信息单流水号
+  tpId:'',//信息单流水号
   partDosageStatus:'', //每次用量状态
   partNameZh:"",//零件中文名称
   partNum:'',//零件号
