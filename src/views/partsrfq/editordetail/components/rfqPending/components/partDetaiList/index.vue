@@ -18,9 +18,9 @@
     <iPagination @size-change="handleSizeChange($event, getTableList)"
                  @current-change="handleCurrentChange($event, getTableList)" background :page-sizes="page.pageSizes"
                  :page-size="page.pageSize" :layout="page.layout" :total="page.totalCount"></iPagination>
-    <di class="addFs flex-align-center">
+    <div class="addFs flex-align-center">
       <iButton @click="start" :loading="addLoding" v-permission="PARTSRFQ_EDITORDETAIL_PARTDETAILIST_ADD">添加</iButton>
-    </di>
+    </div>
     <partsTable :rfqId="rfqId" @targetHand="waitSelect"></partsTable>
     <!-- 新申请财务目标价 -->
     <applyPrice ref="applyPrice" @refresh="getTableList" :handleSelectArr="handleSelectArr"></applyPrice>
