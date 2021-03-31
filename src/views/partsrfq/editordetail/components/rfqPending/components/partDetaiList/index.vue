@@ -163,6 +163,7 @@ export default {
           this.page.pageSize = res.data.pageData.pageSize
           this.page.totalCount = res.data.pageData.total
           this.tableListData = res.data.pageData.data
+          this.$store.dispatch('setPendingPartsList', this.tableListData)
         }).catch(() => this.confirmTableLoading = false)
       }
     },
