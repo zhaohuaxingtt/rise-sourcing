@@ -26,7 +26,7 @@ export default {
       handler(data) { // 字段绑定值
         const _infos = cloneDeep(infos)
         _infos.forEach(item => {
-          item.value = data[item.key]
+          item.value = data[item.props]
         })
         this.infoChunks = chunk(_infos, 3)
       },

@@ -19,7 +19,7 @@
 		</div>
 		<iSearch class="margin-bottom20" :title="$t('LK_CAIGOUXIANGMUXINXI')" tabCard>
 			<el-form>
-				<el-form-item label="零件采购项目类型">
+				<el-form-item :label="$t('LK_LINGJIANCAIGOUXIANGMULEIXING')">
 					<iSelect  v-model="batch.part_preject_type">
 						<el-option :value="item.key" :label="item.name"
 							v-for="(item, index) in getGroupList('part_preject_type')" :key="index"></el-option>

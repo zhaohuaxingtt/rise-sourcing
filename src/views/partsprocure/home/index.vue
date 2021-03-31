@@ -9,7 +9,7 @@
 <template>
   <iPage class="partsprocureHome" v-permission="PARTSPROCURE_INDEXPAGE">
     <el-tabs v-model="tab" class="tab">
-      <el-tab-pane :label="$t('partsignLanguage.XunYuanZhiXing')" name="source">
+      <el-tab-pane :label="$t('LK_XUNYUANZHIHANG')" name="source">
         <div>
           <div class="margin-bottom33">
             <iNav-mvp @change="change" right routerPage></iNav-mvp>

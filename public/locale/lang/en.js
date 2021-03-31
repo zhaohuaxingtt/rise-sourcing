@@ -477,6 +477,16 @@
         'LK_RUKUQIJUSHOUMING':'Inbound Equipment Useful Life', //入库器具寿命
         'LK_RUKUJICHUNIANWEIXIUFEILV':'Inbound Annual Repair Base Rate', //入库基础年维修费率
         'LK_FASHENGSHIJIAN':'Occurred Time', //发生时间 
+        'LK_RUKUQIJUXINGHAO':'Inbound Equipment ID', //入库器具型号  
+        'LK_RUKUQIJULEIXING':'Inbound Equipment Type', //入库器具类型  
+        'LK_RUKUQIJUZHONGHEDANJIA':'Inbound Equipment Net Unit Price', //入库器具综合单价  
+        'LK_RUKUQIJUZHONGHEDANJIARMB':'Inbound Equipment Net Unit Price (RMB)', //入库器具综合单价  
+        'LK_RUKUQIJUZUJINRMBDAY':'Inbound Equipment Rent (RMB/Day)', //入库器具综合单价  
+        'LK_BENLUNBAOJIAJIEZHISHIJIAN':'Deadline for Current Round of Quotation', //本轮报价截止时间 
+        'LK_BENLUNZHUANGTAI':'Current Round Status', //本轮状态 
+        'LK_ZAICISHENGQINGCAIWUMUBIAOJIA':'Reapply CF Target Price', //再新申请财务目标价  
+        'LK_QINGSHURUCHANXUANGONGYINGSHANGMINGCHENG':'Please enter to search for supplier name, factory…', //请输入查询供应商名称  
+        'LK_LINGJIANCAIGOUXIANGMULEIXING':'Parts Project Type', //零件采购项目类型  
         // 'LK_XIANGNEIZHOUZHUANCAILIAOZHONGHEJIAGE':'翻箱前器具综合单价（RMB）', //箱内周转材料综合价格 
         /*
         <!------------------------------------------------------------------------>

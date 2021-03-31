@@ -32,19 +32,19 @@
 					name: "零件签收",
 					message: 0,
 					url:'/partsign',
-					key:"partsignLanguage.LingJianQianShou"
+					key:"LK_LINGJIANQIANSHOU"
 				}, {
 					value: 2,
 					name: "采购项目建立",
 					message: 0,
 					url:'/partsprocure',
-					key:"partsignLanguage.CaiGouXiangMuJianLi"
+					key:"LK_CAIGOUXIANGMUJIANLI"
 				}, {
 					value: 3,
 					name: "RFQ管理",
 					message: 0,
 					url:'/partsrfq',
-					key:"partsignLanguage.RfqguanLi"
+					key:"LK_RFQGUANLI"
 				}]
 			},
 
