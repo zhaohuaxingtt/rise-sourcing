@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2021-03-31 16:04:15
+ * @LastEditTime: 2021-03-31 16:57:55
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsprocure\editordetail\index.vue
@@ -64,7 +64,7 @@
 							<iSelect v-model="detailData.partPrejectType"
 								v-permission="PARTSPROCURE_EDITORDETAIL_EVENTITEMTYPE">
 								<el-option :value="item.key" :label="item.name"
-									v-for="(item, index) in getGroupList('part_preject_type')" :key="index">
+									v-for="(item, index) in getGroupList('all_part_project_type')" :key="index">
 								</el-option>
 							</iSelect>
 						</iFormItem>
@@ -79,9 +79,11 @@
 						<iFormItem label="Common Sourcing：" name="test">
 							<iSelect v-model="detailData.commonSourcing"
 								v-permission="PARTSPROCURE_EDITORDETAIL_COMMONSOURCING">
-								<el-option :value="item.key" :label="item.name"
+								<!-- <el-option :value="item.key" :label="item.name"
 									v-for="(item, index) in getGroupList('is_common_sourcing')" :key="index">
-								</el-option>
+								</el-option> -->
+								 <el-option value="true" label="是"></el-option>
+								 <el-option value="false" label="否"></el-option>
 							</iSelect>
 						</iFormItem>
 						<iFormItem :label="$t('LK_ZHIFUTIAOKUAN')+':'" name="test" v-if="detailData.partType=='BD'">
@@ -106,7 +108,7 @@
 						<iFormItem :label="$t('LK_LINGJIANLEIXING')+':'" name="test">
 							<iSelect v-model="detailData.partType" v-permission="PARTSPROCURE_EDITORDETAIL_PARTTYPE">
 								<el-option :value="item.key" :label="item.name"
-									v-for="(item, index) in getGroupList('part_type')" :key="index"></el-option>
+									v-for="(item, index) in getGroupList('all_part_type')" :key="index"></el-option>
 							</iSelect>
 						</iFormItem>
 						<iFormItem :label="$t('LK_DANWEI')+':'" name="test">
@@ -117,8 +119,10 @@
 						</iFormItem>
 						<iFormItem :label="$t('LK_MTZLINGJIAN')+':'" name="test">
 							<iSelect v-model="detailData.mtz" v-permission="PARTSPROCURE_EDITORDETAIL_MTZPARTS">
-								<el-option :value="item.key" :label="item.name"
-									v-for="(item, index) in getGroupList('mtz')" :key="index"></el-option>
+								<!-- <el-option :value="item.key" :label="item.name"
+									v-for="(item, index) in getGroupList('mtz')" :key="index"></el-option> -->
+									<el-option value="true" label="是"></el-option>
+								 	<el-option value="false" label="否"></el-option>
 							</iSelect>
 						</iFormItem>
 					</div>
@@ -309,7 +313,7 @@
 				});
 			},
 			getProcureGroup() {
-				let types=["part_status","cartype_project_zh","cartype_category","part_preject_type","procure_factory",]
+				let types=["part_status","cartype_project_zh","cartype_category","part_preject_type","procure_factory","all_part_type",'all_part_project_type','all_part_type','all_currency_id','all_unit']
 				getProcureGroup({types}).then((res) => {
 					this.fromGroup = res.data;
 				});	
