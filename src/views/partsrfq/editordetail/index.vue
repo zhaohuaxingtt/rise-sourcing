@@ -320,8 +320,8 @@ export default {
           otherInfoPackage: {
             findType: '10',
             rfqId: id,
-            current: 10,
-            size: 1,
+            current: 1,
+            size: 10,
           }
         }
         const res = await getRfqDataList(req)
