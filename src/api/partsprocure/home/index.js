@@ -51,16 +51,6 @@ export function insertRfq(parmars){
     }
   })
 }
-//添加询价零件
-export function rfqAddPart(parmars){
-  return requst({
-    url:'/api/rfqs/insertRfq',
-    method:'PATCH',
-    data:{
-      insertRfcPackage:{...parmars,...{operationType:1,userId:store.state.permission.userInfo.id || '',userName:store.state.permission.userInfo.userName}}
-    }
-  })
-}
 
 export function getYearScope(params) {
   return requst({
