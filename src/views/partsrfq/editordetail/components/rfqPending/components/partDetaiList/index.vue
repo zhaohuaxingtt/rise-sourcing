@@ -120,11 +120,13 @@ export default {
       if (!(await this.validateStart())) return;
       this.addLoding = true;
       addRfq({
-        operationType: '1',
-        userId: store.state.permission.userInfo.id || '',
-        userName: store.state.permission.userInfo.userName,
-        rfqPartDTOList: this.waitHandleSelectArr,
-        rfqId: this.rfqId
+        insertRfcPackage: {
+          operationType: '1',
+          userId: store.state.permission.userInfo.id || '',
+          userName: store.state.permission.userInfo.userName,
+          rfqPartDTOList: this.waitHandleSelectArr,
+          rfqId: this.rfqId
+        }
       })
           .then((res) => {
             this.addLoding = false;
