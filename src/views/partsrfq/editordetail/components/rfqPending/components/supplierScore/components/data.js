@@ -7,28 +7,28 @@
 import {permissionTitle} from '@/utils'
 // export const supplierScoreTitle = [
 export const supplierScoreTitle = permissionTitle("PARTSRFQ_EDITORDETAIL_RFQPENDING_SUPPLIERSCORE_PARTSCORING_VIEWREMARK",[
-    {props: 'svwCode', name: 'SVW号'},
-    {props: 'shortNameZh', name: '供应商名'},
-    {props: 'companyAddress', name: '供应商生产场地'},
-    {props: 'action', name: '零件评分'},
+    {props: 'svwCode', name: 'SVW号', key: 'LK_SWHAO'},
+    {props: 'shortNameZh', name: '供应商名', key: 'LK_GONGYINGSHANGMING'},
+    {props: 'companyAddress', name: '供应商生产场地', key: 'LK_GONGYINGSHANGSHENGCHANCHANGDI'},
+    {props: 'action', name: '零件评分', key: 'LK_LINGJIANPINGFEN'},
     {
         name: 'TPB',
         list: [
-            {props: 'tpbGrade', name: '评分'},
-            {props: 'tpbExternaFee', name: '外部开发费（元）'},
-            {props: 'tpbAddFee', name: '增加的认可费（元）'},
-            {props: 'tpbConfirmCycle', name: '认可周期（周）'},
-            {props: 'tpbMemo', name: '备注'},
+            {props: 'tpbGrade', name: '评分', key:'LK_PINGFEN'},
+            {props: 'tpbExternaFee', name: '外部开发费（元）', key:'LK_WAIBUKAIFAFEIYUAN'},
+            {props: 'tpbAddFee', name: '增加的认可费（元）', key:'LK_ZENGJIADERENKEFEIYUAN'},
+            {props: 'tpbConfirmCycle', name: '认可周期（周）', key:'LK_RENKEZHOUQIZHOU'},
+            {props: 'tpbMemo', name: '备注', key:'LK_BEIZHU'},
         ]
     }
 ])
 
 export const supplierRatingAttachmentTitle = [
-    {props: 'fileName', name: '文件名称'},
-    {props: 'fileSize', name: '大小（MB）'},
-    {props: 'createDate', name: '上传日期'},
-    {props: 'createBy', name: '上传人'},
-    {props: 'operateType', name: '操作'}
+    {props: 'fileName', name: '文件名称', key: 'LK_WENJIANMINGCHENG'},
+    {props: 'fileSize', name: '大小（MB）', key: 'LK_DAXIAOMB'},
+    {props: 'createDate', name: '上传日期', key: 'LK_SHANGCHUANRIQI'},
+    {props: 'createBy', name: '上传人', key: 'LK_SHANGCHUANREN'},
+    {props: 'operateType', name: '操作', key: 'LK_CAOZUO'}
 ]
 
 

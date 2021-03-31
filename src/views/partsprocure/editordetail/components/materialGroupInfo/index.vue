@@ -60,22 +60,22 @@
 </template>
 
 <script>
-import { tableTitle } from "./components/data";
-import { iButton, iCard, iPagination, iMessage } from "@/components";
-import infos from "./components/infos";
-import tableList from "@/views/partsign/editordetail/components/tableList";
-import { pageMixins } from "@/utils/pageMixins";
+import { tableTitle } from './components/data'
+import { iButton, iCard, iPagination, iMessage } from '@/components'
+import infos from './components/infos'
+import tableList from '@/views/partsign/editordetail/components/tableList'
+import { pageMixins } from '@/utils/pageMixins'
 import {
   getMaterialGroup,
   getMeterialStuff,
   putMaterialGroup,
-} from "@/api/partsprocure/editordetail";
+} from '@/api/partsprocure/editordetail'
 // import logDialog from "@/views/partsign/editordetail/components/logDialog"
 
 export default {
   components: { iButton, iCard, iPagination, tableList, infos },
   // logDialog
-  mixins: [pageMixins],
+  mixins: [ pageMixins ],
   props: {
     params: {
       type: Object,
@@ -103,39 +103,44 @@ export default {
   },
   watch: {
     setMaterialGroupStatus(status) {
-      if (status) this.getMeterialStuff();
+      if (status) this.getMeterialStuff()
     },
   },
   created() {
-    this.getMaterialGroup();
+    this.getMaterialGroup()
   },
   methods: {
     // 获取材料组数据
     getMaterialGroup() {
-      if (!this.params.categoryCode)
-        return iMessage.warn("缺失工艺组编号，请先设置零件对应的工艺组");
-      this.loading = true;
-      getMaterialGroup({ categoryCode: this.params.categoryCode })
-        .then((res) => {
-          this.info = res.data || {};
-          this.loading = false;
+      if (!this.params.categoryCode) return iMessage.warn('缺失工艺组编号，请先设置零件对应的工艺组')
+      this.loading = true
+      getMaterialGroup({ categoryCode: this.params.categoryCode, partNum: this.params.partNum })
+        .then(res => {
+          if (res.code == 200) {
+            this.info = res.data || {}
+          } else {
+            iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
+          }
+          
+          this.loading = false
         })
-        .catch(() => (this.loading = false));
+        .catch(() => (this.loading = false))
     },
     // 设置工艺组
     setMaterialGroup() {
-      if (!this.params.partNum) return iMessage.warn("缺失有效的零件编号");
-      this.setMaterialGroupStatus = true;
+      if (!this.params.partNum) return iMessage.warn('缺失有效的零件编号')
+      this.setMaterialGroupStatus = true
 
-      this.getMeterialStuff();
+      this.getMeterialStuff()
     },
     // 设置工艺组请求
     confirmMaterialGroup() {
-      if (this.multipleSelection.length !== 1)
-        return iMessage.warn("抱歉，此处必须选择一条工艺组数据");
-      const data = this.multipleSelection[0];
+      if (this.multipleSelection.length !== 1) return iMessage.warn('抱歉，此处必须选择一条工艺组数据')
+      if (!this.info.id) return iMessage.warn('缺失有效的工艺组id')
+      if (!this.params.partNum) return iMessage.warn('缺失有效的零件编号')
+      const data = this.multipleSelection[0]
 
-      this.confirmLoading = true;
+      this.confirmLoading = true
       putMaterialGroup({
         id: this.info.id,
         stuffCode: data.stuffCode,
@@ -145,35 +150,33 @@ export default {
       })
         .then((res) => {
           if (res.code == 200) {
-            iMessage.success(
-              this.$i18n.locale === "zh" ? res.desZh : res.desEn
-            );
-            this.confirmLoading = false;
-            this.getMaterialGroup();
-            this.back();
+            iMessage.success(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
+            this.confirmLoading = false
+            this.getMaterialGroup()
+            this.back()
           } else {
-            iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+            iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
           }
         })
-        .catch(() => (this.confirmLoading = false));
+        .catch(() => this.confirmLoading = false)
     },
     // 获取零件可选的工艺组数据
     getMeterialStuff() {
-      this.tableLoading = true;
+      this.tableLoading = true
 
       getMeterialStuff({
         partNum: this.params.partNum,
       })
         .then((res) => {
-          this.tableListData = res.data;
+          this.tableListData = res.data
           // this.page.totalCount = res.total
-          this.tableLoading = false;
+          this.tableLoading = false
         })
-        .catch(() => (this.tableLoading = false));
+        .catch(() => this.tableLoading = false)
     },
     // 表格多选
     handleSelectionChange(list) {
-      this.multipleSelection = list;
+      this.multipleSelection = list
     },
     // 日志
     // log() {
@@ -181,9 +184,9 @@ export default {
     // },
     // 返回
     back() {
-      this.setMaterialGroupStatus = false;
-      this.tableListData = [];
-      this.loading = false;
+      this.setMaterialGroupStatus = false
+      this.tableListData = []
+      this.loading = false
     },
   },
 };

@@ -29,6 +29,11 @@ export const tableTitle = permissionTitle("PARTSPROCURE_PARTSPROCURELIST",[{
 		key: 'partsprocure.PARTSPROCUREPARTNAMEDE',
 	},
 	{
+		props: 'statusName',
+		name: '项目状态',
+		key: 'partsprocure.PARTSPROCURESTATUS',
+	},
+	{
 		props: 'procureFactory',
 		name: '采购工厂',
 		key: 'partsprocure.PARTSPROCUREPURCHASINGFACTORY',

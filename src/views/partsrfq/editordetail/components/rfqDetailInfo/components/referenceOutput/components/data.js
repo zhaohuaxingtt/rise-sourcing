@@ -30,7 +30,7 @@ export const timePlanableTitle = permissionTitle("PARTSRFQ_EDITORDETAIL_RFQDETAI
     {props:'cartypePro0s',name:'车型项目0S',key: 'LK_CHEXINGXIANGMU0S'},
     {props:'cartypeProSop',name:'车型项目SOP',key: 'LK_CHEXINGXIANGMUSOP'},
     {props:'productiveLife',name:'车型生产年限',key: 'LK_CHEXINGSHENGCHANNIANXIAN'},
-    {props:'svwFirst',name:'SVW要求首次试模',key: 'LK_BANBENHAO'},
+    {props:'svwFirst',name:'SVW要求首次试模',key: 'LK_SVWSHIMO'},
     {props:'svwRequestEm',name:'SVW要求EM（周）',key: 'LK_SVWYAOQIUEMZHOU'},
     {props:'svwRequestOts',name:'SVW要求OTS(周)',key: 'LK_SVWYAOQIUOTSZHOU'}
 ])

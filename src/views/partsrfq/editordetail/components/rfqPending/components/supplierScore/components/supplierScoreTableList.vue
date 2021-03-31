@@ -10,7 +10,7 @@
     <el-table-column v-if='index' type='index' width='50' align='center' label='#'></el-table-column>
     <template v-for="(items,index) in tableTitle">
       <template v-if="items.list && isArray(items.list)">
-        <el-table-column :label="items.name" :key="index" align="center">
+        <el-table-column :label="$t(items.key)" :key="index" align="center">
           <template v-for="(items2, index2) in items.list">
             <el-table-column :key="index2" align='center' v-if="items2.props === multiHeaderProps" :prop="items2.props" :label="items2.name">
               <template slot-scope="scope">
@@ -23,12 +23,12 @@
       </template>
       <template v-else>
         <el-table-column :key="index" align='center' v-if="items.props === actionProps" :prop="items.props"
-                         :label="items.name">
+                         :label="$t(items.key)">
           <template slot-scope="scope">
             <span class="openLinkText cursor" @click="openActionPropsPage(scope.row)">查看</span>
           </template>
         </el-table-column>
-        <el-table-column :key="index" align='center' v-else :label="items.name" :prop="items.props"></el-table-column>
+        <el-table-column :key="index" align='center' v-else :label="$t(items.key)" :prop="items.props"></el-table-column>
       </template>
     </template>
   </el-table>

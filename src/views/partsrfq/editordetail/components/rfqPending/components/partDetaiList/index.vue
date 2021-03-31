@@ -13,7 +13,7 @@
       </iButton>
       <iButton @click="againApply" v-permission="PARTSRFQ_EDITORDETAIL_PARTDETAILIST_REAPPLYPRICE">再新申请财务目标价</iButton>
     </div>
-    <tableList :tableData="confirmTableListData" :tableTitle="tableTitle" :tableLoading="confirmTableLoading"
+    <tableList :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="confirmTableLoading"
                @handleSelectionChange="handleSelectionChange" @openPage="openPage"></tableList>
     <iPagination @size-change="handleSizeChange($event, getTableList)"
                  @current-change="handleCurrentChange($event, getTableList)" background :page-sizes="page.pageSizes"
@@ -21,7 +21,7 @@
     <div class="addFs flex-align-center">
       <iButton @click="start" :loading="addLoding" v-permission="PARTSRFQ_EDITORDETAIL_PARTDETAILIST_ADD">添加</iButton>
     </div>
-    <partsTable :rfqId="rfqId" @targetHand="waitSelect"></partsTable>
+    <partsTable ref="partsTable" :rfqId="rfqId" @targetHand="waitSelect"></partsTable>
     <!-- 新申请财务目标价 -->
     <applyPrice ref="applyPrice" @refresh="getTableList" :handleSelectArr="handleSelectArr"></applyPrice>
   </iCard>
@@ -40,8 +40,8 @@ import {
   form
 } from "@/views/partsprocure/home/components/data";
 import {
-  getTabelData,
-} from '@/api/partsprocure/home';
+  getPartSrcPrjs,
+} from '@/api/partsrfq/editordetail';
 import {
   addRfq
 } from '@/api/partsrfq/home';
@@ -133,6 +133,8 @@ export default {
             if (res.data && res.data.rfqId) {
               this.getTableList()
               this.$refs.applyPrice.getTableList()
+              this.$refs.partsTable.getTableList()
+              this.resultMessage(res)
             } else {
               this.resultMessage(res)
             }
@@ -148,7 +150,7 @@ export default {
       this.parmarsHasRfq['search.current'] = this.page.currPage
       this.parmarsHasRfq['search.rfqId'] = this.rfqId
       this.parmarsHasRfq['search.projectStatus'] = '12'
-      getTabelData(this.parmarsHasRfq).then(res => {
+      getPartSrcPrjs(this.parmarsHasRfq).then(res => {
         this.confirmTableLoading = false
         this.page.currPage = res.data.pageData.pageNum
         this.page.pageSize = res.data.pageData.pageSize
