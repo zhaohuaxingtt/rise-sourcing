@@ -79,6 +79,7 @@
 
 <style lang="scss" scoped>
 	.nav {
+		min-height: 30px;
 		div {
 			margin-left: 10px;
 			position: relative;
