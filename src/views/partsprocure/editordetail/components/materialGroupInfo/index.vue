@@ -118,6 +118,7 @@ export default {
         .then(res => {
           if (res.code == 200) {
             this.info = res.data || {}
+            console.log(this.info)
           } else {
             iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
           }
@@ -146,7 +147,7 @@ export default {
         stuffCode: data.stuffCode,
         stuffId: data.id,
         updateBy: this.userInfo.id,
-        partNums: [this.params.partNum],
+        partNums: [this.params.partNum].join('&partNums='),
       })
         .then((res) => {
           if (res.code == 200) {
