@@ -71,7 +71,7 @@
               <iText v-else v-permission="PARTSRFQ_EDITORDETAIL_CF">{{ baseInfo.cf }}</iText>
             </iFormItem>
 
-            <iFormItem label="本轮报价截止时间：" name="currentRoundsEndTime">
+            <iFormItem :label="$t('LK_BENLUNBAOJIAJIEZHISHIJIAN')+':'" name="currentRoundsEndTime">
               <iText v-permission="PARTSRFQ_EDITORDETAIL_DEADLINEQUOTATIONS">{{ baseInfo.currentRoundsEndTime }}</iText>
             </iFormItem>
           </div>
@@ -112,7 +112,7 @@
               <iInput v-if="editStatus" v-model="baseInfo.pl" v-permission="PARTSRFQ_EDITORDETAIL_PL"></iInput>
               <iText v-else v-permission="PARTSRFQ_EDITORDETAIL_PL">{{ baseInfo.pl }}</iText>
             </iFormItem>
-            <iFormItem label="本轮状态：" name="test">
+            <iFormItem :label="$t('LK_BENLUNZHUANGTAI')+':'" name="test">
               <iText v-permission="PARTSRFQ_EDITORDETAIL_CURRENTSTATE">{{ baseInfo.currentRoundsStatus }}</iText>
             </iFormItem>
             <div class="edit-button-row">

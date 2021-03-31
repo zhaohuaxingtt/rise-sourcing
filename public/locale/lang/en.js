@@ -481,6 +481,11 @@
         'LK_RUKUQIJULEIXING':'Inbound Equipment Type', //入库器具类型  
         'LK_RUKUQIJUZHONGHEDANJIARMB':'Inbound Equipment Net Unit Price (RMB)', //入库器具综合单价  
         'LK_RUKUQIJUZUJINRMBDAY':'Inbound Equipment Rent (RMB/Day)', //入库器具综合单价
+        'LK_BENLUNBAOJIAJIEZHISHIJIAN':'Deadline for Current Round of Quotation', //本轮报价截止时间 
+        'LK_BENLUNZHUANGTAI':'Current Round Status', //本轮状态 
+        'LK_ZAICISHENGQINGCAIWUMUBIAOJIA':'Reapply CF Target Price', //再新申请财务目标价  
+        'LK_QINGSHURUCHANXUANGONGYINGSHANGMINGCHENG':'Please enter to search for supplier name, factory…', //请输入查询供应商名称  
+        'LK_LINGJIANCAIGOUXIANGMULEIXING':'Parts Project Type', //零件采购项目类型  
 
 
         //2021-03-31 增加
@@ -509,8 +514,6 @@
         'LK_NINXUANZHONGDEDANJUZHONGCUNZAIYIQIANSHOUDEXINXIDANBUNENGPILIANGQIANSHOU': 'Selections contain signed records, unable to batch sign in!',//抱歉，您选中的单据中存在已签收的信息单，不能批量签收！
         'LK_YONGHUMINGHUOMIMABUNENGWEIKONG': 'User name or password cannot be empty!',//抱歉，用户名或密码不能为空！
         'LK_BEITIDAILINGJIAN': 'Replaced Parts',//被替代零件 
-        'LK_BENLUNBAOJIAJIEZHISHIJIAN': 'Deadline for Current Round of Quotation',//本轮报价截止时间
-        'LK_BENLUNZHUANGTAI': 'Current Round Status',//本轮状态
         'LK_CANKAOLINGJIANMING': 'Reference Part Name',//参考零件名 
         'LK_CHANGJINGMINGCHENGRENWUMINGCHENG': 'Task Name',//场景名称/任务名称 
         'LK_DAORUSHIJIAN': 'Import time',//导入时间
@@ -530,7 +533,6 @@
         'LK_FANXIANGQIANQIJUZUJINRMBDAY': '翻箱前器具租金（RMB/DAY）English',//翻箱前器具租金（RMB/DAY）
         'LK_GONGGONGUIZUJIANZHANSHIJIEMIANJIYUELEMENTDEERCIFENGZHUANGDANGQIANELEMENTBANBEN': 'Display Public UI Components, Based on second seal of element, current element version',//公共UI组件展示界面，基于element的二次封装，当前element版本 
         'LK_JINRIDAIBAN': 'Due Today',//今日待办 
-        'LK_LINGJIANCAIGOUXIANGMULEIXING': 'Parts Project Type',//零件采购项目类型
         'LK_LINGJIANSUOSHUCAILIAOZULINIEBUMEN': 'Part\'s Material Group\'s Linie Department',//零件所属材料组LINIE部门 
         'LK_LINGJIANSUOSHUCAILIAOZUDEWENMINGCHENG': 'Part\'s Material Group Name(De)',//零件所属材料组德文名称 
         'LK_LINGJIANSUOSHUCAILIAOZUZHONGWENMINGCHENG': 'Part\'s Material Group Name(Zh)',//零件所属材料组中文名称 
