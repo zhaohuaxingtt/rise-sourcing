@@ -479,9 +479,87 @@
         'LK_FASHENGSHIJIAN':'Occurred Time', //发生时间 
         'LK_RUKUQIJUXINGHAO':'Inbound Equipment ID', //入库器具型号  
         'LK_RUKUQIJULEIXING':'Inbound Equipment Type', //入库器具类型  
-        'LK_RUKUQIJUZHONGHEDANJIA':'Inbound Equipment Net Unit Price', //入库器具综合单价  
         'LK_RUKUQIJUZHONGHEDANJIARMB':'Inbound Equipment Net Unit Price (RMB)', //入库器具综合单价  
-        'LK_RUKUQIJUZUJINRMBDAY':'Inbound Equipment Rent (RMB/Day)', //入库器具综合单价  
+        'LK_RUKUQIJUZUJINRMBDAY':'Inbound Equipment Rent (RMB/Day)', //入库器具综合单价
+
+
+        //2021-03-31 增加
+        // 'LK_XIANGNEIZHOUZHUANCAILIAOZHONGHEJIAGE':'翻箱前器具综合单价（RMB）', //箱内周转材料综合价格 
+        'LK_SVWYAOQIUSHOUCISHIMO': 'SVW requires first trial',//SVW要求首次试模
+        'LK_BAOCUNBINGCHUANGJIAN': 'Save and Create',//保存并创建
+        'LK_NINDANGQIANHAIWEIXUANZE': 'Sorry, you have not selected yet!',//抱歉！您当前还未选择！
+        'LK_NINDANGQIANHAIWEIXUANZEXUNJIACAIGOUYUAN': 'Sorry, Forward Sourcing not selected!',//抱歉！您当前还未选择询价采购员！
+        'LK_BEIZHUBUNENGWEIKONG': 'Sorry, notes cannot be empty!',//抱歉，备注不能为空！
+        'LK_CICHUBIXUXUANZEYITIAOGONGYIZUSHUJU': 'Sorry, Please select a craft group data here!',//抱歉，此处必须选择一条工艺组数据
+        'LK_DANGQIANCAIGOUXIANGMUZHONGCUNZAIHAIWEISHENGCHENGFSNRDESHUJUWUFAWEININQIDONGXUNJIA': 'Sorry, this Project has ungenerated FSNR, unable to start inquiry',//抱歉，当前采购项目中存在还未生成FSNR的数据，无法为您启动询价！
+        'LK_DANGQIANCAIGOUXIANGMUZHONGCUNZAIHAIWEISHENGCHENGFSNRDESHUJUWUFAWEININTIANJIA': 'Sorry, this Project has ungenerated FSNR, unable to add',//抱歉，当前采购项目中存在还未生成FSNR的数据，无法为您添加！
+        'LK_LIYOUBUNENGWEIKONG': 'Sorry, reason cannot be empty',//抱歉，理由不能为空！
+        'LK_NINDANGQIANHAIWEIXUANZENINXUYAOQIANSHOUDEXINXIDAN': 'Sorry, no TP records to be signed is selected',//抱歉，您当前还未选择您需要签收的信息单！
+        'LK_NINDANGQIANHAIWEIXUANZENINXUYAOQUXIAODELINGJIANCAIGOUXIANGMU': 'Sorry, no TP records to be cancelled is selected',//抱歉，您当前还未选择您需要取消的零件采购项目！
+        'LK_NINDANGQIANHAIWEIXUANZENINXUYAOSHENGCHENGFSHAODELINGJIANCAIGOUXIANGMU': 'Sorry, no Project is selected to generate FS number!',//抱歉，您当前还未选择您需要生成FS号的零件采购项目！
+        'LK_NINDANGQIANHAIWEIXUANZENINXUYAOSHENGPILIANGWEIHUDEXIANGMU': 'Sorry, no project to batch maintain is selected!',//抱歉，您当前还未选择您需要生批量维护的项目！
+        'LK_NINDANGQIANHAIWEIXUANZENINXUYAOTUIHUIDEXINXIDAN': 'Sorry, no TP records to be rejected is selected!',//抱歉，您当前还未选择您需要退回的信息单！
+        'LK_NINDANGQIANHAIWEIXUANZENINXUYAOZHUANPAIDELINGJIANCAIGOUXIANGMU': 'Sorry, no project to be reassign is selected!',//抱歉，您当前还未选择您需要转派的零件采购项目！
+        'LK_NINDANGQIANHAIWEIXUANZENINXUYAOZHUANPAIDEPINGFENRENWU': 'Sorry, no rating task to be reassign is selected!',//抱歉，您当前还未选择您需要转派的评分任务！
+        'LK_NINDANGQIANHAIWEIXUANZENINXUYAOZHUANPAIDEXINXIDAN': 'Sorry, no TP records to be reassign is selected!',//抱歉，您当前还未选择您需要转派的信息单！
+        'LK_NINDANGQIANHAIWEIXUANZERENWU': 'Sorry, you have not selected a task yet!',//抱歉，您当前还未选择任务！
+        'LK_NINDANGQIANHAIWEIXUANZEXUYAOQIDONGXUNJIADECAIGOUXIANGMU': 'Sorry, no project to initiate inquiry is selected!',//抱歉，您当前还未选择需要启动询价的采购项目！
+        'LK_NINDANGQIANHAIWEIXUANZEXUYAOSHENQINGMUBIAOJIADECAIGOUXIANGMU': 'Sorry, no projects to apply for target price is selected!',//抱歉，您当前还未选择需要申请目标价的采购项目！
+        'LK_NINDANGQIANHAIWEIXUANZEXUYAOTIANJIADECAIGOUXIANGMU': 'Sorry, no project to be added is selected!',//抱歉，您当前还未选择需要添加的采购项目！
+        'LK_NINXUANZHONGDEDANJUZHONGCUNZAIYIQIANSHOUDEXINXIDANBUNENGPILIANGQIANSHOU': 'Selections contain signed records, unable to batch sign in!',//抱歉，您选中的单据中存在已签收的信息单，不能批量签收！
+        'LK_YONGHUMINGHUOMIMABUNENGWEIKONG': 'User name or password cannot be empty!',//抱歉，用户名或密码不能为空！
+        'LK_BEITIDAILINGJIAN': 'Replaced Parts',//被替代零件 
+        'LK_BENLUNBAOJIAJIEZHISHIJIAN': 'Deadline for Current Round of Quotation',//本轮报价截止时间
+        'LK_BENLUNZHUANGTAI': 'Current Round Status',//本轮状态
+        'LK_CANKAOLINGJIANMING': 'Reference Part Name',//参考零件名 
+        'LK_CHANGJINGMINGCHENGRENWUMINGCHENG': 'Task Name',//场景名称/任务名称 
+        'LK_DAORUSHIJIAN': 'Import time',//导入时间
+        'LK_DIANJISHANGCHUAN': 'Click to Upload',//点击上传 
+        'LK_DUQUYOUXIAOBOM': 'Read Valid BOM',//读取有效BOM 
+        'LK_FANXIANGQIANBAOZHUANGMAOZHONGKG': '翻箱前包装毛重（KG）English',//翻箱前包装毛重（KG）
+        'LK_FANXIANGQIANJICHUNIANWEIXIULÜ': '翻箱前基础年维修率 English',//翻箱前基础年维修率 
+        'LK_FANXIANGQIANQIJUFANCHENGSHEDIEBI': '翻箱前器具返程折叠比 English',//翻箱前器具返程折叠比 
+        'LK_FANXIANGQIANQIJUGAOMM': '翻箱前器具高（mm）English',//翻箱前器具高（mm）
+        'LK_FANXIANGQIANQIJUHAO': '翻箱前器具号 English',//翻箱前器具号 
+        'LK_FANXIANGQIANQIJUKUANMM': '翻箱前器具宽（mm）English',//翻箱前器具宽（mm）
+        'LK_FANXIANGQIANQIJULEIXING': '翻箱前器具类型 English',//翻箱前器具类型 
+        'LK_FANXIANGQIANQIJUSHOUMING': '翻箱前器具寿命 English',//翻箱前器具寿命 
+        'LK_FANXIANGQIANQIJUSHU': '翻箱前器具数 English',//翻箱前器具数 
+        'LK_FANXIANGQIANQIJUZHANGMM': '翻箱前器具长（mm）English',//翻箱前器具长（mm）
+        'LK_FANXIANGQIANQIJUZONGHEDANJIARMB': '翻箱前器具综合单价（RMB）English',//翻箱前器具综合单价（RMB）
+        'LK_FANXIANGQIANQIJUZUJINRMBDAY': '翻箱前器具租金（RMB/DAY）English',//翻箱前器具租金（RMB/DAY）
+        'LK_GONGGONGUIZUJIANZHANSHIJIEMIANJIYUELEMENTDEERCIFENGZHUANGDANGQIANELEMENTBANBEN': 'Display Public UI Components, Based on second seal of element, current element version',//公共UI组件展示界面，基于element的二次封装，当前element版本 
+        'LK_JINRIDAIBAN': 'Due Today',//今日待办 
+        'LK_LINGJIANCAIGOUXIANGMULEIXING': 'Parts Project Type',//零件采购项目类型
+        'LK_LINGJIANSUOSHUCAILIAOZULINIEBUMEN': 'Part\'s Material Group\'s Linie Department',//零件所属材料组LINIE部门 
+        'LK_LINGJIANSUOSHUCAILIAOZUDEWENMINGCHENG': 'Part\'s Material Group Name(De)',//零件所属材料组德文名称 
+        'LK_LINGJIANSUOSHUCAILIAOZUZHONGWENMINGCHENG': 'Part\'s Material Group Name(Zh)',//零件所属材料组中文名称 
+        'LK_LINGJIANSUOSHUGONGYIBIANHAO': 'No. of the part\'s craft',//零件所属工艺编号
+        'LK_NINSHIFOUQUERENDUIXINJIANXINXIDANJINHANGQIANSHOU': '您是否确认对新件信息单进行签收？ English',//您是否确认对新件信息单进行签收？
+        'LK_PUTONGLUNCI': 'Regular Round',//普通轮次
+        'LK_QIANDUANBAOZHUANGMINGCHENG': '前段包装名称 english',//前段包装名称 
+        'LK_QINGSHURUCHAXUNGONGYINGSHANGMINGCHENGCHANGSHANG': 'Please enter to search for supplier name, factory…',//请输入查询供应商名称,厂商...
+        'LK_RENWUZHONGXIN': 'Task Center',//任务中心 
+        'LK_RIZHICHAKAN': 'Show Log',//日志查看 
+        'LK_RUKUBAOZHUANGMAOZHONGKG': 'Inbound Packaging Gross Weight (Kg)',//入库包装毛重（KG）
+        'LK_RUKUJICHUNIANWEIXIUFEILÜ': 'Inbound Annual Repair Base Rate',//入库基础年维修费率
+        'LK_RUKUQIJUFANCHENGSHEDIEBI': '入库器具返程折叠比 english',//入库器具返程折叠比 
+        'LK_RUKUQIJUKUANMM': 'Inbound Equipment Width (mm)',//入库器具宽（mm） 
+        'LK_RUKUQIJUZHANGMM': 'Inbound Equipment Length (mm)',//入库器具长（mm）
+        'LK_RUKUQIJUZONGHEDANJIA': 'Inbound Equipment Net Unit Price',//入库器具综合单价 
+        'LK_SHEJIGONGCHENGSHIGONGHAO': 'TP owner No.',//设计工程师工号 
+        'LK_SHIFOUQUERENSHANCHU': '温馨提示 English',//是否确认删除?
+        'LK_TUZHIHETPXIANGQINGYE': 'Blueprint and TP Information',//图纸和TP详情页 
+        'LK_WENXINTISHI': '温馨提示',//温馨提示
+        'LK_XIANGNEIZHOUZHUANCAILIAOZONGHEJIAGE': '箱内周转材料综合价格 english',//箱内周转材料综合价格 
+        'LK_XIANGNEIZHOUZHUANCAILIAOZONGHESHOUMING': '箱内周转材料综合寿命 english',//箱内周转材料综合寿命 
+        'LK_XIANGMUCHEXING': 'Project Car Type',//项目车型 
+        'LK_XINJIANXINXILIUSHUIDANHAO': 'New Tp Sequence No.',//新件信息流水单号 
+        'LK_XUNJIATUZHI': 'Inquiry Blueprint',//询价图纸 
+        'LK_YUQIDAIBAN': 'Overdue',//逾期待办 
+        'LK_ZAIXINSHENQINGCAIWUMUBIAOJIA': 'Reapply CF Target Price',//再新申请财务目标价 
+        'LK_ZAIXIANJINGJIA': 'Online Bidding',//在线竞价
+
 
         // 'LK_XIANGNEIZHOUZHUANCAILIAOZHONGHEJIAGE':'翻箱前器具综合单价（RMB）', //箱内周转材料综合价格 
         /*

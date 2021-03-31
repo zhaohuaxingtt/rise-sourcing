@@ -482,11 +482,90 @@
     'LK_FASHENGSHIJIAN':'发生时间', //发生时间  
     'LK_RUKUQIJUXINGHAO':'入库器具型号', //入库器具型号  
     'LK_RUKUQIJULEIXING':'入库器具类型', //入库器具类型  
-    'LK_RUKUQIJUZHONGHEDANJIA':'入库器具综合单价', //入库器具综合单价  
     'LK_RUKUQIJUZHONGHEDANJIARMB':'入库器具综合单价（RMB）', //入库器具综合单价  
     'LK_RUKUQIJUZUJINRMBDAY':'入库器具租金（RMB/DAY）', //入库器具综合单价  
     // 'LK_XIANGNEIZHOUZHUANCAILIAOZHONGHEJIAGE':'箱内周转材料综合价格', //箱内周转材料综合价格 
+    // 'LK_XIANGNEIZHOUZHUANCAILIAOZHONGHEJIAGE':'箱内周转材料综合价格', //箱内周转材料综合价格
+
+
+    //2021-03-31
     // 'LK_XIANGNEIZHOUZHUANCAILIAOZHONGHEJIAGE':'箱内周转材料综合价格', //箱内周转材料综合价格 
+    // 'LK_XIANGNEIZHOUZHUANCAILIAOZHONGHEJIAGE':'箱内周转材料综合价格', //箱内周转材料综合价格 
+    'LK_SVWYAOQIUSHOUCISHIMO': 'SVW要求首次试模',//SVW要求首次试模
+    'LK_BAOCUNBINGCHUANGJIAN': '保存并创建',//保存并创建
+    'LK_NINDANGQIANHAIWEIXUANZE': '抱歉！您当前还未选择！',//抱歉！您当前还未选择！
+    'LK_NINDANGQIANHAIWEIXUANZEXUNJIACAIGOUYUAN': '抱歉！您当前还未选择询价采购员！',//抱歉！您当前还未选择询价采购员！
+    'LK_BEIZHUBUNENGWEIKONG': '抱歉，备注不能为空！',//抱歉，备注不能为空！
+    'LK_CICHUBIXUXUANZEYITIAOGONGYIZUSHUJU': '抱歉，此处必须选择一条工艺组数据',//抱歉，此处必须选择一条工艺组数据
+    'LK_DANGQIANCAIGOUXIANGMUZHONGCUNZAIHAIWEISHENGCHENGFSNRDESHUJUWUFAWEININQIDONGXUNJIA': '抱歉，当前采购项目中存在还未生成FSNR的数据，无法为您启动询价！',//抱歉，当前采购项目中存在还未生成FSNR的数据，无法为您启动询价！
+    'LK_DANGQIANCAIGOUXIANGMUZHONGCUNZAIHAIWEISHENGCHENGFSNRDESHUJUWUFAWEININTIANJIA': '抱歉，当前采购项目中存在还未生成FSNR的数据，无法为您添加！',//抱歉，当前采购项目中存在还未生成FSNR的数据，无法为您添加！
+    'LK_LIYOUBUNENGWEIKONG': '抱歉，理由不能为空！',//抱歉，理由不能为空！
+    'LK_NINDANGQIANHAIWEIXUANZENINXUYAOQIANSHOUDEXINXIDAN': '抱歉，您当前还未选择您需要签收的信息单！',//抱歉，您当前还未选择您需要签收的信息单！
+    'LK_NINDANGQIANHAIWEIXUANZENINXUYAOQUXIAODELINGJIANCAIGOUXIANGMU': '抱歉，您当前还未选择您需要取消的零件采购项目！',//抱歉，您当前还未选择您需要取消的零件采购项目！
+    'LK_NINDANGQIANHAIWEIXUANZENINXUYAOSHENGCHENGFSHAODELINGJIANCAIGOUXIANGMU': '抱歉，您当前还未选择您需要生成FS号的零件采购项目！',//抱歉，您当前还未选择您需要生成FS号的零件采购项目！
+    'LK_NINDANGQIANHAIWEIXUANZENINXUYAOSHENGPILIANGWEIHUDEXIANGMU': '抱歉，您当前还未选择您需要生批量维护的项目！',//抱歉，您当前还未选择您需要生批量维护的项目！
+    'LK_NINDANGQIANHAIWEIXUANZENINXUYAOTUIHUIDEXINXIDAN': '抱歉，您当前还未选择您需要退回的信息单！',//抱歉，您当前还未选择您需要退回的信息单！
+    'LK_NINDANGQIANHAIWEIXUANZENINXUYAOZHUANPAIDELINGJIANCAIGOUXIANGMU': '抱歉，您当前还未选择您需要转派的零件采购项目！',//抱歉，您当前还未选择您需要转派的零件采购项目！
+    'LK_NINDANGQIANHAIWEIXUANZENINXUYAOZHUANPAIDEPINGFENRENWU': '抱歉，您当前还未选择您需要转派的评分任务！',//抱歉，您当前还未选择您需要转派的评分任务！
+    'LK_NINDANGQIANHAIWEIXUANZENINXUYAOZHUANPAIDEXINXIDAN': '抱歉，您当前还未选择您需要转派的信息单！',//抱歉，您当前还未选择您需要转派的信息单！
+    'LK_NINDANGQIANHAIWEIXUANZERENWU': '抱歉，您当前还未选择任务！',//抱歉，您当前还未选择任务！
+    'LK_NINDANGQIANHAIWEIXUANZEXUYAOQIDONGXUNJIADECAIGOUXIANGMU': '抱歉，您当前还未选择需要启动询价的采购项目！',//抱歉，您当前还未选择需要启动询价的采购项目！
+    'LK_NINDANGQIANHAIWEIXUANZEXUYAOSHENQINGMUBIAOJIADECAIGOUXIANGMU': '抱歉，您当前还未选择需要申请目标价的采购项目！',//抱歉，您当前还未选择需要申请目标价的采购项目！
+    'LK_NINDANGQIANHAIWEIXUANZEXUYAOTIANJIADECAIGOUXIANGMU': '抱歉，您当前还未选择需要添加的采购项目！',//抱歉，您当前还未选择需要添加的采购项目！
+    'LK_NINXUANZHONGDEDANJUZHONGCUNZAIYIQIANSHOUDEXINXIDANBUNENGPILIANGQIANSHOU': '抱歉，您选中的单据中存在已签收的信息单，不能批量签收！',//抱歉，您选中的单据中存在已签收的信息单，不能批量签收！
+    'LK_YONGHUMINGHUOMIMABUNENGWEIKONG': '抱歉，用户名或密码不能为空！',//抱歉，用户名或密码不能为空！
+    'LK_BEITIDAILINGJIAN': '被替代零件 ',//被替代零件 
+    'LK_BENLUNBAOJIAJIEZHISHIJIAN': '本轮报价截止时间',//本轮报价截止时间
+    'LK_BENLUNZHUANGTAI': '本轮状态',//本轮状态
+    'LK_CANKAOLINGJIANMING': '参考零件名 ',//参考零件名 
+    'LK_CHANGJINGMINGCHENGRENWUMINGCHENG': '场景名称/任务名称 ',//场景名称/任务名称 
+    'LK_DAORUSHIJIAN': '导入时间',//导入时间
+    'LK_DIANJISHANGCHUAN': '点击上传 ',//点击上传 
+    'LK_DUQUYOUXIAOBOM': '读取有效BOM ',//读取有效BOM 
+    'LK_FANXIANGQIANBAOZHUANGMAOZHONGKG': '翻箱前包装毛重（KG）',//翻箱前包装毛重（KG）
+    'LK_FANXIANGQIANJICHUNIANWEIXIULÜ': '翻箱前基础年维修率 ',//翻箱前基础年维修率 
+    'LK_FANXIANGQIANQIJUFANCHENGSHEDIEBI': '翻箱前器具返程折叠比 ',//翻箱前器具返程折叠比 
+    'LK_FANXIANGQIANQIJUGAOMM': '翻箱前器具高（mm）',//翻箱前器具高（mm）
+    'LK_FANXIANGQIANQIJUHAO': '翻箱前器具号 ',//翻箱前器具号 
+    'LK_FANXIANGQIANQIJUKUANMM': '翻箱前器具宽（mm）',//翻箱前器具宽（mm）
+    'LK_FANXIANGQIANQIJULEIXING': '翻箱前器具类型 ',//翻箱前器具类型 
+    'LK_FANXIANGQIANQIJUSHOUMING': '翻箱前器具寿命 ',//翻箱前器具寿命 
+    'LK_FANXIANGQIANQIJUSHU': '翻箱前器具数 ',//翻箱前器具数 
+    'LK_FANXIANGQIANQIJUZHANGMM': '翻箱前器具长（mm）',//翻箱前器具长（mm）
+    'LK_FANXIANGQIANQIJUZONGHEDANJIARMB': '翻箱前器具综合单价（RMB）',//翻箱前器具综合单价（RMB）
+    'LK_FANXIANGQIANQIJUZUJINRMBDAY': '翻箱前器具租金（RMB/DAY）',//翻箱前器具租金（RMB/DAY）
+    'LK_GONGGONGUIZUJIANZHANSHIJIEMIANJIYUELEMENTDEERCIFENGZHUANGDANGQIANELEMENTBANBEN': '公共UI组件展示界面，基于element的二次封装，当前element版本 ',//公共UI组件展示界面，基于element的二次封装，当前element版本 
+    'LK_JINRIDAIBAN': '今日待办 ',//今日待办 
+    'LK_LINGJIANCAIGOUXIANGMULEIXING': '零件采购项目类型',//零件采购项目类型
+    'LK_LINGJIANSUOSHUCAILIAOZULINIEBUMEN': '零件所属材料组LINIE部门 ',//零件所属材料组LINIE部门 
+    'LK_LINGJIANSUOSHUCAILIAOZUDEWENMINGCHENG': '零件所属材料组德文名称 ',//零件所属材料组德文名称 
+    'LK_LINGJIANSUOSHUCAILIAOZUZHONGWENMINGCHENG': '零件所属材料组中文名称 ',//零件所属材料组中文名称 
+    'LK_LINGJIANSUOSHUGONGYIBIANHAO': '零件所属工艺编号',//零件所属工艺编号
+    'LK_NINSHIFOUQUERENDUIXINJIANXINXIDANJINHANGQIANSHOU': '您是否确认对新件信息单进行签收？',//您是否确认对新件信息单进行签收？
+    'LK_PUTONGLUNCI': '普通轮次',//普通轮次
+    'LK_QIANDUANBAOZHUANGMINGCHENG': '前段包装名称 ',//前段包装名称 
+    'LK_QINGSHURUCHAXUNGONGYINGSHANGMINGCHENGCHANGSHANG': '请输入查询供应商名称,厂商...',//请输入查询供应商名称,厂商...
+    'LK_RENWUZHONGXIN': '任务中心 ',//任务中心 
+    'LK_RIZHICHAKAN': '日志查看 ',//日志查看 
+    'LK_RUKUBAOZHUANGMAOZHONGKG': '入库包装毛重（KG）',//入库包装毛重（KG）
+    'LK_RUKUJICHUNIANWEIXIUFEILÜ': '入库基础年维修费率',//入库基础年维修费率
+    'LK_RUKUQIJUFANCHENGSHEDIEBI': '入库器具返程折叠比 ',//入库器具返程折叠比 
+    'LK_RUKUQIJUKUANMM': '入库器具宽（mm） ',//入库器具宽（mm） 
+    'LK_RUKUQIJUZHANGMM': '入库器具长（mm）',//入库器具长（mm）
+    'LK_RUKUQIJUZONGHEDANJIA': '入库器具综合单价 ',//入库器具综合单价 
+    'LK_SHEJIGONGCHENGSHIGONGHAO': '设计工程师工号 ',//设计工程师工号 
+    'LK_SHIFOUQUERENSHANCHU': '是否确认删除?',//是否确认删除?
+    'LK_TUZHIHETPXIANGQINGYE': '图纸和TP详情页 ',//图纸和TP详情页 
+    'LK_WENXINTISHI': '温馨提示',//温馨提示
+    'LK_XIANGNEIZHOUZHUANCAILIAOZONGHEJIAGE': '箱内周转材料综合价格 ',//箱内周转材料综合价格 
+    'LK_XIANGNEIZHOUZHUANCAILIAOZONGHESHOUMING': '箱内周转材料综合寿命 ',//箱内周转材料综合寿命 
+    'LK_XIANGMUCHEXING': '项目车型 ',//项目车型 
+    'LK_XINJIANXINXILIUSHUIDANHAO': '新件信息流水单号 ',//新件信息流水单号 
+    'LK_XUNJIATUZHI': '询价图纸 ',//询价图纸 
+    'LK_YUQIDAIBAN': '逾期待办 ',//逾期待办 
+    'LK_ZAIXINSHENQINGCAIWUMUBIAOJIA': '再新申请财务目标价 ',//再新申请财务目标价 
+    'LK_ZAIXIANJINGJIA': '在线竞价',//在线竞价
+ 
     /*
     <!------------------------------------------------------------------------>
     <!--                                                                   --->
