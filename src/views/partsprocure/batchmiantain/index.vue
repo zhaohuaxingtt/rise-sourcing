@@ -31,22 +31,19 @@
 							v-for="(item, index) in getGroupList('linie_dept')" :key="index"></el-option>
 					</iSelect>
 				</el-form-item>
-				<el-form-item label="LINIE" value-key="key">
-					<iSelect v-model="linie">
-						<el-option :value="item" :label="item.name"
-							v-for="(item, index) in getGroupList('linie_name')" :key="index"></el-option>
+				<el-form-item label="LINIE">
+					<iSelect v-model="linie" value-key="key">
+						<el-option :value="item" :label="item.name" v-for="(item, index) in getGroupList('linie_name')" :key="index"></el-option>
 					</iSelect>
 				</el-form-item>
 				<el-form-item :label="$t('LK_LINGJIANLEIXING')">
 					<iSelect v-model="batch.partType">
-						<el-option :value="item.key" :label="item.name"
-							v-for="(item, index) in getGroupList('part_type')" :key="index"></el-option>
+						<el-option :value="item.key" :label="item.name" v-for="(item, index) in getGroupList('part_type')" :key="index"></el-option>
 					</iSelect>
 				</el-form-item>
 				<el-form-item :label="$t('LK_CHEXINGXIANGMU')">
 					<iSelect  v-model="cartypeProject" value-key="key">
-						<el-option :value="item" :label="item.name"
-							v-for="(item, index) in getGroupList('cartype_project_zh')" :key="index"></el-option>
+						<el-option :value="item" :label="item.name" v-for="(item, index) in getGroupList('cartype_project_zh')" :key="index"></el-option>
 					</iSelect>
 				</el-form-item>
 				<el-form-item :label="$t('LK_CAIGOUGONGCHANG')">
@@ -104,9 +101,11 @@
 	import outputPlan from './components/outputPlan'
 	import {
 		changeProcure,
-		insertRfq,
 		getProcureGroup,
 	} from "@/api/partsprocure/home";
+  import {
+    insertRfq
+  } from "@/api/partsrfq/home";
 	import {materialGroupByLinie,getStuffByCategory,putMaterialGroup} from "@/api/partsprocure/editordetail";
 	import {
 		getPageGroup
@@ -261,7 +260,7 @@
 				this.batch.stuffId=this.stuff.id
 				this.batch.cartypeProjectZh=this.cartypeProject.name
 				this.batch.cartypeProjectNum=this.cartypeProject.key
-				this.batch.linieDept=this.linie.name
+				this.batch.linieName=this.linie.name
 				this.batch.linieNum=this.linie.key
 				this.batch.categoryCode=this.categoryObj.id
 				this.batch.categoryName=this.categoryObj.categoryNameZh
@@ -278,10 +277,10 @@
 			},
 			// 重置stuff数据
 			resetStuff() {
-				this.stuff.stuffName = ""
-				this.stuff.categoryCode = ""
-				this.stuff.stuffCode=""
-				
+				this.batch.stuffName = ""
+				this.batch.categoryCode = ""
+				this.batch.stuffCode=""
+				this.batch.categoryName=""
 			},
 			// 生成fs号
 			creatFs() {
