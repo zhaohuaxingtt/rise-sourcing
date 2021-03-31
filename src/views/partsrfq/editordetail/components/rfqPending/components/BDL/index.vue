@@ -154,9 +154,9 @@ export default {
           this.tableData = res.data.rfqBdlVO.rfqBdlVOList || []
           this.page.totalCount = res.data.rfqBdlVO.total || 0
 
-          if (this.tableData[0] && this.tableData[0].userDefinedGradeFiled) {
+          if (this.tableData[0] && this.tableData[0].userDefinedGradeField) {
             this.$refs.table.addCustom()
-            this.$refs.table.addTitle = this.tableData[0].userDefinedGradeFiled
+            this.$refs.table.addTitle = this.tableData[0].userDefinedGradeField
           }
         }
 
