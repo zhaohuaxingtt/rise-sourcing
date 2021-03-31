@@ -125,9 +125,9 @@
         </div>
       </iFormGroup>
     </i-card>
-    <rfqPending v-if="navActivtyValue === '0' || navActivtyValue === ''"></rfqPending>
-    <rfq-detail-info v-if="navActivtyValue === '1'"></rfq-detail-info>
-    <new-rfq-round v-model="newRfqRoundDialog" @refreshBaseInfo="getBaseInfo"/>
+    <rfqPending v-if="(navActivtyValue === '0' || navActivtyValue === '') && tabShowStatus"></rfqPending>
+    <rfq-detail-info v-if="navActivtyValue === '1' && tabShowStatus"></rfq-detail-info>
+    <new-rfq-round v-model="newRfqRoundDialog" @refreshBaseInfo="getBaseInfo" v-if="tabShowStatus"/>
   </iPage>
 </template>
 <script>
@@ -185,7 +185,8 @@ export default {
       editStatus: false,
       newRfqRoundDialog: false,
       baseInfo: {},
-      baseInfoLoading: false
+      baseInfoLoading: false,
+      tabShowStatus: true
     }
   },
   created() {
@@ -290,6 +291,10 @@ export default {
           path: `/partsrfq/editordetail?id=${res.data.rfqId}`
         })
         this.getBaseInfo()
+        this.tabShowStatus = false
+        this.$nextTick(() => {
+          this.tabShowStatus = true
+        })
       }
     },
     toLogPage() {

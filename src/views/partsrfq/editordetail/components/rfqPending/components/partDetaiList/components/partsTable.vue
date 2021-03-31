@@ -69,16 +69,19 @@ export default {
   methods: {
     //获取表格数据
     getTableList() {
-      this.parmarsNotHasRfq['search.size'] = this.page.pageSize
-      this.parmarsNotHasRfq['search.current'] = this.page.currPage
-      this.parmarsNotHasRfq['search.projectStatus'] = '11'
-      getPartSrcPrjs(this.parmarsNotHasRfq).then(res => {
-        this.tableLoading = false
-        this.page.currPage = res.data.pageData.pageNum
-        this.page.pageSize = res.data.pageData.pageSize
-        this.page.totalCount = res.data.pageData.total
-        this.tableListData = res.data.pageData.data || []
-      }).catch(() => this.tableLoading = false)
+      if (this.rfqId) {
+        this.tableLoading = true
+        this.parmarsNotHasRfq['search.size'] = this.page.pageSize
+        this.parmarsNotHasRfq['search.current'] = this.page.currPage
+        this.parmarsNotHasRfq['search.projectStatus'] = '11'
+        getPartSrcPrjs(this.parmarsNotHasRfq).then(res => {
+          this.tableLoading = false
+          this.page.currPage = res.data.pageData.pageNum
+          this.page.pageSize = res.data.pageData.pageSize
+          this.page.totalCount = res.data.pageData.total
+          this.tableListData = res.data.pageData.data || []
+        }).catch(() => this.tableLoading = false)
+      }
     },
     // 待选零件
     handleSelectionChange(e) {
