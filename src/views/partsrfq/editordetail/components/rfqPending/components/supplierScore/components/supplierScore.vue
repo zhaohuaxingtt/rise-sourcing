@@ -76,7 +76,8 @@ export default {
         try {
           const req = {
             rfqId: id,
-            userId: store.state.permission.userInfo.id
+            userId: store.state.permission.userInfo.id,
+            isFake: 1
           }
           const res = await getAllSupplier(req)
           this.tableListData = res.records;

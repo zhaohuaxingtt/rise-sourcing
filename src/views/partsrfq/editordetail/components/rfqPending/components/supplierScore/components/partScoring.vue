@@ -94,7 +94,8 @@ export default {
           const req = {
             supplierId,
             rfqId,
-            userId:store.state.permission.userInfo.id
+            userId:store.state.permission.userInfo.id,
+            isFake: 1
           }
           const res = await getSupplierAllParts(req)
           this.tableListData = res.records;
