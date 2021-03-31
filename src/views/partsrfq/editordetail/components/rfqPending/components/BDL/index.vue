@@ -8,15 +8,15 @@
   <iCard>
     <div class="header flex-between-center">
       <div class="input">
-        <iInput placeholder="请输入查询供应商名称,厂商..." suffix-icon="iconfont iconshaixuankuangsousuo" v-model="searchKey"></iInput>
+        <iInput placeholder="请输入查询供应商名称" suffix-icon="iconfont iconshaixuankuangsousuo" v-model="searchKey"></iInput>
       </div>
       <div>
-        <iButton @click="saveBdl" v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_BDLSAVEBDL">{{ $t('LK_BAOCUN') }}</iButton>
-        <iButton v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_DELETESUPPLIER">{{ $t('LK_SHANCHUGONGYINGSHANG') }}</iButton>
+        <iButton @click="handleSave" v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_BDLSAVEBDL" :loading="saveLoading">{{ $t('LK_BAOCUN') }}</iButton>
+        <iButton @click="handleDelete" v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_DELETESUPPLIER" :loading="deleteLoading">{{ $t('LK_SHANCHUGONGYINGSHANG') }}</iButton>
         <iButton @click="addCustom" v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_ADDCUSTOM">{{ $t('LK_TIANJIAZIDINGYIPINGFENXIANG') }}</iButton>
       </div>
     </div>
-    <tableList :tableData="tableData" :tableTitle="tableTitle" :tableLoading="tableLoading"
+    <tableList :tableData="tableData.filter(item => !searchKey || item.supplierNameZh.toLowerCase().includes(searchKey.trim().toLowerCase()))" :tableTitle="tableTitle" :tableLoading="tableLoading"
                @handleSelectionChange="handleSelectionChange"
                @openPage="openPage"
                @log="log" ref="table"
@@ -30,10 +30,10 @@
 </template>
 
 <script>
-import {iCard, iButton, iInput,iPagination} from "@/components"
+import {iCard, iButton, iInput,iPagination, iMessage} from "@/components"
 import tableList from "./tableList"
 import {tableTitle} from "./data"
-import {getBdlList} from "@/api/partsrfq/editordetail";
+import {getBdlList, updateRfq} from "@/api/partsrfq/editordetail";
 import logDialog from '@/views/partsign/editordetail/components/logDialog'
 import {pageMixins} from '@/utils/pageMixins'
 export default {
@@ -46,6 +46,12 @@ export default {
     logDialog,
     iPagination
   },
+  computed: {
+    // eslint-disable-next-line no-undef
+    ...Vuex.mapState({
+      userInfo: state => state.permission.userInfo,
+    })
+  },
   data() {
     return {
       tableTitle,
@@ -56,7 +62,9 @@ export default {
       rfqId:'',
       selectTableData: [],
       editSelectTableDataCache: [],
-      noEditSelectTableDataCache: []
+      noEditSelectTableDataCache: [],
+      saveLoading: false,
+      deleteLoading: false
     }
   },
   created() {
@@ -68,15 +76,59 @@ export default {
      * 获取bdl列表
      * 需求：
      **************************/
-    saveBdl() {
-      this.multipleSelectionCache = []
+    // 保存
+    handleSave() {
+      this.saveLoading = true
+      updateRfq({
+        updateRfqBdlPackage: {
+          rfqId: '19',
+          userId: this.userInfo.id,
+          bdlInfoList: this.editSelectTableDataCache.map(item => ({
+            ...item,
+            userDefinedGradeField: this.$refs.table.addTitle || undefined,
+            userDefinedGrader: item.userDefinedGrader
+          }))
+        }
+      })
+        .then(res => {
+          if (res.code == 200) {
+            this.getTableList()
+            this.editSelectTableDataCache = []
+          } else {
+            iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
+          }
+
+          this.saveLoading = false
+        })
+        .catch(() => this.saveLoading = false)
+    },
+    // 删除
+    handleDelete() {
+      this.deleteLoading = true
+      updateRfq({
+        deleteBdlPackage: {
+          userId: this.userInfo.id,
+          ids: this.noEditSelectTableDataCache.map(item => item.id)
+        }
+      })
+        .then(res => {
+          if (res.code == 200) {
+            this.getTableList()
+            this.noEditSelectTableDataCache = []
+          } else {
+            iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
+          }
+
+          this.deleteLoading = false
+        })
+        .catch(() => this.deleteLoading = false)
     },
     /**************************
      * 获取bdl列表
      **************************/
     translateParmars(){
       return {
-        rfqId:'249356903498256384',
+        rfqId:'19',
         // this.rfqId || 
         size:this.page.pageSize,
         current:this.page.currPage,
@@ -87,9 +139,13 @@ export default {
       this.tableLoading = true;
       getBdlList(this.translateParmars()).then((res) => {
         if(res.data && res.data.rfqBdlVO && res.data.rfqBdlVO.rfqBdlVOList){
-          this.tableData = res.data.rfqBdlVO.rfqBdlVOList
+          this.tableData = res.data.rfqBdlVO.rfqBdlVOList || []
+
+          if (this.tableData[0] && this.tableData[0].userDefinedGradeField) {
+            this.$refs.table.addCustom()
+            this.$refs.table.addTitle = this.tableData[0].userDefinedGradeField
+          }
         }
-        this.tableData = [{supplierId: 1}, {supplierId: 2}, {supplierId: 3}, {supplierId: 4}, {supplierId: 5}, {supplierId: 6}]
 
         this.tableData.forEach(item => {
           if (item.isEdit) {

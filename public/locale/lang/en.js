@@ -322,7 +322,7 @@
         'LK_JIESHUBENLUNXUNJIA': 'Finish RFQ round',//结束本轮询价
         'LK_JIAOFU': 'Delivery',//交付
         'LK_JIAGEMINGXI': 'Price Details',//价格明细
-        'LK_JISHUJIAOLIUHUI': 'Techonology Meeting',//技术交流会
+        'LK_JISHUJIAOLIUHUI': 'Techonology Meeting',//技术交底会
         'LK_JIHUORFQ': 'Activate RFQ',//激活RFQ
         'LK_JICHUXINXI': 'Basic information',//基础信息
         'LK_HUOBI': 'Currency',//货币
@@ -459,7 +459,12 @@
         'LK_CBDSHEZHI': 'CBD Setting',//CBD设置
         'LK_BOMDANXINXI': 'BOM information',//BOM单信息
         'LK_BDLLIEBIAO': 'BDL List',//BDL列表
-        'LK_AEKOHAO': 'Aeko No.'//Aeko号
+        'LK_AEKOHAO': 'Aeko No.',//Aeko号
+        'LK_QINGSHURULINGJIANHAO':'Please Enter',//请输入零件号
+        'LK_QINGSHURULINGJIANMING':'Please Enter',//请输入零件名（中）
+        'LK_QINGTIANXIESHEJIKESHI':'Please Enter',//请填写设计科室
+        'LK_QINGTIANXIEGONGCHENGSHI':'Please Enter',//请填写工程师
+        'LK_QINGTIANXIEXINXIDANLIUSHUIHAO':'Please Enter'//请填写信息单流水号
 
         /*
         <!------------------------------------------------------------------------>

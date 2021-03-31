@@ -75,18 +75,18 @@
 		<iSearch class="margin-bottom20" :title="$t('LK_CAILIAOZUGONGYISHEZHI')" tabCard icon>
 			<el-form>
 				<el-form-item :label="$t('LK_CAILIAOZU')">
-					<iSelect :placeholder="$t('LK_QINGXUANZE')" v-model="stuff.categoryCode" @change="changeSelect">
-						<el-option :value="item.id" :label="item.categoryNameZh" v-for="(item, index) in category" :key="index"></el-option>
+					<iSelect :placeholder="$t('LK_QINGXUANZE')" v-model="categoryObj"  @change="changeSelect" value-key="id">
+						<el-option :value="item" :label="item.categoryNameZh" v-for="(item, index) in category" :key="index"></el-option>
 					</iSelect>
 				</el-form-item>
 				<el-form-item :label="$t('LK_GONGYI')">
-					<iSelect placeholder="请选择先材料组" v-model="stuffObj" value-key="stuffCode">
+					<iSelect placeholder="请选择先材料组" v-model="stuff" value-key="stuffCode">
 						<el-option :value="item"  :label="item.stuffName" v-for="(item, index) in stuffArr" :key="index"></el-option>
 					</iSelect>
 				</el-form-item>
 			</el-form>
 			<template slot="button">
-				<iButton @click="putMaterialGroup" v-permission="PARTSPROCURE_BATCHMIANTAIN_MATERIALGROUPCONFIRM">{{ $t('LK_QUEREN') }}</iButton>
+				<iButton @click="save" v-permission="PARTSPROCURE_BATCHMIANTAIN_MATERIALGROUPCONFIRM">{{ $t('LK_QUEREN') }}</iButton>
 				<iButton @click="resetStuff" v-permission="PARTSPROCURE_BATCHMIANTAIN_MATERIALGROUPRESET">{{ $t('LK_ZHONGZHI') }}</iButton>
 			</template>
 		</iSearch>
@@ -125,22 +125,31 @@
 				category:[],//材料组数据
 				stuffArr:[],//工艺组数据
 				batch: {
-					part_preject_type: "",
-					linieDept: "",
-					linieName: "",//value
-					linieNum:"",//key
-					partType: "",
-					cartypeProjectZh: "",//value
-					cartypeProjectNum:"",//key
-					procureFactory: "",
-					cfController: "",
-					unit: "",
+					cartypeProjectNum:"",//车型项目编号–同上关联
+					cartypeProjectZh:"",//车型项目
+					categoryCode:"",//材料组
+					categoryName:"",//材料名称
+					cfController: "",//CF控制员
+					linieDept: "",//LINIE部门
+					linieName: "",//采购人名称
+					linieNum:"",//采购员编号–同上关联
+					partType:"",//零件类型
+					procureFactory: "",//采购工厂
+					stuffCode:"",//工艺组code
+					stuffId:"",//工艺组id
+					stuffName:"",//工艺组名称
+					type:"",//零件采购项目类型
+					unit:"",//单位
 					purchaseProjectIds: [],//采购项目id
 				},
 				stuff: {
-					stuffName: "",//value
-					stuffCode:"",//key
-					categoryCode:"",
+					id:"",
+					stuffCode:"",
+					stuffName:""
+				},
+				categoryObj:{
+					categoryNameZh:"",
+					id:""
 				},
 				linie:{ //专业采购员
 					key:"",
@@ -150,11 +159,12 @@
 					key:"",
 					name:""
 				},
-				stuffObj:{
-					id:"",
-					stuffCode:"",
-					stuffName:""
-				},
+				// stuffObj:{
+				// 	id:"",
+				// 	stuffCode:"",
+				// 	stuffName:""
+				// },
+				
 				selectTableData: [],
 				startLoding: false,
 			}
@@ -191,32 +201,32 @@
 			// 获取工艺组数据
 			changeSelect(val){
 				let data={
-					categoryId:val
+					categoryId:val.id
 				}
 				getStuffByCategory(data).then(res=>{
 					this.stuffArr=res.data || []
 				})
 			},
 			// 设置工艺组
-			putMaterialGroup(){
-				if (this.batch.purchaseProjectIds.length == 0) {
-					iMessage.warn("请选择需要设置的零件采购项目")
-					return
-				}
-				let data={
-					id :this.stuff.categoryCode,
-					partNums :this.batch.purchaseProjectIds,
-					stuffCode:this.stuffObj.stuffCode,
-					stuffId:this.stuffObj.id
-				}
-				getStuffByCategory(data).then(res=>{
-					if (res.data) {
-						iMessage.success("设置成功")
-					}else{
-						iMessage.error(res.desZh)
-					}
-				})
-			},
+			// putMaterialGroup(){
+			// 	if (this.batch.purchaseProjectIds.length == 0) {
+			// 		iMessage.warn("请选择需要设置的零件采购项目")
+			// 		return
+			// 	}
+			// 	let data={
+			// 		id :this.stuff.categoryCode,
+			// 		partNums :this.batch.purchaseProjectIds,
+			// 		stuffCode:this.stuffObj.stuffCode,
+			// 		stuffId:this.stuffObj.id
+			// 	}
+			// 	getStuffByCategory(data).then(res=>{
+			// 		if (res.data) {
+			// 			iMessage.success("设置成功")
+			// 		}else{
+			// 			iMessage.error(res.desZh)
+			// 		}
+			// 	})
+			// },
 			//选中零件采购数据
 			handleSelectionChange(e) {
 				this.selectTableData = e
@@ -234,10 +244,7 @@
 				}
 				this.pushKey()
 				// 复制参数对应key
-				let batch = {
-					...this.batch,
-					...this.stuff
-				}
+				let batch = {...this.batch}
 				changeProcure({
 					batch
 				}).then(res => {
@@ -249,12 +256,15 @@
 				})
 			},
 			pushKey(){
-				this.stuff.stuffName=this.stuffObj.stuffName
-				this.stuff.stuffCode=this.stuffObj.stuffCode
+				this.batch.stuffName=this.stuff.stuffName
+				this.batch.stuffCode=this.stuff.stuffCode
+				this.batch.stuffId=this.stuff.id
 				this.batch.cartypeProjectZh=this.cartypeProject.name
 				this.batch.cartypeProjectNum=this.cartypeProject.key
 				this.batch.linieDept=this.linie.name
 				this.batch.linieNum=this.linie.key
+				this.batch.categoryCode=this.categoryObj.id
+				this.batch.categoryName=this.categoryObj.categoryNameZh
 			},
 			// 重置采购信息数据
 			reset() {

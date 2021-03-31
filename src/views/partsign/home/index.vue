@@ -28,27 +28,27 @@
               <el-form-item :label="$t('partsignLanguage.LingJianHao')">
                 <iInput
                   v-model="form.partNum"
-                  placeholder="请输入零件号"
+                  :placeholder="$t('LK_QINGSHURULINGJIANHAO')"
                   v-permission="PARTSIGN_PARTNUM"
                 ></iInput>
               </el-form-item>
               <el-form-item :label="$t('partsignLanguage.LingJianMingChengZH')">
                 <iInput
                   v-model="form.partNameZh"
-                  placeholder="请输入零件名（中）"
+                  :placeholder="$t('LK_QINGSHURULINGJIANMING')"
                   v-permission="PARTSIGN_PARTNAMEZH"
                 ></iInput>
               </el-form-item>
               <el-form-item :label="$t('partsignLanguage.SheJiKeShi')">
                 <iInput
                   v-model="form.dept"
-                  placeholder="请填写设计科室"
+                  :placeholder="$t('LK_QINGTIANXIESHEJIKESHI')"
                   v-permission="PARTSIGN_DESIGNDEPARTMENT"
                 ></iInput>
               </el-form-item>
               <el-form-item :label="$t('LK_GONGCHENGSHI')">
                 <iInput
-                  placeholder="请填写工程师"
+                  :placeholder="$t('LK_QINGTIANXIEGONGCHENGSHI')"
                   v-permission="PARTSIGN_ENGINEER"
                 ></iInput>
               </el-form-item>
@@ -109,7 +109,7 @@
               <el-form-item :label="$t('LK_XINXIDANLIUSHUIHAO')">
                 <iInput
                   v-model="form.id"
-                  placeholder="请填写信息单流水号"
+                  :placeholder="$t('LK_QINGTIANXIEXINXIDANLIUSHUIHAO')"
                   v-permission="PARTSIGN_PARTINFOID"
                 ></iInput>
               </el-form-item>
@@ -441,7 +441,7 @@ export default {
     },
     //转派
     sureChangeItems(val) {
-      this.patchRecordsForTranslate(val, this.selectTableData);
+      this.patchRecordsForTranslate(val.id, this.selectTableData);
       this.diologChangeItems = false;
     },
   },

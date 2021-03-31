@@ -121,3 +121,12 @@ export function getBdlList(parmars){
         }
     })
 }
+
+// 更新rfq相关bdl
+export function updateRfq(params) {
+    return requst({
+        url: '/api/rfqs/updateRfq',
+        method: 'PATCH',
+        data: params
+    })
+}

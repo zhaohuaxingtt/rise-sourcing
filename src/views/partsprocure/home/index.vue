@@ -251,7 +251,8 @@
 			//确认转派弹窗值。
 			sureChangeItems(val) {
 				let transfer = {
-					buyerName: val,
+					buyerName: val.nameZh,
+					buyerId:val.id,
 					purchaseProjectIds: this.getPurchasePrjectId(),
 				};
 				changeProcure({

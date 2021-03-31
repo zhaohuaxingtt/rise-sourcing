@@ -2,7 +2,7 @@
   <div>
     <iTabsList class="margin-top20" type='border-card' @tab-click="handleTabClick">
       <el-tab-pane :label="item.label" v-for="item of tabList" :key="item.label" v-permisstion='item.permissionKey'>
-        <component :is="item.component" v-if="activityTabLabel === item.label"/>
+        <component :is="item.component" v-if="activityTabIndex === item.index"/>
       </el-tab-pane>
     </iTabsList>
   </div>
@@ -28,18 +28,38 @@ export default {
   data() {
     return {
       editStatus: false,
-      activityTabLabel: '目标价',
+      activityTabIndex: '0',
       tabList: [
-        {label: '目标价', component: 'targetPrice',permissionKey:'PARTSRFQ_EDITORDETAIL_TARGETPRICE_INDEXPAGE'},
-        {label: '参考产量及时间计划', component: 'referenceOutput',permissionKey:'PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_TIMEPLAN_INDEXPAGE'},
-        {label: '物流要求', component: 'logisticsRequirements',permissionKey:'PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_LOGISTICSREQUIREMENTS_INDEXPAGE'},
-        {label: '询价附件', component: 'inquiryAttachment',permissionKey:'PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_INQUIRYATTACHMENT_INQUIRYATTACHMENT_INDEXPAGE'},
+        {
+          index: '0',
+          label: '目标价',
+          component: 'targetPrice',
+          permissionKey: 'PARTSRFQ_EDITORDETAIL_TARGETPRICE_INDEXPAGE'
+        },
+        {
+          index: '1',
+          label: '参考产量及时间计划',
+          component: 'referenceOutput',
+          permissionKey: 'PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_TIMEPLAN_INDEXPAGE'
+        },
+        {
+          index: '2',
+          label: '物流要求',
+          component: 'logisticsRequirements',
+          permissionKey: 'PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_LOGISTICSREQUIREMENTS_INDEXPAGE'
+        },
+        {
+          index: '3',
+          label: '询价附件',
+          component: 'inquiryAttachment',
+          permissionKey: 'PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_INQUIRYATTACHMENT_INQUIRYATTACHMENT_INDEXPAGE'
+        },
       ]
     }
   },
   methods: {
     handleTabClick(target) {
-      this.activityTabLabel = target.label
+      this.activityTabIndex = target.index
     }
   }
 }

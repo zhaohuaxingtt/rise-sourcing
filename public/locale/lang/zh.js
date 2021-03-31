@@ -152,7 +152,7 @@
     'LK_ZAISHENQINGCAIWUMUBIAOJIA': '再申请财务目标价',//再申请财务目标价
     'LK_YUANPEICHANG': '原配厂',//原配厂
     'LK_YONGLIANG': '用量',//用量
-    'LK_YIXUNJIACAIGOUYUANSHANGHUIBEIZHU': '易询价采购员上会备注',//易询价采购员上会备注
+    'LK_YIXUNJIACAIGOUYUANSHANGHUIBEIZHU': '询价采购员上会备注',//易询价采购员上会备注
     'LK_YIXUNJIAGONGYINGSHANG': '已询价供应商',//已询价供应商
     'LK_YIBAOJIAGONGYINGSHANG': '已报价供应商',//已报价供应商
     'LK_YAOQIUCSCHUIYIRIQI': '要求CSC会议日期',//要求CSC会议日期
@@ -324,7 +324,7 @@
     'LK_JIESHUBENLUNXUNJIA': '结束本轮询价',//结束本轮询价
     'LK_JIAOFU': '交付',//交付
     'LK_JIAGEMINGXI': '价格明细',//价格明细
-    'LK_JISHUJIAOLIUHUI': '技术交流会',//技术交流会
+    'LK_JISHUJIAOLIUHUI': '技术交底会',//技术交底会
     'LK_JIHUORFQ': '激活RFQ',//激活RFQ
     'LK_JICHUXINXI': '基础信息',//基础信息
     'LK_HUOBI': '货币',//货币
@@ -461,7 +461,12 @@
     'LK_CBDSHEZHI': 'CBD设置',//CBD设置
     'LK_BOMDANXINXI': 'BOM单信息',//BOM单信息
     'LK_BDLLIEBIAO': 'BDL列表',//BDL列表
-    'LK_AEKOHAO': 'Aeko号'//Aeko号
+    'LK_AEKOHAO': 'Aeko号',//Aeko号
+    'LK_QINGSHURULINGJIANHAO':'请输入零件号',//请输入零件号
+    'LK_QINGSHURULINGJIANMING':'请输入零件名（中）',//请输入零件名（中）
+    'LK_QINGTIANXIESHEJIKESHI':'请填写设计科室',//请填写设计科室
+    'LK_QINGTIANXIEGONGCHENGSHI':'请填写工程师',//请填写工程师
+    'LK_QINGTIANXIEXINXIDANLIUSHUIHAO':'请填写信息单流水号'//请填写信息单流水号
 
     /*
     <!------------------------------------------------------------------------>
