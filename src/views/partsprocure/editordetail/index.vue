@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2021-03-31 16:57:55
+ * @LastEditTime: 2021-03-31 17:28:26
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsprocure\editordetail\index.vue
@@ -114,7 +114,7 @@
 						<iFormItem :label="$t('LK_DANWEI')+':'" name="test">
 							<iSelect v-model="detailData.unit" v-permission="PARTSPROCURE_EDITORDETAIL_UNIT">
 								<el-option :value="item.key" :label="item.name"
-									v-for="(item, index) in getGroupList('unit')" :key="index"></el-option>
+									v-for="(item, index) in getGroupList('all_unit')" :key="index"></el-option>
 							</iSelect>
 						</iFormItem>
 						<iFormItem :label="$t('LK_MTZLINGJIAN')+':'" name="test">
@@ -134,15 +134,18 @@
 						</iFormItem>
 						<iFormItem :label="$t('LK_LINIEBUMEN')+':'" name="test">
 							<iSelect v-model="detailData.linieDept" v-permission="PARTSPROCURE_EDITORDETAIL_LINEDEPARTMENT">
-								<el-option :value="item.key" :label="item.name"
-									v-for="(item, index) in getGroupList('linie_dept')" :key="index"></el-option>
+								<!-- <el-option :value="item.key" :label="item.name"
+									v-for="(item, index) in getGroupList('linie_dept')" :key="index"></el-option> -->
+									<el-option value="15" label="专业采购股"></el-option>
 							</iSelect>
 						</iFormItem>
 						<iFormItem label="LINIE：" name="test">
 							<!-- :disabled="!detailData.categoryCode" -->
 							<iSelect v-model="detailData.linieName" v-permission="PARTSPROCURE_EDITORDETAIL_LINE">
-								<el-option :value="item.key" :label="item.name"
-									v-for="(item, index) in getGroupList('linie_name')" :key="index"></el-option>
+								<!-- <el-option :value="item.key" :label="item.name"
+									v-for="(item, index) in getGroupList('linie_name')" :key="index"></el-option> -->
+									<el-option value="16" label="郝连水"></el-option>
+									<el-option value="17" label="郭建立"></el-option>
 							</iSelect>
 						</iFormItem>
 						<iFormItem :label="$t('LK_CFKONGZHIYUAN')+':'" name="test">
@@ -313,7 +316,7 @@
 				});
 			},
 			getProcureGroup() {
-				let types=["part_status","cartype_project_zh","cartype_category","part_preject_type","procure_factory","all_part_type",'all_part_project_type','all_part_type','all_currency_id','all_unit']
+				let types=["part_status","cartype_project_zh","cartype_category","part_preject_type","procure_factory","all_part_type",'all_part_project_type','all_part_type','all_currency_id','all_unit',"all_user_dept"]
 				getProcureGroup({types}).then((res) => {
 					this.fromGroup = res.data;
 				});	
