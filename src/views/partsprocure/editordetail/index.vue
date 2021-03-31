@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2021-03-31 15:52:01
+ * @LastEditTime: 2021-03-31 16:04:15
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsprocure\editordetail\index.vue
@@ -166,9 +166,9 @@
 								{{ detailData.sopDate }}
 							</iText>
 						</iFormItem>
-						<iFormItem :label="$t('LK_LINGJIANZHUANGTAI')+':'" name="test">
+						<iFormItem :label="$t('partsprocure.PARTSPROCUREPARTSTATUSNAME')+':'" name="test">
 							<iText v-permission="PARTSPROCURE_EDITORDETAIL_PARTSTATUS">
-								{{ detailData.partStatus }}
+								{{ detailData.statusName }}
 							</iText>
 						</iFormItem>
 						<iFormItem label="BMG：" name="test">
@@ -184,7 +184,6 @@
 								</el-option>
 							</iSelect>
 						</iFormItem>
-
 					</div>
 				</div>
 			</iFormGroup>

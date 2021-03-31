@@ -2,7 +2,7 @@
   <div class="infos">
     <iFormGroup v-for="(infoChunk, $chunkIndex) in infoChunks" :key="$chunkIndex" row="3" class="infos" inline icon>
       <!--<iFormItem v-for="(info, $index) in infoChunk" :key="$index" class="item" :label="`${ info.label }：`">-->
-      <iFormItem v-for="(info, $index) in infoChunk" :key="$index" class="item" :label="$t('info.key')+':'">
+      <iFormItem v-for="(info, $index) in infoChunk" :key="$index" class="item" :label="$t(info.key)+':'">
         <iText class="text">{{ info.value }}</iText>
       </iFormItem>
     </iFormGroup>

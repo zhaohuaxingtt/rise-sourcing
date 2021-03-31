@@ -172,13 +172,17 @@
 			// 获取申请目标价数据
 			targePriceDetail(){
 				let data = {
-					"cfTargetpriceReq.purchaseTargetId": this.purchaseProjectId,
+					"cfTargetpriceReq.purchaseProjectId": this.purchaseProjectId,
 				};
 				getTabelData(data).then((res) => {
 					let price=res.data.targetprice
-					this.detailData = price;
-					this.tableListData=[price.cfTargetPriceDetail]
-					this.targeRwData=[price.rwApplication]
+					this.targetprice = price;
+					if (price.cfTargetPriceDetail) {
+						this.tableListData=[price.cfTargetPriceDetail]
+					}
+					if (price.rwApplication) {
+						this.targeRwData=[price.rwApplication]
+					}
 				});
 			},
 			//表格选中值集

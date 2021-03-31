@@ -60,7 +60,6 @@ export const targetPriceDetail = {
 		applyReason: "",
 		applyMemo: "",
 	},
-	operator: "", //操作人
 	purchasePrjectId: "", //采购项目ID
 	rwApplication: {
 		applyDate: "", //申请时间
