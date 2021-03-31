@@ -23,7 +23,7 @@ export const tableTitle = permissionTitle("PARTSRFQ_RFQLIST",[
     {props:'linieNameZh',name:'LINIE', key: 'rfq.RFQLINIE'},
     {props:'tpGradeStatus',name:'TP评分状态', key: 'LK_TPPINGFENZHUANGTAI'},
     {props:'mqGradeStatus',name:'MQ评分状态', key: 'LK_MQPINGFENZHUANGTAI'},
-    {props:'targetGradeStatus',name:'目标价状态', key: 'LK_MQPINGFENZHUANGTAI'},
+    {props:'targetGradeStatus',name:'目标价状态', key: 'LK_MUBIAOJIAZHUANGTAI'},
     {props:'recordId',name:'',key: ''},
 ])
 
