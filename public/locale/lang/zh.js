@@ -3,16 +3,17 @@
 		typeof define === 'function' && define.amd ? define(['i18n'], factory) :
 		(global = global || self, factory(window.i18n))
 }(this, function(i18n) {
-	'use strict'
-
+	'use strict'  
 	i18n.setLocaleMessage('zh', {
+    // ...require('element-ui/lib/locale/lang/zh-CN'),
 		'delete': "删除",
 		'all': '全部',
 		'search': '搜索',
 		'setting': '设置',
 		'pagination': {
 			'prev': '上一页',
-			'next': '下一页'
+			'next': '下一页',
+      'goto': '前往',
 		},
 		'topLayout': {
 			'message': {
@@ -573,7 +574,10 @@
 		'LK_ZAIXINSHENQINGCAIWUMUBIAOJIA': '再新申请财务目标价 ', //再新申请财务目标价 
 		'LK_ZAIXIANJINGJIA': '在线竞价', //在线竞价
 		'LK_DANGQIANBANBEN': '当前版本', //当前版本
-
+    'LK_XIANSHI': '显示', // 显示
+    'LK_TIAODI': '条到第', // 条到第
+    'LK_TIAOJILU': '条记录', // 条记录
+    'LK_GONG': '共', // 共
 		/*
 		<!------------------------------------------------------------------------>
 		<!--                                                                   --->
