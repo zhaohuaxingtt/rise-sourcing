@@ -4,15 +4,16 @@
             (global = global || self, factory(window.i18n))
 }(this, function (i18n) {
     'use strict'
-
     i18n.setLocaleMessage('en', {
+        // ...require('element-ui/lib/locale/lang/en'),
         'delete': "delete",
         'all': 'all',
         'search': 'search',
         'setting': 'setting',
         'pagination': {
             'prev': 'prev',
-            'next': 'next'
+            'next': 'next',
+            'goto': 'go to',
         },
         'topLayout': {
             'message': {
@@ -456,7 +457,7 @@
         'LK_CSFPFUZEREN': 'CSF（P）Person in Charge',//CSF（P）负责人
         'LK_CS_1SHANGHUIBEIZHU': 'CS*1 meeting remark',//CS*1上会备注
         'LK_CS_1BEIZHU': 'CS*1 Remark',//CS*1备注
-        'LK_CFFUZEREN': 'CF Owner',//CF负责人
+        'LK_CFFUZEREN': 'CSF(P) Owner',//CSF(P) 负责人
         'LK_CBDXUANZE': 'CBD choice',//CBD选择
         'LK_CBDSHEZHI': 'CBD Setting',//CBD设置
         'LK_BOMDANXINXI': 'BOM information',//BOM单信息
@@ -566,6 +567,10 @@
         'LK_ZAIXINSHENQINGCAIWUMUBIAOJIA': 'Reapply CF Target Price',//再新申请财务目标价 
         'LK_ZAIXIANJINGJIA': 'Online Bidding',//在线竞价
         'LK_DANGQIANBANBEN': 'Current Version',//当前版本
+        'LK_XIANSHI': 'Displays', // 显示
+        'LK_TIAODI': 'to', // 条到第
+        'LK_TIAOJILU': 'records', // 条记录
+        'LK_GONG': 'total', // 共
 		'LK_ZHUANGTAI': 'Status',//状态
 
 

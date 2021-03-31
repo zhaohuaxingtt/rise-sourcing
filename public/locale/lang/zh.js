@@ -3,16 +3,17 @@
 		typeof define === 'function' && define.amd ? define(['i18n'], factory) :
 		(global = global || self, factory(window.i18n))
 }(this, function(i18n) {
-	'use strict'
-
+	'use strict'  
 	i18n.setLocaleMessage('zh', {
+    // ...require('element-ui/lib/locale/lang/zh-CN'),
 		'delete': "删除",
 		'all': '全部',
 		'search': '搜索',
 		'setting': '设置',
 		'pagination': {
 			'prev': '上一页',
-			'next': '下一页'
+			'next': '下一页',
+      'goto': '前往',
 		},
 		'topLayout': {
 			'message': {
@@ -459,7 +460,7 @@
 		'LK_CSFPFUZEREN': 'CSF（P）负责人', //CSF（P）负责人
 		'LK_CS_1SHANGHUIBEIZHU': 'CS*1上会备注', //CS*1上会备注
 		'LK_CS_1BEIZHU': 'CS*1备注', //CS*1备注
-		'LK_CFFUZEREN': 'CF负责人', //CF负责人
+		'LK_CFFUZEREN': 'CSF(P)负责人', //CF负责人
 		'LK_CBDXUANZE': 'CBD选择', //CBD选择
 		'LK_CBDSHEZHI': 'CBD设置', //CBD设置
 		'LK_BOMDANXINXI': 'BOM单信息', //BOM单信息
@@ -573,6 +574,10 @@
 		'LK_ZAIXINSHENQINGCAIWUMUBIAOJIA': '再新申请财务目标价 ', //再新申请财务目标价 
 		'LK_ZAIXIANJINGJIA': '在线竞价', //在线竞价
 		'LK_DANGQIANBANBEN': '当前版本', //当前版本
+    'LK_XIANSHI': '显示', // 显示
+    'LK_TIAODI': '条到第', // 条到第
+    'LK_TIAOJILU': '条记录', // 条记录
+    'LK_GONG': '共', // 共
 		'LK_ZHUANGTAI': '状态',//状态
 		/*
 		<!------------------------------------------------------------------------>

@@ -7,7 +7,7 @@
  * @FilePath: \rise\src\views\partsign\editordetail\components\enquiry\components\tablelist.vue
 -->
 <template>
-	<el-table class="table" :data="tableData" v-loading="tableLoading" @selection-change="handleSelectionChange">
+	<el-table class="table" :data="tableData" :empty-text="$t('LK_ZANWUSHUJU')" v-loading="tableLoading" @selection-change="handleSelectionChange">
 		<el-table-column type="selection" align="center"></el-table-column>
 		<el-table-column type="index" align="center" label="#"></el-table-column>
 		<template v-for="(item, index) in tableTitle">
