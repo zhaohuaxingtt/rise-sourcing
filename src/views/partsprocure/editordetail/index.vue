@@ -137,7 +137,7 @@
 									v-for="(item, index) in getGroupList('linie_name')" :key="index"></el-option>
 							</iSelect>
 						</iFormItem>
-						<iFormItem label="CF控制员：" name="test">
+						<iFormItem :label="$t('LK_CFKONGZHIYUAN')+':'" name="test">
 							<iSelect v-model="detailData.cfController"
 								v-permission="PARTSPROCURE_EDITORDETAIL_CFCONTROLLER">
 								<el-option :value="item.value" :label="item.label"

@@ -7,7 +7,7 @@
  * @FilePath: \rise\src\views\partsign\editordetail\components\logDialog\index.vue
 -->
 <template>
-  <iDialog class="dialog" title="日志查看" v-bind="$props" :visible.sync="visible" v-on="$listeners">
+  <iDialog class="dialog" :title="$t('LK_RIHZICHAKAN')" v-bind="$props" :visible.sync="visible" v-on="$listeners">
     <div class="body">
       <tableList index :selection="false" height="100%" v-show="visible" class="table" :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="loading" />
     </div>

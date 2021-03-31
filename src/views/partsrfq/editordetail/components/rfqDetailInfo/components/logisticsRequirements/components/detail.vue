@@ -97,7 +97,7 @@
             <iInput v-if="editStatus"></iInput>
             <i-text v-else>{{dataInfo.partPackgeRequirements.warehousingAppliancesLife}}</i-text>
           </iFormItem>
-          <iFormItem label="入库基础年维修费率" name="test">
+          <iFormItem :label="$t('LK_RUKUJICHUNIANWEIXIUFEILV')" name="test">
             <iInput v-if="editStatus"></iInput>
             <i-text v-else>{{dataInfo.partPackgeRequirements.warehousingAppliancesAnnualMaintenanceRate}}</i-text>
           </iFormItem>

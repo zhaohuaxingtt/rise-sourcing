@@ -11,7 +11,7 @@
     <el-table-column v-if="selection" type="selection" align="center"></el-table-column>
     <el-table-column v-if="index" type="index" align="center" :label="indexLabel"></el-table-column>
     <template v-for="(item, $index) in tableTitle">
-      <el-table-column :key="$index" align="center" :label="item.name" :prop="item.props">
+      <el-table-column :key="$index" align="center" :label="$t(item.key)" :prop="item.props">
         <template v-if="$scopedSlots[item.props] || $slots[item.props]" v-slot="scope">
           <slot :name="item.props" :row="scope.row"></slot>
         </template>
