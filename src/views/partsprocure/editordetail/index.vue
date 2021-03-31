@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2021-03-31 15:52:01
+ * @LastEditTime: 2021-03-31 16:04:15
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsprocure\editordetail\index.vue
@@ -184,7 +184,6 @@
 								</el-option>
 							</iSelect>
 						</iFormItem>
-
 					</div>
 				</div>
 			</iFormGroup>
