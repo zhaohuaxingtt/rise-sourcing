@@ -565,6 +565,7 @@
         'LK_YUQIDAIBAN': 'Overdue',//逾期待办 
         'LK_ZAIXINSHENQINGCAIWUMUBIAOJIA': 'Reapply CF Target Price',//再新申请财务目标价 
         'LK_ZAIXIANJINGJIA': 'Online Bidding',//在线竞价
+        'LK_DANGQIANBANBEN': 'Current Version',//当前版本
 
 
         // 'LK_XIANGNEIZHOUZHUANCAILIAOZHONGHEJIAGE':'翻箱前器具综合单价（RMB）', //箱内周转材料综合价格 
