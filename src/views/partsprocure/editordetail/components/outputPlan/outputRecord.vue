@@ -1,5 +1,5 @@
 <template>
-  <iCard class="outputRecord" tabCard>
+  <iCard class="outputRecord" tabCard :title="$t('LK_LINGJIANCHANLIANGJILU')">
     <template v-slot:header-control>
       <iButton @click="updateOutput" v-permission="PARTSPROCURE_EDITORDETAIL_OUTPUTPLAN_OUTPUTRECORD_UPDATE">{{ $t('LK_GENGXINZHIXUNJIACHANLIANG') }}</iButton>
     </template>
@@ -65,14 +65,14 @@ export default {
       }).
         then(res => {
           if (res.data && res.data.partRecordResPageDTO) {
-            if (Array.isArray(res.data.partRecordResPageDTO.records) && res.data.partRecordResPageDTO.records[0] && Array.isArray(res.data.partRecordResPageDTO.records[0].outputPlanList)) {
+            if (Array.isArray(res.data.partRecordResPageDTO.data) && res.data.partRecordResPageDTO.data[0] && Array.isArray(res.data.partRecordResPageDTO.data[0].outputPlanList)) {
               this.tableTitle = cloneDeep(tableTitle)
               
-              res.data.partRecordResPageDTO.records[0].outputPlanList.forEach((planData, index) => {
-                this.tableTitle.splice(index, 0, { props: planData.year, name: planData.year })
+              res.data.partRecordResPageDTO.data[0].outputPlanList.forEach((planData, index) => {
+                this.tableTitle.splice(index, 0, { props: planData.year, name: planData.year, key: planData.year })
               })
 
-              this.tableListData = res.data.partRecordResPageDTO.records.map(item => {
+              this.tableListData = res.data.partRecordResPageDTO.data.map(item => {
                 const result = {
                   totalOutput: item.totalOutput,
                   versionNum: item.versionNum,
@@ -89,8 +89,8 @@ export default {
 
                 return result
               })
+              console.log(this.tableListData)
             }
-
             this.page.totalCount = res.data.partRecordResPageDTO.total || 0
           }
 
