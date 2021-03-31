@@ -10,7 +10,7 @@
                 v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_TECHNICALSEMINAR_DESTEXT">
       <template v-for="(item,index) of dynamicForm.baseInfo">
         <iFormItem label=" " :name="index" :key="index">
-          <iInput type="textarea" :rows="4" resize="none" :placeholder="$t('LK_QINGSHURU')" v-model="item.value"
+          <iInput type="textarea" :rows="4" resize="none" :placeholder="item.placeholder" v-model="item.value"
                   maxlength="100" show-word-limit></iInput>
         </iFormItem>
       </template>
@@ -34,9 +34,9 @@ export default {
       showStatus: true,
       dynamicForm: {
         baseInfo: [
-          {value: ''},
-          {value: ''},
-          {value: ''},
+          {value: '', placeholder: '供应商公司介绍'},
+          {value: '', placeholder: '供应商产品概要'},
+          {value: '', placeholder: '供应商timeline'},
         ]
       }
     }
@@ -44,9 +44,9 @@ export default {
   methods: {
     add() {
       const inputTemplate = [
-        {value: ''},
-        {value: ''},
-        {value: ''},
+        {value: '', placeholder: '供应商公司介绍'},
+        {value: '', placeholder: '供应商产品概要'},
+        {value: '', placeholder: '供应商timeline'},
       ]
       if (this.dynamicForm.baseInfo.length < 12) {
         this.dynamicForm.baseInfo.push(...inputTemplate)
