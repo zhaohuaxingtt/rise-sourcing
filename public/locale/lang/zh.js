@@ -263,7 +263,7 @@
     'LK_PEIZHIBIANMA': '配置编码',//配置编码
     'LK_PEIZHIBILI': '配置比例',//配置比例
     'LK_NIANFEN': '年份',//年份
-    'LK_MUBIAOJIAZHUANGTAI': '目标价状态',//目标价状态
+    'LK_MUBIAOJIAZHUANGTAI': 'CF目标价状态',//目标价状态
     'LK_MUBIAOJIA': '目标价',//目标价
     'LK_MOJUYUSUANSHENQING': '模具预算申请',//模具预算申请
     'LK_MEICHEYONGLIANGZHUANGTAI': '每车用量状态',//每车用量状态

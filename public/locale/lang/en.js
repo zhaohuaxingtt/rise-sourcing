@@ -261,7 +261,7 @@
         'LK_PEIZHIBIANMA': 'Configuration ID',//配置编码
         'LK_PEIZHIBILI': 'Configure Ratio',//配置比例
         'LK_NIANFEN': 'Year',//年份
-        'LK_MUBIAOJIAZHUANGTAI': 'Target price status',//目标价状态
+        'LK_MUBIAOJIAZHUANGTAI': 'CF Target price status',//目标价状态
         'LK_MUBIAOJIA': 'Target Price',//目标价
         'LK_MOJUYUSUANSHENQING': 'Tooling Budget Application',//模具预算申请
         'LK_MEICHEYONGLIANGZHUANGTAI': 'Dosage status',//每车用量状态
