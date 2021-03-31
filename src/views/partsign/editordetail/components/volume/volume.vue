@@ -9,7 +9,7 @@
 <template>
   <iCard class="volume">
     <div class="header clearFloat">
-      <span class="title">{{ $t('LK_MEICHEYONGLIANG') }}（当前版本：{{ versionNum }}）</span>
+      <span class="title">{{ $t('LK_MEICHEYONGLIANG') }}（{{ $t('LK_DANGQIANBANBEN') }} ：{{ versionNum }}）</span>
       <div class="control">
         <iButton @click="version" v-permission="PARTSIGN_EDITORDETAIL_VOLUME_ALL">{{ $t('LK_CHAKANQUANBUBANBEN') }}</iButton>
         <iButton @click="download" v-permission="PARTSIGN_EDITORDETAIL_VOLUME_EXPORT">{{ $t('LK_DAOCHU') }}</iButton>
