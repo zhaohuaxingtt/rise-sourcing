@@ -37,7 +37,7 @@
 </template>
 
 <script>
-import {iCard, iPagination, iMessage} from "@/components";
+import {iCard, iPagination} from "@/components";
 import tablelist from './supplierScoreTableList'
 import {supplierScoreTitle} from "./data";
 import {pageMixins} from "@/utils/pageMixins";

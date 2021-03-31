@@ -98,7 +98,6 @@ export default {
     confirm() {
       if (this.multipleSelection.length !== 1) return iMessage.warn('请选择一条需要确认的版本')
       const data = this.multipleSelection[0]
-
       this.confirmLoading = true
       putPerCarDosage({
         updateConfirmScenes: {

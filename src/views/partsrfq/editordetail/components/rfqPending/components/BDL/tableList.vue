@@ -8,7 +8,7 @@
 	<el-table :stripe="false" class="table" ref='multipleTable' :data="tableData" :empty-text="$t('LK_ZANWUSHUJU')" v-loading="tableLoading" @selection-change="handleSelectionChange" @select="handleSelect" @select-all="handleSelectAll" :row-style="rowStyle">
 		<el-table-column type="selection" align="center" :selectable="selectable">
 		</el-table-column>
-		<el-table-column type="index" align="center" label="#"></el-table-column>
+<!--		<el-table-column type="index" align="center" label="#"></el-table-column>-->
 		<template v-for="(item, index) in tableTitle">
 			<el-table-column :key="index" align="center" v-if="item.props == 'supplierNameZh'" :prop="item.props" :label="$t(item.key)">
 				<template slot-scope="scope">

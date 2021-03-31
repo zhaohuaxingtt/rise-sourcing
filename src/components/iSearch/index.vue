@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 16:34:49
- * @LastEditTime: 2021-03-28 17:35:28
+ * @LastEditTime: 2021-03-31 21:20:34
  * @LastEditors: Please set LastEditors
  * @Description: 界面中存在的搜索区域，公共组件。
  * @FilePath: \rise\src\components\iSearch\index.vue
@@ -113,6 +113,6 @@ export default {
 }
 
 .hiden {
-  max-height: 70px;
+  max-height: 65px;
 }
 </style>

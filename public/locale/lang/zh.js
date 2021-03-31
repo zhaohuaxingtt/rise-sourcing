@@ -197,7 +197,7 @@
 		'LK_TUIHUI': '退回', //退回
 		'LK_TUISONGSHIJIAN': '推送时间', //推送时间
 		'LK_TUZHIRIQI': '图纸日期', //图纸日期
-		'LK_TUZHIHETPDANXIANGQING': '图纸和TP单详情', //图纸和TP单详情
+		'LK_TUZHIHETPDANXIANGQING': '图纸和信息单详情', //图纸和信息单详情
 		'LK_TUZHI': '图纸', //图纸
 		'LK_TOUZIYUSUAN': '投资预算', //投资预算
 		'LK_TONGZHIYIBAOJIAGONGYINGSHANG': '通知已报价供应商', //通知已报价供应商
@@ -403,7 +403,7 @@
 		'LK_CANKAOBAOZHUANGDANJIAYUAN': '参考包装单价（元）', //参考包装单价（元）
 		'LK_CANKAOBAOZHUANG': '参考包装', //参考包装
 		'LK_CAIGOUYUANGONGHAO': '采购员工号', //采购员工号
-		'LK_CAIGOUYUAN': '采购员', //采购员
+		'LK_CAIGOUYUAN': '前期采购员', //采购员
 		'LK_CAIGOUXIANGMUXINXI': '采购项目信息', //采购项目信息
 		'LK_CAIGOUXIANGMUJIANLI': '采购项目建立', //采购项目建立
 		'LK_CAIGOUTIAOKUAN': '采购条款', //采购条款

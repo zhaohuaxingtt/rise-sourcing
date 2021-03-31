@@ -54,7 +54,7 @@
     <!--                  添加供应商弹框                                      --->
     <!------------------------------------------------------------------------>
     <add-supplier-dialog
-        @save="handleAddSupplierSave"
+        @sure="handleAddSupplierSave"
         v-model="dialogAddSupplier"
     />
   </div>
@@ -170,6 +170,8 @@ export default {
     },
     handleAddSupplierSave(list) {
       this.addSupplierList = list
+      this.dialogAddSupplier = false
+      iMessage.success('已保存')
     },
     async getPic(row) {
       this.drawingList = []

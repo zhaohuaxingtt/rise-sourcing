@@ -58,7 +58,7 @@ export default {
           if (res.data && res.data.partRecordsResDTO) {
             if (Array.isArray(res.data.partRecordsResDTO.outputPlanList)) {
               res.data.partRecordsResDTO.outputPlanList.forEach((planData, index) => {
-                this.tableTitle.splice(1 + index, 0, { props: planData.year, name: planData.year })
+                this.tableTitle.splice(1 + index, 0, { props: planData.year, name: planData.year, key: planData.year })
                 this.tableListData[0][planData.year] = planData.output
                 this.tableListData[0].info[planData.year] = planData
               })
