@@ -490,6 +490,11 @@
     'LK_ZAICISHENGQINGCAIWUMUBIAOJIA':'再新申请财务目标价', //再新申请财务目标价  
     'LK_QINGSHURUCHANXUANGONGYINGSHANGMINGCHENG':'请输入查询供应商名称', //请输入查询供应商名称  
     'LK_LINGJIANCAIGOUXIANGMULEIXING':'零件采购项目类型', //零件采购项目类型  
+    'LK_BAOCUNBINGCHUANGJIAN':'保存并创建', //保存并创建  
+    'LK_DAORUSHIJIAN':'导入时间', //导入时间  
+    'LK_DUQUYOUXIAODOM':'读取有效BOM', //读取有效BOM   
+    'LK_XUNJIATUZHI':'询价图纸', //询价图纸   
+    'LK_RENWUZHONGXIN':'任务中心', //任务中心   
     // 'LK_XIANGNEIZHOUZHUANCAILIAOZHONGHEJIAGE':'箱内周转材料综合价格', //箱内周转材料综合价格 
     // 'LK_XIANGNEIZHOUZHUANCAILIAOZHONGHEJIAGE':'箱内周转材料综合价格', //箱内周转材料综合价格 
     /*

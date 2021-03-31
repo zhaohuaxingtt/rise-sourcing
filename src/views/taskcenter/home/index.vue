@@ -2,7 +2,7 @@
   <iPage id="taskCenterHome" class="home" v-loading="loading">
     <div id="header" class="header">
       <div class="margin-bottom20 clearFloat">
-        <span class="font18 font-weight">任务中心</span>
+        <span class="font18 font-weight">{{$t('LK_RENWUZHONGXIN')}}</span>
         <div class="floatright">
           <!-- <logButton @click="log" /> -->
           <span class="margin-left20">

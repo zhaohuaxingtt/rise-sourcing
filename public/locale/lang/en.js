@@ -487,6 +487,11 @@
         'LK_ZAICISHENGQINGCAIWUMUBIAOJIA':'Reapply CF Target Price', //再新申请财务目标价  
         'LK_QINGSHURUCHANXUANGONGYINGSHANGMINGCHENG':'Please enter to search for supplier name, factory…', //请输入查询供应商名称  
         'LK_LINGJIANCAIGOUXIANGMULEIXING':'Parts Project Type', //零件采购项目类型  
+        'LK_BAOCUNBINGCHUANGJIAN':'Save and Create', //保存并创建 
+        'LK_DAORUSHIJIAN':'Import time', //导入时间  
+        'LK_DUQUYOUXIAODOM':'Read Valid BOM', //读取有效BOM 
+        'LK_XUNJIATUZHI':'Inquiry Blueprint', //询价图纸  
+        'LK_RENWUZHONGXIN':'Task Center', //任务中心 
         // 'LK_XIANGNEIZHOUZHUANCAILIAOZHONGHEJIAGE':'翻箱前器具综合单价（RMB）', //箱内周转材料综合价格 
         /*
         <!------------------------------------------------------------------------>
