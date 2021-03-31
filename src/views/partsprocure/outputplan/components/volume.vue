@@ -53,7 +53,8 @@ export default {
       tableTitle,
       tableListData: [],
       multipleSelection: [],
-      carTypeConfigId: ''
+      carTypeConfigId: '',
+      tpId: ''
     };
   },
   created() {
@@ -69,7 +70,7 @@ export default {
             currPage: 1,
             pageSize: 10,
             status: 1,
-            tpId: this.params.purchasingRequirementId,
+            purchasingRequirementId: this.params.purchasingRequirementId,
           });
 
           this.versionNum = "V1";
@@ -78,10 +79,9 @@ export default {
             Array.isArray(versionRes.data.tpRecordList) &&
             versionRes.data.tpRecordList[0]
           ) {
-            this.carTypeConfigId =
-              versionRes.data.tpRecordList[0].carTypeConfigId;
-            this.versionNum =
-              versionRes.data.tpRecordList[0].versionNum || "V1";
+            this.carTypeConfigId = versionRes.data.tpRecordList[0].carTypeConfigId;
+            this.versionNum = versionRes.data.tpRecordList[0].versionNum || "V1";
+            this.tpId = versionRes.data.tpRecordList[0].tpId
           }
         }
 
@@ -91,7 +91,7 @@ export default {
           currPage: this.page.currPage,
           pageSize: this.page.pageSize,
           status: 1,
-          tpId: this.params.purchasingRequirementId,
+          tpId: this.tpId,
         });
 
         if (infoRes.data) {
