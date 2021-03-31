@@ -1,7 +1,7 @@
 <template>
-  <iCard class="outputRecord" tabCard collapse title="零件产量记录">
+  <iCard class="outputRecord" tabCard collapse :title="$t('LK_LINGJIANCHANLIANGJILU')">
     <template v-slot:header-control>
-      <iButton v-permission="PARTSPROCURE_OUTPUTPLAN_OUTPUTRECORD_UPDATE">更新至询价产量</iButton>
+      <iButton v-permission="PARTSPROCURE_OUTPUTPLAN_OUTPUTRECORD_UPDATE">{{$t('LK_GENGXINZHIXUNJIACHANLIANG')}}</iButton>
     </template>
     <div class="body">
       <tablelist

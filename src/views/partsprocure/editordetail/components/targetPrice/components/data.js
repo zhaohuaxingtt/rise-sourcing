@@ -5,47 +5,58 @@
  * @Description: In User Settings Edit
  */
 export const targeTitle = [{
-		props: 'applyDate',
-		name: '申请日期'
-	},
-	{
-		props: 'applyType',
-		name: '申请类型'
-	},
-	{
-		props: 'cfOwnerId',
-		name: 'CF负责人'
-	},
-	{
-		props: 'applyCategory',
-		name: '申请类别'
-	},
-	{
-		props: 'expTargetpri',
-		name: '期望目标价'
-	},
-	{
-		props: 'applyStatus',
-		name: '申请状态'
-	},
+	props: 'applyDate',
+	name: '申请日期',
+	key:'LK_SHENQINGRIQI'
+},
+{
+	props: 'applyType',
+	name: '申请类型',
+	key:'LK_SHENQINGLEIXING'
+},
+{
+	props: 'cfOwnerId',
+	name: 'CF负责人',
+	key:'LK_CFFUZEREN'
+},
+{
+	props: 'applyCategory',
+	name: '申请类别',
+	key:'LK_SHENQINGLEIBIE'
+},
+{
+	props: 'expTargetpri',
+	name: '期望目标价',
+	key:'LK_QIWANGMUBIAOJIA'
+},
+{
+	props: 'applyStatus',
+	name: '申请状态',
+	key:'LK_SHENQINGZHUANGTAI'
+},
 ]
 export const rwTitle = [{
-		props: 'applyDate',
-		name: '申请日期'
-	},
-	{
-		props: 'applyType',
-		name: '申请类型'
-	},
-	{
-		props: 'price',
-		name: 'RW价'
-	},
-	{
-		props: 'applyStatus',
-		name: '申请状态'
-	}
+	props: 'applyDate',
+	name: '申请日期',
+	key:'LK_SHENQINGRIQI'
+},
+{
+	props: 'applyType',
+	name: '申请类型',
+	key:'LK_SHENQINGLEIXING'
+},
+{
+	props: 'price',
+	name: 'RW价',
+	key:'LK_RWJIA'
+},
+{
+	props: 'applyStatus',
+	name: '申请状态',
+	key:'LK_SHENQINGZHUANGTAI'
+}
 ]
+
 // 申请目标价信息
 export const targetPriceDetail = {
 	cfTargetPriceDetail: {
@@ -60,7 +71,6 @@ export const targetPriceDetail = {
 		applyReason: "",
 		applyMemo: "",
 	},
-	operator: "", //操作人
 	purchasePrjectId: "", //采购项目ID
 	rwApplication: {
 		applyDate: "", //申请时间

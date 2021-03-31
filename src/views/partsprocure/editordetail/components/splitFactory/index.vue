@@ -27,6 +27,7 @@
           @selection-change="handleSelectionChange"
           width="500"
           class="margin-right30"
+          :empty-text="$t('LK_ZANWUSHUJU')"
         >
           <el-table-column
             type="selection"
