@@ -104,9 +104,11 @@
 	import outputPlan from './components/outputPlan'
 	import {
 		changeProcure,
-		insertRfq,
 		getProcureGroup,
 	} from "@/api/partsprocure/home";
+  import {
+    insertRfq
+  } from "@/api/partsrfq/home";
 	import {materialGroupByLinie,getStuffByCategory,putMaterialGroup} from "@/api/partsprocure/editordetail";
 	import {
 		getPageGroup
