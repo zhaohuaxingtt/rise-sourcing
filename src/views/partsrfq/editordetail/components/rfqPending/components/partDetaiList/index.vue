@@ -14,7 +14,9 @@
       <iButton @click="showApplyPrice" v-permission="PARTSRFQ_EDITORDETAIL_PARTDETAILIST_NEWPRICE">
         {{ $t('LK_XINSHENQINGCAIWUMUBIAOJIA') }}
       </iButton>
-      <iButton @click="againApply" v-permission="PARTSRFQ_EDITORDETAIL_PARTDETAILIST_REAPPLYPRICE">{{ $t('LK_ZAICISHENGQINGCAIWUMUBIAOJIA') }}</iButton>
+      <iButton @click="againApply" v-permission="PARTSRFQ_EDITORDETAIL_PARTDETAILIST_REAPPLYPRICE">
+        {{ $t('LK_ZAICISHENGQINGCAIWUMUBIAOJIA') }}
+      </iButton>
     </div>
     <tableList :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="confirmTableLoading"
                @handleSelectionChange="handleSelectionChange" @openPage="openPage"></tableList>
@@ -149,18 +151,20 @@ export default {
     },
     //获取表格数据
     getTableList() {
-      this.confirmTableLoading = true
-      this.parmarsHasRfq['search.size'] = this.page.pageSize
-      this.parmarsHasRfq['search.current'] = this.page.currPage
-      this.parmarsHasRfq['search.rfqId'] = this.rfqId
-      this.parmarsHasRfq['search.projectStatus'] = '12'
-      getPartSrcPrjs(this.parmarsHasRfq).then(res => {
-        this.confirmTableLoading = false
-        this.page.currPage = res.data.pageData.pageNum
-        this.page.pageSize = res.data.pageData.pageSize
-        this.page.totalCount = res.data.pageData.total
-        this.tableListData = res.data.pageData.data
-      }).catch(() => this.confirmTableLoading = false)
+      if (this.rfqId) {
+        this.confirmTableLoading = true
+        this.parmarsHasRfq['search.size'] = this.page.pageSize
+        this.parmarsHasRfq['search.current'] = this.page.currPage
+        this.parmarsHasRfq['search.rfqId'] = this.rfqId
+        this.parmarsHasRfq['search.projectStatus'] = '12'
+        getPartSrcPrjs(this.parmarsHasRfq).then(res => {
+          this.confirmTableLoading = false
+          this.page.currPage = res.data.pageData.pageNum
+          this.page.pageSize = res.data.pageData.pageSize
+          this.page.totalCount = res.data.pageData.total
+          this.tableListData = res.data.pageData.data
+        }).catch(() => this.confirmTableLoading = false)
+      }
     },
     // 新申请财务目标价
     showApplyPrice() {
