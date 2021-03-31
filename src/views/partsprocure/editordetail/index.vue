@@ -126,19 +126,18 @@
 							</iText>
 						</iFormItem>
 						<iFormItem :label="$t('LK_LINIEBUMEN')+':'" name="test">
-							<iSelect v-model="detailData.linieDept"
-								v-permission="PARTSPROCURE_EDITORDETAIL_LINEDEPARTMENT">
+							<iSelect v-model="detailData.linieDept" v-permission="PARTSPROCURE_EDITORDETAIL_LINEDEPARTMENT" :disabled="!detailData.categoryCode" @click="tips">
 								<el-option :value="item.value" :label="item.label"
 									v-for="(item, index) in getGroupList('linie_dept')" :key="index"></el-option>
 							</iSelect>
 						</iFormItem>
 						<iFormItem label="LINIE：" name="test">
-							<iSelect v-model="detailData.linieName" v-permission="PARTSPROCURE_EDITORDETAIL_LINE">
+							<iSelect v-model="detailData.linieName" v-permission="PARTSPROCURE_EDITORDETAIL_LINE" :disabled="!detailData.categoryCode">
 								<el-option :value="item.value" :label="item.label"
 									v-for="(item, index) in getGroupList('linie_name')" :key="index"></el-option>
 							</iSelect>
 						</iFormItem>
-						<iFormItem label="CF控制员：" name="test">
+						<iFormItem :label="$t('LK_CFKONGZHIYUAN')+':'" name="test">
 							<iSelect v-model="detailData.cfController"
 								v-permission="PARTSPROCURE_EDITORDETAIL_CFCONTROLLER">
 								<el-option :value="item.value" :label="item.label"
@@ -434,6 +433,10 @@
 			updateTabs() {
 				this.$refs.outputPlan.getData();
 				this.$refs.outputRecord.getData();
+			},
+			// 下拉框逻辑提示
+			tips(){
+				iMessage.warn("请先设置材料组信息")
 			}
 		},
 	};

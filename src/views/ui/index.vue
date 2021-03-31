@@ -112,7 +112,7 @@
 				<icard title="iTabs-list">
 					<iTabs-list type="border-card" slot="components">
 						<el-tab-pane label="材料清单">内容1</el-tab-pane>
-						<el-tab-pane label="供应商">内容2</el-tab-pane>
+						<el-tab-pane :label="$t('LK_GONGYINGSHANGMING')">内容2</el-tab-pane>
 					</iTabs-list>
 				</icard>
 			</el-col>
@@ -191,26 +191,26 @@
 								<iFormItem label="FSNR/GSNR/SPNR：" name="test">
 									<iInput></iInput>
 								</iFormItem>
-								<iFormItem label="询价采购员：" name="test">
+								<iFormItem :label="$t('LK_XUNJIACAIGOUYUAN')+':'" name="test">
 									<iInput></iInput>
 								</iFormItem>
-								<iFormItem label="签收日期：" name="test">
+								<iFormItem :label="$t('LK_QIANSHOURIQI')+':'" name="test">
 									<iInput></iInput>
 								</iFormItem>
 					</iFormGroup>
 				</iCard>
 				<iCard>
 				<iFormGroup :row="3" inline icon>
-							<iFormItem label="零件号：" name="test">
+							<iFormItem :label="$t('LK_LINGJIANHAO')+':'" name="test">
 								<iInput></iInput>
 							</iFormItem>
 							<iFormItem label="FSNR/GSNR/SPNR：" name="test">
 								<iInput></iInput>
 							</iFormItem>
-							<iFormItem label="询价采购员：" name="test">
+							<iFormItem :label="$t('LK_XUNJIACAIGOUYUAN')+':'" name="test">
 								<iInput></iInput>
 							</iFormItem>
-							<iFormItem label="零件号：" name="test">
+							<iFormItem :label="$t('LK_LINGJIANHAO')+':'" name="test">
 								<iText>test</iText>
 							</iFormItem>
 							<iFormItem label="FSNR/GSNR/SPNR：" name="test">
@@ -218,16 +218,16 @@
 							</iFormItem>
 				</iFormGroup>
 				<iFormGroup :row="2" inline icon>
-							<iFormItem label="零件号：" name="test">
+							<iFormItem :label="$t('LK_LINGJIANHAO')+':'" name="test">
 								<iInput></iInput>
 							</iFormItem>
 							<iFormItem label="FSNR/GSNR/SPNR：" name="test">
 								<iInput></iInput>
 							</iFormItem>
-							<iFormItem label="询价采购员：" name="test">
+							<iFormItem :label="$t('LK_XUNJIACAIGOUYUAN')+':'" name="test">
 								<iInput></iInput>
 							</iFormItem>
-							<iFormItem label="零件号：" name="test">
+							<iFormItem :label="$t('LK_LINGJIANHAO')+':'" name="test">
 								<iText>test</iText>
 							</iFormItem>
 							<iFormItem label="FSNR/GSNR/SPNR：" name="test">
@@ -235,16 +235,16 @@
 							</iFormItem>
 				</iFormGroup>
 					<iFormGroup :row="1" inline icon>
-							<iFormItem label="零件号：">
+							<iFormItem :label="$t('LK_LINGJIANHAO')+':'">
 								<iInput></iInput>
 							</iFormItem>
 							<iFormItem label="FSNR/GSNR/SPNR：" name="test">
 								<iInput></iInput>
 							</iFormItem>
-							<iFormItem label="询价采购员：" name="test">
+							<iFormItem :label="$t('LK_XUNJIACAIGOUYUAN')+':'" name="test">
 								<iInput></iInput>
 							</iFormItem>
-							<iFormItem label="零件号：" name="test">
+							<iFormItem :label="$t('LK_LINGJIANHAO')+':'" name="test">
 								<iText>test</iText>
 							</iFormItem>
 							<iFormItem label="" name="test">

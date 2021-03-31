@@ -8,7 +8,7 @@
   <iCard>
     <div class="header flex-between-center">
       <div class="input">
-        <iInput placeholder="请输入查询供应商名称" suffix-icon="iconfont iconshaixuankuangsousuo" v-model="searchKey"></iInput>
+        <iInput :placeholder="$t('LK_QINGSHURUCHANXUANGONGYINGSHANGMINGCHENG')" suffix-icon="iconfont iconshaixuankuangsousuo" v-model="searchKey"></iInput>
       </div>
       <div>
         <iButton @click="handleSave" v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_BDLSAVEBDL" :loading="saveLoading">{{ $t('LK_BAOCUN') }}</iButton>

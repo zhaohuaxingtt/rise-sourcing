@@ -49,11 +49,11 @@
           </iFormItem>
         </iFormGroup>
         <iFormGroup :row="4" inline icon>
-          <iFormItem label="入库器具长（mm）" name="test">
+          <iFormItem :label="$t('LK_RUKUQIJUCHANG')" name="test">
             <iInput v-if="editStatus"></iInput>
             <i-text v-else>{{dataInfo.partPackgeRequirements.warehousingAppliancesLength}}</i-text>
           </iFormItem>
-          <iFormItem label="入库器具宽（mm）" name="test">
+          <iFormItem :label="$t('LK_RUKUQIJUKUAN')" name="test">
             <iInput v-if="editStatus"></iInput>
             <i-text v-else>{{dataInfo.partPackgeRequirements.warehousingAppliancesWidth}}</i-text>
           </iFormItem>
@@ -61,31 +61,31 @@
             <iInput v-if="editStatus"></iInput>
             <i-text v-else>{{dataInfo.referencePackageWidth}}</i-text>
           </iFormItem>
-          <iFormItem label="入库器具装箱数" name="test">
+          <iFormItem :label="$t('LK_RUKUQIJUZHUANGXIANGSHU')" name="test">
             <iInput v-if="editStatus"></iInput>
             <i-text v-else>{{dataInfo.partPackgeRequirements.warehousingAppliancesCount}}</i-text>
           </iFormItem>
         </iFormGroup>
         <iFormGroup :row="4" inline icon>
-          <iFormItem label="入库器具型号" name="test">
+          <iFormItem :label="$t('LK_RUKUQIJUXINGHAO')" name="test">
             <iInput v-if="editStatus"></iInput>
             <i-text v-else>{{dataInfo.partPackgeRequirements.warehousingAppliancesModel}}</i-text>
           </iFormItem>
-          <iFormItem label="入库器具类型" name="test">
+          <iFormItem :label="$t('LK_RUKUQIJULEIXING')" name="test">
             <iInput v-if="editStatus"></iInput>
             <i-text v-else>{{dataInfo.partPackgeRequirements.warehousingAppliancesType}}</i-text>
           </iFormItem>
-          <iFormItem label="入库器具综合单价（RMB）" name="test">
+          <iFormItem :label="$t('LK_RUKUQIJUZHONGHEDANJIARMB')" name="test">
             <iInput v-if="editStatus"></iInput>
             <i-text v-else>{{dataInfo.partPackgeRequirements.warehousingPerAppliancesPrice}}</i-text>
           </iFormItem>
-          <iFormItem label="入库器具租金（RMB/DAY）" name="test">
+          <iFormItem :label="$t('LK_RUKUQIJUZUJINRMBDAY')" name="test">
             <iInput v-if="editStatus"></iInput>
             <i-text v-else>{{dataInfo.partPackgeRequirements.warehousingAppliancesRent}}</i-text>
           </iFormItem>
         </iFormGroup>
         <iFormGroup :row="4" inline icon>
-          <iFormItem label="入库包装毛重（KG）" name="test">
+          <iFormItem :label="$t('LK_RUKUBAOZHUANGMAOZHONG')" name="test">
             <iInput v-if="editStatus"></iInput>
             <i-text v-else>{{dataInfo.partPackgeRequirements.warehousingAppliancesGrossWeight}}</i-text>
           </iFormItem>
@@ -93,11 +93,11 @@
             <iInput v-if="editStatus"></iInput>
             <i-text v-else>{{dataInfo.partPackgeRequirements.warehousingAppliancesFoldingReturnRatio}}</i-text>
           </iFormItem>
-          <iFormItem label="入库器具寿命" name="test">
+          <iFormItem :label="$t('LK_RUKUQIJUSHOUMING')" name="test">
             <iInput v-if="editStatus"></iInput>
             <i-text v-else>{{dataInfo.partPackgeRequirements.warehousingAppliancesLife}}</i-text>
           </iFormItem>
-          <iFormItem label="入库基础年维修费率" name="test">
+          <iFormItem :label="$t('LK_RUKUJICHUNIANWEIXIUFEILV')" name="test">
             <iInput v-if="editStatus"></iInput>
             <i-text v-else>{{dataInfo.partPackgeRequirements.warehousingAppliancesAnnualMaintenanceRate}}</i-text>
           </iFormItem>

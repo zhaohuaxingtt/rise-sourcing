@@ -19,7 +19,7 @@
 		</div>
 		<iSearch class="margin-bottom20" :title="$t('LK_CAIGOUXIANGMUXINXI')" tabCard>
 			<el-form>
-				<el-form-item label="零件采购项目类型">
+				<el-form-item :label="$t('LK_LINGJIANCAIGOUXIANGMULEIXING')">
 					<iSelect  v-model="batch.part_preject_type">
 						<el-option :value="item.key" :label="item.name"
 							v-for="(item, index) in getGroupList('part_preject_type')" :key="index"></el-option>
@@ -58,7 +58,7 @@
 							:key="index"></el-option>
 					</iSelect>
 				</el-form-item>
-				<el-form-item label="CF控制员">
+				<el-form-item :label="$t('LK_CFKONGZHIYUAN')">
 					<iSelect v-model="batch.cfController">
 						<el-option :value="item.key" :label="item.name" v-for="(item, index) in getGroupList('cf_controller')" :key="index"></el-option>
 					</iSelect>
@@ -72,7 +72,7 @@
 		<iSearch class="margin-bottom20" :title="$t('LK_CAILIAOZUGONGYISHEZHI')" tabCard icon>
 			<el-form>
 				<el-form-item :label="$t('LK_CAILIAOZU')">
-					<iSelect :placeholder="$t('LK_QINGXUANZE')" v-model="categoryObj"  @change="changeSelect" value-key="id">
+					<iSelect :placeholder="$t('LK_QINGXUANZE')" v-model="categoryObj"  @change="changeSelect" value-key="categoryCode">
 						<el-option :value="item" :label="item.categoryNameZh" v-for="(item, index) in category" :key="index"></el-option>
 					</iSelect>
 				</el-form-item>
@@ -141,29 +141,10 @@
 					unit:"",//单位
 					purchaseProjectIds: [],//采购项目id
 				},
-				stuff: {
-					id:"",
-					stuffCode:"",
-					stuffName:""
-				},
-				categoryObj:{
-					categoryNameZh:"",
-					id:""
-				},
-				linie:{ //专业采购员
-					key:"",
-					name:""
-				},
-				cartypeProject:{ //车型项目
-					key:"",
-					name:""
-				},
-				// stuffObj:{
-				// 	id:"",
-				// 	stuffCode:"",
-				// 	stuffName:""
-				// },
-				
+				stuff: {},
+				categoryObj:{},
+				linie:{ },//专业采购员
+				cartypeProject:{},//车型项目
 				selectTableData: [],
 				startLoding: false,
 			}
@@ -262,7 +243,7 @@
 				this.batch.cartypeProjectNum=this.cartypeProject.key
 				this.batch.linieName=this.linie.name
 				this.batch.linieNum=this.linie.key
-				this.batch.categoryCode=this.categoryObj.id
+				this.batch.categoryCode=this.categoryObj.categoryCode
 				this.batch.categoryName=this.categoryObj.categoryNameZh
 			},
 			// 重置采购信息数据
@@ -274,13 +255,15 @@
 						this.batch[i] = "";
 					}
 				}
+				this.linie={}
+				this.cartypeProject={}
 			},
 			// 重置stuff数据
 			resetStuff() {
-				this.batch.stuffName = ""
-				this.batch.categoryCode = ""
-				this.batch.stuffCode=""
-				this.batch.categoryName=""
+				this.categoryObj={}
+				this.stuff={}
+				this.stuffArr=[]
+				
 			},
 			// 生成fs号
 			creatFs() {
