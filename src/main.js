@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:06
- * @LastEditTime: 2021-04-01 17:37:43
+ * @LastEditTime: 2021-04-01 18:05:26
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\main.js
@@ -15,7 +15,7 @@ import './utils/mydirect'
 import './permission' 
 require('./auto').init()
 Vue.config.productionTip = false
-Vue.use(ElementUI, {
+Vue.use(ELEMENT, {
   i18n: (key, value) => {
     let lang = localStorage.getItem('lang');
     if (key === "el.pagination.goto") {
@@ -30,7 +30,6 @@ Vue.use(ElementUI, {
     return (key, value)
   }
 });
-
 new Vue({
   router,
   store,
