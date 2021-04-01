@@ -12,8 +12,13 @@ import store from '../store'
 // eslint-disable-next-line no-undef
 Vue.directive('permission', {
   inserted: function (el,binding) {
-     if(!store.state.permission.whiteBtnList[binding.expression]){       
-      el.parentNode.removeChild(el)
+     if(!store.state.permission.whiteBtnList[binding.expression]){  
+		// if(el.getAttribute('target')){ //input  textArea tagName
+		// 	el.setAttribute('disabled',true)
+		// }else{
+		// 	el.parentNode.removeChild(el)	
+		// }
+		el.parentNode.removeChild(el)
      }
   }
 });

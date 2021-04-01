@@ -9,7 +9,7 @@
 export const partTitle = [
 	{key:'partNum',name:'零件号',permissionKey:'PARTSIGN_EDITORDETAIL_PARTNUMBER', language: 'LK_LINGJIANHAO'},
 	{key:'partNameCn',name:'零件名（中）',permissionKey:'PARTSIGN_EDITORDETAIL_PARTNAMEZH', language: 'LK_LINGJIANMINGZHONG'},
-	{key:'partNameEn',name:'零件名（德）',permissionKey:'PARTSIGN_EDITORDETAIL_PARTNAMEGER', language: 'LK_LINGJIANMINGYING'},
+	{key:'partNameEn',name:'零件名（德）',permissionKey:'PARTSIGN_EDITORDETAIL_PARTNAMEGER', language: 'LK_LINGJIANMINGDE'},
 	{key:'inheritedCarModel',name:'车型大类',permissionKey:'PARTSIGN_EDITORDETAIL_VEHICLECATEGORIES', language: 'LK_CHEXINGDALEI'},
 	{key:'projectCarType',name:'车型项目',permissionKey:'PARTSIGN_EDITORDETAIL_MODELPROJECT', language: 'LK_CHEXINGXIANGMU'},
 	{key:'tpInfoType',name:'信息单类型',permissionKey:'PARTSIGN_EDITORDETAIL_INFORMATIONCLASSIFICATION', language: 'LK_XINXIDANLEIXING'},
