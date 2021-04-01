@@ -43,6 +43,7 @@ import {getBdlList, updateRfq} from "@/api/partsrfq/editordetail";
 import logDialog from '@/views/partsign/editordetail/components/logDialog'
 import {pageMixins} from '@/utils/pageMixins'
 import {rfqCommonFunMixins} from "pages/partsrfq/components/commonFun";
+import { cloneDeep } from 'lodash'
 
 export default {
   mixins:[pageMixins, rfqCommonFunMixins],
@@ -62,7 +63,7 @@ export default {
   },
   data() {
     return {
-      tableTitle,
+      tableTitle: cloneDeep(tableTitle),
       tableData: [],
       tableLoading: false,
       searchKey: "",//搜索关键词	
