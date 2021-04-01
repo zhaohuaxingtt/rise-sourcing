@@ -109,7 +109,7 @@ export default {
       patchTpRecords({
         enquiryAttachmentFacadeDTO: {
           partAttachmentList: this.fileList,
-          tpNewPartID: this.params.purchasingRequirementId
+          purchasingRequirementId: this.params.purchasingRequirementId
         }
       })
         .then(res => {
@@ -127,7 +127,7 @@ export default {
       getInfoAnnexPage({
         currPage: this.page.currPage,
         pageSize: this.page.pageSize,
-        purchasingRequirementTargetId: this.params.purchasingRequirementTargetId
+        purchasingRequirementTargetIds: this.params.purchasingRequirementObjectId
       })
         .then(res => { 
           // console.log(res.data)

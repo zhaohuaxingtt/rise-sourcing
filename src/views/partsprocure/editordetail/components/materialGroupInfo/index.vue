@@ -112,7 +112,7 @@ export default {
   methods: {
     // 获取材料组数据
     getMaterialGroup() {
-      if (!this.params.categoryCode) return iMessage.warn('缺失工艺组编号，请先设置零件对应的工艺组')
+      if (!this.params.categoryCode) return iMessage.warn('缺失材料组编号，请先设置零件对应的材料组')
       this.loading = true
       getMaterialGroup({ categoryCode: this.params.categoryCode, partNum: this.params.partNum })
         .then(res => {
@@ -132,7 +132,7 @@ export default {
       if (!this.params.partNum) return iMessage.warn('缺失有效的零件编号')
       this.setMaterialGroupStatus = true
 
-      this.getMeterialStuff()
+      // this.getMeterialStuff()
     },
     // 设置工艺组请求
     confirmMaterialGroup() {
