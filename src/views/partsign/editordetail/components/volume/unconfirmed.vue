@@ -108,10 +108,15 @@ export default {
         }
       })
         .then(res => {
-          iMessage.success('操作成功')
-          this.confirmLoading = false
-          this.$emit('updateVersion')
-          this.multipleSelection = []
+          if(res.code == 200){
+            iMessage.success('操作成功')
+            this.confirmLoading = false
+            this.$emit('updateVersion')
+            this.multipleSelection = []
+          }else{
+             iMessage.error(res.desZh)
+             this.confirmLoading = false
+          }
         })
         .catch(() => this.confirmLoading = false)
     },
@@ -134,11 +139,16 @@ export default {
         }
       })
         .then(res => {
-          iMessage.success('操作成功')
-          this.$emit('updateVersion')
-          this.getPerCarDosageVersion()
-          this.visible = false
-          this.multipleSelection = []
+          if(res.code == 200){
+            iMessage.success('操作成功')
+            this.$emit('updateVersion')
+            this.getPerCarDosageVersion()
+            this.visible = false
+            this.multipleSelection = []
+          }else{
+            iMessage.error(res.desZh)
+            this.visible = false
+          }
         })
         .catch(() => this.rejectLoading = false)
     },

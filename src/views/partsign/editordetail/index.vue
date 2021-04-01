@@ -93,7 +93,6 @@ export default {
   methods: {
     //如果当前状态的信息单是已经签收的，则签收和退回需要变成灰色
     tpInfoStuats(){
-      console.log(this.partDetails)
       if(this.partDetails.status == "已签收"){
         return true
       } else {
@@ -102,13 +101,13 @@ export default {
       
     },
     getPartInfo() {
-		this.partDetails = JSON.parse(localStorage.getItem('tpPartInfoVO')) || {};
+		  this.partDetails = JSON.parse(localStorage.getItem('tpPartInfoVO')) || {};
     },
     //签收
     save() {
        if (	this.partDetails.status == 1) return iMessage.warn("抱歉，您选中的单据中存在已签收的信息单，不能批量签收！");
       iMessageBox('您是否确认对新件信息单进行签收？').then(res=>{
-        this.patchRecords(1)
+        this.patchRecords(2)
       })
     },
     //退回
@@ -121,10 +120,9 @@ export default {
     },
     // 确定退回
     sureBackmark(val) {
-      console.log(val)
       this.backMark = val
       this.diologBack = false;
-      this.patchRecords(0)
+      this.patchRecords(3)
     },
     // 确定转派
     sureChangeItems(val) {
@@ -142,8 +140,11 @@ export default {
         tpIds:[this.partDetails.tpPartID],
         csFReceiveMemo:this.backMark
       }}).then(res=>{
-        if(res.data){
+        if(res.code == 200){
           iMessage.success('操作成功')
+          this.partDetails.status = type == 2 ? '已签收':"以退回"
+        }else{
+          iMessage.error(res.desZh)
         }
       })
     },
@@ -153,8 +154,10 @@ export default {
         tpIds:[this.partDetails.tpPartID],
         userId:id
       }}).then(res=>{
-        if(res.data){
+        if(res.code == 200){
           iMessage.success('操作成功')
+        }else{
+          iMessage.error(res.desZh)
         }
       })
     },
