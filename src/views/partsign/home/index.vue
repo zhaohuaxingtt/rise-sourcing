@@ -310,7 +310,7 @@ export default {
         },
       }).then((res) => {
         if (res.data) {
-          iMessage.success(this.$t('LK_CAOZUOCHENGGONG'));
+          iMessage.success(this.this.$t('LK_CAOZUOCHENGGONG'));
           this.getTableList();
         } else {
           iMessage.error(res.desZh);

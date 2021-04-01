@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:08
- * @LastEditTime: 2021-04-01 17:43:12
+ * @LastEditTime: 2021-04-01 19:50:14
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\components\index.js
@@ -23,8 +23,8 @@ import iFormGroup from '../components/iPageItemsGroup/iFormGroup'
 import iFormItem from '../components/iPageItemsGroup/iFormItem'
 import iText from '../components/iPageItemsGroup/iText'
 import iDrawer from "../components/iDrawer"
-// eslint-disable-next-line no-undef
-const iMessageBox = (content='',title=Vue.$t('LK_WENXINTISHI'),options={}) => {
+// const msg = this.$t('LK_WENXINTISHI');
+const iMessageBox = (content='',title=`温馨提示`,options={}) => {
   return MessageBox.confirm(content,title,Object.assign({zIndex:20000},options))
 }
 function message(){
