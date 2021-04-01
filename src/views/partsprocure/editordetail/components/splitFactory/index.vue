@@ -153,7 +153,7 @@ export default{
             changeProcure(this.translateDataForService()).then(res=>{
               if(res.data){
                 this.btnLoding = false
-                iMessage.success("操作成功！")
+                iMessage.success(this.$t('LK_CAOZUOCHENGGONG'))
                 this.updateTabs()
                 this.close()
               }else{
