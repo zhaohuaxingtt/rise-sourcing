@@ -7,7 +7,7 @@
  * @FilePath: \rise\src\views\partsign\components\tableList.vue
 -->
 <template>
-  <el-table :height="height" :data='tableData' v-loading='tableLoading' @selection-change="handleSelectionChange" :empty-text="$t('LK_ZANWUSHUJU')">
+  <el-table :height="height" :data='tableData' v-loading='tableLoading' @selection-change="handleSelectionChange" :empty-text="$t('LK_ZANWUSHUJU')" ref="moviesTable">
     <el-table-column v-if="selection" type='selection' width="50" align='center'></el-table-column>
     <el-table-column v-if='index' type='index' width='50' align='center' :label='indexLabel'></el-table-column>
     <template v-for="(items,index) in tableTitle">
@@ -33,12 +33,28 @@ export default{
     index:{type:Boolean,default:false},
     indexLabel:{type:String,default:'#'},
     height:{type:Number||String},
-    activeItems:{type:String,default:'b'}
+    activeItems:{type:String,default:'b'},
+	isOne:{type:Boolean,default:false}// 是否单选
   },
   inject:['vm'],
   methods:{
     handleSelectionChange(val){
-      this.$emit('handleSelectionChange',val)
+		if (this.isOne) {
+			if (val.length > 1) {
+			//取出最后val的最后一个返回出来
+			  var duoxuans=val.pop();
+			 this.handleSelectArr=val.pop();
+			//清除所有选中
+			  this.$refs.moviesTable.clearSelection()
+			  //给最后一个加上选中
+			  this.$refs.moviesTable.toggleRowSelection(duoxuans)
+			  // console.log(this.duoxuan);
+			} else {
+			  this.$emit('handleSelectionChange',val)
+			 }
+		}else{
+			this.$emit('handleSelectionChange',val)
+		}
     },
     openPage(e){
       this.$emit('openPage',e)
@@ -49,7 +65,8 @@ export default{
       } catch (error) {
         return ''
       }
-    }
+    },
+	
   }
 }
 </script>
