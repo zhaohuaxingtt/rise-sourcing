@@ -138,7 +138,7 @@ export default {
         csFReceiveMemo:this.backMark
       }}).then(res=>{
         if(res.data){
-          iMessage.success('操作成功')
+          iMessage.success(this.$t('LK_CAOZUOCHENGGONG'))
         }
       })
     },
@@ -149,7 +149,7 @@ export default {
         userId:id
       }}).then(res=>{
         if(res.data){
-          iMessage.success('操作成功')
+          iMessage.success(this.$t('LK_CAOZUOCHENGGONG'))
         }
       })
     },

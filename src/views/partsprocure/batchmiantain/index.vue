@@ -272,7 +272,7 @@
 			creatFs() {
 				if (this.selectTableData.length == 0)
 					return iMessage.warn(
-						"抱歉，您当前还未选择您需要生成FS号的零件采购项目！"
+					  this.$t('LK_NINDANGQIANHAIWEIXUANZENINXUYAOSHENGCHENGFSHAODELINGJIANCAIGOUXIANGMU')
 					);
 				let fs = {
 					purchaseProjectIds: this.batch.purchaseProjectIds,
@@ -281,7 +281,7 @@
 					fs,
 				}).then((res) => {
 					if (res.data) {
-						iMessage.success("操作成功")
+						iMessage.success(this.$t('LK_CAOZUOCHENGGONG'))
 					}else{
 						iMessage.error(res.desZh)
 					}
@@ -291,13 +291,13 @@
 				return new Promise((r) => {
 					if (this.selectTableData.length == 0) {
 						r(false);
-						iMessage.warn(`抱歉，您当前还未选择需要启动询价的采购项目！`);
+						iMessage.warn(this.$t('LK_NINDANGQIANHAIWEIXUANZEXUYAOQIDONGXUNJIADECAIGOUXIANGMU'));
 						return;
 					}
 					if (this.selectTableData.find((items) => items.fsnrGsnrNum == "")) {
 						r(false);
 						iMessage.warn(
-							`抱歉，当前采购项目中存在还未生成FSNR的数据，无法为您启动询价！`
+							this.$t('LK_DANGQIANCAIGOUXIANGMUZHONGCUNZAIHAIWEISHENGCHENGFSNRDESHUJUWUFAWEININQIDONGXUNJIA')
 						);
 						return;
 					}

@@ -201,7 +201,7 @@ export default {
   },
   methods: {
     sureChangeItems() {
-      if (this.selectTableData.length == '') return iMessage.warn('抱歉！您当前还未选择！')
+      if (this.selectTableData.length == '') return iMessage.warn(this.$t('LK_NINDANGQIANHAIWEIXUANZE'))
       this.$emit('sure', JSON.parse(this.selectTableData))
     },
     edit() {

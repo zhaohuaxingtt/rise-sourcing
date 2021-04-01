@@ -581,6 +581,7 @@
 		'LK_ZHUANGTAI': '状态',//状态
 		'LK_QUXIAO': '取 消',//取消
 		'LK_QINGXUANZHEXUYAODAOCHUSHUJU': '请选择需要导出的数据', //请选择需要导出的数据
+		'LK_QINGXUANZHEXUYAODAOCHUBANBEN': '请选择需要导出的版本', //请选择需要导出的版本
 		'LK_BUNENGSHANCHUZHISHAOBAOLIUYITIAO': '不能删除，至少保留一条!', //不能删除，至少保留一条!
 		'LK_YITIANJIADAOSHANGXIAN': '已添加到上限', //已添加到上限!
 		'LK_GONGYINGSHANGGONGSIJIESHAO': '供应商公司介绍', //供应商公司介绍!
@@ -609,6 +610,11 @@
 		'LK_QUESHIYOUXIAODELINGJIANBIANHAO': '缺失有效的零件编号', // 缺失有效的零件编号
 		'LK_QUESHIYOUXIAODEGONGYIZUID': '缺失有效的工艺组id', // 缺失有效的工艺组id
 		'LK_XIUGAICHENGGONG': '修改成功', // 修改成功
+		'LK_CAOZUOCHENGGONG': '操作成功', // 操作成功
+		'LK_QINGXUANZHEXUYAOXIAZHAIWENJIAN': '请选择需要下载文件', // 请选择需要下载文件
+		'LK_QINGXUANZHEYITIAOXUYAOQUEREDEBANBEN': '请选择一条需要确认的版本', // 请选择一条需要确认的版本
+		'LK_XINJIANXINXIDANZHUANPAI': '新件信息单转派', // 新件信息单转派
+		'LK_QINGXUANZHEXUNJIACAIGOUYUAN': '请选择询价采购员', // 请选择询价采购员
 		/*
 		<!------------------------------------------------------------------------>
 		<!--                                                                   --->

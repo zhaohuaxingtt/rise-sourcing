@@ -602,6 +602,12 @@
         'LK_QUESHIYOUXIAODELINGJIANBIANHAO': 'A valid part number is missing', // 缺失有效的零件编号
         'LK_QUESHIYOUXIAODEGONGYIZUID': 'A valid process group ID is missing', // 缺失有效的工艺组id
         'LK_XIUGAICHENGGONG': 'Modify the success', // 修改成功
+        'LK_CAOZUOCHENGGONG': 'Operation is successful', // 操作成功
+        'LK_QINGXUANZHEXUYAOXIAZHAIWENJIAN': 'Please select the file you want to download', // 请选择需要下载文件
+        'LK_QINGXUANZHEYITIAOXUYAOQUEREDEBANBEN': 'Please select a version that you want to confirm', // 请选择一条需要确认的版本
+        'LK_QINGXUANZHEXUYAODAOCHUBANBEN': 'Select the version you want to export', //请选择需要导出的版本
+        'LK_XINJIANXINXIDANZHUANPAI': 'Delivery of new pieces of information', // 新件信息单转派
+        'LK_QINGXUANZHEXUNJIACAIGOUYUAN': 'Please select inquiry buyer', // 请选择询价采购员
         // 'LK_XIANGNEIZHOUZHUANCAILIAOZHONGHEJIAGE':'翻箱前器具综合单价（RMB）', //箱内周转材料综合价格 
         /*
         <!------------------------------------------------------------------------>

@@ -30,7 +30,7 @@
         :layout="page.layout"
         :total="page.totalCount" />
     </div>
-    <backItems class="backItems" v-model="visible" title="拒绝" @sure="refuseSure" :repeatClick="rejectLoading" />
+    <backItems class="backItems" v-model="visible" :title="$t('LK_JUJUE')" @sure="refuseSure" :repeatClick="rejectLoading" />
     <volumeDialog :visible.sync="volumeVisible" :volumeParams="volumeParams" />
   </iCard>
 </template>
@@ -96,7 +96,7 @@ export default {
       this.multipleSelection = list
     },
     confirm() {
-      if (this.multipleSelection.length !== 1) return iMessage.warn('请选择一条需要确认的版本')
+      if (this.multipleSelection.length !== 1) return iMessage.warn(this.$t('LK_QINGXUANZHEYITIAOXUYAOQUEREDEBANBEN'))
       const data = this.multipleSelection[0]
       this.confirmLoading = true
       putPerCarDosage({
@@ -108,7 +108,7 @@ export default {
         }
       })
         .then(res => {
-          iMessage.success('操作成功')
+          iMessage.success(this.$t('LK_CAOZUOCHENGGONG'))
           this.confirmLoading = false
           this.$emit('updateVersion')
           this.multipleSelection = []
@@ -116,7 +116,7 @@ export default {
         .catch(() => this.confirmLoading = false)
     },
     reject() {
-      if (this.multipleSelection.length !== 1) return iMessage.warn('请选择一条需要拒绝的版本')
+      if (this.multipleSelection.length !== 1) return iMessage.warn(this.$t('LK_QINGXUANZHEYITIAOXUYAOQUEREDEBANBEN'))
 
       this.visible = true
     },
@@ -134,7 +134,7 @@ export default {
         }
       })
         .then(res => {
-          iMessage.success('操作成功')
+          iMessage.success(this.$t('LK_CAOZUOCHENGGONG'))
           this.$emit('updateVersion')
           this.getPerCarDosageVersion()
           this.visible = false
@@ -143,7 +143,7 @@ export default {
         .catch(() => this.rejectLoading = false)
     },
     download() {
-      if (!this.multipleSelection.length) return iMessage.warn('请选择需要导出的版本')
+      if (!this.multipleSelection.length) return iMessage.warn(this.$t('LK_QINGXUANZHEXUYAODAOCHUBANBEN'))
       excelExport(this.multipleSelection, this.tableTitle)
     },
     volume(data) {

@@ -244,7 +244,7 @@ export default {
     //转派
     openDiologChangeItems() {
       if (this.selectTableData.length == 0)
-        return iMessage.warn("抱歉，您当前还未选择您需要转派的零件采购项目！");
+        return iMessage.warn(this.$t('LK_NINDANGQIANHAIWEIXUANZENINXUYAOZHUANPAIDELINGJIANCAIGOUXIANGMU'));
       this.diologChangeItems = true;
     },
     //确认转派弹窗值。
@@ -303,7 +303,7 @@ export default {
     //退回
     openDiologBack() {
       if (this.selectTableData.length == 0)
-        return iMessage.warn("抱歉，您当前还未选择您需要取消的零件采购项目！");
+        return iMessage.warn(this.$t('LK_NINDANGQIANHAIWEIXUANZENINXUYAOQUXIAODELINGJIANCAIGOUXIANGMU'));
       this.diologBack = true;
     },
     // 取消零件采购
@@ -335,13 +335,13 @@ export default {
       return new Promise((r) => {
         if (this.selectTableData.length == 0) {
           r(false);
-          iMessage.warn(`抱歉，您当前还未选择需要启动询价的采购项目！`);
+          iMessage.warn(this.$t('LK_NINDANGQIANHAIWEIXUANZEXUYAOQIDONGXUNJIADECAIGOUXIANGMU'));
           return;
         }
         if (this.selectTableData.find((items) => items.fsnrGsnrNum == "")) {
           r(false);
           iMessage.warn(
-              `抱歉，当前采购项目中存在还未生成FSNR的数据，无法为您启动询价！`
+            this.$t('LK_DANGQIANCAIGOUXIANGMUZHONGCUNZAIHAIWEISHENGCHENGFSNRDESHUJUWUFAWEININQIDONGXUNJIA')
           );
           return;
         }
@@ -378,7 +378,7 @@ export default {
     creatFs() {
       if (this.selectTableData.length == 0)
         return iMessage.warn(
-            "抱歉，您当前还未选择您需要生成FS号的零件采购项目！"
+          this.$t('LK_NINDANGQIANHAIWEIXUANZENINXUYAOSHENGCHENGFSHAODELINGJIANCAIGOUXIANGMU')
         );
       let fs = {
         purchaseProjectIds: this.getPurchasePrjectId(),
@@ -413,7 +413,7 @@ export default {
     openBatchmiantain() {
       if (this.selectTableData.length == 0)
         return iMessage.warn(
-            "抱歉，您当前还未选择您需要生批量维护的项目！"
+          this.$t('LK_NINDANGQIANHAIWEIXUANZENINXUYAOSHENGPILIANGWEIHUDEXIANGMU')
         );
       this.$router.push({
         path: "/partsprocure/batchmiantain",
