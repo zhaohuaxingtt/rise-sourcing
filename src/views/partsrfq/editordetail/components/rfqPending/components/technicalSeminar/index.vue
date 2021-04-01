@@ -138,7 +138,9 @@ export default {
     },
     async sendToMyEmail() {
       const id = this.$route.query.id
-      const supplierMaterialPreparationData = this.$refs.supplierMaterialPreparation.dynamicForm.baseInfo
+      const supplierMaterialPreparationData = this.$refs.supplierMaterialPreparation.dynamicForm.baseInfo.filter(item => {
+        return item.value.length > 0
+      })
       const otherMeetingInformationData = this.$refs.otherMeetingInformation.form
       const meetingStuffList = supplierMaterialPreparationData.map(item => {
         return item.value
@@ -157,7 +159,7 @@ export default {
         rfqId: id,
         userId: store.state.permission.userInfo.id,
         // eslint-disable-next-line no-undef
-        meetingDate: moment(otherMeetingInformationData.meetingDate).format('YYYY-MM-DD'),
+        meetingDate: otherMeetingInformationData.meetingDate ? moment(otherMeetingInformationData.meetingDate).format('YYYY-MM-DD') : '',
         meetingLocation: otherMeetingInformationData.meetingLocation,
         memo: otherMeetingInformationData.memo,
         meetingStuff: meetingStuffList.join(','),
