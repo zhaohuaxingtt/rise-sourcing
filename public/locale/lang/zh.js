@@ -628,6 +628,13 @@
 		'LK_SHANGCHUANCHENGGONG': '上传成功', // 上传成功
 		'LK_SHANGCHUANSHIBAI': '上传失败', // 上传失败
 		'LK_ZHUANPAICHENGGONG': '转派成功', // 转派成功
+		'LK_CAIGOUGONGCHNEGMINGCHENG': '采购工厂名称', // 采购工厂名称
+		'LK_CHANLIANGZHANBI': '产量占比（%）', // 产量占比（%）
+		'LK_HAIWEIXUANZHEGONGCHANG': '您还未选择工厂！', // 您还未选择工厂！
+		'LK_CAIGOUFENEFENPEIDABUDAO': '采购份额分配达不到100%', // 采购份额分配达不到100%
+		'LK_CAIGOUFENEFENPEICHAOGUO': '当前分配已超过100%，请重新分配！', // 当前分配已超过100%，请重新分配！
+		'LK_CAIGOUFENEFENPEIWEIDADAO': '当前分配未达到100%，请重新分配！', // 当前分配未达到100%，请重新分配！
+		'LK_CAIGOUFENEFENPEIWEIDADAODANGQIAN': '当前分配未达到100%当前分配的工厂中存在为0的情况，请重新分配！', // 当前分配未达到100%，请重新分配！
 		/*
 		<!------------------------------------------------------------------------>
 		<!--                                                                   --->
