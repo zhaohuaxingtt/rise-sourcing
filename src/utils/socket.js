@@ -1,17 +1,19 @@
 /*
  * @Author: your name
  * @Date: 2021-03-18 15:52:47
- * @LastEditTime: 2021-03-22 15:13:01
+ * @LastEditTime: 2021-04-01 18:59:15
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\utils\socket.js
  */
 
+import { getToken } from "./index";
+
 export default function socket({baseUrl,url}) {
   const vm = this
   if("WebSocket" in window){
     // eslint-disable-next-line no-undef
-    const sockJs = new WebSocket(baseUrl+url)
+    const sockJs = new WebSocket(`${baseUrl}${url}?token=${getToken()}`)
     // eslint-disable-next-line no-undef
     sockJs.onopen = ()=>{
       if(this.vmcallBack){
