@@ -89,7 +89,7 @@
             <iInput v-if="editStatus"></iInput>
             <i-text v-else>{{dataInfo.partPackgeRequirements.warehousingAppliancesGrossWeight}}</i-text>
           </iFormItem>
-          <iFormItem label="入库器具返程折叠比" name="test">
+          <iFormItem :label="$t('LK_RUKUQIJUFANCHENGSHEDIEBI')" name="test">
             <iInput v-if="editStatus"></iInput>
             <i-text v-else>{{dataInfo.partPackgeRequirements.warehousingAppliancesFoldingReturnRatio}}</i-text>
           </iFormItem>

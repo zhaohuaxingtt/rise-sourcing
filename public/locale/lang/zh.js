@@ -596,6 +596,10 @@
 		'LK_SHENQING': '申请', //申请
 		'LK_CAIWUMUBIAOJIA': '财务⽬标价', //财务⽬标价
 		'LK_RFQMINGCHNEGBUNENGWEIKONG': 'RFQ名称不能为空', //RFQ名称不能为空
+		'LK_RFQLINGJIANHUOZHERFQGONGYINGSHANGWEIKONG': 'RFQ零件或者RFQ供应商为空，不能创建RFQ轮次', //RFQ零件或者RFQ供应商为空，不能创建RFQ轮次
+		'LK_SHANGCHUAN': '上传', // 上传
+		'LK_QINGXUANZHEXUYAODAOCHUDEMEINIANYONGCHELIANG': '请选择需要导出的每车用量', // 请选择需要导出的每车用量
+		'LK_QINGXUANZHEYITIAOJIHUAGENGXIN': '请选择一条计划更新至询价产量', // 请选择一条计划更新至询价产量
 		/*
 		<!------------------------------------------------------------------------>
 		<!--                                                                   --->

@@ -234,7 +234,7 @@ export default {
       const pendingPartsList = this.$store.state.rfq.pendingPartsList
       await this.getNewRoundList()
       if (pendingPartsList.length === 0 || this.newRfqRoundList.length === 0) {
-        iMessage.warn('RFQ零件或者RFQ供应商为空，不能创建RFQ轮次')
+        iMessage.warn(this.$t('LK_RFQLINGJIANHUOZHERFQGONGYINGSHANGWEIKONG'))
         this.newRfqOpenValidateLoading = false
         return false
       } else {

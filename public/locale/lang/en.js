@@ -589,6 +589,10 @@
         'LK_SHENQING': 'Apply', //申请
 		'LK_CAIWUMUBIAOJIA': 'Financial target price', //财务⽬标价
 		'LK_RFQMINGCHNEGBUNENGWEIKONG': 'The RFQ name cannot be empty', //RFQ名称不能为空
+        'LK_RFQLINGJIANHUOZHERFQGONGYINGSHANGWEIKONG': 'The RFQ part or RFQ supplier is empty and cannot create RFQ rounds', //RFQ零件或者RFQ供应商为空，不能创建RFQ轮次
+        'LK_SHANGCHUAN': 'upload', // 上传
+        'LK_QINGXUANZHEXUYAODAOCHUDEMEINIANYONGCHELIANG': 'Please select the amount per vehicle to be exported', // 请选择需要导出的每车用量
+        'LK_QINGXUANZHEYITIAOJIHUAGENGXIN': 'Please select a plan to update to RFQ', // 请选择一条计划更新至询价产量
         // 'LK_XIANGNEIZHOUZHUANCAILIAOZHONGHEJIAGE':'翻箱前器具综合单价（RMB）', //箱内周转材料综合价格 
         /*
         <!------------------------------------------------------------------------>
