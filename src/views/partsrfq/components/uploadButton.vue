@@ -15,7 +15,7 @@
       :http-request="myUpload"
       accept=".xlsx,.pdf,.docx"
   >
-    <iButton :loading="uploadButtonLoading">{{ buttonText }}</iButton>
+    <iButton :loading="uploadButtonLoading">{{ $t(buttonText) }}</iButton>
   </el-upload>
 </template>
 <script>
@@ -27,7 +27,7 @@ export default {
     iButton
   },
   props: {
-    buttonText: {type: String, default: '上传附件'},
+    buttonText: {type: String, default: 'LK_SHANGCHUANFUJIAN'},
     repeatClick: Boolean,
     uploadButtonLoading: {type: Boolean, default: false}
   },

@@ -2,7 +2,7 @@
 	<iDialog class="dialog" :title="$t('LK_SHENQINGCAIWUMUBIAOJIA')" :visible.sync="applyPriceShow">
 		<div class="btn">
 			<iButton v-if="againApply" @click="save">{{ $t('LK_ZHONGXINSHENQING') }}</iButton>
-			<iButton v-else @click="save">申请</iButton>
+			<iButton v-else @click="save">{{$t('LK_SHENQING')}}</iButton>
 		</div>
 		
 		<iFormGroup row="2" icon inline>

@@ -3,12 +3,12 @@
  * @Date: 2021-03-16 17:24:15
 -->
 <template>
-  <iDialog :title="title" :visible.sync="value" width="878px" @close='clearDiolog'>
+  <iDialog :title="$t(title)" :visible.sync="value" width="878px" @close='clearDiolog'>
     <div class="changeContent">
       <img :src="item" v-for="item of drawingList" :key="item" class="img-style"/>
     </div>
     <span slot="footer" class="dialog-footer">
-       <iButton @click="clearDiolog">取消</iButton>
+       <iButton @click="clearDiolog">{{$t('LK_QUXIAO')}}</iButton>
     </span>
   </iDialog>
 </template>
@@ -21,7 +21,7 @@ export default {
     iDialog,
   },
   props: {
-    title: {type: String, default: '图纸'},
+    title: {type: String, default: 'LK_TUZHI'},
     value: {type: Boolean},
     repeatClick: Boolean,
     drawingList: {

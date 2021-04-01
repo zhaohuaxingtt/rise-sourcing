@@ -43,7 +43,6 @@
 			</iFormGroup>
 			<iFormGroup :row="4" inline icon>
 				<iFormItem :label="$t('LK_RUCHANGBAOZHUANGMINGCHENG')" name="test">
-
 					<i-text>{{dataInfo.partPackgeRequirements.admissionPackgeName}}</i-text>
 				</iFormItem>
 			</iFormGroup>
@@ -88,7 +87,7 @@
 
 					<i-text>{{dataInfo.partPackgeRequirements.warehousingAppliancesGrossWeight}}</i-text>
 				</iFormItem>
-				<iFormItem label="入库器具返程折叠比" name="test">
+				<iFormItem :label="$t('LK_RUKUQIJUFANCHENGSHEDIEBI')" name="test">
 
 					<i-text>{{dataInfo.partPackgeRequirements.warehousingAppliancesFoldingReturnRatio}}</i-text>
 				</iFormItem>
@@ -114,7 +113,7 @@
 			<iFormGroup :row="4" inline icon>
 				<iFormItem :label="$t('LK_QIANDUANBAOZHUANGMINGCHENG')" name="test">
 
-					<i-text>{{dataInfo.partPackgeRequirements.frontPackgeName}}</i-text>
+					<i-text>{{dataInfo.partPackgeRequirements.admissionPackgeName}}</i-text>
 				</iFormItem>
 			</iFormGroup>
 			<iFormGroup :row="4" inline icon>
@@ -217,7 +216,6 @@
 						warehousingAppliancesAnnualMaintenanceRate:"",
 						warehousingMaterialComprehensivePrice:"",
 						warehousingMaterialLife:"",
-						frontPackgeName:"",
 						turnoverAppliancesLength:"",
 						turnoverAppliancesWidth:"",
 						turnoverPackageHeight:"",

@@ -9,7 +9,7 @@
 
 export function excelExport(data,title,fileName= new Date().getTime()){
   try {
-    if (!data&&!title) return console.warn('没有可以下载的信息')
+    if (!data&&!title) return console.warn(this.$t('LK_MEIYOUKEYIXIAZHAIDEXINXI'))
     let worksheet = window.XLSX.utils.aoa_to_sheet(translateData(data,title))
     // 创建工作簿
     let newWorkbook = window.XLSX.utils.book_new()

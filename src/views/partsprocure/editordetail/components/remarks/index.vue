@@ -109,7 +109,7 @@
 					})
 					.then((res) => {
 						if (res.data) {
-							iMessage.success("修改成功");
+							iMessage.success(this.$t('LK_XIUGAICHENGGONG'))
 							this.getDatail();
 						} else {
 							iMessage.error(res.desZh);

@@ -8,11 +8,11 @@
   <iPage v-permission="PARTSIGN_EDITORDETAIL_INDEXPAGE">
     <!-- 零件详情操作按钮 -->
     <div class="pageTitle flex-between-center-center">
-      <span>3QG810005L</span>
+      <span>{{partDetails.partNum || ''}}</span>
       <div class="btnList flex-align-center">
-        <iButton :disabled='tpInfoStuats' @click="openDiologChangeItems" v-permission='PARTSIGN_EDITORDETAIL_TRANSFERBUTTON'>{{ $t('LK_ZHUANPAI') }}</iButton>
-        <iButton :disabled='tpInfoStuats' @click="save" v-permission="PARTSIGN_EDITORDETAIL_SIGNBUTTON">{{ $t('LK_QIANSHOU') }}</iButton>
-        <iButton :disabled='tpInfoStuats' @click="openDiologBack" v-permission="PARTSIGN_EDITORDETAIL_BACKBUTTON">{{ $t('LK_TUIHUI') }}</iButton>
+        <iButton :disabled='tpInfoStuats()' @click="openDiologChangeItems" v-permission='PARTSIGN_EDITORDETAIL_TRANSFERBUTTON'>{{ $t('LK_ZHUANPAI') }}</iButton>
+        <iButton :disabled='tpInfoStuats()' @click="save" v-permission="PARTSIGN_EDITORDETAIL_SIGNBUTTON">{{ $t('LK_QIANSHOU') }}</iButton>
+        <iButton :disabled='tpInfoStuats()' @click="openDiologBack" v-permission="PARTSIGN_EDITORDETAIL_BACKBUTTON">{{ $t('LK_TUIHUI') }}</iButton>
         <iButton @click="back" v-permission="PARTSIGN_EDITORDETAIL_RETURN">{{ $t('LK_FANHUI') }}</iButton>
         <logButton class="margin-left20" @click="log"  v-permission="PARTSIGN_EDITORDETAIL_LOGBUTTON"/>
         <span>
@@ -62,6 +62,7 @@ import { partDetailTitle, partTitle } from "./components/data";
 // import { getPartInfo } from "@/api/partsign/editordetail";
 import {patchRecords} from "@/api/partsign/home";
 import logButton from '@/views/partsign/editordetail/components/logButton'
+import local from "@/utils/localstorage";
 export default {
   components: {
     iPage,
@@ -93,17 +94,21 @@ export default {
   methods: {
     //如果当前状态的信息单是已经签收的，则签收和退回需要变成灰色
     tpInfoStuats(){
-      if(this.partDetails.status == "已签收") return false
-      return true
+      if(this.partDetails.status == "已签收"){
+        return true
+      } else {
+        return false  
+      }
+      
     },
     getPartInfo() {
-		this.partDetails = JSON.parse(localStorage.getItem('tpPartInfoVO')) || {};
+		  this.partDetails = JSON.parse(localStorage.getItem('tpPartInfoVO')) || {};
     },
     //签收
     save() {
        if (	this.partDetails.status == 1) return iMessage.warn("抱歉，您选中的单据中存在已签收的信息单，不能批量签收！");
       iMessageBox('您是否确认对新件信息单进行签收？').then(res=>{
-        this.patchRecords(1)
+        this.patchRecords(2)
       })
     },
     //退回
@@ -116,10 +121,9 @@ export default {
     },
     // 确定退回
     sureBackmark(val) {
-      console.log(val)
       this.backMark = val
       this.diologBack = false;
-      this.patchRecords(0)
+      this.patchRecords(3)
     },
     // 确定转派
     sureChangeItems(val) {
@@ -137,8 +141,15 @@ export default {
         tpIds:[this.partDetails.tpPartID],
         csFReceiveMemo:this.backMark
       }}).then(res=>{
-        if(res.data){
-          iMessage.success('操作成功')
+        if(res.code == 200){
+          iMessage.success(this.$t('LK_CAOZUOCHENGGONG'))
+          this.partDetails.status = type == 2 ? '已签收':"以退回"
+          local.set(
+            "tpPartInfoVO",
+            JSON.stringify(this.partDetails)
+          );
+        }else{
+          iMessage.error(res.desZh)
         }
       })
     },
@@ -148,8 +159,10 @@ export default {
         tpIds:[this.partDetails.tpPartID],
         userId:id
       }}).then(res=>{
-        if(res.data){
-          iMessage.success('操作成功')
+        if(res.code == 200){
+          iMessage.success(this.$t('LK_CAOZUOCHENGGONG'))
+        }else{
+          iMessage.error(res.desZh)
         }
       })
     },

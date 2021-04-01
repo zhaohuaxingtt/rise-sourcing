@@ -60,12 +60,12 @@
 		},
 		'partsprocure': {
 			'PARTSPROCURENEWPROCUREMENTPROJECT': 'FSNF/GSNF/SPNR',
-			'PARTSPROCUREGENERATEFSGSNR': '生成Fs/GsNr',
+			'PARTSPROCUREGENERATEFSGSNR': '生成FS/GSNR',
 			'PARTSPROCURECANCELPARTSPURCHASE': '取消零件采购',
 			'PARTSPROCUREBATCHMAINTENANCE': '批量维护',
 			'PARTSPROCURESTARTINQUIRY': '启动询价',
 			'PARTSPROCURETRANSFER': '转派',
-			'PARTSPROCUREFSNFGSNFSPNR': 'FSNF/GSNF/SPNR',
+			'PARTSPROCUREFSNFGSNFSPNR': 'FSNR/GSNR',
 			'PARTSPROCUREPARTNUMBER': '零件号',
 			'PARTSPROCUREPARTNAMEZH': '零件名（中）',
 			'PARTSPROCUREPARTNAMEDE': '零件名（德）',
@@ -574,11 +574,50 @@
 		'LK_ZAIXINSHENQINGCAIWUMUBIAOJIA': '再新申请财务目标价 ', //再新申请财务目标价 
 		'LK_ZAIXIANJINGJIA': '在线竞价', //在线竞价
 		'LK_DANGQIANBANBEN': '当前版本', //当前版本
-    'LK_XIANSHI': '显示', // 显示
-    'LK_TIAODI': '条到第', // 条到第
-    'LK_TIAOJILU': '条记录', // 条记录
-    'LK_GONG': '共', // 共
+		'LK_XIANSHI': '显示', // 显示
+		'LK_TIAODI': '条到第', // 条到第
+		'LK_TIAOJILU': '条记录', // 条记录
+		'LK_GONG': '共', // 共
 		'LK_ZHUANGTAI': '状态',//状态
+		'LK_QUXIAO': '取 消',//取消
+		'LK_QINGXUANZHEXUYAODAOCHUSHUJU': '请选择需要导出的数据', //请选择需要导出的数据
+		'LK_QINGXUANZHEXUYAODAOCHUBANBEN': '请选择需要导出的版本', //请选择需要导出的版本
+		'LK_BUNENGSHANCHUZHISHAOBAOLIUYITIAO': '不能删除，至少保留一条!', //不能删除，至少保留一条!
+		'LK_YITIANJIADAOSHANGXIAN': '已添加到上限', //已添加到上限!
+		'LK_GONGYINGSHANGGONGSIJIESHAO': '供应商公司介绍', //供应商公司介绍!
+		'LK_GONGYINGSHANGCHANPINGAIYAO': '供应商产品概要', //供应商产品概要!
+		'LK_GONGYINGSHANGTIMELINE': '供应商timeline', //供应商timeline!
+		'LK_LIRUMENJING': '例如：⻔禁申请步骤，其他备注信息等', //例如：⻔禁申请步骤，其他备注信息等
+		'LK_SHANGQIDAZHONGYUANQU': '上汽⼤众园区303室', //上汽⼤众园区303室!
+		'LK_YIBAOCUN': '已保存', //已保存!
+		'LK_QINGTIANJIAGONGYINGSHANG': '请添加供应商!', //请添加供应商!
+		'LK_CHAKAN': '查看', //查看!
+		'LK_TUICHUDENGLU': '退出登录', //退出登录!
+		'LK_QINGSHURUBEIZHU': '请输入备注', //请输入备注
+		'LK_SHENQING': '申请', //申请
+		'LK_CAIWUMUBIAOJIA': '财务⽬标价', //财务⽬标价
+		'LK_RFQMINGCHNEGBUNENGWEIKONG': 'RFQ名称不能为空', //RFQ名称不能为空
+		'LK_RFQLINGJIANHUOZHERFQGONGYINGSHANGWEIKONG': 'RFQ零件或者RFQ供应商为空，不能创建RFQ轮次', //RFQ零件或者RFQ供应商为空，不能创建RFQ轮次
+		'LK_SHANGCHUAN': '上传', // 上传
+		'LK_QINGXUANZHEXUYAODAOCHUDEMEINIANYONGCHELIANG': '请选择需要导出的每车用量', // 请选择需要导出的每车用量
+		'LK_QINGXUANZHEYITIAOJIHUAGENGXIN': '请选择一条计划更新至询价产量', // 请选择一条计划更新至询价产量
+		'LK_MEIYOUKEYIXIAZHAIDEXINXI': '没有可以下载的信息', // 没有可以下载的信息
+		'LK_QINGXUANZHEXUYAODAOCHURIZHI': '请选择需要导出的日志', // 请选择需要导出的日志
+		'LK_QINGXUANZHEXUYAOSHANCHUYOUJIAN': '请选择需要删除的附件', // 请选择需要删除的附件
+		'LK_SHANCHUCHENGGONG': '删除成功', // 删除成功
+		'LK_QINGXUANZHEXUYAOXIAZHAIDEFUJIAN': '请选择需要下载的附件', // 请选择需要下载的附件
+		'LK_QUESHICAILIAOZUBIANHAOETC': '缺失材料组编号，请先设置零件对应的材料组', // 缺失材料组编号，请先设置零件对应的材料组
+		'LK_QUESHIYOUXIAODELINGJIANBIANHAO': '缺失有效的零件编号', // 缺失有效的零件编号
+		'LK_QUESHIYOUXIAODEGONGYIZUID': '缺失有效的工艺组id', // 缺失有效的工艺组id
+		'LK_XIUGAICHENGGONG': '修改成功', // 修改成功
+		'LK_CAOZUOCHENGGONG': '操作成功', // 操作成功
+		'LK_QINGXUANZHEXUYAOXIAZHAIWENJIAN': '请选择需要下载文件', // 请选择需要下载文件
+		'LK_QINGXUANZHEYITIAOXUYAOQUEREDEBANBEN': '请选择一条需要确认的版本', // 请选择一条需要确认的版本
+		'LK_XINJIANXINXIDANZHUANPAI': '新件信息单转派', // 新件信息单转派
+		'LK_QINGXUANZHEXUNJIACAIGOUYUAN': '请选择询价采购员', // 请选择询价采购员
+		'LK_YONGHUMING': '用户名', // 用户名
+		'LK_MIMA': '密码', // 密码
+		'LK_DENGLU': '登录', // 登录
 		/*
 		<!------------------------------------------------------------------------>
 		<!--                                                                   --->

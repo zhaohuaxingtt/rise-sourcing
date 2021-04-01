@@ -1,5 +1,5 @@
 <template>
-  <iDialog :title="title" :visible.sync="value" width="80%" @close='clearDiolog'>
+  <iDialog :title="$t(title)" :visible.sync="value" width="80%" @close='clearDiolog'>
     <div class="changeContent">
       <div class="margin-bottom20 clearFloat">
         <div class="floatright title-button-box">
@@ -15,7 +15,7 @@
       ></tablelist>
     </div>
     <span slot="footer" class="dialog-footer">
-          <iButton @click="$emit('input',false)">取 消</iButton>
+          <iButton @click="$emit('input',false)">{{$t('LK_QUXIAO')}}</iButton>
         </span>
   </iDialog>
 </template>
@@ -28,7 +28,7 @@ import {getAllRfqSupplier} from "@/api/partsrfq/editordetail";
 export default {
   components: {iButton, iDialog, tablelist},
   props: {
-    title: {type: String, default: '添加供应商'},
+    title: {type: String, default: 'LK_TIANJIAGONGYINGSHANG'},
     value: {type: Boolean},
     repeatClick: Boolean
   },
@@ -70,10 +70,10 @@ export default {
     },
     save() {
       if (this.selectTableData.length == '') {
-        iMessage.warn('抱歉！您当前还未选择！')
+        iMessage.warn(this.$t('LK_NINDANGQIANHAIWEIXUANZE'))
         return false
       }
-      this.$emit('sure', JSON.parse(this.selectTableData))
+      this.$emit('sure', this.selectTableData)
     }
   },
   watch: {

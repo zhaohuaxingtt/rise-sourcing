@@ -170,14 +170,7 @@ module.exports = {
 				pathRewrite: {
 					"^/partsProcureApi": ""
 				}
-			},
-			'/fileApi': { // file 文件上传下载
-				target: 'http://10.122.18.166:8014',
-				changeOrigin: true,
-				pathRewrite: {
-					"^/fileApi": ""
-				}
-			},
+			}
 		}
 	}
 }

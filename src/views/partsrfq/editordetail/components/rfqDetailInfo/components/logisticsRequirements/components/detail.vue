@@ -89,7 +89,7 @@
             <iInput v-if="editStatus"></iInput>
             <i-text v-else>{{dataInfo.partPackgeRequirements.warehousingAppliancesGrossWeight}}</i-text>
           </iFormItem>
-          <iFormItem label="入库器具返程折叠比" name="test">
+          <iFormItem :label="$t('LK_RUKUQIJUFANCHENGSHEDIEBI')" name="test">
             <iInput v-if="editStatus"></iInput>
             <i-text v-else>{{dataInfo.partPackgeRequirements.warehousingAppliancesFoldingReturnRatio}}</i-text>
           </iFormItem>
@@ -115,7 +115,7 @@
         <iFormGroup :row="4" inline icon>
           <iFormItem :label="$t('LK_QIANDUANBAOZHUANGMINGCHENG')" name="test">
             <iInput v-if="editStatus"></iInput>
-            <i-text v-else>{{dataInfo.partPackgeRequirements.frontPackgeName}}</i-text>
+            <i-text v-else>{{dataInfo.partPackgeRequirements.admissionPackgeName}}</i-text>
           </iFormItem>
         </iFormGroup>
         <iFormGroup :row="4" inline icon>
@@ -201,7 +201,7 @@ export default {
   },
   methods: {
     sureChangeItems() {
-      if (this.selectTableData.length == '') return iMessage.warn('抱歉！您当前还未选择！')
+      if (this.selectTableData.length == '') return iMessage.warn(this.$t('LK_NINDANGQIANHAIWEIXUANZE'))
       this.$emit('sure', JSON.parse(this.selectTableData))
     },
     edit() {

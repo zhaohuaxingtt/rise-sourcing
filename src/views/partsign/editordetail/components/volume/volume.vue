@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-24 17:57:52
- * @LastEditTime: 2021-03-27 17:08:31
+ * @LastEditTime: 2021-04-01 00:02:50
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsign\editordetail\components\volume\index.vue
@@ -88,7 +88,7 @@ export default {
           currPage: this.page.currPage,
           pageSize: this.page.pageSize,
           status: 1,
-          tpId: 12390
+          tpId: this.data.tpPartID
         })
         if(infoRes.data){
           this.tableListData = infoRes.data.tpRecordList

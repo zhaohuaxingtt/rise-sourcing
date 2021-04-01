@@ -19,13 +19,12 @@
         </iButton>
         <!-- 暂不做，后端暂无接口：用户可以选择“通知全部供应商”，询价附件会发送给当前RFQ BDL中所选择的全部供应商-->
         <iButton @click="notifyAllSuppliers"
-                 v-permission="PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_INQUIRYATTACHMENT_INQUIRYATTACHMENT_NOTIFYALL">
+                 v-permission="PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_INQUIRYATTACHMENT_INQUIRYATTACHMENT_NOTIFYALL" disabled>
           {{ $t('LK_TONGZHIQUANBUGONGYINGSHANG') }}
         </iButton>
         <!-- 暂不做，后端暂无接口：用户选择“通知已报价供应商”，系统会根据RFQ的报价记录，发给有有效报价的供应商-->
         <iButton @click="notifySuppliersWhoHaveQuoted"
-                 v-permission="PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_INQUIRYATTACHMENT_INQUIRYATTACHMENT_NOTIFYQUOTED">
-
+                 v-permission="PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_INQUIRYATTACHMENT_INQUIRYATTACHMENT_NOTIFYQUOTED" disabled>
           {{ $t('LK_TONGZHIYIBAOJIAGONGYINGSHANG') }}
         </iButton>
       </div>
@@ -112,7 +111,7 @@ export default {
       }
     },
     deleteItems() {
-      iMessageBox('是否确认删除?').then(async () => {
+      iMessageBox(this.$t('LK_SHIFOUQUERENSHANCHU')).then(async () => {
         const annexIds = this.selectTableData.map(item => {
           return item.id
         })
@@ -159,7 +158,7 @@ export default {
     },
     async download() {
       if (this.selectTableData.length == 0)
-        return iMessage.warn('请选择')
+        return iMessage.warn(this.$t('LK_QINGXUANZE'))
       const fileList = this.selectTableData.map(item => {
         return item.fileName
       })

@@ -89,12 +89,12 @@
             <iFormItem :label="$t('LK_DANGQIANLUNCI')+':'" name="currentRounds">
               <iText v-permission="PARTSRFQ_EDITORDETAIL_CURRENTROUND">{{ baseInfo.currentRounds }}</iText>
             </iFormItem>
-            <iFormItem :label="$t('LK_LUNCILEIXING')+':'" name="roudsType">
+            <iFormItem :label="$t('LK_LUNCILEIXING')+':'" name="roundsType">
               <iText>
-                <template v-if="baseInfo.roudsType === '00'" v-permission="PARTSRFQ_EDITORDETAIL_ROUNDTYPE">
+                <template v-if="baseInfo.roundsType === '00'" v-permission="PARTSRFQ_EDITORDETAIL_ROUNDTYPE">
                   {{ $t('LK_PUTONGLUNCI') }}
                 </template>
-                <template v-else-if="baseInfo.roudsType === '01'" v-permission="PARTSRFQ_EDITORDETAIL_ROUNDTYPE">
+                <template v-else-if="baseInfo.roundsType === '01'" v-permission="PARTSRFQ_EDITORDETAIL_ROUNDTYPE">
                   {{ $t('LK_ZAIXIANJINGJIA') }}
                 </template>
                 <template v-else v-permission="PARTSRFQ_EDITORDETAIL_ROUNDTYPE"></template>
@@ -234,7 +234,7 @@ export default {
       const pendingPartsList = this.$store.state.rfq.pendingPartsList
       await this.getNewRoundList()
       if (pendingPartsList.length === 0 || this.newRfqRoundList.length === 0) {
-        iMessage.warn('RFQ零件或者RFQ供应商为空，不能创建RFQ轮次')
+        iMessage.warn(this.$t('LK_RFQLINGJIANHUOZHERFQGONGYINGSHANGWEIKONG'))
         this.newRfqOpenValidateLoading = false
         return false
       } else {
@@ -263,7 +263,7 @@ export default {
     edit() {
       const rfqName = this.baseInfo.rfqName
       if (!rfqName && this.editStatus) {
-        iMessage.warn('RFQ名称不能为空')
+        iMessage.warn(this.$t('LK_RFQMINGCHNEGBUNENGWEIKONG'))
         return false
       }
       this.editStatus = !this.editStatus
