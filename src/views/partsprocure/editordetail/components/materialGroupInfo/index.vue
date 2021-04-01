@@ -112,7 +112,7 @@ export default {
   methods: {
     // 获取材料组数据
     getMaterialGroup() {
-      if (!this.params.categoryCode) return iMessage.warn('缺失工艺组编号，请先设置零件对应的工艺组')
+      if (!this.params.categoryCode) return iMessage.warn(this.$t('LK_QUESHIGONGYIZUBIANHAOETC'))
       this.loading = true
       getMaterialGroup({ categoryCode: this.params.categoryCode, partNum: this.params.partNum })
         .then(res => {
@@ -129,16 +129,16 @@ export default {
     },
     // 设置工艺组
     setMaterialGroup() {
-      if (!this.params.partNum) return iMessage.warn('缺失有效的零件编号')
+      if (!this.params.partNum) return iMessage.warn(this.$t('LK_QUESHIYOUXIAODELINGJIANBIANHAO'))
       this.setMaterialGroupStatus = true
 
       this.getMeterialStuff()
     },
     // 设置工艺组请求
     confirmMaterialGroup() {
-      if (this.multipleSelection.length !== 1) return iMessage.warn('抱歉，此处必须选择一条工艺组数据')
-      if (!this.info.id) return iMessage.warn('缺失有效的工艺组id')
-      if (!this.params.partNum) return iMessage.warn('缺失有效的零件编号')
+      if (this.multipleSelection.length !== 1) return iMessage.warn(this.$t('LK_CICHUBIXUXUANZEYITIAOGONGYIZUSHUJU'))
+      if (!this.info.id) return iMessage.warn(this.$t('LK_QUESHIYOUXIAODEGONGYIZUID'))
+      if (!this.params.partNum) return iMessage.warn(this.$t('LK_QUESHIYOUXIAODELINGJIANBIANHAO'))
       const data = this.multipleSelection[0]
 
       this.confirmLoading = true

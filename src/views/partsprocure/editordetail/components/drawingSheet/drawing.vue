@@ -141,13 +141,13 @@ export default {
       this.multipleSelection = list
     },
     handleDelete() {
-      if (!this.multipleSelection.length) return iMessage.warn('请选择需要删除的附件')
+      if (!this.multipleSelection.length) return iMessage.warn(this.$t('LK_QINGXUANZHEXUYAOSHANCHUYOUJIAN'))
 
       // 后端删除
       this.deleteLoading = true
       deleteFile({ ids: this.multipleSelection.map(item => item.id) })
         .then(res => {
-          iMessage.success('删除成功')
+          iMessage.success(this.$t('LK_SHANCHUCHENGGONG'))
           this.getInfoAnnexPage()
           this.deleteLoading = false
           this.multipleSelection = []
@@ -161,7 +161,7 @@ export default {
       })
     },
     async handleDownload() {
-      if (!this.multipleSelection.length) return iMessage.warn("请选择需要下载的附件")
+      if (!this.multipleSelection.length) return iMessage.warn(this.$t('LK_QINGXUANZHEXUYAOXIAZHAIDEFUJIAN'))
 
       this.downloadLoading = true
       await downloadFile({

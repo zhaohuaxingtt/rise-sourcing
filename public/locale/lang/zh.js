@@ -603,6 +603,12 @@
 		'LK_MEIYOUKEYIXIAZHAIDEXINXI': '没有可以下载的信息', // 没有可以下载的信息
 		'LK_QINGXUANZHEXUYAODAOCHURIZHI': '请选择需要导出的日志', // 请选择需要导出的日志
 		'LK_QINGXUANZHEXUYAOSHANCHUYOUJIAN': '请选择需要删除的附件', // 请选择需要删除的附件
+		'LK_SHANCHUCHENGGONG': '删除成功', // 删除成功
+		'LK_QINGXUANZHEXUYAOXIAZHAIDEFUJIAN': '请选择需要下载的附件', // 请选择需要下载的附件
+		'LK_QUESHIGONGYIZUBIANHAOETC': '缺失工艺组编号，请先设置零件对应的工艺组', // 缺失工艺组编号，请先设置零件对应的工艺组
+		'LK_QUESHIYOUXIAODELINGJIANBIANHAO': '缺失有效的零件编号', // 缺失有效的零件编号
+		'LK_QUESHIYOUXIAODEGONGYIZUID': '缺失有效的工艺组id', // 缺失有效的工艺组id
+		'LK_XIUGAICHENGGONG': '修改成功', // 修改成功
 		/*
 		<!------------------------------------------------------------------------>
 		<!--                                                                   --->

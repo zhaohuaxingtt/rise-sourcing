@@ -596,6 +596,12 @@
         'LK_MEIYOUKEYIXIAZHAIDEXINXI': 'There is no information available for download', // 没有可以下载的信息
         'LK_QINGXUANZHEXUYAODAOCHURIZHI': 'Please select the logs that you want to export', // 请选择需要导出的日志
         'LK_QINGXUANZHEXUYAOSHANCHUYOUJIAN': 'Please select the attachment you want to delete', // 请选择需要删除的附件
+        'LK_SHANCHUCHENGGONG': 'Delete the success', // 删除成功
+        'LK_QINGXUANZHEXUYAOXIAZHAIDEFUJIAN': 'Please select the attachment you want to download', // 请选择需要下载的附件
+        'LK_QUESHIGONGYIZUBIANHAOETC': 'The process group number is missing. Please first set the process group corresponding to the part', // 缺失工艺组编号，请先设置零件对应的工艺组
+        'LK_QUESHIYOUXIAODELINGJIANBIANHAO': 'A valid part number is missing', // 缺失有效的零件编号
+        'LK_QUESHIYOUXIAODEGONGYIZUID': 'A valid process group ID is missing', // 缺失有效的工艺组id
+        'LK_XIUGAICHENGGONG': 'Modify the success', // 修改成功
         // 'LK_XIANGNEIZHOUZHUANCAILIAOZHONGHEJIAGE':'翻箱前器具综合单价（RMB）', //箱内周转材料综合价格 
         /*
         <!------------------------------------------------------------------------>
