@@ -17,7 +17,7 @@
     </div>
     <div class="body margin-top27">
       <tableList index class="table" :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="loading" @handleSelectionChange="handleSelectionChange" />
-      <iPagination
+      <iPagination v-update
         class="pagination"
         @size-change="handleSizeChange($event, getVolume)"
         @current-change="handleCurrentChange($event, getVolume)"

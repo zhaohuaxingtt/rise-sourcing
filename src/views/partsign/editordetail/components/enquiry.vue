@@ -24,7 +24,7 @@
           <span>{{ scope.row.updateDate | dateFilter }}</span>
         </template>
       </tableList>
-      <iPagination
+      <iPagination v-update
         class="pagination"
         @size-change="handleSizeChange($event, getInfoAnnexPage)"
         @current-change="handleCurrentChange($event, getInfoAnnexPage)"

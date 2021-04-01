@@ -188,7 +188,7 @@
             <!------------------------------------------------------------------------>
             <!--                  表格分页                                          --->
             <!------------------------------------------------------------------------>
-            <iPagination
+            <iPagination v-update
               v-update
               @size-change="handleSizeChange($event, getTableList)"
               @current-change="handleCurrentChange($event, getTableList)"
