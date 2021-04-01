@@ -260,7 +260,7 @@ export default {
           .then((res) => {
             this.diologChangeItems = false;
             if (res.data) {
-              iMessage.success("转派成功")
+              iMessage.success(this.$t('LK_ZHUANPAICHENGGONG'))
               this.getTableListFn();
             } else {
               iMessage.error(res.desZh)
@@ -317,7 +317,7 @@ export default {
       })
           .then((res) => {
             if (res.data) {
-              iMessage.success("操作成功")
+              iMessage.success(this.$t('LK_CAOZUOCHENGGONG'))
               this.getTableListFn();
             } else {
               iMessage.error(res.desZh)

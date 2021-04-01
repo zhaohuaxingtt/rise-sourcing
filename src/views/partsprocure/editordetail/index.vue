@@ -57,7 +57,7 @@
 		<!------------------------------------------------------------------------>
 		<!--                  基本信息区域                                       --->
 		<!------------------------------------------------------------------------>
-		<iCard class="card" title="基础信息" collapse>
+		<iCard class="card" :title="$t('LK_JICHUXINXI')" collapse>
 			<iFormGroup row="1" inline :rules="rules">
 				<div class="row">
 					<div class="col">
@@ -375,7 +375,7 @@
 					start,
 				}).then((res) => {
 					if (res.data) {
-						iMessage.success("操作成功");
+						iMessage.success(this.$t('LK_CAOZUOCHENGGONG'));
 						this.getDatail();
 					} else {
 						iMessage.error(res.desZh);
@@ -398,7 +398,7 @@
 					this.diologClose = false;
 					if (res.data) {
 						this.getDatail();
-						iMessage.success("操作成功");
+						iMessage.success(this.$t('LK_CAOZUOCHENGGONG'));
 					} else {
 						iMessage.error(res.desZh);
 					}
@@ -460,7 +460,7 @@
 					})
 					.then((res) => {
 						if (res.data) {
-							iMessage.success("操作成功");
+							iMessage.success(this.$t('LK_CAOZUOCHENGGONG'));
 							this.getDatail();
 						} else {
 							iMessage.error(res.desZh);

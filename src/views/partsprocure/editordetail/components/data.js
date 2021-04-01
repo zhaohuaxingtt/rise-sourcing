@@ -48,10 +48,12 @@ export const detailData = {
 export const splitPurchTitle = [
 	{
 		name: '采购工厂名称',
-		props: "factoryName"
+		props: "factoryName",
+		key: 'LK_CAIGOUGONGCHNEGMINGCHENG'
 	},
 	{
 		name: '产量占比（%）',
-		props: "share"
+		props: "share",
+		key: 'LK_CHANLIANGZHANBI'
 	}
 ]
