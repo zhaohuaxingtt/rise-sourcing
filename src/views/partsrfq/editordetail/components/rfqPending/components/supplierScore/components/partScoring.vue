@@ -24,7 +24,7 @@
           :index="true"
           @openMultiHeaderPropsPage="openMultiHeaderPropsPage"
           multi-header-props="tpbMemo"
-          multi-header-props-text="查看"
+          :multi-header-props-text="$t('LK_CHAKAN')"
           action-props=""
       ></tablelist>
       <!------------------------------------------------------------------------>

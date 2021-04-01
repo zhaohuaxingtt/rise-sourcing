@@ -33,21 +33,21 @@ export const supplierRatingAttachmentTitle = [
 
 
 export const partScroingTitle = [
-    {props: 'partNum', name: '零件号'},
-    {props: 'fsNum', name: 'FS号'},
-    {props: 'purchasingFactory', name: '采购工厂'},
-    {props: 'partNameZh', name: '零件名称（中）'},
-    {props: 'partNameDe', name: '零件名称（德）'},
-    {props: 'carProjectType', name: '车型项目'},
-    {props: 'relatedModels', name: '相关车型'},
+    {props: 'partNum', name: '零件号', key: 'LK_LINGJIANHAO'},
+    {props: 'fsNum', name: 'FS号', key: 'LK_FSHAO'},
+    {props: 'purchasingFactory', name: '采购工厂', key: 'LK_CAIGOUGONGCHANG'},
+    {props: 'partNameZh', name: '零件名称（中）', key: 'LK_LINGJIANMINGCHENGZHONG'},
+    {props: 'partNameDe', name: '零件名称（德）', key: 'LK_LINGJIANMINGCHENGDE'},
+    {props: 'carProjectType', name: '车型项目', key: 'LK_CHEXINGXIANGMU'},
+    {props: 'relatedModels', name: '相关车型', key: 'LK_XIANGGUANCHEXING'},
     {
         name: 'TPB',
         list: [
-            {props: 'tpGrade', name: '评分'},
-            {props: 'tpbExternaFee', name: '外部开发费（元）'},
-            {props: 'tpbAddFee', name: '增加的认可费（元）'},
-            {props: 'tpbConfirmCycle', name: '认可周期（周）'},
-            {props: 'tpbMemo', name: '备注'},
+            {props: 'tpGrade', name: '评分', key: 'LK_PINGFEN'},
+            {props: 'tpbExternaFee', name: '外部开发费（元）', key: 'LK_WAIBUKAIFAFEIYUAN'},
+            {props: 'tpbAddFee', name: '增加的认可费（元）', key: 'LK_ZENGJIADERENKEFEIYUAN'},
+            {props: 'tpbConfirmCycle', name: '认可周期（周）', key: 'LK_RENKEZHOUQIZHOU'},
+            {props: 'tpbMemo', name: '备注', key: 'LK_BEIZHU'},
         ]
     }
 ]

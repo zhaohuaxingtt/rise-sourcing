@@ -585,7 +585,7 @@
         'LK_QINGTIANJIAGONGYINGSHANG': 'Please add supplier!', //请添加供应商!
         'LK_CHAKAN': 'To view', //查看!
 		'LK_TUICHUDENGLU': 'Log out', //退出登录!
-
+        'LK_QINGSHURUBEIZHU': 'Please enter remarks', //请输入备注
         // 'LK_XIANGNEIZHOUZHUANCAILIAOZHONGHEJIAGE':'翻箱前器具综合单价（RMB）', //箱内周转材料综合价格 
         /*
         <!------------------------------------------------------------------------>
