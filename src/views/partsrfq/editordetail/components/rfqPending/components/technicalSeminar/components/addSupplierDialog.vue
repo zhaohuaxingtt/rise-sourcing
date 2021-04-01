@@ -73,7 +73,7 @@ export default {
         iMessage.warn('抱歉！您当前还未选择！')
         return false
       }
-      this.$emit('sure', JSON.parse(this.selectTableData))
+      this.$emit('sure', this.selectTableData)
     }
   },
   watch: {

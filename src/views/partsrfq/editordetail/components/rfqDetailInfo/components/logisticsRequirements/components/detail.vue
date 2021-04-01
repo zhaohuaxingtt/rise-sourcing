@@ -115,7 +115,7 @@
         <iFormGroup :row="4" inline icon>
           <iFormItem :label="$t('LK_QIANDUANBAOZHUANGMINGCHENG')" name="test">
             <iInput v-if="editStatus"></iInput>
-            <i-text v-else>{{dataInfo.partPackgeRequirements.frontPackgeName}}</i-text>
+            <i-text v-else>{{dataInfo.partPackgeRequirements.admissionPackgeName}}</i-text>
           </iFormItem>
         </iFormGroup>
         <iFormGroup :row="4" inline icon>

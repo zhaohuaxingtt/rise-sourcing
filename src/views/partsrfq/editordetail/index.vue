@@ -89,12 +89,12 @@
             <iFormItem :label="$t('LK_DANGQIANLUNCI')+':'" name="currentRounds">
               <iText v-permission="PARTSRFQ_EDITORDETAIL_CURRENTROUND">{{ baseInfo.currentRounds }}</iText>
             </iFormItem>
-            <iFormItem :label="$t('LK_LUNCILEIXING')+':'" name="roudsType">
+            <iFormItem :label="$t('LK_LUNCILEIXING')+':'" name="roundsType">
               <iText>
-                <template v-if="baseInfo.roudsType === '00'" v-permission="PARTSRFQ_EDITORDETAIL_ROUNDTYPE">
+                <template v-if="baseInfo.roundsType === '00'" v-permission="PARTSRFQ_EDITORDETAIL_ROUNDTYPE">
                   {{ $t('LK_PUTONGLUNCI') }}
                 </template>
-                <template v-else-if="baseInfo.roudsType === '01'" v-permission="PARTSRFQ_EDITORDETAIL_ROUNDTYPE">
+                <template v-else-if="baseInfo.roundsType === '01'" v-permission="PARTSRFQ_EDITORDETAIL_ROUNDTYPE">
                   {{ $t('LK_ZAIXIANJINGJIA') }}
                 </template>
                 <template v-else v-permission="PARTSRFQ_EDITORDETAIL_ROUNDTYPE"></template>

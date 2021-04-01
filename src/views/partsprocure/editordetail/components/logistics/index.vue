@@ -114,7 +114,7 @@
 			<iFormGroup :row="4" inline icon>
 				<iFormItem :label="$t('LK_QIANDUANBAOZHUANGMINGCHENG')" name="test">
 
-					<i-text>{{dataInfo.partPackgeRequirements.frontPackgeName}}</i-text>
+					<i-text>{{dataInfo.partPackgeRequirements.admissionPackgeName}}</i-text>
 				</iFormItem>
 			</iFormGroup>
 			<iFormGroup :row="4" inline icon>
@@ -217,7 +217,7 @@
 						warehousingAppliancesAnnualMaintenanceRate:"",
 						warehousingMaterialComprehensivePrice:"",
 						warehousingMaterialLife:"",
-						frontPackgeName:"",
+						admissionPackgeName:"",
 						turnoverAppliancesLength:"",
 						turnoverAppliancesWidth:"",
 						turnoverPackageHeight:"",
