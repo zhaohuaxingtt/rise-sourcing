@@ -21,8 +21,8 @@
       <el-table-column :key="index" align='center' v-else-if='inputProps.includes(items.props)' :prop="items.props"
                        :label="items.name">
         <template slot-scope="scope">
-          <i-input v-model="scope.row[items.props]" v-if="inputType" :type="inputType" key="inputType"/>
-          <i-input v-model="scope.row[items.props]" v-else key="inputType"/>
+          <i-input v-model="scope.row[items.props]" v-if="inputType" :type="inputType"/>
+          <i-input v-model="scope.row[items.props]" v-else/>
         </template>
       </el-table-column>
       <el-table-column :key="index" align='center'
