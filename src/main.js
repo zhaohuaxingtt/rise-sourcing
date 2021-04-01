@@ -13,10 +13,27 @@ import store from './store'
 import '@/assets/style/global/index.scss'
 import './utils/mydirect'
 import './permission' 
+
 require('./auto').init()
 const ElementUI = require('element-ui')
 Vue.config.productionTip = false
+Vue.prototype.$t = (key, value) => i18n.t(key, value);
 
+// window.addEventListener("setItemEvent",(e) => {
+//   console.log(e.target.localStorage.lang);
+//   // window.location.reload();
+//   const vm = new Vue();
+//   vm.$forceUpdate(() => {
+//     Vue.use(ElementUI, {
+//       i18n: (key, value) => {
+//         if (key === "el.pagination.goto") {
+//           value = e.target.localStorage.lang == 'zh' ? '前往' : 'go to'
+//         }
+//         return (key, value)
+//       }
+//     })
+//   });
+// });
 Vue.use(ElementUI, {
   i18n: (key, value) => {
     let lang = localStorage.getItem('lang');
