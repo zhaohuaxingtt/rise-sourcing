@@ -36,7 +36,7 @@
 					<iSelect v-model="linie" value-key="key">
 						<!-- <el-option :value="item" :label="item.name" v-for="(item, index) in getGroupList('linie_name')" :key="index"></el-option> -->
 						<el-option value="16" label="郝连水"></el-option>
-            <el-option value="17" label="郭建立"></el-option>
+						<el-option value="17" label="郭建立"></el-option>
 					</iSelect>
 				</el-form-item>
 				<el-form-item :label="$t('LK_LINGJIANLEIXING')">

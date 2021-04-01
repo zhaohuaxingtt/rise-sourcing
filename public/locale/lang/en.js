@@ -81,7 +81,8 @@
             'PARTSPROCURE': 'Please Enter The Number, Separated By Multiple Commas',
             'PLEENTER': 'Please Enter',
             'CHOOSE': 'Please Choose',
-            "CF": 'CF'
+            "CF": 'CF',
+			'PARTSPROCUREPARTSTATUSNAME':'Project Status'
         },
 
         'partsignLanguage': {
