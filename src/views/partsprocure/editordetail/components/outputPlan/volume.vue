@@ -101,8 +101,8 @@ export default {
         });
 
         if (infoRes.code != 200) {
-            return iMessage.error(`${ this.$i18n.locale === 'zh' ? infoRes.desZh : infoRes.desEn }`)
-          }
+          return iMessage.error(`${ this.$i18n.locale === 'zh' ? infoRes.desZh : infoRes.desEn }`)
+        }
 
         if (infoRes.data) {
           this.tableListData = infoRes.data.tpRecordList;
