@@ -81,7 +81,8 @@
             'PARTSPROCURE': 'Please Enter The Number, Separated By Multiple Commas',
             'PLEENTER': 'Please Enter',
             'CHOOSE': 'Please Choose',
-            "CF": 'CF'
+            "CF": 'CF',
+			'PARTSPROCUREPARTSTATUSNAME':'Project Status'
         },
 
         'partsignLanguage': {
@@ -194,7 +195,7 @@
         'LK_TUIHUI': 'Return',//退回
         'LK_TUISONGSHIJIAN': 'Forwarded time',//推送时间
         'LK_TUZHIRIQI': 'Spec. date',//图纸日期
-        'LK_TUZHIHETPDANXIANGQING': 'Blueprint and TP Order',//图纸和TP单详情
+        'LK_TUZHIHETPDANXIANGQING': 'Blueprint and TP Order',//图纸和信息单详情
         'LK_TUZHI': 'Blueprint',//图纸
         'LK_TOUZIYUSUAN': 'Investment Budget',//投资预算
         'LK_TONGZHIYIBAOJIAGONGYINGSHANG': 'Inform suppliers with quotation',//通知已报价供应商

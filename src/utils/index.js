@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-03-29 18:18:07
+ * @LastEditTime: 2021-03-31 23:36:33
  * @LastEditors: Please set LastEditors
  * @Description: 公共utils部分
  * @FilePath: \rise\src\utils\index.js
@@ -96,7 +96,10 @@ export function permissionTitle(key,titleList){
   if(permissionMap){
     const a = []
     titleList.forEach(element => {
-       if(permissionMap.fieldList.find(items=>items.fieldName == element.props)) a.push(element)
+       if(permissionMap.fieldList.find(items=>items.fieldName == element.props || element.list)) a.push(element)
+       if(element.list){
+        element.list = permissionTitle(key,element.list)
+       }
     });
     newTitleList = a
   }

@@ -69,7 +69,8 @@ export default {
         try {
           const req = {
             rfqId: id,
-            userId: store.state.permission.userInfo.id
+            userId: store.state.permission.userInfo.id,
+            isFake: 1
           }
           const res = await getModelBudgetList(req)
           this.tableListData = res.records;
@@ -83,6 +84,10 @@ export default {
       }
     },
     async submit() {
+      if(this.selectTableData.length == 0) {
+        iMessage.warn(this.$t('partsignLanguage.QingXuanZe'))
+        return false
+      }
       this.selectTableData = this.selectTableData.map(item => {
         item.approvalStatus = 'submitted'
         return item
@@ -93,6 +98,10 @@ export default {
       this.getTableList()
     },
     async recall() {
+      if(this.selectTableData.length == 0) {
+        iMessage.warn(this.$t('partsignLanguage.QingXuanZe'))
+        return false
+      }
       this.selectTableData = this.selectTableData.map(item => {
         item.approvalStatus = 'revoked'
         return item

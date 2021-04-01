@@ -8,11 +8,11 @@
   <iPage v-permission="PARTSIGN_EDITORDETAIL_INDEXPAGE">
     <!-- 零件详情操作按钮 -->
     <div class="pageTitle flex-between-center-center">
-      <span>3QG810005L</span>
+      <span>{{partDetails.partNum || ''}}</span>
       <div class="btnList flex-align-center">
-        <iButton :disabled='tpInfoStuats' @click="openDiologChangeItems" v-permission='PARTSIGN_EDITORDETAIL_TRANSFERBUTTON'>{{ $t('LK_ZHUANPAI') }}</iButton>
-        <iButton :disabled='tpInfoStuats' @click="save" v-permission="PARTSIGN_EDITORDETAIL_SIGNBUTTON">{{ $t('LK_QIANSHOU') }}</iButton>
-        <iButton :disabled='tpInfoStuats' @click="openDiologBack" v-permission="PARTSIGN_EDITORDETAIL_BACKBUTTON">{{ $t('LK_TUIHUI') }}</iButton>
+        <iButton :disabled='tpInfoStuats()' @click="openDiologChangeItems" v-permission='PARTSIGN_EDITORDETAIL_TRANSFERBUTTON'>{{ $t('LK_ZHUANPAI') }}</iButton>
+        <iButton :disabled='tpInfoStuats()' @click="save" v-permission="PARTSIGN_EDITORDETAIL_SIGNBUTTON">{{ $t('LK_QIANSHOU') }}</iButton>
+        <iButton :disabled='tpInfoStuats()' @click="openDiologBack" v-permission="PARTSIGN_EDITORDETAIL_BACKBUTTON">{{ $t('LK_TUIHUI') }}</iButton>
         <iButton @click="back" v-permission="PARTSIGN_EDITORDETAIL_RETURN">{{ $t('LK_FANHUI') }}</iButton>
         <logButton class="margin-left20" @click="log"  v-permission="PARTSIGN_EDITORDETAIL_LOGBUTTON"/>
         <span>
@@ -93,8 +93,13 @@ export default {
   methods: {
     //如果当前状态的信息单是已经签收的，则签收和退回需要变成灰色
     tpInfoStuats(){
-      if(this.partDetails.status == "已签收") return false
-      return true
+      console.log(this.partDetails)
+      if(this.partDetails.status == "已签收"){
+        return true
+      } else {
+        return false  
+      }
+      
     },
     getPartInfo() {
 		this.partDetails = JSON.parse(localStorage.getItem('tpPartInfoVO')) || {};

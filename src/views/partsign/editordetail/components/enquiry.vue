@@ -9,7 +9,6 @@
 <template>
   <iCard class="enquiry">
     <div class="header clearFloat">
-      <!-- <span class="title">{{ $t('LK_FUJIANLIEBIAO') }} （{{ $t('LK_DANGQIANBANBEN') }}: V1）</span> -->
       <span class="title">{{ $t('LK_FUJIANLIEBIAO') }} （{{ $t('LK_DANGQIANBANBEN') }}: V1）</span>
       <div class="control">
         <iButton @click="version" v-permission="PARTSIGN_EDITORDETAIL_ENQUIRY_ALL">{{ $t('LK_CHAKANQUANBUBANBEN') }}</iButton>
@@ -19,7 +18,7 @@
     <div class="body margin-top27">
       <tableList class="table" index :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="loading" @handleSelectionChange="handleSelectionChange">
         <template #tpPartAttachmentName="scope">
-          <span class="link-underline" @click="preview">{{ scope.row.tpPartAttachmentName }}</span>
+          <span class="link-underline" @click="preview(scope.row)">{{ scope.row.tpPartAttachmentName }}</span>
         </template>
         <template #updateDate="scope">
           <span>{{ scope.row.updateDate | dateFilter }}</span>
@@ -48,7 +47,8 @@ import { enquiryTableTitle as tableTitle } from './data'
 import { getInfoAnnexPage } from '@/api/partsign/editordetail'
 import { pageMixins } from '@/utils/pageMixins'
 import filters from '@/utils/filters'
-import {download} from '@/api/taskcenter/home'
+// import {download} from '@/api/taskcenter/home'
+import { downloadFile } from "@/api/file";
 export default {
   components: { iCard, iButton, iPagination, tableList },
   mixins: [ pageMixins, filters ],
@@ -97,13 +97,22 @@ export default {
     handleSelectionChange(list) {
       this.multipleSelection = list
     },
-    download() {
+    async download() {
       if (!this.multipleSelection.length) {
         iMessage.warn('请选择需要下载文件')
       }
-      download({fileList:[""]})
+
+      downloadFile({
+        applicationName: 'rise-procurereq-service',
+        fileList: this.multipleSelection.map(item => item.tpPartAttachmentName).join('&fileList=')
+      })
     },
-    preview() {},
+    preview(row) {
+      downloadFile({
+        applicationName: 'rise-procurereq-service',
+        fileList: row.tpPartAttachmentName
+      })
+    },
   }
 }
 </script>

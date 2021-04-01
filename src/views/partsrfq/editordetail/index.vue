@@ -18,7 +18,8 @@
         </iTabsList>
       </div>
       <div class="btnList">
-        <iButton @click="newRfq" v-permission="PARTSRFQ_EDITORDETAIL_NEWRFQROUND">{{
+        <iButton :loading="newRfqOpenValidateLoading" @click="newRfq" v-permission="PARTSRFQ_EDITORDETAIL_NEWRFQROUND">
+          {{
             $t('LK_XINJIANRFQLUNCI')
           }}
         </iButton>
@@ -88,12 +89,12 @@
             <iFormItem :label="$t('LK_DANGQIANLUNCI')+':'" name="currentRounds">
               <iText v-permission="PARTSRFQ_EDITORDETAIL_CURRENTROUND">{{ baseInfo.currentRounds }}</iText>
             </iFormItem>
-            <iFormItem :label="$t('LK_LUNCILEIXING')+':'" name="roudsType">
+            <iFormItem :label="$t('LK_LUNCILEIXING')+':'" name="roundsType">
               <iText>
-                <template v-if="baseInfo.roudsType === '00'" v-permission="PARTSRFQ_EDITORDETAIL_ROUNDTYPE">
+                <template v-if="baseInfo.roundsType === '00'" v-permission="PARTSRFQ_EDITORDETAIL_ROUNDTYPE">
                   {{ $t('LK_PUTONGLUNCI') }}
                 </template>
-                <template v-else-if="baseInfo.roudsType === '01'" v-permission="PARTSRFQ_EDITORDETAIL_ROUNDTYPE">
+                <template v-else-if="baseInfo.roundsType === '01'" v-permission="PARTSRFQ_EDITORDETAIL_ROUNDTYPE">
                   {{ $t('LK_ZAIXIANJINGJIA') }}
                 </template>
                 <template v-else v-permission="PARTSRFQ_EDITORDETAIL_ROUNDTYPE"></template>
@@ -188,7 +189,8 @@ export default {
       baseInfo: {},
       baseInfoLoading: false,
       tabShowStatus: true,
-      newRfqRoundList: []
+      newRfqRoundList: [],
+      newRfqOpenValidateLoading: false
     }
   },
   created() {
@@ -228,15 +230,17 @@ export default {
       this.navActivtyValue = target.index
     },
     async newRfq() {
+      this.newRfqOpenValidateLoading = true
       const pendingPartsList = this.$store.state.rfq.pendingPartsList
       await this.getNewRoundList()
       if (pendingPartsList.length === 0 || this.newRfqRoundList.length === 0) {
         iMessage.warn('RFQ零件或者RFQ供应商为空，不能创建RFQ轮次')
+        this.newRfqOpenValidateLoading = false
         return false
       } else {
+        this.newRfqOpenValidateLoading = false
         this.newRfqRoundDialog = true
       }
-
     },
     async updateRfqStatus(updateType) {
       const query = this.$route.query
@@ -320,12 +324,16 @@ export default {
           otherInfoPackage: {
             findType: '10',
             rfqId: id,
-            current: 10,
-            size: 1,
+            current: 1,
+            size: 10,
           }
         }
-        const res = await getRfqDataList(req)
-        this.newRfqRoundList = res.data.rfqRoundBdlVO.rfqBdlVOList;
+        try {
+          const res = await getRfqDataList(req)
+          this.newRfqRoundList = res.data.rfqRoundBdlVO.rfqBdlVOList;
+        } catch {
+          this.newRfqOpenValidateLoading = false
+        }
       }
     },
     // eslint-disable-next-line no-undef

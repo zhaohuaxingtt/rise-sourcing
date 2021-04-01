@@ -54,7 +54,7 @@
     <!--                  添加供应商弹框                                      --->
     <!------------------------------------------------------------------------>
     <add-supplier-dialog
-        @save="handleAddSupplierSave"
+        @sure="handleAddSupplierSave"
         v-model="dialogAddSupplier"
     />
   </div>
@@ -109,7 +109,8 @@ export default {
         try {
           const req = {
             rfqId: id,
-            userId:store.state.permission.userInfo.id
+            userId:store.state.permission.userInfo.id,
+            isFake: 1
           }
           const res = await getAllRfqParts(req)
           this.tableListData = res.records;
@@ -170,6 +171,8 @@ export default {
     },
     handleAddSupplierSave(list) {
       this.addSupplierList = list
+      this.dialogAddSupplier = false
+      iMessage.success('已保存')
     },
     async getPic(row) {
       this.drawingList = []
