@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:06
- * @LastEditTime: 2021-03-31 23:39:48
+ * @LastEditTime: 2021-04-01 19:49:59
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\main.js
@@ -13,20 +13,9 @@ import store from './store'
 import '@/assets/style/global/index.scss'
 import './utils/mydirect'
 import './permission' 
-
 require('./auto').init()
-const ElementUI = require('element-ui')
 Vue.config.productionTip = false
-Vue.prototype.$t = (key, value) => i18n.t(key, value);
-
-// window.addEventListener("setItemEvent",(e) => {
-//   console.log(e.target.localStorage.lang);
-//   // window.location.reload();
-//   const vm = new Vue();
-//   vm.$forceUpdate()
-//   });
-// });
-Vue.use(ElementUI, {
+Vue.use(ELEMENT, {
   i18n: (key, value) => {
     let lang = localStorage.getItem('lang');
     if (key === "el.pagination.goto") {
@@ -41,7 +30,6 @@ Vue.use(ElementUI, {
     return (key, value)
   }
 });
-
 new Vue({
   router,
   store,

@@ -84,7 +84,6 @@ export default {
         .then(res => {
           console.log(res.data.tpRecordsSenarioResult)
           this.data = (res.data.tpRecordsSenarioResult && res.data.tpRecordsSenarioResult.tpRecordList && res.data.tpRecordsSenarioResult.tpRecordList[0] && res.data.tpRecordsSenarioResult.tpRecordList[0].tpPartInfoVO) || {}
-          console.log('appp', this.data)
           this.loading = false
         })
         .catch(() => this.loading = false)

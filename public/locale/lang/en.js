@@ -60,7 +60,7 @@
         },
         'partsprocure': {
             'PARTSPROCURENEWPROCUREMENTPROJECT': 'New Procurement Project',
-            'PARTSPROCUREGENERATEFSGSNR': 'Generate Fs/gsnr',
+            'PARTSPROCUREGENERATEFSGSNR': 'Generate FSNR/GSNR/SPNR',
             'PARTSPROCURECANCELPARTSPURCHASE': 'Cancel Parts Purchase',
             'PARTSPROCUREBATCHMAINTENANCE': 'Batch Maintenance',
             'PARTSPROCURESTARTINQUIRY': 'Start Inquiry',
@@ -214,7 +214,7 @@
         'LK_SHIFOUERCIJIAN': 'Second or not',//是否二次件
         'LK_SHIJIANJIHUA': 'Time Schedule',//时间计划
         'LK_SHENGCHENGFSHAO': 'Generate FS',//生成FS号
-        'LK_SHENGCHENGFS_GSNR': 'Generate FS/GSNR',//生成FS/GSNR
+        'LK_SHENGCHENGFS_GSNR': 'Generate FSNR/GSNR/SPNR',//生成FS/GSNR
         'LK_SHENPIZHUANGTAI': 'Approval Status',//审批状态
         'LK_SHENPIYIJIAN': 'Approval Opinion',//审批意见
         'LK_SHENDUGUOCHANHUADAIMA': 'Deep localize code',//深度国产化代码

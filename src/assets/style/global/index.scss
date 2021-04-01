@@ -162,7 +162,6 @@ a{
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
   font-size: 14px;
-  .cell{overflow: inherit;}
   .el-table__header{
     background-color: $color-table-header;
     tr{
@@ -431,3 +430,8 @@ a{
 .el-table thead.is-group th{
   background: rgb(231,239,254);
 }
+
+
+// input['=disabel']{
+	// background:
+// }

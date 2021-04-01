@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 09:50:42
- * @LastEditTime: 2021-03-27 21:41:01
+ * @LastEditTime: 2021-04-01 14:05:13
  * @LastEditors: Please set LastEditors
  * @Description: 零件采购项目建立首页。
  * @FilePath: \rise\src\views\partsprocure\home\index.vue
@@ -107,6 +107,9 @@
 							<span class="font18 font-weight">
 								{{ $t('partsprocure.PARTSPROCURENEWPROCUREMENTPROJECT') }}</span>
               <div class="floatright">
+				<iButton @click="openDiologChangeItems" v-permission="PARTSPROCURE_TRANSFER">
+				    {{ $t('partsprocure.PARTSPROCURETRANSFER') }}
+				</iButton>
                 <iButton @click="creatFs" v-permission="PARTSPROCURE_GENERATEFSBUTTON">
                   {{ $t('partsprocure.PARTSPROCUREGENERATEFSGSNR') }}
                 </iButton>
@@ -118,9 +121,6 @@
                 </iButton>
                 <iButton @click="start" :loading="startLoding" v-permission="PARTSPROCURE_STARTINQUIRY">
                   {{ $t('partsprocure.PARTSPROCURESTARTINQUIRY') }}
-                </iButton>
-                <iButton @click="openDiologChangeItems" v-permission="PARTSPROCURE_TRANSFER">
-                  {{ $t('partsprocure.PARTSPROCURETRANSFER') }}
                 </iButton>
               </div>
             </div>
@@ -236,7 +236,7 @@ export default {
     // is_common_sourcing--Sourcing
     // buyer_name        --询价采购员
     getProcureGroup() {
-      let types = ["project_status", "cartype_project_zh", "cartype_category", "part_preject_type", "procure_factory"]
+      let types = ["project_status", "cartype_project_zh", "cartype_category", "part_project_type", "procure_factory"]
       getProcureGroup({types}).then((res) => {
         this.fromGroup = res.data;
       });
