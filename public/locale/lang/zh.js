@@ -600,6 +600,9 @@
 		'LK_SHANGCHUAN': '上传', // 上传
 		'LK_QINGXUANZHEXUYAODAOCHUDEMEINIANYONGCHELIANG': '请选择需要导出的每车用量', // 请选择需要导出的每车用量
 		'LK_QINGXUANZHEYITIAOJIHUAGENGXIN': '请选择一条计划更新至询价产量', // 请选择一条计划更新至询价产量
+		'LK_MEIYOUKEYIXIAZHAIDEXINXI': '没有可以下载的信息', // 没有可以下载的信息
+		'LK_QINGXUANZHEXUYAODAOCHURIZHI': '请选择需要导出的日志', // 请选择需要导出的日志
+		'LK_QINGXUANZHEXUYAOSHANCHUYOUJIAN': '请选择需要删除的附件', // 请选择需要删除的附件
 		/*
 		<!------------------------------------------------------------------------>
 		<!--                                                                   --->

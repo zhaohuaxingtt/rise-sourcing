@@ -217,7 +217,7 @@
 						warehousingAppliancesAnnualMaintenanceRate:"",
 						warehousingMaterialComprehensivePrice:"",
 						warehousingMaterialLife:"",
-						admissionPackgeName:"",
+						// admissionPackgeName:"",
 						turnoverAppliancesLength:"",
 						turnoverAppliancesWidth:"",
 						turnoverPackageHeight:"",

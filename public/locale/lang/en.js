@@ -593,6 +593,9 @@
         'LK_SHANGCHUAN': 'upload', // 上传
         'LK_QINGXUANZHEXUYAODAOCHUDEMEINIANYONGCHELIANG': 'Please select the amount per vehicle to be exported', // 请选择需要导出的每车用量
         'LK_QINGXUANZHEYITIAOJIHUAGENGXIN': 'Please select a plan to update to RFQ', // 请选择一条计划更新至询价产量
+        'LK_MEIYOUKEYIXIAZHAIDEXINXI': 'There is no information available for download', // 没有可以下载的信息
+        'LK_QINGXUANZHEXUYAODAOCHURIZHI': 'Please select the logs that you want to export', // 请选择需要导出的日志
+        'LK_QINGXUANZHEXUYAOSHANCHUYOUJIAN': 'Please select the attachment you want to delete', // 请选择需要删除的附件
         // 'LK_XIANGNEIZHOUZHUANCAILIAOZHONGHEJIAGE':'翻箱前器具综合单价（RMB）', //箱内周转材料综合价格 
         /*
         <!------------------------------------------------------------------------>
