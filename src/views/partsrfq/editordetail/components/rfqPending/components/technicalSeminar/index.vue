@@ -3,8 +3,13 @@
     <iCard>
       <div class="margin-bottom5 clearFloat">
         <div class="floatright">
-          <iButton @click="addSupplier" v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_TECHNICALSEMINAR_ADDSUPPLIER">{{ $t('LK_TIANJIAGONGYINGSHANG') }}</iButton>
-          <iButton @click="sendToMyEmail" v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_TECHNICALSEMINAR_SENDTOMYEMAIL">{{ $t('LK_FASONGZHIWODEYOUXIANG') }}</iButton>
+          <iButton @click="addSupplier" v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_TECHNICALSEMINAR_ADDSUPPLIER">
+            {{ $t('LK_TIANJIAGONGYINGSHANG') }}
+          </iButton>
+          <iButton @click="sendToMyEmail"
+                   v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_TECHNICALSEMINAR_SENDTOMYEMAIL">
+            {{ $t('LK_FASONGZHIWODEYOUXIANG') }}
+          </iButton>
         </div>
       </div>
       <div class="margin-bottom20 clearFloat">
@@ -56,6 +61,7 @@
     <add-supplier-dialog
         @sure="handleAddSupplierSave"
         v-model="dialogAddSupplier"
+        :addSupplierList="addSupplierList"
     />
   </div>
 </template>
@@ -109,7 +115,7 @@ export default {
         try {
           const req = {
             rfqId: id,
-            userId:store.state.permission.userInfo.id,
+            userId: store.state.permission.userInfo.id,
             isFake: 1
           }
           const res = await getAllRfqParts(req)
@@ -138,18 +144,18 @@ export default {
         return item.value
       })
       const supplierIdList = this.addSupplierList.map(item => {
-        return item.id
+        return item.supplierId
       })
       const partNumsList = this.selectTableData.map(item => {
         return item.partNum
       })
-      if(supplierIdList.length === 0) {
-      iMessage.warn(this.$t('LK_QINGTIANJIAGONGYINGSHANG'))
+      if (supplierIdList.length === 0) {
+        iMessage.warn(this.$t('LK_QINGTIANJIAGONGYINGSHANG'))
         return
       }
       const req = {
         rfqId: id,
-        userId:store.state.permission.userInfo.id,
+        userId: store.state.permission.userInfo.id,
         // eslint-disable-next-line no-undef
         meetingDate: moment(otherMeetingInformationData.meetingDate).format('YYYY-MM-DD'),
         meetingLocation: otherMeetingInformationData.meetingLocation,
