@@ -93,7 +93,7 @@ export default {
         iMessage.error(`${ this.$i18n.locale === 'zh' ? res.desZh : res.desEn }`)
       } else {
         clearTimeout(this.timer)
-        iMessage.success(`${ file.name } ${ $t('LK_SHANGCHUANCHENGGONG') }`)
+        iMessage.success(`${ file.name } ${ this.$t('LK_SHANGCHUANCHENGGONG') }`)
         this.fileList.push({ tpPartAttachmentName: res.data[0].fileName, tpPartAttachmentPath: res.data[0].filePath, size: (file.size / 1024 / 1024).toFixed(3) })
         this.timer = setTimeout(() => {
           this.patchTpRecords()
@@ -103,7 +103,7 @@ export default {
     },
     uploadError(err, file) {
       this.uploadLoading = false
-      iMessage.error(`${ file.name } ${ $t('LK_SHANGCHUANSHIBAI') }`)
+      iMessage.error(`${ file.name } ${ this.$t('LK_SHANGCHUANSHIBAI') }`)
     },
     patchTpRecords() {
       patchTpRecords({
