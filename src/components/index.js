@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:08
- * @LastEditTime: 2021-03-02 14:29:33
+ * @LastEditTime: 2021-04-01 17:43:12
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\components\index.js
@@ -23,7 +23,8 @@ import iFormGroup from '../components/iPageItemsGroup/iFormGroup'
 import iFormItem from '../components/iPageItemsGroup/iFormItem'
 import iText from '../components/iPageItemsGroup/iText'
 import iDrawer from "../components/iDrawer"
-const iMessageBox = (content='',title=this.$t('LK_WENXINTISHI'),options={}) => {
+// eslint-disable-next-line no-undef
+const iMessageBox = (content='',title=Vue.$t('LK_WENXINTISHI'),options={}) => {
   return MessageBox.confirm(content,title,Object.assign({zIndex:20000},options))
 }
 function message(){

@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:06
- * @LastEditTime: 2021-03-31 23:39:48
+ * @LastEditTime: 2021-04-01 17:37:43
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\main.js
@@ -14,9 +14,7 @@ import '@/assets/style/global/index.scss'
 import './utils/mydirect'
 import './permission' 
 require('./auto').init()
-const ElementUI = require('element-ui')
 Vue.config.productionTip = false
-
 Vue.use(ElementUI, {
   i18n: (key, value) => {
     let lang = localStorage.getItem('lang');
