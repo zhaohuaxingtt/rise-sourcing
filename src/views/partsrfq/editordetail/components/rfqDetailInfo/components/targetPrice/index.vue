@@ -2,7 +2,7 @@
   <div>
     <iCard>
       <div class="margin-bottom20 clearFloat">
-        <span class="font18 font-weight">财务⽬标价</span>
+        <span class="font18 font-weight">{{$t('LK_CAIWUMUBIAOJIA')}}</span>
         <div class="floatright">
           <iButton @click="exports" v-permission="PARTSRFQ_EDITORDETAIL_EXPORT">{{$t('LK_DAOCHU')}}</iButton>
         </div>
@@ -86,7 +86,7 @@ export default {
     },
     exports() {
       if (this.selectTableData.length == 0)
-        return iMessage.warn('请选择需要导出的数据')
+        return iMessage.warn(this.$t('LK_QINGXUANZHEXUYAODAOCHUSHUJU'))
       excelExport(this.selectTableData, this.tableTitle)
     },
     //修改表格改动列

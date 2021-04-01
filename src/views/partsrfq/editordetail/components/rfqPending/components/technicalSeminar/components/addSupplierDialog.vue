@@ -1,5 +1,5 @@
 <template>
-  <iDialog :title="title" :visible.sync="value" width="80%" @close='clearDiolog'>
+  <iDialog :title="$t(title)" :visible.sync="value" width="80%" @close='clearDiolog'>
     <div class="changeContent">
       <div class="margin-bottom20 clearFloat">
         <div class="floatright title-button-box">
@@ -13,24 +13,48 @@
           @handleSelectionChange="handleSelectionChange"
           :index="true"
       ></tablelist>
+      <!------------------------------------------------------------------------>
+      <!--                  表格分页                                          --->
+      <!------------------------------------------------------------------------>
+      <iPagination
+          @size-change="handleSizeChange($event, getTableList)"
+          @current-change="handleCurrentChange($event, getTableList)"
+          background
+          :page-sizes="page.pageSizes"
+          :page-size="page.pageSize"
+          :layout="page.layout"
+          :current-page='page.currPage'
+          :total="page.totalCount"
+      />
     </div>
     <span slot="footer" class="dialog-footer">
-          <iButton @click="$emit('input',false)">取 消</iButton>
+          <iButton @click="$emit('input',false)">{{ $t('LK_QUXIAO') }}</iButton>
         </span>
   </iDialog>
 </template>
 <script>
-import {iButton, iMessage, iDialog} from '@/components'
+import {iButton, iMessage, iDialog, iPagination} from '@/components'
 import tablelist from "pages/partsrfq/components/tablelist";
 import {addSupplierTitle} from "./data"
 import {getAllRfqSupplier} from "@/api/partsrfq/editordetail";
+import {pageMixins} from "@/utils/pageMixins";
 
 export default {
-  components: {iButton, iDialog, tablelist},
+  components: {iButton, iDialog, tablelist, iPagination},
   props: {
-    title: {type: String, default: '添加供应商'},
+    title: {type: String, default: 'LK_TIANJIAGONGYINGSHANG'},
     value: {type: Boolean},
-    repeatClick: Boolean
+    repeatClick: Boolean,
+    addSupplierList: {
+      type: Array,
+      default: () => {
+        return []
+      }
+    }
+  },
+  mixins: [pageMixins],
+  created() {
+    this.getTableList()
   },
   data() {
     return {
@@ -70,15 +94,10 @@ export default {
     },
     save() {
       if (this.selectTableData.length == '') {
-        iMessage.warn('抱歉！您当前还未选择！')
+        iMessage.warn(this.$t('LK_NINDANGQIANHAIWEIXUANZE'))
         return false
       }
       this.$emit('sure', this.selectTableData)
-    }
-  },
-  watch: {
-    value() {
-      this.getTableList()
     }
   }
 }

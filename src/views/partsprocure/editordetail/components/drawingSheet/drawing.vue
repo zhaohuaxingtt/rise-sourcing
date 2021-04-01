@@ -6,13 +6,11 @@
       <el-upload 
         class="uploadBtn" 
         multiple
-        :action="action"
-        :data="{ applicationName: 'procurereq-service' }"
+        ref="upload"
         name="multipartFile"
+        :http-request="upload"
         :show-file-list="false" 
         :before-upload="beforeUpload"
-        :on-success="uploadSuccess"
-        :on-error="uploadError"
         accept=".pdf,.xlsx,.docx">
           <iButton :loading="uploadLoading" v-permission="PARTSPROCURE_EDITORDETAIL_DRAWINGSHEET_HANDLEUPLOAD">{{ $t('LK_SHANGCHUANFUJIAN') }}</iButton>
       </el-upload>
@@ -55,6 +53,8 @@ import { tableTitle } from './data'
 import { getInfoAnnexPage, deleteFile, patchTpRecords } from "@/api/partsprocure/editordetail";
 import filters from '@/utils/filters'
 import { downloadFile } from "@/api/file";
+import { uploadFile } from "@/api/file/upload";
+import { getToken } from "@/utils";
 
 export default {
   components: { iCard, iButton, tableList, iPagination },
@@ -71,7 +71,7 @@ export default {
       uploadLoading: false,
       downloadLoading: false,
       deleteLoading: false,
-      action: `${ process.env.VUE_APP_COMMON }/upload`, // 上传api
+      // action: `${ process.env.VUE_APP_COMMON }/upload`, // 上传api
       tableTitle,
       tableListData: [],
       multipleSelection: [],
@@ -81,10 +81,22 @@ export default {
   },
   created() {
     this.getInfoAnnexPage()
+    this.token = getToken()
   },
   methods: {
-    beforeUpload(res) {
-      // console.log(res)
+    upload(content) {
+      const formData = new FormData()
+      formData.append('multipartFile', content.file)
+      formData.append('applicationName', 'procurereq-service')
+      uploadFile(formData)
+        .then(res => {
+          this.uploadSuccess(res, content.file)
+        })
+        .catch(rej => {
+          this.uploadError(rej, content.file)
+        })
+    },
+    beforeUpload() {
       this.uploadLoading = true
     },
     uploadSuccess(res, file) {
@@ -93,7 +105,7 @@ export default {
         iMessage.error(`${ this.$i18n.locale === 'zh' ? res.desZh : res.desEn }`)
       } else {
         clearTimeout(this.timer)
-        iMessage.success(`${ file.name } 上传成功`)
+        iMessage.success(`${ file.name } ${ this.$t('LK_SHANGCHUANCHENGGONG') }`)
         this.fileList.push({ tpPartAttachmentName: res.data[0].fileName, tpPartAttachmentPath: res.data[0].filePath, size: (file.size / 1024 / 1024).toFixed(3) })
         this.timer = setTimeout(() => {
           this.patchTpRecords()
@@ -103,13 +115,13 @@ export default {
     },
     uploadError(err, file) {
       this.uploadLoading = false
-      iMessage.error(`${ file.name } 上传失败`)
+      iMessage.error(`${ file.name } ${ this.$t('LK_SHANGCHUANSHIBAI') }`)
     },
     patchTpRecords() {
       patchTpRecords({
         enquiryAttachmentFacadeDTO: {
           partAttachmentList: this.fileList,
-          tpNewPartID: this.params.purchasingRequirementId
+          purchasingRequirementId: this.params.purchasingRequirementId
         }
       })
         .then(res => {
@@ -127,10 +139,9 @@ export default {
       getInfoAnnexPage({
         currPage: this.page.currPage,
         pageSize: this.page.pageSize,
-        purchasingRequirementTargetId: this.params.purchasingRequirementTargetId
+        purchasingRequirementTargetId: this.params.purchasingRequirementObjectId
       })
         .then(res => { 
-          // console.log(res.data)
           this.tableListData = res.data.tpRecordList
           this.page.totalCount = res.data.totalCount || 0
           this.loading = false
@@ -141,13 +152,13 @@ export default {
       this.multipleSelection = list
     },
     handleDelete() {
-      if (!this.multipleSelection.length) return iMessage.warn('请选择需要删除的附件')
+      if (!this.multipleSelection.length) return iMessage.warn(this.$t('LK_QINGXUANZHEXUYAOSHANCHUYOUJIAN'))
 
       // 后端删除
       this.deleteLoading = true
       deleteFile({ ids: this.multipleSelection.map(item => item.id) })
         .then(res => {
-          iMessage.success('删除成功')
+          iMessage.success(this.$t('LK_SHANCHUCHENGGONG'))
           this.getInfoAnnexPage()
           this.deleteLoading = false
           this.multipleSelection = []
@@ -161,7 +172,7 @@ export default {
       })
     },
     async handleDownload() {
-      if (!this.multipleSelection.length) return iMessage.warn("请选择需要下载的附件")
+      if (!this.multipleSelection.length) return iMessage.warn(this.$t('LK_QINGXUANZHEXUYAOXIAZHAIDEFUJIAN'))
 
       this.downloadLoading = true
       await downloadFile({

@@ -7,10 +7,10 @@
  * @FilePath: \rise\src\views\partsign\home\components\backItems.vue
 -->
 <template>
-    <iDialog :title="title" :visible.sync="value" width="400px" @close='clearDiolog'>
-         <iInput v-model='backmark' show-word-limit class="textarea" :autosize='{minRows:4}' placeholder='请填写理由，该输入框为必填' maxLength='200' type='textarea'></iInput>
+    <iDialog :title="$t(title)" :visible.sync="value" width="400px" @close='clearDiolog'>
+         <iInput v-model='backmark' show-word-limit class="textarea" :autosize='{minRows:4}' :placeholder="$t('LK_QINGTIANXIELIYOUSHURUKUANGBITIAN')" maxLength='200' type='textarea'></iInput>
          <span slot="footer" class="dialog-footer">
-           <iButton @click="$emit('input',false)">取 消</iButton>
+           <iButton @click="$emit('input',false)">{{$t("LK_QUXIAO")}}</iButton>
           <iButton :loading='repeatClick' @click="sureBackmark">{{$t('LK_QUEREN')}}</iButton>
         </span>
       </iDialog>
@@ -21,7 +21,7 @@ export default{
   components:{iInput,iButton,iDialog},
   props:{
     value:{type:Boolean},
-    title:{type:String,default:'新件信息单退回'},
+    title:{type:String,default:'LK_XINJIANXINXIDANTUIHUI'},
     repeatClick:Boolean
   },
   data(){
@@ -31,7 +31,7 @@ export default{
   },
   methods:{
     sureBackmark(){
-      if(this.backmark == '') return iMessage.warn('抱歉，理由不能为空！')
+      if(this.backmark == '') return iMessage.warn(this.$t('LK_LIYOUBUNENGWEIKONG'))
       this.$emit('sure',this.backmark)
     },
     clearDiolog(){this.$emit('input',false);this.backmark=''},

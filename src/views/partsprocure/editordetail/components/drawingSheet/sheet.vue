@@ -7,13 +7,14 @@
  * @FilePath: \rise\src\views\partsprocure\editordetail\components\drawingSheet\sheet.vue
 -->
 <template>
-  <iCard class="outputRecord" tabCard :title="`${ $t('LK_XINXIDANLIUSHUIHAO') }：${ this.params.purchasingRequirementId || '' }`" v-loading="loading">
+  <iCard class="outputRecord" tabCard :title="`${ $t('LK_XINXIDANLIUSHUIHAO') }：${ this.data.tpPartID || '' }`" v-loading="loading">
     <div class="body">
       <iFormGroup v-for="(chunk, $index) in items" :key="$index" :row="3" inline>
         <iFormItem v-for="item in chunk" :key="item.props" :label="$t(item.key)">
-          <iText v-if="item.props === 'status'">{{ value | statusFilter }}</iText>
-          <iText v-else-if="item.props === 'createDate' || item.props === 'drawingDate'">{{ value | dateFilter }}</iText>
-          <iText v-else>{{ value }}</iText>
+          <iText v-if="item.props === 'status'">{{ item.value | statusFilter }}</iText>
+          <iText v-else-if="item.props === 'createDate' || item.props === 'drawingDate'">{{ item.value | dateFilter }}</iText>
+          <iText v-else-if="item.props === 'isSecondTier' || item.props === 'isBMG'">{{ item.value | boolFilter }}</iText>
+          <iText v-else>{{ item.value }}</iText>
         </iFormItem>
       </iFormGroup>
     </div>
@@ -39,6 +40,7 @@ export default {
   watch: {
     data: {
       handler(data) {
+        console.log('test', data)
         this.items.forEach(chunk => {
           chunk.forEach(item => {
             this.$set(item, 'value', data[item.props])
@@ -80,7 +82,8 @@ export default {
         userId: store.state.permission.userInfo.id
       })
         .then(res => {
-          this.data = (res.data.tpRecordsSenarioResult && res.data.tpRecordsSenarioResult.tpRecordList && res.data.tpRecordsSenarioResult.tpRecordList[0]) || {}
+          console.log(res.data.tpRecordsSenarioResult)
+          this.data = (res.data.tpRecordsSenarioResult && res.data.tpRecordsSenarioResult.tpRecordList && res.data.tpRecordsSenarioResult.tpRecordList[0] && res.data.tpRecordsSenarioResult.tpRecordList[0].tpPartInfoVO) || {}
           this.loading = false
         })
         .catch(() => this.loading = false)

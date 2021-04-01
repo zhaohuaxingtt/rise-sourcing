@@ -310,7 +310,7 @@ export default {
         },
       }).then((res) => {
         if (res.data) {
-          iMessage.success("操作成功");
+          iMessage.success(this.this.$t('LK_CAOZUOCHENGGONG'));
           this.getTableList();
         } else {
           iMessage.error(res.desZh);
@@ -326,7 +326,7 @@ export default {
         },
       }).then((res) => {
         if (res.data) {
-          iMessage.success("操作成功");
+          iMessage.success(this.$t('LK_CAOZUOCHENGGONG'));
           this.getTableList();
         }
       });
@@ -408,29 +408,29 @@ export default {
     //签收
     save() {
       if (this.selectTableData.length == 0)
-        return iMessage.warn("抱歉，您当前还未选择您需要签收的信息单！");
+        return iMessage.warn(this.$t('LK_NINDANGQIANHAIWEIXUANZENINXUYAOQIANSHOUDEXINXIDAN'));
       if (this.selectTableData.find((items) => items.status == 1))
         return iMessage.warn(
-          "抱歉，您选中的单据中存在已签收的信息单，不能批量签收！"
+          this.$t('LK_NINXUANZHONGDEDANJUZHONGCUNZAIYIQIANSHOUDEXINXIDANBUNENGPILIANGQIANSHOU')
         );
-      iMessageBox("您是否确认对新件信息单进行签收？").then((res) => {
+      iMessageBox(this.$t('LK_NINSHIFOUQUERENDUIXINJIANXINXIDANJINHANGQIANSHOU')).then((res) => {
         this.patchRecords(2, this.selectTableData);
       });
     },
     //退回
     openDiologBack() {
       if (this.selectTableData.length == 0)
-        return iMessage.warn("抱歉，您当前还未选择您需要退回的信息单！");
+        return iMessage.warn(this.$t('LK_NINDANGQIANHAIWEIXUANZENINXUYAOTUIHUIDEXINXIDAN'));
       if (this.selectTableData.find((items) => items.status == 1))
         return iMessage.warn(
-          "抱歉，您选中的单据中存在已签收的信息单，不能批量签收！"
+          this.$t('LK_NINXUANZHONGDEDANJUZHONGCUNZAIYIQIANSHOUDEXINXIDANBUNENGPILIANGQIANSHOU')
         );
       this.diologBack = true;
     },
     //转派
     openDiologChangeItems() {
       if (this.selectTableData.length == 0)
-        return iMessage.warn("抱歉，您当前还未选择您需要转派的信息单！");
+        return iMessage.warn(this.$t('LK_NINDANGQIANHAIWEIXUANZENINXUYAOZHUANPAIDEXINXIDAN'));
       this.diologChangeItems = true;
     },
     //退回

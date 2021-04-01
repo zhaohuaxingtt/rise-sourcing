@@ -6,13 +6,13 @@
  * @Description: In User Settings Edit
 -->
 <template>
-  <iDialog :title="title" :visible.sync="value" width="80%" @close='clearDiolog'>
+  <iDialog :title="$t(title)" :visible.sync="value" width="80%" @close='clearDiolog'>
     <div class="changeContent">
       <div class="margin-bottom20 clearFloat">
         <div class="floatright title-button-box">
-          <iButton @click="add" v-permission="PARTSRFQ_ASSIGNMENTOFSCORINGTASKS_SAVE">添加</iButton>
-          <iButton @click="deleteItems">删除</iButton>
-          <iButton @click="save">转派</iButton>
+          <iButton @click="add" v-permission="PARTSRFQ_ASSIGNMENTOFSCORINGTASKS_SAVE">{{ $t('LK_TIANJIA') }}</iButton>
+          <iButton @click="deleteItems">{{ $t('LK_SHANCHU') }}</iButton>
+          <iButton @click="save">{{ $t('LK_ZHUANPAI') }}</iButton>
         </div>
       </div>
       <tablelist
@@ -29,7 +29,7 @@
       ></tablelist>
     </div>
     <span slot="footer" class="dialog-footer">
-          <iButton @click="$emit('input',false)">取 消</iButton>
+          <iButton @click="$emit('input',false)">{{ $t('LK_QUXIAO') }}</iButton>
         </span>
   </iDialog>
 </template>
@@ -47,7 +47,7 @@ import {rfqCommonFunMixins} from "pages/partsrfq/components/commonFun";
 export default {
   components: {iButton, iDialog, tablelist},
   props: {
-    title: {type: String, default: '转派评分任务'},
+    title: {type: String, default: 'LK_ZHUANPAIPINGFENRENWU'},
     value: {type: Boolean},
     repeatClick: Boolean,
     rfqId: {
@@ -78,12 +78,12 @@ export default {
       this.$emit('input', false)
     },
     async save() {
-      if (this.selectTableData.length == '') return iMessage.warn('抱歉！您当前还未选择！')
+      if (this.selectTableData.length == '') return iMessage.warn(this.$t('LK_NINDANGQIANHAIWEIXUANZE'));
       const req = {
         ratingInfoPackage: {
           ratingInfoList: this.selectTableData,
           rfqId: this.rfqId,
-          userId:store.state.permission.userInfo.id,
+          userId: store.state.permission.userInfo.id,
         }
       }
       const res = await editRfqData(req)
@@ -123,6 +123,15 @@ export default {
             }
           })
           break;
+        case 'graderId':
+          this.tableListData.map(item => {
+            if (item.time === res.time) {
+              item.graderName = (newObj[res.time].graderId.filter(item2 => {
+                return item2.code === res.val
+              }))[0].name
+            }
+          })
+          break;
       }
       this.selectPropsOptionsObject = newObj
     },
@@ -139,7 +148,8 @@ export default {
     },
     deleteItems() {
       if (this.selectTableData.length === 0) {
-        return iMessage.warn("抱歉，您当前还未选择！");
+        // return iMessage.warn("抱歉，您当前还未选择！");
+        return iMessage.warn(this.$t('LK_NINDANGQIANHAIWEIXUANZE'));
       }
       const indexList = this.selectTableData.map(item => {
         return item.time

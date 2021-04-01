@@ -3,8 +3,13 @@
     <iCard>
       <div class="margin-bottom5 clearFloat">
         <div class="floatright">
-          <iButton @click="addSupplier" v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_TECHNICALSEMINAR_ADDSUPPLIER">{{ $t('LK_TIANJIAGONGYINGSHANG') }}</iButton>
-          <iButton @click="sendToMyEmail" v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_TECHNICALSEMINAR_SENDTOMYEMAIL">{{ $t('LK_FASONGZHIWODEYOUXIANG') }}</iButton>
+          <iButton @click="addSupplier" v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_TECHNICALSEMINAR_ADDSUPPLIER">
+            {{ $t('LK_TIANJIAGONGYINGSHANG') }}
+          </iButton>
+          <iButton @click="sendToMyEmail"
+                   v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_TECHNICALSEMINAR_SENDTOMYEMAIL">
+            {{ $t('LK_FASONGZHIWODEYOUXIANG') }}
+          </iButton>
         </div>
       </div>
       <div class="margin-bottom20 clearFloat">
@@ -17,7 +22,7 @@
           :index="true"
           @handleSelectionChange="handleSelectionChange"
           open-page-props="action"
-          customOpenPageWord="查看"
+          :customOpenPageWord="$t('LK_CHAKAN')"
           @openPage="openPage"
           :openPageGetRowData="true"
       ></tablelist>
@@ -56,6 +61,7 @@
     <add-supplier-dialog
         @sure="handleAddSupplierSave"
         v-model="dialogAddSupplier"
+        :addSupplierList="addSupplierList"
     />
   </div>
 </template>
@@ -109,7 +115,7 @@ export default {
         try {
           const req = {
             rfqId: id,
-            userId:store.state.permission.userInfo.id,
+            userId: store.state.permission.userInfo.id,
             isFake: 1
           }
           const res = await getAllRfqParts(req)
@@ -132,26 +138,28 @@ export default {
     },
     async sendToMyEmail() {
       const id = this.$route.query.id
-      const supplierMaterialPreparationData = this.$refs.supplierMaterialPreparation.dynamicForm.baseInfo
+      const supplierMaterialPreparationData = this.$refs.supplierMaterialPreparation.dynamicForm.baseInfo.filter(item => {
+        return item.value.length > 0
+      })
       const otherMeetingInformationData = this.$refs.otherMeetingInformation.form
       const meetingStuffList = supplierMaterialPreparationData.map(item => {
         return item.value
       })
       const supplierIdList = this.addSupplierList.map(item => {
-        return item.id
+        return item.supplierId
       })
       const partNumsList = this.selectTableData.map(item => {
         return item.partNum
       })
-      if(supplierIdList.length === 0) {
-        iMessage.warn('请添加供应商!')
+      if (supplierIdList.length === 0) {
+        iMessage.warn(this.$t('LK_QINGTIANJIAGONGYINGSHANG'))
         return
       }
       const req = {
         rfqId: id,
-        userId:store.state.permission.userInfo.id,
+        userId: store.state.permission.userInfo.id,
         // eslint-disable-next-line no-undef
-        meetingDate: moment(otherMeetingInformationData.meetingDate).format('YYYY-MM-DD'),
+        meetingDate: otherMeetingInformationData.meetingDate ? moment(otherMeetingInformationData.meetingDate).format('YYYY-MM-DD') : '',
         meetingLocation: otherMeetingInformationData.meetingLocation,
         memo: otherMeetingInformationData.memo,
         meetingStuff: meetingStuffList.join(','),
@@ -172,7 +180,7 @@ export default {
     handleAddSupplierSave(list) {
       this.addSupplierList = list
       this.dialogAddSupplier = false
-      iMessage.success('已保存')
+      iMessage.success(this.$t('LK_YIBAOCUN'))
     },
     async getPic(row) {
       this.drawingList = []

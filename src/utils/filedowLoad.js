@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-03-17 23:40:36
- * @LastEditTime: 2021-03-18 00:36:05
+ * @LastEditTime: 2021-04-01 17:44:10
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\utils\filedowLoad.js
@@ -9,7 +9,8 @@
 
 export function excelExport(data,title,fileName= new Date().getTime()){
   try {
-    if (!data&&!title) return console.warn('没有可以下载的信息')
+    // eslint-disable-next-line no-undef
+    if (!data&&!title) return console.warn(Vue.$t('LK_MEIYOUKEYIXIAZHAIDEXINXI'))
     let worksheet = window.XLSX.utils.aoa_to_sheet(translateData(data,title))
     // 创建工作簿
     let newWorkbook = window.XLSX.utils.book_new()

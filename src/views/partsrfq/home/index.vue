@@ -1,7 +1,7 @@
 <!--
  * @Author: moxuan
  * @Date: 2021-02-25 09:59:25
- * @LastEditTime: 2021-03-27 21:41:09
+ * @LastEditTime: 2021-04-01 19:18:54
  * @LastEditors: Please set LastEditors
  * @Description: RFQ模块首页
  * @FilePath: \rise\src\views\partsrfq\home\index.vue
@@ -227,7 +227,7 @@ export default {
     },
     async editRfq(updateType) {
       if (this.selectTableData.length === 0) {
-        return iMessage.warn("抱歉，您当前还未选择任务！");
+        return iMessage.warn(this.$t('LK_NINDANGQIANHAIWEIXUANZE'));
       }
       const idList = this.selectTableData.map(item => {
         return item.id
@@ -247,7 +247,7 @@ export default {
     },
     assignmentOfScoringTasks() {
       if (this.selectTableData.length == 0)
-        return iMessage.warn("抱歉，您当前还未选择您需要转派的评分任务！");
+        return iMessage.warn(this.$t('LK_NINDANGQIANHAIWEIXUANZENINXUYAOZHUANPAIDEPINGFENRENWU'));
       this.diologAssignmentOfScroingTasks = true
       this.assignmentRfqIdList = this.selectTableData.map(item => {
         return item.id
@@ -274,7 +274,7 @@ export default {
     },
     exportTable() {
       if (this.selectTableData.length == 0)
-        return iMessage.warn('请选择需要导出的数据')
+        return iMessage.warn(this.$t('LK_QINGXUANZHEXUYAODAOCHUSHUJU'));
       excelExport(this.selectTableData, this.tableTitle)
     },
     setOperationButtonLoading(updateType, boolean) {

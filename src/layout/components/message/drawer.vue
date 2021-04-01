@@ -5,7 +5,7 @@
         <div class="chunk" :key="key" v-if="items.length">
           <div class="header">
             <p class="title font-weight">{{ $t(`topLayout.message.${ key }`) }}</p>
-            <span class="clear font-size14" @click="handleClearByChunk(key)">清除</span>
+            <span class="clear font-size14" @click="handleClearByChunk(key)">{{$t('LK_QINGCHU')}}</span>
           </div>
           <transition-group name="item" tag="card">
             <card class="card" v-for="item in items" :key="item.remark" :data="item" @handleClear="handleClear(item, items)" />

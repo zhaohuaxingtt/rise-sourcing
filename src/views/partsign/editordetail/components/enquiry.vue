@@ -99,7 +99,7 @@ export default {
     },
     async download() {
       if (!this.multipleSelection.length) {
-        iMessage.warn('请选择需要下载文件')
+        iMessage.warn(this.$t('LK_QINGXUANZHEXUYAOXIAZHAIWENJIAN'))
       }
 
       downloadFile({
