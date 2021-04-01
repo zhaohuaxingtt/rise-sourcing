@@ -24,7 +24,7 @@ export default{
       return null
     },
     getRowItemsIcon(){
-      if(this.icon) return 'icon_self';
+      //if(this.icon) return 'icon_self';
       return null
     },
     addClassElformItems(){
