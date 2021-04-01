@@ -89,7 +89,6 @@ export default {
 
                 return result
               })
-              console.log(this.tableListData)
             }
             this.page.totalCount = res.data.partRecordResPageDTO.total || 0
           }

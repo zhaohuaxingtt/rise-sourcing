@@ -112,7 +112,7 @@ export default {
   methods: {
     // 获取材料组数据
     getMaterialGroup() {
-      if (!this.params.categoryCode) return iMessage.warn(this.$t('LK_QUESHIGONGYIZUBIANHAOETC'))
+      if (!this.params.categoryCode) return iMessage.warn(this.$t('LK_QUESHICAILIAOZUBIANHAOETC'))
       this.loading = true
       getMaterialGroup({ categoryCode: this.params.categoryCode, partNum: this.params.partNum })
         .then(res => {
@@ -132,7 +132,7 @@ export default {
       if (!this.params.partNum) return iMessage.warn(this.$t('LK_QUESHIYOUXIAODELINGJIANBIANHAO'))
       this.setMaterialGroupStatus = true
 
-      this.getMeterialStuff()
+      // this.getMeterialStuff()
     },
     // 设置工艺组请求
     confirmMaterialGroup() {
