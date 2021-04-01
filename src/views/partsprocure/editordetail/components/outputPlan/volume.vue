@@ -37,6 +37,7 @@ import {
   getPerCarDosageVersion,
   getPerCarDosageInfo,
 } from "@/api/partsign/editordetail";
+import { iMessage } from '../../../../../components';
 
 export default {
   components: { iCard, tableList, iPagination },
@@ -72,9 +73,13 @@ export default {
             status: 1,
             purchasingRequirementId: this.params.purchasingRequirementId,
           });
-          console.log('versionRes', versionRes)
 
           this.versionNum = "V1";
+
+          if (versionRes.code != 200) {
+            return iMessage.error(`${ this.$i18n.locale === 'zh' ? versionRes.desZh : versionRes.desEn }`)
+          }
+
           if (
             versionRes.data &&
             Array.isArray(versionRes.data.tpRecordList) &&
@@ -95,9 +100,13 @@ export default {
           tpId: this.tpId,
         });
 
+        if (infoRes.code != 200) {
+            return iMessage.error(`${ this.$i18n.locale === 'zh' ? infoRes.desZh : infoRes.desEn }`)
+          }
+
         if (infoRes.data) {
           this.tableListData = infoRes.data.tpRecordList;
-          this.page.totalCount = infoRes.data.totalCount;
+          this.page.totalCount = infoRes.data.totalCount || 0;
         }
       } catch (e) {
         console.error(e);
