@@ -67,6 +67,7 @@
             :layout="page.layout"
             :current-page="page.currPage"
             :total="page.totalCount"
+			v-update
           />
           </el-form>
       </template>

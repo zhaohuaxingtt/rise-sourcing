@@ -11,7 +11,7 @@ import {permissionTitle} from '@/utils'
 export const tableTitle = permissionTitle("PARTSPROCURE_PARTSPROCURELIST",[{
 		props: 'fsnrGsnrNum',
 		name: 'FSNF/GSNF/SPNR',
-		key: 'partsprocure.PARTSPROCURENEWPROCUREMENTPROJECT',
+		key: 'partsprocure.PARTSPROCUREFSNFGSNFSPNR',
 		tooltip:false
 	},
 	{

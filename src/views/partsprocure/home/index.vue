@@ -134,7 +134,7 @@
             <iPagination @size-change="handleSizeChange($event, getTableListFn)"
                          @current-change="handleCurrentChange($event, getTableListFn)" background
                          :page-sizes="page.pageSizes" :page-size="page.pageSize" :layout="page.layout"
-                         :total="page.totalCount"/>
+                         :total="page.totalCount" v-update/>
           </iCard>
           <!------------------------------------------------------------------------>
           <!--                  转派弹出框                                         --->

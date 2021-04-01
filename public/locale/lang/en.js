@@ -65,7 +65,7 @@
             'PARTSPROCUREBATCHMAINTENANCE': 'Batch Maintenance',
             'PARTSPROCURESTARTINQUIRY': 'Start Inquiry',
             'PARTSPROCURETRANSFER': 'Transfer',
-            'PARTSPROCUREFSNFGSNFSPNR': 'FSNF/GSNF/SPNR',
+            'PARTSPROCUREFSNFGSNFSPNR': 'FSNR/GSNR/SPNR',
             'PARTSPROCUREPARTNUMBER': 'Number',
             'PARTSPROCUREPARTNAMEZH': 'Name (ZH)',
             'PARTSPROCUREPARTNAMEDE': 'Name (DE)',
