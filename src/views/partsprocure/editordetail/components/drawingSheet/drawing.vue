@@ -8,6 +8,7 @@
         multiple
         :action="action"
         :data="{ applicationName: 'procurereq-service' }"
+        :headers="{ token }"
         name="multipartFile"
         :show-file-list="false" 
         :before-upload="beforeUpload"
@@ -55,6 +56,7 @@ import { tableTitle } from './data'
 import { getInfoAnnexPage, deleteFile, patchTpRecords } from "@/api/partsprocure/editordetail";
 import filters from '@/utils/filters'
 import { downloadFile } from "@/api/file";
+import { getToken } from "@/utils";
 
 export default {
   components: { iCard, iButton, tableList, iPagination },
@@ -81,6 +83,7 @@ export default {
   },
   created() {
     this.getInfoAnnexPage()
+    this.token = getToken()
   },
   methods: {
     beforeUpload(res) {
@@ -127,7 +130,7 @@ export default {
       getInfoAnnexPage({
         currPage: this.page.currPage,
         pageSize: this.page.pageSize,
-        purchasingRequirementTargetIds: this.params.purchasingRequirementObjectId
+        purchasingRequirementTargetId: this.params.purchasingRequirementObjectId
       })
         .then(res => { 
           // console.log(res.data)
