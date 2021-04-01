@@ -95,7 +95,7 @@ export default {
       }
     },
     deleteItems() {
-      iMessageBox('是否确认删除?').then(async () => {
+      iMessageBox(this.$t('LK_SHIFOUQUERENSHANCHU')).then(async () => {
         const annexIds = this.selectTableData.map(item => {
           return item.id
         })

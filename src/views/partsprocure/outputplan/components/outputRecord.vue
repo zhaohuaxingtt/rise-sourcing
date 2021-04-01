@@ -102,7 +102,7 @@ export default {
       this.multipleSelection = list
     },
     updateOutput() {
-      if (this.multipleSelection.length !== 1) return iMessage.warn('请选择一条计划更新至询价产量')
+      if (this.multipleSelection.length !== 1) return iMessage.warn(this.$t('LK_QINGXUANZHEYITIAOJIHUAGENGXIN'))
       this.$emit('updateOutput', this.multipleSelection[0])
     },
     updateStartYear(startYear) {

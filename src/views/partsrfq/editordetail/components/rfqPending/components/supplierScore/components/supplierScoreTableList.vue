@@ -17,7 +17,7 @@
                              :label="items2.key ? $t(items2.key) : items2.name">
               <template slot-scope="scope">
                 <span class="openLinkText cursor"
-                      @click="openMultiHeaderPropsPage(scope.row)">{{ multiHeaderPropsText }}</span>
+                      @click="openMultiHeaderPropsPage(scope.row)">{{ $t(multiHeaderPropsText) }}</span>
               </template>
             </el-table-column>
             <el-table-column :key="index2" align='center' v-else :label="items2.key ? $t(items2.key) : items2.name"
@@ -29,7 +29,7 @@
         <el-table-column :key="index" align='center' v-if="items.props === actionProps" :prop="items.props"
                          :label="items.key ? $t(items.key) : items.name">
           <template slot-scope="scope">
-            <span class="openLinkText cursor" @click="openActionPropsPage(scope.row)">查看</span>
+            <span class="openLinkText cursor" @click="openActionPropsPage(scope.row)">{{$t('LK_CHAKAN')}}</span>
           </template>
         </el-table-column>
         <el-table-column :key="index" align='center' v-else :label="items.key ? $t(items.key) : items.name"
@@ -52,7 +52,7 @@ export default {
     hideOpenPage: {type: Boolean, default: false},
     multiHeaderProps: {type: String, default: 'tpbMemo'},
     actionProps: {type: String, default: 'action'},
-    multiHeaderPropsText: {type: String, default: '编辑'},
+    multiHeaderPropsText: {type: String, default: 'LK_BIANJI'},
   },
   methods: {
     handleSelectionChange(val) {

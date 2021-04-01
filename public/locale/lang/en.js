@@ -573,8 +573,62 @@
         'LK_TIAOJILU': 'records', // 条记录
         'LK_GONG': 'total', // 共
 		'LK_ZHUANGTAI': 'Status',//状态
-
-
+        'LK_QUXIAO': 'Cancel',//取消
+        'LK_QINGXUANZHEXUYAODAOCHUSHUJU': 'Select the data you want to export', //请选择需要导出的数据
+        'LK_BUNENGSHANCHUZHISHAOBAOLIUYITIAO': 'Can not delete, at least keep one!', //不能删除，至少保留一条!
+        'LK_YITIANJIADAOSHANGXIAN': 'Added to the upper limit', //已添加到上限!
+        'LK_GONGYINGSHANGGONGSIJIESHAO': 'Supplier Company Introduction', //供应商公司介绍!
+        'LK_GONGYINGSHANGCHANPINGAIYAO': 'Supplier Product Profile', //供应商产品概要!
+		'LK_GONGYINGSHANGTIMELINE': 'Supplier timeline', //供应商timeline!
+        'LK_LIRUMENJING': 'For example, the procedures for the application of baggage ban, other remarks information, etc', //例如：⻔禁申请步骤，其他备注信息等
+		'LK_SHANGQIDAZHONGYUANQU': 'Room 303, Shanghai Volkswagen Park', //上汽⼤众园区303室!
+        'LK_YIBAOCUN': 'The saved', //已保存!
+        'LK_QINGTIANJIAGONGYINGSHANG': 'Please add supplier!', //请添加供应商!
+        'LK_CHAKAN': 'To view', //查看!
+		'LK_TUICHUDENGLU': 'Log out', //退出登录!
+        'LK_QINGSHURUBEIZHU': 'Please enter remarks', //请输入备注
+        'LK_SHENQING': 'Apply', //申请
+		'LK_CAIWUMUBIAOJIA': 'Financial target price', //财务⽬标价
+		'LK_RFQMINGCHNEGBUNENGWEIKONG': 'The RFQ name cannot be empty', //RFQ名称不能为空
+        'LK_RFQLINGJIANHUOZHERFQGONGYINGSHANGWEIKONG': 'The RFQ part or RFQ supplier is empty and cannot create RFQ rounds', //RFQ零件或者RFQ供应商为空，不能创建RFQ轮次
+        'LK_SHANGCHUAN': 'upload', // 上传
+        'LK_QINGXUANZHEXUYAODAOCHUDEMEINIANYONGCHELIANG': 'Please select the amount per vehicle to be exported', // 请选择需要导出的每车用量
+        'LK_QINGXUANZHEYITIAOJIHUAGENGXIN': 'Please select a plan to update to RFQ', // 请选择一条计划更新至询价产量
+        'LK_MEIYOUKEYIXIAZHAIDEXINXI': 'There is no information available for download', // 没有可以下载的信息
+        'LK_QINGXUANZHEXUYAODAOCHURIZHI': 'Please select the logs that you want to export', // 请选择需要导出的日志
+        'LK_QINGXUANZHEXUYAOSHANCHUYOUJIAN': 'Please select the attachment you want to delete', // 请选择需要删除的附件
+        'LK_SHANCHUCHENGGONG': 'Delete the success', // 删除成功
+        'LK_QINGXUANZHEXUYAOXIAZHAIDEFUJIAN': 'Please select the attachment you want to download', // 请选择需要下载的附件
+        'LK_QUESHICAILIAOZUBIANHAOETC': 'The category group number is missing. Please first set the category group corresponding to the part', // 缺失材料组编号，请先设置零件对应的材料组
+        'LK_QUESHIYOUXIAODELINGJIANBIANHAO': 'A valid part number is missing', // 缺失有效的零件编号
+        'LK_QUESHIYOUXIAODEGONGYIZUID': 'A valid process group ID is missing', // 缺失有效的工艺组id
+        'LK_XIUGAICHENGGONG': 'Modify the success', // 修改成功
+        'LK_CAOZUOCHENGGONG': 'Operation is successful', // 操作成功
+        'LK_QINGXUANZHEXUYAOXIAZHAIWENJIAN': 'Please select the file you want to download', // 请选择需要下载文件
+        'LK_QINGXUANZHEYITIAOXUYAOQUEREDEBANBEN': 'Please select a version that you want to confirm', // 请选择一条需要确认的版本
+        'LK_QINGXUANZHEXUYAODAOCHUBANBEN': 'Select the version you want to export', //请选择需要导出的版本
+        'LK_XINJIANXINXIDANZHUANPAI': 'Delivery of new pieces of information', // 新件信息单转派
+        'LK_QINGXUANZHEXUNJIACAIGOUYUAN': 'Please select inquiry buyer', // 请选择询价采购员
+        'LK_YONGHUMING': 'UserName', // 用户名
+		'LK_MIMA': 'PassWord', // 密码
+		'LK_DENGLU': 'Login', // 登录
+        'LK_QINGCHU': 'Remove', // 清除
+        'LK_QINGTIANXIELIYOUSHURUKUANGBITIAN': 'Please fill in the reason. This input box is required', // 请填写理由，该输入框为必填
+        'LK_XINJIANXINXIDANTUIHUI': 'New piece of information sheet returned', // 新件信息单退回
+        'LK_YIQIANSHOU': 'Have been signed', // 新件信息单退回
+		'LK_YITUIHUI': 'Returned', // 以退回
+        'LK_QINGXUANZHEXUYAOXIUGAIDELINGJIANCAIGOUXIANGMU': 'Please select the part purchase item to be modified', // 请选择需要修改的零件采购项目
+        'LK_QINGXUANZHEXIANCAILIAOZU': 'Please select the first material group', // 请选择先材料组
+        'LK_SHANGCHUANCHENGGONG': 'Uploaded successfully', // 上传成功
+		'LK_SHANGCHUANSHIBAI': 'Upload failed', // 上传失败
+        'LK_ZHUANPAICHENGGONG': 'Turn sent successfully', // 转派成功
+        'LK_CAIGOUGONGCHNEGMINGCHENG': 'Name of Purchasing Factory', // 采购工厂名称
+		'LK_CHANLIANGZHANBI': 'Output ratio (%)', // 产量占比（%）
+        'LK_HAIWEIXUANZHEGONGCHANG': 'You have not selected a factory yet!', // 您还未选择工厂！
+		'LK_CAIGOUFENEFENPEIDABUDAO': 'Procurement share allocation cannot reach 100%', // 采购份额分配达不到100%
+        'LK_CAIGOUFENEFENPEICHAOGUO': 'The current allocation has exceeded 100%, please reallocate!', // 当前分配已超过100%，请重新分配！
+		'LK_CAIGOUFENEFENPEIWEIDADAO': 'The current allocation has not reached 100%, please reallocate!', // 当前分配未达到100%，请重新分配！
+		'LK_CAIGOUFENEFENPEIWEIDADAODANGQIAN': 'The current allocation does not reach 100%. There is a 0 condition in the current allocation factory. Please reassign it!', // 当前分配未达到100%，请重新分配！
         // 'LK_XIANGNEIZHOUZHUANCAILIAOZHONGHEJIAGE':'翻箱前器具综合单价（RMB）', //箱内周转材料综合价格 
         /*
         <!------------------------------------------------------------------------>

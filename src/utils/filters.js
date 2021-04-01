@@ -6,6 +6,9 @@ export default {
     },
     dateFilter(val) {
       return typeof val === 'string' ? window.moment(val).format('YYYY-MM-DD HH:mm:ss') : val
+    },
+    boolFilter(val) {
+      return typeof val === 'boolean' ? (val ? '是' : '否') : val
     }
   },
 }

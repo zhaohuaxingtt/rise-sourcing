@@ -3,7 +3,7 @@
  * @Date: 2021-03-16 17:24:15
 -->
 <template>
-  <iDialog :title="title" :visible.sync="value" width="500px" @close='clearDiolog'>
+  <iDialog :title="$t(title)" :visible.sync="value" width="500px" @close='clearDiolog'>
     <div class="changeContent">
       <el-upload
           class="avatar-uploader"
@@ -21,8 +21,8 @@
       </el-upload>
     </div>
     <span slot="footer" class="dialog-footer">
-       <iButton @click="submit">确认</iButton>
-       <iButton @click="clearDiolog">取消</iButton>
+       <iButton @click="submit">{{$t('LK_QUEREN')}}</iButton>
+       <iButton @click="clearDiolog">{{$t('LK_QUXIAO')}}</iButton>
     </span>
   </iDialog>
 </template>
@@ -35,7 +35,7 @@ export default {
     iDialog
   },
   props: {
-    title: {type: String, default: '上传'},
+    title: {type: String, default: 'LK_SHANGCHUAN'},
     value: {type: Boolean},
     repeatClick: Boolean,
     fileList: {

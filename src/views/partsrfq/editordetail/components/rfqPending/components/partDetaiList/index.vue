@@ -19,12 +19,12 @@
 			</iButton>
 		</div>
 		<tableList :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="confirmTableLoading"
-			@handleSelectionChange="handleSelectionChange" @openPage="openPage"></tableList>
+			@handleSelectionChange="handleSelectionChange" @openPage="openPage"  ref="moviesTable"></tableList>
 		<iPagination @size-change="handleSizeChange($event, getTableList)"
 			@current-change="handleCurrentChange($event, getTableList)" background :page-sizes="page.pageSizes"
 			:page-size="page.pageSize" :layout="page.layout" :total="page.totalCount"></iPagination>
 		<div class="addFs flex-align-center">
-			<iButton @click="start" :loading="addLoding" v-permission="PARTSRFQ_EDITORDETAIL_PARTDETAILIST_ADD">添加</iButton>
+			<iButton @click="start" :loading="addLoding" v-permission="PARTSRFQ_EDITORDETAIL_PARTDETAILIST_ADD">{{$t('LK_TIANJIA')}}</iButton>
 		</div>
 		<partsTable ref="partsTable" :rfqId="rfqId" @targetHand="waitSelect"></partsTable>
 		<!-- 新申请财务目标价 -->
@@ -90,8 +90,37 @@
 		},
 		methods: {
 			// 已在RFQ中零件选中数据
-			handleSelectionChange(e) {
-				this.handleSelectArr = e;
+			handleSelectionChange(rows) {
+				// rows.forEach(row => {
+				// 	this.$refs.multipleTable.toggleRowSelection(row,false);
+				// });
+				// let row=e[0]
+				// console.log(row);
+				// this.$refs.multipleTable.toggleRowSelection(row)
+				// this.$refs.multipleTable.clearSelection()
+				// if (rows.length>1) {
+				// 	iMessage.warn("财务目标价应单条申请")
+				// 	this.$refs.multipleTable.toggleRowSelection()
+				// }
+				// this.handleSelectArr = rows;
+				// console.log(val)
+				      // @selection-change="handleSelectionChange"绑定的方法
+				      if (rows.length > 1) {
+				      //取出最后val的最后一个返回出来
+				        var duoxuans=rows.pop();
+				       this.handleSelectArr=rows.pop();
+				      //清除所有选中
+				        this.$refs.moviesTable.clearSelection()
+				        //给最后一个加上选中
+				        this.$refs.moviesTable.toggleRowSelection(duoxuans)
+				        // console.log(this.duoxuan);
+				      } else {
+				        this.handleSelectArr=rows;
+				        }
+				
+			},
+			select(row){
+				console.log(row);
 			},
 			// 未在RFQ中零件选中数据
 			waitSelect(e) {
@@ -110,13 +139,13 @@
 				return new Promise((r) => {
 					if (this.waitHandleSelectArr.length == 0) {
 						r(false);
-						iMessage.warn(`抱歉，您当前还未选择需要添加的采购项目！`);
+						iMessage.warn(this.$t('LK_NINDANGQIANHAIWEIXUANZEXUYAOTIANJIADECAIGOUXIANGMU'));
 						return;
 					}
 					if (this.waitHandleSelectArr.find((items) => items.fsnrGsnrNum == "")) {
 						r(false);
 						iMessage.warn(
-							`抱歉，当前采购项目中存在还未生成FSNR的数据，无法为您添加！`
+							this.$t('LK_DANGQIANCAIGOUXIANGMUZHONGCUNZAIHAIWEISHENGCHENGFSNRDESHUJUWUFAWEININTIANJIA')
 						);
 						return;
 					}
@@ -173,7 +202,7 @@
 			showApplyPrice() {
 				console.log(this.handleSelectArr.length);
 				if (this.handleSelectArr.length == 0) {
-					iMessage.warn(`抱歉，您当前还未选择需要申请目标价的采购项目！`);
+					iMessage.warn(this.$t('LK_NINDANGQIANHAIWEIXUANZEXUYAOSHENQINGMUBIAOJIADECAIGOUXIANGMU'));
 					return
 				}
 				this.$refs.applyPrice.show()
@@ -181,7 +210,7 @@
 			// 再次申请财务目标价
 			againApply() {
 				if (this.handleSelectArr.length == 0) {
-					iMessage.warn(`抱歉，您当前还未选择需要申请目标价的采购项目！`);
+					iMessage.warn(this.$t('LK_NINDANGQIANHAIWEIXUANZEXUYAOSHENQINGMUBIAOJIADECAIGOUXIANGMU'));
 					return
 				}
 				this.$refs.applyPrice.againShow()
@@ -217,7 +246,7 @@
 		justify-content: flex-end;
 	}
 
-	//  thead .el-table-column--selection .cell{
-	//   display: none;
-	// }
+	::v-deep thead .el-table-column--selection .cell{
+	  display: none;
+	}
 </style>

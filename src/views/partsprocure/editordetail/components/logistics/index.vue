@@ -87,7 +87,7 @@
 
 					<i-text>{{dataInfo.partPackgeRequirements.warehousingAppliancesGrossWeight}}</i-text>
 				</iFormItem>
-				<iFormItem label="入库器具返程折叠比" name="test">
+				<iFormItem :label="$t('LK_RUKUQIJUFANCHENGSHEDIEBI')" name="test">
 
 					<i-text>{{dataInfo.partPackgeRequirements.warehousingAppliancesFoldingReturnRatio}}</i-text>
 				</iFormItem>
