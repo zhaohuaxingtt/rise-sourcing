@@ -13,24 +13,48 @@
           @handleSelectionChange="handleSelectionChange"
           :index="true"
       ></tablelist>
+      <!------------------------------------------------------------------------>
+      <!--                  表格分页                                          --->
+      <!------------------------------------------------------------------------>
+      <iPagination
+          @size-change="handleSizeChange($event, getTableList)"
+          @current-change="handleCurrentChange($event, getTableList)"
+          background
+          :page-sizes="page.pageSizes"
+          :page-size="page.pageSize"
+          :layout="page.layout"
+          :current-page='page.currPage'
+          :total="page.totalCount"
+      />
     </div>
     <span slot="footer" class="dialog-footer">
-          <iButton @click="$emit('input',false)">{{$t('LK_QUXIAO')}}</iButton>
+          <iButton @click="$emit('input',false)">{{ $t('LK_QUXIAO') }}</iButton>
         </span>
   </iDialog>
 </template>
 <script>
-import {iButton, iMessage, iDialog} from '@/components'
+import {iButton, iMessage, iDialog, iPagination} from '@/components'
 import tablelist from "pages/partsrfq/components/tablelist";
 import {addSupplierTitle} from "./data"
 import {getAllRfqSupplier} from "@/api/partsrfq/editordetail";
+import {pageMixins} from "@/utils/pageMixins";
 
 export default {
-  components: {iButton, iDialog, tablelist},
+  components: {iButton, iDialog, tablelist, iPagination},
   props: {
     title: {type: String, default: 'LK_TIANJIAGONGYINGSHANG'},
     value: {type: Boolean},
-    repeatClick: Boolean
+    repeatClick: Boolean,
+    addSupplierList: {
+      type: Array,
+      default: () => {
+        return []
+      }
+    }
+  },
+  mixins: [pageMixins],
+  created() {
+    this.getTableList()
   },
   data() {
     return {
@@ -74,11 +98,6 @@ export default {
         return false
       }
       this.$emit('sure', this.selectTableData)
-    }
-  },
-  watch: {
-    value() {
-      this.getTableList()
     }
   }
 }
