@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-02-24 10:19:28
- * @LastEditTime: 2021-02-24 10:19:29
+ * @LastEditTime: 2021-04-01 10:43:14
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\api\partsign\editordetail\index.js
@@ -32,7 +32,7 @@ export function putPerCarDosage(params) {
   return requst({
     url: '/tp-records/perCarDosage',
     method: 'PUT',
-    params: params
+    data: params
   })
 }
 
