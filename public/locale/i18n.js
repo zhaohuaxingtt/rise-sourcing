@@ -4,7 +4,14 @@
   (global = global || self, global.i18n = factory())
 }(this, function () { 
   'use strict'
-  let lang = localStorage.getItem('lang')
+  const lang = localStorage.getItem('lang')
+  const orignalSetItem = localStorage.setItem;
+  localStorage.setItem = function(key,newValue){
+    var setItemEvent = new Event("setItemEvent");
+    setItemEvent.key = key;
+    window.dispatchEvent(setItemEvent);
+    orignalSetItem.apply(this,arguments);
+  };
   if (!lang) {
     lang = window.navigator.language ? window.navigator.language.replace(/^(.*)-(.*)$/, '$1'): 'zh'
     localStorage.setItem('lang', lang)

@@ -12,7 +12,7 @@
       </div>
       <div>
         <div v-if="!addCustomStatus">
-          <iButton @click="handleSave" v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_BDLSAVEBDL" :loading="saveLoading">{{ $t('LK_BAOCUN') }}</iButton>
+          <iButton @click="handleSave" v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_BDLSAVEBDL" :loading="saveLoading">{{ $t('LK_QUEREN') }}</iButton>
           <iButton @click="handleDelete" v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_DELETESUPPLIER" :loading="deleteLoading">{{ $t('LK_SHANCHUGONGYINGSHANG') }}</iButton>
           <iButton @click="addCustom" v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_ADDCUSTOM">{{ $t('LK_TIANJIAZIDINGYIPINGFENXIANG') }}</iButton>
         </div>
@@ -154,7 +154,7 @@ export default {
           this.tableData = res.data.rfqBdlVO.rfqBdlVOList || []
           this.page.totalCount = res.data.rfqBdlVO.total || 0
 
-          if (this.tableData[0] && this.tableData[0].userDefinedGradeField) {
+          if (!this.$refs.table.addCustomShow && this.tableData[0] && this.tableData[0].userDefinedGradeField) {
             this.$refs.table.addCustom()
             this.$refs.table.addTitle = this.tableData[0].userDefinedGradeField
           }
@@ -256,11 +256,14 @@ export default {
     },
     handleBack() {
       this.addCustomStatus = false
+      this.$refs.table.addCustom()
     },
     // 添加自定义项目
     addCustom(){
       this.addCustomStatus = true
-      this.$refs.table.addCustom()
+      if (!this.$refs.table.addTitle) {
+        this.$refs.table.addCustom()
+      }
     }
   }
 }
