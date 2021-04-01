@@ -106,8 +106,8 @@ export default {
     },
     //签收
     save() {
-       if (	this.partDetails.status == 1) return iMessage.warn("抱歉，您选中的单据中存在已签收的信息单，不能批量签收！");
-      iMessageBox('您是否确认对新件信息单进行签收？').then(res=>{
+       if (	this.partDetails.status == 1) return iMessage.warn(this.$t('LK_NINXUANZHONGDEDANJUZHONGCUNZAIYIQIANSHOUDEXINXIDANBUNENGPILIANGQIANSHOU'));
+      iMessageBox(this.$t('LK_NINSHIFOUQUERENDUIXINJIANXINXIDANJINHANGQIANSHOU')).then(res=>{
         this.patchRecords(2)
       })
     },
@@ -143,7 +143,7 @@ export default {
       }}).then(res=>{
         if(res.code == 200){
           iMessage.success(this.$t('LK_CAOZUOCHENGGONG'))
-          this.partDetails.status = type == 2 ? '已签收':"以退回"
+          this.partDetails.status = type == 2 ? this.$t('LK_YIQIANSHOU') : this.$('LK_YITUIHUI')
           local.set(
             "tpPartInfoVO",
             JSON.stringify(this.partDetails)

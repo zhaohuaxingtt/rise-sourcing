@@ -618,6 +618,23 @@
 		'LK_YONGHUMING': '用户名', // 用户名
 		'LK_MIMA': '密码', // 密码
 		'LK_DENGLU': '登录', // 登录
+		'LK_QINGCHU': '清除', // 清除
+		'LK_QINGTIANXIELIYOUSHURUKUANGBITIAN': '请填写理由，该输入框为必填', // 请填写理由，该输入框为必填
+		'LK_XINJIANXINXIDANTUIHUI': '新件信息单退回', // 新件信息单退回
+		'LK_YIQIANSHOU': '已签收', // 新件信息单退回
+		'LK_YITUIHUI': '已退回', // 以退回
+		'LK_QINGXUANZHEXUYAOXIUGAIDELINGJIANCAIGOUXIANGMU': '请选择需要修改的零件采购项目', // 请选择需要修改的零件采购项目
+		'LK_QINGXUANZHEXIANCAILIAOZU': '请选择先材料组', // 请选择先材料组
+		'LK_SHANGCHUANCHENGGONG': '上传成功', // 上传成功
+		'LK_SHANGCHUANSHIBAI': '上传失败', // 上传失败
+		'LK_ZHUANPAICHENGGONG': '转派成功', // 转派成功
+		'LK_CAIGOUGONGCHNEGMINGCHENG': '采购工厂名称', // 采购工厂名称
+		'LK_CHANLIANGZHANBI': '产量占比（%）', // 产量占比（%）
+		'LK_HAIWEIXUANZHEGONGCHANG': '您还未选择工厂！', // 您还未选择工厂！
+		'LK_CAIGOUFENEFENPEIDABUDAO': '采购份额分配达不到100%', // 采购份额分配达不到100%
+		'LK_CAIGOUFENEFENPEICHAOGUO': '当前分配已超过100%，请重新分配！', // 当前分配已超过100%，请重新分配！
+		'LK_CAIGOUFENEFENPEIWEIDADAO': '当前分配未达到100%，请重新分配！', // 当前分配未达到100%，请重新分配！
+		'LK_CAIGOUFENEFENPEIWEIDADAODANGQIAN': '当前分配未达到100%当前分配的工厂中存在为0的情况，请重新分配！', // 当前分配未达到100%，请重新分配！
 		/*
 		<!------------------------------------------------------------------------>
 		<!--                                                                   --->

@@ -109,7 +109,7 @@ export default {
       this.multipleSelection = list
     },
     download() {
-      if (!this.multipleSelection.length) return iMessage.warn('请选择需要导出的每车用量')
+      if (!this.multipleSelection.length) return iMessage.warn(this.$t('LK_QINGXUANZHEXUYAODAOCHUDEMEINIANYONGCHELIANG'))
       excelExport(this.multipleSelection, this.tableTitle)
     }
   }
