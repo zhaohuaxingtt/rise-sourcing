@@ -210,7 +210,9 @@ export default{
   }
   .marginleft300 {
     position: relative;
-    left: 620px;
+    float: right;
+    right: 20px;
+    // left: 620px;
     top: -5px;
   }
   ::v-deep .el-dialog__body{
