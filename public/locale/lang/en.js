@@ -81,7 +81,8 @@
             'PARTSPROCURE': 'Please Enter The Number, Separated By Multiple Commas',
             'PLEENTER': 'Please Enter',
             'CHOOSE': 'Please Choose',
-            "CF": 'CF'
+            "CF": 'CF',
+			'PARTSPROCUREPARTSTATUSNAME':'Project Status'
         },
 
         'partsignLanguage': {
@@ -608,6 +609,9 @@
         'LK_QINGXUANZHEXUYAODAOCHUBANBEN': 'Select the version you want to export', //请选择需要导出的版本
         'LK_XINJIANXINXIDANZHUANPAI': 'Delivery of new pieces of information', // 新件信息单转派
         'LK_QINGXUANZHEXUNJIACAIGOUYUAN': 'Please select inquiry buyer', // 请选择询价采购员
+        'LK_YONGHUMING': 'UserName', // 用户名
+		'LK_MIMA': 'PassWord', // 密码
+		'LK_DENGLU': 'Login', // 登录
         // 'LK_XIANGNEIZHOUZHUANCAILIAOZHONGHEJIAGE':'翻箱前器具综合单价（RMB）', //箱内周转材料综合价格 
         /*
         <!------------------------------------------------------------------------>

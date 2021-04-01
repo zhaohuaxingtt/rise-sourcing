@@ -60,12 +60,12 @@
 		},
 		'partsprocure': {
 			'PARTSPROCURENEWPROCUREMENTPROJECT': 'FSNF/GSNF/SPNR',
-			'PARTSPROCUREGENERATEFSGSNR': '生成Fs/GsNr',
+			'PARTSPROCUREGENERATEFSGSNR': '生成FS/GSNR',
 			'PARTSPROCURECANCELPARTSPURCHASE': '取消零件采购',
 			'PARTSPROCUREBATCHMAINTENANCE': '批量维护',
 			'PARTSPROCURESTARTINQUIRY': '启动询价',
 			'PARTSPROCURETRANSFER': '转派',
-			'PARTSPROCUREFSNFGSNFSPNR': 'FSNF/GSNF/SPNR',
+			'PARTSPROCUREFSNFGSNFSPNR': 'FSNR/GSNR',
 			'PARTSPROCUREPARTNUMBER': '零件号',
 			'PARTSPROCUREPARTNAMEZH': '零件名（中）',
 			'PARTSPROCUREPARTNAMEDE': '零件名（德）',
@@ -615,6 +615,9 @@
 		'LK_QINGXUANZHEYITIAOXUYAOQUEREDEBANBEN': '请选择一条需要确认的版本', // 请选择一条需要确认的版本
 		'LK_XINJIANXINXIDANZHUANPAI': '新件信息单转派', // 新件信息单转派
 		'LK_QINGXUANZHEXUNJIACAIGOUYUAN': '请选择询价采购员', // 请选择询价采购员
+		'LK_YONGHUMING': '用户名', // 用户名
+		'LK_MIMA': '密码', // 密码
+		'LK_DENGLU': '登录', // 登录
 		/*
 		<!------------------------------------------------------------------------>
 		<!--                                                                   --->

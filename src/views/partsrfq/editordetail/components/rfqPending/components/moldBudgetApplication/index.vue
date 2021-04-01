@@ -14,6 +14,7 @@
           :index="true"
           @handleSelectionChange="handleSelectionChange"
           :input-props="['budget']"
+          input-type="number"
       ></tablelist>
       <!------------------------------------------------------------------------>
       <!--                  表格分页                                          --->
@@ -84,6 +85,10 @@ export default {
       }
     },
     async submit() {
+      if(this.selectTableData.length == 0) {
+        iMessage.warn(this.$t('partsignLanguage.QingXuanZe'))
+        return false
+      }
       this.selectTableData = this.selectTableData.map(item => {
         item.approvalStatus = 'submitted'
         return item
@@ -94,6 +99,10 @@ export default {
       this.getTableList()
     },
     async recall() {
+      if(this.selectTableData.length == 0) {
+        iMessage.warn(this.$t('partsignLanguage.QingXuanZe'))
+        return false
+      }
       this.selectTableData = this.selectTableData.map(item => {
         item.approvalStatus = 'revoked'
         return item
