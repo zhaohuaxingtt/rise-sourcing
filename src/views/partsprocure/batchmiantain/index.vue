@@ -80,7 +80,7 @@
 					</iSelect>
 				</el-form-item>
 				<el-form-item :label="$t('LK_GONGYI')">
-					<iSelect placeholder="请选择先材料组" v-model="stuff" value-key="stuffCode">
+					<iSelect :placeholder="$t('LK_QINGXUANZHEXIANCAILIAOZU')" v-model="stuff" value-key="stuffCode">
 						<el-option :value="item"  :label="item.stuffName" v-for="(item, index) in stuffArr" :key="index"></el-option>
 					</iSelect>
 				</el-form-item>
@@ -222,7 +222,7 @@
 			// 批量修改
 			save() {
 				if (this.batch.purchaseProjectIds.length == 0) {
-					iMessage.warn("请选择需要修改的零件采购项目")
+					iMessage.warn(this.$t('LK_QINGXUANZHEXUYAOXIUGAIDELINGJIANCAIGOUXIANGMU'))
 					return
 				}
 				this.pushKey()

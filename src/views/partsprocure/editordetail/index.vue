@@ -57,7 +57,7 @@
 		<!------------------------------------------------------------------------>
 		<!--                  基本信息区域                                       --->
 		<!------------------------------------------------------------------------>
-		<iCard class="card" title="基础信息" collapse>
+		<iCard class="card" :title="$t('LK_JICHUXINXI')" collapse>
 			<iFormGroup row="1" inline :rules="rules">
 				<div class="row">
 					<div class="col">

@@ -615,6 +615,13 @@
         'LK_QINGCHU': 'Remove', // 清除
         'LK_QINGTIANXIELIYOUSHURUKUANGBITIAN': 'Please fill in the reason. This input box is required', // 请填写理由，该输入框为必填
         'LK_XINJIANXINXIDANTUIHUI': 'New piece of information sheet returned', // 新件信息单退回
+        'LK_YIQIANSHOU': 'Have been signed', // 新件信息单退回
+		'LK_YITUIHUI': 'Returned', // 以退回
+        'LK_QINGXUANZHEXUYAOXIUGAIDELINGJIANCAIGOUXIANGMU': 'Please select the part purchase item to be modified', // 请选择需要修改的零件采购项目
+        'LK_QINGXUANZHEXIANCAILIAOZU': 'Please select the first material group', // 请选择先材料组
+        'LK_SHANGCHUANCHENGGONG': 'Uploaded successfully', // 上传成功
+		'LK_SHANGCHUANSHIBAI': 'Upload failed', // 上传失败
+        'LK_ZHUANPAICHENGGONG': 'Turn sent successfully', // 转派成功
         // 'LK_XIANGNEIZHOUZHUANCAILIAOZHONGHEJIAGE':'翻箱前器具综合单价（RMB）', //箱内周转材料综合价格 
         /*
         <!------------------------------------------------------------------------>
