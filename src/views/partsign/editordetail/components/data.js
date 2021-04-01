@@ -1,7 +1,7 @@
 /*
  * @Author: shujie
  * @Date: 2021-02-24 10:17:53
- * @LastEditTime: 2021-04-01 13:56:39
+ * @LastEditTime: 2021-04-01 13:58:31
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsign\editordetail\components\data.js
@@ -109,7 +109,7 @@ export const enquiryTableTitle = [
   { props: 'tpPartAttachmentName', name: '文件名', key: 'LK_WENJIANMING' },
   { props: 'size', name: '文件大小（MB）', key: 'LK_WENJIANDAXIAOMB' },
   { props: 'updateDate', name: '上传日期', key: 'LK_SHANGCHUANRIQI' },
-  { props: 'updateBy', name: '上传人', key: 'LK_SHANGCHUANREN' }
+  // { props: 'updateBy', name: '上传人', key: 'LK_SHANGCHUANREN' }
 ]
 
 export const unconfirmedTableTitle = [
