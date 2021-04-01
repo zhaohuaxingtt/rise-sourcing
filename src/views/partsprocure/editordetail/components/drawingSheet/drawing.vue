@@ -8,6 +8,7 @@
         multiple
         :action="action"
         :data="{ applicationName: 'procurereq-service' }"
+        :headers="{ token }"
         name="multipartFile"
         :show-file-list="false" 
         :before-upload="beforeUpload"
@@ -55,6 +56,7 @@ import { tableTitle } from './data'
 import { getInfoAnnexPage, deleteFile, patchTpRecords } from "@/api/partsprocure/editordetail";
 import filters from '@/utils/filters'
 import { downloadFile } from "@/api/file";
+import { getToken } from "@/utils";
 
 export default {
   components: { iCard, iButton, tableList, iPagination },
@@ -81,6 +83,7 @@ export default {
   },
   created() {
     this.getInfoAnnexPage()
+    this.token = getToken()
   },
   methods: {
     beforeUpload(res) {
@@ -93,7 +96,7 @@ export default {
         iMessage.error(`${ this.$i18n.locale === 'zh' ? res.desZh : res.desEn }`)
       } else {
         clearTimeout(this.timer)
-        iMessage.success(`${ file.name } ${ $t('LK_SHANGCHUANCHENGGONG') }`)
+        iMessage.success(`${ file.name } ${ this.$t('LK_SHANGCHUANCHENGGONG') }`)
         this.fileList.push({ tpPartAttachmentName: res.data[0].fileName, tpPartAttachmentPath: res.data[0].filePath, size: (file.size / 1024 / 1024).toFixed(3) })
         this.timer = setTimeout(() => {
           this.patchTpRecords()
@@ -103,7 +106,7 @@ export default {
     },
     uploadError(err, file) {
       this.uploadLoading = false
-      iMessage.error(`${ file.name } ${ $t('LK_SHANGCHUANSHIBAI') }`)
+      iMessage.error(`${ file.name } ${ this.$t('LK_SHANGCHUANSHIBAI') }`)
     },
     patchTpRecords() {
       patchTpRecords({
@@ -127,7 +130,7 @@ export default {
       getInfoAnnexPage({
         currPage: this.page.currPage,
         pageSize: this.page.pageSize,
-        purchasingRequirementTargetIds: this.params.purchasingRequirementObjectId
+        purchasingRequirementTargetId: this.params.purchasingRequirementObjectId
       })
         .then(res => { 
           // console.log(res.data)
