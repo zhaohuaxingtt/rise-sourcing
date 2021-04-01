@@ -30,12 +30,12 @@
         </iFormItem>
         <iFormItem :label="$t('LK_BENLUNBAOJIAQIZHISHIJIAN')" name="test" v-if="roundType === '00'">
           <div class="flex">
-            <el-date-picker type="date" placeholder="请选择" v-model="startTime"
+            <el-date-picker type="date" :placeholder="$t('LK_QINGXUANZE')" v-model="startTime"
                             v-permission="PARTSRFQ_EDITORDETAIL_NEWRFQROUND_STARTTIME"></el-date-picker>
           </div>
         </iFormItem>
         <iFormItem label="" name="test" v-if="roundType === '00'">
-          <el-date-picker type="date" placeholder="请选择" v-model="endTime"
+          <el-date-picker type="date" :placeholder="$t('LK_QINGXUANZE')" v-model="endTime"
                           v-permission="PARTSRFQ_EDITORDETAIL_NEWRFQROUND_ENDTIME"></el-date-picker>
         </iFormItem>
       </iFormGroup>
@@ -138,7 +138,7 @@ export default {
       }
     },
     sureChangeItems() {
-      if (this.selectTableData.length == '') return iMessage.warn('抱歉！您当前还未选择！')
+      if (this.selectTableData.length == '') return iMessage.warn(this.$t('LK_NINDANGQIANHAIWEIXUANZE'))
       this.$emit('sure', JSON.parse(this.selectTableData))
     },
     clearDiolog() {
@@ -154,7 +154,7 @@ export default {
     },
     async save() {
       if (this.selectTableData.length === 0) {
-        return iMessage.warn("抱歉，您当前还未选择任务！");
+        return iMessage.warn(this.$t('LK_NINDANGQIANHAIWEIXUANZERENWU'));
       }
       const id = this.$route.query.id
       if (id) {

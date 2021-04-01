@@ -263,7 +263,7 @@ export default {
     edit() {
       const rfqName = this.baseInfo.rfqName
       if (!rfqName && this.editStatus) {
-        iMessage.warn('RFQ名称不能为空')
+        iMessage.warn(this.$t('LK_RFQMINGCHNEGBUNENGWEIKONG'))
         return false
       }
       this.editStatus = !this.editStatus

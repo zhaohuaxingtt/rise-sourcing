@@ -587,6 +587,8 @@
 		'LK_TUICHUDENGLU': 'Log out', //退出登录!
         'LK_QINGSHURUBEIZHU': 'Please enter remarks', //请输入备注
         'LK_SHENQING': 'Apply', //申请
+		'LK_CAIWUMUBIAOJIA': 'Financial target price', //财务⽬标价
+		'LK_RFQMINGCHNEGBUNENGWEIKONG': 'The RFQ name cannot be empty', //RFQ名称不能为空
         // 'LK_XIANGNEIZHOUZHUANCAILIAOZHONGHEJIAGE':'翻箱前器具综合单价（RMB）', //箱内周转材料综合价格 
         /*
         <!------------------------------------------------------------------------>

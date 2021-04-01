@@ -93,7 +93,7 @@ export default {
     },
     async download() {
       if (this.selectTableData.length == 0)
-        return iMessage.warn('请选择')
+        return iMessage.warn(this.$t('LK_QINGXUANZE'))
       const fileList = this.selectTableData.map(item => {
         return item.fileName
       })

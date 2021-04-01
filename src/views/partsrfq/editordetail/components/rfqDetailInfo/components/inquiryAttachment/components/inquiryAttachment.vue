@@ -112,7 +112,7 @@ export default {
       }
     },
     deleteItems() {
-      iMessageBox('是否确认删除?').then(async () => {
+      iMessageBox(this.$t('LK_SHIFOUQUERENSHANCHU')).then(async () => {
         const annexIds = this.selectTableData.map(item => {
           return item.id
         })
@@ -159,7 +159,7 @@ export default {
     },
     async download() {
       if (this.selectTableData.length == 0)
-        return iMessage.warn('请选择')
+        return iMessage.warn(this.$t('LK_QINGXUANZE'))
       const fileList = this.selectTableData.map(item => {
         return item.fileName
       })

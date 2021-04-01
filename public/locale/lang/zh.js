@@ -594,6 +594,8 @@
 		'LK_TUICHUDENGLU': '退出登录', //退出登录!
 		'LK_QINGSHURUBEIZHU': '请输入备注', //请输入备注
 		'LK_SHENQING': '申请', //申请
+		'LK_CAIWUMUBIAOJIA': '财务⽬标价', //财务⽬标价
+		'LK_RFQMINGCHNEGBUNENGWEIKONG': 'RFQ名称不能为空', //RFQ名称不能为空
 		/*
 		<!------------------------------------------------------------------------>
 		<!--                                                                   --->
