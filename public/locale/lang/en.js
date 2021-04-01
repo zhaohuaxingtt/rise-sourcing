@@ -572,7 +572,19 @@
         'LK_TIAOJILU': 'records', // 条记录
         'LK_GONG': 'total', // 共
 		'LK_ZHUANGTAI': 'Status',//状态
-
+        'LK_QUXIAO': 'Cancel',//取消
+        'LK_QINGXUANZHEXUYAODAOCHUSHUJU': 'Select the data you want to export', //请选择需要导出的数据
+        'LK_BUNENGSHANCHUZHISHAOBAOLIUYITIAO': 'Can not delete, at least keep one!', //不能删除，至少保留一条!
+        'LK_YITIANJIADAOSHANGXIAN': 'Added to the upper limit', //已添加到上限!
+        'LK_GONGYINGSHANGGONGSIJIESHAO': 'Supplier Company Introduction', //供应商公司介绍!
+        'LK_GONGYINGSHANGCHANPINGAIYAO': 'Supplier Product Profile', //供应商产品概要!
+		'LK_GONGYINGSHANGTIMELINE': 'Supplier timeline', //供应商timeline!
+        'LK_LIRUMENJING': 'For example, the procedures for the application of baggage ban, other remarks information, etc', //例如：⻔禁申请步骤，其他备注信息等
+		'LK_SHANGQIDAZHONGYUANQU': 'Room 303, Shanghai Volkswagen Park', //上汽⼤众园区303室!
+        'LK_YIBAOCUN': 'The saved', //已保存!
+        'LK_QINGTIANJIAGONGYINGSHANG': 'Please add supplier!', //请添加供应商!
+        'LK_CHAKAN': 'To view', //查看!
+		'LK_TUICHUDENGLU': 'Log out', //退出登录!
 
         // 'LK_XIANGNEIZHOUZHUANCAILIAOZHONGHEJIAGE':'翻箱前器具综合单价（RMB）', //箱内周转材料综合价格 
         /*

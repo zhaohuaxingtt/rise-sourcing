@@ -45,7 +45,7 @@ export default{
   },
   methods:{
     login(){
-      if(this.passWord == '' || this.userName == '') return iMessage.error('抱歉，用户名或密码不能为空！')
+      if(this.passWord == '' || this.userName == '') return iMessage.error(this.$t('LK_YONGHUMINGHUOMIMABUNENGWEIKONG'))
       this.loading = true
       login({userName:this.userName,passWord:this.passWord}).then(async res=>{
         this.loading = false

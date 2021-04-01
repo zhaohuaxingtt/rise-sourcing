@@ -17,7 +17,7 @@
           :index="true"
           @handleSelectionChange="handleSelectionChange"
           open-page-props="action"
-          customOpenPageWord="查看"
+          :customOpenPageWord="$t('LK_CHAKAN')"
           @openPage="openPage"
           :openPageGetRowData="true"
       ></tablelist>
@@ -144,7 +144,7 @@ export default {
         return item.partNum
       })
       if(supplierIdList.length === 0) {
-        iMessage.warn('请添加供应商!')
+      iMessage.warn(this.$t('LK_QINGTIANJIAGONGYINGSHANG'))
         return
       }
       const req = {
@@ -172,7 +172,7 @@ export default {
     handleAddSupplierSave(list) {
       this.addSupplierList = list
       this.dialogAddSupplier = false
-      iMessage.success('已保存')
+      iMessage.success(this.$t('LK_YIBAOCUN'))
     },
     async getPic(row) {
       this.drawingList = []

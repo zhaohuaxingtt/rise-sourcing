@@ -574,11 +574,24 @@
 		'LK_ZAIXINSHENQINGCAIWUMUBIAOJIA': '再新申请财务目标价 ', //再新申请财务目标价 
 		'LK_ZAIXIANJINGJIA': '在线竞价', //在线竞价
 		'LK_DANGQIANBANBEN': '当前版本', //当前版本
-    'LK_XIANSHI': '显示', // 显示
-    'LK_TIAODI': '条到第', // 条到第
-    'LK_TIAOJILU': '条记录', // 条记录
-    'LK_GONG': '共', // 共
+		'LK_XIANSHI': '显示', // 显示
+		'LK_TIAODI': '条到第', // 条到第
+		'LK_TIAOJILU': '条记录', // 条记录
+		'LK_GONG': '共', // 共
 		'LK_ZHUANGTAI': '状态',//状态
+		'LK_QUXIAO': '取 消',//取消
+		'LK_QINGXUANZHEXUYAODAOCHUSHUJU': '请选择需要导出的数据', //请选择需要导出的数据
+		'LK_BUNENGSHANCHUZHISHAOBAOLIUYITIAO': '不能删除，至少保留一条!', //不能删除，至少保留一条!
+		'LK_YITIANJIADAOSHANGXIAN': '已添加到上限', //已添加到上限!
+		'LK_GONGYINGSHANGGONGSIJIESHAO': '供应商公司介绍', //供应商公司介绍!
+		'LK_GONGYINGSHANGCHANPINGAIYAO': '供应商产品概要', //供应商产品概要!
+		'LK_GONGYINGSHANGTIMELINE': '供应商timeline', //供应商timeline!
+		'LK_LIRUMENJING': '例如：⻔禁申请步骤，其他备注信息等', //例如：⻔禁申请步骤，其他备注信息等
+		'LK_SHANGQIDAZHONGYUANQU': '上汽⼤众园区303室', //上汽⼤众园区303室!
+		'LK_YIBAOCUN': '已保存', //已保存!
+		'LK_QINGTIANJIAGONGYINGSHANG': '请添加供应商!', //请添加供应商!
+		'LK_CHAKAN': '查看', //查看!
+		'LK_TUICHUDENGLU': '退出登录', //退出登录!
 		/*
 		<!------------------------------------------------------------------------>
 		<!--                                                                   --->

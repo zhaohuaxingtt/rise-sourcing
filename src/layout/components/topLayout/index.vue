@@ -30,7 +30,7 @@
             <span>{{ $t("setting") | capitalizeFilter }}</span>
           </span>
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item icon="el-icon-switch-button">退出登录</el-dropdown-item>
+            <el-dropdown-item icon="el-icon-switch-button">{{$t('LK_TUICHUDENGLU')}}</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
       </div>

@@ -3,14 +3,14 @@
     <div class="margin-bottom20 clearFloat">
       <span class="font18 font-weight">{{ $t('LK_GONGYINGSHANGCAILIAOZHUNBEI') }}</span>
       <div class="floatright">
-        <iButton @click="add" v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_TECHNICALSEMINAR_ADD">添加</iButton>
+        <iButton @click="add" v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_TECHNICALSEMINAR_ADD">{{$t('LK_TIANJIA')}}</iButton>
       </div>
     </div>
     <iFormGroup :row="3" inline icon class="label-zero" v-model="dynamicForm" v-if="showStatus"
                 v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_TECHNICALSEMINAR_DESTEXT">
       <template v-for="(item,index) of dynamicForm.baseInfo">
         <iFormItem label=" " :name="index" :key="index" class="form-item-style">
-          <iInput type="textarea" :rows="4" resize="none" :placeholder="item.placeholder" v-model="item.value"
+          <iInput type="textarea" :rows="4" resize="none" :placeholder="$t(item.placeholderkey)" v-model="item.value"
                   maxlength="100" show-word-limit></iInput>
           <div @click="deleteItems(index+ 1)"
                v-if="(index+1)%3 === 0">
@@ -40,9 +40,9 @@ export default {
       showStatus: true,
       dynamicForm: {
         baseInfo: [
-          {value: '', placeholder: '供应商公司介绍'},
-          {value: '', placeholder: '供应商产品概要'},
-          {value: '', placeholder: '供应商timeline'},
+          {value: '', placeholder: '供应商公司介绍', placeholderkey: 'LK_GONGYINGSHANGGONGSIJIESHAO'},
+          {value: '', placeholder: '供应商产品概要', placeholderkey: 'LK_GONGYINGSHANGCHANPINGAIYAO'},
+          {value: '', placeholder: '供应商timeline', placeholderkey: 'LK_GONGYINGSHANGTIMELINE'},
         ]
       }
     }
@@ -50,9 +50,9 @@ export default {
   methods: {
     add() {
       const inputTemplate = [
-        {value: '', placeholder: '供应商公司介绍'},
-        {value: '', placeholder: '供应商产品概要'},
-        {value: '', placeholder: '供应商timeline'},
+        {value: '', placeholder: '供应商公司介绍',placeholderkey: 'LK_GONGYINGSHANGGONGSIJIESHAO'},
+        {value: '', placeholder: '供应商产品概要',placeholderkey: 'LK_GONGYINGSHANGCHANPINGAIYAO'},
+        {value: '', placeholder: '供应商timeline',placeholderkey: 'LK_GONGYINGSHANGTIMELINE'},
       ]
       if (this.dynamicForm.baseInfo.length < 12) {
         this.dynamicForm.baseInfo.push(...inputTemplate)
@@ -61,13 +61,13 @@ export default {
           this.showStatus = true
         })
       } else {
-        iMessage.warn('已添加到上限')
+        iMessage.warn(this.$t('LK_YITIANJIADAOSHANGXIAN'))
         return false
       }
     },
     deleteItems(index) {
       if (this.dynamicForm.baseInfo.length === 3) {
-        iMessage.warn('不能删除，至少保留一条!')
+        iMessage.warn(this.$t('Can not delete, at least keep one!'))
       } else {
         this.dynamicForm.baseInfo.splice(index - 3, 3)
       }
