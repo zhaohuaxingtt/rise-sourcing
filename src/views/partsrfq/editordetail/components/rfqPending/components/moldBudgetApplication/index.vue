@@ -14,6 +14,7 @@
           :index="true"
           @handleSelectionChange="handleSelectionChange"
           :input-props="['budget']"
+          input-type="number"
       ></tablelist>
       <!------------------------------------------------------------------------>
       <!--                  表格分页                                          --->

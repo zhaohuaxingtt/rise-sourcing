@@ -35,6 +35,7 @@
           :index="true"
           :hide-open-page="true"
           :input-props="inputProps"
+          input-type="number"
       ></tablelist>
       <!------------------------------------------------------------------------>
       <!--                  表格分页                                          --->
