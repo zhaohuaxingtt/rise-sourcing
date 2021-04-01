@@ -612,6 +612,9 @@
         'LK_YONGHUMING': 'UserName', // 用户名
 		'LK_MIMA': 'PassWord', // 密码
 		'LK_DENGLU': 'Login', // 登录
+        'LK_QINGCHU': 'Remove', // 清除
+        'LK_QINGTIANXIELIYOUSHURUKUANGBITIAN': 'Please fill in the reason. This input box is required', // 请填写理由，该输入框为必填
+        'LK_XINJIANXINXIDANTUIHUI': 'New piece of information sheet returned', // 新件信息单退回
         // 'LK_XIANGNEIZHOUZHUANCAILIAOZHONGHEJIAGE':'翻箱前器具综合单价（RMB）', //箱内周转材料综合价格 
         /*
         <!------------------------------------------------------------------------>
