@@ -10,9 +10,9 @@
     <div class="changeContent">
       <div class="margin-bottom20 clearFloat">
         <div class="floatright title-button-box">
-          <iButton @click="add" v-permission="PARTSRFQ_ASSIGNMENTOFSCORINGTASKS_SAVE">{{$t('LK_TIANJIA')}}</iButton>
-          <iButton @click="deleteItems">{{$t('LK_SHANCHU')}}</iButton>
-          <iButton @click="save">{{$t('LK_ZHUANPAI')}}</iButton>
+          <iButton @click="add" v-permission="PARTSRFQ_ASSIGNMENTOFSCORINGTASKS_SAVE">{{ $t('LK_TIANJIA') }}</iButton>
+          <iButton @click="deleteItems">{{ $t('LK_SHANCHU') }}</iButton>
+          <iButton @click="save">{{ $t('LK_ZHUANPAI') }}</iButton>
         </div>
       </div>
       <tablelist
@@ -83,7 +83,7 @@ export default {
         ratingInfoPackage: {
           ratingInfoList: this.selectTableData,
           rfqId: this.rfqId,
-          userId:store.state.permission.userInfo.id,
+          userId: store.state.permission.userInfo.id,
         }
       }
       const res = await editRfqData(req)
@@ -120,6 +120,15 @@ export default {
             return {
               code: item.id,
               name: item.userName
+            }
+          })
+          break;
+        case 'graderId':
+          this.tableListData.map(item => {
+            if (item.time === res.time) {
+              item.graderName = (newObj[res.time].graderId.filter(item2 => {
+                return item2.code === res.val
+              }))[0].name
             }
           })
           break;
