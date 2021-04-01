@@ -57,7 +57,7 @@
 		<!------------------------------------------------------------------------>
 		<!--                  基本信息区域                                       --->
 		<!------------------------------------------------------------------------>
-		<iCard class="card" title="基础信息" collapse>
+		<iCard class="card" :title="$t('LK_JICHUXINXI')" collapse>
 			<iFormGroup row="1" inline :rules="rules">
 				<div class="row">
 					<div class="col">
@@ -95,7 +95,7 @@
 							</iSelect>
 						</iFormItem>
 						<iFormItem :label="$t('LK_ZHIFUTIAOKUAN') + ':'" name="test"
-							v-show="detailData.partType == ''">
+							v-show="detailData.partType == '113'">
 							<iSelect v-model="detailData.payClause"
 								v-permission="PARTSPROCURE_EDITORDETAIL_NUMBEROFPAYMENT">
 								<el-option :value="item.id" :label="item.name"
@@ -163,7 +163,7 @@
 									v-for="(item, index) in fromGroup.CF_CONTROL" :key="index"></el-option>
 							</iSelect>
 						</iFormItem>
-						<iFormItem :label="$t('LK_HUOBI') + ':'" name="test" v-show="detailData.partType != '47'">
+						<iFormItem :label="$t('LK_HUOBI') + ':'" name="test" v-show="detailData.partType == '113'">
 							<iSelect v-model="detailData.currencyId" v-permission="PARTSPROCURE_EDITORDETAIL_CURRENCY">
 								<el-option :value="item.id" :label="item.name"
 									v-for="(item, index) in fromGroup.CURRENCY_TYPE" :key="index"></el-option>
@@ -192,7 +192,7 @@
 							</iText>
 						</iFormItem>
 						<iFormItem :label="$t('LK_CAIGOUTIAOKUAN') + ':'" name="test"
-							v-show="detailData.partType != '47'">
+							v-show="detailData.partType == '113'">
 							<iSelect v-model="detailData.purchaseClause"
 								v-permission="PARTSPROCURE_EDITORDETAIL_PURCHASETERMS">
 								<el-option :value="item.id" :label="item.name"
@@ -358,7 +358,7 @@
 					start,
 				}).then((res) => {
 					if (res.data) {
-						iMessage.success("操作成功");
+						iMessage.success(this.$t('LK_CAOZUOCHENGGONG'));
 						this.getDatail();
 					} else {
 						iMessage.error(res.desZh);
@@ -381,7 +381,7 @@
 					this.diologClose = false;
 					if (res.data) {
 						this.getDatail();
-						iMessage.success("操作成功");
+						iMessage.success(this.$t('LK_CAOZUOCHENGGONG'));
 					} else {
 						iMessage.error(res.desZh);
 					}
@@ -443,7 +443,7 @@
 					})
 					.then((res) => {
 						if (res.data) {
-							iMessage.success("操作成功");
+							iMessage.success(this.$t('LK_CAOZUOCHENGGONG'));
 							this.getDatail();
 						} else {
 							iMessage.error(res.desZh);

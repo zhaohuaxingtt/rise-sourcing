@@ -73,7 +73,7 @@ export default {
   methods: {
     exports() {
       if (this.selectTableData.length == 0)
-        return iMessage.warn('请选择需要导出的数据')
+        return iMessage.warn(this.$t('LK_QINGXUANZHEXUYAODAOCHUSHUJU'))
       excelExport(this.selectTableData, this.tableTitle)
     },
     //获取表格数据

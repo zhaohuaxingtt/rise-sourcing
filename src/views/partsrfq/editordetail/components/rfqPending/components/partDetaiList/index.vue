@@ -24,7 +24,7 @@
 			@current-change="handleCurrentChange($event, getTableList)" background :page-sizes="page.pageSizes"
 			:page-size="page.pageSize" :layout="page.layout" :total="page.totalCount"></iPagination>
 		<div class="addFs flex-align-center">
-			<iButton @click="start" :loading="addLoding" v-permission="PARTSRFQ_EDITORDETAIL_PARTDETAILIST_ADD">添加</iButton>
+			<iButton @click="start" :loading="addLoding" v-permission="PARTSRFQ_EDITORDETAIL_PARTDETAILIST_ADD">{{$t('LK_TIANJIA')}}</iButton>
 		</div>
 		<partsTable ref="partsTable" :rfqId="rfqId" @targetHand="waitSelect"></partsTable>
 		<!-- 新申请财务目标价 -->
@@ -139,13 +139,13 @@
 				return new Promise((r) => {
 					if (this.waitHandleSelectArr.length == 0) {
 						r(false);
-						iMessage.warn(`抱歉，您当前还未选择需要添加的采购项目！`);
+						iMessage.warn(this.$t('LK_NINDANGQIANHAIWEIXUANZEXUYAOTIANJIADECAIGOUXIANGMU'));
 						return;
 					}
 					if (this.waitHandleSelectArr.find((items) => items.fsnrGsnrNum == "")) {
 						r(false);
 						iMessage.warn(
-							`抱歉，当前采购项目中存在还未生成FSNR的数据，无法为您添加！`
+							this.$t('LK_DANGQIANCAIGOUXIANGMUZHONGCUNZAIHAIWEISHENGCHENGFSNRDESHUJUWUFAWEININTIANJIA')
 						);
 						return;
 					}
@@ -202,7 +202,7 @@
 			showApplyPrice() {
 				console.log(this.handleSelectArr.length);
 				if (this.handleSelectArr.length == 0) {
-					iMessage.warn(`抱歉，您当前还未选择需要申请目标价的采购项目！`);
+					iMessage.warn(this.$t('LK_NINDANGQIANHAIWEIXUANZEXUYAOSHENQINGMUBIAOJIADECAIGOUXIANGMU'));
 					return
 				}
 				this.$refs.applyPrice.show()
@@ -210,7 +210,7 @@
 			// 再次申请财务目标价
 			againApply() {
 				if (this.handleSelectArr.length == 0) {
-					iMessage.warn(`抱歉，您当前还未选择需要申请目标价的采购项目！`);
+					iMessage.warn(this.$t('LK_NINDANGQIANHAIWEIXUANZEXUYAOSHENQINGMUBIAOJIADECAIGOUXIANGMU'));
 					return
 				}
 				this.$refs.applyPrice.againShow()

@@ -38,14 +38,14 @@
             <el-table-column
               :key="index"
               v-if="items.props == 'factoryName'"
-              :label="items.name"
+              :label="$t(items.key)"
               :prop="items.props"
               width="200"
             ></el-table-column>
             <el-table-column
               v-else
               :key="index"
-              :label="items.name"
+              :label="$t(items.key)"
               width="150"
             >
               <template slot-scope="scope">
@@ -107,7 +107,7 @@ export default{
     validateNumberPersiont(){
      return new Promise((r)=>{
         if(this.selectSplitPurchList.length == 0){
-          iMessage.warn("您还未选择工厂！")
+          iMessage.warn(this.$t('LK_HAIWEIXUANZHEGONGCHANG'))
           r(false)
           return
         }
@@ -117,17 +117,17 @@ export default{
         });
         const total = persiontData.reduce((a,b)=> _getMathNumber(`${a || 0}+${b || 0}`))
         if(total > 100){
-          iMessage.warn("当前分配已超过100%，请重新分配！")
+          iMessage.warn(this.$t('LK_CAIGOUFENEFENPEICHAOGUO'))
           r(false)
           return
         }
         if(total < 100){
-          iMessage.warn("当前分配未达到100%，请重新分配！")
+          iMessage.warn(this.$t('LK_CAIGOUFENEFENPEIWEIDADAO'))
           r(false)
           return
         }
         if(this.selectSplitPurchList.find(items=>items.share == 0 || items.share == '')){
-          iMessage.warn("当前分配的工厂中存在为0的情况，请重新分配！")
+          iMessage.warn(this.$t('LK_CAIGOUFENEFENPEIWEIDADAODANGQIAN'))
           r(false)
           return
         }
@@ -153,7 +153,7 @@ export default{
             changeProcure(this.translateDataForService()).then(res=>{
               if(res.data){
                 this.btnLoding = false
-                iMessage.success("操作成功！")
+                iMessage.success(this.$t('LK_CAOZUOCHENGGONG'))
                 this.updateTabs()
                 this.close()
               }else{

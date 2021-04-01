@@ -7,10 +7,10 @@
  * @FilePath: \rise\src\views\partsign\home\components\changeItems.vue
 -->
 <template>
-      <iDialog :title="title" :visible.sync="value" width="400px" @close='clearDiolog' top="40vh">
+      <iDialog :title="$t(title)" :visible.sync="value" width="400px" @close='clearDiolog' top="40vh">
         <div class="changeContent">
           <span class="fontSize14">{{ $t('LK_CAIGOUYUAN') }}：</span>
-          <iSelect v-model='inquiryBuyer' placeholder='请选择询价采购员' value-key="id">
+          <iSelect v-model='inquiryBuyer' :placeholder="$t('LK_QINGXUANZHEXUNJIACAIGOUYUAN')" value-key="id">
            <el-option v-for="(items,index) in inquiryBuyerList" :key='index' :value='items' :label="items.nameZh"/>
             <!-- <el-option value='12' label="12"></el-option> -->
            <!-- <el-option value='12' label="采购员12"></el-option>
@@ -18,7 +18,7 @@
           </iSelect>
         </div>
         <span slot="footer" class="dialog-footer">
-          <iButton @click="$emit('input',false)">取 消</iButton>
+          <iButton @click="$emit('input',false)">{{$t('LK_QUXIAO')}}</iButton>
           <iButton :loading='repeatClick' @click="sureChangeItems">确 定</iButton>
         </span>
       </iDialog>
@@ -30,7 +30,7 @@ import store from '@/store'
 export default{
   components:{iSelect,iButton,iDialog},
   props:{
-    title:{type:String,default:'新件信息单转派'},
+    title:{type:String,default:'LK_XINJIANXINXIDANZHUANPAI'},
     value:{type:Boolean},
     repeatClick:Boolean
   },
@@ -55,7 +55,7 @@ export default{
     },
     sureChangeItems(){
 		// console.log(this.inquiryBuyer);
-      if(!this.inquiryBuyer.id) return iMessage.warn('抱歉！您当前还未选择询价采购员！')
+      if(!this.inquiryBuyer.id) return iMessage.warn(this.$t('LK_NINDANGQIANHAIWEIXUANZEXUNJIACAIGOUYUAN'))
       this.$emit('sure',this.inquiryBuyer)
     }
   }

@@ -93,7 +93,7 @@ export default {
         iMessage.error(`${ this.$i18n.locale === 'zh' ? res.desZh : res.desEn }`)
       } else {
         clearTimeout(this.timer)
-        iMessage.success(`${ file.name } 上传成功`)
+        iMessage.success(`${ file.name } ${ $t('LK_SHANGCHUANCHENGGONG') }`)
         this.fileList.push({ tpPartAttachmentName: res.data[0].fileName, tpPartAttachmentPath: res.data[0].filePath, size: (file.size / 1024 / 1024).toFixed(3) })
         this.timer = setTimeout(() => {
           this.patchTpRecords()
@@ -103,13 +103,13 @@ export default {
     },
     uploadError(err, file) {
       this.uploadLoading = false
-      iMessage.error(`${ file.name } 上传失败`)
+      iMessage.error(`${ file.name } ${ $t('LK_SHANGCHUANSHIBAI') }`)
     },
     patchTpRecords() {
       patchTpRecords({
         enquiryAttachmentFacadeDTO: {
           partAttachmentList: this.fileList,
-          tpNewPartID: this.params.purchasingRequirementId
+          purchasingRequirementId: this.params.purchasingRequirementId
         }
       })
         .then(res => {
@@ -127,7 +127,7 @@ export default {
       getInfoAnnexPage({
         currPage: this.page.currPage,
         pageSize: this.page.pageSize,
-        purchasingRequirementTargetId: this.params.purchasingRequirementTargetId
+        purchasingRequirementTargetIds: this.params.purchasingRequirementObjectId
       })
         .then(res => { 
           // console.log(res.data)
@@ -141,13 +141,13 @@ export default {
       this.multipleSelection = list
     },
     handleDelete() {
-      if (!this.multipleSelection.length) return iMessage.warn('请选择需要删除的附件')
+      if (!this.multipleSelection.length) return iMessage.warn(this.$t('LK_QINGXUANZHEXUYAOSHANCHUYOUJIAN'))
 
       // 后端删除
       this.deleteLoading = true
       deleteFile({ ids: this.multipleSelection.map(item => item.id) })
         .then(res => {
-          iMessage.success('删除成功')
+          iMessage.success(this.$t('LK_SHANCHUCHENGGONG'))
           this.getInfoAnnexPage()
           this.deleteLoading = false
           this.multipleSelection = []
@@ -161,7 +161,7 @@ export default {
       })
     },
     async handleDownload() {
-      if (!this.multipleSelection.length) return iMessage.warn("请选择需要下载的附件")
+      if (!this.multipleSelection.length) return iMessage.warn(this.$t('LK_QINGXUANZHEXUYAOXIAZHAIDEFUJIAN'))
 
       this.downloadLoading = true
       await downloadFile({

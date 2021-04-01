@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 15:12:41
- * @LastEditTime: 2021-03-31 17:36:43
+ * @LastEditTime: 2021-04-01 16:29:33
  * @LastEditors: Please set LastEditors
  * @Description: 零件采购项目批量维护界面
  * @FilePath: \rise\src\views\partsprocure\batchmiantain\index.vue
@@ -10,13 +10,19 @@
 <template>
 	<iPage class="batchmiantain" v-permission="PARTSPROCURE_BATCHMIANTAIN_INDEXPAGE">
 		<div class="margin-bottom20 clearFloat">
-			<span class="font18 font-weight">{{ $t('LK_PILIANGWEIHULINGJIANCAIGOUXIANGMU') }}</span>
+			<span class="font18 font-weight">{{
+        $t("LK_PILIANGWEIHULINGJIANCAIGOUXIANGMU")
+      }}</span>
 			<div class="floatright">
-				<iButton @click="back" v-permission="PARTSPROCURE_BATCHMIANTAIN_SAVE">{{ $t('LK_FANHUI') }}</iButton>
+				<iButton @click="back" v-permission="PARTSPROCURE_BATCHMIANTAIN_SAVE">{{
+          $t("LK_FANHUI")
+        }}</iButton>
 				<iButton @click="creatFs" v-permission="PARTSPROCURE_BATCHMIANTAIN_GENERATEFSNUMBER">
-					{{ $t('LK_SHENGCHENGFSHAO') }}</iButton>
+					{{ $t("LK_SHENGCHENGFSHAO") }}
+				</iButton>
 				<iButton @click="start" :loading="startLoding" v-permission="PARTSPROCURE_BATCHMIANTAIN_STARTINQUIRY">
-					{{ $t('LK_QIDONGXUNJIA') }}</iButton>
+					{{ $t("LK_QIDONGXUNJIA") }}
+				</iButton>
 			</div>
 		</div>
 		<iSearch class="margin-bottom20" :title="$t('LK_CAIGOUXIANGMUXINXI')" tabCard>
@@ -34,7 +40,7 @@
 					</iSelect>
 				</el-form-item>
 				<el-form-item label="LINIE">
-					<iSelect v-model="linie" value-key="key">
+					<iSelect v-model="linie" value-key="id">
 						<el-option :value="item" :label="item.name" v-for="(item, index) in fromGroup.LINIE"
 							:key="index"></el-option>
 					</iSelect>
@@ -46,7 +52,7 @@
 					</iSelect>
 				</el-form-item>
 				<el-form-item :label="$t('LK_CHEXINGXIANGMU')">
-					<iSelect v-model="cartypeProject" value-key="key">
+					<iSelect v-model="cartypeProject" value-key="id">
 						<el-option :value="item" :label="item.name" v-for="(item, index) in fromGroup.CAR_TYPE_PRO"
 							:key="index"></el-option>
 					</iSelect>
@@ -71,9 +77,9 @@
 				</el-form-item>
 			</el-form>
 			<template slot="button">
-				<iButton @click="save" v-permission="PARTSPROCURE_BATCHMIANTAIN_PURCHASINGCONFIRM">{{ $t('LK_QUEREN') }}
+				<iButton @click="save" v-permission="PARTSPROCURE_BATCHMIANTAIN_PURCHASINGCONFIRM">{{ $t("LK_QUEREN") }}
 				</iButton>
-				<iButton @click="reset" v-permission="PARTSPROCURE_BATCHMIANTAIN_PURCHASERESET">{{ $t('LK_ZHONGZHI') }}
+				<iButton @click="reset" v-permission="PARTSPROCURE_BATCHMIANTAIN_PURCHASERESET">{{ $t("LK_ZHONGZHI") }}
 				</iButton>
 			</template>
 		</iSearch>
@@ -87,7 +93,7 @@
 					</iSelect>
 				</el-form-item>
 				<el-form-item :label="$t('LK_GONGYI')">
-					<iSelect placeholder="请选择先材料组" v-model="stuff" value-key="stuffCode">
+					<iSelect :placeholder="$t('LK_QINGXUANZHEXIANCAILIAOZU')" v-model="stuff" value-key="stuffCode">
 						<el-option :value="item" :label="item.stuffName" v-for="(item, index) in stuffArr" :key="index">
 						</el-option>
 					</iSelect>
@@ -95,9 +101,11 @@
 			</el-form>
 			<template slot="button">
 				<iButton @click="save" v-permission="PARTSPROCURE_BATCHMIANTAIN_MATERIALGROUPCONFIRM">
-					{{ $t('LK_QUEREN') }}</iButton>
+					{{ $t("LK_QUEREN") }}
+				</iButton>
 				<iButton @click="resetStuff" v-permission="PARTSPROCURE_BATCHMIANTAIN_MATERIALGROUPRESET">
-					{{ $t('LK_ZHONGZHI') }}</iButton>
+					{{ $t("LK_ZHONGZHI") }}
+				</iButton>
 			</template>
 		</iSearch>
 		<outputPlan class="margin-bottom20" @handleSelectionChange="handleSelectionChange" />
@@ -110,8 +118,8 @@
 		iSearch,
 		iSelect,
 		iMessage
-	} from '@/components'
-	import outputPlan from './components/outputPlan'
+	} from "@/components";
+	import outputPlan from "./components/outputPlan";
 	import {
 		changeProcure,
 		getProcureGroup
@@ -123,7 +131,7 @@
 		materialGroupByLinie,
 		getStuffByCategory,
 		putMaterialGroup,
-		dictkey
+		dictkey,
 	} from "@/api/partsprocure/editordetail";
 	import {
 		getPageGroup
@@ -134,7 +142,7 @@
 			iButton,
 			iSearch,
 			iSelect,
-			outputPlan
+			outputPlan,
 		},
 		data() {
 			return {
@@ -165,11 +173,11 @@
 				cartypeProject: {}, //车型项目
 				selectTableData: [],
 				startLoding: false,
-			}
+			};
 		},
 		created() {
 			this.getProcureGroup();
-			this.getMaterialGroupByLinie()
+			this.getMaterialGroupByLinie();
 		},
 		methods: {
 			//获取上方group信息
@@ -191,86 +199,89 @@
 			// 获取材料组数据
 			getMaterialGroupByLinie() {
 				let data = {
-					LinieId: this.$store.state.permission.userInfo.id
-				}
-				materialGroupByLinie(data).then(res => {
-					this.category = res.data || []
-				})
+					LinieId: this.$store.state.permission.userInfo.id,
+				};
+				materialGroupByLinie(data).then((res) => {
+					this.category = res.data || [];
+				});
 			},
 			// 获取工艺组数据
 			changeSelect(val) {
 				let data = {
-					categoryId: val.id
-				}
-				getStuffByCategory(data).then(res => {
-					this.stuffArr = res.data || []
-				})
+					categoryId: val.id,
+				};
+				getStuffByCategory(data).then((res) => {
+					this.stuffArr = res.data || [];
+				});
 			},
 
 			handleSelectionChange(e) {
-				this.selectTableData = e
-				let arr = []
-				this.selectTableData.map(res => {
-					arr.push(res.purchaseProjectId)
-				})
-				this.batch.purchaseProjectIds = arr
+				this.selectTableData = e;
+				let arr = [];
+				this.selectTableData.map((res) => {
+					arr.push(res.purchaseProjectId);
+				});
+				this.batch.purchaseProjectIds = arr;
 			},
 			// 批量修改
 			save() {
 				if (this.batch.purchaseProjectIds.length == 0) {
-					iMessage.warn("请选择需要修改的零件采购项目")
-					return
+					iMessage.warn(
+						this.$t("LK_QINGXUANZHEXUYAOXIUGAIDELINGJIANCAIGOUXIANGMU")
+					);
+					return;
 				}
-				this.pushKey()
+				this.pushKey();
 				// 复制参数对应key
 				let batch = {
-					...this.batch
-				}
+					...this.batch,
+				};
 				changeProcure({
-					batch
-				}).then(res => {
+					batch,
+				}).then((res) => {
 					if (res.data) {
-						iMessage.success("修改成功")
+						iMessage.success(this.$t("LK_XIUGAICHENGGONG"));
 					} else {
-						iMessage.error(res.desZh)
+						iMessage.error(res.desZh);
 					}
-				})
+				});
 			},
 			pushKey() {
-				this.batch.stuffName = this.stuff.stuffName
-				this.batch.stuffCode = this.stuff.stuffCode
-				this.batch.stuffId = this.stuff.id
-				this.batch.cartypeProjectZh = this.cartypeProject.name
-				this.batch.cartypeProjectNum = this.cartypeProject.id
-				this.batch.linieName = this.linie.name
-				this.batch.linieNum = this.linie.id
-				this.batch.categoryCode = this.categoryObj.categoryCode
-				this.batch.categoryName = this.categoryObj.categoryNameZh
+				this.batch.stuffName = this.stuff.stuffName;
+				this.batch.stuffCode = this.stuff.stuffCode;
+				this.batch.stuffId = this.stuff.id;
+				this.batch.cartypeProjectZh = this.cartypeProject.name;
+				this.batch.cartypeProjectNum = this.cartypeProject.id;
+				this.batch.linieName = this.linie.name;
+				this.batch.linieNum = this.linie.id;
+				this.batch.categoryCode = this.categoryObj.categoryCode;
+				this.batch.categoryName = this.categoryObj.categoryNameZh;
 			},
 			// 重置采购信息数据
 			reset() {
 				for (let i in this.batch) {
 					if (i == "purchaseProjectIds") {
-						this.batch[i] = []
+						this.batch[i] = [];
 					} else {
 						this.batch[i] = "";
 					}
 				}
-				this.linie = {}
-				this.cartypeProject = {}
+				this.linie = {};
+				this.cartypeProject = {};
 			},
 			// 重置stuff数据
 			resetStuff() {
-				this.categoryObj = {}
-				this.stuff = {}
-				this.stuffArr = []
-
+				this.categoryObj = {};
+				this.stuff = {};
+				this.stuffArr = [];
 			},
 			// 生成fs号
 			creatFs() {
 				if (this.selectTableData.length == 0)
 					return iMessage.warn(
-						"抱歉，您当前还未选择您需要生成FS号的零件采购项目！"
+						this.$t(
+							"LK_NINDANGQIANHAIWEIXUANZENINXUYAOSHENGCHENGFSHAODELINGJIANCAIGOUXIANGMU"
+						)
 					);
 				let fs = {
 					purchaseProjectIds: this.batch.purchaseProjectIds,
@@ -279,9 +290,9 @@
 					fs,
 				}).then((res) => {
 					if (res.data) {
-						iMessage.success("操作成功")
+						iMessage.success(this.$t("LK_CAOZUOCHENGGONG"));
 					} else {
-						iMessage.error(res.desZh)
+						iMessage.error(res.desZh);
 					}
 				});
 			},
@@ -289,13 +300,19 @@
 				return new Promise((r) => {
 					if (this.selectTableData.length == 0) {
 						r(false);
-						iMessage.warn(`抱歉，您当前还未选择需要启动询价的采购项目！`);
+						iMessage.warn(
+							this.$t(
+								"LK_NINDANGQIANHAIWEIXUANZEXUYAOQIDONGXUNJIADECAIGOUXIANGMU"
+							)
+						);
 						return;
 					}
 					if (this.selectTableData.find((items) => items.fsnrGsnrNum == "")) {
 						r(false);
 						iMessage.warn(
-							`抱歉，当前采购项目中存在还未生成FSNR的数据，无法为您启动询价！`
+							this.$t(
+								"LK_DANGQIANCAIGOUXIANGMUZHONGCUNZAIHAIWEISHENGCHENGFSNRDESHUJUWUFAWEININQIDONGXUNJIA"
+							)
 						);
 						return;
 					}
@@ -306,7 +323,7 @@
 				if (!(await this.validateStart())) return;
 				this.startLoding = true;
 				insertRfq({
-						rfqPartDTOList: this.selectTableData
+						rfqPartDTOList: this.selectTableData,
 					})
 					.then((res) => {
 						this.startLoding = false;
@@ -327,10 +344,10 @@
 			},
 			//back
 			back() {
-				this.$router.go(-1)
-			}
-		}
-	}
+				this.$router.go(-1);
+			},
+		},
+	};
 </script>
 <style lang="scss" scoped>
 	.batchmiantain {}

@@ -11,14 +11,14 @@
         <div class="title">RISE</div>
         <div class="content">
           <el-form :rules="rules">
-            <el-form-item label='用户名' >
+            <el-form-item :label="$t('LK_YONGHUMING')" >
               <el-input v-model='userName' autocomplete="off" :readonly="readonly" @focus="stopAutoComplate"></el-input>
             </el-form-item>
-            <el-form-item label='密码'>
+            <el-form-item :label="$t('LK_MIMA')">
               <el-input v-model="passWord" autocomplete="off" type="password" :readonly="readonly" @focus="stopAutoComplate"></el-input>
             </el-form-item>
           </el-form>
-          <el-button :loading='loading' class="button" @click="login">登录</el-button>
+          <el-button :loading='loading' class="button" @click="login">{{$t("LK_DENGLU")}}</el-button>
         </div>
     </div>
 </template>
@@ -45,7 +45,7 @@ export default{
   },
   methods:{
     login(){
-      if(this.passWord == '' || this.userName == '') return iMessage.error('抱歉，用户名或密码不能为空！')
+      if(this.passWord == '' || this.userName == '') return iMessage.error(this.$t('LK_YONGHUMINGHUOMIMABUNENGWEIKONG'))
       this.loading = true
       login({userName:this.userName,passWord:this.passWord}).then(async res=>{
         this.loading = false
