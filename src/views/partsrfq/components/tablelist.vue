@@ -21,7 +21,8 @@
       <el-table-column :key="index" align='center' v-else-if='inputProps.includes(items.props)' :prop="items.props"
                        :label="items.name">
         <template slot-scope="scope">
-          <i-input v-model="scope.row[items.props]"/>
+          <i-input v-model="scope.row[items.props]" v-if="inputType" :type="inputType" key="inputType"/>
+          <i-input v-model="scope.row[items.props]" v-else key="inputType"/>
         </template>
       </el-table-column>
       <el-table-column :key="index" align='center'
@@ -97,6 +98,7 @@ export default {
     customOpenPageWord: {type: String, default: ''},
     openPageGetRowData: {type: Boolean, default: false},
     fileSizeProps: {type: String, default: 'fileSize'},
+    inputType: {type: String, default: ''}
   },
   components: {
     iInput,
