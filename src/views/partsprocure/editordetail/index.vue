@@ -74,7 +74,7 @@
 						<iFormItem :label="$t('LK_LINGJIANXIANGMULEIXING') + ':'" name="test">
 							<iSelect v-model="detailData.partPrejectType"
 								v-permission="PARTSPROCURE_EDITORDETAIL_EVENTITEMTYPE">
-								<el-option :value="item.key" :label="item.name"
+								<el-option :value="item.id" :label="item.name"
 									v-for="(item, index) in fromGroup.PART_PROJECT_TYPE" :key="index">
 								</el-option>
 							</iSelect>
@@ -330,6 +330,7 @@
 					this.detailData = res.data.detailData;
 					if (res.data.targetprice) {
 						this.targetprice = res.data.targetprice;
+						
 					}
 				});
 			},

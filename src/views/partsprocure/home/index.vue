@@ -107,6 +107,9 @@
 							<span class="font18 font-weight">
 								{{ $t('partsprocure.PARTSPROCURENEWPROCUREMENTPROJECT') }}</span>
               <div class="floatright">
+				<iButton @click="openDiologChangeItems" v-permission="PARTSPROCURE_TRANSFER">
+				    {{ $t('partsprocure.PARTSPROCURETRANSFER') }}
+				</iButton>
                 <iButton @click="creatFs" v-permission="PARTSPROCURE_GENERATEFSBUTTON">
                   {{ $t('partsprocure.PARTSPROCUREGENERATEFSGSNR') }}
                 </iButton>
@@ -118,9 +121,6 @@
                 </iButton>
                 <iButton @click="start" :loading="startLoding" v-permission="PARTSPROCURE_STARTINQUIRY">
                   {{ $t('partsprocure.PARTSPROCURESTARTINQUIRY') }}
-                </iButton>
-                <iButton @click="openDiologChangeItems" v-permission="PARTSPROCURE_TRANSFER">
-                  {{ $t('partsprocure.PARTSPROCURETRANSFER') }}
                 </iButton>
               </div>
             </div>

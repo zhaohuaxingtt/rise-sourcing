@@ -19,7 +19,7 @@
 			</iButton>
 		</div>
 		<tableList :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="confirmTableLoading"
-			@handleSelectionChange="handleSelectionChange" @openPage="openPage"  ref="moviesTable"></tableList>
+			@handleSelectionChange="handleSelectionChange" @openPage="openPage" isOne></tableList>
 		<iPagination @size-change="handleSizeChange($event, getTableList)"
 			@current-change="handleCurrentChange($event, getTableList)" background :page-sizes="page.pageSizes"
 			:page-size="page.pageSize" :layout="page.layout" :total="page.totalCount"></iPagination>
@@ -91,36 +91,7 @@
 		methods: {
 			// 已在RFQ中零件选中数据
 			handleSelectionChange(rows) {
-				// rows.forEach(row => {
-				// 	this.$refs.multipleTable.toggleRowSelection(row,false);
-				// });
-				// let row=e[0]
-				// console.log(row);
-				// this.$refs.multipleTable.toggleRowSelection(row)
-				// this.$refs.multipleTable.clearSelection()
-				// if (rows.length>1) {
-				// 	iMessage.warn("财务目标价应单条申请")
-				// 	this.$refs.multipleTable.toggleRowSelection()
-				// }
-				// this.handleSelectArr = rows;
-				// console.log(val)
-				      // @selection-change="handleSelectionChange"绑定的方法
-				      if (rows.length > 1) {
-				      //取出最后val的最后一个返回出来
-				        var duoxuans=rows.pop();
-				       this.handleSelectArr=rows.pop();
-				      //清除所有选中
-				        this.$refs.moviesTable.clearSelection()
-				        //给最后一个加上选中
-				        this.$refs.moviesTable.toggleRowSelection(duoxuans)
-				        // console.log(this.duoxuan);
-				      } else {
-				        this.handleSelectArr=rows;
-				        }
-				
-			},
-			select(row){
-				console.log(row);
+				this.handleSelectArr = rows;
 			},
 			// 未在RFQ中零件选中数据
 			waitSelect(e) {
