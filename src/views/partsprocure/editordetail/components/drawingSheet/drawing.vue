@@ -71,7 +71,7 @@ export default {
       uploadLoading: false,
       downloadLoading: false,
       deleteLoading: false,
-      action: `${ process.env.VUE_APP_FILE }/upload`, // 上传api
+      action: `${ process.env.VUE_APP_COMMON }/upload`, // 上传api
       tableTitle,
       tableListData: [],
       multipleSelection: [],

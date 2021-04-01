@@ -14,13 +14,13 @@
         <el-table-column :label="items.key ? $t(items.key) : items.name" :key="index" align="center">
           <template v-for="(items2, index2) in items.list">
             <el-table-column :key="index2" align='center' v-if="items2.props === multiHeaderProps" :prop="items2.props"
-                             :label="items2.name">
+                             :label="items2.key ? $t(items2.key) : items2.name">
               <template slot-scope="scope">
                 <span class="openLinkText cursor"
                       @click="openMultiHeaderPropsPage(scope.row)">{{ multiHeaderPropsText }}</span>
               </template>
             </el-table-column>
-            <el-table-column :key="index2" align='center' v-else :label="items2.name"
+            <el-table-column :key="index2" align='center' v-else :label="items2.key ? $t(items2.key) : items2.name"
                              :prop="items2.props"></el-table-column>
           </template>
         </el-table-column>
@@ -32,7 +32,7 @@
             <span class="openLinkText cursor" @click="openActionPropsPage(scope.row)">查看</span>
           </template>
         </el-table-column>
-        <el-table-column :key="index" align='center' v-else :label="$t(items.key)"
+        <el-table-column :key="index" align='center' v-else :label="items.key ? $t(items.key) : items.name"
                          :prop="items.props"></el-table-column>
       </template>
     </template>

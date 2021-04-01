@@ -5,6 +5,7 @@
         <span>{{ $t('LK_LINGJIANPINGFEN') }}</span>
       </div>
       <div class="btnList">
+        <iButton @click="backPage">{{ $t('LK_FANHUI') }}</iButton>
         <iButton type="text" @click="log">
           <icon symbol name="iconrizhiwuzi" class="log-icon"/>
           <span class="log-word">{{ $t('LK_RIZHI') }}</span>
@@ -123,6 +124,9 @@ export default {
     },
     log() {
       window.open(`/#/log?recordId=`, '_blank')
+    },
+    backPage() {
+      this.$router.go(-1)
     }
   }
 }
