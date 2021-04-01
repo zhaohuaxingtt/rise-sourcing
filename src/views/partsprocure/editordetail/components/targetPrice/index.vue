@@ -54,7 +54,7 @@
 			<iFormItem :label="$t('LK_SHENQINGLEIXING')" name="test" v-permission="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_SQLX">
 				<el-radio-group v-model="targetprice.cfTargetPriceDetail.applyType">
 					<el-radio label="LC">LC</el-radio>
-					<el-radio label="SDK">SDK</el-radio>
+					<el-radio label="SKD">SKD</el-radio>
 					<el-radio label="CKD_LANDED">CKD_LANDED</el-radio>
 				</el-radio-group>
 				<span class="start">*</span>
