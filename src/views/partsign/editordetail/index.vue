@@ -62,6 +62,7 @@ import { partDetailTitle, partTitle } from "./components/data";
 // import { getPartInfo } from "@/api/partsign/editordetail";
 import {patchRecords} from "@/api/partsign/home";
 import logButton from '@/views/partsign/editordetail/components/logButton'
+import local from "@/utils/localstorage";
 export default {
   components: {
     iPage,
@@ -143,6 +144,10 @@ export default {
         if(res.code == 200){
           iMessage.success('操作成功')
           this.partDetails.status = type == 2 ? '已签收':"以退回"
+          local.set(
+            "tpPartInfoVO",
+            JSON.stringify(this.partDetails)
+          );
         }else{
           iMessage.error(res.desZh)
         }
