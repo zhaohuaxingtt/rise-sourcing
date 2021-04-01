@@ -21,7 +21,7 @@
         @size-change="handleSizeChange($event, getVolume)"
         @current-change="handleCurrentChange($event, getVolume)"
         background
-        :current-page="page.size"
+        :current-page="page.currPage"
         :page-sizes="page.pageSizes"
         :page-size="page.pageSize"
         :layout="page.layout"
