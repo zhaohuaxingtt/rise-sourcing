@@ -7,7 +7,7 @@
  * @FilePath: \rise\src\views\partsprocure\editordetail\components\drawingSheet\sheet.vue
 -->
 <template>
-  <iCard class="outputRecord" tabCard :title="`${ $t('LK_XINXIDANLIUSHUIHAO') }：${ this.data.tpPartID || '' }`" v-loading="loading">
+  <iCard class="outputRecord" tabCard :title="`${ $t('LK_LINGJIANHAO') }：${ this.data.partNum || '' }`" v-loading="loading">
     <div class="body">
       <iFormGroup v-for="(chunk, $index) in items" :key="$index" :row="3" inline>
         <iFormItem v-for="item in chunk" :key="item.props" :label="$t(item.key)">
