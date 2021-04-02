@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-04-02 15:32:29
+ * @LastEditTime: 2021-04-02 17:15:51
  * @LastEditors: Please set LastEditors
  * @Description: 自定义指令文件。
  * @FilePath: \rise\src\utils\mydirect.js
@@ -14,12 +14,13 @@ Vue.directive('permission', {
 	inserted: function(el, binding) {
 		if (!store.state.permission.whiteBtnList[binding.expression]) {
 			if (binding.modifiers.disabled) {
-				let textarea = el.getElementsByTagName("textarea")
-				let input = el.getElementsByTagName("textarea")
-				let arr = [...textarea,...input]
-				arr.forEach(res => {
-					res.setAttribute('disabled', true)
-				})
+				el.classList.add("is-disabled")
+				// let textarea = el.getElementsByTagName("textarea")
+				// let input = el.getElementsByTagName("input")
+				// let arr = [...textarea,...input]
+				// arr.forEach(res => {
+				// 	res.setAttribute('disabled','disabled')
+				// })
 			} else {
 				el.parentNode.removeChild(el)
 			}
@@ -34,6 +35,6 @@ Vue.directive('update', {
     }
 });
 
-export function Hash(){
+export function Hash() {
     return parseInt(Math.random() * 1000000000)
 }

@@ -117,9 +117,9 @@ export default {
         partNum,
         tab
       }
-      const params = serialize(req)
+      // const params = serialize(req)
       this.$router.push({
-        path: `/partsprocure/editordetail?${params}`
+        path: `/partsprocure/editordetail?item=${JSON.stringify(req)}`
       })
     }
   }

@@ -28,7 +28,7 @@
 		<iSearch class="margin-bottom20" :title="$t('LK_CAIGOUXIANGMUXINXI')" tabCard>
 			<el-form>
 				<el-form-item :label="$t('LK_LINGJIANCAIGOUXIANGMULEIXING')">
-					<iSelect v-model="batch.part_preject_type">
+					<iSelect v-model="batch.type">
 						<el-option :value="item.id" :label="item.name"
 							v-for="(item, index) in fromGroup.PART_PROJECT_TYPE" :key="index"></el-option>
 					</iSelect>
