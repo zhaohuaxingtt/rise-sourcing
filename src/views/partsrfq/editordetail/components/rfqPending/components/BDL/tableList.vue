@@ -124,13 +124,15 @@
 			addCustom() {
 				if (!this.addTitle) {
 					if (this.addCustomShow) {
-						this.tableTitle.splice(4, 1);
+						// this.tableTitle.splice(4, 1);
+						this.tableTitle.pop()
 					} else {
 						let obj = {
 							props: "userDefinedGrade",
 							name: ""
 						};
-						this.tableTitle.splice(4, 0, obj);
+						// this.tableTitle.splice(4, 0, obj);
+						this.tableTitle.push(obj)
 					}
 					this.addCustomShow = !this.addCustomShow;
 				}
