@@ -14,11 +14,15 @@ Vue.directive('permission', {
 	inserted: function(el, binding) {
 		if (!store.state.permission.whiteBtnList[binding.expression]) {
 			if (binding.modifiers.disabled) {
+				// el.addClass('is-disabled')
+				console.log(el);
+				el.className="is-disabled"
 				let textarea = el.getElementsByTagName("textarea")
-				let input = el.getElementsByTagName("textarea")
+				let input = el.getElementsByTagName("input")
 				let arr = [...textarea,...input]
+				console.log(arr);
 				arr.forEach(res => {
-					res.setAttribute('disabled', true)
+					res.setAttribute('disabled','true')
 				})
 			} else {
 				el.parentNode.removeChild(el)
