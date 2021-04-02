@@ -59,7 +59,7 @@ export default {
 
       getOutputPlan({
         'partRecordPageReqDTO.current': this.page.currPage,
-        'partRecordPageReqDTO.purchaseProjectId': this.params.purchasePrjectId,
+        'partRecordPageReqDTO.purchaseProjectId': this.$route.query.purchaseProjectId,
         'partRecordPageReqDTO.size': this.page.pageSize,
         'partRecordPageReqDTO.year': this.startYear
       }).

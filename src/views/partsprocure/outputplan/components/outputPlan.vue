@@ -70,7 +70,7 @@ export default {
     getData() {
       this.loading = true
       getOutputPlan({
-        'partOutputPlanReqDTO.purchaseProjectId': this.params.purchasePrjectId,
+        'partOutputPlanReqDTO.purchaseProjectId': this.$route.query.purchaseProjectId,
         'partOutputPlanReqDTO.year': this.startYear || undefined
       })
         .then((res) => {
