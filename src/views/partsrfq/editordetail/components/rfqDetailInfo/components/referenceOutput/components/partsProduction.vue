@@ -101,14 +101,19 @@ export default {
       const rfqId = this.$route.query.id;
       const rfqPlanId = row.rfqPlanId;
       const purchasePrjectId = row.purchaseProjectId;
-      const purchasingRequirementId = row.purchasingRequirementTargetId
+      const purchasingRequirementId = row.purchasingRequirementId
       const partNum = row.ninePartNum
+      const categoryCode = row.categoryCode
+      const purchasingRequirementObjectId = row.purchasingRequirementObjectId
       const tab = 'outputPlan'
+
       const req = {
         rfqId,
         rfqPlanId,
         purchasePrjectId,
         purchasingRequirementId,
+        categoryCode,
+        purchasingRequirementObjectId,
         partNum,
         tab
       }
