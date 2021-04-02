@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-03-26 18:37:44
- * @LastEditTime: 2021-03-30 23:22:32
+ * @LastEditTime: 2021-04-02 13:55:29
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqPending\components\partDetaiList\components\partsTable.vue
@@ -23,6 +23,7 @@
         :page-sizes="page.pageSizes"
         :page-size="page.pageSize"
         :layout="page.layout"
+        :current-page="page.currPage"
         :total="page.totalCount"
     ></iPagination>
   </div>
