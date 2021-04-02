@@ -12,12 +12,14 @@ import App from './App.vue'
 import store from './store'
 import '@/assets/style/global/index.scss'
 import './utils/mydirect'
-import './permission' 
+import './permission'
 require('./auto').init()
 Vue.config.productionTip = false
+Vue.prototype.$t = (key, value) => i18n.t(key, value);
+
 new Vue({
-  router,
-  store,
-  i18n,
-  render: h => h(App),
+    router,
+    store,
+    i18n,
+    render: h => h(App),
 }).$mount('#app')

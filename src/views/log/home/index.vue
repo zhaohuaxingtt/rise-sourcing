@@ -21,6 +21,7 @@
       </div>
       <div class="footer" >
         <iPagination
+          v-update
           class="pagination"
           @size-change="handleSizeChange($event, queryByPage)"
           @current-change="handleCurrentChange($event, queryByPage)"
