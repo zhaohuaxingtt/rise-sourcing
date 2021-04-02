@@ -15,9 +15,7 @@
 				<span class="start">*</span>
 			</iFormItem>
 			<iFormItem :label="$t('LK_QIWANGMUBIAOJIA')" name="test">
-				<iText>
-					{{targetprice.cfTargetPriceDetail.lcPrice}}
-				</iText>
+				<iInput v-model="targetprice.cfTargetPriceDetail.lcPrice" onkeyup="value=value.replace(/[^\d]/g,'')"  maxlength="20"></iInput>
 			</iFormItem>
 		</iFormGroup>
 		<iFormGroup row="2" icon inline>
@@ -40,7 +38,6 @@
 		iFormGroup,
 		iFormItem,
 		iInput,
-		iText,
 		iDialog,
 		iButton
 	} from "@/components";
@@ -58,7 +55,6 @@
 			iFormGroup,
 			iFormItem,
 			iInput,
-			iText,
 			tablelist,
 			iDialog,
 			iButton

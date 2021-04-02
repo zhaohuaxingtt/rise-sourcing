@@ -24,12 +24,12 @@
           <span>{{ scope.row.updateDate | dateFilter }}</span>
         </template>
       </tableList>
-      <iPagination
+      <iPagination v-update
         class="pagination"
         @size-change="handleSizeChange($event, getInfoAnnexPage)"
         @current-change="handleCurrentChange($event, getInfoAnnexPage)"
         background
-        :current-page="page.size"
+        :current-page="page.currPage"
         :page-sizes="page.pageSizes"
         :page-size="page.pageSize"
         :layout="page.layout"
@@ -55,7 +55,7 @@ export default {
   props: {
     data: {
       type: Array,
-      default: () => ([])
+      default: () => ({})
     }
   },
   data() {
@@ -92,7 +92,7 @@ export default {
       // this.$router.push({
       //   path:'/partsign/version'
       // })
-      window.open('/#/partsign/version', '_blank')
+      window.open(`/#/partsign/version?tpId=${ this.data.tpPartID }`, '_blank')
     },
     handleSelectionChange(list) {
       this.multipleSelection = list

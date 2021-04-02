@@ -6,14 +6,11 @@
       <el-upload 
         class="uploadBtn" 
         multiple
-        :action="action"
-        :data="{ applicationName: 'procurereq-service' }"
-        :headers="{ token }"
+        ref="upload"
         name="multipartFile"
+        :http-request="upload"
         :show-file-list="false" 
         :before-upload="beforeUpload"
-        :on-success="uploadSuccess"
-        :on-error="uploadError"
         accept=".pdf,.xlsx,.docx">
           <iButton :loading="uploadLoading" v-permission="PARTSPROCURE_EDITORDETAIL_DRAWINGSHEET_HANDLEUPLOAD">{{ $t('LK_SHANGCHUANFUJIAN') }}</iButton>
       </el-upload>
@@ -43,7 +40,9 @@
         :page-sizes="page.pageSizes"
         :page-size="page.pageSize"
         :layout="page.layout"
-        :total="page.totalCount" />
+        :total="page.totalCount" 
+		v-update
+		/>
     </div>
   </iCard>
 </template>
@@ -56,6 +55,7 @@ import { tableTitle } from './data'
 import { getInfoAnnexPage, deleteFile, patchTpRecords } from "@/api/partsprocure/editordetail";
 import filters from '@/utils/filters'
 import { downloadFile } from "@/api/file";
+import { uploadFile } from "@/api/file/upload";
 import { getToken } from "@/utils";
 
 export default {
@@ -73,7 +73,7 @@ export default {
       uploadLoading: false,
       downloadLoading: false,
       deleteLoading: false,
-      action: `${ process.env.VUE_APP_COMMON }/upload`, // 上传api
+      // action: `${ process.env.VUE_APP_COMMON }/upload`, // 上传api
       tableTitle,
       tableListData: [],
       multipleSelection: [],
@@ -86,8 +86,19 @@ export default {
     this.token = getToken()
   },
   methods: {
-    beforeUpload(res) {
-      // console.log(res)
+    upload(content) {
+      const formData = new FormData()
+      formData.append('multipartFile', content.file)
+      formData.append('applicationName', 'procurereq-service')
+      uploadFile(formData)
+        .then(res => {
+          this.uploadSuccess(res, content.file)
+        })
+        .catch(rej => {
+          this.uploadError(rej, content.file)
+        })
+    },
+    beforeUpload() {
       this.uploadLoading = true
     },
     uploadSuccess(res, file) {
@@ -133,7 +144,6 @@ export default {
         purchasingRequirementTargetId: this.params.purchasingRequirementObjectId
       })
         .then(res => { 
-          // console.log(res.data)
           this.tableListData = res.data.tpRecordList
           this.page.totalCount = res.data.totalCount || 0
           this.loading = false

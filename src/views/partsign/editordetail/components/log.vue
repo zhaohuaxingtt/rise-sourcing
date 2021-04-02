@@ -16,12 +16,12 @@
     </div>
     <div class="body margin-top27">
       <tableList class="table" index :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="loading" />
-      <iPagination
+      <iPagination v-update
         class="pagination"
         @size-change="handleSizeChange($event, getVolume)"
         @current-change="handleCurrentChange($event, getVolume)"
         background
-        :current-page="page.size"
+        :current-page="page.currPage"
         :page-sizes="page.pageSizes"
         :page-size="page.pageSize"
         :layout="page.layout"

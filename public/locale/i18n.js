@@ -1,24 +1,35 @@
-;(function (global, factory) {
-  typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
-  typeof define === 'function' && define.amd ? define(factory) :
-  (global = global || self, global.i18n = factory())
-}(this, function () { 
-  'use strict'
-  const lang = localStorage.getItem('lang')
-  const orignalSetItem = localStorage.setItem;
-  localStorage.setItem = function(key,newValue){
-    var setItemEvent = new Event("setItemEvent");
-    setItemEvent.key = key;
-    window.dispatchEvent(setItemEvent);
-    orignalSetItem.apply(this,arguments);
-  };
-  if (!lang) {
-    lang = window.navigator.language ? window.navigator.language.replace(/^(.*)-(.*)$/, '$1'): 'zh'
-    localStorage.setItem('lang', lang)
-  }
+(function(global, factory) {
+    typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
+        typeof define === 'function' && define.amd ? define(factory) :
+        (global = global || self, global.i18n = factory())
+}(this, function() {
+    'use strict'
+    let lang = localStorage.getItem('lang')
+    if (!lang) {
+        lang = window.navigator.language ? window.navigator.language.replace(/^(.*)-(.*)$/, '$1') : 'zh'
+        localStorage.setItem('lang', lang)
+    }
+    //默认语言设置ELEMENT
+    if (lang == "en") {
+        // eslint-disable-next-line no-undef
+        ELEMENT.locale(ELEMENT.lang.en)
+    } else {
+        // eslint-disable-next-line no-undef
+        ELEMENT.locale(ELEMENT.lang.zhCN)
+    }
 
-  return new window.VueI18n({
-    locale: lang || 'zh',
-    fallbackLocale: 'en',
-  })
+    const messages = {
+        en: {
+            ...ELEMENT.lang.en
+        },
+        zh: {
+            ...ELEMENT.lang.zhCN
+        }
+    }
+
+    return new window.VueI18n({
+        locale: lang || 'zh',
+        messages,
+        fallbackLocale: 'en',
+    })
 }))

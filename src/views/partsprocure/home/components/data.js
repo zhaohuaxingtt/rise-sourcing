@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-25 10:14:46
- * @LastEditTime: 2021-03-31 16:29:39
+ * @LastEditTime: 2021-04-01 19:14:34
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsprocure\home\component\data.js
@@ -11,67 +11,80 @@ import {permissionTitle} from '@/utils'
 export const tableTitle = permissionTitle("PARTSPROCURE_PARTSPROCURELIST",[{
 		props: 'fsnrGsnrNum',
 		name: 'FSNF/GSNF/SPNR',
-		key: 'partsprocure.PARTSPROCURENEWPROCUREMENTPROJECT',
+		key: 'partsprocure.PARTSPROCUREFSNFGSNFSPNR',
+		tooltip:false
 	},
 	{
 		props: 'partNum',
 		name: '零件号',
 		key: 'partsprocure.PARTSPROCUREPARTNUMBER',
+		tooltip:false
 	},
 	{
 		props: 'partNameZh',
 		name: '零件名（中）',
 		key: 'partsprocure.PARTSPROCUREPARTNAMEZH',
+		tooltip:false
 	},
 	{
 		props: 'partNameDe',
 		name: '零件名（德）',
 		key: 'partsprocure.PARTSPROCUREPARTNAMEDE',
+		tooltip:false
 	},
 	{
 		props: 'statusName',
 		name: '项目状态',
 		key: 'partsprocure.PARTSPROCURESTATUS',
+		tooltip:false
 	},
 	{
 		props: 'procureFactory',
 		name: '采购工厂',
 		key: 'partsprocure.PARTSPROCUREPURCHASINGFACTORY',
+		tooltip:false
 	},
 	{
 		props: 'partPrejectType',
 		name: '零件项目类型',
 		key: 'partsprocure.PARTSPROCUREPARTITEMTYPE',
+		tooltip:false
 	},
 	{
 		props: 'cartypeCategory',
 		name: '车型大类',
 		key: 'partsprocure.PARTSPROCUREVEHICLECATEGORIES',
+		tooltip:false
 	},
 	{
 		props: 'cartypeProjectZh',
 		name: '车型项目',
 		key: 'partsprocure.PARTSPROCUREMODELPROJECT',
+		tooltip:false
 	},
 	{
 		props: 'partStatusName',
 		name: '零件状态',
 		key: 'partsprocure.PARTSPROCUREPARTSTATUS',
+		tooltip:false
 	},
 	{
 		props: 'buyerName',
 		name: '询价采购员',
 		key: 'partsprocure.PARTSPROCUREINQUIRYBUYER',
+		tooltip:false
 	},
 	{
 		props: 'linieName',
 		name: 'LINIE',
 		key: 'partsprocure.PARTSPROCURELINIE',
+		tooltip:false
 	},
 	{
 		props: 'cfControllerZh',
 		name: 'CF',
 		key: 'partsprocure.CF',
+		tooltip:false
 	}
 ])
 

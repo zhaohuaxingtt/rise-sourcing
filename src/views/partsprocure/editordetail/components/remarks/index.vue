@@ -9,6 +9,7 @@
 					</p>
 					<iInput type="textarea" rows="8" resize="none" v-model="detailData.csfMemo"
 						v-permission="PARTSPROCURE_EDITORDETAIL_REMARKS_INQUIRYREMARKS"></iInput>
+						<!-- partsprocure.PARTSPROCURETRANSFER -->
 				</div>
 				<div>
 					<p>

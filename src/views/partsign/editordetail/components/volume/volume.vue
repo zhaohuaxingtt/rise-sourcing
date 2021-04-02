@@ -17,7 +17,7 @@
     </div>
     <div class="body margin-top27">
       <tableList index class="table" :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="loading" @handleSelectionChange="handleSelectionChange" />
-      <iPagination
+      <iPagination v-update
         class="pagination"
         @size-change="handleSizeChange($event, getVolume)"
         @current-change="handleCurrentChange($event, getVolume)"
@@ -76,7 +76,13 @@ export default {
             "status": 1,
             "tpId": this.data.tpPartID
           })
+          
           this.versionNum = 'V1'
+
+          if (versionRes.code != 200) {
+            return iMessage.error(`${ this.$i18n.locale === 'zh' ? versionRes.desZh : versionRes.desEn }`)
+          }
+
           if (versionRes.data && Array.isArray(versionRes.data.tpRecordList) && versionRes.data.tpRecordList[0]) {
             this.carTypeConfigId = versionRes.data.tpRecordList[0].carTypeConfigId
             this.versionNum = versionRes.data.tpRecordList[0].versionNum || 'V1'
@@ -90,6 +96,11 @@ export default {
           status: 1,
           tpId: this.data.tpPartID
         })
+
+        if (infoRes.code != 200) {
+          return iMessage.error(`${ this.$i18n.locale === 'zh' ? infoRes.desZh : infoRes.desEn }`)
+        }
+
         if(infoRes.data){
           this.tableListData = infoRes.data.tpRecordList
           this.page.totalCount = infoRes.data.totalCount

@@ -16,6 +16,7 @@
     <!--                  表格分页                                          --->
     <!------------------------------------------------------------------------>
     <iPagination
+        v-update
         @size-change="handleSizeChange($event, getTableList)"
         @current-change="handleCurrentChange($event, getTableList)"
         background

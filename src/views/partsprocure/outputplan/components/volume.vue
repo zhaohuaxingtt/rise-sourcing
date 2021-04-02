@@ -17,11 +17,12 @@
         @size-change="handleSizeChange($event, getData)"
         @current-change="handleCurrentChange($event, getData)"
         background
-        :current-page="page.size"
+        :current-page="page.currPage"
         :page-sizes="page.pageSizes"
         :page-size="page.pageSize"
         :layout="page.layout"
         :total="page.totalCount"
+		v-update
       />
     </div>
   </iCard>
@@ -74,6 +75,11 @@ export default {
           });
 
           this.versionNum = "V1";
+
+          if (versionRes.code != 200) {
+            return iMessage.error(`${ this.$i18n.locale === 'zh' ? versionRes.desZh : versionRes.desEn }`)
+          }
+
           if (
             versionRes.data &&
             Array.isArray(versionRes.data.tpRecordList) &&
@@ -93,6 +99,10 @@ export default {
           status: 1,
           tpId: this.tpId,
         });
+
+        if (infoRes.code != 200) {
+          return iMessage.error(`${ this.$i18n.locale === 'zh' ? infoRes.desZh : infoRes.desEn }`)
+        }
 
         if (infoRes.data) {
           this.tableListData = infoRes.data.tpRecordList;
