@@ -22,7 +22,7 @@
 			@handleSelectionChange="handleSelectionChange" @openPage="openPage" isOne></tableList>
 		<iPagination v-update @size-change="handleSizeChange($event, getTableList)"
 			@current-change="handleCurrentChange($event, getTableList)" background :page-sizes="page.pageSizes"
-			:page-size="page.pageSize" :layout="page.layout" :total="page.totalCount"></iPagination>
+			:page-size="page.pageSize" :current-page="page.currPage" :layout="page.layout" :total="page.totalCount"></iPagination>
 		<div class="addFs flex-align-center">
 			<iButton @click="start" :loading="addLoding" v-permission="PARTSRFQ_EDITORDETAIL_PARTDETAILIST_ADD">{{$t('LK_TIANJIA')}}</iButton>
 		</div>
