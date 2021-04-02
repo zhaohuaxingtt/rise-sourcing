@@ -1,9 +1,9 @@
 export const infos = [
-  { props: 'categoryCode', label: '零件所属材料编号', key: 'LK_LINGJIANSUOSHUCAILIAOBIANHAO' },
-  { props: 'linieGroup', label: '零件所属材料组LINIE部门', key: 'LK_LINGJIANSUOSHUCAILIAOZULINEBUMEN' },
-  { props: 'categoryNameZh', label: '零件所属材料组中文名称', key: 'LK_LINGJIANSUOSHUCAILIAOZUMINGCHENGZHONG' },
-  { props: 'categoryNameDe', label: '零件所属材料组德文名称', key: 'LK_LINGJIANSUOSHUCAILIAOZUMINGCHENGDE' },
-  { props: 'stuffCode', label: '零件所属工艺编号', key: 'LK_LINGJIANSUOSHUGONGYIHAO' }
+  { props: 'categoryCode', label: '材料组编号', key: 'LK_CAILIAOZUBIANHAO' },
+  { props: 'linieGroup', label: '材料组LINE部门', key: 'LK_CAILIAOZULINEBUMEN' },
+  { props: 'categoryNameZh', label: '材料组名称（中）', key: 'LK_CAILIAOZUMINGCHENGZHONG' },
+  { props: 'categoryNameDe', label: '材料组名称（德）', key: 'LK_CAILIAOZUMINGCHENGDE' },
+  { props: 'stuffCode', label: '工艺号', key: 'LK_GONGYIHAO' }
 ]
 
 export const tableTitle = [
