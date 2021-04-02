@@ -103,12 +103,17 @@ export default {
       const purchasePrjectId = row.purchaseProjectId;
       const purchasingRequirementId = row.purchasingRequirementTargetId
       const partNum = row.ninePartNum
+      const categoryCode = row.categoryCode
+      const purchasingRequirementObjectId = row.purchasingRequirementObjectId
+
       const tab = 'outputPlan'
       const req = {
         rfqId,
         rfqPlanId,
         purchasePrjectId,
         purchasingRequirementId,
+        categoryCode,
+        purchasingRequirementObjectId,
         partNum,
         tab
       }

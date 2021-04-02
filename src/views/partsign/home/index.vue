@@ -55,7 +55,7 @@
               <el-form-item :label="$t('LK_CHEXINGXIANGMU')">
                 <iSelect
                   v-model="form.projectCarType"
-                  placeholder="请选择车型项目"
+                  :placeholder="$t('LK_QINGXUANZHECHEXINGXIANGMU')"
                   v-permission="PARTSIGN_MODELPROJECT"
                 >
                   <el-option
@@ -73,7 +73,7 @@
               <el-form-item :label="$t('LK_XINXIDANFENLEI')">
                 <iSelect
                   v-model="form.tpInfoType"
-                  placeholder="请选择信息分类"
+                  :placeholder="$t('LK_QINGXUANZHEXINXIFENLEI')"
                   v-permission="PARTSIGN_INFORMATIONCLASSIFICATION"
                 >
                   <el-option
@@ -91,7 +91,7 @@
               <el-form-item :label="$t('LK_XINXIDANZHUANGTAI')">
                 <iSelect
                   v-model="form.status"
-                  placeholder="请选择信息单状态"
+                  :placeholder="$t('LK_QINGXUANZHEXINXIDANZHUANGTAI')"
                   v-permission="PARTSIGN_INFORMATIONSTATUS"
                 >
                   <el-option
@@ -116,7 +116,7 @@
               <el-form-item :label="$t('LK_XUNJIAZILIAOZHUANGTAI')">
                 <iSelect
                   v-model="form.attachmentStatus"
-                  placeholder="请选择询价资料状态"
+                  :placeholder="$t('LK_QINGXUANZHEXUNJIAZILIAOZHUANGTAI')"
                   v-permission="PARTSIGN_INQUIRYSTATUS"
                 >
                   <el-option
@@ -134,7 +134,7 @@
               <el-form-item :label="$t('LK_MEICHEYONGLIANGZHUANGTAI')">
                 <iSelect
                   v-model="form.partDosageStatus"
-                  placeholder="请选择每车用量状态"
+                  :placeholder="$t('LK_QINGXUANZHEMEICHEYONGLIANGZHUANGTAI')"
                   v-permission="PARTSIGN_USAGEVEHICLE"
                 >
                   <el-option
