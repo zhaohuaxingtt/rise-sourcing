@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-03-24 18:12:23
- * @LastEditTime: 2021-03-31 15:53:28
+ * @LastEditTime: 2021-04-02 13:39:39
  * @LastEditors: Please set LastEditors
  * @Description: 拆分采购工厂
  * @FilePath: \rise\src\views\partsprocure\editordetail\components\splitFactory\index.vue
@@ -67,7 +67,7 @@
             :layout="page.layout"
             :current-page="page.currPage"
             :total="page.totalCount"
-			v-update
+			      v-update
           />
           </el-form>
       </template>

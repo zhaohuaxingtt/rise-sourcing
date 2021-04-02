@@ -19,7 +19,7 @@
         </div>
         <span slot="footer" class="dialog-footer">
           <iButton @click="$emit('input',false)">{{$t('LK_QUXIAO')}}</iButton>
-          <iButton :loading='repeatClick' @click="sureChangeItems">确 定</iButton>
+          <iButton :loading='repeatClick' @click="sureChangeItems">{{$t('LK_QUEREN')}}</iButton>
         </span>
       </iDialog>
 </template>

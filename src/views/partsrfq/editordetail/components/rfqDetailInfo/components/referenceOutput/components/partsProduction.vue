@@ -101,12 +101,12 @@ export default {
       const rfqId = this.$route.query.id;
       const rfqPlanId = row.rfqPlanId;
       const purchasePrjectId = row.purchaseProjectId;
-      const purchasingRequirementId = row.purchasingRequirementTargetId
+      const purchasingRequirementId = row.purchasingRequirementId
       const partNum = row.ninePartNum
       const categoryCode = row.categoryCode
       const purchasingRequirementObjectId = row.purchasingRequirementObjectId
-
       const tab = 'outputPlan'
+
       const req = {
         rfqId,
         rfqPlanId,
@@ -117,9 +117,9 @@ export default {
         partNum,
         tab
       }
-      const params = serialize(req)
+      // const params = serialize(req)
       this.$router.push({
-        path: `/partsprocure/editordetail?${params}`
+        path: `/partsprocure/editordetail?item=${JSON.stringify(req)}`
       })
     }
   }
