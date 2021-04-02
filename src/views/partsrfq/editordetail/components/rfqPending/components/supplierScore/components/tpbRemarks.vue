@@ -11,7 +11,7 @@
     <div class="changeContent">
       <iFormGroup row="1" icon>
         <iFormItem label="" name="memo">
-          <i-input type="textarea" :rows="8" resize="none" :placeholder="$t('LK_QINGSHURUBEIZHU')" v-model="memo" :disabled="disabled"></i-input>
+          <i-input type="textarea" :rows="8" resize="none" :placeholder="!disabled ? $t('LK_QINGSHURUBEIZHU') : ''" v-model="memo" :disabled="disabled"></i-input>
         </iFormItem>
       </iFormGroup>
     </div>
