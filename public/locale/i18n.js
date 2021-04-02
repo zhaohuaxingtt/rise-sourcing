@@ -9,27 +9,27 @@
         lang = window.navigator.language ? window.navigator.language.replace(/^(.*)-(.*)$/, '$1') : 'zh'
         localStorage.setItem('lang', lang)
     }
-    //默认语言设置ELEMENT
-    if (lang == "en") {
-        // eslint-disable-next-line no-undef
-        ELEMENT.locale(ELEMENT.lang.en)
-    } else {
-        // eslint-disable-next-line no-undef
-        ELEMENT.locale(ELEMENT.lang.zhCN)
-    }
+    // //默认语言设置ELEMENT
+    // if (lang == "en") {
+    //     // eslint-disable-next-line no-undef
+    //     ELEMENT.locale(ELEMENT.lang.en)
+    // } else {
+    //     // eslint-disable-next-line no-undef
+    //     ELEMENT.locale(ELEMENT.lang.zhCN)
+    // }
 
-    const messages = {
-        en: {
-            ...ELEMENT.lang.en
-        },
-        zh: {
-            ...ELEMENT.lang.zhCN
-        }
-    }
+    // const messages = {
+    //     en: {
+    //         ...ELEMENT.lang.en
+    //     },
+    //     zh: {
+    //         ...ELEMENT.lang.zhCN
+    //     }
+    // }
 
     return new window.VueI18n({
         locale: lang || 'zh',
-        messages,
+        // messages,
         fallbackLocale: 'en',
     })
 }))
