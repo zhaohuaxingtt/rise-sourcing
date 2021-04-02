@@ -140,8 +140,8 @@
           <!------------------------------------------------------------------------>
           <!--                  转派弹出框                                         --->
           <!------------------------------------------------------------------------>
-          <changeItems v-model="diologChangeItems" @sure="sureChangeItems" title="零件采购项目转派"></changeItems>
-          <backItems v-model="diologBack" @sure="cancel" title="取消零件采购"></backItems>
+          <changeItems v-model="diologChangeItems" @sure="sureChangeItems" :title="$t('LK_LINGJIANCAIGOUXIANGMUZHUANPAI')"></changeItems>
+          <backItems v-model="diologBack" @sure="cancel" :title="$t('LK_QUXIAOLINGJIANCAIGOUXIANGMU')"></backItems>
         </div>
       </el-tab-pane>
     </el-tabs>

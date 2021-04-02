@@ -178,6 +178,9 @@
         'LK_XINJIANRFQLUNCI': 'Create New RFQ Round', //新建RFQ轮次
         'LK_XINJIANRFQ': 'Create New RFQ', //新建RFQ
         'LK_XINJIANXINXIDANQIANSHOU': 'TP Apps Sign in', //新件信息单签收
+        'LK_QINGXUANZHEXUNJIAZILIAOZHUANGTAI': 'Please select inquiry data status', // 请选择询价资料状态
+        'LK_QINGXUANZHEXINXIDANZHUANGTAI': 'Please select the information sheet status', // 请选择信息单状态
+        'LK_QINGXUANZHEMEICHEYONGLIANGZHUANGTAI': 'Please select the dosage status of each vehicle', // 请选择每车用量状态
         'LK_XIANGQINGXINXI': 'Detail', //详情信息
         'LK_XIANGGUANCHEXING': 'Relevent car type', //相关车型
         'LK_XIAZAI': 'Download', //下载
@@ -244,7 +247,7 @@
         'LK_QUEREN': 'Confirm', //确认
         'LK_QUANBUBANBEN': 'All Versions', //全部版本
         'LK_QUXIAOYUANYIN': 'Terminate reason', //取消原因
-        'LK_QUXIAOLINGJIANCAIGOUXIANGMU': 'Cancel Parts Project', //取消零件采购项目
+        'LK_QUXIAOLINGJIANCAIGOUXIANGMU': 'Cancel Parts Purchase', //取消零件采购项目
         'LK_QINGXUANZE': 'Please Select', //请选择
         'LK_QINGSHURU': 'Please Enter', //请输入
         'LK_QIANSHOURIQI': 'Sign in Date', //签收日期
@@ -628,6 +631,9 @@
         'LK_CAIGOUFENEFENPEICHAOGUO': 'The current allocation has exceeded 100%, please reallocate!', // 当前分配已超过100%，请重新分配！
         'LK_CAIGOUFENEFENPEIWEIDADAO': 'The current allocation has not reached 100%, please reallocate!', // 当前分配未达到100%，请重新分配！
         'LK_CAIGOUFENEFENPEIWEIDADAODANGQIAN': 'The current allocation does not reach 100%. There is a 0 condition in the current allocation factory. Please reassign it!', // 当前分配未达到100%，请重新分配！
+        'LK_LINGJIANCAIGOUXIANGMUZHUANPAI': 'Parts procurement project transfer', //零件采购项目转派
+        "LK_QINGXUANZHEXINXIFENLEI": 'Please select the information category', //请选择信息分类
+        "LK_QINGXUANZHECHEXINGXIANGMU": 'Please select vehicle type item', //请选择车型项目
         // 'LK_XIANGNEIZHOUZHUANCAILIAOZHONGHEJIAGE':'翻箱前器具综合单价（RMB）', //箱内周转材料综合价格 
         /*
         <!------------------------------------------------------------------------>
