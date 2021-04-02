@@ -15,7 +15,7 @@
         @size-change="handleSizeChange($event, getData)"
         @current-change="handleCurrentChange($event, getData)"
         background
-        :current-page="page.size"
+        :current-page="page.currPage"
         :page-sizes="page.pageSizes"
         :page-size="page.pageSize"
         :layout="page.layout"
