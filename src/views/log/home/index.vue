@@ -65,8 +65,8 @@ export default {
       this.loading = true
       queryByPage({ recordId: this.recordId, pageNo: this.page.currPage, pageSize: this.page.pageSize })
         .then(res => {
-          this.tableListData = res.data.data
-          this.page.totalCount = res.data.total
+          this.tableListData = res.data
+          this.page.totalCount = res.total
           this.loading = false
         })
         .catch(() => this.loading = false)
