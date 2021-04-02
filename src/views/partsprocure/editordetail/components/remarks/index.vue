@@ -7,8 +7,7 @@
 						<icon symbol name="iconbeizhuxinxi"></icon>
 						<span>{{ $t('LK_XUNJIACAIGOUYUANBEIZHU') }}</span>
 					</p>
-					<iInput type="textarea" rows="8" resize="none" v-model="detailData.csfMemo"
-						v-permission="PARTSPROCURE_EDITORDETAIL_REMARKS_INQUIRYREMARKS"></iInput>
+					<iInput v-permission.disabled="PARTSPROCURE_TRANSFER" type="textarea" rows="8" resize="none" v-model="detailData.csfMemo"></iInput>
 						<!-- partsprocure.PARTSPROCURETRANSFER -->
 				</div>
 				<div>
@@ -16,7 +15,7 @@
 						<icon symbol name="iconbeizhuxinxi"></icon>
 						<span>{{ $t('LK_LINIEBEIZHU') }}</span>
 					</p>
-					<iInput type="textarea" rows="8" resize="none" v-model="detailData.linieMemo" disabled
+					<iInput type="textarea" rows="8" resize="none" v-model="detailData.linieMemo"
 						v-permission="PARTSPROCURE_EDITORDETAIL_REMARKS_LINIENOTES"></iInput>
 				</div>
 				<div>
@@ -24,7 +23,7 @@
 						<icon symbol name="iconbeizhuxinxi"></icon>
 						<span>{{ $t('LK_CS_1BEIZHU') }}</span>
 					</p>
-					<iInput type="textarea" rows="8" resize="none" v-model="detailData.cs1Memo" disabled
+					<iInput type="textarea" rows="8" resize="none" v-model="detailData.cs1Memo" 
 						v-permission="PARTSPROCURE_EDITORDETAIL_REMARKS_CS1REMARKS"></iInput>
 				</div>
 				<!-- 保存 -->
