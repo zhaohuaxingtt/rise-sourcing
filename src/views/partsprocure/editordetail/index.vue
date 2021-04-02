@@ -27,9 +27,7 @@
 			CANCEL("17", "已取消");
 			; -->
 		<div class="margin-bottom20 clearFloat">
-			<span class="font18 font-weight">{{
-        $t("LK_LINGJIANCAIGOUXIANGMU")
-      }}</span>
+			<span class="font18 font-weight">{{$t("LK_LINGJIANCAIGOUXIANGMU")}}</span>
 			<div class="floatright">
 				<iButton @click="start" v-permission="PARTSPROCURE_EDITORDETAIL_STARTUP"
 					v-if="detailData.status == '16'">{{ $t("LK_QIDONGXIANGMU") }}</iButton>
@@ -122,8 +120,8 @@
 						</iFormItem>
 						<iFormItem :label="$t('LK_DANWEI') + ':'" name="test">
 							<iSelect v-model="detailData.unit" v-permission="PARTSPROCURE_EDITORDETAIL_UNIT">
-								<el-option :value="item.id" :label="item.name"
-									v-for="(item, index) in fromGroup.UNIT" :key="index"></el-option>
+								<el-option :value="item.id" :label="item.name" v-for="(item, index) in fromGroup.UNIT"
+									:key="index"></el-option>
 							</iSelect>
 						</iFormItem>
 						<iFormItem :label="$t('LK_MTZLINGJIAN') + ':'" name="test">
@@ -144,14 +142,14 @@
 								v-permission="PARTSPROCURE_EDITORDETAIL_LINEDEPARTMENT">
 								<el-option :value="item.id" :label="item.name"
 									v-for="(item, index) in fromGroup.LINIE_DEPT" :key="index"></el-option>
-									<!-- <el-option value="15" label="专业采购股"></el-option> -->
+								<!-- <el-option value="15" label="专业采购股"></el-option> -->
 							</iSelect>
 						</iFormItem>
 						<iFormItem label="LINIE：" name="test">
 							<!-- :disabled="!detailData.categoryCode" -->
 							<iSelect v-model="detailData.linieName" v-permission="PARTSPROCURE_EDITORDETAIL_LINE">
-								<el-option :value="item.id" :label="item.name"
-									v-for="(item, index) in fromGroup.LINIE" :key="index"></el-option>
+								<el-option :value="item.id" :label="item.name" v-for="(item, index) in fromGroup.LINIE"
+									:key="index"></el-option>
 								<!-- 	<el-option value="16" label="郝连水"></el-option>
 									<el-option value="17" label="郭建立"></el-option> -->
 							</iSelect>
@@ -163,7 +161,8 @@
 									v-for="(item, index) in fromGroup.CF_CONTROL" :key="index"></el-option>
 							</iSelect>
 						</iFormItem>
-						<iFormItem :label="$t('LK_HUOBI') + ':'" name="test" v-show="detailData.partPrejectType == '47'">
+						<iFormItem :label="$t('LK_HUOBI') + ':'" name="test"
+							v-show="detailData.partPrejectType == '47'">
 							<iSelect v-model="detailData.currencyId" v-permission="PARTSPROCURE_EDITORDETAIL_CURRENCY">
 								<el-option :value="item.id" :label="item.name"
 									v-for="(item, index) in fromGroup.CURRENCY_TYPE" :key="index"></el-option>
@@ -268,7 +267,9 @@
 		changeProcure,
 		getProcureGroup,
 	} from "@/api/partsprocure/home";
-	import {dictkey} from "@/api/partsprocure/editordetail";
+	import {
+		dictkey
+	} from "@/api/partsprocure/editordetail";
 	import {
 		detailData
 	} from "./components/data";
@@ -330,7 +331,7 @@
 					this.detailData = res.data.detailData;
 					if (res.data.targetprice) {
 						this.targetprice = res.data.targetprice;
-						
+
 					}
 				});
 			},
