@@ -57,9 +57,13 @@
               <iText v-permission="PARTSRFQ_EDITORDETAIL_RFQNUMBER">{{ baseInfo.id }}</iText>
             </iFormItem>
             <iFormItem :label="$t('LK_RFQMINGCHENG')+':'" name="rfqName">
-              <iInput v-if="editStatus" v-model="baseInfo.rfqName"
-                      v-permission="PARTSRFQ_EDITORDETAIL_RFQNAME"></iInput>
-              <iText v-else v-permission="PARTSRFQ_EDITORDETAIL_RFQNAME">{{ baseInfo.rfqName }}</iText>
+              <el-tooltip class="item" effect="light" :content="baseInfo.rfqName" placement="top">
+                <iInput v-if="editStatus" v-model="baseInfo.rfqName"
+                        v-permission="PARTSRFQ_EDITORDETAIL_RFQNAME"></iInput>
+                <iText v-else v-permission="PARTSRFQ_EDITORDETAIL_RFQNAME" class="ellipsis">
+                  {{ baseInfo.rfqName }}
+                </iText>
+              </el-tooltip>
             </iFormItem>
 
             <iFormItem label="EP：" name="ep">
@@ -416,4 +420,13 @@ export default {
   align-items: center;
   margin-left: 20px;
 }
+
+.ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+}
+
 </style>
