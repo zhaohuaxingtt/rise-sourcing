@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-24 17:57:52
- * @LastEditTime: 2021-04-01 00:02:50
+ * @LastEditTime: 2021-04-02 18:57:28
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsign\editordetail\components\volume\index.vue
@@ -76,7 +76,6 @@ export default {
             "status": 1,
             "tpId": this.data.tpPartID
           })
-          
           this.versionNum = 'V1'
 
           if (versionRes.code != 200) {
@@ -88,7 +87,9 @@ export default {
             this.versionNum = versionRes.data.tpRecordList[0].versionNum || 'V1'
           }
         }
-        const infoRes = await getPerCarDosageInfo({
+        //如果没有已确认的版本，不调用查询没车用量
+        if(!this.carTypeConfigId) return;
+          const infoRes = await getPerCarDosageInfo({
           carTypeConfigId: this.carTypeConfigId,
           versionNum: this.versionNum,
           currPage: this.page.currPage,

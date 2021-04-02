@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-25 10:14:46
- * @LastEditTime: 2021-04-01 19:14:34
+ * @LastEditTime: 2021-04-02 17:17:33
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsprocure\home\component\data.js
@@ -39,7 +39,7 @@ export const tableTitle = permissionTitle("PARTSPROCURE_PARTSPROCURELIST",[{
 		tooltip:false
 	},
 	{
-		props: 'procureFactory',
+		props: 'procureFactoryName',
 		name: '采购工厂',
 		key: 'partsprocure.PARTSPROCUREPURCHASINGFACTORY',
 		tooltip:false
