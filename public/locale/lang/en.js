@@ -90,13 +90,13 @@
             'LingJianQianShou': 'Signing', //零件签收
             'CaiGouXiangMuJianLi': 'Procurement Project Establishment', //采购项目建立
             'RfqguanLi': 'Rfq Management', //RFQ管理
-            'DingDianGuanLi': 'Point Management', //定点管理
+            'DingDianGuanLi': 'nomination management', //定点管理
             'RiZhi': 'Log', //日志
             'LingJianHao': 'Number', //零件号
             'LingJianMingChengZH': 'Name (zh)', //零件名称（中）
-            'SheJiKeShi': 'Design Department', //设计科室
+            'SheJiKeShi': 'Desinger dept.', //设计科室
             'GongChengShi': 'Engineer', //工程师
-            'CheXingXiangMu': 'Model Project', //车型项目
+            'CheXingXiangMu': 'Carilne Project', //车型项目
             'XinXiDanFenLei': 'Information Sheet Classification', //信息单分类
             'XinXiDanZhuangTai': 'Information Sheet Status', //信息单状态
             'XinXiDanLiuShuiHao': 'Information Single Serial Number', //信息单流水号
@@ -161,17 +161,17 @@
         'LK_XUNJIAZILIAO': 'Drawing for inquiry', //询价资料
         'LK_XUNJIAFUJIAN': 'Inquiry attachments', //询价附件
         'LK_XUNJIACHANLIANGJIHUA': 'Inquiry Volume Plan', //询价产量计划
-        'LK_XUNJIACAIGOUYUANBEIZHU': 'Sourcer remark', //询价采购员备注
-        'LK_XUNJIACAIGOUYUAN': 'Source owner', //询价采购员
-        'LK_XUNYUANZHIHANG': 'Execute Soucring', //寻源执行
+        'LK_XUNJIACAIGOUYUANBEIZHU': 'Forward Buyer remark', //询价采购员备注
+        'LK_XUNJIACAIGOUYUAN': 'Forward Buyer', //询价采购员
+        'LK_XUNYUANZHIHANG': 'Sourcing Operation', //寻源执行
         'LK_XUANZHUANGJIAN': 'Optional', //选装件
-        'LK_XINXILIUSHUIDANHAO': 'TP Sequence No.', //信息流水单号
-        'LK_XINXIDANZHUANGTAI': 'Sheet status', //信息单状态
-        'LK_XINXIDANXIANGQING': 'TP detailed info.', //信息单详情
-        'LK_XINXIDANSHENGCHENGSHIJIAN': 'TP generation time', //信息单生成时间
-        'LK_XINXIDANLIUSHUIHAO': 'TP sequence ID', //信息单流水号
+        'LK_XINXILIUSHUIDANHAO': 'Part Shee ID', //信息流水单号
+        'LK_XINXIDANZHUANGTAI': 'Part Sheet status', //信息单状态
+        'LK_XINXIDANXIANGQING': 'Part Sheet detailed info.', //信息单详情
+        'LK_XINXIDANSHENGCHENGSHIJIAN': 'Part Sheet creation time', //信息单生成时间
+        'LK_XINXIDANLIUSHUIHAO': 'Part Shee ID', //信息单流水号
         'LK_XINXIDANLEIXING': 'Sheet type', //信息单类型
-        'LK_XINXIDANFENLEI': 'Sheet type', //信息单分类
+        'LK_XINXIDANFENLEI': 'Part Sheet type', //信息单分类
         'LK_XINSHENQINGCAIWUMUBIAOJIA': 'Apply New CF Target Price', //新申请财务目标价
         'LK_XINJIANXINXIDANLIUSHUIHAO': 'Part info. sheet no.', //新建信息单流水号
         'LK_XINJIANXINXIDANBEIZHU': 'Create new part info. remark', //新建信息单备注
@@ -193,7 +193,7 @@
         'LK_TUIHUIYUANYIN': 'Return reason', //退回原因
         'LK_TUIHUI': 'Return', //退回
         'LK_TUISONGSHIJIAN': 'Forwarded time', //推送时间
-        'LK_TUZHIRIQI': 'Spec. date', //图纸日期
+        'LK_TUZHIRIQI': 'Drawing date', //图纸日期
         'LK_TUZHIHETPDANXIANGQING': 'Blueprint and TP Order', //图纸和信息单详情
         'LK_TUZHI': 'Blueprint', //图纸
         'LK_TOUZIYUSUAN': 'Investment Budget', //投资预算
@@ -210,7 +210,7 @@
         'LK_SHIFOUYANZHENGCBD': 'CBD verified or not', //是否验证CBD
         'LK_SHIFOUSHENDUGUOCHANHUA': 'Deep localize or not', //是否深度国产化
         'LK_CONFIRM_SIGN_RECORD_TIPS': 'Confirm to sign the new record?', //是否确认对新件信息单进行签收？
-        'LK_SHIFOUERCIJIAN': 'Second or not', //是否二次件
+        'LK_SHIFOUERCIJIAN': 'Tier-2 or not', //是否二次件
         'LK_SHIJIANJIHUA': 'Time Schedule', //时间计划
         'LK_SHENGCHENGFSHAO': 'Generate FS', //生成FS号
         'LK_SHENGCHENGFS_GSNR': 'Generate FSNR/GSNR/SPNR', //生成FS/GSNR
@@ -228,9 +228,9 @@
         'LK_SHENQINGBEIZHU': 'Application Remarks', //申请备注
         'LK_SHENQINGRWJIA': 'Apply RW Price', //申请RW价
         'LK_SHEZHIGONGYIZU': 'Set Craft Group', //设置工艺组
-        'LK_SHEJIKESHI': 'TP dept.', //设计科室
-        'LK_SHEJIGONGCHENGSHIXINGMING': 'TP name', //设计工程师姓名
-        'LK_SHEJIGONGCHENGSHIHAO': 'TP owner NO.', //设计工程师号
+        'LK_SHEJIKESHI': 'R&D Department', //设计科室
+        'LK_SHEJIGONGCHENGSHIXINGMING': 'Desinger Name', //设计工程师姓名
+        'LK_SHEJIGONGCHENGSHIHAO': 'Desinger NO.', //设计工程师号
         'LK_SHANGYIYE': 'Prevoius', //上一页
         'LK_SHANGCHUANRIQI': 'Upload date', //上传日期
         'LK_SHANGCHUANREN': 'Uploader', //上传人
@@ -265,7 +265,7 @@
         'LK_MUBIAOJIAZHUANGTAI': 'CF Target price status', //目标价状态
         'LK_MUBIAOJIA': 'Target Price', //目标价
         'LK_MOJUYUSUANSHENQING': 'Tooling Budget Application', //模具预算申请
-        'LK_MEICHEYONGLIANGZHUANGTAI': 'Dosage status', //每车用量状态
+        'LK_MEICHEYONGLIANGZHUANGTAI': 'Quantity per car status', //每车用量状态
         'LK_MEICHEYONGLIANG': 'Per Car Dosage', //每车用量
         'LK_MAOZHONGKG': 'Gross Weight (KG)', //毛重（KG）
         'LK_LUNCILEIXING': 'Round type', //轮次类型
@@ -281,17 +281,17 @@
         'LK_LINGJIANSUOSHUCAILIAOZULINEBUMEN': 'Part\'s Material Group\'s Linie Department', //零件所属材料组LINE部门
         'LK_LINGJIANSUOSHUCAILIAOBIANHAO': 'Code of the part\'s material group', //零件所属材料编号
         'LK_LINGJIANQINGDAN': 'Parts List', //零件清单
-        'LK_LINGJIANQIANSHOU': 'Parts sign in', //零件签收
+        'LK_LINGJIANQIANSHOU': 'Part sheet sign in', //零件签收
         'LK_LINGJIANPINGFEN': 'Parts Rating', //零件评分
         'LK_LINGJIANPINGTAIXINGZHIMIAOSHUZHONG': 'Part platform property desc.(Cn)', //零件平台性质描述(中)
         'LK_LINGJIANPINGTAIXINGZHIMIAOSHUYING': 'Part platform property desc.(En)', //零件平台性质描述(英)
         'LK_LINGJIANPINGTAIXINGZHIMIAOSHUDE': 'Part platform property desc.(De)', //零件平台性质描述(德)
         'LK_LINGJIANPINGTAIXINGZHIDAIMA': 'Part platform property code', //零件平台性质代码
-        'LK_LINGJIANMINGCHENGZHONG': 'Parts Name (Cn)', //零件名称（中）
+        'LK_LINGJIANMINGCHENGZHONG': 'Parts Name (CN)', //零件名称（中）
         'LK_LINGJIANMINGCHENGDE': 'Parts Name (De)', //零件名称（德）
         'LK_LINGJIANMINGCHENG': 'Parts Name', //零件名称
-        'LK_LINGJIANMINGZHONG': 'Parts Name (Cn)', //零件名（中）
-        'LK_LINGJIANMINGYING': 'Part Name(En)', //零件名（英）
+        'LK_LINGJIANMINGZHONG': 'Parts Name (CN)', //零件名（中）
+        'LK_LINGJIANMINGYING': 'Parts Name(En)', //零件名（英）
         'LK_LINGJIANMINGDE': 'Parts Name(De)', //零件名（德）
         'LK_LINGJIANMEICHEYONGLIANG': 'Parts Dosage Per Car', //零件每车用量
         'LK_LINGJIANMAOYISHUXINGMIAOSHUZHONG': 'Parts Trade Property Description(Cn)', //零件贸易属性描述(中)
@@ -319,7 +319,7 @@
         'LK_LISHISHIYONGGAILÜ': 'Historical Applicable Rate', //历史适用概率
         'LK_KAISHINIANFEN': 'Start Year', //开始年份
         'LK_JUJUE': 'Deny', //拒绝
-        'LK_JINDUJIANKONG': 'Monitr progress', //进度监控
+        'LK_JINDUJIANKONG': 'Progress Monitor', //进度监控
         'LK_JIESHUXIANGMU': 'End Project', //结束项目
         'LK_JIESHUBENLUNXUNJIA': 'Finish RFQ round', //结束本轮询价
         'LK_JIAOFU': 'Delivery', //交付
@@ -370,16 +370,16 @@
         'LK_CHUANGJIANSHIJIAN': 'Creation date', //创建时间
         'LK_CHUANGJIANRIQI': 'Creation date', //创建日期
         'LK_CHUANGJIANRENXINGMING': 'Creator name', //创建人姓名
-        'LK_CHUANGJIANRENGONGHAO': 'Creator employee no.', //创建人工号
+        'LK_CHUANGJIANRENGONGHAO': 'Creator ID', //创建人工号
         'LK_CHUANGJIANDINGDIANSHENQING': 'Create SQO Application', //创建定点申请
         'LK_CHICUN': 'Dimension', //尺寸
         'LK_CHENGBEN': 'Cost', //成本
         'LK_CHEHUI': 'Withdraw', //撤回
-        'LK_CHEXINGXIANGMUMINGCHENG': 'Car Project Name', //车型项目名称
-        'LK_CHEXINGXIANGMUSOP': 'Car Project SOP', //车型项目SOP
-        'LK_CHEXINGXIANGMUPVS': 'Car Project PVS', //车型项目PVS
-        'LK_CHEXINGXIANGMU0S': 'Car Project 0S', //车型项目0S
-        'LK_CHEXINGXIANGMU': 'Car Project', //车型项目
+        'LK_CHEXINGXIANGMUMINGCHENG': 'Carilne Project Name', //车型项目名称
+        'LK_CHEXINGXIANGMUSOP': 'Carilne Project SOP', //车型项目SOP
+        'LK_CHEXINGXIANGMUPVS': 'Carilne Project PVS', //车型项目PVS
+        'LK_CHEXINGXIANGMU0S': 'Carilne Project 0S', //车型项目0S
+        'LK_CHEXINGXIANGMU': 'Carilne Project', //车型项目
         'LK_CHEXINGSHENGCHANNIANXIAN': 'Car Production Life', //车型生产年限
         'LK_CHEXINGDENGJI': 'Car Level', //车型等级
         'LK_CHEXINGDALEI': 'Model', //车型大类
@@ -402,7 +402,7 @@
         'LK_CAIGOUYUANGONGHAO': 'Buyer ID', //采购员工号
         'LK_CAIGOUYUAN': 'Buyer', //采购员
         'LK_CAIGOUXIANGMUXINXI': 'Project Information', //采购项目信息
-        'LK_CAIGOUXIANGMUJIANLI': 'Create Project', //采购项目建立
+        'LK_CAIGOUXIANGMUJIANLI': 'Create Sourcing Project', //采购项目建立
         'LK_CAIGOUTIAOKUAN': 'Purchasing Terms', //采购条款
         'LK_CAIGOUGONGCHANG': 'Purchasing Factory', //采购工厂
         'LK_CAIWUMUBIAOJIA': 'CF Target Price', //财务目标价
@@ -443,7 +443,7 @@
         'LK_RFQZHUANGTAI': 'RFQ status', //RFQ状态
         'LK_RFQMINGCHENG': 'RFQ name', //RFQ名称
         'LK_RFQLEIXING': 'RFQ type', //RFQ类型
-        'LK_RFQGUANLI': 'RFQ Managemnet', //RFQ管理
+        'LK_RFQGUANLI': 'RFQ Management', //RFQ管理
         'LK_RFQBIANHAO': 'RFQ number ', //RFQ编号
         'LK_MTZLINGJIAN': 'MTZ Parts', //MTZ零件
         'LK_MQPINGFENZHUANGTAI': 'MQ Rating Status', //MQ评分状态
