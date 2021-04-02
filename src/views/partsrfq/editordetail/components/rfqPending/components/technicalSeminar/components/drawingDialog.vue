@@ -5,20 +5,31 @@
 <template>
   <iDialog :title="$t(title)" :visible.sync="value" width="878px" @close='clearDiolog'>
     <div class="changeContent">
-      <img :src="item" v-for="item of drawingList" :key="item" class="img-style"/>
+      <tablelist
+          :tableData="drawingList"
+          :tableTitle="drawingTitle"
+          open-page-props="fileName"
+          @openPage="downloadFile"
+          :openPageGetRowData="true"
+          :selection="false"
+      ></tablelist>
     </div>
     <span slot="footer" class="dialog-footer">
-       <iButton @click="clearDiolog">{{$t('LK_QUXIAO')}}</iButton>
+       <iButton @click="clearDiolog">{{ $t('LK_QUXIAO') }}</iButton>
     </span>
   </iDialog>
 </template>
 <script>
 import {iButton, iDialog} from '@/components'
+import {drawingTitle} from './data'
+import {downloadFile} from "@/api/file";
+import tablelist from "pages/partsrfq/components/tablelist";
 
 export default {
   components: {
     iButton,
     iDialog,
+    tablelist
   },
   props: {
     title: {type: String, default: 'LK_TUZHI'},
@@ -31,11 +42,20 @@ export default {
     }
   },
   data() {
-    return {}
+    return {
+      drawingTitle
+    }
   },
   methods: {
     clearDiolog() {
       this.$emit('input', false)
+    },
+    async downloadFile(row) {
+      const req = {
+        applicationName: 'rise-procurereq-service',
+        fileList: [row.fileName]
+      }
+      await downloadFile(req)
     }
   }
 }
@@ -43,15 +63,6 @@ export default {
 <style lang='scss' scoped>
 .changeContent {
   padding: 0 10px 20px 10px;
-}
-
-.img-style {
-  width: 100%;
-  display: block;
-}
-
-.img-style + .img-style {
-  margin-top: 10px;
 }
 </style>
 
