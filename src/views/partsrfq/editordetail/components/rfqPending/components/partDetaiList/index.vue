@@ -20,7 +20,7 @@
 		</div>
 		<tableList :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="confirmTableLoading"
 			@handleSelectionChange="handleSelectionChange" @openPage="openPage" isOne></tableList>
-		<iPagination @size-change="handleSizeChange($event, getTableList)"
+		<iPagination v-update @size-change="handleSizeChange($event, getTableList)"
 			@current-change="handleCurrentChange($event, getTableList)" background :page-sizes="page.pageSizes"
 			:page-size="page.pageSize" :layout="page.layout" :total="page.totalCount"></iPagination>
 		<div class="addFs flex-align-center">

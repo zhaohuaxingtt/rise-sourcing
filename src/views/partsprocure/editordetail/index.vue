@@ -95,7 +95,7 @@
 							</iSelect>
 						</iFormItem>
 						<iFormItem :label="$t('LK_ZHIFUTIAOKUAN') + ':'" name="test"
-							v-show="detailData.partType == '113'">
+							v-show="detailData.partPrejectType == '47'">
 							<iSelect v-model="detailData.payClause"
 								v-permission="PARTSPROCURE_EDITORDETAIL_NUMBEROFPAYMENT">
 								<el-option :value="item.id" :label="item.name"
@@ -163,7 +163,7 @@
 									v-for="(item, index) in fromGroup.CF_CONTROL" :key="index"></el-option>
 							</iSelect>
 						</iFormItem>
-						<iFormItem :label="$t('LK_HUOBI') + ':'" name="test" v-show="detailData.partType == '113'">
+						<iFormItem :label="$t('LK_HUOBI') + ':'" name="test" v-show="detailData.partPrejectType == '47'">
 							<iSelect v-model="detailData.currencyId" v-permission="PARTSPROCURE_EDITORDETAIL_CURRENCY">
 								<el-option :value="item.id" :label="item.name"
 									v-for="(item, index) in fromGroup.CURRENCY_TYPE" :key="index"></el-option>
@@ -192,7 +192,7 @@
 							</iText>
 						</iFormItem>
 						<iFormItem :label="$t('LK_CAIGOUTIAOKUAN') + ':'" name="test"
-							v-show="detailData.partType == '113'">
+							v-show="detailData.partPrejectType == '47'">
 							<iSelect v-model="detailData.purchaseClause"
 								v-permission="PARTSPROCURE_EDITORDETAIL_PURCHASETERMS">
 								<el-option :value="item.id" :label="item.name"

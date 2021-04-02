@@ -4,7 +4,7 @@
       <tableList index height="100%" :selection="false" v-show="visible" class="table" :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="loading" />
     </div>
     <div slot="footer" class="footer">
-      <iPagination
+      <iPagination v-update
         class="pagination"
         @size-change="handleSizeChange($event, getPerCarDosageInfo)"
         @current-change="handleCurrentChange($event, getPerCarDosageInfo)"

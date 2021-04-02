@@ -12,12 +12,12 @@
       <tableList index :selection="false" height="100%" v-show="visible" class="table" :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="loading" />
     </div>
     <div slot="footer" class="footer">
-      <iPagination
+      <iPagination v-update
         class="pagination"
         @size-change="handleSizeChange($event, getEnquiryList)"
         @current-change="handleCurrentChange($event, getEnquiryList)"
         background
-        :current-page="page.size"
+        :current-page="page.currPage"
         :page-sizes="page.pageSizes"
         :page-size="page.pageSize"
         :layout="page.layout"

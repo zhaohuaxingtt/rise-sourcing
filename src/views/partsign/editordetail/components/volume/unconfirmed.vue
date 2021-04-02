@@ -19,7 +19,7 @@
       </tableList>
     </div>
     <div class="footer margin-top30">
-      <iPagination
+      <iPagination v-update
         class="pagination"
         @size-change="handleSizeChange($event, getPerCarDosageVersion)"
         @current-change="handleCurrentChange($event, getPerCarDosageVersion)"

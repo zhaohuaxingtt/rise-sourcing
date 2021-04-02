@@ -20,7 +20,7 @@
           <iSearch class="margin-bottom20" :icon="true" @reset="handleSearchReset" @sure="getTableList"
                    :resetKey="PARTSRFQ_RESET" :searchKey="PARTSRFQ_SEARCH">
             <el-form>
-              <el-form-item :label="$t('rfq.RFQPARTNUMBERFSNRRFQBUYER')" style="width: 200px">
+              <el-form-item :label="$t('rfq.RFQPARTNUMBERFSNRRFQBUYER')" style="width: 340px">
                 <iInput :placeholder="$t('rfq.RFQPLEASEENTERQUERY')" v-model="form.searchConditions"
                         v-permission="PARTSRFQ_SEARCHBOX"></iInput>
               </el-form-item>
@@ -28,15 +28,16 @@
                 <iSelect :placeholder="$t('rfq.RFQPLEASECHOOSE')" v-model="form.carType"
                          v-permission="PARTSRFQ_MODELPROJECT">
                   <el-option value="" :label="$t('all') | capitalizeFilter"></el-option>
-                  <el-option v-for="items in carTypeOptions" :key='items.code' :value='items.code' :label="items.name"/>
+                  <el-option :value="item.key" :label="item.name"
+                             v-for="(item, index) in getGroupList('cartype_project_zh')" :key="index"/>
                 </iSelect>
               </el-form-item>
               <el-form-item :label="$t('rfq.RFQPARTITEMTYPE')">
                 <iSelect :placeholder="$t('rfq.RFQPLEASECHOOSE')" v-model="form.partType"
                          v-permission="PARTSRFQ_PARTITEMTYPE">
                   <el-option value="" :label="$t('all') | capitalizeFilter"></el-option>
-                  <el-option v-for="items in partTypeOptions" :key='items.code' :value='items.code'
-                             :label="items.name"/>
+                  <el-option :value="item.key" :label="item.name"
+                             v-for="(item, index) in getGroupList('part_preject_type')" :key="index"/>
                 </iSelect>
               </el-form-item>
               <el-form-item :label="$t('rfq.RFQRFQSTATUS')">
@@ -107,6 +108,7 @@
             <!--                  表格分页                                          --->
             <!------------------------------------------------------------------------>
             <iPagination
+                v-update
                 @size-change="handleSizeChange($event, getTableList)"
                 @current-change="handleCurrentChange($event, getTableList)"
                 background
@@ -142,6 +144,9 @@ import {excelExport} from "@/utils/filedowLoad";
 import store from '@/store'
 import filters from "@/utils/filters";
 import {rfqCommonFunMixins} from "pages/partsrfq/components/commonFun";
+import {
+  getProcureGroup
+} from "@/api/partsprocure/home";
 
 export default {
   components: {
@@ -179,13 +184,15 @@ export default {
       partTypeOptions: [],
       rfqStatusOptions: [],
       assignmentRfqIdList: [],
+      fromGroup: [],
       tab: 'source'
     };
   },
   created() {
     this.getTableList()
-    this.getCarTypeOptions()
-    this.getPartTypeOptions()
+   /* this.getCarTypeOptions()
+    this.getPartTypeOptions()*/
+    this.getSelectOptions()
     this.getRfqStatusOptions()
   },
   methods: {
@@ -293,14 +300,28 @@ export default {
           break;
       }
     },
-    async getCarTypeOptions() {
+    getSelectOptions() {
+      let types = ["project_status", "cartype_project_zh", "cartype_category", "part_project_type", "procure_factory"]
+      getProcureGroup({types}).then((res) => {
+        this.fromGroup = res.data;
+      });
+    },
+    // 查询fliter数据
+    getGroupList(key) {
+      if (this.fromGroup.length > 0) {
+        let obj = this.fromGroup.find((items) => items.type == key);
+        if (!obj) return [];
+        return obj.list;
+      }
+    },
+   /* async getCarTypeOptions() {
       const res = await findBySearches('01')
       this.carTypeOptions = res.data
     },
     async getPartTypeOptions() {
       const res = await findBySearches('02')
       this.partTypeOptions = res.data
-    },
+    },*/
     async getRfqStatusOptions() {
       const res = await findBySearches('03')
       this.rfqStatusOptions = res.data
