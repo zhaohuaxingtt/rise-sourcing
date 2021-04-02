@@ -38,7 +38,6 @@
 		iFormGroup,
 		iFormItem,
 		iInput,
-		iText,
 		iDialog,
 		iButton
 	} from "@/components";
@@ -56,7 +55,6 @@
 			iFormGroup,
 			iFormItem,
 			iInput,
-			iText,
 			tablelist,
 			iDialog,
 			iButton

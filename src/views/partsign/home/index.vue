@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-24 09:17:57
- * @LastEditTime: 2021-04-02 11:23:37
+ * @LastEditTime: 2021-04-02 11:24:57
  * @LastEditors: Please set LastEditors
  * @Description: 零件签收列表界面.
  * @FilePath: \rise\src\views\partsign\index.vue
@@ -188,7 +188,8 @@
             <!------------------------------------------------------------------------>
             <!--                  表格分页                                          --->
             <!------------------------------------------------------------------------>
-            <iPagination v-update
+            <iPagination 
+              v-update
               @size-change="handleSizeChange($event, getTableList)"
               @current-change="handleCurrentChange($event, getTableList)"
               background
