@@ -14,10 +14,6 @@ import '@/assets/style/global/index.scss'
 import './utils/mydirect'
 import './permission'
 require('./auto').init()
-const ElementLocale = require("element-ui/lib/locale");
-
-ElementLocale.i18n((key, value) => i18n.t(key, value));
-console.log(ElementLocale)
 Vue.config.productionTip = false
 Vue.prototype.$t = (key, value) => i18n.t(key, value);
 
