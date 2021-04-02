@@ -116,8 +116,7 @@ export default {
         try {
           const req = {
             rfqId: id,
-            userId: store.state.permission.userInfo.id,
-            isFake: 1
+            userId: store.state.permission.userInfo.id
           }
           const res = await getAllRfqParts(req)
           this.tableListData = res.records;
