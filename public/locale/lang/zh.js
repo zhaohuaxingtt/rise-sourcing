@@ -57,6 +57,10 @@
             'RFQPLEASECHOOSE': '请选择',
             'RFQPLEASEENTERQUERY': '请输入查询',
             'RFQRFQINTEGRATEDMANAGEMENT': 'RFQ综合管理',
+            'EP': '技术评分人',
+            'MQ': '质量评分人',
+            'CF': '财务控制员',
+            'PL': '物流审核人'
         },
         'partsprocure': {
             'PARTSPROCURENEWPROCUREMENTPROJECT': '零件采购项目管理',
