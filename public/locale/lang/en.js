@@ -558,9 +558,9 @@
         'LK_RUKUQIJUZHANGMM': 'Inbound Equipment Length (mm)', //入库器具长（mm）
         'LK_RUKUQIJUZONGHEDANJIA': 'Inbound Equipment Net Unit Price', //入库器具综合单价 
         'LK_SHEJIGONGCHENGSHIGONGHAO': 'TP owner No.', //设计工程师工号 
-        'LK_SHIFOUQUERENSHANCHU': '温馨提示 English', //是否确认删除?
+        'LK_SHIFOUQUERENSHANCHU': 'Do you confirm deletion?', //是否确认删除?
         'LK_TUZHIHETPXIANGQINGYE': 'Blueprint and TP Information', //图纸和TP详情页 
-        'LK_WENXINTISHI': '温馨提示', //温馨提示
+        'LK_WENXINTISHI': '温馨提示 english', //温馨提示
         'LK_XIANGNEIZHOUZHUANCAILIAOZONGHEJIAGE': '箱内周转材料综合价格 english', //箱内周转材料综合价格 
         'LK_XIANGNEIZHOUZHUANCAILIAOZONGHESHOUMING': '箱内周转材料综合寿命 english', //箱内周转材料综合寿命 
         'LK_XIANGMUCHEXING': 'Project Car Type', //项目车型 
@@ -634,6 +634,7 @@
         'LK_LINGJIANCAIGOUXIANGMUZHUANPAI': 'Parts procurement project transfer', //零件采购项目转派
         "LK_QINGXUANZHEXINXIFENLEI": 'Please select the information category', //请选择信息分类
         "LK_QINGXUANZHECHEXINGXIANGMU": 'Please select vehicle type item', //请选择车型项目
+        "LK_ZHINENGSHANGCHUANWENJIAN": '只能上传.xlsx文件 english', //只能上传.xlsx文件
         // 'LK_XIANGNEIZHOUZHUANCAILIAOZHONGHEJIAGE':'翻箱前器具综合单价（RMB）', //箱内周转材料综合价格 
         /*
         <!------------------------------------------------------------------------>

@@ -641,6 +641,7 @@
         "LK_LINGJIANCAIGOUXIANGMUZHUANPAI": '零件采购项目转派', //零件采购项目转派
         "LK_QINGXUANZHEXINXIFENLEI": '请选择信息分类', //请选择信息分类
         "LK_QINGXUANZHECHEXINGXIANGMU": '请选择车型项目', //请选择车型项目
+        "LK_ZHINENGSHANGCHUANWENJIAN": '只能上传.xlsx文件', //只能上传.xlsx文件
         /*
         <!------------------------------------------------------------------------>
         <!--                                                                   --->

@@ -19,7 +19,7 @@
         </template>
       </el-table-column>
       <el-table-column :width="items.width" :show-overflow-tooltip='items.tooltip' :key="index" align='center' v-else-if='inputProps.includes(items.props)' :prop="items.props"
-                       :label="items.name">
+                       :label="items.key ? $t(items.key) : items.name">
         <template slot-scope="scope">
           <i-input v-model="scope.row[items.props]" v-if="inputType" :type="inputType"/>
           <i-input v-model="scope.row[items.props]" v-else/>
@@ -27,34 +27,34 @@
       </el-table-column>
       <el-table-column :width="items.width" :show-overflow-tooltip='items.tooltip' :key="index" align='center'
                        v-else-if='isSelectOptionsLinkage && selectProps.includes(items.props)' :prop="items.props"
-                       :label="items.name">
+                       :label="items.key ? $t(items.key) : items.name">
         <template slot-scope="scope">
           <i-select v-model="scope.row[items.props]"
                     @change="(val)=>handleSelectChange(items.props,val, scope.row.time)">
             <el-option v-for="items in selectPropsOptionsObject[scope.row.time][items.props]" :key='items.code'
                        :value='items.code'
-                       :label="items.name"/>
+                       :label="items.key ? $t(items.key) : items.name"/>
           </i-select>
         </template>
       </el-table-column>
       <el-table-column :width="items.width" :show-overflow-tooltip='items.tooltip' :key="index" align='center'
                        v-else-if='!isSelectOptionsLinkage && selectProps.includes(items.props)' :prop="items.props"
-                       :label="items.name">
+                       :label="items.key ? $t(items.key) : items.name">
         <template slot-scope="scope">
           <i-select v-model="scope.row[items.props]">
             <el-option v-for="items in selectPropsOptionsObject[items.props]" :key='items.code' :value='items.code'
-                       :label="items.name"/>
+                       :label="items.key ? $t(items.key) : items.name"/>
           </i-select>
         </template>
       </el-table-column>
       <el-table-column :width="items.width" :show-overflow-tooltip='items.tooltip' :key="index" align='center' v-else-if='items.props === iconProps' :prop="items.props"
-                       :label="items.name">
+                       :label="items.key ? $t(items.key) : items.name">
         <template slot-scope="scope">
           <slot name="icon" :data="scope.row"></slot>
         </template>
       </el-table-column>
       <el-table-column :width="items.width" :show-overflow-tooltip='items.tooltip' :key="index" align='center' v-else-if='items.props === fileSizeProps' :prop="items.props"
-                       :label="items.name">
+                       :label="items.key ? $t(items.key) : items.name">
         <template slot-scope="scope">
           {{ scope.row[items.props] ? scope.row[items.props] / 1024 / 1024 : '' }}
         </template>
