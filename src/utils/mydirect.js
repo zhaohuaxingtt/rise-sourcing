@@ -13,16 +13,19 @@ import store from '../store'
 Vue.directive('permission', {
   inserted: function (el,binding) {
      if(!store.state.permission.whiteBtnList[binding.expression]){  
-		// if(el.getAttribute('target')){ //input  textArea tagName
-		// 	el.setAttribute('disabled',true)
-		// }else{
-		// 	el.parentNode.removeChild(el)	
-		// }
-		el.parentNode.removeChild(el)
+		if (binding.modifiers.disabled) {
+			let textarea= el.getElementsByTagName("textarea")
+			let input= el.getElementsByTagName("textarea")
+			let arr=textarea.concat(input)
+			arr.forEach(res=>{
+				res.setAttribute('disabled',true)
+			})
+		} else {
+			el.parentNode.removeChild(el)
+		}
      }
   }
 });
-
 //切换I8n动态更新element值
 // eslint-disable-next-line no-undef
 Vue.directive('update', {
