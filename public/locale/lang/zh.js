@@ -278,11 +278,11 @@
         'LK_LINGJIANYANYONGXINGZHIMIAOSHUDE': '零件沿用性质描述(德)', //零件沿用性质描述(德)
         'LK_LINGJIANYANYONGXINGZHIDAIMA': '零件沿用性质代码', //零件沿用性质代码
         'LK_LINGJIANXIANGMULEIXING': '零件项目类型', //零件项目类型
-        'LK_LINGJIANSUOSHUGONGYIHAO': '零件所属工艺号', //零件所属工艺号
-        'LK_LINGJIANSUOSHUCAILIAOZUMINGCHENGZHONG': '零件所属材料组名称（中）', //零件所属材料组名称（中）
-        'LK_LINGJIANSUOSHUCAILIAOZUMINGCHENGDE': '零件所属材料组名称（德）', //零件所属材料组名称（德）
-        'LK_LINGJIANSUOSHUCAILIAOZULINEBUMEN': '零件所属材料组LINE部门', //零件所属材料组LINE部门
-        'LK_LINGJIANSUOSHUCAILIAOBIANHAO': '零件所属材料编号', //零件所属材料编号
+        'LK_GONGYIHAO': '工艺号', //工艺号
+        'LK_CAILIAOZUMINGCHENGZHONG': '材料组名称（中）', //材料组名称（中）
+        'LK_CAILIAOZUMINGCHENGDE': '材料组名称（德）', //材料组名称（德）
+        'LK_CAILIAOZULINEBUMEN': '材料组LINE部门', //材料组LINE部门
+        'LK_CAILIAOZUBIANHAO': '材料组编号', //材料组编号
         'LK_LINGJIANQINGDAN': '零件清单', //零件清单
         'LK_LINGJIANQIANSHOU': '零件签收', //零件签收
         'LK_LINGJIANPINGFEN': '零件评分', //零件评分

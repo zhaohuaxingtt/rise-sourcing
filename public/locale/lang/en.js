@@ -278,11 +278,11 @@
         'LK_LINGJIANYANYONGXINGZHIMIAOSHUDE': 'Part COP property desc.(De)', //零件沿用性质描述(德)
         'LK_LINGJIANYANYONGXINGZHIDAIMA': 'Part COP property code', //零件沿用性质代码
         'LK_LINGJIANXIANGMULEIXING': 'Parts project type', //零件项目类型
-        'LK_LINGJIANSUOSHUGONGYIHAO': 'No. of the part\'s craft', //零件所属工艺号
-        'LK_LINGJIANSUOSHUCAILIAOZUMINGCHENGZHONG': 'Parts\' Material Group Name(Zh)', //零件所属材料组名称（中）
-        'LK_LINGJIANSUOSHUCAILIAOZUMINGCHENGDE': 'Parts\' Material Group Name(De)', //零件所属材料组名称（德）
-        'LK_LINGJIANSUOSHUCAILIAOZULINEBUMEN': 'Part\'s Material Group\'s Linie Department', //零件所属材料组LINE部门
-        'LK_LINGJIANSUOSHUCAILIAOBIANHAO': 'Code of the part\'s material group', //零件所属材料编号
+        'LK_GONGYIHAO': 'Craft Number', //工艺号
+        'LK_CAILIAOZUMINGCHENGZHONG': 'Stuff Gategory Category Name (Zh)', //材料组名称（中）
+        'LK_CAILIAOZUMINGCHENGDE': 'Stuff Gategory Category Name (De)', //材料组名称（德）
+        'LK_CAILIAOZULINEBUMEN': 'Dept. of the owner of the part\'s material group', //材料组LINE部门
+        'LK_CAILIAOZUBIANHAO': 'Material Group Code', //材料组编号
         'LK_LINGJIANQINGDAN': 'Parts List', //零件清单
         'LK_LINGJIANQIANSHOU': 'Part sheet sign in', //零件签收
         'LK_LINGJIANPINGFEN': 'Parts Rating', //零件评分
