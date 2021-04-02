@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 09:50:42
- * @LastEditTime: 2021-04-01 14:05:13
+ * @LastEditTime: 2021-04-01 23:39:00
  * @LastEditors: Please set LastEditors
  * @Description: 零件采购项目建立首页。
  * @FilePath: \rise\src\views\partsprocure\home\index.vue
@@ -131,10 +131,11 @@
             <!------------------------------------------------------------------------>
             <!--                  表格分页                                          --->
             <!------------------------------------------------------------------------>
-            <iPagination @size-change="handleSizeChange($event, getTableListFn)"
+            <iPagination v-update @size-change="handleSizeChange($event, getTableListFn)"
                          @current-change="handleCurrentChange($event, getTableListFn)" background
+                         :current-page="page.currPage"
                          :page-sizes="page.pageSizes" :page-size="page.pageSize" :layout="page.layout"
-                         :total="page.totalCount" v-update/>
+                         :total="page.totalCount"/>
           </iCard>
           <!------------------------------------------------------------------------>
           <!--                  转派弹出框                                         --->
