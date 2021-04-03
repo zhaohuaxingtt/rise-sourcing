@@ -102,7 +102,7 @@ export default {
       putPerCarDosage({
         updateConfirmScenes: {
           carTypeConfigId: data.carTypeConfigId,
-          purchasingRequirementTargetId: data.purchasingRequirementTargetId,
+          purchasingRequirementTargetId: data.purchasingRequirementTargetId  + '',
           versionNum: data.versionNum,
           status: "1"
         }
@@ -132,7 +132,7 @@ export default {
       putPerCarDosage({
         updateConfirmScenes: {
           carTypeConfigId: data.carTypeConfigId,
-          purchasingRequirementTargetId: data.purchasingRequirementTargetId,
+          purchasingRequirementTargetId: data.purchasingRequirementTargetId  + '',
           versionNum: data.versionNum,
           refuseReason: reason,
           status: "2"

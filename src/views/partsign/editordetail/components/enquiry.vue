@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-24 16:57:16
- * @LastEditTime: 2021-03-27 17:45:21
+ * @LastEditTime: 2021-04-03 17:28:31
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsign\editordetail\components\enquiry\index.vue
@@ -76,7 +76,7 @@ export default {
       getInfoAnnexPage({
         currPage: this.page.currPage,
         pageSize: this.page.pageSize,
-        purchasingRequirementTargetId: this.data.purchasingRequirementTargetId
+        purchasingRequirementTargetId: this.data.purchasingRequirementTargetId  + ''
       })
         .then(res => { 
           if(res.data){
