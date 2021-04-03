@@ -46,7 +46,7 @@
                     :placeholder="$t('partsprocure.PLEENTER') + $t('partsprocure.PARTSPROCURELINIE')"
                     v-model="form['search.linieName']" v-permission="PARTSPROCURE_LINIEINPUT"></iInput>
               </el-form-item>
-              <el-form-item :label="$t('partsprocure.PARTSPROCUREPARTSTATUSNAME')">
+              <el-form-item :label="$t('partsprocure.PARTSPROCUREPARTSTATUS')">
                 <iSelect
                     :placeholder="$t('partsprocure.CHOOSE') + $t('partsprocure.PARTSPROCUREPARTSTATUS')"
                     v-model="form['search.partStatus']" v-permission="PARTSPROCURE_PARTSTATUS">
