@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-25 10:09:50
- * @LastEditTime: 2021-03-27 13:40:26
+ * @LastEditTime: 2021-04-03 11:30:40
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsrfq\editordetail\index.vue
@@ -57,16 +57,18 @@
               <iText v-permission="PARTSRFQ_EDITORDETAIL_RFQNUMBER">{{ baseInfo.id }}</iText>
             </iFormItem>
             <iFormItem :label="$t('LK_RFQMINGCHENG')+':'" name="rfqName">
-              <iInput v-if="editStatus" v-model="baseInfo.rfqName"
-                      v-permission="PARTSRFQ_EDITORDETAIL_RFQNAME"></iInput>
-              <iText v-else v-permission="PARTSRFQ_EDITORDETAIL_RFQNAME">{{ baseInfo.rfqName }}</iText>
+                <iInput v-if="editStatus" v-model="baseInfo.rfqName"
+                        v-permission="PARTSRFQ_EDITORDETAIL_RFQNAME"></iInput>
+                <iText v-else v-permission="PARTSRFQ_EDITORDETAIL_RFQNAME">
+                  {{ baseInfo.rfqName }}
+                </iText>
             </iFormItem>
 
-            <iFormItem label="EP：" name="ep">
+            <iFormItem :label="$t('rfq.EP')+':'" name="ep">
               <iInput v-if="editStatus" v-model="baseInfo.ep" v-permission="PARTSRFQ_EDITORDETAIL_EP"></iInput>
               <iText v-else v-permission="PARTSRFQ_EDITORDETAIL_EP">{{ baseInfo.ep }}</iText>
             </iFormItem>
-            <iFormItem label="CF：" name="cf">
+            <iFormItem :label="$t('rfq.CF')+':'" name="cf">
               <iInput v-if="editStatus" v-model="baseInfo.cf" v-permission="PARTSRFQ_EDITORDETAIL_CF"></iInput>
               <iText v-else v-permission="PARTSRFQ_EDITORDETAIL_CF">{{ baseInfo.cf }}</iText>
             </iFormItem>
@@ -82,7 +84,7 @@
             <iFormItem :label="$t('LK_XUNJIACAIGOUYUAN')+':'" name="buyerName">
               <iText v-permission="PARTSRFQ_EDITORDETAIL_INQUIRYBUYER">{{ baseInfo.buyerName }}</iText>
             </iFormItem>
-            <iFormItem label="MQ：" name="mq">
+            <iFormItem :label="$t('rfq.MQ')+':'" name="mq">
               <iInput v-if="editStatus" v-model="baseInfo.mq" v-permission="PARTSRFQ_EDITORDETAIL_MQ"></iInput>
               <iText v-else v-permission="PARTSRFQ_EDITORDETAIL_MQ">{{ baseInfo.mq }}</iText>
             </iFormItem>
@@ -110,7 +112,7 @@
             <iFormItem label="LINIE：" name="linieNameZh">
               <iText v-permission="PARTSRFQ_EDITORDETAIL_LINE">{{ baseInfo.linieNameZh }}</iText>
             </iFormItem>
-            <iFormItem label="PL：" name="test">
+            <iFormItem :label="$t('rfq.PL')+':'" name="test">
               <iInput v-if="editStatus" v-model="baseInfo.pl" v-permission="PARTSRFQ_EDITORDETAIL_PL"></iInput>
               <iText v-else v-permission="PARTSRFQ_EDITORDETAIL_PL">{{ baseInfo.pl }}</iText>
             </iFormItem>
@@ -416,4 +418,13 @@ export default {
   align-items: center;
   margin-left: 20px;
 }
+
+.ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+}
+
 </style>

@@ -46,7 +46,7 @@
                     :placeholder="$t('partsprocure.PLEENTER') + $t('partsprocure.PARTSPROCURELINIE')"
                     v-model="form['search.linieName']" v-permission="PARTSPROCURE_LINIEINPUT"></iInput>
               </el-form-item>
-              <el-form-item :label="$t('partsprocure.PARTSPROCUREPARTSTATUSNAME')">
+              <el-form-item :label="$t('partsprocure.PARTSPROCUREPARTSTATUS')">
                 <iSelect
                     :placeholder="$t('partsprocure.CHOOSE') + $t('partsprocure.PARTSPROCUREPARTSTATUS')"
                     v-model="form['search.partStatus']" v-permission="PARTSPROCURE_PARTSTATUS">
@@ -82,7 +82,7 @@
                     v-model="form['search.partPrejectType']" v-permission="PARTSPROCURE_PARTITEMTYPE">
                   <el-option value="" :label="$t('all') | capitalizeFilter"></el-option>
                  <el-option :value="item.key" :label="item.name"
-                             v-for="(item, index) in getGroupList('part_preject_type')" :key="index">
+                             v-for="(item, index) in getGroupList('part_project_type')" :key="index">
                   </el-option>
                 </iSelect>
               </el-form-item>

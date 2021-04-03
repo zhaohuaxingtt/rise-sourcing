@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-24 09:47:32
- * @LastEditTime: 2021-04-01 19:13:25
+ * @LastEditTime: 2021-04-03 12:21:41
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsign\home\components\data.js
@@ -27,6 +27,7 @@ export const needTranslate = [
 ]
 //form
 export const form = {
+  tpPrincepalName:'',
   attachmentStatus:'',//询价资料状态
   dept:'',//设计科室
   tpId:'',//信息单流水号

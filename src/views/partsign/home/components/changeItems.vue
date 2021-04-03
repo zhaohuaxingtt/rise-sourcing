@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 11:24:15
- * @LastEditTime: 2021-03-30 23:33:27
+ * @LastEditTime: 2021-04-03 12:17:46
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsign\home\components\changeItems.vue
@@ -67,7 +67,7 @@ export default{
     padding: 20px 10px 20px 10px;
     span{
       display: inline-block;
-      width: 80px;
+      width: 140px;
       font-size: 14px;
       height: 35px;
       line-height: 35px;

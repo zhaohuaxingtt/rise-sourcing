@@ -3,10 +3,10 @@
 		<div class="body">
 			<tablelist class="table" index :tableData="tableListData" :tableTitle="tableTitle"
 				:tableLoading="loading" @handleSelectionChange="handleSelectionChange" activeItems="partNum" @openPage="openPage"/>
-			<iPagination class="pagination margin-top30" @size-change="handleSizeChange($event, getUsage)"
+	<!-- 		<iPagination class="pagination margin-top30" @size-change="handleSizeChange($event, getUsage)"
 				@current-change="handleCurrentChange($event, getUsage)" background :current-page="page.currPage"
 				:page-sizes="page.pageSizes" :page-size="page.pageSize" :layout="page.layout"
-				:total="page.totalCount" v-update />
+				:total="page.totalCount" v-update /> -->
 		</div>
 	</iCard>
 </template>
@@ -14,7 +14,7 @@
 <script>
 	import {
 		iCard,
-		iPagination
+		// iPagination
 	} from '@/components'
 	import tablelist from '@/views/partsign/home/components/tableList'
 	import {
@@ -30,7 +30,7 @@
 		components: {
 			iCard,
 			tablelist,
-			iPagination
+			// iPagination
 		},
 		mixins: [pageMixins],
 		data() {
