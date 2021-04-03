@@ -57,6 +57,10 @@
             'RFQPLEASECHOOSE': '请选择',
             'RFQPLEASEENTERQUERY': '请输入查询',
             'RFQRFQINTEGRATEDMANAGEMENT': 'RFQ综合管理',
+            'EP': '技术评分人',
+            'MQ': '质量评分人',
+            'CF': '财务控制员',
+            'PL': '物流审核人'
         },
         'partsprocure': {
             'PARTSPROCURENEWPROCUREMENTPROJECT': '零件采购项目管理',
@@ -410,7 +414,6 @@
         'LK_CAIGOUGONGCHANG': '采购工厂', //采购工厂
         'LK_CAIWUMUBIAOJIA': '财务目标价', //财务目标价
         'LK_CAILIAOZUXINXI': '材料组信息', //材料组信息
-        'LK_CAILIAOZUMINGCHENGZHONG': '材料组名称（中）', //材料组名称（中）
         'LK_CAILIAOZUGONGYISHEZHI': '材料组工艺设置', //材料组工艺设置
         'LK_CAILIAOZUGONGYIBIANHAO': '材料组工艺编号', //材料组工艺编号
         'LK_CAILIAOZU': '材料组', //材料组
@@ -595,7 +598,6 @@
         'LK_TUICHUDENGLU': '退出登录', //退出登录!
         'LK_QINGSHURUBEIZHU': '请输入备注', //请输入备注
         'LK_SHENQING': '申请', //申请
-        'LK_CAIWUMUBIAOJIA': '财务⽬标价', //财务⽬标价
         'LK_RFQMINGCHNEGBUNENGWEIKONG': 'RFQ名称不能为空', //RFQ名称不能为空
         'LK_RFQLINGJIANHUOZHERFQGONGYINGSHANGWEIKONG': 'RFQ零件或者RFQ供应商为空，不能创建RFQ轮次', //RFQ零件或者RFQ供应商为空，不能创建RFQ轮次
         'LK_SHANGCHUAN': '上传', // 上传
