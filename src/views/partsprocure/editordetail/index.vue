@@ -85,7 +85,7 @@
 						<iFormItem :label="$t('LK_CHEXINGXIANGMU') + ':'" name="test">
 							<iSelect v-model="detailData.cartypeProjectZh" v-permission="PARTSPROCURE_EDITORDETAIL_CARTYPEZH">
 								<el-option :value="item.id" :label="item.name"
-									v-for="(item, index) in fromGroup.PART_PROJECT_TYPE" :key="index">
+									v-for="(item, index) in fromGroup.CAR_TYPE_PRO" :key="index">
 								</el-option>
 							</iSelect>
 						</iFormItem>

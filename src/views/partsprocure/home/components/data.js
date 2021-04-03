@@ -1,14 +1,14 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-25 10:14:46
- * @LastEditTime: 2021-04-02 17:17:33
+ * @LastEditTime: 2021-04-03 14:22:10
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsprocure\home\component\data.js
  */
 import {permissionTitle} from '@/utils'
-// export const tableTitle = [{
-export const tableTitle = permissionTitle("PARTSPROCURE_PARTSPROCURELIST",[{
+ export const tableTitle = [{
+//export const tableTitle = permissionTitle("PARTSPROCURE_PARTSPROCURELIST",[{
 		props: 'fsnrGsnrNum',
 		name: 'FSNF/GSNF/SPNR',
 		key: 'partsprocure.PARTSPROCUREFSNFGSNFSPNR',
@@ -32,12 +32,12 @@ export const tableTitle = permissionTitle("PARTSPROCURE_PARTSPROCURELIST",[{
 		key: 'partsprocure.PARTSPROCUREPARTNAMEDE',
 		tooltip:false
 	},
-	{
-		props: 'statusName',
-		name: '项目状态',
-		key: 'partsprocure.PARTSPROCURESTATUS',
-		tooltip:false
-	},
+	// {
+	// 	props: 'statusName',
+	// 	name: '项目状态',
+	// 	key: 'partsprocure.PARTSPROCURESTATUS',
+	// 	tooltip:false
+	// },
 	{
 		props: 'procureFactoryName',
 		name: '采购工厂',
@@ -45,7 +45,7 @@ export const tableTitle = permissionTitle("PARTSPROCURE_PARTSPROCURELIST",[{
 		tooltip:false
 	},
 	{
-		props: 'partPrejectType',
+		props: 'partProjectTypeName',
 		name: '零件项目类型',
 		key: 'partsprocure.PARTSPROCUREPARTITEMTYPE',
 		tooltip:false
@@ -63,7 +63,7 @@ export const tableTitle = permissionTitle("PARTSPROCURE_PARTSPROCURELIST",[{
 		tooltip:false
 	},
 	{
-		props: 'partStatusName',
+		props: 'statusName',
 		name: '零件状态',
 		key: 'partsprocure.PARTSPROCUREPARTSTATUS',
 		tooltip:false
@@ -86,7 +86,8 @@ export const tableTitle = permissionTitle("PARTSPROCURE_PARTSPROCURELIST",[{
 		key: 'partsprocure.CF',
 		tooltip:false
 	}
-])
+]
+//)
 
 //零件采购列表入参
 export const form = {
