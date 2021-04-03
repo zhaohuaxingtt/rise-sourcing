@@ -202,6 +202,7 @@ export default {
       }
       const res = await editRfqData(req)
       this.resultMessage(res)
+      this.$emit('refreshBaseInfo')
     },
     initTimeData() {
       if (this.roundType === '00') {
