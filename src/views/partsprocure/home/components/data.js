@@ -32,12 +32,12 @@ export const tableTitle = permissionTitle("PARTSPROCURE_PARTSPROCURELIST",[{
 		key: 'partsprocure.PARTSPROCUREPARTNAMEDE',
 		tooltip:false
 	},
-	{
-		props: 'statusName',
-		name: '项目状态',
-		key: 'partsprocure.PARTSPROCURESTATUS',
-		tooltip:false
-	},
+	// {
+	// 	props: 'statusName',
+	// 	name: '项目状态',
+	// 	key: 'partsprocure.PARTSPROCURESTATUS',
+	// 	tooltip:false
+	// },
 	{
 		props: 'procureFactoryName',
 		name: '采购工厂',
@@ -45,7 +45,7 @@ export const tableTitle = permissionTitle("PARTSPROCURE_PARTSPROCURELIST",[{
 		tooltip:false
 	},
 	{
-		props: 'partPrejectType',
+		props: 'partProjectTypeName',
 		name: '零件项目类型',
 		key: 'partsprocure.PARTSPROCUREPARTITEMTYPE',
 		tooltip:false
@@ -63,7 +63,7 @@ export const tableTitle = permissionTitle("PARTSPROCURE_PARTSPROCURELIST",[{
 		tooltip:false
 	},
 	{
-		props: 'partStatusName',
+		props: 'statusName',
 		name: '零件状态',
 		key: 'partsprocure.PARTSPROCUREPARTSTATUS',
 		tooltip:false
