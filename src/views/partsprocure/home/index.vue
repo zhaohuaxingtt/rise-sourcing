@@ -82,7 +82,7 @@
                     v-model="form['search.partPrejectType']" v-permission="PARTSPROCURE_PARTITEMTYPE">
                   <el-option value="" :label="$t('all') | capitalizeFilter"></el-option>
                  <el-option :value="item.key" :label="item.name"
-                             v-for="(item, index) in getGroupList('part_preject_type')" :key="index">
+                             v-for="(item, index) in getGroupList('part_project_type')" :key="index">
                   </el-option>
                 </iSelect>
               </el-form-item>

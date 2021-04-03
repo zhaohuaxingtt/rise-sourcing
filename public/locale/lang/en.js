@@ -56,6 +56,10 @@
             'RFQPLEASECHOOSE': 'Please Choose',
             'RFQPLEASEENTERQUERY': 'Please Enter Query',
             'RFQRFQINTEGRATEDMANAGEMENT': 'Rfq Integrated Management',
+            'EP': 'EP',
+            'MQ': 'MQ',
+            'CF': 'CF',
+            'PL': 'PL'
         },
         'partsprocure': {
             'PARTSPROCURENEWPROCUREMENTPROJECT': 'New Procurement Project',
