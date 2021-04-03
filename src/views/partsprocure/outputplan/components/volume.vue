@@ -90,7 +90,7 @@ export default {
             this.tpId = versionRes.data.tpRecordList[0].tpId
           }
         }
-
+        if(!this.carTypeConfigId) return;
         const infoRes = await getPerCarDosageInfo({
           carTypeConfigId: this.carTypeConfigId,
           versionNum: this.versionNum,
@@ -126,6 +126,4 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.volume {
-}
 </style>

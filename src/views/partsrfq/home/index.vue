@@ -28,16 +28,15 @@
                 <iSelect :placeholder="$t('rfq.RFQPLEASECHOOSE')" v-model="form.carType"
                          v-permission="PARTSRFQ_MODELPROJECT">
                   <el-option value="" :label="$t('all') | capitalizeFilter"></el-option>
-                  <el-option :value="item.key" :label="item.name"
-                             v-for="(item, index) in getGroupList('cartype_project_zh')" :key="index"/>
+                  <el-option v-for="items in carTypeOptions" :key='items.code' :value='items.code' :label="items.name"/>
                 </iSelect>
               </el-form-item>
               <el-form-item :label="$t('rfq.RFQPARTITEMTYPE')">
                 <iSelect :placeholder="$t('rfq.RFQPLEASECHOOSE')" v-model="form.partType"
                          v-permission="PARTSRFQ_PARTITEMTYPE">
                   <el-option value="" :label="$t('all') | capitalizeFilter"></el-option>
-                  <el-option :value="item.key" :label="item.name"
-                             v-for="(item, index) in getGroupList('part_preject_type')" :key="index"/>
+                  <el-option v-for="items in partTypeOptions" :key='items.code' :value='items.code'
+                             :label="items.name"/>
                 </iSelect>
               </el-form-item>
               <el-form-item :label="$t('rfq.RFQRFQSTATUS')">
@@ -62,7 +61,7 @@
                   {{ $t('rfq.RFQACTIVATERFQ') }}
                 </iButton>
                 <!--新建RFQ：点击该键，系统会跳到下一界面。具体新建RFQ见另一user story，当RFQ类型为FS时，仅前期采购员有该按钮权限-->
-                <iButton @click="newRfq" v-permission="PARTSRFQ_NEWRFQ">{{ $t('rfq.RFQNEWRFQ')}}</iButton>
+                <iButton @click="newRfq" v-permission="PARTSRFQ_NEWRFQ">{{ $t('rfq.RFQNEWRFQ') }}</iButton>
                 <!--关闭RFQ：仅前期采购员有该按钮权限。以下情况可关闭：RFQ零件状态是全部定点或全部结束，当前RFQ没有零件-->
                 <iButton @click="editRfq('01')" :loading="closeButtonLoading" v-permission="PARTSRFQ_CLOSERFQ">
                   {{ $t('rfq.RFQCLOSERFQ') }}
@@ -73,17 +72,17 @@
                 </iButton>
                 <!--转谈判：只会出现在前期采购员界面-->
                 <iButton @click="editRfq('03')" :loading="transferNegotiationButtonLoading"
-                         v-permission="PARTSRFQ_TRANSFERNEGOTIATION">{{ $t('rfq.RFQTRANSFERNEGOTIATION')}}
+                         v-permission="PARTSRFQ_TRANSFERNEGOTIATION">{{ $t('rfq.RFQTRANSFERNEGOTIATION') }}
                 </iButton>
                 <!--转询价：只会出现在专业采购员界面-->
                 <iButton @click="editRfq('04')" :loading="transferInquiryButtonLoading"
-                         v-permission="PARTSRFQ_REINQUIRY">{{ $t('rfq.RFQREINQUIRY')}}
+                         v-permission="PARTSRFQ_REINQUIRY">{{ $t('rfq.RFQREINQUIRY') }}
                 </iButton>
                 <!--创建定点申请：在列表中选择RFQ，点击该键，会跳转到定点申请创建页面，RFQ的内容会自动带入到定点申请的各页签中-->
                 <iButton disabled v-permission="PARTSRFQ_CREATEAPPLICATION">
-                  {{ $t('rfq.RFQCREATEAFIXEDPOINTAPPLICATION')}}
+                  {{ $t('rfq.RFQCREATEAFIXEDPOINTAPPLICATION') }}
                 </iButton>
-                <iButton @click="exportTable" v-permission="PARTSRFQ_EXPORT">{{ $t('rfq.RFQEXPORT')}}</iButton>
+                <iButton @click="exportTable" v-permission="PARTSRFQ_EXPORT">{{ $t('rfq.RFQEXPORT') }}</iButton>
               </div>
             </div>
             <tablelist
@@ -190,9 +189,8 @@ export default {
   },
   created() {
     this.getTableList()
-   /* this.getCarTypeOptions()
-    this.getPartTypeOptions()*/
-    this.getSelectOptions()
+    this.getCarTypeOptions()
+    this.getPartTypeOptions()
     this.getRfqStatusOptions()
   },
   methods: {
@@ -300,28 +298,14 @@ export default {
           break;
       }
     },
-    getSelectOptions() {
-      let types = ["project_status", "cartype_project_zh", "cartype_category", "part_project_type", "procure_factory"]
-      getProcureGroup({types}).then((res) => {
-        this.fromGroup = res.data;
-      });
-    },
-    // 查询fliter数据
-    getGroupList(key) {
-      if (this.fromGroup.length > 0) {
-        let obj = this.fromGroup.find((items) => items.type == key);
-        if (!obj) return [];
-        return obj.list;
-      }
-    },
-   /* async getCarTypeOptions() {
+    async getCarTypeOptions() {
       const res = await findBySearches('01')
       this.carTypeOptions = res.data
     },
     async getPartTypeOptions() {
       const res = await findBySearches('02')
       this.partTypeOptions = res.data
-    },*/
+    },
     async getRfqStatusOptions() {
       const res = await findBySearches('03')
       this.rfqStatusOptions = res.data

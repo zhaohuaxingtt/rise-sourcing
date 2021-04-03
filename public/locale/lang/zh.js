@@ -57,6 +57,10 @@
             'RFQPLEASECHOOSE': '请选择',
             'RFQPLEASEENTERQUERY': '请输入查询',
             'RFQRFQINTEGRATEDMANAGEMENT': 'RFQ综合管理',
+            'EP': '技术评分人',
+            'MQ': '质量评分人',
+            'CF': '财务控制员',
+            'PL': '物流审核人'
         },
         'partsprocure': {
             'PARTSPROCURENEWPROCUREMENTPROJECT': '零件采购项目管理',
@@ -278,11 +282,11 @@
         'LK_LINGJIANYANYONGXINGZHIMIAOSHUDE': '零件沿用性质描述(德)', //零件沿用性质描述(德)
         'LK_LINGJIANYANYONGXINGZHIDAIMA': '零件沿用性质代码', //零件沿用性质代码
         'LK_LINGJIANXIANGMULEIXING': '零件项目类型', //零件项目类型
-        'LK_LINGJIANSUOSHUGONGYIHAO': '零件所属工艺号', //零件所属工艺号
-        'LK_LINGJIANSUOSHUCAILIAOZUMINGCHENGZHONG': '零件所属材料组名称（中）', //零件所属材料组名称（中）
-        'LK_LINGJIANSUOSHUCAILIAOZUMINGCHENGDE': '零件所属材料组名称（德）', //零件所属材料组名称（德）
-        'LK_LINGJIANSUOSHUCAILIAOZULINEBUMEN': '零件所属材料组LINE部门', //零件所属材料组LINE部门
-        'LK_LINGJIANSUOSHUCAILIAOBIANHAO': '零件所属材料编号', //零件所属材料编号
+        'LK_GONGYIHAO': '工艺号', //工艺号
+        'LK_CAILIAOZUMINGCHENGZHONG': '材料组名称（中）', //材料组名称（中）
+        'LK_CAILIAOZUMINGCHENGDE': '材料组名称（德）', //材料组名称（德）
+        'LK_CAILIAOZULINEBUMEN': '材料组LINE部门', //材料组LINE部门
+        'LK_CAILIAOZUBIANHAO': '材料组编号', //材料组编号
         'LK_LINGJIANQINGDAN': '零件清单', //零件清单
         'LK_LINGJIANQIANSHOU': '零件签收', //零件签收
         'LK_LINGJIANPINGFEN': '零件评分', //零件评分
@@ -410,7 +414,6 @@
         'LK_CAIGOUGONGCHANG': '采购工厂', //采购工厂
         'LK_CAIWUMUBIAOJIA': '财务目标价', //财务目标价
         'LK_CAILIAOZUXINXI': '材料组信息', //材料组信息
-        'LK_CAILIAOZUMINGCHENGZHONG': '材料组名称（中）', //材料组名称（中）
         'LK_CAILIAOZUGONGYISHEZHI': '材料组工艺设置', //材料组工艺设置
         'LK_CAILIAOZUGONGYIBIANHAO': '材料组工艺编号', //材料组工艺编号
         'LK_CAILIAOZU': '材料组', //材料组
@@ -595,7 +598,6 @@
         'LK_TUICHUDENGLU': '退出登录', //退出登录!
         'LK_QINGSHURUBEIZHU': '请输入备注', //请输入备注
         'LK_SHENQING': '申请', //申请
-        'LK_CAIWUMUBIAOJIA': '财务⽬标价', //财务⽬标价
         'LK_RFQMINGCHNEGBUNENGWEIKONG': 'RFQ名称不能为空', //RFQ名称不能为空
         'LK_RFQLINGJIANHUOZHERFQGONGYINGSHANGWEIKONG': 'RFQ零件或者RFQ供应商为空，不能创建RFQ轮次', //RFQ零件或者RFQ供应商为空，不能创建RFQ轮次
         'LK_SHANGCHUAN': '上传', // 上传

@@ -57,7 +57,7 @@
 					<el-radio label="SKD">SKD</el-radio>
 					<el-radio label="CKD_LANDED">CKD_LANDED</el-radio>
 				</el-radio-group>
-				<span class="start">*</span>
+				<!-- <span class="start">*</span> -->
 			</iFormItem>
 			<iFormItem :label="$t('LK_QIWANGMUBIAOJIA')" name="test"  v-permission="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_QWMBJ">
 				<iInput v-model="targetprice.cfTargetPriceDetail.lcPrice" onkeyup="value=value.replace(/[^\d]/g,'')"  maxlength="20"></iInput>
