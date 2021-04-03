@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-03-01 17:17:17
- * @LastEditTime: 2021-04-03 10:15:27
+ * @LastEditTime: 2021-04-03 11:23:12
  * @LastEditors: Please set LastEditors
  * @Description: 为不同的宽度item做出UI还原
  * @FilePath: \rise\src\components\iFromItem\index.vue
@@ -102,6 +102,7 @@ export default{
     }
     ::v-deep.el-form-item__content{
       flex: 1;
+      min-width: 0px;
     }
   }
   @for $i from 1 through 6{
