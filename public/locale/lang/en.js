@@ -636,6 +636,7 @@
         'LK_LINGJIANCAIGOUXIANGMUZHUANPAI': 'Parts procurement project transfer', //零件采购项目转派
         "LK_QINGXUANZHEXINXIFENLEI": 'Please select the information category', //请选择信息分类
         "LK_QINGXUANZHECHEXINGXIANGMU": 'Please select vehicle type item', //请选择车型项目
+        'LK_QUEDING': 'Confirm', //确定
         // 'LK_XIANGNEIZHOUZHUANCAILIAOZHONGHEJIAGE':'翻箱前器具综合单价（RMB）', //箱内周转材料综合价格 
         /*
         <!------------------------------------------------------------------------>
