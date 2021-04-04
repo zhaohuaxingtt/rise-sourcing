@@ -107,7 +107,11 @@ export default {
     //签收
     save() {
        if (	this.partDetails.status == 1) return iMessage.warn(this.$t('LK_NINXUANZHONGDEDANJUZHONGCUNZAIYIQIANSHOUDEXINXIDANBUNENGPILIANGQIANSHOU'));
-      iMessageBox(this.$t('LK_NINSHIFOUQUERENDUIXINJIANXINXIDANJINHANGQIANSHOU')).then(res=>{
+      iMessageBox(
+        this.$t('LK_NINSHIFOUQUERENDUIXINJIANXINXIDANJINHANGQIANSHOU'), // 暂时处理
+        this.$t('LK_WENXINTISHI'), 
+        { confirmButtonText: this.$t('LK_QUEDING'), cancelButtonText: this.$t('LK_QUXIAO') }
+      ).then(res=>{
         this.patchRecords(2)
       })
     },

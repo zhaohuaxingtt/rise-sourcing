@@ -5,7 +5,7 @@
 <template>
   <iDialog :title="$t(title)" :visible.sync="value" width="400px" @close='clearDiolog'>
     <div slot="title" class="title">
-      <div class="text">{{title}}</div>
+      <div class="text">{{$t(title)}}</div>
       <div class="star" v-if="!disabled">*</div>
     </div>
     <div class="changeContent">

@@ -202,11 +202,12 @@ export default {
       }
       const res = await editRfqData(req)
       this.resultMessage(res)
+      this.$emit('refreshBaseInfo')
     },
     initTimeData() {
       if (this.roundType === '00') {
         // eslint-disable-next-line no-undef
-        this.startTime = moment().format('YYYY-MM-DD ')
+        this.startTime = moment().format('YYYY-MM-DD')
         // eslint-disable-next-line no-undef
         this.endTime = moment().add(7, 'd').format('YYYY-MM-DD')
       }
