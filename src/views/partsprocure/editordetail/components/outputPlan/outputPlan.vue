@@ -9,7 +9,11 @@
         :selection="false"
         :tableData="tableListData" 
         :tableTitle="tableTitle" 
-        :tableLoading="loading" />
+        :tableLoading="loading">
+        <template #pc>
+          <span>{{ $t('LK_CHANLIANGPC') }}</span>
+        </template>
+      </tableList>
     </div>
   </iCard>
 </template>
