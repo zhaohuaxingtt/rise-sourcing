@@ -295,7 +295,7 @@ export default {
         this.getBaseInfo()
       } else {
         const req = {
-          insertRfcPackage: {
+          insertRfqPackage: {
             userName: store.state.permission.userInfo.userName,
             operationType: '2',
             ...params

@@ -6,9 +6,7 @@
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsprocure\home\component\data.js
  */
-import {
-	permissionTitle
-} from '@/utils'
+import {permissionTitle} from '@/utils'
 export const tableTitle = [{
 		//export const tableTitle = permissionTitle("PARTSPROCURE_PARTSPROCURELIST",[{
 		props: 'fsnrGsnrNum',
@@ -112,9 +110,11 @@ export const form = {
 }
 
 // addRfq
-export const addRfqTitle = {
-	id: "",
-	rfqName: "",
-	currentStatus: "",
-	updateDate: ""
-}
+export const addRfqTitle =[
+	{props:'id',name:'RFQ#'},
+	{props:'rfqName',name:'RFQ名称'},
+	{props:'currentStatus',name:'RFQ状态'},
+	{props:'updateDate',name:'操作时间'},
+
+]
+

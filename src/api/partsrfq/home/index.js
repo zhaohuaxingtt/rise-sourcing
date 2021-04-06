@@ -47,7 +47,7 @@ export function insertRfq(parmars) {
         url: '/api/rfqs/insertRfq',
         method: 'PATCH',
         data: {
-            insertRfcPackage: {
+            insertRfqPackage: {
                 ...parmars,
                 ...{
                     operationType: '3',
