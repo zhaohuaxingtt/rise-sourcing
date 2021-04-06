@@ -1,7 +1,7 @@
 /*
  * @Author: shujie
  * @Date: 2021-02-24 10:17:53
- * @LastEditTime: 2021-04-01 13:58:31
+ * @LastEditTime: 2021-04-03 13:58:57
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsign\editordetail\components\data.js
@@ -9,7 +9,7 @@
 export const partTitle = [
 	{key:'partNum',name:'零件号',permissionKey:'PARTSIGN_EDITORDETAIL_PARTNUMBER', language: 'LK_LINGJIANHAO'},
 	{key:'partNameCn',name:'零件名（中）',permissionKey:'PARTSIGN_EDITORDETAIL_PARTNAMEZH', language: 'LK_LINGJIANMINGZHONG'},
-	{key:'partNameEn',name:'零件名（德）',permissionKey:'PARTSIGN_EDITORDETAIL_PARTNAMEGER', language: 'LK_LINGJIANMINGDE'},
+	{key:'partNameDe',name:'零件名（德）',permissionKey:'PARTSIGN_EDITORDETAIL_PARTNAMEGER', language: 'LK_LINGJIANMINGDE'},
 	{key:'inheritedCarModel',name:'车型大类',permissionKey:'PARTSIGN_EDITORDETAIL_VEHICLECATEGORIES', language: 'LK_CHEXINGDALEI'},
 	{key:'projectCarType',name:'车型项目',permissionKey:'PARTSIGN_EDITORDETAIL_MODELPROJECT', language: 'LK_CHEXINGXIANGMU'},
 	{key:'tpInfoType',name:'信息单类型',permissionKey:'PARTSIGN_EDITORDETAIL_INFORMATIONCLASSIFICATION', language: 'LK_XINXIDANLEIXING'},
@@ -106,38 +106,38 @@ export const partDetailTitle=[
 ]
 
 export const enquiryTableTitle = [
-  { props: 'tpPartAttachmentName', name: '文件名', key: 'LK_WENJIANMING' },
-  { props: 'size', name: '文件大小（MB）', key: 'LK_WENJIANDAXIAOMB' },
-  { props: 'updateDate', name: '上传日期', key: 'LK_SHANGCHUANRIQI' },
-  // { props: 'updateBy', name: '上传人', key: 'LK_SHANGCHUANREN' }
+  { props: 'tpPartAttachmentName', name: '文件名', key: 'LK_WENJIANMING', tooltip: true },
+  { props: 'size', name: '文件大小（MB）', key: 'LK_WENJIANDAXIAOMB', tooltip: true },
+  { props: 'updateDate', name: '上传日期', key: 'LK_SHANGCHUANRIQI', tooltip: true },
+  // { props: 'updateBy', name: '上传人', key: 'LK_SHANGCHUANREN', tooltip: true }
 ]
 
 export const unconfirmedTableTitle = [
-  { props: 'versionNum', name: '版本号', key: 'LK_BANBENHAO' },
-  { props: 'tpId', name: '信息流水单号', key: 'LK_XINXILIUSHUIDANHAO' },
-  { props: 'maintainerId', name: '维护人', key: 'LK_WEIHUREN' },
-  { props: 'publishDate', name: '推送时间', key: 'LK_TUISONGSHIJIAN' },
-  { props: 'versionStatus', name: '版本状态', key: 'LK_BANBENZHUANGTAI' }
+  { props: 'versionNum', name: '版本号', key: 'LK_BANBENHAO', tooltip: true },
+  { props: 'tpId', name: '信息流水单号', key: 'LK_XINXILIUSHUIDANHAO', tooltip: true },
+  { props: 'maintainerId', name: '维护人', key: 'LK_WEIHUREN', tooltip: true },
+  { props: 'publishDate', name: '推送时间', key: 'LK_TUISONGSHIJIAN', tooltip: true },
+  { props: 'versionStatus', name: '版本状态', key: 'LK_BANBENZHUANGTAI', tooltip: true }
 ]
 
 export const volumeTableTitle = [
-  { props: 'cartypeCategory', name: '车型大类', key: 'LK_CHEXINGDALEI' },
-  { props: 'engineType', name: '发动机类型', key: 'LK_FADONGJILEIXING' },
-  { props: 'batteryCapacity', name: '电池容量', key: 'LK_DIANCHIRONGLIANG' },
-  { props: 'gearType', name: '变速箱类型', key: 'LK_BIANSUXIANGLEIXING' },
-  { props: 'cartypeLevel', name: '车型等级', key: 'LK_CHEXINGDENGJI' },
-  { props: 'otherInfo', name: '其他信息', key: 'LK_QITAXINXI' },
-  { props: 'perCarDosage', name: '每车用量', key: 'LK_MEICHEYONGLIANG' }
+  { props: 'cartypeCategory', name: '车型大类', key: 'LK_CHEXINGDALEI', tooltip: true },
+  { props: 'engineType', name: '发动机类型', key: 'LK_FADONGJILEIXING', tooltip: true },
+  { props: 'batteryCapacity', name: '电池容量', key: 'LK_DIANCHIRONGLIANG', tooltip: true },
+  { props: 'gearType', name: '变速箱类型', key: 'LK_BIANSUXIANGLEIXING', tooltip: true },
+  { props: 'cartypeLevel', name: '车型等级', key: 'LK_CHEXINGDENGJI', tooltip: true },
+  { props: 'otherInfo', name: '其他信息', key: 'LK_QITAXINXI', tooltip: true },
+  { props: 'perCarDosage', name: '每车用量', key: 'LK_MEICHEYONGLIANG', tooltip: true }
 ]
 
 export const volumeDialogTableTitle = [
-  { props: 'cartypeCategory', name: '车型大类', key: 'LK_CHEXINGDALEI' },
-  { props: 'engineType', name: '发动机类型', key: 'LK_FADONGJILEIXING' },
-  { props: 'batteryCapacity', name: '电池容量', key: 'LK_DIANCHIRONGLIANG' },
-  { props: 'gearType', name: '变速箱类型', key: 'LK_BIANSUXIANGLEIXING' },
-  { props: 'cartypeLevel', name: '车型等级', key: 'LK_CHEXINGDENGJI' },
-  { props: 'otherInfo', name: '其他信息', key: 'LK_QITAXINXI' },
-  { props: 'perCarDosage', name: '每车用量', key: 'LK_MEICHEYONGLIANG' }
+  { props: 'cartypeCategory', name: '车型大类', key: 'LK_CHEXINGDALEI', tooltip: true },
+  { props: 'engineType', name: '发动机类型', key: 'LK_FADONGJILEIXING', tooltip: true },
+  { props: 'batteryCapacity', name: '电池容量', key: 'LK_DIANCHIRONGLIANG', tooltip: true },
+  { props: 'gearType', name: '变速箱类型', key: 'LK_BIANSUXIANGLEIXING', tooltip: true },
+  { props: 'cartypeLevel', name: '车型等级', key: 'LK_CHEXINGDENGJI', tooltip: true },
+  { props: 'otherInfo', name: '其他信息', key: 'LK_QITAXINXI', tooltip: true },
+  { props: 'perCarDosage', name: '每车用量', key: 'LK_MEICHEYONGLIANG', tooltip: true }
 ]
 
 export const logTableTitle = [

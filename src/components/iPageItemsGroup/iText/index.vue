@@ -1,18 +1,16 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-03-02 14:23:15
- * @LastEditTime: 2021-04-03 11:05:19
+ * @LastEditTime: 2021-04-03 11:49:27
  * @LastEditors: Please set LastEditors
  * @Description: 作为当前组件的配套组合，适应不需要编辑的元素。
  * @FilePath: \rise\src\components\iPageItemsGroup\iText\index.vue
 -->
 <template>
   <div class="itext">
-     <el-tooltip v-if='tooltip' effect='light' :content='$slots.default'>
-       <span><slot></slot></span>
-     </el-tooltip>
-    <span class="child" v-else>
-      <slot></slot>
+    <span class="child">
+      <el-tooltip v-if='tooltip' effect='light' :content='$slots.default'><span><slot></slot></span></el-tooltip>
+      <slot v-else></slot>
     </span>
   </div>
 </template>
@@ -23,9 +21,12 @@ export default{
   },
   mounted(){
     this.$nextTick(()=>{
+      //保证获取到的值是已经填入后的元素宽度   由于默认初始化的时候已经将数据展示出来，setTimeout只是做一个文字替换.
+      setTimeout(() => {
         let parentWidth =  this.$el.clientWidth
         let childWidth =  this.$el.querySelector('.child').offsetWidth
-        if(childWidth > parentWidth) this.tooltip = true
+        if(childWidth > parentWidth) {this.tooltip = true} else {this.tooltip = false} 
+      }, 100);
     })
   }
 }

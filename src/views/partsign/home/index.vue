@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-24 09:17:57
- * @LastEditTime: 2021-04-02 11:24:57
+ * @LastEditTime: 2021-04-03 12:21:51
  * @LastEditors: Please set LastEditors
  * @Description: 零件签收列表界面.
  * @FilePath: \rise\src\views\partsign\index.vue
@@ -49,6 +49,7 @@
               <el-form-item :label="$t('LK_GONGCHENGSHI')">
                 <iInput
                   :placeholder="$t('LK_QINGTIANXIEGONGCHENGSHI')"
+                  v-model="form.tpPrincepalName"
                   v-permission="PARTSIGN_ENGINEER"
                 ></iInput>
               </el-form-item>
@@ -414,7 +415,11 @@ export default {
         return iMessage.warn(
           this.$t('LK_NINXUANZHONGDEDANJUZHONGCUNZAIYIQIANSHOUDEXINXIDANBUNENGPILIANGQIANSHOU')
         );
-      iMessageBox(this.$t('LK_NINSHIFOUQUERENDUIXINJIANXINXIDANJINHANGQIANSHOU')).then((res) => {
+      iMessageBox(
+        this.$t('LK_NINSHIFOUQUERENDUIXINJIANXINXIDANJINHANGQIANSHOU'), // 暂时处理
+        this.$t('LK_WENXINTISHI'),
+        { confirmButtonText: this.$t('LK_QUEDING'), cancelButtonText: this.$t('LK_QUXIAO') }
+      ).then((res) => {
         this.patchRecords(2, this.selectTableData);
       });
     },

@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-25 10:14:46
- * @LastEditTime: 2021-04-02 17:17:33
+ * @LastEditTime: 2021-04-03 14:22:10
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsprocure\home\component\data.js
@@ -32,12 +32,12 @@ import {permissionTitle} from '@/utils'
 		key: 'partsprocure.PARTSPROCUREPARTNAMEDE',
 		tooltip:false
 	},
-/*	{
-		props: 'statusName',
-		name: '项目状态',
-		key: 'partsprocure.PARTSPROCURESTATUS',
-		tooltip:false
-	},*/
+	// {
+	// 	props: 'statusName',
+	// 	name: '项目状态',
+	// 	key: 'partsprocure.PARTSPROCURESTATUS',
+	// 	tooltip:false
+	// },
 	{
 		props: 'procureFactoryName',
 		name: '采购工厂',
@@ -45,7 +45,7 @@ import {permissionTitle} from '@/utils'
 		tooltip:false
 	},
 	{
-		props: 'partPrejectType',
+		props: 'partProjectTypeName',
 		name: '零件项目类型',
 		key: 'partsprocure.PARTSPROCUREPARTITEMTYPE',
 		tooltip:false

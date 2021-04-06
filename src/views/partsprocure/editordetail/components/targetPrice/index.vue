@@ -47,20 +47,24 @@
 		<div class="header flex-between-center-center">
 			<span class="title">{{ $t('LK_SHENQINGCAIWUMUBIAOJIA') }}</span>
 			<div class="control">
+<<<<<<< HEAD
 				<iButton @click="save" v-permission="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_APPLY">{{$t('LK_SHENQING')}}</iButton>
+=======
+				<iButton @click="save" v-permission="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_APPLY">{{ $t('LK_SHENQING') }}</iButton>
+>>>>>>> f89057c5af9d985598cdee7fe7f8c14c5af825ea
 			</div>
 		</div>
 		<iFormGroup row="2" icon inline>
 			<iFormItem :label="$t('LK_SHENQINGLEIXING')" name="test" v-permission="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_SQLX">
 				<el-radio-group v-model="targetprice.cfTargetPriceDetail.applyType">
-					<el-radio label="LC">LC</el-radio>
-					<el-radio label="SKD">SKD</el-radio>
-					<el-radio label="CKD_LANDED">CKD_LANDED</el-radio>
+					<iRadio label="LC" size="small" border>LC</iRadio>
+					<iRadio label="SKD" size="small" border>SKD</iRadio>
+					<iRadio label="CKD LANDED" size="small" border>CKD LANDED</iRadio>
 				</el-radio-group>
 				<!-- <span class="start">*</span> -->
 			</iFormItem>
 			<iFormItem :label="$t('LK_QIWANGMUBIAOJIA')" name="test"  v-permission="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_QWMBJ">
-				<iInput v-model="targetprice.cfTargetPriceDetail.lcPrice" onkeyup="value=value.replace(/[^\d]/g,'')"  maxlength="20"></iInput>
+				<iInput v-model="targetprice.cfTargetPriceDetail.expTargetpri" onkeyup="value=value.replace(/[^\d]/g,'')"  maxlength="20"></iInput>
 			</iFormItem>
 		</iFormGroup>
 		<iFormGroup row="2" icon inline>
@@ -80,7 +84,11 @@
 		<div class="header flex-between-center-center">
 			<span class="title">{{ $t('LK_SHENQINGRWJIA') }}</span>
 			<div class="control">
+<<<<<<< HEAD
 				<iButton @click="targeRw" v-permission="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_RWAPPLY">{{$t('LK_SHENQING')}}</iButton>
+=======
+				<iButton @click="targeRw" v-permission="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_RWAPPLY">{{ $t('LK_SHENQING') }}</iButton>
+>>>>>>> f89057c5af9d985598cdee7fe7f8c14c5af825ea
 			</div>
 		</div>
 		<iFormGroup row="2" icon inline v-permission="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_APPLYRWTXT">
@@ -123,7 +131,8 @@
 		iText,
 		iButton,
 		iInput,
-		iMessage
+		iMessage,
+		iRadio
 	} from "@/components";
 	import tablelist from "./components/tablelist";
 	import {
@@ -143,7 +152,8 @@
 			iText,
 			iButton,
 			iInput,
-			tablelist
+			tablelist,
+			iRadio
 		},
 		props: {
 			purchaseProjectId: {
@@ -176,11 +186,11 @@
 					let price=res.data.targetprice
 					if (price.cfTargetPriceDetail) {
 						this.targetprice.cfTargetPriceDetail=price.cfTargetPriceDetail
-						this.tableListData=[price.cfTargetPriceDetail]
+						this.tableListData=JSON.parse(JSON.stringify([price.cfTargetPriceDetail]))  
 					}
 					if (price.rwApplication) {
 						this.targetprice.rwApplication=price.rwApplication
-						this.targeRwData=[price.rwApplication]
+						this.targeRwData=JSON.parse(JSON.stringify([price.rwApplication]))
 					}
 				});
 			},
@@ -250,4 +260,5 @@
 		top: 4px;
 		color: red;
 	}
+	
 </style>

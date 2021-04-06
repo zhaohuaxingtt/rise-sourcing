@@ -15,7 +15,7 @@ export const targeTitle = [{
 	key:'LK_SHENQINGLEIXING'
 },
 {
-	props: 'cfOwnerId',
+	props: 'buyerName',
 	name: 'CF负责人',
 	key:'LK_CFFUZEREN'
 },

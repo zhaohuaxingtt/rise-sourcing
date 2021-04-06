@@ -130,7 +130,10 @@ export default {
     handleSave() {
       this.saveLoading = true
       updateOutputPlan({
-        partOutputPlanInsertFacadeDTOS: this.tableListData[0].outputPlanList
+        partOutputPlanInsertFacadeDTOS: {
+          partOutputPlanInsertList: this.tableListData[0].outputPlanList,
+          purchasingProjectId: this.$route.query.purchaseProjectId,
+        }
       })
         .then(res => {
           if (res.code == 200) {

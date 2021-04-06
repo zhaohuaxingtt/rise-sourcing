@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-25 10:09:50
- * @LastEditTime: 2021-03-27 13:40:26
+ * @LastEditTime: 2021-04-03 11:30:40
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsrfq\editordetail\index.vue
@@ -57,13 +57,11 @@
               <iText v-permission="PARTSRFQ_EDITORDETAIL_RFQNUMBER">{{ baseInfo.id }}</iText>
             </iFormItem>
             <iFormItem :label="$t('LK_RFQMINGCHENG')+':'" name="rfqName">
-              <el-tooltip class="item" effect="light" :content="baseInfo.rfqName" placement="top">
                 <iInput v-if="editStatus" v-model="baseInfo.rfqName"
                         v-permission="PARTSRFQ_EDITORDETAIL_RFQNAME"></iInput>
-                <iText v-else v-permission="PARTSRFQ_EDITORDETAIL_RFQNAME" class="ellipsis">
+                <iText v-else v-permission="PARTSRFQ_EDITORDETAIL_RFQNAME">
                   {{ baseInfo.rfqName }}
                 </iText>
-              </el-tooltip>
             </iFormItem>
 
             <iFormItem :label="$t('rfq.EP')+':'" name="ep">
