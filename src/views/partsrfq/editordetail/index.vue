@@ -259,9 +259,6 @@ export default {
     },
     createAFixedPointApplication() {
     },
-    log() {
-      window.open(`/#/log?recordId=`, '_blank')
-    },
     edit() {
       const rfqName = this.baseInfo.rfqName
       if (!rfqName && this.editStatus) {

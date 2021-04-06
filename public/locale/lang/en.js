@@ -104,7 +104,7 @@
             'XinXiDanFenLei': 'TP single classification', //信息单分类
             'XinXiDanZhuangTai': 'TP status', //信息单状态
             'XinXiDanLiuShuiHao': 'Information Single Serial Number', //信息单流水号
-            'XunJiaZiLiaoZhuangTai': 'Inquiry Attachment State', //询价资料状态
+            'XunJiaZiLiaoZhuangTai': 'Inquiry Attachment States', //询价资料状态
             'MeiCheYongLiangZhuangTai': 'Usage Status Per Vehicle', //每车用量状态
             'QingShuRu': 'Please Enter', //请输入
             'QingXuanZe': 'Please Choose', //请选择
@@ -161,7 +161,7 @@
         'LK_YIBAOJIAGONGYINGSHANG': 'Supplier with quotation', //已报价供应商
         'LK_YAOQIUCSCHUIYIRIQI': 'Request CSC Meeting Date', //要求CSC会议日期
         'LK_YANYONGCHEXINGDALEIDAIMA': 'COP Model code', //沿用车型大类代码
-        'LK_XUNJIAZILIAOZHUANGTAI': 'Inquiry Attachment State', //询价资料状态
+        'LK_XUNJIAZILIAOZHUANGTAI': 'Inquiry Attachment States', //询价资料状态
         'LK_XUNJIAZILIAO': 'Drawing for inquiry', //询价资料
         'LK_XUNJIAFUJIAN': 'Inquiry attachments', //询价附件
         'LK_XUNJIACHANLIANGJIHUA': 'Enquiry Volume Plan', //询价产量计划
@@ -169,11 +169,11 @@
         'LK_XUNJIACAIGOUYUAN': 'Forward Buyer', //询价采购员
         'LK_XUNYUANZHIHANG': 'Sourcing Operation', //寻源执行
         'LK_XUANZHUANGJIAN': 'Optional', //选装件
-        'LK_XINXILIUSHUIDANHAO': 'Part Shee ID', //信息流水单号
+        'LK_XINXILIUSHUIDANHAO': 'Part Sheet ID', //信息流水单号
         'LK_XINXIDANZHUANGTAI': 'TP status', //信息单状态
         'LK_XINXIDANXIANGQING': 'Part Sheet detailed info.', //信息单详情
         'LK_XINXIDANSHENGCHENGSHIJIAN': 'Part Sheet creation time', //信息单生成时间
-        'LK_XINXIDANLIUSHUIHAO': 'Part Shee ID', //信息单流水号
+        'LK_XINXIDANLIUSHUIHAO': 'Part Sheet ID', //信息单流水号
         'LK_XINXIDANLEIXING': 'Sheet type', //信息单类型
         'LK_XINXIDANFENLEI': 'TP single classification', //信息单分类
         'LK_XINSHENQINGCAIWUMUBIAOJIA': 'Apply New CF Target Price', //新申请财务目标价
