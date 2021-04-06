@@ -1,5 +1,5 @@
 <template>
-  <iCard class="card">
+  <iCard class="card" @click.native="$emit('click', data)">
     <template #header>
       <div class="header">
         <div class="title font-weight">{{ title }}</div>

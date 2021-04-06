@@ -31,7 +31,7 @@
             <div class="title font-weight" :class="{ current: type == taskType }">{{ taskTypeFloatMap[taskType].name || taskType }}</div>
             <div class="row clearFloat margin-top20">
               <div class="col" v-for="(item, $index) in task" :key="$index">
-                <card :data="item" :tag="taskTypeFloatMap[taskType].name || taskType" :title="taskTypeFloatMap[item.taskTypeCode].name"/>
+                <card :data="item" :tag="taskTypeFloatMap[taskType].name || taskType" :title="taskTypeFloatMap[item.taskTypeCode].name" @click="jump" />
               </div>
             </div>
           </div>
@@ -204,6 +204,9 @@ export default {
     // log() {
     //   window.open(`/#/log?recordId=`, '_blank')
     // }
+    jump() {
+      this.$router.push({ path: '/partsign' })
+    }
   }
 }
 </script>
