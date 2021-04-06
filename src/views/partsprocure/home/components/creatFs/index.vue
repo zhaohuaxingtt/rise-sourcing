@@ -82,7 +82,7 @@
 			addRfq(){
 				this.addLoding = true;
 				addRfq({
-					insertRfcPackage: {
+					insertRfqPackage: {
 						operationType: '1',
 						userId: store.state.permission.userInfo.id || '',
 						userName: store.state.permission.userInfo.userName,
