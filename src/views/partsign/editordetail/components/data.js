@@ -109,7 +109,7 @@ export const enquiryTableTitle = [
   { props: 'tpPartAttachmentName', name: '文件名', key: 'LK_WENJIANMING', tooltip: true },
   { props: 'size', name: '文件大小（MB）', key: 'LK_WENJIANDAXIAOMB', tooltip: true },
   { props: 'updateDate', name: '上传日期', key: 'LK_SHANGCHUANRIQI', tooltip: true },
-  // { props: 'updateBy', name: '上传人', key: 'LK_SHANGCHUANREN', tooltip: true }
+  { props: 'uploadBy', name: '上传人', key: 'LK_SHANGCHUANREN', tooltip: true }
 ]
 
 export const unconfirmedTableTitle = [
