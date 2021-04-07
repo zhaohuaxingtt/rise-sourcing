@@ -19,7 +19,7 @@
       </iButton>
     </div>
     <tableList :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="confirmTableLoading"
-               @handleSelectionChange="handleSelectionChange" @openPage="openPage" isOne></tableList>
+               @handleSelectionChange="handleSelectionChange" @openPage="openPage" radio></tableList>
     <iPagination v-update @size-change="handleSizeChange($event, getTableList)"
                  @current-change="handleCurrentChange($event, getTableList)" background :page-sizes="page.pageSizes"
                  :page-size="page.pageSize" :current-page="page.currPage" :layout="page.layout"
@@ -131,7 +131,7 @@ export default {
       if (!(await this.validateStart())) return;
       this.addLoding = true;
       addRfq({
-        insertRfcPackage: {
+        insertRfqPackage: {
           operationType: '1',
           userId: store.state.permission.userInfo.id || '',
           userName: store.state.permission.userInfo.userName,
@@ -218,9 +218,5 @@ export default {
 .addFs {
   height: 85px;
   justify-content: flex-end;
-}
-
-::v-deep thead .el-table-column--selection .cell {
-  display: none;
 }
 </style>

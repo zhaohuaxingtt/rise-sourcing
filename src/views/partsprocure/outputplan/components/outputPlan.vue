@@ -10,7 +10,7 @@
         v-loading="loading"
         ref="table">
         <template v-for="(items, $index) in tableTitle">
-          <el-table-column :key="$index" align="center" v-if="$index == 1" :prop="items.props" :label="items.name">
+          <el-table-column :key="$index" align="center" v-if="$index == 1" :prop="items.props" :label="$t(items.key)">
             <template v-slot:header>
               <iSelect v-model="startYear" class="select" @change="handleStartYearChange">
                 <el-option
@@ -24,8 +24,12 @@
               <iInput class="input" v-model="scope.row[startYear]" @input="handleInput($event, startYear)"/>
             </template>
           </el-table-column>
-          <el-table-column v-if="$index == 0" :key="$index" align="center" :label="items.name" :prop="items.props"></el-table-column>
-          <el-table-column v-else :key="$index" align="center" :label="items.name" :prop="items.props">
+          <el-table-column v-if="$index == 0" :key="$index" align="center" :label="$t(items.key)">
+            <template v-slot>
+              <span>{{ $t('LK_CHANLIANGPC') }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column v-else :key="$index" align="center" :label="$t(items.key)" :prop="items.props">
             <template v-slot="scope">
               <iInput class="input" :disabled="$index == tableTitle.length - 1 || $index == tableTitle.length - 2" v-model="scope.row[items.props]" @input="handleInput($event, items.props)"/>
             </template>
