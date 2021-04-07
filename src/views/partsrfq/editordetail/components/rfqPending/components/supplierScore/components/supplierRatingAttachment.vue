@@ -96,7 +96,11 @@ export default {
       }
     },
     deleteItems() {
-      iMessageBox(this.$t('LK_SHIFOUQUERENSHANCHU')).then(async () => {
+      iMessageBox(
+        this.$t('LK_SHIFOUQUERENSHANCHU'), // 暂时处理
+        this.$t('LK_WENXINTISHI'),
+        { confirmButtonText: this.$t('LK_QUEDING'), cancelButtonText: this.$t('LK_QUXIAO') }
+      ).then(async () => {
         const annexIds = this.selectTableData.map(item => {
           return item.id
         })

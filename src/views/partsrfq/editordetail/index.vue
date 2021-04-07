@@ -259,9 +259,6 @@ export default {
     },
     createAFixedPointApplication() {
     },
-    log() {
-      window.open(`/#/log?recordId=`, '_blank')
-    },
     edit() {
       const rfqName = this.baseInfo.rfqName
       if (!rfqName && this.editStatus) {
@@ -295,7 +292,7 @@ export default {
         this.getBaseInfo()
       } else {
         const req = {
-          insertRfcPackage: {
+          insertRfqPackage: {
             userName: store.state.permission.userInfo.userName,
             operationType: '2',
             ...params

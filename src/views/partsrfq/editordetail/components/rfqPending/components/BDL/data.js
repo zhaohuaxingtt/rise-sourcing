@@ -6,12 +6,12 @@
  */
 import {permissionTitle} from '@/utils'
 export const tableTitle = permissionTitle("PARTSRFQ_EDITORDETAIL_RFQPENDING_LIST_360VIEWCOLUMN",[
-    {props:'supplierNameZh',name:'供应商名称', key:'LK_GONGYINGSHANGMINGCHENG'},
-    {props:'pupplierProductionPlace',name:'供应商生产场地', key:'LK_GONGYINGSHANGSHENGCHANCHANGDI'},
-    {props:'bdlType',name:'MBDL', key: 'LK_MBDL'},
-    {props:'isCheckCbd',name:'是否验证CBD', key: 'LK_SHIFOUYANZHENGCBD'},
-    {props:'supplierQualityGrade',name:'质量', key: 'LK_ZHILIANG'},
-    {props:'supplierCostGrade',name:'成本', key: 'LK_CHENGBEN'},
-    {props:'supplierDeliverGrade',name:'交付', key: 'LK_JIAOFU'},
+    {props:'supplierNameZh',name:'供应商名称', key:'LK_GONGYINGSHANGMINGCHENG', tooltip: true},
+    {props:'pupplierProductionPlace',name:'供应商生产场地', key:'LK_GONGYINGSHANGSHENGCHANCHANGDI', tooltip: true},
+    {props:'bdlType',name:'MBDL', key: 'LK_MBDL', tooltip: true},
+    {props:'isCheckCbd',name:'是否验证CBD', key: 'LK_SHIFOUYANZHENGCBD', tooltip: true},
+    {props:'supplierQualityGrade',name:'质量', key: 'LK_ZHILIANG', tooltip: true},
+    {props:'supplierCostGrade',name:'成本', key: 'LK_CHENGBEN', tooltip: true},
+    {props:'supplierDeliverGrade',name:'交付', key: 'LK_JIAOFU', tooltip: true},
     {props:'i',name:'供应商360°视图', key: 'LK_GONGYINGSHANG360SHITU'}
   ])

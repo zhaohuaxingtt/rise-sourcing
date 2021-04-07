@@ -10,7 +10,7 @@
 		</el-table-column>
 <!--		<el-table-column type="index" align="center" label="#"></el-table-column>-->
 		<template v-for="(item, index) in tableTitle">
-			<el-table-column :key="index" align="center" v-if="item.props == 'supplierNameZh'" :prop="item.props" :label="$t(item.key)">
+			<el-table-column :key="index" align="center" v-if="item.props == 'supplierNameZh'" :prop="item.props" :label="$t(item.key)"  :show-overflow-tooltip="item.tooltip">
 				<template slot-scope="scope">
 					<!-- <span class="openLinkText cursor" @click="openPage">{{scope.row.supplierNameZh}}</span> -->
 					<span>{{ scope.row.supplierNameZh }}</span>
@@ -38,7 +38,7 @@
 					</span>
 				</template>
 			</el-table-column>
-			<el-table-column v-else :key="index" align="center" :label="$t(item.key)" :prop="item.props">
+			<el-table-column v-else :key="index" align="center" :label="$t(item.key)" :prop="item.props" :show-overflow-tooltip="item.tooltip">
 				<template slot-scope="scope">
 					<span v-if="item.props == 'bdlType'">
 						{{scope.row[item.props] == '2'?'M':''}}

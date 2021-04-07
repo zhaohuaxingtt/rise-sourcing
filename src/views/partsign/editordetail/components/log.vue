@@ -53,6 +53,7 @@ export default {
   methods: {
     getVolume() {
       this.loading = true
+      console.error(...this.pageMixins);
       getVolume({ ...this.pageMixins?.page })
         .then(res => {
           this.tableListData = res.data

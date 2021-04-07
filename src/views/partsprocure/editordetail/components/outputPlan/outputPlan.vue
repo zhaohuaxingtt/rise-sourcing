@@ -9,7 +9,11 @@
         :selection="false"
         :tableData="tableListData" 
         :tableTitle="tableTitle" 
-        :tableLoading="loading" />
+        :tableLoading="loading">
+        <template #pc>
+          <span>{{ $t('LK_CHANLIANGPC') }}</span>
+        </template>
+      </tableList>
     </div>
   </iCard>
 </template>
@@ -47,7 +51,7 @@ export default {
     getData() {
       this.loading = true
       getOutputPlan({
-        'partOutputPlanReqDTO.purchaseProjectId': this.params.purchasePrjectId
+        'partOutputPlanReqDTO.purchaseProjectId': this.params.purchasePrjectId,
       })
         .then((res) => {
           this.tableTitle = cloneDeep(tableTitle)
@@ -95,7 +99,10 @@ export default {
     handleSave() {
       this.saveLoading = true
       updateOutputPlan({
-        partOutputPlanInsertFacadeDTOS: this.tableListData[0].outputPlanList
+        partOutputPlanInsertFacadeDTOS: {
+          partOutputPlanInsertList: this.tableListData[0].outputPlanList,
+          purchasingProjectId: this.params.purchasePrjectId
+        }
       })
         .then(res => {
           if (res.code == 200) {

@@ -3,7 +3,8 @@
     <div class="margin-bottom20 clearFloat">
       <span class="font18 font-weight">{{ $t('LK_PILIANGWEIHU') }}：{{ params.partNum }}</span>
       <div class="floatright">
-        <logButton @click="log" />
+        <iButton @click="back">{{ $t('LK_FANHUI') }}</iButton>
+        <logButton class="margin-left20" @click="log" />
         <span class="margin-left20">
 					<icon symbol name="icondatabaseweixuanzhong" class="font18"></icon>
 				</span>
@@ -16,14 +17,14 @@
 </template>
 
 <script>
-import { iPage, icon } from '@/components'
+import { iPage, iButton, icon } from '@/components'
 import outputPlan from './components/outputPlan'
 import outputRecord from './components/outputRecord'
 import volume from './components/volume'
 import logButton from '@/views/partsign/editordetail/components/logButton'
 
 export default {
-  components: { iPage, icon, outputPlan, outputRecord, volume, logButton },
+  components: { iPage, iButton, icon, outputPlan, outputRecord, volume, logButton },
   data() {
     return {
       params: {}
@@ -38,6 +39,9 @@ export default {
     },
     log() {
       window.open(`/#/log?recordId=`, '_blank')
+    },
+    back() {
+      this.$router.go(-1)
     }
   }
 }

@@ -17,7 +17,7 @@
           accept=".xlsx"
       >
         <iButton>{{$t('LK_DIANJISHANGCHUAN')}}</iButton>
-        <div slot="tip" class="el-upload__tip">只能上传.xlsx文件</div>
+        <div slot="tip" class="el-upload__tip">{{$t('LK_ZHINENGSHANGCHUANWENJIAN')}}</div>
       </el-upload>
     </div>
     <span slot="footer" class="dialog-footer">
