@@ -6,7 +6,7 @@
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\components\index.js
  */
-import {MessageBox,Message} from 'element-ui'
+import { MessageBox, Message } from 'element-ui'
 import iInput from '../components/iInput'
 import iSelect from '../components/iSelect'
 import iTabs from '../components/iTabs'
@@ -25,51 +25,52 @@ import iText from '../components/iPageItemsGroup/iText'
 import iDrawer from "../components/iDrawer"
 import iRadio from "../components/iRadio"
 // const msg = this.$t('LK_WENXINTISHI');
-const iMessageBox = (content='',title=`温馨提示`,options={}) => {
-  return MessageBox.confirm(content,title,Object.assign({zIndex:20000},options))
+const iMessageBox = (content = '', title, options = {}) => {
+    return MessageBox.confirm(content, title, Object.assign({ zIndex: 20000 }, options))
 }
-function message(){
-  this.type = 'success';
-  this.message = ''
-  return this
+
+function message() {
+    this.type = 'success';
+    this.message = ''
+    return this
 }
-message.prototype.success = (message)=>{
-  Message({
-    message: message || this.message,
-    type: 'success',
-  })
+message.prototype.success = (message) => {
+    Message({
+        message: message || this.message,
+        type: 'success',
+    })
 }
-message.prototype.warn = (message)=>{
-  Message({
-    message: message || this.message,
-    type: 'warning'
-  })
+message.prototype.warn = (message) => {
+    Message({
+        message: message || this.message,
+        type: 'warning'
+    })
 }
-message.prototype.error = (message)=>{
-  Message({
-    message: message || this.message,
-    type: 'error'
-  })
+message.prototype.error = (message) => {
+    Message({
+        message: message || this.message,
+        type: 'error'
+    })
 }
 const iMessage = new message()
 export {
-  iFormGroup,
-  iFormItem,
-  iInput,
-  iSelect,
-  iButton,
-  iCard,
-  iTabs,
-  iTabsList,
-  icon,
-  iPage,
-  iMessage,
-  iMessageBox,
-  iPagination,
-  iNavMvp,
-  iSearch,
-  iDialog,
-  iText,
-  iDrawer,
-  iRadio
+    iFormGroup,
+    iFormItem,
+    iInput,
+    iSelect,
+    iButton,
+    iCard,
+    iTabs,
+    iTabsList,
+    icon,
+    iPage,
+    iMessage,
+    iMessageBox,
+    iPagination,
+    iNavMvp,
+    iSearch,
+    iDialog,
+    iText,
+    iDrawer,
+    iRadio
 }
