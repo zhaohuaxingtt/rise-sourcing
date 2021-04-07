@@ -10,7 +10,7 @@
         v-loading="loading"
         ref="table">
         <template v-for="(items, $index) in tableTitle">
-          <el-table-column :key="$index" align="center" v-if="$index == 1" :prop="items.props" :label="items.name">
+          <el-table-column :key="$index" align="center" v-if="$index == 1" :prop="items.props" :label="$t(items.key)">
             <template v-slot:header>
               <iSelect v-model="startYear" class="select" @change="handleStartYearChange">
                 <el-option
