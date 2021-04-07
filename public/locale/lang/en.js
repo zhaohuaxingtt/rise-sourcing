@@ -104,7 +104,7 @@
             'XinXiDanFenLei': 'TP single classification', //信息单分类
             'XinXiDanZhuangTai': 'TP status', //信息单状态
             'XinXiDanLiuShuiHao': 'Information Single Serial Number', //信息单流水号
-            'XunJiaZiLiaoZhuangTai': 'Inquiry Attachment States', //询价资料状态
+            'XunJiaZiLiaoZhuangTai': 'Inquiry Attachment Status', //询价资料状态
             'MeiCheYongLiangZhuangTai': 'Usage Status Per Vehicle', //每车用量状态
             'QingShuRu': 'Please Enter', //请输入
             'QingXuanZe': 'Please Choose', //请选择
@@ -161,7 +161,7 @@
         'LK_YIBAOJIAGONGYINGSHANG': 'Supplier with quotation', //已报价供应商
         'LK_YAOQIUCSCHUIYIRIQI': 'Request CSC Meeting Date', //要求CSC会议日期
         'LK_YANYONGCHEXINGDALEIDAIMA': 'COP Model code', //沿用车型大类代码
-        'LK_XUNJIAZILIAOZHUANGTAI': 'Inquiry Attachment States', //询价资料状态
+        'LK_XUNJIAZILIAOZHUANGTAI': 'Inquiry Attachment Status', //询价资料状态
         'LK_XUNJIAZILIAO': 'Drawing for inquiry', //询价资料
         'LK_XUNJIAFUJIAN': 'Inquiry attachments', //询价附件
         'LK_XUNJIACHANLIANGJIHUA': 'Enquiry Volume Plan', //询价产量计划
@@ -273,7 +273,7 @@
         'LK_MUBIAOJIA': 'Target Price', //目标价
         'LK_MOJUYUSUANSHENQING': 'Model Budget Application', //模具预算申请
         'LK_MEICHEYONGLIANGZHUANGTAI': 'Quantity per car status', //每车用量状态
-        'LK_MEICHEYONGLIANG': 'Per Car Dosage', //每车用量
+        'LK_MEICHEYONGLIANG': 'Quantity per car status', //每车用量
         'LK_MAOZHONGKG': 'Gross Weight (KG)', //毛重（KG）
         'LK_LUNCILEIXING': 'Round type', //轮次类型
         'LK_LINGJIANZHUANGTAI': 'Parts Status', //零件状态
@@ -299,7 +299,7 @@
         'LK_LINGJIANMINGZHONG': 'Parts Name (CN)', //零件名（中）
         'LK_LINGJIANMINGYING': 'Parts Name(En)', //零件名（英）
         'LK_LINGJIANMINGDE': 'Parts Name(De)', //零件名（德）
-        'LK_LINGJIANMEICHEYONGLIANG': 'Parts Per Car Dosage', //零件每车用量
+        'LK_LINGJIANMEICHEYONGLIANG': 'Parts quantity per car status', //零件每车用量
         'LK_LINGJIANMAOYISHUXINGMIAOSHUZHONG': 'Parts Trade Property Description(Cn)', //零件贸易属性描述(中)
         'LK_LINGJIANMAOYISHUXINGMIAOSHUYING': 'Parts Trade Property Description(En)', //零件贸易属性描述(英)
         'LK_LINGJIANMAOYISHUXINGMIAOSHUDE': 'Parts Trade Property Description(De)', //零件贸易属性描述(德)
@@ -622,7 +622,7 @@
         'LK_YIQIANSHOU': 'Have been signed', // 新件信息单退回
         'LK_YITUIHUI': 'Returned', // 以退回
         'LK_QINGXUANZHEXUYAOXIUGAIDELINGJIANCAIGOUXIANGMU': 'Please select the part purchase item to be modified', // 请选择需要修改的零件采购项目
-        'LK_QINGXUANZHEXIANCAILIAOZU': 'Please select the first material group', // 请选择先材料组
+        'LK_QINGXUANZHEXIANCAILIAOZU': 'Please Select', // 请选择先材料组
         'LK_SHANGCHUANCHENGGONG': 'Uploaded successfully', // 上传成功
         'LK_SHANGCHUANSHIBAI': 'Upload failed', // 上传失败
         'LK_ZHUANPAICHENGGONG': 'Turn sent successfully', // 转派成功
@@ -636,7 +636,7 @@
         'LK_LINGJIANCAIGOUXIANGMUZHUANPAI': 'Parts procurement project transfer', //零件采购项目转派
         "LK_QINGXUANZHEXINXIFENLEI": 'Please select the information category', //请选择信息分类
         "LK_QINGXUANZHECHEXINGXIANGMU": 'Please select vehicle type item', //请选择车型项目
-        "LK_ZHINENGSHANGCHUANWENJIAN": '只能上传.xlsx文件 english', //只能上传.xlsx文件
+        "LK_ZHINENGSHANGCHUANWENJIAN": 'Upload .xlsx file only', //只能上传.xlsx文件
         'LK_QUEDING': 'Confirm', //确定
         // 'LK_XIANGNEIZHOUZHUANCAILIAOZHONGHEJIAGE':'翻箱前器具综合单价（RMB）', //箱内周转材料综合价格 
         /*
