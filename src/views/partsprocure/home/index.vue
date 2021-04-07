@@ -17,8 +17,7 @@
           <!------------------------------------------------------------------------>
           <!--                  search 搜索模块                                   --->
           <!------------------------------------------------------------------------>
-          <iSearch class="margin-bottom20" @sure="sure" @reset="reset" :resetKey="PARTSPROCURE_RESET"
-                   :searchKey="PARTSPROCURE_CONFIRM">
+          <iSearch class="margin-bottom20" @sure="sure" @reset="reset" :resetKey="PARTSPROCURE_RESET" :searchKey="PARTSPROCURE_CONFIRM">
             <el-form>
               <el-form-item :label="$t('partsprocure.PARTSPROCUREPARTNUMBER')">
                 <iInput :placeholder="$t('partsprocure.PARTSPROCURE')" v-model="form['search.partNum']"
@@ -106,13 +105,14 @@
             <div class="margin-bottom20 clearFloat">
 							<span class="font18 font-weight">
 								{{ $t('partsprocure.PARTSPROCURENEWPROCUREMENTPROJECT') }}</span>
-              <div class="floatright">
+            <div class="floatright">
 				<iButton @click="openDiologChangeItems" v-permission="PARTSPROCURE_TRANSFER">
 				    {{ $t('partsprocure.PARTSPROCURETRANSFER') }}
 				</iButton>
-                <iButton @click="creatFs" v-permission="PARTSPROCURE_GENERATEFSBUTTON">
+				<creatFs :projectIds="projectIds" @refresh="getTableListFn"></creatFs>
+             <!--  <iButton @click="creatFs" v-permission="PARTSPROCURE_GENERATEFSBUTTON">
                   {{ $t('partsprocure.PARTSPROCUREGENERATEFSGSNR') }}
-                </iButton>
+                </iButton> -->
                 <iButton @click="openDiologBack" v-permission="PARTSPROCURE_CANCELPROCUREMENTITEMS">
                   {{ $t('partsprocure.PARTSPROCURECANCELPARTSPURCHASE') }}
                 </iButton>
@@ -122,7 +122,7 @@
                 <iButton @click="start" :loading="startLoding" v-permission="PARTSPROCURE_STARTINQUIRY">
                   {{ $t('partsprocure.PARTSPROCURESTARTINQUIRY') }}
                 </iButton>
-              </div>
+            </div>
             </div>
             <tablelist :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="tableLoading"
                        @handleSelectionChange="handleSelectionChange" @openPage="openPage"
@@ -159,24 +159,15 @@ import {
   iInput,
   iSelect,
 } from "@/components";
-import {
-  pageMixins
-} from "@/utils/pageMixins";
+import {pageMixins} from "@/utils/pageMixins";
 import backItems from "@/views/partsign/home/components/backItems";
-import {
-  tableTitle,
-  form,
-} from "./components/data";
+import {tableTitle,form} from "./components/data";
 import tablelist from "../../partsign/home/components/tableList";
-import {
-  getTabelData,
-  changeProcure,
-  getProcureGroup
-} from "@/api/partsprocure/home";
+import {getTabelData,changeProcure,getProcureGroup} from "@/api/partsprocure/home";
 import {insertRfq} from "@/api/partsrfq/home"
 import changeItems from "../../partsign/home/components/changeItems";
 import filters from "@/utils/filters";
-
+import creatFs from "./components/creatFs"
 export default {
   mixins: [pageMixins, filters],
   components: {
@@ -191,6 +182,7 @@ export default {
     iInput,
     iSelect,
     backItems,
+	creatFs
   },
   data() {
     return {
@@ -205,6 +197,11 @@ export default {
       startLoding: false,
       tab: 'source'
     };
+  },
+  computed:{
+	projectIds(){
+		return this.getPurchasePrjectId()
+	}
   },
   created() {
     this.getTableListFn();
@@ -375,25 +372,6 @@ export default {
     /*********************************************************************
      *                          end
      *********************************************************************/
-    // 生成fs号
-    creatFs() {
-      if (this.selectTableData.length == 0)
-        return iMessage.warn(
-          this.$t('LK_NINDANGQIANHAIWEIXUANZENINXUYAOSHENGCHENGFSHAODELINGJIANCAIGOUXIANGMU')
-        );
-      let fs = {
-        purchaseProjectIds: this.getPurchasePrjectId(),
-      };
-      changeProcure({
-        fs,
-      }).then((res) => {
-        if (res.data) {
-          this.getTableListFn();
-        } else {
-          iMessage.error(res.desZh)
-        }
-      });
-    },
     // 获取选中零件号ID
     getPurchasePrjectId() {
       let purchasePrjectId = [];
