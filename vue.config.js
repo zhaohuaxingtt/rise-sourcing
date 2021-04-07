@@ -58,6 +58,7 @@ module.exports = {
                     sourceMap: false,
                     parallel: true
                 }),
+                //环境代码
                 new ChangeNginxConfig()
             )
         }
