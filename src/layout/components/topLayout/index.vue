@@ -171,7 +171,7 @@ export default {
 
       this.reconnectTimer = setTimeout(() => {
         this.getMessageBySocket("1001");
-      }, 4000);
+      }, 20000);
     },
     handleChangeLang() {
       this.lang = this.lang === "zh" ? "en" : "zh";
