@@ -47,11 +47,7 @@
 		<div class="header flex-between-center-center">
 			<span class="title">{{ $t('LK_SHENQINGCAIWUMUBIAOJIA') }}</span>
 			<div class="control">
-<<<<<<< HEAD
-				<iButton @click="save" v-permission="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_APPLY">{{$t('LK_SHENQING')}}</iButton>
-=======
 				<iButton @click="save" v-permission="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_APPLY">{{ $t('LK_SHENQING') }}</iButton>
->>>>>>> f89057c5af9d985598cdee7fe7f8c14c5af825ea
 			</div>
 		</div>
 		<iFormGroup row="2" icon inline>
@@ -84,11 +80,7 @@
 		<div class="header flex-between-center-center">
 			<span class="title">{{ $t('LK_SHENQINGRWJIA') }}</span>
 			<div class="control">
-<<<<<<< HEAD
-				<iButton @click="targeRw" v-permission="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_RWAPPLY">{{$t('LK_SHENQING')}}</iButton>
-=======
 				<iButton @click="targeRw" v-permission="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_RWAPPLY">{{ $t('LK_SHENQING') }}</iButton>
->>>>>>> f89057c5af9d985598cdee7fe7f8c14c5af825ea
 			</div>
 		</div>
 		<iFormGroup row="2" icon inline v-permission="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_APPLYRWTXT">
