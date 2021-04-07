@@ -28,49 +28,49 @@
 		<iSearch class="margin-bottom20" :title="$t('LK_CAIGOUXIANGMUXINXI')" tabCard>
 			<el-form>
 				<el-form-item :label="$t('LK_LINGJIANCAIGOUXIANGMULEIXING')">
-					<iSelect v-model="batch.type">
+					<iSelect :placeholder="$t('LK_QINGXUANZE')" v-model="batch.type">
 						<el-option :value="item.id" :label="item.name"
 							v-for="(item, index) in fromGroup.PART_PROJECT_TYPE" :key="index"></el-option>
 					</iSelect>
 				</el-form-item>
 				<el-form-item :label="$t('LK_LINIEBUMEN')">
-					<iSelect v-model="batch.linieDept">
+					<iSelect :placeholder="$t('LK_QINGXUANZE')" v-model="batch.linieDept">
 						<el-option :value="item.id" :label="item.name" v-for="(item, index) in fromGroup.LINIE_DEPT"
 							:key="index"></el-option>
 					</iSelect>
 				</el-form-item>
 				<el-form-item label="LINIE">
-					<iSelect v-model="linie" value-key="id">
+					<iSelect :placeholder="$t('LK_QINGXUANZE')" v-model="linie" value-key="id">
 						<el-option :value="item" :label="item.name" v-for="(item, index) in fromGroup.LINIE"
 							:key="index"></el-option>
 					</iSelect>
 				</el-form-item>
 				<el-form-item :label="$t('LK_LINGJIANLEIXING')">
-					<iSelect v-model="batch.partType">
+					<iSelect :placeholder="$t('LK_QINGXUANZE')" v-model="batch.partType">
 						<el-option :value="item.id" :label="item.name" v-for="(item, index) in fromGroup.PART_TYPE"
 							:key="index"></el-option>
 					</iSelect>
 				</el-form-item>
 				<el-form-item :label="$t('LK_CHEXINGXIANGMU')">
-					<iSelect v-model="cartypeProject" value-key="id">
+					<iSelect :placeholder="$t('LK_QINGXUANZE')" v-model="cartypeProject" value-key="id">
 						<el-option :value="item" :label="item.name" v-for="(item, index) in fromGroup.CAR_TYPE_PRO"
 							:key="index"></el-option>
 					</iSelect>
 				</el-form-item>
 				<el-form-item :label="$t('LK_CAIGOUGONGCHANG')">
-					<iSelect v-model="batch.procureFactory">
+					<iSelect :placeholder="$t('LK_QINGXUANZE')" v-model="batch.procureFactory">
 						<el-option :value="item.id" :label="item.name"
 							v-for="(item, index) in fromGroup.PURCHASE_FACTORY" :key="index"></el-option>
 					</iSelect>
 				</el-form-item>
 				<el-form-item :label="$t('LK_DANWEI')">
-					<iSelect v-model="batch.unit">
+					<iSelect :placeholder="$t('LK_QINGXUANZE')" v-model="batch.unit">
 						<el-option :value="item.id" :label="item.name" v-for="(item, index) in fromGroup.UNIT"
 							:key="index"></el-option>
 					</iSelect>
 				</el-form-item>
 				<el-form-item :label="$t('LK_CFKONGZHIYUAN')">
-					<iSelect v-model="batch.cfController">
+					<iSelect :placeholder="$t('LK_QINGXUANZE')" v-model="batch.cfController">
 						<el-option :value="item.id" :label="item.name" v-for="(item, index) in fromGroup.CF_CONTROL"
 							:key="index"></el-option>
 					</iSelect>
