@@ -2,6 +2,7 @@ const path = require('path')
 const resolve = dir => path.join(__dirname, dir)
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 const CompressionPlugin = require("compression-webpack-plugin");
+const ChangeNginxConfig = require(resolve('./loadersPlugins/pluginTranslateNginxConfig'))
 const px2rem = require('postcss-px2rem')
 const postcss = px2rem({
     remUnit: 16
@@ -44,7 +45,7 @@ module.exports = {
     },
     configureWebpack: config => {
         //为生产环境移除console debugger 代码压缩
-        if (process.env.NODE_ENV == 'production') {
+        if (process.env.NODE_ENV !== 'dev') {
             config.plugins.push(
                 new UglifyJsPlugin({
                     uglifyOptions: {
@@ -56,7 +57,8 @@ module.exports = {
                     },
                     sourceMap: false,
                     parallel: true
-                })
+                }),
+                new ChangeNginxConfig()
             )
         }
         config["externals"] = {
