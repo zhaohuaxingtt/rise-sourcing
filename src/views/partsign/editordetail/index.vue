@@ -37,7 +37,7 @@
           <enquiry ref="enquiry" class="enquiry" :data="partDetails" />
         </el-tab-pane>
         <el-tab-pane :label="$t('LK_MEICHEYONGLIANG')" v-permission="PARTSIGN_EDITORDETAIL_USAGEPERVEHICLE">
-          <volumeUnconfirmed ref="volumeUnconfirmed" class="volumeUnconfirmed" :data="partDetails" @updateVersion="updateVersion" />
+          <volumeUnconfirmed ref="volumeUnconfirmed" class="volumeUnconfirmed" :data="partDetails" @updateVersion="updateVolumeVersion" />
           <volume ref="volume" class="volume" :data="partDetails" />
         </el-tab-pane>
       </iTabs-list>
@@ -176,7 +176,7 @@ export default {
     log() {
       window.open(`/#/log?recordId=${ this.partDetails.tpPartID }`, '_blank')
     },
-    updateVersion() {
+    updateVolumeVersion() {
       this.$refs.volumeUnconfirmed.getPerCarDosageVersion()
       this.$refs.volume.getVolume()
     },
