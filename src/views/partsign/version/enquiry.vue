@@ -4,7 +4,7 @@
       <div class="header clearFloat">
         <span class="title">{{ $t('LK_QUANBUBANBEN') }}</span>
         <div class="control">
-          <iButton @click="download">{{ $t('LK_XIAZAI') }}</iButton>
+          <iButton v-permission="PARTSIGN_EDITORDETAIL_ENQUIRY_VERSION_DOWNLOAD" @click="download">{{ $t('LK_XIAZAI') }}</iButton>
         </div>
       </div>
       <div class="body margin-top25">
