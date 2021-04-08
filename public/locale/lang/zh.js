@@ -644,7 +644,11 @@
         "LK_QINGXUANZHEXINXIFENLEI": '请选择信息分类', //请选择信息分类
         "LK_QINGXUANZHECHEXINGXIANGMU": '请选择车型项目', //请选择车型项目
         "LK_ZHINENGSHANGCHUANWENJIAN": '只能上传.xlsx文件', //只能上传.xlsx文件
-        'LK_QUEDING': '确定' //确定
+        'LK_QUEDING': '确定', //确定
+        'LK_SHIFOUJIARUYIYOURFQ': '是否加入已有RFQ',//是否加入已有RFQ
+        'LK_SHIFOUZUHEXINJIANRFQ': '是否组合新建RFQ',//是否组合新建RFQ
+        'LK_UpdateDate':'操作时间',//操作时间
+        'LK_RFQLIST':'RFQ列表'//RFQ列表
             /*
             <!------------------------------------------------------------------------>
             <!--                                                                   --->

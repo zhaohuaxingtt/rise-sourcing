@@ -111,10 +111,10 @@ export const form = {
 
 // addRfq
 export const addRfqTitle =[
-	{props:'id',name:'RFQ#'},
-	{props:'rfqName',name:'RFQ名称'},
-	{props:'currentStatus',name:'RFQ状态'},
-	{props:'updateDate',name:'操作时间'},
+	{props:'id',name:'RFQ#',key: 'RFQ#'},
+	{props:'rfqName',name:'RFQ名称',key: 'LK_RFQMINGCHENG',},
+	{props:'currentStatus',name:'RFQ状态',key: 'LK_RFQZHUANGTAI'},
+	{props:'updateDate',name:'操作时间',key: 'LK_UpdateDate'},
 
 ]
 
