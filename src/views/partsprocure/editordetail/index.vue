@@ -214,7 +214,7 @@
 			</el-tab-pane>
 			<el-tab-pane :label="$t('LK_LINGJIANCHANLIANGJIHUA')"
 				v-permission="PARTSPROCURE_EDITORDETAIL_PARTSPRODUCTIONPLAN">
-				<outputPlan ref="outputPlan" :params="infoItem" />
+				<outputPlan ref="outputPlan" :params="infoItem" @updateStartYear="updateStartYear" />
 				<outputRecord ref="outputRecord" class="margin-top20" :params="infoItem" @updateOutput="updateOutput" />
 				<volume ref="volume" class="margin-top20" :params="infoItem" />
 			</el-tab-pane>
@@ -477,6 +477,12 @@
 			},
 			// 下拉框逻辑提示
 			tips() {},
+			updateStartYear(startYear) {
+				this.$refs.outputRecord.updateStartYear(startYear)
+			},
+			updateOutput(data) {
+				this.$refs.outputPlan.updateOutput(data)
+			},
 		},
 	};
 </script>
