@@ -33,6 +33,7 @@
           </iCard>
         </el-tab-pane>
         <el-tab-pane :label="$t('LK_XUNJIAZILIAO')" v-permission="PARTSIGN_EDITORDETAIL_INQUIRYINFORMATION">
+          <enquiryUnconfirmed :data="partDetails" />
           <enquiry :data="partDetails" />
         </el-tab-pane>
         <el-tab-pane :label="$t('LK_MEICHEYONGLIANG')" v-permission="PARTSIGN_EDITORDETAIL_USAGEPERVEHICLE">
@@ -53,7 +54,8 @@
 <script>
 import { iPage, iButton, iCard, iTabsList, icon, iMessage ,iMessageBox} from "@/components";
 import partInfo from "./components/partInfo";
-import enquiry from "./components/enquiry";
+import enquiry from "./components/enquiry/enquiry";
+import enquiryUnconfirmed from "./components/enquiry/unconfirmed";
 import volume from "./components/volume/volume";
 import unconfirmed from "./components/volume/unconfirmed";
 import backItems from "../home/components/backItems";
@@ -76,7 +78,8 @@ export default {
     backItems,
     changeItems,
     unconfirmed,
-    logButton
+    logButton,
+    enquiryUnconfirmed
   },
   data() {
     return {

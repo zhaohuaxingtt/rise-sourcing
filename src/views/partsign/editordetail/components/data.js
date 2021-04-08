@@ -112,8 +112,8 @@ export const enquiryTableTitle = [
   { props: 'uploadBy', name: '上传人', key: 'LK_SHANGCHUANREN', tooltip: true }
 ]
 
-export const unconfirmedTableTitle = [
-  { props: 'versionNum', name: '版本号', key: 'LK_BANBENHAO', tooltip: true },
+export const volumeUnconfirmedTableTitle = [
+  { props: 'version', name: '版本号', key: 'LK_BANBENHAO', tooltip: true },
   { props: 'tpId', name: '信息流水单号', key: 'LK_XINXILIUSHUIDANHAO', tooltip: true },
   { props: 'maintainerId', name: '维护人', key: 'LK_WEIHUREN', tooltip: true },
   { props: 'publishDate', name: '推送时间', key: 'LK_TUISONGSHIJIAN', tooltip: true },
@@ -145,4 +145,12 @@ export const logTableTitle = [
   { props: 'b', name: '发生时间', key: 'LK_FASHENGSHIJIAN' },
   { props: 'c', name: '操作人', key: 'LK_CAOZUOREN' },
   { props: 'd', name: '备注', key: 'LK_BEIZHU' }
+]
+
+export const enquiryUnconfirmedTableTitle = [
+	{ props: 'version', name: '版本号', key: 'LK_BANBENHAO', tooltip: true },
+  { props: 'tpId', name: '信息流水单号', key: 'LK_XINXILIUSHUIDANHAO', tooltip: true },
+  { props: 'uploadBy', name: '上传人', key: 'LK_SHANGCHUANREN', tooltip: true },
+  { props: 'createDate', name: '上传日期', key: 'LK_SHANGCHUANRIQI', tooltip: true },
+  { props: 'versionStatus', name: '版本状态', key: 'LK_BANBENZHUANGTAI', tooltip: true }
 ]

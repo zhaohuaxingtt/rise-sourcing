@@ -3,26 +3,26 @@
     <div class="header clearFloat">
       <span class="title">{{ $t('LK_DAIQUERENBANBEN') }}</span>
       <div class="control">
-        <iButton @click="confirm" :loading="confirmLoading" v-permission="PARTSIGN_EDITORDETAIL_UNCONFIRMED_CONFIRM">{{ $t('LK_QUEREN') }}</iButton>
-        <iButton @click="reject" v-permission="PARTSIGN_EDITORDETAIL_UNCONFIRMED_REFUSE">{{ $t('LK_JUJUE') }}</iButton>
-        <iButton @click="download" v-permission="PARTSIGN_EDITORDETAIL_UNCONFIRMED_EXPORT">{{ $t('LK_DAOCHU') }}</iButton>
+        <iButton @click="confirm" :loading="confirmLoading" v-permission="PARTSIGN_EDITORDETAIL_ENQUIRY_UNCONFIRMED_CONFIRM">{{ $t('LK_QUEREN') }}</iButton>
+        <iButton @click="reject" v-permission="PARTSIGN_EDITORDETAIL_ENQUIRY_UNCONFIRMED_REFUSE">{{ $t('LK_JUJUE') }}</iButton>
+        <iButton @click="download" v-permission="PARTSIGN_EDITORDETAIL_ENQUIRY_UNCONFIRMED_EXPORT">{{ $t('LK_DAOCHU') }}</iButton>
       </div>
     </div>
     <div class="body margin-top27">
       <tableList class="table" index :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="loading" @handleSelectionChange="handleSelectionChange">
         <template #version="scope">
-          <span class="link-underline" @click="volume(scope.row)">{{ scope.row.version }}</span>
+          <span class="link-underline" @click="enquiry(scope.row)">{{ scope.row.version }}</span>
         </template>
-        <template #publishDate="scope">
-          <span>{{ scope.row.publishDate | dateFilter }}</span>
+        <template #createDate="scope">
+          <span>{{ scope.row.createDate | dateFilter }}</span>
         </template>
       </tableList>
     </div>
     <div class="footer margin-top30">
       <iPagination v-update
         class="pagination"
-        @size-change="handleSizeChange($event, getPerCarDosageVersion)"
-        @current-change="handleCurrentChange($event, getPerCarDosageVersion)"
+        @size-change="handleSizeChange($event, getAttachmentVersion)"
+        @current-change="handleCurrentChange($event, getAttachmentVersion)"
         background
         :current-page="page.currPage"
         :page-sizes="page.pageSizes"
@@ -31,23 +31,23 @@
         :total="page.totalCount" />
     </div>
     <backItems class="backItems" v-model="visible" :title="$t('LK_JUJUE')" @sure="refuseSure" :repeatClick="rejectLoading" />
-    <volumeDialog :visible.sync="volumeVisible" :volumeParams="volumeParams" />
+    <enquiryDialog :visible.sync="enquiryVisible" :params="params" />
   </iCard>
 </template>
 
 <script>
 import { iCard, iButton, iPagination, iMessage } from '@/components'
 import tableList from '../tableList'
-import { volumeUnconfirmedTableTitle as tableTitle } from '../data'
+import { enquiryUnconfirmedTableTitle as tableTitle } from '../data'
 import backItems from '@/views/partsign/home/components/backItems'
-import { getPerCarDosageVersion, putPerCarDosage } from '@/api/partsign/editordetail'
+import { getAttachmentVersion, patchAttachmentVersion } from '@/api/partsign/editordetail'
 import { pageMixins } from '@/utils/pageMixins'
-import volumeDialog from '../volumeDialog'
+import enquiryDialog from '../enquiryDialog'
 import filters from '@/utils/filters'
 import { excelExport } from '@/utils/filedowLoad'
 
 export default {
-  components: { iCard, iButton, iPagination, tableList, backItems, volumeDialog },
+  components: { iCard, iButton, iPagination, tableList, backItems, enquiryDialog },
   mixins: [ pageMixins, filters ],
   props: {
     data: {
@@ -64,29 +64,37 @@ export default {
       multipleSelection: [],
       loading: false,
       visible: false,
-      volumeVisible: false,
-      volumeParams: {},
+      enquiryVisible: false,
+      params: {},
       confirmLoading: false,
       rejectLoading: false
     }
   },
   created() {
-    this.getPerCarDosageVersion()
+    this.getAttachmentVersion()
   },
   methods: {
-    getPerCarDosageVersion() {
+    getAttachmentVersion() {
       this.loading = true
 
-      getPerCarDosageVersion({
+      getAttachmentVersion({
         currPage: this.page.currPage,
         pageSize: this.page.pageSize,
         status: 0,
-        tpId: this.data.tpPartID
+        purchasingRequirementObjectId: this.data.purchasingRequirementTargetId
       })
         .then(res => {
-          this.tableListData = res.data.tpRecordList
+          if (res.code != 200) return iMessage.error(`${ this.$i18n.locale === 'zh' ? res.desZh : res.desEn }`)
+
+          if (res.data.attachmentVersionVOS) {
+            this.tableListData = Array.isArray(res.data.attachmentVersionVOS.tpRecordList) ? res.data.attachmentVersionVOS.tpRecordList : []
+            this.page.totalCount = res.data.attachmentVersionVOS.totalCount || 0
+          } else {
+            this.tableListData = []
+            this.page.totalCount = 0
+          }
+
           this.display = !!this.tableListData.length
-          this.page.totalCount = res.data.totalCount
           this.loading = false
         })
         .catch(() => this.loading = false)
@@ -98,13 +106,10 @@ export default {
       if (this.multipleSelection.length !== 1) return iMessage.warn(this.$t('LK_QINGXUANZHEYITIAOXUYAOQUEREDEBANBEN'))
       const data = this.multipleSelection[0]
       this.confirmLoading = true
-      putPerCarDosage({
-        updateConfirmScenes: {
-          carTypeConfigId: data.carTypeConfigId,
-          purchasingRequirementTargetId: data.purchasingRequirementTargetId  + '',
-          version: data.version,
-          status: "1"
-        }
+      patchAttachmentVersion({
+        purchasingRequirementObjectId: data.purchasingRequirementTargetId,
+        version: data.version,
+        status: "1"
       })
         .then(res => {
           if(res.code == 200){
@@ -112,8 +117,9 @@ export default {
             this.confirmLoading = false
             this.$emit('updateVersion')
             this.multipleSelection = []
+            this.getAttachmentVersion()
           }else{
-             iMessage.error(res.desZh)
+             iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
              this.confirmLoading = false
           }
         })
@@ -128,24 +134,21 @@ export default {
       const data = this.multipleSelection[0]
 
       this.rejectLoading = true
-      putPerCarDosage({
-        updateConfirmScenes: {
-          carTypeConfigId: data.carTypeConfigId,
-          purchasingRequirementTargetId: data.purchasingRequirementTargetId  + '',
-          version: data.version,
-          refuseReason: reason,
-          status: "2"
-        }
+      patchAttachmentVersion({
+        purchasingRequirementObjectId: data.purchasingRequirementTargetId,
+        version: data.version,
+        refuseReason: reason,
+        status: "2"
       })
         .then(res => {
           if(res.code == 200){
             iMessage.success(this.$t('LK_CAOZUOCHENGGONG'))
             this.$emit('updateVersion')
-            this.getPerCarDosageVersion()
+            this.getAttachmentVersion()
             this.visible = false
             this.multipleSelection = []
           }else{
-            iMessage.error(res.desZh)
+            iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
             this.visible = false
           }
         })
@@ -155,9 +158,9 @@ export default {
       if (!this.multipleSelection.length) return iMessage.warn(this.$t('LK_QINGXUANZHEXUYAODAOCHUBANBEN'))
       excelExport(this.multipleSelection, this.tableTitle)
     },
-    volume(data) {
-      this.volumeVisible = true
-      this.volumeParams = { ...data, tpId: this.data.tpPartID }
+    enquiry(data) {
+      this.enquiryVisible = true
+      this.params = { ...data, purchasingRequirementTargetId: this.data.purchasingRequirementTargetId }
     },
   }
 }

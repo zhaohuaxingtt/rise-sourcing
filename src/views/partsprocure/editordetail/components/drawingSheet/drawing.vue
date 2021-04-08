@@ -156,9 +156,18 @@ export default {
     handleDelete() {
       if (!this.multipleSelection.length) return iMessage.warn(this.$t('LK_QINGXUANZHEXUYAOSHANCHUYOUJIAN'))
 
+      let deleteArr = []
+      for(let i = 0, item; (item = this.multipleSelection[i++]); ) {
+        if (item.source == 1) { // 1 外部NewPro  2 内部
+          iMessage.warn(`${ item.tpPartAttachmentName } 为外部系统文件，无法删除`)
+        } else {
+          deleteArr.push(item)
+        }
+      }
+
       // 后端删除
       this.deleteLoading = true
-      deleteFile({ ids: this.multipleSelection.map(item => item.id) })
+      deleteFile({ ids: deleteArr.map(item => item.id) })
         .then(res => {
           iMessage.success(this.$t('LK_SHANCHUCHENGGONG'))
           this.getInfoAnnexPage()

@@ -9,8 +9,8 @@
       </div>
       <div class="body margin-top25">
         <tableList index height="100%" :selection="false" class="table" :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="loading">
-          <template #versionNum="scope">
-            <span class="link-underline" @click="volume(scope.row)">{{ scope.row.versionNum }}</span>
+          <template #version="scope">
+            <span class="link-underline" @click="volume(scope.row)">{{ scope.row.version }}</span>
           </template>
           <template #publishDate="scope">
             <span>{{ scope.row.publishDate | dateFilter }}</span>
@@ -39,7 +39,7 @@ import { iPage, iCard, iPagination } from '@/components'
 import tableList from '@/views/partsign/editordetail/components/tableList'
 import volumeDialog from '@/views/partsign/editordetail/components/volumeDialog'
 import { getPerCarDosageVersion } from '@/api/partsign/editordetail'
-import { tableTitle } from './components/data'
+import { volumeTableTitle as tableTitle } from './components/data'
 import { pageMixins } from '@/utils/pageMixins'
 import filters from '@/utils/filters'
 
