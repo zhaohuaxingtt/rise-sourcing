@@ -13,7 +13,8 @@ export const iconData = [{
         acIcon: 'iconhomexuanzhong',
         active: false,
         key: 'first',
-        path: '/partsign',
+        // path: '/partsign',
+        path: "/organization/check",
         menuData: []
     },
     {
@@ -21,7 +22,8 @@ export const iconData = [{
         acIcon: 'iconworkbenchxuanzhong',
         active: false,
         key: 'tow',
-        path: '/partsprocure',
+        path: '/organization/organization',
+        // path: '/partsprocure',
         menuData: []
     },
     {
@@ -29,7 +31,8 @@ export const iconData = [{
         acIcon: 'iconcommonfunctionxuanzhong',
         active: false,
         key: 'three',
-        path: '/partsrfq',
+        // path: '/partsrfq',
+        path: '/organization/postmanagement',
         menuData: [{
             label: '任务中心',
             active: false,

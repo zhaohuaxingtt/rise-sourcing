@@ -1,16 +1,16 @@
 <template>
   <div class="logButton" @click="$emit('click')">
     <icon symbol name="iconrizhiwuzi" class="icon" />
-    <span>{{ $t('LK_RIZHI') }}</span>
+    <span>{{ $t("LK_RIZHI") }}</span>
   </div>
 </template>
 
 <script>
-import { icon } from '@/components'
+import { icon } from "@/components";
 
 export default {
-  components: { icon }  
-}
+  components: { icon },
+};
 </script>
 
 <style lang="scss" scoped>

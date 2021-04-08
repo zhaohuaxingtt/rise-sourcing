@@ -11,21 +11,21 @@ import store from '../store'
 // 按钮权限
 // eslint-disable-next-line no-undef
 Vue.directive('permission', {
-	inserted: function(el, binding) {
-		if (!store.state.permission.whiteBtnList[binding.expression]) {
-			if (binding.modifiers.disabled) {
-				el.classList.add("is-disabled")
-				// let textarea = el.getElementsByTagName("textarea")
-				// let input = el.getElementsByTagName("input")
-				// let arr = [...textarea,...input]
-				// arr.forEach(res => {
-				// 	res.setAttribute('disabled','disabled')
-				// })
-			} else {
-				el.parentNode.removeChild(el)
-			}
-		}
-	}
+    inserted: function(el, binding) {
+        if (!store.state.permission.whiteBtnList[binding.expression]) {
+            if (binding.modifiers.disabled) {
+                el.classList.add("is-disabled")
+                    // let textarea = el.getElementsByTagName("textarea")
+                    // let input = el.getElementsByTagName("input")
+                    // let arr = [...textarea,...input]
+                    // arr.forEach(res => {
+                    // 	res.setAttribute('disabled','disabled')
+                    // })
+            } else {
+                el.parentNode.removeChild(el)
+            }
+        }
+    }
 });
 //切换I8n动态更新element值
 // eslint-disable-next-line no-undef
@@ -34,6 +34,39 @@ Vue.directive('update', {
         vnode.key = Hash()
     }
 });
+
+// 实现拖拽功能
+// eslint-disable-next-line no-undef
+Vue.directive('dragabled', {
+    bind: function(el, binding, vnode, oldVnode) {
+        if (!binding) return
+        el.onmousedown = (e) => {
+            // 鼠标按下，计算当前元素距离可视区的距离
+            let disX = e.clientX;
+            let disY = e.clientY;
+            el.style.cursor = 'move';
+
+            document.onmousemove = function(e) {
+                e.preventDefault(); // 移动时禁用默认事件
+
+                // 通过事件委托，计算移动的距离 
+                const left = e.clientX - disX;
+                disX = e.clientX;
+                el.scrollLeft += -left;
+
+                const top = e.clientY - disY;
+                disY = e.clientY;
+                el.scrollTop += -top;
+            };
+
+            document.onmouseup = function(e) {
+                el.style.cursor = 'auto';
+                document.onmousemove = null;
+                document.onmouseup = null;
+            };
+        }
+    }
+})
 
 export function Hash() {
     return parseInt(Math.random() * 1000000000)

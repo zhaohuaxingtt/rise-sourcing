@@ -645,6 +645,13 @@
         <!------------------------------------------------------------------------>
         */
         //
-
+        // 2021-04-07 Work Stream 2
+        'LK_ZUZHIJIGOUBIANMA': 'Organization code', //组织机构编码
+        'LK_ZUZHIJIGOUMINGCHENG': 'Name of Organization', //组织机构名称
+        'LK_ZUZHIJIGOUJIANMA': 'Organization simple code', //组织机构编码
+        'LK_ZUZHIJIGOUJIANCHENG': 'Abbreviation for organization', //组织机构编码
+        'LK_GANGWEIBIANMA': 'Job code', //岗位编码
+        'LK_GANGWEIQUANCHENG': 'Full name of post', //岗位全称
+        'LK_ZUZHILINGDAO': 'Organizational leadership', //组织领导
     })
 }))

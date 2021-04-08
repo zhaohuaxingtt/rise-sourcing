@@ -134,6 +134,34 @@ export const staticRouter = [{
                 name: "log",
                 component: () =>
                     import ("@/views/log/home"),
+            },
+            /** work stream 2 组织/用户权限 */
+            {
+                path: '/organization/check',
+                name: 'organizationcheck',
+                meta: {
+                    title: '组织管理-组织查看'
+                },
+                component: () =>
+                    import (`@/views/organization/home`)
+            },
+            {
+                path: '/organization/organization',
+                name: 'organization',
+                meta: {
+                    title: '组织管理-组织管理'
+                },
+                component: () =>
+                    import (`@/views/organization/management`)
+            },
+            {
+                path: '/organization/postmanagement',
+                name: '/postmanagement',
+                meta: {
+                    title: '岗位管理-岗位管理'
+                },
+                component: () =>
+                    import (`@/views/organization/jobmanagement`)
             }
         ],
     },
@@ -163,7 +191,7 @@ export const staticRouter = [{
         },
         component: () =>
             import (`@/views/404`)
-    }
+    },
 ]
 
 // eslint-disable-next-line no-undef
