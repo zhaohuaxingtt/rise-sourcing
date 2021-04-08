@@ -27,8 +27,8 @@
       </tableList>
       <iPagination v-update
         class="pagination"
-        @size-change="handleSizeChange($event, getVolume)"
-        @current-change="handleCurrentChange($event, getVolume)"
+        @size-change="handleSizeChange($event, getEnquiry)"
+        @current-change="handleCurrentChange($event, getEnquiry)"
         background
         :current-page="page.currPage"
         :page-sizes="page.pageSizes"
@@ -69,10 +69,10 @@ export default {
     }
   },
   created() {
-    this.getVolume()
+    this.getEnquiry()
   },
   methods: {
-    async getVolume() {
+    async getEnquiry() {
       this.loading = true
 
       try {

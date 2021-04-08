@@ -33,11 +33,11 @@
           </iCard>
         </el-tab-pane>
         <el-tab-pane :label="$t('LK_XUNJIAZILIAO')" v-permission="PARTSIGN_EDITORDETAIL_INQUIRYINFORMATION">
-          <enquiryUnconfirmed :data="partDetails" />
-          <enquiry :data="partDetails" />
+          <enquiryUnconfirmed ref="enquiryUnconfirmed" class="enquiryUnconfirmed" :data="partDetails" @updateVersion="updateEnquiryVersion" />
+          <enquiry ref="enquiry" class="enquiry" :data="partDetails" />
         </el-tab-pane>
         <el-tab-pane :label="$t('LK_MEICHEYONGLIANG')" v-permission="PARTSIGN_EDITORDETAIL_USAGEPERVEHICLE">
-          <unconfirmed ref="unconfirmed" class="unconfirmed" :data="partDetails" @updateVersion="updateVersion" />
+          <volumeUnconfirmed ref="volumeUnconfirmed" class="volumeUnconfirmed" :data="partDetails" @updateVersion="updateVersion" />
           <volume ref="volume" class="volume" :data="partDetails" />
         </el-tab-pane>
       </iTabs-list>
@@ -57,7 +57,7 @@ import partInfo from "./components/partInfo";
 import enquiry from "./components/enquiry/enquiry";
 import enquiryUnconfirmed from "./components/enquiry/unconfirmed";
 import volume from "./components/volume/volume";
-import unconfirmed from "./components/volume/unconfirmed";
+import volumeUnconfirmed from "./components/volume/unconfirmed";
 import backItems from "../home/components/backItems";
 import changeItems from "../home/components/changeItems";
 import { partDetailTitle, partTitle } from "./components/data";
@@ -77,7 +77,7 @@ export default {
     volume,
     backItems,
     changeItems,
-    unconfirmed,
+    volumeUnconfirmed,
     logButton,
     enquiryUnconfirmed
   },
@@ -105,7 +105,7 @@ export default {
       
     },
     getPartInfo() {
-		  this.partDetails = JSON.parse(localStorage.getItem('tpPartInfoVO')) || {};
+      this.partDetails = JSON.parse(localStorage.getItem('tpPartInfoVO')) || {};
     },
     //签收
     save() {
@@ -177,9 +177,13 @@ export default {
       window.open(`/#/log?recordId=${ this.partDetails.tpPartID }`, '_blank')
     },
     updateVersion() {
-      this.$refs.unconfirmed.getPerCarDosageVersion()
+      this.$refs.volumeUnconfirmed.getPerCarDosageVersion()
       this.$refs.volume.getVolume()
     },
+    updateEnquiryVersion() {
+      this.$refs.enquiryUnconfirmed.getAttachmentVersion()
+      this.$refs.enquiry.getEnquiry()
+    }
   },
 };
 </script>
@@ -214,7 +218,8 @@ export default {
   margin-top: 15px;
 }
 
-.unconfirmed + .volume {
+.volumeUnconfirmed + .volume,
+.enquiryUnconfirmed + .enquiry {
 	margin-top: 30px;
 }
 </style>
