@@ -144,7 +144,6 @@ export default {
           if(res.code == 200){
             iMessage.success(this.$t('LK_CAOZUOCHENGGONG'))
             this.$emit('updateVersion')
-            this.getAttachmentVersion()
             this.visible = false
             this.multipleSelection = []
           }else{
