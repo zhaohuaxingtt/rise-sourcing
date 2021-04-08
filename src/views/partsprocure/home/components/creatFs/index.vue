@@ -1,6 +1,6 @@
 <template>
 	<div class="fs margin-left10 margin-right10">
-		<iButton v-permission="PARTSPROCURE_GENERATEFSBUTTON" @click="creatFs()">
+		<iButton  @click="creatFs()">
 			{{ $t('partsprocure.PARTSPROCUREGENERATEFSGSNR') }}
 		</iButton>
 		<!-- 单条插入RFQ表格 -->

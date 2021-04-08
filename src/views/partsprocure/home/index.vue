@@ -109,7 +109,7 @@
 				<iButton @click="openDiologChangeItems" v-permission="PARTSPROCURE_TRANSFER">
 				    {{ $t('partsprocure.PARTSPROCURETRANSFER') }}
 				</iButton>
-				<creatFs :projectIds="projectIds" @refresh="getTableListFn"></creatFs>
+				<creatFs :projectIds="projectIds" @refresh="getTableListFn" v-permission="PARTSPROCURE_GENERATEFSBUTTON"></creatFs>
              <!--  <iButton @click="creatFs" v-permission="PARTSPROCURE_GENERATEFSBUTTON">
                   {{ $t('partsprocure.PARTSPROCUREGENERATEFSGSNR') }}
                 </iButton> -->

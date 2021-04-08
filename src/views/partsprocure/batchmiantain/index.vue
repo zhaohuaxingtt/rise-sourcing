@@ -17,9 +17,10 @@
 				<iButton @click="back" v-permission="PARTSPROCURE_BATCHMIANTAIN_SAVE">{{
           $t("LK_FANHUI")
         }}</iButton>
-				<iButton @click="creatFs" v-permission="PARTSPROCURE_BATCHMIANTAIN_GENERATEFSNUMBER">
+			<!-- 	<iButton @click="creatFs" v-permission="PARTSPROCURE_BATCHMIANTAIN_GENERATEFSNUMBER">
 					{{ $t("LK_SHENGCHENGFSHAO") }}
-				</iButton>
+				</iButton> -->
+				<creatFs :projectIds="batch.purchaseProjectIds"  v-permission="PARTSPROCURE_BATCHMIANTAIN_GENERATEFSNUMBER"></creatFs>
 				<iButton @click="start" :loading="startLoding" v-permission="PARTSPROCURE_BATCHMIANTAIN_STARTINQUIRY">
 					{{ $t("LK_QIDONGXUNJIA") }}
 				</iButton>
@@ -136,6 +137,7 @@
 	import {
 		getPageGroup
 	} from "@/api/partsign/home";
+	import creatFs from "../home/components/creatFs"
 	export default {
 		components: {
 			iPage,
@@ -143,6 +145,7 @@
 			iSearch,
 			iSelect,
 			outputPlan,
+			creatFs
 		},
 		data() {
 			return {
