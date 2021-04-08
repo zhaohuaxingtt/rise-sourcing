@@ -635,8 +635,8 @@
         "LK_ZHINENGSHANGCHUANWENJIAN": 'Upload .xlsx file only', //只能上传.xlsx文件
         'LK_QUEDING': 'Confirm', //确定
 
-        'LK_SHIFOUJIARUYIYOURFQ': '是否加入已有RFQ Engilsh',//是否加入已有RFQ
-        'LK_SHIFOUZUHEXINJIANRFQ': '是否组合新建RFQ Engilsh', //是否组合新建RFQ
+        'LK_SHIFOUJIARUYIYOURFQ': 'Confirm to add existing RFQ',//是否加入已有RFQ
+        'LK_SHIFOUZUHEXINJIANRFQ': 'Confirm to group new RFQ', //是否组合新建RFQ
         'LK_UpdateDate':'Operating time',//操作时间
         'LK_RFQLIST':'RFQ List'//RFQ列表"
         // 'LK_XIANGNEIZHOUZHUANCAILIAOZHONGHEJIAGE':'翻箱前器具综合单价（RMB）', //箱内周转材料综合价格 
