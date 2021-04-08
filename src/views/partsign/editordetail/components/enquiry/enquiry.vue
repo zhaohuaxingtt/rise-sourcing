@@ -13,7 +13,6 @@
       <div class="control">
         <iButton @click="download" v-permission="PARTSIGN_EDITORDETAIL_ENQUIRY_DOWNLOAD">{{ $t('LK_XIAZAI') }}</iButton>
         <iButton @click="jump" v-permission="PARTSIGN_EDITORDETAIL_ENQUIRY_ALL">{{ $t('LK_CHAKANQUANBUBANBEN') }}</iButton>
-        <iButton @click="download" v-permission="PARTSIGN_EDITORDETAIL_ENQUIRY_EXPORT">{{ $t('LK_DAOCHU') }}</iButton>
       </div>
     </div>
     <div class="body margin-top27">
@@ -92,12 +91,11 @@ export default {
           this.version = versionRes.data.attachmentVersionVOS.tpRecordList[0].version || 'V1'
         }
 
-        //如果没有已确认的版本，不调用查询没车用量
         const infoRes = await getAttachment({
           version: this.version,
           currPage: this.page.currPage,
           pageSize: this.page.pageSize,
-          status: 1,
+          status: "1",
           purchasingRequirementTargetId: this.data.purchasingRequirementTargetId
         })
 
@@ -108,7 +106,6 @@ export default {
         if(infoRes.data.attachmentVOS){
           this.tableListData = infoRes.data.attachmentVOS.tpRecordList
           this.page.totalCount = infoRes.data.attachmentVOS.totalCount
-
         }
       } catch(e) {
         console.warn(e)

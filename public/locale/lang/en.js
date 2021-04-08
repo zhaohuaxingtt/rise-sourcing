@@ -638,7 +638,9 @@
         'LK_SHIFOUJIARUYIYOURFQ': '是否加入已有RFQ Engilsh',//是否加入已有RFQ
         'LK_SHIFOUZUHEXINJIANRFQ': '是否组合新建RFQ Engilsh', //是否组合新建RFQ
         'LK_UpdateDate':'Operating time',//操作时间
-        'LK_RFQLIST':'RFQ List'//RFQ列表"
+        'LK_RFQLIST':'RFQ List',//RFQ列表"
+        'LK_QINGXUANZHEYIGEXUYAOXIAZAIBANBEN': '', //请选择一个需要下载的版本
+        'LK_SUOXUANBANBENWUFUJIAN': ''//所选版本无附件
         // 'LK_XIANGNEIZHOUZHUANCAILIAOZHONGHEJIAGE':'翻箱前器具综合单价（RMB）', //箱内周转材料综合价格 
         /*
         <!------------------------------------------------------------------------>

@@ -648,7 +648,9 @@
         'LK_SHIFOUJIARUYIYOURFQ': '是否加入已有RFQ',//是否加入已有RFQ
         'LK_SHIFOUZUHEXINJIANRFQ': '是否组合新建RFQ',//是否组合新建RFQ
         'LK_UpdateDate':'操作时间',//操作时间
-        'LK_RFQLIST':'RFQ列表'//RFQ列表
+        'LK_RFQLIST':'RFQ列表',//RFQ列表
+        'LK_QINGXUANZHEYIGEXUYAOXIAZAIBANBEN': '请选择一个需要下载的版本', //请选择一个需要下载的版本
+        'LK_SUOXUANBANBENWUFUJIAN': '所选版本无附件'//所选版本无附件
             /*
             <!------------------------------------------------------------------------>
             <!--                                                                   --->

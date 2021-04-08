@@ -142,6 +142,9 @@ export default {
       if (!this.params.partNum) return iMessage.warn(this.$t('LK_QUESHIYOUXIAODELINGJIANBIANHAO'))
       const data = this.multipleSelection[0]
 
+      console.log('params', this.params)
+      return
+
       this.confirmLoading = true
       putMaterialGroup({
         id: this.info.id,
@@ -149,6 +152,7 @@ export default {
         stuffId: data.id,
         updateBy: this.userInfo.id,
         partNums: [this.params.partNum].join('&partNums='),
+        partPurchaseProId: this.params
       })
         .then((res) => {
           if (res.code == 200) {
