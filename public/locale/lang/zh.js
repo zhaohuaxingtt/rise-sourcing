@@ -369,7 +369,7 @@
         'LK_DENGJIPEIZHI': '等级配置', //等级配置
         'LK_DAOCHU': '导出', //导出
         'LK_DANGQIANLUNCI': '当前轮次', //当前轮次
-        'LK_DANWEI': '单位', //单位
+        'LK_DANWEI': '价格单位', //单位
         'LK_DAIQUERENBANBEN': '待确认版本', //待确认版本
         'LK_DAIBANSHIXIANG': '待办事项', //待办事项
         'LK_DAXIAOMB': '大小（MB）', //大小（MB）
