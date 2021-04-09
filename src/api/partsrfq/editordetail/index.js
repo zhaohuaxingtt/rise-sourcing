@@ -3,12 +3,13 @@ import axios from '@/utils/axios'
 const requst = axios(process.env.VUE_APP_RFQ)
 
 /*零件清单*/
+
 //获取零件采购列表。
-export function getPartSrcPrjs(parmars){
+export function getPartSrcPrjs(parmars) {
     return requst({
-        url:'/part-src-prjs',
-        method:'GET',
-        params:parmars
+        url: '/part-src-prjs',
+        method: 'GET',
+        params: parmars
     })
 }
 
@@ -122,12 +123,12 @@ export function getPic(parmars) {
 }
 
 //getBdl
-export function getBdlList(parmars){
+export function getBdlList(parmars) {
     return requst({
         url: '/rfqs/findByRfqs',
         method: 'POST',
         data: {
-            otherInfoPackage:parmars
+            otherInfoPackage: parmars
         }
     })
 }
@@ -138,5 +139,13 @@ export function updateRfq(params) {
         url: '/rfqs/updateRfq',
         method: 'PATCH',
         data: params
+    })
+}
+
+// 询价附件
+export function notifySuppliers(rfqId) {
+    return requst({
+        url: `/rfqs/notifySuppliers/${rfqId}`,
+        method: 'GET',
     })
 }

@@ -63,7 +63,7 @@ import tablelist from 'pages/partsrfq/components/tablelist'
 import {inquiryAttachmentTableTitle} from "./data";
 import {pageMixins} from "@/utils/pageMixins";
 import uploadButton from 'pages/partsrfq/components/uploadButton'
-import {deleteAnnex, getAllAnnex, uploadRfqAnnex} from "@/api/partsrfq/editordetail";
+import {deleteAnnex, getAllAnnex, uploadRfqAnnex, notifySuppliers} from "@/api/partsrfq/editordetail";
 import store from '@/store'
 import {downloadFile} from '@/api/file'
 import {rfqCommonFunMixins} from "pages/partsrfq/components/commonFun";
@@ -147,7 +147,10 @@ export default {
         this.getTableList()
       }
     },
-    notifyAllSuppliers() {
+    async notifyAllSuppliers() {
+      const id = this.$route.query.id
+      const res = await notifySuppliers(id)
+      this.resultMessage(res)
     },
     notifySuppliersWhoHaveQuoted() {
     },
