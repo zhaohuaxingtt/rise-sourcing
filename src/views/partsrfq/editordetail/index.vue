@@ -57,16 +57,15 @@
               <iText v-permission="PARTSRFQ_EDITORDETAIL_RFQNUMBER">{{ baseInfo.id }}</iText>
             </iFormItem>
             <iFormItem :label="$t('LK_RFQMINGCHENG')+':'" name="rfqName">
-                <iInput v-if="editStatus" v-model="baseInfo.rfqName"
-                        v-permission="PARTSRFQ_EDITORDETAIL_RFQNAME"></iInput>
-                <iText v-else v-permission="PARTSRFQ_EDITORDETAIL_RFQNAME">
-                  {{ baseInfo.rfqName }}
-                </iText>
+              <iInput v-if="editStatus" v-model="baseInfo.rfqName"
+                      v-permission="PARTSRFQ_EDITORDETAIL_RFQNAME"></iInput>
+              <iText v-else v-permission="PARTSRFQ_EDITORDETAIL_RFQNAME">
+                {{ baseInfo.rfqName }}
+              </iText>
             </iFormItem>
 
             <iFormItem :label="$t('LK_EP')+':'" name="ep">
-              <iInput v-if="editStatus" v-model="baseInfo.ep" v-permission="PARTSRFQ_EDITORDETAIL_EP"></iInput>
-              <iText v-else v-permission="PARTSRFQ_EDITORDETAIL_EP">{{ baseInfo.ep }}</iText>
+              <iText v-permission="PARTSRFQ_EDITORDETAIL_EP">{{ baseInfo.ep }}</iText>
             </iFormItem>
             <iFormItem :label="$t('LK_CF')+':'" name="cf">
               <iInput v-if="editStatus" v-model="baseInfo.cf" v-permission="PARTSRFQ_EDITORDETAIL_CF"></iInput>
@@ -85,21 +84,14 @@
               <iText v-permission="PARTSRFQ_EDITORDETAIL_INQUIRYBUYER">{{ baseInfo.buyerName }}</iText>
             </iFormItem>
             <iFormItem :label="$t('LK_MQ')+':'" name="mq">
-              <iInput v-if="editStatus" v-model="baseInfo.mq" v-permission="PARTSRFQ_EDITORDETAIL_MQ"></iInput>
-              <iText v-else v-permission="PARTSRFQ_EDITORDETAIL_MQ">{{ baseInfo.mq }}</iText>
+              <iText v-permission="PARTSRFQ_EDITORDETAIL_MQ">{{ baseInfo.mq }}</iText>
             </iFormItem>
             <iFormItem :label="$t('LK_DANGQIANLUNCI')+':'" name="currentRounds">
               <iText v-permission="PARTSRFQ_EDITORDETAIL_CURRENTROUND">{{ baseInfo.currentRounds }}</iText>
             </iFormItem>
             <iFormItem :label="$t('LK_LUNCILEIXING')+':'" name="roundsType">
-              <iText>
-                <template v-if="baseInfo.roundsType === '00'" v-permission="PARTSRFQ_EDITORDETAIL_ROUNDTYPE">
-                  {{ $t('LK_PUTONGLUNCI') }}
-                </template>
-                <template v-else-if="baseInfo.roundsType === '01'" v-permission="PARTSRFQ_EDITORDETAIL_ROUNDTYPE">
-                  {{ $t('LK_ZAIXIANJINGJIA') }}
-                </template>
-                <template v-else v-permission="PARTSRFQ_EDITORDETAIL_ROUNDTYPE"></template>
+              <iText v-permission="PARTSRFQ_EDITORDETAIL_ROUNDTYPE">
+                {{ baseInfo.roundsType }}
               </iText>
             </iFormItem>
           </div>
