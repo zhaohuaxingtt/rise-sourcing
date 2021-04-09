@@ -325,12 +325,10 @@ export default {
       let batch = {
         ...this.batch,
       };
-      console.log(batch);
       changeProcure({
         batch,
       }).then((res) => {
         if (res.data) {
-          console.error(res.data);
           iMessage.success(this.$t("LK_XIUGAICHENGGONG"));
         } else {
           iMessage.error(res.desZh);
