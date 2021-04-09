@@ -11,32 +11,40 @@
       <div class="clearFloat">
         <div class="floatright title-button-box">
           <template v-if="roundType === '00'">
-            <iButton @click="save" v-permission="PARTSRFQ_EDITORDETAIL_NEWRFQROUND_SAVE">{{$t('LK_BAOCUN')}}</iButton>
+            <iButton @click="save" v-permission="PARTSRFQ_EDITORDETAIL_NEWRFQROUND_SAVE">{{ $t('LK_BAOCUN') }}</iButton>
             <iButton @click="updateRfqStatus('06')" :disabled="!saveStaus"
                      v-permission="PARTSRFQ_EDITORDETAIL_NEWRFQROUND_SAND">{{ $t('LK_FASONGXUNJIA') }}
             </iButton>
           </template>
           <template v-else>
-            <iButton @click="saveAndCreate" v-permission="PARTSRFQ_EDITORDETAIL_NEWRFQROUND_SAVEANDCREATE">{{ $t('LK_BAOCUNBINGCHUANGJIAN') }}
+            <iButton @click="saveAndCreate" v-permission="PARTSRFQ_EDITORDETAIL_NEWRFQROUND_SAVEANDCREATE">
+              {{ $t('LK_BAOCUNBINGCHUANGJIAN') }}
             </iButton>
           </template>
         </div>
       </div>
       <iFormGroup inline icon>
-        <iFormItem :label="$t('LK_LUNCILEIXING')" name="test" v-permission="PARTSRFQ_EDITORDETAIL_NEWRFQROUND_ROUNDTYPE">
+        <iFormItem :label="$t('LK_LUNCILEIXING')" name="test"
+                   v-permission="PARTSRFQ_EDITORDETAIL_NEWRFQROUND_ROUNDTYPE">
           <i-select v-model="roundType" @change="handleSelectChange">
-            <el-option v-for="items in roundTypeOptions" :key='items.code' :value='items.code' :label="items.name"/>
+            <el-option v-for="items in roundTypeOptions" :key='items.code' :value='items.code' :label="items.name" :disabled="items.disabled"/>
           </i-select>
         </iFormItem>
-        <iFormItem :label="$t('LK_BENLUNBAOJIAQIZHISHIJIAN')" name="test" v-if="roundType === '00'">
+        <iFormItem :label="$t('LK_BENLUNBAOJIAQIZHISHIJIAN')" name="test" v-if="['00', '01'].includes(roundType)">
           <div class="flex">
             <el-date-picker type="date" :placeholder="$t('LK_QINGXUANZE')" v-model="startTime"
-                            v-permission="PARTSRFQ_EDITORDETAIL_NEWRFQROUND_STARTTIME"></el-date-picker>
+                            v-permission="PARTSRFQ_EDITORDETAIL_NEWRFQROUND_STARTTIME" disabled></el-date-picker>
           </div>
         </iFormItem>
-        <iFormItem label="" name="test" v-if="roundType === '00'">
+        <iFormItem label="" name="test" v-if="['00', '01'].includes(roundType)">
           <el-date-picker type="date" :placeholder="$t('LK_QINGXUANZE')" v-model="endTime"
-                          v-permission="PARTSRFQ_EDITORDETAIL_NEWRFQROUND_ENDTIME"></el-date-picker>
+                          v-permission="PARTSRFQ_EDITORDETAIL_NEWRFQROUND_ENDTIME"
+                          :picker-options="{
+                            disabledDate(time) {
+                              return time.getTime() < Date.now()
+                            }
+                          }"
+          ></el-date-picker>
         </iFormItem>
       </iFormGroup>
       <tablelist
@@ -48,6 +56,7 @@
           :index="true"
           @handleSelectionChange="handleSelectionChange"
           :select-props="['cbdTemplateId']"
+          :round-type="roundType"
       ></tablelist>
       <tablelist
           ref="multipleTable"
@@ -105,7 +114,8 @@ export default {
       endTime: '',
       tableTitle,
       tableTitle2,
-      saveStaus: false
+      saveStaus: false,
+      roundsPhase: ''
     }
   },
   created() {
@@ -128,11 +138,13 @@ export default {
         try {
           const res = await getRfqDataList(req)
           this.tableListData = res.data.rfqRoundBdlVO.rfqBdlVOList;
+          this.roundsPhase = this.tableListData[0].roundsPhase
           this.page.currPage = res.data.rfqRoundBdlVO.pageNum
           this.page.pageSize = res.data.rfqRoundBdlVO.pageSize
           this.page.totalCount = res.data.rfqRoundBdlVO.total
           this.setTableRowSelected()
           this.tableLoading = false;
+          this.initTimeData()
         } catch {
           this.tableLoading = false;
         }
@@ -150,9 +162,12 @@ export default {
     },
     async getRoundTypeOptions() {
       const res = await findBySearches('04')
-      this.roundTypeOptions = res.data
+      this.roundTypeOptions = res.data.map(item => {
+        item.disabled = item.code === '02'
+        return item
+      })
       this.roundType = this.roundTypeOptions[0].code
-    },
+         },
     async save() {
       if (this.selectTableData.length === 0) {
         return iMessage.warn(this.$t('LK_NINDANGQIANHAIWEIXUANZERENWU'));
@@ -170,7 +185,7 @@ export default {
           }
         }
         const res = await addRfq(req)
-        this.resultMessage(res, ()=>{
+        this.resultMessage(res, () => {
           this.saveStaus = true
         })
       }
@@ -208,19 +223,29 @@ export default {
       if (this.roundType === '00') {
         // eslint-disable-next-line no-undef
         this.startTime = moment().format('YYYY-MM-DD')
-        // eslint-disable-next-line no-undef
-        this.endTime = moment().add(7, 'd').format('YYYY-MM-DD')
+        if (this.roundsPhase === '01') {
+          // eslint-disable-next-line no-undef
+          this.endTime = moment().add(14, 'd').format('YYYY-MM-DD')
+        } else if (this.roundsPhase === '02') {
+          // eslint-disable-next-line no-undef
+          this.endTime = moment().add(7, 'd').format('YYYY-MM-DD')
+        }
       }
     },
     handleSelectChange(val) {
       if (val === '00') {
         this.initTimeData()
+      } else if (val === '01') {
+        this.endTime = ''
       }
     },
     setTableRowSelected() {
       this.$nextTick(() => {
         this.tableListData.map(item => {
           if (item.isChecked) {
+            this.$refs.multipleTable.$refs.newRoundTable.toggleRowSelection(item, true)
+          }
+          if (item.isMbdl === '1' && this.roundsPhase === '01' && this.roundType === '00') {
             this.$refs.multipleTable.$refs.newRoundTable.toggleRowSelection(item, true)
           }
         })
@@ -232,7 +257,6 @@ export default {
       if (val) {
         this.saveStaus = false
         this.getTableList()
-        this.initTimeData()
       }
     }
   }
