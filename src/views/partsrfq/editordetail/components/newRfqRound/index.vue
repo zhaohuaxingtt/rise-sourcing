@@ -245,7 +245,7 @@ export default {
           if (item.isChecked) {
             this.$refs.multipleTable.$refs.newRoundTable.toggleRowSelection(item, true)
           }
-          if (item.isMbdl === '1' && this.roundsPhase === '01' && this.roundType === '00') {
+          if (item.isMbdl === '2' && this.roundsPhase === '01' && this.roundType === '00') {
             this.$refs.multipleTable.$refs.newRoundTable.toggleRowSelection(item, true)
           }
         })
