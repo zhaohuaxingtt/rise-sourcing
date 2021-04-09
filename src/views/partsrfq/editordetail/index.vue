@@ -64,11 +64,11 @@
                 </iText>
             </iFormItem>
 
-            <iFormItem :label="$t('rfq.EP')+':'" name="ep">
+            <iFormItem :label="$t('LK_EP')+':'" name="ep">
               <iInput v-if="editStatus" v-model="baseInfo.ep" v-permission="PARTSRFQ_EDITORDETAIL_EP"></iInput>
               <iText v-else v-permission="PARTSRFQ_EDITORDETAIL_EP">{{ baseInfo.ep }}</iText>
             </iFormItem>
-            <iFormItem :label="$t('rfq.CF')+':'" name="cf">
+            <iFormItem :label="$t('LK_CF')+':'" name="cf">
               <iInput v-if="editStatus" v-model="baseInfo.cf" v-permission="PARTSRFQ_EDITORDETAIL_CF"></iInput>
               <iText v-else v-permission="PARTSRFQ_EDITORDETAIL_CF">{{ baseInfo.cf }}</iText>
             </iFormItem>
@@ -84,7 +84,7 @@
             <iFormItem :label="$t('LK_XUNJIACAIGOUYUAN')+':'" name="buyerName">
               <iText v-permission="PARTSRFQ_EDITORDETAIL_INQUIRYBUYER">{{ baseInfo.buyerName }}</iText>
             </iFormItem>
-            <iFormItem :label="$t('rfq.MQ')+':'" name="mq">
+            <iFormItem :label="$t('LK_MQ')+':'" name="mq">
               <iInput v-if="editStatus" v-model="baseInfo.mq" v-permission="PARTSRFQ_EDITORDETAIL_MQ"></iInput>
               <iText v-else v-permission="PARTSRFQ_EDITORDETAIL_MQ">{{ baseInfo.mq }}</iText>
             </iFormItem>
@@ -112,7 +112,7 @@
             <iFormItem label="LINIE：" name="linieNameZh">
               <iText v-permission="PARTSRFQ_EDITORDETAIL_LINE">{{ baseInfo.linieNameZh }}</iText>
             </iFormItem>
-            <iFormItem :label="$t('rfq.PL')+':'" name="test">
+            <iFormItem :label="$t('LK_PL')+':'" name="test">
               <iInput v-if="editStatus" v-model="baseInfo.pl" v-permission="PARTSRFQ_EDITORDETAIL_PL"></iInput>
               <iText v-else v-permission="PARTSRFQ_EDITORDETAIL_PL">{{ baseInfo.pl }}</iText>
             </iFormItem>

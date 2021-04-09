@@ -17,7 +17,7 @@
       <iSearch class="search margin-top10" icon>
         <el-form>
           <el-form-item :label="$t('LK_CHANGJIANGMINGCHNEG')">
-            <iInput v-model="search" class="input" :placeholder="$t('rfq.RFQPLEASEENTERQUERY')">
+            <iInput v-model="search" class="input" :placeholder="$t('LK_RFQPLEASEENTERQUERY')">
               <icon slot="suffix" name="iconshaixuankuangsousuo" />
             </iInput>
           </el-form-item>

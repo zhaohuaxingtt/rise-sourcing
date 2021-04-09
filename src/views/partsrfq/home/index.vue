@@ -20,27 +20,27 @@
           <iSearch class="margin-bottom20" :icon="true" @reset="handleSearchReset" @sure="getTableList"
                    :resetKey="PARTSRFQ_RESET" :searchKey="PARTSRFQ_SEARCH">
             <el-form>
-              <el-form-item :label="$t('rfq.RFQPARTNUMBERFSNRRFQBUYER')" style="width: 340px">
-                <iInput :placeholder="$t('rfq.RFQPLEASEENTERQUERY')" v-model="form.searchConditions"
+              <el-form-item :label="$t('LK_LINGJIANHAO_FSNR_RFQBIANHAO_CAIGOUYUAN')" style="width: 340px">
+                <iInput :placeholder="$t('LK_QINGXUANZE')" v-model="form.searchConditions"
                         v-permission="PARTSRFQ_SEARCHBOX"></iInput>
               </el-form-item>
-              <el-form-item :label="$t('rfq.RFQMODELPROJECT')">
-                <iSelect :placeholder="$t('rfq.RFQPLEASECHOOSE')" v-model="form.carType"
+              <el-form-item :label="$t('LK_CHEXINGXIANGMU')">
+                <iSelect :placeholder="$t('LK_QINGXUANZE')" v-model="form.carType"
                          v-permission="PARTSRFQ_MODELPROJECT">
                   <el-option value="" :label="$t('all') | capitalizeFilter"></el-option>
                   <el-option v-for="items in carTypeOptions" :key='items.code' :value='items.code' :label="items.name"/>
                 </iSelect>
               </el-form-item>
-              <el-form-item :label="$t('rfq.RFQPARTITEMTYPE')">
-                <iSelect :placeholder="$t('rfq.RFQPLEASECHOOSE')" v-model="form.partType"
+              <el-form-item :label="$t('LK_LINGJIANXIANGMULEIXING')">
+                <iSelect :placeholder="$t('LK_QINGXUANZE')" v-model="form.partType"
                          v-permission="PARTSRFQ_PARTITEMTYPE">
                   <el-option value="" :label="$t('all') | capitalizeFilter"></el-option>
                   <el-option v-for="items in partTypeOptions" :key='items.code' :value='items.code'
                              :label="items.name"/>
                 </iSelect>
               </el-form-item>
-              <el-form-item :label="$t('rfq.RFQRFQSTATUS')">
-                <iSelect :placeholder="$t('rfq.RFQPLEASECHOOSE')" v-model="form.rfqStatus"
+              <el-form-item :label="$t('LK_RFQZHUANGTAI')">
+                <iSelect :placeholder="$t('LK_QINGXUANZE')" v-model="form.rfqStatus"
                          v-permission="PARTSRFQ_RFQSTATUS">
                   <el-option value="" :label="$t('all') | capitalizeFilter"></el-option>
                   <el-option v-for="items in rfqStatusOptions" :key='items.code' :value='items.code'
@@ -54,35 +54,35 @@
             <!--                  table模块，向外入参表格数据，表头                    --->
             <!------------------------------------------------------------------------>
             <div class="margin-bottom20 clearFloat">
-              <span class="font18 font-weight">{{ $t('rfq.RFQRFQINTEGRATEDMANAGEMENT') }}</span>
+              <span class="font18 font-weight">{{ $t('LK_RFQZONGHEGUANLI') }}</span>
               <div class="floatright">
                 <!--激活RFQ：仅前期采购员有该按钮权限。已经关闭的RFQ，如果需要再次打开时，点击该键-->
                 <iButton @click="editRfq('02')" :loading="activateButtonLoading" v-permission="PARTSRFQ_ACTIVATERFQ">
-                  {{ $t('rfq.RFQACTIVATERFQ') }}
+                  {{ $t('LK_JIHUORFQ') }}
                 </iButton>
                 <!--新建RFQ：点击该键，系统会跳到下一界面。具体新建RFQ见另一user story，当RFQ类型为FS时，仅前期采购员有该按钮权限-->
-                <iButton @click="newRfq" v-permission="PARTSRFQ_NEWRFQ">{{ $t('rfq.RFQNEWRFQ') }}</iButton>
+                <iButton @click="newRfq" v-permission="PARTSRFQ_NEWRFQ">{{ $t('LK_XINJIANRFQ') }}</iButton>
                 <!--关闭RFQ：仅前期采购员有该按钮权限。以下情况可关闭：RFQ零件状态是全部定点或全部结束，当前RFQ没有零件-->
                 <iButton @click="editRfq('01')" :loading="closeButtonLoading" v-permission="PARTSRFQ_CLOSERFQ">
-                  {{ $t('rfq.RFQCLOSERFQ') }}
+                  {{ $t('LK_GUANBIRFQ') }}
                 </iButton>
                 <!--转派评分任务：选中RFQ之后，可以手动转派任务给EP/MQ同事-->
                 <iButton @click="assignmentOfScoringTasks" v-permission="PARTSRFQ_ASSIGNMENTTASKS">
-                  {{ $t('rfq.RFQASSIGNMENTOFSCORINGTASKS') }}
+                  {{ $t('LK_ZHUANPAIPINGFENRENWU') }}
                 </iButton>
                 <!--转谈判：只会出现在前期采购员界面-->
                 <iButton @click="editRfq('03')" :loading="transferNegotiationButtonLoading"
-                         v-permission="PARTSRFQ_TRANSFERNEGOTIATION">{{ $t('rfq.RFQTRANSFERNEGOTIATION') }}
+                         v-permission="PARTSRFQ_TRANSFERNEGOTIATION">{{ $t('LK_ZHUANTANPAN') }}
                 </iButton>
                 <!--转询价：只会出现在专业采购员界面-->
                 <iButton @click="editRfq('04')" :loading="transferInquiryButtonLoading"
-                         v-permission="PARTSRFQ_REINQUIRY">{{ $t('rfq.RFQREINQUIRY') }}
+                         v-permission="PARTSRFQ_REINQUIRY">{{ $t('LK_ZHUANXUNJIA') }}
                 </iButton>
                 <!--创建定点申请：在列表中选择RFQ，点击该键，会跳转到定点申请创建页面，RFQ的内容会自动带入到定点申请的各页签中-->
                 <iButton disabled v-permission="PARTSRFQ_CREATEAPPLICATION">
-                  {{ $t('rfq.RFQCREATEAFIXEDPOINTAPPLICATION') }}
+                  {{ $t('LK_CHUANGJIANDINGDIANSHENQING') }}
                 </iButton>
-                <iButton @click="exportTable" v-permission="PARTSRFQ_EXPORT">{{ $t('rfq.RFQEXPORT') }}</iButton>
+                <iButton @click="exportTable" v-permission="PARTSRFQ_EXPORT">{{ $t('LK_DAOCHU') }}</iButton>
               </div>
             </div>
             <tablelist

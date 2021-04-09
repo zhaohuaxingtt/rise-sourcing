@@ -11,8 +11,8 @@
     <div class="iSearch-content" :class="{hiden:hidens}">
       <div class="operation">
         <slot name='button'>
-          <iButton @click="$emit('sure')" :v-permission="searchKey">{{ $t('rfq.RFQINQUIRE') }}</iButton>
-          <iButton @click="$emit('reset')" :v-permission="resetKey">{{ $t('rfq.RFQRESET') }}</iButton>
+          <iButton @click="$emit('sure')" :v-permission="searchKey">{{ $t('LK_INQUIRE') }}</iButton>
+          <iButton @click="$emit('reset')" :v-permission="resetKey">{{ $t('LK_ZHONGZHI') }}</iButton>
         </slot>
         <i @click="hidens=!hidens" v-if='!icon' class="el-icon-arrow-up icon margin-left20 cursor"
            :class="{rotate:hidens}"></i>
