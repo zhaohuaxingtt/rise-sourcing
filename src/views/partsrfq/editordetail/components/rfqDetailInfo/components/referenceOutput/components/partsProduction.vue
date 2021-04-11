@@ -151,9 +151,7 @@ export default {
 <style scoped lang="scss">
 ::v-deep .el-table {
   tr{
-    &:nth-child(even){
-      background-color: $color-table-td;
-    }
+    background-color: white;
   }
 
   th {
