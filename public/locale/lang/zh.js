@@ -333,7 +333,7 @@
         'LK_GONGYINGSHANGMINGCHENG': '供应商名称',//供应商名称
         'LK_GONGYINGSHANGPINGFEN': '供应商评分',//供应商评分
         'LK_GONGYINGSHANGPINGFENFUJIAN': '供应商评分附件',//供应商评分附件
-        'LK_GONGYINGSHANGSHENGCHANCHANGDI': '供应商生产场地',//供应商生产场地
+        'LK_GONGYINGSHANGSHENGCHANCHANGDI': '供应商工厂地址',//供应商工厂地址
         'LK_GUANBIRFQ': '关闭RFQ',//关闭RFQ
         'LK_HUIYIDIDIAN': '会议地点',//会议地点
         'LK_HUIYIJIBENXINXI': '会议基本信息',//会议基本信息
@@ -602,6 +602,8 @@
         'LK_ZUIXINRWJIA': '最新RW价',//最新RW价
         'LK_ZUIXINFANHUIRIQI': '最新返回日期',//最新返回日期
         'LK_ZUIXINSHENQINGRIQI': '最新申请日期',//最新申请日期
-        'LK_ZUIXINSHENQINGZHUANGTAI': '最新申请状态',//最新申请状态        
+        'LK_ZUIXINSHENQINGZHUANGTAI': '最新申请状态',//最新申请状态
+        'LK_SHEZHIPINGFENBUMEN': '设置评分部门', //设置评分部门
+        'LK_TUISONGPINGFENRENWU': '推送评分任务', //推送评分任务
     })
 }))
