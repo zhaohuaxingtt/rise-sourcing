@@ -602,6 +602,10 @@
         'LK_ZUIXINRWJIA': '最新RW价',//最新RW价
         'LK_ZUIXINFANHUIRIQI': '最新返回日期',//最新返回日期
         'LK_ZUIXINSHENQINGRIQI': '最新申请日期',//最新申请日期
-        'LK_ZUIXINSHENQINGZHUANGTAI': '最新申请状态',//最新申请状态        
+        'LK_ZUIXINSHENQINGZHUANGTAI': '最新申请状态',//最新申请状态
+        'LK_GONGYISHEZHI': '工艺设置',//工艺设置
+        'LK_CAILIAOZUSHAIXUAN': '材料组筛选',//材料组筛选
+        'LK_GONGYIZUXUANDING': '工艺组选定',//工艺组选定
+        'LK_GONGYIZU': '工艺组',//工艺组
     })
 }))

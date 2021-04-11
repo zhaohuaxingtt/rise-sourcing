@@ -49,6 +49,7 @@
 			// 获取批量数据
 			getData() {
 				getAllTable(this.getIds(this.purchaseProjectIds)).then((res) => {
+					console.log("res", res)
 					if (res.data.partOutPutPlanBatchs) {
 						let  arr=res.data.partOutPutPlanBatchs
 						arr.forEach(res => {

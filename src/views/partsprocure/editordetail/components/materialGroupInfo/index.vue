@@ -71,6 +71,7 @@ import {
   getMeterialStuff,
   putMaterialGroup,
 } from '@/api/partsprocure/editordetail'
+import { changeProcure } from '@/api/partsprocure/home'
 // import logDialog from "@/views/partsign/editordetail/components/logDialog"
 
 export default {
@@ -142,17 +143,19 @@ export default {
       if (!this.params.partNum) return iMessage.warn(this.$t('LK_QUESHIYOUXIAODELINGJIANBIANHAO'))
       const data = this.multipleSelection[0]
 
-      console.log('params', this.params)
-      return
+      // console.log('data', data)
 
       this.confirmLoading = true
-      putMaterialGroup({
-        id: this.info.id,
-        stuffCode: data.stuffCode,
-        stuffId: data.id,
-        updateBy: this.userInfo.id,
-        partNums: [this.params.partNum].join('&partNums='),
-        partPurchaseProId: this.params
+      changeProcure({
+        batch: {
+          categoryId: this.params.categoryId,
+          categoryCode: this.params.categoryCode,
+          categoryName: data.categoryNameZh,
+          purchaseProjectIds: [ this.params.purchasePrjectId ],
+          stuffCode: data.stuffCode,
+          stuffId: data.id,
+          stuffName: data.materialStuffGroupName
+        }
       })
         .then((res) => {
           if (res.code == 200) {
@@ -165,6 +168,25 @@ export default {
           }
         })
         .catch(() => this.confirmLoading = false)
+      // putMaterialGroup({
+      //   id: this.info.id,
+      //   stuffCode: data.stuffCode,
+      //   stuffId: data.id,
+      //   updateBy: this.userInfo.id,
+      //   partNums: [this.params.partNum].join('&partNums='),
+      //   partPurchaseProId: this.params
+      // })
+      //   .then((res) => {
+      //     if (res.code == 200) {
+      //       iMessage.success(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
+      //       this.confirmLoading = false
+      //       this.getMaterialGroup()
+      //       this.back()
+      //     } else {
+      //       iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
+      //     }
+      //   })
+      //   .catch(() => this.confirmLoading = false)
     },
     // 获取零件可选的工艺组数据
     getMeterialStuff() {
