@@ -12,7 +12,7 @@ const requst = axios(process.env.VUE_APP_RFQ)
 
 export function getRfqDataList(parmars) {
     return requst({
-        url: '/api/rfqs/findByRfqs',
+        url: '/rfqs/findByRfqs',
         method: 'POST',
         data: parmars
     })
@@ -20,7 +20,7 @@ export function getRfqDataList(parmars) {
 
 export function editRfqData(parmars) {
     return requst({
-        url: '/api/rfqs/updateRfq',
+        url: '/rfqs/updateRfq',
         method: 'PATCH',
         data: parmars
     })
@@ -28,7 +28,7 @@ export function editRfqData(parmars) {
 
 export function addRfq(parmars) {
     return requst({
-        url: '/api/rfqs/insertRfq',
+        url: '/rfqs/insertRfq',
         method: 'PATCH',
         data: parmars
     })
@@ -36,7 +36,7 @@ export function addRfq(parmars) {
 
 export function findBySearches(type) {
     return requst({
-        url: `/api/rfqs/findBySearches/${type}`,
+        url: `/rfqs/findBySearches/${type}`,
         method: 'GET'
     })
 }
@@ -44,7 +44,7 @@ export function findBySearches(type) {
 //启动询价
 export function insertRfq(parmars) {
     return requst({
-        url: '/api/rfqs/insertRfq',
+        url: '/rfqs/insertRfq',
         method: 'PATCH',
         data: {
             insertRfqPackage: {

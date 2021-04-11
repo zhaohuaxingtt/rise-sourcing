@@ -53,3 +53,36 @@ export function getVolume(params) {
     params: params
   })
 }
+
+// 获取询价资料版本
+export function getAttachmentVersion(params) {
+  return requst({
+    url: '/tp-records/tpInfo',
+    method: 'POST',
+    data: {
+      attachmentVersionDTO: params
+    }
+  })
+}
+
+// 根据版本获取询价资料
+export function getAttachment(params) {
+  return requst({
+    url: '/tp-records/tpInfo',
+    method: 'POST',
+    data: {
+      tpInfoAttachmentDTO: params
+    }
+  })
+}
+
+// 确认/拒绝 询价资料版本
+export function patchAttachmentVersion(params) {
+  return requst({
+    url: '/tp-records/tpInfo',
+    method: 'PATCH',
+    data: {
+      attachmentConfirmDTO: params
+    }
+  })
+}

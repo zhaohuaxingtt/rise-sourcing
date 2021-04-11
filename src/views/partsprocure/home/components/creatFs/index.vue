@@ -1,12 +1,12 @@
 <template>
 	<div class="fs margin-left10 margin-right10">
-		<iButton v-permission="PARTSPROCURE_GENERATEFSBUTTON" @click="creatFs()">
+		<iButton  @click="creatFs()">
 			{{ $t('partsprocure.PARTSPROCUREGENERATEFSGSNR') }}
 		</iButton>
 		<!-- 单条插入RFQ表格 -->
-		<iDialog title="RFQ列表" :visible.sync="visible">
+		<iDialog :title="$t('LK_RFQLIST')" :visible.sync="visible">
 			<div class="flex-align-center add">
-				<iButton @click="addRfq">添加</iButton>
+				<iButton @click="addRfq">{{ $t('LK_TIANJIA') }}</iButton>
 			</div>
 			<tableList  :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="tableLoading" @handleSelectionChange="handleSelectionChange" radio></tableList>
 			<div class="placeholder"></div>
@@ -51,8 +51,8 @@
 							res.data.fs.projectList.map(res=>{
 								tip=tip+res.fsnrGsnrNum+','
 							})
-							tip=tip+"是否组合新建RFQ"
-							iMessageBox(tip,"是否新组建RFQ",{ confirmButtonText: this.$t('LK_QUEDING'), cancelButtonText: this.$t('LK_QUXIAO') }).then(val=>{
+							tip=tip+this.$t('LK_SHIFOUZUHEXINJIANRFQ')
+							iMessageBox(tip,'',{ confirmButtonText: this.$t('LK_QUEDING'), cancelButtonText: this.$t('LK_QUXIAO') }).then(val=>{
 								insertRfq({ rfqPartDTOList: res.data.fs.projectList}).then((res) => {
 									if (res.data && res.data.rfqId) {
 										iMessage.success(this.$t('LK_CAOZUOCHENGGONG'))
@@ -64,7 +64,7 @@
 							})	
 						}else if(res.data.fs.rfqResult){
 							// 单条插入RFQ
-							iMessageBox("是否加入已有RFQ","是否加入RFQ",{ confirmButtonText: this.$t('LK_QUEDING'), cancelButtonText: this.$t('LK_QUXIAO') }).then(val=>{
+							iMessageBox(this.$t('LK_SHIFOUJIARUYIYOURFQ'),'',{ confirmButtonText: this.$t('LK_QUEDING'), cancelButtonText: this.$t('LK_QUXIAO') }).then(val=>{
 								this.visible=true
 								this.tableListData=res.data.fs.rfqResult.list
 								this.rfqPartDTOList.push(res.data.fs.rfqResult.project) 
@@ -92,7 +92,7 @@
 				}).then((res) => {
 						this.addLoding = false;
 						if (res.data && res.data.rfqId) {
-							iMessage.success("操作成功")
+							iMessage.success(this.$t('LK_CAOZUOCHENGGONG'))
 							this.visible=false
 							this.$emit('refresh')
 						} else {

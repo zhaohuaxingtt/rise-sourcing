@@ -1,7 +1,7 @@
 <template>
   <iCard class="outputRecord" tabCard collapse :title="$t('LK_LINGJIANCHANLIANGJILU')">
     <template v-slot:header-control>
-      <iButton v-permission="PARTSPROCURE_OUTPUTPLAN_OUTPUTRECORD_UPDATE">{{$t('LK_GENGXINZHIXUNJIACHANLIANG')}}</iButton>
+      <iButton v-permission="PARTSPROCURE_OUTPUTPLAN_OUTPUTRECORD_UPDATE" @click="updateOutput">{{$t('LK_GENGXINZHIXUNJIACHANLIANG')}}</iButton>
     </template>
     <div class="body">
       <tablelist
@@ -9,7 +9,8 @@
         index
         :tableData="tableListData" 
         :tableTitle="tableTitle" 
-        :tableLoading="loading" />
+        :tableLoading="loading"
+        @handleSelectionChange="handleSelectionChange" />
       <iPagination
         class="pagination margin-top30"
         @size-change="handleSizeChange($event, getData)"
@@ -51,7 +52,7 @@ export default {
     }
   },
   created() {
-    this.getData()
+    // this.getData()
   },
   methods: {
     getData() {

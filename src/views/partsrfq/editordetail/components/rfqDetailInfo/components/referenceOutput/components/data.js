@@ -10,7 +10,7 @@ export const partsProductionTableTitle = permissionTitle("PARTSRFQ_EDITORDETAIL_
     {props:'procureFactory',name:'采购工厂',key: 'LK_CAIGOUGONGCHANG'},
     {props:'ninePartNum',name:'零件号',key: 'LK_LINGJIANHAO'},
     {props:'partNameZh',name:'零件名称',key: 'LK_LINGJIANMINGCHENG'},
-    {props:'unit',name:'单位',key: 'LK_DANWEI'},
+    {props:'unit',name:'价格单位',key: 'LK_DANWEI'},
     {props:'year',name:'2020'},
     {props:'year1',name:'2021'},
     {props:'year2',name:'2022'},

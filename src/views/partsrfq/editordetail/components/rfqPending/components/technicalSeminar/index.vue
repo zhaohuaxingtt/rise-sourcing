@@ -165,6 +165,8 @@ export default {
         meetingStuff: meetingStuffList.join(','),
         supplierIds: supplierIdList,
         partNums: partNumsList,
+        partsInfo: this.selectTableData,
+        supplierInfo: this.addSupplierList
       }
       const res = await addTechnology(req)
       this.resultMessage(res)

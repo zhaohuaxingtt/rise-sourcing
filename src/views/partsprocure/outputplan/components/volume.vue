@@ -66,7 +66,7 @@ export default {
       this.loading = true;
 
       try {
-        if (!this.versionNum || !this.carTypeConfigId) {
+        if (!this.version || !this.carTypeConfigId) {
           const versionRes = await getPerCarDosageVersion({
             currPage: 1,
             pageSize: 10,
@@ -74,7 +74,7 @@ export default {
             purchasingRequirementId: this.$route.query.purchasingRequirementId,
           });
 
-          this.versionNum = "V1";
+          this.version = "V1";
 
           if (versionRes.code != 200) {
             return iMessage.error(`${ this.$i18n.locale === 'zh' ? versionRes.desZh : versionRes.desEn }`)
@@ -86,14 +86,14 @@ export default {
             versionRes.data.tpRecordList[0]
           ) {
             this.carTypeConfigId = versionRes.data.tpRecordList[0].carTypeConfigId;
-            this.versionNum = versionRes.data.tpRecordList[0].versionNum || "V1";
+            this.version = versionRes.data.tpRecordList[0].version || "V1";
             this.tpId = versionRes.data.tpRecordList[0].tpId
           }
         }
         if(!this.carTypeConfigId) return;
         const infoRes = await getPerCarDosageInfo({
           carTypeConfigId: this.carTypeConfigId,
-          versionNum: this.versionNum,
+          version: this.version,
           currPage: this.page.currPage,
           pageSize: this.page.pageSize,
           status: 1,
