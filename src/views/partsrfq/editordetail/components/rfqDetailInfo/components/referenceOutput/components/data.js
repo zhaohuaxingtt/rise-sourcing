@@ -6,19 +6,19 @@
  */
 import {permissionTitle} from '@/utils'
 export const partsProductionTableTitle = permissionTitle("PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_TIMEPLAN_PRODUCTIONLIST",[
-    {props:'rfqPlanId',name:'FS号',key: 'LK_FSHAO'},
-    {props:'procureFactory',name:'采购工厂',key: 'LK_CAIGOUGONGCHANG'},
-    {props:'ninePartNum',name:'零件号',key: 'LK_LINGJIANHAO'},
-    {props:'partNameZh',name:'零件名称',key: 'LK_LINGJIANMINGCHENG'},
-    {props:'unit',name:'价格单位',key: 'LK_DANWEI'},
-    {props:'year',name:'2020'},
+    {props:'rfqPlanId',name:'FS号',key: 'LK_FSHAO', fixed: true},
+    {props:'procureFactory',name:'采购工厂',key: 'LK_CAIGOUGONGCHANG',fixed: true},
+    {props:'ninePartNum',name:'零件号',key: 'LK_LINGJIANHAO',fixed: true},
+    {props:'partNameZh',name:'零件名称',key: 'LK_LINGJIANMINGCHENG',fixed: true},
+    {props:'unit',name:'价格单位',key: 'LK_DANWEI',fixed: true},
+    /*{props:'year',name:'2020'},
     {props:'year1',name:'2021'},
     {props:'year2',name:'2022'},
     {props:'year3',name:'2023'},
     {props:'year4',name:'2024'},
-    {props:'year5',name:'2025'},
-    {props:'sum',name:'Sum'},
-    {props:'versionNum',name:'版本号',key: 'LK_BANBENHAO'},
+    {props:'year5',name:'2025'},*/
+    /*{props:'sum',name:'Sum'},
+    {props:'versionNum',name:'版本号',key: 'LK_BANBENHAO'},*/
 ])
 
 export const timePlanableTitle = permissionTitle("PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_TIMEPLAN_TIMELIST",[

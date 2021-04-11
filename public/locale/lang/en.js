@@ -603,6 +603,8 @@
         'LK_ZUIXINFANHUIRIQI': 'Latest Response Date',//最新返回日期
         'LK_ZUIXINSHENQINGRIQI': 'Latest Application Date',//最新申请日期
         'LK_ZUIXINSHENQINGZHUANGTAI': 'Latest Application Status',//最新申请状态
+        'LK_SHEZHIPINGFENBUMEN': 'Set up a scoring department', //设置评分部门
+        'LK_TUISONGPINGFENRENWU': 'Push scoring task', //推送评分任务
         'LK_GONGYIZU': 'Craft Group',//工艺组
         'LK_GONGYISHEZHI': '',//工艺设置
         'LK_CAILIAOZUSHAIXUAN': '',//材料组筛选
