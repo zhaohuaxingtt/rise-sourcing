@@ -148,6 +148,17 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+::v-deep .el-table {
+  tr{
+    &:nth-child(even){
+      background-color: $color-table-td;
+    }
+  }
+
+  th {
+    background-color: rgb(231,239,254);
+  }
+}
 
 </style>
