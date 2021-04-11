@@ -2,9 +2,12 @@
   <div>
     <iCard>
       <div class="margin-bottom20 clearFloat">
-        <span class="font18 font-weight">{{$t('LK_LINGJIANCHANLIANG')}}</span>
+        <span class="font18 font-weight">{{ $t('LK_LINGJIANCHANLIANG') }}</span>
         <div class="floatright">
-          <iButton @click="exports" v-permission="PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_EXPORTS">{{ $t('LK_DAOCHU') }}</iButton>
+          <iButton @click="exports" v-permission="PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_EXPORTS">{{
+              $t('LK_DAOCHU')
+            }}
+          </iButton>
         </div>
       </div>
       <tablelist
@@ -79,6 +82,25 @@ export default {
         try {
           const res = await getRfqDataList(req)
           this.tableListData = res.data.partOutputPlanVO.partOutputPlanVOList;
+          if (this.tableListData.length !== 0) {
+            const yearTitle = this.tableListData[0].outputPlanList.map(item => {
+              return {
+                props: item.year,
+                name: item.year
+              }
+            })
+            yearTitle.push(
+                {props: 'sum', name: 'Sum'},
+                {props: 'versionNum', name: '版本号', key: 'LK_BANBENHAO'},
+            )
+            this.tableTitle = this.tableTitle.concat(yearTitle)
+            this.tableListData = this.tableListData.map(item => {
+              item.outputPlanList.map(item2 => {
+                item[item2.year] = item2.outPut
+              })
+              return item
+            })
+          }
           this.page.currPage = res.data.partOutputPlanVO.pageNum
           this.page.pageSize = res.data.partOutputPlanVO.pageSize
           this.page.totalCount = res.data.partOutputPlanVO.total
