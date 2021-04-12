@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-03-24 18:12:23
- * @LastEditTime: 2021-04-02 13:39:39
+ * @LastEditTime: 2021-04-12 19:45:39
  * @LastEditors: Please set LastEditors
  * @Description: 拆分采购工厂
  * @FilePath: \rise\src\views\partsprocure\editordetail\components\splitFactory\index.vue
@@ -86,7 +86,10 @@ export default{
   props:{
     splitPurchBoolean:Boolean,
     purchaseProjectId:String,
-    updateTabs:Function
+    updateTabs:Function,
+    firstId:{
+      default:''
+    }
   },
   components:{iDialog,iButton,iPagination,iInput},
   created(){
@@ -107,6 +110,11 @@ export default{
     },
     validateNumberPersiont(){
      return new Promise((r)=>{
+        if(!this.selectSplitPurchList.every(items=>items.share>0)){
+          iMessage.warn(this.$t('LK_CHAIFENFACTORY'))
+          r(false)
+          return
+        }
         if(this.selectSplitPurchList.length == 0){
           iMessage.warn(this.$t('LK_HAIWEIXUANZHEGONGCHANG'))
           r(false)
@@ -164,17 +172,20 @@ export default{
     },
     translateData(data){
       const newData = []
-      data.forEach(element => {
+      data.forEach((element,index) => {
         element['share'] = ''
+        if(index == 0 && this.firstId){
+          element['share'] = '100'
+        }
         newData.push(element)
       });
       return newData
     },
     purchaseFactory(){
       this.tableLoading = true
-      purchaseFactory().then(res=>{
+      purchaseFactory({firstId:this.firstId}).then(res=>{
         if(res.data){
-          this.splitPurchList = this.translateData(res.data);
+          this.splitPurchList = this.translateData(res.data,this.firstId);
           this.tableLoading = false
           this.page.pageSize = res.pageSize
           this.page.currPage = res.pageNum

@@ -139,10 +139,10 @@ export function dictkey(params) {
 		params: params
 	})
 }
-// 数据字典
-export function factory(params) {
+// 检测当前值是不是在范围里面。
+export function checkFactory(params) {
 	return requstPartsProcure({
-		url: '/web/part-src-prjs/factory',
+		url: '/part-src-prjs/factory',
 		method: 'POST',
 		data: params
 	})
