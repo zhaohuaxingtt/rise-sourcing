@@ -609,5 +609,10 @@
         'LK_GONGYISHEZHI': '',//工艺设置
         'LK_CAILIAOZUSHAIXUAN': '',//材料组筛选
         'LK_GONGYIZUXUANDING': '',//工艺组选定
+        'LK_XIETIAOREN': '',//协调人
+        'LK_XINZENG': 'Add',//新增
+        'LK_HUIFU': 'Recover',//恢复
+        'LK_QINGXUANZEXUYAOSHANCHUDEPINGFENBUMEN': '',//请选择需要删除的评分部门
+        'LK_QINGXUANZEXUYAOHUIFUDEPINGFENBUMEN': '',//请选择需要恢复的评分部门
     })
 }))

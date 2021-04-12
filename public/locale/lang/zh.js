@@ -609,5 +609,10 @@
         'LK_CAILIAOZUSHAIXUAN': '材料组筛选',//材料组筛选
         'LK_GONGYIZUXUANDING': '工艺组选定',//工艺组选定
         'LK_GONGYIZU': '工艺组',//工艺组
+        'LK_XIETIAOREN': '协调人',//协调人
+        'LK_XINZENG': '新增', //新增
+        'LK_HUIFU': '恢复',//恢复
+        'LK_QINGXUANZEXUYAOSHANCHUDEPINGFENBUMEN': '请选择需要删除的评分部门',//请选择需要删除的评分部门
+        'LK_QINGXUANZEXUYAOHUIFUDEPINGFENBUMEN': '请选择需要恢复的评分部门',//请选择需要恢复的评分部门
     })
 }))
