@@ -160,12 +160,13 @@ export default {
         .then((res) => {
           if (res.code == 200) {
             iMessage.success(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
-            this.confirmLoading = false
             this.getMaterialGroup()
             this.back()
           } else {
             iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
           }
+
+          this.confirmLoading = false
         })
         .catch(() => this.confirmLoading = false)
       // putMaterialGroup({
