@@ -605,5 +605,17 @@
         'LK_ZUIXINSHENQINGZHUANGTAI': '最新申请状态',//最新申请状态
         'LK_SHEZHIPINGFENBUMEN': '设置评分部门', //设置评分部门
         'LK_TUISONGPINGFENRENWU': '推送评分任务', //推送评分任务
+        'LK_GONGYISHEZHI': '工艺设置',//工艺设置
+        'LK_CAILIAOZUSHAIXUAN': '材料组筛选',//材料组筛选
+        'LK_GONGYIZUXUANDING': '工艺组选定',//工艺组选定
+        'LK_GONGYIZU': '工艺组',//工艺组
+        "LK_CHAIFENFACTORY":'选中的工厂中,存在未分配的份额，请填写后重试！',
+        "LK_FACTORYNOTSAME":'您所选的采购工厂与主数据中该车型项目对应的采购工厂不一致，请确认是否修改',
+        "LK_AREYOUSPLITE":'该车型项目主数据中对应多个采购工厂，是否拆分？',
+        'LK_XIETIAOREN': '协调人',//协调人
+        'LK_XINZENG': '新增', //新增
+        'LK_HUIFU': '恢复',//恢复
+        'LK_QINGXUANZEXUYAOSHANCHUDEPINGFENBUMEN': '请选择需要删除的评分部门',//请选择需要删除的评分部门
+        'LK_QINGXUANZEXUYAOHUIFUDEPINGFENBUMEN': '请选择需要恢复的评分部门',//请选择需要恢复的评分部门
     })
 }))

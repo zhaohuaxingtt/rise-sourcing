@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2021-03-31 21:55:41
+ * @LastEditTime: 2021-04-12 19:54:59
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsprocure\editordetail\index.vue
@@ -82,8 +82,9 @@
 								</el-option>
 							</iSelect>
 						</iFormItem>
+						<!--来源为新件信息单的零件采购项目，不可修改车型项目。前端车型项目下拉框应该置为不可修改的状态 --->
 						<iFormItem :label="$t('LK_CHEXINGXIANGMU') + ':'" name="test">
-							<iSelect v-model="detailData.cartypeProjectZh" v-permission="PARTSPROCURE_EDITORDETAIL_CARTYPEZH">
+							<iSelect :disabled='carTypeCanselect()' v-model="detailData.cartypeProjectZh" v-permission="PARTSPROCURE_EDITORDETAIL_CARTYPEZH">
 								<el-option :value="item.id" :label="item.name"
 									v-for="(item, index) in fromGroup.CAR_TYPE_PRO" :key="index">
 								</el-option>
@@ -123,8 +124,10 @@
 								<el-option :value="false" label="否"></el-option>
 							</iSelect>
 						</iFormItem>
+						<!--如果选择后的采购工厂不在主数据中该车型项目对应的采购工厂范围内？，则提示”您所选的采购工厂与主数据中该车型项目对应的采购工厂不一致，请确认是否修改“；选择”确认“保持修改后的值，选择”取消“恢复到修改前的值。”保存“后生效。--->
 						<iFormItem :label="$t('LK_CAIGOUGONGCHANG') + ':'" name="test">
 							<iSelect v-model="detailData.procureFactory"
+								@change="checkFactory()"
 								v-permission="PARTSPROCURE_EDITORDETAIL_PURCHASINGFACTORY">
 								<el-option :value="item.id" :label="item.name"
 									v-for="(item, index) in fromGroup.PURCHASE_FACTORY" :key="index">
@@ -239,7 +242,7 @@
 		<!-- 结束项目 -->
 		<backItems v-model="diologClose" @sure="close" :title="$t('LK_JIESHUXIANGMU')"></backItems>
 		<!--  -->
-		<splitFactory :splitPurchBoolean="splitPurch" :purchaseProjectId="purchasePrjectId" :update="updateTabs">
+		<splitFactory :splitPurchBoolean="splitPurch" :purchaseProjectId="purchasePrjectId" :firstId='firstId' :update="updateTabs">
 		</splitFactory>
 	</iPage>
 </template>
@@ -272,12 +275,14 @@
 		getProcureGroup,
 	} from "@/api/partsprocure/home";
 	import {
-		dictkey
+		dictkey,
+		checkFactory
 	} from "@/api/partsprocure/editordetail";
 	import {
 		detailData
 	} from "./components/data";
 	import splitFactory from "./components/splitFactory";
+import { iMessageBox } from '../../../components';
 	export default {
 		components: {
 			iPage,
@@ -303,6 +308,8 @@
 		},
 		data() {
 			return {
+				firstId:'',
+				checkFactoryString:'',
 				infoItem: {},
 				detailData: detailData, //顶部详情数据
 				targetprice: {}, //申请目标价数据
@@ -320,8 +327,34 @@
 			this.purchasePrjectId = this.infoItem.purchasePrjectId;
 			this.getDatail();
 			this.getProcureGroup();
+			this.checkFactoryString = this.detailData.procureFactory
 		},
 		methods: {
+			checkFactory(){
+				const parmars = {
+					id:this.detailData.purchasePrjectId,
+					factoryId:this.detailData.procureFactory
+				}
+				checkFactory(parmars).then(res=>{
+					if(res.code == 200 && !res.data){
+						iMessageBox(this.$t('LK_FACTORYNOTSAME'),this.$t('LK_WENXINTISHI')).then(res=>{
+							this.checkFactoryString = this.detailData.procureFactory
+						}).catch(err=>{
+							this.detailData.procureFactory = this.checkFactoryString
+						})
+					}
+				}).catch(err=>{
+					iMessage.error(err.desZh);
+				})
+			},
+			//判断采购项目来源，查看是否能选择车型项目
+			carTypeCanselect(){
+				if(this.detailData.partProjectSource == 1){
+					return true
+				}else {
+					return false
+				}
+			},
 			splitPurchFn() {
 				this.splitPurch.splitPurchBoolean = true;
 			},
@@ -412,8 +445,17 @@
 					detailData,
 				}).then((res) => {
 					if (res.data) {
-						iMessage.success("保存成功");
-						this.getDatail();
+						if(typeof res.data == "boolean"){
+							iMessage.success(this.$t('LK_YIBAOCUN'));
+							this.getDatail();
+						}else{
+							this.getDatail();
+							iMessageBox(this.$t('LK_AREYOUSPLITE'),this.$t('LK_WENXINTISHI')).then(res=>{
+								//如果这条ID存在 则默认查询出来的采购工厂将会为第一条
+								this.firstId = this.detailData.procureFactory
+								this.splitPurchFn()
+							})
+						}
 					} else {
 						iMessage.error(res.desZh);
 					}

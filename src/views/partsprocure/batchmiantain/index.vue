@@ -152,12 +152,13 @@
     </iSearch>
     <iSearch
       class="margin-bottom20"
-      :title="$t('LK_CAILIAOZUGONGYISHEZHI')"
+      :title="$t('LK_GONGYISHEZHI')"
       tabCard
       icon
     >
+    <!-- LK_CAILIAOZUGONGYISHEZHI -->
       <el-form>
-        <el-form-item :label="$t('LK_CAILIAOZU')">
+        <el-form-item :label="$t('LK_CAILIAOZUSHAIXUAN')"><!-- LK_CAILIAOZU -->
           <iSelect
             :placeholder="$t('LK_QINGXUANZE')"
             v-model="categoryObj"
@@ -172,7 +173,7 @@
             ></el-option>
           </iSelect>
         </el-form-item>
-        <el-form-item :label="$t('LK_GONGYI')">
+        <el-form-item :label="$t('LK_GONGYIZUXUANDING')"><!-- LK_GONGYI -->
           <iSelect
             :placeholder="$t('LK_QINGXUANZHEXIANCAILIAOZU')"
             v-model="stuff"
@@ -204,6 +205,7 @@
       </template>
     </iSearch>
     <outputPlan
+      ref="outputPlan"
       class="margin-bottom20"
       @handleSelectionChange="handleSelectionChange"
     />
@@ -330,6 +332,7 @@ export default {
       }).then((res) => {
         if (res.data) {
           iMessage.success(this.$t("LK_XIUGAICHENGGONG"));
+          this.$refs.outputPlan.getData()
         } else {
           iMessage.error(res.desZh);
         }
