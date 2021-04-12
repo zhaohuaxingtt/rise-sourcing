@@ -12,7 +12,7 @@ const requst = axios(process.env.VUE_APP_PART_PROCURE)
 //获取零件采购列表。
 export function getTabelData(parmars){
   return requst({
-    url:'/api/part-src-prjs',
+    url:'/part-src-prjs',
     method:'GET',
     params:parmars
   })
@@ -20,7 +20,7 @@ export function getTabelData(parmars){
 // 获取零件采购 group下拉数据
 export function getProcureGroup(parmars){
 	return requst({
-		url:"/api/part-src-prjs/drop-down-box-infos",
+		url:"/part-src-prjs/drop-down-box-infos",
 		method:'POST',
 		data:parmars
 	})
