@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-25 11:07:22
- * @LastEditTime: 2021-03-24 17:16:42
+ * @LastEditTime: 2021-04-12 23:14:07
  * @LastEditors: Please set LastEditors
  * @Description: 零件采购项目创建模块API
  * @FilePath: \rise\src\api\partsprocure\home\index.js
@@ -28,14 +28,14 @@ export function getProcureGroup(parmars){
 
 export function getAllTable(parmars){
   return requst({
-    url:'/api/part-src-prjs?'+parmars,
+    url:'/part-src-prjs?'+parmars,
     method:'GET'
   })
 }
 //修改零件采购项目相关信息
 export function changeProcure(parmars){
   return requst({
-    url:'/api/part-src-prjs',
+    url:'/part-src-prjs',
     method:'PATCH',
     data:parmars
   })
