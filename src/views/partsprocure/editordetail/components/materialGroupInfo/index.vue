@@ -197,7 +197,12 @@ export default {
         partNum: this.params.partNum,
       })
         .then((res) => {
-          this.tableListData = res.data
+          if (res.code == 200) {
+            this.tableListData = res.data
+          } else {
+            iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
+          }
+          
           // this.page.totalCount = res.total
           this.tableLoading = false
         })
