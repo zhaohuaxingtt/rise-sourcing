@@ -139,3 +139,11 @@ export function dictkey(params) {
 		params: params
 	})
 }
+// 数据字典
+export function factory(params) {
+	return requstPartsProcure({
+		url: '/web/part-src-prjs/factory',
+		method: 'POST',
+		data: params
+	})
+}

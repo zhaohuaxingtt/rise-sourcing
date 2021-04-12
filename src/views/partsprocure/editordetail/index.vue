@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2021-03-31 21:55:41
+ * @LastEditTime: 2021-04-12 16:54:57
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsprocure\editordetail\index.vue
@@ -82,8 +82,9 @@
 								</el-option>
 							</iSelect>
 						</iFormItem>
+						<!--来源为新件信息单的零件采购项目，不可修改车型项目。前端车型项目下拉框应该置为不可修改的状态 --->
 						<iFormItem :label="$t('LK_CHEXINGXIANGMU') + ':'" name="test">
-							<iSelect v-model="detailData.cartypeProjectZh" v-permission="PARTSPROCURE_EDITORDETAIL_CARTYPEZH">
+							<iSelect :disabled='carTypeCanselect()' v-model="detailData.cartypeProjectZh" v-permission="PARTSPROCURE_EDITORDETAIL_CARTYPEZH">
 								<el-option :value="item.id" :label="item.name"
 									v-for="(item, index) in fromGroup.CAR_TYPE_PRO" :key="index">
 								</el-option>
@@ -322,6 +323,14 @@
 			this.getProcureGroup();
 		},
 		methods: {
+			//判断采购项目来源，查看是否能选择车型项目
+			carTypeCanselect(){
+				if(this.detailData.partProjectSource == 1){
+					return true
+				}else {
+					return false
+				}
+			},
 			splitPurchFn() {
 				this.splitPurch.splitPurchBoolean = true;
 			},
