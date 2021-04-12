@@ -149,3 +149,12 @@ export function notifySuppliers(rfqId) {
         method: 'GET',
     })
 }
+
+// 获取评分部门数据
+export function getAllScoringDepartmentInfo(params) {
+    return requst({
+        url: '/getAllScoringDepartmentInfo',
+        method: 'GET',
+        params: params
+    })
+}

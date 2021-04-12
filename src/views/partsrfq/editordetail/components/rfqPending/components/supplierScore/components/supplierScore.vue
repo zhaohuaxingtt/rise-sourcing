@@ -2,6 +2,11 @@
   <iCard>
     <div class="margin-bottom20 clearFloat">
       <span class="font18 font-weight">{{ $t('LK_GONGYINGSHANGPINGFEN') }}</span>
+      <div class="floatright">
+        <!-- v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_SUPPLIERSCORE_PARTSCORING_DELETE" -->
+        <iButton @click="setScoreDept">{{ $t('LK_SHEZHIPINGFENBUMEN') }}</iButton>
+        <iButton @click="deleteItems">{{ $t('LK_TUISONGPINGFENRENWU') }}</iButton>
+      </div>
     </div>
     <tablelist
         :tableData="tableListData"
@@ -34,11 +39,12 @@
         @submit="handleRemarksSubmit"
         :memo="selectedRowData.tpbMemo"
     />
+    <scoringDeptDialog :visible.sync="setScoringDeptVisible" />
   </iCard>
 </template>
 
 <script>
-import {iCard, iPagination} from "@/components";
+import {iCard, iPagination, iButton} from "@/components";
 import tablelist from './supplierScoreTableList'
 import {supplierScoreTitle} from "./data";
 import {pageMixins} from "@/utils/pageMixins";
@@ -47,13 +53,16 @@ import {getAllSupplier, setTpbMemo} from "@/api/partsrfq/editordetail";
 import {serialize} from '@/utils'
 import store from '@/store'
 import {rfqCommonFunMixins} from "pages/partsrfq/components/commonFun";
+import scoringDeptDialog from './scoringDeptDialog'
 
 export default {
   components: {
     iCard,
     iPagination,
     tablelist,
-    tpbRemarks
+    tpbRemarks,
+    iButton,
+    scoringDeptDialog
   },
   mixins: [pageMixins, rfqCommonFunMixins],
   data() {
@@ -63,7 +72,8 @@ export default {
       tableLoading: false,
       selectTableData: [],
       dialogRemarks: false,
-      selectedRowData: {}
+      selectedRowData: {},
+      setScoringDeptVisible: false
     };
   },
   created() {
@@ -125,6 +135,10 @@ export default {
         this.dialogRemarks = false
         this.getTableList()
       })
+    },
+    // 设置评分部门
+    setScoreDept() {
+      this.setScoringDeptVisible = true
     }
   }
 }

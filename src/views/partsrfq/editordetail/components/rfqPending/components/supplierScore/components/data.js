@@ -51,3 +51,10 @@ export const partScroingTitle = [
         ]
     }
 ]
+
+export const scoringDeptTitle = [
+    { props: 'a', name: '部门评分类型', key: 'LK_BUMENPINGFENLEIXING' },
+    { props: 'b', name: '部门编号', key: 'LK_BUMENBIANHAO', tooltip: true },
+    { props: 'c', name: '评分人', key: 'LK_PINGFENREN' },
+    { props: 'd', name: '协调人', key: 'LK_XIETIAOREN' }
+]
