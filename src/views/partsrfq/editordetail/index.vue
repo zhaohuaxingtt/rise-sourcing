@@ -65,11 +65,11 @@
             </iFormItem>
 
             <iFormItem :label="$t('LK_EP')+':'" name="ep">
-              <iText v-permission="PARTSRFQ_EDITORDETAIL_EP">{{ baseInfo.ep }}</iText>
+              <iText v-permission="PARTSRFQ_EDITORDETAIL_EP" forceTooltip :tooltipContent="baseInfo.ep">{{ nameProcessor(baseInfo.ep) }}</iText>
             </iFormItem>
             <iFormItem :label="$t('LK_CF')+':'" name="cf">
               <iInput v-if="editStatus" v-model="baseInfo.cf" v-permission="PARTSRFQ_EDITORDETAIL_CF"></iInput>
-              <iText v-else v-permission="PARTSRFQ_EDITORDETAIL_CF">{{ baseInfo.cf }}</iText>
+              <iText v-else v-permission="PARTSRFQ_EDITORDETAIL_CF" forceTooltip :tooltipContent="baseInfo.cf">{{ nameProcessor(baseInfo.cf) }}</iText>
             </iFormItem>
 
             <iFormItem :label="$t('LK_BENLUNBAOJIAJIEZHISHIJIAN')+':'" name="currentRoundsEndTime">
@@ -84,7 +84,7 @@
               <iText v-permission="PARTSRFQ_EDITORDETAIL_INQUIRYBUYER">{{ baseInfo.buyerName }}</iText>
             </iFormItem>
             <iFormItem :label="$t('LK_MQ')+':'" name="mq">
-              <iText v-permission="PARTSRFQ_EDITORDETAIL_MQ">{{ baseInfo.mq }}</iText>
+              <iText v-permission="PARTSRFQ_EDITORDETAIL_MQ" forceTooltip :tooltipContent="baseInfo.mq">{{ nameProcessor(baseInfo.mq) }}</iText>
             </iFormItem>
             <iFormItem :label="$t('LK_DANGQIANLUNCI')+':'" name="currentRounds">
               <iText v-permission="PARTSRFQ_EDITORDETAIL_CURRENTROUND">{{ baseInfo.currentRounds }}</iText>
@@ -106,7 +106,7 @@
             </iFormItem>
             <iFormItem :label="$t('LK_PL')+':'" name="test">
               <iInput v-if="editStatus" v-model="baseInfo.pl" v-permission="PARTSRFQ_EDITORDETAIL_PL"></iInput>
-              <iText v-else v-permission="PARTSRFQ_EDITORDETAIL_PL">{{ baseInfo.pl }}</iText>
+              <iText v-else v-permission="PARTSRFQ_EDITORDETAIL_PL" forceTooltip :tooltipContent="baseInfo.pl">{{ nameProcessor(baseInfo.pl) }}</iText>
             </iFormItem>
             <iFormItem :label="$t('LK_BENLUNZHUANGTAI')+':'" name="test">
               <iText v-permission="PARTSRFQ_EDITORDETAIL_CURRENTSTATE">{{ baseInfo.currentRoundsStatus }}</iText>
@@ -193,6 +193,15 @@ export default {
   methods: {
     backPage() {
       this.$router.go(-1)
+    },
+    nameProcessor(val) {
+      if (!val) return ''
+      const arr = val.split(',')
+      if (arr.length > 3) {
+        return `${ arr.splice(0, 3).join(',') }...`
+      } else {
+        return val
+      }
     },
     async getBaseInfo() {
       const query = this.$route.query
