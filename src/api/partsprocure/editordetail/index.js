@@ -142,7 +142,7 @@ export function dictkey(params) {
 // 检测当前值是不是在范围里面。
 export function checkFactory(params) {
 	return requstPartsProcure({
-		url: '/part-src-prjs/factory',
+		url: '/api/part-src-prjs/is-exist-cartype-project-factory',
 		method: 'POST',
 		data: params
 	})
