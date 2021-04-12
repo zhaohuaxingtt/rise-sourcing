@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-24 09:17:57
- * @LastEditTime: 2021-04-03 12:21:51
+ * @LastEditTime: 2021-04-12 21:43:57
  * @LastEditors: Please set LastEditors
  * @Description: 零件签收列表界面.
  * @FilePath: \rise\src\views\partsign\index.vue
@@ -311,7 +311,7 @@ export default {
           csFReceiveMemo: this.backmark,
         },
       }).then((res) => {
-        if (res.data) {
+        if (res.code == 200) {
           iMessage.success(this.$t("LK_CAOZUOCHENGGONG"));
           this.getTableList();
         } else {
