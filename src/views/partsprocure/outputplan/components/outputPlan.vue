@@ -160,7 +160,7 @@ export default {
       this.getData()
     },
     handleInput(val, key) {
-      this.tableListData[0][key] = (val + '').replace(/\D/g, '')
+      this.tableListData[0][key] = (val + '').replace(/\D/g, '').replace(/([0]*)(0|[1-9]+[0-9]+)/, "$2")
       if (Array.isArray(this.tableListData[0].outputPlanList)) {
         this.tableListData[0].totalOutput = this.tableListData[0].outputPlanList.reduce((acc, cur) => {
           if (key == cur.year) cur.output = this.tableListData[0][key]
