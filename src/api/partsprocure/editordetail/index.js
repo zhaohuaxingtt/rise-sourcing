@@ -62,7 +62,7 @@ export function getTpInfo(params) {
 // 关联附件用
 export function patchTpRecords(params) {
 	return requst({
-		url: '/tp-records',
+		url: '/api/tp-records',
 		method: 'PATCH',
 		data: params
 	})
