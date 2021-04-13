@@ -59,7 +59,7 @@ module.exports = {
                     parallel: true
                 }),
                 //环境代码
-                new ChangeNginxConfig()
+                process.env.NODE_ENV == 'dev' ? '' : new ChangeNginxConfig()
             )
         }
         config["externals"] = {

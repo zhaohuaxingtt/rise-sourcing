@@ -11,7 +11,9 @@
     "build:win:prod": "vue-cli-service build --mode prod",
     "lint": "vue-cli-service lint",
     "report": "vue-cli-service build --mode sit --report",
-    "macdev": "npm run start:win:dev"
+    "macdev": "npm run start:win:dev",
+    "build:win:dev:publish":"vue-cli-service build --mode dev && node ./loadersPlugins/publishDevCode.js",
+    "conect":"node ./loadersPlugins/publishDevCode.js"
   },
   "dependencies": {
     "core-js": "^3.6.5"
