@@ -158,3 +158,12 @@ export function getAllScoringDepartmentInfo(params) {
         params: params
     })
 }
+
+//获取供应商接口，tpb模块。
+export function getRaterAndCoordinatorByDepartmentId(data){
+    return requst({
+        url: '/supplier/getRaterAndCoordinatorByDepartmentId',
+        method: 'POST',
+        data: data
+    })
+}
