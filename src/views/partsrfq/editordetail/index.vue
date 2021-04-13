@@ -68,8 +68,8 @@
               <iText v-permission="PARTSRFQ_EDITORDETAIL_EP" forceTooltip :tooltipContent="baseInfo.ep">{{ nameProcessor(baseInfo.ep) }}</iText>
             </iFormItem>
             <iFormItem :label="$t('LK_CF')+':'" name="cf">
-              <iInput v-if="editStatus" v-model="baseInfo.cf" v-permission="PARTSRFQ_EDITORDETAIL_CF"></iInput>
-              <iText v-else v-permission="PARTSRFQ_EDITORDETAIL_CF" forceTooltip :tooltipContent="baseInfo.cf">{{ nameProcessor(baseInfo.cf) }}</iText>
+              <!-- <iInput v-if="editStatus" v-model="baseInfo.cf" v-permission="PARTSRFQ_EDITORDETAIL_CF"></iInput> -->
+              <iText v-permission="PARTSRFQ_EDITORDETAIL_CF" forceTooltip :tooltipContent="baseInfo.cf">{{ nameProcessor(baseInfo.cf) }}</iText>
             </iFormItem>
 
             <iFormItem :label="$t('LK_BENLUNBAOJIAJIEZHISHIJIAN')+':'" name="currentRoundsEndTime">
@@ -105,8 +105,8 @@
               <iText v-permission="PARTSRFQ_EDITORDETAIL_LINE">{{ baseInfo.linieNameZh }}</iText>
             </iFormItem>
             <iFormItem :label="$t('LK_PL')+':'" name="test">
-              <iInput v-if="editStatus" v-model="baseInfo.pl" v-permission="PARTSRFQ_EDITORDETAIL_PL"></iInput>
-              <iText v-else v-permission="PARTSRFQ_EDITORDETAIL_PL" forceTooltip :tooltipContent="baseInfo.pl">{{ nameProcessor(baseInfo.pl) }}</iText>
+              <!-- <iInput v-if="editStatus" v-model="baseInfo.pl" v-permission="PARTSRFQ_EDITORDETAIL_PL"></iInput> -->
+              <iText v-permission="PARTSRFQ_EDITORDETAIL_PL" forceTooltip :tooltipContent="baseInfo.pl">{{ nameProcessor(baseInfo.pl) }}</iText>
             </iFormItem>
             <iFormItem :label="$t('LK_BENLUNZHUANGTAI')+':'" name="test">
               <iText v-permission="PARTSRFQ_EDITORDETAIL_CURRENTSTATE">{{ baseInfo.currentRoundsStatus }}</iText>

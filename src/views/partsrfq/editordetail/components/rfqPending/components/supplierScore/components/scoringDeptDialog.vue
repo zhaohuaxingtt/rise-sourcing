@@ -5,11 +5,28 @@
         <iButton @click="handleAdd">{{ $t('LK_XINZENG') }}</iButton>
         <iButton @click="handleDelete">{{ $t('LK_SHANCHU') }}</iButton>
         <iButton @click="handleRecover">{{ $t('LK_HUIFU') }}</iButton>
-        <iButton @click="download" >{{ $t('LK_BAOCUN') }}</iButton>
+        <iButton @click="handleSave" :loading="saveLoading">{{ $t('LK_BAOCUN') }}</iButton>
       </div>
       <tableList index height="83%" class="table margin-top20" :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="loading" :cellClassName="deleteLine" @handleSelectionChange="handleSelectionChange">
-        <template #a="scope">
-          <iSelect v-model="scope.row.a" :disabled="scope.row.deleteStatus"></iSelect>
+        <template #rateDepart="scope">
+          <iSelect v-model="scope.row.rateDepart" :disabled="scope.row.deleteStatus" @change="handleClearAll(scope.row)">
+            <el-option v-for="(item, $index) in Object.keys(deptScoringMap)" :key="$index" :label="item" :value="item"></el-option>
+          </iSelect>
+        </template>
+        <template #rateDepartNum="scope">
+          <iSelect v-if="scope.row.rateDepart" v-model="scope.row.rateDepartNum" :disabled="scope.row.deleteStatus" @change="handleClearCoordinatorAndRater(scope.row)">
+            <el-option v-for="(item, $index) in Object.keys(deptScoringMap[scope.row.rateDepart])" :key="$index" :label="item" :value="item"></el-option>
+          </iSelect>
+        </template>
+        <template #raterId="scope"> <!-- right 评分人 -->
+          <iSelect v-if="scope.row.rateDepartNum" v-model="scope.row.raterId" :disabled="scope.row.deleteStatus" @change="handleChange($event, deptScoringMap[scope.row.rateDepart][scope.row.rateDepartNum].right, scope.row, 'rater')">
+            <el-option v-for="(item, $index) in deptScoringMap[scope.row.rateDepart][scope.row.rateDepartNum].right" :key="$index" :label="item.nameZh" :value="item.id"></el-option>
+          </iSelect>
+        </template>
+        <template #coordinatorId="scope"> <!-- left 评分人 -->
+          <iSelect v-if="scope.row.rateDepartNum" v-model="scope.row.coordinatorId" :disabled="scope.row.deleteStatus" @change="handleChange($event, deptScoringMap[scope.row.rateDepart][scope.row.rateDepartNum].left, scope.row, 'coordinator')">
+            <el-option v-for="(item, $index) in deptScoringMap[scope.row.rateDepart][scope.row.rateDepartNum].left" :key="$index" :label="item.nameZh" :value="item.id"></el-option>
+          </iSelect>
         </template>
       </tableList>
     </div>
@@ -20,8 +37,9 @@
 import { iDialog, iSelect, iButton, iMessage } from '@/components'
 import tableList from '@/views/partsign/editordetail/components/tableList'
 import { scoringDeptTitle as tableTitle } from './data'
-import { getAllScoringDepartmentInfo } from '@/api/partsrfq/editordetail'
+import { getAllScoringDepartmentInfo, getRaterAndCoordinatorByDepartmentId, setRaterAndCoordinatorByDepartmentId } from '@/api/partsrfq/editordetail'
 import { pageMixins } from '@/utils/pageMixins'
+import store from '@/store'
 
 export default {
   components: { tableList, iDialog, iSelect, iButton },
@@ -32,48 +50,66 @@ export default {
       type: Boolean,
       default: false
     },
-    volumeParams: {
-      type: Object,
-      default: () => ({})
+    id: {
+      type: String
     }
   },
   watch: {
     visible(nv) {
+      if (nv && this.id) {
+        // this.getAllScoringDepartmentInfo()
+        this.getRaterAndCoordinatorByDepartmentId()
+      } else {
+        this.tableListData = []
+      }
       this.$emit('update:visible', nv)
     },
-    volumeParams: {
-      handler() {
-        // this.$nextTick(() => { if (this.visible) this.getAllScoringDepartmentInfo() })
-      },
-      deep: true
-    }
+  },
+  created() {
+    this.getAllScoringDepartmentInfo()
   },
   data() {
     return {
       loading: false,
       tableTitle,
       tableListData: [],
-      multipleSelection: []
+      multipleSelection: [],
+      deptScoringMap: {},
+      saveLoading: false
     }
   },
   methods: {
+    // 获取下拉列表值
     getAllScoringDepartmentInfo() {
-      this.loading = true
-
       getAllScoringDepartmentInfo({
-        carTypeConfigId: this.volumeParams.carTypeConfigId,
-        version: this.volumeParams.version,
-        currPage: this.page.currPage,
-        pageSize: this.page.pageSize,
-        status: this.volumeParams.status,
-        tpId: this.volumeParams.tpId
+        rfqId: this.id
       })
         .then(res => {
-          this.tableListData = res.data.tpRecordList
-          this.page.totalCount = res.data.totalCount
-          this.loading = false
+          if (res.code == 200) {
+            this.deptScoringMap = res.data || {}
+          } else {
+            iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
+          }
         })
-        .catch(() => this.loading = false)
+        .catch(() => {})
+    },
+    // 获取已保存的评分部门
+    getRaterAndCoordinatorByDepartmentId() {
+      this.loading = true
+
+      getRaterAndCoordinatorByDepartmentId({
+        rfqId: this.id
+      })
+      .then(res => {
+        if (res.code == 200) {
+          this.tableListData = res.data
+        } else {
+          iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
+        }
+
+        this.loading = false
+      })
+      .catch(() => this.loading = false)
     },
     handleSelectionChange(list) {
       this.multipleSelection = list
@@ -81,6 +117,7 @@ export default {
     handleAdd() {
       this.tableListData.push({})
     },
+    // 前端样式删除（删除数据不传给后端，保存后刷新数据重绘掉）
     handleDelete() {
       if (!this.multipleSelection.length) return iMessage.warn(this.$t('LK_QINGXUANZEXUYAOSHANCHUDEPINGFENBUMEN'))
 
@@ -89,10 +126,64 @@ export default {
     deleteLine({ row }) {
       if (row.deleteStatus) return 'deleteLine'
     },
+    // 前端样式恢复
     handleRecover() {
       if (!this.multipleSelection.length) return iMessage.warn(this.$t('LK_QINGXUANZEXUYAOHUIFUDEPINGFENBUMEN'))
 
       this.multipleSelection.forEach(item => this.$set(item, 'deleteStatus', false))
+    },
+    handleChange(val, list, row, key) {
+      for (let i = 0, item; (item = list[i++]); ) {
+        if (item.id == val) {
+          this.$set(row, key, item.nameZh)
+          this.$set(row, 'tagName', item.tagName)
+        }
+      }
+    },
+    handleClearAll(row) {
+      const keys = ['coordinator', 'coordinatorId', 'rateDepartNum', 'rater', 'raterId', 'tagName']
+      keys.forEach(key => this.$set(row, key, undefined))
+    },
+    handleClearCoordinatorAndRater(row) {
+      const keys = ['coordinator', 'coordinatorId', 'rater', 'raterId', 'tagName']
+      keys.forEach(key => this.$set(row, key, undefined))
+    },
+    handleSave() {
+      const list = this.tableListData.filter(item => !item.deleteStatus)
+      // if (!list.length) return
+
+      for (let i = 0, item; (item = list[i++]);) {
+        if (!item.coordinatorId || !item.raterId || !item.rateDepart || !item.rateDepartNum) {
+          return iMessage.warn(this.$t('LK_QINGXUANZEWANSHUJUZAIZUOBAOCUN'))
+        }
+      }
+
+      this.saveLoading = true
+
+      setRaterAndCoordinatorByDepartmentId(
+        list.map(item => ({
+          coordinator: item.coordinator,
+          coordinatorId: item.coordinatorId,
+          rateDepart: item.rateDepart,
+          rateDepartNum: item.rateDepartNum,
+          rater: item.rater,
+          raterId: item.raterId,
+          rfqId: this.id,
+          tagName: item.tagName,
+          userId: store.state.permission.userInfo.id
+        })
+      ))
+      .then(res => {
+        if (res.code == 200) {
+          iMessage.success(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
+          this.getRaterAndCoordinatorByDepartmentId()
+        } else {
+          iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
+        }
+
+        this.saveLoading = false
+      })
+      .catch(() => this.saveLoading = false)
     }
   }
 }
