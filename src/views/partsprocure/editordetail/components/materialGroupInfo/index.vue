@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-03-01 10:29:09
- * @LastEditTime: 2021-03-30 23:31:57
+ * @LastEditTime: 2021-04-14 02:59:10
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsprocure\editordetail\components\materialGroupInfo\index.vue
@@ -114,9 +114,10 @@ export default {
   methods: {
     // 获取材料组数据
     getMaterialGroup() {
-      if (!this.params.categoryCode) return iMessage.warn(this.$t('LK_QUESHICAILIAOZUBIANHAOETC'))
+      // 签收的时候默认会设置一个采购项目为这个零件号。移除提示问题
+      //if (!this.params.categoryCode) return iMessage.warn(this.$t('LK_QUESHICAILIAOZUBIANHAOETC'))
       this.loading = true
-      getMaterialGroup({ categoryCode: this.params.categoryCode, partNum: this.params.partNum })
+      getMaterialGroup({ partNum: this.params.partNum })
         .then(res => {
           if (res.code == 200) {
             this.info = res.data || {}
