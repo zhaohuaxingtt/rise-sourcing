@@ -37,7 +37,7 @@
     <tpb-remarks
         v-model="dialogRemarks"
         @submit="handleRemarksSubmit"
-        :memo="selectedRowData.tpbMemo"
+        :memo="memo"
     />
     <scoringDeptDialog :visible.sync="scoringDeptVisible" :id="$route.query.id" />
   </iCard>
@@ -76,7 +76,8 @@ export default {
       scoringDeptVisible: false,
       pushLoading: false,
       setScoringDeptVisible: false,
-      templateScoreTitle:templateScoreTitle
+      templateScoreTitle:templateScoreTitle,
+      tagName: ''
     };
   },
   created() {
@@ -94,8 +95,10 @@ export default {
             userId: store.state.permission.userInfo.id
           }
           const res = await getAllSupplier(req)
-          const tpb = await getRaterAndCoordinatorByDepartmentId({'rfqId':id})
-          this.tableListData = this.trnaslateDataForView(res.records || [],tpb.data || []);
+          // const tpb = await getRaterAndCoordinatorByDepartmentId({'rfqId':id})
+          // ,tpb.data ||
+          const tpb = res.records[0] ? (res.records[0].rateEntity ? res.records[0].rateEntity : []) : []
+          this.tableListData = this.trnaslateDataForView(res.records || [], tpb);
           this.page.currPage = res.current
           this.page.pageSize = res.size
           this.page.totalCount = res.total
@@ -124,14 +127,19 @@ export default {
     },
     trnaslateDataForView(data,vmdata){
       const parmars = ['rate','externaFee','addFee','confirmCycle','memo']
-      const templateTitleLast = JSON.parse(JSON.stringify(this.templateScoreTitle))
-      vmdata.forEach((vmitems,vmindex)=>{this.translateTile(vmindex,vmitems,parmars,templateTitleLast)})
+     
+      vmdata.forEach((vmitems,vmindex)=>{
+        const templateTitleLast = JSON.parse(JSON.stringify(this.templateScoreTitle))
+        this.translateTile(vmindex,vmitems,parmars,templateTitleLast)
+      })
       data.forEach((items,index)=>{
         vmdata.forEach((vmitems,vmindex)=>{
-          parmars.forEach(items=>{
-            vmitems[items+(vmindex?vmindex:'')] = vmitems[items]
+          const obj = {}
+          parmars.forEach(item=>{
+            // vmitems[item+(vmindex?vmindex:'')] = vmitems[item]
+            obj[item+(vmindex?vmindex:'')] = items.rateEntity[vmindex][item]
           })
-          items = Object.assign(items,vmitems)
+          items = Object.assign(items,obj)
         })
       })
       return data
@@ -139,9 +147,9 @@ export default {
     translateTile(index,data,parmars,templateTitleLast){
       templateTitleLast.name = data.rateDepart
       templateTitleLast.list.forEach(items=>{
-          parmars.forEach(v=>{
-            items.props = v+(index?index:'')
-          })
+          // parmars.forEach(v=>{
+            items.props = items.props+(index?index:'')
+          // })
       })
       this.tableTitle.push(templateTitleLast)
     },
@@ -156,8 +164,10 @@ export default {
         path: `/partsrfq/editordetail/partScoring?${params}`
       })
     },
-    openMultiHeaderPropsPage(row) {
+    openMultiHeaderPropsPage(row, key) {
       this.selectedRowData = row
+      this.memo = row[key]
+      this.tagName = row.rateEntity[+(key.replace(/\D/g, ''))] ? row.rateEntity[+(key.replace(/\D/g, ''))].tagName : ''
       this.dialogRemarks = true
     },
     //修改表格改动列
@@ -168,7 +178,8 @@ export default {
       const req = {
         memo,
         supplierId: this.selectedRowData.id,
-        rfqId: this.$route.query.id
+        rfqId: this.$route.query.id,
+        tagName: this.tagName
       }
       const res = await setTpbMemo(req)
       this.resultMessage(res, () => {
