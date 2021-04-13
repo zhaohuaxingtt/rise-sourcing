@@ -150,7 +150,7 @@ export function notifySuppliers(rfqId) {
     })
 }
 
-// 获取评分部门
+// 获取评分部门列表
 export function getAllScoringDepartmentInfo(params) {
     return requst({
         url: '/supplier/getAllScoringDepartmentInfo',
@@ -162,7 +162,25 @@ export function getAllScoringDepartmentInfo(params) {
 // 设置评分部门
 export function setRaterAndCoordinatorByDepartmentId(params) {
     return requst({
-        url: '/supplier/getAllScoringDepartmentInfo',
+        url: '/supplier/setRaterAndCoordinatorByDepartmentId',
+        method: 'POST',
+        data: params
+    })
+}
+
+// 获取评分部门
+export function getRaterAndCoordinatorByDepartmentId(params) {
+    return requst({
+        url: '/supplier/getRaterAndCoordinatorByDepartmentId',
+        method: 'POST',
+        data: params
+    })
+}
+
+// 推送评分任务
+export function sendTaskForRating(params) {
+    return requst({
+        url: '/supplier/sendTaskForRating',
         method: 'POST',
         data: params
     })

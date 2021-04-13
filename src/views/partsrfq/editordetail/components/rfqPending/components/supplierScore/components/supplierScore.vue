@@ -4,8 +4,8 @@
       <span class="font18 font-weight">{{ $t('LK_GONGYINGSHANGPINGFEN') }}</span>
       <div class="floatright">
         <!-- v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_SUPPLIERSCORE_PARTSCORING_DELETE" -->
-        <iButton @click="setScoreDept">{{ $t('LK_SHEZHIPINGFENBUMEN') }}</iButton>
-        <iButton @click="deleteItems">{{ $t('LK_TUISONGPINGFENRENWU') }}</iButton>
+        <iButton @click="setScoringDept">{{ $t('LK_SHEZHIPINGFENBUMEN') }}</iButton>
+        <iButton @click="sendTaskForRating" :loading="pushLoading">{{ $t('LK_TUISONGPINGFENRENWU') }}</iButton>
       </div>
     </div>
     <tablelist
@@ -39,17 +39,17 @@
         @submit="handleRemarksSubmit"
         :memo="selectedRowData.tpbMemo"
     />
-    <scoringDeptDialog :visible.sync="setScoringDeptVisible" />
+    <scoringDeptDialog :visible.sync="scoringDeptVisible" :id="$route.query.id" />
   </iCard>
 </template>
 
 <script>
-import {iCard, iPagination, iButton} from "@/components";
+import {iCard, iPagination, iButton, iMessage} from "@/components";
 import tablelist from './supplierScoreTableList'
 import {supplierScoreTitle} from "./data";
 import {pageMixins} from "@/utils/pageMixins";
 import tpbRemarks from './tpbRemarks'
-import {getAllSupplier, setTpbMemo} from "@/api/partsrfq/editordetail";
+import {getAllSupplier, setTpbMemo, sendTaskForRating} from "@/api/partsrfq/editordetail";
 import {serialize} from '@/utils'
 import store from '@/store'
 import {rfqCommonFunMixins} from "pages/partsrfq/components/commonFun";
@@ -73,7 +73,8 @@ export default {
       selectTableData: [],
       dialogRemarks: false,
       selectedRowData: {},
-      setScoringDeptVisible: false
+      scoringDeptVisible: false,
+      pushLoading: false
     };
   },
   created() {
@@ -100,7 +101,20 @@ export default {
         }
       }
     },
-    deleteItems() {
+    sendTaskForRating() {
+      this.pushLoading = true
+
+      sendTaskForRating(this.selectTableData)
+      .then(res => {
+        if (res.code == 200) {
+          iMessage.success(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
+        } else {
+          iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
+        }
+
+        this.pushLoading = false
+      })
+      .catch(() => this.pushLoading = false)
     },
     uploadAttachments() {
 
@@ -137,8 +151,8 @@ export default {
       })
     },
     // 设置评分部门
-    setScoreDept() {
-      this.setScoringDeptVisible = true
+    setScoringDept() {
+      this.scoringDeptVisible = true
     }
   }
 }

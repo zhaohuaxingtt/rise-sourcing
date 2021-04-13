@@ -21,7 +21,7 @@
               </template>
             </el-table-column>
             <el-table-column :key="index2" align='center' v-else :label="items2.key ? $t(items2.key) : items2.name"
-                             :prop="items2.props"></el-table-column>
+                             :prop="items2.props" fixed="left"></el-table-column>
           </template>
         </el-table-column>
       </template>
