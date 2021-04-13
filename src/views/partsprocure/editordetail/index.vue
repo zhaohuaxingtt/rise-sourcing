@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2021-04-13 18:06:57
+ * @LastEditTime: 2021-04-14 00:54:20
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsprocure\editordetail\index.vue
@@ -445,7 +445,7 @@ import { iMessageBox } from '../../../components';
 					detailData,
 				}).then((res) => {
 					if (res.data) {
-						if(typeof res.data == "boolean"){
+						if(res.data.procureFactoryIds.length <= 1 ){
 							iMessage.success(this.$t('LK_YIBAOCUN'));
 							this.getDatail();
 						}else{
