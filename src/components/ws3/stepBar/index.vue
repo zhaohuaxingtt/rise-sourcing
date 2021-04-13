@@ -41,24 +41,20 @@ export default {
           {title: '1.首页', required: true},
           {title: '2.基本信息', required: true},
           {title: '3.工厂信息', required: true},
-          {title: '4.银行信息'},
-          {title: '5.股东、集团与关联公司'},
-          {title: '6.人员及公司治理情况'},
-          {title: '7.主要业务及产品'},
-          {title: '8.主要客户'},
-          {title: '9.主要分供方及产品名称'},
-          {title: '10.重大事项'},
-          {title: '11.联系人与用户', required: true},
-          {title: '12.相关附件', required: true},
-          {title: '13.财务大数', required: true},
-          {title: '14.财务数据'},
+          {title: '4.授权银行信息'},
+          {title: '5.主要业务及产品'},
+          {title: '6.主要客户'},
+          {title: '7.主要分供方及产品名称'},
+          {title: '8.联系人与用户', required: true},
+          {title: '9.相关附件', required: true},
+          {title: '10.财务大数'},
+          {title: '11.财务数据'},
         ]
       }
     }
   },
   methods: {
     handleItemClick(index) {
-      console.log(index);
       this.$emit('handleItemClick', index)
     }
   }
@@ -69,7 +65,8 @@ export default {
 .step-bar {
   width: 100%;
   display: flex;
-  overflow-x: scroll;
+  justify-content: center;
+  overflow-x: auto;
 
   .box {
     display: flex;
@@ -78,7 +75,7 @@ export default {
       display: flex;
       flex-direction: column;
       align-items: center;
-      width: 100px;
+      width: 105px;
       cursor: pointer;
 
       .symbol-box {

@@ -171,6 +171,12 @@ export const staticRouter = [{
                 },
                 component: () =>
                     import (`@/views/priceorder/jobmanagement`)
+            },
+            {
+                path: "/ws3-register",
+                name: "/ws3Register",
+                component: () =>
+                    import ("@/views/ws3/register"),
             }
         ],
     },
@@ -200,7 +206,7 @@ export const staticRouter = [{
         },
         component: () =>
             import (`@/views/404`)
-    },
+    }
 ]
 
 // eslint-disable-next-line no-undef
