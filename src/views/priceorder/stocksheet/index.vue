@@ -9,9 +9,23 @@
 <template>
   <iPage class="partsprocureHome" v-permission="PARTSPROCURE_INDEXPAGE">
     <el-tabs v-model="tab" class="tab">
-      <el-tab-pane label="" name="source">
+      <el-tab-pane name="source">
         <div>
-          <div class="margin-bottom33">
+          <div class="flex-between-center-center">
+            <div class="tabs">
+              <!-- <iTabs type="card">
+                <el-tab-pane label="用户管理" name="first"></el-tab-pane>
+                <el-tab-pane label="配置管理" name="second"></el-tab-pane>
+                <el-tab-pane label="角色管理" name="third"></el-tab-pane>
+                <el-tab-pane label="定时任务补偿" name="fourth"></el-tab-pane>
+              </iTabs>-->
+              <ul>
+                <li v-for="(items, index) in tabtitle" :key="index">
+                  {{ items.name }}
+                </li>
+              </ul>
+              <span class="bottom-line"></span>
+            </div>
             <div class="btnList flex-align-center">
               <iButton>备货表</iButton>
               <iButton>采购申请</iButton>
@@ -26,6 +40,7 @@
           <!------------------------------------------------------------------------>
           <iSearch
             class="margin-bottom20"
+            style="margin-top: 20px"
             @sure="sure"
             @reset="reset"
             :resetKey="PARTSPROCURE_RESET"
@@ -169,17 +184,10 @@
                 </iSelect>
               </el-form-item>
               <el-form-item label="实施⽇期起⽌">
-                <!-- <DatePicker
-                  v-model="value1"
-                  type="datetime"
-                  placeholder="选择日期时间"
-                  default-time="12:00:00"
-                /> -->
                 <iDatePicker
                   v-model="value1"
                   type="datetime"
                   placeholder="选择日期时间"
-                  default-time="12:00:00"
                 />
               </el-form-item>
             </el-form>
@@ -245,6 +253,7 @@ import {
   iInput,
   iSelect,
   iDatePicker,
+  iTabs,
 } from "@/components";
 import { DatePicker } from "element-ui";
 import logButton from "./components/logButton";
@@ -279,6 +288,7 @@ export default {
     iDatePicker,
     icon,
     DatePicker,
+    iTabs,
   },
   data() {
     return {
@@ -292,7 +302,15 @@ export default {
       diologBack: false, //退回
       startLoding: false,
       tab: "source",
-      value1: new Date(2000, 10, 10, 10, 10),
+      value1: new Date().getTime(),
+      tabtitle: [
+        { name: "概览", index: 0, key: "LK_GAILIAN" },
+        { name: "采购申请", active: false, key: "LK_CAIGOUSHENQING" },
+        { name: "采购订单", active: true, key: "LK_CAIGOUDINGDAN" },
+        { name: "定价管理", active: false, key: "LK_DINGJIAGUANLI" },
+        { name: "价格追溯", active: false, key: "LK_JIAGEZHUISU" },
+        { name: "合同查询", active: false, key: "LK_HETONGCHAXUN" },
+      ],
     };
   },
   computed: {
@@ -578,6 +596,23 @@ export default {
       .is-active {
         opacity: 1;
         font-weight: bold;
+      }
+    }
+    .tabs {
+      display: flex;
+      > ul {
+        display: flex;
+        flex-direction: row;
+        > li {
+          width: 80px;
+          font-size: 16px;
+          font-weight: 400;
+        }
+      }
+      > ul::after {
+        width: 100%;
+        height: 2px;
+        border-bottom: 2px solid red;
       }
     }
   }
