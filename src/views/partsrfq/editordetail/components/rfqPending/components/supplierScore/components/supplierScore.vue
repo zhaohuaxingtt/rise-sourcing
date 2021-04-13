@@ -115,7 +115,6 @@ export default {
           items = Object.assign(items,vmitems)
         })
       })
-      console.log(data)
       return data
     },
     translateTile(index,data,parmars,templateTitleLast){
