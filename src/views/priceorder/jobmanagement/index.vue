@@ -160,7 +160,7 @@ export default {
   }
 
   .font24 {
-    font-size: 24px;
+    font-size: 30px;
   }
   .tab {
     ::v-deep .el-tabs__header {

@@ -14,7 +14,7 @@ export const iconData = [{
         active: false,
         key: 'first',
         // path: '/partsign',
-        path: "/organization/check",
+        path: "/priceorder/check",
         menuData: []
     },
     {
@@ -22,7 +22,7 @@ export const iconData = [{
         acIcon: 'iconworkbenchxuanzhong',
         active: false,
         key: 'tow',
-        path: '/organization/organization',
+        path: '/priceorder/stocksheet',
         // path: '/partsprocure',
         menuData: []
     },
@@ -32,7 +32,7 @@ export const iconData = [{
         active: false,
         key: 'three',
         // path: '/partsrfq',
-        path: '/organization/postmanagement',
+        path: '/priceorder/postmanagement',
         menuData: [{
             label: '任务中心',
             active: false,

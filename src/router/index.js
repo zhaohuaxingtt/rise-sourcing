@@ -137,31 +137,31 @@ export const staticRouter = [{
             },
             /** work stream 2 组织/用户权限 */
             {
-                path: '/organization/check',
+                path: '/priceorder/check',
                 name: 'organizationcheck',
                 meta: {
                     title: '组织管理-组织查看'
                 },
                 component: () =>
-                    import (`@/views/organization/home`)
+                    import (`@/views/priceorder/home`)
             },
             {
-                path: '/organization/organization',
-                name: 'organization',
+                path: '/priceorder/stocksheet',
+                name: 'stocksheet',
                 meta: {
-                    title: '组织管理-组织管理'
+                    title: '价格与订单-备货表'
                 },
                 component: () =>
-                    import (`@/views/organization/management`)
+                    import (`@/views/priceorder/stocksheet`)
             },
             {
-                path: '/organization/postmanagement',
+                path: '/priceorder/postmanagement',
                 name: '/postmanagement',
                 meta: {
                     title: '岗位管理-岗位管理'
                 },
                 component: () =>
-                    import (`@/views/organization/jobmanagement`)
+                    import (`@/views/priceorder/jobmanagement`)
             }
         ],
     },

@@ -98,19 +98,19 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang='scss' scoped>
 .process-tree {
   padding: 10px;
   overflow: scroll;
-  padding-bottom: 27px;
   width: 100%;
   padding-right: 0;
   font-size: 0;
   line-height: 0;
 }
 .process-tree-roots {
-  width: 250%;
-  margin-bottom: 20px;
+  display: inline-block;
+  display: flex;
+  flex-direction: column;
 }
 .single-node::before {
   content: "";
@@ -126,11 +126,11 @@ export default {
   content: "";
   display: block;
   position: absolute;
-  width: 3px;
-  height: 100%;
+  width: 100%;
+  height: 3px;
   background: rgba(203, 221, 238, 1);
   left: -23px;
-  top: 0;
+  top: 20px;
 }
 .process-tree-node {
   position: relative;
@@ -140,22 +140,22 @@ export default {
   color: #333;
   display: inline-block;
   cursor: pointer;
-  min-width: 80px;
   text-align: center;
   font-size: 12px;
   line-height: 1.8em;
   vertical-align: middle;
-  min-height: 20px;
+  width: 150px;
+  height: 120px;
 }
 .process-tree-node::after {
   content: "";
   display: block;
-  width: 20px;
-  height: 3px;
+  width: 3px;
+  height: 20px;
   background: rgba(203, 221, 238, 1);
   position: absolute;
-  left: 100%;
-  top: 50%;
+  left: 50%;
+  top: 100%;
 }
 .leaf-node::after {
   display: none;
@@ -176,11 +176,11 @@ export default {
   content: "";
   display: block;
   position: absolute;
-  width: 20px;
-  height: 3px;
+  width: 3px;
+  height: 20px;
   background: rgba(203, 221, 238, 1);
   left: -20px;
-  top: 50%;
+  top: 0%;
 }
 .multiply-node .process-tree-childNodes-row:first-child::after,
 .multiply-node .process-tree-childNodes-row:last-child::after {

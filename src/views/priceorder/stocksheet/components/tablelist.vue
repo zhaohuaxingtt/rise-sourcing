@@ -30,7 +30,7 @@
         :show-overflow-tooltip="items.tooltip"
         v-if="items.props == activeItems"
         :prop="items.props"
-        :label="items.key ? $t(items.key) : items.name"
+        :label="items.name"
       >
         <template slot-scope="row"
           ><span class="openLinkText cursor" @click="openPage(row.row)">{{
@@ -43,7 +43,7 @@
         align="center"
         :show-overflow-tooltip="items.tooltip"
         v-else-if="items.props == 'tpInfoType'"
-        :label="items.key ? $t(items.key) : items.name"
+        :label="items.name"
         :prop="items.props"
       >
         <template slot-scope="scope">
@@ -57,12 +57,13 @@
         align="center"
         :show-overflow-tooltip="items.tooltip"
         v-else
-        :label="items.key ? $t(items.key) : items.name"
+        :label="items.name"
         :prop="items.props"
       ></el-table-column>
     </template>
   </el-table>
 </template>
+
 <script>
 export default {
   props: {

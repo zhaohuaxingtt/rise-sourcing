@@ -58,26 +58,22 @@ export default {
         {
           name: "节点1",
           children: [
-            { name: "节点5" },
-            { name: "节点5", isLong: true },
             {
               name: "节点26",
+              isLong: false,
               children: [
                 { name: "节点3" },
                 { name: "节点3" },
                 {
                   name: "节点33",
-                  children: [
-                    { name: "节点3" },
-                    { name: "节点3" },
-                    { name: "节点3" },
-                  ],
                 },
               ],
             },
-            { name: "节点3", children: [{ name: "节点3" }, { name: "节点3" }] },
-            { name: "节点4", children: [{ name: "节点3" }] },
-            { name: "节点5", isLong: true },
+            {
+              name: "节点3",
+              isLong: false,
+              children: [{ name: "节点3" }, { name: "节点3" }],
+            },
           ],
         },
       ],
@@ -88,18 +84,27 @@ export default {
   mounted() {
     this.$refs.tree.initDomWidth();
   },
+  watch: {
+    treeData() {
+      this.$nextTick(this.$refs.tree.initDomWidth);
+    },
+  },
 };
 </script>
 <style lang='scss' scoped>
 .orgationcheckHome {
   position: relative;
   .icard-one {
-    height: 500px;
     border-radius: 10px;
     margin-top: 66px;
-    .tree {
-      display: flex;
-      flex-direction: column;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    overflow: hidden;
+    > div {
+      width: calc(100% + 17px);
+      height: calc(100% + 17px);
     }
   }
   .tab {
