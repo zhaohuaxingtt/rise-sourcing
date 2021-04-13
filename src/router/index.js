@@ -143,6 +143,12 @@ export const staticRouter = [{
                 name: "log",
                 component: () =>
                     import ("@/views/log/home"),
+            },
+            {
+                path: "/ws3-register",
+                name: "/ws3Register",
+                component: () =>
+                    import ("@/views/ws3/register"),
             }
         ],
     },
