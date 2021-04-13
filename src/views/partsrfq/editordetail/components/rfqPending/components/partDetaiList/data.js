@@ -18,7 +18,7 @@ export const tableTitle = [
     {props:'h',name:'车型项目',key: 'LK_CHEXINGXIANGMU'},
     {props:'i',name:'零件状态',key: 'LK_LINGJIANZHUANGTAI'},
     {props:'j',name:'询价采购员',key: 'LK_XUNJIACAIGOUYUAN'},
-    {props: 'k', name: 'LINIE',key: 'rfq.RFQLINIE'},
+    {props: 'k', name: 'LINIE',key: 'LK_LINIE'},
     {props:'l',name:'CF',key: 'partsprocure.PARTSPROCURECF'}
     
   ]

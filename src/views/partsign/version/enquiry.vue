@@ -3,12 +3,12 @@
     <iCard class="card">
       <div class="header clearFloat">
         <span class="title">{{ $t('LK_QUANBUBANBEN') }}</span>
-        <!-- <div class="control">
-          <iButton @click="back">{{ $t('LK_FANHUI') }}</iButton>
-        </div> -->
+        <div class="control">
+          <iButton v-permission="PARTSIGN_EDITORDETAIL_ENQUIRY_VERSION_DOWNLOAD" @click="download">{{ $t('LK_XIAZAI') }}</iButton>
+        </div>
       </div>
       <div class="body margin-top25">
-        <tableList index height="100%" :selection="false" class="table" :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="loading">
+        <tableList index height="100%" class="table" :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="loading" @handleSelectionChange="handleSelectionChange">
           <template #version="scope">
             <span class="link-underline" @click="volume(scope.row)">{{ scope.row.version }}</span>
           </template>
@@ -35,16 +35,17 @@
 </template>
 
 <script>
-import { iPage, iCard, iPagination } from '@/components'
+import { iPage, iCard, iPagination, iButton, iMessage } from '@/components'
 import tableList from '@/views/partsign/editordetail/components/tableList'
 import enquiryDialog from '@/views/partsign/editordetail/components/enquiryDialog'
-import { getAttachmentVersion } from '@/api/partsign/editordetail'
+import { getAttachmentVersion, getAttachment } from '@/api/partsign/editordetail'
 import { enquiryTableTitle as tableTitle } from './components/data'
 import { pageMixins } from '@/utils/pageMixins'
 import filters from '@/utils/filters'
+import { downloadFile } from '@/api/file'
 
 export default {
-  components: { iPage, iCard, iPagination, tableList, enquiryDialog },
+  components: { iPage, iCard, iPagination, tableList, enquiryDialog, iButton },
   mixins: [ pageMixins, filters ],
   data() {
     return {
@@ -52,7 +53,8 @@ export default {
       tableListData: [],
       enquiryVisible: false,
       enquiryParams: {},
-      purchasingRequirementTargetId: ""
+      purchasingRequirementTargetId: "",
+      multipleSelection: []
     }
   },
   created() {
@@ -82,7 +84,46 @@ export default {
     },
     volume(data) {
       this.enquiryVisible = true
-      this.enquiryParams = { ...data, purchasingRequirementTargetId: this.purchasingRequirementTargetId }
+      this.enquiryParams = { ...data, purchasingRequirementTargetId: this.purchasingRequirementTargetId, status: "1" }
+    },
+    handleSelectionChange(list) {
+      this.multipleSelection = list
+    },
+    async download() {
+      if (this.multipleSelection.length !== 1) return iMessage.warn(this.$t('LK_QINGXUANZHEYIGEXUYAOXIAZAIBANBEN'))
+      const data = this.multipleSelection[0]
+      
+      this.downLoading = true
+      const infoRes = await getAttachment({
+        version: data.version,
+        currPage: 1,
+        pageSize: 999999,
+        status: "1",
+        purchasingRequirementTargetId: data.purchasingRequirementTargetId
+      })
+
+      if (infoRes.code != 200) {
+        this.downLoading = false
+        return iMessage.error(`${ this.$i18n.locale === 'zh' ? infoRes.desZh : infoRes.desEn }`)
+      }
+
+      if(infoRes.data.attachmentVOS){
+        const list = infoRes.data.attachmentVOS.tpRecordList
+        if (list.length == 0) {
+          this.downLoading = false
+          return iMessage.error(this.$t('LK_SUOXUANBANBENWUFUJIAN'))
+        }
+
+        await downloadFile({
+          applicationName: 'rise-procurereq-service',
+          fileList: list.map(item => item.tpPartAttachmentName).join('&fileList=')
+        })
+
+        this.downLoading = false
+      } else {
+        iMessage.error(this.$t('LK_SUOXUANBANBENWUFUJIAN'))
+        this.downLoading = false
+      }
     },
     // back() {
     //   this.$router.go(-1)

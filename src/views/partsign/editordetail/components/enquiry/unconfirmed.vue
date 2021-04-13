@@ -5,7 +5,7 @@
       <div class="control">
         <iButton @click="confirm" :loading="confirmLoading" v-permission="PARTSIGN_EDITORDETAIL_ENQUIRY_UNCONFIRMED_CONFIRM">{{ $t('LK_QUEREN') }}</iButton>
         <iButton @click="reject" v-permission="PARTSIGN_EDITORDETAIL_ENQUIRY_UNCONFIRMED_REFUSE">{{ $t('LK_JUJUE') }}</iButton>
-        <iButton @click="download" v-permission="PARTSIGN_EDITORDETAIL_ENQUIRY_UNCONFIRMED_EXPORT">{{ $t('LK_DAOCHU') }}</iButton>
+        <iButton @click="download" v-permission="PARTSIGN_EDITORDETAIL_ENQUIRY_UNCONFIRMED_DOWNLOAD" :loading="downLoading">{{ $t('LK_XIAZAI') }}</iButton>
       </div>
     </div>
     <div class="body margin-top27">
@@ -40,11 +40,11 @@ import { iCard, iButton, iPagination, iMessage } from '@/components'
 import tableList from '../tableList'
 import { enquiryUnconfirmedTableTitle as tableTitle } from '../data'
 import backItems from '@/views/partsign/home/components/backItems'
-import { getAttachmentVersion, patchAttachmentVersion } from '@/api/partsign/editordetail'
+import { getAttachmentVersion, patchAttachmentVersion, getAttachment } from '@/api/partsign/editordetail'
 import { pageMixins } from '@/utils/pageMixins'
 import enquiryDialog from '../enquiryDialog'
 import filters from '@/utils/filters'
-import { excelExport } from '@/utils/filedowLoad'
+import { downloadFile } from '@/api/file'
 
 export default {
   components: { iCard, iButton, iPagination, tableList, backItems, enquiryDialog },
@@ -67,7 +67,8 @@ export default {
       enquiryVisible: false,
       params: {},
       confirmLoading: false,
-      rejectLoading: false
+      rejectLoading: false,
+      downLoading: false
     }
   },
   created() {
@@ -153,13 +154,45 @@ export default {
         })
         .catch(() => this.rejectLoading = false)
     },
-    download() {
-      if (!this.multipleSelection.length) return iMessage.warn(this.$t('LK_QINGXUANZHEXUYAODAOCHUBANBEN'))
-      excelExport(this.multipleSelection, this.tableTitle)
+    async download() {
+      if (this.multipleSelection.length !== 1) return iMessage.warn(this.$t('LK_QINGXUANZHEYIGEXUYAOXIAZAIBANBEN'))
+      const data = this.multipleSelection[0]
+      
+      this.downLoading = true
+      const infoRes = await getAttachment({
+        version: data.version,
+        currPage: 1,
+        pageSize: 999999,
+        status: "0",
+        purchasingRequirementTargetId: data.purchasingRequirementTargetId
+      })
+
+      if (infoRes.code != 200) {
+        this.downLoading = false
+        return iMessage.error(`${ this.$i18n.locale === 'zh' ? infoRes.desZh : infoRes.desEn }`)
+      }
+
+      if(infoRes.data.attachmentVOS){
+        const list = infoRes.data.attachmentVOS.tpRecordList
+        if (list.length == 0) {
+          this.downLoading = false
+          return iMessage.error(this.$t('LK_SUOXUANBANBENWUFUJIAN'))
+        }
+
+        await downloadFile({
+          applicationName: 'rise-procurereq-service',
+          fileList: list.map(item => item.tpPartAttachmentName).join('&fileList=')
+        })
+
+        this.downLoading = false
+      } else {
+        iMessage.error(this.$t('LK_SUOXUANBANBENWUFUJIAN'))
+        this.downLoading = false
+      }
     },
     enquiry(data) {
       this.enquiryVisible = true
-      this.params = { ...data, purchasingRequirementTargetId: this.data.purchasingRequirementTargetId }
+      this.params = { ...data, purchasingRequirementTargetId: this.data.purchasingRequirementTargetId, stauts: "0" }
     },
   }
 }

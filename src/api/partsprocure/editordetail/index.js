@@ -62,7 +62,7 @@ export function getTpInfo(params) {
 // 关联附件用
 export function patchTpRecords(params) {
 	return requst({
-		url: '/tp-records',
+		url: '/api/tp-records',
 		method: 'PATCH',
 		data: params
 	})
@@ -90,7 +90,7 @@ const requstPartProcure = axios(process.env.VUE_APP_PART_PROCURE)
 // 获取产量计划
 export function getOutputPlan(params) {
 	return requstPartProcure({
-		url: '/api/part-src-prjs',
+		url: '/part-src-prjs',
 		method: 'GET',
 		params: params
 	})
@@ -99,7 +99,7 @@ export function getOutputPlan(params) {
 // 更新产量计划
 export function updateOutputPlan(params) {
 	return requstPartProcure({
-		url: '/api/part-src-prjs',
+		url: '/part-src-prjs',
 		method: 'POST',
 		data: params
 	})
@@ -137,5 +137,13 @@ export function dictkey(params) {
 		url: '/selectDictKey',
 		method: 'GET',
 		params: params
+	})
+}
+// 检测当前值是不是在范围里面。
+export function checkFactory(params) {
+	return requstPartsProcure({
+		url: '/part-src-prjs/is-exist-cartype-project-factory',
+		method: 'POST',
+		data: params
 	})
 }

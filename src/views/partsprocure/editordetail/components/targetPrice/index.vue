@@ -136,6 +136,7 @@
 		getTabelData,
 		changeProcure
 	} from '@/api/partsprocure/home'
+import { iMessageBox } from '../../../../../components';
 	export default {
 		components: {
 			iCard,
@@ -219,7 +220,14 @@
 				changeProcure({
 					targetprice,
 				}).then((res) => {
-					this.targePriceDetail()
+					if(res.code == 200){
+						iMessage.success(this.$t('LK_CAOZUOCHENGGONG'))
+						this.targePriceDetail()
+					}else{
+						iMessage.error(res.desZh)
+					}
+				}).catch(err=>{
+					iMessage.error(err.desZh)
 				});
 			}
 		}

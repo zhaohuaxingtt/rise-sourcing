@@ -9,13 +9,21 @@
 <template>
   <div class="itext">
     <span class="child">
-      <el-tooltip v-if='tooltip' effect='light' :content='$slots.default'><span><slot></slot></span></el-tooltip>
+      <el-tooltip v-if='tooltip || forceTooltip' effect='light' :content='tooltipContent ? tooltipContent : $slots.default'><span><slot></slot></span></el-tooltip>
       <slot v-else></slot>
     </span>
   </div>
 </template>
 <script>
 export default{
+  props: {
+    forceTooltip: {
+      type: Boolean
+    },
+    tooltipContent: {
+      type: String
+    }
+  },
   data(){
     return {tooltip:false}
   },

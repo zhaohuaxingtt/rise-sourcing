@@ -1,13 +1,12 @@
 <template>
-  <iCard class="outputRecord" tabCard :title="$t('LK_LINGJIANCHANLIANGJILU')">
+  <iCard class="outputRecord" tabCard collapse :title="$t('LK_LINGJIANCHANLIANGJILU')">
     <template v-slot:header-control>
-      <iButton @click="updateOutput" v-permission="PARTSPROCURE_EDITORDETAIL_OUTPUTPLAN_OUTPUTRECORD_UPDATE">{{ $t('LK_GENGXINZHIXUNJIACHANLIANG') }}</iButton>
+      <iButton v-permission="PARTSPROCURE_OUTPUTPLAN_OUTPUTRECORD_UPDATE" @click="updateOutput">{{$t('LK_GENGXINZHIXUNJIACHANLIANG')}}</iButton>
     </template>
     <div class="body">
-      <tableList
+      <tablelist
         class="table"
         index
-        :indexLabel="$t('LK_BIANHAO')" 
         :tableData="tableListData" 
         :tableTitle="tableTitle" 
         :tableLoading="loading"
@@ -21,21 +20,21 @@
         :page-sizes="page.pageSizes"
         :page-size="page.pageSize"
         :layout="page.layout"
-        :total="page.totalCount" v-update/>
+        :total="page.totalCount" v-update />
     </div>
   </iCard>
 </template>
 
 <script>
 import { iCard, iButton, iPagination, iMessage } from '@/components'
-import tableList from '@/views/partsign/editordetail/components/tableList'
+import tablelist from '@/views/partsign/home/components/tableList'
 import { getOutputPlan } from '@/api/partsprocure/editordetail'
 import { pageMixins } from '@/utils/pageMixins'
 import { outputRecordTableTitle as tableTitle } from './data'
 import { cloneDeep } from 'lodash'
 
 export default {
-  components: { iCard, iButton, tableList, iPagination },
+  components: { iCard, iButton, tablelist, iPagination },
   mixins: [ pageMixins ],
   props: {
     params: {
@@ -48,11 +47,12 @@ export default {
       loading: false,
       tableTitle: cloneDeep(tableTitle),
       tableListData: [],
-      multipleSelection: []
+      multipleSelection: [],
+      startYear: ''
     }
   },
   created() {
-    this.getData()
+    // this.getData()
   },
   methods: {
     getData() {
@@ -61,7 +61,8 @@ export default {
       getOutputPlan({
         'partRecordPageReqDTO.current': this.page.currPage,
         'partRecordPageReqDTO.purchaseProjectId': this.params.purchasePrjectId,
-        'partRecordPageReqDTO.size': this.page.pageSize
+        'partRecordPageReqDTO.size': this.page.pageSize,
+        'partRecordPageReqDTO.year': this.startYear
       }).
         then(res => {
           if (res.data && res.data.partRecordResPageDTO) {
@@ -90,6 +91,7 @@ export default {
                 return result
               })
             }
+
             this.page.totalCount = res.data.partRecordResPageDTO.total || 0
           }
 
@@ -103,6 +105,11 @@ export default {
     updateOutput() {
       if (this.multipleSelection.length !== 1) return iMessage.warn(this.$t('LK_QINGXUANZHEYITIAOJIHUAGENGXIN'))
       this.$emit('updateOutput', this.multipleSelection[0])
+      console.log(this.tableListData)
+    },
+    updateStartYear(startYear) {
+      this.startYear = startYear
+      this.getData()
     }
   }
 }

@@ -24,6 +24,7 @@ import iFormItem from '../components/iPageItemsGroup/iFormItem'
 import iText from '../components/iPageItemsGroup/iText'
 import iDrawer from "../components/iDrawer"
 import iRadio from "../components/iRadio"
+import iDatePicker from "../components/iDatePicker"
 // const msg = this.$t('LK_WENXINTISHI');
 const iMessageBox = (content = '', title, options = {}) => {
     return MessageBox.confirm(content, title, Object.assign({ zIndex: 20000 }, options))
@@ -72,5 +73,6 @@ export {
     iDialog,
     iText,
     iDrawer,
-    iRadio
+    iRadio,
+    iDatePicker
 }

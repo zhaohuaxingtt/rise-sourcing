@@ -10,8 +10,8 @@
 				</span>
       </div>
     </div>
-    <outputPlan :params="params" @updateStartYear="updateStartYear" />
-    <outputRecord ref="outputRecord" class="margin-top20" :params="params" />
+    <outputPlan ref="outputPlan" :params="params" @updateStartYear="updateStartYear" />
+    <outputRecord ref="outputRecord" class="margin-top20" :params="params" @updateOutput="updateOutput" />
     <volume class="margin-top20" :params="params" />
   </iPage>
 </template>
@@ -36,6 +36,9 @@ export default {
   methods: {
     updateStartYear(startYear) {
       this.$refs.outputRecord.updateStartYear(startYear)
+    },
+    updateOutput(data) {
+      this.$refs.outputPlan.updateOutput(data)
     },
     log() {
       window.open(`/#/log?recordId=`, '_blank')

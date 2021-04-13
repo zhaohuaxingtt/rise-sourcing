@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-25 10:14:46
- * @LastEditTime: 2021-04-03 14:22:10
+ * @LastEditTime: 2021-04-03 14:50:29
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsprocure\home\component\data.js
@@ -111,10 +111,10 @@ export const form = {
 
 // addRfq
 export const addRfqTitle =[
-	{props:'id',name:'RFQ#'},
-	{props:'rfqName',name:'RFQ名称'},
-	{props:'currentStatus',name:'RFQ状态'},
-	{props:'updateDate',name:'操作时间'},
+	{props:'id',name:'RFQ#',key: 'RFQ#'},
+	{props:'rfqName',name:'RFQ名称',key: 'LK_RFQMINGCHENG',},
+	{props:'currentStatus',name:'RFQ状态',key: 'LK_RFQZHUANGTAI'},
+	{props:'updateDate',name:'操作时间',key: 'LK_UpdateDate'},
 
 ]
 

@@ -88,6 +88,7 @@ export default {
               res.data.partRecordsResDTO.outputPlanList.forEach((planData, index) => {
                 if (index === 0) {
                   this.startYear = planData.year
+                  this.$emit('updateStartYear', this.startYear)
                 } else {
                   this.tableTitle.splice(index, 0, { props: planData.year, name: planData.year, key: planData.year })
                 }
@@ -116,15 +117,8 @@ export default {
         .catch(() => this.loading = false)
     },
     updateOutput(data) {
-      this.tableTitle = cloneDeep(tableTitle)
-      this.tableListData = [
-        { pc: '产量（PC）', info: this.tableListData[0].info }
-      ]
-      
-      data.outputPlanList.forEach((planData, index) => {
-        this.tableTitle.splice(1 + index, 0, { props: planData.year, name: planData.year })
-        this.tableListData[0][planData.year] = planData.output
-        this.tableListData[0].info[planData.year] = planData
+      this.tableListData[0].outputPlanList.forEach(planData => {
+        this.$set(this.tableListData[0], planData.year, data[planData.year])
       })
 
       this.tableListData[0].totalOutput = data.totalOutput
@@ -166,7 +160,7 @@ export default {
       this.getData()
     },
     handleInput(val, key) {
-      this.tableListData[0][key] = (val + '').replace(/\D/g, '')
+      this.tableListData[0][key] = (val + '').replace(/\D/g, '').replace(/([0]*)(0|[1-9]+[0-9]+)/, "$2")
       if (Array.isArray(this.tableListData[0].outputPlanList)) {
         this.tableListData[0].totalOutput = this.tableListData[0].outputPlanList.reduce((acc, cur) => {
           if (key == cur.year) cur.output = this.tableListData[0][key]

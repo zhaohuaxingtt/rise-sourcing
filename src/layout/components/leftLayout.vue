@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-22 16:47:54
- * @LastEditTime: 2021-03-25 23:51:07
+ * @LastEditTime: 2021-03-29 15:29:53
  * @LastEditors: Please set LastEditors
  * @Description: 界面左边的按钮切换菜单栏。
  * @FilePath: \rise\src\layout\components\leftLayout.vue
@@ -50,7 +50,7 @@ export default{
   },
   methods:{
     active(key){
-      // this.$router.push({ path: key.path });
+      this.$router.push({ path: key.path });
       this.iconChangeClass = '';
       if( key.key == 'first') this.iconChangeClass = 'type-first';
       if( key.key == 'tow') this.iconChangeClass = 'type-tow';
