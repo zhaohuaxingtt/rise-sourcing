@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2021-04-12 19:54:59
+ * @LastEditTime: 2021-04-13 16:41:21
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsprocure\editordetail\index.vue
@@ -242,7 +242,7 @@
 		<!-- 结束项目 -->
 		<backItems v-model="diologClose" @sure="close" :title="$t('LK_JIESHUXIANGMU')"></backItems>
 		<!--  -->
-		<splitFactory :splitPurchBoolean="splitPurch" :purchaseProjectId="purchasePrjectId" :firstId='firstId' :update="updateTabs">
+		<splitFactory ref='purchaseFactory' :splitPurchBoolean="splitPurch" :purchaseProjectId="purchasePrjectId" :firstId='firstId' :update="updateTabs">
 		</splitFactory>
 	</iPage>
 </template>
@@ -453,6 +453,7 @@ import { iMessageBox } from '../../../components';
 							iMessageBox(this.$t('LK_AREYOUSPLITE'),this.$t('LK_WENXINTISHI')).then(res=>{
 								//如果这条ID存在 则默认查询出来的采购工厂将会为第一条
 								this.firstId = this.detailData.procureFactory
+								this.$refs.purchaseFactory.purchaseFactory()
 								this.splitPurchFn()
 							})
 						}
