@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-03-24 18:12:23
- * @LastEditTime: 2021-04-13 18:03:09
+ * @LastEditTime: 2021-04-13 23:50:31
  * @LastEditors: Please set LastEditors
  * @Description: 拆分采购工厂
  * @FilePath: \rise\src\views\partsprocure\editordetail\components\splitFactory\index.vue
@@ -66,8 +66,7 @@
             :page-size="page.pageSize"
             :layout="page.layout"
             :current-page="page.currPage"
-            :total="page.totalCount"
-			      v-update
+            :total="page.totalCount" v-update
           />
           </el-form>
       </template>
@@ -156,9 +155,9 @@ export default{
         }
       }
     },
-    save(){
+    async save(){
       this.btnLoding = true
-      if(!this.validateNumberPersiont()) return
+      if(!await this.validateNumberPersiont()) return
       changeProcure(this.translateDataForService()).then(res=>{
                 if(res.data){
                   this.btnLoding = false
