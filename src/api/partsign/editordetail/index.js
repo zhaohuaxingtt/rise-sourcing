@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-02-24 10:19:28
- * @LastEditTime: 2021-04-01 10:43:14
+ * @LastEditTime: 2021-04-12 23:58:01
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\api\partsign\editordetail\index.js
@@ -51,5 +51,38 @@ export function getVolume(params) {
     url: '/tp-records/tpInfo/getVolume',
     method: 'GET',
     params: params
+  })
+}
+
+// 获取询价资料版本
+export function getAttachmentVersion(params) {
+  return requst({
+    url: '/tp-records/tpInfo',
+    method: 'POST',
+    data: {
+      attachmentVersionDTO: params
+    }
+  })
+}
+
+// 根据版本获取询价资料
+export function getAttachment(params) {
+  return requst({
+    url: '/tp-records/tpInfo',
+    method: 'POST',
+    data: {
+      tpInfoAttachmentDTO: params
+    }
+  })
+}
+
+// 确认/拒绝 询价资料版本
+export function patchAttachmentVersion(params) {
+  return requst({
+    url: '/tp-records/tpInfo',
+    method: 'PATCH',
+    data: {
+      attachmentConfirmDTO: params
+    }
   })
 }

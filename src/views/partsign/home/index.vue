@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-24 09:17:57
- * @LastEditTime: 2021-04-03 12:21:51
+ * @LastEditTime: 2021-04-12 21:43:57
  * @LastEditors: Please set LastEditors
  * @Description: 零件签收列表界面.
  * @FilePath: \rise\src\views\partsign\index.vue
@@ -189,7 +189,7 @@
             <!------------------------------------------------------------------------>
             <!--                  表格分页                                          --->
             <!------------------------------------------------------------------------>
-            <iPagination 
+            <iPagination
               v-update
               @size-change="handleSizeChange($event, getTableList)"
               @current-change="handleCurrentChange($event, getTableList)"
@@ -311,8 +311,8 @@ export default {
           csFReceiveMemo: this.backmark,
         },
       }).then((res) => {
-        if (res.data) {
-          iMessage.success(this.$t('LK_CAOZUOCHENGGONG'));
+        if (res.code == 200) {
+          iMessage.success(this.$t("LK_CAOZUOCHENGGONG"));
           this.getTableList();
         } else {
           iMessage.error(res.desZh);
@@ -328,7 +328,7 @@ export default {
         },
       }).then((res) => {
         if (res.data) {
-          iMessage.success(this.$t('LK_CAOZUOCHENGGONG'));
+          iMessage.success(this.$t("LK_CAOZUOCHENGGONG"));
           this.getTableList();
         }
       });
@@ -410,15 +410,22 @@ export default {
     //签收
     save() {
       if (this.selectTableData.length == 0)
-        return iMessage.warn(this.$t('LK_NINDANGQIANHAIWEIXUANZENINXUYAOQIANSHOUDEXINXIDAN'));
+        return iMessage.warn(
+          this.$t("LK_NINDANGQIANHAIWEIXUANZENINXUYAOQIANSHOUDEXINXIDAN")
+        );
       if (this.selectTableData.find((items) => items.status == 1))
         return iMessage.warn(
-          this.$t('LK_NINXUANZHONGDEDANJUZHONGCUNZAIYIQIANSHOUDEXINXIDANBUNENGPILIANGQIANSHOU')
+          this.$t(
+            "LK_NINXUANZHONGDEDANJUZHONGCUNZAIYIQIANSHOUDEXINXIDANBUNENGPILIANGQIANSHOU"
+          )
         );
       iMessageBox(
-        this.$t('LK_NINSHIFOUQUERENDUIXINJIANXINXIDANJINHANGQIANSHOU'), // 暂时处理
-        this.$t('LK_WENXINTISHI'),
-        { confirmButtonText: this.$t('LK_QUEDING'), cancelButtonText: this.$t('LK_QUXIAO') }
+        this.$t("LK_NINSHIFOUQUERENDUIXINJIANXINXIDANJINHANGQIANSHOU"), // 暂时处理
+        this.$t("LK_WENXINTISHI"),
+        {
+          confirmButtonText: this.$t("LK_QUEDING"),
+          cancelButtonText: this.$t("LK_QUXIAO"),
+        }
       ).then((res) => {
         this.patchRecords(2, this.selectTableData);
       });
@@ -426,17 +433,23 @@ export default {
     //退回
     openDiologBack() {
       if (this.selectTableData.length == 0)
-        return iMessage.warn(this.$t('LK_NINDANGQIANHAIWEIXUANZENINXUYAOTUIHUIDEXINXIDAN'));
+        return iMessage.warn(
+          this.$t("LK_NINDANGQIANHAIWEIXUANZENINXUYAOTUIHUIDEXINXIDAN")
+        );
       if (this.selectTableData.find((items) => items.status == 1))
         return iMessage.warn(
-          this.$t('LK_NINXUANZHONGDEDANJUZHONGCUNZAIYIQIANSHOUDEXINXIDANBUNENGPILIANGQIANSHOU')
+          this.$t(
+            "LK_NINXUANZHONGDEDANJUZHONGCUNZAIYIQIANSHOUDEXINXIDANBUNENGPILIANGQIANSHOU"
+          )
         );
       this.diologBack = true;
     },
     //转派
     openDiologChangeItems() {
       if (this.selectTableData.length == 0)
-        return iMessage.warn(this.$t('LK_NINDANGQIANHAIWEIXUANZENINXUYAOZHUANPAIDEXINXIDAN'));
+        return iMessage.warn(
+          this.$t("LK_NINDANGQIANHAIWEIXUANZENINXUYAOZHUANPAIDEXINXIDAN")
+        );
       this.diologChangeItems = true;
     },
     //退回

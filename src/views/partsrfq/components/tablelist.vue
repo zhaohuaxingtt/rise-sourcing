@@ -10,7 +10,7 @@
 <!--    <el-table-column v-if='index' type='index' width='50' align='center' label='#'></el-table-column>-->
     <template v-for="(items,index) in tableTitle">
       <el-table-column :key="index" align='center' :width="items.width" :show-overflow-tooltip='items.tooltip' v-if='items.props === openPageProps' :prop="items.props"
-                       :label="items.key ? $t(items.key) : items.name">
+                       :label="items.key ? $t(items.key) : items.name" :fixed="items.fixed">
         <template slot-scope="scope">
             <span class="openLinkText cursor"
                   @click="openPage(openPageGetRowData ?  scope.row : scope.row[items.props])">{{
@@ -60,7 +60,7 @@
         </template>
       </el-table-column>
       <el-table-column :width="items.width" :show-overflow-tooltip='items.tooltip' :key="index" align='center' v-else :label="items.key ? $t(items.key) : items.name"
-                       :prop="items.props"></el-table-column>
+                       :prop="items.props" :fixed="items.fixed"></el-table-column>
     </template>
   </el-table>
 </template>

@@ -9,9 +9,9 @@
 <template>
   <iCard class="volume">
     <div class="header clearFloat">
-      <span class="title">{{ $t('LK_MEICHEYONGLIANG') }}（{{ $t('LK_DANGQIANBANBEN') }} ：{{ versionNum }}）</span>
+      <span class="title">{{ $t('LK_MEICHEYONGLIANG') }}（{{ $t('LK_DANGQIANBANBEN') }} ：{{ version }}）</span>
       <div class="control">
-        <iButton @click="version" v-permission="PARTSIGN_EDITORDETAIL_VOLUME_ALL">{{ $t('LK_CHAKANQUANBUBANBEN') }}</iButton>
+        <iButton @click="jump" v-permission="PARTSIGN_EDITORDETAIL_VOLUME_ALL">{{ $t('LK_CHAKANQUANBUBANBEN') }}</iButton>
         <iButton @click="download" v-permission="PARTSIGN_EDITORDETAIL_VOLUME_EXPORT">{{ $t('LK_DAOCHU') }}</iButton>
       </div>
     </div>
@@ -56,7 +56,7 @@ export default {
       tableListData: [],
       multipleSelection: [],
       loading: false,
-      versionNum: '',
+      version: '',
       carTypeConfigId: '',
       // versionVisible: false
     }
@@ -69,14 +69,14 @@ export default {
       this.loading = true
 
       try {
-        if (!this.versionNum || !this.carTypeConfigId) {
+        if (!this.version || !this.carTypeConfigId) {
           const versionRes = await getPerCarDosageVersion({
             "currPage": 1,
             "pageSize": 10,
             "status": 1,
             "tpId": this.data.tpPartID
           })
-          this.versionNum = 'V1'
+          this.version = 'V1'
 
           if (versionRes.code != 200) {
             return iMessage.error(`${ this.$i18n.locale === 'zh' ? versionRes.desZh : versionRes.desEn }`)
@@ -84,14 +84,14 @@ export default {
 
           if (versionRes.data && Array.isArray(versionRes.data.tpRecordList) && versionRes.data.tpRecordList[0]) {
             this.carTypeConfigId = versionRes.data.tpRecordList[0].carTypeConfigId
-            this.versionNum = versionRes.data.tpRecordList[0].versionNum || 'V1'
+            this.version = versionRes.data.tpRecordList[0].version || 'V1'
           }
         }
         //如果没有已确认的版本，不调用查询没车用量
         if(!this.carTypeConfigId) return;
           const infoRes = await getPerCarDosageInfo({
           carTypeConfigId: this.carTypeConfigId,
-          versionNum: this.versionNum,
+          version: this.version,
           currPage: this.page.currPage,
           pageSize: this.page.pageSize,
           status: 1,
@@ -112,9 +112,9 @@ export default {
         this.loading = false
       }
     },
-    version() {
+    jump() {
       // this.versionVisible = true
-      window.open(`/#/partsign/version?tpId=${ this.data.tpPartID }`, '_blank')
+      window.open(`/#/partsign/volumeVersion?tpId=${ this.data.tpPartID }`, '_blank')
       // this.$router.push('/partsign/version')
     },
     handleSelectionChange(list) {

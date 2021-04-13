@@ -33,13 +33,13 @@
 		</iFormGroup>
 		<iFormGroup row="3" icon inline>
 			<iFormItem label="CKD Duty(%)" name="test">
-				<iInput v-model="targetprice.cfTargetPriceDetail.ckdDuty" onkeyup="value=value.replace(/[^\d]/g,'')" maxlength="3" v-permission="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_CKD_Duty"></iInput>
+				<iInput v-model="targetprice.cfTargetPriceDetail.ckdDuty" v-Int maxlength="3" v-permission="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_CKD_Duty"></iInput>
 			</iFormItem>
 			<iFormItem label="CKD EX_Work" name="test">
-				<iInput v-model="targetprice.cfTargetPriceDetail.ckdExwork" onkeyup="value=value.replace(/[^\d]/g,'')"  maxlength="15" v-permission="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_CKD_EX"></iInput>
+				<iInput v-model="targetprice.cfTargetPriceDetail.ckdExwork" v-Int  maxlength="15" v-permission="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_CKD_EX"></iInput>
 			</iFormItem>
 			<iFormItem label="CKD LANDED" name="test">
-				<iInput v-model="targetprice.cfTargetPriceDetail.ckdLanded" onkeyup="value=value.replace(/[^\d]/g,'')"  maxlength="15" v-permission="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_CKD_LANDED"></iInput>
+				<iInput v-model="targetprice.cfTargetPriceDetail.ckdLanded" v-Int maxlength="15" v-permission="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_CKD_LANDED"></iInput>
 			</iFormItem>
 		</iFormGroup>
 		<div class="line"></div>
@@ -60,7 +60,7 @@
 				<!-- <span class="start">*</span> -->
 			</iFormItem>
 			<iFormItem :label="$t('LK_QIWANGMUBIAOJIA')" name="test"  v-permission="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_QWMBJ">
-				<iInput v-model="targetprice.cfTargetPriceDetail.expTargetpri" onkeyup="value=value.replace(/[^\d]/g,'')"  maxlength="20"></iInput>
+				<iInput v-model="targetprice.cfTargetPriceDetail.expTargetpri" v-Int  maxlength="20"></iInput>
 			</iFormItem>
 		</iFormGroup>
 		<iFormGroup row="2" icon inline>
@@ -136,6 +136,7 @@
 		getTabelData,
 		changeProcure
 	} from '@/api/partsprocure/home'
+import { iMessageBox } from '../../../../../components';
 	export default {
 		components: {
 			iCard,
@@ -219,7 +220,14 @@
 				changeProcure({
 					targetprice,
 				}).then((res) => {
-					this.targePriceDetail()
+					if(res.code == 200){
+						iMessage.success(this.$t('LK_CAOZUOCHENGGONG'))
+						this.targePriceDetail()
+					}else{
+						iMessage.error(res.desZh)
+					}
+				}).catch(err=>{
+					iMessage.error(err.desZh)
 				});
 			}
 		}

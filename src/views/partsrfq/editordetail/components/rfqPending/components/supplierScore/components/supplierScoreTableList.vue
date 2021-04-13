@@ -33,7 +33,7 @@
           </template>
         </el-table-column>
         <el-table-column :key="index" align='center' v-else :label="items.key ? $t(items.key) : items.name"
-                         :prop="items.props"></el-table-column>
+                         :prop="items.props" fixed="left"></el-table-column>
       </template>
     </template>
   </el-table>

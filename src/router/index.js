@@ -43,13 +43,22 @@ export const staticRouter = [{
                     import ("@/views/partsign/editordetail"),
             },
             {
-                path: "/partsign/version",
-                name: "version",
+                path: "/partsign/volumeVersion",
+                name: "volumeVersion",
                 meta: {
-                    title: "新建信息单版本",
+                    title: "新建信息单每车用量版本",
                 },
                 component: () =>
-                    import ("@/views/partsign/version"),
+                    import ("@/views/partsign/version/volume"),
+            },
+            {
+                path: "/partsign/enquiryVersion",
+                name: "enquiryVersion",
+                meta: {
+                    title: "新建信息单询价资料版本",
+                },
+                component: () =>
+                    import ("@/views/partsign/version/enquiry"),
             },
             {
                 path: "/partsprocure",
