@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2021-04-13 16:41:21
+ * @LastEditTime: 2021-04-13 17:19:45
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsprocure\editordetail\index.vue
@@ -453,7 +453,7 @@ import { iMessageBox } from '../../../components';
 							iMessageBox(this.$t('LK_AREYOUSPLITE'),this.$t('LK_WENXINTISHI')).then(res=>{
 								//如果这条ID存在 则默认查询出来的采购工厂将会为第一条
 								this.firstId = this.detailData.procureFactory
-								this.$refs.purchaseFactory.purchaseFactory()
+								this.$refs.purchaseFactory.purchaseFactory(this.firstId)
 								this.splitPurchFn()
 							})
 						}

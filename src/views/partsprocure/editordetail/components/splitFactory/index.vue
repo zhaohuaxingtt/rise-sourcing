@@ -1,11 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-03-24 18:12:23
-<<<<<<< HEAD
- * @LastEditTime: 2021-04-13 16:22:24
-=======
- * @LastEditTime: 2021-04-13 16:59:11
->>>>>>> develop
+ * @LastEditTime: 2021-04-13 17:21:10
  * @LastEditors: Please set LastEditors
  * @Description: 拆分采购工厂
  * @FilePath: \rise\src\views\partsprocure\editordetail\components\splitFactory\index.vue
@@ -90,10 +86,7 @@ export default{
   props:{
     splitPurchBoolean:Boolean,
     purchaseProjectId:String,
-    updateTabs:Function,
-    firstId:{
-      default:''
-    }
+    updateTabs:Function
   },
   components:{iDialog,iButton,iPagination,iInput},
   created(){
@@ -105,7 +98,8 @@ export default{
       splitPurchList: [],
       selectSplitPurchList: [],
       tableLoading:false,
-      btnLoding:false
+      btnLoding:false,
+      firstId:''
     }
   },
   methods:{
@@ -185,9 +179,10 @@ export default{
       });
       return newData
     },
-    purchaseFactory(){
+    purchaseFactory(firstId){
+      this.firstId = firstId
       this.tableLoading = true
-      purchaseFactory({firstId:this.firstId}).then(res=>{
+      purchaseFactory({firstId:firstId}).then(res=>{
         if(res.data){
           this.splitPurchList = this.translateData(res.data,this.firstId);
           this.tableLoading = false
