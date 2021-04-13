@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2021-04-13 17:19:45
+ * @LastEditTime: 2021-04-13 17:26:39
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsprocure\editordetail\index.vue
@@ -327,7 +327,7 @@ import { iMessageBox } from '../../../components';
 			this.purchasePrjectId = this.infoItem.purchasePrjectId;
 			this.getDatail();
 			this.getProcureGroup();
-			this.checkFactoryString = this.detailData.procureFactory
+			this.checkFactoryString = detailData.procureFactory
 		},
 		methods: {
 			checkFactory(){
