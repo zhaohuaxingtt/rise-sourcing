@@ -50,7 +50,7 @@ export default{
   },
   methods:{
     active(key){
-      // this.$router.push({ path: key.path });
+      this.$router.push({ path: key.path });
       this.iconChangeClass = '';
       if( key.key == 'first') this.iconChangeClass = 'type-first';
       if( key.key == 'tow') this.iconChangeClass = 'type-tow';

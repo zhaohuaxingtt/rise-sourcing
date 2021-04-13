@@ -143,6 +143,40 @@ export const staticRouter = [{
                 name: "log",
                 component: () =>
                     import ("@/views/log/home"),
+            },
+            /** work stream 2 组织/用户权限 */
+            {
+                path: '/priceorder/check',
+                name: 'organizationcheck',
+                meta: {
+                    title: '组织管理-组织查看'
+                },
+                component: () =>
+                    import (`@/views/priceorder/home`)
+            },
+            {
+                path: '/priceorder/stocksheet',
+                name: 'stocksheet',
+                meta: {
+                    title: '价格与订单-备货表'
+                },
+                component: () =>
+                    import (`@/views/priceorder/stocksheet`)
+            },
+            {
+                path: '/priceorder/postmanagement',
+                name: '/postmanagement',
+                meta: {
+                    title: '岗位管理-岗位管理'
+                },
+                component: () =>
+                    import (`@/views/priceorder/jobmanagement`)
+            },
+            {
+                path: "/ws3-register",
+                name: "/ws3Register",
+                component: () =>
+                    import ("@/views/ws3/register"),
             }
         ],
     },

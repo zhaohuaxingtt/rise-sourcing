@@ -6,56 +6,65 @@
  * @Description: In User Settings Edit
 -->
 <template>
-  <iDialog :title="$t(title)" :visible.sync="value" width="80%" @close='clearDiolog'>
+  <iDialog
+    :title="$t(title)"
+    :visible.sync="value"
+    width="80%"
+    @close="clearDiolog"
+  >
     <div class="changeContent">
       <div class="margin-bottom20 clearFloat">
         <div class="floatright title-button-box">
-          <iButton @click="add" v-permission="PARTSRFQ_ASSIGNMENTOFSCORINGTASKS_SAVE">{{ $t('LK_TIANJIA') }}</iButton>
-          <iButton @click="deleteItems">{{ $t('LK_SHANCHU') }}</iButton>
-          <iButton @click="save">{{ $t('LK_ZHUANPAI') }}</iButton>
+          <iButton
+            @click="add"
+            v-permission="PARTSRFQ_ASSIGNMENTOFSCORINGTASKS_SAVE"
+            >{{ $t("LK_TIANJIA") }}</iButton
+          >
+          <iButton @click="deleteItems">{{ $t("LK_SHANCHU") }}</iButton>
+          <iButton @click="save">{{ $t("LK_ZHUANPAI") }}</iButton>
         </div>
       </div>
       <tablelist
-          v-if="showStatus"
-          @handleSelectionChange="handleSelectionChange"
-          :tableData="tableListData"
-          :tableTitle="tableTitle"
-          :tableLoading="tableLoading"
-          :index="true"
-          :select-props="selectProps"
-          :select-props-options-object="selectPropsOptionsObject"
-          @handleSelectChange="handleSelectChange"
-          :is-select-options-linkage="true"
+        v-if="showStatus"
+        @handleSelectionChange="handleSelectionChange"
+        :tableData="tableListData"
+        :tableTitle="tableTitle"
+        :tableLoading="tableLoading"
+        :index="true"
+        :select-props="selectProps"
+        :select-props-options-object="selectPropsOptionsObject"
+        @handleSelectChange="handleSelectChange"
+        :is-select-options-linkage="true"
       ></tablelist>
     </div>
     <span slot="footer" class="dialog-footer">
-          <iButton @click="$emit('input',false)">{{ $t('LK_QUXIAO') }}</iButton>
-        </span>
+      <iButton @click="$emit('input', false)">{{ $t("LK_QUXIAO") }}</iButton>
+    </span>
   </iDialog>
 </template>
 <script>
-import {iButton, iMessage, iDialog} from '@/components'
+import { iButton, iMessage, iDialog } from "@/components";
 import tablelist from "pages/partsrfq/components/tablelist";
-import {assignmentOfScroingTasksTableTitle} from "pages/partsrfq/home/components/data";
-import {editRfqData} from "@/api/partsrfq/home";
-import {getDictByCode, getDeptByDeptType} from "@/api/dictionary";
-import {getGraderIdByDept} from "@/api/usercenter";
-import store from '@/store'
-import {rfqCommonFunMixins} from "pages/partsrfq/components/commonFun";
-
+import { assignmentOfScroingTasksTableTitle } from "pages/partsrfq/home/components/data";
+import { editRfqData } from "@/api/partsrfq/home";
+import { getDictByCode, getDeptByDeptType } from "@/api/dictionary";
+import { getGraderIdByDept } from "@/api/usercenter";
+import store from "@/store";
+import { rfqCommonFunMixins } from "pages/partsrfq/components/commonFun";
 
 export default {
-  components: {iButton, iDialog, tablelist},
+  components: { iButton, iDialog, tablelist },
   props: {
-    title: {type: String, default: 'LK_ZHUANPAIPINGFENRENWU'},
-    value: {type: Boolean},
+    title: { type: String, default: "LK_ZHUANPAIPINGFENRENWU" },
+    value: { type: Boolean },
     repeatClick: Boolean,
     rfqId: {
       required: true,
-      type: Array, default: () => {
-        return []
-      }
-    }
+      type: Array,
+      default: () => {
+        return [];
+      },
+    },
   },
   mixins: [rfqCommonFunMixins],
   data() {
@@ -64,104 +73,110 @@ export default {
       tableTitle: assignmentOfScroingTasksTableTitle,
       tableLoading: false,
       selectTableData: [],
-      selectProps: ['deptType', 'deptNum', 'graderId'],
+      selectProps: ["deptType", "deptNum", "graderId"],
       selectPropsOptionsObject: {},
       showStatus: true,
-      deptTypeList: []
-    }
+      deptTypeList: [],
+    };
   },
   created() {
-    this.getDeptType()
+    this.getDeptType();
   },
   methods: {
     clearDiolog() {
-      this.$emit('input', false)
+      this.$emit("input", false);
     },
     async save() {
-      if (this.selectTableData.length == '') return iMessage.warn(this.$t('LK_NINDANGQIANHAIWEIXUANZE'));
+      if (this.selectTableData.length == "")
+        return iMessage.warn(this.$t("LK_NINDANGQIANHAIWEIXUANZE"));
       const req = {
         ratingInfoPackage: {
           ratingInfoList: this.selectTableData,
           rfqId: this.rfqId,
           userId: store.state.permission.userInfo.id,
-        }
-      }
-      const res = await editRfqData(req)
-      this.resultMessage(res)
-      this.$emit('sure', this.selectTableData)
+        },
+      };
+      const res = await editRfqData(req);
+      this.resultMessage(res);
+      this.$emit("sure", this.selectTableData);
     },
     //修改表格改动列
     handleSelectionChange(val) {
       this.selectTableData = val;
     },
     async getDeptType() {
-      const res = await getDictByCode('score_dept')
-      this.deptTypeList = res.data[0].subDictResultVo
+      const res = await getDictByCode("score_dept");
+      this.deptTypeList = res.data[0].subDictResultVo;
     },
     async handleSelectChange(res) {
-      const newObj = JSON.parse(JSON.stringify(this.selectPropsOptionsObject))
+      const newObj = JSON.parse(JSON.stringify(this.selectPropsOptionsObject));
       switch (res.type) {
-        case 'deptType':
-          newObj[res.time].deptNum = (await getDeptByDeptType(res.val)).data
-          this.tableListData.map(item => {
+        case "deptType":
+          newObj[res.time].deptNum = (await getDeptByDeptType(res.val)).data;
+          this.tableListData.map((item) => {
             if (item.time === res.time) {
-              item.deptNum = ''
-              item.graderId = ''
+              item.deptNum = "";
+              item.graderId = "";
             }
-          })
+          });
           break;
-        case 'deptNum':
-          this.tableListData.map(item => {
+        case "deptNum":
+          this.tableListData.map((item) => {
             if (item.time === res.time) {
-              item.graderId = ''
+              item.graderId = "";
             }
-          })
-          newObj[res.time].graderId = (await getGraderIdByDept(res.val)).data.map(item => {
+          });
+          newObj[res.time].graderId = (
+            await getGraderIdByDept(res.val)
+          ).data.map((item) => {
             return {
               code: item.id,
-              name: item.userName
-            }
-          })
+              name: item.userName,
+            };
+          });
           break;
-        case 'graderId':
-          this.tableListData.map(item => {
+        case "graderId":
+          this.tableListData.map((item) => {
             if (item.time === res.time) {
-              item.graderName = (newObj[res.time].graderId.filter(item2 => {
-                return item2.code === res.val
-              }))[0].name
+              item.graderName = newObj[res.time].graderId.filter((item2) => {
+                return item2.code === res.val;
+              })[0].name;
             }
-          })
+          });
           break;
       }
-      this.selectPropsOptionsObject = newObj
+      this.selectPropsOptionsObject = newObj;
     },
     add() {
-      const time = new Date().getTime()
+      const time = new Date().getTime();
       this.tableListData.push({
-        deptType: '', deptNum: '', graderId: '', time: time
-      })
+        deptType: "",
+        deptNum: "",
+        graderId: "",
+        time: time,
+      });
       this.selectPropsOptionsObject[time] = {
         deptType: this.deptTypeList,
         deptNum: [],
-        graderId: []
-      }
+        graderId: [],
+      };
     },
     deleteItems() {
       if (this.selectTableData.length === 0) {
         // return iMessage.warn("抱歉，您当前还未选择！");
-        return iMessage.warn(this.$t('LK_NINDANGQIANHAIWEIXUANZE'));
+        return iMessage.warn(this.$t("LK_NINDANGQIANHAIWEIXUANZE"));
       }
-      const indexList = this.selectTableData.map(item => {
-        return item.time
-      })
-      this.tableListData = this.tableListData.filter(item => {
+      const indexList = this.selectTableData.map((item) => {
+        return item.time;
+      });
+      this.tableListData = this.tableListData.filter((item) => {
         if (!indexList.includes(item.time)) {
-          return item
+          return item;
         }
-      })
-    }
-  }
-}
+      });
+    },
+  },
+};
 </script>
 <style lang='scss' scoped>
 .changeContent {

@@ -64,21 +64,21 @@
             'SheJiKeShi': 'TP dept.', //设计科室
             'GongChengShi': 'TP owner', //工程师
             'CheXingXiangMu': 'Car Model', //车型项目
-            'XinXiDanFenLei': 'Part Sheet type', //信息单分类
-            'XinXiDanZhuangTai': 'Part Sheet Status', //信息单状态
-            'XinXiDanLiuShuiHao': 'Part Shee ID', //信息单流水号
-            'XunJiaZiLiaoZhuangTai': 'Inquiry Attachment Status', //询价资料状态
+            'XinXiDanFenLei': 'Sheet type', //信息单分类
+            'XinXiDanZhuangTai': 'Sheet Status', //信息单状态
+            'XinXiDanLiuShuiHao': 'TP sequence ID', //信息单流水号
+            'XunJiaZiLiaoZhuangTai': 'Inquiry Document Status', //询价资料状态
             'MeiCheYongLiangZhuangTai': 'Quantity per car status', //每车用量状态
             'QingShuRu': 'Please Enter', //请输入
             'QingXuanZe': 'Please Choose', //请选择
             'QueRen': 'Confirm', //确认
             'ZhongZhi': 'Reset', //重置
             'XinJianXinXiDanQianShou': 'Receipt Of New Information Sheet', //新件信息单签收
-            'ZhuanPai': 'Handover', //转派
-            'QianShou': 'Sign', //签收
+            'ZhuanPai': 'Reassigned', //转派
+            'QianShou': 'Sign in', //签收
             'TuiHui': 'Return', //退回
-            'LingJianMingZH': 'Parts Name (Cn)', //零件名（中）
-            'LingJianMingDE': 'Parts Name (De)', //零件名（德）
+            'LingJianMingZH': 'Part Name (Cn)', //零件名（中）
+            'LingJianMingDE': 'Part Name (Ger)', //零件名（德）
             'XinXiDanLeiXing': 'Information Sheet Type', //信息单类型
             'XianShiDiTiaoDaoTiaoJiLuGongTiaoJiLu': 'Display Records From Records To Records In Total', //显示第    条到    条记录，共    条记录
             'ShangYiYe': 'Previous Page', //上一页
@@ -253,30 +253,30 @@
         'LK_UpdateDate': 'Operating time',//操作时间
         'LK_CHAKAN': 'To view',//查看!
         'LK_CHAKANQUANBUBANBEN': 'View All Versions',//查看全部版本
-        'LK_INQUIRE': 'Inquire',//查询
+        'LK_INQUIRE': 'Query',//查询
         'LK_CHAZHAOGONGYIZUGONGYINGSHANG': 'Find Craft Group Supplier',//查找工艺组供应商
         'LK_CHAIFENCAIGOUGONGCHANG': 'Split Procurement Factory',//拆分采购工厂
         'LK_CHANLIANGPC': 'Volume(PC)',//产量（PC）
         'LK_CHANGJIANGMINGCHNEG': 'Task Name',//场景名称/任务名称
         'LK_CHANGJINGMINGCHENGRENWUMINGCHENG': 'Task Name',//场景名称/任务名称
         'LK_CHEXING': 'Car Type',//车型
-        'LK_CHEXINGDALEI': 'Car Type',//车型大类
+        'LK_CHEXINGDALEI': 'Model',//车型大类
         'LK_CHEXINGDENGJI': 'Car Level',//车型等级
         'LK_CHEXINGSHENGCHANNIANXIAN': 'Car Production Life',//车型生产年限
-        'LK_CHEXINGXIANGMU': 'Car Model',//车型项目
-        'LK_CHEXINGXIANGMU0S': 'Car Model 0S',//车型项目0S
-        'LK_CHEXINGXIANGMUPVS': 'Car Model PVS',//车型项目PVS
-        'LK_CHEXINGXIANGMUSOP': 'Car Model SOP',//车型项目SOP
-        'LK_CHEXINGXIANGMUMINGCHENG': 'Carilne Model Name',//车型项目名称
+        'LK_CHEXINGXIANGMU': 'Project',//车型项目
+        'LK_CHEXINGXIANGMU0S': 'Project 0S',//车型项目0S
+        'LK_CHEXINGXIANGMUPVS': 'Project PVS',//车型项目PVS
+        'LK_CHEXINGXIANGMUSOP': 'Project SOP',//车型项目SOP
+        'LK_CHEXINGXIANGMUMINGCHENG': 'Project Name',//车型项目名称
         'LK_CHEHUI': 'Withdraw',//撤回
         'LK_CHENGBEN': 'Cost',//成本
         'LK_CHICUN': 'Dimension',//尺寸
         'LK_CHUANGJIANDINGDIANSHENQING': 'Create SQO Application',//创建定点申请
-        'LK_CHUANGJIANRENGONGHAO': 'Creator ID',//创建人工号
+        'LK_CHUANGJIANRENGONGHAO': 'Creator Employee No.',//创建人工号
         'LK_CHUANGJIANRENXINGMING': 'Creator Name',//创建人姓名
         'LK_CHUANGJIANRIQI': 'Creation date',//创建日期
         'LK_CHUANGJIANSHIJIAN': 'Creation Time',//创建时间
-        'LK_CONGLINGJIANPAISHENG': 'created from part',//从零件派生
+        'LK_CONGLINGJIANPAISHENG': 'Created from part',//从零件派生
         'LK_DAXIAOMB': 'Size(MB)',//大小（MB）
         'LK_DAIBANSHIXIANG': 'To-Do List',//待办事项
         'LK_DAIQUERENBANBEN': 'Unconfirmed Version',//待确认版本
@@ -361,7 +361,7 @@
         'LK_LINGJIANCHANLIANG': 'Parts Yield',//零件产量
         'LK_LINGJIANCHANLIANGJIHUA': 'Parts Volume Plan',//零件产量计划
         'LK_LINGJIANCHANLIANGJILU': 'Parts Production Record',//零件产量记录
-        'LK_LINGJIANHAO': 'Parts No.',//零件号
+        'LK_LINGJIANHAO': 'Part No.',//零件号
         'LK_LINGJIANHAO_FSNR_RFQBIANHAO_CAIGOUYUAN': 'Parts No./FSNR/RFQ No./Buyer',//零件号/FSNR/RFQ编号/采购员
         'LK_LINGJIANHAODIERBUFEN': '2nd part of part no.',//零件号第二部分
         'LK_LINGJIANHAODISANBUFEN': '3rd part of part no.',//零件号第三部分
@@ -372,19 +372,19 @@
         'LK_LINGJIANJIAGONGCHENGDUYING': 'Part processing status desc.(En)',//零件加工程度(英)
         'LK_LINGJIANJIAGONGCHENGDUZHONG': 'Part processing status desc.(Cn)',//零件加工程度(中)
         'LK_LINGJIANJIAGONGCHENGDUDAIMA': 'Part processing status Code',//零件加工程度代码
-        'LK_LINGJIANLEIXING': 'Part Type',//零件类型
+        'LK_LINGJIANLEIXING': 'Type Maintenance',//零件类型
         'LK_LINGJIANLEIXINGDAIMA': 'Part Type Code',//零件类型代码
         'LK_LINGJIANMAOYISHUXINGDAIMA': 'Part Trade Property Code',//零件贸易属性代码
-        'LK_LINGJIANMAOYISHUXINGMIAOSHUDE': 'Parts Trade Property Description(De)',//零件贸易属性描述(德)
-        'LK_LINGJIANMAOYISHUXINGMIAOSHUYING': 'Parts Trade Property Description(En)',//零件贸易属性描述(英)
-        'LK_LINGJIANMAOYISHUXINGMIAOSHUZHONG': 'Parts Trade Property Description(Cn)',//零件贸易属性描述(中)
+        'LK_LINGJIANMAOYISHUXINGMIAOSHUDE': 'Parts Trade Property Desc.(De)',//零件贸易属性描述(德)
+        'LK_LINGJIANMAOYISHUXINGMIAOSHUYING': 'Parts Trade Property Desc.(En)',//零件贸易属性描述(英)
+        'LK_LINGJIANMAOYISHUXINGMIAOSHUZHONG': 'Parts Trade Property Desc.(Cn)',//零件贸易属性描述(中)
         'LK_LINGJIANMEICHEYONGLIANG': 'Parts quantity per car status',//零件每车用量
-        'LK_LINGJIANMINGDE': 'Parts Name(De)',//零件名（德）
-        'LK_LINGJIANMINGYING': 'Parts Name(En)',//零件名（英）
-        'LK_LINGJIANMINGZHONG': 'Parts Name (Cn)',//零件名（中）
-        'LK_LINGJIANMINGCHENG': 'Parts Name',//零件名称
-        'LK_LINGJIANMINGCHENGDE': 'Parts Name (De)',//零件名称（德）
-        'LK_LINGJIANMINGCHENGZHONG': 'Parts Name (Cn)',//零件名称（中）
+        'LK_LINGJIANMINGDE': 'Part Name(Ger)',//零件名（德）
+        'LK_LINGJIANMINGYING': 'Part Name(En)',//零件名（英）
+        'LK_LINGJIANMINGZHONG': 'Part Name (Cn)',//零件名（中）
+        'LK_LINGJIANMINGCHENG': 'Part Name',//零件名称
+        'LK_LINGJIANMINGCHENGDE': 'Part Name (De)',//零件名称（德）
+        'LK_LINGJIANMINGCHENGZHONG': 'Part Name (Cn)',//零件名称（中）
         'LK_LINGJIANPINGTAIXINGZHIDAIMA': 'Part platform property code',//零件平台性质代码
         'LK_LINGJIANPINGTAIXINGZHIMIAOSHUDE': 'Part platform property desc.(De)',//零件平台性质描述(德)
         'LK_LINGJIANPINGTAIXINGZHIMIAOSHUYING': 'Part platform property desc.(En)',//零件平台性质描述(英)
@@ -404,8 +404,8 @@
         'LK_LINGJIANZHUANGTAI': 'Parts Status',//零件状态
         'LK_LUNCILEIXING': 'Round type',//轮次类型
         'LK_MAOZHONGKG': 'Gross Weight (KG)',//毛重（KG）
-        'LK_MEICHEYONGLIANG': 'Quantity per car status',//每车用量
-        'LK_MEICHEYONGLIANGZHUANGTAI': 'Quantity per car status',//每车用量状态
+        'LK_MEICHEYONGLIANG': 'per car dosage',//每车用量
+        'LK_MEICHEYONGLIANGZHUANGTAI': 'Dosage state',//每车用量状态
         'LK_MOJUYUSUANSHENQING': 'Model Budget Application',//模具预算申请
         'LK_MUBIAOJIA': 'Target Price',//目标价
         'LK_MUBIAOJIAZHUANGTAI': 'CF Target price status',//目标价状态
@@ -481,9 +481,9 @@
         'LK_SHANGCHUANRIQI': 'Upload date',//上传日期
         'LK_SHANGQIDAZHONGYUANQU': 'Room 303, Shanghai Volkswagen Park',//上汽⼤众园区303室!
         'LK_SHANGYIYE': 'Prevoius',//上一页
-        'LK_SHEJIGONGCHENGSHIGONGHAO': 'Designer ID',//设计工程师工号
-        'LK_SHEJIGONGCHENGSHIHAO': 'Designer ID',//设计工程师号
-        'LK_SHEJIGONGCHENGSHIXINGMING': 'Desinger Name',//设计工程师姓名
+        'LK_SHEJIGONGCHENGSHIGONGHAO': 'TP owner No.',//设计工程师工号
+        'LK_SHEJIGONGCHENGSHIHAO': 'TP owner No.',//设计工程师号
+        'LK_SHEJIGONGCHENGSHIXINGMING': 'TP Name',//设计工程师姓名
         'LK_SHEJIKESHI': 'TP dept.',//设计科室
         'LK_SHEZHIGONGYIZU': 'Set Craft Group',//设置工艺组
         'LK_SHENQING': 'Apply',//申请
@@ -525,7 +525,7 @@
         'LK_TUZHI': 'Blueprint',//图纸
         'LK_TUZHIHETPXIANGQINGYE': 'Blueprint and TP Information',//图纸和TP详情页
         'LK_TUZHIHETPDANXIANGQING': 'Blueprint and TP Order',//图纸和信息单详情
-        'LK_TUZHIRIQI': 'Drawing date',//图纸日期
+        'LK_TUZHIRIQI': 'Spec. date',//图纸日期
         'LK_TUISONGSHIJIAN': 'Forwarded time',//推送时间
         'LK_TUICHUDENGLU': 'Log out',//退出登录!
         'LK_TUIHUI': 'Return',//退回
@@ -552,14 +552,14 @@
         'LK_XINJIANRFQ': 'Create New RFQ',//新建RFQ
         'LK_XINJIANRFQLUNCI': 'Create New RFQ Round',//新建RFQ轮次
         'LK_XINJIANXINXIDANBEIZHU': 'Create new part info. remark',//新建信息单备注
-        'LK_XINJIANXINXIDANLIUSHUIHAO': 'Part Shee ID',//新建信息单流水号
+        'LK_XINJIANXINXIDANLIUSHUIHAO': 'Part info. Sheet No.',//新建信息单流水号
         'LK_XINSHENQINGCAIWUMUBIAOJIA': 'Apply New CF Target Price',//新申请财务目标价
-        'LK_XINXIDANFENLEI': 'Part Sheet type',//信息单分类
+        'LK_XINXIDANFENLEI': 'Sheet type',//信息单分类
         'LK_XINXIDANLEIXING': 'Sheet type',//信息单类型
-        'LK_XINXIDANLIUSHUIHAO': 'Part Shee ID',//信息单流水号
+        'LK_XINXIDANLIUSHUIHAO': 'TP sequence ID',//信息单流水号
         'LK_XINXIDANSHENGCHENGSHIJIAN': 'Part Sheet creation time',//信息单生成时间
         'LK_XINXIDANXIANGQING': 'Part Sheet detailed info.',//信息单详情
-        'LK_XINXIDANZHUANGTAI': 'Part Sheet Status',//信息单状态
+        'LK_XINXIDANZHUANGTAI': 'Sheet Status',//信息单状态
         'LK_XINXILIUSHUIDANHAO': 'Part Sheet ID',//信息流水单号
         'LK_XUANZHUANGJIAN': 'Optional',//选装件
         'LK_XUNYUANZHIHANG': 'Sourcing Operation',//寻源执行
@@ -569,7 +569,7 @@
         'LK_XUNJIAFUJIAN': 'Inquiry attachments',//询价附件
         'LK_XUNJIATUZHI': 'Inquiry Blueprint',//询价图纸
         'LK_XUNJIAZILIAO': 'Drawing for inquiry',//询价资料
-        'LK_XUNJIAZILIAOZHUANGTAI': 'Inquiry Attachment Status',//询价资料状态
+        'LK_XUNJIAZILIAOZHUANGTAI': 'Inquiry Documents Status',//询价资料状态
         'LK_YANYONGCHEXINGDALEIDAIMA': 'COP Model code',//沿用车型大类代码
         'LK_YAOQIUCSCHUIYIRIQI': 'Request CSC Meeting Date',//要求CSC会议日期
         'LK_YIBAOCUN': 'The saved',//已保存!
@@ -605,17 +605,17 @@
         'LK_ZUIXINSHENQINGZHUANGTAI': 'Latest Application Status',//最新申请状态
         'LK_SHEZHIPINGFENBUMEN': 'Set up a scoring department', //设置评分部门
         'LK_TUISONGPINGFENRENWU': 'Push scoring task', //推送评分任务
-        'LK_GONGYIZU': 'Craft Group',//工艺组
-        'LK_GONGYISHEZHI': '',//工艺设置
-        'LK_CAILIAOZUSHAIXUAN': '',//材料组筛选
-        'LK_GONGYIZUXUANDING': '',//工艺组选定
-        "LK_CHAIFENFACTORY":'选中的工厂中,存在未分配的份额，请填写后重试！',
-        "LK_FACTORYNOTSAME":'您所选的采购工厂与主数据中该车型项目对应的采购工厂不一致，请确认是否修改',
-        "LK_AREYOUSPLITE":'该车型项目主数据中对应多个采购工厂，是否拆分？',
-        'LK_XIETIAOREN': '',//协调人
-        'LK_XINZENG': 'Add',//新增
-        'LK_HUIFU': 'Recover',//恢复
-        'LK_QINGXUANZEXUYAOSHANCHUDEPINGFENBUMEN': '',//请选择需要删除的评分部门
-        'LK_QINGXUANZEXUYAOHUIFUDEPINGFENBUMEN': '',//请选择需要恢复的评分部门
+        'LK_GONGYIZU': 'Craft Group', //工艺组
+        'LK_GONGYISHEZHI': '', //工艺设置
+        'LK_CAILIAOZUSHAIXUAN': '', //材料组筛选
+        'LK_GONGYIZUXUANDING': '', //工艺组选定
+        "LK_CHAIFENFACTORY": '选中的工厂中,存在未分配的份额，请填写后重试！',
+        "LK_FACTORYNOTSAME": '您所选的采购工厂与主数据中该车型项目对应的采购工厂不一致，请确认是否修改',
+        "LK_AREYOUSPLITE": '该车型项目主数据中对应多个采购工厂，是否拆分？',
+        'LK_XIETIAOREN': '', //协调人
+        'LK_XINZENG': 'Add', //新增
+        'LK_HUIFU': 'Recover', //恢复
+        'LK_QINGXUANZEXUYAOSHANCHUDEPINGFENBUMEN': '', //请选择需要删除的评分部门
+        'LK_QINGXUANZEXUYAOHUIFUDEPINGFENBUMEN': '', //请选择需要恢复的评分部门
     })
 }))
