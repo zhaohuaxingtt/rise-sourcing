@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-03-24 18:12:23
- * @LastEditTime: 2021-04-13 16:59:11
+ * @LastEditTime: 2021-04-13 18:03:09
  * @LastEditors: Please set LastEditors
  * @Description: 拆分采购工厂
  * @FilePath: \rise\src\views\partsprocure\editordetail\components\splitFactory\index.vue
@@ -19,7 +19,7 @@
         <iButton class="float-right marginleft300" @click='save' :btnLoding='btnLoding'>{{ $t('LK_BAOCUN') }}</iButton>
       </template>
       <template>
-        <el-form ref='form'>
+        <el-form ref='form' :model="splitPurchList">
         <el-table
           :height="height"
           :data="splitPurchList"
@@ -88,7 +88,7 @@ export default{
     purchaseProjectId:String,
     updateTabs:Function,
     firstId:{
-      default:''
+      default:null
     }
   },
   components:{iDialog,iButton,iPagination,iInput},
@@ -159,16 +159,16 @@ export default{
     save(){
       this.btnLoding = true
       if(!this.validateNumberPersiont()) return
-            changeProcure(this.translateDataForService()).then(res=>{
-              if(res.data){
-                this.btnLoding = false
-                iMessage.success(this.$t('LK_CAOZUOCHENGGONG'))
-                this.updateTabs()
-                this.close()
-              }else{
-                iMessage.warn(res.desZh)
-              }
-      }).then(err=>{this.btnLoding = false})
+      changeProcure(this.translateDataForService()).then(res=>{
+                if(res.data){
+                  this.btnLoding = false
+                  iMessage.success(this.$t('LK_CAOZUOCHENGGONG'))
+                  this.updateTabs()
+                  this.close()
+                }else{
+                  iMessage.warn(res.desZh)
+                }
+        }).then(err=>{this.btnLoding = false})
     },
     translateData(data){
       const newData = []

@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2021-04-13 16:41:21
+ * @LastEditTime: 2021-04-13 17:48:26
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsprocure\editordetail\index.vue
@@ -242,7 +242,7 @@
 		<!-- 结束项目 -->
 		<backItems v-model="diologClose" @sure="close" :title="$t('LK_JIESHUXIANGMU')"></backItems>
 		<!--  -->
-		<splitFactory ref='purchaseFactory' :splitPurchBoolean="splitPurch" :purchaseProjectId="purchasePrjectId" :firstId='firstId' :update="updateTabs">
+		<splitFactory v-if='splitPurch.splitPurchBoolean' ref='purchaseFactory' :splitPurchBoolean="splitPurch" :purchaseProjectId="purchasePrjectId" :firstId='firstId' :update="updateTabs">
 		</splitFactory>
 	</iPage>
 </template>
@@ -327,7 +327,6 @@ import { iMessageBox } from '../../../components';
 			this.purchasePrjectId = this.infoItem.purchasePrjectId;
 			this.getDatail();
 			this.getProcureGroup();
-			this.checkFactoryString = this.detailData.procureFactory
 		},
 		methods: {
 			checkFactory(){
@@ -366,6 +365,7 @@ import { iMessageBox } from '../../../components';
 				};
 				getTabelData(data).then((res) => {
 					this.detailData = res.data.detailData;
+					this.checkFactoryString = res.data.detailData.procureFactory
 					if (res.data.targetprice) {
 						this.targetprice = res.data.targetprice;
 
@@ -453,7 +453,6 @@ import { iMessageBox } from '../../../components';
 							iMessageBox(this.$t('LK_AREYOUSPLITE'),this.$t('LK_WENXINTISHI')).then(res=>{
 								//如果这条ID存在 则默认查询出来的采购工厂将会为第一条
 								this.firstId = this.detailData.procureFactory
-								this.$refs.purchaseFactory.purchaseFactory()
 								this.splitPurchFn()
 							})
 						}
