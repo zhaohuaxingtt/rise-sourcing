@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-03-24 18:12:23
- * @LastEditTime: 2021-04-13 23:55:29
+ * @LastEditTime: 2021-04-14 01:06:11
  * @LastEditors: Please set LastEditors
  * @Description: 拆分采购工厂
  * @FilePath: \rise\src\views\partsprocure\editordetail\components\splitFactory\index.vue
@@ -180,10 +180,9 @@ export default{
       });
       return newData
     },
-    purchaseFactory(firstId){
-      this.firstId = firstId
+    purchaseFactory(){
       this.tableLoading = true
-      purchaseFactory({firstId:firstId}).then(res=>{
+      purchaseFactory({firstId:this.firstId}).then(res=>{
         if(res.data){
           this.splitPurchList = this.translateData(res.data,this.firstId);
           this.tableLoading = false
