@@ -1,7 +1,7 @@
 <template>
   <div class="step-bar">
     <div class="box" v-for="(item,index) of list" :key="item.title">
-      <div class="item" @click="handleItemClick(index + 1)">
+      <div class="item" @click="handleItemClick(index + 1, item.title, item.required)">
         <div class="symbol-box" :class="{'symbol-box-gray': (index + 1) > current}">
           <div class="draw-box" :class="{
             'draw-box-gray': (index + 1) > current,
@@ -11,7 +11,7 @@
           </div>
         </div>
         <div class="title">
-          {{ item.title }}
+          {{ index + 1 }}.{{ item.title }}
           <span v-if="item.required" class="required">*</span>
         </div>
       </div>
@@ -38,24 +38,24 @@ export default {
       type: Array,
       default: () => {
         return [
-          {title: '1.首页', required: true},
-          {title: '2.基本信息', required: true},
-          {title: '3.工厂信息', required: true},
-          {title: '4.授权银行信息'},
-          {title: '5.主要业务及产品'},
-          {title: '6.主要客户'},
-          {title: '7.主要分供方及产品名称'},
-          {title: '8.联系人与用户', required: true},
-          {title: '9.相关附件', required: true},
-          {title: '10.财务大数'},
-          {title: '11.财务数据'},
+          {title: '首页', required: true},
+          {title: '基本信息', required: true},
+          {title: '工厂信息', required: true},
+          {title: '授权银行信息'},
+          {title: '主要业务及产品'},
+          {title: '主要客户'},
+          {title: '主要分供方及产品名称'},
+          {title: '联系人与用户', required: true},
+          {title: '相关附件', required: true},
+          {title: '财务大数'},
+          {title: '财务数据'},
         ]
       }
     }
   },
   methods: {
-    handleItemClick(index) {
-      this.$emit('handleItemClick', index)
+    handleItemClick(index, title, required) {
+      this.$emit('handleItemClick', index, title, required)
     }
   }
 }
