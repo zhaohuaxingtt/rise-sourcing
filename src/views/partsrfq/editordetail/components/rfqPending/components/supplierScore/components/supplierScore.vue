@@ -46,10 +46,10 @@
 <script>
 import {iCard, iPagination, iButton, iMessage} from "@/components";
 import tablelist from './supplierScoreTableList'
-import {supplierScoreTitle} from "./data";
+import {supplierScoreTitle,templateScoreTitle} from "./data";
 import {pageMixins} from "@/utils/pageMixins";
 import tpbRemarks from './tpbRemarks'
-import {getAllSupplier, setTpbMemo, sendTaskForRating} from "@/api/partsrfq/editordetail";
+import {getAllSupplier, setTpbMemo, sendTaskForRating, getRaterAndCoordinatorByDepartmentId} from "@/api/partsrfq/editordetail";
 import {serialize} from '@/utils'
 import store from '@/store'
 import {rfqCommonFunMixins} from "pages/partsrfq/components/commonFun";
@@ -68,16 +68,19 @@ export default {
   data() {
     return {
       tableListData: [],
-      tableTitle: supplierScoreTitle,
+      tableTitle: JSON.parse(JSON.stringify(supplierScoreTitle)),
       tableLoading: false,
       selectTableData: [],
       dialogRemarks: false,
       selectedRowData: {},
       scoringDeptVisible: false,
-      pushLoading: false
+      pushLoading: false,
+      setScoringDeptVisible: false,
+      templateScoreTitle:templateScoreTitle
     };
   },
   created() {
+    this.tableTitle = JSON.parse(JSON.stringify(supplierScoreTitle))
     this.getTableList();
   },
   methods: {
@@ -91,7 +94,8 @@ export default {
             userId: store.state.permission.userInfo.id
           }
           const res = await getAllSupplier(req)
-          this.tableListData = res.records;
+          const tpb = await getRaterAndCoordinatorByDepartmentId({'rfqId':id})
+          this.tableListData = this.trnaslateDataForView(res.records || [],tpb.data || []);
           this.page.currPage = res.current
           this.page.pageSize = res.size
           this.page.totalCount = res.total
@@ -116,8 +120,28 @@ export default {
       })
       .catch(() => this.pushLoading = false)
     },
-    uploadAttachments() {
-
+    trnaslateDataForView(data,vmdata){
+      const parmars = ['rate','externaFee','addFee','confirmCycle','memo']
+      const templateTitleLast = JSON.parse(JSON.stringify(this.templateScoreTitle))
+      vmdata.forEach((vmitems,vmindex)=>{this.translateTile(vmindex,vmitems,parmars,templateTitleLast)})
+      data.forEach((items,index)=>{
+        vmdata.forEach((vmitems,vmindex)=>{
+          parmars.forEach(items=>{
+            vmitems[items+(vmindex?vmindex:'')] = vmitems[items]
+          })
+          items = Object.assign(items,vmitems)
+        })
+      })
+      return data
+    },
+    translateTile(index,data,parmars,templateTitleLast){
+      templateTitleLast.name = data.rateDepart
+      templateTitleLast.list.forEach(items=>{
+          parmars.forEach(v=>{
+            items.props = v+(index?index:'')
+          })
+      })
+      this.tableTitle.push(templateTitleLast)
     },
     openActionPropsPage(row) {
       const rfqId = this.$route.query.id

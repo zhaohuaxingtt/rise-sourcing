@@ -169,13 +169,13 @@ export function setRaterAndCoordinatorByDepartmentId(params) {
 }
 
 // 获取评分部门
-export function getRaterAndCoordinatorByDepartmentId(params) {
-    return requst({
-        url: '/supplier/getRaterAndCoordinatorByDepartmentId',
-        method: 'POST',
-        data: params
-    })
-}
+// export function getRaterAndCoordinatorByDepartmentId(params) {
+//     return requst({
+//         url: '/supplier/getRaterAndCoordinatorByDepartmentId',
+//         method: 'POST',
+//         data: params
+//     })
+// }
 
 // 推送评分任务
 export function sendTaskForRating(params) {
@@ -183,5 +183,14 @@ export function sendTaskForRating(params) {
         url: '/supplier/sendTaskForRating',
         method: 'POST',
         data: params
+    })
+}
+
+//获取供应商接口，tpb模块。
+export function getRaterAndCoordinatorByDepartmentId(data){
+    return requst({
+        url: '/supplier/getRaterAndCoordinatorByDepartmentId',
+        method: 'POST',
+        data: data
     })
 }

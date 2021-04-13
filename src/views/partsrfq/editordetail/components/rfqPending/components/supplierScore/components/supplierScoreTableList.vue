@@ -26,7 +26,7 @@
         </el-table-column>
       </template>
       <template v-else>
-        <el-table-column :key="index" align='center' v-if="items.props === actionProps" :prop="items.props"
+        <el-table-column :key="index" align='center' fixed="left" v-if="items.props == actionProps" :prop="items.props"
                          :label="items.key ? $t(items.key) : items.name">
           <template slot-scope="scope">
             <span class="openLinkText cursor" @click="openActionPropsPage(scope.row)">{{$t('LK_CHAKAN')}}</span>
