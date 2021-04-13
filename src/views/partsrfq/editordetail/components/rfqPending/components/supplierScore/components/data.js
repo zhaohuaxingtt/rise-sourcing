@@ -28,17 +28,17 @@ export const supplierScoreTitle = [
     {props: 'shortNameZh', name: '供应商名', key: 'LK_GONGYINGSHANGMING'},
     {props: 'companyAddress', name: '供应商生产场地', key: 'LK_GONGYINGSHANGSHENGCHANCHANGDI'},
     {props: 'action', name: '零件评分', key: 'LK_LINGJIANPINGFEN'},
-    {
-        name: 'TPB',
-        list: [
-            {props: 'rate', name: '评分', key:'LK_PINGFEN'},
-            {props: 'externaFee', name: '外部开发费（元）', key:'LK_WAIBUKAIFAFEIYUAN'},
-            {props: 'addFee', name: '增加的认可费（元）', key:'LK_ZENGJIADERENKEFEIYUAN'},
-            {props: 'confirmCycle', name: '认可周期（周）', key:'LK_RENKEZHOUQIZHOU'},
-            {props: 'memo', name: '备注', key:'LK_BEIZHU'},
-        ]
-    }
 ]
+export const templateScoreTitle = {
+    name: 'TPB',
+    list: [
+        {props: 'rate', name: '评分', key:'LK_PINGFEN'},
+        {props: 'externaFee', name: '外部开发费（元）', key:'LK_WAIBUKAIFAFEIYUAN'},
+        {props: 'addFee', name: '增加的认可费（元）', key:'LK_ZENGJIADERENKEFEIYUAN'},
+        {props: 'confirmCycle', name: '认可周期（周）', key:'LK_RENKEZHOUQIZHOU'},
+        {props: 'memo', name: '备注', key:'LK_BEIZHU'},
+    ]
+}
 export const supplierRatingAttachmentTitle = [
     {props: 'fileName', name: '文件名称', key: 'LK_WENJIANMINGCHENG'},
     {props: 'fileSize', name: '大小（MB）', key: 'LK_DAXIAOMB'},

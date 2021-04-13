@@ -46,7 +46,7 @@
 <script>
 import {iCard, iPagination, iButton} from "@/components";
 import tablelist from './supplierScoreTableList'
-import {supplierScoreTitle} from "./data";
+import {supplierScoreTitle,templateScoreTitle} from "./data";
 import {pageMixins} from "@/utils/pageMixins";
 import tpbRemarks from './tpbRemarks'
 import {getAllSupplier, setTpbMemo,getRaterAndCoordinatorByDepartmentId} from "@/api/partsrfq/editordetail";
@@ -73,10 +73,12 @@ export default {
       selectTableData: [],
       dialogRemarks: false,
       selectedRowData: {},
-      setScoringDeptVisible: false
+      setScoringDeptVisible: false,
+      templateScoreTitle:templateScoreTitle
     };
   },
   created() {
+    this.tableTitle = JSON.parse(JSON.stringify(supplierScoreTitle))
     this.getTableList();
   },
   methods: {
@@ -91,7 +93,7 @@ export default {
           }
           const res = await getAllSupplier(req)
           const tpb = await getRaterAndCoordinatorByDepartmentId({'rfqId':id})
-          this.tableListData = this.trnaslateDataForView(res.records || [],tpb.data || [{rate:1,externaFee:'2',addFee:'3',confirmCycle:'4',memo:'121212',rateDepart:'1'},{rate:1,externaFee:'2',addFee:'3',confirmCycle:'4',memo:'121212',rateDepart:'1'}]);
+          this.tableListData = this.trnaslateDataForView(res.records || [],tpb.data || []);
           this.page.currPage = res.current
           this.page.pageSize = res.size
           this.page.totalCount = res.total
@@ -103,7 +105,7 @@ export default {
     },
     trnaslateDataForView(data,vmdata){
       const parmars = ['rate','externaFee','addFee','confirmCycle','memo']
-      const templateTitleLast = JSON.parse(JSON.stringify(this.tableTitle[this.tableTitle.length -1]))
+      const templateTitleLast = JSON.parse(JSON.stringify(this.templateScoreTitle))
       vmdata.forEach((vmitems,vmindex)=>{this.translateTile(vmindex,vmitems,parmars,templateTitleLast)})
       data.forEach((items,index)=>{
         vmdata.forEach((vmitems,vmindex)=>{
@@ -113,18 +115,17 @@ export default {
           items = Object.assign(items,vmitems)
         })
       })
+      console.log(data)
       return data
     },
     translateTile(index,data,parmars,templateTitleLast){
       templateTitleLast.name = data.rateDepart
-      if(index > 0){
-        templateTitleLast.list.forEach(items=>{
+      templateTitleLast.list.forEach(items=>{
           parmars.forEach(v=>{
-            items.props = v+index
+            items.props = v+(index?index:'')
           })
-        })
-        this.tableTitle.push(templateTitleLast)
-      }
+      })
+      this.tableTitle.push(templateTitleLast)
     },
     deleteItems() {
     },
