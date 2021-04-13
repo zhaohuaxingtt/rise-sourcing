@@ -106,6 +106,8 @@ export default {
       }
     },
     sendTaskForRating() {
+      if (!this.selectTableData.length) return
+      
       this.pushLoading = true
 
       sendTaskForRating(this.selectTableData)
