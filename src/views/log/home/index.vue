@@ -44,6 +44,7 @@ import { pageMixins } from '@/utils/pageMixins'
 import filters from '@/utils/filters'
 import { queryByPage } from '@/api/log'
 import { excelExport } from '@/utils/filedowLoad'
+import store from '@/store'
 
 export default {
   components: { iPage, icon, iCard, iButton, iPagination, tableList },
@@ -63,7 +64,7 @@ export default {
   methods: {
     queryByPage() {
       this.loading = true
-      queryByPage({ recordId: this.recordId, pageNo: this.page.currPage, pageSize: this.page.pageSize })
+      queryByPage({ recordId: this.recordId, deptId: Array.isArray(store.state.permission.userInfo.positionList) ? (store.state.permission.userInfo.positionList[0] ? store.state.permission.userInfo.positionList[0].deptId : undefined) : undefined || '123', pageNo: this.page.currPage, pageSize: this.page.pageSize })
         .then(res => {
           this.tableListData = res.data
           this.page.totalCount = res.total
