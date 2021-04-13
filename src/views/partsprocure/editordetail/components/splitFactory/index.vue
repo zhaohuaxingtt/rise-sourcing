@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-03-24 18:12:23
- * @LastEditTime: 2021-04-12 19:45:39
+ * @LastEditTime: 2021-04-13 16:22:24
  * @LastEditors: Please set LastEditors
  * @Description: 拆分采购工厂
  * @FilePath: \rise\src\views\partsprocure\editordetail\components\splitFactory\index.vue
@@ -156,9 +156,9 @@ export default{
         }
       }
     },
-    save(){
+    async save(){
       this.btnLoding = true
-      if(!this.validateNumberPersiont()) return
+      if(!await this.validateNumberPersiont()) return
             changeProcure(this.translateDataForService()).then(res=>{
               if(res.data){
                 this.btnLoding = false
