@@ -1,7 +1,11 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-03-24 18:12:23
+<<<<<<< HEAD
  * @LastEditTime: 2021-04-13 16:22:24
+=======
+ * @LastEditTime: 2021-04-13 16:59:11
+>>>>>>> develop
  * @LastEditors: Please set LastEditors
  * @Description: 拆分采购工厂
  * @FilePath: \rise\src\views\partsprocure\editordetail\components\splitFactory\index.vue
@@ -46,7 +50,7 @@
               v-else
               :key="index"
               :label="$t(items.key)"
-              width="150"
+              width="250"
             >
               <template slot-scope="scope">
                 <el-form-item :error="scope.row.error">
