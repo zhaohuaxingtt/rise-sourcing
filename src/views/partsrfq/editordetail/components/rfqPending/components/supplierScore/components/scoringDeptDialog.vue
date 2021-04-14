@@ -163,18 +163,21 @@ export default {
       this.saveLoading = true
 
       setRaterAndCoordinatorByDepartmentId(
-        list.map(item => ({
-          coordinator: item.coordinator,
-          coordinatorId: item.coordinatorId,
-          rateDepart: item.rateDepart,
-          rateDepartNum: item.rateDepartNum,
-          rater: item.rater,
-          raterId: item.raterId,
+        {
           rfqId: this.id,
-          tagName: item.tagName,
-          userId: store.state.permission.userInfo.id
-        })
-      ))
+          setRateAndCoordinatorDTOS: list.map(item => ({
+            coordinator: item.coordinator,
+            coordinatorId: item.coordinatorId,
+            rateDepart: item.rateDepart,
+            rateDepartNum: item.rateDepartNum,
+            rater: item.rater,
+            raterId: item.raterId,
+            rfqId: this.id,
+            tagName: item.tagName,
+            userId: store.state.permission.userInfo.id
+          }))
+        }
+      )
       .then(res => {
         if (res.code == 200) {
           iMessage.success(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
