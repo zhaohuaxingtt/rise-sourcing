@@ -159,11 +159,13 @@ export default {
       let deleteArr = []
       for(let i = 0, item; (item = this.multipleSelection[i++]); ) {
         if (item.source == 1) { // 1 外部NewPro  2 内部
-          iMessage.warn(`${ item.tpPartAttachmentName } 为外部系统文件，无法删除`)
+          iMessage.warn(`${ item.tpPartAttachmentName } ${ this.$t('LK_WEIBUXITONGWENJIANWUFASHANCHU') }`)
         } else {
           deleteArr.push(item)
         }
       }
+
+      if (!deleteArr.length) return
 
       // 后端删除
       this.deleteLoading = true

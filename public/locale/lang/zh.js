@@ -618,5 +618,6 @@
         'LK_QINGXUANZEXUYAOSHANCHUDEPINGFENBUMEN': '请选择需要删除的评分部门', //请选择需要删除的评分部门
         'LK_QINGXUANZEXUYAOHUIFUDEPINGFENBUMEN': '请选择需要恢复的评分部门', //请选择需要恢复的评分部门
         'LK_QINGXUANZEWANSHUJUZAIZUOBAOCUN': '请选择完数据再做保存', //请选择完数据再做保存
+        'LK_WEIBUXITONGWENJIANWUFASHANCHU': '为外部系统文件，无法删除' // xxx 为外部系统文件, 无法删除
     })
 }))

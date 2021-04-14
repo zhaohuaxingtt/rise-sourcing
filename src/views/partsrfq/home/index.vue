@@ -98,7 +98,7 @@
               <template v-slot:icon="scope">
                 <div @click="toTop(scope.data)" class="icon-style">
                   <icon class="icon icon-color-active" name="iconliebiaoyizhiding"
-                        v-if="scope.data.recordId > 1"></icon>
+                        v-if="+scope.data.recordId > 0"></icon>
                   <icon class="icon" name="iconliebiaoyizhiding" v-else></icon>
                 </div>
               </template>
