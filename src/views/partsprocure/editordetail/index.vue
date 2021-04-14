@@ -525,7 +525,7 @@ import { iMessageBox } from '../../../components';
 			updateOutput(data) {
 				this.$refs.outputPlan.updateOutput(data)
 			},
-		},
+		}
 	};
 </script>
 <style lang="scss" scoped>

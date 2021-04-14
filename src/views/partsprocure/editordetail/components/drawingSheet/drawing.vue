@@ -52,7 +52,7 @@ import { iCard, iButton, iPagination, iMessage } from '@/components'
 import tableList from '@/views/partsign/editordetail/components/tableList'
 import { pageMixins } from '@/utils/pageMixins'
 import { tableTitle } from './data'
-import { getInfoAnnexPage, deleteFile, patchTpRecords } from "@/api/partsprocure/editordetail";
+import { getInfoAnnexPage, deleteFile, patchTpInfoByAttachment } from "@/api/partsprocure/editordetail";
 import filters from '@/utils/filters'
 import { downloadFile } from "@/api/file";
 import { uploadFile } from "@/api/file/upload";
@@ -110,7 +110,7 @@ export default {
         iMessage.success(`${ file.name } ${ this.$t('LK_SHANGCHUANCHENGGONG') }`)
         this.fileList.push({ tpPartAttachmentName: res.data[0].fileName, tpPartAttachmentPath: res.data[0].filePath, size: (file.size / 1024 / 1024).toFixed(3) })
         this.timer = setTimeout(() => {
-          this.patchTpRecords()
+          this.patchTpInfoByAttachment()
           clearTimeout(this.timer)
         }, 700)
       }
@@ -119,12 +119,10 @@ export default {
       this.uploadLoading = false
       iMessage.error(`${ file.name } ${ this.$t('LK_SHANGCHUANSHIBAI') }`)
     },
-    patchTpRecords() {
-      patchTpRecords({
-        enquiryAttachmentFacadeDTO: {
-          partAttachmentList: this.fileList,
-          purchasingRequirementId: this.params.purchasingRequirementId
-        }
+    patchTpInfoByAttachment() {
+      patchTpInfoByAttachment({
+        partAttachmentList: this.fileList,
+        purchasingRequirementId: this.params.purchasingRequirementId
       })
         .then(res => {
           if (res.code == 200) {
