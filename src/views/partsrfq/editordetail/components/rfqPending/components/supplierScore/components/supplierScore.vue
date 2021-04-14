@@ -39,7 +39,7 @@
         @submit="handleRemarksSubmit"
         :memo="memo"
     />
-    <scoringDeptDialog :visible.sync="scoringDeptVisible" :id="$route.query.id" />
+    <scoringDeptDialog :visible.sync="scoringDeptVisible" :id="$route.query.id" @update="updateTable" />
   </iCard>
 </template>
 
@@ -97,6 +97,7 @@ export default {
           const res = await getAllSupplier(req)
           // const tpb = await getRaterAndCoordinatorByDepartmentId({'rfqId':id})
           // ,tpb.data ||
+          this.tableTitle = JSON.parse(JSON.stringify(supplierScoreTitle))
           const tpb = res.records[0] ? (res.records[0].rateEntity ? res.records[0].rateEntity : []) : []
           this.tableListData = this.trnaslateDataForView(res.records || [], tpb);
           this.page.currPage = res.current
@@ -190,6 +191,10 @@ export default {
     // 设置评分部门
     setScoringDept() {
       this.scoringDeptVisible = true
+    },
+    // 关闭设置部门后是否刷新表格
+    updateTable(status) {
+      if (status) this.getTableList()
     }
   }
 }

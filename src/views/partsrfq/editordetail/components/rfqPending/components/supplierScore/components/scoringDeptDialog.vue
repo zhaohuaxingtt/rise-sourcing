@@ -61,6 +61,7 @@ export default {
         this.getRaterAndCoordinatorByDepartmentId()
       } else {
         this.tableListData = []
+        this.$emit('update', this.isUpdate)
       }
       this.$emit('update:visible', nv)
     },
@@ -75,7 +76,8 @@ export default {
       tableListData: [],
       multipleSelection: [],
       deptScoringMap: {},
-      saveLoading: false
+      saveLoading: false,
+      isUpdate: false
     }
   },
   methods: {
@@ -177,6 +179,7 @@ export default {
         if (res.code == 200) {
           iMessage.success(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
           this.getRaterAndCoordinatorByDepartmentId()
+          this.isUpdate = true // 用于判断是否有数据更新
         } else {
           iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
         }
