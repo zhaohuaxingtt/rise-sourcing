@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 16:34:49
- * @LastEditTime: 2021-03-31 21:20:34
+ * @LastEditTime: 2021-04-15 17:28:55
  * @LastEditors: Please set LastEditors
  * @Description: 界面中存在的搜索区域，公共组件。
  * @FilePath: \rise\src\components\iSearch\index.vue
@@ -10,12 +10,12 @@
   <iCard :title="title" :tabCard="tabCard">
     <div class="iSearch-content" :class="{hiden:hidens}">
       <div class="operation">
+        <i @click="hidens=!hidens" v-if='!icon' class="el-icon-arrow-up icon margin-left20 cursor"
+           :class="{rotate:hidens}"></i>
         <slot name='button'>
           <iButton @click="$emit('sure')" :v-permission="searchKey">{{ $t('LK_INQUIRE') }}</iButton>
           <iButton @click="$emit('reset')" :v-permission="resetKey">{{ $t('LK_ZHONGZHI') }}</iButton>
         </slot>
-        <i @click="hidens=!hidens" v-if='!icon' class="el-icon-arrow-up icon margin-left20 cursor"
-           :class="{rotate:hidens}"></i>
       </div>
       <div class="serch">
         <slot>
@@ -88,6 +88,14 @@ export default {
     display: flex;
     margin-top: 22px;
     text-align: right;
+    .icon{
+      position: relative;
+      top: -20px;
+      right: -210px;
+    }
+    button{
+      margin-top: 5px;
+    }
   }
 }
 

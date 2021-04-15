@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-22 13:59:24
- * @LastEditTime: 2021-03-08 18:16:48
+ * @LastEditTime: 2021-04-15 17:30:16
  * @LastEditors: Please set LastEditors
  * @Description: 项目中使用到的按钮集合。
  * @FilePath: \rise\src\components\iButton\index.vue
@@ -15,6 +15,9 @@ export default{
 <style lang='scss' scoped>
 .el-button{
   border:transparent;
+  span{
+    font-weight: bold;
+  }
 }
 .el-button--default{
     background-color: $color-btn-background;
