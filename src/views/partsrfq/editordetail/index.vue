@@ -190,6 +190,11 @@ export default {
   created() {
     this.getBaseInfo()
   },
+  provide: function() {
+    return {
+      getBaseInfo: this.getBaseInfo
+    }
+  },
   methods: {
     backPage() {
       this.$router.go(-1)

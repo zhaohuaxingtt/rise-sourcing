@@ -84,6 +84,7 @@ export default {
     this.tableTitle = JSON.parse(JSON.stringify(supplierScoreTitle))
     this.getTableList();
   },
+  inject: ['getBaseInfo'],
   methods: {
     async getTableList() {
       const id = this.$route.query.id
@@ -194,7 +195,10 @@ export default {
     },
     // 关闭设置部门后是否刷新表格
     updateTable(status) {
-      if (status) this.getTableList()
+      if (status) {
+        this.getBaseInfo()
+        this.getTableList()
+      }
     }
   }
 }

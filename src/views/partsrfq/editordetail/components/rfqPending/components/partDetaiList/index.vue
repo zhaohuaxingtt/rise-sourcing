@@ -40,7 +40,8 @@ import {
   iButton,
   iCard,
   iPagination,
-  iMessage
+  iMessage,
+  iMessageBox
 } from "@/components";
 import tableList from "@/views/partsign/home/components/tableList";
 import {
@@ -190,20 +191,26 @@ export default {
       this.$refs.applyPrice.againShow()
     },
     async deleteItems() {
-      const idList = this.handleSelectArr.map(item => {
-        return item.id
-      })
-      const req = {
-        deletePartPackage: {
-          userId: store.state.permission.userInfo.id,
-          rfqId: this.rfqId,
-          idList
-        }
+      if (this.handleSelectArr.length == 0) {
+        iMessage.warn(this.$t('LK_NINDANGQIANHAIWEIXUANZEXUYAOSHENQINGMUBIAOJIADECAIGOUXIANGMU'));
+        return
       }
-      const res = await editRfqData(req)
-      this.resultMessage(res)
-      this.getTableList()
-      this.$refs.partsTable.getTableList()
+      iMessageBox(this.$t('deleteSure'),this.$t('LK_WENXINTISHI')).then(async ()=>{
+        const idList = this.handleSelectArr.map(item => {
+        return item.id
+        })
+        const req = {
+          deletePartPackage: {
+            userId: store.state.permission.userInfo.id,
+            rfqId: this.rfqId,
+            idList
+          }
+        }
+        const res = await editRfqData(req)
+        this.resultMessage(res)
+        this.getTableList()
+        this.$refs.partsTable.getTableList()
+        })
     }
   },
 };

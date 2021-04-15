@@ -61,13 +61,25 @@ export function getTpInfo(params) {
 }
 
 // 关联附件用
-export function patchTpRecords(params) {
+export function patchTpInfoByAttachment(params) {
 	return requst({
-		url: '/api/tp-records',
+		url: '/tp-records/tpInfo',
 		method: 'PATCH',
-		data: params
+		data: {
+			uploadAttachmentDTO: params
+		}
 	})
 }
+
+
+// 关联附件用
+// export function patchTpRecords(params) {
+// 	return requst({
+// 		url: '/api/tp-records',
+// 		method: 'PATCH',
+// 		data: params
+// 	})
+// }
 
 // 获取附件
 export function getInfoAnnexPage(params) {

@@ -6,6 +6,7 @@
     'use strict'
     i18n.setLocaleMessage('zh', {
         'delete': "删除",
+        "deleteSure":'您确定要执行删除操作吗？',
         'all': '全部',
         'search': '搜索',
         'setting': '设置',
@@ -104,6 +105,7 @@
         'LK_MEIYOUKEYIXIAZHAIDEXINXI': '没有可以下载的信息', // 没有可以下载的信息
         'LK_MIMA': '密码', // 密码
         'LK_HAIWEIXUANZHEGONGCHANG': '您还未选择工厂！', // 您还未选择工厂！
+        "LK_NHWXZBDL":"您还未选择BDL",
         'LK_QINGCHU': '清除', // 清除
         'LK_QINGTIANXIELIYOUSHURUKUANGBITIAN': '请填写理由，该输入框为必填', // 请填写理由，该输入框为必填
         'LK_QINGXUANZHEMEICHEYONGLIANGZHUANGTAI': '请选择每车用量状态', // 请选择每车用量状态
@@ -201,6 +203,7 @@
         'LK_NINDANGQIANHAIWEIXUANZENINXUYAOZHUANPAIDEXINXIDAN': '抱歉，您当前还未选择您需要转派的信息单！', //抱歉，您当前还未选择您需要转派的信息单！
         'LK_NINDANGQIANHAIWEIXUANZERENWU': '抱歉，您当前还未选择任务！', //抱歉，您当前还未选择任务！
         'LK_NINDANGQIANHAIWEIXUANZEXUYAOQIDONGXUNJIADECAIGOUXIANGMU': '抱歉，您当前还未选择需要启动询价的采购项目！', //抱歉，您当前还未选择需要启动询价的采购项目！
+        "LK_NOTCHOUSEDELETEPROJECT":"抱歉！您还未选择您需要删除的采购项目。",
         'LK_NINDANGQIANHAIWEIXUANZEXUYAOSHENQINGMUBIAOJIADECAIGOUXIANGMU': '抱歉，您当前还未选择需要申请目标价的采购项目！', //抱歉，您当前还未选择需要申请目标价的采购项目！
         'LK_NINDANGQIANHAIWEIXUANZEXUYAOTIANJIADECAIGOUXIANGMU': '抱歉，您当前还未选择需要添加的采购项目！', //抱歉，您当前还未选择需要添加的采购项目！
         'LK_NINXUANZHONGDEDANJUZHONGCUNZAIYIQIANSHOUDEXINXIDANBUNENGPILIANGQIANSHOU': '抱歉，您选中的单据中存在已签收的信息单，不能批量签收！', //抱歉，您选中的单据中存在已签收的信息单，不能批量签收！
@@ -552,7 +555,7 @@
         'LK_XINJIANRFQ': '新建RFQ', //新建RFQ
         'LK_XINJIANRFQLUNCI': '新建RFQ轮次', //新建RFQ轮次
         'LK_XINJIANXINXIDANBEIZHU': '新建信息单备注', //新建信息单备注
-        'LK_XINJIANXINXIDANLIUSHUIHAO': '新建信息单流水号', //新建信息单流水号
+        'LK_XINJIANXINXIDANLIUSHUIHAO': '新件信息单流水号', //新建信息单流水号
         'LK_XINSHENQINGCAIWUMUBIAOJIA': '新申请财务目标价', //新申请财务目标价
         'LK_XINXIDANFENLEI': '信息单分类', //信息单分类
         'LK_XINXIDANLEIXING': '信息单类型', //信息单类型

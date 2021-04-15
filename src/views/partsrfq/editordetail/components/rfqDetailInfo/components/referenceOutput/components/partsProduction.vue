@@ -8,14 +8,6 @@
               $t('LK_DAOCHU')
             }}
           </iButton>
-          <iButton>{{
-              $t('LK_SHEZHIPINGFENBUMEN')
-            }}
-          </iButton>
-          <iButton>{{
-              $t('LK_TUISONGPINGFENRENWU')
-            }}
-          </iButton>
         </div>
       </div>
       <tablelist

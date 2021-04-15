@@ -272,6 +272,7 @@ export default {
     };
   },
   created() {
+    this.form.status = "1"
     this.getPageGroup();
     this.getTableList();
   },

@@ -44,6 +44,7 @@ import logDialog from '@/views/partsign/editordetail/components/logDialog'
 import {pageMixins} from '@/utils/pageMixins'
 import {rfqCommonFunMixins} from "pages/partsrfq/components/commonFun";
 import { cloneDeep } from 'lodash'
+import { iMessageBox } from '../../../../../../../components';
 
 export default {
   mixins:[pageMixins, rfqCommonFunMixins],
@@ -88,6 +89,7 @@ export default {
      **************************/
     // 保存
     handleSave() {
+      if(this.noEditSelectTableDataCache.length == 0) return iMessage.warn(this.$t('LK_NHWXZBDL')) 
       this.saveLoading = true
       updateRfq({
         updateRfqBdlPackage: {
@@ -116,25 +118,28 @@ export default {
     },
     // 删除
     handleDelete() {
-      this.deleteLoading = true
-      updateRfq({
-        deleteBdlPackage: {
-          userId: this.userInfo.id,
-          ids: this.noEditSelectTableDataCache.map(item => item.id)
-        }
-      })
-        .then(res => {
-          if (res.code == 200) {
-            this.getTableList()
-            this.noEditSelectTableDataCache = []
-            this.resultMessage(res)
-          } else {
-            this.resultMessage(res)
+      if(this.noEditSelectTableDataCache.length == 0) return iMessage.warn(this.$t('LK_NHWXZBDL')) 
+      iMessageBox(this.$t('deleteSure'),this.$t('LK_WENXINTISHI')).then(()=>{
+        this.deleteLoading = true
+        updateRfq({
+          deleteBdlPackage: {
+            userId: this.userInfo.id,
+            ids: this.noEditSelectTableDataCache.map(item => item.id)
           }
-
-          this.deleteLoading = false
         })
-        .catch(() => this.deleteLoading = false)
+          .then(res => {
+            if (res.code == 200) {
+              this.getTableList()
+              this.noEditSelectTableDataCache = []
+              this.resultMessage(res)
+            } else {
+              this.resultMessage(res)
+            }
+
+            this.deleteLoading = false
+          })
+          .catch(() => this.deleteLoading = false)
+      })
     },
     /**************************
      * 获取bdl列表
@@ -228,6 +233,7 @@ export default {
       window.open(`/#/log?recordId=${ this.partDetails.tpPartID }`, '_blank')
     },
     handleSaveCustom() {
+      if(this.noEditSelectTableDataCache.length == 0) return iMessage.error(this.$t('LK_NHWXZBDL')) 
       this.saveLoading = true
       updateRfq({
         updateRfqBdlPackage: {

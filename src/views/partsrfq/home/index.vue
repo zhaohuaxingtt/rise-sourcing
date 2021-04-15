@@ -1,7 +1,7 @@
 <!--
  * @Author: moxuan
  * @Date: 2021-02-25 09:59:25
- * @LastEditTime: 2021-04-01 19:18:54
+ * @LastEditTime: 2021-04-15 13:51:21
  * @LastEditors: Please set LastEditors
  * @Description: RFQ模块首页
  * @FilePath: \rise\src\views\partsrfq\home\index.vue
@@ -143,6 +143,7 @@ import {excelExport} from "@/utils/filedowLoad";
 import store from '@/store'
 import filters from "@/utils/filters";
 import {rfqCommonFunMixins} from "pages/partsrfq/components/commonFun";
+import {getRaterAndCoordinatorByDepartmentId} from '@/api/partsrfq/editordetail'
 import {
   getProcureGroup
 } from "@/api/partsprocure/home";

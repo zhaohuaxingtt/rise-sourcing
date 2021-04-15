@@ -6,6 +6,7 @@
     'use strict'
     i18n.setLocaleMessage('en', {
         'delete': "delete",
+        "deleteSure":'are you sureAre you sure you want to do this?',
         'all': 'all',
         'search': 'search',
         'setting': 'setting',
@@ -201,6 +202,7 @@
         'LK_NINDANGQIANHAIWEIXUANZENINXUYAOZHUANPAIDEXINXIDAN': 'Sorry, no TP records to be reassign is selected!',//抱歉，您当前还未选择您需要转派的信息单！
         'LK_NINDANGQIANHAIWEIXUANZERENWU': 'Sorry, you have not selected a task yet!',//抱歉，您当前还未选择任务！
         'LK_NINDANGQIANHAIWEIXUANZEXUYAOQIDONGXUNJIADECAIGOUXIANGMU': 'Sorry, no project to initiate inquiry is selected!',//抱歉，您当前还未选择需要启动询价的采购项目！
+        "LK_NOTCHOUSEDELETEPROJECT":"抱歉！您还未选择您需要删除的采购项目。", //抱歉您还未选择您需要删除的采购项目
         'LK_NINDANGQIANHAIWEIXUANZEXUYAOSHENQINGMUBIAOJIADECAIGOUXIANGMU': 'Sorry, no projects to apply for target price is selected!',//抱歉，您当前还未选择需要申请目标价的采购项目！
         'LK_NINDANGQIANHAIWEIXUANZEXUYAOTIANJIADECAIGOUXIANGMU': 'Sorry, no project to be added is selected!',//抱歉，您当前还未选择需要添加的采购项目！
         'LK_NINXUANZHONGDEDANJUZHONGCUNZAIYIQIANSHOUDEXINXIDANBUNENGPILIANGQIANSHOU': 'Selections contain signed records, unable to batch sign in!',//抱歉，您选中的单据中存在已签收的信息单，不能批量签收！
@@ -612,6 +614,7 @@
         "LK_CHAIFENFACTORY": '选中的工厂中,存在未分配的份额，请填写后重试！',
         "LK_FACTORYNOTSAME": '您所选的采购工厂与主数据中该车型项目对应的采购工厂不一致，请确认是否修改',
         "LK_AREYOUSPLITE": '该车型项目主数据中对应多个采购工厂，是否拆分？',
+        "LK_NHWXZBDL":"您还未选择BDL",
         'LK_XIETIAOREN': '', //协调人
         'LK_XINZENG': 'Add', //新增
         'LK_HUIFU': 'Recover', //恢复
