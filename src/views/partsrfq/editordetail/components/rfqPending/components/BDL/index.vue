@@ -89,7 +89,7 @@ export default {
      **************************/
     // 保存
     handleSave() {
-      if(this.noEditSelectTableDataCache.length == 0) return iMessage.warn(this.$t('LK_NHWXZBDL')) 
+      if(this.editSelectTableDataCache.length == 0) return iMessage.warn(this.$t('LK_NHWXZBDL')) 
       this.saveLoading = true
       updateRfq({
         updateRfqBdlPackage: {
@@ -118,7 +118,7 @@ export default {
     },
     // 删除
     handleDelete() {
-      if(this.noEditSelectTableDataCache.length == 0) return iMessage.warn(this.$t('LK_NHWXZBDL')) 
+      if(this.editSelectTableDataCache.length == 0) return iMessage.warn(this.$t('LK_NHWXZBDL')) 
       iMessageBox(this.$t('deleteSure'),this.$t('LK_WENXINTISHI')).then(()=>{
         this.deleteLoading = true
         updateRfq({
@@ -233,7 +233,7 @@ export default {
       window.open(`/#/log?recordId=${ this.partDetails.tpPartID }`, '_blank')
     },
     handleSaveCustom() {
-      if(this.noEditSelectTableDataCache.length == 0) return iMessage.error(this.$t('LK_NHWXZBDL')) 
+      if(this.editSelectTableDataCache.length == 0) return iMessage.error(this.$t('LK_NHWXZBDL')) 
       this.saveLoading = true
       updateRfq({
         updateRfqBdlPackage: {
