@@ -1,7 +1,7 @@
 <!--
  * @Author: moxuan
  * @Date: 2021-03-04 11:24:15
- * @LastEditTime: 2021-03-26 00:10:28
+ * @LastEditTime: 2021-04-15 13:49:39
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
 -->
@@ -131,7 +131,7 @@ export default {
           ).data.map((item) => {
             return {
               code: item.id,
-              name: item.userName,
+              name: item.nameZh,
             };
           });
           break;
