@@ -89,7 +89,6 @@ export default {
      **************************/
     // 保存
     handleSave() {
-      if(this.editSelectTableDataCache.length == 0) return iMessage.warn(this.$t('LK_NHWXZBDL')) 
       this.saveLoading = true
       updateRfq({
         updateRfqBdlPackage: {
@@ -118,7 +117,7 @@ export default {
     },
     // 删除
     handleDelete() {
-      if(this.editSelectTableDataCache.length == 0) return iMessage.warn(this.$t('LK_NHWXZBDL')) 
+      if(this.noEditSelectTableDataCache.length == 0) return iMessage.warn(this.$t('LK_NHWXZBDL')) 
       iMessageBox(this.$t('deleteSure'),this.$t('LK_WENXINTISHI')).then(()=>{
         this.deleteLoading = true
         updateRfq({
