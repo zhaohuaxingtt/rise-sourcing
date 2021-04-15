@@ -57,6 +57,7 @@ import filters from '@/utils/filters'
 import { downloadFile } from "@/api/file";
 import { uploadFile } from "@/api/file/upload";
 import { getToken } from "@/utils";
+import { iMessageBox } from '../../../../../components'
 
 export default {
   components: { iCard, iButton, tableList, iPagination },
@@ -153,7 +154,7 @@ export default {
     },
     handleDelete() {
       if (!this.multipleSelection.length) return iMessage.warn(this.$t('LK_QINGXUANZHEXUYAOSHANCHUYOUJIAN'))
-
+      iMessageBox(this.$t('deleteSure'),this.$t('LK_WENXINTISHI')).then(()=>{
       let deleteArr = []
       for(let i = 0, item; (item = this.multipleSelection[i++]); ) {
         if (item.source == 1) { // 1 外部NewPro  2 内部
@@ -175,6 +176,7 @@ export default {
           this.multipleSelection = []
         })
         .catch(() => this.deleteLoading = false)
+      })
     },
     preview(row) {
       downloadFile({
