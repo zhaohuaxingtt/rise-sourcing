@@ -89,6 +89,7 @@ export default {
      **************************/
     // 保存
     handleSave() {
+      if(this.editSelectTableDataCache.length == 0) return iMessage.warn(this.$t('LK_NHWXZBDL')) 
       this.saveLoading = true
       updateRfq({
         updateRfqBdlPackage: {
