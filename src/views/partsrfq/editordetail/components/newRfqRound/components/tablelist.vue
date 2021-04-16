@@ -32,7 +32,7 @@
         <template slot-scope="scope">
           <i-select v-model="scope.row[items.props]">
             <el-option v-for="items in scope.row.roundCbdVOS" :key='items.id' :value='items.id'
-                       :label="$t(items.key)"/>
+                       :label="$t(items.name)"/>
           </i-select>
         </template>
       </el-table-column>
