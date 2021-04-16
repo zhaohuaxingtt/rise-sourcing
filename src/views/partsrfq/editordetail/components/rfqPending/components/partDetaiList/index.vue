@@ -162,7 +162,7 @@ export default {
         this.parmarsHasRfq['search.size'] = this.page.pageSize
         this.parmarsHasRfq['search.current'] = this.page.currPage
         this.parmarsHasRfq['search.rfqId'] = this.rfqId
-        this.parmarsHasRfq['search.projectStatus'] = '12'
+        this.parmarsHasRfq['search.projectStatus'] = ''
         getPartSrcPrjs(this.parmarsHasRfq).then(res => {
           this.confirmTableLoading = false
           this.page.currPage = res.data.pageData.pageNum
