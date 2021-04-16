@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-03-01 10:29:09
- * @LastEditTime: 2021-04-14 03:17:41
+ * @LastEditTime: 2021-04-16 16:50:52
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsprocure\editordetail\components\materialGroupInfo\index.vue
@@ -149,7 +149,7 @@ export default {
       this.confirmLoading = true
       changeProcure({
         batch: {
-          categoryId: data.id,
+          categoryId: data.categoryId,
           categoryCode: data.categoryCode,
           categoryName: data.categoryNameZh,
           purchaseProjectIds: [ this.params.purchasePrjectId ],
