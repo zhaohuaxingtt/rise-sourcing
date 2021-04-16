@@ -23,7 +23,7 @@
       </el-table-column>
       <el-table-column :key="index" align='center' :label="$t(items.key)" v-else-if="items.props === 'isMbdl'">
         <template slot-scope="scope">
-          {{ scope.row.isMbdl ? 'M' : '' }}
+          {{ scope.row.isMbdl == 2 ? 'M' : '' }}
         </template>
       </el-table-column>
       <el-table-column :key="index" align='center'
