@@ -1,7 +1,7 @@
 /*
  * @Author: moxuan
  * @Date: 2021-03-03 09:52:00
- * @LastEditTime: 2021-04-15 13:50:22
+ * @LastEditTime: 2021-04-16 16:41:40
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsrfq\home\components\data.js
@@ -28,7 +28,7 @@ export const tableTitle = permissionTitle("PARTSRFQ_RFQLIST", [
 ])
 
 export const assignmentOfScroingTasksTableTitle = [
-    { props: 'deptType', name: '部门评分类型', key: 'LK_BUMENPINGFENLEIXING' },
     { props: 'deptNum', name: '部门编号', key: 'LK_BUMENBIANHAO' },
+    { props: 'deptType', name: '部门评分类型', key: 'LK_BUMENPINGFENLEIXING' },
     { props: 'graderId', name: '评分人', key: 'LK_PINGFENREN' },
 ]

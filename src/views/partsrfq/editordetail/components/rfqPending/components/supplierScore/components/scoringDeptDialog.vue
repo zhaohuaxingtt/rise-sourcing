@@ -84,7 +84,7 @@ export default {
     // 获取下拉列表值
     getAllScoringDepartmentInfo() {
       getAllScoringDepartmentInfo({
-        rfqId: this.id
+        rfqId: [this.id]
       })
         .then(res => {
           if (res.code == 200) {
@@ -100,7 +100,7 @@ export default {
       this.loading = true
 
       getRaterAndCoordinatorByDepartmentId({
-        rfqId: this.id
+        rfqId: [this.id]
       })
       .then(res => {
         if (res.code == 200) {

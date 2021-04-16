@@ -1,7 +1,7 @@
 <!--
  * @Author: moxuan
  * @Date: 2021-02-25 09:59:25
- * @LastEditTime: 2021-04-15 13:51:21
+ * @LastEditTime: 2021-04-16 16:32:14
  * @LastEditors: Please set LastEditors
  * @Description: RFQ模块首页
  * @FilePath: \rise\src\views\partsrfq\home\index.vue
@@ -123,6 +123,7 @@
             <assignment-of-scoring-tasks
                 v-model="diologAssignmentOfScroingTasks"
                 :rfq-id="assignmentRfqIdList"
+                :selectDatalist='selectDatalist'
             />
           </iCard>
         </div>
@@ -143,10 +144,8 @@ import {excelExport} from "@/utils/filedowLoad";
 import store from '@/store'
 import filters from "@/utils/filters";
 import {rfqCommonFunMixins} from "pages/partsrfq/components/commonFun";
-import {getRaterAndCoordinatorByDepartmentId} from '@/api/partsrfq/editordetail'
-import {
-  getProcureGroup
-} from "@/api/partsprocure/home";
+import {getAllScoringDepartmentInfo} from '@/api/partsrfq/home'
+import { getProcureGroup } from "@/api/partsprocure/home";
 
 export default {
   components: {
@@ -185,7 +184,8 @@ export default {
       rfqStatusOptions: [],
       assignmentRfqIdList: [],
       fromGroup: [],
-      tab: 'source'
+      tab: 'source',
+      selectDatalist:[]
     };
   },
   created() {
@@ -195,6 +195,21 @@ export default {
     this.getRfqStatusOptions()
   },
   methods: {
+    //获取转派评分任务列表
+    getAllScoringDepartmentInfo(){
+      return new Promise((r)=>{
+        const rfqids = []
+          this.selectTableData.forEach(element => {
+            rfqids.push(element.id)
+          });
+          getAllScoringDepartmentInfo({rfqId:rfqids}).then(res=>{
+            r(res.data)
+          }).catch(err=>{
+            r([])
+          })
+      })
+    },
+    //动态获取转派评分任务
     openPage(id) {
       this.$router.push({
         path: `/partsrfq/editordetail?id=${id}`
@@ -251,9 +266,11 @@ export default {
       this.resultMessage(res)
       this.getTableList()
     },
-    assignmentOfScoringTasks() {
+    //d点击打开转派评分任务列表
+    async assignmentOfScoringTasks() {
       if (this.selectTableData.length == 0)
         return iMessage.warn(this.$t('LK_NINDANGQIANHAIWEIXUANZENINXUYAOZHUANPAIDEPINGFENRENWU'));
+      this.selectDatalist = await this.getAllScoringDepartmentInfo()
       this.diologAssignmentOfScroingTasks = true
       this.assignmentRfqIdList = this.selectTableData.map(item => {
         return item.id
