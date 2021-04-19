@@ -17733,8 +17733,8 @@
     background-color: #FFFFFF; }
     .el-table tr input[type="checkbox"] {
       margin: 0; }
-  .el-table th.is-leaf, .el-table td {
-    border-bottom: 1px solid #EBEEF5; }
+  /* .el-table th.is-leaf, .el-table td {
+    border-bottom: 1px solid #EBEEF5; } */
   .el-table th.is-sortable {
     cursor: pointer; }
   .el-table th {
@@ -17746,6 +17746,7 @@
     background-color: #FFFFFF; }
     .el-table th > .cell {
       color:#000;
+      white-space: nowrap;
       display: inline-block;
       -webkit-box-sizing: border-box;
       box-sizing: border-box;
