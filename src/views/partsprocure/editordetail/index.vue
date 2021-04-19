@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2021-04-14 00:54:20
+ * @LastEditTime: 2021-04-16 18:24:34
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsprocure\editordetail\index.vue
@@ -196,7 +196,7 @@
 						</iFormItem>
 						<iFormItem label="BMG：" name="test">
 							<iText v-permission="PARTSPROCURE_EDITORDETAIL_BMG">
-								{{ detailData.bmg }}
+								{{ fillterss(detailData.bmg) }}
 							</iText>
 						</iFormItem>
 						<iFormItem :label="$t('LK_HUOBI') + ':'" name="test"
@@ -329,6 +329,13 @@ import { iMessageBox } from '../../../components';
 			this.getProcureGroup();
 		},
 		methods: {
+			fillterss(data){
+				if(data){
+					return '是'
+				}else{
+					return '否'
+				}
+			},
 			checkFactory(){
 				const parmars = {
 					id:this.detailData.purchasePrjectId,
