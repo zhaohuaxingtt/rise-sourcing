@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-22 16:47:54
- * @LastEditTime: 2021-03-29 15:29:53
+ * @LastEditTime: 2021-04-19 15:24:21
  * @LastEditors: Please set LastEditors
  * @Description: 界面左边的按钮切换菜单栏。
  * @FilePath: \rise\src\layout\components\leftLayout.vue
@@ -141,7 +141,7 @@ export default{
         text-align: center;
         line-height: 120px;
         background-color:$color-white;
-        font-size: 28px;
+        font-size: 32px;
         cursor: pointer;
         transition: all 0.2s;
         color:#001847;
