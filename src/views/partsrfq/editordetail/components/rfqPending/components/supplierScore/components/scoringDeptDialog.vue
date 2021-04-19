@@ -2,19 +2,19 @@
   <iDialog class="dialog" :title="$t('LK_SHEZHIPINGFENBUMEN')" v-bind="$props" :visible.sync="visible" v-on="$listeners">
     <div class="body">
       <div class="control" id="control">
-        <iButton @click="handleAdd">{{ $t('LK_XINZENG') }}</iButton>
-        <iButton @click="handleDelete">{{ $t('LK_SHANCHU') }}</iButton>
-        <iButton @click="handleRecover">{{ $t('LK_HUIFU') }}</iButton>
+        <iButton @click="handleAdd" v-if="!customAction">{{ $t('LK_XINZENG') }}</iButton>
+        <iButton @click="handleDelete" v-if="!customAction">{{ $t('LK_SHANCHU') }}</iButton>
+        <iButton @click="handleRecover" v-if="!customAction">{{ $t('LK_HUIFU') }}</iButton>
         <iButton @click="handleSave" :loading="saveLoading">{{ $t('LK_BAOCUN') }}</iButton>
       </div>
       <tableList index height="83%" class="table margin-top20" :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="loading" :cellClassName="deleteLine" @handleSelectionChange="handleSelectionChange">
         <template #rateDepart="scope">
-          <iSelect v-model="scope.row.rateDepart" :disabled="scope.row.deleteStatus" @change="handleClearAll(scope.row)">
+          <iSelect v-model="scope.row.rateDepart" :disabled="scope.row.deleteStatus || customAction" @change="handleClearAll(scope.row)">
             <el-option v-for="(item, $index) in Object.keys(deptScoringMap)" :key="$index" :label="item" :value="item"></el-option>
           </iSelect>
         </template>
         <template #rateDepartNum="scope">
-          <iSelect v-if="scope.row.rateDepart" v-model="scope.row.rateDepartNum" :disabled="scope.row.deleteStatus" @change="handleClearCoordinatorAndRater(scope.row)">
+          <iSelect v-if="scope.row.rateDepart" v-model="scope.row.rateDepartNum" :disabled="scope.row.deleteStatus || customAction" @change="handleClearCoordinatorAndRater(scope.row)">
             <el-option v-for="(item, $index) in Object.keys(deptScoringMap[scope.row.rateDepart])" :key="$index" :label="item" :value="item"></el-option>
           </iSelect>
         </template>
@@ -50,15 +50,18 @@ export default {
       type: Boolean,
       default: false
     },
-    id: {
-      type: String
+    ids: {
+      type: Array
+    },
+    customAction: {
+      type: Boolean
     }
   },
   watch: {
     visible(nv) {
-      if (nv && this.id) {
+      if (nv && this.ids.length) {
         // this.getAllScoringDepartmentInfo()
-        this.getRaterAndCoordinatorByDepartmentId()
+        if (!this.customAction) this.getRaterAndCoordinatorByDepartmentId()
       } else {
         this.tableListData = []
         this.$emit('update', this.isUpdate)
@@ -67,6 +70,8 @@ export default {
     },
   },
   created() {
+    if (this.customAction) this.tableTitle = this.tableTitle.filter(title => title.props !== 'coordinatorId')
+
     this.getAllScoringDepartmentInfo()
   },
   data() {
@@ -84,7 +89,7 @@ export default {
     // 获取下拉列表值
     getAllScoringDepartmentInfo() {
       getAllScoringDepartmentInfo({
-        rfqId: [this.id]
+        rfqId: this.ids
       })
         .then(res => {
           if (res.code == 200) {
@@ -100,7 +105,7 @@ export default {
       this.loading = true
 
       getRaterAndCoordinatorByDepartmentId({
-        rfqId: [this.id]
+        rfqId: this.ids
       })
       .then(res => {
         if (res.code == 200) {
@@ -160,11 +165,16 @@ export default {
         }
       }
 
+      if (this.customAction) {
+        this.$emit('handleSave', list)
+        return
+      }
+
       this.saveLoading = true
 
       setRaterAndCoordinatorByDepartmentId(
         {
-          rfqId: this.id,
+          rfqId: [this.ids][0],
           setRateAndCoordinatorDTOS: list.map(item => ({
             coordinator: item.coordinator,
             coordinatorId: item.coordinatorId,
@@ -172,7 +182,7 @@ export default {
             rateDepartNum: item.rateDepartNum,
             rater: item.rater,
             raterId: item.raterId,
-            rfqId: this.id,
+            rfqId: [this.ids][0],
             tagName: item.tagName,
             userId: store.state.permission.userInfo.id
           }))
@@ -190,6 +200,9 @@ export default {
         this.saveLoading = false
       })
       .catch(() => this.saveLoading = false)
+    },
+    setSaveLoading(val) {
+      this.saveLoading = val
     }
   }
 }

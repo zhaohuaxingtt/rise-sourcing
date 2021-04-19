@@ -39,7 +39,7 @@
         @submit="handleRemarksSubmit"
         :memo="memo"
     />
-    <scoringDeptDialog :visible.sync="scoringDeptVisible" :id="$route.query.id" @update="updateTable" />
+    <scoringDeptDialog :visible.sync="scoringDeptVisible" :ids="[$route.query.id]" @update="updateTable" />
   </iCard>
 </template>
 
