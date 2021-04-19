@@ -60,8 +60,8 @@ export default {
   watch: {
     visible(nv) {
       if (nv && this.ids.length) {
-        // this.getAllScoringDepartmentInfo()
-        if (!this.customAction) this.getRaterAndCoordinatorByDepartmentId()
+        this.getAllScoringDepartmentInfo()
+        this.getRaterAndCoordinatorByDepartmentId()
       } else {
         this.tableListData = []
         this.$emit('update', this.isUpdate)
@@ -70,9 +70,11 @@ export default {
     },
   },
   created() {
-    if (this.customAction) this.tableTitle = this.tableTitle.filter(title => title.props !== 'coordinatorId')
-
-    this.getAllScoringDepartmentInfo()
+    if (this.customAction) {
+      this.tableTitle = this.tableTitle.filter(title => title.props !== 'coordinatorId')
+    } else {
+      this.getAllScoringDepartmentInfo()
+    }
   },
   data() {
     return {
@@ -182,7 +184,7 @@ export default {
             rateDepartNum: item.rateDepartNum,
             rater: item.rater,
             raterId: item.raterId,
-            rfqId: [this.ids][0],
+            rfqId: this.ids[0],
             tagName: item.tagName,
             userId: store.state.permission.userInfo.id
           }))
