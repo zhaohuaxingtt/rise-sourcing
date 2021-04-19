@@ -17634,7 +17634,7 @@
   max-width: 100%;
   background-color: #FFFFFF;
   font-size: 14px;
-  color: #4D4F5C; }
+  color: #000; }
   .el-table__empty-block {
     min-height: 60px;
     text-align: center;
@@ -17733,8 +17733,8 @@
     background-color: #FFFFFF; }
     .el-table tr input[type="checkbox"] {
       margin: 0; }
-  .el-table th.is-leaf, .el-table td {
-    border-bottom: 1px solid #EBEEF5; }
+  /* .el-table th.is-leaf, .el-table td {
+    border-bottom: 1px solid #EBEEF5; } */
   .el-table th.is-sortable {
     cursor: pointer; }
   .el-table th {
@@ -17745,6 +17745,8 @@
     user-select: none;
     background-color: #FFFFFF; }
     .el-table th > .cell {
+      color:#000;
+      white-space: nowrap;
       display: inline-block;
       -webkit-box-sizing: border-box;
       box-sizing: border-box;

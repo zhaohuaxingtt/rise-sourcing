@@ -233,7 +233,7 @@ export default {
       window.open(`/#/log?recordId=${ this.partDetails.tpPartID }`, '_blank')
     },
     handleSaveCustom() {
-      if(this.editSelectTableDataCache.length == 0) return iMessage.error(this.$t('LK_NHWXZBDL')) 
+      // if(this.editSelectTableDataCache.length == 0) return iMessage.error(this.$t('LK_NHWXZBDL')) 
       this.saveLoading = true
       updateRfq({
         updateRfqBdlPackage: {

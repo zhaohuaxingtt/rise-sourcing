@@ -28,12 +28,12 @@
         },
         'partsprocure': {
             'PARTSPROCURENEWPROCUREMENTPROJECT': '零件采购项目管理',
-            'PARTSPROCUREGENERATEFSGSNR': '生成FSNR/GSNR/SPNR',
+            'PARTSPROCUREGENERATEFSGSNR': '生成零件采购项目号',
             'PARTSPROCURECANCELPARTSPURCHASE': '取消零件采购项目',
             'PARTSPROCUREBATCHMAINTENANCE': '批量维护',
             'PARTSPROCURESTARTINQUIRY': '启动询价',
             'PARTSPROCURETRANSFER': '转派',
-            'PARTSPROCUREFSNFGSNFSPNR': 'FSNR/GSNR/SPNR',
+            'PARTSPROCUREFSNFGSNFSPNR': '零件采购项目号',
             'PARTSPROCUREPARTNUMBER': '零件号',
             'PARTSPROCUREPARTNAMEZH': '零件名（中）',
             'PARTSPROCUREPARTNAMEDE': '零件名（德）',
@@ -55,9 +55,9 @@
         'partsignLanguage': {
             'XunYuanZhiXing': '寻源执行', //寻源执行
             'JinDuJianKong': '进度监控', //进度监控
-            'LingJianQianShou': '零件签收', //零件签收
-            'CaiGouXiangMuJianLi': '采购项目建立', //采购项目建立
-            'RfqguanLi': 'RFQ管理', //RFQ管理
+            'LingJianQianShou': '新件信息单', //零件签收
+            'CaiGouXiangMuJianLi': '零件采购项目', //采购项目建立
+            'RfqguanLi': 'RFQ', //RFQ管理
             'DingDianGuanLi': '定点管理', //定点管理
             'RiZhi': '日志', //日志
             'LingJianHao': '零件号', //零件号
@@ -157,10 +157,10 @@
         'LK_LINIEBUMEN': 'LINIE部门', //LINIE部门
         'LK_LINIESHANGHUIBEIZHU': 'Linie上会备注', //Linie上会备注
         'LK_MBDL': 'MBDL', //MBDL
-        'LK_MQPINGFENZHUANGTAI': 'MQ评分状态', //MQ评分状态
+        'LK_MQPINGFENZHUANGTAI': 'MQ评分', //MQ评分状态
         'LK_MTZLINGJIAN': 'MTZ零件', //MTZ零件
         'LK_RFQBIANHAO': 'RFQ编号', //RFQ编号
-        'LK_RFQGUANLI': 'RFQ管理', //RFQ管理
+        'LK_RFQGUANLI': 'RFQ', //RFQ管理
         'LK_RFQLEIXING': 'RFQ类型', //RFQ类型
         'LK_RFQLIST': 'RFQ列表', //RFQ列表
         'LK_RFQLINGJIANHUOZHERFQGONGYINGSHANGWEIKONG': 'RFQ零件或者RFQ供应商为空，不能创建RFQ轮次', //RFQ零件或者RFQ供应商为空，不能创建RFQ轮次
@@ -178,14 +178,14 @@
         'LK_SVWYAOQIUOTSZHOU': 'SVW要求OTS（周）', //SVW要求OTS（周）
         'LK_SVWYAOQIUSHOUCISHIMO': 'SVW要求首次试模', //SVW要求首次试模
         'LK_SWHAO': 'SVW号', //sw号
-        'LK_TPPINGFENZHUANGTAI': 'TP评分状态', //TP评分状态
+        'LK_TPPINGFENZHUANGTAI': 'EP评分', //TP评分状态
         'LK_BANBENHAO': '版本号', //版本号
         'LK_BANBENZHUANGTAI': '版本状态', //版本状态
         'LK_BAOZHUANGFUZEREN': '包装负责人', //包装负责人
         'LK_BAOCUN': '保存', //保存
         'LK_BAOCUNBINGCHUANGJIAN': '保存并创建', //保存并创建
-        'LK_BAOJIAJIEZHIRIQI': '报价截止日期', //报价截止日期
-        'LK_RFQQUOTATIONDEADLINE': '报价截至日期', //报价截至日期
+        'LK_BAOJIAJIEZHIRIQI': '截止日期', //报价截止日期
+        'LK_RFQQUOTATIONDEADLINE': '截止日期', //报价截至日期
         'LK_NINDANGQIANHAIWEIXUANZE': '抱歉！您当前还未选择！', //抱歉！您当前还未选择！
         'LK_NINDANGQIANHAIWEIXUANZEXUNJIACAIGOUYUAN': '抱歉！您当前还未选择询价采购员！', //抱歉！您当前还未选择询价采购员！
         'LK_BEIZHUBUNENGWEIKONG': '抱歉，备注不能为空！', //抱歉，备注不能为空！
@@ -237,7 +237,7 @@
         'LK_CAIWUMUBIAOJIA': '财务目标价', //财务目标价
         'LK_CAIGOUGONGCHANG': '采购工厂', //采购工厂
         'LK_CAIGOUTIAOKUAN': '采购条款', //采购条款
-        'LK_CAIGOUXIANGMUJIANLI': '采购项目建立', //采购项目建立
+        'LK_CAIGOUXIANGMUJIANLI': '零件采购项目', //采购项目建立
         'LK_CAIGOUXIANGMUXINXI': '采购项目信息', //采购项目信息
         'LK_CAIGOUYUAN': '前期采购员', //采购员
         'LK_CAIGOUYUANGONGHAO': '采购员工号', //采购员工号
@@ -393,7 +393,7 @@
         'LK_LINGJIANPINGTAIXINGZHIMIAOSHUYING': '零件平台性质描述(英)', //零件平台性质描述(英)
         'LK_LINGJIANPINGTAIXINGZHIMIAOSHUZHONG': '零件平台性质描述(中)', //零件平台性质描述(中)
         'LK_LINGJIANPINGFEN': '零件评分', //零件评分
-        'LK_LINGJIANQIANSHOU': '零件签收', //零件签收
+        'LK_LINGJIANQIANSHOU': '新件信息单', //零件签收
         'LK_LINGJIANQINGDAN': '零件清单', //零件清单
         'LK_LINGJIANSUOSHUCAILIAOZULINIEBUMEN': '零件所属材料组LINIE部门 ', //零件所属材料组LINIE部门
         'LK_LINGJIANSUOSHUCAILIAOZUDEWENMINGCHENG': '零件所属材料组德文名称 ', //零件所属材料组德文名称
@@ -411,7 +411,7 @@
         'LK_MEICHEYONGLIANGZHUANGTAI': '每车用量状态', //每车用量状态
         'LK_MOJUYUSUANSHENQING': '模具预算申请', //模具预算申请
         'LK_MUBIAOJIA': '目标价', //目标价
-        'LK_MUBIAOJIAZHUANGTAI': 'CF目标价状态', //目标价状态
+        'LK_MUBIAOJIAZHUANGTAI': 'F-Target', //目标价状态
         'LK_NIANFEN': '年份', //年份
         'LK_NINSHIFOUQUERENDUIXINJIANXINXIDANJINHANGQIANSHOU': '您是否确认对新件信息单进行签收？', //您是否确认对新件信息单进行签收？
         'LK_PEIZHIBILI': '配置比例', //配置比例
@@ -503,7 +503,7 @@
         'LK_SHENDUGUOCHANHUADAIMA': '深度国产化代码', //深度国产化代码
         'LK_SHENPIYIJIAN': '审批意见', //审批意见
         'LK_SHENPIZHUANGTAI': '审批状态', //审批状态
-        'LK_SHENGCHENGFS_GSNR': '生成FSNR/GSNR/SPNR', //生成FS/GSNR
+        'LK_SHENGCHENGFS_GSNR': '生成FS/GS/SP Np.', //生成FS/GSNR
         'LK_SHENGCHENGFSHAO': '生成FS号', //生成FS号
         'LK_SHIJIANJIHUA': '时间计划', //时间计划
         'LK_SHIFOUERCIJIAN': '是否二次件', //是否二次件
@@ -565,7 +565,7 @@
         'LK_XINXIDANZHUANGTAI': '信息单状态', //信息单状态
         'LK_XINXILIUSHUIDANHAO': '信息流水单号', //信息流水单号
         'LK_XUANZHUANGJIAN': '选装件', //选装件
-        'LK_XUNYUANZHIHANG': '寻源执行', //寻源执行
+        'LK_XUNYUANZHIHANG': '寻源', //寻源执行
         'LK_XUNJIACAIGOUYUAN': '询价采购员', //询价采购员
         'LK_XUNJIACAIGOUYUANBEIZHU': '询价采购员备注', //询价采购员备注
         'LK_XUNJIACHANLIANGJIHUA': '询价产量计划', //询价产量计划

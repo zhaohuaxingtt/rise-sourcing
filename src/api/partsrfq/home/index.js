@@ -58,3 +58,11 @@ export function insertRfq(parmars) {
         }
     })
 }
+
+export function getAllScoringDepartmentInfo(parmars) {
+    return requst({
+        url: '/supplier/getAllScoringDepartmentInfo',
+        method: 'POST',
+        data: parmars
+    })
+}

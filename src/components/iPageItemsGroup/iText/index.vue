@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-03-02 14:23:15
- * @LastEditTime: 2021-04-03 11:49:27
+ * @LastEditTime: 2021-04-15 17:45:31
  * @LastEditors: Please set LastEditors
  * @Description: 作为当前组件的配套组合，适应不需要编辑的元素。
  * @FilePath: \rise\src\components\iPageItemsGroup\iText\index.vue
@@ -42,7 +42,7 @@ export default{
 <style lang='scss' scoped>
   .itext{
     width: 100%;
-    font-size: 16px;
+    font-size: 14px;
     background-color: #F8F8FA;
     height: 35px;
     text-align: center;
