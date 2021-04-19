@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-24 09:47:32
- * @LastEditTime: 2021-04-03 12:21:41
+ * @LastEditTime: 2021-04-19 14:43:37
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsign\home\components\data.js
@@ -28,14 +28,14 @@ export const needTranslate = [
 //form
 export const form = {
   tpPrincepalName:'',
-  attachmentStatus:'',//询价资料状态
+  attachmentStatus:'0',//询价资料状态.默认查询 解决bug
   dept:'',//设计科室
   tpId:'',//信息单流水号
-  partDosageStatus:'', //每次用量状态
+  partDosageStatus:'0', //每次用量状态，默认查询 解决bug
   partNameZh:"",//零件中文名称
   partNum:'',//零件号
   projectCarType:'',//车型项目
-  status:'',//信息单状态
+  status:'1',//信息单状态，默认查询 解决bug
   tpInfoType:'',//信息单分类
   userId:store.state.permission.userInfo.id
 }
