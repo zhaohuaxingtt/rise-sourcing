@@ -503,7 +503,7 @@
         'LK_SHENDUGUOCHANHUADAIMA': '深度国产化代码', //深度国产化代码
         'LK_SHENPIYIJIAN': '审批意见', //审批意见
         'LK_SHENPIZHUANGTAI': '审批状态', //审批状态
-        'LK_SHENGCHENGFS_GSNR': '生成FS/GS/SP Np.', //生成FS/GSNR
+        'LK_SHENGCHENGFS_GSNR': '生成FS/GS/SP NO.', //生成FS/GSNR
         'LK_SHENGCHENGFSHAO': '生成FS号', //生成FS号
         'LK_SHIJIANJIHUA': '时间计划', //时间计划
         'LK_SHIFOUERCIJIAN': '是否二次件', //是否二次件
