@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-25 10:14:46
- * @LastEditTime: 2021-04-03 14:50:29
+ * @LastEditTime: 2021-04-19 14:56:21
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsprocure\home\component\data.js
@@ -30,7 +30,7 @@ export const tableTitle = [{
 		props: 'partNameDe',
 		name: '零件名（德）',
 		key: 'partsprocure.PARTSPROCUREPARTNAMEDE',
-		tooltip: false
+		tooltip: true
 	},
 	// {
 	// 	props: 'statusName',
@@ -42,7 +42,7 @@ export const tableTitle = [{
 		props: 'procureFactoryName',
 		name: '采购工厂',
 		key: 'partsprocure.PARTSPROCUREPURCHASINGFACTORY',
-		tooltip: false
+		tooltip: true
 	},
 	{
 		props: 'partProjectTypeName',
@@ -54,13 +54,13 @@ export const tableTitle = [{
 		props: 'cartypeCategory',
 		name: '车型大类',
 		key: 'partsprocure.PARTSPROCUREVEHICLECATEGORIES',
-		tooltip: false
+		tooltip: true
 	},
 	{
 		props: 'cartypeProjectZh',
 		name: '车型项目',
 		key: 'partsprocure.PARTSPROCUREMODELPROJECT',
-		tooltip: false
+		tooltip: true
 	},
 	{
 		props: 'statusName',
