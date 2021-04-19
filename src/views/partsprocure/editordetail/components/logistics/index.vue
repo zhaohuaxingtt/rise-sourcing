@@ -19,7 +19,7 @@
 				</iFormItem>
 				<iFormItem :label="$t('LK_FUZEREN')" name="test">
 
-					<i-text>{{dataInfo.direcorId}}</i-text>
+					<i-text>{{dataInfo.direcorName}}</i-text>
 				</iFormItem>
 				<iFormItem label="ZP" name="test">
 
@@ -38,7 +38,7 @@
 			<iFormGroup :row="4" inline icon>
 				<iFormItem :label="$t('LK_BAOZHUANGFUZEREN')" name="test">
 
-					<i-text>{{dataInfo.partPackgeRequirements.direcorId}}</i-text>
+					<i-text>{{dataInfo.partPackgeRequirements.direcorName}}</i-text>
 				</iFormItem>
 			</iFormGroup>
 			<iFormGroup :row="4" inline icon>
