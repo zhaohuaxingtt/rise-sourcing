@@ -174,7 +174,7 @@ export default {
 
       setRaterAndCoordinatorByDepartmentId(
         {
-          rfqId: [this.ids][0],
+          rfqId: this.ids[0],
           setRateAndCoordinatorDTOS: list.map(item => ({
             coordinator: item.coordinator,
             coordinatorId: item.coordinatorId,
