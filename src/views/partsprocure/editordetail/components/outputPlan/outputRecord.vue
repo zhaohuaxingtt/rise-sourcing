@@ -6,6 +6,7 @@
     <div class="body">
       <tablelist
         class="table"
+        radio
         index
         :tableData="tableListData" 
         :tableTitle="tableTitle" 

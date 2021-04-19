@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-24 09:42:07
- * @LastEditTime: 2021-04-19 14:54:14
+ * @LastEditTime: 2021-04-19 17:15:37
  * @LastEditors: Please set LastEditors
  * @Description: 零件签收-table组件。
  * @FilePath: \rise\src\views\partsign\components\tableList.vue
@@ -34,7 +34,7 @@ export default{
     indexLabel:{type:String,default:'#'},
     height:{type:Number||String},
     activeItems:{type:String,default:'b'},
-	radio:{type:Boolean,default:false}// 是否单选
+	  radio:{type:Boolean,default:false}// 是否单选
   },
   inject:['vm'],
   methods:{
