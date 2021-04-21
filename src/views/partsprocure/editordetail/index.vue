@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2021-04-16 18:24:34
+ * @LastEditTime: 2021-04-19 22:24:45
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsprocure\editordetail\index.vue
@@ -158,16 +158,14 @@
 						</iFormItem>
 						<iFormItem label="LINIE：" name="test">
 							<!-- :disabled="!detailData.categoryCode" -->
-							<iSelect v-model="detailData.linieName" v-permission="PARTSPROCURE_EDITORDETAIL_LINE">
-								<el-option :value="item.id" :label="item.name" v-for="(item, index) in fromGroup.LINIE"
-									:key="index"></el-option>
+							<iSelect v-model="detailData.linieName" value-key='name' v-permission="PARTSPROCURE_EDITORDETAIL_LINE">
+								<el-option :value="item" :label="item.name" v-for="item in fromGroup.LINIE"
+									:key="item.name"></el-option>
 							</iSelect>
 						</iFormItem>
-						<iFormItem :label="$t('LK_CFKONGZHIYUAN') + ':'" name="test">
-							<iSelect v-model="detailData.cfController"
-								v-permission="PARTSPROCURE_EDITORDETAIL_CFCONTROLLER">
-								<el-option :value="item.id" :label="item.name"
-									v-for="(item, index) in fromGroup.CF_CONTROL" :key="index"></el-option>
+						<iFormItem :label="$t('LK_CFKONGZHIYUAN') + ':'" name='cfczy'>
+							<iSelect v-model="detailData.cfControllerZh" value-key='name' v-permission="PARTSPROCURE_EDITORDETAIL_CFCONTROLLER">
+								<el-option :value="item" :label="item.name" v-for="item in fromGroup.CF_CONTROL" :key="item.name"></el-option>
 							</iSelect>
 						</iFormItem>
 						<iFormItem label="Common Sourcing：" name="test">
@@ -448,6 +446,10 @@ import { iMessageBox } from '../../../components';
 						detailData[i] = this.detailData[i];
 					}
 				}
+				detailData['cfController'] = this.detailData.cfControllerZh.id
+				detailData['cfControllerZh'] = this.detailData.cfControllerZh.name
+				detailData['linieUserId'] = this.detailData.linieName.id
+				detailData['linieName'] = this.detailData.linieName.name
 				changeProcure({
 					detailData,
 				}).then((res) => {

@@ -51,6 +51,10 @@ export default {
     collapse: {
       type: Boolean,
       default: false
+    },
+    hiddenBoxshadow:{
+      type:Boolean,
+      default:false
     }
   },
   data() {
