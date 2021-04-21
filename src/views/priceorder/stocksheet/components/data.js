@@ -112,7 +112,62 @@ export const tableTitle = [{
         },
     ]
     //)
-
+export const budgetManagementData = [{
+    //export const tableTitle = permissionTitle("PARTSPROCURE_PARTSPROCURELIST",[{
+        props: 'categoryCode',
+        name: '材料组编号',
+        key: 'partsprocure.PARTSPROCUREFSNFGSNFSPNR',
+        tooltip: false
+    },
+    {
+        props: 'categoryNameDe',
+        name: '材料组名称（中）',
+        key: 'partsprocure.PARTSPROCUREPARTNUMBER',
+        tooltip: false
+    },
+    {
+        props: 'categoryNameZh',
+        name: '材料组名称（德）',
+        key: 'partsprocure.PARTSPROCUREPARTNAMEZH',
+        tooltip: false
+    },
+    {
+        props: 'commodity',
+        name: '专业科室',
+        key: 'partsprocure.PARTSPROCUREPARTNAMEDE',
+        tooltip: false
+    },
+    {
+        props: 'isCommonSourcing',
+        name: '是否做过Common Sourcing',
+        key: 'partsprocure.PARTSPROCURESTATUS',
+        tooltip: false
+    },
+    {
+        props: 'moldProperties',
+        name: '模具属性',
+        key: 'partsprocure.PARTSPROCUREPURCHASINGFACTORY',
+        tooltip: false
+    },
+    {
+        props: 'newLinieName',
+        name: 'LINIE',
+        key: 'partsprocure.PARTSPROCUREPARTITEMTYPE',
+        tooltip: false
+    },
+    {
+        props: 'zp',
+        name: 'ZP',
+        key: 'partsprocure.PARTSPROCUREVEHICLECATEGORIES',
+        tooltip: false
+    },
+    {
+        props: 'remarks',
+        name: '备注',
+        key: 'partsprocure.PARTSPROCUREMODELPROJECT',
+        tooltip: false
+    }
+]
 //零件采购列表入参
 export const form = {
     'search.buyerName': '', //询价采购员
@@ -130,7 +185,13 @@ export const form = {
     'search.projectStatus': '', //采购项目状态
     'search.rfqId': '', //rfq编号
     'search.size': '',
-    'search.current': ""
+    'search.current': "",
+
+    'search.carTypeProject': "", //车型项目
+    'search.projectType': "", //项目类型
+    'search.fixedPointType': "", //定点类型
+    'search.modelCategory': "", //车型类别
+    'search.materialName': "", //材料组
 }
 
 // addRfq

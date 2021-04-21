@@ -30,31 +30,150 @@
           <!------------------------------------------------------------------------>
           <!--                  search 搜索模块                                   --->
           <!------------------------------------------------------------------------>
-          <div class="content">
-            <div class="item">
-              <icon class="addIcon" symbol name="icontianjiachexingxiangmu"></icon>
-            </div>
-            <div class="item" v-for="(item, index) in contentData" :key="index" @click="toEdit(item.id)">
-              <div class="item_top">
-                <icon class="editIcon" symbol name="iconyouchexingxiangmukapian"></icon>
-<!--                <img :src="item.url" alt="">-->
-                <div class="title">
-                  <h4>{{ item.cartypeProjectName }}</h4>
-                  <p>{{ item.locationFactory }}</p>
-                  <p>SOP：{{ item.sop }}</p>
-                </div>
+          <iSearch
+              class="margin-bottom20"
+              style="margin-top: 20px"
+              @sure="sure"
+              @reset="reset"
+              :icon="true"
+              :resetKey="PARTSPROCURE_RESET"
+              :searchKey="PARTSPROCURE_CONFIRM"
+          >
+            <el-form>
+              <el-form-item label="车型项目">
+                <iSelect
+                    placeholder="请选择"
+                    v-model="form['search.carTypeProject']"
+                    v-permission="PARTSPROCURE_PARTSTATUS"
+                    @change="changeCarTypeProject"
+                >
+                  <el-option
+                      :value="item.id"
+                      :label="item.cartypeNname"
+                      v-for="(item, index) in fromGroup"
+                      :key="index"
+                  ></el-option>
+                </iSelect>
+              </el-form-item>
+              <el-form-item label="项目类型">
+                <iSelect
+                    placeholder="请选择"
+                    v-model="form['search.projectType']"
+                    v-permission="PARTSPROCURE_VEHICLECATEGORIES"
+                >
+                  <el-option
+                      :value="item.key"
+                      :label="item.name"
+                      v-for="(item, index) in getGroupList('cartype_category')"
+                      :key="index"
+                  >
+                  </el-option>
+                </iSelect>
+              </el-form-item>
+              <el-form-item label="定点类型">
+                <iSelect
+                    placeholder="请选择"
+                    v-model="form['search.fixedPointType']"
+                    v-permission="PARTSPROCURE_MODELPROJECT"
+                >
+                  <el-option
+                      :value="item.key"
+                      :label="item.name"
+                      v-for="(item, index) in getGroupList('cartype_project_zh')"
+                      :key="index"
+                  >
+                  </el-option>
+                </iSelect>
+              </el-form-item>
+              <el-form-item label="车型类别">
+                <iSelect
+                    placeholder="请选择"
+                    v-model="form['search.modelCategory']"
+                    v-permission="PARTSPROCURE_PARTITEMTYPE"
+                >
+                  <el-option
+                      :value="item.key"
+                      :label="item.name"
+                      v-for="(item, index) in getGroupList('part_project_type')"
+                      :key="index"
+                  >
+                  </el-option>
+                </iSelect>
+              </el-form-item>
+            </el-form>
+          </iSearch>
+          <iCard>
+            <!------------------------------------------------------------------------>
+            <!--                  table模块，向外入参表格数据，表头                    --->
+            <!------------------------------------------------------------------------>
+            <div class="header margin-bottom20">
+              <div>
+                材料组：
+                <el-input placeholder="请输入查询" v-model="form['search.materialName']" class="input-with-select">
+                  <el-button slot="append" icon="el-icon-search"></el-button>
+                </el-input>
+                零件六位号：
+                <el-input placeholder="请输入查询" v-model="form['search.partNum']" class="input-with-select">
+                  <el-button slot="append" icon="el-icon-search"></el-button>
+                </el-input>
               </div>
-              <div class="unit">
-                单位：百万元
+              <div>
+                <iButton @click="deleteItems">添加行</iButton>
+                <iButton @click="deleteItems">删除行</iButton>
+                <iButton @click="deleteItems">参考车型</iButton>
+                <iButton @click="deleteItems">保存</iButton>
+                <iButton @click="deleteItems">生成投资清单</iButton>
               </div>
-<!--              <div class="echart" id="xxx"></div>-->
-
-              <div class="chart" :id="'chart' + index"></div>
             </div>
-          </div>
+            <tablelist
+                :tableData="tableListData"
+                :tableTitle="tableTitle"
+                :tableLoading="tableLoading"
+                @handleSelectionChange="handleSelectionChange"
+                @openPage="openPage"
+                :activeItems="'partNum'"
+            >
+              <template #moldProperties="scope">
+                <iInput v-model="scope.row.moldProperties"></iInput>
+              </template>
+              <template #newLinieName="scope">
+                <iInput v-model="scope.row.newLinieName"></iInput>
+              </template>
+              <template #zp="scope">
+                <iInput v-model="scope.row.zp"></iInput>
+              </template>
+              <template #remarks="scope">
+                <iInput v-model="scope.row.remarks"></iInput>
+              </template>
+            </tablelist>
+            <!------------------------------------------------------------------------>
+            <!--                  表格分页                                          --->
+            <!------------------------------------------------------------------------>
+            <iPagination
+                v-update
+                @size-change="handleSizeChange($event, getTableListFn)"
+                @current-change="handleCurrentChange($event, getTableListFn)"
+                background
+                :current-page="page.currPage"
+                :page-sizes="page.pageSizes"
+                :page-size="page.pageSize"
+                :layout="page.layout"
+                :total="page.totalCount"
+            />
+          </iCard>
           <!------------------------------------------------------------------------>
           <!--                  转派弹出框                                         --->
           <!------------------------------------------------------------------------>
+          <changeItems
+              v-model="diologChangeItems"
+              @sure="sureChangeItems"
+              :title="$t('LK_LINGJIANCAIGOUXIANGMUZHUANPAI')"
+          ></changeItems>
+          <backItems
+              v-model="diologBack"
+              @sure="cancel"
+              :title="$t('LK_QUXIAOLINGJIANCAIGOUXIANGMU')"
+          ></backItems>
         </div>
       </el-tab-pane>
     </el-tabs>
@@ -78,18 +197,19 @@ import { DatePicker } from "element-ui";
 import logButton from "./components/logButton";
 import { pageMixins } from "@/utils/pageMixins";
 import backItems from "@/views/partsign/home/components/backItems";
-import { tableTitle, form } from "./components/data";
+import { budgetManagementData, form } from "./components/data";
 import tablelist from "./components/tablelist";
-import echarts from "@/utils/echarts";
 import {
   getTabelData,
   changeProcure,
   getProcureGroup,
 } from "@/api/partsprocure/home";
 import {
-  findCartypePro
-} from "@/api/priceorder/stocksheet";
-import {getAllScoringDepartmentInfo, insertRfq} from "@/api/partsrfq/home";
+  findInvestmentBuild,
+  getCartypePulldown,
+  findProjectTypeDetailPulldown,
+} from "@/api/priceorder/stocksheet/edit";
+import { insertRfq } from "@/api/partsrfq/home";
 import changeItems from "../../partsign/home/components/changeItems";
 import filters from "@/utils/filters";
 import creatFs from "./components/creatFs";
@@ -115,9 +235,11 @@ export default {
   },
   data() {
     return {
+      carType: '',
+
       tableListData: [],
       tableLoading: false,
-      tableTitle: tableTitle,
+      tableTitle: budgetManagementData,
       selectTableData: [],
       diologChangeItems: false,
       form: form,
@@ -134,8 +256,6 @@ export default {
         { name: "BM申请", active: false, key: "LK_JIAGEZHUISU" },
         { name: "投资报告", active: false, key: "LK_HETONGCHAXUN" },
       ],
-
-      contentData: []
     };
   },
   computed: {
@@ -146,100 +266,18 @@ export default {
   created() {
     this.getTableListFn();
     this.getProcureGroup();
-    this.findCartypePro();
-  },
-  mounted() {
-
-
-
   },
   methods: {
-    toEdit(id){
-      this.$router.push({
-        path: '/priceorder/stocksheet/Edit',
-        query: {
-          id: id,
-        },
-      })
-    },
-    //获取转派评分任务列表
-    findCartypePro(){
-      return new Promise((r)=>{
-        findCartypePro().then(res => {
-          if(res.code == "0"){
-            this.contentData = res.data
-            this.$nextTick(() => {
-              const vm = echarts().init(document.getElementById("chart0"));
-              console.log(vm)
-              let option = {
-                grid: {
-                  left: '0%',
-                  right: '0',
-                  bottom: '0%',
-                  top: '12%',
-                  containLabel: true
-                },
-                xAxis: {
-                  type: 'category',
-                  data: ['Mon', 'Tue', 'Wed', 'Thu'],
-                  axisTick: {
-                    show: false
-                  },
-                  axisLine:{
-                    lineStyle:{
-                      color: '#CDD4E2'
-                    }
-                  },
-                  axisLabel:{
-                    textStyle:{
-                      color: '#485465'
-                    }
-                  },
-                },
-                yAxis: {
-                  type: 'value',
-                  axisTick: {
-                    show: false
-                  },
-                  axisLabel: {
-                    show: false
-                  },
-                  splitLine: {
-                    show: false
-                  },
-                  axisLine: {
-                    show: false
-                  },
-
-                },
-                series: [{
-                  data: [120, 200, 150, 80],
-                  type: 'bar',
-                  barWidth: 30,
-                  label: {
-                    show: true,
-                    position: 'top',
-                    textStyle: {
-                      color: '#485465'
-                    }
-                  },
-                  itemStyle: {
-                    normal: {
-                      barBorderRadius: [5, 5, 0, 0],
-                      color: function(params){
-                        console.log(params)
-                        let colorlist = ['#1763F7','#73A1FA','#B0C5F5','#CEE1FF'];
-                        return colorlist[params.dataIndex];
-                      }
-                    },
-                  }
-                }]
-              };
-              vm.setOption(option);
-            })
-          }
-        }).catch()
-      })
+    changeCarTypeProject(){
+      console.log(this.form)
+      let parmars = {
+        cartypeProId: this.form['search.projectType'],
+        materialName: this.form['search.materialName'],
+        partNum: this.form['search.partNum'],
+      }
+      findProjectTypeDetailPulldown(parmars).then((res) => {
+        console.log(res)
+      });
     },
     // 跳转详情
     openPage(item) {
@@ -274,17 +312,18 @@ export default {
         "part_project_type",
         "procure_factory",
       ];
-      getProcureGroup({ types }).then((res) => {
+      getCartypePulldown().then((res) => {
         this.fromGroup = res.data;
+        this.form['search.carTypeProject'] = Number(this.$route.query.id)
       });
     },
     //转派
     openDiologChangeItems() {
       if (this.selectTableData.length == 0)
         return iMessage.warn(
-          this.$t(
-            "LK_NINDANGQIANHAIWEIXUANZENINXUYAOZHUANPAIDELINGJIANCAIGOUXIANGMU"
-          )
+            this.$t(
+                "LK_NINDANGQIANHAIWEIXUANZENINXUYAOZHUANPAIDELINGJIANCAIGOUXIANGMU"
+            )
         );
       this.diologChangeItems = true;
     },
@@ -298,18 +337,18 @@ export default {
       changeProcure({
         transfer,
       })
-        .then((res) => {
-          this.diologChangeItems = false;
-          if (res.data) {
-            iMessage.success(this.$t("LK_ZHUANPAICHENGGONG"));
-            this.getTableListFn();
-          } else {
-            iMessage.error(res.desZh);
-          }
-        })
-        .catch(() => {
-          this.diologChangeItems = false;
-        });
+          .then((res) => {
+            this.diologChangeItems = false;
+            if (res.data) {
+              iMessage.success(this.$t("LK_ZHUANPAICHENGGONG"));
+              this.getTableListFn();
+            } else {
+              iMessage.error(res.desZh);
+            }
+          })
+          .catch(() => {
+            this.diologChangeItems = false;
+          });
     },
     //表格选中值集
     handleSelectionChange(val) {
@@ -320,15 +359,18 @@ export default {
       this.tableLoading = true;
       this.form["search.size"] = this.page.pageSize;
       this.form["search.current"] = this.page.currPage;
-      getTabelData(this.form)
-        .then((res) => {
-          this.tableLoading = false;
-          this.page.currPage = res.data.pageData.pageNum;
-          this.page.pageSize = res.data.pageData.pageSize;
-          this.page.totalCount = res.data.pageData.total;
-          this.tableListData = res.data.pageData.data;
-        })
-        .catch(() => (this.tableLoading = false));
+      findInvestmentBuild({"id": 1,
+        "cartypeNname": "项目xxx",
+        "sourceType": "1" })
+          .then((res) => {
+            this.tableLoading = false;
+            this.page.currPage = res.pageNum;
+            this.page.pageSize = res.pageSize;
+            this.page.totalCount = res.total;
+            this.tableListData = res.data;
+            console.log(this.tableListData)
+          })
+          .catch(() => (this.tableLoading = false));
     },
     // 查询
     sure() {
@@ -339,15 +381,15 @@ export default {
       for (let i in this.form) {
         this.form[i] = "";
       }
-      this.getTableListFn();
+      // this.getTableListFn();
     },
     //退回
     openDiologBack() {
       if (this.selectTableData.length == 0)
         return iMessage.warn(
-          this.$t(
-            "LK_NINDANGQIANHAIWEIXUANZENINXUYAOQUXIAODELINGJIANCAIGOUXIANGMU"
-          )
+            this.$t(
+                "LK_NINDANGQIANHAIWEIXUANZENINXUYAOQUXIAODELINGJIANCAIGOUXIANGMU"
+            )
         );
       this.diologBack = true;
     },
@@ -360,18 +402,18 @@ export default {
       changeProcure({
         cancel,
       })
-        .then((res) => {
-          if (res.data) {
-            iMessage.success(this.$t("LK_CAOZUOCHENGGONG"));
-            this.getTableListFn();
-          } else {
-            iMessage.error(res.desZh);
-          }
-          this.diologBack = false;
-        })
-        .catch(() => {
-          this.diologBack = false;
-        });
+          .then((res) => {
+            if (res.data) {
+              iMessage.success(this.$t("LK_CAOZUOCHENGGONG"));
+              this.getTableListFn();
+            } else {
+              iMessage.error(res.desZh);
+            }
+            this.diologBack = false;
+          })
+          .catch(() => {
+            this.diologBack = false;
+          });
     },
     /*********************************************************************
      *                          启动询价模块
@@ -381,18 +423,18 @@ export default {
         if (this.selectTableData.length == 0) {
           r(false);
           iMessage.warn(
-            this.$t(
-              "LK_NINDANGQIANHAIWEIXUANZEXUYAOQIDONGXUNJIADECAIGOUXIANGMU"
-            )
+              this.$t(
+                  "LK_NINDANGQIANHAIWEIXUANZEXUYAOQIDONGXUNJIADECAIGOUXIANGMU"
+              )
           );
           return;
         }
         if (this.selectTableData.find((items) => items.fsnrGsnrNum == "")) {
           r(false);
           iMessage.warn(
-            this.$t(
-              "LK_DANGQIANCAIGOUXIANGMUZHONGCUNZAIHAIWEISHENGCHENGFSNRDESHUJUWUFAWEININQIDONGXUNJIA"
-            )
+              this.$t(
+                  "LK_DANGQIANCAIGOUXIANGMUZHONGCUNZAIHAIWEISHENGCHENGFSNRDESHUJUWUFAWEININQIDONGXUNJIA"
+              )
           );
           return;
         }
@@ -405,22 +447,22 @@ export default {
       insertRfq({
         rfqPartDTOList: this.selectTableData,
       })
-        .then((res) => {
-          this.startLoding = false;
-          if (res.data && res.data.rfqId) {
-            this.$router.push({
-              path: "/partsrfq/editordetail",
-              query: {
-                id: res.data.rfqId,
-              },
-            });
-          } else {
-            iMessage.warn(res.desZh);
-          }
-        })
-        .catch((err) => {
-          this.startLoding = false;
-        });
+          .then((res) => {
+            this.startLoding = false;
+            if (res.data && res.data.rfqId) {
+              this.$router.push({
+                path: "/partsrfq/editordetail",
+                query: {
+                  id: res.data.rfqId,
+                },
+              });
+            } else {
+              iMessage.warn(res.desZh);
+            }
+          })
+          .catch((err) => {
+            this.startLoding = false;
+          });
     },
     /*********************************************************************
      *                          end
@@ -445,9 +487,9 @@ export default {
     openBatchmiantain() {
       if (this.selectTableData.length == 0)
         return iMessage.warn(
-          this.$t(
-            "LK_NINDANGQIANHAIWEIXUANZENINXUYAOSHENGPILIANGWEIHUDEXIANGMU"
-          )
+            this.$t(
+                "LK_NINDANGQIANHAIWEIXUANZENINXUYAOSHENGPILIANGWEIHUDEXIANGMU"
+            )
         );
       this.$router.push({
         path: "/partsprocure/batchmiantain",
@@ -460,6 +502,10 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+.input-with-select{
+  width: 200px;
+}
+
 .checkBox {
   position: relative;
   top: 30px;
@@ -516,6 +562,11 @@ export default {
         font-weight: bold;
       }
     }
+    .header{
+      display: flex;
+      justify-content: space-between;
+
+    }
     .tabs {
       display: flex;
       > ul {
@@ -542,60 +593,6 @@ export default {
         width: 100%;
         height: 2px;
         border-bottom: 2px solid red;
-      }
-    }
-  }
-  .content {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    margin-top: 23px;
-    .item {
-      width: 410px;
-      height: 418px;
-      background: #FFFFFF;
-      box-shadow: 0px 0px 20px rgba(27, 29, 33, 0.08);
-      opacity: 1;
-      border-radius: 10px;
-      padding: 52px 36px 0 36px;
-      margin-bottom: 29px;
-      cursor: pointer;
-      .addIcon{
-        width: 214px;
-        height: 122px;
-        transform: translate(-50%, -50%);
-        margin-left: 50%;
-        margin-top: 50%;
-      }
-      .item_top{
-        display: flex;
-        justify-content: space-between;
-        color: #41434A;
-        line-height: 21px;
-        .editIcon{
-          width: 150px;
-          height: 53px;
-        }
-        .title{
-          width: 148px;
-          h4{
-            font-size: 16px;
-            font-weight: bold;
-          }
-          p{
-            font-size: 14px;
-          }
-        }
-      }
-      .unit{
-        font-size: 12px;
-        color: #485465;
-        text-align: right;
-        margin-top: 46px;
-      }
-      .chart{
-        width: 100%;
-        height: 185px;
       }
     }
   }

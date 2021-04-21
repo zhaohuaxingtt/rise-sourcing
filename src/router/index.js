@@ -164,6 +164,15 @@ export const staticRouter = [{
                     import (`@/views/priceorder/stocksheet`)
             },
             {
+                path: '/priceorder/stocksheet/Edit',
+                name: 'stocksheetEdit',
+                meta: {
+                    title: '价格与订单-备货表'
+                },
+                component: () =>
+                    import (`@/views/priceorder/stocksheet/edit`)
+            },
+            {
                 path: '/priceorder/postmanagement',
                 name: '/postmanagement',
                 meta: {

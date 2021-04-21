@@ -59,7 +59,11 @@
         v-else
         :label="items.name"
         :prop="items.props"
-      ></el-table-column>
+      >
+        <template v-if="$scopedSlots[items.props] || $slots[items.props]" v-slot="scope">
+          <slot :name="items.props" :row="scope.row"></slot>
+        </template>
+      </el-table-column>
     </template>
   </el-table>
 </template>
