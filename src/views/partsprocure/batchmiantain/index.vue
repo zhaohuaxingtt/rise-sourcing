@@ -163,13 +163,13 @@
             :placeholder="$t('LK_QINGXUANZE')"
             v-model="categoryObj"
             @change="changeSelect"
-            value-key="categoryCode"
+            value-key="categoryNameId"
           >
             <el-option
               :value="item"
-              :label="item.categoryNameZh"
-              v-for="(item, index) in category"
-              :key="index"
+              :label="item.categoryName"
+              v-for="item in category"
+              :key="item.categoryNameId"
             ></el-option>
           </iSelect>
         </el-form-item>
@@ -208,6 +208,7 @@
       ref="outputPlan"
       class="margin-bottom20"
       @handleSelectionChange="handleSelectionChange"
+      @updateCategoryGroup="updateCategoryGroup"
     />
   </iPage>
 </template>
@@ -255,7 +256,7 @@ export default {
         type: "", //零件采购项目类型
         unit: "", //单位
         purchaseProjectIds: [], //采购项目id
-        categoryId: "", // 材料组id
+        categoryId: {}, // 材料组id
       },
       stuff: {},
       categoryObj: {},
@@ -267,7 +268,7 @@ export default {
   },
   created() {
     this.getProcureGroup();
-    this.getMaterialGroupByLinie();
+    // this.getMaterialGroupByLinie();
   },
   methods: {
     //获取上方group信息
@@ -287,20 +288,26 @@ export default {
       }
     },
     // 获取材料组数据
-    getMaterialGroupByLinie() {
-      let data = {
-        LinieId: this.$store.state.permission.userInfo.id,
-      };
-      materialGroupByLinie(data).then((res) => {
-        this.category = res.data || [];
-      });
+    // getMaterialGroupByLinie() {
+    //   let data = {
+    //     LinieId: this.$store.state.permission.userInfo.id,
+    //   };
+    //   materialGroupByLinie(data).then((res) => {
+    //     this.category = res.data || [];
+    //   });
+    // },
+    // 更新材料组值域
+    updateCategoryGroup(group) {
+      this.categoryObj = null
+      this.resetStuff()
+      this.category = group
     },
     // 获取工艺组数据
     changeSelect(val) {
       let data = {
-        categoryId: val.id,
+        categoryId: val.categoryId,
       };
-      this.batch.categoryId = val.id;
+      this.batch.categoryId = val.categoryId;
       getStuffByCategory(data).then((res) => {
         this.stuffArr = res.data || [];
       });
@@ -363,7 +370,7 @@ export default {
     },
     // 重置stuff数据
     resetStuff() {
-      this.categoryObj = {};
+      // this.categoryObj = {};
       this.stuff = {};
       this.stuffArr = [];
     },
