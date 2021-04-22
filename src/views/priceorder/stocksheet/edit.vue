@@ -35,7 +35,7 @@
               style="margin-top: 20px"
               @sure="sure"
               @reset="reset"
-              :icon="true"
+              :icon="false"
               :resetKey="PARTSPROCURE_RESET"
               :searchKey="PARTSPROCURE_CONFIRM"
           >
@@ -107,18 +107,18 @@
             <!--                  table模块，向外入参表格数据，表头                    --->
             <!------------------------------------------------------------------------>
             <div class="header margin-bottom20">
-              <div>
+              <div class="search">
                 材料组：
-                <el-input placeholder="请输入查询" v-model="form['search.materialName']" class="input-with-select">
-                  <el-button slot="append" icon="el-icon-search"></el-button>
-                </el-input>
+                <iInput v-model="form['search.materialName']" placeholder="请输入查询">
+                  <i slot="suffix" class="el-input__icon el-icon-search" @click="sure"></i>
+                </iInput>
                 零件六位号：
-                <el-input placeholder="请输入查询" v-model="form['search.partNum']" class="input-with-select">
-                  <el-button slot="append" icon="el-icon-search"></el-button>
-                </el-input>
+                <iInput v-model="form['search.partNum']" placeholder="请输入查询">
+                  <i slot="suffix" class="el-input__icon el-icon-search" @click="sure"></i>
+                </iInput>
               </div>
               <div>
-                <iButton @click="deleteItems">添加行</iButton>
+                <iButton @click="addRow">添加行</iButton>
                 <iButton @click="deleteItems">删除行</iButton>
                 <iButton @click="deleteItems">参考车型</iButton>
                 <iButton @click="deleteItems">保存</iButton>
@@ -177,6 +177,7 @@
         </div>
       </el-tab-pane>
     </el-tabs>
+    <addRow v-model="addRowShow" :carTypeProId="form['search.carTypeProject']"></addRow>
   </iPage>
 </template>
 <script>
@@ -190,15 +191,13 @@ import {
   icon,
   iInput,
   iSelect,
-  iDatePicker,
-  iTabs,
 } from "@/components";
-import { DatePicker } from "element-ui";
 import logButton from "./components/logButton";
 import { pageMixins } from "@/utils/pageMixins";
 import backItems from "@/views/partsign/home/components/backItems";
 import { budgetManagementData, form } from "./components/data";
 import tablelist from "./components/tablelist";
+import addRow from "./components/addRow";
 import {
   getTabelData,
   changeProcure,
@@ -226,16 +225,14 @@ export default {
     iInput,
     iSelect,
     backItems,
-    creatFs,
     logButton,
-    iDatePicker,
     icon,
-    DatePicker,
-    iTabs,
+    addRow,
   },
   data() {
     return {
       carType: '',
+      addRowShow: false,
 
       tableListData: [],
       tableLoading: false,
@@ -268,6 +265,9 @@ export default {
     this.getProcureGroup();
   },
   methods: {
+    addRow(){
+      this.addRowShow = true
+    },
     changeCarTypeProject(){
       console.log(this.form)
       let parmars = {
@@ -363,12 +363,13 @@ export default {
         "cartypeNname": "项目xxx",
         "sourceType": "1" })
           .then((res) => {
+            if (res.data) {
+              this.page.currPage = res.pageNum;
+              this.page.pageSize = res.pageSize;
+              this.page.totalCount = res.total;
+              this.tableListData = res.data;
+            }
             this.tableLoading = false;
-            this.page.currPage = res.pageNum;
-            this.page.pageSize = res.pageSize;
-            this.page.totalCount = res.total;
-            this.tableListData = res.data;
-            console.log(this.tableListData)
           })
           .catch(() => (this.tableLoading = false));
     },
@@ -514,7 +515,10 @@ export default {
 
 .partsprocureHome {
   position: relative;
-
+  //组件按钮间距
+  ::v-deep .cardBody .iSearch-content .operation{
+    width: auto;
+  }
   .btnList {
     > span {
       font-size: 20px;
@@ -565,7 +569,12 @@ export default {
     .header{
       display: flex;
       justify-content: space-between;
-
+      .search{
+        ::v-deep .el-input{
+          width: 220px;
+          margin-right: 30px;
+        }
+      }
     }
     .tabs {
       display: flex;

@@ -11,7 +11,7 @@ const postcss = px2rem({
 require('events').EventEmitter.defaultMaxListeners = 0
 module.exports = {
     //打包时
-    publicPath: process.env.VUE_APP_PUBLICPATH,
+    // publicPath: process.env.VUE_APP_PUBLICPATH,
     outputDir: 'dist',
     assetsDir: 'static',
     filenameHashing: true,
@@ -181,7 +181,7 @@ module.exports = {
             },
             '/ws2Api': { // ws2Api.../ 王鹏霄
                 // target: 'http://10.122.18.166:8022',
-                target: 'http://bb13c17f1420.ngrok.io',
+                target: 'http://c9e0d6ad025a.ngrok.io',
                 changeOrigin: true,
                 pathRewrite: {
                     "^/ws2Api": ""

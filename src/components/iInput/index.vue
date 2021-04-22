@@ -24,4 +24,9 @@ export default{
       @include textarea_inner;
     }
   }
+  .el-icon-search{
+    color: #CBCBCB;
+    font-size: 20px;
+    cursor: pointer;
+  }
 </style>

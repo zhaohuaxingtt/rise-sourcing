@@ -32,16 +32,16 @@
           <!------------------------------------------------------------------------>
           <div class="content">
             <div class="item">
-              <icon class="addIcon" symbol name="icontianjiachexingxiangmu"></icon>
+              <img class="addIcon" src="../../../assets/images/addCar.png" alt="">
             </div>
             <div class="item" v-for="(item, index) in contentData" :key="index" @click="toEdit(item.id)">
               <div class="item_top">
-                <icon class="editIcon" symbol name="iconyouchexingxiangmukapian"></icon>
+                <img class="editIcon" src="../../../assets/images/editCar.png" alt="">
 <!--                <img :src="item.url" alt="">-->
                 <div class="title">
-                  <h4>{{ item.cartypeProjectName }}</h4>
-                  <p>{{ item.locationFactory }}</p>
-                  <p>SOP：{{ item.sop }}</p>
+                  <h4 :title="item.cartypeProjectName">{{ item.cartypeProjectName }}</h4>
+                  <p :title="item.locationFactory">{{ item.locationFactory }}</p>
+                  <p :title="item.sop">SOP：{{ item.sop }}</p>
                 </div>
               </div>
               <div class="unit">
@@ -170,8 +170,99 @@ export default {
             this.contentData = res.data
             this.$nextTick(() => {
               const vm = echarts().init(document.getElementById("chart0"));
-              console.log(vm)
               let option = {
+                grid: {
+                  left: '0%',
+                  right: '0',
+                  bottom: '0%',
+                  top: '12%',
+                  containLabel: true
+                },
+                xAxis: {
+                  type: 'category',
+                  data: ['Mon', 'Tue', 'Wed', 'Thu'],
+                  axisTick: {
+                    show: false
+                  },
+                  axisLine:{
+                    lineStyle:{
+                      color: '#CDD4E2'
+                    }
+                  },
+                  axisLabel:{
+                    textStyle:{
+                      color: '#485465'
+                    }
+                  },
+                },
+                yAxis: {
+                  type: 'value',
+                  axisTick: {
+                    show: false
+                  },
+                  axisLabel: {
+                    show: false
+                  },
+                  splitLine: {
+                    show: false
+                  },
+                  axisLine: {
+                    show: false
+                  },
+
+                },
+                series: [
+                  {
+                    data: [120, 200, 150, 80],
+                    type: 'bar',
+                    barWidth: 30,
+                     stack: 'total',
+                    label: {
+                      show: false,
+                      position: 'top',
+                      textStyle: {
+                        color: '#485465'
+                      }
+                    },
+                    itemStyle: {
+                      normal: {
+                        color: function(params){
+                          console.log(params)
+                          let colorlist = ['#1763F7','#73A1FA','#B0C5F5','#CEE1FF'];
+                          return colorlist[params.dataIndex];
+                        }
+                      },
+                    }
+                  },
+                  {
+                    data: [150, 100, 250, 100],
+                    type: 'bar',
+                    barWidth: 30,
+                     stack: 'total',
+                    label: {
+                      show: true,
+                      position: 'top',
+                      textStyle: {
+                        color: '#485465'
+                      }
+                    },
+                    itemStyle: {
+                      normal: {
+                        barBorderRadius: [5, 5, 0, 0],
+                        color: function(params){
+                          console.log(params)
+                          let colorlist = ['#55C2D0','#87D4DE','#BBE7EC','#D4F8F7'];
+                          return colorlist[params.dataIndex];
+                        }
+                      },
+                    }
+                  }
+                ]
+              };
+              vm.setOption(option);
+
+              const vm1 = echarts().init(document.getElementById("chart1"));
+              let option1 = {
                 grid: {
                   left: '0%',
                   right: '0',
@@ -468,7 +559,6 @@ export default {
 
 .partsprocureHome {
   position: relative;
-
   .btnList {
     > span {
       font-size: 20px;
@@ -548,7 +638,7 @@ export default {
   .content {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
+    justify-content: flex-start;
     margin-top: 23px;
     .item {
       width: 410px;
@@ -559,13 +649,17 @@ export default {
       border-radius: 10px;
       padding: 52px 36px 0 36px;
       margin-bottom: 29px;
+      margin-right: calc((100% - 1640px) / 3);
       cursor: pointer;
+      &:nth-of-type(4n){
+        margin-right: 0;
+      }
       .addIcon{
         width: 214px;
         height: 122px;
         transform: translate(-50%, -50%);
         margin-left: 50%;
-        margin-top: 50%;
+        margin-top: 47%;
       }
       .item_top{
         display: flex;
@@ -575,15 +669,24 @@ export default {
         .editIcon{
           width: 150px;
           height: 53px;
+          margin-top: 5px;
         }
         .title{
           width: 148px;
           h4{
             font-size: 16px;
             font-weight: bold;
+            max-width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
           }
           p{
             font-size: 14px;
+            max-width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
           }
         }
       }
