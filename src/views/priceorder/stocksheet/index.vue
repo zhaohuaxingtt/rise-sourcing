@@ -7,7 +7,7 @@
  * @FilePath: \rise\src\views\partsprocure\home\index.vue
 -->
 <template>
-  <iPage class="partsprocureHome" v-permission="PARTSPROCURE_INDEXPAGE">
+  <iPage class="partsprocureHome" v-permission="PARTSPROCURE_INDEXPAGE" v-loading="loadingiPage">
     <el-tabs v-model="tab" class="tab">
       <el-tab-pane name="source">
         <div>
@@ -31,12 +31,13 @@
           <!--                  search 搜索模块                                   --->
           <!------------------------------------------------------------------------>
           <div class="content">
-            <div class="item">
+            <div class="item" @click="toEdit('add')">
               <img class="addIcon" src="../../../assets/images/addCar.png" alt="">
             </div>
-            <div class="item" v-for="(item, index) in contentData" :key="index" @click="toEdit(item.id)">
+            <div class="item" v-for="(item, index) in contentData" :key="index" @click="toEdit(item.id, item.sourceStatus)">
               <div class="item_top">
-                <img class="editIcon" src="../../../assets/images/editCar.png" alt="">
+                <img v-if="item.isBudget == 1" class="editIcon" src="../../../assets/images/editCar.png" alt="">
+                <img v-if="item.isBudget == 2" class="editIcon" src="../../../assets/images/editCar2.png" alt="">
 <!--                <img :src="item.url" alt="">-->
                 <div class="title">
                   <h4 :title="item.cartypeProjectName">{{ item.cartypeProjectName }}</h4>
@@ -115,6 +116,7 @@ export default {
   },
   data() {
     return {
+      loadingiPage: false,
       tableListData: [],
       tableLoading: false,
       tableTitle: tableTitle,
@@ -144,8 +146,8 @@ export default {
     },
   },
   created() {
-    this.getTableListFn();
-    this.getProcureGroup();
+    // this.getTableListFn();
+    // this.getProcureGroup();
     this.findCartypePro();
   },
   mounted() {
@@ -154,91 +156,163 @@ export default {
 
   },
   methods: {
-    toEdit(id){
+    toEdit(id, sourceStatus){
       this.$router.push({
         path: '/priceorder/stocksheet/Edit',
         query: {
           id: id,
+          sourceStatus: sourceStatus
         },
       })
     },
-    //获取转派评分任务列表
     findCartypePro(){
+      this.loadingiPage = true
       return new Promise((r)=>{
         findCartypePro().then(res => {
+          this.loadingiPage = false
           if(res.code == "0"){
             this.contentData = res.data
-            this.$nextTick(() => {
-              const vm = echarts().init(document.getElementById("chart0"));
-              let option = {
-                grid: {
-                  left: '0%',
-                  right: '0',
-                  bottom: '0%',
-                  top: '12%',
-                  containLabel: true
-                },
-                xAxis: {
-                  type: 'category',
-                  data: ['Mon', 'Tue', 'Wed', 'Thu'],
-                  axisTick: {
-                    show: false
-                  },
-                  axisLine:{
-                    lineStyle:{
-                      color: '#CDD4E2'
-                    }
-                  },
-                  axisLabel:{
-                    textStyle:{
-                      color: '#485465'
-                    }
-                  },
-                },
-                yAxis: {
-                  type: 'value',
-                  axisTick: {
-                    show: false
-                  },
-                  axisLabel: {
-                    show: false
-                  },
-                  splitLine: {
-                    show: false
-                  },
-                  axisLine: {
-                    show: false
-                  },
 
-                },
-                series: [
-                  {
-                    data: [120, 200, 150, 80],
-                    type: 'bar',
-                    barWidth: 30,
-                     stack: 'total',
-                    label: {
-                      show: false,
-                      position: 'top',
-                      textStyle: {
+            this.$nextTick(() => {
+              // const vm = echarts().init(document.getElementById("chart0"));
+              // let option = {
+              //   grid: {
+              //     left: '0%',
+              //     right: '0',
+              //     bottom: '0%',
+              //     top: '12%',
+              //     containLabel: true
+              //   },
+              //   xAxis: {
+              //     type: 'category',
+              //     data: ['总预算', '定点金额', 'BM单', '付款'],
+              //     axisTick: {
+              //       show: false
+              //     },
+              //     axisLine:{
+              //       lineStyle:{
+              //         color: '#CDD4E2'
+              //       }
+              //     },
+              //     axisLabel:{
+              //       textStyle:{
+              //         color: '#485465'
+              //       }
+              //     },
+              //   },
+              //   yAxis: {
+              //     type: 'value',
+              //     axisTick: {
+              //       show: false
+              //     },
+              //     axisLabel: {
+              //       show: false
+              //     },
+              //     splitLine: {
+              //       show: false
+              //     },
+              //     axisLine: {
+              //       show: false
+              //     },
+              //
+              //   },
+              //   series: [
+              //     {
+              //       data: [120, 200, 150, 80],
+              //       type: 'bar',
+              //       barWidth: 30,
+              //        stack: 'total',
+              //       label: {
+              //         show: false,
+              //         position: 'top',
+              //         textStyle: {
+              //           color: '#485465'
+              //         }
+              //       },
+              //       itemStyle: {
+              //         normal: {
+              //           color: function(params){
+              //             console.log(params)
+              //             let colorlist = ['#1763F7','#73A1FA','#B0C5F5','#CEE1FF'];
+              //             return colorlist[params.dataIndex];
+              //           }
+              //         },
+              //       }
+              //     },
+              //     {
+              //       data: [150, 100, 250, 100],
+              //       type: 'bar',
+              //       barWidth: 30,
+              //        stack: 'total',
+              //       label: {
+              //         show: true,
+              //         position: 'top',
+              //         textStyle: {
+              //           color: '#485465'
+              //         }
+              //       },
+              //       itemStyle: {
+              //         normal: {
+              //           barBorderRadius: [5, 5, 0, 0],
+              //           color: function(params){
+              //             console.log(params)
+              //             let colorlist = ['#55C2D0','#87D4DE','#BBE7EC','#D4F8F7'];
+              //             return colorlist[params.dataIndex];
+              //           }
+              //         },
+              //       }
+              //     }
+              //   ]
+              // };
+              // vm.setOption(option);
+              this.contentData.map((item, index) => {
+                let chartData = [(item.generalBudget | 0), (item.fixedAmount | 0), (item.bmAmount | 0), (item.paymentAmount | 0)]
+                const vm1 = echarts().init(document.getElementById("chart" + index));
+                let option1 = {
+                  grid: {
+                    left: '0%',
+                    right: '0',
+                    bottom: '0%',
+                    top: '12%',
+                    containLabel: true
+                  },
+                  xAxis: {
+                    type: 'category',
+                    data: ['总预算', '定点金额', 'BM单', '付款'],
+                    axisTick: {
+                      show: false
+                    },
+                    axisLine:{
+                      lineStyle:{
+                        color: '#CDD4E2'
+                      }
+                    },
+                    axisLabel:{
+                      textStyle:{
                         color: '#485465'
                       }
                     },
-                    itemStyle: {
-                      normal: {
-                        color: function(params){
-                          console.log(params)
-                          let colorlist = ['#1763F7','#73A1FA','#B0C5F5','#CEE1FF'];
-                          return colorlist[params.dataIndex];
-                        }
-                      },
-                    }
                   },
-                  {
-                    data: [150, 100, 250, 100],
+                  yAxis: {
+                    type: 'value',
+                    axisTick: {
+                      show: false
+                    },
+                    axisLabel: {
+                      show: false
+                    },
+                    splitLine: {
+                      show: false
+                    },
+                    axisLine: {
+                      show: false
+                    },
+
+                  },
+                  series: [{
+                    data: chartData,
                     type: 'bar',
                     barWidth: 30,
-                     stack: 'total',
                     label: {
                       show: true,
                       position: 'top',
@@ -251,82 +325,16 @@ export default {
                         barBorderRadius: [5, 5, 0, 0],
                         color: function(params){
                           console.log(params)
-                          let colorlist = ['#55C2D0','#87D4DE','#BBE7EC','#D4F8F7'];
+                          let colorlist = ['#1763F7','#73A1FA','#B0C5F5','#CEE1FF'];
                           return colorlist[params.dataIndex];
                         }
                       },
                     }
-                  }
-                ]
-              };
-              vm.setOption(option);
+                  }]
+                };
+                vm1.setOption(option1);
+              })
 
-              const vm1 = echarts().init(document.getElementById("chart1"));
-              let option1 = {
-                grid: {
-                  left: '0%',
-                  right: '0',
-                  bottom: '0%',
-                  top: '12%',
-                  containLabel: true
-                },
-                xAxis: {
-                  type: 'category',
-                  data: ['Mon', 'Tue', 'Wed', 'Thu'],
-                  axisTick: {
-                    show: false
-                  },
-                  axisLine:{
-                    lineStyle:{
-                      color: '#CDD4E2'
-                    }
-                  },
-                  axisLabel:{
-                    textStyle:{
-                      color: '#485465'
-                    }
-                  },
-                },
-                yAxis: {
-                  type: 'value',
-                  axisTick: {
-                    show: false
-                  },
-                  axisLabel: {
-                    show: false
-                  },
-                  splitLine: {
-                    show: false
-                  },
-                  axisLine: {
-                    show: false
-                  },
-
-                },
-                series: [{
-                  data: [120, 200, 150, 80],
-                  type: 'bar',
-                  barWidth: 30,
-                  label: {
-                    show: true,
-                    position: 'top',
-                    textStyle: {
-                      color: '#485465'
-                    }
-                  },
-                  itemStyle: {
-                    normal: {
-                      barBorderRadius: [5, 5, 0, 0],
-                      color: function(params){
-                        console.log(params)
-                        let colorlist = ['#1763F7','#73A1FA','#B0C5F5','#CEE1FF'];
-                        return colorlist[params.dataIndex];
-                      }
-                    },
-                  }
-                }]
-              };
-              vm.setOption(option);
             })
           }
         }).catch()
@@ -641,13 +649,16 @@ export default {
     justify-content: flex-start;
     margin-top: 23px;
     .item {
+      display: flex;
+      justify-content: space-between;
+      flex-direction: column;
       width: 410px;
       height: 418px;
       background: #FFFFFF;
       box-shadow: 0px 0px 20px rgba(27, 29, 33, 0.08);
       opacity: 1;
       border-radius: 10px;
-      padding: 52px 36px 0 36px;
+      padding: 52px 30px 30px 30px;
       margin-bottom: 29px;
       margin-right: calc((100% - 1640px) / 3);
       cursor: pointer;
@@ -670,6 +681,7 @@ export default {
           width: 150px;
           height: 53px;
           margin-top: 5px;
+          margin-left: 6px;
         }
         .title{
           width: 148px;
@@ -698,7 +710,7 @@ export default {
       }
       .chart{
         width: 100%;
-        height: 185px;
+        height: 210px;
       }
     }
   }

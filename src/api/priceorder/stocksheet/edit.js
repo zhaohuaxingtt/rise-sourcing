@@ -18,6 +18,30 @@ export function findProjectTypeDetailPulldown(parmars) {
         params: parmars
     })
 }
+//投资清单-根据车型下拉列表选择 回显项目类型,定点类型,车型类别
+export function findProjectDetailById(parmars) {
+    return requst({
+        url: '/web/buildInvestment/findProjectDetailById',
+        method: 'GET',
+        params: parmars
+    })
+}
+//投资清单-根据车型下拉列表选择 回显项目类型,定点类型,车型类别
+export function GetOtherCarTypeAlternative(parmars) {
+    return requst({
+        url: '/web/buildInvestment/GetOtherCarTypeAlternative',
+        method: 'GET',
+        params: parmars
+    })
+}
+//投资清单-参考车型项目-回显
+export function getRelationCarTypeById(parmars) {
+    return requst({
+        url: '/web/refcartypepro/getRelationCarTypeById',
+        method: 'GET',
+        params: parmars
+    })
+}
 //生成投资清单条件查询
 export function findInvestmentBuild(parmars) {
     return requst({
@@ -38,6 +62,38 @@ export function findAddColumnInvestmentBuild(parmars) {
 export function saveList(parmars) {
     return requst({
         url: '/web/buildInvestment/save',
+        method: 'POST',
+        data: parmars
+    })
+}
+//删除投资清单-删除材料组
+export function deleteList(parmars) {
+    return requst({
+        url: '/web/buildInvestment/delete',
+        method: 'POST',
+        data: parmars
+    })
+}
+//保存自定义车型项目
+export function saveCustomCart(parmars) {
+    return requst({
+        url: '/web/cartype/saveCustomCart',
+        method: 'POST',
+        data: parmars
+    })
+}
+//投资清单-配置参考车型项目
+export function saveRefcartypepro(parmars) {
+    return requst({
+        url: '/web/refcartypepro/save',
+        method: 'POST',
+        data: parmars
+    })
+}
+//更新投资清单-更新材料组
+export function updateBuildInvestment(parmars) {
+    return requst({
+        url: '/web/buildInvestment/update',
         method: 'POST',
         data: parmars
     })

@@ -1,5 +1,5 @@
 <!--
- * @Author: yuszhou
+ * @Author: yz
  * @Date: 2021-02-25 09:50:42
  * @LastEditTime: 2021-04-01 23:39:00
  * @LastEditors: Please set LastEditors
@@ -38,6 +38,7 @@
               :icon="false"
               :resetKey="PARTSPROCURE_RESET"
               :searchKey="PARTSPROCURE_CONFIRM"
+              v-loading="loadingiSearch"
           >
             <el-form>
               <el-form-item label="车型项目">
@@ -45,6 +46,7 @@
                     placeholder="请选择"
                     v-model="form['search.carTypeProject']"
                     v-permission="PARTSPROCURE_PARTSTATUS"
+                    filterable
                     @change="changeCarTypeProject"
                 >
                   <el-option
@@ -55,16 +57,21 @@
                   ></el-option>
                 </iSelect>
               </el-form-item>
+              <el-form-item label="新增车型" v-if="isAdd">
+                <iInput v-model="addCarTypeProject" placeholder="请输入车型项目">></iInput>
+                <iButton @click="handleAddCarTypeProject">保存</iButton>
+              </el-form-item>
               <el-form-item label="项目类型">
                 <iSelect
                     placeholder="请选择"
                     v-model="form['search.projectType']"
                     v-permission="PARTSPROCURE_VEHICLECATEGORIES"
+                    :disabled="carTypeProjectDisabled"
                 >
                   <el-option
-                      :value="item.key"
-                      :label="item.name"
-                      v-for="(item, index) in getGroupList('cartype_category')"
+                      :value="item.projectTypeId"
+                      :label="item.projectTypeName"
+                      v-for="(item, index) in projectTypeList"
                       :key="index"
                   >
                   </el-option>
@@ -75,11 +82,12 @@
                     placeholder="请选择"
                     v-model="form['search.fixedPointType']"
                     v-permission="PARTSPROCURE_MODELPROJECT"
+                    :disabled="carTypeProjectDisabled"
                 >
                   <el-option
-                      :value="item.key"
-                      :label="item.name"
-                      v-for="(item, index) in getGroupList('cartype_project_zh')"
+                      :value="item.fixedPointId"
+                      :label="item.fixedPointName"
+                      v-for="(item, index) in fixedPointTypeList"
                       :key="index"
                   >
                   </el-option>
@@ -90,11 +98,12 @@
                     placeholder="请选择"
                     v-model="form['search.modelCategory']"
                     v-permission="PARTSPROCURE_PARTITEMTYPE"
+                    :disabled="carTypeProjectDisabled"
                 >
                   <el-option
-                      :value="item.key"
-                      :label="item.name"
-                      v-for="(item, index) in getGroupList('part_project_type')"
+                      :value="item.carTypeId"
+                      :label="item.carTypeName"
+                      v-for="(item, index) in modelCategoryList"
                       :key="index"
                   >
                   </el-option>
@@ -119,9 +128,9 @@
               </div>
               <div>
                 <iButton @click="addRow">添加行</iButton>
-                <iButton @click="deleteItems">删除行</iButton>
-                <iButton @click="deleteItems">参考车型</iButton>
-                <iButton @click="deleteItems">保存</iButton>
+                <iButton @click="deleteIRow">删除行</iButton>
+                <iButton @click="referenceModelShow = true">参考车型</iButton>
+                <iButton @click="saveRow">保存</iButton>
                 <iButton @click="deleteItems">生成投资清单</iButton>
               </div>
             </div>
@@ -136,8 +145,8 @@
               <template #moldProperties="scope">
                 <iInput v-model="scope.row.moldProperties"></iInput>
               </template>
-              <template #newLinieName="scope">
-                <iInput v-model="scope.row.newLinieName"></iInput>
+              <template #linie="scope">
+                <iInput v-model="scope.row.linie"></iInput>
               </template>
               <template #zp="scope">
                 <iInput v-model="scope.row.zp"></iInput>
@@ -177,7 +186,13 @@
         </div>
       </el-tab-pane>
     </el-tabs>
-    <addRow v-model="addRowShow" :carTypeProId="form['search.carTypeProject']"></addRow>
+    <addRow v-model="addRowShow" :carTypeProId="form['search.carTypeProject']" @updateTable="getTableListFn"></addRow>
+    <referenceModel
+        v-model="referenceModelShow"
+        :carTypeProId="form['search.carTypeProject']"
+        :carType="this.fromGroup"
+        @updateTable="getTableListFn"
+    ></referenceModel>
   </iPage>
 </template>
 <script>
@@ -198,6 +213,7 @@ import backItems from "@/views/partsign/home/components/backItems";
 import { budgetManagementData, form } from "./components/data";
 import tablelist from "./components/tablelist";
 import addRow from "./components/addRow";
+import referenceModel from "./components/referenceModel";
 import {
   getTabelData,
   changeProcure,
@@ -207,6 +223,11 @@ import {
   findInvestmentBuild,
   getCartypePulldown,
   findProjectTypeDetailPulldown,
+  findProjectDetailById,
+  saveCustomCart,
+  deleteList,
+  GetOtherCarTypeAlternative,
+  updateBuildInvestment
 } from "@/api/priceorder/stocksheet/edit";
 import { insertRfq } from "@/api/partsrfq/home";
 import changeItems from "../../partsign/home/components/changeItems";
@@ -228,11 +249,20 @@ export default {
     logButton,
     icon,
     addRow,
+    referenceModel,
   },
   data() {
     return {
       carType: '',
       addRowShow: false,
+      referenceModelShow: false,
+      modelCategoryList: [],
+      fixedPointTypeList: [],
+      projectTypeList: [],
+      carTypeProjectDisabled: false,
+      loadingiSearch: false,
+      addCarTypeProject: '',
+      isAdd: '',
 
       tableListData: [],
       tableLoading: false,
@@ -261,23 +291,86 @@ export default {
     },
   },
   created() {
-    this.getTableListFn();
+    this.isAdd = this.$route.query.id == 'add' ? true : false
     this.getProcureGroup();
   },
   methods: {
+    handleAddCarTypeProject(){
+      this.tableLoading = true
+      saveCustomCart({cartypeProjectName: this.addCarTypeProject}).then((res) => {
+        if (Number(res.code) === 0) {
+          iMessage.success(res.desZh);
+        } else {
+          iMessage.error(res.desZh);
+        }
+        this.tableLoading = false
+      }).catch(() => {
+        this.tableLoading = false
+      });
+    },
     addRow(){
       this.addRowShow = true
     },
-    changeCarTypeProject(){
-      console.log(this.form)
-      let parmars = {
-        cartypeProId: this.form['search.projectType'],
-        materialName: this.form['search.materialName'],
-        partNum: this.form['search.partNum'],
+    deleteIRow(){
+      if(this.selectTableData.length == 0){
+        iMessage.warn('请先勾选');
+        return
       }
-      findProjectTypeDetailPulldown(parmars).then((res) => {
-        console.log(res)
+      this.tableLoading = true
+      deleteList(this.selectTableData.map(item => ({ id: item.id, isDelete: 2 }))).then((res) => {
+        if (Number(res.code) === 0) {
+          this.getTableListFn()
+          iMessage.success(res.desZh);
+        } else {
+          iMessage.error(res.desZh);
+          this.tableLoading = false
+        }
+      }).catch(() => {
+        this.tableLoading = false
       });
+    },
+    saveRow(){
+      if(this.selectTableData.length == 0){
+        iMessage.warn('请先勾选');
+        return
+      }
+      if(this.selectTableData.length > 1){
+        iMessage.warn('只能勾选保存一行数据');
+        return
+      }
+      this.tableLoading = true
+      updateBuildInvestment(this.selectTableData[0]).then((res) => {
+        if (Number(res.code) === 0) {
+          this.getTableListFn()
+          iMessage.success(res.desZh);
+        } else {
+          iMessage.error(res.desZh);
+          this.tableLoading = false
+        }
+      }).catch(() => {
+        this.tableLoading = false
+      });
+    },
+    changeCarTypeProject(val){
+      if(!val){
+        return
+      }
+      this.loadingiSearch = true
+      this.carTypeProjectDisabled = this.fromGroup.find(item => item.id == val).sourceType == '0' ? true : false
+      findProjectDetailById({id: val}).then((res) => {
+        if (res.data) {
+          this.form['search.projectType'] = this.projectTypeList.find(item => item.projectTypeName == res.data.projectTypeName).projectTypeId
+          this.form['search.fixedPointType'] = this.fixedPointTypeList.find(item => item.fixedPointName == res.data.fixedPointName).fixedPointId
+          this.form['search.modelCategory'] = this.modelCategoryList.find(item => item.carTypeName == res.data.carTypeName).carTypeId
+        } else {
+          iMessage.error(res.desZh);
+        }
+        this.loadingiSearch = false
+      }).catch(() => {
+        this.loadingiSearch = false
+      });
+      // iMessage.success(this.$t("LK_ZHUANPAICHENGGONG"));
+      // this.getTableListFn();
     },
     // 跳转详情
     openPage(item) {
@@ -305,17 +398,35 @@ export default {
     // is_common_sourcing--Sourcing
     // buyer_name        --询价采购员
     getProcureGroup() {
-      let types = [
-        "project_status",
-        "cartype_project_zh",
-        "cartype_category",
-        "part_project_type",
-        "procure_factory",
-      ];
-      getCartypePulldown().then((res) => {
-        this.fromGroup = res.data;
-        this.form['search.carTypeProject'] = Number(this.$route.query.id)
+      this.loadingiSearch = true
+      Promise.all([findProjectTypeDetailPulldown(), getCartypePulldown()]).then((res) => {
+        if (res[0].data) {
+          this.projectTypeList= res[0].data.projectTypePullDownVOList
+          this.fixedPointTypeList = res[0].data.fixedPointPullDownVOList
+          this.modelCategoryList = res[0].data.carCategoryPullDownVOList
+          this.form['search.projectType'] = ''
+          this.form['search.fixedPointType'] = ''
+          this.form['search.modelCategory'] = ''
+        } else {
+          iMessage.error(res[0].desZh);
+        }
+        if (res[1].data) {
+          this.fromGroup = res[1].data;
+          this.changeCarTypeProject(Number(this.$route.query.id))
+          if(this.$route.query.id != 'add'){
+            this.form['search.carTypeProject'] = Number(this.$route.query.id)
+            this.getTableListFn();
+          } else {
+            this.form['search.carTypeProject'] = ''
+          }
+        } else {
+          iMessage.error(res[1].desZh);
+        }
+        this.loadingiSearch = false
+      }).catch(() => {
+        this.loadingiSearch = false
       });
+
     },
     //转派
     openDiologChangeItems() {
@@ -359,9 +470,12 @@ export default {
       this.tableLoading = true;
       this.form["search.size"] = this.page.pageSize;
       this.form["search.current"] = this.page.currPage;
-      findInvestmentBuild({"id": 1,
-        "cartypeNname": "项目xxx",
-        "sourceType": "1" })
+      let params = {
+        cartypeProId: this.form['search.carTypeProject'],
+        materialName: this.form['search.materialName'],
+        partNum: this.form['search.partNum'],
+      }
+      findInvestmentBuild(params)
           .then((res) => {
             if (res.data) {
               this.page.currPage = res.pageNum;
@@ -382,7 +496,7 @@ export default {
       for (let i in this.form) {
         this.form[i] = "";
       }
-      // this.getTableListFn();
+      this.getTableListFn();
     },
     //退回
     openDiologBack() {

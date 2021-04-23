@@ -114,7 +114,7 @@ export const tableTitle = [{
     //)
 export const budgetManagementData = [{
     //export const tableTitle = permissionTitle("PARTSPROCURE_PARTSPROCURELIST",[{
-        props: 'categoryCode',
+        props: 'categoryId',
         name: '材料组编号',
         key: 'partsprocure.PARTSPROCUREFSNFGSNFSPNR',
         tooltip: false
@@ -150,7 +150,7 @@ export const budgetManagementData = [{
         tooltip: false
     },
     {
-        props: 'newLinieName',
+        props: 'linie',
         name: 'LINIE',
         key: 'partsprocure.PARTSPROCUREPARTITEMTYPE',
         tooltip: false
@@ -246,6 +246,14 @@ export const form = {
     'search.zhEnNo': "", //材料组编号/中文名/德文名
     'search.mouldAttr': "", //模具属性
     'search.professionalDepartments': "", //专业科室
+
+    'search.referenceModel1': "", //参考车型项目一
+    'search.referenceModel2': "", //参考车型项目二
+    'search.referenceModel3': "", //参考车型项目三
+    'search.otherModel': "", //其它车型项目备选
+    'search.modelProject': "", //车型项目类型
+    'search.catTypeStartTime': "2021", //车型项目起止年份
+    'search.catTypeEndTime': "2021", //车型项目起止年份
 }
 
 // addRfq
