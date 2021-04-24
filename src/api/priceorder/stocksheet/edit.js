@@ -50,6 +50,14 @@ export function findInvestmentBuild(parmars) {
         data: parmars
     })
 }
+//新增投资清单
+export function ConfirmCustomerCarTypeSelect(parmars) {
+    return requst({
+        url: 'web/cartype/ConfirmCustomerCarTypeSelect',
+        method: 'POST',
+        data: parmars
+    })
+}
 //添加行材料组列表
 export function findAddColumnInvestmentBuild(parmars) {
     return requst({

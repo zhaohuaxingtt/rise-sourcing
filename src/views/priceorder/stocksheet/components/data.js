@@ -120,13 +120,13 @@ export const budgetManagementData = [{
         tooltip: false
     },
     {
-        props: 'categoryNameDe',
+        props: 'categoryNameZh',
         name: '材料组名称（中）',
         key: 'partsprocure.PARTSPROCUREPARTNUMBER',
         tooltip: false
     },
     {
-        props: 'categoryNameZh',
+        props: 'categoryNameDe',
         name: '材料组名称（德）',
         key: 'partsprocure.PARTSPROCUREPARTNAMEZH',
         tooltip: false
@@ -170,19 +170,19 @@ export const budgetManagementData = [{
 ]
 export const addListInvestment = [{
     //export const tableTitle = permissionTitle("PARTSPROCURE_PARTSPROCURELIST",[{
-        props: 'categoryCode',
+        props: 'categoryId',
         name: '材料组编号',
         key: 'partsprocure.PARTSPROCUREFSNFGSNFSPNR',
         tooltip: false
     },
     {
-        props: 'categoryNameDe',
+        props: 'categoryNameZh',
         name: '材料组名称（中）',
         key: 'partsprocure.PARTSPROCUREPARTNUMBER',
         tooltip: false
     },
     {
-        props: 'categoryNameZh',
+        props: 'categoryNameDe',
         name: '材料组名称（德）',
         key: 'partsprocure.PARTSPROCUREPARTNAMEZH',
         tooltip: false

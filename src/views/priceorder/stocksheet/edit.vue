@@ -15,13 +15,13 @@
             <div class="tabs">
               <ul>
                 <li v-for="(items, index) in tabtitle" :key="index" :class="{ 'active': items.active }">
-                  {{items.name}}
+                  {{ items.name }}
                 </li>
               </ul>
               <span class="bottom-line"></span>
             </div>
             <div class="btnList flex-align-center">
-              <logButton class="margin-left20" @click="log" />
+              <logButton class="margin-left20" @click="log"/>
               <span>
                 <icon symbol name="icondatabaseweixuanzhong"></icon>
               </span>
@@ -57,10 +57,10 @@
                   ></el-option>
                 </iSelect>
               </el-form-item>
-              <el-form-item label="新增车型" v-if="isAdd">
-                <iInput v-model="addCarTypeProject" placeholder="请输入车型项目">></iInput>
-                <iButton @click="handleAddCarTypeProject">保存</iButton>
-              </el-form-item>
+              <!--              <el-form-item label="新增车型" v-if="isAdd">-->
+              <!--                <iInput v-model="addCarTypeProject" placeholder="请输入车型项目">></iInput>-->
+              <!--                <iButton @click="handleAddCarTypeProject">保存</iButton>-->
+              <!--              </el-form-item>-->
               <el-form-item label="项目类型">
                 <iSelect
                     placeholder="请选择"
@@ -110,6 +110,11 @@
                 </iSelect>
               </el-form-item>
             </el-form>
+            <div class="searchSure">
+              <iButton @click="saveAddCarType" v-loading="addCarTypeLoading">确认</iButton>
+              <iButton @click="sure">查询</iButton>
+              <iButton @click="reset">重置</iButton>
+            </div>
           </iSearch>
           <iCard>
             <!------------------------------------------------------------------------>
@@ -208,9 +213,9 @@ import {
   iSelect,
 } from "@/components";
 import logButton from "./components/logButton";
-import { pageMixins } from "@/utils/pageMixins";
+import {pageMixins} from "@/utils/pageMixins";
 import backItems from "@/views/partsign/home/components/backItems";
-import { budgetManagementData, form } from "./components/data";
+import {budgetManagementData, form} from "./components/data";
 import tablelist from "./components/tablelist";
 import addRow from "./components/addRow";
 import referenceModel from "./components/referenceModel";
@@ -227,12 +232,14 @@ import {
   saveCustomCart,
   deleteList,
   GetOtherCarTypeAlternative,
-  updateBuildInvestment
+  updateBuildInvestment,
+  ConfirmCustomerCarTypeSelect
 } from "@/api/priceorder/stocksheet/edit";
-import { insertRfq } from "@/api/partsrfq/home";
+import {insertRfq} from "@/api/partsrfq/home";
 import changeItems from "../../partsign/home/components/changeItems";
 import filters from "@/utils/filters";
 import creatFs from "./components/creatFs";
+
 export default {
   mixins: [pageMixins, filters],
   components: {
@@ -273,15 +280,16 @@ export default {
       fromGroup: [],
       diologBack: false, //退回
       startLoding: false,
+      addCarTypeLoading: false,
       tab: "source",
       value1: new Date().getTime(),
       tabtitle: [
-        { name: "车型项目概览", index: 0, key: "LK_GAILIAN" },
-        { name: "预算管理", active: true, key: "LK_CAIGOUSHENQING" },
-        { name: "预算审批", active: false, key: "LK_CAIGOUDINGDAN" },
-        { name: "BA申请", active: false, key: "LK_DINGJIAGUANLI" },
-        { name: "BM申请", active: false, key: "LK_JIAGEZHUISU" },
-        { name: "投资报告", active: false, key: "LK_HETONGCHAXUN" },
+        {name: "车型项目概览", index: 0, key: "LK_GAILIAN"},
+        {name: "预算管理", active: true, key: "LK_CAIGOUSHENQING"},
+        {name: "预算审批", active: false, key: "LK_CAIGOUDINGDAN"},
+        {name: "BA申请", active: false, key: "LK_DINGJIAGUANLI"},
+        {name: "BM申请", active: false, key: "LK_JIAGEZHUISU"},
+        {name: "投资报告", active: false, key: "LK_HETONGCHAXUN"},
       ],
     };
   },
@@ -295,7 +303,7 @@ export default {
     this.getProcureGroup();
   },
   methods: {
-    handleAddCarTypeProject(){
+    handleAddCarTypeProject() {
       this.tableLoading = true
       saveCustomCart({cartypeProjectName: this.addCarTypeProject}).then((res) => {
         if (Number(res.code) === 0) {
@@ -308,16 +316,16 @@ export default {
         this.tableLoading = false
       });
     },
-    addRow(){
+    addRow() {
       this.addRowShow = true
     },
-    deleteIRow(){
-      if(this.selectTableData.length == 0){
+    deleteIRow() {
+      if (this.selectTableData.length == 0) {
         iMessage.warn('请先勾选');
         return
       }
       this.tableLoading = true
-      deleteList(this.selectTableData.map(item => ({ id: item.id, isDelete: 2 }))).then((res) => {
+      deleteList(this.selectTableData.map(item => ({id: item.id, isDelete: 2}))).then((res) => {
         if (Number(res.code) === 0) {
           this.getTableListFn()
           iMessage.success(res.desZh);
@@ -329,12 +337,12 @@ export default {
         this.tableLoading = false
       });
     },
-    saveRow(){
-      if(this.selectTableData.length == 0){
+    saveRow() {
+      if (this.selectTableData.length == 0) {
         iMessage.warn('请先勾选');
         return
       }
-      if(this.selectTableData.length > 1){
+      if (this.selectTableData.length > 1) {
         iMessage.warn('只能勾选保存一行数据');
         return
       }
@@ -351,17 +359,17 @@ export default {
         this.tableLoading = false
       });
     },
-    changeCarTypeProject(val){
-      if(!val){
+    changeCarTypeProject(val) {
+      if (!val) {
         return
       }
       this.loadingiSearch = true
       this.carTypeProjectDisabled = this.fromGroup.find(item => item.id == val).sourceType == '0' ? true : false
-      findProjectDetailById({id: val}).then((res) => {
+      findProjectDetailById({id: val, sourceStatus: this.$route.query.sourceStatus}).then((res) => {
         if (res.data) {
-          this.form['search.projectType'] = this.projectTypeList.find(item => item.projectTypeName == res.data.projectTypeName).projectTypeId
-          this.form['search.fixedPointType'] = this.fixedPointTypeList.find(item => item.fixedPointName == res.data.fixedPointName).fixedPointId
-          this.form['search.modelCategory'] = this.modelCategoryList.find(item => item.carTypeName == res.data.carTypeName).carTypeId
+          this.form['search.projectType'] = res.data.projectTypeId
+          this.form['search.fixedPointType'] = res.data.fixedPointId
+          this.form['search.modelCategory'] = res.data.carTypeId
         } else {
           iMessage.error(res.desZh);
         }
@@ -401,7 +409,7 @@ export default {
       this.loadingiSearch = true
       Promise.all([findProjectTypeDetailPulldown(), getCartypePulldown()]).then((res) => {
         if (res[0].data) {
-          this.projectTypeList= res[0].data.projectTypePullDownVOList
+          this.projectTypeList = res[0].data.projectTypePullDownVOList
           this.fixedPointTypeList = res[0].data.fixedPointPullDownVOList
           this.modelCategoryList = res[0].data.carCategoryPullDownVOList
           this.form['search.projectType'] = ''
@@ -413,7 +421,7 @@ export default {
         if (res[1].data) {
           this.fromGroup = res[1].data;
           this.changeCarTypeProject(Number(this.$route.query.id))
-          if(this.$route.query.id != 'add'){
+          if (this.$route.query.id != 'add') {
             this.form['search.carTypeProject'] = Number(this.$route.query.id)
             this.getTableListFn();
           } else {
@@ -474,6 +482,8 @@ export default {
         cartypeProId: this.form['search.carTypeProject'],
         materialName: this.form['search.materialName'],
         partNum: this.form['search.partNum'],
+        current: this.page.currPage,
+        size: this.page.pageSize
       }
       findInvestmentBuild(params)
           .then((res) => {
@@ -497,6 +507,25 @@ export default {
         this.form[i] = "";
       }
       this.getTableListFn();
+    },
+    saveAddCarType() {
+      this.addCarTypeLoading = true;
+      ConfirmCustomerCarTypeSelect({
+        id: this.form['search.carTypeProject'],
+        projectTypeId: this.form['search.projectType'],
+        fixedPointId: this.form['search.fixedPointType'],
+        carTypeId: this.form['search.modelCategory']
+      }).then((res) => {
+        if (res.data) {
+          iMessage.success(this.$t("LK_CAOZUOCHENGGONG"));
+          this.getTableListFn();
+        } else {
+          iMessage.error(res.desZh);
+        }
+        this.addCarTypeLoading = false;
+      }).catch(() => {
+        this.addCarTypeLoading = false;
+      });
     },
     //退回
     openDiologBack() {
@@ -617,7 +646,7 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-.input-with-select{
+.input-with-select {
   width: 200px;
 }
 
@@ -630,8 +659,16 @@ export default {
 .partsprocureHome {
   position: relative;
   //组件按钮间距
-  ::v-deep .cardBody .iSearch-content .operation{
+  ::v-deep .cardBody .iSearch-content .operation {
     width: auto;
+    display: none;
+  }
+  ::v-deep .serch{
+    margin-right: 0;
+  }
+  .searchSure{
+    float: right;
+    margin-top: 27px;
   }
   .btnList {
     > span {
@@ -646,6 +683,7 @@ export default {
       }
     }
   }
+
   .tab {
     ::v-deep .el-tabs__header {
       position: absolute;
@@ -680,21 +718,26 @@ export default {
         font-weight: bold;
       }
     }
-    .header{
+
+    .header {
       display: flex;
       justify-content: space-between;
-      .search{
-        ::v-deep .el-input{
+
+      .search {
+        ::v-deep .el-input {
           width: 220px;
           margin-right: 30px;
         }
       }
     }
+
     .tabs {
       display: flex;
+
       > ul {
         display: flex;
         flex-direction: row;
+
         > li {
           max-width: 130px;
           color: #000000;
@@ -704,7 +747,8 @@ export default {
           opacity: 0.42;
           padding-bottom: 5px;
           margin-right: 50px;
-          &.active{
+
+          &.active {
             font-weight: bold;
             color: #000000;
             opacity: 1;
@@ -712,6 +756,7 @@ export default {
           }
         }
       }
+
       > ul::after {
         width: 100%;
         height: 2px;

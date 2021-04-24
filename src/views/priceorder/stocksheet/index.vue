@@ -31,7 +31,7 @@
           <!--                  search 搜索模块                                   --->
           <!------------------------------------------------------------------------>
           <div class="content">
-            <div class="item" @click="toEdit('add')">
+            <div class="item" @click="toAdd()">
               <img class="addIcon" src="../../../assets/images/addCar.png" alt="">
             </div>
             <div class="item" v-for="(item, index) in contentData" :key="index" @click="toEdit(item.id, item.sourceStatus)">
@@ -59,6 +59,18 @@
         </div>
       </el-tab-pane>
     </el-tabs>
+    <iDialog
+      title="请输入车型名称"
+      :iDialogLoading="iDialogLoading"
+      :visible.sync="addAialog"
+      width="30%"
+      :before-close="handleClose">
+      <iInput v-model="addCarTypeName" placeholder="请输入"></iInput>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="addAialog = false">取 消</el-button>
+        <el-button type="primary" @click="sureAddAialog">确 定</el-button>
+      </span>
+    </iDialog>
   </iPage>
 </template>
 <script>
@@ -74,6 +86,7 @@ import {
   iSelect,
   iDatePicker,
   iTabs,
+  iDialog
 } from "@/components";
 import { DatePicker } from "element-ui";
 import logButton from "./components/logButton";
@@ -94,6 +107,7 @@ import {getAllScoringDepartmentInfo, insertRfq} from "@/api/partsrfq/home";
 import changeItems from "../../partsign/home/components/changeItems";
 import filters from "@/utils/filters";
 import creatFs from "./components/creatFs";
+import {saveCustomCart} from "@/api/priceorder/stocksheet/edit";
 export default {
   mixins: [pageMixins, filters],
   components: {
@@ -113,9 +127,13 @@ export default {
     icon,
     DatePicker,
     iTabs,
+    iDialog
   },
   data() {
     return {
+      addAialog: false,
+      addCarTypeName: '',
+      iDialogLoading: false,
       loadingiPage: false,
       tableListData: [],
       tableLoading: false,
@@ -156,6 +174,35 @@ export default {
 
   },
   methods: {
+    sureAddAialog(){
+      if(!this.addCarTypeName){
+        iMessage.warn('请先输入车型名称');
+        return
+      }
+      this.iDialogLoading = true
+      saveCustomCart({cartypeProjectName: this.addCarTypeName}).then((res) => {
+        if (Number(res.code) === 0) {
+          iMessage.success(res.desZh);
+          this.addAialog = false
+          this.$router.push({
+            path: '/priceorder/stocksheet/Edit',
+            query: {
+              id: res.data.id,
+              sourceStatus: res.data.sourceStatus
+            },
+          })
+        } else {
+          iMessage.error(res.desZh);
+        }
+        this.iDialogLoading = false
+      }).catch(() => {
+        this.iDialogLoading = false
+      });
+    },
+    toAdd(){
+      this.addCarTypeName = ''
+      this.addAialog = true
+    },
     toEdit(id, sourceStatus){
       this.$router.push({
         path: '/priceorder/stocksheet/Edit',
