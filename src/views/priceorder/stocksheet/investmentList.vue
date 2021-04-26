@@ -1,50 +1,51 @@
 <!--
  * @Author: yz
- * @Date: 2021-02-25 09:50:42
- * @LastEditTime: 2021-04-01 23:39:00
- * @LastEditors: Please set LastEditors
- * @Description: 零件采购项目建立首页。
- * @FilePath: \rise\src\views\partsprocure\home\index.vue
+ * @Date: 2021-04-26 09:50:42
+ * @Description: 投资清单。
 -->
 <template>
-  <iPage class="partsprocureHome" v-permission="PARTSPROCURE_INDEXPAGE">
+  <div class="investmentList">
     <el-tabs v-model="tab" class="tab">
       <el-tab-pane name="source">
         <div>
-          <div class="flex-between-center-center">
-            <div class="tabs">
-              <ul>
-                <li v-for="(items, index) in tabtitle" :key="index" :class="{ 'active': items.active }">
-                  {{ items.name }}
-                </li>
-              </ul>
-              <span class="bottom-line"></span>
-            </div>
-            <div class="btnList flex-align-center">
-              <logButton class="margin-left20" @click="log"/>
-              <span>
-                <icon symbol name="icondatabaseweixuanzhong"></icon>
-              </span>
-            </div>
-          </div>
           <!------------------------------------------------------------------------>
           <!--                  search 搜索模块                                   --->
           <!------------------------------------------------------------------------>
-          <iSearch
-              class="margin-bottom20"
-              style="margin-top: 20px"
-              @sure="sure"
-              @reset="reset"
-              :icon="false"
-              :resetKey="PARTSPROCURE_RESET"
-              :searchKey="PARTSPROCURE_CONFIRM"
-              v-loading="loadingiSearch"
-          >
-            <el-form>
-              <el-form-item label="车型项目">
+          <iCard class="margin-bottom20 headerIcard" style="margin-top: 20px">
+            <img class="editIcon" src="../../../assets/images/editCar.png" alt="">
+            <div class="infoIcard">
+              <div>
+                <label>版本号：</label>
+                <span>V-PSK88</span>
+              </div>
+              <div>
+                <label>车型名称：</label>
+                <span>V-PSK88</span>
+              </div>
+              <div>
+                <label>采购工厂：</label>
+                <span>V-PSK88</span>
+              </div>
+              <div>
+                <label>SOP：</label>
+                <span>V-PSK88</span>
+              </div>
+              <div>
+                <label>批准投资：</label>
+                <span>V-PSK88</span>
+              </div>
+            </div>
+          </iCard>
+          <iCard>
+            <!------------------------------------------------------------------------>
+            <!--                  table模块，向外入参表格数据，表头                    --->
+            <!------------------------------------------------------------------------>
+            <div class="header margin-bottom20">
+              <div class="search">
+                <label>专业科室：</label>
                 <iSelect
                     placeholder="请选择"
-                    v-model="form['search.carTypeProject']"
+                    v-model="form['search.professionalDepartments']"
                     v-permission="PARTSPROCURE_PARTSTATUS"
                     filterable
                     @change="changeCarTypeProject"
@@ -56,80 +57,6 @@
                       :key="index"
                   ></el-option>
                 </iSelect>
-              </el-form-item>
-              <!--              <el-form-item label="新增车型" v-if="isAdd">-->
-              <!--                <iInput v-model="addCarTypeProject" placeholder="请输入车型项目">></iInput>-->
-              <!--                <iButton @click="handleAddCarTypeProject">保存</iButton>-->
-              <!--              </el-form-item>-->
-              <el-form-item label="项目类型">
-                <iSelect
-                    placeholder="请选择"
-                    v-model="form['search.projectType']"
-                    v-permission="PARTSPROCURE_VEHICLECATEGORIES"
-                    :disabled="carTypeProjectDisabled"
-                >
-                  <el-option
-                      :value="item.projectTypeId"
-                      :label="item.projectTypeName"
-                      v-for="(item, index) in projectTypeList"
-                      :key="index"
-                  >
-                  </el-option>
-                </iSelect>
-              </el-form-item>
-              <el-form-item label="定点类型">
-                <iSelect
-                    placeholder="请选择"
-                    v-model="form['search.fixedPointType']"
-                    v-permission="PARTSPROCURE_MODELPROJECT"
-                    :disabled="carTypeProjectDisabled"
-                >
-                  <el-option
-                      :value="item.fixedPointId"
-                      :label="item.fixedPointName"
-                      v-for="(item, index) in fixedPointTypeList"
-                      :key="index"
-                  >
-                  </el-option>
-                </iSelect>
-              </el-form-item>
-              <el-form-item label="车型类别">
-                <iSelect
-                    placeholder="请选择"
-                    v-model="form['search.modelCategory']"
-                    v-permission="PARTSPROCURE_PARTITEMTYPE"
-                    :disabled="carTypeProjectDisabled"
-                >
-                  <el-option
-                      :value="item.carTypeId"
-                      :label="item.carTypeName"
-                      v-for="(item, index) in modelCategoryList"
-                      :key="index"
-                  >
-                  </el-option>
-                </iSelect>
-              </el-form-item>
-            </el-form>
-            <div class="searchSure">
-              <iButton @click="saveAddCarType" v-loading="addCarTypeLoading">确认</iButton>
-              <iButton @click="sure">查询</iButton>
-              <iButton @click="reset">重置</iButton>
-            </div>
-          </iSearch>
-          <iCard>
-            <!------------------------------------------------------------------------>
-            <!--                  table模块，向外入参表格数据，表头                    --->
-            <!------------------------------------------------------------------------>
-            <div class="header margin-bottom20">
-              <div class="search">
-                材料组：
-                <iInput v-model="form['search.materialName']" placeholder="请输入查询">
-                  <i slot="suffix" class="el-input__icon el-icon-search" @click="sure"></i>
-                </iInput>
-                零件六位号：
-                <iInput v-model="form['search.partNum']" placeholder="请输入查询">
-                  <i slot="suffix" class="el-input__icon el-icon-search" @click="sure"></i>
-                </iInput>
               </div>
               <div>
                 <iButton @click="addRow">添加行</iButton>
@@ -198,7 +125,7 @@
         :carType="this.fromGroup"
         @updateTable="getTableListFn"
     ></referenceModel>
-  </iPage>
+  </div>
 </template>
 <script>
 import {
@@ -222,7 +149,6 @@ import referenceModel from "./components/referenceModel";
 import {
   getTabelData,
   changeProcure,
-  getProcureGroup,
 } from "@/api/partsprocure/home";
 import {
   findInvestmentBuild,
@@ -267,7 +193,6 @@ export default {
       fixedPointTypeList: [],
       projectTypeList: [],
       carTypeProjectDisabled: false,
-      loadingiSearch: false,
       addCarTypeProject: '',
       isAdd: '',
 
@@ -300,7 +225,6 @@ export default {
   },
   created() {
     this.isAdd = this.$route.query.id == 'add' ? true : false
-    this.getProcureGroup();
   },
   methods: {
     handleAddCarTypeProject() {
@@ -359,27 +283,6 @@ export default {
         this.tableLoading = false
       });
     },
-    changeCarTypeProject(val) {
-      if (!val) {
-        return
-      }
-      this.loadingiSearch = true
-      this.carTypeProjectDisabled = this.fromGroup.find(item => item.id == val).sourceType == '0' ? true : false
-      findProjectDetailById({id: val, sourceStatus: this.$route.query.sourceStatus}).then((res) => {
-        if (res.data) {
-          this.form['search.projectType'] = res.data.projectTypeId
-          this.form['search.fixedPointType'] = res.data.fixedPointId
-          this.form['search.modelCategory'] = res.data.carTypeId
-        } else {
-          iMessage.error(res.desZh);
-        }
-        this.loadingiSearch = false
-      }).catch(() => {
-        this.loadingiSearch = false
-      });
-      // iMessage.success(this.$t("LK_ZHUANPAICHENGGONG"));
-      // this.getTableListFn();
-    },
     // 跳转详情
     openPage(item) {
       this.$router.push({
@@ -405,37 +308,7 @@ export default {
     // cf_controller     --Cf控制员
     // is_common_sourcing--Sourcing
     // buyer_name        --询价采购员
-    getProcureGroup() {
-      this.loadingiSearch = true
-      Promise.all([findProjectTypeDetailPulldown(), getCartypePulldown()]).then((res) => {
-        if (res[0].data) {
-          this.projectTypeList = res[0].data.projectTypePullDownVOList
-          this.fixedPointTypeList = res[0].data.fixedPointPullDownVOList
-          this.modelCategoryList = res[0].data.carCategoryPullDownVOList
-          this.form['search.projectType'] = ''
-          this.form['search.fixedPointType'] = ''
-          this.form['search.modelCategory'] = ''
-        } else {
-          iMessage.error(res[0].desZh);
-        }
-        if (res[1].data) {
-          this.fromGroup = res[1].data;
-          this.changeCarTypeProject(Number(this.$route.query.id))
-          if (this.$route.query.id != 'add') {
-            this.form['search.carTypeProject'] = Number(this.$route.query.id)
-            this.getTableListFn();
-          } else {
-            this.form['search.carTypeProject'] = ''
-          }
-        } else {
-          iMessage.error(res[1].desZh);
-        }
-        this.loadingiSearch = false
-      }).catch(() => {
-        this.loadingiSearch = false
-      });
 
-    },
     //转派
     openDiologChangeItems() {
       if (this.selectTableData.length == 0)
@@ -497,36 +370,8 @@ export default {
           })
           .catch(() => (this.tableLoading = false));
     },
-    // 查询
-    sure() {
-      this.getTableListFn();
-    },
-    // 重置搜索条件
-    reset() {
-      for (let i in this.form) {
-        this.form[i] = "";
-      }
-      this.getTableListFn();
-    },
-    saveAddCarType() {
-      this.addCarTypeLoading = true;
-      ConfirmCustomerCarTypeSelect({
-        id: this.form['search.carTypeProject'],
-        projectTypeId: this.form['search.projectType'],
-        fixedPointId: this.form['search.fixedPointType'],
-        carTypeId: this.form['search.modelCategory']
-      }).then((res) => {
-        if (res.data) {
-          iMessage.success(this.$t("LK_CAOZUOCHENGGONG"));
-          this.getTableListFn();
-        } else {
-          iMessage.error(res.desZh);
-        }
-        this.addCarTypeLoading = false;
-      }).catch(() => {
-        this.addCarTypeLoading = false;
-      });
-    },
+
+
     //退回
     openDiologBack() {
       if (this.selectTableData.length == 0)
@@ -656,20 +501,50 @@ export default {
   left: -70px;
 }
 
-.partsprocureHome {
+.investmentList {
   position: relative;
+
+  .headerIcard ::v-deep .cardBody {
+    padding: 18px 60px 22px 50px;
+    display: flex;
+    align-items: center;
+
+    .infoIcard {
+      margin-left: 49px;
+
+      div {
+        font-size: 14px;
+        margin-bottom: 10px;
+
+        label {
+          display: inline-block;
+          min-width: 80px;
+        }
+
+        &:nth-of-type(1), &:nth-of-type(2) {
+          label {
+            font-weight: bold;
+          }
+        }
+      }
+    }
+  }
+
   //组件按钮间距
   ::v-deep .cardBody .iSearch-content .operation {
     width: auto;
     display: none;
   }
-  ::v-deep .serch{
+
+  ::v-deep .serch {
     margin-right: 0;
   }
-  .searchSure{
+
+  .searchSure {
     float: right;
     margin-top: 27px;
   }
+
   .btnList {
     > span {
       font-size: 20px;
@@ -684,84 +559,82 @@ export default {
     }
   }
 
-  .tab {
-    ::v-deep .el-tabs__header {
-      position: absolute;
-      top: 20px;
-      transform: translate(0, 5px);
-      z-index: 1;
+  ::v-deep .el-tabs__header {
+    position: absolute;
+    top: 20px;
+    transform: translate(0, 5px);
+    z-index: 1;
 
-      .el-tabs__nav-wrap::after {
-        background: transparent;
+    .el-tabs__nav-wrap::after {
+      background: transparent;
+    }
+
+    .el-tabs__active-bar {
+      height: 3px;
+      background: $color-blue;
+      border-radius: 2px;
+    }
+
+    .el-tabs__item {
+      font-size: 18px;
+      color: #000000;
+      opacity: 0.42;
+      height: 35px;
+      line-height: 35px;
+
+      & + & {
+        padding: 0 25px;
       }
+    }
 
-      .el-tabs__active-bar {
-        height: 3px;
-        background: $color-blue;
-        border-radius: 2px;
+    .is-active {
+      opacity: 1;
+      font-weight: bold;
+    }
+  }
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+
+    .search {
+      ::v-deep .el-input, ::v-deep .el-select {
+        width: 220px;
+        margin-right: 30px;
       }
+    }
+  }
 
-      .el-tabs__item {
-        font-size: 18px;
+  .tabs {
+    display: flex;
+
+    > ul {
+      display: flex;
+      flex-direction: row;
+
+      > li {
+        max-width: 130px;
         color: #000000;
+        line-height: 23px;
+        font-size: 20px;
+        font-weight: 400;
         opacity: 0.42;
-        height: 35px;
-        line-height: 35px;
+        padding-bottom: 5px;
+        margin-right: 50px;
 
-        & + & {
-          padding: 0 25px;
-        }
-      }
-
-      .is-active {
-        opacity: 1;
-        font-weight: bold;
-      }
-    }
-
-    .header {
-      display: flex;
-      justify-content: space-between;
-
-      .search {
-        ::v-deep .el-input {
-          width: 220px;
-          margin-right: 30px;
-        }
-      }
-    }
-
-    .tabs {
-      display: flex;
-
-      > ul {
-        display: flex;
-        flex-direction: row;
-
-        > li {
-          max-width: 130px;
+        &.active {
+          font-weight: bold;
           color: #000000;
-          line-height: 23px;
-          font-size: 20px;
-          font-weight: 400;
-          opacity: 0.42;
-          padding-bottom: 5px;
-          margin-right: 50px;
-
-          &.active {
-            font-weight: bold;
-            color: #000000;
-            opacity: 1;
-            border-bottom: 3px solid #1763F7;
-          }
+          opacity: 1;
+          border-bottom: 3px solid #1763F7;
         }
       }
+    }
 
-      > ul::after {
-        width: 100%;
-        height: 2px;
-        border-bottom: 2px solid red;
-      }
+    > ul::after {
+      width: 100%;
+      height: 2px;
+      border-bottom: 2px solid red;
     }
   }
 }

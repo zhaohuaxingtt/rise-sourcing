@@ -25,6 +25,7 @@ import iText from '../components/iPageItemsGroup/iText'
 import iDrawer from "../components/iDrawer"
 import iRadio from "../components/iRadio"
 import iDatePicker from "../components/iDatePicker"
+import iNavWS2 from "../components/iNavWS2"
 // const msg = this.$t('LK_WENXINTISHI');
 const iMessageBox = (content = '', title, options = {}) => {
     return MessageBox.confirm(content, title, Object.assign({ zIndex: 20000 }, options))
@@ -74,5 +75,6 @@ export {
     iText,
     iDrawer,
     iRadio,
-    iDatePicker
+    iDatePicker,
+    iNavWS2
 }

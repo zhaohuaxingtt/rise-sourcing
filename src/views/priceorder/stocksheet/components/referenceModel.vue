@@ -3,11 +3,19 @@
  * @Date: 2021-04-21 17:24:15
 -->
 <template>
-  <iDialog :title="$t(title)" :visible.sync="value" width="684px" top="5vh" @close='clearDiolog' v-loading="loadingiDialog">
+  <iDialog :title="$t(title)" :visible.sync="value" width="684px" top="5vh" @close='clearDiolog'>
     <div slot="title" class="title">
-      <div class="text">{{$t(title)}}<icon symbol name="iconSetting"></icon></div>
+      <div class="text">
+        {{$t(title)}}
+        <Popover
+            placement="top-start"
+            content="车型参考依照顺序匹配"
+            trigger="hover">
+          <icon symbol name="iconxinxitishi" slot="reference"></icon>
+        </Popover>
+      </div>
     </div>
-    <div class="changeContent">
+    <div class="changeContent" v-loading="loadingiDialog">
         <el-form style="border-bottom: 1px solid #D1D1D1">
           <el-form-item label="参考车型项目一">
             <iSelect
@@ -103,14 +111,12 @@
   </iDialog>
 </template>
 <script>
-import {iButton, iDialog, iMessage, iSearch, iPagination, iInput, iSelect} from '@/components'
-import tablelist from "../components/tablelist";
-
+import {iButton, iDialog, iMessage, iSelect, icon} from '@/components'
+import { Popover } from "element-ui"
 import { addListInvestment, form } from "../components/data";
 import { pageMixins } from "@/utils/pageMixins";
-import filters from "@/utils/filters";
 import {
-  findAddColumnInvestmentBuild, findProjectTypeDetailPulldown, getCartypePulldown, GetOtherCarTypeAlternative,
+  findAddColumnInvestmentBuild, GetOtherCarTypeAlternative,
   saveList, saveRefcartypepro, getRelationCarTypeById
 } from "@/api/priceorder/stocksheet/edit";
 
@@ -120,11 +126,8 @@ export default {
     iButton,
     iSelect,
     iDialog,
-    iSearch,
-    tablelist,
-    iPagination,
-    iInput,
-    iMessage,
+    icon,
+    Popover
   },
   props: {
     title: {type: String, default: '参考车型项目'},
@@ -190,7 +193,6 @@ export default {
         if (res.data) {
           this.carTypeAlternatives = res.data.carTypeAlternatives
           this.carTypes = res.data.carTypes
-          console.log(res)
         }
         this.tableLoading = false
       }).catch(err => {
@@ -208,7 +210,6 @@ export default {
       this.tableLoading = true
       saveList(this.multipleSelection).then((res) => {
         if (res.data) {
-          console.log(res)
         }
         this.tableLoading = false
         return iMessage.success(`${ this.$i18n.locale === 'zh' ? res.desZh : res.desEn }`)
@@ -269,6 +270,9 @@ export default {
 }
 </script>
 <style lang='scss' scoped>
+::v-deep .el-popover__title{
+  margin-bottom: 0;
+}
 .title{
   position: relative;
   display: inline-block;
@@ -276,6 +280,9 @@ export default {
     font-size: 18px;
     font-weight: bold;
     line-height: 25px;
+    .icon{
+      cursor: pointer;
+    }
   }
   .star{
     position: absolute;

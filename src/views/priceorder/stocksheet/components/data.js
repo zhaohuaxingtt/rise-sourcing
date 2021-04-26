@@ -139,7 +139,7 @@ export const budgetManagementData = [{
     },
     {
         props: 'isCommonSourcing',
-        name: '是否做过Common Sourcing',
+        name: 'Common Sourcing',
         key: 'partsprocure.PARTSPROCURESTATUS',
         tooltip: false
     },
@@ -150,7 +150,7 @@ export const budgetManagementData = [{
         tooltip: false
     },
     {
-        props: 'linie',
+        props: 'newLinieName',
         name: 'LINIE',
         key: 'partsprocure.PARTSPROCUREPARTITEMTYPE',
         tooltip: false
@@ -161,16 +161,16 @@ export const budgetManagementData = [{
         key: 'partsprocure.PARTSPROCUREVEHICLECATEGORIES',
         tooltip: false
     },
-    {
-        props: 'remarks',
-        name: '备注',
-        key: 'partsprocure.PARTSPROCUREMODELPROJECT',
-        tooltip: false
-    }
+    // {
+    //     props: 'remarks',
+    //     name: '备注',
+    //     key: 'partsprocure.PARTSPROCUREMODELPROJECT',
+    //     tooltip: false
+    // }
 ]
 export const addListInvestment = [{
     //export const tableTitle = permissionTitle("PARTSPROCURE_PARTSPROCURELIST",[{
-        props: 'categoryId',
+        props: 'categoryCode',
         name: '材料组编号',
         key: 'partsprocure.PARTSPROCUREFSNFGSNFSPNR',
         tooltip: false
@@ -195,7 +195,7 @@ export const addListInvestment = [{
     },
     {
         props: 'isCommonSourcing',
-        name: '是否做过Common Sourcing',
+        name: 'Common Sourcing',
         key: 'partsprocure.PARTSPROCURESTATUS',
         tooltip: false
     },
@@ -206,7 +206,7 @@ export const addListInvestment = [{
         tooltip: false
     },
     {
-        props: 'newLinieName',
+        props: 'linie',
         name: 'LINIE',
         key: 'partsprocure.PARTSPROCUREPARTITEMTYPE',
         tooltip: false
@@ -262,5 +262,13 @@ export const addRfqTitle = [
     { props: 'rfqName', name: 'RFQ名称' },
     { props: 'currentStatus', name: 'RFQ状态' },
     { props: 'updateDate', name: '操作时间' },
+]
 
+export const tabtitle = [
+    {name: "车型项目概览", index: 0, active: false, key: "LK_GAILIAN"},
+    {name: "预算管理", index: 1, active: true, key: "LK_CAIGOUSHENQING"},
+    {name: "预算审批", index: 2, active: false, key: "LK_CAIGOUDINGDAN"},
+    {name: "BA申请", index: 3, active: false, key: "LK_DINGJIAGUANLI"},
+    {name: "BM申请", index: 4, active: false, key: "LK_JIAGEZHUISU"},
+    {name: "投资报告", index: 5, active: false, key: "LK_HETONGCHAXUN"},
 ]
