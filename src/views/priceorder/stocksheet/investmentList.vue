@@ -5,119 +5,149 @@
 -->
 <template>
   <div class="investmentList">
-    <el-tabs v-model="tab" class="tab">
-      <el-tab-pane name="source">
-        <div>
-          <!------------------------------------------------------------------------>
-          <!--                  search 搜索模块                                   --->
-          <!------------------------------------------------------------------------>
-          <iCard class="margin-bottom20 headerIcard" style="margin-top: 20px">
-            <img class="editIcon" src="../../../assets/images/editCar.png" alt="">
-            <div class="infoIcard">
-              <div>
-                <label>版本号：</label>
-                <span>V-PSK88</span>
-              </div>
-              <div>
-                <label>车型名称：</label>
-                <span>V-PSK88</span>
-              </div>
-              <div>
-                <label>采购工厂：</label>
-                <span>V-PSK88</span>
-              </div>
-              <div>
-                <label>SOP：</label>
-                <span>V-PSK88</span>
-              </div>
-              <div>
-                <label>批准投资：</label>
-                <span>V-PSK88</span>
-              </div>
-            </div>
-          </iCard>
-          <iCard>
-            <!------------------------------------------------------------------------>
-            <!--                  table模块，向外入参表格数据，表头                    --->
-            <!------------------------------------------------------------------------>
-            <div class="header margin-bottom20">
-              <div class="search">
-                <label>专业科室：</label>
-                <iSelect
-                    placeholder="请选择"
-                    v-model="form['search.professionalDepartments']"
-                    v-permission="PARTSPROCURE_PARTSTATUS"
-                    filterable
-                    @change="changeCarTypeProject"
-                >
-                  <el-option
-                      :value="item.id"
-                      :label="item.cartypeNname"
-                      v-for="(item, index) in fromGroup"
-                      :key="index"
-                  ></el-option>
-                </iSelect>
-              </div>
-              <div>
-                <iButton @click="addRow">添加行</iButton>
-                <iButton @click="deleteIRow">删除行</iButton>
-                <iButton @click="referenceModelShow = true">参考车型</iButton>
-                <iButton @click="saveRow">保存</iButton>
-                <iButton @click="deleteItems">生成投资清单</iButton>
-              </div>
-            </div>
-            <tablelist
-                :tableData="tableListData"
-                :tableTitle="tableTitle"
-                :tableLoading="tableLoading"
-                @handleSelectionChange="handleSelectionChange"
-                @openPage="openPage"
-                :activeItems="'partNum'"
+    <div>
+      <!------------------------------------------------------------------------>
+      <!--                  search 搜索模块                                   --->
+      <!------------------------------------------------------------------------>
+      <iCard v-loading="headerLoading" class="margin-bottom20 headerIcard" style="margin-top: 20px">
+        <img class="editIcon" src="../../../assets/images/editCar.png" alt="">
+        <div class="infoIcard">
+          <div class="search">
+            <label>版本号：</label>
+            <iSelect
+                placeholder="请选择"
+                v-model="form['search.version']"
+                v-permission="PARTSPROCURE_PARTSTATUS"
+                filterable
+                @change="changeCarTypeProject"
             >
-              <template #moldProperties="scope">
-                <iInput v-model="scope.row.moldProperties"></iInput>
-              </template>
-              <template #linie="scope">
-                <iInput v-model="scope.row.linie"></iInput>
-              </template>
-              <template #zp="scope">
-                <iInput v-model="scope.row.zp"></iInput>
-              </template>
-              <template #remarks="scope">
-                <iInput v-model="scope.row.remarks"></iInput>
-              </template>
-            </tablelist>
-            <!------------------------------------------------------------------------>
-            <!--                  表格分页                                          --->
-            <!------------------------------------------------------------------------>
-            <iPagination
-                v-update
-                @size-change="handleSizeChange($event, getTableListFn)"
-                @current-change="handleCurrentChange($event, getTableListFn)"
-                background
-                :current-page="page.currPage"
-                :page-sizes="page.pageSizes"
-                :page-size="page.pageSize"
-                :layout="page.layout"
-                :total="page.totalCount"
-            />
-          </iCard>
-          <!------------------------------------------------------------------------>
-          <!--                  转派弹出框                                         --->
-          <!------------------------------------------------------------------------>
-          <changeItems
-              v-model="diologChangeItems"
-              @sure="sureChangeItems"
-              :title="$t('LK_LINGJIANCAIGOUXIANGMUZHUANPAI')"
-          ></changeItems>
-          <backItems
-              v-model="diologBack"
-              @sure="cancel"
-              :title="$t('LK_QUXIAOLINGJIANCAIGOUXIANGMU')"
-          ></backItems>
+              <el-option
+                  :value="item.id"
+                  :label="item.version"
+                  v-for="(item, index) in versionList"
+                  :key="index"
+              ></el-option>
+            </iSelect>
+            <!--            <span>V-PSK88</span>-->
+          </div>
+          <div>
+            <label>车型名称：</label>
+            <span>{{ form['search.carTypeName'] }}</span>
+          </div>
+          <div class="search">
+            <label>关联车型：</label>
+            <iSelect
+                placeholder="请选择"
+                v-model="form['search.relatedCarType']"
+                v-permission="PARTSPROCURE_PARTSTATUS"
+                filterable
+                @change="changeCarTypeProject"
+            >
+              <el-option
+                  :value="item.id"
+                  :label="item.carTypeProjectName"
+                  v-for="(item, index) in mainCarTypeList"
+                  :key="index"
+              ></el-option>
+            </iSelect>
+            <!--            <span>V-PSK88</span>-->
+          </div>
+          <div>
+            <label>采购工厂：</label>
+            <span>{{ form['search.purchasingFactory'] }}</span>
+          </div>
+          <div>
+            <label>SOP：</label>
+            <span>{{ form['search.sopDate'] }}</span>
+          </div>
+          <div>
+            <label>批准投资：</label>
+            <span>{{ form['search.approvalInvestment'] }}</span>
+          </div>
         </div>
-      </el-tab-pane>
-    </el-tabs>
+        <div id="chart1" style="width: 200px; height: 200px"></div>
+      </iCard>
+      <iCard v-loading="contentLoading">
+        <!------------------------------------------------------------------------>
+        <!--                  table模块，向外入参表格数据，表头                    --->
+        <!------------------------------------------------------------------------>
+        <div class="header margin-bottom20">
+          <div class="search">
+            <label>专业科室：</label>
+            <iSelect
+                placeholder="请选择"
+                v-model="form['search.professionalDepartments']"
+                v-permission="PARTSPROCURE_PARTSTATUS"
+                filterable
+                @change="findInvestmentList"
+            >
+              <el-option
+                  :value="item.commodity"
+                  :label="item.commodityName"
+                  v-for="(item, index) in commodityList"
+                  :key="index"
+              ></el-option>
+            </iSelect>
+          </div>
+          <div>
+            <iButton @click="addRow">添加行</iButton>
+            <iButton @click="deleteIRow">删除行</iButton>
+            <iButton @click="referenceModelShow = true">参考车型</iButton>
+            <iButton @click="saveRow">保存</iButton>
+            <iButton @click="deleteItems">生成投资清单</iButton>
+          </div>
+        </div>
+        <tablelist
+            :tableData="tableListData"
+            :tableTitle="tableTitle"
+            :tableLoading="tableLoading"
+            @handleSelectionChange="handleSelectionChange"
+            @openPage="openPage"
+            :activeItems="'partNum'"
+        >
+<!--          <template #moldProperties="scope">-->
+<!--            <iInput v-model="scope.row.moldProperties"></iInput>-->
+<!--          </template>-->
+<!--          <template #linie="scope">-->
+<!--            <iInput v-model="scope.row.linie"></iInput>-->
+<!--          </template>-->
+<!--          <template #zp="scope">-->
+<!--            <iInput v-model="scope.row.zp"></iInput>-->
+<!--          </template>-->
+<!--          <template #remarks="scope">-->
+<!--            <iInput v-model="scope.row.remarks"></iInput>-->
+<!--          </template>-->
+        </tablelist>
+        <!------------------------------------------------------------------------>
+        <!--                  表格分页                                          --->
+        <!------------------------------------------------------------------------>
+        <iPagination
+            v-update
+            @size-change="handleSizeChange($event, getTableListFn)"
+            @current-change="handleCurrentChange($event, getTableListFn)"
+            background
+            :current-page="page.currPage"
+            :page-sizes="page.pageSizes"
+            :page-size="page.pageSize"
+            :layout="page.layout"
+            :total="page.totalCount"
+        />
+      </iCard>
+      <!------------------------------------------------------------------------>
+      <!--                  转派弹出框                                         --->
+      <!------------------------------------------------------------------------>
+      <changeItems
+          v-model="diologChangeItems"
+          @sure="sureChangeItems"
+          :title="$t('LK_LINGJIANCAIGOUXIANGMUZHUANPAI')"
+      ></changeItems>
+      <backItems
+          v-model="diologBack"
+          @sure="cancel"
+          :title="$t('LK_QUXIAOLINGJIANCAIGOUXIANGMU')"
+      ></backItems>
+    </div>
+
     <addRow v-model="addRowShow" :carTypeProId="form['search.carTypeProject']" @updateTable="getTableListFn"></addRow>
     <referenceModel
         v-model="referenceModelShow"
@@ -142,7 +172,7 @@ import {
 import logButton from "./components/logButton";
 import {pageMixins} from "@/utils/pageMixins";
 import backItems from "@/views/partsign/home/components/backItems";
-import {budgetManagementData, form} from "./components/data";
+import {investmentListEntities, form} from "./components/data";
 import tablelist from "./components/tablelist";
 import addRow from "./components/addRow";
 import referenceModel from "./components/referenceModel";
@@ -161,12 +191,26 @@ import {
   updateBuildInvestment,
   ConfirmCustomerCarTypeSelect
 } from "@/api/priceorder/stocksheet/edit";
+import {
+  getInvestmentVerisionList,
+  getInvestmentData,
+  getDepartmentsList,
+  findInvestmentList
+} from "@/api/priceorder/stocksheet/investmentList";
 import {insertRfq} from "@/api/partsrfq/home";
 import changeItems from "../../partsign/home/components/changeItems";
 import filters from "@/utils/filters";
+import echarts from "@/utils/echarts";
+
 import creatFs from "./components/creatFs";
 
 export default {
+  props: {
+    params: {
+      type: Object, default: () => {
+      }
+    }
+  },
   mixins: [pageMixins, filters],
   components: {
     iPage,
@@ -186,19 +230,25 @@ export default {
   },
   data() {
     return {
+      headerLoading: false,
+      contentLoading: false,
+
       carType: '',
       addRowShow: false,
       referenceModelShow: false,
       modelCategoryList: [],
       fixedPointTypeList: [],
       projectTypeList: [],
+      versionList: [],
+      commodityList: [],
+      mainCarTypeList: [],
       carTypeProjectDisabled: false,
       addCarTypeProject: '',
       isAdd: '',
 
       tableListData: [],
       tableLoading: false,
-      tableTitle: budgetManagementData,
+      tableTitle: investmentListEntities,
       selectTableData: [],
       diologChangeItems: false,
       form: form,
@@ -224,9 +274,219 @@ export default {
     },
   },
   created() {
-    this.isAdd = this.$route.query.id == 'add' ? true : false
+    // this.isAdd = this.$route.query.id == 'add' ? true : false
+    // this.getInvestmentData()
+    this.getInvestmentVerisionList()
+    this.getDepartmentsList()
+
+  },
+  mounted() {
   },
   methods: {
+    getDepartmentsList(){
+      getDepartmentsList().then((res) => {
+        if (Number(res.code) === 0) {
+          this.commodityList = res.data
+        } else {
+          iMessage.error(res.desZh);
+        }
+        // this.tableLoading = false
+      }).catch(() => {
+        // this.tableLoading = false
+      });
+    },
+    findInvestmentList(){
+      this.contentLoading = true
+      findInvestmentList({
+        commodity: this.form['search.professionalDepartments'],
+        listVerisonId: this.form['search.version'],
+      }).then((res) => {
+        if (Number(res.code) === 0) {
+          this.tableListData = res.data.investmentListEntities
+        } else {
+          iMessage.error(res.desZh);
+        }
+        this.contentLoading = false
+      }).catch(() => {
+        this.contentLoading = false
+      });
+    },
+    getInvestmentData() {
+      this.headerLoading = true
+      getInvestmentData({
+        investmentVersionId: this.form['search.version'],
+        // carTypeId: this.params.id,
+        carTypeId: 3,
+        carType: this.params.carType
+      }).then((res) => {
+        if (Number(res.code) === 0) {
+          this.form['search.carTypeName'] = res.data.carTypeName
+          this.form['search.sopDate'] = res.data.sopDate
+          this.form['search.purchasingFactory'] = res.data.purchasingFactory ? res.data.purchasingFactory.join('') : ''
+          this.form['search.approvalInvestment'] = res.data.approvalInvestment ? Number(res.data.approvalInvestment).toFixed(2) : 0
+          this.mainCarTypeList = res.data.mainCarTypeList
+          this.form['search.relatedCarType'] = res.data.mainCarTypeList[0].id
+
+          let contingency = res.data.contingency ? Number(res.data.contingency).toFixed(0) : 0
+          let aekoValue = res.data.aekoValue ? Number(res.data.aekoValue).toFixed(0) : 0
+          let notAekoValue = res.data.notAekoValue ? Number(res.data.notAekoValue).toFixed(0) : 0
+          let totalValue = res.data.notAekoValue ? Number(res.data.totalValue).toFixed(0) : 0
+          this.findInvestmentList()
+          this.$nextTick(() => {
+            const chart1 = echarts().init(document.getElementById("chart1"));
+            let option1 = {
+              tooltip: {
+                formatter: function (params) {//这里就是控制显示的样式
+                  console.log(params)
+                  if(params.seriesIndex == 0){
+                    return Number((contingency / totalValue) * 100).toFixed(2) + '%'
+                  } else if(params.seriesIndex == 1){
+                    return Number((aekoValue / totalValue) * 100).toFixed(2) + '%'
+                  } else if(params.seriesIndex == 2){
+                    return Number((notAekoValue / totalValue) * 100).toFixed(2) + '%'
+                  }
+                },
+              },
+              grid: {
+                left: '0%',
+                right: '0',
+                bottom: '0%',
+                top: '12%',
+                containLabel: true
+              },
+              xAxis: {
+                type: 'category',
+                data: ['总预算'],
+                axisTick: {
+                  show: false
+                },
+                axisLine: {
+                  show: false,
+
+                },
+              },
+              yAxis: {
+                type: 'value',
+                axisTick: {
+                  show: false
+                },
+                axisLabel: {
+                  show: false
+                },
+                splitLine: {
+                  show: false
+                },
+                axisLine: {
+                  show: false
+                },
+
+              },
+              series: [
+                {
+                  name: 'Contingency',
+                  type: 'bar',
+                  stack: 'total',
+                  color: '#55C2D0',
+                  barWidth: 40,
+                  label: {
+                    show: true,
+                    textStyle: {
+                      color: '#ffffff'
+                    }
+                  },
+                  emphasis: {
+                    focus: 'series'
+                  },
+                  data: [contingency]
+                },
+                {
+                  name: 'AEKO',
+                  type: 'bar',
+                  stack: 'total',
+                  color: '#FFB04D',
+                  label: {
+                    show: true,
+                    textStyle: {
+                      color: '#ffffff'
+                    }
+                  },
+                  emphasis: {
+                    focus: 'series'
+                  },
+                  data: [aekoValue]
+                },
+                {
+                  name: '非AEKO',
+                  type: 'bar',
+                  stack: 'total',
+                  color: '#B3D0FF',
+                  label: {
+                    show: true,
+                    textStyle: {
+                      color: '#ffffff'
+                    }
+                  },
+                  emphasis: {
+                    focus: 'series'
+                  },
+                  data: [notAekoValue],
+                  itemStyle: {
+                    normal: {
+                      barBorderRadius: [5, 5, 0, 0],
+                    }
+                  }
+                },
+                {
+                  name: 'Mail Ad',
+                  type: 'bar',
+                  stack: 'total',
+                  color: '#B3D0FF',
+                  label: {
+                    show: true,
+                    position: 'top',
+                    textStyle: {
+                      color: '#485465'
+                    }
+                  },
+                  emphasis: {
+                    focus: 'series'
+                  },
+                  data: [0]
+                },
+
+              ]
+            };
+            option1.series[option1.series.length - 1].label.formatter = totalValue
+            chart1.setOption(option1);
+          })
+
+        } else {
+          iMessage.error(res.desZh);
+        }
+        this.headerLoading = false
+      }).catch(() => {
+        this.headerLoading = false
+      });
+    },
+    getInvestmentVerisionList() {
+      this.headerLoading = true
+      getInvestmentVerisionList({
+        // id: this.params.id,
+        id: 1,
+        sourceType: this.params.sourceStatus
+      }).then((res) => {
+        if (Number(res.code) === 0) {
+          this.versionList = res.data
+          this.form['search.version'] = this.versionList[0].id
+          this.getInvestmentData()
+        } else {
+          iMessage.error(res.desZh);
+        }
+        // this.tableLoading = false
+      }).catch(() => {
+        // this.tableLoading = false
+      });
+    },
     handleAddCarTypeProject() {
       this.tableLoading = true
       saveCustomCart({cartypeProjectName: this.addCarTypeProject}).then((res) => {
@@ -501,6 +761,13 @@ export default {
   left: -70px;
 }
 
+.search {
+  ::v-deep .el-input, ::v-deep .el-select {
+    width: 220px;
+    margin-right: 30px;
+  }
+}
+
 .investmentList {
   position: relative;
 
@@ -597,12 +864,7 @@ export default {
     display: flex;
     justify-content: space-between;
 
-    .search {
-      ::v-deep .el-input, ::v-deep .el-select {
-        width: 220px;
-        margin-right: 30px;
-      }
-    }
+
   }
 
   .tabs {

@@ -132,11 +132,9 @@ export default {
   props: {
     title: {type: String, default: '参考车型项目'},
     carTypeProId: {type: String, default: ''},
+    sourceStatus: {type: String, default: ''},
     carType: {type: Array},
     value: {type: Boolean},
-    repeatClick: Boolean,
-    memo: {type: String, default: ''},
-    disabled: {type: Boolean, default: false}
   },
   data() {
     return {
@@ -168,7 +166,7 @@ export default {
         refCartypeProThirdId: this.form['search.referenceModel3'],
         // sopBegin: this.form['search.catTypeStartTime'],
         // sopEnd: this.form['search.catTypeEndTime'],
-        sourceStatus: this.$route.query.sourceStatus,
+        sourceStatus: this.sourceStatus,
       }
       saveRefcartypepro(params).then((res) => {
         if (Number(res.code) === 0) {

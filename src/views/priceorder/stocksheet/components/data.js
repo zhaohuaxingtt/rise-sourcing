@@ -114,7 +114,7 @@ export const tableTitle = [{
     //)
 export const budgetManagementData = [{
     //export const tableTitle = permissionTitle("PARTSPROCURE_PARTSPROCURELIST",[{
-        props: 'categoryId',
+        props: 'categoryCode',
         name: '材料组编号',
         key: 'partsprocure.PARTSPROCUREFSNFGSNFSPNR',
         tooltip: false
@@ -218,6 +218,80 @@ export const addListInvestment = [{
         tooltip: false
     },
 ]
+export const investmentListEntities = [{
+    //export const tableTitle = permissionTitle("PARTSPROCURE_PARTSPROCURELIST",[{
+        props: 'categoryId',
+        name: '材料组编号',
+        key: 'partsprocure.PARTSPROCUREFSNFGSNFSPNR',
+        tooltip: false
+    },
+    {
+        props: 'categoryNameZh',
+        name: '材料组名称（中）',
+        key: 'partsprocure.PARTSPROCUREPARTNUMBER',
+        tooltip: false
+    },
+    {
+        props: 'categoryNameDe',
+        name: '材料组名称（德）',
+        key: 'partsprocure.PARTSPROCUREPARTNAMEZH',
+        tooltip: false
+    },
+    {
+        props: 'commodity',
+        name: '专业科室',
+        key: 'partsprocure.PARTSPROCUREPARTNAMEDE',
+        tooltip: false
+    },
+    {
+        props: 'budgetAmount',
+        name: '预算金额PSK',
+        key: 'partsprocure.PARTSPROCURESTATUS',
+        tooltip: false
+    },
+    {
+        props: 'moldProperties',
+        name: '模具属性',
+        key: 'partsprocure.PARTSPROCUREPURCHASINGFACTORY',
+        tooltip: false
+    },
+    {
+        props: 'sourcingType',
+        name: 'Sourcing类型',
+        key: 'partsprocure.PARTSPROCUREPURCHASINGFACTORY',
+        tooltip: false
+    },
+    {
+        props: 'linie',
+        name: 'LINIE',
+        key: 'partsprocure.PARTSPROCUREPARTITEMTYPE',
+        tooltip: false
+    },
+    {
+        props: 'zp',
+        name: 'ZP',
+        key: 'partsprocure.PARTSPROCUREVEHICLECATEGORIES',
+        tooltip: false
+    },
+    {
+        props: 'refCartypeProId',
+        name: '参考项目',
+        key: 'partsprocure.PARTSPROCUREVEHICLECATEGORIES',
+        tooltip: false
+    },
+    {
+        props: 'refMoldAmount',
+        name: '参考项目模具金额',
+        key: 'partsprocure.PARTSPROCUREVEHICLECATEGORIES',
+        tooltip: false
+    },
+    {
+        props: 'remarks',
+        name: '预算备注',
+        key: 'partsprocure.PARTSPROCUREVEHICLECATEGORIES',
+        tooltip: false
+    },
+]
 //零件采购列表入参
 export const form = {
     'search.buyerName': '', //询价采购员
@@ -254,6 +328,13 @@ export const form = {
     'search.modelProject': "", //车型项目类型
     'search.catTypeStartTime': "2021", //车型项目起止年份
     'search.catTypeEndTime': "2021", //车型项目起止年份
+
+    'search.version': "", //版本号
+    'search.carTypeName': "", //车型名称
+    'search.sopDate': "", //SOD
+    'search.purchasingFactory': "", //采购工厂
+    'search.approvalInvestment': "", //批准投资
+    'search.relatedCarType': "", //关联车型
 }
 
 // addRfq

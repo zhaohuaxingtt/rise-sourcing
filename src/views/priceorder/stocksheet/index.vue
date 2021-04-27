@@ -18,11 +18,14 @@
           v-if="indexChilden === 0"
       ></carTypeOverview>
       <generateInvestmentList
-          @toinvestmentList="budgetManagement(val, 2)"
+          @toinvestmentList="val => budgetManagement(val, 2, 'investmentListParams')"
           :params="generateInvestmentListParams"
           v-if="indexChilden === 1"
       ></generateInvestmentList>
-      <investmentList :params="generateInvestmentListParams" v-if="indexChilden === 2"></investmentList>
+      <investmentList
+          :params="investmentListParams"
+          v-if="indexChilden === 2"
+      ></investmentList>
     </div>
   </iPage>
 </template>

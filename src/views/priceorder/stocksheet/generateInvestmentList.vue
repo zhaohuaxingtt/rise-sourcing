@@ -155,10 +155,16 @@
     <!------------------------------------------------------------------------>
     <!--            新增行以及c参考车型模态框                                  --->
     <!------------------------------------------------------------------------>
-    <addRow v-model="addRowShow" :carTypeProId="form['search.carTypeProject']" @updateTable="getTableListFn"></addRow>
+    <addRow
+        v-model="addRowShow"
+        :carTypeProId="form['search.carTypeProject']"
+        :sourceStatus="carTypeProjectObj.sourceStatus"
+        @updateTable="getTableListFn"
+    ></addRow>
     <referenceModel
         v-model="referenceModelShow"
         :carTypeProId="form['search.carTypeProject']"
+        :sourceStatus="carTypeProjectObj.sourceStatus"
         :carType="this.fromGroup"
         @updateTable="getTableListFn"
     ></referenceModel>
@@ -187,18 +193,14 @@ import {
   deleteList,
   updateBuildInvestment,
   ConfirmCustomerCarTypeSelect,
+  saveInvestBuildBottom,
 } from "@/api/priceorder/stocksheet/edit";
 import filters from "@/utils/filters";
 import {Popover} from "element-ui"
 
 export default {
   props: {
-    params: {
-      type: Object,
-      default: () => {
-        return {}
-      }
-    }
+    params: { type: Object, default: () => {} }
   },
   mixins: [pageMixins, filters],
   components: {
@@ -223,6 +225,7 @@ export default {
       carTypeProjectDisabled: false,
 
       carType: '',
+      carTypeProjectObj: {},
       fixedPointTypeList: [],
       modelCategoryList: [],
       projectTypeList: [],
@@ -305,22 +308,39 @@ export default {
       });
     },
     investmentList() {
-      this.$emit('toinvestmentList')
+      this.$emit('toinvestmentList', {id: this.form['search.carTypeProject'], sourceStatus: this.params.sourceStatus, carType: this.carTypeProjectObj.sourceStatus})
+      return
+      saveInvestBuildBottom({
+
+        id: this.form['search.carTypeProject'],
+        sourceStatus: this.carTypeProjectObj.sourceStatus
+      }).then((res) => {
+        if (Number(res.code) === 0) {
+          iMessage.success(res.desZh);
+          this.$emit('toinvestmentList', {id: this.form['search.carTypeProject'], sourceStatus: this.params.sourceStatus, carType: this.carTypeProjectObj.sourceStatus})
+        } else {
+          iMessage.error(res.desZh);
+          this.tableLoading = false
+        }
+      }).catch(() => {
+        this.tableLoading = false
+      });
     },
     changeCarTypeProject(val) {
       if (!val) {
         return
       }
       this.loadingiSearch = true
-      let sourceType = this.fromGroup.find(item => item.id == val).sourceType
-      this.carTypeProjectDisabled = sourceType == '1' ? true : false
-      findProjectDetailById({id: val, sourceStatus: this.params.sourceStatus}).then((res) => {
+      this.carTypeProjectObj = this.fromGroup.find(item => item.id == val)
+      let sourceStatus = this.carTypeProjectObj.sourceStatus
+      this.carTypeProjectDisabled = sourceStatus == '1' ? true : false
+      findProjectDetailById({id: val, sourceStatus: sourceStatus}).then((res) => {
         if (res.data) {
-          if (sourceType == 1) {
-            this.form['search.projectType'] = this.projectTypeList.find(item => item.projectTypeName == res.data.projectTypeName).projectTypeId
-            this.form['search.fixedPointType'] = this.fixedPointTypeList.find(item => item.fixedPointName == res.data.fixedPointName).fixedPointId
-            this.form['search.modelCategory'] = this.modelCategoryList.find(item => item.carTypeName == res.data.carTypeName).carTypeId
-          } else if (sourceType == 2) {
+          if (sourceStatus == 1) {
+            this.form['search.projectType'] = res.data.projectTypeName ? this.projectTypeList.find(item => item.projectTypeName == res.data.projectTypeName).projectTypeId : ''
+            this.form['search.fixedPointType'] = res.data.fixedPointName ? this.fixedPointTypeList.find(item => item.fixedPointName == res.data.fixedPointName).fixedPointId : ''
+            this.form['search.modelCategory'] = res.data.carTypeName ? this.modelCategoryList.find(item => item.carTypeName == res.data.carTypeName).carTypeId : ''
+          } else if (sourceStatus == 2) {
             this.form['search.projectType'] = res.data.projectTypeId
             this.form['search.fixedPointType'] = res.data.fixedPointId
             this.form['search.modelCategory'] = res.data.carTypeId
@@ -338,6 +358,7 @@ export default {
     },
     getProcureGroup() {
       this.loadingiSearch = true
+      this.form['search.carTypeProject'] = ''
       Promise.all([findProjectTypeDetailPulldown(), getCartypePulldown()]).then((res) => {
         if (res[0].data) {
           this.projectTypeList = res[0].data.projectTypePullDownVOList
@@ -377,7 +398,7 @@ export default {
       // this.form["search.size"] = this.page.pageSize;
       // this.form["search.current"] = this.page.currPage;
       let params = {
-        cartypeProId: this.form['search.carTypeProject'],
+        carTypeProId: this.form['search.carTypeProject'],
         materialName: this.form['search.materialName'],
         partNum: this.form['search.partNum'],
         // current: this.page.currPage,

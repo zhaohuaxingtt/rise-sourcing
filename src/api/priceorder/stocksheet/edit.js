@@ -106,3 +106,11 @@ export function updateBuildInvestment(parmars) {
         data: parmars
     })
 }
+//生成投资清单按钮-生成投资清单
+export function saveInvestBuildBottom(parmars) {
+    return requst({
+        url: '/web/investment/saveInvestBuildBottom',
+        method: 'POST',
+        data: parmars
+    })
+}
