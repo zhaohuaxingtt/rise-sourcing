@@ -4,7 +4,7 @@
 		<div class="header flex-between-center-center">
 			<span class="title">{{ $t('LK_JIAGEMINGXI') }}</span>
 			<div class="control">
-				<iButton  @click="save" v-permission="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_SAVE">{{ $t('LK_BAOCUN') }}</iButton>
+				<iButton  @click="save('save')" v-permission="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_SAVE">{{ $t('LK_BAOCUN') }}</iButton>
 			</div>
 		</div>
 		<iFormGroup row="3" icon inline>
@@ -47,7 +47,7 @@
 		<div class="header flex-between-center-center">
 			<span class="title">{{ $t('LK_SHENQINGCAIWUMUBIAOJIA') }}</span>
 			<div class="control">
-				<iButton @click="save" v-permission="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_APPLY">{{ $t('LK_SHENQING') }}</iButton>
+				<iButton @click="save('apply')" v-permission="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_APPLY">{{ $t('LK_SHENQING') }}</iButton>
 			</div>
 		</div>
 		<iFormGroup row="2" icon inline>
@@ -75,6 +75,17 @@
 		</iFormGroup>
 		<tablelist :tableData='tableListData' :tableTitle='targeTitle' :loading='tableLoading'
 			@handleSelectionChange='handleSelectionChange'></tablelist>
+		<iPagination
+        class="pagination margin-top30"
+				v-update
+        @size-change="handleSizeChange($event, getTargetPrice)"
+        @current-change="handleCurrentChange($event, getTargetPrice)"
+        background
+        :current-page="page.currPage"
+        :page-sizes="page.pageSizes"
+        :page-size="page.pageSize"
+        :layout="page.layout"
+        :total="page.totalCount" />
 		<div class="line"></div>
 		<!-- 申请RW价 -->
 		<div class="header flex-between-center-center">
@@ -124,7 +135,8 @@
 		iButton,
 		iInput,
 		iMessage,
-		iRadio
+		iRadio,
+		iPagination
 	} from "@/components";
 	import tablelist from "./components/tablelist";
 	import {
@@ -134,9 +146,12 @@
 	} from './components/data';
 	import {
 		getTabelData,
-		changeProcure
+		changeProcure,
+		getTargetPrice
 	} from '@/api/partsprocure/home'
 import { iMessageBox } from '../../../../../components';
+import { pageMixins } from '@/utils/pageMixins'
+import { cloneDeep } from 'lodash'
 	export default {
 		components: {
 			iCard,
@@ -146,8 +161,10 @@ import { iMessageBox } from '../../../../../components';
 			iButton,
 			iInput,
 			tablelist,
-			iRadio
+			iRadio,
+			iPagination
 		},
+		mixins: [ pageMixins ],
 		props: {
 			purchaseProjectId: {
 				type: String
@@ -167,20 +184,48 @@ import { iMessageBox } from '../../../../../components';
 			}
 		},
 		created() {
+			this.getTargetPrice()
 			this.targePriceDetail()
 		},
 		methods: {
+			getTargetPrice() {
+				getTargetPrice({
+					purchaseProjectId: this.purchaseProjectId,
+					current: this.page.currPage,
+  				size: this.page.pageSize
+				})
+				.then(res => {
+					if (res.code == 200) {
+						if (res.data.left) {
+							this.tableListData = []
+							this.targetprice.cfTargetPriceDetail = cloneDeep(res.data.left)
+							this.page.totalCount = 0
+						} else if (Array.isArray(res.data.right.records) && res.data.right.records.length > 0) {
+							this.tableListData = cloneDeep(res.data.right.records)
+							this.targetprice.cfTargetPriceDetail = cloneDeep(this.tableListData[0] || {})
+							this.page.totalCount = res.data.right.total || 0
+						} else {
+							this.tableListData = []
+							this.targetprice.cfTargetPriceDetail = {}
+							this.page.totalCount = 0
+						}
+					} else {
+						iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+					}
+				})
+				.catch(() => {})
+			},
 			// 获取申请目标价数据
 			targePriceDetail(){
 				let data = {
 					"cfTargetpriceReq.purchaseProjectId": this.purchaseProjectId,
 				};
 				getTabelData(data).then((res) => {
-					let price=res.data.targetprice
-					if (price.cfTargetPriceDetail) {
-						this.targetprice.cfTargetPriceDetail=price.cfTargetPriceDetail
-						this.tableListData=JSON.parse(JSON.stringify([price.cfTargetPriceDetail]))  
-					}
+					// let price=res.data.targetprice
+					// if (price.cfTargetPriceDetail) {
+					// 	this.targetprice.cfTargetPriceDetail=price.cfTargetPriceDetail
+					// 	this.tableListData=JSON.parse(JSON.stringify([price.cfTargetPriceDetail]))  
+					// }
 					if (price.rwApplication) {
 						this.targetprice.rwApplication=price.rwApplication
 						this.targeRwData=JSON.parse(JSON.stringify([price.rwApplication]))
@@ -192,10 +237,10 @@ import { iMessageBox } from '../../../../../components';
 				// this.selectTableData = val
 			},
 			// 保存 ,申请财务目标价
-			save() {
+			save(type) {
 				let targetprice = {
 					purchaseProjectId: this.purchaseProjectId,
-					cfTargetPriceDetail: this.targetprice.cfTargetPriceDetail,
+					cfTargetPriceDetail: { ...this.targetprice.cfTargetPriceDetail, type }, // save 保存  apply 申请
 					rwApplication:null
 				};
 				changeProcure({
@@ -204,6 +249,7 @@ import { iMessageBox } from '../../../../../components';
 					if (res.data) {
 						iMessage.success(this.$t('LK_CAOZUOCHENGGONG'))
 						this.targePriceDetail()
+						this.getTargetPrice()
 					}else{
 						iMessage.error(res.desZh)
 					}
