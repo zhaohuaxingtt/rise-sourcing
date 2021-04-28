@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2021-04-28 16:07:38
+ * @LastEditTime: 2021-04-28 16:59:34
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsprocure\editordetail\index.vue
@@ -169,6 +169,7 @@
 							</iSelect>
 						</iFormItem>
 						<iFormItem label="Common Sourcing：" name="test">
+							<!--------预设值会有一个联动，如果 为是  零件采购项目类型是fs commonsourcing  如果是否，则是fs零件 ps:和设计刘洋沟通前端不做联动，仅仅在数据初始化时做----------> 
 							<iSelect v-model="detailData.isCommonSourcing"
 								v-permission="PARTSPROCURE_EDITORDETAIL_COMMONSOURCING">
 								<el-option :value="true" label="是"></el-option>

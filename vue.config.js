@@ -8,7 +8,7 @@ const postcss = px2rem({
     remUnit: 16
 })
 module.exports = {
-    publicPath:'/mvp',
+    publicPath: process.env.PUBLICPATH,
     outputDir: 'dist',
     assetsDir: 'static',
     filenameHashing: true,
