@@ -8,6 +8,7 @@ const postcss = px2rem({
     remUnit: 16
 })
 module.exports = {
+    publicPath:'/mvp',
     outputDir: 'dist',
     assetsDir: 'static',
     filenameHashing: true,
@@ -23,7 +24,6 @@ module.exports = {
         config.resolve.alias
             .set('@', resolve('src'))
             .set('pages', resolve('src/views'))
-
         config.optimization.splitChunks({
             chunks: 'all',
             cacheGroups: {
