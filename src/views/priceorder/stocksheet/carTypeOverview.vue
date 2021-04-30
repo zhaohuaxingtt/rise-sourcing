@@ -5,14 +5,15 @@
 <template>
   <div v-loading="loadingiPage">
     <div class="content">
-      <div class="item" @click="toEdit('add')">
+      <div class="item" @click="toEdit('add')" title="点击进入【生成投资清单】页面">
         <img class="addIcon" src="../../../assets/images/addCar.png" alt="">
       </div>
       <div class="item" v-for="(item, index) in contentData" :key="index"
-           @click="toEdit(item.id, item.sourceStatus)">
+           @click="toEdit(item.id, item.sourceStatus, item.isBudget)">
         <div class="item_top">
           <img v-if="item.isBudget == 1" class="editIcon" src="../../../assets/images/editCar.png" alt="">
           <img v-if="item.isBudget == 2" class="editIcon" src="../../../assets/images/editCar2.png" alt="">
+          <img v-if="item.isBudget == 3" class="editIcon" src="../../../assets/images/editCar.png" alt="">
           <div class="title">
             <h4 :title="item.cartypeProjectName">{{ item.cartypeProjectName }}</h4>
             <p :title="item.locationFactory">{{ item.locationFactory }}</p>
@@ -51,10 +52,11 @@ export default {
   },
   methods: {
     // 跳转投资清单
-    toEdit(id, sourceStatus) {
+    toEdit(id, sourceStatus, isBudget) {
       this.$emit(
           'toGenerateInvestmentList',
           {
+            step: isBudget == 3 ? 2 : 1,
             id: id,
             sourceStatus: sourceStatus
           }

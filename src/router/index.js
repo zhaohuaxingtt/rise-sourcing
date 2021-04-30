@@ -155,7 +155,7 @@ export const staticRouter = [{
                     import (`@/views/priceorder/home`)
             },
             {
-                path: '/priceorder/stocksheet',
+                path: '/tooling',
                 name: 'stocksheet',
                 meta: {
                     title: '价格与订单-备货表'

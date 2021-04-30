@@ -15,11 +15,12 @@
           <div class="search">
             <label>版本号：</label>
             <iSelect
+                v-show="!pageEdit"
                 placeholder="请选择"
                 v-model="form['search.version']"
                 v-permission="PARTSPROCURE_PARTSTATUS"
                 filterable
-                @change="changeCarTypeProject"
+                @change="changeVersion"
             >
               <el-option
                   :value="item.id"
@@ -28,20 +29,20 @@
                   :key="index"
               ></el-option>
             </iSelect>
-            <!--            <span>V-PSK88</span>-->
+            <span v-show="pageEdit">{{ versionName }}</span>
           </div>
           <div>
             <label>车型名称：</label>
             <span>{{ form['search.carTypeName'] }}</span>
           </div>
-          <div class="search">
+          <div class="search" v-show="(params.sourceStatus == 2) && pageEdit">
             <label>关联车型：</label>
             <iSelect
                 placeholder="请选择"
                 v-model="form['search.relatedCarType']"
                 v-permission="PARTSPROCURE_PARTSTATUS"
                 filterable
-                @change="changeCarTypeProject"
+                @change="relationMainCarType"
             >
               <el-option
                   :value="item.id"
@@ -52,49 +53,60 @@
             </iSelect>
             <!--            <span>V-PSK88</span>-->
           </div>
-          <div>
+          <div v-show="params.sourceStatus == 1">
             <label>采购工厂：</label>
             <span>{{ form['search.purchasingFactory'] }}</span>
           </div>
-          <div>
+          <div v-show="params.sourceStatus == 1">
             <label>SOP：</label>
             <span>{{ form['search.sopDate'] }}</span>
           </div>
-          <div>
+          <div class="search">
             <label>批准投资：</label>
-            <span>{{ form['search.approvalInvestment'] }}</span>
+            <span v-show="!pageEdit">{{ form['search.approvalInvestment'] }}</span>
+            <iInput v-show="pageEdit" v-model="form['search.approvalInvestment']"></iInput>
           </div>
         </div>
         <div id="chart1" style="width: 200px; height: 200px"></div>
+        <div class="legend">
+          <div>非AEKO</div>
+          <div>AEKO</div>
+          <div>Contingency</div>
+          <div>单位：百万元</div>
+        </div>
       </iCard>
       <iCard v-loading="contentLoading">
         <!------------------------------------------------------------------------>
         <!--                  table模块，向外入参表格数据，表头                    --->
         <!------------------------------------------------------------------------>
         <div class="header margin-bottom20">
-          <div class="search">
-            <label>专业科室：</label>
-            <iSelect
-                placeholder="请选择"
-                v-model="form['search.professionalDepartments']"
-                v-permission="PARTSPROCURE_PARTSTATUS"
-                filterable
-                @change="findInvestmentList"
-            >
-              <el-option
-                  :value="item.commodity"
-                  :label="item.commodityName"
-                  v-for="(item, index) in commodityList"
-                  :key="index"
-              ></el-option>
-            </iSelect>
-          </div>
+          <!--          <div class="search">-->
+          <!--            <label>专业科室：</label>-->
+          <!--            <iSelect-->
+          <!--                placeholder="请选择"-->
+          <!--                v-model="form['search.professionalDepartments']"-->
+          <!--                v-permission="PARTSPROCURE_PARTSTATUS"-->
+          <!--                filterable-->
+          <!--                @change="findInvestmentList"-->
+          <!--            >-->
+          <!--              <el-option-->
+          <!--                  :value="item.commodity"-->
+          <!--                  :label="item.commodityName"-->
+          <!--                  v-for="(item, index) in commodityList"-->
+          <!--                  :key="index"-->
+          <!--              ></el-option>-->
+          <!--            </iSelect>-->
+          <!--          </div>-->
+          <div></div>
           <div>
-            <iButton @click="addRow">添加行</iButton>
-            <iButton @click="deleteIRow">删除行</iButton>
-            <iButton @click="referenceModelShow = true">参考车型</iButton>
-            <iButton @click="saveRow">保存</iButton>
-            <iButton @click="deleteItems">生成投资清单</iButton>
+            <iButton v-show="!pageEdit" @click="pageEdit = true">编辑</iButton>
+            <iButton v-show="pageEdit" @click="addRow">添加行</iButton>
+            <iButton v-show="pageEdit" @click="deleteIRow">删除行</iButton>
+            <!--            <iButton v-show="pageEdit" @click="referenceModelShow = true">参考车型</iButton>-->
+            <iButton v-show="pageEdit" @click="saveRow">保存</iButton>
+            <iButton v-show="pageEdit" @click="saveAsRow">保存为新版本</iButton>
+            <!--            <iButton @click="saveRow">下载投资清单</iButton>-->
+            <iButton v-show="pageEdit" @click="conversionRatioShow = true">按比例折算</iButton>
           </div>
         </div>
         <tablelist
@@ -105,33 +117,96 @@
             @openPage="openPage"
             :activeItems="'partNum'"
         >
-<!--          <template #moldProperties="scope">-->
-<!--            <iInput v-model="scope.row.moldProperties"></iInput>-->
-<!--          </template>-->
-<!--          <template #linie="scope">-->
-<!--            <iInput v-model="scope.row.linie"></iInput>-->
-<!--          </template>-->
-<!--          <template #zp="scope">-->
-<!--            <iInput v-model="scope.row.zp"></iInput>-->
-<!--          </template>-->
-<!--          <template #remarks="scope">-->
-<!--            <iInput v-model="scope.row.remarks"></iInput>-->
-<!--          </template>-->
+          <template #refCartypeProId="scope">
+            <a :href="scope.row.refCartypeProId">{{ scope.row.refCartypeProId }}</a>
+          </template>
+          <template #budgetAmount="scope">
+            <iInput v-model="scope.row.budgetAmount" v-if="pageEdit"></iInput>
+            <div v-if="!pageEdit">{{ scope.row.budgetAmount }}</div>
+          </template>
+          <template #moldProperties="scope">
+            <iSelect
+                v-show="pageEdit"
+                placeholder="请选择"
+                v-model="scope.row.moldProperties"
+                v-permission="PARTSPROCURE_PARTSTATUS"
+                filterable
+                @change="changeCarTypeProject"
+            >
+              <el-option
+                  :value="item.modelProtitesName"
+                  :label="item.modelProtitesName"
+                  v-for="(item, index) in modelProtitesList"
+                  :key="index"
+              ></el-option>
+            </iSelect>
+            <div v-if="!pageEdit">{{ scope.row.moldProperties }}</div>
+          </template>
+          <template #sourcingType="scope">
+            <div v-if="!pageEdit">{{ scope.row.sourcingType == 1 ? 'Y' : 'N' }}</div>
+            <iSelect
+                v-show="pageEdit"
+                placeholder="请选择"
+                v-model="scope.row.sourcingType"
+                v-permission="PARTSPROCURE_PARTSTATUS"
+                filterable
+                @change="changeCarTypeProject"
+            >
+              <el-option :value="1" label="Y"></el-option>
+              <el-option :value="2" label="N"></el-option>
+            </iSelect>
+          </template>
+          <template #remarks="scope">
+            <iInput v-model="scope.row.remarks" v-if="pageEdit"></iInput>
+            <div v-if="!pageEdit">{{ scope.row.remarks }}</div>
+          </template>
         </tablelist>
+        <div class="buttomInput">
+          <div>
+            <h4>SUB-TOTAL:</h4>
+            <iInput v-model="form['search.SUBTOTA']" disabled></iInput>
+          </div>
+          <div>
+            <h4>AEKO:</h4>
+            <iInput v-model="aekoPercent"></iInput>% of Sub-Total
+          </div>
+          <div>
+            <h4>AEKO金额:</h4>
+            <iInput v-model="AEKOMoney"></iInput>
+          </div>
+          <div>
+            <h4>综合偏差:</h4>
+            <iInput v-model="form['search.contingencyPercent']"></iInput>% of Sub-Total
+          </div>
+          <div>
+            <h4>综合偏差金额:</h4>
+            <iInput v-model="form['search.contingencyAmount']"></iInput>
+          </div>
+          <div>
+            <h4>总预算:</h4>
+            <iInput v-model="form['search.totalBudget']"></iInput>
+          </div>
+          <div>
+            <iInput v-model="aekoPercent"></iInput>
+          </div>
+          <div>
+            <iInput v-model="AEKOMoney"></iInput>
+          </div>
+        </div>
         <!------------------------------------------------------------------------>
         <!--                  表格分页                                          --->
         <!------------------------------------------------------------------------>
-        <iPagination
-            v-update
-            @size-change="handleSizeChange($event, getTableListFn)"
-            @current-change="handleCurrentChange($event, getTableListFn)"
-            background
-            :current-page="page.currPage"
-            :page-sizes="page.pageSizes"
-            :page-size="page.pageSize"
-            :layout="page.layout"
-            :total="page.totalCount"
-        />
+        <!--        <iPagination-->
+        <!--            v-update-->
+        <!--            @size-change="handleSizeChange($event, getTableListFn)"-->
+        <!--            @current-change="handleCurrentChange($event, getTableListFn)"-->
+        <!--            background-->
+        <!--            :current-page="page.currPage"-->
+        <!--            :page-sizes="page.pageSizes"-->
+        <!--            :page-size="page.pageSize"-->
+        <!--            :layout="page.layout"-->
+        <!--            :total="page.totalCount"-->
+        <!--        />-->
       </iCard>
       <!------------------------------------------------------------------------>
       <!--                  转派弹出框                                         --->
@@ -148,13 +223,29 @@
       ></backItems>
     </div>
 
-    <addRow v-model="addRowShow" :carTypeProId="form['search.carTypeProject']" @updateTable="getTableListFn"></addRow>
+    <addRow
+        v-model="addRowShow"
+        :carTypeProId="form['search.carTypeProject']"
+        :isInvestmentList="true"
+        :version="form['search.version']"
+        :sourceStatus="params.sourceStatus"
+        @updateTable="findInvestmentList"
+    ></addRow>
     <referenceModel
         v-model="referenceModelShow"
         :carTypeProId="form['search.carTypeProject']"
+        :sourceStatus="params.sourceStatus"
         :carType="this.fromGroup"
-        @updateTable="getTableListFn"
+        @updateTable="findInvestmentList"
     ></referenceModel>
+    <conversionRatio
+        v-model="conversionRatioShow"
+        @conversionSave="conversionSave"
+    ></conversionRatio>
+    <saveAs
+        v-model="saveAsShow"
+        :saveParams="saveParams"
+    ></saveAs>
   </div>
 </template>
 <script>
@@ -176,6 +267,8 @@ import {investmentListEntities, form} from "./components/data";
 import tablelist from "./components/tablelist";
 import addRow from "./components/addRow";
 import referenceModel from "./components/referenceModel";
+import conversionRatio from "./components/conversionRatio";
+import saveAs from "./components/saveAs";
 import {
   getTabelData,
   changeProcure,
@@ -186,7 +279,6 @@ import {
   findProjectTypeDetailPulldown,
   findProjectDetailById,
   saveCustomCart,
-  deleteList,
   GetOtherCarTypeAlternative,
   updateBuildInvestment,
   ConfirmCustomerCarTypeSelect
@@ -195,7 +287,11 @@ import {
   getInvestmentVerisionList,
   getInvestmentData,
   getDepartmentsList,
-  findInvestmentList
+  findInvestmentList,
+  getModelProtitesPullDown,
+  investmentDelete,
+  relationMainCarType,
+  investmentUpdate
 } from "@/api/priceorder/stocksheet/investmentList";
 import {insertRfq} from "@/api/partsrfq/home";
 import changeItems from "../../partsign/home/components/changeItems";
@@ -227,15 +323,29 @@ export default {
     icon,
     addRow,
     referenceModel,
+    conversionRatio,
+    saveAs,
   },
   data() {
     return {
+      aekoPercent: '',
+      AEKOMoney: '',
+      contingencyPercent: '',
+      contingencyAmount: '',
+      totalBudget: '',
+      aaa: '',
+      bbb: '',
       headerLoading: false,
       contentLoading: false,
+
+      pageEdit: false,
 
       carType: '',
       addRowShow: false,
       referenceModelShow: false,
+      conversionRatioShow: false,
+      saveAsShow: false,
+      modelProtitesList: [],
       modelCategoryList: [],
       fixedPointTypeList: [],
       projectTypeList: [],
@@ -245,7 +355,20 @@ export default {
       carTypeProjectDisabled: false,
       addCarTypeProject: '',
       isAdd: '',
+      saveParams: {
+        investmentListEntities: [],
+        aekoAmount: '',
+        aekoPercent: '',
+        contingencyAmount: '',
+        contingencyPercent: '',
+        investmentVersionId: '',
+        totalBudget: '',
+        approveInvestment: '',
+        versionId: '',
+        version: '',
+      },
 
+      versionName: '',
       tableListData: [],
       tableLoading: false,
       tableTitle: investmentListEntities,
@@ -277,13 +400,57 @@ export default {
     // this.isAdd = this.$route.query.id == 'add' ? true : false
     // this.getInvestmentData()
     this.getInvestmentVerisionList()
-    this.getDepartmentsList()
+    // this.getDepartmentsList() 专业科室
+    this.getModelProtitesPullDown()
+    console.log(this.params)
 
   },
   mounted() {
   },
   methods: {
-    getDepartmentsList(){
+    conversionSave(val) {
+      let conversionVal = val / 100
+      this.tableListData = this.tableListData.map(item => item.budgetAmount * conversionVal)
+      this.form['search.SUBTOTA'] = form['search.SUBTOTA'] * conversionVal
+      this.form['search.AEKOMoney'] = form['search.AEKOMoney'] * conversionVal
+      this.form['search.contingencyAmount'] = form['search.contingencyAmount'] * conversionVal
+      this.form['search.totalBudget'] = this.form['search.AEKOMoney'] + this.form['search.contingencyAmount']
+    },
+    changeVersion(val) {
+      if (val) {
+        this.versionName = this.versionList.find(item => item.id == val).version
+      } else {
+        this.versionName = ''
+      }
+    },
+    relationMainCarType(val) {
+      relationMainCarType({
+        mainId: val,
+        localId: 'mainId',
+      }).then((res) => {
+        if (Number(res.code) === 0) {
+          iMessage.success(res.desZh);
+        } else {
+          iMessage.error(res.desZh);
+        }
+        // this.tableLoading = false
+      }).catch(() => {
+        // this.tableLoading = false
+      });
+    },
+    getModelProtitesPullDown() {
+      getModelProtitesPullDown().then((res) => {
+        if (Number(res.code) === 0) {
+          this.modelProtitesList = res.data
+        } else {
+          iMessage.error(res.desZh);
+        }
+        // this.tableLoading = false
+      }).catch(() => {
+        // this.tableLoading = false
+      });
+    },
+    getDepartmentsList() {
       getDepartmentsList().then((res) => {
         if (Number(res.code) === 0) {
           this.commodityList = res.data
@@ -295,54 +462,61 @@ export default {
         // this.tableLoading = false
       });
     },
-    findInvestmentList(){
-      this.contentLoading = true
+    findInvestmentList() {
+      this.tableLoading = true
       findInvestmentList({
-        commodity: this.form['search.professionalDepartments'],
+        // commodity: this.form['search.professionalDepartments'],
         listVerisonId: this.form['search.version'],
       }).then((res) => {
         if (Number(res.code) === 0) {
           this.tableListData = res.data.investmentListEntities
+          this.form['search.aekoPercent'] = res.data.aekoPercent
+          this.form['search.AEKOMoney'] = res.data.aekoAmount
+          this.form['search.contingencyAmount'] = res.data.contingencyPercent
+          this.form['search.contingencyPercent'] = res.data.contingencyAmount
+          this.form['search.totalBudget'] = res.data.totalBudget
         } else {
           iMessage.error(res.desZh);
         }
-        this.contentLoading = false
+        this.tableLoading = false
       }).catch(() => {
-        this.contentLoading = false
+        this.tableLoading = false
       });
     },
     getInvestmentData() {
       this.headerLoading = true
       getInvestmentData({
         investmentVersionId: this.form['search.version'],
-        // carTypeId: this.params.id,
-        carTypeId: 3,
-        carType: this.params.carType
+        carTypeId: this.params.id,
+        carType: this.params.sourceStatus
       }).then((res) => {
         if (Number(res.code) === 0) {
           this.form['search.carTypeName'] = res.data.carTypeName
           this.form['search.sopDate'] = res.data.sopDate
           this.form['search.purchasingFactory'] = res.data.purchasingFactory ? res.data.purchasingFactory.join('') : ''
-          this.form['search.approvalInvestment'] = res.data.approvalInvestment ? Number(res.data.approvalInvestment).toFixed(2) : 0
+          this.form['search.approvalInvestment'] = Number(res.data.approvalInvestment) ? Number(res.data.approvalInvestment).toFixed(2) : 0
           this.mainCarTypeList = res.data.mainCarTypeList
-          this.form['search.relatedCarType'] = res.data.mainCarTypeList[0].id
+          this.form['search.relatedCarType'] = res.data.mainCarTypeList[0] ? res.data.mainCarTypeList[0].id : ''
+          this.saveParams.version = res.data.defaultVersion
 
-          let contingency = res.data.contingency ? Number(res.data.contingency).toFixed(0) : 0
-          let aekoValue = res.data.aekoValue ? Number(res.data.aekoValue).toFixed(0) : 0
-          let notAekoValue = res.data.notAekoValue ? Number(res.data.notAekoValue).toFixed(0) : 0
-          let totalValue = res.data.notAekoValue ? Number(res.data.totalValue).toFixed(0) : 0
+          let contingency = Number(res.data.contingency) ? Number(res.data.contingency).toFixed(0) : 0
+          let aekoValue = Number(res.data.aekoValue) ? Number(res.data.aekoValue).toFixed(0) : 0
+          let notAekoValue = Number(res.data.notAekoValue) ? Number(res.data.notAekoValue).toFixed(0) : 0
+          let totalValue = Number(res.data.notAekoValue) ? Number(res.data.totalValue).toFixed(0) : 0
+          this.form['search.SUBTOTA'] = Number(res.data.subTotal) ? Number(res.data.subTotal).toFixed(0) : 0
           this.findInvestmentList()
+
           this.$nextTick(() => {
             const chart1 = echarts().init(document.getElementById("chart1"));
             let option1 = {
               tooltip: {
                 formatter: function (params) {//这里就是控制显示的样式
                   console.log(params)
-                  if(params.seriesIndex == 0){
+                  if (params.seriesIndex == 0) {
                     return Number((contingency / totalValue) * 100).toFixed(2) + '%'
-                  } else if(params.seriesIndex == 1){
+                  } else if (params.seriesIndex == 1) {
                     return Number((aekoValue / totalValue) * 100).toFixed(2) + '%'
-                  } else if(params.seriesIndex == 2){
+                  } else if (params.seriesIndex == 2) {
                     return Number((notAekoValue / totalValue) * 100).toFixed(2) + '%'
                   }
                 },
@@ -471,13 +645,13 @@ export default {
     getInvestmentVerisionList() {
       this.headerLoading = true
       getInvestmentVerisionList({
-        // id: this.params.id,
-        id: 1,
+        id: this.params.id,
         sourceType: this.params.sourceStatus
       }).then((res) => {
         if (Number(res.code) === 0) {
           this.versionList = res.data
           this.form['search.version'] = this.versionList[0].id
+          this.versionName = this.versionList[0].version
           this.getInvestmentData()
         } else {
           iMessage.error(res.desZh);
@@ -509,9 +683,32 @@ export default {
         return
       }
       this.tableLoading = true
-      deleteList(this.selectTableData.map(item => ({id: item.id, isDelete: 2}))).then((res) => {
+      investmentDelete(this.selectTableData).then((res) => {
         if (Number(res.code) === 0) {
-          this.getTableListFn()
+          this.findInvestmentList()
+          iMessage.success(res.desZh);
+        } else {
+          iMessage.error(res.desZh);
+          // this.tableLoading = false
+        }
+      }).catch(() => {
+        // this.tableLoading = false
+      });
+    },
+    saveRow() {
+      this.tableLoading = true
+      investmentUpdate({
+        investmentListEntities: this.tableListData,
+        aekoAmount: this.form['search.AEKOMoney'],
+        aekoPercent: this.form['search.aekoPercent'],
+        contingencyAmount: this.form['search.contingencyAmount'],
+        contingencyPercent: this.form['search.contingencyPercent'],
+        investmentVersionId: this.form['search.version'],
+        totalBudget: this.form['search.totalBudget'],
+        approveInvestment: this.form['search.approvalInvestment'],
+      }).then((res) => {
+        if (Number(res.code) === 0) {
+          this.findInvestmentList()
           iMessage.success(res.desZh);
         } else {
           iMessage.error(res.desZh);
@@ -521,27 +718,17 @@ export default {
         this.tableLoading = false
       });
     },
-    saveRow() {
-      if (this.selectTableData.length == 0) {
-        iMessage.warn('请先勾选');
-        return
-      }
-      if (this.selectTableData.length > 1) {
-        iMessage.warn('只能勾选保存一行数据');
-        return
-      }
-      this.tableLoading = true
-      updateBuildInvestment(this.selectTableData[0]).then((res) => {
-        if (Number(res.code) === 0) {
-          this.getTableListFn()
-          iMessage.success(res.desZh);
-        } else {
-          iMessage.error(res.desZh);
-          this.tableLoading = false
-        }
-      }).catch(() => {
-        this.tableLoading = false
-      });
+    saveAsRow() {
+      this.saveParams.investmentListEntities = this.tableListData
+      this.saveParams.aekoAmount = this.form['search.AEKOMoney']
+      this.saveParams.aekoPercent = this.form['search.aekoPercent']
+      this.saveParams.contingencyAmount = this.form['search.contingencyAmount']
+      this.saveParams.contingencyPercent = this.form['search.contingencyPercent']
+      this.saveParams.investmentVersionId = this.form['search.version']
+      this.saveParams.totalBudget = this.form['search.totalBudget']
+      this.saveParams.approveInvestment = this.form['search.approvalInvestment']
+      this.saveParams.versionId = this.form['search.version']
+      this.saveAsShow = true
     },
     // 跳转详情
     openPage(item) {
@@ -748,6 +935,14 @@ export default {
       });
     },
   },
+  watch:{
+    aekoPercent(val){
+      this.AEKOMoney = (val * this.form['search.SUBTOTA'] * 0.01).toFixed(2)
+    },
+    AEKOMoney(val){
+      this.aekoPercent = (val * 100 / this.form['search.SUBTOTA']).toFixed(0)
+    },
+  }
 };
 </script>
 <style lang="scss" scoped>
@@ -771,10 +966,29 @@ export default {
 .investmentList {
   position: relative;
 
+  .buttomInput {
+    display: flex;
+    justify-content: space-between;
+
+    > div {
+      display: flex;
+
+      h4 {
+        white-space: nowrap;
+        margin-right: 5px;
+      }
+
+      .el-input {
+        width: 100px;
+      }
+    }
+  }
+
   .headerIcard ::v-deep .cardBody {
     padding: 18px 60px 22px 50px;
     display: flex;
     align-items: center;
+    position: relative;
 
     .infoIcard {
       margin-left: 49px;
@@ -791,6 +1005,55 @@ export default {
         &:nth-of-type(1), &:nth-of-type(2) {
           label {
             font-weight: bold;
+          }
+        }
+      }
+    }
+
+    .legend {
+      font-size: 12px;
+      font-weight: bold;
+      position: absolute;
+      right: 60px;
+      top: 18px;
+
+      div {
+        display: inline-block;
+        position: relative;
+        margin-left: 60px;
+
+        &::before {
+          content: '';
+          display: block;
+          width: 10px;
+          height: 10px;
+          border-radius: 50%;
+          background-color: #B3D0FF;
+          position: absolute;
+          left: -17px;
+          top: 4px;
+        }
+
+        &:nth-of-type(2) {
+          &::before {
+            background-color: #FFB04D;
+            top: 2px;
+          }
+        }
+
+        &:nth-of-type(3) {
+          &::before {
+            background-color: #55C2D0;
+            top: 2px;
+          }
+        }
+
+        &:nth-of-type(4) {
+          color: #485465;
+          font-weight: 400;
+
+          &::before {
+            background-color: transparent;
           }
         }
       }

@@ -14,11 +14,11 @@
     <!--预算管理-->
     <div v-if="index === 1">
       <carTypeOverview
-          @toGenerateInvestmentList="val => budgetManagement(val, 1, 'generateInvestmentListParams')"
+          @toGenerateInvestmentList="val => budgetManagement(val, 'generateInvestmentListParams')"
           v-if="indexChilden === 0"
       ></carTypeOverview>
       <generateInvestmentList
-          @toinvestmentList="val => budgetManagement(val, 2, 'investmentListParams')"
+          @toinvestmentList="val => budgetManagement(val, 'investmentListParams')"
           :params="generateInvestmentListParams"
           v-if="indexChilden === 1"
       ></generateInvestmentList>
@@ -52,7 +52,6 @@ export default {
       tabtitle: tabtitle,
       index: 1,
       indexChilden: 0,
-      budgetManagementIndex: '1-1',
       generateInvestmentListParams: {}
     };
   },
@@ -61,9 +60,12 @@ export default {
       this.index = val
       this.indexChilden = 0
     },
-    budgetManagement(val, step, params) {
+    budgetManagement(val, params) {
       this[params] = val
-      this.indexChilden = step
+      this.indexChilden = val.step
+      if(val.step == 2){
+        this.investmentListParams = val
+      }
     }
   },
 };

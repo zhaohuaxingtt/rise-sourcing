@@ -245,7 +245,7 @@ export const investmentListEntities = [{
     },
     {
         props: 'budgetAmount',
-        name: '预算金额PSK',
+        name: '预算金额PSK(Mio.RMB)',
         key: 'partsprocure.PARTSPROCURESTATUS',
         tooltip: false
     },
@@ -281,7 +281,7 @@ export const investmentListEntities = [{
     },
     {
         props: 'refMoldAmount',
-        name: '参考项目模具金额',
+        name: '参考项目模具金额(Mio.RMB)',
         key: 'partsprocure.PARTSPROCUREVEHICLECATEGORIES',
         tooltip: false
     },
@@ -335,6 +335,13 @@ export const form = {
     'search.purchasingFactory': "", //采购工厂
     'search.approvalInvestment': "", //批准投资
     'search.relatedCarType': "", //关联车型
+
+    'search.SUBTOTA': "", //SUB-TOTAL
+    'search.aekoPercent': "", //AEKO
+    'search.AEKOMoney': "", //AEKO金额
+    'search.contingencyAmount': "", //综合偏差
+    'search.contingencyPercent': "", //综合偏差金额
+    'search.totalBudget': "", //总预算
 }
 
 // addRfq

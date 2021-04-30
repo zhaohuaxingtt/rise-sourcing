@@ -159,7 +159,7 @@ export default {
       this.saveLoading = true
       let params = {
         cartypeProType: this.form['search.modelProject'],
-        id: this.$route.query.id,
+        id: this.carTypeProId,
         other: this.form['search.otherModel'],
         refCartypeProFirstId: this.form['search.referenceModel1'],
         refCartypeProSecondId: this.form['search.referenceModel2'],
@@ -219,6 +219,7 @@ export default {
       this.tableLoading = true
       let parmars = {
         cartypeProId: this.carTypeProId,
+        sourceStatus: this.sourceStatus,
         commodity: this.form['search.professionalDepartments'],
         materialName: this.form['search.zhEnNo'],
         modelType: this.form['search.mouldAttr'],
@@ -252,7 +253,7 @@ export default {
     value(val) {
       if(val){
         this.loadingiDialog = true
-        getRelationCarTypeById({id: this.$route.query.id}).then((res) => {
+        getRelationCarTypeById({id: this.carTypeProId}).then((res) => {
           if (res.data) {
             this.form['referenceModel1'] = res.data.refCartypeProFirstId
             this.form['referenceModel2'] = res.data.refCartypeProSecondId

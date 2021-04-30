@@ -179,6 +179,9 @@ import {
   iInput,
   iSelect,
 } from "@/components";
+// import {
+//   iButton
+// } from "rise"
 import {pageMixins} from "@/utils/pageMixins";
 import {budgetManagementData, form} from "./components/data";
 import tablelist from "./components/tablelist";
@@ -200,7 +203,10 @@ import {Popover} from "element-ui"
 
 export default {
   props: {
-    params: { type: Object, default: () => {} }
+    params: {
+      type: Object, default: () => {
+      }
+    }
   },
   mixins: [pageMixins, filters],
   components: {
@@ -308,8 +314,12 @@ export default {
       });
     },
     investmentList() {
-      this.$emit('toinvestmentList', {id: this.form['search.carTypeProject'], sourceStatus: this.params.sourceStatus, carType: this.carTypeProjectObj.sourceStatus})
-      return
+      if(this.tableListData.length == 0){
+        iMessage.warn('请先添加行');
+        return
+      }
+      // this.$emit('toinvestmentList', {id: this.form['search.carTypeProject'], sourceStatus: this.params.sourceStatus, carType: this.carTypeProjectObj.sourceStatus})
+      // return
       saveInvestBuildBottom({
 
         id: this.form['search.carTypeProject'],
@@ -317,7 +327,11 @@ export default {
       }).then((res) => {
         if (Number(res.code) === 0) {
           iMessage.success(res.desZh);
-          this.$emit('toinvestmentList', {id: this.form['search.carTypeProject'], sourceStatus: this.params.sourceStatus, carType: this.carTypeProjectObj.sourceStatus})
+          this.$emit('toinvestmentList', {
+            id: this.form['search.carTypeProject'],
+            sourceStatus: this.carTypeProjectObj.sourceStatus,
+            step: 2
+          })
         } else {
           iMessage.error(res.desZh);
           this.tableLoading = false
