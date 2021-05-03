@@ -3,7 +3,7 @@
  * @Date: 2021-04-21 17:24:15
 -->
 <template>
-  <iDialog :title="$t(title)" :visible.sync="value" width="684px" top="5vh" @close='clearDiolog'>
+  <iDialog :title="$t(title)" :visible.sync="value" width="684px" top="5vh" @close='clearDiolog' :modal-append-to-body='false'>
     <div slot="title" class="title">
       <div class="text">
         {{$t(title)}}
@@ -16,7 +16,12 @@
       </div>
     </div>
     <div class="changeContent" v-loading="loadingiDialog">
-        <el-form style="border-bottom: 1px solid #D1D1D1">
+      <iSearch
+          :icon="false"
+          :resetKey="PARTSPROCURE_RESET"
+          :searchKey="PARTSPROCURE_CONFIRM"
+      >
+        <el-form class="form1 clearfix">
           <el-form-item label="参考车型项目一">
             <iSelect
                 placeholder="请选择"
@@ -82,7 +87,7 @@
             </iSelect>
           </el-form-item>
         </el-form>
-        <el-form>
+        <el-form class="clearfix">
           <el-form-item label="车型项目类型">
             <iSelect
                 placeholder="请选择"
@@ -99,10 +104,24 @@
               ></el-option>
             </iSelect>
           </el-form-item>
-<!--          <el-form-item label="车型项目起止年份">-->
+          <el-form-item label="车型项目起止年份">
+            <div class="timeClass">
+              <el-date-picker
+                  v-model="value3"
+                  type="year"
+                  placeholder="选择年">
+              </el-date-picker>
+              <div>-</div>
+              <el-date-picker
+                  v-model="value4"
+                  type="year"
+                  placeholder="选择年">
+              </el-date-picker>
+            </div>
 <!--            <iInput v-model="form['search.catTypeStartTime']"></iInput>-->
-<!--          </el-form-item>-->
+          </el-form-item>
         </el-form>
+      </iSearch>
     </div>
     <span slot="footer" class="dialog-footer">
       <iButton @click="save" :loading='saveLoading'>确认</iButton>
@@ -111,13 +130,13 @@
   </iDialog>
 </template>
 <script>
-import {iButton, iDialog, iMessage, iSelect, icon} from '@/components'
+import {iButton, iDialog, iMessage, iSelect, icon, iSearch} from '@/components'
 import { Popover } from "element-ui"
 import { addListInvestment, form } from "../components/data";
 import { pageMixins } from "@/utils/pageMixins";
 import {
   findAddColumnInvestmentBuild, GetOtherCarTypeAlternative,
-  saveList, saveRefcartypepro, getRelationCarTypeById
+  saveList, saveRefcartypepro, getRelationCarTypeById, findProjectTypeDetailPulldown, getCartypePulldown
 } from "@/api/priceorder/stocksheet/edit";
 
 export default {
@@ -127,7 +146,8 @@ export default {
     iSelect,
     iDialog,
     icon,
-    Popover
+    Popover,
+    iSearch
   },
   props: {
     title: {type: String, default: '参考车型项目'},
@@ -269,6 +289,13 @@ export default {
 }
 </script>
 <style lang='scss' scoped>
+.clearfix::after{
+  content: '';
+  display: block;
+  font-size: 0;
+  height: 0;
+  clear: both;
+}
 ::v-deep .el-popover__title{
   margin-bottom: 0;
 }
@@ -293,21 +320,26 @@ export default {
 }
 
 .changeContent {
+  .form1{
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #E3E3E3;
+  }
   .el-form{
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    .el-input{
-    }
-    .el-form-item__label{
-      color: #000000;
-      font-weight: 400;
-    }
-    .el-select{
-      width: 280px;
+    .el-form-item{
+      width: calc(50% - 50px);
+      .el-input{
+      }
     }
   }
-  margin-bottom: 30px;
+  .timeClass{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    ::v-deep .el-input{
+      width: 45%;
+    }
+  }
   ::v-deep .card{
     box-shadow: none;
     border-radius: 0;
@@ -319,7 +351,6 @@ export default {
       padding-right: 0;
     }
     .iSearch-content{
-      border-bottom: 1px solid #E3E3E3;
       padding-bottom: 20px;
     }
   }

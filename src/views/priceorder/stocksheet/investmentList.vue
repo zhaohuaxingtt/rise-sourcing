@@ -109,88 +109,94 @@
             <iButton v-show="pageEdit" @click="conversionRatioShow = true">按比例折算</iButton>
           </div>
         </div>
-        <tablelist
-            :tableData="tableListData"
-            :tableTitle="tableTitle"
-            :tableLoading="tableLoading"
-            @handleSelectionChange="handleSelectionChange"
-            @openPage="openPage"
-            :activeItems="'partNum'"
-        >
-          <template #refCartypeProId="scope">
-            <a :href="scope.row.refCartypeProId">{{ scope.row.refCartypeProId }}</a>
-          </template>
-          <template #budgetAmount="scope">
-            <iInput v-model="scope.row.budgetAmount" v-if="pageEdit"></iInput>
-            <div v-if="!pageEdit">{{ scope.row.budgetAmount }}</div>
-          </template>
-          <template #moldProperties="scope">
-            <iSelect
-                v-show="pageEdit"
-                placeholder="请选择"
-                v-model="scope.row.moldProperties"
-                v-permission="PARTSPROCURE_PARTSTATUS"
-                filterable
-                @change="changeCarTypeProject"
-            >
-              <el-option
-                  :value="item.modelProtitesName"
-                  :label="item.modelProtitesName"
-                  v-for="(item, index) in modelProtitesList"
-                  :key="index"
-              ></el-option>
-            </iSelect>
-            <div v-if="!pageEdit">{{ scope.row.moldProperties }}</div>
-          </template>
-          <template #sourcingType="scope">
-            <div v-if="!pageEdit">{{ scope.row.sourcingType == 1 ? 'Y' : 'N' }}</div>
-            <iSelect
-                v-show="pageEdit"
-                placeholder="请选择"
-                v-model="scope.row.sourcingType"
-                v-permission="PARTSPROCURE_PARTSTATUS"
-                filterable
-                @change="changeCarTypeProject"
-            >
-              <el-option :value="1" label="Y"></el-option>
-              <el-option :value="2" label="N"></el-option>
-            </iSelect>
-          </template>
-          <template #remarks="scope">
-            <iInput v-model="scope.row.remarks" v-if="pageEdit"></iInput>
-            <div v-if="!pageEdit">{{ scope.row.remarks }}</div>
-          </template>
-        </tablelist>
-        <div class="buttomInput">
-          <div>
-            <h4>SUB-TOTAL:</h4>
-            <iInput v-model="form['search.SUBTOTA']" disabled></iInput>
-          </div>
-          <div>
-            <h4>AEKO:</h4>
-            <iInput v-model="aekoPercent"></iInput>% of Sub-Total
-          </div>
-          <div>
-            <h4>AEKO金额:</h4>
-            <iInput v-model="AEKOMoney"></iInput>
-          </div>
-          <div>
-            <h4>综合偏差:</h4>
-            <iInput v-model="form['search.contingencyPercent']"></iInput>% of Sub-Total
-          </div>
-          <div>
-            <h4>综合偏差金额:</h4>
-            <iInput v-model="form['search.contingencyAmount']"></iInput>
-          </div>
-          <div>
-            <h4>总预算:</h4>
-            <iInput v-model="form['search.totalBudget']"></iInput>
-          </div>
-          <div>
-            <iInput v-model="aekoPercent"></iInput>
-          </div>
-          <div>
-            <iInput v-model="AEKOMoney"></iInput>
+        <div v-loading="tableLoading">
+          <tablelist
+              :tableData="tableListData"
+              :tableTitle="tableTitle"
+              @handleSelectionChange="handleSelectionChange"
+              @openPage="openPage"
+              :activeItems="'partNum'"
+          >
+            <template #refCartypeProId="scope">
+              <a :href="scope.row.refCartypeProId">{{ scope.row.refCartypeProId }}</a>
+            </template>
+            <template #budgetAmount="scope">
+              <iInput v-model="scope.row.budgetAmount" v-if="pageEdit" @input="changeBudgetAmount"></iInput>
+              <div v-if="!pageEdit">{{ scope.row.budgetAmount }}</div>
+            </template>
+            <template #moldProperties="scope">
+              <iSelect
+                  v-show="pageEdit"
+                  placeholder="请选择"
+                  v-model="scope.row.moldProperties"
+                  v-permission="PARTSPROCURE_PARTSTATUS"
+                  filterable
+                  @change="changeCarTypeProject"
+              >
+                <el-option
+                    :value="item.modelProtitesName"
+                    :label="item.modelProtitesName"
+                    v-for="(item, index) in modelProtitesList"
+                    :key="index"
+                ></el-option>
+              </iSelect>
+              <div v-if="!pageEdit">{{ scope.row.moldProperties }}</div>
+            </template>
+            <template #sourcingType="scope">
+              <div v-if="!pageEdit">{{ scope.row.sourcingType == 1 ? 'Y' : 'N' }}</div>
+              <iSelect
+                  v-show="pageEdit"
+                  placeholder="请选择"
+                  v-model="scope.row.sourcingType"
+                  v-permission="PARTSPROCURE_PARTSTATUS"
+                  filterable
+                  @change="changeCarTypeProject"
+              >
+                <el-option :value="1" label="Y"></el-option>
+                <el-option :value="2" label="N"></el-option>
+              </iSelect>
+            </template>
+            <template #remarks="scope">
+              <iInput v-model="scope.row.remarks" v-if="pageEdit"></iInput>
+              <div v-if="!pageEdit">{{ scope.row.remarks }}</div>
+            </template>
+          </tablelist>
+          <div class="buttomInput">
+            <div>
+              <h4>SUB-TOTAL:</h4>
+              <iInput v-model="form['search.SUBTOTA']" disabled></iInput>
+            </div>
+            <div>
+              <h4>AEKO:</h4>
+              <iInput v-model="form['search.aekoPercent']" @input="changePerent" :disabled="!pageEdit"></iInput>
+              % of Sub-Total
+            </div>
+            <div>
+              <h4>AEKO金额:</h4>
+              <iInput v-model="form['search.AEKOMoney']" disabled></iInput>
+            </div>
+            <div>
+              <h4>综合偏差:</h4>
+              <iInput v-model="form['search.contingencyPercent']" @input="changePerent" :disabled="isLocked || !pageEdit"></iInput>
+              % of Sub-Total
+            </div>
+            <div>
+              <h4>综合偏差金额:</h4>
+              <iInput v-model="form['search.contingencyAmount']" disabled></iInput>
+            </div>
+            <div>
+              <h4>总预算:</h4>
+              <iInput v-model="form['search.totalBudget']" :disabled="isLocked || !pageEdit">
+                <icon slot="suffix" symbol name="iconzongyusuansuoding" class="icon" v-if="isLocked" @click="isLocked = !isLocked"/>
+                <icon slot="suffix" symbol name="iconzongyusuanweisuoding" class="icon" v-if="!isLocked" @click="isLocked = !isLocked"/>
+                <i slot="suffix" class="el-input__icon el-icon-search" v-if="isLocked" @click="isLocked = !isLocked"></i>
+                <i slot="suffix" class="el-input__icon el-icon-eleme" v-if="!isLocked" @click="isLocked = !isLocked"></i>
+
+              </iInput>
+
+              <div v-if="isLocked" @click="isLocked = !isLocked">11111</div>
+              <div v-if="!isLocked" @click="isLocked = !isLocked">22222</div>
+            </div>
           </div>
         </div>
         <!------------------------------------------------------------------------>
@@ -337,7 +343,7 @@ export default {
       bbb: '',
       headerLoading: false,
       contentLoading: false,
-
+      isLocked: false,
       pageEdit: false,
 
       carType: '',
@@ -408,13 +414,32 @@ export default {
   mounted() {
   },
   methods: {
+    changeBudgetAmount(){
+      let total = 0
+      this.tableListData.map(item => total += Number(item.budgetAmount))
+      this.form['search.SUBTOTA'] = total.toFixed(2)
+      this.changePerent()
+    },
+    changePerent() {
+      if (this.isLocked) {
+        this.form['search.AEKOMoney'] = (Number(this.form['search.aekoPercent']) * Number(this.form['search.SUBTOTA']) * 0.01).toFixed(2)
+        this.form['search.contingencyAmount'] = (Number(this.form['search.totalBudget']) - Number(this.form['search.SUBTOTA']) - Number(this.form['search.AEKOMoney'])).toFixed(2)
+        this.form['search.contingencyPercent'] = ((Number(this.form['search.contingencyAmount']) / Number(this.form['search.SUBTOTA'])) * 100).toFixed(2)
+      } else {
+        this.form['search.AEKOMoney'] = (Number(this.form['search.aekoPercent']) * Number(this.form['search.SUBTOTA']) * 0.01).toFixed(2)
+        this.form['search.contingencyAmount'] = (Number(this.form['search.contingencyPercent']) * Number(this.form['search.SUBTOTA']) * 0.01).toFixed(2)
+        this.form['search.totalBudget'] = (Number(this.form['search.AEKOMoney']) + Number(this.form['search.contingencyAmount']) + Number(this.form['search.SUBTOTA'])).toFixed(2)
+      }
+    },
     conversionSave(val) {
       let conversionVal = val / 100
-      this.tableListData = this.tableListData.map(item => item.budgetAmount * conversionVal)
-      this.form['search.SUBTOTA'] = form['search.SUBTOTA'] * conversionVal
-      this.form['search.AEKOMoney'] = form['search.AEKOMoney'] * conversionVal
-      this.form['search.contingencyAmount'] = form['search.contingencyAmount'] * conversionVal
-      this.form['search.totalBudget'] = this.form['search.AEKOMoney'] + this.form['search.contingencyAmount']
+      this.tableListData = this.tableListData.map(item => {
+        console.log(item)
+        item.budgetAmount = (Number(item.budgetAmount) * conversionVal).toFixed(2)
+        return item
+      })
+      this.form['search.SUBTOTA'] = Number(this.form['search.SUBTOTA']) * conversionVal
+      this.changePerent()
     },
     changeVersion(val) {
       if (val) {
@@ -426,7 +451,7 @@ export default {
     relationMainCarType(val) {
       relationMainCarType({
         mainId: val,
-        localId: 'mainId',
+        localId: this.params.id,
       }).then((res) => {
         if (Number(res.code) === 0) {
           iMessage.success(res.desZh);
@@ -469,12 +494,15 @@ export default {
         listVerisonId: this.form['search.version'],
       }).then((res) => {
         if (Number(res.code) === 0) {
-          this.tableListData = res.data.investmentListEntities
-          this.form['search.aekoPercent'] = res.data.aekoPercent
-          this.form['search.AEKOMoney'] = res.data.aekoAmount
-          this.form['search.contingencyAmount'] = res.data.contingencyPercent
-          this.form['search.contingencyPercent'] = res.data.contingencyAmount
-          this.form['search.totalBudget'] = res.data.totalBudget
+          this.tableListData = res.data.investmentListEntities.map(item => {
+            item.budgetAmount = Number(item.budgetAmount).toFixed(2)
+            return item
+          })
+          this.form['search.aekoPercent'] = Number(res.data.aekoPercent).toFixed(2)
+          this.form['search.AEKOMoney'] = Number(res.data.aekoAmount).toFixed(2)
+          this.form['search.contingencyPercent'] = Number(res.data.contingencyPercent).toFixed(2)
+          this.form['search.contingencyAmount'] = Number(res.data.contingencyAmount).toFixed(2)
+          this.form['search.totalBudget'] = Number(res.data.totalBudget).toFixed(2)
         } else {
           iMessage.error(res.desZh);
         }
@@ -503,7 +531,7 @@ export default {
           let aekoValue = Number(res.data.aekoValue) ? Number(res.data.aekoValue).toFixed(0) : 0
           let notAekoValue = Number(res.data.notAekoValue) ? Number(res.data.notAekoValue).toFixed(0) : 0
           let totalValue = Number(res.data.notAekoValue) ? Number(res.data.totalValue).toFixed(0) : 0
-          this.form['search.SUBTOTA'] = Number(res.data.subTotal) ? Number(res.data.subTotal).toFixed(0) : 0
+          this.form['search.SUBTOTA'] = Number(res.data.subTotal) ? Number(res.data.subTotal).toFixed(2) : 0
           this.findInvestmentList()
 
           this.$nextTick(() => {
@@ -935,13 +963,13 @@ export default {
       });
     },
   },
-  watch:{
-    aekoPercent(val){
-      this.AEKOMoney = (val * this.form['search.SUBTOTA'] * 0.01).toFixed(2)
-    },
-    AEKOMoney(val){
-      this.aekoPercent = (val * 100 / this.form['search.SUBTOTA']).toFixed(0)
-    },
+  watch: {
+    // aekoPercent(val){
+    //   this.AEKOMoney = (val * this.form['search.SUBTOTA'] * 0.01).toFixed(2)
+    // },
+    // AEKOMoney(val){
+    //   this.aekoPercent = (val * 100 / this.form['search.SUBTOTA']).toFixed(0)
+    // },
   }
 };
 </script>
@@ -969,7 +997,8 @@ export default {
   .buttomInput {
     display: flex;
     justify-content: space-between;
-
+    margin-top: 44px;
+    line-height: 35px;
     > div {
       display: flex;
 

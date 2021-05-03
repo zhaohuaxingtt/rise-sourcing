@@ -220,7 +220,7 @@ export const addListInvestment = [{
 ]
 export const investmentListEntities = [{
     //export const tableTitle = permissionTitle("PARTSPROCURE_PARTSPROCURELIST",[{
-        props: 'categoryId',
+        props: 'categoryCode',
         name: '材料组编号',
         key: 'partsprocure.PARTSPROCUREFSNFGSNFSPNR',
         tooltip: false

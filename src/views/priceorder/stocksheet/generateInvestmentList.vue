@@ -91,8 +91,8 @@
         </el-form>
         <div class="searchSure">
           <iButton @click="saveAddCarType" v-loading="addCarTypeLoading">确认</iButton>
-          <iButton @click="sure">查询</iButton>
-          <iButton @click="reset">重置</iButton>
+<!--          <iButton @click="sure">查询</iButton>-->
+<!--          <iButton @click="reset">重置</iButton>-->
         </div>
       </iSearch>
       <iCard>
@@ -102,7 +102,7 @@
         <div class="header margin-bottom20">
           <div class="search">
             材料组/中文名/德文名：
-            <iInput v-model="form['search.materialName']" placeholder="请输入查询">
+            <iInput v-model="form['search.materialName']" placeholder="可输入编号中德文名称">
               <i slot="suffix" class="el-input__icon el-icon-search" @click="sure"></i>
             </iInput>
             零件六位号：
@@ -115,7 +115,7 @@
             <iButton @click="deleteIRow" :disabled="(form['search.carTypeProject'] == '')">删除行</iButton>
             <iButton @click="referenceModelShow = true" :disabled="(form['search.carTypeProject'] == '')">参考车型</iButton>
             <!--                <iButton @click="saveRow" :disabled="(form['search.carTypeProject'] == '')">保存</iButton>-->
-            <iButton @click="investmentList" :disabled="(form['search.carTypeProject'] == '')">下一步</iButton>
+<!--            <iButton @click="investmentList" :disabled="(form['search.carTypeProject'] == '')">下一步</iButton>-->
           </div>
         </div>
         <tablelist
@@ -245,6 +245,10 @@ export default {
     };
   },
   created() {
+    this.$store.commit('SET_budgetManagement', {
+      carTypeProject: '',
+      sourceStatus: ''
+    });
     this.getProcureGroup();
   },
   methods: {
@@ -321,7 +325,6 @@ export default {
       // this.$emit('toinvestmentList', {id: this.form['search.carTypeProject'], sourceStatus: this.params.sourceStatus, carType: this.carTypeProjectObj.sourceStatus})
       // return
       saveInvestBuildBottom({
-
         id: this.form['search.carTypeProject'],
         sourceStatus: this.carTypeProjectObj.sourceStatus
       }).then((res) => {
@@ -346,6 +349,10 @@ export default {
       }
       this.loadingiSearch = true
       this.carTypeProjectObj = this.fromGroup.find(item => item.id == val)
+      this.$store.commit('SET_budgetManagement', {
+        carTypeProject: this.carTypeProjectObj.id,
+        sourceStatus: this.carTypeProjectObj.sourceStatus
+      });
       let sourceStatus = this.carTypeProjectObj.sourceStatus
       this.carTypeProjectDisabled = sourceStatus == '1' ? true : false
       findProjectDetailById({id: val, sourceStatus: sourceStatus}).then((res) => {
@@ -359,7 +366,7 @@ export default {
             this.form['search.fixedPointType'] = res.data.fixedPointId
             this.form['search.modelCategory'] = res.data.carTypeId
           }
-
+          this.sure()
         } else {
           iMessage.error(res.desZh);
         }
@@ -371,8 +378,14 @@ export default {
       // this.getTableListFn();
     },
     getProcureGroup() {
-      this.loadingiSearch = true
       this.form['search.carTypeProject'] = ''
+      this.form['search.materialName'] = ''
+      this.form['search.partNum'] = ''
+      this.loadingiSearch = true
+      this.$store.commit('SET_budgetManagement', {
+        carTypeProject: this.params.id,
+        sourceStatus: this.params.sourceStatus
+      });
       Promise.all([findProjectTypeDetailPulldown(), getCartypePulldown()]).then((res) => {
         if (res[0].data) {
           this.projectTypeList = res[0].data.projectTypePullDownVOList

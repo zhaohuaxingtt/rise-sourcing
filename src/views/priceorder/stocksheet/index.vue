@@ -7,7 +7,13 @@
     <!------------------------------------------------------------------------>
     <!--                  导航                                  --->
     <!------------------------------------------------------------------------>
-    <iNavWS2 :tabtitle="tabtitle" @click="log" @changeNav="changeNav"></iNavWS2>
+    <iNavWS2
+        :tabtitle="tabtitle"
+        @click="log"
+        @changeNav="changeNav"
+        :isGenerateInvestmentList="isGenerateInvestmentList"
+        @nextStep="nextStep"
+    ></iNavWS2>
     <!------------------------------------------------------------------------>
     <!--                  内容                                  --->
     <!------------------------------------------------------------------------>
@@ -32,12 +38,15 @@
 <script>
 import {
   iPage,
-  iNavWS2
+  iNavWS2, iMessage
 } from "@/components";
 import {tabtitle} from "./components/data";
 import carTypeOverview from "./carTypeOverview";
 import generateInvestmentList from "./generateInvestmentList";
 import investmentList from "./investmentList";
+import {
+  saveInvestBuildBottom,
+} from "@/api/priceorder/stocksheet/edit";
 
 export default {
   components: {
@@ -59,12 +68,51 @@ export default {
     changeNav(val) {
       this.index = val
       this.indexChilden = 0
+      this.isGenerateInvestmentList = false
     },
     budgetManagement(val, params) {
+      this.isGenerateInvestmentList = val.step == 1 ? true : false
       this[params] = val
       this.indexChilden = val.step
-      if(val.step == 2){
+      if (val.step == 2) {
         this.investmentListParams = val
+      }
+    },
+    nextStep() {
+      let carTypeProject = this.$store.state.mouldManagement.budgetManagement.carTypeProject
+      let sourceStatus = this.$store.state.mouldManagement.budgetManagement.sourceStatus
+      if (this.$store.state.mouldManagement.budgetManagement.carTypeProject &&
+          this.$store.state.mouldManagement.budgetManagement.sourceStatus) {
+        // if (this.tableListData.length == 0) {
+        //   iMessage.warn('请先添加行');
+        //   return
+        // }
+        saveInvestBuildBottom({
+          id: carTypeProject,
+          sourceStatus: sourceStatus
+        }).then((res) => {
+          if (Number(res.code) === 0) {
+            iMessage.success(res.desZh);
+            this.budgetManagement({
+                id: carTypeProject,
+                sourceStatus: sourceStatus,
+                step: 2
+              },
+              'investmentListParams'
+            )
+          } else if (Number(res.code) === 1){
+            iMessage.error('请先添加行');
+            this.tableLoading = false
+          } else {
+            iMessage.error(res.desZh);
+            this.tableLoading = false
+          }
+        }).catch(() => {
+          this.tableLoading = false
+        });
+
+      } else {
+        iMessage.warn('请先选择车型项目');
       }
     }
   },

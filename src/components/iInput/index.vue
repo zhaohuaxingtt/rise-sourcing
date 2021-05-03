@@ -29,4 +29,8 @@ export default{
     font-size: 20px;
     cursor: pointer;
   }
+  .el-input__suffix-inner{
+    font-size: 16px;
+    cursor: pointer;
+  }
 </style>

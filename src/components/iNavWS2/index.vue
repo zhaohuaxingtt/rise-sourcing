@@ -7,13 +7,18 @@
   <div class="nav">
     <div class="tabs">
       <ul>
-        <li v-for="(items, index) in tabtitle" :key="index" :class="{ 'active': items.active }" @click="$emit('changeNav', items.index)">
+        <li v-for="(items, index) in tabtitle" :key="index" :class="{ 'active': items.active }" @click="changeNav(items.index)">
           {{ items.name }}
         </li>
       </ul>
       <span class="bottom-line"></span>
     </div>
     <div class="btnList flex-align-center">
+      <iButton
+          v-if="isGenerateInvestmentList"
+          class="nextStep"
+          @click="$emit('nextStep')"
+      >下一步</iButton>
       <div class="logButton" @click="$emit('click')">
         <icon symbol name="iconrizhiwuzi" class="icon" />
         <span>{{ $t("LK_RIZHI") }}</span>
@@ -27,6 +32,7 @@
 <script>
 import {
   icon,
+  iButton, iMessage
 } from "@/components";
 import logButton from "pages/priceorder/stocksheet/components/logButton";
 export default {
@@ -35,12 +41,14 @@ export default {
       type: Array
     },
     routerPage: Boolean,
+    isGenerateInvestmentList: Boolean,
   },
   mounted() {
     console.log(this.tabtitle)
   },
   components: {
     icon,
+    iButton
   },
   data() {
     return {
@@ -50,7 +58,15 @@ export default {
   created() {
 
   },
-  methods: {}
+  methods: {
+    changeNav(index){
+      this.tabtitle = this.tabtitle.map(item => {
+        item.active = item.index == index ? true : false
+        return item
+      })
+      this.$emit('changeNav', index)
+    }
+  }
 }
 </script>
 
@@ -59,6 +75,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  height: 30px;
   .tabs {
     display: flex;
 
@@ -92,6 +109,9 @@ export default {
     }
   }
   .btnList {
+    .nextStep{
+      margin-right: 20px;
+    }
     > span {
       font-size: 20px;
       margin-left: 20px;
