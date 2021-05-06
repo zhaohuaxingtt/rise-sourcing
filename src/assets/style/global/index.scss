@@ -9,13 +9,13 @@
 */
 *{
   box-sizing: border-box;
-  font-family: 'Arial',"Microsoft YaHei";
+  font-family: 'VWTEXTOFFICE-REGULAR','VWHEADOFFICE-REGULAR','VWAGTHESANS-BOLD','VWHEADOFFICE-BOLD','VWHEADOFFICE-BOLDITALIC','VWHEADOFFICE-REGULARITALIC','VWTEXTOFFICE-BOLD','VWTEXTOFFICE-BOLDITALIC','VWTEXTOFFICE-REGULARITALIC';
   &::-webkit-scrollbar {
         width:9px;
         height:9px;
     }
     &::-webkit-scrollbar-track {
-        width: 6px;
+        width: 8px;
         background-color:#e4e4e5;
         -webkit-border-radius: 2em;
         -moz-border-radius: 2em;
@@ -105,7 +105,7 @@ a{
 }
 /*-------------------------------------
  |                                     |
- |           组件间距class名                |
+ |           组件间距class名             |
  |                                     |
  ---------------------------------------
 */
@@ -182,10 +182,10 @@ a{
   }
   // table里面 select样式调整
   .el-table__row .el-input {
-  	height: 35px !important;
+  	height: 30px !important;
 
   	.el-input__inner {
-  		height: 35px !important;
+  		height: 30px !important;
   	}
   }
   .el-select {

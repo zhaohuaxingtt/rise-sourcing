@@ -107,7 +107,7 @@ export default {
     },
     download() {
       if (!this.multipleSelection.length) {
-        iMessage.warn(this.$t('LK_QINGXUANZHEXUYAOXIAZHAIWENJIAN'))
+        return iMessage.warn(this.$t('LK_QINGXUANZHEXUYAOXIAZHAIWENJIAN'))
       }
 
       downloadFile({

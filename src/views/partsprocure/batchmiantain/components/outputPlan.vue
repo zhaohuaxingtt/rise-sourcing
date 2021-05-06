@@ -51,13 +51,22 @@
 				getAllTable(this.getIds(this.purchaseProjectIds)).then((res) => {
 					if (res.data.partOutPutPlanBatchs) {
 						let  arr=res.data.partOutPutPlanBatchs
+
+						const categoryMap = {}
+
 						arr.forEach(res => {
 							res.outputPlanList.forEach((val, i) => {
 								res['year' + i] = val.outPut
 							})
 							res.startYear = res.outputPlanList[0].year
+
+							if (res.categoryId) {
+								categoryMap[res.categoryId] = { categoryName: res.categoryName, categoryCode: res.categoryCode }
+							}
 						})
 						this.tableListData = arr;
+
+						this.$emit('updateCategoryGroup', Object.keys(categoryMap).map(key => ({ categoryId: key, categoryCode: categoryMap[key].categoryCode, categoryName: categoryMap[key].categoryName })))
 					}
 				})
 			},

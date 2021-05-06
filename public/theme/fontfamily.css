@@ -1,0 +1,72 @@
+@charset "UTF-8";
+@font-face {
+  font-family: 'VWAGTHESANS-BOLD';
+  src: url("fontfamily/VWAGTHESANS-BOLD.OTF") format("opentype");
+  /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/
+  font-weight: normal;
+  font-display: "auto";
+  font-style: normal; }
+
+@font-face {
+  font-family: 'VWHEADOFFICE-BOLD';
+  src: url("fontfamily/VWHEADOFFICE-BOLD.TTF") format("truetype");
+  /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/
+  font-weight: normal;
+  font-display: "auto";
+  font-style: normal; }
+
+@font-face {
+  font-family: 'VWHEADOFFICE-BOLDITALIC';
+  src: url("fontfamily/VWHEADOFFICE-BOLDITALIC.TTF") format("truetype");
+  /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/
+  font-weight: normal;
+  font-display: "auto";
+  font-style: normal; }
+
+@font-face {
+  font-family: 'VWHEADOFFICE-REGULAR';
+  src: url("fontfamily/VWHEADOFFICE-REGULAR.TTF") format("truetype");
+  /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/
+  font-weight: normal;
+  font-display: "auto";
+  font-style: normal; }
+
+@font-face {
+  font-family: 'VWHEADOFFICE-REGULARITALIC';
+  src: url("fontfamily/VWHEADOFFICE-REGULARITALIC.TTF") format("truetype");
+  /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/
+  font-weight: normal;
+  font-display: "auto";
+  font-style: normal; }
+
+@font-face {
+  font-family: 'VWTEXTOFFICE-BOLD';
+  src: url("fontfamily/VWTEXTOFFICE-BOLD.TTF") format("truetype");
+  /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/
+  font-weight: normal;
+  font-display: "auto";
+  font-style: normal; }
+
+@font-face {
+  font-family: 'VWTEXTOFFICE-BOLDITALIC';
+  src: url("fontfamily/VWTEXTOFFICE-BOLDITALIC.TTF") format("truetype");
+  /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/
+  font-weight: normal;
+  font-display: "auto";
+  font-style: normal; }
+
+@font-face {
+  font-family: 'VWTEXTOFFICE-REGULAR';
+  src: url("fontfamily/VWTEXTOFFICE-REGULAR.TTF") format("truetype");
+  /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/
+  font-weight: normal;
+  font-display: "auto";
+  font-style: normal; }
+
+@font-face {
+  font-family: 'VWTEXTOFFICE-REGULARITALIC';
+  src: url("fontfamily/VWTEXTOFFICE-REGULARITALIC.TTF") format("truetype");
+  /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/
+  font-weight: normal;
+  font-display: "auto";
+  font-style: normal; }

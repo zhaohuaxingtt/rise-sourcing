@@ -159,7 +159,7 @@ export default {
       let deleteArr = []
       for(let i = 0, item; (item = this.multipleSelection[i++]); ) {
         if (item.source == 1) { // 1 外部NewPro  2 内部
-          iMessage.warn(`${ item.tpPartAttachmentName } ${ this.$t('LK_WEIBUXITONGWENJIANWUFASHANCHU') }`)
+          return iMessage.warn(`${ item.tpPartAttachmentName } ${ this.$t('LK_WEIBUXITONGWENJIANWUFASHANCHU') }`)
         } else {
           deleteArr.push(item)
         }

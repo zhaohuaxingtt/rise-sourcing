@@ -1,7 +1,7 @@
 <!--
  * @Author: moxuan
  * @Date: 2021-02-25 09:59:25
- * @LastEditTime: 2021-04-16 16:32:14
+ * @LastEditTime: 2021-04-19 15:58:50
  * @LastEditors: Please set LastEditors
  * @Description: RFQ模块首页
  * @FilePath: \rise\src\views\partsrfq\home\index.vue
@@ -17,7 +17,7 @@
           <!------------------------------------------------------------------------>
           <!--                  search 搜索模块                                   --->
           <!------------------------------------------------------------------------>
-          <iSearch class="margin-bottom20" :icon="true" @reset="handleSearchReset" @sure="getTableList"
+          <iSearch class="margin-bottom20" icon @reset="handleSearchReset" @sure="getTableList"
                    :resetKey="PARTSRFQ_RESET" :searchKey="PARTSRFQ_SEARCH">
             <el-form>
               <el-form-item :label="$t('LK_LINGJIANHAO_FSNR_RFQBIANHAO_CAIGOUYUAN')" style="width: 340px">

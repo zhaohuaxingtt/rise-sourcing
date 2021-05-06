@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2021-04-14 00:54:20
+ * @LastEditTime: 2021-04-28 16:59:34
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsprocure\editordetail\index.vue
@@ -158,19 +158,18 @@
 						</iFormItem>
 						<iFormItem label="LINIE：" name="test">
 							<!-- :disabled="!detailData.categoryCode" -->
-							<iSelect v-model="detailData.linieName" v-permission="PARTSPROCURE_EDITORDETAIL_LINE">
-								<el-option :value="item.id" :label="item.name" v-for="(item, index) in fromGroup.LINIE"
-									:key="index"></el-option>
+							<iSelect v-model="detailData.linieUserId" v-permission="PARTSPROCURE_EDITORDETAIL_LINE">
+								<el-option :value="item.id" :label="item.name" v-for="item in fromGroup.LINIE"
+									:key="item.name"></el-option>
 							</iSelect>
 						</iFormItem>
-						<iFormItem :label="$t('LK_CFKONGZHIYUAN') + ':'" name="test">
-							<iSelect v-model="detailData.cfController"
-								v-permission="PARTSPROCURE_EDITORDETAIL_CFCONTROLLER">
-								<el-option :value="item.id" :label="item.name"
-									v-for="(item, index) in fromGroup.CF_CONTROL" :key="index"></el-option>
+						<iFormItem :label="$t('LK_CFKONGZHIYUAN') + ':'" name='cfczy'>
+							<iSelect v-model="detailData.cfController" v-permission="PARTSPROCURE_EDITORDETAIL_CFCONTROLLER">
+								<el-option :value="item.id" :label="item.name" v-for="item in fromGroup.CF_CONTROL" :key="item.name"></el-option>
 							</iSelect>
 						</iFormItem>
 						<iFormItem label="Common Sourcing：" name="test">
+							<!--------预设值会有一个联动，如果 为是  零件采购项目类型是fs commonsourcing  如果是否，则是fs零件 ps:和设计刘洋沟通前端不做联动，仅仅在数据初始化时做----------> 
 							<iSelect v-model="detailData.isCommonSourcing"
 								v-permission="PARTSPROCURE_EDITORDETAIL_COMMONSOURCING">
 								<el-option :value="true" label="是"></el-option>
@@ -196,7 +195,7 @@
 						</iFormItem>
 						<iFormItem label="BMG：" name="test">
 							<iText v-permission="PARTSPROCURE_EDITORDETAIL_BMG">
-								{{ detailData.bmg }}
+								{{ fillterss(detailData.bmg) }}
 							</iText>
 						</iFormItem>
 						<iFormItem :label="$t('LK_HUOBI') + ':'" name="test"
@@ -329,6 +328,13 @@ import { iMessageBox } from '../../../components';
 			this.getProcureGroup();
 		},
 		methods: {
+			fillterss(data){
+				if(data){
+					return '是'
+				}else{
+					return '否'
+				}
+			},
 			checkFactory(){
 				const parmars = {
 					id:this.detailData.purchasePrjectId,
@@ -441,6 +447,10 @@ import { iMessageBox } from '../../../components';
 						detailData[i] = this.detailData[i];
 					}
 				}
+				detailData['cfController'] = this.detailData.cfController
+				detailData['cfControllerZh'] = this.fromGroup.CF_CONTROL.find(items=>items.id == this.detailData.cfController).name
+				detailData['linieUserId'] = this.detailData.linieUserId
+				detailData['linieName'] = this.fromGroup.LINIE.find(items=>items.id == this.detailData.linieUserId).name
 				changeProcure({
 					detailData,
 				}).then((res) => {

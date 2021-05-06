@@ -5,7 +5,7 @@
  * @Description: RFQ-table组件。
 -->
 <template>
-  <el-table fit :height="height" tooltip-effect='light' :data='tableData' :empty-text="$t('LK_ZANWUSHUJU')" v-loading='tableLoading' @selection-change="handleSelectionChange">
+  <el-table :height="height" tooltip-effect='light' :data='tableData' :empty-text="$t('LK_ZANWUSHUJU')" v-loading='tableLoading' @selection-change="handleSelectionChange">
     <el-table-column v-if="selection" type='selection' width="50" align='center'></el-table-column>
 <!--    <el-table-column v-if='index' type='index' width='50' align='center' label='#'></el-table-column>-->
     <template v-for="(items,index) in tableTitle">

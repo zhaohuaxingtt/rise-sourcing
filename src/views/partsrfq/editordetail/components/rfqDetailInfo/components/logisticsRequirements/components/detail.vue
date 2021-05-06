@@ -22,7 +22,7 @@
           </iFormItem>
           <iFormItem :label="$t('LK_FUZEREN')" name="test">
             <iInput v-if="editStatus"></iInput>
-            <i-text v-else>{{dataInfo.direcorId}}</i-text>
+            <i-text v-else>{{dataInfo.direcorName}}</i-text>
           </iFormItem>
           <iFormItem label="ZP：" name="test">
             <iInput v-if="editStatus"></iInput>
@@ -39,7 +39,7 @@
         <iFormGroup :row="4" inline icon>
           <iFormItem :label="$t('LK_BAOZHUANGFUZEREN')" name="test">
             <iInput v-if="editStatus"></iInput>
-            <i-text v-else>{{dataInfo.partPackgeRequirements.direcorId}}</i-text>
+            <i-text v-else>{{dataInfo.partPackgeRequirements.direcorName}}</i-text>
           </iFormItem>
         </iFormGroup>
         <iFormGroup :row="4" inline icon>

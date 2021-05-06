@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-24 09:47:32
- * @LastEditTime: 2021-04-19 14:43:37
+ * @LastEditTime: 2021-04-19 14:54:53
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsign\home\components\data.js
@@ -12,7 +12,7 @@ export const tableTitle = permissionTitle("PERMISSION_TESTTABLE",[
   {props:'tpPartID',name:'信息单流水号',key: 'LK_XINXIDANLIUSHUIHAO',tooltip:false },
   {props:'partNum',name:'零件号',key: 'LK_LINGJIANHAO',tooltip:false},
   {props:'partNameCn',name:'零件名（中）',key: 'LK_LINGJIANMINGZHONG',tooltip:false},
-  {props:'partNameDe',name:'零件名（德）',key: 'LK_LINGJIANMINGDE',tooltip:false},
+  {props:'partNameDe',name:'零件名（德）',key: 'LK_LINGJIANMINGDE',tooltip:true},
   {props:'projectCarType',name:'车型项目',key: 'LK_CHEXINGXIANGMU',tooltip:false},
   {props:'buyerName',name:'前期采购员',key: 'LK_CAIGOUYUAN',tooltip:false},
   {props:'tpDeptNum',name:'设计科室',key: 'LK_SHEJIKESHI',tooltip:false},
