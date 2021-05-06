@@ -257,7 +257,7 @@ export const investmentListEntities = [{
     },
     {
         props: 'sourcingType',
-        name: 'Sourcing类型',
+        name: 'Common Sourcing',
         key: 'partsprocure.PARTSPROCUREPURCHASINGFACTORY',
         tooltip: false
     },
@@ -274,7 +274,7 @@ export const investmentListEntities = [{
         tooltip: false
     },
     {
-        props: 'refCartypeProId',
+        props: 'refCartypeName',
         name: '参考项目',
         key: 'partsprocure.PARTSPROCUREVEHICLECATEGORIES',
         tooltip: false
@@ -326,8 +326,8 @@ export const form = {
     'search.referenceModel3': "", //参考车型项目三
     'search.otherModel': "", //其它车型项目备选
     'search.modelProject': "", //车型项目类型
-    'search.catTypeStartTime': "2021", //车型项目起止年份
-    'search.catTypeEndTime': "2021", //车型项目起止年份
+    'search.sopBegin': "", //车型项目起止年份
+    'search.sopEnd': "", //车型项目起止年份
 
     'search.version': "", //版本号
     'search.carTypeName': "", //车型名称

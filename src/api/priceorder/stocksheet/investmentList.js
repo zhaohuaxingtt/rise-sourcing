@@ -17,6 +17,14 @@ export function getDepartmentsList(parmars) {
         params: parmars
     })
 }
+//获取专业科室下拉列表
+export function proDeptPullDown(parmars) {
+    return requst({
+        url: '/web/investment/proDeptPullDown',
+        method: 'POST',
+        params: parmars
+    })
+}
 //投资清单-添加行-模具属性下拉
 export function getModelProtitesPullDown(parmars) {
     return requst({
@@ -66,11 +74,12 @@ export function investmentSave(parmars) {
     })
 }
 //模具投资清单-刪除投资清单
-export function investmentDelete(parmars) {
+export function investmentDelete(data, parmars) {
     return requst({
         url: '/web/investment/delete',
         method: 'POST',
-        data: parmars
+        data: data,
+        params: parmars,
     })
 }
 //模具投资清单-保存编辑内容
@@ -85,6 +94,14 @@ export function investmentUpdate(parmars) {
 export function saveNewVersion(parmars) {
     return requst({
         url: '/web/investment/saveNewVersion',
+        method: 'POST',
+        data: parmars
+    })
+}
+//获取linie下拉
+export function liniePullDownByDept(parmars) {
+    return requst({
+        url: '/web/investment/liniePullDownByDept',
         method: 'POST',
         data: parmars
     })

@@ -59,6 +59,7 @@
         v-else
         :label="items.name"
         :prop="items.props"
+        :min-width="items.props == 'linie' ? 120 : 'auto'"
       >
         <template v-if="$scopedSlots[items.props] || $slots[items.props]" v-slot="scope">
           <slot :name="items.props" :row="scope.row"></slot>

@@ -27,6 +27,7 @@
                 v-permission="PARTSPROCURE_PARTSTATUS"
                 filterable
                 @change="changeCarTypeProject"
+                ref="carTypeProjectRef"
             >
               <div class="addCarTypeProject">
                 <iInput v-model="addCarTypeProject" placeholder="请输入车型项目名称"></iInput>
@@ -106,7 +107,7 @@
               <i slot="suffix" class="el-input__icon el-icon-search" @click="sure"></i>
             </iInput>
             零件六位号：
-            <iInput v-model="form['search.partNum']" placeholder="请输入查询">
+            <iInput v-model="form['search.partNum']" placeholder="请输入查询" maxlength="6">
               <i slot="suffix" class="el-input__icon el-icon-search" @click="sure"></i>
             </iInput>
           </div>
@@ -265,6 +266,8 @@ export default {
           this.addAialog = false
           this.params.id = res.data.id
           this.params.sourceStatus = res.data.sourceStatus
+          // 隐藏下拉框
+          this.$refs.carTypeProjectRef.blur()
           this.getProcureGroup();
         } else {
           iMessage.error(res.desZh);
@@ -487,6 +490,7 @@ export default {
 }
 
 .addCarTypeProject {
+  margin-bottom: 5px;
   padding: 0 10px;
 
   ::v-deep .el-input {

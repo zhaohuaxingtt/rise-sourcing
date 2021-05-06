@@ -3,16 +3,26 @@
  * @Date: 2021-04-21 17:24:15
 -->
 <template>
-  <iDialog :title="$t(title)" :visible.sync="value" width="381px" @close='clearDiolog'>
+  <iDialog :title="$t(title)" :visible.sync="value" width="381px" @close='clearDiolog' v-loading="iDialogLoading"
+           :modal-append-to-body='false'>
     <div slot="title" class="title">
       <div class="text">{{ $t(title) }}</div>
     </div>
+    <p class="newVersion">新版本命名</p>
     <div class="changeContent">
+      <div>PSK</div>
       <iInput v-model="saveParams.version" placeholder="请输入" maxlength="5"></iInput>
     </div>
     <span slot="footer" class="dialog-footer">
-      <iButton @click="save" :loading='saveLoading'>确认</iButton>
+      <iButton @click="save">确认</iButton>
     </span>
+    <iDialog title="是否确定保存为新版本？" :visible.sync="value2" width="381px" @close='clearDiolog2' v-loading="iDialogLoading2"
+             :modal-append-to-body="true" append-to-body>
+      <span slot="footer" class="dialog-footer">
+        <iButton @click="value2 = false">取消</iButton>
+        <iButton @click="save2" :loading='saveLoading'>确认</iButton>
+      </span>
+    </iDialog>
   </iDialog>
 </template>
 <script>
@@ -21,6 +31,7 @@ import {pageMixins} from "@/utils/pageMixins";
 import {
   saveNewVersion
 } from "@/api/priceorder/stocksheet/investmentList";
+
 export default {
   mixins: [pageMixins],
   components: {
@@ -30,13 +41,18 @@ export default {
     iButton
   },
   props: {
-    title: {type: String, default: '请您使用PSK版本号进行命名'},
+    title: {type: String, default: '保存为新版本'},
     value: {type: Boolean},
-    saveParams: {type: Object, default: () => {}},
+    saveParams: {
+      type: Object, default: () => {
+      }
+    },
   },
   data() {
     return {
-      conversionVal: ''
+      conversionVal: '',
+      iDialogLoading: false,
+      value2: false
     }
   },
   mounted() {
@@ -45,21 +61,32 @@ export default {
     clearDiolog() {
       this.$emit('input', false)
     },
+    clearDiolog2() {
+      this.value2 = false
+    },
     save() {
-      // this.tableLoading = true
+      let _this = this
+      this.value2 = true
+
+    },
+    save2(){
+      this.saveLoading = true
       saveNewVersion(this.saveParams).then((res) => {
         if (Number(res.code) === 0) {
           // this.findInvestmentList()
           iMessage.success(res.desZh);
+          this.value2 = false
+          this.$emit('input', false)
+          this.$emit('refresh')
         } else {
           iMessage.error(res.desZh);
-          // this.tableLoading = false
         }
+        this.saveLoading = false
       }).catch(() => {
-        // this.tableLoading = false
+        this.saveLoading = false
       });
-      this.$emit('input', false)
-    },
+
+    }
   },
   watch: {}
 }
@@ -83,9 +110,20 @@ export default {
     color: red;
   }
 }
-
+.newVersion{
+  font-size: 14px;
+  color: #000000;
+}
 .changeContent {
   padding-bottom: 30px;
+  display: flex;
+  justify-content: space-between;
+  height: 60px;
+  line-height: 60px;
+
+  .el-input {
+    width: calc(100% - 50px);
+  }
 
   ::v-deep .card {
     box-shadow: none;

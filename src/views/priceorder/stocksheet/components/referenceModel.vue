@@ -3,7 +3,7 @@
  * @Date: 2021-04-21 17:24:15
 -->
 <template>
-  <iDialog :title="$t(title)" :visible.sync="value" width="684px" top="5vh" @close='clearDiolog' :modal-append-to-body='false'>
+  <iDialog :title="$t(title)" :visible.sync="value" width="684px" top="5vh" @close='clearDiolog' z-index="1000">
     <div slot="title" class="title">
       <div class="text">
         {{$t(title)}}
@@ -25,7 +25,7 @@
           <el-form-item label="参考车型项目一">
             <iSelect
                 placeholder="请选择"
-                v-model="form['search.referenceModel1']"
+                v-model="referenceModel1"
                 v-permission="PARTSPROCURE_PARTSTATUS"
                 filterable
                 @change="changeCarTypeProject"
@@ -41,7 +41,7 @@
           <el-form-item label="参考车型项目二">
             <iSelect
                 placeholder="请选择"
-                v-model="form['search.referenceModel2']"
+                v-model="referenceModel2"
                 v-permission="PARTSPROCURE_PARTSTATUS"
                 filterable
                 @change="changeCarTypeProject"
@@ -57,7 +57,7 @@
           <el-form-item label="参考车型项目三">
             <iSelect
                 placeholder="请选择"
-                v-model="form['search.referenceModel3']"
+                v-model="referenceModel3"
                 v-permission="PARTSPROCURE_PARTSTATUS"
                 filterable
                 @change="changeCarTypeProject"
@@ -73,7 +73,7 @@
           <el-form-item label="其它车型项目备选">
             <iSelect
                 placeholder="请选择"
-                v-model="form['search.otherModel']"
+                v-model="otherModel"
                 v-permission="PARTSPROCURE_PARTSTATUS"
                 filterable
                 @change="changeCarTypeProject"
@@ -91,7 +91,7 @@
           <el-form-item label="车型项目类型">
             <iSelect
                 placeholder="请选择"
-                v-model="form['search.modelProject']"
+                v-model="modelProject"
                 v-permission="PARTSPROCURE_PARTSTATUS"
                 filterable
                 @change="changeCarTypeProject"
@@ -107,13 +107,13 @@
           <el-form-item label="车型项目起止年份">
             <div class="timeClass">
               <el-date-picker
-                  v-model="value3"
+                  v-model="sopBegin"
                   type="year"
                   placeholder="选择年">
               </el-date-picker>
-              <div>-</div>
+              <div class="symbol">-</div>
               <el-date-picker
-                  v-model="value4"
+                  v-model="sopEnd"
                   type="year"
                   placeholder="选择年">
               </el-date-picker>
@@ -135,8 +135,8 @@ import { Popover } from "element-ui"
 import { addListInvestment, form } from "../components/data";
 import { pageMixins } from "@/utils/pageMixins";
 import {
-  findAddColumnInvestmentBuild, GetOtherCarTypeAlternative,
-  saveList, saveRefcartypepro, getRelationCarTypeById, findProjectTypeDetailPulldown, getCartypePulldown
+  GetOtherCarTypeAlternative,
+  saveList, saveRefcartypepro, getRelationCarTypeById,
 } from "@/api/priceorder/stocksheet/edit";
 
 export default {
@@ -168,24 +168,30 @@ export default {
       carTypes: [],
       saveLoading: false,
       loadingiDialog: false,
+      referenceModel1: '',
+      referenceModel2: '',
+      referenceModel3: '',
+      otherModel: '',
+      modelProject: '',
+      sopBegin: '',
+      sopEnd: '',
     }
   },
   mounted() {
     this.GetOtherCarTypeAlternative()
-    // this.findAddColumnInvestmentBuild()
   },
   methods: {
     save(){
       this.saveLoading = true
       let params = {
-        cartypeProType: this.form['search.modelProject'],
+        cartypeProType: this.modelProject,
         id: this.carTypeProId,
-        other: this.form['search.otherModel'],
-        refCartypeProFirstId: this.form['search.referenceModel1'],
-        refCartypeProSecondId: this.form['search.referenceModel2'],
-        refCartypeProThirdId: this.form['search.referenceModel3'],
-        // sopBegin: this.form['search.catTypeStartTime'],
-        // sopEnd: this.form['search.catTypeEndTime'],
+        other: this.otherModel,
+        refCartypeProFirstId: this.referenceModel1,
+        refCartypeProSecondId: this.referenceModel2,
+        refCartypeProThirdId: this.referenceModel3,
+        sopBegin: new Date(this.sopBegin).getFullYear(),
+        sopEnd: new Date(this.sopEnd).getFullYear(),
         sourceStatus: this.sourceStatus,
       }
       saveRefcartypepro(params).then((res) => {
@@ -235,38 +241,17 @@ export default {
         this.tableLoading = false
       })
     },
-    findAddColumnInvestmentBuild(){
-      this.tableLoading = true
-      let parmars = {
-        cartypeProId: this.carTypeProId,
-        sourceStatus: this.sourceStatus,
-        commodity: this.form['search.professionalDepartments'],
-        materialName: this.form['search.zhEnNo'],
-        modelType: this.form['search.mouldAttr'],
-        partNum: this.form['search.materialName'],
-      }
-      findAddColumnInvestmentBuild(parmars).then((res) => {
-        if (res.data) {
-          this.page.currPage = res.pageNum;
-          this.page.pageSize = res.pageSize;
-          this.page.totalCount = res.total;
-          this.tableListData = res.data;
-        }
-        this.tableLoading = false
-      });
-    },
     clearDiolog() {
       this.$emit('input', false)
     },
-    sure(){
-      this.findAddColumnInvestmentBuild()
-    },
     reset(){
-      this.form['referenceModel1'] = ""
-      this.form['referenceModel2'] = ""
-      this.form['referenceModel3'] = ""
-      this.form['otherModel'] = ""
-      this.form['modelProject'] = ""
+      this.referenceModel1 = ""
+      this.referenceModel2 = ""
+      this.referenceModel3 = ""
+      this.otherModel = ""
+      this.modelProject = ""
+      this.sopBegin = ""
+      this.sopEnd = ""
     }
   },
   watch: {
@@ -274,12 +259,15 @@ export default {
       if(val){
         this.loadingiDialog = true
         getRelationCarTypeById({id: this.carTypeProId}).then((res) => {
-          if (res.data) {
-            this.form['referenceModel1'] = res.data.refCartypeProFirstId
-            this.form['referenceModel2'] = res.data.refCartypeProSecondId
-            this.form['referenceModel3'] = res.data.refCartypeProThirdId
-            this.form['otherModel'] = res.data.carTypeAlternativeId
-            this.form['modelProject'] = res.data.relationCarTypeId
+          if (Number(res.code) == 0) {
+            this.referenceModel1 = res.data.refCartypeProFirstId
+            this.referenceModel2 = res.data.refCartypeProSecondId
+            this.referenceModel3 = res.data.refCartypeProThirdId
+            this.otherModel = res.data.carTypeAlternativeId
+            this.modelProject = res.data.relationCarTypeId
+            this.sopBegin = res.data.sopBegin
+            this.sopEnd = res.data.sopEnd
+            console.log(this.referenceModel1)
           }
           this.loadingiDialog = false
         });
@@ -322,12 +310,12 @@ export default {
 .changeContent {
   .form1{
     margin-bottom: 20px;
-    padding-bottom: 20px;
     border-bottom: 1px solid #E3E3E3;
   }
   .el-form{
     .el-form-item{
       width: calc(50% - 50px);
+      margin-bottom: 20px;
       .el-input{
       }
     }
@@ -336,6 +324,9 @@ export default {
     width: 100%;
     display: flex;
     justify-content: space-between;
+    .symbol{
+      line-height: 38px;
+    }
     ::v-deep .el-input{
       width: 45%;
     }

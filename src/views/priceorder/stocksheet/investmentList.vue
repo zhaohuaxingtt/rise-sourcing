@@ -99,10 +99,12 @@
           <!--          </div>-->
           <div></div>
           <div>
-            <iButton v-show="!pageEdit" @click="pageEdit = true">编辑</iButton>
+            <iButton v-show="!pageEdit" @click="pageEdit = true"
+                     :disabled="versionList[0] && versionId != versionList[0].id">编辑
+            </iButton>
             <iButton v-show="pageEdit" @click="addRow">添加行</iButton>
             <iButton v-show="pageEdit" @click="deleteIRow">删除行</iButton>
-            <!--            <iButton v-show="pageEdit" @click="referenceModelShow = true">参考车型</iButton>-->
+            <iButton v-show="pageEdit" @click="referenceModelShow = true">参考车型</iButton>
             <iButton v-show="pageEdit" @click="saveRow">保存</iButton>
             <iButton v-show="pageEdit" @click="saveAsRow">保存为新版本</iButton>
             <!--            <iButton @click="saveRow">下载投资清单</iButton>-->
@@ -117,11 +119,15 @@
               @openPage="openPage"
               :activeItems="'partNum'"
           >
-            <template #refCartypeProId="scope">
-              <a :href="scope.row.refCartypeProId">{{ scope.row.refCartypeProId }}</a>
+            <template #refCartypeName="scope">
+              <a :href="scope.row.refCartypeName">{{ scope.row.refCartypeName }}</a>
+            </template>
+            <template #refMoldAmount="scope">
+              <a :href="scope.row.refMoldAmount">{{ scope.row.refMoldAmount }}</a>
             </template>
             <template #budgetAmount="scope">
-              <iInput v-model="scope.row.budgetAmount" v-if="pageEdit" @input="changeBudgetAmount"></iInput>
+              <iInput v-model="scope.row.budgetAmount" v-if="pageEdit"
+                      @input="changeBudgetAmount(scope.row.budgetAmount)" maxlength="20"></iInput>
               <div v-if="!pageEdit">{{ scope.row.budgetAmount }}</div>
             </template>
             <template #moldProperties="scope">
@@ -141,6 +147,48 @@
                 ></el-option>
               </iSelect>
               <div v-if="!pageEdit">{{ scope.row.moldProperties }}</div>
+            </template>
+            <template #commodity="scope">
+              <iSelect
+                  v-show="pageEdit"
+                  placeholder="请选择"
+                  v-model="scope.row.commodity"
+                  v-permission="PARTSPROCURE_PARTSTATUS"
+                  filterable
+              >
+                <el-option
+                    :value="item.commodityName"
+                    :label="item.commodityName"
+                    v-for="(item, index) in DeptPullDown"
+                    :key="index"
+                ></el-option>
+              </iSelect>
+              <div v-if="!pageEdit">{{ scope.row.commodity }}</div>
+            </template>
+            <template #linie="scope">
+              <iSelect
+                  v-show="pageEdit"
+                  placeholder="请选择"
+                  v-model="scope.row.linieArr"
+                  v-permission="PARTSPROCURE_PARTSTATUS"
+                  collapse-tags
+                  multiple
+                  filterable
+              >
+                <el-option
+                    :value="item.linieID"
+                    :label="item.linieName"
+                    v-for="(item, index) in liniePullDown"
+                    :key="index"
+                ></el-option>
+              </iSelect>
+              <Popover
+                  v-if="!pageEdit"
+                  placement="top-start"
+                  :content="scope.row.linieName"
+                  trigger="hover">
+                <div slot="reference" class="ellipsisDiv">{{ scope.row.linieName }}</div>
+              </Popover>
             </template>
             <template #sourcingType="scope">
               <div v-if="!pageEdit">{{ scope.row.sourcingType == 1 ? 'Y' : 'N' }}</div>
@@ -177,7 +225,8 @@
             </div>
             <div>
               <h4>综合偏差:</h4>
-              <iInput v-model="form['search.contingencyPercent']" @input="changePerent" :disabled="isLocked || !pageEdit"></iInput>
+              <iInput v-model="form['search.contingencyPercent']" @input="changePerent"
+                      :disabled="isLocked || !pageEdit"></iInput>
               % of Sub-Total
             </div>
             <div>
@@ -187,15 +236,11 @@
             <div>
               <h4>总预算:</h4>
               <iInput v-model="form['search.totalBudget']" :disabled="isLocked || !pageEdit">
-                <icon slot="suffix" symbol name="iconzongyusuansuoding" class="icon" v-if="isLocked" @click="isLocked = !isLocked"/>
-                <icon slot="suffix" symbol name="iconzongyusuanweisuoding" class="icon" v-if="!isLocked" @click="isLocked = !isLocked"/>
-                <i slot="suffix" class="el-input__icon el-icon-search" v-if="isLocked" @click="isLocked = !isLocked"></i>
-                <i slot="suffix" class="el-input__icon el-icon-eleme" v-if="!isLocked" @click="isLocked = !isLocked"></i>
-
+                <div slot="suffix" @click="isLocked = !isLocked">
+                  <icon symbol name="iconzongyusuansuoding" class="icon" v-if="isLocked"/>
+                  <icon symbol name="iconzongyusuanweisuoding" class="icon" v-if="!isLocked"/>
+                </div>
               </iInput>
-
-              <div v-if="isLocked" @click="isLocked = !isLocked">11111</div>
-              <div v-if="!isLocked" @click="isLocked = !isLocked">22222</div>
             </div>
           </div>
         </div>
@@ -217,16 +262,6 @@
       <!------------------------------------------------------------------------>
       <!--                  转派弹出框                                         --->
       <!------------------------------------------------------------------------>
-      <changeItems
-          v-model="diologChangeItems"
-          @sure="sureChangeItems"
-          :title="$t('LK_LINGJIANCAIGOUXIANGMUZHUANPAI')"
-      ></changeItems>
-      <backItems
-          v-model="diologBack"
-          @sure="cancel"
-          :title="$t('LK_QUXIAOLINGJIANCAIGOUXIANGMU')"
-      ></backItems>
     </div>
 
     <addRow
@@ -235,14 +270,15 @@
         :isInvestmentList="true"
         :version="form['search.version']"
         :sourceStatus="params.sourceStatus"
+        :sourcePage="2"
         @updateTable="findInvestmentList"
     ></addRow>
     <referenceModel
         v-model="referenceModelShow"
-        :carTypeProId="form['search.carTypeProject']"
-        :sourceStatus="params.sourceStatus"
+        :carTypeProId="$store.state.mouldManagement.budgetManagement.carTypeProject"
+        :sourceStatus="$store.state.mouldManagement.budgetManagement.sourceStatus"
         :carType="this.fromGroup"
-        @updateTable="findInvestmentList"
+        @updateTable="saveReference"
     ></referenceModel>
     <conversionRatio
         v-model="conversionRatioShow"
@@ -251,24 +287,21 @@
     <saveAs
         v-model="saveAsShow"
         :saveParams="saveParams"
+        @refresh="getInvestmentVerisionList"
     ></saveAs>
   </div>
 </template>
 <script>
 import {
-  iPage,
   iButton,
   iCard,
   iMessage,
-  iPagination,
-  iSearch,
   icon,
   iInput,
   iSelect,
 } from "@/components";
-import logButton from "./components/logButton";
+import {Popover} from "element-ui"
 import {pageMixins} from "@/utils/pageMixins";
-import backItems from "@/views/partsign/home/components/backItems";
 import {investmentListEntities, form} from "./components/data";
 import tablelist from "./components/tablelist";
 import addRow from "./components/addRow";
@@ -276,18 +309,8 @@ import referenceModel from "./components/referenceModel";
 import conversionRatio from "./components/conversionRatio";
 import saveAs from "./components/saveAs";
 import {
-  getTabelData,
-  changeProcure,
-} from "@/api/partsprocure/home";
-import {
-  findInvestmentBuild,
   getCartypePulldown,
-  findProjectTypeDetailPulldown,
-  findProjectDetailById,
   saveCustomCart,
-  GetOtherCarTypeAlternative,
-  updateBuildInvestment,
-  ConfirmCustomerCarTypeSelect
 } from "@/api/priceorder/stocksheet/edit";
 import {
   getInvestmentVerisionList,
@@ -297,14 +320,12 @@ import {
   getModelProtitesPullDown,
   investmentDelete,
   relationMainCarType,
-  investmentUpdate
+  investmentUpdate, proDeptPullDown, liniePullDownByDept
 } from "@/api/priceorder/stocksheet/investmentList";
 import {insertRfq} from "@/api/partsrfq/home";
-import changeItems from "../../partsign/home/components/changeItems";
 import filters from "@/utils/filters";
 import echarts from "@/utils/echarts";
-
-import creatFs from "./components/creatFs";
+import {cloneDeep} from 'lodash'
 
 export default {
   props: {
@@ -315,22 +336,17 @@ export default {
   },
   mixins: [pageMixins, filters],
   components: {
-    iPage,
     iButton,
     iCard,
     tablelist,
-    changeItems,
-    iPagination,
-    iSearch,
     iInput,
     iSelect,
-    backItems,
-    logButton,
     icon,
     addRow,
     referenceModel,
     conversionRatio,
     saveAs,
+    Popover
   },
   data() {
     return {
@@ -339,8 +355,6 @@ export default {
       contingencyPercent: '',
       contingencyAmount: '',
       totalBudget: '',
-      aaa: '',
-      bbb: '',
       headerLoading: false,
       contentLoading: false,
       isLocked: false,
@@ -376,45 +390,39 @@ export default {
 
       versionName: '',
       tableListData: [],
+      tableListDataClone: [],
       tableLoading: false,
       tableTitle: investmentListEntities,
       selectTableData: [],
-      diologChangeItems: false,
       form: form,
+      clone: {},
       fromGroup: [],
-      diologBack: false, //退回
-      startLoding: false,
-      addCarTypeLoading: false,
-      tab: "source",
-      value1: new Date().getTime(),
-      tabtitle: [
-        {name: "车型项目概览", index: 0, key: "LK_GAILIAN"},
-        {name: "预算管理", active: true, key: "LK_CAIGOUSHENQING"},
-        {name: "预算审批", active: false, key: "LK_CAIGOUDINGDAN"},
-        {name: "BA申请", active: false, key: "LK_DINGJIAGUANLI"},
-        {name: "BM申请", active: false, key: "LK_JIAGEZHUISU"},
-        {name: "投资报告", active: false, key: "LK_HETONGCHAXUN"},
-      ],
+      DeptPullDown: [],
+      liniePullDown: [],
     };
   },
-  computed: {
-    projectIds() {
-      return this.getPurchasePrjectId();
-    },
-  },
+  computed: {},
   created() {
     // this.isAdd = this.$route.query.id == 'add' ? true : false
     // this.getInvestmentData()
+    this.getModelProtitesPullDown()
     this.getInvestmentVerisionList()
     // this.getDepartmentsList() 专业科室
-    this.getModelProtitesPullDown()
     console.log(this.params)
 
   },
   mounted() {
   },
   methods: {
-    changeBudgetAmount(){
+    saveReference() {
+      this.tableListData = this.tableListData.map(item => {
+        item.refCartypeName = '钢材'
+        item.refMoldAmount = '100'
+        return item
+      })
+      this.saveRow()
+    },
+    changeBudgetAmount(val) {
       let total = 0
       this.tableListData.map(item => total += Number(item.budgetAmount))
       this.form['search.SUBTOTA'] = total.toFixed(2)
@@ -433,17 +441,18 @@ export default {
     },
     conversionSave(val) {
       let conversionVal = val / 100
-      this.tableListData = this.tableListData.map(item => {
-        console.log(item)
+      this.tableListData = cloneDeep(this.tableListDataClone).map(item => {
         item.budgetAmount = (Number(item.budgetAmount) * conversionVal).toFixed(2)
         return item
       })
-      this.form['search.SUBTOTA'] = Number(this.form['search.SUBTOTA']) * conversionVal
+      this.form['search.SUBTOTA'] = (Number(this.clone['search.SUBTOTA']) * conversionVal).toFixed(2)
       this.changePerent()
     },
     changeVersion(val) {
       if (val) {
         this.versionName = this.versionList.find(item => item.id == val).version
+        this.versionId = val
+        this.getInvestmentVerisionList()
       } else {
         this.versionName = ''
       }
@@ -454,6 +463,7 @@ export default {
         localId: this.params.id,
       }).then((res) => {
         if (Number(res.code) === 0) {
+          this.getInvestmentVerisionList()
           iMessage.success(res.desZh);
         } else {
           iMessage.error(res.desZh);
@@ -463,17 +473,53 @@ export default {
         // this.tableLoading = false
       });
     },
-    getModelProtitesPullDown() {
-      getModelProtitesPullDown().then((res) => {
-        if (Number(res.code) === 0) {
-          this.modelProtitesList = res.data
-        } else {
-          iMessage.error(res.desZh);
-        }
-        // this.tableLoading = false
-      }).catch(() => {
-        // this.tableLoading = false
+    // getModelProtitesPullDown() {
+    //   getModelProtitesPullDown().then((res) => {
+    //     if (Number(res.code) === 0) {
+    //       this.modelProtitesList = res.data
+    //     } else {
+    //       iMessage.error(res.desZh);
+    //     }
+    //     // this.tableLoading = false
+    //   }).catch(() => {
+    //     // this.tableLoading = false
+    //   });
+    // },
+    async getModelProtitesPullDown() {
+      this.form['search.carTypeProject'] = ''
+      this.form['search.materialName'] = ''
+      this.form['search.partNum'] = ''
+      this.loadingiSearch = true
+      this.$store.commit('SET_budgetManagement', {
+        carTypeProject: this.params.id,
+        sourceStatus: this.params.sourceStatus
       });
+      await Promise.all([getModelProtitesPullDown(), getCartypePulldown(), proDeptPullDown(), liniePullDownByDept({deptId: ''})]).then((res) => {
+        if (Number(res[0].code) === 0) {
+          this.modelProtitesList = res[0].data
+        } else {
+          iMessage.error(res[0].desZh);
+        }
+        if (res[1].data) {
+          this.fromGroup = res[1].data;
+        } else {
+          iMessage.error(res[1].desZh);
+        }
+        if (Number(res[2].code) === 0) {
+          this.DeptPullDown = res[2].data
+        } else {
+          iMessage.error(res[2].desZh);
+        }
+        if (Number(res[3].code) === 0) {
+          this.liniePullDown = res[3].data
+        } else {
+          iMessage.error(res[3].desZh);
+        }
+        this.loadingiSearch = false
+      }).catch(() => {
+        this.loadingiSearch = false
+      });
+
     },
     getDepartmentsList() {
       getDepartmentsList().then((res) => {
@@ -496,8 +542,15 @@ export default {
         if (Number(res.code) === 0) {
           this.tableListData = res.data.investmentListEntities.map(item => {
             item.budgetAmount = Number(item.budgetAmount).toFixed(2)
+            let linieName = ''
+            item.linieArr = item.linie ? (item.linie.split(',')).map(key => Number(key)) : []
+            item.linieArr.map(a => {
+              linieName += this.liniePullDown.find(b => b.linieID == a) ? (this.liniePullDown.find(b => b.linieID == a).linieName + '/') : ''
+            })
+            item.linieName = linieName.slice(0, linieName.length - 1)
             return item
           })
+          this.tableListDataClone = cloneDeep(this.tableListData)
           this.form['search.aekoPercent'] = Number(res.data.aekoPercent).toFixed(2)
           this.form['search.AEKOMoney'] = Number(res.data.aekoAmount).toFixed(2)
           this.form['search.contingencyPercent'] = Number(res.data.contingencyPercent).toFixed(2)
@@ -525,13 +578,14 @@ export default {
           this.form['search.approvalInvestment'] = Number(res.data.approvalInvestment) ? Number(res.data.approvalInvestment).toFixed(2) : 0
           this.mainCarTypeList = res.data.mainCarTypeList
           this.form['search.relatedCarType'] = res.data.mainCarTypeList[0] ? res.data.mainCarTypeList[0].id : ''
-          this.saveParams.version = res.data.defaultVersion
+          this.saveParams.version = res.data.defaultVersion.slice(4)
 
           let contingency = Number(res.data.contingency) ? Number(res.data.contingency).toFixed(0) : 0
           let aekoValue = Number(res.data.aekoValue) ? Number(res.data.aekoValue).toFixed(0) : 0
           let notAekoValue = Number(res.data.notAekoValue) ? Number(res.data.notAekoValue).toFixed(0) : 0
           let totalValue = Number(res.data.notAekoValue) ? Number(res.data.totalValue).toFixed(0) : 0
           this.form['search.SUBTOTA'] = Number(res.data.subTotal) ? Number(res.data.subTotal).toFixed(2) : 0
+          this.clone['search.SUBTOTA'] = Number(res.data.subTotal) ? Number(res.data.subTotal).toFixed(2) : 0
           this.findInvestmentList()
 
           this.$nextTick(() => {
@@ -678,8 +732,9 @@ export default {
       }).then((res) => {
         if (Number(res.code) === 0) {
           this.versionList = res.data
-          this.form['search.version'] = this.versionList[0].id
-          this.versionName = this.versionList[0].version
+          this.form['search.version'] = this.versionId ? this.versionId : (this.versionList[0] ? this.versionList[0].id : '')
+          this.versionId = this.form['search.version']
+          this.versionName = this.versionList[0] ? this.versionList[0].version : ''
           this.getInvestmentData()
         } else {
           iMessage.error(res.desZh);
@@ -711,9 +766,10 @@ export default {
         return
       }
       this.tableLoading = true
-      investmentDelete(this.selectTableData).then((res) => {
+      investmentDelete(this.selectTableData, {investmentVersionId: this.form['search.version']}).then((res) => {
         if (Number(res.code) === 0) {
-          this.findInvestmentList()
+          this.getInvestmentVerisionList()
+          // this.findInvestmentList()
           iMessage.success(res.desZh);
         } else {
           iMessage.error(res.desZh);
@@ -726,7 +782,10 @@ export default {
     saveRow() {
       this.tableLoading = true
       investmentUpdate({
-        investmentListEntities: this.tableListData,
+        investmentListEntities: this.tableListData.map(item => {
+          item.linie = item.linieArr.join(',')
+          return item
+        }),
         aekoAmount: this.form['search.AEKOMoney'],
         aekoPercent: this.form['search.aekoPercent'],
         contingencyAmount: this.form['search.contingencyAmount'],
@@ -736,7 +795,8 @@ export default {
         approveInvestment: this.form['search.approvalInvestment'],
       }).then((res) => {
         if (Number(res.code) === 0) {
-          this.findInvestmentList()
+          // this.findInvestmentList()
+          this.getInvestmentVerisionList()
           iMessage.success(res.desZh);
         } else {
           iMessage.error(res.desZh);
@@ -747,7 +807,10 @@ export default {
       });
     },
     saveAsRow() {
-      this.saveParams.investmentListEntities = this.tableListData
+      this.saveParams.investmentListEntities = this.tableListData.map(item => {
+        item.linie = item.linieArr.join(',')
+        return item
+      })
       this.saveParams.aekoAmount = this.form['search.AEKOMoney']
       this.saveParams.aekoPercent = this.form['search.aekoPercent']
       this.saveParams.contingencyAmount = this.form['search.contingencyAmount']
@@ -767,201 +830,13 @@ export default {
         },
       });
     },
-    //获取上方group信息
-    // part_status --零件状态
-    // cartype_category --车型类型
-    // cartype_project_zh --车型项目
-    // part_preject_type --零件项目类型
-    // procure_factory   --采购工厂
-    // purchase_clause   --采购条款
-    // part_type         --零件类型
-    // unit              --单位
-    // pay_clause        --支付条款
-    // currency_id       --币种
-    // linie_dept        --Linie部门A
-    // linie_name        --Line
-    // cf_controller     --Cf控制员
-    // is_common_sourcing--Sourcing
-    // buyer_name        --询价采购员
 
-    //转派
-    openDiologChangeItems() {
-      if (this.selectTableData.length == 0)
-        return iMessage.warn(
-            this.$t(
-                "LK_NINDANGQIANHAIWEIXUANZENINXUYAOZHUANPAIDELINGJIANCAIGOUXIANGMU"
-            )
-        );
-      this.diologChangeItems = true;
-    },
-    //确认转派弹窗值。
-    sureChangeItems(val) {
-      let transfer = {
-        buyerName: val.nameZh,
-        buyerId: val.id,
-        purchaseProjectIds: this.getPurchasePrjectId(),
-      };
-      changeProcure({
-        transfer,
-      })
-          .then((res) => {
-            this.diologChangeItems = false;
-            if (res.data) {
-              iMessage.success(this.$t("LK_ZHUANPAICHENGGONG"));
-              this.getTableListFn();
-            } else {
-              iMessage.error(res.desZh);
-            }
-          })
-          .catch(() => {
-            this.diologChangeItems = false;
-          });
-    },
+
     //表格选中值集
     handleSelectionChange(val) {
       this.selectTableData = val;
     },
-    // 获取零件采购项目相关信息
-    getTableListFn() {
-      this.tableLoading = true;
-      this.form["search.size"] = this.page.pageSize;
-      this.form["search.current"] = this.page.currPage;
-      let params = {
-        cartypeProId: this.form['search.carTypeProject'],
-        materialName: this.form['search.materialName'],
-        partNum: this.form['search.partNum'],
-        current: this.page.currPage,
-        size: this.page.pageSize
-      }
-      findInvestmentBuild(params)
-          .then((res) => {
-            if (res.data) {
-              this.page.currPage = res.pageNum;
-              this.page.pageSize = res.pageSize;
-              this.page.totalCount = res.total;
-              this.tableListData = res.data;
-            }
-            this.tableLoading = false;
-          })
-          .catch(() => (this.tableLoading = false));
-    },
 
-
-    //退回
-    openDiologBack() {
-      if (this.selectTableData.length == 0)
-        return iMessage.warn(
-            this.$t(
-                "LK_NINDANGQIANHAIWEIXUANZENINXUYAOQUXIAODELINGJIANCAIGOUXIANGMU"
-            )
-        );
-      this.diologBack = true;
-    },
-    // 取消零件采购
-    cancel(backmark) {
-      let cancel = {
-        cancelRemark: backmark,
-        purchaseProjectIds: this.getPurchasePrjectId(),
-      };
-      changeProcure({
-        cancel,
-      })
-          .then((res) => {
-            if (res.data) {
-              iMessage.success(this.$t("LK_CAOZUOCHENGGONG"));
-              this.getTableListFn();
-            } else {
-              iMessage.error(res.desZh);
-            }
-            this.diologBack = false;
-          })
-          .catch(() => {
-            this.diologBack = false;
-          });
-    },
-    /*********************************************************************
-     *                          启动询价模块
-     *********************************************************************/
-    validateStart() {
-      return new Promise((r) => {
-        if (this.selectTableData.length == 0) {
-          r(false);
-          iMessage.warn(
-              this.$t(
-                  "LK_NINDANGQIANHAIWEIXUANZEXUYAOQIDONGXUNJIADECAIGOUXIANGMU"
-              )
-          );
-          return;
-        }
-        if (this.selectTableData.find((items) => items.fsnrGsnrNum == "")) {
-          r(false);
-          iMessage.warn(
-              this.$t(
-                  "LK_DANGQIANCAIGOUXIANGMUZHONGCUNZAIHAIWEISHENGCHENGFSNRDESHUJUWUFAWEININQIDONGXUNJIA"
-              )
-          );
-          return;
-        }
-        r(true);
-      });
-    },
-    async start() {
-      if (!(await this.validateStart())) return;
-      this.startLoding = true;
-      insertRfq({
-        rfqPartDTOList: this.selectTableData,
-      })
-          .then((res) => {
-            this.startLoding = false;
-            if (res.data && res.data.rfqId) {
-              this.$router.push({
-                path: "/partsrfq/editordetail",
-                query: {
-                  id: res.data.rfqId,
-                },
-              });
-            } else {
-              iMessage.warn(res.desZh);
-            }
-          })
-          .catch((err) => {
-            this.startLoding = false;
-          });
-    },
-    /*********************************************************************
-     *                          end
-     *********************************************************************/
-    // 获取选中零件号ID
-    getPurchasePrjectId() {
-      let purchasePrjectId = [];
-      this.selectTableData.map((res) => {
-        purchasePrjectId.push(res.purchasePrjectId);
-      });
-      return purchasePrjectId;
-    },
-    // 查询fliter数据
-    getGroupList(key) {
-      if (this.fromGroup.length > 0) {
-        let obj = this.fromGroup.find((items) => items.type == key);
-        if (!obj) return [];
-        return obj.list;
-      }
-    },
-    // 跳转批量维护
-    openBatchmiantain() {
-      if (this.selectTableData.length == 0)
-        return iMessage.warn(
-            this.$t(
-                "LK_NINDANGQIANHAIWEIXUANZENINXUYAOSHENGPILIANGWEIHUDEXIANGMU"
-            )
-        );
-      this.$router.push({
-        path: "/partsprocure/batchmiantain",
-        query: {
-          ids: this.getPurchasePrjectId(),
-        },
-      });
-    },
   },
   watch: {
     // aekoPercent(val){
@@ -991,6 +866,12 @@ export default {
   }
 }
 
+.ellipsisDiv{
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
 .investmentList {
   position: relative;
 
@@ -999,6 +880,7 @@ export default {
     justify-content: space-between;
     margin-top: 44px;
     line-height: 35px;
+
     > div {
       display: flex;
 
