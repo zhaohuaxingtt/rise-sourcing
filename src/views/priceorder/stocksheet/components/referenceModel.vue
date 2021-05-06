@@ -265,9 +265,8 @@ export default {
             this.referenceModel3 = res.data.refCartypeProThirdId
             this.otherModel = res.data.carTypeAlternativeId
             this.modelProject = res.data.relationCarTypeId
-            this.sopBegin = res.data.sopBegin
-            this.sopEnd = res.data.sopEnd
-            console.log(this.referenceModel1)
+            this.sopBegin = res.data.sopBegin ? res.data.sopBegin : ''
+            this.sopEnd = res.data.sopEnd ? res.data.sopEnd : ''
           }
           this.loadingiDialog = false
         });

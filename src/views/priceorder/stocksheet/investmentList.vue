@@ -75,28 +75,11 @@
           <div>单位：百万元</div>
         </div>
       </iCard>
-      <iCard v-loading="contentLoading">
+      <iCard v-loading="tableLoading">
         <!------------------------------------------------------------------------>
         <!--                  table模块，向外入参表格数据，表头                    --->
         <!------------------------------------------------------------------------>
         <div class="header margin-bottom20">
-          <!--          <div class="search">-->
-          <!--            <label>专业科室：</label>-->
-          <!--            <iSelect-->
-          <!--                placeholder="请选择"-->
-          <!--                v-model="form['search.professionalDepartments']"-->
-          <!--                v-permission="PARTSPROCURE_PARTSTATUS"-->
-          <!--                filterable-->
-          <!--                @change="findInvestmentList"-->
-          <!--            >-->
-          <!--              <el-option-->
-          <!--                  :value="item.commodity"-->
-          <!--                  :label="item.commodityName"-->
-          <!--                  v-for="(item, index) in commodityList"-->
-          <!--                  :key="index"-->
-          <!--              ></el-option>-->
-          <!--            </iSelect>-->
-          <!--          </div>-->
           <div></div>
           <div>
             <iButton v-show="!pageEdit" @click="pageEdit = true"
@@ -111,7 +94,7 @@
             <iButton v-show="pageEdit" @click="conversionRatioShow = true">按比例折算</iButton>
           </div>
         </div>
-        <div v-loading="tableLoading">
+        <div>
           <tablelist
               :tableData="tableListData"
               :tableTitle="tableTitle"
@@ -375,6 +358,7 @@ export default {
       carTypeProjectDisabled: false,
       addCarTypeProject: '',
       isAdd: '',
+      beginType: 1,
       saveParams: {
         investmentListEntities: [],
         aekoAmount: '',
@@ -405,11 +389,10 @@ export default {
   created() {
     // this.isAdd = this.$route.query.id == 'add' ? true : false
     // this.getInvestmentData()
+    this.beginType = this.params.sourceStatus
     this.getModelProtitesPullDown()
     this.getInvestmentVerisionList()
     // this.getDepartmentsList() 专业科室
-    console.log(this.params)
-
   },
   mounted() {
   },
@@ -458,6 +441,7 @@ export default {
       }
     },
     relationMainCarType(val) {
+      this.params.sourceStatus = 1
       relationMainCarType({
         mainId: val,
         localId: this.params.id,
@@ -540,6 +524,7 @@ export default {
         listVerisonId: this.form['search.version'],
       }).then((res) => {
         if (Number(res.code) === 0) {
+          res.data.investmentListEntities = res.data.investmentListEntities ? res.data.investmentListEntities : []
           this.tableListData = res.data.investmentListEntities.map(item => {
             item.budgetAmount = Number(item.budgetAmount).toFixed(2)
             let linieName = ''
@@ -586,6 +571,7 @@ export default {
           let totalValue = Number(res.data.notAekoValue) ? Number(res.data.totalValue).toFixed(0) : 0
           this.form['search.SUBTOTA'] = Number(res.data.subTotal) ? Number(res.data.subTotal).toFixed(2) : 0
           this.clone['search.SUBTOTA'] = Number(res.data.subTotal) ? Number(res.data.subTotal).toFixed(2) : 0
+
           this.findInvestmentList()
 
           this.$nextTick(() => {
@@ -593,7 +579,6 @@ export default {
             let option1 = {
               tooltip: {
                 formatter: function (params) {//这里就是控制显示的样式
-                  console.log(params)
                   if (params.seriesIndex == 0) {
                     return Number((contingency / totalValue) * 100).toFixed(2) + '%'
                   } else if (params.seriesIndex == 1) {
@@ -728,7 +713,8 @@ export default {
       this.headerLoading = true
       getInvestmentVerisionList({
         id: this.params.id,
-        sourceType: this.params.sourceStatus
+        // sourceType: this.params.sourceStatus,
+        beginType: this.beginType,
       }).then((res) => {
         if (Number(res.code) === 0) {
           this.versionList = res.data

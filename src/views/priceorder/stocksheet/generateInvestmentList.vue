@@ -258,6 +258,10 @@ export default {
         iMessage.warn('请先输入车型名称');
         return
       }
+      if (this.fromGroup.some(item => {item.cartypeNname == this.addCarTypeProject})){
+        iMessage.warn('已有车型名称，请重新输入');
+        return
+      }
       this.iDialogAddCarTypeProject = true
       saveCustomCart({cartypeProjectName: this.addCarTypeProject}).then((res) => {
         if (Number(res.code) === 0) {
@@ -457,6 +461,10 @@ export default {
       this.getTableListFn();
     },
     saveAddCarType() {
+      if(!this.form['search.carTypeProject']){
+        iMessage.warn('请先选择车型项目');
+        return
+      }
       this.addCarTypeLoading = true;
       ConfirmCustomerCarTypeSelect({
         id: this.form['search.carTypeProject'],
