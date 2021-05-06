@@ -181,9 +181,9 @@ module.exports = {
             },
             '/ws2Api': { // ws2Api.../ 王鹏霄
                 // target: 'http://10.122.18.166:8022',
-                // target: 'http://10.160.138.247:8022',// 圆圆
-                target: 'http://192.168.50.167:8022',// 立立
-                // target: 'http://8332d6f15ce9.ngrok.io',
+                target: 'http://192.168.50.41:8022',// 圆圆
+                // target: 'http://192.168.50.40:8022',// 立立
+                // target: 'http://cbbbc967414f.ngrok.io',
                 changeOrigin: true,
                 pathRewrite: {
                     "^/ws2Api": ""
