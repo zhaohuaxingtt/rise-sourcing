@@ -24,7 +24,6 @@
             <iSelect
                 :placeholder="$t('partsprocure.PLEENTER')"
                 v-model="form['search.carTypeProject']"
-                v-permission="PARTSPROCURE_PARTSTATUS"
                 filterable
                 @change="changeCarTypeProject"
                 ref="carTypeProjectRef"
@@ -45,7 +44,6 @@
             <iSelect
                 :placeholder="$t('partsprocure.PLEENTER')"
                 v-model="form['search.projectType']"
-                v-permission="PARTSPROCURE_VEHICLECATEGORIES"
                 :disabled="carTypeProjectDisabled"
             >
               <el-option
@@ -61,7 +59,6 @@
             <iSelect
                 :placeholder="$t('partsprocure.PLEENTER')"
                 v-model="form['search.fixedPointType']"
-                v-permission="PARTSPROCURE_MODELPROJECT"
                 :disabled="carTypeProjectDisabled"
             >
               <el-option
@@ -77,7 +74,6 @@
             <iSelect
                 :placeholder="$t('partsprocure.PLEENTER')"
                 v-model="form['search.modelCategory']"
-                v-permission="PARTSPROCURE_PARTITEMTYPE"
                 :disabled="carTypeProjectDisabled"
             >
               <el-option

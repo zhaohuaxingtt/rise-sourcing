@@ -18,7 +18,6 @@
                 v-show="!pageEdit"
                 placeholder="请选择"
                 v-model="form['search.version']"
-                v-permission="PARTSPROCURE_PARTSTATUS"
                 filterable
                 @change="changeVersion"
             >
@@ -40,7 +39,6 @@
             <iSelect
                 placeholder="请选择"
                 v-model="form['search.relatedCarType']"
-                v-permission="PARTSPROCURE_PARTSTATUS"
                 filterable
                 @change="relationMainCarType"
             >
@@ -118,7 +116,6 @@
                   v-show="pageEdit"
                   placeholder="请选择"
                   v-model="scope.row.moldProperties"
-                  v-permission="PARTSPROCURE_PARTSTATUS"
                   filterable
                   @change="changeCarTypeProject"
               >
@@ -136,7 +133,6 @@
                   v-show="pageEdit"
                   placeholder="请选择"
                   v-model="scope.row.commodity"
-                  v-permission="PARTSPROCURE_PARTSTATUS"
                   filterable
               >
                 <el-option
@@ -153,7 +149,6 @@
                   v-show="pageEdit"
                   placeholder="请选择"
                   v-model="scope.row.linieArr"
-                  v-permission="PARTSPROCURE_PARTSTATUS"
                   collapse-tags
                   multiple
                   filterable
@@ -179,7 +174,6 @@
                   v-show="pageEdit"
                   placeholder="请选择"
                   v-model="scope.row.sourcingType"
-                  v-permission="PARTSPROCURE_PARTSTATUS"
                   filterable
                   @change="changeCarTypeProject"
               >

@@ -26,7 +26,6 @@
             <iSelect
                 placeholder="请选择"
                 v-model="referenceModel1"
-                v-permission="PARTSPROCURE_PARTSTATUS"
                 filterable
                 @change="changeCarTypeProject"
             >
@@ -42,7 +41,6 @@
             <iSelect
                 placeholder="请选择"
                 v-model="referenceModel2"
-                v-permission="PARTSPROCURE_PARTSTATUS"
                 filterable
                 @change="changeCarTypeProject"
             >
@@ -58,7 +56,6 @@
             <iSelect
                 placeholder="请选择"
                 v-model="referenceModel3"
-                v-permission="PARTSPROCURE_PARTSTATUS"
                 filterable
                 @change="changeCarTypeProject"
             >
@@ -74,7 +71,6 @@
             <iSelect
                 placeholder="请选择"
                 v-model="otherModel"
-                v-permission="PARTSPROCURE_PARTSTATUS"
                 filterable
                 @change="changeCarTypeProject"
             >
@@ -92,7 +88,6 @@
             <iSelect
                 placeholder="请选择"
                 v-model="modelProject"
-                v-permission="PARTSPROCURE_PARTSTATUS"
                 filterable
                 @change="changeCarTypeProject"
             >

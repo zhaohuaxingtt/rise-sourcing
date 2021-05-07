@@ -31,7 +31,6 @@
             <iSelect
                 :placeholder="$t('LK_QINGXUANZE')"
                 v-model="mouldAttr"
-                v-permission="PARTSPROCURE_PARTSTATUS"
                 filterable
                 clearable
                 @change="sure"
@@ -51,7 +50,6 @@
             <iSelect
                 :placeholder="$t('LK_QINGXUANZE')"
                 v-model="professionalDepartments"
-                v-permission="PARTSPROCURE_PARTSTATUS"
                 filterable
                 clearable
                 @change="sure"
