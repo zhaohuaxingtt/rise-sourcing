@@ -155,13 +155,31 @@ export const staticRouter = [{
                     import (`@/views/priceorder/home`)
             },
             {
-                path: '/priceorder/stocksheet',
+                path: '/tooling',
                 name: 'stocksheet',
                 meta: {
                     title: '价格与订单-备货表'
                 },
                 component: () =>
                     import (`@/views/priceorder/stocksheet`)
+            },
+            {
+                path: '/priceorder/stocksheet/generateInvestmentList',
+                name: 'stocksheetGenerateInvestmentList',
+                meta: {
+                    title: '模具-材料组清单'
+                },
+                component: () =>
+                    import (`@/views/priceorder/stocksheet/generateInvestmentList`)
+            },
+            {
+                path: '/priceorder/stocksheet/investmentList',
+                name: 'investmentList',
+                meta: {
+                    title: '模具-投资清单'
+                },
+                component: () =>
+                    import (`@/views/priceorder/stocksheet/investmentList`)
             },
             {
                 path: '/priceorder/postmanagement',

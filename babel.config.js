@@ -17,6 +17,15 @@ module.exports = {
         "libraryName": "element-ui",
         "styleLibraryName": "theme-chalk"
       }
+    ],
+    [
+      "component",
+      {
+        "libraryName": "rise",
+        "styleLibraryName": "style"
+      },
+      "rise"
     ]
+
   ]
 }

@@ -59,12 +59,27 @@
         v-else
         :label="items.name"
         :prop="items.props"
-      ></el-table-column>
+        :min-width="items.props == 'linie' ? 120 : 'auto'"
+      >
+        <template slot="header" slot-scope="scope">
+          <Popover
+              placement="top-start"
+              :content="items.name"
+              trigger="hover">
+            <div slot="reference" class="tableHeader">{{ items.name }}</div>
+          </Popover>
+        </template>
+        <template v-if="$scopedSlots[items.props] || $slots[items.props]" v-slot="scope">
+          <slot :name="items.props" :row="scope.row"></slot>
+        </template>
+      </el-table-column>
     </template>
   </el-table>
 </template>
 
 <script>
+import {Popover} from "element-ui"
+
 export default {
   props: {
     tableData: { type: Array },
@@ -78,6 +93,9 @@ export default {
     radio: { type: Boolean, default: false }, // 是否单选
   },
   inject: ["vm"],
+  components: {
+    Popover
+  },
   methods: {
     handleSelectionChange(val) {
       if (this.radio) {
@@ -110,6 +128,12 @@ export default {
 };
 </script>
 <style lang='scss' scoped>
+.tableHeader{
+  max-width: 100%;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
 .openLinkText {
   color: $color-blue;
 }
