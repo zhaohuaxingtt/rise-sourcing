@@ -83,7 +83,7 @@
           <div></div>
           <div>
             <iButton v-show="!pageEdit" @click="pageEdit = true"
-                     :disabled="versionList[0] && versionId != versionList[0].id">编辑
+                     :disabled="versionList[0] && form['search.version'] != versionList[0].id">编辑
             </iButton>
             <iButton v-show="pageEdit" @click="addRow">添加行</iButton>
             <iButton v-show="pageEdit" @click="deleteIRow">删除行</iButton>
@@ -434,7 +434,6 @@ export default {
     changeVersion(val) {
       if (val) {
         this.versionName = this.versionList.find(item => item.id == val).version
-        this.versionId = val
         this.getInvestmentVerisionList()
       } else {
         this.versionName = ''
@@ -718,8 +717,7 @@ export default {
       }).then((res) => {
         if (Number(res.code) === 0) {
           this.versionList = res.data
-          this.form['search.version'] = this.versionId ? this.versionId : (this.versionList[0] ? this.versionList[0].id : '')
-          this.versionId = this.form['search.version']
+          this.form['search.version'] = this.versionList[0] ? this.versionList[0].id : ''
           this.versionName = this.versionList[0] ? this.versionList[0].version : ''
           this.getInvestmentData()
         } else {

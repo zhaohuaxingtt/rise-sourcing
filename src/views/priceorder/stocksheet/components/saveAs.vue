@@ -20,7 +20,7 @@
              :modal-append-to-body="true" append-to-body>
       <span slot="footer" class="dialog-footer">
         <iButton @click="value2 = false">取消</iButton>
-        <iButton @click="save2" :loading='saveLoading'>确认</iButton>
+        <iButton @click="save2">确认</iButton>
       </span>
     </iDialog>
   </iDialog>
@@ -52,7 +52,8 @@ export default {
     return {
       conversionVal: '',
       iDialogLoading: false,
-      value2: false
+      value2: false,
+      iDialogLoading2: false
     }
   },
   mounted() {
@@ -70,7 +71,7 @@ export default {
 
     },
     save2(){
-      this.saveLoading = true
+      this.iDialogLoading2 = true
       saveNewVersion(this.saveParams).then((res) => {
         if (Number(res.code) === 0) {
           // this.findInvestmentList()
@@ -81,9 +82,9 @@ export default {
         } else {
           iMessage.error(res.desZh);
         }
-        this.saveLoading = false
+        this.iDialogLoading2 = false
       }).catch(() => {
-        this.saveLoading = false
+        this.iDialogLoading2 = false
       });
 
     }
