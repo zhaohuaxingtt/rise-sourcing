@@ -258,7 +258,7 @@ export default {
         iMessage.warn('请先输入车型名称');
         return
       }
-      if (this.fromGroup.some(item => {item.cartypeNname == this.addCarTypeProject})){
+      if (this.fromGroup.some(item => item.cartypeNname == ('自定义-' + this.addCarTypeProject))){
         iMessage.warn('已有车型名称，请重新输入');
         return
       }

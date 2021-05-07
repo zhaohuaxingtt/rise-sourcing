@@ -434,7 +434,7 @@ export default {
     changeVersion(val) {
       if (val) {
         this.versionName = this.versionList.find(item => item.id == val).version
-        this.getInvestmentVerisionList()
+        this.getInvestmentVerisionList(true)
       } else {
         this.versionName = ''
       }
@@ -708,7 +708,7 @@ export default {
         this.headerLoading = false
       });
     },
-    getInvestmentVerisionList() {
+    getInvestmentVerisionList(isChange) {
       this.headerLoading = true
       getInvestmentVerisionList({
         id: this.params.id,
@@ -717,7 +717,9 @@ export default {
       }).then((res) => {
         if (Number(res.code) === 0) {
           this.versionList = res.data
-          this.form['search.version'] = this.versionList[0] ? this.versionList[0].id : ''
+          if(!isChange){
+            this.form['search.version'] = this.versionList[0] ? this.versionList[0].id : ''
+          }
           this.versionName = this.versionList[0] ? this.versionList[0].version : ''
           this.getInvestmentData()
         } else {
