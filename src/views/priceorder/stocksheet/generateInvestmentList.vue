@@ -4,7 +4,7 @@
  * @Description: 生成投资清单。
 -->
 <template>
-  <div class="generateInvestmentList" v-permission="PARTSPROCURE_INDEXPAGE">
+  <div class="generateInvestmentList">
     <div>
       <!------------------------------------------------------------------------>
       <!--                  search 搜索模块                                   --->
@@ -20,9 +20,9 @@
           v-loading="loadingiSearch"
       >
         <el-form>
-          <el-form-item label="车型项目">
+          <el-form-item :label="$t('LK_CHEXINXIANGMU')">
             <iSelect
-                placeholder="请选择"
+                :placeholder="$t('partsprocure.PLEENTER')"
                 v-model="form['search.carTypeProject']"
                 v-permission="PARTSPROCURE_PARTSTATUS"
                 filterable
@@ -41,9 +41,9 @@
               ></el-option>
             </iSelect>
           </el-form-item>
-          <el-form-item label="项目类型">
+          <el-form-item :label="$t('LK_XIANGMULEIXIN')">
             <iSelect
-                placeholder="请选择"
+                :placeholder="$t('partsprocure.PLEENTER')"
                 v-model="form['search.projectType']"
                 v-permission="PARTSPROCURE_VEHICLECATEGORIES"
                 :disabled="carTypeProjectDisabled"
@@ -57,9 +57,9 @@
               </el-option>
             </iSelect>
           </el-form-item>
-          <el-form-item label="定点类型">
+          <el-form-item :label="$t('LK_DINGDIANLEIXIN')">
             <iSelect
-                placeholder="请选择"
+                :placeholder="$t('partsprocure.PLEENTER')"
                 v-model="form['search.fixedPointType']"
                 v-permission="PARTSPROCURE_MODELPROJECT"
                 :disabled="carTypeProjectDisabled"
@@ -75,7 +75,7 @@
           </el-form-item>
           <el-form-item label="燃料类型">
             <iSelect
-                placeholder="请选择"
+                :placeholder="$t('partsprocure.PLEENTER')"
                 v-model="form['search.modelCategory']"
                 v-permission="PARTSPROCURE_PARTITEMTYPE"
                 :disabled="carTypeProjectDisabled"
@@ -91,7 +91,7 @@
           </el-form-item>
         </el-form>
         <div class="searchSure">
-          <iButton @click="saveAddCarType" v-loading="addCarTypeLoading">确认</iButton>
+          <iButton @click="saveAddCarType" v-loading="addCarTypeLoading">{{ $t('LK_QUEREN') }}</iButton>
 <!--          <iButton @click="sure">查询</iButton>-->
 <!--          <iButton @click="reset">重置</iButton>-->
         </div>
@@ -106,15 +106,15 @@
             <iInput v-model="form['search.materialName']" placeholder="可输入编号中德文名称">
               <i slot="suffix" class="el-input__icon el-icon-search" @click="sure"></i>
             </iInput>
-            零件六位号：
-            <iInput v-model="form['search.partNum']" placeholder="请输入查询" maxlength="6">
+            {{ $t('LK_LINJIANLIUWEIHAO') }}:
+            <iInput v-model="form['search.partNum']" :placeholder="$t('LK_RFQPLEASEENTERQUERY')" maxlength="6">
               <i slot="suffix" class="el-input__icon el-icon-search" @click="sure"></i>
             </iInput>
           </div>
           <div>
-            <iButton @click="addRow" :disabled="(form['search.carTypeProject'] == '')">添加行</iButton>
-            <iButton @click="deleteIRow" :disabled="(form['search.carTypeProject'] == '')">删除行</iButton>
-            <iButton @click="referenceModelShow = true" :disabled="(form['search.carTypeProject'] == '')">参考车型</iButton>
+            <iButton @click="addRow" :disabled="(form['search.carTypeProject'] == '')">{{ $t('LK_TIANJIAHANG') }}</iButton>
+            <iButton @click="deleteIRow" :disabled="(form['search.carTypeProject'] == '')">{{ $t('LK_SHANCHUHANG') }}</iButton>
+            <iButton @click="referenceModelShow = true" :disabled="(form['search.carTypeProject'] == '')">{{ $t('LK_CANKAOCHEXIN') }}</iButton>
             <!--                <iButton @click="saveRow" :disabled="(form['search.carTypeProject'] == '')">保存</iButton>-->
 <!--            <iButton @click="investmentList" :disabled="(form['search.carTypeProject'] == '')">下一步</iButton>-->
           </div>

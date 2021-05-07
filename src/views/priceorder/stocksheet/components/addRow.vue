@@ -18,18 +18,18 @@
       >
         <el-form>
           <el-form-item label="材料组/中文名/德文名">
-            <iInput v-model="zhEnNo" placeholder="请输入查询">
+            <iInput v-model="zhEnNo" :placeholder="$t('LK_RFQPLEASEENTERQUERY')">
               <i slot="suffix" class="el-input__icon el-icon-search" @click="sure"></i>
             </iInput>
           </el-form-item>
-          <el-form-item label="零件六位号">
-            <iInput v-model="materialName" placeholder="请输入查询" maxlength="6">
+          <el-form-item :label="$t('LK_LINJIANLIUWEIHAO')">
+            <iInput v-model="materialName" :placeholder="$t('LK_RFQPLEASEENTERQUERY')" maxlength="6">
               <i slot="suffix" class="el-input__icon el-icon-search" @click="sure"></i>
             </iInput>
           </el-form-item>
-          <el-form-item label="模具属性">
+          <el-form-item :label="$t('LK_MOJUSHUXIN')">
             <iSelect
-                placeholder="请选择"
+                :placeholder="$t('LK_QINGXUANZE')"
                 v-model="mouldAttr"
                 v-permission="PARTSPROCURE_PARTSTATUS"
                 filterable
@@ -47,9 +47,9 @@
 <!--              <i slot="suffix" class="el-input__icon el-icon-search" @click="sure"></i>-->
 <!--            </iInput>-->
           </el-form-item>
-          <el-form-item label="专业科室">
+          <el-form-item :label="$t('LK_ZHUANYEKESHI')">
             <iSelect
-                placeholder="请选择"
+                :placeholder="$t('LK_QINGXUANZE')"
                 v-model="professionalDepartments"
                 v-permission="PARTSPROCURE_PARTSTATUS"
                 filterable
@@ -70,7 +70,7 @@
         </el-form>
       </iSearch>
       <div v-loading="tableLoading">
-        <iButton class="add" @click="addList">添加</iButton>
+        <iButton class="add" @click="addList">{{ $t('LK_TIANJIA') }}</iButton>
         <tablelist
             :height="tableHeight"
             :tableData="tableListData"
@@ -123,7 +123,7 @@ export default {
     iMessage
   },
   props: {
-    title: {type: String, default: '添加行'},
+    title: {type: String, default: 'LK_TIANJIAHANG'},
     carTypeProId: {type: String, default: ''},
     sourceStatus: {type: String, default: ''},
     value: {type: Boolean},

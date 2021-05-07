@@ -16,12 +16,12 @@
           <img v-if="item.isBudget == 3" class="editIcon" src="../../../assets/images/editCar.png" alt="">
           <div class="title">
             <h4 :title="item.cartypeProjectName">{{ item.cartypeProjectName }}</h4>
-            <p :title="item.locationFactory">{{ item.locationFactory }}</p>
-            <p :title="item.sop">SOP：{{ item.sop }}</p>
+            <p :title="item.locationFactory">{{$t("LK_CAIGOUGONGCHANG")}}: {{ item.locationFactory }}</p>
+            <p :title="item.sop">SOP: {{ item.sop }}</p>
           </div>
         </div>
         <div class="unit">
-          单位：百万元
+          {{$t("LK_DANWEI")}}: {{$t("LK_BAIWANYUAN")}}
         </div>
         <div class="chart" :id="'chart' + index"></div>
       </div>
@@ -182,7 +182,7 @@ export default {
                   },
                   xAxis: {
                     type: 'category',
-                    data: ['总预算', '定点金额', 'BM单', '付款'],
+                    data: [this.$t("LK_ZONGYUSUAN"), this.$t("LK_DINGDIANJINE"), this.$t("LK_BMDAN"), this.$t("LK_FUKUAN")],
                     axisTick: {
                       show: false
                     },

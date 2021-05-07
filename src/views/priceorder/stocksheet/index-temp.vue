@@ -7,7 +7,7 @@
  * @FilePath: \rise\src\views\partsprocure\home\index.vue
 -->
 <template>
-  <iPage class="partsprocureHome" v-permission="PARTSPROCURE_INDEXPAGE">
+  <iPage class="partsprocureHome">
     <el-tabs v-model="tab" class="tab">
       <el-tab-pane name="source">
         <div>

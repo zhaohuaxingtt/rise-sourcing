@@ -30,7 +30,7 @@
         :show-overflow-tooltip="items.tooltip"
         v-if="items.props == activeItems"
         :prop="items.props"
-        :label="items.name"
+        :label="$t(items.key)"
       >
         <template slot-scope="row"
           ><span class="openLinkText cursor" @click="openPage(row.row)">{{
@@ -64,9 +64,9 @@
         <template slot="header" slot-scope="scope">
           <Popover
               placement="top-start"
-              :content="items.name"
+              :content="$t(items.key)"
               trigger="hover">
-            <div slot="reference" class="tableHeader">{{ items.name }}</div>
+            <div slot="reference" class="tableHeader">{{ $t(items.key) }}</div>
           </Popover>
         </template>
         <template v-if="$scopedSlots[items.props] || $slots[items.props]" v-slot="scope">
