@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2021-04-28 16:59:34
+ * @LastEditTime: 2021-05-07 16:54:11
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsprocure\editordetail\index.vue
@@ -91,7 +91,7 @@
 							</iSelect>
 						</iFormItem>
 						<iFormItem :label="$t('LK_CAIGOUTIAOKUAN') + ':'" name="test"
-							v-show="detailData.partPrejectType == '47'">
+							v-show="detailData.partPrejectType == '46'">
 							<iSelect v-model="detailData.purchaseClause"
 								v-permission="PARTSPROCURE_EDITORDETAIL_PURCHASETERMS">
 								<el-option :value="item.id" :label="item.name" v-for="(item, index) in fromGroup.PURCHASE_RULE" :key="index">
@@ -135,7 +135,7 @@
 							</iSelect>
 						</iFormItem>
 						<iFormItem :label="$t('LK_ZHIFUTIAOKUAN') + ':'" name="test"
-							v-show="detailData.partPrejectType == '47'">
+							v-show="detailData.partPrejectType == '46'">
 							<iSelect v-model="detailData.payClause"
 								v-permission="PARTSPROCURE_EDITORDETAIL_NUMBEROFPAYMENT">
 								<el-option :value="item.id" :label="item.name"
@@ -199,7 +199,7 @@
 							</iText>
 						</iFormItem>
 						<iFormItem :label="$t('LK_HUOBI') + ':'" name="test"
-							v-show="detailData.partPrejectType == '47'">
+							v-show="detailData.partPrejectType == '46'">
 							<iSelect v-model="detailData.currencyId" v-permission="PARTSPROCURE_EDITORDETAIL_CURRENCY">
 								<el-option :value="item.id" :label="item.name"
 									v-for="(item, index) in fromGroup.CURRENCY_TYPE" :key="index"></el-option>
