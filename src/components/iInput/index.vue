@@ -24,4 +24,13 @@ export default{
       @include textarea_inner;
     }
   }
+  .el-icon-search{
+    color: #CBCBCB;
+    font-size: 20px;
+    cursor: pointer;
+  }
+  .el-input__suffix-inner{
+    font-size: 16px;
+    cursor: pointer;
+  }
 </style>

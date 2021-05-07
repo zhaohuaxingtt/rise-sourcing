@@ -7,8 +7,11 @@ const px2rem = require('postcss-px2rem')
 const postcss = px2rem({
     remUnit: 16
 })
+//内存泄漏
+require('events').EventEmitter.defaultMaxListeners = 0
 module.exports = {
-    publicPath: process.env.PUBLICPATH,
+    //打包时
+    // publicPath: process.env.VUE_APP_PUBLICPATH,
     outputDir: 'dist',
     assetsDir: 'static',
     filenameHashing: true,
@@ -24,6 +27,7 @@ module.exports = {
         config.resolve.alias
             .set('@', resolve('src'))
             .set('pages', resolve('src/views'))
+
         config.optimization.splitChunks({
             chunks: 'all',
             cacheGroups: {
@@ -174,7 +178,17 @@ module.exports = {
                 pathRewrite: {
                     "^/partsProcureApi": ""
                 }
-            }
+            },
+            '/ws2Api': { // ws2Api.../ 王鹏霄
+                target: 'http://10.122.18.166:8022',
+                // target: 'http://192.168.50.41:8022',// 圆圆
+                // target: 'http://192.168.50.40:8022',// 立立
+                // target: 'http://cbbbc967414f.ngrok.io',
+                changeOrigin: true,
+                pathRewrite: {
+                    "^/ws2Api": ""
+                }
+            },
         }
     }
 }
