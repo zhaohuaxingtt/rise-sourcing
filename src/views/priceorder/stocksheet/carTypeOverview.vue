@@ -3,7 +3,7 @@
  * @Date: 2021-04-21 09:50:42
 -->
 <template>
-  <div v-loading="loadingiPage">
+  <div v-loading="loadingiPage" v-permission="TOOLING_BUDGET_OVERVIEW">
     <div class="content">
       <div class="item" @click="toEdit('add')" title="点击进入【生成投资清单】页面">
         <img class="addIcon" src="../../../assets/images/addCar.png" alt="">

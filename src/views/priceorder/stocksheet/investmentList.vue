@@ -4,7 +4,7 @@
  * @Description: 投资清单。
 -->
 <template>
-  <div class="investmentList">
+  <div class="investmentList" v-permission="TOOLING_BUDGET_INVESTMENT">
     <div>
       <!------------------------------------------------------------------------>
       <!--                  search 搜索模块                                   --->

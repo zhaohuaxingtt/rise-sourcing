@@ -4,7 +4,7 @@
  * @Description: 生成投资清单。
 -->
 <template>
-  <div class="generateInvestmentList">
+  <div class="generateInvestmentList" v-permission="TOOLING_BUDGET_BUILD">
     <div>
       <!------------------------------------------------------------------------>
       <!--                  search 搜索模块                                   --->
