@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-24 09:17:57
- * @LastEditTime: 2021-04-19 14:40:47
+ * @LastEditTime: 2021-05-07 16:59:45
  * @LastEditors: Please set LastEditors
  * @Description: 零件签收列表界面.
  * @FilePath: \rise\src\views\partsign\index.vue
@@ -327,7 +327,7 @@ export default {
           userId: id,
         },
       }).then((res) => {
-        if (res.data) {
+        if (res.code == '200') {
           iMessage.success(this.$t("LK_CAOZUOCHENGGONG"));
           this.getTableList();
         }
