@@ -7,8 +7,8 @@
  * @FilePath: \rise\src\views\home\index.vue
 -->
 <template>
-	<div>
-		hello rise ...
+	<div class="welcome">
+		欢迎进入RISE系统，首页正在建设中...
 	</div>
 </template>
 <script>
@@ -22,4 +22,8 @@
 	}
 </script>
 <style lang='scss' scoped>
+.welcome{
+  margin: 30px;
+  font-size: 20px;
+}
 </style>

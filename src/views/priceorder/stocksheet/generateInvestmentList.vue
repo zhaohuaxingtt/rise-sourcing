@@ -29,7 +29,7 @@
                 ref="carTypeProjectRef"
             >
               <div class="addCarTypeProject">
-                <iInput v-model="addCarTypeProject" placeholder="请输入车型项目名称"></iInput>
+                <iInput v-model="addCarTypeProject" placeholder="请输入自定义名称"></iInput>
                 <iButton @click="handleAddCarTypeProject" v-loading="iDialogAddCarTypeProject">确认</iButton>
               </div>
               <el-option
@@ -87,7 +87,7 @@
           </el-form-item>
         </el-form>
         <div class="searchSure">
-          <iButton @click="saveAddCarType" v-loading="addCarTypeLoading">{{ $t('LK_QUEREN') }}</iButton>
+          <iButton @click="saveAddCarType" :disabled="carTypeProjectObj.isBudget == 3" v-loading="addCarTypeLoading">{{ $t('LK_QUEREN') }}</iButton>
 <!--          <iButton @click="sure">查询</iButton>-->
 <!--          <iButton @click="reset">重置</iButton>-->
         </div>
@@ -108,9 +108,9 @@
             </iInput>
           </div>
           <div>
-            <iButton @click="addRow" :disabled="(form['search.carTypeProject'] == '')">{{ $t('LK_TIANJIAHANG') }}</iButton>
-            <iButton @click="deleteIRow" :disabled="(form['search.carTypeProject'] == '')">{{ $t('LK_SHANCHUHANG') }}</iButton>
-            <iButton @click="referenceModelShow = true" :disabled="(form['search.carTypeProject'] == '')">{{ $t('LK_CANKAOCHEXIN') }}</iButton>
+            <iButton @click="addRow" :disabled="(form['search.carTypeProject'] == '') || carTypeProjectObj.isBudget == 3">{{ $t('LK_TIANJIAHANG') }}</iButton>
+            <iButton @click="deleteIRow" :disabled="(form['search.carTypeProject'] == '') || carTypeProjectObj.isBudget == 3">{{ $t('LK_SHANCHUHANG') }}</iButton>
+            <iButton @click="referenceModelShow = true" :disabled="(form['search.carTypeProject'] == '') || carTypeProjectObj.isBudget == 3">{{ $t('LK_CANKAOCHEXIN') }}</iButton>
             <!--                <iButton @click="saveRow" :disabled="(form['search.carTypeProject'] == '')">保存</iButton>-->
 <!--            <iButton @click="investmentList" :disabled="(form['search.carTypeProject'] == '')">下一步</iButton>-->
           </div>
@@ -356,6 +356,7 @@ export default {
         carTypeProject: this.carTypeProjectObj.id,
         sourceStatus: this.carTypeProjectObj.sourceStatus
       });
+      this.$store.commit('SET_isBudget', this.carTypeProjectObj.isBudget);
       let sourceStatus = this.carTypeProjectObj.sourceStatus
       this.carTypeProjectDisabled = sourceStatus == '1' ? true : false
       findProjectDetailById({id: val, sourceStatus: sourceStatus}).then((res) => {

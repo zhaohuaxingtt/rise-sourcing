@@ -18,6 +18,7 @@
           v-if="isGenerateInvestmentList"
           class="nextStep"
           @click="$emit('nextStep')"
+          :disabled="$store.state.mouldManagement.isBudget == 3"
       >下一步</iButton>
       <div class="logButton" @click="$emit('click')">
         <icon symbol name="iconrizhiwuzi" class="icon" />

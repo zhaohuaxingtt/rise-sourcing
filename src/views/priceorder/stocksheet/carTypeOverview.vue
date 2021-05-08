@@ -47,7 +47,7 @@ export default {
       contentData: []
     };
   },
-  created() {
+  mounted() {
     this.findCartypePro();
   },
   methods: {

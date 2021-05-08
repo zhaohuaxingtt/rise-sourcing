@@ -51,7 +51,7 @@ export default{
         this.loading = false
         await setToken(res.data.token)
         this.$router.replace({
-            path:'/partsign'
+            path:'/index'
         })
       }).catch(()=>{
         this.loading = false
