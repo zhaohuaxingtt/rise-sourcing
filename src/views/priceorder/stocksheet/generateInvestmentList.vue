@@ -10,7 +10,7 @@
       <!--                  search 搜索模块                                   --->
       <!------------------------------------------------------------------------>
       <iSearch
-          class="margin-bottom20"
+          class="margin-bottom20 giSearch"
           style="margin-top: 20px"
           @sure="sure"
           @reset="reset"
@@ -511,9 +511,11 @@ export default {
 .generateInvestmentList {
   position: relative;
   //组件按钮间距
-  ::v-deep .cardBody .iSearch-content .operation {
-    width: auto;
-    display: none;
+  .giSearch{
+    ::v-deep .cardBody .iSearch-content .operation {
+      width: auto;
+      display: none;
+    }
   }
 
   ::v-deep .serch {

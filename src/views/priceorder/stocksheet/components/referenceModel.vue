@@ -104,13 +104,15 @@
               <el-date-picker
                   v-model="sopBegin"
                   type="year"
-                  placeholder="选择年">
+                  placeholder="选择年"
+                  @change="changeYears('sopBegin')">
               </el-date-picker>
               <div class="symbol">-</div>
               <el-date-picker
                   v-model="sopEnd"
                   type="year"
-                  placeholder="选择年">
+                  placeholder="选择年"
+                  @change="changeYears('sopEnd')">
               </el-date-picker>
             </div>
 <!--            <iInput v-model="form['search.catTypeStartTime']"></iInput>-->
@@ -122,6 +124,13 @@
       <iButton @click="save" :loading='saveLoading'>确认</iButton>
       <iButton @click="reset">重置</iButton>
     </span>
+    <iDialog title="您还没有选择参考车型项目，是否继续?" :visible.sync="value2" width="381px" @close='clearDiolog2' v-loading="iDialogLoading2"
+             :modal-append-to-body="true" append-to-body>
+      <span slot="footer" class="dialog-footer">
+        <iButton @click="value2 = false">取消</iButton>
+        <iButton @click="save2">确认</iButton>
+      </span>
+    </iDialog>
   </iDialog>
 </template>
 <script>
@@ -133,6 +142,7 @@ import {
   GetOtherCarTypeAlternative,
   saveList, saveRefcartypepro, getRelationCarTypeById,
 } from "@/api/priceorder/stocksheet/edit";
+import {saveNewVersion} from "@/api/priceorder/stocksheet/investmentList";
 
 export default {
   mixins: [pageMixins],
@@ -170,14 +180,16 @@ export default {
       modelProject: '',
       sopBegin: '',
       sopEnd: '',
+      value2: false,
+      iDialogLoading2: false
     }
   },
   mounted() {
     this.GetOtherCarTypeAlternative()
   },
   methods: {
-    save(){
-      this.saveLoading = true
+    save2(){
+      this.iDialogLoading2 = true
       let params = {
         cartypeProType: this.modelProject,
         id: this.carTypeProId,
@@ -187,6 +199,41 @@ export default {
         refCartypeProThirdId: this.referenceModel3,
         sopBegin: new Date(this.sopBegin).getFullYear(),
         sopEnd: new Date(this.sopEnd).getFullYear(),
+        sourceStatus: this.sourceStatus,
+      }
+      saveRefcartypepro(params).then((res) => {
+        if (Number(res.code) === 0) {
+          this.value2 = false
+          this.$emit('input', false)
+          this.$emit('updateTable')
+        }
+        this.iDialogLoading2 = false
+        return iMessage.success(`${ this.$i18n.locale === 'zh' ? res.desZh : res.desEn }`)
+      }).catch(err => {
+        this.iDialogLoading2 = false
+      })
+    },
+    clearDiolog2() {
+      this.value2 = false
+    },
+    save(){
+      if(!this.referenceModel1 && !this.referenceModel2 &&
+          !this.referenceModel3 && !this.otherModel &&
+          !this.modelProject && !this.sopBegin &&
+          !this.sopEnd){
+        this.value2 = true
+        return
+      }
+      this.saveLoading = true
+      let params = {
+        cartypeProType: this.modelProject,
+        id: this.carTypeProId,
+        other: this.otherModel,
+        refCartypeProFirstId: this.referenceModel1,
+        refCartypeProSecondId: this.referenceModel2,
+        refCartypeProThirdId: this.referenceModel3,
+        sopBegin: this.sopBegin ? new Date(this.sopBegin).getFullYear() : '',
+        sopEnd: this.sopEnd ? new Date(this.sopEnd).getFullYear() : '',
         sourceStatus: this.sourceStatus,
       }
       saveRefcartypepro(params).then((res) => {
@@ -247,12 +294,19 @@ export default {
       this.modelProject = ""
       this.sopBegin = ""
       this.sopEnd = ""
+    },
+    changeYears(key){
+      if(new Date(this.sopBegin + '').getFullYear() > new Date(this.sopEnd + '').getFullYear()){
+        iMessage.warn(`开始时间不能大于结束时间，请重新选择。`)
+        this[key] = ''
+      }
     }
   },
   watch: {
     value(val) {
       if(val){
         this.loadingiDialog = true
+        let currentYears = new Date().getFullYear()
         getRelationCarTypeById({id: this.carTypeProId}).then((res) => {
           if (Number(res.code) == 0) {
             this.referenceModel1 = res.data.refCartypeProFirstId
@@ -262,6 +316,12 @@ export default {
             this.modelProject = res.data.relationCarTypeId
             this.sopBegin = res.data.sopBegin ? res.data.sopBegin : ''
             this.sopEnd = res.data.sopEnd ? res.data.sopEnd : ''
+            if(!this.sopBegin){
+              this.sopBegin = currentYears - 5 + ''
+            }
+            if(!this.sopEnd){
+              this.sopEnd = currentYears + ''
+            }
           }
           this.loadingiDialog = false
         });
@@ -271,6 +331,10 @@ export default {
 }
 </script>
 <style lang='scss' scoped>
+::v-deep .iSearch-content .operation {
+  width: auto;
+  display: none;
+}
 .clearfix::after{
   content: '';
   display: block;

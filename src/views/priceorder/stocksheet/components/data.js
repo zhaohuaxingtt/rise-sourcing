@@ -257,7 +257,7 @@ export const investmentListEntities = [{
     },
     {
         props: 'sourcingType',
-        name: 'Common Sourcing',
+        name: 'Sourcing类型',
         key: 'partsprocure.PARTSPROCUREPURCHASINGFACTORY',
         tooltip: false
     },

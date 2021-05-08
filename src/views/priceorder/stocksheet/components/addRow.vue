@@ -234,9 +234,10 @@ export default {
       this.findAddColumnInvestmentBuild()
     },
     reset(){
-      for (let i in this.form) {
-        this.form[i] = "";
-      }
+      this.zhEnNo = ''
+      this.materialName = ''
+      this.mouldAttr = ''
+      this.professionalDepartments = ''
     }
   },
   watch: {
