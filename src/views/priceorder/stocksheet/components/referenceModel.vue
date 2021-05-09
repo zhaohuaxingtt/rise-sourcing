@@ -8,9 +8,15 @@
       <div class="text">
         {{$t(title)}}
         <Popover
+            width="500"
             placement="top-start"
-            content="车型参考依照顺序匹配"
             trigger="hover">
+          <div class="popoverDiv">
+            <p>本窗口的功能为选择参考车型项目。选择好所有条件后，系统会根据你的选择，首先计算第一顺位车型项目的各个材料组的历史投资金额。</p>
+            <p>若某个材料组的计算结果为0，则计算第二顺位车型项目的各个材料组的历史投资金额进行补充。</p>
+            <p>若某个材料组的计算结果再次为0，则计算第三顺位车型项目的各个材料组的历史投资金额进行补充。</p>
+            <p>若某个材料组的计算结果依旧为0，系统根据【其他参考】【车型项目类型】【项目年份】筛选出多个车型项目，并调用模具投资金额最大的项目作为参考项目的模具投资金额，显示在【模具投资清单页面】。</p>
+          </div>
           <icon symbol name="iconxinxitishi" slot="reference"></icon>
         </Popover>
       </div>
@@ -331,6 +337,9 @@ export default {
 }
 </script>
 <style lang='scss' scoped>
+.popoverDiv p{
+  text-indent: 2em;
+}
 ::v-deep .iSearch-content .operation {
   width: auto;
   display: none;

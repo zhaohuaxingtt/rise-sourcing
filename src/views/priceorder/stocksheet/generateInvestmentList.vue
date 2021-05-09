@@ -347,7 +347,7 @@ export default {
       });
     },
     changeCarTypeProject(val) {
-      if (!val) {
+      if (!val || val == 'add') {
         return
       }
       this.loadingiSearch = true
@@ -403,9 +403,9 @@ export default {
         }
         if (res[1].data) {
           this.fromGroup = res[1].data;
-          this.changeCarTypeProject(Number(this.params.id))
+          this.changeCarTypeProject(this.params.id)
           if (this.params.id != 'add') {
-            this.form['search.carTypeProject'] = this.params.id == '' ? '' : Number(this.params.id)
+            this.form['search.carTypeProject'] = this.params.id == '' ? '' : this.params.id
             this.getTableListFn();
           } else {
             this.form['search.carTypeProject'] = ''
