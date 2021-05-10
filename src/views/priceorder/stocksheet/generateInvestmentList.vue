@@ -362,9 +362,12 @@ export default {
       findProjectDetailById({id: val, sourceStatus: sourceStatus}).then((res) => {
         if (res.data) {
           if (sourceStatus == 1) {
-            this.form['search.projectType'] = res.data.projectTypeName ? this.projectTypeList.find(item => item.projectTypeName == res.data.projectTypeName).projectTypeId : ''
-            this.form['search.fixedPointType'] = res.data.fixedPointName ? this.fixedPointTypeList.find(item => item.fixedPointName == res.data.fixedPointName).fixedPointId : ''
-            this.form['search.modelCategory'] = res.data.carTypeName ? this.modelCategoryList.find(item => item.carTypeName == res.data.carTypeName).carTypeId : ''
+            let projectType = this.projectTypeList.find(item => item.projectTypeName == res.data.projectTypeName)
+            let fixedPointType = this.projectTypeList.find(item => item.projectTypeName == res.data.projectTypeName)
+            let modelCategory = this.projectTypeList.find(item => item.projectTypeName == res.data.projectTypeName)
+            this.form['search.projectType'] = res.data.projectTypeName ? (projectType ? projectType.projectTypeId : '') : ''
+            this.form['search.fixedPointType'] = res.data.fixedPointName ? (fixedPointType ? fixedPointType.fixedPointId : '') : ''
+            this.form['search.modelCategory'] = res.data.carTypeName ? (modelCategory ? modelCategory.carTypeId : '') : ''
           } else if (sourceStatus == 2) {
             this.form['search.projectType'] = res.data.projectTypeId
             this.form['search.fixedPointType'] = res.data.fixedPointId
