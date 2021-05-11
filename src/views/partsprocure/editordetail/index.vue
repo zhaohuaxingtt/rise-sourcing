@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2021-05-11 17:58:45
+ * @LastEditTime: 2021-05-11 20:41:23
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsprocure\editordetail\index.vue
@@ -448,9 +448,9 @@ import { iMessageBox } from '../../../components';
 					}
 				}
 				detailData['cfController'] = this.detailData.cfController
-				detailData['cfControllerZh'] = this.fromGroup.CF_CONTROL.find(items=>items.id == this.detailData.cfController).name
+				detailData['cfControllerZh'] = (this.fromGroup.CF_CONTROL.find(items=>items.id == this.detailData.cfController)).name || ''
 				detailData['linieUserId'] = this.detailData.linieUserId
-				detailData['linieName'] = this.fromGroup.LINIE.find(items=>items.id == this.detailData.linieUserId).name
+				detailData['linieName'] = (this.fromGroup.LINIE.find(items=>items.code == this.detailData.linieUserId)).name || ''
 				changeProcure({
 					detailData,
 				}).then((res) => {
