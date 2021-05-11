@@ -1,3 +1,11 @@
+/*
+ * @Author: your name
+ * @Date: 2021-04-12 10:12:38
+ * @LastEditTime: 2021-05-11 13:41:01
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: \front-web\src\views\partsprocure\editordetail\components\drawingSheet\data.js
+ */
 export const tableTitle = [
   { 'props': 'tpPartAttachmentName', name: '文件名称', key: 'LK_WENJIANMINGCHENG', tooltip: true },
   { 'props': 'size', name: '大小（MB）', key: 'LK_DAXIAOMB', tooltip: true },
@@ -13,9 +21,9 @@ export const items = [
     { props: 'createDate', name: '创建日期', key: 'LK_CHUANGJIANRIQI' },
     { props: 'creatorNum', name: '创建人工号', key: 'LK_CHUANGJIANRENGONGHAO' },
     { props: 'creatorName', name: '创建人姓名', key: 'LK_CHUANGJIANRENXINGMING' },
-    { props: 'dept', name: '设计科室', key: 'LK_SHEJIKESHI' }, //*
-    { props: 'a8', name: '设计工程师工号', key: 'LK_SHEJIGONGCHENGSHIHAO' }, //*
-    { props: 'a9', name: '设计工程师姓名', key: 'LK_SHEJIGONGCHENGSHIXINGMING' }, //*
+    { props: 'tpDeptNum', name: '设计科室', key: 'LK_SHEJIKESHI' }, //*
+    { props: 'tpPrincepalNum', name: '设计工程师工号', key: 'LK_SHEJIGONGCHENGSHIHAO' }, //*
+    { props: 'tpPrincepalName', name: '设计工程师姓名', key: 'LK_SHEJIGONGCHENGSHIXINGMING' }, //*
     { props: 'partNameCn', name: '零件名（中）', key: 'LK_LINGJIANMINGZHONG' },
     { props: 'partNameDe', name: '零件名（德）', key: 'LK_LINGJIANMINGDE' },
     { props: 'partNameEn', name: '零件名（英）', key: 'LK_LINGJIANMINGYING' },
