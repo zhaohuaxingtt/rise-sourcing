@@ -30,7 +30,7 @@
             >
               <div class="addCarTypeProject">
                 <iInput v-model="addCarTypeProject" placeholder="请输入自定义名称"></iInput>
-                <iButton @click="handleAddCarTypeProject" v-loading="iDialogAddCarTypeProject">确认</iButton>
+                <iButton @click="handleAddCarTypeProject" v-loading="iDialogAddCarTypeProject">{{ $t('LK_QUEREN') }}</iButton>
               </div>
               <el-option
                   :value="item.id"
@@ -98,7 +98,7 @@
         <!------------------------------------------------------------------------>
         <div class="header margin-bottom20">
           <div class="search">
-            材料组/中文名/德文名：
+            {{ $t('LK_CAILIAOZUBIANHAOZHONGWENMINGDEWEN') }}:
             <iInput v-model="form['search.materialName']" placeholder="可输入编号中德文名称">
               <i slot="suffix" class="el-input__icon el-icon-search" @click="sure"></i>
             </iInput>
@@ -175,7 +175,7 @@ import {
   iSearch,
   iInput,
   iSelect,
-} from "@/components";
+} from "rise";
 // import {
 //   iButton
 // } from "rise"
@@ -260,8 +260,9 @@ export default {
       }
       this.iDialogAddCarTypeProject = true
       saveCustomCart({cartypeProjectName: this.addCarTypeProject}).then((res) => {
+        const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
         if (Number(res.code) === 0) {
-          iMessage.success(res.desZh);
+          iMessage.success(result);
           this.addCarTypeProject = ''
           this.addAialog = false
           this.params.id = res.data.id
@@ -270,7 +271,7 @@ export default {
           this.$refs.carTypeProjectRef.blur()
           this.getProcureGroup();
         } else {
-          iMessage.error(res.desZh);
+          iMessage.error(result);
         }
         this.iDialogAddCarTypeProject = false
       }).catch(() => {
@@ -287,11 +288,12 @@ export default {
       }
       this.tableLoading = true
       deleteList(this.selectTableData.map(item => ({id: item.id, isDelete: 2}))).then((res) => {
+        const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
         if (Number(res.code) === 0) {
           this.getTableListFn()
-          iMessage.success(res.desZh);
+          iMessage.success(result);
         } else {
-          iMessage.error(res.desZh);
+          iMessage.error(result);
           this.tableLoading = false
         }
       }).catch(() => {
@@ -309,11 +311,12 @@ export default {
       }
       this.tableLoading = true
       updateBuildInvestment(this.selectTableData[0]).then((res) => {
+        const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
         if (Number(res.code) === 0) {
           this.getTableListFn()
-          iMessage.success(res.desZh);
+          iMessage.success(result);
         } else {
-          iMessage.error(res.desZh);
+          iMessage.error(result);
           this.tableLoading = false
         }
       }).catch(() => {
@@ -331,15 +334,16 @@ export default {
         id: this.form['search.carTypeProject'],
         sourceStatus: this.carTypeProjectObj.sourceStatus
       }).then((res) => {
+        const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
         if (Number(res.code) === 0) {
-          iMessage.success(res.desZh);
+          iMessage.success(result);
           this.$emit('toinvestmentList', {
             id: this.form['search.carTypeProject'],
             sourceStatus: this.carTypeProjectObj.sourceStatus,
             step: 2
           })
         } else {
-          iMessage.error(res.desZh);
+          iMessage.error(result);
           this.tableLoading = false
         }
       }).catch(() => {
@@ -360,6 +364,7 @@ export default {
       let sourceStatus = this.carTypeProjectObj.sourceStatus
       this.carTypeProjectDisabled = sourceStatus == '1' ? true : false
       findProjectDetailById({id: val, sourceStatus: sourceStatus}).then((res) => {
+        const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
         if (res.data) {
           if (sourceStatus == 1) {
             let projectType = this.projectTypeList.find(item => item.projectTypeName == res.data.projectTypeName)
@@ -375,7 +380,7 @@ export default {
           }
           this.sure()
         } else {
-          iMessage.error(res.desZh);
+          iMessage.error(result);
         }
         this.loadingiSearch = false
       }).catch(() => {
@@ -394,6 +399,8 @@ export default {
         sourceStatus: this.params.sourceStatus
       });
       Promise.all([findProjectTypeDetailPulldown(), getCartypePulldown()]).then((res) => {
+        const result0 = this.$i18n.locale === 'zh' ? res[0].desZh : res[0].desEn
+        const result1 = this.$i18n.locale === 'zh' ? res[1].desZh : res[1].desEn
         if (res[0].data) {
           this.projectTypeList = res[0].data.projectTypePullDownVOList
           this.fixedPointTypeList = res[0].data.fixedPointPullDownVOList
@@ -402,7 +409,7 @@ export default {
           this.form['search.fixedPointType'] = ''
           this.form['search.modelCategory'] = ''
         } else {
-          iMessage.error(res[0].desZh);
+          iMessage.error(result0);
         }
         if (res[1].data) {
           this.fromGroup = res[1].data;
@@ -414,7 +421,7 @@ export default {
             this.form['search.carTypeProject'] = ''
           }
         } else {
-          iMessage.error(res[1].desZh);
+          iMessage.error(result1);
         }
         this.loadingiSearch = false
       }).catch(() => {
@@ -440,6 +447,7 @@ export default {
       }
       findInvestmentBuild(params)
           .then((res) => {
+            const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
             if (res) {
               // this.page.currPage = res.pageNum;
               // this.page.pageSize = res.pageSize;
@@ -472,11 +480,12 @@ export default {
         fixedPointId: this.form['search.fixedPointType'],
         carTypeId: this.form['search.modelCategory']
       }).then((res) => {
+        const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
         if (res.data) {
-          iMessage.success(this.$t("LK_CAOZUOCHENGGONG"));
+          iMessage.success(result);
           this.getTableListFn();
         } else {
-          iMessage.error(res.desZh);
+          iMessage.error(result);
         }
         this.addCarTypeLoading = false;
       }).catch(() => {

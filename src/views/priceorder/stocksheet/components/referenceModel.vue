@@ -28,9 +28,9 @@
           :searchKey="PARTSPROCURE_CONFIRM"
       >
         <el-form class="form1 clearfix">
-          <el-form-item label="参考车型项目一">
+          <el-form-item :label="$t('LK_CANKAOCHEXINXIANGMUYI')">
             <iSelect
-                placeholder="请选择"
+                :placeholder="$t('LK_QINGXUANZE')"
                 v-model="referenceModel1"
                 filterable
                 @change="changeCarTypeProject"
@@ -43,9 +43,9 @@
               ></el-option>
             </iSelect>
           </el-form-item>
-          <el-form-item label="参考车型项目二">
+          <el-form-item :label="$t('LK_CANKAOCHEXINXIANGMUER')">
             <iSelect
-                placeholder="请选择"
+                :placeholder="$t('LK_QINGXUANZE')"
                 v-model="referenceModel2"
                 filterable
                 @change="changeCarTypeProject"
@@ -58,9 +58,9 @@
               ></el-option>
             </iSelect>
           </el-form-item>
-          <el-form-item label="参考车型项目三">
+          <el-form-item :label="$t('LK_CANKAOCHEXINXIANGMUSAN')">
             <iSelect
-                placeholder="请选择"
+                :placeholder="$t('LK_QINGXUANZE')"
                 v-model="referenceModel3"
                 filterable
                 @change="changeCarTypeProject"
@@ -73,9 +73,9 @@
               ></el-option>
             </iSelect>
           </el-form-item>
-          <el-form-item label="其它车型项目备选">
+          <el-form-item :label="$t('LK_QITACHEXINXIANGMUBEIXUAN')">
             <iSelect
-                placeholder="请选择"
+                :placeholder="$t('LK_QINGXUANZE')"
                 v-model="otherModel"
                 filterable
                 @change="changeCarTypeProject"
@@ -90,9 +90,9 @@
           </el-form-item>
         </el-form>
         <el-form class="clearfix">
-          <el-form-item label="车型项目类型">
+          <el-form-item :label="$t('LK_CHEXINXIANGMULEIXIN')">
             <iSelect
-                placeholder="请选择"
+                :placeholder="$t('LK_QINGXUANZE')"
                 v-model="modelProject"
                 filterable
                 @change="changeCarTypeProject"
@@ -105,19 +105,19 @@
               ></el-option>
             </iSelect>
           </el-form-item>
-          <el-form-item label="车型项目起止年份">
+          <el-form-item :label="$t('LK_CHEXINXIANGMUQIZHINIANFEN')">
             <div class="timeClass">
               <el-date-picker
                   v-model="sopBegin"
                   type="year"
-                  placeholder="选择年"
+                  :placeholder="$t('LK_QINGXUANZE')"
                   @change="changeYears('sopBegin')">
               </el-date-picker>
               <div class="symbol">-</div>
               <el-date-picker
                   v-model="sopEnd"
                   type="year"
-                  placeholder="选择年"
+                  :placeholder="$t('LK_QINGXUANZE')"
                   @change="changeYears('sopEnd')">
               </el-date-picker>
             </div>
@@ -127,20 +127,20 @@
       </iSearch>
     </div>
     <span slot="footer" class="dialog-footer">
-      <iButton @click="save" :loading='saveLoading'>确认</iButton>
-      <iButton @click="reset">重置</iButton>
+      <iButton @click="save" :loading='saveLoading'>{{ $t('LK_QUEREN') }}</iButton>
+      <iButton @click="reset">{{ $t('LK_ZHONGZHI') }}</iButton>
     </span>
     <iDialog title="您还没有选择参考车型项目，是否继续?" :visible.sync="value2" width="381px" @close='clearDiolog2' v-loading="iDialogLoading2"
              :modal-append-to-body="true" append-to-body>
       <span slot="footer" class="dialog-footer">
-        <iButton @click="value2 = false">取消</iButton>
-        <iButton @click="save2">确认</iButton>
+        <iButton @click="value2 = false">{{ $t('LK_QUXIAO') }}</iButton>
+        <iButton @click="save2">{{ $t('LK_QUEREN') }}</iButton>
       </span>
     </iDialog>
   </iDialog>
 </template>
 <script>
-import {iButton, iDialog, iMessage, iSelect, icon, iSearch} from '@/components'
+import {iButton, iDialog, iMessage, iSelect, icon, iSearch} from 'rise'
 import { Popover } from "element-ui"
 import { addListInvestment, form } from "../components/data";
 import { pageMixins } from "@/utils/pageMixins";
@@ -161,7 +161,7 @@ export default {
     iSearch
   },
   props: {
-    title: {type: String, default: '参考车型项目'},
+    title: {type: String, default: 'LK_CANKAOCHEXINXIANGMU'},
     carTypeProId: {type: String, default: ''},
     sourceStatus: {type: String, default: ''},
     carType: {type: Array},
@@ -208,13 +208,14 @@ export default {
         sourceStatus: this.sourceStatus,
       }
       saveRefcartypepro(params).then((res) => {
+        const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
         if (Number(res.code) === 0) {
           this.value2 = false
           this.$emit('input', false)
           this.$emit('updateTable')
         }
         this.iDialogLoading2 = false
-        return iMessage.success(`${ this.$i18n.locale === 'zh' ? res.desZh : res.desEn }`)
+        return iMessage.success(result)
       }).catch(err => {
         this.iDialogLoading2 = false
       })
@@ -243,12 +244,13 @@ export default {
         sourceStatus: this.sourceStatus,
       }
       saveRefcartypepro(params).then((res) => {
+        const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
         if (Number(res.code) === 0) {
           this.$emit('input', false)
           this.$emit('updateTable')
         }
         this.saveLoading = false
-        return iMessage.success(`${ this.$i18n.locale === 'zh' ? res.desZh : res.desEn }`)
+        return iMessage.success(result)
       }).catch(err => {
         this.saveLoading = false
       })
@@ -262,29 +264,12 @@ export default {
     GetOtherCarTypeAlternative(){
       this.tableLoading = true
       GetOtherCarTypeAlternative(this.multipleSelection).then((res) => {
+        const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
         if (res.data) {
           this.carTypeAlternatives = res.data.carTypeAlternatives
           this.carTypes = res.data.carTypes
         }
         this.tableLoading = false
-      }).catch(err => {
-        this.tableLoading = false
-      })
-    },
-    addList(){
-      if(this.multipleSelection.length == 0){
-        return iMessage.warn(
-            this.$t(
-                "请先勾选"
-            )
-        );
-      }
-      this.tableLoading = true
-      saveList(this.multipleSelection).then((res) => {
-        if (res.data) {
-        }
-        this.tableLoading = false
-        return iMessage.success(`${ this.$i18n.locale === 'zh' ? res.desZh : res.desEn }`)
       }).catch(err => {
         this.tableLoading = false
       })
@@ -314,6 +299,7 @@ export default {
         this.loadingiDialog = true
         let currentYears = new Date().getFullYear()
         getRelationCarTypeById({id: this.carTypeProId}).then((res) => {
+          const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
           if (Number(res.code) == 0) {
             this.referenceModel1 = res.data.refCartypeProFirstId
             this.referenceModel2 = res.data.refCartypeProSecondId

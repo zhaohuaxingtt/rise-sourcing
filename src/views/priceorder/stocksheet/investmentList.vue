@@ -13,7 +13,7 @@
         <img class="editIcon" src="../../../assets/images/editCar.png" alt="">
         <div class="infoIcard">
           <div class="search">
-            <label>版本号：</label>
+            <label :title="$t('LK_BANBENHAO')">{{ $t('LK_BANBENHAO') }}:</label>
             <iSelect
                 v-show="!pageEdit"
                 placeholder="请选择"
@@ -31,11 +31,11 @@
             <span v-show="pageEdit">{{ versionName }}</span>
           </div>
           <div>
-            <label>车型名称：</label>
+            <label :title="$t('LK_CHEXINMINGCENG')">{{ $t('LK_CHEXINMINGCENG') }}:</label>
             <span>{{ form['search.carTypeName'] }}</span>
           </div>
           <div class="search" v-show="(params.sourceStatus == 2) && pageEdit">
-            <label>关联车型：</label>
+            <label>{{ $t('LK_GUANLIANCHEXIN') }}:</label>
             <iSelect
                 placeholder="请选择"
                 v-model="form['search.relatedCarType']"
@@ -52,25 +52,25 @@
             <!--            <span>V-PSK88</span>-->
           </div>
           <div v-show="params.sourceStatus == 1">
-            <label>采购工厂：</label>
+            <label :title="$t('LK_CAIGOUGONGCHANG')">{{ $t('LK_CAIGOUGONGCHANG') }}:</label>
             <span>{{ form['search.purchasingFactory'] }}</span>
           </div>
           <div v-show="params.sourceStatus == 1">
-            <label>SOP：</label>
+            <label :title="$t('SOP')">SOP：</label>
             <span>{{ form['search.sopDate'] }}</span>
           </div>
           <div class="search">
-            <label>批准投资：</label>
+            <label :title="$t('LK_PIZHUNTOUZHI')">{{ $t('LK_PIZHUNTOUZHI') }}:</label>
             <span v-show="!pageEdit">{{ form['search.approvalInvestment'] }}</span>
             <iInput v-show="pageEdit" v-model="form['search.approvalInvestment']"></iInput>
           </div>
         </div>
         <div id="chart1" style="width: 200px; height: 200px"></div>
         <div class="legend">
-          <div>非AEKO</div>
+          <div>{{ $t('LK_FEIAEKO') }}</div>
           <div>AEKO</div>
           <div>Contingency</div>
-          <div>单位：百万元</div>
+          <div>{{ $t("LK_DANWEI") }}: {{ $t("LK_BAIWANYUAN") }}</div>
         </div>
       </iCard>
       <iCard v-loading="tableLoading">
@@ -81,15 +81,15 @@
           <div></div>
           <div>
             <iButton v-show="!pageEdit" @click="pageEdit = true"
-                     :disabled="versionList[0] && form['search.version'] != versionList[0].id">编辑
+                     :disabled="versionList[0] && form['search.version'] != versionList[0].id">{{ $t('LK_BIANJI') }}
             </iButton>
-            <iButton v-show="pageEdit" @click="addRow">添加行</iButton>
-            <iButton v-show="pageEdit" @click="deleteIRow">删除行</iButton>
-            <iButton v-show="pageEdit" @click="referenceModelShow = true">参考车型</iButton>
-            <iButton v-show="pageEdit" @click="saveRow">保存</iButton>
-            <iButton v-show="pageEdit" @click="saveAsRow">保存为新版本</iButton>
+            <iButton v-show="pageEdit" @click="addRow">{{ $t('LK_TIANJIAHANG') }}</iButton>
+            <iButton v-show="pageEdit" @click="deleteIRow">{{ $t('LK_SHANCHUHANG') }}</iButton>
+            <iButton v-show="pageEdit" @click="referenceModelShow = true">{{ $t('LK_CANKAOCHEXIN') }}</iButton>
+            <iButton v-show="pageEdit" @click="saveRow">{{ $t('LK_BAOCUN') }}</iButton>
+            <iButton v-show="pageEdit" @click="saveAsRow">{{ $t('LK_BAOCUNWEIXINBANBEN') }}</iButton>
             <!--            <iButton @click="saveRow">下载投资清单</iButton>-->
-            <iButton v-show="pageEdit" @click="conversionRatioShow = true">按比例折算</iButton>
+            <iButton v-show="pageEdit" @click="conversionRatioShow = true">{{ $t('LK_ANBILIZHESUAN') }}</iButton>
           </div>
         </div>
         <div>
@@ -197,21 +197,21 @@
               % of Sub-Total
             </div>
             <div>
-              <h4>AEKO金额:</h4>
+              <h4>{{ $t('LK_AEKOJINE') }}:</h4>
               <iInput v-model="form['search.AEKOMoney']" disabled></iInput>
             </div>
             <div>
-              <h4>综合偏差:</h4>
+              <h4>{{ $t('LK_ZONGHEPIANCHA') }}:</h4>
               <iInput v-model="form['search.contingencyPercent']" @input="changePerent"
                       :disabled="isLocked || !pageEdit"></iInput>
               % of Sub-Total
             </div>
             <div>
-              <h4>综合偏差金额:</h4>
+              <h4>{{ $t('LK_ZHONGHEPIANCHAJINE') }}:</h4>
               <iInput v-model="form['search.contingencyAmount']" disabled></iInput>
             </div>
             <div>
-              <h4>总预算:</h4>
+              <h4>{{ $t('LK_ZONGYUSUAN') }}:</h4>
               <iInput v-model="form['search.totalBudget']" :disabled="isLocked || !pageEdit" @input="changeTotalBudget">
                 <div slot="suffix" @click="isLocked = !isLocked">
                   <icon symbol name="iconzongyusuansuoding" class="icon" v-if="isLocked"/>
@@ -276,7 +276,7 @@ import {
   icon,
   iInput,
   iSelect,
-} from "@/components";
+} from "rise";
 import {Popover} from "element-ui"
 import {pageMixins} from "@/utils/pageMixins";
 import {investmentListEntities, form} from "./components/data";
@@ -443,11 +443,12 @@ export default {
         mainId: val,
         localId: this.params.id,
       }).then((res) => {
+        const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
         if (Number(res.code) === 0) {
           this.getInvestmentVerisionList()
-          iMessage.success(res.desZh);
+          iMessage.success(result);
         } else {
-          iMessage.error(res.desZh);
+          iMessage.error(result);
         }
         // this.tableLoading = false
       }).catch(() => {
@@ -476,25 +477,29 @@ export default {
         sourceStatus: this.params.sourceStatus
       });
       await Promise.all([getModelProtitesPullDown(), getCartypePulldown(), proDeptPullDown(), liniePullDownByDept({deptId: ''})]).then((res) => {
+        const result0 = this.$i18n.locale === 'zh' ? res[0].desZh : res[0].desEn
+        const result1 = this.$i18n.locale === 'zh' ? res[1].desZh : res[1].desEn
+        const result2 = this.$i18n.locale === 'zh' ? res[2].desZh : res[2].desEn
+        const result3 = this.$i18n.locale === 'zh' ? res[3].desZh : res[3].desEn
         if (Number(res[0].code) === 0) {
           this.modelProtitesList = res[0].data
         } else {
-          iMessage.error(res[0].desZh);
+          iMessage.error(result0);
         }
         if (res[1].data) {
           this.fromGroup = res[1].data;
         } else {
-          iMessage.error(res[1].desZh);
+          iMessage.error(result1);
         }
         if (Number(res[2].code) === 0) {
           this.DeptPullDown = res[2].data
         } else {
-          iMessage.error(res[2].desZh);
+          iMessage.error(result2);
         }
         if (Number(res[3].code) === 0) {
           this.liniePullDown = res[3].data
         } else {
-          iMessage.error(res[3].desZh);
+          iMessage.error(result3);
         }
         this.loadingiSearch = false
       }).catch(() => {
@@ -504,10 +509,11 @@ export default {
     },
     getDepartmentsList() {
       getDepartmentsList().then((res) => {
+        const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
         if (Number(res.code) === 0) {
           this.commodityList = res.data
         } else {
-          iMessage.error(res.desZh);
+          iMessage.error(result);
         }
         // this.tableLoading = false
       }).catch(() => {
@@ -520,6 +526,7 @@ export default {
         // commodity: this.form['search.professionalDepartments'],
         listVerisonId: this.form['search.version'],
       }).then((res) => {
+        const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
         if (Number(res.code) === 0) {
           res.data.investmentListEntities = res.data.investmentListEntities ? res.data.investmentListEntities : []
           this.tableListData = res.data.investmentListEntities.map(item => {
@@ -539,7 +546,7 @@ export default {
           this.form['search.contingencyAmount'] = Number(res.data.contingencyAmount).toFixed(2)
           this.form['search.totalBudget'] = Number(res.data.totalBudget).toFixed(2)
         } else {
-          iMessage.error(res.desZh);
+          iMessage.error(result);
         }
         this.tableLoading = false
       }).catch(() => {
@@ -553,6 +560,7 @@ export default {
         carTypeId: this.params.id,
         carType: this.params.sourceStatus
       }).then((res) => {
+        const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
         if (Number(res.code) === 0) {
           this.form['search.carTypeName'] = res.data.carTypeName
           this.form['search.sopDate'] = res.data.sopDate
@@ -699,7 +707,7 @@ export default {
           })
 
         } else {
-          iMessage.error(res.desZh);
+          iMessage.error(result);
         }
         this.headerLoading = false
       }).catch(() => {
@@ -713,6 +721,7 @@ export default {
         // sourceType: this.params.sourceStatus,
         beginType: this.beginType,
       }).then((res) => {
+        const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
         if (Number(res.code) === 0) {
           this.versionList = res.data
           if (!isChange) {
@@ -721,7 +730,7 @@ export default {
           this.versionName = this.versionList[0] ? this.versionList[0].version : ''
           this.getInvestmentData()
         } else {
-          iMessage.error(res.desZh);
+          iMessage.error(result);
         }
         // this.tableLoading = false
       }).catch(() => {
@@ -731,10 +740,11 @@ export default {
     handleAddCarTypeProject() {
       this.tableLoading = true
       saveCustomCart({cartypeProjectName: this.addCarTypeProject}).then((res) => {
+        const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
         if (Number(res.code) === 0) {
-          iMessage.success(res.desZh);
+          iMessage.success(result);
         } else {
-          iMessage.error(res.desZh);
+          iMessage.error(result);
         }
         this.tableLoading = false
       }).catch(() => {
@@ -751,12 +761,13 @@ export default {
       }
       this.tableLoading = true
       investmentDelete(this.selectTableData, {investmentVersionId: this.form['search.version']}).then((res) => {
+        const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
         if (Number(res.code) === 0) {
           this.getInvestmentVerisionList()
           // this.findInvestmentList()
-          iMessage.success(res.desZh);
+          iMessage.success(result);
         } else {
-          iMessage.error(res.desZh);
+          iMessage.error(result);
           // this.tableLoading = false
         }
       }).catch(() => {
@@ -778,12 +789,13 @@ export default {
         totalBudget: this.form['search.totalBudget'],
         approveInvestment: this.form['search.approvalInvestment'],
       }).then((res) => {
+        const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
         if (Number(res.code) === 0) {
           // this.findInvestmentList()
           this.getInvestmentVerisionList()
-          iMessage.success(res.desZh);
+          iMessage.success(result);
         } else {
-          iMessage.error(res.desZh);
+          iMessage.error(result);
           this.tableLoading = false
         }
       }).catch(() => {
@@ -896,6 +908,12 @@ export default {
         label {
           display: inline-block;
           min-width: 80px;
+          max-width: 80px;
+          word-break: break-all;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          vertical-align: text-bottom;
         }
 
         &:nth-of-type(1), &:nth-of-type(2) {

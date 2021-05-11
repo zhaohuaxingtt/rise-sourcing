@@ -26,6 +26,10 @@
             'volume': 'volume',
             'log': 'log'
         },
+        'rfq': {
+            'RFQINQUIRE': 'Search',
+            'RFQRESET': 'Reset',
+        },
         'partsprocure': {
             'PARTSPROCURENEWPROCUREMENTPROJECT': 'New Procurement Project',
             'PARTSPROCUREGENERATEFSGSNR': 'Generate FSNR/GSNR/SPNR',
@@ -675,10 +679,10 @@
         'LK_YOUBM': 'BM',//有BM
         // 'LK_BIANJI': 'Edit',//编辑
         'LK_XIAZHAITOUZHIQINDAN': 'Download Invest List',//下载投资清单
-        'LK_YUSUANJINEPSK': 'Budget Amount PSK',//预算⾦额PSK
+        'LK_YUSUANJINEPSK': 'Budget Amount PSK(Mio.RMB)',//预算⾦额PSK
         'LK_SOURCINGLEIXIN': 'Sourcing Type',//Sourcing类型
         'LK_CANKAOXIANGMU': 'Refer Project',//参考项⽬
-        'LK_CANKAOXINGMUMOJUJINE': 'Refer Project Amount',//参考项⽬模具⾦额
+        'LK_CANKAOXINGMUMOJUJINE': 'Refer Project Amount(Mio.RMB)',//参考项⽬模具⾦额
         'LK_YUSUANBEIZHU': 'Budget Remark',//预算备注
         'LK_AEKOJINE': 'Aeko Amount',//AEKO⾦额
         'LK_ZONGHEPIANCHA': 'Comp. Deviation',//综合偏差

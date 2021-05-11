@@ -11,22 +11,22 @@
     <p class="newVersion">新版本命名</p>
     <div class="changeContent">
       <div>PSK</div>
-      <iInput v-model="saveParams.version" placeholder="请输入" maxlength="5"></iInput>
+      <iInput v-model="saveParams.version" :placeholder="$t('LK_QINGSHURU')" maxlength="5"></iInput>
     </div>
     <span slot="footer" class="dialog-footer">
-      <iButton @click="save">确认</iButton>
+      <iButton @click="save">{{ $t('LK_QUEREN') }}</iButton>
     </span>
     <iDialog title="是否确定保存为新版本？" :visible.sync="value2" width="381px" @close='clearDiolog2' v-loading="iDialogLoading2"
              :modal-append-to-body="true" append-to-body>
       <span slot="footer" class="dialog-footer">
-        <iButton @click="value2 = false">取消</iButton>
-        <iButton @click="save2">确认</iButton>
+        <iButton @click="value2 = false">{{ $t('LK_QUXIAO') }}</iButton>
+        <iButton @click="save2">{{ $t('LK_QUEREN') }}</iButton>
       </span>
     </iDialog>
   </iDialog>
 </template>
 <script>
-import {iDialog, iSearch, iInput, iButton, iMessage} from '@/components'
+import {iDialog, iSearch, iInput, iButton, iMessage} from 'rise'
 import {pageMixins} from "@/utils/pageMixins";
 import {
   saveNewVersion
@@ -41,7 +41,7 @@ export default {
     iButton
   },
   props: {
-    title: {type: String, default: '保存为新版本'},
+    title: {type: String, default: 'LK_BAOCUNWEIXINBANBEN'},
     value: {type: Boolean},
     saveParams: {
       type: Object, default: () => {
@@ -73,14 +73,15 @@ export default {
     save2(){
       this.iDialogLoading2 = true
       saveNewVersion(this.saveParams).then((res) => {
+        const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
         if (Number(res.code) === 0) {
           // this.findInvestmentList()
-          iMessage.success(res.desZh);
+          iMessage.success(result);
           this.value2 = false
           this.$emit('input', false)
           this.$emit('refresh')
         } else {
-          iMessage.error(res.desZh);
+          iMessage.error(result);
         }
         this.iDialogLoading2 = false
       }).catch(() => {

@@ -36,10 +36,8 @@
   </iPage>
 </template>
 <script>
-import {
-  iPage,
-  iNavWS2, iMessage
-} from "@/components";
+import {iPage, iMessage} from "rise";
+import {iNavWS2} from "@/components";
 import {tabtitle} from "./components/data";
 import carTypeOverview from "./carTypeOverview";
 import generateInvestmentList from "./generateInvestmentList";
@@ -91,20 +89,22 @@ export default {
           id: carTypeProject,
           sourceStatus: sourceStatus
         }).then((res) => {
+          const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
           if (Number(res.code) === 0) {
-            iMessage.success(res.desZh);
+            iMessage.success(result);
             this.budgetManagement({
-                id: carTypeProject,
-                sourceStatus: sourceStatus,
-                step: 2
-              },
-              'investmentListParams'
+                  id: carTypeProject,
+                  sourceStatus: sourceStatus,
+                  step: 2
+                },
+                'investmentListParams'
             )
-          } else if (Number(res.code) === 1){
-            iMessage.error('请先添加行');
+          } else if (Number(res.code) === 1) {
+            iMessage.error(result);
             this.tableLoading = false
           } else {
-            iMessage.error(res.desZh);
+            const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
+            iMessage.error(result);
             this.tableLoading = false
           }
         }).catch(() => {

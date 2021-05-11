@@ -31,7 +31,7 @@
 <script>
 import {
   iMessage,
-} from "@/components";
+} from "rise";
 import {tabtitle} from "./components/data";
 import echarts from "@/utils/echarts";
 import {
@@ -74,6 +74,7 @@ export default {
       this.loadingiPage = true
       return new Promise((r) => {
         findCartypePro().then(res => {
+          const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
           this.loadingiPage = false
           if (Number(res.code) === 0) {
             this.contentData = res.data
@@ -239,7 +240,7 @@ export default {
               })
             })
           } else {
-            iMessage.error(res.desZh);
+            iMessage.error(result);
           }
         }).catch(() => {
           this.loadingiPage = false

@@ -17,8 +17,8 @@
           v-loading="iSearchLoading"
       >
         <el-form>
-          <el-form-item label="材料组/中文名/德文名">
-            <iInput v-model="zhEnNo" :placeholder="$t('LK_RFQPLEASEENTERQUERY')">
+          <el-form-item :label="$t('LK_CAILIAOZUBIANHAOZHONGWENMINGDEWEN')">
+            <iInput v-model="zhEnNo" placeholder="可输入编号中德文名称">
               <i slot="suffix" class="el-input__icon el-icon-search" @click="sure"></i>
             </iInput>
           </el-form-item>
@@ -93,7 +93,15 @@
   </iDialog>
 </template>
 <script>
-import {iButton, iDialog, iMessage, iSearch, iPagination, iInput, iSelect} from '@/components'
+import {
+  iButton,
+  iDialog,
+  iMessage,
+  iSearch,
+  iPagination,
+  iInput,
+  iSelect
+} from 'rise'
 import tablelist from "../components/tablelist";
 
 import { addListInvestment, form } from "../components/data";
@@ -155,15 +163,17 @@ export default {
     getSelected(){
       this.iSearchLoading = true
       Promise.all([getModelProtitesPullDown(), proDeptPullDown()]).then((res) => {
+        const result0 = this.$i18n.locale === 'zh' ? res[0].desZh : res[0].desEn
+        const result1 = this.$i18n.locale === 'zh' ? res[1].desZh : res[1].desEn
         if (Number(res[0].code) === 0) {
           this.modelProtitesList = res[0].data
         } else {
-          iMessage.error(res[0].desZh);
+          iMessage.error(result0);
         }
         if (Number(res[1].code) === 0) {
           this.DeptPullDown = res[1].data
         } else {
-          iMessage.error(res[1].desZh);
+          iMessage.error(result1);
         }
         this.iSearchLoading = false
       })
@@ -189,12 +199,13 @@ export default {
         item.listVerisonId = this.version
         return item
       })).then((res) => {
+        const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
         if (Number(res.code) === 0) {
           this.$emit('input', false)
           this.$emit('updateTable')
         }
         this.tableLoading = false
-        return iMessage.success(`${ this.$i18n.locale === 'zh' ? res.desZh : res.desEn }`)
+        return iMessage.success(result)
       }).catch(err => {
         this.tableLoading = false
       })
@@ -218,11 +229,14 @@ export default {
         size: this.page.pageSize
       }
       findAddColumnInvestmentBuild(parmars).then((res) => {
-        if (res.data) {
+        const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
+        if (Number(res.code) === 0) {
           this.page.currPage = res.pageNum;
           this.page.pageSize = res.pageSize;
           this.page.totalCount = res.total;
           this.tableListData = res.data;
+        } else {
+          iMessage.error(result);
         }
         this.tableLoading = false
       });

@@ -9,15 +9,15 @@
     </div>
     <div class="changeContent">
       <p>折算比例</p>
-      <iInput v-model="conversionVal" placeholder="请输入" maxlength="5"></iInput> %
+      <iInput v-model="conversionVal" :placeholder="$t('LK_QINGSHURU')" maxlength="5"></iInput> %
     </div>
     <span slot="footer" class="dialog-footer">
-      <iButton @click="save" :loading='saveLoading'>确认</iButton>
+      <iButton @click="save" :loading='saveLoading'>{{ $t('LK_QUEREN') }}</iButton>
     </span>
   </iDialog>
 </template>
 <script>
-import {iDialog, iSearch, iInput, iButton} from '@/components'
+import {iDialog, iSearch, iInput, iButton} from 'rise'
 
 import {pageMixins} from "@/utils/pageMixins";
 
@@ -30,7 +30,7 @@ export default {
     iButton,
   },
   props: {
-    title: {type: String, default: '按比例折算'},
+    title: {type: String, default: 'LK_ANBILIZHESUAN'},
     value: {type: Boolean},
   },
   data() {

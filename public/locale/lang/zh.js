@@ -26,6 +26,10 @@
             'volume': '每车用量',
             'log': '操作日志'
         },
+        'rfq': {
+            'RFQINQUIRE': '查询',
+            'RFQRESET': '重置',
+        },
         'partsprocure': {
             'PARTSPROCURENEWPROCUREMENTPROJECT': '零件采购项目管理',
             'PARTSPROCUREGENERATEFSGSNR': '生成零件采购项目号',
@@ -624,6 +628,19 @@
         'LK_WEIBUXITONGWENJIANWUFASHANCHU': '为外部系统文件，无法删除', // xxx 为外部系统文件, 无法删除
 
         //摸具预算
+        // 点击进入【生成投资清单】页面
+        // 下一步
+        // 请输入自定义名称
+        // 您还没有选择参考车型项目，是否继续?
+        // 新版本命名
+        // 请先选择车型项目
+        // 请先输入车型名称
+        // 已有车型名称，请重新输入
+        // 请先勾选
+        // 请先添加行
+        // 开始时间不能大于结束时间，请重新选择。
+        // 是否确定保存为新版本？
+
         // 'LK_CAIGOUGONGCHANG': '采购⼯⼚',//采购⼯⼚
         // 'LK_DANWEI': '单位',//单位
         'LK_BAIWANYUAN': '百万元',//百万元
@@ -675,10 +692,10 @@
         'LK_YOUBM': '有BM',//有BM
         // 'LK_BIANJI': '编辑',//编辑
         'LK_XIAZHAITOUZHIQINDAN': '下载投资清单',//下载投资清单
-        'LK_YUSUANJINEPSK': '预算⾦额PSK',//预算⾦额PSK
+        'LK_YUSUANJINEPSK': '预算⾦额PSK(Mio.RMB)',//预算⾦额PSK
         'LK_SOURCINGLEIXIN': 'Sourcing类型',//Sourcing类型
-        'LK_CANKAOXIANGMU': '参考项⽬',//参考项⽬
-        'LK_CANKAOXINGMUMOJUJINE': '参考项⽬模具⾦额',//参考项⽬模具⾦额
+        'LK_CANKAOXIANGMU': '参考项目',//参考项目
+        'LK_CANKAOXINGMUMOJUJINE': '参考项⽬模具⾦额(Mio.RMB)',//参考项⽬模具⾦额
         'LK_YUSUANBEIZHU': '预算备注',//预算备注
         'LK_AEKOJINE': 'AEKO⾦额',//AEKO⾦额
         'LK_ZONGHEPIANCHA': '综合偏差',//综合偏差
