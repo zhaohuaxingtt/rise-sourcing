@@ -621,6 +621,73 @@
         'LK_QINGXUANZEXUYAOSHANCHUDEPINGFENBUMEN': '请选择需要删除的评分部门', //请选择需要删除的评分部门
         'LK_QINGXUANZEXUYAOHUIFUDEPINGFENBUMEN': '请选择需要恢复的评分部门', //请选择需要恢复的评分部门
         'LK_QINGXUANZEWANSHUJUZAIZUOBAOCUN': '请选择完数据再做保存', //请选择完数据再做保存
-        'LK_WEIBUXITONGWENJIANWUFASHANCHU': '为外部系统文件，无法删除' // xxx 为外部系统文件, 无法删除
+        'LK_WEIBUXITONGWENJIANWUFASHANCHU': '为外部系统文件，无法删除', // xxx 为外部系统文件, 无法删除
+
+        //摸具预算
+        // 'LK_CAIGOUGONGCHANG': '采购⼯⼚',//采购⼯⼚
+        // 'LK_DANWEI': '单位',//单位
+        'LK_BAIWANYUAN': '百万元',//百万元
+        'LK_ZONGYUSUAN': '总预算',//总预算
+        'LK_DINGDIANJINE': '定点⾦额',//定点⾦额
+        'LK_BMDAN': 'BM单',//BM单
+        'LK_FUKUAN': '付款',//付款
+        'LK_CHEXINXIANGMU': '⻋型项⽬',//⻋型项⽬
+        'LK_XIANGMULEIXIN': '项⽬类型',//项⽬类型
+        'LK_DINGDIANLEIXIN': '定点类型',//定点类型
+        'LK_CHEXINLEIBIE': '⻋型类别',//⻋型类别 ----------------燃料类型
+        // 'LK_QUEREN': '确认',//确认
+        // 'LK_CAILIAOZU': '材料组',//材料组  -------------------材料组/中文名/德文名
+        'LK_LINJIANLIUWEIHAO': '零件六位号',//零件六位号
+        'LK_TIANJIAHANG': '添加⾏',//添加⾏
+        'LK_SHANCHUHANG': '删除⾏',//删除⾏
+        'LK_CANKAOCHEXIN': '参考⻋型',//参考⻋型
+        // 'LK_CAILIAOZUBIANHAO': '材料组编号',//材料组编号        //  ------------------------可输入编号中德文名称
+        'LK_CAILIAOZUMINGCENGZHONG': '材料组名称（中）',//材料组名称（中）
+        'LK_CAILIAOZUMINGCENGDE': '材料组名称（德）',//材料组名称（德）
+        'LK_ZHUANYEKESHI': '专业科室',//专业科室
+        'LK_SHIFOUZUOGUOCOMMONSOURING': '是否做过Common Sourcing',//是否做过Common Sourcing  -------------- common sourcing
+        'LK_CommonSourcing': 'Common Sourcing',
+        'LK_MOJUSHUXIN': '模具属性',//模具属性
+        // 'LK_LINIE': 'LINIE',//LINIE
+        'LK_ZP': 'ZP',//ZP
+        'LK_CANKAOCHEXINXIANGMU': '参考⻋型项⽬',//参考⻋型项⽬
+        'LK_CANKAOCHEXINXIANGMUYI': '参考⻋型项⽬⼀',//参考⻋型项⽬⼀
+        'LK_CANKAOCHEXINXIANGMUER': '参考⻋型项⽬⼆',//参考⻋型项⽬⼆
+        'LK_CANKAOCHEXINXIANGMUSAN': '参考⻋型项⽬三',//参考⻋型项⽬三
+        'LK_QITACHEXINXIANGMUBEIXUAN': '其它⻋型项⽬备选',//其它⻋型项⽬备选
+        'LK_CHEXINXIANGMULEIXIN': '⻋型项⽬类型',//⻋型项⽬类型
+        'LK_CHEXINXIANGMUQIZHINIANFEN': '⻋型项⽬起⽌年份',//⻋型项⽬起⽌年份
+        'LK_CHONGZHI': '重置',//重置
+        'LK_CAILIAOZUBIANHAOZHONGWENMINGDEWEN': '材料组编号/中⽂名/德⽂名',//材料组编号/中⽂名/德⽂名
+        'LK_CHAXUN': '查询',//查询
+        // 'LK_TIANJIA': '添加',//添加
+        // 'LK_BANBENHAO': '版本号',//版本号
+        'LK_CHEXINMINGCENG': '⻋型名称',//⻋型名称
+        'LK_PIZHUNTOUZHI': '批准投资',//批准投资
+        'LK_FEIAEKO': '⾮AEKO',//⾮AEKO
+        'LK_WEISHENQING': '未申请',//未申请
+        'LK_YISHENQING': '已申请',//已申请
+        'LK_WEIDINGDIAN': '未定点',//未定点
+        'LK_YIDINGDIAN': '已定点',//已定点
+        'LK_WUBA': '⽆BA',//⽆BA
+        'LK_YOUBA': '有BA',//有BA
+        'LK_WUBM': '⽆BM',//⽆BM
+        'LK_YOUBM': '有BM',//有BM
+        // 'LK_BIANJI': '编辑',//编辑
+        'LK_XIAZHAITOUZHIQINDAN': '下载投资清单',//下载投资清单
+        'LK_YUSUANJINEPSK': '预算⾦额PSK',//预算⾦额PSK
+        'LK_SOURCINGLEIXIN': 'Sourcing类型',//Sourcing类型
+        'LK_CANKAOXIANGMU': '参考项⽬',//参考项⽬
+        'LK_CANKAOXINGMUMOJUJINE': '参考项⽬模具⾦额',//参考项⽬模具⾦额
+        'LK_YUSUANBEIZHU': '预算备注',//预算备注
+        'LK_AEKOJINE': 'AEKO⾦额',//AEKO⾦额
+        'LK_ZONGHEPIANCHA': '综合偏差',//综合偏差
+        'LK_ZHONGHEPIANCHAJINE': '综合偏差⾦额',//综合偏差⾦额
+        'LK_GUANLIANCHEXIN': '关联⻋型',//关联⻋型
+        // 'LK_BAOCUN': '保存',//保存
+        'LK_BAOCUNWEIXINBANBEN': '保存为新版本',//保存为新版本
+        'LK_ANBILIZHESUAN': '按⽐例折算',//按⽐例折算
+        'LK_ZHESUANBILI': '折算⽐例',//折算⽐例
+        // 'LK_QUEDING': '确定',//确定
     })
 }))

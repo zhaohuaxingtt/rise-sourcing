@@ -4,7 +4,7 @@
  * @Description: 投资清单。
 -->
 <template>
-  <div class="investmentList">
+  <div class="investmentList" v-permission="TOOLING_BUDGET_INVESTMENT">
     <div>
       <!------------------------------------------------------------------------>
       <!--                  search 搜索模块                                   --->
@@ -18,7 +18,6 @@
                 v-show="!pageEdit"
                 placeholder="请选择"
                 v-model="form['search.version']"
-                v-permission="PARTSPROCURE_PARTSTATUS"
                 filterable
                 @change="changeVersion"
             >
@@ -40,7 +39,6 @@
             <iSelect
                 placeholder="请选择"
                 v-model="form['search.relatedCarType']"
-                v-permission="PARTSPROCURE_PARTSTATUS"
                 filterable
                 @change="relationMainCarType"
             >
@@ -118,7 +116,6 @@
                   v-show="pageEdit"
                   placeholder="请选择"
                   v-model="scope.row.moldProperties"
-                  v-permission="PARTSPROCURE_PARTSTATUS"
                   filterable
                   @change="changeCarTypeProject"
               >
@@ -136,7 +133,6 @@
                   v-show="pageEdit"
                   placeholder="请选择"
                   v-model="scope.row.commodity"
-                  v-permission="PARTSPROCURE_PARTSTATUS"
                   filterable
               >
                 <el-option
@@ -153,7 +149,6 @@
                   v-show="pageEdit"
                   placeholder="请选择"
                   v-model="scope.row.linieArr"
-                  v-permission="PARTSPROCURE_PARTSTATUS"
                   collapse-tags
                   multiple
                   filterable
@@ -174,17 +169,16 @@
               </Popover>
             </template>
             <template #sourcingType="scope">
-              <div v-if="!pageEdit">{{ scope.row.sourcingType == 1 ? 'Y' : 'N' }}</div>
+              <div v-if="!pageEdit">{{ scope.row.sourcingType == 1 ? 'Common' : 'JV' }}</div>
               <iSelect
                   v-show="pageEdit"
                   placeholder="请选择"
                   v-model="scope.row.sourcingType"
-                  v-permission="PARTSPROCURE_PARTSTATUS"
                   filterable
                   @change="changeCarTypeProject"
               >
-                <el-option :value="1" label="Y"></el-option>
-                <el-option :value="2" label="N"></el-option>
+                <el-option :value="1" label="Common"></el-option>
+                <el-option :value="2" label="JV"></el-option>
               </iSelect>
             </template>
             <template #remarks="scope">
@@ -218,7 +212,7 @@
             </div>
             <div>
               <h4>总预算:</h4>
-              <iInput v-model="form['search.totalBudget']" :disabled="isLocked || !pageEdit">
+              <iInput v-model="form['search.totalBudget']" :disabled="isLocked || !pageEdit" @input="changeTotalBudget">
                 <div slot="suffix" @click="isLocked = !isLocked">
                   <icon symbol name="iconzongyusuansuoding" class="icon" v-if="isLocked"/>
                   <icon symbol name="iconzongyusuanweisuoding" class="icon" v-if="!isLocked"/>
@@ -421,6 +415,10 @@ export default {
         this.form['search.contingencyAmount'] = (Number(this.form['search.contingencyPercent']) * Number(this.form['search.SUBTOTA']) * 0.01).toFixed(2)
         this.form['search.totalBudget'] = (Number(this.form['search.AEKOMoney']) + Number(this.form['search.contingencyAmount']) + Number(this.form['search.SUBTOTA'])).toFixed(2)
       }
+    },
+    changeTotalBudget() {
+      this.form['search.AEKOMoney'] = (Number(this.form['search.totalBudget']) - Number(this.form['search.SUBTOTA']) - Number(this.form['search.contingencyAmount'])).toFixed(2)
+      this.form['search.aekoPercent'] = ((Number(this.form['search.AEKOMoney']) / Number(this.form['search.SUBTOTA'])) * 100).toFixed(2)
     },
     conversionSave(val) {
       let conversionVal = val / 100
@@ -717,7 +715,7 @@ export default {
       }).then((res) => {
         if (Number(res.code) === 0) {
           this.versionList = res.data
-          if(!isChange){
+          if (!isChange) {
             this.form['search.version'] = this.versionList[0] ? this.versionList[0].id : ''
           }
           this.versionName = this.versionList[0] ? this.versionList[0].version : ''
@@ -852,12 +850,13 @@ export default {
   }
 }
 
-.ellipsisDiv{
+.ellipsisDiv {
   max-width: 100%;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
 .investmentList {
   position: relative;
 
@@ -959,8 +958,8 @@ export default {
 
   //组件按钮间距
   ::v-deep .cardBody .iSearch-content .operation {
-    width: auto;
-    display: none;
+    //width: auto;
+    //display: none;
   }
 
   ::v-deep .serch {

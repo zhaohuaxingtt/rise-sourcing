@@ -116,49 +116,49 @@ export const budgetManagementData = [{
     //export const tableTitle = permissionTitle("PARTSPROCURE_PARTSPROCURELIST",[{
         props: 'categoryCode',
         name: '材料组编号',
-        key: 'partsprocure.PARTSPROCUREFSNFGSNFSPNR',
+        key: 'LK_CAILIAOZUBIANHAO',
         tooltip: false
     },
     {
         props: 'categoryNameZh',
         name: '材料组名称（中）',
-        key: 'partsprocure.PARTSPROCUREPARTNUMBER',
+        key: 'LK_CAILIAOZUMINGCENGZHONG',
         tooltip: false
     },
     {
         props: 'categoryNameDe',
         name: '材料组名称（德）',
-        key: 'partsprocure.PARTSPROCUREPARTNAMEZH',
+        key: 'LK_CAILIAOZUMINGCENGDE',
         tooltip: false
     },
     {
         props: 'commodity',
         name: '专业科室',
-        key: 'partsprocure.PARTSPROCUREPARTNAMEDE',
+        key: 'LK_ZHUANYEKESHI',
         tooltip: false
     },
     {
         props: 'isCommonSourcing',
         name: 'Common Sourcing',
-        key: 'partsprocure.PARTSPROCURESTATUS',
+        key: 'LK_CommonSourcing',
         tooltip: false
     },
     {
         props: 'moldProperties',
         name: '模具属性',
-        key: 'partsprocure.PARTSPROCUREPURCHASINGFACTORY',
+        key: 'LK_MOJUSHUXIN',
         tooltip: false
     },
     {
         props: 'newLinieName',
         name: 'LINIE',
-        key: 'partsprocure.PARTSPROCUREPARTITEMTYPE',
+        key: 'LK_LINIE',
         tooltip: false
     },
     {
         props: 'zp',
         name: 'ZP',
-        key: 'partsprocure.PARTSPROCUREVEHICLECATEGORIES',
+        key: 'LK_ZP',
         tooltip: false
     },
     // {
@@ -172,49 +172,49 @@ export const addListInvestment = [{
     //export const tableTitle = permissionTitle("PARTSPROCURE_PARTSPROCURELIST",[{
         props: 'categoryCode',
         name: '材料组编号',
-        key: 'partsprocure.PARTSPROCUREFSNFGSNFSPNR',
+        key: 'LK_CAILIAOZUBIANHAO',
         tooltip: false
     },
     {
         props: 'categoryNameZh',
         name: '材料组名称（中）',
-        key: 'partsprocure.PARTSPROCUREPARTNUMBER',
+        key: 'LK_CAILIAOZUMINGCENGZHONG',
         tooltip: false
     },
     {
         props: 'categoryNameDe',
         name: '材料组名称（德）',
-        key: 'partsprocure.PARTSPROCUREPARTNAMEZH',
+        key: 'LK_CAILIAOZUMINGCENGDE',
         tooltip: false
     },
     {
         props: 'commodity',
         name: '专业科室',
-        key: 'partsprocure.PARTSPROCUREPARTNAMEDE',
+        key: 'LK_ZHUANYEKESHI',
         tooltip: false
     },
     {
         props: 'isCommonSourcing',
         name: 'Common Sourcing',
-        key: 'partsprocure.PARTSPROCURESTATUS',
+        key: 'LK_CommonSourcing',
         tooltip: false
     },
     {
         props: 'moldProperties',
         name: '模具属性',
-        key: 'partsprocure.PARTSPROCUREPURCHASINGFACTORY',
+        key: 'LK_MOJUSHUXIN',
         tooltip: false
     },
     {
         props: 'linie',
         name: 'LINIE',
-        key: 'partsprocure.PARTSPROCUREPARTITEMTYPE',
+        key: 'LK_LINIE',
         tooltip: false
     },
     {
         props: 'zp',
         name: 'ZP',
-        key: 'partsprocure.PARTSPROCUREVEHICLECATEGORIES',
+        key: 'LK_ZP',
         tooltip: false
     },
 ]
@@ -257,7 +257,7 @@ export const investmentListEntities = [{
     },
     {
         props: 'sourcingType',
-        name: 'Common Sourcing',
+        name: 'Sourcing类型',
         key: 'partsprocure.PARTSPROCUREPURCHASINGFACTORY',
         tooltip: false
     },

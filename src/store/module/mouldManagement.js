@@ -3,7 +3,8 @@ const state = {
         carTypeProject: '',
         sourceStatus: '',
     },
-    versionId: ''
+    versionId: '',
+    isBudget: '',
 };
 
 const mutations = {
@@ -12,6 +13,9 @@ const mutations = {
     },
     SET_versionId(state, data) {
         state.versionId = data
+    },
+    SET_isBudget(state, data) {
+        state.isBudget = data
     },
 };
 
