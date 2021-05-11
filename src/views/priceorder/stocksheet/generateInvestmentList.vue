@@ -4,13 +4,13 @@
  * @Description: 生成投资清单。
 -->
 <template>
-  <div class="generateInvestmentList" v-permission="PARTSPROCURE_INDEXPAGE">
+  <div class="generateInvestmentList" v-permission="TOOLING_BUDGET_BUILD">
     <div>
       <!------------------------------------------------------------------------>
       <!--                  search 搜索模块                                   --->
       <!------------------------------------------------------------------------>
       <iSearch
-          class="margin-bottom20"
+          class="margin-bottom20 giSearch"
           style="margin-top: 20px"
           @sure="sure"
           @reset="reset"
@@ -20,17 +20,16 @@
           v-loading="loadingiSearch"
       >
         <el-form>
-          <el-form-item label="车型项目">
+          <el-form-item :label="$t('LK_CHEXINXIANGMU')">
             <iSelect
-                placeholder="请选择"
+                :placeholder="$t('partsprocure.PLEENTER')"
                 v-model="form['search.carTypeProject']"
-                v-permission="PARTSPROCURE_PARTSTATUS"
                 filterable
                 @change="changeCarTypeProject"
                 ref="carTypeProjectRef"
             >
               <div class="addCarTypeProject">
-                <iInput v-model="addCarTypeProject" placeholder="请输入车型项目名称"></iInput>
+                <iInput v-model="addCarTypeProject" placeholder="请输入自定义名称"></iInput>
                 <iButton @click="handleAddCarTypeProject" v-loading="iDialogAddCarTypeProject">确认</iButton>
               </div>
               <el-option
@@ -41,11 +40,10 @@
               ></el-option>
             </iSelect>
           </el-form-item>
-          <el-form-item label="项目类型">
+          <el-form-item :label="$t('LK_XIANGMULEIXIN')">
             <iSelect
-                placeholder="请选择"
+                :placeholder="$t('partsprocure.PLEENTER')"
                 v-model="form['search.projectType']"
-                v-permission="PARTSPROCURE_VEHICLECATEGORIES"
                 :disabled="carTypeProjectDisabled"
             >
               <el-option
@@ -57,11 +55,10 @@
               </el-option>
             </iSelect>
           </el-form-item>
-          <el-form-item label="定点类型">
+          <el-form-item :label="$t('LK_DINGDIANLEIXIN')">
             <iSelect
-                placeholder="请选择"
+                :placeholder="$t('partsprocure.PLEENTER')"
                 v-model="form['search.fixedPointType']"
-                v-permission="PARTSPROCURE_MODELPROJECT"
                 :disabled="carTypeProjectDisabled"
             >
               <el-option
@@ -75,9 +72,8 @@
           </el-form-item>
           <el-form-item label="燃料类型">
             <iSelect
-                placeholder="请选择"
+                :placeholder="$t('partsprocure.PLEENTER')"
                 v-model="form['search.modelCategory']"
-                v-permission="PARTSPROCURE_PARTITEMTYPE"
                 :disabled="carTypeProjectDisabled"
             >
               <el-option
@@ -91,7 +87,7 @@
           </el-form-item>
         </el-form>
         <div class="searchSure">
-          <iButton @click="saveAddCarType" v-loading="addCarTypeLoading">确认</iButton>
+          <iButton @click="saveAddCarType" :disabled="carTypeProjectObj.isBudget == 3" v-loading="addCarTypeLoading">{{ $t('LK_QUEREN') }}</iButton>
 <!--          <iButton @click="sure">查询</iButton>-->
 <!--          <iButton @click="reset">重置</iButton>-->
         </div>
@@ -106,15 +102,15 @@
             <iInput v-model="form['search.materialName']" placeholder="可输入编号中德文名称">
               <i slot="suffix" class="el-input__icon el-icon-search" @click="sure"></i>
             </iInput>
-            零件六位号：
-            <iInput v-model="form['search.partNum']" placeholder="请输入查询" maxlength="6">
+            {{ $t('LK_LINJIANLIUWEIHAO') }}:
+            <iInput v-model="form['search.partNum']" :placeholder="$t('LK_RFQPLEASEENTERQUERY')" maxlength="6">
               <i slot="suffix" class="el-input__icon el-icon-search" @click="sure"></i>
             </iInput>
           </div>
           <div>
-            <iButton @click="addRow" :disabled="(form['search.carTypeProject'] == '')">添加行</iButton>
-            <iButton @click="deleteIRow" :disabled="(form['search.carTypeProject'] == '')">删除行</iButton>
-            <iButton @click="referenceModelShow = true" :disabled="(form['search.carTypeProject'] == '')">参考车型</iButton>
+            <iButton @click="addRow" :disabled="(form['search.carTypeProject'] == '') || carTypeProjectObj.isBudget == 3">{{ $t('LK_TIANJIAHANG') }}</iButton>
+            <iButton @click="deleteIRow" :disabled="(form['search.carTypeProject'] == '') || carTypeProjectObj.isBudget == 3">{{ $t('LK_SHANCHUHANG') }}</iButton>
+            <iButton @click="referenceModelShow = true" :disabled="(form['search.carTypeProject'] == '') || carTypeProjectObj.isBudget == 3">{{ $t('LK_CANKAOCHEXIN') }}</iButton>
             <!--                <iButton @click="saveRow" :disabled="(form['search.carTypeProject'] == '')">保存</iButton>-->
 <!--            <iButton @click="investmentList" :disabled="(form['search.carTypeProject'] == '')">下一步</iButton>-->
           </div>
@@ -351,7 +347,7 @@ export default {
       });
     },
     changeCarTypeProject(val) {
-      if (!val) {
+      if (!val || val == 'add') {
         return
       }
       this.loadingiSearch = true
@@ -360,14 +356,18 @@ export default {
         carTypeProject: this.carTypeProjectObj.id,
         sourceStatus: this.carTypeProjectObj.sourceStatus
       });
+      this.$store.commit('SET_isBudget', this.carTypeProjectObj.isBudget);
       let sourceStatus = this.carTypeProjectObj.sourceStatus
       this.carTypeProjectDisabled = sourceStatus == '1' ? true : false
       findProjectDetailById({id: val, sourceStatus: sourceStatus}).then((res) => {
         if (res.data) {
           if (sourceStatus == 1) {
-            this.form['search.projectType'] = res.data.projectTypeName ? this.projectTypeList.find(item => item.projectTypeName == res.data.projectTypeName).projectTypeId : ''
-            this.form['search.fixedPointType'] = res.data.fixedPointName ? this.fixedPointTypeList.find(item => item.fixedPointName == res.data.fixedPointName).fixedPointId : ''
-            this.form['search.modelCategory'] = res.data.carTypeName ? this.modelCategoryList.find(item => item.carTypeName == res.data.carTypeName).carTypeId : ''
+            let projectType = this.projectTypeList.find(item => item.projectTypeName == res.data.projectTypeName)
+            let fixedPointType = this.projectTypeList.find(item => item.projectTypeName == res.data.projectTypeName)
+            let modelCategory = this.projectTypeList.find(item => item.projectTypeName == res.data.projectTypeName)
+            this.form['search.projectType'] = res.data.projectTypeName ? (projectType ? projectType.projectTypeId : '') : ''
+            this.form['search.fixedPointType'] = res.data.fixedPointName ? (fixedPointType ? fixedPointType.fixedPointId : '') : ''
+            this.form['search.modelCategory'] = res.data.carTypeName ? (modelCategory ? modelCategory.carTypeId : '') : ''
           } else if (sourceStatus == 2) {
             this.form['search.projectType'] = res.data.projectTypeId
             this.form['search.fixedPointType'] = res.data.fixedPointId
@@ -406,9 +406,9 @@ export default {
         }
         if (res[1].data) {
           this.fromGroup = res[1].data;
-          this.changeCarTypeProject(Number(this.params.id))
+          this.changeCarTypeProject(this.params.id)
           if (this.params.id != 'add') {
-            this.form['search.carTypeProject'] = this.params.id == '' ? '' : Number(this.params.id)
+            this.form['search.carTypeProject'] = this.params.id == '' ? '' : this.params.id
             this.getTableListFn();
           } else {
             this.form['search.carTypeProject'] = ''
@@ -514,9 +514,11 @@ export default {
 .generateInvestmentList {
   position: relative;
   //组件按钮间距
-  ::v-deep .cardBody .iSearch-content .operation {
-    width: auto;
-    display: none;
+  .giSearch{
+    ::v-deep .cardBody .iSearch-content .operation {
+      width: auto;
+      display: none;
+    }
   }
 
   ::v-deep .serch {

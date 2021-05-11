@@ -622,5 +622,72 @@
         'LK_QINGXUANZEXUYAOHUIFUDEPINGFENBUMEN': '', //请选择需要恢复的评分部门
         'LK_QINGXUANZEWANSHUJUZAIZUOBAOCUN': '', //请选择完数据再做保存
         'LK_WEIBUXITONGWENJIANWUFASHANCHU': '', // xxx 为外部系统文件, 无法删除
+
+        //摸具预算
+        // 'LK_CAIGOUGONGCHANG': 'Plant',//采购⼯⼚
+        // 'LK_DANWEI': 'Unit',//单位
+        'LK_BAIWANYUAN': 'Mio.',//百万元
+        'LK_ZONGYUSUAN': 'Total Budget',//总预算
+        'LK_DINGDIANJINE': 'Nomi. Price',//定点⾦额
+        'LK_BMDAN': 'BM sheet',//BM单
+        'LK_FUKUAN': 'Payment',//付款
+        'LK_CHEXINXIANGMU': 'Project',//⻋型项⽬
+        'LK_XIANGMULEIXIN': 'Project Type',//项⽬类型
+        'LK_DINGDIANLEIXIN': 'Nomi. Type',//定点类型
+        'LK_CHEXINLEIBIE': 'Category',//⻋型类别
+        // 'LK_QUEREN': 'Confirm',//确认
+        // 'LK_CAILIAOZU': 'MG',//材料组
+        'LK_LINJIANLIUWEIHAO': '6-digital No',//零件六位号
+        'LK_TIANJIAHANG': 'Add',//添加⾏
+        'LK_SHANCHUHANG': 'Delete',//删除⾏
+        'LK_CANKAOCHEXIN': 'Refer Carline',//参考⻋型
+        // 'LK_CAILIAOZUBIANHAO': 'MG No',//材料组编号
+        'LK_CAILIAOZUMINGCENGZHONG': 'MG Name_CN',//材料组名称（中）
+        'LK_CAILIAOZUMINGCENGDE': 'MG Name_GE',//材料组名称（德）
+        'LK_ZHUANYEKESHI': 'Commodity',//专业科室
+        'LK_SHIFOUZUOGUOCOMMONSOURING': 'Common Sourcing',//是否做过Common Sourcing
+        'LK_CommonSourcing': 'Common Sourcing',
+        'LK_MOJUSHUXIN': 'Mold Property',//模具属性
+        // 'LK_LINIE': 'Linie',//LINIE
+        'LK_ZP': 'ZP',//ZP
+        'LK_CANKAOCHEXINXIANGMU': 'Refer Project',//参考⻋型项⽬
+        'LK_CANKAOCHEXINXIANGMUYI': '1st Refer',//参考⻋型项⽬⼀
+        'LK_CANKAOCHEXINXIANGMUER': '2nd Refer ',//参考⻋型项⽬⼆
+        'LK_CANKAOCHEXINXIANGMUSAN': '3rd Refer',//参考⻋型项⽬三
+        'LK_QITACHEXINXIANGMUBEIXUAN': 'Others',//其它⻋型项⽬备选
+        'LK_CHEXINXIANGMULEIXIN': 'Project Type',//⻋型项⽬类型
+        'LK_CHEXINXIANGMUQIZHINIANFEN': 'Project SOP',//⻋型项⽬起⽌年份
+        'LK_CHONGZHI': 'Reset',//重置
+        'LK_CAILIAOZUBIANHAOZHONGWENMINGDEWEN': 'MG',//材料组编号/中⽂名/德⽂名
+        'LK_CHAXUN': 'Search',//查询
+        // 'LK_TIANJIA': 'Add',//添加
+        // 'LK_BANBENHAO': 'Version',//版本号
+        'LK_CHEXINMINGCENG': 'Carline',//⻋型名称
+        'LK_PIZHUNTOUZHI': 'Approved Invest',//批准投资
+        'LK_FEIAEKO': 'Not AEKO',//⾮AEKO
+        'LK_WEISHENQING': 'Not Apply',//未申请
+        'LK_YISHENQING': 'Applied',//已申请
+        'LK_WEIDINGDIAN': 'Not Nomi.',//未定点
+        'LK_YIDINGDIAN': 'Nomi.',//已定点
+        'LK_WUBA': 'Not BA',//⽆BA
+        'LK_YOUBA': 'BA',//有BA
+        'LK_WUBM': 'Not BM',//⽆BM
+        'LK_YOUBM': 'BM',//有BM
+        // 'LK_BIANJI': 'Edit',//编辑
+        'LK_XIAZHAITOUZHIQINDAN': 'Download Invest List',//下载投资清单
+        'LK_YUSUANJINEPSK': 'Budget Amount PSK',//预算⾦额PSK
+        'LK_SOURCINGLEIXIN': 'Sourcing Type',//Sourcing类型
+        'LK_CANKAOXIANGMU': 'Refer Project',//参考项⽬
+        'LK_CANKAOXINGMUMOJUJINE': 'Refer Project Amount',//参考项⽬模具⾦额
+        'LK_YUSUANBEIZHU': 'Budget Remark',//预算备注
+        'LK_AEKOJINE': 'Aeko Amount',//AEKO⾦额
+        'LK_ZONGHEPIANCHA': 'Comp. Deviation',//综合偏差
+        'LK_ZHONGHEPIANCHAJINE': 'Comp. Deviation Amount',//综合偏差⾦额
+        'LK_GUANLIANCHEXIN': 'Associated Carline',//关联⻋型
+        // 'LK_BAOCUN': 'Save',//保存
+        'LK_BAOCUNWEIXINBANBEN': 'Save New',//保存为新版本
+        'LK_ANBILIZHESUAN': 'Convert By Proportion',//按⽐例折算
+        'LK_ZHESUANBILI': 'Proportion',//折算⽐例
+        // 'LK_QUEDING': 'Confirm',//确定
     })
 }))

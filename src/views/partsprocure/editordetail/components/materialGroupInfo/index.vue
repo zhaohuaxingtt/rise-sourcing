@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-03-01 10:29:09
- * @LastEditTime: 2021-04-19 15:42:38
+ * @LastEditTime: 2021-05-11 15:39:00
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsprocure\editordetail\components\materialGroupInfo\index.vue
@@ -15,7 +15,6 @@
         v-permission="PARTSPROCURE_EDITORDETAIL_SETPROCESSGROUP"
         >{{ $t("LK_SHEZHIGONGYIZU") }}</iButton
       >
-      <iButton disabled>{{ $t('LK_CHAZHAOGONGYIZUGONGYINGSHANG') }}</iButton>
       <iButton
         v-if="setMaterialGroupStatus"
         @click="confirmMaterialGroup"
@@ -29,6 +28,7 @@
         v-permission="PARTSPROCURE_EDITORDETAIL_MATERIALGROUPINFO_BACK"
         >{{ $t("LK_FANHUI") }}</iButton
       >
+      <iButton disabled>{{ $t('LK_CHAZHAOGONGYIZUGONGYINGSHANG') }}</iButton>
     </template>
     <div class="body">
       <infos :data="info" />

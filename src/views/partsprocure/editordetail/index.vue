@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2021-05-11 11:10:04
+ * @LastEditTime: 2021-05-11 15:41:32
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsprocure\editordetail\index.vue

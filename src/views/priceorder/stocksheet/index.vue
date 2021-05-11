@@ -3,7 +3,7 @@
  * @Date: 2021-04-21 09:50:42
 -->
 <template>
-  <iPage class="partsprocureHome" v-permission="PARTSPROCURE_INDEXPAGE">
+  <iPage class="partsprocureHome">
     <!------------------------------------------------------------------------>
     <!--                  导航                                  --->
     <!------------------------------------------------------------------------>
