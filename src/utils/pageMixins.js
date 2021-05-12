@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-24 14:28:34
- * @LastEditTime: 2021-03-17 22:10:44
+ * @LastEditTime: 2021-05-10 16:21:04
  * @LastEditors: Please set LastEditors
  * @Description: 针对所有的分页插件，实行方法混入。
  * @FilePath: \rise\src\utils\pageMixins.js
@@ -23,6 +23,7 @@
     handleSizeChange(val,callback){
       if(typeof callback != 'function') return console.warn('function handleSizeChange parmars must be a function!')
       this.page.pageSize = val
+      this.page.currPage = 1
       callback();
     },
     handleCurrentChange(val,callback){
