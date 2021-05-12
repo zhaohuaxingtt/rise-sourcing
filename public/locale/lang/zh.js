@@ -658,7 +658,7 @@
         'LK_TIANJIAHANG': '添加⾏',//添加⾏
         'LK_SHANCHUHANG': '删除⾏',//删除⾏
         'LK_CANKAOCHEXIN': '参考⻋型',//参考⻋型
-        // 'LK_CAILIAOZUBIANHAO': '材料组编号',//材料组编号        //  ------------------------可输入编号中德文名称
+        'LK_CAILIAOZUBIANHAO2': '材料组编号',//材料组编号
         'LK_CAILIAOZUMINGCENGZHONG': '材料组名称（中）',//材料组名称（中）
         'LK_CAILIAOZUMINGCENGDE': '材料组名称（德）',//材料组名称（德）
         'LK_ZHUANYEKESHI': '专业科室',//专业科室
@@ -678,7 +678,7 @@
         'LK_CAILIAOZUBIANHAOZHONGWENMINGDEWEN': '材料组编号/中⽂名/德⽂名',//材料组编号/中⽂名/德⽂名
         'LK_CHAXUN': '查询',//查询
         // 'LK_TIANJIA': '添加',//添加
-        // 'LK_BANBENHAO': '版本号',//版本号
+        'LK_BANBENHAO2': '版本号',//版本号
         'LK_CHEXINMINGCENG': '⻋型名称',//⻋型名称
         'LK_PIZHUNTOUZHI': '批准投资',//批准投资
         'LK_FEIAEKO': '⾮AEKO',//⾮AEKO

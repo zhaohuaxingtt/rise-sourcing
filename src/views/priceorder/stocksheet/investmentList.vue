@@ -13,7 +13,7 @@
         <img class="editIcon" src="../../../assets/images/editCar.png" alt="">
         <div class="infoIcard">
           <div class="search">
-            <label :title="$t('LK_BANBENHAO')">{{ $t('LK_BANBENHAO') }}:</label>
+            <label :title="$t('LK_BANBENHAO2')">{{ $t('LK_BANBENHAO2') }}:</label>
             <iSelect
                 v-show="!pageEdit"
                 :placeholder="$t('LK_QINGXUANZE')"
@@ -602,7 +602,7 @@ export default {
               },
               xAxis: {
                 type: 'category',
-                data: ['总预算'],
+                data: [this.$t("LK_ZONGYUSUAN")],
                 axisTick: {
                   show: false
                 },

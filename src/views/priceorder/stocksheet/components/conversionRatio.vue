@@ -8,7 +8,7 @@
       <div class="text">{{ $t(title) }}</div>
     </div>
     <div class="changeContent">
-      <p>折算比例</p>
+      <p>{{ $t('LK_ZHESUANBILI') }}</p>
       <iInput v-model="conversionVal" :placeholder="$t('LK_QINGSHURU')" maxlength="5"></iInput> %
     </div>
     <span slot="footer" class="dialog-footer">

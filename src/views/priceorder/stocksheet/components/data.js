@@ -116,7 +116,7 @@ export const budgetManagementData = [{
     //export const tableTitle = permissionTitle("PARTSPROCURE_PARTSPROCURELIST",[{
         props: 'categoryCode',
         name: '材料组编号',
-        key: 'LK_CAILIAOZUBIANHAO',
+        key: 'LK_CAILIAOZUBIANHAO2',
         tooltip: false
     },
     {
@@ -172,7 +172,7 @@ export const addListInvestment = [{
     //export const tableTitle = permissionTitle("PARTSPROCURE_PARTSPROCURELIST",[{
         props: 'categoryCode',
         name: '材料组编号',
-        key: 'LK_CAILIAOZUBIANHAO',
+        key: 'LK_CAILIAOZUBIANHAO2',
         tooltip: false
     },
     {
@@ -222,7 +222,7 @@ export const investmentListEntities = [{
     //export const tableTitle = permissionTitle("PARTSPROCURE_PARTSPROCURELIST",[{
         props: 'categoryCode',
         name: '材料组编号',
-        key: 'LK_CAILIAOZUBIANHAO',
+        key: 'LK_CAILIAOZUBIANHAO2',
         tooltip: false
     },
     {

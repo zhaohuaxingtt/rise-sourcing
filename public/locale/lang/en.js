@@ -141,7 +141,7 @@
         'LK_YITUIHUI': 'Returned',// 以退回
         'LK_YONGHUMING': 'UserName',// 用户名
         'LK_ZHUANPAICHENGGONG': 'Turn sent successfully',// 转派成功
-        'LK_AEKOHAO': 'Aeko No.',//Aeko号
+        'LK_AEKOHAO': 'AEKO No.',//Aeko号
         'LK_BDLLIEBIAO': 'BDL List',//BDL列表
         'LK_BMG': 'BMG',//BMG
         'LK_BOMDANXINXI': 'BOM information',//BOM单信息
@@ -238,7 +238,7 @@
         'LK_CAILIAOZUXINXI': 'Material Group Information',//材料组信息
         'LK_CF': 'CF',//财务控制员
         'LK_CAIWUMUBIAOJIA': 'CF Target Price',//财务目标价
-        'LK_CAIGOUGONGCHANG': 'Purchasing Factory',//采购工厂
+        'LK_CAIGOUGONGCHANG': 'Plant',//采购工厂
         'LK_CAIGOUTIAOKUAN': 'Purchasing Terms',//采购条款
         'LK_CAIGOUXIANGMUJIANLI': 'Create Sourcing Project',//采购项目建立
         'LK_CAIGOUXIANGMUXINXI': 'Project Information',//采购项目信息
@@ -645,7 +645,7 @@
         'LK_TIANJIAHANG': 'Add',//添加⾏
         'LK_SHANCHUHANG': 'Delete',//删除⾏
         'LK_CANKAOCHEXIN': 'Refer Carline',//参考⻋型
-        // 'LK_CAILIAOZUBIANHAO': 'MG No',//材料组编号
+        'LK_CAILIAOZUBIANHAO2': 'MG No',//材料组编号
         'LK_CAILIAOZUMINGCENGZHONG': 'MG Name_CN',//材料组名称（中）
         'LK_CAILIAOZUMINGCENGDE': 'MG Name_GE',//材料组名称（德）
         'LK_ZHUANYEKESHI': 'Commodity',//专业科室
@@ -665,7 +665,7 @@
         'LK_CAILIAOZUBIANHAOZHONGWENMINGDEWEN': 'MG',//材料组编号/中⽂名/德⽂名
         'LK_CHAXUN': 'Search',//查询
         // 'LK_TIANJIA': 'Add',//添加
-        // 'LK_BANBENHAO': 'Version',//版本号
+        'LK_BANBENHAO2': 'Version',//版本号
         'LK_CHEXINMINGCENG': 'Carline',//⻋型名称
         'LK_PIZHUNTOUZHI': 'Approved Invest',//批准投资
         'LK_FEIAEKO': 'Not AEKO',//⾮AEKO
@@ -684,7 +684,7 @@
         'LK_CANKAOXIANGMU': 'Refer Project',//参考项⽬
         'LK_CANKAOXINGMUMOJUJINE': 'Refer Project Nomi Amount(Mio.RMB)',//参考项⽬模具⾦额
         'LK_YUSUANBEIZHU': 'Budget Remark',//预算备注
-        'LK_AEKOJINE': 'Aeko Amount',//AEKO⾦额
+        'LK_AEKOJINE': 'AEKO Amount',//AEKO⾦额
         'LK_ZONGHEPIANCHA': 'Comp. Deviation',//综合偏差
         'LK_ZHONGHEPIANCHAJINE': 'Comp. Deviation Amount',//综合偏差⾦额
         'LK_GUANLIANCHEXIN': 'Associated Carline',//关联⻋型
