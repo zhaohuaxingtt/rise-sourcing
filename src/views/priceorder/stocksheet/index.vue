@@ -12,6 +12,7 @@
         @click="log"
         @changeNav="changeNav"
         :isGenerateInvestmentList="isGenerateInvestmentList"
+        :nextStepLoading="nextStepLoading"
         @nextStep="nextStep"
     ></iNavWS2>
     <!------------------------------------------------------------------------>
@@ -33,16 +34,24 @@
           v-if="indexChilden === 2"
       ></investmentList>
     </div>
+    <iDialog title="您还没有选择参考车型项目，是否继续?" :visible.sync="nextStepvalue" width="381px" top="0s" @close='clearDiolog'
+             v-loading="iDialogLoading" class="iDialogNextStep">
+      <span slot="footer" class="dialog-footer">
+        <iButton @click="nextStepvalue = false">{{ $t('LK_QUXIAO') }}</iButton>
+        <iButton @click="nextStepsave">{{ $t('LK_QUEREN') }}</iButton>
+      </span>
+    </iDialog>
   </iPage>
 </template>
 <script>
-import {iPage, iMessage} from "rise";
+import {iPage, iMessage, iDialog, iButton} from "rise";
 import {iNavWS2} from "@/components";
 import {tabtitle} from "./components/data";
 import carTypeOverview from "./carTypeOverview";
 import generateInvestmentList from "./generateInvestmentList";
 import investmentList from "./investmentList";
 import {
+  getRelationCarTypeById,
   saveInvestBuildBottom,
 } from "@/api/priceorder/stocksheet/edit";
 
@@ -52,14 +61,19 @@ export default {
     iNavWS2,
     carTypeOverview,
     generateInvestmentList,
-    investmentList
+    investmentList,
+    iDialog,
+    iButton,
   },
   data() {
     return {
       tabtitle: tabtitle,
       index: 1,
       indexChilden: 0,
-      generateInvestmentListParams: {}
+      generateInvestmentListParams: {},
+      nextStepvalue: false,
+      iDialogLoading: false,
+      nextStepLoading: false,
     };
   },
   methods: {
@@ -77,28 +91,37 @@ export default {
       }
     },
     nextStep() {
+      this.nextStepLoading = true
       let carTypeProject = this.$store.state.mouldManagement.budgetManagement.carTypeProject
       let sourceStatus = this.$store.state.mouldManagement.budgetManagement.sourceStatus
       if (this.$store.state.mouldManagement.budgetManagement.carTypeProject &&
           this.$store.state.mouldManagement.budgetManagement.sourceStatus) {
-        // if (this.tableListData.length == 0) {
-        //   iMessage.warn('请先添加行');
-        //   return
-        // }
         saveInvestBuildBottom({
           id: carTypeProject,
           sourceStatus: sourceStatus
         }).then((res) => {
           const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
           if (Number(res.code) === 0) {
-            iMessage.success(result);
-            this.budgetManagement({
-                  id: carTypeProject,
-                  sourceStatus: sourceStatus,
-                  step: 2
-                },
-                'investmentListParams'
-            )
+            getRelationCarTypeById({id: carTypeProject}).then((res2) => {
+              if (Number(res2.code) == 0) {
+                let data = res2.data
+                if (!data.refCartypeProFirstId && !data.refCartypeProSecondId && !data.refCartypeProThirdId && !data.carTypeAlternativeId) {
+                  this.nextStepvalue = true
+                } else {
+                  iMessage.success(result);
+                  this.budgetManagement({
+                        id: carTypeProject,
+                        sourceStatus: sourceStatus,
+                        step: 2
+                      },
+                      'investmentListParams'
+                  )
+                }
+              } else {
+                this.nextStepvalue = true
+              }
+            });
+            this.nextStepLoading = false
           } else if (Number(res.code) === 1) {
             iMessage.error(result);
             this.tableLoading = false
@@ -107,18 +130,41 @@ export default {
             iMessage.error(result);
             this.tableLoading = false
           }
+          this.nextStepLoading = false
         }).catch(() => {
           this.tableLoading = false
+          this.nextStepLoading = false
         });
 
       } else {
         iMessage.warn('请先选择车型项目');
+        this.nextStepLoading = false
       }
-    }
+    },
+    clearDiolog() {
+      this.nextStepvalue = false
+    },
+    nextStepsave() {
+      this.budgetManagement({
+            id: this.$store.state.mouldManagement.budgetManagement.carTypeProject,
+            sourceStatus: this.$store.state.mouldManagement.budgetManagement.sourceStatus,
+            step: 2
+          },
+          'investmentListParams'
+      )
+      this.nextStepvalue = false
+    },
   },
 };
 </script>
 <style lang="scss" scoped>
+.iDialogNextStep {
+  ::v-deep .el-dialog {
+    top: 50%;
+    transform: translateY(-50%);
+  }
+}
+
 .checkBox {
   position: relative;
   top: 30px;

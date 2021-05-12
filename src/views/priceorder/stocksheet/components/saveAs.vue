@@ -3,7 +3,7 @@
  * @Date: 2021-04-21 17:24:15
 -->
 <template>
-  <iDialog :title="$t(title)" :visible.sync="value" width="381px" @close='clearDiolog' v-loading="iDialogLoading"
+  <iDialog :title="$t(title)" :visible.sync="value" width="381px" top="0" @close='clearDiolog' v-loading="iDialogLoading" class="iDialogSaveAs"
            :modal-append-to-body='false'>
     <div slot="title" class="title">
       <div class="text">{{ $t(title) }}</div>
@@ -94,6 +94,12 @@ export default {
 }
 </script>
 <style lang='scss' scoped>
+.iDialogSaveAs {
+  ::v-deep .el-dialog {
+    top: 50%;
+    transform: translateY(-50%);
+  }
+}
 .title {
   position: relative;
   display: inline-block;

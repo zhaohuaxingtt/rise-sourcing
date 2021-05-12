@@ -682,7 +682,7 @@
         'LK_YUSUANJINEPSK': 'Budget Amount PSK(Mio.RMB)',//预算⾦额PSK
         'LK_SOURCINGLEIXIN': 'Sourcing Type',//Sourcing类型
         'LK_CANKAOXIANGMU': 'Refer Project',//参考项⽬
-        'LK_CANKAOXINGMUMOJUJINE': 'Refer Project Amount(Mio.RMB)',//参考项⽬模具⾦额
+        'LK_CANKAOXINGMUMOJUJINE': 'Refer Project Nomi Amount(Mio.RMB)',//参考项⽬模具⾦额
         'LK_YUSUANBEIZHU': 'Budget Remark',//预算备注
         'LK_AEKOJINE': 'Aeko Amount',//AEKO⾦额
         'LK_ZONGHEPIANCHA': 'Comp. Deviation',//综合偏差

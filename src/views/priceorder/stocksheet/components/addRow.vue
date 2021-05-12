@@ -3,9 +3,9 @@
  * @Date: 2021-04-21 17:24:15
 -->
 <template>
-  <iDialog :title="$t(title)" :visible.sync="value" width="95%" top="5vh" @close='clearDiolog' z-index="1000">
+  <iDialog :title="$t(title)" :visible.sync="value" width="95%" top="5vh" @close='clearDiolog' z-index="1000" class="iDialogAdd">
     <div slot="title" class="title">
-      <div class="text">{{$t(title)}}</div>
+      <div class="text">{{ $t(title) }}</div>
     </div>
     <div class="changeContent">
       <iSearch
@@ -42,9 +42,9 @@
                   :key="index"
               ></el-option>
             </iSelect>
-<!--            <iInput v-model="mouldAttr" placeholder="请输入查询" maxlength="5">-->
-<!--              <i slot="suffix" class="el-input__icon el-icon-search" @click="sure"></i>-->
-<!--            </iInput>-->
+            <!--            <iInput v-model="mouldAttr" placeholder="请输入查询" maxlength="5">-->
+            <!--              <i slot="suffix" class="el-input__icon el-icon-search" @click="sure"></i>-->
+            <!--            </iInput>-->
           </el-form-item>
           <el-form-item :label="$t('LK_ZHUANYEKESHI')">
             <iSelect
@@ -61,9 +61,9 @@
                   :key="index"
               ></el-option>
             </iSelect>
-<!--            <iInput v-model="form['search.professionalDepartments']" placeholder="请输入查询" maxlength="5">-->
-<!--              <i slot="suffix" class="el-input__icon el-icon-search" @click="sure"></i>-->
-<!--            </iInput>-->
+            <!--            <iInput v-model="form['search.professionalDepartments']" placeholder="请输入查询" maxlength="5">-->
+            <!--              <i slot="suffix" class="el-input__icon el-icon-search" @click="sure"></i>-->
+            <!--            </iInput>-->
           </el-form-item>
         </el-form>
       </iSearch>
@@ -104,8 +104,8 @@ import {
 } from 'rise'
 import tablelist from "../components/tablelist";
 
-import { addListInvestment, form } from "../components/data";
-import { pageMixins } from "@/utils/pageMixins";
+import {addListInvestment, form} from "../components/data";
+import {pageMixins} from "@/utils/pageMixins";
 import {
   findAddColumnInvestmentBuild,
   saveList
@@ -157,10 +157,10 @@ export default {
   mounted() {
     this.getSelected()
     this.findAddColumnInvestmentBuild()
-    this.tableHeight = (document.documentElement.clientHeight || document.body.clientHeight) - document.querySelector('.card').offsetHeight - 300
+    this.tableHeight = (document.documentElement.clientHeight || document.body.clientHeight) - 420
   },
   methods: {
-    getSelected(){
+    getSelected() {
       this.iSearchLoading = true
       Promise.all([getModelProtitesPullDown(), proDeptPullDown()]).then((res) => {
         const result0 = this.$i18n.locale === 'zh' ? res[0].desZh : res[0].desEn
@@ -178,14 +178,14 @@ export default {
         this.iSearchLoading = false
       })
     },
-    handleSelectionChange(list){
+    handleSelectionChange(list) {
       this.multipleSelection = list.map(item => {
         item.cartypeProId = this.carTypeProId
         return item
       })
     },
-    addList(){
-      if(this.multipleSelection.length == 0){
+    addList() {
+      if (this.multipleSelection.length == 0) {
         return iMessage.warn(
             this.$t(
                 "请先勾选"
@@ -210,9 +210,9 @@ export default {
         this.tableLoading = false
       })
     },
-    findAddColumnInvestmentBuild(){
+    findAddColumnInvestmentBuild() {
       this.tableLoading = true
-      if(!this.sourceStatus){
+      if (!this.sourceStatus) {
         this.tableLoading = true
         return
       }
@@ -244,10 +244,10 @@ export default {
     clearDiolog() {
       this.$emit('input', false)
     },
-    sure(){
+    sure() {
       this.findAddColumnInvestmentBuild()
     },
-    reset(){
+    reset() {
       this.zhEnNo = ''
       this.materialName = ''
       this.mouldAttr = ''
@@ -256,7 +256,7 @@ export default {
   },
   watch: {
     value(val) {
-      if(val){
+      if (val) {
         this.zhEnNo = ''
         this.materialName = ''
         this.mouldAttr = ''
@@ -268,15 +268,21 @@ export default {
 }
 </script>
 <style lang='scss' scoped>
-.title{
+.iDialogAdd.el-dialog__wrapper {
+  overflow: hidden;
+}
+
+.title {
   position: relative;
   display: inline-block;
-  .text{
+
+  .text {
     font-size: 18px;
     font-weight: bold;
     line-height: 25px;
   }
-  .star{
+
+  .star {
     position: absolute;
     right: -15px;
     top: 0;
@@ -287,22 +293,26 @@ export default {
 
 .changeContent {
   padding-bottom: 30px;
-  ::v-deep .card{
+
+  ::v-deep .card {
     box-shadow: none;
     border-radius: 0;
     background: none;
-    .cardBody{
+
+    .cardBody {
       margin-top: 0;
       padding-top: 0;
       padding-left: 0;
       padding-right: 0;
     }
-    .iSearch-content{
+
+    .iSearch-content {
       border-bottom: 1px solid #E3E3E3;
       padding-bottom: 20px;
     }
   }
-  .add{
+
+  .add {
     float: right;
     margin-bottom: 10px;
   }

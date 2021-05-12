@@ -3,7 +3,7 @@
  * @Date: 2021-04-21 17:24:15
 -->
 <template>
-  <iDialog :title="$t(title)" :visible.sync="value" width="381px" @close='clearDiolog'>
+  <iDialog :title="$t(title)" :visible.sync="value" width="381px" top="0" @close='clearDiolog' class="iDialogCon">
     <div slot="title" class="title">
       <div class="text">{{ $t(title) }}</div>
     </div>
@@ -53,6 +53,12 @@ export default {
 }
 </script>
 <style lang='scss' scoped>
+.iDialogCon {
+  ::v-deep .el-dialog {
+    top: 50%;
+    transform: translateY(-50%);
+  }
+}
 .title {
   position: relative;
   display: inline-block;

@@ -19,6 +19,7 @@
           class="nextStep"
           @click="$emit('nextStep')"
           :disabled="$store.state.mouldManagement.isBudget == 3"
+          v-loading="nextStepLoading"
       >下一步</iButton>
       <div class="logButton" @click="$emit('click')">
         <icon symbol name="iconrizhiwuzi" class="icon" />
@@ -43,6 +44,7 @@ export default {
     },
     routerPage: Boolean,
     isGenerateInvestmentList: Boolean,
+    nextStepLoading: Boolean,
   },
   mounted() {
     console.log(this.tabtitle)

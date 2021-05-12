@@ -16,7 +16,7 @@
             <label :title="$t('LK_BANBENHAO')">{{ $t('LK_BANBENHAO') }}:</label>
             <iSelect
                 v-show="!pageEdit"
-                placeholder="请选择"
+                :placeholder="$t('LK_QINGXUANZE')"
                 v-model="form['search.version']"
                 filterable
                 @change="changeVersion"
@@ -37,7 +37,7 @@
           <div class="search" v-show="(params.sourceStatus == 2) && pageEdit">
             <label>{{ $t('LK_GUANLIANCHEXIN') }}:</label>
             <iSelect
-                placeholder="请选择"
+                :placeholder="$t('LK_QINGXUANZE')"
                 v-model="form['search.relatedCarType']"
                 filterable
                 @change="relationMainCarType"
@@ -567,13 +567,13 @@ export default {
           this.form['search.purchasingFactory'] = res.data.purchasingFactory ? res.data.purchasingFactory.join('') : ''
           this.form['search.approvalInvestment'] = Number(res.data.approvalInvestment) ? Number(res.data.approvalInvestment).toFixed(2) : 0
           this.mainCarTypeList = res.data.mainCarTypeList
-          this.form['search.relatedCarType'] = res.data.mainCarTypeList[0] ? res.data.mainCarTypeList[0].id : ''
+          // this.form['search.relatedCarType'] = res.data.mainCarTypeList[0] ? res.data.mainCarTypeList[0].id : ''
           this.saveParams.version = res.data.defaultVersion.slice(4)
 
-          let contingency = Number(res.data.contingency) ? Number(res.data.contingency).toFixed(0) : 0
-          let aekoValue = Number(res.data.aekoValue) ? Number(res.data.aekoValue).toFixed(0) : 0
-          let notAekoValue = Number(res.data.notAekoValue) ? Number(res.data.notAekoValue).toFixed(0) : 0
-          let totalValue = Number(res.data.notAekoValue) ? Number(res.data.totalValue).toFixed(0) : 0
+          let contingency = Number(res.data.contingency) ? Number(res.data.contingency).toFixed(2) : 0
+          let aekoValue = Number(res.data.aekoValue) ? Number(res.data.aekoValue).toFixed(2) : 0
+          let notAekoValue = Number(res.data.notAekoValue) ? Number(res.data.notAekoValue).toFixed(2) : 0
+          let totalValue = Number(res.data.notAekoValue) ? Number(res.data.totalValue).toFixed(2) : 0
           this.form['search.SUBTOTA'] = Number(res.data.subTotal) ? Number(res.data.subTotal).toFixed(2) : 0
           this.clone['search.SUBTOTA'] = Number(res.data.subTotal) ? Number(res.data.subTotal).toFixed(2) : 0
 
@@ -871,7 +871,6 @@ export default {
 
 .investmentList {
   position: relative;
-
   .buttomInput {
     display: flex;
     justify-content: space-between;

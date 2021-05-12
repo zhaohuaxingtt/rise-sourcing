@@ -3,10 +3,11 @@
  * @Date: 2021-04-21 17:24:15
 -->
 <template>
-  <iDialog :title="$t(title)" :visible.sync="value" width="684px" top="5vh" @close='clearDiolog' z-index="1000">
+  <iDialog :title="$t(title)" :visible.sync="value" width="684px" top="0" @close='clearDiolog' z-index="1000"
+           class="iDialogRef">
     <div slot="title" class="title">
       <div class="text">
-        {{$t(title)}}
+        {{ $t(title) }}
         <Popover
             width="500"
             placement="top-start"
@@ -121,7 +122,7 @@
                   @change="changeYears('sopEnd')">
               </el-date-picker>
             </div>
-<!--            <iInput v-model="form['search.catTypeStartTime']"></iInput>-->
+            <!--            <iInput v-model="form['search.catTypeStartTime']"></iInput>-->
           </el-form-item>
         </el-form>
       </iSearch>
@@ -130,20 +131,13 @@
       <iButton @click="save" :loading='saveLoading'>{{ $t('LK_QUEREN') }}</iButton>
       <iButton @click="reset">{{ $t('LK_ZHONGZHI') }}</iButton>
     </span>
-    <iDialog title="您还没有选择参考车型项目，是否继续?" :visible.sync="value2" width="381px" @close='clearDiolog2' v-loading="iDialogLoading2"
-             :modal-append-to-body="true" append-to-body>
-      <span slot="footer" class="dialog-footer">
-        <iButton @click="value2 = false">{{ $t('LK_QUXIAO') }}</iButton>
-        <iButton @click="save2">{{ $t('LK_QUEREN') }}</iButton>
-      </span>
-    </iDialog>
   </iDialog>
 </template>
 <script>
 import {iButton, iDialog, iMessage, iSelect, icon, iSearch} from 'rise'
-import { Popover } from "element-ui"
-import { addListInvestment, form } from "../components/data";
-import { pageMixins } from "@/utils/pageMixins";
+import {Popover} from "element-ui"
+import {addListInvestment, form} from "../components/data";
+import {pageMixins} from "@/utils/pageMixins";
 import {
   GetOtherCarTypeAlternative,
   saveList, saveRefcartypepro, getRelationCarTypeById,
@@ -186,51 +180,19 @@ export default {
       modelProject: '',
       sopBegin: '',
       sopEnd: '',
-      value2: false,
-      iDialogLoading2: false
     }
   },
   mounted() {
     this.GetOtherCarTypeAlternative()
   },
   methods: {
-    save2(){
-      this.iDialogLoading2 = true
-      let params = {
-        cartypeProType: this.modelProject,
-        id: this.carTypeProId,
-        other: this.otherModel,
-        refCartypeProFirstId: this.referenceModel1,
-        refCartypeProSecondId: this.referenceModel2,
-        refCartypeProThirdId: this.referenceModel3,
-        sopBegin: new Date(this.sopBegin).getFullYear(),
-        sopEnd: new Date(this.sopEnd).getFullYear(),
-        sourceStatus: this.sourceStatus,
-      }
-      saveRefcartypepro(params).then((res) => {
-        const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
-        if (Number(res.code) === 0) {
-          this.value2 = false
-          this.$emit('input', false)
-          this.$emit('updateTable')
-        }
-        this.iDialogLoading2 = false
-        return iMessage.success(result)
-      }).catch(err => {
-        this.iDialogLoading2 = false
-      })
-    },
-    clearDiolog2() {
-      this.value2 = false
-    },
-    save(){
-      if(!this.referenceModel1 && !this.referenceModel2 &&
-          !this.referenceModel3 && !this.otherModel &&
-          !this.modelProject && !this.sopBegin &&
-          !this.sopEnd){
-        this.value2 = true
-        return
-      }
+    save() {
+      // if (!this.referenceModel1 && !this.referenceModel2 &&
+      //     !this.referenceModel3 && !this.otherModel &&
+      //     !this.modelProject && !this.sopBegin &&
+      //     !this.sopEnd) {
+      //   return
+      // }
       this.saveLoading = true
       let params = {
         cartypeProType: this.modelProject,
@@ -255,13 +217,13 @@ export default {
         this.saveLoading = false
       })
     },
-    handleSelectionChange(list){
+    handleSelectionChange(list) {
       this.multipleSelection = list.map(item => {
         item.cartypeProId = this.carTypeProId
         return item
       })
     },
-    GetOtherCarTypeAlternative(){
+    GetOtherCarTypeAlternative() {
       this.tableLoading = true
       GetOtherCarTypeAlternative(this.multipleSelection).then((res) => {
         const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
@@ -277,7 +239,7 @@ export default {
     clearDiolog() {
       this.$emit('input', false)
     },
-    reset(){
+    reset() {
       this.referenceModel1 = ""
       this.referenceModel2 = ""
       this.referenceModel3 = ""
@@ -286,8 +248,8 @@ export default {
       this.sopBegin = ""
       this.sopEnd = ""
     },
-    changeYears(key){
-      if(new Date(this.sopBegin + '').getFullYear() > new Date(this.sopEnd + '').getFullYear()){
+    changeYears(key) {
+      if (new Date(this.sopBegin + '').getFullYear() > new Date(this.sopEnd + '').getFullYear()) {
         iMessage.warn(`开始时间不能大于结束时间，请重新选择。`)
         this[key] = ''
       }
@@ -295,7 +257,7 @@ export default {
   },
   watch: {
     value(val) {
-      if(val){
+      if (val) {
         this.loadingiDialog = true
         let currentYears = new Date().getFullYear()
         getRelationCarTypeById({id: this.carTypeProId}).then((res) => {
@@ -308,10 +270,10 @@ export default {
             this.modelProject = res.data.relationCarTypeId
             this.sopBegin = res.data.sopBegin ? res.data.sopBegin : ''
             this.sopEnd = res.data.sopEnd ? res.data.sopEnd : ''
-            if(!this.sopBegin){
+            if (!this.sopBegin) {
               this.sopBegin = currentYears - 5 + ''
             }
-            if(!this.sopEnd){
+            if (!this.sopEnd) {
               this.sopEnd = currentYears + ''
             }
           }
@@ -323,35 +285,49 @@ export default {
 }
 </script>
 <style lang='scss' scoped>
-.popoverDiv p{
+.iDialogRef {
+  ::v-deep .el-dialog {
+    top: 50%;
+    transform: translateY(-50%);
+  }
+}
+
+.popoverDiv p {
   text-indent: 2em;
 }
+
 ::v-deep .iSearch-content .operation {
   width: auto;
   display: none;
 }
-.clearfix::after{
+
+.clearfix::after {
   content: '';
   display: block;
   font-size: 0;
   height: 0;
   clear: both;
 }
-::v-deep .el-popover__title{
+
+::v-deep .el-popover__title {
   margin-bottom: 0;
 }
-.title{
+
+.title {
   position: relative;
   display: inline-block;
-  .text{
+
+  .text {
     font-size: 18px;
     font-weight: bold;
     line-height: 25px;
-    .icon{
+
+    .icon {
       cursor: pointer;
     }
   }
-  .star{
+
+  .star {
     position: absolute;
     right: -15px;
     top: 0;
@@ -361,44 +337,53 @@ export default {
 }
 
 .changeContent {
-  .form1{
+  .form1 {
     margin-bottom: 20px;
     border-bottom: 1px solid #E3E3E3;
   }
-  .el-form{
-    .el-form-item{
+
+  .el-form {
+    .el-form-item {
       width: calc(50% - 50px);
       margin-bottom: 20px;
-      .el-input{
+
+      .el-input {
       }
     }
   }
-  .timeClass{
+
+  .timeClass {
     width: 100%;
     display: flex;
     justify-content: space-between;
-    .symbol{
+
+    .symbol {
       line-height: 38px;
     }
-    ::v-deep .el-input{
+
+    ::v-deep .el-input {
       width: 45%;
     }
   }
-  ::v-deep .card{
+
+  ::v-deep .card {
     box-shadow: none;
     border-radius: 0;
     background: none;
-    .cardBody{
+
+    .cardBody {
       margin-top: 0;
       padding-top: 0;
       padding-left: 0;
       padding-right: 0;
     }
-    .iSearch-content{
+
+    .iSearch-content {
       padding-bottom: 20px;
     }
   }
-  .add{
+
+  .add {
     float: right;
     margin-bottom: 10px;
   }
