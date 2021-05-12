@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2021-05-11 11:14:25
+ * @LastEditTime: 2021-05-11 20:41:23
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsprocure\editordetail\index.vue
@@ -77,7 +77,7 @@
 						<iFormItem :label="$t('LK_LINGJIANXIANGMULEIXING') + ':'" name="test">
 							<iSelect v-model="detailData.partPrejectType"
 								v-permission="PARTSPROCURE_EDITORDETAIL_EVENTITEMTYPE">
-								<el-option :value="item.code" :label="item.name"
+								<el-option :value="item.id" :label="item.name"
 									v-for="(item, index) in fromGroup.PART_PROJECT_TYPE" :key="index">
 								</el-option>
 							</iSelect>
@@ -85,7 +85,7 @@
 						<!--来源为新件信息单的零件采购项目，不可修改车型项目。前端车型项目下拉框应该置为不可修改的状态 --->
 						<iFormItem :label="$t('LK_CHEXINGXIANGMU') + ':'" name="test">
 							<iSelect :disabled='carTypeCanselect()' v-model="detailData.cartypeProjectZh" v-permission="PARTSPROCURE_EDITORDETAIL_CARTYPEZH">
-								<el-option :value="item.code" :label="item.name"
+								<el-option :value="item.id" :label="item.name"
 									v-for="(item, index) in fromGroup.CAR_TYPE_PRO" :key="index">
 								</el-option>
 							</iSelect>
@@ -94,7 +94,7 @@
 							v-show="detailData.partPrejectType == '46'">
 							<iSelect v-model="detailData.purchaseClause"
 								v-permission="PARTSPROCURE_EDITORDETAIL_PURCHASETERMS">
-								<el-option :value="item.code" :label="item.name" v-for="(item, index) in fromGroup.PURCHASE_RULE" :key="index">
+								<el-option :value="item.id" :label="item.name" v-for="(item, index) in fromGroup.PURCHASE_RULE" :key="index">
 								</el-option>
 							</iSelect>
 						</iFormItem>
@@ -108,13 +108,13 @@
 						
 						<iFormItem :label="$t('LK_LINGJIANLEIXING') + ':'" name="test">
 							<iSelect v-model="detailData.partType" v-permission="PARTSPROCURE_EDITORDETAIL_PARTTYPE">
-								<el-option :value="item.code" :label="item.name"
+								<el-option :value="item.id" :label="item.name"
 									v-for="(item, index) in fromGroup.PART_TYPE" :key="index"></el-option>
 							</iSelect>
 						</iFormItem>
 						<iFormItem :label="$t('LK_DANWEI') + ':'" name="test">
 							<iSelect v-model="detailData.unit" v-permission="PARTSPROCURE_EDITORDETAIL_UNIT">
-								<el-option :value="item.code" :label="item.name" v-for="(item, index) in fromGroup.UNIT"
+								<el-option :value="item.id" :label="item.name" v-for="(item, index) in fromGroup.UNIT"
 									:key="index"></el-option>
 							</iSelect>
 						</iFormItem>
@@ -129,7 +129,7 @@
 							<iSelect v-model="detailData.procureFactory"
 								@change="checkFactory()"
 								v-permission="PARTSPROCURE_EDITORDETAIL_PURCHASINGFACTORY">
-								<el-option :value="item.code" :label="item.name"
+								<el-option :value="item.id" :label="item.name"
 									v-for="(item, index) in fromGroup.PURCHASE_FACTORY" :key="index">
 								</el-option>
 							</iSelect>
@@ -138,7 +138,7 @@
 							v-show="detailData.partPrejectType == '46'">
 							<iSelect v-model="detailData.payClause"
 								v-permission="PARTSPROCURE_EDITORDETAIL_NUMBEROFPAYMENT">
-								<el-option :value="item.code" :label="item.name"
+								<el-option :value="item.id" :label="item.name"
 									v-for="(item, index) in fromGroup.PAYMENT_RULE" :key="index"></el-option>
 							</iSelect>
 						</iFormItem>
@@ -152,7 +152,7 @@
 						<iFormItem :label="$t('LK_LINIEBUMEN') + ':'" name="test">
 							<iSelect v-model="detailData.linieDept"
 								v-permission="PARTSPROCURE_EDITORDETAIL_LINEDEPARTMENT">
-								<el-option :value="item.code" :label="item.name"
+								<el-option :value="item.id" :label="item.name"
 									v-for="(item, index) in fromGroup.LINIE_DEPT" :key="index"></el-option>
 							</iSelect>
 						</iFormItem>
@@ -165,7 +165,7 @@
 						</iFormItem>
 						<iFormItem :label="$t('LK_CFKONGZHIYUAN') + ':'" name='cfczy'>
 							<iSelect v-model="detailData.cfController" v-permission="PARTSPROCURE_EDITORDETAIL_CFCONTROLLER">
-								<el-option :value="item.code" :label="item.name" v-for="item in fromGroup.CF_CONTROL" :key="item.name"></el-option>
+								<el-option :value="item.id" :label="item.name" v-for="item in fromGroup.CF_CONTROL" :key="item.name"></el-option>
 							</iSelect>
 						</iFormItem>
 						<iFormItem label="Common Sourcing：" name="test">
@@ -201,7 +201,7 @@
 						<iFormItem :label="$t('LK_HUOBI') + ':'" name="test"
 							v-show="detailData.partPrejectType == '46'">
 							<iSelect v-model="detailData.currencyId" v-permission="PARTSPROCURE_EDITORDETAIL_CURRENCY">
-								<el-option :value="item.code" :label="item.name"
+								<el-option :value="item.id" :label="item.name"
 									v-for="(item, index) in fromGroup.CURRENCY_TYPE" :key="index"></el-option>
 							</iSelect>
 						</iFormItem>
@@ -448,9 +448,9 @@ import { iMessageBox } from '../../../components';
 					}
 				}
 				detailData['cfController'] = this.detailData.cfController
-				detailData['cfControllerZh'] = this.fromGroup.CF_CONTROL.find(items=>items.id == this.detailData.cfController).name
+				detailData['cfControllerZh'] = (this.fromGroup.CF_CONTROL.find(items=>items.id == this.detailData.cfController)).name || ''
 				detailData['linieUserId'] = this.detailData.linieUserId
-				detailData['linieName'] = this.fromGroup.LINIE.find(items=>items.id == this.detailData.linieUserId).name
+				detailData['linieName'] = (this.fromGroup.LINIE.find(items=>items.code == this.detailData.linieUserId)).name || ''
 				changeProcure({
 					detailData,
 				}).then((res) => {

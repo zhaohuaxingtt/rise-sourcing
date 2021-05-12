@@ -221,7 +221,7 @@ import { cloneDeep } from 'lodash'
 					"cfTargetpriceReq.purchaseProjectId": this.purchaseProjectId,
 				};
 				getTabelData(data).then((res) => {
-					// let price=res.data.targetprice
+					let price=res.data.targetprice
 					// if (price.cfTargetPriceDetail) {
 					// 	this.targetprice.cfTargetPriceDetail=price.cfTargetPriceDetail
 					// 	this.tableListData=JSON.parse(JSON.stringify([price.cfTargetPriceDetail]))  
