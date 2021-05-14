@@ -108,19 +108,19 @@
           </el-form-item>
           <el-form-item :label="$t('LK_CHEXINXIANGMUQIZHINIANFEN')">
             <div class="timeClass">
-              <el-date-picker
+              <iDatePicker
                   v-model="sopBegin"
                   type="year"
                   :placeholder="$t('LK_QINGXUANZE')"
                   @change="changeYears('sopBegin')">
-              </el-date-picker>
+              </iDatePicker>
               <div class="symbol">-</div>
-              <el-date-picker
+              <iDatePicker
                   v-model="sopEnd"
                   type="year"
                   :placeholder="$t('LK_QINGXUANZE')"
                   @change="changeYears('sopEnd')">
-              </el-date-picker>
+              </iDatePicker>
             </div>
             <!--            <iInput v-model="form['search.catTypeStartTime']"></iInput>-->
           </el-form-item>
@@ -134,7 +134,7 @@
   </iDialog>
 </template>
 <script>
-import {iButton, iDialog, iMessage, iSelect, icon, iSearch} from 'rise'
+import {iButton, iDialog, iMessage, iSelect, icon, iSearch, iDatePicker} from 'rise'
 import {Popover} from "element-ui"
 import {addListInvestment, form} from "../components/data";
 import {pageMixins} from "@/utils/pageMixins";
@@ -152,7 +152,8 @@ export default {
     iDialog,
     icon,
     Popover,
-    iSearch
+    iSearch,
+    iDatePicker
   },
   props: {
     title: {type: String, default: 'LK_CANKAOCHEXINXIANGMU'},
