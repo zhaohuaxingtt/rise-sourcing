@@ -221,7 +221,7 @@ import { cloneDeep } from 'lodash'
 					"cfTargetpriceReq.purchaseProjectId": this.purchaseProjectId,
 				};
 				getTabelData(data).then((res) => {
-					// let price=res.data.targetprice
+					let price=res.data.targetprice
 					// if (price.cfTargetPriceDetail) {
 					// 	this.targetprice.cfTargetPriceDetail=price.cfTargetPriceDetail
 					// 	this.tableListData=JSON.parse(JSON.stringify([price.cfTargetPriceDetail]))  
@@ -243,6 +243,9 @@ import { cloneDeep } from 'lodash'
 					cfTargetPriceDetail: { ...this.targetprice.cfTargetPriceDetail, type }, // save 保存  apply 申请
 					rwApplication:null
 				};
+				if(!targetprice.cfTargetPriceDetail.expTargetpri){
+					targetprice.cfTargetPriceDetail.expTargetpri = 0
+				}
 				changeProcure({
 					targetprice,
 				}).then((res) => {
