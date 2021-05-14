@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-03-25 23:20:12
+ * @LastEditTime: 2021-05-14 20:11:00
  * @LastEditors: Please set LastEditors
  * @Description: 用户信息保存。
  * @FilePath: \rise\src\store\module\permission.js
@@ -31,7 +31,7 @@ const getVuerouter = function(router){
 function initMeun(data){
   data.forEach((items,index)=>{
     if(index == 0){
-      items['active'] = true
+      items['active'] = false
     }else{
       items['active'] = false
     }
