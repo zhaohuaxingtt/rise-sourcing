@@ -13,7 +13,15 @@
         <img class="editIcon" src="../../../assets/images/editCar.png" alt="">
         <div class="infoIcard">
           <div class="search">
-            <label :title="$t('LK_BANBENHAO2')">{{ $t('LK_BANBENHAO2') }}:</label>
+            <Popover
+                placement="top-start"
+                trigger="hover">
+              <div class="popoverDiv">
+                <p>{{$t('LK_BANBENHAO2')}}</p>
+              </div>
+              <label slot="reference">{{ $t('LK_BANBENHAO2') }}:</label>
+            </Popover>
+<!--            <label :title="$t('LK_BANBENHAO2')">{{ $t('LK_BANBENHAO2') }}:</label>-->
             <iSelect
                 v-show="!pageEdit"
                 :placeholder="$t('LK_QINGXUANZE')"
@@ -31,11 +39,27 @@
             <span v-show="pageEdit">{{ versionName }}</span>
           </div>
           <div>
-            <label :title="$t('LK_CHEXINMINGCENG')">{{ $t('LK_CHEXINMINGCENG') }}:</label>
+            <Popover
+                placement="top-start"
+                trigger="hover">
+              <div class="popoverDiv">
+                <p>{{$t('LK_CHEXINMINGCENG')}}</p>
+              </div>
+              <label slot="reference">{{ $t('LK_CHEXINMINGCENG') }}:</label>
+            </Popover>
+<!--            <label :title="$t('LK_CHEXINMINGCENG')">{{ $t('LK_CHEXINMINGCENG') }}:</label>-->
             <span>{{ form['search.carTypeName'] }}</span>
           </div>
           <div class="search" v-show="(params.sourceStatus == 2) && pageEdit">
-            <label :title="$t('LK_GUANLIANCHEXIN')">{{ $t('LK_GUANLIANCHEXIN') }}:</label>
+            <Popover
+                placement="top-start"
+                trigger="hover">
+              <div class="popoverDiv">
+                <p>{{$t('LK_GUANLIANCHEXIN')}}</p>
+              </div>
+              <label slot="reference">{{ $t('LK_GUANLIANCHEXIN') }}:</label>
+            </Popover>
+<!--            <label :title="$t('LK_GUANLIANCHEXIN')">{{ $t('LK_GUANLIANCHEXIN') }}:</label>-->
             <iSelect
                 :placeholder="$t('LK_QINGXUANZE')"
                 v-model="form['search.relatedCarType']"
@@ -52,7 +76,15 @@
             <!--            <span>V-PSK88</span>-->
           </div>
           <div v-show="params.sourceStatus == 1">
-            <label :title="$t('LK_CAIGOUGONGCHANG')">{{ $t('LK_CAIGOUGONGCHANG') }}:</label>
+            <Popover
+                placement="top-start"
+                trigger="hover">
+              <div class="popoverDiv">
+                <p>{{$t('LK_CAIGOUGONGCHANG')}}</p>
+              </div>
+              <label slot="reference">{{ $t('LK_CAIGOUGONGCHANG') }}:</label>
+            </Popover>
+<!--            <label :title="$t('LK_CAIGOUGONGCHANG')">{{ $t('LK_CAIGOUGONGCHANG') }}:</label>-->
             <span>{{ form['search.purchasingFactory'] }}</span>
           </div>
           <div v-show="params.sourceStatus == 1">
@@ -60,7 +92,15 @@
             <span>{{ form['search.sopDate'] }}</span>
           </div>
           <div class="search">
-            <label :title="$t('LK_PIZHUNTOUZHI')">{{ $t('LK_PIZHUNTOUZHI') }}:</label>
+            <Popover
+                placement="top-start"
+                trigger="hover">
+              <div class="popoverDiv">
+                <p>{{$t('LK_PIZHUNTOUZHI')}}</p>
+              </div>
+              <label slot="reference">{{ $t('LK_PIZHUNTOUZHI') }}:</label>
+            </Popover>
+<!--            <label :title="$t('LK_PIZHUNTOUZHI')">{{ $t('LK_PIZHUNTOUZHI') }}:</label>-->
             <span v-show="!pageEdit">{{ form['search.approvalInvestment'] }}</span>
             <iInput v-show="pageEdit" v-model="form['search.approvalInvestment']"></iInput>
           </div>
