@@ -13,9 +13,9 @@
             placement="top-start"
             trigger="hover">
           <div class="popoverDiv">
-            <p>1）本窗口的功能为选择参考车型项目，未SOP的车型项目不作为参考数据</p>
-            <p>2）参考的金额是模具的定点金额</p>
-            <p>3）选择好所有条件后，系统会根据你的选择，首先计算第一顺位车型项目的各个材料组的历史投资金额；</p>
+            <div>本窗口的功能为选择参考车型项目，未SOP的车型项目不作为参考数据</div>
+            <div>参考的金额是模具的定点金额</div>
+            <div>选择好所有条件后，系统会根据你的选择，首先计算第一顺位车型项目的各个材料组的历史投资金额；</div>
             <p>若某个材料组的计算结果为0，则计算第二顺位车型项目的各个材料组的历史投资金额进行补充；</p>
             <p>若某个材料组的计算结果再次为0，则计算第三顺位车型项目的各个材料组的历史投资金额进行补充；</p>
             <p>若某个材料组的计算结果依旧为0，系统根据【其他参考】【车型项目类型】【项目年份】筛选出多个车型项目，并调用模具投资金额最大的项目作为参考项目的模具投资金额，显示在【模具投资清单页面】</p>
@@ -295,8 +295,23 @@ export default {
   }
 }
 
-.popoverDiv p {
-  text-indent: 2em;
+.popoverDiv  {
+  padding: 10px;
+  padding-left: 20px;
+  div{
+    &:before{
+      content: '①';
+      display: block;
+      position: absolute;
+      left: 13px;
+    }
+    &:nth-of-type(2):before{
+      content: '②';
+    }
+    &:nth-of-type(3):before{
+      content: '③';
+    }
+  }
 }
 
 ::v-deep .iSearch-content .operation {

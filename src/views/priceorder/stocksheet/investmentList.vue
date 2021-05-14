@@ -684,7 +684,8 @@ export default {
                   label: {
                     show: true,
                     textStyle: {
-                      color: '#ffffff'
+                      color: '#ffffff',
+                      fontSize: 8
                     }
                   },
                   emphasis: {
@@ -700,7 +701,8 @@ export default {
                   label: {
                     show: true,
                     textStyle: {
-                      color: '#ffffff'
+                      color: '#ffffff',
+                      fontSize: 8
                     }
                   },
                   emphasis: {
@@ -716,7 +718,8 @@ export default {
                   label: {
                     show: true,
                     textStyle: {
-                      color: '#ffffff'
+                      color: '#ffffff',
+                      fontSize: 8
                     }
                   },
                   emphasis: {
