@@ -1,7 +1,7 @@
 <!--
  * @Author: moxuan
  * @Date: 2021-03-05 17:24:15
- * @LastEditTime: 2021-05-14 10:06:56
+ * @LastEditTime: 2021-05-14 12:30:41
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
 -->
@@ -32,12 +32,12 @@
         </iFormItem>
         <iFormItem :label="$t('LK_BENLUNBAOJIAQIZHISHIJIAN')" name="test" v-if="['00', '01'].includes(roundType)">
           <div class="flex">
-            <iDatePicker type="date" :placeholder="$t('LK_QINGXUANZE')" v-model="startTime"
+            <iDatePicker type="date" :placeholder="$t('LK_QINGXUANZE')" v-model="startTime" value-format="yyyy-MM-dd"
                             v-permission="PARTSRFQ_EDITORDETAIL_NEWRFQROUND_STARTTIME" disabled></iDatePicker>
           </div>
         </iFormItem>
         <iFormItem label="" name="test" v-if="['00', '01'].includes(roundType)">
-          <iDatePicker type="date" :placeholder="$t('LK_QINGXUANZE')" v-model="endTime"
+          <iDatePicker type="date" :placeholder="$t('LK_QINGXUANZE')" v-model="endTime" value-format="yyyy-MM-dd"
                           v-permission="PARTSRFQ_EDITORDETAIL_NEWRFQROUND_ENDTIME"
                           :picker-options="{
                             disabledDate(time) {

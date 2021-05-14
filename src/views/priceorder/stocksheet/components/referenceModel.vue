@@ -114,14 +114,16 @@
                   v-model="sopBegin"
                   type="year"
                   :placeholder="$t('LK_QINGXUANZE')"
-                  @change="changeYears('sopBegin')">
+                  @change="changeYears('sopBegin')"
+                  value-format="yyyy">
               </iDatePicker>
               <div class="symbol">-</div>
               <iDatePicker
                   v-model="sopEnd"
                   type="year"
                   :placeholder="$t('LK_QINGXUANZE')"
-                  @change="changeYears('sopEnd')">
+                  @change="changeYears('sopEnd')"
+                  value-format="yyyy">
               </iDatePicker>
             </div>
             <!--            <iInput v-model="form['search.catTypeStartTime']"></iInput>-->
