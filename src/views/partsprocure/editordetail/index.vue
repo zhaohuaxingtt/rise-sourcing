@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2021-05-11 20:41:23
+ * @LastEditTime: 2021-05-14 15:39:01
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsprocure\editordetail\index.vue
@@ -460,11 +460,11 @@ import { iMessageBox } from '../../../components';
 							this.getDatail();
 						}else{
 							this.getDatail();
-							iMessageBox(this.$t('LK_AREYOUSPLITE'),this.$t('LK_WENXINTISHI')).then(res=>{
-								//如果这条ID存在 则默认查询出来的采购工厂将会为第一条
-								this.firstId = this.detailData.procureFactory
-								this.splitPurchFn()
-							})
+							// iMessageBox(this.$t('LK_AREYOUSPLITE'),this.$t('LK_WENXINTISHI')).then(res=>{
+							// 	//如果这条ID存在 则默认查询出来的采购工厂将会为第一条
+							// 	this.firstId = this.detailData.procureFactory
+							// 	this.splitPurchFn()
+							// })
 						}
 					} else {
 						iMessage.error(res.desZh);

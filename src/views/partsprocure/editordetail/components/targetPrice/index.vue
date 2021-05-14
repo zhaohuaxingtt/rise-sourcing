@@ -243,6 +243,9 @@ import { cloneDeep } from 'lodash'
 					cfTargetPriceDetail: { ...this.targetprice.cfTargetPriceDetail, type }, // save 保存  apply 申请
 					rwApplication:null
 				};
+				if(!targetprice.cfTargetPriceDetail.expTargetpri){
+					targetprice.cfTargetPriceDetail.expTargetpri = 0
+				}
 				changeProcure({
 					targetprice,
 				}).then((res) => {
