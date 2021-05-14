@@ -46,10 +46,10 @@
 <script>
 import {iPage, iMessage, iDialog, iButton} from "rise";
 import {iNavWS2} from "@/components";
-import {tabtitle} from "./components/data";
-import carTypeOverview from "./carTypeOverview";
-import generateInvestmentList from "./generateInvestmentList";
-import investmentList from "./investmentList";
+import {tabtitle} from "./stocksheet/components/data";
+import carTypeOverview from "./stocksheet/carTypeOverview";
+import generateInvestmentList from "./stocksheet/generateInvestmentList";
+import investmentList from "./stocksheet/investmentList";
 import {
   getRelationCarTypeById,
   saveInvestBuildBottom,

@@ -35,7 +35,7 @@
             <span>{{ form['search.carTypeName'] }}</span>
           </div>
           <div class="search" v-show="(params.sourceStatus == 2) && pageEdit">
-            <label>{{ $t('LK_GUANLIANCHEXIN') }}:</label>
+            <label :title="$t('LK_GUANLIANCHEXIN')">{{ $t('LK_GUANLIANCHEXIN') }}:</label>
             <iSelect
                 :placeholder="$t('LK_QINGXUANZE')"
                 v-model="form['search.relatedCarType']"
@@ -266,6 +266,12 @@
         :saveParams="saveParams"
         @refresh="getInvestmentVerisionList"
     ></saveAs>
+    <confirmAssociatedCarline
+        v-model="confirmAssociatedCarlineShow"
+        :associatedCarlineParams="associatedCarlineParams"
+        @confirm="confirmAssociatedCarlineChange"
+        @notConfirm="form['search.relatedCarType'] = ''"
+    ></confirmAssociatedCarline>
   </div>
 </template>
 <script>
@@ -284,6 +290,7 @@ import tablelist from "./components/tablelist";
 import addRow from "./components/addRow";
 import referenceModel from "./components/referenceModel";
 import conversionRatio from "./components/conversionRatio";
+import confirmAssociatedCarline from "./components/confirmAssociatedCarline";
 import saveAs from "./components/saveAs";
 import {
   getCartypePulldown,
@@ -323,6 +330,7 @@ export default {
     referenceModel,
     conversionRatio,
     saveAs,
+    confirmAssociatedCarline,
     Popover
   },
   data() {
@@ -342,6 +350,7 @@ export default {
       referenceModelShow: false,
       conversionRatioShow: false,
       saveAsShow: false,
+      confirmAssociatedCarlineShow: false,
       modelProtitesList: [],
       modelCategoryList: [],
       fixedPointTypeList: [],
@@ -365,7 +374,9 @@ export default {
         versionId: '',
         version: '',
       },
+      associatedCarlineParams: {
 
+      },
       versionName: '',
       tableListData: [],
       tableListDataClone: [],
@@ -437,23 +448,18 @@ export default {
         this.versionName = ''
       }
     },
-    relationMainCarType(val) {
+    confirmAssociatedCarlineChange(){
       this.params.sourceStatus = 1
-      relationMainCarType({
-        mainId: val,
-        localId: this.params.id,
-      }).then((res) => {
-        const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
-        if (Number(res.code) === 0) {
-          this.getInvestmentVerisionList()
-          iMessage.success(result);
-        } else {
-          iMessage.error(result);
+      this.getInvestmentVerisionList()
+    },
+    relationMainCarType(val) {
+      if(val){
+        this.confirmAssociatedCarlineShow = true
+        this.associatedCarlineParams = {
+          mainId: val,
+          localId: this.params.id,
         }
-        // this.tableLoading = false
-      }).catch(() => {
-        // this.tableLoading = false
-      });
+      }
     },
     // getModelProtitesPullDown() {
     //   getModelProtitesPullDown().then((res) => {
@@ -568,6 +574,7 @@ export default {
           this.form['search.approvalInvestment'] = Number(res.data.approvalInvestment) ? Number(res.data.approvalInvestment).toFixed(2) : 0
           this.mainCarTypeList = res.data.mainCarTypeList
           // this.form['search.relatedCarType'] = res.data.mainCarTypeList[0] ? res.data.mainCarTypeList[0].id : ''
+          this.form['search.relatedCarType'] = ''
           this.saveParams.version = res.data.defaultVersion.slice(4)
 
           let contingency = Number(res.data.contingency) ? Number(res.data.contingency).toFixed(2) : 0

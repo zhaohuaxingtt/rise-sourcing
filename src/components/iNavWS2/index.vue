@@ -27,6 +27,7 @@
       </div>
       <span>
         <icon symbol name="icondatabaseweixuanzhong"></icon>
+<!--        <icon symbol name="icondatabasexuanzhongzhuangtai" class="openIcon"></icon>-->
       </span>
     </div>
   </div>
@@ -114,6 +115,10 @@ export default {
   .btnList {
     .nextStep{
       margin-right: 20px;
+    }
+    .openIcon{
+      width: 31px;
+      height: 36px;
     }
     > span {
       font-size: 20px;

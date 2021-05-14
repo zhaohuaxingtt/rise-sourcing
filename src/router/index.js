@@ -161,7 +161,16 @@ export const staticRouter = [{
                     title: '价格与订单-备货表'
                 },
                 component: () =>
-                    import (`@/views/priceorder/stocksheet`)
+                    import (`@/views/priceorder`)
+            },
+            {
+                path: '/tooling/dataBase',
+                name: 'dataBase',
+                meta: {
+                    title: '价格与订单-备货表'
+                },
+                component: () =>
+                    import (`@/views/priceorder/dataBase`)
             },
             {
                 path: '/priceorder/stocksheet/generateInvestmentList',

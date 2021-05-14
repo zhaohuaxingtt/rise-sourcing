@@ -6,6 +6,34 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "21562780",
+      "name": "流程节点（已完成）",
+      "font_class": "liuchengjiedianyiwancheng1",
+      "unicode": "e63c",
+      "unicode_decimal": 58940
+    },
+    {
+      "icon_id": "21562781",
+      "name": "流程节点（未开始）",
+      "font_class": "liuchengjiedianweikaishi1",
+      "unicode": "e64c",
+      "unicode_decimal": 58956
+    },
+    {
+      "icon_id": "21562782",
+      "name": "流程节点（进行中）",
+      "font_class": "liuchengjiedianjinhangzhong1",
+      "unicode": "e64d",
+      "unicode_decimal": 58957
+    },
+    {
+      "icon_id": "21483279",
+      "name": "DB标签",
+      "font_class": "DBbiaoqian",
+      "unicode": "e64e",
+      "unicode_decimal": 58958
+    },
+    {
       "icon_id": "21357621",
       "name": "总预算锁定",
       "font_class": "zongyusuansuoding",
@@ -81,13 +109,6 @@
       "font_class": "guanlianlingjian-moren",
       "unicode": "e637",
       "unicode_decimal": 58935
-    },
-    {
-      "icon_id": "21206969",
-      "name": "步骤未开始",
-      "font_class": "buzhouweikaishi",
-      "unicode": "e63c",
-      "unicode_decimal": 58940
     },
     {
       "icon_id": "21206970",

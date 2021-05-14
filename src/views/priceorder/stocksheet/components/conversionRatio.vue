@@ -5,7 +5,19 @@
 <template>
   <iDialog :title="$t(title)" :visible.sync="value" width="381px" top="0" @close='clearDiolog' class="iDialogCon">
     <div slot="title" class="title">
-      <div class="text">{{ $t(title) }}</div>
+      <div class="text">
+        {{ $t(title) }}
+        <Popover
+            width="272"
+            placement="top-start"
+            trigger="hover">
+          <div class="popoverDiv">
+            <p>输入比例后需要点击保存，图表才随之变化。折算比例确认后，原数字不保留，请注意惠存原数字。</p>
+          </div>
+          <icon symbol name="iconxinxitishi" slot="reference"></icon>
+        </Popover>
+      </div>
+
     </div>
     <div class="changeContent">
       <p>{{ $t('LK_ZHESUANBILI') }}</p>
@@ -17,8 +29,8 @@
   </iDialog>
 </template>
 <script>
-import {iDialog, iSearch, iInput, iButton} from 'rise'
-
+import {iDialog, iSearch, iInput, iButton, icon} from 'rise'
+import {Popover} from "element-ui"
 import {pageMixins} from "@/utils/pageMixins";
 
 export default {
@@ -28,6 +40,8 @@ export default {
     iSearch,
     iInput,
     iButton,
+    Popover,
+    icon,
   },
   props: {
     title: {type: String, default: 'LK_ANBILIZHESUAN'},
@@ -67,6 +81,9 @@ export default {
     font-size: 18px;
     font-weight: bold;
     line-height: 25px;
+    .icon {
+      cursor: pointer;
+    }
   }
 
   .star {
