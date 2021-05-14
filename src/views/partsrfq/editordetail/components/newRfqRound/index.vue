@@ -1,7 +1,7 @@
 <!--
  * @Author: moxuan
  * @Date: 2021-03-05 17:24:15
- * @LastEditTime: 2021-03-26 00:03:52
+ * @LastEditTime: 2021-05-14 10:06:56
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
 -->
@@ -32,19 +32,19 @@
         </iFormItem>
         <iFormItem :label="$t('LK_BENLUNBAOJIAQIZHISHIJIAN')" name="test" v-if="['00', '01'].includes(roundType)">
           <div class="flex">
-            <el-date-picker type="date" :placeholder="$t('LK_QINGXUANZE')" v-model="startTime"
-                            v-permission="PARTSRFQ_EDITORDETAIL_NEWRFQROUND_STARTTIME" disabled></el-date-picker>
+            <iDatePicker type="date" :placeholder="$t('LK_QINGXUANZE')" v-model="startTime"
+                            v-permission="PARTSRFQ_EDITORDETAIL_NEWRFQROUND_STARTTIME" disabled></iDatePicker>
           </div>
         </iFormItem>
         <iFormItem label="" name="test" v-if="['00', '01'].includes(roundType)">
-          <el-date-picker type="date" :placeholder="$t('LK_QINGXUANZE')" v-model="endTime"
+          <iDatePicker type="date" :placeholder="$t('LK_QINGXUANZE')" v-model="endTime"
                           v-permission="PARTSRFQ_EDITORDETAIL_NEWRFQROUND_ENDTIME"
                           :picker-options="{
                             disabledDate(time) {
                               return time.getTime() < Date.now()
                             }
                           }"
-          ></el-date-picker>
+          ></iDatePicker>
         </iFormItem>
       </iFormGroup>
       <tablelist
@@ -86,6 +86,7 @@
 </template>
 <script>
 import {iButton, iMessage, iDialog, iFormGroup, iFormItem, iSelect, iPagination} from '@/components'
+import { iDatePicker } from "rise"
 import tablelist from './components/tablelist'
 import {pageMixins} from "@/utils/pageMixins";
 import {tableTitle, tableTitle2} from "./components/data";
@@ -94,7 +95,7 @@ import store from '@/store'
 import {rfqCommonFunMixins} from "pages/partsrfq/components/commonFun";
 
 export default {
-  components: {iButton, iDialog, iFormGroup, iFormItem, iSelect, tablelist, iPagination},
+  components: {iButton, iDialog, iFormGroup, iFormItem, iSelect, tablelist, iPagination, iDatePicker},
   mixins: [pageMixins, rfqCommonFunMixins],
   props: {
     // title: {type: String, default: '新建RFQ轮次'},
