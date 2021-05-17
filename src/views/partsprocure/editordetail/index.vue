@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2021-05-14 15:36:09
+ * @LastEditTime: 2021-05-17 15:00:43
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsprocure\editordetail\index.vue
@@ -459,6 +459,7 @@ import { iMessageBox } from '../../../components';
 							iMessage.success(this.$t('LK_YIBAOCUN'));
 							this.getDatail();
 						}else{
+							iMessage.success(this.$t('LK_YIBAOCUN'));
 							this.getDatail();
 							// iMessageBox(this.$t('LK_AREYOUSPLITE'),this.$t('LK_WENXINTISHI')).then(res=>{
 							// 	//如果这条ID存在 则默认查询出来的采购工厂将会为第一条
