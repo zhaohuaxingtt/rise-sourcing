@@ -705,6 +705,6 @@
         'LK_BAOCUNWEIXINBANBEN': '保存为新版本',//保存为新版本
         'LK_ANBILIZHESUAN': '按⽐例折算',//按⽐例折算
         'LK_ZHESUANBILI': '折算⽐例',//折算⽐例
-        // 'LK_QUEDING': '确定',//确定
+        'LK_CHEXINGXIANGMULEIXING': '车型项目类型',//车型项目类型
     })
 }))

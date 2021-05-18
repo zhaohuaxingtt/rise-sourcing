@@ -14,10 +14,13 @@
         :isGenerateInvestmentList="isGenerateInvestmentList"
         :nextStepLoading="nextStepLoading"
         @nextStep="nextStep"
+        @toDataBase="toDataBase"
     ></iNavWS2>
     <!------------------------------------------------------------------------>
     <!--                  内容                                  --->
     <!------------------------------------------------------------------------>
+    <!--数据库-->
+    <dataBase v-if="index === 999"></dataBase>
     <!--预算管理-->
     <div v-if="index === 1">
       <carTypeOverview
@@ -50,6 +53,7 @@ import {tabtitle} from "./stocksheet/components/data";
 import carTypeOverview from "./stocksheet/carTypeOverview";
 import generateInvestmentList from "./stocksheet/generateInvestmentList";
 import investmentList from "./stocksheet/investmentList";
+import dataBase from "./dataBase";
 import {
   getRelationCarTypeById,
   saveInvestBuildBottom,
@@ -62,6 +66,7 @@ export default {
     carTypeOverview,
     generateInvestmentList,
     investmentList,
+    dataBase,
     iDialog,
     iButton,
   },
@@ -154,6 +159,14 @@ export default {
       )
       this.nextStepvalue = false
     },
+    toDataBase(){
+      this.index = 999
+      this.isGenerateInvestmentList = false
+      this.tabtitle = this.tabtitle.map(item => {
+        item.active = false
+        return item
+      })
+    }
   },
 };
 </script>

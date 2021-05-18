@@ -692,6 +692,6 @@
         'LK_BAOCUNWEIXINBANBEN': 'Save New',//保存为新版本
         'LK_ANBILIZHESUAN': 'Convert By Proportion',//按⽐例折算
         'LK_ZHESUANBILI': 'Proportion',//折算⽐例
-        // 'LK_QUEDING': 'Confirm',//确定
+        'LK_CHEXINGXIANGMULEIXING': '车型项目类型',//车型项目类型
     })
 }))

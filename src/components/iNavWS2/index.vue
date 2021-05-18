@@ -7,7 +7,8 @@
   <div class="nav">
     <div class="tabs">
       <ul>
-        <li v-for="(items, index) in tabtitle" :key="index" :class="{ 'active': items.active }" @click="changeNav(items.index)">
+        <li v-for="(items, index) in tabtitle" :key="index" :class="{ 'active': items.active }"
+            @click="changeNav(items.index)">
           {{ items.name }}
         </li>
       </ul>
@@ -20,14 +21,19 @@
           @click="$emit('nextStep')"
           :disabled="$store.state.mouldManagement.isBudget == 3"
           v-loading="nextStepLoading"
-      >下一步</iButton>
-      <div class="logButton" @click="$emit('click')">
-        <icon symbol name="iconrizhiwuzi" class="icon" />
-        <span>{{ $t("LK_RIZHI") }}</span>
-      </div>
-      <span>
-        <icon symbol name="icondatabaseweixuanzhong"></icon>
-<!--        <icon symbol name="icondatabasexuanzhongzhuangtai" class="openIcon"></icon>-->
+      >下一步
+      </iButton>
+<!--      <div class="logButton" @click="$emit('click')">-->
+<!--        <icon symbol name="iconrizhiwuzi" class="icon"/>-->
+<!--        <span @click="changeDataBase">{{ $t("LK_RIZHI") }}</span>-->
+<!--      </div>-->
+      <span @click="changeDataBase" class="dataBase">
+        <transition name="bounce">
+          <icon v-if="!dataBase" @click="changeDataBase" symbol name="icondatabaseweixuanzhong"></icon>
+        </transition>
+        <transition name="bounceTo">
+          <icon v-if="dataBase" symbol name="icondatabasexuanzhongzhuangtai" class="openIcon"></icon>
+        </transition>
       </span>
     </div>
   </div>
@@ -38,6 +44,7 @@ import {
   iButton, iMessage
 } from "@/components";
 import logButton from "pages/priceorder/stocksheet/components/logButton";
+
 export default {
   props: {
     tabtitle: {
@@ -57,29 +64,76 @@ export default {
   data() {
     return {
       activeIndex: 0,
+      dataBase: false,
     }
   },
   created() {
 
   },
   methods: {
-    changeNav(index){
+    changeNav(index) {
       this.tabtitle = this.tabtitle.map(item => {
         item.active = item.index == index ? true : false
         return item
       })
+      this.dataBase = false
       this.$emit('changeNav', index)
+    },
+    changeDataBase() {
+      this.dataBase = true
+      this.$emit('toDataBase')
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.nav{
+.bounce-enter-active {
+  animation: bounce-in .5s;
+}
+//
+//.bounce-leave-active {
+//  animation: bounce-in .5s reverse;
+//}
+//
+@keyframes bounce-in {
+  0% {
+    transform: scale(0);
+  }
+  50% {
+    transform: scale(1.5);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.bounceTo-enter-active {
+  animation: bounceTo-in .5s;
+}
+
+//.bounceTo-leave-active {
+//  animation: bounceTo-in .5s reverse;
+//}
+
+@keyframes bounceTo-in {
+  0% {
+    transform: scale(0);
+  }
+  50% {
+    transform: scale(1.5);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.nav {
   display: flex;
   align-items: center;
   justify-content: space-between;
   height: 30px;
+
   .tabs {
     display: flex;
 
@@ -97,6 +151,7 @@ export default {
         padding-bottom: 5px;
         margin-right: 50px;
         cursor: pointer;
+
         &.active {
           font-weight: bold;
           color: #000000;
@@ -112,17 +167,13 @@ export default {
       border-bottom: 2px solid red;
     }
   }
+
   .btnList {
-    .nextStep{
+    .nextStep {
       margin-right: 20px;
-    }
-    .openIcon{
-      width: 31px;
-      height: 36px;
     }
     > span {
       font-size: 20px;
-      margin-left: 20px;
 
       // opacity: 0.5;
       .log {
@@ -131,11 +182,24 @@ export default {
         margin-left: 5px;
       }
     }
+
+    .dataBase {
+      width: 31px;
+      height: 36px;
+      line-height: 36px;
+      text-align: center;
+      cursor: pointer;
+      .openIcon {
+        width: 31px;
+        height: 36px;
+      }
+    }
+
     .logButton {
       display: inline-block;
       user-select: none;
       cursor: pointer;
-
+      margin-right: 20px;
       .icon {
         width: 20px;
         height: 20px;

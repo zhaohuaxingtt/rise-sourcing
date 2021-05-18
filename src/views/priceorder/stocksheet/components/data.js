@@ -316,6 +316,7 @@ export const form = {
     'search.fixedPointType': "", //定点类型
     'search.modelCategory': "", //车型类别
     'search.materialName': "", //材料组
+    'search.categoryName': "", //材料组
 
     'search.zhEnNo': "", //材料组编号/中文名/德文名
     'search.mouldAttr': "", //模具属性
@@ -359,4 +360,61 @@ export const tabtitle = [
     {name: "BA申请", index: 3, active: false, key: "LK_DINGJIAGUANLI"},
     {name: "BM申请", index: 4, active: false, key: "LK_JIAGEZHUISU"},
     {name: "投资报告", index: 5, active: false, key: "LK_HETONGCHAXUN"},
+]
+
+export const dataBaseData = [
+    {
+        props: 'tmCartypeProName',
+        name: '车型项目',
+        key: '车型项目',
+        tooltip: false
+    },
+    {
+        props: 'sopTime',
+        name: 'SOP时间',
+        key: 'SOP时间',
+        tooltip: false
+    },
+    {
+        props: 'cartypeProType',
+        name: '车型项目类型',
+        key: '车型项目类型',
+        tooltip: false
+    },
+    {
+        props: 'deptName',
+        name: '专业科室',
+        key: '专业科室',
+        tooltip: false
+    },
+    {
+        props: 'categoryNameZh',
+        name: '材料组',
+        key: '材料组',
+        tooltip: false
+    },
+    {
+        props: 'budgetAuditAmount',
+        name: '模具属性',
+        key: '模具属性',
+        tooltip: false
+    },
+    {
+        props: 'nomiAmount',
+        name: '定点金额',
+        key: '定点金额',
+        tooltip: false
+    },
+    {
+        props: 'bmAmount',
+        name: 'BM单金额',
+        key: 'BM单金额',
+        tooltip: false
+    },
+    {
+        props: 'entryAmount',
+        name: '入账金额',
+        key: '入账金额',
+        tooltip: false
+    },
 ]
