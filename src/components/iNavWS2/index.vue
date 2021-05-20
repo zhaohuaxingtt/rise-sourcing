@@ -7,8 +7,8 @@
   <div class="nav">
     <div class="tabs">
       <ul>
-        <li v-for="(items, index) in tabtitle" :key="index" :class="{ 'active': items.active }"
-            @click="changeNav(items.index)">
+        <li v-for="(items, index) in tabtitle" :key="index" :class="index == activeIndex && 'active'"
+            @click="changeNav(items)">
           {{ items.name }}
         </li>
       </ul>
@@ -16,17 +16,17 @@
     </div>
     <div class="btnList flex-align-center">
       <iButton
-          v-if="isGenerateInvestmentList"
+          v-if="$store.state.mouldManagement.nextStep"
           class="nextStep"
           @click="$emit('nextStep')"
           :disabled="$store.state.mouldManagement.isBudget == 3"
           v-loading="nextStepLoading"
       >下一步
       </iButton>
-<!--      <div class="logButton" @click="$emit('click')">-->
-<!--        <icon symbol name="iconrizhiwuzi" class="icon"/>-->
-<!--        <span @click="changeDataBase">{{ $t("LK_RIZHI") }}</span>-->
-<!--      </div>-->
+      <!--      <div class="logButton" @click="$emit('click')">-->
+      <!--        <icon symbol name="iconrizhiwuzi" class="icon"/>-->
+      <!--        <span @click="changeDataBase">{{ $t("LK_RIZHI") }}</span>-->
+      <!--      </div>-->
       <span @click="changeDataBase" class="dataBase">
         <transition name="bounce">
           <icon v-if="!dataBase" @click="changeDataBase" symbol name="icondatabaseweixuanzhong"></icon>
@@ -50,12 +50,9 @@ export default {
     tabtitle: {
       type: Array
     },
-    routerPage: Boolean,
-    isGenerateInvestmentList: Boolean,
     nextStepLoading: Boolean,
   },
   mounted() {
-    console.log(this.tabtitle)
   },
   components: {
     icon,
@@ -63,24 +60,36 @@ export default {
   },
   data() {
     return {
-      activeIndex: 0,
+      activeIndex: 999,
       dataBase: false,
+      routerPage: true,
+      query: true,
     }
   },
   created() {
-
+    if(this.$route.path == '/tooling/dataBase'){
+      this.dataBase = true
+    }
+    this.tabtitle.forEach((items, index) => {
+      if (items.url == this.$route.path) this.activeIndex = index
+    })
   },
   methods: {
-    changeNav(index) {
-      this.tabtitle = this.tabtitle.map(item => {
-        item.active = item.index == index ? true : false
-        return item
-      })
+    changeNav(item) {
+      this.$emit('change',item)
+      this.activeIndex = item.index
+      if(this.routerPage){
+        this.$router.push({
+          path:item.url,
+          query:this.query
+        })
+      }
       this.dataBase = false
-      this.$emit('changeNav', index)
+      // this.$emit('changeNav', index)
     },
     changeDataBase() {
       this.dataBase = true
+      this.activeIndex = 999
       this.$emit('toDataBase')
     }
   }
@@ -91,6 +100,7 @@ export default {
 .bounce-enter-active {
   animation: bounce-in .5s;
 }
+
 //
 //.bounce-leave-active {
 //  animation: bounce-in .5s reverse;
@@ -172,6 +182,7 @@ export default {
     .nextStep {
       margin-right: 20px;
     }
+
     > span {
       font-size: 20px;
 
@@ -189,6 +200,7 @@ export default {
       line-height: 36px;
       text-align: center;
       cursor: pointer;
+
       .openIcon {
         width: 31px;
         height: 36px;
@@ -200,6 +212,7 @@ export default {
       user-select: none;
       cursor: pointer;
       margin-right: 20px;
+
       .icon {
         width: 20px;
         height: 20px;

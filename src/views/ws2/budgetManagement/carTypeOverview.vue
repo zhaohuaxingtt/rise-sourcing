@@ -53,21 +53,32 @@ export default {
   methods: {
     // 跳转投资清单
     toEdit(id, sourceStatus, isBudget) {
-      this.$emit(
-          'toGenerateInvestmentList',
-          {
-            step: isBudget == 3 ? 2 : 1,
+      // this.$emit(
+      //     'toGenerateInvestmentList',
+      //     {
+      //       step: isBudget == 3 ? 2 : 1,
+      //       id: id,
+      //       sourceStatus: sourceStatus
+      //     }
+      // )
+      if(isBudget == 3){
+        this.$router.push({
+          path: '/tooling/budgetManagement/investmentList',
+          query: {
             id: id,
             sourceStatus: sourceStatus
-          }
-      )
-      // this.$router.push({
-      //   path: '/priceorder/budgetManagement/generateInvestmentList',
-      //   query: {
-      //     id: id,
-      //     sourceStatus: sourceStatus
-      //   },
-      // })
+          },
+        })
+      }else {
+        this.$store.commit('SET_nextStep', true);
+        this.$router.push({
+          path: '/tooling/budgetManagement/generateInvestmentList',
+          query: {
+            id: id,
+            sourceStatus: sourceStatus
+          },
+        })
+      }
     },
     // 获取卡片列表
     findCartypePro() {

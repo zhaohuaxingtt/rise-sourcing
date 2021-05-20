@@ -9,6 +9,11 @@
  */
 /* eslint-disable no-undef */
 Vue.use(VueRouter);
+const originalPush = VueRouter.prototype.push
+
+VueRouter.prototype.push = function push(location) {
+    return originalPush.call(this, location).catch(err => err)
+}
 export const staticRouter = [{
         path: "/",
         name: "index",
@@ -147,12 +152,49 @@ export const staticRouter = [{
             /** work stream 2 组织/用户权限 */
             {
                 path: '/tooling',
-                name: 'budgetManagement',
+                name: 'tooling',
                 meta: {
-                    title: '价格与订单-备货表'
+                    title: '模具'
                 },
-                component: () =>
-                    import (`@/views/ws2`)
+                component: () => import (`@/views/ws2`),
+                children: [
+                    {
+                        path: '/',
+                        redirect: 'budgetManagement/carTypeOverview',
+                    },
+                    {
+                        path: '/tooling/budgetManagement/carTypeOverview',
+                        name: 'carTypeOverview',
+                        meta: {
+                            title: '车型概览'
+                        },
+                        component: () => import (`@/views/ws2/budgetManagement/carTypeOverview`),
+                    },
+                    {
+                        path: '/tooling/budgetManagement/generateInvestmentList',
+                        name: 'generateInvestmentList',
+                        meta: {
+                            title: '生成投资清单'
+                        },
+                        component: () => import (`@/views/ws2/budgetManagement/generateInvestmentList`),
+                    },
+                    {
+                        path: '/tooling/budgetManagement/investmentList',
+                        name: 'investmentList',
+                        meta: {
+                            title: '投资清单'
+                        },
+                        component: () => import (`@/views/ws2/budgetManagement/investmentList`),
+                    },
+                    {
+                        path: '/tooling/dataBase',
+                        name: 'dataBase',
+                        meta: {
+                            title: '历史数据库'
+                        },
+                        component: () => import (`@/views/ws2/dataBase`),
+                    },
+                ]
             },
             {
                 path: '/tooling/dataBase',

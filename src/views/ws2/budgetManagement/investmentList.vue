@@ -358,10 +358,6 @@ import {cloneDeep} from 'lodash'
 export default {
   mixins: [pageMixins, filters, tableHeight],
   props: {
-    params: {
-      type: Object, default: () => {
-      }
-    }
   },
   components: {
     iButton,
@@ -390,6 +386,7 @@ export default {
       pageEdit: false,
 
       carType: '',
+      params: {},
       addRowShow: false,
       referenceModelShow: false,
       conversionRatioShow: false,
@@ -438,6 +435,7 @@ export default {
   created() {
     // this.isAdd = this.$route.query.id == 'add' ? true : false
     // this.getInvestmentData()
+    this.params = this.$route.query
     this.beginType = this.params.sourceStatus
     this.getModelProtitesPullDown()
     this.getInvestmentVerisionList()

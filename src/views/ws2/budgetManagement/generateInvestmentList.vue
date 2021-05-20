@@ -202,10 +202,7 @@ import {Popover} from "element-ui"
 export default {
   mixins: [pageMixins, filters, tableHeight],
   props: {
-    params: {
-      type: Object, default: () => {
-      }
-    }
+
   },
   components: {
     iButton,
@@ -229,6 +226,7 @@ export default {
       carTypeProjectDisabled: false,
 
       carType: '',
+      params: {},
       carTypeProjectObj: {},
       fixedPointTypeList: [],
       modelCategoryList: [],
@@ -247,6 +245,8 @@ export default {
       carTypeProject: '',
       sourceStatus: ''
     });
+    this.$store.commit('SET_nextStep', true);
+    this.params = this.$route.query
     this.getProcureGroup();
   },
   methods: {

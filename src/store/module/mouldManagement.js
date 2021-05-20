@@ -5,6 +5,7 @@ const state = {
     },
     versionId: '',
     isBudget: '',
+    nextStep: false,
 };
 
 const mutations = {
@@ -16,6 +17,9 @@ const mutations = {
     },
     SET_isBudget(state, data) {
         state.isBudget = data
+    },
+    SET_nextStep(state, data) {
+        state.nextStep = data
     },
 };
 

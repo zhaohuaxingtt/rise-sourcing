@@ -10,33 +10,33 @@
     <iNavWS2
         :tabtitle="tabtitle"
         @click="log"
-        @changeNav="changeNav"
-        :isGenerateInvestmentList="isGenerateInvestmentList"
         :nextStepLoading="nextStepLoading"
         @nextStep="nextStep"
         @toDataBase="toDataBase"
     ></iNavWS2>
+    <router-view></router-view>
+
     <!------------------------------------------------------------------------>
     <!--                  内容                                  --->
     <!------------------------------------------------------------------------>
     <!--数据库-->
-    <dataBase v-if="index === 999"></dataBase>
+<!--    <dataBase v-if="index === 999"></dataBase>-->
     <!--预算管理-->
-    <div v-if="index === 1">
-      <carTypeOverview
-          @toGenerateInvestmentList="val => budgetManagement(val, 'generateInvestmentListParams')"
-          v-if="indexChilden === 0"
-      ></carTypeOverview>
-      <generateInvestmentList
-          @toinvestmentList="val => budgetManagement(val, 'investmentListParams')"
-          :params="generateInvestmentListParams"
-          v-if="indexChilden === 1"
-      ></generateInvestmentList>
-      <investmentList
-          :params="investmentListParams"
-          v-if="indexChilden === 2"
-      ></investmentList>
-    </div>
+<!--    <div v-if="index === 1">-->
+<!--      <carTypeOverview-->
+<!--          @toGenerateInvestmentList="val => budgetManagement(val, 'generateInvestmentListParams')"-->
+<!--          v-if="indexChilden === 0"-->
+<!--      ></carTypeOverview>-->
+<!--      <generateInvestmentList-->
+<!--          @toinvestmentList="val => budgetManagement(val, 'investmentListParams')"-->
+<!--          :params="generateInvestmentListParams"-->
+<!--          v-if="indexChilden === 1"-->
+<!--      ></generateInvestmentList>-->
+<!--      <investmentList-->
+<!--          :params="investmentListParams"-->
+<!--          v-if="indexChilden === 2"-->
+<!--      ></investmentList>-->
+<!--    </div>-->
     <iDialog title="您还没有选择参考车型项目，是否继续?" :visible.sync="nextStepvalue" width="381px" top="0s" @close='clearDiolog'
              v-loading="iDialogLoading" class="iDialogNextStep">
       <span slot="footer" class="dialog-footer">
@@ -82,19 +82,19 @@ export default {
     };
   },
   methods: {
-    changeNav(val) {
-      this.index = val
-      this.indexChilden = 0
-      this.isGenerateInvestmentList = false
-    },
-    budgetManagement(val, params) {
-      this.isGenerateInvestmentList = val.step == 1 ? true : false
-      this[params] = val
-      this.indexChilden = val.step
-      if (val.step == 2) {
-        this.investmentListParams = val
-      }
-    },
+    // changeNav(val) {
+    //   this.index = val
+    //   this.indexChilden = 0
+    //   this.isGenerateInvestmentList = false
+    // },
+    // budgetManagement(val, params) {
+    //   this.isGenerateInvestmentList = val.step == 1 ? true : false
+    //   this[params] = val
+    //   this.indexChilden = val.step
+    //   if (val.step == 2) {
+    //     this.investmentListParams = val
+    //   }
+    // },
     nextStep() {
       this.nextStepLoading = true
       let carTypeProject = this.$store.state.mouldManagement.budgetManagement.carTypeProject
@@ -114,13 +114,22 @@ export default {
                   this.nextStepvalue = true
                 } else {
                   iMessage.success(result);
-                  this.budgetManagement({
-                        id: carTypeProject,
-                        sourceStatus: sourceStatus,
-                        step: 2
-                      },
-                      'investmentListParams'
-                  )
+                  // this.budgetManagement({
+                  //       id: carTypeProject,
+                  //       sourceStatus: sourceStatus,
+                  //       step: 2
+                  //     },
+                  //     'investmentListParams'
+                  // )
+                  this.$router.push({
+                    path: '/tooling/budgetManagement/investmentList',
+                    query: {
+                      id: carTypeProject,
+                      sourceStatus: sourceStatus,
+                      step: 2
+                    },
+                  })
+                  this.$store.commit('SET_nextStep', false);
                 }
               } else {
                 this.nextStepvalue = true
@@ -150,22 +159,30 @@ export default {
       this.nextStepvalue = false
     },
     nextStepsave() {
-      this.budgetManagement({
-            id: this.$store.state.mouldManagement.budgetManagement.carTypeProject,
-            sourceStatus: this.$store.state.mouldManagement.budgetManagement.sourceStatus,
-            step: 2
-          },
-          'investmentListParams'
-      )
+      // this.budgetManagement({
+      //       id: this.$store.state.mouldManagement.budgetManagement.carTypeProject,
+      //       sourceStatus: this.$store.state.mouldManagement.budgetManagement.sourceStatus,
+      //       step: 2
+      //     },
+      //     'investmentListParams'
+      // )
+      this.$router.push({
+        path: '/tooling/budgetManagement/investmentList',
+        query: {
+          id: this.$store.state.mouldManagement.budgetManagement.carTypeProject,
+          sourceStatus: this.$store.state.mouldManagement.budgetManagement.sourceStatus,
+          step: 2
+        },
+      })
+      this.$store.commit('SET_nextStep', false);
       this.nextStepvalue = false
     },
     toDataBase(){
-      this.index = 999
-      this.isGenerateInvestmentList = false
       this.tabtitle = this.tabtitle.map(item => {
         item.active = false
         return item
       })
+      this.$router.push({path: '/tooling/dataBase'})
     }
   },
 };

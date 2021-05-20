@@ -354,12 +354,12 @@ export const addRfqTitle = [
 ]
 
 export const tabtitle = [
-    {name: "车型项目概览", index: 0, active: false, key: "LK_GAILIAN"},
-    {name: "预算管理", index: 1, active: true, key: "LK_CAIGOUSHENQING"},
-    {name: "预算审批", index: 2, active: false, key: "LK_CAIGOUDINGDAN"},
-    {name: "BA申请", index: 3, active: false, key: "LK_DINGJIAGUANLI"},
-    {name: "BM申请", index: 4, active: false, key: "LK_JIAGEZHUISU"},
-    {name: "投资报告", index: 5, active: false, key: "LK_HETONGCHAXUN"},
+    {name: "车型项目概览", index: 0, url: '', key: "LK_GAILIAN"},
+    {name: "预算管理", index: 1, url: '/tooling/budgetManagement/carTypeOverview', key: "LK_CAIGOUSHENQING"},
+    {name: "预算审批", index: 2, url: '', key: "LK_CAIGOUDINGDAN"},
+    {name: "BA申请", index: 3, url: '', key: "LK_DINGJIAGUANLI"},
+    {name: "BM申请", index: 4, url: '', key: "LK_JIAGEZHUISU"},
+    {name: "投资报告", index: 5, url: '', key: "LK_HETONGCHAXUN"},
 ]
 
 export const dataBaseData = [
