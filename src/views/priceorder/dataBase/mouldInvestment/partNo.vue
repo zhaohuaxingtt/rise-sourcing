@@ -5,6 +5,7 @@
         style="margin-top: 20px"
         @sure="getTableListFn"
         @reset="reset"
+        @toggle="iSearchToggle"
         :icon="false"
         :resetKey="PARTSPROCURE_RESET"
         :searchKey="PARTSPROCURE_CONFIRM"
@@ -93,13 +94,14 @@
         <div></div>
         <iButton @click="exportFile">{{ $t('LK_DAOCHU') }}</iButton>
       </div>
-      <tablelist
+      <iTableList
+          :height="tableHeight - 620"
           :tableData="tableListData"
           :tableTitle="tableTitle"
           :tableLoading="tableLoading"
           @handleSelectionChange="handleSelectionChange"
       >
-      </tablelist>
+      </iTableList>
       <iPagination
           v-update
           @size-change="handleSizeChange($event, getTableListFn)"
@@ -123,9 +125,12 @@ import {
   getInvestmentHistoryMaterial,
   getCardDetailPulldown
 } from "@/api/priceorder/dataBase";
-import tablelist from "../../stocksheet/components/tablelist";
-import {form, dataBaseData} from "../components/data";
+import {
+  iTableList
+} from "@/components"
+import {form, partNoData} from "../components/data";
 import {pageMixins} from "@/utils/pageMixins";
+import {tableHeight} from "@/utils/tableHeight";
 import {
   getCartypePulldown,
 } from "@/api/priceorder/stocksheet/edit";
@@ -137,12 +142,12 @@ import {
 } from "@/api/priceorder/stocksheet/investmentList";
 
 export default {
-  mixins: [pageMixins],
+  mixins: [pageMixins, tableHeight],
   components: {
     iCard,
     iSearch,
     iSelect,
-    tablelist,
+    iTableList,
     iPagination,
     iButton,
     iInput,
@@ -161,7 +166,7 @@ export default {
       proDeptList: [],
       tableListData: [],
       multipleSelection: [],
-      tableTitle: dataBaseData,
+      tableTitle: partNoData,
 
     }
   },
@@ -169,6 +174,13 @@ export default {
     this.getModelProtitesPullDown()
   },
   methods: {
+    iSearchToggle(val){
+      if(val){
+        this.tableHeight += 73
+      }else {
+        this.tableHeight -= 73
+      }
+    },
     async getModelProtitesPullDown() {
       for (let i in this.form) {
         this.form[i] = "";

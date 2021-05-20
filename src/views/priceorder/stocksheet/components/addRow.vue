@@ -69,14 +69,14 @@
       </iSearch>
       <div v-loading="tableLoading">
         <iButton class="add" @click="addList">{{ $t('LK_TIANJIA') }}</iButton>
-        <tablelist
-            :height="tableHeight"
+        <iTableList
+            :height="tableHeight - 420"
             :tableData="tableListData"
             :tableTitle="tableTitle"
             :activeItems="'partNum'"
             @handleSelectionChange="handleSelectionChange"
         >
-        </tablelist>
+        </iTableList>
         <iPagination
             v-update
             @size-change="handleSizeChange($event, findAddColumnInvestmentBuild)"
@@ -102,10 +102,12 @@ import {
   iInput,
   iSelect
 } from 'rise'
-import tablelist from "../components/tablelist";
-
+import {
+  iTableList
+} from "@/components"
 import {addListInvestment, form} from "../components/data";
 import {pageMixins} from "@/utils/pageMixins";
+import {tableHeight} from "@/utils/tableHeight";
 import {
   findAddColumnInvestmentBuild,
   saveList
@@ -117,12 +119,12 @@ import {
 } from "@/api/priceorder/stocksheet/investmentList";
 
 export default {
-  mixins: [pageMixins],
+  mixins: [pageMixins, tableHeight],
   components: {
     iButton,
     iDialog,
     iSearch,
-    tablelist,
+    iTableList,
     iPagination,
     iInput,
     iSelect,
@@ -147,7 +149,6 @@ export default {
       multipleSelection: [],
       modelProtitesList: [],
       DeptPullDown: [],
-      tableHeight: '',
       zhEnNo: '',
       materialName: '',
       mouldAttr: '',
@@ -157,7 +158,6 @@ export default {
   mounted() {
     this.getSelected()
     this.findAddColumnInvestmentBuild()
-    this.tableHeight = (document.documentElement.clientHeight || document.body.clientHeight) - 420
   },
   methods: {
     getSelected() {

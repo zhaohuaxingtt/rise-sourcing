@@ -115,7 +115,8 @@
 <!--            <iButton @click="investmentList" :disabled="(form['search.carTypeProject'] == '')">下一步</iButton>-->
           </div>
         </div>
-        <tablelist
+        <iTableList
+            :height="tableHeight - 440"
             :tableData="tableListData"
             :tableTitle="tableTitle"
             :tableLoading="tableLoading"
@@ -132,7 +133,7 @@
             </Popover>
             <div v-else>{{ scope.row.linie }}</div>
           </template>
-        </tablelist>
+        </iTableList>
         <!------------------------------------------------------------------------>
         <!--                  表格分页                                          --->
         <!------------------------------------------------------------------------>
@@ -176,12 +177,12 @@ import {
   iInput,
   iSelect,
 } from "rise";
-// import {
-//   iButton
-// } from "rise"
+import {
+  iTableList
+} from "@/components"
 import {pageMixins} from "@/utils/pageMixins";
+import {tableHeight} from "@/utils/tableHeight";
 import {budgetManagementData, form} from "./components/data";
-import tablelist from "./components/tablelist";
 import addRow from "./components/addRow";
 import referenceModel from "./components/referenceModel";
 import {
@@ -199,17 +200,17 @@ import filters from "@/utils/filters";
 import {Popover} from "element-ui"
 
 export default {
+  mixins: [pageMixins, filters, tableHeight],
   props: {
     params: {
       type: Object, default: () => {
       }
     }
   },
-  mixins: [pageMixins, filters],
   components: {
     iButton,
     iCard,
-    tablelist,
+    iTableList,
     iSearch,
     iInput,
     iSelect,

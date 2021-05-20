@@ -133,7 +133,8 @@
           </div>
         </div>
         <div>
-          <tablelist
+          <iTableList
+              :height="tableHeight - 630"
               :tableData="tableListData"
               :tableTitle="tableTitle"
               @handleSelectionChange="handleSelectionChange"
@@ -225,7 +226,7 @@
               <iInput v-model="scope.row.remarks" v-if="pageEdit"></iInput>
               <div v-if="!pageEdit">{{ scope.row.remarks }}</div>
             </template>
-          </tablelist>
+          </iTableList>
           <div class="buttomInput">
             <div>
               <h4>SUB-TOTAL:</h4>
@@ -323,10 +324,13 @@ import {
   iInput,
   iSelect,
 } from "rise";
+import {
+  iTableList
+} from "@/components"
 import {Popover} from "element-ui"
 import {pageMixins} from "@/utils/pageMixins";
+import {tableHeight} from "@/utils/tableHeight";
 import {investmentListEntities, form} from "./components/data";
-import tablelist from "./components/tablelist";
 import addRow from "./components/addRow";
 import referenceModel from "./components/referenceModel";
 import conversionRatio from "./components/conversionRatio";
@@ -352,17 +356,17 @@ import echarts from "@/utils/echarts";
 import {cloneDeep} from 'lodash'
 
 export default {
+  mixins: [pageMixins, filters, tableHeight],
   props: {
     params: {
       type: Object, default: () => {
       }
     }
   },
-  mixins: [pageMixins, filters],
   components: {
     iButton,
     iCard,
-    tablelist,
+    iTableList,
     iInput,
     iSelect,
     icon,

@@ -36,11 +36,11 @@
             <i slot="suffix" class="el-input__icon el-icon-search" @click="getTableListFn"></i>
           </iInput>
         </el-form-item>
-        <el-form-item :label="$t('LK_LINGJIANMINGCHENG')">
-          <iInput v-model="form['search.partNameZh']" :placeholder="$t('LK_RFQPLEASEENTERQUERY')" maxlength="6">
-            <i slot="suffix" class="el-input__icon el-icon-search" @click="getTableListFn"></i>
-          </iInput>
-        </el-form-item>
+<!--        <el-form-item :label="$t('LK_LINGJIANMINGCHENG')">-->
+<!--          <iInput v-model="form['search.partNameZh']" :placeholder="$t('LK_RFQPLEASEENTERQUERY')" maxlength="6">-->
+<!--            <i slot="suffix" class="el-input__icon el-icon-search" @click="getTableListFn"></i>-->
+<!--          </iInput>-->
+<!--        </el-form-item>-->
       </el-form>
 
 
@@ -50,13 +50,14 @@
         <div></div>
         <iButton @click="exportFile">{{ $t('LK_DAOCHU') }}</iButton>
       </div>
-      <tablelist
+      <iTableList
+          :height="tableHeight - 550"
           :tableData="tableListData"
           :tableTitle="tableTitle"
           :tableLoading="tableLoading"
           @handleSelectionChange="handleSelectionChange"
       >
-      </tablelist>
+      </iTableList>
       <iPagination
           v-update
           @size-change="handleSizeChange($event, getTableListFn)"
@@ -76,29 +77,26 @@
 import {iCard, iSearch, iSelect, iPagination, iButton, iInput, iMessage} from 'rise';
 import { excelExport } from '@/utils/filedowLoad'
 import {
-  getInvestmentHistoryParts,
   getInvestmentHistoryMaterial
 } from "@/api/priceorder/dataBase";
-import tablelist from "../../stocksheet/components/tablelist";
-import {form, dataBaseData} from "../components/data";
+import {
+  iTableList
+} from "@/components"
+import {form, summaryData} from "../components/data";
 import {pageMixins} from "@/utils/pageMixins";
+import {tableHeight} from "@/utils/tableHeight";
 import {
   getCartypePulldown,
 } from "@/api/priceorder/stocksheet/edit";
-import {
-  getModelProtitesPullDown,
-  liniePullDownByDept,
-  proDeptPullDown,
-  getDepartmentsList
-} from "@/api/priceorder/stocksheet/investmentList";
+
 
 export default {
-  mixins: [pageMixins],
+  mixins: [pageMixins, tableHeight],
   components: {
     iCard,
     iSearch,
     iSelect,
-    tablelist,
+    iTableList,
     iPagination,
     iButton,
     iInput,
@@ -113,7 +111,7 @@ export default {
       carTypeList: [],
       tableListData: [],
       multipleSelection: [],
-      tableTitle: dataBaseData,
+      tableTitle: summaryData,
 
     }
   },
@@ -149,7 +147,7 @@ export default {
         tmCartypeProId: form['search.tmCartypeProId'],
         categoryName: form['search.categoryName'],
         partNum: form['search.partNum'],
-        partNameZh: form['search.partNameZh'],
+        // partNameZh: form['search.partNameZh'],
       }
       getInvestmentHistoryMaterial(params)
           .then((res) => {
