@@ -8,6 +8,11 @@
  *
  */
 /* eslint-disable no-undef */
+
+// 引入modules
+// 定点管理
+import designateRoutes from './modules/designate'
+
 Vue.use(VueRouter);
 export const staticRouter = [{
         path: "/",
@@ -195,28 +200,7 @@ export const staticRouter = [{
                 name: "/ws3Register",
                 component: () =>
                     import ("@/views/ws3/register"),
-            },
-            /* ----定点申请相关路由 start----  */ 
-            {
-                path: "/designate",
-                name: "designate",
-                meta: {
-                    title: "定点申请综合管理",
-                },
-                component: () =>
-                    import ("@/views/designate/home"),
-            },
-            {
-                path: "/designate/rfqdetail",
-                name: "designate/rfqdetail",
-                meta: {
-                    title: "定点管理-RFQ零件清单",
-                },
-                component: () =>
-                    import ("@/views/designate/designatedetail/rfqdetail"),
-            },
-
-            /* ----定点申请相关路由 end----  */  
+            }  
         ],
     },
     {
@@ -250,5 +234,8 @@ export const staticRouter = [{
 
 // eslint-disable-next-line no-undef
 export default new VueRouter({
-    routes: staticRouter
+    routes: [
+        ...staticRouter,
+        ...designateRoutes
+    ]
 });
