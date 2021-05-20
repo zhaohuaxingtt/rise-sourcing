@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-03-27 16:49:15
+ * @LastEditTime: 2021-05-20 14:24:02
  * @LastEditors: Please set LastEditors
  * @Description: 系统静态路由.
  * @FilePath: \rise\src\router\index.js
@@ -195,7 +195,28 @@ export const staticRouter = [{
                 name: "/ws3Register",
                 component: () =>
                     import ("@/views/ws3/register"),
-            }
+            },
+            /* ----定点申请相关路由 start----  */ 
+            {
+                path: "/designate",
+                name: "designate",
+                meta: {
+                    title: "定点申请综合管理",
+                },
+                component: () =>
+                    import ("@/views/designate/home"),
+            },
+            {
+                path: "/designate/rfqdetail",
+                name: "designate/rfqdetail",
+                meta: {
+                    title: "定点管理-RFQ零件清单",
+                },
+                component: () =>
+                    import ("@/views/designate/designatedetail/rfqdetail"),
+            },
+
+            /* ----定点申请相关路由 end----  */  
         ],
     },
     {
