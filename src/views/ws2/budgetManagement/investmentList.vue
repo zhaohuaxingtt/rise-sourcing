@@ -339,7 +339,7 @@ import saveAs from "./components/saveAs";
 import {
   getCartypePulldown,
   saveCustomCart,
-} from "@/api/priceorder/stocksheet/edit";
+} from "@/api/ws2/budgetManagement/edit";
 import {
   getInvestmentVerisionList,
   getInvestmentData,
@@ -349,7 +349,7 @@ import {
   investmentDelete,
   relationMainCarType,
   investmentUpdate, proDeptPullDown, liniePullDownByDept
-} from "@/api/priceorder/stocksheet/investmentList";
+} from "@/api/ws2/budgetManagement/investmentList";
 import {insertRfq} from "@/api/partsrfq/home";
 import filters from "@/utils/filters";
 import echarts from "@/utils/echarts";

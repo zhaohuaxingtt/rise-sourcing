@@ -30,7 +30,7 @@ import {iDialog, iSearch, iInput, iButton, iMessage} from 'rise'
 import {pageMixins} from "@/utils/pageMixins";
 import {
   saveNewVersion
-} from "@/api/priceorder/stocksheet/investmentList";
+} from "@/api/ws2/budgetManagement/investmentList";
 
 export default {
   mixins: [pageMixins],

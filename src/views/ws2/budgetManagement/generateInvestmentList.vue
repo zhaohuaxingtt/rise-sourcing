@@ -195,7 +195,7 @@ import {
   updateBuildInvestment,
   ConfirmCustomerCarTypeSelect,
   saveInvestBuildBottom,
-} from "@/api/priceorder/stocksheet/edit";
+} from "@/api/ws2/budgetManagement/edit";
 import filters from "@/utils/filters";
 import {Popover} from "element-ui"
 

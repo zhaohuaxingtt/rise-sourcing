@@ -19,7 +19,7 @@
 import {iDialog, iSearch, iInput, iButton, icon, iMessage} from 'rise'
 import {Popover} from "element-ui"
 import {pageMixins} from "@/utils/pageMixins";
-import {relationMainCarType} from "@/api/priceorder/stocksheet/investmentList";
+import {relationMainCarType} from "@/api/ws2/budgetManagement/investmentList";
 
 export default {
   mixins: [pageMixins],

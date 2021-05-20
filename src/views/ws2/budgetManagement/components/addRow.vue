@@ -111,12 +111,12 @@ import {tableHeight} from "@/utils/tableHeight";
 import {
   findAddColumnInvestmentBuild,
   saveList
-} from "@/api/priceorder/stocksheet/edit";
+} from "@/api/ws2/budgetManagement/edit";
 import {
   getModelProtitesPullDown,
   investmentSave,
   proDeptPullDown
-} from "@/api/priceorder/stocksheet/investmentList";
+} from "@/api/ws2/budgetManagement/investmentList";
 
 export default {
   mixins: [pageMixins, tableHeight],

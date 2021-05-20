@@ -24,10 +24,10 @@
 import {iMessage} from 'rise';
 import {
   getInvestmentHistoryMaterial
-} from "@/api/priceorder/dataBase";
+} from "@/api/ws2/dataBase";
 import summaryPart from "./mouldInvestment/summary";
 import partNoPart from "./mouldInvestment/partNo";
-import {form, dataBaseData} from "../stocksheet/components/data";
+import {form, dataBaseData} from "../budgetManagement/components/data";
 import {pageMixins} from "@/utils/pageMixins";
 
 export default {

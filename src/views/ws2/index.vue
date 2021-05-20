@@ -49,15 +49,15 @@
 <script>
 import {iPage, iMessage, iDialog, iButton} from "rise";
 import {iNavWS2} from "@/components";
-import {tabtitle} from "./stocksheet/components/data";
-import carTypeOverview from "./stocksheet/carTypeOverview";
-import generateInvestmentList from "./stocksheet/generateInvestmentList";
-import investmentList from "./stocksheet/investmentList";
+import {tabtitle} from "./budgetManagement/components/data";
+import carTypeOverview from "./budgetManagement/carTypeOverview";
+import generateInvestmentList from "./budgetManagement/generateInvestmentList";
+import investmentList from "./budgetManagement/investmentList";
 import dataBase from "./dataBase";
 import {
   getRelationCarTypeById,
   saveInvestBuildBottom,
-} from "@/api/priceorder/stocksheet/edit";
+} from "@/api/ws2/budgetManagement/edit";
 
 export default {
   components: {

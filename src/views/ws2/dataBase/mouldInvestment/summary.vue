@@ -78,7 +78,7 @@ import {iCard, iSearch, iSelect, iPagination, iButton, iInput, iMessage} from 'r
 import { excelExport } from '@/utils/filedowLoad'
 import {
   getInvestmentHistoryMaterial
-} from "@/api/priceorder/dataBase";
+} from "@/api/ws2/dataBase";
 import {
   iTableList
 } from "@/components"
@@ -87,7 +87,7 @@ import {pageMixins} from "@/utils/pageMixins";
 import {tableHeight} from "@/utils/tableHeight";
 import {
   getCartypePulldown,
-} from "@/api/priceorder/stocksheet/edit";
+} from "@/api/ws2/budgetManagement/edit";
 
 
 export default {

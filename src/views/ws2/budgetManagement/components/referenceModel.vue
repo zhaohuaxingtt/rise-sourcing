@@ -145,8 +145,8 @@ import {pageMixins} from "@/utils/pageMixins";
 import {
   GetOtherCarTypeAlternative,
   saveList, saveRefcartypepro, getRelationCarTypeById,
-} from "@/api/priceorder/stocksheet/edit";
-import {saveNewVersion} from "@/api/priceorder/stocksheet/investmentList";
+} from "@/api/ws2/budgetManagement/edit";
+import {saveNewVersion} from "@/api/ws2/budgetManagement/investmentList";
 
 export default {
   mixins: [pageMixins],

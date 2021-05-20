@@ -146,22 +146,13 @@ export const staticRouter = [{
             },
             /** work stream 2 组织/用户权限 */
             {
-                path: '/priceorder/check',
-                name: 'organizationcheck',
-                meta: {
-                    title: '组织管理-组织查看'
-                },
-                component: () =>
-                    import (`@/views/priceorder/home`)
-            },
-            {
                 path: '/tooling',
-                name: 'stocksheet',
+                name: 'budgetManagement',
                 meta: {
                     title: '价格与订单-备货表'
                 },
                 component: () =>
-                    import (`@/views/priceorder`)
+                    import (`@/views/ws2`)
             },
             {
                 path: '/tooling/dataBase',
@@ -170,34 +161,25 @@ export const staticRouter = [{
                     title: '价格与订单-备货表'
                 },
                 component: () =>
-                    import (`@/views/priceorder/dataBase`)
+                    import (`@/views/ws2/dataBase`)
             },
             {
-                path: '/priceorder/stocksheet/generateInvestmentList',
+                path: '/ws2/budgetManagement/generateInvestmentList',
                 name: 'stocksheetGenerateInvestmentList',
                 meta: {
                     title: '模具-材料组清单'
                 },
                 component: () =>
-                    import (`@/views/priceorder/stocksheet/generateInvestmentList`)
+                    import (`@/views/ws2/budgetManagement/generateInvestmentList`)
             },
             {
-                path: '/priceorder/stocksheet/investmentList',
+                path: '/ws2/budgetManagement/investmentList',
                 name: 'investmentList',
                 meta: {
                     title: '模具-投资清单'
                 },
                 component: () =>
-                    import (`@/views/priceorder/stocksheet/investmentList`)
-            },
-            {
-                path: '/priceorder/postmanagement',
-                name: '/postmanagement',
-                meta: {
-                    title: '岗位管理-岗位管理'
-                },
-                component: () =>
-                    import (`@/views/priceorder/jobmanagement`)
+                    import (`@/views/ws2/budgetManagement/investmentList`)
             },
             {
                 path: "/ws3-register",

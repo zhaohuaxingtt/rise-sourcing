@@ -124,7 +124,7 @@ import {
   getInvestmentHistoryParts,
   getInvestmentHistoryMaterial,
   getCardDetailPulldown
-} from "@/api/priceorder/dataBase";
+} from "@/api/ws2/dataBase";
 import {
   iTableList
 } from "@/components"
@@ -133,13 +133,13 @@ import {pageMixins} from "@/utils/pageMixins";
 import {tableHeight} from "@/utils/tableHeight";
 import {
   getCartypePulldown,
-} from "@/api/priceorder/stocksheet/edit";
+} from "@/api/ws2/budgetManagement/edit";
 import {
   getModelProtitesPullDown,
   liniePullDownByDept,
   proDeptPullDown,
   getDepartmentsList
-} from "@/api/priceorder/stocksheet/investmentList";
+} from "@/api/ws2/budgetManagement/investmentList";
 
 export default {
   mixins: [pageMixins, tableHeight],

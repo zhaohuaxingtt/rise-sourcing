@@ -36,7 +36,7 @@ import {tabtitle} from "./components/data";
 import echarts from "@/utils/echarts";
 import {
   findCartypePro
-} from "@/api/priceorder/stocksheet";
+} from "@/api/ws2/budgetManagement";
 
 export default {
   components: {},
@@ -62,7 +62,7 @@ export default {
           }
       )
       // this.$router.push({
-      //   path: '/priceorder/stocksheet/generateInvestmentList',
+      //   path: '/priceorder/budgetManagement/generateInvestmentList',
       //   query: {
       //     id: id,
       //     sourceStatus: sourceStatus

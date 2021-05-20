@@ -43,7 +43,7 @@ import {
   icon,
   iButton, iMessage
 } from "@/components";
-import logButton from "pages/priceorder/stocksheet/components/logButton";
+import logButton from "pages/ws2/budgetManagement/components/logButton";
 
 export default {
   props: {
