@@ -138,8 +138,6 @@
               :tableData="tableListData"
               :tableTitle="tableTitle"
               @handleSelectionChange="handleSelectionChange"
-              @openPage="openPage"
-              :activeItems="'partNum'"
           >
             <template #refCartypeName="scope">
               <a :href="scope.row.refCartypeName">{{ scope.row.refCartypeName }}</a>
@@ -351,12 +349,11 @@ import {
   investmentUpdate, proDeptPullDown, liniePullDownByDept
 } from "@/api/ws2/budgetManagement/investmentList";
 import {insertRfq} from "@/api/partsrfq/home";
-import filters from "@/utils/filters";
 import echarts from "@/utils/echarts";
 import {cloneDeep} from 'lodash'
 
 export default {
-  mixins: [pageMixins, filters, tableHeight],
+  mixins: [pageMixins, tableHeight],
   props: {
   },
   components: {
@@ -870,14 +867,14 @@ export default {
       this.saveAsShow = true
     },
     // 跳转详情
-    openPage(item) {
-      this.$router.push({
-        path: "/partsprocure/editordetail",
-        query: {
-          item: JSON.stringify(item),
-        },
-      });
-    },
+    // openPage(item) {
+    //   this.$router.push({
+    //     path: "/partsprocure/editordetail",
+    //     query: {
+    //       item: JSON.stringify(item),
+    //     },
+    //   });
+    // },
 
 
     //表格选中值集
