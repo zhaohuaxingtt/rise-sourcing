@@ -151,6 +151,14 @@ export const staticRouter = [{
             },
             /** work stream 2 组织/用户权限 */
             {
+                path: '/tooling/modelDetails',
+                name: 'toolingModelDetails',
+                meta: {
+                    title: '车型项目详情'
+                },
+                component: () => import (`@/views/ws2/baApply/details`),
+            },
+            {
                 path: '/tooling',
                 name: 'tooling',
                 meta: {
@@ -170,6 +178,14 @@ export const staticRouter = [{
                             title: '车型概览'
                         },
                         component: () => import (`@/views/ws2/budgetManagement/carTypeOverview`),
+                    },
+                    {
+                        path: '/tooling/budgetManagement/baApplyIndex',
+                        name: 'baApplyIndex',
+                        meta: {
+                            title: '车型概览'
+                        },
+                        component: () => import (`@/views/ws2/baApply`),
                     },
                     {
                         path: '/tooling/budgetManagement/generateInvestmentList',

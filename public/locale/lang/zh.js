@@ -706,6 +706,11 @@
         'LK_ANBILIZHESUAN': '按⽐例折算',//按⽐例折算
         'LK_ZHESUANBILI': '折算⽐例',//折算⽐例
         'LK_CHEXINGXIANGMULEIXING': '车型项目类型',//车型项目类型
+        'LK_BUDGETAMOUNTTOTAL': '总预算金额',   //  总预算金额
+        'LK_APPLYINVESTAMOUNTTOTAL': '总申请投资金额',  //  总申请投资金额
+        'LK_FIXEDINVESTAMOUNTTOTAL': '总定点投资金额',  //  总定点投资金额
+        'LK_MOULDBUDGETSTATUS': '模具预算状态', //  模具预算状态
+        'LK_APPLYDATESTARTANDEND': '申请⽇期起⽌',  //  申请⽇期起⽌
         'LK_RFQHAO': 'RFQ号',//RFQ号
         'LK_YUSUANZHUANGTAI': '预算状态',//预算状态
         'LK_SHENQINGREN': '申请人',//申请人
