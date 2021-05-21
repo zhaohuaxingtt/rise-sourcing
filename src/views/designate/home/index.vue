@@ -4,14 +4,135 @@
  * @Description: 
 -->
 <template>
-  <h1>定点申请综合管理</h1>
+  <iPage class="designateHome">
+    <!-- 头部 -->
+    <headerNav />
+    <!-- 筛选框 -->
+    <div style="clear: both"></div>
+    <!-- 搜索区 -->
+    <search />
+    <!-- 表格 -->
+
+    <div class="designateTable">
+      <iCard>
+        <div class="margin-bottom20 clearFloat">
+          <span class="font18 font-weight">
+            {{ $t("nominationLanguage.DingDianShenQingZongHeGuanLi") }}</span
+          >
+          <div class="floatright">
+            <iButton
+              @click="openPage"
+              v-permission="PARTSPROCURE_TRANSFER"
+            >
+              {{ $t("nominationLanguage.XinJianLingJIanDingDianShengQIng") }}
+            </iButton>
+            <!--  <iButton @click="creatFs" v-permission="PARTSPROCURE_GENERATEFSBUTTON">
+              {{ $t('partsprocure.PARTSPROCUREGENERATEFSGSNR') }}
+            </iButton> -->
+            <iButton
+              @click="openPage"
+              v-permission="PARTSPROCURE_CANCELPROCUREMENTITEMS"
+            >
+              {{ $t("nominationLanguage.CheHui") }}
+            </iButton>
+            <iButton
+              @click="openPage"
+              v-permission="PARTSPROCURE_BATCHMAINTENANCE"
+            >
+              {{ $t("nominationLanguage.ShanChu") }}
+            </iButton>
+            <iButton
+              @click="openPage"
+              :loading="startLoding"
+              v-permission="PARTSPROCURE_STARTINQUIRY"
+            >
+              {{ $t("nominationLanguage.TiJiaoYiZhiXingJiaoYan") }}
+            </iButton>
+          </div>
+        </div>
+        <tablelist
+          :tableData="tableListData"
+          :tableTitle="tableTitle"
+          :tableLoading="tableLoading"
+          @handleSelectionChange="handleSelectionChange"
+          @openPage="openPage"
+          :activeItems="'partNum'"
+        >
+        </tablelist>
+        <iPagination
+          v-update
+          @size-change="handleSizeChange($event, getTableListFn)"
+          @current-change="handleCurrentChange($event, getTableListFn)"
+          background
+          :current-page="page.currPage"
+          :page-sizes="page.pageSizes"
+          :page-size="page.pageSize"
+          :layout="page.layout"
+          :total="page.totalCount"
+        />
+      </iCard>
+    </div>
+    
+  </iPage>
 </template>
 
 <script>
+import { TAB, tableTitle } from './components/data'
+import headerNav from './components/headerNav'
+import search from './components/search'
+import tablelist from "../../partsign/home/components/tableList";
+
+import {
+  iPage,
+  iButton,
+  iPagination
+} from "rise";
+
 export default {
+  data() {
+    return {
+      tab: TAB,
+      tableListData: [],
+      tableLoading: false,
+      tableTitle: tableTitle,
+      selectTableData: [],
+      startLoding: false,
+      page: {}
+    }
+  },
+  components: {
+    iPage,
+    iButton,
+    iPagination,
+    headerNav,
+    search,
+    tablelist
+  },
+  methods: {
+    handleSelectionChange() {
+
+    },
+    openPage() {
+
+    },
+    handleSizeChange() {
+
+    },
+    handleCurrentChange() {
+
+    }
+  }
 }
 </script>
 
-<style>
-
+<style lang="scss" scoped>
+.designateSearch {
+  margin-top: 20px;
+}
+.designateTable {
+  box-shadow: 0 0 1.25rem rgb(27 29 33 / 8%);
+  border-radius: 0.375rem;
+  background: #fff;
+  padding: 20px;
+}
 </style>

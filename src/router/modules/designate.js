@@ -9,15 +9,15 @@
 
 export default [
   {
-    path: "/designate",
+    path: "/nomination",
     name: "index",
     component: () =>
         import ("@/layout/default"),
-    redirect: "/designate/home",
+    redirect: "/nomination/home",
     children: [
       /* ----定点申请相关路由 start----  */ 
       {
-        path: "/designate/home",
+        path: "/nomination/home",
         name: "designateHome",
         meta: {
           title: "定点申请综合管理",
