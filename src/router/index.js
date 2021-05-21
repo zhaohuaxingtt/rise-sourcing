@@ -162,6 +162,7 @@ export const staticRouter = [{
                         path: '/',
                         redirect: 'budgetManagement/carTypeOverview',
                     },
+                    // 预算管理
                     {
                         path: '/tooling/budgetManagement/carTypeOverview',
                         name: 'carTypeOverview',
@@ -186,6 +187,7 @@ export const staticRouter = [{
                         },
                         component: () => import (`@/views/ws2/budgetManagement/investmentList`),
                     },
+                    //历史数据库
                     {
                         path: '/tooling/dataBase',
                         name: 'dataBase',
@@ -193,6 +195,15 @@ export const staticRouter = [{
                             title: '历史数据库'
                         },
                         component: () => import (`@/views/ws2/dataBase`),
+                    },
+                    //预算审批
+                    {
+                        path: '/tooling/budgetApproval',
+                        name: 'budgetApproval',
+                        meta: {
+                            title: '预算审批'
+                        },
+                        component: () => import (`@/views/ws2/budgetApproval`),
                     },
                 ]
             },

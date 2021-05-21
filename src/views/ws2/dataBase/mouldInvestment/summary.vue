@@ -27,17 +27,17 @@
           </iSelect>
         </el-form-item>
         <el-form-item :label="$t('LK_CAILIAOZU')">
-          <iInput v-model="form['search.categoryName']" :placeholder="$t('LK_RFQPLEASEENTERQUERY')" maxlength="6">
+          <iInput v-model="form['search.categoryName']" :placeholder="$t('LK_RFQPLEASEENTERQUERY')">
             <i slot="suffix" class="el-input__icon el-icon-search" @click="getTableListFn"></i>
           </iInput>
         </el-form-item>
         <el-form-item :label="$t('LK_LINGJIANHAO')">
-          <iInput v-model="form['search.partNum']" :placeholder="$t('LK_RFQPLEASEENTERQUERY')" maxlength="6">
+          <iInput v-model="form['search.partNum']" :placeholder="$t('LK_RFQPLEASEENTERQUERY')">
             <i slot="suffix" class="el-input__icon el-icon-search" @click="getTableListFn"></i>
           </iInput>
         </el-form-item>
 <!--        <el-form-item :label="$t('LK_LINGJIANMINGCHENG')">-->
-<!--          <iInput v-model="form['search.partNameZh']" :placeholder="$t('LK_RFQPLEASEENTERQUERY')" maxlength="6">-->
+<!--          <iInput v-model="form['search.partNameZh']" :placeholder="$t('LK_RFQPLEASEENTERQUERY')">-->
 <!--            <i slot="suffix" class="el-input__icon el-icon-search" @click="getTableListFn"></i>-->
 <!--          </iInput>-->
 <!--        </el-form-item>-->
@@ -130,7 +130,6 @@ export default {
           this.carTypeList = res[0].data;
         } else {
           iMessage.error(result0);
-          return
         }
         this.getTableListFn()
         this.loadingiSearch = false

@@ -9,7 +9,7 @@
       <ul>
         <li v-for="(items, index) in tabtitle" :key="index" :class="index == activeIndex && 'active'"
             @click="changeNav(items)">
-          {{ items.name }}
+          {{ $t(items.key) }}
         </li>
       </ul>
       <span class="bottom-line"></span>

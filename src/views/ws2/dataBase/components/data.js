@@ -1,10 +1,6 @@
 /*
- * @Author: yuszhou
- * @Date: 2021-02-25 10:14:46
- * @LastEditTime: 2021-04-03 14:22:10
- * @LastEditors: Please set LastEditors
- * @Description: In User Settings Edit
- * @FilePath: \rise\src\views\partsprocure\home\component\data.js
+ * @Author: yz
+ * @Date: 2021-05-21 10:14:46
  */
 import { permissionTitle } from '@/utils'
 //零件采购列表入参

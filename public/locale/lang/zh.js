@@ -706,5 +706,17 @@
         'LK_ANBILIZHESUAN': '按⽐例折算',//按⽐例折算
         'LK_ZHESUANBILI': '折算⽐例',//折算⽐例
         'LK_CHEXINGXIANGMULEIXING': '车型项目类型',//车型项目类型
+        'LK_RFQHAO': 'RFQ号',//RFQ号
+        'LK_YUSUANZHUANGTAI': '预算状态',//预算状态
+        'LK_SHENQINGREN': '申请人',//申请人
+        'LK_SHENQINGSHIJIANQIZHI': '申请时间起止',//申请时间起止
+        'LK_PIZHUAN': '批准',//批准
+
+        'LK_CHEXINGXIANGMUGAILAN': '车型项目概览',//车型项目概览
+        'LK_YUSUANGUANLI': '预算管理',//预算管理
+        'LK_YUSUANSHENPI': '预算审批',//预算审批
+        'LK_BASHENQING': 'BA申请',//BA申请
+        'LK_BMSHENQING': 'BM申请',//BM申请
+        'LK_TOUZIBAOGAO': '投资报告',//投资报告
     })
 }))
