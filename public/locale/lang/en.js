@@ -693,5 +693,10 @@
         'LK_ANBILIZHESUAN': 'Convert By Proportion',//按⽐例折算
         'LK_ZHESUANBILI': 'Proportion',//折算⽐例
         'LK_CHEXINGXIANGMULEIXING': '车型项目类型',//车型项目类型
+        'LK_BUDGETAMOUNTTOTAL': '总预算金额',   //  总预算金额
+        'LK_APPLYINVESTAMOUNTTOTAL': '总申请投资金额',  //  总申请投资金额
+        'LK_FIXEDINVESTAMOUNTTOTAL': '总定点投资金额',  //  总定点投资金额
+        'LK_MOULDBUDGETSTATUS': '模具预算状态', //  模具预算状态
+        'LK_APPLYDATESTARTANDEND': '申请⽇期起⽌',  //  申请⽇期起⽌
     })
 }))
