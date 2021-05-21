@@ -14,11 +14,12 @@
 <script>
 import {
   iPage
-} from "@/components";
+} from "rise";
 import designateStep from '../components/designateStep'
 export default {
     components:{
         designateStep,
+        iPage,
     }
 }
 </script>
