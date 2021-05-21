@@ -4,11 +4,18 @@
  * @Description: 决策资料-title
 -->
 <template>
- <iPage>
-    <designateStep/>
-    <decisionDataHeader/>
+ <iPage class="decision-data-title">
+    <designateStep v-show="!isPreview" @preview="preview"/>
+    <decisionDataHeader v-show="!isPreview" :isPreview="isPreview"/>
     <iCard>
-       <div class="decision-data-title">
+       <div>
+         <h2 v-show="isPreview" class="flex-between-center margin-bottm20">
+            CSC Nomination Recommendation
+            <icon symbol name="guanbixiaoxiliebiaokapiannei" class="closeIcon" @click="preview"></icon>
+         </h2>
+         <decisionDataHeader v-show="isPreview" :isPreview="isPreview"/>
+       </div>
+       <div class="decision-data-title-content">
           <h1 class="margin-bottom20 font18">Title</h1>
          <iFormGroup row="1">
             <div class="col">
@@ -54,7 +61,15 @@ export default {
              {label:'Buyer',value:'FS Name/ Linie Name'},
              {label:'Single Sourcing',value:'Y'},
              {label:'PUC/TIA',value:'Not Relevant/Finished'},
-          ]
+          ],
+          isPreview:false,
+       }
+    },
+    methods:{
+       // 预览
+       preview(){
+          const {isPreview} = this;
+          this.isPreview = !isPreview;
        }
     }
 }
@@ -62,6 +77,12 @@ export default {
 
 <style lang="scss" scoped>
    .decision-data-title{
-      width: 50%;
+      .decision-data-title-content{
+         width: 50%;
+      }
+      .closeIcon{
+         width: 24px;
+         height: 24px;
+      }
    }
 </style>
