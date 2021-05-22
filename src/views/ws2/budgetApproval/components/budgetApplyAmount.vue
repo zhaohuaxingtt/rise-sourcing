@@ -10,7 +10,7 @@
     <div class="changeContent">
       <div v-loading="tableLoading">
         <iTableList
-            :height="tableHeight - 420"
+             :height="tableHeight - 240"
             :tableData="tableListData"
             :tableTitle="tableTitle"
             :activeItems="'partNum'"
@@ -57,6 +57,7 @@ export default {
   props: {
     title: {type: String, default: '申请金额'},
     RFQName: {type: String, default: ''},
+    value: {type: Boolean},
   },
   data() {
     return {
