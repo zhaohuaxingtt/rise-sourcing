@@ -140,10 +140,10 @@
         v-model="RFQShow"
         :RFQName="RFQName"
     ></RFQ>
-    <RFQ
+    <budgetApplyAmount
         v-model="budgetApplyAmountShow"
         :RFQName="RFQName"
-    ></RFQ>
+    ></budgetApplyAmount>
   </div>
 </template>
 
@@ -162,7 +162,7 @@ import {
 } from "@/components"
 import {form, budgetApprovalData} from "./components/data";
 import RFQ from './components/RFQ'
-import budgetApplyAmount from './components/RFQ'
+import budgetApplyAmount from './components/budgetApplyAmount'
 import {pageMixins} from "@/utils/pageMixins";
 import {tableHeight} from "@/utils/tableHeight";
 import {
@@ -180,7 +180,8 @@ export default {
     iPagination,
     iButton,
     iInput,
-    RFQ
+    RFQ,
+    budgetApplyAmount,
   },
   data() {
     return {
@@ -197,7 +198,6 @@ export default {
       tableListData: [],
       multipleSelection: [],
       tableTitle: budgetApprovalData,
-
     }
   },
   created() {
