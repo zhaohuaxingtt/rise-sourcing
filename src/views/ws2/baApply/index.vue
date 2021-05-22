@@ -47,9 +47,9 @@
           @handleSelectionChange="handleSelectionChange"
           :activeItems="'partNum'"
       >
-      <template #data1="scope">
-        <a class="table-a" href="javascript: ;" @click="jumpDetails">{{scope.row.data1}}</a>
-      </template>
+        <template #data1="scope">
+          <a class="table-a" href="javascript: ;" @click="jumpDetails">{{scope.row.data1}}</a>
+        </template>
       </iTableList>
     </iCard>
   </div>

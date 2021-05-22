@@ -723,5 +723,12 @@
         'LK_BASHENQING': 'BA申请',//BA申请
         'LK_BMSHENQING': 'BM申请',//BM申请
         'LK_TOUZIBAOGAO': '投资报告',//投资报告
+
+        'LK_BANMUBER': 'BA号',  //  BA号
+        'LK_FIXEDPOINTSUPPLIER': '定点供应商', // 定点供应商
+        'LK_MODULFIXEDPOINTMONEY': '模具定点金额',  //  模具定点金额
+        'LK_REGINOCONTROLLER': '区域控制员',    //  区域控制员
+        'LK_RSODDNUMBERS': 'RS单号',    //  RS单号
+        'LK_SPAREPARTSNUMBER': '零件号',    //  零件号
     })
 }))

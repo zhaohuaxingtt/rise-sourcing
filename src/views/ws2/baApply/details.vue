@@ -3,14 +3,15 @@
     <DetailsSearch @reset="handleReset" @sure="handleSure" :isModelItem="true" />
 
     <iCard>
-      
+      <DetailsTable />
     </iCard>
   </iPage>
 </template>
 
 <script>
-import {iPage, iMessage, iDialog, iButton} from "rise";
+import {iPage, iMessage, iDialog, iButton, iCard} from "rise";
 import DetailsSearch from "./components/detailsSearch";
+import DetailsTable from "./components/detailsTable";
 
 export default {
   components: {
@@ -18,7 +19,9 @@ export default {
     iMessage,
     iDialog,
     iButton,
-    DetailsSearch
+    DetailsSearch,
+    DetailsTable,
+    iCard
   },
 
   methods: {
