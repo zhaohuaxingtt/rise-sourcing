@@ -730,5 +730,10 @@
         'LK_REGINOCONTROLLER': '区域控制员',    //  区域控制员
         'LK_RSODDNUMBERS': 'RS单号',    //  RS单号
         'LK_SPAREPARTSNUMBER': '零件号',    //  零件号
+        'LK_BADETAILSPOPUPTXT1': '您将要申请',  //  您将要申请
+        'LK_BADETAILSPOPUPTXT2': '的BA账户，请确认金额：',   //  的BAzzh账户，请确认金额：
+        'LK_BANUMBERDISTRIBUTION': 'BA号分配',  //  BA号分配
+        'LK_AMOUNTMONEYRMB': '金额（RMB）', //  金额（RMB）
+        'LK_FIXEDINVESTTOTAL': '总定点投资金额',    //  总定点投资金额
     })
 }))

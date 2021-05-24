@@ -1,5 +1,11 @@
 <template>
   <iPage class="partsprocureHome">
+    <div class="page-head">
+      <div class="page-headTitle">
+        车型项目详情
+      </div>
+      <div>组件</div>
+    </div>
     <DetailsSearch @reset="handleReset" @sure="handleSure" :isModelItem="true" />
 
     <iCard>
@@ -39,6 +45,15 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
+.page-head{
+  display: flex;
+  justify-content: space-between;
+
+  .page-headTitle{
+    font-size: 20px;
+    font-weight: bold;
+  }
+}
 
 </style>
