@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-05-24 16:16:18
+ * @LastEditTime: 2021-05-24 17:56:07
  * @LastEditors: Please set LastEditors
  * @Description: 系统静态路由.
  * @FilePath: \rise\src\router\index.js
@@ -201,6 +201,13 @@ export const staticRouter = [{
                 name: "/ws3Register",
                 component: () =>
                     import ("@/views/ws3/register"),
+            },
+            // workStream1 -------------------------------------- //
+            {
+                path: "/partsfp/automaticallyassignde", //管理员看到的，手动分配配件任务。
+                name: "/ws3Register",
+                component: () =>
+                    import ("@/views/AutomaticallyAssignDe"),
             }  
         ],
     },
