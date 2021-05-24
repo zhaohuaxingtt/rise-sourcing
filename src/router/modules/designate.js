@@ -71,6 +71,17 @@ export default [
             component: () =>
               import ("@/views/designate/supplier/index")
           },
+          // 定点建议
+          {                          
+            path: "/designate/suggestion",
+            name: "designateSuggestion",
+            meta: {
+                hideTabLV3: true,
+                title: "定点管理-定点建议",
+            },
+            component: () =>
+              import ("@/views/designate/suggestion/index")
+          },
           {                            
             path: "/designate/rfqdetail",
             name: "designateRfqdetail",
