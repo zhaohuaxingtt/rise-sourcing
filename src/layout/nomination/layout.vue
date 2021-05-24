@@ -5,7 +5,7 @@
       <!-- 进度条,基本信息 -->
       <designateStep />
       <!-- 三级导航栏 -->
-      <decisionDataHeader />
+      <decisionDataHeader v-if="!$route.meta.hideTabLV3" />
     </div>
     <div class="nomination-content">
       <router-view></router-view>

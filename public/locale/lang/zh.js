@@ -709,12 +709,15 @@
 
         // 定点管理
         'nominationLanguage': {
+            'DingDianGuanLi': '定点管理',
             'LingJianHao': '零件号',
             'ShenQingDanHao': '申请单号',
-            'RFQBinaHao': 'RFQ编号',
+            'RFQBianHao': 'RFQ编号',
             'LiuChengLeiXing': '流程类型',
             'ShenQingZhuangTai': '申请状态',
             'LingJianMing': '零件名',
+            'LingJianMingCN': '零件名(中)',
+            'LingJianMingDE': '零件名(德)',
             'XunJiaCaiGouYuan': '询价采购员',
             'CheXingXiangMu': '车型项目',
             'BaoJiaYiZhiXingJiaoYan': '报价一致性校验',
@@ -736,6 +739,20 @@
             'BaoJiaYiZhiXingZhuangTai':'报价一致性校验状态',
             'SELDanJuQUeRenZH': 'SEL单据确认状态',
             'DingDianRiQi': '定点日期'
+        },
+        nominationSupplier: {
+            'GongYingShangLieBiao': '供应商列表',
+            'GongYingShangMing': '供应商名',
+            'JiaRuZhanShi': '加入展示',
+            'QuXiaoZhanShi': '取消展示',
+            'ChangShangMing': '厂商名',
+            'SAPHao': 'SAP号',
+            'ChangShangMingEN': '厂商名(英)',
+            'ShiFouZhanShi': '是否展示',
+            'DanYiGongYingShang': '单一供应商',
+            'DanYiYuanYin': '单一原因',
+            'BuMen': '部门',
+            'GengXinShiJian': '更新时间'
         }
     })
 }))

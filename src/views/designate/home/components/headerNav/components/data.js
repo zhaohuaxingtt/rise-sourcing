@@ -11,8 +11,8 @@ import Vue from 'vue'
 export const TAB = [
   {
     value: 1,
-    label: '寻源执行',
-    key: Vue.prototype.$t('partsignLanguage.XunYuanZhiXing'),
+    label: '定点管理',
+    key: Vue.prototype.$t('nominationLanguage.DingDianGuanLi'),
     url: '/nomination',
     message: 0
   },
