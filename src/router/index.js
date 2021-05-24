@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-05-20 14:24:02
+ * @LastEditTime: 2021-05-21 16:01:41
  * @LastEditors: Please set LastEditors
  * @Description: 系统静态路由.
  * @FilePath: \rise\src\router\index.js
@@ -19,7 +19,7 @@ export const staticRouter = [{
         name: "index",
         component: () =>
             import ("@/layout/default"),
-        redirect: "/partsign",
+        redirect: "/sourcing/partsign",
         children: [{
                 path: "/index",
                 name: "home",
@@ -30,7 +30,7 @@ export const staticRouter = [{
                     import ("@/views/home"),
             },
             {
-                path: "/partsign",
+                path: "/sourcing/partsign",
                 name: "partsign",
                 meta: {
                     title: "新建信息单",
@@ -39,7 +39,7 @@ export const staticRouter = [{
                     import ("@/views/partsign/home"),
             },
             {
-                path: "/partsign/editordetail",
+                path: "/sourcing/partsign/editordetail",
                 name: "editordetail",
                 meta: {
                     title: "新建信息单详情",
@@ -48,7 +48,7 @@ export const staticRouter = [{
                     import ("@/views/partsign/editordetail"),
             },
             {
-                path: "/partsign/volumeVersion",
+                path: "/sourcing/partsign/volumeVersion",
                 name: "volumeVersion",
                 meta: {
                     title: "新建信息单每车用量版本",
@@ -57,7 +57,7 @@ export const staticRouter = [{
                     import ("@/views/partsign/version/volume"),
             },
             {
-                path: "/partsign/enquiryVersion",
+                path: "/sourcing/partsign/enquiryVersion",
                 name: "enquiryVersion",
                 meta: {
                     title: "新建信息单询价资料版本",
@@ -66,7 +66,7 @@ export const staticRouter = [{
                     import ("@/views/partsign/version/enquiry"),
             },
             {
-                path: "/partsprocure",
+                path: "/sourcing/partsprocure",
                 name: "partsprocure",
                 meta: {
                     title: "采购项目",
@@ -75,7 +75,7 @@ export const staticRouter = [{
                     import ("@/views/partsprocure/home"),
             },
             {
-                path: "/partsprocure/editordetail",
+                path: "/sourcing/partsprocure/editordetail",
                 name: "partsprocure",
                 meta: {
                     title: "采购项目详情",
@@ -84,7 +84,7 @@ export const staticRouter = [{
                     import ("@/views/partsprocure/editordetail"),
             },
             {
-                path: "/partsprocure/batchmiantain",
+                path: "/sourcing/partsprocure/batchmiantain",
                 name: "batchmiantain",
                 meta: {
                     title: "采购项目批量修改",
@@ -93,7 +93,7 @@ export const staticRouter = [{
                     import ("@/views/partsprocure/batchmiantain"),
             },
             {
-                path: "/partsprocure/outputplan",
+                path: "/sourcing/partsprocure/outputplan",
                 name: "outputplan",
                 meta: {
                     title: "采购项目计划",
@@ -102,7 +102,7 @@ export const staticRouter = [{
                     import ("@/views/partsprocure/outputplan"),
             },
             {
-                path: "/partsrfq",
+                path: "/sourcing/partsrfq",
                 name: "partsrfq",
                 meta: {
                     title: "RFQ",
@@ -111,7 +111,7 @@ export const staticRouter = [{
                     import ("@/views/partsrfq/home"),
             },
             {
-                path: "/partsrfq/editordetail", //RFQ详情
+                path: "/sourcing/partsrfq/editordetail", //RFQ详情
                 name: "editordetail",
                 meta: {
                     title: "RFQ详情",
@@ -120,7 +120,7 @@ export const staticRouter = [{
                     import ("@/views/partsrfq/editordetail"),
             },
             {
-                path: "/partsrfq/editordetail/partScoring", //零件评分
+                path: "/sourcing/partsrfq/editordetail/partScoring", //零件评分
                 name: "editordetailPartScoring",
                 meta: {
                     title: "RFQ零件评分",
