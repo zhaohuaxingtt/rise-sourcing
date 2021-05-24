@@ -4,6 +4,7 @@
  * @LastEditTime: 2021-05-24 13:37:55
  * @LastEditors: Please set LastEditors
  * @Description: 定点管理
+ * @metaParams: hideTabLV3 隐藏三级导航
  *
  */
 
@@ -59,6 +60,28 @@ export default [
         component: () => import ("@/layout/nomination/layout"),
         redirect: "/designate/rfqdetail",
         children: [
+          // 供应商&单一供应商
+          {                          
+            path: "/designate/supplier",
+            name: "designateSupplier",
+            meta: {
+                hideTabLV3: true,
+                title: "定点管理-供应商&单一供应商",
+            },
+            component: () =>
+              import ("@/views/designate/supplier/index")
+          },
+          // 定点建议
+          {                          
+            path: "/designate/suggestion",
+            name: "designateSuggestion",
+            meta: {
+                hideTabLV3: true,
+                title: "定点管理-定点建议",
+            },
+            component: () =>
+              import ("@/views/designate/suggestion/index")
+          },
           {                            
             path: "/designate/rfqdetail",
             name: "designateRfqdetail",

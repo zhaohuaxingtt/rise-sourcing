@@ -54,7 +54,8 @@
             'PARTSPROCURE': '请输入零件号，多个逗号分隔',
             'PLEENTER': '请输入',
             'CHOOSE': '请选择',
-            "CF": 'CF'
+            "CF": 'CF',
+            'SHOUGONGCAIGOUXIANGMUCHUANGJIAN': '手工采购项目创建', // 手工采购项目创建
         },
         'partsignLanguage': {
             'XunYuanZhiXing': '寻源执行', //寻源执行
@@ -90,7 +91,13 @@
             'XiaYiYe': '下一页', //下一页
             'QianWangYe': '前往    页' //前往    页
         },
-
+        // 手工采购项目创建
+        'createparts': {
+            'Shougongcaigouxiangmuchuangjian': '手工采购项目创建', // 手工采购项目创建
+            'Gangcaipiliangcaigou': '钢材批量采购', // 钢材批量采购
+            'Gangcaiyicixingcaigou': '钢材一次性采购', // 钢材一次性采购
+            'Gongchangqianyi': '工厂迁移', // 工厂迁移
+        },
         /*
         <!------------------------------------------------------------------------>
         <!--                                                                   --->
@@ -706,15 +713,20 @@
         'LK_ANBILIZHESUAN': '按⽐例折算',//按⽐例折算
         'LK_ZHESUANBILI': '折算⽐例',//折算⽐例
         // 'LK_QUEDING': '确定',//确定
+        'LK_HEAVYITEM': 'Heavy Item', // Heavy Item
+        'LK_FENXIBAOGAO': '分析报告', // 分析报告
 
         // 定点管理
         'nominationLanguage': {
+            'DingDianGuanLi': '定点管理',
             'LingJianHao': '零件号',
             'ShenQingDanHao': '申请单号',
-            'RFQBinaHao': 'RFQ编号',
+            'RFQBianHao': 'RFQ编号',
             'LiuChengLeiXing': '流程类型',
             'ShenQingZhuangTai': '申请状态',
             'LingJianMing': '零件名',
+            'LingJianMingCN': '零件名(中)',
+            'LingJianMingDE': '零件名(德)',
             'XunJiaCaiGouYuan': '询价采购员',
             'CheXingXiangMu': '车型项目',
             'BaoJiaYiZhiXingJiaoYan': '报价一致性校验',
@@ -736,6 +748,36 @@
             'BaoJiaYiZhiXingZhuangTai':'报价一致性校验状态',
             'SELDanJuQUeRenZH': 'SEL单据确认状态',
             'DingDianRiQi': '定点日期'
+        },
+        nominationSupplier: {
+            'GongYingShangLieBiao': '供应商列表',
+            'GongYingShangMing': '供应商名',
+            'JiaRuZhanShi': '加入展示',
+            'QuXiaoZhanShi': '取消展示',
+            'ChangShangMing': '厂商名',
+            'SAPHao': 'SAP号',
+            'ChangShangMingEN': '厂商名(英)',
+            'ShiFouZhanShi': '是否展示',
+            'DanYiGongYingShang': '单一供应商',
+            'DanYiYuanYin': '单一原因',
+            'BuMen': '部门',
+            'GengXinShiJian': '更新时间'
+        },
+        // 定点建议
+        'nominationSuggestion': {
+            'Mujuyusuanguanli': '模具预算管理', // 模具预算管理
+            'Tijiao': '提交', // 提交
+            'Chehui': '撤回', // 撤回
+            'Qingxuanzezhishaoyitiaoshuju': '请选择至少一条数据', // 请选择至少一条数据
+            'Lingjianhao': '零件号', // 零件号
+            'Fsnrgsnr': 'FSNR/GSNR', // FSNR/GSNR
+            'Rfqbianhao': 'RFQ编号', // RFQ编号
+            'Shenqingriqi': '申请日期', // 申请日期
+            'Chexingxiangmu': '车型项目', // 车型项目
+            'Touziyusuanrmb': '投资预算(RMB)', // 投资预算(RMB)
+            'Csfpfuzeren': 'CSF(P)负责人', // CSF(P)负责人
+            'Shenpizhuangtai': '审批状态', // 审批状态
+            'Shenpiyijian': '审批意见', // 审批意见
         }
     })
 }))

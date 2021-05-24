@@ -1,7 +1,7 @@
 <!--
  * @Author: moxuan
  * @Date: 2021-02-25 09:59:25
- * @LastEditTime: 2021-05-21 16:13:56
+ * @LastEditTime: 2021-05-24 13:02:08
  * @LastEditors: Please set LastEditors
  * @Description: RFQ模块首页
  * @FilePath: \rise\src\views\partsrfq\home\index.vue
@@ -17,7 +17,7 @@
           <!------------------------------------------------------------------------>
           <!--                  search 搜索模块                                   --->
           <!------------------------------------------------------------------------>
-          <iSearch class="margin-bottom20" icon @reset="handleSearchReset" @sure="getTableList"
+          <iSearch class="margin-bottom20" :icon="false" @reset="handleSearchReset" @sure="getTableList"
                    :resetKey="PARTSRFQ_RESET" :searchKey="PARTSRFQ_SEARCH">
             <el-form>
               <el-form-item :label="$t('LK_LINGJIANHAO_FSNR_RFQBIANHAO_CAIGOUYUAN')" style="width: 340px">
@@ -45,6 +45,13 @@
                   <el-option value="" :label="$t('all') | capitalizeFilter"></el-option>
                   <el-option v-for="items in rfqStatusOptions" :key='items.code' :value='items.code'
                              :label="items.name"/>
+                </iSelect>
+              </el-form-item>
+              <el-form-item :label="$t('LK_CHEXING')">
+                <iSelect :placeholder="$t('LK_QINGXUANZE')" v-model="form.car">
+                  <el-option value="" :label="$t('all') | capitalizeFilter"></el-option>
+                  <!-- <el-option v-for="items in rfqStatusOptions" :key='items.code' :value='items.code'
+                             :label="items.name"/> -->
                 </iSelect>
               </el-form-item>
             </el-form>
@@ -102,6 +109,20 @@
                   <icon class="icon" name="iconliebiaoyizhiding" v-else></icon>
                 </div>
               </template>
+              <template #b="scope">
+                <el-popover
+                  v-if="scope.row.b"
+                  placement="left"
+                  width="300"
+                  trigger="click">
+                  <tablelist :tableTitle="attachmentTableTitle" :tableData="attachmentTableListData" :selection="false">
+                    <template #fileName="attachmentScope">
+                      <span class="link" @click="downLoad(attachmentScope.row)">{{ attachmentScope.row.fileName }}</span>
+                    </template>
+                  </tablelist>
+                  <icon class="tick icon-style" symbol name="iconbaojiazhuangtailiebiao_yibaojia" slot="reference"/>
+                </el-popover>
+              </template>
             </tablelist>
             <!------------------------------------------------------------------------>
             <!--                  表格分页                                          --->
@@ -135,12 +156,12 @@
 
 </template>
 <script>
-import {iPage, iButton, iCard, iMessage, iPagination, iSearch, iInput, iSelect, icon} from "@/components";
-import { iNavMvp } from "rise";
+import {iPage, iButton, iCard, iMessage, iPagination, iInput, iSelect, icon} from "@/components";
+import { iNavMvp, iSearch } from "rise";
 import tablelist from "pages/partsrfq/components/tablelist";
 import assignmentOfScoringTasks from "pages/partsrfq/home/components/assignmentOfScoringTasks";
 import {pageMixins} from "@/utils/pageMixins";
-import {tableTitle} from "pages/partsrfq/home/components/data";
+import {tableTitle, attachmentTableTitle} from "pages/partsrfq/home/components/data";
 import {getRfqDataList, editRfqData, findBySearches} from "@/api/partsrfq/home";
 import {excelExport} from "@/utils/filedowLoad";
 import store from '@/store'
@@ -179,7 +200,8 @@ export default {
         searchConditions: '',
         carType: '',
         partType: '',
-        rfqStatus: ''
+        rfqStatus: '',
+        car: ''
       },
       activateButtonLoading: false,
       closeButtonLoading: false,
@@ -194,7 +216,14 @@ export default {
       selectDatalist:[],
       scoringDeptVisible: false,
       rfqIds: [],
-      navList: cloneDeep(navList)
+      navList: cloneDeep(navList),
+      attachmentTableTitle,
+      attachmentTableListData: [
+        { fileName: 'a.pdf' },
+        { fileName: 'b.pdf' },
+        { fileName: 'c.pdf' },
+        { fileName: 'd.pdf' },
+      ]
     };
   },
   created() {
@@ -378,7 +407,9 @@ export default {
     async getRfqStatusOptions() {
       const res = await findBySearches('03')
       this.rfqStatusOptions = res.data
-    }
+    },
+    // 分析报告下载
+    downLoad(row) {}
   }
 }
 </script>
@@ -428,6 +459,10 @@ export default {
         font-weight: bold;
       }
     }
+  }
+
+  .tick {
+    font-size: 18px;
   }
 }
 </style>

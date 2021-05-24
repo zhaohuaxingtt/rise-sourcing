@@ -29,7 +29,7 @@
         ></iInput>
       </el-form-item>
         <!-- RFQ编号 -->
-      <el-form-item :label="$t('nominationLanguage.RFQBinaHao')">
+      <el-form-item :label="$t('nominationLanguage.RFQBianHao')">
         <iInput
           v-model="form.partNum"
           :placeholder="$t('LK_QINGSHURU')"
