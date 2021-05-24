@@ -693,5 +693,7 @@
         'LK_ANBILIZHESUAN': 'Convert By Proportion',//按⽐例折算
         'LK_ZHESUANBILI': 'Proportion',//折算⽐例
         // 'LK_QUEDING': 'Confirm',//确定
+        'LK_HEAVYITEM': 'Heavy Item', // Heavy Item
+        'LK_FENXIBAOGAO': '', // 分析报告
     })
 }))

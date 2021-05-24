@@ -706,6 +706,8 @@
         'LK_ANBILIZHESUAN': '按⽐例折算',//按⽐例折算
         'LK_ZHESUANBILI': '折算⽐例',//折算⽐例
         // 'LK_QUEDING': '确定',//确定
+        'LK_HEAVYITEM': 'Heavy Item', // Heavy Item
+        'LK_FENXIBAOGAO': '分析报告', // 分析报告
 
         // 定点管理
         'nominationLanguage': {

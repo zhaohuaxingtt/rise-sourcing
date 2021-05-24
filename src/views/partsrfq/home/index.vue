@@ -1,7 +1,7 @@
 <!--
  * @Author: moxuan
  * @Date: 2021-02-25 09:59:25
- * @LastEditTime: 2021-05-21 16:13:56
+ * @LastEditTime: 2021-05-24 11:57:21
  * @LastEditors: Please set LastEditors
  * @Description: RFQ模块首页
  * @FilePath: \rise\src\views\partsrfq\home\index.vue
@@ -102,6 +102,20 @@
                   <icon class="icon" name="iconliebiaoyizhiding" v-else></icon>
                 </div>
               </template>
+              <template #b="scope">
+                <el-popover
+                  v-if="scope.row.b"
+                  placement="left"
+                  width="300"
+                  trigger="click">
+                  <tablelist :tableTitle="attachmentTableTitle" :tableData="attachmentTableListData" :selection="false">
+                    <template #fileName="attachmentScope">
+                      <span class="link" @click="downLoad(attachmentScope.row)">{{ attachmentScope.row.fileName }}</span>
+                    </template>
+                  </tablelist>
+                  <icon class="tick icon-style" symbol name="iconbaojiazhuangtailiebiao_yibaojia" slot="reference"/>
+                </el-popover>
+              </template>
             </tablelist>
             <!------------------------------------------------------------------------>
             <!--                  表格分页                                          --->
@@ -140,7 +154,7 @@ import { iNavMvp } from "rise";
 import tablelist from "pages/partsrfq/components/tablelist";
 import assignmentOfScoringTasks from "pages/partsrfq/home/components/assignmentOfScoringTasks";
 import {pageMixins} from "@/utils/pageMixins";
-import {tableTitle} from "pages/partsrfq/home/components/data";
+import {tableTitle, attachmentTableTitle} from "pages/partsrfq/home/components/data";
 import {getRfqDataList, editRfqData, findBySearches} from "@/api/partsrfq/home";
 import {excelExport} from "@/utils/filedowLoad";
 import store from '@/store'
@@ -194,7 +208,14 @@ export default {
       selectDatalist:[],
       scoringDeptVisible: false,
       rfqIds: [],
-      navList: cloneDeep(navList)
+      navList: cloneDeep(navList),
+      attachmentTableTitle,
+      attachmentTableListData: [
+        { fileName: 'a.pdf' },
+        { fileName: 'b.pdf' },
+        { fileName: 'c.pdf' },
+        { fileName: 'd.pdf' },
+      ]
     };
   },
   created() {
@@ -378,7 +399,9 @@ export default {
     async getRfqStatusOptions() {
       const res = await findBySearches('03')
       this.rfqStatusOptions = res.data
-    }
+    },
+    // 分析报告下载
+    downLoad(row) {}
   }
 }
 </script>
@@ -428,6 +451,10 @@ export default {
         font-weight: bold;
       }
     }
+  }
+
+  .tick {
+    font-size: 18px;
   }
 }
 </style>
