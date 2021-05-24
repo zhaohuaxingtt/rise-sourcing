@@ -1,7 +1,7 @@
 <!--
  * @Author: moxuan
  * @Date: 2021-02-25 09:59:25
- * @LastEditTime: 2021-05-24 11:57:21
+ * @LastEditTime: 2021-05-24 13:02:08
  * @LastEditors: Please set LastEditors
  * @Description: RFQ模块首页
  * @FilePath: \rise\src\views\partsrfq\home\index.vue
@@ -17,7 +17,7 @@
           <!------------------------------------------------------------------------>
           <!--                  search 搜索模块                                   --->
           <!------------------------------------------------------------------------>
-          <iSearch class="margin-bottom20" icon @reset="handleSearchReset" @sure="getTableList"
+          <iSearch class="margin-bottom20" :icon="false" @reset="handleSearchReset" @sure="getTableList"
                    :resetKey="PARTSRFQ_RESET" :searchKey="PARTSRFQ_SEARCH">
             <el-form>
               <el-form-item :label="$t('LK_LINGJIANHAO_FSNR_RFQBIANHAO_CAIGOUYUAN')" style="width: 340px">
@@ -45,6 +45,13 @@
                   <el-option value="" :label="$t('all') | capitalizeFilter"></el-option>
                   <el-option v-for="items in rfqStatusOptions" :key='items.code' :value='items.code'
                              :label="items.name"/>
+                </iSelect>
+              </el-form-item>
+              <el-form-item :label="$t('LK_CHEXING')">
+                <iSelect :placeholder="$t('LK_QINGXUANZE')" v-model="form.car">
+                  <el-option value="" :label="$t('all') | capitalizeFilter"></el-option>
+                  <!-- <el-option v-for="items in rfqStatusOptions" :key='items.code' :value='items.code'
+                             :label="items.name"/> -->
                 </iSelect>
               </el-form-item>
             </el-form>
@@ -149,8 +156,8 @@
 
 </template>
 <script>
-import {iPage, iButton, iCard, iMessage, iPagination, iSearch, iInput, iSelect, icon} from "@/components";
-import { iNavMvp } from "rise";
+import {iPage, iButton, iCard, iMessage, iPagination, iInput, iSelect, icon} from "@/components";
+import { iNavMvp, iSearch } from "rise";
 import tablelist from "pages/partsrfq/components/tablelist";
 import assignmentOfScoringTasks from "pages/partsrfq/home/components/assignmentOfScoringTasks";
 import {pageMixins} from "@/utils/pageMixins";
@@ -193,7 +200,8 @@ export default {
         searchConditions: '',
         carType: '',
         partType: '',
-        rfqStatus: ''
+        rfqStatus: '',
+        car: ''
       },
       activateButtonLoading: false,
       closeButtonLoading: false,
