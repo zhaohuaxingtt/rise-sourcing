@@ -755,6 +755,22 @@
             'DanYiYuanYin': '单一原因',
             'BuMen': '部门',
             'GengXinShiJian': '更新时间'
+        },
+        // 定点建议
+        'nominationSuggestion': {
+            'Mujuyusuanguanli': '模具预算管理', // 模具预算管理
+            'Tijiao': '提交', // 提交
+            'Chehui': '撤回', // 撤回
+            'Qingxuanzezhishaoyitiaoshuju': '请选择至少一条数据', // 请选择至少一条数据
+            'Lingjianhao': '零件号', // 零件号
+            'Fsnrgsnr': 'FSNR/GSNR', // FSNR/GSNR
+            'Rfqbianhao': 'RFQ编号', // RFQ编号
+            'Shenqingriqi': '申请日期', // 申请日期
+            'Chexingxiangmu': '车型项目', // 车型项目
+            'Touziyusuanrmb': '投资预算(RMB)', // 投资预算(RMB)
+            'Csfpfuzeren': 'CSF(P)负责人', // CSF(P)负责人
+            'Shenpizhuangtai': '审批状态', // 审批状态
+            'Shenpiyijian': '审批意见', // 审批意见
         }
     })
 }))
