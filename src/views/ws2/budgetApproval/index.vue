@@ -90,8 +90,8 @@
         <div></div>
         <div>
           <iButton @click="exportFile">{{ $t('LK_PIZHUAN') }}</iButton>
-          <iButton @click="exportFile">{{ $t('LK_JUJUE') }}</iButton>
-          <iButton @click="exportFile">{{ $t('LK_ZHUANPAI') }}</iButton>
+          <iButton @click="rejectShow = true">{{ $t('LK_JUJUE') }}</iButton>
+          <iButton @click="transferShow = true">{{ $t('LK_ZHUANPAI') }}</iButton>
         </div>
       </div>
       <iTableList
@@ -144,6 +144,14 @@
         v-model="budgetApplyAmountShow"
         :RFQName="RFQName"
     ></budgetApplyAmount>
+    <reject
+        v-model="rejectShow"
+        :RFQName="RFQName"
+    ></reject>
+    <transfer
+        v-model="transferShow"
+        :RFQName="RFQName"
+    ></transfer>
   </div>
 </template>
 
@@ -163,6 +171,8 @@ import {
 import {form, budgetApprovalData} from "./components/data";
 import RFQ from './components/RFQ'
 import budgetApplyAmount from './components/budgetApplyAmount'
+import reject from './components/reject'
+import transfer from './components/transfer'
 import {pageMixins} from "@/utils/pageMixins";
 import {tableHeight} from "@/utils/tableHeight";
 import {
@@ -182,6 +192,8 @@ export default {
     iInput,
     RFQ,
     budgetApplyAmount,
+    reject,
+    transfer,
   },
   data() {
     return {
@@ -192,6 +204,8 @@ export default {
       tableLoading: false,
       RFQShow: false,
       budgetApplyAmountShow: false,
+      rejectShow: false,
+      transferShow: false,
       carTypeList: [],
       approvalStatusList: [],
       applyUserIdList: [],

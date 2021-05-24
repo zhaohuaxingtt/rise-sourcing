@@ -106,6 +106,8 @@
           </div>
         </div>
         <div id="chart1" style="width: 200px; height: 200px"></div>
+        <div id="chart2" style="width: 640px; height: 200px"></div>
+        <div id="chart3" style="width: 420px; height: 200px"></div>
         <div class="legend">
           <div>{{ $t('LK_FEIAEKO') }}</div>
           <div>AEKO</div>
@@ -623,10 +625,15 @@ export default {
           this.form['search.SUBTOTA'] = Number(res.data.subTotal) ? Number(res.data.subTotal).toFixed(2) : 0
           this.clone['search.SUBTOTA'] = Number(res.data.subTotal) ? Number(res.data.subTotal).toFixed(2) : 0
 
+          let notAekoPriceDetail = res.data.notAekoPriceDetail
+          let aekoPriceDetail = res.data.aekoPriceDetail
+
           this.findInvestmentList()
 
           this.$nextTick(() => {
             const chart1 = echarts().init(document.getElementById("chart1"));
+            const chart2 = echarts().init(document.getElementById("chart2"));
+            const chart3 = echarts().init(document.getElementById("chart3"));
             let option1 = {
               tooltip: {
                 formatter: function (params) {//这里就是控制显示的样式
@@ -751,8 +758,211 @@ export default {
 
               ]
             };
+            let option2 = {
+              tooltip: {
+
+              },
+              grid: {
+                left: '0%',
+                right: '0',
+                bottom: '0%',
+                top: '12%',
+                containLabel: true
+              },
+              xAxis: {
+                type: 'category',
+                data: ['非AEKO', '未申请', '已申请', '未定点', '已定点', '无BA', '有BA', '无BM', '有BM'],
+                axisTick: {
+                  show: false
+                },
+                axisLine: {
+                  show: true,
+                  lineStyle: {
+                    color: '#CDD4E2'
+                  }
+                },
+                axisLabel: {
+                  textStyle: {
+                    color: '#485465',
+
+                  },
+                },
+              },
+              yAxis: {
+                type: 'value',
+                axisTick: {
+                  show: false
+                },
+                axisLabel: {
+                  show: false
+                },
+                splitLine: {
+                  show: false
+                },
+                axisLine: {
+                  show: false
+                },
+
+              },
+              series: [
+                {
+                  name: '辅助',
+                  type: 'bar',
+                  stack: 'total',
+                  itemStyle: {
+                    barBorderColor: 'rgba(0,0,0,0)',
+                    color: 'rgba(0,0,0,0)'
+                  },
+                  emphasis: {
+                    itemStyle: {
+                      barBorderColor: 'rgba(0,0,0,0)',
+                      color: 'rgba(0,0,0,0)'
+                    }
+                  },
+                  data: [
+                    0,
+                    notAekoPriceDetail.applyAmount,
+                    0,
+                    notAekoPriceDetail.nomiAmount,
+                    0,
+                    notAekoPriceDetail.baAmount,
+                    0,
+                    notAekoPriceDetail.bmAmount]
+                },
+                {
+                  name: '非AEKO',
+                  type: 'bar',
+                  stack: 'total',
+                  color: '#B3D0FF',
+                  barWidth: '30',
+                  label: {
+                    show: true,
+                    position: 'top',
+                    textStyle: {
+                      color: '#485465',
+                      fontSize: 12
+                    }
+                  },
+                  emphasis: {
+                    focus: 'series'
+                  },
+                  data: [
+                    notAekoPriceDetail.notAekoTotal,
+                    notAekoPriceDetail.notApplyAmount,
+                    notAekoPriceDetail.applyAmount,
+                    notAekoPriceDetail.notNomiAmount,
+                    notAekoPriceDetail.nomiAmount,
+                    notAekoPriceDetail.notBaAmount,
+                    notAekoPriceDetail.baAmount,
+                    notAekoPriceDetail.notBmAmount,
+                    notAekoPriceDetail.bmAmount
+                  ],
+                  itemStyle: {
+                    normal: {
+                      barBorderRadius: [5, 5, 0, 0],
+                    }
+                  }
+                },
+              ]
+            }
+            let option3 = {
+              tooltip: {
+
+              },
+              grid: {
+                left: '0%',
+                right: '0',
+                bottom: '0%',
+                top: '12%',
+                containLabel: true
+              },
+              xAxis: {
+                type: 'category',
+                data: ['AEKO', '有BA', 'BA', '无BM', '有BM'],
+                axisTick: {
+                  show: false
+                },
+                axisLine: {
+                  show: true,
+                  lineStyle: {
+                    color: '#CDD4E2'
+                  }
+                },
+                axisLabel: {
+                  textStyle: {
+                    color: '#485465',
+
+                  },
+                },
+              },
+              yAxis: {
+                type: 'value',
+                axisTick: {
+                  show: false
+                },
+                axisLabel: {
+                  show: false
+                },
+                splitLine: {
+                  show: false
+                },
+                axisLine: {
+                  show: false
+                },
+
+              },
+              series: [
+                {
+                  name: '辅助',
+                  type: 'bar',
+                  stack: 'total',
+                  itemStyle: {
+                    barBorderColor: 'rgba(0,0,0,0)',
+                    color: 'rgba(0,0,0,0)'
+                  },
+                  emphasis: {
+                    itemStyle: {
+                      barBorderColor: 'rgba(0,0,0,0)',
+                      color: 'rgba(0,0,0,0)'
+                    }
+                  },
+                  data: [0, aekoPriceDetail.baAmount, 0, aekoPriceDetail.bmAmount, 0]
+                },
+                {
+                  name: '非AEKO',
+                  type: 'bar',
+                  stack: 'total',
+                  color: '#FFB04D',
+                  barWidth: '30',
+                  label: {
+                    show: true,
+                    position: 'top',
+                    textStyle: {
+                      color: '#485465',
+                      fontSize: 12
+                    }
+                  },
+                  emphasis: {
+                    focus: 'series'
+                  },
+                  data: [
+                    aekoPriceDetail.aekoTotal,
+                    aekoPriceDetail.notBaAmount,
+                    aekoPriceDetail.baAmount,
+                    aekoPriceDetail.notBmAmount,
+                    aekoPriceDetail.bmAmount],
+                  itemStyle: {
+                    normal: {
+                      barBorderRadius: [5, 5, 0, 0],
+                    }
+                  }
+                },
+              ]
+            }
             option1.series[option1.series.length - 1].label.formatter = totalValue
             chart1.setOption(option1);
+            chart2.setOption(option2);
+            chart3.setOption(option3);
           })
 
         } else {
@@ -943,12 +1153,13 @@ export default {
   .headerIcard ::v-deep .cardBody {
     padding: 18px 60px 22px 50px;
     display: flex;
+    justify-content: space-between;
     align-items: center;
     position: relative;
 
     .infoIcard {
       margin-left: 49px;
-
+      max-width: 170px;
       div {
         font-size: 14px;
         margin-bottom: 10px;
