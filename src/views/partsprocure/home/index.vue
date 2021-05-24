@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 09:50:42
- * @LastEditTime: 2021-05-21 16:14:08
+ * @LastEditTime: 2021-05-24 17:25:30
  * @LastEditors: Please set LastEditors
  * @Description: 零件采购项目建立首页。
  * @FilePath: \rise\src\views\partsprocure\home\index.vue
@@ -206,6 +206,8 @@
                 {{ $t("partsprocure.PARTSPROCURENEWPROCUREMENTPROJECT") }}</span
               >
               <div class="floatright">
+                <!-- 手工采购项目创建 -->
+                <iButton @click="openCreateParts">{{ $t("partsprocure.SHOUGONGCAIGOUXIANGMUCHUANGJIAN") }}</iButton>
                 <iButton
                   @click="openDiologChangeItems"
                   v-permission="PARTSPROCURE_TRANSFER"
@@ -355,7 +357,7 @@ export default {
     // 跳转详情
     openPage(item) {
       this.$router.push({
-        path: "/partsprocure/editordetail",
+        path: "/sourcing/partsprocure/editordetail",
         query: {
           item: JSON.stringify(item),
         },
@@ -561,12 +563,15 @@ export default {
           )
         );
       this.$router.push({
-        path: "/partsprocure/batchmiantain",
+        path: "/sourcing/partsprocure/batchmiantain",
         query: {
           ids: this.getPurchasePrjectId(),
         },
       });
     },
+    openCreateParts() {
+      this.$router.push({ path: "/sourcing/createparts/home" })
+    }
   },
 };
 </script>

@@ -54,7 +54,8 @@
             'PARTSPROCURE': '请输入零件号，多个逗号分隔',
             'PLEENTER': '请输入',
             'CHOOSE': '请选择',
-            "CF": 'CF'
+            "CF": 'CF',
+            'SHOUGONGCAIGOUXIANGMUCHUANGJIAN': '手工采购项目创建', // 手工采购项目创建
         },
         'partsignLanguage': {
             'XunYuanZhiXing': '寻源执行', //寻源执行
@@ -90,7 +91,13 @@
             'XiaYiYe': '下一页', //下一页
             'QianWangYe': '前往    页' //前往    页
         },
-
+        // 手工采购项目创建
+        'createparts': {
+            'Shougongcaigouxiangmuchuangjian': '手工采购项目创建', // 手工采购项目创建
+            'Gangcaipiliangcaigou': '钢材批量采购', // 钢材批量采购
+            'Gangcaiyicixingcaigou': '钢材一次性采购', // 钢材一次性采购
+            'Gongchangqianyi': '工厂迁移', // 工厂迁移
+        },
         /*
         <!------------------------------------------------------------------------>
         <!--                                                                   --->

@@ -54,7 +54,8 @@
             'PLEENTER': 'Please Enter',
             'CHOOSE': 'Please Choose',
             "CF": 'CF',
-            'PARTSPROCUREPARTSTATUSNAME': 'Project Status'
+            'PARTSPROCUREPARTSTATUSNAME': 'Project Status',
+            'SHOUGONGCAIGOUXIANGMUCHUANGJIAN': '', // 手工采购项目创建
         },
         'partsignLanguage': {
             'XunYuanZhiXing': 'Sourcing Operation', //寻源执行
@@ -89,6 +90,13 @@
             'ShangYiYe': 'Previous Page', //上一页
             'XiaYiYe': 'Next Page', //下一页
             'QianWangYe': 'Go To Page' //前往    页
+        },
+        // 手工采购项目创建
+        'createparts': {
+            'Shougongcaigouxiangmuchuangjian': '手工采购项目创建', // 手工采购项目创建
+            'Gangcaipiliangcaigou': '钢材批量采购', // 钢材批量采购
+            'Gangcaiyicixingcaigou': '钢材一次性采购', // 钢材一次性采购
+            'Gongchangqianyi': '', // 工厂迁移
         },
 
         /*
