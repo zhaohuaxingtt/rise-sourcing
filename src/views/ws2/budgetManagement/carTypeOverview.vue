@@ -5,8 +5,13 @@
 <template>
   <div v-loading="loadingiPage" v-permission="TOOLING_BUDGET_OVERVIEW">
     <div class="content">
-      <div class="item" @click="toEdit('add')" title="点击进入【生成投资清单】页面">
-        <img class="addIcon" src="../../../assets/images/addCar.png" alt="">
+      <div class="item" @click="toEdit('add')">
+        <Popover
+            content="点击进入【生成投资清单】页面"
+            placement="top-start"
+            trigger="hover">
+          <img slot="reference" class="addIcon" src="../../../assets/images/addCar.png" alt="">
+        </Popover>
       </div>
       <div class="item" v-for="(item, index) in contentData" :key="index"
            @click="toEdit(item.id, item.sourceStatus, item.isBudget)">
@@ -15,9 +20,41 @@
           <img v-if="item.isBudget == 2" class="editIcon" src="../../../assets/images/editCar2.png" alt="">
           <img v-if="item.isBudget == 3" class="editIcon" src="../../../assets/images/editCar.png" alt="">
           <div class="title">
-            <h4 :title="item.cartypeProjectName">{{ item.cartypeProjectName }}</h4>
-            <p :title="item.locationFactory">{{$t("LK_CAIGOUGONGCHANG")}}: {{ item.locationFactory }}</p>
-            <p :title="item.sop">SOP: {{ item.sop }}</p>
+            <Popover
+                :content="item.cartypeProjectName"
+                placement="top-start"
+                trigger="hover">
+              <h4 slot="reference">{{ item.cartypeProjectName }}</h4>
+            </Popover>
+            <Popover
+                :content="$t('LK_CAIGOUGONGCHANG') + ': ' + (item.locationFactory ? item.locationFactory : '')"
+                placement="top-start"
+                trigger="hover">
+              <p slot="reference">{{$t("LK_CAIGOUGONGCHANG")}}: {{ item.locationFactory }}</p>
+            </Popover>
+            <Popover
+                :content="'SOP: ' + item.sop"
+                placement="top-start"
+                trigger="hover">
+              <p slot="reference">SOP: {{ item.sop }}</p>
+            </Popover>
+            <Popover
+                :content="$t('最近更新人') + ': ' + (item.updateByName ? item.updateByName : '')"
+                placement="top-start"
+                trigger="hover">
+              <p slot="reference" v-if="item.isBudget == 3">{{$t('最近更新人')}}: {{ item.updateByName }}</p>
+            </Popover>
+            <Popover
+                :content="$t('最近更新时间') + ': ' + (item.updateTime ? item.updateTime : '')"
+                placement="top-start"
+                trigger="hover">
+              <p slot="reference" v-if="item.isBudget == 3">{{$t('最近更新时间')}}: {{ item.updateTime }}</p>
+            </Popover>
+<!--            <h4 :title="item.cartypeProjectName">{{ item.cartypeProjectName }}</h4>-->
+<!--            <p :title="item.locationFactory">{{$t("LK_CAIGOUGONGCHANG")}}: {{ item.locationFactory }}</p>-->
+<!--            <p :title="item.sop">SOP: {{ item.sop }}</p>-->
+<!--            <p :title="item.updateByName" v-if="item.isBudget == 3">最近更新人: {{ item.updateByName }}</p>-->
+<!--            <p :title="item.updateTime" v-if="item.isBudget == 3">最近更新时间: {{ item.updateTime }}</p>-->
           </div>
         </div>
         <div class="unit">
@@ -32,6 +69,7 @@
 import {
   iMessage,
 } from "rise";
+import {Popover} from "element-ui"
 import {tabtitle} from "./components/data";
 import echarts from "@/utils/echarts";
 import {
@@ -39,7 +77,9 @@ import {
 } from "@/api/ws2/budgetManagement";
 
 export default {
-  components: {},
+  components: {
+    Popover
+  },
   data() {
     return {
       loadingiPage: false,
@@ -411,7 +451,7 @@ export default {
         font-size: 12px;
         color: #485465;
         text-align: right;
-        margin-top: 46px;
+        margin-top: 24px;
       }
 
       .chart {
