@@ -1,7 +1,7 @@
 <!--
  * @Author: moxuan
  * @Date: 2021-02-25 09:59:25
- * @LastEditTime: 2021-04-19 15:58:50
+ * @LastEditTime: 2021-05-21 16:13:56
  * @LastEditors: Please set LastEditors
  * @Description: RFQ模块首页
  * @FilePath: \rise\src\views\partsrfq\home\index.vue
@@ -12,7 +12,7 @@
       <el-tab-pane :label="$t('LK_XUNYUANZHIHANG')" name="source">
         <div>
           <div class="margin-bottom33">
-            <iNav-mvp @change="change" right routerPage></iNav-mvp>
+            <iNavMvp @change="change" right routerPage lev="2" :list="navList" />
           </div>
           <!------------------------------------------------------------------------>
           <!--                  search 搜索模块                                   --->
@@ -135,7 +135,8 @@
 
 </template>
 <script>
-import {iPage, iButton, iCard, iMessage, iPagination, iSearch, iInput, iSelect, iNavMvp, icon} from "@/components";
+import {iPage, iButton, iCard, iMessage, iPagination, iSearch, iInput, iSelect, icon} from "@/components";
+import { iNavMvp } from "rise";
 import tablelist from "pages/partsrfq/components/tablelist";
 import assignmentOfScoringTasks from "pages/partsrfq/home/components/assignmentOfScoringTasks";
 import {pageMixins} from "@/utils/pageMixins";
@@ -148,6 +149,8 @@ import {rfqCommonFunMixins} from "pages/partsrfq/components/commonFun";
 import {getAllScoringDepartmentInfo} from '@/api/partsrfq/home'
 import { getProcureGroup } from "@/api/partsprocure/home";
 import scoringDeptDialog from "@/views/partsrfq/editordetail/components/rfqPending/components/supplierScore/components/scoringDeptDialog"
+import { navList } from "@/views/partsign/home/components/data";
+import { cloneDeep } from "lodash";
 
 export default {
   components: {
@@ -190,7 +193,8 @@ export default {
       tab: 'source',
       selectDatalist:[],
       scoringDeptVisible: false,
-      rfqIds: []
+      rfqIds: [],
+      navList: cloneDeep(navList)
     };
   },
   created() {
