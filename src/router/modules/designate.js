@@ -1,7 +1,7 @@
 /*
  * @Author: HaoJiang
  * @Date: 2021-05-20 14:29:09
- * @LastEditTime: 2021-05-21 15:34:39
+ * @LastEditTime: 2021-05-24 10:19:15
  * @LastEditors: Please set LastEditors
  * @Description: 定点管理
  * @metaParams: hideTabLV3 隐藏三级导航
@@ -97,6 +97,15 @@ export default [
             },
             component: () =>
               import ("@/views/designate/designatedetail/decisionData/partList")
+          },
+          {                             
+            path: "/designate/decisiondata/singlesourcing",
+            name: "designateDecisionDataSingleSourcing",
+            meta: {
+                title: "定点管理-决策资料-Single Sourcing",
+            },
+            component: () =>
+              import ("@/views/designate/designatedetail/decisionData/singleSourcing")
           },
         ]
       }

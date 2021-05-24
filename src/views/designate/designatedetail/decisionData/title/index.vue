@@ -5,16 +5,7 @@
 -->
 <template>
  <iPage class="decision-data-title">
-    <designateStep v-show="!isPreview" @preview="preview"/>
-    <decisionDataHeader v-show="!isPreview" :isPreview="isPreview"/>
     <iCard>
-       <div>
-         <h2 v-show="isPreview" class="flex-between-center margin-bottm20">
-            CSC Nomination Recommendation
-            <icon symbol name="guanbixiaoxiliebiaokapiannei" class="closeIcon" @click="preview"></icon>
-         </h2>
-         <decisionDataHeader v-show="isPreview" :isPreview="isPreview"/>
-       </div>
        <div class="decision-data-title-content">
           <h1 class="margin-bottom20 font18">Title</h1>
          <iFormGroup row="1">
@@ -39,13 +30,9 @@ import {
   iFormItem,
   iText,
 } from "rise";
-import designateStep from '../../components/designateStep'
-import decisionDataHeader from '../components/decisionDataHeader'
 export default {
      components:{
-        designateStep,
         iPage,
-        decisionDataHeader,
         iCard,
         iFormGroup,
         iFormItem,
@@ -66,11 +53,6 @@ export default {
        }
     },
     methods:{
-       // 预览
-       preview(){
-          const {isPreview} = this;
-          this.isPreview = !isPreview;
-       }
     }
 }
 </script>

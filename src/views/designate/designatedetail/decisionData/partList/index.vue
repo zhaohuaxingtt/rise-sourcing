@@ -5,16 +5,7 @@
 -->
 <template>
  <iPage class="decision-data-partList">
-    <designateStep v-show="!isPreview" @preview="preview"/>
-    <decisionDataHeader v-show="!isPreview" :isPreview="isPreview"/>
     <iCard>
-       <div>
-         <h2 v-show="isPreview" class="flex-between-center margin-bottm20">
-            CSC Nomination Recommendation
-            <icon symbol name="guanbixiaoxiliebiaokapiannei" class="closeIcon" @click="preview"></icon>
-         </h2>
-         <decisionDataHeader v-show="isPreview" :isPreview="isPreview"/>
-       </div>
        <div class="decision-data-partList-content">
           <h1 class="flex-between-center margin-bottom20 font18">
               <span>Part List</span>
@@ -60,22 +51,21 @@ import {
   iButton,
   iPagination,
 } from "rise";
-import designateStep from '../../components/designateStep'
-import decisionDataHeader from '../components/decisionDataHeader'
 import {pageMixins} from '@/utils/pageMixins'
 export default {
   mixins:[pageMixins],
      components:{
-        designateStep,
         iPage,
-        decisionDataHeader,
         iCard,
         iButton,
         iPagination,
     },
+    created(){
+
+    },
     data(){
        return{
-          isPreview:false,
+          isPreview:true,
           loading: false,
           tableListData:[],
           tableTitle:[
@@ -94,11 +84,6 @@ export default {
        }
     },
     methods:{
-       // 预览
-       preview(){
-          const {isPreview} = this;
-          this.isPreview = !isPreview;
-       }
     }
 }
 </script>

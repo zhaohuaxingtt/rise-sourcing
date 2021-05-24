@@ -60,7 +60,11 @@
         </template>
       </el-table-column>
       <el-table-column :width="items.width" :show-overflow-tooltip='items.tooltip' :key="index" align='center' v-else :label="items.key ? $t(items.key) : items.name"
-                       :prop="items.props" :fixed="items.fixed"></el-table-column>
+                       :prop="items.props" :fixed="items.fixed">
+        <template v-if="$scopedSlots[items.props] || $slots[items.props]" v-slot="scope">
+          <slot :name="items.props" :row="scope.row"></slot>
+        </template>
+      </el-table-column>
     </template>
   </el-table>
 </template>

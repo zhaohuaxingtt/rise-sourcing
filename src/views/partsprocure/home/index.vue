@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 09:50:42
- * @LastEditTime: 2021-04-01 23:39:00
+ * @LastEditTime: 2021-05-21 16:14:08
  * @LastEditors: Please set LastEditors
  * @Description: 零件采购项目建立首页。
  * @FilePath: \rise\src\views\partsprocure\home\index.vue
@@ -12,7 +12,7 @@
       <el-tab-pane :label="$t('LK_XUNYUANZHIHANG')" name="source">
         <div>
           <div class="margin-bottom33">
-            <iNav-mvp @change="change" right routerPage></iNav-mvp>
+            <iNavMvp @change="change" right routerPage lev="2" :list="navList" />
           </div>
           <!------------------------------------------------------------------------>
           <!--                  search 搜索模块                                   --->
@@ -290,11 +290,11 @@ import {
   iCard,
   iMessage,
   iPagination,
-  iNavMvp,
   iSearch,
   iInput,
   iSelect,
 } from "@/components";
+import { iNavMvp } from "rise";
 import { pageMixins } from "@/utils/pageMixins";
 import backItems from "@/views/partsign/home/components/backItems";
 import { tableTitle, form } from "./components/data";
@@ -308,6 +308,9 @@ import { insertRfq } from "@/api/partsrfq/home";
 import changeItems from "../../partsign/home/components/changeItems";
 import filters from "@/utils/filters";
 import creatFs from "./components/creatFs";
+import { navList } from "@/views/partsign/home/components/data";
+import { cloneDeep } from "lodash";
+
 export default {
   mixins: [pageMixins, filters],
   components: {
@@ -336,6 +339,7 @@ export default {
       diologBack: false, //退回
       startLoding: false,
       tab: "source",
+      navList: cloneDeep(navList)
     };
   },
   computed: {
