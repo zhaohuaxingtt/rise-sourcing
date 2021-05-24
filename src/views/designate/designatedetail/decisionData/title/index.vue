@@ -4,10 +4,9 @@
  * @Description: 决策资料-title
 -->
 <template>
- <iPage class="decision-data-title">
-    <iCard>
+ <div class="decision-data-title">
+    <iCard title="Title">
        <div class="decision-data-title-content">
-          <h1 class="margin-bottom20 font18">Title</h1>
          <iFormGroup row="1">
             <div class="col">
                <iFormItem v-for="(item,index) in titleData" :key="'titleData'+index"  :label="item.label+':'">
@@ -19,12 +18,11 @@
          </iFormGroup>
        </div>
     </iCard>
- </iPage>
+ </div>
 </template>
 
 <script>
 import {
-  iPage,
   iCard,
   iFormGroup,
   iFormItem,
@@ -32,7 +30,6 @@ import {
 } from "rise";
 export default {
      components:{
-        iPage,
         iCard,
         iFormGroup,
         iFormItem,

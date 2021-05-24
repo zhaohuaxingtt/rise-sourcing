@@ -1,7 +1,7 @@
 /*
  * @Author: HaoJiang
  * @Date: 2021-05-20 14:29:09
- * @LastEditTime: 2021-05-24 10:19:15
+ * @LastEditTime: 2021-05-24 13:37:55
  * @LastEditors: Please set LastEditors
  * @Description: 定点管理
  *
@@ -94,6 +94,15 @@ export default [
             },
             component: () =>
               import ("@/views/designate/designatedetail/decisionData/singleSourcing")
+          },
+          {                             
+            path: "/designate/decisiondata/timeline",
+            name: "designateDecisionDataTimeLine",
+            meta: {
+                title: "定点管理-决策资料-Time Line",
+            },
+            component: () =>
+              import ("@/views/designate/designatedetail/decisionData/timeLine")
           },
         ]
       }
