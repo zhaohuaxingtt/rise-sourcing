@@ -5,8 +5,8 @@
 -->
 
 <template>
-    <iTabsList v-model=defaultTab>
-        <el-tab-pane v-for="(item,index) in decisionType" :key="'decisionType'+index" :label="item.name" :name="item.key"></el-tab-pane>
+    <iTabsList v-model=defaultTab @tab-click="handleClick">
+        <el-tab-pane v-for="(item,index) in decisionType" :key="'decisionType'+index" :label="item.name" :name="item.path"></el-tab-pane>
     </iTabsList>
 </template>
 
@@ -20,10 +20,31 @@ export default {
     components:{
         iTabsList,
     },
+    props:{
+        isPreview:{
+            type: Boolean,
+            default:false
+        }
+    },
     data(){
         return{
             decisionType:decisionType,
-            defaultTab:'Title'
+            defaultTab:'Title',
+        }
+    },
+    created(){
+        // 根据当前路由设置defaultTab
+        const { path } = this.$route
+        this.defaultTab = path;
+    },
+    methods:{
+        // tab切换
+        handleClick(tab){
+            console.log(tab,'handleClickhandleClick');
+            const { name='Title' } = tab;
+            this.$router.push({
+                path: name,
+            });
         }
     }
 }

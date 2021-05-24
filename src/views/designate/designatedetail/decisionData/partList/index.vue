@@ -5,8 +5,6 @@
 -->
 <template>
  <iPage class="decision-data-partList">
-    <designateStep v-show="!isPreview" @preview="preview"/>
-    <decisionDataHeader v-show="!isPreview" :isPreview="isPreview"/>
     <iCard>
        <div>
          <h2 v-show="isPreview" class="flex-between-center margin-bottm20">
@@ -60,18 +58,17 @@ import {
   iButton,
   iPagination,
 } from "rise";
-import designateStep from '../../components/designateStep'
-import decisionDataHeader from '../components/decisionDataHeader'
 import {pageMixins} from '@/utils/pageMixins'
 export default {
   mixins:[pageMixins],
      components:{
-        designateStep,
         iPage,
-        decisionDataHeader,
         iCard,
         iButton,
         iPagination,
+    },
+    created(){
+
     },
     data(){
        return{
@@ -94,11 +91,6 @@ export default {
        }
     },
     methods:{
-       // 预览
-       preview(){
-          const {isPreview} = this;
-          this.isPreview = !isPreview;
-       }
     }
 }
 </script>

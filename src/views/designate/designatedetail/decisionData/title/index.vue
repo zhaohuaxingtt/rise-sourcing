@@ -5,8 +5,6 @@
 -->
 <template>
  <iPage class="decision-data-title">
-    <designateStep v-show="!isPreview" @preview="preview"/>
-    <decisionDataHeader v-show="!isPreview" :isPreview="isPreview"/>
     <iCard>
        <div>
          <h2 v-show="isPreview" class="flex-between-center margin-bottm20">
@@ -39,13 +37,9 @@ import {
   iFormItem,
   iText,
 } from "rise";
-import designateStep from '../../components/designateStep'
-import decisionDataHeader from '../components/decisionDataHeader'
 export default {
      components:{
-        designateStep,
         iPage,
-        decisionDataHeader,
         iCard,
         iFormGroup,
         iFormItem,
@@ -66,11 +60,6 @@ export default {
        }
     },
     methods:{
-       // 预览
-       preview(){
-          const {isPreview} = this;
-          this.isPreview = !isPreview;
-       }
     }
 }
 </script>

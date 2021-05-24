@@ -22,6 +22,7 @@
             <div class="btnList flex-align-center">
                 <iButton >导出</iButton>
                 <iButton >提交</iButton>
+                <iButton v-if="isDecision" @click="preview">预览</iButton>
                 <logButton class="margin-left20" @click="log"  />
                 <span class="title-font margin-left20"><icon symbol name="icondatabaseweixuanzhong"></icon></span>
             </div>
@@ -58,8 +59,15 @@ export default {
     props:{
         status: {
             type: String,
-            default: '1'
+            default: '1',
+            isDecision:false,
         },
+    },
+    created(){
+        // 判断当前路由是否是决策资料相关路由 是则显示预览按钮
+        const { path } = this.$route;
+        this.isDecision = path.indexOf('/designate/decisiondata/')>-1;
+
     },
     data(){
         return{
@@ -68,6 +76,20 @@ export default {
             applyStep:applyStep
         }
     },
+    methods:{
+        // 预览
+        preview(){
+            const {path,query} = this.$route;
+            console.log(path);
+            this.$router.push({
+              path,
+              query: {
+                ...query,
+                isPreview:true
+              }
+            })
+        }
+    }
 }
 </script>
 

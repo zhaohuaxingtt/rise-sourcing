@@ -40,6 +40,7 @@ export default {
     methods:{
         // tab切换
         handleClick(tab){
+            console.log(tab,'handleClickhandleClick');
             const { name='Title' } = tab;
             this.$router.push({
                 path: name,
