@@ -6,13 +6,6 @@
 <template>
  <iPage class="decision-data-partList">
     <iCard>
-       <div>
-         <h2 v-show="isPreview" class="flex-between-center margin-bottm20">
-            CSC Nomination Recommendation
-            <icon symbol name="guanbixiaoxiliebiaokapiannei" class="closeIcon" @click="preview"></icon>
-         </h2>
-         <decisionDataHeader v-show="isPreview" :isPreview="isPreview"/>
-       </div>
        <div class="decision-data-partList-content">
           <h1 class="flex-between-center margin-bottom20 font18">
               <span>Part List</span>
@@ -72,7 +65,7 @@ export default {
     },
     data(){
        return{
-          isPreview:false,
+          isPreview:true,
           loading: false,
           tableListData:[],
           tableTitle:[

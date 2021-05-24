@@ -6,13 +6,6 @@
 <template>
  <iPage class="decision-data-title">
     <iCard>
-       <div>
-         <h2 v-show="isPreview" class="flex-between-center margin-bottm20">
-            CSC Nomination Recommendation
-            <icon symbol name="guanbixiaoxiliebiaokapiannei" class="closeIcon" @click="preview"></icon>
-         </h2>
-         <decisionDataHeader v-show="isPreview" :isPreview="isPreview"/>
-       </div>
        <div class="decision-data-title-content">
           <h1 class="margin-bottom20 font18">Title</h1>
          <iFormGroup row="1">
