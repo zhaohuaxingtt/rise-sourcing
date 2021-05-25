@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-05-25 21:01:30
- * @LastEditTime: 2021-05-25 22:09:23
+ * @LastEditTime: 2021-05-25 22:26:20
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringTracking\components\data.js
@@ -65,3 +65,27 @@ export const timeList = [
     name:'首次报价A'
   }
 ]
+
+
+export const iconList_car = { //汽车图标
+  1:{
+    icon:'iconbaojiafenxi-zhengchejindu-cheng' //橙色
+  },
+  2:{
+    icon:'iconbaojiafenxi-zhengchejindu-hong' //红色
+  },
+  3:{
+    icon:'iconbaojiafenxi-zhengchejindu-huang1' //黄色浅黄
+  },
+}
+export const iconList_all_times = { //整体任务进度
+  1:{
+    icon:'iconbaojiafenxi-zhengchejindu-cheng' //橙色
+  },
+  2:{
+    icon:'iconbaojiafenxi-zhengchejindu-hong' //红色
+  },
+  3:{
+    icon:'iconbaojiafenxi-zhengchejindu-huang1' //黄色浅黄
+  },
+}

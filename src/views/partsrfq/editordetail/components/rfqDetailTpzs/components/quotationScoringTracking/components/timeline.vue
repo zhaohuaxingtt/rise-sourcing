@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-25 16:11:34
- * @LastEditTime: 2021-05-25 22:07:59
+ * @LastEditTime: 2021-05-25 22:40:33
  * @LastEditors: Please set LastEditors
  * @Description: timeline
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringTracking\components\timeline.vue
@@ -10,9 +10,10 @@
   <div class="timeLine">
     <div v-for='(items,index) in timeList' :key='index' class="lineitems">
       <p class="itemsa">
-        <span>
+        <span v-if='items.week % 2 != 0'>
           cw{{items.week}}
         </span>
+        <span v-else style="display:inline-block;height:20px;"></span>
       </p>
       <p class="itemsb"></p>
       <p class="itemsc" :style='{top:"40px"}' v-if='items.name'>
@@ -29,7 +30,7 @@ export default{
   props:{
     timeList:{
       type:Array,
-      default:()=>[{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}]
+      default:()=>[]
     }
   }
 }
@@ -66,6 +67,9 @@ export default{
           display: block;
           &:nth-child(1){
             font-weight: bold;
+          }
+          &:nth-child(2){
+            margin-left: 15px;
           }
         }
       }
