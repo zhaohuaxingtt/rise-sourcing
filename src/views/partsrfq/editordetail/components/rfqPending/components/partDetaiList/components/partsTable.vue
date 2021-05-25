@@ -93,7 +93,7 @@ export default {
     // 跳转详情
     openPage(item) {
       this.$router.push({
-        path: "/partsprocure/editordetail",
+        path: "/sourcing/partsprocure/editordetail",
         query: {
           item: JSON.stringify(item),
         },

@@ -97,6 +97,17 @@
             'Gangcaipiliangcaigou': '钢材批量采购', // 钢材批量采购
             'Gangcaiyicixingcaigou': '钢材一次性采购', // 钢材一次性采购
             'Gongchangqianyi': '工厂迁移', // 工厂迁移
+            'Qingshuru': '请输入', // 请输入
+            'Qingxuanze': '请选择', // 请选择
+            'Lingjianhao': '零件号', // 零件号
+            'Lingjianmingzhong': '零件名(中)', // 零件名(中)
+            'Lingjianmingde': '零件名(德)', // 零件名(德)
+            'Lingjianlaiyuan': '零件来源', // 零件来源
+            'Chuangjiancaigouxiangmu': '创建采购项目', // 创建采购项目
+            'Lingjianzhuangtai': '零件状态', // 零件状态
+            'Jihuoshijian': '激活时间', // 激活时间
+            'Caozuorizhi': '操作日志', // 操作日志
+            'Chakan': '查看', // 查看
         },
         /*
         <!------------------------------------------------------------------------>
@@ -715,6 +726,9 @@
         // 'LK_QUEDING': '确定',//确定
         'LK_HEAVYITEM': 'Heavy Item', // Heavy Item
         'LK_FENXIBAOGAO': '分析报告', // 分析报告
+        'LK_PJZDFPKESHI':'配件自动分配科室',
+        'LK_LINGJIANCHENGBENFENXIYUAN': '零件成本分析员', // 零件成本分析员
+        'LK_MUJUCHENGBENFENXIYUAN': '模具成本分析员', // 模具成本分析员
 
         // 定点管理
         'nominationLanguage': {

@@ -428,7 +428,7 @@ export default {
           this.startLoding = false;
           if (res.data && res.data.rfqId) {
             this.$router.push({
-              path: "/partsrfq/editordetail",
+              path: "/sourcing/partsrfq/editordetail",
               query: {
                 id: res.rfqId,
               },

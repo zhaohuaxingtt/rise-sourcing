@@ -93,10 +93,21 @@
         },
         // 手工采购项目创建
         'createparts': {
-            'Shougongcaigouxiangmuchuangjian': '手工采购项目创建', // 手工采购项目创建
-            'Gangcaipiliangcaigou': '钢材批量采购', // 钢材批量采购
-            'Gangcaiyicixingcaigou': '钢材一次性采购', // 钢材一次性采购
+            'Shougongcaigouxiangmuchuangjian': '', // 手工采购项目创建
+            'Gangcaipiliangcaigou': '', // 钢材批量采购
+            'Gangcaiyicixingcaigou': '', // 钢材一次性采购
             'Gongchangqianyi': '', // 工厂迁移
+            'Qingshuru': '', // 请输入
+            'Qingxuanze': '', // 请选择
+            'Lingjianhao': '零件号', // 零件号
+            'Lingjianmingzhong': '', // 零件名(中)
+            'Lingjianmingde': '', // 零件名(德)
+            'Lingjianlaiyuan': '', // 零件来源
+            'Chuangjiancaigouxiangmu': '', // 创建采购项目
+            'Lingjianzhuangtai': '', // 零件状态
+            'Jihuoshijian': '', // 激活时间
+            'Caozuorizhi': '', // 操作日志
+            'Chakan': '', // 查看
         },
 
         /*
@@ -703,6 +714,8 @@
         // 'LK_QUEDING': 'Confirm',//确定
         'LK_HEAVYITEM': 'Heavy Item', // Heavy Item
         'LK_FENXIBAOGAO': '', // 分析报告
+        'LK_LINGJIANCHENGBENFENXIYUAN': '', // 零件成本分析员
+        'LK_MUJUCHENGBENFENXIYUAN': '', // 模具成本分析员
 
         // 定点建议
         'nominationSuggestion': {

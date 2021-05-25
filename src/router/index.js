@@ -1,10 +1,10 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-05-24 16:16:18
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-05-25 14:06:50
+ * @LastEditors: Luoshuang
  * @Description: 系统静态路由.
- * @FilePath: \rise\src\router\index.js
+ * @FilePath: \front-web\src\router\index.js
  *
  */
 /* eslint-disable no-undef */
@@ -13,6 +13,7 @@
 // 定点管理
 import designateRoutes from './modules/designate'
 import createpartsRoutes from './modules/createparts'
+import accessorypartsRoutes from './modules/accessoryparts'
 
 Vue.use(VueRouter);
 export const staticRouter = [{
@@ -201,6 +202,13 @@ export const staticRouter = [{
                 name: "/ws3Register",
                 component: () =>
                     import ("@/views/ws3/register"),
+            },
+            // workStream1 -------------------------------------- //
+            {
+                path: "/partsfp/automaticallyassignde", //管理员看到的，手动分配配件任务。
+                name: "/ws3Register",
+                component: () =>
+                    import ("@/views/AutomaticallyAssignDe"),
             }  
         ],
     },
@@ -238,6 +246,7 @@ export default new VueRouter({
     routes: [
         ...staticRouter,
         ...designateRoutes,
-        ...createpartsRoutes
+        ...createpartsRoutes,
+        ...accessorypartsRoutes
     ]
 });

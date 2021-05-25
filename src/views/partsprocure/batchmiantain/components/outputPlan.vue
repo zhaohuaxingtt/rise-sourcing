@@ -83,7 +83,7 @@
 			},
 			openPage(item){
 				this.$router.push({
-					path:"/partsprocure/outputplan",
+					path:"/sourcing/partsprocure/outputplan",
 					query:{
 						purchaseProjectId:item.purchaseProjectId,
 						purchasingRequirementId:item.purchasingRequirementId,
