@@ -250,7 +250,7 @@ export default {
     //动态获取转派评分任务
     openPage(id) {
       this.$router.push({
-        path: `/partsrfq/editordetail?id=${id}`
+        path: `/sourcing/partsrfq/editordetail?id=${id}`
       })
     },
     //获取表格数据
@@ -281,7 +281,7 @@ export default {
     },
     newRfq() {
       this.$router.push({
-        path: '/partsrfq/editordetail'
+        path: '/sourcing/partsrfq/editordetail'
       })
     },
     async editRfq(updateType) {

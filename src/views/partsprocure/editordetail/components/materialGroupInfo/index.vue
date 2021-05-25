@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-03-01 10:29:09
- * @LastEditTime: 2021-05-11 15:39:00
+ * @LastEditTime: 2021-05-25 20:57:20
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsprocure\editordetail\components\materialGroupInfo\index.vue
@@ -28,7 +28,7 @@
         v-permission="PARTSPROCURE_EDITORDETAIL_MATERIALGROUPINFO_BACK"
         >{{ $t("LK_FANHUI") }}</iButton
       >
-      <iButton disabled>{{ $t('LK_CHAZHAOGONGYIZUGONGYINGSHANG') }}</iButton>
+      <iButton @click="jumpBdl">{{ $t('LK_CHAZHAOGONGYIZUGONGYINGSHANG') }}</iButton>
     </template>
     <div class="body">
       <infos :data="info" />
@@ -223,6 +223,9 @@ export default {
       this.tableListData = []
       this.loading = false
     },
+    jumpBdl() {
+      window.open(`${ process.env.VUE_APP_PORTAL_URL }/#/supplier/application-BDL`, '_blank')
+    }
   },
 };
 </script>

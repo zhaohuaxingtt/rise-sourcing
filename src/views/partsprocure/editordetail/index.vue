@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2021-05-17 15:00:43
+ * @LastEditTime: 2021-05-25 15:35:45
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsprocure\editordetail\index.vue
@@ -124,6 +124,11 @@
 								<el-option :value="false" label="否"></el-option>
 							</iSelect>
 						</iFormItem>
+						<iFormItem label="Heavy Item List:" name="">
+							<iText>
+								{{ detailData.a }}
+							</iText>
+						</iFormItem>
 						<!--如果选择后的采购工厂不在主数据中该车型项目对应的采购工厂范围内？，则提示”您所选的采购工厂与主数据中该车型项目对应的采购工厂不一致，请确认是否修改“；选择”确认“保持修改后的值，选择”取消“恢复到修改前的值。”保存“后生效。--->
 						<iFormItem :label="$t('LK_CAIGOUGONGCHANG') + ':'" name="test">
 							<iSelect v-model="detailData.procureFactory"
@@ -165,6 +170,16 @@
 						</iFormItem>
 						<iFormItem :label="$t('LK_CFKONGZHIYUAN') + ':'" name='cfczy'>
 							<iSelect v-model="detailData.cfController" v-permission="PARTSPROCURE_EDITORDETAIL_CFCONTROLLER">
+								<el-option :value="item.code" :label="item.name" v-for="item in fromGroup.CF_CONTROL" :key="item.name"></el-option>
+							</iSelect>
+						</iFormItem>
+						<iFormItem :label="$t('LK_LINGJIANCHENGBENFENXIYUAN') + ':'" name=''>
+							<iSelect class="multipleSelect" v-model="detailData.c" multiple collapse-tags>
+								<el-option :value="item.code" :label="item.name" v-for="item in fromGroup.CF_CONTROL" :key="item.name"></el-option>
+							</iSelect>
+						</iFormItem>
+						<iFormItem :label="$t('LK_MUJUCHENGBENFENXIYUAN') + ':'" name=''>
+							<iSelect class="multipleSelect" v-model="detailData.d" multiple collapse-tags>
 								<el-option :value="item.code" :label="item.name" v-for="item in fromGroup.CF_CONTROL" :key="item.name"></el-option>
 							</iSelect>
 						</iFormItem>
@@ -572,6 +587,18 @@ import { iMessageBox } from '../../../components';
 
 		.items {
 			width: 300px;
+		}
+	}
+
+	.multipleSelect {
+		::v-deep .el-tag + .el-tag:last-of-type {
+			// text-overflow: ellipsis;
+			// white-space: nowrap;
+			// max-width: 38px;
+			// overflow: hidden;
+			// display: block;
+			// float: left;
+			max-width: 38px;
 		}
 	}
 </style>

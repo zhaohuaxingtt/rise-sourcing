@@ -4,7 +4,7 @@
  * @Description: 决策资料-PartList
 -->
 <template>
- <iPage class="decision-data-partList">
+ <div class="decision-data-partList">
     <iCard>
        <div class="decision-data-partList-content">
           <h1 class="flex-between-center margin-bottom20 font18">
@@ -41,12 +41,11 @@
           />
        </div>
     </iCard>
- </iPage>
+ </div>
 </template>
 
 <script>
 import {
-  iPage,
   iCard,
   iButton,
   iPagination,
@@ -55,7 +54,6 @@ import {pageMixins} from '@/utils/pageMixins'
 export default {
   mixins:[pageMixins],
      components:{
-        iPage,
         iCard,
         iButton,
         iPagination,

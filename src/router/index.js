@@ -1,10 +1,10 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-05-25 13:08:20
+ * @LastEditTime: 2021-05-25 22:12:34
  * @LastEditors: Please set LastEditors
  * @Description: 系统静态路由.
- * @FilePath: \rise\src\router\index.js
+ * @FilePath: \front-web\src\router\index.js
  *
  */
 /* eslint-disable no-undef */
@@ -13,6 +13,7 @@
 // 定点管理
 import designateRoutes from './modules/designate'
 import createpartsRoutes from './modules/createparts'
+import accessorypartsRoutes from './modules/accessoryparts'
 
 Vue.use(VueRouter);
 export const staticRouter = [{
@@ -263,6 +264,7 @@ export default new VueRouter({
     routes: [
         ...staticRouter,
         ...designateRoutes,
-        ...createpartsRoutes
+        ...createpartsRoutes,
+        ...accessorypartsRoutes
     ]
 });

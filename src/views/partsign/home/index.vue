@@ -360,7 +360,7 @@ export default {
         JSON.stringify(this.translateDataForDetail(val))
       );
       this.$router.push({
-        path: "/partsign/editordetail",
+        path: "/sourcing/partsign/editordetail",
       });
     },
     //获取上方group信息

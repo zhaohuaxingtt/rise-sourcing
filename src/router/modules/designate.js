@@ -1,7 +1,7 @@
 /*
  * @Author: HaoJiang
  * @Date: 2021-05-20 14:29:09
- * @LastEditTime: 2021-05-24 10:19:15
+ * @LastEditTime: 2021-05-25 16:50:12
  * @LastEditors: Please set LastEditors
  * @Description: 定点管理
  * @metaParams: hideTabLV3 隐藏三级导航
@@ -46,6 +46,33 @@ export default [
       // },
 
       /* ----定点申请相关路由 end----  */ 
+      {
+        path: "/designate/rfqdetail/addRfq",
+        name: "designateAddRfq",
+        meta: {
+          title: "定点管理-RFQ零件清单-新增RFQ",
+        },
+        component: () =>
+          import ("@/views/designate/designatedetail/addRfq")
+      },
+      {
+        path: "/designate/rsSingleMaintenance",
+        name: "rsSingleMaintenance",
+        meta: {
+          title: "定点管理-RS单维护",
+        },
+        component: () =>
+          import ("@/views/designate/designatedetail/rsSingleMaintenance")
+      },
+      {
+        path: "/designate/defaultLogic",
+        name: "defaultLogic",
+        meta: {
+          title: "定点申请预设逻辑",
+        },
+        component: () =>
+          import ("@/views/designate/defaultLogic")
+      },
     ]
   },
   {
@@ -118,8 +145,27 @@ export default [
             component: () =>
               import ("@/views/designate/designatedetail/decisionData/singleSourcing")
           },
+          {                             
+            path: "/designate/decisiondata/timeline",
+            name: "designateDecisionDataTimeLine",
+            meta: {
+                title: "定点管理-决策资料-Time Line",
+            },
+            component: () =>
+              import ("@/views/designate/designatedetail/decisionData/timeLine")
+          },
+          {                             
+            path: "/designate/decisiondata/bdl",
+            name: "designateDecisionDataBDL",
+            meta: {
+                title: "定点管理-决策资料-BDL",
+            },
+            component: () =>
+              import ("@/views/designate/designatedetail/decisionData/bdl")
+          },
         ]
       }
     ]
-  }
+  },
+  
 ]

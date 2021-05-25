@@ -1,14 +1,14 @@
 <!--
  * @Author: your name
  * @Date: 2021-05-24 16:03:20
- * @LastEditTime: 2021-05-24 16:59:23
+ * @LastEditTime: 2021-05-24 19:18:28
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\createParts\index.vue
 -->
 <template>
   <iPage class="createParts">
-    <iNavMvp :lev="1" :list="navList" routerPage />
+    <iNavMvp :lev="1" :list="navList" routerPage class="nav" />
     <router-view></router-view>
   </iPage>
 </template>
@@ -17,6 +17,7 @@
 import { iPage, iNavMvp } from "rise"
 import { navList } from "./components/data"
 import { cloneDeep } from "lodash"
+
 
 export default {
   name: "createParts",
@@ -34,6 +35,12 @@ export default {
 
 <style lang="scss" scoped>
 .createParts {
+  position: relative;
 
+  .nav {
+    position: absolute;
+    top: 30px;
+    left: 40px;
+  }
 }
 </style>
