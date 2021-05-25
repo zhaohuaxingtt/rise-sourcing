@@ -9,12 +9,19 @@
           <li v-for="(item,index) in stepList" :key="'stepList_'+index">
                 <icon symbol :name="item.icon" class="step-icon"></icon>
                 <p class="step-title">{{item.title}}</p>
-                <p class="step-tips">{{item.tips}}</p>
+                <p class="step-tips">
+                    <iInput
+                    class="step-tips-input" 
+                    v-if="item.isEdit" 
+                    v-model="item.tips"
+                    />
+                    <span v-else>{{item.tips}}</span>
+                </p>
 
-                <!-- 当前setp -->
-                <div v-if="index == stepIndex" class="myStep">
-                    <icon symbol name="TimeLine-Today" class="step-icon"></icon>
-                    <p>Today</p>
+                
+                <!-- 插入的icon显示位 -->
+                <div v-if="($slots['myStep'] || myStep) && stepIndex==index" class="myStep">
+                    <slot name="myStep">{{ myStep }}</slot>
                 </div>
           </li>
       </ul>
@@ -24,17 +31,27 @@
 <script>
 import {
   icon,
+  iInput,
 } from "rise";
-import { stepList } from './data'
 export default {
     name:'groupStep',
     components:{
         icon,
+        iInput,
+    },
+    props:{
+        stepIndex:{
+            type:Number,
+            default:0,
+        },
+        stepList:{
+            type:Array,
+            default:[]
+        }
     },
     data(){
         return{
-            stepList:stepList,
-            stepIndex:2, // 当前step
+           
         }
     }
 
@@ -62,6 +79,9 @@ export default {
                    &.step-tips{
                        color: #5F6F8F;
                        font-size: 14px;
+                       .step-tips-input{
+                           width: 100px;
+                       }
                    }
                }
                &:not(:last-child){
@@ -80,14 +100,11 @@ export default {
 
                div{
                    &.myStep{
+                       width: calc(100% - 44px - 30px);
                        position: absolute;
-                        right: calc((100% - 74px)/2 - 7px);
+                        right: 15px;
                         top: 7px;
                         text-align: center;
-                        .step-icon{
-                            width: 30px;
-                            height: 30px;
-                        }
                         p{
                             font-size: 16px;
                             margin-top: 16px;

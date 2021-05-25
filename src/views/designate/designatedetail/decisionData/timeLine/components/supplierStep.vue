@@ -35,7 +35,7 @@ export default {
 
 <style lang="scss" scoped>
     .supplierStep-list{
-        width: 700px;
+        width: 900px;
         justify-content: space-around;
         li{
             .step-icon{
