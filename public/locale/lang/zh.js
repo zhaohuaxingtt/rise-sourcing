@@ -750,11 +750,23 @@
             'ChangShangMing': '厂商名',
             'SAPHao': 'SAP号',
             'ChangShangMingEN': '厂商名(英)',
+            'CaiGouGongChang': '采购工厂',
             'ShiFouZhanShi': '是否展示',
             'DanYiGongYingShang': '单一供应商',
             'DanYiYuanYin': '单一原因',
             'BuMen': '部门',
-            'GengXinShiJian': '更新时间'
+            'GengXinShiJian': '更新时间',
+            // 零件清单
+            "LingJianXiangMuLeiXing": "零件项目类型", 
+            "CheXingDaLei": "车型大类", 
+            "CheXingXiangMu": "车型项目",
+            "LingJianZhuangTai": "零件状态", 
+            "XunJiaCaiGouYuan": "询价采购员", 
+            "LINIE": "LINIE", 
+            "CFMuBiaoJia": "CF目标价",
+            "BatchEdit": "批量编辑",
+            "Edit": "编辑",
+            "Export": "导出",
         }
     })
 }))

@@ -8,7 +8,6 @@
 <template>
   <el-table fit tooltip-effect='light' :height="height" :data='tableData' default-expand-all :tree-props="{children: 'children', hasChildren: 'hasChildren'}" row-key="id" v-loading='tableLoading' @selection-change="handleSelectionChange" :empty-text="$t('LK_ZANWUSHUJU')" ref="moviesTable" :class="{'moviesTable': true, 'radio': radio}">
     <el-table-column v-if="selection" type='selection' width="50" align='center'></el-table-column>
-    <el-table-column type="index" width="50" label="#"></el-table-column>
     <el-table-column v-if='index' type='index' width='50' align='center' :label='indexLabel'></el-table-column>
     <template v-for="(items,index) in tableTitle">
       <el-table-column :key="index" align='center' :width="items.width" :show-overflow-tooltip='items.tooltip' v-if='items.props == activeItems' :prop="items.props" :label="items.key ? $t(items.key) : items.name">
@@ -30,7 +29,9 @@
         :prop="items.props"
         :class-name="items.tree ? 'tree' : ''">
         <template slot-scope="scope">
-          <span :class="{normal: true, child: scope.row.children}">{{scope.row[items.props]}}</span>
+          <slot :name="items.props" :row="scope.row">
+            <span :class="{normal: true, child: scope.row.children}">{{scope.row[items.props]}}</span>
+          </slot>
         </template>
       </el-table-column>
     </template>
@@ -47,8 +48,8 @@ export default{
     indexLabel:{type:String,default:'#'},
     height:{type:Number||String},
     activeItems:{type:String,default:'b'},
-	  radio:{type:Boolean,default:false}, // 是否单选
-    treeProps: {type:Object},
+	  radio:{type:Boolean,default:false}, //是否单选
+    treeProps: {type:Object}
   },
   inject:['vm'],
   methods:{
