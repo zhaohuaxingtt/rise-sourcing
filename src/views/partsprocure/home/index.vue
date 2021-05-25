@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 09:50:42
- * @LastEditTime: 2021-05-24 17:25:30
+ * @LastEditTime: 2021-05-25 15:05:36
  * @LastEditors: Please set LastEditors
  * @Description: 零件采购项目建立首页。
  * @FilePath: \rise\src\views\partsprocure\home\index.vue
@@ -548,7 +548,7 @@ export default {
     },
     // 查询fliter数据
     getGroupList(key) {
-      if (this.fromGroup.length > 0) {
+      if (Array.isArray(this.fromGroup) && this.fromGroup.length > 0) {
         let obj = this.fromGroup.find((items) => items.type == key);
         if (!obj) return [];
         return obj.list;
