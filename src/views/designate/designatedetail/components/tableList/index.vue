@@ -2,10 +2,10 @@
  * @Descripttion: 
  * @Author: Luoshuang
  * @Date: 2021-05-21 14:30:41
- * @LastEditTime: 2021-05-24 17:37:38
+ * @LastEditTime: 2021-05-25 21:27:53
 -->
 <template>
-  <el-table fit tooltip-effect='light' :height="height" :data='tableData' v-loading='tableLoading' @selection-change="handleSelectionChange" :empty-text="$t('LK_ZANWUSHUJU')" ref="moviesTable" :class="radio && 'radio'">
+  <el-table fit tooltip-effect='light' :height="height" :data='tableData' v-loading='tableLoading' @selection-change="handleSelectionChange" :empty-text="$t('LK_ZANWUSHUJU')" ref="moviesTable" >
     <el-table-column v-if="selection" type='selection' width="50" align='center'></el-table-column>
     <el-table-column v-if='indexKey' type='index' width='50' align='center' label='#'>
       <template slot-scope="scope">
@@ -48,7 +48,21 @@
         </template>
       </el-table-column>
       <!-------------------------正常列--------------------------->
-      <el-table-column :key="index" align='center' :width="items.width" :show-overflow-tooltip='items.tooltip'  v-else :label="items.key ? $t(items.key) : items.name" :prop="items.props"></el-table-column>
+      <el-table-column :key="index" align='center' :width="items.width" :show-overflow-tooltip='items.tooltip'  v-else :label="items.key ? $t(items.key) : items.name" :prop="items.props">
+        <template slot="header">
+          <span v-if="items.enName">{{items.name}}<br />{{items.enName}}</span>
+          <span v-else>{{items.key ? $t(items.key) : items.name}}</span>
+        </template>
+        <template v-if="items.children">
+          <el-table-column v-for="(childItem, childIndex) in items.children" :key="childIndex" align='center' :width="childItem.width" :show-overflow-tooltip='childItem.tooltip'  :label="childItem.key ? $t(childItem.key) : childItem.name" :prop="childItem.props">
+            <template slot-scope="scope">
+              <span v-if="childItem.props === 'beizhu'" class="openLinkText cursor">查看</span>
+              <span v-else>{{scope.row[childItem.props]}}</span>
+              <icon v-if="scope.row.withIcon && scope.row.withIcon.includes(childItem.props)" symbol class="cursor" name='icontishi-cheng' style="border:1px solid red;margin-left:8px" @click.native="$emit('openDialog')"></icon>
+            </template>
+          </el-table-column>
+        </template>
+      </el-table-column>
     </template>
   </el-table>
 </template>
@@ -64,13 +78,13 @@ export default{
     selection:{type:Boolean,default:true},
     height:{type:Number||String},
     activeItems:{type:String,default:'b'},
-    radio:{type:Boolean,default:false},// 是否单选
     tableIndexString:{
       type:String,
       default:''
     },
     indexKey:Boolean,
-    notEdit:Boolean
+    notEdit:Boolean,
+    doubleHeader:Boolean,
   },
   inject:['vm'],
   methods:{
@@ -98,5 +112,6 @@ export default{
     ::v-deep thead .el-table-column--selection .cell {
     display: none;
 	}
+  
   }
 </style>

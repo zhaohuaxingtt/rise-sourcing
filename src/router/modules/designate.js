@@ -154,6 +154,15 @@ export default [
             component: () =>
               import ("@/views/designate/designatedetail/decisionData/timeLine")
           },
+          {                             
+            path: "/designate/decisiondata/bdl",
+            name: "designateDecisionDataBDL",
+            meta: {
+                title: "定点管理-决策资料-BDL",
+            },
+            component: () =>
+              import ("@/views/designate/designatedetail/decisionData/bdl")
+          },
         ]
       }
     ]
