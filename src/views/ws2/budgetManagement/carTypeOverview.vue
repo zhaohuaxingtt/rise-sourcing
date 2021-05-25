@@ -39,16 +39,16 @@
               <p slot="reference">SOP: {{ item.sop }}</p>
             </Popover>
             <Popover
-                :content="$t('最近更新人') + ': ' + (item.updateByName ? item.updateByName : '')"
+                :content="$t('LK_ZUIXINGENGXINREN') + ': ' + (item.updateByName ? item.updateByName : '')"
                 placement="top-start"
                 trigger="hover">
-              <p slot="reference" v-if="item.isBudget == 3">{{$t('最近更新人')}}: {{ item.updateByName }}</p>
+              <p slot="reference" v-if="item.isBudget == 3">{{$t('LK_ZUIXINGENGXINREN')}}: {{ item.updateByName }}</p>
             </Popover>
             <Popover
-                :content="$t('最近更新时间') + ': ' + (item.updateTime ? item.updateTime : '')"
+                :content="$t('LK_ZUIXINGENGXINSHIJIAN') + ': ' + (item.updateTime ? item.updateTime : '')"
                 placement="top-start"
                 trigger="hover">
-              <p slot="reference" v-if="item.isBudget == 3">{{$t('最近更新时间')}}: {{ item.updateTime }}</p>
+              <p slot="reference" v-if="item.isBudget == 3">{{$t('LK_ZUIXINGENGXINSHIJIAN')}}: {{ item.updateTime }}</p>
             </Popover>
 <!--            <h4 :title="item.cartypeProjectName">{{ item.cartypeProjectName }}</h4>-->
 <!--            <p :title="item.locationFactory">{{$t("LK_CAIGOUGONGCHANG")}}: {{ item.locationFactory }}</p>-->

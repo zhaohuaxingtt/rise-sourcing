@@ -4,7 +4,7 @@
 -->
 <template>
   <iDialog :title="$t(title)" :visible.sync="value" width="878" top="0" @close='clearDiolog' z-index="1000"
-           class="iDialogReject">
+           v-loading="iDialogLoading" class="iDialogReject">
     <div slot="title" class="title">
       <div class="text">{{ $t(title) }}<span>*</span></div>
     </div>
@@ -12,7 +12,7 @@
       <iInput
           type="textarea"
           placeholder="请输入拒绝原因"
-          v-model="rejectReason">
+          v-model="approvalComments">
       </iInput>
     </div>
     <span slot="footer" class="dialog-footer">
@@ -25,13 +25,11 @@
 import {
   iDialog,
   iInput,
-  iButton,
+  iButton, iMessage,
 } from 'rise'
-import {pageMixins} from "@/utils/pageMixins";
-import {tableHeight} from "@/utils/tableHeight";
+import {reject} from "@/api/ws2/budgetApproval";
 
 export default {
-  mixins: [pageMixins, tableHeight],
   components: {
     iDialog,
     iInput,
@@ -40,9 +38,12 @@ export default {
   props: {
     title: {type: String, default: '拒绝'},
     value: {type: Boolean},
+    multipleSelection: {type: Array, default: () => []},
   },
   data() {
-    return {}
+    return {
+      approvalComments: ''
+    }
   },
   mounted() {
   },
@@ -50,16 +51,35 @@ export default {
     clearDiolog() {
       this.$emit('input', false)
     },
+    save(){
+      if(!this.approvalComments){
+        iMessage.warn('请输入拒绝原因')
+        return
+      }
+      this.iDialogLoading = true
+      reject({
+        applyIds: this.multipleSelection.map(item => item.id),
+        assignId: this.approvalComments
+      }).then((res) => {
+        const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
+        if (Number(res.code) === 0) {
+          iMessage.success(result);
+          this.$emit('input', false)
+        } else {
+          iMessage.error(result);
+        }
+        this.iDialogLoading = false
+      }).catch(() => {
+        this.iDialogLoading = false
+      });
+    }
   },
   watch: {
     value(val) {
       if (val) {
-        this.rejectReason = ''
+        this.approvalComments = ''
       }
     },
-    save(){
-      this.rejectReason = ''
-    }
   }
 }
 </script>

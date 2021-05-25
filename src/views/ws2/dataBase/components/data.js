@@ -7,7 +7,7 @@ import { permissionTitle } from '@/utils'
 export const form = {
      'search.partNameZh': '', //零件名称(中)
      'search.partNum': '', //零件号
-     'search.tmCartypeProId': "", //车型项目
+     'search.tmCartypeProId': [], //车型项目
      'search.categoryName': "", //材料组
      'search.nomiType': "", //材料组
      'search.deptId': "", //材料组

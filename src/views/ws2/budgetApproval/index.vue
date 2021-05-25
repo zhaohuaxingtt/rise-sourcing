@@ -82,16 +82,14 @@
           </el-date-picker>
         </el-form-item>
       </el-form>
-
-
     </iSearch>
     <iCard>
       <div class="icardHeader">
         <div></div>
         <div>
-          <iButton @click="exportFile">{{ $t('LK_PIZHUAN') }}</iButton>
-          <iButton @click="rejectShow = true">{{ $t('LK_JUJUE') }}</iButton>
-          <iButton @click="transferShow = true">{{ $t('LK_ZHUANPAI') }}</iButton>
+          <iButton @click="approvalBtn">{{ $t('LK_PIZHUAN') }}</iButton>
+          <iButton @click="rejectShowBtn">{{ $t('LK_JUJUE') }}</iButton>
+          <iButton @click="transferBtn">{{ $t('LK_ZHUANPAI') }}</iButton>
         </div>
       </div>
       <iTableList
@@ -113,7 +111,8 @@
           </div>
         </template>
         <template #budgetApplyAmount="scope">
-          <div class="linkStyle"><span @click="clickBudgetApplyAmountShow(scope.row.budgetApplyAmount)">{{ scope.row.budgetApplyAmount }}</span>
+          <div class="linkStyle" :class="(Number(scope.row.budgetApplyAmount) > Number(scope.row.budgetLeftoverAmount)) && 'red'"><span
+              @click="clickBudgetApplyAmountShow(scope.row.budgetApplyAmount)">{{ scope.row.budgetApplyAmount }}</span>
           </div>
         </template>
         <template #approvalStatus="scope">
@@ -146,11 +145,12 @@
     ></budgetApplyAmount>
     <reject
         v-model="rejectShow"
-        :RFQName="RFQName"
+        :multipleSelection="multipleSelection"
     ></reject>
     <transfer
         v-model="transferShow"
-        :RFQName="RFQName"
+        :applyUserIdList="applyUserIdList"
+        :multipleSelection="multipleSelection"
     ></transfer>
   </div>
 </template>
@@ -164,6 +164,7 @@ import {
   carCombo,
   statusCombo,
   userCombo,
+  alert
 } from "@/api/ws2/budgetApproval";
 import {
   iTableList
@@ -295,10 +296,50 @@ export default {
     handleSelectionChange(list) {
       this.multipleSelection = list
     },
-    exportFile() {
-      if (!this.multipleSelection.length) return iMessage.warn(this.$t('请先选择'))
-      excelExport(this.multipleSelection, this.tableTitle, '材料组汇总')
+    approvalBtn() {
+      if (this.multipleSelection.length == 0) {
+        iMessage.warn('请先勾选')
+        return
+      }
+      if(this.multipleSelection.some(item => item.budgetApplyAmount > item.budgetLeftoverAmount)){
+        let redMultipleSelection = []
+        this.multipleSelection.map(item => {
+          if(item.budgetApplyAmount > item.budgetLeftoverAmount){
+            redMultipleSelection.push(item)
+          }
+        })
+        // this.iDialogLoading = true
+        alert(redMultipleSelection).then((res) => {
+          const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
+          if (Number(res.code) === 0) {
+            iMessage.success(result);
+          } else {
+            iMessage.error(result);
+          }
+          // this.iDialogLoading = false
+        }).catch(() => {
+          // this.iDialogLoading = false
+        });
+      }
     },
+    transferBtn() {
+      if (this.multipleSelection.length == 0) {
+        iMessage.warn('请先勾选')
+      } else if (this.multipleSelection.length >= 0) {
+        this.transferShow = true
+      }
+    },
+    rejectShowBtn() {
+      if(this.multipleSelection.some(item => item.approvalStatus == 3)){
+        iMessage.warn('选项中已有被拒绝的项')
+        return
+      }
+      if (this.multipleSelection.length == 0) {
+        iMessage.warn('请先勾选')
+        return
+      }
+      this.rejectShow = true
+    }
   }
 }
 </script>
@@ -309,6 +350,12 @@ export default {
     color: #1663F6;
     border-bottom: 1px solid #1663F6;
     cursor: pointer;
+  }
+  &.red{
+    span{
+      color: #E30D0D;
+      border-bottom: 1px solid #E30D0D;
+    }
   }
 }
 

@@ -99,7 +99,7 @@
         <div class="header margin-bottom20">
           <div class="search">
             {{ $t('LK_CAILIAOZUBIANHAOZHONGWENMINGDEWEN') }}:
-            <iInput v-model="form['search.materialName']" placeholder="可输入编号中德文名称">
+            <iInput v-model="form['search.materialName']" :placeholder="$t('LK_QINGSHURU')">
               <i slot="suffix" class="el-input__icon el-icon-search" @click="sure"></i>
             </iInput>
             {{ $t('LK_LINJIANLIUWEIHAO') }}:

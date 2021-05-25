@@ -33,6 +33,30 @@ export function userCombo(parmars) {
         data: parmars
     })
 }
+//转派
+export function assign(parmars) {
+    return VUE_APP_BUDGET({
+        url: '/apply/assign',
+        method: 'POST',
+        data: parmars
+    })
+}
+//拒绝
+export function reject(parmars) {
+    return VUE_APP_BUDGET({
+        url: '/apply/reject',
+        method: 'POST',
+        data: parmars
+    })
+}
+//批准前提示
+export function alert(parmars) {
+    return VUE_APP_BUDGET({
+        url: '/ratify/alert',
+        method: 'POST',
+        data: parmars
+    })
+}
 export function getCardDetailPulldown(parmars) {
     return VUE_APP_BUDGET({
         url: '/getCardDetailPulldown',

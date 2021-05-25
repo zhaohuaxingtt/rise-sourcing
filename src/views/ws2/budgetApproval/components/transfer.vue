@@ -3,7 +3,8 @@
  * @Date: 2021-04-21 17:24:15
 -->
 <template>
-  <iDialog :title="$t(title)" :visible.sync="value" width="381px" top="0" @close='clearDiolog' v-loading="iDialogLoading" class="iDialogSaveAs"
+  <iDialog :title="$t(title)" :visible.sync="value" width="381px" top="0" @close='clearDiolog'
+           v-loading="iDialogLoading" class="iDialogSaveAs"
            :modal-append-to-body='false'>
     <div slot="title" class="title">
       <div class="text">{{ $t(title) }}</div>
@@ -11,15 +12,15 @@
     <p class="newVersion">采购员</p>
     <div class="changeContent">
       <iSelect
-          :placeholder="$t('LK_QINGXUANZE')"
-          v-model="transferModel"
+          :placeholder="$t('partsprocure.PLEENTER')"
+          v-model="applyUserId"
           filterable
           clearable
       >
         <el-option
-            :value="item.modelProtitesName"
-            :label="item.modelProtitesName"
-            v-for="(item, index) in []"
+            :value="item.linieID"
+            :label="item.linieName"
+            v-for="(item, index) in applyUserIdList"
             :key="index"
         ></el-option>
       </iSelect>
@@ -32,9 +33,7 @@
 <script>
 import {iDialog, iSelect, iButton, iMessage} from 'rise'
 import {pageMixins} from "@/utils/pageMixins";
-import {
-  saveNewVersion
-} from "@/api/ws2/budgetManagement/investmentList";
+import {assign} from "@/api/ws2/budgetApproval";
 
 export default {
   mixins: [pageMixins],
@@ -46,9 +45,12 @@ export default {
   props: {
     title: {type: String, default: '转派'},
     value: {type: Boolean},
+    applyUserIdList: {type: Array, default: () => []},
+    multipleSelection: {type: Array, default: () => []},
   },
   data() {
     return {
+      applyUserId: '',
       transferModel: '',
       iDialogLoading: false,
     }
@@ -62,7 +64,22 @@ export default {
     clearDiolog2() {
     },
     save() {
-      let _this = this
+      this.iDialogLoading = true
+      assign({
+        applyIds: this.multipleSelection.map(item => item.id),
+        assignId: this.applyUserId
+      }).then((res) => {
+        const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
+        if (Number(res.code) === 0) {
+          iMessage.success(result);
+          this.$emit('input', false)
+        } else {
+          iMessage.error(result);
+        }
+        this.iDialogLoading = false
+      }).catch(() => {
+        this.iDialogLoading = false
+      });
     },
   },
   watch: {}
@@ -75,6 +92,7 @@ export default {
     transform: translateY(-50%);
   }
 }
+
 .title {
   position: relative;
   display: inline-block;
@@ -93,10 +111,15 @@ export default {
     color: red;
   }
 }
-.newVersion{
+
+.newVersion {
   font-size: 14px;
   color: #000000;
-  margin-bottom: 6px;
+}
+
+.changeContent {
+  margin-top: 6px;
+  margin-bottom: 20px;
 }
 
 </style>

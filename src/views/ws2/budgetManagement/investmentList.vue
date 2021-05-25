@@ -13,15 +13,7 @@
         <img class="editIcon" src="../../../assets/images/editCar.png" alt="">
         <div class="infoIcard">
           <div class="search">
-            <Popover
-                placement="top-start"
-                trigger="hover">
-              <div class="popoverDiv">
-                <p>{{$t('LK_BANBENHAO2')}}</p>
-              </div>
-              <label slot="reference">{{ $t('LK_BANBENHAO2') }}:</label>
-            </Popover>
-<!--            <label :title="$t('LK_BANBENHAO2')">{{ $t('LK_BANBENHAO2') }}:</label>-->
+            <label>{{ $t('LK_BANBENHAO2') }}:</label>
             <iSelect
                 v-show="!pageEdit"
                 :placeholder="$t('LK_QINGXUANZE')"
@@ -36,30 +28,20 @@
                   :key="index"
               ></el-option>
             </iSelect>
-            <span v-show="pageEdit">{{ versionName }}</span>
+            <span v-show="pageEdit" class="infoIcardValue">{{ versionName }}</span>
           </div>
           <div>
+            <label>{{ $t('LK_CHEXINMINGCENG') }}:</label>
             <Popover
+                class="infoIcardValue"
+                :content="form['search.carTypeName']"
                 placement="top-start"
                 trigger="hover">
-              <div class="popoverDiv">
-                <p>{{$t('LK_CHEXINMINGCENG')}}</p>
-              </div>
-              <label slot="reference">{{ $t('LK_CHEXINMINGCENG') }}:</label>
+              <span slot="reference">{{ form['search.carTypeName'] }}</span>
             </Popover>
-<!--            <label :title="$t('LK_CHEXINMINGCENG')">{{ $t('LK_CHEXINMINGCENG') }}:</label>-->
-            <span>{{ form['search.carTypeName'] }}</span>
           </div>
           <div class="search" v-show="(params.sourceStatus == 2) && pageEdit">
-            <Popover
-                placement="top-start"
-                trigger="hover">
-              <div class="popoverDiv">
-                <p>{{$t('LK_GUANLIANCHEXIN')}}</p>
-              </div>
-              <label slot="reference">{{ $t('LK_GUANLIANCHEXIN') }}:</label>
-            </Popover>
-<!--            <label :title="$t('LK_GUANLIANCHEXIN')">{{ $t('LK_GUANLIANCHEXIN') }}:</label>-->
+            <label>{{ $t('LK_GUANLIANCHEXIN') }}:</label>
             <iSelect
                 :placeholder="$t('LK_QINGXUANZE')"
                 v-model="form['search.relatedCarType']"
@@ -85,11 +67,11 @@
               <label slot="reference">{{ $t('LK_CAIGOUGONGCHANG') }}:</label>
             </Popover>
 <!--            <label :title="$t('LK_CAIGOUGONGCHANG')">{{ $t('LK_CAIGOUGONGCHANG') }}:</label>-->
-            <span>{{ form['search.purchasingFactory'] }}</span>
+            <span class="infoIcardValue">{{ form['search.purchasingFactory'] }}</span>
           </div>
           <div v-show="params.sourceStatus == 1">
             <label :title="$t('SOP')">SOP：</label>
-            <span>{{ form['search.sopDate'] }}</span>
+            <span class="infoIcardValue">{{ form['search.sopDate'] }}</span>
           </div>
           <div class="search">
             <Popover
@@ -101,13 +83,13 @@
               <label slot="reference">{{ $t('LK_PIZHUNTOUZHI') }}:</label>
             </Popover>
 <!--            <label :title="$t('LK_PIZHUNTOUZHI')">{{ $t('LK_PIZHUNTOUZHI') }}:</label>-->
-            <span v-show="!pageEdit">{{ form['search.approvalInvestment'] }}</span>
+            <span v-show="!pageEdit" class="infoIcardValue">{{ form['search.approvalInvestment'] }}</span>
             <iInput v-show="pageEdit" v-model="form['search.approvalInvestment']"></iInput>
           </div>
         </div>
-        <div id="chart1" style="width: 200px; height: 200px"></div>
-        <div id="chart2" style="width: 640px; height: 200px"></div>
-        <div id="chart3" style="width: 420px; height: 200px"></div>
+        <div id="chart1"></div>
+        <div id="chart2"></div>
+        <div id="chart3"></div>
         <div class="legend">
           <div>{{ $t('LK_FEIAEKO') }}</div>
           <div>AEKO</div>
@@ -544,7 +526,10 @@ export default {
           iMessage.error(result2);
         }
         if (Number(res[3].code) === 0) {
-          this.liniePullDown = res[3].data
+          this.liniePullDown = res[3].data.map(item => {
+            item.linieID = Number(item.linieID)
+            return item
+          })
         } else {
           iMessage.error(result3);
         }
@@ -661,7 +646,12 @@ export default {
                 },
                 axisLine: {
                   show: false,
-
+                },
+                axisLabel: {
+                  textStyle: {
+                    color: '#485465',
+                    fontSize: 10
+                  },
                 },
               },
               yAxis: {
@@ -700,7 +690,7 @@ export default {
                   data: [contingency]
                 },
                 {
-                  name: 'AEKO',
+                  name: '',
                   type: 'bar',
                   stack: 'total',
                   color: '#FFB04D',
@@ -717,7 +707,7 @@ export default {
                   data: [aekoValue]
                 },
                 {
-                  name: '非AEKO',
+                  name: '',
                   type: 'bar',
                   stack: 'total',
                   color: '#B3D0FF',
@@ -734,7 +724,7 @@ export default {
                   data: [notAekoValue],
                   itemStyle: {
                     normal: {
-                      barBorderRadius: [5, 5, 0, 0],
+                      // barBorderRadius: [5, 5, 0, 0],
                     }
                   }
                 },
@@ -760,7 +750,7 @@ export default {
             };
             let option2 = {
               tooltip: {
-
+                show: false
               },
               grid: {
                 left: '0%',
@@ -771,7 +761,18 @@ export default {
               },
               xAxis: {
                 type: 'category',
-                data: ['非AEKO', '未申请', '已申请', '未定点', '已定点', '无BA', '有BA', '无BM', '有BM'],
+                // data: ['非AEKO', '未申请', '已申请', '未定点', '已定点', '无BA', '有BA', '无BM', '有BM'],
+                data: [
+                  this.$t("LK_FEIAEKO"),
+                  this.$t("LK_WEISHENQING"),
+                  this.$t("LK_YISHENQING"),
+                  this.$t("LK_WEIDINGDIAN"),
+                  this.$t("LK_YIDINGDIAN"),
+                  this.$t("LK_WUBA"),
+                  this.$t("LK_YOUBA"),
+                  this.$t("LK_WUBM"),
+                  this.$t("LK_YOUBM"),
+                ],
                 axisTick: {
                   show: false
                 },
@@ -784,7 +785,7 @@ export default {
                 axisLabel: {
                   textStyle: {
                     color: '#485465',
-
+                    fontSize: 10
                   },
                 },
               },
@@ -830,7 +831,7 @@ export default {
                     notAekoPriceDetail.bmAmount]
                 },
                 {
-                  name: '非AEKO',
+                  name: '',
                   type: 'bar',
                   stack: 'total',
                   color: '#B3D0FF',
@@ -859,7 +860,7 @@ export default {
                   ],
                   itemStyle: {
                     normal: {
-                      barBorderRadius: [5, 5, 0, 0],
+                      // barBorderRadius: [5, 5, 5, 5],
                     }
                   }
                 },
@@ -867,7 +868,7 @@ export default {
             }
             let option3 = {
               tooltip: {
-
+                show: false
               },
               grid: {
                 left: '0%',
@@ -878,7 +879,14 @@ export default {
               },
               xAxis: {
                 type: 'category',
-                data: ['AEKO', '有BA', 'BA', '无BM', '有BM'],
+                // data: ['AEKO', '有BA', 'BA', '无BM', '有BM'],
+                data: [
+                  'AEKO',
+                  this.$t("LK_WUBA"),
+                  this.$t("LK_YOUBA"),
+                  this.$t("LK_WUBM"),
+                  this.$t("LK_YOUBM"),
+                ],
                 axisTick: {
                   show: false
                 },
@@ -891,7 +899,7 @@ export default {
                 axisLabel: {
                   textStyle: {
                     color: '#485465',
-
+                    fontSize: 10
                   },
                 },
               },
@@ -929,7 +937,7 @@ export default {
                   data: [0, aekoPriceDetail.baAmount, 0, aekoPriceDetail.bmAmount, 0]
                 },
                 {
-                  name: '非AEKO',
+                  name: '',
                   type: 'bar',
                   stack: 'total',
                   color: '#FFB04D',
@@ -953,7 +961,7 @@ export default {
                     aekoPriceDetail.bmAmount],
                   itemStyle: {
                     normal: {
-                      barBorderRadius: [5, 5, 0, 0],
+                      // barBorderRadius: [5, 5, 0, 0],
                     }
                   }
                 },
@@ -1104,6 +1112,22 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+#chart1{
+  width: 200px;
+  height: 200px;
+  align-self: flex-end;
+}
+#chart2{
+  width: 640px;
+  height: 180px;
+  margin: 0 30px;
+  align-self: flex-end;
+}
+#chart3{
+  width: 420px;
+  height: 180px;
+  align-self: flex-end;
+}
 .input-with-select {
   width: 200px;
 }
@@ -1116,8 +1140,10 @@ export default {
 
 .search {
   ::v-deep .el-input, ::v-deep .el-select {
-    width: 220px;
-    margin-right: 30px;
+    width: calc(100% - 80px);
+    .el-input{
+      width: 100%;
+    }
   }
 }
 
@@ -1160,25 +1186,31 @@ export default {
     .infoIcard {
       margin-left: 49px;
       max-width: 170px;
-      div {
+      > div {
+        display: flex;
         font-size: 14px;
-        margin-bottom: 10px;
-
+        height: 35px;
+        line-height: 35px;
         label {
-          display: inline-block;
+          display: block;
           min-width: 80px;
           max-width: 80px;
           word-break: break-all;
           white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;
-          vertical-align: text-bottom;
         }
 
         &:nth-of-type(1), &:nth-of-type(2) {
           label {
             font-weight: bold;
           }
+        }
+        .infoIcardValue{
+          max-width: 100%;
+          text-overflow: ellipsis;
+          overflow: hidden;
+          white-space: nowrap;
         }
       }
     }

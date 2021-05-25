@@ -646,6 +646,8 @@
         'LK_BAIWANYUAN': '百万元',//百万元
         'LK_ZONGYUSUAN': '总预算',//总预算
         'LK_DINGDIANJINE': '定点⾦额',//定点⾦额
+        'LK_ZUIXINGENGXINREN': '最新更新人',//最新更新人
+        'LK_ZUIXINGENGXINSHIJIAN': '最新更新时间',//最新更新时间
         'LK_BMDAN': 'BM单',//BM单
         'LK_FUKUAN': '付款',//付款
         'LK_CHEXINXIANGMU': '⻋型项⽬',//⻋型项⽬
@@ -730,5 +732,7 @@
         'LK_REGINOCONTROLLER': '区域控制员',    //  区域控制员
         'LK_RSODDNUMBERS': 'RS单号',    //  RS单号
         'LK_SPAREPARTSNUMBER': '零件号',    //  零件号
+
+        'LK_XIAYIBU': '下一步',    //  下一步
     })
 }))

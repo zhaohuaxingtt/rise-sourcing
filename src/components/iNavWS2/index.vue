@@ -21,7 +21,7 @@
           @click="$emit('nextStep')"
           :disabled="$store.state.mouldManagement.isBudget == 3"
           v-loading="nextStepLoading"
-      >下一步
+      >{{ $t('LK_XIAYIBU') }}
       </iButton>
       <!--      <div class="logButton" @click="$emit('click')">-->
       <!--        <icon symbol name="iconrizhiwuzi" class="icon"/>-->
@@ -152,7 +152,7 @@ export default {
       flex-direction: row;
 
       > li {
-        max-width: 130px;
+        //max-width: 130px;
         color: #000000;
         line-height: 23px;
         font-size: 20px;

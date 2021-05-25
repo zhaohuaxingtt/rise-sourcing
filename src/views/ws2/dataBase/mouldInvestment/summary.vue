@@ -17,6 +17,7 @@
               v-model="form['search.tmCartypeProId']"
               filterable
               clearable
+              multiple
           >
             <el-option
                 :value="item.id"
@@ -143,7 +144,7 @@ export default {
       let params = {
         current: this.page.currPage,
         size: this.page.pageSize,
-        tmCartypeProId: form['search.tmCartypeProId'],
+        tmCartypeProIds: form['search.tmCartypeProId'],
         categoryName: form['search.categoryName'],
         partNum: form['search.partNum'],
         // partNameZh: form['search.partNameZh'],
