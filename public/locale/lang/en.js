@@ -560,6 +560,7 @@
         'LK_XIANGNEIZHOUZHUANCAILIAOZONGHEJIAGE': 'Inbox turnover material price',//箱内周转材料综合价格
         'LK_XIANGNEIZHOUZHUANCAILIAOZONGHESHOUMING': 'Inbox turnover material life',//箱内周转材料综合寿命
         'LK_XIANGQINGXINXI': 'Detail',//详情信息
+        "LK_TANPANZS":'谈判助手',
         'LK_XIANGMUCHEXING': 'Project Car Type',//项目车型
         'LK_XINJIANXINXIDANQIANSHOU': 'TP Apps Sign in',//新件信息单签收
         'LK_XINJIANXINXILIUSHUIDANHAO': 'New Tp Sequence No.',//新件信息流水单号

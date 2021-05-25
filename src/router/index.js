@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-05-24 17:56:07
+ * @LastEditTime: 2021-05-25 13:08:20
  * @LastEditors: Please set LastEditors
  * @Description: 系统静态路由.
  * @FilePath: \rise\src\router\index.js
@@ -112,13 +112,31 @@ export const staticRouter = [{
                     import ("@/views/partsrfq/home"),
             },
             {
-                path: "/sourcing/partsrfq/editordetail", //RFQ详情
+                path: "/sourcing/partsrfq/editordetail", //RFQ详情待办
+                name: "editordetail",
+                meta: {
+                    title: "RFQ详情待办",
+                },
+                component: () =>
+                    import ("@/views/partsrfq/editordetail"),
+            },
+            {
+                path: "/sourcing/partsrfq/editordetailinfo", //RFQ详情
                 name: "editordetail",
                 meta: {
                     title: "RFQ详情",
                 },
                 component: () =>
-                    import ("@/views/partsrfq/editordetail"),
+                    import ("@/views/partsrfq/editordetailInfo"),
+            },
+            {
+                path: "/sourcing/partsrfq/assistant", //RFQ谈判助手
+                name: "editordetail",
+                meta: {
+                    title: "谈判助手",
+                },
+                component: () =>
+                    import ("@/views/partsrfq/assistant"),
             },
             {
                 path: "/sourcing/partsrfq/editordetail/partScoring", //零件评分

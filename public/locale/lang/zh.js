@@ -560,6 +560,7 @@
         'LK_XIANGNEIZHOUZHUANCAILIAOZONGHEJIAGE': '箱内周转材料综合价格 ', //箱内周转材料综合价格
         'LK_XIANGNEIZHOUZHUANCAILIAOZONGHESHOUMING': '箱内周转材料综合寿命 ', //箱内周转材料综合寿命
         'LK_XIANGQINGXINXI': '详情信息', //详情信息
+        "LK_TANPANZS":'谈判助手',
         'LK_XIANGMUCHEXING': '项目车型 ', //项目车型
         'LK_XINJIANXINXIDANQIANSHOU': '新件信息单签收', //新件信息单签收
         'LK_XINJIANXINXILIUSHUIDANHAO': '新件信息流水单号 ', //新件信息流水单号
