@@ -1,0 +1,102 @@
+<!--
+ * @Descripttion: 
+ * @Author: Luoshuang
+ * @Date: 2021-05-21 14:30:41
+ * @LastEditTime: 2021-05-24 17:37:38
+-->
+<template>
+  <el-table fit tooltip-effect='light' :height="height" :data='tableData' v-loading='tableLoading' @selection-change="handleSelectionChange" :empty-text="$t('LK_ZANWUSHUJU')" ref="moviesTable" :class="radio && 'radio'">
+    <el-table-column v-if="selection" type='selection' width="50" align='center'></el-table-column>
+    <el-table-column v-if='indexKey' type='index' width='50' align='center' label='#'>
+      <template slot-scope="scope">
+        {{tableIndexString+(scope.$index+1)}}
+      </template>
+    </el-table-column>
+    <template v-for="(items,index) in tableTitle">
+      <!----------------------需要高亮的列并且带有打开详情事件------------------------>
+      <el-table-column :key="index" align='center' :width="items.width" :show-overflow-tooltip='items.tooltip' v-if='items.props == activeItems' :prop="items.props" :label="items.key ? $t(items.key) : items.name">
+        <template slot-scope="row"><span class="openLinkText cursor" @click="openPage(row.row)">{{row.row[activeItems]}}</span></template>
+      </el-table-column>
+      <!----------------------需要进行排序的列------------------------>
+      <el-table-column :key="index" align='center' :width="items.width"  v-else-if='items.props == "paixu"'>
+        <tempalte slot-scope="scope">
+          <span @click="updateSlot(scope.row,0)" v-if='scope.row.recordId && parseInt(scope.row.recordId)'>
+            <icon symbol class="cursor" name='iconliebiaoyizhiding' ></icon>
+          </span>
+          <span @click="updateSlot(scope.row,1)" v-else>
+            <icon symbol class="cursor" name='iconliebiaoweizhiding'></icon>
+          </span>
+        </tempalte>
+      </el-table-column>
+      <el-table-column :key="index" align='center' :width="items.width" :show-overflow-tooltip='items.tooltip' v-else-if="items.editable" :prop="items.props" :label="items.key ? $t(items.key) : items.name">
+        <template slot="header">
+          <span>{{items.key ? $t(items.key) : items.name}}</span>
+          <span v-if="items.required" style="color:red;">*</span>
+        </template>
+        <template slot-scope="scope">
+          <iInput v-if="items.type === 'input'" v-model="scope.row[items.props]"></iInput>
+          <iSelect v-else-if="items.type === 'select'" v-model="scope.row[items.props]">
+            <el-option
+              :value="item.value"
+              :label="item.label"
+              v-for="(item, index) in items.selectOption"
+              :key="index"
+            ></el-option>
+          </iSelect>
+          <iDatePicker v-else-if="items.type === 'date'" v-model="scope.row[items.props]" format="yyyy-MM-dd" value-format="yyyy-MM-dd"></iDatePicker>
+          <iInput v-if="items.type === 'rate'" v-model="scope.row[items.props]"></iInput>
+        </template>
+      </el-table-column>
+      <!-------------------------正常列--------------------------->
+      <el-table-column :key="index" align='center' :width="items.width" :show-overflow-tooltip='items.tooltip'  v-else :label="items.key ? $t(items.key) : items.name" :prop="items.props"></el-table-column>
+    </template>
+  </el-table>
+</template>
+<script>
+import {icon,iSelect,iInput, iDatePicker} from 'rise'
+import {_getMathNumber} from '@/utils'
+export default{
+  components:{icon,iSelect,iInput, iDatePicker},
+  props:{
+    tableData:{type:Array},
+    tableTitle:{type:Array},
+    tableLoading:{type:Boolean,default:false},
+    selection:{type:Boolean,default:true},
+    height:{type:Number||String},
+    activeItems:{type:String,default:'b'},
+    radio:{type:Boolean,default:false},// 是否单选
+    tableIndexString:{
+      type:String,
+      default:''
+    },
+    indexKey:Boolean,
+    notEdit:Boolean
+  },
+  inject:['vm'],
+  methods:{
+    handleSelectionChange(val){
+      this.$emit('handleSelectionChange',val)
+    },
+    openPage(e){
+      this.$emit('openPage',e)
+    },	
+    activeTop(e){
+      this.$emit('activeTop',e)
+    },
+    updateSlot(e,a){
+      this.$emit('updateSlot',[e,a])
+    },
+  }
+}
+</script>
+<style lang='scss' scoped>
+  .openLinkText{
+    color:$color-blue;
+    text-decoration: underline;
+  }
+  .radio{
+    ::v-deep thead .el-table-column--selection .cell {
+    display: none;
+	}
+  }
+</style>
