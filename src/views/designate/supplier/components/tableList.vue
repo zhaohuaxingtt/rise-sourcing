@@ -48,7 +48,7 @@ export default{
     indexLabel:{type:String,default:'#'},
     height:{type:Number||String},
     activeItems:{type:String,default:'b'},
-	  radio:{type:Boolean,default:false}, //是否单选
+    radio:{type:Boolean,default:false}, //是否单选
     treeProps: {type:Object}
   },
   inject:['vm'],
@@ -89,9 +89,9 @@ export default{
     color:$color-blue;
   }
   .radio {
-	  ::v-deep thead .el-table-column--selection .cell {
-	  	display: none;
-	  }
+    ::v-deep thead .el-table-column--selection .cell {
+      display: none;
+    }
   }
   ::v-deep.el-table.moviesTable {
     .tree {
