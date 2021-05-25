@@ -12,27 +12,32 @@
         @handleSelectionChange="handleSelectionChange"
         :activeItems="'partNum'"
     >
-      <!-- <template #data1="scope">
-        <a class="table-a" href="javascript: ;" @click="jumpDetails">{{scope.row.data1}}</a>
-      </template> -->
+      <template #baNum="scope">
+        <div>{{scope.row.baNum === '' ? '无' : scope.row.baNum}}</div>
+      </template>
     </iTableList>
 
     <!-- 申请BA单弹窗 -->
     <ApplyPopup :visible="visible" @changeLayer="changeLayer" @confirm="layerConfirm">
       <span slot="nameArry" class="span-color">
-        名字
+        {{nameList}}
       </span>
 
       <template slot="table">
-        <iTableList
-          :getSummaries="getSummaries"
-          :tableData="tableLayerListData1"
-          :tableTitle="tableLayerTitle1"
-          :tableLoading="tableLayerLoading"
-          :selection="false"
-          :show-summary="true"
-      >
-      </iTableList>
+
+        <template v-for="(item, index) in tableLayerListData">
+          <iTableList
+            :getSummaries="getSummaries"
+            :tableData="item"
+            :tableTitle="tableLayerTitle"
+            :tableLoading="tableLayerLoading"
+            :selection="false"
+            :show-summary="true"
+          >
+            
+          </iTableList>
+        </template>
+        
       </template>
 
     </ApplyPopup>
@@ -43,26 +48,32 @@
 import { tableHeight } from "@/utils/tableHeight";
 import { detailsTableHead, layerTableHead1, layerTableHead2 } from "./data";
 import { iButton, iMessage } from "rise";
+import { getDetail, baConfirm } from "@/api/ws2/baApply/baCommodityApply";
 import ApplyPopup from "./applyPopup";
 import {
   iTableList
 } from "@/components";
+import { form } from '../../../partsign/home/components/data';
 
 export default {
+  props: {
+    tableListData: {type: Array, default: []},
+    tableLoading: {type: Boolean, default: false},
+  },
+  computed: {
+    nameList(){
+      const key = this.$store.state.baApply.baAcountType === 2 ? 'locationFactoryName' : 'baNum';
+      return this.selectTableData.map(item => item[key]).join('、');
+    }
+  },
   data(){
     return {
-      tableListData: [],
       tableTitle: detailsTableHead,
-      tableLoading: false,
       selectTableData: [],
       visible: false,
-      tableLayerListData1: [
-        {data1: '11111111', data2: '11111111', data3: '11111111', data4: '11111111', data5: '11111111'},
-        {data1: '11111111', data2: '11111111', data3: '11111111', data4: '11111111', data5: '11111111'},
-        {data1: '11111111', data2: '11111111', data3: '11111111', data4: '11111111', data5: '11111111'},
-      ],
-      tableLayerTitle1: layerTableHead1,
-      tableLayerLoading: false
+      tableLayerListData: [],
+      tableLayerTitle: [],
+      tableLayerLoading: false,
     }
   },
   mixins: [tableHeight],
@@ -76,7 +87,10 @@ export default {
   methods: {
 
     layerConfirm(){
-      
+      console.log('11111', baConfirm, this.tableLayerListData);
+      baConfirm(this.tableLayerListData).then(res => {
+        console.log('11111', res);
+      })
     },
 
     changeLayer(visible){
@@ -84,7 +98,6 @@ export default {
     },
 
     getSummaries(param){
-      console.log('param', param);
       const { columns, data } = param;
       const sums = [];
 
@@ -93,7 +106,7 @@ export default {
           sums[index] = 'Total';
           return;
         }
-        if(column.property === "data5"){  //  只有金额字段才需要显示总价
+        if(column.property === "amount"){  //  只有金额字段才需要显示总价
           const values = data.map(item => Number(item[column.property]));
           console.log('values', values);
           if (!values.every(value => isNaN(value))) {
@@ -118,10 +131,25 @@ export default {
     
     //  申请BA单
     applyBA(){
-      // if(this.selectTableData){
-      //   return iMessage.warn('请先选择车型项目');
-      // }
-      this.visible = true;
+      if(!this.selectTableData.length){
+        return iMessage.warn('请先选择车型项目');
+      }
+      this.getDetail();
+    },
+
+    getDetail(){
+      getDetail(this.selectTableData).then(res => {
+        console.log('明细：', res);
+        const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn;
+
+        if(res.data){
+          this.tableLayerTitle = this.$store.state.baApply.baAcountType === 2 ? layerTableHead2 : layerTableHead1;
+          this.tableLayerListData = res.data;
+          this.visible = true;
+        }else{
+          iMessage.error(result);
+        }
+      })
     },
 
     handleSelectionChange(val) {

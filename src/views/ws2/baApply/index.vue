@@ -48,7 +48,7 @@
           :activeItems="'partNum'"
       >
         <template #carTypeProjectName="scope">
-          <a class="table-a" href="javascript: ;" @click="jumpDetails">{{scope.row.carTypeProjectName}}</a>
+          <a class="table-a" href="javascript: ;" @click="jumpDetails(scope)">{{scope.row.carTypeProjectName}}</a>
         </template>
       </iTableList>
       <iPagination
@@ -108,11 +108,6 @@ export default {
       tableTitle: indexTableHead,
       tableLoading: false,
       selectTableData: [],
-      // tableParam: {
-      //   cartypeProjectId: 0,
-      //   current: 1,
-      //   size: 10,
-      // },
       page: {
         currPage: 1,
         pageSize: 10,
@@ -135,7 +130,6 @@ export default {
         size: this.page.pageSize
       }
       findCarTypeList(param).then(res => {
-        console.log('1111111111', res);
         const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn;
         if(res.data){
           this.tableListData = res.data;
@@ -152,8 +146,8 @@ export default {
     },
 
     //  跳转详情
-    jumpDetails(){
-      this.$router.push({path: '/tooling/modelDetails'})
+    jumpDetails(scope){
+      this.$router.push({name: 'toolingModelDetails', params: {id: scope.row.tmCartypeProId}})
     },
 
     handleSelectionChange(val) {

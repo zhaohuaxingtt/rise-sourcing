@@ -9,17 +9,31 @@
     <DetailsSearch @reset="handleReset" @sure="handleSure" :isModelItem="true" />
 
     <iCard>
-      <DetailsTable />
+      <DetailsTable :tableListData="tableListData" :tableLoading="tableLoading" />
+      <iPagination
+          v-update
+          @size-change="handleSizeChange($event, handleSure)"
+          @current-change="handleCurrentChange($event, handleSure)"
+          background
+          :current-page="page.currPage"
+          :page-sizes="page.pageSizes"
+          :page-size="page.pageSize"
+          :layout="page.layout"
+          :total="page.totalCount"
+      />
     </iCard>
   </iPage>
 </template>
 
 <script>
-import {iPage, iMessage, iDialog, iButton, iCard} from "rise";
+import {iPage, iMessage, iDialog, iButton, iCard, iPagination} from "rise";
 import DetailsSearch from "./components/detailsSearch";
 import DetailsTable from "./components/detailsTable";
+import { findBaPartsList } from "@/api/ws2/baApply";
+import { pageMixins } from "@/utils/pageMixins";
 
 export default {
+  mixins: [pageMixins],
   components: {
     iPage,
     iMessage,
@@ -27,14 +41,52 @@ export default {
     iButton,
     DetailsSearch,
     DetailsTable,
-    iCard
+    iCard,
+    iPagination
+  },
+
+  data(){
+    return {
+      tableListData: [],
+      tableLoading: false,
+      page: {
+        currPage: 1,
+        pageSize: 10,
+      },
+      tmCartypeProId: '',
+    }
+  },
+
+  created(){
+    this.tmCartypeProId = this.$route.params.id;
   },
 
   methods: {
 
     //  查询
     handleSure(form){
-      console.log('handleSure', form);
+      this.tableLoading = true;
+      const param = {
+        ...form,
+        current: this.page.currPage,
+        size: this.page.pageSize,
+        baAcountType: 2,
+      }
+      findBaPartsList(param).then(res => {
+        this.tableListData = res.data;
+        this.page.currPage = ~~res.pageNum;
+        this.page.pageSize = ~~res.pageSize;
+        this.page.totalCount = ~~res.total;
+
+        this.tableLoading = false;
+      }).catch(err => {
+        this.tableLoading = false;
+      })
+    },
+
+    //  获取列表
+    getList(){
+
     },
 
     //  重置

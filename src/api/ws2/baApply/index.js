@@ -10,3 +10,39 @@ export function findCarTypeList(parmars) {
       data: parmars
   })
 }
+
+//  采购工厂列表
+export function getPurchaseFactoryPullDown(parmars) {
+  return VUE_APP_APPLY({
+      url: '/getPurchaseFactoryPullDown',
+      method: 'GET',
+      data: parmars
+  })
+}
+
+//  模具预算状态下拉
+export function getBudgetStatusPullDown(parmars) {
+  return VUE_APP_APPLY({
+      url: '/getBudgetStatusPullDown',
+      method: 'GET',
+      data: parmars
+  })
+}
+
+//  ba申请-车型列表
+export function findBaPartsList(parmars) {
+  return VUE_APP_APPLY({
+      url: '/findBaPartsList',
+      method: 'POST',
+      data: parmars
+  })
+}
+
+//  模具预算状态下拉
+export function getBaAccountType(parmars) {
+  return VUE_APP_APPLY({
+      url: '/getBaAccountType',
+      method: 'GET',
+      data: parmars
+  })
+}

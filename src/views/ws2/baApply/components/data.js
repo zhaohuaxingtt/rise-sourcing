@@ -6,40 +6,41 @@ export const indexFrom = {
 
 //  车型项目详情列表入参
 export const detailsForm = {
-  'search.cartypeProjectZh': '', //车型项目
-  'search.':  '', //  模具预算状态
-  'search.': '',  //  采购工厂
-  'search.': '', //  申请日期起止
+  'tmCartypeProId': '', //车型项目
+  'moldStatus':  '', //  模具预算状态
+  'locationFactoryId': '',  //  采购工厂
+  'startDate': '', //  申请开始时间
+  'endDate': '',  //  申请结束时间
 }
 
 //  BA申请table表头1
 export const layerTableHead1 = [
   {
-    props: 'data1',
+    props: 'carTypeName',
     name: '车型项目',
     key: 'LK_CHEXINGXIANGMU',
     tooltip: false
   },
   {
-    props: 'data2',
+    props: 'locationFactoryName',
     name: '采购工厂',
     key: 'LK_CAIGOUGONGCHANG',
     tooltip: false
   },
   {
-    props: 'data3',
+    props: 'deptName',
     name: '专业科室',
     key: 'LK_ZHUANYEKESHI',
     tooltip: false
   },
   {
-    props: 'data4',
+    props: 'baNum',
     name: 'BA号分配',
     key: 'LK_BANUMBERDISTRIBUTION',
     tooltip: false
   },
   {
-    props: 'data5',
+    props: 'amount',
     name: '金额（RMB）',
     key: 'LK_AMOUNTMONEYRMB',
     tooltip: false
@@ -49,25 +50,25 @@ export const layerTableHead1 = [
 //  BA申请table表头2
 export const layerTableHead2 = [
   {
-    props: 'data1',
+    props: 'locationFactoryName',
     name: '采购工厂',
     key: 'LK_CAIGOUGONGCHANG',
     tooltip: false
   },
   {
-    props: 'data2',
+    props: 'deptName',
     name: '专业科室',
     key: 'LK_ZHUANYEKESHI',
     tooltip: false
   },
   {
-    props: 'data3',
+    props: 'baNum',
     name: 'BA号分配',
     key: 'LK_BANUMBERDISTRIBUTION',
     tooltip: false
   },
   {
-    props: 'data4',
+    props: 'amount',
     name: '金额（RMB）',
     key: 'LK_AMOUNTMONEYRMB',
     tooltip: false
@@ -77,79 +78,79 @@ export const layerTableHead2 = [
 //  BA申请车型详情table表头
 export const detailsTableHead = [
   {
-    props: 'data1',
+    props: 'carTypeName',
     name: '车型项目',
     key: 'LK_CHEXINGXIANGMU',
     tooltip: false
   },
   {
-    props: 'data2',
+    props: 'locationFactoryName',
     name: '采购工厂',
     key: 'LK_CAIGOUGONGCHANG',
     tooltip: false
   },
   {
-    props: 'data3',
+    props: 'categoryName',
     name: '材料组',
     key: 'LK_CAILIAOZU',
     tooltip: false
   },
   {
-    props: 'data4',
+    props: 'deptName',
     name: '专业科室',
     key: 'LK_ZHUANYEKESHI',
     tooltip: false
   },
   {
-    props: 'data5',
+    props: 'baNum',
     name: 'BA号',
     key: 'LK_BANMUBER',
     tooltip: false
   },
   {
-    props: 'data6',
+    props: 'partsId',
     name: '零件号',
     key: 'LK_SPAREPARTSNUMBER',
     tooltip: false
   },
   {
-    props: 'data7',
+    props: 'partsName',
     name: '零件名称',
     key: 'LK_LINGJIANMINGCHENG',
     tooltip: false
   },
   {
-    props: 'data8',
+    props: 'designatedSupplierName',
     name: '定点供应商',
     key: 'LK_FIXEDPOINTSUPPLIER',
     tooltip: false
   },
   {
-    props: 'data9',
+    props: 'moldAmount	',
     name: '模具定点金额',
     key: 'LK_MODULFIXEDPOINTMONEY',
     tooltip: false
   },
   {
-    props: 'data10',
+    props: 'auditUserName',
     name: '区域控制员',
     key: 'LK_REGINOCONTROLLER',
     tooltip: false
   },
   {
-    props: 'data11',
+    props: 'rsNum',
     name: 'RS单号',
     key: 'LK_RSODDNUMBERS',
     tooltip: false
   },
   {
-    props: 'data12',
+    props: 'applyDate',
     name: '申请日期',
     key: 'LK_SHENQINGRIQI',
     tooltip: false
   },
   {
-    props: 'data12',
+    props: 'moldStatusName',
     name: '模具预算状态',
     key: 'LK_MOULDBUDGETSTATUS',
     tooltip: false

@@ -11,10 +11,12 @@
         v-loading="loadingiSearch"
     >
       <el-form>
+
+        <!-- 车型项目 -->
         <el-form-item :label="$t('LK_CHEXINXIANGMU')" v-if="isModelItem">
           <iSelect
               :placeholder="$t('partsprocure.CHOOSE')"
-              v-model="form['search.cartypeProjectZh']"
+              v-model="form['tmCartypeProId']"
               filterable
               @change="changeCarTypeProject"
               ref="carTypeProjectRef"
@@ -32,45 +34,49 @@
           </iSelect>
         </el-form-item>
 
+        <!-- 模具预算状态 -->
         <el-form-item :label="$t('LK_MOULDBUDGETSTATUS')">
           <iSelect
               :placeholder="$t('partsprocure.CHOOSE')"
-              v-model="form['search.']"
+              v-model="form['moldStatus']"
               filterable
               ref=""
           >
-            <!-- <el-option
-                :value="item.id"
-                :label="item.cartypeNname"
-                v-for="(item, index) in fromGroup"
+            <el-option
+                :value="item.moldStatus"
+                :label="item.mouldStatusName"
+                v-for="(item, index) in budgetStatus"
                 :key="index"
-            ></el-option> -->
+            ></el-option>
           </iSelect>
         </el-form-item>
 
+        <!-- 采购工厂列表 -->
         <el-form-item :label="$t('LK_CAIGOUGONGCHANG')">
           <iSelect
               :placeholder="$t('partsprocure.CHOOSE')"
-              v-model="form['search.']"
+              v-model="form['locationFactoryId']"
               filterable
               ref=""
           >
-            <!-- <el-option
-                :value="item.id"
-                :label="item.cartypeNname"
-                v-for="(item, index) in fromGroup"
+            <el-option
+                :value="item.locationFactoryId"
+                :label="item.locationFactoryName"
+                v-for="(item, index) in factoryList"
                 :key="index"
-            ></el-option> -->
+            ></el-option>
           </iSelect>
         </el-form-item>
 
+        <!-- 申请日期起止 -->
         <el-form-item :label="$t('LK_APPLYDATESTARTANDEND')">
           <el-date-picker
-            v-model="form['search.']"
+            @change="dateChange"
             type="daterange"
+            v-model="pickerDate"
             range-separator="至"
-            start-placeholder="开始日期"
-            end-placeholder="结束日期">
+            start-placeholder="YYYY-MM-DD"
+            end-placeholder="YYYY-MM-DD">
           </el-date-picker>
         </el-form-item>
         
@@ -82,6 +88,7 @@
 <script>
 import { detailsForm } from "./data";
 import { getCartypePulldown, saveCustomCart } from "@/api/ws2/budgetManagement/edit";
+import { getPurchaseFactoryPullDown, getBudgetStatusPullDown, getBaAccountType } from "@/api/ws2/baApply";
 import {
   iButton,
   iCard,
@@ -101,7 +108,7 @@ export default {
     iSelect,
   },
   props: {
-    isModelItem: {type: Boolean}, //  是否显示车型项目
+    // isModelItem: {type: Boolean}, //  是否显示车型项目
   },
   data(){
     return {
@@ -110,18 +117,31 @@ export default {
       addCarTypeProject: '',
       iDialogAddCarTypeProject: false,
       fromGroup: [],
+      factoryList: [],
+      budgetStatus: [],
+      pickerDate: '',
+      isModelItem: true,
     }
   },
 
   created(){
     this.getComponentsData();
     this.isModelItem && this.getCartypePulldown();  //  获取车型项目
+    this.$emit('sure', this.form);
   },
 
   methods: {
 
+    dateChange(date){
+      this.form['startDate'] = date ? date[0] : '';
+      this.form['endDate'] = date ? date[1] : '';
+    },
+
     reset(){
-      this.$emit('reset', this.form);
+      for(let item in this.form){
+        this.form[item] = '';
+      }
+      this.$emit('sure', this.form);
     },
 
     //  查询
@@ -136,6 +156,7 @@ export default {
 
         if(res.data){
           this.fromGroup = res.data;
+          this.form['tmCartypeProId'] = this.$route.params.id;
         }else{
           iMessage.error(result0);
         }
@@ -144,7 +165,34 @@ export default {
     },
 
     getComponentsData(){
+      this.loadingiSearch = true;
+      //  采购工厂列表、模具预算状态
+      Promise.all([getPurchaseFactoryPullDown(), getBudgetStatusPullDown(), getBaAccountType()]).then(res => {
+        const result0 = this.$i18n.locale === 'zh' ? res[0].desZh : res[0].desEn;
+        const result1 = this.$i18n.locale === 'zh' ? res[1].desZh : res[1].desEn;
+        const result2 = this.$i18n.locale === 'zh' ? res[2].desZh : res[2].desEn;
+        if(res[0].data){
+          this.factoryList = res[0].data;
+        }else{
+          iMessage.error(result0);
+        }
 
+        if(res[1].data){
+          this.budgetStatus = res[1].data;
+        }else{
+          iMessage.error(result1);
+        }
+
+        if(res[2].data){
+          this.isModelItem = !res[2].data.baAcountType === 2;
+          this.$store.commit('SET_baAcountType', res[2].data.baAcountType || '');
+        }else{
+          iMessage.error(result2);
+        }
+        this.loadingiSearch = false;
+      }).catch(err => {
+        this.loadingiSearch = false;
+      })
     },
 
     handleAddCarTypeProject(){
@@ -172,7 +220,7 @@ export default {
     },
 
     changeCarTypeProject(){
-
+      this.$emit('sure', this.form);
     }
   }
 }
