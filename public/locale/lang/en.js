@@ -714,6 +714,8 @@
         // 'LK_QUEDING': 'Confirm',//确定
         'LK_HEAVYITEM': 'Heavy Item', // Heavy Item
         'LK_FENXIBAOGAO': '', // 分析报告
+        'LK_LINGJIANCHENGBENFENXIYUAN': '', // 零件成本分析员
+        'LK_MUJUCHENGBENFENXIYUAN': '', // 模具成本分析员
 
         // 定点建议
         'nominationSuggestion': {

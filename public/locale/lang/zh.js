@@ -727,6 +727,9 @@
         'LK_HEAVYITEM': 'Heavy Item', // Heavy Item
         'LK_FENXIBAOGAO': '分析报告', // 分析报告
         'LK_PJZDFPKESHI':'配件自动分配科室',
+        'LK_LINGJIANCHENGBENFENXIYUAN': '零件成本分析员', // 零件成本分析员
+        'LK_MUJUCHENGBENFENXIYUAN': '模具成本分析员', // 模具成本分析员
+
         // 定点管理
         'nominationLanguage': {
             'DingDianGuanLi': '定点管理',
