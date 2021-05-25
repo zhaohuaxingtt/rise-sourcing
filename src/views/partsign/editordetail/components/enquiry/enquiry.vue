@@ -114,7 +114,7 @@ export default {
       }
     },
     jump() {
-      window.open(`/#/partsign/enquiryVersion?purchasingRequirementTargetId=${ this.data.purchasingRequirementTargetId }`, '_blank')
+      window.open(`/#/sourcing/partsign/enquiryVersion?purchasingRequirementTargetId=${ this.data.purchasingRequirementTargetId }`, '_blank')
     },
     handleSelectionChange(list) {
       this.multipleSelection = list

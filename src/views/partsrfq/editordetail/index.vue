@@ -307,7 +307,7 @@ export default {
         const res = await addRfq(req)
         this.resultMessage(res)
         this.$router.push({
-          path: `/partsrfq/editordetail?id=${res.data.rfqId}`
+          path: `/sourcing/partsrfq/editordetail?id=${res.data.rfqId}`
         })
         this.getBaseInfo()
         this.tabShowStatus = false
