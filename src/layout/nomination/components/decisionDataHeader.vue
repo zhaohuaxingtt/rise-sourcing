@@ -5,15 +5,13 @@
 -->
 
 <template>
-    <iTabsList v-model=defaultTab @tab-click="handleClick" class="tab-list">
-        <el-tab-pane v-for="(item,index) in decisionType" :key="'decisionType'+index" :label="item.name" :name="item.path"></el-tab-pane>
+    <div class="decision-header">
+        <iTabsList type="card"  v-model=defaultTab @tab-click="handleClick" class="tab-list">
+            <el-tab-pane v-for="(item,index) in decisionType" :key="'decisionType'+index" :label="item.name" :name="item.path"></el-tab-pane>
+        </iTabsList>
         <!-- 设置按钮 -->
-        <el-tab-pane label="1234" name='icon'>
-            <span slot="label">
-                <icon symbol name="Setting" class="tab-icon"></icon>
-            </span>
-        </el-tab-pane>
-    </iTabsList>
+        <span><icon symbol name="Setting" class="tab-icon"></icon></span>
+    </div>
 </template>
 
 <script>
@@ -63,12 +61,20 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .tab-list{
+    .decision-header{
+        width: calc(100% - 50px);
+        position: relative;
+        ::v-deep.el-tabs__nav-scroll{
+				overflow: hidden;
+			}
         .tab-icon{
-            width: 20px;
-            height: 20px;
-            border:1px solid red;
-        }
+                width: 20px;
+                height: 20px;
+                border:1px solid red;
+                position: absolute;
+                right: -40px;
+                bottom: 0;
+            }
     }
 
 </style>

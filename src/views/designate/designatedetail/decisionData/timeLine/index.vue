@@ -162,6 +162,8 @@ export default {
                 }
             }
             .supplier-item-list{
+                width: 100%;
+                overflow: hidden;
                 li{
                     padding: 25px 0;
                     align-items: center;
