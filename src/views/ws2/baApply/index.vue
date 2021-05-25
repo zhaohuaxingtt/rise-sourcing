@@ -14,7 +14,7 @@
         <el-form-item :label="$t('LK_CHEXINXIANGMU')">
           <iSelect
               :placeholder="$t('partsprocure.PLEENTER')"
-              v-model="form['search.cartypeProjectZh']"
+              v-model="form['cartypeProjectId']"
               filterable
               @change="changeCarTypeProject"
               ref="carTypeProjectRef"
@@ -47,10 +47,21 @@
           @handleSelectionChange="handleSelectionChange"
           :activeItems="'partNum'"
       >
-        <template #data1="scope">
-          <a class="table-a" href="javascript: ;" @click="jumpDetails">{{scope.row.data1}}</a>
+        <template #carTypeProjectName="scope">
+          <a class="table-a" href="javascript: ;" @click="jumpDetails">{{scope.row.carTypeProjectName}}</a>
         </template>
       </iTableList>
+      <iPagination
+            v-update
+            @size-change="handleSizeChange($event, findCarTypeList)"
+            @current-change="handleCurrentChange($event, findCarTypeList)"
+            background
+            :current-page="page.currPage"
+            :page-sizes="page.pageSizes"
+            :page-size="page.pageSize"
+            :layout="page.layout"
+            :total="page.totalCount"
+        />
     </iCard>
   </div>
 </template>
@@ -58,7 +69,9 @@
 <script>
 import { indexFrom, indexTableHead } from "./components/data";
 import { getCartypePulldown, saveCustomCart } from "@/api/ws2/budgetManagement/edit";
+import { findCarTypeList } from "@/api/ws2/baApply";
 import { tableHeight } from "@/utils/tableHeight";
+import { pageMixins } from "@/utils/pageMixins";
 import {
   iTableList
 } from "@/components"
@@ -70,10 +83,11 @@ import {
   iSearch,
   iInput,
   iSelect,
+  iPagination
 } from "rise";
 
 export default {
-  mixins: [tableHeight],
+  mixins: [tableHeight, pageMixins],
   components: {
     iButton,
     iCard,
@@ -81,6 +95,7 @@ export default {
     iInput,
     iSelect,
     iTableList,
+    iPagination,
   },
   data(){
     return {
@@ -89,23 +104,52 @@ export default {
       form: indexFrom,
       iDialogAddCarTypeProject: false,
       fromGroup: [],
-      tableListData: [{
-        data1: '11111',
-        data2: '11111',
-        data3: '11111',
-        data4: '11111',
-      }],
+      tableListData: [],
       tableTitle: indexTableHead,
       tableLoading: false,
       selectTableData: [],
+      // tableParam: {
+      //   cartypeProjectId: 0,
+      //   current: 1,
+      //   size: 10,
+      // },
+      page: {
+        currPage: 1,
+        pageSize: 10,
+      }
     }
   },
 
   created(){
     this.getPageData();
+    this.findCarTypeList();
   },
 
   methods: {
+
+    findCarTypeList(){
+      this.tableLoading = true;
+      const param = {
+        ...this.form,
+        current: this.page.currPage,
+        size: this.page.pageSize
+      }
+      findCarTypeList(param).then(res => {
+        console.log('1111111111', res);
+        const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn;
+        if(res.data){
+          this.tableListData = res.data;
+          this.page.currPage = ~~res.pageNum;
+          this.page.pageSize = ~~res.pageSize;
+          this.page.totalCount = ~~res.total;
+        }else{
+          iMessage.error(result);
+        }
+        this.tableLoading = false;
+      }).catch(err => {
+        this.tableLoading = false;
+      })
+    },
 
     //  跳转详情
     jumpDetails(){
@@ -127,7 +171,7 @@ export default {
       this.iDialogAddCarTypeProject = true;
       saveCustomCart({cartypeProjectName: this.addCarTypeProject}).then(res => {
         const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn;
-        if (Number(res.code) === 0){
+        if (~~res.code === 0){
           iMessage.success(result);
           this.addCarTypeProject = '';
           this.$refs.carTypeProjectRef.blur();
@@ -159,16 +203,20 @@ export default {
     },
 
     sure(){
-      console.log('sure');
+      console.log('form', this.form);
+      this.findCarTypeList();
     },
 
     reset(){
-      console.log('reset');
+      this.form['cartypeProjectId'] = '';
+      this.page.currPage = 1;
+      this.page.pageSize = 10;
+      this.findCarTypeList();
     },
 
 
     changeCarTypeProject(){
-
+      this.findCarTypeList();
     },
   }
 }

@@ -16,6 +16,8 @@
     :empty-text="$t('LK_ZANWUSHUJU')"
     ref="moviesTable"
     :class="radio && 'radio'"
+    :show-summary="showSummary"
+    :summary-method="getSummaries"
   >
     <el-table-column
       v-if="selection"
@@ -91,6 +93,8 @@ export default {
     height: { type: Number || String },
     activeItems: { type: String, default: "b" },
     radio: { type: Boolean, default: false }, // 是否单选
+    showSummary: { type: Boolean, default: false }, //  是否显示总结行
+    getSummaries: { type: Function },
   },
   inject: ["vm"],
   components: {
