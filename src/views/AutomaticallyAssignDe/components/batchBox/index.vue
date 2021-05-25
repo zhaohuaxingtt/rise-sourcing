@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 11:24:15
- * @LastEditTime: 2021-05-24 20:51:23
+ * @LastEditTime: 2021-05-24 20:56:43
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsign\home\components\changeItems.vue
@@ -9,7 +9,7 @@
 <template>
       <iDialog :title="$t(title)" :visible.sync="value" width="400px" @close='clearDiolog' top="40vh">
         <div class="changeContent">
-          <span class="fontSize14">{{ $t('LK_CAIGOUYUAN') }}：</span>
+          <span class="fontSize14">分配科室：</span>
           <iSelect v-model='inquiryBuyer' :placeholder="$t('LK_QINGXUANZHEXUNJIACAIGOUYUAN')" value-key="id">
            <el-option v-for="(items,index) in inquiryBuyerList" :key='index' :value='items' :label="items.nameZh"/>
           </iSelect>

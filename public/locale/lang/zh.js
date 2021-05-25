@@ -725,7 +725,7 @@
         // 'LK_QUEDING': '确定',//确定
         'LK_HEAVYITEM': 'Heavy Item', // Heavy Item
         'LK_FENXIBAOGAO': '分析报告', // 分析报告
-
+        'LK_PJZDFPKESHI':'配件自动分配科室',
         // 定点管理
         'nominationLanguage': {
             'DingDianGuanLi': '定点管理',
