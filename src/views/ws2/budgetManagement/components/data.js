@@ -360,6 +360,7 @@ export const tabtitle = [
     {name: "BA申请", index: 3, url: '/tooling/budgetManagement/baApplyIndex', key: "LK_BASHENQING"},
     {name: "BM申请", index: 4, url: '', key: "LK_BMSHENQING"},
     {name: "投资报告", index: 5, url: '', key: "LK_TOUZIBAOGAO"},
+    {name: "BA审批", index: 6, url: '/tooling/budgetManagement/baApprovalIndex', key: "LK_BAAPPROVAL"},
 ]
 
 export const dataBaseData = [

@@ -34,7 +34,11 @@
             :selection="false"
             :show-summary="true"
           >
-            
+            <template #amount="scope">
+              <iInput :placeholder="$t('LK_QINGSHURU')" v-model="scope.row.amount" v-if="scope.row.deptName === 'Aeko'"
+                      maxlength="20"></iInput>
+              <div v-else>{{scope.row.amount}}</div>
+            </template>
           </iTableList>
         </template>
         
@@ -47,7 +51,7 @@
 <script>
 import { tableHeight } from "@/utils/tableHeight";
 import { detailsTableHead, layerTableHead1, layerTableHead2 } from "./data";
-import { iButton, iMessage } from "rise";
+import { iButton, iMessage, iInput } from "rise";
 import { getDetail, baConfirm } from "@/api/ws2/baApply/baCommodityApply";
 import ApplyPopup from "./applyPopup";
 import {
@@ -81,7 +85,8 @@ export default {
     iTableList,
     iButton,
     iMessage,
-    ApplyPopup
+    ApplyPopup,
+    iInput
   },
 
   methods: {
