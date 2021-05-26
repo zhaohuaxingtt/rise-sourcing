@@ -5,7 +5,7 @@
 <template>
   <iDialog :title="$t(title)" :visible.sync="value" width="95%" top="5vh" @close='clearDiolog' z-index="1000" class="iDialogAdd">
     <div slot="title" class="title">
-      <div class="text">{{ $t(title) + '：' + RFQName }}</div>
+      <div class="text">{{ $t(title) }}</div>
     </div>
     <div class="changeContent">
       <div v-loading="tableLoading">
@@ -18,8 +18,8 @@
         </iTableList>
         <iPagination
             v-update
-            @size-change="handleSizeChange($event, findAddColumnInvestmentBuild)"
-            @current-change="handleCurrentChange($event, findAddColumnInvestmentBuild)"
+            @size-change="handleSizeChange($event, applyDetail)"
+            @current-change="handleCurrentChange($event, applyDetail)"
             background
             :current-page="page.currPage"
             :page-sizes="page.pageSizes"
@@ -40,12 +40,10 @@ import {
 import {
   iTableList
 } from "@/components"
-import {addListInvestment, form} from "../components/data";
+import {budgetApplyAmountList, form} from "../components/data";
 import {pageMixins} from "@/utils/pageMixins";
 import {tableHeight} from "@/utils/tableHeight";
-import {
-  findAddColumnInvestmentBuild,
-} from "@/api/ws2/budgetManagement/edit";
+import {applyDetail} from "@/api/ws2/budgetApproval";
 
 export default {
   mixins: [pageMixins, tableHeight],
@@ -56,14 +54,14 @@ export default {
   },
   props: {
     title: {type: String, default: '申请金额'},
-    RFQName: {type: String, default: ''},
+    RFQID: {type: String, default: ''},
     value: {type: Boolean},
   },
   data() {
     return {
       form: form,
       tableListData: [],
-      tableTitle: addListInvestment,
+      tableTitle: budgetApplyAmountList,
       tableLoading: false,
       zhEnNo: '',
       materialName: '',
@@ -72,17 +70,12 @@ export default {
     }
   },
   mounted() {
-    // this.findAddColumnInvestmentBuild()
+    // this.applyDetail()
   },
   methods: {
-    findAddColumnInvestmentBuild() {
+    applyDetail() {
       // this.tableLoading = true
-
-      let parmars = {
-        current: this.page.currPage,
-        size: this.page.pageSize
-      }
-      findAddColumnInvestmentBuild(parmars).then((res) => {
+      applyDetail({rfqId: this.RFQID}).then((res) => {
         const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
         if (Number(res.code) === 0) {
           this.page.currPage = res.pageNum;
@@ -106,7 +99,7 @@ export default {
         this.materialName = ''
         this.mouldAttr = ''
         this.professionalDepartments = ''
-        this.findAddColumnInvestmentBuild()
+        this.applyDetail()
       }
     }
   }

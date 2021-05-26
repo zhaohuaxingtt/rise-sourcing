@@ -59,12 +59,13 @@ export default {
       this.iDialogLoading = true
       reject({
         applyIds: this.multipleSelection.map(item => item.id),
-        assignId: this.approvalComments
+        approvalComments: this.approvalComments
       }).then((res) => {
         const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
         if (Number(res.code) === 0) {
           iMessage.success(result);
           this.$emit('input', false)
+          this.$emit('refresh')
         } else {
           iMessage.error(result);
         }

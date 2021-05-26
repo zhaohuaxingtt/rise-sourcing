@@ -87,7 +87,7 @@
       <div class="icardHeader">
         <div></div>
         <div>
-          <iButton @click="approvalBtn">{{ $t('LK_PIZHUAN') }}</iButton>
+          <iButton @click="approvalBtn" v-loading="saveLoading">{{ $t('LK_PIZHUAN') }}</iButton>
           <iButton @click="rejectShowBtn">{{ $t('LK_JUJUE') }}</iButton>
           <iButton @click="transferBtn">{{ $t('LK_ZHUANPAI') }}</iButton>
         </div>
@@ -137,21 +137,29 @@
     </iCard>
     <RFQ
         v-model="RFQShow"
-        :RFQName="RFQName"
+        :RFQID="RFQID"
     ></RFQ>
     <budgetApplyAmount
         v-model="budgetApplyAmountShow"
-        :RFQName="RFQName"
+        :RFQID="RFQID"
     ></budgetApplyAmount>
     <reject
         v-model="rejectShow"
         :multipleSelection="multipleSelection"
+        @refresh="getTableListFn"
     ></reject>
     <transfer
         v-model="transferShow"
         :applyUserIdList="applyUserIdList"
         :multipleSelection="multipleSelection"
+        @refresh="getTableListFn"
     ></transfer>
+    <alertDialog
+        v-model="alertShow"
+        :redMultipleSelection="redMultipleSelection"
+        :multipleSelection="multipleSelectionIds"
+        @refresh="getTableListFn"
+    ></alertDialog>
   </div>
 </template>
 
@@ -163,8 +171,7 @@ import {
   pageApproval,
   carCombo,
   statusCombo,
-  userCombo,
-  alert
+  userCombo, ratify,
 } from "@/api/ws2/budgetApproval";
 import {
   iTableList
@@ -174,6 +181,7 @@ import RFQ from './components/RFQ'
 import budgetApplyAmount from './components/budgetApplyAmount'
 import reject from './components/reject'
 import transfer from './components/transfer'
+import alertDialog from './components/alert'
 import {pageMixins} from "@/utils/pageMixins";
 import {tableHeight} from "@/utils/tableHeight";
 import {
@@ -195,23 +203,28 @@ export default {
     budgetApplyAmount,
     reject,
     transfer,
+    alertDialog,
   },
   data() {
     return {
       leftModel: 'mouldInvestment',
       rightModel: 1,
       form: form,
+      saveLoading: false,
       loadingiSearch: false,
       tableLoading: false,
       RFQShow: false,
       budgetApplyAmountShow: false,
       rejectShow: false,
       transferShow: false,
+      alertShow: false,
       carTypeList: [],
       approvalStatusList: [],
       applyUserIdList: [],
       tableListData: [],
       multipleSelection: [],
+      multipleSelectionIds: [],
+      redMultipleSelection: [],
       tableTitle: budgetApprovalData,
     }
   },
@@ -221,11 +234,11 @@ export default {
   methods: {
     clickRfqId(val) {
       this.RFQShow = true
-      this.RFQName = val
+      this.RFQID = val
     },
     clickBudgetApplyAmountShow(val) {
       this.budgetApplyAmountShow = true
-      this.RFQName = val
+      this.RFQID = val
     },
     async getModelProtitesPullDown() {
       for (let i in this.form) {
@@ -295,10 +308,15 @@ export default {
     },
     handleSelectionChange(list) {
       this.multipleSelection = list
+      this.multipleSelectionIds = list.map(item => item.id)
     },
     approvalBtn() {
       if (this.multipleSelection.length == 0) {
         iMessage.warn('请先勾选')
+        return
+      }
+      if (this.multipleSelection.some(item => item.approvalStatus == 2)){
+        iMessage.warn('请勾选未审批的项目')
         return
       }
       if(this.multipleSelection.some(item => item.budgetApplyAmount > item.budgetLeftoverAmount)){
@@ -308,17 +326,22 @@ export default {
             redMultipleSelection.push(item)
           }
         })
+        this.redMultipleSelection = redMultipleSelection
+        this.alertShow = true
         // this.iDialogLoading = true
-        alert(redMultipleSelection).then((res) => {
+      } else {
+        this.saveLoading = true
+        ratify({ids: this.multipleSelectionIds}).then((res) => {
           const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
           if (Number(res.code) === 0) {
             iMessage.success(result);
+            this.getTableListFn()
           } else {
             iMessage.error(result);
           }
-          // this.iDialogLoading = false
+          this.saveLoading = false
         }).catch(() => {
-          // this.iDialogLoading = false
+          this.saveLoading = false
         });
       }
     },

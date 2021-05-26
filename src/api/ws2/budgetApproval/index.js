@@ -57,6 +57,30 @@ export function alert(parmars) {
         data: parmars
     })
 }
+//批准
+export function ratify(parmars) {
+    return VUE_APP_BUDGET({
+        url: '/apply/ratify',
+        method: 'POST',
+        data: parmars
+    })
+}
+//根据RFQ查询
+export function detail(parmars) {
+    return VUE_APP_BUDGET({
+        url: '/part/detail',
+        method: 'POST',
+        params: parmars
+    })
+}
+//查询申请明细
+export function applyDetail(parmars) {
+    return VUE_APP_BUDGET({
+        url: '/apply/detail',
+        method: 'POST',
+        params: parmars
+    })
+}
 export function getCardDetailPulldown(parmars) {
     return VUE_APP_BUDGET({
         url: '/getCardDetailPulldown',

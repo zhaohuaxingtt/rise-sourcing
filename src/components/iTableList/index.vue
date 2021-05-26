@@ -61,7 +61,7 @@
         v-else
         :label="items.name"
         :prop="items.props"
-        :min-width="items.props == 'linie' ? 120 : 'auto'"
+        :min-width="items.props == 'linie' ? 140 : 'auto'"
       >
         <template slot="header" slot-scope="scope">
           <Popover

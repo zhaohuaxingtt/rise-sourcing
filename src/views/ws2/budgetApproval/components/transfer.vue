@@ -73,6 +73,7 @@ export default {
         if (Number(res.code) === 0) {
           iMessage.success(result);
           this.$emit('input', false)
+          this.$emit('refresh')
         } else {
           iMessage.error(result);
         }

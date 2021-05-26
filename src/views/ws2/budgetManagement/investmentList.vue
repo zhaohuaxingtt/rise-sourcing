@@ -178,7 +178,7 @@
               >
                 <el-option
                     :value="item.linieID"
-                    :label="item.linieName"
+                    :label="$i18n.locale == 'zh' ? item.linieName : item.linieNameEn"
                     v-for="(item, index) in liniePullDown"
                     :key="index"
                 ></el-option>
@@ -565,9 +565,18 @@ export default {
             item.budgetAmount = Number(item.budgetAmount).toFixed(2)
             let linieName = ''
             item.linieArr = item.linie ? (item.linie.split(',')).map(key => Number(key)) : []
-            item.linieArr.map(a => {
-              linieName += this.liniePullDown.find(b => b.linieID == a) ? (this.liniePullDown.find(b => b.linieID == a).linieName + '/') : ''
-            })
+            if(this.$i18n.locale == 'zh'){
+              item.linieArr.map(a => {
+                linieName += this.liniePullDown.find(b => b.linieID == a) ? (this.liniePullDown.find(b => b.linieID == a).linieName + '/') : ''
+              })
+            }else {
+              item.linieArr.map(a => {
+                linieName += this.liniePullDown.find(b => b.linieID == a) ? (this.liniePullDown.find(b => b.linieID == a).linieNameEn + '/') : ''
+              })
+            }
+            // item.linieArr.map(a => {
+            //   linieName += this.liniePullDown.find(b => b.linieID == a) ? (this.liniePullDown.find(b => b.linieID == a).linieName + '/') : ''
+            // })
             item.linieName = linieName.slice(0, linieName.length - 1)
             return item
           })
