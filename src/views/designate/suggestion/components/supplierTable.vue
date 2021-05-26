@@ -1,6 +1,5 @@
 <template>
-  <div class="supplierTable singleSupplier">
-    <iCard>
+  <iCard class="supplierTable singleSupplier">
       <div class="margin-bottom20 clearFloat">
         <div class="floatright">
           <!-- 批量编辑 -->
@@ -85,13 +84,12 @@
         :layout="page.layout"
         :total="page.totalCount"
       />
-    </iCard>
 
     <!-- 批量编辑弹窗 -->
     <batchEditDialog :visible.sync="batchEditVisibal" />
     <!-- 模具弹窗 -->
     <mouldDialog :visible.sync="mouldVisibal" />
-  </div>
+  </iCard>
 </template>
 
 <script>
@@ -105,6 +103,7 @@ import batchEditDialog from "./batchEditDialog"
 import mouldDialog from "./mouldDialog"
 
 import {
+  iCard,
   iButton,
   iPagination,
   iMessage,
@@ -113,6 +112,7 @@ import {
 
 export default {
   components: {
+    iCard,
     iButton,
     iSelect,
     iPagination,
@@ -176,10 +176,5 @@ export default {
 </script>
 <style lang="scss" scoped>
 .supplierTable {
-  box-shadow: 0 0 1.25rem rgb(27 29 33 / 8%);
-  border-radius: 0.375rem;
-  background: #fff;
-  padding: 20px;
-  margin-top: 20px;
 }
 </style>

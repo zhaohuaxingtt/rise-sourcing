@@ -1,7 +1,6 @@
 <template>
-  <div class="supplierTable singleSupplier">
-    <iCard>
-      <div class="margin-bottom20 clearFloat">
+  <iCard class="supplierTable singleSupplier margin-top20">
+    <div class="margin-bottom20 clearFloat">
         <span class="font18 font-weight">
           {{ $t("nominationSupplier.DanYiGongYingShang") }}</span
         >
@@ -109,12 +108,11 @@
         :layout="page.layout"
         :total="page.totalCount"
       />
-    </iCard>
     <!-- 零件弹窗 -->
     <partDialog :visible.sync="partDialogVisibal" />
     <!-- 批量操作弹窗 -->
     <batchEditDialog :visible.sync="batchEditVisibal" />
-  </div>
+  </iCard>
 </template>
 
 <script>
@@ -128,6 +126,7 @@ import partDialog from './partDialog'
 import batchEditDialog from './batchEditDialog'
 
 import {
+  iCard,
   iButton,
   iPagination,
   iMessage,
@@ -136,6 +135,7 @@ import {
 
 export default {
   components: {
+    iCard,
     iButton,
     iSelect,
     iPagination,
@@ -186,11 +186,4 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-.supplierTable {
-  box-shadow: 0 0 1.25rem rgb(27 29 33 / 8%);
-  border-radius: 0.375rem;
-  background: #fff;
-  padding: 20px;
-  margin-top: 20px;
-}
 </style>

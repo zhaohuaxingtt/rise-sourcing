@@ -1,51 +1,49 @@
 <template>
-  <div class="multiSupplier supplierTable">
-    <iCard>
-      <div class="margin-bottom20 clearFloat">
-        <span class="font18 font-weight">
-          {{ $t("nominationSupplier.GongYingShangLieBiao") }}</span
-        >
-        <div class="floatright">
-          <span v-if="multiEditControl">
-            <iButton>
-              {{ $t("nominationSupplier.JiaRuZhanShi") }}
-            </iButton>
-            <iButton>
-              {{ $t("nominationSupplier.QuXiaoZhanShi") }}
-            </iButton>
-          </span>
-          <span v-else>
-            <iButton @click="multiEditControl = true">
-              {{ $t("LK_BIANJI") }}
-            </iButton>
-          </span>
-          
-        </div>
-      </div>
-      <tablelist
-        index
-        :tableData="tableListData"
-        :tableTitle="multiSupplierTitle"
-        :tableLoading="tableLoading"
-        :treeProps="{children: 'children', hasChildren: 'hasChildren'}"
-        @handleSelectionChange="handleMutiSelectionChange"
-        @openPage="openPage"
-        :activeItems="'partNum'"
+  <iCard class="multiSupplier supplierTable">
+    <div class="margin-bottom20 clearFloat">
+      <span class="font18 font-weight">
+        {{ $t("nominationSupplier.GongYingShangLieBiao") }}</span
       >
-      </tablelist>
-      <iPagination
-        v-update
-        @size-change="handleSizeChange($event, getTableListFn)"
-        @current-change="handleCurrentChange($event, getTableListFn)"
-        background
-        :current-page="page.currPage"
-        :page-sizes="page.pageSizes"
-        :page-size="page.pageSize"
-        :layout="page.layout"
-        :total="page.totalCount"
-      />
-    </iCard>
-  </div>
+      <div class="floatright">
+        <span v-if="multiEditControl">
+          <iButton>
+            {{ $t("nominationSupplier.JiaRuZhanShi") }}
+          </iButton>
+          <iButton>
+            {{ $t("nominationSupplier.QuXiaoZhanShi") }}
+          </iButton>
+        </span>
+        <span v-else>
+          <iButton @click="multiEditControl = true">
+            {{ $t("LK_BIANJI") }}
+          </iButton>
+        </span>
+        
+      </div>
+    </div>
+    <tablelist
+      index
+      :tableData="tableListData"
+      :tableTitle="multiSupplierTitle"
+      :tableLoading="tableLoading"
+      :treeProps="{children: 'children', hasChildren: 'hasChildren'}"
+      @handleSelectionChange="handleMutiSelectionChange"
+      @openPage="openPage"
+      :activeItems="'partNum'"
+    >
+    </tablelist>
+    <iPagination
+      v-update
+      @size-change="handleSizeChange($event, getTableListFn)"
+      @current-change="handleCurrentChange($event, getTableListFn)"
+      background
+      :current-page="page.currPage"
+      :page-sizes="page.pageSizes"
+      :page-size="page.pageSize"
+      :layout="page.layout"
+      :total="page.totalCount"
+    />
+  </iCard>
 </template>
 
 <script>
@@ -55,12 +53,14 @@ import {
 } from './data'
 import tablelist from "./tableList";
 import {
+  iCard,
   iButton,
   iPagination
 } from "rise";
 
 export default {
   components: {
+    iCard,
     iButton,
     iPagination,
     tablelist

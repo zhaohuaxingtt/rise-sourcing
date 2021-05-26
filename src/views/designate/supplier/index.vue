@@ -38,12 +38,5 @@ export default {
 </script>
 <style lang="scss" scoped>
 .supplier {
-  .supplierTable {
-    box-shadow: 0 0 1.25rem rgb(27 29 33 / 8%);
-    border-radius: 0.375rem;
-    background: #fff;
-    padding: 20px;
-    margin-top: 20px;
-  }
 }
 </style>

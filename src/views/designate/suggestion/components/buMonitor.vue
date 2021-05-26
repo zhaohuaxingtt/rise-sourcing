@@ -6,7 +6,7 @@
 -->
 
 <template>
-  <div class="buMonitor">
+  <iCard class="buMonitor">
     <el-row :gutter="24">
       <!-- 供应商表格 -->
       <el-col :span="16">
@@ -69,15 +69,16 @@
         </div>
       </el-col>
     </el-row>
-  </div>
+  </iCard>
 </template>
 <script>
-import { iButton } from 'rise'
+import { iCard, iButton } from 'rise'
 import buMonitorCharts from './buMonitorCharts'
 import monitorTableList from './monitorTableList'
 
 export default {
   components: {
+    iCard,
     iButton,
     buMonitorCharts,
     monitorTableList
@@ -98,10 +99,6 @@ export default {
 </script>
 <style lang="scss" scoped>
 .buMonitor {
-  box-shadow: 0 0 1.25rem rgb(27 29 33 / 8%);
-  border-radius: 0.375rem;
-  background: #fff;
-  padding: 20px;
   margin-top: 20px;
   .supplierTable {
     .updateTime {
