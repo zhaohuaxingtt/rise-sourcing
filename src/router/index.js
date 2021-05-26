@@ -1,8 +1,8 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-05-26 10:50:56
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-05-26 11:56:12
+ * @LastEditors: Luoshuang
  * @Description: 系统静态路由.
  * @FilePath: \front-web\src\router\index.js
  *
@@ -13,7 +13,6 @@
 // 定点管理
 import designateRoutes from './modules/designate'
 import createpartsRoutes from './modules/createparts'
-import accessorypartsRoutes from './modules/accessoryparts'
 
 Vue.use(VueRouter);
 export const staticRouter = [{
@@ -233,7 +232,26 @@ export const staticRouter = [{
                 name: "importFiles",
                 component: () =>
                     import ("@/views/designateFiles/importFiles"),
-            }  
+            },
+            // 配件相关路由
+            {
+                path: "/sourcing/signforpartsdemand",
+                name: "signForPartsDemand",
+                meta: { title: "配件需求签收" },
+                component: () => import("@/views/accessoryPart/signForPartsDemand/index"),
+            },
+            {
+                path: "/sourcing/integratedmanage",
+                name: "integratedManage",
+                meta: { title: "配件综合管理" },
+                component: () => import("@/views/accessoryPart/integratedManage/index"),
+            },
+            {
+                path: "/sourcing/accessorypartdetail",
+                name: "accessoryPartDetail",
+                meta: { title: "配件详情" },
+                component: () => import("@/views/accessoryPart/accessoryPartDetail/index"),
+            }
         ],
     },
     {
@@ -270,7 +288,6 @@ export default new VueRouter({
     routes: [
         ...staticRouter,
         ...designateRoutes,
-        ...createpartsRoutes,
-        ...accessorypartsRoutes
+        ...createpartsRoutes
     ]
 });
