@@ -745,6 +745,7 @@
         nominationSupplier: {
             'GongYingShangLieBiao': '供应商列表',
             'GongYingShangMing': '供应商名',
+            'GongYingShangHao': '供应商号',
             'JiaRuZhanShi': '加入展示',
             'QuXiaoZhanShi': '取消展示',
             'ChangShangMing': '厂商名',
@@ -766,7 +767,27 @@
             "CFMuBiaoJia": "CF目标价",
             "BatchEdit": "批量编辑",
             "Edit": "编辑",
+            "COPY": "复制",
             "Export": "导出",
+            "Refresh": "刷新",
+            "Reset": "重置"
+        },
+        nominationSuggestion: {
+            "MoJuYuSuanGuanLi": "模具预算管理",
+            "BiLi": "比例(%)",
+            "ShenQingRiQi": "申请日期",
+            "CheXingXiangMu": "车型项目",
+            "TouZiYuSuan": "投资预算(RMB)",
+            "CSFuZeRen": "CSF(P)负责人",
+            "ShenPiZhuangTai": "审批状态",
+            "ShenPiYiJian": "审批意见",
+            "YeWuFenPeiMoNi": "业务分配模拟",
+            "ShuaXinShiJian": "刷新时间",
+            "FanAnXuanZhe": "方案选择",
+            "ZuHe": '组合',
+            "QuXiaoZuHe": "取消组合",
+            "TuiChuBianJi": "退出编辑",
+
         }
     })
 }))
