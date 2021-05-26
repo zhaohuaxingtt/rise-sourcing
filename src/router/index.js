@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-05-25 22:12:34
+ * @LastEditTime: 2021-05-26 10:50:56
  * @LastEditors: Please set LastEditors
  * @Description: 系统静态路由.
  * @FilePath: \front-web\src\router\index.js
@@ -227,6 +227,12 @@ export const staticRouter = [{
                 name: "/ws3Register",
                 component: () =>
                     import ("@/views/AutomaticallyAssignDe"),
+            },
+            {
+                path: "/sourcing/importfiles",
+                name: "importFiles",
+                component: () =>
+                    import ("@/views/designateFiles/importFiles"),
             }  
         ],
     },

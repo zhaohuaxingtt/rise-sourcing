@@ -717,6 +717,7 @@
         'LK_FENXIBAOGAO': '', // 分析报告
         'LK_LINGJIANCHENGBENFENXIYUAN': '', // 零件成本分析员
         'LK_MUJUCHENGBENFENXIYUAN': '', // 模具成本分析员
+        'LK_FUJIANXUQIUDAORU':'附件需求导入', // 附件需求导入 
 
         // 定点建议
         'nominationSuggestion': {

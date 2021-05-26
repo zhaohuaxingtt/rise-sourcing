@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-24 09:47:32
- * @LastEditTime: 2021-05-21 15:57:39
+ * @LastEditTime: 2021-05-26 11:02:20
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsign\home\components\data.js
@@ -57,6 +57,14 @@ export const navList = [
     url: '/sourcing/partsprocure',
     activePath: 'partsprocure',
     key: 'LK_CAIGOUXIANGMUJIANLI'
+  },
+  {
+    value: 5,
+    name: '附件需求导入',
+    message: 0,
+    url: '/sourcing/importfiles',
+    activePath: 'importfiles',
+    key: 'LK_FUJIANXUQIUDAORU'
   },
   {
     value: 3,

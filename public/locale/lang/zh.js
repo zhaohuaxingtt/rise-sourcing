@@ -730,6 +730,7 @@
         'LK_PJZDFPKESHI':'配件自动分配科室',
         'LK_LINGJIANCHENGBENFENXIYUAN': '零件成本分析员', // 零件成本分析员
         'LK_MUJUCHENGBENFENXIYUAN': '模具成本分析员', // 模具成本分析员
+        'LK_FUJIANXUQIUDAORU':'附件需求导入', // 附件需求导入 
 
         // 定点管理
         'nominationLanguage': {
