@@ -77,7 +77,7 @@
 </template>
 
 <script>
-import { TAB, tableTitle } from './components/data'
+import { tableTitle } from './components/data'
 import headerNav from './components/headerNav'
 import search from './components/search'
 import tablelist from "../../partsign/home/components/tableList";
@@ -91,7 +91,6 @@ import {
 export default {
   data() {
     return {
-      tab: TAB,
       tableListData: [],
       tableLoading: false,
       tableTitle: tableTitle,

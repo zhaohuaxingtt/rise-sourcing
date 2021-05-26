@@ -1,37 +1,39 @@
 <!--
- * @Author: your name
- * @Date: 2021-05-24 13:53:50
- * @LastEditTime: 2021-05-24 15:33:07
- * @LastEditors: Please set LastEditors
- * @Description: In User Settings Edit
- * @FilePath: \front-web\src\views\designate\suggestion\index.vue
+ * @Author: haojiang
+ * @Date: 2021-02-24 09:42:07
+ * @LastEditTime: 2021-04-19 17:15:37
+ * @description: 定点建议页面
 -->
 <template>
   <div class="nomination-sugestion">
-    定点建议
-    <iButton @click="show">{{ $t("nominationSuggestion.Mujuyusuanguanli") }}</iButton>
-    <mouldBudgetManagementDialog :visible.sync="mouldBudgetManagementDialogVisible" />
+    <!-- <iButton @click="show">{{ $t("nominationSuggestion.Mujuyusuanguanli") }}</iButton>
+    <mouldBudgetManagementDialog :visible.sync="mouldBudgetManagementDialogVisible" /> -->
+    <!-- 供应商列表 -->
+    <supplierTable />
+    <!-- 业务分配模拟 -->
+    <buMonitor />
   </div>
 </template>
-
 <script>
-import { iButton } from "rise"
-import mouldBudgetManagementDialog from "./components/mouldBudgetManagementDialog"
+import supplierTable from "./components/supplierTable";
+import buMonitor from "./components/buMonitor";
+// import { iButton } from "rise"
+// import mouldBudgetManagementDialog from "./components/mouldBudgetManagementDialog"
 
 export default {
   components: {
-    iButton,
-    mouldBudgetManagementDialog 
+    supplierTable,
+    buMonitor
   },
   data() {
     return {
-      mouldBudgetManagementDialogVisible: false
+      // mouldBudgetManagementDialogVisible: false
     }
   },
   methods: {
-    show() {
-      this.mouldBudgetManagementDialogVisible = true
-    }
+    // show() {
+    //   this.mouldBudgetManagementDialogVisible = true
+    // }
   }
 }
 </script>

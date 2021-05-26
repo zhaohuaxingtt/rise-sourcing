@@ -3,7 +3,6 @@
  * @Date: 2021-02-24 09:42:07
  * @LastEditTime: 2021-04-19 17:15:37
  * @LastEditors: Please set LastEditors
- * @Description: 来自零件签收-table组件，新增了单列的异常配置
 -->
 <template>
   <el-table fit tooltip-effect='light' :height="height" :data='tableData' default-expand-all :tree-props="{children: 'children', hasChildren: 'hasChildren'}" row-key="id" v-loading='tableLoading' @selection-change="handleSelectionChange" :empty-text="$t('LK_ZANWUSHUJU')" ref="moviesTable" :class="{'moviesTable': true, 'radio': radio}">
