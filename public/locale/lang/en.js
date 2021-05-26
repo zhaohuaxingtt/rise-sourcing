@@ -54,7 +54,8 @@
             'PLEENTER': 'Please Enter',
             'CHOOSE': 'Please Choose',
             "CF": 'CF',
-            'PARTSPROCUREPARTSTATUSNAME': 'Project Status'
+            'PARTSPROCUREPARTSTATUSNAME': 'Project Status',
+            'SHOUGONGCAIGOUXIANGMUCHUANGJIAN': '', // 手工采购项目创建
         },
         'partsignLanguage': {
             'XunYuanZhiXing': 'Sourcing Operation', //寻源执行
@@ -89,6 +90,24 @@
             'ShangYiYe': 'Previous Page', //上一页
             'XiaYiYe': 'Next Page', //下一页
             'QianWangYe': 'Go To Page' //前往    页
+        },
+        // 手工采购项目创建
+        'createparts': {
+            'Shougongcaigouxiangmuchuangjian': '', // 手工采购项目创建
+            'Gangcaipiliangcaigou': '', // 钢材批量采购
+            'Gangcaiyicixingcaigou': '', // 钢材一次性采购
+            'Gongchangqianyi': '', // 工厂迁移
+            'Qingshuru': '', // 请输入
+            'Qingxuanze': '', // 请选择
+            'Lingjianhao': '零件号', // 零件号
+            'Lingjianmingzhong': '', // 零件名(中)
+            'Lingjianmingde': '', // 零件名(德)
+            'Lingjianlaiyuan': '', // 零件来源
+            'Chuangjiancaigouxiangmu': '', // 创建采购项目
+            'Lingjianzhuangtai': '', // 零件状态
+            'Jihuoshijian': '', // 激活时间
+            'Caozuorizhi': '', // 操作日志
+            'Chakan': '', // 查看
         },
 
         /*
@@ -552,6 +571,7 @@
         'LK_XIANGNEIZHOUZHUANCAILIAOZONGHEJIAGE': 'Inbox turnover material price',//箱内周转材料综合价格
         'LK_XIANGNEIZHOUZHUANCAILIAOZONGHESHOUMING': 'Inbox turnover material life',//箱内周转材料综合寿命
         'LK_XIANGQINGXINXI': 'Detail',//详情信息
+        "LK_TANPANZS":'谈判助手',
         'LK_XIANGMUCHEXING': 'Project Car Type',//项目车型
         'LK_XINJIANXINXIDANQIANSHOU': 'TP Apps Sign in',//新件信息单签收
         'LK_XINJIANXINXILIUSHUIDANHAO': 'New Tp Sequence No.',//新件信息流水单号
@@ -695,5 +715,25 @@
         // 'LK_QUEDING': 'Confirm',//确定
         'LK_HEAVYITEM': 'Heavy Item', // Heavy Item
         'LK_FENXIBAOGAO': '', // 分析报告
+        'LK_LINGJIANCHENGBENFENXIYUAN': '', // 零件成本分析员
+        'LK_MUJUCHENGBENFENXIYUAN': '', // 模具成本分析员
+        'LK_FUJIANXUQIUDAORU':'附件需求导入', // 附件需求导入 
+
+        // 定点建议
+        'nominationSuggestion': {
+            'Mujuyusuanguanli': '', // 模具预算管理
+            'Tijiao': '', // 提交
+            'Chehui': '', // 撤回
+            'Qingxuanzezhishaoyitiaoshuju': '', // 请选择至少一条数据
+            'Lingjianhao': '', // 零件号
+            'Fsnrgsnr': '', // FSNR/GSNR
+            'Rfqbianhao': '', // RFQ编号
+            'Shenqingriqi': '', // 申请日期
+            'Chexingxiangmu': '', // 车型项目
+            'Touziyusuanrmb': '', // 投资预算(RMB)
+            'Csfpfuzeren': '', // CSF(P)负责人
+            'Shenpizhuangtai': '', // 审批状态
+            'Shenpiyijian': '', // 审批意见
+        }
     })
 }))

@@ -1,10 +1,10 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-05-21 16:01:41
+ * @LastEditTime: 2021-05-26 16:44:53
  * @LastEditors: Please set LastEditors
  * @Description: 系统静态路由.
- * @FilePath: \rise\src\router\index.js
+ * @FilePath: \front-web\src\router\index.js
  *
  */
 /* eslint-disable no-undef */
@@ -12,6 +12,7 @@
 // 引入modules
 // 定点管理
 import designateRoutes from './modules/designate'
+import createpartsRoutes from './modules/createparts'
 
 Vue.use(VueRouter);
 export const staticRouter = [{
@@ -111,13 +112,31 @@ export const staticRouter = [{
                     import ("@/views/partsrfq/home"),
             },
             {
-                path: "/sourcing/partsrfq/editordetail", //RFQ详情
+                path: "/sourcing/partsrfq/editordetail", //RFQ详情待办
+                name: "editordetail",
+                meta: {
+                    title: "RFQ详情待办",
+                },
+                component: () =>
+                    import ("@/views/partsrfq/editordetail"),
+            },
+            {
+                path: "/sourcing/partsrfq/editordetailinfo", //RFQ详情
                 name: "editordetail",
                 meta: {
                     title: "RFQ详情",
                 },
                 component: () =>
-                    import ("@/views/partsrfq/editordetail"),
+                    import ("@/views/partsrfq/editordetailInfo"),
+            },
+            {
+                path: "/sourcing/partsrfq/assistant", //RFQ谈判助手
+                name: "editordetail",
+                meta: {
+                    title: "谈判助手",
+                },
+                component: () =>
+                    import ("@/views/partsrfq/assistant"),
             },
             {
                 path: "/sourcing/partsrfq/editordetail/partScoring", //零件评分
@@ -200,7 +219,51 @@ export const staticRouter = [{
                 name: "/ws3Register",
                 component: () =>
                     import ("@/views/ws3/register"),
-            }  
+            },
+            // workStream1 -------------------------------------- //
+            {
+                path: "/partsfp/automaticallyassignde", //管理员看到的，手动分配配件任务。
+                name: "/ws3Register",
+                component: () =>
+                    import ("@/views/AutomaticallyAssignDe"),
+            },
+            {
+                path: "/sourcing/importfiles",
+                name: "importFiles",
+                component: () =>
+                    import ("@/views/designateFiles/importFiles"),
+            },
+            {
+                path: "/sourcing/importfiles/detaillist",
+                name: "filesDetailList",
+                component: () =>
+                    import ("@/views/designateFiles/importFiles/detail"),
+            },  
+            // 配件相关路由
+            {
+                path: "/sourcing/signforpartsdemand",
+                name: "signForPartsDemand",
+                meta: { title: "配件需求签收" },
+                component: () => import("@/views/accessoryPart/signForPartsDemand/index"),
+            },
+            {
+                path: "/sourcing/integratedmanage",
+                name: "integratedManage",
+                meta: { title: "配件综合管理" },
+                component: () => import("@/views/accessoryPart/integratedManage/index"),
+            },
+            {
+                path: "/sourcing/accessorypartdetail",
+                name: "accessoryPartDetail",
+                meta: { title: "配件详情" },
+                component: () => import("@/views/accessoryPart/accessoryPartDetail/index"),
+            },
+            {
+                path: "/sourcing/createrfq",
+                name: "createRfq",
+                meta: { title: "创建RFQ" },
+                component: () => import("@/views/accessoryPart/createRfq/index"),
+            }
         ],
     },
     {
@@ -236,6 +299,7 @@ export const staticRouter = [{
 export default new VueRouter({
     routes: [
         ...staticRouter,
-        ...designateRoutes
+        ...designateRoutes,
+        ...createpartsRoutes
     ]
 });

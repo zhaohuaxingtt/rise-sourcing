@@ -1,10 +1,10 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-24 09:47:32
- * @LastEditTime: 2021-05-21 15:57:39
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-05-26 13:30:12
+ * @LastEditors: Luoshuang
  * @Description: In User Settings Edit
- * @FilePath: \rise\src\views\partsign\home\components\data.js
+ * @FilePath: \front-web\src\views\partsign\home\components\data.js
  */
 import store from '@/store'
 import {permissionTitle} from '@/utils'
@@ -59,6 +59,30 @@ export const navList = [
     key: 'LK_CAIGOUXIANGMUJIANLI'
   },
   {
+    value: 7,
+    name: '配件需求签收',
+    message: 0,
+    url: '/sourcing/signforpartsdemand',
+    activePath: 'signforpartsdemand',
+    key: '配件需求签收'
+  },
+  {
+    value: 8,
+    name: '配件综合管理',
+    message: 0,
+    url: '/sourcing/integratedmanage',
+    activePath: 'integratedmanage',
+    key: '配件综合管理'
+  },
+  {
+    value: 5,
+    name: '附件需求导入',
+    message: 0,
+    url: '/sourcing/importfiles',
+    activePath: 'importfiles',
+    key: 'LK_FUJIANXUQIUDAORU'
+  },
+  {
     value: 3,
     name: 'RFQ管理',
     message: 0,
@@ -73,5 +97,5 @@ export const navList = [
     url: '/sourcing/partsnomination',
     activePath: 'partsnomination    ',
     key: 'LK_DINGDIANGUANLI'
-  }
+  },
 ]

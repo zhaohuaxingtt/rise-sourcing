@@ -435,3 +435,10 @@ a{
 // input['=disabel']{
 	// background:
 // }
+
+.input-center {
+  &,
+  input {
+    text-align: center;
+  }
+}

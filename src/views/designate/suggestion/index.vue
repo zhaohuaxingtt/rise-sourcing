@@ -6,6 +6,8 @@
 -->
 <template>
   <div class="nomination-sugestion">
+    <!-- <iButton @click="show">{{ $t("nominationSuggestion.Mujuyusuanguanli") }}</iButton>
+    <mouldBudgetManagementDialog :visible.sync="mouldBudgetManagementDialogVisible" /> -->
     <!-- 供应商列表 -->
     <supplierTable />
     <!-- 业务分配模拟 -->
@@ -15,11 +17,23 @@
 <script>
 import supplierTable from "./components/supplierTable";
 import buMonitor from "./components/buMonitor";
+// import { iButton } from "rise"
+// import mouldBudgetManagementDialog from "./components/mouldBudgetManagementDialog"
 
 export default {
   components: {
     supplierTable,
     buMonitor
+  },
+  data() {
+    return {
+      // mouldBudgetManagementDialogVisible: false
+    }
+  },
+  methods: {
+    // show() {
+    //   this.mouldBudgetManagementDialogVisible = true
+    // }
   }
 }
 </script>

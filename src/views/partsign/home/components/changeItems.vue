@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 11:24:15
- * @LastEditTime: 2021-04-03 12:17:46
+ * @LastEditTime: 2021-05-24 20:51:23
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsign\home\components\changeItems.vue
@@ -12,9 +12,6 @@
           <span class="fontSize14">{{ $t('LK_CAIGOUYUAN') }}：</span>
           <iSelect v-model='inquiryBuyer' :placeholder="$t('LK_QINGXUANZHEXUNJIACAIGOUYUAN')" value-key="id">
            <el-option v-for="(items,index) in inquiryBuyerList" :key='index' :value='items' :label="items.nameZh"/>
-            <!-- <el-option value='12' label="12"></el-option> -->
-           <!-- <el-option value='12' label="采购员12"></el-option>
-            <el-option value='13' label="采购员13"></el-option> -->
           </iSelect>
         </div>
         <span slot="footer" class="dialog-footer">

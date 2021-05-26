@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-25 10:09:50
- * @LastEditTime: 2021-04-03 11:30:40
+ * @LastEditTime: 2021-05-25 13:10:51
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsrfq\editordetail\index.vue
@@ -12,10 +12,7 @@
     <div class="pageTitle flex-between-center-center">
       <div class="flex nav-box">
         <span>{{ $route.query.id ? 'RFQ' : $t('LK_XINJIANRFQ') }}</span>
-        <iTabsList type="border-card" @tab-click="changeNav" class="nav-style">
-          <el-tab-pane :label="$t(item.key)" v-for="item of navList" :key="item.label">
-          </el-tab-pane>
-        </iTabsList>
+        <iNavMvp :lev='2' routerPage :list='navList'></iNavMvp>
       </div>
       <div class="btnList">
         <iButton :loading="newRfqOpenValidateLoading" @click="newRfq" v-permission="PARTSRFQ_EDITORDETAIL_NEWRFQROUND">
@@ -121,8 +118,18 @@
         </div>
       </iFormGroup>
     </iCard>
+    <!--------------------------------------------------------------->
+    <!-------------------------RFQ待办信息---------------------------->
+    <!--------------------------------------------------------------->
     <rfqPending v-if="(navActivtyValue === '0' || navActivtyValue === '') && tabShowStatus"></rfqPending>
+    <!--------------------------------------------------------------->
+    <!-------------------------RFQ详情信息---------------------------->
+    <!--------------------------------------------------------------->    
     <rfq-detail-info v-if="navActivtyValue === '1' && tabShowStatus"></rfq-detail-info>
+    <!--------------------------------------------------------------->
+    <!-------------------------报价助手------------------------------->
+    <!--------------------------------------------------------------->
+    <rfq-detail-tpzs v-if='navActivtyValue == 2'></rfq-detail-tpzs>
     <new-rfq-round v-model="newRfqRoundDialog" @refreshBaseInfo="getBaseInfo" v-if="tabShowStatus"/>
   </iPage>
 </template>
@@ -137,15 +144,16 @@ import {
   iText,
   iInput,
   iMessage,
-  iTabsList
-} from "@/components";
+  iNavMvp
+} from "rise";
 import rfqPending from './components/rfqPending'
 import rfqDetailInfo from './components/rfqDetailInfo'
 import newRfqRound from './components/newRfqRound'
+import rfqDetailTpzs from './components/rfqDetailTpzs'
 import {getRfqDataList, editRfqData, addRfq} from "@/api/partsrfq/home";
 import store from '@/store'
 import {rfqCommonFunMixins} from "pages/partsrfq/components/commonFun";
-
+import {navList} from './components/data'
 export default {
   components: {
     iButton,
@@ -159,25 +167,14 @@ export default {
     rfqPending,
     rfqDetailInfo,
     newRfqRound,
-    iTabsList
+    iNavMvp,
+    rfqDetailTpzs
   },
   mixins: [rfqCommonFunMixins],
   data() {
     return {
       navActivtyValue: '',
-      navList: [
-        {
-          label: "待办事项",
-          key: 'LK_DAIBANSHIXIANG'
-        },
-        {
-          label: "详情信息",
-          key: 'LK_XIANGQINGXINXI'
-        },
-        // {
-        //   label: "谈判助手",
-        // }
-      ],
+      navList: navList,
       editStatus: false,
       newRfqRoundDialog: false,
       baseInfo: {},
@@ -307,7 +304,7 @@ export default {
         const res = await addRfq(req)
         this.resultMessage(res)
         this.$router.push({
-          path: `/partsrfq/editordetail?id=${res.data.rfqId}`
+          path: `/sourcing/partsrfq/editordetail?id=${res.data.rfqId}`
         })
         this.getBaseInfo()
         this.tabShowStatus = false
@@ -349,7 +346,10 @@ export default {
 <style lang='scss' scoped>
 .pageTitle {
   .nav-box {
-    > span {
+    flex:1;
+    margin-right: 30px;
+    justify-content: space-between;
+    & > span {
       font-size: 20px;
       font-weight: bold;
     }
