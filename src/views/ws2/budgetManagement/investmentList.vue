@@ -130,14 +130,14 @@
               <a :href="scope.row.refMoldAmount">{{ scope.row.refMoldAmount }}</a>
             </template>
             <template #budgetAmount="scope">
-              <iInput v-model="scope.row.budgetAmount" v-if="pageEdit"
+              <iInput v-model="scope.row.budgetAmount" v-if="pageEdit" :placeholder="$t('LK_QINGSHURU')"
                       @input="changeBudgetAmount(scope.row.budgetAmount)" maxlength="20"></iInput>
               <div v-if="!pageEdit">{{ scope.row.budgetAmount }}</div>
             </template>
             <template #moldProperties="scope">
               <iSelect
                   v-show="pageEdit"
-                  placeholder="请选择"
+                  :placeholder="$t('LK_QINGXUANZE')"
                   v-model="scope.row.moldProperties"
                   filterable
                   @change="changeCarTypeProject"
@@ -154,7 +154,7 @@
             <template #commodity="scope">
               <iSelect
                   v-show="pageEdit"
-                  placeholder="请选择"
+                  :placeholder="$t('LK_QINGXUANZE')"
                   v-model="scope.row.commodity"
                   filterable
               >
@@ -170,7 +170,7 @@
             <template #linie="scope">
               <iSelect
                   v-show="pageEdit"
-                  placeholder="请选择"
+                  :placeholder="$t('LK_QINGXUANZE')"
                   v-model="scope.row.linieArr"
                   collapse-tags
                   multiple
@@ -195,7 +195,7 @@
               <div v-if="!pageEdit">{{ scope.row.sourcingType == 1 ? 'Common' : 'JV' }}</div>
               <iSelect
                   v-show="pageEdit"
-                  placeholder="请选择"
+                  :placeholder="$t('LK_QINGXUANZE')"
                   v-model="scope.row.sourcingType"
                   filterable
                   @change="changeCarTypeProject"
@@ -205,7 +205,7 @@
               </iSelect>
             </template>
             <template #remarks="scope">
-              <iInput v-model="scope.row.remarks" v-if="pageEdit"></iInput>
+              <iInput v-model="scope.row.remarks" :placeholder="$t('LK_QINGSHURU')" v-if="pageEdit"></iInput>
               <div v-if="!pageEdit">{{ scope.row.remarks }}</div>
             </template>
           </iTableList>
