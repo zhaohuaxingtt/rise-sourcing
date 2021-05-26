@@ -32,7 +32,8 @@ export default {
   },
   components: {
     iDialog,
-    iButton
+    iButton,
+    iMessage
   },
 
   methods: {
