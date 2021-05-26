@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-05-26 10:50:56
+ * @LastEditTime: 2021-05-26 13:58:50
  * @LastEditors: Please set LastEditors
  * @Description: 系统静态路由.
  * @FilePath: \front-web\src\router\index.js
@@ -233,7 +233,13 @@ export const staticRouter = [{
                 name: "importFiles",
                 component: () =>
                     import ("@/views/designateFiles/importFiles"),
-            }  
+            },
+            {
+                path: "/sourcing/importfiles/detaillist",
+                name: "filesDetailList",
+                component: () =>
+                    import ("@/views/designateFiles/importFiles/detail"),
+            }    
         ],
     },
     {

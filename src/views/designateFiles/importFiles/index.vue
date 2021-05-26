@@ -11,7 +11,68 @@
                     <iNavMvp right routerPage lev="2" :list="navList" />
                 </div>
                 <!-- 内容区 -->
-                <h1>附件需求导入</h1>
+                <iCard>
+                  <div class="margin-bottom20 clearFloat">
+                    <div class="floatright">
+                      <iButton>导入</iButton>
+                      <iButton>配件模板下载</iButton>
+                    </div>
+                  </div>
+                  <!-- 表格区域 -->
+                  <el-table
+                    :data="tableData"
+                    fit 
+                    tooltip-effect='light'
+                    :empty-text="$t('LK_ZANWUSHUJU')"
+                  >
+                    <el-table-column
+                      type="selection"
+                      align='center'
+                      width="50">
+                    </el-table-column>
+                    <el-table-column
+                      type="index"
+                      label="#"
+                      align='center'
+                      width="50">
+                    </el-table-column>
+                    <el-table-column
+                      prop="prop1"
+                      align='center'
+                      label="编号">
+                      <template slot-scope="scope">
+                        <span @click="goFilesList" class="link-underline" >{{scope.row.prop1}}</span>
+                      </template>
+                    </el-table-column>
+                    <el-table-column
+                      prop="prop2"
+                      align='center'
+                      label="导⼊时间">
+                    </el-table-column>
+                    <el-table-column
+                      prop="prop3"
+                      align='center'
+                      label="导⼊员">
+                    </el-table-column>
+                    <el-table-column
+                      prop="prop4"
+                      align='center'
+                      label="科室">
+                    </el-table-column>
+                  </el-table>
+                  <!-- 分页 -->
+                   <iPagination
+                      v-update
+                      @size-change="handleSizeChange($event, getTableListFn)"
+                      @current-change="handleCurrentChange($event, getTableListFn)"
+                      background
+                      :current-page="page.currPage"
+                      :page-sizes="page.pageSizes"
+                      :page-size="page.pageSize"
+                      :layout="page.layout"
+                      :total="page.totalCount"
+                    />
+                </iCard>
             </el-tab-pane>
         </el-tabs>
     </iPage>
@@ -21,20 +82,43 @@
 import {
   iPage,
   iNavMvp,
+  iCard,
+  iButton,
+  iPagination,
 } from "rise";
 import { navList } from "@/views/partsign/home/components/data";
 import { cloneDeep } from "lodash";
+import { pageMixins } from "@/utils/pageMixins";
 export default {
     name:'importFiles',
+    mixins: [pageMixins],
     components:{
         iPage,
         iNavMvp,
+        iCard,
+        iButton,
+        iPagination,
     },
     data(){
         return{
             tab:'source',
             navList: cloneDeep(navList),
+            tableData:[
+              {
+                prop1:'编号123',
+                prop2:'2020-01-01',
+                prop3:'分配科室',
+                prop4:'SKAP',
+
+              }
+            ],
         }
+    },
+    methods:{
+      // 跳转附件清单页
+      goFilesList(){
+        this.$router.push({path:'/sourcing/importfiles/detaillist'})
+      },
     }
 
 }
