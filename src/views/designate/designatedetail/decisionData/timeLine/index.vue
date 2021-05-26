@@ -6,7 +6,7 @@
 <template>
     <div class="decision-data-timeLine">
         <!-- 按钮区域 -->
-        <div class="timeLine-btn-list">
+        <div class="timeLine-btn-list" v-if="isPreview=='0'">
             <template v-if="isEdit">
                 <iButton @click="save">保存</iButton>
                 <iButton @click="edit">取消</iButton>
@@ -99,11 +99,17 @@ export default {
                 {startDate:1621480561,endDate:1621998961}, // 5-20 ---> 5-26
                 {startDate:1620616561,endDate:1621307761}, // 5-10 ---> 5-18
             ],
-            stepList:stepList
+            stepList:stepList,
+            isPreview:'0',
         }
     },
     created(){
         this.formatTime();
+        // 是否为预览路径
+        const {query={}} = this.$route;
+        const {isPreview='0'} = query;
+        this.isPreview = isPreview;
+
     },
     methods:{
         // 重置下timeList
@@ -146,7 +152,12 @@ export default {
         save(){
             console.log(this.stepList,'stepList');
         }
-    }
+    },
+    watch:{$route(to,from){
+        const {query={}} = to;
+        const {isPreview = '0'} = query;
+        this.isPreview = isPreview;
+    }}
 }
 </script>
 

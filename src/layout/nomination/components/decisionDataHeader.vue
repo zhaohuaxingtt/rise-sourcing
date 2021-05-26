@@ -5,12 +5,21 @@
 -->
 
 <template>
-    <div class="decision-header">
-        <iTabsList type="card"  v-model=defaultTab @tab-click="handleClick" class="tab-list">
-            <el-tab-pane v-for="(item,index) in decisionType" :key="'decisionType'+index" :label="item.name" :name="item.path"></el-tab-pane>
-        </iTabsList>
+    <div :class="isPreview=='1' ? 'decision-header preview-header' : 'decision-header'">
+        <div  class="tab-list">
+            <iTabsList v-if="isPreview=='1'"  v-model=defaultTab @tab-click="handleClick">
+                <el-tab-pane v-for="(item,index) in decisionType" :key="'decisionType'+index" :label="item.name" :name="item.path"></el-tab-pane>
+            </iTabsList>
+             <iTabsList v-else type="card"  v-model=defaultTab @tab-click="handleClick">
+                <el-tab-pane v-for="(item,index) in decisionType" :key="'decisionType'+index" :label="item.name" :name="item.path"></el-tab-pane>
+            </iTabsList>
+        </div>
+
+
+        <!-- 关闭预览按钮 -->
+        <span class="tab-icon" v-if="isPreview=='1'" @click="close"><icon symbol name="guanbixiaoxiliebiaokapiannei"></icon></span>
         <!-- 设置按钮 -->
-        <span><icon symbol name="Setting" class="tab-icon"></icon></span>
+        <span class="tab-icon" v-else><icon symbol name="Setting"></icon></span>
     </div>
 </template>
 
@@ -28,8 +37,8 @@ export default {
     },
     props:{
         isPreview:{
-            type: Boolean,
-            default:false
+            type: String,
+            default:'0'
         }
     },
     data(){
@@ -50,10 +59,24 @@ export default {
     methods:{
         // tab切换
         handleClick(tab){
-            console.log(tab,'handleClickhandleClick');
+            const { query } =  this.$route;
             const { name='Title' } = tab;
             this.$router.push({
                 path: name,
+                query,
+            });
+        },
+
+        // 关闭预览
+        close(){
+            const { query,path } =  this.$route;
+            console.log(this.$route);
+            this.$router.push({
+                path,
+                query:{
+                    ...query,
+                    isPreview:'0'
+                },
             });
         }
     }
@@ -62,19 +85,28 @@ export default {
 
 <style lang="scss" scoped>
     .decision-header{
-        width: calc(100% - 50px);
+        padding: 20px 30px;
         position: relative;
         ::v-deep.el-tabs__nav-scroll{
 				overflow: hidden;
 			}
+        .tab-list{
+            width: calc(100% - 50px);
+        }
         .tab-icon{
                 width: 20px;
                 height: 20px;
                 border:1px solid red;
                 position: absolute;
-                right: -40px;
-                bottom: 0;
+                right: 40px;
+                top: 30px;
             }
+        &.preview-header{
+            background-color: #fff;
+            box-shadow: $btn-box-shadow;
+            border-top-left-radius: 6px;
+            border-top-right-radius: 6px;
+        }
     }
 
 </style>
