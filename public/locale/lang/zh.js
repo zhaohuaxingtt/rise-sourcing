@@ -739,5 +739,16 @@
         'LK_FIXEDINVESTTOTAL': '总定点投资金额',    //  总定点投资金额
 
         'LK_XIAYIBU': '下一步',    //  下一步
+
+        'LK_BAAPPROVAL': 'BA审批',  //  BA审批
+        'LK_BADANSTATUS': 'BA单状态', // BA单状态
+        'LK_ALL': '全部',   //  全部
+        'LK_BAODDNUMBERS': 'BA单号',    //  BA单号
+        'LK_BAACCOUNTTYPE': 'BA账户类型',   //  BA账户类型
+        'LK_CURRENTAMOUNT': '当前金额', //  当前金额
+        'LK_APPLYAMOUNT': '申请金额',   //  申请金额
+        'LK_APPLYAMOUNTTHEN': '申请后金额', //  申请后金额
+        'LK_MODIFYANUMBER': '修改A号',  //  修改A号
+        'LK_CANCELAPPLY': '退回申请',   //  退回申请
     })
 }))

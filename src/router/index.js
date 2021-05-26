@@ -183,9 +183,17 @@ export const staticRouter = [{
                         path: '/tooling/budgetManagement/baApplyIndex',
                         name: 'baApplyIndex',
                         meta: {
-                            title: '车型概览'
+                            title: 'BA申请'
                         },
                         component: () => import (`@/views/ws2/baApply`),
+                    },
+                    {
+                        path: '/tooling/budgetManagement/baApprovalIndex',
+                        name: 'baApprovalIndex',
+                        meta: {
+                            title: 'BA审批'
+                        },
+                        component: () => import (`@/views/ws2/baApproval`),
                     },
                     {
                         path: '/tooling/budgetManagement/generateInvestmentList',
