@@ -75,6 +75,7 @@
 import {
   iCard,
   iButton,
+  icon,
 } from "rise";
 import { stepList } from './components/data'
 import groupStep from './components/groupStep'
@@ -88,6 +89,7 @@ export default {
         supplierLine,
         iCard,
         iButton,
+        icon,
     },
     data(){
         return{

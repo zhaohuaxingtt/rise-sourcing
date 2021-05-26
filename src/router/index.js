@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-05-26 14:10:39
+ * @LastEditTime: 2021-05-26 14:18:27
  * @LastEditors: Please set LastEditors
  * @Description: 系统静态路由.
  * @FilePath: \front-web\src\router\index.js
@@ -238,7 +238,7 @@ export const staticRouter = [{
                 name: "filesDetailList",
                 component: () =>
                     import ("@/views/designateFiles/importFiles/detail"),
-            } ,   
+            },  
             // 配件相关路由
             {
                 path: "/sourcing/signforpartsdemand",
