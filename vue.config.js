@@ -186,6 +186,76 @@ module.exports = {
                     "^/ws2Api": ""
                 }
             },
+						'/quotationApiDL': {
+							// target: 'http://10.160.138.38:8788',
+							target: 'http://10.122.18.166:8021',
+							changeOrigin: true,
+							pathRewrite: {
+								"^/quotationApiDL": ""
+							}
+						},
+						'/supplierApiDL': {  // 供应商
+							// target: 'http://10.160.137.63:8788',
+							target: 'http://10.122.18.166:8025',
+							changeOrigin: true,
+							pathRewrite: {
+								"^/supplierApiDL": ""
+							}
+						},
+						'/supplierApiWdl': { //   供应商
+							target: 'http://10.122.18.166:8021',
+							changeOrigin: true,
+							pathRewrite: {
+								"^/supplierApiWdl": ""
+							}
+						},
+						'/supplierApiXW': { //   供应商
+							target: 'http://10.122.18.166:8021',
+							changeOrigin: true,
+							pathRewrite: {
+								"^/supplierApiXW": ""
+							}
+						},
+						'/supplierApiBob': { //   供应商
+							target: 'http://10.160.136.45:8099',
+							changeOrigin: true,
+							pathRewrite: {
+								"^/supplierApiBob": ""
+							}
+						},
+						'/supplierApiRfqlist': { //   供应商
+							target: 'http://10.122.18.166:8025',
+							changeOrigin: true,
+							pathRewrite: {
+								"^/supplierApiRfqlist": ""
+							}
+						},
+						'/supplierApi': { //   供应商
+							target: 'http://10.122.18.166:8010',
+							changeOrigin: true,
+							pathRewrite: {
+								"^/supplierApi": ""
+							}
+						},
+						'/quotationApi': { // 供应商报价
+							// target: 'http://10.160.136.42:8021',
+							target: 'http://10.122.18.166:8021/',
+							// target: 'http://10.160.136.115:8021', // 智博
+							// target: 'http://10.160.136.83:8021', // 智博
+							// target: 'http://10.160.138.206:8093', // 顾晓炜
+							// target: 'http://10.122.18.166:8093', // 高攀弘
+							changeOrigin: true,
+							pathRewrite: {
+								"^/quotationApi": ""
+							}
+						},
+						'/partApi': {
+							target: 'http://10.160.138.31:8788',
+							changeOrigin: true,
+							pathRewrite: {
+								"^/partApi": ""
+							}
+						}
         }
     }
 }
