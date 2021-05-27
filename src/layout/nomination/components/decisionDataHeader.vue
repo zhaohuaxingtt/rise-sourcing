@@ -6,6 +6,7 @@
 
 <template>
     <div :class="isPreview=='1' ? 'decision-header preview-header' : 'decision-header'">
+        <p v-if="isPreview=='1'" class="preview-title margin-bottom20">CSC Nomination Recommendation</p>
         <div  class="tab-list">
             <iTabsList v-if="isPreview=='1'"  v-model=defaultTab @tab-click="handleClick">
                 <el-tab-pane v-for="(item,index) in decisionType" :key="'decisionType'+index" :label="item.name" :name="item.path"></el-tab-pane>
@@ -106,6 +107,10 @@ export default {
             box-shadow: $btn-box-shadow;
             border-top-left-radius: 6px;
             border-top-right-radius: 6px;
+        }
+        .preview-title{
+            font-size: 20px;
+            font-weight: bold;
         }
     }
 
