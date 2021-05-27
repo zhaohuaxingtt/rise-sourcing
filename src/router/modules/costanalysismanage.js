@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-05-27 12:00:48
- * @LastEditTime: 2021-05-27 13:58:42
+ * @LastEditTime: 2021-05-27 17:47:52
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\router\modules\costanalysismanage.js
@@ -30,6 +30,12 @@ export default [
             component: () => import("@/views/costanalysismanage/components/datamaintenance"),
           }
         ]
+      },
+      {
+        path: "/costanalysismanage/rfqdetail",
+        name: "costAnalysisManageRfqDetail",
+        meta: { title: "RFQ详情" },
+        component: () => import("@/views/costanalysismanage/components/rfqdetail"),
       }
     ]
   }
