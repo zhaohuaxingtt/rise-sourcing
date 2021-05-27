@@ -91,7 +91,6 @@ import { getCartypePulldown, saveCustomCart } from "@/api/ws2/budgetManagement/e
 import { getPurchaseFactoryPullDown, getBudgetStatusPullDown, getBaAccountType } from "@/api/ws2/baApply";
 import {
   iButton,
-  iCard,
   iMessage,
   iSearch,
   iInput,
@@ -101,8 +100,6 @@ import {
 export default {
   components: {
     iButton,
-    iCard,
-    iMessage,
     iSearch,
     iInput,
     iSelect,
@@ -141,6 +138,7 @@ export default {
       for(let item in this.form){
         this.form[item] = '';
       }
+      this.pickerDate = '';
       this.$emit('sure', this.form);
     },
 

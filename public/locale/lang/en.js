@@ -737,5 +737,6 @@
         'LK_APPLYAMOUNTTHEN': '申请后金额', //  申请后金额
         'LK_MODIFYANUMBER': '修改A号',  //  修改A号
         'LK_CANCELAPPLY': '退回申请',   //  退回申请
+        'LK_MODIFIABLE': '可修改',  //  可修改
     })
 }))

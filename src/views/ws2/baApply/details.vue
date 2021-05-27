@@ -70,7 +70,7 @@ export default {
         ...form,
         current: this.page.currPage,
         size: this.page.pageSize,
-        baAcountType: 2,
+        baAcountType: this.$store.state.baApply.baAcountType,
       }
       findBaPartsList(param).then(res => {
         this.tableListData = res.data;

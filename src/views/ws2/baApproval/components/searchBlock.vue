@@ -14,7 +14,7 @@
       <el-form-item :label="$t('LK_CHEXINXIANGMU')">
         <iSelect
             :placeholder="$t('partsprocure.PLEENTER')"
-            v-model="form['cartypeProjectId']"
+            v-model="form['tmCartypeProId']"
             filterable
             @change="changeCarTypeProject"
             ref="carTypeProjectRef"
@@ -36,14 +36,14 @@
       <el-form-item :label="$t('LK_BADANSTATUS')">
         <iSelect
             :placeholder="$t('LK_ALL')"
-            v-model="form['cartypeProjectId']"
+            v-model="form['baStatus']"
             filterable
             @change="changeCarTypeProject"
             ref="carTypeProjectRef"
         >
           <el-option
-              :value="item.id"
-              :label="item.cartypeNname"
+              :value="item.baStatusId"
+              :label="item.baStatus"
               v-for="(item, index) in baStatusList"
               :key="index"
           ></el-option>
@@ -52,20 +52,7 @@
 
       <!-- BA单号 -->
       <el-form-item :label="$t('LK_BAODDNUMBERS')">
-        <iSelect
-            :placeholder="$t('LK_ALL')"
-            v-model="form['cartypeProjectId']"
-            filterable
-            @change="changeCarTypeProject"
-            ref="carTypeProjectRef"
-        >
-          <el-option
-              :value="item.id"
-              :label="item.cartypeNname"
-              v-for="(item, index) in baNumbersList"
-              :key="index"
-          ></el-option>
-        </iSelect>
+        <iInput :placeholder="$t('LK_ALL')" v-model="form['sixBa']" maxlength="6"></iInput>
       </el-form-item>
 
       <!-- 申请日期起止 -->
@@ -84,14 +71,14 @@
       <el-form-item :label="$t('LK_SHENQINGREN')">
         <iSelect
             :placeholder="$t('LK_ALL')"
-            v-model="form['cartypeProjectId']"
+            v-model="form['applyUserId']"
             filterable
             @change="changeCarTypeProject"
             ref="carTypeProjectRef"
         >
           <el-option
-              :value="item.id"
-              :label="item.cartypeNname"
+              :value="item.applyUserId"
+              :label="item.applyUserName"
               v-for="(item, index) in applicantList"
               :key="index"
           ></el-option>
@@ -102,15 +89,15 @@
       <el-form-item :label="$t('LK_CAIGOUGONGCHANG')">
         <iSelect
             :placeholder="$t('partsprocure.CHOOSE')"
-            v-model="form['cartypeProjectId']"
+            v-model="form['localFactoryId']"
             filterable
             @change="changeCarTypeProject"
             ref="carTypeProjectRef"
         >
           <el-option
-              :value="item.id"
-              :label="item.cartypeNname"
-              v-for="(item, index) in applicantList"
+              :value="item.localFactoryId"
+              :label="item.localFactoryName"
+              v-for="(item, index) in factoryList"
               :key="index"
           ></el-option>
         </iSelect>
@@ -120,15 +107,15 @@
       <el-form-item :label="$t('LK_BAACCOUNTTYPE')">
         <iSelect
             :placeholder="$t('partsprocure.CHOOSE')"
-            v-model="form['cartypeProjectId']"
+            v-model="form['baAccountType']"
             filterable
             @change="changeCarTypeProject"
             ref="carTypeProjectRef"
         >
           <el-option
-              :value="item.id"
-              :label="item.cartypeNname"
-              v-for="(item, index) in applicantList"
+              :value="item.baAccountId"
+              :label="item.baAccountName"
+              v-for="(item, index) in accountTypeList"
               :key="index"
           ></el-option>
         </iSelect>
@@ -141,7 +128,9 @@
 
 <script>
 import { allBAApplySearch } from "./data";
+import { getBaPullDown, getApplyUserPullDown, getLocalFactoryPullDown } from "@/api/ws2/baApproval";
 import { getCartypePulldown, saveCustomCart } from "@/api/ws2/budgetManagement/edit";
+import { getBaAccountTypePullDown } from "@/api/ws2/baApply";
 import {
   iSearch,
   iMessage,
@@ -151,8 +140,8 @@ import {
 } from "rise";
 export default {
   components: {
-    iSearch, iMessage,
-    iSelect, iInput, iButton,
+    iSearch, iButton,
+    iSelect, iInput, 
   },
 
   data(){
@@ -164,6 +153,8 @@ export default {
       baStatusList: [],
       baNumbersList: [],
       applicantList: [],
+      accountTypeList: [],
+      factoryList: [],
       pickerDate: '',
     }
   },
@@ -180,22 +171,58 @@ export default {
     },
 
     reset(){
-
+      for(let item in this.form){
+        this.form[item] = '';
+      }
+      this.pickerDate = '';
+      this.$emit('sure', this.form);
     },
 
     sure(){
-
+      this.$emit('sure', this.form);
     },
 
     getPageSearchData(){
       this.loadingiSearch = true;
-      Promise.all([getCartypePulldown()]).then(res => {
+
+      //  车型项目、BA状态、申请人、采购工厂、BA账户类型
+      Promise.all(
+        [getCartypePulldown(),getBaPullDown(),getApplyUserPullDown(),getLocalFactoryPullDown(),getBaAccountTypePullDown()]
+      ).then(res => {
         const result0 = this.$i18n.locale === 'zh' ? res[0].desZh : res[0].desEn;
+        const result1 = this.$i18n.locale === 'zh' ? res[1].desZh : res[1].desEn;
+        const result2 = this.$i18n.locale === 'zh' ? res[2].desZh : res[2].desEn;
+        const result3 = this.$i18n.locale === 'zh' ? res[3].desZh : res[3].desEn;
+        const result4 = this.$i18n.locale === 'zh' ? res[4].desZh : res[4].desEn;
 
         if(res[0].data){
           this.fromGroup = res[0].data;
         }else{
           iMessage.error(result0);
+        }
+
+        if(res[1].data){
+          this.baStatusList = res[1].data;
+        }else{
+          iMessage.error(result1);
+        }
+
+        if(res[2].data){
+          this.applicantList = res[2].data;
+        }else{
+          iMessage.error(result2);
+        }
+
+        if(res[3].data){
+          this.factoryList = res[3].data;
+        }else{
+          iMessage.error(result3);
+        }
+
+        if(res[4].data){
+          this.accountTypeList = res[4].data;
+        }else{
+          iMessage.error(result4);
         }
 
         this.loadingiSearch = false;
@@ -238,6 +265,10 @@ export default {
 
 <style lang="scss" scoped>
 .giSearch{
+
+  & .el-form-item:nth-child(4){
+    height: 53px !important;
+  }
 
   ::v-deep .el-form-item {
     width: auto !important;

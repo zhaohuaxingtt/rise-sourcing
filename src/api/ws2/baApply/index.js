@@ -46,3 +46,12 @@ export function getBaAccountType(parmars) {
       data: parmars
   })
 }
+
+//  BA账户类型
+export function getBaAccountTypePullDown(parmars) {
+  return VUE_APP_APPLY({
+      url: '/getBaAccountTypePullDown',
+      method: 'GET',
+      data: parmars
+  })
+}
