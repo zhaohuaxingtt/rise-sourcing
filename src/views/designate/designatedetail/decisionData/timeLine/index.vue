@@ -29,10 +29,8 @@
                 </ul>
                 <!-- 供应商编辑列表 -->
                 <ul class="supplier-edit-list">
-                    <li>
-                        <p>
-                            <span>供应商1</span>
-                        </p>
+                    <li v-for="(item,index) in supplierData" :key="'supplier-edit-list-'+index">
+                        <supplierItem :supplierData="item"/>
                     </li>
                 </ul>
             </iCard>
@@ -50,7 +48,7 @@
                 <div class="supplier-list">
                     <iCard collapse title="Supplier 1" class="supplier-item">
                         <template slot="header-control" >
-                            <supplierStep />
+                            <supplierStep :supplierData="supplierData"/>
                         </template>
                         <ul class="supplier-item-list">
                             <li class="flex-between-center" v-for="(item,index) in timeList" :key="'supplier-item-'+index">
@@ -81,12 +79,14 @@ import { stepList } from './components/data'
 import groupStep from './components/groupStep'
 import supplierStep from './components/supplierStep'
 import supplierLine from './components/supplierLine'
+import supplierItem from './components/supplierItem'
 export default {
     name:'timeLine',
      components:{
         groupStep,
         supplierStep,
         supplierLine,
+        supplierItem,
         iCard,
         iButton,
         icon,
@@ -100,15 +100,25 @@ export default {
                 {startDate:1620616561,endDate:1621307761}, // 5-10 ---> 5-18
             ],
             stepList:stepList,
-            isPreview:'0',
+            supplierData:[
+                {name:'供应商1',a:'1',b:'2',c:'3',d:'4',
+                list:[
+                    {e:'55',date:''},
+                    {e:'55',date:''},
+                    {e:'55',date:''},
+                    {e:'55',date:''},
+                ]},
+                {name:'供应商2',a:'1',b:'2',c:'3',d:'4',
+                list:[
+                    {e:'55',date:''}
+                ]}
+                
+            ]
+            
         }
     },
     created(){
         this.formatTime();
-        // 是否为预览路径
-        const {query={}} = this.$route;
-        const {isPreview='0'} = query;
-        this.isPreview = isPreview;
 
     },
     methods:{
@@ -153,11 +163,11 @@ export default {
             console.log(this.stepList,'stepList');
         }
     },
-    watch:{$route(to,from){
-        const {query={}} = to;
-        const {isPreview = '0'} = query;
-        this.isPreview = isPreview;
-    }}
+    computed:{
+        isPreview(){
+            return this.$store.getters.isPreview;
+        }
+    },
 }
 </script>
 

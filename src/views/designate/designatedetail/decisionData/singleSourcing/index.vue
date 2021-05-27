@@ -93,7 +93,12 @@ export default {
                 {name:'原因部⻔\nCaused by',key:'Causedby'},
             ]
         }
-    }
+    },
+    computed:{
+        isPreview(){
+            return this.$store.getters.isPreview;
+        }
+    },
 
 }
 </script>
