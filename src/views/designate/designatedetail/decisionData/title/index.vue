@@ -46,8 +46,13 @@ export default {
              {label:'Single Sourcing',value:'Y'},
              {label:'PUC/TIA',value:'Not Relevant/Finished'},
           ],
-          isPreview:false,
        }
+    },
+    
+    computed:{
+        isPreview(){
+            return this.$store.getters.isPreview;
+        }
     },
     methods:{
     }

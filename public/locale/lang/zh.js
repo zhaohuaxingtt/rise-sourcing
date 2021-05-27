@@ -885,13 +885,17 @@
             "QuanBuXiaZai": "全部下载",
             "XiaZai": "下载",
             "ShangChuan": "上传",
+            "ShanChu": "删除",
             "ShangChuanRiQi": "上传日期",
             "ShangChuanWenJian": "上传文件",
             "ShangChuanRen": "上传人",
             "MingChen": "名称",
             "ZhuTi": "主题",
             "XianShiYinCang": "显示/隐藏",
-            "ZiDingYi": "自定义"
+            "ZiDingYi": "自定义",
+            "ShangChuanXianXiaRS": "上传线下RS文件",
+            "JieSuBianJi": "结束编辑",
+            "BeiZuXinXi": "备注信息"
         }
     })
 }))

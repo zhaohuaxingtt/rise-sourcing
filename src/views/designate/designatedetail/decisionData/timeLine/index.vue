@@ -29,10 +29,8 @@
                 </ul>
                 <!-- 供应商编辑列表 -->
                 <ul class="supplier-edit-list">
-                    <li>
-                        <p>
-                            <span>供应商1</span>
-                        </p>
+                    <li v-for="(item,index) in supplierData" :key="'supplier-edit-list-'+index">
+                        <supplierItem :itemIndex="index" :supplierData="item" @editSupplierLine="editSupplierLine"/>
                     </li>
                 </ul>
             </iCard>
@@ -50,7 +48,7 @@
                 <div class="supplier-list">
                     <iCard collapse title="Supplier 1" class="supplier-item">
                         <template slot="header-control" >
-                            <supplierStep />
+                            <supplierStep :supplierData="supplierData"/>
                         </template>
                         <ul class="supplier-item-list">
                             <li class="flex-between-center" v-for="(item,index) in timeList" :key="'supplier-item-'+index">
@@ -81,34 +79,47 @@ import { stepList } from './components/data'
 import groupStep from './components/groupStep'
 import supplierStep from './components/supplierStep'
 import supplierLine from './components/supplierLine'
+import supplierItem from './components/supplierItem'
+import { cloneDeep } from 'lodash'
 export default {
     name:'timeLine',
      components:{
         groupStep,
         supplierStep,
         supplierLine,
+        supplierItem,
         iCard,
         iButton,
         icon,
     },
     data(){
         return{
-            isEdit:true,
+            isEdit:false,
             timeList:[
                 {startDate:1621048561,endDate:1621912561}, // 5-17 ---> 5-25
                 {startDate:1621480561,endDate:1621998961}, // 5-20 ---> 5-26
                 {startDate:1620616561,endDate:1621307761}, // 5-10 ---> 5-18
             ],
             stepList:stepList,
-            isPreview:'0',
+            supplierData:[
+                {name:'供应商1',a:'1',b:'2',c:'3',d:'4',
+                list:[
+                    {e:'1-1',date:''},
+                    {e:'1-2',date:''},
+                    {e:'1-3',date:''},
+                    {e:'1-4',date:''},
+                ]},
+                {name:'供应商2',a:'1',b:'2',c:'3',d:'4',
+                list:[
+                    {e:'55',date:''}
+                ]}
+                
+            ]
+            
         }
     },
     created(){
         this.formatTime();
-        // 是否为预览路径
-        const {query={}} = this.$route;
-        const {isPreview='0'} = query;
-        this.isPreview = isPreview;
 
     },
     methods:{
@@ -151,13 +162,28 @@ export default {
         // 保存
         save(){
             console.log(this.stepList,'stepList');
+        },
+
+        // 新增删减供应商行
+        editSupplierLine(type,index,line){
+            const { supplierData=[] } = this;
+            let newData = cloneDeep(supplierData);
+            // 新增行
+            if(type === 'add'){
+                newData[index].list.push({
+                     e:'',date:''
+                });
+            }else if(type === 'delete'){
+                newData[index]['list'].splice(line,1);
+            }
+            this.supplierData = newData;
+        },
+    },
+    computed:{
+        isPreview(){
+            return this.$store.getters.isPreview;
         }
     },
-    watch:{$route(to,from){
-        const {query={}} = to;
-        const {isPreview = '0'} = query;
-        this.isPreview = isPreview;
-    }}
 }
 </script>
 

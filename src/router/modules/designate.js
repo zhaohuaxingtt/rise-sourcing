@@ -181,6 +181,33 @@ export default [
             component: () =>
               import ("@/views/designate/approvalPersonAndRecord/index")
           },
+          {                             
+            path: "/designate/decisiondata/attachment",
+            name: "designateDecisionAttachment",
+            meta: {
+                title: "定点管理-决策资料-attachment",
+            },
+            component: () =>
+              import ("@/views/designate/designatedetail/attachment")
+          },
+          {                             
+            path: "/designate/decisiondata/attachment/upload",
+            name: "designateDecisionAttachmentUpload",
+            meta: {
+                title: "定点管理-决策资料-attachmentUpload",
+            },
+            component: () =>
+              import ("@/views/designate/designatedetail/attachment/upload")
+          },
+          {                             
+            path: "/designate/decisiondata/tasks",
+            name: "designateDecisionTasks",
+            meta: {
+                title: "定点管理-决策资料-tasks",
+            },
+            component: () =>
+              import ("@/views/designate/designatedetail/tasks")
+          },
         ]
       }
     ]
