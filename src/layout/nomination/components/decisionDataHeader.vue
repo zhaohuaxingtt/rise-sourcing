@@ -17,9 +17,13 @@
 
 
         <!-- 关闭预览按钮 -->
-        <span class="tab-icon" v-if="isPreview=='1'" @click="close"><icon symbol name="guanbixiaoxiliebiaokapiannei"></icon></span>
+        <span class="tab-icon" v-if="isPreview=='1'" @click="close">
+            <icon symbol name="iconguanbixiaoxiliebiaokapiannei"></icon>
+        </span>
         <!-- 设置按钮 -->
-        <span class="tab-icon" v-else><icon symbol name="Setting"></icon></span>
+        <span class="tab-icon" @click="sortDialogVisibal = true" v-else><icon symbol name="iconSetting"></icon></span>
+        <!-- 排序弹窗 -->
+        <sortDialog :visible.sync="sortDialogVisibal" />
     </div>
 </template>
 
@@ -29,22 +33,26 @@ import {
   icon,
 } from "rise";
 import { decisionType } from './data'
+import sortDialog from './sortDialog'
+
 export default {
     name:'decisionDataHeader',
     components:{
         iTabsList,
         icon,
+        sortDialog
     },
     props:{
         isPreview:{
             type: String,
-            default:'0'
+            default:'1'
         }
     },
     data(){
         return{
             decisionType:decisionType,
             defaultTab:'Title',
+            sortDialogVisibal: true
         }
     },
     mounted(){
@@ -96,10 +104,12 @@ export default {
         .tab-icon{
                 width: 20px;
                 height: 20px;
-                border:1px solid red;
+                // border:1px solid red;
                 position: absolute;
                 right: 40px;
                 top: 30px;
+                font-size: 18px;
+                cursor: pointer;
             }
         &.preview-header{
             background-color: #fff;
