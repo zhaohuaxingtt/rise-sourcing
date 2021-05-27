@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-25 15:32:38
- * @LastEditTime: 2021-05-25 22:34:41
+ * @LastEditTime: 2021-05-27 10:24:23
  * @LastEditors: Please set LastEditors
  * @Description: 报价评分跟踪
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringTracking\index.vue
@@ -19,18 +19,22 @@
         </span>
       </div>
       <timeline :timeList='timeList'></timeline>
+      <tabelData :tableTile='tableTile' :tableData='tableDatas'></tabelData>
   </div>
 </template>
 <script>
 import timeline from './components/timeline'
 import {icon} from 'rise'
-import {timeList} from './components/data'
+import {timeList,tableTile,tableDatas} from './components/data'
 import dalyWeeks from './components/dalyWeeks'
+import tabelData from './components/tableList'
 export default{
-  components:{timeline,icon,dalyWeeks},
+  components:{timeline,icon,dalyWeeks,tabelData},
   data(){
     return {
-      timeList:timeList
+      timeList:timeList,
+      tableTile:tableTile,
+      tableDatas:tableDatas
     }
   }
 }
