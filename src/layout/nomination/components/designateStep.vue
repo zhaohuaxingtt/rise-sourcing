@@ -85,7 +85,7 @@ export default {
               path,
               query: {
                 ...query,
-                isPreview:true
+                isPreview:'1'
               }
             })
         }

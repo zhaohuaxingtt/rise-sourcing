@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-05-26 14:02:16
+ * @LastEditTime: 2021-05-27 10:17:35
  * @LastEditors: Please set LastEditors
  * @Description: 系统静态路由.
  * @FilePath: \front-web\src\router\index.js
@@ -233,6 +233,12 @@ export const staticRouter = [{
                 component: () =>
                     import ("@/views/designateFiles/importFiles"),
             },
+            {
+                path: "/sourcing/importfiles/detaillist",
+                name: "filesDetailList",
+                component: () =>
+                    import ("@/views/designateFiles/importFiles/detail"),
+            },  
             // 配件相关路由
             {
                 path: "/sourcing/signforpartsdemand",
@@ -258,6 +264,12 @@ export const staticRouter = [{
                 name: "quotationDetail",
                 component: () => 
                     import ("@/views/supplier/quotationdetail")
+            },
+            {
+                path: "/sourcing/createrfq",
+                name: "createRfq",
+                meta: { title: "创建RFQ" },
+                component: () => import("@/views/accessoryPart/createRfq/index"),
             }
         ],
     },

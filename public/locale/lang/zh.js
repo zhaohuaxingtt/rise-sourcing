@@ -765,22 +765,54 @@
             'SELDanJuQUeRenZH': 'SEL单据确认状态',
             'DingDianRiQi': '定点日期'
         },
-        nominationSupplier: {
+        // 单一供应商
+        "nominationSupplier": {
             'GongYingShangLieBiao': '供应商列表',
             'GongYingShangMing': '供应商名',
+            'GongYingShangHao': '供应商号',
             'JiaRuZhanShi': '加入展示',
             'QuXiaoZhanShi': '取消展示',
             'ChangShangMing': '厂商名',
             'SAPHao': 'SAP号',
             'ChangShangMingEN': '厂商名(英)',
+            'CaiGouGongChang': '采购工厂',
             'ShiFouZhanShi': '是否展示',
             'DanYiGongYingShang': '单一供应商',
             'DanYiYuanYin': '单一原因',
             'BuMen': '部门',
-            'GengXinShiJian': '更新时间'
+            'GengXinShiJian': '更新时间',
+            // 零件清单
+            "LingJianXiangMuLeiXing": "零件项目类型", 
+            "CheXingDaLei": "车型大类", 
+            "CheXingXiangMu": "车型项目",
+            "LingJianZhuangTai": "零件状态", 
+            "XunJiaCaiGouYuan": "询价采购员", 
+            "LINIE": "LINIE", 
+            "CFMuBiaoJia": "CF目标价",
+            "BatchEdit": "批量编辑",
+            "Edit": "编辑",
+            "COPY": "复制",
+            "Export": "导出",
+            "Refresh": "刷新",
+            "Reset": "重置"
         },
         // 定点建议
-        'nominationSuggestion': {
+        "nominationSuggestion": {
+            "MoJuYuSuanGuanLi": "模具预算管理",
+            "BiLi": "比例(%)",
+            "ShenQingRiQi": "申请日期",
+            "CheXingXiangMu": "车型项目",
+            "TouZiYuSuan": "投资预算(RMB)",
+            "CSFuZeRen": "CSF(P)负责人",
+            "ShenPiZhuangTai": "审批状态",
+            "ShenPiYiJian": "审批意见",
+            "YeWuFenPeiMoNi": "业务分配模拟",
+            "ShuaXinShiJian": "刷新时间",
+            "FanAnXuanZhe": "方案选择",
+            "ZuHe": '组合',
+            "QuXiaoZuHe": "取消组合",
+            "TuiChuBianJi": "退出编辑",
+            'GengXinShiJian': '更新时间',
             'Mujuyusuanguanli': '模具预算管理', // 模具预算管理
             'Tijiao': '提交', // 提交
             'Chehui': '撤回', // 撤回
@@ -794,6 +826,17 @@
             'Csfpfuzeren': 'CSF(P)负责人', // CSF(P)负责人
             'Shenpizhuangtai': '审批状态', // 审批状态
             'Shenpiyijian': '审批意见', // 审批意见
+        },
+        // 决策资料
+        "strategicdoc": {
+            "PaiXu": "排序",
+            "QuanBuXiaZai": "全部下载",
+            "XiaZai": "下载",
+            "ShangChuan": "上传",
+            "ShangChuanRiQi": "上传日期",
+            "ShangChuanWenJian": "上传文件",
+            "ShangChuanRen": "上传人",
+            "MingChen": "名称"
         }
     })
 }))
