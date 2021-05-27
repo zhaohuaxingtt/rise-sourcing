@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-24 09:47:32
- * @LastEditTime: 2021-05-26 13:30:12
+ * @LastEditTime: 2021-05-26 16:28:37
  * @LastEditors: Luoshuang
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsign\home\components\data.js
@@ -64,7 +64,7 @@ export const navList = [
     message: 0,
     url: '/sourcing/signforpartsdemand',
     activePath: 'signforpartsdemand',
-    key: '配件需求签收'
+    key: 'LK_PEIJIANXUQIUQIANSHOU'
   },
   {
     value: 8,
@@ -72,7 +72,7 @@ export const navList = [
     message: 0,
     url: '/sourcing/integratedmanage',
     activePath: 'integratedmanage',
-    key: '配件综合管理'
+    key: 'LK_PEIJIANZONGHEGUANLI'
   },
   {
     value: 5,
@@ -81,6 +81,14 @@ export const navList = [
     url: '/sourcing/importfiles',
     activePath: 'importfiles',
     key: 'LK_FUJIANXUQIUDAORU'
+  },
+  {
+    value: 5,
+    name: '附件综合管理',
+    message: 0,
+    url: '/sourcing/filemanage',
+    activePath: 'filemanage',
+    key: 'LK_FUJIANZONGHEGUANLI'
   },
   {
     value: 3,

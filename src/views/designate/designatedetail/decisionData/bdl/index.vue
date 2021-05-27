@@ -2,13 +2,16 @@
  * @Author: Luoshuang
  * @Date: 2021-05-25 17:00:48
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-05-25 21:20:42
+ * @LastEditTime: 2021-05-26 20:38:15
  * @Description: 定点管理-决策资料-BDL
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\bdl\index.vue
 -->
 
 <template>
   <iPage class="decision-bdl">
+    <div class="margin-top20" style="text-align:right;">
+      <iButton @click="gotoSupplier">跳转供应商维护</iButton>
+    </div>
     <iCard v-for="(item, index) in rfqList" :key="index" :title="'RFQ NO.'+item.rfqNum+',RFQ Name:'+item.rfqName" class="margin-top20">
       <tableList :tableTitle="tableTitle" :selection="false" :tableData="item.tableData" class="doubleHeader" @openDialog="changeDialogVisible(true)"></tableList>
       <iPagination v-update 
@@ -27,12 +30,12 @@
 </template>
 
 <script>
-import { iCard, iPage, iPagination } from 'rise'
+import { iCard, iPage, iPagination, iButton } from 'rise'
 import tableList from '../../components/tableList'
 import { tableTitle, mockData } from './data'
 import partsRatingDialog from './partsRating'
 export default {
-  components: { iCard, iPage, tableList, iPagination, partsRatingDialog },
+  components: { iCard, iPage, tableList, iPagination, partsRatingDialog, iButton },
   data() {
     return {
       rfqList: [
@@ -47,6 +50,10 @@ export default {
   methods: {
     changeDialogVisible(visible) {
       this.dialogVisible = visible
+    },
+    gotoSupplier() {
+      const router =  this.$router.resolve({path: '/designate/supplier', query: {  }})
+      window.open(router.href,'_blank')
     }
   }
 }

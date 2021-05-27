@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-25 13:57:11
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-05-26 11:21:01
+ * @LastEditTime: 2021-05-27 00:19:37
  * @Description: 
  * @FilePath: \front-web\src\views\accessoryPart\signForPartsDemand\index.vue
 -->
@@ -32,20 +32,20 @@
           <!----------------------------------------------------------------->
           <iCard class="margin-top20">
             <div class="margin-bottom20 clearFloat">
-                <span class="font18 font-weight">配件需求签收</span>
-                  <div class="floatright">
-                    <!--------------------签收按钮----------------------------------->
-                    <iButton @click="batchData">签收</iButton>
-                    <!--------------------退回EPS按钮----------------------------------->
-                    <iButton @click="changebackDialogVisible(true)" >退回EPS</iButton>
-                    <!--------------------分配询价科室按钮----------------------------------->
-                    <iButton @click="changeInquiryDialogVisible(true)" >分配询价科室</iButton>
-                    <!--------------------分配询价采购员按钮----------------------------------->
-                    <iButton @click="changeBuyerDialogVisible(true)" >分配询价采购员</iButton>
-                    <!--------------------导出按钮----------------------------------->
-                    <iButton @click="remove" >导出</iButton>
-                  </div>
-              </div>
+              <span class="font18 font-weight">配件需求签收</span>
+                <div class="floatright">
+                  <!--------------------签收按钮----------------------------------->
+                  <iButton @click="batchData">签收</iButton>
+                  <!--------------------退回EPS按钮----------------------------------->
+                  <iButton @click="changebackDialogVisible(true)" >退回EPS</iButton>
+                  <!--------------------分配询价科室按钮----------------------------------->
+                  <iButton @click="changeInquiryDialogVisible(true)" >分配询价科室</iButton>
+                  <!--------------------分配询价采购员按钮----------------------------------->
+                  <iButton @click="changeBuyerDialogVisible(true)" >分配询价采购员</iButton>
+                  <!--------------------导出按钮----------------------------------->
+                  <iButton @click="remove" >导出</iButton>
+                </div>
+            </div>
             <tableList :activeItems='"a1"' selection indexKey :tableData="tableData" :tableTitle="tableTitle" :tableLoading="tableLoading" @handleSelectionChange="handleSelectionChange" @openPage="openPage"></tableList>
                 <!------------------------------------------------------------------------>
                 <!--                  表格分页                                          --->

@@ -7,11 +7,11 @@
     <div class="decision-data-timeLine">
         <!-- 按钮区域 -->
         <div class="timeLine-btn-list" v-if="isPreview=='0'">
-            <template v-if="isEdit">
+            <span v-if="isEdit">
                 <iButton @click="save">保存</iButton>
                 <iButton @click="edit">取消</iButton>
                 <iButton>展示</iButton>
-            </template>
+            </span>
             <iButton v-else @click="edit">编辑</iButton>
         </div>
         <!-- 编辑状态 -->
@@ -22,7 +22,7 @@
                     <li class="flex-between-center margin-bottom20">
                         <span class="show-icon">
                             <icon symbol name="xianshi" class="step-icon" ></icon>
-                            <icon symbol name="yincang" class="step-icon" ></icon>
+                            <!-- <icon symbol name="yincang" class="step-icon" ></icon> -->
                         </span>
                         <groupStep :stepList="stepList" class="list-item-step"/>
                     </li>
@@ -93,7 +93,7 @@ export default {
     },
     data(){
         return{
-            isEdit:false,
+            isEdit:true,
             timeList:[
                 {startDate:1621048561,endDate:1621912561}, // 5-17 ---> 5-25
                 {startDate:1621480561,endDate:1621998961}, // 5-20 ---> 5-26
