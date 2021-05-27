@@ -31,6 +31,7 @@
     </div>
     <tablelist
       index
+      :selection="!$store.getters.isPreview"
       :tableData="tableListData"
       :tableTitle="uploadtableTitle"
       :tableLoading="tableLoading"

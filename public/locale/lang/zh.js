@@ -859,7 +859,9 @@
             "ZhuTi": "主题",
             "XianShiYinCang": "显示/隐藏",
             "ZiDingYi": "自定义",
-            "ShangChuanXianXiaRS": "上传线下RS文件"
+            "ShangChuanXianXiaRS": "上传线下RS文件",
+            "JieSuBianJi": "结束编辑",
+            "BeiZuXinXi": "备注信息"
         }
     })
 }))
