@@ -419,3 +419,93 @@ export const dataBaseData = [
         tooltip: false
     },
 ]
+
+export const tmCartypeProList = [
+    {
+        props: 'tmCartypeProName',
+        name: '车型项目',
+        key: '车型项目',
+        tooltip: false
+    },
+    {
+        props: 'cartypeProType',
+        name: '车型类型',
+        key: '车型类型',
+        tooltip: false
+    },
+    {
+        props: 'nomiType',
+        name: 'JV/Common',
+        key: 'JV/Common',
+        tooltip: false
+    },
+    {
+        props: 'categoryNameZh',
+        name: '材料组',
+        key: '材料组',
+        tooltip: false
+    },
+    {
+        props: 'nomiAmount',
+        name: '模具定点金额',
+        key: '模具定点金额',
+        tooltip: false
+    },
+    {
+        props: 'entryAmount',
+        name: '模具入账金额',
+        key: '模具入账金额',
+        tooltip: false
+    },
+    {
+        props: 'info',
+        name: '',
+        key: '',
+        tooltip: false
+    },
+    {
+        props: 'apply',
+        name: '',
+        key: '',
+        tooltip: false
+    },
+]
+
+export const partsList = [
+    {
+        props: 'partNum',
+        name: '零件号',
+        key: '零件号',
+        tooltip: false
+    },
+    {
+        props: 'partNameZh',
+        name: '零件名称（中）',
+        key: '零件名称（中）',
+        tooltip: false
+    },
+    {
+        props: 'nomiType',
+        name: '零件名称（德）',
+        key: '零件名称（德）',
+        tooltip: false
+    },
+    {
+        props: 'nomiAmount',
+        name: '模具定点金额',
+        key: '模具定点金额',
+        tooltip: false
+    },
+    {
+        props: 'nomiType',
+        name: '定点类型',
+        key: '定点类型',
+        tooltip: false
+    },
+    {
+        props: 'entryAmount',
+        name: '模具入账金额',
+        key: '模具入账金额',
+        tooltip: false
+    },
+]

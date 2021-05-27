@@ -76,9 +76,9 @@
             :activeItems="'partNum'"
             @handleSelectionChange="handleSelectionChange"
         >
-          <template #linie="scope">
-            <div>{{ $i18n.locale == 'zh' ? scope.row.linie : (Math.random() > 0.5 ? 'Cui zhiwei' : 'Mu zengzhi') }}</div>
-          </template>
+<!--          <template #linie="scope">-->
+<!--            <div>{{ $i18n.locale == 'zh' ? scope.row.linie : (Math.random() > 0.5 ? 'Cui zhiwei' : 'Mu zengzhi') }}</div>-->
+<!--          </template>-->
         </iTableList>
         <iPagination
             v-update
@@ -131,7 +131,6 @@ export default {
     iPagination,
     iInput,
     iSelect,
-    iMessage
   },
   props: {
     title: {type: String, default: 'LK_TIANJIAHANG'},

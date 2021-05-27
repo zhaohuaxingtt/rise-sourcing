@@ -4,6 +4,7 @@ const INVESTMENT = axios(process.env.VUE_APP_INVESTMENT)
 const INVESTMENTVERSION = axios(process.env.VUE_APP_INVESTMENTVERSION)
 const BUILDINVESTMENT = axios(process.env.VUE_APP_BUILDINVESTMENT)
 const INVESTMENTORDER = axios(process.env.VUE_APP_INVESTMENTORDER)
+const VUE_APP_REFCARTYPEPRO = axios(process.env.VUE_APP_REFCARTYPEPRO)
 //获取专业科室下拉列表
 export function getDepartmentsList(parmars) {
     return INVESTMENT({
@@ -107,6 +108,30 @@ export function getInvestmentData(parmars) {
         url: '/getInvestmentData',
         method: 'POST',
         data: parmars
+    })
+}
+//投资清单-参考车型项目列表
+export function searchRelationCarTypeList(parmars) {
+    return VUE_APP_REFCARTYPEPRO({
+        url: '/searchRelationCarTypeList',
+        method: 'POST',
+        data: parmars
+    })
+}
+//投资清单-参考车型项目零件列表
+export function relationCarTypePartsList(parmars) {
+    return VUE_APP_REFCARTYPEPRO({
+        url: '/relationCarTypePartsList',
+        method: 'POST',
+        params: parmars
+    })
+}
+//投资清单-应用参考车型项目
+export function applyRefCarType(id, data) {
+    return INVESTMENT({
+        url: '/applyRefCarType/' + id,
+        method: 'POST',
+        data: data
     })
 }
 

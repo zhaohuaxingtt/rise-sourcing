@@ -71,7 +71,7 @@ export default {
   },
   methods: {
     detail() {
-      // this.tableLoading = true
+      this.tableLoading = true
       detail({rfqId: this.RFQID}).then((res) => {
         const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
         if (Number(res.code) === 0) {

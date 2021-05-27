@@ -18,6 +18,7 @@
     :class="radio && 'radio'"
     :show-summary="showSummary"
     :summary-method="getSummaries"
+    :row-class-name="tableRowClassName"
   >
     <el-table-column
       v-if="selection"
@@ -95,6 +96,7 @@ export default {
     radio: { type: Boolean, default: false }, // 是否单选
     showSummary: { type: Boolean, default: false }, //  是否显示总结行
     getSummaries: { type: Function },
+    tableRowClassName: { type: Function },
   },
   inject: ["vm"],
   components: {
