@@ -765,7 +765,8 @@
             'SELDanJuQUeRenZH': 'SEL单据确认状态',
             'DingDianRiQi': '定点日期'
         },
-        nominationSupplier: {
+        // 单一供应商
+        "nominationSupplier": {
             'GongYingShangLieBiao': '供应商列表',
             'GongYingShangMing': '供应商名',
             'GongYingShangHao': '供应商号',
@@ -795,7 +796,8 @@
             "Refresh": "刷新",
             "Reset": "重置"
         },
-        nominationSuggestion: {
+        // 定点建议
+        "nominationSuggestion": {
             "MoJuYuSuanGuanLi": "模具预算管理",
             "BiLi": "比例(%)",
             "ShenQingRiQi": "申请日期",
@@ -824,6 +826,17 @@
             'Csfpfuzeren': 'CSF(P)负责人', // CSF(P)负责人
             'Shenpizhuangtai': '审批状态', // 审批状态
             'Shenpiyijian': '审批意见', // 审批意见
+        },
+        // 决策资料
+        "strategicdoc": {
+            "PaiXu": "排序",
+            "QuanBuXiaZai": "全部下载",
+            "XiaZai": "下载",
+            "ShangChuan": "上传",
+            "ShangChuanRiQi": "上传日期",
+            "ShangChuanWenJian": "上传文件",
+            "ShangChuanRen": "上传人",
+            "MingChen": "名称"
         }
     })
 }))

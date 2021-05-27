@@ -29,7 +29,7 @@
         :prop="items.props"
         :class-name="items.tree ? 'tree' : ''">
         <template slot-scope="scope">
-          <slot :name="items.props" :row="scope.row">
+          <slot :name="items.props" :row="scope.row" :$index="scope.$index">
             <span :class="{normal: true, child: scope.row.children}">{{scope.row[items.props]}}</span>
           </slot>
         </template>

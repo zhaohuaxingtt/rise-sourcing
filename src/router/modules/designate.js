@@ -163,6 +163,15 @@ export default [
             component: () =>
               import ("@/views/designate/designatedetail/decisionData/bdl")
           },
+          {                             
+            path: "/designate/decisiondata/drawing",
+            name: "designateDecisionDrawing",
+            meta: {
+                title: "定点管理-决策资料-drawing",
+            },
+            component: () =>
+              import ("@/views/designate/designatedetail/drawing")
+          },
         ]
       }
     ]
