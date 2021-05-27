@@ -1,8 +1,8 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-05-25 22:12:34
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-05-27 10:19:41
+ * @LastEditors: Luoshuang
  * @Description: 系统静态路由.
  * @FilePath: \front-web\src\router\index.js
  *
@@ -13,7 +13,6 @@
 // 定点管理
 import designateRoutes from './modules/designate'
 import createpartsRoutes from './modules/createparts'
-import accessorypartsRoutes from './modules/accessoryparts'
 
 Vue.use(VueRouter);
 export const staticRouter = [{
@@ -227,7 +226,57 @@ export const staticRouter = [{
                 name: "/ws3Register",
                 component: () =>
                     import ("@/views/AutomaticallyAssignDe"),
-            }  
+            },
+            {
+                path: "/sourcing/importfiles",
+                name: "importFiles",
+                component: () =>
+                    import ("@/views/designateFiles/importFiles"),
+            },
+            {
+                path: "/sourcing/importfiles/detaillist",
+                name: "filesDetailList",
+                component: () =>
+                    import ("@/views/designateFiles/importFiles/detail"),
+            } ,
+            {
+                path: "/sourcing/filemanage",
+                name: "fileManage",
+                meta: { title: "附件综合管理" },
+                component: () => import("@/views/designateFiles/fileManage/index"),
+            },   
+            // 配件相关路由
+            {
+                path: "/sourcing/signforpartsdemand",
+                name: "signForPartsDemand",
+                meta: { title: "配件需求签收" },
+                component: () => import("@/views/accessoryPart/signForPartsDemand/index"),
+            },
+            {
+                path: "/sourcing/integratedmanage",
+                name: "integratedManage",
+                meta: { title: "配件综合管理" },
+                component: () => import("@/views/accessoryPart/integratedManage/index"),
+            },
+            {
+                path: "/sourcing/accessorypartdetail",
+                name: "accessoryPartDetail",
+                meta: { title: "配件详情" },
+                component: () => import("@/views/accessoryPart/accessoryPartDetail/index"),
+            },
+            // 报价详情相关路由
+            {
+                path: "/supplier/quotationdetail",
+                name: "quotationDetail",
+                component: () => 
+                    import ("@/views/supplier/quotationdetail")
+            },
+            {
+                path: "/sourcing/createrfq",
+                name: "createRfq",
+                meta: { title: "创建RFQ" },
+                component: () => import("@/views/accessoryPart/createRfq/index"),
+            }
         ],
     },
     {
@@ -264,7 +313,6 @@ export default new VueRouter({
     routes: [
         ...staticRouter,
         ...designateRoutes,
-        ...createpartsRoutes,
-        ...accessorypartsRoutes
+        ...createpartsRoutes
     ]
 });

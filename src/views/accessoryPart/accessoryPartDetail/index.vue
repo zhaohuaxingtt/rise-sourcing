@@ -2,9 +2,9 @@
  * @Author: Luoshuang
  * @Date: 2021-05-25 15:16:38
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-05-25 15:53:32
+ * @LastEditTime: 2021-05-26 10:59:48
  * @Description: 配件详情
- * @FilePath: \front-web\src\views\accessoryPart\components\accessoryPartDetail\index.vue
+ * @FilePath: \front-web\src\views\accessoryPart\accessoryPartDetail\index.vue
 -->
 
 <template>
@@ -26,7 +26,7 @@
 
 <script>
 import { iPage, iCard, iFormGroup, iFormItem, iText } from 'rise'
-import topComponents from '../../../designate/designatedetail/components/topComponents'
+import topComponents from '../../designate/designatedetail/components/topComponents'
 import { detailList } from './data'
 export default {
   components: { iPage, topComponents, iCard, iFormGroup, iFormItem, iText },

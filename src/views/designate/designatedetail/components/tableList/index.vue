@@ -2,7 +2,7 @@
  * @Descripttion: 
  * @Author: Luoshuang
  * @Date: 2021-05-21 14:30:41
- * @LastEditTime: 2021-05-25 21:27:53
+ * @LastEditTime: 2021-05-27 00:32:34
 -->
 <template>
   <el-table fit tooltip-effect='light' :height="height" :data='tableData' v-loading='tableLoading' @selection-change="handleSelectionChange" :empty-text="$t('LK_ZANWUSHUJU')" ref="moviesTable" >
@@ -28,6 +28,7 @@
           </span>
         </tempalte>
       </el-table-column>
+      <!---------------------------可编辑列---------------------------------->
       <el-table-column :key="index" align='center' :width="items.width" :show-overflow-tooltip='items.tooltip' v-else-if="items.editable" :prop="items.props" :label="items.key ? $t(items.key) : items.name">
         <template slot="header">
           <span>{{items.key ? $t(items.key) : items.name}}</span>
@@ -53,12 +54,29 @@
           <span v-if="items.enName">{{items.name}}<br />{{items.enName}}</span>
           <span v-else>{{items.key ? $t(items.key) : items.name}}</span>
         </template>
+        <template slot-scope="scope">
+          <!----------------------------附件综合管理-创建RFQ-产能计划列-------------------------------->
+          <span v-if="items.props === 'channeng'" class="openLinkText cursor" @click="$emit('openPlan', scope.row)">编辑</span>
+          <!----------------------------附件综合管理-附件列-------------------------------->
+          <el-popover
+            v-else-if="items.props === 'fujian'"
+            placement="right"
+            trigger="hover"
+            popper-class="tableTitleTip"
+            content="xxx.pdf"
+            :visible-arrow="false">
+            <span slot="reference" class="openLinkText cursor">下载</span>
+          </el-popover>
+          <!------------------正常--------------------------->
+          <span v-else>{{scope.row[items.props]}}</span>
+        </template>
         <template v-if="items.children">
           <el-table-column v-for="(childItem, childIndex) in items.children" :key="childIndex" align='center' :width="childItem.width" :show-overflow-tooltip='childItem.tooltip'  :label="childItem.key ? $t(childItem.key) : childItem.name" :prop="childItem.props">
             <template slot-scope="scope">
+              <!----------------------------备注列-------------------------------->
               <span v-if="childItem.props === 'beizhu'" class="openLinkText cursor">查看</span>
               <span v-else>{{scope.row[childItem.props]}}</span>
-              <icon v-if="scope.row.withIcon && scope.row.withIcon.includes(childItem.props)" symbol class="cursor" name='icontishi-cheng' style="border:1px solid red;margin-left:8px" @click.native="$emit('openDialog')"></icon>
+              <icon v-if="scope.row.withIcon && scope.row.withIcon.includes(childItem.props)" symbol class="cursor" name='icontishi-cheng' style="margin-left:8px" @click.native="$emit('openDialog')"></icon>
             </template>
           </el-table-column>
         </template>
