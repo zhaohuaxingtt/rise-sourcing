@@ -361,6 +361,7 @@ export default {
         carTypeProject: this.carTypeProjectObj.id,
         sourceStatus: this.carTypeProjectObj.sourceStatus
       });
+      this.params.id = this.carTypeProjectObj.id
       this.$store.commit('SET_isBudget', this.carTypeProjectObj.isBudget);
       let sourceStatus = this.carTypeProjectObj.sourceStatus
       this.carTypeProjectDisabled = sourceStatus == '1' ? true : false

@@ -74,3 +74,120 @@ export const budgetApprovalData = [
         tooltip: false
     },
 ]
+
+export const alertList = [
+    {
+        props: 'tmCarTypeProName',
+        name: '车型项目',
+        key: '车型项目',
+        tooltip: false
+    },
+    {
+        props: 'categoryName',
+        name: '材料组',
+        key: '材料组',
+        tooltip: false
+    },
+    {
+        props: 'budgetApplyAmount',
+        name: '申请金额',
+        key: '申请金额',
+        tooltip: false
+    }
+]
+
+export const RFQList = [
+    {
+        props: 'partNum',
+        name: '零件号',
+        key: '零件号',
+        tooltip: false
+    },
+    {
+        props: 'partName',
+        name: '零件名称',
+        key: '零件名称',
+        tooltip: false
+    },
+    {
+        props: 'purchasingFactory',
+        name: '采购工厂',
+        key: '采购工厂',
+        tooltip: false
+    },
+    {
+        props: 'fs',
+        name: 'FSNR / GSNR',
+        key: 'FSNR / GSNR',
+        tooltip: false
+    },
+    {
+        props: 'applyDate',
+        name: '申请日期',
+        key: '申请日期',
+        tooltip: false
+    },
+    {
+        props: 'carTypeProName',
+        name: '车型项目',
+        key: '车型项目',
+        tooltip: false
+    },
+    {
+        props: 'investmentBudget',
+        name: '投资预算',
+        key: '投资预算',
+        tooltip: false
+    },
+    {
+        props: 'csf',
+        name: 'CSF(P)负责人',
+        key: 'CSF(P)负责人',
+        tooltip: false
+    }
+]
+
+export const budgetApplyAmountList = [
+    {
+        props: 'categroyName',
+        name: '材料组',
+        key: '材料组',
+        tooltip: false
+    },
+    {
+        props: 'budgetAmount',
+        name: '预算金额',
+        key: '预算金额',
+        tooltip: false
+    },
+    {
+        props: 'usableAmount',
+        name: '可用金额',
+        key: '可用金额',
+        tooltip: false
+    },
+    {
+        props: 'partNum',
+        name: '零件号',
+        key: '零件号',
+        tooltip: false
+    },
+    {
+        props: 'rfqId',
+        name: 'RFQ号',
+        key: 'RFQ号',
+        tooltip: false
+    },
+    {
+        props: 'applyAmount',
+        name: '申请金额',
+        key: '申请金额',
+        tooltip: false
+    },
+    {
+        props: 'applyName',
+        name: '申请人',
+        key: '申请人',
+        tooltip: false
+    },
+]

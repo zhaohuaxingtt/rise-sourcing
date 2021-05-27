@@ -706,12 +706,12 @@
         'LK_SHENQINGSHIJIANQIZHI': '申请时间起止',//申请时间起止
         'LK_PIZHUAN': '批准',//批准
 
-        'LK_CHEXINGXIANGMUGAILAN': 'Project overview',//车型项目概览
-        'LK_YUSUANGUANLI': 'Budget mgmt',//预算管理
-        'LK_YUSUANSHENPI': 'Budget approval',//预算审批
-        'LK_BASHENQING': 'BA application',//BA申请
-        'LK_BMSHENQING': 'BM application',//BM申请
-        'LK_TOUZIBAOGAO': 'Investment report',//投资报告
+        'LK_CHEXINGXIANGMUGAILAN': 'Project Overview',//车型项目概览
+        'LK_YUSUANGUANLI': 'Budget Mgmt',//预算管理
+        'LK_YUSUANSHENPI': 'Budget Approval',//预算审批
+        'LK_BASHENQING': 'BA Application',//BA申请
+        'LK_BMSHENQING': 'BM Application',//BM申请
+        'LK_TOUZIBAOGAO': 'Investment Report',//投资报告
 
         'LK_BANMUBER': 'BA号',  //  BA号
         'LK_FIXEDPOINTSUPPLIER': '定点供应商', // 定点供应商

@@ -5,11 +5,12 @@
 <template>
   <iDialog :title="$t(title)" :visible.sync="value" width="95%" top="5vh" @close='clearDiolog' z-index="1000" class="iDialogAdd">
     <div slot="title" class="title">
-      <div class="text">{{ $t(title) + '：' + RFQName }}</div>
+      <div class="text">{{ $t(title) + '：' + RFQID }}</div>
     </div>
     <div class="changeContent">
       <div v-loading="tableLoading">
         <iTableList
+            :selection="false"
             :height="tableHeight - 240"
             :tableData="tableListData"
             :tableTitle="tableTitle"
@@ -40,12 +41,10 @@ import {
 import {
   iTableList
 } from "@/components"
-import {addListInvestment, form} from "../components/data";
+import {RFQList, form} from "../components/data";
 import {pageMixins} from "@/utils/pageMixins";
 import {tableHeight} from "@/utils/tableHeight";
-import {
-  findAddColumnInvestmentBuild,
-} from "@/api/ws2/budgetManagement/edit";
+import {detail} from "@/api/ws2/budgetApproval";
 
 export default {
   mixins: [pageMixins, tableHeight],
@@ -56,33 +55,24 @@ export default {
   },
   props: {
     title: {type: String, default: 'RFQ号'},
-    RFQName: {type: String, default: ''},
+    RFQID: {type: String, default: ''},
     value: {type: Boolean},
   },
   data() {
     return {
       form: form,
       tableListData: [],
-      tableTitle: addListInvestment,
+      tableTitle: RFQList,
       tableLoading: false,
-      zhEnNo: '',
-      materialName: '',
-      mouldAttr: '',
-      professionalDepartments: '',
     }
   },
   mounted() {
     // this.findAddColumnInvestmentBuild()
   },
   methods: {
-    findAddColumnInvestmentBuild() {
-      // this.tableLoading = true
-
-      let parmars = {
-        current: this.page.currPage,
-        size: this.page.pageSize
-      }
-      findAddColumnInvestmentBuild(parmars).then((res) => {
+    detail() {
+      this.tableLoading = true
+      detail({rfqId: this.RFQID}).then((res) => {
         const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
         if (Number(res.code) === 0) {
           this.page.currPage = res.pageNum;
@@ -102,11 +92,7 @@ export default {
   watch: {
     value(val) {
       if (val) {
-        this.zhEnNo = ''
-        this.materialName = ''
-        this.mouldAttr = ''
-        this.professionalDepartments = ''
-        this.findAddColumnInvestmentBuild()
+        this.detail()
       }
     }
   }

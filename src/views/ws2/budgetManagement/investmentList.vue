@@ -124,20 +124,22 @@
               @handleSelectionChange="handleSelectionChange"
           >
             <template #refCartypeName="scope">
-              <a :href="scope.row.refCartypeName">{{ scope.row.refCartypeName }}</a>
+              <div class="linkStyle" v-if="scope.row.refCartypeProId"><span @click="clickRefCartypeName(scope.row)">{{ scope.row.refCartypeName }}</span></div>
+              <div v-else>-</div>
             </template>
             <template #refMoldAmount="scope">
-              <a :href="scope.row.refMoldAmount">{{ scope.row.refMoldAmount }}</a>
+              <div class="linkStyle" v-if="scope.row.refCartypeProId"><span @click="clickRefCartypeName(scope.row)">{{ scope.row.refMoldAmount }}</span></div>
+              <div v-else>-</div>
             </template>
             <template #budgetAmount="scope">
-              <iInput v-model="scope.row.budgetAmount" v-if="pageEdit"
+              <iInput v-model="scope.row.budgetAmount" v-if="pageEdit" :placeholder="$t('LK_QINGSHURU')"
                       @input="changeBudgetAmount(scope.row.budgetAmount)" maxlength="20"></iInput>
               <div v-if="!pageEdit">{{ scope.row.budgetAmount }}</div>
             </template>
             <template #moldProperties="scope">
               <iSelect
                   v-show="pageEdit"
-                  placeholder="请选择"
+                  :placeholder="$t('LK_QINGXUANZE')"
                   v-model="scope.row.moldProperties"
                   filterable
                   @change="changeCarTypeProject"
@@ -154,7 +156,7 @@
             <template #commodity="scope">
               <iSelect
                   v-show="pageEdit"
-                  placeholder="请选择"
+                  :placeholder="$t('LK_QINGXUANZE')"
                   v-model="scope.row.commodity"
                   filterable
               >
@@ -170,7 +172,7 @@
             <template #linie="scope">
               <iSelect
                   v-show="pageEdit"
-                  placeholder="请选择"
+                  :placeholder="$t('LK_QINGXUANZE')"
                   v-model="scope.row.linieArr"
                   collapse-tags
                   multiple
@@ -178,7 +180,7 @@
               >
                 <el-option
                     :value="item.linieID"
-                    :label="item.linieName"
+                    :label="$i18n.locale == 'zh' ? item.linieName : item.linieNameEn"
                     v-for="(item, index) in liniePullDown"
                     :key="index"
                 ></el-option>
@@ -195,7 +197,7 @@
               <div v-if="!pageEdit">{{ scope.row.sourcingType == 1 ? 'Common' : 'JV' }}</div>
               <iSelect
                   v-show="pageEdit"
-                  placeholder="请选择"
+                  :placeholder="$t('LK_QINGXUANZE')"
                   v-model="scope.row.sourcingType"
                   filterable
                   @change="changeCarTypeProject"
@@ -205,7 +207,7 @@
               </iSelect>
             </template>
             <template #remarks="scope">
-              <iInput v-model="scope.row.remarks" v-if="pageEdit"></iInput>
+              <iInput v-model="scope.row.remarks" :placeholder="$t('LK_QINGSHURU')" v-if="pageEdit"></iInput>
               <div v-if="!pageEdit">{{ scope.row.remarks }}</div>
             </template>
           </iTableList>
@@ -266,7 +268,7 @@
 
     <addRow
         v-model="addRowShow"
-        :carTypeProId="form['search.carTypeProject']"
+        :carTypeProId="$store.state.mouldManagement.budgetManagement.carTypeProject"
         :isInvestmentList="true"
         :version="form['search.version']"
         :sourceStatus="params.sourceStatus"
@@ -295,6 +297,11 @@
         @confirm="confirmAssociatedCarlineChange"
         @notConfirm="form['search.relatedCarType'] = ''"
     ></confirmAssociatedCarline>
+    <referenceCarProject
+        v-model="referenceCarProjectShow"
+        :referenceCarProjectParams="referenceCarProjectParams"
+        @refresh="getInvestmentVerisionList"
+    ></referenceCarProject>
   </div>
 </template>
 <script>
@@ -318,6 +325,7 @@ import referenceModel from "./components/referenceModel";
 import conversionRatio from "./components/conversionRatio";
 import confirmAssociatedCarline from "./components/confirmAssociatedCarline";
 import saveAs from "./components/saveAs";
+import referenceCarProject from "./components/referenceCarProject";
 import {
   getCartypePulldown,
   saveCustomCart,
@@ -351,6 +359,7 @@ export default {
     referenceModel,
     conversionRatio,
     saveAs,
+    referenceCarProject,
     confirmAssociatedCarline,
     Popover
   },
@@ -368,11 +377,13 @@ export default {
 
       carType: '',
       params: {},
+      referenceCarProjectParams: {},
       addRowShow: false,
       referenceModelShow: false,
       conversionRatioShow: false,
       saveAsShow: false,
       confirmAssociatedCarlineShow: false,
+      referenceCarProjectShow: false,
       modelProtitesList: [],
       modelCategoryList: [],
       fixedPointTypeList: [],
@@ -565,9 +576,18 @@ export default {
             item.budgetAmount = Number(item.budgetAmount).toFixed(2)
             let linieName = ''
             item.linieArr = item.linie ? (item.linie.split(',')).map(key => Number(key)) : []
-            item.linieArr.map(a => {
-              linieName += this.liniePullDown.find(b => b.linieID == a) ? (this.liniePullDown.find(b => b.linieID == a).linieName + '/') : ''
-            })
+            if(this.$i18n.locale == 'zh'){
+              item.linieArr.map(a => {
+                linieName += this.liniePullDown.find(b => b.linieID == a) ? (this.liniePullDown.find(b => b.linieID == a).linieName + '/') : ''
+              })
+            }else {
+              item.linieArr.map(a => {
+                linieName += this.liniePullDown.find(b => b.linieID == a) ? (this.liniePullDown.find(b => b.linieID == a).linieNameEn + '/') : ''
+              })
+            }
+            // item.linieArr.map(a => {
+            //   linieName += this.liniePullDown.find(b => b.linieID == a) ? (this.liniePullDown.find(b => b.linieID == a).linieName + '/') : ''
+            // })
             item.linieName = linieName.slice(0, linieName.length - 1)
             return item
           })
@@ -1021,6 +1041,14 @@ export default {
     addRow() {
       this.addRowShow = true
     },
+    clickRefCartypeName(row){
+      this.referenceCarProjectShow = true
+      this.referenceCarProjectParams = {
+        carTypeProId: row.refCartypeProId,
+        categoryId: row.categoryId,
+        sourceProjectId: this.params.id
+      }
+    },
     deleteIRow() {
       if (this.selectTableData.length == 0) {
         iMessage.warn('请先勾选');
@@ -1127,6 +1155,13 @@ export default {
   width: 420px;
   height: 180px;
   align-self: flex-end;
+}
+.linkStyle {
+  span {
+    color: #1663F6;
+    border-bottom: 1px solid #1663F6;
+    cursor: pointer;
+  }
 }
 .input-with-select {
   width: 200px;

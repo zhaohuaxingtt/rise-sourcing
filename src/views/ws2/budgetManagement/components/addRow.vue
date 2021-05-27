@@ -23,7 +23,7 @@
             </iInput>
           </el-form-item>
           <el-form-item :label="$t('LK_LINJIANLIUWEIHAO')">
-            <iInput v-model="materialName" :placeholder="$t('LK_RFQPLEASEENTERQUERY')" maxlength="6">
+            <iInput v-model="materialName" :placeholder="$t('LK_QINGSHURU')" maxlength="6">
               <i slot="suffix" class="el-input__icon el-icon-search" @click="sure"></i>
             </iInput>
           </el-form-item>
@@ -76,6 +76,9 @@
             :activeItems="'partNum'"
             @handleSelectionChange="handleSelectionChange"
         >
+<!--          <template #linie="scope">-->
+<!--            <div>{{ $i18n.locale == 'zh' ? scope.row.linie : (Math.random() > 0.5 ? 'Cui zhiwei' : 'Mu zengzhi') }}</div>-->
+<!--          </template>-->
         </iTableList>
         <iPagination
             v-update
@@ -128,7 +131,6 @@ export default {
     iPagination,
     iInput,
     iSelect,
-    iMessage
   },
   props: {
     title: {type: String, default: 'LK_TIANJIAHANG'},
