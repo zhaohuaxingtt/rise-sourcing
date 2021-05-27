@@ -1,8 +1,8 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-05-26 11:56:12
- * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-05-26 14:02:16
+ * @LastEditors: Please set LastEditors
  * @Description: 系统静态路由.
  * @FilePath: \front-web\src\router\index.js
  *
@@ -251,6 +251,13 @@ export const staticRouter = [{
                 name: "accessoryPartDetail",
                 meta: { title: "配件详情" },
                 component: () => import("@/views/accessoryPart/accessoryPartDetail/index"),
+            },
+            // 报价详情相关路由
+            {
+                path: "/supplier/quotationdetail",
+                name: "quotationDetail",
+                component: () => 
+                    import ("@/views/supplier/quotationdetail")
             }
         ],
     },
