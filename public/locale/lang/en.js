@@ -109,7 +109,20 @@
             'Caozuorizhi': '', // 操作日志
             'Chakan': '', // 查看
         },
-
+        // 成本分析管理
+        'costanalysismanage': {
+            'Chengbenfenxiguanli': '', // 成本分析管理
+            'Shujuweihu': '', // 数据维护
+            'Rengongchengbenshujuweihu': '', // 人工成本数据维护
+            'Daochu': '', // 导出
+            'Shangechuan': '', // 上传
+            'Xiazai': '', // 下载
+            'Shanchu': '', // 删除
+            'Daxiao': '', // 大小
+            'Shijian': '', // 时间
+            'Shangchuanren': '', // 上传人
+            'Beizhu': '', // 备注
+        },
         /*
         <!------------------------------------------------------------------------>
         <!--                                                                   --->

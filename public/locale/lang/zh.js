@@ -109,6 +109,21 @@
             'Caozuorizhi': '操作日志', // 操作日志
             'Chakan': '查看', // 查看
         },
+        // 成本分析管理
+        'costanalysismanage': {
+            'Chengbenfenxiguanli': '成本分析管理', // 成本分析管理
+            'Shujuweihu': '数据维护', // 数据维护
+            'Rengongchengbenshujuweihu': '人工成本数据维护', // 人工成本数据维护
+            'Daochu': '导出', // 导出
+            'Shangechuan': '上传', // 上传
+            'Xiazai': '下载', // 下载
+            'Shanchu': '删除', // 删除
+            'Shangechuanwenjianmingcheng': '上传文件名称', // 上传文件名称
+            'Daxiao': '大小', // 大小
+            'Shijian': '时间', // 时间
+            'Shangchuanren': '上传人', // 上传人
+            'Beizhu': '备注', // 备注
+        },
         /*
         <!------------------------------------------------------------------------>
         <!--                                                                   --->
