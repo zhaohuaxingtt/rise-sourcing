@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:06
- * @LastEditTime: 2021-05-25 21:18:01
+ * @LastEditTime: 2021-05-26 17:51:57
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\main.js
@@ -16,6 +16,14 @@ import './permission'
 require('./auto').init()
 Vue.config.productionTip = false
 Vue.prototype.$t = (key, value) => i18n.t(key, value);
+
+Promise.all([
+    import('rise/web/lang/zh.js'),
+    import('rise/web/lang/en.js')
+]).then(([zhModule, enModule]) => {
+    i18n.mergeLocaleMessage('zh', zhModule.default)
+    i18n.mergeLocaleMessage('en', enModule.default)
+})
 
 new Vue({
     router,
