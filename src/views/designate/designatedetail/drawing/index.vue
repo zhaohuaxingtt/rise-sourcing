@@ -4,7 +4,7 @@
       <span class="font18 font-weight">
         {{ $t("Drawing") }}</span
       >
-      <div class="floatright">
+      <div class="floatright" v-if="!$store.getters.isPreview">
         <!-- 排序 -->
         <iButton @click="sortVisibal = true">
           {{ $t("strategicdoc.PaiXu") }}
