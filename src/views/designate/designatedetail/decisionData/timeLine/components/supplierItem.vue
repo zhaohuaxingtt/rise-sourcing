@@ -25,16 +25,18 @@
                     start-placeholder="开始日期"
                     end-placeholder="结束日期"
                     />
+
+                    <!-- 删除按钮 -->
+                    <span class="delete" @click="edit('delete',itemIndex,index)"><icon symbol name="dingdianshenqingyusheluoji" /></span>
                 </li>
             </ul>
         </div>
         <p class="btn-list">
-            <span class="add" ><icon symbol name="TimeLine_tianjiagongyingshang" /></span>
+            <span class="add" @click="edit('add',itemIndex)"><icon symbol name="TimeLine_tianjiagongyingshang" /></span>
         </p>
         
     </div>
 </template>
-
 <script>
 import {
     iInput,
@@ -52,6 +54,10 @@ export default {
         supplierData:{
             type:Object,
             default:{},
+        },
+        itemIndex:{
+            type:Number,
+            default:0,
         }
     },
     data(){
@@ -64,6 +70,12 @@ export default {
             ]
         }
     },
+    methods:{
+        // 编辑行
+        edit(type,index,line=null){
+            this.$emit('editSupplierLine',type,index,line);
+        }
+    }
 }
 </script>
 
@@ -99,6 +111,14 @@ export default {
                     width: 268px; 
                     margin-right: 100px;
                     margin-bottom: 15px;
+                }
+                .delete{
+                    margin-left: 15px;
+                    display:inline-block;
+                    width: 20px;
+                    height: 20px;
+                    border: 1px solid red;
+                    margin-top: 10px;
                 }
             }   
         }

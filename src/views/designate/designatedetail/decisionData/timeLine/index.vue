@@ -30,7 +30,7 @@
                 <!-- 供应商编辑列表 -->
                 <ul class="supplier-edit-list">
                     <li v-for="(item,index) in supplierData" :key="'supplier-edit-list-'+index">
-                        <supplierItem :supplierData="item"/>
+                        <supplierItem :itemIndex="index" :supplierData="item" @editSupplierLine="editSupplierLine"/>
                     </li>
                 </ul>
             </iCard>
@@ -80,6 +80,7 @@ import groupStep from './components/groupStep'
 import supplierStep from './components/supplierStep'
 import supplierLine from './components/supplierLine'
 import supplierItem from './components/supplierItem'
+import { cloneDeep } from 'lodash'
 export default {
     name:'timeLine',
      components:{
@@ -93,7 +94,7 @@ export default {
     },
     data(){
         return{
-            isEdit:true,
+            isEdit:false,
             timeList:[
                 {startDate:1621048561,endDate:1621912561}, // 5-17 ---> 5-25
                 {startDate:1621480561,endDate:1621998961}, // 5-20 ---> 5-26
@@ -103,10 +104,10 @@ export default {
             supplierData:[
                 {name:'供应商1',a:'1',b:'2',c:'3',d:'4',
                 list:[
-                    {e:'55',date:''},
-                    {e:'55',date:''},
-                    {e:'55',date:''},
-                    {e:'55',date:''},
+                    {e:'1-1',date:''},
+                    {e:'1-2',date:''},
+                    {e:'1-3',date:''},
+                    {e:'1-4',date:''},
                 ]},
                 {name:'供应商2',a:'1',b:'2',c:'3',d:'4',
                 list:[
@@ -161,7 +162,22 @@ export default {
         // 保存
         save(){
             console.log(this.stepList,'stepList');
-        }
+        },
+
+        // 新增删减供应商行
+        editSupplierLine(type,index,line){
+            const { supplierData=[] } = this;
+            let newData = cloneDeep(supplierData);
+            // 新增行
+            if(type === 'add'){
+                newData[index].list.push({
+                     e:'',date:''
+                });
+            }else if(type === 'delete'){
+                newData[index]['list'].splice(line,1);
+            }
+            this.supplierData = newData;
+        },
     },
     computed:{
         isPreview(){
