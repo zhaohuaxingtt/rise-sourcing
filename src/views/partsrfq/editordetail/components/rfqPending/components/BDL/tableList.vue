@@ -1,7 +1,7 @@
 <!--
 * @author:shujie
 * @Date: 2021-3-5 10:56:32
- * @LastEditors: Please set LastEditors
+ * @LastEditors: Luoshuang
 * @Description: BDL表格数据
  -->
 <template>
@@ -14,6 +14,16 @@
 				<template slot-scope="scope">
 					<!-- <span class="openLinkText cursor" @click="openPage">{{scope.row.supplierNameZh}}</span> -->
 					<span>{{ scope.row.supplierNameZh }}</span>
+					<!-----------Spring10新增：如果供应商FRM评级为C,则认为有风险被标识出来------------------------------------------------------->
+					<el-popover
+            v-if="scope.row.frm === 'C'"
+            placement="bottom"
+            trigger="hover"
+            popper-class="tableTitleTip"
+            content="FRM评级：C"
+            :visible-arrow="false">
+            <icon symbol class="cursor margin-left8" name='iconzhongyaoxinxitishi' ></icon>
+          </el-popover>
 				</template>
 			</el-table-column>
 			<!-- <el-table-column :key="index" align="center" v-if="item.props == 'c'" :prop="item.props" :label="item.name">
