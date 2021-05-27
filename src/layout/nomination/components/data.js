@@ -35,3 +35,28 @@ export const decisionType = [
     {key:'MTZ',name:'MTZ',path:'/designate/decisiondata/mtz'},
     {key:'Attachment',name:'Attachment',path:'/designate/decisiondata/attachment'},
 ]
+
+// 整体三级菜单排序 表头
+export const sortTableTitle=[
+    {props:'key',name:'主题',key:'strategicdoc.ZhuTi',tooltip:false},
+    {props:'visible',name:'显示/隐藏',key:'strategicdoc.XianShiYinCang',tooltip:false},
+    {props:'sort',name:'',key:'strategicdoc.PaiXu',tooltip:false}
+]
+// 三级表头表格数据
+export const sortTableData = [
+    {key:'Title',name:'Title',visible: true, sort: 0},
+    {key:'PartList',name:'Part List',visible: false, sort: 1},
+    {key:'Tasks',name:'Tasks',visible: false, sort: 2},
+    {key:'Drawing',name:'Drawing',visible: false, sort: 3},
+    {key:'BDL',name:'BDL',visible: false, sort: 4},
+    {key:'SingleSourcing',name:'Single Sourcing',visible: false, sort: 5},
+    {key:'ABPrice',name:'A-B Price',visible: false, sort: 6},
+    {key:'CostAnalysis',name:'Cost Analysis',visible: false, sort: 7},
+    {key:'TimeLine',name:'Time Line',visible: true, sort: 8},
+    {key:'Strategy',name:'Strategy',visible: true, sort: 9},
+    {key:'BNKReference',name:'BNK Reference',visible: true, sort: 10},
+    {key:'AwardingScenario',name:'Awarding Scenario',visible: true, sort: 11},
+    {key:'RS',name:'RS',visible: true, sort: 12},
+    {key:'MTZ',name:'MTZ',visible: true, sort: 13},
+    {key:'Attachment',name:'Attachment',visible: true, sort: 14},
+]

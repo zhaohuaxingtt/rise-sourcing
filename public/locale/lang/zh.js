@@ -839,7 +839,10 @@
             "ShangChuanRiQi": "上传日期",
             "ShangChuanWenJian": "上传文件",
             "ShangChuanRen": "上传人",
-            "MingChen": "名称"
+            "MingChen": "名称",
+            "ZhuTi": "主题",
+            "XianShiYinCang": "显示/隐藏",
+            "ZiDingYi": "自定义"
         }
     })
 }))
