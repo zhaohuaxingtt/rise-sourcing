@@ -113,6 +113,8 @@
         'costanalysismanage': {
             'Chengbenfenxiguanli': '成本分析管理', // 成本分析管理
             'Shujuweihu': '数据维护', // 数据维护
+
+            // 数据维护
             'Rengongchengbenshujuweihu': '人工成本数据维护', // 人工成本数据维护
             'Daochu': '导出', // 导出
             'Shangechuan': '上传', // 上传
@@ -123,6 +125,38 @@
             'Shijian': '时间', // 时间
             'Shangchuanren': '上传人', // 上传人
             'Beizhu': '备注', // 备注
+
+            // rfq详情
+            'Rfqbianhao': 'RFQ编号', // RFQ编号
+            'Rfqzhuangtai': 'RFQ状态', // RFQ状态
+            'Chuangjianriqi': '创建日期', // 创建日期
+            'Rfqmingcheng': 'RFQ名称', // RFQ名称
+            'Xunjiacaigouyuan': '询价采购员', // 询价采购员
+            'Linie': 'LINIE', // LINIE
+            'Dangqianlunci': '当前轮次', // 当前轮次
+            'Benlunzhuangtai': '本轮状态', // 本轮状态
+            'Benlunbaojiajiezhiri': '本轮报价截止日', // 本轮报价截止日
+            'Luncileixing': '轮次类型', // 轮次类型
+            
+            // 零件清单
+            'Lingjianqingdan': '零件清单', // 零件清单
+            'Baocun': '保存', // 保存
+            'Xiazaijishuziliao': '下载技术资料', // 下载技术资料
+            'Xiazaicbd': '下载CBD', // 下载CBD
+            'Fsnfgsnfspnr': 'FSNF/GSNF/SPNR', // FSNF/GSNF/SPNR
+            'Lingjianhao': '零件号', // 零件号
+            'Lingjianmingzhong': '零件名(中)', // 零件名(中)
+            'Lingjianmingde': '零件名(德)', // 零件名(德)
+            'Caigougongchang': '采购工厂', // 采购工厂
+            'Lingjianxiangmuleixing': '零件项目类型', // 零件项目类型
+            'Chexingdalei': '车型大类', // 车型大类
+            'Chexingxiangmu': '车型项目', // 车型项目
+            'Heavyitem': 'Heavy Item', // Heavy Item
+            'Rfqlunci': 'RFQ轮次', // RFQ轮次
+            'Cbd': 'CBD', // CBD
+            'Gongyingshang': '供应商', // 供应商
+            'Pcafenxijieguo': 'PCA分析结果', // PCA分析结果
+            'Tiafenxijieguo': 'TIA分析结果', // TIA分析结果
         },
         /*
         <!------------------------------------------------------------------------>
