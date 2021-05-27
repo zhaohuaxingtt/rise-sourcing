@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-26 21:04:49
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-05-27 00:47:12
+ * @LastEditTime: 2021-05-27 14:29:04
  * @Description: 定点-审批人&审批记录
  * @FilePath: \front-web\src\views\designate\approvalPersonAndRecord\index.vue
 -->
@@ -16,7 +16,7 @@
           <!------------------------------------------------------------------------------->
           <div class="floatright"  v-if="!isEdit">
             <!--------------------同步按钮----------------------------------->
-            <iButton @click="synchronization">同步</iButton>
+            <span class="cursor tongbu" @click="synchronization"><icon symbol class="margin-right8" name='icontongbu' ></icon>同步</span>
             <!--------------------审批流按钮----------------------------------->
             <iButton @click="openAprroveFlow" >审批流</iButton>
             <!--------------------编辑按钮----------------------------------->
@@ -138,5 +138,11 @@ export default {
 <style lang="scss" scoped>
 .approvalFlow {
   padding: 0;
+}
+.tongbu {
+  font-size: 16px;
+  font-weight: 400;
+  color: rgba(22, 96, 241, 1);
+  margin-right: 10px;
 }
 </style>
