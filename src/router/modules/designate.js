@@ -181,6 +181,24 @@ export default [
             component: () =>
               import ("@/views/designate/approvalPersonAndRecord/index")
           },
+          {                             
+            path: "/designate/decisiondata/attachment",
+            name: "designateDecisionAttachment",
+            meta: {
+                title: "定点管理-决策资料-attachment",
+            },
+            component: () =>
+              import ("@/views/designate/designatedetail/attachment")
+          },
+          {                             
+            path: "/designate/decisiondata/attachment/upload",
+            name: "designateDecisionAttachmentUpload",
+            meta: {
+                title: "定点管理-决策资料-attachmentUpload",
+            },
+            component: () =>
+              import ("@/views/designate/designatedetail/attachment/upload")
+          },
         ]
       }
     ]
