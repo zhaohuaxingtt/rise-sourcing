@@ -2,14 +2,14 @@
  * @Author: Luoshuang
  * @Date: 2021-05-25 20:57:31
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-05-25 21:25:18
+ * @LastEditTime: 2021-05-26 20:32:30
  * @Description: 零件评分弹窗
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\bdl\partsRating.vue
 -->
 
 <template>
   <iDialog 
-    title="分配询价科室"
+    title="零件评分"
     :visible.sync="dialogVisible"
     @close="clearDialog"
     width="95%"

@@ -1,15 +1,15 @@
 <!--
  * @Author: Luoshuang
- * @Date: 2021-05-26 14:48:50
+ * @Date: 2021-05-26 19:46:16
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-05-26 20:08:08
- * @Description: 添加配件弹窗
- * @FilePath: \front-web\src\views\accessoryPart\createRfq\components\addAccessoryPart.vue
+ * @LastEditTime: 2021-05-26 19:56:37
+ * @Description: 添加附件弹窗
+ * @FilePath: \front-web\src\views\accessoryPart\createRfq\components\addFile.vue
 -->
 
 <template>
   <iDialog 
-    title="添加配件"
+    title="添加附件"
     :visible.sync="dialogVisible"
     @close="clearDialog"
     width="90%"
@@ -19,13 +19,14 @@
       <el-form>
         <el-form-item v-for="(item, index) in searchList" :key="index" :label="item.label">
           <iSelect v-if="item.type === 'select'" v-model="searchParams[item.value]"></iSelect> 
+          <iDatePicker v-else-if="item.type === 'date'" format="yyyy-MM-dd" value-format="yyyy-MM-dd" v-model="searchParams[item.value]"></iDatePicker>
           <iInput v-else v-model="searchParams[item.value]"></iInput> 
         </el-form-item>
       </el-form>
     </iSearch>
     <div class="margin-bottom20 clearFloat margin-top20">
       <div class="floatright">
-        <!--------------------选择按钮----------------------------------->
+        <!--------------------分配询价科室按钮----------------------------------->
         <iButton @click="changeInquiryDialogVisible(true)" >选择</iButton>
       </div>
     </div>
@@ -44,13 +45,14 @@
 </template>
 
 <script>
-import { iDialog, iButton, iSelect, iInput, iSearch, iPagination } from 'rise'
+import { iDialog, iButton, iSelect, iInput, iSearch, iPagination, iDatePicker } from 'rise'
 import tableList from '@/views/designate/designatedetail/components/tableList'
 import { pageMixins } from "@/utils/pageMixins"
-import { tableTitle, tableMockData, searchList } from '../../integratedManage/data'
+import { tableTitle, tableMockData, fileSearchList } from '@/views/designateFiles/fileManage/data'
+
 export default {
   mixins: [pageMixins],
-  components: { iDialog, iButton, iSelect, iInput, tableList, iSearch, iPagination },
+  components: { iDialog, iButton, iSelect, iInput, tableList, iSearch, iPagination, iDatePicker },
   props: {
     dialogVisible: { type: Boolean, default: false }
   },
@@ -60,7 +62,7 @@ export default {
       backReason: '',
       tableData: tableMockData,
       tableTitle: tableTitle,
-      searchList,
+      searchList: fileSearchList,
       searchParams: {}
     }
   },

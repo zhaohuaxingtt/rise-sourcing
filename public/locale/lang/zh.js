@@ -731,6 +731,9 @@
         'LK_LINGJIANCHENGBENFENXIYUAN': '零件成本分析员', // 零件成本分析员
         'LK_MUJUCHENGBENFENXIYUAN': '模具成本分析员', // 模具成本分析员
         'LK_FUJIANXUQIUDAORU':'附件需求导入', // 附件需求导入 
+        'LK_PEIJIANXUQIUQIANSHOU': '配件需求签收', // 配件需求签收
+        'LK_PEIJIANZONGHEGUANLI': '配件综合管理', // 配件综合管理
+        'LK_FUJIANZONGHEGUANLI': '附件综合管理', // 附件综合管理
 
         // 定点管理
         'nominationLanguage': {
@@ -836,7 +839,10 @@
             "ShangChuanRiQi": "上传日期",
             "ShangChuanWenJian": "上传文件",
             "ShangChuanRen": "上传人",
-            "MingChen": "名称"
+            "MingChen": "名称",
+            "ZhuTi": "主题",
+            "XianShiYinCang": "显示/隐藏",
+            "ZiDingYi": "自定义"
         }
     })
 }))
