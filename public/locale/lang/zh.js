@@ -144,14 +144,14 @@
             'Cbd': 'CBD', // CBD
             'Fenxibaogao': '分析报告', // 分析报告
             'FASONGSHIJIAN':'发送时间', // 发送时间
+            'Xiazai': '下载', // 下载
 
             // 数据维护
             'Rengongchengbenshujuweihu': '人工成本数据维护', // 人工成本数据维护
             'Daochu': '导出', // 导出
-            'Shangechuan': '上传', // 上传
-            'Xiazai': '下载', // 下载
+            'Shangchuan': '上传', // 上传
             'Shanchu': '删除', // 删除
-            'Shangechuanwenjianmingcheng': '上传文件名称', // 上传文件名称
+            'Shangchuanwenjianmingcheng': '上传文件名称', // 上传文件名称
             'Daxiao': '大小', // 大小
             'Shijian': '时间', // 时间
             'Shangchuanren': '上传人', // 上传人
@@ -180,6 +180,12 @@
 
 
             'baogaoqingdan':'报告清单',// 报告清单
+
+            // 成本分析
+            'Chengbenfenxi': '成本分析', // 成本分析
+            'Fanhui': '返回', // 返回
+            'Wenjianmingcheng': '文件名称', // 文件名称
+            'Shangchuanriqi': '上传日期', // 上传日期
         },
         /*
         <!------------------------------------------------------------------------>
