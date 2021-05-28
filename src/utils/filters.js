@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-04-12 10:12:38
- * @LastEditTime: 2021-05-24 15:10:14
+ * @LastEditTime: 2021-05-28 14:50:36
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\utils\filters.js
@@ -14,7 +14,7 @@ export default {
     },
     // 日期格式化
     dateFilter(val, format = "YYYY-MM-DD HH:mm:ss") {
-      return typeof val === 'string' ? window.moment(val).format(format) : val
+      return typeof val === 'string' ||  typeof val === 'number' ? window.moment(val).format(format) : val
     },
     // boolean 转 是/否
     boolFilter(val) {

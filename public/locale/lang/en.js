@@ -114,6 +114,36 @@
             'Chengbenfenxiguanli': '', // 成本分析管理
             'Shujuweihu': '', // 数据维护
 
+            // 成本分析管理
+            'Rfqbianhao': '', // RFQ编号
+            'Qingshururfqbianhao': '', // 请输入RFQ编号
+            'Rfqzhuangtai': '', // RFQ状态
+            'Qingxuanzerfqzhuangtai': '', // 请选择RFQ状态
+            'Lingjianhao': '', // 零件号
+            'Qingshurulingjianhao': '', // 请输入零件号
+            'Chexingxiangmu': '', // 车型项目
+            'Qingxuanzechexingxiangmu': '', // 请选择车型项目
+            'Pca': 'PCA', // PCA
+            'Qingshurupca': '', // 请输入PCA
+            'Tia': 'TIA', // TIA
+            'Qingshurutia': '', // 请输入TIA
+            'Heavyitem': 'Heavy Item', // Heavy Item
+            'Qingxuanzeheavyitem': '', // 请选择Heavy Item
+            'Commodity': 'COMMODITY', // COMMODITY
+            'Qingxuanzecommodity': '', // 请选择COMMODITY
+            'Linie': 'LINIE', // LINIE
+            'Qingxuanzelinie': '', // 请选择LINIE
+            'Rfqliebiao': '', // RFQ列表
+            'Rfqmingcheng': '', // RFQ名称
+            'Rfqleixing': '', // RFQ类型
+            'Chuangjianriqi': '', // 创建日期
+            'Dangqianlunci': '', // 当前轮次
+            'Baojiajiezhiriqi': '', // 报价截止日期
+            'Xunjiacaigouyuan': '', // 询价采购员
+            'Jieshuziliao': '', // 技术资料
+            'Cbd': '', // CBD
+            'Fenxibaogao': '', // 分析报告
+
             // 数据维护
             'Rengongchengbenshujuweihu': '', // 人工成本数据维护
             'Daochu': '', // 导出
@@ -126,13 +156,6 @@
             'Beizhu': '', // 备注
 
             // rfq详情
-            'Rfqbianhao': '', // RFQ编号
-            'Rfqzhuangtai': '', // RFQ状态
-            'Chuangjianriqi': '', // 创建日期
-            'Rfqmingcheng': '', // RFQ名称
-            'Xunjiacaigouyuan': '', // 询价采购员
-            'Linie': 'LINIE', // LINIE
-            'Dangqianlunci': '', // 当前轮次
             'Benlunzhuangtai': '', // 本轮状态
             'Benlunbaojiajiezhiri': '', // 本轮报价截止日
             'Luncileixing': '', // 轮次类型
@@ -143,16 +166,12 @@
             'Xiazaijishuziliao': '', // 下载技术资料
             'Xiazaicbd': '', // 下载CBD
             'Fsnfgsnfspnr': 'FSNF/GSNF/SPNR', // FSNF/GSNF/SPNR
-            'Lingjianhao': '', // 零件号
             'Lingjianmingzhong': '', // 零件名(中)
             'Lingjianmingde': '', // 零件名(德)
             'Caigougongchang': '', // 采购工厂
             'Lingjianxiangmuleixing': '', // 零件项目类型
             'Chexingdalei': '', // 车型大类
-            'Chexingxiangmu': '', // 车型项目
-            'Heavyitem': 'Heavy Item', // Heavy Item
             'Rfqlunci': '', // RFQ轮次
-            'Cbd': 'CBD', // CBD
             'Gongyingshang': '供应商', // 供应商
             'Pcafenxijieguo': '', // PCA分析结果
             'Tiafenxijieguo': '', // TIA分析结果
