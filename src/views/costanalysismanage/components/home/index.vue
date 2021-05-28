@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-05-27 12:32:54
- * @LastEditTime: 2021-05-27 13:49:18
+ * @LastEditTime: 2021-05-28 10:14:56
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\costanalysismanage\components\home\index.vue
@@ -14,18 +14,29 @@
         <icon symbol name="icondatabaseweixuanzhong" class="font24"></icon>
       </span>
     </div>
+
+
+    <!-- 技术资料下载弹窗 -->
+    <downloadDialog :dialogVisible='downloadDialogVisible'/>
+
   </div>
 </template>
 
 <script>
 import { icon } from "rise"
 import logButton from "@/views/partsign/editordetail/components/logButton"
-
+import downloadDialog from './components/downloadFiles'
 export default {
   components: { 
     icon, 
-    logButton
+    logButton,
+    downloadDialog,
   },
+  data(){
+    return{
+      downloadDialogVisible:false,
+    }
+  }
 }
 </script>
 

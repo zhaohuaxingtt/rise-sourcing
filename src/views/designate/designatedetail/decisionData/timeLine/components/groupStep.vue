@@ -10,11 +10,14 @@
                 <icon symbol :name="item.icon" class="step-icon"></icon>
                 <p class="step-title">{{item.title}}</p>
                 <p class="step-tips">
-                    <iInput
-                    class="step-tips-input" 
-                    v-if="item.isEdit" 
-                    v-model="item.tips"
-                    />
+                    <span v-if="item.isEdit" class="step-tips-edit">
+                        <span class="step-tips-block">{{item.tips}}</span>
+                        <!-- <iInput
+                            class="step-tips-input" 
+                            v-model="item.tips"
+                        /> -->
+                        <iDatePicker class="step-tips-picker"/>
+                    </span>
                     <span v-else>{{item.tips}}</span>
                 </p>
 
@@ -32,12 +35,14 @@
 import {
   icon,
   iInput,
+  iDatePicker,
 } from "rise";
 export default {
     name:'groupStep',
     components:{
         icon,
         iInput,
+        iDatePicker,
     },
     props:{
         stepIndex:{
@@ -79,8 +84,27 @@ export default {
                    &.step-tips{
                        color: #5F6F8F;
                        font-size: 14px;
-                       .step-tips-input{
-                           width: 100px;
+                       .step-tips-edit{
+                            position: relative;
+                            .step-tips-block{
+                                display: inline-block;
+                                width: 100px;
+                                height: 28px;
+                                line-height: 28px;
+                                text-align: center;
+                                box-shadow: 0 0 1px rgba(0,38,98,.15);
+                                border-color: transparent;
+                                border-radius: 4px;
+                            }
+                            .step-tips-input{
+                                width: 100px;
+                            }
+                            .step-tips-picker{
+                                position: absolute;
+                                left: 0;
+                                top: 0;
+                                opacity: 0;
+                            }
                        }
                    }
                }
