@@ -807,6 +807,10 @@
         'LK_PEIJIANMUBANXIAZAI':'配件模板下载', // 配件模板下载
         'LK_DAORUYUAN':'导⼊员', // 导⼊员
         'LK_YULAN':'预览', // 预览
+        'LK_TIAOZHUANZHILINGJIANQINGDANTIANJIA':'跳转⾄零件清单添加', // 跳转⾄零件清单添加
+        'LK_ZHANSHI':'展示', // 展示
+        'LK_KAISHISHIJIAN':'开始日期', // 开始日期
+        'LK_JIESHUSHIJIAN':'结束日期', // 结束日期
 
 
         // 定点管理

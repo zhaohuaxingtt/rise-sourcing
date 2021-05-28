@@ -22,8 +22,8 @@
                     v-model="item.date"
                     type="daterange"
                     range-separator="-"
-                    start-placeholder="开始日期"
-                    end-placeholder="结束日期"
+                    :start-placeholder="$t('LK_KAISHISHIJIAN')"
+                    :end-placeholder="$t('LK_JIESHUSHIJIAN')"
                     />
 
                     <!-- 删除按钮 -->
