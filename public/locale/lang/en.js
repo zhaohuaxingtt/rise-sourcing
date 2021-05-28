@@ -738,5 +738,6 @@
         'LK_MODIFYANUMBER': '修改A号',  //  修改A号
         'LK_CANCELAPPLY': '退回申请',   //  退回申请
         'LK_MODIFIABLE': '可修改',  //  可修改
+        'LK_DEPNAME': '科室名称',   //  科室名称
     })
 }))

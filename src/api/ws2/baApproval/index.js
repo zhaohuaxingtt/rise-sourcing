@@ -74,3 +74,39 @@ export function backApprove(parmars) {
       data: parmars
   })
 }
+
+//明细
+export function getDetail(parmars) {
+  return VUE_APP_BAAPPROVE({
+      url: '/detail',
+      method: 'GET',
+      params: parmars
+  })
+}
+
+//  确认A号
+export function addSixBa(parmars) {
+  return VUE_APP_BAAPPROVE({
+      url: '/addSixBa',
+      method: 'POST',
+      data: parmars
+  })
+}
+
+//  确认金额
+export function updateByCarId(parmars) {
+  return VUE_APP_BAAPPROVE({
+      url: '/updateByCarId',
+      method: 'POST',
+      data: parmars
+  })
+}
+
+//  确认详情列表
+export function confirmDetail(parmars) {
+  return VUE_APP_BAAPPROVE({
+      url: '/confirmDetail',
+      method: 'GET',
+      params: parmars
+  })
+}

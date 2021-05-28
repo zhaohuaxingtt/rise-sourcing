@@ -1,20 +1,16 @@
 <template>
-  <iDialog title="申请BA单" :visible.sync="visible" @close='clearDiolog' width="95%" top="5vh" z-index="1000" class="iDialog">
+  <iDialog title="申请BA单" :visible="visible" @close='clearDiolog' width="95%" top="5vh" z-index="1000" class="iDialog">
     <div slot="title">
       <div class="iDialog-head">
-        <div>申请BA单</div>
-        <iButton @click="confirm">确认</iButton>
+        <div>{{title}}</div>
+        <slot name="btns">
+
+        </slot>
+        <!-- <iButton @click="confirm">确认</iButton> -->
       </div>
     </div>
 
-    <div class="head-msg">
-      {{$t('LK_BADETAILSPOPUPTXT1')}}
-      <slot name="nameArry"></slot>
-      {{$t('LK_BADETAILSPOPUPTXT2')}}
-    </div>
-
     <slot name="table"></slot>
-
 
   </iDialog>
 </template>
@@ -29,10 +25,10 @@ import {
 export default {
   props: {
     visible: {type: Boolean, default: false},
+    title: {type: String, default: ''},
   },
   components: {
     iDialog,
-    iButton,
   },
 
   methods: {
@@ -77,7 +73,7 @@ export default {
   }
   
   ::v-deep .el-dialog{
-    height: 90%;
+    height: 90% !important;
     overflow: auto;
   }
 }
