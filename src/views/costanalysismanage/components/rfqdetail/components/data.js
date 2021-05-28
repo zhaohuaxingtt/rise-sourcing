@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-05-27 17:29:03
- * @LastEditTime: 2021-05-27 19:52:43
+ * @LastEditTime: 2021-05-28 11:36:23
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\costanalysismanage\components\rfqdetail\components\data.js
@@ -34,4 +34,12 @@ export const partListTableTitle = [
   { props: "l", name: "供应商", key: "costanalysismanage.Gongyingshang", tooltip: true },
   { props: "m", name: "PCA分析结果", key: "costanalysismanage.Pcafenxijieguo", tooltip: true, width: 110 },
   { props: "n", name: "TIA分析结果", key: "costanalysismanage.Tiafenxijieguo", tooltip: true, width: 110 }
+]
+
+// 报告清单表头
+export const reportListTableTitle = [
+  { props: "a", name: "文件名称", key: "LK_WENJIANMINGCHENG", tooltip: true },
+  { props: "b", name: "大小(MB)", key: "LK_DAXIAOMB", tooltip: true },
+  { props: "c", name: "上传日期", key: "LK_SHANGCHUANRIQI", tooltip: true },
+  { props: "d", name: "上传人", key: "LK_SHANGCHUANREN", tooltip: true },
 ]

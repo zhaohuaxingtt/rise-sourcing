@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-25 16:11:34
- * @LastEditTime: 2021-05-25 22:40:33
+ * @LastEditTime: 2021-05-27 10:19:17
  * @LastEditors: Please set LastEditors
  * @Description: timeline
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringTracking\components\timeline.vue
@@ -13,7 +13,7 @@
         <span v-if='items.week % 2 != 0'>
           cw{{items.week}}
         </span>
-        <span v-else style="display:inline-block;height:20px;"></span>
+        <span v-else style="display:inline-block;height:13px;"></span>
       </p>
       <p class="itemsb"></p>
       <p class="itemsc" :style='{top:"40px"}' v-if='items.name'>
@@ -37,7 +37,7 @@ export default{
 </script>
 <style lang='scss' scoped>
   .timeLine{
-    min-height:180px;
+    min-height:150px;
     overflow: auto;
     margin-top: 30px;
     white-space: nowrap;
@@ -57,7 +57,7 @@ export default{
       .itemsb{
         border-radius: 3px;
         width: 67px;
-        height: 15px;
+        height: 13px;
         background: #457BF4;
       }
       .itemsc{

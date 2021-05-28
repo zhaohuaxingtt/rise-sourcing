@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-21 09:23:11
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-05-24 14:22:50
+ * @LastEditTime: 2021-05-28 10:45:21
  * @Description: RFQ & 零件清单界面
  * @FilePath: \front-web\src\views\designate\designatedetail\rfqdetail\index.vue
 -->
@@ -15,7 +15,7 @@
         <span class="font18 font-weight">RFQ清单</span>
         <div class="floatright">
           <iInput placeholder="请输入零件号/RFQ编号/RFQ名称/LINIE" v-model="searchParam" class="margin-right20 input" @blur="getRfqTableList" >
-            <icon slot="suffix" name="iconshaixuankuangsousuo" />
+            <icon symble slot="suffix" name="iconshaixuankuangsousuo" />
           </iInput>
           <!--------------------新增按钮----------------------------------->
           <iButton @click="addRfq">新增</iButton>
