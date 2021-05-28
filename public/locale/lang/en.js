@@ -803,6 +803,52 @@
         'LK_FUJIANSHANGSHISHIJIAN':'附件上市时间', // 附件上市时间
         'LK_FUJIANQINGDAN':'附件清单', // 附件清单
         'LK_SHANGCHUANWENJIAN':'上传文件', // 上传文件
+        'LK_DAORU':'导入', // 导入
+        'LK_PEIJIANMUBANXIAZAI':'配件模板下载', // 配件模板下载
+        'LK_DAORUYUAN':'导⼊员', // 导⼊员
+        'LK_YULAN':'预览', // 预览
+
+
+        // 定点管理
+        'nominationLanguage': {
+            'DingDianGuanLi': '定点管理',
+            'LingJianHao': '零件号',
+            'ShenQingDanHao': '申请单号',
+            'RFQBianHao': 'RFQ编号',
+            'LiuChengLeiXing': '流程类型',
+            'ShenQingZhuangTai': '申请状态',
+            'LingJianMing': '零件名',
+            'LingJianMingCN': '零件名(中)',
+            'LingJianMingDE': '零件名(德)',
+            'XunJiaCaiGouYuan': '询价采购员',
+            'CheXingXiangMu': '车型项目',
+            'BaoJiaYiZhiXingJiaoYan': '报价一致性校验',
+            'ShiFouDnaYiGongYingShang': '是否单一供应商',
+            'XianShiZiJi': '显示自己',
+            'Yes': '是',
+            'No': '否',
+            'DingDianShenQingZongHeGuanLi': '定点申请综合管理',
+            'XinJianLingJIanDingDianShengQIng': '新建零件定点申请',
+            'CheHui': '撤回',
+            'ShanChu': '删除',
+            'TiJiaoYiZhiXingJiaoYan': '提交一致性校验',
+            'ShenQingDanMing': '申请单名',
+            'LeiXing': '类型',
+            'XingMuLeiXing': '项目类型',
+            'HuiYi': '会议',
+            'RSZhuangTai': 'RS单状态',
+            'RSDongJieRiQi':'RS冻结日期',
+            'BaoJiaYiZhiXingZhuangTai':'报价一致性校验状态',
+            'SELDanJuQUeRenZH': 'SEL单据确认状态',
+            'DingDianRiQi': '定点日期',
+            'DINGDIANSHENQINGLEIXING':'定点申请类型', // 定点申请类型
+            'RFQANDLINGJIANQINGDAN':'RFQ & 零件清单', // RFQ & 零件清单
+            'GONGYINGSHANGANDDANYIGONGYINGSHANG':'供应商 & 单⼀供应商', // 供应商 & 单⼀供应商
+            'DINGDIANJIANYI':'定点建议', // 定点建议
+            'SHENPIRENANDSHENPIJILU':'审批⼈ & 审批记录', // 审批⼈ & 审批记录
+            'JUECEZILIAO':'决策资料', // 决策资料
+
+        },
    
         // 定点建议
         'nominationSuggestion': {

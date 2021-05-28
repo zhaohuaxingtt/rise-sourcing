@@ -8,8 +8,8 @@
         <!-- 顶部信息栏 -->
         <div class="pageTitle flex-between-center-center">
             <div class="flex flex-between-center-center">
-                <span class="title-text margin-left10">定点管理: 51017456</span>
-                <span class="select-text margin-left10">定点申请类型：</span>
+                <span class="title-text margin-left10">{{$t('nominationLanguage.DingDianGuanLi')}}: 51017456</span>
+                <span class="select-text margin-left10">{{$t('nominationLanguage.DINGDIANSHENQINGLEIXING')}}：</span>
                 <iSelect v-model="designateType" @change="onDesignateTypeChange">
                     <el-option
                     :value="item.id"
@@ -20,9 +20,9 @@
                 </iSelect>
             </div>
             <div class="btnList flex-align-center">
-                <iButton >导出</iButton>
-                <iButton >提交</iButton>
-                <iButton v-if="isDecision" @click="preview">预览</iButton>
+                <iButton >{{$t('LK_DAOCHU')}}</iButton>
+                <iButton >{{$t('LK_TIJIAO')}}</iButton>
+                <iButton v-if="isDecision" @click="preview">{{$t('LK_YULAN')}}</iButton>
                 <logButton class="margin-left20" @click="log"  />
                 <span class="title-font margin-left20"><icon symbol name="icondatabaseweixuanzhong"></icon></span>
             </div>
@@ -32,7 +32,7 @@
             <div class="step-list-item flex-center-center" v-for="(item,index) in applyStep" :key="'applyStep'+index">
                 <div>
                     <icon symbol name="dingdianguanlijiedian-jinhangzhong" class="step-icon"></icon>
-                    <p class="step-text">{{item.name}}</p>
+                    <p class="step-text">{{$t(item.key) || item.name}}</p>
                 </div>
                 <icon v-if="index+1 !== applyStep.length" symbol name="liuchengjiedianyiwancheng1" class="step-icon"></icon>
             </div>
