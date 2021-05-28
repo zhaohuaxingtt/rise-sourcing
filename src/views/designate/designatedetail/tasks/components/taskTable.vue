@@ -4,15 +4,13 @@
         <span class="font18 font-weight">
           {{ $t("Tasks") }}</span
         >
-        <div class="floatright" v-if="singleEditControl">
+        <div class="floatright" v-if="editControl">
           <iButton
-            v-if="!$store.getters.isPreview"
             @click="partDialogVisibal = !partDialogVisibal"
           >
             {{ $t("LK_XINZENG") }}
           </iButton>
           <iButton
-            v-if="!$store.getters.isPreview"
             @click="setEditState(false)"
             :loading="startLoding"
           >
@@ -20,17 +18,14 @@
           </iButton>
           <iButton
             v-if="!$store.getters.isPreview"
-            @click="setEditState(false)"
+            @click="editControl = false"
             :loading="startLoding"
           >
             {{ $t("LK_QUXIAO") }}
           </iButton>
         </div>
         <div class="floatright" v-else>
-          <!-- 批量编辑 -->
-          <iButton @click="handleBatchEdit" v-if="!$store.getters.isPreview">
-            {{ $t("nominationSupplier.BatchEdit") }}
-          </iButton>
+          <!-- 编辑 -->
           <iButton v-if="!$store.getters.isPreview" @click="handlEdit">
             {{ $t("nominationSupplier.Edit") }}
           </iButton>
@@ -52,53 +47,43 @@
         <template #partNum="scope">
           <a class="link-underline" href="javascript:;">{{scope.row.partNum}}</a>
         </template>
-        <!-- 供应商名 -->
-        <template #supplierName="scope">
-          <div v-if="scope.row.isEdit">
-            <iSelect
-              v-model="scope.row.supplierName"
-              :placeholder="$t('LK_QINGXUANZE')">
-              <el-option
-                :value="items.key"
-                :label="items.value"
-                v-for="(items, index) in []"
-                :key="index"
-              ></el-option>
-            </iSelect>
+        <!-- 任务时间 -->
+        <template #time="scope">
+          <div v-if="editControl">
+            <iDatePicker v-model='scope.row.time' value-format="yyyy-MM-dd">
+            </iDatePicker>
           </div>
-          <span v-else>{{scope.row.supplierName}}</span>
+          <span v-else>{{scope.row.time}}</span>
         </template>
-        <!-- 单一原因 -->
-        <template #reason="scope">
-          <div v-if="scope.row.isEdit">
-            <iSelect
-              v-model="scope.row.reason"
-              :placeholder="$t('LK_QINGXUANZE')">
-              <el-option
-                :value="items.key"
-                :label="items.value"
-                v-for="(items, index) in []"
-                :key="index"
-              ></el-option>
-            </iSelect>
+        <!-- 任务名称 -->
+        <template #task="scope">
+          <div v-if="editControl">
+            <iInput v-model="scope.row.task" />
           </div>
-          <span v-else>{{scope.row.reason}}</span>
+          <span v-else>{{scope.row.task}}</span>
+        </template>
+        <!-- 任务结果 -->
+        <template #result="scope">
+          <div v-if="editControl">
+            <iInput v-model="scope.row.result" />
+          </div>
+          <span v-else>{{scope.row.result}}</span>
         </template>
         <!-- 部门 -->
-        <template #dept="scope">
-          <div v-if="scope.row.isEdit">
+        <template #status="scope">
+          <div v-if="editControl">
             <iSelect
-              v-model="scope.row.dept"
+              v-model="scope.row.status"
               :placeholder="$t('LK_QINGXUANZE')">
               <el-option
                 :value="items.key"
                 :label="items.value"
-                v-for="(items, index) in []"
+                v-for="(items, index) in taskStatus"
                 :key="index"
               ></el-option>
             </iSelect>
           </div>
-          <span v-else>{{scope.row.dept}}</span>
+          <span v-else>{{scope.row.status}}</span>
         </template>
       </tablelist>
       <iPagination
@@ -119,6 +104,7 @@
 import Vue from 'vue'
 import {
   tasksTitle,
+  taskStatus,
   MoketasksData
 } from './data'
 import tablelist from "./tableList";
@@ -126,26 +112,31 @@ import tablelist from "./tableList";
 import {
   iCard,
   iButton,
+  iInput,
   iPagination,
   iMessage,
-  iSelect
+  iSelect,
+  iDatePicker
 } from "rise";
 
 export default {
   components: {
     iCard,
     iButton,
+    iInput,
     iSelect,
     iPagination,
+    iDatePicker,
     tablelist
   },
   data() {
     return {
       // 单一供应商
       tasksTitle,
+      taskStatus,
       data: MoketasksData,
-      selectSingleData: [],
-      singleEditControl: false,
+      selectedData: [],
+      editControl: true,
       partDialogVisibal: false,
       batchEditVisibal: false,
       page: {}
@@ -154,29 +145,18 @@ export default {
   methods: {
     // 批量编辑
     handleBatchEdit() {
-      if (!this.selectSingleData.length) {
+      if (!this.selectedData.length) {
         iMessage.error('请选择')
         return
       }
       this.batchEditVisibal = true
     },
     handlEdit() {
-      if (!this.selectSingleData.length) {
-        iMessage.error('请选择')
-        return
-      }
-      this.singleEditControl = true
-      this.setEditState(true)
-    },
-    setEditState(state = false) {
-      this.selectSingleData.forEach(item => {
-        const tar = this.singleListData.find(o => o.id === item.id)
-        tar && (Vue.set(tar, 'isEdit', state))
-      })
+      this.editControl = true
     },
     // 单一供应商
     handleSingleSelectionChange(data) {
-      this.selectSingleData = data
+      this.selectedData = data
     },
   }
 }

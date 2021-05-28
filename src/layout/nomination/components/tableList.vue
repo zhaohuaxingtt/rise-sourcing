@@ -6,7 +6,7 @@
  * @Description: 来自零件签收-table组件
 -->
 <template>
-  <el-table fit tooltip-effect='light' :height="height" :data='tableData' default-expand-all {...treeProps} v-loading='tableLoading' @selection-change="handleSelectionChange" :empty-text="$t('LK_ZANWUSHUJU')" ref="moviesTable" :class="{'moviesTable': true, 'radio': radio}">
+  <el-table fit tooltip-effect='light' :height="height" :data='tableData' default-expand-all v-bind="treeProps" v-loading='tableLoading' @selection-change="handleSelectionChange" :empty-text="$t('LK_ZANWUSHUJU')" ref="moviesTable" :class="{'moviesTable': true, 'radio': radio}">
     <el-table-column v-if="selection" type='selection' width="50" align='center'></el-table-column>
     <el-table-column v-if='index' type='index' width='50' align='center' :label='indexLabel'></el-table-column>
     <template v-for="(items,index) in tableTitle">

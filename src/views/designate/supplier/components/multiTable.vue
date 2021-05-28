@@ -26,11 +26,31 @@
       :tableData="tableListData"
       :tableTitle="multiSupplierTitle"
       :tableLoading="tableLoading"
-      :treeProps="{children: 'children', hasChildren: 'hasChildren'}"
+      :treeProps="{'tree-props': {children: 'children', hasChildren: 'hasChildren'}, 'row-key': 'id'}"
       @handleSelectionChange="handleMutiSelectionChange"
       @openPage="openPage"
       :activeItems="'partNum'"
     >
+    <template #descr="scope">
+      <el-tooltip effect="light" :content="scope.row.descr">
+          <span>{{ scope.row.descr }}</span>
+      </el-tooltip>
+    </template>
+    <!-- 厂商 -->
+    <template #fsnrGsnrName="scope">
+      <div>
+        <span class="factoryDesc">{{scope.row.fsnrGsnrName }}</span>
+        <el-tooltip effect="light" :content="'FRM评级：CCC'" v-if="scope.row.frmWarning">
+          <span>
+            <icon symbol name="iconzhongyaoxinxitishi" />
+          </span>
+        </el-tooltip>
+      </div>
+    </template>
+    <!-- 是否展示 -->
+    <template #show="scope">
+      <span>{{scope.row.show === 'Y' ? '是' : '否' }}</span>
+    </template>
     </tablelist>
     <iPagination
       v-update
@@ -55,7 +75,8 @@ import tablelist from "./tableList";
 import {
   iCard,
   iButton,
-  iPagination
+  iPagination,
+  icon
 } from "rise";
 
 export default {
@@ -63,7 +84,8 @@ export default {
     iCard,
     iButton,
     iPagination,
-    tablelist
+    tablelist,
+    icon
   },
   data() {
     return {
@@ -85,11 +107,8 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-.supplierTable {
-  box-shadow: 0 0 1.25rem rgb(27 29 33 / 8%);
-  border-radius: 0.375rem;
-  background: #fff;
-  padding: 20px;
-  margin-top: 20px;
+.factoryDesc {
+  display: inline-block;
+  padding-right: 3px;
 }
 </style>

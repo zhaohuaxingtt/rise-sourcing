@@ -26,16 +26,27 @@ export const tasksTitle = [
   }
 ]
 
+export const taskStatus = [
+  {
+    value: 'Ongoing',
+    key: 'Ongoing'
+  },
+  {
+    value: 'Finished',
+    key: 'Finished'
+  },
+]
+
 // 单一供应商列表moke数据
 export const MoketasksData = [
   {
-    "time": "18-kw50",
+    "time": "2021-05-12",
     "task": "Optimize the Cost Walk",
     "result": "In Discussion",
     "status": "Ongoing"
   },
   {
-    "time": "18-kw46",
+    "time": "2021-05-22",
     "task": "Futher negotiation",
     "result": "Done",
     "status": "Finished"

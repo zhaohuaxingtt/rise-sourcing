@@ -6,7 +6,7 @@
  * @Description: 来自零件签收-table组件，新增了单列的异常配置
 -->
 <template>
-  <el-table fit tooltip-effect='light' :height="height" :data='tableData' default-expand-all :tree-props="{children: 'children', hasChildren: 'hasChildren'}" row-key="id" v-loading='tableLoading' @selection-change="handleSelectionChange" :empty-text="$t('LK_ZANWUSHUJU')" ref="moviesTable" :class="{'moviesTable': true, 'radio': radio}">
+  <el-table fit tooltip-effect='light' :height="height" :data='tableData' default-expand-all  v-bind="treeProps" v-loading='tableLoading' @selection-change="handleSelectionChange" :empty-text="$t('LK_ZANWUSHUJU')" ref="moviesTable" :class="{'moviesTable': true, 'radio': radio}">
     <el-table-column v-if="selection" type='selection' width="50" align='center'></el-table-column>
     <el-table-column v-if='index' type='index' width='50' align='center' :label='indexLabel'></el-table-column>
     <template v-for="(items,index) in tableTitle">
@@ -29,9 +29,11 @@
         :prop="items.props"
         :class-name="items.tree ? 'tree' : ''">
         <template slot-scope="scope">
-          <slot :name="items.props" :row="scope.row" :$index="scope.$index">
-            <span :class="{normal: true, child: scope.row.children}">{{scope.row[items.props]}}</span>
-          </slot>
+          <span :class="{normal: true, child: scope.row.children}">
+            <slot :name="items.props" :row="scope.row" :$index="scope.$index">
+              {{scope.row[items.props]}}
+            </slot>
+          </span>
         </template>
       </el-table-column>
     </template>

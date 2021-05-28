@@ -17,7 +17,7 @@ export const multiSupplierTitle = [
     props: 'descr',
     name: '',
     key: '',
-    tooltip: true,
+    tooltip: false,
     width: 250,
     tree: true
   },
@@ -55,6 +55,7 @@ export const mokeMultiSupplierData = [
     "fsnrGsnrName": "海尔",
     "sapNum": "88718273662",
     "fsnrGsnrNameEn": "Haier",
+    "frmWarning": true,
     "show": "Y",
     "children": [
       {
