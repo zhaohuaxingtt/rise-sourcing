@@ -936,6 +936,10 @@
             'Csfpfuzeren': 'CSF(P)负责人', // CSF(P)负责人
             'Shenpizhuangtai': '审批状态', // 审批状态
             'Shenpiyijian': '审批意见', // 审批意见
+            'Chongfutijiao': '重复提交', // 重复提交
+            'Qiyushujuzhengchangtijiao': '其余数据正常提交', // 其余数据正常提交
+            'Chongfuchehui': '重复撤回', // 重复撤回
+            'Qiyushujuzhengchangchehui': '其余数据正常撤回', // 其余数据正常撤回 
         },
         // 决策资料
         "strategicdoc": {

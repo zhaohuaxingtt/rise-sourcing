@@ -860,7 +860,10 @@
             'DINGDIANJIANYI':'定点建议', // 定点建议
             'SHENPIRENANDSHENPIJILU':'审批⼈ & 审批记录', // 审批⼈ & 审批记录
             'JUECEZILIAO':'决策资料', // 决策资料
-
+            'Chongfutijiao': '重复提交', // 重复提交
+            'Qiyushujuzhengchangtijiao': '其余数据正常提交', // 其余数据正常提交
+            'Chongfuchehui': '重复撤回', // 重复撤回
+            'Qiyushujuzhengchangchehui': '其余数据正常撤回', // 其余数据正常撤回 
         },
    
         // 定点建议

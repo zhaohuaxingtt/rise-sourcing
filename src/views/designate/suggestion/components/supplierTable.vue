@@ -100,7 +100,8 @@ import {
 } from './data'
 import tablelist from "./tableList";
 import batchEditDialog from "./batchEditDialog"
-import mouldDialog from "./mouldDialog"
+// import mouldDialog from "./mouldDialog"
+import mouldDialog from "./mouldBudgetManagementDialog"
 
 import {
   iCard,

@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-05-24 13:45:08
- * @LastEditTime: 2021-05-24 15:30:31
+ * @LastEditTime: 2021-05-28 20:35:39
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\designate\suggestion\components\mouldBudgetManagementDialog.vue
@@ -16,7 +16,7 @@
     <template #title>
       <p class="title">{{ $t("nominationSuggestion.Mujuyusuanguanli") }}</p>
       <div class="control" id="control">
-        <iButton @click="handleSubmit">{{ $t("nominationSuggestion.Tijiao") }}</iButton>
+        <iButton :loading="submitLoading" @click="handleSubmit">{{ $t("nominationSuggestion.Tijiao") }}</iButton>
         <iButton @click="handleRecall">{{ $t("nominationSuggestion.Chehui") }}</iButton>
       </div>
     </template>
@@ -31,14 +31,14 @@
         :tableLoading="loading"
         @handleSelectionChange="handleSelectionChange"
       >
-        <template #c="scope">
-          <span class="link" @click="jump(scope.row)">{{ scope.row.c }}</span>
+        <template #partNum="scope">
+          <span class="link" @click="jump(scope.row)">{{ scope.row.partNum }}</span>
         </template>
-        <template #d="scope">
-          <span>{{ scope.row.d | dateFilter("YYYY-MM-DD") }}</span>
+        <template #applyTime="scope">
+          <span>{{ scope.row.applyTime | dateFilter("YYYY-MM-DD") }}</span>
         </template>
-        <template #f="scope">
-          <iInput class="input-center" v-model="scope.row.f" @input="handleInputByF($event, scope.row)" />
+        <template #budget="scope">
+          <iInput class="input-center" v-model="scope.row.budget" @input="handleInputByBudget($event, scope.row)" />
         </template>
       </tableList>
     </div>
@@ -64,6 +64,7 @@ import { mouldBudgetManagementDialogTableTitle as tableTitle } from "./data"
 import filters from "@/utils/filters"
 import { numberProcessor } from "@/utils"
 import { pageMixins } from "@/utils/pageMixins"
+import { getMouldBudget, patchMouldBudget } from "@/api/designate"
 
 export default {
   components: { iDialog, iButton, iInput, iPagination, tableList },
@@ -78,7 +79,8 @@ export default {
   watch: {
     visible(nv) {
       if (nv) { 
-        // 请求 
+        // 请求
+        this.getMouldBudget()
       }
 
       this.$emit("update:visible", nv)
@@ -94,23 +96,31 @@ export default {
     return {
       loading: false,
       tableTitle,
-      tableListData: [
-        { c: "51142061" }
-      ],
-      multipleSelection: []
+      tableListData: [],
+      multipleSelection: [],
+      submitLoading: false,
+      recallLoading: false
     };
   },
   methods: {
     // 获取列表
-    getList() {
+    getMouldBudget() {
       this.loading = true
 
-      const getList = function() {}
-      getList({
+      this.multipleSelection = [
+        { rfqId: "50002000" },
+        { rfqId: "50002001" },
+      ]
+
+      getMouldBudget({
+        currPage: this.page.currPage,
+        pageSize: this.page.pageSize,
+        rfqIds: this.multipleSelection.map(item => item.rfqId).join('&rfqIds=')
       })
       .then(res => {
         if (res.code == 200) {
-          this.tableListData = Array.isArray(res.data) ? res.data : []
+          this.tableListData = Array.isArray(res.data.records) ? res.data.records : []
+          this.page.totalCount = res.data.total || 0
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }
@@ -125,9 +135,8 @@ export default {
     // 跳转rfq
     jump(row) {},
     // 投资预算
-    handleInputByF(val, row) {
-      console.log(val)
-      this.$set(row, "f", numberProcessor(val, 4))
+    handleInputByBudget(val, row) {
+      this.$set(row, "budget", numberProcessor(val, 4))
     },
     // 提交
     handleSubmit() {
@@ -135,8 +144,33 @@ export default {
         return iMessage.warn(this.$t("nominationSuggestion.Qingxuanzezhishaoyitiaoshuju"))
       }
 
-      this.$emit("submit", this.multipleSelection)
-      this.$emit("update:visible", false)
+      this.submitLoading = true
+      patchMouldBudget({
+        updateType: 1,
+        mouldBudgetDTOS: this.multipleSelection
+      })
+      .then(res => {
+        if (res.code == 200) {
+          if (!res.data.length) {
+            iMessage.success(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+            this.getMouldBudget()
+          } else {
+            if (this.multipleSelection.length === res.data.length) {
+              iMessage.warn(`${ this.$t("nominationSuggestion.Rfqbianhao") }: ${ res.data.join(", ") } ${ this.$t("nominationSuggestion.Chongfutijiao") }`)
+            } else {
+              iMessage.warn(`${ this.$t("nominationSuggestion.Rfqbianhao") }: ${ res.data.join(", ") } ${ this.$t("nominationSuggestion.Chongfutijiao") }, ${ this.$t("nominationSuggestion.Qiyushujuzhengchangtijiao") }`)
+              this.getMouldBudget()
+            }
+          }
+
+          this.$emit("submit", this.multipleSelection.filter(item => !res.data.includes(item)))
+          this.submitLoading = false
+          // this.$emit("update:visible", false)
+        } else {
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
+      })
+      .catch(() => this.submitLoading = false)
     },
     // 撤回
     handleRecall() {
@@ -144,8 +178,33 @@ export default {
         return iMessage.warn(this.$t("nominationSuggestion.Qingxuanzezhishaoyitiaoshuju"))
       }
 
-      this.$emit("recall", this.multipleSelection)
-      this.$emit("update:visible", false)
+      this.recallLoading = true
+      patchMouldBudget({
+        updateType: 0,
+        mouldBudgetDTOS: this.multipleSelection
+      })
+      .then(res => {
+        if (res.code == 200) {
+          if (!res.data.length) {
+            iMessage.success(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+            this.getMouldBudget()
+          } else {
+            if (this.multipleSelection.length === res.data.length) {
+              iMessage.warn(`${ this.$t("nominationSuggestion.Rfqbianhao") }: ${ res.data.join(", ") } ${ this.$t("nominationSuggestion.Chongfuchehui") }`)
+            } else {
+              iMessage.warn(`${ this.$t("nominationSuggestion.Rfqbianhao") }: ${ res.data.join(", ") } ${ this.$t("nominationSuggestion.Chongfuchehui") }, ${ this.$t("nominationSuggestion.Qiyushujuzhengchangchehui") }`)
+              this.getMouldBudget()
+            }
+          }
+
+          this.$emit("recall", this.multipleSelection.filter(item => !res.data.includes(item)))
+          this.recallLoading = false
+          // this.$emit("update:visible", false)
+        } else {
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
+      })
+      .catch(() => this.recallLoading = false)
     }
   }
 };
