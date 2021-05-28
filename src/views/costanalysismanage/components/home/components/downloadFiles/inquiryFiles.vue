@@ -33,7 +33,7 @@ import {
 } from 'rise'
 import tableList from '@/views/designate/designatedetail/components/tableList'
 import { pageMixins } from "@/utils/pageMixins"
-import { FilesTitle } from './data'
+import { FilesTitle } from '../data'
 
 export default {
     name:'inquiryFiles',

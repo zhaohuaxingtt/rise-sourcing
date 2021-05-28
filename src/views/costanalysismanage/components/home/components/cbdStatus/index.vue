@@ -1,19 +1,24 @@
 <!--
  * @Author: wentliao
- * @Date: 2021-05-27 20:26:28
- * @Description: 
+ * @Date: 2021-05-28 10:29:24
+ * @Description: CBD弹窗
 -->
 <template>
-    <div class="inquiryDrawing">
+    <iDialog
+        :visible.sync="dialogVisible"
+        @close="clearDialog"
+        width="90%"
+    >
+    <div class="cbdStatus">
         <div class="header clearFloat margin-bottom15">
-          <span class="title">询价图纸</span>
+          <span class="title">CBD状态</span>
 
           <div class="floatright">
               <iButton>下载</iButton>
           </div>
       </div>
       <!-- 表格区域 -->
-      <tableList :activeItems='"a"' selection indexKey :tableData="tableData" :tableTitle="tableTitle" :tableLoading="tableLoading" @handleSelectionChange="handleSelectionChange" @openPage="openPage"></tableList>
+      <tableList :activeItems="null" selection indexKey :tableData="tableData" :tableTitle="tableTitle" :tableLoading="tableLoading" @handleSelectionChange="handleSelectionChange" @openPage="openPage"></tableList>
       <!-- 分页 -->
       <iPagination v-update @size-change="handleSizeChange($event, getTableList)" @current-change="handleCurrentChange($event, getTableList)" background :page-sizes="page.pageSizes"
       :page-size="page.pageSize"
@@ -23,32 +28,40 @@
       class="padding-bottom20"
     />
     </div>
+    </iDialog>
 </template>
 
 <script>
 import {
+    iDialog,
     iButton,
     iPagination,
 } from 'rise'
 import tableList from '@/views/designate/designatedetail/components/tableList'
 import { pageMixins } from "@/utils/pageMixins"
-import { DrawingTitle } from '../data'
+import { CbdTitle } from '../data'
 export default {
-    name:'inquiryDrawing',
+    name:'cbdStatus',
     mixins: [pageMixins],
     components:{
+        iDialog,
         tableList,
         iButton,
         iPagination,
+        
+    },
+    props:{
+        dialogVisible:{
+            type:Boolean,
+            default:false
+        }
     },
     data(){
         return{
             tableData:[
-                {'e':'零件号1','a':'1a.jpg','b':'1.14','c':'2021-03-04','d':'张一'},
-                {'e':'零件号2','a':'2a.jpg','b':'2.14','c':'2021-03-04','d':'张二'},
-                {'e':'零件号3','a':'3c.jpg','b':'3.14','c':'2021-03-04','d':'张三'},
+                {'a':'FS号','b':'3q11','c':'空调器','d':'KTQ','e':'B-MPV2','f':'XXX','g':'2021-01-01','h':'1','i':'已关闭','j':'BUC.TIA'},
         ],
-            tableTitle:DrawingTitle,
+            tableTitle:CbdTitle,
             selectItems:[],
             tableLoading:false,
         }
@@ -65,13 +78,13 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-    .inquiryDrawing{
-        .header{
-            .title{
-                font-size: 18px;
-                font-weight: bold;
-            }
+<style  lang="scss" scoped>
+.cbdStatus{
+    .header{
+        .title{
+            font-size: 18px;
+            font-weight: bold;
         }
     }
+}
 </style>
