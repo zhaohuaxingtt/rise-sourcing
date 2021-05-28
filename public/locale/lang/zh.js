@@ -143,6 +143,7 @@
             'Jieshuziliao': '技术资料', // 技术资料
             'Cbd': 'CBD', // CBD
             'Fenxibaogao': '分析报告', // 分析报告
+            'FASONGSHIJIAN':'发送时间', // 发送时间
 
             // 数据维护
             'Rengongchengbenshujuweihu': '人工成本数据维护', // 人工成本数据维护
@@ -826,6 +827,7 @@
         'LK_ZHANSHI':'展示', // 展示
         'LK_KAISHISHIJIAN':'开始日期', // 开始日期
         'LK_JIESHUSHIJIAN':'结束日期', // 结束日期
+        'LK_WENJIANQINGXUANZHUANZHIZHENGCHANG':'上传附件:文件请旋转至正常方向后上传', // 上传附件:文件请旋转至正常方向后上传
         
 
         // 定点管理
