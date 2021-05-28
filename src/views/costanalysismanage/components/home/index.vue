@@ -207,7 +207,7 @@ export default {
   mixins: [ filters, pageMixins ],
   data(){
     return{
-      downloadDialogVisible:false,
+      downloadDialogVisible:true,
       cbdDialogVisible:false,
       form: {
         rfqNum: "",
