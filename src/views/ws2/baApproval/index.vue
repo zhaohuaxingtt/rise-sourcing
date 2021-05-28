@@ -44,11 +44,11 @@
           :height="tableHeight - 440"
           :tableData="allTableData"
           :tableTitle="allBAATableHead"
-          :tableLoading="allTableLoading"
+          :tableLoading="allListLoading"
           @handleSelectionChange="handleSelectionChange"
         >
           <template #detailed="scope">
-            <div class="detailed">明细</div>
+            <div class="detailed" @click="openDetails(scope)">明细</div>
           </template>
         </iTableList>
         <iPagination
@@ -78,16 +78,16 @@
           @handleSelectionChange="handleSelectionChange"
         >
           <template #sixBa="scope">
-            A-<div class="iDialog-input">
-                    <iInput :placeholder="$t('LK_QINGSHURU')" v-model="sixBa" maxlength="6" />
-                  </div>-<div class="iDialog-input">
-                            <iInput :placeholder="`INT (${$t('LK_MODIFIABLE')})`" v-model="int" />
+            A-<div class="iDialog-inputItem">
+                    <iInput :placeholder="$t('LK_QINGSHURU')" v-model="sixBa" maxlength="5" />
+                  </div>-<div class="iDialog-inputItem">
+                            <iInput :placeholder="`INT (${$t('LK_MODIFIABLE')})`" maxlength="3" v-model="int" />
                           </div>
           </template>
           <template #detailed="scope">
             <div class="detailed-item">
-              <div class="detailed">确认</div>
-              <div class="detailed">明细</div>
+              <div class="detailed" @click="confirmA(scope)">确认</div>
+              <div class="detailed" @click="openDetails(scope)">明细</div>
             </div>
           </template>
         </iTableList>
@@ -119,8 +119,8 @@
         >
           <template #detailed="scope">
             <div class="detailed-item">
-              <div class="detailed">确认</div>
-              <div class="detailed">明细</div>
+              <div class="detailed" @click="confirmA(scope)">确认</div>
+              <div class="detailed" @click="openDetails(scope)">明细</div>
             </div>
           </template>
         </iTableList>
@@ -162,13 +162,13 @@
 
       <div class="iDialog-item">
         <div>
-          原A号：A-000001-INT
+          原A号：{{allSelectList.length && allSelectList[0].sixBa || ''}}
         </div>
         <div>
           原A号：A-<div class="iDialog-input">
-                    <iInput :placeholder="$t('LK_QINGSHURU')" v-model="sixBa" maxlength="6" />
+                    <iInput :placeholder="$t('LK_QINGSHURU')" v-model="sixBa" maxlength="5" />
                   </div>-<div class="iDialog-input">
-                            <iInput :placeholder="`INT (${$t('LK_MODIFIABLE')})`" v-model="int" />
+                            <iInput :placeholder="`INT (${$t('LK_MODIFIABLE')})`" maxlength="3" v-model="int" />
                           </div>
         </div>
       </div>
@@ -177,17 +177,50 @@
         <iButton @click="iDialogConfirm">{{ $t('LK_QUEDING') }}</iButton>
       </div>
     </iDialog>
+
+    <!-- 明细 -->
+    <ApplyPopup :visible="detailsdVisible" title="明细" @changeLayer="clearDetailsDiolog">
+      <template slot="table">
+        <iTableList
+          :tableData="detailsTableData"
+          :tableTitle="detailedTableHead"
+          :selection="false"
+        >
+          
+        </iTableList>
+      </template>
+    </ApplyPopup>
+
+    <!-- 确认页面 -->
+    <ApplyPopup :visible="confirmVisible" :title="titleMap[tableIndex]" @changeLayer="clearConfirmDiolog">
+      <template slot="table">
+        <iTableList
+          :tableData="confirmTableData"
+          :tableTitle="confirmTableHead"
+          :selection="false"
+        >
+          
+        </iTableList>
+      </template>
+      <template slot="btns">
+        <iButton @click="handleConfirm(tableIndex)">{{ $t('LK_QUEREN') }}</iButton>
+      </template>
+    </ApplyPopup>
     
   </div>
 </template>
 
 <script>
-import { getBaCount, findListConditoons, listByStatus, updateSixBa, backApprove } from "@/api/ws2/baApproval";
-import { allBAATableHead, waitBAATableHead, waitAddTableHead } from "./components/data";
+import { getBaCount, findListConditoons,
+  listByStatus, updateSixBa, backApprove, getDetail,
+  addSixBa, updateByCarId, confirmDetail
+} from "@/api/ws2/baApproval";
+import { allBAATableHead, waitBAATableHead, waitAddTableHead, detailedTableHead, confirmTableHead } from "./components/data";
 import { tableHeight } from "@/utils/tableHeight";
 import { Popover } from "element-ui"
 import SearchBlock from "./components/searchBlock";
 import { pageMixins } from "@/utils/pageMixins";
+import ApplyPopup from "./components/applyPopup";
 import {
   icon,
   iTableList
@@ -201,32 +234,46 @@ import {
   iInput,
 } from "rise";
 
+const titleMap = {
+          1: '确认A号',
+          3: '确认金额'
+        }
+
 export default {
   mixins: [tableHeight, pageMixins],
   components: {
     icon, iButton, iDialog,
     SearchBlock, iTableList, iCard,
     iPagination, iInput, Popover,
+    ApplyPopup
   },
   data(){
     return {
+      titleMap,
       sixBa: '',
       int: 'INT',
       tableIndex: 0,
       iDialogAddCarTypeProject: false,
       allTableData: [],
       allBAATableHead,
-      allTableLoading: false,
+      detailedTableHead,
+      allListLoading: false,
       waitTableLoading: false,
       waitAddTableLoading: false,
+      detailsdVisible: false,
       visible: false,
+      confirmVisible: false,
       allSelectList: [],
       waitSelectList: [],
       waitAddSelectList: [],
       waitTableData: [],
       waitAddTableData: [],
+      detailsTableData: [],
+      confirmTableData: [],
+      confirmTableHead,
       waitBAATableHead,
       waitAddTableHead,
+      currentScope: [],
       tabData: {
         amountCount: 0,
         applyCount: 0,
@@ -242,6 +289,10 @@ export default {
       waitAddPage: {
         currPage: 1,
         pageSize: 10,
+      },
+      detailPage: {
+        currPage: 1,
+        pageSize: 10,
       }
     }
   },
@@ -253,17 +304,76 @@ export default {
 
   methods: {
 
+    //  确认金额、确认A号
+    handleConfirm(type){
+      const { currentScope } = this;
+      const fun = type === 1 ? addSixBa : updateByCarId;
+      const param = {
+        approveAmount: currentScope.approveAmount,
+        id: currentScope.id,
+        localFactoryId: currentScope.localFactoryid,
+        sixBa: currentScope.sixBa,
+        tmCartypeProId: currentScope.tmCartypeProId
+      }
+
+      fun(param).then(res => {
+        console.log('确认：', res);
+      })
+    },
+
+    clearDetailsDiolog(visible){
+      this.detailsdVisible = visible;
+    },
+
+    //  明细
+    openDetails(scope){
+      getDetail({id: scope.row.id}).then(res => {
+        const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn;
+        if(res.data){
+          this.detailsTableData = res.data;
+          this.detailsdVisible = true;
+        }else{
+          iMessage.error(result);
+        }
+      })
+    },
+
+    clearConfirmDiolog(){
+      this.confirmVisible = false;
+    },
+
+    //  确认A号
+    confirmA(scope){
+      confirmDetail({id: scope.row.id}).then(res => {
+        const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn;
+        if(res.data){
+          this.confirmTableData = res.data;
+          this.confirmVisible = true;
+          this.currentScope = scope.row;
+        }else{
+          iMessage.error(result);
+        }
+      })
+    },
+
     //  修改A号-确认
     iDialogConfirm(){
       const { sixBa, int, allSelectList } = this;
 
-      if(sixBa === '' || sixBa.length < 6){
-        return iMessage.warn('请输入6位数的A号！');
+      if(sixBa === '' || sixBa.length < 5){
+        return iMessage.warn('请输入5位或8位A号!');
       }
+
+      if(int.length < 3 && int !== ''){
+        return iMessage.warn('请输入5位或8位A号!');
+      }
+
 
       const param = {
         sixBa: `A-${sixBa}-${int}`,
         tmCartypeProId: allSelectList[0].tmCartypeProId,
+        localFactoryId: allSelectList[0].localFactoryid,
+        id: allSelectList[0].id,
       }
 
       updateSixBa(param).then(res => {
@@ -286,7 +396,7 @@ export default {
     },
     
     handleSure(form){
-      this.allTableLoading = true;
+      this.allListLoading = true;
       const param = {
         ...form,
         current: this.allPage.currPage,
@@ -298,9 +408,9 @@ export default {
         this.allPage.totalCount = ~~res.total;
         this.allTableData = res.data;
 
-        this.allTableLoading = false;
+        this.allListLoading = false;
       }).catch(err => {
-        this.allTableLoading = false;
+        this.allListLoading = false;
       })
     },
 
@@ -328,7 +438,7 @@ export default {
         3: 'waitAddTableData',
       }
       const loadingMap = {
-        0: 'allTableLoading',
+        0: 'allListLoading',
         1: 'waitTableLoading',
         3: 'waitAddTableLoading',
       }
@@ -405,6 +515,14 @@ export default {
       if(this.allSelectList.length > 1){
         return iMessage.warn('最多只能同时修改一条数据！');
       }
+      
+      if(!this.allSelectList[0].sixBa || this.allSelectList[0].sixBa === ''){
+        return iMessage.warn('需要先确认A号！');
+      }
+
+      if(this.allSelectList[0].baStatus === 5){
+        return iMessage.warn('退回状态不能确认A号！');
+      }
 
       this.visible = true;
     },
@@ -423,6 +541,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.iDialog-inputItem{
+  display: inline-block;
+  width: 80px;
+}
 .iDialog{
 
   .iDialog-bottom{

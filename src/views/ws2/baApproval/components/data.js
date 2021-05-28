@@ -140,6 +140,7 @@ export const waitBAATableHead =[
     props: 'sixBa',
     name: 'BA单号',
     key: 'LK_BAODDNUMBERS',
+    minWidth: '130',
     tooltip: false
   },
   {
@@ -216,6 +217,92 @@ export const waitAddTableHead = [
     props: 'detailed',
     name: '',
     key: '',
+    tooltip: false
+  },
+]
+
+//  明细表头
+export const detailedTableHead = [
+  {
+    props: 'carTypeName',
+    name: '车型项目',
+    key: 'LK_CHEXINGXIANGMU',
+    tooltip: false
+  },
+  {
+    props: 'categoryName',
+    name: '材料组',
+    key: 'LK_CAILIAOZU',
+    tooltip: false
+  },
+  {
+    props: 'deptName',
+    name: '科室名称',
+    key: 'LK_DEPNAME',
+    tooltip: false
+  },
+  {
+    props: 'baNum',
+    name: 'BA单号',
+    key: 'LK_BAODDNUMBERS',
+    tooltip: false
+  },
+  {
+    props: 'partsId',
+    name: '零件号',
+    key: 'LK_LINGJIANHAO',
+    tooltip: false
+  },
+  {
+    props: 'partsName',
+    name: '零件名称',
+    key: 'LK_LINGJIANMINGCHENG',
+    tooltip: false
+  },
+  {
+    props: 'designatedSupplierName',
+    name: '定点供应商',
+    key: 'LK_FIXEDPOINTSUPPLIER',
+    tooltip: false
+  },
+  {
+    props: 'moldAmount',
+    name: '模具定点金额',
+    key: 'LK_MODULFIXEDPOINTMONEY',
+    tooltip: false
+  },
+  {
+    props: 'rsNum',
+    name: 'RS单号',
+    key: 'LK_RSODDNUMBERS',
+    tooltip: false
+  },
+]
+
+//  确认详情表头
+export const confirmTableHead = [
+  {
+    props: 'carTypeName',
+    name: '车型项目',
+    key: 'LK_CHEXINGXIANGMU',
+    tooltip: false
+  },
+  {
+    props: 'deptName',
+    name: '科室名称',
+    key: 'LK_DEPNAME',
+    tooltip: false
+  },
+  {
+    props: 'baNum',
+    name: 'BA单号',
+    key: 'LK_BAODDNUMBERS',
+    tooltip: false
+  },
+  {
+    props: 'amount',
+    name: '金额（RMB）',
+    key: 'LK_AMOUNTMONEYRMB',
     tooltip: false
   },
 ]
