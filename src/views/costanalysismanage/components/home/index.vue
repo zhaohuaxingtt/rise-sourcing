@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-05-27 12:32:54
- * @LastEditTime: 2021-05-28 16:07:02
+ * @LastEditTime: 2021-05-28 17:03:41
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\costanalysismanage\components\home\index.vue
@@ -140,7 +140,7 @@
         :tableTitle="tableTitle"
         :tableLoading="loading">
         <template #rfqNum="scope">
-          <span class="link">{{ scope.row.rfqNum }}</span>
+          <span class="link" @click="jumpRfq(scope.row)">{{ scope.row.rfqNum }}</span>
         </template>
         <template #createDate="scope">
           <span>{{ scope.row.createDate | dateFilter("YYYY-MM-DD") }}</span>
@@ -237,6 +237,10 @@ export default {
   },
   methods: {
     getList() {},
+    // 跳转RFQ详情
+    jumpRfq(row) {
+      window.open(`/#/costanalysismanage/rfqdetail?rfqNum=${ row.rfqNum }`, "_blank")
+    },
     // 下载
     download(row) {
       this.downloadDialogVisible = true
