@@ -8,13 +8,13 @@
   <div class="uploadList">
       <!-- 按钮区域 -->
       <p class="btn-list">
-          <iButton>下载</iButton>
-          <iButton>删除</iButton>
+          <iButton>{{$t('LK_XIAZAI')}}</iButton>
+          <iButton>{{$t('LK_SHANCHU')}}</iButton>
           <upload-button
             @uploadedCallback="uploadAttachments"
             :upload-button-loading="uploadAttachmentsButtonLoading"
             class="margin-left8 margin-right8"
-            buttonText="上传文件"
+            :buttonText="$t('LK_SHANGCHUANWENJIAN')"
             />
       </p>
       <!-- 表格区域 -->
@@ -38,8 +38,8 @@
         <el-table-column v-for="(item,index) in filesTableTitle" 
             :key="'filesDetailListTable'+index" 
             align='center'
-            :label="item.name"
-            :prop="item.key"
+            :label="$t(item.key) || item.name"
+            :prop="item.props"
             >
         </el-table-column>
       </el-table>

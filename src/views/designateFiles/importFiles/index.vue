@@ -14,8 +14,8 @@
                 <iCard>
                   <div class="margin-bottom20 clearFloat">
                     <div class="floatright">
-                      <iButton>导入</iButton>
-                      <iButton>配件模板下载</iButton>
+                      <iButton>{{$t('LK_DAORU')}}</iButton>
+                      <iButton>{{$t('LK_PEIJIANMUBANXIAZAI')}}</iButton>
                     </div>
                   </div>
                   <!-- 表格区域 -->
@@ -39,7 +39,7 @@
                     <el-table-column
                       prop="prop1"
                       align='center'
-                      label="编号">
+                      :label="$t('LK_BIANHAO')">
                       <template slot-scope="scope">
                         <span @click="goFilesList" class="link-underline" >{{scope.row.prop1}}</span>
                       </template>
@@ -47,17 +47,17 @@
                     <el-table-column
                       prop="prop2"
                       align='center'
-                      label="导⼊时间">
+                      :label="$t('LK_DAORUSHIJIAN')">
                     </el-table-column>
                     <el-table-column
                       prop="prop3"
                       align='center'
-                      label="导⼊员">
+                      :label="$t('LK_DAORUYUAN')">
                     </el-table-column>
                     <el-table-column
                       prop="prop4"
                       align='center'
-                      label="科室">
+                      :label="$t('LK_KESHI')">
                     </el-table-column>
                   </el-table>
                   <!-- 分页 -->

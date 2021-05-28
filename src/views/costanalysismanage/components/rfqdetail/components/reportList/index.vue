@@ -18,6 +18,9 @@
             :tableTitle="tableTitle"
             :tableLoading="loading"
         >
+            <template #a="scope">
+            <span class="link" @click="download(scope.row)">{{ scope.row.a }}</span>
+            </template>
         </tableList>
         <iPagination 
             v-update
@@ -54,8 +57,15 @@ export default {
         return {
         loading: false,
         tableTitle,
-        tableListData: []
+        tableListData: [
+            {a:'文件名1.png',b:'2',c:'3',d:'4'}
+        ]
         }
+    },
+    methods:{
+        download(){
+
+        },
     }
 }
 </script>

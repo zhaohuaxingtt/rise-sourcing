@@ -6,21 +6,21 @@
 <template>
     <iPage class="filesDetailList">
         <div v-if="!showUploadList">
-            <p class="title margin-bottom10">附件清单：SAZJ1029</p>
+            <p class="title margin-bottom10">{{$t('LK_FUJIANQINGDAN')}}：SAZJ1029</p>
             <iCard collapse>
                 <!-- 搜索区域 -->
                 <iSearch @sure="sure" @reset="reset">
                     <el-form>
-                        <el-form-item label="附件零件编号">
+                        <el-form-item :label="$t('LK_FUJIANLINGJIANHAO')">
                             <iInput v-model="searchParams['a']"></iInput> 
                         </el-form-item>
-                        <el-form-item label="附件零件名称">
+                        <el-form-item :label="$t('LK_FUJIANLINGJIANMINGCHENG')">
                             <iInput v-model="searchParams['b']"></iInput> 
                         </el-form-item>
-                        <el-form-item label="使⽤⻋型">
+                        <el-form-item :label="$t('LK_SHIYONGCHEXING')">
                             <iInput v-model="searchParams['c']"></iInput> 
                         </el-form-item>
-                        <el-form-item label="附件上市时间">
+                        <el-form-item :label="$t('LK_FUJIANSHANGSHISHIJIAN')">
                             <iDatePicker format="yyyy-MM-dd" value-format="yyyy-MM-dd" v-model="searchParams['d']"></iDatePicker> 
                         </el-form-item>
                     </el-form>
@@ -48,12 +48,12 @@
                 <el-table-column v-for="(item,index) in tableTitle" 
                     :key="'filesDetailListTable'+index" 
                     align='center'
-                    :label="item.name"
-                    :prop="item.key"
+                    :label="$t(item.key) || item.name"
+                    :prop="item.props"
                     >
                     <template slot-scope="scope">
-                        <span class="link-underline"  v-if="item.key === 'files'" @click="checkUploadList">上传</span>
-                        <span v-else>{{scope.row[item.key] || '-'}}</span>
+                        <span class="link-underline"  v-if="item.key === 'LK_FUJIAN'" @click="checkUploadList">{{$t('LK_SHANGCHUAN')}}</span>
+                        <span v-else>{{scope.row[item.props] || '-'}}</span>
                     </template>
                 </el-table-column>
                 </el-table>
@@ -122,7 +122,7 @@ export default {
             tableData:[
                 {a:'Z00856102',b:'SP123',c:'SVAA432',d:'1',e:'1111'}
             ],
-            showUploadList:true,
+            showUploadList:false,
         }
     },
     methods:{
