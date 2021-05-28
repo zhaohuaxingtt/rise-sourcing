@@ -807,6 +807,18 @@
         'LK_PEIJIANZONGHEGUANLI': '配件综合管理', // 配件综合管理
         'LK_FUJIANZONGHEGUANLI': '附件综合管理', // 附件综合管理
 
+        'LK_FUJIANLINGJIANHAO':'附件零件号', // 附件零件号
+        'LK_SPHAO':'SP号', // SP号
+        'LK_DAORUXIANGCI':'导⼊项次', // 导⼊项次
+        'LK_CSFKESHI':'CSF科室', // CSF科室
+        'LK_KESHI':'科室', // 科室
+        'LK_FUJIANLINGJIANMINGCHENG':'附件零件名称', // 附件零件名称
+        'LK_SHIYONGCHEXING':'使⽤⻋型', // 使⽤⻋型
+        'LK_FUJIAN':'附件', // 附件
+        'LK_FUJIANSHANGSHISHIJIAN':'附件上市时间', // 附件上市时间
+        'LK_FUJIANQINGDAN':'附件清单', // 附件清单
+        'LK_SHANGCHUANWENJIAN':'上传文件', // 上传文件
+
         // 定点管理
         'nominationLanguage': {
             'DingDianGuanLi': '定点管理',
