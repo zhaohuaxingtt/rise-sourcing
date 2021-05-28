@@ -697,6 +697,7 @@
         'LK_QINGXUANZEXUYAOHUIFUDEPINGFENBUMEN': '请选择需要恢复的评分部门', //请选择需要恢复的评分部门
         'LK_QINGXUANZEWANSHUJUZAIZUOBAOCUN': '请选择完数据再做保存', //请选择完数据再做保存
         'LK_WEIBUXITONGWENJIANWUFASHANCHU': '为外部系统文件，无法删除', // xxx 为外部系统文件, 无法删除
+        'LK_DINGDIANXINXI': '定点信息', // 定点信息
 
         //摸具预算
         // 点击进入【生成投资清单】页面
