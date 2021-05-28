@@ -21,7 +21,7 @@
       :span-method="spanMethod"
       :empty-text="$t('LK_ZANWUSHUJU')"
       ref="monitorTable">
-      <el-table-column
+      <!-- <el-table-column
         v-if="selection"
         type='selection' 
         width="60"
@@ -29,6 +29,15 @@
         align='center'>
         <template slot-scope="scope">
           <el-checkbox></el-checkbox>
+          <div class="tableSelection" v-if="scope.row.gid">{{'GroupName'}}</div>
+        </template>
+      </el-table-column> -->
+      <el-table-column
+        width="60"
+        label='Group'
+        align='center'>
+        <template slot-scope="scope">
+          <el-checkbox v-if="batchEdit"></el-checkbox>
           <div class="tableSelection" v-if="scope.row.gid">{{'GroupName'}}</div>
         </template>
       </el-table-column>
@@ -139,7 +148,7 @@ export default {
       data: this.tableData,
       spanArr: [],
       selectedData: [],
-      supplier: ['SH Huashi', 'NBHX Trim'],
+      supplier: ['SH Huashi', 'NBHX Trim', 'Bj Vehic'],
       chartData: []
     }
   },
@@ -275,7 +284,7 @@ export default {
       this.supplier.forEach((item, index) => {
         countSupplier[index] = data.map(o => Number(o.TTo[index])).reduce((total, n) => total += n)
       })
-      res[0][0] = countSupplier.sort()[0]
+      res[0][0] = 0
       res[1][0] = countSupplier.reduce((total, n) => total += n)
 
       // Best TTO by Group
