@@ -6,11 +6,11 @@
 <template>
   <div class="inquiryFiles">
       <div class="header clearFloat margin-bottom15">
-          <span class="title">询价附件</span>
-          <span class="tips">上传附件:文件请旋转至正常方向后上传</span>
+          <span class="title">{{$t('LK_XUNJIAFUJIAN')}}</span>
+          <span class="tips">{{$t('LK_WENJIANQINGXUANZHUANZHIZHENGCHANG')}}</span>
 
           <div class="floatright">
-              <iButton>下载</iButton>
+              <iButton>{{$t('LK_XIAZAI')}}</iButton>
           </div>
       </div>
       <!-- 表格区域 -->

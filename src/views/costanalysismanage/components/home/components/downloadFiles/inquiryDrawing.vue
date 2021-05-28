@@ -6,10 +6,10 @@
 <template>
     <div class="inquiryDrawing">
         <div class="header clearFloat margin-bottom15">
-          <span class="title">询价图纸</span>
+          <span class="title">{{$t('LK_XUNJIATUZHI')}}</span>
 
           <div class="floatright">
-              <iButton>下载</iButton>
+              <iButton>{{$t('LK_XIAZAI')}}</iButton>
           </div>
       </div>
       <!-- 表格区域 -->
