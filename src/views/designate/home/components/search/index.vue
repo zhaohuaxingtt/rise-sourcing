@@ -50,7 +50,7 @@
           <el-option
             :value="items.key"
             :label="items.value"
-            v-for="(items, index) in []"
+            v-for="(items, index) in ptocessType"
             :key="index"
           ></el-option>
         </iSelect>
@@ -183,7 +183,7 @@
 </template>
 
 <script>
-import { form } from '../data'
+import { form, ptocessType } from '../data'
 import {
   iSearch,
   iInput,
@@ -193,7 +193,8 @@ import {
 export default {
   data() {
     return {
-      form: form
+      form,
+      ptocessType
     }
   },
   components: {
