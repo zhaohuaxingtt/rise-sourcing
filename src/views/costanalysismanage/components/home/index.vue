@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-05-27 12:32:54
- * @LastEditTime: 2021-05-28 10:45:05
+ * @LastEditTime: 2021-05-28 10:57:50
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\costanalysismanage\components\home\index.vue
@@ -38,7 +38,7 @@ export default {
   data(){
     return{
       downloadDialogVisible:false,
-      cbdDialogVisible:true,
+      cbdDialogVisible:false,
     }
   }
 }
