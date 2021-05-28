@@ -11,6 +11,22 @@
 export const form = {
 }
 
+// 流程类型字典
+export const ptocessType = [
+  {
+    value: '上会',
+    key: 'A'
+  },
+  {
+    value: '流转',
+    key: 'B'
+  },
+  {
+    value: '备案',
+    key: 'C'
+  }
+]
+
 // 表单表头
 export const tableTitle = [{
   //export const tableTitle = permissionTitle("nominationLanguage_nominationLanguageLIST",[{

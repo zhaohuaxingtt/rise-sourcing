@@ -16,7 +16,7 @@
 </template>
 <script>
 import supplierTable from "./components/supplierTable";
-import buMonitor from "./components/buMonitor";
+import buMonitor from "@/views/designate/suggestion/components/buMonitor";
 // import { iButton } from "rise"
 // import mouldBudgetManagementDialog from "./components/mouldBudgetManagementDialog"
 

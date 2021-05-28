@@ -109,6 +109,58 @@
             'Caozuorizhi': '操作日志', // 操作日志
             'Chakan': '查看', // 查看
         },
+        // 成本分析管理
+        'costanalysismanage': {
+            'Chengbenfenxiguanli': '成本分析管理', // 成本分析管理
+            'Shujuweihu': '数据维护', // 数据维护
+
+            // 数据维护
+            'Rengongchengbenshujuweihu': '人工成本数据维护', // 人工成本数据维护
+            'Daochu': '导出', // 导出
+            'Shangechuan': '上传', // 上传
+            'Xiazai': '下载', // 下载
+            'Shanchu': '删除', // 删除
+            'Shangechuanwenjianmingcheng': '上传文件名称', // 上传文件名称
+            'Daxiao': '大小', // 大小
+            'Shijian': '时间', // 时间
+            'Shangchuanren': '上传人', // 上传人
+            'Beizhu': '备注', // 备注
+
+            // rfq详情
+            'Rfqbianhao': 'RFQ编号', // RFQ编号
+            'Rfqzhuangtai': 'RFQ状态', // RFQ状态
+            'Chuangjianriqi': '创建日期', // 创建日期
+            'Rfqmingcheng': 'RFQ名称', // RFQ名称
+            'Xunjiacaigouyuan': '询价采购员', // 询价采购员
+            'Linie': 'LINIE', // LINIE
+            'Dangqianlunci': '当前轮次', // 当前轮次
+            'Benlunzhuangtai': '本轮状态', // 本轮状态
+            'Benlunbaojiajiezhiri': '本轮报价截止日', // 本轮报价截止日
+            'Luncileixing': '轮次类型', // 轮次类型
+            
+            // 零件清单
+            'Lingjianqingdan': '零件清单', // 零件清单
+            'Baocun': '保存', // 保存
+            'Xiazaijishuziliao': '下载技术资料', // 下载技术资料
+            'Xiazaicbd': '下载CBD', // 下载CBD
+            'Fsnfgsnfspnr': 'FSNF/GSNF/SPNR', // FSNF/GSNF/SPNR
+            'Lingjianhao': '零件号', // 零件号
+            'Lingjianmingzhong': '零件名(中)', // 零件名(中)
+            'Lingjianmingde': '零件名(德)', // 零件名(德)
+            'Caigougongchang': '采购工厂', // 采购工厂
+            'Lingjianxiangmuleixing': '零件项目类型', // 零件项目类型
+            'Chexingdalei': '车型大类', // 车型大类
+            'Chexingxiangmu': '车型项目', // 车型项目
+            'Heavyitem': 'Heavy Item', // Heavy Item
+            'Rfqlunci': 'RFQ轮次', // RFQ轮次
+            'Cbd': 'CBD', // CBD
+            'Gongyingshang': '供应商', // 供应商
+            'Pcafenxijieguo': 'PCA分析结果', // PCA分析结果
+            'Tiafenxijieguo': 'TIA分析结果', // TIA分析结果
+
+
+            'baogaoqingdan':'报告清单',// 报告清单
+        },
         /*
         <!------------------------------------------------------------------------>
         <!--                                                                   --->
@@ -645,6 +697,7 @@
         'LK_QINGXUANZEXUYAOHUIFUDEPINGFENBUMEN': '请选择需要恢复的评分部门', //请选择需要恢复的评分部门
         'LK_QINGXUANZEWANSHUJUZAIZUOBAOCUN': '请选择完数据再做保存', //请选择完数据再做保存
         'LK_WEIBUXITONGWENJIANWUFASHANCHU': '为外部系统文件，无法删除', // xxx 为外部系统文件, 无法删除
+        'LK_DINGDIANXINXI': '定点信息', // 定点信息
 
         //摸具预算
         // 点击进入【生成投资清单】页面
@@ -836,13 +889,17 @@
             "QuanBuXiaZai": "全部下载",
             "XiaZai": "下载",
             "ShangChuan": "上传",
+            "ShanChu": "删除",
             "ShangChuanRiQi": "上传日期",
             "ShangChuanWenJian": "上传文件",
             "ShangChuanRen": "上传人",
             "MingChen": "名称",
             "ZhuTi": "主题",
             "XianShiYinCang": "显示/隐藏",
-            "ZiDingYi": "自定义"
+            "ZiDingYi": "自定义",
+            "ShangChuanXianXiaRS": "上传线下RS文件",
+            "JieSuBianJi": "结束编辑",
+            "BeiZuXinXi": "备注信息"
         }
     })
 }))

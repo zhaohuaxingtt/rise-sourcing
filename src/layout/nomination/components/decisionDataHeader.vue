@@ -53,7 +53,7 @@ export default {
         return{
             decisionType:decisionType,
             defaultTab:'Title',
-            sortDialogVisibal: true
+            sortDialogVisibal: false
         }
     },
     mounted(){

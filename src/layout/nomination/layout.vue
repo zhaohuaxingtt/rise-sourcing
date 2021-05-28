@@ -46,6 +46,8 @@ export default {
     const {query={}} = to;
     const {isPreview = '0'} = query;
     this.isPreview = isPreview;
+    // 缓存/更新预览状态
+    this.$store.dispatch('setPreviewState', isPreview)
   }}
 }
 </script>

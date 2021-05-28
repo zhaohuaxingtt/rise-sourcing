@@ -9,7 +9,7 @@
        <div class="decision-data-partList-content">
           <h1 class="flex-between-center margin-bottom20 font18">
               <span>Part List</span>
-              <div>
+              <div v-if="isPreview!='1'">
                   <iButton>跳转⾄零件清单添加</iButton>
                   <iButton>保存</iButton>
               </div>
@@ -63,7 +63,6 @@ export default {
     },
     data(){
        return{
-          isPreview:true,
           loading: false,
           tableListData:[],
           tableTitle:[
@@ -80,6 +79,11 @@ export default {
              {name:'Volume (p.a.)',key:'Volume (p.a.)'},
           ]
        }
+    },
+    computed:{
+        isPreview(){
+            return this.$store.getters.isPreview;
+        }
     },
     methods:{
     }

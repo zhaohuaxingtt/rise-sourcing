@@ -1,8 +1,8 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-05-27 10:19:41
- * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-05-27 13:42:07
+ * @LastEditors: Please set LastEditors
  * @Description: 系统静态路由.
  * @FilePath: \front-web\src\router\index.js
  *
@@ -13,6 +13,7 @@
 // 定点管理
 import designateRoutes from './modules/designate'
 import createpartsRoutes from './modules/createparts'
+import costanalysismanageRoutes from './modules/costanalysismanage'
 
 Vue.use(VueRouter);
 export const staticRouter = [{
@@ -313,6 +314,7 @@ export default new VueRouter({
     routes: [
         ...staticRouter,
         ...designateRoutes,
-        ...createpartsRoutes
+        ...createpartsRoutes,
+        ...costanalysismanageRoutes
     ]
 });
