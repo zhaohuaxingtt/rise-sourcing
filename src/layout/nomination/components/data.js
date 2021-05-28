@@ -5,9 +5,9 @@
  */
 // 定点申请类型
 export const applyType = [
-    {id:'1',name:'上会1'},
-    {id:'2',name:'上会2'},
-    {id:'3',name:'上会3'},
+    {id:'1',name:'上会'},
+    {id:'2',name:'流转'},
+    {id:'3',name:'备案'},
 ]
 // 定点申请步骤栏
 export const applyStep = [

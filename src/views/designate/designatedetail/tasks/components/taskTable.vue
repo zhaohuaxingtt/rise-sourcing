@@ -18,7 +18,7 @@
           </iButton>
           <iButton
             v-if="!$store.getters.isPreview"
-            @click="editControl = false"
+            @click="handlCancel"
             :loading="startLoding"
           >
             {{ $t("LK_QUXIAO") }}
@@ -40,6 +40,7 @@
         :tableData="data"
         :tableTitle="tasksTitle"
         :tableLoading="tableLoading"
+        :class="{taskTable: true, edit: editControl}"
         @handleSelectionChange="handleSingleSelectionChange"
         @openPage="openPage"
         :activeItems="'partNum'"
@@ -85,6 +86,17 @@
           </div>
           <span v-else>{{scope.row.status}}</span>
         </template>
+        <!-- 编辑 -->
+        <template #edit="scope">
+          <div v-if="editControl">
+            <a class="link-underline" v-if="scope.row.visible">
+              <icon symbol name="iconyincang" class="icon trigger-visible" />
+            </a>
+            <a class="link-underline" v-else>
+              <icon symbol name="iconxianshi" class="icon trigger-visible" />
+            </a>
+          </div>
+        </template>
       </tablelist>
       <iPagination
         v-update
@@ -116,7 +128,8 @@ import {
   iPagination,
   iMessage,
   iSelect,
-  iDatePicker
+  iDatePicker,
+  icon
 } from "rise";
 
 export default {
@@ -127,6 +140,7 @@ export default {
     iSelect,
     iPagination,
     iDatePicker,
+    icon,
     tablelist
   },
   data() {
@@ -136,9 +150,15 @@ export default {
       taskStatus,
       data: MoketasksData,
       selectedData: [],
-      editControl: true,
+      editControl: false,
       partDialogVisibal: false,
       batchEditVisibal: false,
+      editColumn: {
+        props: 'edit',
+        name: 'HIDE/UNHIDE',
+        key: 'HIDE/UNHIDE',
+        tooltip: false
+      },
       page: {}
     }
   },
@@ -153,6 +173,15 @@ export default {
     },
     handlEdit() {
       this.editControl = true
+      if (!this.tasksTitle.find(o => o.props === 'edit')) {
+        this.tasksTitle.push(this.editColumn)
+      }
+    },
+    handlCancel() {
+      this.editControl = false
+      if (this.tasksTitle.find(o => o.props === 'edit')) {
+        this.tasksTitle.pop()
+      }
     },
     // 单一供应商
     handleSingleSelectionChange(data) {
@@ -162,4 +191,9 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+.link-underline {
+  .trigger-visible {
+    font-size: 18px;
+  }
+}
 </style>
