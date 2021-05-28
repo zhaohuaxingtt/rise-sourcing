@@ -70,7 +70,7 @@ export function detail(parmars) {
     return VUE_APP_BUDGET({
         url: '/part/detail',
         method: 'POST',
-        params: parmars
+        data: parmars
     })
 }
 //查询申请明细
@@ -78,7 +78,7 @@ export function applyDetail(parmars) {
     return VUE_APP_BUDGET({
         url: '/apply/detail',
         method: 'POST',
-        params: parmars
+        data: parmars
     })
 }
 export function getCardDetailPulldown(parmars) {

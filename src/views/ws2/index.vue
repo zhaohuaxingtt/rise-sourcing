@@ -7,36 +7,27 @@
     <!------------------------------------------------------------------------>
     <!--                  导航                                  --->
     <!------------------------------------------------------------------------>
-    <iNavWS2
-        :tabtitle="tabtitle"
-        @click="log"
-        :nextStepLoading="nextStepLoading"
-        @nextStep="nextStep"
-        @toDataBase="toDataBase"
-    ></iNavWS2>
-    <router-view></router-view>
+    <div class="navBar">
+      <iNavMvp
+          ref="iNavMvpRef"
+          :lev='1'
+          :routerPage="true"
+          :list="tabtitle"
+          @change="changeNav"
+      ></iNavMvp>
+      <iNavWS2
+          @click="log"
+          :nextStepLoading="nextStepLoading"
+          :dataBaseInit="dataBaseInit"
+          @nextStep="nextStep"
+          @changeDataBase="$refs.iNavMvpRef.activeIndex = 999"
+      ></iNavWS2>
+    </div>
 
+    <router-view></router-view>
     <!------------------------------------------------------------------------>
     <!--                  内容                                  --->
     <!------------------------------------------------------------------------>
-    <!--数据库-->
-<!--    <dataBase v-if="index === 999"></dataBase>-->
-    <!--预算管理-->
-<!--    <div v-if="index === 1">-->
-<!--      <carTypeOverview-->
-<!--          @toGenerateInvestmentList="val => budgetManagement(val, 'generateInvestmentListParams')"-->
-<!--          v-if="indexChilden === 0"-->
-<!--      ></carTypeOverview>-->
-<!--      <generateInvestmentList-->
-<!--          @toinvestmentList="val => budgetManagement(val, 'investmentListParams')"-->
-<!--          :params="generateInvestmentListParams"-->
-<!--          v-if="indexChilden === 1"-->
-<!--      ></generateInvestmentList>-->
-<!--      <investmentList-->
-<!--          :params="investmentListParams"-->
-<!--          v-if="indexChilden === 2"-->
-<!--      ></investmentList>-->
-<!--    </div>-->
     <iDialog title="您还没有选择参考车型项目，是否继续?" :visible.sync="nextStepvalue" width="381px" top="0s" @close='clearDiolog'
              v-loading="iDialogLoading" class="iDialogNextStep">
       <span slot="footer" class="dialog-footer">
@@ -47,13 +38,9 @@
   </iPage>
 </template>
 <script>
-import {iPage, iMessage, iDialog, iButton} from "rise";
+import {iPage, iMessage, iDialog, iButton, iNavMvp} from "rise";
 import {iNavWS2} from "@/components";
 import {tabtitle} from "./budgetManagement/components/data";
-import carTypeOverview from "./budgetManagement/carTypeOverview";
-import generateInvestmentList from "./budgetManagement/generateInvestmentList";
-import investmentList from "./budgetManagement/investmentList";
-import dataBase from "./dataBase";
 import {
   getRelationCarTypeById,
   saveInvestBuildBottom,
@@ -63,12 +50,9 @@ export default {
   components: {
     iPage,
     iNavWS2,
-    carTypeOverview,
-    generateInvestmentList,
-    investmentList,
-    dataBase,
     iDialog,
     iButton,
+    iNavMvp
   },
   data() {
     return {
@@ -79,14 +63,18 @@ export default {
       nextStepvalue: false,
       iDialogLoading: false,
       nextStepLoading: false,
+      dataBaseInit: false,
     };
   },
+  mounted() {
+    if(this.$route.path == '/tooling/dataBase'){
+      this.$refs.iNavMvpRef.activeIndex = 999
+    }
+  },
   methods: {
-    // changeNav(val) {
-    //   this.index = val
-    //   this.indexChilden = 0
-    //   this.isGenerateInvestmentList = false
-    // },
+    changeNav(val) {
+      this.dataBaseInit = !this.dataBaseInit
+      },
     // budgetManagement(val, params) {
     //   this.isGenerateInvestmentList = val.step == 1 ? true : false
     //   this[params] = val
@@ -177,17 +165,14 @@ export default {
       this.$store.commit('SET_nextStep', false);
       this.nextStepvalue = false
     },
-    toDataBase(){
-      this.tabtitle = this.tabtitle.map(item => {
-        item.active = false
-        return item
-      })
-      this.$router.push({path: '/tooling/dataBase'})
-    }
   },
 };
 </script>
 <style lang="scss" scoped>
+.navBar{
+  display: flex;
+  justify-content: space-between;
+}
 .iDialogNextStep {
   ::v-deep .el-dialog {
     top: 50%;
@@ -203,5 +188,10 @@ export default {
 
 .partsprocureHome {
   position: relative;
+  ::v-deep .nav.flex-align-center{
+    > div:first-of-type{
+      margin-left: 0;
+    }
+  }
 }
 </style>

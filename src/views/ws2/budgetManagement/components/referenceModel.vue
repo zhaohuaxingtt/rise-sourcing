@@ -163,6 +163,7 @@ export default {
     title: {type: String, default: 'LK_CANKAOCHEXINXIANGMU'},
     carTypeProId: {type: String, default: ''},
     sourceStatus: {type: String, default: ''},
+    listVerisonId: {type: String, default: ''},
     carType: {type: Array},
     value: {type: Boolean},
   },
@@ -209,6 +210,7 @@ export default {
         sopBegin: this.sopBegin ? new Date(this.sopBegin).getFullYear() : '',
         sopEnd: this.sopEnd ? new Date(this.sopEnd).getFullYear() : '',
         sourceStatus: this.sourceStatus,
+        listVerisonId: this.listVerisonId,
       }
       saveRefcartypepro(params).then((res) => {
         const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn

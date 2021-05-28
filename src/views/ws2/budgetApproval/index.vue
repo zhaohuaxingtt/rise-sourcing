@@ -93,7 +93,7 @@
         </div>
       </div>
       <iTableList
-          :height="tableHeight - 560"
+          :height="tableHeight - 570"
           :tableData="tableListData"
           :tableTitle="tableTitle"
           :tableLoading="tableLoading"
@@ -102,8 +102,8 @@
         <template #rfqId="scope">
           <div class="linkStyle"><span @click="clickRfqId(scope.row.rfqId)">{{ scope.row.rfqId }}</span></div>
         </template>
-        <template #approvalComments="scope">
-          <div class="linkStyle"><span @click="clickRfqId(scope.row.rfqId)">{{ scope.row.approvalComments }}</span>
+        <template #categoryBudget="scope">
+          <div class="linkStyle"><span @click="clickCategoryBudget(scope.row)">{{ scope.row.categoryBudget }}</span>
           </div>
         </template>
         <template #budgetLeftoverAmount="scope">
@@ -112,7 +112,7 @@
         </template>
         <template #budgetApplyAmount="scope">
           <div class="linkStyle" :class="(Number(scope.row.budgetApplyAmount) > Number(scope.row.budgetLeftoverAmount)) && 'red'"><span
-              @click="clickBudgetApplyAmountShow(scope.row.budgetApplyAmount)">{{ scope.row.budgetApplyAmount }}</span>
+              @click="clickBudgetApplyAmountShow(scope.row.id)">{{ scope.row.budgetApplyAmount }}</span>
           </div>
         </template>
         <template #approvalStatus="scope">
@@ -160,6 +160,12 @@
         :multipleSelection="multipleSelectionIds"
         @refresh="getTableListFn"
     ></alertDialog>
+    <referenceCarProject
+        v-model="referenceCarProjectShow"
+        :referenceCarProjectParams="referenceCarProjectParams"
+        :isApply="false"
+        @refresh="getTableListFn"
+    ></referenceCarProject>
   </div>
 </template>
 
@@ -182,6 +188,7 @@ import budgetApplyAmount from './components/budgetApplyAmount'
 import reject from './components/reject'
 import transfer from './components/transfer'
 import alertDialog from './components/alert'
+import referenceCarProject from '../budgetManagement/components/referenceCarProject'
 import {pageMixins} from "@/utils/pageMixins";
 import {tableHeight} from "@/utils/tableHeight";
 import {
@@ -204,6 +211,7 @@ export default {
     reject,
     transfer,
     alertDialog,
+    referenceCarProject
   },
   data() {
     return {
@@ -218,6 +226,7 @@ export default {
       rejectShow: false,
       transferShow: false,
       alertShow: false,
+      referenceCarProjectShow: false,
       carTypeList: [],
       approvalStatusList: [],
       applyUserIdList: [],
@@ -225,6 +234,7 @@ export default {
       multipleSelection: [],
       multipleSelectionIds: [],
       redMultipleSelection: [],
+      referenceCarProjectParams: {},
       tableTitle: budgetApprovalData,
     }
   },
@@ -235,6 +245,14 @@ export default {
     clickRfqId(val) {
       this.RFQShow = true
       this.RFQID = val
+    },
+    clickCategoryBudget(row) {
+      this.referenceCarProjectShow = true
+      this.referenceCarProjectParams = {
+        carTypeProId: '',
+        categoryId: row.categoryId,
+        sourceProjectId: row.tmCartypeProId
+      }
     },
     clickBudgetApplyAmountShow(val) {
       this.budgetApplyAmountShow = true
