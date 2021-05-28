@@ -1,9 +1,9 @@
 <!--
- * @Author: your name
+ * @Author: yuszhou
  * @Date: 2021-05-25 13:01:23
- * @LastEditTime: 2021-05-25 16:26:33
+ * @LastEditTime: 2021-05-28 11:49:51
  * @LastEditors: Please set LastEditors
- * @Description: In User Settings Edit
+ * @Description: 报价助手界面
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\index.vue
 -->
 <template>
@@ -13,8 +13,10 @@
          <iCard title="报价与评分跟踪" collapse>
            <quotationScoringTracking></quotationScoringTracking>
          </iCard>
-         <iCard title="报价分析汇总-零件" collapse class="margin-top20"></iCard>
-         <iCard title="报价分析汇总-模具" collapse class="margin-top20"></iCard>
+         <iCard title="报价分析汇总-零件" collapse class="margin-top20">
+           
+         </iCard>
+         <quotationScoringMj class="margin-top20" titleKey='LK_BJFXHZMJ'></quotationScoringMj>
          <iCard title="报价趋势" collapse class="margin-top20"></iCard>
          <iCard title="业务分配模拟" collapse class="margin-top20"></iCard>
       </template>
@@ -34,8 +36,9 @@
 <script>
 import {iTabsList,iCard} from 'rise'
 import quotationScoringTracking from './components/quotationScoringTracking'
+import quotationScoringMj from './components/quotationScoringMj'
 export default{
-  components:{iTabsList,iCard,quotationScoringTracking}
+  components:{iTabsList,iCard,quotationScoringTracking,quotationScoringMj}
 }
 </script>
 <style lang='scss' scoped>

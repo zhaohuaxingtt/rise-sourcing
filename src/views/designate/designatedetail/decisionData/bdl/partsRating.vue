@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-25 20:57:31
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-05-26 20:32:30
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-05-27 10:49:18
  * @Description: 零件评分弹窗
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\bdl\partsRating.vue
 -->
@@ -30,13 +30,13 @@
 </template>
 
 <script>
-import { iDialog, iButton, iSelect, iPagination } from 'rise'
+import { iDialog, iPagination } from 'rise'
 import tableList from '../../components/tableList'
 import { pageMixins } from "@/utils/pageMixins"
 import { partsRatingTableTitle } from './data'
 export default {
   mixins: [pageMixins],
-  components: { iDialog, iButton, iSelect, iPagination, tableList },
+  components: { iDialog, iPagination, tableList },
   props: {
     dialogVisible: { type: Boolean, default: false }
   },
