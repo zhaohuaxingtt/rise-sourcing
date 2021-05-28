@@ -9,23 +9,33 @@
  */
 
 const state = {
+  // 定点管理，决策资料 是否处于预览状态
   isPreview: false,
+  // 定点管理，定点类型
+  nominationType: ''
 };
 
 const mutations = {
   SET_PREVIEW_STATE(state, STATE) {
       state.isPreview = STATE
+  },
+  SET_NOMINATION_TYPE(state, type) {
+    state.nominationType = type
   }
 };
 
 const actions = {
   setPreviewState({commit}, isPreview) {
     commit('SET_PREVIEW_STATE', isPreview === '1')
+  },
+  setNominationType({commit}, type) {
+    commit('SET_PREVIEW_STATE', type)
   }
 }
 
 const getters = {
-  isPreview: (state) => state.isPreview
+  isPreview: (state) => state.isPreview,
+  nominationType: (state) => state.nominationType,
 };
 
 export default {

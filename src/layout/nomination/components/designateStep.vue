@@ -10,7 +10,7 @@
             <div class="flex flex-between-center-center">
                 <span class="title-text margin-left10">定点管理: 51017456</span>
                 <span class="select-text margin-left10">定点申请类型：</span>
-                <iSelect v-model="designateType">
+                <iSelect v-model="designateType" @change="onDesignateTypeChange">
                     <el-option
                     :value="item.id"
                     :label="item.name"
@@ -88,6 +88,10 @@ export default {
                 isPreview:'1'
               }
             })
+        },
+        onDesignateTypeChange(data) {
+            // 缓存/更新定点申请类型
+            this.$store.dispatch('setNominationType', data)
         }
     }
 }
