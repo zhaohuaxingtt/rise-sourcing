@@ -57,7 +57,9 @@
             <!-- 表格 -->
             <div class="clearfix"></div>
             <div class="margin-top20">
-              <monitorTableList @updateCharts="updateCharts" :batchEdit="multiEditControl" />
+              <monitorTableList
+                @updateCharts="updateCharts"
+                :batchEdit="multiEditControl" />
             </div>
           </div>
         </div>

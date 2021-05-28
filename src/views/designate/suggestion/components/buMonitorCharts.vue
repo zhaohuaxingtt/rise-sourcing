@@ -16,6 +16,10 @@
           v-model="mapControl"
           :placeholder="$t('nominationSuggestion.FanAnXuanZhe')">
           <el-option
+            value=""
+            :label="$t('all') | capitalizeFilter"
+          ></el-option>
+          <el-option
             :value="items.key"
             :label="items.value"
             v-for="(items, index) in mapOptions"
