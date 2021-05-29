@@ -14,7 +14,7 @@
           <span class="title">CBD状态</span>
 
           <div class="floatright">
-              <iButton>下载</iButton>
+              <iButton>{{$t('LK_XIAZAI')}}</iButton>
           </div>
       </div>
       <!-- 表格区域 -->
