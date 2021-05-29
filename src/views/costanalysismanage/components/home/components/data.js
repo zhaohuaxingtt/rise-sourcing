@@ -1,17 +1,17 @@
 /*
  * @Author: your name
  * @Date: 2021-05-27 13:45:35
- * @LastEditTime: 2021-05-28 17:04:05
+ * @LastEditTime: 2021-05-29 10:29:17
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\costanalysismanage\components\home\components\data.js
  */
 // 技术资料下载弹窗---询价附件表单头
 export const FilesTitle = [
-    {props:'a',name:'文件名称', key: "", tooltip: true},
-    {props:'b',name:'大小(MB)', key: "", tooltip: true},
-    {props:'c',name:'上传日期', key: "", tooltip: true},
-    {props:'d',name:'上传人', key: "", tooltip: true},
+    {props:'a',name:'文件名称', key: "LK_WENJIANMINGCHENG", tooltip: true},
+    {props:'b',name:'大小(MB)', key: "LK_DAXIAOMB", tooltip: true},
+    {props:'c',name:'上传日期', key: "LK_SHANGCHUANRIQI", tooltip: true},
+    {props:'d',name:'上传人', key: "LK_SHANGCHUANREN", tooltip: true},
   ]
 
 
