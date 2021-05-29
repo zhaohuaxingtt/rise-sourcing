@@ -5,17 +5,17 @@
  */
 // 定点申请类型
 export const applyType = [
-    {id:'1',name:'上会1'},
-    {id:'2',name:'上会2'},
-    {id:'3',name:'上会3'},
+    {id:'1',name:'上会'},
+    {id:'2',name:'流转'},
+    {id:'3',name:'备案'},
 ]
 // 定点申请步骤栏
 export const applyStep = [
-    {id:'1',name:'RFQ & 零件清单'},
-    {id:'2',name:'供应商 & 单⼀供应商'},
-    {id:'3',name:'定点建议'},
-    {id:'4',name:'审批⼈ & 审批记录'},
-    {id:'5',name:'决策资料'},
+    {id:'1',name:'RFQ & 零件清单',key:'nominationLanguage.RFQANDLINGJIANQINGDAN'},
+    {id:'2',name:'供应商 & 单⼀供应商',key:'nominationLanguage.GONGYINGSHANGANDDANYIGONGYINGSHANG'},
+    {id:'3',name:'定点建议',key:'nominationLanguage.DINGDIANJIANYI'},
+    {id:'4',name:'审批⼈ & 审批记录',key:'nominationLanguage.SHENPIRENANDSHENPIJILU'},
+    {id:'5',name:'决策资料',key:'nominationLanguage.JUECEZILIAO'},
 ]
 // 决策资料--tab栏
 export const decisionType = [

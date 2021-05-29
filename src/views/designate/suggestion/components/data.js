@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-05-24 13:53:50
- * @LastEditTime: 2021-05-24 14:43:23
+ * @LastEditTime: 2021-05-28 17:55:13
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\designate\suggestion\components\data.js
@@ -177,8 +177,8 @@ export const mokeMouldMonitorData = [
     fsnr: 'FS12987-0035',
     factory: '上海工厂',
     gid: 'aaa',
-    supplier: ['SH Huashi', 'NBHX Trim'],
-    TTo: ['11111', '10000'],
+    supplier: ['SH Huashi', 'NBHX Trim', 'Bj Vehic'],
+    TTo: ['11111', '10000', '42212'],
     supplierChosen: ['NBHX Trim', 'SH Huashi'],
     percent: [20, 80]
   },
@@ -188,8 +188,8 @@ export const mokeMouldMonitorData = [
     fsnr: 'FS12987-0035',
     factory: '上海工厂',
     gid: 'aaa',
-    supplier: ['SH Huashi', 'NBHX Trim'],
-    TTo: ['22222', '22223'],
+    supplier: ['SH Huashi', 'NBHX Trim', 'Bj Vehic'],
+    TTo: ['22222', '22223', '12212'],
     supplierChosen: ['NBHX Trim'],
     percent: [100]
   },
@@ -199,8 +199,8 @@ export const mokeMouldMonitorData = [
     fsnr: 'FS12987-0032',
     factory: '上海工厂',
     gid: 'aaa',
-    supplier: ['SH Huashi', 'NBHX Trim'],
-    TTo: ['33333', '33334'],
+    supplier: ['SH Huashi', 'NBHX Trim', 'Bj Vehic'],
+    TTo: ['33333', '33334', '32212'],
     supplierChosen: ['NBHX Trim'],
     percent: [100]
   },
@@ -210,8 +210,8 @@ export const mokeMouldMonitorData = [
     fsnr: 'FS12987-0032',
     factory: '上海工厂',
     gid: 'bb',
-    supplier: ['SH Huashi', 'NBHX Trim'],
-    TTo: ['44444', '44445'],
+    supplier: ['SH Huashi', 'NBHX Trim', 'Bj Vehic'],
+    TTo: ['44444', '44445', '42211'],
     supplierChosen: ['SH Huashi'],
     percent: [100]
   },
@@ -221,8 +221,8 @@ export const mokeMouldMonitorData = [
     fsnr: 'FS12987-0032',
     factory: '上海工厂',
     gid: 'bb',
-    supplier: ['SH Huashi', 'NBHX Trim'],
-    TTo: ['55555', '55556'],
+    supplier: ['SH Huashi', 'NBHX Trim', 'Bj Vehic'],
+    TTo: ['55555', '55556', '12212'],
     supplierChosen: ['SH Huashi'],
     percent: [100]
   },
@@ -231,8 +231,8 @@ export const mokeMouldMonitorData = [
     num: '3CG12898828AB HAP',
     fsnr: 'FS12987-0032',
     factory: '上海工厂',
-    supplier: ['SH Huashi', 'NBHX Trim'],
-    TTo: ['66666', '66667'],
+    supplier: ['SH Huashi', 'NBHX Trim', 'Bj Vehic'],
+    TTo: ['66666', '66667', '42212'],
     supplierChosen: ['SH Huashi'],
     percent: [100]
   },
@@ -241,21 +241,21 @@ export const mokeMouldMonitorData = [
     num: '3CG12898828QB HAP',
     fsnr: 'FS12987-0031',
     factory: '上海工厂',
-    supplier: ['SH Huashi', 'NBHX Trim'],
-    TTo: ['12117', '77778'],
+    supplier: ['SH Huashi', 'NBHX Trim', 'Bj Vehic'],
+    TTo: ['12117', '77778', '32212'],
     supplierChosen: ['SH Huashi'],
     percent: [100]
   },
 ]
 
 export const mouldBudgetManagementDialogTableTitle = [
-  { props: "a", name: "零件号", tooltip: true, key: "nominationSuggestion.Lingjianhao" },
-  { props: "b", name: "FSNR/GSNR", tooltip: true, key: "nominationSuggestion.Fsnrgsnr" },
-  { props: "c", name: "RFQ编号", tooltip: true, key: "nominationSuggestion.Rfqbianhao" },
-  { props: "d", name: "申请日期", tooltip: true, key: "nominationSuggestion.Shenqingriqi" },
-  { props: "e", name: "车型项目", tooltip: true, key: "nominationSuggestion.Chexingxiangmu" },
-  { props: "f", name: "投资预算(RMB)", tooltip: true, key: "nominationSuggestion.Touziyusuanrmb" },
-  { props: "g", name: "CSF(P)负责人", tooltip: true, key: "nominationSuggestion.Csfpfuzeren" },
-  { props: "h", name: "审批状态", tooltip: true, key: "nominationSuggestion.Shenpizhuangtai" },
-  { props: "h", name: "审批意见", tooltip: true, key: "nominationSuggestion.Shenpiyijian" },
+  { props: "partNum", name: "零件号", tooltip: true, key: "nominationSuggestion.Lingjianhao" },
+  { props: "fsnrGsnrNum", name: "FSNR/GSNR", tooltip: true, key: "nominationSuggestion.Fsnrgsnr" },
+  { props: "rfqId", name: "RFQ编号", tooltip: true, key: "nominationSuggestion.Rfqbianhao" },
+  { props: "applyTime", name: "申请日期", tooltip: true, key: "nominationSuggestion.Shenqingriqi" },
+  { props: "cartypeProZh", name: "车型项目", tooltip: true, key: "nominationSuggestion.Chexingxiangmu" },
+  { props: "budget", name: "投资预算(RMB)", tooltip: true, key: "nominationSuggestion.Touziyusuanrmb" },
+  { props: "csfPDiretor", name: "CSF(P)负责人", tooltip: true, key: "nominationSuggestion.Csfpfuzeren" },
+  { props: "approvalStatus", name: "审批状态", tooltip: true, key: "nominationSuggestion.Shenpizhuangtai" },
+  { props: "approvalComments", name: "审批意见", tooltip: true, key: "nominationSuggestion.Shenpiyijian" },
 ]

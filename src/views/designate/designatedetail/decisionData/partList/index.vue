@@ -10,8 +10,8 @@
           <h1 class="flex-between-center margin-bottom20 font18">
               <span>Part List</span>
               <div v-if="isPreview!='1'">
-                  <iButton>跳转⾄零件清单添加</iButton>
-                  <iButton>保存</iButton>
+                  <iButton>{{$t('LK_TIAOZHUANZHILINGJIANQINGDANTIANJIA')}}</iButton>
+                  <iButton>{{$t('LK_BAOCUN')}}</iButton>
               </div>
           </h1>
           <!-- table区域 -->

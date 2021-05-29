@@ -8,11 +8,11 @@
         <!-- 按钮区域 -->
         <div class="timeLine-btn-list" v-if="isPreview=='0'">
             <span v-if="isEdit">
-                <iButton @click="save">保存</iButton>
-                <iButton @click="edit">取消</iButton>
-                <iButton>展示</iButton>
+                <iButton @click="save">{{$t('LK_BAOCUN')}}</iButton>
+                <iButton @click="edit">{{$t('LK_QUXIAO')}}</iButton>
+                <iButton>{{$t('LK_ZHANSHI')}}</iButton>
             </span>
-            <iButton v-else @click="edit">编辑</iButton>
+            <iButton v-else @click="edit">{{$t('LK_BIANJI')}}</iButton>
         </div>
         <!-- 编辑状态 -->
         <div v-if="isEdit">

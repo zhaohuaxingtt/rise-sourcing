@@ -1,26 +1,27 @@
 <!--
  * @Author: your name
- * @Date: 2021-05-27 12:33:07
- * @LastEditTime: 2021-05-28 16:33:49
+ * @Date: 2021-05-28 16:01:25
+ * @LastEditTime: 2021-05-28 16:38:05
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
- * @FilePath: \front-web\src\views\costanalysismanage\components\datamaintenance\index.vue
+ * @FilePath: \front-web\src\views\costanalysismanage\components\costanalysis\index.vue
 -->
 <template>
-  <div class="datamaintenance">
-    <div class="control">
-      <logButton class="margin-left20" />
-      <span class="margin-left20">
-        <icon symbol name="icondatabaseweixuanzhong" class="font24"></icon>
-      </span>
-    </div>
-    <iCard class="card margin-top65" :title="$t('costanalysismanage.Rengongchengbenshujuweihu')">
-      <template v-slot:header-control>
-        <iButton>{{ $t("costanalysismanage.Daochu") }}</iButton>
+  <iPage class="analysis">
+    <div class="header clearFloat">
+      <div class="title">{{ $t("costanalysismanage.Chengbenfenxi") }}</div>
+      <div class="control">
+        <iButton @click="back">{{ $t("costanalysismanage.Fanhui") }}</iButton>
         <iButton>{{ $t("costanalysismanage.Shangchuan") }}</iButton>
         <iButton>{{ $t("costanalysismanage.Xiazai") }}</iButton>
         <iButton>{{ $t("costanalysismanage.Shanchu") }}</iButton>
-      </template>
+        <logButton class="margin-left20" />
+        <span class="margin-left20">
+          <icon symbol name="icondatabaseweixuanzhong" class="font24"></icon>
+        </span>
+      </div>
+    </div>
+    <iCard class="margin-top30 card">
       <div class="body">
         <tableList
           class="table"
@@ -50,22 +51,24 @@
           :total="page.totalCount" />
       </div>
     </iCard>
-  </div>
+  </iPage>
 </template>
 
 <script>
-import { icon, iCard, iButton, iPagination } from "rise"
+import { iPage, iButton, icon, iCard, iPagination } from "rise"
 import logButton from "@/views/partsign/editordetail/components/logButton"
 import tableList from "@/views/partsign/editordetail/components/tableList"
 import { tableTitle } from "./components/data"
 import filters from "@/utils/filters"
 import { pageMixins } from "@/utils/pageMixins"
 
+
 export default {
-  components: { 
+  components: {
+    iPage,
+    iButton,
     icon,
     iCard,
-    iButton,
     iPagination,
     logButton,
     tableList
@@ -79,25 +82,42 @@ export default {
     }
   },
   methods: {
-    getList() {}
+    getList() {},
+    // 返回
+    back() {
+      this.$router.go(-1)
+    }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.datamaintenance {
-  .control {
-    position: absolute;
-    top: 30px;
-    right: 40px;
-    display: flex;
-    align-items: center;
-    height: 30px;
+.analysis {
+  .header {
+    position: relative;
+
+    .title {
+      font-size: 20px;
+      font-weight: bold;
+      color: #000;
+      height: 28px;
+      line-height: 28px;
+    }
+
+    .control {
+      position: absolute;
+      top: 50%;
+      right: 0;
+      transform: translate(0, -50%);
+      display: flex;
+      align-items: center;
+      height: 30px;
+    }
   }
 
   .card {
     .body {
-      height: calc(100vh - 310px);
+      height: calc(100vh - 240px);
       min-height: 480px;
     }
   }

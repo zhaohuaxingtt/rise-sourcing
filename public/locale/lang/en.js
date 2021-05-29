@@ -114,25 +114,50 @@
             'Chengbenfenxiguanli': '', // 成本分析管理
             'Shujuweihu': '', // 数据维护
 
+            // 成本分析管理
+            'Rfqbianhao': '', // RFQ编号
+            'Qingshururfqbianhao': '', // 请输入RFQ编号
+            'Rfqzhuangtai': '', // RFQ状态
+            'Qingxuanzerfqzhuangtai': '', // 请选择RFQ状态
+            'Lingjianhao': '', // 零件号
+            'Qingshurulingjianhao': '', // 请输入零件号
+            'Chexingxiangmu': '', // 车型项目
+            'Qingxuanzechexingxiangmu': '', // 请选择车型项目
+            'Pca': 'PCA', // PCA
+            'Qingshurupca': '', // 请输入PCA
+            'Tia': 'TIA', // TIA
+            'Qingshurutia': '', // 请输入TIA
+            'Heavyitem': 'Heavy Item', // Heavy Item
+            'Qingxuanzeheavyitem': '', // 请选择Heavy Item
+            'Commodity': 'COMMODITY', // COMMODITY
+            'Qingxuanzecommodity': '', // 请选择COMMODITY
+            'Linie': 'LINIE', // LINIE
+            'Qingxuanzelinie': '', // 请选择LINIE
+            'Rfqliebiao': '', // RFQ列表
+            'Rfqmingcheng': '', // RFQ名称
+            'Rfqleixing': '', // RFQ类型
+            'Chuangjianriqi': '', // 创建日期
+            'Dangqianlunci': '', // 当前轮次
+            'Baojiajiezhiriqi': '', // 报价截止日期
+            'Xunjiacaigouyuan': '', // 询价采购员
+            'Jieshuziliao': '', // 技术资料
+            'Cbd': '', // CBD
+            'Fenxibaogao': '', // 分析报告
+            'FASONGSHIJIAN':'发送时间', // 发送时间
+            'Xiazai': '', // 下载
+
             // 数据维护
             'Rengongchengbenshujuweihu': '', // 人工成本数据维护
             'Daochu': '', // 导出
-            'Shangechuan': '', // 上传
-            'Xiazai': '', // 下载
+            'Shangchuan': '', // 上传
             'Shanchu': '', // 删除
+            'Shangchuanwenjianmingcheng': '', // 上传文件名称
             'Daxiao': '', // 大小
             'Shijian': '', // 时间
             'Shangchuanren': '', // 上传人
             'Beizhu': '', // 备注
 
             // rfq详情
-            'Rfqbianhao': '', // RFQ编号
-            'Rfqzhuangtai': '', // RFQ状态
-            'Chuangjianriqi': '', // 创建日期
-            'Rfqmingcheng': '', // RFQ名称
-            'Xunjiacaigouyuan': '', // 询价采购员
-            'Linie': 'LINIE', // LINIE
-            'Dangqianlunci': '', // 当前轮次
             'Benlunzhuangtai': '', // 本轮状态
             'Benlunbaojiajiezhiri': '', // 本轮报价截止日
             'Luncileixing': '', // 轮次类型
@@ -143,22 +168,24 @@
             'Xiazaijishuziliao': '', // 下载技术资料
             'Xiazaicbd': '', // 下载CBD
             'Fsnfgsnfspnr': 'FSNF/GSNF/SPNR', // FSNF/GSNF/SPNR
-            'Lingjianhao': '', // 零件号
             'Lingjianmingzhong': '', // 零件名(中)
             'Lingjianmingde': '', // 零件名(德)
             'Caigougongchang': '', // 采购工厂
             'Lingjianxiangmuleixing': '', // 零件项目类型
             'Chexingdalei': '', // 车型大类
-            'Chexingxiangmu': '', // 车型项目
-            'Heavyitem': 'Heavy Item', // Heavy Item
             'Rfqlunci': '', // RFQ轮次
-            'Cbd': 'CBD', // CBD
             'Gongyingshang': '供应商', // 供应商
             'Pcafenxijieguo': '', // PCA分析结果
             'Tiafenxijieguo': '', // TIA分析结果
 
 
             'baogaoqingdan':'报告清单',// 报告清单
+
+            // 成本分析
+            'Chengbenfenxi': '', // 成本分析
+            'Fanhui': '', // 返回
+            'Wenjianmingcheng': '', // 文件名称
+            'Shangchuanriqi': '', // 上传日期
         },
         /*
         <!------------------------------------------------------------------------>
@@ -772,7 +799,73 @@
         'LK_PEIJIANXUQIUQIANSHOU': '配件需求签收', // 配件需求签收
         'LK_PEIJIANZONGHEGUANLI': '配件综合管理', // 配件综合管理
         'LK_FUJIANZONGHEGUANLI': '附件综合管理', // 附件综合管理
+        
+        'LK_FUJIANLINGJIANHAO':'附件零件号', // 附件零件号
+        'LK_SPHAO':'SP号', // SP号
+        'LK_DAORUXIANGCI':'导⼊项次', // 导⼊项次
+        'LK_CSFKESHI':'CSF科室', // CSF科室
+        'LK_KESHI':'科室', // 科室
+        'LK_FUJIANLINGJIANMINGCHENG':'附件零件名称', // 附件零件名称
+        'LK_SHIYONGCHEXING':'使⽤⻋型', // 使⽤⻋型
+        'LK_FUJIAN':'附件', // 附件
+        'LK_FUJIANSHANGSHISHIJIAN':'附件上市时间', // 附件上市时间
+        'LK_FUJIANQINGDAN':'附件清单', // 附件清单
+        'LK_SHANGCHUANWENJIAN':'上传文件', // 上传文件
+        'LK_DAORU':'导入', // 导入
+        'LK_PEIJIANMUBANXIAZAI':'配件模板下载', // 配件模板下载
+        'LK_DAORUYUAN':'导⼊员', // 导⼊员
+        'LK_YULAN':'预览', // 预览
+        'LK_TIAOZHUANZHILINGJIANQINGDANTIANJIA':'跳转⾄零件清单添加', // 跳转⾄零件清单添加
+        'LK_ZHANSHI':'展示', // 展示
+        'LK_KAISHISHIJIAN':'开始日期', // 开始日期
+        'LK_JIESHUSHIJIAN':'结束日期', // 结束日期
+        'LK_WENJIANQINGXUANZHUANZHIZHENGCHANG':'上传附件:文件请旋转至正常方向后上传', // 上传附件:文件请旋转至正常方向后上传
 
+
+        // 定点管理
+        'nominationLanguage': {
+            'DingDianGuanLi': '定点管理',
+            'LingJianHao': '零件号',
+            'ShenQingDanHao': '申请单号',
+            'RFQBianHao': 'RFQ编号',
+            'LiuChengLeiXing': '流程类型',
+            'ShenQingZhuangTai': '申请状态',
+            'LingJianMing': '零件名',
+            'LingJianMingCN': '零件名(中)',
+            'LingJianMingDE': '零件名(德)',
+            'XunJiaCaiGouYuan': '询价采购员',
+            'CheXingXiangMu': '车型项目',
+            'BaoJiaYiZhiXingJiaoYan': '报价一致性校验',
+            'ShiFouDnaYiGongYingShang': '是否单一供应商',
+            'XianShiZiJi': '显示自己',
+            'Yes': '是',
+            'No': '否',
+            'DingDianShenQingZongHeGuanLi': '定点申请综合管理',
+            'XinJianLingJIanDingDianShengQIng': '新建零件定点申请',
+            'CheHui': '撤回',
+            'ShanChu': '删除',
+            'TiJiaoYiZhiXingJiaoYan': '提交一致性校验',
+            'ShenQingDanMing': '申请单名',
+            'LeiXing': '类型',
+            'XingMuLeiXing': '项目类型',
+            'HuiYi': '会议',
+            'RSZhuangTai': 'RS单状态',
+            'RSDongJieRiQi':'RS冻结日期',
+            'BaoJiaYiZhiXingZhuangTai':'报价一致性校验状态',
+            'SELDanJuQUeRenZH': 'SEL单据确认状态',
+            'DingDianRiQi': '定点日期',
+            'DINGDIANSHENQINGLEIXING':'定点申请类型', // 定点申请类型
+            'RFQANDLINGJIANQINGDAN':'RFQ & 零件清单', // RFQ & 零件清单
+            'GONGYINGSHANGANDDANYIGONGYINGSHANG':'供应商 & 单⼀供应商', // 供应商 & 单⼀供应商
+            'DINGDIANJIANYI':'定点建议', // 定点建议
+            'SHENPIRENANDSHENPIJILU':'审批⼈ & 审批记录', // 审批⼈ & 审批记录
+            'JUECEZILIAO':'决策资料', // 决策资料
+            'Chongfutijiao': '重复提交', // 重复提交
+            'Qiyushujuzhengchangtijiao': '其余数据正常提交', // 其余数据正常提交
+            'Chongfuchehui': '重复撤回', // 重复撤回
+            'Qiyushujuzhengchangchehui': '其余数据正常撤回', // 其余数据正常撤回 
+        },
+   
         // 定点建议
         'nominationSuggestion': {
             'Mujuyusuanguanli': '', // 模具预算管理
