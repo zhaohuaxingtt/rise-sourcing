@@ -868,27 +868,41 @@
             'DINGDIANJIANYI':'定点建议', // 定点建议
             'SHENPIRENANDSHENPIJILU':'审批⼈ & 审批记录', // 审批⼈ & 审批记录
             'JUECEZILIAO':'决策资料', // 决策资料
-            'Chongfutijiao': '重复提交', // 重复提交
-            'Qiyushujuzhengchangtijiao': '其余数据正常提交', // 其余数据正常提交
-            'Chongfuchehui': '重复撤回', // 重复撤回
-            'Qiyushujuzhengchangchehui': '其余数据正常撤回', // 其余数据正常撤回 
         },
    
         // 定点建议
         'nominationSuggestion': {
-            'Mujuyusuanguanli': '', // 模具预算管理
-            'Tijiao': '', // 提交
-            'Chehui': '', // 撤回
-            'Qingxuanzezhishaoyitiaoshuju': '', // 请选择至少一条数据
-            'Lingjianhao': '', // 零件号
-            'Fsnrgsnr': '', // FSNR/GSNR
-            'Rfqbianhao': '', // RFQ编号
-            'Shenqingriqi': '', // 申请日期
-            'Chexingxiangmu': '', // 车型项目
-            'Touziyusuanrmb': '', // 投资预算(RMB)
-            'Csfpfuzeren': '', // CSF(P)负责人
-            'Shenpizhuangtai': '', // 审批状态
-            'Shenpiyijian': '', // 审批意见
+            "MoJuYuSuanGuanLi": "模具预算管理",
+            "BiLi": "比例(%)",
+            "ShenQingRiQi": "申请日期",
+            "CheXingXiangMu": "车型项目",
+            "TouZiYuSuan": "投资预算(RMB)",
+            "CSFuZeRen": "CSF(P)负责人",
+            "ShenPiZhuangTai": "审批状态",
+            "ShenPiYiJian": "审批意见",
+            "YeWuFenPeiMoNi": "业务分配模拟",
+            "ShuaXinShiJian": "刷新时间",
+            "FanAnXuanZhe": "方案选择",
+            "ZuHe": '组合',
+            "QuXiaoZuHe": "取消组合",
+            "TuiChuBianJi": "退出编辑",
+            'GengXinShiJian': '更新时间',
+            'TiJiao': '提交', // 提交
+            'CheHui': '撤回', // 撤回
+            'QingXuanZeZhiShaoYiTiaoShuJu': '请选择至少一条数据', // 请选择至少一条数据
+            'LingJianHao': '零件号', // 零件号
+            'FsnrGsnr': 'FSNR/GSNR', // FSNR/GSNR
+            'RfqBianHao': 'RFQ编号', // RFQ编号
+            'ShenQingRiQi': '申请日期', // 申请日期
+            'CheXingXiangMu': '车型项目', // 车型项目
+            'TouZiYuSuanRmb': '投资预算(RMB)', // 投资预算(RMB)
+            'CsfPFuZeRen': 'CSF(P)负责人', // CSF(P)负责人
+            'ShenPiZhuangTai': '审批状态', // 审批状态
+            'ShenPiYiJian': '审批意见', // 审批意见
+            'ChongFuTiJiao': '重复提交', // 重复提交
+            'QiYuShuJuZhengChangTiJiao': '其余数据正常提交', // 其余数据正常提交
+            'ChongFuCheHui': '重复撤回', // 重复撤回
+            'QiYuShuJuZhengChangCheHui': '其余数据正常撤回', // 其余数据正常撤回 
         },
     })
 }))

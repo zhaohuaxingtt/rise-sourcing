@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-05-24 13:45:08
- * @LastEditTime: 2021-05-28 20:35:39
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-05-29 17:56:59
+ * @LastEditors: ldh
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\designate\suggestion\components\mouldBudgetManagementDialog.vue
 -->
@@ -14,10 +14,10 @@
     v-on="$listeners"
   >
     <template #title>
-      <p class="title">{{ $t("nominationSuggestion.Mujuyusuanguanli") }}</p>
+      <p class="title">{{ $t("nominationSuggestion.MoJuYuSuanGuanLi") }}</p>
       <div class="control" id="control">
-        <iButton :loading="submitLoading" @click="handleSubmit">{{ $t("nominationSuggestion.Tijiao") }}</iButton>
-        <iButton @click="handleRecall">{{ $t("nominationSuggestion.Chehui") }}</iButton>
+        <iButton :loading="submitLoading" @click="handleSubmit">{{ $t("nominationSuggestion.TiJiao") }}</iButton>
+        <iButton :loading="recallLoading" @click="handleRecall">{{ $t("nominationSuggestion.CheHui") }}</iButton>
       </div>
     </template>
     <div class="body">
@@ -141,7 +141,7 @@ export default {
     // 提交
     handleSubmit() {
       if (this.multipleSelection.length < 1) {
-        return iMessage.warn(this.$t("nominationSuggestion.Qingxuanzezhishaoyitiaoshuju"))
+        return iMessage.warn(this.$t("nominationSuggestion.QingXuanZeZhiShaoYiTiaoShuJu"))
       }
 
       this.submitLoading = true
@@ -156,9 +156,9 @@ export default {
             this.getMouldBudget()
           } else {
             if (this.multipleSelection.length === res.data.length) {
-              iMessage.warn(`${ this.$t("nominationSuggestion.Rfqbianhao") }: ${ res.data.join(", ") } ${ this.$t("nominationSuggestion.Chongfutijiao") }`)
+              iMessage.warn(`${ this.$t("nominationSuggestion.RfqBianHao") }: ${ res.data.join(", ") } ${ this.$t("nominationSuggestion.ChongFuTiJiao") }`)
             } else {
-              iMessage.warn(`${ this.$t("nominationSuggestion.Rfqbianhao") }: ${ res.data.join(", ") } ${ this.$t("nominationSuggestion.Chongfutijiao") }, ${ this.$t("nominationSuggestion.Qiyushujuzhengchangtijiao") }`)
+              iMessage.warn(`${ this.$t("nominationSuggestion.RfqBianHao") }: ${ res.data.join(", ") } ${ this.$t("nominationSuggestion.ChongFuTiJiao") }, ${ this.$t("nominationSuggestion.QiYuShuJuZhengChangTiJiao") }`)
               this.getMouldBudget()
             }
           }
@@ -175,7 +175,7 @@ export default {
     // 撤回
     handleRecall() {
       if (this.multipleSelection.length < 1) {
-        return iMessage.warn(this.$t("nominationSuggestion.Qingxuanzezhishaoyitiaoshuju"))
+        return iMessage.warn(this.$t("nominationSuggestion.QingXuanZeZhiShaoYiTiaoShuJu"))
       }
 
       this.recallLoading = true
@@ -190,9 +190,9 @@ export default {
             this.getMouldBudget()
           } else {
             if (this.multipleSelection.length === res.data.length) {
-              iMessage.warn(`${ this.$t("nominationSuggestion.Rfqbianhao") }: ${ res.data.join(", ") } ${ this.$t("nominationSuggestion.Chongfuchehui") }`)
+              iMessage.warn(`${ this.$t("nominationSuggestion.RfqBianHao") }: ${ res.data.join(", ") } ${ this.$t("nominationSuggestion.ChongFuCheHui") }`)
             } else {
-              iMessage.warn(`${ this.$t("nominationSuggestion.Rfqbianhao") }: ${ res.data.join(", ") } ${ this.$t("nominationSuggestion.Chongfuchehui") }, ${ this.$t("nominationSuggestion.Qiyushujuzhengchangchehui") }`)
+              iMessage.warn(`${ this.$t("nominationSuggestion.RfqBianHao") }: ${ res.data.join(", ") } ${ this.$t("nominationSuggestion.ChongFuCheHui") }, ${ this.$t("nominationSuggestion.QiYuShuJuZhengChangCheHui") }`)
               this.getMouldBudget()
             }
           }
