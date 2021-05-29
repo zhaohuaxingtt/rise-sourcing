@@ -56,6 +56,14 @@
             "CF": 'CF',
             'PARTSPROCUREPARTSTATUSNAME': 'Project Status',
             'SHOUGONGCAIGOUXIANGMUCHUANGJIAN': '', // 手工采购项目创建
+            'FaSong': '发送', // 发送
+            'CheHui': '撤回', // 撤回
+            'LingJianHao': '零件号', // 零件号
+            'FsnrGsnr': 'FSNR/GSNR', // FSNR/GSNR
+            'GongYingShangMingCheng': '供应商名称', // 供应商名称
+            'CbdCengJi': 'CBD层级', // CBD层级
+            'ShiFouYiBaoCbd': '是否已报CBD', // 是否已报CBD
+            'FaSongZhuangTai': '发送状态', // 发送状态
         },
         'partsignLanguage': {
             'XunYuanZhiXing': 'Sourcing Operation', //寻源执行
@@ -820,7 +828,7 @@
         'LK_KAISHISHIJIAN':'开始日期', // 开始日期
         'LK_JIESHUSHIJIAN':'结束日期', // 结束日期
         'LK_WENJIANQINGXUANZHUANZHIZHENGCHANG':'上传附件:文件请旋转至正常方向后上传', // 上传附件:文件请旋转至正常方向后上传
-
+        'LK_FASONGKM': '发送KM', // 发送KM
 
         // 定点管理
         'nominationLanguage': {
@@ -881,6 +889,6 @@
             'Csfpfuzeren': '', // CSF(P)负责人
             'Shenpizhuangtai': '', // 审批状态
             'Shenpiyijian': '', // 审批意见
-        }
+        },
     })
 }))
