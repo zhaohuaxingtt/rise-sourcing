@@ -178,6 +178,15 @@ export default [
             component: () =>
               import ("@/views/designate/designatedetail/tasks")
           },
+          {                             
+            path: "/designate/decisiondata/awardingscenario",
+            name: "designateDecisionAwardingscenario",
+            meta: {
+                title: "定点管理-决策资料-awardingscenario",
+            },
+            component: () =>
+              import ("@/views/designate/designatedetail/awardingscenario")
+          },
         ]
       }
     ]

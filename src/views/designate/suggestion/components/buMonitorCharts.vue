@@ -2,7 +2,7 @@
   <div class="buNonitorCharts">
     <div class="margin-bottom20 clearFloat">
       <span class="font18 font-weight">
-        {{ 'Nomination Scenario Overview' }}
+        {{ title }}
       </span>
     </div>
     <div class="legendLine">
@@ -41,6 +41,10 @@ export default {
     iSelect
   },
   props: {
+    title: {
+      type: String,
+      default: 'Nomination Scenario Overview'
+    },
     data: {
       type: Array,
       default: () => ([[0, 0, 0, 0], [0, 0, 0, 0]])
