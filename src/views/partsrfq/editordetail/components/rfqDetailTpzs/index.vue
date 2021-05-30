@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-25 13:01:23
- * @LastEditTime: 2021-05-28 14:44:14
+ * @LastEditTime: 2021-05-30 11:18:49
  * @LastEditors: Please set LastEditors
  * @Description: 报价助手界面
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\index.vue
@@ -19,8 +19,8 @@
            <quotationScoringHZ></quotationScoringHZ>
          </iCard>
          <quotationScoringMj class="margin-top20" titleKey='LK_BJFXHZMJ'></quotationScoringMj>
-         <iCard title="报价趋势" collapse class="margin-top20"></iCard>
-         <iCard title="业务分配模拟" collapse class="margin-top20"></iCard>
+         <quotationScoringEcartsCard></quotationScoringEcartsCard>
+         <buMonitor></buMonitor>
       </template>
     </el-tab-pane>
     <el-tab-pane label="专项分析工具">
@@ -40,8 +40,10 @@ import {iTabsList,iCard} from 'rise'
 import quotationScoringTracking from './components/quotationScoringTracking'
 import quotationScoringMj from './components/quotationScoringMj'
 import quotationScoringHZ from './components/quotationScoringHz'
+import quotationScoringEcartsCard from './components/quotationScoringEcartsCard'
+import buMonitor from "@/views/designate/suggestion/components/buMonitor"
 export default{
-  components:{iTabsList,iCard,quotationScoringTracking,quotationScoringMj,quotationScoringHZ}
+  components:{iTabsList,iCard,quotationScoringTracking,quotationScoringMj,quotationScoringHZ,quotationScoringEcartsCard,buMonitor}
 }
 </script>
 <style lang='scss' scoped>

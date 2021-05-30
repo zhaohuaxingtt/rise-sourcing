@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-28 15:03:47
- * @LastEditTime: 2021-05-29 17:17:44
+ * @LastEditTime: 2021-05-29 21:57:34
  * @LastEditors: Please set LastEditors
  * @Description: 特殊表格实现
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\table.vue
@@ -134,6 +134,9 @@ export default{
       if( index <= this.tableData.length - 4){
         return true
       }
+    },
+    handleSelectionChange(val){
+      this.$emit('handleSelectionChange',val)
     }
   }
 }
@@ -157,12 +160,18 @@ export default{
     }
     ::v-deep.blueclass{
       background-color: rgba(197, 215, 253, 1);
+      .el-checkbox{
+        display: none;
+      }
       &:hover{
         background-color: none;
       }
     }
     ::v-deep.lineBlueClass{
       background-color: rgba(247, 250, 255, 1);
+      .el-checkbox{
+        display: none;
+      }
       &:hover{
         background-color: rgba(247, 250, 255, 1)!important;
       }
@@ -179,7 +188,7 @@ export default{
       height: 150px;
       width: 100px;
       //background-color: red;
-      z-index: 99999999;
+      z-index: 123;
       bottom: 38px;
       left:-14px;
       border: 1px solid #C5CCD6;
