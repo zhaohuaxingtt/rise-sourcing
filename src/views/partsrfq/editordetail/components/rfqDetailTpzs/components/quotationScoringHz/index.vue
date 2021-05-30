@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-28 14:32:04
- * @LastEditTime: 2021-05-29 23:27:20
+ * @LastEditTime: 2021-05-30 11:29:47
  * @LastEditors: Please set LastEditors
  * @Description: 报价分析汇总表格
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\index.vue
@@ -28,6 +28,7 @@
         </div>            
       </div>
       <div class="btnSearch">
+        <iButton @click="quote">是否引用询价轮次报价</iButton>
         <iButton @click="group">组合</iButton>
         <iButton>取消组合</iButton>
         <iButton>导出</iButton>
@@ -80,6 +81,14 @@ export default{
         return 
       }
       this.groupVisble = !this.groupVisble
+    },
+        quote() {
+      this.$confirm('是否引用询价轮次报价?', '引用询价轮次报价', {
+        confirmButtonText: '是',
+        cancelButtonText: '否',
+      })
+      .then(() => {})
+      .catch(() => {});
     }
   }
 }
@@ -103,7 +112,7 @@ export default{
         display: flex;
         justify-content: space-between;
         span{
-          width: 180px;
+          width: 160px;
           line-height: 30px;
           font-size: 14px;
         }
