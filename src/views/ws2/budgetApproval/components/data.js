@@ -50,7 +50,7 @@ export const budgetApprovalData = [
         tooltip: false
     },
     {
-        props: 'approvalComments',
+        props: 'categoryBudget',
         name: '材料组预算',
         key: '材料组预算',
         tooltip: false
@@ -110,37 +110,37 @@ export const RFQList = [
         tooltip: false
     },
     {
-        props: 'purchasingFactory',
+        props: 'procureFactory',
         name: '采购工厂',
         key: '采购工厂',
         tooltip: false
     },
     {
-        props: 'fs',
+        props: 'fsnrGsnrNum',
         name: 'FSNR / GSNR',
         key: 'FSNR / GSNR',
         tooltip: false
     },
     {
-        props: 'applyDate',
+        props: 'applyTime',
         name: '申请日期',
         key: '申请日期',
         tooltip: false
     },
     {
-        props: 'carTypeProName',
+        props: 'cartypeProZh',
         name: '车型项目',
         key: '车型项目',
         tooltip: false
     },
     {
-        props: 'investmentBudget',
+        props: 'budget',
         name: '投资预算',
         key: '投资预算',
         tooltip: false
     },
     {
-        props: 'csf',
+        props: 'csfPDiretor',
         name: 'CSF(P)负责人',
         key: 'CSF(P)负责人',
         tooltip: false
@@ -179,7 +179,7 @@ export const budgetApplyAmountList = [
         tooltip: false
     },
     {
-        props: 'applyAmount',
+        props: 'budget',
         name: '申请金额',
         key: '申请金额',
         tooltip: false

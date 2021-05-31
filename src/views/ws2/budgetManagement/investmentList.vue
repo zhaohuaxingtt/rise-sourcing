@@ -280,6 +280,7 @@
         :carTypeProId="$store.state.mouldManagement.budgetManagement.carTypeProject"
         :sourceStatus="$store.state.mouldManagement.budgetManagement.sourceStatus"
         :carType="this.fromGroup"
+        :listVerisonId="form['search.version']"
         @updateTable="saveReference"
     ></referenceModel>
     <conversionRatio

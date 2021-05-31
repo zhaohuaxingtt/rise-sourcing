@@ -7,81 +7,103 @@
  * @FilePath: \rise\src\views\partsign\components\tableList.vue
 -->
 <template>
-  <el-table
-    tooltip-effect="light"
-    :height="height"
-    :data="tableData"
-    v-loading="tableLoading"
-    @selection-change="handleSelectionChange"
-    :empty-text="$t('LK_ZANWUSHUJU')"
-    ref="moviesTable"
-    :class="radio && 'radio'"
-    :show-summary="showSummary"
-    :summary-method="getSummaries"
-    :row-class-name="tableRowClassName"
-  >
-    <el-table-column
-      v-if="selection"
-      type="selection"
-      width="50"
-      align="center"
-    ></el-table-column>
-    <template v-for="(items, index) in tableTitle">
+  <div>
+    <el-table
+      tooltip-effect="light"
+      :height="height"
+      :data="tableData"
+      v-loading="tableLoading"
+      @selection-change="handleSelectionChange"
+      :empty-text="$t('LK_ZANWUSHUJU')"
+      ref="moviesTable"
+      :class="radio && 'radio'"
+      :show-summary="showSummary"
+      :summary-method="getSummaries"
+      :row-class-name="tableRowClassName"
+    >
       <el-table-column
-        :key="index"
+        v-if="selection"
+        type="selection"
+        width="50"
         align="center"
-        :show-overflow-tooltip="items.tooltip"
-        v-if="items.props == activeItems"
-        :prop="items.props"
-        :label="$t(items.key)"
-      >
-        <template slot-scope="row"
-          ><span class="openLinkText cursor" @click="openPage(row.row)">{{
-            row.row[activeItems]
-          }}</span></template
+      ></el-table-column>
+      <template v-for="(items, index) in tableTitleTemp">
+        <el-table-column
+          :key="index"
+          align="center"
+          :show-overflow-tooltip="items.tooltip"
+          v-if="items.props == activeItems"
+          :prop="items.props"
+          :label="$t(items.key)"
         >
-      </el-table-column>
-      <el-table-column
-        :key="index"
-        align="center"
-        :show-overflow-tooltip="items.tooltip"
-        v-else-if="items.props == 'tpInfoType'"
-        :label="items.name"
-        :prop="items.props"
-      >
-        <template slot-scope="scope">
-          <span>{{
-            translateData("tp_info_type", scope.row[items.props])
-          }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column
-        :key="index"
-        align="center"
-        :show-overflow-tooltip="items.tooltip"
-        v-else
-        :label="items.name"
-        :prop="items.props"
-        :min-width="items.minWidth"
-      >
-        <template slot="header" slot-scope="scope">
-          <Popover
-              placement="top-start"
-              :content="$t(items.key)"
-              trigger="hover">
-            <div slot="reference" class="tableHeader">{{ $t(items.key) }}</div>
-          </Popover>
-        </template>
-        <template v-if="$scopedSlots[items.props] || $slots[items.props]" v-slot="scope">
-          <slot :name="items.props" :row="scope.row"></slot>
-        </template>
-      </el-table-column>
-    </template>
-  </el-table>
+          <template slot-scope="row"
+            ><span class="openLinkText cursor" @click="openPage(row.row)">{{
+              row.row[activeItems]
+            }}</span></template
+          >
+        </el-table-column>
+        <el-table-column
+          :key="index"
+          align="center"
+          :show-overflow-tooltip="items.tooltip"
+          v-else-if="items.props == 'tpInfoType'"
+          :label="items.name"
+          :prop="items.props"
+        >
+          <template slot-scope="scope">
+            <span>{{
+              translateData("tp_info_type", scope.row[items.props])
+            }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column
+          :key="index"
+          align="center"
+          :show-overflow-tooltip="items.tooltip"
+          v-else
+          :label="items.name"
+          :prop="items.props"
+          :min-width="items.minWidth"
+          :width="items.width"
+        >
+          <template slot="header" slot-scope="">
+            <iSelect
+                v-if="items.props == 'filterTable'"
+                :placeholder="$t('partsprocure.PLEENTER')"
+                v-model="chooseCol"
+                @change="changeCol"
+                collapse-tags
+                filterable
+                multiple
+            >
+              <el-option
+                  :value="item.props"
+                  :label="$t(item.key)"
+                  v-for="(item, index) in tableTitle"
+                  :key="index"
+              ></el-option>
+            </iSelect>
+            <Popover
+                v-else
+                placement="top-start"
+                :content="$t(items.key)"
+                trigger="hover">
+              <div slot="reference" class="tableHeader">{{ $t(items.key) }}</div>
+            </Popover>
+          </template>
+          <template v-if="$scopedSlots[items.props] || $slots[items.props]" v-slot="scope">
+            <slot :name="items.props" :row="scope.row"></slot>
+          </template>
+        </el-table-column>
+      </template>
+    </el-table>
+  </div>
 </template>
 
 <script>
 import {Popover} from "element-ui"
+import {iSelect} from "rise"
+import { cloneDeep } from 'lodash'
 
 export default {
   props: {
@@ -95,14 +117,42 @@ export default {
     activeItems: { type: String, default: "b" },
     radio: { type: Boolean, default: false }, // 是否单选
     showSummary: { type: Boolean, default: false }, //  是否显示总结行
+    filterTable: { type: Boolean, default: false }, //  是否筛选列
     getSummaries: { type: Function },
     tableRowClassName: { type: Function },
   },
   inject: ["vm"],
   components: {
-    Popover
+    Popover,
+    iSelect,
+  },
+  data() {
+    return {
+      chooseCol: [],
+      tableTitleTemp: cloneDeep(this.tableTitle),
+    }
+  },
+  mounted() {
+    if(this.filterTable){
+      this.initChoose()
+    }
   },
   methods: {
+    initChoose(){
+      this.chooseCol = this.tableTitle.map(item => item.props)
+      this.tableTitleTemp.push({props: 'filterTable', width: 200})
+    },
+    changeCol(val){
+      let tableTitleTemp = []
+      this.tableTitle.map(item => {
+        if(val.includes(item.props)){
+          tableTitleTemp.push(item)
+        }
+      })
+      tableTitleTemp.push({props: 'filterTable', width: 200})
+      console.log(tableTitleTemp)
+      this.tableTitleTemp = tableTitleTemp
+    },
     handleSelectionChange(val) {
       if (this.radio) {
         if (val.length > 1) {

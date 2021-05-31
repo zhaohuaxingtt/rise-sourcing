@@ -12,6 +12,8 @@
             :placeholder="$t('partsprocure.PLEENTER')"
             v-model="form['search.carTypeProject']"
             filterable
+            clearable
+            @change="searchRelationCarTypeList"
             ref="carTypeProjectRef"
         >
           <el-option
@@ -26,6 +28,8 @@
             :placeholder="$t('partsprocure.PLEENTER')"
             v-model="form['search.projectType']"
             filterable
+            clearable
+            @change="searchRelationCarTypeList"
         >
           <el-option
               :value="item.projectTypeId"
@@ -49,10 +53,10 @@
             @handleSelectionChange="handleSelectionChange"
         >
           <template #info="scope">
-            <div class="linkStyle"><span @click="relationCarTypePartsList(scope.row.tmCartypeProId)">{{ $t('详情') }}</span></div>
+            <div class="linkStyle" :class="{noLine: scope.row.tmCartypeProId == noLine}"><span @click="relationCarTypePartsList(scope.row.tmCartypeProId)">{{ $t('详情') }}</span></div>
           </template>
-          <template #apply="scope">
-            <div class="linkStyle"><span @click="applyRefCarType(scope.row)">{{ $t('应用') }}</span></div>
+          <template #apply="scope" v-if="isApply">
+            <div class="linkStyleNoline"><span @click="applyRefCarType(scope.row)">{{ $t('应用') }}</span></div>
           </template>
         </iTableList>
         <iTableList
@@ -90,6 +94,7 @@ import {
   relationCarTypePartsList,
   applyRefCarType
 } from "@/api/ws2/budgetManagement/investmentList";
+import { cloneDeep } from 'lodash'
 
 export default {
   mixins: [pageMixins, tableHeight],
@@ -101,6 +106,7 @@ export default {
   props: {
     title: {type: String, default: '关联车型项目'},
     value: {type: Boolean},
+    isApply: {type: Boolean, default: true},
     referenceCarProjectParams: {type: Object, default: () => {}},
   },
   data() {
@@ -112,12 +118,12 @@ export default {
       partsTableTitle: partsList,
       tableLoading: false,
       iSearchLoading: false,
+      noLine: '',
       cartypeList: [],
       projectTypeList: [],
     }
   },
   mounted() {
-    this.form['search.carTypeProject'] = this.referenceCarProjectParams.carTypeProId
     this.getSelected()
   },
   methods: {
@@ -134,7 +140,7 @@ export default {
         const result1 = this.$i18n.locale === 'zh' ? res[1].desZh : res[1].desEn
         if (Number(res[0].code) === 0) {
           this.cartypeList = res[0].data
-          this.form['search.carTypeProject'] = this.referenceCarProjectParams.sourceProjectId
+          // this.form['search.carTypeProject'] = this.referenceCarProjectParams.sourceProjectId
         } else {
           iMessage.error(result0);
         }
@@ -143,6 +149,8 @@ export default {
         } else {
           iMessage.error(result1);
         }
+        this.iSearchLoading = false
+      }).catch(() => {
         this.iSearchLoading = false
       })
     },
@@ -157,14 +165,18 @@ export default {
       searchRelationCarTypeList(parmars).then((res) => {
         const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
         if (Number(res.code) === 0) {
-          this.tableListData1 = res.data;
+          this.tableListData1 = res.data
+          this.tableListData2 = []
         } else {
           iMessage.error(result);
         }
         this.tableLoading = false
-      });
+      }).catch(() => {
+        this.iSearchLoading = false
+      })
     },
     relationCarTypePartsList(carTypeProId) {
+      this.noLine = carTypeProId
       this.tableLoading = true
       let parmars = {
         carTypeProId: carTypeProId,
@@ -178,7 +190,9 @@ export default {
           iMessage.error(result);
         }
         this.tableLoading = false
-      });
+      }).catch(() => {
+        this.iSearchLoading = false
+      })
     },
     applyRefCarType(row) {
       this.tableLoading = true
@@ -194,7 +208,9 @@ export default {
           iMessage.error(result);
         }
         this.tableLoading = false
-      });
+      }).catch(() => {
+        this.iSearchLoading = false
+      })
     },
     clearDiolog() {
       this.$emit('input', false)
@@ -203,6 +219,12 @@ export default {
   watch: {
     value(val) {
       if (val) {
+        if(!this.isApply){
+          this.tmCartypeProTableTitle = cloneDeep(this.tmCartypeProTableTitle)
+          this.tmCartypeProTableTitle.pop()
+        }
+        this.noLine = ''
+        this.form['search.carTypeProject'] = this.referenceCarProjectParams.carTypeProId
         this.searchRelationCarTypeList()
       }
     }
@@ -217,6 +239,17 @@ export default {
   span {
     color: #1663F6;
     border-bottom: 1px solid #1663F6;
+    cursor: pointer;
+  }
+  &.noLine{
+    span {
+      border-bottom: none;
+    }
+  }
+}
+.linkStyleNoline{
+  span {
+    color: #1663F6;
     cursor: pointer;
   }
 }

@@ -10,10 +10,9 @@
     <div class="changeContent">
       <div v-loading="tableLoading">
         <iTableList
-             :height="tableHeight - 240"
+            :height="tableHeight - 240"
             :tableData="tableListData"
             :tableTitle="tableTitle"
-            :activeItems="'partNum'"
         >
         </iTableList>
         <iPagination
@@ -75,12 +74,16 @@ export default {
   methods: {
     applyDetail() {
       this.tableLoading = true
-      applyDetail({rfqId: this.RFQID}).then((res) => {
+      applyDetail({
+        auditIds: [this.RFQID],
+        current: this.page.currPage,
+        size: this.page.pageSize,
+      }).then((res) => {
         const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
-        if (Number(res.code) === 0) {
-          this.page.currPage = res.pageNum;
-          this.page.pageSize = res.pageSize;
-          this.page.totalCount = res.total;
+        if (Number(res.code) === 200) {
+          this.page.currPage = Number(res.pageNum);
+          this.page.pageSize = Number(res.pageSize);
+          this.page.totalCount = Number(res.total);
           this.tableListData = res.data;
         } else {
           iMessage.error(result);
