@@ -9,6 +9,7 @@
 <template>
   <div class="tableContent">
     <iSelect
+        v-if="filterTable"
         class="chooseCol"
         :placeholder="$t('partsprocure.PLEENTER')"
         v-model="chooseCol"

@@ -121,7 +121,7 @@
               :height="tableHeight - 630"
               :tableData="tableListData"
               :tableTitle="tableTitle"
-              :filterTable="true"
+              :filterTable="false"
               @handleSelectionChange="handleSelectionChange"
           >
             <template #refCartypeName="scope">
