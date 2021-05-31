@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-05-27 12:32:54
- * @LastEditTime: 2021-05-28 17:03:41
+ * @LastEditTime: 2021-05-31 14:45:33
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\costanalysismanage\components\home\index.vue
@@ -207,7 +207,7 @@ export default {
   mixins: [ filters, pageMixins ],
   data(){
     return{
-      downloadDialogVisible:true,
+      downloadDialogVisible:false,
       cbdDialogVisible:false,
       form: {
         rfqNum: "",
