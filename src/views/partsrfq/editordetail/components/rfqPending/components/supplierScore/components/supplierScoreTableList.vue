@@ -26,7 +26,22 @@
         </el-table-column>
       </template>
       <template v-else>
-        <el-table-column :key="index" align='center' fixed="left" v-if="items.props == actionProps" :prop="items.props"
+        <el-table-column width="240" :key="index" align="center" fixed="left" :label="items.key ? $t(items.key) : items.name" v-if="items.props == 'companyAddress'">
+          <template v-slot="scope">
+            <iSelect class="companySelect input-center" v-model="scope.row.companyAddress" clearable popper-class="companySelectDropdown">
+              <el-option
+                v-for="company in companies"
+                :key="company.code"
+                :label="company.name"
+                :value="company.code">
+                  <el-tooltip class="item" effect="light" :open-delay="200" :content="`${ company.name }_${ company.province }_${ company.city }_${ company.address }`" placement="right">
+                    <div class="item">{{ `${ company.name }_${ company.province }_${ company.city }_${ company.address }` }}</div>
+                  </el-tooltip>
+              </el-option>
+            </iSelect>
+          </template>
+        </el-table-column>
+        <el-table-column :key="index" align='center' fixed="left" v-else-if="items.props == actionProps" :prop="items.props"
                          :label="items.key ? $t(items.key) : items.name">
           <template slot-scope="scope">
             <span class="openLinkText cursor" @click="openActionPropsPage(scope.row)">{{$t('LK_CHAKAN')}}</span>
@@ -39,7 +54,10 @@
   </el-table>
 </template>
 <script>
+import { iSelect } from "rise"
+
 export default {
+  components: { iSelect },
   props: {
     tableData: {type: Array},
     tableTitle: {type: Array},
@@ -51,6 +69,11 @@ export default {
     multiHeaderProps: {type: String, default: 'tpbMemo'},
     actionProps: {type: String, default: 'action'},
     multiHeaderPropsText: {type: String, default: 'LK_BIANJI'},
+  },
+  data() {
+    return {
+      companies: []
+    }
   },
   methods: {
     handleSelectionChange(val) {
@@ -68,5 +91,24 @@ export default {
 <style lang='scss' scoped>
 .openLinkText {
   color: $color-blue;
+}
+
+.companySelect {
+  ::v-deep input {
+    padding: 0 18px;
+  }
+
+  ::v-deep .el-input__suffix {
+    display: none;
+  }
+}
+
+.companySelectDropdown {
+  .item {
+    max-width: 230px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
 }
 </style>

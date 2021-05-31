@@ -1,10 +1,10 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2021-05-17 15:02:41
+ * @LastEditTime: 2021-05-31 10:35:52
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
- * @FilePath: \rise\src\views\partsprocure\editordetail\index.vue
+ * @FilePath: \front-web\src\views\partsprocure\editordetail\index.vue
 -->
 <template>
 	<iPage class="partsprocureEditordetail" v-permission="PARTSPROCURE_EDITORDETAIL_INDEXPAGE">
@@ -124,6 +124,11 @@
 								<el-option :value="false" label="否"></el-option>
 							</iSelect>
 						</iFormItem>
+						<iFormItem label="Heavy Item List:" name="">
+							<iText>
+								{{ detailData.a }}
+							</iText>
+						</iFormItem>
 						<!--如果选择后的采购工厂不在主数据中该车型项目对应的采购工厂范围内？，则提示”您所选的采购工厂与主数据中该车型项目对应的采购工厂不一致，请确认是否修改“；选择”确认“保持修改后的值，选择”取消“恢复到修改前的值。”保存“后生效。--->
 						<iFormItem :label="$t('LK_CAIGOUGONGCHANG') + ':'" name="test">
 							<iSelect v-model="detailData.procureFactory"
@@ -168,6 +173,16 @@
 								<el-option :value="item.id" :label="item.name" v-for="item in fromGroup.CF_CONTROL" :key="item.name"></el-option>
 							</iSelect>
 						</iFormItem>
+						<iFormItem :label="$t('LK_LINGJIANCHENGBENFENXIYUAN') + ':'" name=''>
+							<iSelect class="multipleSelect" v-model="detailData.c" multiple collapse-tags>
+								<el-option :value="item.code" :label="item.name" v-for="item in fromGroup.CF_CONTROL" :key="item.name"></el-option>
+							</iSelect>
+						</iFormItem>
+						<iFormItem :label="$t('LK_MUJUCHENGBENFENXIYUAN') + ':'" name=''>
+							<iSelect class="multipleSelect" v-model="detailData.d" multiple collapse-tags>
+								<el-option :value="item.code" :label="item.name" v-for="item in fromGroup.CF_CONTROL" :key="item.name"></el-option>
+							</iSelect>
+						</iFormItem>
 						<iFormItem label="Common Sourcing：" name="test">
 							<!--------预设值会有一个联动，如果 为是  零件采购项目类型是fs commonsourcing  如果是否，则是fs零件 ps:和设计刘洋沟通前端不做联动，仅仅在数据初始化时做----------> 
 							<iSelect v-model="detailData.isCommonSourcing"
@@ -210,6 +225,10 @@
 			</iFormGroup>
 		</iCard>
 		<iTabsList class="margin-top20" type="border-card">
+			<!-------------------------已定点时显示定点信息tab------------------------------------------>
+			<el-tab-pane :label="$t('LK_DINGDIANXINXI')" >
+				<designateInfo :params="infoItem" />
+			</el-tab-pane>
 			<el-tab-pane :label="$t('LK_CAILIAOZUXINXI')"
 				v-permission="PARTSPROCURE_EDITORDETAIL_MATERIALGROUPINFORMATION">
 				<materialGroupInfo :params="infoItem" />
@@ -282,6 +301,7 @@
 	} from "./components/data";
 	import splitFactory from "./components/splitFactory";
 import { iMessageBox } from '../../../components';
+import designateInfo from './components/designateInfo'
 	export default {
 		components: {
 			iPage,
@@ -304,6 +324,7 @@ import { iMessageBox } from '../../../components';
 			logButton,
 			backItems,
 			splitFactory,
+			designateInfo
 		},
 		data() {
 			return {
@@ -572,6 +593,18 @@ import { iMessageBox } from '../../../components';
 
 		.items {
 			width: 300px;
+		}
+	}
+
+	.multipleSelect {
+		::v-deep .el-tag + .el-tag:last-of-type {
+			// text-overflow: ellipsis;
+			// white-space: nowrap;
+			// max-width: 38px;
+			// overflow: hidden;
+			// display: block;
+			// float: left;
+			max-width: 38px;
 		}
 	}
 </style>

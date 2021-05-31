@@ -141,7 +141,7 @@ export default {
       }
       // const params = serialize(req)
       this.$router.push({
-        path: `/partsprocure/editordetail?item=${JSON.stringify(req)}`
+        path: `/sourcing/partsprocure/editordetail?item=${JSON.stringify(req)}`
       })
     }
   }

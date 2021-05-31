@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2021-03-04 15:18:55
- * @LastEditTime: 2021-03-04 15:59:34
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-05-29 17:32:33
+ * @LastEditors: ldh
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqPending\components\partDetaiList\data.js
  */
@@ -22,3 +22,12 @@ export const tableTitle = [
     {props:'l',name:'CF',key: 'partsprocure.PARTSPROCURECF'}
     
   ]
+
+export const kmDialogTableTitle = [
+  { props: "partNum", name: "零件号", tooltip: true, key: "partsprocure.LingJianHao" },
+  { props: "fsnrGsnrNum", name: "FSNR/GSNR", tooltip: true, key: "partsprocure.FsnrGsnr" },
+  { props: "supplierName", name: "供应商名称", tooltip: true, key: "partsprocure.GongYingShangMingCheng" },
+  { props: "cbdLevel", name: "CBD层级", tooltip: true, key: "partsprocure.CbdCengJi" },
+  { props: "isSend", name: "是否已报CBD", tooltip: true, key: "partsprocure.ShiFouYiBaoCbd" },
+  { props: "sendStatus", name: "发送状态", tooltip: true, key: "partsprocure.FaSongZhuangTai" },
+]

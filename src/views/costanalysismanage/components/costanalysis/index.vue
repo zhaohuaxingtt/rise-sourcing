@@ -1,0 +1,125 @@
+<!--
+ * @Author: your name
+ * @Date: 2021-05-28 16:01:25
+ * @LastEditTime: 2021-05-28 16:38:05
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: \front-web\src\views\costanalysismanage\components\costanalysis\index.vue
+-->
+<template>
+  <iPage class="analysis">
+    <div class="header clearFloat">
+      <div class="title">{{ $t("costanalysismanage.Chengbenfenxi") }}</div>
+      <div class="control">
+        <iButton @click="back">{{ $t("costanalysismanage.Fanhui") }}</iButton>
+        <iButton>{{ $t("costanalysismanage.Shangchuan") }}</iButton>
+        <iButton>{{ $t("costanalysismanage.Xiazai") }}</iButton>
+        <iButton>{{ $t("costanalysismanage.Shanchu") }}</iButton>
+        <logButton class="margin-left20" />
+        <span class="margin-left20">
+          <icon symbol name="icondatabaseweixuanzhong" class="font24"></icon>
+        </span>
+      </div>
+    </div>
+    <iCard class="margin-top30 card">
+      <div class="body">
+        <tableList
+          class="table"
+          index
+          :tableData="tableListData"
+          :tableTitle="tableTitle"
+          :tableLoading="loading"
+          height="calc(100% - 54px)"
+        >
+          <template #fileName="scope">
+            <span class="link" @click="download(scope.row)">{{ scope.row.fileName }}</span>
+          </template>
+          <template #date="scope">
+            <span>{{ scope.row.date | dateFilter("YYYY-MM-DD") }}</span>
+          </template>
+        </tableList>
+        <iPagination 
+          v-update
+          class="margin-top30"
+          @size-change="handleSizeChange($event, getList)"
+          @current-change="handleCurrentChange($event, getList)"
+          background
+          :current-page="page.currPage"
+          :page-sizes="page.pageSizes"
+          :page-size="page.pageSize"
+          :layout="page.layout"
+          :total="page.totalCount" />
+      </div>
+    </iCard>
+  </iPage>
+</template>
+
+<script>
+import { iPage, iButton, icon, iCard, iPagination } from "rise"
+import logButton from "@/views/partsign/editordetail/components/logButton"
+import tableList from "@/views/partsign/editordetail/components/tableList"
+import { tableTitle } from "./components/data"
+import filters from "@/utils/filters"
+import { pageMixins } from "@/utils/pageMixins"
+
+
+export default {
+  components: {
+    iPage,
+    iButton,
+    icon,
+    iCard,
+    iPagination,
+    logButton,
+    tableList
+  },
+  mixins: [ filters, pageMixins ],
+  data() {
+    return {
+      loading: false,
+      tableTitle,
+      tableListData: []
+    }
+  },
+  methods: {
+    getList() {},
+    // 返回
+    back() {
+      this.$router.go(-1)
+    }
+  }
+}
+</script>
+
+<style lang="scss" scoped>
+.analysis {
+  .header {
+    position: relative;
+
+    .title {
+      font-size: 20px;
+      font-weight: bold;
+      color: #000;
+      height: 28px;
+      line-height: 28px;
+    }
+
+    .control {
+      position: absolute;
+      top: 50%;
+      right: 0;
+      transform: translate(0, -50%);
+      display: flex;
+      align-items: center;
+      height: 30px;
+    }
+  }
+
+  .card {
+    .body {
+      height: calc(100vh - 240px);
+      min-height: 480px;
+    }
+  }
+}
+</style>

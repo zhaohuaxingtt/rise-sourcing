@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 09:50:42
- * @LastEditTime: 2021-04-01 23:39:00
+ * @LastEditTime: 2021-05-25 15:05:36
  * @LastEditors: Please set LastEditors
  * @Description: 零件采购项目建立首页。
  * @FilePath: \rise\src\views\partsprocure\home\index.vue
@@ -12,7 +12,7 @@
       <el-tab-pane :label="$t('LK_XUNYUANZHIHANG')" name="source">
         <div>
           <div class="margin-bottom33">
-            <iNav-mvp @change="change" right routerPage></iNav-mvp>
+            <iNavMvp @change="change" right routerPage lev="2" :list="navList" />
           </div>
           <!------------------------------------------------------------------------>
           <!--                  search 搜索模块                                   --->
@@ -206,6 +206,8 @@
                 {{ $t("partsprocure.PARTSPROCURENEWPROCUREMENTPROJECT") }}</span
               >
               <div class="floatright">
+                <!-- 手工采购项目创建 -->
+                <iButton @click="openCreateParts">{{ $t("partsprocure.SHOUGONGCAIGOUXIANGMUCHUANGJIAN") }}</iButton>
                 <iButton
                   @click="openDiologChangeItems"
                   v-permission="PARTSPROCURE_TRANSFER"
@@ -290,11 +292,11 @@ import {
   iCard,
   iMessage,
   iPagination,
-  iNavMvp,
   iSearch,
   iInput,
   iSelect,
 } from "@/components";
+import { iNavMvp } from "rise";
 import { pageMixins } from "@/utils/pageMixins";
 import backItems from "@/views/partsign/home/components/backItems";
 import { tableTitle, form } from "./components/data";
@@ -308,6 +310,9 @@ import { insertRfq } from "@/api/partsrfq/home";
 import changeItems from "../../partsign/home/components/changeItems";
 import filters from "@/utils/filters";
 import creatFs from "./components/creatFs";
+import { navList } from "@/views/partsign/home/components/data";
+import { cloneDeep } from "lodash";
+
 export default {
   mixins: [pageMixins, filters],
   components: {
@@ -336,6 +341,7 @@ export default {
       diologBack: false, //退回
       startLoding: false,
       tab: "source",
+      navList: cloneDeep(navList)
     };
   },
   computed: {
@@ -351,7 +357,7 @@ export default {
     // 跳转详情
     openPage(item) {
       this.$router.push({
-        path: "/partsprocure/editordetail",
+        path: "/sourcing/partsprocure/editordetail",
         query: {
           item: JSON.stringify(item),
         },
@@ -516,7 +522,7 @@ export default {
           this.startLoding = false;
           if (res.data && res.data.rfqId) {
             this.$router.push({
-              path: "/partsrfq/editordetail",
+              path: "/sourcing/partsrfq/editordetail",
               query: {
                 id: res.data.rfqId,
               },
@@ -542,7 +548,7 @@ export default {
     },
     // 查询fliter数据
     getGroupList(key) {
-      if (this.fromGroup.length > 0) {
+      if (Array.isArray(this.fromGroup) && this.fromGroup.length > 0) {
         let obj = this.fromGroup.find((items) => items.type == key);
         if (!obj) return [];
         return obj.list;
@@ -557,12 +563,15 @@ export default {
           )
         );
       this.$router.push({
-        path: "/partsprocure/batchmiantain",
+        path: "/sourcing/partsprocure/batchmiantain",
         query: {
           ids: this.getPurchasePrjectId(),
         },
       });
     },
+    openCreateParts() {
+      this.$router.push({ path: "/sourcing/createparts/home" })
+    }
   },
 };
 </script>

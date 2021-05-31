@@ -10,7 +10,6 @@ const postcss = px2rem({
 //内存泄漏
 require('events').EventEmitter.defaultMaxListeners = 0
 module.exports = {
-    //打包时
     publicPath: process.env.VUE_APP_PUBLICPATH,
     outputDir: 'dist',
     assetsDir: 'static',
@@ -19,33 +18,30 @@ module.exports = {
     productionSourceMap: false,
     parallel: require("os").cpus().length > 1,
     chainWebpack: config => {
-        config.plugins.delete('preload')
-        config.plugins.delete('prefetch')
-        config.optimization.minimize(true)
-        config.resolve.symlinks(true)
-            //定义全局别名
+        //定义全局别名
         config.resolve.alias
             .set('@', resolve('src'))
             .set('pages', resolve('src/views'))
-
-        config.optimization.splitChunks({
-            chunks: 'all',
-            cacheGroups: {
-                vendors: {
-                    name: 'vendors',
-                    test: /[\\/]node_modules[\\/]/,
-                    priority: 10
-                },
-                commons: {
-                    name: 'commons',
-                    test: resolve('src/components'),
-                    minChunks: 3,
-                    priority: 5,
-                    reuseExistingChunk: true
+        if (process.env.NODE_ENV == 'production') {
+            config.optimization.splitChunks({
+                chunks: 'all',
+                cacheGroups: {
+                    vendors: {
+                        name: 'vendors',
+                        test: /[\\/]node_modules[\\/]/,
+                        priority: 10
+                    },
+                    commons: {
+                        name: 'commons',
+                        test: resolve('src/components'),
+                        minChunks: 3,
+                        priority: 5,
+                        reuseExistingChunk: true
+                    }
                 }
-            }
-        })
-        config.optimization.runtimeChunk('single')
+            })
+            config.optimization.runtimeChunk('single')
+        }
     },
     configureWebpack: config => {
         //为生产环境移除console debugger 代码压缩
@@ -65,6 +61,14 @@ module.exports = {
                 //环境代码
                 process.env.NODE_ENV == 'dev' ? '' : new ChangeNginxConfig()
             )
+            config.plugins.push(new CompressionPlugin({
+                algorithm: 'gzip',
+                test: new RegExp("\\.(" + ["js", "css"].join("|") + ")$"),
+                threshold: 5120,
+                minRatio: 0.8,
+                cache: true,
+                deleteOriginalAssets: false
+            }))
         }
         config["externals"] = {
             'vue': 'Vue',
@@ -78,20 +82,13 @@ module.exports = {
             'Ellipsis': 'Ellipsis'
         };
         //开启gizp压缩
-        config.plugins.push(new CompressionPlugin({
-            algorithm: 'gzip',
-            test: new RegExp("\\.(" + ["js", "css"].join("|") + ")$"),
-            threshold: 5120,
-            minRatio: 0.8,
-            cache: true,
-            deleteOriginalAssets: false
-        }))
+
     },
     //引入全局css变量
     css: {
         //是否开起css分离
         extract: false,
-        sourceMap: process.env.NODE_ENV !== 'production',
+        sourceMap: process.env.NODE_ENV == 'production',
         requireModuleExtension: true,
         loaderOptions: {
             sass: {
@@ -122,7 +119,7 @@ module.exports = {
             },
             '/tpInfoApi': { //高攀弘服务地址
                 target: 'http://10.122.18.166:8023',
-								// target: 'http://10.160.142.20:8023',
+                // target: 'http://10.160.142.20:8023',
                 changeOrigin: true,
                 pathRewrite: {
                     "^/tpInfoApi": ""
@@ -180,8 +177,8 @@ module.exports = {
                 }
             },
             '/ws2Api': { // ws2Api.../ 王鹏霄
-                // target: 'http://10.122.18.166:8022',    //  dev
-                target: 'http://192.168.50.160:8022',// 圆圆
+                target: 'http://10.122.18.166:8022',    //  dev
+                // target: 'http://192.168.50.160:8022',// 圆圆
                 // target: 'http://192.168.50.40:8022',// 立立
                 // target: 'http://cbbbc967414f.ngrok.io',
                 changeOrigin: true,
@@ -189,6 +186,76 @@ module.exports = {
                     "^/ws2Api": ""
                 }
             },
+            '/quotationApiDL': {
+                // target: 'http://10.160.138.38:8788',
+                target: 'http://10.122.18.166:8021',
+                changeOrigin: true,
+                pathRewrite: {
+                    "^/quotationApiDL": ""
+                }
+            },
+            '/supplierApiDL': {  // 供应商
+                // target: 'http://10.160.137.63:8788',
+                target: 'http://10.122.18.166:8025',
+                changeOrigin: true,
+                pathRewrite: {
+                    "^/supplierApiDL": ""
+                }
+            },
+            '/supplierApiWdl': { //   供应商
+                target: 'http://10.122.18.166:8021',
+                changeOrigin: true,
+                pathRewrite: {
+                    "^/supplierApiWdl": ""
+                }
+            },
+            '/supplierApiXW': { //   供应商
+                target: 'http://10.122.18.166:8021',
+                changeOrigin: true,
+                pathRewrite: {
+                    "^/supplierApiXW": ""
+                }
+            },
+            '/supplierApiBob': { //   供应商
+                target: 'http://10.160.136.45:8099',
+                changeOrigin: true,
+                pathRewrite: {
+                    "^/supplierApiBob": ""
+                }
+            },
+            '/supplierApiRfqlist': { //   供应商
+                target: 'http://10.122.18.166:8025',
+                changeOrigin: true,
+                pathRewrite: {
+                    "^/supplierApiRfqlist": ""
+                }
+            },
+            '/supplierApi': { //   供应商
+                target: 'http://10.122.18.166:8010',
+                changeOrigin: true,
+                pathRewrite: {
+                    "^/supplierApi": ""
+                }
+            },
+            '/quotationApi': { // 供应商报价
+                // target: 'http://10.160.136.42:8021',
+                target: 'http://10.122.18.166:8021/',
+                // target: 'http://10.160.136.115:8021 //智博
+                // target: 'http://10.160.136.83:8021', // 智博
+                // target: 'http://10.160.138.206:8093', // 顾晓炜
+                // target: 'http://10.122.18.166:8093', // 高攀弘
+                changeOrigin: true,
+                pathRewrite: {
+                    "^/quotationApi": ""
+                }
+            },
+            '/partApi': {
+                target: 'http://10.160.138.31:8788',
+                changeOrigin: true,
+                pathRewrite: {
+                    "^/partApi": ""
+                }
+            }
         }
     }
 }
