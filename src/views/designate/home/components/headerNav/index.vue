@@ -7,21 +7,24 @@
   <div class="headerNav">
     <iNavMvp :list="list" @change="change" :lev="1" routerPage></iNavMvp>
     <div class="ext">
-      <ul>
+      <div class="pull-right">
+        <a href="javascript:;" class="iconMenu">
+          <icon symbol
+            name="iconrizhi"
+          ></icon>
+        </a>
+        <a href="javascript:;" class="iconDatabase">
+          <icon symbol
+            name="icondatabaseweixuanzhong"
+          ></icon>
+        </a>
+      </div>
+      <iNavMvp @change="change" class="pull-right" right routerPage lev="2" :list="menu" />
+      <!-- <ul>
         <li v-for="(item, index) in menu" :key="index">
-          <a href="javascript:;" @click="$router.push({ path: item.url })">{{item.key}}</a>
+          <a href="javascript:;" @click="$router.push({ path: item.url })">{{item.name}}</a>
         </li>
-      </ul>
-      <a href="javascript:;" class="iconMenu">
-        <icon symbol
-          name="iconrizhi"
-        ></icon>
-      </a>
-      <a href="javascript:;" class="iconDatabase">
-        <icon symbol
-          name="icondatabaseweixuanzhong"
-        ></icon>
-      </a>
+      </ul> -->
     </div>
     
   </div>
@@ -121,5 +124,9 @@ export default {
       }
     }
   }
+}
+
+.pull-right{
+  float: right;
 }
 </style>

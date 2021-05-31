@@ -16,7 +16,7 @@ export default [
     redirect: "/designate/rfq",
     children: [
       {
-        path: "/designate/nomination",
+        path: "/sourcing/partsnomination",
         name: "designateHome",
         meta: {
           title: "定点申请综合管理",

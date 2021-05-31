@@ -6,7 +6,7 @@
 <template>
   <iPage class="designateHome">
     <!-- 头部 -->
-    <headerNav />
+    <headerNav class="margin-bottom30" />
     <!-- 筛选框 -->
     <div style="clear: both"></div>
     <!-- 搜索区 -->
