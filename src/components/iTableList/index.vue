@@ -182,7 +182,7 @@ export default {
 </script>
 <style lang='scss' scoped>
 .tableContent{
-  position: relative;
+  //position: relative;
   .chooseCol{
     width: 330px;
     position: absolute;
