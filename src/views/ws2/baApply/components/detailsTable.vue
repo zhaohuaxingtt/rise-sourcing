@@ -61,7 +61,7 @@ import { form } from '../../../partsign/home/components/data';
 
 export default {
   props: {
-    tableListData: {type: Array, default: []},
+    tableListData: {type: Array, default: () => []},
     tableLoading: {type: Boolean, default: false},
   },
   computed: {
@@ -84,7 +84,6 @@ export default {
   components: {
     iTableList,
     iButton,
-    iMessage,
     ApplyPopup,
     iInput
   },

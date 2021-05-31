@@ -36,9 +36,6 @@ export default {
   mixins: [pageMixins],
   components: {
     iPage,
-    iMessage,
-    iDialog,
-    iButton,
     DetailsSearch,
     DetailsTable,
     iCard,

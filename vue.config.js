@@ -10,7 +10,8 @@ const postcss = px2rem({
 //内存泄漏
 require('events').EventEmitter.defaultMaxListeners = 0
 module.exports = {
-    publicPath: process.env.VUE_APP_PUBLICPATH,
+    //打包时
+    // publicPath: process.env.VUE_APP_PUBLICPATH,
     outputDir: 'dist',
     assetsDir: 'static',
     filenameHashing: true,
