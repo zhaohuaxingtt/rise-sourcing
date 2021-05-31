@@ -14,4 +14,4 @@ export function getPartList(params) {
         method: "GET",
         params: params
     })
-  }
+}

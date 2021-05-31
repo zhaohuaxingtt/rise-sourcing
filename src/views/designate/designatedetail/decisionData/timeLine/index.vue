@@ -94,7 +94,7 @@ export default {
     },
     data(){
         return{
-            isEdit:true,
+            isEdit:false,
             timeList:[
                 {startDate:1621048561,endDate:1621912561}, // 5-17 ---> 5-25
                 {startDate:1621480561,endDate:1621998961}, // 5-20 ---> 5-26
@@ -156,6 +156,7 @@ export default {
                         }
                     });
             }
+             this.$store.dispatch('updateNominationStep',{nominateId:'1',phaseType:'1'});
             this.isEdit = !isEdit;
         },
 
