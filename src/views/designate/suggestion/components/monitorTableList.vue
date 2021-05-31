@@ -138,7 +138,7 @@ export default {
     selection:{type:Boolean,default:true},
     index:{type:Boolean,default:false},
     indexLabel:{type:String,default:'#'},
-    height:{type:Number||String, default:'450'},
+    height:{type:Number||String, default:'380'},
     batchEdit: {type:Boolean, default:false},
   },
   components: {iInput},

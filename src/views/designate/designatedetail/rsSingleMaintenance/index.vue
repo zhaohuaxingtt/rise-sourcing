@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-24 14:39:43
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-05-24 16:44:57
+ * @LastEditTime: 2021-05-31 09:58:09
  * @Description: RS单维护界面
  * @FilePath: \front-web\src\views\designate\designatedetail\rsSingleMaintenance\index.vue
 -->
@@ -51,7 +51,7 @@
             <!--------------------选择按钮----------------------------------->
             <iButton @click="handleSelect">读取报价单</iButton>
             <!--------------------返回按钮----------------------------------->
-            <iButton @click="goBack">RS单预览</iButton>
+            <iButton @click="changersEeditionDialogVisible(true)">RS单预览</iButton>
             
           </div>
       </div>
@@ -69,6 +69,7 @@
           :total="page.totalCount"
         />
     </iCard>
+    <rsDialog :dialogVisible="rsEeditionDialogVisible" @changeVisible="changersEeditionDialogVisible" />
   </iPage>
 </template>
 
@@ -78,15 +79,17 @@ import { pageMixins } from "@/utils/pageMixins"
 import tableList from '../components/tableList'
 import { rsTableTitle, rsMockData } from './data'
 import detailTop from '../components/topComponents'
+import rsDialog from '@/views/partsprocure/editordetail/components/designateInfo/components/rsEEdition'
 export default {
   mixins: [pageMixins],
-  components: { iPage, iCard, iPagination, iButton, tableList, iSearch, iSelect, iInput, detailTop },
+  components: { iPage, iCard, iPagination, iButton, tableList, iSearch, iSelect, iInput, detailTop, rsDialog },
   data() {
     return {
       tableListData: rsMockData,
       tableTitle: rsTableTitle,
       tableLoading: false,
-      form: {}
+      form: {},
+      rsEeditionDialogVisible: false
     }
   },
   methods: {
@@ -97,6 +100,9 @@ export default {
     handleSelect() {},
     goBack() {
       this.$router.push({path:'/designate/rfqdetail'})
+    },
+    changersEeditionDialogVisible(visible) {
+      this.rsEeditionDialogVisible = visible
     }
   }
 }

@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2021-05-24 13:53:50
- * @LastEditTime: 2021-05-28 17:55:13
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-05-29 18:00:13
+ * @LastEditors: ldh
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\designate\suggestion\components\data.js
  */
@@ -249,13 +249,13 @@ export const mokeMouldMonitorData = [
 ]
 
 export const mouldBudgetManagementDialogTableTitle = [
-  { props: "partNum", name: "零件号", tooltip: true, key: "nominationSuggestion.Lingjianhao" },
-  { props: "fsnrGsnrNum", name: "FSNR/GSNR", tooltip: true, key: "nominationSuggestion.Fsnrgsnr" },
-  { props: "rfqId", name: "RFQ编号", tooltip: true, key: "nominationSuggestion.Rfqbianhao" },
-  { props: "applyTime", name: "申请日期", tooltip: true, key: "nominationSuggestion.Shenqingriqi" },
-  { props: "cartypeProZh", name: "车型项目", tooltip: true, key: "nominationSuggestion.Chexingxiangmu" },
-  { props: "budget", name: "投资预算(RMB)", tooltip: true, key: "nominationSuggestion.Touziyusuanrmb" },
-  { props: "csfPDiretor", name: "CSF(P)负责人", tooltip: true, key: "nominationSuggestion.Csfpfuzeren" },
-  { props: "approvalStatus", name: "审批状态", tooltip: true, key: "nominationSuggestion.Shenpizhuangtai" },
-  { props: "approvalComments", name: "审批意见", tooltip: true, key: "nominationSuggestion.Shenpiyijian" },
+  { props: "partNum", name: "零件号", tooltip: true, key: "nominationSuggestion.LingJianHao" },
+  { props: "fsnrGsnrNum", name: "FSNR/GSNR", tooltip: true, key: "nominationSuggestion.FsnrGsnr" },
+  { props: "rfqId", name: "RFQ编号", tooltip: true, key: "nominationSuggestion.RfqBianHao" },
+  { props: "applyTime", name: "申请日期", tooltip: true, key: "nominationSuggestion.ShenQingRiQi" },
+  { props: "cartypeProZh", name: "车型项目", tooltip: true, key: "nominationSuggestion.CheXingXiangMu" },
+  { props: "budget", name: "投资预算(RMB)", tooltip: true, key: "nominationSuggestion.TouZiYuSuanRmb" },
+  { props: "csfPDiretor", name: "CSF(P)负责人", tooltip: true, key: "nominationSuggestion.CsfPFuZeRen" },
+  { props: "approvalStatus", name: "审批状态", tooltip: true, key: "nominationSuggestion.ShenPiZhuangTai" },
+  { props: "approvalComments", name: "审批意见", tooltip: true, key: "nominationSuggestion.ShenPiYiJian" },
 ]

@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2021-05-28 10:52:47
+ * @LastEditTime: 2021-05-29 16:25:36
  * @LastEditors: Luoshuang
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\editordetail\index.vue
@@ -226,7 +226,7 @@
 		</iCard>
 		<iTabsList class="margin-top20" type="border-card">
 			<!-------------------------已定点时显示定点信息tab------------------------------------------>
-			<el-tab-pane :label="$t('LK_DINGDIANXINXI')" v-if="detailData.status === '15'">
+			<el-tab-pane :label="$t('LK_DINGDIANXINXI')" >
 				<designateInfo :params="infoItem" />
 			</el-tab-pane>
 			<el-tab-pane :label="$t('LK_CAILIAOZUXINXI')"

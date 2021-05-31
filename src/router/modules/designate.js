@@ -1,7 +1,7 @@
 /*
  * @Author: HaoJiang
  * @Date: 2021-05-20 14:29:09
- * @LastEditTime: 2021-05-27 10:20:08
+ * @LastEditTime: 2021-05-31 09:48:33
  * @LastEditors: Luoshuang
  * @Description: 定点管理
  * @metaParams: hideTabLV3 隐藏三级导航
@@ -16,7 +16,7 @@ export default [
     redirect: "/designate/rfq",
     children: [
       {
-        path: "/designate/nomination",
+        path: "/sourcing/partsnomination",
         name: "designateHome",
         meta: {
           title: "定点申请综合管理",
@@ -177,6 +177,24 @@ export default [
             },
             component: () =>
               import ("@/views/designate/designatedetail/tasks")
+          },
+          {                             
+            path: "/designate/decisiondata/awardingscenario",
+            name: "designateDecisionAwardingscenario",
+            meta: {
+                title: "定点管理-决策资料-awardingscenario",
+            },
+            component: () =>
+              import ("@/views/designate/designatedetail/awardingscenario")
+          },
+          {
+            path: "/designate/decisiondata/rs",
+            name: "designateDecisionRS",
+            meta: {
+                title: "定点管理-决策资料-RS",
+            },
+            component: () =>
+              import ("@/views/designate/designatedetail/decisionData/rs")
           },
         ]
       }

@@ -5,7 +5,7 @@
 -->
 <template>
 <iPage>
-  <div class="nomination-wraper">
+  <div class="nomination-wraper" :class="{isPreview: isPreview === '1'}">
     <div class="nomination-layout">
       <!-- 进度条,基本信息 -->
       <designateStep v-if="isPreview=='0'"/>
@@ -51,3 +51,17 @@ export default {
   }}
 }
 </script>
+<style lang="scss" scoped>
+.nomination-wraper {
+  &.isPreview {
+    box-shadow: 0 0 1.25rem rgb(27 29 33 / 8%);
+    border-radius: 0.375rem;
+    background: #fff;
+    .nomination-content {
+      ::v-deep.card {
+        box-shadow: none !important;
+      }
+    }
+  }
+}
+</style>

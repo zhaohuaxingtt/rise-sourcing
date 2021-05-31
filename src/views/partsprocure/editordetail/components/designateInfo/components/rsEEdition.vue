@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-27 21:20:41
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-05-28 10:38:04
+ * @LastEditTime: 2021-05-29 16:36:15
  * @Description: 
  * @FilePath: \front-web\src\views\partsprocure\editordetail\components\designateInfo\components\rsEEdition.vue
 -->
@@ -11,30 +11,11 @@
   <iDialog 
     :visible.sync="dialogVisible"
     @close="clearDialog"
-    width="90%"
+    width="92%"
     class="addPartsDialog"
+    :title="'CSC Nomination Recommendatio'"
   >
-    <template slot="title">
-      <div class="clearFloat">
-        <span class="font18 font-weight">电子RS单</span>
-          <div class="floatright">
-            <!--------------------下载按钮----------------------------------->
-            <iButton @click="handleDownload" class="margin-right20" >下载</iButton>
-          </div>
-      </div>
-    </template>
-    <tableList selection indexKey :tableTitle="tableTitle" :tableData="tableData" class="doubleHeader"></tableList>
-    <iPagination v-update 
-      @size-change="handleSizeChange($event, getRfqTableList)" 
-      @current-change="handleCurrentChange($event, getRfqTableList)" 
-      background 
-      :page-sizes="page.pageSizes"
-      :page-size="page.pageSize"
-      :layout="page.layout"
-      :current-page="page.currPage"
-      :total="page.totalCount"
-      class="padding-bottom20"
-    />
+    <rsDetail :otherPreview="true" :otherNominationType="'1'" />
   </iDialog>
 </template>
 
@@ -43,9 +24,10 @@ import { iDialog, iButton, iSelect, iInput, iPagination } from 'rise'
 import tableList from '@/views/designate/designatedetail/components/tableList'
 import { fileTableTitle } from '../data'
 import { pageMixins } from "@/utils/pageMixins"
+import rsDetail from '@/views/designate/designatedetail/decisionData/rs'
 export default {
   mixins: [pageMixins],
-  components: { iDialog, iButton, iSelect, iInput, iPagination, tableList },
+  components: { iDialog, iButton, iSelect, iInput, iPagination, tableList, rsDetail },
   props: {
     dialogVisible: { type: Boolean, default: false }
   },
@@ -77,10 +59,11 @@ export default {
   }
   ::v-deep .el-dialog {
     margin-top: 30px !important;
-    height: 90%;
+    height: 93%;
     .el-dialog__body {
-      height: calc(100% - 70px);
+      height: calc(100% - 80px);
       overflow: auto;
+      padding: 0;
     }
   }
 }

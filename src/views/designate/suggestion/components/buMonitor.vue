@@ -13,14 +13,14 @@
         <div class="supplierTable">
           <div class="margin-bottom20 clearFloat">
             <span class="font18 font-weight">
-              {{ $t("nominationSuggestion.YeWuFenPeiMoNi") }}
+              {{ title || this.$t("nominationSuggestion.YeWuFenPeiMoNi") }}
             </span>
-            <span class="updateTime">
+            <span class="updateTime" v-if="updateTime">
               {{$t("nominationSuggestion.ShuaXinShiJian")}}:
               {{'2021-05-25'}}
             </span>
             
-            <div class="floatright">
+            <div class="floatright" v-if="!readOnly">
               <!-- 合并功能 -->
               <span class="combine">
                 <iButton>
@@ -79,6 +79,20 @@ import buMonitorCharts from './buMonitorCharts'
 import monitorTableList from './monitorTableList'
 
 export default {
+  props: {
+    readOnly: {
+      type: Boolean,
+      default: false
+    },
+    updateTime: {
+      type: Boolean,
+      default: false
+    },
+    title: {
+      type: String,
+      default: ''
+    },
+  },
   components: {
     iCard,
     iButton,
