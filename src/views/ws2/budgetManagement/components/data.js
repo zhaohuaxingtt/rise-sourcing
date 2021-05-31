@@ -360,7 +360,7 @@ export const tabtitle = [
     {value: 4, message: 0, name: "BA申请", activePath: '/tooling/baApplyIndex', url: '/tooling/baApplyIndex', key: "LK_BASHENQING"},
     {value: 5, message: 0, name: "BM申请", activePath: '/tooling/bmApplyIndex', url: '/tooling/bmApplyIndex', key: "LK_BMSHENQING"},
     {value: 6, message: 0, name: "投资报告", activePath: '/tooling/bmApplyIndex', url: '/tooling/bmApplyIndex', key: "LK_TOUZIBAOGAO"},
-    {value: 7, message: 0, name: "BA审批", activePath: '/tooling/budgetManagement/baApprovalIndex', url: '/tooling/budgetManagement/baApprovalIndex', key: "LK_BAAPPROVAL"},
+    {value: 7, message: 0, name: "BA审批", activePath: '/tooling/baApprovalIndex', url: '/tooling/baApprovalIndex', key: "LK_BAAPPROVAL"},
 ]
 
 export const dataBaseData = [

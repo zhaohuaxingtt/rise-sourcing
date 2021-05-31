@@ -4,7 +4,7 @@
       <div class="page-head-flex" :class="tableIndex === 0 ? 'head-on' : ''" @click="selectHeadTable(0)">
         <div class="line-divL line-div">
           <div class="title">All</div>
-          <div class="describe">所有BA申请</div>
+          <div class="describe">{{$t('LK_ALLBAAPPLY')}}</div>
         </div>
         <div class="line-divR line-div">
           <icon v-if="tableIndex === 0" symbol name="iconsuoyouBAshenqingweixuanzhong" class="openIcon"></icon>
@@ -14,7 +14,7 @@
       <div class="page-head-flex" :class="tableIndex === 1 ? 'head-on' : ''" @click="selectHeadTable(1)">
         <div class="line-divL line-div">
           <div class="title">{{tabData.applyCount}}</div>
-          <div class="describe">待确认BA申请</div>
+          <div class="describe">{{$t('LK_TOBECONFIRMEDBAAPPLY')}}</div>
         </div>
         <div class="line-divR line-div">
           <icon v-if="tableIndex === 1" symbol name="iconsuoyouBAshenqingweixuanzhong" class="openIcon"></icon>
@@ -24,7 +24,7 @@
       <div class="page-head-flex" :class="tableIndex === 3 ? 'head-on' : ''" @click="selectHeadTable(3)">
         <div class="line-divL line-div">
           <div class="title">{{tabData.amountCount}}</div>
-          <div class="describe">待确认追加金额</div>
+          <div class="describe">{{$t('LK_TOBECONFIRMEDMONEY')}}</div>
         </div>
         <div class="line-divR line-div">
           <icon v-if="tableIndex === 2" symbol name="iconsuoyouBAshenqingweixuanzhong" class="openIcon"></icon>
@@ -48,7 +48,7 @@
           @handleSelectionChange="handleSelectionChange"
         >
           <template #detailed="scope">
-            <div class="detailed" @click="openDetails(scope)">明细</div>
+            <div class="detailed" @click="openDetails(scope)">{{$t('LK_DETAILEDTXT')}}</div>
           </template>
         </iTableList>
         <iPagination
@@ -86,8 +86,8 @@
           </template>
           <template #detailed="scope">
             <div class="detailed-item">
-              <div class="detailed" @click="confirmA(scope)">确认</div>
-              <div class="detailed" @click="openDetails(scope)">明细</div>
+              <div class="detailed" @click="confirmA(scope)">{{$t('LK_QUEREN')}}</div>
+              <div class="detailed" @click="openDetails(scope)">{{$t('LK_DETAILEDTXT')}}</div>
             </div>
           </template>
         </iTableList>
@@ -119,8 +119,8 @@
         >
           <template #detailed="scope">
             <div class="detailed-item">
-              <div class="detailed" @click="confirmA(scope)">确认</div>
-              <div class="detailed" @click="openDetails(scope)">明细</div>
+              <div class="detailed" @click="confirmA(scope)">{{$t('LK_QUEREN')}}</div>
+              <div class="detailed" @click="openDetails(scope)">{{$t('LK_DETAILEDTXT')}}</div>
             </div>
           </template>
         </iTableList>
@@ -143,7 +143,7 @@
       <template slot="title">
         <div class="iDialog-head">
           <span>
-            修改A号
+            {{$t('LK_MODIFYANUMBER')}}
           </span>
           <span>
             {{allSelectList.length && allSelectList[0].carTypeName || ''}} {{allSelectList.length && allSelectList[0].localFactoryName || ''}}
@@ -153,7 +153,7 @@
               placement="bottom"
               trigger="hover">
             <div class="popoverDiv">
-              <p>确定后，所有同⼀⻋型项⽬、同⼀⼯⼚的BA申请相关记录将⼀并更改。</p>
+              <p>{{$t('LK_MODIFYANUMBERTXTTIPS')}}</p>
             </div>
             <icon symbol name="iconxinxitishi" slot="reference"></icon>
           </Popover>
@@ -162,10 +162,10 @@
 
       <div class="iDialog-item">
         <div>
-          原A号：{{allSelectList.length && allSelectList[0].sixBa || ''}}
+          {{$t('LK_PRIMARYAMBER')}}:{{allSelectList.length && allSelectList[0].sixBa || ''}}
         </div>
         <div>
-          原A号：A-<div class="iDialog-input">
+          {{$t('LK_NEWAMBER')}}:A-<div class="iDialog-input">
                     <iInput :placeholder="$t('LK_QINGSHURU')" v-model="sixBa" maxlength="5" />
                   </div>-<div class="iDialog-input">
                             <iInput :placeholder="`INT (${$t('LK_MODIFIABLE')})`" maxlength="3" v-model="int" />
@@ -179,7 +179,7 @@
     </iDialog>
 
     <!-- 明细 -->
-    <ApplyPopup :visible="detailsdVisible" title="明细" @changeLayer="clearDetailsDiolog">
+    <ApplyPopup :visible="detailsdVisible" :title="$t('LK_DETAILEDTXT')" @changeLayer="clearDetailsDiolog">
       <template slot="table">
         <iTableList
           :tableData="detailsTableData"
@@ -206,6 +206,11 @@
         <iButton @click="handleConfirm(tableIndex)">{{ $t('LK_QUEREN') }}</iButton>
       </template>
     </ApplyPopup>
+
+    <!-- 提示 -->
+    <!-- <Tips :visible='true'>
+
+    </Tips> -->
     
   </div>
 </template>
@@ -221,6 +226,7 @@ import { Popover } from "element-ui"
 import SearchBlock from "./components/searchBlock";
 import { pageMixins } from "@/utils/pageMixins";
 import ApplyPopup from "./components/applyPopup";
+import Tips from "./components/tips";
 import {
   icon,
   iTableList
@@ -235,8 +241,8 @@ import {
 } from "rise";
 
 const titleMap = {
-          1: '确认A号',
-          3: '确认金额'
+          // 1: this.$t('LK_CONFIRMANUMBER'),
+          // 3: this.$t('LK_CONFIRMMONEY')
         }
 
 export default {
@@ -245,7 +251,7 @@ export default {
     icon, iButton, iDialog,
     SearchBlock, iTableList, iCard,
     iPagination, iInput, Popover,
-    ApplyPopup
+    ApplyPopup, Tips
   },
   data(){
     return {
@@ -318,6 +324,13 @@ export default {
 
       fun(param).then(res => {
         console.log('确认：', res);
+        const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn;
+        if(res.data){
+          iMessage.success(result);
+          this.confirmVisible = false;
+        }else{
+          iMessage.error(result);
+        }
       })
     },
 
@@ -361,16 +374,15 @@ export default {
       const { sixBa, int, allSelectList } = this;
 
       if(sixBa === '' || sixBa.length < 5){
-        return iMessage.warn('请输入5位或8位A号!');
+        return iMessage.warn(this.$t('LK_INPUTNUMBERORMORE'));
       }
 
       if(int.length < 3 && int !== ''){
-        return iMessage.warn('请输入5位或8位A号!');
+        return iMessage.warn(this.$t('LK_INPUTNUMBERORMORE'));
       }
 
-
       const param = {
-        sixBa: `A-${sixBa}-${int}`,
+        sixBa: `A-${sixBa}-${int.length === 0 ? 'INT' : int}`,
         tmCartypeProId: allSelectList[0].tmCartypeProId,
         localFactoryId: allSelectList[0].localFactoryid,
         id: allSelectList[0].id,
@@ -509,25 +521,28 @@ export default {
     //  修改A号
     modifyA(){
       if(!this.allSelectList.length){
-        return iMessage.warn('请选择需要修改的数据！');
+        return iMessage.warn(this.$t('LK_PLEASEINPUTTIPS1'));
       }
 
       if(this.allSelectList.length > 1){
-        return iMessage.warn('最多只能同时修改一条数据！');
+        return iMessage.warn(this.$t('LK_PLEASEINPUTTIPS2'));
       }
       
       if(!this.allSelectList[0].sixBa || this.allSelectList[0].sixBa === ''){
-        return iMessage.warn('需要先确认A号！');
+        return iMessage.warn(this.$t('LK_PLEASEINPUTTIPS3'));
       }
 
-      if(this.allSelectList[0].baStatus === 5){
-        return iMessage.warn('退回状态不能确认A号！');
+      if(this.allSelectList[0].baStatus === "5"){
+        return iMessage.warn(this.$t('LK_PLEASEINPUTTIPS4'));
       }
 
       this.visible = true;
     },
 
     selectHeadTable(type){
+      if(this.tableIndex === type){
+        return
+      }
       this.tableIndex = type;
       this.allSelectList = [];
       this.waitSelectList = [];
