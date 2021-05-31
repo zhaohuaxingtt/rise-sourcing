@@ -81,10 +81,11 @@ export default {
     },
     created(){
         // 判断当前路由是否是决策资料相关路由 是则显示预览按钮
-        const { path } = this.$route;
+        const { path,query } = this.$route;
+        const {id ='1'} = query;
         this.isDecision = path.indexOf('/designate/decisiondata/')>-1;
 
-        this.getStepStatus();
+        this.getStepStatus(id);
 
     },
      computed:{
@@ -118,10 +119,8 @@ export default {
         },
 
         // 获取步骤状态
-        async getStepStatus(){
-            const data= {
-                "nominateId":"1"
-            }
+        async getStepStatus(nominateId){
+            const data= {nominateId};
             await this.$store.dispatch('setNominationStep',data);
         },
 

@@ -21,8 +21,8 @@
                 <ul class="timeLine-edit-list">
                     <li class="flex-between-center margin-bottom20">
                         <span class="show-icon">
-                            <icon symbol name="xianshi" class="step-icon" ></icon>
-                            <!-- <icon symbol name="yincang" class="step-icon" ></icon> -->
+                            <!-- <icon symbol name="iconxianshi" class="show-icon-item" ></icon> -->
+                            <icon symbol name="iconyincang" class="show-icon-item" ></icon>
                         </span>
                         <groupStep :stepList="stepList" class="list-item-step"/>
                     </li>
@@ -40,7 +40,7 @@
             <iCard collapse title="Material Group 1" class="timeLine-card">
                 <groupStep :stepList="stepList" :stepIndex='2'>
                     <template slot="myStep">
-                        <icon symbol name="TimeLine-Today" class="step-icon" ></icon>
+                        <icon symbol name="iconTimeLine-Today" class="step-icon" ></icon>
                         <p>Today</p>
                     </template>
                 </groupStep>
@@ -94,7 +94,7 @@ export default {
     },
     data(){
         return{
-            isEdit:false,
+            isEdit:true,
             timeList:[
                 {startDate:1621048561,endDate:1621912561}, // 5-17 ---> 5-25
                 {startDate:1621480561,endDate:1621998961}, // 5-20 ---> 5-26
@@ -231,10 +231,10 @@ export default {
         .show-icon{
             width: 100px;
             padding-top: 10px;
-            .step-icon{
-                width: 50px;
-                height: 50px;
-                border: 1px solid red;
+            .show-icon-item{
+                width: 25px;
+                height: 25px;
+                margin-left: 20px;
             }
         }
         .list-item-step{

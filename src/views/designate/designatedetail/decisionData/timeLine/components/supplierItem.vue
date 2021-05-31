@@ -27,12 +27,12 @@
                     />
 
                     <!-- 删除按钮 -->
-                    <span class="delete" @click="edit('delete',itemIndex,index)"><icon symbol name="dingdianshenqingyusheluoji" /></span>
+                    <span class="delete" @click="edit('delete',itemIndex,index)"><icon class="delete-icon" symbol name="icondingdianshenqingyusheluoji-shanchu" /></span>
                 </li>
             </ul>
         </div>
         <p class="btn-list">
-            <span class="add" @click="edit('add',itemIndex)"><icon symbol name="TimeLine_tianjiagongyingshang" /></span>
+            <span class="add" @click="edit('add',itemIndex)"><icon class="add-icon" symbol name="iconTimeLine_tianjiagongyingshang" /></span>
         </p>
         
     </div>
@@ -115,10 +115,11 @@ export default {
                 .delete{
                     margin-left: 15px;
                     display:inline-block;
-                    width: 20px;
-                    height: 20px;
-                    border: 1px solid red;
                     margin-top: 10px;
+                    .delete-icon{
+                        width: 20px;
+                        height: 20px;
+                    }
                 }
             }   
         }
@@ -129,9 +130,10 @@ export default {
             bottom: 30px;
             span{
                 display:inline-block;
-                width: 20px;
-                height: 20px;
-                border: 1px solid red;
+                .add-icon{
+                    width: 20px;
+                    height: 20px;
+                }
             }
         }
     }
