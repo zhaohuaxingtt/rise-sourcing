@@ -1,7 +1,7 @@
 <!--
 * @author:shujie
 * @Date: 2021-2-25 11:42:11
- * @LastEditors: Please set LastEditors
+ * @LastEditors: ldh
 * @Description: 待办事项-零件清单
  -->
 <template>
@@ -11,6 +11,7 @@
           $t('delete')
         }}
       </iButton>
+      <iButton @click="sendKM">{{ $t('LK_FASONGKM') }}</iButton>
       <iButton @click="showApplyPrice" v-permission="PARTSRFQ_EDITORDETAIL_PARTDETAILIST_NEWPRICE">
         {{ $t('LK_XINSHENQINGCAIWUMUBIAOJIA') }}
       </iButton>
@@ -32,6 +33,8 @@
     <partsTable ref="partsTable" :rfqId="rfqId" @targetHand="waitSelect"></partsTable>
     <!-- 新申请财务目标价 -->
     <applyPrice ref="applyPrice" @refresh="getTableList" :handleSelectArr="handleSelectArr"></applyPrice>
+    <!-- 发送KM -->
+    <kmDialog :visible.sync="kmDialogVisible" />
   </iCard>
 </template>
 
@@ -64,6 +67,7 @@ import store from "@/store";
 import {
   rfqCommonFunMixins
 } from "pages/partsrfq/components/commonFun";
+import kmDialog from "./components/kmDialog";
 
 export default {
   mixins: [pageMixins, rfqCommonFunMixins],
@@ -73,7 +77,8 @@ export default {
     tableList,
     iPagination,
     applyPrice,
-    partsTable
+    partsTable,
+    kmDialog
   },
   created() {
     this.rfqId = this.$route.query.id
@@ -90,6 +95,7 @@ export default {
       parmarsHasRfq: JSON.parse(JSON.stringify(form)),
       rfqId: "",
       addLoding: false,
+      kmDialogVisible: false
     };
   },
   methods: {
@@ -104,7 +110,7 @@ export default {
     // 跳转详情
     openPage(item) {
       this.$router.push({
-        path: "/partsprocure/editordetail",
+        path: "/sourcing/partsprocure/editordetail",
         query: {
           item: JSON.stringify(item),
         },
@@ -211,6 +217,10 @@ export default {
         this.getTableList()
         this.$refs.partsTable.getTableList()
         })
+    },
+    // 发送KM
+    sendKM() {
+      this.kmDialogVisible = true
     }
   },
 };

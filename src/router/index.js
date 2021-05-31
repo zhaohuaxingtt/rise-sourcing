@@ -1,13 +1,20 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-03-27 16:49:15
+ * @LastEditTime: 2021-05-27 13:42:07
  * @LastEditors: Please set LastEditors
  * @Description: 系统静态路由.
- * @FilePath: \rise\src\router\index.js
+ * @FilePath: \front-web\src\router\index.js
  *
  */
 /* eslint-disable no-undef */
+
+// 引入modules
+// 定点管理
+import designateRoutes from './modules/designate'
+import createpartsRoutes from './modules/createparts'
+import costanalysismanageRoutes from './modules/costanalysismanage'
+
 Vue.use(VueRouter);
 const originalPush = VueRouter.prototype.push
 
@@ -19,7 +26,7 @@ export const staticRouter = [{
         name: "index",
         component: () =>
             import ("@/layout/default"),
-        redirect: "/partsign",
+        redirect: "/sourcing/partsign",
         children: [{
                 path: "/index",
                 name: "home",
@@ -30,7 +37,7 @@ export const staticRouter = [{
                     import ("@/views/home"),
             },
             {
-                path: "/partsign",
+                path: "/sourcing/partsign",
                 name: "partsign",
                 meta: {
                     title: "新建信息单",
@@ -39,7 +46,7 @@ export const staticRouter = [{
                     import ("@/views/partsign/home"),
             },
             {
-                path: "/partsign/editordetail",
+                path: "/sourcing/partsign/editordetail",
                 name: "editordetail",
                 meta: {
                     title: "新建信息单详情",
@@ -48,7 +55,7 @@ export const staticRouter = [{
                     import ("@/views/partsign/editordetail"),
             },
             {
-                path: "/partsign/volumeVersion",
+                path: "/sourcing/partsign/volumeVersion",
                 name: "volumeVersion",
                 meta: {
                     title: "新建信息单每车用量版本",
@@ -57,7 +64,7 @@ export const staticRouter = [{
                     import ("@/views/partsign/version/volume"),
             },
             {
-                path: "/partsign/enquiryVersion",
+                path: "/sourcing/partsign/enquiryVersion",
                 name: "enquiryVersion",
                 meta: {
                     title: "新建信息单询价资料版本",
@@ -66,7 +73,7 @@ export const staticRouter = [{
                     import ("@/views/partsign/version/enquiry"),
             },
             {
-                path: "/partsprocure",
+                path: "/sourcing/partsprocure",
                 name: "partsprocure",
                 meta: {
                     title: "采购项目",
@@ -75,7 +82,7 @@ export const staticRouter = [{
                     import ("@/views/partsprocure/home"),
             },
             {
-                path: "/partsprocure/editordetail",
+                path: "/sourcing/partsprocure/editordetail",
                 name: "partsprocure",
                 meta: {
                     title: "采购项目详情",
@@ -84,7 +91,7 @@ export const staticRouter = [{
                     import ("@/views/partsprocure/editordetail"),
             },
             {
-                path: "/partsprocure/batchmiantain",
+                path: "/sourcing/partsprocure/batchmiantain",
                 name: "batchmiantain",
                 meta: {
                     title: "采购项目批量修改",
@@ -93,7 +100,7 @@ export const staticRouter = [{
                     import ("@/views/partsprocure/batchmiantain"),
             },
             {
-                path: "/partsprocure/outputplan",
+                path: "/sourcing/partsprocure/outputplan",
                 name: "outputplan",
                 meta: {
                     title: "采购项目计划",
@@ -102,7 +109,7 @@ export const staticRouter = [{
                     import ("@/views/partsprocure/outputplan"),
             },
             {
-                path: "/partsrfq",
+                path: "/sourcing/partsrfq",
                 name: "partsrfq",
                 meta: {
                     title: "RFQ",
@@ -111,16 +118,34 @@ export const staticRouter = [{
                     import ("@/views/partsrfq/home"),
             },
             {
-                path: "/partsrfq/editordetail", //RFQ详情
+                path: "/sourcing/partsrfq/editordetail", //RFQ详情待办
                 name: "editordetail",
                 meta: {
-                    title: "RFQ详情",
+                    title: "RFQ详情待办",
                 },
                 component: () =>
                     import ("@/views/partsrfq/editordetail"),
             },
             {
-                path: "/partsrfq/editordetail/partScoring", //零件评分
+                path: "/sourcing/partsrfq/editordetailinfo", //RFQ详情
+                name: "editordetail",
+                meta: {
+                    title: "RFQ详情",
+                },
+                component: () =>
+                    import ("@/views/partsrfq/editordetailInfo"),
+            },
+            {
+                path: "/sourcing/partsrfq/assistant", //RFQ谈判助手
+                name: "editordetail",
+                meta: {
+                    title: "谈判助手",
+                },
+                component: () =>
+                    import ("@/views/partsrfq/assistant"),
+            },
+            {
+                path: "/sourcing/partsrfq/editordetail/partScoring", //零件评分
                 name: "editordetailPartScoring",
                 meta: {
                     title: "RFQ零件评分",
@@ -267,6 +292,63 @@ export const staticRouter = [{
                 name: "/ws3Register",
                 component: () =>
                     import ("@/views/ws3/register"),
+            },
+            // workStream1 -------------------------------------- //
+            {
+                path: "/partsfp/automaticallyassignde", //管理员看到的，手动分配配件任务。
+                name: "/ws3Register",
+                component: () =>
+                    import ("@/views/AutomaticallyAssignDe"),
+            },
+            {
+                path: "/sourcing/importfiles",
+                name: "importFiles",
+                component: () =>
+                    import ("@/views/designateFiles/importFiles"),
+            },
+            {
+                path: "/sourcing/importfiles/detaillist",
+                name: "filesDetailList",
+                component: () =>
+                    import ("@/views/designateFiles/importFiles/detail"),
+            } ,
+            {
+                path: "/sourcing/filemanage",
+                name: "fileManage",
+                meta: { title: "附件综合管理" },
+                component: () => import("@/views/designateFiles/fileManage/index"),
+            },   
+            // 配件相关路由
+            {
+                path: "/sourcing/signforpartsdemand",
+                name: "signForPartsDemand",
+                meta: { title: "配件需求签收" },
+                component: () => import("@/views/accessoryPart/signForPartsDemand/index"),
+            },
+            {
+                path: "/sourcing/integratedmanage",
+                name: "integratedManage",
+                meta: { title: "配件综合管理" },
+                component: () => import("@/views/accessoryPart/integratedManage/index"),
+            },
+            {
+                path: "/sourcing/accessorypartdetail",
+                name: "accessoryPartDetail",
+                meta: { title: "配件详情" },
+                component: () => import("@/views/accessoryPart/accessoryPartDetail/index"),
+            },
+            // 报价详情相关路由
+            {
+                path: "/supplier/quotationdetail",
+                name: "quotationDetail",
+                component: () => 
+                    import ("@/views/supplier/quotationdetail")
+            },
+            {
+                path: "/sourcing/createrfq",
+                name: "createRfq",
+                meta: { title: "创建RFQ" },
+                component: () => import("@/views/accessoryPart/createRfq/index"),
             }
         ],
     },
@@ -301,5 +383,10 @@ export const staticRouter = [{
 
 // eslint-disable-next-line no-undef
 export default new VueRouter({
-    routes: staticRouter
+    routes: [
+        ...staticRouter,
+        ...designateRoutes,
+        ...createpartsRoutes,
+        ...costanalysismanageRoutes
+    ]
 });

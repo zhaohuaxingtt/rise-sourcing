@@ -163,13 +163,13 @@
             :placeholder="$t('LK_QINGXUANZE')"
             v-model="categoryObj"
             @change="changeSelect"
-            value-key="categoryNameId"
+            value-key="categoryId"
           >
             <el-option
               :value="item"
               :label="item.categoryName"
               v-for="item in category"
-              :key="item.categoryNameId"
+              :key="item.categoryId"
             ></el-option>
           </iSelect>
         </el-form-item>
@@ -428,7 +428,7 @@ export default {
           this.startLoding = false;
           if (res.data && res.data.rfqId) {
             this.$router.push({
-              path: "/partsrfq/editordetail",
+              path: "/sourcing/partsrfq/editordetail",
               query: {
                 id: res.rfqId,
               },

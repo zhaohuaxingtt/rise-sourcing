@@ -6,48 +6,6 @@
   "description": "",
   "glyphs": [
     {
-      "icon_id": "21841382",
-      "name": "财务预警-icon",
-      "font_class": "caiwuyujing-icon",
-      "unicode": "e67b",
-      "unicode_decimal": 59003
-    },
-    {
-      "icon_id": "21841383",
-      "name": "财务预警-红灯",
-      "font_class": "caiwuyujing-hongdeng",
-      "unicode": "e67c",
-      "unicode_decimal": 59004
-    },
-    {
-      "icon_id": "21840371",
-      "name": "待确认BA申请:追加金额（选中）",
-      "font_class": "daiquerenBAshenqingzhuijiajinexuanzhong",
-      "unicode": "e679",
-      "unicode_decimal": 59001
-    },
-    {
-      "icon_id": "21840372",
-      "name": "待确认BA申请:追加金额（未选中）",
-      "font_class": "daiquerenBAshenqingzhuijiajineweixuanzhong",
-      "unicode": "e67a",
-      "unicode_decimal": 59002
-    },
-    {
-      "icon_id": "21840254",
-      "name": "所有BA申请（未选中）",
-      "font_class": "suoyouBAshenqingweixuanzhong",
-      "unicode": "e677",
-      "unicode_decimal": 58999
-    },
-    {
-      "icon_id": "21840255",
-      "name": "所有BA申请（选中）",
-      "font_class": "suoyouBAshenqingxuanzhong",
-      "unicode": "e678",
-      "unicode_decimal": 59000
-    },
-    {
       "icon_id": "21781190",
       "name": "TimeLine-BFConfirm",
       "font_class": "TimeLine-BFConfirm",

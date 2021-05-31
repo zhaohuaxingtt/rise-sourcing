@@ -1,7 +1,7 @@
 /*
  * @Author: moxuan
  * @Date: 2021-03-03 09:52:00
- * @LastEditTime: 2021-04-19 15:19:36
+ * @LastEditTime: 2021-05-24 12:11:59
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsrfq\home\components\data.js
@@ -24,11 +24,18 @@ export const tableTitle = permissionTitle("PARTSRFQ_RFQLIST", [
     { props: 'tpGradeStatus', name: 'TP评分状态', key: 'LK_TPPINGFENZHUANGTAI', tooltip: false },
     { props: 'mqGradeStatus', name: 'MQ评分状态', key: 'LK_MQPINGFENZHUANGTAI', tooltip: false },
     { props: 'targetGradeStatus', name: 'CF目标价状态', key: 'LK_MUBIAOJIAZHUANGTAI', tooltip: false },
+    { props: 'a', name: 'Heavy Item', key: 'LK_HEAVYITEM', tooltip: false, width: 100 },
+    { props: 'b', name: '分析报告', key: 'LK_FENXIBAOGAO', tooltip: false, width: 100 },
     { props: 'recordId', name: '', key: '', tooltip: false },
-])
+]
+)
 
 export const assignmentOfScroingTasksTableTitle = [
     { props: 'deptNum', name: '部门编号', key: 'LK_BUMENBIANHAO' },
     { props: 'deptType', name: '部门评分类型', key: 'LK_BUMENPINGFENLEIXING' },
     { props: 'graderId', name: '评分人', key: 'LK_PINGFENREN' },
+]
+
+export const attachmentTableTitle = [
+    { props: 'fileName', name: '文件名称', key: 'LK_WENJIANMINGCHENG' }
 ]
