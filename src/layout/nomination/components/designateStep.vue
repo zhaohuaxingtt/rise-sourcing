@@ -31,7 +31,7 @@
         <div class="step-list flex-between-center-center margin-top30 margin-bottom30">
             <div class="step-list-item flex-center-center" v-for="(item,index) in applyStep" :key="'applyStep'+index">
                 <div>
-                    <icon symbol name="databaseweixuanzhong" class="step-icon"></icon>
+                    <icon symbol name="icondingdianguanlijiedian-jinhangzhong" class="step-icon"></icon>
                     <p class="step-text">{{$t(item.key) || item.name}}</p>
                 </div>
                 <icon v-if="index+1 !== applyStep.length" symbol name="liuchengjiedianyiwancheng1" class="step-icon"></icon>
