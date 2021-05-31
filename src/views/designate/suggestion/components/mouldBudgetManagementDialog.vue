@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-05-24 13:45:08
- * @LastEditTime: 2021-05-31 13:53:35
+ * @LastEditTime: 2021-05-31 14:40:53
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\designate\suggestion\components\mouldBudgetManagementDialog.vue
@@ -85,6 +85,9 @@ export default {
       if (nv) { 
         // 请求
         this.getMouldBudget()
+      } else {
+        this.tableListData = []
+        this.multipleSelection = []
       }
 
       this.$emit("update:visible", nv)

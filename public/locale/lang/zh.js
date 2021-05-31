@@ -101,21 +101,24 @@
         },
         // 手工采购项目创建
         'createparts': {
-            'Shougongcaigouxiangmuchuangjian': '手工采购项目创建', // 手工采购项目创建
-            'Gangcaipiliangcaigou': '钢材批量采购', // 钢材批量采购
-            'Gangcaiyicixingcaigou': '钢材一次性采购', // 钢材一次性采购
-            'Gongchangqianyi': '工厂迁移', // 工厂迁移
-            'Qingshuru': '请输入', // 请输入
-            'Qingxuanze': '请选择', // 请选择
-            'Lingjianhao': '零件号', // 零件号
-            'Lingjianmingzhong': '零件名(中)', // 零件名(中)
-            'Lingjianmingde': '零件名(德)', // 零件名(德)
-            'Lingjianlaiyuan': '零件来源', // 零件来源
-            'Chuangjiancaigouxiangmu': '创建采购项目', // 创建采购项目
-            'Lingjianzhuangtai': '零件状态', // 零件状态
-            'Jihuoshijian': '激活时间', // 激活时间
-            'Caozuorizhi': '操作日志', // 操作日志
-            'Chakan': '查看', // 查看
+            'ShouGongCaiGouXiangMuChuangJian': '手工采购项目创建', // 手工采购项目创建
+            'GangCaiPiLiangCaiGou': '钢材批量采购', // 钢材批量采购
+            'GangCaiYiCiXingCaiGou': '钢材一次性采购', // 钢材一次性采购
+            'GongChangQianYi': '工厂迁移', // 工厂迁移
+            'QingShuRuLingJianHao': '请输入零件号', // 请输入零件号
+            'QingShuRuLingJianMingZhong': '请输入零件名(中)', // 请输入零件名(中)
+            'QingShuRuLingJianMingDe': '请输入零件名(德)', // 请输入零件名(德)
+            'QingXuanZeLingJianLaiYuan': '请选择零件来源', // 请选择零件来源
+            'QingXuanZeLingJianZhuangTai': '请选择零件状态', // 请选择零件状态
+            'LingJianHao': '零件号', // 零件号
+            'LingJianMingZhong': '零件名(中)', // 零件名(中)
+            'LingJianMingDe': '零件名(德)', // 零件名(德)
+            'LingJianLaiYuan': '零件来源', // 零件来源
+            'ChuangJianCaiGouXiangMu': '创建采购项目', // 创建采购项目
+            'LingJianZhuangTai': '零件状态', // 零件状态
+            'JiHuoShiJian': '激活时间', // 激活时间
+            'CaoZuoRiZhi': '操作日志', // 操作日志
+            'ChaKan': '查看', // 查看
         },
         // 成本分析管理
         'costanalysismanage': {
