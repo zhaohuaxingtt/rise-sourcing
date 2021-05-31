@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:18:01
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-05-29 16:18:34
+ * @LastEditTime: 2021-05-31 11:29:26
  * @Description: 流转RS单
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\rs\components\circulation\index.vue
 -->
@@ -55,7 +55,7 @@
 
 <script>
 import { iCard, iButton, iInput, icon, iPagination, iFormGroup, iFormItem, iText } from 'rise'
-import { nomalTableTitle, checkList } from './data'
+import { nomalTableTitle, checkList, accessoryTableTitle, sparePartTableTitle } from './data'
 import tableList from '@/views/designate/designatedetail/components/tableList'
 import { pageMixins } from "@/utils/pageMixins"
 export default {
@@ -84,7 +84,9 @@ export default {
   },
   computed: {
     cardTitle() {
-      return '生产采购 CSC Nomination Recommendation - Production Purchasing'
+      // '配件采购 Nomination Recommendation - Spare Part Purchasing'
+      // '附件采购 Nomination Recommendation – Accessory Purchasing'
+      return '生产采购 Nomination Recommendation - Production Purchasing'
     }
   },
   methods: {
