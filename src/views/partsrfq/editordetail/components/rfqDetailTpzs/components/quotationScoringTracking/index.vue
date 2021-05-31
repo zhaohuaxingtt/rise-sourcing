@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-25 15:32:38
- * @LastEditTime: 2021-05-31 15:02:32
+ * @LastEditTime: 2021-05-31 16:28:12
  * @LastEditors: Please set LastEditors
  * @Description: 报价评分跟踪
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringTracking\index.vue
@@ -39,7 +39,6 @@ export default{
     }
   },
   created(){
-    console.log(this.$route.query.id)
     this.getTimeLine(1,this.$route.query.id)
   },
   methods:{
@@ -50,11 +49,16 @@ export default{
      */
     getTimeLine(qutaitonId,rfqId){
       getTimeLine(qutaitonId,rfqId).then(res=>{
-        console.log(res)
+        if(res.data){
+          console.log(res.data)
+        }
       }).catch(err=>{
         iMessage.error(err.desZh)
       })
-    }
+    },
+    translateTimeLine(){
+      
+    },
   }
 }
 </script>

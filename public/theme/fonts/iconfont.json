@@ -6,6 +6,104 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "21930806",
+      "name": "报价单-有附件",
+      "font_class": "baojiadan-youfujian",
+      "unicode": "e684",
+      "unicode_decimal": 59012
+    },
+    {
+      "icon_id": "21874930",
+      "name": "财报分析",
+      "font_class": "caibaofenxi",
+      "unicode": "e683",
+      "unicode_decimal": 59011
+    },
+    {
+      "icon_id": "21874670",
+      "name": "TimeLine_添加供应商",
+      "font_class": "TimeLine_tianjiagongyingshang",
+      "unicode": "e682",
+      "unicode_decimal": 59010
+    },
+    {
+      "icon_id": "21866602",
+      "name": "供应商申请中",
+      "font_class": "gongyingshangshenqingzhong",
+      "unicode": "e680",
+      "unicode_decimal": 59008
+    },
+    {
+      "icon_id": "21866603",
+      "name": "供应商审核完成",
+      "font_class": "gongyingshangshenhewancheng",
+      "unicode": "e681",
+      "unicode_decimal": 59009
+    },
+    {
+      "icon_id": "21862113",
+      "name": "同步",
+      "font_class": "tongbu",
+      "unicode": "e67f",
+      "unicode_decimal": 59007
+    },
+    {
+      "icon_id": "21860981",
+      "name": "地图放大",
+      "font_class": "ditufangda",
+      "unicode": "e67d",
+      "unicode_decimal": 59005
+    },
+    {
+      "icon_id": "21860982",
+      "name": "地图缩小",
+      "font_class": "ditusuoxiao",
+      "unicode": "e67e",
+      "unicode_decimal": 59006
+    },
+    {
+      "icon_id": "21841382",
+      "name": "财务预警-icon",
+      "font_class": "caiwuyujing-icon",
+      "unicode": "e67b",
+      "unicode_decimal": 59003
+    },
+    {
+      "icon_id": "21841383",
+      "name": "财务预警-红灯",
+      "font_class": "caiwuyujing-hongdeng",
+      "unicode": "e67c",
+      "unicode_decimal": 59004
+    },
+    {
+      "icon_id": "21840371",
+      "name": "待确认BA申请:追加金额（选中）",
+      "font_class": "daiquerenBAshenqingzhuijiajinexuanzhong",
+      "unicode": "e679",
+      "unicode_decimal": 59001
+    },
+    {
+      "icon_id": "21840372",
+      "name": "待确认BA申请:追加金额（未选中）",
+      "font_class": "daiquerenBAshenqingzhuijiajineweixuanzhong",
+      "unicode": "e67a",
+      "unicode_decimal": 59002
+    },
+    {
+      "icon_id": "21840254",
+      "name": "所有BA申请（未选中）",
+      "font_class": "suoyouBAshenqingweixuanzhong",
+      "unicode": "e677",
+      "unicode_decimal": 58999
+    },
+    {
+      "icon_id": "21840255",
+      "name": "所有BA申请（选中）",
+      "font_class": "suoyouBAshenqingxuanzhong",
+      "unicode": "e678",
+      "unicode_decimal": 59000
+    },
+    {
       "icon_id": "21781190",
       "name": "TimeLine-BFConfirm",
       "font_class": "TimeLine-BFConfirm",
