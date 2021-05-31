@@ -1,15 +1,7 @@
 <template>
-  <iDialog title="提示" :visible="visible" @close='clearDiolog' width="380px" top="5vh" z-index="1000" class="iDialog">
-    <!-- <div slot="title">
-      <div class="iDialog-head">
-        <div>{{title}}</div>
-        <slot name="btns">
-
-        </slot>
-      </div>
-    </div>
-
-    <slot name="table"></slot> -->
+  <iDialog title="提示" :visible="visible" @close='clearDiolog' width="380px" z-index="1000" class="iDialog">
+    
+    <slot name="msg"></slot>
 
   </iDialog>
 </template>
@@ -40,6 +32,9 @@ export default {
 
 <style lang='scss' scoped>
 .iDialog{
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
   .head-msg{
     font-size: 14px;
@@ -66,8 +61,9 @@ export default {
   }
   
   ::v-deep .el-dialog{
-    height: 90% !important;
+    height: 217px !important;
     overflow: auto;
+    margin: 0;
   }
 }
 </style>
