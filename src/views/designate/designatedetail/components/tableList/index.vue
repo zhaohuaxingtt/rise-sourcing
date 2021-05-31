@@ -2,7 +2,7 @@
  * @Descripttion: 
  * @Author: Luoshuang
  * @Date: 2021-05-21 14:30:41
- * @LastEditTime: 2021-05-27 00:32:34
+ * @LastEditTime: 2021-05-29 12:03:19
 -->
 <template>
   <el-table fit tooltip-effect='light' :height="height" :data='tableData' v-loading='tableLoading' @selection-change="handleSelectionChange" :empty-text="$t('LK_ZANWUSHUJU')" ref="moviesTable" >
@@ -14,11 +14,11 @@
     </el-table-column>
     <template v-for="(items,index) in tableTitle">
       <!----------------------需要高亮的列并且带有打开详情事件------------------------>
-      <el-table-column :key="index" align='center' :width="items.width" :show-overflow-tooltip='items.tooltip' v-if='items.props == activeItems' :prop="items.props" :label="items.key ? $t(items.key) : items.name">
+      <el-table-column :key="index" align='center' :width="items.width" :min-width="items.minWidth" :show-overflow-tooltip='items.tooltip' v-if='items.props == activeItems' :prop="items.props" :label="items.key ? $t(items.key) : items.name">
         <template slot-scope="row"><span class="openLinkText cursor" @click="openPage(row.row)">{{row.row[activeItems]}}</span></template>
       </el-table-column>
       <!----------------------需要进行排序的列------------------------>
-      <el-table-column :key="index" align='center' :width="items.width"  v-else-if='items.props == "paixu"'>
+      <el-table-column :key="index" align='center' :width="items.width" :min-width="items.minWidth"  v-else-if='items.props == "paixu"'>
         <tempalte slot-scope="scope">
           <span @click="updateSlot(scope.row,0)" v-if='scope.row.recordId && parseInt(scope.row.recordId)'>
             <icon symbol class="cursor" name='iconliebiaoyizhiding' ></icon>
@@ -29,7 +29,7 @@
         </tempalte>
       </el-table-column>
       <!---------------------------可编辑列---------------------------------->
-      <el-table-column :key="index" align='center' :width="items.width" :show-overflow-tooltip='items.tooltip' v-else-if="items.editable" :prop="items.props" :label="items.key ? $t(items.key) : items.name">
+      <el-table-column :key="index" align='center' :width="items.width" :min-width="items.minWidth" :show-overflow-tooltip='items.tooltip' v-else-if="items.editable" :prop="items.props" :label="items.key ? $t(items.key) : items.name">
         <template slot="header">
           <span>{{items.key ? $t(items.key) : items.name}}</span>
           <span v-if="items.required" style="color:red;">*</span>
@@ -49,9 +49,9 @@
         </template>
       </el-table-column>
       <!-------------------------正常列--------------------------->
-      <el-table-column :key="index" align='center' :width="items.width" :show-overflow-tooltip='items.tooltip'  v-else :label="items.key ? $t(items.key) : items.name" :prop="items.props">
+      <el-table-column :key="index" align='center' :width="items.width" :min-width="items.minWidth" :show-overflow-tooltip='items.tooltip'  v-else :label="items.key ? $t(items.key) : items.name" :prop="items.props">
         <template slot="header">
-          <span v-if="items.enName">{{items.name}}<br />{{items.enName}}</span>
+          <span v-if="items.enName">{{items.name}}<span><br />{{items.enName}}<br v-if="items.enName1" />{{items.enName1}}</span></span>
           <span v-else>{{items.key ? $t(items.key) : items.name}}</span>
         </template>
         <template slot-scope="scope">
