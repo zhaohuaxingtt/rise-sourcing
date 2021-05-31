@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-25 13:01:23
- * @LastEditTime: 2021-05-30 11:18:49
+ * @LastEditTime: 2021-05-31 15:15:36
  * @LastEditors: Please set LastEditors
  * @Description: 报价助手界面
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\index.vue
@@ -41,6 +41,7 @@ import quotationScoringTracking from './components/quotationScoringTracking'
 import quotationScoringMj from './components/quotationScoringMj'
 import quotationScoringHZ from './components/quotationScoringHz'
 import quotationScoringEcartsCard from './components/quotationScoringEcartsCard'
+// eslint-disable-next-line no-irregular-whitespace
 import buMonitor from "@/views/designate/suggestion/components/buMonitor"
 export default{
   components:{iTabsList,iCard,quotationScoringTracking,quotationScoringMj,quotationScoringHZ,quotationScoringEcartsCard,buMonitor}

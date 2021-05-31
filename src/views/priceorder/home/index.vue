@@ -1,7 +1,7 @@
 <!--
  * @Author: lyujiahong
  * @Date: 2021-04-07 09:59:25
- * @LastEditTime: 2021-04-07 09:59:25
+ * @LastEditTime: 2021-05-31 15:10:23
  * @LastEditors: Please set LastEditors
  * @Description: RFQ模块首页
  * @FilePath: \rise\src\views\partsrfq\home\index.vue
@@ -23,16 +23,9 @@
 <script>
 import {
   iPage,
-  iButton,
   iCard,
-  iPagination,
-  iSearch,
-  iInput,
-  iSelect,
-  icon,
 } from "@/components";
 import ProcessTree from "./component/ProcessTree";
-import assignmentOfScoringTasks from "pages/partsrfq/home/components/assignmentOfScoringTasks";
 import { pageMixins } from "@/utils/pageMixins";
 import filters from "@/utils/filters";
 import { rfqCommonFunMixins } from "pages/partsrfq/components/commonFun";
@@ -40,14 +33,7 @@ import { rfqCommonFunMixins } from "pages/partsrfq/components/commonFun";
 export default {
   components: {
     iPage,
-    iButton,
     iCard,
-    iPagination,
-    iSearch,
-    iInput,
-    iSelect,
-    icon,
-    assignmentOfScoringTasks,
     ProcessTree,
   },
   mixins: [pageMixins, filters, rfqCommonFunMixins],

@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-05-24 17:06:01
- * @LastEditTime: 2021-05-25 09:13:50
+ * @LastEditTime: 2021-05-31 15:39:17
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\createparts\components\home\index.vue
@@ -23,25 +23,25 @@
       :icon="true"
     >
       <el-form>
-        <el-form-item :label="$t('createparts.Lingjianhao')">
-          <iInput :placeholder="$t('createparts.Qingshuru')" v-model="form['search.partNum']" />
+        <el-form-item :label="$t('createparts.LingJianHao')">
+          <iInput :placeholder="$t('createparts.QingShuRuLingJianHao')" v-model="form['search.partNum']" />
         </el-form-item>
-        <el-form-item :label="$t('createparts.Lingjianmingzhong')">
-          <iInput :placeholder="$t('createparts.Qingshuru')" v-model="form['search.partNameZh']" />
+        <el-form-item :label="$t('createparts.LingJianMingZhong')">
+          <iInput :placeholder="$t('createparts.QingShuRuLingJianMingZhong')" v-model="form['search.partNameZh']" />
         </el-form-item>
-        <el-form-item :label="$t('createparts.Lingjianmingde')">
-          <iInput :placeholder="$t('createparts.Qingshuru')" v-model="form['search.partNameDe']" />
+        <el-form-item :label="$t('createparts.LingJianMingDe')">
+          <iInput :placeholder="$t('createparts.QingShuRuLingJianMingDe')" v-model="form['search.partNameDe']" />
         </el-form-item>
-        <el-form-item :label="$t('createparts.Lingjianmingde')">
-          <iSelect :placeholder="$t('createparts.Qingxuanze')" v-model="form['search.partStatus']">
+        <el-form-item :label="$t('createparts.LingJianLaiYuan')">
+          <iSelect :placeholder="$t('createparts.QingXuanZeLingJianLaiYuan')" v-model="form['search.partStatus']">
             <el-option
               value=""
               :label="$t('all') | capitalizeFilter"
             ></el-option>
           </iSelect>
         </el-form-item>
-        <el-form-item :label="$t('createparts.Lingjianlaiyuan')">
-          <iSelect :placeholder="$t('createparts.Qingxuanze')" v-model="form['search.partSource']">
+        <el-form-item :label="$t('createparts.LingJianZhuangTai')">
+          <iSelect :placeholder="$t('createparts.QingXuanZeLingJianZhuangTai')" v-model="form['search.partSource']">
             <el-option
               value=""
               :label="$t('all') | capitalizeFilter"
@@ -52,7 +52,7 @@
     </iSearch>
     <iCard class="margin-top20">
       <template v-slot:header-control>
-        <iButton>{{ $t("createparts.Chuangjiancaigouxiangmu") }}</iButton>
+        <iButton>{{ $t("createparts.ChuangJianCaiGouXiangMu") }}</iButton>
       </template>
       <div class="body">
         <tableList
@@ -66,7 +66,7 @@
             <span>{{ scope.row.date | dateFilter("YYYY-MM-DD") }}</span>
           </template>
           <template #log="scope">
-            <span class="link" @click="log(scope.row)">{{ $t("createparts.Chakan") }}</span>
+            <span class="link" @click="log(scope.row)">{{ $t("createparts.ChaKan") }}</span>
           </template>
         </tableList>
         <iPagination 
@@ -86,7 +86,7 @@
 </template>
 
 <script>
-import { icon, iSearch, iInput, iSelect, iCard, iButton, iPagination } from "rise"
+import { icon, iSearch, iInput, iSelect, iCard, iButton, iPagination, iMessage } from "rise"
 import logButton from "@/views/partsign/editordetail/components/logButton"
 import tableList from "@/views/partsign/editordetail/components/tableList";
 import { tableTitle } from "./components/data"

@@ -61,7 +61,6 @@
 <script>
 import {
   iCard,
-  iButton,
   iPagination,
   iFormGroup,
   iFormItem,
@@ -72,7 +71,6 @@ export default {
     mixins:[pageMixins],
      components:{
         iCard,
-        iButton,
         iPagination,
         iFormGroup,
         iFormItem,

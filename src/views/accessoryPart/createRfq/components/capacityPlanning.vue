@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-26 20:06:02
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-05-27 10:07:55
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-05-31 15:07:54
  * @Description: 产能计划弹窗
  * @FilePath: \front-web\src\views\accessoryPart\createRfq\components\capacityPlanning.vue
 -->
@@ -31,13 +31,13 @@
 </template>
 
 <script>
-import { iDialog, iButton, iSelect, iInput, iSearch, iPagination } from 'rise'
+import { iDialog, iButton } from 'rise'
 import tableList from '@/views/designate/designatedetail/components/tableList'
 import { pageMixins } from "@/utils/pageMixins"
 import { planTableTitle } from '../data'
 export default {
   mixins: [pageMixins],
-  components: { iDialog, iButton, iSelect, iInput, tableList, iSearch, iPagination },
+  components: { iDialog, iButton, tableList },
   props: {
     dialogVisible: { type: Boolean, default: false }
   },

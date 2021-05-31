@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:18:01
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-05-31 11:29:26
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-05-31 15:37:45
  * @Description: 流转RS单
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\rs\components\circulation\index.vue
 -->
@@ -54,13 +54,13 @@
 </template>
 
 <script>
-import { iCard, iButton, iInput, icon, iPagination, iFormGroup, iFormItem, iText } from 'rise'
-import { nomalTableTitle, checkList, accessoryTableTitle, sparePartTableTitle } from './data'
+import { iCard, iButton, iInput, iPagination, iFormGroup, iFormItem, iText } from 'rise'
+import { nomalTableTitle, checkList } from './data'
 import tableList from '@/views/designate/designatedetail/components/tableList'
 import { pageMixins } from "@/utils/pageMixins"
 export default {
   mixins: [pageMixins],
-  components: { iCard, tableList, iButton, iInput, icon, iPagination, iFormGroup, iFormItem, iText },
+  components: { iCard, tableList, iButton, iInput, iPagination, iFormGroup, iFormItem, iText },
   props: {
     isPreview: {type:Boolean, default:false}
   },

@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-26 13:43:37
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-05-26 14:09:13
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-05-31 15:32:10
  * @Description: 
  * @FilePath: \front-web\src\views\accessoryPart\integratedManage\components\back.vue
 -->
@@ -27,9 +27,9 @@
 </template>
 
 <script>
-import { iDialog, iButton, iSelect, iInput } from 'rise'
+import { iDialog, iButton, iInput } from 'rise'
 export default {
-  components: { iDialog, iButton, iSelect, iInput },
+  components: { iDialog, iButton, iInput },
   props: {
     dialogVisible: { type: Boolean, default: false }
   },

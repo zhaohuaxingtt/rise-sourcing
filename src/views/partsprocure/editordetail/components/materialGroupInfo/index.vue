@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-03-01 10:29:09
- * @LastEditTime: 2021-05-25 20:57:20
+ * @LastEditTime: 2021-05-31 15:16:17
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsprocure\editordetail\components\materialGroupInfo\index.vue
@@ -52,7 +52,7 @@
           :page-size="page.pageSize"
           :layout="page.layout"
           :total="page.totalCount"
-			    v-update
+			v-update
         />
       </div>
     </div>

@@ -39,7 +39,7 @@
 </template>
 
 <script>
-import { iCard, iButton, iInput, iPagination } from "rise"
+import { iCard, iButton, iPagination } from "rise"
 import tableList from "@/views/partsign/editordetail/components/tableList"
 import { reportListTableTitle as tableTitle } from "../data"
 import { pageMixins } from "@/utils/pageMixins"
@@ -49,7 +49,6 @@ export default {
     components: {
         iCard,
         iButton,
-        iInput,
         iPagination,
         tableList
     },
