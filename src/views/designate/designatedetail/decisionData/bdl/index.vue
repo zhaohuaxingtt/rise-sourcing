@@ -2,14 +2,14 @@
  * @Author: Luoshuang
  * @Date: 2021-05-25 17:00:48
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-05-26 20:38:15
+ * @LastEditTime: 2021-05-31 11:37:42
  * @Description: 定点管理-决策资料-BDL
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\bdl\index.vue
 -->
 
 <template>
   <iPage class="decision-bdl">
-    <div class="margin-top20" style="text-align:right;">
+    <div class="margin-top20" style="text-align:right;" v-if="!isPreview">
       <iButton @click="gotoSupplier">跳转供应商维护</iButton>
     </div>
     <iCard v-for="(item, index) in rfqList" :key="index" :title="'RFQ NO.'+item.rfqNum+',RFQ Name:'+item.rfqName" class="margin-top20">
@@ -45,6 +45,11 @@ export default {
       ],
       tableTitle: tableTitle,
       dialogVisible: false
+    }
+  },
+  computed: {
+    isPreview() {
+      return this.$store.getters.isPreview || this.otherPreview
     }
   },
   methods: {

@@ -13,7 +13,7 @@
                 <iSelect v-model="designateType" @change="onDesignateTypeChange">
                     <el-option
                     :value="item.id"
-                    :label="item.name"
+                    :label="$t(item.key) || item.name"
                     v-for="(item, index) in applyType"
                     :key="index"
                     ></el-option>
@@ -71,7 +71,7 @@ export default {
     },
     data(){
         return{
-            designateType:'1',
+            designateType:'MEETING',
             applyType:applyType,
             applyStep:applyStep
         }

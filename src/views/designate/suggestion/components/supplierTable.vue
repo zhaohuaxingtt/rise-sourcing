@@ -88,7 +88,7 @@
     <!-- 批量编辑弹窗 -->
     <batchEditDialog :visible.sync="batchEditVisibal" />
     <!-- 模具弹窗 -->
-    <mouldDialog :visible.sync="mouldVisibal" />
+    <mouldDialog :visible.sync="mouldVisibal" :rfqIds="rfqIds" />
   </iCard>
 </template>
 
@@ -139,7 +139,9 @@ export default {
         currPage: 1,
         pageSize: 10,
         totalCount: 2
-      }
+      },
+      // 全量rfqId，用于模具预算管理列表查询
+      rfqIds: []
     }
   },
   methods: {

@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:50:41
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-05-29 14:46:15
+ * @LastEditTime: 2021-05-31 11:17:30
  * @Description: 
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\rs\components\circulation\data.js
  */
@@ -37,37 +37,85 @@ export const nomalDetailTitleBlue = [
   {props: 'a', name: 'PVS时间', enName: 'PVS TBT'}
 ]
 
-
+// 生产
 export const nomalTableTitle = [
-  {props:'supplier',name:'FS号', key: "", minWidth: 60},
-  {props:'supplierNo',name:'零件号', key: "", minWidth: 60},
-  {props:'location',name:'原零件号', key: "", minWidth: 100},
-  {props:'c',name:'原A价', key: "", minWidth: 60},
-  {props:'d',name:'零件名称', key: "", minWidth: 85},
-  {props:'e',name:'零件单位', key: "", minWidth: 80},
-  {props:'f',name:'TP科室',  key: "", minWidth: 80},
-  {props:'g',name:'ZP属性',  key: "", minWidth: 80},
-  {props:'c',name:'项目名称',  key: "", minWidth: 80},
-  {props:'d',name:'厂商号', key: "", minWidth: 80},
-  {props:'e',name:'供应商名称',  key: "", minWidth: 90},
-  {props:'f',name:'产地',  key: "", minWidth: 95},
-  {props:'g',name:'财务目标A价', key: "", minWidth: 95},
-  {props:'f',name:'财务目标B价', key: "", minWidth: 95},
-  {props:'g',name:'欧价', key: "", minWidth: 80},
-  {props:'c',name:'状态', key: "", minWidth: 45},
-  {props:'d',name:'A价', key: "", minWidth: 90},
-  {props:'e',name:'B价', key: "", minWidth: 90},
-  {props:'f',name:'包装费', key: "", minWidth: 80},
-  {props:'g',name:'运输费', key: "", minWidth: 80},
-  {props:'g',name:'操作费', key: "", minWidth: 65},
-  {props:'c',name:'投资费(不含税)', key: "", minWidth: 120},
-  {props:'d',name:'定点份额(%)', key: "", minWidth: 90},
-  {props:'e',name:'年降', key: "", minWidth: 90},
-  {props:'f',name:'年降开始时间', key: "", minWidth: 120},
-  {props:'g',name:'年需求', key: "", minWidth: 80},
-  {props:'g',name:'年产能', key: "", minWidth: 65},
-  {props:'g',name:'采购金额', key: "", minWidth: 80},
-  {props:'g',name:'备注', key: "", minWidth: 65},
+  {props:'supplier',name:'FS No.', key: "", minWidth: 60},
+  {props:'supplierNo',name:'Part No.', key: "", minWidth: 60},
+  {props:'location',name:'Old Part No.', key: "", minWidth: 100},
+  {props:'c',name:'Old A Price', key: "", minWidth: 60},
+  {props:'d',name:'Part Name', key: "", minWidth: 85},
+  {props:'e',name:'Unit', key: "", minWidth: 80},
+  {props:'f',name:'TP Dep.',  key: "", minWidth: 80},
+  {props:'g',name:'ZP',  key: "", minWidth: 80},
+  {props:'c',name:'Project',  key: "", minWidth: 80},
+  {props:'d',name:'Supplier No.', key: "", minWidth: 80},
+  {props:'e',name:'Supplier Name',  key: "", minWidth: 90},
+  {props:'f',name:'Location',  key: "", minWidth: 95},
+  {props:'g',name:'CF A Price', key: "", minWidth: 95},
+  {props:'f',name:'CF B Price', key: "", minWidth: 95},
+  {props:'g',name:'RW', key: "", minWidth: 80},
+  {props:'c',name:'Type', key: "", minWidth: 45},
+  {props:'d',name:'A Price', key: "", minWidth: 90},
+  {props:'e',name:'B Price', key: "", minWidth: 90},
+  {props:'f',name:'Packing', key: "", minWidth: 80},
+  {props:'g',name:'Transportation', key: "", minWidth: 80},
+  {props:'g',name:'Operation', key: "", minWidth: 65},
+  {props:'c',name:'Invest(no tax)', key: "", minWidth: 120},
+  {props:'d',name:'Share(%)', key: "", minWidth: 90},
+  {props:'e',name:'LTC', key: "", minWidth: 90},
+  {props:'f',name:'LTC Date', key: "", minWidth: 120},
+  {props:'g',name:'Annual Demand(K)', key: "", minWidth: 80},
+  {props:'g',name:'Annual Capa.(K)', key: "", minWidth: 65},
+  {props:'g',name:'Purchase Price', key: "", minWidth: 80},
+  {props:'g',name:'Notes', key: "", minWidth: 65},
+]
+
+// 附件列表
+export const accessoryTableTitle = [
+  {props:'supplier',name:'FS No.', key: "", minWidth: 60},
+  {props:'supplierNo',name:'Series Part No.', key: "", minWidth: 60},
+  {props:'location',name:'Accessory Part No.', key: "", minWidth: 100},
+  {props:'c',name:'Accessory Part Name', key: "", minWidth: 60},
+  {props:'d',name:'Carline', key: "", minWidth: 85},
+  {props:'e',name:'Code', key: "", minWidth: 80},
+  {props:'f',name:'Supplier',  key: "", minWidth: 80},
+  {props:'g',name:'Prod.Location',  key: "", minWidth: 80},
+  {props:'c',name:'Demand(K)',  key: "", minWidth: 80},
+  {props:'d',name:'B Price', key: "", minWidth: 80},
+  {props:'e',name:'CF B Price',  key: "", minWidth: 90},
+  {props:'f',name:'Old B Price',  key: "", minWidth: 95},
+  {props:'g',name:'Sales Price', key: "", minWidth: 95},
+  {props:'f',name:'Series B Price', key: "", minWidth: 95},
+  {props:'g',name:'Price Start Date', key: "", minWidth: 80},
+  {props:'c',name:'Turnover(K)', key: "", minWidth: 45},
+  {props:'d',name:'Share(%)', key: "", minWidth: 90},
+  {props:'e',name:'LTC', key: "", minWidth: 90},
+  {props:'f',name:'Start', key: "", minWidth: 80},
+  {props:'g',name:'Time of LTC', key: "", minWidth: 80},
+  {props:'g',name:'Remark', key: "", minWidth: 65}
+]
+
+// 配件列表
+export const sparePartTableTitle = [
+  {props:'supplier',name:'FS No.', key: "", minWidth: 60},
+  {props:'supplierNo',name:'Series Part No.', key: "", minWidth: 60},
+  {props:'location',name:'Spare Part No.', key: "", minWidth: 100},
+  {props:'c',name:'Spare Part Name', key: "", minWidth: 60},
+  {props:'d',name:'Carline', key: "", minWidth: 85},
+  {props:'e',name:'Code', key: "", minWidth: 80},
+  {props:'f',name:'Supplier',  key: "", minWidth: 80},
+  {props:'c',name:'Prod.Location',  key: "", minWidth: 80},
+  {props:'d',name:'Demand(K)', key: "", minWidth: 80},
+  {props:'e',name:'B Price',  key: "", minWidth: 90},
+  {props:'f',name:'CF B Price',  key: "", minWidth: 95},
+  {props:'g',name:'Old Price', key: "", minWidth: 95},
+  {props:'f',name:'Series Price', key: "", minWidth: 95},
+  {props:'g',name:'Price Start Date', key: "", minWidth: 80},
+  {props:'c',name:'Turnover(K)', key: "", minWidth: 45},
+  {props:'d',name:'Share(%)', key: "", minWidth: 90},
+  {props:'e',name:'LTC', key: "", minWidth: 90},
+  {props:'f',name:'Start Time of LTC', key: "", minWidth: 80},
+  {props:'g',name:'Remark', key: "", minWidth: 80},
 ]
 
 export const meetingRemark = [
