@@ -7,7 +7,23 @@
  * @FilePath: \rise\src\views\partsign\components\tableList.vue
 -->
 <template>
-  <div>
+  <div class="tableContent">
+    <iSelect
+        class="chooseCol"
+        :placeholder="$t('partsprocure.PLEENTER')"
+        v-model="chooseCol"
+        @change="changeCol"
+        collapse-tags
+        filterable
+        multiple
+    >
+      <el-option
+          :value="item.props"
+          :label="$t(item.key)"
+          v-for="(item, index) in tableTitle"
+          :key="index"
+      ></el-option>
+    </iSelect>
     <el-table
       tooltip-effect="light"
       :height="height"
@@ -67,24 +83,7 @@
           :width="items.width"
         >
           <template slot="header" slot-scope="">
-            <iSelect
-                v-if="items.props == 'filterTable'"
-                :placeholder="$t('partsprocure.PLEENTER')"
-                v-model="chooseCol"
-                @change="changeCol"
-                collapse-tags
-                filterable
-                multiple
-            >
-              <el-option
-                  :value="item.props"
-                  :label="$t(item.key)"
-                  v-for="(item, index) in tableTitle"
-                  :key="index"
-              ></el-option>
-            </iSelect>
             <Popover
-                v-else
                 placement="top-start"
                 :content="$t(items.key)"
                 trigger="hover">
@@ -140,7 +139,6 @@ export default {
   methods: {
     initChoose(){
       this.chooseCol = this.tableTitle.map(item => item.props)
-      this.tableTitleTemp.push({props: 'filterTable', width: 200})
     },
     changeCol(val){
       let tableTitleTemp = []
@@ -149,8 +147,6 @@ export default {
           tableTitleTemp.push(item)
         }
       })
-      tableTitleTemp.push({props: 'filterTable', width: 200})
-      console.log(tableTitleTemp)
       this.tableTitleTemp = tableTitleTemp
     },
     handleSelectionChange(val) {
@@ -184,6 +180,14 @@ export default {
 };
 </script>
 <style lang='scss' scoped>
+.tableContent{
+  position: relative;
+  .chooseCol{
+    width: 330px;
+    position: absolute;
+    top: -55px;
+  }
+}
 .tableHeader{
   max-width: 100%;
   text-overflow: ellipsis;

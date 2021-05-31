@@ -172,6 +172,10 @@ export const staticRouter = [{
                     },
                     // 预算管理
                     {
+                        path: '/tooling/budgetManagement',
+                        redirect: 'budgetManagement/carTypeOverview',
+                    },
+                    {
                         path: '/tooling/budgetManagement/carTypeOverview',
                         name: 'carTypeOverview',
                         meta: {

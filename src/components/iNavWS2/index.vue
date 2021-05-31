@@ -19,10 +19,20 @@
     <!--      </div>-->
     <span @click="changeDataBase" class="dataBase">
       <transition name="bounce">
-        <icon v-if="!dataBase" symbol name="icondatabaseweixuanzhong"></icon>
+        <Popover
+            content="历史数据库"
+            placement="top-start"
+            trigger="hover">
+            <icon slot="reference" v-if="!dataBase" symbol name="icondatabaseweixuanzhong"></icon>
+        </Popover>
       </transition>
       <transition name="bounceTo">
-        <icon v-if="dataBase" symbol name="icondatabasexuanzhongzhuangtai" class="openIcon"></icon>
+        <Popover
+            content="历史数据库"
+            placement="top-start"
+            trigger="hover">
+            <icon slot="reference" v-if="dataBase" symbol name="icondatabasexuanzhongzhuangtai" class="openIcon"></icon>
+        </Popover>
       </transition>
     </span>
   </div>
