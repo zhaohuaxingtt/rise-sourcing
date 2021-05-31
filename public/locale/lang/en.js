@@ -732,6 +732,9 @@
         'LK_QINGXUANZEWANSHUJUZAIZUOBAOCUN': '', //请选择完数据再做保存
         'LK_WEIBUXITONGWENJIANWUFASHANCHU': '', // xxx 为外部系统文件, 无法删除
         'LK_DINGDIANXINXI': '定点信息', // 定点信息
+        'LK_SHANGHUI': '上会', // 上会
+        'LK_LIUZHUAN': '流转', // 流转
+        'LK_BEIAN': '备案', // 备案
 
         //摸具预算
         // 'LK_CAIGOUGONGCHANG': 'Plant',//采购⼯⼚
