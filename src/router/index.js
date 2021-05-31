@@ -180,7 +180,7 @@ export const staticRouter = [{
                         component: () => import (`@/views/ws2/budgetManagement/carTypeOverview`),
                     },
                     {
-                        path: '/tooling/budgetManagement/baApplyIndex',
+                        path: '/tooling/baApplyIndex',
                         name: 'baApplyIndex',
                         meta: {
                             title: 'BA申请'
@@ -188,7 +188,7 @@ export const staticRouter = [{
                         component: () => import (`@/views/ws2/baApply`),
                     },
                     {
-                        path: '/tooling/budgetManagement/baApprovalIndex',
+                        path: '/tooling/baApprovalIndex',
                         name: 'baApprovalIndex',
                         meta: {
                             title: 'BA审批'

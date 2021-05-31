@@ -357,10 +357,10 @@ export const tabtitle = [
     {name: "车型项目概览", index: 0, url: '', key: "LK_CHEXINGXIANGMUGAILAN"},
     {name: "预算管理", index: 1, url: '/tooling/budgetManagement/carTypeOverview', key: "LK_YUSUANGUANLI"},
     {name: "预算审批", index: 2, url: '/tooling/budgetApproval', key: "LK_YUSUANSHENPI"},
-    {name: "BA申请", index: 3, url: '/tooling/budgetManagement/baApplyIndex', key: "LK_BASHENQING"},
+    {name: "BA申请", index: 3, url: '/tooling/baApplyIndex', key: "LK_BASHENQING"},
     {name: "BM申请", index: 4, url: '', key: "LK_BMSHENQING"},
     {name: "投资报告", index: 5, url: '', key: "LK_TOUZIBAOGAO"},
-    {name: "BA审批", index: 6, url: '/tooling/budgetManagement/baApprovalIndex', key: "LK_BAAPPROVAL"},
+    {name: "BA审批", index: 6, url: '/tooling/baApprovalIndex', key: "LK_BAAPPROVAL"},
 ]
 
 export const dataBaseData = [

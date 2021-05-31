@@ -1,16 +1,15 @@
 <template>
-  <iDialog :title="$T('LK_APPLYBANUMBER')" :visible="visible" @close='clearDiolog' width="95%" top="5vh" z-index="1000" class="iDialog">
-    <div slot="title">
+  <iDialog title="提示" :visible="visible" @close='clearDiolog' width="380px" top="5vh" z-index="1000" class="iDialog">
+    <!-- <div slot="title">
       <div class="iDialog-head">
         <div>{{title}}</div>
         <slot name="btns">
 
         </slot>
-        <!-- <iButton @click="confirm">确认</iButton> -->
       </div>
     </div>
 
-    <slot name="table"></slot>
+    <slot name="table"></slot> -->
 
   </iDialog>
 </template>
@@ -23,23 +22,17 @@ import {
 } from 'rise'
 
 export default {
-  props: {
-    visible: {type: Boolean, default: false},
-    title: {type: String, default: ''},
-  },
   components: {
     iDialog,
   },
 
+  props:  {
+    visible: {type: Boolean, default: false},
+  },
+  
   methods: {
-
     clearDiolog(){
       this.$emit('changeLayer', false);
-    },
-
-    //  确认
-    confirm(){
-      this.$emit('confirm');
     }
   }
 }

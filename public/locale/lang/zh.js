@@ -752,5 +752,24 @@
         'LK_CANCELAPPLY': '退回申请',   //  退回申请
         'LK_MODIFIABLE': '可修改',  //  可修改
         'LK_DEPNAME': '科室名称',   //  科室名称
+        'LK_ALLBAAPPLY': '所有BA申请',  //  所有BA申请
+        'LK_TOBECONFIRMEDBAAPPLY': '待确认BA申请',  //  待确认BA申请
+        'LK_TOBECONFIRMEDMONEY': '待确认追加金额',  //  待确认追加金额
+        'LK_DETAILEDTXT': '明细',   //  明细
+        'LK_MODIFYANUMBERTXTTIPS': '确定后，所有同⼀⻋型项⽬、同⼀⼯⼚的BA申请相关记录将⼀并更改',  //  确定后，所有同⼀⻋型项⽬、同⼀⼯⼚的BA申请相关记录将⼀并更改
+        'LK_PRIMARYAMBER': '原A号',     //  原A号
+        'LK_NEWAMBER': '新A号', //  新A号
+        'LK_CONFIRMANUMBER': '确认A号', //  确认A号
+        'LK_CONFIRMMONEY': '确认金额',  //  确认金额
+        'LK_INPUTNUMBERORMORE': '请输入5位或8位A号',    //  请输入5位或8位A号
+        'LK_PLEASEINPUTTIPS1': '请选择需要修改的数据',  //  请选择需要修改的数据
+        'LK_PLEASEINPUTTIPS2': '最多只能同时修改一条数据',  //  最多只能同时修改一条数据
+        'LK_PLEASEINPUTTIPS3': '需要先确认A号',  //  需要先确认A号
+        'LK_PLEASEINPUTTIPS4': '退回状态不能修改A号',  //  退回状态不能修改A号
+        'LK_PLEASEINPUTTIPS5': '车型项目尚未确认A号，请先前往',  //  车型项目尚未确认A号，请先前往
+        'LK_PLEASEINPUTTIPS6': '待确认BA申请',  //  待确认BA申请
+        'LK_PLEASEINPUTTIPS7': '页面中进行A号确认',  //  页面中进行A号确认
+        'LK_APPLYBANUMBER': '申请BA单',  //  申请BA单
+        'LK_OF': '的', //  的
     })
 }))
