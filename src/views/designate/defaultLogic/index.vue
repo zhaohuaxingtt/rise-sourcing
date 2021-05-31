@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-24 18:06:45
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-05-24 20:35:37
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-05-31 15:28:24
  * @Description: 定点申请预设逻辑界面
  * @FilePath: \front-web\src\views\designate\defaultLogic\index.vue
 -->
@@ -49,7 +49,7 @@
 </template>
 
 <script>
-import { iPage, iCard, iPagination, iButton, iSearch, iSelect, iInput } from 'rise'
+import { iPage, iCard, iPagination, iButton } from 'rise'
 import { pageMixins } from "@/utils/pageMixins"
 import tableList from '../designatedetail/components/tableList'
 import { defaultLogicTableTitle, defaultLogicMockData } from './data'
@@ -57,7 +57,7 @@ import detailTop from '../designatedetail/components/topComponents'
 import addRule from './addRule'
 export default {
   mixins: [pageMixins],
-  components: { iPage, iCard, iPagination, iButton, tableList, iSearch, iSelect, iInput, detailTop, addRule },
+  components: { iPage, iCard, iPagination, iButton, tableList, detailTop, addRule },
   data() {
     return {
       tableListData: defaultLogicMockData,

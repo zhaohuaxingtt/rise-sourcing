@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-25 15:32:38
- * @LastEditTime: 2021-05-27 10:24:23
+ * @LastEditTime: 2021-05-31 15:02:32
  * @LastEditors: Please set LastEditors
  * @Description: 报价评分跟踪
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringTracking\index.vue
@@ -24,10 +24,11 @@
 </template>
 <script>
 import timeline from './components/timeline'
-import {icon} from 'rise'
+import {icon,iMessage} from 'rise'
 import {timeList,tableTile,tableDatas} from './components/data'
 import dalyWeeks from './components/dalyWeeks'
 import tabelData from './components/tableList'
+import {getTimeLine} from '@/api/partsrfq/editordetail'
 export default{
   components:{timeline,icon,dalyWeeks,tabelData},
   data(){
@@ -35,6 +36,24 @@ export default{
       timeList:timeList,
       tableTile:tableTile,
       tableDatas:tableDatas
+    }
+  },
+  created(){
+    console.log(this.$route.query.id)
+    this.getTimeLine(1,this.$route.query.id)
+  },
+  methods:{
+    /**
+     * @description: 获取时间轴接口 
+     * @param {*}
+     * @return {*}
+     */
+    getTimeLine(qutaitonId,rfqId){
+      getTimeLine(qutaitonId,rfqId).then(res=>{
+        console.log(res)
+      }).catch(err=>{
+        iMessage.error(err.desZh)
+      })
     }
   }
 }

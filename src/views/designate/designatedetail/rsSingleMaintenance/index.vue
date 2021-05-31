@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-24 14:39:43
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-05-31 09:58:09
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-05-31 15:22:10
  * @Description: RS单维护界面
  * @FilePath: \front-web\src\views\designate\designatedetail\rsSingleMaintenance\index.vue
 -->
@@ -74,7 +74,7 @@
 </template>
 
 <script>
-import { iPage, iCard, iPagination, iButton, iSearch, iSelect, iInput } from 'rise'
+import { iPage, iCard, iPagination, iButton, iSearch, iInput } from 'rise'
 import { pageMixins } from "@/utils/pageMixins"
 import tableList from '../components/tableList'
 import { rsTableTitle, rsMockData } from './data'
@@ -82,7 +82,7 @@ import detailTop from '../components/topComponents'
 import rsDialog from '@/views/partsprocure/editordetail/components/designateInfo/components/rsEEdition'
 export default {
   mixins: [pageMixins],
-  components: { iPage, iCard, iPagination, iButton, tableList, iSearch, iSelect, iInput, detailTop, rsDialog },
+  components: { iPage, iCard, iPagination, iButton, tableList, iSearch, iInput, detailTop, rsDialog },
   data() {
     return {
       tableListData: rsMockData,

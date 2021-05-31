@@ -41,7 +41,6 @@ export default {
     name:'groupStep',
     components:{
         icon,
-        iInput,
         iDatePicker,
     },
     props:{
@@ -51,7 +50,7 @@ export default {
         },
         stepList:{
             type:Array,
-            default:[]
+            default:()=>[]
         }
     },
     data(){

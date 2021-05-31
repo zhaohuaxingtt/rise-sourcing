@@ -1,7 +1,7 @@
 <!--
  * @Author: lyujiahong
  * @Date: 2021-02-24 09:42:07
- * @LastEditTime: 2021-04-01 20:08:22
+ * @LastEditTime: 2021-05-31 15:07:10
  * @LastEditors: Please set LastEditors
  * @Description: 零件签收-table组件。
  * @FilePath: \rise\src\views\partsign\components\tableList.vue
@@ -61,7 +61,7 @@
         :prop="items.props"
         :min-width="items.props == 'linie' ? 120 : 'auto'"
       >
-        <template slot="header" slot-scope="scope">
+        <template slot="header">
           <Popover
               placement="top-start"
               :content="$t(items.key)"

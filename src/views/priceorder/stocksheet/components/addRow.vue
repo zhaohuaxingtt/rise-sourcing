@@ -125,8 +125,7 @@ export default {
     tablelist,
     iPagination,
     iInput,
-    iSelect,
-    iMessage
+    iSelect
   },
   props: {
     title: {type: String, default: 'LK_TIANJIAHANG'},

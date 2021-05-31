@@ -53,7 +53,7 @@ export default {
     props:{
         supplierData:{
             type:Object,
-            default:{},
+            default:()=>{},
         },
         itemIndex:{
             type:Number,

@@ -26,7 +26,7 @@
   </iDialog>
 </template>
 <script>
-import {iDialog, iSearch, iInput, iButton, iMessage} from 'rise'
+import {iDialog, iInput, iButton, iMessage} from 'rise'
 import {pageMixins} from "@/utils/pageMixins";
 import {
   saveNewVersion
@@ -36,7 +36,6 @@ export default {
   mixins: [pageMixins],
   components: {
     iDialog,
-    iSearch,
     iInput,
     iButton
   },
