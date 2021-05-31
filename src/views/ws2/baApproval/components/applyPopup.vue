@@ -1,5 +1,5 @@
 <template>
-  <iDialog :title="$T('LK_APPLYBANUMBER')" :visible="visible" @close='clearDiolog' width="95%" top="5vh" z-index="1000" class="iDialog">
+  <iDialog :title="$t('LK_APPLYBANUMBER')" :visible="visible" @close='clearDiolog' width="95%" top="5vh" z-index="1000" class="iDialog">
     <div slot="title">
       <div class="iDialog-head">
         <div>{{title}}</div>

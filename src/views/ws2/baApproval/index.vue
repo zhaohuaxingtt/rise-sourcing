@@ -208,9 +208,9 @@
     </ApplyPopup>
 
     <!-- 提示 -->
-    <Tips :visible='true'>
+    <!-- <Tips :visible='true'>
 
-    </Tips>
+    </Tips> -->
     
   </div>
 </template>
@@ -241,8 +241,8 @@ import {
 } from "rise";
 
 const titleMap = {
-          1: this.$t('LK_CONFIRMANUMBER'),
-          3: this.$t('LK_CONFIRMMONEY')
+          // 1: this.$t('LK_CONFIRMANUMBER'),
+          // 3: this.$t('LK_CONFIRMMONEY')
         }
 
 export default {
@@ -525,7 +525,7 @@ export default {
       }
 
       if(this.allSelectList.length > 1){
-        return iMessage.warn(his.$t('LK_PLEASEINPUTTIPS2'));
+        return iMessage.warn(this.$t('LK_PLEASEINPUTTIPS2'));
       }
       
       if(!this.allSelectList[0].sixBa || this.allSelectList[0].sixBa === ''){
