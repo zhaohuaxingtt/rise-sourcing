@@ -31,7 +31,7 @@
         <div class="step-list flex-between-center-center margin-top30 margin-bottom30">
             <div class="step-list-item flex-center-center" v-for="(item,index) in applyStep" :key="'applyStep'+index">
                 <div>
-                    <icon symbol name="dingdianguanlijiedian-jinhangzhong" class="step-icon"></icon>
+                    <icon symbol name="databaseweixuanzhong" class="step-icon"></icon>
                     <p class="step-text">{{$t(item.key) || item.name}}</p>
                 </div>
                 <icon v-if="index+1 !== applyStep.length" symbol name="liuchengjiedianyiwancheng1" class="step-icon"></icon>
@@ -47,6 +47,7 @@ import {
   iSelect,
 } from "rise";
 import logButton from '@/views/partsign/editordetail/components/logButton'
+import { findFrontPageSeat } from '@/api/designate'
 import { applyType,applyStep } from './data'
 export default {
     name:'designateStep',
@@ -67,6 +68,8 @@ export default {
         // 判断当前路由是否是决策资料相关路由 是则显示预览按钮
         const { path } = this.$route;
         this.isDecision = path.indexOf('/designate/decisiondata/')>-1;
+
+        this.getStepStatus();
 
     },
     data(){
@@ -92,7 +95,18 @@ export default {
         onDesignateTypeChange(data) {
             // 缓存/更新定点申请类型
             this.$store.dispatch('setNominationType', data)
+        },
+
+        // 获取步骤状态
+        getStepStatus(){
+            const data= {
+                "nominateId":"1"
+            }
+            findFrontPageSeat(data).then((res)=>{
+                console.log(data);
+            })
         }
+
     }
 }
 </script>
