@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-05-24 13:45:08
- * @LastEditTime: 2021-05-28 20:35:39
+ * @LastEditTime: 2021-05-31 13:53:35
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\designate\suggestion\components\mouldBudgetManagementDialog.vue
@@ -74,6 +74,10 @@ export default {
     visible: {
       type: Boolean,
       default: false,
+    },
+    rfqIds: {
+      type: Array,
+      require: true
     }
   },
   watch: {
@@ -107,7 +111,7 @@ export default {
     getMouldBudget() {
       this.loading = true
 
-      this.multipleSelection = [
+      const rfqIds = [
         { rfqId: "50002000" },
         { rfqId: "50002001" },
       ]
@@ -115,7 +119,7 @@ export default {
       getMouldBudget({
         currPage: this.page.currPage,
         pageSize: this.page.pageSize,
-        rfqIds: this.multipleSelection.map(item => item.rfqId).join('&rfqIds=')
+        rfqIds: rfqIds.map(item => item.rfqId).join('&rfqIds=')
       })
       .then(res => {
         if (res.code == 200) {
@@ -164,11 +168,12 @@ export default {
           }
 
           this.$emit("submit", this.multipleSelection.filter(item => !res.data.includes(item)))
-          this.submitLoading = false
           // this.$emit("update:visible", false)
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }
+
+        this.submitLoading = false
       })
       .catch(() => this.submitLoading = false)
     },
@@ -198,11 +203,12 @@ export default {
           }
 
           this.$emit("recall", this.multipleSelection.filter(item => !res.data.includes(item)))
-          this.recallLoading = false
           // this.$emit("update:visible", false)
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }
+
+        this.recallLoading = false
       })
       .catch(() => this.recallLoading = false)
     }
