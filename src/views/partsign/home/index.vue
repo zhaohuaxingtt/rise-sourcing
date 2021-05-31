@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-24 09:17:57
- * @LastEditTime: 2021-05-07 16:59:45
+ * @LastEditTime: 2021-05-21 16:04:10
  * @LastEditors: Please set LastEditors
  * @Description: 零件签收列表界面.
  * @FilePath: \rise\src\views\partsign\index.vue
@@ -12,7 +12,7 @@
       <el-tab-pane :label="$t('LK_XUNYUANZHIHANG')" name="source">
         <div>
           <div class="margin-bottom33">
-            <iNavMvp @change="change" right routerPage></iNavMvp>
+            <iNavMvp @change="change" right routerPage lev="2" :list="navList" />
           </div>
           <!------------------------------------------------------------------------>
           <!--                  search 搜索模块                                   --->
@@ -230,15 +230,16 @@ import {
   iSelect,
 } from "@/components";
 import tablelist from "./components/tableList";
-import { tableTitle, form, needTranslate } from "./components/data";
+import { tableTitle, form, needTranslate, navList } from "./components/data";
 import { getTabelData, getPageGroup, patchRecords } from "@/api/partsign/home";
 import { pageMixins } from "@/utils/pageMixins";
 import backItems from "./components/backItems";
 import changeItems from "./components/changeItems";
-import { iNavMvp } from "@/components";
 import local from "@/utils/localstorage";
 import { iMessageBox } from "../../../components";
 import filters from "@/utils/filters";
+import { iNavMvp } from "rise";
+import { cloneDeep } from "lodash";
 export default {
   components: {
     iPage,
@@ -269,6 +270,7 @@ export default {
       fromGroup: [],
       tab: "source",
       needTranslate: needTranslate,
+      navList: cloneDeep(navList)
     };
   },
   created() {
@@ -358,7 +360,7 @@ export default {
         JSON.stringify(this.translateDataForDetail(val))
       );
       this.$router.push({
-        path: "/partsign/editordetail",
+        path: "/sourcing/partsign/editordetail",
       });
     },
     //获取上方group信息

@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-04-01 22:13:16
+ * @LastEditTime: 2021-05-24 15:21:03
  * @LastEditors: Please set LastEditors
  * @Description: 公共utils部分
  * @FilePath: \rise\src\utils\index.js
@@ -114,4 +114,24 @@ export function serialize(data) {
   }
   str = str.replace(/&$/, '')
   return str
+}
+
+// 数字限制输入
+export const numberProcessor = function(val, precision = 4) {
+  let result = ""
+
+  if (+precision > 0) {
+    result = (val + "").replace(/[^\d.]/g, "")
+      .replace(/^\.*/g, "")
+      .replace(".", "$#$")
+      .replace(/\./g, "")
+      .replace("$#$", ".")
+      .replace(/^0+([0-9].*)/, "$1")
+      .replace(new RegExp(`^(.+\\.\\d{0,${ precision || 2 }})\\d*$`), "$1")
+  } else {
+    result = (val + "").replace(/\D/g, "")
+      .replace(/^0+([0-9])/, "$1")
+  }
+
+  return result
 }

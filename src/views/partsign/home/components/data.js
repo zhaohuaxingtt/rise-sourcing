@@ -1,10 +1,10 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-24 09:47:32
- * @LastEditTime: 2021-04-19 14:54:53
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-05-26 16:28:37
+ * @LastEditors: Luoshuang
  * @Description: In User Settings Edit
- * @FilePath: \rise\src\views\partsign\home\components\data.js
+ * @FilePath: \front-web\src\views\partsign\home\components\data.js
  */
 import store from '@/store'
 import {permissionTitle} from '@/utils'
@@ -40,3 +40,70 @@ export const form = {
   userId:store.state.permission.userInfo.id
 }
 export const fromGroup = JSON.parse(JSON.stringify(form))
+
+export const navList = [
+  {
+    value: 1,
+    name: '零件签收',
+    message: 0,
+    url: '/sourcing/partsign',
+    activePath: 'partsign',
+    key: 'LK_LINGJIANQIANSHOU'
+  },
+  {
+    value: 2,
+    name: '采购项目建立',
+    message: 0,
+    url: '/sourcing/partsprocure',
+    activePath: 'partsprocure',
+    key: 'LK_CAIGOUXIANGMUJIANLI'
+  },
+  {
+    value: 7,
+    name: '配件需求签收',
+    message: 0,
+    url: '/sourcing/signforpartsdemand',
+    activePath: 'signforpartsdemand',
+    key: 'LK_PEIJIANXUQIUQIANSHOU'
+  },
+  {
+    value: 8,
+    name: '配件综合管理',
+    message: 0,
+    url: '/sourcing/integratedmanage',
+    activePath: 'integratedmanage',
+    key: 'LK_PEIJIANZONGHEGUANLI'
+  },
+  {
+    value: 5,
+    name: '附件需求导入',
+    message: 0,
+    url: '/sourcing/importfiles',
+    activePath: 'importfiles',
+    key: 'LK_FUJIANXUQIUDAORU'
+  },
+  {
+    value: 5,
+    name: '附件综合管理',
+    message: 0,
+    url: '/sourcing/filemanage',
+    activePath: 'filemanage',
+    key: 'LK_FUJIANZONGHEGUANLI'
+  },
+  {
+    value: 3,
+    name: 'RFQ管理',
+    message: 0,
+    url: '/sourcing/partsrfq',
+    activePath: 'partsrfq',
+    key: 'LK_RFQGUANLI'
+  },
+  {
+    value: 4,
+    name: '定点管理',
+    message: 0,
+    url: '/sourcing/partsnomination',
+    activePath: 'partsnomination    ',
+    key: 'LK_DINGDIANGUANLI'
+  },
+]

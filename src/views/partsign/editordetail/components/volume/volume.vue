@@ -114,7 +114,7 @@ export default {
     },
     jump() {
       // this.versionVisible = true
-      window.open(`/#/partsign/volumeVersion?tpId=${ this.data.tpPartID }`, '_blank')
+      window.open(`/#/sourcing/partsign/volumeVersion?tpId=${ this.data.tpPartID }`, '_blank')
       // this.$router.push('/partsign/version')
     },
     handleSelectionChange(list) {

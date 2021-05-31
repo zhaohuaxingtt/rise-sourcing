@@ -1,8 +1,8 @@
 @font-face {
   font-family: "iconfont"; /* Project id 2285260 */
-  src: url('iconfont.woff2?t=1622010130714') format('woff2'),
-       url('iconfont.woff?t=1622010130714') format('woff'),
-       url('iconfont.ttf?t=1622010130714') format('truetype');
+  src: url('iconfont.woff2?t=1621942901408') format('woff2'),
+       url('iconfont.woff?t=1621942901408') format('woff'),
+       url('iconfont.ttf?t=1621942901408') format('truetype');
 }
 
 .iconfont {
@@ -11,30 +11,6 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-}
-
-.iconcaiwuyujing-icon:before {
-  content: "\e67b";
-}
-
-.iconcaiwuyujing-hongdeng:before {
-  content: "\e67c";
-}
-
-.icondaiquerenBAshenqingzhuijiajinexuanzhong:before {
-  content: "\e679";
-}
-
-.icondaiquerenBAshenqingzhuijiajineweixuanzhong:before {
-  content: "\e67a";
-}
-
-.iconsuoyouBAshenqingweixuanzhong:before {
-  content: "\e677";
-}
-
-.iconsuoyouBAshenqingxuanzhong:before {
-  content: "\e678";
 }
 
 .iconTimeLine-BFConfirm:before {
