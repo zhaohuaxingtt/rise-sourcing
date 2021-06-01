@@ -41,7 +41,6 @@ export default {
     name:'groupStep',
     components:{
         icon,
-        iInput,
         iDatePicker,
     },
     props:{
@@ -51,7 +50,7 @@ export default {
         },
         stepList:{
             type:Array,
-            default:[]
+            default:()=>[]
         }
     },
     data(){
@@ -73,7 +72,6 @@ export default {
                .step-icon{
                    width: 44px;
                    height: 44px;
-                   border: 1px solid red;
                }
                p{
                    &.step-title{
@@ -127,7 +125,7 @@ export default {
                        width: calc(100% - 44px - 30px);
                        position: absolute;
                         right: 15px;
-                        top: 7px;
+                        top: 2px;
                         text-align: center;
                         p{
                             font-size: 16px;

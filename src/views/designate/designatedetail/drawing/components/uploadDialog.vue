@@ -28,14 +28,14 @@
 </template>
 
 <script>
-import { iPagination, iDialog, iMessage, iButton, icon } from '@/components'
+import { iPagination, iDialog, iButton } from '@/components'
 import { uploadtableTitle as tableTitle, mokeUploadTableListData } from './data'
 import { pageMixins } from '@/utils/pageMixins'
 import tableList from '@/views/designate/supplier/components/tableList'
 import filters from '@/utils/filters'
 
 export default {
-  components: { tableList, iPagination, iDialog, iButton, icon },
+  components: { tableList, iPagination, iDialog, iButton },
   mixins: [ pageMixins, filters ],
   props: {
     ...iDialog.props,

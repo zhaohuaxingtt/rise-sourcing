@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-25 10:09:50
- * @LastEditTime: 2021-05-25 13:10:51
+ * @LastEditTime: 2021-05-31 14:50:25
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsrfq\editordetail\index.vue
@@ -12,7 +12,7 @@
     <div class="pageTitle flex-between-center-center">
       <div class="flex nav-box">
         <span>{{ $route.query.id ? 'RFQ' : $t('LK_XINJIANRFQ') }}</span>
-        <iNavMvp :lev='2' routerPage :list='navList'></iNavMvp>
+        <iNavMvp :query='$route.query' :lev='2' routerPage :list='navList' @change='changeRouter'></iNavMvp>
       </div>
       <div class="btnList">
         <iButton :loading="newRfqOpenValidateLoading" @click="newRfq" v-permission="PARTSRFQ_EDITORDETAIL_NEWRFQROUND">
@@ -193,6 +193,9 @@ export default {
     }
   },
   methods: {
+    changeRouter(router){
+      
+    },
     backPage() {
       this.$router.go(-1)
     },

@@ -141,6 +141,7 @@ module.exports = {
             },
             '/rfqApi': { //周德华，rfq模块的api地址
                 target: 'http://10.122.18.166:8025',
+                // target: 'http://192.168.50.89:8029', // 周洁松
                 changeOrigin: true,
                 pathRewrite: {
                     "^/rfqApi": ""

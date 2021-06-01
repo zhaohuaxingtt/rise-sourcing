@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-05-28 17:30:52
- * @LastEditTime: 2021-05-28 20:07:52
+ * @LastEditTime: 2021-05-31 21:08:45
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\api\designate\index.js
@@ -27,3 +27,23 @@ export function patchMouldBudget(params) {
       data: params
   })
 }
+
+
+// 获取步骤栏状态
+export function findFrontPageSeat(params) {
+  return requst({
+      url: "/page-history/find-front-page-seat",
+      method: "GET",
+      params,
+  })
+}
+
+// 更新步骤栏的状态
+export function updatePresenPageSeat(data) {
+  return requst({
+      url: "/page-history/update-presen-page-seat",
+      method: "POST",
+      data,
+  })
+}
+
