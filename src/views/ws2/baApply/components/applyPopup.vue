@@ -1,9 +1,9 @@
 <template>
-  <iDialog title="申请BA单" :visible.sync="visible" @close='clearDiolog' width="95%" top="5vh" z-index="1000" class="iDialog">
+  <iDialog :title="$t('LK_APPLYBANUMBER')" :visible.sync="visible" @close='clearDiolog' width="95%" top="5vh" z-index="1000" class="iDialog">
     <div slot="title">
       <div class="iDialog-head">
-        <div>申请BA单</div>
-        <iButton @click="confirm">确认</iButton>
+        <div>{{$t('LK_APPLYBANUMBER')}}</div>
+        <iButton @click="confirm">{{$t('LK_QUEREN')}}</iButton>
       </div>
     </div>
 

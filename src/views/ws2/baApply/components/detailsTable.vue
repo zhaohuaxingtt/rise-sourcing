@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="page-head">
-      <iButton @click="applyBA">申请BA单</iButton>
+      <iButton @click="applyBA">{{$t('LK_APPLYBANUMBER')}}</iButton>
     </div>
     
     <iTableList
@@ -25,7 +25,7 @@
 
       <template slot="table">
 
-        <template v-for="(item, index) in tableLayerListData">
+        <template v-for="(item, index) in tableLayerListData.listDate">
           <iTableList
             :getSummaries="getSummaries"
             :tableData="item"
@@ -33,6 +33,8 @@
             :tableLoading="tableLayerLoading"
             :selection="false"
             :show-summary="true"
+            :key="index"
+            style="margin-bottom:36px"
           >
             <template #amount="scope">
               <iInput :placeholder="$t('LK_QINGSHURU')" v-model="scope.row.amount" v-if="scope.row.deptName === 'Aeko'"
@@ -54,6 +56,7 @@ import { detailsTableHead, layerTableHead1, layerTableHead2 } from "./data";
 import { iButton, iMessage, iInput } from "rise";
 import { getDetail, baConfirm } from "@/api/ws2/baApply/baCommodityApply";
 import ApplyPopup from "./applyPopup";
+import { excelExport } from '@/utils/filedowLoad'
 import {
   iTableList
 } from "@/components";
@@ -75,7 +78,7 @@ export default {
       tableTitle: detailsTableHead,
       selectTableData: [],
       visible: false,
-      tableLayerListData: [],
+      tableLayerListData: {},
       tableLayerTitle: [],
       tableLayerLoading: false,
     }
@@ -91,8 +94,19 @@ export default {
   methods: {
 
     layerConfirm(){
-      console.log('11111', baConfirm, this.tableLayerListData);
-      baConfirm(this.tableLayerListData).then(res => {
+      const param = {
+        baAccountType: this.$store.state.baApply.baAcountType,
+        baPartsApplyDTOS: this.tableLayerListData.baPartsApplyDTOS,
+        listDate: this.tableLayerListData.listDate,
+      }
+      baConfirm(param).then(res => {
+        const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn;
+        if(res.data){
+          iMessage.success(result);
+          this.visible = false;
+        }else{
+          iMessage.error(result);
+        }
         console.log('11111', res);
       })
     },
@@ -136,7 +150,7 @@ export default {
     //  申请BA单
     applyBA(){
       if(!this.selectTableData.length){
-        return iMessage.warn('请先选择车型项目');
+        return iMessage.warn(this.$t('LK_BAAPPLYTISP1'));
       }
       this.getDetail();
     },
