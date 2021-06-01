@@ -10,7 +10,7 @@
             <div class="flex flex-between-center-center">
                 <span class="title-text margin-left10">{{$t('nominationLanguage.DingDianGuanLi')}}: 51017456</span>
                 <span class="select-text margin-left10">{{$t('nominationLanguage.DINGDIANSHENQINGLEIXING')}}：</span>
-                <iSelect v-model="designateType" @change="onDesignateTypeChange">
+                <iSelect v-model="designateType" @change="onDesignateTypeChange" :disabled="designateTypeDisabled">
                     <el-option
                     :value="item.id"
                     :label="$t(item.key) || item.name"
@@ -21,7 +21,7 @@
             </div>
             <div class="btnList flex-align-center">
                 <iButton >{{$t('LK_DAOCHU')}}</iButton>
-                <iButton >{{$t('LK_TIJIAO')}}</iButton>
+                <iButton @click="submit">{{$t('LK_TIJIAO')}}</iButton>
                 <iButton v-if="isDecision" @click="preview">{{$t('LK_YULAN')}}</iButton>
                 <logButton class="margin-left20" @click="log"  />
                 <span class="title-font margin-left20"><icon symbol name="icondatabaseweixuanzhong"></icon></span>
@@ -62,7 +62,10 @@ import {
   iSelect,
 } from "rise";
 import logButton from '@/views/partsign/editordetail/components/logButton'
-import { findFrontPageSeat } from '@/api/designate'
+import { 
+    nominateAppSsubmit,
+    nominateAppSDetail,
+} from '@/api/designate'
 import { applyType,applyStep } from './data'
 export default {
     name:'designateStep',
@@ -86,6 +89,7 @@ export default {
         this.isDecision = path.indexOf('/designate/decisiondata/')>-1;
 
         this.getStepStatus(id);
+        this.getDesignateType(id);
 
     },
      computed:{
@@ -98,6 +102,7 @@ export default {
             designateType:'MEETING',
             applyType:applyType,
             applyStep:applyStep,
+            designateTypeDisabled:true,
         }
     },
     methods:{
@@ -135,7 +140,32 @@ export default {
                 ...query,
               }
             })
-        }
+        },
+
+        // 提交
+        submit(){
+            const { path,query } = this.$route;
+            const {id ='1'} = query;
+            const data = {
+                nominateAppId:id,
+            }
+            nominateAppSsubmit(data).then((res)=>{
+                console.log(res);
+            })
+        },
+
+        // 获取定点管理详情 --- 取定点申请类型字段
+        getDesignateType(nominateAppId){ 
+            const data = {nominateAppId,};
+            nominateAppSDetail(data).then((res)=>{
+                console.log(res);
+                const {code,data} = res;
+                if(code === '200' && data){
+                    const { nominateProcessType } = data;
+                    this.designateType = nominateProcessType || 'MEETING';
+                }
+            })
+        },
 
     }
 }
