@@ -43,6 +43,7 @@ import { iCard, iButton, iPagination } from "rise"
 import tableList from "@/views/partsign/editordetail/components/tableList"
 import { reportListTableTitle as tableTitle } from "../data"
 import { pageMixins } from "@/utils/pageMixins"
+import { getFileHistory } from "@/api/costanalysismanage/rfqdetail"
 export default {
     name:'reportList',
     mixins: [ pageMixins ],
@@ -52,19 +53,45 @@ export default {
         iPagination,
         tableList
     },
+    created(){
+        this.getList();
+    },
     data() {
         return {
         loading: false,
         tableTitle,
-        tableListData: [
-            {a:'文件名1.png',b:'2',c:'3',d:'4'}
-        ]
+        tableListData: []
         }
     },
     methods:{
         download(){
 
         },
+        
+        // 获取列表
+        getList(){
+            this.loading =  true;
+            const { query } = this.$route;
+            const {rfqNum="1" } = query;
+            const { page } = this;
+            const data = {
+                nomiAppId:rfqNum,
+                fileType:'109',   // 101 109: 报告清单,110:询价图纸,111:询价附件
+                pageNo:page.currPage,
+                pageSize:page.pageSize,
+            }
+            getFileHistory(data).then((res)=>{
+                const {code,data} = res; 
+                if(code === '200' && data){
+                    const {records,total} = data;
+                    this.loading =  false;
+                    this.tableListData = records;
+                    this.page.totalCount = total;
+                }
+            }).catch((err)=>{
+                 this.loading =  false;
+            })
+        }
     }
 }
 </script>
