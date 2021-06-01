@@ -53,8 +53,6 @@ export default {
     iButton,
     iDialog,
     iTableList,
-    iPagination,
-    iMessage
   },
   props: {
     title: {type: String, default: '提示'},

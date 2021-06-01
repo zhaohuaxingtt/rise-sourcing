@@ -27,7 +27,7 @@
           <div class="describe">{{$t('LK_TOBECONFIRMEDMONEY')}}</div>
         </div>
         <div class="line-divR line-div">
-          <icon v-if="tableIndex === 2" symbol name="iconsuoyouBAshenqingweixuanzhong" class="openIcon"></icon>
+          <icon v-if="tableIndex === 3" symbol name="iconsuoyouBAshenqingweixuanzhong" class="openIcon"></icon>
           <icon v-else symbol name="icondaiquerenBAshenqingzhuijiajineweixuanzhong" class="openIcon"></icon>
         </div>
       </div>
@@ -208,9 +208,24 @@
     </ApplyPopup>
 
     <!-- 提示 -->
-    <!-- <Tips :visible='true'>
-
-    </Tips> -->
+    <Tips :visible='tipsVisible' @changeLayer="clearTipsDiolog">
+      <template slot="msg">
+        <div>
+          <span>
+            {{currentScope.localFactoryName}}
+            {{$t('LK_OF')}}
+            {{currentScope.carTypeName}}
+            {{$t('LK_PLEASEINPUTTIPS5')}}
+          </span>
+          <span class="color-txt">
+            {{$t('LK_PLEASEINPUTTIPS6')}}
+          </span>
+          <span>
+            {{$t('LK_PLEASEINPUTTIPS7')}}
+          </span>
+        </div>
+      </template>
+    </Tips>
     
   </div>
 </template>
@@ -240,11 +255,6 @@ import {
   iInput,
 } from "rise";
 
-const titleMap = {
-          // 1: this.$t('LK_CONFIRMANUMBER'),
-          // 3: this.$t('LK_CONFIRMMONEY')
-        }
-
 export default {
   mixins: [tableHeight, pageMixins],
   components: {
@@ -255,7 +265,10 @@ export default {
   },
   data(){
     return {
-      titleMap,
+      titleMap: {
+        1: this.$t('LK_CONFIRMANUMBER'),
+        3: this.$t('LK_CONFIRMMONEY')
+      },
       sixBa: '',
       int: 'INT',
       tableIndex: 0,
@@ -269,6 +282,7 @@ export default {
       detailsdVisible: false,
       visible: false,
       confirmVisible: false,
+      tipsVisible: false,
       allSelectList: [],
       waitSelectList: [],
       waitAddSelectList: [],
@@ -279,7 +293,7 @@ export default {
       confirmTableHead,
       waitBAATableHead,
       waitAddTableHead,
-      currentScope: [],
+      currentScope: {},
       tabData: {
         amountCount: 0,
         applyCount: 0,
@@ -310,6 +324,10 @@ export default {
 
   methods: {
 
+    clearTipsDiolog(){
+      this.tipsVisible = false;
+    },
+
     //  确认金额、确认A号
     handleConfirm(type){
       const { currentScope } = this;
@@ -325,11 +343,17 @@ export default {
       fun(param).then(res => {
         console.log('确认：', res);
         const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn;
-        if(res.data){
-          iMessage.success(result);
+        if(res.code === '1'){
           this.confirmVisible = false;
+          this.tipsVisible = true;
         }else{
-          iMessage.error(result);
+          if(res.data){
+            iMessage.success(result);
+            this.confirmVisible = false;
+          }else{
+            iMessage.error(result);
+          }
+          
         }
       })
     },
@@ -357,6 +381,7 @@ export default {
 
     //  确认A号
     confirmA(scope){
+      console.log('123123', scope);
       confirmDetail({id: scope.row.id}).then(res => {
         const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn;
         if(res.data){
@@ -556,6 +581,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.color-txt{
+  color: #1660F1;
+}
 .iDialog-inputItem{
   display: inline-block;
   width: 80px;

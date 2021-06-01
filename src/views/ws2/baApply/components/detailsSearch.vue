@@ -21,10 +21,10 @@
               @change="changeCarTypeProject"
               ref="carTypeProjectRef"
           >
-            <div class="addCarTypeProject">
+            <!-- <div class="addCarTypeProject">
               <iInput v-model="addCarTypeProject" placeholder="请输入自定义名称"></iInput>
               <iButton @click="handleAddCarTypeProject" v-loading="iDialogAddCarTypeProject">{{ $t('LK_QUEREN') }}</iButton>
-            </div>
+            </div> -->
             <el-option
                 :value="item.id"
                 :label="item.cartypeNname"
@@ -193,29 +193,29 @@ export default {
       })
     },
 
-    handleAddCarTypeProject(){
-      if (!this.addCarTypeProject) {
-        return iMessage.warn('请先输入车型名称');
-      }
-      if (this.fromGroup.some(item => item.cartypeNname == ('自定义-' + this.addCarTypeProject))){
-        return iMessage.warn('已有车型名称，请重新输入');
-      }
+    // handleAddCarTypeProject(){
+    //   if (!this.addCarTypeProject) {
+    //     return iMessage.warn('请先输入车型名称');
+    //   }
+    //   if (this.fromGroup.some(item => item.cartypeNname == ('自定义-' + this.addCarTypeProject))){
+    //     return iMessage.warn('已有车型名称，请重新输入');
+    //   }
 
-      this.iDialogAddCarTypeProject = true;
-      saveCustomCart({cartypeProjectName: this.addCarTypeProject}).then(res => {
-        const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn;
-        if (~~res.code === 0){
-          iMessage.success(result);
-          this.addCarTypeProject = '';
-          this.$refs.carTypeProjectRef.blur();
-        }else{
-          iMessage.error(result);
-        }
-        this.iDialogAddCarTypeProject = false;
-      }).catch(err => {
-        this.iDialogAddCarTypeProject = false;
-      })
-    },
+    //   this.iDialogAddCarTypeProject = true;
+    //   saveCustomCart({cartypeProjectName: this.addCarTypeProject}).then(res => {
+    //     const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn;
+    //     if (~~res.code === 0){
+    //       iMessage.success(result);
+    //       this.addCarTypeProject = '';
+    //       this.$refs.carTypeProjectRef.blur();
+    //     }else{
+    //       iMessage.error(result);
+    //     }
+    //     this.iDialogAddCarTypeProject = false;
+    //   }).catch(err => {
+    //     this.iDialogAddCarTypeProject = false;
+    //   })
+    // },
 
     changeCarTypeProject(){
       this.$emit('sure', this.form);

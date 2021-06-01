@@ -36,7 +36,6 @@ export default {
   mixins: [pageMixins],
   components: {
     iDialog,
-    iSearch,
     iInput,
     iButton
   },

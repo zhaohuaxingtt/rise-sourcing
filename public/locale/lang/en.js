@@ -895,6 +895,8 @@
         'LK_WENJIANQINGXUANZHUANZHIZHENGCHANG':'上传附件:文件请旋转至正常方向后上传', // 上传附件:文件请旋转至正常方向后上传
         'LK_FASONGKM': '发送KM', // 发送KM
 
+        'LK_BAAPPLYTISP1': '请先选择车型项目',  //  请先选择车型项目
+
         // 定点管理
         'nominationLanguage': {
             'DingDianGuanLi': '定点管理',
