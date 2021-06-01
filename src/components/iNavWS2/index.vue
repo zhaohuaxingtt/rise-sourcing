@@ -5,8 +5,21 @@
  -->
 <template>
   <div class="btnList flex-align-center">
+    <div class="carTypeOverview" v-if="$route.path.indexOf('budgetManagement/carTypeOverview') > -1">
+      <el-switch
+          v-model="onleySelf"
+          @change="changeCarTypeOverview"
+          inactive-text="仅看自己">
+      </el-switch>
+      <el-switch
+          v-model="checkHistory"
+          @change="changeCheckHistory"
+          inactive-text="查看历史">
+      </el-switch>
+      <iButton icon="el-icon-circle-plus-outline" type="primary">新增车型项目</iButton>
+    </div>
     <iButton
-        v-if="$store.state.mouldManagement.nextStep"
+        v-if="$route.path.indexOf('budgetManagement/generateInvestmentList') > -1"
         class="nextStep"
         @click="$emit('nextStep')"
         :disabled="$store.state.mouldManagement.isBudget == 3"
@@ -40,8 +53,9 @@
 <script>
 import {
   icon,
-  iButton, iMessage
-} from "@/components";
+  iButton,
+} from "rise";
+import { Switch } from "element-ui";
 import logButton from "pages/ws2/budgetManagement/components/logButton";
 
 export default {
@@ -53,7 +67,7 @@ export default {
   },
   components: {
     icon,
-    iButton
+    iButton,
   },
   data() {
     return {
@@ -61,6 +75,8 @@ export default {
       routerPage: true,
       query: true,
       dataBase: false,
+      onleySelf: false,
+      checkHistory: false,
     }
   },
   created() {
@@ -69,6 +85,12 @@ export default {
     }
   },
   methods: {
+    changeCarTypeOverview(val){
+
+    },
+    changeCheckHistory(val){
+
+    },
     changeDataBase() {
       this.dataBase = true
       this.activeIndex = 999
@@ -85,6 +107,21 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.carTypeOverview{
+  > div{
+    margin-right: 20px;
+  }
+  ::v-deep .el-switch__label.is-active{
+    color: #41434A;
+  }
+  ::v-deep .el-button--primary{
+    font-size: 16px;
+    color: #1660F1;
+    background-color: #EEF2FB;
+    border-color: #EEF2FB;
+    margin-right: 20px;
+  }
+}
 .bounce-enter-active {
   animation: bounce-in .5s;
 }

@@ -12,7 +12,8 @@ export const tableHeight = {
     },
     methods: {
         getHeight(){
-            this.tableHeight = document.documentElement.clientHeight || document.body.clientHeight
+            // this.tableHeight = document.documentElement.clientHeight || document.body.clientHeight
+            this.tableHeight = -50000
         }
     },
     created() {

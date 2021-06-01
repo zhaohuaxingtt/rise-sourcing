@@ -112,7 +112,7 @@
             <iButton v-show="pageEdit" @click="referenceModelShow = true">{{ $t('LK_CANKAOCHEXIN') }}</iButton>
             <iButton v-show="pageEdit" @click="saveRow">{{ $t('LK_BAOCUN') }}</iButton>
             <iButton v-show="pageEdit" @click="saveAsRow">{{ $t('LK_BAOCUNWEIXINBANBEN') }}</iButton>
-            <!--            <iButton @click="saveRow">下载投资清单</iButton>-->
+            <iButton @click="downloadList">下载投资清单</iButton>
             <iButton v-show="pageEdit" @click="conversionRatioShow = true">{{ $t('LK_ANBILIZHESUAN') }}</iButton>
           </div>
         </div>
@@ -340,7 +340,10 @@ import {
   getModelProtitesPullDown,
   investmentDelete,
   relationMainCarType,
-  investmentUpdate, proDeptPullDown, liniePullDownByDept
+  investmentUpdate,
+  proDeptPullDown,
+  liniePullDownByDept,
+  exportInvestmentList
 } from "@/api/ws2/budgetManagement/investmentList";
 import {insertRfq} from "@/api/partsrfq/home";
 import echarts from "@/utils/echarts";
@@ -1113,6 +1116,34 @@ export default {
       this.saveParams.approveInvestment = this.form['search.approvalInvestment']
       this.saveParams.versionId = this.form['search.version']
       this.saveAsShow = true
+    },
+    downloadList() {
+      this.tableLoading = true
+      exportInvestmentList({
+        listVerisonId: this.form['search.version'],
+      }).then((res) => {
+        const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
+        if (Number(res.code) === 200) {
+          const blob = new Blob([res.data]);//new Blob([res])中不加data就会返回下图中[objece objece]内容（少取一层）
+          const fileName = '选择计划.xls'; //这里可以自定义名称，发现设置xlsx文件类型下载后打开会提示下面图-1的无效报错,所以我用了xls格式
+          const elink = document.createElement('a');
+          elink.download = fileName;
+          elink.style.display = 'none';
+          elink.href = URL.createObjectURL(blob);
+          document.body.appendChild(elink);
+          elink.click();
+          URL.revokeObjectURL(elink.href); // 释放URL 对象
+          document.body.removeChild(elink);
+          iMessage.success(result);
+        } else {
+          iMessage.error(result);
+          this.tableLoading = false
+        }
+      }).catch(() => {
+        this.tableLoading = false
+      });
+      // let url = process.env.VUE_APP_INVESTMENT + '/exportInvestmentList?listVerisonId=' + this.form['search.version']
+      // window.open(url)
     },
     // 跳转详情
     // openPage(item) {

@@ -105,6 +105,10 @@ export default {
 <style lang='scss' scoped>
 .iDialogAdd.el-dialog__wrapper {
   overflow: hidden;
+  ::v-deep .el-dialog{
+    height: 90%;
+    overflow-y: auto;
+  }
 }
 
 .title {

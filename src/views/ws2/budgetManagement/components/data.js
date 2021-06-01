@@ -265,6 +265,7 @@ export const investmentListEntities = [{
         props: 'linie',
         name: 'LINIE',
         key: 'LK_LINIE',
+        minWidth: 120,
         tooltip: false
     },
     {

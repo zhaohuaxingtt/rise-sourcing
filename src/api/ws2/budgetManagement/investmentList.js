@@ -29,6 +29,14 @@ export function findInvestmentList(parmars) {
         data: parmars
     })
 }
+//模具投资清单条件下载
+export function exportInvestmentList(parmars) {
+    return INVESTMENT({
+        url: '/exportInvestmentList',
+        method: 'POST',
+        data: parmars
+    })
+}
 //模具投资清单-添加行
 export function investmentSave(parmars) {
     return INVESTMENT({

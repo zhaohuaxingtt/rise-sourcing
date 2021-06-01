@@ -312,6 +312,9 @@ export default {
               this.page.pageSize = res.pageSize;
               this.page.totalCount = res.total;
               this.tableListData = res.data;
+              if(res.data && res.data.isHideColumn == 2){
+                this.tableTitle = this.tableTitle.filter(item => item.props != 'categoryBudget' && item.props != 'budgetLeftoverAmount')
+              }
             } else {
               iMessage.error(result)
             }

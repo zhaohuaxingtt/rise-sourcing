@@ -13,10 +13,12 @@
       <el-form>
         <el-form-item :label="$t('LK_CHEXINXIANGMU')">
           <iSelect
+              class="multipleSelect"
               :placeholder="$t('partsprocure.PLEENTER')"
               v-model="form['search.tmCartypeProId']"
               filterable
               clearable
+              collapse-tags
               multiple
           >
             <el-option
@@ -117,6 +119,7 @@ export default {
     }
   },
   created() {
+    this.page.pageSizes = [10, 20, 50, 100, 300]
     this.getModelProtitesPullDown()
   },
   methods: {
@@ -167,6 +170,7 @@ export default {
       for (let i in this.form) {
         this.form[i] = "";
       }
+      this.form['search.tmCartypeProId'] = []
       this.getTableListFn()
     },
     handleSelectionChange(list) {
@@ -185,5 +189,13 @@ export default {
   display: flex;
   justify-content: space-between;
   margin-bottom: 20px;
+}
+.multipleSelect{
+  ::v-deep .el-tag{
+    max-width: calc(100% - 50px);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
 }
 </style>
