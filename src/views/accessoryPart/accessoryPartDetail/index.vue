@@ -2,13 +2,13 @@
  * @Author: Luoshuang
  * @Date: 2021-05-25 15:16:38
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-05-26 10:59:48
+ * @LastEditTime: 2021-06-01 16:17:42
  * @Description: 配件详情
  * @FilePath: \front-web\src\views\accessoryPart\accessoryPartDetail\index.vue
 -->
 
 <template>
-  <iPage>
+  <iPage v-loading="pageLoading">
     <topComponents>
       <span slot="left" class="floatleft font20 font-weight">
         配件编号：SVZC5052
@@ -28,12 +28,35 @@
 import { iPage, iCard, iFormGroup, iFormItem, iText } from 'rise'
 import topComponents from '../../designate/designatedetail/components/topComponents'
 import { detailList } from './data'
+import { getAccessoryOneInfo } from '@/api/accessoryPart/index'
+import { iMessage } from '../../../components'
 export default {
   components: { iPage, topComponents, iCard, iFormGroup, iFormItem, iText },
   data() {
     return {
       detailList,
-      detailData: {}
+      detailData: {},
+      pageLoading: false
+    }
+  },
+  created() {
+    if (this.$route.query.accessoryId) {
+      this.getDetail()
+    }
+  },
+  methods: {
+    getDetail() {
+      this.pageLoading = true
+      getAccessoryOneInfo(this.$route.query.accessoryId).then(res => {
+        if (res.result) {
+          this.detailData = res.data
+        } else {
+          this.detailData = {}
+          iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
+        }
+      }).finally(() => {
+        this.pageLoading = false
+      })
     }
   }
 }

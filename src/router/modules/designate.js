@@ -1,7 +1,7 @@
 /*
  * @Author: HaoJiang
  * @Date: 2021-05-20 14:29:09
- * @LastEditTime: 2021-05-31 09:48:33
+ * @LastEditTime: 2021-05-31 21:31:26
  * @LastEditors: Luoshuang
  * @Description: 定点管理
  * @metaParams: hideTabLV3 隐藏三级导航
@@ -25,7 +25,7 @@ export default [
             import ("@/views/designate/home"),
       },
       {
-        path: "/designate/rfqdetail/addRfq",
+        path: "/sourcing/designate/rfqdetail/addRfq",
         name: "designateAddRfq",
         meta: {
           title: "定点管理-RFQ零件清单-新增RFQ",
@@ -34,7 +34,7 @@ export default [
           import ("@/views/designate/designatedetail/addRfq")
       },
       {
-        path: "/designate/rsSingleMaintenance",
+        path: "/sourcing/designate/rsSingleMaintenance",
         name: "rsSingleMaintenance",
         meta: {
           title: "定点管理-RS单维护",
@@ -43,7 +43,7 @@ export default [
           import ("@/views/designate/designatedetail/rsSingleMaintenance")
       },
       {
-        path: "/designate/defaultLogic",
+        path: "/sourcing/designate/defaultLogic",
         name: "defaultLogic",
         meta: {
           title: "定点申请预设逻辑",

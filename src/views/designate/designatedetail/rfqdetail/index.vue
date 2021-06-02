@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-21 09:23:11
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-05-31 15:23:31
+ * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-06-01 14:45:31
  * @Description: RFQ & 零件清单界面
  * @FilePath: \front-web\src\views\designate\designatedetail\rfqdetail\index.vue
 -->
@@ -120,7 +120,7 @@ export default {
      * @return {*}
      */    
     addRfq() {
-      this.$router.push({path: '/designate/rfqdetail/addRfq'})
+      this.$router.push({path: '/sourcing/designate/rfqdetail/addRfq'})
     },
     /**
      * @Description: rfq清单列表数据查询
