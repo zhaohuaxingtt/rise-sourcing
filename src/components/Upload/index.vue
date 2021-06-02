@@ -12,7 +12,7 @@
     :accept="accept"
     v-bind="props"
   >
-		<iButton :loading="uploadButtonLoading">{{buttonText || $t('LK_DIANJISHANGCHUAN')}}</iButton>
+		<iButton :loading="uploading">{{buttonText || $t('LK_DIANJISHANGCHUAN')}}</iButton>
 		<div v-if="!hideTip" slot="tip" class="el-upload__tip">{{$t('LK_ZHINENGSHANGCHUANWENJIAN')}}</div>
   </el-upload>
 </template>
