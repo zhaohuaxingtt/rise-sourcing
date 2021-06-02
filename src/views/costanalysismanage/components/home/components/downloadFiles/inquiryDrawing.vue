@@ -9,7 +9,7 @@
           <span class="title">{{$t('LK_XUNJIATUZHI')}}</span>
 
           <div class="floatright">
-              <iButton>{{$t('LK_XIAZAI')}}</iButton>
+              <iButton @click="downloadList">{{$t('LK_XIAZAI')}}</iButton>
           </div>
       </div>
       <!-- 表格区域 -->
@@ -21,7 +21,7 @@
         @handleSelectionChange="handleSelectionChange"
       >
         <template #fileName="scope">
-            <span class="link" @click="download(scope.row)">{{ scope.row.fileName }}</span>
+            <span class="link" @click="downloadLine(scope.row)">{{ scope.row.fileName }}</span>
         </template>
       </tableList>
       <!-- 分页 -->
@@ -39,11 +39,14 @@
 import {
     iButton,
     iPagination,
+    iMessage,
 } from 'rise'
 import tableList from "@/views/partsign/editordetail/components/tableList"
 import { pageMixins } from "@/utils/pageMixins"
 import { DrawingTitle } from '../data'
 import { getFileHistory } from "@/api/costanalysismanage/rfqdetail"
+import { downloadFile } from '@/api/file'
+
 export default {
     name:'inquiryDrawing',
     mixins: [pageMixins],
@@ -51,6 +54,7 @@ export default {
         tableList,
         iButton,
         iPagination,
+        iMessage,
     },
     props:{
         rfqNum:{
@@ -73,7 +77,29 @@ export default {
         handleSelectionChange(val) {
             this.selectItems = val;
         },
-        download(){
+        // 下载附件
+        async download(fileList){
+             const data = {
+              applicationName: 'rise',
+              fileList:fileList.join(),
+            };
+            await downloadFile(data);
+        },
+        
+        // 批量下载附件
+        downloadList(){
+            const  {selectItems } = this;
+            if(!selectItems.length){
+            iMessage.warn(this.$t('LK_QINGXUANZHEXUYAOXIAZHAIDEFUJIAN'));
+            }else{
+                const list = selectItems.map((item)=>item.id);
+                this.download(list);
+            }
+        },
+        // 单文件下载
+        downloadLine(row){
+            const {id} = row;
+            this.download([id]);
         },
         // 获取列表
         async getList(){
@@ -82,7 +108,7 @@ export default {
             const { page } = this;
             const data = {
                 nomiAppId:rfqNum,
-                fileType:'101',   // 101 109: 报告清单,110:询价图纸,111:询价附件
+                fileType:'110',   // 101 109: 报告清单,110:询价图纸,111:询价附件
                 pageNo:page.currPage,
                 pageSize:page.pageSize,
             }
