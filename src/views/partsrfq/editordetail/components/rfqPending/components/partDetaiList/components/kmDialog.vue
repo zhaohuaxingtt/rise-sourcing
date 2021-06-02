@@ -1,7 +1,7 @@
 <!--
  * @Author: ldh
  * @Date: 2021-05-29 16:29:00
- * @LastEditTime: 2021-06-02 19:30:05
+ * @LastEditTime: 2021-06-02 20:04:32
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqPending\components\partDetaiList\components\kmDialog.vue
@@ -17,7 +17,8 @@
       <p class="title"></p>
       <div class="control" id="control">
         <iButton :loading="sendLoading" @click="handleSend">{{ $t("partsprocure.FaSong") }}</iButton>
-        <iButton :loading="recallLoading" @click="handleRecall">{{ $t("partsprocure.CheHui") }}</iButton>
+        <!-- 2021/06/02 取消撤回功能 -->
+        <!-- <iButton :loading="recallLoading" @click="handleRecall">{{ $t("partsprocure.CheHui") }}</iButton> -->
       </div>
     </template>
     <div class="body">
