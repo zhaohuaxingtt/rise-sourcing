@@ -498,7 +498,7 @@ export const partsList = [
         tooltip: false
     },
     {
-        props: 'nomiType',
+        props: 'partNameDe',
         name: '零件名称（德）',
         key: '零件名称（德）',
         tooltip: false
