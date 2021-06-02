@@ -4,7 +4,8 @@
       <div class="page-headTitle">
         车型项目详情
       </div>
-      <div>组件</div>
+      <iNavWS2
+      ></iNavWS2>
     </div>
     <DetailsSearch @reset="handleReset" @sure="handleSure" :isModelItem="true" />
 
@@ -31,6 +32,7 @@ import DetailsSearch from "./components/detailsSearch";
 import DetailsTable from "./components/detailsTable";
 import { findBaPartsList } from "@/api/ws2/baApply";
 import { pageMixins } from "@/utils/pageMixins";
+import { iNavWS2 } from "@/components";
 
 export default {
   mixins: [pageMixins],
@@ -39,7 +41,8 @@ export default {
     DetailsSearch,
     DetailsTable,
     iCard,
-    iPagination
+    iPagination,
+    iNavWS2
   },
 
   data(){
