@@ -18,8 +18,8 @@
             :tableTitle="tableTitle"
             :tableLoading="loading"
         >
-            <template #a="scope">
-            <span class="link" @click="download(scope.row)">{{ scope.row.a }}</span>
+            <template #fileName="scope">
+            <span class="link" @click="download(scope.row)">{{ scope.row.fileName }}</span>
             </template>
         </tableList>
         <iPagination 
@@ -64,8 +64,8 @@ export default {
         }
     },
     methods:{
-        download(){
-
+        download(row){
+            console.log(row);
         },
         
         // 获取列表
@@ -87,6 +87,8 @@ export default {
                     this.loading =  false;
                     this.tableListData = records;
                     this.page.totalCount = total;
+                }else{
+                     this.loading =  false;
                 }
             }).catch((err)=>{
                  this.loading =  false;

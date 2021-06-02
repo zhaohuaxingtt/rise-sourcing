@@ -144,7 +144,7 @@ export default {
 
         // 提交
         submit(){
-            const { path,query } = this.$route;
+            const { query } = this.$route;
             const {id ='1'} = query;
             const data = {
                 nominateAppId:id,

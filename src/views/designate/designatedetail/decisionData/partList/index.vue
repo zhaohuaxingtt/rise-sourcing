@@ -11,7 +11,7 @@
               <span>Part List</span>
               <div v-if="isPreview!='1'">
                   <iButton>{{$t('LK_TIAOZHUANZHILINGJIANQINGDANTIANJIA')}}</iButton>
-                  <iButton>{{$t('LK_BAOCUN')}}</iButton>
+                  <iButton :loading="saveLoading" @click="save">{{$t('LK_BAOCUN')}}</iButton>
               </div>
           </h1>
           <!-- table区域 -->
@@ -22,12 +22,24 @@
           >
            <template v-for="(item,index) in tableTitle" >
                <el-table-column
-                     :key="'tableListData'+index"
-                     :prop="item.key"
-                     :label="item.name">
-               </el-table-column>>
+                  align="center"
+                  :key="'tableListData'+index"
+                  :prop="item.props"
+                  :label="item.name">
+                  <template slot-scope="scope">
+                     <!-- 系统计算EBR值 -->
+                     <span v-if="item.props === 'ebrCalculatedValue'">{{scope.row.ebrCalculatedValue || 0}}</span>
+                     <!-- 手工输入EBR值 -->
+                     <span v-else-if="item.props === 'ebrConfirmValue'">
+                        <span v-if="isPreview=='1'">{{scope.row.ebrConfirmValue || 0}}</span>
+                        <iInput v-else v-model="scope.row.ebrConfirmValue" @input="handleInputLimit($event, scope.row)" />
+                     </span>
+                     <span v-else>{{scope.row[item.props] || '-'}}</span>
+                  </template>
+                  
+               </el-table-column>
             </template>
-            </el-table>
+         </el-table>
           <iPagination
             class="margin-bottom20"
             @size-change="handleSizeChange($event, getListData)"
@@ -49,15 +61,23 @@ import {
   iCard,
   iButton,
   iPagination,
+  iInput,
+  iMessage,
 } from "rise";
 import {pageMixins} from '@/utils/pageMixins'
-import { getPartList } from '@/api/designate/designatedetail/decisionData/partlist'
+import { 
+   getPartList,
+   partUpdate,
+ } from '@/api/designate/designatedetail/decisionData/partlist'
+import { numberProcessor } from "@/utils"
 export default {
   mixins:[pageMixins],
      components:{
         iCard,
         iButton,
         iPagination,
+        iInput,
+        iMessage,
     },
     created(){
        this.getListData();
@@ -65,19 +85,20 @@ export default {
     data(){
        return{
           loading: false,
+          saveLoading:false,
           tableListData:[],
           tableTitle:[
-             {name:'FS No.',key:'FSNo'},
-             {name:'PART NO.',key:'PARTNO'},
-             {name:'Part Name',key:'PartName'},
-             {name:'Material Group',key:'MaterialGroup'},
-             {name:'Factory',key:'Factory'},
-             {name:'PROJECT',key:'PROJECT'},
-             {name:'SOP',key:'SOP'},
-             {name:'EBR%',key:'EBR%'},
-             {name:'EBR% (input)',key:'EBR% (input)'},
-             {name:'Volume (lifetime)',key:'Volume (lifetime)'},
-             {name:'Volume (p.a.)',key:'Volume (p.a.)'},
+             {props:'fsNum',name:'FS No.',key:'FSNo'},
+             {props:'partNum',name:'PART NO.',key:'PARTNO'},
+             {props:'partNameZh',name:'Part Name',key:'PartName'},
+             {props:'materialGroup',name:'Material Group',key:'MaterialGroup'},
+             {props:'procureFactory',name:'Factory',key:'Factory'},
+             {props:'project',name:'PROJECT',key:'PROJECT'},
+             {props:'sopDate',name:'SOP',key:'SOP'},
+             {props:'ebrCalculatedValue',name:'EBR%',key:'EBR%'},
+             {props:'ebrConfirmValue',name:'EBR% (input)',key:'EBR% (input)'},
+             {props:'lifeTime',name:'Volume (lifetime)',key:'Volume (lifetime)'},
+             {props:'paVolume',name:'Volume (p.a.)',key:'Volume (p.a.)'},
           ]
        }
     },
@@ -88,19 +109,55 @@ export default {
     },
     methods:{
        // 获取列表
-       getListData(){
-      const {pageSize,currPage} = this.page;
+       async getListData(){
+         const { query } = this.$route;
+         const {id ='1'} = query;
+          this.loading = true;
+         const {pageSize,currPage} = this.page;
           const data = {
-             nominateId:'1',
+             nominateId:id,
              size:pageSize,
              current:currPage
              
           };
-          getPartList(data).then((res)=>{
+          await getPartList(data).then((res)=>{
+            this.loading = false;
+             const {code,data} = res;
+             if(code === '200' && data){
+                const { records=[],total } = data;
+                this.tableListData = records;
+                this.page.totalCount = total;
+             }
              console.log(res);
+          }).catch((err)=>{
+            this.loading = true;
           })
-       }
-    }
+       },
+       // 输入框 手工输入EBR值 数字的限制
+       handleInputLimit(val, row){
+          this.$set(row, "ebrConfirmValue", numberProcessor(val, 2))
+       },
+      // 保存
+      async save(){
+         this.saveLoading = true;
+         const data = {
+            partPrjList:[  
+               ...this.tableListData
+            ]
+         }
+         await partUpdate(data).then((res)=>{
+            this.saveLoading = false;
+            if (res.code == 200) {
+               iMessage.success(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+            } else {
+               iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+            }
+            this.getListData();
+         }).catch((err)=>{
+             this.saveLoading = false;
+         })
+      },
+    },
 }
 </script>
 
