@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-05-24 15:21:03
+ * @LastEditTime: 2021-06-02 11:24:30
  * @LastEditors: Please set LastEditors
  * @Description: 公共utils部分
  * @FilePath: \rise\src\utils\index.js
@@ -107,13 +107,28 @@ export function permissionTitle(key,titleList){
 }
 
 //序列化url参数传递
-export function serialize(data) {
+export function serialize(data, type = Object) {
   let str = ''
-  for (let key in data) {
-    str += key + '=' + encodeURIComponent(data[key]) + '&'
+
+  switch(type) {
+    case Object:
+      for (let key in data) {
+        str += key + '=' + encodeURIComponent(data[key]) + '&'
+      }
+      str = str.replace(/&$/, '')
+      return str
+    case Array:
+      if (Array.isArray(data)) {
+        str = data
+          .map(item => {
+            return serialize(item)
+          })
+          .join("&")
+      }
+
+      return str
   }
-  str = str.replace(/&$/, '')
-  return str
+  
 }
 
 // 数字限制输入
