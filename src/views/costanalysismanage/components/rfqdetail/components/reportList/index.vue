@@ -16,7 +16,7 @@
             </span>
             <!-- <iButton>{{$t('LK_SHANGCHUAN')}}</iButton> -->
             <iButton @click="downloadList">{{$t('LK_XIAZAI')}}</iButton>
-            <iButton>{{$t('delete')}}</iButton>
+            <iButton @click="deleteItem">{{$t('delete')}}</iButton>
         </template>
         <div class="body">
         <tableList
@@ -25,9 +25,12 @@
             :tableData="tableListData"
             :tableTitle="tableTitle"
             :tableLoading="loading"
+            @handleSelectionChange="handleSelectionChange"
         >
             <template #fileName="scope">
-            <span class="link" @click="download(scope.row)">{{ scope.row.fileName }}</span>
+                <a class="trigger" href="javascript:;" @click="downloadLine(scope.row)">
+                    <span class="link" >{{ scope.row.fileName }}</span>
+                </a>
             </template>
         </tableList>
         <iPagination 
@@ -47,7 +50,12 @@
 </template>
 
 <script>
-import { iCard, iButton, iPagination } from "rise"
+import { 
+    iCard, 
+    iButton, 
+    iPagination,
+    iMessage,
+} from "rise"
 import Upload from '@/components/Upload'
 import tableList from "@/views/partsign/editordetail/components/tableList"
 import { reportListTableTitle as tableTitle } from "../data"
@@ -55,8 +63,9 @@ import { pageMixins } from "@/utils/pageMixins"
 import { getFileHistory } from "@/api/costanalysismanage/rfqdetail"
 import {
   uploadDaring,
+  batchDeleteDaring,
 } from '@/api/designate/decisiondata/drawing'
-import { downloadFiles } from '@/api/file/upload'
+import { downloadFile } from '@/api/file'
 
 export default {
     name:'reportList',
@@ -67,6 +76,7 @@ export default {
         iPagination,
         tableList,
         Upload,
+        iMessage,
     },
     created(){
         this.getList();
@@ -75,33 +85,33 @@ export default {
         return {
         loading: false,
         tableTitle,
-        tableListData: []
+        tableListData: [],
+        selectItems:[],
         }
     },
     methods:{
         // 批量下载附件
-        async downloadFile(fileList){
+        async download(fileList){
              const data = {
               applicationName: 'rise',
-              fileList
+              fileList:fileList.join(),
             };
-            await downloadFiles(data).then((res)=>{
-                const {code} = res;
-                if(code==200){
-
-                }
-            })
+            await downloadFile(data);
         },
         // 单文件下载
-        download(row){
-            console.log(row);
+        downloadLine(row){
             const {id} = row;
-            console.log(id);
-            this.downloadFile([id]);
+            this.download([id]);
         },
         // 批量下载附件
         downloadList(){
-
+            const  {selectItems } = this;
+            if(!selectItems.length){
+            iMessage.warn(this.$t('LK_QINGXUANZHEXUYAOXIAZHAIDEFUJIAN'));
+            }else{
+                const list = selectItems.map((item)=>item.id);
+                this.download(list);
+            }
         },
         
         // 获取列表
@@ -111,8 +121,8 @@ export default {
             const {rfqNum="1" } = query;
             const { page } = this;
             const data = {
-                nomiAppId:'1',
-                fileType:'101',   // 101 109: 报告清单,110:询价图纸,111:询价附件
+                nomiAppId:rfqNum,
+                fileType:'109',   // 101 109: 报告清单,110:询价图纸,111:询价附件
                 pageNo:page.currPage,
                 pageSize:page.pageSize,
             }
@@ -130,6 +140,10 @@ export default {
                  this.loading =  false;
             })
         },
+        
+        handleSelectionChange(val) {
+            this.selectItems = val;
+        },
         // 上传附件
         onDraingUploadsucess(data){
             const { query } = this.$route;
@@ -140,8 +154,8 @@ export default {
                 filePath: data.data.filePath || '',
                 fileSize: data.file.size || 0,
                 size: data.file.size || 0,
-                fileType: 101,
-                hostId: '1'
+                fileType: '109',
+                hostId: rfqNum
             };
             uploadDaring(params).then((res)=>{
                 const {code} = res;
@@ -153,6 +167,26 @@ export default {
                 }
             })
         },
+        // 删除附件
+        async deleteItem(){
+            const { selectItems } = this;
+            if(!selectItems.length){
+                iMessage.warn(this.$t('LK_QINGXUANZHEXUYAOSHANCHUYOUJIAN'));
+            }else{
+                const confirmInfo = await this.$confirm(this.$t('deleteSure'))
+                if (confirmInfo !== 'confirm') return;
+                const idList = selectItems.map((item)=>item.id);
+                await batchDeleteDaring({idList}).then((res)=>{
+                    const {code} = res;
+                    if(code == 200 ){
+                        iMessage.success(this.$t('LK_CAOZUOCHENGGONG'));
+                        this.getList();
+                    } else {
+                        iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+                    }
+                }).catch((err)=>{});
+            }
+        }
     }
 }
 </script>
