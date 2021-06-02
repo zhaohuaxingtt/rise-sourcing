@@ -52,6 +52,8 @@
           v-if="items.props == activeItems"
           :prop="items.props"
           :label="$t(items.key)"
+          :min-width="items.minWidth"
+          :width="items.width"
         >
           <template slot-scope="row"
             ><span class="openLinkText cursor" @click="openPage(row.row)">{{
@@ -66,6 +68,8 @@
           v-else-if="items.props == 'tpInfoType'"
           :label="items.name"
           :prop="items.props"
+          :min-width="items.minWidth"
+          :width="items.width"
         >
           <template slot-scope="scope">
             <span>{{

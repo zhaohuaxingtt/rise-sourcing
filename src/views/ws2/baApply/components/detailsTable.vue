@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="page-head">
-      <iButton @click="applyBA">{{$t('LK_APPLYBANUMBER')}}</iButton>
+      <iButton @click="applyBA" :loading="applyLoading">{{$t('LK_APPLYBANUMBER')}}</iButton>
     </div>
     
     <iTableList
@@ -35,6 +35,7 @@
             :show-summary="true"
             :key="index"
             style="margin-bottom:36px"
+            class="baApply-table"
           >
             <template #amount="scope">
               <iInput :placeholder="$t('LK_QINGSHURU')" v-model="scope.row.amount" v-if="scope.row.deptName === 'Aeko'"
@@ -54,9 +55,9 @@
 import { tableHeight } from "@/utils/tableHeight";
 import { detailsTableHead, layerTableHead1, layerTableHead2 } from "./data";
 import { iButton, iMessage, iInput } from "rise";
-import { getDetail, baConfirm } from "@/api/ws2/baApply/baCommodityApply";
+import { getDetail, baConfirm, downloadExport } from "@/api/ws2/baApply/baCommodityApply";
 import ApplyPopup from "./applyPopup";
-import { excelExport } from '@/utils/filedowLoad'
+import httpRequest from "@/utils/axios.download";
 import {
   iTableList
 } from "@/components";
@@ -81,6 +82,7 @@ export default {
       tableLayerListData: {},
       tableLayerTitle: [],
       tableLayerLoading: false,
+      applyLoading: false,
     }
   },
   mixins: [tableHeight],
@@ -93,6 +95,12 @@ export default {
 
   methods: {
 
+    downloadExport(){
+      downloadExport(this.selectTableData).then(res => {
+        
+      })
+    },
+
     layerConfirm(){
       const param = {
         baAccountType: this.$store.state.baApply.baAcountType,
@@ -104,6 +112,7 @@ export default {
         if(res.data){
           iMessage.success(result);
           this.visible = false;
+          this.downloadExport();
         }else{
           iMessage.error(result);
         }
@@ -156,6 +165,7 @@ export default {
     },
 
     getDetail(){
+      this.applyLoading = true;
       getDetail(this.selectTableData).then(res => {
         console.log('明细：', res);
         const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn;
@@ -164,8 +174,10 @@ export default {
           this.tableLayerTitle = this.$store.state.baApply.baAcountType === 2 ? layerTableHead2 : layerTableHead1;
           this.tableLayerListData = res.data;
           this.visible = true;
+          this.applyLoading = false;
         }else{
           iMessage.error(result);
+          this.applyLoading = false;
         }
       })
     },
@@ -178,6 +190,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.baApply-table{
+  ::v-deep .el-input__inner{
+    width: 120px !important;
+  }
+
+  ::v-deep .el-table__footer-wrapper .is-center{
+    color: #000 !important;
+    font-weight: bold !important;
+  }
+}
 .span-color{
   color: #1660F1;
 }

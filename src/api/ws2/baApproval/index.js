@@ -106,7 +106,7 @@ export function updateByCarId(parmars) {
 export function confirmDetail(parmars) {
   return VUE_APP_BAAPPROVE({
       url: '/confirmDetail',
-      method: 'GET',
-      params: parmars
+      method: 'POST',
+      data: parmars
   })
 }
