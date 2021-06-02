@@ -42,78 +42,79 @@ export const tableTitle = [{
   tooltip: false
 },
 {
-  props: 'PROJECT',
+  props: 'carTypeProj',
   name: 'PROJECT',
   key: 'PROJECT',
   tooltip: false
 },
 {
-  props: 'partNameDe',
+  props: 'nominateProcessType',
   name: '类型',
   key: 'nominationLanguage.LeiXing',
   tooltip: true
 },
 {
-	props: 'statusName',
+	props: 'applicationStatus',
 	name: '状态',
 	key: 'LK_ZHUANGTAI',
 	tooltip:false
 },
 {
-  props: 'partProjectTypeName',
+  props: 'carType',
   name: '项目类型',
   key: 'nominationLanguage.XingMuLeiXing',
   tooltip: false
 },
 {
-  props: 'cartypeCategory',
+  props: 'meetingPresentId',
   name: '会议',
   key: 'nominationLanguage.HuiYi',
   tooltip: true
 },
 {
-  props: 'cartypeProjectZh',
+  props: 'nominateUserName',
   name: '询价采购员',
   key: 'nominationLanguage.XunJiaCaiGouYuan',
   tooltip: true
 },
 {
-  props: 'LINIE',
+  props: 'linieName',
   name: 'LINIE',
   key: 'LINIE',
   tooltip: false
 },
 {
-  props: 'rstate',
+  props: 'rsStatus',
   name: 'RS单状态',
   key: 'nominationLanguage.RSZhuangTai',
   tooltip: false
 },
 {
-  props: 'rsdate',
+  props: 'rsFreezeDate',
   name: 'RS冻结日期',
   key: 'nominationLanguage.RSDongJieRiQi',
   tooltip: false
 },
 {
-  props: 'linieName',
+  props: 'isPriceConsistent',
   name: '报价一致性校验状态',
   key: 'nominationLanguage.BaoJiaYiZhiXingZhuangTai',
   tooltip: false
 },
 {
-  props: 'cfControllerZh',
+  props: 'selStatus',
   name: 'SEL单据确认状态',
   key: 'nominationLanguage.SELDanJuQUeRenZH',
   tooltip: false
 },
 {
-  props: 'date',
+  props: 'nominateDate',
   name: '定点日期',
   key: 'nominationLanguage.DingDianRiQi',
   tooltip: false
 },
 {
+  props: 'LK_CAOZUO',
   name: '操作',
   key: 'LK_CAOZUO',
   tooltip: false

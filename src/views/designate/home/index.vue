@@ -56,15 +56,32 @@
         @openPage="openPage"
         :activeItems="'partNum'"
       >
+      <template #LK_CAOZUO="scope">
+        <span><a href="javascript:;" @click="detail(scope.row)">{{'定点详情'}}</a></span>
+      </template>
+      <!-- re冻结日期 -->
+      <template #rsFreezeDate="scope">
+        <span>{{scope.row.rsFreezeDate | dateFilter("YYYY-MM-DD")}}</span>
+      </template>
+      
+      <!-- 一致性校验 -->
+      <template #isPriceConsistent="scope">
+        <span>{{scope.row.isPriceConsistent ? '通过' : '不通过'}}</span>
+      </template>
+
+      <!-- 定点日期 -->
+      <template #nominateDate="scope">
+        <span>{{scope.row.nominateDate | dateFilter("YYYY-MM-DD")}}</span>
+      </template>
+      
       </tablelist>
       <iPagination
         v-update
-        @size-change="handleSizeChange($event, getTableListFn)"
-        @current-change="handleCurrentChange($event, getTableListFn)"
+        @current-change="handleCurrentChange"
         background
         :current-page="page.currPage"
         :page-sizes="page.pageSizes"
-        :page-size="page.pageSize"
+        :page-size="page.pageSizes"
         :layout="page.layout"
         :total="page.totalCount"
       />
@@ -77,8 +94,9 @@
 import { tableTitle } from './components/data'
 import headerNav from './components/headerNav'
 import search from './components/search'
-import tablelist from "../../partsign/home/components/tableList";
+import tablelist from "@/views/designate/supplier/components/tableList";
 import { getNominationList } from '@/api/designate/nomination'
+import filters from "@/utils/filters"
 
 import {
   iPage,
@@ -89,6 +107,7 @@ import {
 } from "rise";
 
 export default {
+  mixins: [ filters ],
   data() {
     return {
       tableListData: [],
@@ -125,7 +144,9 @@ export default {
       }).then(res => {
         this.tableLoading = false
         if (res.code === '200') {
-          console.log(res)
+          this.tableListData = res.data.records || []
+          this.page.totalCount = res.data.total
+          console.log(this.selectTableData)
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }
@@ -135,17 +156,18 @@ export default {
         this.tableLoading = false
       })
     },
+    detail(item) {
+
+    },
     handleSelectionChange() {
 
     },
     openPage() {
 
     },
-    handleSizeChange() {
-
-    },
-    handleCurrentChange() {
-
+    handleCurrentChange(page) {
+      this.page.currPage = page
+      this.getDataList()
     }
   }
 }
