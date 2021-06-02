@@ -853,6 +853,7 @@
 
         // 定点管理
         'nominationLanguage': {
+            "DingDianXiangQing": '定点详情', // 定点详情
             'DingDianGuanLi': '定点管理', // 定点管理
             'LingJianHao': '零件号', // 零件号
             'ShenQingDanHao': '申请单号', // 申请单号

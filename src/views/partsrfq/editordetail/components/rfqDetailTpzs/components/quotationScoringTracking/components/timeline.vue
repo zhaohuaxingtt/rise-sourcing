@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-25 16:11:34
- * @LastEditTime: 2021-05-27 10:19:17
+ * @LastEditTime: 2021-06-02 14:21:13
  * @LastEditors: Please set LastEditors
  * @Description: timeline
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringTracking\components\timeline.vue
@@ -15,22 +15,38 @@
         </span>
         <span v-else style="display:inline-block;height:13px;"></span>
       </p>
-      <p class="itemsb"></p>
-      <p class="itemsc" :style='{top:"40px"}' v-if='items.name'>
-        <span><icon symbol :name='"iconbaojiapingfengenzong-jiedian-hong"' class="margin-right5"></icon>{{items.name}}</span>
-        <span>2021Cw{{items.week}}</span>
-      </p>
+      <p :class="{itemsb:true,active:items.active,width:'70px'}"></p>
+      <template v-if='items.oneWeekList.length<=1'>
+        <p class="itemsc" :style='{top:"40px",left:(items.doneDay-1) * 10 + "px"}' v-if='items.progressTypeDesc'>
+          <span><icon symbol :name='iconList_all_times["a"+items.taskStatus].icon' class="margin-right5"></icon>{{items.progressTypeDesc}}</span>
+          <span>{{items.doneYear}}Cw{{items.week}}</span>
+        </p>
+      </template>
+      <template v-else>
+        <template v-for="(itemss,indexs) in items.oneWeekList">
+          <p class="itemsc" :style='{top:`${40*(indexs+1)}px`,left:(itemss.doneDay-1) * 10 + "px"}' v-if='itemss.progressTypeDesc' :key="indexs">
+            <span><icon symbol :name='iconList_all_times["a"+itemss.taskStatus].icon' class="margin-right5"></icon>{{itemss.progressTypeDesc}}</span>
+            <span>{{itemss.doneYear}}Cw{{itemss.donePeriod}}</span>
+          </p>
+        </template>
+      </template>
     </div>
   </div>
 </template>
 <script>
 import {icon} from 'rise'
+import {iconList_all_times} from './data'
 export default{
   components:{icon},
   props:{
     timeList:{
       type:Array,
       default:()=>[]
+    }
+  },
+  data(){
+    return {
+      iconList_all_times:iconList_all_times
     }
   }
 }
@@ -58,7 +74,10 @@ export default{
         border-radius: 3px;
         width: 67px;
         height: 13px;
-        background: #457BF4;
+        background: #CDD4E2;
+      }
+      .active{
+         background: #457BF4;
       }
       .itemsc{
         top: 50px;

@@ -134,7 +134,6 @@ export function serialize(data, type = Object) {
 // 数字限制输入
 export const numberProcessor = function(val, precision = 4) {
   let result = ""
-
   if (+precision > 0) {
     result = (val + "").replace(/[^\d.]/g, "")
       .replace(/^\.*/g, "")
@@ -147,6 +146,10 @@ export const numberProcessor = function(val, precision = 4) {
     result = (val + "").replace(/\D/g, "")
       .replace(/^0+([0-9])/, "$1")
   }
-
   return result
+}
+//i18N 翻译
+// eslint-disable-next-line no-undef
+Vue.prototype.language = function(languageKey,name){
+  return this.$t(languageKey)
 }

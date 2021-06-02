@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-05-27 12:32:54
- * @LastEditTime: 2021-06-01 17:53:44
+ * @LastEditTime: 2021-06-02 15:02:34
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\costanalysismanage\components\home\index.vue
@@ -175,9 +175,9 @@
         :total="page.totalCount" />
     </iCard>
     <!-- 技术资料下载弹窗 -->
-    <downloadDialog :dialogVisible='downloadDialogVisible' @changeVisible="changeVisible"/>
+    <downloadDialog :rfqNum='rfqNum' :dialogVisible='downloadDialogVisible' @changeVisible="changeVisible"/>
     <!-- CBD弹窗 -->
-    <cbdDialog :dialogVisible='cbdDialogVisible'  @changeVisible="changeVisible"/>
+    <cbdDialog :rfqNum='rfqNum' :dialogVisible='cbdDialogVisible'  @changeVisible="changeVisible"/>
   </div>
 </template>
 
@@ -232,7 +232,8 @@ export default {
           analysisReport: 1622184508000,
           order: 1
         }
-      ]
+      ],
+      rfqNum:'', // 当前选择的rfq
     }
   },
   methods: {
@@ -244,6 +245,8 @@ export default {
     // 下载
     download(row) {
       console.log(row);
+      const { rfqNum='1' } = row;
+      this.rfqNum = '1';
       this.downloadDialogVisible = true
     },
     // CBD
