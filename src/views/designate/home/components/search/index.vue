@@ -155,9 +155,9 @@
             value=""
             :label="$t('all') | capitalizeFilter"
           ></el-option>
-          <el-option value="Y" :label="$t('nominationLanguage.Yes')"
+          <el-option :value="true" :label="$t('nominationLanguage.Yes')"
           ></el-option>
-          <el-option value="N" :label="$t('nominationLanguage.No')"
+          <el-option :value="false" :label="$t('nominationLanguage.No')"
           ></el-option>
         </iSelect>
       </el-form-item>
@@ -172,9 +172,9 @@
             value=""
             :label="$t('all') | capitalizeFilter"
           ></el-option>
-          <el-option value="Y" :label="$t('nominationLanguage.Yes')"
+          <el-option :value="true" :label="$t('nominationLanguage.Yes')"
           ></el-option>
-          <el-option value="N" :label="$t('nominationLanguage.No')"
+          <el-option :value="false" :label="$t('nominationLanguage.No')"
           ></el-option>
         </iSelect>
       </el-form-item>

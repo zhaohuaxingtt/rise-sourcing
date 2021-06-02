@@ -83,6 +83,7 @@ export default [
             path: "/designate/rfqdetail",
             name: "designateRfqdetail",
             meta: {
+                hideTabLV3: true,
                 title: "定点管理-RFQ零件清单",
             },
             component: () =>
