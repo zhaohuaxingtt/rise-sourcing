@@ -313,6 +313,7 @@ export const form = {
     'search.current': "",
 
     'search.carTypeProject': "", //车型项目
+    'search.locationFactoryId': "", //车型项目
     'search.projectType': "", //项目类型
     'search.fixedPointType': "", //定点类型
     'search.modelCategory': "", //车型类别

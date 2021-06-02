@@ -53,8 +53,8 @@
         <div></div>
         <iButton @click="exportFile">{{ $t('LK_DAOCHU') }}</iButton>
       </div>
+<!--      550-->
       <iTableList
-          :height="tableHeight - 550"
           :tableData="tableListData"
           :tableTitle="tableTitle"
           :tableLoading="tableLoading"
@@ -192,7 +192,7 @@ export default {
 }
 .multipleSelect{
   ::v-deep .el-tag{
-    max-width: calc(100% - 50px);
+    max-width: calc(100% - 65px);
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;

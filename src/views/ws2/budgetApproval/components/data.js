@@ -128,7 +128,7 @@ export const RFQList = [
         tooltip: false
     },
     {
-        props: 'cartypeProZh',
+        props: 'cartypeProjectZh',
         name: '车型项目',
         key: '车型项目',
         tooltip: false

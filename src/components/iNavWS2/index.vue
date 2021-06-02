@@ -16,7 +16,12 @@
           @change="changeCheckHistory"
           inactive-text="查看历史">
       </el-switch>
-      <iButton icon="el-icon-circle-plus-outline" type="primary">新增车型项目</iButton>
+      <Popover
+          content="点击进入【生成投资清单】页面"
+          placement="top-start"
+          trigger="hover">
+        <iButton slot="reference" icon="el-icon-circle-plus-outline" type="primary" @click="addCarType">新增车型项目</iButton>
+      </Popover>
     </div>
     <iButton
         v-if="$route.path.indexOf('budgetManagement/generateInvestmentList') > -1"
@@ -55,7 +60,7 @@ import {
   icon,
   iButton,
 } from "rise";
-import { Switch } from "element-ui";
+import { Switch, Popover } from "element-ui";
 import logButton from "pages/ws2/budgetManagement/components/logButton";
 
 export default {
@@ -68,6 +73,7 @@ export default {
   components: {
     icon,
     iButton,
+    Popover
   },
   data() {
     return {
@@ -75,7 +81,7 @@ export default {
       routerPage: true,
       query: true,
       dataBase: false,
-      onleySelf: false,
+      onleySelf: true,
       checkHistory: false,
     }
   },
@@ -86,10 +92,19 @@ export default {
   },
   methods: {
     changeCarTypeOverview(val){
-
+      this.$store.commit('SET_onleySelf', this.onleySelf)
     },
     changeCheckHistory(val){
-
+      this.$store.commit('SET_checkHistory', this.checkHistory)
+    },
+    addCarType(){
+      this.$router.push({
+        path: '/tooling/budgetManagement/generateInvestmentList',
+        query: {
+          id: 'add',
+          sourceStatus: ''
+        },
+      })
     },
     changeDataBase() {
       this.dataBase = true
@@ -109,7 +124,7 @@ export default {
 <style lang="scss" scoped>
 .carTypeOverview{
   > div{
-    margin-right: 20px;
+    margin-right: 10px;
   }
   ::v-deep .el-switch__label.is-active{
     color: #41434A;
@@ -119,7 +134,7 @@ export default {
     color: #1660F1;
     background-color: #EEF2FB;
     border-color: #EEF2FB;
-    margin-right: 20px;
+    //margin-right: 10px;
   }
 }
 .bounce-enter-active {

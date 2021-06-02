@@ -77,8 +77,8 @@
               class="budgetApprovalDate"
               type="daterange"
               range-separator="至"
-              start-placeholder="开始日期"
-              end-placeholder="结束日期">
+              start-placeholder="YYYY-MM-DD"
+              end-placeholder="YYYY-MM-DD">
           </el-date-picker>
         </el-form-item>
       </el-form>
@@ -92,8 +92,8 @@
           <iButton @click="transferBtn">{{ $t('LK_ZHUANPAI') }}</iButton>
         </div>
       </div>
+<!--      570-->
       <iTableList
-          :height="tableHeight - 570"
           :tableData="tableListData"
           :tableTitle="tableTitle"
           :tableLoading="tableLoading"
@@ -106,18 +106,14 @@
           <div class="linkStyle"><span @click="clickCategoryBudget(scope.row)">{{ scope.row.categoryBudget }}</span>
           </div>
         </template>
-        <template #budgetLeftoverAmount="scope">
-          <div class="linkStyle"><span @click="clickRfqId(scope.row.rfqId)">{{ scope.row.budgetLeftoverAmount }}</span>
-          </div>
-        </template>
         <template #budgetApplyAmount="scope">
           <div class="linkStyle" :class="(Number(scope.row.budgetApplyAmount) > Number(scope.row.budgetLeftoverAmount)) && 'red'"><span
               @click="clickBudgetApplyAmountShow(scope.row.id)">{{ scope.row.budgetApplyAmount }}</span>
           </div>
         </template>
         <template #approvalStatus="scope">
-          <div class="linkStyle">
-            <span @click="clickRfqId(scope.row.rfqId)">{{
+          <div>
+            <span>{{
                 scope.row.approvalStatus === '1' ? '待审批' : (scope.row.approvalStatus === '2') ? '已通过' : '已拒绝'
               }}</span>
           </div>

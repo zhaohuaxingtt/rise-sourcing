@@ -8,7 +8,7 @@ const CARTYPE = axios(process.env.VUE_APP_CARTYPE)
 export function findCartypePro(parmars) {
     return CARTYPE({
         url: '/findCartypePro',
-        method: 'GET',
-        params: parmars
+        method: 'POST',
+        data: parmars
     })
 }

@@ -159,6 +159,14 @@ export default {
 .changeContent {
   padding-bottom: 30px;
   color: #000000;
+  ::v-deep .el-table__footer-wrapper{
+    td{
+      font-weight: bold;
+    }
+    td:last-of-type{
+      color: #E30D0D;
+    }
+  }
   .tips{
     margin-bottom: 10px;
   }

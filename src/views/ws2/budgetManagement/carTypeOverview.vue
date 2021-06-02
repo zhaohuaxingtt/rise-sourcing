@@ -3,94 +3,201 @@
  * @Date: 2021-04-21 09:50:42
 -->
 <template>
-  <div v-loading="loadingiPage" v-permission="TOOLING_BUDGET_OVERVIEW">
-    <div class="content">
-      <div class="item" @click="toEdit('add')">
-        <Popover
-            content="点击进入【生成投资清单】页面"
-            placement="top-start"
-            trigger="hover">
-          <img slot="reference" class="addIcon" src="../../../assets/images/addCar.png" alt="">
-        </Popover>
+  <div v-permission="TOOLING_BUDGET_OVERVIEW">
+    <iSearch
+        class="margin-bottom20 giSearch"
+        style="margin-top: 20px"
+        @sure="findCartypePro"
+        @reset="reset"
+        :icon="false"
+        :resetKey="PARTSPROCURE_RESET"
+        :searchKey="PARTSPROCURE_CONFIRM"
+        v-loading="loadingiSearch"
+    >
+      <el-form>
+        <el-form-item :label="$t('LK_CHEXINXIANGMU')">
+          <iSelect
+              class="multipleSelect"
+              :placeholder="$t('partsprocure.PLEENTER')"
+              v-model="cartypeProId"
+              filterable
+              @change="changeCarTypeProject"
+              collapse-tags
+              multiple
+          >
+            <el-option
+                :value="item.id"
+                :label="item.cartypeNname"
+                v-for="(item, index) in fromGroup"
+                :key="index"
+            ></el-option>
+          </iSelect>
+        </el-form-item>
+        <el-form-item :label="$t('LK_CAIGOUGONGCHANG')">
+          <iSelect
+              :placeholder="$t('partsprocure.CHOOSE')"
+              v-model="localFactoryName"
+              filterable
+              ref=""
+          >
+            <el-option
+                :value="item.locationFactoryId"
+                :label="item.locationFactoryName"
+                v-for="(item, index) in factoryList"
+                :key="index"
+            ></el-option>
+          </iSelect>
+        </el-form-item>
+        <el-form-item :label="$t('LK_SHENQINGSHIJIANQIZHI')">
+          <el-date-picker
+              v-model="timeStarEnd"
+              format="yyyy-MM-dd"
+              class="budgetApprovalDate"
+              type="daterange"
+              range-separator="至"
+              start-placeholder="YYYY-MM-DD"
+              end-placeholder="YYYY-MM-DD">
+          </el-date-picker>
+        </el-form-item>
+      </el-form>
+      <div class="searchSure">
+<!--        <iButton @click="saveAddCarType" :disabled="carTypeProjectObj.isBudget == 3" v-loading="addCarTypeLoading">{{ $t('LK_QUEREN') }}</iButton>-->
+        <!--          <iButton @click="sure">查询</iButton>-->
+        <!--          <iButton @click="reset">重置</iButton>-->
       </div>
-      <div class="item" v-for="(item, index) in contentData" :key="index"
-           @click="toEdit(item.id, item.sourceStatus, item.isBudget)">
-        <div class="item_top">
-          <img v-if="item.isBudget == 1" class="editIcon" src="../../../assets/images/editCar.png" alt="">
-          <img v-if="item.isBudget == 2" class="editIcon" src="../../../assets/images/editCar2.png" alt="">
-          <img v-if="item.isBudget == 3" class="editIcon" src="../../../assets/images/editCar.png" alt="">
-          <div class="title">
-            <Popover
-                :content="item.cartypeProjectName"
-                placement="top-start"
-                trigger="hover">
-              <h4 slot="reference">{{ item.cartypeProjectName }}</h4>
-            </Popover>
-            <Popover
-                :content="$t('LK_CAIGOUGONGCHANG') + ': ' + (item.locationFactory ? item.locationFactory : '')"
-                placement="top-start"
-                trigger="hover">
-              <p slot="reference">{{$t("LK_CAIGOUGONGCHANG")}}: {{ item.locationFactory }}</p>
-            </Popover>
-            <Popover
-                :content="'SOP: ' + item.sop"
-                placement="top-start"
-                trigger="hover">
-              <p slot="reference">SOP: {{ item.sop }}</p>
-            </Popover>
-            <Popover
-                :content="$t('LK_ZUIXINGENGXINREN') + ': ' + (item.updateByName ? item.updateByName : '')"
-                placement="top-start"
-                trigger="hover">
-              <p slot="reference" v-if="item.isBudget == 3">{{$t('LK_ZUIXINGENGXINREN')}}: {{ item.updateByName }}</p>
-            </Popover>
-            <Popover
-                :content="$t('LK_ZUIXINGENGXINSHIJIAN') + ': ' + (item.updateTime ? item.updateTime : '')"
-                placement="top-start"
-                trigger="hover">
-              <p slot="reference" v-if="item.isBudget == 3">{{$t('LK_ZUIXINGENGXINSHIJIAN')}}: {{ item.updateTime }}</p>
-            </Popover>
-<!--            <h4 :title="item.cartypeProjectName">{{ item.cartypeProjectName }}</h4>-->
-<!--            <p :title="item.locationFactory">{{$t("LK_CAIGOUGONGCHANG")}}: {{ item.locationFactory }}</p>-->
-<!--            <p :title="item.sop">SOP: {{ item.sop }}</p>-->
-<!--            <p :title="item.updateByName" v-if="item.isBudget == 3">最近更新人: {{ item.updateByName }}</p>-->
-<!--            <p :title="item.updateTime" v-if="item.isBudget == 3">最近更新时间: {{ item.updateTime }}</p>-->
+    </iSearch>
+    <div v-loading="loadingiPage">
+      <div class="content" v-if="contentData.length > 0">
+        <!--      <div class="item" @click="toEdit('add')">-->
+        <!--        <Popover-->
+        <!--            content="点击进入【生成投资清单】页面"-->
+        <!--            placement="top-start"-->
+        <!--            trigger="hover">-->
+        <!--          <img slot="reference" class="addIcon" src="../../../assets/images/addCar.png" alt="">-->
+        <!--        </Popover>-->
+        <!--      </div>-->
+        <div class="item" v-for="(item, index) in contentData" :key="index"
+             @click="toEdit(item.id, item.sourceStatus, item.isBudget)">
+          <div class="item_top">
+            <img v-if="item.isBudget == 1" class="editIcon" src="../../../assets/images/editCar.png" alt="">
+            <img v-if="item.isBudget == 2" class="editIcon" src="../../../assets/images/editCar2.png" alt="">
+            <img v-if="item.isBudget == 3" class="editIcon" src="../../../assets/images/editCar.png" alt="">
+            <div class="title">
+              <Popover
+                  :content="item.cartypeProjectName"
+                  placement="top-start"
+                  trigger="hover">
+                <h4 slot="reference">{{ item.cartypeProjectName }}</h4>
+              </Popover>
+              <Popover
+                  :content="$t('LK_CAIGOUGONGCHANG') + ': ' + (item.locationFactory ? item.locationFactory : '')"
+                  placement="top-start"
+                  trigger="hover">
+                <p slot="reference">{{$t("LK_CAIGOUGONGCHANG")}}: {{ item.locationFactory }}</p>
+              </Popover>
+              <Popover
+                  :content="'SOP: ' + item.sop"
+                  placement="top-start"
+                  trigger="hover">
+                <p slot="reference">SOP: {{ item.sop }}</p>
+              </Popover>
+              <Popover
+                  :content="$t('LK_ZUIXINGENGXINREN') + ': ' + (item.updateByName ? item.updateByName : '')"
+                  placement="top-start"
+                  trigger="hover">
+                <p slot="reference" v-if="item.isBudget == 3">{{$t('LK_ZUIXINGENGXINREN')}}: {{ item.updateByName }}</p>
+              </Popover>
+              <Popover
+                  :content="$t('LK_ZUIXINGENGXINSHIJIAN') + ': ' + (item.updateTime ? item.updateTime : '')"
+                  placement="top-start"
+                  trigger="hover">
+                <p slot="reference" v-if="item.isBudget == 3">{{$t('LK_ZUIXINGENGXINSHIJIAN')}}: {{ item.updateTime }}</p>
+              </Popover>
+              <!--            <h4 :title="item.cartypeProjectName">{{ item.cartypeProjectName }}</h4>-->
+              <!--            <p :title="item.locationFactory">{{$t("LK_CAIGOUGONGCHANG")}}: {{ item.locationFactory }}</p>-->
+              <!--            <p :title="item.sop">SOP: {{ item.sop }}</p>-->
+              <!--            <p :title="item.updateByName" v-if="item.isBudget == 3">最近更新人: {{ item.updateByName }}</p>-->
+              <!--            <p :title="item.updateTime" v-if="item.isBudget == 3">最近更新时间: {{ item.updateTime }}</p>-->
+            </div>
           </div>
+          <div class="unit">
+            {{$t("LK_DANWEI")}}: {{$t("LK_BAIWANYUAN")}}
+          </div>
+          <div class="chart" :id="'chart' + index"></div>
         </div>
-        <div class="unit">
-          {{$t("LK_DANWEI")}}: {{$t("LK_BAIWANYUAN")}}
-        </div>
-        <div class="chart" :id="'chart' + index"></div>
       </div>
+      <div class="noData" v-if="contentData.length === 0">暂无数据</div>
     </div>
   </div>
 </template>
 <script>
 import {
   iMessage,
+  iSearch,
+  iSelect
 } from "rise";
+import { form } from "./components/data";
 import {Popover} from "element-ui"
 import {tabtitle} from "./components/data";
 import echarts from "@/utils/echarts";
 import {
   findCartypePro
 } from "@/api/ws2/budgetManagement";
+import {findProjectTypeDetailPulldown, getCartypePulldown} from "@/api/ws2/budgetManagement/edit";
+import {getPurchaseFactoryPullDown} from "@/api/ws2/baApply";
+import {mapState} from 'vuex'
+import Moment from 'moment'
 
 export default {
   components: {
-    Popover
+    Popover,
+    iSearch,
+    iSelect
   },
   data() {
     return {
       loadingiPage: false,
+      loadingiSearch: false,
       tabtitle: tabtitle,
-      contentData: []
+      form: form,
+      contentData: [],
+      cartypeProId: [],
+      localFactoryName: '',
+      timeStarEnd: []
     };
+  },
+  computed: {
+    ...mapState({
+      onleySelf: (state) => state.mouldManagement.onleySelf,
+      showHistory: (state) => state.mouldManagement.checkHistory,
+    })
   },
   mounted() {
     this.findCartypePro();
+    this.getProcureGroup();
   },
   methods: {
+    getProcureGroup() {
+      this.loadingiSearch = true
+      Promise.all([getPurchaseFactoryPullDown(), getCartypePulldown()]).then((res) => {
+        const result0 = this.$i18n.locale === 'zh' ? res[0].desZh : res[0].desEn
+        const result1 = this.$i18n.locale === 'zh' ? res[1].desZh : res[1].desEn
+        if (res[0].data) {
+          this.factoryList = res[0].data;
+        } else {
+          iMessage.error(result0);
+        }
+        if (res[1].data) {
+          this.fromGroup = res[1].data;
+        } else {
+          iMessage.error(result1);
+        }
+        this.loadingiSearch = false
+      }).catch(() => {
+        this.loadingiSearch = false
+      });
+
+    },
     // 跳转投资清单
     toEdit(id, sourceStatus, isBudget) {
       // this.$emit(
@@ -123,8 +230,17 @@ export default {
     // 获取卡片列表
     findCartypePro() {
       this.loadingiPage = true
+      let timeStarEnd =  this.timeStarEnd ? (this.timeStarEnd.length === 0 ? '' : this.timeStarEnd) : ''
       return new Promise((r) => {
-        findCartypePro().then(res => {
+        let params = {
+          showSelf: this.onleySelf,
+          showHistory: this.showHistory,
+          cartypeProId: this.cartypeProId,
+          sopBegin: timeStarEnd ? Moment(timeStarEnd[0]).format('YYYY-MM-DD') : '',
+          sopEnd: timeStarEnd ? Moment(timeStarEnd[1]).format('YYYY-MM-DD') : '',
+          localFactoryName: this.localFactoryName,
+        }
+        findCartypePro(params).then(res => {
           const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
           this.loadingiPage = false
           if (Number(res.code) === 0) {
@@ -299,10 +415,38 @@ export default {
         })
       })
     },
+    reset(){
+      this.cartypeProId = []
+      this.localFactoryName = ''
+      this.timeStarEnd = []
+      this.findCartypePro();
+    }
   },
+  watch: {
+    onleySelf(val){
+      this.findCartypePro();
+    },
+    showHistory(val){
+      this.findCartypePro();
+    },
+  }
 };
 </script>
 <style lang="scss" scoped>
+.budgetApprovalDate::v-deep.el-range-editor.el-input__inner {
+  width: 489px;
+  .el-range-input {
+    width: 50%;
+  }
+}
+.multipleSelect{
+  ::v-deep .el-tag{
+    max-width: calc(100% - 65px);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
 .checkBox {
   position: relative;
   top: 30px;
@@ -383,6 +527,7 @@ export default {
     display: flex;
     flex-wrap: wrap;
     justify-content: flex-start;
+    min-height: 300px;
     margin-top: 23px;
 
     .item {
@@ -459,6 +604,9 @@ export default {
         height: 210px;
       }
     }
+  }
+  .noData{
+    font-size: 22px;
   }
 }
 </style>

@@ -6,6 +6,8 @@ const state = {
     versionId: '',
     isBudget: '',
     nextStep: false,
+    onleySelf: false,
+    checkHistory: false,
 };
 
 const mutations = {
@@ -20,6 +22,12 @@ const mutations = {
     },
     SET_nextStep(state, data) {
         state.nextStep = data
+    },
+    SET_onleySelf(state, data) {
+        state.onleySelf = data
+    },
+    SET_checkHistory(state, data) {
+        state.checkHistory = data
     },
 };
 
