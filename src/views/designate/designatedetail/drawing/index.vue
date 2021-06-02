@@ -28,7 +28,7 @@
               class="img-preview"
               :src="item.filePath" />
             <span v-else><i class="el-icon-document"></i>{{item.fileName}}</span>
-            <a class="trigger" href="javascript:;">
+            <a class="trigger" href="javascript:;" @click="dowloadSingleFile(item)">
               <icon class="icon" symbol name="iconicon-xiazai" />
               <span>下载</span></a>
           </div>
@@ -82,6 +82,15 @@ export default {
     this.getDataList()
   },
   methods: {
+    dowloadSingleFile(item) {
+      if (item && item.id) {
+        const params = {
+          applicationName: 'rise',
+          fileList: [item.id]
+        }
+        downloadFile(params)
+      }
+    },
     async batchDownload() {
       try {
         const res1 = await getdDecisiondataDaringListAll({
@@ -100,11 +109,7 @@ export default {
               fileList
             }
             console.log('批量下载', params)
-            const dInfo = await downloadFile(params)
-            console.log(dInfo)
-            if (dInfo && dInfo.code === '200') {
-              console.log(dInfo)
-            }
+            downloadFile(params)
           }
         }
       } catch (e) {
