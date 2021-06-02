@@ -30,8 +30,8 @@
             </el-table>
           <iPagination
             class="margin-bottom20"
-            @size-change="handleSizeChange($event, purchaseFactory)"
-            @current-change="handleCurrentChange($event, purchaseFactory)"
+            @size-change="handleSizeChange($event, getListData)"
+            @current-change="handleCurrentChange($event, getListData)"
             background
             :page-sizes="page.pageSizes"
             :page-size="page.pageSize"
@@ -51,6 +51,7 @@ import {
   iPagination,
 } from "rise";
 import {pageMixins} from '@/utils/pageMixins'
+import { getPartList } from '@/api/designate/designatedetail/decisionData/partlist'
 export default {
   mixins:[pageMixins],
      components:{
@@ -59,7 +60,7 @@ export default {
         iPagination,
     },
     created(){
-
+       this.getListData();
     },
     data(){
        return{
@@ -86,6 +87,19 @@ export default {
         }
     },
     methods:{
+       // 获取列表
+       getListData(){
+      const {pageSize,currPage} = this.page;
+          const data = {
+             nominateId:'1',
+             size:pageSize,
+             current:currPage
+             
+          };
+          getPartList(data).then((res)=>{
+             console.log(res);
+          })
+       }
     }
 }
 </script>

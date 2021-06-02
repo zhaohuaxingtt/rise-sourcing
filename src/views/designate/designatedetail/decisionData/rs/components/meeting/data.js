@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:50:41
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-05-29 12:04:38
+ * @LastEditTime: 2021-05-31 11:33:50
  * @Description: 
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\rs\components\meeting\data.js
  */
@@ -54,6 +54,48 @@ export const nomalTableTitle = [
   {props:'g',name:'财务目标B价', enName: 'CF Target B Price', key: "", minWidth: 95},
   {props:'f',name:'状态', enName: 'Status', key: "", minWidth: 45},
   {props:'g',name:'A价', enName: 'A Price', key: "", minWidth: 45},
+  {props:'c',name:'B价', enName: 'B Price', key: "", minWidth: 45},
+  {props:'d',name:'年降', enName: 'LTC', key: "", minWidth: 35},
+  {props:'e',name:'年降开始时间', enName: 'Start Time of LTC', key: "", minWidth: 90},
+  {props:'f',name:'投资费(不含税)', enName: 'Invest(excl.VAT)', key: "", minWidth: 80},
+  {props:'g',name:'开发费(含税)', enName: 'Develop Cost',enName1:'(incl. VAT)', key: "", minWidth: 80},
+  {props:'g',name:'采购金额', enName: 'Turnover', key: "", minWidth: 65},
+]
+
+// 配件
+export const sparePartTableTitle = [
+  {props:'supplier',name:'SP号', enName: 'FS-NO.', key: "", minWidth: 60},
+  {props:'location',name:'年产量', enName: 'Demand(K)', key: "", minWidth: 60},
+  {props:'c',name:'零件号', enName: 'Part No.', key: "", minWidth: 55},
+  {props:'d',name:'零件名称', enName: 'Part Name', key: "", minWidth: 85},
+  {props:'e',name:'物流标准', enName: 'Log Norm', key: "", minWidth: 60},
+  {props:'f',name:'厂商', enName: 'Code', key: "", minWidth: 45},
+  {props:'g',name:'供应商', enName: 'Supplier', key: "", minWidth: 55},
+  {props:'c',name:'产地', enName: 'Prod.Location', key: "", minWidth: 75},
+  {props:'d',name:'份额', enName: 'Share(%)', key: "", minWidth: 55},
+  {props:'f',name:'财务目标价', enName: 'CF Target Price', key: "", minWidth: 95},
+  {props:'f',name:'状态', enName: 'Status', key: "", minWidth: 45},
+  {props:'c',name:'B价', enName: 'B Price', key: "", minWidth: 45},
+  {props:'d',name:'年降', enName: 'LTC', key: "", minWidth: 35},
+  {props:'e',name:'年降开始时间', enName: 'Start Time of LTC', key: "", minWidth: 90},
+  {props:'f',name:'投资费(不含税)', enName: 'Invest(excl.VAT)', key: "", minWidth: 80},
+  {props:'g',name:'开发费(含税)', enName: 'Develop Cost',enName1:'(incl. VAT)', key: "", minWidth: 80},
+  {props:'g',name:'采购金额', enName: 'Turnover', key: "", minWidth: 65},
+]
+
+// 附件
+export const accessoryTableTitle = [
+  {props:'supplier',name:'SP号', enName: 'FS-NO.', key: "", minWidth: 60},
+  {props:'location',name:'年产量', enName: 'Demand(K)', key: "", minWidth: 60},
+  {props:'c',name:'零件号', enName: 'Part No.', key: "", minWidth: 55},
+  {props:'d',name:'零件名称', enName: 'Part Name', key: "", minWidth: 85},
+  {props:'e',name:'物流标准', enName: 'Log Norm', key: "", minWidth: 60},
+  {props:'f',name:'厂商', enName: 'Code', key: "", minWidth: 45},
+  {props:'g',name:'供应商', enName: 'Supplier', key: "", minWidth: 55},
+  {props:'c',name:'产地', enName: 'Prod.Location', key: "", minWidth: 75},
+  {props:'d',name:'份额', enName: 'Share(%)', key: "", minWidth: 55},
+  {props:'f',name:'财务目标价', enName: 'CF Target Price', key: "", minWidth: 95},
+  {props:'f',name:'状态', enName: 'Status', key: "", minWidth: 45},
   {props:'c',name:'B价', enName: 'B Price', key: "", minWidth: 45},
   {props:'d',name:'年降', enName: 'LTC', key: "", minWidth: 35},
   {props:'e',name:'年降开始时间', enName: 'Start Time of LTC', key: "", minWidth: 90},

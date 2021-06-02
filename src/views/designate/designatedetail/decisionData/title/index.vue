@@ -44,7 +44,7 @@ export default {
              {label:'SOP Time',value:'2020-01-01'},
              {label:'Buyer',value:'FS Name/ Linie Name'},
              {label:'Single Sourcing',value:'Y'},
-             {label:'PUC/TIA',value:'Not Relevant/Finished'},
+             {label:'PCA/TIA',value:'Not Relevant/Finished'},
           ],
        }
     },

@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-27 21:20:49
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-05-28 10:39:59
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-05-31 15:16:41
  * @Description: 
  * @FilePath: \front-web\src\views\partsprocure\editordetail\components\designateInfo\components\sel.vue
 -->
@@ -39,13 +39,13 @@
 </template>
 
 <script>
-import { iDialog, iButton, iInput, iPagination } from 'rise'
+import { iDialog, iButton, iPagination } from 'rise'
 import tableList from '@/views/designate/designatedetail/components/tableList'
 import { fileTableTitle } from '../data'
 import { pageMixins } from "@/utils/pageMixins"
 export default {
   mixins: [pageMixins],
-  components: { iDialog, iButton, iInput, iPagination, tableList },
+  components: { iDialog, iButton, iPagination, tableList },
   props: {
     dialogVisible: { type: Boolean, default: false }
   },

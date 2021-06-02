@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-26 11:16:51
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-05-26 19:42:06
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-05-31 15:31:51
  * @Description: 配件综合管理页面
  * @FilePath: \front-web\src\views\accessoryPart\integratedManage\index.vue
 -->
@@ -86,7 +86,7 @@
 </template>
 
 <script>
-import { iPage, iSearch, iSelect, iInput, iCard, iButton, iPagination, iDatePicker, iMessage, iNavMvp } from 'rise'
+import { iPage, iSearch, iSelect, iInput, iCard, iButton, iPagination, iMessage, iNavMvp } from 'rise'
 import { pageMixins } from "@/utils/pageMixins"
 import tableList from '@/views/designate/designatedetail/components/tableList'
 import { tableTitle, tableMockData, searchList } from './data'
@@ -98,7 +98,7 @@ import { navList } from "@/views/partsign/home/components/data"
 import { cloneDeep } from 'lodash'
 export default {
   mixins: [pageMixins],
-  components: { iPage, iSearch, iSelect, iInput, iCard, iButton, iPagination, tableList, iDatePicker, assignInquiryDepartmentDialog, assignInquiryBuyerDialog,backEpsDialog, backDialog, iNavMvp },
+  components: { iPage, iSearch, iSelect, iInput, iCard, iButton, iPagination, tableList, assignInquiryDepartmentDialog, assignInquiryBuyerDialog,backEpsDialog, backDialog, iNavMvp },
   data() {
     return {
       tableData: tableMockData,

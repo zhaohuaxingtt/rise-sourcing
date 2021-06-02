@@ -1,8 +1,8 @@
 <!--
  * @Author: ldh
  * @Date: 2021-05-29 16:29:00
- * @LastEditTime: 2021-05-29 17:42:31
- * @LastEditors: ldh
+ * @LastEditTime: 2021-05-31 15:13:19
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqPending\components\partDetaiList\components\kmDialog.vue
 -->
@@ -47,7 +47,7 @@
 </template>
 
 <script>
-import { iDialog, iButton, iInput, iPagination, iMessage } from "rise"
+import { iDialog, iButton, iPagination, iMessage } from "rise"
 import tableList from "@/views/partsign/editordetail/components/tableList"
 import { kmDialogTableTitle as tableTitle } from "../data"
 import filters from "@/utils/filters"
@@ -56,7 +56,7 @@ import { pageMixins } from "@/utils/pageMixins"
 // import { getMouldBudget, patchMouldBudget } from "@/api/designate"
 
 export default {
-  components: { iDialog, iButton, iInput, iPagination, tableList },
+  components: { iDialog, iButton, iPagination, tableList },
   mixins: [ filters, pageMixins ],
   props: {
     ...iDialog.props,

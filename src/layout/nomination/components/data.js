@@ -4,18 +4,21 @@
  * @Description: 
  */
 // 定点申请类型
+//  MEETING("MEETING","上会"),
+//  CIRCULATE("CIRCULATE","流转"),
+//  RECORD("RECORD","备案");
 export const applyType = [
-    {id:'1',name:'上会'},
-    {id:'2',name:'流转'},
-    {id:'3',name:'备案'},
+    {id:'MEETING',name:'上会',key:'LK_SHANGHUI'},
+    {id:'CIRCULATE',name:'流转',key:'LK_LIUZHUAN'},
+    {id:'RECORD',name:'备案',key:'LK_BEIAN'},
 ]
 // 定点申请步骤栏
 export const applyStep = [
-    {id:'1',name:'RFQ & 零件清单',key:'nominationLanguage.RFQANDLINGJIANQINGDAN'},
-    {id:'2',name:'供应商 & 单⼀供应商',key:'nominationLanguage.GONGYINGSHANGANDDANYIGONGYINGSHANG'},
-    {id:'3',name:'定点建议',key:'nominationLanguage.DINGDIANJIANYI'},
-    {id:'4',name:'审批⼈ & 审批记录',key:'nominationLanguage.SHENPIRENANDSHENPIJILU'},
-    {id:'5',name:'决策资料',key:'nominationLanguage.JUECEZILIAO'},
+    {id:1,name:'RFQ & 零件清单',key:'nominationLanguage.RFQANDLINGJIANQINGDAN',path:'/designate/rfqdetail'},
+    {id:2,name:'供应商 & 单⼀供应商',key:'nominationLanguage.GONGYINGSHANGANDDANYIGONGYINGSHANG',path:'/designate/supplier'},
+    {id:3,name:'定点建议',key:'nominationLanguage.DINGDIANJIANYI',path:'/designate/suggestion'},
+    {id:4,name:'审批⼈ & 审批记录',key:'nominationLanguage.SHENPIRENANDSHENPIJILU',path:'/designate/approvalpersonrecord'},
+    {id:5,name:'决策资料',key:'nominationLanguage.JUECEZILIAO',path:'/designate/decisiondata/title'},
 ]
 // 决策资料--tab栏
 export const decisionType = [

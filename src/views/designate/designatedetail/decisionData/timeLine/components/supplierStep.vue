@@ -6,7 +6,7 @@
 <template>
     <ul class="supplierStep-list flex">
         <li class="flex-align-center" v-for="(item,index) in supplierStepList" :key="'supplierStep_'+index">
-            <icon symbol name="TimeLine-Today" class="step-icon"></icon>
+            <icon symbol name="iconTimeLine-Today" class="step-icon"></icon>
             <div>
                 <p class="title">{{item.title}}</p>
                 <p class="tips">{{item.tips}}</p>
@@ -41,7 +41,6 @@ export default {
             .step-icon{
                 width: 30px;
                 height: 30px;
-                border: 1px solid red;
                 margin-right: 15px;
             }
             p{

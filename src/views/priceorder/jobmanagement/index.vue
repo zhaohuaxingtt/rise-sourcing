@@ -1,7 +1,7 @@
 <!--
  * @Author: lyujiahong
  * @Date: 2021-04-07 09:59:25
- * @LastEditTime: 2021-04-07 09:59:25
+ * @LastEditTime: 2021-05-31 15:12:58
  * @LastEditors: Please set LastEditors
  * @Description: RFQ模块首页
  * @FilePath: \rise\src\views\partsrfq\home\index.vue
@@ -108,11 +108,6 @@ import {
   iPage,
   iButton,
   iCard,
-  iMessage,
-  iPagination,
-  iSearch,
-  iInput,
-  iSelect,
   icon,
 } from "@/components";
 import { pageMixins } from "@/utils/pageMixins";
@@ -126,10 +121,6 @@ export default {
     iPage,
     iButton,
     iCard,
-    iPagination,
-    iSearch,
-    iInput,
-    iSelect,
     icon,
     tablelist,
   },

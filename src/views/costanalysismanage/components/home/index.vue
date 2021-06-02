@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-05-27 12:32:54
- * @LastEditTime: 2021-05-28 17:03:41
+ * @LastEditTime: 2021-06-01 17:53:44
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\costanalysismanage\components\home\index.vue
@@ -175,9 +175,9 @@
         :total="page.totalCount" />
     </iCard>
     <!-- 技术资料下载弹窗 -->
-    <downloadDialog :dialogVisible='downloadDialogVisible'/>
+    <downloadDialog :dialogVisible='downloadDialogVisible' @changeVisible="changeVisible"/>
     <!-- CBD弹窗 -->
-    <cbdDialog :dialogVisible='cbdDialogVisible'/>
+    <cbdDialog :dialogVisible='cbdDialogVisible'  @changeVisible="changeVisible"/>
   </div>
 </template>
 
@@ -207,7 +207,7 @@ export default {
   mixins: [ filters, pageMixins ],
   data(){
     return{
-      downloadDialogVisible:true,
+      downloadDialogVisible:false,
       cbdDialogVisible:false,
       form: {
         rfqNum: "",
@@ -243,6 +243,7 @@ export default {
     },
     // 下载
     download(row) {
+      console.log(row);
       this.downloadDialogVisible = true
     },
     // CBD
@@ -259,6 +260,12 @@ export default {
     // 变更顺序
     updateOrder(row) {
       this.$set(row, "order", row.order ? 0 : 1)
+    },
+
+    // 关闭弹窗
+    changeVisible(type){
+      this.downloadDialogVisible = type;
+      this.cbdDialogVisible = type;
     }
   }
 }

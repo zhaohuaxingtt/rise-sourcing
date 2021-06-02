@@ -5,13 +5,13 @@
  */
 // timeline顶部的总步骤
 export const stepList = [
-    {title:'Parts Release',tips:'KW05',icon:'TimeLine-PartsRelease'},
-    {title:'CSC meeting',tips:'KW15',icon:'TimeLine-CSCMeeting'},
-    {title:'BF Confirm',tips:'KW20',icon:'TimeLine-BFConfirm'},
-    {title:'VFF',tips:'KW28',icon:'dingdianguanlijiedian-jinhangzhong'},
-    {title:'PVS',tips:'KW30',icon:'dingdianguanlijiedian-jinhangzhong'},
-    {title:'OTS',tips:'KW38',icon:'dingdianguanlijiedian-jinhangzhong'},
-    {title:'SOP',tips:'KW48',icon:'dingdianguanlijiedian-jinhangzhong'},
+    {title:'Parts Release',tips:'KW05',icon:'iconTimeLine-PartsRelease'},
+    {title:'CSC meeting',tips:'KW15',icon:'iconTimeLine-CSCMeeting'},
+    {title:'BF Confirm',tips:'KW20',icon:'iconTimeLine-BFConfirm'},
+    {title:'VFF',tips:'KW28',icon:'icondingdianguanlijiedian-jinhangzhong'},
+    {title:'PVS',tips:'KW30',icon:'icondingdianguanlijiedian-jinhangzhong'},
+    {title:'OTS',tips:'KW38',icon:'icondingdianguanlijiedian-jinhangzhong'},
+    {title:'SOP',tips:'KW48',icon:'icondingdianguanlijiedian-jinhangzhong'},
 ]
 
 // timeline供应商步骤

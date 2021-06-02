@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-26 16:20:16
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-05-26 16:49:54
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-05-31 15:30:07
  * @Description: 附件综合管理
  * @FilePath: \front-web\src\views\designateFiles\fileManage\index.vue
 -->
@@ -72,7 +72,7 @@
 </template>
 
 <script>
-import { iPage, iSearch, iSelect, iInput, iCard, iButton, iPagination, iDatePicker, iMessage, iNavMvp } from 'rise'
+import { iPage, iSearch, iSelect, iInput, iCard, iButton, iPagination, iMessage, iNavMvp } from 'rise'
 import { pageMixins } from "@/utils/pageMixins"
 import tableList from '@/views/designate/designatedetail/components/tableList'
 import { tableTitle, tableMockData, searchList } from './data'
@@ -82,7 +82,7 @@ import { navList } from "@/views/partsign/home/components/data"
 import { cloneDeep } from 'lodash'
 export default {
   mixins: [pageMixins],
-  components: { iPage, iSearch, iSelect, iInput, iCard, iButton, iPagination, tableList, iDatePicker, linieDialog, backDialog, iNavMvp },
+  components: { iPage, iSearch, iSelect, iInput, iCard, iButton, iPagination, tableList, linieDialog, backDialog, iNavMvp },
   data() {
     return {
       tableData: tableMockData,

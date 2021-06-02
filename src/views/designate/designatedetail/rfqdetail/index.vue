@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-21 09:23:11
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-05-28 10:45:21
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-05-31 15:23:31
  * @Description: RFQ & 零件清单界面
  * @FilePath: \front-web\src\views\designate\designatedetail\rfqdetail\index.vue
 -->
@@ -70,13 +70,12 @@
 
 <script>
 import { iPage, iCard, iPagination, iMessage, iButton, iInput, icon } from "rise"
-import designateStep from '../components/designateStep'
 import tableList from '../components/tableList'
 import { rfqListTitle, partsListTitle } from './data'
 import { pageMixins } from "@/utils/pageMixins";
 export default {
   mixins: [pageMixins],
-  components:{ iPage, iCard, designateStep, tableList, iPagination, iButton, iInput, icon },
+  components:{ iPage, iCard, tableList, iPagination, iButton, iInput, icon },
   data() {
     return {
       rfqTableTitle: rfqListTitle,

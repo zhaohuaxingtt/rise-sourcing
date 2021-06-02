@@ -74,6 +74,10 @@ export default {
         handleSelectionChange(val) {
             this.selectItems = val;
         },
+        
+        clearDialog() {
+            this.$emit('changeVisible', false);
+        },
     }
 }
 </script>

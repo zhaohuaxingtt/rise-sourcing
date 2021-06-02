@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-27 00:41:04
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-05-27 09:34:48
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-05-31 15:28:50
  * @Description: 审批流弹窗
  * @FilePath: \front-web\src\views\designate\approvalPersonAndRecord\approvalFlow.vue
 -->
@@ -57,10 +57,10 @@
 </template>
 
 <script>
-import { iDialog, iButton, iSelect, iInput, icon } from 'rise'
+import { iDialog, iButton, iInput, icon } from 'rise'
 import { flowData } from './data'
 export default {
-  components: { iDialog, iButton, iSelect, iInput, icon },
+  components: { iDialog, iButton, iInput, icon },
   props: {
     dialogVisible: { type: Boolean, default: false }
   },

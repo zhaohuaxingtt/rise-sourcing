@@ -101,21 +101,25 @@
         },
         // 手工采购项目创建
         'createparts': {
-            'Shougongcaigouxiangmuchuangjian': '', // 手工采购项目创建
-            'Gangcaipiliangcaigou': '', // 钢材批量采购
-            'Gangcaiyicixingcaigou': '', // 钢材一次性采购
-            'Gongchangqianyi': '', // 工厂迁移
-            'Qingshuru': '', // 请输入
-            'Qingxuanze': '', // 请选择
-            'Lingjianhao': '零件号', // 零件号
-            'Lingjianmingzhong': '', // 零件名(中)
-            'Lingjianmingde': '', // 零件名(德)
-            'Lingjianlaiyuan': '', // 零件来源
-            'Chuangjiancaigouxiangmu': '', // 创建采购项目
-            'Lingjianzhuangtai': '', // 零件状态
-            'Jihuoshijian': '', // 激活时间
-            'Caozuorizhi': '', // 操作日志
-            'Chakan': '', // 查看
+            'ShouGongCaiGouXiangMuChuangJian': '', // 手工采购项目创建
+            'GangCaiPiLiangCaiGou': '', // 钢材批量采购
+            'GangCaiYiCiXingCaiGou': '', // 钢材一次性采购
+            'GongChangQianYi': '', // 工厂迁移
+            'QingShuRu': '', // 请输入
+            'QingShuRuLingJianHao': '', // 请输入零件号
+            'QingShuRuLingJianMingZhong': '', // 请输入零件名(中)
+            'QingShuRuLingJianMingDe': '', // 请输入零件名(德)
+            'QingXuanZeLingJianLaiYuan': '', // 请选择零件来源
+            'QingXuanZeLingJianZhuangTai': '', // 请选择零件状态
+            'LingJianHao': '零件号', // 零件号
+            'LingJianMingZhong': '', // 零件名(中)
+            'LingJianMingDe': '', // 零件名(德)
+            'LingJianLaiYuan': '', // 零件来源
+            'ChuangJianCaiGouXiangMu': '', // 创建采购项目
+            'LingJianZhuangTai': '', // 零件状态
+            'JiHuoShiJian': '', // 激活时间
+            'CaoZuoRiZhi': '', // 操作日志
+            'ChaKan': '', // 查看
         },
         // 成本分析管理
         'costanalysismanage': {
@@ -732,6 +736,9 @@
         'LK_QINGXUANZEWANSHUJUZAIZUOBAOCUN': '', //请选择完数据再做保存
         'LK_WEIBUXITONGWENJIANWUFASHANCHU': '', // xxx 为外部系统文件, 无法删除
         'LK_DINGDIANXINXI': '定点信息', // 定点信息
+        'LK_SHANGHUI': '上会', // 上会
+        'LK_LIUZHUAN': '流转', // 流转
+        'LK_BEIAN': '备案', // 备案
 
         //摸具预算
         // 'LK_CAIGOUGONGCHANG': 'Plant',//采购⼯⼚

@@ -135,7 +135,7 @@ export default {
             const {searchParams} = this;
             for(let i in searchParams){
                 searchParams[i] = '';
-            };
+            }
             this.searchParams = searchParams;
         },
         // 改变弹窗是否显示状态
