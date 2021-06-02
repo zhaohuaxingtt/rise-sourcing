@@ -21,10 +21,6 @@
               @change="changeCarTypeProject"
               ref="carTypeProjectRef"
           >
-            <!-- <div class="addCarTypeProject">
-              <iInput v-model="addCarTypeProject" placeholder="请输入自定义名称"></iInput>
-              <iButton @click="handleAddCarTypeProject" v-loading="iDialogAddCarTypeProject">{{ $t('LK_QUEREN') }}</iButton>
-            </div> -->
             <el-option
                 :value="item.id"
                 :label="item.cartypeNname"
@@ -193,30 +189,6 @@ export default {
       })
     },
 
-    // handleAddCarTypeProject(){
-    //   if (!this.addCarTypeProject) {
-    //     return iMessage.warn('请先输入车型名称');
-    //   }
-    //   if (this.fromGroup.some(item => item.cartypeNname == ('自定义-' + this.addCarTypeProject))){
-    //     return iMessage.warn('已有车型名称，请重新输入');
-    //   }
-
-    //   this.iDialogAddCarTypeProject = true;
-    //   saveCustomCart({cartypeProjectName: this.addCarTypeProject}).then(res => {
-    //     const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn;
-    //     if (~~res.code === 0){
-    //       iMessage.success(result);
-    //       this.addCarTypeProject = '';
-    //       this.$refs.carTypeProjectRef.blur();
-    //     }else{
-    //       iMessage.error(result);
-    //     }
-    //     this.iDialogAddCarTypeProject = false;
-    //   }).catch(err => {
-    //     this.iDialogAddCarTypeProject = false;
-    //   })
-    // },
-
     changeCarTypeProject(){
       this.$emit('sure', this.form);
     }
@@ -225,17 +197,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.addCarTypeProject {
-  margin-bottom: 5px;
-  padding: 0 10px;
+.giSearch{
 
-  ::v-deep .el-input {
-    width: calc(100% - 110px);
+  ::v-deep .el-form-item {
+    width: auto !important;
   }
 
-  ::v-deep .el-button {
-    width: 100px;
-    margin-left: 10px;
+  ::v-deep .el-range-separator{
+    width: 20px !important;
   }
+
 }
 </style>

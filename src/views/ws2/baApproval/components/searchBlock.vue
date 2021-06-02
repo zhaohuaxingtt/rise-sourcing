@@ -140,7 +140,7 @@ import {
 } from "rise";
 export default {
   components: {
-    iSearch, iButton,
+    iSearch,
     iSelect, iInput, 
   },
 

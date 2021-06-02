@@ -71,7 +71,8 @@ export const layerTableHead2 = [
     props: 'amount',
     name: '金额（RMB）',
     key: 'LK_AMOUNTMONEYRMB',
-    tooltip: false
+    tooltip: false,
+    width: '200',
   },
 ]
 

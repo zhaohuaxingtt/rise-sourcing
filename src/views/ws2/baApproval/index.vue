@@ -33,110 +33,117 @@
       </div>
     </div>
 
-    <template v-if="tableIndex === 0">
-      <SearchBlock @sure="handleSure" />
+    <keep-alive>
+      <div v-if="tableIndex === 0">
+        <SearchBlock @sure="handleSure" />
 
-      <iCard>
-        <div class="table-head">
-          <iButton @click="modifyA">{{ $t('LK_MODIFYANUMBER') }}</iButton>
-        </div>
-        <iTableList
-          :height="tableHeight - 440"
-          :tableData="allTableData"
-          :tableTitle="allBAATableHead"
-          :tableLoading="allListLoading"
-          @handleSelectionChange="handleSelectionChange"
-        >
-          <template #detailed="scope">
-            <div class="detailed" @click="openDetails(scope)">{{$t('LK_DETAILEDTXT')}}</div>
-          </template>
-        </iTableList>
-        <iPagination
-          v-update
-          @size-change="handleSizeChange($event, handleSure)"
-          @current-change="handleCurrentChange($event, handleSure)"
-          background
-          :current-page="allPage.currPage"
-          :page-sizes="allPage.pageSizes"
-          :page-size="allPage.pageSize"
-          :layout="allPage.layout"
-          :total="allPage.totalCount"
-        />
-      </iCard>
-    </template>
-
-    <template v-else-if="tableIndex===1">
-      <iCard>
-        <div class="table-head">
-          <iButton @click="waitApply(1)">{{ $t('LK_CANCELAPPLY') }}</iButton>
-        </div>
-        <iTableList
-          :height="tableHeight - 440"
-          :tableData="waitTableData"
-          :tableTitle="waitBAATableHead"
-          :tableLoading="waitTableLoading"
-          @handleSelectionChange="handleSelectionChange"
-        >
-          <template #sixBa="scope">
-            A-<div class="iDialog-inputItem">
-                    <iInput :placeholder="$t('LK_QINGSHURU')" v-model="sixBa" maxlength="5" />
-                  </div>-<div class="iDialog-inputItem">
-                            <iInput :placeholder="`INT (${$t('LK_MODIFIABLE')})`" maxlength="3" v-model="int" />
-                          </div>
-          </template>
-          <template #detailed="scope">
-            <div class="detailed-item">
-              <div class="detailed" @click="confirmA(scope)">{{$t('LK_QUEREN')}}</div>
+        <iCard>
+          <div class="table-head">
+            <iButton @click="modifyA">{{ $t('LK_MODIFYANUMBER') }}</iButton>
+          </div>
+          <iTableList
+            :height="tableHeight - 440"
+            :tableData="allTableData"
+            :tableTitle="allBAATableHead"
+            :tableLoading="allListLoading"
+            @handleSelectionChange="handleSelectionChange"
+          >
+            <template #detailed="scope">
               <div class="detailed" @click="openDetails(scope)">{{$t('LK_DETAILEDTXT')}}</div>
-            </div>
-          </template>
-        </iTableList>
-        <iPagination
-          v-update
-          @size-change="handleSizeChange($event, getPageData)"
-          @current-change="handleCurrentChange($event, getPageData)"
-          background
-          :current-page="waitPage.currPage"
-          :page-sizes="waitPage.pageSizes"
-          :page-size="waitPage.pageSize"
-          :layout="waitPage.layout"
-          :total="waitPage.totalCount"
-        />
-      </iCard>
-    </template>
-
-    <template v-else-if="tableIndex===3">
-      <iCard>
-        <div class="table-head">
-          <iButton @click="waitApply(3)">{{ $t('LK_CANCELAPPLY') }}</iButton>
-        </div>
-        <iTableList
-          :height="tableHeight - 440"
-          :tableData="waitAddTableData"
-          :tableTitle="waitAddTableHead"
-          :tableLoading="waitAddTableLoading"
-          @handleSelectionChange="handleSelectionChange"
-        >
-          <template #detailed="scope">
-            <div class="detailed-item">
-              <div class="detailed" @click="confirmA(scope)">{{$t('LK_QUEREN')}}</div>
-              <div class="detailed" @click="openDetails(scope)">{{$t('LK_DETAILEDTXT')}}</div>
-            </div>
-          </template>
-        </iTableList>
-        <iPagination
-          v-update
-          @size-change="handleSizeChange($event, getPageData)"
-          @current-change="handleCurrentChange($event, getPageData)"
-          background
-          :current-page="waitAddPage.currPage"
-          :page-sizes="waitAddPage.pageSizes"
-          :page-size="waitAddPage.pageSize"
-          :layout="waitAddPage.layout"
-          :total="waitAddPage.totalCount"
-        />
-      </iCard>
-    </template>
+            </template>
+          </iTableList>
+          <iPagination
+            v-update
+            @size-change="handleSizeChange($event, handleSure)"
+            @current-change="handleCurrentChange($event, handleSure)"
+            background
+            :current-page="allPage.currPage"
+            :page-sizes="allPage.pageSizes"
+            :page-size="allPage.pageSize"
+            :layout="allPage.layout"
+            :total="allPage.totalCount"
+          />
+        </iCard>
+      </div>
+    </keep-alive>
+    
+    <keep-alive>
+      <div v-if="tableIndex===1">
+        <iCard>
+          <div class="table-head">
+            <iButton @click="waitApply(1)">{{ $t('LK_CANCELAPPLY') }}</iButton>
+          </div>
+          <iTableList
+            :height="tableHeight - 440"
+            :tableData="waitTableData"
+            :tableTitle="waitBAATableHead"
+            :tableLoading="waitTableLoading"
+            @handleSelectionChange="handleSelectionChange"
+          >
+            <template #sixBa="scope">
+              A-<div class="iDialog-inputItem">
+                      <iInput :placeholder="$t('LK_QINGSHURU')" v-model="sixBa" maxlength="5" />
+                    </div>-<div class="iDialog-inputItem">
+                              <iInput :placeholder="`INT (${$t('LK_MODIFIABLE')})`" maxlength="3" v-model="int" />
+                            </div>
+            </template>
+            <template #detailed="scope">
+              <div class="detailed-item">
+                <div class="detailed" @click="confirmA(scope)">{{$t('LK_QUEREN')}}</div>
+                <div class="detailed" @click="openDetails(scope)">{{$t('LK_DETAILEDTXT')}}</div>
+              </div>
+            </template>
+          </iTableList>
+          <iPagination
+            v-update
+            @size-change="handleSizeChange($event, getPageData)"
+            @current-change="handleCurrentChange($event, getPageData)"
+            background
+            :current-page="waitPage.currPage"
+            :page-sizes="waitPage.pageSizes"
+            :page-size="waitPage.pageSize"
+            :layout="waitPage.layout"
+            :total="waitPage.totalCount"
+          />
+        </iCard>
+      </div>
+    </keep-alive>
+    
+    <keep-alive>
+      <div v-if="tableIndex===3">
+        <iCard>
+          <div class="table-head">
+            <iButton @click="waitApply(3)">{{ $t('LK_CANCELAPPLY') }}</iButton>
+          </div>
+          <iTableList
+            :height="tableHeight - 440"
+            :tableData="waitAddTableData"
+            :tableTitle="waitAddTableHead"
+            :tableLoading="waitAddTableLoading"
+            @handleSelectionChange="handleSelectionChange"
+          >
+            <template #detailed="scope">
+              <div class="detailed-item">
+                <div class="detailed" @click="confirmA(scope)">{{$t('LK_QUEREN')}}</div>
+                <div class="detailed" @click="openDetails(scope)">{{$t('LK_DETAILEDTXT')}}</div>
+              </div>
+            </template>
+          </iTableList>
+          <iPagination
+            v-update
+            @size-change="handleSizeChange($event, getPageData)"
+            @current-change="handleCurrentChange($event, getPageData)"
+            background
+            :current-page="waitAddPage.currPage"
+            :page-sizes="waitAddPage.pageSizes"
+            :page-size="waitAddPage.pageSize"
+            :layout="waitAddPage.layout"
+            :total="waitAddPage.totalCount"
+          />
+        </iCard>
+      </div>
+    </keep-alive>
+    
     
     <!-- 修改A号弹窗 -->
     <iDialog :visible="visible" @close='clearDiolog' width="22%" top="7vh" z-index="1000" class="iDialog">
@@ -174,7 +181,7 @@
       </div>
 
       <div class="iDialog-bottom">
-        <iButton @click="iDialogConfirm">{{ $t('LK_QUEDING') }}</iButton>
+        <iButton @click="iDialogConfirm" :loading="modifyAButtonLoading">{{ $t('LK_QUEDING') }}</iButton>
       </div>
     </iDialog>
 
@@ -185,6 +192,7 @@
           :tableData="detailsTableData"
           :tableTitle="detailedTableHead"
           :selection="false"
+          class="table-footerStyle"
         >
           
         </iTableList>
@@ -198,6 +206,7 @@
           :tableData="confirmTableData"
           :tableTitle="confirmTableHead"
           :selection="false"
+          class="table-footerStyle"
         >
           
         </iTableList>
@@ -279,6 +288,7 @@ export default {
       allListLoading: false,
       waitTableLoading: false,
       waitAddTableLoading: false,
+      modifyAButtonLoading: false,
       detailsdVisible: false,
       visible: false,
       confirmVisible: false,
@@ -381,8 +391,10 @@ export default {
 
     //  确认A号
     confirmA(scope){
-      console.log('123123', scope);
-      confirmDetail({id: scope.row.id}).then(res => {
+      confirmDetail({
+        id: scope.row.id,
+        tmCartypeProId: scope.row.tmCartypeProId
+      }).then(res => {
         const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn;
         if(res.data){
           this.confirmTableData = res.data;
@@ -406,6 +418,8 @@ export default {
         return iMessage.warn(this.$t('LK_INPUTNUMBERORMORE'));
       }
 
+      this.modifyAButtonLoading = true;
+
       const param = {
         sixBa: `A-${sixBa}-${int.length === 0 ? 'INT' : int}`,
         tmCartypeProId: allSelectList[0].tmCartypeProId,
@@ -420,8 +434,10 @@ export default {
           this.visible = false;
           this.getBaCount();
           this.getPageData();
+          this.modifyAButtonLoading = false;
         }else{
           iMessage.error(result);
+          this.modifyAButtonLoading = false;
         }
       })
 
@@ -581,6 +597,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.table-footerStyle{
+  ::v-deep .el-table__footer-wrapper .is-center{
+    color: #000 !important;
+    font-weight: bold !important;
+  }
+}
 .color-txt{
   color: #1660F1;
 }
