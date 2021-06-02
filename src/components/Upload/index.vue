@@ -31,16 +31,28 @@ export default {
   components: {
     iButton
   },
+  data() {
+    return {
+      loading: false
+    }
+  },
+  computed: {
+    uploading() {
+      return this.loading || this.uploadButtonLoading
+    }
+  },
   methods: {
     async onHttpUploaded(content) {
       const formData = new FormData()
       formData.append('multipartFile', content.file)
       formData.append('applicationName', 'rise')
+      this.loading = true
       const res = await uploadFile(formData)
       this.$emit('on-success', {
         data: (res && res.data && res.data[0]) || {} ,
         file: content.file || {}
       })
+      this.loading = false
     },
   }
 }
