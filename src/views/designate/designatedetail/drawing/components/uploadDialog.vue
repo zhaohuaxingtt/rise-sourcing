@@ -4,12 +4,22 @@
       <div class="font18 font-weight">{{$t('strategicdoc.ShangChuan')}}</div>
       <div class="control">
         <iButton>{{ $t('LK_XIAZAI') }}</iButton>
-        <iButton>{{ $t('LK_SHANCHU') }}</iButton>
-        <iButton>{{ $t('strategicdoc.ShangChuanWenJian') }}</iButton>
+        <iButton @click="deleteFile">{{ $t('LK_SHANCHU') }}</iButton>
+        <upload
+          class="upload-trigger"
+          :hideTip="true"
+          :accept="'.jpg,.jpeg,.png,.pdf'"
+          :buttonText="$t('strategicdoc.ShangChuanWenJian')"
+          @on-success="onDraingUploadsucess"
+        />
+        <!-- <iButton>{{ $t('strategicdoc.ShangChuanWenJian') }}</iButton> -->
       </div>
     </div>
-    <div class="body">
-      <tableList index :height="controlHeight ? '91%' : '100%'" v-show="visible" class="table margin-top20" :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="loading" @handleSelectionChange="handleSelectionChange">
+    <div class="body" v-loading="tableLoading">
+      <tableList index :height="controlHeight ? '91%' : '100%'" v-show="visible" class="table margin-top20" :tableData="tableListData" :tableTitle="tableTitle" @handleSelectionChange="handleSelectionChange">
+        <template #uploadDate="scope">
+          {{fomat(scope.row.uploadDate)}}
+        </template>
       </tableList>
     </div>
     <div slot="footer" class="footer">
@@ -28,14 +38,20 @@
 </template>
 
 <script>
-import { iPagination, iDialog, iMessage, iButton, icon } from '@/components'
-import { uploadtableTitle as tableTitle, mokeUploadTableListData } from './data'
+import { iPagination, iDialog, iMessage, iButton } from '@/components'
+import { uploadtableTitle as tableTitle } from './data'
 import { pageMixins } from '@/utils/pageMixins'
 import tableList from '@/views/designate/supplier/components/tableList'
 import filters from '@/utils/filters'
+import upload from '@/components/Upload'
+import {
+  uploadDaring,
+  batchDeleteDaring,
+  getdDecisiondataDaringList
+} from '@/api/designate/decisiondata/drawing'
 
 export default {
-  components: { tableList, iPagination, iDialog, iButton, icon },
+  components: { tableList, iPagination, iDialog, iButton, upload },
   mixins: [ pageMixins, filters ],
   props: {
     ...iDialog.props,
@@ -49,9 +65,9 @@ export default {
     }
   },
   watch: {
-    params: {
+    visible: {
       handler() {
-        this.$nextTick(() => { if (this.visible) this.getAttachment() })
+        this.$nextTick(() => { if (this.visible) this.getFetchData() })
       },
       deep: true
     }
@@ -59,18 +75,95 @@ export default {
   data() {
     return {
       loading: false,
+      tableLoading: false,
       tableTitle,
-      tableListData: mokeUploadTableListData,
+      tableListData: [],
       multipleSelection: [],
-      controlHeight: 0
+      controlHeight: 0,
+      page: {
+        currPage: 1,
+        pageSize: 10,
+        totalCount: 0
+      }
     }
   },
   methods: {
+    fomat(date) {
+      return window.moment(date).format('YYYY-MM-DD HH:mm:ss')
+    },
     getFetchData() {
-
+      this.tableLoading = true
+      getdDecisiondataDaringList({
+        nomiAppId: '1',
+        sortColumn: 'sort',
+        isAsc: true,
+        fileType: '101',
+        pageNo: this.page.currPage,
+        pageSize: this.page.pageSize
+      }).then(res => {
+        if (res.code === '200') {
+          this.tableListData = res.data.records || []
+          this.page.totalCount = res.data.total || 0
+        } else {
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
+        this.tableLoading = false
+        console.log(res)
+      }).catch(e => {
+        console.log(e)
+        this.tableLoading = false
+      })
     },
     handleSelectionChange(list) {
       this.multipleSelection = list
+    },
+    onDraingUploadsucess(data) {
+      console.log(data)
+      this.tableLoading = true
+      const params = {
+        fileCode: '0',
+        fileName: data.data.fileName || '',
+        filePath: data.data.filePath || '',
+        fileSize: data.file.size || 0,
+        size: data.file.size || 0,
+        fileType: 101,
+        hostId: '1'
+      }
+      // const params = JSON.parse("{\"fileCode\":\"0\",\"fileName\":\"1.jpg\",\"filePath\":\"https://dev-rise.obs.cloud.csvw.com:443/rise%2F1.jpg\",\"fileSize\":93894,\"size\":93894,\"fileType\":101,\"hostId\":\"1\"}")
+      console.log(params)
+      uploadDaring(params).then(res => {
+        if (res.code === '200') {
+          iMessage.success('上传成功')
+          console.log(res)
+        } else {
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
+        this.tableLoading = false
+      }).catch(e => {
+        this.tableLoading = false
+        iMessage.error(this.$i18n.locale === "zh" ? e.desZh : event.desEn)
+      })
+
+    },
+    async deleteFile() {
+      if (!this.multipleSelection.length) {
+        iMessage.error(this.$t('nominationSuggestion.QingXuanZeZhiShaoYiTiaoShuJu'))
+        return
+      }
+      const confirmInfo = await this.$confirm(this.$t('deleteSure'))
+      if (confirmInfo !== 'confirm') return
+      const idList = this.multipleSelection.map(o => o.id)
+      try {
+        const res = await batchDeleteDaring({idList})
+        if (res.code === '200') {
+          iMessage.success(this.$t('LK_CAOZUOCHENGGONG'))
+          this.getFetchData()
+        } else {
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
+      } catch (e) {
+        iMessage.error(this.$i18n.locale === "zh" ? e.desZh : event.desEn)
+      }
     }
   }
 }
@@ -81,6 +174,10 @@ export default {
   @mixin pdtb($top: 0, $bottom: 0) {
     padding-top: $top;
     padding-bottom: $bottom;
+  }
+
+  .upload-trigger {
+    margin-left: 10px;
   }
 
   .link-underline {

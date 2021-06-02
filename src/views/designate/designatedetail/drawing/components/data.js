@@ -1,7 +1,7 @@
 
 export const sorttableTitle = [
   {
-    props: 'name',
+    props: 'fileName',
     name: '名称',
     key: 'strategicdoc.MingChen',
     tooltip: false
@@ -42,13 +42,13 @@ export const uploadtableTitle = [
     tooltip: false
   },
   {
-    props: 'date',
+    props: 'uploadDate',
     name: '上传日期',
     key: 'strategicdoc.ShangChuanRiQi',
     tooltip: false
   },
   {
-    props: 'userName',
+    props: 'uploadBy',
     name: '上传人',
     key: 'strategicdoc.ShangChuanRen',
     tooltip: false
