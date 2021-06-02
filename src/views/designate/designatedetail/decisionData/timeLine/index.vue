@@ -151,12 +151,13 @@ export default {
                 stepList.map((item)=>{item.isEdit = false});
             }else{
                 stepList.map((item)=>{
-                    if(item.icon == 'TimeLine-CSCMeeting' || item.icon == 'TimeLine-BFConfirm'){
+                    if(item.icon == 'iconTimeLine-CSCMeeting' || item.icon == 'iconTimeLine-BFConfirm'){
                         item.isEdit = true;
                         }
                     });
             }
-             this.$store.dispatch('updateNominationStep',{nominateId:'1',phaseType:'1'});
+            this.$store.dispatch('updateNominationStep',{nominateId:'1',phaseType:'1'});
+            this.stepList = stepList;
             this.isEdit = !isEdit;
         },
 
