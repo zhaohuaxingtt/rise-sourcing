@@ -119,6 +119,27 @@ module.exports = {
         https: false,
         hotOnly: true,
         proxy: {
+						'usercenterKX': {
+								target: 'http://10.160.143.244:8789',
+								changeOrigin: true,
+								pathRewrite: {
+										"^/usercenterKX": ""
+								}
+						},
+						'procurementrequirementZZB': {
+								target: 'http://10.160.137.213:8083',
+								changeOrigin: true,
+								pathRewrite: {
+										"^/procurementrequirementZZB": ""
+								}
+						},
+						'/supplierApiWJS': {
+								target: 'http://192.168.50.89:8029',
+								changeOrigin: true,
+								pathRewrite: {
+										"^/supplierApiWJS": ""
+								}
+						},
             '/mock': {
                 target: 'https://www.fastmock.site/mock',
                 changeOrigin: true,

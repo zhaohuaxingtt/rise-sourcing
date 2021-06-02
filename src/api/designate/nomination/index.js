@@ -19,3 +19,21 @@ export function getNominationList(params) {
       data: params
   })
 }
+
+// 批量撤回
+export function batchRevoke(data) {
+  return requst({
+    url: `/nominate-apps/recall`,
+    method: "post",
+    data
+})
+}
+
+// 批量删除
+export function batchDelete(data) {
+  return requst({
+    url: `/nominate-apps/delete`,
+    method: "post",
+    data
+})
+}

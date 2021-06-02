@@ -1,14 +1,14 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-26 11:16:51
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-05-31 15:31:51
+ * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-06-02 17:05:01
  * @Description: 配件综合管理页面
  * @FilePath: \front-web\src\views\accessoryPart\integratedManage\index.vue
 -->
 
 <template>
-  <iPage class="signForParts" v-permission="PARTSIGN_INDEXPAGE">
+  <iPage class="signForParts" >
     <el-tabs v-model="tab" class="tab">
       <el-tab-pane :label="$t('LK_XUNYUANZHIHANG')" name="source">
         <div>
@@ -18,10 +18,18 @@
           <!----------------------------------------------------------------->
           <!---------------------------搜索区域------------------------------->
           <!----------------------------------------------------------------->
-          <iSearch @sure="sure" @reset="reset">
+          <iSearch @sure="getTableList" @reset="reset">
             <el-form>
               <el-form-item v-for="(item, index) in searchList" :key="index" :label="item.label">
-                <iSelect v-if="item.type === 'select'" v-model="searchParams[item.value]"></iSelect> 
+                <iSelect v-if="item.type === 'select'" v-model="searchParams[item.value]">
+                  <el-option value="" :label="$t('all')"></el-option>
+                  <el-option
+                    v-for="item in selectOptions[item.selectOption] || []"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value">
+                  </el-option>  
+                </iSelect> 
                 <iInput v-else v-model="searchParams[item.value]"></iInput> 
               </el-form-item>
             </el-form>
@@ -36,7 +44,7 @@
                   <!--------------------分配询价科室按钮----------------------------------->
                   <iButton @click="changeInquiryDialogVisible(true)" >分配询价科室</iButton>
                   <!--------------------分配询价采购员按钮----------------------------------->
-                  <iButton @click="changeBuyerDialogVisible(true)" >分配询价采购员</iButton>
+                  <iButton @click="openBuyerDialog" >分配询价采购员</iButton>
                   <!--------------------退回按钮----------------------------------->
                   <iButton @click="changebackDialogVisible(true)" >退回</iButton>
                   <!--------------------退回EPS按钮----------------------------------->
@@ -46,12 +54,12 @@
                   <!--------------------加入已有RFQ----------------------------------->
                   <iButton @click="batchData">加入已有RFQ</iButton>
                   <!--------------------下载报表----------------------------------->
-                  <iButton @click="batchData">下载报表</iButton>
+                  <iButton @click="downloadAll">下载报表</iButton>
                   <!--------------------导出按钮----------------------------------->
-                  <iButton @click="remove" >导出</iButton>
+                  <iButton @click="donwloadList" >导出</iButton>
                 </div>
             </div>
-            <tableList :activeItems='"a1"' selection indexKey :tableData="tableData" :tableTitle="tableTitle" :tableLoading="tableLoading" @handleSelectionChange="handleSelectionChange" @openPage="openPage"></tableList>
+            <tableList :activeItems='"spnrNum"' selection indexKey :tableData="tableData" :tableTitle="tableTitle" :tableLoading="tableLoading" @handleSelectionChange="handleSelectionChange" @openPage="openPage"></tableList>
             <!------------------------------------------------------------------------>
             <!--                  表格分页                                          --->
             <!------------------------------------------------------------------------>
@@ -65,19 +73,19 @@
           <!------------------------------------------------------------------------>
           <!--                  分配询价科室弹窗                                   --->
           <!------------------------------------------------------------------------>
-          <assignInquiryDepartmentDialog :dialogVisible="inquiryDialogVisible" @changeVisible="changeInquiryDialogVisible" />
+          <assignInquiryDepartmentDialog :dialogVisible="inquiryDialogVisible" @changeVisible="changeInquiryDialogVisible" @sendAccessory="sendAccessoryDept" />
           <!------------------------------------------------------------------------>
           <!--                  分配询价采购员弹窗                                 --->
           <!------------------------------------------------------------------------>
-          <assignInquiryBuyerDialog :dialogVisible="buyerDialogVisible" @changeVisible="changeBuyerDialogVisible" />
+          <assignInquiryBuyerDialog :dialogVisible="buyerDialogVisible" @changeVisible="changeBuyerDialogVisible" @sendAccessory="sendAccessoryLINIE" />
           <!------------------------------------------------------------------------>
           <!--                  退回EPS弹窗                                       --->
           <!------------------------------------------------------------------------>
-          <backEpsDialog :dialogVisible="backEpsDialogVisible" @changeVisible="changebackEpsDialogVisible" />
+          <backEpsDialog :dialogVisible="backEpsDialogVisible" @changeVisible="changebackEpsDialogVisible" @handleBack="handleBackEPS" />
           <!------------------------------------------------------------------------>
           <!--                    退回弹窗                                        --->
           <!------------------------------------------------------------------------>
-          <backDialog :dialogVisible="backDialogVisible" @changeVisible="changebackDialogVisible" />
+          <backDialog :dialogVisible="backDialogVisible" @changeVisible="changebackDialogVisible" @handleBack="handleBack" />
         </div>
       </el-tab-pane>
       <!-- <el-tab-pane label="进度监控" name="progress"></el-tab-pane> -->
@@ -96,6 +104,7 @@ import backEpsDialog from './components/backEps'
 import backDialog from './components/back'
 import { navList } from "@/views/partsign/home/components/data"
 import { cloneDeep } from 'lodash'
+import { getAccessoryManageList, sendAccessoryInfo, downLoadAccessoryList, downLoadAccessoryAll, back, backEPS } from '@/api/accessoryPart/index'
 export default {
   mixins: [pageMixins],
   components: { iPage, iSearch, iSelect, iInput, iCard, iButton, iPagination, tableList, assignInquiryDepartmentDialog, assignInquiryBuyerDialog,backEpsDialog, backDialog, iNavMvp },
@@ -105,7 +114,16 @@ export default {
       tableTitle: tableTitle,
       tableLoading: false,
       searchList: searchList,
-      searchParams: {},
+      searchParams: {
+        carType: '',
+        carProject: '',
+        state: '',
+        partStatus: '',
+        partState: '',
+        cfTargetPrice: '',
+        nomiType: '',
+        idState: ''
+      },
       inquiryDialogVisible: false,
       buyerDialogVisible: false,
       backDialogVisible: false,
@@ -113,9 +131,186 @@ export default {
       selectParts: [],
       navList: cloneDeep(navList),
       tab: "source",
+      selectOptions: {}
     }
   },
+  created() {
+    this.getTableList()
+  },
   methods: {
+    /**
+     * @Description: 搜索条件重置
+     * @Author: Luoshuang
+     * @param {*}
+     * @return {*}
+     */    
+    reset() {
+      this.searchParams = {
+        carType: '',
+        carProject: '',
+        state: '',
+        partStatus: '',
+        partState: '',
+        cfTargetPrice: '',
+        nomiType: '',
+        idState: ''
+      }
+    },
+    /**
+     * @Description: 获取列表数据
+     * @Author: Luoshuang
+     * @param {*}
+     * @return {*}
+     */    
+    getTableList() {
+      // this.tableLoading = true
+      const params = {
+        ...this.searchParams,
+        current: this.page.currPage,
+        size: this.page.pageSize
+      }
+      getAccessoryManageList(params).then(res => {
+        if(res.result) {
+          this.tableData = res.data.records
+          this.page.pageSize = res.data.size
+          this.page.currPage = res.data.current
+          this.page.totalCount = res.data.total
+        } else {
+          this.tableData = []
+        }
+      }).finally(() => {
+        this.tableLoading = false
+      })
+    },
+    /**
+     * @Description: 退回
+     * @Author: Luoshuang
+     * @param {*} reason 退回原因
+     * @return {*}
+     */    
+    handleBack(reason){
+      const params = {
+        accessoryIdList: this.selectParts.map(item => item.id),
+        reason
+      }
+      back(params).then(res => {
+        if (res.result) {
+          iMessage.success(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
+          this.changebackDialogVisible(false)
+          this.getTableList()
+        } else {
+          iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
+        }
+      })
+    },
+    /**
+     * @Description: 退回EPS
+     * @Author: Luoshuang
+     * @param {*} reasonType 退回类型
+     * @param {*} reasonDescription  退回描述
+     * @return {*}
+     */    
+    handleBackEPS(reasonType, reasonDescription) {
+      const params = {
+        accessoryIdList: this.selectParts.map(item => item.id),
+        reasonType,
+        reasonDescription
+      }
+      backEPS(params).then(res => {
+        if (res.result) {
+          iMessage.success(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
+          this.changebackEpsDialogVisible(false)
+          this.getTableList()
+        } else {
+          iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
+        }
+      })
+    },
+    /**
+     * @Description: 打开分配询价采购员弹窗，若未勾选配件或勾选的配件没有部门或勾选的配件的部门不一致则给出提示不允许操作
+     * @Author: Luoshuang
+     * @param {*}
+     * @return {*}
+     */    
+    openBuyerDialog() {
+      if (this.selectParts.length < 1) {
+        iMessage.warn('请选择配件')
+        return
+      }
+      const selectPartsDept = uniq(this.selectParts.map(item => item.csfuserId))
+      if (selectPartsDept.length !== 1) {
+        iMessage.warn('请选择相同部门的配件')
+        return
+      }
+      if (!selectPartsDept[0]) {
+        iMessage.warn('请选择有部门的配件')
+        return
+      }
+      this.changeBuyerDialogVisible(true)
+    },
+    /**
+     * @Description: 分配询价科室或询价采购员
+     * @Author: Luoshuang
+     * @param {*} respDept  询价科室
+     * @param {*} respLINIE  询价采购员
+     * @return {*}
+     */    
+    sendAccessory({respDept, respLINIE}) {
+      const params = {
+        accessoryIdList: this.selectParts.map(item => item.id),
+        respDept,
+        respLINIE
+      }
+      sendAccessoryInfo(params).then(res => {
+        if (res.result) {
+          iMessage.success(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
+          this.changeInquiryDialogVisible(false)
+          this.changeBuyerDialogVisible(false)
+          this.getTableList()
+        } else {
+          iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
+        }
+      })
+    },
+    /**
+     * @Description: 分配询价科室
+     * @Author: Luoshuang
+     * @param {*} respLINIE 询价科室ID
+     * @return {*}
+     */    
+    sendAccessoryLINIE(respLINIE) {
+      this.sendAccessory({respLINIE})
+    },
+    /**
+     * @Description: 分配询价采购员
+     * @Author: Luoshuang
+     * @param {*} respDept 询价采购员ID
+     * @return {*}
+     */    
+    sendAccessoryDept(respDept) {
+      this.sendAccessory({respDept})
+    },
+    /**
+     * @Description: 下载报表
+     * @Author: Luoshuang
+     * @param {*}
+     * @return {*}
+     */    
+    async downloadAll() {
+      await downLoadAccessoryAll()
+    },
+    /**
+     * @Description: 导出事件
+     * @Author: Luoshuang
+     * @param {*}
+     * @return {*}
+     */    
+    async donwloadList() {
+      const params = {
+        ...this.searchParams
+      }
+      await downLoadAccessoryList(params)
+    },
     /**
      * @Description: 点击SP号跳转事件
      * @Author: Luoshuang

@@ -2,9 +2,9 @@
  * @Author: Luoshuang
  * @Date: 2021-05-25 15:57:31
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-05-25 16:10:34
+ * @LastEditTime: 2021-06-02 11:39:12
  * @Description: 分配询价科室弹窗
- * @FilePath: \front-web\src\views\accessoryPart\components\signForPartsDemand\components\assignInquiryDepartment.vue
+ * @FilePath: \front-web\src\views\accessoryPart\signForPartsDemand\components\assignInquiryDepartment.vue
 -->
 
 <template>
@@ -20,14 +20,22 @@
     </template>
     <el-form>
       <el-form-item label="请选择询价科室">
-        <iSelect v-model="inquiryDepartment"></iSelect> 
+        <iSelect v-model="respDept">
+          <el-option
+            v-for="item in deptOptions"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value">
+          </el-option>
+        </iSelect> 
       </el-form-item>
     </el-form>
   </iDialog>
 </template>
 
 <script>
-import { iDialog, iButton, iSelect } from 'rise'
+import { iDialog, iButton, iSelect, iMessage } from 'rise'
+import { getDeptList } from '@/api/accessoryPart/index'
 export default {
   components: { iDialog, iButton, iSelect },
   props: {
@@ -35,12 +43,34 @@ export default {
   },
   data() {
     return {
-      inquiryDepartment: ''
+      respDept: '',
+      deptOptions: []
     }
+  },
+  created() {
+    // 获取部门下拉，智博说要自己搞，所以放后面再写
+    getDeptList().then(res => {
+      if (res.result) {
+        this.deptOptions = res.data?.map(item => {return {value:item.id, label:item.nameZh}})
+      } else {
+        this.deptOptions = []
+      }
+    })
   },
   methods: {
     clearDialog() {
       this.$emit('changeVisible', false)
+    },
+    handleCancel() {
+      this.respDept = ''
+      this.clearDialog()
+    },
+    handleConfirm() {
+      if (this.respDept === '') {
+        iMessage.warn('请选择询价部门')
+        return
+      }
+      this.$emit('sendAccessory', this.respDept)
     }
   }
 }

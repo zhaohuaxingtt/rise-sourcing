@@ -38,6 +38,7 @@ export const tableTitle = [{
 {
   props: 'nominateName',
   name: '申请单名',
+  width: 200,
   key: 'nominationLanguage.ShenQingDanMing',
   tooltip: false
 },
@@ -74,6 +75,7 @@ export const tableTitle = [{
 {
   props: 'nominateUserName',
   name: '询价采购员',
+  width: 150,
   key: 'nominationLanguage.XunJiaCaiGouYuan',
   tooltip: true
 },
@@ -92,24 +94,28 @@ export const tableTitle = [{
 {
   props: 'rsFreezeDate',
   name: 'RS冻结日期',
+  width: 150,
   key: 'nominationLanguage.RSDongJieRiQi',
   tooltip: false
 },
 {
   props: 'isPriceConsistent',
   name: '报价一致性校验状态',
+  width: 150,
   key: 'nominationLanguage.BaoJiaYiZhiXingZhuangTai',
   tooltip: false
 },
 {
   props: 'selStatus',
   name: 'SEL单据确认状态',
+  width: 150,
   key: 'nominationLanguage.SELDanJuQUeRenZH',
   tooltip: false
 },
 {
   props: 'nominateDate',
   name: '定点日期',
+  width: 150,
   key: 'nominationLanguage.DingDianRiQi',
   tooltip: false
 },

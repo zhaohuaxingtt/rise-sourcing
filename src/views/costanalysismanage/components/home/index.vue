@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-05-27 12:32:54
- * @LastEditTime: 2021-06-02 15:02:34
+ * @LastEditTime: 2021-06-02 16:50:16
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\costanalysismanage\components\home\index.vue
@@ -246,7 +246,7 @@ export default {
     download(row) {
       console.log(row);
       const { rfqNum='1' } = row;
-      this.rfqNum = '1';
+      this.rfqNum = rfqNum;
       this.downloadDialogVisible = true
     },
     // CBD

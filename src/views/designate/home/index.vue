@@ -10,7 +10,7 @@
     <!-- 筛选框 -->
     <div style="clear: both"></div>
     <!-- 搜索区 -->
-    <search @search="getDataList" />
+    <search @search="getFetchData" />
     <!-- 表格 -->
     <iCard class="designateTable">
       <div class="margin-bottom20 clearFloat">
@@ -18,8 +18,9 @@
           {{ $t("nominationLanguage.DingDianShenQingZongHeGuanLi") }}</span
         >
         <div class="floatright">
+          <!-- 新建定点申请 -->
           <iButton
-            @click="openPage"
+            @click="$router.push({path: '/designate/rfqdetail'})"
             v-permission="PARTSPROCURE_TRANSFER"
           >
             {{ $t("nominationLanguage.XinJianLingJIanDingDianShengQIng") }}
@@ -27,14 +28,16 @@
           <!--  <iButton @click="creatFs" v-permission="PARTSPROCURE_GENERATEFSBUTTON">
             {{ $t('partsprocure.PARTSPROCUREGENERATEFSGSNR') }}
           </iButton> -->
+          <!-- 撤回 -->
           <iButton
-            @click="openPage"
+            @click="handleBatchRevoke"
             v-permission="PARTSPROCURE_CANCELPROCUREMENTITEMS"
           >
             {{ $t("nominationLanguage.CheHui") }}
           </iButton>
+          <!-- 批量删除 -->
           <iButton
-            @click="openPage"
+            @click="handleBatchDelete"
             v-permission="PARTSPROCURE_BATCHMAINTENANCE"
           >
             {{ $t("nominationLanguage.ShanChu") }}
@@ -53,21 +56,29 @@
         :tableTitle="tableTitle"
         :tableLoading="tableLoading"
         @handleSelectionChange="handleSelectionChange"
-        @openPage="openPage"
-        :activeItems="'partNum'"
       >
-      <template #LK_CAOZUO="scope">
+      <!-- <template #LK_CAOZUO="scope">
         <span><a href="javascript:;" @click="detail(scope.row)">{{'定点详情'}}</a></span>
+      </template> -->
+      
+      <!-- 定点单号 -->
+      <template #nominateName="scope">
+        <a
+          href="javascript:;"
+          @click="$router.push({path: '/designate/rfqdetail', query: {desinateId: scope.row.id}})">
+          {{scope.row.nominateName}}
+        </a>
       </template>
+
       <!-- re冻结日期 -->
       <template #rsFreezeDate="scope">
         <span>{{scope.row.rsFreezeDate | dateFilter("YYYY-MM-DD")}}</span>
       </template>
       
       <!-- 一致性校验 -->
-      <template #isPriceConsistent="scope">
+      <!-- <template #isPriceConsistent="scope">
         <span>{{scope.row.isPriceConsistent ? '通过' : '不通过'}}</span>
-      </template>
+      </template> -->
 
       <!-- 定点日期 -->
       <template #nominateDate="scope">
@@ -77,11 +88,11 @@
       </tablelist>
       <iPagination
         v-update
-        @current-change="handleCurrentChange"
+        @current-change="handleCurrentChange($event, getFetchData)"
         background
         :current-page="page.currPage"
-        :page-sizes="page.pageSizes"
-        :page-size="page.pageSizes"
+        :page-sizes="page.pageSize"
+        :page-size="page.pageSize"
         :layout="page.layout"
         :total="page.totalCount"
       />
@@ -95,7 +106,12 @@ import { tableTitle } from './components/data'
 import headerNav from './components/headerNav'
 import search from './components/search'
 import tablelist from "@/views/designate/supplier/components/tableList";
-import { getNominationList } from '@/api/designate/nomination'
+import { 
+  getNominationList,
+  batchRevoke,
+  batchDelete
+} from '@/api/designate/nomination'
+import { pageMixins } from '@/utils/pageMixins'
 import filters from "@/utils/filters"
 
 import {
@@ -107,7 +123,7 @@ import {
 } from "rise";
 
 export default {
-  mixins: [ filters ],
+  mixins: [ filters, pageMixins ],
   data() {
     return {
       tableListData: [],
@@ -117,8 +133,9 @@ export default {
       startLoding: false,
       page: {
         currPage: 1,
-        pageSizes: 10,
-        totalCount: 0
+        pageSize: 15,
+        totalCount: 0,
+        layout: "total, prev, pager, next, jumper"
       }
     }
   },
@@ -132,15 +149,16 @@ export default {
     tablelist
   },
   mounted() {
-    this.getDataList()
+    this.getFetchData()
   },
   methods: {
-    getDataList(params = {}) {
+    // 获取定点管理列表
+    getFetchData(params = {}) {
       this.tableLoading = true
       getNominationList({
         ...params,
         current: this.page.currPage,
-        size: this.page.pageSizes
+        size: this.page.pageSize
       }).then(res => {
         this.tableLoading = false
         if (res.code === '200') {
@@ -156,18 +174,51 @@ export default {
         this.tableLoading = false
       })
     },
-    detail(item) {
-
+    // 多选
+    handleSelectionChange(data) {
+      this.selectTableData = data
     },
-    handleSelectionChange() {
-
+    // 批量撤回
+    async handleBatchRevoke() {
+      if (!this.selectTableData.length) {
+        iMessage.error(this.$t('nominationSuggestion.QingXuanZeZhiShaoYiTiaoShuJu'))
+        return
+      }
+      const confirmInfo = await this.$confirm(this.$t('revokeSure'))
+      if (confirmInfo !== 'confirm') return
+      const idList = this.selectTableData.map(o => o.id)
+      try {
+        const res = await batchRevoke({nominateAppArr: idList})
+        if (res.code === '200') {
+          iMessage.success(this.$t('LK_CAOZUOCHENGGONG'))
+          this.getFetchData()
+        } else {
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
+      } catch (e) {
+        iMessage.error(this.$i18n.locale === "zh" ? e.desZh : event.desEn)
+      }
     },
-    openPage() {
-
-    },
-    handleCurrentChange(page) {
-      this.page.currPage = page
-      this.getDataList()
+    // 批量删除
+    async handleBatchDelete() {
+      if (!this.selectTableData.length) {
+        iMessage.error(this.$t('nominationSuggestion.QingXuanZeZhiShaoYiTiaoShuJu'))
+        return
+      }
+      const confirmInfo = await this.$confirm(this.$t('deleteSure'))
+      if (confirmInfo !== 'confirm') return
+      const idList = this.selectTableData.map(o => o.id)
+      try {
+        const res = await batchDelete({nominateAppArr: idList})
+        if (res.code === '200') {
+          iMessage.success(this.$t('LK_CAOZUOCHENGGONG'))
+          this.getFetchData()
+        } else {
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
+      } catch (e) {
+        iMessage.error(this.$i18n.locale === "zh" ? e.desZh : event.desEn)
+      }
     }
   }
 }
