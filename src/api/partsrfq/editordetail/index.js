@@ -202,3 +202,11 @@ export function getTimeLine(quotationId=1,rfqId){
         method: 'GET'
     })
 }
+
+// 获取供应商生产地
+export function getSupplierProducePlace(params) {
+    return requst({
+        url: `/supplier/getSupplierProducePlace/${ params.supplierId }`,
+        method: 'GET'
+    })
+}
