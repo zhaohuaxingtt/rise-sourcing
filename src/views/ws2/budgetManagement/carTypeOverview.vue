@@ -41,14 +41,14 @@
               ref=""
           >
             <el-option
-                :value="item.locationFactoryId"
+                :value="item.locationFactoryName"
                 :label="item.locationFactoryName"
                 v-for="(item, index) in factoryList"
                 :key="index"
             ></el-option>
           </iSelect>
         </el-form-item>
-        <el-form-item :label="$t('LK_SHENQINGSHIJIANQIZHI')">
+        <el-form-item :label="$t('SOP时间')">
           <el-date-picker
               v-model="timeStarEnd"
               format="yyyy-MM-dd"
@@ -68,20 +68,17 @@
     </iSearch>
     <div v-loading="loadingiPage">
       <div class="content" v-if="contentData.length > 0">
-        <!--      <div class="item" @click="toEdit('add')">-->
-        <!--        <Popover-->
-        <!--            content="点击进入【生成投资清单】页面"-->
-        <!--            placement="top-start"-->
-        <!--            trigger="hover">-->
-        <!--          <img slot="reference" class="addIcon" src="../../../assets/images/addCar.png" alt="">-->
-        <!--        </Popover>-->
-        <!--      </div>-->
         <div class="item" v-for="(item, index) in contentData" :key="index"
              @click="toEdit(item.id, item.sourceStatus, item.isBudget)">
           <div class="item_top">
-            <img v-if="item.isBudget == 1" class="editIcon" src="../../../assets/images/editCar.png" alt="">
-            <img v-if="item.isBudget == 2" class="editIcon" src="../../../assets/images/editCar2.png" alt="">
-            <img v-if="item.isBudget == 3" class="editIcon" src="../../../assets/images/editCar.png" alt="">
+            <Popover
+                :content="Number(item.isBudget) === 3 ? '点击进入【模具投资清单】页面' : '点击进入未完成/需要继续编辑的【生成投资清单】页面'"
+                placement="top-start"
+                trigger="hover">
+              <img slot="reference" v-if="item.isBudget == 1" class="editIcon" src="../../../assets/images/editCar.png" alt="">
+              <img slot="reference" v-if="item.isBudget == 2" class="editIcon" src="../../../assets/images/editCar2.png" alt="">
+              <img slot="reference" v-if="item.isBudget == 3" class="editIcon" src="../../../assets/images/editCar.png" alt="">
+            </Popover>
             <div class="title">
               <Popover
                   :content="item.cartypeProjectName"
@@ -123,7 +120,12 @@
           <div class="unit">
             {{$t("LK_DANWEI")}}: {{$t("LK_BAIWANYUAN")}}
           </div>
-          <div class="chart" :id="'chart' + index"></div>
+          <Popover
+              :content="Number(item.isBudget) === 3 ? '点击进入【模具投资清单】页面' : '点击进入未完成/需要继续编辑的【生成投资清单】页面'"
+              placement="top-start"
+              trigger="hover">
+            <div slot="reference" class="chart" :id="'chart' + index"></div>
+          </Popover>
         </div>
       </div>
       <div class="noData" v-if="contentData.length === 0">暂无数据</div>
@@ -233,8 +235,8 @@ export default {
       let timeStarEnd =  this.timeStarEnd ? (this.timeStarEnd.length === 0 ? '' : this.timeStarEnd) : ''
       return new Promise((r) => {
         let params = {
-          showSelf: this.onleySelf,
-          showHistory: this.showHistory,
+          showSelf: this.onleySelf ? 'Y' : 'N',
+          showHistory: this.showHistory ? '1' : '0',
           cartypeProId: this.cartypeProId,
           sopBegin: timeStarEnd ? Moment(timeStarEnd[0]).format('YYYY-MM-DD') : '',
           sopEnd: timeStarEnd ? Moment(timeStarEnd[1]).format('YYYY-MM-DD') : '',
@@ -523,6 +525,9 @@ export default {
     }
   }
 
+  .noData {
+    min-height: 300px;
+  }
   .content {
     display: flex;
     flex-wrap: wrap;

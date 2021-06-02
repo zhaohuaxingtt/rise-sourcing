@@ -1,6 +1,8 @@
 import axios from '@/utils/axios'
+import axiosFile from '@/utils/axios.download'
 
 const INVESTMENT = axios(process.env.VUE_APP_INVESTMENT)
+const INVESTMENTFile = axiosFile(process.env.VUE_APP_INVESTMENT)
 const INVESTMENTVERSION = axios(process.env.VUE_APP_INVESTMENTVERSION)
 const BUILDINVESTMENT = axios(process.env.VUE_APP_BUILDINVESTMENT)
 const INVESTMENTORDER = axios(process.env.VUE_APP_INVESTMENTORDER)
@@ -31,7 +33,7 @@ export function findInvestmentList(parmars) {
 }
 //模具投资清单条件下载
 export function exportInvestmentList(parmars) {
-    return INVESTMENT({
+    return INVESTMENTFile({
         url: '/exportInvestmentList',
         method: 'POST',
         data: parmars

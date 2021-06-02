@@ -117,8 +117,8 @@
           </div>
         </div>
         <div>
+<!--          630-->
           <iTableList
-              :height="tableHeight - 630"
               :tableData="tableListData"
               :tableTitle="tableTitle"
               :filterTable="false"
@@ -1122,23 +1122,7 @@ export default {
       exportInvestmentList({
         listVerisonId: this.form['search.version'],
       }).then((res) => {
-        const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
-        if (Number(res.code) === 200) {
-          const blob = new Blob([res.data]);//new Blob([res])中不加data就会返回下图中[objece objece]内容（少取一层）
-          const fileName = '选择计划.xls'; //这里可以自定义名称，发现设置xlsx文件类型下载后打开会提示下面图-1的无效报错,所以我用了xls格式
-          const elink = document.createElement('a');
-          elink.download = fileName;
-          elink.style.display = 'none';
-          elink.href = URL.createObjectURL(blob);
-          document.body.appendChild(elink);
-          elink.click();
-          URL.revokeObjectURL(elink.href); // 释放URL 对象
-          document.body.removeChild(elink);
-          iMessage.success(result);
-        } else {
-          iMessage.error(result);
-          this.tableLoading = false
-        }
+        this.tableLoading = false
       }).catch(() => {
         this.tableLoading = false
       });
