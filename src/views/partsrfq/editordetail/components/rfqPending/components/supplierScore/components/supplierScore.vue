@@ -4,6 +4,9 @@
       <span class="font18 font-weight">{{ $t('LK_GONGYINGSHANGPINGFEN') }}</span>
       <div class="floatright">
         <!-- v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_SUPPLIERSCORE_PARTSCORING_DELETE" -->
+        <iButton v-if="!editStatus" @click="editStatus = true">{{ $t('LK_BIANJI') }}</iButton>
+        <iButton v-if="editStatus" @click="editStatus = false">{{ $t('LK_QUXIAO') }}</iButton>
+        <iButton v-if="editStatus" :loading="saveLoading" @click="handleSave">{{ $t('LK_BAOCUN') }}</iButton>
         <iButton @click="setScoringDept">{{ $t('LK_SHEZHIPINGFENBUMEN') }}</iButton>
         <iButton @click="sendTaskForRating" :loading="pushLoading">{{ $t('LK_TUISONGPINGFENRENWU') }}</iButton>
       </div>
@@ -85,7 +88,9 @@ export default {
       getSupplierProducePlaceSource: null, // 请求CancelToken
       currentSupplierId: "",
       supplierProducePlaces: [],
-      supplierProducePlacesLoading: false
+      supplierProducePlacesLoading: false,
+      editStatus: false,
+      saveLoading: false
     };
   },
   created() {
@@ -241,7 +246,9 @@ export default {
         this.supplierProducePlacesLoading = false
       })
       .catch(() => this.supplierProducePlacesLoading = false)
-    }
+    },
+    // 保存
+    handleSave() {}
   }
 }
 </script>
