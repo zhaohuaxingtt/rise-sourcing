@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-05-24 17:06:01
- * @LastEditTime: 2021-05-31 15:39:17
+ * @LastEditTime: 2021-06-01 10:43:07
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\createparts\components\home\index.vue
@@ -52,7 +52,7 @@
     </iSearch>
     <iCard class="margin-top20">
       <template v-slot:header-control>
-        <iButton>{{ $t("createparts.ChuangJianCaiGouXiangMu") }}</iButton>
+        <iButton :loading="createPartsLoading" @click="createParts">{{ $t("createparts.ChuangJianCaiGouXiangMu") }}</iButton>
       </template>
       <div class="body">
         <tableList
@@ -61,6 +61,7 @@
           :tableData="tableListData"
           :tableTitle="tableTitle"
           :tableLoading="loading"
+          @handleSelectionChange="handleSelectionChange"
         >
           <template #date="scope">
             <span>{{ scope.row.date | dateFilter("YYYY-MM-DD") }}</span>
@@ -92,6 +93,7 @@ import tableList from "@/views/partsign/editordetail/components/tableList";
 import { tableTitle } from "./components/data"
 import filters from "@/utils/filters"
 import { pageMixins } from "@/utils/pageMixins"
+import { createParts } from "@/api/partsprocure/editordetail"
 
 export default {
   components: { 
@@ -113,20 +115,27 @@ export default {
       },
       loading: false,
       tableTitle,
-      tableListData: []
+      tableListData: [],
+      multipleSelection: [],
+      createPartsLoading: false
     }
+  },
+  created() {
+    this.getTabelData()
   },
   methods: {
     sure() {},
     reset() {},
-    getList() {
+    getTabelData() {
       this.loading = true
 
-      const getList = function() {}
-      getList({
+      const getTabelData = function() {}
+      getTabelData({
+
       })
       .then(res => {
         if (res.code == 200) {
+          console.log(res)
           this.tableListData = Array.isArray(res.data) ? res.data : []
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
@@ -135,6 +144,40 @@ export default {
         this.loading = false
       })
       .catch(() => this.loading = false)
+    },
+    handleSelectionChange(list) {
+      this.multipleSelection = list
+    },
+    // 创建采购项⽬
+    createParts() {
+      if (this.multipleSelection.length < 1) return iMessage.warn(this.$t("createparts.QingXuanZeZhiShaoYiTiaoShuJu"))
+
+      this.createPartsLoading = true
+
+      createParts({
+        manuallyCreatePartProjectDTOList: this.multipleSelection.map(item => ({
+          carTypeProjectNum: item.carTypeProjectNum,
+          partNum: item.partNum,
+          partProjectType: item.partProjectType,
+          status: item.status
+        }))
+      })
+      .then(res => {
+        if (res.code == 200) {
+          iMessage.success(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+
+          if (this.multipleSelection.length == 1) {
+            console.log(1)
+          } else {
+            console.log(1)
+          }
+        } else {
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
+
+        this.createPartsLoading = false
+      })
+      .catch(() => this.createPartsLoading = false)
     },
     // 查看操作日志
     log(row) {

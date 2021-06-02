@@ -30,13 +30,13 @@ export const ptocessType = [
 // 表单表头
 export const tableTitle = [{
   //export const tableTitle = permissionTitle("nominationLanguage_nominationLanguageLIST",[{
-  props: 'fsnrGsnrNum',
+  props: 'id',
   name: '申请单号',
   key: 'nominationLanguage.ShenQingDanHao',
   tooltip: false
 },
 {
-  props: 'partNum',
+  props: 'nominateName',
   name: '申请单名',
   key: 'nominationLanguage.ShenQingDanMing',
   tooltip: false

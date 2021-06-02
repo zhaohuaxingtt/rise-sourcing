@@ -8,10 +8,19 @@ import axios from "@/utils/axios"
 const requst = axios(process.env.VUE_APP_RFQ)
 
 // 获取part list列表数据
-export function getPartList(params) {
+export function getPartList(data) {
     return requst({
         url: '/nominate/part-list',
-        method: "GET",
-        params: params
+        method: "POST",
+        data,
     })
-  }
+}
+
+// 保存
+export function partUpdate(data) {
+    return requst({
+        url: '/nominate/part-update',
+        method: "POST",
+        data,
+    })
+}

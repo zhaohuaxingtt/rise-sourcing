@@ -10,7 +10,7 @@
     <!-- 筛选框 -->
     <div style="clear: both"></div>
     <!-- 搜索区 -->
-    <search />
+    <search @search="getDataList" />
     <!-- 表格 -->
     <iCard class="designateTable">
       <div class="margin-bottom20 clearFloat">
@@ -78,12 +78,14 @@ import { tableTitle } from './components/data'
 import headerNav from './components/headerNav'
 import search from './components/search'
 import tablelist from "../../partsign/home/components/tableList";
+import { getNominationList } from '@/api/designate/nomination'
 
 import {
   iPage,
   iCard,
   iButton,
-  iPagination
+  iPagination,
+  iMessage
 } from "rise";
 
 export default {
@@ -94,7 +96,11 @@ export default {
       tableTitle: tableTitle,
       selectTableData: [],
       startLoding: false,
-      page: {}
+      page: {
+        currPage: 1,
+        pageSizes: 10,
+        totalCount: 0
+      }
     }
   },
   components: {
@@ -106,7 +112,29 @@ export default {
     search,
     tablelist
   },
+  mounted() {
+    this.getDataList()
+  },
   methods: {
+    getDataList(params = {}) {
+      this.tableLoading = true
+      getNominationList({
+        ...params,
+        current: this.page.currPage,
+        size: this.page.pageSizes
+      }).then(res => {
+        this.tableLoading = false
+        if (res.code === '200') {
+          console.log(res)
+        } else {
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
+        console.log(res)
+      }).catch(e => {
+        console.log(e)
+        this.tableLoading = false
+      })
+    },
     handleSelectionChange() {
 
     },

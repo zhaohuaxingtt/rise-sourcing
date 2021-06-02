@@ -7,20 +7,20 @@
         <iButton>{{ $t('LK_QUXIAO') }}</iButton>
       </div>
     </div>
-    <div class="body">
-      <tableList index :height="controlHeight ? '91%' : '100%'" v-show="visible" class="table margin-top20" :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="loading" @handleSelectionChange="handleSelectionChange">
+    <div class="body" v-loading="tableLoading">
+      <tableList index radio :height="controlHeight ? '91%' : '100%'" v-show="visible" class="table margin-top20" :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="loading" @handleSelectionChange="handleSelectionChange">
         <template #isTop="scope">
           <a class="link-underline" v-if="scope.$index === 0">
             <icon symbol name="iconpaixu-xiangshangjinzhi" class="icon" />
           </a>
-          <a class="link-underline" v-else>
+          <a class="link-underline" @click="updateAttachSort(scope.row, true)" v-else>
             <icon symbol name="iconpaixu-xiangshang" class="icon" />
           </a>
 
           <a class="link-underline" v-if="scope.$index === tableListData.length - 1">
             <icon symbol name="iconpaixu-xiangxiajinzhi" class="icon" />
           </a>
-          <a class="link-underline" v-else>
+          <a class="link-underline" @click="updateAttachSort(scope.row, false)" v-else>
             <icon symbol name="iconpaixu-xiangxia" class="icon" />
           </a>
         </template>
@@ -47,6 +47,10 @@ import { sorttableTitle as tableTitle, mokeTableListData } from './data'
 import { pageMixins } from '@/utils/pageMixins'
 import tableList from '@/views/designate/supplier/components/tableList'
 import filters from '@/utils/filters'
+import {
+  updateDaringSort,
+  getdDecisiondataDaringList
+} from '@/api/designate/decisiondata/drawing'
 
 export default {
   components: { tableList, iPagination, iDialog, iButton, icon },
@@ -63,9 +67,11 @@ export default {
     }
   },
   watch: {
-    params: {
+    visible: {
       handler() {
-        this.$nextTick(() => { if (this.visible) this.getAttachment() })
+        this.$nextTick(() => {
+          this.visible && (this.getAttachment())
+        })
       },
       deep: true
     }
@@ -74,14 +80,63 @@ export default {
     return {
       loading: false,
       tableTitle,
-      tableListData: mokeTableListData,
+      tableLoading: false,
+      tableListData: [],
       multipleSelection: [],
-      controlHeight: 0
+      controlHeight: 0,
+      page: {
+        currPage: 1,
+        pageSize: 10,
+        totalCount: 0
+      }
     }
   },
   methods: {
-    getFetchData() {
-
+    getAttachment(hideLoading) {
+      !hideLoading && (this.tableLoading = true)
+      console.log('tableLoading')
+      getdDecisiondataDaringList({
+        nomiAppId: '1',
+        sortColumn: 'sort',
+        isAsc: true,
+        fileType: '101',
+        pageNo: this.page.currPage,
+        pageSize: this.page.pageSize
+      }).then(res => {
+        if (res.code === '200') {
+          this.tableListData = res.data.records || []
+          this.page.totalCount = res.data.total || 0
+        } else {
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
+        this.tableLoading = false
+        console.log(res)
+      }).catch(e => {
+        console.log(e)
+        this.tableLoading = false
+      })
+    },
+    updateAttachSort(row, isUp) {
+      console.log(this.multipleSelection)
+      const params = {
+        fileId: row.id,
+        isUp
+      }
+      // const params = JSON.parse("{\"fileCode\":\"0\",\"fileName\":\"1.jpg\",\"filePath\":\"https://dev-rise.obs.cloud.csvw.com:443/rise%2F1.jpg\",\"fileSize\":93894,\"size\":93894,\"fileType\":101,\"hostId\":\"1\"}")
+      console.log(params)
+      updateDaringSort(params).then(res => {
+        if (res.code === '200') {
+          console.log(res)
+          this.page.currPage = 1
+          this.getAttachment(true)
+        } else {
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
+        this.tableLoading = false
+      }).catch(e => {
+        this.tableLoading = false
+        iMessage.error(this.$i18n.locale === "zh" ? e.desZh : event.desEn)
+      })
     },
     handleSelectionChange(list) {
       this.multipleSelection = list
@@ -109,7 +164,7 @@ export default {
   }
 
   ::v-deep .el-dialog {
-    width: 1745px!important;
+    width: 825px!important;
     position: absolute;
     margin: 0!important;
     top: 50%;
@@ -118,7 +173,7 @@ export default {
     overflow-x: hidden;
 
     .body {
-      height: 580px;
+      height: 380px;
     }
 
     .el-dialog__header {

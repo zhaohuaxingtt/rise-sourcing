@@ -43,7 +43,7 @@ export default {
     },
     methods:{
         clearDialog() {
-        this.$emit('changeVisible', false)
+            this.$emit('changeVisible', false)
         },
     }
 
