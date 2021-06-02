@@ -14,7 +14,15 @@
                 <iCard>
                   <div class="margin-bottom20 clearFloat">
                     <div class="floatright">
-                      <iButton>{{$t('LK_DAORU')}}</iButton>
+                      <span class="margin-right10">
+                          <Upload 
+                              hideTip
+                              :buttonText="$t('LK_DAORU')"
+                              accept=" .xls,.xlsx"
+                              @on-success="onDraingUploadsucess"
+                          />
+                      </span>
+                      <!-- <iButton>{{$t('LK_DAORU')}}</iButton> -->
                       <iButton>{{$t('LK_PEIJIANMUBANXIAZAI')}}</iButton>
                     </div>
                   </div>
@@ -86,6 +94,7 @@ import {
   iButton,
   iPagination,
 } from "rise";
+import Upload from '@/components/Upload'
 import { navList } from "@/views/partsign/home/components/data";
 import { cloneDeep } from "lodash";
 import { pageMixins } from "@/utils/pageMixins";
@@ -98,6 +107,7 @@ export default {
         iCard,
         iButton,
         iPagination,
+        Upload,
     },
     data(){
         return{
@@ -118,6 +128,11 @@ export default {
       // 跳转附件清单页
       goFilesList(){
         this.$router.push({path:'/sourcing/importfiles/detaillist'})
+      },
+
+      // 导入文件
+      onDraingUploadsucess(data){
+
       },
     }
 

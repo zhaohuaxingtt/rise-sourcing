@@ -128,7 +128,6 @@ export default {
                 this.tableListData = records;
                 this.page.totalCount = total;
              }
-             console.log(res);
           }).catch((err)=>{
             this.loading = true;
           })

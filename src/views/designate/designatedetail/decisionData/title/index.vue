@@ -9,11 +9,13 @@
        <div class="decision-data-title-content">
          <iFormGroup row="1">
             <div class="col">
-               <iFormItem v-for="(item,index) in titleData" :key="'titleData'+index"  :label="item.label+':'">
-                  <iText >
-                     {{ item.value }}
-                  </iText>
-               </iFormItem>
+               <template v-for="(item,index) in titleData"  >
+                  <iFormItem v-if="!item.hidden" :key="'titleData'+index"  :label="item.label+':'">
+                     <iText >
+                        {{ item.value }}
+                     </iText>
+                  </iFormItem>
+               </template>
             </div>
          </iFormGroup>
        </div>
@@ -28,6 +30,10 @@ import {
   iFormItem,
   iText,
 } from "rise";
+import {
+   findLayoutTitleInfo,
+} from '@/api/designate/decisiondata/title'
+import { cloneDeep } from 'lodash'
 export default {
      components:{
         iCard,
@@ -35,26 +41,59 @@ export default {
         iFormItem,
         iText,
     },
-    data(){
-       return{
-          titleData:[
-             {label:'Project Type',value:'FS⼩零件'},
-             {label:'Part',value:'零件号-德⽂名-中⽂名(⾸零件),零件号-德⽂名-中⽂名(⾸零件),零件号-德⽂名-中⽂名(⾸零件)'},
-             {label:'Project',value:'AAAA BBBB'},
-             {label:'SOP Time',value:'2020-01-01'},
-             {label:'Buyer',value:'FS Name/ Linie Name'},
-             {label:'Single Sourcing',value:'Y'},
-             {label:'PCA/TIA',value:'Not Relevant/Finished'},
-          ],
-       }
-    },
-    
     computed:{
         isPreview(){
             return this.$store.getters.isPreview;
         }
     },
+    data(){
+       return{
+          titleData:[
+             {label:'Project Type',key:'projectType'},
+             {label:'Part',key:'nominateName'},
+             {label:'Project',key:'projects'},
+             {label:'SOP Time',key:'SOPTime'},
+             {label:'Buyer',key:'buyer'},
+             {label:'Single Sourcing',key:'singleSourcing'},
+             {label:'PCA/TIA',key:'PCA/TIA'},
+          ],
+       }
+    },
+    mounted(){
+       this.getInfo();
+    },
     methods:{
+       // 获取title信息
+       async getInfo(){
+         const { query } = this.$route;
+         const {id ='1'} = query;
+         const { titleData } = this;
+         const newData = cloneDeep(titleData);
+        await findLayoutTitleInfo({nominateId:id}).then((res)=>{
+            const {data,code} = res;
+            if(code == 200 && data){
+               console.log(data);
+               newData.map((item)=>{
+                  if(item.key === 'PCA/TIA'){
+                     if(!data.isShow) item.hidden = true;
+                     else{
+                        const {pacStatus,tiaStatus} = data;
+                        item.value = `${pacStatus}/${tiaStatus}`
+                     }
+                  }else if(item.key === 'projects'){
+                     item.value = data.projects ? data.projects.join() :'-';
+                  }
+                  else{
+                     item.value = data[item.key];
+                     
+                     console.log(data[item.key],item.key);
+                  }
+               })
+
+               this.titleData = newData;
+            }
+         })
+       },
     }
 }
 </script>

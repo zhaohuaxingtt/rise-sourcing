@@ -75,7 +75,7 @@
             <iCard>
                 <p class="uploadList-icon margin-bottom20">
                     <span @click="changeShowStatus">
-                        <icon symbol name="guanbixiaoxiliebiaokapiannei" class="close-icon" ></icon>
+                        <icon symbol name="iconguanbixiaoxiliebiaokapiannei" class="close-icon" ></icon>
                     </span>
                 </p>
                 <uploadList />
@@ -162,7 +162,6 @@ export default {
             .close-icon{
                 width: 24px;
                 height: 24px;
-                border: 1px solid red;
             }
         }
     }
