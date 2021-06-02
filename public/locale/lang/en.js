@@ -120,6 +120,7 @@
             'JiHuoShiJian': '', // 激活时间
             'CaoZuoRiZhi': '', // 操作日志
             'ChaKan': '', // 查看
+            'QingXuanZeZhiShaoYiTiaoShuJu': '', // 请选择至少一条数据
         },
         // 成本分析管理
         'costanalysismanage': {
