@@ -3,6 +3,7 @@ const resolve = dir => path.join(__dirname, dir)
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 const CompressionPlugin = require("compression-webpack-plugin");
 const ChangeNginxConfig = require(resolve('./loadersPlugins/pluginTranslateNginxConfig'))
+const NodeserverUpload = require(resolve('./loadersPlugins/pluginLanguage'))
 const px2rem = require('postcss-px2rem')
 const postcss = px2rem({
     remUnit: 16
@@ -10,7 +11,7 @@ const postcss = px2rem({
 //内存泄漏
 require('events').EventEmitter.defaultMaxListeners = 0
 module.exports = {
-    publicPath: process.env.VUE_APP_PUBLICPATH,
+  publicPath: process.env.VUE_APP_PUBLICPATH,
 	outputDir: 'dist',
 	assetsDir: 'static',
 	filenameHashing: true,
@@ -45,7 +46,15 @@ module.exports = {
 	},
 	configureWebpack: config => {
 		//为生产环境移除console debugger 代码压缩
-		if (process.env.NODE_ENV !== 'dev') {
+		if (process.env.NODE_ENV !== 'dev') { //production
+			// config.resolveLoader.modules.push('./loadersPlugins/') //新增自定义loader路径
+			// config.module.rules.push({ //新增线上翻译loader
+			// 	test:/\.vue$/,
+			// 	use:[{
+			// 		loader:'loaderLanguage'
+			// 	}]
+			// })
+			// config.plugins.push(new NodeserverUpload())
 			config.plugins.push(
 				new UglifyJsPlugin({
 					uglifyOptions: {

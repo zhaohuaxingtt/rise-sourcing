@@ -1,10 +1,11 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-19 14:29:21
- * @LastEditTime: 2021-03-08 18:04:23
+ * @LastEditTime: 2021-06-01 15:37:03
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\ui\index.vue
+ * @FileName:
 -->
 <template>
 	<div class="padding20 scorll">
@@ -148,13 +149,13 @@
 								<el-form-item label="活动名称">
 								<iInput></iInput>
 							</el-form-item>
-							<el-form-item label="活动名称">
+							<el-form-item :label="language('LANGRUIGEKEY','活动名称1212')">
 								<iInput></iInput>
 							</el-form-item>
-							<el-form-item label="活动名称">
+							<el-form-item :label="language('LANGRUIGEKEY','活动名称12')">
 								<iInput></iInput>
 							</el-form-item>
-							<el-form-item label="活动名称">
+							<el-form-item :label="language('LANGRUIGEKEY','活动名称')">
 								<iInput></iInput>
 							</el-form-item>	
 					</el-form>

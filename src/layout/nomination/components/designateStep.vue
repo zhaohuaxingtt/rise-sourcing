@@ -68,7 +68,6 @@ export default {
         // 判断当前路由是否是决策资料相关路由 是则显示预览按钮
         const { path } = this.$route;
         this.isDecision = path.indexOf('/designate/decisiondata/')>-1;
-
         this.getStepStatus();
 
     },
