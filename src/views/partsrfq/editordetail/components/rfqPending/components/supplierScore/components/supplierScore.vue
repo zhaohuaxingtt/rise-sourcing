@@ -4,6 +4,9 @@
       <span class="font18 font-weight">{{ $t('LK_GONGYINGSHANGPINGFEN') }}</span>
       <div class="floatright">
         <!-- v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_SUPPLIERSCORE_PARTSCORING_DELETE" -->
+        <iButton v-if="!editStatus" @click="editStatus = true">{{ $t('LK_BIANJI') }}</iButton>
+        <iButton v-if="editStatus" @click="editStatus = false">{{ $t('LK_QUXIAO') }}</iButton>
+        <iButton v-if="editStatus" :loading="saveLoading" @click="handleSave">{{ $t('LK_BAOCUN') }}</iButton>
         <iButton @click="setScoringDept">{{ $t('LK_SHEZHIPINGFENBUMEN') }}</iButton>
         <iButton @click="sendTaskForRating" :loading="pushLoading">{{ $t('LK_TUISONGPINGFENRENWU') }}</iButton>
       </div>
@@ -14,6 +17,9 @@
         :tableLoading="tableLoading"
         @handleSelectionChange="handleSelectionChange"
         :index="true"
+        :supplierProducePlaces="supplierProducePlaces"
+        :supplierProducePlacesLoading="supplierProducePlacesLoading"
+        @supplierProducePlacesVisibleChange="supplierProducePlacesVisibleChange"
         @openActionPropsPage="openActionPropsPage"
         @openMultiHeaderPropsPage="openMultiHeaderPropsPage"
     ></tablelist>
@@ -49,11 +55,12 @@ import tablelist from './supplierScoreTableList'
 import {supplierScoreTitle,templateScoreTitle} from "./data";
 import {pageMixins} from "@/utils/pageMixins";
 import tpbRemarks from './tpbRemarks'
-import {getAllSupplier, setTpbMemo, sendTaskForRating, getRaterAndCoordinatorByDepartmentId} from "@/api/partsrfq/editordetail";
+import {getAllSupplier, setTpbMemo, sendTaskForRating, getRaterAndCoordinatorByDepartmentId, getSupplierProducePlace} from "@/api/partsrfq/editordetail";
 import {serialize} from '@/utils'
 import store from '@/store'
 import {rfqCommonFunMixins} from "pages/partsrfq/components/commonFun";
 import scoringDeptDialog from './scoringDeptDialog'
+import axios from 'axios'
 
 export default {
   components: {
@@ -77,7 +84,13 @@ export default {
       pushLoading: false,
       setScoringDeptVisible: false,
       templateScoreTitle:templateScoreTitle,
-      tagName: ''
+      tagName: '',
+      getSupplierProducePlaceSource: null, // 请求CancelToken
+      currentSupplierId: "",
+      supplierProducePlaces: [],
+      supplierProducePlacesLoading: false,
+      editStatus: false,
+      saveLoading: false
     };
   },
   created() {
@@ -199,7 +212,43 @@ export default {
         this.getBaseInfo()
         this.getTableList()
       }
-    }
+    },
+    supplierProducePlacesVisibleChange(data) {
+      if (data.id === this.currentSupplierId) return
+      this.supplierProducePlaces = []
+      this.currentSupplierId = data.id
+      this.getSupplierProducePlace(data.id)
+    },
+    // 获取供应商生产地
+    getSupplierProducePlace(supplierId) {
+      if (!supplierId) return
+
+      if (this.getSupplierProducePlaceSource) this.getSupplierProducePlaceSource.cancel()
+      this.getSupplierProducePlaceSource = axios.CancelToken.source()
+
+      this.supplierProducePlacesLoading = true
+      getSupplierProducePlace({ supplierId })
+      .then(res => {
+        if (res.code == 200) {
+          this.supplierProducePlaces = 
+            Array.isArray(res.data) ? 
+            res.data.map(item => ({
+              ...item,
+              key: item.code,
+              label: item.address,
+              value: item.code
+            })) : 
+            []
+        } else {
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
+
+        this.supplierProducePlacesLoading = false
+      })
+      .catch(() => this.supplierProducePlacesLoading = false)
+    },
+    // 保存
+    handleSave() {}
   }
 }
 </script>
