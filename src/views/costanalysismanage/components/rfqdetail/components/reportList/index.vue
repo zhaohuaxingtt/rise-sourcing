@@ -90,7 +90,7 @@ export default {
         }
     },
     methods:{
-        // 批量下载附件
+        // 下载附件
         async download(fileList){
              const data = {
               applicationName: 'rise',
