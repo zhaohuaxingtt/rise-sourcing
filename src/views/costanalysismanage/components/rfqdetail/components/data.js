@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-05-27 17:29:03
- * @LastEditTime: 2021-06-01 18:43:48
+ * @LastEditTime: 2021-06-02 09:56:34
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\costanalysismanage\components\rfqdetail\components\data.js
@@ -40,6 +40,6 @@ export const partListTableTitle = [
 export const reportListTableTitle = [
   { props: "fileName", name: "文件名称", key: "LK_WENJIANMINGCHENG", tooltip: true },
   { props: "fileSize", name: "大小(MB)", key: "LK_DAXIAOMB", tooltip: true },
-  { props: "createDate", name: "上传日期", key: "LK_SHANGCHUANRIQI", tooltip: true },
-  { props: "createBy", name: "上传人", key: "LK_SHANGCHUANREN", tooltip: true },
+  { props: "uploadDate", name: "上传日期", key: "LK_SHANGCHUANRIQI", tooltip: true },
+  { props: "uploadBy", name: "上传人", key: "LK_SHANGCHUANREN", tooltip: true },
 ]
