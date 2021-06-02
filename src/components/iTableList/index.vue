@@ -87,13 +87,16 @@
           :min-width="items.minWidth"
           :width="items.width"
         >
-          <template slot="header" slot-scope="">
+          <template slot="header" slot-scope="" v-if="titlePopover">
             <Popover
                 placement="top-start"
                 :content="$t(items.key)"
                 trigger="hover">
               <div slot="reference" class="tableHeader">{{ $t(items.key) }}</div>
             </Popover>
+          </template>
+          <template slot="header" slot-scope="" v-else>
+            <div>{{ $t(items.key) }}</div>
           </template>
           <template v-if="$scopedSlots[items.props] || $slots[items.props]" v-slot="scope">
             <slot :name="items.props" :row="scope.row"></slot>
@@ -122,6 +125,7 @@ export default {
     radio: { type: Boolean, default: false }, // 是否单选
     showSummary: { type: Boolean, default: false }, //  是否显示总结行
     filterTable: { type: Boolean, default: false }, //  是否筛选列
+    titlePopover: { type: Boolean, default: true }, //  表头是否省略加popover
     getSummaries: { type: Function },
     tableRowClassName: { type: Function },
   },

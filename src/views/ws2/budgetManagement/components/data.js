@@ -223,73 +223,84 @@ export const investmentListEntities = [{
         props: 'categoryCode',
         name: '材料组编号',
         key: 'LK_CAILIAOZUBIANHAO2',
+        width: 120,
         tooltip: false
     },
     {
         props: 'categoryNameZh',
         name: '材料组名称（中）',
         key: 'LK_CAILIAOZUMINGCENGZHONG',
+        width: 150,
         tooltip: false
     },
     {
         props: 'categoryNameDe',
         name: '材料组名称（德）',
         key: 'LK_CAILIAOZUMINGCENGDE',
+        width: 150,
         tooltip: false
     },
     {
         props: 'commodity',
         name: '专业科室',
         key: 'LK_ZHUANYEKESHI',
+        width: 100,
         tooltip: false
     },
     {
         props: 'budgetAmount',
         name: '预算金额PSK(Mio.RMB)',
         key: 'LK_YUSUANJINEPSK',
+        width: 220,
         tooltip: false
     },
     {
         props: 'moldProperties',
         name: '模具属性',
         key: 'LK_MOJUSHUXIN',
+        width: 130,
         tooltip: false
     },
     {
         props: 'sourcingType',
         name: 'Sourcing类型',
         key: 'LK_SOURCINGLEIXIN',
+        width: 150,
         tooltip: false
     },
     {
         props: 'linie',
         name: 'LINIE',
         key: 'LK_LINIE',
-        minWidth: 120,
+        width: 200,
         tooltip: false
     },
     {
         props: 'zp',
         name: 'ZP',
         key: 'LK_ZP',
+        width: 60,
         tooltip: false
     },
     {
         props: 'refCartypeName',
         name: '参考项目',
         key: 'LK_CANKAOXIANGMU',
+        width: 130,
         tooltip: false
     },
     {
         props: 'refMoldAmount',
         name: '参考项目模具金额(Mio.RMB)',
         key: 'LK_CANKAOXINGMUMOJUJINE',
+        width: 320,
         tooltip: false
     },
     {
         props: 'remarks',
         name: '预算备注',
         key: 'LK_YUSUANBEIZHU',
+        width: 140,
         tooltip: false
     },
 ]

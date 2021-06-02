@@ -122,6 +122,7 @@
               :tableData="tableListData"
               :tableTitle="tableTitle"
               :filterTable="false"
+              :titlePopover="false"
               @handleSelectionChange="handleSelectionChange"
           >
             <template #refCartypeName="scope">
@@ -129,7 +130,7 @@
               <div v-else>-</div>
             </template>
             <template #refMoldAmount="scope">
-              <div class="linkStyle" v-if="scope.row.refCartypeProId"><span @click="clickRefCartypeName(scope.row)">{{ scope.row.refMoldAmount }}</span></div>
+              <div v-if="scope.row.refCartypeProId"><span>{{ scope.row.refMoldAmount }}</span></div>
               <div v-else>-</div>
             </template>
             <template #budgetAmount="scope">
@@ -172,6 +173,7 @@
             </template>
             <template #linie="scope">
               <iSelect
+                  class="multipleSelect"
                   v-show="pageEdit"
                   :placeholder="$t('LK_QINGXUANZE')"
                   v-model="scope.row.linieArr"
@@ -1157,6 +1159,14 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+.multipleSelect{
+  ::v-deep .el-tag{
+    max-width: calc(100% - 65px);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
 #chart1{
   width: 200px;
   height: 200px;
