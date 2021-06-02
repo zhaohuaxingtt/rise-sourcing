@@ -198,7 +198,7 @@ export function getRaterAndCoordinatorByDepartmentId(data){
 //获取时间节点
 export function getTimeLine(quotationId=1,rfqId){
     return requst({
-        url: `/${quotationId}/${rfqId}`,
+        url: `/rfq-time-axis/${rfqId}`,
         method: 'GET'
     })
 }

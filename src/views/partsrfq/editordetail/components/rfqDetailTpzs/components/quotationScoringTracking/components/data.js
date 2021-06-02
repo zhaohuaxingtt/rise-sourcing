@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-05-25 21:01:30
- * @LastEditTime: 2021-05-27 10:31:51
+ * @LastEditTime: 2021-06-02 14:30:18
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringTracking\components\data.js
@@ -10,7 +10,8 @@
 export const timeList = [
   {
     week:1,
-    name:'首次报价'
+    name:'首次报价',
+    active:true
   },
   {
     week:2,
@@ -68,26 +69,32 @@ export const timeList = [
 
 
 export const iconList_car = { //汽车图标
-  1:{
+  'a2':{
     icon:'iconbaojiafenxi-zhengchejindu-cheng' //橙色
   },
-  2:{
+  'a3':{
     icon:'iconbaojiafenxi-zhengchejindu-hong' //红色
   },
-  3:{
+  'a1':{
     icon:'iconbaojiafenxi-zhengchejindu-huang1' //黄色浅黄
   },
+  'default':{
+    icon:'icondingdianguanlijiedian-yiwancheng' //default
+  }
 }
 export const iconList_all_times = { //整体任务进度
-  1:{
-    icon:'iconbaojiafenxi-zhengchejindu-cheng' //橙色
+  'a2':{
+    icon:'iconbaojiapingfengenzong-jiedian-lv' //绿色
   },
-  2:{
-    icon:'iconbaojiafenxi-zhengchejindu-hong' //红色
+  'a3':{
+    icon:'iconbaojiapingfengenzong-jiedian-huang' //红色
   },
-  3:{
-    icon:'iconbaojiafenxi-zhengchejindu-huang1' //黄色浅黄
+  'a1':{
+    icon:'iconbaojiapingfengenzong-jiedian-hei' //黑色
   },
+  'a4':{
+    icon:'iconbaojiapingfengenzong-jiedian-cheng' //橙色
+  }
 }
 
 

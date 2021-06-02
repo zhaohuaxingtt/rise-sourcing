@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-04-12 20:57:25
+ * @LastEditTime: 2021-06-01 11:32:56
  * @LastEditors: Please set LastEditors
  * @Description: 自定义指令文件。
  * @FilePath: \rise\src\utils\mydirect.js
@@ -88,3 +88,7 @@ Vue.directive('Int', {
         }
     }
 })
+
+
+
+

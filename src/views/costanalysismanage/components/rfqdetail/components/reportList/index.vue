@@ -6,8 +6,16 @@
 <template>
     <iCard :title="$t('costanalysismanage.baogaoqingdan')">
         <template v-slot:header-control>
-            <iButton>{{$t('LK_SHANGCHUAN')}}</iButton>
-            <iButton>{{$t('LK_XIAZAI')}}</iButton>
+            <span class="margin-right10">
+                <Upload 
+                    hideTip
+                    :buttonText="$t('LK_SHANGCHUAN')"
+                    accept=".pdf"
+                    @on-success="onDraingUploadsucess"
+                />
+            </span>
+            <!-- <iButton>{{$t('LK_SHANGCHUAN')}}</iButton> -->
+            <iButton @click="downloadList">{{$t('LK_XIAZAI')}}</iButton>
             <iButton>{{$t('delete')}}</iButton>
         </template>
         <div class="body">
@@ -40,10 +48,16 @@
 
 <script>
 import { iCard, iButton, iPagination } from "rise"
+import Upload from '@/components/Upload'
 import tableList from "@/views/partsign/editordetail/components/tableList"
 import { reportListTableTitle as tableTitle } from "../data"
 import { pageMixins } from "@/utils/pageMixins"
 import { getFileHistory } from "@/api/costanalysismanage/rfqdetail"
+import {
+  uploadDaring,
+} from '@/api/designate/decisiondata/drawing'
+import { downloadFiles } from '@/api/file/upload'
+
 export default {
     name:'reportList',
     mixins: [ pageMixins ],
@@ -51,7 +65,8 @@ export default {
         iCard,
         iButton,
         iPagination,
-        tableList
+        tableList,
+        Upload,
     },
     created(){
         this.getList();
@@ -64,8 +79,29 @@ export default {
         }
     },
     methods:{
+        // 批量下载附件
+        async downloadFile(fileList){
+             const data = {
+              applicationName: 'rise',
+              fileList
+            };
+            await downloadFiles(data).then((res)=>{
+                const {code} = res;
+                if(code==200){
+
+                }
+            })
+        },
+        // 单文件下载
         download(row){
             console.log(row);
+            const {id} = row;
+            console.log(id);
+            this.downloadFile([id]);
+        },
+        // 批量下载附件
+        downloadList(){
+
         },
         
         // 获取列表
@@ -75,8 +111,8 @@ export default {
             const {rfqNum="1" } = query;
             const { page } = this;
             const data = {
-                nomiAppId:rfqNum,
-                fileType:'109',   // 101 109: 报告清单,110:询价图纸,111:询价附件
+                nomiAppId:'1',
+                fileType:'101',   // 101 109: 报告清单,110:询价图纸,111:询价附件
                 pageNo:page.currPage,
                 pageSize:page.pageSize,
             }
@@ -93,7 +129,30 @@ export default {
             }).catch((err)=>{
                  this.loading =  false;
             })
-        }
+        },
+        // 上传附件
+        onDraingUploadsucess(data){
+            const { query } = this.$route;
+            const {rfqNum="1" } = query;
+            const params = {
+                fileCode: '0',
+                fileName: data.data.fileName || '',
+                filePath: data.data.filePath || '',
+                fileSize: data.file.size || 0,
+                size: data.file.size || 0,
+                fileType: 101,
+                hostId: '1'
+            };
+            uploadDaring(params).then((res)=>{
+                const {code} = res;
+                if (res.code == 200) {
+                iMessage.success(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+                this.getList();
+                } else {
+                iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+                }
+            })
+        },
     }
 }
 </script>

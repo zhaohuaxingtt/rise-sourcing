@@ -10,9 +10,9 @@
         width="90%"
         class="addPartsDialog"
     >
-    <inquiryFiles/>
+    <inquiryFiles :rfqNum="rfqNum" />
     <el-divider/>
-    <inquiryDrawing/>
+    <inquiryDrawing :rfqNum="rfqNum" />
         
     </iDialog>
 </template>
@@ -34,6 +34,10 @@ export default {
         dialogVisible:{
             type:Boolean,
             default:false
+        },
+        rfqNum:{
+            type:String,
+            default:'',
         }
     },
     data(){
