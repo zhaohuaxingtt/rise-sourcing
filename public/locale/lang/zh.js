@@ -942,6 +942,8 @@
             'TiJiao': '提交', // 提交
             'CheHui': '撤回', // 撤回
             'QingXuanZeZhiShaoYiTiaoShuJu': '请选择至少一条数据', // 请选择至少一条数据
+            'QingWuXuanZeYiFaSongDeShuJu': '请勿选择已发送的数据', // 请勿选择已发送的数据
+            'QingWuXuanZeWeiFaSongDeShuJu': '请勿选择未发送的数据', // 请勿选择未发送的数据
             'LingJianHao': '零件号', // 零件号
             'FsnrGsnr': 'FSNR/GSNR', // FSNR/GSNR
             'RfqBianHao': 'RFQ编号', // RFQ编号
