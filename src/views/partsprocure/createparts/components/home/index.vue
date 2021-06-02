@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-05-24 17:06:01
- * @LastEditTime: 2021-06-01 10:43:07
+ * @LastEditTime: 2021-06-02 13:55:16
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\createparts\components\home\index.vue
@@ -24,28 +24,30 @@
     >
       <el-form>
         <el-form-item :label="$t('createparts.LingJianHao')">
-          <iInput :placeholder="$t('createparts.QingShuRuLingJianHao')" v-model="form['search.partNum']" />
+          <iInput :placeholder="$t('createparts.QingShuRuLingJianHao')" v-model="form.partNum" />
         </el-form-item>
         <el-form-item :label="$t('createparts.LingJianMingZhong')">
-          <iInput :placeholder="$t('createparts.QingShuRuLingJianMingZhong')" v-model="form['search.partNameZh']" />
+          <iInput :placeholder="$t('createparts.QingShuRuLingJianMingZhong')" v-model="form.partNameZh" />
         </el-form-item>
         <el-form-item :label="$t('createparts.LingJianMingDe')">
-          <iInput :placeholder="$t('createparts.QingShuRuLingJianMingDe')" v-model="form['search.partNameDe']" />
-        </el-form-item>
-        <el-form-item :label="$t('createparts.LingJianLaiYuan')">
-          <iSelect :placeholder="$t('createparts.QingXuanZeLingJianLaiYuan')" v-model="form['search.partStatus']">
-            <el-option
-              value=""
-              :label="$t('all') | capitalizeFilter"
-            ></el-option>
-          </iSelect>
+          <iInput :placeholder="$t('createparts.QingShuRuLingJianMingDe')" v-model="form.partNameDe" />
         </el-form-item>
         <el-form-item :label="$t('createparts.LingJianZhuangTai')">
-          <iSelect :placeholder="$t('createparts.QingXuanZeLingJianZhuangTai')" v-model="form['search.partSource']">
+          <iSelect :placeholder="$t('createparts.QingXuanZeLingJianZhuangTai')" v-model="form.partStatus">
             <el-option
               value=""
               :label="$t('all') | capitalizeFilter"
             ></el-option>
+            <el-option v-for="item in dictMap.PART_STATE" :key="item.code" :value="item.value" :label="item[$i18n.locale]" />
+          </iSelect>
+        </el-form-item>
+        <el-form-item :label="$t('createparts.LingJianLaiYuan')">
+          <iSelect :placeholder="$t('createparts.QingXuanZeLingJianLaiYuan')" v-model="form.source">
+            <el-option
+              value=""
+              :label="$t('all') | capitalizeFilter"
+            ></el-option>
+            <el-option v-for="item in dictMap.SOURCE_OF_PART" :key="item.code" :value="item.value" :label="item[$i18n.locale]" />
           </iSelect>
         </el-form-item>
       </el-form>
@@ -90,10 +92,12 @@
 import { icon, iSearch, iInput, iSelect, iCard, iButton, iPagination, iMessage } from "rise"
 import logButton from "@/views/partsign/editordetail/components/logButton"
 import tableList from "@/views/partsign/editordetail/components/tableList";
-import { tableTitle } from "./components/data"
+import { tableTitle, queryForm } from "./components/data"
 import filters from "@/utils/filters"
 import { pageMixins } from "@/utils/pageMixins"
-import { createParts } from "@/api/partsprocure/editordetail"
+import { getParts, createParts } from "@/api/partsprocure/editordetail"
+import { selectDictByKeys } from "@/api/dictionary"
+import { cloneDeep } from "lodash"
 
 export default {
   components: { 
@@ -110,9 +114,11 @@ export default {
   mixins: [ filters, pageMixins ],
   data() {
     return {
-      form: {
-        search: {}
+      dictMap: {
+        PART_STATE: [],
+        SOURCE_OF_PART: []
       },
+      form: cloneDeep(queryForm),
       loading: false,
       tableTitle,
       tableListData: [],
@@ -121,22 +127,55 @@ export default {
     }
   },
   created() {
-    this.getTabelData()
+    this.getDict()
+    this.getParts()
   },
   methods: {
-    sure() {},
-    reset() {},
-    getTabelData() {
+    getDict() {
+      selectDictByKeys(
+        [
+          { keys: "PART_STATE" },
+          { keys: "SOURCE_OF_PART" }
+        ]
+      )
+      .then(res => {
+        if (res.code == 200) {
+          this.dictMap = {}
+          Object.keys(res.data).forEach(key => {
+            this.$set(this.dictMap, key, res.data[key].map(item => ({
+              ...item,
+              key: item.code,
+              value: item.code,
+              zh: item.name,
+              en: item.nameEn,
+              de: item.nameDe
+            })))
+          })
+        } else {
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
+      })
+      .catch(() => {})
+    },
+    sure() {
+      this.getParts()
+    },
+    reset() {
+      this.form = cloneDeep(queryForm)
+      this.getParts()
+    },
+    getParts() {
       this.loading = true
 
-      const getTabelData = function() {}
-      getTabelData({
-
+      getParts({
+        ...this.form,
+        current: this.page.currPage,
+        size: this.page.pageSize
       })
       .then(res => {
         if (res.code == 200) {
-          console.log(res)
           this.tableListData = Array.isArray(res.data) ? res.data : []
+          this.page.totalCount = res.total || 0
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }
@@ -158,8 +197,8 @@ export default {
         manuallyCreatePartProjectDTOList: this.multipleSelection.map(item => ({
           carTypeProjectNum: item.carTypeProjectNum,
           partNum: item.partNum,
-          partProjectType: item.partProjectType,
-          status: item.status
+          partProjectType: item.partType,
+          status: item.partStatus
         }))
       })
       .then(res => {
