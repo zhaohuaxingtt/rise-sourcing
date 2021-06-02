@@ -14,7 +14,17 @@
           </div>
       </div>
       <!-- 表格区域 -->
-      <tableList :activeItems='"a"' selection indexKey :tableData="tableData" :tableTitle="tableTitle" :tableLoading="tableLoading" @handleSelectionChange="handleSelectionChange" @openPage="openPage"></tableList>
+      <tableList
+        index
+        :tableData="tableData"
+        :tableTitle="tableTitle"
+        :tableLoading="tableLoading"
+        @handleSelectionChange="handleSelectionChange"
+      >
+        <template #fileName="scope">
+            <span class="link" @click="download(scope.row)">{{ scope.row.fileName }}</span>
+        </template>
+      </tableList>
       <!-- 分页 -->
       <iPagination v-update @size-change="handleSizeChange($event, getTableList)" @current-change="handleCurrentChange($event, getTableList)" background :page-sizes="page.pageSizes"
       :page-size="page.pageSize"
@@ -31,9 +41,10 @@ import {
     iButton,
     iPagination,
 } from 'rise'
-import tableList from '@/views/designate/designatedetail/components/tableList'
+import tableList from "@/views/partsign/editordetail/components/tableList"
 import { pageMixins } from "@/utils/pageMixins"
 import { FilesTitle } from '../data'
+import { getFileHistory } from "@/api/costanalysismanage/rfqdetail"
 
 export default {
     name:'inquiryFiles',
@@ -43,26 +54,54 @@ export default {
         iButton,
         iPagination,
     },
+    props:{
+        rfqNum:{
+            type:String,
+            default:'',
+        }
+    },
     data(){
         return{
-            tableData:[
-                {'a':'1a.jpg','b':'1.14','c':'2021-03-04','d':'张一'},
-                {'a':'2a.jpg','b':'2.14','c':'2021-03-04','d':'张二'},
-                {'a':'3c.jpg','b':'3.14','c':'2021-03-04','d':'张三'},
-           ],
+            tableData:[],
             tableTitle:FilesTitle,
             selectItems:[],
             tableLoading:false,
         }
     },
-    methods:{
-        openPage(){
-            const router =  this.$router.resolve({path: '/sourcing/accessorypartdetail', query: {  }})
-            window.open(router.href,'_blank')
-        },
+    created(){
+        this.getList();
+    },
+    methods:{ 
         handleSelectionChange(val) {
             this.selectItems = val;
         },
+        download(){
+        },
+        // 获取列表
+        async getList(){
+            this.tableLoading =  true;
+            const {rfqNum} = this;
+            const { page } = this;
+            const data = {
+                nomiAppId:rfqNum,
+                fileType:'101',   // 101 109: 报告清单,110:询价图纸,111:询价附件
+                pageNo:page.currPage,
+                pageSize:page.pageSize,
+            }
+            getFileHistory(data).then((res)=>{
+                const {code,data} = res; 
+                 this.tableLoading =  false;
+                if(code === '200' && data){
+                    const {records,total} = data;
+                    this.tableLoading =  false;
+                    this.tableData = records;
+                    this.page.totalCount = total;
+                }
+            }).catch((err)=>{
+                 this.tableLoading =  false;
+            })
+        },
+
     }
 
 }

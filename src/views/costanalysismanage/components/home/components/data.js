@@ -1,27 +1,27 @@
 /*
  * @Author: your name
  * @Date: 2021-05-27 13:45:35
- * @LastEditTime: 2021-05-29 10:29:17
+ * @LastEditTime: 2021-06-02 15:04:39
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\costanalysismanage\components\home\components\data.js
  */
 // 技术资料下载弹窗---询价附件表单头
 export const FilesTitle = [
-    {props:'a',name:'文件名称', key: "LK_WENJIANMINGCHENG", tooltip: true},
-    {props:'b',name:'大小(MB)', key: "LK_DAXIAOMB", tooltip: true},
-    {props:'c',name:'上传日期', key: "LK_SHANGCHUANRIQI", tooltip: true},
-    {props:'d',name:'上传人', key: "LK_SHANGCHUANREN", tooltip: true},
+    {props:'fileName',name:'文件名称', key: "LK_WENJIANMINGCHENG", tooltip: true},
+    {props:'fileSize',name:'大小(MB)', key: "LK_DAXIAOMB", tooltip: true},
+    {props:'uploadDate',name:'上传日期', key: "LK_SHANGCHUANRIQI", tooltip: true},
+    {props:'uploadBy',name:'上传人', key: "LK_SHANGCHUANREN", tooltip: true},
   ]
 
 
 // 技术资料下载弹窗---询价图纸表单头
   export const DrawingTitle = [
     {props:'e',name:'零件号', key: "LK_LINGJIANHAO", tooltip: true},
-    {props:'a',name:'文件名称', key: "LK_WENJIANMINGCHENG", tooltip: true},
-    {props:'b',name:'大小(MB)', key: "LK_DAXIAOMB", tooltip: true},
-    {props:'c',name:'上传日期', key: "LK_SHANGCHUANRIQI", tooltip: true},
-    {props:'d',name:'上传人', key: "LK_SHANGCHUANREN", tooltip: true},
+    {props:'fileName',name:'文件名称', key: "LK_WENJIANMINGCHENG", tooltip: true},
+    {props:'fileSize',name:'大小(MB)', key: "LK_DAXIAOMB", tooltip: true},
+    {props:'uploadDate',name:'上传日期', key: "LK_SHANGCHUANRIQI", tooltip: true},
+    {props:'uploadBy',name:'上传人', key: "LK_SHANGCHUANREN", tooltip: true},
   ]
 
   // CBD状态弹窗表头
