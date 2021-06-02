@@ -1,9 +1,14 @@
 <template>
-  <iDialog :title="$t('LK_APPLYBANUMBER')" :visible.sync="visible" @close='clearDiolog' width="95%" top="5vh" z-index="1000" class="iDialog">
+  <iDialog 
+    :title="$t('LK_APPLYBANUMBER')" 
+    :visible.sync="visible" 
+    @close='clearDiolog' width="95%" top="5vh" z-index="1000" class="iDialog"
+    :destroy-on-close="true"
+  >
     <div slot="title">
       <div class="iDialog-head">
         <div>{{$t('LK_APPLYBANUMBER')}}</div>
-        <iButton @click="confirm">{{$t('LK_QUEREN')}}</iButton>
+        <iButton @click="confirm" :loading="buttonLoading">{{$t('LK_QUEREN')}}</iButton>
       </div>
     </div>
 
@@ -35,14 +40,22 @@ export default {
     iButton,
   },
 
+  data(){
+    return {
+      buttonLoading: false,
+    }
+  },
+
   methods: {
 
     clearDiolog(){
+      this.buttonLoading = false;
       this.$emit('changeLayer', false);
     },
 
     //  确认
     confirm(){
+      this.buttonLoading = true;
       this.$emit('confirm');
     }
   }
