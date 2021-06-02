@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-26 16:20:16
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-05-31 15:30:07
+ * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-06-02 15:41:30
  * @Description: 附件综合管理
  * @FilePath: \front-web\src\views\designateFiles\fileManage\index.vue
 -->
@@ -18,7 +18,7 @@
           <!----------------------------------------------------------------->
           <!---------------------------搜索区域------------------------------->
           <!----------------------------------------------------------------->
-          <iSearch @sure="sure" @reset="reset">
+          <iSearch @sure="getTableList" @reset="reset">
             <el-form>
               <el-form-item v-for="(item, index) in searchList" :key="index" :label="item.label">
                 <iSelect v-if="item.type === 'select'" v-model="searchParams[item.value]"></iSelect> 
@@ -59,11 +59,11 @@
           <!------------------------------------------------------------------------>
           <!--                  分配LINIE/CSS弹窗                                   --->
           <!------------------------------------------------------------------------>
-          <linieDialog :dialogVisible="linieDialogVisible" @changeVisible="changeLinieDialogVisible" />
+          <linieDialog :dialogVisible="linieDialogVisible" @changeVisible="changeLinieDialogVisible" @updateLinie="updateLinie" />
           <!------------------------------------------------------------------------>
           <!--                    退回弹窗                                        --->
           <!------------------------------------------------------------------------>
-          <backDialog :dialogVisible="backDialogVisible" @changeVisible="changebackDialogVisible" />
+          <backDialog :dialogVisible="backDialogVisible" @changeVisible="changebackDialogVisible" @handleBack="handleBack" />
         </div>
       </el-tab-pane>
       <!-- <el-tab-pane label="进度监控" name="progress"></el-tab-pane> -->
@@ -80,6 +80,7 @@ import linieDialog from './components/setLinie'
 import backDialog from './components/back'
 import { navList } from "@/views/partsign/home/components/data"
 import { cloneDeep } from 'lodash'
+import { getAffixList, updateAffixList } from '@/api/designateFiles/index'
 export default {
   mixins: [pageMixins],
   components: { iPage, iSearch, iSelect, iInput, iCard, iButton, iPagination, tableList, linieDialog, backDialog, iNavMvp },
@@ -97,7 +98,91 @@ export default {
       tab: "source",
     }
   },
+  created() {
+    this.getTableList()
+  },
   methods: {
+    /**
+     * @Description: 更新配件信息
+     * @Author: Luoshuang
+     * @param {*} respDept 采购员部门
+     * @param {*} respLINIE 采购员
+     * @param {*} reason 退回原因
+     * @param {*} updateType 更新类型（0：退回 1：分配Linie）
+     * @return {*}
+     */
+    updateAffix({respDept, respLINIE, reason, updateType}){
+      const params = {
+        affixIdList: this.selectParts.map(item => item.id),
+        respDept,
+        respLINIE,
+        reason,
+        updateType
+      }
+      updateAffixList(params).then(res => {
+        if (res.result) {
+          iMessage.success(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
+          this.getTableList()
+        } else {
+          iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
+        }
+      })
+    },
+    /**
+     * @Description: 分配LINIE
+     * @Author: Luoshuang
+     * @param {*} respDept 采购员部门
+     * @param {*} respLINIE 采购员
+     * @return {*}
+     */    
+    updateLinie(respDept, respLINIE) {
+      this.updateAffix({respDept, respLINIE, updateType: '1'})
+    },
+    /**
+     * @Description: 退回
+     * @Author: Luoshuang
+     * @param {*} reason 退回原因
+     * @return {*}
+     */    
+    handleBack(reason) {
+      this.updateAffix({reason, updateType: '1'})
+    },
+    /**
+     * @Description: 重置搜索条件
+     * @Author: Luoshuang
+     * @param {*}
+     * @return {*}
+     */    
+    reset() {
+      this.searchParams = {}
+    },
+    /**
+     * @Description: 获取表格数据
+     * @Author: Luoshuang
+     * @param {*}
+     * @return {*}
+     */    
+    getTableList() {
+      this.tableLoading = true
+      const params = {
+        ...this.searchParams,
+        current: this.page.currPage,
+        size: this.page.pageSize
+      }
+      getAffixList(params).then(res => {
+        if (res.result) {
+          this.tableData = res.data.records
+          this.page.currPage = res.data.current
+          this.page.pageSize = res.data.size
+          this.page.totalCount = res.data.total
+        } else {
+          this.tableData = []
+          iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
+        }
+      }).finally(() => {
+        this.tableLoading = false
+      })
+    },
     /**
      * @Description: 点击RFQ编号跳转事件
      * @Author: Luoshuang

@@ -2,8 +2,10 @@
  * @Author: Luoshuang
  * @Date: 2021-05-26 13:54:01
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-05-26 20:15:27
+ * @LastEditTime: 2021-06-02 16:38:51
  * @Description: 创建RFQ界面
+       配件：选择的配件需要是分配了询价采购员的且是同一个询价采购员, 创建时能选择LINIE
+       附件：选择的附件需要时分配了LINIE且为同一个LINIE, 创建时不能再选择LINIE
  * @FilePath: \front-web\src\views\accessoryPart\createRfq\index.vue
 -->
 
@@ -42,15 +44,6 @@
           </div>
       </div>
       <tableList :activeItems='"a1"' selection indexKey :tableData="tableData" :tableTitle="tableTitle" :tableLoading="tableLoading" @handleSelectionChange="handleSelectionChange" @openPage="openPage" @openPlan="openPlanDialog"></tableList>
-      <!------------------------------------------------------------------------>
-      <!--                  表格分页                                          --->
-      <!------------------------------------------------------------------------>
-      <iPagination v-update @size-change="handleSizeChange($event, getTableList)" @current-change="handleCurrentChange($event, getTableList)" background :page-sizes="page.pageSizes"
-        :page-size="page.pageSize"
-        :layout="page.layout"
-        :current-page="page.currPage"
-        :total="page.totalCount"
-      />
     </iCard>
     <!------------------------------------------------------------------------>
     <!--                  添加配件弹窗                                          --->

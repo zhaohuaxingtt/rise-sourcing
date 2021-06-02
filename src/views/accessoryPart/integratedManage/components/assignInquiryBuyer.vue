@@ -2,9 +2,9 @@
  * @Author: Luoshuang
  * @Date: 2021-05-25 16:11:07
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-05-25 16:12:02
+ * @LastEditTime: 2021-06-02 14:11:06
  * @Description: 分配询价采购员弹窗
- * @FilePath: \front-web\src\views\accessoryPart\components\signForPartsDemand\components\assignInquiryBuyer.vue
+ * @FilePath: \front-web\src\views\accessoryPart\integratedManage\components\assignInquiryBuyer.vue
 -->
 
 <template>
