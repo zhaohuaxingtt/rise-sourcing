@@ -210,3 +210,30 @@ export function getSupplierProducePlace(params) {
         method: 'GET'
     })
 }
+
+// 获取对应供应商的零件清单
+export function getPartsBySupplier(params) {
+    return requst({
+        url: `/list`,
+        method: 'POST',
+        data: params
+    })
+}
+
+// 发送KM
+export function sendKm(params) {
+    return requst({
+        url: `/sendKm`,
+        method: 'POST',
+        data: params
+    })
+}
+
+// 撤回发送KM
+export function cancelKm(params) {
+    return requst({
+        url: `/cancelKm`,
+        method: 'POST',
+        data: params
+    })
+}
