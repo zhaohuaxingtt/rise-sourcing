@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-05-27 12:32:54
- * @LastEditTime: 2021-06-03 13:52:50
+ * @LastEditTime: 2021-06-03 16:12:42
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\costanalysismanage\components\home\index.vue
@@ -190,7 +190,7 @@ import cbdDialog from './components/cbdStatus'
 import { queryForm, tableTitle } from "./components/data"
 import filters from "@/utils/filters"
 import { pageMixins } from "@/utils/pageMixins"
-import { getKmRfqList } from "@/api/costanalysismanage/home"
+import { getSelectOptions, getKmRfqList } from "@/api/costanalysismanage/home"
 import { cloneDeep } from "lodash"
 
 export default {
@@ -229,9 +229,21 @@ export default {
     }
   },
   created() {
+    // this.getSelectOptions("03")
     this.getKmRfqList()
   },
   methods: {
+    // getSelectOptions(type) {
+    //   getSelectOptions(type)
+    //   .then(res => {
+    //     if (res.code == 200) {
+    //       console.log(res)
+    //     } else {
+    //       iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+    //     }
+    //   })
+    //   .catch(() => {})
+    // },
     getKmRfqList() {
       this.loading = true
 
@@ -271,7 +283,7 @@ export default {
     analysisReport(row) {
       this.$router.push({
         path: "/costanalysismanage/costanalysis",
-        query: {}
+        query: { rfqId: row.id }
       })
     },
     // 变更顺序
