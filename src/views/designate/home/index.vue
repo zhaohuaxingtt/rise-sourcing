@@ -20,7 +20,7 @@
         <div class="floatright">
           <!-- 新建定点申请 -->
           <iButton
-            @click="$router.push({path: '/designate/rfqdetail'})"
+            @click="createNomination"
             v-permission="PARTSPROCURE_TRANSFER"
           >
             {{ $t("nominationLanguage.XinJianLingJIanDingDianShengQIng") }}
@@ -72,7 +72,7 @@
       <template #nominateName="scope">
         <a
           href="javascript:;"
-          @click="$router.push({path: '/designate/rfqdetail', query: {desinateId: scope.row.id}})">
+          @click="viewNominationDetail(scope.row)">
           {{scope.row.nominateName}}
         </a>
       </template>
@@ -159,6 +159,24 @@ export default {
     this.getFetchData()
   },
   methods: {
+    // 新建零件定点申请
+    createNomination() {
+      // 缓存/更新定点申请类型
+      this.$store.dispatch('setNominationTypeDisable', false)
+      this.$nextTick(() => {
+        this.$router.push({path: '/designate/rfqdetail'})
+      })
+    },
+    // 查看详情
+    viewNominationDetail(row) {
+      // 缓存nominateProcessType
+      this.$store.dispatch('setNominationType', row.nominateProcessType)
+      // 禁用nominateProcessType编辑
+      this.$store.dispatch('setNominationTypeDisable', true)
+      this.$nextTick(() => {
+        this.$router.push({path: '/designate/rfqdetail', query: {desinateId: row.id}})
+      })
+    },
     // 获取定点管理列表
     getFetchData(params = {}) {
       this.tableLoading = true

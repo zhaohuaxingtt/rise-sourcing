@@ -90,6 +90,7 @@ export default {
 
         this.getStepStatus(id);
         this.getDesignateType(id);
+        this.$store.dispatch('setNominationTypeDisable', Boolean(query.desinateId))
 
     },
      computed:{
