@@ -17,6 +17,8 @@ const state = {
   isPreview: false,
   // 定点管理，定点类型
   nominationType: 'MEETING',
+  // 是否禁用定点类型
+  disableNominationType: true,
   // 定点管理 步骤状态
   nominationStep:{},
   // 定点管理 当前步骤状态
@@ -24,6 +26,9 @@ const state = {
 };
 
 const mutations = {
+  SET_DISABLE_NOMINATION(state, STATE) {
+    state.disableNominationType = STATE
+  },
   SET_PREVIEW_STATE(state, STATE) {
       state.isPreview = STATE
   },
@@ -39,6 +44,9 @@ const mutations = {
 };
 
 const actions = {
+  setNominationTypeDisable({commit}, state) {
+    commit('SET_DISABLE_NOMINATION', state)
+  },
   setPreviewState({commit}, isPreview) {
     commit('SET_PREVIEW_STATE', isPreview === '1')
   },
@@ -98,6 +106,7 @@ const getters = {
   nominationType: (state) => state.nominationType,
   nominationStep: (state) => state.nominationStep,
   phaseType: (state) => state.phaseType,
+  disableNominationType: (state) => state.disableNominationType,
   
 };
 

@@ -10,7 +10,7 @@
             <div class="flex flex-between-center-center">
                 <span class="title-text margin-left10">{{$t('nominationLanguage.DingDianGuanLi')}}: 51017456</span>
                 <span class="select-text margin-left10">{{$t('nominationLanguage.DINGDIANSHENQINGLEIXING')}}：</span>
-                <iSelect v-model="designateType" @change="onDesignateTypeChange" :disabled="designateTypeDisabled">
+                <iSelect v-model="designateType" @change="onDesignateTypeChange" :disabled="disableNominationType">
                     <el-option
                     :value="item.id"
                     :label="$t(item.key) || item.name"
@@ -95,14 +95,16 @@ export default {
      computed:{
         phaseType(){
             return this.$store.getters.phaseType;
+        },
+        disableNominationType(){
+            return this.$store.getters.disableNominationType;
         }
     },
     data(){
         return{
             designateType:'MEETING',
             applyType:applyType,
-            applyStep:applyStep,
-            designateTypeDisabled:true,
+            applyStep:applyStep
         }
     },
     methods:{
