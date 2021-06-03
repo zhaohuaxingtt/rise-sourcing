@@ -86,6 +86,8 @@ export default {
     }
   },
   created() {
+    this.$store.commit('SET_onleySelf', this.onleySelf)
+    this.$store.commit('SET_checkHistory', this.checkHistory)
     if(this.$route.path == '/tooling/dataBase'){
       this.dataBase = true
     }
