@@ -82,8 +82,9 @@ export default {
                      }
                   }else if(item.key === 'projects'){
                      item.value = data.projects ? data.projects.join() :'-';
-                  }
-                  else{
+                  }else if(item.key === 'singleSourcing'){
+                     data['singleSourcing'] ? item.value = 'Y' : item.hidden = true;
+                  }else{
                      item.value = data[item.key];
                      
                      console.log(data[item.key],item.key);
