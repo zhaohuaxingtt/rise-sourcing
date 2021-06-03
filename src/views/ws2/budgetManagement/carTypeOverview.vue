@@ -144,7 +144,7 @@
           </Popover>
         </div>
       </div>
-      <div class="loader">
+      <div class="loader" v-if="loading && contentData.length != 0">
         <div class="loader-inner ball-pulse">
           <div></div>
           <div></div>
