@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-26 11:16:51
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-02 17:05:01
+ * @LastEditTime: 2021-06-03 11:22:30
  * @Description: 配件综合管理页面
  * @FilePath: \front-web\src\views\accessoryPart\integratedManage\index.vue
 -->
@@ -103,7 +103,7 @@ import assignInquiryBuyerDialog from './components/assignInquiryBuyer'
 import backEpsDialog from './components/backEps'
 import backDialog from './components/back'
 import { navList } from "@/views/partsign/home/components/data"
-import { cloneDeep } from 'lodash'
+import { cloneDeep, uniq } from 'lodash'
 import { getAccessoryManageList, sendAccessoryInfo, downLoadAccessoryList, downLoadAccessoryAll, back, backEPS } from '@/api/accessoryPart/index'
 export default {
   mixins: [pageMixins],
@@ -177,6 +177,7 @@ export default {
           this.page.totalCount = res.data.total
         } else {
           this.tableData = []
+          iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
         }
       }).finally(() => {
         this.tableLoading = false

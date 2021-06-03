@@ -1,17 +1,17 @@
 <!--
  * @Author: your name
  * @Date: 2021-05-27 17:29:13
- * @LastEditTime: 2021-05-27 19:37:42
+ * @LastEditTime: 2021-06-03 14:04:27
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\costanalysismanage\components\rfqdetail\components\partList\index.vue
 -->
 <template>
-  <iCard :title="$t('costanalysismanage.Lingjianqingdan')">
+  <iCard :title="$t('costanalysismanage.LingJianQingDan')">
     <template v-slot:header-control>
-      <iButton>{{ $t("costanalysismanage.Baocun") }}</iButton>
-      <iButton>{{ $t("costanalysismanage.Xiazaijishuziliao") }}</iButton>
-      <iButton>{{ $t("costanalysismanage.Xiazaicbd") }}</iButton>
+      <iButton>{{ $t("costanalysismanage.BaoCun") }}</iButton>
+      <iButton>{{ $t("costanalysismanage.XiaZaiJiShuZiLiao") }}</iButton>
+      <iButton>{{ $t("costanalysismanage.XiaZaiCbd") }}</iButton>
     </template>
     <div class="body">
       <tableList

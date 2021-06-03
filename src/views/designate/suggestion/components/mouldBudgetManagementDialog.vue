@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-05-24 13:45:08
- * @LastEditTime: 2021-05-31 14:40:53
+ * @LastEditTime: 2021-06-03 11:12:34
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\designate\suggestion\components\mouldBudgetManagementDialog.vue
@@ -45,8 +45,8 @@
     <template #footer class="footer">
       <iPagination v-update
         class="pagination"
-        @size-change="handleSizeChange($event, getList)"
-        @current-change="handleCurrentChange($event, getList)"
+        @size-change="handleSizeChange($event, getMouldBudget)"
+        @current-change="handleCurrentChange($event, getMouldBudget)"
         background
         :current-page="page.currPage"
         :page-sizes="page.pageSizes"

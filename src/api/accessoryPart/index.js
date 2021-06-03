@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-01 14:50:12
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-02 17:04:33
+ * @LastEditTime: 2021-06-03 14:49:28
  * @Description: 配件相关接口
  * @FilePath: \front-web\src\api\accessoryPart\index.js
  */
@@ -11,7 +11,6 @@ import axios from "@/utils/axios"
 import axiosDownload from '@/utils/axios.download'
 
 const requst = axios(process.env.VUE_APP_PROCUREMENTREQUIREMENT_ZZB)
-const requstKX = axios(process.env.VUE_APP_USERCENTER_KX)
 const requestDownload = axiosDownload(process.env.VUE_APP_PROCUREMENTREQUIREMENT_ZZB)
 
 // 获取配件列表数据
