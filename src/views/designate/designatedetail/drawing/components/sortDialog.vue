@@ -105,7 +105,7 @@ export default {
       !hideLoading && (this.tableLoading = true)
       console.log('tableLoading')
       getdDecisiondataDaringList({
-        nomiAppId: '1',
+        nomiAppId: this.this.nomiAppId,
         sortColumn: 'sort',
         isAsc: true,
         fileType: '101',

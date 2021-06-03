@@ -60,6 +60,10 @@ export default {
       type: Boolean,
       default: false
     },
+    nomiAppId: {
+      type: String,
+      default: ''
+    },
     params: {
       type: Object,
       default: () => ({})
@@ -94,9 +98,10 @@ export default {
       return window.moment(date).format('YYYY-MM-DD HH:mm:ss')
     },
     getFetchData() {
+      if (!this.nomiAppId) return iMessage.error(this.$t('nominationLanguage.DingDianIDNotNull'))
       this.tableLoading = true
       getdDecisiondataDaringList({
-        nomiAppId: '1',
+        nomiAppId: this.nomiAppId,
         sortColumn: 'sort',
         isAsc: true,
         fileType: '101',
