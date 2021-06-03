@@ -95,9 +95,7 @@ import {
 
 export default {
   components: {
-    iButton,
     iSearch,
-    iInput,
     iSelect,
   },
   props: {
