@@ -195,7 +195,7 @@
           class="table-footerStyle"
         >
           <template #rsNum="scope">
-            <a class="detailed" :href="VUE_APP_BACOMMODITYAPPLY + '/exportRsForAudit/' + scope.row.rsNum" download="RS单">{{scope.row.rsNum}}</a>
+            <a @click="openViewPdf(scope)" class="detailed">{{scope.row.rsNum}}</a>
           </template>
         </iTableList>
       </template>
@@ -338,11 +338,11 @@ export default {
   methods: {
 
     //  rs单号
-    // handelrsNum(scope){
-    //   let url = process.env.VUE_APP_BACOMMODITYAPPLY + '/exportRsForAudit/' + scope.row.rsNum;
-    //   console.log('url', url);
-    //   window.open(url)
-    // },
+    openViewPdf(scope){
+      let url = process.env.VUE_APP_BACOMMODITYAPPLY + '/exportRsForAudit/' + scope.row.rsNum;
+      console.log('url', url);
+      window.open(url)
+    },
 
     clearTipsDiolog(){
       this.tipsVisible = false;
