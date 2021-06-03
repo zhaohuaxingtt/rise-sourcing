@@ -58,7 +58,8 @@ export default {
   },
 
   created(){
-    this.tmCartypeProId = this.$route.params.id;
+    console.log('this.$route.params.id', this.$route.query.id);
+    this.tmCartypeProId = this.$route.query.id;
   },
 
   methods: {
@@ -71,6 +72,7 @@ export default {
         current: this.page.currPage,
         size: this.page.pageSize,
         baAcountType: this.$store.state.baApply.baAcountType,
+        tmCartypeProId: this.tmCartypeProId,
       }
       findBaPartsList(param).then(res => {
         this.tableListData = res.data;

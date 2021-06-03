@@ -127,7 +127,7 @@ export const detailsTableHead = [
     tooltip: false
   },
   {
-    props: 'moldAmount	',
+    props: 'moldAmount',
     name: '模具定点金额',
     key: 'LK_MODULFIXEDPOINTMONEY',
     tooltip: false
