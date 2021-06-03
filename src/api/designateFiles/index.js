@@ -1,8 +1,8 @@
 /*
  * @Author: Luoshuang
  * @Date: 2021-06-02 14:54:29
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-02 15:12:43
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-06-03 15:26:04
  * @Description: 附件相关api
  * @FilePath: \front-web\src\api\designateFiles\index.js
  */
