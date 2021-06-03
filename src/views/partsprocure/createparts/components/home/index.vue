@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-05-24 17:06:01
- * @LastEditTime: 2021-06-02 13:55:16
+ * @LastEditTime: 2021-06-03 11:14:13
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\createparts\components\home\index.vue
@@ -75,8 +75,8 @@
         <iPagination 
           v-update
           class="margin-top30"
-          @size-change="handleSizeChange($event, getList)"
-          @current-change="handleCurrentChange($event, getList)"
+          @size-change="handleSizeChange($event, getParts)"
+          @current-change="handleCurrentChange($event, getParts)"
           background
           :current-page="page.currPage"
           :page-sizes="page.pageSizes"
