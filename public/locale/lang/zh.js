@@ -852,6 +852,7 @@
         'LK_WENJIANQINGXUANZHUANZHIZHENGCHANG':'上传附件:文件请旋转至正常方向后上传', // 上传附件:文件请旋转至正常方向后上传
         'LK_FASONGKM': '发送KM', // 发送KM
         'LK_DONGJIE':'冻结', // 冻结
+        'LK_NINQUERENZHIXINGDONGJIECAOZUOMA':'您确定要执行冻结操作吗？', // 您确定要执行冻结操作吗？
 
         // 定点管理
         'nominationLanguage': {
@@ -892,6 +893,7 @@
             'DINGDIANJIANYI':'定点建议', // 定点建议
             'SHENPIRENANDSHENPIJILU':'审批⼈ & 审批记录', // 审批⼈ & 审批记录
             'JUECEZILIAO':'决策资料', // 决策资料
+            'DINGDIAN':'定点', // 定点
         },
         // 单一供应商
         "nominationSupplier": {
