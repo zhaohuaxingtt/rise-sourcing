@@ -130,12 +130,10 @@ export default {
                 const {code,data} = res; 
                 if(code === '200' && data){
                     const {records,total} = data;
-                    this.loading =  false;
                     this.tableListData = records;
                     this.page.totalCount = total;
-                }else{
-                     this.loading =  false;
                 }
+                this.loading =  false;
             }).catch((err)=>{
                  this.loading =  false;
             })

@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-01 14:50:12
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-03 14:49:28
+ * @LastEditTime: 2021-06-03 16:11:14
  * @Description: 配件相关接口
  * @FilePath: \front-web\src\api\accessoryPart\index.js
  */
@@ -97,7 +97,7 @@ export function downLoadAccessoryList(params) {
 export function backEPS(params) {
   return requst({
     url: `/tp-records/accessoryInfo/backAccessoryToEps`,
-    method: 'POST',
+    method: 'PATCH',
     data: params
   })
 }
@@ -106,7 +106,7 @@ export function backEPS(params) {
 export function back(params) {
   return requst({
     url: `/tp-records/accessoryInfo/backAccessoryInfo`,
-    method: 'POST',
+    method: 'PATCH',
     data: params
   })
 }
