@@ -14,6 +14,7 @@
 
         <!-- 车型项目 -->
         <el-form-item :label="$t('LK_CHEXINXIANGMU')" v-if="isModelItem">
+        <!-- <el-form-item :label="$t('LK_CHEXINXIANGMU')"> -->
           <iSelect
               :placeholder="$t('partsprocure.CHOOSE')"
               v-model="form['tmCartypeProId']"
@@ -95,9 +96,7 @@ import {
 
 export default {
   components: {
-    iButton,
     iSearch,
-    iInput,
     iSelect,
   },
   props: {
@@ -118,8 +117,8 @@ export default {
   },
 
   created(){
+    this.form['tmCartypeProId'] = this.$route.query.id || '';
     this.getComponentsData();
-    this.isModelItem && this.getCartypePulldown();  //  获取车型项目
     this.$emit('sure', this.form);
   },
 
@@ -143,28 +142,14 @@ export default {
       this.$emit('sure', this.form);
     },
 
-    //  获取车型项目
-    async getCartypePulldown(){
-      const res = await getCartypePulldown();
-      const result0 = this.$i18n.locale === 'zh' ? res.desZh : res.desEn;
-
-        if(res.data){
-          this.fromGroup = res.data;
-          this.form['tmCartypeProId'] = this.$route.params.id;
-        }else{
-          iMessage.error(result0);
-        }
-
-        this.loadingiSearch = false;
-    },
-
     getComponentsData(){
       this.loadingiSearch = true;
-      //  采购工厂列表、模具预算状态
-      Promise.all([getPurchaseFactoryPullDown(), getBudgetStatusPullDown(), getBaAccountType()]).then(res => {
+      //  采购工厂列表、模具预算状态、AccountType、车型项目
+      Promise.all([getPurchaseFactoryPullDown(), getBudgetStatusPullDown(), getBaAccountType(), getCartypePulldown()]).then(res => {
         const result0 = this.$i18n.locale === 'zh' ? res[0].desZh : res[0].desEn;
         const result1 = this.$i18n.locale === 'zh' ? res[1].desZh : res[1].desEn;
         const result2 = this.$i18n.locale === 'zh' ? res[2].desZh : res[2].desEn;
+        const result3 = this.$i18n.locale === 'zh' ? res[3].desZh : res[3].desEn;
         if(res[0].data){
           this.factoryList = res[0].data;
         }else{
@@ -182,6 +167,12 @@ export default {
           this.$store.commit('SET_baAcountType', res[2].data.baAcountType || '');
         }else{
           iMessage.error(result2);
+        }
+
+        if(res[3].data){
+          this.fromGroup = res[3].data;
+        }else{
+          iMessage.error(result3);
         }
         this.loadingiSearch = false;
       }).catch(err => {

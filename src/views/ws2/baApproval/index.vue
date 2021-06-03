@@ -82,9 +82,9 @@
           >
             <template #sixBa="scope">
               A-<div class="iDialog-inputItem">
-                      <iInput :placeholder="$t('LK_QINGSHURU')" v-model="sixBa" maxlength="5" />
+                      <iInput :placeholder="$t('LK_QINGSHURU')" v-model="scope.row.sixBa" maxlength="5" />
                     </div>-<div class="iDialog-inputItem">
-                              <iInput :placeholder="`INT (${$t('LK_MODIFIABLE')})`" maxlength="3" v-model="int" />
+                              <iInput :placeholder="`INT (${$t('LK_MODIFIABLE')})`" maxlength="3" v-model="scope.row.int" />
                             </div>
             </template>
             <template #detailed="scope">
@@ -194,7 +194,9 @@
           :selection="false"
           class="table-footerStyle"
         >
-          
+          <template #rsNum="scope">
+            <a @click="openViewPdf(scope)" class="detailed">{{scope.row.rsNum}}</a>
+          </template>
         </iTableList>
       </template>
     </ApplyPopup>
@@ -212,7 +214,7 @@
         </iTableList>
       </template>
       <template slot="btns">
-        <iButton @click="handleConfirm(tableIndex)">{{ $t('LK_QUEREN') }}</iButton>
+        <iButton @click="handleConfirm(tableIndex)" :loading="confirmButtonLoding">{{ $t('LK_QUEREN') }}</iButton>
       </template>
     </ApplyPopup>
 
@@ -235,7 +237,6 @@
         </div>
       </template>
     </Tips>
-    
   </div>
 </template>
 
@@ -274,6 +275,7 @@ export default {
   },
   data(){
     return {
+      VUE_APP_BACOMMODITYAPPLY: process.env.VUE_APP_BACOMMODITYAPPLY,
       titleMap: {
         1: this.$t('LK_CONFIRMANUMBER'),
         3: this.$t('LK_CONFIRMMONEY')
@@ -293,6 +295,7 @@ export default {
       visible: false,
       confirmVisible: false,
       tipsVisible: false,
+      confirmButtonLoding: false,
       allSelectList: [],
       waitSelectList: [],
       waitAddSelectList: [],
@@ -334,6 +337,13 @@ export default {
 
   methods: {
 
+    //  rs单号
+    openViewPdf(scope){
+      let url = process.env.VUE_APP_BACOMMODITYAPPLY + '/exportRsForAudit/' + scope.row.rsNum;
+      console.log('url', url);
+      window.open(url)
+    },
+
     clearTipsDiolog(){
       this.tipsVisible = false;
     },
@@ -341,16 +351,29 @@ export default {
     //  确认金额、确认A号
     handleConfirm(type){
       const { currentScope } = this;
+      const sixBa = currentScope.sixBa || '';
+      const int = currentScope.int || '';
+
       const fun = type === 1 ? addSixBa : updateByCarId;
-      const param = {
+      const data = {
         approveAmount: currentScope.approveAmount,
         id: currentScope.id,
         localFactoryId: currentScope.localFactoryid,
-        sixBa: currentScope.sixBa,
         tmCartypeProId: currentScope.tmCartypeProId
       }
+      const paramMap = {
+        1: {
+          ...data,
+          sixBa: `A-${sixBa}-${int.length === 0 ? 'INT' : int}`,
+        },
+        3: {
+          ...data
+        }
+      }
 
-      fun(param).then(res => {
+      this.confirmButtonLoding = true;
+
+      fun(paramMap[type]).then(res => {
         console.log('确认：', res);
         const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn;
         if(res.code === '1'){
@@ -360,11 +383,16 @@ export default {
           if(res.data){
             iMessage.success(result);
             this.confirmVisible = false;
+            this.getPageData();
+            this.getBaCount();
           }else{
             iMessage.error(result);
           }
           
         }
+        this.confirmButtonLoding = false;
+      }).catch(err => {
+        this.confirmButtonLoding = false;
       })
     },
 
@@ -391,13 +419,31 @@ export default {
 
     //  确认A号
     confirmA(scope){
+      const { currentScope, tableIndex } = this;
+      const sixBa = scope.row.sixBa || '';
+      const int = scope.row.int || '';
+      
+      if(tableIndex === 1){ //  对输入的BA号判断
+        
+        if(sixBa === '' || sixBa.length < 5){
+          return iMessage.warn(this.$t('LK_INPUTNUMBERORMORE'));
+        }
+
+        if(int.length < 3 && int !== ''){
+          return iMessage.warn(this.$t('LK_INPUTNUMBERORMORE'));
+        }
+      }
+
       confirmDetail({
         id: scope.row.id,
         tmCartypeProId: scope.row.tmCartypeProId
       }).then(res => {
         const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn;
         if(res.data){
-          this.confirmTableData = res.data;
+          this.confirmTableData = res.data.map(item => ({
+            ...item,
+            baNumber: item.carTypeName === 'Total' ? '' : `A-${sixBa}-${int.length === 0 ? 'INT' : int}`
+          }));
           this.confirmVisible = true;
           this.currentScope = scope.row;
         }else{
@@ -546,11 +592,14 @@ export default {
         return iMessage.warn('请选择需要退回的数据！');
       }
 
-      backApprove(list.map(item => item.id)).then(res => {
+      backApprove({
+        ids: list.map(item => item.id)
+      }).then(res => {
         const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn;
         if(res.data){
           iMessage.success(result);
           this.getPageData();
+          this.getBaCount();
         }else{
           iMessage.error(result);
         }
@@ -598,7 +647,8 @@ export default {
 
 <style lang="scss" scoped>
 .table-footerStyle{
-  ::v-deep .el-table__footer-wrapper .is-center{
+
+  ::v-deep .el-table__row:nth-last-child(1){
     color: #000 !important;
     font-weight: bold !important;
   }

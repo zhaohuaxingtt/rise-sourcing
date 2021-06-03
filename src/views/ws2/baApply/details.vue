@@ -4,9 +4,10 @@
       <div class="page-headTitle">
         车型项目详情
       </div>
-      <div>组件</div>
+      <iNavWS2
+      ></iNavWS2>
     </div>
-    <DetailsSearch @reset="handleReset" @sure="handleSure" :isModelItem="true" />
+    <DetailsSearch @reset="handleReset" @sure="handleSure" />
 
     <iCard>
       <DetailsTable :tableListData="tableListData" :tableLoading="tableLoading" />
@@ -31,6 +32,8 @@ import DetailsSearch from "./components/detailsSearch";
 import DetailsTable from "./components/detailsTable";
 import { findBaPartsList } from "@/api/ws2/baApply";
 import { pageMixins } from "@/utils/pageMixins";
+import { iNavWS2 } from "@/components";
+import store from '@/store';
 
 export default {
   mixins: [pageMixins],
@@ -39,7 +42,8 @@ export default {
     DetailsSearch,
     DetailsTable,
     iCard,
-    iPagination
+    iPagination,
+    iNavWS2
   },
 
   data(){
@@ -50,12 +54,11 @@ export default {
         currPage: 1,
         pageSize: 10,
       },
-      tmCartypeProId: '',
     }
   },
 
   created(){
-    this.tmCartypeProId = this.$route.params.id;
+    console.log('store.state.permission.whiteBtnList', store.state.permission.whiteBtnList)
   },
 
   methods: {
@@ -65,6 +68,7 @@ export default {
       this.tableLoading = true;
       const param = {
         ...form,
+        moldStatus: form['moldStatus'] === '' ? [] : [form['moldStatus']],
         current: this.page.currPage,
         size: this.page.pageSize,
         baAcountType: this.$store.state.baApply.baAcountType,

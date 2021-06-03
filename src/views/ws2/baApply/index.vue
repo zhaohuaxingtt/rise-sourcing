@@ -1,5 +1,5 @@
 <template>
-  <div class="generateInvestmentList" v-permission="TOOLING_BUDGET_BUILD">
+  <div class="generateInvestmentList">
     <iSearch
         class="margin-bottom20 giSearch"
         style="margin-top: 20px"
@@ -19,10 +19,6 @@
               @change="changeCarTypeProject"
               ref="carTypeProjectRef"
           >
-            <!-- <div class="addCarTypeProject">
-              <iInput v-model="addCarTypeProject" placeholder="请输入自定义名称"></iInput>
-              <iButton @click="handleAddCarTypeProject" v-loading="iDialogAddCarTypeProject">{{ $t('LK_QUEREN') }}</iButton>
-            </div> -->
             <el-option
                 :value="item.id"
                 :label="item.cartypeNname"
@@ -34,7 +30,7 @@
         
       </el-form>
       <div class="searchSure">
-        <!-- <iButton @click="saveAddCarType" :disabled="carTypeProjectObj.isBudget == 3" v-loading="addCarTypeLoading">{{ $t('LK_QUEREN') }}</iButton> -->
+        
       </div>
     </iSearch>
 
@@ -89,10 +85,8 @@ import {
 export default {
   mixins: [tableHeight, pageMixins],
   components: {
-    iButton,
     iCard,
     iSearch,
-    iInput,
     iSelect,
     iTableList,
     iPagination,
@@ -147,37 +141,13 @@ export default {
 
     //  跳转详情
     jumpDetails(scope){
-      this.$router.push({name: 'toolingModelDetails', params: {id: scope.row.tmCartypeProId}})
+      // this.$router.push({name: 'toolingModelDetails', params: {id: scope.row.tmCartypeProId}})
+      this.$router.push({path: '/tooling/modelDetails', query: {id: scope.row.tmCartypeProId}});
     },
 
     handleSelectionChange(val) {
       this.selectTableData = val;
     },
-
-    // handleAddCarTypeProject(){
-    //   if (!this.addCarTypeProject) {
-    //     return iMessage.warn('请先输入车型名称');
-    //   }
-    //   if (this.fromGroup.some(item => item.cartypeNname == ('自定义-' + this.addCarTypeProject))){
-    //     return iMessage.warn('已有车型名称，请重新输入');
-    //   }
-
-    //   this.iDialogAddCarTypeProject = true;
-    //   saveCustomCart({cartypeProjectName: this.addCarTypeProject}).then(res => {
-    //     const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn;
-    //     if (~~res.code === 0){
-    //       iMessage.success(result);
-    //       this.addCarTypeProject = '';
-    //       this.$refs.carTypeProjectRef.blur();
-    //     }else{
-    //       iMessage.error(result);
-    //     }
-    //     this.iDialogAddCarTypeProject = false;
-    //   }).catch(err => {
-    //     this.iDialogAddCarTypeProject = false;
-    //   })
-
-    // },
 
     getPageData(){
       this.loadingiSearch = true;
