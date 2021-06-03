@@ -894,6 +894,7 @@
             'SHENPIRENANDSHENPIJILU':'审批⼈ & 审批记录', // 审批⼈ & 审批记录
             'JUECEZILIAO':'决策资料', // 决策资料
             'DINGDIAN':'定点', // 定点
+            'DingDianIDNotNull': '定点申请单id不能为空' //定点申请单id不能为空
         },
         // 单一供应商
         "nominationSupplier": {

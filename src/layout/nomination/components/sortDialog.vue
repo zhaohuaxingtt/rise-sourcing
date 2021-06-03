@@ -8,7 +8,14 @@
       </div>
     </div>
     <div class="body">
-      <tableList :height="280" v-show="visible" class="table" :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="loading" @handleSelectionChange="handleSelectionChange">
+      <tableList
+        :height="280"
+        v-show="visible"
+        class="table"
+        :tableData="tableListData"
+        :tableTitle="tableTitle"
+        :tableLoading="loading"
+        @handleSelectionChange="handleSelectionChange">
         <template #visible="scope">
           <a class="link-underline" v-if="scope.row.visible">
             <icon symbol name="iconyincang" class="icon trigger-visible" />
@@ -110,6 +117,7 @@ export default {
 
   ::v-deep .el-dialog {
     width: 620px!important;
+    height: 520px;
     position: absolute;
     margin: 0!important;
     top: 50%;

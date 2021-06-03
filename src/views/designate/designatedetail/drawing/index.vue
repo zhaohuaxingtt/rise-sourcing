@@ -37,9 +37,9 @@
       <div class="data-null" v-else>{{$t('LK_ZANWUSHUJU')}}</div>
     </div>
     <!-- 排序弹窗 -->
-    <sortDialog :visible.sync="sortVisibal" />
+    <sortDialog :visible.sync="sortVisibal" :nomiAppId="nomiAppId" />
     <!-- 上传弹窗 -->
-    <uploadDialog :visible.sync="uploadVisibal" />
+    <uploadDialog :visible.sync="uploadVisibal" :nomiAppId="nomiAppId" />
   </iCard>
 </template>
 <script>
@@ -64,6 +64,7 @@ export default {
       uploadVisibal: false,
       loading: false,
       dataList: [],
+      nomiAppId: this.$route.query.desinateId || '',
       page: {
         currPage: 1,
         pageSize: 10,
@@ -92,9 +93,10 @@ export default {
       }
     },
     async batchDownload() {
+      if (!this.nomiAppId) return iMessage.error(this.$t('nominationLanguage.DingDianIDNotNull'))
       try {
         const res1 = await getdDecisiondataDaringListAll({
-          nomiAppId: '1',
+          nomiAppId: this.nomiAppId,
           sortColumn: 'sort',
           isAsc: true,
           fileType: '101',
@@ -117,9 +119,10 @@ export default {
       }
     },
     getDataList() {
+      if (!this.nomiAppId) return iMessage.error(this.$t('nominationLanguage.DingDianIDNotNull'))
       this.loading = true
       getdDecisiondataDaringList({
-        nomiAppId: '1',
+        nomiAppId: this.nomiAppId,
         sortColumn: 'sort',
         isAsc: true,
         fileType: '101',
