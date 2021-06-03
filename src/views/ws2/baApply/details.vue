@@ -69,7 +69,7 @@ export default {
       this.tableLoading = true;
       const param = {
         ...form,
-        moldStatus: [form['moldStatus']],
+        moldStatus: form['moldStatus'] === '' ? [] : [form['moldStatus']],
         current: this.page.currPage,
         size: this.page.pageSize,
         baAcountType: this.$store.state.baApply.baAcountType,
