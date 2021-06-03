@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-25 15:57:31
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-02 11:39:12
+ * @LastEditTime: 2021-06-03 16:36:33
  * @Description: 分配询价科室弹窗
  * @FilePath: \front-web\src\views\accessoryPart\signForPartsDemand\components\assignInquiryDepartment.vue
 -->
@@ -47,8 +47,14 @@ export default {
       deptOptions: []
     }
   },
+  watch: {
+    dialogVisible(val) {
+      if (val) {
+        this.respDept = ''
+      }
+    }
+  },
   created() {
-    // 获取部门下拉，智博说要自己搞，所以放后面再写
     getDeptList().then(res => {
       if (res.result) {
         this.deptOptions = res.data?.map(item => {return {value:item.id, label:item.nameZh}})
@@ -59,6 +65,7 @@ export default {
   },
   methods: {
     clearDialog() {
+      this.respDept = ''
       this.$emit('changeVisible', false)
     },
     handleCancel() {

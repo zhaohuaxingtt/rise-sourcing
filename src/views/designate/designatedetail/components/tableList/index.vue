@@ -2,7 +2,7 @@
  * @Descripttion: 
  * @Author: Luoshuang
  * @Date: 2021-05-21 14:30:41
- * @LastEditTime: 2021-06-03 12:49:05
+ * @LastEditTime: 2021-06-03 15:33:40
 -->
 <template>
   <el-table ref="multipleTable" fit tooltip-effect='light' :height="height" :data='tableData' v-loading='tableLoading' @selection-change="handleSelectionChange" :empty-text="$t('LK_ZANWUSHUJU')" >
@@ -110,7 +110,6 @@ export default{
     toggleSelection(rows) {
       if (rows) {
         rows.forEach(row => {
-          console.log(row)
           this.$refs.multipleTable.toggleRowSelection(row);
         });
       } else {
@@ -118,7 +117,6 @@ export default{
       }
     },
     handleSelectionChange(val){
-      console.log(val)
       this.$emit('handleSelectionChange',val)
     },
     openPage(e){
