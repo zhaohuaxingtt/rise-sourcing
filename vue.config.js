@@ -11,7 +11,7 @@ const postcss = px2rem({
 require('events').EventEmitter.defaultMaxListeners = 0
 module.exports = {
     //打包时
-    // publicPath: process.env.VUE_APP_PUBLICPATH,
+    publicPath: process.env.VUE_APP_PUBLICPATH,
     outputDir: 'dist',
     assetsDir: 'static',
     filenameHashing: true,
