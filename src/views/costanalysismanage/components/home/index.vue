@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-05-27 12:32:54
- * @LastEditTime: 2021-06-02 16:50:16
+ * @LastEditTime: 2021-06-03 13:52:50
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\costanalysismanage\components\home\index.vue
@@ -22,16 +22,16 @@
       :searchKey="PARTSIGN_CONFIRMBUTTON"
     >
       <el-form>
-        <el-form-item :label="$t('costanalysismanage.Rfqbianhao')">
+        <el-form-item :label="$t('costanalysismanage.RfqBianHao')">
           <iInput
-            v-model="form.rfqNum"
-            :placeholder="$t('costanalysismanage.Qingshururfqbianhao')"
+            v-model="form.rfqId"
+            :placeholder="$t('costanalysismanage.QingShuRuRfqBianHao')"
           ></iInput>
         </el-form-item>
-        <el-form-item :label="$t('costanalysismanage.Rfqzhuangtai')">
+        <el-form-item :label="$t('costanalysismanage.RfqZhuangTai')">
           <iSelect
             v-model="form.rfqStatus"
-            :placeholder="$t('costanalysismanage.Qingxuanzerfqzhuangtai')"
+            :placeholder="$t('costanalysismanage.QingXuanZeRfqZhuangTai')"
           >
             <el-option
               value=""
@@ -45,16 +45,16 @@
             ></el-option>
           </iSelect>
         </el-form-item>
-        <el-form-item :label="$t('costanalysismanage.Lingjianhao')">
+        <el-form-item :label="$t('costanalysismanage.LingJianHao')">
           <iInput
             v-model="form.partNum"
-            :placeholder="$t('costanalysismanage.Qingshurulingjianhao')"
+            :placeholder="$t('costanalysismanage.QingShuRuLingJianHao')"
           ></iInput>
         </el-form-item>
-        <el-form-item :label="$t('costanalysismanage.Chexingxiangmu')">
+        <el-form-item :label="$t('costanalysismanage.CheXingXiangMu')">
           <iSelect
-            v-model="form.cartypeProject"
-            :placeholder="$t('costanalysismanage.Qingxuanzechexingxiangmu')"
+            v-model="form.carType"
+            :placeholder="$t('costanalysismanage.QingXuanZeCheXingXiangMu')"
           >
             <el-option
               value=""
@@ -71,19 +71,19 @@
         <el-form-item :label="$t('costanalysismanage.Pca')">
           <iInput
             v-model="form.pca"
-            :placeholder="$t('costanalysismanage.Qingshurupca')"
+            :placeholder="$t('costanalysismanage.QingShuRuPca')"
           ></iInput>
         </el-form-item>
         <el-form-item :label="$t('costanalysismanage.Tia')">
           <iInput
             v-model="form.tia"
-            :placeholder="$t('costanalysismanage.Qingshurutia')"
+            :placeholder="$t('costanalysismanage.QingShuRuTia')"
           ></iInput>
         </el-form-item>
-        <el-form-item :label="$t('costanalysismanage.Heavyitem')">
+        <el-form-item :label="$t('costanalysismanage.HeavyItem')">
           <iSelect
             v-model="form.heavyItem"
-            :placeholder="$t('costanalysismanage.Qingxuanzeheavyitem')"
+            :placeholder="$t('costanalysismanage.QingXuanZeHeavyItem')"
           >
             <el-option
               value=""
@@ -100,7 +100,7 @@
         <el-form-item :label="$t('costanalysismanage.Commodity')">
           <iSelect
             v-model="form.commodity"
-            :placeholder="$t('costanalysismanage.Qingxuanzecommodity')"
+            :placeholder="$t('costanalysismanage.QingXuanZeCommodity')"
           >
             <el-option
               value=""
@@ -116,8 +116,8 @@
         </el-form-item>
         <el-form-item :label="$t('costanalysismanage.Linie')">
           <iSelect
-            v-model="form.linie"
-            :placeholder="$t('costanalysismanage.Qingxuanzelinie')"
+            v-model="form.linieId"
+            :placeholder="$t('costanalysismanage.QingXuanZeLinie')"
           >
             <el-option
               value=""
@@ -133,40 +133,40 @@
         </el-form-item>
       </el-form>
     </iSearch>
-    <iCard class="margin-top20" :title="$t('costanalysismanage.Rfqliebiao')">
+    <iCard class="margin-top20" :title="$t('costanalysismanage.RfqLieBiao')">
       <tableList
         index
         :tableData="tableListData"
         :tableTitle="tableTitle"
         :tableLoading="loading">
-        <template #rfqNum="scope">
-          <span class="link" @click="jumpRfq(scope.row)">{{ scope.row.rfqNum }}</span>
+        <template #id="scope">
+          <span class="link" @click="jumpRfq(scope.row)">{{ scope.row.id }}</span>
         </template>
         <template #createDate="scope">
           <span>{{ scope.row.createDate | dateFilter("YYYY-MM-DD") }}</span>
         </template>
-        <template #deadDate="scope">
+        <template #currentRoundsEndTime="scope">
           <span>{{ scope.row.deadDate | dateFilter("YYYY-MM-DD") }}</span>
         </template>
-        <template #techFile="scope">
-          <span class="link" @click="download(scope.row)">{{ $t("costanalysismanage.Xiazai") }}</span>
+        <template #technoMaterial="scope">
+          <span class="link" @click="download(scope.row)">{{ $t("costanalysismanage.XiaZai") }}</span>
         </template>
-        <template #cbd="scope">
-            <span class="link" @click="cbd(scope.row)">{{ scope.row.cbd | dateFilter("YYYY-MM-DD") }}</span>
-            <div class="attention margin-left4"><span>!</span></div>
+        <template #sendDate="scope">
+            <span class="link" @click="cbd(scope.row)">{{ scope.row.sendDate | dateFilter("YYYY-MM-DD") }}</span>
+            <div v-if="scope.row.sendDate" class="attention margin-left4"><span>!</span></div>
         </template>
         <template #analysisReport="scope">
           <icon class="tick link" symbol name="iconbaojiazhuangtailiebiao_yibaojia" @click.native="analysisReport(scope.row)"/>
         </template>
-        <template #order="scope">
-          <icon class="link" symbol :name="scope.row.order == 1 ? 'iconliebiaoyizhiding' : 'iconliebiaoweizhiding'" @click.native="updateOrder(scope.row)" />
+        <template #recordId="scope">
+          <icon class="link" symbol :name="scope.row.recordId == 1 ? 'iconliebiaoyizhiding' : 'iconliebiaoweizhiding'" @click.native="updateOrder(scope.row)" />
         </template>
       </tableList>
       <iPagination 
         v-update
         class="margin-top30"
-        @size-change="handleSizeChange($event, getList)"
-        @current-change="handleCurrentChange($event, getList)"
+        @size-change="handleSizeChange($event, getKmRfqList)"
+        @current-change="handleCurrentChange($event, getKmRfqList)"
         background
         :current-page="page.currPage"
         :page-sizes="page.pageSizes"
@@ -182,14 +182,16 @@
 </template>
 
 <script>
-import { icon, iSearch, iInput, iSelect, iCard, iPagination } from "rise"
+import { icon, iSearch, iInput, iSelect, iCard, iPagination, iMessage } from "rise"
 import logButton from "@/views/partsign/editordetail/components/logButton"
 import tableList from "@/views/partsign/editordetail/components/tableList"
 import downloadDialog from './components/downloadFiles'
 import cbdDialog from './components/cbdStatus'
-import { tableTitle } from "./components/data"
+import { queryForm, tableTitle } from "./components/data"
 import filters from "@/utils/filters"
 import { pageMixins } from "@/utils/pageMixins"
+import { getKmRfqList } from "@/api/costanalysismanage/home"
+import { cloneDeep } from "lodash"
 
 export default {
   components: { 
@@ -209,35 +211,47 @@ export default {
     return{
       downloadDialogVisible:false,
       cbdDialogVisible:false,
-      form: {
-        rfqNum: "",
-        rfqStatus: "",
-        partNum: "",
-        cartypeProject: "",
-        pca: "",
-        tia: "",
-        heavyItem: "",
-        commodity: "",
-        linie: ""
-      },
+      form: cloneDeep(queryForm),
       list: [],
       loading: false,
       tableTitle,
       tableListData: [
         {
-          rfqNum: "T2234345",
+          id: "T2234345",
           createDate: 1622184508000,
-          deadDate: 1622184508000,
-          cbd: 1622184508000,
+          currentRoundsEndTime: 1622184508000,
+          sendDate: 1622184508000,
           analysisReport: 1622184508000,
-          order: 1
+          recordId: 1
         }
       ],
       rfqNum:'', // 当前选择的rfq
     }
   },
+  created() {
+    this.getKmRfqList()
+  },
   methods: {
-    getList() {},
+    getKmRfqList() {
+      this.loading = true
+
+      getKmRfqList({
+        current: this.page.currPage,
+        size: this.page.pageSize,
+        ...this.form
+      })
+      .then(res => {
+        if (res.code == 200) {
+          this.tableListData = Array.isArray(res.data.records) ? res.data.records : []
+          this.totalCount = res.data.total || 0
+        } else {
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
+
+        this.loading = false
+      })
+      .catch(() => {})
+    },
     // 跳转RFQ详情
     jumpRfq(row) {
       window.open(`/#/costanalysismanage/rfqdetail?rfqNum=${ row.rfqNum }`, "_blank")
@@ -262,7 +276,7 @@ export default {
     },
     // 变更顺序
     updateOrder(row) {
-      this.$set(row, "order", row.order ? 0 : 1)
+      this.$set(row, "recordId", row.recordId ? 0 : 1)
     },
 
     // 关闭弹窗

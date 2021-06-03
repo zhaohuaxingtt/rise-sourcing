@@ -31,6 +31,7 @@
 
 <script>
 import { iDialog, iButton, iSelect, iInput } from 'rise'
+import { getDictByCode } from '@/api/dictionary'
 export default {
   components: { iDialog, iButton, iSelect, iInput },
   props: {
@@ -39,8 +40,19 @@ export default {
   data() {
     return {
       reasonType: '',
-      reasonDescription: ''
+      reasonDescription: '',
+      backTypeOption: [],
+      loading: false
     }
+  },
+  created() {
+    getDictByCode('BACK_REASON_TYPE').then(res => {
+      if(res?.result) {
+        this.backTypeOption = res.data[0].subDictResultVo.map(item => {
+          return { value: item.code, label: item.name }
+        })
+      }
+    })
   },
   methods: {
     clearDialog() {

@@ -20,7 +20,7 @@
         <div class="floatright">
           <!-- 新建定点申请 -->
           <iButton
-            @click="$router.push({path: '/designate/rfqdetail'})"
+            @click="createNomination"
             v-permission="PARTSPROCURE_TRANSFER"
           >
             {{ $t("nominationLanguage.XinJianLingJIanDingDianShengQIng") }}
@@ -77,7 +77,7 @@
       <template #nominateName="scope">
         <a
           href="javascript:;"
-          @click="$router.push({path: '/designate/rfqdetail', query: {desinateId: scope.row.id}})">
+          @click="viewNominationDetail(scope.row)">
           {{scope.row.nominateName}}
         </a>
       </template>
@@ -125,6 +125,9 @@ import {
   nominateRreeze,
   nominateConfirm,
 } from '@/api/designate/nomination'
+// 前端配置文件里面的定点类型
+import { applyType } from '@/layout/nomination/components/data'
+
 import { pageMixins } from '@/utils/pageMixins'
 import filters from "@/utils/filters"
 
@@ -166,6 +169,25 @@ export default {
     this.getFetchData()
   },
   methods: {
+    // 新建零件定点申请
+    createNomination() {
+      // 缓存/更新定点申请类型
+      this.$store.dispatch('setNominationTypeDisable', false)
+      this.$nextTick(() => {
+        this.$router.push({path: '/designate/rfqdetail'})
+      })
+    },
+    // 查看详情
+    viewNominationDetail(row) {
+      // 缓存nominateProcessType
+      // this.$store.dispatch('setNominationType', row.nominateProcessType)
+      // 禁用nominateProcessType编辑
+      this.$store.dispatch('setNominationTypeDisable', true)
+      this.$nextTick(() => {
+        const nominateProcessType = (applyType.find(o => o.name === row.nominateProcessType) || {}).id || ''
+        this.$router.push({path: '/designate/rfqdetail', query: {desinateId: row.id, designateType: nominateProcessType}})
+      })
+    },
     // 获取定点管理列表
     getFetchData(params = {}) {
       this.tableLoading = true
@@ -184,7 +206,6 @@ export default {
         }
         console.log(res)
       }).catch(e => {
-        console.log(e)
         this.tableLoading = false
       })
     },
@@ -254,7 +275,7 @@ export default {
           }else{
             iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
           }
-        }).catch((err)=>{
+        }).catch((e)=>{
           iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
         })
       }
@@ -280,7 +301,7 @@ export default {
           }else{
             iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
           }
-        }).catch((err)=>{
+        }).catch((e)=>{
           iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
         })
       }

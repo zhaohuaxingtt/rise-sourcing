@@ -4,7 +4,7 @@
  * @Description: 报告清单列表
 -->
 <template>
-    <iCard :title="$t('costanalysismanage.baogaoqingdan')">
+    <iCard :title="$t('costanalysismanage.BaoGaoQingDan')">
         <template v-slot:header-control>
             <span class="margin-right10">
                 <Upload 

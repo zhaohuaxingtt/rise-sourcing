@@ -48,8 +48,8 @@
             :label="$t('all') | capitalizeFilter"
           ></el-option>
           <el-option
-            :value="items.key"
-            :label="items.value"
+            :value="items.id"
+            :label="items.name"
             v-for="(items, index) in ptocessType"
             :key="index"
           ></el-option>
@@ -183,7 +183,9 @@
 </template>
 
 <script>
-import { form, ptocessType } from '../data'
+
+import { applyType } from '@/layout/nomination/components/data'
+import { form } from '../data'
 import {
   iSearch,
   iInput,
@@ -194,7 +196,7 @@ export default {
   data() {
     return {
       form,
-      ptocessType
+      ptocessType: applyType
     }
   },
   components: {

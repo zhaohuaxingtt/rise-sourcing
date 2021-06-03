@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-05-28 16:01:25
- * @LastEditTime: 2021-05-28 16:38:05
+ * @LastEditTime: 2021-06-03 14:11:51
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\costanalysismanage\components\costanalysis\index.vue
@@ -9,12 +9,12 @@
 <template>
   <iPage class="analysis">
     <div class="header clearFloat">
-      <div class="title">{{ $t("costanalysismanage.Chengbenfenxi") }}</div>
+      <div class="title">{{ $t("costanalysismanage.ChengBenFenXi") }}</div>
       <div class="control">
-        <iButton @click="back">{{ $t("costanalysismanage.Fanhui") }}</iButton>
-        <iButton>{{ $t("costanalysismanage.Shangchuan") }}</iButton>
-        <iButton>{{ $t("costanalysismanage.Xiazai") }}</iButton>
-        <iButton>{{ $t("costanalysismanage.Shanchu") }}</iButton>
+        <iButton @click="back">{{ $t("costanalysismanage.FanHui") }}</iButton>
+        <iButton>{{ $t("costanalysismanage.ShangChuan") }}</iButton>
+        <iButton>{{ $t("costanalysismanage.XiaZai") }}</iButton>
+        <iButton>{{ $t("costanalysismanage.ShanChu") }}</iButton>
         <logButton class="margin-left20" />
         <span class="margin-left20">
           <icon symbol name="icondatabaseweixuanzhong" class="font24"></icon>

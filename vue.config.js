@@ -119,13 +119,6 @@ module.exports = {
         https: false,
         hotOnly: true,
         proxy: {
-						'usercenterKX': {
-								target: 'http://10.160.143.244:8789',
-								changeOrigin: true,
-								pathRewrite: {
-										"^/usercenterKX": ""
-								}
-						},
 						'procurementrequirementZZB': {
 								target: 'http://10.160.137.213:8083',
 								changeOrigin: true,
@@ -133,8 +126,9 @@ module.exports = {
 										"^/procurementrequirementZZB": ""
 								}
 						},
-						'/supplierApiWJS': {
-								target: 'http://192.168.50.89:8029',
+						'/supplierApiWJS': { //王洁松服务地址
+								// target: 'http://192.168.50.89:8029',
+								target: 'http://10.122.18.166:8025',
 								changeOrigin: true,
 								pathRewrite: {
 										"^/supplierApiWJS": ""

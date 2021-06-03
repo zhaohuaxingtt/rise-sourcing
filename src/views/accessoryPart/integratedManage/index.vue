@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-26 11:16:51
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-02 17:05:01
+ * @LastEditTime: 2021-06-03 17:08:12
  * @Description: 配件综合管理页面
  * @FilePath: \front-web\src\views\accessoryPart\integratedManage\index.vue
 -->
@@ -54,9 +54,9 @@
                   <!--------------------加入已有RFQ----------------------------------->
                   <iButton @click="batchData">加入已有RFQ</iButton>
                   <!--------------------下载报表----------------------------------->
-                  <iButton @click="downloadAll">下载报表</iButton>
+                  <iButton @click="downloadAll" :loading="downloadAllLoading">下载报表</iButton>
                   <!--------------------导出按钮----------------------------------->
-                  <iButton @click="donwloadList" >导出</iButton>
+                  <iButton @click="donwloadList" :loading="downloadLoading" >导出</iButton>
                 </div>
             </div>
             <tableList :activeItems='"spnrNum"' selection indexKey :tableData="tableData" :tableTitle="tableTitle" :tableLoading="tableLoading" @handleSelectionChange="handleSelectionChange" @openPage="openPage"></tableList>
@@ -77,7 +77,7 @@
           <!------------------------------------------------------------------------>
           <!--                  分配询价采购员弹窗                                 --->
           <!------------------------------------------------------------------------>
-          <assignInquiryBuyerDialog :dialogVisible="buyerDialogVisible" @changeVisible="changeBuyerDialogVisible" @sendAccessory="sendAccessoryLINIE" />
+          <assignInquiryBuyerDialog :dialogVisible="buyerDialogVisible" @changeVisible="changeBuyerDialogVisible" @sendAccessory="sendAccessoryLINIE" :deptId="selectDeptId" />
           <!------------------------------------------------------------------------>
           <!--                  退回EPS弹窗                                       --->
           <!------------------------------------------------------------------------>
@@ -98,13 +98,14 @@ import { iPage, iSearch, iSelect, iInput, iCard, iButton, iPagination, iMessage,
 import { pageMixins } from "@/utils/pageMixins"
 import tableList from '@/views/designate/designatedetail/components/tableList'
 import { tableTitle, tableMockData, searchList } from './data'
-import assignInquiryDepartmentDialog from './components/assignInquiryDepartment'
-import assignInquiryBuyerDialog from './components/assignInquiryBuyer'
+import assignInquiryDepartmentDialog from '../signForPartsDemand/components/assignInquiryDepartment'
+import assignInquiryBuyerDialog from '../signForPartsDemand/components/assignInquiryBuyer'
 import backEpsDialog from './components/backEps'
 import backDialog from './components/back'
 import { navList } from "@/views/partsign/home/components/data"
-import { cloneDeep } from 'lodash'
+import { cloneDeep, uniq } from 'lodash'
 import { getAccessoryManageList, sendAccessoryInfo, downLoadAccessoryList, downLoadAccessoryAll, back, backEPS } from '@/api/accessoryPart/index'
+import { getDictByCode } from '@/api/dictionary'
 export default {
   mixins: [pageMixins],
   components: { iPage, iSearch, iSelect, iInput, iCard, iButton, iPagination, tableList, assignInquiryDepartmentDialog, assignInquiryBuyerDialog,backEpsDialog, backDialog, iNavMvp },
@@ -131,13 +132,49 @@ export default {
       selectParts: [],
       navList: cloneDeep(navList),
       tab: "source",
-      selectOptions: {}
+      selectOptions: {
+        yesOrNoOption: [{value: '1', label: '是'},{value: '0', label: '否'}]
+      },
+      selectDeptId: '',
+      downloadAllLoading: false,
+      downloadLoading: false
     }
   },
   created() {
+    this.getSelectOptions()
     this.getTableList()
   },
   methods: {
+    /**
+     * @Description: 调取数据字典获取下拉
+     * @Author: Luoshuang
+     * @param {*} optionName 下拉选项名称
+     * @param {*} optionType 下拉类型
+     * @return {*}
+     */    
+    getDictionary(optionName, optionType) {
+      getDictByCode(optionType).then(res => {
+        if(res?.result) {
+          this.selectOptions[optionName] = res.data[0].subDictResultVo.map(item => {
+            return { value: item.code, label: item.name }
+          })
+        }
+      })
+    },
+    /**
+     * @Description: 获取下拉数据
+     * @Author: Luoshuang
+     * @param {*}
+     * @return {*}
+     */    
+    getSelectOptions() {
+      // 配件状态
+      this.getDictionary('accessoryTypeOption', 'ACCESSORY_STAT')
+      // ID状态
+      this.getDictionary('accessoryIdStateOption', 'ACCESSORY_ID_STATE')
+      // 定点状态
+      this.getDictionary('nominateStateOption', 'NOMINATE_STATE')
+    },
     /**
      * @Description: 搜索条件重置
      * @Author: Luoshuang
@@ -163,7 +200,7 @@ export default {
      * @return {*}
      */    
     getTableList() {
-      // this.tableLoading = true
+      this.tableLoading = true
       const params = {
         ...this.searchParams,
         current: this.page.currPage,
@@ -177,6 +214,7 @@ export default {
           this.page.totalCount = res.data.total
         } else {
           this.tableData = []
+          iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
         }
       }).finally(() => {
         this.tableLoading = false
@@ -246,6 +284,7 @@ export default {
         iMessage.warn('请选择有部门的配件')
         return
       }
+      this.selectDeptId = selectPartsDept[0]
       this.changeBuyerDialogVisible(true)
     },
     /**
@@ -297,7 +336,9 @@ export default {
      * @return {*}
      */    
     async downloadAll() {
+      this.downloadAllLoading = true
       await downLoadAccessoryAll()
+      this.downloadAllLoading = false
     },
     /**
      * @Description: 导出事件
@@ -306,10 +347,12 @@ export default {
      * @return {*}
      */    
     async donwloadList() {
+      this.downloadLoading = true
       const params = {
         ...this.searchParams
       }
       await downLoadAccessoryList(params)
+      this.downloadLoading = false
     },
     /**
      * @Description: 点击SP号跳转事件

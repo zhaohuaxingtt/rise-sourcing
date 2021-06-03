@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-05-27 12:33:07
- * @LastEditTime: 2021-05-28 16:33:49
+ * @LastEditTime: 2021-06-03 13:57:06
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\costanalysismanage\components\datamaintenance\index.vue
@@ -14,12 +14,12 @@
         <icon symbol name="icondatabaseweixuanzhong" class="font24"></icon>
       </span>
     </div>
-    <iCard class="card margin-top65" :title="$t('costanalysismanage.Rengongchengbenshujuweihu')">
+    <iCard class="card margin-top65" :title="$t('costanalysismanage.RenGongChengBenShuJuWeiHu')">
       <template v-slot:header-control>
-        <iButton>{{ $t("costanalysismanage.Daochu") }}</iButton>
-        <iButton>{{ $t("costanalysismanage.Shangchuan") }}</iButton>
-        <iButton>{{ $t("costanalysismanage.Xiazai") }}</iButton>
-        <iButton>{{ $t("costanalysismanage.Shanchu") }}</iButton>
+        <iButton>{{ $t("costanalysismanage.DaoChu") }}</iButton>
+        <iButton>{{ $t("costanalysismanage.ShangChuan") }}</iButton>
+        <iButton>{{ $t("costanalysismanage.XiaZai") }}</iButton>
+        <iButton>{{ $t("costanalysismanage.ShanChu") }}</iButton>
       </template>
       <div class="body">
         <tableList
