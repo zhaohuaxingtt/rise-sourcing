@@ -7,7 +7,7 @@
       <iNavWS2
       ></iNavWS2>
     </div>
-    <DetailsSearch @reset="handleReset" @sure="handleSure" :isModelItem="true" />
+    <DetailsSearch @reset="handleReset" @sure="handleSure" />
 
     <iCard>
       <DetailsTable :tableListData="tableListData" :tableLoading="tableLoading" />
@@ -33,6 +33,7 @@ import DetailsTable from "./components/detailsTable";
 import { findBaPartsList } from "@/api/ws2/baApply";
 import { pageMixins } from "@/utils/pageMixins";
 import { iNavWS2 } from "@/components";
+import store from '@/store';
 
 export default {
   mixins: [pageMixins],
@@ -53,13 +54,11 @@ export default {
         currPage: 1,
         pageSize: 10,
       },
-      tmCartypeProId: '',
     }
   },
 
   created(){
-    console.log('this.$route.params.id', this.$route.query.id);
-    this.tmCartypeProId = this.$route.query.id;
+    console.log('store.state.permission.whiteBtnList', store.state.permission.whiteBtnList)
   },
 
   methods: {
@@ -73,7 +72,6 @@ export default {
         current: this.page.currPage,
         size: this.page.pageSize,
         baAcountType: this.$store.state.baApply.baAcountType,
-        tmCartypeProId: this.tmCartypeProId,
       }
       findBaPartsList(param).then(res => {
         this.tableListData = res.data;

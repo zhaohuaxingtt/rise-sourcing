@@ -354,19 +354,6 @@ export default {
       const sixBa = currentScope.sixBa || '';
       const int = currentScope.int || '';
 
-      if(type === 1){ //  对输入的BA号判断
-        
-
-        if(sixBa === '' || sixBa.length < 5){
-          return iMessage.warn(this.$t('LK_INPUTNUMBERORMORE'));
-        }
-
-        if(int.length < 3 && int !== ''){
-          return iMessage.warn(this.$t('LK_INPUTNUMBERORMORE'));
-        }
-        console.log('currentScope', currentScope, sixBa, int);
-      }
-
       const fun = type === 1 ? addSixBa : updateByCarId;
       const data = {
         approveAmount: currentScope.approveAmount,
@@ -432,13 +419,31 @@ export default {
 
     //  确认A号
     confirmA(scope){
+      const { currentScope, tableIndex } = this;
+      const sixBa = scope.row.sixBa || '';
+      const int = scope.row.int || '';
+      
+      if(tableIndex === 1){ //  对输入的BA号判断
+        
+        if(sixBa === '' || sixBa.length < 5){
+          return iMessage.warn(this.$t('LK_INPUTNUMBERORMORE'));
+        }
+
+        if(int.length < 3 && int !== ''){
+          return iMessage.warn(this.$t('LK_INPUTNUMBERORMORE'));
+        }
+      }
+
       confirmDetail({
         id: scope.row.id,
         tmCartypeProId: scope.row.tmCartypeProId
       }).then(res => {
         const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn;
         if(res.data){
-          this.confirmTableData = res.data;
+          this.confirmTableData = res.data.map(item => ({
+            ...item,
+            baNumber: item.carTypeName === 'Total' ? '' : `A-${sixBa}-${int.length === 0 ? 'INT' : int}`
+          }));
           this.confirmVisible = true;
           this.currentScope = scope.row;
         }else{
@@ -587,11 +592,14 @@ export default {
         return iMessage.warn('请选择需要退回的数据！');
       }
 
-      backApprove(list.map(item => item.id)).then(res => {
+      backApprove({
+        ids: list.map(item => item.id)
+      }).then(res => {
         const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn;
         if(res.data){
           iMessage.success(result);
           this.getPageData();
+          this.getBaCount();
         }else{
           iMessage.error(result);
         }

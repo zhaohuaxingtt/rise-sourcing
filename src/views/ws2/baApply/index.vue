@@ -1,5 +1,5 @@
 <template>
-  <div class="generateInvestmentList" v-permission="TOOLING_BUDGET_BUILD">
+  <div class="generateInvestmentList">
     <iSearch
         class="margin-bottom20 giSearch"
         style="margin-top: 20px"
@@ -19,10 +19,6 @@
               @change="changeCarTypeProject"
               ref="carTypeProjectRef"
           >
-            <!-- <div class="addCarTypeProject">
-              <iInput v-model="addCarTypeProject" placeholder="请输入自定义名称"></iInput>
-              <iButton @click="handleAddCarTypeProject" v-loading="iDialogAddCarTypeProject">{{ $t('LK_QUEREN') }}</iButton>
-            </div> -->
             <el-option
                 :value="item.id"
                 :label="item.cartypeNname"
@@ -34,7 +30,7 @@
         
       </el-form>
       <div class="searchSure">
-        <!-- <iButton @click="saveAddCarType" :disabled="carTypeProjectObj.isBudget == 3" v-loading="addCarTypeLoading">{{ $t('LK_QUEREN') }}</iButton> -->
+        
       </div>
     </iSearch>
 

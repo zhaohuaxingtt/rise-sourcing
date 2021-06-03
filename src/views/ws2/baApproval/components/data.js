@@ -294,7 +294,7 @@ export const confirmTableHead = [
     tooltip: false
   },
   {
-    props: 'baNum',
+    props: 'baNumber',
     name: 'BA单号',
     key: 'LK_BAODDNUMBERS',
     tooltip: false
