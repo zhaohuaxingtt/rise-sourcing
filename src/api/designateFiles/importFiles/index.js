@@ -47,5 +47,32 @@ export function postAffixList(data) {
     })
   }
 
+// 根据fileId查询列表 
+export function getAffixListById(params) {
+    const {affixId,pageNo,pageSize} = params;
+    return requst({
+        url: `/affix/affix-requirement-attachments/${affixId}/${pageNo}/${pageSize}`,
+        method: "GET",
+        params,
+    })
+}
+
+// 附件上传后关联
+export function uploadAttachments(data) {
+    return requst({
+        url: '/affix/affix-requirement-attachments',
+        method: "POST",
+        data,
+    })
+}
+
+// 删除附件
+export function deleteattachments(data) {
+    return requst({
+        url: '/affix/affix-requirement-attachments',
+        method: "DELETE",
+        data,
+    })
+}
 
   

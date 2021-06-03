@@ -33,7 +33,7 @@ export const tableTitle = [
 
 
 export const filesTableTitle = [
-    {name:'文件名',key:'LK_WENJIANMING',props:'a'},
-    {name:'上传日期',key:'LK_SHANGCHUANRIQI',props:'b'},
-    {name:'上传人',key:'LK_SHANGCHUANREN',props:'c'},
+    {name:'文件名',key:'LK_WENJIANMING',props:'fileName'},
+    {name:'上传日期',key:'LK_SHANGCHUANRIQI',props:'uploadDate'},
+    {name:'上传人',key:'LK_SHANGCHUANREN',props:'uploadBy'},
 ]

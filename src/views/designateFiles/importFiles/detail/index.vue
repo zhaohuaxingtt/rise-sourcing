@@ -43,38 +43,9 @@
                 </template>
                 <!-- 附件 -->
                 <template #LK_FUJIAN="scope">
-                    <span @click="checkUploadList(scope.row.code)" class="link-underline" >{{$t('LK_SHANGCHUAN')}}</span>
+                    <span @click="checkUploadList(scope.row.id)" class="link-underline" >{{$t('LK_SHANGCHUAN')}}</span>
                 </template>
             </tableList>
-                <!-- <el-table
-                :data="tableData"
-                fit 
-                tooltip-effect='light'
-                :empty-text="$t('LK_ZANWUSHUJU')"
-                >
-                <el-table-column
-                    type="selection"
-                    align='center'
-                    width="50">
-                </el-table-column>
-                <el-table-column
-                    type="index"
-                    label="#"
-                    align='center'
-                    width="50">
-                </el-table-column>
-                <el-table-column v-for="(item,index) in tableTitle" 
-                    :key="'filesDetailListTable'+index" 
-                    align='center'
-                    :label="$t(item.key) || item.name"
-                    :prop="item.props"
-                    >
-                    <template slot-scope="scope">
-                        <span class="link-underline"  v-if="item.key === 'LK_FUJIAN'" @click="checkUploadList">{{$t('LK_SHANGCHUAN')}}</span>
-                        <span v-else>{{scope.row[item.props] || '-'}}</span>
-                    </template>
-                </el-table-column>
-                </el-table> -->
                 <!-- 分页 -->
                 <iPagination
                     class="margin-bottom20"
@@ -96,7 +67,7 @@
                         <icon symbol name="iconguanbixiaoxiliebiaokapiannei" class="close-icon" ></icon>
                     </span>
                 </p>
-                <uploadList />
+                <uploadList  :uploadId="uploadId" />
             </iCard>
         </div>
     </iPage>
@@ -148,6 +119,7 @@ export default {
             ],
             showUploadList:false,
             loading:false,
+            uploadId:'',
         }
     },
     created(){
@@ -174,11 +146,12 @@ export default {
             this.showUploadList = !showUploadList;
         },
         // 查看上传列表
-        checkUploadList(){
+        checkUploadList(id){
+            this.uploadId = id ;
             this.changeShowStatus();
         },
         // 获取列表
-        getList(){
+        async getList(){
             this.loading =  true;
             const { page,searchParams } = this;
             const data = { 
@@ -186,7 +159,7 @@ export default {
                 pageNo:page.currPage,
                 pageSize:page.pageSize,
             };
-            postAffixList(data).then((res)=>{
+            await postAffixList(data).then((res)=>{
             const {code,data} = res; 
             if(code === '200' && data){
                 const {records,total} = data;
@@ -199,7 +172,7 @@ export default {
                 this.loading =  false;
             });
         },
-        }
+    }
 }
 </script>
 
