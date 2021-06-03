@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-21 09:23:11
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-01 14:45:31
+ * @LastEditTime: 2021-06-03 14:45:52
  * @Description: RFQ & 零件清单界面
  * @FilePath: \front-web\src\views\designate\designatedetail\rfqdetail\index.vue
 -->
@@ -34,16 +34,6 @@
         @openPage="openRfqPage"
         @updateSlot='rfqToTop'
       />
-      <iPagination v-update 
-        @size-change="handleSizeChange($event, getRfqTableList)" 
-        @current-change="handleCurrentChange($event, getRfqTableList)" 
-        background 
-        :page-sizes="page.pageSizes"
-        :page-size="page.pageSize"
-        :layout="page.layout"
-        :current-page="page.currPage"
-        :total="page.totalCount"
-      />
     </iCard>
     <iCard class="margin-top20" >
       <div class="margin-bottom20 clearFloat">
@@ -63,6 +53,8 @@
         @handleSelectionChange="handlePartsSelectionChange"
         @openPage="openPartsPage"
         @updateSlot='partsToTop'
+        :selectedItems="partsSelectedItems"
+        ref="partTable"
       />
     </iCard>
   </iPage>
@@ -73,6 +65,7 @@ import { iPage, iCard, iPagination, iMessage, iButton, iInput, icon } from "rise
 import tableList from '../components/tableList'
 import { rfqListTitle, partsListTitle } from './data'
 import { pageMixins } from "@/utils/pageMixins";
+import { getRfqList, getPartList, updatePart, deleteRfq } from '@/api/designate/designatedetail/rfqdetail/index'
 export default {
   mixins: [pageMixins],
   components:{ iPage, iCard, tableList, iPagination, iButton, iInput, icon },
@@ -89,7 +82,27 @@ export default {
       searchParam: ''
     }
   },
+  created(){
+    if(this.$route.query.desinateId){
+      this.desinateId = this.$route.query.desinateId
+      this.getRfqTableList()
+    } 
+  },
+  mounted(){
+    if(this.$route.query.desinateId){
+      this.getPartsTableList()
+    }
+  },
   methods: {
+    /**
+     * @Description: 默认选中表格部分
+     * @Author: Luoshuang
+     * @param {*}
+     * @return {*}
+     */
+    defaultSelectTable(){
+       this.$refs.partTable.toggleSelection(this.partsTableListData.filter(item => item.selected == 1))
+    },
     /**
      * @Description: 保存选中的零件
      * @Author: Luoshuang
@@ -100,6 +113,27 @@ export default {
       if (this.partsSelectedItems.length < 1) {
         iMessage.warn('请选择需要保存的零件')
       }
+      this.partsTableLoading = true
+      const params = {
+        nominateAppId: this.desinateId,
+        partPrjList: this.partsSelectedItems.map(item => {
+          return {
+            id: item.id,
+            partPrjCode: item.fsnrGsnrNum,
+            // partPrjId: item.
+          }
+        })
+      }
+      updatePart(params).then(res => {
+        if (res?.result) {
+          iMessage.success(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
+          this.getPartsTableList()
+        } else {
+          iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
+        }
+      }).finally(() => {
+        this.partsTableLoading = false
+      })
     },
     /**
      * @Description: 删除rfq按钮点击事件
@@ -112,6 +146,22 @@ export default {
         iMessage.warn('请选择需要删除的行')
         return
       }
+      this.rfqTableLoading = true
+      const params = {
+        nominateAppId: this.desinateId,
+        rfqIdList: this.rfqSelectedItems.map(item => item.id)
+      }
+      deleteRfq(params).then(res => {
+        if (res?.result) {
+          iMessage.success(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
+          this.getRfqTableList()
+          this.getPartsTableList()
+        } else {
+          iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
+        }
+      }).finally(() => {
+        this.rfqTableLoading = false
+      })
     },
     /**
      * @Description: 新增rfq按钮点击事件
@@ -120,7 +170,7 @@ export default {
      * @return {*}
      */    
     addRfq() {
-      this.$router.push({path: '/sourcing/designate/rfqdetail/addRfq'})
+      this.$router.push({path: '/sourcing/designate/rfqdetail/addRfq', query: {desinateId: this.desinateId}})
     },
     /**
      * @Description: rfq清单列表数据查询
@@ -128,14 +178,27 @@ export default {
      * @param {*}
      * @return {*}
      */    
-    getRfqTableList() {},
+    getRfqTableList() {
+      this.rfqTableLoading = true
+      getRfqList(this.desinateId).then(res => {
+        if(res?.result) {
+          this.rfqTableListData = res.data
+        } else {
+          iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
+        }
+      }).finally(() => {
+        this.rfqTableLoading = false
+      })
+    },
     /**
      * @Description: rfq清单列表选中处理事件
      * @Author: Luoshuang
      * @param {*} selectItems
      * @return {*}
      */        
-    handleRfqSelectionChange(selectItems){},
+    handleRfqSelectionChange(selectItems){
+      this.rfqSelectedItems = selectItems
+    },
     /**
      * @Description: rfq清单列表点击rfq编号跳转事件
      * @Author: Luoshuang
@@ -156,14 +219,30 @@ export default {
      * @param {*}
      * @return {*}
      */    
-    getPartsTableList(){},
+    getPartsTableList(){
+      this.partsTableLoading = true
+      getPartList(this.desinateId).then(res => {
+        if(res?.result) {
+          this.partsTableListData = res.data
+              this.$nextTick(()=>{
+                this.defaultSelectTable()
+              })
+        } else {
+          iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
+        }
+      }).finally(() => {
+        this.partsTableLoading = false
+      })
+    },
     /**
      * @Description: 零件列表选中处理
      * @Author: Luoshuang
      * @param {*} selectItems
      * @return {*}
      */    
-    handlePartsSelectionChange(selectItems){},
+    handlePartsSelectionChange(selectItems){
+      this.partsSelectedItems = selectItems
+    },
     /**
      * @Description: 零件列表点击零件号跳转事件
      * @Author: Luoshuang

@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-24 11:27:22
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-01 18:56:58
+ * @LastEditTime: 2021-06-03 14:47:02
  * @Description: 
  * @FilePath: \front-web\src\views\designate\designatedetail\addRfq\index.vue
 -->
@@ -132,10 +132,11 @@ export default {
       const params = {
         ...this.form,
         current: this.page.currPage,
-        size: this.page.pageSize
+        size: this.page.pageSize,
+        nominateId: this.$route.query.desinateId
       }
       getRfqList(params).then(res => {
-        if(res.result) {
+        if(res?.result) {
           this.tableListData = res.data.records
           this.page.pageSize = res.data.size
           this.page.currPage = res.data.current
@@ -157,21 +158,26 @@ export default {
         iMessage.warn('请选择RFQ')
         return
       }
+      this.tableLoading = true
       const params = {
         rfqIdArr: this.selectedRfqs.map(item => item.id),
-        nominateProcessType: this.$store.getters.nominationType
+        nominateProcessType: this.$store.getters.nominationType,
+        nominateId: this.$route.query.desinateId
       }
       selectRfq(params).then(res => {
-        if (res.result) {
+        if (res?.result) {
           iMessage.success(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
-          this.$router.push({path: '/designate/rfqdetail', query: {desinateId: res.data}})
+          this.$router.push({path: '/designate/rfqdetail', query: {desinateId: res.data, designateType: this.$store.getters.nominationType}})
         } else {
           iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
         }
+      }).finally(() => {
+        this.tableLoading = false
       })
     },
     goBack() {
-      this.$router.push({path:'/designate/rfqdetail'})
+      // this.$router.push({path:'/designate/rfqdetail'})
+      this.$router.go(-1)
     }
   }
 }
