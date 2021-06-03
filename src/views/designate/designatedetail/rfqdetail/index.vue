@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-21 09:23:11
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-03 14:45:52
+ * @LastEditTime: 2021-06-03 15:17:13
  * @Description: RFQ & 零件清单界面
  * @FilePath: \front-web\src\views\designate\designatedetail\rfqdetail\index.vue
 -->
@@ -14,7 +14,7 @@
       <div class="margin-bottom20 clearFloat">
         <span class="font18 font-weight">RFQ清单</span>
         <div class="floatright">
-          <iInput placeholder="请输入零件号/RFQ编号/RFQ名称/LINIE" v-model="searchParam" class="margin-right20 input" @blur="getRfqTableList" >
+          <iInput placeholder="请输入零件号/RFQ编号/RFQ名称/LINIE" v-model="searchParam" class="margin-right20 input" @blur="searchRfqTableList" >
             <icon symble slot="suffix" name="iconshaixuankuangsousuo" />
           </iInput>
           <!--------------------新增按钮----------------------------------->
@@ -33,6 +33,7 @@
         @handleSelectionChange="handleRfqSelectionChange"
         @openPage="openRfqPage"
         @updateSlot='rfqToTop'
+        ref="rfqTable"
       />
     </iCard>
     <iCard class="margin-top20" >
@@ -66,6 +67,7 @@ import tableList from '../components/tableList'
 import { rfqListTitle, partsListTitle } from './data'
 import { pageMixins } from "@/utils/pageMixins";
 import { getRfqList, getPartList, updatePart, deleteRfq } from '@/api/designate/designatedetail/rfqdetail/index'
+import { cloneDeep } from 'lodash'
 export default {
   mixins: [pageMixins],
   components:{ iPage, iCard, tableList, iPagination, iButton, iInput, icon },
@@ -73,10 +75,12 @@ export default {
     return {
       rfqTableTitle: rfqListTitle,
       rfqTableListData: [],
+      rfqTableListDataTemp: [],
       rfqTableLoading: false,
       rfqSelectedItems: [],
       partsTableTitle: partsListTitle,
       partsTableListData: [],
+      partsTableListDataTemp: [],
       partsTableLoading: false,
       partsSelectedItems: [],
       searchParam: ''
@@ -94,6 +98,16 @@ export default {
     }
   },
   methods: {
+    searchRfqTableList() {
+      this.rfqTableListData = this.rfqTableListDataTemp.filter(item => (
+        item.id.toLocaleLowerCase().includes(this.searchParam.toLocaleLowerCase()) || item.rfqName.toLocaleLowerCase().includes(this.searchParam.toLocaleLowerCase()) || item.linieNameZh.toLocaleLowerCase().includes(this.searchParam.toLocaleLowerCase())
+      ))
+      this.partsTableListData = this.partsTableListDataTemp.filter(item => this.rfqTableListData.some(rfqItem => rfqItem.id === item.rfqId))
+      this.$nextTick(()=>{
+        this.$refs.rfqTable.toggleSelection()
+        this.defaultSelectTable()
+      })
+    },
     /**
      * @Description: 默认选中表格部分
      * @Author: Luoshuang
@@ -183,6 +197,7 @@ export default {
       getRfqList(this.desinateId).then(res => {
         if(res?.result) {
           this.rfqTableListData = res.data
+          this.rfqTableListDataTemp = cloneDeep(res.data)
         } else {
           iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
         }
@@ -224,9 +239,10 @@ export default {
       getPartList(this.desinateId).then(res => {
         if(res?.result) {
           this.partsTableListData = res.data
-              this.$nextTick(()=>{
-                this.defaultSelectTable()
-              })
+          this.partsTableListDataTemp = cloneDeep(res.data)
+          this.$nextTick(()=>{
+            this.defaultSelectTable()
+          })
         } else {
           iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
         }
