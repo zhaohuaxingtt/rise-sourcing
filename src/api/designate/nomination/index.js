@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-05-28 17:30:52
- * @LastEditTime: 2021-05-28 20:07:52
+ * @LastEditTime: 2021-06-03 11:12:59
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\api\designate\index.js
@@ -29,11 +29,22 @@ export function batchRevoke(data) {
 })
 }
 
-// 批量删除
-export function batchDelete(data) {
+// 冻结
+export function nominateRreeze(data) {
   return requst({
-    url: `/nominate-apps/delete`,
+    url: '/nominate-apps/freeze',
     method: "post",
     data
-})
+  })
 }
+
+// 定点确认
+export function nominateConfirm(data) {
+  return requst({
+    url: '/nominate-apps/nominate',
+    method: "post",
+    data
+  })
+}
+
+

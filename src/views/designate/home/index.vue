@@ -31,6 +31,11 @@
             {{$t('LK_DONGJIE')}}
           </iButton>
 
+          <!-- 定点 -->
+          <iButton @click="confirm">
+            {{$t('nominationLanguage.DINGDIAN')}}
+          </iButton>
+
 
           <!--  <iButton @click="creatFs" v-permission="PARTSPROCURE_GENERATEFSBUTTON">
             {{ $t('partsprocure.PARTSPROCUREGENERATEFSGSNR') }}
@@ -116,7 +121,9 @@ import tablelist from "@/views/designate/supplier/components/tableList";
 import { 
   getNominationList,
   batchRevoke,
-  batchDelete
+  batchDelete,
+  nominateRreeze,
+  nominateConfirm,
 } from '@/api/designate/nomination'
 import { pageMixins } from '@/utils/pageMixins'
 import filters from "@/utils/filters"
@@ -246,9 +253,58 @@ export default {
       }
     },
     // 冻结
-    freeze(){
-      console.log('冻结!!!!');
+    async freeze(){
+      const {selectTableData} = this;
+      if(!selectTableData.length){
+        iMessage.warn(this.$t('nominationSuggestion.QingXuanZeZhiShaoYiTiaoShuJu'));
+      }else{
+        const confirmInfo = await this.$confirm(this.$t('LK_NINQUERENZHIXINGDONGJIECAOZUOMA'));
+        if (confirmInfo !== 'confirm') return;
+        const nominateAppIdArr = selectTableData.map((item)=>item.id);
+        const data = {
+          nominateAppIdArr,
+        };
+        await nominateRreeze(data).then((res)=>{
+          const { code } = res;
+          if(code == 200){
+            iMessage.success(this.$t('LK_CAOZUOCHENGGONG'));
+            this.getFetchData()
+          }else{
+            iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+          }
+        }).catch((err)=>{
+          iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
+        })
+      }
     },
+
+    // 定点
+    async confirm(){
+      const {selectTableData} = this;
+      if(!selectTableData.length){
+        iMessage.warn(this.$t('nominationSuggestion.QingXuanZeZhiShaoYiTiaoShuJu'));
+      }else{
+        const confirmInfo = await this.$confirm(this.$t('LK_NINQUERENZHIXINGDONGJIECAOZUOMA'));
+        if (confirmInfo !== 'confirm') return;
+        const nomiAppIdList = selectTableData.map((item)=>item.id);
+        const data = {
+          nomiAppIdList,
+        };
+        await nominateConfirm(data).then((res)=>{
+          const { code } = res;
+          if(code == 200){
+            iMessage.success(this.$t('LK_CAOZUOCHENGGONG'));
+            this.getFetchData()
+          }else{
+            iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+          }
+        }).catch((err)=>{
+          iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
+        })
+      }
+    },
+
+
   }
 }
 </script>
