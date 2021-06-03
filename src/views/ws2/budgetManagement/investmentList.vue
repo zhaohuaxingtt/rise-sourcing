@@ -13,7 +13,12 @@
         <img class="editIcon" src="../../../assets/images/editCar.png" alt="">
         <div class="infoIcard">
           <div class="search">
-            <label>{{ $t('LK_BANBENHAO2') }}:</label>
+            <Popover
+                :content="$t('LK_CHUANGJIANSHIJIAN') + ':' + createDate"
+                placement="top-start"
+                trigger="hover">
+              <label slot="reference">{{ $t('LK_BANBENHAO2') }}:</label>
+            </Popover>
             <iSelect
                 v-show="!pageEdit"
                 :placeholder="$t('LK_QINGXUANZE')"
@@ -62,11 +67,11 @@
                 placement="top-start"
                 trigger="hover">
               <div class="popoverDiv">
-                <p>{{$t('LK_CAIGOUGONGCHANG')}}</p>
+                <p>{{ $t('LK_CAIGOUGONGCHANG') }}</p>
               </div>
               <label slot="reference">{{ $t('LK_CAIGOUGONGCHANG') }}:</label>
             </Popover>
-<!--            <label :title="$t('LK_CAIGOUGONGCHANG')">{{ $t('LK_CAIGOUGONGCHANG') }}:</label>-->
+            <!--            <label :title="$t('LK_CAIGOUGONGCHANG')">{{ $t('LK_CAIGOUGONGCHANG') }}:</label>-->
             <span class="infoIcardValue">{{ form['search.purchasingFactory'] }}</span>
           </div>
           <div v-show="params.sourceStatus == 1">
@@ -78,11 +83,11 @@
                 placement="top-start"
                 trigger="hover">
               <div class="popoverDiv">
-                <p>{{$t('LK_PIZHUNTOUZHI')}}</p>
+                <p>{{ $t('LK_PIZHUNTOUZHI') }}</p>
               </div>
               <label slot="reference">{{ $t('LK_PIZHUNTOUZHI') }}:</label>
             </Popover>
-<!--            <label :title="$t('LK_PIZHUNTOUZHI')">{{ $t('LK_PIZHUNTOUZHI') }}:</label>-->
+            <!--            <label :title="$t('LK_PIZHUNTOUZHI')">{{ $t('LK_PIZHUNTOUZHI') }}:</label>-->
             <span v-show="!pageEdit" class="infoIcardValue">{{ form['search.approvalInvestment'] }}</span>
             <iInput v-show="pageEdit" v-model="form['search.approvalInvestment']"></iInput>
           </div>
@@ -117,7 +122,7 @@
           </div>
         </div>
         <div>
-<!--          630-->
+          <!--          630-->
           <iTableList
               :tableData="tableListData"
               :tableTitle="tableTitle"
@@ -126,7 +131,8 @@
               @handleSelectionChange="handleSelectionChange"
           >
             <template #refCartypeName="scope">
-              <div class="linkStyle" v-if="scope.row.refCartypeProId"><span @click="clickRefCartypeName(scope.row)">{{ scope.row.refCartypeName }}</span></div>
+              <div class="linkStyle" v-if="scope.row.refCartypeProId"><span
+                  @click="clickRefCartypeName(scope.row)">{{ scope.row.refCartypeName }}</span></div>
               <div v-else>-</div>
             </template>
             <template #refMoldAmount="scope">
@@ -284,7 +290,7 @@
         :sourceStatus="$store.state.mouldManagement.budgetManagement.sourceStatus"
         :carType="this.fromGroup"
         :listVerisonId="form['search.version']"
-        @updateTable="saveReference"
+        @updateTable="findInvestmentList"
     ></referenceModel>
     <conversionRatio
         v-model="conversionRatioShow"
@@ -353,8 +359,7 @@ import {cloneDeep} from 'lodash'
 
 export default {
   mixins: [pageMixins, tableHeight],
-  props: {
-  },
+  props: {},
   components: {
     iButton,
     iCard,
@@ -414,10 +419,9 @@ export default {
         versionId: '',
         version: '',
       },
-      associatedCarlineParams: {
-
-      },
+      associatedCarlineParams: {},
       versionName: '',
+      createDate: '',
       tableListData: [],
       tableListDataClone: [],
       tableLoading: false,
@@ -484,17 +488,18 @@ export default {
     changeVersion(val) {
       if (val) {
         this.versionName = this.versionList.find(item => item.id == val).version
+        this.createDate = this.versionList.find(item => item.id == val).createDate
         this.getInvestmentVerisionList(true)
       } else {
         this.versionName = ''
       }
     },
-    confirmAssociatedCarlineChange(){
+    confirmAssociatedCarlineChange() {
       this.params.sourceStatus = 1
       this.getInvestmentVerisionList()
     },
     relationMainCarType(val) {
-      if(val){
+      if (val) {
         this.confirmAssociatedCarlineShow = true
         this.associatedCarlineParams = {
           mainId: val,
@@ -583,11 +588,11 @@ export default {
             item.budgetAmount = Number(item.budgetAmount).toFixed(2)
             let linieName = ''
             item.linieArr = item.linie ? (item.linie.split(',')).map(key => Number(key)) : []
-            if(this.$i18n.locale == 'zh'){
+            if (this.$i18n.locale == 'zh') {
               item.linieArr.map(a => {
                 linieName += this.liniePullDown.find(b => b.linieID == a) ? (this.liniePullDown.find(b => b.linieID == a).linieName + '/') : ''
               })
-            }else {
+            } else {
               item.linieArr.map(a => {
                 linieName += this.liniePullDown.find(b => b.linieID == a) ? (this.liniePullDown.find(b => b.linieID == a).linieNameEn + '/') : ''
               })
@@ -699,7 +704,7 @@ export default {
               },
               series: [
                 {
-                  name: 'Contingency',
+                  name: 'contingency',
                   type: 'bar',
                   stack: 'total',
                   color: '#55C2D0',
@@ -717,7 +722,7 @@ export default {
                   data: [contingency]
                 },
                 {
-                  name: '',
+                  name: 'aekoValue',
                   type: 'bar',
                   stack: 'total',
                   color: '#FFB04D',
@@ -734,7 +739,7 @@ export default {
                   data: [aekoValue]
                 },
                 {
-                  name: '',
+                  name: 'notAekoValue',
                   type: 'bar',
                   stack: 'total',
                   color: '#B3D0FF',
@@ -756,7 +761,7 @@ export default {
                   }
                 },
                 {
-                  name: 'Mail Ad',
+                  name: '',
                   type: 'bar',
                   stack: 'total',
                   color: '#B3D0FF',
@@ -969,6 +974,7 @@ export default {
                   stack: 'total',
                   color: '#FFB04D',
                   barWidth: '30',
+                  barGap: '-100%',
                   label: {
                     show: true,
                     position: 'top',
@@ -998,6 +1004,55 @@ export default {
             chart1.setOption(option1);
             chart2.setOption(option2);
             chart3.setOption(option3);
+            chart1.on('click', function (params) {
+              if (params.seriesName === "notAekoValue") {
+                let option2Temp = cloneDeep(option2)
+                option2Temp.series[1].barGap = '-100%'
+                option2Temp.series.splice(1, 0, {
+                  name: '阴影辅助',
+                  data: [0],
+                  type: 'bar',
+                  barWidth: '30',
+                  showBackground: true,
+                  itemStyle: {
+                    barBorderColor: 'rgba(0,0,0,0)',
+                    color: 'rgba(0,0,0,0)'
+                  },
+                  backgroundStyle: {
+                    shadowColor: 'rgba(0, 0, 0, 1)',
+                    shadowBlur: 20,
+                    opacity: 1,
+                    shadowOffsetY: 10,
+                    shadowOffsetX: 10,
+                  }
+                })
+                chart2.setOption(option2Temp, true)
+                chart3.setOption(option3, true);
+              } else if (params.seriesName === "aekoValue") {
+                let option3Temp = cloneDeep(option3)
+                option3Temp.series[1].barGap = '-100%'
+                option3Temp.series.splice(1, 0, {
+                  name: '阴影辅助',
+                  data: [0],
+                  type: 'bar',
+                  barWidth: '30',
+                  showBackground: true,
+                  itemStyle: {
+                    barBorderColor: 'rgba(0,0,0,0)',
+                    color: 'rgba(0,0,0,0)'
+                  },
+                  backgroundStyle: {
+                    shadowColor: 'rgba(0, 0, 0, 1)',
+                    shadowBlur: 20,
+                    opacity: 1,
+                    shadowOffsetY: 10,
+                    shadowOffsetX: 10,
+                  }
+                })
+                chart3.setOption(option3Temp, true)
+                chart2.setOption(option2, true);
+              }
+            })
           })
 
         } else {
@@ -1022,6 +1077,7 @@ export default {
             this.form['search.version'] = this.versionList[0] ? this.versionList[0].id : ''
           }
           this.versionName = this.versionList[0] ? this.versionList[0].version : ''
+          this.createDate = this.versionList[0] ? this.versionList[0].createDate : ''
           this.getInvestmentData()
         } else {
           iMessage.error(result);
@@ -1048,7 +1104,7 @@ export default {
     addRow() {
       this.addRowShow = true
     },
-    clickRefCartypeName(row){
+    clickRefCartypeName(row) {
       this.referenceCarProjectShow = true
       this.referenceCarProjectParams = {
         carTypeProId: row.refCartypeProId,
@@ -1159,30 +1215,34 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-.multipleSelect{
-  ::v-deep .el-tag{
+.multipleSelect {
+  ::v-deep .el-tag {
     max-width: calc(100% - 65px);
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
   }
 }
-#chart1{
+
+#chart1 {
   width: 200px;
   height: 200px;
   align-self: flex-end;
 }
-#chart2{
+
+#chart2 {
   width: 640px;
   height: 180px;
   margin: 0 30px;
   align-self: flex-end;
 }
-#chart3{
+
+#chart3 {
   width: 420px;
   height: 180px;
   align-self: flex-end;
 }
+
 .linkStyle {
   span {
     color: #1663F6;
@@ -1190,6 +1250,7 @@ export default {
     cursor: pointer;
   }
 }
+
 .input-with-select {
   width: 200px;
 }
@@ -1203,7 +1264,8 @@ export default {
 .search {
   ::v-deep .el-input, ::v-deep .el-select {
     width: calc(100% - 80px);
-    .el-input{
+
+    .el-input {
       width: 100%;
     }
   }
@@ -1218,6 +1280,7 @@ export default {
 
 .investmentList {
   position: relative;
+
   .buttomInput {
     display: flex;
     justify-content: space-between;
@@ -1248,11 +1311,13 @@ export default {
     .infoIcard {
       margin-left: 49px;
       max-width: 170px;
+
       > div {
         display: flex;
         font-size: 14px;
         height: 35px;
         line-height: 35px;
+
         label {
           display: block;
           min-width: 80px;
@@ -1268,7 +1333,8 @@ export default {
             font-weight: bold;
           }
         }
-        .infoIcardValue{
+
+        .infoIcardValue {
           max-width: 100%;
           text-overflow: ellipsis;
           overflow: hidden;

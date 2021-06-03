@@ -6,7 +6,7 @@
   <iDialog :title="$t(title)" :visible.sync="value" width="878" top="0" @close='clearDiolog' z-index="1000"
            v-loading="iDialogLoading" class="iDialogReject">
     <div slot="title" class="title">
-      <div class="text">{{ $t(title) }}<span>*</span></div>
+      <div class="text">{{ $t(title) }}</div>
     </div>
     <div class="changeContent">
       <iInput
@@ -52,10 +52,10 @@ export default {
       this.$emit('input', false)
     },
     save(){
-      if(!this.approvalComments){
-        iMessage.warn('请输入拒绝原因')
-        return
-      }
+      // if(!this.approvalComments){
+      //   iMessage.warn('请输入拒绝原因')
+      //   return
+      // }
       this.iDialogLoading = true
       reject({
         applyIds: this.multipleSelection.map(item => item.id),

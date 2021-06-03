@@ -10,6 +10,7 @@
     <div class="changeContent">
       <div v-loading="tableLoading">
         <iTableList
+            :selection="false"
             :height="tableHeight - 240"
             :tableData="tableListData"
             :tableTitle="tableTitle"
@@ -52,7 +53,7 @@ export default {
     iPagination,
   },
   props: {
-    title: {type: String, default: '申请金额'},
+    title: {type: String, default: '申请明细'},
     RFQID: {type: String, default: ''},
     value: {type: Boolean},
   },

@@ -66,9 +66,23 @@
         <!--          <iButton @click="reset">重置</iButton>-->
       </div>
     </iSearch>
-    <div v-loading="loadingiPage">
-      <div class="content" v-if="contentData.length > 0">
-        <div class="item" v-for="(item, index) in contentData" :key="index"
+    <div v-loading="loadingiPage" style="overflow:auto;" :style="{height: cardHeight + 'px'}">
+<!--      <div class="infinite-list-wrapper" style="overflow:auto;height: 100px;">-->
+<!--        <ul-->
+<!--            class="list"-->
+<!--            v-infinite-scroll="load"-->
+<!--            infinite-scroll-disabled="disabled">-->
+<!--          <li v-for="(item, index) in contentData" :key="index" class="list-item">{{ item.cartypeProjectName }}</li>-->
+<!--        </ul>-->
+<!--        <p v-if="loading">加载中...</p>-->
+<!--        <p v-if="noMore">没有更多了</p>-->
+<!--      </div>-->
+
+      <div class="content list"
+           v-if="contentData.length > 0"
+           v-infinite-scroll="load"
+           infinite-scroll-disabled="disabled">
+        <div class="item list-item" v-for="(item, index) in contentData" :key="index"
              @click="toEdit(item.id, item.sourceStatus, item.isBudget)">
           <div class="item_top">
             <Popover
@@ -130,6 +144,14 @@
           </Popover>
         </div>
       </div>
+      <div class="loader">
+        <div class="loader-inner ball-pulse">
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
+      </div>
+<!--      <p v-if="noMore">没有更多了</p>-->
       <div class="noData" v-if="contentData.length === 0">暂无数据</div>
     </div>
   </div>
@@ -151,8 +173,12 @@ import {findProjectTypeDetailPulldown, getCartypePulldown} from "@/api/ws2/budge
 import {getPurchaseFactoryPullDown} from "@/api/ws2/baApply";
 import {mapState} from 'vuex'
 import Moment from 'moment'
+import {tableHeight} from "@/utils/tableHeight";
+import {cloneDeep} from 'lodash'
+import {pageMixins} from "@/utils/pageMixins";
 
 export default {
+  mixins: [tableHeight],
   components: {
     Popover,
     iSearch,
@@ -160,27 +186,49 @@ export default {
   },
   data() {
     return {
+      loading: false,
       loadingiPage: false,
       loadingiSearch: false,
       tabtitle: tabtitle,
       form: form,
       contentData: [],
+      initContentData: [],
       cartypeProId: [],
       localFactoryName: '',
-      timeStarEnd: []
+      timeStarEnd: [],
+      count: 8,
+      cardHeight: 600,
     };
   },
   computed: {
     ...mapState({
       onleySelf: (state) => state.mouldManagement.onleySelf,
       showHistory: (state) => state.mouldManagement.checkHistory,
-    })
+    }),
+    noMore () {
+      return this.count >= this.initContentData.length
+    },
+    disabled () {
+      return this.loadingiPage || this.noMore
+    }
   },
   mounted() {
     this.findCartypePro();
     this.getProcureGroup();
+    this.cardHeight = this.tableHeight - document.querySelector('.giSearch').offsetHeight - document.querySelector('.navBar').offsetHeight - document.querySelector('.left').offsetHeight - 100
   },
   methods: {
+    load () {
+      if(!this.loading){
+        this.loading = true
+        setTimeout(() => {
+          this.count += 8
+          this.contentData = this.contentData.concat(this.initContentData.slice(this.count - 8, this.count))
+          this.loading = false
+        }, 2000)
+      }
+
+    },
     getProcureGroup() {
       this.loadingiSearch = true
       Promise.all([getPurchaseFactoryPullDown(), getCartypePulldown()]).then((res) => {
@@ -248,7 +296,8 @@ export default {
           const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
           this.loadingiPage = false
           if (Number(res.code) === 0) {
-            this.contentData = res.data
+            this.initContentData = cloneDeep(res.data)
+            this.contentData = res.data.slice(0, 8)
             this.$nextTick(() => {
               // const vm = echarts().init(document.getElementById("chart0"));
               // let option = {
@@ -437,6 +486,50 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+@keyframes scale
+{
+  30% {
+    -webkit-transform: scale(0.3);
+    transform: scale(0.3);
+  }
+
+  100% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+  }
+}
+
+.loader{
+  box-sizing: border-box;
+  display: flex;
+  flex: 0 1 auto;
+  flex-direction: column;
+  flex-grow: 1;
+  flex-shrink: 0;
+  flex-basis: 25%;
+  height: 30px;
+  align-items: center;
+  justify-content: center;
+  .ball-pulse > div{
+    background-color: #1763f7;
+    width: 15px;
+    height: 15px;
+    border-radius: 100%;
+    margin: 2px;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+    display: inline-block;
+    &:nth-of-type(1){
+      animation: scale 0.75s 0.12s infinite cubic-bezier(.2, .68, .18, 1.08);
+    }
+    &:nth-of-type(2){
+      animation: scale 0.75s 0.24s infinite cubic-bezier(.2, .68, .18, 1.08);
+    }
+    &:nth-of-type(3){
+      animation: scale 0.75s 0.36s infinite cubic-bezier(.2, .68, .18, 1.08);
+    }
+  }
+}
 .budgetApprovalDate::v-deep.el-range-editor.el-input__inner {
   width: 489px;
   .el-range-input {

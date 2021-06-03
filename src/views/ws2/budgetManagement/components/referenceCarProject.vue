@@ -32,8 +32,8 @@
             @change="searchRelationCarTypeList"
         >
           <el-option
-              :value="item.projectTypeId"
-              :label="item.projectTypeName"
+              :value="item"
+              :label="item"
               v-for="(item, index) in projectTypeList"
               :key="index"
           >
@@ -50,7 +50,6 @@
             :tableData="tableListData1"
             :tableTitle="tmCartypeProTableTitle"
             :activeItems="'partNum'"
-            @handleSelectionChange="handleSelectionChange"
         >
           <template #info="scope">
             <div class="linkStyle" :class="{noLine: scope.row.tmCartypeProId == noLine}"><span @click="relationCarTypePartsList(scope.row.tmCartypeProId)">{{ $t('详情') }}</span></div>
@@ -65,8 +64,6 @@
             :selection="false"
             :tableData="tableListData2"
             :tableTitle="partsTableTitle"
-            :activeItems="'partNum'"
-            @handleSelectionChange="handleSelectionChange"
         >
         </iTableList>
       </div>
@@ -104,7 +101,7 @@ export default {
     iSelect,
   },
   props: {
-    title: {type: String, default: '关联车型项目'},
+    title: {type: String, default: '参考车型项目'},
     value: {type: Boolean},
     isApply: {type: Boolean, default: true},
     referenceCarProjectParams: {type: Object, default: () => {}},
@@ -145,7 +142,8 @@ export default {
           iMessage.error(result0);
         }
         if (Number(res[1].code) === 0) {
-          this.projectTypeList = res[1].data.projectTypePullDownVOList
+          // this.projectTypeList = res[1].data.projectTypePullDownVOList
+          this.projectTypeList = ['新车型', 'MP车型', '发动机']
         } else {
           iMessage.error(result1);
         }

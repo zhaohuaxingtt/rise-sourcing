@@ -158,6 +158,7 @@
     ></alertDialog>
     <referenceCarProject
         v-model="referenceCarProjectShow"
+        :title="参考车型项目"
         :referenceCarProjectParams="referenceCarProjectParams"
         :isApply="false"
         @refresh="getTableListFn"
