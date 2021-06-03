@@ -2,15 +2,16 @@
   <iDialog class="dialog" v-bind="$props" :visible.sync="visible" v-on="$listeners">
     <div class="dialog-Header" slot="title">
       <div class="font18 font-weight">{{$t('strategicdoc.PaiXu')}}</div>
-      <div class="control">
+      <!-- <div class="control">
         <iButton @click="$emit('update:visible', false)">{{ $t('LK_QUEDING') }}</iButton>
         <iButton @click="$emit('update:visible', false)">{{ $t('LK_QUXIAO') }}</iButton>
-      </div>
+      </div> -->
     </div>
     <div class="body" v-loading="tableLoading">
       <tableList
         index
         radio
+        :selection="false"
         :height="controlHeight ? '91%' : '100%'"
         v-show="visible"
         class="table margin-top20" 
@@ -69,6 +70,10 @@ export default {
       type: Boolean,
       default: false
     },
+    nomiAppId: {
+      type: String,
+      default: ''
+    },
     params: {
       type: Object,
       default: () => ({})
@@ -105,7 +110,7 @@ export default {
       !hideLoading && (this.tableLoading = true)
       console.log('tableLoading')
       getdDecisiondataDaringList({
-        nomiAppId: this.this.nomiAppId,
+        nomiAppId: this.nomiAppId,
         sortColumn: 'sort',
         isAsc: true,
         fileType: '101',
