@@ -125,6 +125,9 @@ import {
   nominateRreeze,
   nominateConfirm,
 } from '@/api/designate/nomination'
+// 前端配置文件里面的定点类型
+import { applyType } from '@/layout/nomination/components/data'
+
 import { pageMixins } from '@/utils/pageMixins'
 import filters from "@/utils/filters"
 
@@ -177,11 +180,12 @@ export default {
     // 查看详情
     viewNominationDetail(row) {
       // 缓存nominateProcessType
-      this.$store.dispatch('setNominationType', row.nominateProcessType)
+      // this.$store.dispatch('setNominationType', row.nominateProcessType)
       // 禁用nominateProcessType编辑
       this.$store.dispatch('setNominationTypeDisable', true)
       this.$nextTick(() => {
-        this.$router.push({path: '/designate/rfqdetail', query: {desinateId: row.id}})
+        const nominateProcessType = (applyType.find(o => o.name === row.nominateProcessType) || {}).id || ''
+        this.$router.push({path: '/designate/rfqdetail', query: {desinateId: row.id, designateType: nominateProcessType}})
       })
     },
     // 获取定点管理列表
@@ -271,7 +275,7 @@ export default {
           }else{
             iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
           }
-        }).catch((err)=>{
+        }).catch((e)=>{
           iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
         })
       }
@@ -297,7 +301,7 @@ export default {
           }else{
             iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
           }
-        }).catch((err)=>{
+        }).catch((e)=>{
           iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
         })
       }
