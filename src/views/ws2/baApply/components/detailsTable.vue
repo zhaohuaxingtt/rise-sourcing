@@ -15,6 +15,9 @@
       <template #baNum="scope">
         <div>{{scope.row.baNum === '' ? '无' : scope.row.baNum}}</div>
       </template>
+      <template #rsNum="scope">
+        <a @click="openViewPdf(scope)" class="detailed">{{scope.row.rsNum}}</a>
+      </template>
     </iTableList>
 
     <!-- 申请BA单弹窗 -->
@@ -94,6 +97,12 @@ export default {
   },
 
   methods: {
+
+    //  预览RSpdf
+    openViewPdf(scope){
+      const url = process.env.VUE_APP_BACOMMODITYAPPLY + '/exportRsFull/' + scope.row.rsNum;
+      window.open(url);
+    },
 
     downloadExport(){
       downloadExport(this.selectTableData).then(res => {
@@ -207,5 +216,11 @@ export default {
   display: flex;
   justify-content: flex-end;
   margin-bottom: 20px;
+}
+.detailed{
+  color: #1663F6;
+  text-decoration: underline;
+  font-family: Arial;
+  cursor: pointer;
 }
 </style>
