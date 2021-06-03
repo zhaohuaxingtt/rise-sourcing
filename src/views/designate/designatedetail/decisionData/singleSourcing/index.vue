@@ -9,39 +9,24 @@
             <div class="margin-top30 margin-bottom30">
                 <iFormGroup inline>
                     <iFormItem label-width="130px"  label="项⽬名称 Project:">
-                        <iText style="width:250px">xxxx</iText>
+                        <iText tooltip style="width:250px">{{projectName}}</iText>
                     </iFormItem>
                         <iFormItem label-width="180px"  label="定点申请单号 Project No.:">
-                        <iText style="width:250px">51017456</iText>
+                        <iText style="width:250px">{{nominateId}}</iText>
                     </iFormItem>
                 </iFormGroup>
             </div>
             <!-- 表单部分 -->
             <div class="singleSourcing-table">
-                <el-table
-                :empty-text="$t('LK_ZANWUSHUJU')"
-                :data="tableListData"
-                v-loading="loading"
-                header-align="center"
+                <tableList
+                    :selection="false"
+                    class="table"
+                    index
+                    :tableData="tableListData"
+                    :tableTitle="tableTitle"
+                    :tableLoading="loading"
                 >
-                <el-table-column
-                    :key="'tableListData-index'+index"
-                    label="#"
-                    align="center"
-                    width="50"
-                    >
-                    {{index+0}}
-                </el-table-column>
-                <template v-for="(item,index) in tableTitle" >
-                    <el-table-column
-                        :key="'tableListData'+index"
-                        :prop="item.key"
-                        :label="item.name"
-                        align="center"
-                        >
-                    </el-table-column>>
-                    </template>
-                    </el-table>
+                </tableList>
                 <iPagination
                     class="margin-bottom20"
                     @size-change="handleSizeChange($event, purchaseFactory)"
@@ -67,6 +52,10 @@ import {
   iText,
 } from "rise";
 import {pageMixins} from '@/utils/pageMixins'
+import tableList from "@/views/partsign/editordetail/components/tableList"
+import {
+    getSingleSourcing,
+} from '@/api/designate/decisiondata/singleSourcing'
 export default {
     mixins:[pageMixins],
      components:{
@@ -75,6 +64,7 @@ export default {
         iFormGroup,
         iFormItem,
         iText,
+        tableList,
     },
     name:'SingleSourcing',
     data(){
@@ -82,21 +72,53 @@ export default {
             loading: false,
             tableListData:[],
             tableTitle:[
-                {name:'FS号\nFS No',key:'FSNo'},
-                {name:'零件号\nPart No.',key:'PARTNO'},
-                {name:'零件名称\nPart Name',key:'PartName'},
-                {name:'供应商名称\nSupplier Name',key:'SupplierName'},
-                {name:'供应商编码\nSupplier No.',key:'SupplierNo.'},
-                {name:'原因\nReason',key:'Reason'},
-                {name:'原因部⻔\nCaused by',key:'Causedby'},
-            ]
+                {name:'FS号\nFS No',key:'FSNo',props:'fsnrGsnrNum'},
+                {name:'零件号\nPart No.',key:'PARTNO',props:'partNum'},
+                {name:'零件名称\nPart Name',key:'PartName',props:'partNameCh'},
+                {name:'供应商名称\nSupplier Name',key:'SupplierName',props:'suppliersName'},
+                {name:'供应商编码\nSupplier No.',key:'SupplierNo.',props:'supplierId'},
+                {name:'原因\nReason',key:'Reason',props:'singleReason'},
+                {name:'原因部⻔\nCaused by',key:'Causedby',props:'department'},
+            ],
+            projectName:'',
+            nominateId:'',
         }
+    },
+    created(){
+        this.getDetail();
     },
     computed:{
         isPreview(){
             return this.$store.getters.isPreview;
         }
     },
+    methods:{
+        // 获取详情
+        async getDetail(){
+            this.loading =  true;
+            const { query } = this.$route;
+            const {rfqNum="1" } = query;
+            const { page } = this;
+            const params = {
+                nominateId:rfqNum,
+                current:page.currPage,
+                size:page.pageSize,
+            };
+            await getSingleSourcing(params).then((res)=>{
+                const {resultPage={},nominateId='',cartypeProjectZhList=[]} = res;
+                const {code,total,data} = resultPage;
+                console.log(res);
+                if(code == '200' && data){
+                    this.tableListData = data;
+                    this.page.totalCount = total;
+                    this.nominateId = nominateId;
+                    this.projectName = cartypeProjectZhList.join();
+                }
+                this.loading =  false;
+
+            }).catch((err)=>{ this.loading =  false; });
+        },
+    }
 
 }
 </script>
