@@ -10,10 +10,11 @@
         width="90%"
         class="addPartsDialog"
     >
-    <inquiryFiles :rfqNum="rfqNum" />
-    <el-divider/>
-    <inquiryDrawing :rfqNum="rfqNum" />
-        
+        <template v-if="dialogVisible">
+            <inquiryFiles :rfqNum="rfqNum" />
+            <el-divider/>
+            <inquiryDrawing :rfqNum="rfqNum" />
+        </template>
     </iDialog>
 </template>
 

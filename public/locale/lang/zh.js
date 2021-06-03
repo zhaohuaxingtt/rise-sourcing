@@ -851,6 +851,7 @@
         'LK_JIESHUSHIJIAN':'结束日期', // 结束日期
         'LK_WENJIANQINGXUANZHUANZHIZHENGCHANG':'上传附件:文件请旋转至正常方向后上传', // 上传附件:文件请旋转至正常方向后上传
         'LK_FASONGKM': '发送KM', // 发送KM
+        'LK_DONGJIE':'冻结', // 冻结
 
         // 定点管理
         'nominationLanguage': {

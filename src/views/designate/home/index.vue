@@ -25,6 +25,13 @@
           >
             {{ $t("nominationLanguage.XinJianLingJIanDingDianShengQIng") }}
           </iButton>
+          
+          <!-- 冻结 -->
+          <iButton @click="freeze">
+            {{$t('LK_DONGJIE')}}
+          </iButton>
+
+
           <!--  <iButton @click="creatFs" v-permission="PARTSPROCURE_GENERATEFSBUTTON">
             {{ $t('partsprocure.PARTSPROCUREGENERATEFSGSNR') }}
           </iButton> -->
@@ -219,7 +226,11 @@ export default {
       } catch (e) {
         iMessage.error(this.$i18n.locale === "zh" ? e.desZh : event.desEn)
       }
-    }
+    },
+    // 冻结
+    freeze(){
+      console.log('冻结!!!!');
+    },
   }
 }
 </script>
