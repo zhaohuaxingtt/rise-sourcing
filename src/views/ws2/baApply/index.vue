@@ -112,8 +112,8 @@ export default {
     iSelect,
     iTableList,
     iPagination,
-    DetailsSearch,
-    DetailsTable
+    // DetailsSearch,
+    // DetailsTable
   },
   data(){
     return {
@@ -141,7 +141,7 @@ export default {
 
   created(){
     this.getPageData();
-    // this.findCarTypeList();
+    this.findCarTypeList();
   },
 
   methods: {
