@@ -11,6 +11,14 @@
     <div class="changeContent">
       <div v-loading="tableLoading">
         <div
+            v-for="(item, index) in totalBudget"
+            :key="index"
+            class="tips"
+        >
+          {{item.tmCarTypeProName}}车型项目，总预算
+          {{item.totalBudget}}。申请金额已超出总预算。
+        </div>
+        <div
             v-for="(item, index) in tableListData"
             :key="index"
             class="tips"
@@ -64,6 +72,7 @@ export default {
     return {
       form: form,
       tableListData: [],
+      totalBudget: [],
       tableTitle: alertList,
       tableLoading: false,
       saveLoading: false,
@@ -78,11 +87,11 @@ export default {
       alert(this.redMultipleSelection).then((res) => {
         const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
         if (Number(res.code) === 0) {
-          this.tableListData = res.data.map(item => {
+          this.tableListData = res.data.ratifyAlertVOList.map(item => {
             item.summaries = ['Total', '', item.applyParamVOList.map(item => Number(item.budgetApplyAmount)).reduce((total, num) => total + num)]
-            console.log(item.summaries)
             return item
           })
+          this.totalBudget = res.data.dualAlertVOList
         } else {
           iMessage.error(result);
         }

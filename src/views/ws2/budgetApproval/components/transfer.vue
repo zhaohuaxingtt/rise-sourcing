@@ -18,8 +18,8 @@
           clearable
       >
         <el-option
-            :value="item.linieID"
-            :label="item.linieName"
+            :value="item.userID"
+            :label="item.userName"
             v-for="(item, index) in applyUserIdList"
             :key="index"
         ></el-option>
