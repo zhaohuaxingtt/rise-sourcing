@@ -1,7 +1,7 @@
 <template>
-  <div class="generateInvestmentList" v-permission="TOOLING_BUDGET_BUILD">
+  <div class="generateInvestmentList">
     <div class="page-head">
-      <div class="page-head-flex" :class="tableIndex === 0 ? 'head-on' : ''" @click="selectHeadTable(0)">
+      <div class="page-head-flex" v-permission="TOOLING_BUDGET_BAAPPROVAL_ALL" :class="tableIndex === 0 ? 'head-on' : ''" @click="selectHeadTable(0)">
         <div class="line-divL line-div">
           <div class="title">All</div>
           <div class="describe">{{$t('LK_ALLBAAPPLY')}}</div>
@@ -11,7 +11,7 @@
           <icon v-else symbol name="icondaiquerenBAshenqingzhuijiajineweixuanzhong" class="openIcon"></icon>
         </div>
       </div>
-      <div class="page-head-flex" :class="tableIndex === 1 ? 'head-on' : ''" @click="selectHeadTable(1)">
+      <div class="page-head-flex" v-permission="TOOLING_BUDGET_BAAPPROVAL_APPLY" :class="tableIndex === 1 ? 'head-on' : ''" @click="selectHeadTable(1)">
         <div class="line-divL line-div">
           <div class="title">{{tabData.applyCount}}</div>
           <div class="describe">{{$t('LK_TOBECONFIRMEDBAAPPLY')}}</div>
@@ -21,7 +21,7 @@
           <icon v-else symbol name="icondaiquerenBAshenqingzhuijiajineweixuanzhong" class="openIcon"></icon>
         </div>
       </div>
-      <div class="page-head-flex" :class="tableIndex === 3 ? 'head-on' : ''" @click="selectHeadTable(3)">
+      <div class="page-head-flex" v-permission="TOOLING_BUDGET_BAAPPROVAL_MONEY" :class="tableIndex === 3 ? 'head-on' : ''" @click="selectHeadTable(3)">
         <div class="line-divL line-div">
           <div class="title">{{tabData.amountCount}}</div>
           <div class="describe">{{$t('LK_TOBECONFIRMEDMONEY')}}</div>

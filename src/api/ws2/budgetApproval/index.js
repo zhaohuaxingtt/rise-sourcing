@@ -26,9 +26,9 @@ export function statusCombo(parmars) {
     })
 }
 //转派采购员/申请人
-export function userCombo(parmars) {
+export function applyUserCombo(parmars) {
     return VUE_APP_BUDGET({
-        url: '/assign/userCombo',
+        url: '/assign/applyUserCombo',
         method: 'POST',
         data: parmars
     })

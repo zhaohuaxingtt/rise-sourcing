@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-permission="TOOLING_DATABASE_SUMMARY">
     <iSearch
         class="margin-bottom20 giSearch"
         style="margin-top: 20px"
