@@ -150,7 +150,6 @@ export default {
         const result0 = this.$i18n.locale === 'zh' ? res[0].desZh : res[0].desEn;
         const result1 = this.$i18n.locale === 'zh' ? res[1].desZh : res[1].desEn;
         const result2 = this.$i18n.locale === 'zh' ? res[2].desZh : res[2].desEn;
-        const result3 = this.$i18n.locale === 'zh' ? res[3].desZh : res[3].desEn;
         if(res[0].data){
           this.factoryList = res[0].data;
         }else{
@@ -166,7 +165,7 @@ export default {
         if(res[2].data){
           this.fromGroup = res[2].data;
         }else{
-          iMessage.error(result3);
+          iMessage.error(result2);
         }
         this.loadingiSearch = false;
       }).catch(err => {

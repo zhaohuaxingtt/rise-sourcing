@@ -213,7 +213,6 @@ export default {
       this.loadingiSearch = true;
       Promise.all([getCartypePulldown()]).then(res => {
         const result0 = this.$i18n.locale === 'zh' ? res[0].desZh : res[0].desEn;
-        const result1 = this.$i18n.locale === 'zh' ? res[1].desZh : res[1].desEn;
 
         if(res[0].data){
           this.fromGroup = res[0].data;
