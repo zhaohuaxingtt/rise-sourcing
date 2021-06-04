@@ -2,13 +2,23 @@
   <iDialog class="dialog" v-bind="$props" :visible.sync="visible" v-on="$listeners">
     <div class="dialog-Header" slot="title">
       <div class="font18 font-weight">{{$t('strategicdoc.PaiXu')}}</div>
-      <div class="control">
-        <iButton>{{ $t('LK_QUEDING') }}</iButton>
-        <iButton>{{ $t('LK_QUXIAO') }}</iButton>
-      </div>
+      <!-- <div class="control">
+        <iButton @click="$emit('update:visible', false)">{{ $t('LK_QUEDING') }}</iButton>
+        <iButton @click="$emit('update:visible', false)">{{ $t('LK_QUXIAO') }}</iButton>
+      </div> -->
     </div>
     <div class="body" v-loading="tableLoading">
-      <tableList index radio :height="controlHeight ? '91%' : '100%'" v-show="visible" class="table margin-top20" :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="loading" @handleSelectionChange="handleSelectionChange">
+      <tableList
+        index
+        radio
+        :selection="false"
+        :height="controlHeight ? '91%' : '100%'"
+        v-show="visible"
+        class="table margin-top20" 
+        :tableData="tableListData"
+        :tableTitle="tableTitle" 
+        :tableLoading="loading" 
+        @handleSelectionChange="handleSelectionChange">
         <template #isTop="scope">
           <a class="link-underline" v-if="scope.$index === 0">
             <icon symbol name="iconpaixu-xiangshangjinzhi" class="icon" />
@@ -33,7 +43,6 @@
         @current-change="handleCurrentChange($event, getFetchData)"
         background
         :current-page="page.currPage"
-        :page-sizes="page.pageSizes"
         :page-size="page.pageSize"
         :layout="page.layout"
         :total="page.totalCount" />
@@ -45,8 +54,8 @@
 import { iPagination, iDialog, iMessage, iButton, icon } from '@/components'
 import { sorttableTitle as tableTitle, mokeTableListData } from './data'
 import { pageMixins } from '@/utils/pageMixins'
-import tableList from '@/views/designate/supplier/components/tableList'
 import filters from '@/utils/filters'
+import tableList from '@/views/designate/supplier/components/tableList'
 import {
   updateDaringSort,
   getdDecisiondataDaringList
@@ -60,6 +69,10 @@ export default {
     visible: {
       type: Boolean,
       default: false
+    },
+    nomiAppId: {
+      type: String,
+      default: ''
     },
     params: {
       type: Object,
@@ -87,7 +100,8 @@ export default {
       page: {
         currPage: 1,
         pageSize: 10,
-        totalCount: 0
+        totalCount: 0,
+        layout: "total, prev, pager, next, jumper"
       }
     }
   },
@@ -96,7 +110,7 @@ export default {
       !hideLoading && (this.tableLoading = true)
       console.log('tableLoading')
       getdDecisiondataDaringList({
-        nomiAppId: '1',
+        nomiAppId: this.nomiAppId,
         sortColumn: 'sort',
         isAsc: true,
         fileType: '101',

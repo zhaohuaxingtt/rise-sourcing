@@ -5,7 +5,7 @@ const requstPartResource = axios(process.env.VUE_APP_DIC)
 // VUE_APP_PARTS
 
 const requstPartsProcure = axios(process.env.VUE_APP_PARTSPROCURE)
-const courcing = axios(process.env.VUE_APP_PART_PROCURE)
+const sourcing = axios(process.env.VUE_APP_PART_PROCURE)
 // 采购项目-获取材料组信息
 export function getMaterialGroup(params) {
 	return requstPartsProcure({
@@ -154,9 +154,27 @@ export function dictkey(params) {
 }
 // 检测当前值是不是在范围里面。
 export function checkFactory(params) {
-	return courcing({
+	return sourcing({
 		url: '/part-src-prjs/is-exist-cartype-project-factory',
 		method: 'POST',
 		data: params
 	})
+}
+
+// 获取采购项目列表
+export function getParts(params) {
+	return requstPartsProcure({
+		url: "/web/parts",
+    method: "GET",
+    params
+	})
+}
+
+// 创建采购项目
+export function createParts(params){
+  return sourcing({
+    url: "/part-src-prjs",
+    method: "POST",
+    data: params
+  })
 }

@@ -3,12 +3,12 @@
     <div class="dialog-Header" slot="title">
       <div class="font18 font-weight">{{$t('strategicdoc.ShangChuan')}}</div>
       <div class="control">
-        <iButton>{{ $t('LK_XIAZAI') }}</iButton>
+        <iButton @click="download">{{ $t('LK_XIAZAI') }}</iButton>
         <iButton @click="deleteFile">{{ $t('LK_SHANCHU') }}</iButton>
         <upload
           class="upload-trigger"
           :hideTip="true"
-          :accept="'.jpg,.jpeg,.png,.pdf'"
+          :accept="'.jpg,.jpeg,.png,.pdf,.tif'"
           :buttonText="$t('strategicdoc.ShangChuanWenJian')"
           @on-success="onDraingUploadsucess"
         />
@@ -25,14 +25,13 @@
     <div slot="footer" class="footer">
       <iPagination v-update
         class="pagination"
-        @size-change="handleSizeChange($event, getFetchData)"
         @current-change="handleCurrentChange($event, getFetchData)"
         background
         :current-page="page.currPage"
-        :page-sizes="page.pageSizes"
         :page-size="page.pageSize"
         :layout="page.layout"
         :total="page.totalCount" />
+      
     </div>
   </iDialog>
 </template>
@@ -44,6 +43,8 @@ import { pageMixins } from '@/utils/pageMixins'
 import tableList from '@/views/designate/supplier/components/tableList'
 import filters from '@/utils/filters'
 import upload from '@/components/Upload'
+import { downloadFile } from '@/api/file'
+
 import {
   uploadDaring,
   batchDeleteDaring,
@@ -58,6 +59,10 @@ export default {
     visible: {
       type: Boolean,
       default: false
+    },
+    nomiAppId: {
+      type: String,
+      default: ''
     },
     params: {
       type: Object,
@@ -83,7 +88,8 @@ export default {
       page: {
         currPage: 1,
         pageSize: 10,
-        totalCount: 0
+        totalCount: 0,
+        layout: "total, prev, pager, next, jumper"
       }
     }
   },
@@ -92,9 +98,10 @@ export default {
       return window.moment(date).format('YYYY-MM-DD HH:mm:ss')
     },
     getFetchData() {
+      if (!this.nomiAppId) return iMessage.error(this.$t('nominationLanguage.DingDianIDNotNull'))
       this.tableLoading = true
       getdDecisiondataDaringList({
-        nomiAppId: '1',
+        nomiAppId: this.nomiAppId,
         sortColumn: 'sort',
         isAsc: true,
         fileType: '101',
@@ -114,9 +121,26 @@ export default {
         this.tableLoading = false
       })
     },
+    download() {
+      const fileList = this.multipleSelection.map(o => o.id)
+      if (!fileList.length) return iMessage.error(this.$t('nominationSuggestion.QingXuanZeZhiShaoYiTiaoShuJu'))
+      try {
+        console.log(fileList)
+        if (fileList.length) {
+          const params = {
+            applicationName: 'rise',
+            fileList
+          }
+          downloadFile(params)
+        }
+      } catch (e) {
+        console.log(e)
+      }
+    },
     handleSelectionChange(list) {
       this.multipleSelection = list
     },
+    // 上传成功回调
     onDraingUploadsucess(data) {
       console.log(data)
       this.tableLoading = true
@@ -134,6 +158,7 @@ export default {
       uploadDaring(params).then(res => {
         if (res.code === '200') {
           iMessage.success('上传成功')
+          this.getFetchData()
           console.log(res)
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
@@ -145,6 +170,7 @@ export default {
       })
 
     },
+    // 删除文件
     async deleteFile() {
       if (!this.multipleSelection.length) {
         iMessage.error(this.$t('nominationSuggestion.QingXuanZeZhiShaoYiTiaoShuJu'))

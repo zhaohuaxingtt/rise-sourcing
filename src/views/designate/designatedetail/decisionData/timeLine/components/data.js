@@ -5,13 +5,13 @@
  */
 // timeline顶部的总步骤
 export const stepList = [
-    {title:'Parts Release',tips:'KW05',icon:'iconTimeLine-PartsRelease'},
-    {title:'CSC meeting',tips:'KW15',icon:'iconTimeLine-CSCMeeting'},
-    {title:'BF Confirm',tips:'KW20',icon:'iconTimeLine-BFConfirm'},
-    {title:'VFF',tips:'KW28',icon:'icondingdianguanlijiedian-jinhangzhong'},
-    {title:'PVS',tips:'KW30',icon:'icondingdianguanlijiedian-jinhangzhong'},
-    {title:'OTS',tips:'KW38',icon:'icondingdianguanlijiedian-jinhangzhong'},
-    {title:'SOP',tips:'KW48',icon:'icondingdianguanlijiedian-jinhangzhong'},
+    {title:'Parts Release',tips:'KW05',icon:'iconTimeLine-PartsRelease',isEdit:false},
+    {title:'CSC meeting',tips:'KW15',icon:'iconTimeLine-CSCMeeting',isEdit:false},
+    {title:'BF Confirm',tips:'KW20',icon:'iconTimeLine-BFConfirm',isEdit:false},
+    {title:'VFF',tips:'KW28',icon:'icondingdianguanlijiedian-jinhangzhong',isEdit:false},
+    {title:'PVS',tips:'KW30',icon:'icondingdianguanlijiedian-jinhangzhong',isEdit:false},
+    {title:'OTS',tips:'KW38',icon:'icondingdianguanlijiedian-jinhangzhong',isEdit:false},
+    {title:'SOP',tips:'KW48',icon:'icondingdianguanlijiedian-jinhangzhong',isEdit:false},
 ]
 
 // timeline供应商步骤

@@ -119,6 +119,21 @@ module.exports = {
         https: false,
         hotOnly: true,
         proxy: {
+						'procurementrequirementZZB': {
+								target: 'http://10.160.137.213:8083',
+								changeOrigin: true,
+								pathRewrite: {
+										"^/procurementrequirementZZB": ""
+								}
+						},
+						'/supplierApiWJS': { //王洁松服务地址
+								// target: 'http://192.168.50.89:8029',
+								target: 'http://10.122.18.166:8025',
+								changeOrigin: true,
+								pathRewrite: {
+										"^/supplierApiWJS": ""
+								}
+						},
             '/mock': {
                 target: 'https://www.fastmock.site/mock',
                 changeOrigin: true,
@@ -159,6 +174,7 @@ module.exports = {
                 target: 'http://10.122.18.166:8025',
                 // target: 'http://192.168.50.89:8029', // 周洁松
                 // target: 'http://10.160.141.72:8029', // 李自豪
+                // target: 'http://192.168.50.152:8029', // 谭易平
                 changeOrigin: true,
                 pathRewrite: {
                     "^/rfqApi": ""

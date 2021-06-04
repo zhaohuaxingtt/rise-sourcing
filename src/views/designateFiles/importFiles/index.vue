@@ -14,52 +14,36 @@
                 <iCard>
                   <div class="margin-bottom20 clearFloat">
                     <div class="floatright">
-                      <iButton>{{$t('LK_DAORU')}}</iButton>
-                      <iButton>{{$t('LK_PEIJIANMUBANXIAZAI')}}</iButton>
+                      <span class="margin-right10">
+                          <Upload 
+                              hideTip
+                              :buttonText="$t('LK_DAORU')"
+                              accept=" .xls,.xlsx"
+                              :request="uploadImportFile"
+                              @on-success="onDraingUploadsucess"
+                          />
+                      </span>
+                      <!-- <iButton>{{$t('LK_DAORU')}}</iButton> -->
+                      <iButton @click="downloadTemplate">
+                         <a class="trigger" href="javascript:;">
+                           {{$t('LK_PEIJIANMUBANXIAZAI')}}
+                         </a>
+                      </iButton>
                     </div>
                   </div>
                   <!-- 表格区域 -->
-                  <el-table
-                    :data="tableData"
-                    fit 
-                    tooltip-effect='light'
-                    :empty-text="$t('LK_ZANWUSHUJU')"
+                  <tableList
+                      class="table"
+                      index
+                      :tableData="tableListData"
+                      :tableTitle="tableTitle"
+                      :tableLoading="loading"
+                      @handleSelectionChange="handleSelectionChange"
                   >
-                    <el-table-column
-                      type="selection"
-                      align='center'
-                      width="50">
-                    </el-table-column>
-                    <el-table-column
-                      type="index"
-                      label="#"
-                      align='center'
-                      width="50">
-                    </el-table-column>
-                    <el-table-column
-                      prop="prop1"
-                      align='center'
-                      :label="$t('LK_BIANHAO')">
-                      <template slot-scope="scope">
-                        <span @click="goFilesList" class="link-underline" >{{scope.row.prop1}}</span>
+                      <template #code="scope">
+                        <span @click="goFilesList(scope.row.code)" class="link-underline" >{{scope.row.code}}</span>
                       </template>
-                    </el-table-column>
-                    <el-table-column
-                      prop="prop2"
-                      align='center'
-                      :label="$t('LK_DAORUSHIJIAN')">
-                    </el-table-column>
-                    <el-table-column
-                      prop="prop3"
-                      align='center'
-                      :label="$t('LK_DAORUYUAN')">
-                    </el-table-column>
-                    <el-table-column
-                      prop="prop4"
-                      align='center'
-                      :label="$t('LK_KESHI')">
-                    </el-table-column>
-                  </el-table>
+                  </tableList>
                   <!-- 分页 -->
                    <iPagination
                       v-update
@@ -86,9 +70,18 @@ import {
   iButton,
   iPagination,
 } from "rise";
+import Upload from '@/components/Upload'
 import { navList } from "@/views/partsign/home/components/data";
 import { cloneDeep } from "lodash";
 import { pageMixins } from "@/utils/pageMixins";
+import tableList from "@/views/partsign/editordetail/components/tableList";
+import { tableTitle } from "./data";
+
+import {
+  getAffixList,
+  uploadImportFile,
+  downloadImportFile,
+} from '@/api/designateFiles/importFiles'
 export default {
     name:'importFiles',
     mixins: [pageMixins],
@@ -98,26 +91,70 @@ export default {
         iCard,
         iButton,
         iPagination,
+        Upload,
+        tableList,
     },
     data(){
         return{
             tab:'source',
             navList: cloneDeep(navList),
-            tableData:[
+            loading: false,
+            tableTitle:tableTitle,
+            selectItems:[],
+            uploadImportFile:uploadImportFile,
+            tableListData:[
               {
-                prop1:'编号123',
-                prop2:'2020-01-01',
-                prop3:'分配科室',
-                prop4:'SKAP',
+                code:'123',
+                importDate:'2020-01-01',
+                importedName:'分配科室',
+                respDeptName:'SKAP',
 
               }
             ],
         }
     },
+    created(){
+      this.getList();
+    },
     methods:{
       // 跳转附件清单页
-      goFilesList(){
-        this.$router.push({path:'/sourcing/importfiles/detaillist'})
+      goFilesList(id){
+        this.$router.push({
+          path:'/sourcing/importfiles/detaillist',
+          query:{
+            id,
+          }
+          })
+      },
+
+      // 导入文件
+      onDraingUploadsucess(data){
+        console.log(data);
+      },
+      // 下载模板
+      downloadTemplate(){
+        downloadImportFile();
+      },
+      // 获取列表
+      getList(){
+        this.loading =  true;
+        const { page } = this;
+        const data = { 
+          pageNo:page.currPage,
+          pageSize:page.pageSize,
+        };
+        getAffixList(data).then((res)=>{
+          const {code,data} = res; 
+          if(code === '200' && data){
+              const {records,total} = data;
+              this.tableListData = records;
+              this.page.totalCount = total;
+          }
+          this.loading =  false;
+
+        }).catch((err)=>{
+          this.loading =  false;
+        });
       },
     }
 

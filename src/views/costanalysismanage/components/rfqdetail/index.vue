@@ -9,9 +9,9 @@
 <template>
   <iPage class="rfqdetail">
     <div class="header clearFloat">
-      <div class="title">{{ $t("costanalysismanage.Rfqbianhao") }}: </div>
+      <div class="title">{{ $t("costanalysismanage.RfqBianHao") }}: </div>
       <div class="control">
-        <iButton @click="back">{{ $t("costanalysismanage.Fanhui") }}</iButton>
+        <iButton @click="back">{{ $t("costanalysismanage.FanHui") }}</iButton>
         <logButton class="margin-left20" />
         <span class="margin-left20">
           <icon symbol name="icondatabaseweixuanzhong" class="font24"></icon>

@@ -10,13 +10,23 @@
           <span class="tips">{{$t('LK_WENJIANQINGXUANZHUANZHIZHENGCHANG')}}</span>
 
           <div class="floatright">
-              <iButton>{{$t('LK_XIAZAI')}}</iButton>
+              <iButton @click="downloadList" >{{$t('LK_XIAZAI')}}</iButton>
           </div>
       </div>
       <!-- 表格区域 -->
-      <tableList :activeItems='"a"' selection indexKey :tableData="tableData" :tableTitle="tableTitle" :tableLoading="tableLoading" @handleSelectionChange="handleSelectionChange" @openPage="openPage"></tableList>
+      <tableList
+        index
+        :tableData="tableData"
+        :tableTitle="tableTitle"
+        :tableLoading="tableLoading"
+        @handleSelectionChange="handleSelectionChange"
+      >
+        <template #tpPartAttachmentName="scope">
+            <span class="link" @click="downloadLine(scope.row)">{{ scope.row.fileName }}</span>
+        </template>
+      </tableList>
       <!-- 分页 -->
-      <iPagination v-update @size-change="handleSizeChange($event, getTableList)" @current-change="handleCurrentChange($event, getTableList)" background :page-sizes="page.pageSizes"
+      <iPagination v-update @size-change="handleSizeChange($event, getList)" @current-change="handleCurrentChange($event, getList)" background :page-sizes="page.pageSizes"
       :page-size="page.pageSize"
       :layout="page.layout"
       :current-page="page.currPage"
@@ -30,10 +40,14 @@
 import {
     iButton,
     iPagination,
+    iMessage,
 } from 'rise'
-import tableList from '@/views/designate/designatedetail/components/tableList'
+import tableList from "@/views/partsign/editordetail/components/tableList"
 import { pageMixins } from "@/utils/pageMixins"
 import { FilesTitle } from '../data'
+// import { getFileHistory } from "@/api/costanalysismanage/rfqdetail"
+import { findByRfqs } from "@/api/rfqManageMent/rfqDetail"
+import { downloadFile } from '@/api/file'
 
 export default {
     name:'inquiryFiles',
@@ -42,27 +56,97 @@ export default {
         tableList,
         iButton,
         iPagination,
+        iMessage,
+    },
+    props:{
+        rfqNum:{
+            type:String,
+            default:'',
+        }
     },
     data(){
         return{
-            tableData:[
-                {'a':'1a.jpg','b':'1.14','c':'2021-03-04','d':'张一'},
-                {'a':'2a.jpg','b':'2.14','c':'2021-03-04','d':'张二'},
-                {'a':'3c.jpg','b':'3.14','c':'2021-03-04','d':'张三'},
-           ],
+            tableData:[],
             tableTitle:FilesTitle,
             selectItems:[],
             tableLoading:false,
         }
     },
-    methods:{
-        openPage(){
-            const router =  this.$router.resolve({path: '/sourcing/accessorypartdetail', query: {  }})
-            window.open(router.href,'_blank')
-        },
+    created(){
+        this.getList();
+    },
+    methods:{ 
         handleSelectionChange(val) {
             this.selectItems = val;
+        },// 下载附件
+        async download(fileList){
+             const data = {
+              applicationName: 'rise',
+              fileList:fileList.join(),
+            };
+            await downloadFile(data);
         },
+        
+        // 批量下载附件
+        downloadList(){
+            const  {selectItems } = this;
+            if(!selectItems.length){
+            iMessage.warn(this.$t('LK_QINGXUANZHEXUYAOXIAZHAIDEFUJIAN'));
+            }else{
+                const list = selectItems.map((item)=>item.id);
+                this.download(list);
+            }
+        },
+        // 单文件下载
+        downloadLine(row){
+            const {id} = row;
+            this.download([id]);
+        },
+        // 获取列表
+        async getList(){
+            this.tableLoading =  true;
+            const {rfqNum} = this;
+            const { page } = this;
+            const data = {
+                otherInfoPackage:{
+                    rfqId:rfqNum,
+                    current:page.currPage,
+                    size:page.pageSize,
+                    findType:'03',
+                }
+            };
+            findByRfqs(data).then((res)=>{
+                const {code,data} = res; 
+                this.tableLoading =  false;
+                if(code === '200' && data){
+                    const { inquiryDrawingsVO={},total } = data;
+                    const { inquiryDrawingsVOS } = inquiryDrawingsVO;
+                    this.tableData = inquiryDrawingsVOS;
+                    this.page.totalCount = total;
+                }
+            }).catch((err)=>{
+                this.tableLoading =  false;
+            });
+            // const data = {
+            //     nomiAppId:rfqNum,
+            //     fileType:'111',   // 101 109: 报告清单,110:询价图纸,111:询价附件
+            //     pageNo:page.currPage,
+            //     pageSize:page.pageSize,
+            // }
+            // getFileHistory(data).then((res)=>{
+            //     const {code,data} = res; 
+            //      this.tableLoading =  false;
+            //     if(code === '200' && data){
+            //         const {records,total} = data;
+            //         this.tableLoading =  false;
+            //         this.tableData = records;
+            //         this.page.totalCount = total;
+            //     }
+            // }).catch((err)=>{
+            //      this.tableLoading =  false;
+            // })
+        },
+
     }
 
 }

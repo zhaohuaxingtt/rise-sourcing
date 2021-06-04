@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-24 09:47:32
- * @LastEditTime: 2021-05-26 16:28:37
+ * @LastEditTime: 2021-06-01 13:48:33
  * @LastEditors: Luoshuang
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsign\home\components\data.js
@@ -37,7 +37,7 @@ export const form = {
   projectCarType:'',//车型项目
   status:'1',//信息单状态，默认查询 解决bug
   tpInfoType:'',//信息单分类
-  userId:store.state.permission.userInfo.id
+  userId:store.state.permission.userInfo?.id
 }
 export const fromGroup = JSON.parse(JSON.stringify(form))
 

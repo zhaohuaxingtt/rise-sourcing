@@ -8,7 +8,7 @@
     with-credentials
     :on-success="handleAvatarSuccess"
     :before-upload="beforeAvatarUpload"
-    :http-request="onHttpUploaded"
+    :http-request="onUploaded"
     :accept="accept"
     v-bind="props"
   >
@@ -26,7 +26,9 @@ export default {
     uploadButtonLoading: {type: Boolean, default: false},
     hideTip: {type: Boolean, default: false},
     accept: {type: String, default: '.xlsx,.pdf,.docx'},
-    props: {type: Object, default: () => ({})}
+    props: {type: Object, default: () => ({})},
+    // 回调函数
+    onHttpUploaded: {type: Function}
   },
   components: {
     iButton
@@ -42,17 +44,23 @@ export default {
     }
   },
   methods: {
-    async onHttpUploaded(content) {
+    async onUploaded(content) {
       const formData = new FormData()
       formData.append('multipartFile', content.file)
       formData.append('applicationName', 'rise')
       this.loading = true
-      const res = await uploadFile(formData)
-      this.$emit('on-success', {
-        data: (res && res.data && res.data[0]) || {} ,
-        file: content.file || {}
-      })
-      this.loading = false
+      try {
+        const res = this.onHttpUploaded ? await this.onHttpUploaded(formData) : await uploadFile(formData)
+        this.$emit('on-success', {
+          data: (res && res.data && res.data[0]) || {} ,
+          file: content.file || {}
+        })
+        this.loading = false
+      } catch (e) {
+        this.loading = false
+      }
+      
+      
     },
   }
 }

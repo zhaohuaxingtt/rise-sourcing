@@ -1,11 +1,11 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 15:21:34
- * @LastEditTime: 2021-02-19 15:21:56
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-06-03 17:03:44
+ * @LastEditors: Luoshuang
  * @Description: 基于axios的下载封装下载工具，以IE和其他浏览器作为区分。部分浏览器通过blob a标签模拟click来下载
  *               IE通过msSaveBlob来下载。
- * @FilePath: \Front\src\utils\axios.download.js
+ * @FilePath: \front-web\src\utils\axios.download.js
  */
 import { iMessage } from '@/components';
 import {getToken,removeToken,setToken,setRefreshToken} from '@/utils'
@@ -13,7 +13,8 @@ import store from '@/store'
 const fileType = {
   'docx': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
   'xls': 'application/x-xls',
-  'doc': 'application/msword'
+  'doc': 'application/msword',
+  'xlsx': 'application/vnd.ms-excel'
 }
 export default function httpRequest(baseUrl='',timeOut=15000) {
   // eslint-disable-next-line no-undef
@@ -45,10 +46,28 @@ export default function httpRequest(baseUrl='',timeOut=15000) {
       if (!response) {
         return
       }
+      if (response.data.type === 'application/json') { // 不是返回文件流时处理Json报错
+        const reader = new FileReader()
+        reader.onload = (event) => {
+          const lang = localStorage.getItem("lang")
+          const errorMsg = JSON.parse(event.target.result);
+          iMessage.error(lang == "zh" ? errorMsg.desZh : errorMsg.desEn)
+        }
+        reader.readAsText(response.data)
+        return
+      }
       let type = response.headers['content-disposition'] ? response.headers['content-disposition'].split('.')[1] : 'zip'
       let blob = new Blob([response.data], { type: fileType[type] })
 
-      let fileName = response.headers["fname"]==undefined?`${new Date().toLocaleDateString()}.zip`:decodeURIComponent(response.headers["fname"]);
+      let fileName = `${new Date().toLocaleDateString()}.zip`
+      
+      if (response.headers["content-disposition"]) {
+        fileName = decodeURIComponent(response.headers["content-disposition"].split("=")[1]);
+      }
+
+      if (response.headers["fname"]) {
+        fileName = decodeURIComponent(response.headers["fname"])
+      }
      // 如果是ie则按照saveBlob的方式来下载数据
       if (navigator.msSaveBlob) {
           return navigator.msSaveBlob(blob, fileName)

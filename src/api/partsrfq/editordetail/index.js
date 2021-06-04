@@ -203,7 +203,6 @@ export function getTimeLine(quotationId=1,rfqId){
     })
 }
 
-
 //报价分析-轮次下拉结果
 export function negoAnalysisSummaryRound(rfqId){
     return nego({
@@ -216,6 +215,13 @@ export function negoAnalysisSummaryRound(rfqId){
 export function negoAnalysisSummaryLayout(rfqId){
     return nego({
         url: `/nego-assistant/nego-analysis-summary-layout/${rfqId}`,
+        method: 'GET'
+    })
+}
+// 获取供应商生产地
+export function getSupplierProducePlace(params) {
+    return requst({
+        url: `/supplier/getSupplierProducePlace/${ params.supplierId }`,
         method: 'GET'
     })
 }
@@ -249,3 +255,29 @@ export function negoAnalysisSummaryGroup(data){
     })
 }
 
+// 获取对应供应商的零件清单
+export function getPartsBySupplier(params) {
+    return requst({
+        url: `/list`,
+        method: 'POST',
+        data: params
+    })
+}
+
+// 发送KM
+export function sendKm(params) {
+    return requst({
+        url: `/sendKm`,
+        method: 'POST',
+        data: params
+    })
+}
+
+// 撤回发送KM
+export function cancelKm(params) {
+    return requst({
+        url: `/cancelKm`,
+        method: 'POST',
+        data: params
+    })
+}

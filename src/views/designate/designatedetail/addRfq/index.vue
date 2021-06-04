@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-24 11:27:22
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-05-24 15:53:52
+ * @LastEditTime: 2021-06-03 14:47:02
  * @Description: 
  * @FilePath: \front-web\src\views\designate\designatedetail\addRfq\index.vue
 -->
@@ -15,24 +15,24 @@
     <iSearch class="margin-bottom20" icon @reset="handleSearchReset" @sure="getTableList">
       <el-form>
         <el-form-item :label="$t('LK_LINGJIANHAO_FSNR_RFQBIANHAO_CAIGOUYUAN')" style="width: 340px">
-          <iInput :placeholder="$t('LK_QINGXUANZE')" v-model="form.searchConditions"></iInput>
+          <iInput :placeholder="$t('LK_QINGXUANZE')" v-model="form.fsnrGsnrNum"></iInput>
         </el-form-item>
         <el-form-item :label="$t('LK_CHEXINGXIANGMU')">
-          <iSelect :placeholder="$t('LK_QINGXUANZE')" v-model="form.carType">
-            <el-option value="" :label="$t('all') | capitalizeFilter"></el-option>
+          <iSelect :placeholder="$t('LK_QINGXUANZE')" v-model="form.cartypeProjectZh">
+            <el-option value="" :label="$t('all')"></el-option>
             <el-option v-for="items in carTypeOptions" :key='items.code' :value='items.code' :label="items.name"/>
           </iSelect>
         </el-form-item>
         <el-form-item :label="$t('LK_LINGJIANXIANGMULEIXING')">
-          <iSelect :placeholder="$t('LK_QINGXUANZE')" v-model="form.partType">
-            <el-option value="" :label="$t('all') | capitalizeFilter"></el-option>
+          <iSelect :placeholder="$t('LK_QINGXUANZE')" v-model="form.partProjectType">
+            <el-option value="" :label="$t('all')"></el-option>
             <el-option v-for="items in partTypeOptions" :key='items.code' :value='items.code'
                         :label="items.name"/>
           </iSelect>
         </el-form-item>
         <el-form-item :label="$t('LK_RFQZHUANGTAI')">
-          <iSelect :placeholder="$t('LK_QINGXUANZE')" v-model="form.rfqStatus">
-            <el-option value="" :label="$t('all') | capitalizeFilter"></el-option>
+          <iSelect :placeholder="$t('LK_QINGXUANZE')" v-model="form.currentStatus">
+            <el-option value="" :label="$t('all')"></el-option>
             <el-option v-for="items in rfqStatusOptions" :key='items.code' :value='items.code'
                         :label="items.name"/>
           </iSelect>
@@ -66,10 +66,11 @@
 </template>
 
 <script>
-import { iPage, iCard, iPagination, iButton, iSearch, iSelect, iInput } from 'rise'
+import { iPage, iCard, iPagination, iButton, iSearch, iSelect, iInput, iMessage } from 'rise'
 import { pageMixins } from "@/utils/pageMixins"
 import tableList from '../components/tableList'
 import { rfqListTitle } from '../rfqdetail/data'
+import { getRfqList, getSelectOptions, selectRfq } from '@/api/designate/designatedetail/addRfq/index'
 export default {
   mixins: [pageMixins],
   components: { iPage, iCard, iPagination, iButton, tableList, iSearch, iSelect, iInput },
@@ -81,17 +82,102 @@ export default {
       carTypeOptions: [],
       rfqStatusOptions: [],
       partTypeOptions: [],
-      form: {}
+      form: {
+        cartypeProjectZh: '',
+        partProjectType: '',
+        currentStatus: '',
+        fsnrGsnrNum: ''
+      },
+      selectedRfqs: []
     }
   },
+  created() {
+    this.getRfqStatusOptions()
+    this.getCarTypeOptions()
+    this.getPartTypeOptions()
+    this.getTableList()
+  },
   methods: {
-    getTableList() {},
-    handleSelectionChange() {},
+    handleSearchReset() {
+      this.form = {
+        cartypeProjectZh: '',
+        partProjectType: '',
+        currentStatus: '',
+        fsnrGsnrNum: ''
+      }
+    },
+    getRfqStatusOptions() {
+      getSelectOptions('03').then(res => {
+        if(res.result) {
+          this.rfqStatusOptions = res.data
+        }
+      })
+    },
+    getCarTypeOptions() {
+      getSelectOptions('01').then(res => {
+        if(res.result) {
+          this.carTypeOptions = res.data
+        }
+      })
+    },
+    getPartTypeOptions() {
+      getSelectOptions('02').then(res => {
+        if(res.result) {
+          this.partTypeOptions = res.data
+        }
+      })
+    },
+    getTableList() {
+      this.tableLoading = true
+      const params = {
+        ...this.form,
+        current: this.page.currPage,
+        size: this.page.pageSize,
+        nominateId: this.$route.query.desinateId
+      }
+      getRfqList(params).then(res => {
+        if(res?.result) {
+          this.tableListData = res.data.records
+          this.page.pageSize = res.data.size
+          this.page.currPage = res.data.current
+          this.page.totalCount = res.data.total
+        } else {
+          iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
+        }
+      }).finally(() => {
+        this.tableLoading = false
+      })
+    },
+    handleSelectionChange(val) {
+      this.selectedRfqs = val
+    },
     openPage() {},
     toTop() {},
-    handleSelect() {},
+    handleSelect() {
+      if (this.selectedRfqs.length < 1) {
+        iMessage.warn('请选择RFQ')
+        return
+      }
+      this.tableLoading = true
+      const params = {
+        rfqIdArr: this.selectedRfqs.map(item => item.id),
+        nominateProcessType: this.$store.getters.nominationType,
+        nominateId: this.$route.query.desinateId
+      }
+      selectRfq(params).then(res => {
+        if (res?.result) {
+          iMessage.success(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
+          this.$router.push({path: '/designate/rfqdetail', query: {desinateId: res.data, designateType: this.$store.getters.nominationType}})
+        } else {
+          iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
+        }
+      }).finally(() => {
+        this.tableLoading = false
+      })
+    },
     goBack() {
-      this.$router.push({path:'/designate/rfqdetail'})
+      // this.$router.push({path:'/designate/rfqdetail'})
+      this.$router.go(-1)
     }
   }
 }
