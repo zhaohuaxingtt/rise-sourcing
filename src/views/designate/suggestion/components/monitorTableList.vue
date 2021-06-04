@@ -41,7 +41,7 @@
             v-model="scope.row.selected"
             v-if="batchEdit"
             @change="handleSelectionChange"></el-checkbox>
-          <div class="tableSelection" v-if="scope.row.groupId">{{scope.row.groupId}}</div>
+          <div class="tableSelection" v-if="scope.row.groupId">{{scope.row.groupName}}</div>
         </template>
       </el-table-column>
       <el-table-column 

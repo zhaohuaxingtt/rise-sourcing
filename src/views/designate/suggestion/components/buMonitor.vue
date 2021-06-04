@@ -62,6 +62,7 @@
                 :tableData="tableListData"
                 :supplier="supplierList"
                 :batchEdit="multiEditControl"
+                v-loading="tableLoading"
                 ref="monitorTable" />
             </div>
           </div>
