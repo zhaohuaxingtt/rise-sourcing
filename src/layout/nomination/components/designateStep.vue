@@ -20,7 +20,7 @@
                 </iSelect>
             </div>
             <div class="btnList flex-align-center">
-                <iButton >{{$t('LK_DAOCHU')}}</iButton>
+                <iButton @click="exportNominate">{{$t('LK_DAOCHU')}}</iButton>
                 <iButton @click="submit">{{$t('LK_TIJIAO')}}</iButton>
                 <iButton v-if="isDecision" @click="preview">{{$t('LK_YULAN')}}</iButton>
                 <logButton class="margin-left20" @click="log"  />
@@ -60,9 +60,11 @@ import {
   iButton,
   icon,
   iSelect,
+  iMessage
 } from "rise";
 import logButton from '@/views/partsign/editordetail/components/logButton'
-import { 
+import {
+    nominateAppSExport,
     nominateAppSsubmit,
     nominateAppSDetail,
 } from '@/api/designate'
@@ -111,7 +113,7 @@ export default {
     data(){
         return{
             desinateId: '',
-            designateType: 'MEETING',
+            designateType: 'RECORD',
             applyType:applyType,
             applyStep:applyStep
         }
@@ -155,14 +157,33 @@ export default {
         },
 
         // 提交
-        submit(){
+        async submit(){
             const { query } = this.$route;
-            const {id ='1'} = query;
+            const {desinateId} = query;
             const data = {
-                nominateAppId:id,
+                nominateIdArr:[Number(desinateId)],
             }
+            const confirmInfo = await this.$confirm(this.$t('submitSure'))
+            if (confirmInfo !== 'confirm') return
             nominateAppSsubmit(data).then((res)=>{
+                iMessage.success(this.$t('LK_CAOZUOCHENGGONG'));
                 console.log(res);
+            }).catch(e => {
+                iMessage.error(this.$i18n.locale === "zh" ? e.desZh : event.desEn)
+            })
+        },
+        // 导出
+        async exportNominate(){
+            const { query } = this.$route;
+            const {desinateId} = query;
+            const data = {
+                nominateIdArr:[Number(desinateId)],
+            }
+            nominateAppSExport(data).then((res)=>{
+                iMessage.success(this.$t('LK_CAOZUOCHENGGONG'));
+                console.log(res);
+            }).catch(e => {
+                iMessage.error(this.$i18n.locale === "zh" ? e.desZh : event.desEn)
             })
         },
 

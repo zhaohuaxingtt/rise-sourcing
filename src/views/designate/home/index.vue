@@ -10,7 +10,7 @@
     <!-- 筛选框 -->
     <div style="clear: both"></div>
     <!-- 搜索区 -->
-    <search @search="getFetchData" />
+    <search @search="getFetchData" :carTypeList="carTypeList" />
     <!-- 表格 -->
     <iCard class="designateTable">
       <div class="margin-bottom20 clearFloat">
@@ -29,6 +29,11 @@
           <!-- 冻结 -->
           <iButton @click="freeze">
             {{$t('LK_DONGJIE')}}
+          </iButton>
+
+          <!-- 解冻 -->
+          <iButton @click="freeze(false)">
+            {{$t('LK_JIEDONG')}}
           </iButton>
 
           <!-- 定点 -->
@@ -123,10 +128,12 @@ import {
   batchRevoke,
   batchDelete,
   nominateRreeze,
+  nominateUnRreeze,
   nominateConfirm,
+  getCarTypePro
 } from '@/api/designate/nomination'
 // 前端配置文件里面的定点类型
-import { applyType } from '@/layout/nomination/components/data'
+// import { applyType } from '@/layout/nomination/components/data'
 
 import { pageMixins } from '@/utils/pageMixins'
 import filters from "@/utils/filters"
@@ -148,6 +155,7 @@ export default {
       tableTitle: tableTitle,
       selectTableData: [],
       startLoding: false,
+      carTypeList: [],
       page: {
         currPage: 1,
         pageSize: 15,
@@ -167,6 +175,8 @@ export default {
   },
   mounted() {
     this.getFetchData()
+    // 获取车型项目
+    this.getCarTypePro()
   },
   methods: {
     // 新建零件定点申请
@@ -184,8 +194,15 @@ export default {
       // 禁用nominateProcessType编辑
       this.$store.dispatch('setNominationTypeDisable', true)
       this.$nextTick(() => {
-        const nominateProcessType = (applyType.find(o => o.name === row.nominateProcessType) || {}).id || ''
-        this.$router.push({path: '/designate/rfqdetail', query: {desinateId: row.id, designateType: nominateProcessType}})
+        this.$router.push({path: '/designate/rfqdetail', query: {desinateId: row.id, designateType: row.nominateProcessType}})
+      })
+    },
+    // 获取车型项目
+    getCarTypePro() {
+      getCarTypePro().then(res => {
+        if (res.code === '200') {
+          this.carTypeList = (res.data && res.data.data) || []
+        }
       })
     },
     // 获取定点管理列表
@@ -221,9 +238,9 @@ export default {
       }
       const confirmInfo = await this.$confirm(this.$t('revokeSure'))
       if (confirmInfo !== 'confirm') return
-      const idList = this.selectTableData.map(o => o.id)
+      const idList = this.selectTableData.map(o => Number(o.id))
       try {
-        const res = await batchRevoke({nominateAppArr: idList})
+        const res = await batchRevoke({nominateIdArr: idList})
         if (res.code === '200') {
           iMessage.success(this.$t('LK_CAOZUOCHENGGONG'))
           this.getFetchData()
@@ -231,7 +248,7 @@ export default {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }
       } catch (e) {
-        iMessage.error(this.$i18n.locale === "zh" ? e.desZh : event.desEn)
+        iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
       }
     },
     // 批量删除
@@ -242,9 +259,9 @@ export default {
       }
       const confirmInfo = await this.$confirm(this.$t('deleteSure'))
       if (confirmInfo !== 'confirm') return
-      const idList = this.selectTableData.map(o => o.id)
+      const idList = this.selectTableData.map(o => Number(o.id))
       try {
-        const res = await batchDelete({nominateAppArr: idList})
+        const res = await batchDelete({nominateIdArr: idList})
         if (res.code === '200') {
           iMessage.success(this.$t('LK_CAOZUOCHENGGONG'))
           this.getFetchData()
@@ -252,22 +269,27 @@ export default {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }
       } catch (e) {
-        iMessage.error(this.$i18n.locale === "zh" ? e.desZh : event.desEn)
+        iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
       }
     },
-    // 冻结
-    async freeze(){
+    /**
+     * 冻结
+     * type: true 冻结
+     * type: false 解冻
+     */
+    async freeze(type = true){
       const {selectTableData} = this;
       if(!selectTableData.length){
         iMessage.warn(this.$t('nominationSuggestion.QingXuanZeZhiShaoYiTiaoShuJu'));
       }else{
         const confirmInfo = await this.$confirm(this.$t('LK_NINQUERENZHIXINGDONGJIECAOZUOMA'));
         if (confirmInfo !== 'confirm') return;
-        const nominateAppIdArr = selectTableData.map((item)=>item.id);
+        const nominateIdArr = selectTableData.map((item)=>Number(item.id));
         const data = {
-          nominateAppIdArr,
+          nominateIdArr,
         };
-        await nominateRreeze(data).then((res)=>{
+        try {
+          const res = type ? await nominateRreeze(data) : await nominateUnRreeze(data)
           const { code } = res;
           if(code == 200){
             iMessage.success(this.$t('LK_CAOZUOCHENGGONG'));
@@ -275,9 +297,9 @@ export default {
           }else{
             iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
           }
-        }).catch((e)=>{
+        } catch (e) {
           iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
-        })
+        }
       }
     },
 
@@ -289,7 +311,7 @@ export default {
       }else{
         const confirmInfo = await this.$confirm(this.$t('LK_NINQUERENZHIXINGDONGJIECAOZUOMA'));
         if (confirmInfo !== 'confirm') return;
-        const nomiAppIdList = selectTableData.map((item)=>item.id);
+        const nomiAppIdList = selectTableData.map((item)=>Number(item.id));
         const data = {
           nomiAppIdList,
         };

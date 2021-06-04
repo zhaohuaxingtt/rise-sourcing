@@ -29,10 +29,46 @@ export function batchRevoke(data) {
 })
 }
 
+// 批量删除
+export function batchDelete(data) {
+  return requst({
+    url: `/nominate-apps/delete`,
+    method: "post",
+    data
+})
+}
+
+// 导出
+export function nominatExport(data) {
+  return requst({
+    url: `/nominate-apps/export`,
+    method: "post",
+    data
+})
+}
+
+// 提交
+export function nominatSubmit(data) {
+  return requst({
+    url: `/nominate-apps/submit`,
+    method: "post",
+    data
+})
+}
+
 // 冻结
 export function nominateRreeze(data) {
   return requst({
     url: '/nominate-apps/freeze',
+    method: "post",
+    data
+  })
+}
+
+// 解冻
+export function nominateUnRreeze(data) {
+  return requst({
+    url: '/nominate-apps/unfreeze',
     method: "post",
     data
   })
@@ -44,6 +80,15 @@ export function nominateConfirm(data) {
     url: '/nominate-apps/nominate',
     method: "post",
     data
+  })
+}
+
+// 获取车型项目
+export function getCarTypePro(data) {
+  return requst({
+    url: '/part-src-prjs/car-type-pro',
+    method: "GET"
+    
   })
 }
 

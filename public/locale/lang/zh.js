@@ -8,6 +8,7 @@
         'delete': "删除",
         "deleteSure":'您确定要执行删除操作吗？',
         "revokeSure":'您确定要执行撤回操作吗？',
+        "submitSure":'您确定要执行提交操作吗？',
         'all': '全部',
         'search': '搜索',
         'setting': '设置',
@@ -852,6 +853,12 @@
         'LK_WENJIANQINGXUANZHUANZHIZHENGCHANG':'上传附件:文件请旋转至正常方向后上传', // 上传附件:文件请旋转至正常方向后上传
         'LK_FASONGKM': '发送KM', // 发送KM
         'LK_DONGJIE':'冻结', // 冻结
+        'LK_JIEDONG':'解冻', // 解冻
+        'LK_CAOGAO': '草稿',
+        'LK_TIJIAOZHONG': '提交中',
+        'LK_YIDONGJIE': '已冻结',
+        'LK_SHENPILIUZHUAN': '审批中/流转中',
+        'LK_SHENPILIUZHUANWANCHENG': '审批完成/流转完成',
         'LK_NINQUERENZHIXINGDONGJIECAOZUOMA':'您确定要执行冻结操作吗？', // 您确定要执行冻结操作吗？
 
         // 定点管理
@@ -894,6 +901,7 @@
             'SHENPIRENANDSHENPIJILU':'审批⼈ & 审批记录', // 审批⼈ & 审批记录
             'JUECEZILIAO':'决策资料', // 决策资料
             'DINGDIAN':'定点', // 定点
+            'QUXIAODINGDIAN':'取消定点', // 取消定点
             'DingDianIDNotNull': '定点申请单id不能为空' //定点申请单id不能为空
         },
         // 单一供应商

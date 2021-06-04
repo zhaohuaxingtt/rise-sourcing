@@ -67,9 +67,9 @@
             :label="$t('all') | capitalizeFilter"
           ></el-option>
           <el-option
-            :value="items.key"
-            :label="items.value"
-            v-for="(items, index) in []"
+            :value="items.id"
+            :label="items.name"
+            v-for="(items, index) in applyStates"
             :key="index"
           ></el-option>
         </iSelect>
@@ -112,6 +112,8 @@
           v-model="form.cartypeProjectZh"
           :placeholder="$t('LK_QINGXUANZE')"
           v-permission="PARTSPROCURE_PARTNUMBER"
+          filterable
+          clearable
         >
           <el-option
             value=""
@@ -120,8 +122,9 @@
           <el-option
             :value="items.key"
             :label="items.value"
-            v-for="(items, index) in []"
+            v-for="(items, index) in ($attrs && $attrs.carTypeList) || []"
             :key="index"
+            style="max-width: 190px"
           ></el-option>
         </iSelect>
       </el-form-item>
@@ -185,7 +188,7 @@
 <script>
 
 import { applyType } from '@/layout/nomination/components/data'
-import { form } from '../data'
+import { form, applyStates } from '../data'
 import {
   iSearch,
   iInput,
@@ -196,13 +199,17 @@ export default {
   data() {
     return {
       form,
-      ptocessType: applyType
+      ptocessType: applyType,
+      applyStates
     }
   },
   components: {
     iSearch,
     iInput,
     iSelect
+  },
+  mounted() {
+    console.log(this)
   },
   methods: {
     sure() {

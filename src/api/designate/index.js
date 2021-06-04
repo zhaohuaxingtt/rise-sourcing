@@ -48,11 +48,20 @@ export function updatePresenPageSeat(data) {
 }
 
 // 定点管理-提交
-export function nominateAppSsubmit(params) {
+export function nominateAppSsubmit(data) {
   return requst({
       url: "/nominate-apps/submit",
-      method: "GET",
-      params,
+      method: "POST",
+      data,
+  })
+}
+
+// 定点管理-导出
+export function nominateAppSExport(data) {
+  return requst({
+      url: "/nominate-apps/export",
+      method: "POST",
+      data,
   })
 }
 
