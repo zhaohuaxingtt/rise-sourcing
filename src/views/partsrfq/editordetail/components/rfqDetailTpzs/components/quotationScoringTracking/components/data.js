@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-05-25 21:01:30
- * @LastEditTime: 2021-06-02 14:30:18
+ * @LastEditTime: 2021-06-02 14:38:22
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringTracking\components\data.js
@@ -82,7 +82,7 @@ export const iconList_car = { //汽车图标
     icon:'icondingdianguanlijiedian-yiwancheng' //default
   }
 }
-export const iconList_all_times = { //整体任务进度
+export const iconList_all_times = { //整体任务进度以及每格进度
   'a2':{
     icon:'iconbaojiapingfengenzong-jiedian-lv' //绿色
   },

@@ -1,7 +1,7 @@
-<!--
+:<!--
  * @Author: yuszhou
  * @Date: 2021-05-28 14:32:04
- * @LastEditTime: 2021-05-30 11:37:08
+ * @LastEditTime: 2021-06-02 16:17:39
  * @LastEditors: Please set LastEditors
  * @Description: 报价分析汇总表格
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\index.vue
@@ -13,17 +13,21 @@
       <div class='search'>
         <div>
           <span>Hide/unHide：</span>
-          <iSelect></iSelect> 
+          <iSelect v-model="backChoose" multiple :collapse-tags='true' @visible-change='visibleChange'>
+            <el-option v-for='(items,index) in backChooseLists' :key='index' :label="items.label" :value="items.props"></el-option>
+          </iSelect> 
         </div>
         <div>
           <span>Quota. Round：</span>
-          <iSelect></iSelect> 
+          <iSelect v-model="round">
+            <el-option label="All" value="" v-for='(items,index) in rundList' :key='index'></el-option>
+          </iSelect> 
         </div>
         <div>
           <span>Layout: </span>
           <iSelect v-model="layout">
-            <el-option label="FS-Parts as Row" value="caseOne"></el-option>
-            <el-option label="FS-Supplier as Row" value="caseTow"></el-option>
+            <el-option label="FS-Parts as Row" value="1"></el-option>
+            <el-option label="FS-Supplier as Row" value="2"></el-option>
           </iSelect> 
         </div>            
       </div>
@@ -35,13 +39,17 @@
       </div>
       <!--------------表格模块-------------->
     </div>
-    <tableList :tableTitle='title' v-if='layout == "caseOne"' :tableData='exampelData' @handleSelectionChange='handleSelectionChange'></tableList>
-    <tableListSupplier :tableTitle='supplierTile'  :tableData='supplierData' v-if='layout == "caseTow"'></tableListSupplier>
+    <tableList :tableTitle='title' v-if='layout == "1"' :ratingList='ratingList' :tableData='exampelData' @handleSelectionChange='handleSelectionChange'></tableList>
+    <tableListSupplier :tableTitle='supplierTile'  :tableData='supplierData' v-if='layout == "2"'></tableListSupplier>
     <!--------------弹窗-------------->
-    <iDialog title="组合名" :visible.sync="groupVisble" width='25%'>
+    <iDialog title="组合名" :visible.sync="groupVisble" width='25%' >
       <div class="mine_height">
-        <span>组合名：</span><iInput />
+        <span>组合名：</span><iInput v-model="groupName" />
       </div>
+      <template slot='footer'>
+        <iButton @click="groupVisble = false">取消</iButton>
+        <iButton @click="sureClick()">确定</iButton>
+      </template>
     </iDialog>
   </div>
 </template>
@@ -49,27 +57,154 @@
 import {iButton,iSelect,iDialog,iInput,iMessage} from 'rise'
 import tableList from './components/table'
 import tableListSupplier from './components/tableListSupplier'
-import {title,exampelData,supplierData,concactTitlle,centerSupplierList} from './components/data'
+import {exampelData,supplierData,concactTitlle,centerSupplierList,backChooseList,getRenderTableTile,translateData,translateRating,subtotal} from './components/data'
+import {negoAnalysisSummaryLayout,negoAnalysisSummaryLayoutSave,negoAnalysisSummaryRound,fsPartsAsRow,negoAnalysisSummaryGroup} from '@/api/partsrfq/editordetail'
 export default{
   components:{iButton,iSelect,tableList,iDialog,iInput,tableListSupplier},
   data(){return {
-    title:title,
+    title:getRenderTableTile([],0),
     exampelData:exampelData,
     groupSelectData:[],
     groupVisble:false,
-    layout:'caseOne',
+    layout:'1',
     supplierData:supplierData,
-    supplierTile:[]
+    supplierTile:[],
+    //轮次选择
+    round:1,
+    rundList:[],
+    backChooseLists:[],
+    backChoose:[],
+    ratingList:{
+      firstTile:[],
+      ratingList:[]
+    },
+    groupName:''
   }},
+  created(){
+    this.init()
+  },
   mounted(){
     this.concactTitlle()
   },
+  provide(){
+    return {vm:this}
+  },
   methods:{
+    /**
+     * @description: 确认组合 
+     * @param {*}
+     * @return {*}
+     */
+    sureClick(){
+      this.negoAnalysisSummaryGroups()
+      this.groupVisble = false
+    },
+    getPartNumber(list){
+      const listArray = []
+      list.forEach(element => {
+        listArray.push(element.partPrjCode)
+      });
+      return listArray
+    },
+    /**
+     * @description:组合零件 
+     * @param {*}
+     * @return {*}
+     */
+    negoAnalysisSummaryGroups(){
+      const sendata = {
+          group: this.groupName,
+          partPrjCode: this.getPartNumber(this.groupSelectData),
+          rfqId: this.$route.query.id
+        }
+        console.log(sendata)
+        negoAnalysisSummaryGroup(sendata).then(res=>{
+          console.log(res)
+          if(res.code == 200){
+            this.fsPartsAsRow()
+          }
+        }).catch(err=>{
+          iMessage.warn(err.desZh)
+        })
+      },
+    async init(){
+        await this.negoAnalysisSummaryLayout() //获取隐藏项
+        await this.negoAnalysisSummaryRound() //获取轮次
+        await this.fsPartsAsRow()
+    },
+    visibleChange(res){
+      if(!res){
+        this.negoAnalysisSummaryLayoutSave()
+      }
+    },
+    /**
+     * @description: 获取隐藏打开项
+     * @param {*}
+     * @return {*}
+     */
+    negoAnalysisSummaryLayout(){
+      this.backChooseLists = backChooseList();
+      negoAnalysisSummaryLayout(this.$route.query.id).then(res=>{
+        if(res.data && res.data.layout){
+          this.backChoose = JSON.parse(res.data.layout) // 
+        }
+      }).catch(err=>{
+        iMessage.warn(err.desZh)
+      })
+    },
+    /**
+     * @description: 保存隐藏打开项 
+     * @param {*}
+     * @return {*}
+     */
+    negoAnalysisSummaryLayoutSave(){
+      negoAnalysisSummaryLayoutSave(JSON.stringify(this.backChoose),this.layout).then(res=>{
+      }).catch(err=>{
+        iMessage.warn(err.desZh)
+      })
+    },
+    /**
+     * @description: 获取报价轮次
+     * @param {*}
+     * @return {*}
+     */
+    negoAnalysisSummaryRound(){
+      negoAnalysisSummaryRound(this.$route.query.id).then().catch(err=>{
+        iMessage.warn(err.desZh)
+      })
+    },
+    /**
+     * @description: 合并表头数据。
+     * @param {*}
+     * @return {*}
+     */
     concactTitlle(){
       this.supplierTile = concactTitlle([...centerSupplierList,...centerSupplierList])
     },
+    /**
+     * @description: 勾选方法 
+     * @param {*} val
+     * @return {*}
+     */
     handleSelectionChange(val){
       this.groupSelectData = val
+    },
+    /**
+     * @description: 组合方法 
+     * @param {*}
+     * @return {*}
+     */
+    fsPartsAsRow(){
+      fsPartsAsRow(this.$route.query.id,this.round).then(res=>{
+        if(res.data && res.data.partInfoList && res.data.partInfoList.length){
+          this.title = getRenderTableTile(this.backChoose,res.data.partInfoList[0].bdlInfoList.length)
+          this.exampelData = translateData(res.data.partInfoList)
+          this.ratingList = translateRating(res.data.partInfoList,res.data.bdlRateInfoList)
+          this.exampelData = [...this.exampelData,...subtotal(this.title,this.exampelData,res.data.bdlPriceTotalInfoList)]
+        }
+      }).catch(err=>{
+        iMessage.warn(err.desZh)
+      })
     },
     group(){
       if(this.groupSelectData.length == 0){
@@ -82,12 +217,14 @@ export default{
       }
       this.groupVisble = !this.groupVisble
     },
-        quote() {
+    quote() {
       this.$confirm('是否引用询价轮次报价?', '引用询价轮次报价', {
         confirmButtonText: '是',
         cancelButtonText: '否',
       })
-      .then(() => {})
+      .then(() => {
+        
+      })
       .catch(() => {});
     }
   }
@@ -95,7 +232,7 @@ export default{
 </script>
 <style lang='scss' scoped>
   .mine_height{
-    min-height: 150px;
+    min-height: 100px;
     display: flex;
     span{
       width: 100px;

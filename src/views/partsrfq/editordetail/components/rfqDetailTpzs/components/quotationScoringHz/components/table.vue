@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-28 15:03:47
- * @LastEditTime: 2021-05-29 21:57:34
+ * @LastEditTime: 2021-06-04 10:48:00
  * @LastEditors: Please set LastEditors
  * @Description: 特殊表格实现
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\table.vue
@@ -49,23 +49,24 @@
             <div class="c" :style="{width:cWidth}">
               <ul style="width:99.5px">
                 <li></li>
-                <li>EP</li>
-                <li>MQ</li>
-                <li>PL</li>
+                <li v-for='(items,index) in ratingList.firstTile' :key='index'>{{items}}</li>
               </ul>
         <!----------在表头上方动态循环点------>
-              <template v-for='(rating,index) in ratingList'>
+              <template v-for='(rating,index) in ratingList.ratingList'>
                 <ul :key="index" class="lastChild">
-                  <li>{{rating.name}}</li>
-                  <li>{{rating.ep}}</li>
-                  <li>{{rating.mq}}</li>
-                  <li>{{rating.pl}}</li>
+                  <li v-for='(itemsss,index) in rating' :key='index'>{{itemsss}}</li>
                 </ul>
               </template>
             </div>
           </div>
         </template>
         <template slot-scope="scope">
+          <!-- <template v-if='removeKeysNumber(item.props) == "cfPartAPrice"'>
+              <span :class="{chengse:scope.row[item.props].cfPartAPriceStatus == 2}">{{scope.row[item.props]}}</span>
+          </template>
+          <template v-else-if='removeKeysNumber(item.props) == "lcAPrice"'>
+              <span :class="{lvse:scope.row[item.props][getPorpsNumber(item.props)+'lcAPriceStatus'] == 1}">{{scope.row[item.props]}}</span>
+          </template> -->
           <span>{{scope.row[item.props]}}</span>
         </template>
       </el-table-column>
@@ -74,6 +75,7 @@
   </div>
 </template>
 <script>
+import {removeKeysNumber,getPorpsNumber} from './data'
 export default{
   props:{
     tableData:{
@@ -83,21 +85,26 @@ export default{
     tableTitle:{
       type:Array,
       default:()=>{}
+    },
+    ratingList:{
+      type:Array,
+      default:()=> {}
     }
   },
+  inject:['vm'],
   computed:{
     cWidth(){
       const index = this.tableTitle.findIndex((item)=>item.label == 'EBR')
       return (this.tableTitle.length - index) * 100 + 'px'
-    },
-    ratingList(){
-      return [
-        {name:'shanghai',ep:'A',mq:'A',pl:'A'},
-        {name:'shanghai',ep:'A',mq:'A',pl:'A'}
-      ]
     }
   },
   methods:{
+    getPorpsNumber(key){
+      return getPorpsNumber(key)
+    },
+    removeKeysNumber(data){
+      return removeKeysNumber(data)
+    },
     /**
      * @description: 为表头特殊行加入border 
      * @param {*} row
@@ -118,7 +125,7 @@ export default{
      * @return {*}
      */
     tableRowClassName({row,rowIndex}){
-      if(row.b == "Subtotal"){
+      if(row.partNo == "Subtotal"){
         return 'blueclass'
       }
       if(rowIndex == this.tableData.length -1 || rowIndex == this.tableData.length -2){
@@ -142,6 +149,12 @@ export default{
 }
 </script>
 <style lang='scss' scoped>
+  .lvse{
+    color:$color-green;
+  }
+  .chengse{
+    color: $color-orange;
+  }
   .el-table {
     overflow: visible;
     ::v-deep.cell{
@@ -149,6 +162,17 @@ export default{
     }
     ::v-deep .el-table__header-wrapper{
       overflow: visible;
+      .cell{
+        span{
+          display: inline-block;
+          width: 100%;
+          word-break: break-all;
+          overflow: hidden;
+        }
+        .el-checkbox{
+          width: 18px;
+        }
+      }
     }
     ::v-deep.el-table__header{
       th{
@@ -185,11 +209,10 @@ export default{
     position: relative;
     .c{
       position: absolute;
-      height: 150px;
       width: 100px;
       //background-color: red;
       z-index: 123;
-      bottom: 38px;
+      bottom: 45px;
       left:-14px;
       border: 1px solid #C5CCD6;
       border-bottom: none;
