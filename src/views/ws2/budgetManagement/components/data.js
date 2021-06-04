@@ -303,6 +303,34 @@ export const investmentListEntities = [{
         width: 140,
         tooltip: false
     },
+    {
+        props: 'applyAmount',
+        name: '已申请金额',
+        key: 'LK_YUSUANBEIZHU',
+        width: 140,
+        tooltip: false
+    },
+    {
+        props: 'nomiAmount',
+        name: '已定点金额',
+        key: 'LK_YUSUANBEIZHU',
+        width: 140,
+        tooltip: false
+    },
+    {
+        props: 'baAmount',
+        name: '已BA金额',
+        key: 'LK_YUSUANBEIZHU',
+        width: 140,
+        tooltip: false
+    },
+    {
+        props: 'bmAmount',
+        name: '已BM金额',
+        key: 'LK_YUSUANBEIZHU',
+        width: 140,
+        tooltip: false
+    },
 ]
 //零件采购列表入参
 export const form = {

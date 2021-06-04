@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-permission="TOOLING_BUDGET_BUDGETAPPROVAL">
     <iSearch
         class="margin-bottom20 giSearch"
         style="margin-top: 20px"
@@ -64,8 +64,8 @@
               clearable
           >
             <el-option
-                :value="item.linieID"
-                :label="item.linieName"
+                :value="item.userID"
+                :label="item.userName"
                 v-for="(item, index) in applyUserIdList"
                 :key="index"
             ></el-option>
@@ -174,7 +174,7 @@ import {
   pageApproval,
   carCombo,
   statusCombo,
-  userCombo, ratify,
+  applyUserCombo, ratify,
 } from "@/api/ws2/budgetApproval";
 import {
   iTableList
@@ -260,7 +260,7 @@ export default {
         this.form[i] = "";
       }
       this.loadingiSearch = true
-      await Promise.all([carCombo(), statusCombo(), userCombo()]).then((res) => {
+      await Promise.all([carCombo(), statusCombo(), applyUserCombo()]).then((res) => {
         const result0 = this.$i18n.locale === 'zh' ? res[0].desZh : res[0].desEn
         const result1 = this.$i18n.locale === 'zh' ? res[1].desZh : res[1].desEn
         const result2 = this.$i18n.locale === 'zh' ? res[2].desZh : res[2].desEn
