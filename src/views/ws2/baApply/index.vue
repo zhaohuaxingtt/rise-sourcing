@@ -65,7 +65,7 @@
       <DetailsSearch @reset="handleReset" @sure="handleSure" />
 
       <iCard>
-      <DetailsTable :tableListData="tableDetailsListData" :tableLoading="tableDetailsLoading" />
+      <DetailsTable @handelConfirmSuccess="handelConfirmSuccess" :tableListData="tableDetailsListData" :tableLoading="tableDetailsLoading" />
       <iPagination
           v-update
           @size-change="handleSizeChange($event, handleSure)"
@@ -91,6 +91,7 @@ import { tableHeight } from "@/utils/tableHeight";
 import { pageMixins } from "@/utils/pageMixins";
 import DetailsSearch from "./components/detailsSearch";
 import DetailsTable from "./components/detailsTable";
+import { detailsForm } from "./components/data";
 import {
   iTableList
 } from "@/components"
@@ -147,6 +148,10 @@ export default {
   },
 
   methods: {
+
+    handelConfirmSuccess(){
+      this.handleSure(detailsForm);
+    },
 
     //  详情重置
     handleReset(form){

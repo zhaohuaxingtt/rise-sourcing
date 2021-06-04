@@ -10,7 +10,7 @@
     <DetailsSearch @reset="handleReset" @sure="handleSure" />
 
     <iCard>
-      <DetailsTable :tableListData="tableListData" :tableLoading="tableLoading" />
+      <DetailsTable @handelConfirmSuccess="handelConfirmSuccess" :tableListData="tableListData" :tableLoading="tableLoading" />
       <iPagination
           v-update
           @size-change="handleSizeChange($event, handleSure)"
@@ -33,6 +33,7 @@ import DetailsTable from "./components/detailsTable";
 import { findBaPartsList } from "@/api/ws2/baApply";
 import { pageMixins } from "@/utils/pageMixins";
 import { iNavWS2 } from "@/components";
+import { detailsForm } from "./components/data";
 import store from '@/store';
 
 export default {
@@ -62,6 +63,10 @@ export default {
   },
 
   methods: {
+
+    handelConfirmSuccess(){
+      this.handleSure(detailsForm);
+    },
 
     //  查询
     handleSure(form){

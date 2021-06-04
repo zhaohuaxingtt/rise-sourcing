@@ -121,10 +121,10 @@ export default {
           iMessage.success(result);
           this.visible = false;
           this.downloadExport();
+          this.$emit('handelConfirmSuccess');
         }else{
           iMessage.error(result);
         }
-        console.log('11111', res);
       })
     },
 
