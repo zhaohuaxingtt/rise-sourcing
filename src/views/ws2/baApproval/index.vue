@@ -42,7 +42,6 @@
             <iButton @click="modifyA">{{ $t('LK_MODIFYANUMBER') }}</iButton>
           </div>
           <iTableList
-            :height="tableHeight - 440"
             :tableData="allTableData"
             :tableTitle="allBAATableHead"
             :tableLoading="allListLoading"
@@ -74,7 +73,6 @@
             <iButton @click="waitApply(1)">{{ $t('LK_CANCELAPPLY') }}</iButton>
           </div>
           <iTableList
-            :height="tableHeight - 440"
             :tableData="waitTableData"
             :tableTitle="waitBAATableHead"
             :tableLoading="waitTableLoading"
@@ -116,7 +114,6 @@
             <iButton @click="waitApply(3)">{{ $t('LK_CANCELAPPLY') }}</iButton>
           </div>
           <iTableList
-            :height="tableHeight - 440"
             :tableData="waitAddTableData"
             :tableTitle="waitAddTableHead"
             :tableLoading="waitAddTableLoading"
