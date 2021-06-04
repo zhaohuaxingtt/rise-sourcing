@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-05-27 12:32:54
- * @LastEditTime: 2021-06-04 14:04:33
+ * @LastEditTime: 2021-06-04 17:45:23
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\costanalysismanage\components\home\index.vue
@@ -38,10 +38,10 @@
               :label="$t('all') | capitalizeFilter"
             ></el-option>
             <el-option
-              :value="items.key"
-              :label="items.value"
-              v-for="(items, index) in list"
-              :key="index"
+              :value="item.value"
+              :label="item.label"
+              v-for="item in rfqStatusOptions"
+              :key="item.key"
             ></el-option>
           </iSelect>
         </el-form-item>
@@ -61,10 +61,10 @@
               :label="$t('all') | capitalizeFilter"
             ></el-option>
             <el-option
-              :value="items.key"
-              :label="items.value"
-              v-for="(items, index) in list"
-              :key="index"
+              :value="item.value"
+              :label="item.label"
+              v-for="item in carTypeOptions"
+              :key="item.key"
             ></el-option>
           </iSelect>
         </el-form-item>
@@ -89,12 +89,7 @@
               value=""
               :label="$t('all') | capitalizeFilter"
             ></el-option>
-            <el-option
-              :value="items.key"
-              :label="items.value"
-              v-for="(items, index) in list"
-              :key="index"
-            ></el-option>
+            <el-option v-for="item in heavyItemOptions" :key="item.code" :value="item.value" :label="item[$i18n.locale]" />
           </iSelect>
         </el-form-item>
         <el-form-item :label="$t('costanalysismanage.Commodity')">
@@ -159,7 +154,7 @@
           <icon class="tick link" symbol name="iconbaojiazhuangtailiebiao_yibaojia" @click.native="analysisReport(scope.row)"/>
         </template>
         <template #recordId="scope">
-          <icon class="link" symbol :name="scope.row.recordId == 1 ? 'iconliebiaoyizhiding' : 'iconliebiaoweizhiding'" @click.native="updateOrder(scope.row)" />
+          <icon class="link" symbol :name="+scope.row.recordId > 0 ? 'iconliebiaoyizhiding' : 'iconliebiaoweizhiding'" @click.native="updateOrder(scope.row)" />
         </template>
       </tableList>
       <iPagination 
@@ -190,7 +185,8 @@ import cbdDialog from './components/cbdStatus'
 import { queryForm, tableTitle } from "./components/data"
 import filters from "@/utils/filters"
 import { pageMixins } from "@/utils/pageMixins"
-import { getSelectOptions, getKmRfqList } from "@/api/costanalysismanage/home"
+import { getSelectOptions, getKmRfqList, updateRfq } from "@/api/costanalysismanage/home"
+import { selectDictByKeys } from "@/api/dictionary"
 import { cloneDeep } from "lodash"
 
 export default {
@@ -207,43 +203,77 @@ export default {
     cbdDialog,
   },
   mixins: [ filters, pageMixins ],
+  computed: {
+    //eslint-disable-next-line no-undef
+    ...Vuex.mapState({
+      userInfo: state => state.permission.userInfo,
+    }),
+  },
   data(){
     return{
+      carTypeOptions: [],
+      rfqStatusOptions: [],
+      heavyItemOptions: [],
       downloadDialogVisible:false,
       cbdDialogVisible:false,
       form: cloneDeep(queryForm),
       list: [],
       loading: false,
       tableTitle,
-      tableListData: [
-        {
-          id: "T2234345",
-          createDate: 1622184508000,
-          currentRoundsEndTime: 1622184508000,
-          sendDate: 1622184508000,
-          analysisReport: 1622184508000,
-          recordId: 1
-        }
-      ],
+      tableListData: [],
       rfqNum:'', // 当前选择的rfq
     }
   },
   created() {
-    // this.getSelectOptions("03")
+    this.getSelectOptions("01", "carTypeOptions")
+    this.getSelectOptions("03", "rfqStatusOptions")
+    this.getDict()
     this.getKmRfqList()
   },
   methods: {
-    // getSelectOptions(type) {
-    //   getSelectOptions(type)
-    //   .then(res => {
-    //     if (res.code == 200) {
-    //       console.log(res)
-    //     } else {
-    //       iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
-    //     }
-    //   })
-    //   .catch(() => {})
-    // },
+    getSelectOptions(type, optionsKey) {
+      getSelectOptions(type)
+      .then(res => {
+        if (res.code == 200) {
+          this[optionsKey] = 
+            Array.isArray(res.data) ?
+            res.data.map(item => ({
+              key: item.code,
+              label: item.name,
+              value: item.code
+            })) :
+            []
+        } else {
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
+      })
+      .catch(() => {})
+    },
+    getDict() {
+      selectDictByKeys(
+        [
+          { keys: "HEAVY_ITEM" },
+        ]
+      )
+      .then(res => {
+        if (res.code == 200) {
+          this.dictMap = {}
+          Object.keys(res.data).forEach(key => {
+            this.heavyItemOptions = res.data["HEAVY_ITEM"].map(item => ({
+              ...item,
+              key: item.code,
+              value: item.code,
+              zh: item.name,
+              en: item.nameEn,
+              de: item.nameDe
+            }))
+          })
+        } else {
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
+      })
+      .catch(() => {})
+    },
     getKmRfqList() {
       this.loading = true
 
@@ -263,6 +293,16 @@ export default {
         this.loading = false
       })
       .catch(() => this.loading = false)
+    },
+    // 查询
+    sure() {
+      this.getKmRfqList()
+    },
+    // 重置
+    reset() {
+      this.form = cloneDeep(queryForm)
+      this.page.currPage = 1
+      this.getKmRfqList()
     },
     // 跳转RFQ详情
     jumpRfq(row) {
@@ -288,7 +328,24 @@ export default {
     },
     // 变更顺序
     updateOrder(row) {
-      this.$set(row, "recordId", row.recordId ? 0 : 1)
+      // this.$set(row, "recordId", row.recordId ? 0 : 1)
+      this.loading = true
+
+      updateRfq({
+        rfqSetTopPackage: {
+          setType: row.recordId > 0 ? "0" : "1",
+          rfqId: row.id,
+          userId: this.userInfo.id
+        },
+      })
+      .then(res => {
+        if (res.code == 200) {
+          this.getKmRfqList()
+        } else {
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
+      })
+      .catch(() => {})
     },
 
     // 关闭弹窗
