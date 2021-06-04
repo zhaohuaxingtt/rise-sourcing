@@ -34,7 +34,7 @@
     </div>
 
     <keep-alive>
-      <div v-if="tableIndex === 0">
+      <div v-if="tableIndex === 0" v-permission="TOOLING_BUDGET_BAAPPROVAL_ALL">
         <SearchBlock @sure="handleSure" />
 
         <iCard>
@@ -42,7 +42,6 @@
             <iButton @click="modifyA">{{ $t('LK_MODIFYANUMBER') }}</iButton>
           </div>
           <iTableList
-            :height="tableHeight - 440"
             :tableData="allTableData"
             :tableTitle="allBAATableHead"
             :tableLoading="allListLoading"
@@ -68,13 +67,12 @@
     </keep-alive>
     
     <keep-alive>
-      <div v-if="tableIndex===1">
+      <div v-if="tableIndex===1" v-permission="TOOLING_BUDGET_BAAPPROVAL_APPLY">
         <iCard>
           <div class="table-head">
             <iButton @click="waitApply(1)">{{ $t('LK_CANCELAPPLY') }}</iButton>
           </div>
           <iTableList
-            :height="tableHeight - 440"
             :tableData="waitTableData"
             :tableTitle="waitBAATableHead"
             :tableLoading="waitTableLoading"
@@ -110,13 +108,12 @@
     </keep-alive>
     
     <keep-alive>
-      <div v-if="tableIndex===3">
+      <div v-if="tableIndex===3" v-permission="TOOLING_BUDGET_BAAPPROVAL_MONEY">
         <iCard>
           <div class="table-head">
             <iButton @click="waitApply(3)">{{ $t('LK_CANCELAPPLY') }}</iButton>
           </div>
           <iTableList
-            :height="tableHeight - 440"
             :tableData="waitAddTableData"
             :tableTitle="waitAddTableHead"
             :tableLoading="waitAddTableLoading"
@@ -275,7 +272,6 @@ export default {
   },
   data(){
     return {
-      VUE_APP_BACOMMODITYAPPLY: process.env.VUE_APP_BACOMMODITYAPPLY,
       titleMap: {
         1: this.$t('LK_CONFIRMANUMBER'),
         3: this.$t('LK_CONFIRMMONEY')
@@ -422,6 +418,7 @@ export default {
       const { currentScope, tableIndex } = this;
       const sixBa = scope.row.sixBa || '';
       const int = scope.row.int || '';
+      const pattern = new RegExp("[`~!@#$^&*()=|{}':;',\\[\\].<>/?~！@#￥……&*（）——|{}【】‘；：”“'。，、？]")
       
       if(tableIndex === 1){ //  对输入的BA号判断
         
@@ -431,6 +428,10 @@ export default {
 
         if(int.length < 3 && int !== ''){
           return iMessage.warn(this.$t('LK_INPUTNUMBERORMORE'));
+        }
+
+        if(pattern.test(sixBa) || pattern.test(int)){
+          return iMessage.warn(this.$t('LK_INPUTNUMBERORMORE1'));
         }
       }
 
@@ -502,8 +503,8 @@ export default {
         size: this.allPage.pageSize,
       }
       findListConditoons(param).then(res => {
-        this.allPage.currPage = ~~res.pageNum;
-        this.allPage.pageSize = ~~res.pageSize;
+        this.allPage.currPage = ~~res.pageNum || 1;
+        this.allPage.pageSize = ~~res.pageSize || 10;
         this.allPage.totalCount = ~~res.total;
         this.allTableData = res.data;
 

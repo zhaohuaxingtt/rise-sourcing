@@ -19,10 +19,6 @@
             @change="changeCarTypeProject"
             ref="carTypeProjectRef"
         >
-          <!-- <div class="addCarTypeProject">
-            <iInput v-model="addCarTypeProject" placeholder="请输入自定义名称"></iInput>
-            <iButton @click="handleAddCarTypeProject" v-loading="iDialogAddCarTypeProject">{{ $t('LK_QUEREN') }}</iButton>
-          </div> -->
           <el-option
               :value="item.id"
               :label="item.cartypeNname"
@@ -131,6 +127,7 @@ import { allBAApplySearch } from "./data";
 import { getBaPullDown, getApplyUserPullDown, getLocalFactoryPullDown } from "@/api/ws2/baApproval";
 import { getCartypePulldown, saveCustomCart } from "@/api/ws2/budgetManagement/edit";
 import { getBaAccountTypePullDown } from "@/api/ws2/baApply";
+import Moment from 'moment';
 import {
   iSearch,
   iMessage,
@@ -166,8 +163,8 @@ export default {
   methods: {
 
     dateChange(date){
-      this.form['startDate'] = date ? date[0] : '';
-      this.form['endDate'] = date ? date[1] : '';
+      this.form['startDate'] = date ? Moment(date[0]).format('YYYY-MM-DD') : '';
+      this.form['endDate'] = date ? Moment(date[1]).format('YYYY-MM-DD') : '';
     },
 
     reset(){
@@ -230,31 +227,6 @@ export default {
         this.loadingiSearch = false;
       })
     },
-
-    // handleAddCarTypeProject(){
-    //   if (!this.addCarTypeProject) {
-    //     return iMessage.warn('请先输入车型名称');
-    //   }
-    //   if (this.fromGroup.some(item => item.cartypeNname == ('自定义-' + this.addCarTypeProject))){
-    //     return iMessage.warn('已有车型名称，请重新输入');
-    //   }
-
-    //   this.iDialogAddCarTypeProject = true;
-    //   saveCustomCart({cartypeProjectName: this.addCarTypeProject}).then(res => {
-    //     const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn;
-    //     if (~~res.code === 0){
-    //       iMessage.success(result);
-    //       this.addCarTypeProject = '';
-    //       this.$refs.carTypeProjectRef.blur();
-    //     }else{
-    //       iMessage.error(result);
-    //     }
-    //     this.iDialogAddCarTypeProject = false;
-    //   }).catch(err => {
-    //     this.iDialogAddCarTypeProject = false;
-    //   })
-
-    // },
 
     changeCarTypeProject(){
       

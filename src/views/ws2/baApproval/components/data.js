@@ -166,7 +166,7 @@ export const waitAddTableHead = [
     tooltip: false
   },
   {
-    props: 'sixBa	',
+    props: 'sixBa',
     name: 'BA单号',
     key: 'LK_BAODDNUMBERS',
     tooltip: false

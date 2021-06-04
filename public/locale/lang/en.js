@@ -896,6 +896,7 @@
         'LK_FASONGKM': '发送KM', // 发送KM
 
         'LK_BAAPPLYTISP1': '请先勾选',  //  请先选择车型项目
+        'LK_INPUTNUMBERORMORE1': '不能输入特殊字符',    //  不能输入特俗字符
 
         // 定点管理
         'nominationLanguage': {

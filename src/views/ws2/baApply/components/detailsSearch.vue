@@ -13,7 +13,7 @@
       <el-form>
 
         <!-- 车型项目 -->
-        <el-form-item :label="$t('LK_CHEXINXIANGMU')" v-if="isModelItem">
+        <el-form-item :label="$t('LK_CHEXINXIANGMU')" v-if="baAcountType !== 2">
         <!-- <el-form-item :label="$t('LK_CHEXINXIANGMU')"> -->
           <iSelect
               :placeholder="$t('partsprocure.CHOOSE')"
@@ -86,6 +86,7 @@
 import { detailsForm } from "./data";
 import { getCartypePulldown, saveCustomCart } from "@/api/ws2/budgetManagement/edit";
 import { getPurchaseFactoryPullDown, getBudgetStatusPullDown, getBaAccountType } from "@/api/ws2/baApply";
+import Moment from 'moment';
 import {
   iButton,
   iMessage,
@@ -100,7 +101,6 @@ export default {
     iSelect,
   },
   props: {
-    // isModelItem: {type: Boolean}, //  是否显示车型项目
   },
   data(){
     return {
@@ -112,7 +112,7 @@ export default {
       factoryList: [],
       budgetStatus: [],
       pickerDate: '',
-      isModelItem: true,
+      baAcountType: 2,
     }
   },
 
@@ -125,8 +125,10 @@ export default {
   methods: {
 
     dateChange(date){
-      this.form['startDate'] = date ? date[0] : '';
-      this.form['endDate'] = date ? date[1] : '';
+      // this.form['startDate'] = date ? date[0] : '';
+      // this.form['endDate'] = date ? date[1] : '';
+      this.form['startDate'] = date ? Moment(date[0]).format('YYYY-MM-DD') : '';
+      this.form['endDate'] = date ? Moment(date[1]).format('YYYY-MM-DD') : '';
     },
 
     reset(){
@@ -163,7 +165,7 @@ export default {
         }
 
         if(res[2].data){
-          this.isModelItem = !res[2].data.baAcountType === 2;
+          this.baAcountType = res[2].data.baAcountType;
           this.$store.commit('SET_baAcountType', res[2].data.baAcountType || '');
         }else{
           iMessage.error(result2);
