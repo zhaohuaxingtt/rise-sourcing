@@ -950,12 +950,8 @@
         "nominationSuggestion": {
             "MoJuYuSuanGuanLi": "模具预算管理",
             "BiLi": "比例(%)",
-            "ShenQingRiQi": "申请日期",
-            "CheXingXiangMu": "车型项目",
             "TouZiYuSuan": "投资预算(RMB)",
             "CSFuZeRen": "CSF(P)负责人",
-            "ShenPiZhuangTai": "审批状态",
-            "ShenPiYiJian": "审批意见",
             "YeWuFenPeiMoNi": "业务分配模拟",
             "ShuaXinShiJian": "刷新时间",
             "FanAnXuanZhe": "方案选择",
@@ -980,7 +976,9 @@
             'ChongFuTiJiao': '重复提交', // 重复提交
             'QiYuShuJuZhengChangTiJiao': '其余数据正常提交', // 其余数据正常提交
             'ChongFuCheHui': '重复撤回', // 重复撤回
-            'QiYuShuJuZhengChangCheHui': '其余数据正常撤回', // 其余数据正常撤回 
+            'QiYuShuJuZhengChangCheHui': '其余数据正常撤回', // 其余数据正常撤回
+            'FenZuMingChen': '分组名称', //分组名称
+            'QingShuRuFenZuMing': '请输入分组名', //请输入分组名
         },
         // 决策资料
         "strategicdoc": {

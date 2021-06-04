@@ -9,7 +9,6 @@
 import axios from "@/utils/axios"
 
 const requst = axios(process.env.VUE_APP_RFQ)
-console.log(JSON.str)
 
 // 获取定点管理列表
 export function getNominationList(params) {

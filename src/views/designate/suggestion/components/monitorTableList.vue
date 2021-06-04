@@ -37,8 +37,11 @@
         label='Group'
         align='center'>
         <template slot-scope="scope">
-          <el-checkbox v-if="batchEdit"></el-checkbox>
-          <div class="tableSelection" v-if="scope.row.gid">{{'GroupName'}}</div>
+          <el-checkbox
+            v-model="scope.row.selected"
+            v-if="batchEdit"
+            @change="handleSelectionChange"></el-checkbox>
+          <div class="tableSelection" v-if="scope.row.groupId">{{scope.row.groupId}}</div>
         </template>
       </el-table-column>
       <el-table-column 
@@ -50,12 +53,12 @@
       </el-table-column>
       <el-table-column
         align='center'
-        prop="num"
+        prop="partNo"
         label="Teil Nr.">
       </el-table-column>
       <el-table-column
         align='center'
-        prop="fsnr"
+        prop="partPrjCode"
         label="FSNr.">
       </el-table-column>
       <el-table-column
@@ -127,7 +130,7 @@
 </template>
 <script>
 import Vue from 'vue'
-import {mokeMouldMonitorData} from './data'
+// import {mokeMouldMonitorData} from './data'
 import {iMessage, iInput} from 'rise'
 import _ from 'lodash'
 
@@ -140,6 +143,8 @@ export default {
     indexLabel:{type:String,default:'#'},
     height:{type:Number||String, default:'380'},
     batchEdit: {type:Boolean, default:false},
+    // 供应商数组
+    supplier: {type:Array, default: () => ([])}
   },
   components: {iInput},
   data() {
@@ -148,12 +153,14 @@ export default {
       data: this.tableData,
       spanArr: [],
       selectedData: [],
-      supplier: ['SH Huashi', 'NBHX Trim', 'Bj Vehic'],
-      chartData: []
+      chartData: [],
+      combineVisible: false
     }
   },
-  created() {
-    this.init()
+  watch: {
+    tableData() {
+      this.init()
+    }
   },
   methods: {
     getCellClass(row, Index) {
@@ -185,9 +192,16 @@ export default {
       })
     },
     // section选择
-    handleSelectionChange(data) {
-      console.log(data)
-      this.selectedData = data
+    handleSelectionChange() {
+      let selectedData = this.tableData.filter(o => o.selected)
+      selectedData.forEach(item => {
+        if (item.groupId){
+          const groupedArray = this.tableData.filter(o => o.groupId === item.groupId)
+          selectedData = [...selectedData, ...groupedArray]
+        }
+      })
+      this.selectedData = _.uniqBy(selectedData, o => o.id)
+      // console.log(this.selectedData)
     },
     // 点击cell，分比例
     handleCellClick(row, Index) {
@@ -227,7 +241,7 @@ export default {
       const unGroupedArray = dataList.filter(o => !o[groupKey])
       // 合并
       dataList = [...groupedArray, ...unGroupedArray]
-      
+
       dataList.forEach((item, index) => {
         if( index === 0){
           spanArr.push(1);
@@ -258,7 +272,7 @@ export default {
       }
     },
     init() {
-      this.data = mokeMouldMonitorData
+      this.data = this.tableData
       this.spanArr = this.rowspan(this.data, 'gid', (data = []) => {
         // 格式化数据
         this.data = data
@@ -284,8 +298,11 @@ export default {
       this.supplier.forEach((item, index) => {
         countSupplier[index] = data.map(o => Number(o.TTo[index])).reduce((total, n) => total += n)
       })
+      console.log('1', data, countSupplier)
       res[0][0] = 0
       res[1][0] = countSupplier.reduce((total, n) => total += n)
+
+      
 
       // Best TTO by Group
       // 筛选出所有的分组
@@ -297,10 +314,14 @@ export default {
           const tto = [...(o.TTo || [])]
           return Number(tto.sort()[0])
         }).reduce((total, n) => total += n)
+        console.log(index, groupedArray.map(o => {
+          const tto = [...(o.TTo || [])]
+          return Number(tto.sort()[0])
+        }))
       })
 
-      res[0][1] = bestGroup[0]
-      res[1][1] = bestGroup[1]
+      res[0][1] = bestGroup[0] || 0
+      res[1][1] = bestGroup[1] || 0
 
       // Best TTO by Part
       const TTO = data.map(o => o.TTo)
