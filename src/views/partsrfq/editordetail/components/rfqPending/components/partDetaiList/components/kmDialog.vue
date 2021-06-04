@@ -1,7 +1,7 @@
 <!--
  * @Author: ldh
  * @Date: 2021-05-29 16:29:00
- * @LastEditTime: 2021-06-02 20:04:32
+ * @LastEditTime: 2021-06-03 20:49:54
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqPending\components\partDetaiList\components\kmDialog.vue
@@ -130,8 +130,8 @@ export default {
       .then(res => {
         if (res.code == 200) {
           this.multipleSelection = []
-          this.tableListData = Array.isArray(res.data.records) ? res.data.records : []
-          this.page.totalCount = res.data.total || 0
+          this.tableListData = Array.isArray(res.data) ? res.data : []
+          this.page.totalCount = res.total || 0
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }
