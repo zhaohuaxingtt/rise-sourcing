@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-25 16:11:07
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-02 14:11:19
+ * @LastEditTime: 2021-06-03 16:39:24
  * @Description: 分配询价采购员弹窗
  * @FilePath: \front-web\src\views\accessoryPart\signForPartsDemand\components\assignInquiryBuyer.vue
 -->
@@ -51,6 +51,7 @@ export default {
   watch: {
     dialogVisible(val) {
       if (val && this.deptId) {
+        this.respLINIE = ''
         this.getUserList()
       }
     }

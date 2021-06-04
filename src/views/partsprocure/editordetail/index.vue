@@ -1,8 +1,8 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2021-05-29 16:25:36
- * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-06-03 19:36:01
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\editordetail\index.vue
 -->
@@ -126,7 +126,7 @@
 						</iFormItem>
 						<iFormItem label="Heavy Item List:" name="">
 							<iText>
-								{{ detailData.a }}
+								{{ detailData.heavyItem || "否" }}
 							</iText>
 						</iFormItem>
 						<!--如果选择后的采购工厂不在主数据中该车型项目对应的采购工厂范围内？，则提示”您所选的采购工厂与主数据中该车型项目对应的采购工厂不一致，请确认是否修改“；选择”确认“保持修改后的值，选择”取消“恢复到修改前的值。”保存“后生效。--->
@@ -174,14 +174,20 @@
 							</iSelect>
 						</iFormItem>
 						<iFormItem :label="$t('LK_LINGJIANCHENGBENFENXIYUAN') + ':'" name=''>
-							<iSelect class="multipleSelect" v-model="detailData.c" multiple collapse-tags>
+							<!-- <iSelect class="multipleSelect" v-model="detailData.c" multiple collapse-tags>
 								<el-option :value="item.code" :label="item.name" v-for="item in fromGroup.CF_CONTROL" :key="item.name"></el-option>
-							</iSelect>
+							</iSelect> -->
+							<iText>
+								{{ detailData.partCostUserName }}
+							</iText>
 						</iFormItem>
 						<iFormItem :label="$t('LK_MUJUCHENGBENFENXIYUAN') + ':'" name=''>
-							<iSelect class="multipleSelect" v-model="detailData.d" multiple collapse-tags>
+							<!-- <iSelect class="multipleSelect" v-model="detailData.d" multiple collapse-tags>
 								<el-option :value="item.code" :label="item.name" v-for="item in fromGroup.CF_CONTROL" :key="item.name"></el-option>
-							</iSelect>
+							</iSelect> -->
+							<iText>
+								{{ detailData.mouldCostUserName }}
+							</iText>
 						</iFormItem>
 						<iFormItem label="Common Sourcing：" name="test">
 							<!--------预设值会有一个联动，如果 为是  零件采购项目类型是fs commonsourcing  如果是否，则是fs零件 ps:和设计刘洋沟通前端不做联动，仅仅在数据初始化时做----------> 

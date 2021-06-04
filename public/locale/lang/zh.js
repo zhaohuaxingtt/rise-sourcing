@@ -200,6 +200,7 @@
             'FanHui': '返回', // 返回
             'WenJianMingCheng': '文件名称', // 文件名称
             'ShangChuanRiQi': '上传日期', // 上传日期
+            'QingXuanZeXuYaoXiaZaiDeWenJian': '请选择需要下载的文件', // 请选择需要下载的文件
         },
         /*
         <!------------------------------------------------------------------------>
@@ -860,6 +861,16 @@
         'LK_SHENPILIUZHUAN': '审批中/流转中',
         'LK_SHENPILIUZHUANWANCHENG': '审批完成/流转完成',
         'LK_NINQUERENZHIXINGDONGJIECAOZUOMA':'您确定要执行冻结操作吗？', // 您确定要执行冻结操作吗？
+        'LK_DIYINIANXUQIULIANG':'第1年需求量', // 第1年需求量
+        'LK_DIERNIANXUQIULIANG':'第2年需求量', // 第2年需求量
+        'LK_DISANNIANXUQIULIANG':'第3年需求量', // 第3年需求量
+        'LK_DISINIANXUQIULIANG':'第4年需求量', // 第4年需求量
+        'LK_DIWUNIANXUQIULIANG':'第5年需求量', // 第5年需求量
+        'LK_DILIUNIANXUQIULIANG':'第6年需求量', // 第6年需求量
+        'LK_DIQINIANXUQIULIANG':'第7年需求量', // 第7年需求量
+        'LK_DIBANIANXUQIULIANG':'第8年需求量', // 第8年需求量
+        'LK_DIJIUNIANXUQIULIANG':'第9年需求量', // 第9年需求量
+        'LK_DISHINIANXUQIULIANG':'第10年需求量', // 第10年需求量
 
         // 定点管理
         'nominationLanguage': {

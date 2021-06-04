@@ -120,22 +120,20 @@ export default {
             const { query } = this.$route;
             const {rfqNum="1" } = query;
             const { page } = this;
-            const data = {
+            const params = {
                 nomiAppId:rfqNum,
                 fileType:'109',   // 101 109: 报告清单,110:询价图纸,111:询价附件
                 pageNo:page.currPage,
                 pageSize:page.pageSize,
             }
-            getFileHistory(data).then((res)=>{
+            getFileHistory(params).then((res)=>{
                 const {code,data} = res; 
                 if(code === '200' && data){
                     const {records,total} = data;
-                    this.loading =  false;
                     this.tableListData = records;
                     this.page.totalCount = total;
-                }else{
-                     this.loading =  false;
                 }
+                this.loading =  false;
             }).catch((err)=>{
                  this.loading =  false;
             })

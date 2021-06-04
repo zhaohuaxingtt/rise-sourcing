@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-25 13:57:11
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-02 14:38:58
+ * @LastEditTime: 2021-06-03 17:05:35
  * @Description: 
  * @FilePath: \front-web\src\views\accessoryPart\signForPartsDemand\index.vue
 -->
@@ -51,7 +51,7 @@
                   <!--------------------分配询价采购员按钮----------------------------------->
                   <iButton @click="openBuyerDialog" >分配询价采购员</iButton>
                   <!--------------------导出按钮----------------------------------->
-                  <iButton @click="donwloadList" >导出</iButton>
+                  <iButton @click="donwloadList" :loading="downloadLoading" >导出</iButton>
                 </div>
             </div>
             <tableList :activeItems='"spnrNum"' selection indexKey :tableData="tableData" :tableTitle="tableTitle" :tableLoading="tableLoading" @handleSelectionChange="handleSelectionChange" @openPage="openPage"></tableList>
@@ -68,7 +68,7 @@
           <!------------------------------------------------------------------------>
           <!--                  分配询价科室弹窗                                   --->
           <!------------------------------------------------------------------------>
-          <assignInquiryDepartmentDialog :dialogVisible="inquiryDialogVisible" @changeVisible="changeInquiryDialogVisible" @sendAccessory="sendAccessoryDept" />
+          <assignInquiryDepartmentDialog :dialogVisible="inquiryDialogVisible" @changeVisible="changeInquiryDialogVisible" @sendAccessory="sendAccessoryDept" :deptId="selectDeptId" />
           <!------------------------------------------------------------------------>
           <!--                  分配询价采购员弹窗                                 --->
           <!------------------------------------------------------------------------>
@@ -120,7 +120,9 @@ export default {
       tab: "source",
       selectOptions: {
         yesOrNoOption: [{value: '1', label: '是'},{value: '0', label: '否'}]
-      }
+      },
+      selectDeptId: '',
+      downloadLoading: false
     }
   },
   created() {
@@ -157,10 +159,12 @@ export default {
      * @return {*}
      */    
     async donwloadList() {
+      this.downloadLoading = true
       const params = {
         ...this.searchParams
       }
       await downLoadAccessoryList(params)
+      this.downloadLoading = false
     },
     /**
      * @Description: 打开分配询价采购员弹窗，若未勾选配件或勾选的配件没有部门或勾选的配件的部门不一致则给出提示不允许操作
@@ -182,6 +186,7 @@ export default {
         iMessage.warn('请选择有部门的配件')
         return
       }
+      this.selectDeptId = selectPartsDept[0]
       this.changeBuyerDialogVisible(true)
     },
     /**

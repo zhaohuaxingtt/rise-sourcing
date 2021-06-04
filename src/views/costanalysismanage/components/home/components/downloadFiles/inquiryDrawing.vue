@@ -25,7 +25,7 @@
         </template>
       </tableList>
       <!-- 分页 -->
-      <iPagination v-update @size-change="handleSizeChange($event, getTableList)" @current-change="handleCurrentChange($event, getTableList)" background :page-sizes="page.pageSizes"
+      <iPagination v-update @size-change="handleSizeChange($event, getList)" @current-change="handleCurrentChange($event, getList)" background :page-sizes="page.pageSizes"
       :page-size="page.pageSize"
       :layout="page.layout"
       :current-page="page.currPage"
