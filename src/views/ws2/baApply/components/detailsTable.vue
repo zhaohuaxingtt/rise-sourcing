@@ -5,7 +5,6 @@
     </div>
     
     <iTableList
-        :height="tableHeight - 440"
         :tableData="tableListData"
         :tableTitle="tableTitle"
         :tableLoading="tableLoading"
