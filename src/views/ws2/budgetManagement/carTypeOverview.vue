@@ -101,7 +101,7 @@
                 <h4 slot="reference">{{ item.cartypeProjectName }}</h4>
               </Popover>
               <Popover
-                  v-if="Number(item.SourceStatus) === 1 || Number(item.isBudget) === 3"
+                  v-if="Number(item.sourceStatus) === 1 || Number(item.isBudget) === 3"
                   :content="$t('LK_CAIGOUGONGCHANG') + ': ' + (item.locationFactory ? item.locationFactory : '')"
                   placement="top-start"
                   trigger="hover">

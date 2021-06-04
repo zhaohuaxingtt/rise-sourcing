@@ -23,7 +23,7 @@
             :key="index"
             class="tips"
         >
-          {{item.tmCarTypeProName}}车型项目的，材料组
+          {{item.tmCarTypeProName}}车型项目，材料组
           {{item.categoryName}}，预算剩余为
           {{item.budgetLeftoverAmount}}，此次申请预算为
           {{item.budgetApplyAmountTotal}}，已超额原设定预算，请确定是否要审批？
