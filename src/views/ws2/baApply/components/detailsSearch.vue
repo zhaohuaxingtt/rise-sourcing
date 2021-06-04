@@ -13,7 +13,7 @@
       <el-form>
 
         <!-- 车型项目 -->
-        <el-form-item :label="$t('LK_CHEXINXIANGMU')" v-if="baAcountType !== 2">
+        <el-form-item :label="$t('LK_CHEXINXIANGMU')" v-permission="TOOLING_BUDGET_BAAPPLICATION_CARTYPE">
         <!-- <el-form-item :label="$t('LK_CHEXINXIANGMU')"> -->
           <iSelect
               :placeholder="$t('partsprocure.CHOOSE')"
@@ -112,7 +112,6 @@ export default {
       factoryList: [],
       budgetStatus: [],
       pickerDate: '',
-      baAcountType: 2,
     }
   },
 
@@ -147,7 +146,7 @@ export default {
     getComponentsData(){
       this.loadingiSearch = true;
       //  采购工厂列表、模具预算状态、AccountType、车型项目
-      Promise.all([getPurchaseFactoryPullDown(), getBudgetStatusPullDown(), getBaAccountType(), getCartypePulldown()]).then(res => {
+      Promise.all([getPurchaseFactoryPullDown(), getBudgetStatusPullDown(), getCartypePulldown()]).then(res => {
         const result0 = this.$i18n.locale === 'zh' ? res[0].desZh : res[0].desEn;
         const result1 = this.$i18n.locale === 'zh' ? res[1].desZh : res[1].desEn;
         const result2 = this.$i18n.locale === 'zh' ? res[2].desZh : res[2].desEn;
@@ -165,14 +164,7 @@ export default {
         }
 
         if(res[2].data){
-          this.baAcountType = res[2].data.baAcountType;
-          this.$store.commit('SET_baAcountType', res[2].data.baAcountType || '');
-        }else{
-          iMessage.error(result2);
-        }
-
-        if(res[3].data){
-          this.fromGroup = res[3].data;
+          this.fromGroup = res[2].data;
         }else{
           iMessage.error(result3);
         }

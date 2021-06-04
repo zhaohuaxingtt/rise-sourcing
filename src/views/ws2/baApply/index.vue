@@ -1,7 +1,6 @@
 <template>
-  <div class="generateInvestmentList">
-    <template v-if="baAcountType === 1">
-      <iSearch
+  <div class="generateInvestmentList" v-permission="TOOLING_BUDGET_BAAPPLICATION_TOTAL">
+    <iSearch
           class="margin-bottom20 giSearch"
           style="margin-top: 20px"
           @sure="sure"
@@ -59,9 +58,8 @@
               :total="page.totalCount"
           />
       </iCard>
-    </template>
 
-    <template v-else-if="baAcountType === 2">
+    <!-- <template v-else-if=" === 2">
       <DetailsSearch @reset="handleReset" @sure="handleSure" />
 
       <iCard>
@@ -78,7 +76,7 @@
           :total="detailPage.totalCount"
       />
     </iCard>
-    </template>
+    </template> -->
     
   </div>
 </template>
@@ -138,7 +136,6 @@ export default {
         currPage: 1,
         pageSize: 10,
       },
-      baAcountType: 1,
     }
   },
 
@@ -166,7 +163,6 @@ export default {
         moldStatus: form['moldStatus'] === '' ? [] : [form['moldStatus']],
         current: this.detailPage.currPage,
         size: this.detailPage.pageSize,
-        baAcountType: this.$store.state.baApply.baAcountType,
       }
       findBaPartsList(param).then(res => {
         this.tableDetailsListData = res.data;
@@ -215,7 +211,7 @@ export default {
 
     getPageData(){
       this.loadingiSearch = true;
-      Promise.all([getCartypePulldown(), getBaAccountType()]).then(res => {
+      Promise.all([getCartypePulldown()]).then(res => {
         const result0 = this.$i18n.locale === 'zh' ? res[0].desZh : res[0].desEn;
         const result1 = this.$i18n.locale === 'zh' ? res[1].desZh : res[1].desEn;
 
@@ -223,14 +219,6 @@ export default {
           this.fromGroup = res[0].data;
         }else{
           iMessage.error(result0);
-        }
-
-        if(res[1].data){
-          this.baAcountType = res[1].data.baAcountType;
-          this.$store.commit('SET_baAcountType', res[1].data.baAcountType || '');
-          this.baAcountType === 1 &&  this.findCarTypeList();
-        }else{
-          iMessage.error(result1);
         }
 
         this.loadingiSearch = false;
