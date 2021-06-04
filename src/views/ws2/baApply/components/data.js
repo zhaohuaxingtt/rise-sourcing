@@ -7,7 +7,7 @@ export const indexFrom = {
 //  车型项目详情列表入参
 export const detailsForm = {
   'tmCartypeProId': '', //车型项目
-  'moldStatus':  '', //  模具预算状态
+  'moldStatus':  '1', //  模具预算状态
   'locationFactoryId': '',  //  采购工厂
   'startDate': '', //  申请开始时间
   'endDate': '',  //  申请结束时间

@@ -443,7 +443,7 @@ export default {
         if(res.data){
           this.confirmTableData = res.data.map(item => ({
             ...item,
-            baNumber: item.carTypeName === 'Total' ? '' : `A-${sixBa}-${int.length === 0 ? 'INT' : int}`
+            baNumber: item.carTypeName === 'Total' ? '' : (sixBa ? `A-${sixBa}-${int.length === 0 ? 'INT' : int}` : sixBa),
           }));
           this.confirmVisible = true;
           this.currentScope = scope.row;
