@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-05-27 12:32:54
- * @LastEditTime: 2021-06-03 16:12:42
+ * @LastEditTime: 2021-06-04 14:04:33
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\costanalysismanage\components\home\index.vue
@@ -254,19 +254,19 @@ export default {
       })
       .then(res => {
         if (res.code == 200) {
-          this.tableListData = Array.isArray(res.data.records) ? res.data.records : []
-          this.totalCount = res.data.total || 0
+          this.tableListData = Array.isArray(res.data) ? res.data : []
+          this.totalCount = res.total || 0
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }
 
         this.loading = false
       })
-      .catch(() => {})
+      .catch(() => this.loading = false)
     },
     // 跳转RFQ详情
     jumpRfq(row) {
-      window.open(`/#/costanalysismanage/rfqdetail?rfqNum=${ row.rfqNum }`, "_blank")
+      window.open(`/#/costanalysismanage/rfqdetail?rfqId=${ row.id }`, "_blank")
     },
     // 下载
     download(row) {

@@ -200,6 +200,7 @@
             'WenJianMingCheng': '', // 文件名称
             'ShangChuanRiQi': '', // 上传日期
             'QingXuanZeXuYaoXiaZaiDeWenJian': '', // 请选择需要下载的文件
+            'QingXuanZeXuYaoShanChuDeWenJian': '', // 请选择需要删除的文件
         },
         /*
         <!------------------------------------------------------------------------>

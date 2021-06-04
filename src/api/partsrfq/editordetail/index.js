@@ -214,7 +214,7 @@ export function getSupplierProducePlace(params) {
 // 获取对应供应商的零件清单
 export function getPartsBySupplier(params) {
     return requst({
-        url: `/list`,
+        url: `/partSupplier/List`,
         method: 'POST',
         data: params
     })
