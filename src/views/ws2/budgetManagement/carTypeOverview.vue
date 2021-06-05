@@ -66,7 +66,7 @@
         <!--          <iButton @click="reset">重置</iButton>-->
       </div>
     </iSearch>
-    <div v-loading="loadingiPage" style="overflow:auto;" :style="{height: cardHeight + 'px'}">
+    <div v-loading="loadingiPage">
 <!--      <div class="infinite-list-wrapper" style="overflow:auto;height: 100px;">-->
 <!--        <ul-->
 <!--            class="list"-->
@@ -79,9 +79,12 @@
 <!--      </div>-->
 
       <div class="content list"
+           style="overflow:auto;"
+           :style="{height: cardHeight + 'px'}"
            v-if="contentData.length > 0"
            v-infinite-scroll="load"
-           infinite-scroll-disabled="disabled">
+           infinite-scroll-distance="10"
+           infinite-scroll-disabled="scrollDisabled">
         <div class="item list-item" v-for="(item, index) in contentData" :key="index"
              @click="toEdit(item.id, item.sourceStatus, item.isBudget)">
           <div class="item_top">
@@ -101,7 +104,7 @@
                 <h4 slot="reference">{{ item.cartypeProjectName }}</h4>
               </Popover>
               <Popover
-                  v-if="Number(item.sourceStatus) === 1 || Number(item.isBudget) === 3"
+                  v-if="Number(item.sourceStatus) === 1 || Number(item.isBudget) !== 3"
                   :content="$t('LK_CAIGOUGONGCHANG') + ': ' + (item.locationFactory ? item.locationFactory : '')"
                   placement="top-start"
                   trigger="hover">
@@ -208,8 +211,8 @@ export default {
     noMore () {
       return this.count >= this.initContentData.length
     },
-    disabled () {
-      return this.loadingiPage || this.noMore
+    scrollDisabled () {
+      return this.loading || this.noMore
     }
   },
   mounted() {
@@ -225,7 +228,7 @@ export default {
           this.count += 8
           this.contentData = this.contentData.concat(this.initContentData.slice(this.count - 8, this.count))
           this.loading = false
-        }, 2000)
+        }, 1000)
       }
 
     },
@@ -641,10 +644,21 @@ export default {
       opacity: 1;
       border-radius: 10px;
       padding: 52px 30px 30px 30px;
-      margin-bottom: 29px;
+      margin-top: 29px;
       margin-right: calc((100% - 1640px) / 3);
       cursor: pointer;
-
+      &:nth-of-type(1) {
+        margin-top: 0;
+      }
+      &:nth-of-type(2) {
+        margin-top: 0;
+      }
+      &:nth-of-type(3) {
+        margin-top: 0;
+      }
+      &:nth-of-type(4) {
+        margin-top: 0;
+      }
       &:nth-of-type(4n) {
         margin-right: 0;
       }
