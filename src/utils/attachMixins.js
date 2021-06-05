@@ -6,6 +6,7 @@
  * @Description: 针对所有的分页插件，实行方法混入。
  * @FilePath: \rise\src\utils\attachMixins.js
  */
+import Vue from 'vue'
 import {iMessage} from 'rise'
 import {
   uploadfile,
@@ -16,13 +17,15 @@ import {
 // 下载文件api
 import { downloadFile } from '@/api/file'
 
-export const pageMixins = {
+export const attachMixins = {
   data(){
     return {
     // 加载状态
     tableLoading: false,
     //  选中的数据
-    multipleSelection: []
+    multipleSelection: [],
+    // 列表
+    dataList: []
     }
   },
   methods:{
@@ -69,6 +72,9 @@ export const pageMixins = {
       }, params)).then(res => {
         if (res.code === '200') {
           this.dataList = res.data.records || []
+          if (this.page) {
+            this.page.totalCount = res.data.total
+          }
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }
