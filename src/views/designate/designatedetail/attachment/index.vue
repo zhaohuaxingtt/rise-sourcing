@@ -25,7 +25,7 @@ export default {
       const nominationType = this.$store.getters.nominationType
       const queryNomiType = this.$route.query.designateType
       const show = nominationType === 'RECORD' && queryNomiType === 'RECORD'
-      return true
+      return show
     }
   },
   data() {
