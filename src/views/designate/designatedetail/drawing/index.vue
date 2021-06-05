@@ -10,7 +10,7 @@
           {{ $t("strategicdoc.PaiXu") }}
         </iButton>
         <!-- 全部下载 -->
-        <iButton @click="batchDownload">
+        <iButton @click="batchDownloadAll">
           {{ $t("strategicdoc.QuanBuXiaZai") }}
         </iButton>
         <!-- 上传 -->
@@ -19,7 +19,7 @@
         </iButton>
       </div>
     </div>
-    <div class="list" :class="{'data-null': !(dataList && dataList.length)}" v-loading="loading">
+    <div class="list" :class="{'data-null': !(dataList && dataList.length)}" v-loading="tableLoading">
       <el-row gutter="20" v-if="dataList && dataList.length">
         <el-col class="margin-bottom25" span="12" v-for="(item, index) in dataList" :key="index">
           <div class="drawing-content">
@@ -52,17 +52,19 @@ import {
 import sortDialog from './components/sortDialog'
 import uploadDialog from './components/uploadDialog'
 import { 
-  getdDecisiondataDaringList,
+  // getdDecisiondataDaringList,
   getdDecisiondataDaringListAll
 } from '@/api/designate/decisiondata/drawing'
 import { downloadFile } from '@/api/file'
+import { attachMixins } from '@/utils/attachMixins'
 
 export default {
+  mixins: [ attachMixins ],
   data() {
     return {
       sortVisibal: false,
       uploadVisibal: false,
-      loading: false,
+      // loading: false,
       dataList: [],
       nomiAppId: this.$route.query.desinateId || '',
       page: {
@@ -80,7 +82,7 @@ export default {
     uploadDialog
   },
   mounted() {
-    this.getDataList()
+    this.getFetchDataList()
   },
   methods: {
     dowloadSingleFile(item) {
@@ -92,54 +94,24 @@ export default {
         downloadFile(params)
       }
     },
-    async batchDownload() {
-      if (!this.nomiAppId) return iMessage.error(this.$t('nominationLanguage.DingDianIDNotNull'))
-      try {
-        const res1 = await getdDecisiondataDaringListAll({
-          nomiAppId: this.nomiAppId,
-          sortColumn: 'sort',
-          isAsc: true,
-          fileType: '101',
-        })
-        if (res1.code === '200') {
-          const list = res1.data.records || []
-          const fileList = list.map(o => o.id)
-          console.log(fileList)
-          if (fileList.length) {
-            const params = {
-              applicationName: 'rise',
-              fileList
-            }
-            console.log('批量下载', params)
-            downloadFile(params)
-          }
-        }
-      } catch (e) {
-        console.log(e)
-      }
-    },
-    getDataList() {
-      if (!this.nomiAppId) return iMessage.error(this.$t('nominationLanguage.DingDianIDNotNull'))
-      this.loading = true
-      getdDecisiondataDaringList({
+    async batchDownloadAll() {
+      const params = {
         nomiAppId: this.nomiAppId,
         sortColumn: 'sort',
         isAsc: true,
         fileType: '101',
-        pageNo: this.page.currPage,
-        pageSize: this.page.pageSize
-      }).then(res => {
-        if (res.code === '200') {
-          this.dataList = res.data.records || []
-        } else {
-          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
-        }
-        this.loading = false
-        console.log(res)
-      }).catch(e => {
-        console.log(e)
-        this.loading = false
-      })
+      }
+      this.batchDownload(params)
+      
+    },
+    getFetchDataList() {
+      const params = {
+        nomiAppId: this.nomiAppId,
+        sortColumn: 'sort',
+        isAsc: true,
+        fileType: '101',
+      }
+      this.getDataList(params)
     }
   },
   watch: {

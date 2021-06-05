@@ -109,8 +109,8 @@ export default {
         pageSize: this.page.pageSize
       }).then(res => {
         if (res.code === '200') {
-          this.tableListData = res.data.records || []
-          this.page.totalCount = res.data.total || 0
+          this.tableListData = res.data || []
+          this.page.totalCount = Number(res.total) || 0
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }
