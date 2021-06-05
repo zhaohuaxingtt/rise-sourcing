@@ -34,12 +34,12 @@
       <div class="btnSearch">
         <iButton @click="quote">引用报价</iButton>
         <iButton @click="group">组合</iButton>
-        <iButton>取消组合</iButton>
+        <iButton @click="removeGroup">取消组合</iButton>
         <iButton>导出</iButton>
       </div>
       <!--------------表格模块-------------->
     </div>
-    <tableList :tableTitle='title' v-if='layout == "1"' :ratingList='ratingList' :tableData='exampelData' @handleSelectionChange='handleSelectionChange'></tableList>
+    <tableList v-loading='fsTableLoading' :tableTitle='title' v-if='layout == "1"' :ratingList='ratingList' :tableData='exampelData' @handleSelectionChange='handleSelectionChange'></tableList>
     <tableListSupplier :tableTitle='supplierTile'  :tableData='supplierData' v-if='layout == "2"'></tableListSupplier>
     <!--------------弹窗-------------->
     <iDialog title="组合名" :visible.sync="groupVisble" width='25%' >
@@ -57,8 +57,8 @@
 import {iButton,iSelect,iDialog,iInput,iMessage} from 'rise'
 import tableList from './components/table'
 import tableListSupplier from './components/tableListSupplier'
-import {exampelData,supplierData,concactTitlle,centerSupplierList,backChooseList,getRenderTableTile,translateData,translateRating,subtotal} from './components/data'
-import {negoAnalysisSummaryLayout,negoAnalysisSummaryLayoutSave,negoAnalysisSummaryRound,fsPartsAsRow,negoAnalysisSummaryGroup} from '@/api/partsrfq/editordetail'
+import {exampelData,supplierData,concactTitlle,centerSupplierList,backChooseList,getRenderTableTile,translateData,translateRating,subtotal,defaultSort} from './components/data'
+import {negoAnalysisSummaryLayout,negoAnalysisSummaryLayoutSave,negoAnalysisSummaryRound,fsPartsAsRow,negoAnalysisSummaryGroup,negoAnalysisSummaryGroupDelete} from '@/api/partsrfq/editordetail'
 export default{
   components:{iButton,iSelect,tableList,iDialog,iInput,tableListSupplier},
   data(){return {
@@ -78,7 +78,9 @@ export default{
       firstTile:[],
       ratingList:[]
     },
-    groupName:''
+    groupName:'',
+    fsTableLoading:false,
+    reRenderLastChild:''
   }},
   created(){
     this.init()
@@ -90,6 +92,11 @@ export default{
     return {vm:this}
   },
   methods:{
+    removeGroup(){
+      if(this.groupSelectData.length == 0){iMessage.warn('抱歉！您还未选择零件！');return}
+      if(this.groupSelectData[0].groupId == null){iMessage.warn('抱歉！您选中的零件还未组合，无法取消');return}
+      this.negoAnalysisSummaryGroupsDelete()
+    },
     /**
      * @description: 确认组合 
      * @param {*}
@@ -106,6 +113,36 @@ export default{
       });
       return listArray
     },
+    getPartGroupNumber(){
+      const listArray = []
+      this.exampelData.forEach(element => {
+        if(element.groupId == this.groupSelectData[0].groupId){
+          listArray.push(element.groupId)
+        }
+      });
+      return listArray
+    },
+        /**
+     * @description:取消组合零件 
+     * @param {*}
+     * @return {*}
+     */
+    negoAnalysisSummaryGroupsDelete(){
+      const sendata = {
+          partPrjCode: [...new Set(this.getPartGroupNumber())],
+          rfqId: this.$route.query.id
+        }
+        negoAnalysisSummaryGroupDelete(sendata).then(res=>{
+          console.log(res)
+          if(res.code == 200){
+            this.fsPartsAsRow()
+          }else{
+            iMessage.warn(res.desZh)
+          }
+        }).catch(err=>{
+          iMessage.warn(err.desZh)
+        })
+      },
     /**
      * @description:组合零件 
      * @param {*}
@@ -113,15 +150,15 @@ export default{
      */
     negoAnalysisSummaryGroups(){
       const sendata = {
-          group: this.groupName,
+          groupName: this.groupName,
           partPrjCode: this.getPartNumber(this.groupSelectData),
           rfqId: this.$route.query.id
         }
-        console.log(sendata)
         negoAnalysisSummaryGroup(sendata).then(res=>{
-          console.log(res)
           if(res.code == 200){
             this.fsPartsAsRow()
+          }else{
+            iMessage.warn(res.desZh)
           }
         }).catch(err=>{
           iMessage.warn(err.desZh)
@@ -159,6 +196,9 @@ export default{
      */
     negoAnalysisSummaryLayoutSave(){
       negoAnalysisSummaryLayoutSave(JSON.stringify(this.backChoose),this.layout).then(res=>{
+        if(res.code == 200){
+          this.fsPartsAsRow()
+        }
       }).catch(err=>{
         iMessage.warn(err.desZh)
       })
@@ -190,19 +230,24 @@ export default{
       this.groupSelectData = val
     },
     /**
-     * @description: 组合方法 
+     * @description: 获取数据。
      * @param {*}
      * @return {*}
      */
     fsPartsAsRow(){
+      this.fsTableLoading = true
       fsPartsAsRow(this.$route.query.id,this.round).then(res=>{
+        this.fsTableLoading = false
         if(res.data && res.data.partInfoList && res.data.partInfoList.length){
-          this.title = getRenderTableTile(this.backChoose,res.data.partInfoList[0].bdlInfoList.length)
-          this.exampelData = translateData(res.data.partInfoList)
+          const relTitle = getRenderTableTile(this.backChoose,res.data.partInfoList[0].bdlInfoList.length)
+          this.title = relTitle.title
+          this.reRenderLastChild = relTitle.xhLastChildProps
+          this.exampelData = defaultSort(translateData(res.data.partInfoList),'groupId')
           this.ratingList = translateRating(res.data.partInfoList,res.data.bdlRateInfoList)
           this.exampelData = [...this.exampelData,...subtotal(this.title,this.exampelData,res.data.bdlPriceTotalInfoList)]
         }
       }).catch(err=>{
+        this.fsTableLoading = false
         iMessage.warn(err.desZh)
       })
     },

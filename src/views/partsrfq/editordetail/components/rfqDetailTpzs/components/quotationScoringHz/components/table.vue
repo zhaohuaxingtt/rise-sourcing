@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-28 15:03:47
- * @LastEditTime: 2021-06-04 10:48:00
+ * @LastEditTime: 2021-06-05 11:16:22
  * @LastEditors: Please set LastEditors
  * @Description: 特殊表格实现
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\table.vue
@@ -19,6 +19,7 @@
     :row-class-name="tableRowClassName"
     :header-cell-class-name='headerClassName'
     :cell-class-name='cellClassName'
+    :span-method="spanMethod"
   >
     <template v-for='(item,index) in tableTitle'>
       <!-----------------存在index selection情况------------------------>
@@ -40,6 +41,7 @@
         :width="item.width"
         :prop='item.props'
         align="center"
+        :sortable='item.props == "cfPartAPrice"'
         :resizable="false"
       >
         <!----------在表头上方需要显示评分的点，插入表头标签------>
@@ -51,7 +53,7 @@
                 <li></li>
                 <li v-for='(items,index) in ratingList.firstTile' :key='index'>{{items}}</li>
               </ul>
-        <!----------在表头上方动态循环点------>
+        <!----------在表头上方动态循环点------------------------>
               <template v-for='(rating,index) in ratingList.ratingList'>
                 <ul :key="index" class="lastChild">
                   <li v-for='(itemsss,index) in rating' :key='index'>{{itemsss}}</li>
@@ -61,13 +63,13 @@
           </div>
         </template>
         <template slot-scope="scope">
-          <!-- <template v-if='removeKeysNumber(item.props) == "cfPartAPrice"'>
+          <template v-if='removeKeysNumber(item.props) == "cfPartAPrice"'>
               <span :class="{chengse:scope.row[item.props].cfPartAPriceStatus == 2}">{{scope.row[item.props]}}</span>
           </template>
           <template v-else-if='removeKeysNumber(item.props) == "lcAPrice"'>
-              <span :class="{lvse:scope.row[item.props][getPorpsNumber(item.props)+'lcAPriceStatus'] == 1}">{{scope.row[item.props]}}</span>
-          </template> -->
-          <span>{{scope.row[item.props]}}</span>
+              <span :class="{lvse:scope.row[item.props] == 1}">{{scope.row[item.props]}}</span>
+          </template>
+          <span v-else>{{scope.row[item.props]}}</span>
         </template>
       </el-table-column>
     </template>
@@ -96,9 +98,52 @@ export default{
     cWidth(){
       const index = this.tableTitle.findIndex((item)=>item.label == 'EBR')
       return (this.tableTitle.length - index) * 100 + 'px'
+    },
+    spanArr(){
+      return this.rowspan(this.tableData,'groupId',null)
     }
   },
   methods:{
+        /**
+     * 分组函数，用于element-ui table 分组合并
+     * target 目标数组
+     * groupKey 同一组打标字段名, 
+     * cb 回调函数，提供格式化好的原数组，
+     */
+    rowspan(dataList = [], groupKey = 'groupId', cb = null) {
+      // 缓存每行的span记录
+      const spanArr = []
+      // 遍历dataList index
+      let position = 0
+      dataList.forEach((item, index) => {
+        if( index === 0){
+          spanArr.push(1);
+          position = 0;
+        }else{
+          if(item[groupKey] && item[groupKey] === dataList[index-1][groupKey] ){
+            spanArr[position] += 1;
+            spanArr.push(0);
+          }else{
+            spanArr.push(1);
+            position = index;
+          }
+        }
+        })
+    // 处理回调
+    typeof cb === 'function' && (cb(dataList, spanArr))
+    return spanArr
+  },
+  spanMethod({row, column, rowIndex, columnIndex}) {
+    // 只做第一列合并操作
+    if (columnIndex === 0 ) {
+      const _row = this.spanArr[rowIndex];
+      const _col = _row > 0 ? 1 : 0;
+      return {
+        rowspan: _row,
+        colspan: _col
+        };
+      }
+    },  
     getPorpsNumber(key){
       return getPorpsNumber(key)
     },
@@ -117,6 +162,9 @@ export default{
       if(column.label == 'EBR'){
         return 'leftRightBorder'
       }
+      if(this.vm.reRenderLastChild.name == column.label){
+        return 'rightBorder'
+      }
     },
     /**
      * @description: 在表格内容中，加入特殊颜色 
@@ -132,9 +180,23 @@ export default{
         return 'lineBlueClass'
       }
     },
+    /**
+     * @description: 为表格表头新增class 
+     * @param {*} row
+     * @param {*} column
+     * @param {*} rowIndex
+     * @param {*} columnIndex
+     * @return {*}
+     */
     cellClassName({row, column, rowIndex, columnIndex}){
       if(column.label == 'EBR' && rowIndex <= this.tableData.length - 4){
         return 'leftRightBorder'
+      }
+      if(column.label == 'Group' && row.groupId){
+        return 'bgcoor'
+      }
+      if(this.vm.reRenderLastChild.name == removeKeysNumber(column.label)){
+        return 'rightBorder'
       }
     },
     selectable(row, index){
@@ -163,14 +225,17 @@ export default{
     ::v-deep .el-table__header-wrapper{
       overflow: visible;
       .cell{
+        height: 30px;
         span{
           display: inline-block;
-          width: 100%;
           word-break: break-all;
           overflow: hidden;
         }
         .el-checkbox{
           width: 18px;
+        }
+        .caret-wrapper{
+          top: -8px;
         }
       }
     }
@@ -202,6 +267,12 @@ export default{
     }
     ::v-deep.leftRightBorder{
       border-left: 1px solid #C5CCD6;
+      border-right: 1px solid #C5CCD6;
+    }
+    ::v-deep .bgcoor{
+      background: rgba(247, 250, 255, 1);
+    }
+    ::v-deep .rightBorder{
       border-right: 1px solid #C5CCD6;
     }
   }

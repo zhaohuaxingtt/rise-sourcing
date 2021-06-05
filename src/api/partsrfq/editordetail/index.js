@@ -255,6 +255,15 @@ export function negoAnalysisSummaryGroup(data){
     })
 }
 
+//分析报价-组合
+export function negoAnalysisSummaryGroupDelete(data){
+    return nego({
+        url: `/nego-assistant/nego-analysis-summary-group`,
+        method: 'DELETE',
+        data:data
+    })
+}
+
 // 获取对应供应商的零件清单
 export function getPartsBySupplier(params) {
     return requst({

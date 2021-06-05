@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-05-28 14:32:26
- * @LastEditTime: 2021-06-04 10:17:00
+ * @LastEditTime: 2021-06-05 11:02:45
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\data.js
@@ -89,12 +89,13 @@ export function getRenderTableTile(whiteListService,supplierLength){
       templateListxh.push(xuhTable[i])
     }
   }
+  const lastChildProps = {name:relTableListXh[relTableListXh.length -1].label,props:relTableListXh[relTableListXh.length -1].props}
   for(let i = 0; i<supplierLength;i++){
     if(i>0){
       relTableListXh = [...relTableListXh,...addtitle(templateListxh,i)]
     }
   }
-  return [...relTabelListDefault,...relTableListXh]
+  return {title:[...relTabelListDefault,...relTableListXh],xhLastChildProps:lastChildProps}
 }
 
 /**
@@ -256,6 +257,11 @@ export function kmOrbukeage(type,priceInfo,exampleDatas){
 export function getPorpsNumber(key){
   return parseInt(key)?parseInt(key):''
 }
+
+export function defaultSort(list,key){
+  return [...list.filter(i=>i[key]).sort((a,b)=> a[key] == b[key]),...list.filter(i=>!i[key])]
+}
+
 //------------------------------------------fs数据构造------------------------------------------------------
 
 export const supplierTile = [
