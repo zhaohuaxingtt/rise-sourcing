@@ -19,7 +19,7 @@
         <!-- 删除 -->
         <iButton
           class="margin-right10"
-          @click="deleteFile"
+          @click="deleteFile($event, getFetchDataList)"
           v-if="!$store.getters.isPreview">
           {{ $t("strategicdoc.ShanChu") }}
         </iButton>
@@ -35,7 +35,7 @@
           :hideTip="true"
           :accept="'.doc,.docx,.xls,.xlsx,.ppt,.pptx,.jpg,.jpeg,.png,.pdf,.tif'"
           :buttonText="$t('strategicdoc.ShangChuanWenJian')"
-          @on-success="onUploadsucess({fileType: '102'})"
+          @on-success="onUploadsucess(Object.assign(...arguments, {fileType: '102'}), getFetchDataList)"
         />
       </div>
     </div>
@@ -48,6 +48,9 @@
       v-loading="tableLoading"
       @handleSelectionChange="handleSelectionChange"
     >
+    <template #uploadDate="scope">
+      {{scope.row.uploadDate | dateFilter('YYYY-MM-DD')}}
+    </template>
     </tablelist>
     <iPagination
       v-update
@@ -66,7 +69,7 @@
 <script>
 import { 
   uploadtableTitle, 
-  mokeUploadTableListData
+  // mokeUploadTableListData
 } from './data'
 import tablelist from "./tableList";
 import {
@@ -108,14 +111,15 @@ export default {
     this.getFetchDataList()
   },
   methods: {
-    getFetchDataList() {
+    async getFetchDataList() {
       const params = {
         nomiAppId: this.nomiAppId,
         sortColumn: 'sort',
         isAsc: true,
         fileType: '102',
       }
-      this.getDataList(params)
+      await this.getDataList(params)
+      console.log(this)
     }
   }
 }

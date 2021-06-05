@@ -209,7 +209,7 @@ export default {
             font-size: 20px;
             font-weight: bold;
             white-space: nowrap;
-            margin-bottom: 10px;
+            // margin-bottom: 10px;
         }
         .select-text{
             font-size: 14px;

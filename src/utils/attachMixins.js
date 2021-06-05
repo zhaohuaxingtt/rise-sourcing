@@ -16,8 +16,10 @@ import {
 } from '@/api/designate/decisiondata/attach'
 // 下载文件api
 import { downloadFile } from '@/api/file'
+import filters from '@/utils/filters'
 
 export const attachMixins = {
+  mixins: [ filters ],
   data(){
     return {
     // 加载状态
@@ -71,9 +73,9 @@ export const attachMixins = {
         pageSize: (this.page && this.page.pageSize) || 10
       }, params)).then(res => {
         if (res.code === '200') {
-          this.dataList = res.data.records || []
+          this.dataList = res.data.records || res.data || []
           if (this.page) {
-            this.page.totalCount = res.data.total
+            this.page.totalCount = Number(res.total)
           }
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)

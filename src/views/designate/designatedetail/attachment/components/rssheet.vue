@@ -51,6 +51,9 @@
       :tableLoading="tableLoading"
       @handleSelectionChange="handleSelectionChange"
     >
+    <template #uploadDate="scope">
+      {{scope.row.uploadDate | dateFilter('YYYY-MM-DD')}}
+    </template>
     </tablelist>
     <iPagination
       v-update
@@ -93,6 +96,7 @@ export default {
   data() {
     return {
       // tableListData: mokeUploadTableListData,
+      nomiAppId: this.$route.query.desinateId || '',
       tableLoading: false,
       uploadtableTitle,
       multiEditState: false,
@@ -100,7 +104,7 @@ export default {
       selectMultiData: [],
       page: {
         currPage: 1,
-        pageSizes: 10,
+        pageSizes: 2,
         totalCount: 0,
         layout:"prev, pager, next, jumper"
       }
