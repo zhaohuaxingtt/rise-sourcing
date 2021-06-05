@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-05-24 17:06:01
- * @LastEditTime: 2021-06-04 10:21:18
+ * @LastEditTime: 2021-06-04 18:38:17
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\createparts\components\home\index.vue
@@ -179,8 +179,6 @@ export default {
         }
       })
 
-      console.log(form)
-
       getParts(form)
       .then(res => {
         if (res.code == 200) {
@@ -200,15 +198,12 @@ export default {
     // 创建采购项⽬
     createParts() {
       if (this.multipleSelection.length < 1) return iMessage.warn(this.$t("createparts.QingXuanZeZhiShaoYiTiaoShuJu"))
-      console.log(this.multipleSelection)
       this.createPartsLoading = true
 
       createParts({
         manuallyCreatePartProjectDTOList: this.multipleSelection.map(item => ({
-          carTypeProjectNum: item.carTypeProjectNum,
           partNum: item.partNum,
-          partProjectType: item.partType,
-          status: item.partStatus
+          partProjectType: item.partType
         }))
       })
       .then(res => {

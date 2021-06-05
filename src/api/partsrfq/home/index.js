@@ -66,3 +66,11 @@ export function getAllScoringDepartmentInfo(parmars) {
         data: parmars
     })
 }
+
+// 获取寻源执行子菜单待办数
+export function getAgentTasksNum() {
+    return requst({
+        url: '/getAgentTasksNum',
+        method: 'GET',
+    })
+}

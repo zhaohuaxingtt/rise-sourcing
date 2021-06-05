@@ -1,8 +1,8 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-24 09:47:32
- * @LastEditTime: 2021-06-01 13:48:33
- * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-06-05 10:57:09
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsign\home\components\data.js
  */
@@ -45,7 +45,7 @@ export const navList = [
   {
     value: 1,
     name: '零件签收',
-    message: 0,
+    message: 4,
     url: '/sourcing/partsign',
     activePath: 'partsign',
     key: 'LK_LINGJIANQIANSHOU'
@@ -53,7 +53,7 @@ export const navList = [
   {
     value: 2,
     name: '采购项目建立',
-    message: 0,
+    message: 6,
     url: '/sourcing/partsprocure',
     activePath: 'partsprocure',
     key: 'LK_CAIGOUXIANGMUJIANLI'
@@ -101,7 +101,7 @@ export const navList = [
   {
     value: 4,
     name: '定点管理',
-    message: 0,
+    message: 7,
     url: '/sourcing/partsnomination',
     activePath: 'partsnomination    ',
     key: 'LK_DINGDIANGUANLI'
