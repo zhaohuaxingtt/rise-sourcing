@@ -1,0 +1,56 @@
+{
+  "result": true,
+  "code": "200",
+  "desEn": "success",
+  "desZh": "操作成功",
+  "data": {
+    "supplierSet": [
+      "dulingcong2",
+      "王军",
+      "dulingcong"
+    ],
+    "bestTTOForWholePackage": [
+      {
+        "supplierId": "2",
+        "supplierName": "dulingcong",
+        "value": 1231
+      }
+    ],
+    "bestTTOByGroup": [
+      {
+        "supplierId": "1",
+        "supplierName": "王军",
+        "value": 23
+      },
+      {
+        "supplierId": "2",
+        "supplierName": "dulingcong",
+        "value": 26
+      }
+    ],
+    "bestTTOByPart": [
+      {
+        "supplierId": "1",
+        "supplierName": "王军",
+        "value": 23
+      },
+      {
+        "supplierId": "2",
+        "supplierName": "dulingcong",
+        "value": 12
+      }
+    ],
+    "recommendScenario": [
+      {
+        "supplierId": "1",
+        "supplierName": "王军",
+        "value": 12
+      },
+      {
+        "supplierId": "2",
+        "supplierName": "dulingcong",
+        "value": 25
+      }
+    ]
+  }
+}

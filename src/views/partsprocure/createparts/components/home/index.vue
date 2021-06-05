@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-05-24 17:06:01
- * @LastEditTime: 2021-06-03 11:14:13
+ * @LastEditTime: 2021-06-04 10:21:18
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\createparts\components\home\index.vue
@@ -98,6 +98,7 @@ import { pageMixins } from "@/utils/pageMixins"
 import { getParts, createParts } from "@/api/partsprocure/editordetail"
 import { selectDictByKeys } from "@/api/dictionary"
 import { cloneDeep } from "lodash"
+import { serialize } from "@/utils"
 
 export default {
   components: { 
@@ -167,11 +168,20 @@ export default {
     getParts() {
       this.loading = true
 
-      getParts({
-        ...this.form,
+      const form = {
         current: this.page.currPage,
         size: this.page.pageSize
+      }
+
+      Object.keys(this.form).forEach(key => {
+        if (this.form[key] || this.form[key] === 0) {
+          form[key] = this.form[key]
+        }
       })
+
+      console.log(form)
+
+      getParts(form)
       .then(res => {
         if (res.code == 200) {
           this.tableListData = Array.isArray(res.data) ? res.data : []
@@ -190,7 +200,7 @@ export default {
     // 创建采购项⽬
     createParts() {
       if (this.multipleSelection.length < 1) return iMessage.warn(this.$t("createparts.QingXuanZeZhiShaoYiTiaoShuJu"))
-
+      console.log(this.multipleSelection)
       this.createPartsLoading = true
 
       createParts({
@@ -206,9 +216,13 @@ export default {
           iMessage.success(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
 
           if (this.multipleSelection.length == 1) {
-            console.log(1)
+            // this.$router.push({
+            //   path: ""
+            // })
           } else {
-            console.log(1)
+            this.$router.push({
+              path: `/sourcing/partsprocure/batchmiantain?${ serialize(this.multipleSelection.map(item => ({ ids: item.id }))) }`
+            })
           }
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)

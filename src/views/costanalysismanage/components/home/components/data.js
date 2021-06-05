@@ -1,11 +1,13 @@
 /*
  * @Author: your name
  * @Date: 2021-05-27 13:45:35
- * @LastEditTime: 2021-06-03 13:51:49
+ * @LastEditTime: 2021-06-04 17:07:47
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\costanalysismanage\components\home\components\data.js
  */
+import { permissionTitle } from "@/utils"
+
 // 技术资料下载弹窗---询价附件表单头
 export const FilesTitle = [
     {props:'tpPartAttachmentName',name:'文件名称', key: "LK_WENJIANMINGCHENG", tooltip: true},
@@ -50,13 +52,13 @@ export const queryForm = {
   linieId: ""
 }
 
-export const tableTitle = [
+export const tableTitle = permissionTitle("COSTANALYSISMANAGE_HOME_TABLE", [
   { props: "id", name: "RFQ编号", key: "costanalysismanage.RfqBianHao", tooltip: true },
   { props: "rfqName", name: "RFQ名称", key: "costanalysismanage.RfqMingCheng", tooltip: true },
   { props: "rfqType", name: "RFQ类型", key: "costanalysismanage.RfqLeiXing", tooltip: true },
   { props: "createDate", name: "创建日期", key: "costanalysismanage.ChuangJianRiQi", tooltip: true, width: 100 },
   { props: "currentRounds", name: "当前轮次", key: "costanalysismanage.DangQianLunCi", tooltip: true },
-  { props: "sendDate", name: "RFQ状态", key: "costanalysismanage.RfqZhuangTai", tooltip: true },
+  { props: "statusName", name: "RFQ状态", key: "costanalysismanage.RfqZhuangTai", tooltip: true },
   { props: "currentRoundsEndTime", name: "报价截止日期", key: "costanalysismanage.BaoJiaJieZhiRiQi", tooltip: true, width: 110 },
   { props: "buyerName", name: "询价采购员", key: "costanalysismanage.XunJiaCaiGouYuan", tooltip: true, width: 100 },
   { props: "linieNameZh", name: "LINIE", key: "costanalysismanage.Linie", tooltip: true },
@@ -67,4 +69,4 @@ export const tableTitle = [
   { props: "sendDate", name: "CBD", key: "costanalysismanage.Cbd", tooltip: true, width: 120 },
   { props: "analysisReport", name: "分析报告", key: "costanalysismanage.FenXiBaoGao", tooltip: true },
   { props: "recordId", width: 40 }
-]
+])

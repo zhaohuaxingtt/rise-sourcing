@@ -167,7 +167,6 @@ export default {
             if (confirmInfo !== 'confirm') return
             nominateAppSsubmit(data).then((res)=>{
                 iMessage.success(this.$t('LK_CAOZUOCHENGGONG'));
-                console.log(res);
             }).catch(e => {
                 iMessage.error(this.$i18n.locale === "zh" ? e.desZh : event.desEn)
             })
@@ -181,7 +180,6 @@ export default {
             }
             nominateAppSExport(data).then((res)=>{
                 iMessage.success(this.$t('LK_CAOZUOCHENGGONG'));
-                console.log(res);
             }).catch(e => {
                 iMessage.error(this.$i18n.locale === "zh" ? e.desZh : event.desEn)
             })
@@ -191,7 +189,6 @@ export default {
         getDesignateType(nominateAppId){ 
             const data = {nominateAppId,};
             nominateAppSDetail(data).then((res)=>{
-                console.log(res);
                 const {code,data} = res;
                 if(code === '200' && data){
                     const { nominateProcessType } = data;

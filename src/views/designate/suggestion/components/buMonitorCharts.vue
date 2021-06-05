@@ -7,13 +7,17 @@
     </div>
     <div class="legendLine">
       <ul class="legend">
-        <li>SH Huashi</li>
-        <li class="corlor1">NBHX</li>
+        <li v-for="(item, index) in supplier" class="corlor1" :key="index">
+          {{item}}
+        </li>
+        <!-- <li>SH Huashi</li>
+        <li class="corlor1">NBHX</li> -->
       </ul>
       <div class="control">
         <!-- 方案选择 -->
         <iSelect
           v-model="mapControl"
+          @change="load"
           :placeholder="$t('nominationSuggestion.FanAnXuanZhe')">
           <el-option
             value=""
@@ -48,6 +52,11 @@ export default {
     data: {
       type: Array,
       default: () => ([[0, 0, 0, 0], [0, 0, 0, 0]])
+    },
+    // 供应商数组
+    supplier: {
+      type:Array,
+      default: () => ([])
     }
   },
   data() {
@@ -55,19 +64,19 @@ export default {
       mapControl: '',
       mapOptions: [
         {
-          key: 'A',
+          key: 0,
           value: '整体最佳'
         },
         {
-          key: 'B',
+          key: 1,
           value: '分组最佳'
         },
         {
-          key: 'C',
+          key: 2,
           value: '单一零件最佳'
         },
         {
-          key: 'D',
+          key: 3,
           value: '手动分配'
         }
       ],
@@ -78,9 +87,25 @@ export default {
   mounted() {
   },
   methods: {
-    init() {
+    load(mapControl = '') {
       const vm = echarts().init(document.getElementById("charts0"));
       this.$nextTick(() => {
+        // 业务指标
+        const quota = [
+          'Best TTO \n for Whole Package',
+          'Best TTO \n by Group',
+          'Best TTO \n by Part',
+          'Recommend \n Scenario']
+        // xAxisData
+        const xAxisData = mapControl === '' ? quota : [quota[mapControl]]
+        // seriesData
+        let seriesData0 = this.dataList[0]
+        let seriesData1 = this.dataList[1]
+        if (mapControl !== '') {
+          seriesData0 = [seriesData0[mapControl] || 0]
+          seriesData1 = [seriesData1[mapControl] || 0]
+        }
+
         let option = {
           grid: {
             left: '10',
@@ -92,11 +117,8 @@ export default {
           xAxis: {
             type: 'category',
             offset: 0,
-            data: [
-              'Best TTO \n for Whole Package',
-              'Best TTO \n by Group',
-              'Best TTO \n by Part',
-              'Recommend \n Scenario'],
+            // x轴数据
+            data: xAxisData,
             axisTick: {
               show: false
             },
@@ -146,7 +168,7 @@ export default {
           },
           series: [
             {
-              data: this.dataList[0],
+              data: seriesData0,
               type: 'bar',
               barWidth: 30,
                 stack: 'total',
@@ -167,7 +189,7 @@ export default {
               }
             },
             {
-              data: this.dataList[1],
+              data: seriesData1,
               type: 'bar',
               barWidth: 30,
                 stack: 'total',
@@ -199,7 +221,7 @@ export default {
       handler(newVal) {
         this.dataList = newVal
         this.$nextTick(() => {
-          this.init()
+          this.load()
         })
       },
       immediate: true,

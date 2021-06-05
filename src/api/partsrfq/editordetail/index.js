@@ -267,7 +267,7 @@ export function negoAnalysisSummaryGroupDelete(data){
 // 获取对应供应商的零件清单
 export function getPartsBySupplier(params) {
     return requst({
-        url: `/list`,
+        url: `/partSupplier/List`,
         method: 'POST',
         data: params
     })
