@@ -14,57 +14,75 @@
             </span>
             <iButton v-else @click="edit">{{$t('LK_BIANJI')}}</iButton>
         </div>
-        <!-- 编辑状态 -->
-        <div v-if="isEdit">
-            <!--  -->
-            <iCard collapse title="Material Group 1" class="timeLine-card">
-                <ul class="timeLine-edit-list">
-                    <li class="flex-between-center margin-bottom20">
-                        <span class="show-icon">
-                            <!-- <icon symbol name="iconxianshi" class="show-icon-item" ></icon> -->
-                            <icon symbol name="iconyincang" class="show-icon-item" ></icon>
-                        </span>
-                        <groupStep :stepList="stepList" class="list-item-step"/>
-                    </li>
-                </ul>
-                <!-- 供应商编辑列表 -->
-                <ul class="supplier-edit-list">
-                    <li v-for="(item,index) in supplierData" :key="'supplier-edit-list-'+index">
-                        <supplierItem :itemIndex="index" :supplierData="item" @editSupplierLine="editSupplierLine"/>
-                    </li>
-                </ul>
-            </iCard>
-        </div>
-        <!-- 展示状态 -->
-        <div v-else>
-            <iCard collapse title="Material Group 1" class="timeLine-card">
-                <groupStep :stepList="stepList" :stepIndex='2'>
-                    <template slot="myStep">
-                        <icon symbol name="iconTimeLine-Today" class="step-icon" ></icon>
-                        <p>Today</p>
+        <div v-for="(item,index) in detailData" :key="'timeLine_'+index">
+            <!-- 编辑状态 -->
+            <div v-if="isEdit">
+                <!--  -->
+                <iCard collapse :title="item.materialGroupName"  class="timeLine-card">
+                    <ul class="timeLine-edit-list">
+                        <li class="flex-between-center margin-bottom20" v-for="(groupNode,groupNodeIndex) in item.nomiTimeAxisGroup" :key="'groupNodeEdit_'+groupNodeIndex">
+                            <span class="show-icon">
+                                <icon v-if="groupNode.isVisible" symbol name="iconxianshi" class="show-icon-item" ></icon>
+                                <icon v-else symbol name="iconyincang" class="show-icon-item" ></icon>
+                            </span>
+                            <groupStep 
+                                :groupNode="groupNode.nomiTimeAxisLine"
+                                :stepList="stepList" 
+                                :isEdit="true"
+                                class="list-item-step"
+                            />
+                        </li>
+                    </ul>
+                    <!-- 供应商编辑列表 -->
+                    <ul class="supplier-edit-list">
+                        <!-- v-for="(supplierItem,supplierIndex) in item.nomiTimeAxisSupplierResultVOList" :key="'nomiTimeAxisSupplierResultVOList_'+supplierIndex" -->
+                        <!-- <li v-for="(item,index) in supplierData" :key="'supplier-edit-list-'+index"> -->
+                        <li  v-for="(supplierItem,supplierIndex) in item.nomiTimeAxisSupplierResultVOList" :key="'nomiTimeAxisSupplierResultVOListEdit_'+supplierIndex">
+                            <supplierItem :itemIndex="supplierIndex" :supplierData="supplierItem" @editSupplierLine="editSupplierLine"/>
+                        </li>
+                    </ul>
+                </iCard>
+            </div>
+            <!-- 展示状态 -->
+            <div v-else>
+                <iCard collapse :title="item.materialGroupName" class="timeLine-card">
+                    <template v-for="(groupNode,groupNodeIndex) in item.nomiTimeAxisGroup">
+                        <!-- :stepIndex='2' -->
+                        <groupStep 
+                            v-if="groupNode.isVisible"
+                            :stepList="stepList"
+                            :groupNode="groupNode.nomiTimeAxisLine"
+                            :key="'groupNode_'+groupNodeIndex">
+                            <template slot="myStep">
+                                <icon symbol name="iconTimeLine-Today" class="step-icon" ></icon>
+                                <p>Today</p>
+                            </template>
+                        </groupStep>
                     </template>
-                </groupStep>
-                <!-- 供应商card -->
-                <div class="supplier-list">
-                    <iCard collapse title="Supplier 1" class="supplier-item">
-                        <template slot="header-control" >
-                            <supplierStep :supplierData="supplierData"/>
-                        </template>
-                        <ul class="supplier-item-list">
-                            <li class="flex-between-center" v-for="(item,index) in timeList" :key="'supplier-item-'+index">
-                                <span class="supplier-item-name">Experiment 1</span>
-                                <div class="supplier-item-line">
-                                    <supplierLine 
-                                        :dateTime="item.startDate +'-'+ item.endDate"
-                                        :percent="item.percent+'%'"
-                                        :left="item.distance+'%'"
-                                    />
-                                </div>
-                            </li>
-                        </ul>
-                    </iCard>
-                </div>
-            </iCard>
+                    
+                    <!-- 供应商card -->
+                    <div class="supplier-list" v-for="(supplierItem,supplierIndex) in item.nomiTimeAxisSupplierResultVOList" :key="'nomiTimeAxisSupplierResultVOList_'+supplierIndex">
+                        <iCard collapse :title="supplierItem.supplierName" class="supplier-item">
+                            <template slot="header-control" >
+                                <!-- <supplierStep :supplierData="supplierData"/> -->
+                                <supplierStep :supplierData="supplierItem.nomiTimeAxisSuppliers"/>
+                            </template>
+                            <ul class="supplier-item-list">
+                                <li class="flex-between-center" v-for="(supplierListItem,supplierListItemIndex) in supplierItem.nomiTimeAxisSupplierExps" :key="'supplier-item-'+supplierListItemIndex">
+                                    <span class="supplier-item-name">{{supplierListItem.supplierNameZh}}</span>
+                                    <div class="supplier-item-line">
+                                        <supplierLine 
+                                            :allList="supplierItem.nomiTimeAxisSupplierExps"
+                                            :supplierIndex="supplierListItemIndex"
+                                            :cardIndex="index"
+                                        />
+                                    </div>
+                                </li>
+                            </ul>
+                        </iCard>
+                    </div>
+                </iCard>
+            </div>
         </div>
     </div>
 </template>
@@ -81,6 +99,7 @@ import supplierStep from './components/supplierStep'
 import supplierLine from './components/supplierLine'
 import supplierItem from './components/supplierItem'
 import { cloneDeep } from 'lodash'
+import { MockData } from './components/data'
 export default {
     name:'timeLine',
      components:{
@@ -94,7 +113,7 @@ export default {
     },
     data(){
         return{
-            isEdit:false,
+            isEdit:true,
             timeList:[
                 {startDate:1621048561,endDate:1621912561}, // 5-17 ---> 5-25
                 {startDate:1621480561,endDate:1621998961}, // 5-20 ---> 5-26
@@ -114,36 +133,17 @@ export default {
                     {e:'55',date:''}
                 ]}
                 
-            ]
+            ],
+            MockData:MockData,
+            detailData:[],
             
         }
     },
     created(){
-        this.formatTime();
+        this.getDetail();
 
     },
     methods:{
-        // 重置下timeList
-        formatTime(){
-            const { timeList=[] } = this;
-            let newList = [];
-            timeList.map((item=>{newList.push(item.startDate,item.endDate)}));
-            // 排序取出最小和最大时间
-            let sortList = newList.sort((a,b)=>a-b);
-            let start= sortList[0];
-            let end= sortList[sortList.length-1];
-            console.log(sortList,start,end);
-            timeList.map((item)=>{
-                //获取当前item占总进度条的百分比
-                item.percent = ((item.endDate - item.startDate) / (end - start)) * 100;
-                // 获取当前item与开始时间的差距
-                item.distance = ((item.startDate - start) / (end - start)) * 100; 
-            });
-            this.timeList = timeList;
-            console.log(timeList,'timeList');
-            
-        },
-        
         // 编辑 取消
         edit(){
             const {isEdit,stepList} = this;
@@ -163,13 +163,14 @@ export default {
 
         // 保存
         save(){
-            console.log(this.stepList,'stepList');
+            console.log(this.detailData,'stepList');
         },
 
         // 新增删减供应商行
-        editSupplierLine(type,index,line){
-            const { supplierData=[] } = this;
-            let newData = cloneDeep(supplierData);
+        editSupplierLine(type,card,index,line){
+            console.log(type,card,index,line);
+            const { supplierData=[],detailData=[] } = this;
+            let newData = cloneDeep(detailData);
             // 新增行
             if(type === 'add'){
                 newData[index].list.push({
@@ -179,6 +180,14 @@ export default {
                 newData[index]['list'].splice(line,1);
             }
             this.supplierData = newData;
+        },
+
+        // 获取timeLine详情
+        getDetail(){
+            const { MockData } = this;
+            const { data } = MockData;
+            this.detailData = data;
+            // this.formatTime();
         },
     },
     computed:{

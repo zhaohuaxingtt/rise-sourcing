@@ -6,28 +6,32 @@
 
 <template>
     <div class="supplierItem flex padding-bottom50">
-        <span class="title">{{supplierData.name || '-'}}</span>
+        <span class="title">{{supplierData.supplierName || '-'}}</span>
         <div>
             <ul class="title-line flex">
-                <li class="flex" v-for="(item,index) in titleLine" :key="'titleLine_'+index">
-                    <span class="line-label">{{item.name}}</span>
-                    <iInput class="line-input" v-model="supplierData[item['key']]"/>
+                <li class="flex" v-for="(item,index) in supplierData.nomiTimeAxisSuppliers" :key="'titleLine_'+index">
+                    <span class="line-label">{{item.supplierNameZh}}</span>
+                    <iDatePicker
+                        class="data-picker" 
+                        v-model="item.nodeDate"
+                    />
+                    <!-- <iInput class="line-input" v-model="supplierData[item['key']]"/> -->
                 </li>
             </ul>
-            <ul v-if="supplierData['list'] && supplierData['list'].length" class="date-line">
-                <li class="flex" v-for="(item,index) in supplierData.list" :key="'supplierData_'+index">
-                    <iInput v-model="item.e"  class="date-input"/>
+            <ul v-if="supplierData['nomiTimeAxisSupplierExps'] && supplierData['nomiTimeAxisSupplierExps'].length" class="date-line">
+                <li class="flex" v-for="(supplieritem,supplierIndex) in supplierData.nomiTimeAxisSupplierExps" :key="'supplierData_'+supplierIndex">
+                    <iInput v-model="supplieritem.supplierNameZh"  class="date-input"/>
                     <iDatePicker
-                    class="data-picker" 
-                    v-model="item.date"
-                    type="daterange"
-                    range-separator="-"
-                    :start-placeholder="$t('LK_KAISHISHIJIAN')"
-                    :end-placeholder="$t('LK_JIESHUSHIJIAN')"
+                        class="data-picker" 
+                        v-model="supplieritem.createDate"
+                        type="daterange"
+                        range-separator="-"
+                        :start-placeholder="$t('LK_KAISHISHIJIAN')"
+                        :end-placeholder="$t('LK_JIESHUSHIJIAN')"
                     />
 
                     <!-- 删除按钮 -->
-                    <span class="delete" @click="edit('delete',itemIndex,index)"><icon class="delete-icon" symbol name="icondingdianshenqingyusheluoji-shanchu" /></span>
+                    <span class="delete" @click="edit('delete',itemIndex,supplierIndex)"><icon class="delete-icon" symbol name="icondingdianshenqingyusheluoji-shanchu" /></span>
                 </li>
             </ul>
         </div>
@@ -58,6 +62,10 @@ export default {
         itemIndex:{
             type:Number,
             default:0,
+        },
+        cardIndex:{
+            type:Number,
+            default:0,
         }
     },
     data(){
@@ -70,10 +78,25 @@ export default {
             ]
         }
     },
+    created(){
+        console.log(this.supplierData,'supplierData')
+    },
     methods:{
         // 编辑行
         edit(type,index,line=null){
-            this.$emit('editSupplierLine',type,index,line);
+            const { 
+                cardIndex,
+                supplierData,
+            } = this;
+            if(type == 'add'){
+                supplierData.nomiTimeAxisSupplierExps.push({
+                     supplierNameZh:'',createDate:''
+                });
+
+            }else if(type == 'delete'){
+                 supplierData.nomiTimeAxisSupplierExps.splice(line,1);
+            }
+            // this.$emit('editSupplierLine',type,cardIndex,index,line);
         }
     }
 }
@@ -100,9 +123,9 @@ export default {
                 .line-input{
                     width: 60px;
                 }
-                &:nth-child(2){
-                    margin-right: 100px;
-                }
+                // &:nth-child(2){
+                //     margin-right: 100px;
+                // }
             }
         }
         .date-line{
