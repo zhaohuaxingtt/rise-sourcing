@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-26 11:16:51
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-03 17:08:12
+ * @LastEditTime: 2021-06-07 11:59:04
  * @Description: 配件综合管理页面
  * @FilePath: \front-web\src\views\accessoryPart\integratedManage\index.vue
 -->
@@ -52,7 +52,7 @@
                   <!--------------------创建RFQ----------------------------------->
                   <iButton @click="handleCreateRFQ">创建RFQ</iButton>
                   <!--------------------加入已有RFQ----------------------------------->
-                  <iButton @click="batchData">加入已有RFQ</iButton>
+                  <iButton @click="handleJoinRFQ">加入已有RFQ</iButton>
                   <!--------------------下载报表----------------------------------->
                   <iButton @click="downloadAll" :loading="downloadAllLoading">下载报表</iButton>
                   <!--------------------导出按钮----------------------------------->
@@ -106,6 +106,7 @@ import { navList } from "@/views/partsign/home/components/data"
 import { cloneDeep, uniq } from 'lodash'
 import { getAccessoryManageList, sendAccessoryInfo, downLoadAccessoryList, downLoadAccessoryAll, back, backEPS } from '@/api/accessoryPart/index'
 import { getDictByCode } from '@/api/dictionary'
+import {findBySearches} from "@/api/partsrfq/home";
 export default {
   mixins: [pageMixins],
   components: { iPage, iSearch, iSelect, iInput, iCard, iButton, iPagination, tableList, assignInquiryDepartmentDialog, assignInquiryBuyerDialog,backEpsDialog, backDialog, iNavMvp },
@@ -143,8 +144,19 @@ export default {
   created() {
     this.getSelectOptions()
     this.getTableList()
+    this.getCarTypeOptions()
   },
   methods: {
+    /**
+     * @Description: 车型项目下拉框
+     * @Author: Luoshuang
+     * @param {*}
+     * @return {*}
+     */    
+    async getCarTypeOptions() {
+      const res = await findBySearches('01')
+      this.selectOptions.carTypeOptions = res.data
+    },
     /**
      * @Description: 调取数据字典获取下拉
      * @Author: Luoshuang
@@ -360,8 +372,8 @@ export default {
      * @param {*}
      * @return {*}
      */    
-    openPage() {
-      const router =  this.$router.resolve({path: '/sourcing/accessorypartdetail', query: { type: '1' }})
+    openPage(row) {
+      const router =  this.$router.resolve({path: '/sourcing/accessorypartdetail', query: { accessoryId: row.id }})
       window.open(router.href,'_blank')
     },
     /**
@@ -431,7 +443,11 @@ export default {
      * @return {*}
      */    
     handleCreateRFQ() {
-      const router =  this.$router.resolve({path: '/sourcing/createrfq', query: { type: '1' }})
+      if (this.selectParts.length < 1) {
+        iMessage.warn('请选择配件')
+        return
+      }
+      const router =  this.$router.resolve({path: '/sourcing/createrfq', query: { type: '1', ids: this.selectParts.map(item => item.spnrNum) }})
       window.open(router.href,'_blank')
     }
   }

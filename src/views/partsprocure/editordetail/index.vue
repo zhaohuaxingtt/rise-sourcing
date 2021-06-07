@@ -1,8 +1,8 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2021-06-03 19:36:01
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-06-07 11:56:51
+ * @LastEditors: Luoshuang
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\editordetail\index.vue
 -->
@@ -231,8 +231,8 @@
 			</iFormGroup>
 		</iCard>
 		<iTabsList class="margin-top20" type="border-card">
-			<!-------------------------已定点时显示定点信息tab------------------------------------------>
-			<el-tab-pane :label="$t('LK_DINGDIANXINXI')" >
+			<!-------------------------已定点时显示定点信息tab-  ----------------------------------------->
+			<el-tab-pane :label="$t('LK_DINGDIANXINXI')" v-if="detailData.status == '15'">
 				<designateInfo :params="infoItem" />
 			</el-tab-pane>
 			<el-tab-pane :label="$t('LK_CAILIAOZUXINXI')"

@@ -20,6 +20,7 @@
                 </iSelect>
             </div>
             <div class="btnList flex-align-center">
+                <iButton @click="gotoRsMainten">RS单维护</iButton>
                 <iButton @click="exportNominate">{{$t('LK_DAOCHU')}}</iButton>
                 <iButton @click="submit">{{$t('LK_TIJIAO')}}</iButton>
                 <iButton v-if="isDecision" @click="preview">{{$t('LK_YULAN')}}</iButton>
@@ -121,6 +122,9 @@ export default {
         }
     },
     methods:{
+        gotoRsMainten() {
+            this.$router.push({path: '/sourcing/designate/rsSingleMaintenance', query: {desinateId:this.$route.query.desinateId}})
+        },
         // 预览
         preview(){
             const {path,query} = this.$route;

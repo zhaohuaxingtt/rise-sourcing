@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-26 13:54:01
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-02 16:38:51
+ * @LastEditTime: 2021-06-07 14:33:09
  * @Description: 创建RFQ界面
        配件：选择的配件需要是分配了询价采购员的且是同一个询价采购员, 创建时能选择LINIE
        附件：选择的附件需要时分配了LINIE且为同一个LINIE, 创建时不能再选择LINIE
@@ -13,10 +13,10 @@
   <iPage>
     <topComponents>
       <span slot="left" class="floatleft font20 font-weight">
-        RFQ编号：SVZC5052
+        RFQ编号：{{detailData.rfqId}}
       </span>
     </topComponents>
-    <iCard title="基础信息" collapse>
+    <iCard title="基础信息" collapse v-loading="basicLoading">
       <iFormGroup row="4" class="accessoryPartDetail">
         <iFormItem v-for="(item, index) in basicInfo" :key="index" :label="item.label" :class="item.row ? 'row'+item.row : ''">
           <iText v-if="!item.editable">{{detailData[item.value]}}</iText>
@@ -25,7 +25,7 @@
         </iFormItem>
       </iFormGroup>
       <div style="text-align:right;">
-        <iButton>保存</iButton>
+        <iButton @click="handleSaveRfq">保存</iButton>
         <iButton>取消</iButton>
       </div>
     </iCard>
@@ -48,7 +48,7 @@
     <!------------------------------------------------------------------------>
     <!--                  添加配件弹窗                                          --->
     <!------------------------------------------------------------------------>
-    <addAccessoryPartDialog :dialogVisible="accDialogVisible" @changeVisible="changeAccDialogVisible" />
+    <addAccessoryPartDialog :dialogVisible="accDialogVisible" @changeVisible="changeAccDialogVisible" @selectPart="selectPart" />
     <!------------------------------------------------------------------------>
     <!--                  批量更新采购工厂弹窗                                          --->
     <!------------------------------------------------------------------------>
@@ -60,7 +60,7 @@
     <!------------------------------------------------------------------------>
     <!--                  产能计划弹窗                                          --->
     <!------------------------------------------------------------------------>
-    <capacityPlanningDialog :dialogVisible="planDialogVisible" @changeVisible="changeplanDialogVisible" />
+    <capacityPlanningDialog :dialogVisible="planDialogVisible" @changeVisible="changeplanDialogVisible" :detailInfo="selectPlanRow" />
   </iPage>
 </template>
 
@@ -74,6 +74,7 @@ import addAccessoryPartDialog from './components/addAccessoryPart'
 import updateFactoryDialog from './components/updateFactory'
 import addFileDialog from './components/addFile'
 import capacityPlanningDialog from './components/capacityPlanning'
+import { getAffixList } from '@/api/designateFiles/index'
 export default {
   mixins: [pageMixins],
   components: { iPage, topComponents, iCard, iFormGroup, iFormItem, iText, iButton, iInput, iSelect, iPagination, tableList, addAccessoryPartDialog, updateFactoryDialog, addFileDialog, capacityPlanningDialog },
@@ -90,7 +91,11 @@ export default {
       factoryDialogVisible: false,
       selectItems: [],
       fileDialogVisible: false,
-      planDialogVisible: false
+      planDialogVisible: false,
+      tableLoading: false,
+      ids: [],
+      basicLoading: false,
+      selectPlanRow: {}
     }
   },
   computed: {
@@ -100,7 +105,104 @@ export default {
       return type === '1' ? tableTitle : fileTableTitle
     }
   },
+  created() {
+    if (this.$route.query.ids) {
+      this.ids = this.$route.query.ids.split(',')
+      this.getList()
+    }
+  },
   methods: {
+    /**
+     * @Description: 生成RFQ
+     * @Author: Luoshuang
+     * @param {*}
+     * @return {*}
+     */    
+    handleSaveRfq() {
+      this.basicLoading = true
+      const params = {
+        operationType: '2',
+        rfqName: this.detailData.rfqName,
+        userId: store.state.permission.userInfo.id
+      }
+      insertRfq(params).then(res => {
+        if (res?.result) {
+          iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+          this.detailData.rfqId = res.data.rfqId
+        } else {
+          iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+        }
+      }).finally(() => {
+        this.basicLoading = false
+      })
+    },
+    /**
+     * @Description: 保存，关联零件保存
+     * @Author: Luoshuang
+     * @param {*}
+     * @return {*}
+     */    
+    handleSave() {
+      const params = {
+        insertRfqPackage: {
+          rfqId: this.detailData.rfqId,
+          rfqPartDTOList: this.tableData.map(item => {
+            return {
+              buyerName: item.csfUser, // 询价采购员
+              linieName: item.csfUser, // linie
+              linieUserId: item.csfuserId, // linie
+              partNum: item.partNum, // 零件号
+              fsnrGsnrNum: item.spnrNum, // fs号
+              stuffId: item.stuffId, // 工艺组ID，还没有
+              stuffName: item.stuffName, // 工艺组name，还没有
+            }
+          }),
+          userId: store.state.permission.userInfo.id
+        }
+      }
+      insertRfq(params).then(res => {
+        if (res?.result) {
+          iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+          const router =  this.$router.resolve({path: `/sourcing/partsrfq/editordetail?id=${this.detailData.rfqId}`})
+          window.open(router.href,'_blank')
+        } else {
+          iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+        }
+      })
+    },
+    /**
+     * @Description: 添加配件附件
+     * @Author: Luoshuang
+     * @param {*} selectParts 选择的零件，为sp号数组
+     * @return {*}
+     */    
+    selectPart(selectParts) {
+      this.ids = [...this.ids, ...selectParts]
+      this.getList()
+    },
+    /**
+     * @Description: 获取表格数据
+     * @Author: Luoshuang
+     * @param {*}
+     * @return {*}
+     */    
+    getList() {
+      this.tableLoading = true
+      const params = {
+        spNumList: this.ids,
+        projectType: this.$route.query.type === '1' ? '0' : '1'
+      }
+      getAffixList(params).then(res => {
+        if (res?.result) {
+          this.tableData = res.data.records
+        } else {
+          this.tableData = []
+          iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+        }
+      }).finally(() => {
+        this.tableLoading = false
+      })
+    },
     /**
      * @Description: 点击产能计划列打开产能计划弹窗
      * @Author: Luoshuang
@@ -108,6 +210,7 @@ export default {
      * @return {*}
      */    
     openPlanDialog(row) {
+      this.selectPlanRow = row
       this.changeplanDialogVisible(true)
     },
     /**
@@ -153,6 +256,10 @@ export default {
      * @return {*}
      */    
     handleAddParts() {
+      if(!this.detailData.rfqId) {
+        iMessage.warn('请先保存RFQ信息')
+        return
+      }
       switch(this.$route.query.type) {
         case '1': // 配件
           this.changeAccDialogVisible(true)
