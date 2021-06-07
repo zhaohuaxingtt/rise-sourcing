@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-04-23 09:16:48
- * @LastEditTime: 2021-06-07 20:27:58
+ * @LastEditTime: 2021-06-07 21:36:07
  * @LastEditors: Please set LastEditors
  * @Description: 供应商维度展示
  * @FilePath: \front-supplier\src\views\rfqManageMent\partsOffer\components\ecartsCard\index.vue
@@ -20,7 +20,7 @@
             </iSelect>
           </el-form-item>
           <el-form-item label="供应商">
-            <iSelect :placeholder='$t("partsprocure.CHOOSE")' multiple collapse-tags v-model="supplierSelectlist" @change='changeParts' @visible-change="removeOther($event,'supplierSelectlist')">
+            <iSelect :placeholder='$t("partsprocure.CHOOSE")' multiple collapse-tags v-model="supplierSelectlist" @visible-change="removeOther($event,'supplierSelectlist')">
               <el-option label="All" value="all"></el-option>
               <el-option v-for="(items,index) in supplierlist" :key='index' :label="items.supplierName" :value='items.supplierNum'></el-option>
             </iSelect>
@@ -148,6 +148,7 @@ export default{
       this.form.partNum = this.partsSelect.find(items=>items == "all")?[]:this.partsSelect
       this.form.round = this.luncSelect.find(items=>items == "all")?[]:this.luncSelect.sort((a,b)=>{return a-b})
       this.form.supplierID = this.supplierSelectlist.find(items=>items == "all")?[]:this.supplierSelectlist
+      this.form.fsSelect = this.fsSelect.find(items=>items == 'all')?[]:this.fsSelect
       quotations(this.form).then(res=>{
         this.refreshLoading = false
         if(res.data && res.data){
