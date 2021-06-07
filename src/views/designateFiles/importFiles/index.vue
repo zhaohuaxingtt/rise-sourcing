@@ -24,12 +24,7 @@
                               @on-success="onDraingUploadsucess"
                           />
                       </span>
-                      <!-- <iButton>{{$t('LK_DAORU')}}</iButton> -->
-                      <iButton @click="downloadTemplate">
-                         <a class="trigger" href="javascript:;">
-                           {{$t('LK_PEIJIANMUBANXIAZAI')}}
-                         </a>
-                      </iButton>
+                      <iButton  @click="downloadTemplate" > {{$t('LK_PEIJIANMUBANXIAZAI')}} </iButton>
                     </div>
                   </div>
                   <!-- 表格区域 -->
@@ -127,7 +122,8 @@ export default {
       },
       // 下载模板
       downloadTemplate(){
-        downloadImportFile();
+        // downloadImportFile();
+        window.open('/tpInfoApi/procurementrequirement/web/affix/affix-requirement-files');
       },
       // 获取列表
       getList(){
