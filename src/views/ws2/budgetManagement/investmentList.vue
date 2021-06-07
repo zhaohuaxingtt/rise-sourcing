@@ -131,9 +131,12 @@
               @handleSelectionChange="handleSelectionChange"
           >
             <template #refCartypeName="scope">
-              <div class="linkStyle" v-if="scope.row.refCartypeProId"><span
-                  @click="clickRefCartypeName(scope.row)">{{ scope.row.refCartypeName }}</span></div>
-              <div v-else>-</div>
+              <div class="linkStyle" v-if="scope.row.refCartypeProId">
+                <span @click="clickRefCartypeName(scope.row)">{{ scope.row.refCartypeName }}</span>
+              </div>
+              <div class="linkStyle" v-else>
+                <span @click="clickRefCartypeName(scope.row)">-</span>
+              </div>
             </template>
             <template #refMoldAmount="scope">
               <div v-if="scope.row.refCartypeProId"><span>{{ scope.row.refMoldAmount }}</span></div>

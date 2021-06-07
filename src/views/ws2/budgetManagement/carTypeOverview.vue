@@ -111,7 +111,7 @@
                 <p slot="reference">{{$t("LK_CAIGOUGONGCHANG")}}: {{ item.locationFactory }}</p>
               </Popover>
               <Popover
-                  v-if="Number(item.SourceStatus) === 1 || Number(item.isBudget) !== 3"
+                  v-if="Number(item.sourceStatus) === 1 || Number(item.isBudget) !== 3"
                   :content="'SOP: ' + item.sop"
                   placement="top-start"
                   trigger="hover">
