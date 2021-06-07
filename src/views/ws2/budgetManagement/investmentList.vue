@@ -134,8 +134,8 @@
               <div class="linkStyle" v-if="scope.row.refCartypeProId">
                 <span @click="clickRefCartypeName(scope.row)">{{ scope.row.refCartypeName }}</span>
               </div>
-              <div class="linkStyle" v-else>
-                <span @click="clickRefCartypeName(scope.row)">&nbsp;</span>
+              <div v-else>
+                <span @click="clickRefCartypeName(scope.row)" style="color: #1663f6">-</span>
               </div>
             </template>
             <template #refMoldAmount="scope">
