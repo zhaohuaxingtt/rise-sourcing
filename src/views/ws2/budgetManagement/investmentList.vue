@@ -135,7 +135,7 @@
                 <span @click="clickRefCartypeName(scope.row)">{{ scope.row.refCartypeName }}</span>
               </div>
               <div v-else>
-                <span @click="clickRefCartypeName(scope.row)" style="color: #1663f6">-</span>
+                <span @click="clickRefCartypeName(scope.row)" style="color: #1663f6; cursor: pointer;">-</span>
               </div>
             </template>
             <template #refMoldAmount="scope">
