@@ -119,6 +119,43 @@ module.exports = {
         https: false,
         hotOnly: true,
         proxy: {
+					'/quotationApiDL': {
+						// target: 'http://10.160.138.38:8788',
+						target: 'http://10.122.18.166:8021',
+						changeOrigin: true,
+						pathRewrite: {
+							"^/quotationApiDL": ""
+						}
+					},
+					'/supplierApiDL': {  // 供应商
+						// target: 'http://10.160.137.63:8788',
+						target: 'http://10.122.18.166:8025',
+						changeOrigin: true,
+						pathRewrite: {
+							"^/supplierApiDL": ""
+						}
+					},
+					'/supplierApiWdl': { //   供应商
+						target: 'http://10.122.18.166:8021',
+						changeOrigin: true,
+						pathRewrite: {
+							"^/supplierApiWdl": ""
+						}
+					},
+					'/supplierApiXW': { //   供应商
+						target: 'http://10.122.18.166:8021',
+						changeOrigin: true,
+						pathRewrite: {
+							"^/supplierApiXW": ""
+						}
+					},
+					'/supplierApiBob': { //   供应商
+						target: 'http://10.122.18.166:8025',
+						changeOrigin: true,
+						pathRewrite: {
+							"^/supplierApiBob": ""
+						}
+					},
 						'supplierApiMH': {
 							target: 'http://10.122.18.166:8025',
 							// target: 'http://192.168.50.50:8029/',
