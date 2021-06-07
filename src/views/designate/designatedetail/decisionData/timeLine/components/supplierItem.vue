@@ -6,29 +6,40 @@
 
 <template>
     <div class="supplierItem flex padding-bottom50">
-        <span class="title">{{supplierData.name || '-'}}</span>
+        <span class="title">{{supplierData.supplierName || '-'}}</span>
         <div>
             <ul class="title-line flex">
-                <li class="flex" v-for="(item,index) in titleLine" :key="'titleLine_'+index">
-                    <span class="line-label">{{item.name}}</span>
-                    <iInput class="line-input" v-model="supplierData[item['key']]"/>
+                <li class="flex" v-for="(item,index) in supplierData.nomiTimeAxisSuppliers" :key="'titleLine_'+index">
+                    <span class="line-label">{{item.durationName}}</span>
+                    <iDatePicker
+                        class="data-picker" 
+                        v-model="item.nodeDate"
+                        format="yyyy-MM-dd" 
+                        value-format="timestamp"
+                    />
+                    <!-- <iInput class="line-input" v-model="supplierData[item['key']]"/> -->
                 </li>
             </ul>
-            <ul v-if="supplierData['list'] && supplierData['list'].length" class="date-line">
-                <li class="flex" v-for="(item,index) in supplierData.list" :key="'supplierData_'+index">
-                    <iInput v-model="item.e"  class="date-input"/>
-                    <iDatePicker
-                    class="data-picker" 
-                    v-model="item.date"
-                    type="daterange"
-                    range-separator="-"
-                    :start-placeholder="$t('LK_KAISHISHIJIAN')"
-                    :end-placeholder="$t('LK_JIESHUSHIJIAN')"
-                    />
+            <ul v-if="supplierData['nomiTimeAxisSupplierExps'] && supplierData['nomiTimeAxisSupplierExps'].length" class="date-line">
+                <template  v-for="(supplieritem,supplierIndex) in supplierData.nomiTimeAxisSupplierExps" >
+                    <li v-if="!supplieritem.isDelete" class="flex" :key="'supplierData_'+supplierIndex">
+                        <iInput v-model="supplieritem.durationName"  class="date-input"/>
+                        <iDatePicker
+                            class="data-picker" 
+                            v-model="supplieritem.rangeDate"
+                            type="daterange"
+                            range-separator="-"
+                            :start-placeholder="$t('LK_KAISHISHIJIAN')"
+                            :end-placeholder="$t('LK_JIESHUSHIJIAN')"
+                            format="yyyy-MM-dd" 
+                            value-format="timestamp"
+                            @blur="changeDate(supplieritem)"
+                        />
 
-                    <!-- 删除按钮 -->
-                    <span class="delete" @click="edit('delete',itemIndex,index)"><icon class="delete-icon" symbol name="icondingdianshenqingyusheluoji-shanchu" /></span>
-                </li>
+                        <!-- 删除按钮 -->
+                        <span class="delete" @click="edit('delete',itemIndex,supplierIndex)"><icon class="delete-icon" symbol name="icondingdianshenqingyusheluoji-shanchu" /></span>
+                    </li>
+                 </template>
             </ul>
         </div>
         <p class="btn-list">
@@ -58,6 +69,10 @@ export default {
         itemIndex:{
             type:Number,
             default:0,
+        },
+        cardIndex:{
+            type:Number,
+            default:0,
         }
     },
     data(){
@@ -73,8 +88,28 @@ export default {
     methods:{
         // 编辑行
         edit(type,index,line=null){
-            this.$emit('editSupplierLine',type,index,line);
-        }
+            const { 
+                cardIndex,
+                supplierData,
+            } = this;
+            if(type == 'add'){
+                supplierData.nomiTimeAxisSupplierExps.push({
+                     durationName:'',rangeDate:[],beginDate:'',endDate:'',isDelete:false,
+                });
+
+            }else if(type == 'delete'){
+                supplierData.nomiTimeAxisSupplierExps[line].isDelete = true;
+                //  supplierData.nomiTimeAxisSupplierExps.splice(line,1);
+            }
+        },
+
+        // change区间日期
+        changeDate(item){
+            item.beginDate = item['rangeDate'][0];
+            item.endDate = item['rangeDate'][1];
+            console.log(item,'itemitemitemitemitem');
+        },
+        
     }
 }
 </script>
@@ -100,9 +135,9 @@ export default {
                 .line-input{
                     width: 60px;
                 }
-                &:nth-child(2){
-                    margin-right: 100px;
-                }
+                // &:nth-child(2){
+                //     margin-right: 100px;
+                // }
             }
         }
         .date-line{

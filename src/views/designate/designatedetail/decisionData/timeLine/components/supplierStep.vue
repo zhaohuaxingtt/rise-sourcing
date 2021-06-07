@@ -5,11 +5,11 @@
 -->
 <template>
     <ul class="supplierStep-list flex">
-        <li class="flex-align-center" v-for="(item,index) in supplierStepList" :key="'supplierStep_'+index">
+        <li class="flex-align-center" v-for="(item,index) in supplierData" :key="'supplierStep_'+index">
             <icon symbol name="iconTimeLine-Today" class="step-icon"></icon>
             <div>
-                <p class="title">{{item.title}}</p>
-                <p class="tips">{{item.tips}}</p>
+                <p class="title">{{item.durationName}}</p>
+                <p class="tips">{{item.nodeWeek ? 'KW'+item.nodeWeek :''}}</p>
             </div>
         </li>
     </ul>
@@ -25,10 +25,21 @@ export default {
     components:{
         icon,
     },
+    props:{
+        supplierData:{
+            type:Array,
+             default:()=>[],
+        }
+    },
     data(){
         return{
-            supplierStepList:supplierStepList,
+            // supplierStepList:supplierStepList,
+            supplierStepList:[],
         }
+    },
+    created(){
+    },
+    methods:{
     }
 }
 </script>

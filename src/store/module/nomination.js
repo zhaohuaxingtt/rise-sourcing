@@ -22,7 +22,9 @@ const state = {
   // 定点管理 步骤状态
   nominationStep:{},
   // 定点管理 当前步骤状态
-  phaseType:'1'
+  phaseType:'1',
+  // 定点管理AppId，desinateId
+  nomiAppId: ''
 };
 
 const mutations = {
@@ -40,6 +42,9 @@ const mutations = {
   },
   SET_PHASE_TYPE(state,type){
     state.phaseType = type
+  },
+  SET_NOMIAPP_ID(state,id){
+    state.nomiAppId = id
   }
 };
 
@@ -52,6 +57,9 @@ const actions = {
   },
   setNominationType({commit}, type) {
     commit('SET_NOMINATION_TYPE', type)
+  },
+  setNominateId({commit}, id) {
+    commit('SET_NOMIAPP_ID', id)
   },
   // 定点管理顶部步骤状态
   setNominationStep({commit},params){
@@ -107,7 +115,7 @@ const getters = {
   nominationStep: (state) => state.nominationStep,
   phaseType: (state) => state.phaseType,
   disableNominationType: (state) => state.disableNominationType,
-  
+  nomiAppId: (state) => state.nomiAppId,
 };
 
 export default {

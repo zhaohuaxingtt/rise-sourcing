@@ -5,13 +5,13 @@
         <!-- 单一原因 -->
         <el-form-item :label="$t('nominationSupplier.DanYiYuanYin')">
           <iSelect
-            v-model="form.projectCarType"
+            v-model="form.singleReason"
             :placeholder="$t('LK_QINGXUANZE')"
           >
             <el-option
-              :value="items.key"
-              :label="items.value"
-              v-for="(items, index) in []"
+              :value="items.label"
+              :label="items.label"
+              v-for="(items, index) in (selectOptions.reason || [])"
               :key="index"
             ></el-option>
           </iSelect>
@@ -19,20 +19,20 @@
         <!-- 部门 -->
         <el-form-item :label="$t('nominationSupplier.BuMen')">
           <iSelect
-            v-model="form.projectCarType"
+            v-model="form.department"
             :placeholder="$t('LK_QINGXUANZE')"
           >
             <el-option
-              :value="items.key"
+              :value="items.value"
               :label="items.value"
-              v-for="(items, index) in []"
+              v-for="(items, index) in (selectOptions.dept || [])"
               :key="index"
             ></el-option>
           </iSelect>
         </el-form-item>
       </el-form>
       <div class="footer" slot="footer">
-        <iButton>{{ $t("LK_BAOCUN") }}</iButton>
+        <iButton @click="submit">{{ $t("LK_BAOCUN") }}</iButton>
       </div>
     </div>
   </iDialog>
@@ -52,29 +52,32 @@ export default {
       type: Boolean,
       default: false
     },
+    selectOptions: {
+      type: Object,
+      default: () => ({})
+    },
     params: {
       type: Object,
       default: () => ({})
     }
   },
-  watch: {
-    params: {
-      handler() {
-        this.$nextTick(() => { if (this.visible) this.getAttachment() })
-      },
-      deep: true
-    }
-  },
   data() {
     return {
       form: {
-
+        department: '',
+        singleReason: ''
       },
       loading: false,
       controlHeight: 0
     }
   },
   methods: {
+    submit() {
+      this.$emit('submit', this.form)
+      this.$nextTick(() => {
+        this.$emit('update:visible', false)
+      })
+    }
   }
 }
 </script>

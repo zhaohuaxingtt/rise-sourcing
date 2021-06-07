@@ -29,11 +29,10 @@ export function getAffixList(params) {
 }
 
 // 下载模板
-export function downloadImportFile(params) {
+export function downloadImportFile() {
     return requst({
         url: '/affix/affix-requirement-files',
         method: "GET",
-        params,
     })
   }
 

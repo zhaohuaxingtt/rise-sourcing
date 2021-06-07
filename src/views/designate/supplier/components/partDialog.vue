@@ -3,20 +3,20 @@
     <div class="dialog-Header" slot="title">
       <div class="font18 font-weight">{{$t('LK_LINGJIANQINGDAN')}}</div>
       <div class="control">
-        <iButton>{{ $t('LK_TIANJIA') }}</iButton>
-        <iButton>{{ $t('LK_QUXIAO') }}</iButton>
+        <iButton @click="add">{{ $t('LK_TIANJIA') }}</iButton>
+        <iButton @click="close">{{ $t('LK_QUXIAO') }}</iButton>
       </div>
     </div>
     <div class="body">
       <tableList index :height="controlHeight ? '91%' : '100%'" v-show="visible" class="table margin-top20" :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="loading" @handleSelectionChange="handleSelectionChange">
-        <template #isTop="scope">
+        <!-- <template #isTop="scope">
           <a class="link-underline" v-if="scope.row.isTop">
             <icon symbol name="iconliebiaoyizhiding" class="icon" />
           </a>
           <a class="link-underline" v-else>
             <icon symbol name="iconliebiaoweizhiding" class="icon" />
           </a>
-        </template>
+        </template> -->
       </tableList>
     </div>
     <div slot="footer" class="footer">
@@ -40,9 +40,11 @@ import tableList from './tableList'
 import { partTitle as tableTitle, mokeSingleSupplierData } from './data'
 import { pageMixins } from '@/utils/pageMixins'
 import filters from '@/utils/filters'
+// 获取零件列表
+import { getPartList } from '@/api/designate/designatedetail/rfqdetail/index'
 
 export default {
-  components: { tableList, iPagination, iDialog, iButton, icon },
+  components: { tableList, iPagination, iDialog, iButton },
   mixins: [ pageMixins, filters ],
   props: {
     ...iDialog.props,
@@ -57,30 +59,50 @@ export default {
   },
   watch: {
     visible(nv) {
-      this.$nextTick(() => {
-        this.controlHeight = this.$el.querySelector('#control').getBoundingClientRect().height
-      })
-      this.$emit('update:visible', nv)
-    },
-    params: {
-      handler() {
-        this.$nextTick(() => { if (this.visible) this.getAttachment() })
-      },
-      deep: true
+      if (nv) {
+        this.getFetchData()
+      }
     }
   },
   data() {
     return {
       loading: false,
       tableTitle,
-      tableListData: mokeSingleSupplierData,
+      tableListData: [],
       multipleSelection: [],
-      controlHeight: 0
+      controlHeight: 0,
+      page:{
+         totalCount:0, //总条数
+         currPage:1,    //当前页
+         layout:"prev, pager, next, jumper"
+       }
     }
   },
   methods: {
+    close() {
+      this.$emit('update:visible', false)
+    },
+    add() {
+      if (!this.multipleSelection.length) {
+        iMessage.error(this.$t('nominationSuggestion.QingXuanZeZhiShaoYiTiaoShuJu'))
+        return
+      }
+      this.$emit('add', this.multipleSelection)
+      this.close()
+    },
     getFetchData() {
-
+      const nominateId = this.$store.getters.nomiAppId
+      getPartList(nominateId).then(res => {
+        if (res.code === '200') {
+          this.tableListData = res.data
+          this.page.totalCount = this.tableListData.length
+        } else {
+          this.tableListData =  []
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
+      }).catch(e => {
+        iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
+      })
     },
     handleSelectionChange(list) {
       this.multipleSelection = list

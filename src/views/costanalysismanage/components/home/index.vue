@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-05-27 12:32:54
- * @LastEditTime: 2021-06-04 17:45:23
+ * @LastEditTime: 2021-06-07 13:45:52
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\costanalysismanage\components\home\index.vue
@@ -135,7 +135,7 @@
         :tableTitle="tableTitle"
         :tableLoading="loading">
         <template #id="scope">
-          <span class="link" @click="jumpRfq(scope.row)">{{ scope.row.id }}</span>
+          <span class="link-underline" @click="jumpRfq(scope.row)">{{ scope.row.id }}</span>
         </template>
         <template #createDate="scope">
           <span>{{ scope.row.createDate | dateFilter("YYYY-MM-DD") }}</span>
@@ -144,17 +144,17 @@
           <span>{{ scope.row.deadDate | dateFilter("YYYY-MM-DD") }}</span>
         </template>
         <template #technoMaterial="scope">
-          <span class="link" @click="download(scope.row)">{{ $t("costanalysismanage.XiaZai") }}</span>
+          <span class="link-underline" @click="download(scope.row)">{{ $t("costanalysismanage.XiaZai") }}</span>
         </template>
         <template #sendDate="scope">
-            <span class="link" @click="cbd(scope.row)">{{ scope.row.sendDate | dateFilter("YYYY-MM-DD") }}</span>
+            <span class="link-underline" @click="cbd(scope.row)">{{ scope.row.sendDate | dateFilter("YYYY-MM-DD") }}</span>
             <div v-if="scope.row.sendDate" class="attention margin-left4"><span>!</span></div>
         </template>
         <template #analysisReport="scope">
-          <icon class="tick link" symbol name="iconbaojiazhuangtailiebiao_yibaojia" @click.native="analysisReport(scope.row)"/>
+          <icon class="tick link-underline" symbol name="iconbaojiazhuangtailiebiao_yibaojia" @click.native="analysisReport(scope.row)"/>
         </template>
         <template #recordId="scope">
-          <icon class="link" symbol :name="+scope.row.recordId > 0 ? 'iconliebiaoyizhiding' : 'iconliebiaoweizhiding'" @click.native="updateOrder(scope.row)" />
+          <icon class="link-underline" symbol :name="+scope.row.recordId > 0 ? 'iconliebiaoyizhiding' : 'iconliebiaoweizhiding'" @click.native="updateOrder(scope.row)" />
         </template>
       </tableList>
       <iPagination 
@@ -306,7 +306,13 @@ export default {
     },
     // 跳转RFQ详情
     jumpRfq(row) {
-      window.open(`/#/costanalysismanage/rfqdetail?rfqId=${ row.id }`, "_blank")
+      this.$router.push({
+        path: "/costanalysismanage/rfqdetail",
+        query: {
+          rfqId: row.id
+        }
+      })
+      // window.open(`/#/costanalysismanage/rfqdetail?rfqId=${ row.id }`, "_blank")
     },
     // 下载
     download(row) {

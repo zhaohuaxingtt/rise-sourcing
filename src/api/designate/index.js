@@ -73,3 +73,12 @@ export function nominateAppSDetail(params) {
       params,
   })
 }
+
+// 更新决策资料 - 三级菜单排序
+export function updateTabPageManager(data) {
+  return requst({
+    url: "/tabPageLayouts/updateTabPageManager",
+    method: "POST",
+    data,
+})
+}

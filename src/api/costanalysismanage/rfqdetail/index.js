@@ -25,3 +25,20 @@ export function getFileHistory(params) {
         params,
     })
   }
+
+// 获取km零件清单
+export function getKmPartList(params) {
+    return requst({
+        url: `/KmPartList/${ params.rfqId }/${ params.pageSize }/${ params.currPage }`,
+        method: 'GET'
+    })
+}
+
+// 保存km零件清单中的PCA和TIA分析结果
+export function savePcaAndTia(params) {
+    return requst({
+        url: '/savePcaAndTia',
+        method: 'POST',
+        data: params
+    })
+}

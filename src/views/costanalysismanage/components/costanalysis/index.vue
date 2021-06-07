@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-05-28 16:01:25
- * @LastEditTime: 2021-06-04 15:29:19
+ * @LastEditTime: 2021-06-07 18:17:52
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\costanalysismanage\components\costanalysis\index.vue
@@ -35,7 +35,7 @@
           @handleSelectionChange="handleSelectionChange"
         >
           <template #fileName="scope">
-            <span class="link" @click="download(scope.row)">{{ scope.row.fileName }}</span>
+            <span class="link-underline" @click="download(scope.row)">{{ scope.row.fileName }}</span>
           </template>
           <template #date="scope">
             <span>{{ scope.row.uploadDate | dateFilter("YYYY-MM-DD") }}</span>
@@ -103,7 +103,8 @@ export default {
 
       this.loading = true
       getKmFileHistory({
-        rfqId: this.rfqId,
+        type: 1,
+        hostId: this.rfqId,
         currPage: this.page.currPage,
         pageSize: this.page.pageSize
       })
@@ -127,6 +128,8 @@ export default {
       this.uploadLoading = true
     },
     uploadFiles() {
+      this.loading = true
+
       uploadFiles({
         fileHistoryDTOS: this.fileList.map(item => ({
           fileCode: "0",
@@ -135,21 +138,25 @@ export default {
           fileSize: item.size,
           hostId: this.rfqId,
           source: 0
-        }))
+        })),
+        type: 1
       })
       .then(res => {
         if (res.code == 200) {
           this.getKmFileHistory()
         } else {
           iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
+          this.loading = false
         }
 
         this.uploadLoading = false
       })
-      .catch(() => this.uploadLoading = false)
+      .catch(() => {
+        this.uploadLoading = false
+        this.loading = false
+      })
     },
     uploadSuccess(res, file) {
-      this.uploadLoading = false
       if (res.code != 200) {
         iMessage.error(`${ this.$i18n.locale === "zh" ? res.desZh : res.desEn }`)
       } else {

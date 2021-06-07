@@ -22,6 +22,7 @@
         @supplierProducePlacesVisibleChange="supplierProducePlacesVisibleChange"
         @openActionPropsPage="openActionPropsPage"
         @openMultiHeaderPropsPage="openMultiHeaderPropsPage"
+        :disabled="!editStatus"
     ></tablelist>
     <!------------------------------------------------------------------------>
     <!--                  表格分页                                          --->
@@ -55,7 +56,7 @@ import tablelist from './supplierScoreTableList'
 import {supplierScoreTitle,templateScoreTitle} from "./data";
 import {pageMixins} from "@/utils/pageMixins";
 import tpbRemarks from './tpbRemarks'
-import {getAllSupplier, setTpbMemo, sendTaskForRating, getRaterAndCoordinatorByDepartmentId, getSupplierProducePlace} from "@/api/partsrfq/editordetail";
+import {getAllSupplier, setTpbMemo, sendTaskForRating, getRaterAndCoordinatorByDepartmentId, getSupplierProducePlace, updateBatchSupplierProducePlace} from "@/api/partsrfq/editordetail";
 import {serialize} from '@/utils'
 import store from '@/store'
 import {rfqCommonFunMixins} from "pages/partsrfq/components/commonFun";
@@ -248,7 +249,26 @@ export default {
       .catch(() => this.supplierProducePlacesLoading = false)
     },
     // 保存
-    handleSave() {}
+    handleSave() {
+      updateBatchSupplierProducePlace(
+        this.tableListData.map(item => ({
+          companyAddress: item.companyAddress,
+          companyAddressCode: item.companyAddressCode,
+          rfqBdlId: item.rfqBdlId
+        }))
+      )
+      .then(res => {
+        if (res.code == 200) {
+          iMessage.success(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+          this.getTableList()
+        } else {
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
+
+        this.saveLoading = false
+      })
+      .catch(() => this.saveLoading = false)
+    }
   }
 }
 </script>

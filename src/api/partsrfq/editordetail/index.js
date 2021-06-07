@@ -298,3 +298,13 @@ export function negoScoreReport(reqId) {
         method: 'GET'
     })
 }
+
+
+// 批量更新供应商生产地
+export function updateBatchSupplierProducePlace(params) {
+    return requst({
+        url: '/supplier/updateBatchSupplierProducePlace',
+        method: 'PUT',
+        data: params
+    })
+}

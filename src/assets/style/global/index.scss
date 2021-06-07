@@ -355,6 +355,11 @@ a{
   @extend .link;
   text-decoration: underline;
 }
+.link-underline-disabled {
+  @extend .link-underline;
+  color: $color-header-gray;
+  cursor: not-allowed;
+}
 /*-------------------------------------
  |                                     |
  |   强行控制element中的MessageBox样式    |

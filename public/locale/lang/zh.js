@@ -9,6 +9,7 @@
         "deleteSure":'您确定要执行删除操作吗？',
         "revokeSure":'您确定要执行撤回操作吗？',
         "submitSure":'您确定要执行提交操作吗？',
+        "cancelSure":'您确定要取消吗？',
         'all': '全部',
         'search': '搜索',
         'setting': '设置',
@@ -191,7 +192,7 @@
             'GongYingShang': '供应商', // 供应商
             'PcaFenXiJieGuo': 'PCA分析结果', // PCA分析结果
             'TiaFenXiJieGuo': 'TIA分析结果', // TIA分析结果
-
+            'SavePcaResAndTiaResTips': '请填写完整PCA分析结果和TIA分析结果', // 请填写完整PCA分析结果和TIA分析结果
 
             'BaoGaoQingDan':'报告清单',// 报告清单
 
@@ -872,6 +873,7 @@
         'LK_DIBANIANXUQIULIANG':'第8年需求量', // 第8年需求量
         'LK_DIJIUNIANXUQIULIANG':'第9年需求量', // 第9年需求量
         'LK_DISHINIANXUQIULIANG':'第10年需求量', // 第10年需求量
+        'LK_QINGXUANZEZHISHAOYITIAOSHUJU': '请选择至少一条数据', // 请选择至少一条数据
 
         // 定点管理
         'nominationLanguage': {
@@ -997,7 +999,8 @@
             "ZiDingYi": "自定义",
             "ShangChuanXianXiaRS": "上传线下RS文件",
             "JieSuBianJi": "结束编辑",
-            "BeiZuXinXi": "备注信息"
+            "BeiZuXinXi": "备注信息",
+            "ShangChuanFaShengCuoWu": "上传发生错误，请稍后重试"
         },
     })
 }))

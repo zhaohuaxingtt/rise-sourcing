@@ -190,7 +190,7 @@
             'GongYingShang': '供应商', // 供应商
             'PcaFenXiJieGuo': '', // PCA分析结果
             'TiaFenXiJieGuo': '', // TIA分析结果
-
+            'SavePcaResAndTiaResTips': '', // 请填写完整PCA分析结果和TIA分析结果
 
             'BaoGaoQingDan':'报告清单',// 报告清单
 
@@ -851,6 +851,7 @@
         'LK_DIBANIANXUQIULIANG':'第8年需求量', // 第8年需求量
         'LK_DIJIUNIANXUQIULIANG':'第9年需求量', // 第9年需求量
         'LK_DISHINIANXUQIULIANG':'第10年需求量', // 第10年需求量
+        'LK_QINGXUANZEZHISHAOYITIAOSHUJU': '请选择至少一条数据', // 请选择至少一条数据
 
         // 定点管理
         'nominationLanguage': {

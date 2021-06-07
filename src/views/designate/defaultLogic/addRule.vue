@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-24 20:14:24
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-05-25 11:01:17
+ * @LastEditTime: 2021-06-04 20:02:48
  * @Description: 添加规则弹窗
  * @FilePath: \front-web\src\views\designate\defaultLogic\addRule.vue
 -->
@@ -16,7 +16,7 @@
   >
     <template slot="footer">
       <iButton @click="handleAddRule" :disabled="rules.length > 4">添加条件</iButton>
-      <iButton @click="handleSave">保存</iButton>
+      <iButton @click="handleSave" :loading="loading">保存</iButton>
     </template>
     <el-form class="add-rule-form">
       <el-form-item label="预设定点类型" >
@@ -35,7 +35,7 @@
         <iSelect :placeholder="$t('LK_QINGXUANZE')" v-model="item.input1" :disabled="index < 1">
           <el-option
             v-for="item in input1Options"
-            :disabled="item.disabled"
+            :disabled="item.disabled || alreadyExsist(item.value)"
             :key="item.value"
             :label="item.label"
             :value="item.value">
@@ -43,16 +43,16 @@
         </iSelect>
       </el-form-item>
       <el-form-item v-if="item.input1 !== ''" :label="' '">
-        <iSelect :placeholder="$t('LK_QINGXUANZE')" v-model="item.input2">
+        <iSelect :placeholder="$t('LK_QINGXUANZE')" v-model="item.input2" @change="val => handleSelectChange(val, item)">
           <el-option
-            v-for="item in (index > 0 ? input2Options : partTypeOptions)"
+            v-for="item in (item.input1 === 0 ? partTypeOptions : item.input1 === 4 ? tradeOptions : input2Options )"
             :key="item.value"
             :label="item.label"
             :value="item.value">
           </el-option>
         </iSelect>
       </el-form-item>
-      <el-form-item v-if="item.input1 !== '' && item.input1 !== 'option1'" :label="' '">
+      <el-form-item v-if="item.input1 !== '' && item.input1 !== 0 && item.input1 !== 4" :label="' '">
         <iInput :placeholder="$t('LK_QINGSHURU')" v-model="item.input3" type="number" oninput="if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+5)}"></iInput>
       </el-form-item>
       <icon v-if="index > 0" symbol name="icondingdianshenqingyusheluoji-shanchu" @click.native="handleDeleteRule(index)" class="delete-icon cursor"></icon>
@@ -61,18 +61,39 @@
 </template>
 
 <script>
-import { iDialog, iButton, iSelect, iInput, icon } from 'rise'
+import { iDialog, iButton, iSelect, iInput, icon, iMessage } from 'rise'
+import { getDictByCode } from '@/api/dictionary'
+import { applyType } from '@/layout/nomination/components/data'
+import { findFuelTypeList } from '@/api/designate/defaultLogic/index'
 export default {
   components: { iDialog, iButton, iSelect, iInput, icon },
   props: {
     dialogVisible: {type: Boolean, default: false}
   },
+  created() {
+    getDictByCode('PPT').then(res => {
+      if (res?.result) {
+        this.partTypeOptions = res.data[0].subDictResultVo.map(item => {
+          return {value: item.code, label: item.name}
+        })
+      }
+    })
+  },
+  watch: {
+    dialogVisible(val) {
+      if (val) {
+        this.init()
+      }
+    }
+  },
   data() {
     return {
+      loading: false,
       ddType: '',
       rules: [
-        {input1: 'option1', input2: '', input3: ''}
+        {input1: 0, input2: '', input3: ''}
       ],
+      tradeOptions: [],
       partTypeOptions: [{
         value: 'option1',
         label: 'FS零件'
@@ -80,43 +101,100 @@ export default {
         value: 'option2',
         label: 'Special零件'
       }],
-      typeOptions: [{
-        value: 'option1',
-        label: '上会'
-      }, {
-        value: 'option2',
-        label: '流转'
-      }, {
-        value: 'option3',
-        label: '备案'
-      }],
       input1Options: [{
-        value: 'option1',
+        value: 0,
         label: '零件采购项目类型',
         disabled: true
       }, {
-        value: 'option2',
+        value: 1,
         label: '单价'
       }, {
-        value: 'option3',
+        value: 2,
         label: 'TTO'
+      }, {
+        value: 3,
+        label: 'TO Per Year'
+      }, {
+        value: 4,
+        label: '燃料类型',
       }],
       input2Options: [{
-        value: 'option1',
+        value: 2,
         label: '大于'
       }, {
-        value: 'option2',
+        value: 1,
         label: '小于'
       }, {
-        value: 'option3',
+        value: 3,
         label: '不大于'
       }, {
-        value: 'option4',
+        value: 4,
         label: '不小于'
       }]
     }
   },
+  computed: {
+    typeOptions() {
+      return applyType.map(item => {return {value: item.id, label: item.name}})
+    }
+  },
   methods: {
+    getFuelType(val) {
+      findFuelTypeList(val).then(res => {
+        if (res?.result) {
+          this.tradeOptions = res.data.map(item => {return {value: item, label: item}})
+        }
+      })
+    },
+    /**
+     * @Description: 下拉框选择修改
+     * @Author: Luoshuang
+     * @param {*} val
+     * @param {*} item
+     * @return {*}
+     */    
+    handleSelectChange(val, item) {
+      console.log(this)
+      if(item.input1 === 0 && val) {
+        this.getFuelType(val)
+      }
+    },
+    /**
+     * @Description: 修改保存按钮的loading状态
+     * @Author: Luoshuang
+     * @param {*} loading
+     * @return {*}
+     */    
+    changeSaveLoading(loading) {
+      this.loading = loading
+    },
+    /**
+     * @Description: 初始化弹窗
+     * @Author: Luoshuang
+     * @param {*}
+     * @return {*}
+     */    
+    init() {
+      this.loading = false
+      this.rules = [
+        {input1: 0, input2: '', input3: ''}
+      ]
+      this.ddType = ''
+    },
+    /**
+     * @Description: 看下拉框中的值是否已被选择(这里主要是看车型燃料是否已选择，若已选择则不能再选)
+     * @Author: Luoshuang
+     * @param {*} type
+     * @return {*}
+     */    
+    alreadyExsist(type) {
+      if (type === 4) {
+        if (this.rules.some(item => item.input1 === type)) {
+          return true
+        }
+      }
+      return false
+    },
     /**
      * @Description: 清除弹框
      * @param {*}
@@ -139,7 +217,44 @@ export default {
      * @return {*}
      */    
     handleSave() {
-      this.clearDialog()
+      if(this.ddType === '') {
+        iMessage.warn('请选择预设定点类型')
+        return
+      }
+      if(this.rules.some(item => {
+        if(item.input1 === '') {
+          return true
+        } else if(item.input2 === '') {
+          return true
+        } else if([1,2,3].includes(item.input1) && item.input3 === '') {
+          return true
+        }
+        return false
+      })) {
+        iMessage.warn('请将规则填写完整')
+        return
+      }
+
+      this.loading = true
+      const params = {
+        nomiType: this.ddType,
+        partTermType: this.rules[0].input2,
+        presetLogic:this.rules.reduce((accu, curr, index) => {
+          if(index === 0) {
+            return accu
+          }
+          const data = curr.input1 === 4 ? {
+            isFuelTypeInuse: 1,
+            fuelTypeValue: curr.input2
+          } : {
+            conditionType: curr.input1,
+            logicType: curr.input2,
+            conditionValue: curr.input3
+          }
+          return [...accu, data]
+        },[])
+      }
+      this.$emit('handleSave', params)
     },
     /**
      * @Description: 删除添加的条件
@@ -187,7 +302,7 @@ export default {
     position: absolute;
     right: 0;
     top: 35px;
-    border: 1px solid #000;
+    // border: 1px solid #000;
   }
 }
 </style>

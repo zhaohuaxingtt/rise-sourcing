@@ -9,12 +9,21 @@ import axios from '@/utils/axios'
 import store from "@/store";
 
 const requst = axios(process.env.VUE_APP_RFQ)
+const partsRequst = axios(process.env.VUE_APP_PARTSPROCURE)
 
 export function getRfqDataList(parmars) {
     return requst({
         url: '/rfqs/findByRfqs',
         method: 'POST',
         data: parmars
+    })
+}
+
+export function getRfqList(params) {
+    return requst({
+        url: '/getRfq/getRfqBaseInfoScenes',
+        method: 'POST',
+        data: params
     })
 }
 
@@ -64,5 +73,21 @@ export function getAllScoringDepartmentInfo(parmars) {
         url: '/supplier/getAllScoringDepartmentInfo',
         method: 'POST',
         data: parmars
+    })
+}
+
+// 获取寻源执行子菜单待办数
+export function getAgentTasksNum() {
+    return requst({
+        url: '/getAgentTasksNum',
+        method: 'GET',
+    })
+}
+
+// 获取车型字典
+export function getCartypeDict() {
+    return partsRequst({
+        url: '/api/cartypeDict',
+        method: 'GET',
     })
 }

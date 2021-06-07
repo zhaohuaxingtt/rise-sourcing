@@ -20,6 +20,7 @@
                 </iSelect>
             </div>
             <div class="btnList flex-align-center">
+                <iButton @click="gotoRsMainten">RS单维护</iButton>
                 <iButton @click="exportNominate">{{$t('LK_DAOCHU')}}</iButton>
                 <iButton @click="submit">{{$t('LK_TIJIAO')}}</iButton>
                 <iButton v-if="isDecision" @click="preview">{{$t('LK_YULAN')}}</iButton>
@@ -100,6 +101,8 @@ export default {
         this.$store.dispatch('setNominationTypeDisable', nominationTypeDisable)
         // 设置定点类型
         this.$store.dispatch('setNominationType', this.designateType)
+        // 缓存定点ID
+        this.$store.dispatch('setNominateId', this.desinateId)
 
     },
      computed:{
@@ -119,6 +122,9 @@ export default {
         }
     },
     methods:{
+        gotoRsMainten() {
+            this.$router.push({path: '/sourcing/designate/rsSingleMaintenance', query: {desinateId:this.$route.query.desinateId}})
+        },
         // 预览
         preview(){
             const {path,query} = this.$route;
@@ -209,7 +215,7 @@ export default {
             font-size: 20px;
             font-weight: bold;
             white-space: nowrap;
-            margin-bottom: 10px;
+            // margin-bottom: 10px;
         }
         .select-text{
             font-size: 14px;

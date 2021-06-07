@@ -20,13 +20,13 @@ export const uploadtableTitle = [
     tooltip: false
   },
   {
-    props: 'date',
+    props: 'uploadDate',
     name: 'Upload Date',
     key: 'Upload Date',
     tooltip: false
   },
   {
-    props: 'userName',
+    props: 'uploadBy',
     name: 'Upload Person',
     key: 'Upload Person',
     tooltip: false

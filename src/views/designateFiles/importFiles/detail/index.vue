@@ -6,7 +6,7 @@
 <template>
     <iPage class="filesDetailList">
         <div v-if="!showUploadList">
-            <p class="title margin-bottom10">{{$t('LK_FUJIANQINGDAN')}}：SAZJ1029</p>
+            <p class="title margin-bottom10">{{$t('LK_FUJIANQINGDAN')}}：{{importfilesId}}</p>
             <iCard collapse>
                 <!-- 搜索区域 -->
                 <iSearch @sure="sure" @reset="reset">
@@ -37,9 +37,9 @@
                 :tableLoading="loading"
                 @handleSelectionChange="handleSelectionChange"
             >
-                <!-- 编号 -->
-                <template #code="scope">
-                    <span @click="goFilesList(scope.row.code)" class="link-underline" >{{scope.row.code}}</span>
+                <!-- RFQ编号 -->
+                <template #rfqId="scope">
+                    <span @click="goFilesList(scope.row.rfqId)" class="link-underline" >{{scope.row.rfqId}}</span>
                 </template>
                 <!-- 附件 -->
                 <template #LK_FUJIAN="scope">
@@ -120,9 +120,13 @@ export default {
             showUploadList:false,
             loading:false,
             uploadId:'',
+            importfilesId:'',
         }
     },
     created(){
+        const {query={}} = this.$route;
+        const {id} = query;
+        this.importfilesId = id;
         this.getList();
     },
     methods:{
@@ -154,7 +158,10 @@ export default {
         async getList(){
             this.loading =  true;
             const { page,searchParams } = this;
+            const {query={}} = this.$route;
+            const {id} = query;
             const data = { 
+                code:id,
                 ...searchParams,
                 pageNo:page.currPage,
                 pageSize:page.pageSize,
@@ -172,6 +179,16 @@ export default {
                 this.loading =  false;
             });
         },
+
+        // 跳转RFQ详情
+        goFilesList(rfqId){
+             const router =  this.$router.resolve({path: `/costanalysismanage/rfqdetail?rfqId=${rfqId}`})
+             window.open(router.href,'_blank');
+            // this.$router.push({
+            //     path:'/costanalysismanage/rfqdetail',
+            //     query:{rfqId}
+            // })
+        }
     }
 }
 </script>

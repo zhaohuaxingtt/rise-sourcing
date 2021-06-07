@@ -3,12 +3,13 @@
     <div class="dialog-Header" slot="title">
       <div class="font18 font-weight">{{$t('strategicdoc.ZiDingYi')}}</div>
       <div class="control">
-        <iButton>{{ $t('LK_BAOCUN') }}</iButton>
-        <iButton>{{ $t('LK_CHONGZHI') }}</iButton>
+        <iButton @click="submit">{{ $t('LK_BAOCUN') }}</iButton>
+        <iButton @click="reset">{{ $t('LK_CHONGZHI') }}</iButton>
       </div>
     </div>
     <div class="body">
       <tableList
+        :selection="false"
         :height="280"
         v-show="visible"
         class="table"
@@ -16,11 +17,11 @@
         :tableTitle="tableTitle"
         :tableLoading="loading"
         @handleSelectionChange="handleSelectionChange">
-        <template #visible="scope">
-          <a class="link-underline" v-if="scope.row.visible">
+        <template #flag="scope">
+          <a class="link-underline" v-if="scope.row.flag === 1" @click="toggleVisible(scope.row, 0)">
             <icon symbol name="iconyincang" class="icon trigger-visible" />
           </a>
-          <a class="link-underline" v-else>
+          <a class="link-underline" @click="toggleVisible(scope.row, 1)" v-else>
             <icon symbol name="iconxianshi" class="icon trigger-visible" />
           </a>
         </template>
@@ -28,14 +29,14 @@
           <a class="link-underline" v-if="scope.$index === 0">
             <icon symbol name="iconpaixu-xiangshangjinzhi" class="icon" />
           </a>
-          <a class="link-underline" v-else>
+          <a class="link-underline" @click="sort(scope, true)" v-else>
             <icon symbol name="iconpaixu-xiangshang" class="icon" />
           </a>
 
           <a class="link-underline" v-if="scope.$index === tableListData.length - 1">
             <icon symbol name="iconpaixu-xiangxiajinzhi" class="icon" />
           </a>
-          <a class="link-underline" v-else>
+          <a class="link-underline"  @click="sort(scope, false)" v-else>
             <icon symbol name="iconpaixu-xiangxia" class="icon" />
           </a>
         </template>
@@ -46,10 +47,14 @@
 
 <script>
 import { iDialog, iMessage, iButton, icon } from 'rise'
-import { sortTableTitle as tableTitle, sortTableData } from './data'
+import { sortTableTitle as tableTitle } from './data'
 import { pageMixins } from '@/utils/pageMixins'
 import tableList from '@/views/designate/supplier/components/tableList'
 import filters from '@/utils/filters'
+import _ from 'lodash'
+import {
+  updateTabPageManager
+} from '@/api/designate'
 
 export default {
   components: { tableList, iDialog, iButton, icon },
@@ -66,9 +71,9 @@ export default {
     }
   },
   watch: {
-    params: {
+    visible: {
       handler() {
-        this.$nextTick(() => { if (this.visible) this.getAttachment() })
+        this.$nextTick(() => { if (this.visible) this.getFetchData() })
       },
       deep: true
     }
@@ -77,14 +82,66 @@ export default {
     return {
       loading: false,
       tableTitle,
-      tableListData: sortTableData,
+      tableListData: [],
+      phaseType: {},
       Selection: [],
       controlHeight: 0
     }
   },
   methods: {
+    // 切换显示， 隐藏
+    toggleVisible(row, state) {
+      this.$set(row, 'flag', state)
+    },
+    // 切换排序
+    sort(scope, up = true) {
+      const index = scope.$index
+      if (up) {
+        this.tableListData[index - 1].sort = index
+        this.tableListData[index].sort = index - 1
+      } else {
+        this.tableListData[index + 1].sort = index
+        this.tableListData[index].sort = index + 1
+      }
+      this.tableListData = this.tableListData.sort((a, b) => {
+        return a.sort - b.sort
+      })
+    },
+    reset() {
+      this.getFetchData()
+    },
+    async submit() {
+      const { query } = this.$route;
+      const {desinateId} = query;
+      const data = {
+        nominateTabPageDTO: {
+          nodes: this.tableListData,
+          nominateId: this.$store.getters.nomiAppId
+          // phaseType: this.phaseType
+          
+        },
+        nominateId: this.$store.getters.nomiAppId
+      }
+      const confirmInfo = await this.$confirm(this.$t('submitSure'))
+      if (confirmInfo !== 'confirm') return
+      updateTabPageManager(data).then((res)=>{
+        if (res.code === '200') {
+          iMessage.success(this.$t('LK_CAOZUOCHENGGONG'));
+        } else {
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
+          
+      }).catch(e => {
+          iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
+      })
+    },
     getFetchData() {
-
+      console.log(this.$store.getters)
+      const nominationStep = this.$store.getters.nominationStep
+      const tableListData = nominationStep.nodeList || []
+      this.tableListData = _.cloneDeep(tableListData)
+      this.phaseType = nominationStep.phaseType || {}
+      console.log('tableListData', tableListData)
     },
     handleSelectionChange(list) {
       this.Selection = list

@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-25 14:41:07
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-02 14:38:08
+ * @LastEditTime: 2021-06-07 02:14:28
  * @Description: 
  * @FilePath: \front-web\src\views\accessoryPart\signForPartsDemand\data.js
  */
@@ -43,8 +43,8 @@ export const searchList = [
   {value: 'spnrNum', label: 'SP号', type: 'input', i18n_label: '',},
   {value: 'sparePartCode', label: '编号', type: 'input', i18n_label: '',},
   {value: 'carType', label: '配件车型', type: 'select', i18n_label: '',},
-  {value: 'carProject', label: '配件车型项目', type: 'select', i18n_label: '',},
-  {value: 'state', label: '配件状态', type: 'select', i18n_label: ''},
+  {value: 'carProject', label: '配件车型项目', type: 'select', i18n_label: '',selectOption: 'carTypeOptions'},
+  {value: 'state', label: '配件状态', type: 'select', i18n_label: '', selectOption: 'accessoryTypeOption'},
   {value: 'csfUserDept', label: '是否有询价科室', type: 'select', i18n_label: '', selectOption: 'yesOrNoOption'},
   {value: 'csfUserId', label: '是否有询价采购员', type: 'select', i18n_label: '', selectOption: 'yesOrNoOption'},
   {value: 'sendDate', label: '需求发送起止日期', type: 'date', i18n_label: '',}
