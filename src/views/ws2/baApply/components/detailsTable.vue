@@ -70,11 +70,11 @@ export default {
     tableLoading: {type: Boolean, default: false},
   },
   computed: {
-    nameList(){
-      const ksy1 = store.state.permission.whiteBtnList['TOOLING_BUDGET_BAAPPLICATION_TOTAL'];  //  是否有汇总页面权限
-      const key = ksy1 ? 'baNum' : 'locationFactoryName';
-      return this.selectTableData.map(item => item[key]).join('、');
-    }
+    // nameList(){
+    //   const ksy1 = store.state.permission.whiteBtnList['TOOLING_BUDGET_BAAPPLICATION_TOTAL'];  //  是否有汇总页面权限
+    //   const key = ksy1 ? 'baNum' : 'carTypeName';
+    //   return this.selectTableData.map(item => item[key]).join('、');
+    // }
   },
   data(){
     return {
@@ -85,6 +85,7 @@ export default {
       tableLayerTitle: [],
       tableLayerLoading: false,
       applyLoading: false,
+      nameList: '',
     }
   },
   mixins: [tableHeight],
@@ -169,6 +170,10 @@ export default {
       if(!this.selectTableData.length){
         return iMessage.warn(this.$t('LK_BAAPPLYTISP1'));
       }
+      const ksy1 = store.state.permission.whiteBtnList['TOOLING_BUDGET_BAAPPLICATION_TOTAL'];  //  是否有汇总页面权限
+      const key = ksy1 ? 'carTypeName' : 'locationFactoryName';
+      this.nameList = this.selectTableData.map(item => item[key]).join('、');
+      console.log('this.nameList', this.nameList, key);
       this.getDetail();
     },
 
