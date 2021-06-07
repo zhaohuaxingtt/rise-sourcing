@@ -119,8 +119,33 @@ module.exports = {
         https: false,
         hotOnly: true,
         proxy: {
+						'supplierApiMH': {
+							target: 'http://10.122.18.166:8025',
+							// target: 'http://192.168.50.50:8029/',
+							changeOrigin: true,
+							pathRewrite: {
+									"^/supplierApiWDL": ""
+							}
+						},
+						'supplierApiWDL': {
+							target: 'http://10.122.18.166:8025',
+							// target: 'http://10.160.136.144:8788/',
+							changeOrigin: true,
+							pathRewrite: {
+									"^/supplierApiWDL": ""
+							}
+						},
+						'supplierApiTYP': {
+							target: 'http://10.122.18.166:8025',
+								// target: 'http://192.168.50.152:8029/',
+								changeOrigin: true,
+								pathRewrite: {
+										"^/supplierApiTYP": ""
+								}
+						},
 						'procurementrequirementZZB': {
-								target: 'http://10.160.137.213:8083',
+							target: 'http://10.122.18.166:8023',
+								// target: 'http://10.160.141.45:8023/',
 								changeOrigin: true,
 								pathRewrite: {
 										"^/procurementrequirementZZB": ""

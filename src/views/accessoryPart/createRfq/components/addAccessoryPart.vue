@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-26 14:48:50
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-05-26 20:08:08
+ * @LastEditTime: 2021-06-07 14:42:49
  * @Description: 添加配件弹窗
  * @FilePath: \front-web\src\views\accessoryPart\createRfq\components\addAccessoryPart.vue
 -->
@@ -15,7 +15,7 @@
     width="90%"
     class="addPartsDialog"
   >
-    <iSearch @sure="sure" @reset="reset">
+    <iSearch @sure="getTableList" @reset="reset">
       <el-form>
         <el-form-item v-for="(item, index) in searchList" :key="index" :label="item.label">
           <iSelect v-if="item.type === 'select'" v-model="searchParams[item.value]"></iSelect> 
@@ -26,7 +26,7 @@
     <div class="margin-bottom20 clearFloat margin-top20">
       <div class="floatright">
         <!--------------------选择按钮----------------------------------->
-        <iButton @click="changeInquiryDialogVisible(true)" >选择</iButton>
+        <iButton @click="handleSelectPart" >选择</iButton>
       </div>
     </div>
     <tableList :activeItems='"a1"' selection indexKey :tableData="tableData" :tableTitle="tableTitle" :tableLoading="tableLoading" @handleSelectionChange="handleSelectionChange" @openPage="openPage"></tableList>
@@ -44,10 +44,12 @@
 </template>
 
 <script>
-import { iDialog, iButton, iSelect, iInput, iSearch, iPagination } from 'rise'
+import { iDialog, iButton, iSelect, iInput, iSearch, iPagination, iMessage } from 'rise'
 import tableList from '@/views/designate/designatedetail/components/tableList'
 import { pageMixins } from "@/utils/pageMixins"
-import { tableTitle, tableMockData, searchList } from '../../integratedManage/data'
+import { tableTitle, searchList } from '../../integratedManage/data'
+import {findBySearches} from "@/api/partsrfq/home";
+import { getDictByCode } from '@/api/dictionary'
 export default {
   mixins: [pageMixins],
   components: { iDialog, iButton, iSelect, iInput, tableList, iSearch, iPagination },
@@ -58,13 +60,143 @@ export default {
     return {
       backType: '',
       backReason: '',
-      tableData: tableMockData,
+      tableData: [],
       tableTitle: tableTitle,
+      tableLoading: false,
       searchList,
-      searchParams: {}
+      searchParams: {
+        carType: '',
+        carProject: '',
+        state: '',
+        partStatus: '',
+        partState: '',
+        cfTargetPrice: '',
+        nomiType: '',
+        idState: ''
+      },
+      selectOptions: {
+        yesOrNoOption: [{value: '1', label: '是'},{value: '0', label: '否'}]
+      },
+      selectParts: []
+    }
+  },
+  watch: {
+    dialogVisible(val) {
+      if(val) {
+        this.getSelectOptions()
+        this.getTableList()
+        this.getCarTypeOptions()
+      }
     }
   },
   methods: {
+    /**
+     * @Description: 点击选择按钮
+     * @Author: Luoshuang
+     * @param {*}
+     * @return {*}
+     */    
+    handleSelectPart() {
+      if (this.selectParts.length < 1) {
+        iMessage.warn('请选择配件')
+        return
+      }
+      this.$emit('selectPart', this.selectParts.map(item => item.spnrNum))
+    },
+    /**
+     * @Description: 表格数据选中
+     * @Author: Luoshuang
+     * @param {*} val 选中的行
+     * @return {*}
+     */    
+    handleSelectionChange(val) {
+      this.selectParts = val
+    },
+    /**
+     * @Description: 搜索条件重置
+     * @Author: Luoshuang
+     * @param {*}
+     * @return {*}
+     */    
+    reset() {
+      this.searchParams = {
+        carType: '',
+        carProject: '',
+        state: '',
+        partStatus: '',
+        partState: '',
+        cfTargetPrice: '',
+        nomiType: '',
+        idState: ''
+      }
+    },
+    /**
+     * @Description: 车型项目下拉框
+     * @Author: Luoshuang
+     * @param {*}
+     * @return {*}
+     */    
+    async getCarTypeOptions() {
+      const res = await findBySearches('01')
+      this.selectOptions.carTypeOptions = res.data
+    },
+    /**
+     * @Description: 调取数据字典获取下拉
+     * @Author: Luoshuang
+     * @param {*} optionName 下拉选项名称
+     * @param {*} optionType 下拉类型
+     * @return {*}
+     */    
+    getDictionary(optionName, optionType) {
+      getDictByCode(optionType).then(res => {
+        if(res?.result) {
+          this.selectOptions[optionName] = res.data[0].subDictResultVo.map(item => {
+            return { value: item.code, label: item.name }
+          })
+        }
+      })
+    },
+    /**
+     * @Description: 获取下拉数据
+     * @Author: Luoshuang
+     * @param {*}
+     * @return {*}
+     */    
+    getSelectOptions() {
+      // 配件状态
+      this.getDictionary('accessoryTypeOption', 'ACCESSORY_STAT')
+      // ID状态
+      this.getDictionary('accessoryIdStateOption', 'ACCESSORY_ID_STATE')
+      // 定点状态
+      this.getDictionary('nominateStateOption', 'NOMINATE_STATE')
+    },
+    /**
+     * @Description: 获取列表数据
+     * @Author: Luoshuang
+     * @param {*}
+     * @return {*}
+     */    
+    getTableList() {
+      this.tableLoading = true
+      const params = {
+        ...this.searchParams,
+        current: this.page.currPage,
+        size: this.page.pageSize
+      }
+      getAccessoryManageList(params).then(res => {
+        if(res.result) {
+          this.tableData = res.data.records
+          this.page.pageSize = res.data.size
+          this.page.currPage = res.data.current
+          this.page.totalCount = res.data.total
+        } else {
+          this.tableData = []
+          iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
+        }
+      }).finally(() => {
+        this.tableLoading = false
+      })
+    },
     clearDialog() {
       this.$emit('changeVisible', false)
     },

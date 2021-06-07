@@ -2,7 +2,7 @@
  * @Descripttion: 
  * @Author: Luoshuang
  * @Date: 2021-05-21 14:30:41
- * @LastEditTime: 2021-06-03 15:33:40
+ * @LastEditTime: 2021-06-05 14:06:16
 -->
 <template>
   <el-table ref="multipleTable" fit tooltip-effect='light' :height="height" :data='tableData' v-loading='tableLoading' @selection-change="handleSelectionChange" :empty-text="$t('LK_ZANWUSHUJU')" >
@@ -35,8 +35,8 @@
           <span v-if="items.required" style="color:red;">*</span>
         </template>
         <template slot-scope="scope">
-          <iInput v-if="items.type === 'input'" v-model="scope.row[items.props]"></iInput>
-          <iSelect v-else-if="items.type === 'select'" v-model="scope.row[items.props]">
+          <iInput v-if="items.type === 'input'" v-model="scope.row[items.props]" :class="scope.row[items.isChange] && 'isChange'"></iInput>
+          <iSelect v-else-if="items.type === 'select'" v-model="scope.row[items.props]" :class="scope.row[items.isChange] && 'isChange'">
             <el-option
               :value="item.value"
               :label="item.label"
@@ -44,8 +44,10 @@
               :key="index"
             ></el-option>
           </iSelect>
-          <iDatePicker v-else-if="items.type === 'date'" v-model="scope.row[items.props]" format="yyyy-MM-dd" value-format="yyyy-MM-dd"></iDatePicker>
-          <iInput v-if="items.type === 'rate'" v-model="scope.row[items.props]"></iInput>
+          <iDatePicker v-else-if="items.type === 'date' && items.parentProps" :value="getValue(scope.row, items)" @change="val=>changeValue(val, scope.row, items)" value-format="" :class="scope.row[items.isChange] && 'isChange'"></iDatePicker>
+          <iDatePicker v-else-if="items.type === 'date'" :value="getValue(scope.row, items)" @change="val=>changeValue(val, scope.row, items)" value-format="" :class="scope.row[items.isChange] && 'isChange'"></iDatePicker>
+          <iInput v-else-if="items.type === 'rate' && items.parentProps" :value="getValue(scope.row, items)" @change="val=>changeValue(val, scope.row, items)" :class="scope.row[items.isChange] && 'isChange'"></iInput>
+          <iInput v-else-if="items.type === 'rate'" :value="getValue(scope.row, items)" @change="val=>changeValue(val, scope.row, items)" :class="scope.row[items.isChange] && 'isChange'"></iInput>
         </template>
       </el-table-column>
       <!-------------------------正常列--------------------------->
@@ -63,9 +65,9 @@
             placement="right"
             trigger="hover"
             popper-class="tableTitleTip"
-            content="xxx.pdf"
+            :content="getFileList(scope.row)"
             :visible-arrow="false">
-            <span slot="reference" class="openLinkText cursor">下载</span>
+            <span slot="reference" @click="handleAttachmentDonwload(scope.row)" class="openLinkText cursor">下载</span>
           </el-popover>
           <!------------------正常--------------------------->
           <span v-else>{{scope.row[items.props]}}</span>
@@ -107,6 +109,33 @@ export default{
   },
   inject:['vm'],
   methods:{
+    handleAttachmentDonwload(row) {
+      if (row.fileList?.length < 1) {
+        return
+      }
+      this.$emit('handleFileDownload', row.fileList?.map(item => item.fileName))
+    },
+    getFileList(row) {
+      return row.fileList?.map(item => item.fileName).join('<br/>')
+    },
+    changeValue(val, row, item) {
+      if (item.parentProps) {
+        if (row && row[item.parentProps] && row[item.parentProps][item.propsIndex - 1]) {
+          // return row[item.parentProps][item.propsIndex - 1][item.props]
+        }
+      } else {
+        // return row[item.props]
+      }
+    },
+    getValue(row, item) {
+      if (item.parentProps) {
+        if (row && row[item.parentProps] && row[item.parentProps][item.propsIndex - 1]) {
+          return row[item.parentProps][item.propsIndex - 1][item.props]
+        }
+      } else {
+        return row[item.props]
+      }
+    },
     toggleSelection(rows) {
       if (rows) {
         rows.forEach(row => {

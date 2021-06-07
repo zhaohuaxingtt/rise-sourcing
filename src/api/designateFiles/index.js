@@ -14,7 +14,7 @@ const requst = axios(process.env.VUE_APP_PROCUREMENTREQUIREMENT_ZZB)
 // 获取附件列表数据
 export function getAffixList(params) {
   return requst({
-      url: '/affix/list',
+      url: '/affix/affix-requirements',
       method: "POST",
       data: params
   })
