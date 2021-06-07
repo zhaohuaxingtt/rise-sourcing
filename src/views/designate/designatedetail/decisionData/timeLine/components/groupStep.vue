@@ -10,20 +10,14 @@
                 <icon symbol :name="item.icon" class="step-icon"></icon>
                 <p class="step-title">{{item.title}}</p>
                 <p class="step-tips">
-                    <span v-if="item.isEdit" class="step-tips-edit">
-                        <span class="step-tips-block">{{item.tips}}</span>
-                        <!-- <iInput
-                            class="step-tips-input" 
-                            v-model="item.tips"
-                        /> -->
-                        <iDatePicker class="step-tips-picker"/>
+                    <span v-if="isEdit && groupNode[item.key] && groupNode[item.key].isEditable" class="step-tips-edit">
+                        <span class="step-tips-block">{{groupNode[item.key] ? (groupNode[item.key].nodeWeek || '-') : '-'}}</span>
+                        <iDatePicker v-model="groupNode[item.key].nodeDate" class="step-tips-picker"/>
                     </span>
-                    <span v-else>{{item.tips}}</span>
+                    <span v-else>{{groupNode[item.key] ? (groupNode[item.key].nodeWeek || '-') : '-'}}</span>
                 </p>
-
-                
                 <!-- 插入的icon显示位 -->
-                <div v-if="($slots['myStep'] || myStep) && stepIndex==index" class="myStep">
+                <div v-if="($slots['myStep'] || myStep) && isTodayAfterIndex==index" class="myStep">
                     <slot name="myStep">{{ myStep }}</slot>
                 </div>
           </li>
@@ -34,7 +28,6 @@
 <script>
 import {
   icon,
-  iInput,
   iDatePicker,
 } from "rise";
 export default {
@@ -51,12 +44,28 @@ export default {
         stepList:{
             type:Array,
             default:()=>[]
-        }
+        },
+        groupNode:{
+             type:Object,
+             default:()=>{
+                return {}
+			}
+        },
+        isEdit:false,
+    },
+    created(){
+        console.log(this.groupNode,'groupNode');
     },
     data(){
         return{
-           
+           isTodayAfterIndex:0,
         }
+    },
+    methods:{
+        // 重置一下数据
+        resetListData(){
+
+        },
     }
 
 }

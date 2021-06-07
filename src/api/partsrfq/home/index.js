@@ -18,6 +18,14 @@ export function getRfqDataList(parmars) {
     })
 }
 
+export function getRfqList(params) {
+    return requst({
+        url: '/getRfq/getRfqBaseInfoScenes',
+        method: 'POST',
+        data: params
+    })
+}
+
 export function editRfqData(parmars) {
     return requst({
         url: '/rfqs/updateRfq',
@@ -64,5 +72,13 @@ export function getAllScoringDepartmentInfo(parmars) {
         url: '/supplier/getAllScoringDepartmentInfo',
         method: 'POST',
         data: parmars
+    })
+}
+
+// 获取寻源执行子菜单待办数
+export function getAgentTasksNum() {
+    return requst({
+        url: '/getAgentTasksNum',
+        method: 'GET',
     })
 }
