@@ -39,7 +39,7 @@ export const attachMixins = {
       if (!this.nomiAppId && !params.nomiAppId) return iMessage.error(this.$t('nominationLanguage.DingDianIDNotNull'))
       try {
         const res1 = await getdDecisiondataListAll(Object.assign({
-          nomiAppId: this.nomiAppId,
+          nomiAppId: this.nomiAppId || this.$store.getters.nomiAppId,
           sortColumn: 'sort',
           isAsc: true,
           fileType: '101',
@@ -64,14 +64,16 @@ export const attachMixins = {
     getDataList(params = {}) {
       if (!this.nomiAppId && params.nomiAppId) return iMessage.error(this.$t('nominationLanguage.DingDianIDNotNull'))
       this.tableLoading = true
-      getdDecisiondataList(Object.assign({
-        nomiAppId: this.nomiAppId,
+      params = Object.assign({
+        nomiAppId: this.nomiAppId || this.$store.getters.nomiAppId,
         sortColumn: 'sort',
         isAsc: true,
         fileType: '101',
         pageNo: (this.page && this.page.currPage) || 1,
         pageSize: (this.page && this.page.pageSize) || 10
-      }, params)).then(res => {
+      }, params)
+      console.log('-请求参数--', params)
+      getdDecisiondataList(params).then(res => {
         if (res.code === '200') {
           this.dataList = res.data.records || res.data || []
           if (this.page) {
@@ -90,11 +92,17 @@ export const attachMixins = {
     // 上传成功回调，配合@/components/Upload 食用
     onUploadsucess(data, callback) {
       console.log(data)
+      if (!data.data.fileName && !data.data.filePath) {
+        this.tableLoading = false
+        // 上传发生错误，oss无文件名，路径返回
+        iMessage.error(this.$t('strategicdoc.ShangChuanFaShengCuoWu'))
+        return
+      }
       this.tableLoading = true
       const params = {
         // 业务配置相关
         fileType: data.fileType || 101,
-        hostId: data.hostId || '1',
+        hostId: data.hostId || this.$store.getters.nomiAppId || '',
         fileCode: data.fileCode || '0',
         // 文件内容🇭相关
         fileName: data.data.fileName || '',
@@ -102,7 +110,7 @@ export const attachMixins = {
         fileSize: data.file.size || 0,
         size: data.file.size || 0
       }
-      console.log(params)
+      console.log(params, data)
       uploadfile(params).then(res => {
         if (res.code === '200') {
           iMessage.success('上传成功')

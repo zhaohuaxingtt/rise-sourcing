@@ -22,7 +22,7 @@ export const multiSupplierTitle = [
     tree: true
   },
   {
-    props: 'fsnrGsnrName',
+    props: 'factoryNameCh',
     name: '厂商名',
     key: 'nominationSupplier.ChangShangMing',
     tooltip: false
@@ -34,13 +34,13 @@ export const multiSupplierTitle = [
     tooltip: false
   },
   {
-    props: 'fsnrGsnrNameEn',
+    props: 'factoryNameEng',
     name: '厂商名(英)',
     key: 'nominationSupplier.ChangShangMingEN',
     tooltip: false
   },
   {
-    props: 'show',
+    props: 'isPresent',
     name: '是否展示',
     key: 'nominationSupplier.ShiFouZhanShi',
     tooltip: false
@@ -89,13 +89,13 @@ export const mokeMultiSupplierData = [
 // 单一供应商表头
 export const singleSupplierTitle = [
   {
-    props: 'fsnrGsnrName',
+    props: 'rfqId',
     name: 'RFQ编号',
     key: 'nominationLanguage.RFQBianHao',
     tooltip: false
   },
   {
-    props: 'sapNum',
+    props: 'fsnrGsnrNum',
     name: 'FS/GS/SP NO.',
     key: '',
     tooltip: false
@@ -107,43 +107,43 @@ export const singleSupplierTitle = [
     tooltip: false
   },
   {
-    props: 'fsnrGsnrNameEn',
+    props: 'partNameCh',
     name: '零件名(中)',
     key: 'nominationLanguage.LingJianMingCN',
     tooltip: false
   },
   {
-    props: 'fsnrGsnrNameEn',
+    props: 'partNameGer',
     name: '零件名(德)',
     key: 'nominationLanguage.LingJianMingDE',
     tooltip: false
   },
   {
-    props: 'supplierName',
+    props: 'suppliersName',
     name: '供应商名',
     key: 'nominationSupplier.GongYingShangMing',
     tooltip: false
   },
   {
-    props: 'fsnrGsnrNameEn',
+    props: 'sapNum',
     name: 'SAP号',
     key: 'nominationSupplier.SAPHao',
     tooltip: false
   },
   {
-    props: 'reason',
+    props: 'singleReason',
     name: '单一原因',
     key: 'nominationSupplier.DanYiYuanYin',
     tooltip: false
   },
   {
-    props: 'dept',
+    props: 'department',
     name: '部门',
     key: 'nominationSupplier.BuMen',
     tooltip: false
   },
   {
-    props: 'fsnrGsnrNameEn',
+    props: 'updateDate',
     name: '更新时间',
     key: 'nominationSupplier.GengXinShiJian',
     tooltip: false
