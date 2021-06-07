@@ -44,7 +44,7 @@
         width="50"
         align="center"
       ></el-table-column>
-      <template v-for="(items, index) in tableTitleTemp">
+      <template v-for="(items, index) in tableTitle">
         <el-table-column
           :key="index"
           align="center"
@@ -137,7 +137,8 @@ export default {
   data() {
     return {
       chooseCol: [],
-      tableTitleTemp: cloneDeep(this.tableTitle),
+      // tableTitleTemp: cloneDeep(this.tableTitle),
+      tableTitleTemp: [],
     }
   },
   mounted() {
