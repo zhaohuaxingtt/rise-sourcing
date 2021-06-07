@@ -3,7 +3,7 @@
  * @Date: 2021-04-21 09:50:42
 -->
 <template>
-  <div class="generateInvestmentList">
+  <div>
     <div v-permission="TOOLING_BUDGET_OVERVIEW">
       <iSearch
           class="margin-bottom20 giSearch"
@@ -62,68 +62,33 @@
           </el-form-item>
         </el-form>
         <div class="searchSure">
-  <!--        <iButton @click="saveAddCarType" :disabled="carTypeProjectObj.isBudget == 3" v-loading="addCarTypeLoading">{{ $t('LK_QUEREN') }}</iButton>-->
+          <!--        <iButton @click="saveAddCarType" :disabled="carTypeProjectObj.isBudget == 3" v-loading="addCarTypeLoading">{{ $t('LK_QUEREN') }}</iButton>-->
           <!--          <iButton @click="sure">查询</iButton>-->
           <!--          <iButton @click="reset">重置</iButton>-->
         </div>
       </iSearch>
       <div v-loading="loadingiPage">
-  <!--      <div class="infinite-list-wrapper" style="overflow:auto;height: 100px;">-->
-  <!--        <ul-->
-  <!--            class="list"-->
-  <!--            v-infinite-scroll="load"-->
-  <!--            infinite-scroll-disabled="disabled">-->
-  <!--          <li v-for="(item, index) in contentData" :key="index" class="list-item">{{ item.cartypeProjectName }}</li>-->
-  <!--        </ul>-->
-  <!--        <p v-if="loading">加载中...</p>-->
-  <!--        <p v-if="noMore">没有更多了</p>-->
-  <!--      </div>-->
+        <!--      <div class="infinite-list-wrapper" style="overflow:auto;height: 100px;">-->
+        <!--        <ul-->
+        <!--            class="list"-->
+        <!--            v-infinite-scroll="load"-->
+        <!--            infinite-scroll-disabled="disabled">-->
+        <!--          <li v-for="(item, index) in contentData" :key="index" class="list-item">{{ item.cartypeProjectName }}</li>-->
+        <!--        </ul>-->
+        <!--        <p v-if="loading">加载中...</p>-->
+        <!--        <p v-if="noMore">没有更多了</p>-->
+        <!--      </div>-->
 
-      <div class="content list"
-           style="overflow:auto;"
-           :style="{height: cardHeight + 'px'}"
-           v-if="contentData.length > 0"
-           v-infinite-scroll="load"
-           infinite-scroll-distance="10"
-           infinite-scroll-disabled="scrollDisabled">
-        <div class="item list-item" v-for="(item, index) in contentData" :key="index"
-             @click="toEdit(item.id, item.sourceStatus, item.isBudget)">
-          <div class="item_top">
-            <Popover
-                :content="Number(item.isBudget) === 3 ? '点击进入【模具投资清单】页面' : '点击进入未完成/需要继续编辑的【生成投资清单】页面'"
-                placement="top-start"
-                trigger="hover">
-              <img slot="reference" v-if="item.isBudget == 1" class="editIcon" src="../../../assets/images/editCar.png" alt="">
-              <img slot="reference" v-if="item.isBudget == 2" class="editIcon" src="../../../assets/images/editCar2.png" alt="">
-              <img slot="reference" v-if="item.isBudget == 3" class="editIcon" src="../../../assets/images/editCar.png" alt="">
-            </Popover>
-            <div class="title">
-              <Popover
-                  :content="item.cartypeProjectName"
-                  placement="top-start"
-                  trigger="hover">
-                <h4 slot="reference">{{ item.cartypeProjectName }}</h4>
-              </Popover>
-              <Popover
-                  v-if="Number(item.sourceStatus) === 1 || Number(item.isBudget) !== 3"
-                  :content="$t('LK_CAIGOUGONGCHANG') + ': ' + (item.locationFactory ? item.locationFactory : '')"
-                  placement="top-start"
-                  trigger="hover">
-                <p slot="reference">{{$t("LK_CAIGOUGONGCHANG")}}: {{ item.locationFactory }}</p>
-              </Popover>
-              <Popover
-                  v-if="Number(item.sourceStatus) === 1 || Number(item.isBudget) !== 3"
-                  :content="'SOP: ' + item.sop"
-                  placement="top-start"
-                  trigger="hover">
-                <p slot="reference">SOP: {{ item.sop }}</p>
-              </Popover>
-              <Popover
-                  :content="$t('LK_ZUIXINGENGXINREN') + ': ' + (item.updateByName ? item.updateByName : '')"
-                  placement="top-start"
-                  trigger="hover">
-                <p slot="reference" v-if="item.isBudget == 3">{{$t('LK_ZUIXINGENGXINREN')}}: {{ item.updateByName }}</p>
-              </Popover>
+        <div class="content list"
+             style="overflow:auto;"
+             :style="{height: cardHeight + 'px'}"
+             v-if="contentData.length > 0"
+             v-infinite-scroll="load"
+             infinite-scroll-distance="10"
+             infinite-scroll-disabled="scrollDisabled">
+          <div class="item list-item" v-for="(item, index) in contentData" :key="index"
+               @click="toEdit(item.id, item.sourceStatus, item.isBudget)">
+            <div class="item_top">
               <Popover
                   :content="Number(item.isBudget) === 3 ? '点击进入【模具投资清单】页面' : '点击进入未完成/需要继续编辑的【生成投资清单】页面'"
                   placement="top-start"
@@ -147,7 +112,7 @@
                   <p slot="reference">{{$t("LK_CAIGOUGONGCHANG")}}: {{ item.locationFactory }}</p>
                 </Popover>
                 <Popover
-                    v-if="Number(item.SourceStatus) === 1 || Number(item.isBudget) !== 3"
+                    v-if="Number(item.sourceStatus) === 1 || Number(item.isBudget) !== 3"
                     :content="'SOP: ' + item.sop"
                     placement="top-start"
                     trigger="hover">
@@ -190,13 +155,11 @@
             <div></div>
           </div>
         </div>
-  <!--      <p v-if="noMore">没有更多了</p>-->
+        <!--      <p v-if="noMore">没有更多了</p>-->
         <div class="noData" v-if="contentData.length === 0">暂无数据</div>
       </div>
     </div>
   </div>
-  </div>
-  
 </template>
 <script>
 import {
