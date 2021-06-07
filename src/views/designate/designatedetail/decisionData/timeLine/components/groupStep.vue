@@ -11,13 +11,19 @@
                 <p class="step-title">{{item.title}}</p>
                 <p class="step-tips">
                     <span v-if="isEdit && groupNode[item.key] && groupNode[item.key].isEditable" class="step-tips-edit">
-                        <span class="step-tips-block">{{groupNode[item.key] ? (groupNode[item.key].nodeWeek || '-') : '-'}}</span>
-                        <iDatePicker v-model="groupNode[item.key].nodeDate" class="step-tips-picker"/>
+                        <span class="step-tips-block">{{groupNode[item.key] ? (groupNode[item.key].nodeWeek ? 'KW'+groupNode[item.key].nodeWeek : '-') : '-'}}</span>
+                        <iDatePicker 
+                            class="step-tips-picker"
+                            v-model="groupNode[item.key].nodeDate" 
+                            format="yyyy-MM-dd" 
+                            value-format="timestamp"
+                            @change="changeDate(groupNode[item.key])"
+                        />
                     </span>
-                    <span v-else>{{groupNode[item.key] ? (groupNode[item.key].nodeWeek || '-') : '-'}}</span>
+                    <span v-else>{{groupNode[item.key] ? (groupNode[item.key].nodeWeek ? 'KW'+groupNode[item.key].nodeWeek : '-') : '-'}}</span>
                 </p>
                 <!-- 插入的icon显示位 -->
-                <div v-if="($slots['myStep'] || myStep) && isTodayAfterIndex==index" class="myStep">
+                <div v-if="($slots['myStep'] || myStep) && groupNode[item.key] && groupNode[item.key]['isTodayAfter'] && ((index+1)!=stepList.length)" class="myStep">
                     <slot name="myStep">{{ myStep }}</slot>
                 </div>
           </li>
@@ -66,6 +72,12 @@ export default {
         resetListData(){
 
         },
+
+        // 改变日期
+        changeDate(item){
+            const {nodeDate} = item;
+            item.nodeWeek = window.moment(nodeDate).weeks();
+        }
     }
 
 }
@@ -93,6 +105,8 @@ export default {
                        font-size: 14px;
                        .step-tips-edit{
                             position: relative;
+                            border: 1px solid rgba(0,38,98,.15);
+                            padding: 5px 0;
                             .step-tips-block{
                                 display: inline-block;
                                 width: 100px;
@@ -100,7 +114,7 @@ export default {
                                 line-height: 28px;
                                 text-align: center;
                                 box-shadow: 0 0 1px rgba(0,38,98,.15);
-                                border-color: transparent;
+                                border-color: 5F6F8F;
                                 border-radius: 4px;
                             }
                             .step-tips-input{

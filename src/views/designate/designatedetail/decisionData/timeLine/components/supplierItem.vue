@@ -10,10 +10,12 @@
         <div>
             <ul class="title-line flex">
                 <li class="flex" v-for="(item,index) in supplierData.nomiTimeAxisSuppliers" :key="'titleLine_'+index">
-                    <span class="line-label">{{item.supplierNameZh}}</span>
+                    <span class="line-label">{{item.durationName}}</span>
                     <iDatePicker
                         class="data-picker" 
                         v-model="item.nodeDate"
+                        format="yyyy-MM-dd" 
+                        value-format="timestamp"
                     />
                     <!-- <iInput class="line-input" v-model="supplierData[item['key']]"/> -->
                 </li>
@@ -23,11 +25,13 @@
                     <iInput v-model="supplieritem.supplierNameZh"  class="date-input"/>
                     <iDatePicker
                         class="data-picker" 
-                        v-model="supplieritem.createDate"
+                        v-model="supplieritem.rangeDate"
                         type="daterange"
                         range-separator="-"
                         :start-placeholder="$t('LK_KAISHISHIJIAN')"
                         :end-placeholder="$t('LK_JIESHUSHIJIAN')"
+                        format="yyyy-MM-dd" 
+                        value-format="timestamp"
                     />
 
                     <!-- 删除按钮 -->
@@ -79,6 +83,7 @@ export default {
         }
     },
     created(){
+        this.resetDate();
         console.log(this.supplierData,'supplierData')
     },
     methods:{
@@ -96,8 +101,22 @@ export default {
             }else if(type == 'delete'){
                  supplierData.nomiTimeAxisSupplierExps.splice(line,1);
             }
-            // this.$emit('editSupplierLine',type,cardIndex,index,line);
-        }
+        },
+
+        // 重置下区间数据的显示
+        resetDate(){
+            const { supplierData={} } = this;
+            const {nomiTimeAxisSupplierExps=[]} = supplierData;
+            nomiTimeAxisSupplierExps.map((item)=>{
+                item.rangeDate = [item.beginDate,item.endDate]
+            })
+        },
+
+        // change区间日期
+        changeDate(item){
+            console.log(item,'itemitemitemitemitem');
+        },
+        
     }
 }
 </script>
