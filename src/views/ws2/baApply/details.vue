@@ -59,7 +59,6 @@ export default {
   },
 
   created(){
-    console.log('store.state.permission.whiteBtnList', store.state.permission.whiteBtnList)
   },
 
   methods: {

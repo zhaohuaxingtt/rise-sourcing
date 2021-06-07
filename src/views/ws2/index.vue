@@ -24,9 +24,7 @@
       ></iNavWS2>
     </div>
 
-    <keep-alive>
-      <router-view></router-view>
-    </keep-alive>
+    <router-view></router-view>
     
     <!------------------------------------------------------------------------>
     <!--                  内容                                  --->

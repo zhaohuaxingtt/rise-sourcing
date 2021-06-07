@@ -306,28 +306,28 @@ export const investmentListEntities = [{
     {
         props: 'applyAmount',
         name: '已申请金额',
-        key: '已申请金额',
+        key: 'LK_YUSUANBEIZHU',
         width: 140,
         tooltip: false
     },
     {
         props: 'nomiAmount',
         name: '已定点金额',
-        key: '已定点金额',
+        key: 'LK_YUSUANBEIZHU',
         width: 140,
         tooltip: false
     },
     {
         props: 'baAmount',
         name: '已BA金额',
-        key: '已BA金额',
+        key: 'LK_YUSUANBEIZHU',
         width: 140,
         tooltip: false
     },
     {
         props: 'bmAmount',
         name: '已BM金额',
-        key: '已BM金额',
+        key: 'LK_YUSUANBEIZHU',
         width: 140,
         tooltip: false
     },

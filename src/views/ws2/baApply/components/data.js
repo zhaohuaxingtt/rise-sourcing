@@ -109,7 +109,7 @@ export const detailsTableHead = [
     tooltip: false
   },
   {
-    props: 'partsId',
+    props: 'partsNum',
     name: '零件号',
     key: 'LK_SPAREPARTSNUMBER',
     tooltip: false
