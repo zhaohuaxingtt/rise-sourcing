@@ -129,11 +129,10 @@ export default{
      */
     negoAnalysisSummaryGroupsDelete(){
       const sendata = {
-          partPrjCode: [...new Set(this.getPartGroupNumber())],
+          groupIdList: [...new Set(this.getPartGroupNumber())],
           rfqId: this.$route.query.id
         }
         negoAnalysisSummaryGroupDelete(sendata).then(res=>{
-          console.log(res)
           if(res.code == 200){
             this.fsPartsAsRow()
           }else{

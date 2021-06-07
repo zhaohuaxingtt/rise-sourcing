@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-28 15:03:47
- * @LastEditTime: 2021-06-05 11:16:22
+ * @LastEditTime: 2021-06-05 17:53:36
  * @LastEditors: Please set LastEditors
  * @Description: 特殊表格实现
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\table.vue
@@ -56,7 +56,10 @@
         <!----------在表头上方动态循环点------------------------>
               <template v-for='(rating,index) in ratingList.ratingList'>
                 <ul :key="index" class="lastChild">
-                  <li v-for='(itemsss,index) in rating' :key='index'>{{itemsss}}</li>
+                  <li v-for='(itemsss,index) in rating' :key='index'>
+                    <span style="margin-rigth:10px;">{{itemsss.rate}}</span>
+                    <span><icon v-if='itemsss.isAllPartRateConsistent' name='iconbaojiadan-youfujian' symbol></icon></span>
+                  </li>
                 </ul>
               </template>
             </div>
@@ -78,7 +81,9 @@
 </template>
 <script>
 import {removeKeysNumber,getPorpsNumber} from './data'
+import {icon} from 'rise'
 export default{
+  components:{icon},
   props:{
     tableData:{
       type:Array,

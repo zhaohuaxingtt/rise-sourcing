@@ -2,6 +2,7 @@ import axios from '@/utils/axios'
 
 const requst = axios(process.env.VUE_APP_RFQ)
 const nego = axios(process.env.VUE_APP_NEGO)
+const quotation = axios(process.env.VUE_APP_SUPPLIER_CBHUIZ)
 /*零件清单*/
 
 //获取零件采购列表。
@@ -288,5 +289,12 @@ export function cancelKm(params) {
         url: `/cancelKm`,
         method: 'POST',
         data: params
+    })
+}
+// 撤回发送KM
+export function negoScoreReport(reqId) {
+    return quotation({
+        url: `/nego-score-report/${reqId}`,
+        method: 'GET'
     })
 }

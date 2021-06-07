@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-25 15:32:38
- * @LastEditTime: 2021-06-02 14:13:43
+ * @LastEditTime: 2021-06-07 11:27:56
  * @LastEditors: Please set LastEditors
  * @Description: 报价评分跟踪
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringTracking\index.vue
@@ -10,7 +10,7 @@
   <div class="timeline">
       <div class="topline">
         <span class="margin-right20">整体任务进度: <el-tooltip placement="right" effect="light">
-          <icon symbol style="font-size:20px;position:relative;top:2px;" :name="iconList_all_times['a'+allJdu].icon"></icon>
+          <icon symbol style="font-size:20px;position:relative;top:2px;" :color='"#eff9fd"' :name="iconList_all_times['a'+allJdu].icon"></icon>
             <template slot='content'>
               <dalyWeeks :daliyTime='allJdu'></dalyWeeks>
             </template>
@@ -30,10 +30,10 @@
 <script>
 import timeline from './components/timeline'
 import {icon,iMessage} from 'rise'
-import {timeList,tableTile,tableDatas,iconList_car,iconList_all_times} from './components/data'
+import {timeList,tableTile,tableDatas,iconList_car,iconList_all_times,buildTitleTabel,buildTableData} from './components/data'
 import dalyWeeks from './components/dalyWeeks'
 import tabelData from './components/tableList'
-import {getTimeLine} from '@/api/partsrfq/editordetail'
+import {getTimeLine,negoScoreReport} from '@/api/partsrfq/editordetail'
 export default{
   components:{timeline,icon,dalyWeeks,tabelData},
   data(){
@@ -49,8 +49,20 @@ export default{
   },
   created(){
     this.getTimeLine(1,this.$route.query.id);
+    this.negoScoreReport();
   },
   methods:{
+    negoScoreReport(){
+      negoScoreReport(this.$route.query.id).then(res=>{
+        if(res.code == 200){
+          console.log(res.data)
+          this.tableTile = buildTitleTabel(res.data)
+          this.tableDatas = buildTableData(res.data)
+        }
+      }).catch(err=>{
+        iMessage.warn(err.desZh)
+      })
+    },
     /**
      * @description: 获取时间轴接口 
      * @param {*}

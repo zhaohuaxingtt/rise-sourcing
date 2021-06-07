@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-05-28 14:32:26
- * @LastEditTime: 2021-06-05 11:02:45
+ * @LastEditTime: 2021-06-05 17:39:25
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\data.js
@@ -12,10 +12,10 @@ export const fstitle = [
   {type:'selection',props:'groupProps',label:'Group',i18n:'',width:'50',tooltip:false},
   {type:'',props:'partNo',label:'Part No.',i18n:'',width:'100',tooltip:false},
   {type:'',props:'partName',label:'Part Name',i18n:'',width:'100',tooltip:false},
-  {type:'',props:'partPrjCode',label:'FS/GS/SP No.',i18n:'',width:'120',tooltip:false},
-  {type:'',props:'factory',label:'Factory',i18n:'',width:'120',tooltip:false},
-  {type:'',props:'cfPartAPrice',label:'CF Part A Price',i18n:'',width:'120',tooltip:false},
-  {type:'',props:'cfPartBPrice',label:'CF Part B Price',i18n:'',width:'120',tooltip:false},
+  {type:'',props:'partPrjCode',label:'FS/GS/SP No.',i18n:'',width:'100',tooltip:false},
+  {type:'',props:'factory',label:'Factory',i18n:'',width:'100',tooltip:false},
+  {type:'',props:'cfPartAPrice',label:'CF Part A Price',i18n:'',width:'100',tooltip:false},
+  {type:'',props:'cfPartBPrice',label:'CF Part B Price',i18n:'',width:'100',tooltip:false},
   {type:'',props:'pca',label:'PCA',i18n:'',width:'100',tooltip:false},
   {type:'',props:'tia',label:'TIA',i18n:'',width:'100',tooltip:false},
   {type:'',props:'ebr',label:'EBR',i18n:'',width:'100',tooltip:false}
@@ -144,12 +144,12 @@ export function translateRating(supplierList,ratingList) {
         titleList.push(itemsq.rateDepart)
       })
      }
-     maps.push(c[0].supplierName)
+     maps.push({rate:c[0].supplierName,isAllPartRateConsistent:c[0].rfmRate})
      //拿到评分部门list 为每个部门设置评分
      titleList.forEach(itemsbb=>{
        const map = c.find(it=>it.rateDepart == itemsbb)
        if(map){
-        maps.push(map.rate || '') 
+        maps.push({rate:map.rate,isAllPartRateConsistent:map.isAllPartRateConsistent} || '') 
        }
      })
      ratingListPrivate.push(maps)
