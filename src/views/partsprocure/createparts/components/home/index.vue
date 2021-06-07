@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-05-24 17:06:01
- * @LastEditTime: 2021-06-05 15:28:29
+ * @LastEditTime: 2021-06-07 14:42:13
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\createparts\components\home\index.vue
@@ -210,13 +210,18 @@ export default {
         if (res.code == 200) {
           iMessage.success(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
 
-          if (this.multipleSelection.length == 1) {
-            // this.$router.push({
-            //   path: ""
-            // })
+          if (res.data.manuallyCreatePartProjectVOS.length == 1) {
+            this.$router.push({
+              path: "/sourcing/partsprocure/editordetail",
+              query: {
+                item: JSON.stringify({
+                  
+                })
+              }
+            })
           } else {
             this.$router.push({
-              path: `/sourcing/partsprocure/batchmiantain?${ serialize(this.multipleSelection.map(item => ({ ids: item.id }))) }`
+              path: `/sourcing/partsprocure/batchmiantain?${ serialize(res.data.manuallyCreatePartProjectVOS.map(item => ({ ids: item.purchaseProjectId })), Array) }`
             })
           }
         } else {
