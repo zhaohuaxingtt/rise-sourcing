@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-26 13:54:01
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-07 14:33:09
+ * @LastEditTime: 2021-06-07 20:08:05
  * @Description: 创建RFQ界面
        配件：选择的配件需要是分配了询价采购员的且是同一个询价采购员, 创建时能选择LINIE
        附件：选择的附件需要时分配了LINIE且为同一个LINIE, 创建时不能再选择LINIE
@@ -20,8 +20,8 @@
       <iFormGroup row="4" class="accessoryPartDetail">
         <iFormItem v-for="(item, index) in basicInfo" :key="index" :label="item.label" :class="item.row ? 'row'+item.row : ''">
           <iText v-if="!item.editable">{{detailData[item.value]}}</iText>
-          <iInput v-else-if="item.type === 'input'"></iInput>
-          <iSelect v-else-if="item.type === 'select'"></iSelect>
+          <iInput v-else-if="item.type === 'input'" v-model="detailData[item.value]"></iInput>
+          <iSelect v-else-if="item.type === 'select'" v-model="detailData[item.value]"></iSelect>
         </iFormItem>
       </iFormGroup>
       <div style="text-align:right;">
@@ -40,7 +40,7 @@
             <!--------------------删除按钮----------------------------------->
             <iButton @click="handleDelete" >删除</iButton>
             <!--------------------批量更新采购工厂----------------------------------->
-            <iButton @click="changefactoryDialogVisible(true)" >批量更新采购工厂</iButton>
+            <iButton @click="handleChangeFactory" >批量更新采购工厂</iButton>
           </div>
       </div>
       <tableList :activeItems='"a1"' selection indexKey :tableData="tableData" :tableTitle="tableTitle" :tableLoading="tableLoading" @handleSelectionChange="handleSelectionChange" @openPage="openPage" @openPlan="openPlanDialog"></tableList>
@@ -52,7 +52,7 @@
     <!------------------------------------------------------------------------>
     <!--                  批量更新采购工厂弹窗                                          --->
     <!------------------------------------------------------------------------>
-    <updateFactoryDialog :dialogVisible="factoryDialogVisible" @changeVisible="changefactoryDialogVisible" />
+    <updateFactoryDialog ref="updateFactory" :dialogVisible="factoryDialogVisible" @changeVisible="changefactoryDialogVisible" @updateFactory="updateFactory" />
     <!------------------------------------------------------------------------>
     <!--                  添加附件弹窗                                          --->
     <!------------------------------------------------------------------------>
@@ -74,7 +74,9 @@ import addAccessoryPartDialog from './components/addAccessoryPart'
 import updateFactoryDialog from './components/updateFactory'
 import addFileDialog from './components/addFile'
 import capacityPlanningDialog from './components/capacityPlanning'
-import { getAffixList } from '@/api/designateFiles/index'
+import { getPartBySP } from '@/api/accessoryPart/index'
+import { changeProcure } from "@/api/partsprocure/home";
+import { insertRfq } from '@/api/accessoryPart/index'
 export default {
   mixins: [pageMixins],
   components: { iPage, topComponents, iCard, iFormGroup, iFormItem, iText, iButton, iInput, iSelect, iPagination, tableList, addAccessoryPartDialog, updateFactoryDialog, addFileDialog, capacityPlanningDialog },
@@ -86,7 +88,7 @@ export default {
       basicInfo,
       detailData: {},
       // tableTitle: tableTitle,
-      tableData: [{}],
+      tableData: [],
       accDialogVisible: false,
       factoryDialogVisible: false,
       selectItems: [],
@@ -107,11 +109,43 @@ export default {
   },
   created() {
     if (this.$route.query.ids) {
-      this.ids = this.$route.query.ids.split(',')
+      this.ids = this.$route.query.ids
       this.getList()
     }
   },
   methods: {
+    /**
+     * @Description: 点击批量更新采购工厂
+     * @Author: Luoshuang
+     * @param {*}
+     * @return {*}
+     */    
+    handleChangeFactory() {
+      if (this.selectItems.length < 1) {
+        iMessage.warn('请选择需要更新的行项目')
+        return
+      }
+      this.changefactoryDialogVisible(true)
+    },
+    updateFactory(procureFactory) {
+      this.pushKey();
+      // 复制参数对应key
+      let batch = {
+        procureFactory: procureFactory,
+        purchaseProjectIds: this.selectItems.map(item => item.purchasingProjectId)
+      };
+      changeProcure({
+        batch,
+      }).then((res) => {
+        if (res.data) {
+          iMessage.success(this.$t("LK_XIUGAICHENGGONG"));
+        } else {
+          iMessage.error(res.desZh);
+        }
+      }).finally(() => {
+        this.$refs.updateFactory.changeLoading(false)
+      });
+    },
     /**
      * @Description: 生成RFQ
      * @Author: Luoshuang
@@ -121,9 +155,12 @@ export default {
     handleSaveRfq() {
       this.basicLoading = true
       const params = {
-        operationType: '2',
-        rfqName: this.detailData.rfqName,
-        userId: store.state.permission.userInfo.id
+        insertRfqPackage:{
+          operationType: '2',
+          rfqName: this.detailData.rfqName,
+          rfqDesc: this.detailData.rfqDesc,
+          userId: this.$store.state.permission.userInfo.id
+        }
       }
       insertRfq(params).then(res => {
         if (res?.result) {
@@ -189,12 +226,12 @@ export default {
     getList() {
       this.tableLoading = true
       const params = {
-        spNumList: this.ids,
-        projectType: this.$route.query.type === '1' ? '0' : '1'
+        spNumList: this.ids.split(','),
+        // projectType: this.$route.query.type === '1' ? '0' : '1'
       }
-      getAffixList(params).then(res => {
+      getPartBySP(params).then(res => {
         if (res?.result) {
-          this.tableData = res.data.records
+          this.tableData = res.data
         } else {
           this.tableData = []
           iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)

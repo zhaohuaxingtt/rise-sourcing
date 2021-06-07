@@ -124,12 +124,12 @@ module.exports = {
 							// target: 'http://192.168.50.50:8029/',
 							changeOrigin: true,
 							pathRewrite: {
-									"^/supplierApiWDL": ""
+									"^/supplierApiMH": ""
 							}
 						},
 						'supplierApiWDL': {
 							target: 'http://10.122.18.166:8025',
-							// target: 'http://10.160.136.144:8788/',
+							// target: 'http://10.160.137.16:8029/',
 							changeOrigin: true,
 							pathRewrite: {
 									"^/supplierApiWDL": ""
@@ -146,6 +146,7 @@ module.exports = {
 						'procurementrequirementZZB': {
 							target: 'http://10.122.18.166:8023',
 								// target: 'http://10.160.141.45:8023/',
+								// target: 'http://10.160.136.144:8023/',
 								changeOrigin: true,
 								pathRewrite: {
 										"^/procurementrequirementZZB": ""
@@ -153,6 +154,7 @@ module.exports = {
 						},
 						'/supplierApiWJS': { //王洁松服务地址
 								// target: 'http://192.168.50.89:8029',
+								// target: 'http://192.168.50.239:8029',
 								target: 'http://10.122.18.166:8025',
 								changeOrigin: true,
 								pathRewrite: {
@@ -193,7 +195,7 @@ module.exports = {
                 // target: 'http://192.168.50.89:8029', // 王洁松
                 // target: 'http://10.160.141.72:8029', // 李自豪
                 // target: 'http://192.168.50.152:8029', // 谭易平
-                target: 'http://192.168.50.50:8029', // 马浩
+                target: 'http://10.160.137.16:8029', // 马浩
                 changeOrigin: true,
                 pathRewrite: {
                     "^/rfqApi": ""

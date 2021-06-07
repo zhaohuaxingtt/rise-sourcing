@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-26 20:06:02
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-07 14:28:11
+ * @LastEditTime: 2021-06-07 18:16:56
  * @Description: 产能计划弹窗
  * @FilePath: \front-web\src\views\accessoryPart\createRfq\components\capacityPlanning.vue
 -->
@@ -36,6 +36,8 @@ import tableList from '@/views/designate/designatedetail/components/tableList'
 import { pageMixins } from "@/utils/pageMixins"
 import { planTableTitle } from '../data'
 import { getOutputPlan, updateOutputPlan } from '@/api/partsprocure/editordetail'
+import moment from 'moment'
+import { cloneDeep } from 'lodash'
 export default {
   mixins: [pageMixins],
   components: { iDialog, iButton, tableList },
@@ -105,7 +107,7 @@ export default {
       this.tableLoading = true
       getOutputPlan({
         'partOutputPlanReqDTO.purchaseProjectId': this.detailInfo.purchaseProjectId,
-        'partOutputPlanReqDTO.year': this.detailInfo.timeToMarket
+        'partOutputPlanReqDTO.year': moment(this.detailInfo.timeToMarket).year() + 1
       })
         .then((res) => {
           this.tableTitle = cloneDeep(planTableTitle)

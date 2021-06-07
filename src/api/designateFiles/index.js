@@ -1,8 +1,8 @@
 /*
  * @Author: Luoshuang
  * @Date: 2021-06-02 14:54:29
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-06-03 15:26:04
+ * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-06-07 17:43:42
  * @Description: 附件相关api
  * @FilePath: \front-web\src\api\designateFiles\index.js
  */
@@ -10,6 +10,7 @@
 import axios from "@/utils/axios"
 
 const requst = axios(process.env.VUE_APP_PROCUREMENTREQUIREMENT_ZZB)
+const requstSourcing = axios(process.env.VUE_APP_SOURCING_WDL)
 
 // 获取附件列表数据
 export function getAffixList(params) {
@@ -26,5 +27,13 @@ export function updateAffixList(params) {
       url: '/affix/update',
       method: "PATCH",
       data: params
+  })
+}
+
+// 模糊搜索linie
+export function findBuyer(buyerName) {
+  return requstSourcing({
+    url: `/annex/annex-buyer-name/${buyerName}`,
+    method: 'POST'
   })
 }

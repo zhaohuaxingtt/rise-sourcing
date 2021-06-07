@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-05 14:14:49
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-07 01:49:37
+ * @LastEditTime: 2021-06-07 16:21:33
  * @Description: 加入已有rfq
  * @FilePath: \front-web\src\views\designateFiles\fileManage\components\joinRfq.vue
 -->
@@ -92,14 +92,14 @@
 </template>
 
 <script>
-import { iDialog, iButton, iInput, iPagination, iSelect, iMessage } from 'rise'
+import { iDialog, iButton, iInput, iPagination, iSelect, iMessage, iSearch } from 'rise'
 import tablelist from "@/views/partsrfq/components/tablelist";
 import {pageMixins} from "@/utils/pageMixins";
 import {tableTitle} from "@/views/partsrfq/home/components/data";
 import {getRfqDataList, findBySearches} from "@/api/partsrfq/home";
 export default {
   mixins: [pageMixins],
-  components: { iDialog, iButton, iInput, iPagination, tablelist, iSelect },
+  components: { iDialog, iButton, iInput, iPagination, tablelist, iSelect, iSearch },
   props: {
     dialogVisible: { type: Boolean, default: false },
     partType: {type:String}
@@ -124,6 +124,9 @@ export default {
     }
   },
   methods: {
+    handleSearchReset() {
+      this.form = {}
+    },
     /**
      * @Description: 车型项目下拉
      * @Author: Luoshuang
@@ -180,7 +183,7 @@ export default {
       this.tableLoading = true;
       const req = {
         rfqMangerInfosPackage: {
-          userId: store.state.permission.userInfo.id,
+          userId: this.$store.state.permission.userInfo.id,
           current: this.page.currPage,
           size: this.page.pageSize,
           ...this.form,
