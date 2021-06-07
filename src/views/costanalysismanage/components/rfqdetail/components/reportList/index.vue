@@ -118,10 +118,10 @@ export default {
         getList(){
             this.loading =  true;
             const { query } = this.$route;
-            const {rfqNum="1" } = query;
+            const {rfqId='' } = query;
             const { page } = this;
             const params = {
-                nomiAppId:rfqNum,
+                nomiAppId:rfqId,
                 fileType:'109',   // 101 109: 报告清单,110:询价图纸,111:询价附件
                 pageNo:page.currPage,
                 pageSize:page.pageSize,
@@ -145,7 +145,7 @@ export default {
         // 上传附件
         onDraingUploadsucess(data){
             const { query } = this.$route;
-            const {rfqNum="1" } = query;
+            const {rfqId } = query;
             const params = {
                 fileCode: '0',
                 fileName: data.data.fileName || '',
@@ -153,7 +153,7 @@ export default {
                 fileSize: data.file.size || 0,
                 size: data.file.size || 0,
                 fileType: '109',
-                hostId: rfqNum
+                hostId: rfqId
             };
             uploadDaring(params).then((res)=>{
                 const {code} = res;
