@@ -1,7 +1,8 @@
 import axios from '@/utils/axios'
 
 const requst = axios(process.env.VUE_APP_RFQ)
-
+const nego = axios(process.env.VUE_APP_NEGO)
+const quotation = axios(process.env.VUE_APP_SUPPLIER_CBHUIZ)
 /*零件清单*/
 
 //获取零件采购列表。
@@ -195,7 +196,7 @@ export function getRaterAndCoordinatorByDepartmentId(data){
     })
 }
 
-//获取时间节点
+//报价分析-获取时间节点
 export function getTimeLine(quotationId=1,rfqId){
     return requst({
         url: `/rfq-time-axis/${rfqId}`,
@@ -203,11 +204,64 @@ export function getTimeLine(quotationId=1,rfqId){
     })
 }
 
+//报价分析-轮次下拉结果
+export function negoAnalysisSummaryRound(rfqId){
+    return nego({
+        url: `/nego-assistant/nego-analysis-summary-round/${rfqId}`,
+        method: 'GET'
+    })
+}
+
+//报价分析-获取场景布局
+export function negoAnalysisSummaryLayout(rfqId){
+    return nego({
+        url: `/nego-assistant/nego-analysis-summary-layout/${rfqId}`,
+        method: 'GET'
+    })
+}
 // 获取供应商生产地
 export function getSupplierProducePlace(params) {
     return requst({
         url: `/supplier/getSupplierProducePlace/${ params.supplierId }`,
         method: 'GET'
+    })
+}
+
+//报价分析-保存场景布局
+export function negoAnalysisSummaryLayoutSave(layout,layoutType){
+    return nego({
+        url: `/nego-assistant/nego-analysis-summary-layout`,
+        method: 'POST',
+        data:{
+            layout:layout,
+            layoutType:layoutType
+        }
+    })
+}
+
+//报价分析-fs横轴
+export function fsPartsAsRow(rfqId,round){
+    return nego({
+        url: `/nego-assistant/nego-analysis-summary/fs-parts-as-row/${rfqId}/${round}`,
+        method: 'GET'
+    })
+}
+
+//分析报价-组合
+export function negoAnalysisSummaryGroup(data){
+    return nego({
+        url: `/nego-assistant/nego-analysis-summary-group`,
+        method: 'POST',
+        data:data
+    })
+}
+
+//分析报价-组合
+export function negoAnalysisSummaryGroupDelete(data){
+    return nego({
+        url: `/nego-assistant/nego-analysis-summary-group`,
+        method: 'DELETE',
+        data:data
     })
 }
 
@@ -234,6 +288,23 @@ export function cancelKm(params) {
     return requst({
         url: `/cancelKm`,
         method: 'POST',
+        data: params
+    })
+}
+// 撤回发送KM
+export function negoScoreReport(reqId) {
+    return quotation({
+        url: `/nego-score-report/${reqId}`,
+        method: 'GET'
+    })
+}
+
+
+// 批量更新供应商生产地
+export function updateBatchSupplierProducePlace(params) {
+    return requst({
+        url: '/supplier/updateBatchSupplierProducePlace',
+        method: 'PUT',
         data: params
     })
 }

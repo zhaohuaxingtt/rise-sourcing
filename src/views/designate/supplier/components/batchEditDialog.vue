@@ -23,7 +23,7 @@
             :placeholder="$t('LK_QINGXUANZE')"
           >
             <el-option
-              :value="items.key"
+              :value="items.value"
               :label="items.value"
               v-for="(items, index) in (selectOptions.dept || [])"
               :key="index"
@@ -32,7 +32,7 @@
         </el-form-item>
       </el-form>
       <div class="footer" slot="footer">
-        <iButton>{{ $t("LK_BAOCUN") }}</iButton>
+        <iButton @click="submit">{{ $t("LK_BAOCUN") }}</iButton>
       </div>
     </div>
   </iDialog>
@@ -61,24 +61,23 @@ export default {
       default: () => ({})
     }
   },
-  watch: {
-    params: {
-      handler() {
-        this.$nextTick(() => { if (this.visible) this.getAttachment() })
-      },
-      deep: true
-    }
-  },
   data() {
     return {
       form: {
-        department: ''
+        department: '',
+        singleReason: ''
       },
       loading: false,
       controlHeight: 0
     }
   },
   methods: {
+    submit() {
+      this.$emit('submit', this.form)
+      this.$nextTick(() => {
+        this.$emit('update:visible', false)
+      })
+    }
   }
 }
 </script>

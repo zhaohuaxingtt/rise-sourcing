@@ -1,17 +1,18 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-04-23 09:18:12
- * @LastEditTime: 2021-05-27 21:43:26
+ * @LastEditTime: 2021-06-07 18:23:15
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-supplier\src\views\rfqManageMent\partsOffer\components\ecartsCard\data.js
  */
 export const form = {
+  fsNum: [],
   partNum: [],
-  projectCode: [],
+  priceLatitude: '1',
   rfqId: '',
   round: [],
-  supplierId: ''
+  supplierID:[]
 }
 /**
  * @description: 当小于10的时候，默认使用自定义颜色，可以很好区分出线条。 

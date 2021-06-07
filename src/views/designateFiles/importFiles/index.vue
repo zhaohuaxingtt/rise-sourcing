@@ -20,15 +20,11 @@
                               :buttonText="$t('LK_DAORU')"
                               accept=" .xls,.xlsx"
                               :request="uploadImportFile"
+                              :onHttpUploaded="onHttpUploaded"
                               @on-success="onDraingUploadsucess"
                           />
                       </span>
-                      <!-- <iButton>{{$t('LK_DAORU')}}</iButton> -->
-                      <iButton @click="downloadTemplate">
-                         <a class="trigger" href="javascript:;">
-                           {{$t('LK_PEIJIANMUBANXIAZAI')}}
-                         </a>
-                      </iButton>
+                      <iButton  @click="downloadTemplate" > {{$t('LK_PEIJIANMUBANXIAZAI')}} </iButton>
                     </div>
                   </div>
                   <!-- 表格区域 -->
@@ -102,15 +98,7 @@ export default {
             tableTitle:tableTitle,
             selectItems:[],
             uploadImportFile:uploadImportFile,
-            tableListData:[
-              {
-                code:'123',
-                importDate:'2020-01-01',
-                importedName:'分配科室',
-                respDeptName:'SKAP',
-
-              }
-            ],
+            tableListData:[],
         }
     },
     created(){
@@ -130,10 +118,12 @@ export default {
       // 导入文件
       onDraingUploadsucess(data){
         console.log(data);
+        this.getList();
       },
       // 下载模板
       downloadTemplate(){
-        downloadImportFile();
+        // downloadImportFile();
+        window.open('/tpInfoApi/procurementrequirement/web/affix/affix-requirement-files');
       },
       // 获取列表
       getList(){
@@ -156,6 +146,14 @@ export default {
           this.loading =  false;
         });
       },
+
+      // 附件导入
+      async onHttpUploaded(formData,content){
+        const newFormData = new FormData()
+        newFormData.append('file', content.file)
+        newFormData.append('applicationName', 'rise')
+        const res = await uploadImportFile(newFormData);
+      }
     }
 
 }

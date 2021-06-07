@@ -3,7 +3,7 @@
     <div class="dialog-Header" slot="title">
       <div class="font18 font-weight">{{$t('strategicdoc.ShangChuan')}}</div>
       <div class="control">
-        <iButton @click="download">{{ $t('LK_XIAZAI') }}</iButton>
+        <iButton @click="downloadFile">{{ $t('LK_XIAZAI') }}</iButton>
         <iButton @click="deleteFile">{{ $t('LK_SHANCHU') }}</iButton>
         <upload
           class="upload-trigger"
@@ -44,13 +44,13 @@ import filters from '@/utils/filters'
 import { attachMixins } from '@/utils/attachMixins'
 import { pageMixins } from '@/utils/pageMixins'
 import upload from '@/components/Upload'
-import { downloadFile } from '@/api/file'
+// import { downloadFile } from '@/api/file'
 
-import {
-  uploadDaring,
-  batchDeleteDaring,
-  getdDecisiondataDaringList
-} from '@/api/designate/decisiondata/drawing'
+// import {
+//   uploadDaring,
+//   batchDeleteDaring,
+//   getdDecisiondataDaringList
+// } from '@/api/designate/decisiondata/drawing'
 
 export default {
   components: { tableList, iPagination, iDialog, iButton, upload },
@@ -100,43 +100,6 @@ export default {
         fileType: '101',
       }
       this.getDataList(params)
-    },
-    download() {
-      const fileList = this.multipleSelection.map(o => o.id)
-      if (!fileList.length) return iMessage.error(this.$t('nominationSuggestion.QingXuanZeZhiShaoYiTiaoShuJu'))
-      try {
-        console.log(fileList)
-        if (fileList.length) {
-          const params = {
-            applicationName: 'rise',
-            fileList
-          }
-          downloadFile(params)
-        }
-      } catch (e) {
-        console.log(e)
-      }
-    },
-    // 删除文件
-    async deleteFile() {
-      if (!this.multipleSelection.length) {
-        iMessage.error(this.$t('nominationSuggestion.QingXuanZeZhiShaoYiTiaoShuJu'))
-        return
-      }
-      const confirmInfo = await this.$confirm(this.$t('deleteSure'))
-      if (confirmInfo !== 'confirm') return
-      const idList = this.multipleSelection.map(o => o.id)
-      try {
-        const res = await batchDeleteDaring({idList})
-        if (res.code === '200') {
-          iMessage.success(this.$t('LK_CAOZUOCHENGGONG'))
-          this.getFetchData()
-        } else {
-          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
-        }
-      } catch (e) {
-        iMessage.error(this.$i18n.locale === "zh" ? e.desZh : event.desEn)
-      }
     }
   }
 }

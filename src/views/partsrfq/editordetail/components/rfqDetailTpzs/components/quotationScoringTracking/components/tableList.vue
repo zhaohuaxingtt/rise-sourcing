@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-26 19:14:39
- * @LastEditTime: 2021-05-27 14:35:21
+ * @LastEditTime: 2021-06-05 17:26:55
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringTracking\components\tableList.vue
@@ -27,24 +27,25 @@
             </span>
           </template>
         </el-table-column>
+        <el-table-column v-else-if="item.props == 'supplierName'" :key="index" :label="item.key ? $t(item.key) : item.name" :prop="item.props" :show-overflow-tooltip="item.tooltip" :width="item.width" align="center"></el-table-column>
         <el-table-column v-else :key="index" align="center" :label="item.key ? $t(item.key) : item.name" :prop="item.props" :show-overflow-tooltip="item.tooltip" :width="item.width">
           <template slot-scope="scope">
           <!--------------------------------------------------------->
           <!------------------------内容是打勾------------------------>
           <!--------------------------------------------------------->
-            <span v-if='scope.row[item.props] == 0' class="cursor" @click="openUrl()">
+            <span v-if='scope.row[item.props].schedule == 3' class="cursor" @click="openUrl()">
               <icon name='iconbaojiazhuangtailiebiao_yibaojia' symbol></icon>
             </span>
           <!--------------------------------------------------------->
           <!------------------------内容是打叉------------------------>
           <!--------------------------------------------------------->
-              <span v-else-if='scope.row[item.props] == 1' class="cursor" @click="openUrl()">
+            <span v-else-if='scope.row[item.props].schedule == 2' class="cursor" @click="openUrl()">
               <icon name='iconbaojiazhuangtailiebiao_yijujue' symbol></icon>
             </span>
           <!--------------------------------------------------------->
           <!------------------------内容是横岗百分比------------------->
           <!--------------------------------------------------------->
-            <span v-else class="cursor" @click="openUrl()">{{scope.row[item.props]}}</span>
+          <span v-else class="cursor">{{(typeof scope.row[item.props] == String)?scope.row[item.props]:scope.row[item.props].schedule}}</span>
           </template>
         </el-table-column>
       </template>

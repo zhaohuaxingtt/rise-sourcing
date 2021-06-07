@@ -50,7 +50,7 @@ export default {
       formData.append('applicationName', 'rise')
       this.loading = true
       try {
-        const res = this.onHttpUploaded ? await this.onHttpUploaded(formData) : await uploadFile(formData)
+        const res = this.onHttpUploaded ? await this.onHttpUploaded(formData,content) : await uploadFile(formData)
         this.$emit('on-success', {
           data: (res && res.data && res.data[0]) || {} ,
           file: content.file || {}
