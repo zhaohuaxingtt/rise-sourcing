@@ -21,9 +21,9 @@
                 <iCard collapse :title="item.materialGroupName"  class="timeLine-card">
                     <ul class="timeLine-edit-list">
                         <li class="flex-between-center margin-bottom20" v-for="(groupNode,groupNodeIndex) in item.nomiTimeAxisGroup" :key="'groupNodeEdit_'+groupNodeIndex">
-                            <span class="show-icon">
-                                <icon v-if="groupNode.isVisible" symbol name="iconxianshi" class="show-icon-item" ></icon>
-                                <icon v-else symbol name="iconyincang" class="show-icon-item" ></icon>
+                            <span class="show-icon" @click="showLine(groupNodeIndex,item.nomiTimeAxisGroup)">
+                                <icon v-if="groupNode.isVisible" symbol name="iconshenpiliu-shenpizhong" class="show-icon-item" ></icon>
+                                <icon v-else symbol name="iconshenpiliu-daishenpi" class="show-icon-item" ></icon>
                             </span>
                             <groupStep 
                                 :groupNode="groupNode.nomiTimeAxisLine"
@@ -100,6 +100,9 @@ import supplierLine from './components/supplierLine'
 import supplierItem from './components/supplierItem'
 import { cloneDeep } from 'lodash'
 import { MockData } from './components/data'
+import {
+    getTimeaxis,
+} from '@/api/designate/decisiondata/timeLine'
 export default {
     name:'timeLine',
      components:{
@@ -113,7 +116,7 @@ export default {
     },
     data(){
         return{
-            isEdit:true,
+            isEdit:false,
             timeList:[
                 {startDate:1621048561,endDate:1621912561}, // 5-17 ---> 5-25
                 {startDate:1621480561,endDate:1621998961}, // 5-20 ---> 5-26
@@ -186,9 +189,24 @@ export default {
         getDetail(){
             const { MockData } = this;
             const { data } = MockData;
-            this.detailData = data;
+            // this.detailData = data;
+            
             // this.formatTime();
+            getTimeaxis(34).then((res)=>{
+                const {code,data} = res;
+                if(code == 200 && data){
+                    this.detailData = data;
+                }
+            });
         },
+
+        // 显示隐藏指定的line
+        showLine(index,line){
+            line.map((item,itemIndex)=>{
+                if(itemIndex == index) item.isVisible = true;
+                else item.isVisible = false;
+            })
+        }
     },
     computed:{
         isPreview(){
@@ -246,6 +264,9 @@ export default {
                 width: 25px;
                 height: 25px;
                 margin-left: 20px;
+                &:hover{
+                    cursor: pointer;
+                }
             }
         }
         .list-item-step{

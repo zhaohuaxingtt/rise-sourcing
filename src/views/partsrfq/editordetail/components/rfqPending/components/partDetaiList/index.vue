@@ -220,6 +220,8 @@ export default {
     },
     // 发送KM
     sendKM() {
+      if (!this.handleSelectArr.length) return iMessage.warn(this.$t("LK_QINGXUANZEZHISHAOYITIAOSHUJU"))
+
       this.kmDialogVisible = true
     }
   },
