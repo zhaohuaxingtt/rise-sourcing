@@ -49,10 +49,10 @@
           <a class="link-underline" href="javascript:;">{{scope.row.partNum}}</a>
         </template>
         <!-- 供应商名 -->
-        <template #supplierName="scope">
+        <template #suppliersName="scope">
           <div v-if="scope.row.isEdit">
             <iSelect
-              v-model="scope.row.supplierName"
+              v-model="scope.row.suppliersName"
               :placeholder="$t('LK_QINGXUANZE')">
               <el-option
                 :value="items.key"
@@ -62,39 +62,39 @@
               ></el-option>
             </iSelect>
           </div>
-          <span v-else>{{scope.row.supplierName}}</span>
+          <span v-else>{{scope.row.suppliersName}}</span>
         </template>
         <!-- 单一原因 -->
-        <template #reason="scope">
+        <template #singleReason="scope">
           <div v-if="scope.row.isEdit">
             <iSelect
-              v-model="scope.row.reason"
+              v-model="scope.row.singleReason"
               :placeholder="$t('LK_QINGXUANZE')">
               <el-option
-                :value="items.key"
-                :label="items.value"
-                v-for="(items, index) in []"
+                :value="items.label"
+                :label="items.label"
+                v-for="(items, index) in (selectOptions.reason || [])"
                 :key="index"
               ></el-option>
             </iSelect>
           </div>
-          <span v-else>{{scope.row.reason}}</span>
+          <span v-else>{{scope.row.singleReason}}</span>
         </template>
         <!-- 部门 -->
-        <template #dept="scope">
+        <template #department="scope">
           <div v-if="scope.row.isEdit">
             <iSelect
-              v-model="scope.row.dept"
+              v-model="scope.row.department"
               :placeholder="$t('LK_QINGXUANZE')">
               <el-option
                 :value="items.key"
                 :label="items.value"
-                v-for="(items, index) in []"
+                v-for="(items, index) in (selectOptions.dept || [])"
                 :key="index"
               ></el-option>
             </iSelect>
           </div>
-          <span v-else>{{scope.row.dept}}</span>
+          <span v-else>{{scope.row.department}}</span>
         </template>
       </tablelist>
       <iPagination
@@ -111,7 +111,7 @@
     <!-- 零件弹窗 -->
     <partDialog :visible.sync="partDialogVisibal" />
     <!-- 批量操作弹窗 -->
-    <batchEditDialog :visible.sync="batchEditVisibal" />
+    <batchEditDialog :visible.sync="batchEditVisibal" :selectOptions="selectOptions" />
   </iCard>
 </template>
 
@@ -132,6 +132,10 @@ import {
   iMessage,
   iSelect
 } from "rise";
+import {
+  getSingleSupplierList
+} from '@/api/designate/supplier' 
+import { getDictByCode } from '@/api/dictionary'
 
 export default {
   components: {
@@ -147,21 +151,61 @@ export default {
     return {
       // 单一供应商
       singleSupplierTitle,
-      singleListData: mokeSingleSupplierData,
+      singleListData: [],
       selectSingleData: [],
       singleEditControl: false,
       partDialogVisibal: false,
       batchEditVisibal: false,
-      page: {}
+      selectOptions: {},
+      page: {
+        currPage: 1,
+        pageSize: 10,
+        totalCount: 0,
+        layout: "total, prev, pager, next, jumper"
+      }
     }
   },
+  mounted() {
+    this.getFetchDataList()
+    this.getOptions()
+  },
   methods: {
+    getOptions() {
+      // 获取单一原因数据字典
+      this.getDictionary('dept', 'score_dept')
+      // 部门
+      this.getDictionary('reason', 'SINGLE_SOURCING_REASON')
+    },
+    // 获取数据字典
+    getDictionary(optionName, optionType, key = {value: 'code', label: 'name'}) {
+      getDictByCode(optionType).then(res => {
+        if(res?.result) {
+          this.selectOptions[optionName] = res.data[0].subDictResultVo.map(item => {
+            return { value: item.code, label: item.name }
+          })
+        }
+      })
+    },
+    getFetchDataList() {
+      this.tableLoading = true
+      getSingleSupplierList({
+        nominateId: this.$store.getters.nomiAppId
+      }).then(res => {
+        this.tableLoading = false
+        if (res.code === '200') {
+          this.singleListData = res.data || []
+          if (this.page) {
+            this.page.totalCount = Number(res.total || 0)
+          }
+        } else {
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
+      }).catch(e => {
+        iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
+      })
+    },
     // 批量编辑
     handleBatchEdit() {
-      if (!this.selectSingleData.length) {
-        iMessage.error('请选择')
-        return
-      }
       this.batchEditVisibal = true
     },
     handlEdit() {

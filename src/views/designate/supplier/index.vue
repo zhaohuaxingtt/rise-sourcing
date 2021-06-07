@@ -24,15 +24,6 @@ export default {
     }
   },
   methods: {
-    openPage() {
-
-    },
-    handleSizeChange() {
-
-    },
-    handleCurrentChange() {
-
-    }
   }
 }
 </script>

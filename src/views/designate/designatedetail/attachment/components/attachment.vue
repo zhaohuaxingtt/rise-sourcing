@@ -119,7 +119,6 @@ export default {
         fileType: '102',
       }
       await this.getDataList(params)
-      console.log(this)
     }
   }
 }
