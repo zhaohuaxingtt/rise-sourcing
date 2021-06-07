@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-05-24 17:06:01
- * @LastEditTime: 2021-06-07 14:42:13
+ * @LastEditTime: 2021-06-07 16:16:55
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\createparts\components\home\index.vue
@@ -211,11 +211,13 @@ export default {
           iMessage.success(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
 
           if (res.data.manuallyCreatePartProjectVOS.length == 1) {
+            console.log(JSON.stringify(res.data.manuallyCreatePartProjectVOS[0]))
             this.$router.push({
               path: "/sourcing/partsprocure/editordetail",
               query: {
-                item: JSON.stringify({
-                  
+                item: JSON.stringify({ 
+                  ...res.data.manuallyCreatePartProjectVOS[0], 
+                  purchasePrjectId: res.data.manuallyCreatePartProjectVOS[0].purchaseProjectId
                 })
               }
             })
