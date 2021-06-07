@@ -5,13 +5,13 @@
         <!-- 单一原因 -->
         <el-form-item :label="$t('nominationSupplier.DanYiYuanYin')">
           <iSelect
-            v-model="form.projectCarType"
+            v-model="form.singleReason"
             :placeholder="$t('LK_QINGXUANZE')"
           >
             <el-option
-              :value="items.key"
-              :label="items.value"
-              v-for="(items, index) in []"
+              :value="items.label"
+              :label="items.label"
+              v-for="(items, index) in (selectOptions.reason || [])"
               :key="index"
             ></el-option>
           </iSelect>
@@ -19,13 +19,13 @@
         <!-- 部门 -->
         <el-form-item :label="$t('nominationSupplier.BuMen')">
           <iSelect
-            v-model="form.projectCarType"
+            v-model="form.department"
             :placeholder="$t('LK_QINGXUANZE')"
           >
             <el-option
               :value="items.key"
               :label="items.value"
-              v-for="(items, index) in []"
+              v-for="(items, index) in (selectOptions.dept || [])"
               :key="index"
             ></el-option>
           </iSelect>
@@ -52,6 +52,10 @@ export default {
       type: Boolean,
       default: false
     },
+    selectOptions: {
+      type: Object,
+      default: () => ({})
+    },
     params: {
       type: Object,
       default: () => ({})
@@ -68,7 +72,7 @@ export default {
   data() {
     return {
       form: {
-
+        department: ''
       },
       loading: false,
       controlHeight: 0

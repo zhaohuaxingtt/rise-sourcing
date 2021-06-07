@@ -998,7 +998,8 @@
             "ZiDingYi": "自定义",
             "ShangChuanXianXiaRS": "上传线下RS文件",
             "JieSuBianJi": "结束编辑",
-            "BeiZuXinXi": "备注信息"
+            "BeiZuXinXi": "备注信息",
+            "ShangChuanFaShengCuoWu": "上传发生错误，请稍后重试"
         },
     })
 }))

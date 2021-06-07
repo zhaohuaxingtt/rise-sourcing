@@ -10,15 +10,15 @@
           :hideTip="true"
           :accept="'.jpg,.jpeg,.png,.pdf,.tif'"
           :buttonText="$t('strategicdoc.ShangChuanWenJian')"
-          @on-success="onDraingUploadsucess"
+          @on-success="onUploadsucess(Object.assign(...arguments, {fileType: '101'}), getDataList)"
         />
         <!-- <iButton>{{ $t('strategicdoc.ShangChuanWenJian') }}</iButton> -->
       </div>
     </div>
     <div class="body" v-loading="tableLoading">
-      <tableList index :height="controlHeight ? '91%' : '100%'" v-show="visible" class="table margin-top20" :tableData="tableListData" :tableTitle="tableTitle" @handleSelectionChange="handleSelectionChange">
+      <tableList index :height="controlHeight ? '91%' : '100%'" v-show="visible" class="table margin-top20" :tableData="dataList" :tableTitle="tableTitle" @handleSelectionChange="handleSelectionChange">
         <template #uploadDate="scope">
-          {{fomat(scope.row.uploadDate)}}
+          {{scope.row.uploadDate | dateFilter('YYYY-MM-DD')}}
         </template>
       </tableList>
     </div>
@@ -39,9 +39,10 @@
 <script>
 import { iPagination, iDialog, iMessage, iButton } from '@/components'
 import { uploadtableTitle as tableTitle } from './data'
-import { pageMixins } from '@/utils/pageMixins'
 import tableList from '@/views/designate/supplier/components/tableList'
 import filters from '@/utils/filters'
+import { attachMixins } from '@/utils/attachMixins'
+import { pageMixins } from '@/utils/pageMixins'
 import upload from '@/components/Upload'
 import { downloadFile } from '@/api/file'
 
@@ -53,7 +54,7 @@ import {
 
 export default {
   components: { tableList, iPagination, iDialog, iButton, upload },
-  mixins: [ pageMixins, filters ],
+  mixins: [ pageMixins, filters, attachMixins ],
   props: {
     ...iDialog.props,
     visible: {
@@ -80,10 +81,7 @@ export default {
   data() {
     return {
       loading: false,
-      tableLoading: false,
       tableTitle,
-      tableListData: [],
-      multipleSelection: [],
       controlHeight: 0,
       page: {
         currPage: 1,
@@ -94,32 +92,14 @@ export default {
     }
   },
   methods: {
-    fomat(date) {
-      return window.moment(date).format('YYYY-MM-DD HH:mm:ss')
-    },
     getFetchData() {
-      if (!this.nomiAppId) return iMessage.error(this.$t('nominationLanguage.DingDianIDNotNull'))
-      this.tableLoading = true
-      getdDecisiondataDaringList({
+      const params = {
         nomiAppId: this.nomiAppId,
         sortColumn: 'sort',
         isAsc: true,
         fileType: '101',
-        pageNo: this.page.currPage,
-        pageSize: this.page.pageSize
-      }).then(res => {
-        if (res.code === '200') {
-          this.tableListData = res.data || []
-          this.page.totalCount = Number(res.total) || 0
-        } else {
-          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
-        }
-        this.tableLoading = false
-        console.log(res)
-      }).catch(e => {
-        console.log(e)
-        this.tableLoading = false
-      })
+      }
+      this.getDataList(params)
     },
     download() {
       const fileList = this.multipleSelection.map(o => o.id)
@@ -136,39 +116,6 @@ export default {
       } catch (e) {
         console.log(e)
       }
-    },
-    handleSelectionChange(list) {
-      this.multipleSelection = list
-    },
-    // 上传成功回调
-    onDraingUploadsucess(data) {
-      console.log(data)
-      this.tableLoading = true
-      const params = {
-        fileCode: '0',
-        fileName: data.data.fileName || '',
-        filePath: data.data.filePath || '',
-        fileSize: data.file.size || 0,
-        size: data.file.size || 0,
-        fileType: 101,
-        hostId: '1'
-      }
-      // const params = JSON.parse("{\"fileCode\":\"0\",\"fileName\":\"1.jpg\",\"filePath\":\"https://dev-rise.obs.cloud.csvw.com:443/rise%2F1.jpg\",\"fileSize\":93894,\"size\":93894,\"fileType\":101,\"hostId\":\"1\"}")
-      console.log(params)
-      uploadDaring(params).then(res => {
-        if (res.code === '200') {
-          iMessage.success('上传成功')
-          this.getFetchData()
-          console.log(res)
-        } else {
-          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
-        }
-        this.tableLoading = false
-      }).catch(e => {
-        this.tableLoading = false
-        iMessage.error(this.$i18n.locale === "zh" ? e.desZh : event.desEn)
-      })
-
     },
     // 删除文件
     async deleteFile() {

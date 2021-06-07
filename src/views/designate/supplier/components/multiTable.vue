@@ -6,10 +6,10 @@
       >
       <div class="floatright">
         <span v-if="multiEditControl">
-          <iButton>
+          <iButton @click="addShow(true)">
             {{ $t("nominationSupplier.JiaRuZhanShi") }}
           </iButton>
-          <iButton>
+          <iButton @click="addShow(false)">
             {{ $t("nominationSupplier.QuXiaoZhanShi") }}
           </iButton>
         </span>
@@ -32,8 +32,8 @@
       :activeItems="'partNum'"
     >
     <template #descr="scope">
-      <el-tooltip effect="light" :content="scope.row.descr">
-          <span>{{ scope.row.descr }}</span>
+      <el-tooltip effect="light" :content="genHeaderTitle(scope)">
+          <span>{{ genHeaderTitle(scope) }}</span>
       </el-tooltip>
     </template>
     <!-- 厂商 -->
@@ -48,8 +48,8 @@
       </div>
     </template>
     <!-- 是否展示 -->
-    <template #show="scope">
-      <span>{{scope.row.show === 'Y' ? '是' : '否' }}</span>
+    <template #isPresent="scope">
+      <span>{{scope.row.isPresent === 1 ? '是' : '否' }}</span>
     </template>
     </tablelist>
     <iPagination
@@ -76,8 +76,12 @@ import {
   iCard,
   iButton,
   iPagination,
-  icon
+  icon,
+  iMessage
 } from "rise";
+import {
+  getSupplierList
+} from '@/api/designate/supplier' 
 
 export default {
   components: {
@@ -89,16 +93,57 @@ export default {
   },
   data() {
     return {
-      tableListData: mokeMultiSupplierData,
+      nomiAppId: this.$store.getters.nomiAppId,
+      tableListData: [],
       tableLoading: false,
       multiSupplierTitle,
       multiEditState: false,
       multiEditControl: false,
       selectMultiData: [],
-      page: {}
+      page: {
+        currPage: 1,
+        pageSize: 10,
+        totalCount: 0,
+        layout: "total, prev, pager, next, jumper"
+      }
     }
   },
+  mounted() {
+    this.getFetchDataList()
+  },
   methods: {
+    // 加入展示
+    addShow(type = true) {
+      if (!this.selectMultiData.length) {
+          iMessage.error(this.$t('nominationSuggestion.QingXuanZeZhiShaoYiTiaoShuJu'))
+          return
+        }
+      this.selectMultiData.map(o => {
+        this.$set(o, 'isPresent', type ? 1 : 0)
+      })
+    },
+    // [RFQ号+零件号+零件名称+车型项目]
+    genHeaderTitle(scope) {
+      return scope.row.rfqId + scope.row.partNum + scope.row.partNameCh + scope.row.carModelProject
+    },
+    getFetchDataList() {
+      this.tableLoading = true
+      getSupplierList({
+        nominateId: this.nomiAppId
+      }).then(res => {
+        this.tableLoading = false
+        if (res.code === '200') {
+          this.tableListData = res.data || []
+          if (this.page) {
+            this.page.totalCount = Number(res.total || 0)
+          }
+        } else {
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
+      }).catch(e => {
+        iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
+      })
+    },
     handleMutiSelectionChange(data) {
       this.multiEditControl = Boolean( data && data.length)
       this.selectMultiData = data
