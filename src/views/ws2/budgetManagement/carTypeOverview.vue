@@ -3,80 +3,81 @@
  * @Date: 2021-04-21 09:50:42
 -->
 <template>
-  <div v-permission="TOOLING_BUDGET_OVERVIEW">
-    <iSearch
-        class="margin-bottom20 giSearch"
-        style="margin-top: 20px"
-        @sure="findCartypePro"
-        @reset="reset"
-        :icon="false"
-        :resetKey="PARTSPROCURE_RESET"
-        :searchKey="PARTSPROCURE_CONFIRM"
-        v-loading="loadingiSearch"
-    >
-      <el-form>
-        <el-form-item :label="$t('LK_CHEXINXIANGMU')">
-          <iSelect
-              class="multipleSelect"
-              :placeholder="$t('partsprocure.PLEENTER')"
-              v-model="cartypeProId"
-              filterable
-              @change="changeCarTypeProject"
-              collapse-tags
-              multiple
-          >
-            <el-option
-                :value="item.id"
-                :label="item.cartypeNname"
-                v-for="(item, index) in fromGroup"
-                :key="index"
-            ></el-option>
-          </iSelect>
-        </el-form-item>
-        <el-form-item :label="$t('LK_CAIGOUGONGCHANG')">
-          <iSelect
-              :placeholder="$t('partsprocure.CHOOSE')"
-              v-model="localFactoryName"
-              filterable
-              ref=""
-          >
-            <el-option
-                :value="item.locationFactoryName"
-                :label="item.locationFactoryName"
-                v-for="(item, index) in factoryList"
-                :key="index"
-            ></el-option>
-          </iSelect>
-        </el-form-item>
-        <el-form-item :label="$t('SOP时间')">
-          <el-date-picker
-              v-model="timeStarEnd"
-              format="yyyy-MM-dd"
-              class="budgetApprovalDate"
-              type="daterange"
-              range-separator="至"
-              start-placeholder="YYYY-MM-DD"
-              end-placeholder="YYYY-MM-DD">
-          </el-date-picker>
-        </el-form-item>
-      </el-form>
-      <div class="searchSure">
-<!--        <iButton @click="saveAddCarType" :disabled="carTypeProjectObj.isBudget == 3" v-loading="addCarTypeLoading">{{ $t('LK_QUEREN') }}</iButton>-->
-        <!--          <iButton @click="sure">查询</iButton>-->
-        <!--          <iButton @click="reset">重置</iButton>-->
-      </div>
-    </iSearch>
-    <div v-loading="loadingiPage">
-<!--      <div class="infinite-list-wrapper" style="overflow:auto;height: 100px;">-->
-<!--        <ul-->
-<!--            class="list"-->
-<!--            v-infinite-scroll="load"-->
-<!--            infinite-scroll-disabled="disabled">-->
-<!--          <li v-for="(item, index) in contentData" :key="index" class="list-item">{{ item.cartypeProjectName }}</li>-->
-<!--        </ul>-->
-<!--        <p v-if="loading">加载中...</p>-->
-<!--        <p v-if="noMore">没有更多了</p>-->
-<!--      </div>-->
+  <div class="generateInvestmentList">
+    <div v-permission="TOOLING_BUDGET_OVERVIEW">
+      <iSearch
+          class="margin-bottom20 giSearch"
+          style="margin-top: 20px"
+          @sure="findCartypePro"
+          @reset="reset"
+          :icon="false"
+          :resetKey="PARTSPROCURE_RESET"
+          :searchKey="PARTSPROCURE_CONFIRM"
+          v-loading="loadingiSearch"
+      >
+        <el-form>
+          <el-form-item :label="$t('LK_CHEXINXIANGMU')">
+            <iSelect
+                class="multipleSelect"
+                :placeholder="$t('partsprocure.PLEENTER')"
+                v-model="cartypeProId"
+                filterable
+                @change="changeCarTypeProject"
+                collapse-tags
+                multiple
+            >
+              <el-option
+                  :value="item.id"
+                  :label="item.cartypeNname"
+                  v-for="(item, index) in fromGroup"
+                  :key="index"
+              ></el-option>
+            </iSelect>
+          </el-form-item>
+          <el-form-item :label="$t('LK_CAIGOUGONGCHANG')">
+            <iSelect
+                :placeholder="$t('partsprocure.CHOOSE')"
+                v-model="localFactoryName"
+                filterable
+                ref=""
+            >
+              <el-option
+                  :value="item.locationFactoryName"
+                  :label="item.locationFactoryName"
+                  v-for="(item, index) in factoryList"
+                  :key="index"
+              ></el-option>
+            </iSelect>
+          </el-form-item>
+          <el-form-item :label="$t('SOP时间')">
+            <el-date-picker
+                v-model="timeStarEnd"
+                format="yyyy-MM-dd"
+                class="budgetApprovalDate"
+                type="daterange"
+                range-separator="至"
+                start-placeholder="YYYY-MM-DD"
+                end-placeholder="YYYY-MM-DD">
+            </el-date-picker>
+          </el-form-item>
+        </el-form>
+        <div class="searchSure">
+  <!--        <iButton @click="saveAddCarType" :disabled="carTypeProjectObj.isBudget == 3" v-loading="addCarTypeLoading">{{ $t('LK_QUEREN') }}</iButton>-->
+          <!--          <iButton @click="sure">查询</iButton>-->
+          <!--          <iButton @click="reset">重置</iButton>-->
+        </div>
+      </iSearch>
+      <div v-loading="loadingiPage">
+  <!--      <div class="infinite-list-wrapper" style="overflow:auto;height: 100px;">-->
+  <!--        <ul-->
+  <!--            class="list"-->
+  <!--            v-infinite-scroll="load"-->
+  <!--            infinite-scroll-disabled="disabled">-->
+  <!--          <li v-for="(item, index) in contentData" :key="index" class="list-item">{{ item.cartypeProjectName }}</li>-->
+  <!--        </ul>-->
+  <!--        <p v-if="loading">加载中...</p>-->
+  <!--        <p v-if="noMore">没有更多了</p>-->
+  <!--      </div>-->
 
       <div class="content list"
            style="overflow:auto;"
@@ -124,40 +125,78 @@
                 <p slot="reference" v-if="item.isBudget == 3">{{$t('LK_ZUIXINGENGXINREN')}}: {{ item.updateByName }}</p>
               </Popover>
               <Popover
-                  :content="$t('LK_ZUIXINGENGXINSHIJIAN') + ': ' + (item.updateTime ? item.updateTime : '')"
+                  :content="Number(item.isBudget) === 3 ? '点击进入【模具投资清单】页面' : '点击进入未完成/需要继续编辑的【生成投资清单】页面'"
                   placement="top-start"
                   trigger="hover">
-                <p slot="reference" v-if="item.isBudget == 3">{{$t('LK_ZUIXINGENGXINSHIJIAN')}}: {{ item.updateTime }}</p>
+                <img slot="reference" v-if="item.isBudget == 1" class="editIcon" src="../../../assets/images/editCar.png" alt="">
+                <img slot="reference" v-if="item.isBudget == 2" class="editIcon" src="../../../assets/images/editCar2.png" alt="">
+                <img slot="reference" v-if="item.isBudget == 3" class="editIcon" src="../../../assets/images/editCar.png" alt="">
               </Popover>
-              <!--            <h4 :title="item.cartypeProjectName">{{ item.cartypeProjectName }}</h4>-->
-              <!--            <p :title="item.locationFactory">{{$t("LK_CAIGOUGONGCHANG")}}: {{ item.locationFactory }}</p>-->
-              <!--            <p :title="item.sop">SOP: {{ item.sop }}</p>-->
-              <!--            <p :title="item.updateByName" v-if="item.isBudget == 3">最近更新人: {{ item.updateByName }}</p>-->
-              <!--            <p :title="item.updateTime" v-if="item.isBudget == 3">最近更新时间: {{ item.updateTime }}</p>-->
+              <div class="title">
+                <Popover
+                    :content="item.cartypeProjectName"
+                    placement="top-start"
+                    trigger="hover">
+                  <h4 slot="reference">{{ item.cartypeProjectName }}</h4>
+                </Popover>
+                <Popover
+                    v-if="Number(item.sourceStatus) === 1 || Number(item.isBudget) !== 3"
+                    :content="$t('LK_CAIGOUGONGCHANG') + ': ' + (item.locationFactory ? item.locationFactory : '')"
+                    placement="top-start"
+                    trigger="hover">
+                  <p slot="reference">{{$t("LK_CAIGOUGONGCHANG")}}: {{ item.locationFactory }}</p>
+                </Popover>
+                <Popover
+                    v-if="Number(item.SourceStatus) === 1 || Number(item.isBudget) !== 3"
+                    :content="'SOP: ' + item.sop"
+                    placement="top-start"
+                    trigger="hover">
+                  <p slot="reference">SOP: {{ item.sop }}</p>
+                </Popover>
+                <Popover
+                    :content="$t('LK_ZUIXINGENGXINREN') + ': ' + (item.updateByName ? item.updateByName : '')"
+                    placement="top-start"
+                    trigger="hover">
+                  <p slot="reference" v-if="item.isBudget == 3">{{$t('LK_ZUIXINGENGXINREN')}}: {{ item.updateByName }}</p>
+                </Popover>
+                <Popover
+                    :content="$t('LK_ZUIXINGENGXINSHIJIAN') + ': ' + (item.updateTime ? item.updateTime : '')"
+                    placement="top-start"
+                    trigger="hover">
+                  <p slot="reference" v-if="item.isBudget == 3">{{$t('LK_ZUIXINGENGXINSHIJIAN')}}: {{ item.updateTime }}</p>
+                </Popover>
+                <!--            <h4 :title="item.cartypeProjectName">{{ item.cartypeProjectName }}</h4>-->
+                <!--            <p :title="item.locationFactory">{{$t("LK_CAIGOUGONGCHANG")}}: {{ item.locationFactory }}</p>-->
+                <!--            <p :title="item.sop">SOP: {{ item.sop }}</p>-->
+                <!--            <p :title="item.updateByName" v-if="item.isBudget == 3">最近更新人: {{ item.updateByName }}</p>-->
+                <!--            <p :title="item.updateTime" v-if="item.isBudget == 3">最近更新时间: {{ item.updateTime }}</p>-->
+              </div>
             </div>
+            <div class="unit">
+              {{$t("LK_DANWEI")}}: {{$t("LK_BAIWANYUAN")}}
+            </div>
+            <Popover
+                :content="Number(item.isBudget) === 3 ? '点击进入【模具投资清单】页面' : '点击进入未完成/需要继续编辑的【生成投资清单】页面'"
+                placement="top-start"
+                trigger="hover">
+              <div slot="reference" class="chart" :id="'chart' + index"></div>
+            </Popover>
           </div>
-          <div class="unit">
-            {{$t("LK_DANWEI")}}: {{$t("LK_BAIWANYUAN")}}
+        </div>
+        <div class="loader" v-if="loading && contentData.length != 0">
+          <div class="loader-inner ball-pulse">
+            <div></div>
+            <div></div>
+            <div></div>
           </div>
-          <Popover
-              :content="Number(item.isBudget) === 3 ? '点击进入【模具投资清单】页面' : '点击进入未完成/需要继续编辑的【生成投资清单】页面'"
-              placement="top-start"
-              trigger="hover">
-            <div slot="reference" class="chart" :id="'chart' + index"></div>
-          </Popover>
         </div>
+  <!--      <p v-if="noMore">没有更多了</p>-->
+        <div class="noData" v-if="contentData.length === 0">暂无数据</div>
       </div>
-      <div class="loader" v-if="loading && contentData.length != 0">
-        <div class="loader-inner ball-pulse">
-          <div></div>
-          <div></div>
-          <div></div>
-        </div>
-      </div>
-<!--      <p v-if="noMore">没有更多了</p>-->
-      <div class="noData" v-if="contentData.length === 0">暂无数据</div>
     </div>
   </div>
+  </div>
+  
 </template>
 <script>
 import {

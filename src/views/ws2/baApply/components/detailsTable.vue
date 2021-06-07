@@ -59,11 +59,10 @@ import { detailsTableHead, layerTableHead1, layerTableHead2 } from "./data";
 import { iButton, iMessage, iInput } from "rise";
 import { getDetail, baConfirm, downloadExport } from "@/api/ws2/baApply/baCommodityApply";
 import ApplyPopup from "./applyPopup";
-import httpRequest from "@/utils/axios.download";
+import store from '@/store';
 import {
   iTableList
 } from "@/components";
-import { form } from '../../../partsign/home/components/data';
 
 export default {
   props: {
@@ -71,10 +70,11 @@ export default {
     tableLoading: {type: Boolean, default: false},
   },
   computed: {
-    nameList(){
-      const key = this.$store.state.baApply.baAcountType === 2 ? 'locationFactoryName' : 'baNum';
-      return this.selectTableData.map(item => item[key]).join('、');
-    }
+    // nameList(){
+    //   const ksy1 = store.state.permission.whiteBtnList['TOOLING_BUDGET_BAAPPLICATION_TOTAL'];  //  是否有汇总页面权限
+    //   const key = ksy1 ? 'baNum' : 'carTypeName';
+    //   return this.selectTableData.map(item => item[key]).join('、');
+    // }
   },
   data(){
     return {
@@ -85,6 +85,7 @@ export default {
       tableLayerTitle: [],
       tableLayerLoading: false,
       applyLoading: false,
+      nameList: '',
     }
   },
   mixins: [tableHeight],
@@ -169,6 +170,10 @@ export default {
       if(!this.selectTableData.length){
         return iMessage.warn(this.$t('LK_BAAPPLYTISP1'));
       }
+      const ksy1 = store.state.permission.whiteBtnList['TOOLING_BUDGET_BAAPPLICATION_TOTAL'];  //  是否有汇总页面权限
+      const key = ksy1 ? 'carTypeName' : 'locationFactoryName';
+      this.nameList = this.selectTableData.map(item => item[key]).join('、');
+      console.log('this.nameList', this.nameList, key);
       this.getDetail();
     },
 
@@ -179,7 +184,8 @@ export default {
         const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn;
 
         if(res.data){
-          this.tableLayerTitle = this.$store.state.baApply.baAcountType === 2 ? layerTableHead2 : layerTableHead1;
+          const ksy1 = store.state.permission.whiteBtnList['TOOLING_BUDGET_BAAPPLICATION_TOTAL'];  //  是否有汇总页面权限
+          this.tableLayerTitle = ksy1 ? layerTableHead1 : layerTableHead2;
           this.tableLayerListData = res.data;
           this.visible = true;
           this.applyLoading = false;
