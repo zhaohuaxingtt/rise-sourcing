@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-25 13:57:11
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-03 17:05:35
+ * @LastEditTime: 2021-06-07 02:15:14
  * @Description: 
  * @FilePath: \front-web\src\views\accessoryPart\signForPartsDemand\index.vue
 -->
@@ -88,7 +88,7 @@
 import { iPage, iSearch, iSelect, iInput, iCard, iButton, iPagination, iDatePicker, iMessage, iNavMvp } from 'rise'
 import { pageMixins } from "@/utils/pageMixins"
 import tableList from '../../designate/designatedetail/components/tableList'
-import { tableTitle, tableMockData, searchList } from '../signForPartsDemand/data'
+import { tableTitle, searchList } from '../signForPartsDemand/data'
 import assignInquiryDepartmentDialog from './components/assignInquiryDepartment'
 import assignInquiryBuyerDialog from './components/assignInquiryBuyer'
 import backDialog from './components/backEps'
@@ -96,12 +96,14 @@ import { navList } from "@/views/partsign/home/components/data"
 import { cloneDeep } from 'lodash'
 import { getAccessoryOneInfoList, signAccessoryInfo, sendAccessoryInfo, downLoadAccessoryList, backEPS } from '@/api/accessoryPart/index'
 import { uniq } from 'lodash'
+import {findBySearches} from "@/api/partsrfq/home";
+import { getDictByCode } from '@/api/dictionary'
 export default {
   mixins: [pageMixins],
   components: { iPage, iSearch, iSelect, iInput, iCard, iButton, iPagination, tableList, iDatePicker, assignInquiryDepartmentDialog, assignInquiryBuyerDialog, backDialog, iNavMvp },
   data() {
     return {
-      tableData: tableMockData,
+      tableData: [],
       tableTitle: tableTitle,
       tableLoading: false,
       searchList: searchList,
@@ -126,9 +128,47 @@ export default {
     }
   },
   created() {
+    this.getSelectOptions()
     this.getTableList()
+    this.getCarTypeOptions()
   },
   methods: {
+    /**
+     * @Description: 调取数据字典获取下拉
+     * @Author: Luoshuang
+     * @param {*} optionName 下拉选项名称
+     * @param {*} optionType 下拉类型
+     * @return {*}
+     */    
+    getDictionary(optionName, optionType) {
+      getDictByCode(optionType).then(res => {
+        if(res?.result) {
+          this.selectOptions[optionName] = res.data[0].subDictResultVo.map(item => {
+            return { value: item.code, label: item.name }
+          })
+        }
+      })
+    },
+    /**
+     * @Description: 获取下拉数据
+     * @Author: Luoshuang
+     * @param {*}
+     * @return {*}
+     */    
+    getSelectOptions() {
+      // 配件状态
+      this.getDictionary('accessoryTypeOption', 'ACCESSORY_STAT')
+    },
+    /**
+     * @Description: 车型项目下拉框
+     * @Author: Luoshuang
+     * @param {*}
+     * @return {*}
+     */    
+    async getCarTypeOptions() {
+      const res = await findBySearches('01')
+      this.selectOptions.carTypeOptions = res.data
+    },
     /**
      * @Description: 退回EPS
      * @Author: Luoshuang
@@ -341,13 +381,14 @@ export default {
         size: this.page.pageSize
       }
       getAccessoryOneInfoList(params).then(res => {
-        if(res.result) {
+        if(res?.result) {
           this.tableData = res.data.records
           this.page.pageSize = res.data.size
           this.page.currPage = res.data.current
           this.page.totalCount = res.data.total
         } else {
           this.tableData = []
+          iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
         }
       }).finally(() => {
         this.tableLoading = false

@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-06-03 15:59:56
- * @LastEditTime: 2021-06-04 15:09:33
+ * @LastEditTime: 2021-06-07 18:10:10
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\api\costanalysismanage\costanalysis\index.js
@@ -12,7 +12,7 @@ const requst = axios(process.env.VUE_APP_RFQ)
 // 获取KM的RFQ列表
 export function getKmFileHistory(params) {
   return requst({
-    url: `/km-file-history/${ params.rfqId }/${ params.pageSize }/${ params.currPage }`,
+    url: `/km-file-history/${ params.hostId }/${ params.type }/${ params.pageSize }/${ params.currPage }`,
     method: 'GET'
   })
 }

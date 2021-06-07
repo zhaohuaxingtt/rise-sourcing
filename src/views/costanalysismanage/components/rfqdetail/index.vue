@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-05-27 17:27:15
- * @LastEditTime: 2021-05-28 17:11:50
+ * @LastEditTime: 2021-06-07 13:44:10
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\costanalysismanage\components\rfqdetail\index.vue
@@ -9,17 +9,17 @@
 <template>
   <iPage class="rfqdetail">
     <div class="header clearFloat">
-      <div class="title">{{ $t("costanalysismanage.RfqBianHao") }}: </div>
+      <div class="title">{{ $t("costanalysismanage.RfqBianHao") }}: {{ rfqId }}</div>
       <div class="control">
-        <iButton @click="back">{{ $t("costanalysismanage.FanHui") }}</iButton>
+        <iButton @click="handleBack">{{ $t("costanalysismanage.FanHui") }}</iButton>
         <logButton class="margin-left20" />
         <span class="margin-left20">
           <icon symbol name="icondatabaseweixuanzhong" class="font24"></icon>
         </span>
       </div>
     </div>
-    <infos class="margin-top30" />
-    <partList class="margin-top20" />
+    <infos class="margin-top30" :rfqId="rfqId" />
+    <partList class="margin-top20" :rfqId="rfqId" />
     <reportList class="margin-top20" />
   </iPage>
 </template>
@@ -39,6 +39,19 @@ export default {
     infos,
     partList,
     reportList,
+  },
+  created() {
+    this.rfqId = this.$route.query.rfqId
+  },
+  data() {
+    return {
+      rfqId: ""
+    }
+  },
+  methods: {
+    handleBack() {
+      this.$router.go(-1)
+    }
   }
 }
 </script>

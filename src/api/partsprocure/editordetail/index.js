@@ -6,6 +6,7 @@ const requstPartResource = axios(process.env.VUE_APP_DIC)
 
 const requstPartsProcure = axios(process.env.VUE_APP_PARTSPROCURE)
 const sourcing = axios(process.env.VUE_APP_PART_PROCURE)
+const sourcingDL = axios(process.env.VUE_APP_SOURCING_WDL)
 // 采购项目-获取材料组信息
 export function getMaterialGroup(params) {
 	return requstPartsProcure({
@@ -177,4 +178,21 @@ export function createParts(params){
     method: "POST",
     data: params
   })
+}
+
+// 获取定点信息
+export function findNominateInfo(fsNum) {
+	return sourcingDL({
+		url: `/nominate/list/${fsNum}`,
+		method: 'GET'
+	})
+}
+
+// 获取定点信息相关文件
+// fileType： 103：纸质RS单,  ， 105：SEL分摊单
+export function getNominateFileInfo({nomiAppId, sortColumn, isAsc, fileType, pageNo, pageSize }) {
+	return sourcingDL({
+		url: `/file-history/${nomiAppId}/${sortColumn}/${isAsc}/${fileType}/${pageNo}/${pageSize}`,
+		method: 'GET'
+	})
 }

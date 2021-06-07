@@ -20,6 +20,7 @@
                               :buttonText="$t('LK_DAORU')"
                               accept=" .xls,.xlsx"
                               :request="uploadImportFile"
+                              :onHttpUploaded="onHttpUploaded"
                               @on-success="onDraingUploadsucess"
                           />
                       </span>
@@ -102,15 +103,7 @@ export default {
             tableTitle:tableTitle,
             selectItems:[],
             uploadImportFile:uploadImportFile,
-            tableListData:[
-              {
-                code:'123',
-                importDate:'2020-01-01',
-                importedName:'分配科室',
-                respDeptName:'SKAP',
-
-              }
-            ],
+            tableListData:[],
         }
     },
     created(){
@@ -130,6 +123,7 @@ export default {
       // 导入文件
       onDraingUploadsucess(data){
         console.log(data);
+        this.getList();
       },
       // 下载模板
       downloadTemplate(){
@@ -156,6 +150,14 @@ export default {
           this.loading =  false;
         });
       },
+
+      // 附件导入
+      async onHttpUploaded(formData,content){
+        const newFormData = new FormData()
+        newFormData.append('file', content.file)
+        newFormData.append('applicationName', 'rise')
+        const res = await uploadImportFile(newFormData);
+      }
     }
 
 }

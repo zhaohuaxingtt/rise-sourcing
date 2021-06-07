@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-26 11:16:58
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-03 15:52:10
+ * @LastEditTime: 2021-06-07 02:06:20
  * @Description: 
  * @FilePath: \front-web\src\views\accessoryPart\integratedManage\data.js
  */
@@ -46,7 +46,7 @@ export const searchList = [
   {value: 'spnrNum', label: 'SP号', type: 'input', i18n_label: '',},
   {value: 'sparePartCode', label: '编号', type: 'input', i18n_label: '',},
   {value: 'carType', label: '配件车型', type: 'select', i18n_label: '', selectOption: ''},
-  {value: 'carProject', label: '配件车型项目', type: 'select', i18n_label: '', selectOption: ''},
+  {value: 'carProject', label: '配件车型项目', type: 'select', i18n_label: '', selectOption: 'carTypeOptions'},
   {value: 'state', label: '配件状态', type: 'select', i18n_label: '', selectOption: 'accessoryTypeOption'},
   {value: 'respDept', label: 'LINIE科室', type: 'input', i18n_label: '',},
   {value: 'respLINIE', label: 'LINIE', type: 'input', i18n_label: '',},

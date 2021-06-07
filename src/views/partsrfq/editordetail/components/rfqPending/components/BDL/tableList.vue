@@ -16,7 +16,7 @@
 					<span>{{ scope.row.supplierNameZh }}</span>
 					<!-----------Spring10新增：如果供应商FRM评级为C,则认为有风险被标识出来------------------------------------------------------->
 					<el-popover
-            v-if="scope.row.frm === 'C'"
+            v-if="scope.row.Frm === 'C'"
             placement="bottom"
             trigger="hover"
             popper-class="tableTitleTip"

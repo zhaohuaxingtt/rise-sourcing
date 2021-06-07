@@ -8,7 +8,7 @@
         <!-- 按钮区域 -->
         <div class="timeLine-btn-list" v-if="isPreview=='0'">
             <span v-if="isEdit">
-                <iButton @click="save">{{$t('LK_BAOCUN')}}</iButton>
+                <iButton :loading="isLoading" @click="save">{{$t('LK_BAOCUN')}}</iButton>
                 <iButton @click="edit">{{$t('LK_QUXIAO')}}</iButton>
                 <iButton>{{$t('LK_ZHANSHI')}}</iButton>
             </span>
@@ -21,9 +21,9 @@
                 <iCard collapse :title="item.materialGroupName"  class="timeLine-card">
                     <ul class="timeLine-edit-list">
                         <li class="flex-between-center margin-bottom20" v-for="(groupNode,groupNodeIndex) in item.nomiTimeAxisGroup" :key="'groupNodeEdit_'+groupNodeIndex">
-                            <span class="show-icon">
-                                <icon v-if="groupNode.isVisible" symbol name="iconxianshi" class="show-icon-item" ></icon>
-                                <icon v-else symbol name="iconyincang" class="show-icon-item" ></icon>
+                            <span class="show-icon" @click="showLine(groupNodeIndex,item.nomiTimeAxisGroup)">
+                                <icon v-if="groupNode.isVisible" symbol name="iconshenpiliu-shenpizhong" class="show-icon-item" ></icon>
+                                <icon v-else symbol name="iconshenpiliu-daishenpi" class="show-icon-item" ></icon>
                             </span>
                             <groupStep 
                                 :groupNode="groupNode.nomiTimeAxisLine"
@@ -35,8 +35,6 @@
                     </ul>
                     <!-- 供应商编辑列表 -->
                     <ul class="supplier-edit-list">
-                        <!-- v-for="(supplierItem,supplierIndex) in item.nomiTimeAxisSupplierResultVOList" :key="'nomiTimeAxisSupplierResultVOList_'+supplierIndex" -->
-                        <!-- <li v-for="(item,index) in supplierData" :key="'supplier-edit-list-'+index"> -->
                         <li  v-for="(supplierItem,supplierIndex) in item.nomiTimeAxisSupplierResultVOList" :key="'nomiTimeAxisSupplierResultVOListEdit_'+supplierIndex">
                             <supplierItem :itemIndex="supplierIndex" :supplierData="supplierItem" @editSupplierLine="editSupplierLine"/>
                         </li>
@@ -69,7 +67,7 @@
                             </template>
                             <ul class="supplier-item-list">
                                 <li class="flex-between-center" v-for="(supplierListItem,supplierListItemIndex) in supplierItem.nomiTimeAxisSupplierExps" :key="'supplier-item-'+supplierListItemIndex">
-                                    <span class="supplier-item-name">{{supplierListItem.supplierNameZh}}</span>
+                                    <span class="supplier-item-name">{{supplierListItem.durationName}}</span>
                                     <div class="supplier-item-line">
                                         <supplierLine 
                                             :allList="supplierItem.nomiTimeAxisSupplierExps"
@@ -92,6 +90,7 @@ import {
   iCard,
   iButton,
   icon,
+  iMessage,
 } from "rise";
 import { stepList } from './components/data'
 import groupStep from './components/groupStep'
@@ -99,7 +98,10 @@ import supplierStep from './components/supplierStep'
 import supplierLine from './components/supplierLine'
 import supplierItem from './components/supplierItem'
 import { cloneDeep } from 'lodash'
-import { MockData } from './components/data'
+import {
+    getTimeaxis,
+    saveTimeaxis,
+} from '@/api/designate/decisiondata/timeLine'
 export default {
     name:'timeLine',
      components:{
@@ -110,10 +112,11 @@ export default {
         iCard,
         iButton,
         icon,
+        iMessage,
     },
     data(){
         return{
-            isEdit:true,
+            isEdit:false,
             timeList:[
                 {startDate:1621048561,endDate:1621912561}, // 5-17 ---> 5-25
                 {startDate:1621480561,endDate:1621998961}, // 5-20 ---> 5-26
@@ -134,7 +137,7 @@ export default {
                 ]}
                 
             ],
-            MockData:MockData,
+            isLoading:false,
             detailData:[],
             
         }
@@ -150,11 +153,13 @@ export default {
             if(isEdit){
                 stepList.map((item)=>{item.isEdit = false});
             }else{
+                this.getDetail();
                 stepList.map((item)=>{
                     if(item.icon == 'iconTimeLine-CSCMeeting' || item.icon == 'iconTimeLine-BFConfirm'){
                         item.isEdit = true;
                         }
-                    });
+                });
+                
             }
             this.$store.dispatch('updateNominationStep',{nominateId:'1',phaseType:'1'});
             this.stepList = stepList;
@@ -162,8 +167,23 @@ export default {
         },
 
         // 保存
-        save(){
-            console.log(this.detailData,'stepList');
+        async save(){
+            this.isLoading = true;
+            const { detailData } = this;
+            const data = {
+                nomiTimeAxisList:detailData
+            }
+            await saveTimeaxis(data).then((res)=>{
+                const {code} = res;
+                this.isLoading = false;
+                if(code == 200){
+                    iMessage.success(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+                    this.getDetail();
+                    this.isEdit = false;
+                }else {
+                    iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+                }
+            }).catch((err)=>{ this.isLoading = false; })
         },
 
         // 新增删减供应商行
@@ -184,10 +204,39 @@ export default {
 
         // 获取timeLine详情
         getDetail(){
-            const { MockData } = this;
-            const { data } = MockData;
-            this.detailData = data;
-            // this.formatTime();
+            getTimeaxis(34).then((res)=>{
+                const {code,data} = res;
+                if(code == 200 && data){
+                    this.detailData = this.resetDetail(data);
+                }else{
+                   iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn) 
+                }
+            }).catch((err)=>{});
+        },
+
+        // 显示隐藏指定的line
+        showLine(index,line){
+            line.map((item,itemIndex)=>{
+                if(itemIndex == index) item.isVisible = true;
+                else item.isVisible = false;
+            })
+        },
+
+        // 重置下timeline数据
+        resetDetail(data){
+            const newData = data ; 
+            data.map((item)=>{
+                const {nomiTimeAxisSupplierResultVOList=[]} = item;
+                nomiTimeAxisSupplierResultVOList.map((axisItem)=>{
+                    const {nomiTimeAxisSupplierExps=[]} = axisItem;
+                    nomiTimeAxisSupplierExps.map((expsItem)=>{
+                        // 添加一个range字段给日期组件
+                        expsItem.rangeDate = [expsItem.beginDate,expsItem.endDate]
+                    })
+                })
+            });
+
+             return data;
         },
     },
     computed:{
@@ -246,6 +295,9 @@ export default {
                 width: 25px;
                 height: 25px;
                 margin-left: 20px;
+                &:hover{
+                    cursor: pointer;
+                }
             }
         }
         .list-item-step{

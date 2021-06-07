@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-26 11:16:58
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-02 11:11:58
+ * @LastEditTime: 2021-06-07 14:05:00
  * @Description: 
  * @FilePath: \front-web\src\views\designateFiles\fileManage\data.js
  */
@@ -13,13 +13,13 @@ export const tableTitle = [
   {props:'code',name:'编号', key: "", tooltip: true, width: 100},
   {props:'item',name:'导入项次', key: "", tooltip: true, width: 100},
   {props:'rfqId',name:'RFQ编号', key: "", tooltip: true, width: 100},
-  {props:'csfuserDept',name:'CSF科室', key: "", tooltip: true, width: 100},
-  {props:'csfuserId',name:'CSF', key: "", tooltip: true, width: 100},
-  {props:'respDept',name:'LINIE科室', key: "", tooltip: true, width: 100},
-  {props:'respLinie',name:'LINIE', key: "", tooltip: true, width: 100},
+  {props:'csfuserDeptName',name:'CSF科室', key: "", tooltip: true, width: 100},
+  {props:'csfUser',name:'CSF', key: "", tooltip: true, width: 100},
+  {props:'csfuserDeptName',name:'LINIE科室', key: "", tooltip: true, width: 100},
+  {props:'csfUser',name:'LINIE', key: "", tooltip: true, width: 100},
   {props:'status',name:'状态', key: "", tooltip: true, width: 100},
   {props:'partNameCh',name:'附件零件名称', key: "", tooltip: true, width: 100},
-  {props:'carProject',name:'使用车型', key: "", tooltip: true, width: 100},
+  {props:'carType',name:'使用车型', key: "", tooltip: true, width: 100},
   {props:'carQty',name:'每车用量', key: "", tooltip: true},
   {props:'fujian',name:'附件', key: "", tooltip: true},
   {props:'timeToMarket',name:'附件上市时间', key: "", tooltip: true, width: 120},
@@ -50,18 +50,18 @@ export const searchList = [
   {value: 'partNameCh', label: '附件零件名称', type: 'input', i18n_label: '',},
   {value: 'carType', label: '使用车型', type: 'input', i18n_label: '',},
   {value: 'timeToMarket', label: '附件上市时间', type: 'date', i18n_label: '',},
-  {value: 'deptId', label: '科室', type: 'select', i18n_label: '', selectOption: []},
-  {value: 'linie', label: 'LINIE', type: 'select', i18n_label: '', selectOption: []},
+  {value: 'dept', label: '科室', type: 'input', i18n_label: ''},
+  {value: 'linie', label: 'LINIE', type: 'select', i18n_label: '', selectOption: ''},
   {value: 'code', label: '编号', type: 'input', i18n_label: '',},
-  {value: 'partStatus', label: '零件状态', type: 'select', i18n_label: '', selectOption: []},
+  {value: 'partStatus', label: '零件状态', type: 'select', i18n_label: '', selectOption: ''},
   {value: 'accessoryNum', label: '配件序号', type: 'input', i18n_label: '',},
-  {value: 'isEop', label: '是否EOP', type: 'select', i18n_label: '', selectOption: []},
-  {value: 'assemblyPartNum', label: '批量供货总成号', type: 'input', i18n_label: '',},
-  {value: 'status', label: '状态', type: 'select', i18n_label: '', selectOption: []},
-  {value: 'procureGroup', label: '参考采购组', type: 'input'},
+  // {value: 'isEop', label: '是否EOP', type: 'select', i18n_label: '', selectOption: []},
+  // {value: 'assemblyPartNum', label: '批量供货总成号', type: 'input', i18n_label: '',},
+  {value: 'status', label: '状态', type: 'select', i18n_label: '', selectOption: ''},
+  // {value: 'procureGroup', label: '参考采购组', type: 'input'},
   {value: 'supplierSapCode', label: '供应商SAP号', type: 'input', i18n_label: '',},
   {value: 'spNrNum', label: 'SP号', type: 'input', i18n_label: ''},
-  {value: 'isShow', label: '是否自己', type: 'select', i18n_label: '', selectOption: []},
+  {value: 'isShow', label: '是否自己', type: 'select', i18n_label: '', selectOption: 'yesOrNoOption'},
 ]
 
 export const fileSearchList = [

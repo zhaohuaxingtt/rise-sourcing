@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-01 14:50:12
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-03 16:11:14
+ * @LastEditTime: 2021-06-05 14:37:40
  * @Description: 配件相关接口
  * @FilePath: \front-web\src\api\accessoryPart\index.js
  */
@@ -12,6 +12,7 @@ import axiosDownload from '@/utils/axios.download'
 
 const requst = axios(process.env.VUE_APP_PROCUREMENTREQUIREMENT_ZZB)
 const requestDownload = axiosDownload(process.env.VUE_APP_PROCUREMENTREQUIREMENT_ZZB)
+const requstSourcing = axios(process.env.VUE_APP_SUPPLIER_WJS)
 
 // 获取配件列表数据
 export function getAccessoryOneInfoList(params) {
@@ -116,5 +117,14 @@ export function downLoadAccessoryAll() {
   return requestDownload({
     url: '/tp-records/accessoryInfo/downloadAccessoryAll',
     method: 'GET',
+  })
+}
+
+// 新增rfq
+export function insertRfq(params) {
+  return requstSourcing({
+    url: '/rfqs/insertRfq',
+    method: 'POST',
+    data: params
   })
 }
