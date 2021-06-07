@@ -45,9 +45,8 @@ export const attachMixins = {
           fileType: '101',
         }, params))
         if (res1.code === '200') {
-          const list = res1.data.records || []
-          const fileList = list.map(o => o.id)
-          console.log(fileList)
+          const list = res1.data || []
+          const fileList = list.map(o => o.filePath)
           if (fileList.length) {
             const params = {
               applicationName: 'rise',
@@ -156,7 +155,7 @@ export const attachMixins = {
     },
     // 下载文件
     downloadFile() {
-      const fileList = this.multipleSelection.map(o => o.id)
+      const fileList = this.multipleSelection.map(o => o.filePath)
       if (!fileList.length) return iMessage.error(this.$t('nominationSuggestion.QingXuanZeZhiShaoYiTiaoShuJu'))
       try {
         console.log(fileList)

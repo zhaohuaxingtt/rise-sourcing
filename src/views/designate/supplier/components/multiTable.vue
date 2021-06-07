@@ -12,6 +12,12 @@
           <iButton @click="addShow(false)">
             {{ $t("nominationSupplier.QuXiaoZhanShi") }}
           </iButton>
+          <iButton @click="submit" :loading="submiting">
+            {{ $t("LK_BAOCUN") }}
+          </iButton>
+          <iButton @click="multiEditControl = false">
+            {{ $t("LK_QUXIAO") }}
+          </iButton>
         </span>
         <span v-else>
           <iButton @click="multiEditControl = true">
@@ -69,7 +75,7 @@
 <script>
 import { 
   multiSupplierTitle, 
-  mokeMultiSupplierData
+  // mokeMultiSupplierData
 } from './data'
 import tablelist from "./tableList";
 import {
@@ -80,8 +86,10 @@ import {
   iMessage
 } from "rise";
 import {
-  getSupplierList
+  getSupplierList,
+  addSuppliersInfo
 } from '@/api/designate/supplier' 
+import _ from 'lodash'
 
 export default {
   components: {
@@ -95,11 +103,14 @@ export default {
     return {
       nomiAppId: this.$store.getters.nomiAppId,
       tableListData: [],
+      // 备份tableListData,重置备用
+      oriTableListData: [],
       tableLoading: false,
       multiSupplierTitle,
       multiEditState: false,
       multiEditControl: false,
       selectMultiData: [],
+      submiting: false,
       page: {
         currPage: 1,
         pageSize: 10,
@@ -115,16 +126,42 @@ export default {
     // 加入展示
     addShow(type = true) {
       if (!this.selectMultiData.length) {
-          iMessage.error(this.$t('nominationSuggestion.QingXuanZeZhiShaoYiTiaoShuJu'))
-          return
-        }
+        iMessage.error(this.$t('nominationSuggestion.QingXuanZeZhiShaoYiTiaoShuJu'))
+        return
+      }
       this.selectMultiData.map(o => {
         this.$set(o, 'isPresent', type ? 1 : 0)
       })
     },
+    async submit() {
+      const confirmInfo = await this.$confirm(this.$t('submitSure'))
+      if (confirmInfo !== 'confirm') return
+      this.submiting = true
+      addSuppliersInfo({
+        items: this.tableListData,
+        nominateId: this.$store.getters.nomiAppId
+      }).then(res => {
+        if (res.code === '200') {
+          iMessage.success(this.$t('LK_CAOZUOCHENGGONG'))
+          this.getFetchDataList()
+        } else {
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
+        this.submiting = false
+      }).catch(e => {
+        this.submiting = false
+        iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
+      })
+    },
+    // 取消
+    async cancel() {
+      const confirmInfo = await this.$confirm(this.$t('cancelSure'))
+      if (confirmInfo !== 'confirm') return
+      this.tableListData = _.cloneDeep(this.oriTableListData)
+    },
     // [RFQ号+零件号+零件名称+车型项目]
     genHeaderTitle(scope) {
-      return scope.row.rfqId + scope.row.partNum + scope.row.partNameCh + scope.row.carModelProject
+      return `${scope.row.rfqId || ''} ${scope.row.partNum || ''} ${scope.row.partNameCh || ''} ${scope.row.carModelProject || ''}`
     },
     getFetchDataList() {
       this.tableLoading = true
@@ -134,6 +171,7 @@ export default {
         this.tableLoading = false
         if (res.code === '200') {
           this.tableListData = res.data || []
+          this.oriTableListData = _.cloneDeep(this.tableListData)
           if (this.page) {
             this.page.totalCount = Number(res.total || 0)
           }

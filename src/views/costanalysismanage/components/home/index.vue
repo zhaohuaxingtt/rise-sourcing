@@ -135,7 +135,7 @@
         :tableTitle="tableTitle"
         :tableLoading="loading">
         <template #id="scope">
-          <span class="link" @click="jumpRfq(scope.row)">{{ scope.row.id }}</span>
+          <span class="link-underline" @click="jumpRfq(scope.row)">{{ scope.row.id }}</span>
         </template>
         <template #createDate="scope">
           <span>{{ scope.row.createDate | dateFilter("YYYY-MM-DD") }}</span>
@@ -144,17 +144,17 @@
           <span>{{ scope.row.deadDate | dateFilter("YYYY-MM-DD") }}</span>
         </template>
         <template #technoMaterial="scope">
-          <span class="link" @click="download(scope.row)">{{ $t("costanalysismanage.XiaZai") }}</span>
+          <span class="link-underline" @click="download(scope.row)">{{ $t("costanalysismanage.XiaZai") }}</span>
         </template>
         <template #sendDate="scope">
-            <span class="link" @click="cbd(scope.row)">{{ scope.row.sendDate | dateFilter("YYYY-MM-DD") }}</span>
+            <span class="link-underline" @click="cbd(scope.row)">{{ scope.row.sendDate | dateFilter("YYYY-MM-DD") }}</span>
             <div v-if="scope.row.sendDate" class="attention margin-left4"><span>!</span></div>
         </template>
         <template #analysisReport="scope">
-          <icon class="tick link" symbol name="iconbaojiazhuangtailiebiao_yibaojia" @click.native="analysisReport(scope.row)"/>
+          <icon class="tick link-underline" symbol name="iconbaojiazhuangtailiebiao_yibaojia" @click.native="analysisReport(scope.row)"/>
         </template>
         <template #recordId="scope">
-          <icon class="link" symbol :name="+scope.row.recordId > 0 ? 'iconliebiaoyizhiding' : 'iconliebiaoweizhiding'" @click.native="updateOrder(scope.row)" />
+          <icon class="link-underline" symbol :name="+scope.row.recordId > 0 ? 'iconliebiaoyizhiding' : 'iconliebiaoweizhiding'" @click.native="updateOrder(scope.row)" />
         </template>
       </tableList>
       <iPagination 
