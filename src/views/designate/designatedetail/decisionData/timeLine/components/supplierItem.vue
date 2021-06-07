@@ -21,23 +21,25 @@
                 </li>
             </ul>
             <ul v-if="supplierData['nomiTimeAxisSupplierExps'] && supplierData['nomiTimeAxisSupplierExps'].length" class="date-line">
-                <li class="flex" v-for="(supplieritem,supplierIndex) in supplierData.nomiTimeAxisSupplierExps" :key="'supplierData_'+supplierIndex">
-                    <iInput v-model="supplieritem.supplierNameZh"  class="date-input"/>
-                    <iDatePicker
-                        class="data-picker" 
-                        v-model="supplieritem.rangeDate"
-                        type="daterange"
-                        range-separator="-"
-                        :start-placeholder="$t('LK_KAISHISHIJIAN')"
-                        :end-placeholder="$t('LK_JIESHUSHIJIAN')"
-                        format="yyyy-MM-dd" 
-                        value-format="timestamp"
-                        @blur="changeDate(supplieritem)"
-                    />
+                <template  v-for="(supplieritem,supplierIndex) in supplierData.nomiTimeAxisSupplierExps" >
+                    <li v-if="!supplieritem.isDelete" class="flex" :key="'supplierData_'+supplierIndex">
+                        <iInput v-model="supplieritem.durationName"  class="date-input"/>
+                        <iDatePicker
+                            class="data-picker" 
+                            v-model="supplieritem.rangeDate"
+                            type="daterange"
+                            range-separator="-"
+                            :start-placeholder="$t('LK_KAISHISHIJIAN')"
+                            :end-placeholder="$t('LK_JIESHUSHIJIAN')"
+                            format="yyyy-MM-dd" 
+                            value-format="timestamp"
+                            @blur="changeDate(supplieritem)"
+                        />
 
-                    <!-- 删除按钮 -->
-                    <span class="delete" @click="edit('delete',itemIndex,supplierIndex)"><icon class="delete-icon" symbol name="icondingdianshenqingyusheluoji-shanchu" /></span>
-                </li>
+                        <!-- 删除按钮 -->
+                        <span class="delete" @click="edit('delete',itemIndex,supplierIndex)"><icon class="delete-icon" symbol name="icondingdianshenqingyusheluoji-shanchu" /></span>
+                    </li>
+                 </template>
             </ul>
         </div>
         <p class="btn-list">
@@ -92,11 +94,12 @@ export default {
             } = this;
             if(type == 'add'){
                 supplierData.nomiTimeAxisSupplierExps.push({
-                     supplierNameZh:'',rangeDate:[],beginDate:'',endDate:'',
+                     durationName:'',rangeDate:[],beginDate:'',endDate:'',
                 });
 
             }else if(type == 'delete'){
-                 supplierData.nomiTimeAxisSupplierExps.splice(line,1);
+                supplierData.nomiTimeAxisSupplierExps[line].isDelete = true;
+                //  supplierData.nomiTimeAxisSupplierExps.splice(line,1);
             }
         },
 

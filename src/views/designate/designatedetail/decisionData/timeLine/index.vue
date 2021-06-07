@@ -67,7 +67,7 @@
                             </template>
                             <ul class="supplier-item-list">
                                 <li class="flex-between-center" v-for="(supplierListItem,supplierListItemIndex) in supplierItem.nomiTimeAxisSupplierExps" :key="'supplier-item-'+supplierListItemIndex">
-                                    <span class="supplier-item-name">{{supplierListItem.supplierNameZh}}</span>
+                                    <span class="supplier-item-name">{{supplierListItem.durationName}}</span>
                                     <div class="supplier-item-line">
                                         <supplierLine 
                                             :allList="supplierItem.nomiTimeAxisSupplierExps"
@@ -153,11 +153,13 @@ export default {
             if(isEdit){
                 stepList.map((item)=>{item.isEdit = false});
             }else{
+                this.getDetail();
                 stepList.map((item)=>{
                     if(item.icon == 'iconTimeLine-CSCMeeting' || item.icon == 'iconTimeLine-BFConfirm'){
                         item.isEdit = true;
                         }
-                    });
+                });
+                
             }
             this.$store.dispatch('updateNominationStep',{nominateId:'1',phaseType:'1'});
             this.stepList = stepList;
@@ -177,6 +179,7 @@ export default {
                 if(code == 200){
                     iMessage.success(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
                     this.getDetail();
+                    this.isEdit = false;
                 }else {
                     iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
                 }
@@ -205,8 +208,10 @@ export default {
                 const {code,data} = res;
                 if(code == 200 && data){
                     this.detailData = this.resetDetail(data);
+                }else{
+                   iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn) 
                 }
-            });
+            }).catch((err)=>{});
         },
 
         // 显示隐藏指定的line

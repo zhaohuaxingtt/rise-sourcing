@@ -65,7 +65,8 @@ export default {
                     //获取当前item占总进度条的百分比
                     this.percent = ((Number(item.endDate) - Number(item.beginDate)) / (end - start)) * 100 +'%';
                     // 获取当前item与开始时间的差距
-                    this.left = ((Number(item.beginDate) - start) / (end - start)) * 100 + '%'; 
+                    const distance = ((Number(item.beginDate) - start) / (end - start)) * 100
+                    this.left = distance < 90 ? distance+'%' : '78%'; 
                     // 开始时间
                     this.beginDate = Number(item.beginDate) ;
                     // 结束时间
