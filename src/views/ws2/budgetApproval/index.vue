@@ -308,7 +308,7 @@ export default {
               this.page.currPage = res.pageNum;
               this.page.pageSize = res.pageSize;
               this.page.totalCount = res.total;
-              if(res.data && res.data[0].isHideColumn == 2){
+              if(res.data.length > 0 && res.data[0].isHideColumn == 2){
                 this.tableTitle = this.tableTitle.filter(item => item.props != 'categoryBudget' && item.props != 'budgetLeftoverAmount')
               }
               this.tableListData = res.data;
