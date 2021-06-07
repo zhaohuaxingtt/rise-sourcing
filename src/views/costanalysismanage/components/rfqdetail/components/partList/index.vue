@@ -49,6 +49,7 @@ s<!--
         :layout="page.layout"
         :total="page.totalCount" />
     </div>
+    <downloadDialog :rfqNum="rfqId" :dialogVisible="downloadDialogVisible" @changeVisible="changeVisible"/>
   </iCard>
 </template>
 
@@ -60,6 +61,7 @@ import filters from "@/utils/filters"
 import { pageMixins } from "@/utils/pageMixins"
 import { numberProcessor } from "@/utils"
 import { getKmPartList, savePcaAndTia } from "@/api/costanalysismanage/rfqdetail"
+import downloadDialog from "../../../home/components/downloadFiles"
 
 export default {
   components: {
@@ -67,7 +69,8 @@ export default {
     iButton,
     iInput,
     iPagination,
-    tableList
+    tableList,
+    downloadDialog
   },
   mixins: [ filters, pageMixins ],
   props: {
@@ -81,7 +84,8 @@ export default {
       loading: false,
       tableTitle,
       tableListData: [],
-      saveLoading: false
+      saveLoading: false,
+      downloadDialogVisible: false,
     }
   },
   mounted() {
@@ -138,7 +142,9 @@ export default {
       .catch(() => this.saveLoading = false)
     },
     // 下载技术资料
-    handleDownloadTechnicalData() {},
+    handleDownloadTechnicalData() {
+      this.downloadDialogVisible = true
+    },
     // 下载CBD
     handleDownloadCbd() {},
     // 跳转零件详情
@@ -150,6 +156,10 @@ export default {
     },
     handleInputByTiaResult(value, row) {
       this.$set(row, "tiaResult", numberProcessor(value, 2))
+    },
+    // 关闭弹窗
+    changeVisible(type){
+      this.downloadDialogVisible = type
     }
   }
 }
