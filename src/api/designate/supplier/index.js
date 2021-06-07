@@ -27,3 +27,39 @@ export function getSingleSupplierList(params) {
       params
   })
 }
+
+// 保存供应商列表
+export function addSuppliersInfo(data) {
+  return requst({
+      url: `/supplier/addSuppliersInfo`,
+      method: "POST",
+      data
+  })
+}
+
+// 保存单一供应商列表
+export function addsingleSuppliersInfo(data) {
+  return requst({
+      url: `/exclusiveSupplier/addExclusiveSupplier`,
+      method: "POST",
+      data
+  })
+}
+
+// 根据rfq号查询零件的供应商列表
+export function getRfqSupplierList(params) {
+  return requst({
+      url: `/exclusiveSupplier/rfqSupplierList`,
+      method: "GET",
+      params
+  })
+}
+
+// 导出单一供应商列表
+export function exportExclusiveSuppliersList(data) {
+  return requst({
+      url: `/exclusiveSupplier/exportExclusiveSuppliersList`,
+      method: "POST",
+      data
+  })
+}

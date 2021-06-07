@@ -115,7 +115,7 @@ export default {
       const {desinateId} = query;
       const data = {
         nominateTabPageDTO: {
-          node: this.tableListData,
+          nodes: this.tableListData,
           nominateId: this.$store.getters.nomiAppId
           // phaseType: this.phaseType
           

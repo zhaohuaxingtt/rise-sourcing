@@ -179,79 +179,79 @@ export const mokeSingleSupplierData = [
 // 零件清单表头
 export const partTitle = [
   {
-    props: 'fsnrGsnrName',
+    props: 'rfqId',
     name: 'RFQ编号',
     key: 'nominationLanguage.RFQBianHao',
     tooltip: false
   },
   {
-    props: 'sapNum',
+    props: 'fsnrGsnrNum',
     name: 'FS/GS/SP NO.',
     key: '',
     tooltip: false
   },
   {
-    props: 'fsnrGsnrNameEn',
+    props: 'partNum',
     name: '零件号',
     key: 'nominationLanguage.LingJianHao',
     tooltip: false
   },
   {
-    props: 'fsnrGsnrNameEn',
+    props: 'partNameZh',
     name: '零件名(中)',
     key: 'nominationLanguage.LingJianMingCN',
     tooltip: false
   },
   {
-    props: 'fsnrGsnrNameEn',
+    props: 'partNameDe',
     name: '零件名(德)',
     key: 'nominationLanguage.LingJianMingDE',
     tooltip: false
   },
   {
-    props: 'fsnrGsnrNameEn',
+    props: 'procureFactory',
     name: '采购工厂',
     key: 'nominationSupplier.CaiGouGongChang',
     tooltip: false
   },
   {
-    props: 'fsnrGsnrNameEn',
+    props: 'partProjectType',
     name: '零件项目类型',
     key: 'nominationSupplier.LingJianXiangMuLeiXing',
     tooltip: false
   },
   {
-    props: 'fsnrGsnrNameEn',
+    props: 'cartypeCategory',
     name: '车型大类',
     key: 'nominationSupplier.CheXingDaLei',
     tooltip: false
   },
   {
-    props: 'fsnrGsnrNameEn',
+    props: 'cartypeProjectZh',
     name: '车型项目',
     key: 'nominationSupplier.CheXingXiangMu',
     tooltip: false
   },
   {
-    props: 'fsnrGsnrNameEn',
+    props: 'orderDate',
     name: '更新时间',
     key: 'nominationSupplier.GengXinShiJian',
     tooltip: false
   },
   {
-    props: 'fsnrGsnrNameEn',
+    props: 'partStatus',
     name: '零件状态',
     key: 'nominationSupplier.LingJianZhuangTai',
     tooltip: false
   },
   {
-    props: 'fsnrGsnrNameEn',
+    props: 'buyerName',
     name: '询价采购员',
     key: 'nominationSupplier.XunJiaCaiGouYuan',
     tooltip: false
   },
   {
-    props: 'fsnrGsnrNameEn',
+    props: 'linieName',
     name: 'LINIE',
     key: 'LINIE',
     tooltip: false

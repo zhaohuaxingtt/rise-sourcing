@@ -9,6 +9,7 @@
         "deleteSure":'您确定要执行删除操作吗？',
         "revokeSure":'您确定要执行撤回操作吗？',
         "submitSure":'您确定要执行提交操作吗？',
+        "cancelSure":'您确定要取消吗？',
         'all': '全部',
         'search': '搜索',
         'setting': '设置',
