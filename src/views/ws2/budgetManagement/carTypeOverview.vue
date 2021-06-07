@@ -79,16 +79,51 @@
   <!--        <p v-if="noMore">没有更多了</p>-->
   <!--      </div>-->
 
-        <div class="content list"
-            style="overflow:auto;"
-            :style="{height: cardHeight + 'px'}"
-            v-if="contentData.length > 0"
-            v-infinite-scroll="load"
-            infinite-scroll-distance="10"
-            infinite-scroll-disabled="scrollDisabled">
-          <div class="item list-item" v-for="(item, index) in contentData" :key="index"
-              @click="toEdit(item.id, item.sourceStatus, item.isBudget)">
-            <div class="item_top">
+      <div class="content list"
+           style="overflow:auto;"
+           :style="{height: cardHeight + 'px'}"
+           v-if="contentData.length > 0"
+           v-infinite-scroll="load"
+           infinite-scroll-distance="10"
+           infinite-scroll-disabled="scrollDisabled">
+        <div class="item list-item" v-for="(item, index) in contentData" :key="index"
+             @click="toEdit(item.id, item.sourceStatus, item.isBudget)">
+          <div class="item_top">
+            <Popover
+                :content="Number(item.isBudget) === 3 ? '点击进入【模具投资清单】页面' : '点击进入未完成/需要继续编辑的【生成投资清单】页面'"
+                placement="top-start"
+                trigger="hover">
+              <img slot="reference" v-if="item.isBudget == 1" class="editIcon" src="../../../assets/images/editCar.png" alt="">
+              <img slot="reference" v-if="item.isBudget == 2" class="editIcon" src="../../../assets/images/editCar2.png" alt="">
+              <img slot="reference" v-if="item.isBudget == 3" class="editIcon" src="../../../assets/images/editCar.png" alt="">
+            </Popover>
+            <div class="title">
+              <Popover
+                  :content="item.cartypeProjectName"
+                  placement="top-start"
+                  trigger="hover">
+                <h4 slot="reference">{{ item.cartypeProjectName }}</h4>
+              </Popover>
+              <Popover
+                  v-if="Number(item.sourceStatus) === 1 || Number(item.isBudget) !== 3"
+                  :content="$t('LK_CAIGOUGONGCHANG') + ': ' + (item.locationFactory ? item.locationFactory : '')"
+                  placement="top-start"
+                  trigger="hover">
+                <p slot="reference">{{$t("LK_CAIGOUGONGCHANG")}}: {{ item.locationFactory }}</p>
+              </Popover>
+              <Popover
+                  v-if="Number(item.sourceStatus) === 1 || Number(item.isBudget) !== 3"
+                  :content="'SOP: ' + item.sop"
+                  placement="top-start"
+                  trigger="hover">
+                <p slot="reference">SOP: {{ item.sop }}</p>
+              </Popover>
+              <Popover
+                  :content="$t('LK_ZUIXINGENGXINREN') + ': ' + (item.updateByName ? item.updateByName : '')"
+                  placement="top-start"
+                  trigger="hover">
+                <p slot="reference" v-if="item.isBudget == 3">{{$t('LK_ZUIXINGENGXINREN')}}: {{ item.updateByName }}</p>
+              </Popover>
               <Popover
                   :content="Number(item.isBudget) === 3 ? '点击进入【模具投资清单】页面' : '点击进入未完成/需要继续编辑的【生成投资清单】页面'"
                   placement="top-start"
@@ -159,6 +194,7 @@
         <div class="noData" v-if="contentData.length === 0">暂无数据</div>
       </div>
     </div>
+  </div>
   </div>
   
 </template>
