@@ -41,8 +41,8 @@ export const decisionType = [
 
 // 整体三级菜单排序 表头
 export const sortTableTitle=[
-    {props:'key',name:'主题',key:'strategicdoc.ZhuTi',tooltip:false},
-    {props:'visible',name:'显示/隐藏',key:'strategicdoc.XianShiYinCang',tooltip:false},
+    {props:'tabName',name:'主题',key:'strategicdoc.ZhuTi',tooltip:false},
+    {props:'flag',name:'显示/隐藏',key:'strategicdoc.XianShiYinCang',tooltip:false},
     {props:'sort',name:'',key:'strategicdoc.PaiXu',tooltip:false}
 ]
 // 三级表头表格数据
