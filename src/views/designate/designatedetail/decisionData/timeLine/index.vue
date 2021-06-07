@@ -8,7 +8,7 @@
         <!-- 按钮区域 -->
         <div class="timeLine-btn-list" v-if="isPreview=='0'">
             <span v-if="isEdit">
-                <iButton @click="save">{{$t('LK_BAOCUN')}}</iButton>
+                <iButton :loading="isLoading" @click="save">{{$t('LK_BAOCUN')}}</iButton>
                 <iButton @click="edit">{{$t('LK_QUXIAO')}}</iButton>
                 <iButton>{{$t('LK_ZHANSHI')}}</iButton>
             </span>
@@ -35,8 +35,6 @@
                     </ul>
                     <!-- 供应商编辑列表 -->
                     <ul class="supplier-edit-list">
-                        <!-- v-for="(supplierItem,supplierIndex) in item.nomiTimeAxisSupplierResultVOList" :key="'nomiTimeAxisSupplierResultVOList_'+supplierIndex" -->
-                        <!-- <li v-for="(item,index) in supplierData" :key="'supplier-edit-list-'+index"> -->
                         <li  v-for="(supplierItem,supplierIndex) in item.nomiTimeAxisSupplierResultVOList" :key="'nomiTimeAxisSupplierResultVOListEdit_'+supplierIndex">
                             <supplierItem :itemIndex="supplierIndex" :supplierData="supplierItem" @editSupplierLine="editSupplierLine"/>
                         </li>
@@ -92,6 +90,7 @@ import {
   iCard,
   iButton,
   icon,
+  iMessage,
 } from "rise";
 import { stepList } from './components/data'
 import groupStep from './components/groupStep'
@@ -99,9 +98,9 @@ import supplierStep from './components/supplierStep'
 import supplierLine from './components/supplierLine'
 import supplierItem from './components/supplierItem'
 import { cloneDeep } from 'lodash'
-import { MockData } from './components/data'
 import {
     getTimeaxis,
+    saveTimeaxis,
 } from '@/api/designate/decisiondata/timeLine'
 export default {
     name:'timeLine',
@@ -113,6 +112,7 @@ export default {
         iCard,
         iButton,
         icon,
+        iMessage,
     },
     data(){
         return{
@@ -137,7 +137,7 @@ export default {
                 ]}
                 
             ],
-            MockData:MockData,
+            isLoading:false,
             detailData:[],
             
         }
@@ -165,8 +165,22 @@ export default {
         },
 
         // 保存
-        save(){
-            console.log(this.detailData,'stepList');
+        async save(){
+            this.isLoading = true;
+            const { detailData } = this;
+            const data = {
+                nomiTimeAxisList:detailData
+            }
+            await saveTimeaxis(data).then((res)=>{
+                const {code} = res;
+                this.isLoading = false;
+                if(code == 200){
+                    iMessage.success(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+                    this.getDetail();
+                }else {
+                    iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+                }
+            }).catch((err)=>{ this.isLoading = false; })
         },
 
         // 新增删减供应商行
@@ -187,15 +201,10 @@ export default {
 
         // 获取timeLine详情
         getDetail(){
-            const { MockData } = this;
-            const { data } = MockData;
-            // this.detailData = data;
-            
-            // this.formatTime();
             getTimeaxis(34).then((res)=>{
                 const {code,data} = res;
                 if(code == 200 && data){
-                    this.detailData = data;
+                    this.detailData = this.resetDetail(data);
                 }
             });
         },
@@ -206,7 +215,24 @@ export default {
                 if(itemIndex == index) item.isVisible = true;
                 else item.isVisible = false;
             })
-        }
+        },
+
+        // 重置下timeline数据
+        resetDetail(data){
+            const newData = data ; 
+            data.map((item)=>{
+                const {nomiTimeAxisSupplierResultVOList=[]} = item;
+                nomiTimeAxisSupplierResultVOList.map((axisItem)=>{
+                    const {nomiTimeAxisSupplierExps=[]} = axisItem;
+                    nomiTimeAxisSupplierExps.map((expsItem)=>{
+                        // 添加一个range字段给日期组件
+                        expsItem.rangeDate = [expsItem.beginDate,expsItem.endDate]
+                    })
+                })
+            });
+
+             return data;
+        },
     },
     computed:{
         isPreview(){

@@ -32,6 +32,7 @@
                         :end-placeholder="$t('LK_JIESHUSHIJIAN')"
                         format="yyyy-MM-dd" 
                         value-format="timestamp"
+                        @blur="changeDate(supplieritem)"
                     />
 
                     <!-- 删除按钮 -->
@@ -82,10 +83,6 @@ export default {
             ]
         }
     },
-    created(){
-        this.resetDate();
-        console.log(this.supplierData,'supplierData')
-    },
     methods:{
         // 编辑行
         edit(type,index,line=null){
@@ -95,7 +92,7 @@ export default {
             } = this;
             if(type == 'add'){
                 supplierData.nomiTimeAxisSupplierExps.push({
-                     supplierNameZh:'',createDate:''
+                     supplierNameZh:'',rangeDate:[],beginDate:'',endDate:'',
                 });
 
             }else if(type == 'delete'){
@@ -103,17 +100,10 @@ export default {
             }
         },
 
-        // 重置下区间数据的显示
-        resetDate(){
-            const { supplierData={} } = this;
-            const {nomiTimeAxisSupplierExps=[]} = supplierData;
-            nomiTimeAxisSupplierExps.map((item)=>{
-                item.rangeDate = [item.beginDate,item.endDate]
-            })
-        },
-
         // change区间日期
         changeDate(item){
+            item.beginDate = item['rangeDate'][0];
+            item.endDate = item['rangeDate'][1];
             console.log(item,'itemitemitemitemitem');
         },
         
