@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-05-24 17:06:01
- * @LastEditTime: 2021-06-04 18:38:17
+ * @LastEditTime: 2021-06-05 15:28:29
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\createparts\components\home\index.vue
@@ -203,7 +203,7 @@ export default {
       createParts({
         manuallyCreatePartProjectDTOList: this.multipleSelection.map(item => ({
           partNum: item.partNum,
-          partProjectType: item.partType
+          // partProjectType: item.partType
         }))
       })
       .then(res => {

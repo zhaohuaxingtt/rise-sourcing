@@ -18,6 +18,14 @@ export function getRfqDataList(parmars) {
     })
 }
 
+export function getRfqList(params) {
+    return requst({
+        url: '/getRfq/getRfqBaseInfoScenes',
+        method: 'POST',
+        data: params
+    })
+}
+
 export function editRfqData(parmars) {
     return requst({
         url: '/rfqs/updateRfq',

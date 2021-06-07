@@ -28,7 +28,7 @@
       <template v-else>
         <el-table-column width="240" :key="index" align="center" fixed="left" :label="items.key ? $t(items.key) : items.name" v-if="items.props == 'companyAddress'">
           <template v-slot="scope">
-            <iSelect class="supplierProducePlaces input-center" v-model="scope.row.companyAddress" clearable popper-class="supplierProducePlacesDropdown" :loading="supplierProducePlacesLoading" @visible-change="supplierProducePlacesVisibleChange($event, scope.row)">
+            <iSelect v-if="!disabled" class="supplierProducePlaces input-center" v-model="scope.row.companyAddress" clearable popper-class="supplierProducePlacesDropdown" :loading="supplierProducePlacesLoading" @visible-change="supplierProducePlacesVisibleChange($event, scope.row)">
               <el-option
                 v-for="supplierProducePlace in supplierProducePlaces"
                 :key="supplierProducePlace.key"
@@ -39,6 +39,7 @@
                   </el-tooltip>
               </el-option>
             </iSelect>
+            <span v-else>{{ scope.row.companyAddress }}</span>
           </template>
         </el-table-column>
         <el-table-column :key="index" align='center' fixed="left" v-else-if="items.props == actionProps" :prop="items.props"
@@ -70,7 +71,8 @@ export default {
     actionProps: {type: String, default: 'action'},
     multiHeaderPropsText: {type: String, default: 'LK_BIANJI'},
     supplierProducePlaces: { type: Array, default: () => [] },
-    supplierProducePlacesLoading: { type: Boolean, default: false }
+    supplierProducePlacesLoading: { type: Boolean, default: false },
+    disabled: { type: Boolean, default: true }
   },
   methods: {
     handleSelectionChange(val) {
