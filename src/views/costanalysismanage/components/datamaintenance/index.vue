@@ -34,7 +34,7 @@
           @handleSelectionChange="handleSelectionChange"
         >
           <template #fileName="scope">
-            <span class="link" @click="download(scope.row)">{{ scope.row.fileName }}</span>
+            <span class="link-underline" @click="download(scope.row)">{{ scope.row.fileName }}</span>
           </template>
           <template #date="scope">
             <span>{{ scope.row.uploadDate | dateFilter("YYYY-MM-DD") }}</span>

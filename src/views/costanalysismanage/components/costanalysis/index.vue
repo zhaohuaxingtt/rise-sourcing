@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-05-28 16:01:25
- * @LastEditTime: 2021-06-07 17:58:13
+ * @LastEditTime: 2021-06-07 18:17:52
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\costanalysismanage\components\costanalysis\index.vue
@@ -35,7 +35,7 @@
           @handleSelectionChange="handleSelectionChange"
         >
           <template #fileName="scope">
-            <span class="link" @click="download(scope.row)">{{ scope.row.fileName }}</span>
+            <span class="link-underline" @click="download(scope.row)">{{ scope.row.fileName }}</span>
           </template>
           <template #date="scope">
             <span>{{ scope.row.uploadDate | dateFilter("YYYY-MM-DD") }}</span>
