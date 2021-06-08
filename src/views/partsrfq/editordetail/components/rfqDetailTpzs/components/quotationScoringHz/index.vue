@@ -66,7 +66,7 @@ export default{
     exampelData:exampelData,
     groupSelectData:[],
     groupVisble:false,
-    layout:'2',
+    layout:'1',
     supplierData:[],
     supplierTile:[],
     //轮次选择
