@@ -73,11 +73,16 @@ export default {
             rfqId: id,
             userId: store.state.permission.userInfo.id
           }
-          const res = await getModelBudgetList(req)
-          this.tableListData = res.records;
-          this.page.currPage = res.current
-          this.page.pageSize = res.size
-          this.page.totalCount = res.total
+          const res = await getModelBudgetList({
+            currPage: this.page.currPage,
+            pageSize: this.page.pageSize
+          },
+          [{ rfqIds: id }]
+          )
+          this.tableListData = res.data.records;
+          // this.page.currPage = res.current
+          // this.page.pageSize = res.size
+          this.page.totalCount = res.data.total
           this.tableLoading = false;
         } catch {
           this.tableLoading = false;

@@ -1,8 +1,8 @@
 /*
  * @Author: ldh
  * @Date: 2021-04-26 17:27:20
- * @LastEditors: ldh
- * @LastEditTime: 2021-05-13 21:04:15
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-06-08 20:26:51
  * @Description: In User Settings Edit
  * @FilePath: \front-supplier\src\api\rfqManageMent\quotationdetail\index.js
  */
@@ -177,7 +177,7 @@ export function getPackageTransport({quotationId}) {
 // 获取cbd
 export function findFiles(parmars) {
   return requstxw({
-    url: '/file/findFiles',
+    url: '/file/filesHistory',
     method: 'POST',
     data: parmars
   })
@@ -186,7 +186,7 @@ export function findFiles(parmars) {
 //下载成本汇总模板
 export function downPartCbdLoadFile(parmars) {
   return requstFile({
-    url: '/cbd-files/partCbdDownLoadFile',
+    url: '/cbd-files/partCbdFile',
     method: 'POST',
     data: parmars
   })
