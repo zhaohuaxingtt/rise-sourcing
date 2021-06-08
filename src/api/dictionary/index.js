@@ -4,6 +4,8 @@
  */
 
 import axios from '@/utils/axios'
+import { serialize } from "@/utils"
+
 const requst = axios(process.env.VUE_APP_DIC)
 export function getDictByCode(code) {
     return requst({
@@ -19,10 +21,10 @@ export function getDeptByDeptType(type) {
     })
 }
 
-//原产国
-export function selectDictByKeyss(type) {
+// 字典
+export function selectDictByKeys(params) {
     return requst({
-        url: `/selectDictByKeys?keys=${type}`,
+        url: `/selectDictByKeys?${ serialize(params, Array) }`,
         method: 'GET'
     })
 }

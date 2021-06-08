@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-26 20:06:02
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-05-27 10:07:55
+ * @LastEditTime: 2021-06-07 18:16:56
  * @Description: 产能计划弹窗
  * @FilePath: \front-web\src\views\accessoryPart\createRfq\components\capacityPlanning.vue
 -->
@@ -20,9 +20,9 @@
         <span class="font18 font-weight">产能计划</span>
           <div class="floatright">
             <!--------------------保存按钮----------------------------------->
-            <iButton @click="handleSave" >保存</iButton>
+            <iButton @click="handleSave" :loading="saveLoading" >保存</iButton>
             <!--------------------添加按钮----------------------------------->
-            <iButton @click="handleAddParts" >结束编辑</iButton>
+            <iButton @click="clearDialog" >结束编辑</iButton>
           </div>
       </div>
     </template>
@@ -31,39 +31,115 @@
 </template>
 
 <script>
-import { iDialog, iButton, iSelect, iInput, iSearch, iPagination } from 'rise'
+import { iDialog, iButton } from 'rise'
 import tableList from '@/views/designate/designatedetail/components/tableList'
 import { pageMixins } from "@/utils/pageMixins"
 import { planTableTitle } from '../data'
+import { getOutputPlan, updateOutputPlan } from '@/api/partsprocure/editordetail'
+import moment from 'moment'
+import { cloneDeep } from 'lodash'
 export default {
   mixins: [pageMixins],
-  components: { iDialog, iButton, iSelect, iInput, tableList, iSearch, iPagination },
+  components: { iDialog, iButton, tableList },
   props: {
-    dialogVisible: { type: Boolean, default: false }
+    dialogVisible: { type: Boolean, default: false },
+    detailInfo: {type: Object}
   },
   data() {
     return {
       backType: '',
       backReason: '',
-      tableData: [{a: '降价幅度(%)'}],
-      tableTitle: planTableTitle,
-      searchParams: {}
+      tableData: [],
+      tableTitle: [],
+      searchParams: {},
+      tableLoading: false,
+      saveLoading: false
+    }
+  },
+  watch: {
+    dialogVisible(val) {
+      if (val) {
+        this.getData()
+      }
     }
   },
   methods: {
-    clearDialog() {
-      this.$emit('changeVisible', false)
-    },
     /**
-     * @Description: 点击SP号跳转事件
+     * @Description: 保存修改的产量
      * @Author: Luoshuang
      * @param {*}
      * @return {*}
      */    
-    openPage() {
-      const router =  this.$router.resolve({path: '/sourcing/accessorypartdetail', query: {  }})
-      window.open(router.href,'_blank')
+    handleSave() {
+      this.saveLoading = true
+      const outputPlanList = this.tableTitle.reduce((accum, curr, index) => {
+        if (index === 0) {
+          return accum
+        } else {
+          return [...accum, {year: curr.name, output: this.tableData[0][index]}]
+        }
+      },[])
+      updateOutputPlan({
+        partOutputPlanInsertFacadeDTOS: {
+          partOutputPlanInsertList: outputPlanList,
+          purchasingProjectId: this.$route.query.purchaseProjectId,
+        }
+      })
+        .then(res => {
+          if (res?.result) {
+            iMessage.success(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
+            this.getData()
+          } else {
+            iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
+          }
+          
+          this.saveLoading = false
+        })
+        .catch(() => this.saveLoading = false)
     },
+    /**
+     * @Description: 获取列表数据
+     * @Author: Luoshuang
+     * @param {*}
+     * @return {*}
+     */    
+    getData() {
+      this.tableLoading = true
+      getOutputPlan({
+        'partOutputPlanReqDTO.purchaseProjectId': this.detailInfo.purchaseProjectId,
+        'partOutputPlanReqDTO.year': moment(this.detailInfo.timeToMarket).year() + 1
+      })
+        .then((res) => {
+          this.tableTitle = cloneDeep(planTableTitle)
+          this.tableData = [
+            {a: '产量（PC）'}
+          ]
+
+          if (res.data && res.data.partRecordsResDTO) {
+            if (Array.isArray(res.data.partRecordsResDTO.outputPlanList)) {
+              res.data.partRecordsResDTO.outputPlanList.forEach((planData, index) => {
+                this.tableTitle.push({props: planData.year, name: planData.year, key: planData.year})
+                this.tableData[0][planData.year] = planData.output
+              })
+            }
+          }
+          this.tableLoading = false
+        })
+        .catch(() => this.tableLoading = false)
+    },
+    /**
+     * @Description: 关闭弹窗
+     * @Author: Luoshuang
+     * @param {*}
+     * @return {*}
+     */    
+    clearDialog() {
+      this.tableTitle = cloneDeep(planTableTitle)
+      this.tableData = [
+            {a: '产量（PC）'}
+          ]
+      this.$emit('changeVisible', false)
+    }
   }
 }
 </script>

@@ -1,14 +1,14 @@
 /*
  * @Author: moxuan
  * @Date: 2021-03-03 09:52:00
- * @LastEditTime: 2021-05-24 12:11:59
+ * @LastEditTime: 2021-06-05 17:34:05
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsrfq\home\components\data.js
  */
 import { permissionTitle } from '@/utils'
-// export const tableTitle = [
-export const tableTitle = permissionTitle("PARTSRFQ_RFQLIST", [
+export const tableTitle = [
+// export const tableTitle = permissionTitle("PARTSRFQ_RFQLIST", [
     { props: 'id', name: 'RFQ编号', key: 'LK_RFQBIANHAO', tooltip: false, width:155 },
     { props: 'rfqName', name: 'RFQ名称', key: 'LK_RFQMINGCHENG', tooltip: true },
     { props: 'rfqType', name: 'RFQ类型', key: 'LK_RFQLEIXING', tooltip: false },
@@ -24,11 +24,11 @@ export const tableTitle = permissionTitle("PARTSRFQ_RFQLIST", [
     { props: 'tpGradeStatus', name: 'TP评分状态', key: 'LK_TPPINGFENZHUANGTAI', tooltip: false },
     { props: 'mqGradeStatus', name: 'MQ评分状态', key: 'LK_MQPINGFENZHUANGTAI', tooltip: false },
     { props: 'targetGradeStatus', name: 'CF目标价状态', key: 'LK_MUBIAOJIAZHUANGTAI', tooltip: false },
-    { props: 'a', name: 'Heavy Item', key: 'LK_HEAVYITEM', tooltip: false, width: 100 },
-    { props: 'b', name: '分析报告', key: 'LK_FENXIBAOGAO', tooltip: false, width: 100 },
+    { props: 'heavyItem', name: 'Heavy Item', key: 'LK_HEAVYITEM', tooltip: false, width: 100 },
+    { props: 'kmAnalysis', name: '分析报告', key: 'LK_FENXIBAOGAO', tooltip: false, width: 100 },
     { props: 'recordId', name: '', key: '', tooltip: false },
 ]
-)
+// )
 
 export const assignmentOfScroingTasksTableTitle = [
     { props: 'deptNum', name: '部门编号', key: 'LK_BUMENBIANHAO' },

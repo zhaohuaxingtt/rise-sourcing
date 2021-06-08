@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-27 21:20:49
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-05-28 10:39:59
+ * @LastEditTime: 2021-06-07 11:55:56
  * @Description: 
  * @FilePath: \front-web\src\views\partsprocure\editordetail\components\designateInfo\components\sel.vue
 -->
@@ -23,7 +23,7 @@
           </div>
       </div>
     </template>
-    <tableList selection indexKey :tableTitle="tableTitle" :tableData="tableData" class="doubleHeader"></tableList>
+    <tableList :activeItems='"fileName"' selection indexKey :tableTitle="tableTitle" :tableData="tableData" :tableLoading="tableLoading" class="doubleHeader" @handleSelectionChange="handleSelectionChange" @openPage="openPage"></tableList>
     <iPagination v-update 
       @size-change="handleSizeChange($event, getRfqTableList)" 
       @current-change="handleCurrentChange($event, getRfqTableList)" 
@@ -39,23 +39,111 @@
 </template>
 
 <script>
-import { iDialog, iButton, iInput, iPagination } from 'rise'
+import { iDialog, iButton, iPagination, iMessage } from 'rise'
 import tableList from '@/views/designate/designatedetail/components/tableList'
 import { fileTableTitle } from '../data'
 import { pageMixins } from "@/utils/pageMixins"
+import { downloadFile } from '@/api/file'
+import { getNominateFileInfo } from "@/api/partsprocure/editordetail"
 export default {
   mixins: [pageMixins],
-  components: { iDialog, iButton, iInput, iPagination, tableList },
+  components: { iDialog, iButton, iPagination, tableList },
   props: {
-    dialogVisible: { type: Boolean, default: false }
+    dialogVisible: { type: Boolean, default: false },
+    nominateAppId: {type: String}
   },
   data() {
     return {
       tableTitle: fileTableTitle,
-      tableData: []
+      tableData: [],
+      tableLoading: false,
+      selectData: []
+    }
+  },
+  watch: {
+    dialogVisible(val) {
+      if (val && this.nominateAppId) {
+        this.getTableList()
+      }
     }
   },
   methods: {
+    openPage(row) {
+      this.handleFileDownload([row.fileName])
+    },
+    /**
+     * @Description: 文件下载
+     * @Author: Luoshuang
+     * @param {*} fileList
+     * @return {*}
+     */    
+    async handleFileDownload(fileList) {
+      if (fileList.length < 1) {
+        return
+      }
+      const params = {
+        applicationName: 'rise',
+        fileList: fileList
+      }
+      await downloadFile(params)
+    },
+    /**
+     * @Description: 下载文件
+     * @Author: Luoshuang
+     * @param {*}
+     * @return {*}
+     */    
+    handleDownload() {
+      if (this.selectData.length < 1) {
+        iMessage.warn('请选择需要下载的附件')
+        return
+      }
+      this.handleFileDownload(this.selectData.map(item => item.fileName))
+    },
+    /**
+     * @Description: 处理表格选中
+     * @Author: Luoshuang
+     * @param {*} val
+     * @return {*}
+     */    
+    handleSelectionChange(val) {
+      this.selectData = val
+    },
+    /**
+     * @Description: 获取表格数据
+     * @Author: Luoshuang
+     * @param {*}
+     * @return {*}
+     */    
+    getTableList() {
+      this.tableLoading = true
+      const params = {
+        nomiAppId: this.nominateAppId,
+        sortColumn: 'uploadDate',
+        isAsc: false,
+        fileType: '105',
+        pageNo: this.page.currPage,
+        pageSize: this.page.pageSize
+      }
+      getNominateFileInfo(params).then(res => {
+        if (res?.result) {
+          this.tableData = res.data
+          this.page.pageSize = Number(res.pageSize)
+          this.page.currPage = Number(res.pageNum)
+          this.page.totalCount = Number(res.total)
+        } else {
+          iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+        }
+      }).finally(() => {
+        this.tableLoading = false
+      })
+    },
+    /**
+     * @Description: 关闭弹窗
+     * @Author: Luoshuang
+     * @param {*}
+     * @return {*}
+     */    
     clearDialog() {
       this.$emit('changeVisible', false)
     }

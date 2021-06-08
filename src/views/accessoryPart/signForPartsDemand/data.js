@@ -2,32 +2,32 @@
  * @Author: Luoshuang
  * @Date: 2021-05-25 14:41:07
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-05-25 15:54:41
+ * @LastEditTime: 2021-06-07 02:14:28
  * @Description: 
- * @FilePath: \front-web\src\views\accessoryPart\components\signForPartsDemand\data.js
+ * @FilePath: \front-web\src\views\accessoryPart\signForPartsDemand\data.js
  */
 export const tableTitle = [
-  {props:'a',name:'编号', key: "", tooltip: true, width: 120},
-  {props:'a1',name:'SP号', key: "", tooltip: true, width: 120},
-  {props:'b',name:'批量供货总成号', key: "", tooltip: true, width: 120},
-  {props:'c',name:'配件零件号', key: "", tooltip: true, width: 100},
-  {props:'d',name:'配件零件中文名', key: "", tooltip: true, width: 120},
-  {props:'e',name:'配件车型', key: "", tooltip: true},
-  {props:'f',name:'送货仓库', key: "", tooltip: true},
-  {props:'g',name:'供应商SAP号', key: "", tooltip: true, width: 120},
-  {props:'h',name:'供应商中文名', key: "", tooltip: true, width: 120},
-  {props:'i',name:'需求发送日期', key: "", tooltip: true, width: 120},
-  {props:'j',name:'配件状态', key: "", tooltip: true, width: 120},
-  {props:'k',name:'年需求量', key: "", tooltip: true},
-  {props:'l',name:'询价科室', key: "", tooltip: true},
-  {props:'m',name:'询价采购员', key: "", tooltip: true, width: 100},
-  {props:'n',name:'LINIE科室', key: "", tooltip: true, width: 100},
-  {props:'o',name:'LINIE', key: "", tooltip: true, width: 100},
-  {props:'p1',name:'配件零件德文名', key: "", tooltip: true, width: 120},
-  {props:'q',name:'供应商临时号', key: "", tooltip: true, width: 120},
-  {props:'r',name:'配件车型项目', key: "", tooltip: true, width: 120},
-  {props:'s',name:'售后技术人员名称', key: "", tooltip: true, width: 120},
-  {props:'t',name:'品牌', key: "", tooltip: true},
+  {props:'sparePartCode',name:'编号', key: "", tooltip: true, width: 120},
+  {props:'spnrNum',name:'SP号', key: "", tooltip: true, width: 120},
+  {props:'assemblyPartNum',name:'批量供货总成号', key: "", tooltip: true, width: 120},
+  {props:'partNum',name:'配件零件号', key: "", tooltip: true, width: 100},
+  {props:'partNameCh',name:'配件零件中文名', key: "", tooltip: true, width: 120},
+  {props:'carType',name:'配件车型', key: "", tooltip: true},
+  {props:'deliveryWarehouse',name:'送货仓库', key: "", tooltip: true},
+  {props:'supplierSapCode',name:'供应商SAP号', key: "", tooltip: true, width: 120},
+  {props:'supplierNameZh',name:'供应商中文名', key: "", tooltip: true, width: 120},
+  {props:'sendDate',name:'需求发送日期', key: "", tooltip: true, width: 120},
+  {props:'state',name:'配件状态', key: "", tooltip: true, width: 120},
+  {props:'annualQuantity',name:'年需求量', key: "", tooltip: true},
+  {props:'csfuserDeptName',name:'询价科室', key: "", tooltip: true},
+  {props:'csfuserIdName',name:'询价采购员', key: "", tooltip: true, width: 100},
+  {props:'respDeptName',name:'LINIE科室', key: "", tooltip: true, width: 100},
+  {props:'respLinieName',name:'LINIE', key: "", tooltip: true, width: 100},
+  {props:'partNameDe',name:'配件零件德文名', key: "", tooltip: true, width: 120},
+  {props:'supplierSvwTempCode',name:'供应商临时号', key: "", tooltip: true, width: 120},
+  {props:'carProject',name:'配件车型项目', key: "", tooltip: true, width: 120},
+  {props:'technicianStaffName',name:'售后技术人员名称', key: "", tooltip: true, width: 120},
+  {props:'brand',name:'品牌', key: "", tooltip: true},
 ]
 
 export const tableMockData = [
@@ -35,17 +35,17 @@ export const tableMockData = [
 ]
 
 export const searchList = [
-  {value: 'a', label: '配件零件号', type: 'input', i18n_label: '',},
-  {value: 'b', label: '配件零件中文名', type: 'input', i18n_label: '',},
-  {value: 'c', label: '供应商SAP号', type: 'input', i18n_label: '',},
-  {value: 'd', label: '供应商中文名', type: 'input', i18n_label: '',},
-  {value: 'e', label: '批量供货总成号', type: 'input', i18n_label: '',},
-  {value: 'f', label: 'SP号', type: 'input', i18n_label: '',},
-  {value: 'g', label: '编号', type: 'input', i18n_label: '',},
-  {value: 'h', label: '配件车型', type: 'select', i18n_label: '',},
-  {value: 'i', label: '配件车型项目', type: 'select', i18n_label: '',},
-  {value: 'j', label: '配件状态', type: 'select', i18n_label: '', selectOption: []},
-  {value: 'k', label: '是否有询价科室', type: 'select', i18n_label: '', selectOption: []},
-  {value: 'l', label: '是否有询价采购员', type: 'select', i18n_label: '', selectOption: []},
-  {value: 'm', label: '需求发送起止日期', type: 'date', i18n_label: '',}
+  {value: 'partNum', label: '配件零件号', type: 'input', i18n_label: '',},
+  {value: 'partNameCh', label: '配件零件中文名', type: 'input', i18n_label: '',},
+  {value: 'supplierSapCode', label: '供应商SAP号', type: 'input', i18n_label: '',},
+  {value: 'supplierNameZh', label: '供应商中文名', type: 'input', i18n_label: '',},
+  {value: 'assemblyPartNum', label: '批量供货总成号', type: 'input', i18n_label: '',},
+  {value: 'spnrNum', label: 'SP号', type: 'input', i18n_label: '',},
+  {value: 'sparePartCode', label: '编号', type: 'input', i18n_label: '',},
+  {value: 'carType', label: '配件车型', type: 'select', i18n_label: '',},
+  {value: 'carProject', label: '配件车型项目', type: 'select', i18n_label: '',selectOption: 'carTypeOptions'},
+  {value: 'state', label: '配件状态', type: 'select', i18n_label: '', selectOption: 'accessoryTypeOption'},
+  {value: 'csfUserDept', label: '是否有询价科室', type: 'select', i18n_label: '', selectOption: 'yesOrNoOption'},
+  {value: 'csfUserId', label: '是否有询价采购员', type: 'select', i18n_label: '', selectOption: 'yesOrNoOption'},
+  {value: 'sendDate', label: '需求发送起止日期', type: 'date', i18n_label: '',}
 ]

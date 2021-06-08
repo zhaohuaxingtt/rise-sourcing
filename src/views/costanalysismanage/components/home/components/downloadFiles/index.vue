@@ -10,10 +10,11 @@
         width="90%"
         class="addPartsDialog"
     >
-    <inquiryFiles/>
-    <el-divider/>
-    <inquiryDrawing/>
-        
+        <template v-if="dialogVisible">
+            <inquiryFiles :rfqNum="rfqNum" />
+            <el-divider/>
+            <inquiryDrawing :rfqNum="rfqNum" />
+        </template>
     </iDialog>
 </template>
 
@@ -34,6 +35,10 @@ export default {
         dialogVisible:{
             type:Boolean,
             default:false
+        },
+        rfqNum:{
+            type:String,
+            default:'',
         }
     },
     data(){
@@ -43,7 +48,7 @@ export default {
     },
     methods:{
         clearDialog() {
-        this.$emit('changeVisible', false)
+            this.$emit('changeVisible', false)
         },
     }
 

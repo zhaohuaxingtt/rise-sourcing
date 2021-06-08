@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:17:25
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-05-29 16:10:59
+ * @LastEditTime: 2021-05-31 11:29:01
  * @Description: 上会/备案RS单
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\rs\components\meeting\index.vue
 -->
@@ -92,6 +92,8 @@ export default {
   },
   computed: {
     cardTitle() {
+      // '附件采购 CSC Nomination Recommendation – Accessory Purchasing'
+      // '配件采购 CSC Nomination Recommendation - Spare Part Purchasing'
       return '生产采购 CSC Nomination Recommendation - Production Purchasing'
     }
   },

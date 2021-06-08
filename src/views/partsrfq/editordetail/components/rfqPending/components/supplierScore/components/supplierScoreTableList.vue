@@ -28,17 +28,18 @@
       <template v-else>
         <el-table-column width="240" :key="index" align="center" fixed="left" :label="items.key ? $t(items.key) : items.name" v-if="items.props == 'companyAddress'">
           <template v-slot="scope">
-            <iSelect class="companySelect input-center" v-model="scope.row.companyAddress" clearable popper-class="companySelectDropdown">
+            <iSelect v-if="!disabled" class="supplierProducePlaces input-center" v-model="scope.row.companyAddressCode" clearable popper-class="supplierProducePlacesDropdown" :loading="supplierProducePlacesLoading" @visible-change="supplierProducePlacesVisibleChange($event, scope.row)" @change="supplierProducePlacesChange($event, scope.row)">
               <el-option
-                v-for="company in companies"
-                :key="company.code"
-                :label="company.name"
-                :value="company.code">
-                  <el-tooltip class="item" effect="light" :open-delay="200" :content="`${ company.name }_${ company.province }_${ company.city }_${ company.address }`" placement="right">
-                    <div class="item">{{ `${ company.name }_${ company.province }_${ company.city }_${ company.address }` }}</div>
+                v-for="supplierProducePlace in supplierProducePlaces"
+                :key="supplierProducePlace.key"
+                :label="supplierProducePlace.label"
+                :value="supplierProducePlace.value">
+                  <el-tooltip class="item" effect="light" :open-delay="200" :content="`${ supplierProducePlace.name }_${ supplierProducePlace.province }_${ supplierProducePlace.city }_${ supplierProducePlace.address }`" placement="right">
+                    <div class="item">{{ `${ supplierProducePlace.province }_${ supplierProducePlace.city }_${ supplierProducePlace.address }` }}</div>
                   </el-tooltip>
               </el-option>
             </iSelect>
+            <span v-else>{{ scope.row.companyAddress }}</span>
           </template>
         </el-table-column>
         <el-table-column :key="index" align='center' fixed="left" v-else-if="items.props == actionProps" :prop="items.props"
@@ -69,11 +70,9 @@ export default {
     multiHeaderProps: {type: String, default: 'tpbMemo'},
     actionProps: {type: String, default: 'action'},
     multiHeaderPropsText: {type: String, default: 'LK_BIANJI'},
-  },
-  data() {
-    return {
-      companies: []
-    }
+    supplierProducePlaces: { type: Array, default: () => [] },
+    supplierProducePlacesLoading: { type: Boolean, default: false },
+    disabled: { type: Boolean, default: true }
   },
   methods: {
     handleSelectionChange(val) {
@@ -85,6 +84,22 @@ export default {
     openMultiHeaderPropsPage(row, key) {
       this.$emit('openMultiHeaderPropsPage', row, key)
     },
+    supplierProducePlacesVisibleChange(status, row) {
+      if (status) {
+        this.$emit('supplierProducePlacesVisibleChange', row)
+      }
+    },
+    supplierProducePlacesChange(value, row) {
+      if (value) {
+        const current = this.supplierProducePlaces.filter(item => item.value === value)[0]
+
+        this.$set(row, "companyAddressCode", value),
+        this.$set(row, "companyAddress", current.label)
+      } else {
+        this.$set(row, "companyAddressCode", ""),
+        this.$set(row, "companyAddress", "")
+      }
+    }
   }
 }
 </script>
@@ -93,7 +108,7 @@ export default {
   color: $color-blue;
 }
 
-.companySelect {
+.supplierProducePlaces {
   ::v-deep input {
     padding: 0 18px;
   }
@@ -103,7 +118,7 @@ export default {
   }
 }
 
-.companySelectDropdown {
+.supplierProducePlacesDropdown {
   .item {
     max-width: 230px;
     overflow: hidden;

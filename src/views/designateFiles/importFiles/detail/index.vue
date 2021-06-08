@@ -6,57 +6,46 @@
 <template>
     <iPage class="filesDetailList">
         <div v-if="!showUploadList">
-            <p class="title margin-bottom10">{{$t('LK_FUJIANQINGDAN')}}：SAZJ1029</p>
+            <p class="title margin-bottom10">{{$t('LK_FUJIANQINGDAN')}}：{{importfilesId}}</p>
             <iCard collapse>
                 <!-- 搜索区域 -->
                 <iSearch @sure="sure" @reset="reset">
                     <el-form>
                         <el-form-item :label="$t('LK_FUJIANLINGJIANHAO')">
-                            <iInput v-model="searchParams['a']"></iInput> 
+                            <iInput v-model="searchParams['partNum']"></iInput> 
                         </el-form-item>
                         <el-form-item :label="$t('LK_FUJIANLINGJIANMINGCHENG')">
-                            <iInput v-model="searchParams['b']"></iInput> 
+                            <iInput v-model="searchParams['partNameCh']"></iInput> 
                         </el-form-item>
                         <el-form-item :label="$t('LK_SHIYONGCHEXING')">
-                            <iInput v-model="searchParams['c']"></iInput> 
+                            <iInput v-model="searchParams['carType']"></iInput> 
                         </el-form-item>
                         <el-form-item :label="$t('LK_FUJIANSHANGSHISHIJIAN')">
-                            <iDatePicker format="yyyy-MM-dd" value-format="yyyy-MM-dd" v-model="searchParams['d']"></iDatePicker> 
+                            <iDatePicker format="yyyy-MM-dd" value-format="yyyy-MM-dd" v-model="searchParams['timeToMarket']"></iDatePicker> 
                         </el-form-item>
                     </el-form>
                 </iSearch>
             </iCard>
-            <!-- 表单区域 -->
             <iCard>
-                <el-table
-                :data="tableData"
-                fit 
-                tooltip-effect='light'
-                :empty-text="$t('LK_ZANWUSHUJU')"
-                >
-                <el-table-column
-                    type="selection"
-                    align='center'
-                    width="50">
-                </el-table-column>
-                <el-table-column
-                    type="index"
-                    label="#"
-                    align='center'
-                    width="50">
-                </el-table-column>
-                <el-table-column v-for="(item,index) in tableTitle" 
-                    :key="'filesDetailListTable'+index" 
-                    align='center'
-                    :label="$t(item.key) || item.name"
-                    :prop="item.props"
-                    >
-                    <template slot-scope="scope">
-                        <span class="link-underline"  v-if="item.key === 'LK_FUJIAN'" @click="checkUploadList">{{$t('LK_SHANGCHUAN')}}</span>
-                        <span v-else>{{scope.row[item.props] || '-'}}</span>
-                    </template>
-                </el-table-column>
-                </el-table>
+                
+            <!-- 表格区域 -->
+            <tableList
+                class="table"
+                index
+                :tableData="tableListData"
+                :tableTitle="tableTitle"
+                :tableLoading="loading"
+                @handleSelectionChange="handleSelectionChange"
+            >
+                <!-- RFQ编号 -->
+                <template #rfqId="scope">
+                    <span @click="goFilesList(scope.row.rfqId)" class="link-underline" >{{scope.row.rfqId}}</span>
+                </template>
+                <!-- 附件 -->
+                <template #LK_FUJIAN="scope">
+                    <span @click="checkUploadList(scope.row.id)" class="link-underline" >{{$t('LK_SHANGCHUAN')}}</span>
+                </template>
+            </tableList>
                 <!-- 分页 -->
                 <iPagination
                     class="margin-bottom20"
@@ -75,10 +64,10 @@
             <iCard>
                 <p class="uploadList-icon margin-bottom20">
                     <span @click="changeShowStatus">
-                        <icon symbol name="guanbixiaoxiliebiaokapiannei" class="close-icon" ></icon>
+                        <icon symbol name="iconguanbixiaoxiliebiaokapiannei" class="close-icon" ></icon>
                     </span>
                 </p>
-                <uploadList />
+                <uploadList  :uploadId="uploadId" />
             </iCard>
         </div>
     </iPage>
@@ -97,6 +86,11 @@ import {
 import { tableTitle } from './data'
 import {pageMixins} from '@/utils/pageMixins'
 import uploadList from './components/uploadList'
+import tableList from "@/views/partsign/editordetail/components/tableList";
+import {
+    postAffixList
+} from '@/api/designateFiles/importFiles'
+
 export default {
     name:'filesDetailList',
     mixins:[pageMixins],
@@ -109,25 +103,37 @@ export default {
         iDatePicker,
         iPagination,
         icon,
+        tableList,
     },
     data(){
         return{
             searchParams:{
-                a:'',
-                b:'',
-                c:'',
-                d:'',
+                partNum:'',
+                partNameCh:'',
+                carType:'',
+                timeToMarket:'',
             },
             tableTitle:tableTitle,
-            tableData:[
-                {a:'Z00856102',b:'SP123',c:'SVAA432',d:'1',e:'1111'}
+            tableListData:[
+                {code:'Z00856102',b:'SP123',c:'SVAA432',d:'1',e:'1111'}
             ],
             showUploadList:false,
+            loading:false,
+            uploadId:'',
+            importfilesId:'',
         }
+    },
+    created(){
+        const {query={}} = this.$route;
+        const {id} = query;
+        this.importfilesId = id;
+        this.getList();
     },
     methods:{
         // 查询
         sure(){
+            this.page.currPage = 1;
+            this.getList();
             console.log(this.searchParams);
         },
         // // 重置
@@ -135,7 +141,7 @@ export default {
             const {searchParams} = this;
             for(let i in searchParams){
                 searchParams[i] = '';
-            };
+            }
             this.searchParams = searchParams;
         },
         // 改变弹窗是否显示状态
@@ -144,8 +150,44 @@ export default {
             this.showUploadList = !showUploadList;
         },
         // 查看上传列表
-        checkUploadList(){
+        checkUploadList(id){
+            this.uploadId = id ;
             this.changeShowStatus();
+        },
+        // 获取列表
+        async getList(){
+            this.loading =  true;
+            const { page,searchParams } = this;
+            const {query={}} = this.$route;
+            const {id} = query;
+            const data = { 
+                code:id,
+                ...searchParams,
+                pageNo:page.currPage,
+                pageSize:page.pageSize,
+            };
+            await postAffixList(data).then((res)=>{
+            const {code,data} = res; 
+            if(code === '200' && data){
+                const {records,total} = data;
+                this.tableListData = records;
+                this.page.totalCount = total;
+            }
+            this.loading =  false;
+
+            }).catch((err)=>{
+                this.loading =  false;
+            });
+        },
+
+        // 跳转RFQ详情
+        goFilesList(rfqId){
+             const router =  this.$router.resolve({path: `/costanalysismanage/rfqdetail?rfqId=${rfqId}`})
+             window.open(router.href,'_blank');
+            // this.$router.push({
+            //     path:'/costanalysismanage/rfqdetail',
+            //     query:{rfqId}
+            // })
         }
     }
 }
@@ -162,7 +204,6 @@ export default {
             .close-icon{
                 width: 24px;
                 height: 24px;
-                border: 1px solid red;
             }
         }
     }

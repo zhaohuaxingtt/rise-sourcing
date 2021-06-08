@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-04-23 09:16:48
- * @LastEditTime: 2021-05-30 11:01:55
+ * @LastEditTime: 2021-06-07 21:36:07
  * @LastEditors: Please set LastEditors
  * @Description: 供应商维度展示
  * @FilePath: \front-supplier\src\views\rfqManageMent\partsOffer\components\ecartsCard\index.vue
@@ -14,31 +14,31 @@
     <div class="margin-bottom20 echarts">
       <el-form inline>
           <el-form-item label="价格维度">
-            <iSelect :placeholder='$t("partsprocure.CHOOSE")' multiple collapse-tags v-model="partsSelect" @change='changeParts' @visible-change="removeOther($event,'partsSelect')">
-              <el-option label="All" value="all"></el-option>
-              <el-option v-for="(items,index) in partList" :key='index' :label="items.name" :value='items.value'></el-option>
+            <iSelect :placeholder='$t("partsprocure.CHOOSE")' v-model="form.priceLatitude">
+              <el-option label="mixPrice" value='1'></el-option>
+              <el-option label="To" value='2'></el-option>
             </iSelect>
           </el-form-item>
           <el-form-item label="供应商">
-            <iSelect :placeholder='$t("partsprocure.CHOOSE")' multiple collapse-tags v-model="partsSelect" @change='changeParts' @visible-change="removeOther($event,'partsSelect')">
+            <iSelect :placeholder='$t("partsprocure.CHOOSE")' multiple collapse-tags v-model="supplierSelectlist" @visible-change="removeOther($event,'supplierSelectlist')">
               <el-option label="All" value="all"></el-option>
-              <el-option v-for="(items,index) in partList" :key='index' :label="items.name" :value='items.value'></el-option>
+              <el-option v-for="(items,index) in supplierlist" :key='index' :label="items.supplierName" :value='items.supplierNum'></el-option>
             </iSelect>
           </el-form-item>
-          <!-- <el-form-item :label="$t('Lk_LINGJIAN')">
+          <el-form-item :label="$t('Lk_LINGJIAN')" class="ccc">
             <iSelect :placeholder='$t("partsprocure.CHOOSE")' multiple collapse-tags v-model="partsSelect" @change='changeParts' @visible-change="removeOther($event,'partsSelect')">
               <el-option label="All" value="all"></el-option>
-              <el-option v-for="(items,index) in partList" :key='index' :label="items.name" :value='items.value'></el-option>
+              <el-option v-for="(items,index) in partList" :key='index' :label="items.partName" :value='items.partNum'></el-option>
             </iSelect>
           </el-form-item>
-          <el-form-item :label="$t('LK_FSHAO')">
+          <el-form-item :label="$t('LK_FSHAO')" class="ccc">
             <iSelect :placeholder='$t("partsprocure.CHOOSE")' multiple collapse-tags v-model="fsSelect" @visible-change="removeOther($event,'fsSelect')">
               <el-option label="All" value="all"></el-option>
               <template v-for="(items,index) in fslist">
                   <el-option :value="items.value" :key='index' :label="items.name"></el-option>
               </template>
             </iSelect>
-          </el-form-item> -->
+          </el-form-item>
           <el-form-item :label="$t('LK_DANGQIANLUNCI')">
             <iSelect :placeholder='$t("partsprocure.CHOOSE")' multiple collapse-tags v-model="luncSelect"  @visible-change="removeOther($event,'luncSelect')">
               <el-option label="All" value="all"></el-option>
@@ -58,7 +58,7 @@
 import {iCard,iSelect,iButton,iMessage} from 'rise'
 import echarts from '@/utils/echarts'
 import {chartsOptions,form,translateGetLunci} from './data'
-import { quotations,supplierPart } from '@/api/rfqManageMent/mouldOffer'
+import { quotations,findRfqInfoList } from '@/api/rfqManageMent/mouldOffer'
 export default{
   components:{iCard,iSelect,iButton},
   data(){
@@ -71,13 +71,13 @@ export default{
       luncSelect:['all'],
       RoundList:[],
       partList:[],
-      refreshLoading:false
-
+      refreshLoading:false,
+      supplierlist:[],
+      supplierSelectlist:['all']
     }
   },
   created(){
-    this.form.supplierId = this.$route.query.supplierId || ''
-    this.form.rfqId = this.$route.query.rfqId
+    this.form.rfqId = this.$route.query.id
   },
   mounted(){
     this.initEcharts()
@@ -147,11 +147,12 @@ export default{
     getDataList(){
       this.form.partNum = this.partsSelect.find(items=>items == "all")?[]:this.partsSelect
       this.form.round = this.luncSelect.find(items=>items == "all")?[]:this.luncSelect.sort((a,b)=>{return a-b})
-      this.form.projectCode = this.fsSelect.find(items=>items == "all")?[]:this.fsSelect
+      this.form.supplierID = this.supplierSelectlist.find(items=>items == "all")?[]:this.supplierSelectlist
+      this.form.fsSelect = this.fsSelect.find(items=>items == 'all')?[]:this.fsSelect
       quotations(this.form).then(res=>{
         this.refreshLoading = false
-        if(res.data && res.data.partPriceTrendVos){
-          this.updateEchars(translateGetLunci(res.data.partPriceTrendVos,this.$t('LK_LUNCI')))
+        if(res.data && res.data){
+          this.updateEchars(translateGetLunci(res.data,this.$t('LK_LUNCI')))
           
         }else{
           iMessage.error(res.desZh)
@@ -162,14 +163,11 @@ export default{
       })
     },
     supplierPart(){
-      const parmars = {
-          "rfqId": this.form.rfqId,
-          "supplierId": this.form.supplierId
-        }
-      supplierPart(parmars).then(res=>{
+      findRfqInfoList(this.form.rfqId).then(res=>{
         if(res.data){
-          this.RoundList = res.data.roundList
-          this.partList = this.translatePartList(res.data.partList)
+          this.RoundList = res.data.round
+          this.supplierlist = res.data.supplier
+          this.partList = res.data.partNum
         }
       }).catch(err=>{
         console.log(err)
@@ -218,9 +216,11 @@ export default{
     height: 500px;
     overflow: hidden;
   }
-  ::v-deep .el-form--inline {
+  .ccc{
+      ::v-deep .el-form--inline {
     .el-form-item__content{
     width: 280px;
+  }
   }
   }
 </style>

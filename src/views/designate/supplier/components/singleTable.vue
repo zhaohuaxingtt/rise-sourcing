@@ -5,33 +5,37 @@
           {{ $t("nominationSupplier.DanYiGongYingShang") }}</span
         >
         <div class="floatright" v-if="singleEditControl">
+          <!-- 批量编辑 -->
+          <iButton @click="handleBatchEdit">
+            {{ $t("nominationSupplier.BatchEdit") }}
+          </iButton>
           <iButton
             @click="partDialogVisibal = !partDialogVisibal"
           >
             {{ $t("LK_XINZENG") }}
           </iButton>
           <iButton
-            @click="setEditState(false)"
-            :loading="startLoding"
+            @click="submit"
+            :loading="submiting"
           >
             {{ $t("LK_BAOCUN") }}
           </iButton>
           <iButton
-            @click="setEditState(false)"
-            :loading="startLoding"
+            @click="singleEditControl = false"
           >
             {{ $t("LK_QUXIAO") }}
           </iButton>
+          <iButton
+            @click="deleteRow"
+          >
+            {{ $t("LK_SHANCHU") }}
+          </iButton>
         </div>
         <div class="floatright" v-else>
-          <!-- 批量编辑 -->
-          <iButton @click="handleBatchEdit">
-            {{ $t("nominationSupplier.BatchEdit") }}
-          </iButton>
           <iButton @click="handlEdit">
             {{ $t("nominationSupplier.Edit") }}
           </iButton>
-          <iButton>
+          <iButton @click="exportSupplier">
             {{ $t("nominationSupplier.Export") }}
           </iButton>
         </div>
@@ -49,69 +53,63 @@
           <a class="link-underline" href="javascript:;">{{scope.row.partNum}}</a>
         </template>
         <!-- 供应商名 -->
-        <template #supplierName="scope">
-          <div v-if="scope.row.isEdit">
+        <template #suppliersName="scope">
+          <div v-if="singleEditControl || scope.row.isEdit">
             <iSelect
-              v-model="scope.row.supplierName"
+              v-model="scope.row.suppliersName"
+              @focus="getRfqDepartment(scope.row)"
+              @change="onSupplierChange(arguments, scope.row)"
               :placeholder="$t('LK_QINGXUANZE')">
               <el-option
-                :value="items.key"
-                :label="items.value"
-                v-for="(items, index) in []"
+                :value="items.supplierName"
+                :label="items.supplierName"
+                v-for="(items, index) in (scope.row.departmentOption || [])"
                 :key="index"
               ></el-option>
             </iSelect>
           </div>
-          <span v-else>{{scope.row.supplierName}}</span>
+          <span v-else>{{scope.row.suppliersName}}</span>
         </template>
         <!-- 单一原因 -->
-        <template #reason="scope">
-          <div v-if="scope.row.isEdit">
+        <template #singleReason="scope">
+          <div v-if="singleEditControl || scope.row.isEdit">
             <iSelect
-              v-model="scope.row.reason"
+              v-model="scope.row.singleReason"
               :placeholder="$t('LK_QINGXUANZE')">
               <el-option
-                :value="items.key"
-                :label="items.value"
-                v-for="(items, index) in []"
+                :value="items.label"
+                :label="items.label"
+                v-for="(items, index) in (selectOptions.reason || [])"
                 :key="index"
               ></el-option>
             </iSelect>
           </div>
-          <span v-else>{{scope.row.reason}}</span>
+          <span v-else>{{scope.row.singleReason}}</span>
         </template>
         <!-- 部门 -->
-        <template #dept="scope">
-          <div v-if="scope.row.isEdit">
+        <template #department="scope">
+          <div v-if="singleEditControl || scope.row.isEdit">
             <iSelect
-              v-model="scope.row.dept"
+              v-model="scope.row.department"
               :placeholder="$t('LK_QINGXUANZE')">
               <el-option
-                :value="items.key"
+                :value="items.value"
                 :label="items.value"
-                v-for="(items, index) in []"
+                v-for="(items, index) in (selectOptions.dept || [])"
                 :key="index"
               ></el-option>
             </iSelect>
           </div>
-          <span v-else>{{scope.row.dept}}</span>
+          <span v-else>{{scope.row.department}}</span>
         </template>
       </tablelist>
-      <iPagination
-        v-update
-        @size-change="handleSizeChange($event, getTableListFn)"
-        @current-change="handleCurrentChange($event, getTableListFn)"
-        background
-        :current-page="page.currPage"
-        :page-sizes="page.pageSizes"
-        :page-size="page.pageSize"
-        :layout="page.layout"
-        :total="page.totalCount"
-      />
     <!-- 零件弹窗 -->
-    <partDialog :visible.sync="partDialogVisibal" />
+    <partDialog :visible.sync="partDialogVisibal" @add="onPartAdd" />
     <!-- 批量操作弹窗 -->
-    <batchEditDialog :visible.sync="batchEditVisibal" />
+    <batchEditDialog
+      :visible.sync="batchEditVisibal"
+      :selectOptions="selectOptions"
+      @submit="onBatchEdit" />
   </iCard>
 </template>
 
@@ -119,26 +117,35 @@
 import Vue from 'vue'
 import {
   singleSupplierTitle,
-  mokeSingleSupplierData
+  // mokeSingleSupplierData
 } from './data'
 import tablelist from "./tableList";
 import partDialog from './partDialog'
 import batchEditDialog from './batchEditDialog'
+import _ from 'lodash'
 
 import {
   iCard,
   iButton,
-  iPagination,
+  // iPagination,
   iMessage,
   iSelect
 } from "rise";
+import {
+  getSingleSupplierList,
+  addsingleSuppliersInfo,
+  getRfqSupplierList,
+  exportExclusiveSuppliersList
+} from '@/api/designate/supplier' 
+import { getDictByCode } from '@/api/dictionary'
+import { excelExport } from '@/utils/filedowLoad'
 
 export default {
   components: {
     iCard,
     iButton,
     iSelect,
-    iPagination,
+    // iPagination,
     tablelist,
     partDialog,
     batchEditDialog
@@ -147,28 +154,153 @@ export default {
     return {
       // 单一供应商
       singleSupplierTitle,
-      singleListData: mokeSingleSupplierData,
+      singleListData: [],
       selectSingleData: [],
+      oriTableListData: [],
       singleEditControl: false,
       partDialogVisibal: false,
       batchEditVisibal: false,
-      page: {}
+      submiting: false,
+      selectOptions: {},
+      page: {
+        currPage: 1,
+        pageSize: 10,
+        totalCount: 0,
+        layout: "total, prev, pager, next, jumper"
+      }
     }
   },
+  mounted() {
+    this.getFetchDataList()
+    this.getOptions()
+  },
   methods: {
+    randomid() {
+      return Math.floor(Math.random() * 10000000)
+    },
+    onSupplierChange(data, row) {
+      const val = data && data[0] || ''
+      const list = row.departmentOption || []
+      const op = list.find(o => o.supplierName === val) || {}
+      Vue.set(row, 'supplierId', op.supplierId || '')
+      Vue.set(row, 'sapNum', op.sap || '')
+    },
+    getRfqDepartment(item) {
+      getRfqSupplierList({
+        rfqId: item.rfqId
+      }).then(res => {
+        if (res.code === '200') {
+          Vue.set(item, 'departmentOption', res.data)
+        } else {
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
+      }).catch(e => {
+        iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
+      })
+    },
+    async submit() {
+      const confirmInfo = await this.$confirm(this.$t('submitSure'))
+      if (confirmInfo !== 'confirm') return
+      this.submiting = true
+      addsingleSuppliersInfo({
+        items: this.singleListData,
+        nominateId: this.$store.getters.nomiAppId
+      }).then(res => {
+        if (res.code === '200') {
+          iMessage.success(this.$t('LK_CAOZUOCHENGGONG'))
+        } else {
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
+        this.submiting = false
+      }).catch(e => {
+        this.submiting = false
+        iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
+      })
+    },
+    // 删除
+    async deleteRow() {
+      if (!this.selectSingleData.length) {
+        iMessage.error(this.$t('nominationSuggestion.QingXuanZeZhiShaoYiTiaoShuJu'))
+        return
+      }
+      const confirmInfo = await this.$confirm(this.$t('deleteSure'))
+      if (confirmInfo !== 'confirm') return
+      this.selectSingleData.forEach(item => {
+        const dIndex = this.selectSingleData.findIndex(o => o.sid === item.sid)
+        if (dIndex >= 0) {
+          this.singleListData.splice(dIndex, 1)
+        }
+      })
+      
+    },
+    // 取消
+    async cancel() {
+      // const confirmInfo = await this.$confirm(this.$t('cancelSure'))
+      // if (confirmInfo !== 'confirm') return
+      // this.singleListData = _.cloneDeep(this.oriTableListData)
+    },
+    // 添加零件单一供应商
+    onPartAdd(dataList = []) {
+      console.log(dataList)
+      Array.from(dataList).forEach(item => {
+        if (!this.singleListData.find(o => o.partNum === item.partNum)) {
+          item.partNameCh = item.partNameZh
+          item.partNameGer = item.partNameDe
+          item.nominateId = this.$store.getters.nomiAppId
+          this.singleListData.push(item)
+        }
+      })
+    },
+    getOptions() {
+      // 获取单一原因数据字典
+      this.getDictionary('dept', 'score_dept')
+      // 部门
+      this.getDictionary('reason', 'SINGLE_SOURCING_REASON')
+    },
+    // 获取数据字典
+    getDictionary(optionName, optionType, key = {value: 'code', label: 'name'}) {
+      getDictByCode(optionType).then(res => {
+        if(res?.result) {
+          this.selectOptions[optionName] = res.data[0].subDictResultVo.map(item => {
+            return { value: item.code, label: item.name }
+          })
+        }
+      })
+    },
+    getFetchDataList() {
+      this.tableLoading = true
+      getSingleSupplierList({
+        nominateId: this.$store.getters.nomiAppId
+      }).then(res => {
+        this.tableLoading = false
+        if (res.code === '200') {
+          this.singleListData = res.data || []
+          this.singleListData.map(o => {
+            o.sid = this.randomid()
+            o.nominateId = this.$store.getters.nomiAppId
+            return o
+          })
+          // 备份列表数据
+          this.oriTableListData = _.cloneDeep(this.singleListData)
+          if (this.page) {
+            this.page.totalCount = Number(res.total || 0)
+          }
+        } else {
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
+      }).catch(e => {
+        iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
+      })
+    },
     // 批量编辑
     handleBatchEdit() {
       if (!this.selectSingleData.length) {
-        iMessage.error('请选择')
+        iMessage.error(this.$t('nominationSuggestion.QingXuanZeZhiShaoYiTiaoShuJu'))
         return
       }
       this.batchEditVisibal = true
     },
     handlEdit() {
-      if (!this.selectSingleData.length) {
-        iMessage.error('请选择')
-        return
-      }
       this.singleEditControl = true
       this.setEditState(true)
     },
@@ -181,6 +313,30 @@ export default {
     // 单一供应商
     handleSingleSelectionChange(data) {
       this.selectSingleData = data
+    },
+    onBatchEdit(form) {
+      this.selectSingleData.forEach(item => {
+        Object.keys(form).forEach(key => {
+          Vue.set(item, key, form[key])
+        })
+      })
+    },
+    // 导出
+    async exportSupplier() {
+      if (!this.selectSingleData.length) {
+        iMessage.error(this.$t('nominationSuggestion.QingXuanZeZhiShaoYiTiaoShuJu'))
+        return
+      }
+      excelExport(this.selectSingleData, '单一供应商')
+      // exportExclusiveSuppliersList({
+      //   data: this.singleListData,
+      //   nominateId: this.$store.getters.nomiAppId
+      // }).then(res => {
+      //   excelExport(res, '单一供应商')
+      // }).catch(e => {
+      //   console.log(e, '123123')
+      //   iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
+      // })
     },
   }
 }

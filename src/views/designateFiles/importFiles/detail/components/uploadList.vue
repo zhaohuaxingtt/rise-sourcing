@@ -8,54 +8,47 @@
   <div class="uploadList">
       <!-- 按钮区域 -->
       <p class="btn-list">
-          <iButton>{{$t('LK_XIAZAI')}}</iButton>
-          <iButton>{{$t('LK_SHANCHU')}}</iButton>
-          <upload-button
-            @uploadedCallback="uploadAttachments"
-            :upload-button-loading="uploadAttachmentsButtonLoading"
-            class="margin-left8 margin-right8"
-            :buttonText="$t('LK_SHANGCHUANWENJIAN')"
-            />
+          <iButton @click="download">{{$t('LK_XIAZAI')}}</iButton>
+          <iButton @click="deleteFiles">{{$t('LK_SHANCHU')}}</iButton>
+            <span class="margin-left10">
+                <Upload 
+                    hideTip
+                    :buttonText="$t('LK_SHANGCHUANWENJIAN')"
+                    :request="uploadImportFile"
+                    @on-success="onDraingUploadsucess"
+                />
+            </span>
       </p>
-      <!-- 表格区域 -->
-      <el-table
-        :data="tableData"
-        fit 
-        tooltip-effect='light'
-        :empty-text="$t('LK_ZANWUSHUJU')"
-        >
-        <el-table-column
-            type="selection"
-            align='center'
-            width="50">
-        </el-table-column>
-        <el-table-column
-            type="index"
-            label="#"
-            align='center'
-            width="50">
-        </el-table-column>
-        <el-table-column v-for="(item,index) in filesTableTitle" 
-            :key="'filesDetailListTable'+index" 
-            align='center'
-            :label="$t(item.key) || item.name"
-            :prop="item.props"
+        <!-- 表格区域 -->
+        <tableList
+            class="table"
+            index
+            :tableData="tableListData"
+            :tableTitle="tableTitle"
+            :tableLoading="loading"
+            @handleSelectionChange="handleSelectionChange"
             >
-        </el-table-column>
-      </el-table>
-      
-    <!-- 分页 -->
-    <iPagination
-        class="margin-bottom20"
-        @size-change="handleSizeChange($event, purchaseFactory)"
-        @current-change="handleCurrentChange($event, purchaseFactory)"
-        background
-        :page-sizes="page.pageSizes"
-        :page-size="page.pageSize"
-        :layout="page.layout"
-        :current-page="page.currPage"
-        :total="page.totalCount" v-update
-    />
+            <!-- 编号 -->
+            <template #code="scope">
+            <span @click="goFilesList(scope.row.code)" class="link-underline" >{{scope.row.code}}</span>
+            </template>
+            <!-- 附件 -->
+            <template #LK_FUJIAN="scope">
+            <span @click="checkUploadList(scope.row.id)" class="link-underline" >{{$t('LK_SHANGCHUAN')}}</span>
+            </template>
+        </tableList>
+        <!-- 分页 -->
+        <iPagination
+            class="margin-bottom20"
+            @size-change="handleSizeChange($event, purchaseFactory)"
+            @current-change="handleCurrentChange($event, purchaseFactory)"
+            background
+            :page-sizes="page.pageSizes"
+            :page-size="page.pageSize"
+            :layout="page.layout"
+            :current-page="page.currPage"
+            :total="page.totalCount" v-update
+        />
   </div>
 </template>
 
@@ -63,10 +56,20 @@
 import {
     iPagination,
     iButton,
+    iMessage,
 } from 'rise';
 import uploadButton from 'pages/partsrfq/components/uploadButton'
 import {pageMixins} from '@/utils/pageMixins'
 import { filesTableTitle } from '../data'
+import tableList from "@/views/partsign/editordetail/components/tableList";
+import Upload from '@/components/Upload'
+import {
+    getAffixListById,
+    uploadAttachments,
+    deleteattachments,
+} from '@/api/designateFiles/importFiles'
+import { downloadFile } from '@/api/file'
+
 export default {
     name:'uploadList',
     mixins:[pageMixins],
@@ -74,26 +77,109 @@ export default {
         uploadButton,
         iPagination,
         iButton,
+        tableList,
+        Upload,
+        iMessage,
+    },
+    props:{
+        uploadId:{
+            type:String,
+            default:'',
+        }
     },
     data(){
         return{
-            tableData:[
-                {a:'xxx.png',b:'2021-01-10',c:'xxx'},
+            tableListData:[
+                {fileName:'xxx.png',uploadDate:'2021-01-10',uploadBy:'xxx'},
             ],
-            filesTableTitle:filesTableTitle,
-            uploadAttachmentsButtonLoading:false,
+            tableTitle:filesTableTitle,
+            loading:false,
+            selectItems:[],
 
         }
     },
     created(){
-        console.log('2323232');
+        this.getList();
     },
     methods:{
         // 上传附件
         uploadAttachments(data,size){
             console.log(data,size);
+        },
 
-        }
+        // 获取列表
+        async getList(){
+            this.loading = true;
+            const {uploadId,page} = this;
+            const data = {
+                affixId:uploadId,
+                pageNo:page.currPage,
+                pageSize:page.pageSize,
+
+            };
+            await getAffixListById(data).then((res)=>{
+                 const {code,data} = res; 
+                if(code === '200' && data){
+                    const {records,total} = data;
+                    this.tableListData = records;
+                    this.page.totalCount = total;
+                }
+                this.loading =  false;
+            }).catch((err)=>{ this.loading = false;})
+        },
+        // 上传附件
+        async onDraingUploadsucess(data){
+            const filesData = data.data;
+            const { uploadId } = this;
+            const sendData = {
+                affixId:uploadId,
+                ...filesData,
+            }
+            await uploadAttachments(sendData).then((res)=>{
+                const { code } = res;
+                if(code == 200) this.getList();
+
+            }).catch((err)=>{});
+        },
+        
+        handleSelectionChange(val) {
+            this.selectItems = val;
+        },
+        // 删除附件
+        async deleteFiles(){
+            const { selectItems } = this;
+            if(!selectItems.length){
+                iMessage.warn(this.$t('LK_QINGXUANZHEXUYAOSHANCHUYOUJIAN'));
+            }else{
+                const confirmInfo = await this.$confirm(this.$t('deleteSure'))
+                if (confirmInfo !== 'confirm') return;
+                const attachmentIds = selectItems.map((item)=>item.id);
+                await deleteattachments({attachmentIds}).then((res)=>{
+                    const {code} = res;
+                    if(code == 200 ){
+                        iMessage.success(this.$t('LK_CAOZUOCHENGGONG'));
+                        this.getList();
+                    } else {
+                        iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+                    }
+                }).catch((err)=>{});
+            }
+        },
+        
+        // 下载附件
+        async download(){
+            const  {selectItems } = this;
+            if(!selectItems.length){
+             iMessage.warn(this.$t('LK_QINGXUANZHEXUYAOXIAZHAIDEFUJIAN'));
+            }else{
+                const list = selectItems.map((item)=>item.id);
+                const data = {
+                    applicationName: 'rise',
+                    fileList:list.join(),
+                };
+                await downloadFile(data);
+            }
+        },
     }
 }
 </script>

@@ -1,0 +1,67 @@
+{
+  "result": true,
+  "code": "200",
+  "desEn": "success",
+  "desZh": "操作成功",
+  "data": {
+    "supplierSet": [
+      "dulingcong2",
+      "王军",
+      "dulingcong"
+    ],
+    "partInfoList": [
+      {
+        "groupId": "1",
+        "group": null,
+        "partNo": "12341",
+        "partPrjCode": "FS-1234",
+        "factory": "1",
+        "bdlInfoList": [
+          {
+            "supplierId": "1",
+            "supplierName": "王军",
+            "tto": 1211.0000
+          }
+        ],
+        "recommendBdlInfoList": [
+          {
+            "supplierId": "1",
+            "recommendSupplier": "王军",
+            "share": 100.0000
+          }
+        ]
+      },
+      {
+        "groupId": "1",
+        "group": null,
+        "partNo": "123",
+        "partPrjCode": "FS-123",
+        "factory": "1",
+        "bdlInfoList": [
+          {
+            "supplierId": "2",
+            "supplierName": "dulingcong",
+            "tto": 1231.0000
+          },
+          {
+            "supplierId": "3",
+            "supplierName": "dulingcong2",
+            "tto": 12312.0000
+          },
+          {
+            "supplierId": "1",
+            "supplierName": "王军",
+            "tto": 12313.0000
+          }
+        ],
+        "recommendBdlInfoList": [
+          {
+            "supplierId": "2",
+            "recommendSupplier": "dulingcong",
+            "share": 100.0000
+          }
+        ]
+      }
+    ]
+  }
+}

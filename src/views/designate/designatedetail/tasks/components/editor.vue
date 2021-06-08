@@ -61,6 +61,7 @@ export default {
       const Edditor = new wangEditor('#textEditor')
       Edditor.config.menus = []
       Edditor.config.placeholder = this.$t('strategicdoc.BeiZuXinXi')
+      Edditor.config.zIndex = 100
       Edditor.create()
       window.Edditor = Edditor
     }

@@ -13,35 +13,49 @@
       >
       <div class="floatright">
         <!-- 下载 -->
-        <iButton @click="sortVisibal = true">
+        <iButton @click="downloadFile">
           {{ $t("strategicdoc.XiaZai") }}
         </iButton>
         <!-- 删除 -->
-        <iButton 
+        <iButton
+          class="margin-right10"
+          @click="deleteFile($event, getFetchDataList)"
           v-if="!$store.getters.isPreview">
           {{ $t("strategicdoc.ShanChu") }}
         </iButton>
         <!-- 上传文件 -->
-        <iButton 
+        <!-- <iButton 
           v-if="!$store.getters.isPreview"
           @click="$router.push({path: '/designate/decisiondata/attachment/upload'})">
           {{ $t("strategicdoc.ShangChuanWenJian") }}
-        </iButton>
+        </iButton> -->
+        <upload
+          class="upload-trigger"
+          v-if="!$store.getters.isPreview"
+          :hideTip="true"
+          :accept="'.doc,.docx,.xls,.xlsx,.ppt,.pptx,.jpg,.jpeg,.png,.pdf,.tif'"
+          :buttonText="$t('strategicdoc.ShangChuanWenJian')"
+          @on-success="onUploadsucess(Object.assign(...arguments, {fileType: '102'}), getFetchDataList)"
+        />
       </div>
     </div>
     <tablelist
       index
       :selection="!$store.getters.isPreview"
-      :tableData="tableListData"
+      :tableData="dataList"
       :tableTitle="uploadtableTitle"
       :tableLoading="tableLoading"
-      @handleSelectionChange="handleMutiSelectionChange"
+      v-loading="tableLoading"
+      @handleSelectionChange="handleSelectionChange"
     >
+    <template #uploadDate="scope">
+      {{scope.row.uploadDate | dateFilter('YYYY-MM-DD')}}
+    </template>
     </tablelist>
     <iPagination
       v-update
-      @size-change="handleSizeChange($event, getTableListFn)"
-      @current-change="handleCurrentChange($event, getTableListFn)"
+      @size-change="handleSizeChange($event, getFetchDataList)"
+      @current-change="handleCurrentChange($event, getFetchDataList)"
       background
       :current-page="page.currPage"
       :page-sizes="page.pageSizes"
@@ -55,7 +69,7 @@
 <script>
 import { 
   uploadtableTitle, 
-  mokeUploadTableListData
+  // mokeUploadTableListData
 } from './data'
 import tablelist from "./tableList";
 import {
@@ -63,17 +77,23 @@ import {
   iButton,
   iPagination
 } from "rise";
+import upload from '@/components/Upload'
+import { attachMixins } from '@/utils/attachMixins'
+import { pageMixins } from '@/utils/pageMixins'
 
 export default {
+  mixins: [ attachMixins, pageMixins ],
   components: {
     iCard,
     iButton,
     iPagination,
-    tablelist
+    tablelist,
+    upload
   },
   data() {
     return {
-      tableListData: mokeUploadTableListData,
+      nomiAppId: this.$route.query.desinateId || '',
+      // tableListData: mokeUploadTableListData,
       tableLoading: false,
       uploadtableTitle,
       multiEditState: false,
@@ -82,15 +102,24 @@ export default {
       page: {
         currPage: 1,
         pageSizes: 10,
-        totalCount: 3
+        totalCount: 0,
+        layout:"prev, pager, next, jumper"
       }
     }
   },
+  mounted() {
+    this.getFetchDataList()
+  },
   methods: {
-    handleMutiSelectionChange(data) {
-      this.multiEditControl = Boolean( data && data.length)
-      this.selectMultiData = data
-    },
+    async getFetchDataList() {
+      const params = {
+        nomiAppId: this.nomiAppId,
+        sortColumn: 'sort',
+        isAsc: true,
+        fileType: '102',
+      }
+      await this.getDataList(params)
+    }
   }
 }
 </script>

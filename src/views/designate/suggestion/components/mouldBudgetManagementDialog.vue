@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-05-24 13:45:08
- * @LastEditTime: 2021-05-29 17:56:59
- * @LastEditors: ldh
+ * @LastEditTime: 2021-06-03 11:12:34
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\designate\suggestion\components\mouldBudgetManagementDialog.vue
 -->
@@ -45,8 +45,8 @@
     <template #footer class="footer">
       <iPagination v-update
         class="pagination"
-        @size-change="handleSizeChange($event, getList)"
-        @current-change="handleCurrentChange($event, getList)"
+        @size-change="handleSizeChange($event, getMouldBudget)"
+        @current-change="handleCurrentChange($event, getMouldBudget)"
         background
         :current-page="page.currPage"
         :page-sizes="page.pageSizes"
@@ -74,6 +74,10 @@ export default {
     visible: {
       type: Boolean,
       default: false,
+    },
+    rfqIds: {
+      type: Array,
+      require: true
     }
   },
   watch: {
@@ -81,6 +85,9 @@ export default {
       if (nv) { 
         // 请求
         this.getMouldBudget()
+      } else {
+        this.tableListData = []
+        this.multipleSelection = []
       }
 
       this.$emit("update:visible", nv)
@@ -107,7 +114,7 @@ export default {
     getMouldBudget() {
       this.loading = true
 
-      this.multipleSelection = [
+      const rfqIds = [
         { rfqId: "50002000" },
         { rfqId: "50002001" },
       ]
@@ -115,7 +122,7 @@ export default {
       getMouldBudget({
         currPage: this.page.currPage,
         pageSize: this.page.pageSize,
-        rfqIds: this.multipleSelection.map(item => item.rfqId).join('&rfqIds=')
+        rfqIds: rfqIds.map(item => item.rfqId).join('&rfqIds=')
       })
       .then(res => {
         if (res.code == 200) {
@@ -164,11 +171,12 @@ export default {
           }
 
           this.$emit("submit", this.multipleSelection.filter(item => !res.data.includes(item)))
-          this.submitLoading = false
           // this.$emit("update:visible", false)
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }
+
+        this.submitLoading = false
       })
       .catch(() => this.submitLoading = false)
     },
@@ -198,11 +206,12 @@ export default {
           }
 
           this.$emit("recall", this.multipleSelection.filter(item => !res.data.includes(item)))
-          this.recallLoading = false
           // this.$emit("update:visible", false)
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }
+
+        this.recallLoading = false
       })
       .catch(() => this.recallLoading = false)
     }

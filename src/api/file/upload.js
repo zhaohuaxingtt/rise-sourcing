@@ -9,3 +9,12 @@ export function uploadFile(parmars) {
         data: parmars
     })
 }
+
+// 批量下载
+export function downloadFiles(params) {
+    return requst({
+        url: `/download`,
+        method: 'GET',
+        params
+    })
+}

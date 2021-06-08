@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 09:50:42
- * @LastEditTime: 2021-05-25 15:05:36
+ * @LastEditTime: 2021-06-05 14:37:46
  * @LastEditors: Please set LastEditors
  * @Description: 零件采购项目建立首页。
  * @FilePath: \rise\src\views\partsprocure\home\index.vue
@@ -350,6 +350,10 @@ export default {
     },
   },
   created() {
+    Object.keys(this.$route.query).forEach(key => {
+      this.$set(this.form, `search.${ key }`, this.$route.query[key])
+    })
+
     this.getTableListFn();
     this.getProcureGroup();
   },
@@ -573,6 +577,14 @@ export default {
       this.$router.push({ path: "/sourcing/createparts/home" })
     }
   },
+  beforeRouteUpdate(to, from, next) {
+    Object.keys(this.$route.query).forEach(key => {
+      this.$set(this.form, `search.${ key }`, to.query[key])
+    })
+
+    this.getTableListFn()
+    next()
+  }
 };
 </script>
 <style lang="scss" scoped>

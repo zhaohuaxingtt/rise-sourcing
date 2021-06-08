@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-27 21:20:41
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-05-29 16:36:15
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-05-31 15:17:46
  * @Description: 
  * @FilePath: \front-web\src\views\partsprocure\editordetail\components\designateInfo\components\rsEEdition.vue
 -->
@@ -20,14 +20,13 @@
 </template>
 
 <script>
-import { iDialog, iButton, iSelect, iInput, iPagination } from 'rise'
-import tableList from '@/views/designate/designatedetail/components/tableList'
+import { iDialog } from 'rise'
 import { fileTableTitle } from '../data'
 import { pageMixins } from "@/utils/pageMixins"
 import rsDetail from '@/views/designate/designatedetail/decisionData/rs'
 export default {
   mixins: [pageMixins],
-  components: { iDialog, iButton, iSelect, iInput, iPagination, tableList, rsDetail },
+  components: { iDialog, rsDetail },
   props: {
     dialogVisible: { type: Boolean, default: false }
   },

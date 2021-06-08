@@ -116,9 +116,14 @@
 import Vue from 'vue'
 import {
   tasksTitle,
-  taskStatus,
-  MoketasksData
+  taskStatus
 } from './data'
+import { 
+  getNominateTaskList
+} from '@/api/designate/decisiondata/tasks'
+import { pageMixins } from '@/utils/pageMixins'
+import filters from "@/utils/filters"
+
 import tablelist from "./tableList";
 
 import {
@@ -143,12 +148,14 @@ export default {
     icon,
     tablelist
   },
+  mixins: [ filters, pageMixins ],
   data() {
     return {
       // 单一供应商
       tasksTitle,
       taskStatus,
-      data: MoketasksData,
+      tableLoading: false,
+      data: [],
       selectedData: [],
       editControl: false,
       partDialogVisibal: false,
@@ -159,10 +166,38 @@ export default {
         key: 'HIDE/UNHIDE',
         tooltip: false
       },
-      page: {}
+      page: {
+        currPage: 1,
+        pageSize: 10,
+        totalCount: 0,
+        layout: "total, prev, pager, next, jumper"
+      }
     }
   },
+  mounted() {
+    this.getFetchData()
+  },
   methods: {
+    getFetchData() {
+      this.tableLoading = true
+      getNominateTaskList({
+        nominateId: '1',
+        current: this.page.currPage,
+        size: this.page.pageSize
+      }).then(res => {
+        if (res.code === '200') {
+          this.data = res.data.records || []
+          this.page.totalCount = res.data.total || 0
+        } else {
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
+        this.tableLoading = false
+        console.log(res)
+      }).catch(e => {
+        console.log(e)
+        this.tableLoading = false
+      })
+    },
     // 批量编辑
     handleBatchEdit() {
       if (!this.selectedData.length) {

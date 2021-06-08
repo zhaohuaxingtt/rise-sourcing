@@ -6,104 +6,6 @@
   "description": "",
   "glyphs": [
     {
-      "icon_id": "21956963",
-      "name": "可选标签",
-      "font_class": "kexuanbiaoqian",
-      "unicode": "e691",
-      "unicode_decimal": 59025
-    },
-    {
-      "icon_id": "21953555",
-      "name": "零件4",
-      "font_class": "lingjian4",
-      "unicode": "e68c",
-      "unicode_decimal": 59020
-    },
-    {
-      "icon_id": "21953556",
-      "name": "零件1",
-      "font_class": "lingjian1",
-      "unicode": "e68d",
-      "unicode_decimal": 59021
-    },
-    {
-      "icon_id": "21953557",
-      "name": "零件2",
-      "font_class": "lingjian2",
-      "unicode": "e68e",
-      "unicode_decimal": 59022
-    },
-    {
-      "icon_id": "21953558",
-      "name": "零件3",
-      "font_class": "lingjian3",
-      "unicode": "e68f",
-      "unicode_decimal": 59023
-    },
-    {
-      "icon_id": "21953559",
-      "name": "零件5",
-      "font_class": "lingjian5",
-      "unicode": "e690",
-      "unicode_decimal": 59024
-    },
-    {
-      "icon_id": "21953110",
-      "name": "微信",
-      "font_class": "weixin",
-      "unicode": "e685",
-      "unicode_decimal": 59013
-    },
-    {
-      "icon_id": "21953111",
-      "name": "选中卡片",
-      "font_class": "xuanzhongkapian",
-      "unicode": "e686",
-      "unicode_decimal": 59014
-    },
-    {
-      "icon_id": "21953112",
-      "name": "地址",
-      "font_class": "dizhi",
-      "unicode": "e687",
-      "unicode_decimal": 59015
-    },
-    {
-      "icon_id": "21953113",
-      "name": "审批-附件",
-      "font_class": "shenpi-fujian1",
-      "unicode": "e688",
-      "unicode_decimal": 59016
-    },
-    {
-      "icon_id": "21953114",
-      "name": "邮箱",
-      "font_class": "youxiang",
-      "unicode": "e689",
-      "unicode_decimal": 59017
-    },
-    {
-      "icon_id": "21953115",
-      "name": "电话",
-      "font_class": "dianhua",
-      "unicode": "e68a",
-      "unicode_decimal": 59018
-    },
-    {
-      "icon_id": "21953116",
-      "name": "岗位",
-      "font_class": "gangwei",
-      "unicode": "e68b",
-      "unicode_decimal": 59019
-    },
-    {
-      "icon_id": "21943874",
-      "name": "流程节点(已完成)",
-      "font_class": "liuchengjiedianyiwancheng1",
-      "unicode": "e670",
-      "unicode_decimal": 58992
-    },
-    {
       "icon_id": "21930806",
       "name": "报价单-有附件",
       "font_class": "baojiadan-youfujian",
@@ -242,6 +144,13 @@
       "font_class": "kaiguanjianguan",
       "unicode": "e672",
       "unicode_decimal": 58994
+    },
+    {
+      "icon_id": "21693959",
+      "name": "流程节点（已完成）",
+      "font_class": "liuchengjiedianyiwancheng1",
+      "unicode": "e670",
+      "unicode_decimal": 58992
     },
     {
       "icon_id": "21711129",

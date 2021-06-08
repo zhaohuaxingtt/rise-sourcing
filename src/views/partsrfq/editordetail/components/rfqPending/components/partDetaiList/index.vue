@@ -1,7 +1,7 @@
 <!--
 * @author:shujie
 * @Date: 2021-2-25 11:42:11
- * @LastEditors: ldh
+ * @LastEditors: Please set LastEditors
 * @Description: 待办事项-零件清单
  -->
 <template>
@@ -34,7 +34,7 @@
     <!-- 新申请财务目标价 -->
     <applyPrice ref="applyPrice" @refresh="getTableList" :handleSelectArr="handleSelectArr"></applyPrice>
     <!-- 发送KM -->
-    <kmDialog :visible.sync="kmDialogVisible" />
+    <kmDialog :rfqId="rfqId" :parts="handleSelectArr" :visible.sync="kmDialogVisible" />
   </iCard>
 </template>
 
@@ -220,6 +220,8 @@ export default {
     },
     // 发送KM
     sendKM() {
+      if (!this.handleSelectArr.length) return iMessage.warn(this.$t("LK_QINGXUANZEZHISHAOYITIAOSHUJU"))
+
       this.kmDialogVisible = true
     }
   },

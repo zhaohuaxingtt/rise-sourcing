@@ -3,45 +3,67 @@
     <div class="dialog-Header" slot="title">
       <div class="font18 font-weight">{{$t('strategicdoc.ShangChuan')}}</div>
       <div class="control">
-        <iButton>{{ $t('LK_XIAZAI') }}</iButton>
-        <iButton>{{ $t('LK_SHANCHU') }}</iButton>
-        <iButton>{{ $t('strategicdoc.ShangChuanWenJian') }}</iButton>
+        <iButton @click="downloadFile">{{ $t('LK_XIAZAI') }}</iButton>
+        <iButton @click="deleteFile">{{ $t('LK_SHANCHU') }}</iButton>
+        <upload
+          class="upload-trigger"
+          :hideTip="true"
+          :accept="'.jpg,.jpeg,.png,.pdf,.tif'"
+          :buttonText="$t('strategicdoc.ShangChuanWenJian')"
+          @on-success="onUploadsucess(Object.assign(...arguments, {fileType: '101'}), getDataList)"
+        />
+        <!-- <iButton>{{ $t('strategicdoc.ShangChuanWenJian') }}</iButton> -->
       </div>
     </div>
-    <div class="body">
-      <tableList index :height="controlHeight ? '91%' : '100%'" v-show="visible" class="table margin-top20" :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="loading" @handleSelectionChange="handleSelectionChange">
+    <div class="body" v-loading="tableLoading">
+      <tableList index :height="controlHeight ? '91%' : '100%'" v-show="visible" class="table margin-top20" :tableData="dataList" :tableTitle="tableTitle" @handleSelectionChange="handleSelectionChange">
+        <template #uploadDate="scope">
+          {{scope.row.uploadDate | dateFilter('YYYY-MM-DD')}}
+        </template>
       </tableList>
     </div>
     <div slot="footer" class="footer">
       <iPagination v-update
         class="pagination"
-        @size-change="handleSizeChange($event, getFetchData)"
         @current-change="handleCurrentChange($event, getFetchData)"
         background
         :current-page="page.currPage"
-        :page-sizes="page.pageSizes"
         :page-size="page.pageSize"
         :layout="page.layout"
         :total="page.totalCount" />
+      
     </div>
   </iDialog>
 </template>
 
 <script>
-import { iPagination, iDialog, iMessage, iButton, icon } from '@/components'
-import { uploadtableTitle as tableTitle, mokeUploadTableListData } from './data'
-import { pageMixins } from '@/utils/pageMixins'
+import { iPagination, iDialog, iMessage, iButton } from '@/components'
+import { uploadtableTitle as tableTitle } from './data'
 import tableList from '@/views/designate/supplier/components/tableList'
 import filters from '@/utils/filters'
+import { attachMixins } from '@/utils/attachMixins'
+import { pageMixins } from '@/utils/pageMixins'
+import upload from '@/components/Upload'
+// import { downloadFile } from '@/api/file'
+
+// import {
+//   uploadDaring,
+//   batchDeleteDaring,
+//   getdDecisiondataDaringList
+// } from '@/api/designate/decisiondata/drawing'
 
 export default {
-  components: { tableList, iPagination, iDialog, iButton, icon },
-  mixins: [ pageMixins, filters ],
+  components: { tableList, iPagination, iDialog, iButton, upload },
+  mixins: [ pageMixins, filters, attachMixins ],
   props: {
     ...iDialog.props,
     visible: {
       type: Boolean,
       default: false
+    },
+    nomiAppId: {
+      type: String,
+      default: ''
     },
     params: {
       type: Object,
@@ -49,9 +71,9 @@ export default {
     }
   },
   watch: {
-    params: {
+    visible: {
       handler() {
-        this.$nextTick(() => { if (this.visible) this.getAttachment() })
+        this.$nextTick(() => { if (this.visible) this.getFetchData() })
       },
       deep: true
     }
@@ -60,17 +82,24 @@ export default {
     return {
       loading: false,
       tableTitle,
-      tableListData: mokeUploadTableListData,
-      multipleSelection: [],
-      controlHeight: 0
+      controlHeight: 0,
+      page: {
+        currPage: 1,
+        pageSize: 10,
+        totalCount: 0,
+        layout: "total, prev, pager, next, jumper"
+      }
     }
   },
   methods: {
     getFetchData() {
-
-    },
-    handleSelectionChange(list) {
-      this.multipleSelection = list
+      const params = {
+        nomiAppId: this.nomiAppId,
+        sortColumn: 'sort',
+        isAsc: true,
+        fileType: '101',
+      }
+      this.getDataList(params)
     }
   }
 }
@@ -81,6 +110,10 @@ export default {
   @mixin pdtb($top: 0, $bottom: 0) {
     padding-top: $top;
     padding-bottom: $bottom;
+  }
+
+  .upload-trigger {
+    margin-left: 10px;
   }
 
   .link-underline {

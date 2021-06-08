@@ -1,8 +1,8 @@
 <!--
  * @Author: ldh
  * @Date: 2021-05-29 16:29:00
- * @LastEditTime: 2021-05-29 17:42:31
- * @LastEditors: ldh
+ * @LastEditTime: 2021-06-03 20:49:54
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqPending\components\partDetaiList\components\kmDialog.vue
 -->
@@ -17,7 +17,8 @@
       <p class="title"></p>
       <div class="control" id="control">
         <iButton :loading="sendLoading" @click="handleSend">{{ $t("partsprocure.FaSong") }}</iButton>
-        <iButton :loading="recallLoading" @click="handleRecall">{{ $t("partsprocure.CheHui") }}</iButton>
+        <!-- 2021/06/02 取消撤回功能 -->
+        <!-- <iButton :loading="recallLoading" @click="handleRecall">{{ $t("partsprocure.CheHui") }}</iButton> -->
       </div>
     </template>
     <div class="body">
@@ -29,7 +30,11 @@
         :tableData="tableListData"
         :tableTitle="tableTitle"
         :tableLoading="loading"
-        @handleSelectionChange="handleSelectionChange" />
+        @handleSelectionChange="handleSelectionChange">
+        <template #sendKmFlag="scope">
+          <span>{{ scope.row.sendKmFlag | sendKmFlagFilter }}</span>
+        </template>  
+      </tableList>
     </div>
     <template #footer class="footer">
       <iPagination v-update
@@ -47,29 +52,36 @@
 </template>
 
 <script>
-import { iDialog, iButton, iInput, iPagination, iMessage } from "rise"
+import { iDialog, iButton, iPagination, iMessage } from "rise"
 import tableList from "@/views/partsign/editordetail/components/tableList"
 import { kmDialogTableTitle as tableTitle } from "../data"
 import filters from "@/utils/filters"
-import { numberProcessor } from "@/utils"
 import { pageMixins } from "@/utils/pageMixins"
-// import { getMouldBudget, patchMouldBudget } from "@/api/designate"
+import { getPartsBySupplier, sendKm, cancelKm } from "@/api/partsrfq/editordetail"
 
 export default {
-  components: { iDialog, iButton, iInput, iPagination, tableList },
+  components: { iDialog, iButton, iPagination, tableList },
   mixins: [ filters, pageMixins ],
   props: {
     ...iDialog.props,
     visible: {
       type: Boolean,
       default: false,
+    },
+    rfqId: {
+      type: String,
+      require: true
+    },
+    parts: {
+      type: Array,
+      default: () => []
     }
   },
   watch: {
     visible(nv) {
       if (nv) { 
         // 请求
-        // this.getMouldBudget()
+        this.getPartsBySupplier()
       }
 
       this.$emit("update:visible", nv)
@@ -80,6 +92,14 @@ export default {
     // ...Vuex.mapState({
     //   userInfo: state => state.permission.userInfo,
     // }),
+  },
+  filters: {
+    sendKmFlagFilter(value) {
+      const obj = {
+        "0": "未发送",
+        "1": "已发送"
+      }
+    }
   },
   data() {
     return {
@@ -92,102 +112,86 @@ export default {
     };
   },
   methods: {
-    // // 获取列表
-    // getMouldBudget() {
-    //   this.loading = true
+    // 获取列表
+    getPartsBySupplier() {
+      if (!this.parts.length) return
 
-    //   this.multipleSelection = [
-    //     { rfqId: "50002000" },
-    //     { rfqId: "50002001" },
-    //   ]
+      this.loading = true
 
-    //   getMouldBudget({
-    //     currPage: this.page.currPage,
-    //     pageSize: this.page.pageSize,
-    //     rfqIds: this.multipleSelection.map(item => item.rfqId).join('&rfqIds=')
-    //   })
-    //   .then(res => {
-    //     if (res.code == 200) {
-    //       this.tableListData = Array.isArray(res.data.records) ? res.data.records : []
-    //       this.page.totalCount = res.data.total || 0
-    //     } else {
-    //       iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
-    //     }
+      getPartsBySupplier({
+        current: this.page.currPage,
+        size: this.page.pageSize,
+        rfqId: this.rfqId,
+        partFsInfos: this.parts.map(part => ({
+          fs: part.fsnrGsnrNum,
+          partNum: part.partNum
+        }))
+      })
+      .then(res => {
+        if (res.code == 200) {
+          this.multipleSelection = []
+          this.tableListData = Array.isArray(res.data) ? res.data : []
+          this.page.totalCount = res.total || 0
+        } else {
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
 
-    //     this.loading = false
-    //   })
-    //   .catch(() => this.loading = false)
-    // },
+        this.loading = false
+      })
+      .catch(() => this.loading = false)
+    },
     handleSelectionChange(list) {
       this.multipleSelection = list
     },
     // 提交
-    handleSubmit() {
-      // if (this.multipleSelection.length < 1) {
-      //   return iMessage.warn(this.$t("nominationSuggestion.Qingxuanzezhishaoyitiaoshuju"))
-      // }
+    handleSend() {
+      if (this.multipleSelection.length < 1) return iMessage.warn(this.$t("nominationSuggestion.QingXuanZeZhiShaoYiTiaoShuJu"))
+      if (this.multipleSelection.some(item => item.sendKmFlag == 1)) return iMessage.warn(this.$t("nominationSuggestion.QingWuXuanZeYiFaSongDeShuJu"))
 
-      // this.sendLoading = true
-      // patchMouldBudget({
-      //   updateType: 1,
-      //   mouldBudgetDTOS: this.multipleSelection
-      // })
-      // .then(res => {
-      //   if (res.code == 200) {
-      //     if (!res.data.length) {
-      //       iMessage.success(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
-      //       this.getMouldBudget()
-      //     } else {
-      //       if (this.multipleSelection.length === res.data.length) {
-      //         iMessage.warn(`${ this.$t("nominationSuggestion.Rfqbianhao") }: ${ res.data.join(", ") } ${ this.$t("nominationSuggestion.Chongfutijiao") }`)
-      //       } else {
-      //         iMessage.warn(`${ this.$t("nominationSuggestion.Rfqbianhao") }: ${ res.data.join(", ") } ${ this.$t("nominationSuggestion.Chongfutijiao") }, ${ this.$t("nominationSuggestion.Qiyushujuzhengchangtijiao") }`)
-      //         this.getMouldBudget()
-      //       }
-      //     }
+      this.sendLoading = true
+      sendKm(this.multipleSelection.map(item => ({
+        fsNum: item.fsnrGsnrNum,
+        quotationId: item.quotationId,
+        rfqId: this.rfqId,
+        round: item.round,
+        supplierId: item.supplierId
+      })))
+      .then(res => {
+        if (res.code == 200) {
+          iMessage.success(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+          this.$emit("send", this.multipleSelection)
+          this.getPartsBySupplier()
+          // this.$emit("update:visible", false)
+        } else {
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
 
-      //     this.$emit("submit", this.multipleSelection.filter(item => !res.data.includes(item)))
-      //     this.sendLoading = false
-      //     // this.$emit("update:visible", false)
-      //   } else {
-      //     iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
-      //   }
-      // })
-      // .catch(() => this.sendLoading = false)
+        this.sendLoading = false
+      })
+      .catch(() => this.sendLoading = false)
     },
     // 撤回
     handleRecall() {
-      // if (this.multipleSelection.length < 1) {
-      //   return iMessage.warn(this.$t("nominationSuggestion.Qingxuanzezhishaoyitiaoshuju"))
-      // }
+      if (this.multipleSelection.length < 1) return iMessage.warn(this.$t("nominationSuggestion.QingXuanZeZhiShaoYiTiaoShuJu"))
+      if (this.multipleSelection.some(item => item.sendKmFlag == 0)) return iMessage.warn(this.$t("nominationSuggestion.QingWuXuanZeWeiFaSongDeShuJu"))
 
-      // this.recallLoading = true
-      // patchMouldBudget({
-      //   updateType: 0,
-      //   mouldBudgetDTOS: this.multipleSelection
-      // })
-      // .then(res => {
-      //   if (res.code == 200) {
-      //     if (!res.data.length) {
-      //       iMessage.success(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
-      //       this.getMouldBudget()
-      //     } else {
-      //       if (this.multipleSelection.length === res.data.length) {
-      //         iMessage.warn(`${ this.$t("nominationSuggestion.Rfqbianhao") }: ${ res.data.join(", ") } ${ this.$t("nominationSuggestion.Chongfuchehui") }`)
-      //       } else {
-      //         iMessage.warn(`${ this.$t("nominationSuggestion.Rfqbianhao") }: ${ res.data.join(", ") } ${ this.$t("nominationSuggestion.Chongfuchehui") }, ${ this.$t("nominationSuggestion.Qiyushujuzhengchangchehui") }`)
-      //         this.getMouldBudget()
-      //       }
-      //     }
+      this.recallLoading = true
+      cancelKm({
+        idList: this.multipleSelection.map(item => item.recordId)
+      })
+      .then(res => {
+        if (res.code == 200) {
+          iMessage.success(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+          this.$emit("recall", this.multipleSelection)
+          this.getPartsBySupplier()
+          // this.$emit("update:visible", false)
+        } else {
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
 
-      //     this.$emit("recall", this.multipleSelection.filter(item => !res.data.includes(item)))
-      //     this.recallLoading = false
-      //     // this.$emit("update:visible", false)
-      //   } else {
-      //     iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
-      //   }
-      // })
-      // .catch(() => this.recallLoading = false)
+        this.recallLoading = false
+      })
+      .catch(() => this.recallLoading = false)
     }
   }
 };

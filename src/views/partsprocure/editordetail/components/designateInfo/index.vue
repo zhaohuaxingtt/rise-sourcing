@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-27 17:45:44
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-05-28 10:35:30
+ * @LastEditTime: 2021-06-07 11:52:14
  * @Description: 零件采购项目-定点信息
  * @FilePath: \front-web\src\views\partsprocure\editordetail\components\designateInfo\index.vue
 -->
@@ -21,39 +21,40 @@
         
       </div>
     </div>
-    <tableList selection :tableTitle="tableTitle" :tableData="tableData" />
+    <tableList :selection="false" :tableTitle="tableTitle" :tableData="tableData" :tableLoading="tableLoading" />
     <!------------------------------------------------------------------------>
     <!--                  表格分页                                          --->
     <!------------------------------------------------------------------------>
-    <iPagination v-update @size-change="handleSizeChange($event, getTableList)" @current-change="handleCurrentChange($event, getTableList)" background :page-sizes="page.pageSizes"
+    <!-- <iPagination v-update @size-change="handleSizeChange($event, getTableList)" @current-change="handleCurrentChange($event, getTableList)" background :page-sizes="page.pageSizes"
       :page-size="page.pageSize"
       :layout="page.layout"
       :current-page="page.currPage"
       :total="page.totalCount"
-    />
+    /> -->
     <!------------------------------------------------------------------------>
     <!--                  纸质RS单弹窗                                          --->
     <!------------------------------------------------------------------------>
-    <rsPaperDialog :dialogVisible="rsPaperDialogVisible" @changeVisible="changersPaperDialogVisible" />
+    <rsPaperDialog :dialogVisible="rsPaperDialogVisible" @changeVisible="changersPaperDialogVisible" :nominateAppId="nominateAppId" />
     <!------------------------------------------------------------------------>
     <!--                  SEL分摊单弹窗                                          --->
     <!------------------------------------------------------------------------>
-    <selDialog :dialogVisible="selDialogVisible" @changeVisible="changeselDialogVisible" />
+    <selDialog :dialogVisible="selDialogVisible" @changeVisible="changeselDialogVisible" :nominateAppId="nominateAppId" />
     <!------------------------------------------------------------------------>
     <!--                  电子RS单弹窗                                          --->
     <!------------------------------------------------------------------------>
-    <rsEEditionDialog :dialogVisible="rsEeditionDialogVisible" @changeVisible="changersEeditionDialogVisible" />
+    <rsEEditionDialog :dialogVisible="rsEeditionDialogVisible" @changeVisible="changersEeditionDialogVisible" :nominateAppId="nominateAppId" :nominateType="nominateType" />
   </iCard>
 </template>
 
 <script>
-import { iCard, iButton, iPagination } from 'rise'
+import { iCard, iButton, iPagination, iMessage } from 'rise'
 import { tableTitle } from './data'
 import tableList from '@/views/designate/designatedetail/components/tableList'
 import { pageMixins } from "@/utils/pageMixins"
 import rsPaperDialog from './components/rsPaper'
 import selDialog from './components/sel'
 import rsEEditionDialog from './components/rsEEdition'
+import { findNominateInfo, getNominateFileInfo } from "@/api/partsprocure/editordetail"
 export default {
   mixins: [pageMixins],
   components: { tableList, iCard, iButton, iPagination, rsPaperDialog, selDialog, rsEEditionDialog },
@@ -63,10 +64,43 @@ export default {
       tableData: [],
       rsPaperDialogVisible: false,
       selDialogVisible: false,
-      rsEeditionDialogVisible: false
+      rsEeditionDialogVisible: false,
+      tableLoading: false,
+      nominateAppId: '',
+      nominateType: ''
     }
   },
+  props: {
+    params: {
+      type: Object,
+      require: true
+    }
+  },
+  created() {
+    this.getTableInfo()
+  },
   methods: {
+    /**
+     * @Description: 获取表格信息
+     * @Author: Luoshuang
+     * @param {*}
+     * @return {*}
+     */    
+    getTableInfo() {
+      this.tableLoading = true
+      // this.params.fsnrGsnrNum 
+      findNominateInfo('FS06-10002').then(res => {
+        if (res?.result) {
+          this.tableData = [res.data]
+          this.nominateAppId = res.data.nominateAppId || ''
+          this.nominateType = res.data.applicationStatus || ''
+        } else {
+          iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
+        }
+      }).finally(() => {
+        this.tableLoading = false
+      })
+    },
     /**
      * @Description: 纸质RS单弹窗状态变化
      * @Author: Luoshuang

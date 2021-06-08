@@ -1,7 +1,7 @@
 <!--
  * @Author: moxuan
  * @Date: 2021-02-25 09:59:25
- * @LastEditTime: 2021-05-24 13:02:08
+ * @LastEditTime: 2021-06-07 19:42:24
  * @LastEditors: Please set LastEditors
  * @Description: RFQ模块首页
  * @FilePath: \rise\src\views\partsrfq\home\index.vue
@@ -48,10 +48,9 @@
                 </iSelect>
               </el-form-item>
               <el-form-item :label="$t('LK_CHEXING')">
-                <iSelect :placeholder="$t('LK_QINGXUANZE')" v-model="form.car">
+                <iSelect :placeholder="$t('LK_QINGXUANZE')" v-model="form.modelCode" filterable>
                   <el-option value="" :label="$t('all') | capitalizeFilter"></el-option>
-                  <!-- <el-option v-for="items in rfqStatusOptions" :key='items.code' :value='items.code'
-                             :label="items.name"/> -->
+                  <el-option v-for="item in cartTypeOptions" :key="item.key" :value="item.value" :label="item.label"/>
                 </iSelect>
               </el-form-item>
             </el-form>
@@ -111,11 +110,13 @@
               </template>
               <template #b="scope">
                 <el-popover
-                  v-if="scope.row.b"
+                  v-if="scope.row.kmAnalysis"
                   placement="left"
                   width="300"
-                  trigger="click">
-                  <tablelist :tableTitle="attachmentTableTitle" :tableData="attachmentTableListData" :selection="false">
+                  trigger="click"
+                  @show="showAttachmentTable(scope.row)"
+                  @hide="attachmentTableListData = []">
+                  <tablelist :tableTitle="attachmentTableTitle" :tableData="attachmentTableListData" :tableLoading="attachmentLoading" :selection="false">
                     <template #fileName="attachmentScope">
                       <span class="link" @click="downLoad(attachmentScope.row)">{{ attachmentScope.row.fileName }}</span>
                     </template>
@@ -162,7 +163,7 @@ import tablelist from "pages/partsrfq/components/tablelist";
 import assignmentOfScoringTasks from "pages/partsrfq/home/components/assignmentOfScoringTasks";
 import {pageMixins} from "@/utils/pageMixins";
 import {tableTitle, attachmentTableTitle} from "pages/partsrfq/home/components/data";
-import {getRfqDataList, editRfqData, findBySearches} from "@/api/partsrfq/home";
+import {getRfqDataList, editRfqData, findBySearches, getRfqList, getCartypeDict} from "@/api/partsrfq/home";
 import {excelExport} from "@/utils/filedowLoad";
 import store from '@/store'
 import filters from "@/utils/filters";
@@ -172,6 +173,8 @@ import { getProcureGroup } from "@/api/partsprocure/home";
 import scoringDeptDialog from "@/views/partsrfq/editordetail/components/rfqPending/components/supplierScore/components/scoringDeptDialog"
 import { navList } from "@/views/partsign/home/components/data";
 import { cloneDeep } from "lodash";
+import { getKmFileHistory } from "@/api/costanalysismanage/costanalysis"
+import { downloadFile } from "@/api/file"
 
 export default {
   components: {
@@ -201,7 +204,8 @@ export default {
         carType: '',
         partType: '',
         rfqStatus: '',
-        car: ''
+        car: '',
+        modelCode: ''
       },
       activateButtonLoading: false,
       closeButtonLoading: false,
@@ -217,16 +221,14 @@ export default {
       scoringDeptVisible: false,
       rfqIds: [],
       navList: cloneDeep(navList),
+      attachmentLoading: false,
       attachmentTableTitle,
-      attachmentTableListData: [
-        { fileName: 'a.pdf' },
-        { fileName: 'b.pdf' },
-        { fileName: 'c.pdf' },
-        { fileName: 'd.pdf' },
-      ]
+      attachmentTableListData: [], 
+      cartTypeOptions: []
     };
   },
   created() {
+    this.getCartypeDict()
     this.getTableList()
     this.getCarTypeOptions()
     this.getPartTypeOptions()
@@ -257,19 +259,22 @@ export default {
     async getTableList() {
       this.tableLoading = true;
       const req = {
-        rfqMangerInfosPackage: {
+        // rfqMangerInfosPackage: {
           userId: store.state.permission.userInfo.id,
           current: this.page.currPage,
           size: this.page.pageSize,
           ...this.form
-        }
+        // }
       }
       try {
-        const res = await getRfqDataList(req)
-        this.tableListData = res.data.getRfqInfoVO.rfqVOList;
-        this.page.currPage = res.data.getRfqInfoVO.pageNum
-        this.page.pageSize = res.data.getRfqInfoVO.pageSize
-        this.page.totalCount = res.data.getRfqInfoVO.total
+        // const res = await getRfqDataList(req)
+        const res = await getRfqList(req)
+        // this.tableListData = res.data.getRfqInfoVO.rfqVOList;
+        // this.page.currPage = res.data.getRfqInfoVO.pageNum
+        // this.page.pageSize = res.data.getRfqInfoVO.pageSize
+        // this.page.totalCount = res.data.getRfqInfoVO.total
+        this.tableListData = Array.isArray(res.data) ? res.data : []
+        this.page.totalCount = res.total
         this.tableLoading = false;
       } catch {
         this.tableLoading = false;
@@ -409,7 +414,53 @@ export default {
       this.rfqStatusOptions = res.data
     },
     // 分析报告下载
-    downLoad(row) {}
+    downLoad(row) {
+      downloadFile({
+        applicationName: "rise",
+        fileList: row.fileName
+      })
+    },
+    showAttachmentTable(row) {
+      this.getKmFileHistory(row.id)
+    },
+    // 获取分析报告
+    getKmFileHistory(rfqId) {
+      if (!rfqId) return
+
+      this.attachmentLoading = true
+      getKmFileHistory({
+        rfqId: rfqId,
+        currPage: 1,
+        pageSize: 99999999
+      })
+      .then(res => {
+        if (res.code == 200) {
+          this.attachmentTableListData = Array.isArray(res.data) ? res.data : []
+        } else {
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
+
+        this.attachmentLoading = false
+      })
+      .catch(() => this.attachmentLoading = false)
+    },
+    // 获取车型字典
+    getCartypeDict() {
+      getCartypeDict()
+      .then(res => {
+        if (res.code == 200) {
+          this.cartTypeOptions = 
+            Array.isArray(res.data) ?
+            res.data.map(item => ({
+              ...item,
+              key: item.code,
+              label: item.name,
+              value: item.value
+            })) :
+            []
+        }
+      })
+    }
   }
 }
 </script>

@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-05-24 17:06:01
- * @LastEditTime: 2021-05-25 09:13:50
+ * @LastEditTime: 2021-06-07 16:16:55
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\createparts\components\home\index.vue
@@ -23,36 +23,38 @@
       :icon="true"
     >
       <el-form>
-        <el-form-item :label="$t('createparts.Lingjianhao')">
-          <iInput :placeholder="$t('createparts.Qingshuru')" v-model="form['search.partNum']" />
+        <el-form-item :label="$t('createparts.LingJianHao')">
+          <iInput :placeholder="$t('createparts.QingShuRuLingJianHao')" v-model="form.partNum" />
         </el-form-item>
-        <el-form-item :label="$t('createparts.Lingjianmingzhong')">
-          <iInput :placeholder="$t('createparts.Qingshuru')" v-model="form['search.partNameZh']" />
+        <el-form-item :label="$t('createparts.LingJianMingZhong')">
+          <iInput :placeholder="$t('createparts.QingShuRuLingJianMingZhong')" v-model="form.partNameZh" />
         </el-form-item>
-        <el-form-item :label="$t('createparts.Lingjianmingde')">
-          <iInput :placeholder="$t('createparts.Qingshuru')" v-model="form['search.partNameDe']" />
+        <el-form-item :label="$t('createparts.LingJianMingDe')">
+          <iInput :placeholder="$t('createparts.QingShuRuLingJianMingDe')" v-model="form.partNameDe" />
         </el-form-item>
-        <el-form-item :label="$t('createparts.Lingjianmingde')">
-          <iSelect :placeholder="$t('createparts.Qingxuanze')" v-model="form['search.partStatus']">
+        <el-form-item :label="$t('createparts.LingJianZhuangTai')">
+          <iSelect :placeholder="$t('createparts.QingXuanZeLingJianZhuangTai')" v-model="form.partStatus">
             <el-option
               value=""
               :label="$t('all') | capitalizeFilter"
             ></el-option>
+            <el-option v-for="item in dictMap.PART_STATE" :key="item.code" :value="item.value" :label="item[$i18n.locale]" />
           </iSelect>
         </el-form-item>
-        <el-form-item :label="$t('createparts.Lingjianlaiyuan')">
-          <iSelect :placeholder="$t('createparts.Qingxuanze')" v-model="form['search.partSource']">
+        <el-form-item :label="$t('createparts.LingJianLaiYuan')">
+          <iSelect :placeholder="$t('createparts.QingXuanZeLingJianLaiYuan')" v-model="form.source">
             <el-option
               value=""
               :label="$t('all') | capitalizeFilter"
             ></el-option>
+            <el-option v-for="item in dictMap.SOURCE_OF_PART" :key="item.code" :value="item.value" :label="item[$i18n.locale]" />
           </iSelect>
         </el-form-item>
       </el-form>
     </iSearch>
     <iCard class="margin-top20">
       <template v-slot:header-control>
-        <iButton>{{ $t("createparts.Chuangjiancaigouxiangmu") }}</iButton>
+        <iButton :loading="createPartsLoading" @click="createParts">{{ $t("createparts.ChuangJianCaiGouXiangMu") }}</iButton>
       </template>
       <div class="body">
         <tableList
@@ -61,19 +63,20 @@
           :tableData="tableListData"
           :tableTitle="tableTitle"
           :tableLoading="loading"
+          @handleSelectionChange="handleSelectionChange"
         >
           <template #date="scope">
             <span>{{ scope.row.date | dateFilter("YYYY-MM-DD") }}</span>
           </template>
           <template #log="scope">
-            <span class="link" @click="log(scope.row)">{{ $t("createparts.Chakan") }}</span>
+            <span class="link" @click="log(scope.row)">{{ $t("createparts.ChaKan") }}</span>
           </template>
         </tableList>
         <iPagination 
           v-update
           class="margin-top30"
-          @size-change="handleSizeChange($event, getList)"
-          @current-change="handleCurrentChange($event, getList)"
+          @size-change="handleSizeChange($event, getParts)"
+          @current-change="handleCurrentChange($event, getParts)"
           background
           :current-page="page.currPage"
           :page-sizes="page.pageSizes"
@@ -86,12 +89,16 @@
 </template>
 
 <script>
-import { icon, iSearch, iInput, iSelect, iCard, iButton, iPagination } from "rise"
+import { icon, iSearch, iInput, iSelect, iCard, iButton, iPagination, iMessage } from "rise"
 import logButton from "@/views/partsign/editordetail/components/logButton"
 import tableList from "@/views/partsign/editordetail/components/tableList";
-import { tableTitle } from "./components/data"
+import { tableTitle, queryForm } from "./components/data"
 import filters from "@/utils/filters"
 import { pageMixins } from "@/utils/pageMixins"
+import { getParts, createParts } from "@/api/partsprocure/editordetail"
+import { selectDictByKeys } from "@/api/dictionary"
+import { cloneDeep } from "lodash"
+import { serialize } from "@/utils"
 
 export default {
   components: { 
@@ -108,26 +115,75 @@ export default {
   mixins: [ filters, pageMixins ],
   data() {
     return {
-      form: {
-        search: {}
+      dictMap: {
+        PART_STATE: [],
+        SOURCE_OF_PART: []
       },
+      form: cloneDeep(queryForm),
       loading: false,
       tableTitle,
-      tableListData: []
+      tableListData: [],
+      multipleSelection: [],
+      createPartsLoading: false
     }
   },
+  created() {
+    this.getDict()
+    this.getParts()
+  },
   methods: {
-    sure() {},
-    reset() {},
-    getList() {
+    getDict() {
+      selectDictByKeys(
+        [
+          { keys: "PART_STATE" },
+          { keys: "SOURCE_OF_PART" }
+        ]
+      )
+      .then(res => {
+        if (res.code == 200) {
+          this.dictMap = {}
+          Object.keys(res.data).forEach(key => {
+            this.$set(this.dictMap, key, res.data[key].map(item => ({
+              ...item,
+              key: item.code,
+              value: item.code,
+              zh: item.name,
+              en: item.nameEn,
+              de: item.nameDe
+            })))
+          })
+        } else {
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
+      })
+      .catch(() => {})
+    },
+    sure() {
+      this.getParts()
+    },
+    reset() {
+      this.form = cloneDeep(queryForm)
+      this.getParts()
+    },
+    getParts() {
       this.loading = true
 
-      const getList = function() {}
-      getList({
+      const form = {
+        current: this.page.currPage,
+        size: this.page.pageSize
+      }
+
+      Object.keys(this.form).forEach(key => {
+        if (this.form[key] || this.form[key] === 0) {
+          form[key] = this.form[key]
+        }
       })
+
+      getParts(form)
       .then(res => {
         if (res.code == 200) {
           this.tableListData = Array.isArray(res.data) ? res.data : []
+          this.page.totalCount = res.total || 0
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }
@@ -135,6 +191,48 @@ export default {
         this.loading = false
       })
       .catch(() => this.loading = false)
+    },
+    handleSelectionChange(list) {
+      this.multipleSelection = list
+    },
+    // 创建采购项⽬
+    createParts() {
+      if (this.multipleSelection.length < 1) return iMessage.warn(this.$t("createparts.QingXuanZeZhiShaoYiTiaoShuJu"))
+      this.createPartsLoading = true
+
+      createParts({
+        manuallyCreatePartProjectDTOList: this.multipleSelection.map(item => ({
+          partNum: item.partNum,
+          // partProjectType: item.partType
+        }))
+      })
+      .then(res => {
+        if (res.code == 200) {
+          iMessage.success(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+
+          if (res.data.manuallyCreatePartProjectVOS.length == 1) {
+            console.log(JSON.stringify(res.data.manuallyCreatePartProjectVOS[0]))
+            this.$router.push({
+              path: "/sourcing/partsprocure/editordetail",
+              query: {
+                item: JSON.stringify({ 
+                  ...res.data.manuallyCreatePartProjectVOS[0], 
+                  purchasePrjectId: res.data.manuallyCreatePartProjectVOS[0].purchaseProjectId
+                })
+              }
+            })
+          } else {
+            this.$router.push({
+              path: `/sourcing/partsprocure/batchmiantain?${ serialize(res.data.manuallyCreatePartProjectVOS.map(item => ({ ids: item.purchaseProjectId })), Array) }`
+            })
+          }
+        } else {
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
+
+        this.createPartsLoading = false
+      })
+      .catch(() => this.createPartsLoading = false)
     },
     // 查看操作日志
     log(row) {

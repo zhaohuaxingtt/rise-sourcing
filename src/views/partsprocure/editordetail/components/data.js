@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-02-25 10:10:50
- * @LastEditTime: 2021-03-24 19:41:51
+ * @LastEditTime: 2021-06-03 19:28:17
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsprocure\editordetail\components\data.js
@@ -42,7 +42,12 @@ export const detailData = {
 	rfqId: "", //RFQid
 	signDate: "", //签收时间)
 	sopDate: "", //SOP时间
-	unit: "", //单位	
+	unit: "", //单位
+	heavyItem: "", // heavyItem
+	partCostUserId: "", // 零件成本分析员Id
+	partCostUserName: "", // 零件成本分析员名称
+	mouldCostUserId: "", // 模具成本分析员Id
+	mouldCostUserName: "", // 模具成本分析员名称
 }
 // 采购项目拆分表头
 export const splitPurchTitle = [
