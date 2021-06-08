@@ -9,7 +9,7 @@ import axios from '@/utils/axios'
 import store from "@/store";
 
 const requst = axios(process.env.VUE_APP_RFQ)
-const partsRequst = axios(process.env.VUE_APP_PARTSPROCURE)
+const partsRequst = axios(process.env.VUE_APP_PARTSPROCURE_STATIC)
 
 export function getRfqDataList(parmars) {
     return requst({

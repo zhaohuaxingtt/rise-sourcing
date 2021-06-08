@@ -206,7 +206,7 @@ module.exports = {
                 }
             },
 						'/nego': {
-							target: 'http://10.122.18.166:9022',
+							target: 'http://10.160.142.53:9022',
 							changeOrigin: true,
 							pathRewrite: {
 									"^/nego": "/nego"
@@ -236,12 +236,12 @@ module.exports = {
                 }
             },
             '/rfqApi': { //周德华，rfq模块的api地址
-                // target: 'http://10.122.18.166:8025',
+                target: 'http://10.122.18.166:8025',
                 // target: 'http://10.160.137.16:8029',  // 周德华
                 // target: 'http://192.168.50.89:8029', // 王洁松
                 // target: 'http://10.160.141.72:8029', // 李自豪
                 // target: 'http://192.168.50.152:8029', // 谭易平
-                target: 'http://10.160.137.16:8029', // 马浩
+                // target: 'http://10.160.137.16:8029', // 马浩
                 changeOrigin: true,
                 pathRewrite: {
                     "^/rfqApi": ""

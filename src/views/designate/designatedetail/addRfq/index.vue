@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-24 11:27:22
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-07 14:40:45
+ * @LastEditTime: 2021-06-08 08:55:37
  * @Description: 
  * @FilePath: \front-web\src\views\designate\designatedetail\addRfq\index.vue
 -->
@@ -161,13 +161,13 @@ export default {
       this.tableLoading = true
       const params = {
         rfqIdArr: this.selectedRfqs.map(item => item.id),
-        nominateProcessType: this.$route.query.designateType,
+        nominateProcessType: this.$route.query.designateType ? this.$route.query.designateType : this.$store.getters.designateType,
         nominateId: this.$route.query.desinateId
       }
       selectRfq(params).then(res => {
         if (res?.result) {
           iMessage.success(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
-          this.$router.push({path: '/designate/rfqdetail', query: {desinateId: res.data, designateType: this.$route.query.designateType}})
+          this.$router.push({path: '/designate/rfqdetail', query: {desinateId: res.data, designateType: this.$route.query.designateType ? this.$route.query.designateType : this.$store.getters.designateType}})
         } else {
           iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
         }

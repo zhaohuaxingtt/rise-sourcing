@@ -17,7 +17,9 @@
                             v-model="groupNode[item.key].nodeDate" 
                             format="yyyy-MM-dd" 
                             value-format="timestamp"
+                            :clearable="false"
                             @change="changeDate(groupNode[item.key])"
+                            
                         />
                     </span>
                     <span v-else>{{groupNode[item.key] ? (groupNode[item.key].nodeWeek ? 'KW'+groupNode[item.key].nodeWeek : '-') : '-'}}</span>
