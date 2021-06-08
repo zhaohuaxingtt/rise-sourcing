@@ -38,6 +38,9 @@
             :showSummary="true"
             :getSummaries="() => item.summaries"
         >
+          <template #budgetApplyAmount="scope">
+            <div>{{ $tools.getTousandNum(scope.row.budgetApplyAmount) }}</div>
+          </template>
         </iTableList>
       </div>
     </div>
@@ -88,7 +91,7 @@ export default {
         const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
         if (Number(res.code) === 0) {
           this.tableListData = res.data.ratifyAlertVOList.map(item => {
-            item.summaries = ['Total', '', item.applyParamVOList.map(item => Number(item.budgetApplyAmount)).reduce((total, num) => total + num)]
+            item.summaries = ['Total', '', this.$tools.getTousandNum(item.applyParamVOList.map(item => Number(item.budgetApplyAmount)).reduce((total, num) => total + num))]
             return item
           })
           this.totalBudget = res.data.dualAlertVOList

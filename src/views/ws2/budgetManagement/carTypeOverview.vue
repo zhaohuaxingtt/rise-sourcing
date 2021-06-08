@@ -287,6 +287,7 @@ export default {
     // 获取卡片列表
     findCartypePro() {
       this.loadingiPage = true
+      let _this = this
       let timeStarEnd =  this.timeStarEnd ? (this.timeStarEnd.length === 0 ? '' : this.timeStarEnd) : ''
       return new Promise((r) => {
         let params = {
@@ -396,7 +397,12 @@ export default {
               // };
               // vm.setOption(option);
               this.contentData.map((item, index) => {
-                let chartData = [(item.generalBudget | 0), (item.fixedAmount | 0), (item.bmAmount | 0), (item.paymentAmount | 0)]
+                let chartData = [
+                    (item.generalBudget ? item.generalBudget.toFixed(2) : 0),
+                    (item.fixedAmount ? item.fixedAmount.toFixed(2) : 0),
+                    (item.bmAmount ? item.bmAmount.toFixed(2) : 0),
+                    (item.paymentAmount ? item.paymentAmount.toFixed(2) : 0)
+                ]
                 const vm1 = echarts().init(document.getElementById("chart" + index));
                 let option1 = {
                   grid: {
@@ -449,7 +455,10 @@ export default {
                       position: 'top',
                       textStyle: {
                         color: '#485465'
-                      }
+                      },
+                      formatter: function(p){
+                        return _this.$tools.getTousandNum(p.value)
+                      },
                     },
                     itemStyle: {
                       normal: {

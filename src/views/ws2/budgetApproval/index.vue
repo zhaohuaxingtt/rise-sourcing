@@ -103,13 +103,15 @@
           <div class="linkStyle"><span @click="clickRfqId(scope.row.rfqId)">{{ scope.row.rfqId }}</span></div>
         </template>
         <template #categoryBudget="scope">
-          <div class="linkStyle"><span @click="clickCategoryBudget(scope.row)">{{ scope.row.categoryBudget }}</span>
-          </div>
+          <div class="linkStyle"><span @click="clickCategoryBudget(scope.row)">{{ $tools.getTousandNum(scope.row.categoryBudget) }}</span></div>
         </template>
         <template #budgetApplyAmount="scope">
           <div class="linkStyle" :class="(Number(scope.row.budgetApplyAmount) > Number(scope.row.budgetLeftoverAmount)) && 'red'"><span
-              @click="clickBudgetApplyAmountShow(scope.row.id)">{{ scope.row.budgetApplyAmount }}</span>
+              @click="clickBudgetApplyAmountShow(scope.row.id)">{{ $tools.getTousandNum(scope.row.budgetApplyAmount) }}</span>
           </div>
+        </template>
+        <template #budgetLeftoverAmount="scope">
+          <div>{{ $tools.getTousandNum(scope.row.budgetLeftoverAmount) }}</div>
         </template>
         <template #approvalStatus="scope">
           <div>

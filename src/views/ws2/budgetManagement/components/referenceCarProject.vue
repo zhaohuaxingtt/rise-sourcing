@@ -51,6 +51,12 @@
             :tableTitle="tmCartypeProTableTitle"
             :activeItems="'partNum'"
         >
+          <template #nomiAmount="scope">
+            <div>{{ $tools.getTousandNum(scope.row.nomiAmount) }}</div>
+          </template>
+          <template #entryAmount="scope">
+            <div>{{ $tools.getTousandNum(scope.row.entryAmount) }}</div>
+          </template>
           <template #info="scope">
             <div class="linkStyle" :class="{noLine: scope.row.tmCartypeProId == noLine}"><span @click="relationCarTypePartsList(scope.row.tmCartypeProId)">{{ $t('详情') }}</span></div>
           </template>
@@ -65,6 +71,12 @@
             :tableData="tableListData2"
             :tableTitle="partsTableTitle"
         >
+          <template #nomiAmount="scope">
+            <div>{{ $tools.getTousandNum(scope.row.nomiAmount) }}</div>
+          </template>
+          <template #entryAmount="scope">
+            <div>{{ $tools.getTousandNum(scope.row.entryAmount) }}</div>
+          </template>
         </iTableList>
       </div>
     </div>

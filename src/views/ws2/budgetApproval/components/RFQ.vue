@@ -15,6 +15,9 @@
             :tableData="tableListData"
             :tableTitle="tableTitle"
         >
+          <template #budget="scope">
+            <div>{{ $tools.getTousandNum(scope.row.budget) }}</div>
+          </template>
         </iTableList>
         <iPagination
             v-update
