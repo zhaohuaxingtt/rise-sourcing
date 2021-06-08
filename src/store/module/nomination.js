@@ -1,8 +1,8 @@
 /*
  * @Author: HaoJiang
  * @Date: 2021-05-27 14:29:09
- * @LastEditTime: 2021-06-01 14:47:47
- * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-06-08 15:07:38
+ * @LastEditors: Please set LastEditors
  * @Description: 定点管理状态管理，缓存定点管理 - 决策资料 - 预览状态，
  * 其他页面统一通过isPreview这个状态，禁用自己页面编辑
  *
@@ -97,6 +97,7 @@ const actions = {
         const {code,data} = res;
         if(code === '200' && data){
           resole(data);
+          commit('SET_PHASE_TYPE', params.phaseType);
         }else{
           reject({});
         }
