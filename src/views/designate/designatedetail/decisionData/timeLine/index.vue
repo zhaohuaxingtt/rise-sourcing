@@ -148,20 +148,12 @@ export default {
     methods:{
         // 编辑 取消
         edit(){
-            const {isEdit,stepList} = this;
-            if(isEdit){
-                stepList.map((item)=>{item.isEdit = false});
-            }else{
+            const {isEdit} = this;
+            const {query={}} = this.$route;
+            const {nominateId='1'} = query;
+            if(!isEdit){
                 this.getDetail();
-                stepList.map((item)=>{
-                    if(item.icon == 'iconTimeLine-CSCMeeting' || item.icon == 'iconTimeLine-BFConfirm'){
-                        item.isEdit = true;
-                        }
-                });
-                
             }
-            this.$store.dispatch('updateNominationStep',{nominateId:'1',phaseType:'1'});
-            this.stepList = stepList;
             this.isEdit = !isEdit;
         },
 
@@ -179,6 +171,7 @@ export default {
                     iMessage.success(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
                     this.getDetail();
                     this.isEdit = false;
+                    this.$store.dispatch('updateNominationStep',{nominateId , phaseType:'5'});
                 }else {
                     iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
                 }
