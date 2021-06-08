@@ -25,7 +25,7 @@
         </div>
         <div>
           <span>Layout: </span>
-          <iSelect v-model="layout">
+          <iSelect v-model="layout" @change="changeLayout">
             <el-option label="FS-Parts as Row" value="1"></el-option>
             <el-option label="FS-Supplier as Row" value="2"></el-option>
           </iSelect> 
@@ -33,14 +33,14 @@
       </div>
       <div class="btnSearch">
         <iButton @click="quote">引用报价</iButton>
-        <iButton @click="group">组合</iButton>
-        <iButton @click="removeGroup">取消组合</iButton>
-        <iButton>导出</iButton>
+        <iButton @click="group"  v-if='layout == "1"'>组合</iButton>
+        <iButton @click="removeGroup"  v-if='layout == "1"'>取消组合</iButton>
+        <!-- <iButton>导出</iButton> -->
       </div>
       <!--------------表格模块-------------->
     </div>
     <tableList v-loading='fsTableLoading' :tableTitle='title' v-if='layout == "1"' :ratingList='ratingList' :tableData='exampelData' @handleSelectionChange='handleSelectionChange'></tableList>
-    <tableListSupplier :tableTitle='supplierTile'  :tableData='supplierData' v-if='layout == "2"'></tableListSupplier>
+    <tableListSupplier v-loading='supplierTableLoading' :centerSupplierData='suppliertopList' :supplierLeftLit='supplierLeftLit' :tableTitle='supplierTile'  :tableData='supplierData' v-if='layout == "2"'></tableListSupplier>
     <!--------------弹窗-------------->
     <iDialog title="组合名" :visible.sync="groupVisble" width='25%' >
       <div class="mine_height">
@@ -57,8 +57,8 @@
 import {iButton,iSelect,iDialog,iInput,iMessage} from 'rise'
 import tableList from './components/table'
 import tableListSupplier from './components/tableListSupplier'
-import {exampelData,supplierData,concactTitlle,centerSupplierList,backChooseList,getRenderTableTile,translateData,translateRating,subtotal,defaultSort} from './components/data'
-import {negoAnalysisSummaryLayout,negoAnalysisSummaryLayoutSave,negoAnalysisSummaryRound,fsPartsAsRow,negoAnalysisSummaryGroup,negoAnalysisSummaryGroupDelete} from '@/api/partsrfq/editordetail'
+import {exampelData,backChooseList,getRenderTableTile,translateData,translateRating,subtotal,defaultSort,getRenderTableTileSupplier,translateDataListSupplier,getleftTittleList} from './components/data'
+import {negoAnalysisSummaryLayout,negoAnalysisSummaryLayoutSave,negoAnalysisSummaryRound,fsPartsAsRow,negoAnalysisSummaryGroup,negoAnalysisSummaryGroupDelete,fsSupplierAsRow} from '@/api/partsrfq/editordetail'
 export default{
   components:{iButton,iSelect,tableList,iDialog,iInput,tableListSupplier},
   data(){return {
@@ -66,8 +66,8 @@ export default{
     exampelData:exampelData,
     groupSelectData:[],
     groupVisble:false,
-    layout:'1',
-    supplierData:supplierData,
+    layout:'2',
+    supplierData:[],
     supplierTile:[],
     //轮次选择
     round:1,
@@ -80,18 +80,30 @@ export default{
     },
     groupName:'',
     fsTableLoading:false,
-    reRenderLastChild:''
+    supplierTableLoading:false,
+    reRenderLastChild:'',
+    suppliertopList:[],
+    supplierLeftLit:[]
   }},
-  created(){
-    this.init()
-  },
   mounted(){
-    this.concactTitlle()
+    this.init()
   },
   provide(){
     return {vm:this}
   },
   methods:{
+    /**
+     * @description: 切换tempalte展示 
+     * @param {*} res
+     * @return {*}
+     */
+    changeLayout(res){
+      if(res == 1){
+        this.fsPartsAsRow()
+      }else{
+        this.supplierfsSupplierAsRow()
+      }
+    },
     removeGroup(){
       if(this.groupSelectData.length == 0){iMessage.warn('抱歉！您还未选择零件！');return}
       if(this.groupSelectData[0].groupId == null){iMessage.warn('抱歉！您选中的零件还未组合，无法取消');return}
@@ -164,9 +176,14 @@ export default{
         })
       },
     async init(){
-        await this.negoAnalysisSummaryLayout() //获取隐藏项
         await this.negoAnalysisSummaryRound() //获取轮次
-        await this.fsPartsAsRow()
+        if(this.layout == 1){
+          await this.negoAnalysisSummaryLayout(this.layout) //获取隐藏项
+          await this.fsPartsAsRow()
+        }else{
+          await this.negoAnalysisSummaryLayout(this.layout) //获取隐藏项
+          await this.supplierfsSupplierAsRow()
+        }
     },
     visibleChange(res){
       if(!res){
@@ -178,9 +195,9 @@ export default{
      * @param {*}
      * @return {*}
      */
-    negoAnalysisSummaryLayout(){
-      this.backChooseLists = backChooseList();
-      negoAnalysisSummaryLayout(this.$route.query.id).then(res=>{
+    negoAnalysisSummaryLayout(type){
+      this.backChooseLists = backChooseList(this.layout);
+      negoAnalysisSummaryLayout(type).then(res=>{
         if(res.data && res.data.layout){
           this.backChoose = JSON.parse(res.data.layout) // 
         }
@@ -194,9 +211,15 @@ export default{
      * @return {*}
      */
     negoAnalysisSummaryLayoutSave(){
-      negoAnalysisSummaryLayoutSave(JSON.stringify(this.backChoose),this.layout).then(res=>{
+      negoAnalysisSummaryLayoutSave(JSON.stringify(this.backChoose),this.layout).then(async res=>{
         if(res.code == 200){
-          this.fsPartsAsRow()
+          if(this.layout == 1){
+            await this.negoAnalysisSummaryLayout(this.layout) //获取隐藏项
+            await this.fsPartsAsRow()
+          }else{
+            await this.negoAnalysisSummaryLayout(this.layout) //获取隐藏项
+            await this.supplierfsSupplierAsRow()
+          }
         }
       }).catch(err=>{
         iMessage.warn(err.desZh)
@@ -211,14 +234,6 @@ export default{
       negoAnalysisSummaryRound(this.$route.query.id).then().catch(err=>{
         iMessage.warn(err.desZh)
       })
-    },
-    /**
-     * @description: 合并表头数据。
-     * @param {*}
-     * @return {*}
-     */
-    concactTitlle(){
-      this.supplierTile = concactTitlle([...centerSupplierList,...centerSupplierList])
     },
     /**
      * @description: 勾选方法 
@@ -270,6 +285,26 @@ export default{
         
       })
       .catch(() => {});
+    },
+    /**
+     * @description:获取供应商横轴 
+     * @param {*}
+     * @return {*}
+     */
+    supplierfsSupplierAsRow(){
+      this.supplierTableLoading = true
+      fsSupplierAsRow(this.$route.query.id,this.round).then(res=>{
+        this.supplierTableLoading = false
+        if(res.code == 200 && res.data && res.data.bdlInfoList){
+          this.supplierData = translateDataListSupplier(res.data.bdlInfoList).dataList
+          this.supplierTile = getRenderTableTileSupplier(this.backChoose,res.data.bdlInfoList)
+          this.supplierLeftLit = getleftTittleList(this.backChoose)
+          this.suppliertopList = translateDataListSupplier(res.data.bdlInfoList).topList
+        } 
+      }).catch(err=>{
+        this.supplierTableLoading = false
+        iMessage.error(err.desZh)
+      })
     }
   }
 }
