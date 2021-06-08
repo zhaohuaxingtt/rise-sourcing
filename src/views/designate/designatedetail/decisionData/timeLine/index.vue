@@ -62,7 +62,6 @@
                     <div class="supplier-list" v-for="(supplierItem,supplierIndex) in item.nomiTimeAxisSupplierResultVOList" :key="'nomiTimeAxisSupplierResultVOList_'+supplierIndex">
                         <iCard collapse :title="supplierItem.supplierName" class="supplier-item">
                             <template slot="header-control" >
-                                <!-- <supplierStep :supplierData="supplierData"/> -->
                                 <supplierStep :supplierData="supplierItem.nomiTimeAxisSuppliers"/>
                             </template>
                             <ul class="supplier-item-list">
@@ -116,26 +115,7 @@ export default {
     data(){
         return{
             isEdit:false,
-            timeList:[
-                {startDate:1621048561,endDate:1621912561}, // 5-17 ---> 5-25
-                {startDate:1621480561,endDate:1621998961}, // 5-20 ---> 5-26
-                {startDate:1620616561,endDate:1621307761}, // 5-10 ---> 5-18
-            ],
             stepList:stepList,
-            supplierData:[
-                {name:'供应商1',a:'1',b:'2',c:'3',d:'4',
-                list:[
-                    {e:'1-1',date:''},
-                    {e:'1-2',date:''},
-                    {e:'1-3',date:''},
-                    {e:'1-4',date:''},
-                ]},
-                {name:'供应商2',a:'1',b:'2',c:'3',d:'4',
-                list:[
-                    {e:'55',date:''}
-                ]}
-                
-            ],
             isLoading:false,
             detailData:[],
             
@@ -149,8 +129,6 @@ export default {
         // 编辑 取消
         edit(){
             const {isEdit} = this;
-            const {query={}} = this.$route;
-            const {nominateId='1'} = query;
             if(!isEdit){
                 this.getDetail();
             }
@@ -178,25 +156,11 @@ export default {
             }).catch((err)=>{ this.isLoading = false; })
         },
 
-        // 新增删减供应商行
-        editSupplierLine(type,card,index,line){
-            console.log(type,card,index,line);
-            const { supplierData=[],detailData=[] } = this;
-            let newData = cloneDeep(detailData);
-            // 新增行
-            if(type === 'add'){
-                newData[index].list.push({
-                     e:'',date:''
-                });
-            }else if(type === 'delete'){
-                newData[index]['list'].splice(line,1);
-            }
-            this.supplierData = newData;
-        },
-
         // 获取timeLine详情
         getDetail(){
-            getTimeaxis(34).then((res)=>{
+            const {query={}} = this.$route;
+            const {nominateId=''} = query;  // 34
+            getTimeaxis(nominateId).then((res)=>{
                 const {code,data} = res;
                 if(code == 200 && data){
                     this.detailData = this.resetDetail(data);
