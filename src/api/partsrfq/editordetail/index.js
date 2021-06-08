@@ -3,6 +3,8 @@ import axios from '@/utils/axios'
 const requst = axios(process.env.VUE_APP_RFQ)
 const nego = axios(process.env.VUE_APP_NEGO)
 const quotation = axios(process.env.VUE_APP_SUPPLIER_CBHUIZ)
+
+import { serialize } from "@/utils"
 /*零件清单*/
 
 //获取零件采购列表。
@@ -57,11 +59,18 @@ export function uploadRfqAnnex(parmars) {
 
 
 /*模具预算申请*/
-export function getModelBudgetList(parmars) {
+// export function getModelBudgetList(parmars) {
+//     return requst({
+//         url: '/modelbudget/getModelBudgetList',
+//         method: 'POST',
+//         data: parmars
+//     })
+// }
+// 模具预算申请
+export function getModelBudgetList(params, rfqIds) {
     return requst({
-        url: '/modelbudget/getModelBudgetList',
-        method: 'POST',
-        data: parmars
+        url: `/mould-budget/${ params.currPage }/${ params.pageSize }?${ serialize(rfqIds, Array) }`,
+        method: 'GET'
     })
 }
 
