@@ -764,6 +764,8 @@
         'LK_BAIWANYUAN': '百万元',//百万元
         'LK_ZONGYUSUAN': '总预算',//总预算
         'LK_DINGDIANJINE': '定点⾦额',//定点⾦额
+        'LK_ZUIXINGENGXINREN': '最新更新人',//最新更新人
+        'LK_ZUIXINGENGXINSHIJIAN': '最新更新时间',//最新更新时间
         'LK_BMDAN': 'BM单',//BM单
         'LK_FUKUAN': '付款',//付款
         'LK_CHEXINXIANGMU': '⻋型项⽬',//⻋型项⽬
@@ -776,7 +778,7 @@
         'LK_TIANJIAHANG': '添加⾏',//添加⾏
         'LK_SHANCHUHANG': '删除⾏',//删除⾏
         'LK_CANKAOCHEXIN': '参考⻋型',//参考⻋型
-        // 'LK_CAILIAOZUBIANHAO': '材料组编号',//材料组编号        //  ------------------------可输入编号中德文名称
+        'LK_CAILIAOZUBIANHAO2': '材料组编号',//材料组编号
         'LK_CAILIAOZUMINGCENGZHONG': '材料组名称（中）',//材料组名称（中）
         'LK_CAILIAOZUMINGCENGDE': '材料组名称（德）',//材料组名称（德）
         'LK_ZHUANYEKESHI': '专业科室',//专业科室
@@ -796,7 +798,7 @@
         'LK_CAILIAOZUBIANHAOZHONGWENMINGDEWEN': '材料组编号/中⽂名/德⽂名',//材料组编号/中⽂名/德⽂名
         'LK_CHAXUN': '查询',//查询
         // 'LK_TIANJIA': '添加',//添加
-        // 'LK_BANBENHAO': '版本号',//版本号
+        'LK_BANBENHAO2': '版本号',//版本号
         'LK_CHEXINMINGCENG': '⻋型名称',//⻋型名称
         'LK_PIZHUNTOUZHI': '批准投资',//批准投资
         'LK_FEIAEKO': '⾮AEKO',//⾮AEKO
@@ -823,13 +825,77 @@
         'LK_BAOCUNWEIXINBANBEN': '保存为新版本',//保存为新版本
         'LK_ANBILIZHESUAN': '按⽐例折算',//按⽐例折算
         'LK_ZHESUANBILI': '折算⽐例',//折算⽐例
+        'LK_CHEXINGXIANGMULEIXING': '车型项目类型',//车型项目类型
+        'LK_BUDGETAMOUNTTOTAL': '总预算金额',   //  总预算金额
+        'LK_APPLYINVESTAMOUNTTOTAL': '总申请投资金额',  //  总申请投资金额
+        'LK_FIXEDINVESTAMOUNTTOTAL': '总定点投资金额',  //  总定点投资金额
+        'LK_MOULDBUDGETSTATUS': '模具预算状态', //  模具预算状态
+        'LK_APPLYDATESTARTANDEND': '申请⽇期起⽌',  //  申请⽇期起⽌
+        'LK_RFQHAO': 'RFQ号',//RFQ号
+        'LK_YUSUANZHUANGTAI': '预算状态',//预算状态
+        'LK_SHENQINGREN': '申请人',//申请人
+        'LK_SHENQINGSHIJIANQIZHI': '申请时间起止',//申请时间起止
+        'LK_PIZHUAN': '批准',//批准
+
+        'LK_CHEXINGXIANGMUGAILAN': '车型项目概览',//车型项目概览
+        'LK_YUSUANGUANLI': '预算管理',//预算管理
+        'LK_YUSUANSHENPI': '预算审批',//预算审批
+        'LK_BASHENQING': 'BA申请',//BA申请
+        'LK_BMSHENQING': 'BM申请',//BM申请
+        'LK_TOUZIBAOGAO': '投资报告',//投资报告
+
+        'LK_BANMUBER': 'BA号',  //  BA号
+        'LK_FIXEDPOINTSUPPLIER': '定点供应商', // 定点供应商
+        'LK_MODULFIXEDPOINTMONEY': '模具定点金额',  //  模具定点金额
+        'LK_REGINOCONTROLLER': '区域控制员',    //  区域控制员
+        'LK_RSODDNUMBERS': 'RS单号',    //  RS单号
+        'LK_SPAREPARTSNUMBER': '零件号',    //  零件号
+        'LK_BADETAILSPOPUPTXT1': '您将要申请',  //  您将要申请
+        'LK_BADETAILSPOPUPTXT2': '的BA账户，请确认金额：',   //  的BAzzh账户，请确认金额：
+        'LK_BANUMBERDISTRIBUTION': 'BA号分配',  //  BA号分配
+        'LK_AMOUNTMONEYRMB': '金额（RMB）', //  金额（RMB）
+        'LK_FIXEDINVESTTOTAL': '总定点投资金额',    //  总定点投资金额
+
+        'LK_XIAYIBU': '下一步',    //  下一步
+
+        'LK_BAAPPROVAL': 'BA审批',  //  BA审批
+        'LK_BADANSTATUS': 'BA单状态', // BA单状态
+        'LK_ALL': '全部',   //  全部
+        'LK_BAODDNUMBERS': 'BA单号',    //  BA单号
+        'LK_BAACCOUNTTYPE': 'BA账户类型',   //  BA账户类型
+        'LK_CURRENTAMOUNT': '当前金额', //  当前金额
+        'LK_APPLYAMOUNT': '申请金额',   //  申请金额
+        'LK_APPLYAMOUNTTHEN': '申请后金额', //  申请后金额
+        'LK_MODIFYANUMBER': '修改A号',  //  修改A号
+        'LK_CANCELAPPLY': '退回申请',   //  退回申请
+        'LK_MODIFIABLE': '可修改',  //  可修改
+        'LK_DEPNAME': '科室名称',   //  科室名称
+        'LK_ALLBAAPPLY': '所有BA申请',  //  所有BA申请
+        'LK_TOBECONFIRMEDBAAPPLY': '待确认BA申请',  //  待确认BA申请
+        'LK_TOBECONFIRMEDMONEY': '待确认追加金额',  //  待确认追加金额
+        'LK_DETAILEDTXT': '明细',   //  明细
+        'LK_MODIFYANUMBERTXTTIPS': '确定后，所有同⼀⻋型项⽬、同⼀⼯⼚的BA申请相关记录将⼀并更改',  //  确定后，所有同⼀⻋型项⽬、同⼀⼯⼚的BA申请相关记录将⼀并更改
+        'LK_PRIMARYAMBER': '原A号',     //  原A号
+        'LK_NEWAMBER': '新A号', //  新A号
+        'LK_CONFIRMANUMBER': '确认A号', //  确认A号
+        'LK_CONFIRMMONEY': '确认金额',  //  确认金额
+        'LK_INPUTNUMBERORMORE': '请输入5位或8位A号',    //  请输入5位或8位A号
+        'LK_PLEASEINPUTTIPS1': '请选择需要修改的数据',  //  请选择需要修改的数据
+        'LK_PLEASEINPUTTIPS2': '最多只能同时修改一条数据',  //  最多只能同时修改一条数据
+        'LK_PLEASEINPUTTIPS3': '需要先确认A号',  //  需要先确认A号
+        'LK_PLEASEINPUTTIPS4': '退回状态不能修改A号',  //  退回状态不能修改A号
+        'LK_PLEASEINPUTTIPS5': '车型项目尚未确认A号，请先前往',  //  车型项目尚未确认A号，请先前往
+        'LK_PLEASEINPUTTIPS6': '待确认BA申请',  //  待确认BA申请
+        'LK_PLEASEINPUTTIPS7': '页面中进行A号确认',  //  页面中进行A号确认
+        'LK_APPLYBANUMBER': '申请BA单',  //  申请BA单
+        'LK_OF': '的', //  的
         // 'LK_QUEDING': '确定',//确定
         'LK_HEAVYITEM': 'Heavy Item', // Heavy Item
         'LK_FENXIBAOGAO': '分析报告', // 分析报告
         'LK_PJZDFPKESHI':'配件自动分配科室',
         'LK_LINGJIANCHENGBENFENXIYUAN': '零件成本分析员', // 零件成本分析员
         'LK_MUJUCHENGBENFENXIYUAN': '模具成本分析员', // 模具成本分析员
-        'LK_FUJIANXUQIUDAORU':'附件需求导入', // 附件需求导入 
+        'LK_FUJIANXUQIUDAORU':'附件需求导入', // 附件需求导入
         'LK_PEIJIANXUQIUQIANSHOU': '配件需求签收', // 配件需求签收
         'LK_PEIJIANZONGHEGUANLI': '配件综合管理', // 配件综合管理
         'LK_FUJIANZONGHEGUANLI': '附件综合管理', // 附件综合管理
@@ -855,6 +921,8 @@
         'LK_JIESHUSHIJIAN':'结束日期', // 结束日期
         'LK_WENJIANQINGXUANZHUANZHIZHENGCHANG':'上传附件:文件请旋转至正常方向后上传', // 上传附件:文件请旋转至正常方向后上传
         'LK_FASONGKM': '发送KM', // 发送KM
+        'LK_BAAPPLYTISP1': '请先勾选',  //  请先选择车型项目
+        'LK_INPUTNUMBERORMORE1': '不能输入特殊字符',    //  不能输入特俗字符
         'LK_DONGJIE':'冻结', // 冻结
         'LK_JIEDONG':'解冻', // 解冻
         'LK_CAOGAO': '草稿',
