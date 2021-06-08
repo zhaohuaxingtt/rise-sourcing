@@ -48,7 +48,7 @@
 
       <!-- BA单号 -->
       <el-form-item :label="$t('LK_BAODDNUMBERS')">
-        <iInput :placeholder="$t('LK_ALL')" v-model="form['sixBa']" maxlength="6"></iInput>
+        <iInput :placeholder="$t('LK_ALL')" v-model="form['sixBa']" ></iInput>
       </el-form-item>
 
       <!-- 申请日期起止 -->
