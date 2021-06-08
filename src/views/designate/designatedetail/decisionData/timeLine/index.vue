@@ -112,7 +112,6 @@ export default {
         iCard,
         iButton,
         icon,
-        iMessage,
     },
     data(){
         return{
