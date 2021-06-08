@@ -70,28 +70,28 @@ export default {
   },
   computed: {
     newTableTitle: () => {
-      let whiteBtnList = store.state.permission.whiteBtnList
-      let tabtitleTemp = []
-
-      if(whiteBtnList['TOOLING_BUDGET_OVERVIEW'] || whiteBtnList['TOOLING_BUDGET_BUILD'] || whiteBtnList['TOOLING_BUDGET_INVESTMENT']){
-        tabtitleTemp.push(tabtitle[1])
-      }
-      if(whiteBtnList['TOOLING_BUDGET_BUDGETAPPROVAL']){
-        tabtitleTemp.push(tabtitle[2])
-      }
-      if(whiteBtnList['TOOLING_BUDGET_BAAPPLICATION_TOTAL'] || whiteBtnList['TOOLING_BUDGET_BAAPPLICATION_DETAILS'] || whiteBtnList['TOOLING_BUDGET_BAAPPLICATION_CARTYPE']){
-        tabtitleTemp.push(tabtitle[3])
-      }
-      if(whiteBtnList['TOOLING_BUDGET_BAAPPROVAL_APPLY'] || whiteBtnList['TOOLING_BUDGET_BAAPPROVAL_MONEY'] || whiteBtnList['TOOLING_BUDGET_BAAPPROVAL_ALL']){
-        tabtitleTemp.push(tabtitle[6])
-      }
-      tabtitleTemp = tabtitleTemp.map((item, index) => {
-        item.value = index + 1
-        return item
-      })
+      // let whiteBtnList = store.state.permission.whiteBtnList
+      // let tabtitleTemp = []
+      //
+      // if(whiteBtnList['TOOLING_BUDGET_OVERVIEW'] || whiteBtnList['TOOLING_BUDGET_BUILD'] || whiteBtnList['TOOLING_BUDGET_INVESTMENT']){
+      //   tabtitleTemp.push(tabtitle[1])
+      // }
+      // if(whiteBtnList['TOOLING_BUDGET_BUDGETAPPROVAL']){
+      //   tabtitleTemp.push(tabtitle[2])
+      // }
+      // if(whiteBtnList['TOOLING_BUDGET_BAAPPLICATION_TOTAL'] || whiteBtnList['TOOLING_BUDGET_BAAPPLICATION_DETAILS'] || whiteBtnList['TOOLING_BUDGET_BAAPPLICATION_CARTYPE']){
+      //   tabtitleTemp.push(tabtitle[3])
+      // }
+      // if(whiteBtnList['TOOLING_BUDGET_BAAPPROVAL_APPLY'] || whiteBtnList['TOOLING_BUDGET_BAAPPROVAL_MONEY'] || whiteBtnList['TOOLING_BUDGET_BAAPPROVAL_ALL']){
+      //   tabtitleTemp.push(tabtitle[6])
+      // }
+      // tabtitleTemp = tabtitleTemp.map((item, index) => {
+      //   item.value = index + 1
+      //   return item
+      // })
       const ksy1 = store.state.permission.whiteBtnList['TOOLING_BUDGET_BAAPPLICATION_TOTAL'];  //  是否有汇总页面权限
       const ksy2 = store.state.permission.whiteBtnList['TOOLING_BUDGET_BAAPPLICATION_DETAILS'];  //  是否有详情页权限
-      const list = tabtitleTemp.map(item => {
+      const list = tabtitle.map(item => {
         if(item.value === 4){ //  ba申请
           const url = ksy1 ? '/tooling/baApplyIndex' : (!ksy1 && !ksy2 ? '/views/404' : '/tooling/modelDetails');
           item.activePath = url;
