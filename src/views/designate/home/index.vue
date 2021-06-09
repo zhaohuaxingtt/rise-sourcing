@@ -86,6 +86,14 @@
           {{scope.row.nominateName}}
         </a>
       </template>
+      <!-- 定点类型 -->
+      <template #nominateProcessType="scope">
+        <span>{{(scope.row.nominateProcessType && scope.row.nominateProcessType.desc) || ''}}</span>
+      </template>
+      <!-- 定点类型 -->
+      <template #applicationStatus="scope">
+        <span>{{(scope.row.applicationStatus && scope.row.applicationStatus.desc) || ''}}</span>
+      </template>
 
       <!-- re冻结日期 -->
       <template #rsFreezeDate="scope">
