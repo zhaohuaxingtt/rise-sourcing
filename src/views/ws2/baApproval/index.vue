@@ -146,12 +146,9 @@
     <iDialog :visible="visible" @close='clearDiolog' width="22%" top="7vh" z-index="1000" class="iDialog">
       <template slot="title">
         <div class="iDialog-head">
-          <span>
+          <div>
             {{$t('LK_MODIFYANUMBER')}}
-          </span>
-          <span>
-            {{allSelectList.length && allSelectList[0].carTypeName || ''}} {{allSelectList.length && allSelectList[0].localFactoryName || ''}}
-          </span>
+          </div>
           <Popover
               width="272"
               placement="bottom"
@@ -161,6 +158,10 @@
             </div>
             <icon symbol name="iconxinxitishi" slot="reference"></icon>
           </Popover>
+          <div>
+            {{allSelectList.length && allSelectList[0].carTypeName || ''}} {{allSelectList.length && allSelectList[0].localFactoryName || ''}}
+          </div>
+          
         </div>
       </template>
 
@@ -691,19 +692,23 @@ export default {
   }
 
   .iDialog-head{
+    display: flex;
 
-    & span:nth-child(1){
+    & div:nth-child(1){
       font-size: 18px;
       font-weight: bold;
     }
-    & span:nth-child(2){
+    & div:nth-child(3){
+      width: 175px;
       color: #333333;
       font-size: 14px;
+      margin-left: 5px;
     }
   }
 
   ::v-deep .el-dialog{
-    height: 217px;
+    height: auto !important;
+    padding-bottom: 10px !important;
     overflow: auto;
   }
 
