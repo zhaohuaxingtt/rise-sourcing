@@ -10,6 +10,7 @@
         "revokeSure":'您确定要执行撤回操作吗？',
         "submitSure":'您确定要执行提交操作吗？',
         "cancelSure":'您确定要取消吗？',
+        "copyChosenSure":'您确定要复制选中的数据吗？',
         'all': '全部',
         'search': '搜索',
         'setting': '设置',

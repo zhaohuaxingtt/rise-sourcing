@@ -5,64 +5,44 @@
         <!-- 供应商名 -->
         <el-form-item :label="$t('nominationSupplier.GongYingShangMing')">
           <iSelect
-            v-model="form.supplierNum"
+            v-model="form.supplierName"
+            @change="onSupplierNameChange"
             :placeholder="$t('LK_QINGXUANZE')"
           >
             <el-option
-              :value="items.key"
-              :label="items.value"
-              v-for="(items, index) in []"
+              :value="items.supplierName"
+              :label="items.supplierName"
+              v-for="(items, index) in supplierList"
               :key="index"
             ></el-option>
           </iSelect>
         </el-form-item>
         <!-- 比例 -->
         <el-form-item :label="$t('nominationSuggestion.BiLi')">
-          <iSelect
-            v-model="form.percent"
-            :placeholder="$t('LK_QINGXUANZE')"
-          >
-            <el-option
-              :value="items.key"
-              :label="items.value"
-              v-for="(items, index) in []"
-              :key="index"
-            ></el-option>
-          </iSelect>
+          <iInput v-model="form.ratio" :placeholder="$t('LK_QINGSHURU')" />
         </el-form-item>
       </el-form>
       <div class="footer" slot="footer">
-        <iButton>{{ $t("LK_BAOCUN") }}</iButton>
+        <iButton @click="submit">{{ $t("LK_BAOCUN") }}</iButton>
       </div>
     </div>
   </iDialog>
 </template>
 
 <script>
-import { iDialog, iButton, iSelect } from 'rise'
-import { pageMixins } from '@/utils/pageMixins'
-import filters from '@/utils/filters'
+import { iDialog, iButton, iInput, iSelect } from 'rise'
 
 export default {
-  components: { iDialog, iButton, iSelect },
-  mixins: [ pageMixins, filters ],
+  components: { iDialog, iButton, iInput, iSelect },
   props: {
     ...iDialog.props,
     visible: {
       type: Boolean,
       default: false
     },
-    params: {
-      type: Object,
-      default: () => ({})
-    }
-  },
-  watch: {
-    params: {
-      handler() {
-        this.$nextTick(() => { if (this.visible) this.getAttachment() })
-      },
-      deep: true
+    supplierList: {
+      type: Array,
+      default: () => ([])
     }
   },
   data() {
@@ -75,6 +55,17 @@ export default {
     }
   },
   methods: {
+    onSupplierNameChange(data) {
+      const tar = this.supplierList.find(o => o.supplierName = data) || {}
+      this.form.supplierId = tar.supplierId || ''
+    },
+    submit() {
+      this.$emit('submit', this.form)
+      this.$nextTick(() => {
+        this.form = {}
+        this.$emit('update:visible', false)
+      })
+    }
   }
 }
 </script>
