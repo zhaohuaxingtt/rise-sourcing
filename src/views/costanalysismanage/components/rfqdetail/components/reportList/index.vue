@@ -100,8 +100,8 @@ export default {
         },
         // 单文件下载
         downloadLine(row){
-            const {id} = row;
-            this.download([id]);
+            const {tpPartAttachmentName} = row;
+            this.download([tpPartAttachmentName]);
         },
         // 批量下载附件
         downloadList(){
@@ -109,7 +109,7 @@ export default {
             if(!selectItems.length){
             iMessage.warn(this.$t('LK_QINGXUANZHEXUYAOXIAZHAIDEFUJIAN'));
             }else{
-                const list = selectItems.map((item)=>item.id);
+                const list = selectItems.map((item)=>item.tpPartAttachmentName);
                 this.download(list);
             }
         },
