@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 09:50:42
- * @LastEditTime: 2021-06-05 14:37:46
+ * @LastEditTime: 2021-06-09 14:14:02
  * @LastEditors: Please set LastEditors
  * @Description: 零件采购项目建立首页。
  * @FilePath: \rise\src\views\partsprocure\home\index.vue
@@ -440,9 +440,9 @@ export default {
       getTabelData(this.form)
         .then((res) => {
           this.tableLoading = false;
-          this.page.currPage = res.data.pageData.pageNum;
-          this.page.pageSize = res.data.pageData.pageSize;
-          this.page.totalCount = res.data.pageData.total;
+          // this.page.currPage = res.data.pageData.pageNum;
+          // this.page.pageSize = res.data.pageData.pageSize;
+          this.page.totalCount = +res.data.pageData.total || 0
           this.tableListData = res.data.pageData.data;
         })
         .catch(() => (this.tableLoading = false));
