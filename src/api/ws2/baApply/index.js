@@ -55,3 +55,12 @@ export function getBaAccountTypePullDown(parmars) {
       data: parmars
   })
 }
+
+//  获取车型列表下拉
+export function getBaCarPullDown(parmars) {
+  return VUE_APP_APPLY({
+      url: '/getBaCarPullDown',
+      method: 'GET',
+      data: parmars
+  })
+}
