@@ -133,7 +133,7 @@ export const detailsTableHead = [
     tooltip: false
   },
   {
-    props: 'auditUserName',
+    props: 'approveName',
     name: '区域控制员',
     key: 'LK_REGINOCONTROLLER',
     tooltip: false
