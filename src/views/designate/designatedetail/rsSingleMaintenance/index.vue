@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-24 14:39:43
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-07 21:55:33
+ * @LastEditTime: 2021-06-08 11:10:16
  * @Description: RS单维护界面
  * @FilePath: \front-web\src\views\designate\designatedetail\rsSingleMaintenance\index.vue
 -->
@@ -63,7 +63,7 @@
             <!--------------------选择按钮----------------------------------->
             <iButton @click="handleReadQuotation" :loading="readQuotationLoading">读取报价单</iButton>
             <!--------------------返回按钮----------------------------------->
-            <iButton @click="changersEeditionDialogVisible(true)">RS单预览</iButton>
+            <iButton @click="handlePreviewRS">RS单预览</iButton>
             
           </div>
       </div>
@@ -72,7 +72,7 @@
         <!------------------------------------------------------------------------>
         <tableList :activeItems='"rfqId"' selection indexKey :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="tableLoading" @handleSelectionChange="handleSelectionChange" @openPage="openPage" @updateSlot='toTop' @changeTableValue="changeTableValue"></tableList>
     </iCard>
-    <rsDialog :dialogVisible="rsEeditionDialogVisible" @changeVisible="changersEeditionDialogVisible" />
+    <rsDialog :dialogVisible="rsEeditionDialogVisible" @changeVisible="changersEeditionDialogVisible" :otherPreview="true" :otherNominationType="otherNominationType" :otherNominationId="otherNominationId" :otherPartProjectType="otherPartProjectType" />
   </iPage>
 </template>
 
@@ -83,7 +83,7 @@ import { rsTableTitle, rsMockData } from './data'
 import detailTop from '../components/topComponents'
 import rsDialog from '@/views/partsprocure/editordetail/components/designateInfo/components/rsEEdition'
 import { getList, readQuotation, downloadRSDoc, updateRS } from '@/api/designate/decisiondata/rs'
-import { cloneDeep, omit } from 'lodash'
+import { cloneDeep } from 'lodash'
 import moment from 'moment'
 export default {
   components: { iPage, iCard, iButton, tableList, iSearch, iInput, detailTop, rsDialog },
@@ -103,13 +103,30 @@ export default {
       tableListDataTemp: [],
       selectedTableData: [],
       readQuotationLoading: false,
-      uploadUrl: process.env.VUE_APP_SOURCING_MH
+      uploadUrl: process.env.VUE_APP_SOURCING_MH,
+      otherNominationType: '',
+      otherNominationId: '',
+      otherPartProjectType: ''
     }
   },
   created() {
+    this.otherNominationId = this.$route.query.desinateId
     this.getTableList()
   },
   methods: {
+    handlePreviewRS() {
+      if (this.selectedTableData.length < 1) {
+        iMessage.warn('请选择需要预览的RS单')
+        return
+      }
+      if (this.selectedTableData.length > 1) {
+        iMessage.warn('只能选择一条RS单预览')
+        return
+      }
+      this.otherNominationId = this.selectedTableData[0].nominateAppId
+      this.otherNominationType = this.selectedTableData[0].nominateProcessType
+      this.otherPartProjectType = this.selectedTableData[0].partProjectType
+    },
     /**
      * @Description: 修改表格
      * @Author: Luoshuang
@@ -262,6 +279,7 @@ export default {
     getTableList() {
       getList(this.$route.query.desinateId).then(res => {
         if (res?.result) {
+          this.otherNominationType = res.data.nominateProcessType
           this.tableListData = cloneDeep(res.data?.lines).map(item => {
             const singleItem = {...item}
             item.ltcs.forEach((element, index) => {
@@ -272,7 +290,6 @@ export default {
             });
             return singleItem
           })
-          console.log(this.tableListData)
           this.tableListDataTemp = cloneDeep(res.data?.lines).map(item => {
             const singleItem = {...item}
             item.ltcs.forEach((element, index) => {

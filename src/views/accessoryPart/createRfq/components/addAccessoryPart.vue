@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-26 14:48:50
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-07 14:42:49
+ * @LastEditTime: 2021-06-09 06:45:27
  * @Description: 添加配件弹窗
  * @FilePath: \front-web\src\views\accessoryPart\createRfq\components\addAccessoryPart.vue
 -->
@@ -48,7 +48,7 @@ import { iDialog, iButton, iSelect, iInput, iSearch, iPagination, iMessage } fro
 import tableList from '@/views/designate/designatedetail/components/tableList'
 import { pageMixins } from "@/utils/pageMixins"
 import { tableTitle, searchList } from '../../integratedManage/data'
-import {findBySearches} from "@/api/partsrfq/home";
+import {findBySearches, getCartypeDict} from "@/api/partsrfq/home";
 import { getDictByCode } from '@/api/dictionary'
 export default {
   mixins: [pageMixins],
@@ -83,13 +83,35 @@ export default {
   watch: {
     dialogVisible(val) {
       if(val) {
-        this.getSelectOptions()
+        
         this.getTableList()
-        this.getCarTypeOptions()
+        
       }
     }
   },
+  created() {
+    this.getSelectOptions()
+    this.getCarTypeOptions()
+    this.getCartypeDict()
+  },
   methods: {
+    // 获取车型字典
+    getCartypeDict() {
+      getCartypeDict()
+      .then(res => {
+        if (res.code == 200) {
+          this.selectOptions.cartTypeOptions = 
+            Array.isArray(res.data) ?
+            res.data.map(item => ({
+              ...item,
+              key: item.code,
+              label: item.name,
+              value: item.value
+            })) :
+            []
+        }
+      })
+    },
     /**
      * @Description: 点击选择按钮
      * @Author: Luoshuang
@@ -169,6 +191,10 @@ export default {
       this.getDictionary('accessoryIdStateOption', 'ACCESSORY_ID_STATE')
       // 定点状态
       this.getDictionary('nominateStateOption', 'NOMINATE_STATE')
+      // 合同状态
+      this.getDictionary('contactStateOption', 'CONTRACT_STATE')
+      // 零件状态
+      this.getDictionary('partStateOption', 'RFQ_PART_STATUS_CODE_TYPE')
     },
     /**
      * @Description: 获取列表数据
