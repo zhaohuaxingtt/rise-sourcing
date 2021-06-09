@@ -2,7 +2,7 @@
  * @Descripttion: 
  * @Author: Luoshuang
  * @Date: 2021-05-21 14:30:41
- * @LastEditTime: 2021-06-07 21:52:26
+ * @LastEditTime: 2021-06-08 19:52:42
 -->
 <template>
   <el-table ref="multipleTable" fit tooltip-effect='light' :height="height" :data='tableData' v-loading='tableLoading' @selection-change="handleSelectionChange" :empty-text="$t('LK_ZANWUSHUJU')" >
@@ -77,8 +77,8 @@
             <template slot-scope="scope">
               <!----------------------------备注列-------------------------------->
               <span v-if="childItem.props === 'beizhu'" class="openLinkText cursor">查看</span>
-              <span v-else>{{scope.row[childItem.props]}}</span>
-              <icon v-if="scope.row.withIcon && scope.row.withIcon.includes(childItem.props)" symbol class="cursor" name='icontishi-cheng' style="margin-left:8px" @click.native="$emit('openDialog')"></icon>
+              <span v-else-if="childItem.type === 'rate'">{{getRate(scope.row, childItem.props).rate}}</span>
+              <icon v-if="childItem.type === 'rate' && getRate(scope.row, childItem.props).partSupplierRate === 0" symbol class="cursor" name='icontishi-cheng' style="margin-left:8px" @click.native="$emit('openDialog', scope.row)"></icon>
             </template>
           </el-table-column>
         </template>
@@ -109,6 +109,10 @@ export default{
   },
   inject:['vm'],
   methods:{
+    getRate(row, props) {
+      const findItem = row.departmentRate.find(item => item.rateDepart === props)
+      return findItem || {}
+    },
     handleAttachmentDonwload(row) {
       if (row.fileList?.length < 1) {
         return
