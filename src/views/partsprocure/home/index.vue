@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 09:50:42
- * @LastEditTime: 2021-06-09 14:14:02
+ * @LastEditTime: 2021-06-09 18:05:27
  * @LastEditors: Please set LastEditors
  * @Description: 零件采购项目建立首页。
  * @FilePath: \rise\src\views\partsprocure\home\index.vue
@@ -295,7 +295,7 @@ import {
   iSearch,
   iInput,
   iSelect,
-} from "@/components";
+} from "rise";
 import { iNavMvp } from "rise";
 import { pageMixins } from "@/utils/pageMixins";
 import backItems from "@/views/partsign/home/components/backItems";
@@ -442,7 +442,7 @@ export default {
           this.tableLoading = false;
           // this.page.currPage = res.data.pageData.pageNum;
           // this.page.pageSize = res.data.pageData.pageSize;
-          this.page.totalCount = +res.data.pageData.total || 0
+          this.page.totalCount = res.data.pageData.total || 0
           this.tableListData = res.data.pageData.data;
         })
         .catch(() => (this.tableLoading = false));
