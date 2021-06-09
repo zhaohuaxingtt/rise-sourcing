@@ -182,10 +182,12 @@ export default {
 
         // 跳转RFQ详情
         goFilesList(rfqId){
-            this.$router.push({
-                path:'/costanalysismanage/rfqdetail',
-                query:{rfqId}
-            })
+             const router =  this.$router.resolve({path: `/costanalysismanage/rfqdetail?rfqId=${rfqId}`})
+             window.open(router.href,'_blank');
+            // this.$router.push({
+            //     path:'/costanalysismanage/rfqdetail',
+            //     query:{rfqId}
+            // })
         }
     }
 }

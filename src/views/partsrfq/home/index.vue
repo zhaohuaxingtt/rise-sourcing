@@ -1,7 +1,7 @@
 <!--
  * @Author: moxuan
  * @Date: 2021-02-25 09:59:25
- * @LastEditTime: 2021-06-07 09:45:21
+ * @LastEditTime: 2021-06-07 19:42:24
  * @LastEditors: Please set LastEditors
  * @Description: RFQ模块首页
  * @FilePath: \rise\src\views\partsrfq\home\index.vue
@@ -48,10 +48,9 @@
                 </iSelect>
               </el-form-item>
               <el-form-item :label="$t('LK_CHEXING')">
-                <iSelect :placeholder="$t('LK_QINGXUANZE')" v-model="form.car">
+                <iSelect :placeholder="$t('LK_QINGXUANZE')" v-model="form.modelCode" filterable>
                   <el-option value="" :label="$t('all') | capitalizeFilter"></el-option>
-                  <!-- <el-option v-for="items in rfqStatusOptions" :key='items.code' :value='items.code'
-                             :label="items.name"/> -->
+                  <el-option v-for="item in cartTypeOptions" :key="item.key" :value="item.value" :label="item.label"/>
                 </iSelect>
               </el-form-item>
             </el-form>
@@ -164,7 +163,7 @@ import tablelist from "pages/partsrfq/components/tablelist";
 import assignmentOfScoringTasks from "pages/partsrfq/home/components/assignmentOfScoringTasks";
 import {pageMixins} from "@/utils/pageMixins";
 import {tableTitle, attachmentTableTitle} from "pages/partsrfq/home/components/data";
-import {getRfqDataList, editRfqData, findBySearches, getRfqList} from "@/api/partsrfq/home";
+import {getRfqDataList, editRfqData, findBySearches, getRfqList, getCartypeDict} from "@/api/partsrfq/home";
 import {excelExport} from "@/utils/filedowLoad";
 import store from '@/store'
 import filters from "@/utils/filters";
@@ -205,7 +204,8 @@ export default {
         carType: '',
         partType: '',
         rfqStatus: '',
-        car: ''
+        car: '',
+        modelCode: ''
       },
       activateButtonLoading: false,
       closeButtonLoading: false,
@@ -223,10 +223,12 @@ export default {
       navList: cloneDeep(navList),
       attachmentLoading: false,
       attachmentTableTitle,
-      attachmentTableListData: []
+      attachmentTableListData: [], 
+      cartTypeOptions: []
     };
   },
   created() {
+    this.getCartypeDict()
     this.getTableList()
     this.getCarTypeOptions()
     this.getPartTypeOptions()
@@ -267,10 +269,12 @@ export default {
       try {
         // const res = await getRfqDataList(req)
         const res = await getRfqList(req)
-        this.tableListData = res.data.getRfqInfoVO.rfqVOList;
-        this.page.currPage = res.data.getRfqInfoVO.pageNum
-        this.page.pageSize = res.data.getRfqInfoVO.pageSize
-        this.page.totalCount = res.data.getRfqInfoVO.total
+        // this.tableListData = res.data.getRfqInfoVO.rfqVOList;
+        // this.page.currPage = res.data.getRfqInfoVO.pageNum
+        // this.page.pageSize = res.data.getRfqInfoVO.pageSize
+        // this.page.totalCount = res.data.getRfqInfoVO.total
+        this.tableListData = Array.isArray(res.data) ? res.data : []
+        this.page.totalCount = res.total
         this.tableLoading = false;
       } catch {
         this.tableLoading = false;
@@ -440,6 +444,23 @@ export default {
       })
       .catch(() => this.attachmentLoading = false)
     },
+    // 获取车型字典
+    getCartypeDict() {
+      getCartypeDict()
+      .then(res => {
+        if (res.code == 200) {
+          this.cartTypeOptions = 
+            Array.isArray(res.data) ?
+            res.data.map(item => ({
+              ...item,
+              key: item.code,
+              label: item.name,
+              value: item.value
+            })) :
+            []
+        }
+      })
+    }
   }
 }
 </script>

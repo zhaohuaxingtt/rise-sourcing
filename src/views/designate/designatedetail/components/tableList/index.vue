@@ -2,7 +2,7 @@
  * @Descripttion: 
  * @Author: Luoshuang
  * @Date: 2021-05-21 14:30:41
- * @LastEditTime: 2021-06-05 14:06:16
+ * @LastEditTime: 2021-06-07 21:52:26
 -->
 <template>
   <el-table ref="multipleTable" fit tooltip-effect='light' :height="height" :data='tableData' v-loading='tableLoading' @selection-change="handleSelectionChange" :empty-text="$t('LK_ZANWUSHUJU')" >
@@ -35,8 +35,8 @@
           <span v-if="items.required" style="color:red;">*</span>
         </template>
         <template slot-scope="scope">
-          <iInput v-if="items.type === 'input'" v-model="scope.row[items.props]" :class="scope.row[items.isChange] && 'isChange'"></iInput>
-          <iSelect v-else-if="items.type === 'select'" v-model="scope.row[items.props]" :class="scope.row[items.isChange] && 'isChange'">
+          <iInput v-if="items.type === 'input'" v-model="scope.row[items.props]" :class="scope.row[items.isChange] && 'isChange'" @input="val=>changeValue(val, scope.row, items)"></iInput>
+          <iSelect v-else-if="items.type === 'select'" v-model="scope.row[items.props]" :class="scope.row[items.isChange] && 'isChange'" @change="val=>changeValue(val, scope.row, items)">
             <el-option
               :value="item.value"
               :label="item.label"
@@ -44,10 +44,10 @@
               :key="index"
             ></el-option>
           </iSelect>
-          <iDatePicker v-else-if="items.type === 'date' && items.parentProps" :value="getValue(scope.row, items)" @change="val=>changeValue(val, scope.row, items)" value-format="" :class="scope.row[items.isChange] && 'isChange'"></iDatePicker>
-          <iDatePicker v-else-if="items.type === 'date'" :value="getValue(scope.row, items)" @change="val=>changeValue(val, scope.row, items)" value-format="" :class="scope.row[items.isChange] && 'isChange'"></iDatePicker>
-          <iInput v-else-if="items.type === 'rate' && items.parentProps" :value="getValue(scope.row, items)" @change="val=>changeValue(val, scope.row, items)" :class="scope.row[items.isChange] && 'isChange'"></iInput>
-          <iInput v-else-if="items.type === 'rate'" :value="getValue(scope.row, items)" @change="val=>changeValue(val, scope.row, items)" :class="scope.row[items.isChange] && 'isChange'"></iInput>
+          <iDatePicker v-else-if="items.type === 'date' && items.parentProps" type="month" :value="getValue(scope.row, items)" @change="val=>changeValue(val, scope.row, items)" format="yyyy-MM" value-format="yyyy-MM" :class="scope.row[items.isChange] && 'isChange'"></iDatePicker>
+          <iDatePicker v-else-if="items.type === 'date'" type="month" v-model="scope.row[items.props]" @change="val=>changeValue(val, scope.row, items)" format="yyyy-MM" value-format="yyyy-MM" :class="scope.row[items.isChange] && 'isChange'"></iDatePicker>
+          <iInput v-else-if="items.type === 'rate' && items.parentProps" :value="getValue(scope.row, items)" @input="val=>changeValue(val, scope.row, items)" :class="scope.row[items.isChange] && 'isChange'"></iInput>
+          <iInput v-else-if="items.type === 'rate'" v-model="scope.row[items.props]" @input="val=>changeValue(val, scope.row, items)" :class="scope.row[items.isChange] && 'isChange'"></iInput>
         </template>
       </el-table-column>
       <!-------------------------正常列--------------------------->
@@ -119,13 +119,9 @@ export default{
       return row.fileList?.map(item => item.fileName).join('<br/>')
     },
     changeValue(val, row, item) {
-      if (item.parentProps) {
-        if (row && row[item.parentProps] && row[item.parentProps][item.propsIndex - 1]) {
-          // return row[item.parentProps][item.propsIndex - 1][item.props]
-        }
-      } else {
-        // return row[item.props]
-      }
+      // console.log(val, row, item)
+      row[item.isChange] = true
+      // this.$emit('changeTableValue', val, row, item)
     },
     getValue(row, item) {
       if (item.parentProps) {
@@ -170,5 +166,12 @@ export default{
     display: none;
 	}
   
+  }
+  .isChange {
+    ::v-deep .el-input__inner {
+      color: red;
+      background: rgb(255 0 0 / 10%);
+      border-color: red;
+    }
   }
 </style>

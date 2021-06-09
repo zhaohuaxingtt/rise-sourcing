@@ -94,7 +94,7 @@ export default {
             } = this;
             if(type == 'add'){
                 supplierData.nomiTimeAxisSupplierExps.push({
-                     durationName:'',rangeDate:[],beginDate:'',endDate:'',
+                     durationName:'',rangeDate:[],beginDate:'',endDate:'',isDelete:false,
                 });
 
             }else if(type == 'delete'){

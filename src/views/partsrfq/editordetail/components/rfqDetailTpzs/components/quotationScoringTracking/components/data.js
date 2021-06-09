@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-05-25 21:01:30
- * @LastEditTime: 2021-06-02 14:30:18
+ * @LastEditTime: 2021-06-05 16:59:17
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringTracking\components\data.js
@@ -82,7 +82,7 @@ export const iconList_car = { //汽车图标
     icon:'icondingdianguanlijiedian-yiwancheng' //default
   }
 }
-export const iconList_all_times = { //整体任务进度
+export const iconList_all_times = { //整体任务进度以及每格进度
   'a2':{
     icon:'iconbaojiapingfengenzong-jiedian-lv' //绿色
   },
@@ -98,20 +98,52 @@ export const iconList_all_times = { //整体任务进度
 }
 
 
-export const tableTile = [
-  {props:'a',name:'供应商',key: '',tooltip:false,width:''},
-  {props:'b',name:'第1轮(询价轮)',key: '',tooltip:false,width:'',type:'input'},
-  {props:'c',name:'第2轮(询价轮)',key: '',tooltip:false,width:''},
-  {props:'d',name:'第3轮(谈判轮)',key: '',tooltip:false,width:''},
-  {props:'e',name:'第4轮(谈判轮)',key: '',tooltip:false,width:''},
-  {props:'f',name:'第5轮(谈判轮)',key: '',tooltip:false,width:''},
-  {props:'ep',name:'EP',key: '',tooltip:false,width:''},
-  {props:'g',name:'MQ',key: '',tooltip:false,width:''},
-  {props:'h',name:'PL',key: '',tooltip:false,width:''},
-]
+export const tableTile = {props:'supplierName',name:'供应商',key: '',tooltip:false, width:''}
 
+//构建表头。
+/**
+ * @description: parmats => res.data
+ * @param {*} params
+ * @return {*}
+ */
+export function buildTitleTabel(params) {
+   //前方评分 
+   const supplierTitle = [JSON.parse(JSON.stringify(tableTile))]
+   params.roundTableHead.forEach(element => {
+     const temlateData = JSON.parse(JSON.stringify(tableTile))
+     temlateData.props = 'round' + element.round
+     temlateData.name = '第'+element.round+`轮(${element.roundHeadDetailVO.inquiryType})`
+     temlateData.roundHeadDetailVO = element.roundHeadDetailVO
+     supplierTitle.push(temlateData)
+   });
+   //评分数据
+   let supplierRateTitle = []
+   try {
+    if(!params.rateTableHead) throw 'rateTableHead 无数据';
+    params.rateTableHead.forEach(items=>{
+      const temlateData = JSON.parse(JSON.stringify(tableTile))
+      temlateData.name = items.rateTableHeadDetailVO.rateDepartName
+      temlateData.props = 'round'+items.rateHead
+      supplierRateTitle.push(temlateData)
+   })
+   } catch (error) {
+    supplierRateTitle = [{props:'ep',name:'EP',key: '',tooltip:false, width:'100'},{props:'MQ',name:'MQ',key: '',tooltip:false, width:'100'},{props:'PL',name:'PL',key: '',tooltip:false, width:'100'}]
+   }
+   return [...supplierTitle,...supplierRateTitle]
+}
 
-export const tableDatas = [
-  {a:'0',b:'供应商1',c:'供应商1',d:'供应商1',e:'供应商1',f:'供应商1',ep:'1',g:'供应商1',h:'供应商1'},
-  {a:'供应商1',b:'供应商1',c:'0',d:'供应商1',e:'供应商1',f:'1',ep:'1',g:'供应商1',h:'供应商1'}
-]
+/**
+ * @description: 数据构造
+ * @param {*} data
+ * @return {*}
+ */
+export function buildTableData(data){
+  const datas = []
+  data.roundQuotationVOS.forEach(element=>{
+    for(let key in element.detailVOMap){
+      element[key] = element.detailVOMap[key]
+    }
+    datas.push(element)
+  })
+  return datas
+}

@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-28 15:03:47
- * @LastEditTime: 2021-05-29 21:57:34
+ * @LastEditTime: 2021-06-05 17:53:36
  * @LastEditors: Please set LastEditors
  * @Description: 特殊表格实现
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\table.vue
@@ -19,6 +19,7 @@
     :row-class-name="tableRowClassName"
     :header-cell-class-name='headerClassName'
     :cell-class-name='cellClassName'
+    :span-method="spanMethod"
   >
     <template v-for='(item,index) in tableTitle'>
       <!-----------------存在index selection情况------------------------>
@@ -40,6 +41,7 @@
         :width="item.width"
         :prop='item.props'
         align="center"
+        :sortable='item.props == "cfPartAPrice"'
         :resizable="false"
       >
         <!----------在表头上方需要显示评分的点，插入表头标签------>
@@ -49,24 +51,28 @@
             <div class="c" :style="{width:cWidth}">
               <ul style="width:99.5px">
                 <li></li>
-                <li>EP</li>
-                <li>MQ</li>
-                <li>PL</li>
+                <li v-for='(items,index) in ratingList.firstTile' :key='index'>{{items}}</li>
               </ul>
-        <!----------在表头上方动态循环点------>
-              <template v-for='(rating,index) in ratingList'>
+        <!----------在表头上方动态循环点------------------------>
+              <template v-for='(rating,index) in ratingList.ratingList'>
                 <ul :key="index" class="lastChild">
-                  <li>{{rating.name}}</li>
-                  <li>{{rating.ep}}</li>
-                  <li>{{rating.mq}}</li>
-                  <li>{{rating.pl}}</li>
+                  <li v-for='(itemsss,index) in rating' :key='index'>
+                    <span style="margin-rigth:10px;">{{itemsss.rate}}</span>
+                    <span><icon v-if='itemsss.isAllPartRateConsistent' name='iconbaojiadan-youfujian' symbol></icon></span>
+                  </li>
                 </ul>
               </template>
             </div>
           </div>
         </template>
         <template slot-scope="scope">
-          <span>{{scope.row[item.props]}}</span>
+          <template v-if='removeKeysNumber(item.props) == "cfPartAPrice"'>
+              <span :class="{chengse:scope.row[item.props].cfPartAPriceStatus == 2}">{{scope.row[item.props]}}</span>
+          </template>
+          <template v-else-if='removeKeysNumber(item.props) == "lcAPrice"'>
+              <span :class="{lvse:scope.row[item.props] == 1}">{{scope.row[item.props]}}</span>
+          </template>
+          <span v-else>{{scope.row[item.props]}}</span>
         </template>
       </el-table-column>
     </template>
@@ -74,7 +80,10 @@
   </div>
 </template>
 <script>
+import {removeKeysNumber,getPorpsNumber} from './data'
+import {icon} from 'rise'
 export default{
+  components:{icon},
   props:{
     tableData:{
       type:Array,
@@ -83,21 +92,69 @@ export default{
     tableTitle:{
       type:Array,
       default:()=>{}
+    },
+    ratingList:{
+      type:Array,
+      default:()=> {}
     }
   },
+  inject:['vm'],
   computed:{
     cWidth(){
       const index = this.tableTitle.findIndex((item)=>item.label == 'EBR')
       return (this.tableTitle.length - index) * 100 + 'px'
     },
-    ratingList(){
-      return [
-        {name:'shanghai',ep:'A',mq:'A',pl:'A'},
-        {name:'shanghai',ep:'A',mq:'A',pl:'A'}
-      ]
+    spanArr(){
+      return this.rowspan(this.tableData,'groupId',null)
     }
   },
   methods:{
+        /**
+     * 分组函数，用于element-ui table 分组合并
+     * target 目标数组
+     * groupKey 同一组打标字段名, 
+     * cb 回调函数，提供格式化好的原数组，
+     */
+    rowspan(dataList = [], groupKey = 'groupId', cb = null) {
+      // 缓存每行的span记录
+      const spanArr = []
+      // 遍历dataList index
+      let position = 0
+      dataList.forEach((item, index) => {
+        if( index === 0){
+          spanArr.push(1);
+          position = 0;
+        }else{
+          if(item[groupKey] && item[groupKey] === dataList[index-1][groupKey] ){
+            spanArr[position] += 1;
+            spanArr.push(0);
+          }else{
+            spanArr.push(1);
+            position = index;
+          }
+        }
+        })
+    // 处理回调
+    typeof cb === 'function' && (cb(dataList, spanArr))
+    return spanArr
+  },
+  spanMethod({row, column, rowIndex, columnIndex}) {
+    // 只做第一列合并操作
+    if (columnIndex === 0 ) {
+      const _row = this.spanArr[rowIndex];
+      const _col = _row > 0 ? 1 : 0;
+      return {
+        rowspan: _row,
+        colspan: _col
+        };
+      }
+    },  
+    getPorpsNumber(key){
+      return getPorpsNumber(key)
+    },
+    removeKeysNumber(data){
+      return removeKeysNumber(data)
+    },
     /**
      * @description: 为表头特殊行加入border 
      * @param {*} row
@@ -110,6 +167,9 @@ export default{
       if(column.label == 'EBR'){
         return 'leftRightBorder'
       }
+      if(this.vm.reRenderLastChild.name == column.label){
+        return 'rightBorder'
+      }
     },
     /**
      * @description: 在表格内容中，加入特殊颜色 
@@ -118,16 +178,30 @@ export default{
      * @return {*}
      */
     tableRowClassName({row,rowIndex}){
-      if(row.b == "Subtotal"){
+      if(row.partNo == "Subtotal"){
         return 'blueclass'
       }
       if(rowIndex == this.tableData.length -1 || rowIndex == this.tableData.length -2){
         return 'lineBlueClass'
       }
     },
+    /**
+     * @description: 为表格表头新增class 
+     * @param {*} row
+     * @param {*} column
+     * @param {*} rowIndex
+     * @param {*} columnIndex
+     * @return {*}
+     */
     cellClassName({row, column, rowIndex, columnIndex}){
       if(column.label == 'EBR' && rowIndex <= this.tableData.length - 4){
         return 'leftRightBorder'
+      }
+      if(column.label == 'Group' && row.groupId){
+        return 'bgcoor'
+      }
+      if(this.vm.reRenderLastChild.name == removeKeysNumber(column.label)){
+        return 'rightBorder'
       }
     },
     selectable(row, index){
@@ -142,6 +216,12 @@ export default{
 }
 </script>
 <style lang='scss' scoped>
+  .lvse{
+    color:$color-green;
+  }
+  .chengse{
+    color: $color-orange;
+  }
   .el-table {
     overflow: visible;
     ::v-deep.cell{
@@ -149,6 +229,20 @@ export default{
     }
     ::v-deep .el-table__header-wrapper{
       overflow: visible;
+      .cell{
+        height: 30px;
+        span{
+          display: inline-block;
+          word-break: break-all;
+          overflow: hidden;
+        }
+        .el-checkbox{
+          width: 18px;
+        }
+        .caret-wrapper{
+          top: -8px;
+        }
+      }
     }
     ::v-deep.el-table__header{
       th{
@@ -180,16 +274,21 @@ export default{
       border-left: 1px solid #C5CCD6;
       border-right: 1px solid #C5CCD6;
     }
+    ::v-deep .bgcoor{
+      background: rgba(247, 250, 255, 1);
+    }
+    ::v-deep .rightBorder{
+      border-right: 1px solid #C5CCD6;
+    }
   }
   .headerContent{
     position: relative;
     .c{
       position: absolute;
-      height: 150px;
       width: 100px;
       //background-color: red;
       z-index: 123;
-      bottom: 38px;
+      bottom: 45px;
       left:-14px;
       border: 1px solid #C5CCD6;
       border-bottom: none;

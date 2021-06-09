@@ -9,6 +9,7 @@ import axios from '@/utils/axios'
 import store from "@/store";
 
 const requst = axios(process.env.VUE_APP_RFQ)
+const partsRequst = axios(process.env.VUE_APP_PARTSPROCURE_STATIC)
 
 export function getRfqDataList(parmars) {
     return requst({
@@ -79,6 +80,14 @@ export function getAllScoringDepartmentInfo(parmars) {
 export function getAgentTasksNum() {
     return requst({
         url: '/getAgentTasksNum',
+        method: 'GET',
+    })
+}
+
+// 获取车型字典
+export function getCartypeDict() {
+    return partsRequst({
+        url: '/api/cartypeDict',
         method: 'GET',
     })
 }

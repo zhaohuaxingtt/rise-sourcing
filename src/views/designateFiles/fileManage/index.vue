@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-26 16:20:16
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-07 12:30:46
+ * @LastEditTime: 2021-06-07 18:08:02
  * @Description: 附件综合管理
  * @FilePath: \front-web\src\views\designateFiles\fileManage\index.vue
 -->
@@ -42,7 +42,7 @@
               <span class="font18 font-weight">附件综合查询</span>
                 <div class="floatright">
                   <!--------------------分配LINIE/CSS----------------------------------->
-                  <iButton @click="changeLinieDialogVisible(true)" >分配LINIE/CSS</iButton>
+                  <iButton @click="handleSendLinie" >分配LINIE/CSS</iButton>
                   <!--------------------退回按钮----------------------------------->
                   <iButton @click="changebackDialogVisible(true)" >退回</iButton>
                   <!--------------------创建RFQ----------------------------------->
@@ -75,7 +75,7 @@
           <!------------------------------------------------------------------------>
           <!--                    加入已有RFQ弹窗                                  --->
           <!------------------------------------------------------------------------>
-          <joinRfqDialog :dialogVisible="joinRfqDialogVisible" @changeVisible="changeJoinRfqDialogVisible" @joinRfq="joinRfq" />
+          <joinRfqDialog ref="joinRfq" :dialogVisible="joinRfqDialogVisible" @changeVisible="changeJoinRfqDialogVisible" @joinRfq="joinRfq" />
         </div>
       </el-tab-pane>
       <!-- <el-tab-pane label="进度监控" name="progress"></el-tab-pane> -->
@@ -121,17 +121,35 @@ export default {
     this.getTableList()
   },
   methods: {
+    handleSendLinie() {
+      // if (this.selectParts.length < 1) {
+      //   iMessage.warn('请选择附件')
+      //   return
+      // }
+      // const selectLINIE = uniq(this.selectParts.map(item => item.csfuserId))
+      // if (selectLINIE.length > 1 || selectLINIE[0]) {
+      //   iMessage.warn('请选择未分配LINIE的附件')
+      //   return
+      // }
+      this.changeLinieDialogVisible(true)
+    },
     handleJoinRFQ() {
       if (this.selectParts.length < 1) {
         iMessage.warn('请选择附件')
         return
       }
       const selectLINIE = uniq(this.selectParts.map(item => item.csfuserId))
+      const selectRfq = uniq(this.selectParts.map(item => item.rfqId))
       if (selectLINIE.length > 1) {
         iMessage.warn('请选择相同LINIE的附件')
         return
-      } if (!selectLINIE[0]) {
+      } 
+      if (!selectLINIE[0]) {
         iMessage.warn('请选择已分配LINIE的附件')
+        return
+      }
+      if (selectRfq.length > 1 || selectRfq[0]) {
+        iMessage.warn('请选择未分配RFQ的附件')
         return
       }
       this.changeJoinRfqDialogVisible(true)
@@ -146,6 +164,7 @@ export default {
       const params = {
         insertRfqPackage: {
           rfqId: rfq.rfqId,
+          operationType: '1',
           rfqPartDTOList: this.selectParts.map(item => {
             return {
               buyerName: item.csfUser, // 询价采购员
@@ -163,11 +182,12 @@ export default {
       insertRfq(params).then(res => {
         if (res?.result) {
           iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
-          this.changeJoinRfqDialogVisible(false)
           this.getTableList()
         } else {
           iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
         }
+      }).finally(() => {
+        this.$refs.joinRfq.changeActiveButtonLoading(false)
       })
     },
     /**
@@ -340,7 +360,7 @@ export default {
         iMessage.warn('请选择已分配LINIE的附件')
         return
       }
-      const router =  this.$router.resolve({path: '/sourcing/createrfq', query: { type: '2', ids: this.selectParts.map(item => item.spnrNum) }})
+      const router =  this.$router.resolve({path: '/sourcing/createrfq', query: { type: '2', ids: this.selectParts.map(item => item.spnrNum).join(',') }})
       window.open(router.href,'_blank')
     }
   }
