@@ -202,7 +202,13 @@ export default {
       // 禁用nominateProcessType编辑
       this.$store.dispatch('setNominationTypeDisable', true)
       this.$nextTick(() => {
-        this.$router.push({path: '/designate/rfqdetail', query: {desinateId: row.id, designateType: row.nominateProcessType}})
+        this.$router.push({
+          path: '/designate/rfqdetail',
+          query: {
+            desinateId: row.id, 
+            designateType: (row.nominateProcessType && row.nominateProcessType.code) || ''
+          }
+        })
       })
     },
     // 获取车型项目
