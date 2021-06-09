@@ -1,8 +1,8 @@
 /*
  * @Author: HaoJiang
  * @Date: 2021-05-20 14:29:09
- * @LastEditTime: 2021-05-31 21:31:26
- * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-06-09 15:27:25
+ * @LastEditors: Please set LastEditors
  * @Description: 定点管理
  * @metaParams: hideTabLV3 隐藏三级导航
  *
@@ -196,6 +196,15 @@ export default [
             },
             component: () =>
               import ("@/views/designate/designatedetail/decisionData/rs")
+          },
+          {
+            path: "/designate/decisiondata/abprice",
+            name: "designateDecisionRS",
+            meta: {
+                title: "定点管理-决策资料-RS",
+            },
+            component: () =>
+              import ("@/views/designate/designatedetail/decisionData/abPrice")
           },
         ]
       }
