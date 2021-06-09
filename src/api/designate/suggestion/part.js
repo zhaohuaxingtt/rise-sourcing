@@ -18,10 +18,19 @@ export function getSuggestionList(params) {
   })
 }
 
+// 获取零件供应商列表
+export function getPartSupplierList(data) {
+  return requst({
+      url: `/rs/suppliers`,
+      method: "POST",
+      data
+  })
+}
+
 // 定点建议更新
 export function updateSuggestion(data) {
   return requst({
-      url: `/suggestion/list`,
+      url: `/suggestion/update`,
       method: "POST",
       data
   })

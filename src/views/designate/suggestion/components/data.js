@@ -52,13 +52,13 @@ export const supplierTitle = [
     tooltip: false
   },
   {
-    props: 'supplierName',
+    props: 'supplierId',
     name: '供应商号',
     key: 'nominationSupplier.GongYingShangHao',
     tooltip: false
   },
   {
-    props: 'percent',
+    props: 'ratio',
     name: '',
     key: 'nominationSuggestion.BiLi',
     tooltip: false
