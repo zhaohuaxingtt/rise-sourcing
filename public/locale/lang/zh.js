@@ -943,6 +943,22 @@
         'LK_DISHINIANXUQIULIANG':'第10年需求量', // 第10年需求量
         'LK_QINGXUANZEZHISHAOYITIAOSHUJU': '请选择至少一条数据', // 请选择至少一条数据
 
+        'LK_ALLBMAPPLY': '所有BM申请',    //  所有BM申请
+        'LK_DAIQUERENBMDAN': '待确认BM单',    //  待确认BM单
+        'LK_AEKOZENGZHIBMDAN': 'Aeko增值BM单',  //  Aeko增值BM单
+        'LK_AEKOJIANZHIBMDAN': 'Aeko减值BM单',  //  Aeko减值BM单
+        'LK_BMDANZHUANGTAI': 'BM单状态',    //  BM单状态
+        'LK_AEKOLEIXING': 'Aeko类型',   //  Aeko类型
+        'LK_BMDANLIUSHUIHAO': 'BM单流⽔号',   //  BM单流⽔号
+        'LK_BMDANHAO': 'BM单号',    //  BM单号
+        'LK_WBSBIANHAO': 'WBS编号',   //  WBS编号
+        'LK_DAIBIAOLINGJIAN': '代表零件',  //  代表零件
+        'LK_BMDANJINE':  'BM单金额', //  BM单金额
+        'LK_BMZHUANGTAI': 'BM单状态',   //  BM单状态
+        'LK_DINGDIANLEIXING': '定点类型',   //  定点类型
+        'LK_AEKOZENGZHIJINE': 'Aeko增值金额',  //  Aeko增值金额
+        'LK_XIAZAIQINGDAN': '下载清单', //  下载清单
+
         // 定点管理
         'nominationLanguage': {
             "DingDianXiangQing": '定点详情', // 定点详情

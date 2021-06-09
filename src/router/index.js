@@ -258,6 +258,14 @@ export const staticRouter = [{
                         },
                         component: () => import (`@/views/ws2/budgetApproval`),
                     },
+                    {
+                        path: '/tooling/bmApplyIndex',
+                        name: 'bmApplyIndex',
+                        meta: {
+                            title: 'BM申请'
+                        },
+                        component: () => import (`@/views/ws2/bmApply`),
+                    },
                 ]
             },
             {
