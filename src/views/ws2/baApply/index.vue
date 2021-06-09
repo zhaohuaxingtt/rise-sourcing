@@ -84,7 +84,7 @@
 <script>
 import { indexFrom, indexTableHead } from "./components/data";
 import { getCartypePulldown, saveCustomCart } from "@/api/ws2/budgetManagement/edit";
-import { findCarTypeList, getBaAccountType, findBaPartsList } from "@/api/ws2/baApply";
+import { findCarTypeList, getBaAccountType, findBaPartsList, getBaCarPullDown } from "@/api/ws2/baApply";
 import { tableHeight } from "@/utils/tableHeight";
 import { pageMixins } from "@/utils/pageMixins";
 import DetailsSearch from "./components/detailsSearch";
@@ -211,7 +211,7 @@ export default {
 
     getPageData(){
       this.loadingiSearch = true;
-      Promise.all([getCartypePulldown()]).then(res => {
+      Promise.all([getBaCarPullDown()]).then(res => {
         const result0 = this.$i18n.locale === 'zh' ? res[0].desZh : res[0].desEn;
 
         if(res[0].data){
