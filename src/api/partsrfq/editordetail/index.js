@@ -3,6 +3,8 @@ import axios from '@/utils/axios'
 const requst = axios(process.env.VUE_APP_RFQ)
 const nego = axios(process.env.VUE_APP_NEGO)
 const quotation = axios(process.env.VUE_APP_SUPPLIER_CBHUIZ)
+
+import { serialize } from "@/utils"
 /*零件清单*/
 
 //获取零件采购列表。
@@ -57,11 +59,18 @@ export function uploadRfqAnnex(parmars) {
 
 
 /*模具预算申请*/
-export function getModelBudgetList(parmars) {
+// export function getModelBudgetList(parmars) {
+//     return requst({
+//         url: '/modelbudget/getModelBudgetList',
+//         method: 'POST',
+//         data: parmars
+//     })
+// }
+// 模具预算申请
+export function getModelBudgetList(params, rfqIds) {
     return requst({
-        url: '/modelbudget/getModelBudgetList',
-        method: 'POST',
-        data: parmars
+        url: `/mould-budget/${ params.currPage }/${ params.pageSize }?${ serialize(rfqIds, Array) }`,
+        method: 'GET'
     })
 }
 
@@ -213,9 +222,9 @@ export function negoAnalysisSummaryRound(rfqId){
 }
 
 //报价分析-获取场景布局
-export function negoAnalysisSummaryLayout(rfqId){
+export function negoAnalysisSummaryLayout(layoutType){
     return nego({
-        url: `/nego-assistant/nego-analysis-summary-layout/${rfqId}`,
+        url: `/nego-assistant/nego-analysis-summary-layout/${layoutType}`,
         method: 'GET'
     })
 }
@@ -246,7 +255,13 @@ export function fsPartsAsRow(rfqId,round){
         method: 'GET'
     })
 }
-
+//报价分析-供应商轴
+export function fsSupplierAsRow(rfqId,round){
+    return nego({
+        url: `/nego-assistant/nego-analysis-summary/fs-supplier-as-row/${rfqId}/${round}`,
+        method: 'GET'
+    })
+}
 //分析报价-组合
 export function negoAnalysisSummaryGroup(data){
     return nego({
@@ -264,6 +279,7 @@ export function negoAnalysisSummaryGroupDelete(data){
         data:data
     })
 }
+
 
 // 获取对应供应商的零件清单
 export function getPartsBySupplier(params) {
@@ -308,3 +324,5 @@ export function updateBatchSupplierProducePlace(params) {
         data: params
     })
 }
+
+

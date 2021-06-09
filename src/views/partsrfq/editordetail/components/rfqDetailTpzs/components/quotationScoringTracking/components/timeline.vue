@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-25 16:11:34
- * @LastEditTime: 2021-06-02 14:21:13
+ * @LastEditTime: 2021-06-08 15:20:06
  * @LastEditors: Please set LastEditors
  * @Description: timeline
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringTracking\components\timeline.vue
@@ -16,7 +16,7 @@
         <span v-else style="display:inline-block;height:13px;"></span>
       </p>
       <p :class="{itemsb:true,active:items.active,width:'70px'}"></p>
-      <template v-if='items.oneWeekList.length<=1'>
+      <template v-if='items.oneWeekList && items.oneWeekList.length<=1'>
         <p class="itemsc" :style='{top:"40px",left:(items.doneDay-1) * 10 + "px"}' v-if='items.progressTypeDesc'>
           <span><icon symbol :name='iconList_all_times["a"+items.taskStatus].icon' class="margin-right5"></icon>{{items.progressTypeDesc}}</span>
           <span>{{items.doneYear}}Cw{{items.week}}</span>

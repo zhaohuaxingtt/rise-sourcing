@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-28 15:03:47
- * @LastEditTime: 2021-05-29 23:29:10
+ * @LastEditTime: 2021-06-08 19:36:02
  * @LastEditors: Please set LastEditors
  * @Description: 特殊表格实现
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\table.vue
@@ -30,20 +30,15 @@
           <span>{{scope.column.label}}</span>
           <div class="headerContent" v-if='scope.column.label == "Supplier"'>
             <div class="c" :style="{width:cWidth}">
-              <ul class="ca" style="width:250px;">
-                <li v-for='(items,index) in supplierTableTop' :key='index'>
-                  {{items}}
+              <ul class="ca" style="width:200px;">
+                <li v-for='(items,index) in supplierLeftLit' :key='index'>
+                  {{items.name}}
                 </li>
               </ul>
               <ul class="cb" v-for='(items,index) in centerSupplierData' :key='index'>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
+                <template v-for="(itemss,index) in supplierLeftLit">
+                    <li :key='index'>{{items[itemss.props]}}</li>
+                </template>
               </ul>
               <div class="cc" style="width:100px">
                 450.000
@@ -87,16 +82,25 @@ export default{
     centerSupplierData:{
       type:Array,
       default:()=>[{},{}]
+    },
+    supplierLeftLit:{
+      type:Array,
+      default:()=>[]
     }
   },
-  data(){return {
+  data(){
+    return {
     cWidth:'0px',
     supplierTableTop:supplierTableTop
   }},
-  mounted(){
-    this.$nextTick(()=>{
-      this.getTopWidth()
-    })
+  watch:{
+    tableTitle(){
+      this.$nextTick(()=>{
+        setTimeout(() => {
+           this.getTopWidth() 
+        }, 500);
+      })
+    }
   },
   methods:{
     getTopWidth(){
