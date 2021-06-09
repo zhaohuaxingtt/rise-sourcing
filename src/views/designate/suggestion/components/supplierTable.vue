@@ -35,6 +35,7 @@
         :tableData="data"
         :tableTitle="supplierTitle"
         :tableLoading="tableLoading"
+        v-loading="tableLoading"
         @handleSelectionChange="handleSelectionChange"
       >
         <template #rfqNum="scope">
@@ -60,7 +61,7 @@
         <template #percent="scope">
           <div v-if="scope.row.isEdit">
             <iSelect
-              v-model="scope.row.percent"
+              v-model="scope.row.ratio"
               :placeholder="$t('LK_QINGXUANZE')">
               <el-option
                 :value="items.key"
@@ -70,13 +71,13 @@
               ></el-option>
             </iSelect>
           </div>
-          <span v-else>{{scope.row.percent}}</span>
+          <span v-else>{{scope.row.ratio}}</span>
         </template>
       </tablelist>
       <iPagination
         v-update
-        @size-change="handleSizeChange($event, getTableList)"
-        @current-change="handleCurrentChange($event, getTableList)"
+        @size-change="handleSizeChange($event, getDataList)"
+        @current-change="handleCurrentChange($event, getDataList)"
         background
         :current-page="page.currPage"
         :page-sizes="page.pageSizes"
@@ -102,6 +103,12 @@ import tablelist from "./tableList";
 import batchEditDialog from "./batchEditDialog"
 // import mouldDialog from "./mouldDialog"
 import mouldDialog from "./mouldBudgetManagementDialog"
+import { pageMixins } from '@/utils/pageMixins'
+import {
+  getSuggestionList,
+  updateSuggestion,
+  deleteSuggestion
+} from '@/api/designate/suggestion/part'
 
 import {
   iCard,
@@ -121,12 +128,13 @@ export default {
     batchEditDialog,
     mouldDialog
   },
+  mixins: [ pageMixins ],
   data() {
     return {
       // 表头
       supplierTitle,
       // 表单数据
-      data: mokeSupplierData,
+      data: [],
       // 表单选择的数据
       selectData: [],
       // 控制右边按钮整体切换
@@ -135,14 +143,20 @@ export default {
       batchEditVisibal: false,
       // 模具弹窗
       mouldVisibal: false,
+      // 列表加载状态
+      tableLoading: false,
       page: {
         currPage: 1,
         pageSize: 10,
-        totalCount: 2
+        totalCount: 0,
+        layout: "total, prev, pager, next, jumper"
       },
       // 全量rfqId，用于模具预算管理列表查询
       rfqIds: []
     }
+  },
+  mounted() {
+    this.getDataList()
   },
   methods: {
     // 批量编辑
@@ -171,8 +185,25 @@ export default {
     handleSelectionChange(data) {
       this.selectData = data
     },
-    getTableList() {
-
+    getDataList() {
+      this.tableLoading = true
+      getSuggestionList({
+        nominateAppId: this.$store.getters.nomiAppId || '',
+        current: this.page.currPage,
+        size: this.page.pageSize
+      }).then(res => {
+        this.tableLoading = false
+        if (res.code === '200') {
+          this.data = res.data || []
+          this.page.totalCount = res.total || this.data.length
+          console.log(this.selectTableData)
+        } else {
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
+        console.log(res)
+      }).catch(e => {
+        this.tableLoading = false
+      })
     }
   }
 }

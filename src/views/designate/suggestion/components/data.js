@@ -16,31 +16,31 @@ export const supplierTitle = [
     tooltip: false
   },
   {
-    props: 'sapNum',
+    props: 'fsnrGsnrNum',
     name: 'FSNR/GSNR',
     key: '',
     tooltip: false
   },
   {
-    props: 'rfqNum',
+    props: 'rfqId',
     name: 'RFQ编号',
     key: 'nominationLanguage.RFQBianHao',
     tooltip: false
   },
   {
-    props: 'factory',
+    props: 'purchasingFactory',
     name: '采购工厂',
     key: 'nominationSupplier.CaiGouGongChang',
     tooltip: false
   },
   {
-    props: 'fsnrGsnrNameEn',
+    props: 'partNameZh',
     name: '零件名(中)',
     key: 'nominationLanguage.LingJianMingCN',
     tooltip: false
   },
   {
-    props: 'fsnrGsnrNameEn',
+    props: 'partNameDe',
     name: '零件名(德)',
     key: 'nominationLanguage.LingJianMingDE',
     tooltip: false
@@ -52,14 +52,14 @@ export const supplierTitle = [
     tooltip: false
   },
   {
-    props: 'supplierNum',
+    props: 'supplierName',
     name: '供应商号',
     key: 'nominationSupplier.GongYingShangHao',
     tooltip: false
   },
   {
     props: 'percent',
-    name: 'SAP号',
+    name: '',
     key: 'nominationSuggestion.BiLi',
     tooltip: false
   }
