@@ -1,19 +1,19 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-05-25 09:42:07
- * @LastEditTime: 2021-05-25 17:15:37
+ * @LastEditTime: 2021-06-09 23:21:46
  * @Description: 业务分配模拟
 -->
 
 <template>
-  <iCard class="buMonitor">
+  <iCard class="buMonitor" :title="cardTitle" :collapse='collapse' @handleCollapse='handleCollapse'>
     <el-row :gutter="24">
       <!-- 供应商表格 -->
       <el-col :span="16">
         <div class="supplierTable">
           <div class="margin-bottom20 clearFloat">
             <span class="font18 font-weight">
-              {{ title || this.$t("nominationSuggestion.YeWuFenPeiMoNi") }}
+              {{ title }}
             </span>
             <span class="updateTime" v-if="updateTime">
               {{$t("nominationSuggestion.ShuaXinShiJian")}}:
@@ -117,8 +117,18 @@ export default {
     },
     title: {
       type: String,
-      default: ''
+      default: function(){
+        return this.$t("nominationSuggestion.YeWuFenPeiMoNi")
+      }
     },
+    cardTitle:{
+      type:String,
+      default:''
+    },
+    collapse:{
+      type:Boolean,
+      default:false
+    }
   },
   components: {
     iDialog,
@@ -293,7 +303,8 @@ export default {
     },
     updateCharts(data) {
       this.chartData = data
-    }
+    },
+    handleCollapse(e){this.$emit('handleCollapse',e)}
   }
 }
 </script>
