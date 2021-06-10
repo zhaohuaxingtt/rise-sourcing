@@ -28,3 +28,11 @@ export function selectDictByKeys(params) {
         method: 'GET'
     })
 }
+
+//原产国
+export function selectDictByKeyss(type) {
+    return requst({
+        url: `/selectDictByKeys?keys=${type}`,
+        method: 'GET'
+    })
+}
