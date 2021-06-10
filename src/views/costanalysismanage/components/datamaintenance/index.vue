@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-05-27 12:33:07
- * @LastEditTime: 2021-06-07 18:14:42
+ * @LastEditTime: 2021-06-10 21:39:30
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\costanalysismanage\components\datamaintenance\index.vue
@@ -36,7 +36,7 @@
           <template #fileName="scope">
             <span class="link-underline" @click="download(scope.row)">{{ scope.row.fileName }}</span>
           </template>
-          <template #date="scope">
+          <template #uploadDate="scope">
             <span>{{ scope.row.uploadDate | dateFilter("YYYY-MM-DD") }}</span>
           </template>
         </tableList>
