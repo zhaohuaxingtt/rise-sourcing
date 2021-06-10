@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-21 09:23:11
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-03 15:17:13
+ * @LastEditTime: 2021-06-10 17:19:25
  * @Description: RFQ & 零件清单界面
  * @FilePath: \front-web\src\views\designate\designatedetail\rfqdetail\index.vue
 -->
@@ -126,6 +126,7 @@ export default {
     saveParts() {
       if (this.partsSelectedItems.length < 1) {
         iMessage.warn('请选择需要保存的零件')
+        return
       }
       this.partsTableLoading = true
       const params = {
