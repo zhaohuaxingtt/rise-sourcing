@@ -66,10 +66,10 @@ export default {
        // 获取title信息
        async getInfo(){
          const { query } = this.$route;
-         const {id ='1'} = query;
+         const {desinateId =''} = query;
          const { titleData } = this;
          const newData = cloneDeep(titleData);
-        await findLayoutTitleInfo({nominateId:id}).then((res)=>{
+        await findLayoutTitleInfo({nominateId:desinateId}).then((res)=>{
             const {data,code} = res;
             if(code == 200 && data){
                console.log(data);

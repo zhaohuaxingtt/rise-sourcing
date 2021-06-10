@@ -77,7 +77,6 @@ export default {
         iButton,
         iPagination,
         iInput,
-        iMessage,
     },
     created(){
        this.getListData();
@@ -111,11 +110,11 @@ export default {
        // 获取列表
        async getListData(){
          const { query } = this.$route;
-         const {id ='1'} = query;
+         const {desinateId =''} = query;
           this.loading = true;
          const {pageSize,currPage} = this.page;
           const data = {
-             nominateId:id,
+             nominateId:desinateId,
              size:pageSize,
              current:currPage
              

@@ -142,6 +142,8 @@ export default {
             const data = {
                 nomiTimeAxisList:detailData
             }
+            const {query={}} = this.$route;
+            const {desinateId=''} = query; 
             await saveTimeaxis(data).then((res)=>{
                 const {code} = res;
                 this.isLoading = false;
@@ -149,7 +151,7 @@ export default {
                     iMessage.success(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
                     this.getDetail();
                     this.isEdit = false;
-                    this.$store.dispatch('updateNominationStep',{nominateId , phaseType:'5'});
+                    this.$store.dispatch('updateNominationStep',{desinateId , phaseType:'5'});
                 }else {
                     iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
                 }
@@ -159,8 +161,8 @@ export default {
         // 获取timeLine详情
         getDetail(){
             const {query={}} = this.$route;
-            const {nominateId=''} = query;  // 34
-            getTimeaxis(nominateId).then((res)=>{
+            const {desinateId=''} = query;  // 34
+            getTimeaxis(desinateId).then((res)=>{
                 const {code,data} = res;
                 if(code == 200 && data){
                     this.detailData = this.resetDetail(data);
