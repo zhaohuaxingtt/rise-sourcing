@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-26 16:20:16
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-09 10:57:00
+ * @LastEditTime: 2021-06-10 20:57:54
  * @Description: 附件综合管理
  * @FilePath: \front-web\src\views\designateFiles\fileManage\index.vue
 -->
@@ -71,7 +71,7 @@
                   <iButton @click="remove" >删除</iButton>
                 </div>
             </div>
-            <tableList :activeItems='"c"' selection indexKey :tableData="tableData" :tableTitle="tableTitle" :tableLoading="tableLoading" @handleSelectionChange="handleSelectionChange" @openPage="openPage" @handleFileDownload="handleFileDownload"></tableList>
+            <tableList :activeItems='"rfqId"' selection indexKey :tableData="tableData" :tableTitle="tableTitle" :tableLoading="tableLoading" @handleSelectionChange="handleSelectionChange" @openPage="openPage" @handleFileDownload="handleFileDownload"></tableList>
             <!------------------------------------------------------------------------>
             <!--                  表格分页                                          --->
             <!------------------------------------------------------------------------>
