@@ -88,15 +88,15 @@ export default {
     created(){
         // 判断当前路由是否是决策资料相关路由 是则显示预览按钮
         const { path,query,name } = this.$route;
-        const {id ='1'} = query;
+        const {desinateId =''} = query;
         // 禁用定点类型逻辑：只有新增定点管理和处于designateRfqdetail页面才支持修改定点类型，其他页面禁止编辑
         const nominationTypeDisable = Boolean(query.desinateId) || name !== 'designateRfqdetail'
         this.isDecision = path.indexOf('/designate/decisiondata/')>-1;
         this.desinateId = query.desinateId
         this.designateType = query.designateType
 
-        this.getStepStatus(id);
-        this.getDesignateType(id);
+        this.getStepStatus(desinateId);
+        this.getDesignateType(desinateId);
         // 控制定点类型是否可编辑
         this.$store.dispatch('setNominationTypeDisable', nominationTypeDisable)
         // 设置定点类型
