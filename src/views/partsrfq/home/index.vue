@@ -1,7 +1,7 @@
 <!--
  * @Author: moxuan
  * @Date: 2021-02-25 09:59:25
- * @LastEditTime: 2021-06-10 16:03:38
+ * @LastEditTime: 2021-06-10 22:03:34
  * @LastEditors: Please set LastEditors
  * @Description: RFQ模块首页
  * @FilePath: \rise\src\views\partsrfq\home\index.vue
@@ -103,9 +103,9 @@
             >
               <template v-slot:icon="scope">
                 <div @click="toTop(scope.data)" class="icon-style">
-                  <icon class="icon icon-color-active" name="iconliebiaoyizhiding"
+                  <icon symbol class="icon icon-color-active" name="iconliebiaoyizhiding"
                         v-if="+scope.data.recordId > 0"></icon>
-                  <icon class="icon" name="iconliebiaoyizhiding" v-else></icon>
+                  <icon symbol class="icon" name="iconliebiaoyizhiding" v-else></icon>
                 </div>
               </template>
               <template #b="scope">
