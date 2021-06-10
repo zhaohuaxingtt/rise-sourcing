@@ -100,9 +100,9 @@ export default {
         // 控制定点类型是否可编辑
         this.$store.dispatch('setNominationTypeDisable', nominationTypeDisable)
         // 设置定点类型
-        this.$store.dispatch('setNominationType', this.designateType)
+        this.designateType && (this.$store.dispatch('setNominationType', this.designateType))
         // 缓存定点ID
-        this.$store.dispatch('setNominateId', this.desinateId)
+        this.$store.dispatch('setNominateId', this.desinateId || '')
 
     },
      computed:{
