@@ -1,7 +1,7 @@
 <!--
  * @Author: moxuan
  * @Date: 2021-02-25 09:59:25
- * @LastEditTime: 2021-06-07 19:42:24
+ * @LastEditTime: 2021-06-10 16:03:38
  * @LastEditors: Please set LastEditors
  * @Description: RFQ模块首页
  * @FilePath: \rise\src\views\partsrfq\home\index.vue
@@ -85,7 +85,7 @@
                          v-permission="PARTSRFQ_REINQUIRY">{{ $t('LK_ZHUANXUNJIA') }}
                 </iButton>
                 <!--创建定点申请：在列表中选择RFQ，点击该键，会跳转到定点申请创建页面，RFQ的内容会自动带入到定点申请的各页签中-->
-                <iButton disabled v-permission="PARTSRFQ_CREATEAPPLICATION">
+                <iButton v-permission="PARTSRFQ_CREATEAPPLICATION" @click="jumpDesignateRfqDetail">
                   {{ $t('LK_CHUANGJIANDINGDIANSHENQING') }}
                 </iButton>
                 <iButton @click="exportTable" v-permission="PARTSRFQ_EXPORT">{{ $t('LK_DAOCHU') }}</iButton>
@@ -459,6 +459,11 @@ export default {
             })) :
             []
         }
+      })
+    },
+    jumpDesignateRfqDetail() {
+      this.$router.push({
+        path: "/designate/rfqdetail"
       })
     }
   }
