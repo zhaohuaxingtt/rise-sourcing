@@ -151,7 +151,7 @@ export default {
 
         // 跳转
         goToRoute(item){
-            if(this.phaseType < item.id) return;
+            // if(this.phaseType < item.id) return;
             const {path,query} = this.$route;
             if(item.path === path ) return;
             this.$router.push({
