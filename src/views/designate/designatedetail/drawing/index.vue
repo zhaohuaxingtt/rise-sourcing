@@ -85,15 +85,6 @@ export default {
     this.getFetchDataList()
   },
   methods: {
-    dowloadSingleFile(item) {
-      if (item && item.id) {
-        const params = {
-          applicationName: 'rise',
-          fileList: [item.id]
-        }
-        downloadFile(params)
-      }
-    },
     async batchDownloadAll() {
       const params = {
         nomiAppId: this.nomiAppId,

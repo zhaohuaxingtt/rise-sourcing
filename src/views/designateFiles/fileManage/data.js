@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-26 11:16:58
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-07 14:05:00
+ * @LastEditTime: 2021-06-09 10:37:13
  * @Description: 
  * @FilePath: \front-web\src\views\designateFiles\fileManage\data.js
  */
@@ -51,13 +51,13 @@ export const searchList = [
   {value: 'carType', label: '使用车型', type: 'input', i18n_label: '',},
   {value: 'timeToMarket', label: '附件上市时间', type: 'date', i18n_label: '',},
   {value: 'dept', label: '科室', type: 'input', i18n_label: ''},
-  {value: 'linie', label: 'LINIE', type: 'select', i18n_label: '', selectOption: ''},
+  {value: 'linie', label: 'LINIE', type: 'linie', i18n_label: '', selectOption: ''},
   {value: 'code', label: '编号', type: 'input', i18n_label: '',},
-  {value: 'partStatus', label: '零件状态', type: 'select', i18n_label: '', selectOption: ''},
+  {value: 'partStatus', label: '零件状态', type: 'select', i18n_label: '', selectOption: 'partStatusOption'},
   {value: 'accessoryNum', label: '配件序号', type: 'input', i18n_label: '',},
   // {value: 'isEop', label: '是否EOP', type: 'select', i18n_label: '', selectOption: []},
   // {value: 'assemblyPartNum', label: '批量供货总成号', type: 'input', i18n_label: '',},
-  {value: 'status', label: '状态', type: 'select', i18n_label: '', selectOption: ''},
+  {value: 'status', label: '状态', type: 'select', i18n_label: '', selectOption: 'statusOption'},
   // {value: 'procureGroup', label: '参考采购组', type: 'input'},
   {value: 'supplierSapCode', label: '供应商SAP号', type: 'input', i18n_label: '',},
   {value: 'spNrNum', label: 'SP号', type: 'input', i18n_label: ''},
@@ -65,8 +65,8 @@ export const searchList = [
 ]
 
 export const fileSearchList = [
-  {value: 'a', label: '附件零件编号', type: 'input', i18n_label: '',},
-  {value: 'b', label: '附件零件名称', type: 'input', i18n_label: '',},
-  {value: 'c', label: '使用车型', type: 'input', i18n_label: '',},
-  {value: 'd', label: '附件上市时间', type: 'date', i18n_label: '',},
+  {value: 'partNum', label: '附件零件编号', type: 'input', i18n_label: '',},
+  {value: 'partNameCh', label: '附件零件名称', type: 'input', i18n_label: '',},
+  {value: 'carType', label: '使用车型', type: 'input', i18n_label: '',},
+  {value: 'timeToMarket', label: '附件上市时间', type: 'date', i18n_label: '',},
 ]

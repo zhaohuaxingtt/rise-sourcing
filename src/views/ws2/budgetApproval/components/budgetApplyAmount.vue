@@ -16,13 +16,13 @@
             :tableTitle="tableTitle"
         >
           <template #budgetAmount="scope">
-            <div>{{ $tools.getTousandNum(scope.row.budgetAmount) }}</div>
+            <div>{{ getTousandNum(scope.row.budgetAmount) }}</div>
           </template>
           <template #usableAmount="scope">
-            <div>{{ $tools.getTousandNum(scope.row.usableAmount) }}</div>
+            <div>{{ getTousandNum(scope.row.usableAmount) }}</div>
           </template>
           <template #budget="scope">
-            <div>{{ $tools.getTousandNum(scope.row.budget) }}</div>
+            <div>{{ getTousandNum(scope.row.budget) }}</div>
           </template>
         </iTableList>
         <iPagination
@@ -53,6 +53,7 @@ import {budgetApplyAmountList, form} from "../components/data";
 import {pageMixins} from "@/utils/pageMixins";
 import {tableHeight} from "@/utils/tableHeight";
 import {applyDetail} from "@/api/ws2/budgetApproval";
+import {getTousandNum} from "@/utils/tool";
 
 export default {
   mixins: [pageMixins, tableHeight],
@@ -76,6 +77,7 @@ export default {
       materialName: '',
       mouldAttr: '',
       professionalDepartments: '',
+      getTousandNum: getTousandNum
     }
   },
   mounted() {

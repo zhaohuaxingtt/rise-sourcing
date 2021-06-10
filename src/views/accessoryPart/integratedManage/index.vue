@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-26 11:16:51
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-07 18:07:16
+ * @LastEditTime: 2021-06-09 10:16:28
  * @Description: 配件综合管理页面
  * @FilePath: \front-web\src\views\accessoryPart\integratedManage\index.vue
 -->
@@ -21,7 +21,7 @@
           <iSearch @sure="getTableList" @reset="reset">
             <el-form>
               <el-form-item v-for="(item, index) in searchList" :key="index" :label="item.label">
-                <iSelect v-if="item.type === 'select'" v-model="searchParams[item.value]">
+                <iSelect v-update v-if="item.type === 'select'" v-model="searchParams[item.value]">
                   <el-option value="" :label="$t('all')"></el-option>
                   <el-option
                     v-for="item in selectOptions[item.selectOption] || []"
@@ -86,6 +86,10 @@
           <!--                    退回弹窗                                        --->
           <!------------------------------------------------------------------------>
           <backDialog :dialogVisible="backDialogVisible" @changeVisible="changebackDialogVisible" @handleBack="handleBack" />
+          <!------------------------------------------------------------------------>
+          <!--                    加入已有RFQ弹窗                                  --->
+          <!------------------------------------------------------------------------>
+          <joinRfqDialog ref="joinRfq" :dialogVisible="joinRfqDialogVisible" @changeVisible="changeJoinRfqDialogVisible" @joinRfq="joinRfq" partType="12" />
         </div>
       </el-tab-pane>
       <!-- <el-tab-pane label="进度监控" name="progress"></el-tab-pane> -->
@@ -106,10 +110,15 @@ import { navList } from "@/views/partsign/home/components/data"
 import { cloneDeep, uniq } from 'lodash'
 import { getAccessoryManageList, sendAccessoryInfo, downLoadAccessoryList, downLoadAccessoryAll, back, backEPS } from '@/api/accessoryPart/index'
 import { getDictByCode } from '@/api/dictionary'
-import {findBySearches} from "@/api/partsrfq/home";
+import {findBySearches,getCartypeDict} from "@/api/partsrfq/home";
+import joinRfqDialog from '@/views/designateFiles/fileManage/components/joinRfq'
+import { insertRfq } from '@/api/accessoryPart/index'
+import {
+  dictkey,
+} from "@/api/partsprocure/editordetail";
 export default {
   mixins: [pageMixins],
-  components: { iPage, iSearch, iSelect, iInput, iCard, iButton, iPagination, tableList, assignInquiryDepartmentDialog, assignInquiryBuyerDialog,backEpsDialog, backDialog, iNavMvp },
+  components: { iPage, iSearch, iSelect, iInput, iCard, iButton, iPagination, tableList, assignInquiryDepartmentDialog, assignInquiryBuyerDialog,backEpsDialog, backDialog, iNavMvp, joinRfqDialog },
   data() {
     return {
       tableData: tableMockData,
@@ -134,19 +143,124 @@ export default {
       navList: cloneDeep(navList),
       tab: "source",
       selectOptions: {
-        yesOrNoOption: [{value: '1', label: '是'},{value: '0', label: '否'}]
+        yesOrNoOption: [{value: '1', label: '是'},{value: '0', label: '否'}],
+        carTypeProjectOptions: [],
+        carTypeOptions: []
       },
       selectDeptId: '',
       downloadAllLoading: false,
-      downloadLoading: false
+      downloadLoading: false,
+      joinRfqDialogVisible: false
     }
   },
   created() {
-    this.getSelectOptions()
-    this.getTableList()
-    this.getCarTypeOptions()
+    this.init()
   },
   methods: {
+    async init() {
+       this.getSelectOptions()
+      //  this.getCarTypeOptions()
+       this.getCartypeDict()
+       this.getProcureGroup()
+      this.getTableList()
+    },
+    //获取上方group信息
+    getProcureGroup() {
+      dictkey().then((res) => {
+        if (res.data) {
+          this.fromGroup = res.data;
+          this.selectOptions.carTypeProjectOptions = res.data.CAR_TYPE_PRO.map(item => {
+            return {
+              ...item,
+              value: item.code,
+              key: item.code,
+              name: item.name
+            }
+          })
+        }
+      });
+    },
+    /**
+     * @Description: 加入已有rfq
+     * @Author: Luoshuang
+     * @param {*} rfq
+     * @return {*}
+     */    
+    joinRfq(rfq) {
+      const params = {
+        insertRfqPackage: {
+          rfqId: rfq.rfqId,
+          operationType: '1',
+          rfqPartDTOList: this.selectParts.map(item => {
+            return {
+              buyerName: item.csfUserIdName, // 询价采购员
+              linieName: item.respLinieName, // linie
+              linieUserId: item.respLinie, // linie
+              partNum: item.partNum, // 零件号
+              fsnrGsnrNum: item.spnrNum, // fs号
+              stuffId: item.stuffId, // 工艺组ID
+              stuffName: item.stuffName, // 工艺组name
+            }
+          }),
+          userId: store.state.permission.userInfo.id
+        }
+      }
+      insertRfq(params).then(res => {
+        if (res?.result) {
+          iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+          this.changeJoinRfqDialogVisible(false)
+          this.getTableList()
+        } else {
+          iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+        }
+      }).finally(() => {
+        this.$refs.joinRfq.changeActiveButtonLoading(false)
+      })
+    },
+    /**
+     * @Description: 修改加入已有rfq弹窗状态
+     * @Author: Luoshuang
+     * @param {*} visible
+     * @return {*}
+     */    
+    changeJoinRfqDialogVisible(visible) {
+      this.joinRfqDialogVisible = visible
+    },
+    /**
+     * @Description: 点击加入已有rfq按钮
+     * @Author: Luoshuang
+     * @param {*}
+     * @return {*}
+     */    
+    handleJoinRFQ() {
+      if (this.selectParts.length < 1) {
+        iMessage.warn('请选择配件')
+        return
+      }
+      const selectRfq = uniq(this.selectParts.map(item => item.rfqNum))
+      if (selectRfq.length > 1 || selectRfq[0]) {
+        iMessage.warn('请选择未分配RFQ的附件')
+        return
+      }
+      this.changeJoinRfqDialogVisible(true)
+    },
+    // 获取车型字典
+    getCartypeDict() {
+      getCartypeDict()
+      .then(res => {
+        if (res.code == 200) {
+          this.selectOptions.carTypeOptions = 
+            Array.isArray(res.data) ?
+            res.data.map(item => ({
+              ...item,
+              key: item.code,
+              label: item.name,
+              value: item.value
+            })) :
+            []
+        }
+      })
+    },
     /**
      * @Description: 车型项目下拉框
      * @Author: Luoshuang
@@ -155,7 +269,7 @@ export default {
      */    
     async getCarTypeOptions() {
       const res = await findBySearches('01')
-      this.selectOptions.carTypeOptions = res.data
+      this.selectOptions.carTypeProjectOptions = res.data
     },
     /**
      * @Description: 调取数据字典获取下拉
@@ -167,7 +281,7 @@ export default {
     getDictionary(optionName, optionType) {
       getDictByCode(optionType).then(res => {
         if(res?.result) {
-          this.selectOptions[optionName] = res.data[0].subDictResultVo.map(item => {
+          this.selectOptions[optionName] = res.data[0]?.subDictResultVo.map(item => {
             return { value: item.code, label: item.name }
           })
         }
@@ -181,11 +295,15 @@ export default {
      */    
     getSelectOptions() {
       // 配件状态
-      this.getDictionary('accessoryTypeOption', 'ACCESSORY_STAT')
+      this.getDictionary('accessoryTypeOption', 'SPARE_PART_STATE')
       // ID状态
       this.getDictionary('accessoryIdStateOption', 'ACCESSORY_ID_STATE')
       // 定点状态
       this.getDictionary('nominateStateOption', 'NOMINATE_STATE')
+      // 合同状态
+      this.getDictionary('contactStateOption', 'CONTRACT_STATE')
+      // 零件状态
+      this.getDictionary('partStateOption', 'RFQ_PART_STATUS_CODE_TYPE')
     },
     /**
      * @Description: 搜索条件重置

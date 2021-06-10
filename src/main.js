@@ -13,11 +13,9 @@ import store from './store'
 import '@/assets/style/global/index.scss'
 import './utils/mydirect'
 import './permission'
-import Tool from './utils/tool'
 require('./auto').init()
 Vue.config.productionTip = false
 Vue.prototype.$t = (key, value) => i18n.t(key, value);
-Vue.prototype.$tools = Tool;
 Promise.all([
     import('rise/web/lang/zh.js'),
     import('rise/web/lang/en.js')

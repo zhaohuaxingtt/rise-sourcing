@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-27 21:20:41
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-05-31 15:17:46
+ * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-06-09 15:46:01
  * @Description: 
  * @FilePath: \front-web\src\views\partsprocure\editordetail\components\designateInfo\components\rsEEdition.vue
 -->
@@ -15,7 +15,7 @@
     class="addPartsDialog"
     :title="'CSC Nomination Recommendatio'"
   >
-    <rsDetail :otherPreview="true" :otherNominationType="'1'" />
+    <rsDetail :otherPreview="true" :otherNominationType="otherNominationType" :otherNominationId="otherNominationId" :otherPartProjectType="otherPartProjectType" />
   </iDialog>
 </template>
 
@@ -28,7 +28,11 @@ export default {
   mixins: [pageMixins],
   components: { iDialog, rsDetail },
   props: {
-    dialogVisible: { type: Boolean, default: false }
+    dialogVisible: { type: Boolean, default: false },
+    otherPreview: {type:Boolean},
+    otherNominationType:{type:String},
+    otherNominationId:{type:String},
+    otherPartProjectType:{type:String}
   },
   data() {
     return {

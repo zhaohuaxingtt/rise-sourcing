@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-06-02 11:24:30
+ * @LastEditTime: 2021-06-09 10:00:37
  * @LastEditors: Please set LastEditors
  * @Description: 公共utils部分
  * @FilePath: \rise\src\utils\index.js
@@ -141,7 +141,7 @@ export const numberProcessor = function(val, precision = 4) {
       .replace(/\./g, "")
       .replace("$#$", ".")
       .replace(/^0+([0-9].*)/, "$1")
-      .replace(new RegExp(`^(.+\\.\\d{0,${ precision || 2 }})\\d*$`), "$1")
+      .replace(new RegExp(`^(.+\\.\\d{0,${ precision }})\\d*$`), "$1")
   } else {
     result = (val + "").replace(/\D/g, "")
       .replace(/^0+([0-9])/, "$1")

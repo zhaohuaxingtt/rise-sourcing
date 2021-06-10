@@ -107,12 +107,14 @@ export default {
     methods:{
       // 跳转附件清单页
       goFilesList(id){
-        this.$router.push({
-          path:'/sourcing/importfiles/detaillist',
-          query:{
-            id,
-          }
-          })
+        const router =  this.$router.resolve({path: `/sourcing/importfiles/detaillist?id=${id}`})
+        window.open(router.href,'_blank');
+        // this.$router.push({
+        //   path:'/sourcing/importfiles/detaillist',
+        //   query:{
+        //     id,
+        //   }
+        //   })
       },
 
       // 导入文件
@@ -123,7 +125,7 @@ export default {
       // 下载模板
       downloadTemplate(){
         // downloadImportFile();
-        window.open('/tpInfoApi/procurementrequirement/web/affix/affix-requirement-files');
+        window.open('/tpInfoApi/procurementrequirement/web/affix/affix-requirement-files','_blank');
       },
       // 获取列表
       getList(){

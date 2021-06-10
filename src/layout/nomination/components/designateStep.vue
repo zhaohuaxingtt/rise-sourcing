@@ -209,7 +209,6 @@ export default {
 
 <style lang="scss" scoped>
 .designateStep{
-    padding: 0 50px;
     .pageTitle{
         .title-text{
             font-size: 20px;
@@ -226,6 +225,7 @@ export default {
         }
     }
     .step-list{
+        padding: 0 70px;
         .step-list-item{
             position: relative;
             flex-grow: 1;
