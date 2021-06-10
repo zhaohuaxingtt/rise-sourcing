@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-26 19:14:39
- * @LastEditTime: 2021-06-05 17:26:55
+ * @LastEditTime: 2021-06-10 00:59:36
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringTracking\components\tableList.vue
@@ -14,7 +14,7 @@
         <!--------------------------------------------------------->
         <!------------------------ep模块---------------------------->
         <!--------------------------------------------------------->
-        <el-table-column v-if='item.props == "ep"' :key="index" align="center" :label="item.key ? $t(item.key) : item.name" :prop="item.props" :show-overflow-tooltip="item.tooltip" :width="item.width">
+        <el-table-column v-if='item.props == "rateHead1"' :key="index" align="center" :label="item.key ? $t(item.key) : item.name" :prop="item.props" :show-overflow-tooltip="item.tooltip" :width="item.width">
           <template slot="header" slot-scope="scope">
               <div class="mineTile">{{scope.column.label}} <span class="line" :style='`height:${height}px;`'></span></div> 
           </template>
@@ -23,12 +23,17 @@
           <!------------------------ep模块如果出现警告------------------>
           <!--------------------------------------------------------->
             <span>
-              {{scope.row[item.props]}} <span @click="optionLog" class="cursor"><icon v-if='scope.row[item.props] == 1' name='iconzhongyaoxinxitishi' symbol></icon></span>
+              {{scope.row[item.props]?scope.row[item.props].rate:""}} <span @click="optionLog" class="cursor"><icon v-if='scope.row[item.props] == 1' name='iconzhongyaoxinxitishi' symbol></icon></span>
             </span>
           </template>
         </el-table-column>
-        <el-table-column v-else-if="item.props == 'supplierName'" :key="index" :label="item.key ? $t(item.key) : item.name" :prop="item.props" :show-overflow-tooltip="item.tooltip" :width="item.width" align="center"></el-table-column>
-        <el-table-column v-else :key="index" align="center" :label="item.key ? $t(item.key) : item.name" :prop="item.props" :show-overflow-tooltip="item.tooltip" :width="item.width">
+        <el-table-column v-if="item.props == 'supplierName'" :key="index" :label="item.key ? $t(item.key) : item.name" :prop="item.props" :show-overflow-tooltip="item.tooltip" :width="item.width" align="center"></el-table-column>
+        <el-table-column v-if="item.props.indexOf('rateHead') > -1 && item.props != 'rateHead1'" :key="index" :label="item.key ? $t(item.key) : item.name" :prop="item.props" :show-overflow-tooltip="item.tooltip" :width="item.width" align="center">
+          <template slot-scope="scope">
+            <span>{{scope.row[item.props]?scope.row[item.props].rate:""}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column v-if="item.props.indexOf('round') > -1" :key="index" align="center" :label="item.key ? $t(item.key) : item.name" :prop="item.props" :show-overflow-tooltip="item.tooltip" :width="item.width">
           <template slot-scope="scope">
           <!--------------------------------------------------------->
           <!------------------------内容是打勾------------------------>
@@ -45,7 +50,7 @@
           <!--------------------------------------------------------->
           <!------------------------内容是横岗百分比------------------->
           <!--------------------------------------------------------->
-          <span v-else class="cursor">{{(typeof scope.row[item.props] == String)?scope.row[item.props]:scope.row[item.props].schedule}}</span>
+          <span v-else class="cursor">{{scope.row[item.props].schedule}}</span>
           </template>
         </el-table-column>
       </template>
