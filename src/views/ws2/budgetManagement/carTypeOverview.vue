@@ -269,7 +269,7 @@ export default {
       // )
       if(isBudget == 3){
         this.$router.push({
-          path: '/tooling/budgetManagement/investmentList',
+          path: '/tooling/budgetManagement/investmentListCommon',
           query: {
             id: id,
             sourceStatus: sourceStatus

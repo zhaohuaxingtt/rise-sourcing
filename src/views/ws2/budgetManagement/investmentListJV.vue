@@ -118,6 +118,7 @@
             <iButton v-show="pageEdit" @click="saveRow">{{ $t('LK_BAOCUN') }}</iButton>
             <iButton v-show="pageEdit" @click="saveAsRow">{{ $t('LK_BAOCUNWEIXINBANBEN') }}</iButton>
             <iButton @click="downloadList">下载投资清单</iButton>
+            <iButton @click="toJV">{{ $t('查看Common预算') }}</iButton>
             <iButton v-show="pageEdit" @click="conversionRatioShow = true">{{ $t('LK_ANBILIZHESUAN') }}</iButton>
           </div>
         </div>
@@ -665,6 +666,8 @@ export default {
                     return Number((notAekoValue / totalValue) * 100).toFixed(2) + '%'
                   }
                 },
+                backgroundColor: '#ffffff',
+                extraCssText: 'color: #1B1D21; box-shadow: 0px 0px 20px rgba(27, 29, 33, 0.12);'
               },
               grid: {
                 left: '0%',
@@ -1190,15 +1193,16 @@ export default {
       // let url = process.env.VUE_APP_INVESTMENT + '/exportInvestmentList?listVerisonId=' + this.form['search.version']
       // window.open(url)
     },
-    // 跳转详情
-    // openPage(item) {
-    //   this.$router.push({
-    //     path: "/partsprocure/editordetail",
-    //     query: {
-    //       item: JSON.stringify(item),
-    //     },
-    //   });
-    // },
+
+    toJV() {
+      this.$router.push({
+        path: '/tooling/budgetManagement/investmentListCommon',
+        query: {
+          id: this.params.id,
+          sourceStatus: this.params.sourceStatus
+        },
+      })
+    },
 
 
     //表格选中值集
