@@ -936,6 +936,21 @@
         'LK_DINGDIANLEIXING': '定点类型',   //  定点类型
         'LK_AEKOZENGZHIJINE': 'Aeko增值金额',  //  Aeko增值金额
         'LK_XIAZAIQINGDAN': '下载清单', //  下载清单
+        'LK_QUERENSHENQING': '确认申请',    //  确认申请
+        'LK_ZUOFEI': '作废', // 作废
+        'LK_DAIBIAOLINGJIANHAO': '代表零件号',  //  代表零件号
+        'LK_CAIGOUSHENQINGHAO': '采购申请号',   //  采购申请号
+        'LK_KEMU': '科目',  //  科目
+        'LK_CHENGBENZHONGXIN': '成本中心',  //  成本中心
+        'LK_CHENGBENKONGZHIYU': '成本控制域',   //  成本控制域
+        'LK_ZONGZHANGKEMU': '总账科目', //  总账科目
+        'LK_TONGJIDINGDAN': '统计订单', //  统计订单
+        'LK_WULIAOZHU': '物料组',   //  物料组
+        'LK_JIAOHUORIQI': '交货日期',   //  交货日期
+        'LK_CAIGOUZU': '采购组',    //  采购组
+        'LK_BUHANSUICHENGBEN':  '不含税成本',   //  不含税成本
+        'LK_HANSUICHENGBEN': '含税成本',    //  含税成本
+        'LK_DUANWENBEN': '短文本',  //  短文本
 
         // 定点管理
         'nominationLanguage': {

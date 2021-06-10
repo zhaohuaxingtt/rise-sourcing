@@ -82,6 +82,7 @@
        <!-- 申请日期起止 -->
       <el-form-item :label="$t('LK_APPLYDATESTARTANDEND')">
         <el-date-picker
+          class="budgetApprovalDate"
           @change="dateChange"
           type="daterange"
           v-model="pickerDate"
@@ -132,6 +133,7 @@ export default {
       departmentList: [], //  专业科室
       linieList: [],  //  linie
       form: bmApplyForm,
+      pickerDate: '',
     }
   },
 
@@ -148,11 +150,18 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.budgetApprovalDate::v-deep.el-range-editor.el-input__inner {
+  width: 489px;
+
+  .el-range-input {
+    width: 50%;
+  }
+}
 .search-block{
   margin-bottom: 20px;
 
-  ::v-deep .el-form-item {
-    width: auto !important;
+  & .el-form-item:nth-last-child(2){
+    width: 30.6rem !important;
   }
 
   ::v-deep .el-range-separator{
