@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-04-21 16:39:36
- * @LastEditTime: 2021-06-07 19:58:43
+ * @LastEditTime: 2021-05-07 19:03:42
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-supplier\src\api\rfqManageMent\mouldOffer\index.js
@@ -16,14 +16,14 @@ const requst = axios(process.env.VUE_APP_SUPPLIER_ECHARTS)
  */
  export function quotations(params) {
   return requst({
-      url: '/rfq-parts-quotation/part-quotation',
+      url: '/part-quotation',
       method: 'POST',
       data: params
   })
 }
 export function supplierPart(params) {
   return requst({
-    url: '/rfq-parts-quotation/supplier-part-lists',
+    url: '/supplier-part-lists',
     method: 'POST',
     data: params
   })
