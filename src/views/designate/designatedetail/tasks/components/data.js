@@ -1,25 +1,25 @@
 // 单一供应商表头
 export const tasksTitle = [
   {
-    props: 'time',
+    props: 'taskTime',
     name: 'Time',
     key: 'Time',
     tooltip: false
   },
   {
-    props: 'task',
+    props: 'taskRemark',
     name: 'Task',
     key: 'Task',
     tooltip: false
   },
   {
-    props: 'result',
+    props: 'taskResult',
     name: 'Result',
     key: 'Result',
     tooltip: false
   },
   {
-    props: 'status',
+    props: 'isFinishFlag',
     name: 'STATUS',
     key: 'STATUS',
     tooltip: false
@@ -29,11 +29,11 @@ export const tasksTitle = [
 export const taskStatus = [
   {
     value: 'Ongoing',
-    key: 'Ongoing'
+    key: true
   },
   {
     value: 'Finished',
-    key: 'Finished'
+    key: false
   },
 ]
 

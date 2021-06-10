@@ -6,13 +6,18 @@
         >
         <div class="floatright" v-if="editControl">
           <iButton
-            @click="partDialogVisibal = !partDialogVisibal"
+            @click="addRow"
           >
-            {{ $t("LK_XINZENG") }}
+            {{ $t("strategicdoc.XinZengHang") }}
           </iButton>
           <iButton
-            @click="setEditState(false)"
-            :loading="startLoding"
+            @click="deleteRow"
+          >
+            {{ $t("strategicdoc.ShanChuHang") }}
+          </iButton>
+          <iButton
+            @click="save"
+            :loading="submiting"
           >
             {{ $t("LK_BAOCUN") }}
           </iButton>
@@ -42,39 +47,37 @@
         :tableLoading="tableLoading"
         :class="{taskTable: true, edit: editControl}"
         @handleSelectionChange="handleSingleSelectionChange"
-        @openPage="openPage"
-        :activeItems="'partNum'"
       >
         <template #partNum="scope">
           <a class="link-underline" href="javascript:;">{{scope.row.partNum}}</a>
         </template>
         <!-- 任务时间 -->
-        <template #time="scope">
+        <template #taskTime="scope">
           <div v-if="editControl">
-            <iDatePicker v-model='scope.row.time' value-format="yyyy-MM-dd">
+            <iDatePicker v-model='scope.row.taskTime' value-format="yyyy-MM-dd HH:mm:ss">
             </iDatePicker>
           </div>
-          <span v-else>{{scope.row.time}}</span>
+          <span v-else>{{scope.row.taskTime}}</span>
         </template>
         <!-- 任务名称 -->
-        <template #task="scope">
+        <template #taskRemark="scope">
           <div v-if="editControl">
-            <iInput v-model="scope.row.task" />
+            <iInput v-model="scope.row.taskRemark" />
           </div>
-          <span v-else>{{scope.row.task}}</span>
+          <span v-else>{{scope.row.taskRemark}}</span>
         </template>
         <!-- 任务结果 -->
-        <template #result="scope">
+        <template #taskResult="scope">
           <div v-if="editControl">
-            <iInput v-model="scope.row.result" />
+            <iInput v-model="scope.row.taskResult" />
           </div>
-          <span v-else>{{scope.row.result}}</span>
+          <span v-else>{{scope.row.taskResult}}</span>
         </template>
-        <!-- 部门 -->
-        <template #status="scope">
+        <!-- 任务状态 -->
+        <template #isFinishFlag="scope">
           <div v-if="editControl">
             <iSelect
-              v-model="scope.row.status"
+              v-model="scope.row.isFinishFlag"
               :placeholder="$t('LK_QINGXUANZE')">
               <el-option
                 :value="items.key"
@@ -84,15 +87,15 @@
               ></el-option>
             </iSelect>
           </div>
-          <span v-else>{{scope.row.status}}</span>
+          <span v-else>{{scope.row.isFinishFlag ? '是' : '否'}}</span>
         </template>
         <!-- 编辑 -->
         <template #edit="scope">
-          <div v-if="editControl">
-            <a class="link-underline" v-if="scope.row.visible">
+          <div v-if="editControl && scope.row.isAdd">
+            <a class="link-underline" v-if="scope.row.isPresent" @click="toggleShow(scope.row, false)">
               <icon symbol name="iconyincang" class="icon trigger-visible" />
             </a>
-            <a class="link-underline" v-else>
+            <a class="link-underline" v-else @click="toggleShow(scope.row, true)">
               <icon symbol name="iconxianshi" class="icon trigger-visible" />
             </a>
           </div>
@@ -119,7 +122,9 @@ import {
   taskStatus
 } from './data'
 import { 
-  getNominateTaskList
+  getNominateTaskList,
+  addNominateTask,
+  deleteNominateTask
 } from '@/api/designate/decisiondata/tasks'
 import { pageMixins } from '@/utils/pageMixins'
 import filters from "@/utils/filters"
@@ -128,8 +133,8 @@ import tablelist from "./tableList";
 
 import {
   iCard,
-  iButton,
   iInput,
+  iButton,
   iPagination,
   iMessage,
   iSelect,
@@ -155,10 +160,10 @@ export default {
       tasksTitle,
       taskStatus,
       tableLoading: false,
+      submiting: false,
       data: [],
       selectedData: [],
       editControl: false,
-      partDialogVisibal: false,
       batchEditVisibal: false,
       editColumn: {
         props: 'edit',
@@ -178,16 +183,95 @@ export default {
     this.getFetchData()
   },
   methods: {
+    addRow() {
+      this.data.push({
+        isFinishFlag: false,
+        isPresent: true,
+        isAdd: true,
+        nominateId: this.$store.getters.nomiAppId,
+        taskRemark: '',
+        taskResult: '',
+        taskTime: ''
+      })
+    },
+    async deleteRow() {
+      if (!this.selectedData.length) {
+        iMessage.error(this.$t('nominationSuggestion.QingXuanZeZhiShaoYiTiaoShuJu'))
+        return
+      }
+      const data = {
+        taskIds: this.selectedData.map(o => o.id)
+      }
+      console.log(data)
+      const confirmInfo = await this.$confirm(this.$t('deleteSure'))
+      if (confirmInfo !== 'confirm') return
+      deleteNominateTask(data).then(res => {
+        if (res.code === '200') {
+          iMessage.success(this.$t('LK_CAOZUOCHENGGONG'))
+          this.getFetchData()
+        } else {
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
+      }).catch(e => {
+        console.log(e)
+        iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
+      })
+    },
+    toggleShow(row, state) {
+      Vue.set(row, 'isPresent', state)
+    },
+    async save() {
+      if (!this.selectedData.length) {
+        iMessage.error(this.$t('nominationSuggestion.QingXuanZeZhiShaoYiTiaoShuJu'))
+        return
+      }
+      const data = {
+        items: this.selectedData.map(o => {
+          const status = this.taskStatus.find(item => item.key === o.isFinishFlag) || {}
+          return {
+            id: o.id,
+            isFinishFlag: status.value,
+            isPresent: o.isPresent ? 1 : 0,
+            nominateId: this.$store.getters.nomiAppId,
+            taskRemark: o.taskRemark,
+            taskResult: o.taskResult,
+            taskTime: o.taskTime
+          }
+        })
+      }
+      console.log(data)
+      const confirmInfo = await this.$confirm(this.$t('saveSure'))
+      if (confirmInfo !== 'confirm') return
+      this.submiting = true
+      addNominateTask(data).then(res => {
+        if (res.code === '200') {
+          iMessage.success(this.$t('LK_CAOZUOCHENGGONG'))
+          this.getFetchData()
+        } else {
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
+        this.submiting = false
+      }).catch(e => {
+        console.log(e)
+        this.submiting = false
+      })
+    },
+    // 获取任务列表
     getFetchData() {
       this.tableLoading = true
       getNominateTaskList({
-        nominateId: '1',
+        nominateId: this.$store.getters.nomiAppId,
         current: this.page.currPage,
         size: this.page.pageSize
       }).then(res => {
         if (res.code === '200') {
-          this.data = res.data.records || []
-          this.page.totalCount = res.data.total || 0
+          this.data = res.data || []
+          this.data.map(o => {
+            o.createDate = window.moment(o.createDate).format('YYYY-MM-DD HH:mm:ss')
+            o.taskTime = o.createDate
+            return o
+          })
+          this.page.totalCount = res.total || 0
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }

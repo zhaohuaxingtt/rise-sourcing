@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-25 13:57:11
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-07 02:15:14
+ * @LastEditTime: 2021-06-09 10:14:20
  * @Description: 
  * @FilePath: \front-web\src\views\accessoryPart\signForPartsDemand\index.vue
 -->
@@ -96,8 +96,11 @@ import { navList } from "@/views/partsign/home/components/data"
 import { cloneDeep } from 'lodash'
 import { getAccessoryOneInfoList, signAccessoryInfo, sendAccessoryInfo, downLoadAccessoryList, backEPS } from '@/api/accessoryPart/index'
 import { uniq } from 'lodash'
-import {findBySearches} from "@/api/partsrfq/home";
+import {findBySearches,getCartypeDict} from "@/api/partsrfq/home";
 import { getDictByCode } from '@/api/dictionary'
+import {
+  dictkey,
+} from "@/api/partsprocure/editordetail";
 export default {
   mixins: [pageMixins],
   components: { iPage, iSearch, iSelect, iInput, iCard, iButton, iPagination, tableList, iDatePicker, assignInquiryDepartmentDialog, assignInquiryBuyerDialog, backDialog, iNavMvp },
@@ -121,18 +124,58 @@ export default {
       navList: cloneDeep(navList),
       tab: "source",
       selectOptions: {
-        yesOrNoOption: [{value: '1', label: '是'},{value: '0', label: '否'}]
+        yesOrNoOption: [{value: '1', label: '是'},{value: '0', label: '否'}],
+        carTypeProjectOptions: [],
+        cartTypeOptions: []
       },
       selectDeptId: '',
       downloadLoading: false
     }
   },
   created() {
-    this.getSelectOptions()
-    this.getTableList()
-    this.getCarTypeOptions()
+    this.init()
   },
   methods: {
+    async init() {
+       this.getSelectOptions()
+      //  this.getCarTypeOptions()
+       this.getProcureGroup()
+       this.getCartypeDict()
+      this.getTableList()
+    },
+    //获取上方group信息
+    getProcureGroup() {
+      dictkey().then((res) => {
+        if (res.data) {
+          this.fromGroup = res.data;
+          this.selectOptions.carTypeProjectOptions = res.data.CAR_TYPE_PRO.map(item => {
+            return {
+              ...item,
+              value: item.code,
+              key: item.code,
+              name: item.name
+            }
+          })
+        }
+      });
+    },
+    // 获取车型字典
+    getCartypeDict() {
+      getCartypeDict()
+      .then(res => {
+        if (res.code == 200) {
+          this.selectOptions.cartTypeOptions = 
+            Array.isArray(res.data) ?
+            res.data.map(item => ({
+              ...item,
+              key: item.code,
+              label: item.name,
+              value: item.value
+            })) :
+            []
+        }
+      })
+    },
     /**
      * @Description: 调取数据字典获取下拉
      * @Author: Luoshuang
@@ -157,7 +200,7 @@ export default {
      */    
     getSelectOptions() {
       // 配件状态
-      this.getDictionary('accessoryTypeOption', 'ACCESSORY_STAT')
+      this.getDictionary('accessoryTypeOption', 'SPARE_PART_STATE')
     },
     /**
      * @Description: 车型项目下拉框
@@ -167,7 +210,7 @@ export default {
      */    
     async getCarTypeOptions() {
       const res = await findBySearches('01')
-      this.selectOptions.carTypeOptions = res.data
+      this.selectOptions.carTypeProjectOptions = res.data
     },
     /**
      * @Description: 退回EPS

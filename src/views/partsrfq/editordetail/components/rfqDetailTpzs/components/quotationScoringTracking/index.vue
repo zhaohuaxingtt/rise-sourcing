@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-25 15:32:38
- * @LastEditTime: 2021-06-07 11:27:56
+ * @LastEditTime: 2021-06-10 00:16:26
  * @LastEditors: Please set LastEditors
  * @Description: 报价评分跟踪
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringTracking\index.vue
@@ -12,7 +12,7 @@
         <span class="margin-right20">整体任务进度: <el-tooltip placement="right" effect="light">
           <icon symbol style="font-size:20px;position:relative;top:2px;" :color='"#eff9fd"' :name="iconList_all_times['a'+allJdu].icon"></icon>
             <template slot='content'>
-              <dalyWeeks :daliyTime='allJdu'></dalyWeeks>
+              <dalyWeeks :daliyTime='allJdu' ></dalyWeeks>
             </template>
           </el-tooltip></span>
         <span>整车进度风险: <el-tooltip placement="right" effect="light">
@@ -55,9 +55,9 @@ export default{
     negoScoreReport(){
       negoScoreReport(this.$route.query.id).then(res=>{
         if(res.code == 200){
-          console.log(res.data)
           this.tableTile = buildTitleTabel(res.data)
           this.tableDatas = buildTableData(res.data)
+          console.log(this.tableDatas)
         }
       }).catch(err=>{
         iMessage.warn(err.desZh)
@@ -71,8 +71,8 @@ export default{
     getTimeLine(qutaitonId,rfqId){
       getTimeLine(qutaitonId,rfqId).then(res=>{
         if(res.data){
-          this.daliyTime = res.data.wholeTaskProgress //整车进度风险
-          this.allJdu = res.data.wholeProgressRisk //整体任务进度
+          this.daliyTime = res.data.wholeTaskProgress || 0 //整车进度风险
+          this.allJdu = res.data.wholeProgressRisk || 0 //整体任务进度
           this.timeListdata = this.translateTimeLine(res.data.rfqTimeAxisProgressVOList)
         }
       }).catch(err=>{
@@ -109,10 +109,18 @@ export default{
             }
           )
         }
-        console.log(copeList)
         return copeList
       } catch (error) {
-        return [] 
+         const copeList = []
+         let i = 1
+         while (i < 25) {
+           copeList.push({
+             week:i,
+             active:false
+           })
+           i++
+         }
+         return copeList
       }
     },
   }

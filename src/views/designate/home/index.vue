@@ -86,6 +86,14 @@
           {{scope.row.nominateName}}
         </a>
       </template>
+      <!-- 定点类型 -->
+      <template #nominateProcessType="scope">
+        <span>{{(scope.row.nominateProcessType && scope.row.nominateProcessType.desc) || ''}}</span>
+      </template>
+      <!-- 定点类型 -->
+      <template #applicationStatus="scope">
+        <span>{{(scope.row.applicationStatus && scope.row.applicationStatus.desc) || ''}}</span>
+      </template>
 
       <!-- re冻结日期 -->
       <template #rsFreezeDate="scope">
@@ -194,7 +202,14 @@ export default {
       // 禁用nominateProcessType编辑
       this.$store.dispatch('setNominationTypeDisable', true)
       this.$nextTick(() => {
-        this.$router.push({path: '/designate/rfqdetail', query: {desinateId: row.id, designateType: row.nominateProcessType}})
+        const routeData = this.$router.resolve({
+          path: '/designate/rfqdetail',
+          query: {
+            desinateId: row.id, 
+            designateType: (row.nominateProcessType && row.nominateProcessType.code) || ''
+          }
+        })
+        window.open(routeData.href, '_blank')
       })
     },
     // 获取车型项目

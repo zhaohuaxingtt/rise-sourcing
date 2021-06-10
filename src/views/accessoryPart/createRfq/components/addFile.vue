@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-26 19:46:16
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-05-26 19:56:37
+ * @LastEditTime: 2021-06-09 06:51:42
  * @Description: 添加附件弹窗
  * @FilePath: \front-web\src\views\accessoryPart\createRfq\components\addFile.vue
 -->
@@ -19,15 +19,15 @@
       <el-form>
         <el-form-item v-for="(item, index) in searchList" :key="index" :label="item.label">
           <iSelect v-if="item.type === 'select'" v-model="searchParams[item.value]"></iSelect> 
-          <iDatePicker v-else-if="item.type === 'date'" format="yyyy-MM-dd" value-format="yyyy-MM-dd" v-model="searchParams[item.value]"></iDatePicker>
+          <iDatePicker v-else-if="item.type === 'date'" value-format="" v-model="searchParams[item.value]"></iDatePicker>
           <iInput v-else v-model="searchParams[item.value]"></iInput> 
         </el-form-item>
       </el-form>
     </iSearch>
     <div class="margin-bottom20 clearFloat margin-top20">
       <div class="floatright">
-        <!--------------------分配询价科室按钮----------------------------------->
-        <iButton @click="changeInquiryDialogVisible(true)" >选择</iButton>
+        <!--------------------选择按钮----------------------------------->
+        <iButton @click="handleSelectPart" >选择</iButton>
       </div>
     </div>
     <tableList :activeItems='"a1"' selection indexKey :tableData="tableData" :tableTitle="tableTitle" :tableLoading="tableLoading" @handleSelectionChange="handleSelectionChange" @openPage="openPage"></tableList>
@@ -45,7 +45,7 @@
 </template>
 
 <script>
-import { iDialog, iButton, iSelect, iInput, iSearch, iPagination, iDatePicker } from 'rise'
+import { iDialog, iButton, iSelect, iInput, iSearch, iPagination, iDatePicker, iMessage } from 'rise'
 import tableList from '@/views/designate/designatedetail/components/tableList'
 import { pageMixins } from "@/utils/pageMixins"
 import { tableTitle, tableMockData, fileSearchList } from '@/views/designateFiles/fileManage/data'
@@ -66,9 +66,65 @@ export default {
       searchParams: {}
     }
   },
+  watch: {
+    dialogVisible(val) {
+      if (val) {
+        this.getTableList()
+      }
+    }
+  },
   methods: {
+    /**
+     * @Description: 获取表格数据
+     * @Author: Luoshuang
+     * @param {*}
+     * @return {*}
+     */    
+    getTableList() {
+      this.tableLoading = true
+      const params = {
+        ...this.searchParams,
+        current: this.page.currPage,
+        size: this.page.pageSize
+      }
+      getAffixList(params).then(res => {
+        if (res?.result) {
+          this.tableData = res.data.records
+          this.page.currPage = res.data.current
+          this.page.pageSize = res.data.size
+          this.page.totalCount = res.data.total
+        } else {
+          this.tableData = []
+          iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+        }
+      }).finally(() => {
+        this.tableLoading = false
+      })
+    },
+    /**
+     * @Description: 表格选中事件
+     * @Author: Luoshuang
+     * @param {*} val 选中的行
+     * @return {*}
+     */    
+    handleSelectionChange(val) {
+      this.selectParts = val
+    },
     clearDialog() {
       this.$emit('changeVisible', false)
+    },
+    /**
+     * @Description: 点击选择按钮
+     * @Author: Luoshuang
+     * @param {*}
+     * @return {*}
+     */    
+    handleSelectPart() {
+      if (this.selectParts.length < 1) {
+        iMessage.warn('请选择附件')
+        return
+      }
+      this.$emit('selectPart', this.selectParts.map(item => item.spnrNum))
     },
     /**
      * @Description: 点击SP号跳转事件
@@ -76,8 +132,8 @@ export default {
      * @param {*}
      * @return {*}
      */    
-    openPage() {
-      const router =  this.$router.resolve({path: '/sourcing/accessorypartdetail', query: {  }})
+    openPage(row) {
+      const router =  this.$router.resolve({path: `/sourcing/partsrfq/editordetail?id=${row.rfqId}`})
       window.open(router.href,'_blank')
     },
   }
