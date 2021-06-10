@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-04 14:41:32
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-07 15:08:43
+ * @LastEditTime: 2021-06-08 12:45:52
  * @Description: rs单相关接口
  * @FilePath: \front-web\src\api\designate\decisiondata\rs.js
  */
@@ -30,7 +30,7 @@ export function getList(nominateAppId) {
 }
 
 // 获取备注信息
-export function gerRemark(nominateAppId) {
+export function getRemark(nominateAppId) {
   return requst({
     url: '/rs/queryRsRemarkById?nominateAppId='+nominateAppId,
     method: 'GET'
@@ -62,6 +62,7 @@ export function exportTransformSheet(nominateAppId) {
   })
 }
 
+// RS维护列表-下载模板
 export function downloadRSDoc(params) {
   return requestDownload({
     url: '/rs/downLoadNomiRsDoc',

@@ -43,8 +43,8 @@
         <el-form-item :label="$t('LK_CHEXING')">
           <iSelect :placeholder="$t('LK_QINGXUANZE')" v-model="form.car">
             <el-option value="" :label="$t('all') | capitalizeFilter"></el-option>
-            <!-- <el-option v-for="items in rfqStatusOptions" :key='items.code' :value='items.code'
-                        :label="items.name"/> -->
+            <el-option v-for="items in cartOptions" :key='items.code' :value='items.code'
+                        :label="items.name"/>
           </iSelect>
         </el-form-item>
       </el-form>
@@ -96,7 +96,7 @@ import { iDialog, iButton, iInput, iPagination, iSelect, iMessage, iSearch } fro
 import tablelist from "@/views/partsrfq/components/tablelist";
 import {pageMixins} from "@/utils/pageMixins";
 import {tableTitle} from "@/views/partsrfq/home/components/data";
-import {getRfqDataList, findBySearches} from "@/api/partsrfq/home";
+import {getRfqDataList, findBySearches, getCartypeDict} from "@/api/partsrfq/home";
 export default {
   mixins: [pageMixins],
   components: { iDialog, iButton, iInput, iPagination, tablelist, iSelect, iSearch },
@@ -113,7 +113,8 @@ export default {
       activateButtonLoading: false,
       form: {},
       carTypeOptions: [],
-      rfqStatusOptions: []
+      rfqStatusOptions: [],
+      cartOptions: []
     }
   },
   watch: {
@@ -123,7 +124,29 @@ export default {
       }
     }
   },
+  created() {
+    this.getCarTypeOptions()
+    this.getRfqStatusOptions()
+    this.getCartypeDict()
+  },
   methods: {
+    // 获取车型字典
+    getCartypeDict() {
+      getCartypeDict()
+      .then(res => {
+        if (res.code == 200) {
+          this.cartOptions = 
+            Array.isArray(res.data) ?
+            res.data.map(item => ({
+              ...item,
+              key: item.code,
+              label: item.name,
+              value: item.value
+            })) :
+            []
+        }
+      })
+    },
     handleSearchReset() {
       this.form = {}
     },

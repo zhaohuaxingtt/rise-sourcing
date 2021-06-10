@@ -10,6 +10,8 @@
         "revokeSure":'您确定要执行撤回操作吗？',
         "submitSure":'您确定要执行提交操作吗？',
         "cancelSure":'您确定要取消吗？',
+        "saveSure":'您确定要保存吗？',
+        "copyChosenSure":'您确定要复制选中的数据吗？',
         'all': '全部',
         'search': '搜索',
         'setting': '设置',
@@ -1057,6 +1059,7 @@
             "QuanBuXiaZai": "全部下载",
             "XiaZai": "下载",
             "ShangChuan": "上传",
+            "ShangChuanTuPian": "上传图片",
             "ShanChu": "删除",
             "ShangChuanRiQi": "上传日期",
             "ShangChuanWenJian": "上传文件",
@@ -1068,7 +1071,9 @@
             "ShangChuanXianXiaRS": "上传线下RS文件",
             "JieSuBianJi": "结束编辑",
             "BeiZuXinXi": "备注信息",
-            "ShangChuanFaShengCuoWu": "上传发生错误，请稍后重试"
+            "ShangChuanFaShengCuoWu": "上传发生错误，请稍后重试",
+            "ShanChuHang": "删除行",
+            "XinZengHang": "新增行"
         },
     })
 }))

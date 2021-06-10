@@ -1,15 +1,15 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:18:01
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-05-31 15:37:45
+ * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-06-08 16:42:44
  * @Description: 流转RS单
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\rs\components\circulation\index.vue
 -->
 
 <template>
   <div :class="isPreview && 'isPreview'">
-    <iCard :title="'CSC推荐表/CSC Recommendation Sheet会外流转'">
+    <!-- <iCard :title="'CSC推荐表/CSC Recommendation Sheet会外流转'">
       <iFormGroup row="4" class="csc">
         <div class="col">
           <iFormItem v-for="(item,index) in titleData" :key="'titleData'+index"  :label="item.label+':'">
@@ -19,19 +19,9 @@
           </iFormItem>
         </div>
       </iFormGroup>
-    </iCard>
+    </iCard> -->
     <iCard :title="'流转定点推荐 - ' + cardTitle" :class="!isPreview && 'margin-top20'">
-      <tableList selection :tableTitle="tableTitle" :tabelData="tableData" class="rsTable" />
-      <iPagination v-update 
-        @size-change="handleSizeChange($event, getRfqTableList)" 
-        @current-change="handleCurrentChange($event, getRfqTableList)" 
-        background 
-        :page-sizes="page.pageSizes"
-        :page-size="page.pageSize"
-        :layout="page.layout"
-        :current-page="page.currPage"
-        :total="page.totalCount"
-      />
+      <tableList :selection="false" :tableTitle="tableTitle" :tableData="tableData" class="rsTable" />
     </iCard>
     <iCard title="备注" :class="!isPreview && 'margin-top20'">
       <template slot="header-control" v-if="!isPreview">
@@ -39,7 +29,7 @@
         <template v-else>
           <iButton @click="handleDeleteRemark">删除</iButton>
           <iButton @click="handleAddRemark">添加</iButton>
-          <iButton>保存</iButton>
+          <iButton @click="handleSaveRemarks" :loading="saveLoading">保存</iButton>
           <iButton @click="cancelEdit">取消</iButton>
         </template>
       </template>
@@ -54,15 +44,16 @@
 </template>
 
 <script>
-import { iCard, iButton, iInput, iPagination, iFormGroup, iFormItem, iText } from 'rise'
+import { iCard, iButton, iInput, iFormGroup, iFormItem, iText, iMessage } from 'rise'
 import { nomalTableTitle, checkList } from './data'
 import tableList from '@/views/designate/designatedetail/components/tableList'
-import { pageMixins } from "@/utils/pageMixins"
+import { getList, getRemark, updateRemark } from '@/api/designate/decisiondata/rs'
 export default {
-  mixins: [pageMixins],
-  components: { iCard, tableList, iButton, iInput, iPagination, iFormGroup, iFormItem, iText },
+  components: { iCard, tableList, iButton, iInput, iFormGroup, iFormItem, iText },
   props: {
-    isPreview: {type:Boolean, default:false}
+    isPreview: {type:Boolean, default:false},
+    nominateId: {type:String},
+    projectType: {type:String}
   },
   data() {
     return {
@@ -79,13 +70,17 @@ export default {
       tableData: [],
       remarkItem: [{value: '', checked: false},{value: '', checked: false},{value: '', checked: false}],
       checkList: checkList,
-      isEdit: false
+      isEdit: false,
+      saveLoading: false
     }
   },
   computed: {
     cardTitle() {
-      // '配件采购 Nomination Recommendation - Spare Part Purchasing'
-      // '附件采购 Nomination Recommendation – Accessory Purchasing'
+      if (this.projectType === 'PT17') {
+        return '配件采购 Nomination Recommendation - Spare Part Purchasing'
+      } else if (this.projectType === 'PT18') {
+        return '附件采购 Nomination Recommendation – Accessory Purchasing'
+      }
       return '生产采购 Nomination Recommendation - Production Purchasing'
     }
   },
@@ -101,6 +96,83 @@ export default {
     },
     handleDeleteRemark() {
       this.remarkItem = this.remarkItem.filter(item => !item.checked)
+    },
+    /**
+     * @Description: 保存备注
+     * @Author: Luoshuang
+     * @param {*}
+     * @return {*}
+     */    
+    handleSaveRemarks() {
+      this.saveLoading = true
+      const params = {
+        // meetRemark: this.remarks[this.resetRemarkType],
+        nominateAppId: this.nominateId,
+        // remarkType: this.resetRemarkType
+        remarks: this.remarkItem.map(item => item.value)
+      }
+      updateRemark(params).then(res => {
+        if (res?.result) {
+          iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+          this.getRemark()
+        } else {
+          iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+        }
+      }).finally(() => {
+        this.saveLoading = false
+      })
+    },
+    /**
+     * @Description: 页面初始化
+     * @Author: Luoshuang
+     * @param {*}
+     * @return {*}
+     */    
+    init() {
+      this.getTopList()
+      this.getRemark()
+    },
+    /**
+     * @Description: 获取表格初始数据
+     * @Author: Luoshuang
+     * @param {*}
+     * @return {*}
+     */    
+    getTopList() {
+      getList(this.nominateId).then(res => {
+        if (res?.result) {
+          this.basicData = res.data
+          this.tableData = res.data.lines
+        } else {
+          this.basicData = {}
+          this.tableData = []
+          iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+        }
+      })
+    },
+    /**
+     * @Description: 获取备注
+     * @Author: Luoshuang
+     * @param {*}
+     * @return {*}
+     */    
+    getRemark() {
+      getRemark(this.nominateId).then(res => {
+        if (res?.result) {
+          // res.data.forEach(element => {
+          //   this.remarks[element.remarkType] = element.remark
+          //   this.remarkItem = this.remarkItem.map(item => {
+          //     return {...item, value: this.remarks[item.type]}
+          //   })
+          // })
+          this.remarkItem = res.data.map(item => {
+            return {value: item, checked: false}
+          })
+        } else {
+          this.remarks = {}
+          iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+        }
+      })
     }
   }
 }

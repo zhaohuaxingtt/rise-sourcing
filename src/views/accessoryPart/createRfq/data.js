@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-26 13:54:09
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-07 20:13:47
+ * @LastEditTime: 2021-06-08 19:50:54
  * @Description: 
  * @FilePath: \front-web\src\views\accessoryPart\createRfq\data.js
  */
@@ -12,8 +12,8 @@ export const basicInfo = [
   {value: 'rfqName', label: 'RFQ名称', type: 'input', i18n_label: '', editable: true},
   {value: 'rfqStatus', label: 'RFQ状态', type: 'input', i18n_label: '', editable: false},
   {value: 'rfqDesc', label: 'RFQ描述', type: 'input', i18n_label: '', editable: true},
-  {value: 'e', label: 'LINIE科室', type: 'select', i18n_label: '', editable: true, require:true},
-  {value: 'f', label: 'LINIE', type: 'select', i18n_label: '', editable: true,},
+  {value: 'linieDept', label: 'LINIE科室', type: 'select', i18n_label: '', editable: true, require:true, selectOption: 'LINIE_DEPT'},
+  {value: 'linie', label: 'LINIE', type: 'select', i18n_label: '', editable: true, selectOption: 'LINIE'},
   {value: 'g', label: 'RFQ创建日期', type: 'input', i18n_label: '', editable: false},
   {value: 'h', label: '询价采购员负责人', type: 'input', i18n_label: '', editable: false}
 ]

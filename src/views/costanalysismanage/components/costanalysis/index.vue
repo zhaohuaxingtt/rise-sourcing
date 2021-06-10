@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-05-28 16:01:25
- * @LastEditTime: 2021-06-07 18:17:52
+ * @LastEditTime: 2021-06-09 14:36:51
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\costanalysismanage\components\costanalysis\index.vue
@@ -11,7 +11,7 @@
     <div class="header clearFloat">
       <div class="title">{{ $t("costanalysismanage.ChengBenFenXi") }}</div>
       <div class="control">
-        <iButton @click="back">{{ $t("costanalysismanage.FanHui") }}</iButton>
+        <!-- <iButton @click="back">{{ $t("costanalysismanage.FanHui") }}</iButton> -->
         <uploadButton uploadClass="uploadButton" :params="uploadParams" :beforeUpload="beforeUpload" @success="uploadSuccess" @error="uploadError">
           <iButton :loading="uploadLoading">{{ $t("costanalysismanage.ShangChuan") }}</iButton>
         </uploadButton>

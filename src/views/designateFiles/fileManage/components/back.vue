@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-26 13:43:37
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-02 15:45:03
+ * @LastEditTime: 2021-06-09 10:49:53
  * @Description: 
  * @FilePath: \front-web\src\views\designateFiles\fileManage\components\back.vue
 -->
@@ -15,7 +15,7 @@
     width="878px"
   >
     <template slot="footer">
-      <iButton @click="handleConfirm">保存</iButton>
+      <iButton @click="handleConfirm" :loading="loading">保存</iButton>
       <iButton @click="clearDialog">取消</iButton>
     </template>
     <el-form>
@@ -35,7 +35,8 @@ export default {
   },
   data() {
     return {
-      reason: ''
+      reason: '',
+      loading: false
     }
   },
   methods: {
@@ -44,8 +45,12 @@ export default {
       this.$emit('changeVisible', false)
     },
     handleConfirm() {
+      this.loading = true
       this.$emit('handleBack', this.reason)
-    }
+    },
+    changeLoading(loading) {
+      this.loading = loading
+    } 
   }
 }
 </script>

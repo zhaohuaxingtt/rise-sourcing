@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-26 13:54:01
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-07 20:08:05
+ * @LastEditTime: 2021-06-09 06:59:02
  * @Description: 创建RFQ界面
        配件：选择的配件需要是分配了询价采购员的且是同一个询价采购员, 创建时能选择LINIE
        附件：选择的附件需要时分配了LINIE且为同一个LINIE, 创建时不能再选择LINIE
@@ -21,7 +21,14 @@
         <iFormItem v-for="(item, index) in basicInfo" :key="index" :label="item.label" :class="item.row ? 'row'+item.row : ''">
           <iText v-if="!item.editable">{{detailData[item.value]}}</iText>
           <iInput v-else-if="item.type === 'input'" v-model="detailData[item.value]"></iInput>
-          <iSelect v-else-if="item.type === 'select'" v-model="detailData[item.value]"></iSelect>
+          <iSelect v-else-if="item.type === 'select'" v-model="detailData[item.value]" :disabled="(item.value ==='linie' && linie) || (item.value ==='linieDept' && linieDept)">
+            <el-option
+              :value="item.id"
+              :label="item.name"
+              v-for="(item, index) in fromGroup[item.selectOption]"
+              :key="index"
+            ></el-option>
+          </iSelect>
         </iFormItem>
       </iFormGroup>
       <div style="text-align:right;">
@@ -77,6 +84,9 @@ import capacityPlanningDialog from './components/capacityPlanning'
 import { getPartBySP } from '@/api/accessoryPart/index'
 import { changeProcure } from "@/api/partsprocure/home";
 import { insertRfq } from '@/api/accessoryPart/index'
+import {
+  dictkey,
+} from "@/api/partsprocure/editordetail";
 export default {
   mixins: [pageMixins],
   components: { iPage, topComponents, iCard, iFormGroup, iFormItem, iText, iButton, iInput, iSelect, iPagination, tableList, addAccessoryPartDialog, updateFactoryDialog, addFileDialog, capacityPlanningDialog },
@@ -97,23 +107,40 @@ export default {
       tableLoading: false,
       ids: [],
       basicLoading: false,
-      selectPlanRow: {}
+      selectPlanRow: {},
+      fromGroup: {},
+      linie: '',
+      linieDept: ''
     }
   },
   computed: {
     tableTitle() {
       const type = this.$route.query.type
-      console.log(type)
       return type === '1' ? tableTitle : fileTableTitle
     }
   },
   created() {
+    this.getProcureGroup()
     if (this.$route.query.ids) {
       this.ids = this.$route.query.ids
       this.getList()
     }
+    if (this.$route.query.linie && this.$route.query.linieDept) {
+      this.detailData.linie = this.$route.query.linie
+      this.linie = this.$route.query.linie
+      this.detailData.linieDept = this.$route.query.linieDept
+      this.linieDept = this.$route.query.linieDept
+    }
   },
   methods: {
+    //获取上方group信息
+    getProcureGroup() {
+      dictkey().then((res) => {
+        if (res.data) {
+          this.fromGroup = res.data;
+        }
+      });
+    },
     /**
      * @Description: 点击批量更新采购工厂
      * @Author: Luoshuang
@@ -128,7 +155,7 @@ export default {
       this.changefactoryDialogVisible(true)
     },
     updateFactory(procureFactory) {
-      this.pushKey();
+      // this.pushKey();
       // 复制参数对应key
       let batch = {
         procureFactory: procureFactory,
@@ -139,6 +166,8 @@ export default {
       }).then((res) => {
         if (res.data) {
           iMessage.success(this.$t("LK_XIUGAICHENGGONG"));
+          this.changefactoryDialogVisible(false)
+          this.getList()
         } else {
           iMessage.error(res.desZh);
         }
