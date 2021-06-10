@@ -103,15 +103,15 @@
           <div class="linkStyle"><span @click="clickRfqId(scope.row.rfqId)">{{ scope.row.rfqId }}</span></div>
         </template>
         <template #categoryBudget="scope">
-          <div class="linkStyle"><span @click="clickCategoryBudget(scope.row)">{{ $tools.getTousandNum(scope.row.categoryBudget) }}</span></div>
+          <div class="linkStyle"><span @click="clickCategoryBudget(scope.row)">{{ getTousandNum(scope.row.categoryBudget) }}</span></div>
         </template>
         <template #budgetApplyAmount="scope">
           <div class="linkStyle" :class="(Number(scope.row.budgetApplyAmount) > Number(scope.row.budgetLeftoverAmount)) && 'red'"><span
-              @click="clickBudgetApplyAmountShow(scope.row.id)">{{ $tools.getTousandNum(scope.row.budgetApplyAmount) }}</span>
+              @click="clickBudgetApplyAmountShow(scope.row.id)">{{ getTousandNum(scope.row.budgetApplyAmount) }}</span>
           </div>
         </template>
         <template #budgetLeftoverAmount="scope">
-          <div>{{ $tools.getTousandNum(scope.row.budgetLeftoverAmount) }}</div>
+          <div>{{ getTousandNum(scope.row.budgetLeftoverAmount) }}</div>
         </template>
         <template #approvalStatus="scope">
           <div>
@@ -190,6 +190,7 @@ import alertDialog from './components/alert'
 import referenceCarProject from '../budgetManagement/components/referenceCarProject'
 import {pageMixins} from "@/utils/pageMixins";
 import {tableHeight} from "@/utils/tableHeight";
+import {getTousandNum} from "@/utils/tool";
 import {
   getCartypePulldown,
 } from "@/api/ws2/budgetManagement/edit";
@@ -235,6 +236,7 @@ export default {
       redMultipleSelection: [],
       referenceCarProjectParams: {},
       tableTitle: budgetApprovalData,
+      getTousandNum: getTousandNum
     }
   },
   created() {

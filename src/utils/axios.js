@@ -29,6 +29,9 @@ import store from '@/store'
           ...config.params
         }
       }
+      // 定义请求得数据结构是json
+      config.headers['json-wrapper'] = '1';
+      
       return config;
     }, function (error) {
       return Promise.reject(error);

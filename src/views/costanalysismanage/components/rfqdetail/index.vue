@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-05-27 17:27:15
- * @LastEditTime: 2021-06-07 13:44:10
+ * @LastEditTime: 2021-06-09 14:35:49
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\costanalysismanage\components\rfqdetail\index.vue
@@ -11,7 +11,7 @@
     <div class="header clearFloat">
       <div class="title">{{ $t("costanalysismanage.RfqBianHao") }}: {{ rfqId }}</div>
       <div class="control">
-        <iButton @click="handleBack">{{ $t("costanalysismanage.FanHui") }}</iButton>
+        <!-- <iButton @click="handleBack">{{ $t("costanalysismanage.FanHui") }}</iButton> -->
         <logButton class="margin-left20" />
         <span class="margin-left20">
           <icon symbol name="icondatabaseweixuanzhong" class="font24"></icon>

@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-05-27 12:32:54
- * @LastEditTime: 2021-06-07 13:45:52
+ * @LastEditTime: 2021-06-09 14:37:38
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\costanalysismanage\components\home\index.vue
@@ -306,13 +306,13 @@ export default {
     },
     // 跳转RFQ详情
     jumpRfq(row) {
-      this.$router.push({
-        path: "/costanalysismanage/rfqdetail",
-        query: {
-          rfqId: row.id
-        }
-      })
-      // window.open(`/#/costanalysismanage/rfqdetail?rfqId=${ row.id }`, "_blank")
+      // this.$router.push({
+      //   path: "/costanalysismanage/rfqdetail",
+      //   query: {
+      //     rfqId: row.id
+      //   }
+      // })
+      window.open(`/#/costanalysismanage/rfqdetail?rfqId=${ row.id }`, "_blank")
     },
     // 下载
     download(row) {
@@ -327,10 +327,11 @@ export default {
     },
     // 分析报告
     analysisReport(row) {
-      this.$router.push({
-        path: "/costanalysismanage/costanalysis",
-        query: { rfqId: row.id }
-      })
+      // this.$router.push({
+      //   path: "/costanalysismanage/costanalysis",
+      //   query: { rfqId: row.id }
+      // })
+      window.open(`/#/costanalysismanage/costanalysis?rfqId=${ row.id }`, "_blank")
     },
     // 变更顺序
     updateOrder(row) {

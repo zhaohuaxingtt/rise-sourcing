@@ -39,7 +39,7 @@
             :getSummaries="() => item.summaries"
         >
           <template #budgetApplyAmount="scope">
-            <div>{{ $tools.getTousandNum(scope.row.budgetApplyAmount) }}</div>
+            <div>{{ getTousandNum(scope.row.budgetApplyAmount) }}</div>
           </template>
         </iTableList>
       </div>
@@ -58,6 +58,7 @@ import {
 } from "@/components"
 import {alertList, form} from "../components/data";
 import {alert, ratify} from "@/api/ws2/budgetApproval";
+import {getTousandNum} from "@/utils/tool";
 
 export default {
   components: {
@@ -79,6 +80,7 @@ export default {
       tableTitle: alertList,
       tableLoading: false,
       saveLoading: false,
+      getTousandNum: getTousandNum
     }
   },
   mounted() {
@@ -91,7 +93,7 @@ export default {
         const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
         if (Number(res.code) === 0) {
           this.tableListData = res.data.ratifyAlertVOList.map(item => {
-            item.summaries = ['Total', '', this.$tools.getTousandNum(item.applyParamVOList.map(item => Number(item.budgetApplyAmount)).reduce((total, num) => total + num))]
+            item.summaries = ['Total', '', this.getTousandNum(item.applyParamVOList.map(item => Number(item.budgetApplyAmount)).reduce((total, num) => total + num))]
             return item
           })
           this.totalBudget = res.data.dualAlertVOList

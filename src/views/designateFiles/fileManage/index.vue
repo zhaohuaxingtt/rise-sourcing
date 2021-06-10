@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-26 16:20:16
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-07 18:08:02
+ * @LastEditTime: 2021-06-09 10:57:00
  * @Description: 附件综合管理
  * @FilePath: \front-web\src\views\designateFiles\fileManage\index.vue
 -->
@@ -24,12 +24,30 @@
                 <iSelect v-if="item.type === 'select'" v-model="searchParams[item.value]">
                   <el-option value="" :label="$t('all')"></el-option>
                   <el-option
-                    v-for="item in selectOptions[item.selectOption] || []"
+                    v-for="item in getOptions(item)"
                     :key="item.value"
                     :label="item.label"
                     :value="item.value">
                   </el-option>
                 </iSelect> 
+                <iSelect 
+                  v-else-if="item.type === 'linie'"
+                  v-model="searchParams[item.value]"
+                  filterable
+                  remote
+                  reserve-keyword
+                  placeholder="请输入关键词"
+                  :remote-method="remoteMethod"
+                  :loading="loading"
+                >
+                  <el-option
+                    v-for="item in options"
+                    :key="item.id"
+                    :label="item.nameZh"
+                    :value="item.id">
+                  </el-option>
+                </iSelect> 
+                <iDatePicker v-else-if="item.type === 'date'" value-format="yyyy-MM-dd" v-model="searchParams[item.value]"></iDatePicker>
                 <iInput v-else v-model="searchParams[item.value]"></iInput> 
               </el-form-item>
             </el-form>
@@ -67,15 +85,15 @@
           <!------------------------------------------------------------------------>
           <!--                  分配LINIE/CSS弹窗                                   --->
           <!------------------------------------------------------------------------>
-          <linieDialog :dialogVisible="linieDialogVisible" @changeVisible="changeLinieDialogVisible" @updateLinie="updateLinie" />
+          <linieDialog ref="sendLinie" :dialogVisible="linieDialogVisible" @changeVisible="changeLinieDialogVisible" @updateLinie="updateLinie" />
           <!------------------------------------------------------------------------>
           <!--                    退回弹窗                                        --->
           <!------------------------------------------------------------------------>
-          <backDialog :dialogVisible="backDialogVisible" @changeVisible="changebackDialogVisible" @handleBack="handleBack" />
+          <backDialog ref="back" :dialogVisible="backDialogVisible" @changeVisible="changebackDialogVisible" @handleBack="handleBack" />
           <!------------------------------------------------------------------------>
           <!--                    加入已有RFQ弹窗                                  --->
           <!------------------------------------------------------------------------>
-          <joinRfqDialog ref="joinRfq" :dialogVisible="joinRfqDialogVisible" @changeVisible="changeJoinRfqDialogVisible" @joinRfq="joinRfq" />
+          <joinRfqDialog ref="joinRfq" :dialogVisible="joinRfqDialogVisible" @changeVisible="changeJoinRfqDialogVisible" @joinRfq="joinRfq" partType="13" />
         </div>
       </el-tab-pane>
       <!-- <el-tab-pane label="进度监控" name="progress"></el-tab-pane> -->
@@ -84,7 +102,7 @@
 </template>
 
 <script>
-import { iPage, iSearch, iSelect, iInput, iCard, iButton, iPagination, iMessage, iNavMvp } from 'rise'
+import { iPage, iSearch, iSelect, iInput, iCard, iButton, iPagination, iMessage, iNavMvp, iDatePicker } from 'rise'
 import { pageMixins } from "@/utils/pageMixins"
 import tableList from '@/views/designate/designatedetail/components/tableList'
 import { tableTitle, tableMockData, searchList } from './data'
@@ -92,20 +110,26 @@ import linieDialog from './components/setLinie'
 import backDialog from './components/back'
 import { navList } from "@/views/partsign/home/components/data"
 import { cloneDeep, uniq } from 'lodash'
-import { getAffixList, updateAffixList } from '@/api/designateFiles/index'
+import { getAffixList, updateAffixList, findBuyer } from '@/api/designateFiles/index'
 import { downloadFile } from '@/api/file'
 import { insertRfq } from '@/api/accessoryPart/index'
 import joinRfqDialog from '@/views/designateFiles/fileManage/components/joinRfq'
+import { getDictByCode } from '@/api/dictionary'
 export default {
   mixins: [pageMixins],
-  components: { iPage, iSearch, iSelect, iInput, iCard, iButton, iPagination, tableList, linieDialog, backDialog, iNavMvp, joinRfqDialog },
+  components: { iPage, iSearch, iSelect, iInput, iCard, iButton, iPagination, tableList, linieDialog, backDialog, iNavMvp, joinRfqDialog, iDatePicker },
   data() {
     return {
       tableData: tableMockData,
       tableTitle: tableTitle,
       tableLoading: false,
       searchList: searchList,
-      searchParams: {},
+      searchParams: {
+        partStatus: '',
+        status: '',
+        isShow: '',
+        linie: ''
+      },
       linieDialogVisible: false,
       backDialogVisible: false,
       selectParts: [],
@@ -114,25 +138,89 @@ export default {
       selectOptions: {
         yesOrNoOption: [{value: '1', label: '是'},{value: 0, label: '否'}]
       },
-      joinRfqDialogVisible: false
+      joinRfqDialogVisible: false,
+      selectLinie: '',
+      selectLinieDept: '',
+      loading: false,
+      options: []
     }
   },
   created() {
-    this.getTableList()
+    this.init()
   },
   methods: {
+    remoteMethod(query) {
+      if (query !== '') {
+        this.loading = true;
+        findBuyer(query).then(res => {
+          if (res?.result) {
+            this.options = cloneDeep(res.data || [])
+            this.optionsTemp = cloneDeep(res.data)
+          } else {
+            iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+          }
+        }).finally(() => {
+          this.loading = false
+        })
+      } else {
+        this.options = [];
+      }
+    },
+    async init() {
+       this.getSelectOptions()
+      this.getTableList()
+    },
+    
+    getOptions(item) {
+      return this.selectOptions[item.selectOption] || []
+    },
+    /**
+     * @Description: 调取数据字典获取下拉
+     * @Author: Luoshuang
+     * @param {*} optionName 下拉选项名称
+     * @param {*} optionType 下拉类型
+     * @return {*}
+     */    
+    getDictionary(optionName, optionType) {
+      getDictByCode(optionType).then(res => {
+        if(res?.result) {
+          this.selectOptions[optionName] = res.data[0].subDictResultVo.map(item => {
+            return { value: item.code, label: item.name }
+          })
+          console.log(this.selectOptions)
+        }
+      })
+    },
+    /**
+     * @Description: 获取下拉数据
+     * @Author: Luoshuang
+     * @param {*}
+     * @return {*}
+     */    
+    getSelectOptions() {
+      // 状态
+      this.getDictionary('statusOption', 'AFFIX_STATUS_TYPE')
+      // 零件状态
+      this.getDictionary('partStatusOption', 'RFQ_PART_STATUS_CODE_TYPE')
+    },
     handleSendLinie() {
-      // if (this.selectParts.length < 1) {
-      //   iMessage.warn('请选择附件')
-      //   return
-      // }
-      // const selectLINIE = uniq(this.selectParts.map(item => item.csfuserId))
-      // if (selectLINIE.length > 1 || selectLINIE[0]) {
-      //   iMessage.warn('请选择未分配LINIE的附件')
-      //   return
-      // }
+      if (this.selectParts.length < 1) {
+        iMessage.warn('请选择附件')
+        return
+      }
+      const selectLINIE = uniq(this.selectParts.map(item => item.csfuserId))
+      if (selectLINIE.length > 1 || selectLINIE[0]) {
+        iMessage.warn('请选择未分配LINIE的附件')
+        return
+      }
       this.changeLinieDialogVisible(true)
     },
+    /**
+     * @Description: 点击加入已有rfq按钮
+     * @Author: Luoshuang
+     * @param {*}
+     * @return {*}
+     */    
     handleJoinRFQ() {
       if (this.selectParts.length < 1) {
         iMessage.warn('请选择附件')
@@ -152,6 +240,7 @@ export default {
         iMessage.warn('请选择未分配RFQ的附件')
         return
       }
+      this.selectLinie = selectLINIE[0]
       this.changeJoinRfqDialogVisible(true)
     },
     /**
@@ -172,8 +261,8 @@ export default {
               linieUserId: item.csfuserId, // linie
               partNum: item.partNum, // 零件号
               fsnrGsnrNum: item.spnrNum, // fs号
-              stuffId: item.stuffId, // 工艺组ID，还没有
-              stuffName: item.stuffName, // 工艺组name，还没有
+              stuffId: item.stuffId, // 工艺组ID
+              stuffName: item.stuffName, // 工艺组name
             }
           }),
           userId: store.state.permission.userInfo.id
@@ -182,6 +271,7 @@ export default {
       insertRfq(params).then(res => {
         if (res?.result) {
           iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+          this.changeJoinRfqDialogVisible(false)
           this.getTableList()
         } else {
           iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
@@ -224,11 +314,13 @@ export default {
      * @param {*} updateType 更新类型（0：退回 1：分配Linie）
      * @return {*}
      */
-    updateAffix({respDept, respLINIE, reason, updateType}){
+    updateAffix({respDeptId, respDept, respLinieId, respLinie, reason, updateType}){
       const params = {
         affixIdList: this.selectParts.map(item => item.id),
         respDept,
-        respLINIE,
+        respDeptId,
+        respLinieId,
+        respLinie,
         reason,
         updateType
       }
@@ -239,17 +331,24 @@ export default {
         } else {
           iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
         }
+      }).finally(() => {
+        if (updateType === '1') {
+          this.changeLinieDialogVisible(false)
+          this.$refs.sendLinie.changeLoading(false)
+        } else {
+          this.changebackDialogVisible(false)
+          this.$refs.back.changeLoading(false)
+        }
       })
     },
     /**
      * @Description: 分配LINIE
      * @Author: Luoshuang
-     * @param {*} respDept 采购员部门
-     * @param {*} respLINIE 采购员
+     * @param {*} linie 采购员相关
      * @return {*}
      */    
-    updateLinie(respDept, respLINIE) {
-      this.updateAffix({respDept, respLINIE, updateType: '1'})
+    updateLinie(linie) {
+      this.updateAffix({respDeptId:linie.deptId, respDept: linie.deptNameZh, respLinieId:linie.id, respLinie: linie.nameZh, updateType: '1'})
     },
     /**
      * @Description: 退回
@@ -258,7 +357,7 @@ export default {
      * @return {*}
      */    
     handleBack(reason) {
-      this.updateAffix({reason, updateType: '1'})
+      this.updateAffix({reason, updateType: '0'})
     },
     /**
      * @Description: 重置搜索条件
@@ -267,7 +366,12 @@ export default {
      * @return {*}
      */    
     reset() {
-      this.searchParams = {}
+      this.searchParams = {
+        partStatus: '',
+        status: '',
+        isShow: '',
+        linie: ''
+      }
     },
     /**
      * @Description: 获取表格数据
@@ -353,6 +457,7 @@ export default {
         return
       }
       const selectLINIE = uniq(this.selectParts.map(item => item.csfuserId))
+      const selectLINIEDept = uniq(this.selectParts.map(item => item.csfuserDeptId))
       if (selectLINIE.length > 1) {
         iMessage.warn('请选择相同LINIE的附件')
         return
@@ -360,7 +465,8 @@ export default {
         iMessage.warn('请选择已分配LINIE的附件')
         return
       }
-      const router =  this.$router.resolve({path: '/sourcing/createrfq', query: { type: '2', ids: this.selectParts.map(item => item.spnrNum).join(',') }})
+      this.selectLinieDept = selectLINIEDept[0]
+      const router =  this.$router.resolve({path: '/sourcing/createrfq', query: { type: '2', ids: this.selectParts.map(item => item.spnrNum).join(','),linie:selectLINIE[0], linieDept:selectLINIEDept[0]}})
       window.open(router.href,'_blank')
     }
   }

@@ -181,6 +181,7 @@ import Moment from 'moment'
 import {tableHeight} from "@/utils/tableHeight";
 import {cloneDeep} from 'lodash'
 import {pageMixins} from "@/utils/pageMixins";
+import {getTousandNum} from "@/utils/tool";
 
 export default {
   mixins: [tableHeight],
@@ -203,6 +204,7 @@ export default {
       timeStarEnd: [],
       count: 8,
       cardHeight: 600,
+      getTousandNum: getTousandNum
     };
   },
   computed: {
@@ -457,7 +459,7 @@ export default {
                         color: '#485465'
                       },
                       formatter: function(p){
-                        return _this.$tools.getTousandNum(p.value)
+                        return _this.getTousandNum(p.value)
                       },
                     },
                     itemStyle: {

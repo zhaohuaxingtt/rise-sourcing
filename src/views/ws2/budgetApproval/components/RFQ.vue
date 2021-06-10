@@ -16,7 +16,7 @@
             :tableTitle="tableTitle"
         >
           <template #budget="scope">
-            <div>{{ $tools.getTousandNum(scope.row.budget) }}</div>
+            <div>{{ getTousandNum(scope.row.budget) }}</div>
           </template>
         </iTableList>
         <iPagination
@@ -46,6 +46,7 @@ import {
 import {RFQList, form} from "../components/data";
 import {pageMixins} from "@/utils/pageMixins";
 import {tableHeight} from "@/utils/tableHeight";
+import {getTousandNum} from "@/utils/tool";
 import {detail} from "@/api/ws2/budgetApproval";
 
 export default {
@@ -66,6 +67,7 @@ export default {
       tableListData: [],
       tableTitle: RFQList,
       tableLoading: false,
+      getTousandNum: getTousandNum
     }
   },
   mounted() {

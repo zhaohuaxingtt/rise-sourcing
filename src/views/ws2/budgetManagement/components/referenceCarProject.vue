@@ -52,10 +52,10 @@
             :activeItems="'partNum'"
         >
           <template #nomiAmount="scope">
-            <div>{{ $tools.getTousandNum(scope.row.nomiAmount) }}</div>
+            <div>{{ getTousandNum(scope.row.nomiAmount) }}</div>
           </template>
           <template #entryAmount="scope">
-            <div>{{ $tools.getTousandNum(scope.row.entryAmount) }}</div>
+            <div>{{ getTousandNum(scope.row.entryAmount) }}</div>
           </template>
           <template #info="scope">
             <div class="linkStyle" :class="{noLine: scope.row.tmCartypeProId == noLine}"><span @click="relationCarTypePartsList(scope.row.tmCartypeProId)">{{ $t('详情') }}</span></div>
@@ -72,10 +72,10 @@
             :tableTitle="partsTableTitle"
         >
           <template #nomiAmount="scope">
-            <div>{{ $tools.getTousandNum(scope.row.nomiAmount) }}</div>
+            <div>{{ getTousandNum(scope.row.nomiAmount) }}</div>
           </template>
           <template #entryAmount="scope">
-            <div>{{ $tools.getTousandNum(scope.row.entryAmount) }}</div>
+            <div>{{ getTousandNum(scope.row.entryAmount) }}</div>
           </template>
         </iTableList>
       </div>
@@ -104,6 +104,7 @@ import {
   applyRefCarType
 } from "@/api/ws2/budgetManagement/investmentList";
 import { cloneDeep } from 'lodash'
+import {getTousandNum} from "@/utils/tool";
 
 export default {
   mixins: [pageMixins, tableHeight],
@@ -130,6 +131,7 @@ export default {
       noLine: '',
       cartypeList: [],
       projectTypeList: [],
+      getTousandNum: getTousandNum
     }
   },
   mounted() {
