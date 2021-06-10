@@ -42,3 +42,11 @@ export function cancelSummaryGroup(data) {
       data
   })
 }
+
+// 刷新
+export function refreshSimulateRecord(params) {
+  return requst({
+      url: `/nego-assistant/allocation-simulate-record-refresh/${params.rfqId}`,
+      method: "GET"
+  })
+}

@@ -1,7 +1,7 @@
 <!--
  * @Author: 业务分配模拟
  * @Date: 2021-06-09 22:25:34
- * @LastEditTime: 2021-06-09 23:22:01
+ * @LastEditTime: 2021-06-10 16:27:05
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\qutaionScoringBusses\index.vue
@@ -22,6 +22,11 @@ export default {
     title:{
       type:String,
       default:''
+    }
+  },
+  data(){
+    return {
+      rfqId:this.$route.query.id
     }
   }
 }

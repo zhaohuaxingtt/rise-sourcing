@@ -34,7 +34,7 @@
                 <iButton @click="multiEditControl = false">
                   {{ $t("nominationSuggestion.TuiChuBianJi") }}
                 </iButton>
-                <iButton>
+                <iButton @click="submit">
                   {{ $t("LK_BAOCUN") }}
                 </iButton>
               </span>
@@ -45,11 +45,11 @@
                 </iButton>
               </span>
               <!-- 重置 -->
-              <iButton>
+              <iButton @click="getFetchData">
                 {{ $t("nominationSupplier.Reset") }}
               </iButton>
               <!-- 刷新 -->
-              <iButton @click="init">
+              <iButton @click="refresh">
                 {{ $t("nominationSupplier.Refresh") }}
               </iButton>
             </div>
@@ -102,7 +102,8 @@ import {
   getSimulateRecord,
   getNomiSimulateRecord,
   setSummaryGroup,
-  cancelSummaryGroup
+  cancelSummaryGroup,
+  refreshSimulateRecord
 } from '@/api/designate/suggestion'
 
 export default {
@@ -240,6 +241,19 @@ export default {
         iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
       }
     },
+    // 刷新
+    async refresh() {
+      refreshSimulateRecord({rfqId: this.rfqId}).then(res => {
+        if (res.code === '200') {
+          this.getFetchData()
+        } else {
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
+      }).catch(e => {
+        iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
+      })
+      
+    },
     // 获取模拟列表
     getFetchData() {
       if (!this.rfqId) return iMessage.error(this.$t('nominationLanguage.DingDianIDNotNull'))
@@ -254,12 +268,7 @@ export default {
           tableListData.map(o => {
             // 绑定供应商
             o.id = this.randomid()
-            if (o.groupId) {
-              o.gid = o.groupId
-            } else {
-              o.gid = this.randomid()
-              o.noGid = true
-            }
+            o.groupId && (o.gid = o.groupId)
             o.supplier = this.supplierList
             // 绑定对应供应商TTO
             o.TTo = []
@@ -270,8 +279,16 @@ export default {
             })
             // 绑定推荐供应商
             const recommendBdlInfoList = o.recommendBdlInfoList || []
+            // o.supplierChosen = []
+            // o.percent = []
+    
             o.supplierChosen = recommendBdlInfoList.map(o => o.recommendSupplier)
             o.percent = recommendBdlInfoList.map(o => o.share)
+            // this.supplierList.forEach((sup, supIndex) => {
+            //   const curSupplier = recommendBdlInfoList.find(o => o.recommendSupplier === sup)
+            //   o.supplierChosen[supIndex] = curSupplier ? curSupplier.recommendSupplier : ''
+            //   o.percent[supIndex] = curSupplier ? curSupplier.share : ''
+            // })
             return o
           })
           this.tableListData = tableListData
@@ -282,6 +299,11 @@ export default {
       }).catch(e => {
         this.tableLoading = false
       })
+    },
+    async submit() {
+      const confirmInfo = await this.$confirm(this.$t('submitSure'))
+      if (confirmInfo !== 'confirm') return
+      console.log(this.tableListData)
     },
     // 柱状图数据
     getChartData() {
