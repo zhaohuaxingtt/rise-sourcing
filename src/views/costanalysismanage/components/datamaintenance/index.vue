@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-05-27 12:33:07
- * @LastEditTime: 2021-06-10 21:39:30
+ * @LastEditTime: 2021-06-10 21:54:38
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\costanalysismanage\components\datamaintenance\index.vue
@@ -173,7 +173,7 @@ export default {
         this.fileList = []
         clearTimeout(this.timer)
         iMessage.success(`${ file.name } ${ this.$t("LK_SHANGCHUANCHENGGONG") }`)
-        this.fileList.push({ tpPartAttachmentName: res.data[0].fileName, tpPartAttachmentPath: res.data[0].filePath, size: (file.size / 1024 / 1024).toFixed(3) })
+        this.fileList.push({ tpPartAttachmentName: res.data[0].fileName, tpPartAttachmentPath: res.data[0].filePath, size: file.size })
         this.timer = setTimeout(() => {
           this.uploadFiles()
           clearTimeout(this.timer)
