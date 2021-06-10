@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-26 19:14:39
- * @LastEditTime: 2021-06-10 17:28:05
+ * @LastEditTime: 2021-06-10 18:08:32
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringTracking\components\tableList.vue
@@ -38,13 +38,13 @@
           <!--------------------------------------------------------->
           <!------------------------内容是打勾------------------------>
           <!--------------------------------------------------------->
-            <span v-if='scope.row[item.props].schedule == 3' class="cursor" @click="openUrl('3')">
+            <span v-if='scope.row[item.props].schedule == 3' class="cursor" @click="openUrl('3',scope.row,item.props)">
               <icon name='iconbaojiazhuangtailiebiao_yibaojia' symbol></icon>
             </span>
           <!--------------------------------------------------------->
           <!------------------------内容是打叉------------------------>
           <!--------------------------------------------------------->
-            <span v-else-if='scope.row[item.props].schedule == 2' class="cursor" @click="openUrl('2')">
+            <span v-else-if='scope.row[item.props].schedule == 2' class="cursor" @click="openUrl('2',scope.row,item.props)">
               <icon name='iconbaojiazhuangtailiebiao_yijujue' symbol></icon>
             </span>
           <!--------------------------------------------------------->
@@ -104,11 +104,13 @@ export default{
     optionLog(){
       this.dialogVisible = !this.dialogVisible
     },
-    openUrl(){
+    openUrl(type,items,round){
       const router = this.$router.resolve({
         path:'/supplier/quotationdetail',
         query:{
-          rfqId:'11'
+          rfqId:this.$route.query.id,
+          round:parseInt(round),
+          supplierId:items.supplierId
         }
       })
       window.open(router.href,'_blank')

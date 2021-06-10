@@ -1,8 +1,8 @@
 /*
  * @Author: ldh
  * @Date: 2021-04-26 17:27:20
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-06-08 20:26:51
+ * @LastEditors: ldh
+ * @LastEditTime: 2021-06-09 15:53:50
  * @Description: In User Settings Edit
  * @FilePath: \front-supplier\src\api\rfqManageMent\quotationdetail\index.js
  */
@@ -177,7 +177,7 @@ export function getPackageTransport({quotationId}) {
 // 获取cbd
 export function findFiles(parmars) {
   return requstxw({
-    url: '/file/filesHistory',
+    url: '/file/fileHistory',
     method: 'POST',
     data: parmars
   })
@@ -272,5 +272,100 @@ export function deleteFile(params) {
     url: '/file/deleteFiles',
     method: 'POST',
     data: params
+  })
+}
+
+// 获取降价信息
+export function getLtcPlan(quotationId) {
+  return requst({
+    url: `/part/ltc-plan/${quotationId}`,
+    method: 'GET',
+  })
+}
+
+// 保存降价计划
+export function saveLtcPlan(data) {
+  return requst({
+    url: '/part/ltc-plan/save',
+    method: 'POST',
+    data,
+  })
+}
+
+// 获取报价单备注
+export function getComments(params) {
+  return requst({
+    url: `/part/comments/${ params.quotationId }`,
+    method: 'GET'
+  })
+}
+
+// 保存报价单备注
+export function saveComments(data) {
+  return requst({
+    url: '/part/comments',
+    method: 'POST',
+    data,
+  })
+}
+
+// 获取附件列表
+export function getFileHistory(data) {
+  return requst({
+    url: '/file/fileHistory',
+    method: 'POST',
+    data,
+  })
+}
+
+// 关联附件
+export function uploadFileList(data) {
+  return requst({
+    url: '/file/uploadFileList',
+    method: 'POST',
+    data,
+  })
+}
+
+// 删除附件
+export function deleteFiles(data) {
+  return requst({
+    url: '/file/deleteFiles',
+    method: 'POST',
+    data,
+  })
+}
+
+// 获取送样进度
+export function getSampleProgress(params) {
+  return requst({
+    url: `/part/sample-progress/${ params.quotationId }`,
+    method: 'GET'
+  })
+}
+
+// 保存送样进度
+export function saveSampleProgress(data) {
+  return requst({
+    url: '/part/sample-progress',
+    method: 'POST',
+    data,
+  })
+}
+
+// 引用批量价格
+export function quoteBatchPrice(data) {
+  return requst({
+    url: '/part/quoteBatchPrice',
+    method: 'POST',
+    data,
+  })
+}
+
+// 取消引用批量价格
+export function cancelQuoteBatchPrice(params) {
+  return requst({
+    url: `/part/cancelQuoteBatchPrice/${ params.quotationId }`,
+    method: 'PATCH',
   })
 }
