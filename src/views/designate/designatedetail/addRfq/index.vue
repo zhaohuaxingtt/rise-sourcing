@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-24 11:27:22
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-08 10:27:22
+ * @LastEditTime: 2021-06-10 20:59:59
  * @Description: 
  * @FilePath: \front-web\src\views\designate\designatedetail\addRfq\index.vue
 -->
@@ -51,7 +51,7 @@
         <!------------------------------------------------------------------------>
         <!--                  表格模块                                          --->
         <!------------------------------------------------------------------------>
-        <tableList :activeItems='"rfqId"' selection indexKey :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="tableLoading" @handleSelectionChange="handleSelectionChange" @openPage="openPage" @updateSlot='toTop'></tableList>
+        <tableList :activeItems='"id"' selection indexKey :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="tableLoading" @handleSelectionChange="handleSelectionChange" @openPage="openPage" @updateSlot='toTop'></tableList>
         <!------------------------------------------------------------------------>
         <!--                  表格分页                                          --->
         <!------------------------------------------------------------------------>
@@ -151,7 +151,10 @@ export default {
     handleSelectionChange(val) {
       this.selectedRfqs = val
     },
-    openPage() {},
+    openPage(row) {
+      const router =  this.$router.resolve({path: `/sourcing/partsrfq/editordetail?id=${row.id}`})
+      window.open(router.href,'_blank')
+    },
     toTop() {},
     handleSelect() {
       if (this.selectedRfqs.length < 1) {

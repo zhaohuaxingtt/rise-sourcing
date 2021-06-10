@@ -19,7 +19,6 @@
 import {
   icon,
 } from "rise";
-import { supplierStepList } from './data'
 export default {
     name:'supplierStep',
     components:{
@@ -33,7 +32,6 @@ export default {
     },
     data(){
         return{
-            // supplierStepList:supplierStepList,
             supplierStepList:[],
         }
     },
