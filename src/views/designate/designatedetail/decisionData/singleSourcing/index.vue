@@ -97,10 +97,10 @@ export default {
         async getDetail(){
             this.loading =  true;
             const { query } = this.$route;
-            const {rfqNum="1" } = query;
+            const {desinateId="" } = query;
             const { page } = this;
             const params = {
-                nominateId:rfqNum,
+                nominateId:desinateId,
                 current:page.currPage,
                 size:page.pageSize,
             };
