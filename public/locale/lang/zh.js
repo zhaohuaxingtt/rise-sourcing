@@ -1052,6 +1052,7 @@
             'QiYuShuJuZhengChangCheHui': '其余数据正常撤回', // 其余数据正常撤回
             'FenZuMingChen': '分组名称', //分组名称
             'QingShuRuFenZuMing': '请输入分组名', //请输入分组名
+            'NingShuRuDeBiLiBuHeFa': '您输入的比例不合法', //您输入的比例不合法
         },
         // 决策资料
         "strategicdoc": {

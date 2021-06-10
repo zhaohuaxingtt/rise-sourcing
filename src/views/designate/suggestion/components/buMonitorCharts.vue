@@ -99,12 +99,39 @@ export default {
         // xAxisData
         const xAxisData = mapControl === '' ? quota : [quota[mapControl]]
         // seriesData
-        let seriesData0 = this.dataList[0]
-        let seriesData1 = this.dataList[1]
+        let seriesData = this.dataList
         if (mapControl !== '') {
-          seriesData0 = [seriesData0[mapControl] || 0]
-          seriesData1 = [seriesData1[mapControl] || 0]
+          seriesData = []
+          this.dataList.forEach((sdata, index) => {
+            seriesData[index] = [sdata[mapControl] || 0]
+          })
         }
+        const series = []
+        seriesData.forEach((item, index) => {
+          series.push({
+              data: item,
+              type: 'bar',
+              barWidth: 30,
+                stack: 'total',
+              label: {
+                show: true,
+                position: 'top',
+                textStyle: {
+                  color: '#485465'
+                }
+              },
+              itemStyle: {
+                normal: {
+                  barBorderRadius: [5, 5, 0, 0],
+                  color: function(params){
+                    const bgColor = index === 0 ? '#005cfa' : '#94c8fc'
+                    let colorlist = [bgColor, bgColor, bgColor, bgColor];
+                    return colorlist[params.dataIndex];
+                  }
+                },
+              }
+            })
+        })
 
         let option = {
           grid: {
@@ -166,52 +193,9 @@ export default {
             },
         
           },
-          series: [
-            {
-              data: seriesData0,
-              type: 'bar',
-              barWidth: 30,
-                stack: 'total',
-              label: {
-                show: false,
-                position: 'top',
-                textStyle: {
-                  color: '#485465'
-                }
-              },
-              itemStyle: {
-                normal: {
-                  color: function(params){
-                    let colorlist = ['#005cfa','#005cfa','#005cfa','#005cfa'];
-                    return colorlist[params.dataIndex];
-                  }
-                },
-              }
-            },
-            {
-              data: seriesData1,
-              type: 'bar',
-              barWidth: 30,
-                stack: 'total',
-              label: {
-                show: true,
-                position: 'top',
-                textStyle: {
-                  color: '#485465'
-                }
-              },
-              itemStyle: {
-                normal: {
-                  barBorderRadius: [5, 5, 0, 0],
-                  color: function(params){
-                    let colorlist = ['#94c8fc','#94c8fc','#94c8fc','#94c8fc'];
-                    return colorlist[params.dataIndex];
-                  }
-                },
-              }
-            }
-          ]
+          series
         };
+        // console.log(JSON.stringify(option))
         vm.setOption(option);
       })
     }

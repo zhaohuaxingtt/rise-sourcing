@@ -21,7 +21,6 @@
           <!-- 新建定点申请 -->
           <iButton
             @click="createNomination"
-            v-permission="PARTSPROCURE_TRANSFER"
           >
             {{ $t("nominationLanguage.XinJianLingJIanDingDianShengQIng") }}
           </iButton>
@@ -192,7 +191,8 @@ export default {
       // 缓存/更新定点申请类型
       this.$store.dispatch('setNominationTypeDisable', false)
       this.$nextTick(() => {
-        this.$router.push({path: '/designate/rfqdetail'})
+        const routeData = this.$router.resolve({path: '/designate/rfqdetail'})
+        window.open(routeData.href, '_blank')
       })
     },
     // 查看详情
