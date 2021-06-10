@@ -206,7 +206,7 @@ module.exports = {
                 }
             },
 						'/nego': {
-							target: 'http://10.160.142.53:9022',
+							target: 'http://10.122.18.166:9022',
 							changeOrigin: true,
 							pathRewrite: {
 									"^/nego": "/nego"
@@ -318,13 +318,6 @@ module.exports = {
 							changeOrigin: true,
 							pathRewrite: {
 								"^/partApi": ""
-							}
-						},
-						'/negoApi': {
-							target: 'http://10.122.18.166:9022',
-							changeOrigin: true,
-							pathRewrite: {
-								"^/negoApi": ""
 							}
 						}
         }
