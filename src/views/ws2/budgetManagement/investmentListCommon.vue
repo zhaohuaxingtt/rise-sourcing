@@ -97,6 +97,8 @@
         <div id="chart3"></div>
         <div id="chart4"></div>
         <div class="legend">
+          <div>Commom Sourcing</div>
+          <div>JV Sourcing</div>
           <div>{{ $t('LK_FEIAEKO') }}</div>
           <div>AEKO</div>
           <div>Contingency</div>
@@ -326,7 +328,7 @@ import {
 import {Popover} from "element-ui"
 import {pageMixins} from "@/utils/pageMixins";
 import {tableHeight} from "@/utils/tableHeight";
-import {investmentListEntities, form} from "./components/data";
+import {investmentListCommon, form} from "./components/data";
 import addRow from "./components/addRow";
 import referenceModel from "./components/referenceModel";
 import conversionRatio from "./components/conversionRatio";
@@ -422,7 +424,7 @@ export default {
       tableListData: [],
       tableListDataClone: [],
       tableLoading: false,
-      tableTitle: investmentListEntities,
+      tableTitle: investmentListCommon,
       selectTableData: [],
       form: form,
       clone: {},
@@ -707,7 +709,7 @@ export default {
                   name: 'contingency',
                   type: 'bar',
                   stack: 'total',
-                  color: '#55C2D0',
+                  color: '#73A1F6',
                   barWidth: 40,
                   label: {
                     show: true,
@@ -725,7 +727,7 @@ export default {
                   name: 'aekoValue',
                   type: 'bar',
                   stack: 'total',
-                  color: '#FFB04D',
+                  color: '#2662F3',
                   label: {
                     show: true,
                     textStyle: {
@@ -976,7 +978,7 @@ export default {
                   type: 'bar',
                   stack: 'total',
                   color: '#B3D0FF',
-                  barWidth: '30',
+                  barWidth: '20',
                   label: {
                     show: true,
                     position: 'top',
@@ -1082,7 +1084,7 @@ export default {
                   type: 'bar',
                   stack: 'total',
                   color: '#FFB04D',
-                  barWidth: '30',
+                  barWidth: '20',
                   barGap: '-100%',
                   label: {
                     show: true,
@@ -1484,19 +1486,33 @@ export default {
 
         &:nth-of-type(2) {
           &::before {
-            background-color: #FFB04D;
+            background-color: #2662F3;
             top: 2px;
           }
         }
 
         &:nth-of-type(3) {
           &::before {
-            background-color: #55C2D0;
+            background-color: #73A1F6;
             top: 2px;
           }
         }
 
         &:nth-of-type(4) {
+          &::before {
+            background-color: #FFB04D;
+            top: 2px;
+          }
+        }
+
+        &:nth-of-type(5) {
+          &::before {
+            background-color: #55C2D0;
+            top: 2px;
+          }
+        }
+
+        &:nth-of-type(6) {
           color: #485465;
           font-weight: 400;
 

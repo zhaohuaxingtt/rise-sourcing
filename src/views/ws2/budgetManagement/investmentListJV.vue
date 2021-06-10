@@ -333,7 +333,7 @@ import {
 import {Popover} from "element-ui"
 import {pageMixins} from "@/utils/pageMixins";
 import {tableHeight} from "@/utils/tableHeight";
-import {investmentListEntities, form} from "./components/data";
+import {investmentListJV, form} from "./components/data";
 import addRow from "./components/addRow";
 import referenceModel from "./components/referenceModel";
 import conversionRatio from "./components/conversionRatio";
@@ -429,7 +429,7 @@ export default {
       tableListData: [],
       tableListDataClone: [],
       tableLoading: false,
-      tableTitle: investmentListEntities,
+      tableTitle: investmentListJV,
       selectTableData: [],
       form: form,
       clone: {},
