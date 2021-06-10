@@ -115,10 +115,12 @@
           <template slot-scope="scope">
             <div v-if="batchEdit">
               <iInput
+                v-if="scope.row && scope.row.supplierChosen[hindex - 1] "
                 :placeholder="scope.row.percent && scope.row.percent[hindex - 1] || $t('LK_QINGSHURU')"
                 v-model="scope.row.percent[hindex - 1]"
-                @change="handleEditPercent(scope.row, hindex)"
+                @change="handleEditPercent(scope.row, hindex - 1)"
               ></iInput>
+              <span v-else>{{scope.row.percent && scope.row.percent[hindex - 1] || ''}}</span>
             </div>
             <div v-else>{{scope.row.percent && scope.row.percent[hindex - 1] || '' }}</div>
           </template>
@@ -207,19 +209,34 @@ export default {
     handleCellClick(row, Index) {
       const curSupplier = this.supplier[Index]
       const supplierChosen = row.supplierChosen && row.supplierChosen || []
+      const percent = row.percent || []
+      const cIndex = supplierChosen.findIndex(o => o === curSupplier)
+      if (!this.batchEdit) return
       if (supplierChosen.includes(curSupplier))  {
-        const cIndex = supplierChosen.findIndex(o => o === curSupplier)
+        // 只有一家供应商报价
         if (supplierChosen.length === 1) return
         supplierChosen.splice(cIndex, 1)
+        percent.splice(percent, 1)
       } else {
         supplierChosen.push(curSupplier)
       }
       Vue.set(row, 'supplierChosen', supplierChosen)
+      Vue.set(row, 'percent', percent)
+      // console.log('handleCellClick', curSupplier, cIndex, supplierChosen, row)
     },
     // 编辑百分比
     handleEditPercent(row, Index) {
-      console.log(row, Index)
+      const percent = row.percent || []
+      const count = percent.map(o => Number(o)).reduce((total, n) => total += n)
+      // console.log('handleEditPercent', row, Index, count)
+      if (isNaN(count) || count > 100) {
+        percent[Index] = 0
+        Vue.set(row, 'percent', percent)
+        iMessage.error(this.$t('nominationSuggestion.NingShuRuDeBiLiBuHeFa'))
+        return
+      }
       this.chartData = this.calculateBestTTo(this.data)
+      
       this.$nextTick(() => {
         this.$emit('updateCharts', this.chartData)
       })
@@ -298,38 +315,45 @@ export default {
       this.supplier.forEach((item, index) => {
         countSupplier[index] = data.map(o => Number(o.TTo[index])).reduce((total, n) => total += n)
       })
-      console.log('1', data, countSupplier)
       res[0][0] = 0
-      res[1][0] = countSupplier.reduce((total, n) => total += n)
+      res[1][0] = countSupplier.map(o => Number(o) || 0).reduce((total, n) => total += n)
 
       
 
       // Best TTO by Group
       // 筛选出所有的分组
       const groups = _.uniq(data.filter(o => o[GroupKey]).map(o => o[GroupKey]))
-      const bestGroup = []
+      let bestGroup = []
+      // 取出分组最低
       groups.forEach((gid, index) => {
         const groupedArray = data.filter(o => o[GroupKey] === gid)
+        // 已分组，取最低TTO，组内求和
         bestGroup[index] = groupedArray.map(o => {
-          const tto = [...(o.TTo || [])]
+          const tto = [...(o.TTo || [])].filter(p => p > 0)
           return Number(tto.sort()[0])
         }).reduce((total, n) => total += n)
-        console.log(index, groupedArray.map(o => {
-          const tto = [...(o.TTo || [])]
-          return Number(tto.sort()[0])
-        }))
       })
-
-      res[0][1] = bestGroup[0] || 0
-      res[1][1] = bestGroup[1] || 0
+      // 取出未分组最低，未分组的按照单独分组处理
+      const unGroupedList = data.filter(o => !o[GroupKey])
+      if (unGroupedList.length) {
+        unGroupedList.forEach(item => {
+          const tto1 = [...(item.TTo || [])].filter(o => o > 0)
+          bestGroup.push(Number(tto1.sort()[0]))
+        })
+      }
+      bestGroup = bestGroup.sort()
+      bestGroup.forEach((groupValue, gIndex) => {
+        !res[gIndex] && (res[gIndex] = [])
+        !res[gIndex][0] && (res[gIndex][0] = 0)
+        res[gIndex][1] = groupValue
+        !res[gIndex][2] && (res[gIndex][2] = 0)
+        !res[gIndex][3] && (res[gIndex][3] = 0)
+      })
 
       // Best TTO by Part
       const TTO = data.map(o => o.TTo)
       const filtedTTo = TTO.flat(Infinity).sort((a, b) => { return a - b})
-      const countTTo = filtedTTo.reduce((total, n) => {
-        total = Number(total) + Number(n);
-        return total
-      })
+      const countTTo = filtedTTo.map(o => Number(o)).reduce((total, n) => total += n)
       res[0][2] = filtedTTo[0]
       res[1][2] = countTTo
 
@@ -355,7 +379,7 @@ export default {
       res[0][3] = weightedTTo.sort()[0]
       res[1][3] = countWeightedTTo
 
-      console.log('calculateBestTTo', res, bestGroup, weightedTTo)
+      console.log('calculateBestTTo', res)
       return res
     }
   }
