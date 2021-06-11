@@ -140,9 +140,27 @@ export default {
           grid: {
             left: '10',
             right: '0',
-            bottom: '50',
+            bottom: '0',
             top: '10%',
             containLabel: true
+          },
+          tooltip: {
+            show: true,
+            padding: 0,
+            enterable: true,
+            transitionDuration: 1,
+            textStyle: {
+                color: '#000',
+                decoration: 'none',
+            },
+            formatter: function(params) {
+              console.log(params)
+              const tpl = `
+              <div class="toolTipBox">
+                123123
+              </div>`
+              return tpl
+            }
           },
           xAxis: {
             type: 'category',
@@ -251,7 +269,11 @@ export default {
   }
   #charts0 {
     width: 100%;
-    height: 560px;
+    height: 350PX;
+  }
+  ::v-deep.toolTipBox {
+    background: #fff;
+    padding: 20px;
   }
 }
 </style>
