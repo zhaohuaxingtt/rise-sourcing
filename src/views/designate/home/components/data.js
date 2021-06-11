@@ -55,6 +55,12 @@ export const tableTitle = [{
 	tooltip:false
 },
 {
+	props: 'freezeDate',
+	name: '冻结日期',
+	key: 'nominationLanguage.DongJieRiQi',
+	tooltip:false
+},
+{
   props: 'carType',
   name: '项目类型',
   key: 'nominationLanguage.XingMuLeiXing',
@@ -64,6 +70,12 @@ export const tableTitle = [{
   props: 'meetingPresentId',
   name: '会议',
   key: 'nominationLanguage.HuiYi',
+  tooltip: true
+},
+{
+  props: 'meetingStatus',
+  name: '会议状态',
+  key: 'nominationLanguage.HuiYiZhuangTai',
   tooltip: true
 },
 {

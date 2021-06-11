@@ -118,16 +118,21 @@
       <template #nominateDate="scope">
         <span>{{scope.row.nominateDate | dateFilter("YYYY-MM-DD")}}</span>
       </template>
+
+      <template #freezeDate="scope">
+        <span>{{scope.row.freezeDate | dateFilter("YYYY-MM-DD")}}</span>
+      </template>
       
       </tablelist>
       <iPagination
         v-update
+        @size-change="handleSizeChange($event, getFetchData)"
         @current-change="handleCurrentChange($event, getFetchData)"
         background
-        :current-page="page.currPage"
-        :page-sizes="page.pageSize"
+        :page-sizes="page.pageSizes"
         :page-size="page.pageSize"
         :layout="page.layout"
+        :current-page="page.currPage"
         :total="page.totalCount"
       />
     </iCard>
@@ -174,13 +179,7 @@ export default {
       tableTitle: tableTitle,
       selectTableData: [],
       startLoding: false,
-      carTypeList: [],
-      page: {
-        currPage: 1,
-        pageSize: 15,
-        totalCount: 0,
-        layout: "total, prev, pager, next, jumper"
-      }
+      carTypeList: []
     }
   },
   components: {

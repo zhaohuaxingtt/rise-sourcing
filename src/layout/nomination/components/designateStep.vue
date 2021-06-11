@@ -69,7 +69,8 @@ import {
     nominateAppSExport,
     nominateAppSsubmit,
     nominateAppSDetail,
-    getNominateType
+    getNominateType,
+    updatePresenPageSeat
 } from '@/api/designate'
 import { applyStep } from './data'
 export default {
@@ -185,26 +186,40 @@ export default {
         },
         // 跳转下一步
         async toNextStep() {
-            const step = Number(this.$store.getters.phaseType || '1')
+            let step = Number(this.$store.getters.phaseType || '1')
+            step = step > 5 ? '4' : step
+            
             const phaseType = Number(step) + 1
-            const nominateId = this.desinateId
             const confirmInfo = await this.$confirm(this.$t('nextSure'))
+            console.log('111', confirmInfo)
             if (confirmInfo !== 'confirm') return
 
-            const res = await this.$store.dispatch('updateNominationStep',{nominateId , phaseType: step});
-            if (res) {
-                const item = applyStep.find(o => o.id === phaseType)
-                const {query} = this.$route;
-                const routeData = this.$router.resolve({
-                    path:item.path,
-                    query: {
-                        ...query,
-                    }
-                })
-                window.open(routeData.href, '_self')
-                window.location.reload()
-            }
-            
+            console.log(step)
+            const nominationStep = this.$store.getters.nominationStep
+            const nodeList = nominationStep.nodeList || []
+            updatePresenPageSeat({
+                nominateId: this.$store.getters.nomiAppId,
+                phaseType: this.$store.getters.phaseType,
+                nodeList,
+                currentNode: nominationStep.currentNode,
+                node: nominationStep.currentNode,
+            }).then(res => {
+                if (res.code === '200') {
+                    let item = applyStep.find(o => o.id === phaseType )
+                    
+                    const {query} = this.$route;
+                    const routeData = this.$router.resolve({
+                        path:item.path,
+                        query: {
+                            ...query,
+                        }
+                    })
+                    setTimeout(() => {
+                        window.location.href = routeData.href
+                        window.location.reload()
+                    }, 500)
+                }
+            })
         },
 
         // 提交
