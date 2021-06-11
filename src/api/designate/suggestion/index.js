@@ -50,3 +50,12 @@ export function refreshSimulateRecord(params) {
       method: "GET"
   })
 }
+
+// 保存
+export function saveSimulateRecord(data) {
+  return requst({
+      url: `/nego-assistant/allocation-simulate-record-save`,
+      method: "POST",
+      data
+  })
+}

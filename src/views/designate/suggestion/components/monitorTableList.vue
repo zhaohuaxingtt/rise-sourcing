@@ -299,6 +299,20 @@ export default {
         })
       })
     },
+    cacleSc(data = []) {
+      let count = 0
+      let str = ''
+      data.forEach((item) => {
+        const tto = item.TTo || []
+        tto.forEach((t, tIndex) => {
+          const percent = ((item.percentCalc[tIndex] || 0) / 100).toFixed(2)
+          count += Number(t) * percent
+          str += `${Number(t)}* ${percent} +`
+        })
+      })
+      console.log(str, count)
+      return count
+    },
     /**
      * 计算柱状图最佳TTO
      * Best TTO for Whole Package 所有零件报价最低的厂商
@@ -324,6 +338,7 @@ export default {
       // 筛选出所有的分组
       const groups = _.uniq(data.filter(o => o[GroupKey]).map(o => o[GroupKey]))
       let bestGroup = []
+      let weightedGroup = []
       // 取出分组最低
       groups.forEach((gid, index) => {
         const groupedArray = data.filter(o => o[GroupKey] === gid)
@@ -332,6 +347,9 @@ export default {
           const tto = [...(o.TTo || [])].filter(p => p > 0)
           return Number(tto.sort()[0])
         }).reduce((total, n) => total += n)
+
+        // 分组权重
+        weightedGroup[index] = this.cacleSc(groupedArray)
       })
       // 取出未分组最低，未分组的按照单独分组处理
       const unGroupedList = data.filter(o => !o[GroupKey])
@@ -339,45 +357,31 @@ export default {
         unGroupedList.forEach(item => {
           const tto1 = [...(item.TTo || [])].filter(o => o > 0)
           bestGroup.push(Number(tto1.sort()[0]))
+          // 分组权重
+          weightedGroup.push(this.cacleSc([item]))
         })
       }
+
       bestGroup = bestGroup.sort()
+      weightedGroup = weightedGroup.sort()
+      console.log('weightedGroup',bestGroup, weightedGroup)
+
+      // // 分组 / 加权最低
       bestGroup.forEach((groupValue, gIndex) => {
         !res[gIndex] && (res[gIndex] = [])
-        !res[gIndex][0] && (res[gIndex][0] = 0)
+        !res[gIndex][0] && (res[gIndex][0] = '')
         res[gIndex][1] = groupValue
-        !res[gIndex][2] && (res[gIndex][2] = 0)
-        !res[gIndex][3] && (res[gIndex][3] = 0)
+        !res[gIndex][2] && (res[gIndex][2] = '')
+        !res[gIndex][3] && (res[gIndex][3] = '')
+
+        res[gIndex][3] = weightedGroup[gIndex]
       })
 
       // Best TTO by Part
       const TTO = data.map(o => o.TTo)
-      const filtedTTo = TTO.flat(Infinity).sort((a, b) => { return a - b})
-      const countTTo = filtedTTo.map(o => Number(o)).reduce((total, n) => total += n)
+      const filtedTTo = TTO.flat(Infinity).filter(o => Number(o) > 0).sort((a, b) => { return a - b})
       res[0][2] = filtedTTo[0]
-      res[1][2] = countTTo
-
-      // Recommend Scenario 加权最低
-      const weightedTTo = []
-      data.forEach((item, index) => {
-        let count = 0
-        const tto = item.TTo || []
-        tto.forEach((t, tIndex) => {
-          const percent = (item.percent[tIndex] / 100)
-          if (!isNaN(percent)) {
-            count = Number(count) + Number(t) * percent
-            count = Number(count).toFixed(0)
-          }
-        })
-        weightedTTo[index] = count
-      })
-      const countWeightedTTo = weightedTTo.reduce((total, n) => {
-        total = Number(total) + Number(n);
-        return total
-      })
-
-      res[0][3] = weightedTTo.sort()[0]
-      res[1][3] = countWeightedTTo
+      res[1][2] = 0
 
       console.log('calculateBestTTo', res)
       return res
