@@ -1,7 +1,7 @@
 <!--
  * @Author: moxuan
  * @Date: 2021-02-25 09:59:25
- * @LastEditTime: 2021-06-11 16:08:32
+ * @LastEditTime: 2021-06-11 17:49:18
  * @LastEditors: Please set LastEditors
  * @Description: RFQ模块首页
  * @FilePath: \rise\src\views\partsrfq\home\index.vue
@@ -96,6 +96,7 @@
                 :tableTitle="tableTitle"
                 :tableLoading="tableLoading"
                 @handleSelectionChange="handleSelectionChange"
+                openPageGetRowData
                 @openPage='openPage'
                 open-page-props="id"
                 :index="true"
@@ -256,9 +257,9 @@ export default {
       })
     },
     //动态获取转派评分任务
-    openPage(id) {
+    openPage(row) {
       this.$router.push({
-        path: `/sourcing/partsrfq/editordetail?id=${id}`
+        path: `/sourcing/partsrfq/editordetail?id=${row.id}&round=${row.currentRounds}`
       })
     },
     //获取表格数据
