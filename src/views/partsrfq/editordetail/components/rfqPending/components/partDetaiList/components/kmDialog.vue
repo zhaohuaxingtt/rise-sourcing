@@ -1,7 +1,7 @@
 <!--
  * @Author: ldh
  * @Date: 2021-05-29 16:29:00
- * @LastEditTime: 2021-06-03 20:49:54
+ * @LastEditTime: 2021-06-11 10:19:31
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqPending\components\partDetaiList\components\kmDialog.vue
@@ -31,9 +31,9 @@
         :tableTitle="tableTitle"
         :tableLoading="loading"
         @handleSelectionChange="handleSelectionChange">
-        <template #sendKmFlag="scope">
+        <!-- <template #sendKmFlag="scope">
           <span>{{ scope.row.sendKmFlag | sendKmFlagFilter }}</span>
-        </template>  
+        </template>   -->
       </tableList>
     </div>
     <template #footer class="footer">
@@ -93,14 +93,14 @@ export default {
     //   userInfo: state => state.permission.userInfo,
     // }),
   },
-  filters: {
-    sendKmFlagFilter(value) {
-      const obj = {
-        "0": "未发送",
-        "1": "已发送"
-      }
-    }
-  },
+  // filters: {
+  //   sendKmFlagFilter(value) {
+  //     const obj = {
+  //       "0": "未发送",
+  //       "1": "已发送"
+  //     }
+  //   }
+  // },
   data() {
     return {
       loading: false,
@@ -149,13 +149,15 @@ export default {
       if (this.multipleSelection.some(item => item.sendKmFlag == 1)) return iMessage.warn(this.$t("nominationSuggestion.QingWuXuanZeYiFaSongDeShuJu"))
 
       this.sendLoading = true
-      sendKm(this.multipleSelection.map(item => ({
-        fsNum: item.fsnrGsnrNum,
-        quotationId: item.quotationId,
-        rfqId: this.rfqId,
-        round: item.round,
-        supplierId: item.supplierId
-      })))
+      sendKm({
+        sendKmDTOS: this.multipleSelection.map(item => ({
+          fsNum: item.fsnrGsnrNum,
+          quotationId: item.quotationId,
+          rfqId: this.rfqId,
+          round: item.round,
+          supplierId: item.supplierId
+        }))
+      })
       .then(res => {
         if (res.code == 200) {
           iMessage.success(this.$i18n.locale === "zh" ? res.desZh : res.desEn)

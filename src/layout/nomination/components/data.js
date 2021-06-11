@@ -9,7 +9,7 @@
 //  RECORD("RECORD","备案");
 export const applyType = [
     {id:'MEETING',name:'上会',key:'LK_SHANGHUI'},
-    {id:'CIRCULATE',name:'流转',key:'LK_LIUZHUAN'},
+    {id:'TRANFORM',name:'流转',key:'LK_LIUZHUAN'},
     {id:'RECORD',name:'备案',key:'LK_BEIAN'},
 ]
 // 定点申请步骤栏

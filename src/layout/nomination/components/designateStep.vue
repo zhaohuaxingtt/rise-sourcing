@@ -69,8 +69,9 @@ import {
     nominateAppSExport,
     nominateAppSsubmit,
     nominateAppSDetail,
+    getNominateType
 } from '@/api/designate'
-import { applyType,applyStep } from './data'
+import { applyStep } from './data'
 export default {
     name:'designateStep',
     components:{
@@ -87,6 +88,7 @@ export default {
         },
     },
     created(){
+        this.getApplyType()
         // 判断当前路由是否是决策资料相关路由 是则显示预览按钮
         const { path,query,name } = this.$route;
         const {desinateId =''} = query;
@@ -118,11 +120,25 @@ export default {
         return{
             desinateId: '',
             designateType: 'RECORD',
-            applyType:applyType,
+            applyType:[],
             applyStep:applyStep
         }
     },
     methods:{
+        getApplyType() {
+            getNominateType().then(res => {
+                if (res?.result) {
+                    const apply = []
+                    for (let keys in res.data) {
+                        apply.push({id:keys,name:res.data[keys]})
+                    }
+                    this.applyType = apply
+                } else {
+                    this.applyType = []
+                    iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+                }
+            })
+        },
         gotoRsMainten() {
             this.$router.push({path: '/sourcing/designate/rsSingleMaintenance', query: {desinateId:this.$route.query.desinateId}})
         },
