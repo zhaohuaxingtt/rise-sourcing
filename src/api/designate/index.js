@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2021-05-28 17:30:52
- * @LastEditTime: 2021-06-01 11:06:44
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-06-11 10:47:45
+ * @LastEditors: Luoshuang
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\api\designate\index.js
  */
@@ -81,4 +81,12 @@ export function updateTabPageManager(data) {
     method: "POST",
     data,
 })
+}
+
+//获取定点类型
+export function getNominateType() {
+  return requst({
+    url: '/nominate-create/get-nominate-process-type',
+    method: 'GET'
+  })
 }
