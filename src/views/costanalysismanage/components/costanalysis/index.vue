@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-05-28 16:01:25
- * @LastEditTime: 2021-06-10 21:54:59
+ * @LastEditTime: 2021-06-11 17:37:41
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\costanalysismanage\components\costanalysis\index.vue
@@ -111,7 +111,7 @@ export default {
       .then(res => {
         if (res.code == 200) {
           this.tableListData = Array.isArray(res.data) ? res.data : []
-          this.totalCount = res.total || 0
+          this.page.totalCount = res.total || 0
           this.multipleSelection = []
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
