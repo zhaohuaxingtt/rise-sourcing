@@ -918,7 +918,10 @@
             'JUECEZILIAO':'决策资料', // 决策资料
             'DINGDIAN':'定点', // 定点
             'QUXIAODINGDIAN':'取消定点', // 取消定点
-            'DingDianIDNotNull': '定点申请单id不能为空' //定点申请单id不能为空
+            'DingDianIDNotNull': '定点申请单id不能为空', //定点申请单id不能为空
+            'DongJieRS': '冻结RS单', //冻结RS单
+            'JieDongRS': '解冻RS单',//解冻RS单
+            'QingChuangJianWanDingDianShenQingDan': '请创建完定点申请单再继续下一步',//解冻RS单
         },
         // 单一供应商
         "nominationSupplier": {
