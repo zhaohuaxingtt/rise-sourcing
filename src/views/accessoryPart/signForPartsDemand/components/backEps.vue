@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-25 16:14:32
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-02 14:10:35
+ * @LastEditTime: 2021-06-11 15:37:02
  * @Description: 退回EPS弹窗
  * @FilePath: \front-web\src\views\accessoryPart\signForPartsDemand\components\backEps.vue
 -->
@@ -16,7 +16,7 @@
   >
     <template slot="footer">
       <iButton @click="handleConfirm">保存</iButton>
-      <iButton @click="handleCancel">取消</iButton>
+      <iButton @click="clearDialog">取消</iButton>
     </template>
     <el-form label-position="top">
       <el-form-item label="退回理由类型">
@@ -56,6 +56,8 @@ export default {
   },
   methods: {
     clearDialog() {
+      this.reasonType = ''
+      this.reasonDescription = ''
       this.$emit('changeVisible', false)
     },
     handleConfirm() {
