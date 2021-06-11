@@ -11,6 +11,7 @@
         "submitSure":'您确定要执行提交操作吗？',
         "cancelSure":'您确定要取消吗？',
         "saveSure":'您确定要保存吗？',
+        "nextSure":'您确定要进行下一步吗？请确定数据已经完全保存',
         "copyChosenSure":'您确定要复制选中的数据吗？',
         'all': '全部',
         'search': '搜索',
@@ -876,6 +877,7 @@
         'LK_DIJIUNIANXUQIULIANG':'第9年需求量', // 第9年需求量
         'LK_DISHINIANXUQIULIANG':'第10年需求量', // 第10年需求量
         'LK_QINGXUANZEZHISHAOYITIAOSHUJU': '请选择至少一条数据', // 请选择至少一条数据
+        'LK_XIAYIBU': '下一步', // 下一步
 
         // 定点管理
         'nominationLanguage': {
