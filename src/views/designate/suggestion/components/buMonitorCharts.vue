@@ -39,6 +39,9 @@
 import { iSelect } from "rise";
 import echarts from "@/utils/echarts";
 import {rich} from './lib/chart'
+import {
+  colorPanel
+} from './data'
 
 export default {
   components: {
@@ -122,9 +125,9 @@ export default {
               },
               itemStyle: {
                 normal: {
-                  barBorderRadius: [5, 5, 0, 0],
+                  barBorderRadius: [0, 0, 0, 0],
                   color: function(params){
-                    const bgColor = index === 0 ? '#005cfa' : '#94c8fc'
+                    const bgColor = index === 0 ? '#005cfa' : colorPanel[index]
                     let colorlist = [bgColor, bgColor, bgColor, bgColor];
                     return colorlist[params.dataIndex];
                   }
@@ -137,7 +140,7 @@ export default {
           grid: {
             left: '10',
             right: '0',
-            bottom: '20',
+            bottom: '50',
             top: '10%',
             containLabel: true
           },

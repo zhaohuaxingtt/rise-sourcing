@@ -85,10 +85,11 @@ export default {
             userId: store.state.permission.userInfo.id
           }
           const res = await getAllAnnex(req)
-          this.tableListData = res.records;
-          this.page.currPage = res.current
-          this.page.pageSize = res.size
-          this.page.totalCount = res.total
+          const {code,data,total} = res;
+          if(code==200 && data){
+            this.tableListData = data;
+            this.page.totalCount = total;
+          }
           this.tableLoading = false;
         } catch {
           this.tableLoading = false;

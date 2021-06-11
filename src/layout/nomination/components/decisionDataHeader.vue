@@ -33,6 +33,9 @@ import {
   iTabsList,
   icon,
 } from "rise";
+import {
+    updatePresenPageSeat
+} from '@/api/designate'
 import { decisionType } from './data'
 import sortDialog from './sortDialog'
 
@@ -70,6 +73,7 @@ export default {
         handleClick(tab){
             const { query } =  this.$route;
             const { name='Title' } = tab;
+            this.updateSteps()
             this.$router.push({
                 path: name,
                 query,
@@ -87,6 +91,21 @@ export default {
                     isPreview:'0'
                 },
             });
+        },
+        // 更新进度
+        updateSteps() {
+            const nominationStep = this.$store.getters.nominationStep
+            const nodeList = nominationStep.nodeList || []
+            const { path } = this.$route;
+            const tabName = (decisionType.find(o => o.path === path) || {}).key || ''
+            const node = nodeList.find(o => o.tabName === tabName) || {}
+            updatePresenPageSeat({
+                nominateId: this.$store.getters.nomiAppId,
+                phaseType: 5,
+                nodeList,
+                currentNode: node,
+                node
+            })
         }
     }
 }
