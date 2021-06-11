@@ -45,8 +45,7 @@ import {
 import tableList from "@/views/partsign/editordetail/components/tableList"
 import { pageMixins } from "@/utils/pageMixins"
 import { FilesTitle } from '../data'
-// import { getFileHistory } from "@/api/costanalysismanage/rfqdetail"
-import { findByRfqs } from "@/api/rfqManageMent/rfqDetail"
+import { getAllAnnex } from "@/api/partsrfq/editordetail";
 import { downloadFile } from '@/api/file'
 
 export default {
@@ -71,6 +70,12 @@ export default {
             tableLoading:false,
         }
     },
+  computed: {
+    // eslint-disable-next-line no-undef
+    ...Vuex.mapState({
+      userInfo: state => state.permission.userInfo,
+    })
+  },
     created(){
         this.getList();
     },
@@ -92,58 +97,37 @@ export default {
             if(!selectItems.length){
             iMessage.warn(this.$t('LK_QINGXUANZHEXUYAOXIAZHAIDEFUJIAN'));
             }else{
-                const list = selectItems.map((item)=>item.tpPartAttachmentName);
+                const list = selectItems.map((item)=>item.fileName);
                 this.download(list);
             }
         },
         // 单文件下载
         downloadLine(row){
-            const {tpPartAttachmentName} = row;
-            this.download([tpPartAttachmentName]);
+            const {fileName} = row;
+            this.download([fileName]);
         },
         // 获取列表
         async getList(){
             this.tableLoading =  true;
             const {rfqNum} = this;
             const { page } = this;
-            const data = {
-                otherInfoPackage:{
-                    rfqId:rfqNum,
-                    current:page.currPage,
-                    size:page.pageSize,
-                    findType:'03',
-                }
+            const params={
+                fileType:'2',
+                rfqId:rfqNum,
+                userId: this.userInfo.id,
+                current:page.currPage,
+                size:page.pageSize,
             };
-            findByRfqs(data).then((res)=>{
-                const {code,data} = res; 
-                this.tableLoading =  false;
-                if(code === '200' && data){
-                    const { inquiryDrawingsVO={},total } = data;
-                    const { inquiryDrawingsVOS } = inquiryDrawingsVO;
-                    this.tableData = inquiryDrawingsVOS;
+            getAllAnnex(params).then((res)=>{
+                const {code,data,total} = res;
+                if(code==200 && data){
+                    this.tableData= data;
                     this.page.totalCount = total;
                 }
+                this.tableLoading =  false;
             }).catch((err)=>{
                 this.tableLoading =  false;
             });
-            // const data = {
-            //     nomiAppId:rfqNum,
-            //     fileType:'111',   // 101 109: 报告清单,110:询价图纸,111:询价附件
-            //     pageNo:page.currPage,
-            //     pageSize:page.pageSize,
-            // }
-            // getFileHistory(data).then((res)=>{
-            //     const {code,data} = res; 
-            //      this.tableLoading =  false;
-            //     if(code === '200' && data){
-            //         const {records,total} = data;
-            //         this.tableLoading =  false;
-            //         this.tableData = records;
-            //         this.page.totalCount = total;
-            //     }
-            // }).catch((err)=>{
-            //      this.tableLoading =  false;
-            // })
         },
 
     }
