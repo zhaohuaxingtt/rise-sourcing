@@ -21,7 +21,7 @@
         :tableLoading="tableLoading"
         @handleSelectionChange="handleSelectionChange"
       >
-        <template #tpPartAttachmentName="scope">
+        <template #fileName="scope">
             <span class="link" @click="downloadLine(scope.row)">{{ scope.row.fileName }}</span>
         </template>
       </tableList>
