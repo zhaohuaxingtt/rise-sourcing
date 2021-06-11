@@ -259,3 +259,18 @@ export const mouldBudgetManagementDialogTableTitle = [
   { props: "approvalStatus", name: "审批状态", tooltip: true, key: "nominationSuggestion.ShenPiZhuangTai" },
   { props: "approvalComments", name: "审批意见", tooltip: true, key: "nominationSuggestion.ShenPiYiJian" },
 ]
+
+export const colorPanel = [
+  '#94c8fc',
+  '#94c8fc',
+  '#e8f4ff',
+  '#d1e9ff',
+  '#a3d3ff',
+  '#74bcff',
+  '#46a6ff',
+  '#1890ff',
+  '#1373cc',
+  '#0e5699',
+  '#0a3a66',
+  '#051d33',
+]

@@ -103,7 +103,8 @@ import {
   getNomiSimulateRecord,
   setSummaryGroup,
   cancelSummaryGroup,
-  refreshSimulateRecord
+  refreshSimulateRecord,
+  saveSimulateRecord
 } from '@/api/designate/suggestion'
 
 export default {
@@ -152,7 +153,8 @@ export default {
       combineVisible: false,
       groupForm: {
         groupName:''
-      }
+      },
+      params: {}
     }
   },
   created() {
@@ -204,7 +206,7 @@ export default {
         if (res.code === '200') {
           iMessage.success(this.$t('LK_CAOZUOCHENGGONG'))
           this.combineVisible = false
-          this.init()
+          this.refresh()
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }
@@ -233,7 +235,7 @@ export default {
         if (res.code === '200') {
           iMessage.success(this.$t('LK_CAOZUOCHENGGONG'))
           this.combineVisible = false
-          this.init()
+          this.refresh()
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }
@@ -263,6 +265,7 @@ export default {
       }).then(res => {
         this.tableLoading = false
         if (res.code === '200') {
+          this.params = _.cloneDeep(res.data)
           this.supplierList = res.data.supplierSet
           const tableListData = res.data.partInfoList || []
           tableListData.map(o => {
@@ -272,10 +275,13 @@ export default {
             o.supplier = this.supplierList
             // 绑定对应供应商TTO
             o.TTo = []
+            o.percentCalc = []
             const suppDataList = o.bdlInfoList || []
             this.supplierList.forEach((suppName, index) => {
               const supplier = suppDataList.find(o => o.supplierName === suppName) || {}
+              const recommendSupplier = o.recommendBdlInfoList.find(o => o.recommendSupplier === suppName) || {}
               o.TTo[index] = supplier.tto || 0
+              o.percentCalc[index] = recommendSupplier.share || 0
             })
             // 绑定推荐供应商
             const recommendBdlInfoList = o.recommendBdlInfoList || []
@@ -303,7 +309,42 @@ export default {
     async submit() {
       const confirmInfo = await this.$confirm(this.$t('submitSure'))
       if (confirmInfo !== 'confirm') return
-      console.log(this.tableListData)
+      
+      let data = _.cloneDeep(this.params)
+      const tableListData = _.cloneDeep(this.tableListData)
+      tableListData.map((item) => {
+        // 推荐供应商
+        const recommendBdlInfoList = []
+        item.supplierChosen.forEach((sp, sIndex) => {
+          const suppi = item.bdlInfoList.find(s => s.supplierName === sp)
+          suppi && (recommendBdlInfoList.push({
+            recommendSupplier: suppi.supplierName,
+            supplierId: suppi.supplierId,
+            share: Number(item.percent[sIndex] || 0)
+          }))
+        })
+        item.recommendBdlInfoList = recommendBdlInfoList
+        return item
+      })
+      // 删除不必要的数据
+      delete tableListData.TTo
+      delete tableListData.percent
+      delete tableListData.supplier
+      delete tableListData.supplierChosen
+
+      data.partInfoList = tableListData
+      try {
+        const res = await saveSimulateRecord(data)
+        if (res.code === '200') {
+          iMessage.success(this.$t('LK_CAOZUOCHENGGONG'))
+          this.getFetchData()
+        } else {
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
+      } catch (e) {
+        iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
+      }
+      console.log(data)
     },
     // 柱状图数据
     getChartData() {
