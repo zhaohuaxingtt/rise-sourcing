@@ -310,8 +310,8 @@ export default {
           str += `${Number(t)}* ${percent} +`
         })
       })
-      console.log(str, count)
-      return count
+      // console.log(str, count)
+      return Number(count).toFixed(2)
     },
     /**
      * 计算柱状图最佳TTO
@@ -350,6 +350,7 @@ export default {
 
         // 分组权重
         weightedGroup[index] = this.cacleSc(groupedArray)
+        console.log('g', groupedArray, this.cacleSc(groupedArray))
       })
       // 取出未分组最低，未分组的按照单独分组处理
       const unGroupedList = data.filter(o => !o[GroupKey])
