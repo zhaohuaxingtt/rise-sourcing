@@ -153,6 +153,11 @@ export default {
         goToRoute(item){
             // if(this.phaseType < item.id) return;
             const {path,query} = this.$route;
+            // 新增模式下不允许跳转
+            if (!this.desinateId) {
+                iMessage.error(this.$t('nominationLanguage.QingChuangJianWanDingDianShenQingDan'))
+                return
+            }
             if(item.path === path ) return;
             this.$router.push({
               path:item.path,
