@@ -140,7 +140,7 @@ export default {
           grid: {
             left: '10',
             right: '0',
-            bottom: '20',
+            bottom: '50',
             top: '10%',
             containLabel: true
           },
