@@ -1,8 +1,8 @@
 /*
  * @Author: ldh
  * @Date: 2021-04-26 17:27:20
- * @LastEditors: ldh
- * @LastEditTime: 2021-06-09 15:53:50
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-06-11 16:21:56
  * @Description: In User Settings Edit
  * @FilePath: \front-supplier\src\api\rfqManageMent\quotationdetail\index.js
  */
@@ -17,7 +17,7 @@ const requstdl = axios(process.env.VUE_APP_QUOTATION_DL)
 // 获取零件基础信息
 export function getPartsQuotations(params) {
   return requst({
-    url: `/part/parts-quotations/${ params.rfqId }/${ params.round }/${ params.supplierId }`,
+    url: `/part/parts-quotations/${ params.rfqId }/${ params.round }`,
     method: 'GET'
   })
 }
