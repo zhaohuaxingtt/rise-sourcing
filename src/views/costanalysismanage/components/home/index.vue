@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-05-27 12:32:54
- * @LastEditTime: 2021-06-09 14:37:38
+ * @LastEditTime: 2021-06-11 11:12:48
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\costanalysismanage\components\home\index.vue
@@ -141,7 +141,7 @@
           <span>{{ scope.row.createDate | dateFilter("YYYY-MM-DD") }}</span>
         </template>
         <template #currentRoundsEndTime="scope">
-          <span>{{ scope.row.deadDate | dateFilter("YYYY-MM-DD") }}</span>
+          <span>{{ scope.row.currentRoundsEndTime | dateFilter("YYYY-MM-DD") }}</span>
         </template>
         <template #technoMaterial="scope">
           <span class="link-underline" @click="download(scope.row)">{{ $t("costanalysismanage.XiaZai") }}</span>
@@ -151,7 +151,7 @@
             <div v-if="scope.row.sendDate" class="attention margin-left4"><span>!</span></div>
         </template>
         <template #analysisReport="scope">
-          <icon class="tick link-underline" symbol name="iconbaojiazhuangtailiebiao_yibaojia" @click.native="analysisReport(scope.row)"/>
+          <span class="link-underline" @click="analysisReport(scope.row)">{{ scope.row.analysisReport | dateFilter("YYYY-MM-DD") }}</span>
         </template>
         <template #recordId="scope">
           <icon class="link-underline" symbol :name="+scope.row.recordId > 0 ? 'iconliebiaoyizhiding' : 'iconliebiaoweizhiding'" @click.native="updateOrder(scope.row)" />
@@ -172,7 +172,7 @@
     <!-- 技术资料下载弹窗 -->
     <downloadDialog :rfqNum='rfqNum' :dialogVisible='downloadDialogVisible' @changeVisible="changeVisible"/>
     <!-- CBD弹窗 -->
-    <cbdDialog :rfqNum='rfqNum' :dialogVisible='cbdDialogVisible'  @changeVisible="changeVisible"/>
+    <cbdDialog v-if="cbdDialogVisible" :rfqId='rfqNum' :dialogVisible='cbdDialogVisible'  @changeVisible="changeVisible"/>
   </div>
 </template>
 
@@ -317,12 +317,15 @@ export default {
     // 下载
     download(row) {
       console.log(row);
-      const { rfqNum='1' } = row;
-      this.rfqNum = rfqNum;
+      const { id='' } = row;
+      this.rfqNum = id;
       this.downloadDialogVisible = true
     },
-    // CBD
+    // CBD弹窗
     cbd(row) {
+      console.log(row);
+      const { id='' } = row;
+      this.rfqNum = id;
       this.cbdDialogVisible = true
     },
     // 分析报告
@@ -359,6 +362,7 @@ export default {
     changeVisible(type){
       this.downloadDialogVisible = type;
       this.cbdDialogVisible = type;
+      this.rfqNum = null;
     }
   }
 }

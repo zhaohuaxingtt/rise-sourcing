@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-05-27 13:45:35
- * @LastEditTime: 2021-06-04 17:07:47
+ * @LastEditTime: 2021-06-11 11:00:52
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\costanalysismanage\components\home\components\data.js
@@ -28,16 +28,16 @@ export const FilesTitle = [
 
   // CBD状态弹窗表头
   export const CbdTitle = [
-    {props:'a',name:'FS号', key: "LK_FSHAO", tooltip: true},
-    {props:'b',name:'零件号', key: "LK_LINGJIANHAO", tooltip: true},
-    {props:'c',name:'零件名（中）', key: "LK_LINGJIANMINGZHONG", tooltip: true},
-    {props:'d',name:'零件名（德）', key: "LK_LINGJIANMINGDE", tooltip: true},
-    {props:'e',name:'车型项目', key: "partsignLanguage.CheXingXiangMu", tooltip: true},
-    {props:'f',name:'供应商', key: "LK_GONGYINGSHANGMING", tooltip: true},
-    {props:'g',name:'发送时间', key: "costanalysismanage.FaSongShiJian", tooltip: true},
-    {props:'h',name:'RFQ轮次', key: "costanalysismanage.RfqLunCi", tooltip: true},
-    {props:'i',name:'RFQ状态', key: "LK_RFQZHUANGTAI", tooltip: true},
-    {props:'j',name:'heavy item', key: "LK_HEAVYITEM", tooltip: true},
+    {props:'fsnrGsnrNum',name:'FS号', key: "LK_FSHAO", tooltip: true},
+    {props:'partNum',name:'零件号', key: "LK_LINGJIANHAO", tooltip: true},
+    {props:'partNameZh',name:'零件名（中）', key: "LK_LINGJIANMINGZHONG", tooltip: true},
+    {props:'partNameDe',name:'零件名（德）', key: "LK_LINGJIANMINGDE", tooltip: true},
+    {props:'cartypeProjectZh',name:'车型项目', key: "partsignLanguage.CheXingXiangMu", tooltip: true},
+    {props:'supplierName',name:'供应商', key: "LK_GONGYINGSHANGMING", tooltip: true},
+    {props:'sendDate',name:'发送时间', key: "costanalysismanage.FaSongShiJian", tooltip: true},
+    {props:'round',name:'RFQ轮次', key: "costanalysismanage.RfqLunCi", tooltip: true},
+    {props:'rfqStatus',name:'RFQ状态', key: "LK_RFQZHUANGTAI", tooltip: true},
+    {props:'heavyItem',name:'heavy item', key: "LK_HEAVYITEM", tooltip: true},
   ]
 
 export const queryForm = {

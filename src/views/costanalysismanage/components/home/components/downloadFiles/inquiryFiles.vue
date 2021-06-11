@@ -56,7 +56,6 @@ export default {
         tableList,
         iButton,
         iPagination,
-        iMessage,
     },
     props:{
         rfqNum:{

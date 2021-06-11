@@ -23,6 +23,7 @@
                 <iButton @click="gotoRsMainten">RS单维护</iButton>
                 <iButton @click="exportNominate">{{$t('LK_DAOCHU')}}</iButton>
                 <iButton @click="submit">{{$t('LK_TIJIAO')}}</iButton>
+                <iButton @click="toNextStep">{{$t('LK_XIAYIBU')}}</iButton>
                 <iButton v-if="isDecision" @click="preview">{{$t('LK_YULAN')}}</iButton>
                 <logButton class="margin-left20" @click="log"  />
                 <span class="title-font margin-left20"><icon symbol name="icondatabaseweixuanzhong"></icon></span>
@@ -31,7 +32,7 @@
         <!-- 步骤栏 -->
         <div class="step-list flex-between-center-center margin-top30 margin-bottom30">
             <div class="step-list-item flex-center-center" v-for="(item,index) in applyStep" :key="'applyStep'+index">
-                <div :class="phaseType >=item.id ? 'click-item step-list-item' : 'step-list-item' " @click="goToRoute(item)">
+                <div :class="phaseType >=item.id ? 'click-item step-list-item' : 'step-list-item' ">
                     <p class="step-icon-box">
                         <!-- 正在进行中 -->
                         <icon v-if="phaseType == item.id" symbol name="icondingdianguanlijiedian-jinhangzhong"  class="step-icon"></icon> 
@@ -68,8 +69,9 @@ import {
     nominateAppSExport,
     nominateAppSsubmit,
     nominateAppSDetail,
+    getNominateType
 } from '@/api/designate'
-import { applyType,applyStep } from './data'
+import { applyStep } from './data'
 export default {
     name:'designateStep',
     components:{
@@ -86,6 +88,7 @@ export default {
         },
     },
     created(){
+        this.getApplyType()
         // 判断当前路由是否是决策资料相关路由 是则显示预览按钮
         const { path,query,name } = this.$route;
         const {desinateId =''} = query;
@@ -100,7 +103,7 @@ export default {
         // 控制定点类型是否可编辑
         this.$store.dispatch('setNominationTypeDisable', nominationTypeDisable)
         // 设置定点类型
-        this.designateType && (this.$store.dispatch('setNominationType', this.designateType))
+        this.designateType && (this.$store.dispatch('setNominationType', this.designateType || 'MEETING'))
         // 缓存定点ID
         this.$store.dispatch('setNominateId', this.desinateId || '')
 
@@ -117,11 +120,25 @@ export default {
         return{
             desinateId: '',
             designateType: 'RECORD',
-            applyType:applyType,
+            applyType:[],
             applyStep:applyStep
         }
     },
     methods:{
+        getApplyType() {
+            getNominateType().then(res => {
+                if (res?.result) {
+                    const apply = []
+                    for (let keys in res.data) {
+                        apply.push({id:keys,name:res.data[keys]})
+                    }
+                    this.applyType = apply
+                } else {
+                    this.applyType = []
+                    iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+                }
+            })
+        },
         gotoRsMainten() {
             this.$router.push({path: '/sourcing/designate/rsSingleMaintenance', query: {desinateId:this.$route.query.desinateId}})
         },
@@ -151,7 +168,12 @@ export default {
 
         // 跳转
         goToRoute(item){
-            // if(this.phaseType < item.id) return;
+            // 新增模式下不允许跳转
+            if (!this.desinateId) {
+                iMessage.error(this.$t('nominationLanguage.QingChuangJianWanDingDianShenQingDan'))
+                return
+            }
+            if(this.phaseType < item.id) return;
             const {path,query} = this.$route;
             if(item.path === path ) return;
             this.$router.push({
@@ -160,6 +182,29 @@ export default {
                 ...query,
               }
             })
+        },
+        // 跳转下一步
+        async toNextStep() {
+            const step = Number(this.$store.getters.phaseType || '1')
+            const phaseType = Number(step) + 1
+            const nominateId = this.desinateId
+            const confirmInfo = await this.$confirm(this.$t('nextSure'))
+            if (confirmInfo !== 'confirm') return
+
+            const res = await this.$store.dispatch('updateNominationStep',{nominateId , phaseType: step});
+            if (res) {
+                const item = applyStep.find(o => o.id === phaseType)
+                const {query} = this.$route;
+                const routeData = this.$router.resolve({
+                    path:item.path,
+                    query: {
+                        ...query,
+                    }
+                })
+                window.open(routeData.href, '_self')
+                window.location.reload()
+            }
+            
         },
 
         // 提交
@@ -253,9 +298,9 @@ export default {
                 height: 36px;
             }
             .click-item{
-                &:hover{
-                    cursor: pointer;
-                }
+                // &:hover{
+                //     cursor: pointer;
+                // }
             }
             .step-between-icon{
                 width: 100%;

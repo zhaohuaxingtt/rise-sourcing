@@ -42,3 +42,11 @@ export function savePcaAndTia(params) {
         data: params
     })
 }
+
+//  获取CBD列表
+export function getKmCbdList(params) {
+    return requst({
+        url: `/km-cbd-list/${params.rfqId}/${params.pageSize}/${params.pageNo}`,
+        method: 'GET'
+    })
+}
