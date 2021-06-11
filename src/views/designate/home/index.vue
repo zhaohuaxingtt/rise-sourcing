@@ -24,6 +24,16 @@
           >
             {{ $t("nominationLanguage.XinJianLingJIanDingDianShengQIng") }}
           </iButton>
+
+          <!-- 冻结RS -->
+          <iButton @click="frozeRS(true)">
+            {{$t('nominationLanguage.DongJieRS')}}
+          </iButton>
+
+          <!-- 解冻RS -->
+          <iButton @click="frozeRS(false)">
+            {{$t('nominationLanguage.JieDongRS')}}
+          </iButton>
           
           <!-- 冻结 -->
           <iButton @click="freeze">
@@ -137,7 +147,9 @@ import {
   nominateRreeze,
   nominateUnRreeze,
   nominateConfirm,
-  getCarTypePro
+  getCarTypePro,
+  rsFrozen,
+  rsUnFrozen
 } from '@/api/designate/nomination'
 // 前端配置文件里面的定点类型
 // import { applyType } from '@/layout/nomination/components/data'
@@ -343,7 +355,32 @@ export default {
         })
       }
     },
-
+    // rs冻结
+    async frozeRS(state){
+      const {selectTableData} = this;
+      if(!selectTableData.length){
+        iMessage.warn(this.$t('nominationSuggestion.QingXuanZeZhiShaoYiTiaoShuJu'));
+      }else{
+        const confirmInfo = await this.$confirm(this.$t('LK_NINQUERENZHIXINGDONGJIECAOZUOMA'));
+        if (confirmInfo !== 'confirm') return;
+        const nomiAppIdList = selectTableData.map((item)=>Number(item.id));
+        const data = {
+          ids: nomiAppIdList,
+        };
+        try {
+          const res = state ? await rsFrozen(data) : await rsUnFrozen(data)
+          const { code } = res;
+          if(code == 200){
+            iMessage.success(this.$t('LK_CAOZUOCHENGGONG'));
+            this.getFetchData()
+          }else{
+            iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+          }
+        } catch(e) {
+          iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
+        }
+      }
+    },
 
   }
 }
