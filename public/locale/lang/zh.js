@@ -946,6 +946,9 @@
         'LK_DISHINIANXUQIULIANG':'第10年需求量', // 第10年需求量
         'LK_QINGXUANZEZHISHAOYITIAOSHUJU': '请选择至少一条数据', // 请选择至少一条数据
         'LK_XIAYIBU': '下一步', // 下一步
+        'LK_QINGXUANZEYITIAORFQ': '请选择一条RFQ', // 请选择一条RFQ
+        'LK_QINGXUANZEDINGDIANSHENQINGLEIXING': '请选择定点申请类型', // 请选择定点申请类型
+        'LK_DINGDIANSHENQINGLEIXING': '定点申请类型', // 定点申请类型
 
         // 定点管理
         'nominationLanguage': {
