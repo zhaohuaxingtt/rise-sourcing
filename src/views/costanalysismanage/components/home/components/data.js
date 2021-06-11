@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-05-27 13:45:35
- * @LastEditTime: 2021-06-11 11:00:52
+ * @LastEditTime: 2021-06-11 15:45:38
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\costanalysismanage\components\home\components\data.js
@@ -10,10 +10,10 @@ import { permissionTitle } from "@/utils"
 
 // 技术资料下载弹窗---询价附件表单头
 export const FilesTitle = [
-    {props:'tpPartAttachmentName',name:'文件名称', key: "LK_WENJIANMINGCHENG", tooltip: true},
-    {props:'size',name:'大小(MB)', key: "LK_DAXIAOMB", tooltip: true},
+    {props:'fileName',name:'文件名称', key: "LK_WENJIANMINGCHENG", tooltip: true},
+    {props:'fileSize',name:'大小(MB)', key: "LK_DAXIAOMB", tooltip: true},
     {props:'createDate',name:'上传日期', key: "LK_SHANGCHUANRIQI", tooltip: true},
-    {props:'userName',name:'上传人', key: "LK_SHANGCHUANREN", tooltip: true},
+    {props:'createBy',name:'上传人', key: "LK_SHANGCHUANREN", tooltip: true},
   ]
 
 
