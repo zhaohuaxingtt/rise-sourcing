@@ -119,6 +119,14 @@ module.exports = {
         https: false,
         hotOnly: true,
         proxy: {
+					'/api': {
+						// target: 'http://10.160.138.38:8788',
+						target: 'http://rise-gateway-runtime.apps.vmocp-dev.csvw.com/',
+						changeOrigin: true,
+						pathRewrite: {
+							"^/api": ""
+						}
+					},
 					'/quotationApiDL': {
 						// target: 'http://10.160.138.38:8788',
 						target: 'http://10.122.18.166:8021',
