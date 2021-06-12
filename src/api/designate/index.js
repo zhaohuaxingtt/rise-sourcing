@@ -90,3 +90,21 @@ export function getNominateType() {
     method: 'GET'
   })
 }
+
+// 单一供应商下一步前保存
+export function sugesstionInit(params) {
+  return requst({
+      url: "suggestion/init",
+      method: "GET",
+      params,
+  })
+}
+
+// 定点建议下一步前保存
+export function sugesstionInitReCord(params) {
+  return requst({
+      url: "suggestion/initRecord",
+      method: "GET",
+      params,
+  })
+}

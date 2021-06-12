@@ -2,7 +2,7 @@
  * @Author: ldh
  * @Date: 2021-04-26 17:27:20
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-06-12 16:00:06
+ * @LastEditTime: 2021-06-12 16:55:29
  * @Description: In User Settings Edit
  * @FilePath: \front-supplier\src\api\rfqManageMent\quotationdetail\index.js
  */
@@ -199,9 +199,9 @@ export function cbdfiles(parmars) {
     data: parmars
   })
 }
-export function partsQuotations(rfqId,supplierId,lv) {
+export function partsQuotations(rfqId,lv) {
   return requstxw({
-    url: `/part/parts-quotations/${rfqId}/${lv}/${supplierId}`,
+    url: `/part/parts-quotations/${rfqId}/${lv}`,
     method: 'GET'
   })
 }

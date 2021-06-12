@@ -139,8 +139,11 @@ import {
 } from '@/api/designate/supplier' 
 import { getDictByCode } from '@/api/dictionary'
 import { excelExport } from '@/utils/filedowLoad'
+import { pageMixins } from '@/utils/pageMixins'
+import filters from "@/utils/filters"
 
 export default {
+  mixins: [ filters, pageMixins ],
   components: {
     iCard,
     iButton,
@@ -162,12 +165,6 @@ export default {
       batchEditVisibal: false,
       submiting: false,
       selectOptions: {},
-      page: {
-        currPage: 1,
-        pageSize: 10,
-        totalCount: 0,
-        layout: "total, prev, pager, next, jumper"
-      }
     }
   },
   mounted() {

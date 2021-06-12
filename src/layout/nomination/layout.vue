@@ -40,14 +40,25 @@ export default {
     const {query} = this.$route;
     const {isPreview = '0'} = query;
     this.isPreview = isPreview;
+    // 缓存当前步骤
+    this.getStepStatus();
+  },
+  methods: {
+    // 获取步骤状态
+    getStepStatus(){
+      const nominateId = this.$store.getters.nomiAppId || this.$route.query.desinateId
+      this.$store.dispatch('setNominationStep',{nominateId})
+    },
   },
   watch:{$route(to,from){
     console.log(to,from)
     const {query={}} = to;
-    const {isPreview = '0'} = query;
+    const {isPreview = '0', nominateId} = query;
     this.isPreview = isPreview;
     // 缓存/更新预览状态
     this.$store.dispatch('setPreviewState', isPreview)
+    // 缓存当前步骤
+    this.getStepStatus();
   }}
 }
 </script>
