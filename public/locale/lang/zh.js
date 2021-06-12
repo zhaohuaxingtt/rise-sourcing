@@ -980,6 +980,8 @@
             'HuiYi': '会议', // 会议
             'RSZhuangTai': 'RS单状态', // RS单状态
             'RSDongJieRiQi':'RS冻结日期', // RS冻结日期
+            'DongJieRiQi':'冻结日期', // 冻结日期
+            'HuiYiZhuangTai': '会议状态', //会议状态
             'BaoJiaYiZhiXingZhuangTai':'报价一致性校验状态', // 报价一致性校验状态
             'SELDanJuQUeRenZH': 'SEL单据确认状态', // SEL单据确认状态
             'DingDianRiQi': '定点日期', // 定点日期

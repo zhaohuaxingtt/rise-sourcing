@@ -9,7 +9,7 @@
   <iCard class="buMonitor" :title="cardTitle" :collapse='collapse' @handleCollapse='handleCollapse'>
     <el-row :gutter="24">
       <!-- 供应商表格 -->
-      <el-col :span="16">
+      <el-col :span="15">
         <div class="supplierTable">
           <div class="margin-bottom20 clearFloat">
             <span class="font18 font-weight">
@@ -69,7 +69,7 @@
         </div>
       </el-col>
       <!-- 图标模拟 -->
-      <el-col :span="8">
+      <el-col :span="9">
         <div class="buMonitor-charts">
           <buMonitorCharts
             :supplier="supplierList"
