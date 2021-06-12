@@ -2,7 +2,7 @@
  * @Author: ldh
  * @Date: 2021-04-26 17:27:20
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-06-11 16:21:56
+ * @LastEditTime: 2021-06-12 16:00:06
  * @Description: In User Settings Edit
  * @FilePath: \front-supplier\src\api\rfqManageMent\quotationdetail\index.js
  */
@@ -97,7 +97,7 @@ export function saveSupplierPlantCap(params) {
 // 下载cbd模板
 export function cbdDownloadFile(params) {
   return requstFile({
-    url: `/part/cbd/downLoadFile/${ params.rfqId }/${ params.round }`,
+    url: `/part/cbd/downLoadFile/${ params.rfqId }/${ params.round }?supplierId=${params.supplierId}`,
     method: 'GET',
     params: {
       partNum: params.partNum

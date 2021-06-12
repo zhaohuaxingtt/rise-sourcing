@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start:win:dev": "vue-cli-service serve --mode dev",
+    "start:win:dev": "vue-cli-service serve --mode sit",
     "start:win:sit": "vue-cli-service serve --mode sit",
     "build:win:dev": "vue-cli-service build --mode dev",
     "build:win:sit": "vue-cli-service build --mode sit",
