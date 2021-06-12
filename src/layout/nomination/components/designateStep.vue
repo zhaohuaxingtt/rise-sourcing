@@ -70,7 +70,9 @@ import {
     nominateAppSsubmit,
     nominateAppSDetail,
     getNominateType,
-    updatePresenPageSeat
+    updatePresenPageSeat,
+    sugesstionInit,
+    sugesstionInitReCord
 } from '@/api/designate'
 import { applyStep } from './data'
 export default {
@@ -99,7 +101,6 @@ export default {
         this.desinateId = query.desinateId
         this.designateType = query.designateType
 
-        this.getStepStatus(desinateId);
         this.getDesignateType(desinateId);
         // 控制定点类型是否可编辑
         this.$store.dispatch('setNominationTypeDisable', nominationTypeDisable)
@@ -161,12 +162,6 @@ export default {
             this.$store.dispatch('setNominationType', data)
         },
 
-        // 获取步骤状态
-        async getStepStatus(nominateId){
-            const data= {nominateId};
-            await this.$store.dispatch('setNominationStep',data);
-        },
-
         // 跳转
         goToRoute(item){
             // 新增模式下不允许跳转
@@ -184,40 +179,84 @@ export default {
               }
             })
         },
+        // 单一供应商保存
+        async onSupplierSave() {
+            let state = false
+            try {
+                const res = await sugesstionInit({
+                    nominateAppId: this.$store.getters.nomiAppId,
+                })
+                if (res.code === '200') {
+                    state = true
+                } else {
+                    iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+                }
+            } catch (e) {
+                iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
+                state = false
+            }
+            return state
+        },
+         // 定点建议
+        async onSuggestionSave() {
+            let state = false
+            try {
+                const res = await sugesstionInitReCord({
+                    nominateAppId: this.$store.getters.nomiAppId,
+                })
+                if (res.code === '200') {
+                    state = true
+                } else {
+                    iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+                }
+            } catch (e) {
+                iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
+                state = false
+            }
+            return state
+        },
         // 跳转下一步
         async toNextStep() {
             let step = Number(this.$store.getters.phaseType || '1')
-            step = step > 5 ? '4' : step
-            
+            step = step > 5 ? 4 : step
             const phaseType = Number(step) + 1
             const confirmInfo = await this.$confirm(this.$t('nextSure'))
-            console.log('111', confirmInfo)
             if (confirmInfo !== 'confirm') return
-
-            console.log(step)
             const nominationStep = this.$store.getters.nominationStep
             const nodeList = nominationStep.nodeList || []
+            const beforeNode = {
+                phaseType: step,
+                phaseNodeNow: 0
+            }
+            console.log(step, phaseType)
+            // 当前步骤在单一供应商
+            if (step === 2) {
+                const proc = await this.onSupplierSave()
+                console.log('step 2', proc)
+                if (!proc) return
+            }
+            // 当前步骤在定点建议
+            if (step === 3) {
+                const proc = await this.onSuggestionSave()
+                console.log('step 3', proc)
+                if (!proc) return
+            }
             updatePresenPageSeat({
                 nominateId: this.$store.getters.nomiAppId,
                 phaseType: this.$store.getters.phaseType,
                 nodeList,
-                currentNode: nominationStep.currentNode,
-                node: nominationStep.currentNode,
+                currentNode: step < 5 ? beforeNode : nominationStep.currentNode,
+                node: step < 5 ? beforeNode : nominationStep.currentNode,
             }).then(res => {
                 if (res.code === '200') {
                     let item = applyStep.find(o => o.id === phaseType )
-                    
                     const {query} = this.$route;
-                    const routeData = this.$router.resolve({
+                    this.$router.push({
                         path:item.path,
                         query: {
                             ...query,
                         }
                     })
-                    setTimeout(() => {
-                        window.location.href = routeData.href
-                        window.location.reload()
-                    }, 500)
                 }
             })
         },
