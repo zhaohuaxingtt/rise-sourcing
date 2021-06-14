@@ -1,7 +1,7 @@
 <!--
  * @Author: ldh
  * @Date: 2021-05-29 16:29:00
- * @LastEditTime: 2021-06-14 16:29:19
+ * @LastEditTime: 2021-06-14 16:32:10
  * @LastEditors: ldh
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqPending\components\partDetaiList\components\kmDialog.vue
@@ -144,7 +144,7 @@ export default {
       .catch(() => this.loading = false)
     },
     handleSelectionChange(list) {
-      this.multipleSelection = list
+      this.multipleSelection = list.filter(item => item.cbdLevel === "L3")
     },
     // 提交
     handleSend() {
