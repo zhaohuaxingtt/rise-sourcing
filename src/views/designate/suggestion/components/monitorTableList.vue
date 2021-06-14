@@ -311,7 +311,7 @@ export default {
         })
       })
       // console.log(str, count)
-      return Number(count).toFixed(2)
+      return Number(count).toFixed(0)
     },
     /**
      * 计算柱状图最佳TTO
@@ -327,10 +327,10 @@ export default {
       const countSupplier = []
       // 根据供应商
       this.supplier.forEach((item, index) => {
-        countSupplier[index] = data.map(o => Number(o.TTo[index])).reduce((total, n) => total += n)
+        countSupplier[index] = _.sum(data.map(o => Number(o.TTo[index])))
       })
-      res[0][0] = 0
-      res[1][0] = countSupplier.map(o => Number(o) || 0).reduce((total, n) => total += n)
+      // 总计
+      const wholePackage = _.sum(countSupplier.map(o => Number(o) || 0))
 
       
 
@@ -339,6 +339,7 @@ export default {
       const groups = _.uniq(data.filter(o => o[GroupKey]).map(o => o[GroupKey]))
       let bestGroup = []
       let weightedGroup = []
+      let bestGroupObjs = []
       // 取出分组最低
       groups.forEach((gid, index) => {
         const groupedArray = data.filter(o => o[GroupKey] === gid)
@@ -347,10 +348,11 @@ export default {
           const tto = [...(o.TTo || [])].filter(p => p > 0)
           return Number(tto.sort()[0])
         }).reduce((total, n) => total += n)
-
         // 分组权重
         weightedGroup[index] = this.cacleSc(groupedArray)
-        console.log('g', groupedArray, this.cacleSc(groupedArray))
+        // 记录分组信息
+        bestGroupObjs[index] = groupedArray
+        // console.log('g', groupedArray, this.cacleSc(groupedArray))
       })
       // 取出未分组最低，未分组的按照单独分组处理
       const unGroupedList = data.filter(o => !o[GroupKey])
@@ -360,6 +362,8 @@ export default {
           bestGroup.push(Number(tto1.sort()[0]))
           // 分组权重
           weightedGroup.push(this.cacleSc([item]))
+          // 记录当前单个分组
+          bestGroupObjs.push(item)
         })
       }
 
@@ -381,11 +385,29 @@ export default {
       // Best TTO by Part
       const TTO = data.map(o => o.TTo)
       const filtedTTo = TTO.flat(Infinity).filter(o => Number(o) > 0).sort((a, b) => { return a - b})
-      res[0][2] = filtedTTo[0]
-      res[1][2] = 0
+      const bestByPartTto = filtedTTo[0]
 
       console.log('calculateBestTTo', res)
-      return res
+      // 插入汇总
+      const resLength = res.length
+      res[resLength-1][0] = wholePackage
+      // 插入单个零件最低
+      res[resLength-1][2] = bestByPartTto
+
+      // 分组汇总
+      const groupedInTotal = _.sum(bestGroup)
+      const groupedWeightInTotal = _.sum(weightedGroup.map(o => Number(o) || 0))
+      return {
+        groups,
+        bestGroup,
+        weightedGroup,
+        groupedInTotal,
+        groupedWeightInTotal,
+        bestGroupObjs,
+        wholePackage,
+        bestByPartTto,
+        data: res
+      }
     }
   }
 }

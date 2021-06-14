@@ -1,7 +1,7 @@
 <!--
 * @author:shujie
 * @Date: 2021-3-5 10:56:32
- * @LastEditors: Please set LastEditors
+ * @LastEditors: ldh
 * @Description: BDL列表
  -->
 <template>
@@ -36,7 +36,7 @@
 </template>
 
 <script>
-import {iCard, iButton, iInput,iPagination, iMessage} from "@/components"
+import {iCard, iButton, iInput,iPagination, iMessage} from "rise"
 import tableList from "./tableList"
 import {tableTitle} from "./data"
 import {getBdlList, updateRfq} from "@/api/partsrfq/editordetail";

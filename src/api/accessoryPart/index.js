@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-01 14:50:12
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-07 19:51:38
+ * @LastEditTime: 2021-06-14 11:47:13
  * @Description: 配件相关接口
  * @FilePath: \front-web\src\api\accessoryPart\index.js
  */
@@ -77,11 +77,10 @@ export function getDeptList(params) {
 }
 
 // 获取采购员下拉
-export function getUserList(params) {
+export function getUserList({deptId}) {
   return requst({
-    url: `/tp-records/accessoryInfo/findRespLinie`,
-    method: 'POST',
-    data: params
+    url: `/tp-records/accessoryInfo/findRespLinie/${deptId}`,
+    method: 'GET'
   })
 }
 

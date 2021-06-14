@@ -111,7 +111,7 @@ export default {
   props: {
     readOnly: {
       type: Boolean,
-      default: false
+      default: true
     },
     updateTime: {
       type: Boolean,

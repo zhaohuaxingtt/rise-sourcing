@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-05-27 17:37:00
- * @LastEditTime: 2021-06-07 10:48:30
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-06-14 15:18:45
+ * @LastEditors: ldh
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\costanalysismanage\components\rfqdetail\components\infos\index.vue
 -->
@@ -25,7 +25,7 @@
 <script>
 import { iCard, iFormGroup, iFormItem, iText, iMessage } from "rise"
 import { infos } from "../data"
-import { getRfqDataList } from "@/api/partsrfq/home"
+import { getRfqInfo } from "@/api/costanalysismanage/rfqdetail"
 
 export default {
   components: {
@@ -54,23 +54,19 @@ export default {
     }
   },
   mounted() {
-    this.getRfqDataList()
+    this.getRfqInfo()
   },
   methods: {
-    getRfqDataList() {
+    getRfqInfo() {
       this.loading = true
 
-      getRfqDataList({
-        rfqMangerInfosPackage: {
-          userId: this.userInfo.id,
-          rfqId: this.rfqId
-        }
+      getRfqInfo({
+        rfqId: this.rfqId
       })
       .then(res => {
         if (res.code == 200) {
-          if (Array.isArray(res.data.getRfqInfoVO.rfqVOList) && res.data.getRfqInfoVO.rfqVOList[0]) {
-            this.infoData = res.data.getRfqInfoVO.rfqVOList[0]
-          }
+          this.infoData = res.data
+          this.infoData.id = this.infoData.id ? this.infoData.id : this.rfqId
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }

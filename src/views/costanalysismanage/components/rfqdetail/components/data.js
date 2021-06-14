@@ -16,7 +16,7 @@ export const infos = [
   { row: 4, name: "当前轮次", props: "currentRounds", key: "costanalysismanage.DangQianLunCi" },
   { row: 4, name: "本轮状态", props: "currentRoundsStatus", key: "costanalysismanage.BenLunZhuangTai" },
   { row: 4, name: "本轮报价截止日", props: "currentRoundsEndTime", key: "costanalysismanage.BenLunBaoJiaJieZhiRi" },
-  { row: 4, name: "轮次类型", props: "roundsType", key: "costanalysismanage.LunCiLeiXing" }
+  { row: 4, name: "轮次类型", props: "roundsTypeName", key: "costanalysismanage.LunCiLeiXing" }
 ]
 
 export const partListTableTitle = [
