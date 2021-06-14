@@ -461,3 +461,9 @@ a{
 .el-message-box__wrapper {
   z-index: 99999999!important;
 }
+
+.hideCheckbox {
+  .el-checkbox { 
+    display: none!important;
+  }
+}
