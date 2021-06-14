@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-04-23 09:16:48
- * @LastEditTime: 2021-06-07 21:36:07
+ * @LastEditTime: 2021-06-14 10:46:08
  * @LastEditors: Please set LastEditors
  * @Description: 供应商维度展示
  * @FilePath: \front-supplier\src\views\rfqManageMent\partsOffer\components\ecartsCard\index.vue
@@ -28,7 +28,7 @@
           <el-form-item :label="$t('Lk_LINGJIAN')" class="ccc">
             <iSelect :placeholder='$t("partsprocure.CHOOSE")' multiple collapse-tags v-model="partsSelect" @change='changeParts' @visible-change="removeOther($event,'partsSelect')">
               <el-option label="All" value="all"></el-option>
-              <el-option v-for="(items,index) in partList" :key='index' :label="items.partName" :value='items.partNum'></el-option>
+              <el-option v-for="(items,index) in partList" :key='index' :label="items.name" :value='items.value'></el-option>
             </iSelect>
           </el-form-item>
           <el-form-item :label="$t('LK_FSHAO')" class="ccc">
@@ -92,6 +92,7 @@ export default{
       }
     },
     reset(){
+      this.form.priceLatitude = "1"
       this.fsSelect = []
       this.luncSelect = []
       this.partsSelect = []
@@ -167,7 +168,7 @@ export default{
         if(res.data){
           this.RoundList = res.data.round
           this.supplierlist = res.data.supplier
-          this.partList = res.data.partNum
+          this.partList = this.translatePartList(res.data.partNum)
         }
       }).catch(err=>{
         console.log(err)
@@ -198,6 +199,7 @@ export default{
           })
         }
       });
+      console.log(partList)
       return partList
     }
   }

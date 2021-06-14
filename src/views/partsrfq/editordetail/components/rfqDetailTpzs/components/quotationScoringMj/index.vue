@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-27 14:55:03
- * @LastEditTime: 2021-06-12 16:45:35
+ * @LastEditTime: 2021-06-14 14:21:31
  * @LastEditors: Please set LastEditors
  * @Description: 采购员报价与基本分析模具界面
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringMj\index.vue
@@ -13,15 +13,17 @@ export default {
   extends:quotationMj,
   data(){
     return {
-    useCardSlot:false,
-    hasSupplierComponets:true,
-    supplierId:'11034',
-    supplierList:[]
+      useCardSlot:false,
+      hasSupplierComponets:true,
+      supplierId:'11034',
+      supplierList:[],
+      myDisabled:true,
+      titleKey:"BJZS.LK_BAOJIAZUSHOU_MJ"
     }
   },
   computed:{
     disabled(){
-      return false
+      return !this.dgysBj
     }
   },
   created(){
@@ -30,11 +32,12 @@ export default {
     this.getRfqSupplierList().then(r=>{
       this.getAllMouldFee()
     })
-    
+    this.getAllPartForMould()
   },
   methods:{
     getFee(res){
       this.getAllMouldFee()
+      this.getAllPartForMould()
     },
     getRfqSupplierList(){
      return new Promise(r=>{
