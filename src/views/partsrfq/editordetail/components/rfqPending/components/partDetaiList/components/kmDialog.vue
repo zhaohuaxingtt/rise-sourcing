@@ -1,8 +1,8 @@
 <!--
  * @Author: ldh
  * @Date: 2021-05-29 16:29:00
- * @LastEditTime: 2021-06-11 10:19:31
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-06-14 14:43:26
+ * @LastEditors: ldh
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqPending\components\partDetaiList\components\kmDialog.vue
 -->
@@ -39,8 +39,8 @@
     <template #footer class="footer">
       <iPagination v-update
         class="pagination"
-        @size-change="handleSizeChange($event, getList)"
-        @current-change="handleCurrentChange($event, getList)"
+        @size-change="handleSizeChange($event, getPartsBySupplier)"
+        @current-change="handleCurrentChange($event, getPartsBySupplier)"
         background
         :current-page="page.currPage"
         :page-sizes="page.pageSizes"
@@ -82,6 +82,8 @@ export default {
       if (nv) { 
         // 请求
         this.getPartsBySupplier()
+      } else {
+        this.page.currPage = 1
       }
 
       this.$emit("update:visible", nv)

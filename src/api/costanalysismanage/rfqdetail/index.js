@@ -8,46 +8,52 @@ import axios from "@/utils/axios"
 
 const requst = axios(process.env.VUE_APP_RFQ)
 
-
-
 export function getFileHistory(params) {
-    const {
-        nomiAppId,
-        sortColumn=null,
-        isAsc=false,
-        fileType,
-        pageNo,
-        pageSize,
-    } = params;
-    return requst({
-        url: `/file-history/${nomiAppId}/${sortColumn}/${isAsc}/${fileType}/${pageNo}/${pageSize}`,
-        method: "GET",
-        params,
-    })
-  }
+	const {
+		nomiAppId,
+		sortColumn = null,
+		isAsc = false,
+		fileType,
+		pageNo,
+		pageSize,
+	} = params;
+	return requst({
+		url: `/file-history/${nomiAppId}/${sortColumn}/${isAsc}/${fileType}/${pageNo}/${pageSize}`,
+		method: "GET",
+		params,
+	})
+}
+
+// 获取RFQ详情
+export function getRfqInfo(params) {
+	return requst({
+		url: `/getOneRfq/${ params.rfqId }`,
+		method: 'GET'
+	})
+}
 
 // 获取km零件清单
 export function getKmPartList(params) {
-    return requst({
-        url: `/KmPartList/${ params.rfqId }/${ params.pageSize }/${ params.currPage }`,
-        method: 'GET'
-    })
+	return requst({
+		url: `/KmPartList/${params.rfqId}/${params.pageSize}/${params.currPage}`,
+		method: 'GET'
+	})
 }
 
 // 保存km零件清单中的PCA和TIA分析结果
 export function savePcaAndTia(params) {
-    return requst({
-        url: '/savePcaAndTia',
-        method: 'POST',
-        data: params
-    })
+	return requst({
+		url: '/savePcaAndTia',
+		method: 'POST',
+		data: params
+	})
 }
 
 //  获取CBD列表
 export function getKmCbdList(params) {
-    return requst({
-        url: `/km-cbd-list/${params.rfqId}/${params.pageSize}/${params.pageNo}`,
-        method: 'GET'
-    })
+	return requst({
+		url: `/km-cbd-list/${params.rfqId}/${params.pageSize}/${params.pageNo}`,
+		method: 'GET'
+	})
 }
 
