@@ -1016,7 +1016,10 @@
             "BeiZuXinXi": "备注信息",
             "ShangChuanFaShengCuoWu": "上传发生错误，请稍后重试",
             "ShanChuHang": "删除行",
-            "XinZengHang": "新增行"
+            "XinZengHang": "新增行",
         },
+        "BJZS":{
+            "LK_BAOJIAZUSHOU_MJ":"报价分析汇总-模具"
+        }
     })
 }))

@@ -933,5 +933,8 @@
             'ChongFuCheHui': '重复撤回', // 重复撤回
             'QiYuShuJuZhengChangCheHui': '其余数据正常撤回', // 其余数据正常撤回 
         },
+        "BJZS":{
+            "LK_BAOJIAZUSHOU_MJ":"报价助手-模具"
+        }
     })
 }))

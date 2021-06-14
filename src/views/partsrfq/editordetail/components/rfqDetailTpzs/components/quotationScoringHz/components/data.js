@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-05-28 14:32:26
- * @LastEditTime: 2021-06-14 12:00:50
+ * @LastEditTime: 2021-06-14 16:28:40
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\data.js
@@ -43,7 +43,7 @@ export const fstableTileXh = function(index){
     {type:'',props:`${index?index:''}tto`,label:'TTO',i18n:'',width:'100',tooltip:false},
     {type:'',props:`${index?index:''}externalDevelopmentCost`,label:'External Development cost',i18n:'',width:'100',tooltip:false},
     {type:'',props:`${index?index:''}releaseCost`,label:'release cost',i18n:'',width:'100',tooltip:false},
-    // {type:'',props:`a${index?index:''}quo.de`,label:'Quotation details',i18n:'',width:'',tooltip:false},
+    {type:'',props:`Quotationdetails`,label:'Quo.details',i18n:'',width:'100',tooltip:false},
   ]
 }
 //cache list
@@ -309,7 +309,7 @@ export function kmOrbukeage(type,priceInfo,exampleDatas){
           exampleData[number+'lcAPrice'] = value.kmAPrice
           exampleData[number+'tooling'] = value.kmTooling
         }else{
-          exampleData[number+'lcAPrice'] = value.budget
+          exampleData[number+'tooling'] = value.budget
         }
       }
       if(key == 'ebr'){
@@ -368,8 +368,7 @@ export const centerSupplierList = function(index){
     {type:'',props:`${index}prototypePrice`,label:'Prototype price',i18n:'',width:'100',tooltip:false},
     {type:'',props:`${index}tto`,label:'TTO',i18n:'',width:'100',tooltip:false},
     {type:'',props:`${index}externalDevelopmentCost`,label:'External Development cost',i18n:'',width:'100',tooltip:false},
-    {type:'',props:`${index}releaseCost`,label:'release cost',i18n:'',width:'100',tooltip:false},
-    {type:'',props:`btn`,label:'Quotation details',i18n:'',width:'100',tooltip:false},
+    {type:'',props:`${index}releaseCost`,label:'release cost',i18n:'',width:'100',tooltip:false}
   ]
 }
 

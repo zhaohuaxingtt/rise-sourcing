@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-26 19:14:39
- * @LastEditTime: 2021-06-12 15:29:58
+ * @LastEditTime: 2021-06-14 16:42:38
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringTracking\components\tableList.vue
@@ -39,7 +39,7 @@
             {{scope.row[item.props]?scope.row[item.props]:"-"}}
           </template>
         </el-table-column>
-        <el-table-column v-if="item.props+''.indexOf('round') > -1" :key="index" align="center" :label="item.key ? $t(item.key) : item.name" :prop="item.props" :show-overflow-tooltip="item.tooltip" :width="item.width">
+        <el-table-column v-if="(item.props+'').indexOf('round') > -1" :key="index" align="center" :label="item.key ? $t(item.key) : item.name" :prop="item.props" :show-overflow-tooltip="item.tooltip" :width="item.width">
           <template slot-scope="scope">
           <!--------------------------------------------------------->
           <!------------------------内容是打勾------------------------>
