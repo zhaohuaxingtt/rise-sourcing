@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-24 14:39:43
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-08 11:10:16
+ * @LastEditTime: 2021-06-14 12:08:53
  * @Description: RS单维护界面
  * @FilePath: \front-web\src\views\designate\designatedetail\rsSingleMaintenance\index.vue
 -->
@@ -282,7 +282,7 @@ export default {
           this.otherNominationType = res.data.nominateProcessType
           this.tableListData = cloneDeep(res.data?.lines).map(item => {
             const singleItem = {...item}
-            item.ltcs.forEach((element, index) => {
+            item.ltcs?.forEach((element, index) => {
               singleItem['ltcDate'+(index+1)] = element.ltcDate,
               singleItem['ltcDateIsChange'+(index+1)] = element.ltcDateIsChange,
               singleItem['ltcRate'+(index+1)] = element.ltcRate,
@@ -292,7 +292,7 @@ export default {
           })
           this.tableListDataTemp = cloneDeep(res.data?.lines).map(item => {
             const singleItem = {...item}
-            item.ltcs.forEach((element, index) => {
+            item.ltcs?.forEach((element, index) => {
               singleItem['ltcDate'+(index+1)] = element.ltcDate,
               singleItem['ltcDateIsChange'+(index+1)] = element.ltcDateIsChange,
               singleItem['ltcRate'+(index+1)] = element.ltcRate,
