@@ -11,7 +11,7 @@
     <div class="quotationHz margin-bottom20">
       <!--------------输入框模块-------------->
       <div class='search'>
-        <div>
+        <div class="needAddWhi">
           <span>Hide/unHide：</span>
           <iSelect v-model="backChoose" multiple :collapse-tags='true' @visible-change='visibleChange'>
             <el-option v-for='(items,index) in backChooseLists' :key='index' :label="items.label" :value="items.props"></el-option>
@@ -19,7 +19,7 @@
         </div>
         <div>
           <span>Quota. Round：</span>
-          <iSelect v-model="round">
+          <iSelect v-model="round" style="width:100px">
             <el-option label="All" value="" v-for='(items,index) in rundList' :key='index'></el-option>
           </iSelect> 
         </div>
@@ -334,5 +334,8 @@ export default{
         }
       }
     }
+  }
+  .needAddWhi{
+    width: 420px;
   }
 </style>

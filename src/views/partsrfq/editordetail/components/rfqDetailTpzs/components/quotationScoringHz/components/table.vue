@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-28 15:03:47
- * @LastEditTime: 2021-06-05 17:53:36
+ * @LastEditTime: 2021-06-14 16:56:25
  * @LastEditors: Please set LastEditors
  * @Description: 特殊表格实现
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\table.vue
@@ -30,9 +30,14 @@
         :label="item.i18n ? $t(item.i18n) : item.label"
         :width="item.width || 50"
         align="center"
+        :prop='"cfPartAPrice"'
         :resizable="false"
         :selectable='selectable'
-      />
+      >
+        <template slot-scope="scope">
+            <span v-if='scope.row[groupName]'>{{scope.row[groupName]}}</span>
+        </template>
+      </el-table-column>
       <!-----------------表格中内容模块------------------------>
       <el-table-column
         v-else
@@ -41,7 +46,7 @@
         :width="item.width"
         :prop='item.props'
         align="center"
-        :sortable='item.props == "cfPartAPrice"'
+        :sortable='(item.props == "cfPartAPrice" || item.props == "partNo")'
         :resizable="false"
       >
         <!----------在表头上方需要显示评分的点，插入表头标签------>
@@ -70,9 +75,14 @@
               <span :class="{chengse:scope.row[item.props].cfPartAPriceStatus == 2}">{{scope.row[item.props]}}</span>
           </template>
           <template v-else-if='removeKeysNumber(item.props) == "lcAPrice"'>
-              <span :class="{lvse:scope.row[item.props] == 1}">{{scope.row[item.props]}}</span>
+              <span :class="{lvse:scope.row[item.props].lcAPriceStatus == 1}">{{scope.row[item.props]}}</span>
           </template>
-          <span v-else>{{scope.row[item.props]}}</span>
+          <template v-else-if='removeKeysNumber(item.props) == "Quotationdetails" && scope.$index < tableData.length -3'>
+             <span class="link" @click="optionPage(scope.row)">查看详情</span>
+          </template>
+          <template v-else>
+            <span>{{scope.row[item.props]}}</span>
+          </template>
         </template>
       </el-table-column>
     </template>
@@ -109,6 +119,9 @@ export default{
     }
   },
   methods:{
+    optionPage(){
+      
+    },
         /**
      * 分组函数，用于element-ui table 分组合并
      * target 目标数组
