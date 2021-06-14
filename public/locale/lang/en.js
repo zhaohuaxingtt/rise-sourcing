@@ -932,6 +932,7 @@
             'QiYuShuJuZhengChangTiJiao': '其余数据正常提交', // 其余数据正常提交
             'ChongFuCheHui': '重复撤回', // 重复撤回
             'QiYuShuJuZhengChangCheHui': '其余数据正常撤回', // 其余数据正常撤回 
+            'QingXuanZeCbdCengJiWeiL3DeShuJu': '请选择CBD层级为L3的数据', // 请选择CBD层级为L3的数据
         },
     })
 }))

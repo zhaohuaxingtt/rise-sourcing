@@ -995,6 +995,7 @@
             'FenZuMingChen': '分组名称', //分组名称
             'QingShuRuFenZuMing': '请输入分组名', //请输入分组名
             'NingShuRuDeBiLiBuHeFa': '您输入的比例不合法', //您输入的比例不合法
+            'QingXuanZeCbdCengJiWeiL3DeShuJu': '请选择CBD层级为L3的数据', // 请选择CBD层级为L3的数据
         },
         // 决策资料
         "strategicdoc": {

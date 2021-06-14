@@ -1,7 +1,7 @@
 <!--
  * @Author: ldh
  * @Date: 2021-05-29 16:29:00
- * @LastEditTime: 2021-06-14 14:43:26
+ * @LastEditTime: 2021-06-14 16:10:42
  * @LastEditors: ldh
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqPending\components\partDetaiList\components\kmDialog.vue
@@ -148,6 +148,7 @@ export default {
     // 提交
     handleSend() {
       if (this.multipleSelection.length < 1) return iMessage.warn(this.$t("nominationSuggestion.QingXuanZeZhiShaoYiTiaoShuJu"))
+      if (this.multipleSelection.some(item => item.cbdLevel != "L3")) return iMessage.warn(this.$t("nominationSuggestion.QingXuanZeCbdCengJiWeiL3DeShuJu"))
       if (this.multipleSelection.some(item => item.sendKmFlag == 1)) return iMessage.warn(this.$t("nominationSuggestion.QingWuXuanZeYiFaSongDeShuJu"))
 
       this.sendLoading = true
@@ -177,6 +178,7 @@ export default {
     // 撤回
     handleRecall() {
       if (this.multipleSelection.length < 1) return iMessage.warn(this.$t("nominationSuggestion.QingXuanZeZhiShaoYiTiaoShuJu"))
+      if (this.multipleSelection.some(item => item.cbdLevel != "L3")) return iMessage.warn(this.$t("nominationSuggestion.QingXuanZeCbdCengJiWeiL3DeShuJu"))
       if (this.multipleSelection.some(item => item.sendKmFlag == 0)) return iMessage.warn(this.$t("nominationSuggestion.QingWuXuanZeWeiFaSongDeShuJu"))
 
       this.recallLoading = true
