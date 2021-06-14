@@ -53,13 +53,13 @@ export default {
       default: 'Nomination Scenario Overview'
     },
     data: {
-      type: Array,
-      default: () => ([[0, 0, 0, 0], [0, 0, 0, 0]])
+      type: Object,
+      default: () => ({})
     },
     // 供应商数组
     supplier: {
       type:Array,
-      default: () => ([])
+      default: () => ({})
     }
   },
   data() {
@@ -92,6 +92,10 @@ export default {
   methods: {
     load(mapControl = '') {
       const vm = echarts().init(document.getElementById("charts0"));
+      const self = this
+      // 分组汇总 权重汇总
+      const groupedInTotal = self.data && self.data.groupedInTotal
+      const groupedWeightInTotal = self.data && self.data.groupedWeightInTotal
       this.$nextTick(() => {
         // 业务指标
         const quota = [
@@ -111,21 +115,31 @@ export default {
         }
         const series = []
         seriesData.forEach((item, index) => {
+          const i = index
           series.push({
               data: item,
               type: 'bar',
               barWidth: 30,
-                stack: 'total',
+              stack: 'total',
               label: {
-                show: true,
+                show: index === (seriesData.length - 1),
                 position: 'top',
                 textStyle: {
                   color: '#485465'
+                },
+                formatter: function(prams) {
+                  const labelValue = [
+                    prams.data,
+                    String(groupedInTotal),
+                    prams.data,
+                    String(groupedWeightInTotal)
+                  ]
+                  return labelValue[prams.dataIndex]
                 }
               },
               itemStyle: {
                 normal: {
-                  barBorderRadius: [0, 0, 0, 0],
+                  barBorderRadius: index === seriesData.length - 1 ? [5, 5, 0, 0] : [0, 0, 0, 0],
                   color: function(params){
                     const bgColor = index === 0 ? '#005cfa' : colorPanel[index]
                     let colorlist = [bgColor, bgColor, bgColor, bgColor];
@@ -154,12 +168,41 @@ export default {
                 decoration: 'none',
             },
             formatter: function(params) {
-              console.log(params)
-              const tpl = `
-              <div class="toolTipBox">
-                123123
-              </div>`
-              return tpl
+              const wholePackage = self.data && self.data.wholePackage
+              let tpl = ''
+
+              // toolTip Best TTO \n for Whole Package
+              params.dataIndex === 0 && (tpl = `
+              <div class="toolTipBox-content">
+                <p>Best TTO <br> for Whole Package: <span class="value">${params.data}</span></p>
+              </div>`)
+
+              // toolTip Best TTO \n by Group
+              params.dataIndex === 1 && (tpl = `
+              <div class="toolTipBox-content">
+                <p>Compared to Best TTO <br> for Whole Package: 
+                  <span class="value">${Number(params.data/wholePackage*100).toFixed(2)}%</span>
+                </p>
+              </div>`)
+
+              // toolTip Best TTO \n by Part
+              params.dataIndex === 2 && (tpl = `
+              <div class="toolTipBox-content">
+                <p>Best TTO <br> by Part: <span class="value">${params.data}</span></p>
+              </div>`)
+
+              params.dataIndex === 3 && (tpl = `
+              <div class="toolTipBox-content">
+                <p>Compared to Best TTO <br> for Whole Package: 
+                  <span class="value">${Number(params.data/wholePackage*100).toFixed(2)}%</span>
+                </p>
+              </div>`)
+
+              return `
+              <div class="toolTipBox ${params.data === 0 ? 'hide' : ''}">
+                ${tpl}
+              </div>
+              `
             }
           },
           xAxis: {
@@ -224,7 +267,7 @@ export default {
   watch: {
     data: {
       handler(newVal) {
-        this.dataList = newVal
+        this.dataList = (newVal && newVal.data) || []
         this.$nextTick(() => {
           this.load()
         })
@@ -273,7 +316,23 @@ export default {
   }
   ::v-deep.toolTipBox {
     background: #fff;
+    border-radius: 5px;
     padding: 20px;
+    border: 1px solid #efefef;
+    &.hide {
+      display: none !important;
+    }
+    p {
+      font-size: 12px;
+      font-weight: 100;
+    }
+    .value {
+      font-size: 12px;
+      color: #000;
+      font-weight: 600;
+      display: inline-block;
+      padding-left: 10px;
+    }
   }
 }
 </style>
