@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-24 14:39:43
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-14 19:10:35
+ * @LastEditTime: 2021-06-14 19:31:19
  * @Description: RS单维护界面
  * @FilePath: \front-web\src\views\designate\designatedetail\rsSingleMaintenance\index.vue
 -->
@@ -284,7 +284,7 @@ export default {
             const singleItem = { ...item }
             const watchChangeData = ['aprice','bprice','investFee','investFeeIsShared','devFee','devFeeIsShared']
             watchChangeData?.forEach((element, index) => {
-              singleItem[element+'Temp'] = cloneDeep(item[element]) || ''
+              singleItem[element+'Temp'] = cloneDeep(item[element] === null ? '' : item[element])
             })
             defaultLtcs?.forEach((element, index) => {
               singleItem['ltcDate'+(index+1)] = cloneDeep(item.ltcs?.index?.ltcDate || element.ltcDate),

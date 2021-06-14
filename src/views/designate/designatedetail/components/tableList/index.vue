@@ -2,7 +2,7 @@
  * @Descripttion: 
  * @Author: Luoshuang
  * @Date: 2021-05-21 14:30:41
- * @LastEditTime: 2021-06-14 19:02:09
+ * @LastEditTime: 2021-06-14 19:25:20
 -->
 <template>
   <el-table ref="multipleTable" fit tooltip-effect='light' :height="height" :data='tableData' v-loading='tableLoading' @selection-change="handleSelectionChange" :empty-text="$t('LK_ZANWUSHUJU')" >
@@ -124,8 +124,8 @@ export default{
       return row.fileList?.map(item => item.fileName).join('<br/>')
     },
     changeValue(val, row, item) {
-      // console.log(val, row, item)
-      row[item.isChange] = row[item.props+'Temp'] !== val
+      console.log(val, row, item)
+      row[item.isChange] = row[item.props+'Temp'] !== (val === null ? '' : val)
       // this.$emit('changeTableValue', val, row, item)
     },
     getValue(row, item) {
