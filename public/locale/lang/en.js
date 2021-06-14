@@ -134,6 +134,8 @@
             'QingXuanZeRfqZhuangTai': '', // 请选择RFQ状态
             'LingJianHao': '', // 零件号
             'QingShuRuLingJianHao': '', // 请输入零件号
+            'LingJianMing': '', // 零件名
+            'QingShuRuLingJianMing': '', // 请输入零件名
             'CheXingXiangMu': '', // 车型项目
             'QingXuanZeCheXingXiangMu': '', // 请选择车型项目
             'Pca': 'PCA', // PCA
