@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-24 14:39:43
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-14 18:00:15
+ * @LastEditTime: 2021-06-14 19:10:35
  * @Description: RS单维护界面
  * @FilePath: \front-web\src\views\designate\designatedetail\rsSingleMaintenance\index.vue
 -->
@@ -203,8 +203,8 @@ export default {
       const params = this.tableListData.map(item => {
         return {
           nominateDetailId: item.nominateDetailId,
-          aPrice: item.aPrice,
-          bPrice: item.bPrice,
+          aPrice: item.aprice,
+          bPrice: item.bprice,
           investFee: item.investFee,
           investFeeIsShared: item.investFeeIsShared,
           devFee: item.devFee,
@@ -280,26 +280,24 @@ export default {
       getList(this.$route.query.desinateId).then(res => {
         if (res?.result) {
           this.otherNominationType = res.data.nominateProcessType
-          this.tableListData = cloneDeep(res.data?.lines).map(item => {
-            const singleItem = {...item}
-            defaultLtcs.forEach((element, index) => {
-              singleItem['ltcDate'+(index+1)] = item.ltcs?.index?.ltcDate || element.ltcDate,
+          const cloneData = cloneDeep(res.data?.lines).map(item => {
+            const singleItem = { ...item }
+            const watchChangeData = ['aprice','bprice','investFee','investFeeIsShared','devFee','devFeeIsShared']
+            watchChangeData?.forEach((element, index) => {
+              singleItem[element+'Temp'] = cloneDeep(item[element]) || ''
+            })
+            defaultLtcs?.forEach((element, index) => {
+              singleItem['ltcDate'+(index+1)] = cloneDeep(item.ltcs?.index?.ltcDate || element.ltcDate),
+              singleItem['ltcDate'+(index+1)+'Temp'] = cloneDeep(item.ltcs?.index?.ltcDate || element.ltcDate),
               singleItem['ltcDateIsChange'+(index+1)] = item.ltcs?.index?.ltcDateIsChange || element.ltcDateIsChange,
-              singleItem['ltcRate'+(index+1)] = item.ltcs?.index?.ltcRate || element.ltcRate,
+              singleItem['ltcRate'+(index+1)] = cloneDeep(item.ltcs?.index?.ltcRate || element.ltcRate),
+              singleItem['ltcRate'+(index+1)+'Temp'] = cloneDeep(item.ltcs?.index?.ltcRate || element.ltcRate),
               singleItem['ltcRateIsChange'+(index+1)] = item.ltcs?.index?.ltcRateIsChange || element.ltcRateIsChange
             })
             return singleItem
           })
-          this.tableListDataTemp = cloneDeep(res.data?.lines).map(item => {
-            const singleItem = {...item}
-            defaultLtcs.forEach((element, index) => {
-              singleItem['ltcDate'+(index+1)] = item.ltcs?.index?.ltcDate || element.ltcDate,
-              singleItem['ltcDateIsChange'+(index+1)] = item.ltcs?.index?.ltcDateIsChange || element.ltcDateIsChange,
-              singleItem['ltcRate'+(index+1)] = item.ltcs?.index?.ltcRate || element.ltcRate,
-              singleItem['ltcRateIsChange'+(index+1)] = item.ltcs?.index?.ltcRateIsChange || element.ltcRateIsChange
-            })
-            return singleItem
-          })
+          this.tableListData = cloneData
+          this.tableListDataTemp = cloneDeep(cloneData)
         } else {
           this.tableListData = []
           this.tableListDataTemp = []
