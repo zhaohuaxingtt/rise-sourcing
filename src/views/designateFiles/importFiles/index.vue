@@ -124,8 +124,7 @@ export default {
       },
       // 下载模板
       downloadTemplate(){
-        // downloadImportFile();
-        window.open('/tpInfoApi/procurementrequirement/web/affix/affix-requirement-files','_blank');
+        downloadImportFile();
       },
       // 获取列表
       getList(){

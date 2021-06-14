@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-26 11:16:51
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-09 10:16:28
+ * @LastEditTime: 2021-06-14 12:16:53
  * @Description: 配件综合管理页面
  * @FilePath: \front-web\src\views\accessoryPart\integratedManage\index.vue
 -->
@@ -42,7 +42,7 @@
               <span class="font18 font-weight">配件综合查询</span>
                 <div class="floatright">
                   <!--------------------分配询价科室按钮----------------------------------->
-                  <iButton @click="changeInquiryDialogVisible(true)" >分配询价科室</iButton>
+                  <iButton @click="openInquiryDialog" >分配询价科室</iButton>
                   <!--------------------分配询价采购员按钮----------------------------------->
                   <iButton @click="openBuyerDialog" >分配询价采购员</iButton>
                   <!--------------------退回按钮----------------------------------->
@@ -73,11 +73,11 @@
           <!------------------------------------------------------------------------>
           <!--                  分配询价科室弹窗                                   --->
           <!------------------------------------------------------------------------>
-          <assignInquiryDepartmentDialog :dialogVisible="inquiryDialogVisible" @changeVisible="changeInquiryDialogVisible" @sendAccessory="sendAccessoryDept" />
+          <assignInquiryDepartmentDialog ref="sendliniedept" :dialogVisible="inquiryDialogVisible" @changeVisible="changeInquiryDialogVisible" @sendAccessory="sendAccessoryDept" />
           <!------------------------------------------------------------------------>
           <!--                  分配询价采购员弹窗                                 --->
           <!------------------------------------------------------------------------>
-          <assignInquiryBuyerDialog :dialogVisible="buyerDialogVisible" @changeVisible="changeBuyerDialogVisible" @sendAccessory="sendAccessoryLINIE" :deptId="selectDeptId" />
+          <assignInquiryBuyerDialog ref="sendlinie" :dialogVisible="buyerDialogVisible" @changeVisible="changeBuyerDialogVisible" @sendAccessory="sendAccessoryLINIE" :deptId="selectDeptId" />
           <!------------------------------------------------------------------------>
           <!--                  退回EPS弹窗                                       --->
           <!------------------------------------------------------------------------>
@@ -395,6 +395,24 @@ export default {
       })
     },
     /**
+     * @Description: 打开分配询价科室弹窗，若未勾选配件或勾选的配件已有部门或勾选的配件的部门不一致则给出提示不允许操作
+     * @Author: Luoshuang
+     * @param {*}
+     * @return {*}
+     */ 
+    openInquiryDialog() {
+      if (this.selectParts.length < 1) {
+        iMessage.warn('请选择配件')
+        return
+      }
+      const selectPartsDept = uniq(this.selectParts.map(item => item.respDept))
+      if (selectPartsDept.length !== 1 || selectPartsDept[0]) {
+        iMessage.warn('请选择未分配部门的配件')
+        return
+      }
+      this.changeInquiryDialogVisible(true)
+    },
+    /**
      * @Description: 打开分配询价采购员弹窗，若未勾选配件或勾选的配件没有部门或勾选的配件的部门不一致则给出提示不允许操作
      * @Author: Luoshuang
      * @param {*}
@@ -405,7 +423,7 @@ export default {
         iMessage.warn('请选择配件')
         return
       }
-      const selectPartsDept = uniq(this.selectParts.map(item => item.csfuserId))
+      const selectPartsDept = uniq(this.selectParts.map(item => item.respDept))
       if (selectPartsDept.length !== 1) {
         iMessage.warn('请选择相同部门的配件')
         return
@@ -438,6 +456,12 @@ export default {
           this.getTableList()
         } else {
           iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
+        }
+      }).finally(() => {
+        if(respDept) {
+          this.$refs.sendliniedept.changeLoading && this.$refs.sendliniedept.changeLoading(false)
+        } else {
+          this.$refs.sendlinie.changeLoading && this.$refs.sendlinie.changeLoading(false)
         }
       })
     },
