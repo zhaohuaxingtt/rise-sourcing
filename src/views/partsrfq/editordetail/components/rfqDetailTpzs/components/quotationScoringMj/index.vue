@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-27 14:55:03
- * @LastEditTime: 2021-06-12 16:45:35
+ * @LastEditTime: 2021-06-14 13:42:32
  * @LastEditors: Please set LastEditors
  * @Description: 采购员报价与基本分析模具界面
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringMj\index.vue
@@ -16,12 +16,13 @@ export default {
     useCardSlot:false,
     hasSupplierComponets:true,
     supplierId:'11034',
-    supplierList:[]
+    supplierList:[],
+    myDisabled:true
     }
   },
   computed:{
     disabled(){
-      return false
+      return !this.dgysBj
     }
   },
   created(){

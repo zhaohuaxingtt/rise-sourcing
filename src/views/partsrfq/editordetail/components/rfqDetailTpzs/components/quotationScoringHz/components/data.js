@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-05-28 14:32:26
- * @LastEditTime: 2021-06-08 19:15:37
+ * @LastEditTime: 2021-06-14 12:00:50
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\data.js
@@ -272,7 +272,7 @@ export function subtotal(tableHeader,dataList,priceInfo){
           dataList.forEach(element => {
             for(let key in element){
                 if(items.props == key){
-                  total[key] = _getMathNumber(`${total[key] || 0}+${element[key] || 0}`)
+                  total[key] = _getMathNumber(`${total[key] || 0}+${element[key] || 0}*${element['ebr']}`)
                 }
               }
           });
