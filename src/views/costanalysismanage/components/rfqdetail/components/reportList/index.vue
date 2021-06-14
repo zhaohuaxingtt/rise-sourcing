@@ -127,10 +127,10 @@ export default {
                 pageSize:page.pageSize,
             }
             getFileHistory(params).then((res)=>{
-                const {code,data} = res; 
+                const {code,data,total} = res; 
                 if(code === '200' && data){
-                    const {records,total} = data;
-                    this.tableListData = records;
+                    // const {records,total} = data;
+                    this.tableListData = data;
                     this.page.totalCount = total;
                 }
                 this.loading =  false;

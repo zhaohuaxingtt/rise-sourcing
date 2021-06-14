@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-05-27 12:32:54
- * @LastEditTime: 2021-06-11 17:37:19
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-06-14 16:46:47
+ * @LastEditors: ldh
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\costanalysismanage\components\home\index.vue
 -->
@@ -49,6 +49,12 @@
           <iInput
             v-model="form.partNum"
             :placeholder="$t('costanalysismanage.QingShuRuLingJianHao')"
+          ></iInput>
+        </el-form-item>
+        <el-form-item :label="$t('costanalysismanage.LingJianMing')">
+          <iInput
+            v-model="form.partName"
+            :placeholder="$t('costanalysismanage.QingShuRuLingJianMing')"
           ></iInput>
         </el-form-item>
         <el-form-item :label="$t('costanalysismanage.CheXingXiangMu')">

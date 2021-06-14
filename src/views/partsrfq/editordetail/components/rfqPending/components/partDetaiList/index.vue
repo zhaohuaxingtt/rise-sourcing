@@ -1,7 +1,7 @@
 <!--
 * @author:shujie
 * @Date: 2021-2-25 11:42:11
- * @LastEditors: Please set LastEditors
+ * @LastEditors: ldh
 * @Description: 待办事项-零件清单
  -->
 <template>
@@ -45,7 +45,7 @@ import {
   iPagination,
   iMessage,
   iMessageBox
-} from "@/components";
+} from "rise";
 import tableList from "@/views/partsign/home/components/tableList";
 import {
   tableTitle,

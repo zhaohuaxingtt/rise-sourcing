@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2021-05-27 13:45:35
- * @LastEditTime: 2021-06-11 15:45:38
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-06-14 16:48:28
+ * @LastEditors: ldh
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\costanalysismanage\components\home\components\data.js
  */
@@ -44,6 +44,7 @@ export const queryForm = {
   rfqId: "",
   rfqStatus: "",
   partNum: "",
+  partName: "",
   carType: "",
   pca: "",
   tia: "",

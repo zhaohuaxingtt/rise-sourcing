@@ -139,6 +139,8 @@
             'QingXuanZeRfqZhuangTai': '请选择RFQ状态', // 请选择RFQ状态
             'LingJianHao': '零件号', // 零件号
             'QingShuRuLingJianHao': '请输入零件号', // 请输入零件号
+            'LingJianMing': '零件名', // 零件名
+            'QingShuRuLingJianMing': '请输入零件名', // 请输入零件名
             'CheXingXiangMu': '车型项目', // 车型项目
             'QingXuanZeCheXingXiangMu': '请选择车型项目', // 请选择车型项目
             'Pca': 'PCA', // PCA
@@ -995,6 +997,7 @@
             'FenZuMingChen': '分组名称', //分组名称
             'QingShuRuFenZuMing': '请输入分组名', //请输入分组名
             'NingShuRuDeBiLiBuHeFa': '您输入的比例不合法', //您输入的比例不合法
+            'QingXuanZeCbdCengJiWeiL3DeShuJu': '请选择CBD层级为L3的数据', // 请选择CBD层级为L3的数据
         },
         // 决策资料
         "strategicdoc": {

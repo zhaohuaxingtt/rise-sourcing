@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-25 15:57:31
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-03 16:36:33
+ * @LastEditTime: 2021-06-14 13:04:44
  * @Description: 分配询价科室弹窗
  * @FilePath: \front-web\src\views\accessoryPart\signForPartsDemand\components\assignInquiryDepartment.vue
 -->
@@ -15,7 +15,7 @@
     width="381px"
   >
     <template slot="footer">
-      <iButton @click="handleConfirm">确认</iButton>
+      <iButton @click="handleConfirm" :loading="loading">确认</iButton>
       <iButton @click="handleCancel">取消</iButton>
     </template>
     <el-form>
@@ -44,7 +44,8 @@ export default {
   data() {
     return {
       respDept: '',
-      deptOptions: []
+      deptOptions: [],
+      loading: false
     }
   },
   watch: {
@@ -77,7 +78,11 @@ export default {
         iMessage.warn('请选择询价部门')
         return
       }
+      this.loading = true
       this.$emit('sendAccessory', this.respDept)
+    },
+    changeLoading(loading) {
+      this.loading = loading
     }
   }
 }

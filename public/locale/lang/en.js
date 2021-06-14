@@ -134,6 +134,8 @@
             'QingXuanZeRfqZhuangTai': '', // 请选择RFQ状态
             'LingJianHao': '', // 零件号
             'QingShuRuLingJianHao': '', // 请输入零件号
+            'LingJianMing': '', // 零件名
+            'QingShuRuLingJianMing': '', // 请输入零件名
             'CheXingXiangMu': '', // 车型项目
             'QingXuanZeCheXingXiangMu': '', // 请选择车型项目
             'Pca': 'PCA', // PCA
@@ -932,6 +934,7 @@
             'QiYuShuJuZhengChangTiJiao': '其余数据正常提交', // 其余数据正常提交
             'ChongFuCheHui': '重复撤回', // 重复撤回
             'QiYuShuJuZhengChangCheHui': '其余数据正常撤回', // 其余数据正常撤回 
+            'QingXuanZeCbdCengJiWeiL3DeShuJu': '请选择CBD层级为L3的数据', // 请选择CBD层级为L3的数据
         },
         "BJZS":{
             "LK_BAOJIAZUSHOU_MJ":"报价助手-模具"
