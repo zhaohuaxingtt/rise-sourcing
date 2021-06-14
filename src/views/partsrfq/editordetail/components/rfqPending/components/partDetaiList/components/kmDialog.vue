@@ -1,7 +1,7 @@
 <!--
  * @Author: ldh
  * @Date: 2021-05-29 16:29:00
- * @LastEditTime: 2021-06-14 16:10:42
+ * @LastEditTime: 2021-06-14 16:32:10
  * @LastEditors: ldh
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqPending\components\partDetaiList\components\kmDialog.vue
@@ -30,10 +30,11 @@
         :tableData="tableListData"
         :tableTitle="tableTitle"
         :tableLoading="loading"
+        :cellClassName="cellClass"
         @handleSelectionChange="handleSelectionChange">
-        <!-- <template #sendKmFlag="scope">
-          <span>{{ scope.row.sendKmFlag | sendKmFlagFilter }}</span>
-        </template>   -->
+        <template #sendKmFlag="scope">
+          <span>{{ scope.row.cbdLevel == "L3" ? scope.row.sendKmFlag : "" }}</span>
+        </template>  
       </tableList>
     </div>
     <template #footer class="footer">
@@ -143,7 +144,7 @@ export default {
       .catch(() => this.loading = false)
     },
     handleSelectionChange(list) {
-      this.multipleSelection = list
+      this.multipleSelection = list.filter(item => item.cbdLevel === "L3")
     },
     // 提交
     handleSend() {
@@ -198,6 +199,11 @@ export default {
         this.recallLoading = false
       })
       .catch(() => this.recallLoading = false)
+    },
+    cellClass(row) {
+      if (row.row.cbdLevel != "L3") {
+        return "hideCheckbox"
+      }
     }
   }
 };
