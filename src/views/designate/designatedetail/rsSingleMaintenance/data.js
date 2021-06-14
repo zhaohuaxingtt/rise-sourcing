@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-24 15:31:35
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-07 21:04:40
+ * @LastEditTime: 2021-06-14 18:06:06
  * @Description: 
  * @FilePath: \front-web\src\views\designate\designatedetail\rsSingleMaintenance\data.js
  */
@@ -17,7 +17,7 @@ export const rsTableTitle = [
   {props:'aprice',name:'A价', key: "", tooltip: false, editable: true, required: true, type: 'input', isChange: 'apriceIsChange'},
   {props:'bprice',name:'B价', key: "", tooltip: false, editable: true, required: true, type: 'input', isChange: 'bpriceIsChange'},
   {props:'investFee',name:'投资费(不含税)', key: "", tooltip: false, editable: true, required: true, type: 'input', width: 120, isChange: 'investFeeIsChange'},
-  {props:'investFeeIsShared',name:'是否分摊', key: "", tooltip: false, editable: true, required: true, type: 'select', selectOption:[{value: true, label: '是'},{value: false, label: '否'}], isChange: 'investFeeIsShared'},
+  {props:'investFeeIsShared',name:'是否分摊', key: "", tooltip: false, editable: true, required: true, type: 'select', selectOption:[{value: true, label: '是'},{value: false, label: '否'}], isChange: 'investFeeIsSharedIsChange'},
   {props:'devFee',name:'开发费(含税)', key: "", tooltip: false, editable: true, required: true, type: 'input', width: 120, isChange: 'devFeeIsChange'},
   {props:'devFeeIsShared',name:'是否分摊', key: "", tooltip: false, editable: true, required: true, type: 'select', selectOption:[{value: true, label: '是'},{value: false, label: '否'}], isChange: 'devFeeIsSharedIsChange'},
   {props:'beginYearReduce',name:'年降开始', key: "", tooltip: true},
@@ -43,4 +43,16 @@ export const rsTableTitle = [
 
 export const rsMockData = [
   {a: 'FS21-0123', a1: '23D4328947', b: 'xxx', c: 'shagnhaihuizhong', d: '10002', e: '', f: '2.13', g: '2.13', h: '100000', i: 'Y', j: '100000', 'k': 'Y', m: '2021-01-01', n: '13%'}
+]
+
+export const defaultLtcs = [
+  {ltcDate:'',ltcDateIsChange:false,ltcRate: '',ltcRateIsChange:false},
+  {ltcDate:'',ltcDateIsChange:false,ltcRate: '',ltcRateIsChange:false},
+  {ltcDate:'',ltcDateIsChange:false,ltcRate: '',ltcRateIsChange:false},
+  {ltcDate:'',ltcDateIsChange:false,ltcRate: '',ltcRateIsChange:false},
+  {ltcDate:'',ltcDateIsChange:false,ltcRate: '',ltcRateIsChange:false},
+  {ltcDate:'',ltcDateIsChange:false,ltcRate: '',ltcRateIsChange:false},
+  {ltcDate:'',ltcDateIsChange:false,ltcRate: '',ltcRateIsChange:false},
+  {ltcDate:'',ltcDateIsChange:false,ltcRate: '',ltcRateIsChange:false},
+  {ltcDate:'',ltcDateIsChange:false,ltcRate: '',ltcRateIsChange:false}
 ]

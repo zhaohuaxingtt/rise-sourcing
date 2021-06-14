@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-24 14:39:43
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-14 12:08:53
+ * @LastEditTime: 2021-06-14 18:00:15
  * @Description: RS单维护界面
  * @FilePath: \front-web\src\views\designate\designatedetail\rsSingleMaintenance\index.vue
 -->
@@ -79,7 +79,7 @@
 <script>
 import { iPage, iCard, iButton, iSearch, iInput, iMessage } from 'rise'
 import tableList from '../components/tableList'
-import { rsTableTitle, rsMockData } from './data'
+import { rsTableTitle, rsMockData, defaultLtcs } from './data'
 import detailTop from '../components/topComponents'
 import rsDialog from '@/views/partsprocure/editordetail/components/designateInfo/components/rsEEdition'
 import { getList, readQuotation, downloadRSDoc, updateRS } from '@/api/designate/decisiondata/rs'
@@ -209,9 +209,9 @@ export default {
           investFeeIsShared: item.investFeeIsShared,
           devFee: item.devFee,
           devFeeIsShared: item.devFeeIsShared,
-          ltcs: item.ltcs.map((ltcsItem, ltcIndex) => {
+          ltcs: defaultLtcs.map((ltcsItem, ltcIndex) => {
             return {
-              ltcDate: moment(item['ltcDate'+(ltcIndex+1)]).format('yyyy-MM'),
+              ltcDate: item['ltcDate'+(ltcIndex+1)],
               ltcDateIsChange:item['ltcDateIsChange'+(ltcIndex+1)],
               ltcRate:item['ltcRate'+(ltcIndex+1)],
               ltcRateIsChange:item['ltcRateIsChange'+(ltcIndex+1)]
@@ -282,22 +282,22 @@ export default {
           this.otherNominationType = res.data.nominateProcessType
           this.tableListData = cloneDeep(res.data?.lines).map(item => {
             const singleItem = {...item}
-            item.ltcs?.forEach((element, index) => {
-              singleItem['ltcDate'+(index+1)] = element.ltcDate,
-              singleItem['ltcDateIsChange'+(index+1)] = element.ltcDateIsChange,
-              singleItem['ltcRate'+(index+1)] = element.ltcRate,
-              singleItem['ltcRateIsChange'+(index+1)] = element.ltcRateIsChange
-            });
+            defaultLtcs.forEach((element, index) => {
+              singleItem['ltcDate'+(index+1)] = item.ltcs?.index?.ltcDate || element.ltcDate,
+              singleItem['ltcDateIsChange'+(index+1)] = item.ltcs?.index?.ltcDateIsChange || element.ltcDateIsChange,
+              singleItem['ltcRate'+(index+1)] = item.ltcs?.index?.ltcRate || element.ltcRate,
+              singleItem['ltcRateIsChange'+(index+1)] = item.ltcs?.index?.ltcRateIsChange || element.ltcRateIsChange
+            })
             return singleItem
           })
           this.tableListDataTemp = cloneDeep(res.data?.lines).map(item => {
             const singleItem = {...item}
-            item.ltcs?.forEach((element, index) => {
-              singleItem['ltcDate'+(index+1)] = element.ltcDate,
-              singleItem['ltcDateIsChange'+(index+1)] = element.ltcDateIsChange,
-              singleItem['ltcRate'+(index+1)] = element.ltcRate,
-              singleItem['ltcRateIsChange'+(index+1)] = element.ltcRateIsChange
-            });
+            defaultLtcs.forEach((element, index) => {
+              singleItem['ltcDate'+(index+1)] = item.ltcs?.index?.ltcDate || element.ltcDate,
+              singleItem['ltcDateIsChange'+(index+1)] = item.ltcs?.index?.ltcDateIsChange || element.ltcDateIsChange,
+              singleItem['ltcRate'+(index+1)] = item.ltcs?.index?.ltcRate || element.ltcRate,
+              singleItem['ltcRateIsChange'+(index+1)] = item.ltcs?.index?.ltcRateIsChange || element.ltcRateIsChange
+            })
             return singleItem
           })
         } else {
