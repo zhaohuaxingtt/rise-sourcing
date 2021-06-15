@@ -336,6 +336,6 @@ export default{
     }
   }
   .needAddWhi{
-    width: 420px;
+    width: 480px;
   }
 </style>

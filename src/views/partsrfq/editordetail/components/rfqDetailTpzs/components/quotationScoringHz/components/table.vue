@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-28 15:03:47
- * @LastEditTime: 2021-06-14 16:56:25
+ * @LastEditTime: 2021-06-15 13:04:36
  * @LastEditors: Please set LastEditors
  * @Description: 特殊表格实现
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\table.vue
@@ -72,10 +72,10 @@
         </template>
         <template slot-scope="scope">
           <template v-if='removeKeysNumber(item.props) == "cfPartAPrice"'>
-              <span :class="{chengse:scope.row[item.props].cfPartAPriceStatus == 2}">{{scope.row[item.props]}}</span>
+              <span :class="{chengse:scope.row[item.props]['cfPartAPriceStatus'] == 2}">{{scope.row[item.props]}}</span>
           </template>
           <template v-else-if='removeKeysNumber(item.props) == "lcAPrice"'>
-              <span :class="{lvse:scope.row[item.props].lcAPriceStatus == 1}">{{scope.row[item.props]}}</span>
+              <span :class="{lvse:lvseFn(scope.row,item.props)}">{{scope.row[item.props]}}</span>
           </template>
           <template v-else-if='removeKeysNumber(item.props) == "Quotationdetails" && scope.$index < tableData.length -3'>
              <span class="link" @click="optionPage(scope.row)">查看详情</span>
@@ -119,6 +119,13 @@ export default{
     }
   },
   methods:{
+    lvseFn(row,props){
+      try {
+        return row[getPorpsNumber(props)+"lcAPriceStatus"] == 1
+      } catch (error) {
+        return false
+      }
+    },
     optionPage(){
       
     },
