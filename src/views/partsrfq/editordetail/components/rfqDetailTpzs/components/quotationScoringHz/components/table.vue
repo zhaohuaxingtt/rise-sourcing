@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-28 15:03:47
- * @LastEditTime: 2021-06-15 13:43:26
+ * @LastEditTime: 2021-06-15 15:25:49
  * @LastEditors: Please set LastEditors
  * @Description: 特殊表格实现
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\table.vue
@@ -13,7 +13,6 @@
     :height="height"
     :data="tableData"
     v-loading="loading"
-    @selection-change="handleSelectionChange"
     @cell-click="handleCellClick"
     :empty-text="$t('LK_ZANWUSHUJU')"
     :row-class-name="tableRowClassName"
@@ -25,18 +24,15 @@
       <!-----------------存在index selection情况------------------------>
       <el-table-column
         :key="index"
-        v-if="['selection', 'index'].includes(item.type)"
-        :type="item.type"
+        v-if="item.props == 'groupName'"
         :label="item.i18n ? $t(item.i18n) : item.label"
         :width="item.width || 50"
         align="center"
-        :prop='"cfPartAPrice"'
-        :resizable="false"
-        :selectable='selectable'
+        :prop='item.prop'
       >
-        <!-- <template slot-scope="scope">
-            <span v-if='scope.row[groupName]'>{{scope.row[groupName]}}</span>
-        </template> -->
+        <template slot-scope="scope">
+            <el-checkbox @change="handleSelectionChange" class="checkBox" v-model="scope.row.active"><span>{{scope.row[item.props]}}</span></el-checkbox>
+        </template>
       </el-table-column>
       <!-----------------表格中内容模块------------------------>
       <el-table-column
@@ -236,13 +232,25 @@ export default{
         return true
       }
     },
-    handleSelectionChange(val){
-      this.$emit('handleSelectionChange',val)
+    /**
+     * @description: 自定义表格选中。 
+     * @param {*} val
+     * @return {*}
+     */
+    handleSelectionChange(){
+      this.$emit('handleSelectionChange',this.tableData.filter(items=>items.active))
     }
   }
 }
 </script>
 <style lang='scss' scoped>
+  .checkBox{
+    ::v-deep.el-checkbox__label{
+      display: block;
+      padding-left: 0px;
+      font-size: 12px;
+    }
+  }
   .lvse{
     color:$color-green;
   }

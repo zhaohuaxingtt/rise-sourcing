@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-05-28 14:32:26
- * @LastEditTime: 2021-06-14 16:28:40
+ * @LastEditTime: 2021-06-15 15:19:39
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\data.js
@@ -9,7 +9,7 @@
 import {_getMathNumber} from '@/utils'
 //表格全集。
 export const fstitle = [
-  {type:'selection',props:'groupProps',label:'Group',i18n:'',width:'50',tooltip:false},
+  {type:'selection',props:'groupName',label:'Group',i18n:'',width:'80',tooltip:false},
   {type:'',props:'partNo',label:'Part No.',i18n:'',width:'100',tooltip:false},
   {type:'',props:'partName',label:'Part Name',i18n:'',width:'100',tooltip:false},
   {type:'',props:'partPrjCode',label:'FS/GS/SP No.',i18n:'',width:'100',tooltip:false},
@@ -47,7 +47,7 @@ export const fstableTileXh = function(index){
   ]
 }
 //cache list
-export const whiteList = ['groupProps','partNo','partName','cfPartAPrice','cfPartBPrice','pca','tia','ebr','lcAPrice','lcBPrice','tooling','ltc','ltcStaringDate','tto'] //默认需要显示的数据
+export const whiteList = ['groupName','partNo','partName','cfPartAPrice','cfPartBPrice','pca','tia','ebr','lcAPrice','lcBPrice','tooling','ltc','ltcStaringDate','tto'] //默认需要显示的数据
 /**
  * @description：通过需要循环的表格和基础表格，在通过白名单将需要所有的百名单删选出来
  * @param {*} whiteList
@@ -239,12 +239,14 @@ export function translateRating(supplierList,ratingList) {
 
 export function translateData(list){
   list.forEach(items=>{
+    items['active'] = false;
     items.bdlInfoList.forEach((bdl,index)=>{
       for(let keys in bdl){
         items[index>0?(index+keys):keys] = bdl[keys]
       }
     })
   })
+  console.log(list)
   return list
 }
 /**

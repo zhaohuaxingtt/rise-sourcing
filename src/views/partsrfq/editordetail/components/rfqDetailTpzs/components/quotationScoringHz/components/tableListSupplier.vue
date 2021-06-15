@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-28 15:03:47
- * @LastEditTime: 2021-06-08 19:36:02
+ * @LastEditTime: 2021-06-15 14:48:49
  * @LastEditors: Please set LastEditors
  * @Description: 特殊表格实现
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\table.vue
@@ -27,7 +27,7 @@
       >
         <!----------在表头上方需要显示评分的点，插入表头标签------>
         <template slot="header" slot-scope="scope">
-          <span>{{scope.column.label}}</span>
+          <el-tooltip :content="scope.column.label" effect='light'><span class="labelHader">{{scope.column.label}}</span></el-tooltip>
           <div class="headerContent" v-if='scope.column.label == "Supplier"'>
             <div class="c" :style="{width:cWidth}">
               <ul class="ca" style="width:200px;">
@@ -117,6 +117,12 @@ export default{
     }
     ::v-deep .el-table__header-wrapper{
       overflow: visible;
+      .labelHader{
+        width: 100%;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
     }
     ::v-deep.el-table__header{
       th{
