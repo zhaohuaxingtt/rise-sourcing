@@ -192,6 +192,7 @@
             'GongYingShang': '供应商', // 供应商
             'PcaFenXiJieGuo': '', // PCA分析结果
             'TiaFenXiJieGuo': '', // TIA分析结果
+            'QingXuanZeXuYaoBaoCunDeShuJu': '', // 请选择需要保存的数据
             'SavePcaResAndTiaResTips': '', // 请填写完整PCA分析结果和TIA分析结果
 
             'BaoGaoQingDan':'报告清单',// 报告清单

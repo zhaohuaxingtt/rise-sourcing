@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-24 14:39:43
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-15 10:28:43
+ * @LastEditTime: 2021-06-15 17:42:19
  * @Description: RS单维护界面
  * @FilePath: \front-web\src\views\designate\designatedetail\rsSingleMaintenance\index.vue
 -->
@@ -89,7 +89,7 @@ export default {
   components: { iPage, iCard, iButton, tableList, iSearch, iInput, detailTop, rsDialog },
   data() {
     return {
-      tableListData: rsMockData,
+      tableListData: [],
       tableTitle: rsTableTitle,
       tableLoading: false,
       form: {
@@ -174,6 +174,10 @@ export default {
      * @return {*}
      */    
     handleReadQuotation() {
+      if (this.selectedTableData.length < 1) {
+        iMessage.warn('请选择需要读取的报价单')
+        return
+      }
       this.readQuotationLoading = true
       const params = {
         nominateId: this.$route.query.desinateId,
@@ -286,7 +290,7 @@ export default {
     getTableList() {
       getList(this.$route.query.desinateId).then(res => {
         if (res?.result) {
-          this.otherNominationType = res.data.nominateProcessType
+          this.otherNominationType = res.data?.nominateProcessType
           const cloneData = cloneDeep(res.data?.lines).map(item => {
             const singleItem = { ...item }
             const watchChangeData = ['aprice','bprice','investFee','investFeeIsShared','devFee','devFeeIsShared']

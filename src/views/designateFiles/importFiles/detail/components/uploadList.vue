@@ -173,7 +173,7 @@ export default {
             if(!selectItems.length){
              iMessage.warn(this.$t('LK_QINGXUANZHEXUYAOXIAZHAIDEFUJIAN'));
             }else{
-                const list = selectItems.map((item)=>item.id);
+                const list = selectItems.map((item)=>item.fileName);
                 const data = {
                     applicationName: 'rise',
                     fileList:list.join(),
