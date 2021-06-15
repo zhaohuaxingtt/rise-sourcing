@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-25 13:57:11
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-14 13:06:21
+ * @LastEditTime: 2021-06-15 17:09:43
  * @Description: 
  * @FilePath: \front-web\src\views\accessoryPart\signForPartsDemand\index.vue
 -->
@@ -254,7 +254,7 @@ export default {
         iMessage.warn('请选择配件')
         return
       }
-      const selectPartsDept = uniq(this.selectParts.map(item => item.respDept))
+      const selectPartsDept = uniq(this.selectParts.map(item => item.csfuserDept))
       if (selectPartsDept.length !== 1 || selectPartsDept[0]) {
         iMessage.warn('请选择未分配部门的配件')
         return
@@ -272,13 +272,18 @@ export default {
         iMessage.warn('请选择配件')
         return
       }
-      const selectPartsDept = uniq(this.selectParts.map(item => item.respDept))
+      const selectPartsDept = uniq(this.selectParts.map(item => item.csfuserDept))
+      const selectPartsUser = uniq(this.selectParts.map(item => item.csfuserId))
       if (selectPartsDept.length !== 1) {
         iMessage.warn('请选择相同部门的配件')
         return
       }
       if (!selectPartsDept[0]) {
         iMessage.warn('请选择有部门的配件')
+        return
+      }
+      if (selectPartsUser.length !== 1 || selectPartsUser[0]) {
+        iMessage.warn('请选择未分配采购员的配件')
         return
       }
       this.selectDeptId = selectPartsDept[0]
@@ -294,8 +299,8 @@ export default {
     sendAccessory({respDept, respLINIE}) {
       const params = {
         accessoryIdList: this.selectParts.map(item => item.id),
-        respDept,
-        respLINIE
+        csfDept: respDept,
+        csfUserId: respLINIE
       }
       sendAccessoryInfo(params).then(res => {
         if (res.result) {

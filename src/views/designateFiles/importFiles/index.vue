@@ -24,7 +24,7 @@
                               @on-success="onDraingUploadsucess"
                           />
                       </span>
-                      <iButton  @click="downloadTemplate" > {{$t('LK_PEIJIANMUBANXIAZAI')}} </iButton>
+                      <iButton  @click="downloadTemplate" > {{$t('LK_FUJIANMUBANXIAZAI')}} </iButton>
                     </div>
                   </div>
                   <!-- 表格区域 -->
@@ -78,6 +78,7 @@ import {
   uploadImportFile,
   downloadImportFile,
 } from '@/api/designateFiles/importFiles'
+import { iMessage } from 'rise';
 export default {
     name:'importFiles',
     mixins: [pageMixins],
@@ -153,7 +154,14 @@ export default {
         const newFormData = new FormData()
         newFormData.append('file', content.file)
         newFormData.append('applicationName', 'rise')
-        const res = await uploadImportFile(newFormData);
+        await uploadImportFile(newFormData).then((res)=>{
+          const {code} = res;
+          if(code!=200){
+            iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+          }
+        }).catch((e)=>{
+          iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
+        });
       }
     }
 

@@ -24,6 +24,7 @@ import {
 } from "rise";
 import designateStep from './components/designateStep.vue'
 import decisionDataHeader from './components/decisionDataHeader'
+import { applyStep } from './components/data'
 
 export default {
   components: {
@@ -45,9 +46,20 @@ export default {
   },
   methods: {
     // 获取步骤状态
-    getStepStatus(){
+    async getStepStatus(){
       const nominateId = this.$store.getters.nomiAppId || this.$route.query.desinateId
-      this.$store.dispatch('setNominationStep',{nominateId})
+      await this.$store.dispatch('setNominationStep',{nominateId})
+      this.$nextTick(() => {
+        const phaseType = this.$store.getters.phaseType
+        let item = applyStep.find(o => o.id === phaseType )
+        const {query} = this.$route;
+        this.$router.push({
+            path:item.path,
+            query: {
+                ...query,
+            }
+        })
+      })
     },
   },
   watch:{$route(to,from){

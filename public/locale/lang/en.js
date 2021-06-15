@@ -833,7 +833,7 @@
         'LK_FUJIANQINGDAN':'附件清单', // 附件清单
         'LK_SHANGCHUANWENJIAN':'上传文件', // 上传文件
         'LK_DAORU':'导入', // 导入
-        'LK_PEIJIANMUBANXIAZAI':'配件模板下载', // 配件模板下载
+        'LK_FUJIANMUBANXIAZAI':'附件模板下载', // 附件模板下载
         'LK_DAORUYUAN':'导⼊员', // 导⼊员
         'LK_YULAN':'预览', // 预览
         'LK_TIAOZHUANZHILINGJIANQINGDANTIANJIA':'跳转⾄零件清单添加', // 跳转⾄零件清单添加
