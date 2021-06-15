@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-25 13:01:23
- * @LastEditTime: 2021-06-09 23:41:11
+ * @LastEditTime: 2021-06-15 13:08:05
  * @LastEditors: Please set LastEditors
  * @Description: 报价助手界面
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\index.vue
@@ -64,7 +64,6 @@ export default{
      * @return {*}
      */
     handleCollapse(e,key){
-      console.log(e,key)
       this.cardShow.forEach(i=>{
         if(i.key == key){
           i.show = e
