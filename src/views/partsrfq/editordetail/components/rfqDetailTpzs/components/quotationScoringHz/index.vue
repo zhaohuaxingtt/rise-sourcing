@@ -70,7 +70,7 @@ export default{
     supplierData:[],
     supplierTile:[],
     //轮次选择
-    round:1,
+    round:this.$route.query.round,
     rundList:[],
     backChooseLists:[],
     backChoose:[],
@@ -101,11 +101,7 @@ export default{
      * @return {*}
      */
     changeLayout(res){
-      if(res == 1){
-        this.fsPartsAsRow()
-      }else{
-        this.supplierfsSupplierAsRow()
-      }
+      this.init()
     },
     removeGroup(){
       if(this.groupSelectData.length == 0){iMessage.warn('抱歉！您还未选择零件！');return}
