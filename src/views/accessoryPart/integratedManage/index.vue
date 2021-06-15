@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-26 11:16:51
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-15 15:18:22
+ * @LastEditTime: 2021-06-15 17:09:17
  * @Description: 配件综合管理页面
  * @FilePath: \front-web\src\views\accessoryPart\integratedManage\index.vue
 -->
@@ -405,7 +405,7 @@ export default {
         iMessage.warn('请选择配件')
         return
       }
-      const selectPartsDept = uniq(this.selectParts.map(item => item.respDept))
+      const selectPartsDept = uniq(this.selectParts.map(item => item.csfuserDept))
       if (selectPartsDept.length !== 1 || selectPartsDept[0]) {
         iMessage.warn('请选择未分配部门的配件')
         return
@@ -423,13 +423,18 @@ export default {
         iMessage.warn('请选择配件')
         return
       }
-      const selectPartsDept = uniq(this.selectParts.map(item => item.respDept))
+      const selectPartsDept = uniq(this.selectParts.map(item => item.csfuserDept))
+      const selectPartsUser = uniq(this.selectParts.map(item => item.csfuserId))
       if (selectPartsDept.length !== 1) {
         iMessage.warn('请选择相同部门的配件')
         return
       }
       if (!selectPartsDept[0]) {
         iMessage.warn('请选择有部门的配件')
+        return
+      }
+      if (selectPartsUser.length !== 1 || selectPartsUser[0]) {
+        iMessage.warn('请选择未分配采购员的配件')
         return
       }
       this.selectDeptId = selectPartsDept[0]
