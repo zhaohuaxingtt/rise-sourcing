@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-28 15:03:47
- * @LastEditTime: 2021-06-15 13:41:14
+ * @LastEditTime: 2021-06-15 13:43:26
  * @LastEditors: Please set LastEditors
  * @Description: 特殊表格实现
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\table.vue
@@ -34,9 +34,9 @@
         :resizable="false"
         :selectable='selectable'
       >
-        <template slot-scope="scope">
+        <!-- <template slot-scope="scope">
             <span v-if='scope.row[groupName]'>{{scope.row[groupName]}}</span>
-        </template>
+        </template> -->
       </el-table-column>
       <!-----------------表格中内容模块------------------------>
       <el-table-column
