@@ -184,6 +184,24 @@ export const staticRouter = [{
                 component: () => import (`@/views/ws2/baApply/details`),
             },
             {
+                path: '/investmentAdmin',
+                name: 'toolingModelDetails',
+                meta: {
+                    title: '模具投资付款管理员'
+                },
+                component: () => import (`@/views/ws2/investmentAdmin`),
+                children: [
+                    {
+                        path: '/investmentAdmin/yearlyPlan',
+                        name: 'investmentAdminYearlyPlan',
+                        meta: {
+                            title: '年度计划'
+                        },
+                        component: () => import (`@/views/ws2/investmentAdmin/yearlyPlan`),
+                    },
+                ]
+            },
+            {
                 path: '/tooling',
                 name: 'tooling',
                 meta: {

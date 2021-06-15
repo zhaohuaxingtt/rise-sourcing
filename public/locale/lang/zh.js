@@ -973,6 +973,9 @@
         'LK_BUHANSUICHENGBEN':  '不含税成本',   //  不含税成本
         'LK_HANSUICHENGBEN': '含税成本',    //  含税成本
         'LK_DUANWENBEN': '短文本',  //  短文本
+        'LK_LINGJIANMINGCHENZHONG': '零件名称（中）',   //  零件名称（中）
+        'LK_LINGJIANMINGCHENDE': '零件名称（德）',  //  零件名称（德）
+        'LK_CSF': 'CSF',    //  CSF
 
         // 定点管理
         'nominationLanguage': {
