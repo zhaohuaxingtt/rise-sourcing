@@ -95,7 +95,10 @@
         <div id="chart1"></div>
         <div id="chart2"></div>
         <div id="chart3"></div>
+        <div id="chart4"></div>
         <div class="legend">
+          <div>Commom Sourcing</div>
+          <div>JV Sourcing</div>
           <div>{{ $t('LK_FEIAEKO') }}</div>
           <div>AEKO</div>
           <div>Contingency</div>
@@ -109,16 +112,9 @@
         <div class="header margin-bottom20">
           <div></div>
           <div>
-            <iButton v-show="!pageEdit" @click="pageEdit = true"
-                     :disabled="versionList[0] && form['search.version'] != versionList[0].id">{{ $t('LK_BIANJI') }}
-            </iButton>
-            <iButton v-show="pageEdit" @click="addRow">{{ $t('LK_TIANJIAHANG') }}</iButton>
-            <iButton v-show="pageEdit" @click="deleteIRow">{{ $t('LK_SHANCHUHANG') }}</iButton>
-            <iButton v-show="pageEdit" @click="referenceModelShow = true">{{ $t('LK_CANKAOCHEXIN') }}</iButton>
-            <iButton v-show="pageEdit" @click="saveRow">{{ $t('LK_BAOCUN') }}</iButton>
-            <iButton v-show="pageEdit" @click="saveAsRow">{{ $t('LK_BAOCUNWEIXINBANBEN') }}</iButton>
-            <iButton @click="downloadList">下载投资清单</iButton>
-            <iButton v-show="pageEdit" @click="conversionRatioShow = true">{{ $t('LK_ANBILIZHESUAN') }}</iButton>
+            <iButton @click="saveAsRow">{{ $t('全部清零') }}</iButton>
+            <iButton @click="downloadList">{{ $t('LK_BAOCUN') }}</iButton>
+            <iButton @click="toJV">{{ $t('查看JV预算') }}</iButton>
           </div>
         </div>
         <div>
@@ -332,7 +328,7 @@ import {
 import {Popover} from "element-ui"
 import {pageMixins} from "@/utils/pageMixins";
 import {tableHeight} from "@/utils/tableHeight";
-import {investmentListEntities, form} from "./components/data";
+import {investmentListCommon, form} from "./components/data";
 import addRow from "./components/addRow";
 import referenceModel from "./components/referenceModel";
 import conversionRatio from "./components/conversionRatio";
@@ -428,7 +424,7 @@ export default {
       tableListData: [],
       tableListDataClone: [],
       tableLoading: false,
-      tableTitle: investmentListEntities,
+      tableTitle: investmentListCommon,
       selectTableData: [],
       form: form,
       clone: {},
@@ -654,7 +650,117 @@ export default {
             const chart1 = echarts().init(document.getElementById("chart1"));
             const chart2 = echarts().init(document.getElementById("chart2"));
             const chart3 = echarts().init(document.getElementById("chart3"));
+            const chart4 = echarts().init(document.getElementById("chart4"));
             let option1 = {
+              // tooltip: {
+              //   formatter: function (params) {//这里就是控制显示的样式
+              //     if (params.seriesIndex == 0) {
+              //       return Number((contingency / totalValue) * 100).toFixed(2) + '%'
+              //     } else if (params.seriesIndex == 1) {
+              //       return Number((aekoValue / totalValue) * 100).toFixed(2) + '%'
+              //     } else if (params.seriesIndex == 2) {
+              //       return Number((notAekoValue / totalValue) * 100).toFixed(2) + '%'
+              //     }
+              //   },
+              //   backgroundColor: '#ffffff',
+              //   extraCssText: 'color: #1B1D21; box-shadow: 0px 0px 20px rgba(27, 29, 33, 0.12);'
+              // },
+              grid: {
+                left: '0%',
+                right: '0',
+                bottom: '0%',
+                top: '12%',
+                containLabel: true
+              },
+              xAxis: {
+                type: 'category',
+                data: [this.$t("LK_ZONGYUSUAN")],
+                axisTick: {
+                  show: false
+                },
+                axisLine: {
+                  show: false,
+                },
+                axisLabel: {
+                  textStyle: {
+                    color: '#485465',
+                    fontSize: 10
+                  },
+                },
+              },
+              yAxis: {
+                type: 'value',
+                axisTick: {
+                  show: false
+                },
+                axisLabel: {
+                  show: false
+                },
+                splitLine: {
+                  show: false
+                },
+                axisLine: {
+                  show: false
+                },
+
+              },
+              series: [
+                {
+                  name: 'contingency',
+                  type: 'bar',
+                  stack: 'total',
+                  color: '#73A1F6',
+                  barWidth: 40,
+                  label: {
+                    show: true,
+                    textStyle: {
+                      color: '#ffffff',
+                      fontSize: 8
+                    }
+                  },
+                  emphasis: {
+                    focus: 'series'
+                  },
+                  data: [contingency]
+                },
+                {
+                  name: 'aekoValue',
+                  type: 'bar',
+                  stack: 'total',
+                  color: '#2662F3',
+                  label: {
+                    show: true,
+                    textStyle: {
+                      color: '#ffffff',
+                      fontSize: 8
+                    }
+                  },
+                  emphasis: {
+                    focus: 'series'
+                  },
+                  data: [aekoValue]
+                },
+                {
+                  name: '',
+                  type: 'bar',
+                  stack: 'total',
+                  color: '#B3D0FF',
+                  label: {
+                    show: true,
+                    position: 'top',
+                    textStyle: {
+                      color: '#485465'
+                    }
+                  },
+                  emphasis: {
+                    focus: 'series'
+                  },
+                  data: [0]
+                },
+
+              ]
+            };
+            let option2 = {
               tooltip: {
                 formatter: function (params) {//这里就是控制显示的样式
                   if (params.seriesIndex == 0) {
@@ -665,6 +771,8 @@ export default {
                     return Number((notAekoValue / totalValue) * 100).toFixed(2) + '%'
                   }
                 },
+                backgroundColor: '#ffffff',
+                extraCssText: 'color: #1B1D21; box-shadow: 0px 0px 20px rgba(27, 29, 33, 0.12);'
               },
               grid: {
                 left: '0%',
@@ -783,7 +891,7 @@ export default {
 
               ]
             };
-            let option2 = {
+            let option3 = {
               tooltip: {
                 show: false
               },
@@ -870,7 +978,7 @@ export default {
                   type: 'bar',
                   stack: 'total',
                   color: '#B3D0FF',
-                  barWidth: '30',
+                  barWidth: '20',
                   label: {
                     show: true,
                     position: 'top',
@@ -901,7 +1009,7 @@ export default {
                 },
               ]
             }
-            let option3 = {
+            let option4 = {
               tooltip: {
                 show: false
               },
@@ -976,7 +1084,7 @@ export default {
                   type: 'bar',
                   stack: 'total',
                   color: '#FFB04D',
-                  barWidth: '30',
+                  barWidth: '20',
                   barGap: '-100%',
                   label: {
                     show: true,
@@ -1003,35 +1111,13 @@ export default {
                 },
               ]
             }
-            option1.series[option1.series.length - 1].label.formatter = totalValue
+            option2.series[option2.series.length - 1].label.formatter = totalValue
             chart1.setOption(option1);
             chart2.setOption(option2);
             chart3.setOption(option3);
-            chart1.on('click', function (params) {
+            chart4.setOption(option4);
+            chart2.on('click', function (params) {
               if (params.seriesName === "notAekoValue") {
-                let option2Temp = cloneDeep(option2)
-                option2Temp.series[1].barGap = '-100%'
-                option2Temp.series.splice(1, 0, {
-                  name: '阴影辅助',
-                  data: [0],
-                  type: 'bar',
-                  barWidth: '30',
-                  showBackground: true,
-                  itemStyle: {
-                    barBorderColor: 'rgba(0,0,0,0)',
-                    color: 'rgba(0,0,0,0)'
-                  },
-                  backgroundStyle: {
-                    shadowColor: 'rgba(0, 0, 0, 1)',
-                    shadowBlur: 20,
-                    opacity: 1,
-                    shadowOffsetY: 10,
-                    shadowOffsetX: 10,
-                  }
-                })
-                chart2.setOption(option2Temp, true)
-                chart3.setOption(option3, true);
-              } else if (params.seriesName === "aekoValue") {
                 let option3Temp = cloneDeep(option3)
                 option3Temp.series[1].barGap = '-100%'
                 option3Temp.series.splice(1, 0, {
@@ -1053,7 +1139,30 @@ export default {
                   }
                 })
                 chart3.setOption(option3Temp, true)
-                chart2.setOption(option2, true);
+                chart4.setOption(option4, true);
+              } else if (params.seriesName === "aekoValue") {
+                let option4Temp = cloneDeep(option4)
+                option4Temp.series[1].barGap = '-100%'
+                option4Temp.series.splice(1, 0, {
+                  name: '阴影辅助',
+                  data: [0],
+                  type: 'bar',
+                  barWidth: '30',
+                  showBackground: true,
+                  itemStyle: {
+                    barBorderColor: 'rgba(0,0,0,0)',
+                    color: 'rgba(0,0,0,0)'
+                  },
+                  backgroundStyle: {
+                    shadowColor: 'rgba(0, 0, 0, 1)',
+                    shadowBlur: 20,
+                    opacity: 1,
+                    shadowOffsetY: 10,
+                    shadowOffsetX: 10,
+                  }
+                })
+                chart4.setOption(option4Temp, true)
+                chart3.setOption(option3, true);
               }
             })
           })
@@ -1190,15 +1299,15 @@ export default {
       // let url = process.env.VUE_APP_INVESTMENT + '/exportInvestmentList?listVerisonId=' + this.form['search.version']
       // window.open(url)
     },
-    // 跳转详情
-    // openPage(item) {
-    //   this.$router.push({
-    //     path: "/partsprocure/editordetail",
-    //     query: {
-    //       item: JSON.stringify(item),
-    //     },
-    //   });
-    // },
+    toJV() {
+      this.$router.push({
+        path: '/tooling/budgetManagement/investmentListJV',
+        query: {
+          id: this.params.id,
+          sourceStatus: this.params.sourceStatus
+        },
+      })
+    },
 
 
     //表格选中值集
@@ -1232,15 +1341,20 @@ export default {
   height: 200px;
   align-self: flex-end;
 }
-
 #chart2 {
+  width: 200px;
+  height: 200px;
+  align-self: flex-end;
+}
+
+#chart3 {
   width: 640px;
   height: 180px;
   margin: 0 30px;
   align-self: flex-end;
 }
 
-#chart3 {
+#chart4 {
   width: 420px;
   height: 180px;
   align-self: flex-end;
@@ -1372,19 +1486,33 @@ export default {
 
         &:nth-of-type(2) {
           &::before {
-            background-color: #FFB04D;
+            background-color: #2662F3;
             top: 2px;
           }
         }
 
         &:nth-of-type(3) {
           &::before {
-            background-color: #55C2D0;
+            background-color: #73A1F6;
             top: 2px;
           }
         }
 
         &:nth-of-type(4) {
+          &::before {
+            background-color: #FFB04D;
+            top: 2px;
+          }
+        }
+
+        &:nth-of-type(5) {
+          &::before {
+            background-color: #55C2D0;
+            top: 2px;
+          }
+        }
+
+        &:nth-of-type(6) {
           color: #485465;
           font-weight: 400;
 

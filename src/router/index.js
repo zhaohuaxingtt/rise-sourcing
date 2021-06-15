@@ -251,12 +251,20 @@ export const staticRouter = [{
                         component: () => import (`@/views/ws2/budgetManagement/generateInvestmentList`),
                     },
                     {
-                        path: '/tooling/budgetManagement/investmentList',
-                        name: 'investmentList',
+                        path: '/tooling/budgetManagement/investmentListJV',
+                        name: 'investmentListJV',
                         meta: {
-                            title: '投资清单'
+                            title: '投资清单JV'
                         },
-                        component: () => import (`@/views/ws2/budgetManagement/investmentList`),
+                        component: () => import (`@/views/ws2/budgetManagement/investmentListJV`),
+                    },
+                    {
+                        path: '/tooling/budgetManagement/investmentListCommon',
+                        name: 'investmentListCommon',
+                        meta: {
+                            title: '投资清单Common'
+                        },
+                        component: () => import (`@/views/ws2/budgetManagement/investmentListCommon`),
                     },
                     //历史数据库
                     {
@@ -305,13 +313,13 @@ export const staticRouter = [{
                     import (`@/views/ws2/budgetManagement/generateInvestmentList`)
             },
             {
-                path: '/ws2/budgetManagement/investmentList',
-                name: 'investmentList',
+                path: '/ws2/budgetManagement/investmentListCommon',
+                name: 'investmentListCommon',
                 meta: {
                     title: '模具-投资清单'
                 },
                 component: () =>
-                    import (`@/views/ws2/budgetManagement/investmentList`)
+                    import (`@/views/ws2/budgetManagement/investmentListCommon`)
             },
             {
                 path: "/ws3-register",
