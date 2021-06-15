@@ -220,12 +220,12 @@ export const addListInvestment = [{
 ]
 export const investmentListJV = [{
     //export const tableTitle = permissionTitle("PARTSPROCURE_PARTSPROCURELIST",[{
-    props: 'categoryCode',
-    name: '材料组编号',
-    key: 'LK_CAILIAOZUBIANHAO2',
-    width: 120,
-    tooltip: false
-},
+        props: 'categoryCode',
+        name: '材料组编号',
+        key: 'LK_CAILIAOZUBIANHAO2',
+        width: 120,
+        tooltip: false
+    },
     {
         props: 'categoryNameZh',
         name: '材料组名称（中）',
@@ -481,6 +481,11 @@ export const tabtitle = [
     {value: 5, message: 0, name: "BM申请", activePath: '/tooling/bmApplyIndex', url: '/tooling/bmApplyIndex', key: "LK_BMSHENQING"},
     {value: 6, message: 0, name: "投资报告", activePath: '404', url: '404', key: "LK_TOUZIBAOGAO"},
     {value: 7, message: 0, name: "BA审批", activePath: '/tooling/baApprovalIndex', url: '/tooling/baApprovalIndex', key: "LK_BAAPPROVAL"},
+]
+
+export const budgetManagement3rd = [
+    {value: 1, message: 0, name: "车型项目", activePath: '404', url: '404', key: "LK_CHEXINGXIANGMUGAILAN"},
+    {value: 2, message: 0, name: "Common Sourcing", activePath: '/tooling/budgetManagement', url: '/tooling/budgetManagement', key: "LK_YUSUANGUANLI"},
 ]
 
 export const dataBaseData = [

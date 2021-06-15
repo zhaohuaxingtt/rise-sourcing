@@ -352,7 +352,7 @@
         'LK_CAILIAOZUXINXI': '材料组信息', //材料组信息
         'LK_CF': '财务控制员', //财务控制员
         'LK_CAIWUMUBIAOJIA': '财务目标价', //财务目标价
-        'LK_CAIGOUGONGCHANG': '采购工厂', //采购工厂
+        'LK_CAIGOUGONGCHANG': '生产工厂', //采购工厂
         'LK_CAIGOUTIAOKUAN': '采购条款', //采购条款
         'LK_CAIGOUXIANGMUJIANLI': '零件采购项目', //采购项目建立
         'LK_CAIGOUXIANGMUXINXI': '采购项目信息', //采购项目信息

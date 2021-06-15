@@ -11,7 +11,7 @@
       <div v-loading="tableLoading">
         <iTableList
             :selection="false"
-            :height="tableHeight - 260"
+            :height="tableHeight - 290"
             :tableData="tableListData"
             :tableTitle="tableTitle"
         >
@@ -19,6 +19,7 @@
             <div>{{ getTousandNum(scope.row.budget) }}</div>
           </template>
         </iTableList>
+        <div class="money">货币：人民币  |  单位：元  |  不含税 </div>
         <iPagination
             v-update
             @size-change="handleSizeChange($event, findAddColumnInvestmentBuild)"
@@ -57,7 +58,7 @@ export default {
     iPagination,
   },
   props: {
-    title: {type: String, default: 'RFQ号'},
+    title: {type: String, default: '已申请金额'},
     RFQID: {type: String, default: ''},
     value: {type: Boolean},
   },
@@ -75,7 +76,6 @@ export default {
   },
   methods: {
     detail() {
-      console.log([this.RFQID])
       this.tableLoading = true
       detail({
         rfqIds: [this.RFQID],
@@ -101,7 +101,7 @@ export default {
   watch: {
     value(val) {
       if (val) {
-        this.detail()
+        // this.detail()
       }
     }
   }
@@ -159,6 +159,13 @@ export default {
   .add {
     float: right;
     margin-bottom: 10px;
+  }
+  .money{
+    text-align: right;
+    margin-top: 10px;
+    font-size: 14px;
+    font-weight: 400;
+    color: #999999;
   }
 }
 </style>
