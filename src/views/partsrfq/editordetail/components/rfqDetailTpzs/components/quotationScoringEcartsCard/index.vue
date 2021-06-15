@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-04-23 09:16:48
- * @LastEditTime: 2021-06-14 10:46:08
+ * @LastEditTime: 2021-06-15 16:52:52
  * @LastEditors: Please set LastEditors
  * @Description: 供应商维度展示
  * @FilePath: \front-supplier\src\views\rfqManageMent\partsOffer\components\ecartsCard\index.vue
@@ -104,10 +104,10 @@ export default{
      * @return {*}
      */   
     changeParts(row){    
+      this.fslist = []
       if(row.find(items=>items == "all") || row.length == 0){
         return false
       }
-      this.fslist = []
       row.forEach(item=>{
         this.fslist = [...this.partList.find(items=>items.name == item).list,...this.fslist]
       })
