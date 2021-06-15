@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-24 14:39:43
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-14 19:31:19
+ * @LastEditTime: 2021-06-15 10:28:43
  * @Description: RS单维护界面
  * @FilePath: \front-web\src\views\designate\designatedetail\rsSingleMaintenance\index.vue
 -->
@@ -43,9 +43,9 @@
       <div class="margin-bottom20 clearFloat">
           <div class="floatright">
             <!--------------------返回按钮----------------------------------->
-            <iButton @click="handleSave">保存</iButton>
+            <iButton @click="handleSave" :loading="saveLoading">保存</iButton>
             <!--------------------选择按钮----------------------------------->
-            <iButton @click="downloadTemp">下载模板</iButton>
+            <iButton @click="downloadTemp" :loading="downloadLoading">下载模板</iButton>
             <!--------------------返回按钮----------------------------------->
             <!-- <iButton @click="goBack">上传</iButton> -->
             <el-upload
@@ -106,7 +106,9 @@ export default {
       uploadUrl: process.env.VUE_APP_SOURCING_MH,
       otherNominationType: '',
       otherNominationId: '',
-      otherPartProjectType: ''
+      otherPartProjectType: '',
+      saveLoading: false,
+      downloadLoading: false
     }
   },
   created() {
@@ -160,8 +162,10 @@ export default {
         iMessage.warn('请选择需要下载的数据')
         return
       }
+      this.downloadLoading = true
       const params = {recordIds:this.tableListData.map(item => item.nominateRecordId)}
       await downloadRSDoc(params)
+      this.downloadLoading = false
     },
     /**
      * @Description: 读取报价单
@@ -200,6 +204,7 @@ export default {
      * @return {*}
      */    
     handleSave() {
+      this.saveLoading = true
       const params = this.tableListData.map(item => {
         return {
           nominateDetailId: item.nominateDetailId,
@@ -211,7 +216,7 @@ export default {
           devFeeIsShared: item.devFeeIsShared,
           ltcs: defaultLtcs.map((ltcsItem, ltcIndex) => {
             return {
-              ltcDate: item['ltcDate'+(ltcIndex+1)],
+              ltcDate: item['ltcDate'+(ltcIndex+1)] ? moment(item['ltcDate'+(ltcIndex+1)]).format('yyyy-MM') : '',
               ltcDateIsChange:item['ltcDateIsChange'+(ltcIndex+1)],
               ltcRate:item['ltcRate'+(ltcIndex+1)],
               ltcRateIsChange:item['ltcRateIsChange'+(ltcIndex+1)]
@@ -226,6 +231,8 @@ export default {
         } else {
           iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
         }
+      }).finally(() => {
+        this.saveLoading = false
       })
     },
     /**
@@ -287,12 +294,12 @@ export default {
               singleItem[element+'Temp'] = cloneDeep(item[element] === null ? '' : item[element])
             })
             defaultLtcs?.forEach((element, index) => {
-              singleItem['ltcDate'+(index+1)] = cloneDeep(item.ltcs?.index?.ltcDate || element.ltcDate),
-              singleItem['ltcDate'+(index+1)+'Temp'] = cloneDeep(item.ltcs?.index?.ltcDate || element.ltcDate),
-              singleItem['ltcDateIsChange'+(index+1)] = item.ltcs?.index?.ltcDateIsChange || element.ltcDateIsChange,
-              singleItem['ltcRate'+(index+1)] = cloneDeep(item.ltcs?.index?.ltcRate || element.ltcRate),
-              singleItem['ltcRate'+(index+1)+'Temp'] = cloneDeep(item.ltcs?.index?.ltcRate || element.ltcRate),
-              singleItem['ltcRateIsChange'+(index+1)] = item.ltcs?.index?.ltcRateIsChange || element.ltcRateIsChange
+              singleItem['ltcDate'+(index+1)] = cloneDeep(item.ltcs && item.ltcs[index]?.ltcDate ? item.ltcs[index].ltcDate : element.ltcDate),
+              singleItem['ltcDate'+(index+1)+'Temp'] = cloneDeep(item.ltcs && item.ltcs[index]?.ltcDate ? moment(item.ltcs[index].ltcDate).format('yyyy-MM') : element.ltcDate),
+              singleItem['ltcDateIsChange'+(index+1)] = item.ltcs && item.ltcs[index]?.ltcDateIsChange ? item.ltcs[index].ltcDateIsChange : element.ltcDateIsChange,
+              singleItem['ltcRate'+(index+1)] = cloneDeep(item.ltcs && item.ltcs[index]?.ltcRate ? item.ltcs[index].ltcRate : element.ltcRate),
+              singleItem['ltcRate'+(index+1)+'Temp'] = cloneDeep(item.ltcs && item.ltcs[index]?.ltcRate ? item.ltcs[index].ltcRate : element.ltcRate),
+              singleItem['ltcRateIsChange'+(index+1)] = item.ltcs && item.ltcs[index]?.ltcRateIsChange ? item.ltcs[index].ltcRateIsChange : element.ltcRateIsChange
             })
             return singleItem
           })
