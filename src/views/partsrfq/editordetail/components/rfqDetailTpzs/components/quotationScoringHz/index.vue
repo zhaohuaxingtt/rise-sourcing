@@ -19,8 +19,8 @@
         </div>
         <div>
           <span>Quota. Round：</span>
-          <iSelect v-model="round" style="width:100px">
-            <el-option label="All" value="" v-for='(items,index) in rundList' :key='index'></el-option>
+          <iSelect v-model="round" @change="changeRound" style="width:100px">
+            <el-option :label="items" :value="items" v-for='(items,index) in rundList' :key='index'></el-option>
           </iSelect> 
         </div>
         <div>
@@ -92,6 +92,9 @@ export default{
     return {vm:this}
   },
   methods:{
+    changeRound(){
+      this.init()
+    },
     /**
      * @description: 切换tempalte展示 
      * @param {*} res
@@ -127,10 +130,8 @@ export default{
     },
     getPartGroupNumber(){
       const listArray = []
-      this.exampelData.forEach(element => {
-        if(element.groupId == this.groupSelectData[0].groupId){
-          listArray.push(element.groupId)
-        }
+      this.groupSelectData.forEach(element => {
+        listArray.push(element.groupId)
       });
       return listArray
     },
@@ -141,7 +142,7 @@ export default{
      */
     negoAnalysisSummaryGroupsDelete(){
       const sendata = {
-          groupIdList: [...new Set(this.getPartGroupNumber())],
+          groupIdList: this.getPartGroupNumber(),
           rfqId: this.$route.query.id
         }
         negoAnalysisSummaryGroupDelete(sendata).then(res=>{
@@ -231,7 +232,11 @@ export default{
      * @return {*}
      */
     negoAnalysisSummaryRound(){
-      negoAnalysisSummaryRound(this.$route.query.id).then().catch(err=>{
+      negoAnalysisSummaryRound(this.$route.query.id).then(res=>{
+        if(res.code == 200 && res.data){
+          this.rundList = res.data
+        }
+      }).catch(err=>{
         iMessage.warn(err.desZh)
       })
     },
