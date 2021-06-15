@@ -12,7 +12,19 @@
       </div>
     </div>
     <div class="partBox margin-bottom20">
-      <div class="partItem" v-for="item of partList" :key="item">
+      <div class="partItem"
+           v-for="(item,index) of partList"
+           :key="item"
+           :class="{'partItemActive': partItemCurrent === index}"
+           @click="handlePartItemClick(index)"
+      >
+        <div class="quxiaoIconBox" @click="handlePartItemClose(index)">
+          <icon symbol
+                name="iconrs-quxiao"
+                class="quxiaoIcon"
+                v-if="partItemCurrent === index && partList.length > 1 "
+                />
+        </div>
         {{ item }}
       </div>
     </div>
@@ -24,7 +36,7 @@
 </template>
 
 <script>
-import {iPage, iButton} from 'rise';
+import {iPage, iButton, icon} from 'rise';
 import baseInfo from './components/baseInfo';
 import totalUnitPriceTable from './components/totalUnitPriceTable';
 
@@ -33,12 +45,24 @@ export default {
     iPage,
     iButton,
     baseInfo,
-    totalUnitPriceTable
+    totalUnitPriceTable,
+    icon,
   },
   data() {
     return {
-      partList: ['18D023607', '18D023607'],
+      partList: ['18D023607', '18D023602'],
+      partItemCurrent: 0,
     };
+  },
+  methods: {
+    handlePartItemClick(index) {
+      this.partItemCurrent = index;
+    },
+    handlePartItemClose(index) {
+      this.partList.splice(index, 1);
+      console.log(this.partList);
+      this.partItemCurrent = 0;
+    },
   },
 };
 </script>
@@ -48,6 +72,7 @@ export default {
   display: flex;
 
   .partItem {
+    position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -59,6 +84,20 @@ export default {
     border-radius: 5px;
     font-size: 16px;
     font-weight: bold;
+    color: #000000;
+    cursor: pointer;
+
+    .quxiaoIconBox{
+      position: absolute;
+      right: -10px;
+      top: -10px;
+    }
+    .quxiaoIcon {
+      font-size: 20px;
+    }
+  }
+
+  .partItemActive {
     color: #1763F7;
   }
 }

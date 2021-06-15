@@ -1107,6 +1107,8 @@
             'FENTANSHULIANG': '分摊数量', //分摊数量
             'YINGXIANGDANJIA': '影响单价', //影响单价
             'YINGXIANGCHENGBENZHANBI': '影响成本占比', //影响成本占比
+            'XIANSHIYINGCANG': '显示/隐藏', //显示/隐藏
+            'WANCHENG': '完成', //完成
         }
     })
 }))

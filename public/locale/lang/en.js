@@ -1018,6 +1018,8 @@
             'FENTANSHULIANG': 'Apportioned quantity', //分摊数量
             'YINGXIANGDANJIA': 'Affect the unit price', //影响单价
             'YINGXIANGCHENGBENZHANBI': 'Affect the proportion of cost', //影响成本占比
+            'XIANSHIYINGCANG': 'show/hide', //显示/隐藏
+            'WANCHENG': 'finish', //完成
         }
     })
 }))
