@@ -50,6 +50,7 @@ import {
   iFormGroup,
   iFormItem,
   iText,
+  iMessage,
 } from "rise";
 import {pageMixins} from '@/utils/pageMixins'
 import tableList from "@/views/partsign/editordetail/components/tableList"
@@ -105,18 +106,23 @@ export default {
                 size:page.pageSize,
             };
             await getSingleSourcing(params).then((res)=>{
-                const {resultPage={},nominateId='',cartypeProjectZhList=[]} = res;
-                const {code,total,data} = resultPage;
-                console.log(res);
+                const {code,data} =res;
                 if(code == '200' && data){
-                    this.tableListData = data;
+                    const {resultPage={},nominateId='',cartypeProjectZhList=[]} = data;
+                    const {total} = resultPage;
+                    this.tableListData = resultPage.data || [];
                     this.page.totalCount = total;
                     this.nominateId = nominateId;
                     this.projectName = cartypeProjectZhList.join();
+                }else{
+                    iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
                 }
                 this.loading =  false;
 
-            }).catch((err)=>{ this.loading =  false; });
+            }).catch((e)=>{
+                    iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn) 
+                    this.loading =  false; 
+                });
         },
     }
 

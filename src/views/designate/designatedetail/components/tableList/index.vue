@@ -2,7 +2,7 @@
  * @Descripttion: 
  * @Author: Luoshuang
  * @Date: 2021-05-21 14:30:41
- * @LastEditTime: 2021-06-09 17:54:31
+ * @LastEditTime: 2021-06-15 10:25:03
 -->
 <template>
   <el-table ref="multipleTable" fit tooltip-effect='light' :height="height" :data='tableData' v-loading='tableLoading' @selection-change="handleSelectionChange" :empty-text="$t('LK_ZANWUSHUJU')" >
@@ -125,7 +125,7 @@ export default{
     },
     changeValue(val, row, item) {
       // console.log(val, row, item)
-      row[item.isChange] = true
+      row[item.isChange] = row[item.props+'Temp'] != (val === null ? '' : val)
       // this.$emit('changeTableValue', val, row, item)
     },
     getValue(row, item) {
