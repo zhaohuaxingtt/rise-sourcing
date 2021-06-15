@@ -24,7 +24,7 @@
                               @on-success="onDraingUploadsucess"
                           />
                       </span>
-                      <iButton  @click="downloadTemplate" > {{$t('LK_PEIJIANMUBANXIAZAI')}} </iButton>
+                      <iButton  @click="downloadTemplate" > {{$t('LK_FUJIANMUBANXIAZAI')}} </iButton>
                     </div>
                   </div>
                   <!-- 表格区域 -->
