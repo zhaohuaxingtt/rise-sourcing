@@ -997,11 +997,27 @@
             'ChongFuTiJiao': '重复提交', // 重复提交
             'QiYuShuJuZhengChangTiJiao': '其余数据正常提交', // 其余数据正常提交
             'ChongFuCheHui': '重复撤回', // 重复撤回
-            'QiYuShuJuZhengChangCheHui': '其余数据正常撤回', // 其余数据正常撤回 
+            'QiYuShuJuZhengChangCheHui': '其余数据正常撤回', // 其余数据正常撤回
             'QingXuanZeCbdCengJiWeiL3DeShuJu': '请选择CBD层级为L3的数据', // 请选择CBD层级为L3的数据
         },
         "BJZS":{
             "LK_BAOJIAZUSHOU_MJ":"报价助手-模具"
+        },
+        //谈判助手
+        "TPZS": {
+            'FENXI': ' Analyze', //分析
+            'YULAN': 'preview', //预览
+            'GONGYINGSHANG': 'Supplier', //供应商
+            'CHEXINGXIANGMU': 'Model project', //车型项目
+            'CHEXING': 'Model', //车型
+            'GONGCHANG': 'Factory', //工厂
+            'ZONGDANJIA': 'Total unit price', //总单价
+            'GUDINGCHENGBENZHANBI': 'Percentage of fixed costs', //固定成本占比
+            'FEIYONGLEIXING': 'Types of fee', //费用类型
+            'FEIYONGZONGE': 'Total cost', //费用总额
+            'FENTANSHULIANG': 'Apportioned quantity', //分摊数量
+            'YINGXIANGDANJIA': 'Affect the unit price', //影响单价
+            'YINGXIANGCHENGBENZHANBI': 'Affect the proportion of cost', //影响成本占比
         }
     })
 }))

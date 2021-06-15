@@ -181,7 +181,7 @@
             'BenLunZhuangTai': '本轮状态', // 本轮状态
             'BenLunBaoJiaJieZhiRi': '本轮报价截止日', // 本轮报价截止日
             'LunCiLeiXing': '轮次类型', // 轮次类型
-            
+
             // 零件清单
             'LingJianQingDan': '零件清单', // 零件清单
             'BaoCun': '保存', // 保存
@@ -1017,12 +1017,12 @@
             'BuMen': '部门',
             'GengXinShiJian': '更新时间',
             // 零件清单
-            "LingJianXiangMuLeiXing": "零件项目类型", 
-            "CheXingDaLei": "车型大类", 
+            "LingJianXiangMuLeiXing": "零件项目类型",
+            "CheXingDaLei": "车型大类",
             "CheXingXiangMu": "车型项目",
-            "LingJianZhuangTai": "零件状态", 
-            "XunJiaCaiGouYuan": "询价采购员", 
-            "LINIE": "LINIE", 
+            "LingJianZhuangTai": "零件状态",
+            "XunJiaCaiGouYuan": "询价采购员",
+            "LINIE": "LINIE",
             "CFMuBiaoJia": "CF目标价",
             "BatchEdit": "批量编辑",
             "Edit": "编辑",
@@ -1091,6 +1091,22 @@
         },
         "BJZS":{
             "LK_BAOJIAZUSHOU_MJ":"报价分析汇总-模具"
+        },
+        //谈判助手
+        "TPZS": {
+            'FENXI': '分析', //分析
+            'YULAN': '预览', //预览
+            'GONGYINGSHANG': '供应商', //供应商
+            'CHEXINGXIANGMU': '车型项目', //车型项目
+            'CHEXING': '车型', //车型
+            'GONGCHANG': '工厂', //工厂
+            'ZONGDANJIA': '总单价', //总单价
+            'GUDINGCHENGBENZHANBI': '固定成本占比', //固定成本占比
+            'FEIYONGLEIXING': '费用类型', //费用类型
+            'FEIYONGZONGE': '费用总额', //费用总额
+            'FENTANSHULIANG': '分摊数量', //分摊数量
+            'YINGXIANGDANJIA': '影响单价', //影响单价
+            'YINGXIANGCHENGBENZHANBI': '影响成本占比', //影响成本占比
         }
     })
 }))
