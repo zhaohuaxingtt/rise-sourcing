@@ -287,6 +287,15 @@
             </div>
           </div>
         </div>
+
+        <iTableList
+          :tableData="aekoTableList"
+          :tableTitle="bmPopupTableHead"
+          :tableLoading="allTableLoading"
+          @handleSelectionChange="handleSelectionChange"
+        >
+          
+        </iTableList>
       </template>
     </BmPopup>
   </div>
@@ -307,7 +316,7 @@ import {
   iSelect,
 } from "rise";
 import SearchBlock from "./components/searchBlock";
-import { allTableHead, bmTableHead, aekoTableHead, aekoBmTableHead } from "./components/data";
+import { allTableHead, bmTableHead, aekoTableHead, aekoBmTableHead, bmPopupTableHead } from "./components/data";
 import BmPopup from "./components/popup";
 export default {
   components: {
@@ -321,6 +330,7 @@ export default {
       bmTableHead,
       aekoTableHead,
       aekoBmTableHead,
+      bmPopupTableHead,
       allTableLoading: false,
       allTableList: [], //  所有BM申请列表
       bmTableList: [
@@ -356,6 +366,8 @@ export default {
 
 <style lang="scss" scoped>
 .popup-form{
+  border-bottom: 2px solid #E3E3E3;
+  margin-bottom: 20px;
 
   .popup-formItem{
     display: flex;
@@ -364,6 +376,7 @@ export default {
     .lastItem{
       width: 50%;
       display: flex;
+      padding-right: 30px;
 
       .txt{
         flex: 1;
@@ -372,7 +385,7 @@ export default {
       }
 
       .input{
-        width: 680px;
+        flex: 6;
       }
     }
 
