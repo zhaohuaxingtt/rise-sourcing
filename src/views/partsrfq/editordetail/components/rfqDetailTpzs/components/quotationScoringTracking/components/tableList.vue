@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-26 19:14:39
- * @LastEditTime: 2021-06-14 16:42:38
+ * @LastEditTime: 2021-06-15 13:06:58
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringTracking\components\tableList.vue
@@ -62,8 +62,8 @@
       </template>
     </el-table>  
     <div class="miaosu">
-      <span><icon name='iconbaojiazhuangtailiebiao_yibaojia' symbol></icon> 已拒绝</span>
-      <span><icon name='iconbaojiazhuangtailiebiao_yijujue' symbol></icon> 全报</span>
+      <span><icon name='iconbaojiazhuangtailiebiao_yibaojia' symbol></icon> 全报</span>
+      <span><icon name='iconbaojiazhuangtailiebiao_yijujue' symbol></icon> 已拒绝</span>
       <span><i>—</i> 已收RFQ尚未接受报价</span>
       <span>n/m 共m个零件，已进行n个零件的报价</span>
     </div>

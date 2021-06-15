@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-28 15:03:47
- * @LastEditTime: 2021-06-15 13:04:36
+ * @LastEditTime: 2021-06-15 13:41:14
  * @LastEditors: Please set LastEditors
  * @Description: 特殊表格实现
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\table.vue
@@ -51,7 +51,7 @@
       >
         <!----------在表头上方需要显示评分的点，插入表头标签------>
         <template slot="header" slot-scope="scope">
-          <span>{{scope.column.label}}</span>
+          <el-tooltip :content="scope.column.label" effect='light'><span class="labelHader">{{scope.column.label}}</span></el-tooltip>
           <div class="headerContent" v-if='scope.column.label == "EBR"'>
             <div class="c" :style="{width:cWidth}">
               <ul style="width:99.5px">
@@ -80,6 +80,9 @@
           <template v-else-if='removeKeysNumber(item.props) == "Quotationdetails" && scope.$index < tableData.length -3'>
              <span class="link" @click="optionPage(scope.row)">查看详情</span>
           </template>
+          <template v-else-if='removeKeysNumber(item.props) == "supplierSopDate" || removeKeysNumber(item.props) == "ltcStaringDate"'>
+            <span>{{scope.row[item.props]?moment(scope.row[item.props]).format("YYYY-MM-DD"):''}}</span>
+          </template>
           <template v-else>
             <span>{{scope.row[item.props]}}</span>
           </template>
@@ -92,6 +95,7 @@
 <script>
 import {removeKeysNumber,getPorpsNumber} from './data'
 import {icon} from 'rise'
+import moment from 'moment'
 export default{
   components:{icon},
   props:{
@@ -119,6 +123,9 @@ export default{
     }
   },
   methods:{
+    moment(date){
+      return moment(date)
+    },
     lvseFn(row,props){
       try {
         return row[getPorpsNumber(props)+"lcAPriceStatus"] == 1
@@ -253,14 +260,18 @@ export default{
         height: 30px;
         span{
           display: inline-block;
-          word-break: break-all;
-          overflow: hidden;
+          width: 100%;
         }
         .el-checkbox{
           width: 18px;
         }
         .caret-wrapper{
           top: -8px;
+        }
+        .labelHader{
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
         }
       }
     }
@@ -334,6 +345,10 @@ export default{
         flex: 1;
         &:last-child{
           border-right: 0px;
+        }
+        span{
+          display: inline;
+          margin-right: 10px;
         }
       }
     }
