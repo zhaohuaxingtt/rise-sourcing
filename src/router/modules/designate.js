@@ -1,8 +1,8 @@
 /*
  * @Author: HaoJiang
  * @Date: 2021-05-20 14:29:09
- * @LastEditTime: 2021-06-09 15:27:25
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-06-15 14:58:00
+ * @LastEditors: Luoshuang
  * @Description: 定点管理
  * @metaParams: hideTabLV3 隐藏三级导航
  *
@@ -148,6 +148,7 @@ export default [
             name: "approvalPersonAndRecord",
             meta: {
                 title: "定点管理-审批人审批记录",
+                hideTabLV3: true,
             },
             component: () =>
               import ("@/views/designate/approvalPersonAndRecord/index")

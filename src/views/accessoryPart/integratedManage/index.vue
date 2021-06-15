@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-26 11:16:51
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-14 12:16:53
+ * @LastEditTime: 2021-06-15 15:18:22
  * @Description: 配件综合管理页面
  * @FilePath: \front-web\src\views\accessoryPart\integratedManage\index.vue
 -->
@@ -445,8 +445,8 @@ export default {
     sendAccessory({respDept, respLINIE}) {
       const params = {
         accessoryIdList: this.selectParts.map(item => item.id),
-        respDept,
-        respLINIE
+        csfDept: respDept,
+        csfUserId: respLINIE
       }
       sendAccessoryInfo(params).then(res => {
         if (res.result) {

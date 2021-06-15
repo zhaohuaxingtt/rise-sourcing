@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-25 13:57:11
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-14 13:06:21
+ * @LastEditTime: 2021-06-15 15:18:00
  * @Description: 
  * @FilePath: \front-web\src\views\accessoryPart\signForPartsDemand\index.vue
 -->
@@ -294,8 +294,8 @@ export default {
     sendAccessory({respDept, respLINIE}) {
       const params = {
         accessoryIdList: this.selectParts.map(item => item.id),
-        respDept,
-        respLINIE
+        csfDept: respDept,
+        csfUserId: respLINIE
       }
       sendAccessoryInfo(params).then(res => {
         if (res.result) {
