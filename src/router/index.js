@@ -14,6 +14,7 @@
 import designateRoutes from './modules/designate'
 import createpartsRoutes from './modules/createparts'
 import costanalysismanageRoutes from './modules/costanalysismanage'
+import negotiationAssistant from './modules/negotiationAssistant'
 
 Vue.use(VueRouter);
 const originalPush = VueRouter.prototype.push
@@ -317,7 +318,7 @@ export const staticRouter = [{
                 name: "fileManage",
                 meta: { title: "附件综合管理" },
                 component: () => import("@/views/designateFiles/fileManage/index"),
-            },   
+            },
             // 配件相关路由
             {
                 path: "/sourcing/signforpartsdemand",
@@ -341,7 +342,7 @@ export const staticRouter = [{
             {
                 path: "/supplier/quotationdetail",
                 name: "quotationDetail",
-                component: () => 
+                component: () =>
                     import ("@/views/supplier/quotationdetail")
             },
             {
@@ -387,6 +388,8 @@ export default new VueRouter({
         ...staticRouter,
         ...designateRoutes,
         ...createpartsRoutes,
-        ...costanalysismanageRoutes
+        ...costanalysismanageRoutes,
+        //谈判助手
+        ...negotiationAssistant
     ]
 });
