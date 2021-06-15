@@ -1,8 +1,8 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2021-06-07 11:56:51
- * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-06-15 10:33:00
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\editordetail\index.vue
 -->
@@ -170,7 +170,7 @@
 						</iFormItem>
 						<iFormItem :label="$t('LK_CFKONGZHIYUAN') + ':'" name='cfczy'>
 							<iSelect v-model="detailData.cfController" v-permission="PARTSPROCURE_EDITORDETAIL_CFCONTROLLER">
-								<el-option :value="item.code" :label="item.name" v-for="item in fromGroup.CF_CONTROL" :key="item.name"></el-option>
+								<el-option :value="item.id" :label="item.name" v-for="item in fromGroup.CF_CONTROL" :key="item.name"></el-option>
 							</iSelect>
 						</iFormItem>
 						<iFormItem :label="$t('LK_LINGJIANCHENGBENFENXIYUAN') + ':'" name=''>
@@ -474,11 +474,14 @@ import designateInfo from './components/designateInfo'
 						detailData[i] = this.detailData[i];
 					}
 				}
+				
 				detailData['cfController'] = this.detailData.cfController
-				detailData['cfControllerZh'] = this.fromGroup.CF_CONTROL.find(items=>items.id == this.detailData.cfController).name
+				const cfController = this.fromGroup.CF_CONTROL.find(items=>items.id == this.detailData.cfController)
+				detailData['cfControllerZh'] = cfController ? cfController.name : ""
 				detailData['linieUserId'] = this.detailData.linieUserId
-				detailData['linieName'] = this.fromGroup.LINIE.find(items=>items.id == this.detailData.linieUserId).name
-				changeProcure({
+				const linie = this.fromGroup.LINIE.find(items=>items.id == this.detailData.linieUserId)
+				detailData['linieName'] = linie ? linie.name : ""
+ 				changeProcure({
 					detailData,
 				}).then((res) => {
 					if (res.data) {
