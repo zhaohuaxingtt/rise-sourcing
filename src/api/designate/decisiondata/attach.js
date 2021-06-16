@@ -28,7 +28,7 @@ export function getdDecisiondataListAll(params) {
 // 获取决策资料 - 上传文件
 export function uploadfile(data) {
   return requst({
-      url: `/upload-files`,
+      url: `/upload-file`,
       method: "POST",
       data
   })
