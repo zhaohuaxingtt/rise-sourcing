@@ -1,8 +1,8 @@
 @font-face {
   font-family: "iconfont"; /* Project id 2285260 */
-  src: url('iconfont.woff2?t=1623226288598') format('woff2'),
-       url('iconfont.woff?t=1623226288598') format('woff'),
-       url('iconfont.ttf?t=1623226288598') format('truetype');
+  src: url('iconfont.woff2?t=1623834757193') format('woff2'),
+       url('iconfont.woff?t=1623834757193') format('woff'),
+       url('iconfont.ttf?t=1623834757193') format('truetype');
 }
 
 .iconfont {
@@ -11,6 +11,78 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.iconVP-jihuazongchanliang:before {
+  content: "\e6ac";
+}
+
+.iconSOPfukuanbi:before {
+  content: "\e6ab";
+}
+
+.iconmojukanbanshuaxin:before {
+  content: "\e6aa";
+}
+
+.iconzidingyi:before {
+  content: "\e6a9";
+}
+
+.iconbestballdian:before {
+  content: "\e6a8";
+}
+
+.iconBestofAverage:before {
+  content: "\e6a6";
+}
+
+.iconbestofsecond:before {
+  content: "\e6a7";
+}
+
+.iconbob-shanchu:before {
+  content: "\e6a3";
+}
+
+.iconbob-zhihuan:before {
+  content: "\e6a4";
+}
+
+.iconbob-daitianjia:before {
+  content: "\e6a5";
+}
+
+.iconbob:before {
+  content: "\e6a2";
+}
+
+.iconwenjianshuliangbeijing:before {
+  content: "\e6a0";
+}
+
+.icongouwuche:before {
+  content: "\e6a1";
+}
+
+.iconchubupingji:before {
+  content: "\e69c";
+}
+
+.iconfengxianxinhao:before {
+  content: "\e69d";
+}
+
+.iconcaibaofenxi1:before {
+  content: "\e69b";
+}
+
+.iconzhuanxiangfenxigongju-landian:before {
+  content: "\e69e";
+}
+
+.iconshenrupingji:before {
+  content: "\e69f";
 }
 
 .iconAekojianzhiBMdanweixuanzhong:before {

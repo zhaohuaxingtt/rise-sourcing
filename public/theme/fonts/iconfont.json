@@ -6,6 +6,132 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "22281975",
+      "name": "VP-计划总产量",
+      "font_class": "VP-jihuazongchanliang",
+      "unicode": "e6ac",
+      "unicode_decimal": 59052
+    },
+    {
+      "icon_id": "22281704",
+      "name": "SOP付款比",
+      "font_class": "SOPfukuanbi",
+      "unicode": "e6ab",
+      "unicode_decimal": 59051
+    },
+    {
+      "icon_id": "22271323",
+      "name": "模具看板刷新",
+      "font_class": "mojukanbanshuaxin",
+      "unicode": "e6aa",
+      "unicode_decimal": 59050
+    },
+    {
+      "icon_id": "22263340",
+      "name": "自定义",
+      "font_class": "zidingyi",
+      "unicode": "e6a9",
+      "unicode_decimal": 59049
+    },
+    {
+      "icon_id": "22211971",
+      "name": "best ball点",
+      "font_class": "bestballdian",
+      "unicode": "e6a8",
+      "unicode_decimal": 59048
+    },
+    {
+      "icon_id": "22204292",
+      "name": "Best of Average",
+      "font_class": "BestofAverage",
+      "unicode": "e6a6",
+      "unicode_decimal": 59046
+    },
+    {
+      "icon_id": "22204293",
+      "name": "best of second",
+      "font_class": "bestofsecond",
+      "unicode": "e6a7",
+      "unicode_decimal": 59047
+    },
+    {
+      "icon_id": "22202832",
+      "name": "bob-删除",
+      "font_class": "bob-shanchu",
+      "unicode": "e6a3",
+      "unicode_decimal": 59043
+    },
+    {
+      "icon_id": "22202833",
+      "name": "bob-置换",
+      "font_class": "bob-zhihuan",
+      "unicode": "e6a4",
+      "unicode_decimal": 59044
+    },
+    {
+      "icon_id": "22202834",
+      "name": "bob-待添加",
+      "font_class": "bob-daitianjia",
+      "unicode": "e6a5",
+      "unicode_decimal": 59045
+    },
+    {
+      "icon_id": "22186417",
+      "name": "bob",
+      "font_class": "bob",
+      "unicode": "e6a2",
+      "unicode_decimal": 59042
+    },
+    {
+      "icon_id": "22184407",
+      "name": "文件数量背景",
+      "font_class": "wenjianshuliangbeijing",
+      "unicode": "e6a0",
+      "unicode_decimal": 59040
+    },
+    {
+      "icon_id": "22184408",
+      "name": "购物车",
+      "font_class": "gouwuche",
+      "unicode": "e6a1",
+      "unicode_decimal": 59041
+    },
+    {
+      "icon_id": "22180390",
+      "name": "初步评级",
+      "font_class": "chubupingji",
+      "unicode": "e69c",
+      "unicode_decimal": 59036
+    },
+    {
+      "icon_id": "22180253",
+      "name": "风险信号",
+      "font_class": "fengxianxinhao",
+      "unicode": "e69d",
+      "unicode_decimal": 59037
+    },
+    {
+      "icon_id": "22180081",
+      "name": "财报分析",
+      "font_class": "caibaofenxi1",
+      "unicode": "e69b",
+      "unicode_decimal": 59035
+    },
+    {
+      "icon_id": "22179446",
+      "name": "专项分析工具-蓝点",
+      "font_class": "zhuanxiangfenxigongju-landian",
+      "unicode": "e69e",
+      "unicode_decimal": 59038
+    },
+    {
+      "icon_id": "22179447",
+      "name": "深入评级",
+      "font_class": "shenrupingji",
+      "unicode": "e69f",
+      "unicode_decimal": 59039
+    },
+    {
       "icon_id": "22152427",
       "name": "Aeko减值BM单（未选中）",
       "font_class": "AekojianzhiBMdanweixuanzhong",
