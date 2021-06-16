@@ -2,6 +2,7 @@
   <div class="awardingscenario">
     <buMonitor
       title="Awarding Scenario"
+      :hideUpdateTime="true"
       readOnly />
   </div>
 </template>
