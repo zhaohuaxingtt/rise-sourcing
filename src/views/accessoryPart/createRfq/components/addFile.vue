@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-26 19:46:16
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-16 15:28:23
+ * @LastEditTime: 2021-06-16 15:33:16
  * @Description: 添加附件弹窗
  * @FilePath: \front-web\src\views\accessoryPart\createRfq\components\addFile.vue
 -->
@@ -64,7 +64,8 @@ export default {
       tableData: tableMockData,
       tableTitle: tableTitle,
       searchList: fileSearchList,
-      searchParams: {}
+      searchParams: {},
+      tableLoading: false
     }
   },
   watch: {
