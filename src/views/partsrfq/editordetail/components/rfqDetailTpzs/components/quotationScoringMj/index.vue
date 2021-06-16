@@ -1,8 +1,8 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-27 14:55:03
- * @LastEditTime: 2021-06-15 20:57:38
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-06-16 14:21:15
+ * @LastEditors: Luoshuang
  * @Description: 采购员报价与基本分析模具界面
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringMj\index.vue
 -->
@@ -19,7 +19,7 @@ export default {
       supplierId:'',
       supplierList:[],
       myDisabled:true,
-      titleKey:"BJZS.LK_BAOJIAZUSHOU_MJ",
+      titleKey:"BJZS.LK_BAOJIAZUSHOU_MJDANWEIYUAN",
       oldSupplierId:''
     }
   },

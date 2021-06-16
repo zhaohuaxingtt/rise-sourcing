@@ -938,7 +938,8 @@
             'QingXuanZeCbdCengJiWeiL3DeShuJu': '请选择CBD层级为L3的数据', // 请选择CBD层级为L3的数据
         },
         "BJZS":{
-            "LK_BAOJIAZUSHOU_MJ":"报价助手-模具"
+            "LK_BAOJIAZUSHOU_MJ":"报价分析汇总-模具",
+            "LK_BAOJIAZUSHOU_MJDANWEIYUAN":"报价分析汇总-模具（单元：元）"
         }
     })
 }))
