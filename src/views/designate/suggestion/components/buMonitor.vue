@@ -304,7 +304,7 @@ export default {
             return o
           })
           this.tableListData = tableListData
-          this.updateTime = res.data.updatetime || ''
+          this.updateTime = res.data.refreshTime || ''
           console.log('tableListData', tableListData)
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
