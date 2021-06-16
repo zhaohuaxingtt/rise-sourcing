@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-25 17:00:48
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-06-09 15:36:40
+ * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-06-16 17:59:54
  * @Description: 定点管理-决策资料-BDL
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\bdl\index.vue
 -->
@@ -79,7 +79,7 @@ export default {
     getTableTitle(tableData) {
       const title = cloneDeep(tableTitle)
       const rates = uniq(tableData.reduce((accum, curr) => {
-        return [...accum, ...curr.departmentRate.map(item => item.rateDepart)]
+        return [...accum, ...curr.departmentRate?.map(item => item.rateDepart)]
       },[]))
       console.log(rates)
       title.push({
