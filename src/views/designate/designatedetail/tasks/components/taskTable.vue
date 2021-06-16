@@ -91,7 +91,8 @@
         </template>
         <!-- 编辑 -->
         <template #edit="scope">
-          <div v-if="editControl && scope.row.isAdd">
+          <div>
+            <!-- <div v-if="editControl && scope.row.isAdd"> -->
             <a class="link-underline" v-if="scope.row.isPresent" @click="toggleShow(scope.row, false)">
               <icon symbol name="iconyincang" class="icon trigger-visible" />
             </a>
@@ -165,12 +166,12 @@ export default {
       selectedData: [],
       editControl: false,
       batchEditVisibal: false,
-      editColumn: {
-        props: 'edit',
-        name: 'HIDE/UNHIDE',
-        key: 'HIDE/UNHIDE',
-        tooltip: false
-      },
+      // editColumn: {
+      //   props: 'edit',
+      //   name: 'HIDE/UNHIDE',
+      //   key: 'HIDE/UNHIDE',
+      //   tooltip: false
+      // },
       page: {
         currPage: 1,
         pageSize: 10,
@@ -223,6 +224,7 @@ export default {
       })
     },
     toggleShow(row, state) {
+      if (!this.editControl) return
       Vue.set(row, 'isPresent', state)
     },
     async save() {
@@ -232,11 +234,11 @@ export default {
       }
       const data = {
         items: this.selectedData.map(o => {
-          const status = this.taskStatus.find(item => item.key === o.isFinishFlag) || {}
+          // const status = this.taskStatus.find(item => item.key === o.isFinishFlag) || {}
           return {
             id: o.id,
-            isFinishFlag: status.value,
-            isPresent: o.isPresent ? 1 : 0,
+            isFinishFlag: o.isFinishFlag,
+            isPresent: o.isPresent,
             nominateId: this.$store.getters.nomiAppId,
             taskRemark: o.taskRemark,
             taskResult: o.taskResult,
@@ -297,15 +299,16 @@ export default {
     },
     handlEdit() {
       this.editControl = true
-      if (!this.tasksTitle.find(o => o.props === 'edit')) {
-        this.tasksTitle.push(this.editColumn)
-      }
+      // if (!this.tasksTitle.find(o => o.props === 'edit')) {
+      //   this.tasksTitle.push(this.editColumn)
+      // }
     },
     handlCancel() {
       this.editControl = false
-      if (this.tasksTitle.find(o => o.props === 'edit')) {
-        this.tasksTitle.pop()
-      }
+      this.getFetchData()
+      // if (this.tasksTitle.find(o => o.props === 'edit')) {
+      //   this.tasksTitle.pop()
+      // }
     },
     // 单一供应商
     handleSingleSelectionChange(data) {

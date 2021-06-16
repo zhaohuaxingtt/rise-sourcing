@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-26 19:46:16
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-09 06:51:42
+ * @LastEditTime: 2021-06-16 15:33:16
  * @Description: 添加附件弹窗
  * @FilePath: \front-web\src\views\accessoryPart\createRfq\components\addFile.vue
 -->
@@ -49,6 +49,7 @@ import { iDialog, iButton, iSelect, iInput, iSearch, iPagination, iDatePicker, i
 import tableList from '@/views/designate/designatedetail/components/tableList'
 import { pageMixins } from "@/utils/pageMixins"
 import { tableTitle, tableMockData, fileSearchList } from '@/views/designateFiles/fileManage/data'
+import { getAffixList } from '@/api/designateFiles/index'
 
 export default {
   mixins: [pageMixins],
@@ -63,7 +64,8 @@ export default {
       tableData: tableMockData,
       tableTitle: tableTitle,
       searchList: fileSearchList,
-      searchParams: {}
+      searchParams: {},
+      tableLoading: false
     }
   },
   watch: {
