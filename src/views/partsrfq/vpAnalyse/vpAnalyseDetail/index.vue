@@ -1,3 +1,8 @@
+<!--
+ * @Author: moxuan
+ * @LastEditors: Please set LastEditors
+ * @Description: VP分析详情
+-->
 <template>
   <iPage>
     <div class="margin-bottom20 clearFloat">
