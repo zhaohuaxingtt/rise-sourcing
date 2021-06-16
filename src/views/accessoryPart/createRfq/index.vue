@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-26 13:54:01
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-09 06:59:02
+ * @LastEditTime: 2021-06-16 15:40:54
  * @Description: 创建RFQ界面
        配件：选择的配件需要是分配了询价采购员的且是同一个询价采购员, 创建时能选择LINIE
        附件：选择的附件需要时分配了LINIE且为同一个LINIE, 创建时不能再选择LINIE
@@ -63,7 +63,7 @@
     <!------------------------------------------------------------------------>
     <!--                  添加附件弹窗                                          --->
     <!------------------------------------------------------------------------>
-    <addFileDialog :dialogVisible="fileDialogVisible" @changeVisible="changefileDialogVisible" />
+    <addFileDialog :dialogVisible="fileDialogVisible" @changeVisible="changefileDialogVisible" @selectPart="selectPart" />
     <!------------------------------------------------------------------------>
     <!--                  产能计划弹窗                                          --->
     <!------------------------------------------------------------------------>
@@ -243,7 +243,9 @@ export default {
      * @return {*}
      */    
     selectPart(selectParts) {
-      this.ids = [...this.ids, ...selectParts]
+      this.ids = [...this.ids.split(','), ...selectParts].join(',')
+      this.changeAccDialogVisible(false)
+      this.changefileDialogVisible(false)
       this.getList()
     },
     /**
