@@ -17,7 +17,7 @@
             <el-option v-for='(items,index) in backChooseLists' :key='index' :label="items.label" :value="items.props"></el-option>
           </iSelect> 
         </div>
-        <div>
+        <div v-if='showRound'>
           <span>Quota. Round：</span>
           <iSelect v-model="round" @change="changeRound" style="width:100px">
             <el-option :label="items" :value="items" v-for='(items,index) in rundList' :key='index'></el-option>
@@ -32,14 +32,14 @@
         </div>            
       </div>
       <div class="btnSearch">
-        <iButton @click="quote">引用报价</iButton>
+        <iButton @click="quote" v-if='quoteShow'>引用报价</iButton>
         <iButton @click="group"  v-if='layout == "1"'>组合</iButton>
         <iButton @click="removeGroup"  v-if='layout == "1"'>取消组合</iButton>
         <!-- <iButton>导出</iButton> -->
       </div>
       <!--------------表格模块-------------->
     </div>
-    <tableList v-loading='fsTableLoading' :tableTitle='title' v-if='layout == "1"' :ratingList='ratingList' :tableData='exampelData' @handleSelectionChange='handleSelectionChange'></tableList>
+    <tableList v-loading='fsTableLoading' :round='round' :tableTitle='title' v-if='layout == "1"' :ratingList='ratingList' :tableData='exampelData' @handleSelectionChange='handleSelectionChange'></tableList>
     <tableListSupplier v-loading='supplierTableLoading' :centerSupplierData='suppliertopList' :supplierLeftLit='supplierLeftLit' :tableTitle='supplierTile'  :tableData='supplierData' v-if='layout == "2"'></tableListSupplier>
     <!--------------弹窗-------------->
     <iDialog title="组合名" :visible.sync="groupVisble" width='25%' >
@@ -83,7 +83,9 @@ export default{
     supplierTableLoading:false,
     reRenderLastChild:'',
     suppliertopList:[],
-    supplierLeftLit:[]
+    supplierLeftLit:[],
+    showRound:true,
+    quoteShow:true
   }},
   mounted(){
     this.init()

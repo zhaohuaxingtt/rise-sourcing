@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-28 15:03:47
- * @LastEditTime: 2021-06-15 15:25:49
+ * @LastEditTime: 2021-06-16 17:24:57
  * @LastEditors: Please set LastEditors
  * @Description: 特殊表格实现
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\table.vue
@@ -68,10 +68,19 @@
         </template>
         <template slot-scope="scope">
           <template v-if='removeKeysNumber(item.props) == "cfPartAPrice"'>
-              <span :class="{chengse:scope.row[item.props]['cfPartAPriceStatus'] == 2}">{{scope.row[item.props]}}</span>
+              <span :class="{chengse:scope.row['cfPartAPriceStatus'] == 2}">{{scope.row[item.props]}}</span>
+          </template>
+          <template v-else-if='removeKeysNumber(item.props) == "cfPartBPrice"'>
+              <span :class="{chengse:scope.row['cfPartBPriceStatus'] == 2}">{{scope.row[item.props]}}</span>
           </template>
           <template v-else-if='removeKeysNumber(item.props) == "lcAPrice"'>
-              <span :class="{lvse:lvseFn(scope.row,item.props)}">{{scope.row[item.props]}}</span>
+              <span :class="{lvse:lvseFn(scope.row,item.props,'lcAPriceStatus')}">{{scope.row[item.props]}}</span>
+          </template>
+          <template v-else-if='removeKeysNumber(item.props) == "lcBPrice"'>
+              <span :class="{lvse:lvseFn(scope.row,item.props,'lcBPriceStatus')}">{{scope.row[item.props]}}</span>
+          </template>
+          <template v-else-if='removeKeysNumber(item.props) == "tto"'>
+              <span :class="{lvse:lvseFn(scope.row,item.props,'ttoStatus')}">{{scope.row[item.props]}}</span>
           </template>
           <template v-else-if='removeKeysNumber(item.props) == "Quotationdetails" && scope.$index < tableData.length -3'>
              <span class="link" @click="optionPage(scope.row)">查看详情</span>
@@ -106,6 +115,10 @@ export default{
     ratingList:{
       type:Array,
       default:()=> {}
+    },
+    round:{
+      type:String,
+      default:''
     }
   },
   inject:['vm'],
@@ -122,15 +135,23 @@ export default{
     moment(date){
       return moment(date)
     },
-    lvseFn(row,props){
+    lvseFn(row,props,String){
       try {
-        return row[getPorpsNumber(props)+"lcAPriceStatus"] == 1
+        return row[getPorpsNumber(props)+String] == 1
       } catch (error) {
         return false
       }
     },
-    optionPage(){
-      
+    optionPage(items){
+      const router = this.$router.resolve({
+        path:'/supplier/quotationdetail',
+        query:{
+          rfqId:this.$route.query.id,
+          round:this.round,
+          supplierId:items.supplierId
+        }
+      })
+      window.open(router.href,'_blank')
     },
         /**
      * 分组函数，用于element-ui table 分组合并

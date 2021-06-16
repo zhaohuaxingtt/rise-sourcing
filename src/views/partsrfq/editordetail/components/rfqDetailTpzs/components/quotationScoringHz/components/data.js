@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-05-28 14:32:26
- * @LastEditTime: 2021-06-15 15:19:39
+ * @LastEditTime: 2021-06-16 17:40:27
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\data.js
@@ -275,6 +275,9 @@ export function subtotal(tableHeader,dataList,priceInfo){
             for(let key in element){
                 if(items.props == key){
                   total[key] = _getMathNumber(`${total[key] || 0}+${element[key] || 0}*${element['ebr']}`)
+                  if(removeKeysNumber(key) == "tto"){
+                    total[getPorpsNumber(key)+"Status"] = 0
+                  }
                 }
               }
           });
@@ -282,11 +285,28 @@ export function subtotal(tableHeader,dataList,priceInfo){
       }
       
     })
-    return [total,kmOrbukeage('KM',priceInfo,dataList[0]),kmOrbukeage('Budget',priceInfo,dataList[0])]
+    return [getLowNumber(total),kmOrbukeage('KM',priceInfo,dataList[0]),kmOrbukeage('Budget',priceInfo,dataList[0])]
   } catch (error) {
     console.warn(error)
     return {partNo:'Subtotal'}
   }
+}
+
+export function getLowNumber(totalList){
+  const templateData = JSON.parse(JSON.stringify(totalList))
+  const temLits = []
+  for(let i in templateData){
+    if(removeKeysNumber(i) == "tto"){
+      temLits.push({
+        tto:templateData[i],
+        number:getPorpsNumber(i)
+      })
+    }
+  }
+  temLits.sort((a,b)=>{a.tto - b.tto})
+  templateData[temLits[0].number+'ttoStatus'] = 1
+  console.log(templateData)
+  return templateData
 }
 
 /**
