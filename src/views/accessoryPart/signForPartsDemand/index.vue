@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-25 13:57:11
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-16 10:41:53
+ * @LastEditTime: 2021-06-16 22:12:52
  * @Description: 
  * @FilePath: \front-web\src\views\accessoryPart\signForPartsDemand\index.vue
 -->
@@ -13,7 +13,7 @@
       <el-tab-pane :label="$t('LK_XUNYUANZHIHANG')" name="source">
         <div>
           <div class="margin-bottom33">
-            <iNavMvp @change="change" right routerPage lev="2" :list="navList" />
+            <iNavMvp @change="change" right routerPage lev="2" :list="navList" @message="clickMessage" />
           </div>
           <!----------------------------------------------------------------->
           <!---------------------------搜索区域------------------------------->
@@ -76,7 +76,7 @@
           <!------------------------------------------------------------------------>
           <!--                  退回EPS弹窗                                       --->
           <!------------------------------------------------------------------------>
-          <backDialog :dialogVisible="backDialogVisible" @changeVisible="changebackDialogVisible" @handleBack="handleBackEPS" />
+          <backDialog ref="backEPS" :dialogVisible="backDialogVisible" @changeVisible="changebackDialogVisible" @handleBack="handleBackEPS" />
         </div>
       </el-tab-pane>
       <!-- <el-tab-pane label="进度监控" name="progress"></el-tab-pane> -->
@@ -91,8 +91,7 @@ import tableList from '../../designate/designatedetail/components/tableList'
 import { tableTitle, searchList } from '../signForPartsDemand/data'
 import assignInquiryDepartmentDialog from './components/assignInquiryDepartment'
 import assignInquiryBuyerDialog from './components/assignInquiryBuyer'
-import backDialog from './components/backEps'
-import { navList } from "@/views/partsign/home/components/data"
+import backDialog from '../integratedManage/components/backEps'
 import { cloneDeep } from 'lodash'
 import { getAccessoryOneInfoList, signAccessoryInfo, sendAccessoryInfo, downLoadAccessoryList, backEPS } from '@/api/accessoryPart/index'
 import { uniq } from 'lodash'
@@ -101,6 +100,11 @@ import { getDictByCode } from '@/api/dictionary'
 import {
   dictkey,
 } from "@/api/partsprocure/editordetail";
+import { clickMessage } from "@/views/partsign/home/components/data"
+
+// eslint-disable-next-line no-undef
+const { mapState, mapActions } = Vuex.createNamespacedHelpers("sourcing")
+
 export default {
   mixins: [pageMixins],
   components: { iPage, iSearch, iSelect, iInput, iCard, iButton, iPagination, tableList, iDatePicker, assignInquiryDepartmentDialog, assignInquiryBuyerDialog, backDialog, iNavMvp },
@@ -121,7 +125,6 @@ export default {
       buyerDialogVisible: false,
       backDialogVisible: false,
       selectParts: [],
-      navList: cloneDeep(navList),
       tab: "source",
       selectOptions: {
         yesOrNoOption: [{value: '1', label: '是'},{value: '0', label: '否'}],
@@ -135,6 +138,11 @@ export default {
   },
   created() {
     this.init()
+    this.updateNavList
+  },
+  computed: {
+    ...mapState(["navList"]),
+    ...mapActions(["updateNavList"])
   },
   methods: {
     async init() {
@@ -234,6 +242,8 @@ export default {
         } else {
           iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
         }
+      }).finally(() => {
+        this.$refs.backEPS.changeSaveLoading && this.$refs.backEPS.changeSaveLoading(false)
       })
     },
     /**
@@ -463,7 +473,9 @@ export default {
       }).finally(() => {
         this.tableLoading = false
       })
-    }
+    },
+    // 通过待办数跳转
+    clickMessage,
   }
 }
 </script>

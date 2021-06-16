@@ -62,9 +62,9 @@ import { reportListTableTitle as tableTitle } from "../data"
 import { pageMixins } from "@/utils/pageMixins"
 import { getFileHistory } from "@/api/costanalysismanage/rfqdetail"
 import {
-  uploadDaring,
   batchDeleteDaring,
 } from '@/api/designate/decisiondata/drawing'
+import { uploadDaring } from '@/api/costanalysismanage/rfqdetail'
 import { downloadFile } from '@/api/file'
 
 export default {
