@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-24 09:47:32
- * @LastEditTime: 2021-06-05 10:57:09
+ * @LastEditTime: 2021-06-16 17:16:53
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsign\home\components\data.js
@@ -107,3 +107,23 @@ export const navList = [
     key: 'LK_DINGDIANGUANLI'
   },
 ]
+
+export const clickMessage = function(data) {
+  if (data.url.indexOf("partsign") > -1) {
+    return this.$router.push({
+      path: "/sourcing/partsign",
+      query: {
+        status: "1"
+      }
+    })
+  }
+
+  if (data.url.indexOf("partsprocure") > -1) {
+    return this.$router.push({
+      path: "/sourcing/partsprocure",
+      query: {
+        partStatus: "10"
+      }
+    })
+  }
+}

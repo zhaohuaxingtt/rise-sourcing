@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-26 16:20:16
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-16 17:21:58
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-06-16 18:20:32
  * @Description: 附件综合管理
  * @FilePath: \front-web\src\views\designateFiles\fileManage\index.vue
 -->
@@ -13,7 +13,7 @@
       <el-tab-pane :label="$t('LK_XUNYUANZHIHANG')" name="source">
         <div>
           <div class="margin-bottom33">
-            <iNavMvp @change="change" right routerPage lev="2" :list="navList" />
+            <iNavMvp @change="change" right routerPage lev="2" :list="navList" @message="clickMessage" />
           </div>
           <!----------------------------------------------------------------->
           <!---------------------------搜索区域------------------------------->
@@ -108,13 +108,17 @@ import tableList from '@/views/designate/designatedetail/components/tableList'
 import { tableTitle, tableMockData, searchList } from './data'
 import linieDialog from './components/setLinie'
 import backDialog from './components/back'
-import { navList } from "@/views/partsign/home/components/data"
 import { cloneDeep, uniq } from 'lodash'
 import { getAffixList, updateAffixList, findBuyer } from '@/api/designateFiles/index'
 import { downloadFile } from '@/api/file'
 import { insertRfq } from '@/api/accessoryPart/index'
 import joinRfqDialog from '@/views/designateFiles/fileManage/components/joinRfq'
 import { getDictByCode } from '@/api/dictionary'
+import { clickMessage } from "@/views/partsign/home/components/data"
+
+// eslint-disable-next-line no-undef
+const { mapState, mapActions } = Vuex.createNamespacedHelpers("sourcing")
+
 export default {
   mixins: [pageMixins],
   components: { iPage, iSearch, iSelect, iInput, iCard, iButton, iPagination, tableList, linieDialog, backDialog, iNavMvp, joinRfqDialog, iDatePicker },
@@ -133,7 +137,6 @@ export default {
       linieDialogVisible: false,
       backDialogVisible: false,
       selectParts: [],
-      navList: cloneDeep(navList),
       tab: "source",
       selectOptions: {
         yesOrNoOption: [{value: '1', label: '是'},{value: '0', label: '否'}]
@@ -147,6 +150,11 @@ export default {
   },
   created() {
     this.init()
+    this.updateNavList
+  },
+  computed: {
+    ...mapState(["navList"]),
+    ...mapActions(["updateNavList"])
   },
   methods: {
     /**
@@ -494,7 +502,9 @@ export default {
       this.selectLinieDept = selectLINIEDept[0]
       const router =  this.$router.resolve({path: '/sourcing/createrfq', query: { type: '2', ids: this.selectParts.map(item => item.spnrNum).join(','),linie:selectLINIE[0], linieDept:selectLINIEDept[0]}})
       window.open(router.href,'_blank')
-    }
+    },
+    // 通过待办数跳转
+    clickMessage,
   }
 }
 </script>

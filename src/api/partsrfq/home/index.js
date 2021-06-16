@@ -77,10 +77,11 @@ export function getAllScoringDepartmentInfo(parmars) {
 }
 
 // 获取寻源执行子菜单待办数
-export function getAgentTasksNum() {
+export function getAgentTasksNum(options) {
     return requst({
         url: '/getAgentTasksNum',
         method: 'GET',
+        ...options
     })
 }
 
