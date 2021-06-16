@@ -36,10 +36,7 @@
       </div>
       <!--      自定义图标-->
       <div class="customBox" @click="handleOpenCustomDialog">
-        <icon symbol
-              name="iconzidingyi"
-              class="customIcon"
-        />
+        <icon symbol name="iconzidingyi" class="customIcon"/>
       </div>
     </div>
     <!--信息-->
@@ -54,6 +51,14 @@
       </iCard>
 
       <iCard class="analyzeBox">
+        <div class="margin-bottom20 clearFloat">
+          <span class="font18 font-weight">Volume Pricing{{ $t('TPZS.FENXI') }}</span>
+          <div class="floatright">
+            <!--保存-->
+            <iButton>{{ $t('LK_BAOCUN') }}</iButton>
+          </div>
+        </div>
+        <analyzeChart/>
       </iCard>
     </div>
   </iPage>
@@ -64,6 +69,7 @@ import {iPage, iButton, icon, iCard} from 'rise';
 import baseInfo from './components/baseInfo';
 import totalUnitPriceTable from './components/totalUnitPriceTable';
 import curveChart from './components/curveChart';
+import analyzeChart from './components/analyzeChart';
 
 export default {
   components: {
@@ -74,6 +80,7 @@ export default {
     icon,
     iCard,
     curveChart,
+    analyzeChart
   },
   data() {
     return {
