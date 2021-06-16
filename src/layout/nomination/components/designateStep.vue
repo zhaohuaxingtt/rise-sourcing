@@ -250,13 +250,16 @@ export default {
             }).then(res => {
                 if (res.code === '200') {
                     let item = applyStep.find(o => o.id === phaseType )
-                    const {query} = this.$route;
-                    this.$router.push({
-                        path:item.path,
-                        query: {
-                            ...query,
-                        }
-                    })
+                    const {query, path} = this.$route;
+                    // 在决策资料前的步骤，支持正确的step跳转
+                    if (path.indexOf('/designate/decisiondata') === -1) {
+                        this.$router.push({
+                            path:item.path,
+                            query: {
+                                ...query,
+                            }
+                        })
+                    }
                 }
             })
         },

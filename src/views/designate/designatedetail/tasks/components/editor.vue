@@ -32,6 +32,7 @@
         class="editor-content margin-top20"
         id="textEditor"
         :menus=[]
+        :disabled="!multiEditControl"
         v-model="content"
         ref="editor"
 
