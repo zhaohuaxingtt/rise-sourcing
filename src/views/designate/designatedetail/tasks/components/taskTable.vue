@@ -34,7 +34,7 @@
           <iButton v-if="!$store.getters.isPreview" @click="handlEdit">
             {{ $t("nominationSupplier.Edit") }}
           </iButton>
-          <iButton v-if="!$store.getters.isPreview">
+          <iButton @click="exportTasks" v-if="!$store.getters.isPreview">
             {{ $t("nominationSupplier.Export") }}
           </iButton>
         </div>
@@ -126,9 +126,9 @@ import {
   addNominateTask,
   deleteNominateTask
 } from '@/api/designate/decisiondata/tasks'
+import { excelExport } from '@/utils/filedowLoad'
 import { pageMixins } from '@/utils/pageMixins'
 import filters from "@/utils/filters"
-
 import tablelist from "./tableList";
 
 import {
@@ -311,6 +311,14 @@ export default {
     handleSingleSelectionChange(data) {
       this.selectedData = data
     },
+    async exportTasks() {
+      if (!this.selectedData.length) {
+        iMessage.error(this.$t('nominationSuggestion.QingXuanZeZhiShaoYiTiaoShuJu'))
+        return
+      }
+      console.log(this.selectedData)
+      excelExport(this.selectedData, this.tasksTitle)
+    }
   }
 }
 </script>
