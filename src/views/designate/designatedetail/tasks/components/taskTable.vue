@@ -26,7 +26,7 @@
             @click="handlCancel"
             :loading="startLoding"
           >
-            {{ $t("LK_QUXIAO") }}
+            {{ $t("strategicdoc.JieSuBianJi") }}
           </iButton>
         </div>
         <div class="floatright" v-else>
