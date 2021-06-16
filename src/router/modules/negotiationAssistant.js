@@ -13,7 +13,7 @@ export default [
       {
         path: 'negotiationAssistant/vpAnalyseDetail',
         name: 'vpAnalyseDetail',
-        component: ()=> import('../../views/negotiationAssistant/vpAnalyseDetail')
+        component: ()=> import('../../views/partsrfq/vpAnalyse/vpAnalyseDetail')
       },
     ]}
 ]
