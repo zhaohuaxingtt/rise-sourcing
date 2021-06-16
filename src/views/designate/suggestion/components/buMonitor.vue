@@ -9,50 +9,54 @@
   <iCard class="buMonitor" :title="cardTitle" :collapse='collapse' @handleCollapse='handleCollapse'>
     <el-row :gutter="24">
       <!-- 供应商表格 -->
-      <el-col :span="15">
+      <el-col :span="16">
         <div class="supplierTable">
           <div class="margin-bottom20 clearFloat">
-            <span class="font18 font-weight">
-              {{ title }}
-            </span>
-            <span class="updateTime" v-if="updateTime">
-              {{$t("nominationSuggestion.ShuaXinShiJian")}}:
-              {{'2021-05-25'}}
-            </span>
-            
-            <div class="floatright" v-if="!readOnly">
+            <div>
+              <span class="font18 font-weight">
+                {{ title }}
+              </span>
+              <span class="updateTime" v-if="!hideUpdateTime">
+                {{$t("nominationSuggestion.ShuaXinShiJian")}}:
+                {{updateTime}}
+              </span>
               
-              <span class="combine" v-if="multiEditControl">
-                <!-- 合并功能 -->
-              <iButton @click="combine">
-                  {{ $t("nominationSuggestion.ZuHe") }}
+              <div class="floatright" v-if="!readOnly">
+                
+                <span class="combine" v-if="multiEditControl">
+                  <!-- 合并功能 -->
+                <iButton @click="combine">
+                    {{ $t("nominationSuggestion.ZuHe") }}
+                  </iButton>
+                  <iButton @click="cancelSummaryGroup">
+                    {{ $t("nominationSuggestion.QuXiaoZuHe") }}
+                  </iButton>
+                  <!-- 退出编辑 -->
+                  <iButton @click="multiEditControl = false">
+                    {{ $t("nominationSuggestion.TuiChuBianJi") }}
+                  </iButton>
+                  <iButton @click="submit">
+                    {{ $t("LK_BAOCUN") }}
+                  </iButton>
+                </span>
+                <span class="combine" v-else>
+                  <!-- 编辑 -->
+                  <iButton @click="multiEditControl = true">
+                    {{ $t("LK_BIANJI") }}
+                  </iButton>
+                </span>
+                <!-- 重置 -->
+                <iButton @click="getFetchData">
+                  {{ $t("nominationSupplier.Reset") }}
                 </iButton>
-                <iButton @click="cancelSummaryGroup">
-                  {{ $t("nominationSuggestion.QuXiaoZuHe") }}
+                <!-- 刷新 -->
+                <iButton @click="refresh">
+                  {{ $t("nominationSupplier.Refresh") }}
                 </iButton>
-                <!-- 退出编辑 -->
-                <iButton @click="multiEditControl = false">
-                  {{ $t("nominationSuggestion.TuiChuBianJi") }}
-                </iButton>
-                <iButton @click="submit">
-                  {{ $t("LK_BAOCUN") }}
-                </iButton>
-              </span>
-              <span class="combine" v-else>
-                <!-- 编辑 -->
-                <iButton @click="multiEditControl = true">
-                  {{ $t("LK_BIANJI") }}
-                </iButton>
-              </span>
-              <!-- 重置 -->
-              <iButton @click="getFetchData">
-                {{ $t("nominationSupplier.Reset") }}
-              </iButton>
-              <!-- 刷新 -->
-              <iButton @click="refresh">
-                {{ $t("nominationSupplier.Refresh") }}
-              </iButton>
+              </div>
+              
             </div>
+            
 
             <!-- 表格 -->
             <div class="clearfix"></div>
@@ -69,7 +73,7 @@
         </div>
       </el-col>
       <!-- 图标模拟 -->
-      <el-col :span="9">
+      <el-col :span="8">
         <div class="buMonitor-charts">
           <buMonitorCharts
             :supplier="supplierList"
@@ -111,9 +115,9 @@ export default {
   props: {
     readOnly: {
       type: Boolean,
-      default: true
+      default: false
     },
-    updateTime: {
+    hideUpdateTime: {
       type: Boolean,
       default: false
     },
@@ -151,6 +155,8 @@ export default {
       tableLoading: false,
       chartLoading: false,
       combineVisible: false,
+      // 更新时间
+      updateTime: '',
       groupForm: {
         groupName:''
       },
@@ -298,6 +304,7 @@ export default {
             return o
           })
           this.tableListData = tableListData
+          this.updateTime = res.data.updatetime || ''
           console.log('tableListData', tableListData)
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
