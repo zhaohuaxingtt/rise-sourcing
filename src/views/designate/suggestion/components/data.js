@@ -261,13 +261,13 @@ export const mouldBudgetManagementDialogTableTitle = [
 ]
 
 export const colorPanel = [
-  '#94c8fc',
-  '#94c8fc',
-  '#e8f4ff',
-  '#d1e9ff',
-  '#a3d3ff',
-  '#74bcff',
-  '#46a6ff',
+  '#005cfa',
+  // '#94c8fc',
+  '#137cbd',
+  '#92b2f1',
+  '#1316bd',
+  '#604198',
+  '#ef2121',
   '#1890ff',
   '#1373cc',
   '#0e5699',

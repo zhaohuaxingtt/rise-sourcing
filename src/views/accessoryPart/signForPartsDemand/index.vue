@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-25 13:57:11
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-15 17:09:43
+ * @LastEditTime: 2021-06-16 10:41:53
  * @Description: 
  * @FilePath: \front-web\src\views\accessoryPart\signForPartsDemand\index.vue
 -->
@@ -43,7 +43,7 @@
               <span class="font18 font-weight">配件需求签收</span>
                 <div class="floatright">
                   <!--------------------签收按钮----------------------------------->
-                  <iButton @click="signAccessory">签收</iButton>
+                  <iButton @click="signAccessory" :loading="signLoading">签收</iButton>
                   <!--------------------退回EPS按钮----------------------------------->
                   <iButton @click="changebackDialogVisible(true)" >退回EPS</iButton>
                   <!--------------------分配询价科室按钮----------------------------------->
@@ -129,7 +129,8 @@ export default {
         cartTypeOptions: []
       },
       selectDeptId: '',
-      downloadLoading: false
+      downloadLoading: false,
+      signLoading: false
     }
   },
   created() {
@@ -348,6 +349,7 @@ export default {
         iMessage.warn('请选择需要签收的配件')
         return
       }
+      this.signLoading = true
       const params = {
         accessoryIdList: this.selectParts.map(item => item.id)
       }
@@ -358,6 +360,8 @@ export default {
         } else {
           iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
         }
+      }).finally(() => {
+        this.signLoading = false
       })
     },
     /**

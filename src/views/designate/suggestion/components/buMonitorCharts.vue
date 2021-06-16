@@ -7,7 +7,8 @@
     </div>
     <div class="legendLine">
       <ul class="legend">
-        <li v-for="(item, index) in supplier" class="corlor1" :key="index">
+        <li v-for="(item, index) in supplier" :key="index">
+          <i :style="`background: ${colorPanel[index]}`"></i>
           {{item}}
         </li>
         <!-- <li>SH Huashi</li>
@@ -42,6 +43,7 @@ import {rich} from './lib/chart'
 import {
   colorPanel
 } from './data'
+import _ from 'lodash'
 
 export default {
   components: {
@@ -83,7 +85,9 @@ export default {
           value: '手动分配'
         }
       ],
-      dataList: []
+      dataList: [],
+      // 色板
+      colorPanel
       
     }
   },
@@ -93,9 +97,11 @@ export default {
     load(mapControl = '') {
       const vm = echarts().init(document.getElementById("charts0"));
       const self = this
+      const bgColor = '#94c8fc'
       // 分组汇总 权重汇总
-      const groupedInTotal = self.data && self.data.groupedInTotal
-      const groupedWeightInTotal = self.data && self.data.groupedWeightInTotal
+      
+      const groupedInTotal = self.data.groupedInTotal
+      const groupedWeightInTotal = self.data.groupedWeightInTotal
       this.$nextTick(() => {
         // 业务指标
         const quota = [
@@ -114,41 +120,181 @@ export default {
           })
         }
         const series = []
-        seriesData.forEach((item, index) => {
-          const i = index
-          series.push({
-              data: item,
-              type: 'bar',
-              barWidth: 30,
-              stack: 'total',
-              label: {
-                show: index === (seriesData.length - 1),
-                position: 'top',
-                textStyle: {
-                  color: '#485465'
-                },
-                formatter: function(prams) {
-                  const labelValue = [
-                    prams.data,
-                    String(groupedInTotal),
-                    prams.data,
-                    String(groupedWeightInTotal)
-                  ]
-                  return labelValue[prams.dataIndex]
-                }
-              },
-              itemStyle: {
-                normal: {
-                  barBorderRadius: index === seriesData.length - 1 ? [5, 5, 0, 0] : [0, 0, 0, 0],
-                  color: function(params){
-                    const bgColor = index === 0 ? '#005cfa' : colorPanel[index]
-                    let colorlist = [bgColor, bgColor, bgColor, bgColor];
-                    return colorlist[params.dataIndex];
-                  }
-                },
-              }
-            })
+
+        const wholePackageIndex = self.data.wholePackageIndex
+        const wholePackage = self.data.wholePackage
+        // Best TTO for Whole Package
+        series.push({
+          data: [wholePackage, '', '', ''],
+          type: 'bar',
+          barWidth: 30,
+          stack: 'total',
+          label: {
+            show: true,
+            position: 'top',
+            textStyle: {
+              color: '#485465'
+            },
+            formatter: wholePackage
+          },
+          itemStyle: {
+            normal: {
+              barBorderRadius: [5, 5, 0, 0],
+              color: colorPanel[wholePackageIndex]
+            },
+          }
         })
+        // Best TTO by Group
+        const bestGroupSupplier = self.data.bestGroupSupplier
+        const bestGroupSupplierMin = bestGroupSupplier && bestGroupSupplier[0]
+        const bestGroupSupplierMax = bestGroupSupplier && bestGroupSupplier[1]
+        const bestGroupSupplierMinIndex = self.data.bestGroupSupplierIndex
+        
+        const bestGroupSupplierTotal = bestGroupSupplier && bestGroupSupplier[2]
+
+        console.log('----',bestGroupSupplier)
+        
+        series.push({
+          data: ['', bestGroupSupplierMin, '', ''],
+          type: 'bar',
+          barWidth: 30,
+          stack: 'total',
+          label: {
+            show: true,
+            position: 'top',
+            textStyle: {
+              color: '#485465'
+            },
+            formatter: function(params) {
+              return params.data
+            }
+          },
+          itemStyle: {
+            normal: {
+              barBorderRadius: [0, 0, 0, 0],
+              color: colorPanel[bestGroupSupplierMinIndex]
+            },
+          }
+        })
+        series.push({
+          data: ['', bestGroupSupplierMax, '', ''],
+          type: 'bar',
+          barWidth: 30,
+          stack: 'total',
+          label: {
+            show: true,
+            position: 'top',
+            textStyle: {
+              color: '#485465'
+            },
+            formatter: function() {
+              return bestGroupSupplierTotal
+            }
+          },
+          itemStyle: {
+            normal: {
+              barBorderRadius: [5, 5, 0, 0],
+              color: bgColor
+            },
+          }
+        })
+
+        // 单个零件最小
+        const minPartSupplierindex = self.data.minPartSupplierindex
+        const minPartSupplierTTo = self.data.minPartSupplierTTo
+        
+        series.push({
+          data: ['', '', minPartSupplierTTo, ''],
+          type: 'bar',
+          barWidth: 30,
+          stack: 'total',
+          label: {
+            show: true,
+            position: 'top',
+            textStyle: {
+              color: '#485465'
+            },
+            formatter: function() {
+              return minPartSupplierTTo
+            }
+          },
+          itemStyle: {
+            normal: {
+              barBorderRadius: [5, 5, 0, 0],
+              color: colorPanel[minPartSupplierindex]
+            },
+          }
+        })
+
+        // 权重柱状图
+        const weightSupplier = self.data.weightSupplier || []
+        const weightSupplierTotal = self.data.weightSupplierTotal || 0
+        weightSupplier.forEach((item, index) => {
+          series.push({
+            data: ['', '', '', item],
+            type: 'bar',
+            barWidth: 30,
+            stack: 'total',
+            label: {
+              show: true,
+              position: 'top',
+              textStyle: {
+                color: '#485465'
+              },
+              formatter: function(params) {
+                const ctotal = [
+                  params.data,
+                  params.data,
+                  weightSupplierTotal
+                ]
+                return ctotal[index]
+              }
+            },
+            itemStyle: {
+              normal: {
+                barBorderRadius: index === (weightSupplier.length - 1) ? [5, 5, 0, 0] : [0, 0, 0, 0],
+                color: colorPanel[index]
+              },
+            }
+          })
+        })
+        
+        // seriesData.forEach((item, index) => {
+        //   series.push({
+        //       data: item,
+        //       type: 'bar',
+        //       barWidth: 30,
+        //       stack: 'total',
+        //       label: {
+        //         show: index === (seriesData.length - 1),
+        //         position: 'top',
+        //         textStyle: {
+        //           color: '#485465'
+        //         },
+        //         formatter: function(prams) {
+        //           const labelValue = [
+        //             prams.data,
+        //             String(groupedInTotal),
+        //             prams.data,
+        //             String(groupedWeightInTotal)
+        //           ]
+        //           return labelValue[prams.dataIndex]
+        //         }
+        //       },
+        //       itemStyle: {
+        //         normal: {
+        //           barBorderRadius: index === seriesData.length - 1 ? [5, 5, 0, 0] : [0, 0, 0, 0],
+        //           color: function(params){
+        //             // 005cfa
+        //             const bgColor =  colorPanel[index]
+        //             const TotalPachageCOlor = colorPanel[self.data.wholePackageIndex]
+        //             let colorlist = [TotalPachageCOlor, bgColor, bgColor, bgColor];
+        //             return colorlist[params.dataIndex];
+        //           }
+        //         },
+        //       }
+        //     })
+        // })
 
         let option = {
           grid: {
@@ -292,8 +438,8 @@ export default {
         font-size: 16px;
         display: inline-block;
         padding-right: 15px;
-        &:before {
-          content: '';
+        i {
+          // content: '';
           display: inline-block;
           width: 10px;
           height: 10px;

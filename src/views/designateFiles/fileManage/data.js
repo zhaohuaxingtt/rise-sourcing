@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-26 11:16:58
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-09 10:37:13
+ * @LastEditTime: 2021-06-15 17:51:30
  * @Description: 
  * @FilePath: \front-web\src\views\designateFiles\fileManage\data.js
  */
@@ -51,16 +51,16 @@ export const searchList = [
   {value: 'carType', label: '使用车型', type: 'input', i18n_label: '',},
   {value: 'timeToMarket', label: '附件上市时间', type: 'date', i18n_label: '',},
   {value: 'dept', label: '科室', type: 'input', i18n_label: ''},
-  {value: 'linie', label: 'LINIE', type: 'linie', i18n_label: '', selectOption: ''},
+  {value: 'linieId', label: 'LINIE', type: 'select', filterable: true, i18n_label: '', selectOption: 'linieOptions'},
   {value: 'code', label: '编号', type: 'input', i18n_label: '',},
   {value: 'partStatus', label: '零件状态', type: 'select', i18n_label: '', selectOption: 'partStatusOption'},
-  {value: 'accessoryNum', label: '配件序号', type: 'input', i18n_label: '',},
+  {value: 'item', label: '配件序号', type: 'input', i18n_label: '',},
   // {value: 'isEop', label: '是否EOP', type: 'select', i18n_label: '', selectOption: []},
   // {value: 'assemblyPartNum', label: '批量供货总成号', type: 'input', i18n_label: '',},
   {value: 'status', label: '状态', type: 'select', i18n_label: '', selectOption: 'statusOption'},
   // {value: 'procureGroup', label: '参考采购组', type: 'input'},
   {value: 'supplierSapCode', label: '供应商SAP号', type: 'input', i18n_label: '',},
-  {value: 'spNrNum', label: 'SP号', type: 'input', i18n_label: ''},
+  {value: 'spNum', label: 'SP号', type: 'input', i18n_label: ''},
   {value: 'isShow', label: '是否自己', type: 'select', i18n_label: '', selectOption: 'yesOrNoOption'},
 ]
 

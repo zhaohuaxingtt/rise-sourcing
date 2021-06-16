@@ -2,7 +2,7 @@
  * @Descripttion: 
  * @Author: Luoshuang
  * @Date: 2021-05-21 14:30:41
- * @LastEditTime: 2021-06-15 10:25:03
+ * @LastEditTime: 2021-06-15 22:01:12
 -->
 <template>
   <el-table ref="multipleTable" fit tooltip-effect='light' :height="height" :data='tableData' v-loading='tableLoading' @selection-change="handleSelectionChange" :empty-text="$t('LK_ZANWUSHUJU')" >
@@ -65,8 +65,10 @@
             placement="right"
             trigger="hover"
             popper-class="tableTitleTip"
-            :content="getFileList(scope.row)"
             :visible-arrow="false">
+            <template slot="">
+              <p v-for="(item, index) in (scope.row.fileList || [])" :key="index">{{item.fileName}}</p>
+            </template>
             <span slot="reference" @click="handleAttachmentDonwload(scope.row)" class="openLinkText cursor">下载</span>
           </el-popover>
           <span v-else-if="items.props === 'ltcRateOfThree'">{{(scope.row.ltcs[0]?scope.row.ltcs[0].ltcRate:'')+'/'+(scope.row.ltcs[1]?scope.row.ltcs[1].ltcRate:'')+'/'+(scope.row.ltcs[2]?scope.row.ltcs[2].ltcRate:'')}}</span>
@@ -121,7 +123,7 @@ export default{
       this.$emit('handleFileDownload', row.fileList?.map(item => item.fileName))
     },
     getFileList(row) {
-      return row.fileList?.map(item => item.fileName).join('<br/>')
+      return row.fileList?.map(item => item.fileName).join('\n')
     },
     changeValue(val, row, item) {
       // console.log(val, row, item)

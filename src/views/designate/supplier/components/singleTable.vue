@@ -324,7 +324,7 @@ export default {
         iMessage.error(this.$t('nominationSuggestion.QingXuanZeZhiShaoYiTiaoShuJu'))
         return
       }
-      excelExport(this.selectSingleData, '单一供应商')
+      excelExport(this.selectSingleData, this.singleSupplierTitle)
       // exportExclusiveSuppliersList({
       //   data: this.singleListData,
       //   nominateId: this.$store.getters.nomiAppId

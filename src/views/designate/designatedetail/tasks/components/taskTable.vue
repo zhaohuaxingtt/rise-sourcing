@@ -26,7 +26,7 @@
             @click="handlCancel"
             :loading="startLoding"
           >
-            {{ $t("LK_QUXIAO") }}
+            {{ $t("strategicdoc.JieSuBianJi") }}
           </iButton>
         </div>
         <div class="floatright" v-else>
@@ -34,7 +34,7 @@
           <iButton v-if="!$store.getters.isPreview" @click="handlEdit">
             {{ $t("nominationSupplier.Edit") }}
           </iButton>
-          <iButton v-if="!$store.getters.isPreview">
+          <iButton @click="exportTasks" v-if="!$store.getters.isPreview">
             {{ $t("nominationSupplier.Export") }}
           </iButton>
         </div>
@@ -87,7 +87,7 @@
               ></el-option>
             </iSelect>
           </div>
-          <span v-else>{{scope.row.isFinishFlag ? '是' : '否'}}</span>
+          <span v-else>{{getTaskStatusDesc(scope.row.isFinishFlag)}}</span>
         </template>
         <!-- 编辑 -->
         <template #edit="scope">
@@ -126,9 +126,9 @@ import {
   addNominateTask,
   deleteNominateTask
 } from '@/api/designate/decisiondata/tasks'
+import { excelExport } from '@/utils/filedowLoad'
 import { pageMixins } from '@/utils/pageMixins'
 import filters from "@/utils/filters"
-
 import tablelist from "./tableList";
 
 import {
@@ -183,6 +183,11 @@ export default {
     this.getFetchData()
   },
   methods: {
+    // 取任务状态
+    getTaskStatusDesc(key) {
+      const task = taskStatus.find(o => o.key === key)
+      return (task && task.value) || ''
+    },
     addRow() {
       this.data.push({
         isFinishFlag: false,
@@ -306,6 +311,14 @@ export default {
     handleSingleSelectionChange(data) {
       this.selectedData = data
     },
+    async exportTasks() {
+      if (!this.selectedData.length) {
+        iMessage.error(this.$t('nominationSuggestion.QingXuanZeZhiShaoYiTiaoShuJu'))
+        return
+      }
+      console.log(this.selectedData)
+      excelExport(this.selectedData, this.tasksTitle)
+    }
   }
 }
 </script>
