@@ -223,6 +223,26 @@
               <iInput v-model="scope.row.remarks" :placeholder="$t('LK_QINGSHURU')" v-if="pageEdit"></iInput>
               <div v-if="!pageEdit">{{ scope.row.remarks }}</div>
             </template>
+            <template #applyAmount="scope">
+              <div class="linkStyle">
+                <span @click="clickMoney(scope.row, '已申请金额')">{{ scope.row.applyAmount }}</span>
+              </div>
+            </template>
+            <template #nomiAmount="scope">
+              <div class="linkStyle">
+                <span @click="clickMoney(scope.row, '已定点金额')">{{ scope.row.nomiAmount }}</span>
+              </div>
+            </template>
+            <template #baAmount="scope">
+              <div class="linkStyle">
+                <span @click="clickMoney(scope.row, '已BA金额')">{{ scope.row.baAmount }}</span>
+              </div>
+            </template>
+            <template #bmAmount="scope">
+              <div class="linkStyle">
+                <span @click="clickMoney(scope.row, '已BM金额')">{{ scope.row.bmAmount }}</span>
+              </div>
+            </template>
           </iTableList>
           <div class="buttomInput">
             <div>
@@ -316,6 +336,12 @@
         :referenceCarProjectParams="referenceCarProjectParams"
         @refresh="getInvestmentVerisionList"
     ></referenceCarProject>
+    <moneyComponent
+        v-model="moneyComponentShow"
+        :moneyComponentParams="moneyComponentParams"
+        :title="moneyComponentTitle"
+        @refresh="getInvestmentVerisionList"
+    ></moneyComponent>
   </div>
 </template>
 <script>
@@ -340,6 +366,7 @@ import conversionRatio from "./components/conversionRatio";
 import confirmAssociatedCarline from "./components/confirmAssociatedCarline";
 import saveAs from "./components/saveAs";
 import referenceCarProject from "./components/referenceCarProject";
+import moneyComponent from "./components/money";
 import {
   getCartypePulldown,
   saveCustomCart,
@@ -377,6 +404,7 @@ export default {
     saveAs,
     referenceCarProject,
     confirmAssociatedCarline,
+    moneyComponent,
     Popover
   },
   data() {
@@ -394,12 +422,15 @@ export default {
       carType: '',
       params: {},
       referenceCarProjectParams: {},
+      moneyComponentParams: {},
       addRowShow: false,
       referenceModelShow: false,
       conversionRatioShow: false,
       saveAsShow: false,
       confirmAssociatedCarlineShow: false,
       referenceCarProjectShow: false,
+      moneyComponentShow: false,
+      moneyComponentTitle: '',
       modelProtitesList: [],
       modelCategoryList: [],
       fixedPointTypeList: [],
@@ -1117,6 +1148,16 @@ export default {
         categoryId: row.categoryId,
         sourceProjectId: this.params.id
       }
+    },
+    clickMoney(row, title) {
+      this.moneyComponentShow = true
+      this.moneyComponentTitle = title
+      this.moneyComponentParams = {
+        carTypeProId: row.refCartypeProId,
+        categoryId: row.categoryId,
+        sourceProjectId: this.params.id
+      }
+
     },
     deleteIRow() {
       if (this.selectTableData.length == 0) {
