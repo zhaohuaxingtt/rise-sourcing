@@ -250,7 +250,7 @@ export default {
       }
     },
     // 刷新
-    async refresh() {
+    refresh: _.debounce(function() {
       refreshSimulateRecord({rfqId: this.rfqId}).then(res => {
         if (res.code === '200') {
           this.getFetchData()
@@ -261,7 +261,7 @@ export default {
         iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
       })
       
-    },
+    }, 500),
     // 获取模拟列表
     getFetchData() {
       if (!this.rfqId) return iMessage.error(this.$t('nominationLanguage.DingDianIDNotNull'))

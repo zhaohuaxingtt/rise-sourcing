@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-04-23 09:16:48
- * @LastEditTime: 2021-06-16 11:14:51
+ * @LastEditTime: 2021-06-16 17:48:11
  * @LastEditors: Please set LastEditors
  * @Description: 供应商维度展示
  * @FilePath: \front-supplier\src\views\rfqManageMent\partsOffer\components\ecartsCard\index.vue
@@ -245,5 +245,11 @@ export default{
     width: 280px;
   }
   }
+  }
+  ::v-deep .el-select__tags{
+    span{
+      white-space: nowrap;
+      display: inherit;
+    }
   }
 </style>
