@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:18:01
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-08 16:42:44
+ * @LastEditTime: 2021-06-16 17:51:37
  * @Description: 流转RS单
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\rs\components\circulation\index.vue
 -->
@@ -90,6 +90,7 @@ export default {
     },
     cancelEdit() {
       this.isEdit = false
+      this.getRemark()
     },
     handleAddRemark() {
       this.remarkItem.push({value: '', checked: false})
