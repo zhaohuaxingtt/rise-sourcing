@@ -4,7 +4,7 @@
  * @Description:谈判助手-报告清单首页-谈判基本信息
  -->
 <template>
-	<iCard :title="$t('TPJBXX')" collapse class="margin-top20">
+	<iCard :title="$t('TPZS.TPJBXX')" collapse class="margin-top20">
 		<tableList 
 			:tableData="tableListData"
 			:tableTitle="tableTitle"

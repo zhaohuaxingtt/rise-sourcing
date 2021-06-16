@@ -9,21 +9,25 @@ export const search=[
 
 // 专项分析工具
 export const specialToolsTitle = [
-   { props: 'version', name: '版本号', key: 'LK_BANBENHAO', tooltip: true },
-   { props: 'tpId', name: '信息流水单号', key: 'LK_XINXILIUSHUIDANHAO', tooltip: true },
-   { props: 'maintainerId', name: '维护人', key: 'LK_WEIHUREN', tooltip: true },
-   { props: 'publishDate', name: '推送时间', key: 'LK_TUISONGSHIJIAN', tooltip: true },
-   { props: 'versionStatus', name: '版本状态', key: 'LK_BANBENZHUANGTAI', tooltip: true }
+   { props: 'version', name: '报告名称', key: 'TPZS.BGMC', tooltip: true },
+   { props: 'tpId', name: '分析工具类型', key: 'TPZS.FXGJLX', tooltip: true },
+   { props: 'maintainerId', name: '材料组', key: 'LK_CAILIAOZU', tooltip: true },
+   { props: 'publishDate', name: 'RFQ', key: 'TPZS.RFQ', tooltip: true },
+   { props: 'versionStatus', name: '默认项', key: 'TPZS.MRX', tooltip: true },
+   { props: 'versionStatus', name: '文件类型', key: 'TPZS.WJLX', tooltip: true },
+   { props: 'versionStatus', name: '创建人', key: 'TPZS.CJR', tooltip: true },
+   { props: 'versionStatus', name: '创建日期', key: 'LK_CHUANGJIANRIQI', tooltip: true },
+   { props: 'versionStatus', name: '上次修改日期', key: 'TPZS.SCXGRQ', tooltip: true },
 ]
 
 // 报价分析
 export const quotationAnalysisTitle = [
-   { props: 'version', name: '报告名称', key: 'LK_BANBENHAO', tooltip: true },
-   { props: 'tpId', name: 'RFQ', key: 'LK_XINXILIUSHUIDANHAO', tooltip: true },
+   { props: 'version', name: '报告名称', key: 'TPZS.BGMC', tooltip: true },
+   { props: 'tpId', name: 'RFQ', key: 'TPZS.RFQ', tooltip: true },
 ]
 
 // 谈判基本信息
 export const negotiationBasicTitle = [
-   { props: 'version', name: '报告名称', key: 'LK_BANBENHAO', tooltip: true },
-   { props: 'tpId', name: 'RFQ', key: 'LK_XINXILIUSHUIDANHAO', tooltip: true },
+   { props: 'version', name: '报告名称', key: 'TPZS.BGMC', tooltip: true },
+   { props: 'tpId', name: 'RFQ', key: 'TPZS.RFQ', tooltip: true },
 ]
