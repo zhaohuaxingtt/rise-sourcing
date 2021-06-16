@@ -6,6 +6,34 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "22283927",
+      "name": "上升-VP",
+      "font_class": "shangsheng-VP",
+      "unicode": "e6ad",
+      "unicode_decimal": 59053
+    },
+    {
+      "icon_id": "22281975",
+      "name": "VP-计划总产量",
+      "font_class": "VP-jihuazongchanliang",
+      "unicode": "e6ac",
+      "unicode_decimal": 59052
+    },
+    {
+      "icon_id": "22281704",
+      "name": "SOP付款比",
+      "font_class": "SOPfukuanbi",
+      "unicode": "e6ab",
+      "unicode_decimal": 59051
+    },
+    {
+      "icon_id": "22271323",
+      "name": "模具看板刷新",
+      "font_class": "mojukanbanshuaxin",
+      "unicode": "e6aa",
+      "unicode_decimal": 59050
+    },
+    {
       "icon_id": "22263340",
       "name": "自定义",
       "font_class": "zidingyi",
