@@ -31,7 +31,7 @@ export default {
       urlList: {
         0: '',
         1: '/investmentAdmin/yearlyPlan',
-        2: ''
+        2: '/investmentAdmin/monthlyPlan'
       },
     }
   },

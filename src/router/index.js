@@ -199,6 +199,14 @@ export const staticRouter = [{
                         },
                         component: () => import (`@/views/ws2/investmentAdmin/yearlyPlan`),
                     },
+                    {
+                        path: '/investmentAdmin/monthlyPlan',
+                        name: 'investmentAdminMonthlyPlan',
+                        meta: {
+                            title: '月度计划'
+                        },
+                        component: () => import (`@/views/ws2/investmentAdmin/monthlyPlan`),
+                    }
                 ]
             },
             {
