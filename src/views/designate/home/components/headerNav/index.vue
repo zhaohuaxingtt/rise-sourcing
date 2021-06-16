@@ -19,7 +19,7 @@
           ></icon>
         </a>
       </div>
-      <iNavMvp @change="change" class="pull-right" right routerPage lev="2" :list="menu" />
+      <iNavMvp @change="change" class="pull-right" right routerPage lev="2" :list="navList" @message="clickMessage" />
       <!-- <ul>
         <li v-for="(item, index) in menu" :key="index">
           <a href="javascript:;" @click="$router.push({ path: item.url })">{{item.name}}</a>
@@ -35,6 +35,10 @@ import {
   iNavMvp,
   icon
 } from "rise";
+import { clickMessage } from "@/views/partsign/home/components/data"
+
+// eslint-disable-next-line no-undef
+const { mapState, mapActions } = Vuex.createNamespacedHelpers("sourcing")
 
 export default {
   data() {
@@ -49,11 +53,19 @@ export default {
   },
   created() {
     console.log(this.list)
+
+    this.updateNavList
+  },
+  computed: {
+    ...mapState(["navList"]),
+    ...mapActions(["updateNavList"])
   },
   methods: {
     change() {
 
-    }
+    },
+    // 通过待办数跳转
+    clickMessage,
   }
 }
 </script>

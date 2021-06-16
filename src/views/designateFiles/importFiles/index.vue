@@ -8,7 +8,7 @@
         <el-tabs v-model="tab" class="tab">
             <el-tab-pane :label="$t('LK_XUNYUANZHIHANG')" name="source">
                  <div class="margin-bottom33">
-                    <iNavMvp right routerPage lev="2" :list="navList" />
+                    <iNavMvp right routerPage lev="2" :list="navList" @message="clickMessage" />
                 </div>
                 <!-- 内容区 -->
                 <iCard>
@@ -68,7 +68,6 @@ import {
 } from "rise";
 import Upload from '@/components/Upload'
 import { navList } from "@/views/partsign/home/components/data";
-import { cloneDeep } from "lodash";
 import { pageMixins } from "@/utils/pageMixins";
 import tableList from "@/views/partsign/editordetail/components/tableList";
 import { tableTitle } from "./data";
@@ -79,6 +78,11 @@ import {
   downloadImportFile,
 } from '@/api/designateFiles/importFiles'
 import { iMessage } from 'rise';
+import { clickMessage } from "@/views/partsign/home/components/data"
+
+// eslint-disable-next-line no-undef
+const { mapState, mapActions } = Vuex.createNamespacedHelpers("sourcing")
+
 export default {
     name:'importFiles',
     mixins: [pageMixins],
@@ -94,7 +98,6 @@ export default {
     data(){
         return{
             tab:'source',
-            navList: cloneDeep(navList),
             loading: false,
             tableTitle:tableTitle,
             selectItems:[],
@@ -104,6 +107,11 @@ export default {
     },
     created(){
       this.getList();
+      this.updateNavList
+    },
+    computed: {
+      ...mapState(["navList"]),
+      ...mapActions(["updateNavList"])
     },
     methods:{
       // 跳转附件清单页
@@ -162,7 +170,10 @@ export default {
         }).catch((e)=>{
           iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
         });
-      }
+      },
+
+      // 通过待办数跳转
+      clickMessage,
     }
 
 }
