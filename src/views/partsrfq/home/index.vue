@@ -1,7 +1,7 @@
 <!--
  * @Author: moxuan
  * @Date: 2021-02-25 09:59:25
- * @LastEditTime: 2021-06-16 14:21:28
+ * @LastEditTime: 2021-06-16 18:23:57
  * @LastEditors: Please set LastEditors
  * @Description: RFQ模块首页
  * @FilePath: \rise\src\views\partsrfq\home\index.vue
@@ -12,7 +12,7 @@
       <el-tab-pane :label="$t('LK_XUNYUANZHIHANG')" name="source">
         <div>
           <div class="margin-bottom33">
-            <iNavMvp @change="change" right routerPage lev="2" :list="navList" />
+            <iNavMvp @change="change" right routerPage lev="2" :list="navList" @message="clickMessage" />
           </div>
           <!------------------------------------------------------------------------>
           <!--                  search 搜索模块                                   --->
@@ -173,12 +173,14 @@ import {rfqCommonFunMixins} from "pages/partsrfq/components/commonFun";
 import {getAllScoringDepartmentInfo} from '@/api/partsrfq/home'
 import { getProcureGroup } from "@/api/partsprocure/home";
 import scoringDeptDialog from "@/views/partsrfq/editordetail/components/rfqPending/components/supplierScore/components/scoringDeptDialog"
-import { navList } from "@/views/partsign/home/components/data";
-import { cloneDeep } from "lodash";
 import { getKmFileHistory } from "@/api/costanalysismanage/costanalysis"
 import { downloadFile } from "@/api/file"
 import { selectRfq } from "@/api/designate/designatedetail/addRfq"
 import nominateTypeDialog from "./components/nominateTypeDialog"
+import { clickMessage } from "@/views/partsign/home/components/data"
+
+// eslint-disable-next-line no-undef
+const { mapState, mapActions } = Vuex.createNamespacedHelpers("sourcing")
 
 export default {
   components: {
@@ -225,7 +227,6 @@ export default {
       selectDatalist:[],
       scoringDeptVisible: false,
       rfqIds: [],
-      navList: cloneDeep(navList),
       attachmentLoading: false,
       attachmentTableTitle,
       attachmentTableListData: [], 
@@ -240,6 +241,12 @@ export default {
     this.getCarTypeOptions()
     this.getPartTypeOptions()
     this.getRfqStatusOptions()
+
+    this.updateNavList
+  },
+  computed: {
+    ...mapState(["navList"]),
+    ...mapActions(["updateNavList"])
   },
   methods: {
     //获取转派评分任务列表
@@ -500,7 +507,9 @@ export default {
         this.createDesignateLoading = false
       })
       .catch(() => this.createDesignateLoading = false)
-    }
+    },
+    // 通过待办数跳转
+    clickMessage,
   }
 }
 </script>

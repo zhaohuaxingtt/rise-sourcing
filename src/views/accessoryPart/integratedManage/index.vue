@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-26 11:16:51
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-15 17:09:17
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-06-16 18:11:25
  * @Description: 配件综合管理页面
  * @FilePath: \front-web\src\views\accessoryPart\integratedManage\index.vue
 -->
@@ -13,7 +13,7 @@
       <el-tab-pane :label="$t('LK_XUNYUANZHIHANG')" name="source">
         <div>
           <div class="margin-bottom33">
-            <iNavMvp @change="change" right routerPage lev="2" :list="navList" />
+            <iNavMvp @change="change" right routerPage lev="2" :list="navList" @message="clickMessage" />
           </div>
           <!----------------------------------------------------------------->
           <!---------------------------搜索区域------------------------------->
@@ -106,8 +106,7 @@ import assignInquiryDepartmentDialog from '../signForPartsDemand/components/assi
 import assignInquiryBuyerDialog from '../signForPartsDemand/components/assignInquiryBuyer'
 import backEpsDialog from './components/backEps'
 import backDialog from './components/back'
-import { navList } from "@/views/partsign/home/components/data"
-import { cloneDeep, uniq } from 'lodash'
+import { uniq } from 'lodash'
 import { getAccessoryManageList, sendAccessoryInfo, downLoadAccessoryList, downLoadAccessoryAll, back, backEPS } from '@/api/accessoryPart/index'
 import { getDictByCode } from '@/api/dictionary'
 import {findBySearches,getCartypeDict} from "@/api/partsrfq/home";
@@ -116,6 +115,11 @@ import { insertRfq } from '@/api/accessoryPart/index'
 import {
   dictkey,
 } from "@/api/partsprocure/editordetail";
+import { clickMessage } from "@/views/partsign/home/components/data"
+
+// eslint-disable-next-line no-undef
+const { mapState, mapActions } = Vuex.createNamespacedHelpers("sourcing")
+
 export default {
   mixins: [pageMixins],
   components: { iPage, iSearch, iSelect, iInput, iCard, iButton, iPagination, tableList, assignInquiryDepartmentDialog, assignInquiryBuyerDialog,backEpsDialog, backDialog, iNavMvp, joinRfqDialog },
@@ -140,7 +144,6 @@ export default {
       backDialogVisible: false,
       backEpsDialogVisible: false,
       selectParts: [],
-      navList: cloneDeep(navList),
       tab: "source",
       selectOptions: {
         yesOrNoOption: [{value: '1', label: '是'},{value: '0', label: '否'}],
@@ -155,6 +158,11 @@ export default {
   },
   created() {
     this.init()
+    this.updateNavList
+  },
+  computed: {
+    ...mapState(["navList"]),
+    ...mapActions(["updateNavList"])
   },
   methods: {
     async init() {
@@ -596,7 +604,9 @@ export default {
       }
       const router =  this.$router.resolve({path: '/sourcing/createrfq', query: { type: '1', ids: this.selectParts.map(item => item.spnrNum).join(',') }})
       window.open(router.href,'_blank')
-    }
+    },
+    // 通过待办数跳转
+    clickMessage,
   }
 }
 </script>
