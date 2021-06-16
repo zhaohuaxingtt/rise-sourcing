@@ -113,13 +113,14 @@ export default {
                     this.tableListData = resultPage.data || [];
                     this.page.totalCount = total;
                     this.nominateId = nominateId;
-                    this.projectName = cartypeProjectZhList.join();
+                    this.projectName = cartypeProjectZhList ? cartypeProjectZhList.join() : '';
                 }else{
                     iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
                 }
                 this.loading =  false;
 
             }).catch((e)=>{
+                    e && iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
                     this.loading =  false; 
                 });
         },
