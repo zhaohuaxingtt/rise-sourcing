@@ -106,8 +106,8 @@ export default {
                 size:page.pageSize,
             };
             await getSingleSourcing(params).then((res)=>{
-                const {code,data} =res;
-                if(code == '200' && data){
+                const {code,data={}} =res;
+                if(code == '200'){
                     const {resultPage={},nominateId='',cartypeProjectZhList=[]} = data;
                     const {total} = resultPage;
                     this.tableListData = resultPage.data || [];
@@ -120,7 +120,6 @@ export default {
                 this.loading =  false;
 
             }).catch((e)=>{
-                    iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn) 
                     this.loading =  false; 
                 });
         },
