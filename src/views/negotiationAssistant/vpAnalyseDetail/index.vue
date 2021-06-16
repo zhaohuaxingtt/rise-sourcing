@@ -40,14 +40,25 @@
     <!--信息-->
     <baseInfo class="margin-bottom20"/>
     <!--总单价表格-->
-    <totalUnitPriceTable/>
+    <totalUnitPriceTable class="margin-bottom20"/>
+
+    <!--    图形-->
+    <div class="chartBox">
+      <iCard class="curveBox" title="Volume Pricing曲线">
+        <curveChart chartHeight="260px"/>
+      </iCard>
+
+      <iCard class="analyzeBox">
+      </iCard>
+    </div>
   </iPage>
 </template>
 
 <script>
-import {iPage, iButton, icon} from 'rise';
+import {iPage, iButton, icon, iCard} from 'rise';
 import baseInfo from './components/baseInfo';
 import totalUnitPriceTable from './components/totalUnitPriceTable';
+import curveChart from './components/curveChart';
 
 export default {
   components: {
@@ -56,6 +67,8 @@ export default {
     baseInfo,
     totalUnitPriceTable,
     icon,
+    iCard,
+    curveChart,
   },
   data() {
     return {
@@ -123,6 +136,22 @@ export default {
       cursor: pointer;
       font-size: 20px;
     }
+  }
+}
+
+.chartBox {
+  display: flex;
+  justify-content: space-between;
+  height: 390px;
+
+  .curveBox {
+    width: 42%;
+    height: 100%
+  }
+
+  .analyzeBox {
+    width: 57%;
+    height: 100%
   }
 }
 </style>
