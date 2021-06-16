@@ -1109,6 +1109,9 @@
             'YINGXIANGCHENGBENZHANBI': '影响成本占比', //影响成本占比
             'XIANSHIYINGCANG': '显示/隐藏', //显示/隐藏
             'WANCHENG': '完成', //完成
+            'QUXIAN': '曲线', //曲线
+            'ZUIXINDINGDIANDANJIA': '最新定点单价', //最新定点单价
+            'MUBIAODANJIA': '目标单价', //目标单价
         }
     })
 }))

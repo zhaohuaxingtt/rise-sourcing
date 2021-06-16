@@ -1,7 +1,5 @@
 <template>
-  <div class="curve" ref="curve" :style="{'height': chartHeight}">
-
-  </div>
+  <div class="curve" ref="curve" :style="{'height': chartHeight}"/>
 </template>
 
 <script>
