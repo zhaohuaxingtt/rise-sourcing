@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-01 14:50:12
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-14 11:47:13
+ * @LastEditTime: 2021-06-16 17:34:04
  * @Description: 配件相关接口
  * @FilePath: \front-web\src\api\accessoryPart\index.js
  */
@@ -67,19 +67,18 @@ export function sendAccessoryInfo(params) {
   })
 }
 
-// 获取部门下拉
-export function getDeptList(params) {
+// 获取部门下拉 tag- LINIE:4   询价：9
+export function getDeptList({tag}) {
   return requst({
-    url: '/tp-records/accessoryInfo/findRespDept',
+    url: `/tp-records/accessoryInfo/findRespDept/${tag}`,
     method: 'POST',
-    data: params
   })
 }
 
 // 获取采购员下拉
-export function getUserList({deptId}) {
+export function getUserList({deptId, tag}) {
   return requst({
-    url: `/tp-records/accessoryInfo/findRespLinie/${deptId}`,
+    url: `/tp-records/accessoryInfo/findRespLinie/${tag}/${deptId}`,
     method: 'GET'
   })
 }
