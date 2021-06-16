@@ -22,6 +22,8 @@
         </template>
       </div>
     </div>
+
+    <!--    显示表格-->
     <tableList
         :tableData="tableListData"
         :tableTitle="tableTitle"
@@ -32,6 +34,23 @@
         <div>
           {{ scope.row.showOrHide }}
           <icon symbol name="iconxianshi" class="iconStyle"/>
+        </div>
+      </template>
+    </tableList>
+
+    <el-divider class="margin-top20 margin-bottom20"/>
+
+    <!--    隐藏-->
+    <tableList
+        :tableData="tableEditListData"
+        :tableTitle="tableTitle"
+        :tableLoading="tableLoading"
+        :index="true"
+        :customIndex="tableListData.length"
+    >
+      <template #showOrHide='scope'>
+        <div>
+          {{ scope.row.showOrHide }}
           <icon symbol name="iconyincang" class="iconStyle"/>
         </div>
       </template>
@@ -54,6 +73,12 @@ export default {
   data() {
     return {
       tableListData: [
+        {'1': 1},
+        {'1': 1},
+        {'1': 1},
+      ],
+      tableEditListData: [
+        {'1': 1},
         {'1': 1},
       ],
       tableTitle: tableTitle,
@@ -89,7 +114,8 @@ export default {
   margin-top: 0;
   margin-bottom: 0;
 }
-.iconStyle{
+
+.iconStyle {
   font-size: 22px;
 }
 </style>

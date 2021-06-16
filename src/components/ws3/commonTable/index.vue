@@ -16,7 +16,9 @@
               @selection-change="handleSelectionChange"
               :row-class-name="handleTableRow">
       <el-table-column v-if="selection" type='selection' width="50" align='center'></el-table-column>
-      <el-table-column v-if='index' type='index' width='50' align='center' label='#'></el-table-column>
+      <el-table-column v-if='index' type='index' width='50' align='center' label='#'
+                       :index="indexMethod"
+      ></el-table-column>
       <template v-for="(items,index) in tableTitle">
         <!-- 点击事件-->
         <el-table-column :key="index" align='center' :width="items.width" :show-overflow-tooltip='items.tooltip'
@@ -136,6 +138,7 @@ export default {
     inputType: {type: String, default: ''},
     fileSizeProps: {type: String, default: 'fileSize'},
     mergeValue: {type: String, default: ''},
+    customIndex: {type: Number, default: 0},
   },
   components: {
     iInput,
@@ -181,6 +184,9 @@ export default {
     },
     handleTableRow(row) {
       row.row.index = row.rowIndex;
+    },
+    indexMethod(index) {
+      return index + 1 + this.customIndex;
     },
   },
 };
