@@ -20,7 +20,15 @@
     </template>
     <el-form>
       <el-form-item label="请选择分配的负责人">
-        <iSelect 
+        <iSelect filterable v-model="respLINIE" placeholder="请选择">
+          <el-option
+            v-for="item in options"
+            :key="item.id"
+            :label="item.nameZh"
+            :value="item.id">
+          </el-option>
+        </iSelect> 
+        <!-- <iSelect 
           v-model="respLINIE"
           filterable
           remote
@@ -35,7 +43,7 @@
             :label="item.nameZh"
             :value="item.id">
           </el-option>
-        </iSelect> 
+        </iSelect>  -->
       </el-form-item>
     </el-form>
   </iDialog>
@@ -61,7 +69,25 @@ export default {
       saveLoading: false
     }
   },
+  created() {
+    this.getLinieOption()
+  },
   methods: {
+    /**
+     * @Description: 获取linie下拉框
+     * @Author: Luoshuang
+     * @param {*}
+     * @return {*}
+     */    
+    getLinieOption() {
+      findBuyer('').then(res => {
+        if (res?.result) {
+          this.options = res.data || []
+        } else {
+          // iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+        }
+      })
+    },
     clearDialog() {
       this.respDept = ''
       this.respLINIE = ''
@@ -72,7 +98,7 @@ export default {
         iMessage.warn('请选择LINIE')
       }
       this.saveLoading = true
-      this.findOption = this.optionsTemp.find(item => item.id === this.respLINIE)
+      this.findOption = this.options.find(item => item.id === this.respLINIE)
       this.$emit('updateLinie', this.findOption)
     },
     remoteMethod(query) {

@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-26 16:20:16
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-10 20:57:54
+ * @LastEditTime: 2021-06-16 13:49:31
  * @Description: 附件综合管理
  * @FilePath: \front-web\src\views\designateFiles\fileManage\index.vue
 -->
@@ -21,7 +21,7 @@
           <iSearch @sure="getTableList" @reset="reset">
             <el-form>
               <el-form-item v-for="(item, index) in searchList" :key="index" :label="item.label">
-                <iSelect v-if="item.type === 'select'" v-model="searchParams[item.value]">
+                <iSelect v-if="item.type === 'select'" :filterable="item.filterable" v-model="searchParams[item.value]">
                   <el-option value="" :label="$t('all')"></el-option>
                   <el-option
                     v-for="item in getOptions(item)"
@@ -128,7 +128,7 @@ export default {
         partStatus: '',
         status: '',
         isShow: '',
-        linie: ''
+        linieId: ''
       },
       linieDialogVisible: false,
       backDialogVisible: false,
@@ -149,6 +149,29 @@ export default {
     this.init()
   },
   methods: {
+    /**
+     * @Description: 获取linie下拉框
+     * @Author: Luoshuang
+     * @param {*}
+     * @return {*}
+     */    
+    getLinieOption() {
+      findBuyer('').then(res => {
+        if (res?.result) {
+          this.selectOptions.linieOptions = (res.data || []).map(item => {
+            return { value: item.id, label: item.nameZh }
+          })
+        } else {
+          // iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+        }
+      })
+    },
+    /**
+     * @Description: 模糊搜索LINIE
+     * @Author: Luoshuang
+     * @param {*} query
+     * @return {*}
+     */    
     remoteMethod(query) {
       if (query !== '') {
         this.loading = true;
@@ -168,6 +191,7 @@ export default {
     },
     async init() {
        this.getSelectOptions()
+       this.getLinieOption()
       this.getTableList()
     },
     
@@ -184,10 +208,10 @@ export default {
     getDictionary(optionName, optionType) {
       getDictByCode(optionType).then(res => {
         if(res?.result) {
-          this.selectOptions[optionName] = res.data[0].subDictResultVo.map(item => {
+          this.selectOptions[optionName] = res.data[0]?.subDictResultVo?.map(item => {
             return { value: item.code, label: item.name }
           })
-          console.log(this.selectOptions)
+          // console.log(this.selectOptions)
         }
       })
     },
@@ -299,11 +323,13 @@ export default {
       if (fileList.length < 1) {
         return
       }
+      this.tableLoading = true
       const params = {
         applicationName: 'rise',
         fileList: fileList
       }
       await downloadFile(params)
+      this.tableLoading = false
     },
     /**
      * @Description: 更新配件信息
