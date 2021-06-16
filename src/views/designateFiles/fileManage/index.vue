@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-26 16:20:16
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-16 14:41:55
+ * @LastEditTime: 2021-06-16 14:57:18
  * @Description: 附件综合管理
  * @FilePath: \front-web\src\views\designateFiles\fileManage\index.vue
 -->
@@ -483,7 +483,7 @@ export default {
         return
       }
       const selectLINIE = uniq(this.selectParts.map(item => item.csfuserId))
-      const selectLINIEDept = uniq(this.selectParts.map(item => item.csfuserDeptId))
+      const selectLINIEDept = uniq(this.selectParts.map(item => item.csfuserDept))
       if (selectLINIE.length > 1) {
         iMessage.warn('请选择相同LINIE的附件')
         return
