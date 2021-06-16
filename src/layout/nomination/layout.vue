@@ -54,13 +54,17 @@ export default {
         // 已经到决策资料阶段，默认phaseType=5
         phaseType = phaseType >= 5 ? 5 : phaseType
         let item = applyStep.find(o => o.id === phaseType )
-        const {query} = this.$route;
-        this.$router.push({
+        const {query, path} = this.$route;
+        // 在决策资料前的步骤，支持正确的step跳转
+        if (path.indexOf('/designate/decisiondata') === -1) {
+          this.$router.push({
             path:item.path,
             query: {
                 ...query,
             }
-        })
+          })
+        }
+        
       })
     },
   },

@@ -1,8 +1,8 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-25 13:01:23
- * @LastEditTime: 2021-06-15 13:08:05
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-06-16 14:19:13
+ * @LastEditors: Luoshuang
  * @Description: 报价助手界面
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\index.vue
 -->
@@ -19,7 +19,7 @@
            <quotationScoringHZ v-if='cardShow.find(items=>items.key == "2").show'></quotationScoringHZ>
          </iCard>
           <!--------------------报价分析汇总-模具----------------------------------------->
-         <quotationScoringMj v-if='cardShow.find(items=>items.key == "3").show' class="margin-top20" titleKey='LK_BJFXHZMJ'></quotationScoringMj>
+         <quotationScoringMj v-if='cardShow.find(items=>items.key == "3").show' class="margin-top20" titleKey='LK_BJFXHZMJ' @handleCollapse='handleCollapse($event,"3")'></quotationScoringMj>
          <iCard  title="报价分析汇总-模具" v-else class="margin-top20" @handleCollapse='handleCollapse($event,"3")' collapse :defalutCollVal='false'></iCard>
           <!--------------------报价分析汇总-报价趋势----------------------------------------->
          <quotationScoringEcartsCard v-if='cardShow.find(items=>items.key == "4").show'></quotationScoringEcartsCard>
