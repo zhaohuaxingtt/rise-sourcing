@@ -265,7 +265,7 @@ export default {
     // 批量编辑
     handleBatchEdit() {
       if (!this.selectData.length) {
-        iMessage.error('请选择')
+        iMessage.error(this.$t('nominationSuggestion.QingXuanZeZhiShaoYiTiaoShuJu'))
         return
       }
       this.batchEditVisibal = true
@@ -282,6 +282,10 @@ export default {
     },
     // 保存修改记录
     async submit() {
+      if (!this.selectData.length) {
+        iMessage.error(this.$t('nominationSuggestion.QingXuanZeZhiShaoYiTiaoShuJu'))
+        return
+      }
       const confirmInfo = await this.$confirm(this.$t('submitSure'))
       if (confirmInfo !== 'confirm') return
       this.submiting = true
@@ -350,6 +354,7 @@ export default {
         o.sid = this.randomid()
         // 标识该条数据可以删除
         o.isAdd = true
+        o.sourceId = o.id
         delete o.id
         return o
       })
