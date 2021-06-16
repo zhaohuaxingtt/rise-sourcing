@@ -1091,7 +1091,8 @@
             "XinZengHang": "新增行",
         },
         "BJZS":{
-            "LK_BAOJIAZUSHOU_MJ":"报价分析汇总-模具"
+            "LK_BAOJIAZUSHOU_MJ":"报价分析汇总-模具",
+            "LK_BAOJIAZUSHOU_MJDANWEIYUAN":"报价分析汇总-模具（单元：元）"
         }
     })
 }))

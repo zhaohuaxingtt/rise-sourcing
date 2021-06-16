@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-27 14:55:03
- * @LastEditTime: 2021-06-15 20:57:38
+ * @LastEditTime: 2021-06-16 14:29:22
  * @LastEditors: Please set LastEditors
  * @Description: 采购员报价与基本分析模具界面
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringMj\index.vue
@@ -19,7 +19,7 @@ export default {
       supplierId:'',
       supplierList:[],
       myDisabled:true,
-      titleKey:"BJZS.LK_BAOJIAZUSHOU_MJ",
+      titleKey:"BJZS.LK_BAOJIAZUSHOU_MJDANWEIYUAN",
       oldSupplierId:''
     }
   },
@@ -42,6 +42,7 @@ export default {
   created(){
     this.partInfo.rfqId = parseInt(this.$route.query.id)
     this.partInfo.currentRounds = parseInt(this.$route.query.round)
+    this.partInfo.carTypeNames = this.$route.query.carTypeNames
     this.getRfqSupplierList().then(r=>{
       this.getAllMouldFee()
     })
