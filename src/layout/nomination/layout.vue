@@ -50,7 +50,9 @@ export default {
       const nominateId = this.$store.getters.nomiAppId || this.$route.query.desinateId
       await this.$store.dispatch('setNominationStep',{nominateId})
       this.$nextTick(() => {
-        const phaseType = this.$store.getters.phaseType
+        let phaseType = this.$store.getters.phaseType
+        // 已经到决策资料阶段，默认phaseType=5
+        phaseType = phaseType >= 5 ? 5 : phaseType
         let item = applyStep.find(o => o.id === phaseType )
         const {query} = this.$route;
         this.$router.push({
