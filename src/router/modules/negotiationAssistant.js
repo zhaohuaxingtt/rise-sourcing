@@ -4,16 +4,24 @@
  *
  */
 
-export default [
-  {
-    path: "/sourcing",
-    name: "sourcingNegotiationAssistant",
-    component: () => import ("@/layout/default"),
-    children: [
-      {
-        path: 'negotiationAssistant/vpAnalyseDetail',
-        name: 'vpAnalyseDetail',
-        component: ()=> import('../../views/partsrfq/vpAnalyse/vpAnalyseDetail')
-      },
-    ]}
-]
+export default [{
+	path: "/sourcing",
+	name: "sourcingNegotiationAssistant",
+	component: () => import("@/layout/default"),
+	children: [
+		{
+			path: 'negotiationAssistant/vpAnalyseDetail',
+			name: 'vpAnalyseDetail',
+			component: () => import('../../views/partsrfq/vpAnalyse/vpAnalyseDetail')
+		},
+		{
+			path: "partsrfq/reportList",
+			name: "reportList",
+			meta: {
+				title: "报告清单",
+			},
+			component: () =>
+				import("@/views/partsrfq/reportList"),
+		},
+	]
+}]
