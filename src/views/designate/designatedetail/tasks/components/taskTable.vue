@@ -87,7 +87,7 @@
               ></el-option>
             </iSelect>
           </div>
-          <span v-else>{{scope.row.isFinishFlag ? '是' : '否'}}</span>
+          <span v-else>{{getTaskStatusDesc(scope.row.isFinishFlag)}}</span>
         </template>
         <!-- 编辑 -->
         <template #edit="scope">
@@ -183,6 +183,11 @@ export default {
     this.getFetchData()
   },
   methods: {
+    // 取任务状态
+    getTaskStatusDesc(key) {
+      const task = taskStatus.find(o => o.key === key)
+      return (task && task.value) || ''
+    },
     addRow() {
       this.data.push({
         isFinishFlag: false,
