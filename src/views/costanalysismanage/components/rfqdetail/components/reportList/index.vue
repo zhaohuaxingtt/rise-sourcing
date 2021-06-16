@@ -76,7 +76,6 @@ export default {
         iPagination,
         tableList,
         Upload,
-        iMessage,
     },
     created(){
         this.getList();
