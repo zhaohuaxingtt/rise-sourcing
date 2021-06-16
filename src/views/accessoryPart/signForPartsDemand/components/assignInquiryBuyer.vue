@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-25 16:11:07
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-14 13:04:51
+ * @LastEditTime: 2021-06-16 17:34:47
  * @Description: 分配询价采购员弹窗
  * @FilePath: \front-web\src\views\accessoryPart\signForPartsDemand\components\assignInquiryBuyer.vue
 -->
@@ -59,7 +59,7 @@ export default {
   },
   methods: {
     getUserList() {
-      getUserList({deptId:this.deptId}).then(res => {
+      getUserList({deptId:this.deptId,tag:'9'}).then(res => {
         if (res.result) {
           this.userOptions = res.data?.map(item => {return {value:item.id, label:item.nameZh}})
         } else {

@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-25 15:57:31
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-14 13:04:44
+ * @LastEditTime: 2021-06-16 17:38:16
  * @Description: 分配询价科室弹窗
  * @FilePath: \front-web\src\views\accessoryPart\signForPartsDemand\components\assignInquiryDepartment.vue
 -->
@@ -56,7 +56,7 @@ export default {
     }
   },
   created() {
-    getDeptList().then(res => {
+    getDeptList({tag:'26'}).then(res => {
       if (res.result) {
         this.deptOptions = res.data?.map(item => {return {value:item.id, label:item.nameZh}})
       } else {

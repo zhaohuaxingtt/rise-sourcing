@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-25 16:11:07
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-09 10:52:37
+ * @LastEditTime: 2021-06-16 17:22:08
  * @Description: 分配询价采购员弹窗
  * @FilePath: \front-web\src\views\designateFiles\fileManage\components\setLinie.vue
 -->
@@ -80,7 +80,7 @@ export default {
      * @return {*}
      */    
     getLinieOption() {
-      findBuyer('').then(res => {
+      findBuyer().then(res => {
         if (res?.result) {
           this.options = res.data || []
         } else {
