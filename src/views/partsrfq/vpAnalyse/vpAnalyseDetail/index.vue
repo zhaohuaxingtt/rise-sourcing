@@ -1,3 +1,8 @@
+<!--
+ * @Author: moxuan
+ * @LastEditors: Please set LastEditors
+ * @Description: VP分析详情
+-->
 <template>
   <iPage>
     <div class="margin-bottom20 clearFloat">
@@ -42,9 +47,9 @@
     <!--总单价表格-->
     <totalUnitPriceTable class="margin-bottom20"/>
 
-    <!--    图形-->
+    <!--图形-->
     <div class="chartBox">
-      <iCard class="curveBox" title="Volume Pricing曲线">
+      <iCard class="curveBox" :title="'Volume Pricin' + $t('TPZS.QUXIAN')">
         <curveChart chartHeight="260px"/>
       </iCard>
 
