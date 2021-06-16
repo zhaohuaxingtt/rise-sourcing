@@ -114,19 +114,17 @@ export default {
       const { query } = this.$route;
       const {desinateId} = query;
       const data = {
-        nominateTabPageDTO: {
           nodes: this.tableListData,
           nominateId: this.$store.getters.nomiAppId
           // phaseType: this.phaseType
-          
-        },
-        nominateId: this.$store.getters.nomiAppId
-      }
+        }
       const confirmInfo = await this.$confirm(this.$t('submitSure'))
       if (confirmInfo !== 'confirm') return
       updateTabPageManager(data).then((res)=>{
         if (res.code === '200') {
           iMessage.success(this.$t('LK_CAOZUOCHENGGONG'));
+          const nominateId = this.$store.getters.nomiAppId || this.$route.query.desinateId
+          this.$store.dispatch('setNominationStep',{nominateId})
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }
