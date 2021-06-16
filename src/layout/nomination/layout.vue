@@ -49,6 +49,8 @@ export default {
     async getStepStatus(){
       const nominateId = this.$store.getters.nomiAppId || this.$route.query.desinateId
       await this.$store.dispatch('setNominationStep',{nominateId})
+      // 检查是否带强制路由参数，force表示不做step检测跳转
+      if (this.$route.query.route === 'force') return
       this.$nextTick(() => {
         let phaseType = this.$store.getters.phaseType
         // 已经到决策资料阶段，默认phaseType=5
