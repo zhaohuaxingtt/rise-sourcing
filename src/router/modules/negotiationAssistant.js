@@ -11,7 +11,7 @@ export default [
     component: () => import ("@/layout/default"),
     children: [
       {
-        path: 'negotiationAssistant/vpAnalyseDetail',
+        path: 'partsrfq/vpAnalyseDetail',
         name: 'vpAnalyseDetail',
         component: ()=> import('../../views/partsrfq/vpAnalyse/vpAnalyseDetail')
       },

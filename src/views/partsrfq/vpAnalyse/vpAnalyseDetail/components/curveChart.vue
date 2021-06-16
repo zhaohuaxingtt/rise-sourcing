@@ -52,7 +52,8 @@ export default {
       const option = {
         legend: {
           data: ['最新定点单价', '目标单价'],
-          bottom: 20,
+          right: 10,
+          itemWidth: 10,
         },
         xAxis: {
           type: 'value',
@@ -67,6 +68,11 @@ export default {
               return value + 'k';
             },
           },
+          axisLine: {
+            lineStyle: {
+              color: '#7E84A3',
+            },
+          },
         },
         yAxis: {
           type: 'value',
@@ -76,6 +82,11 @@ export default {
               type: 'dashed',
             },
           },
+          axisLine: {
+            lineStyle: {
+              color: '#7E84A3',
+            },
+          },
         },
         color: '#0059FF',
         series: [
@@ -83,11 +94,13 @@ export default {
             name: '最新定点单价',
             type: 'scatter',
             data: this.newestScatterData,
+            color: '#0059FF',
           },
           {
             name: '目标单价',
             type: 'scatter',
             data: this.targetScatterData,
+            color: '#70AD47',
           },
           {
             type: 'line',
