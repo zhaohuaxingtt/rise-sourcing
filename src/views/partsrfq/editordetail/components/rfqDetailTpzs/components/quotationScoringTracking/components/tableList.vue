@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-26 19:14:39
- * @LastEditTime: 2021-06-16 20:56:27
+ * @LastEditTime: 2021-06-17 12:03:47
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringTracking\components\tableList.vue
@@ -77,6 +77,7 @@
 <script>
 import {icon} from 'rise'
 import riteDialog from '@/views/designate/designatedetail/decisionData/bdl/partsRating.vue'
+import { getPorpsNumber } from '../../quotationScoringHz/components/data'
 export default{
   components:{icon,riteDialog},
   props:{
@@ -114,10 +115,11 @@ export default{
       const router = this.$router.resolve({
         path:'/supplier/quotationdetail',
         query:{
-          rfqId:17,
-          round:parseInt(round),
+          rfqId:this.$route.query.id || '',
+          round:round.replace(/[^0-9]/ig,""),
           supplierId:items.supplierId,
-          fsNum:'FS21-00102'
+          fsNum:items[round].partPrjCode || '',
+          agentQutation:true
         }
       })
       window.open(router.href,'_blank')

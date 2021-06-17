@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-26 11:16:51
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-16 22:13:15
+ * @LastEditTime: 2021-06-17 11:24:23
  * @Description: 配件综合管理页面
  * @FilePath: \front-web\src\views\accessoryPart\integratedManage\index.vue
 -->
@@ -604,7 +604,17 @@ export default {
         iMessage.warn('请选择配件')
         return
       }
-      const router =  this.$router.resolve({path: '/sourcing/createrfq', query: { type: '1', ids: this.selectParts.map(item => item.spnrNum).join(',') }})
+      const selectLINIE = uniq(this.selectParts.map(item => item.respLinie))
+      const selectLINIEDept = uniq(this.selectParts.map(item => item.respDept))
+      if (selectLINIE.length > 1) {
+        iMessage.warn('请选择相同LINIE的配件')
+        return
+      } if (!selectLINIE[0]) {
+        iMessage.warn('请选择已分配LINIE的配件')
+        return
+      }
+      this.selectLinieDept = selectLINIEDept[0]
+      const router =  this.$router.resolve({path: '/sourcing/createrfq', query: { type: '1', ids: this.selectParts.map(item => item.spnrNum).join(','),linie:selectLINIE[0], linieDept:selectLINIEDept[0] }})
       window.open(router.href,'_blank')
     },
     // 通过待办数跳转

@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-24 09:17:57
- * @LastEditTime: 2021-06-16 17:19:01
+ * @LastEditTime: 2021-06-17 10:50:50
  * @LastEditors: Please set LastEditors
  * @Description: 零件签收列表界面.
  * @FilePath: \rise\src\views\partsign\index.vue
@@ -239,6 +239,7 @@ import local from "@/utils/localstorage";
 import { iMessageBox } from "../../../components";
 import filters from "@/utils/filters";
 import { iNavMvp } from "rise";
+import { cloneDeep } from "lodash"
 
 // eslint-disable-next-line no-undef
 const { mapState, mapActions } = Vuex.createNamespacedHelpers("sourcing")
@@ -269,7 +270,7 @@ export default {
       backmark: "",
       inquiryBuyer: "",
       inquiryBuyerList: [],
-      form: form,
+      form: cloneDeep(form),
       fromGroup: [],
       tab: "source",
       needTranslate: needTranslate,
@@ -480,6 +481,8 @@ export default {
     clickMessage,
   },
   beforeRouteUpdate(to, from, next) {
+    this.form = cloneDeep(form)
+
     Object.keys(to.query).forEach(key => {
       this.$set(this.form, key, to.query[key])
     })
