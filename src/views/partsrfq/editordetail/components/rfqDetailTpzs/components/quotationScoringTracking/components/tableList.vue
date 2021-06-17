@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-26 19:14:39
- * @LastEditTime: 2021-06-15 13:06:58
+ * @LastEditTime: 2021-06-16 20:56:27
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringTracking\components\tableList.vue
@@ -114,9 +114,10 @@ export default{
       const router = this.$router.resolve({
         path:'/supplier/quotationdetail',
         query:{
-          rfqId:this.$route.query.id,
+          rfqId:17,
           round:parseInt(round),
-          supplierId:items.supplierId
+          supplierId:items.supplierId,
+          fsNum:'FS21-00102'
         }
       })
       window.open(router.href,'_blank')
