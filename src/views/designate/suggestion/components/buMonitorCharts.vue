@@ -101,10 +101,6 @@ export default {
       const self = this
       const bgColor = '#94c8fc'
       const mapControl = this.mapControl
-      // 分组汇总 权重汇总
-      
-      const groupedInTotal = self.data.groupedInTotal
-      const groupedWeightInTotal = self.data.groupedWeightInTotal
       this.$nextTick(() => {
         // 业务指标
         const quota = [
@@ -155,6 +151,8 @@ export default {
             },
             formatter: function(params) {
               const wholePackage = self.data && self.data.wholePackage
+              const minPartSupplierTToTotal = self.data.minPartSupplierTToTotal
+              const weightSupplierTotal = self.data.weightSupplierTotal || 0
               let tpl = ''
 
               // toolTip Best TTO \n for Whole Package
@@ -174,18 +172,20 @@ export default {
               // toolTip Best TTO \n by Part
               params.dataIndex === 2 && (tpl = `
               <div class="toolTipBox-content">
-                <p>Best TTO <br> by Part: <span class="value">${params.data}</span></p>
+                <p>Compared to Best TTO <br> for Whole Package: 
+                  <span class="value">${Number((params.data-minPartSupplierTToTotal)/minPartSupplierTToTotal*100).toFixed(2)}%</span>
+                </p>
               </div>`)
 
               params.dataIndex === 3 && (tpl = `
               <div class="toolTipBox-content">
                 <p>Compared to Best TTO <br> for Whole Package: 
-                  <span class="value">${Number((params.data-wholePackage)/wholePackage*100).toFixed(2)}%</span>
+                  <span class="value">${Number((params.data-weightSupplierTotal)/weightSupplierTotal*100).toFixed(2)}%</span>
                 </p>
               </div>`)
 
               return `
-              <div class="toolTipBox ${params.data === 0 ? 'hide' : ''}">
+              <div class="toolTipBox" style="${!params.data ? 'display: none' : ''}">
                 ${tpl}
               </div>
               `
