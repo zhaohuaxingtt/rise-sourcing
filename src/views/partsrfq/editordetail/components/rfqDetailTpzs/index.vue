@@ -30,9 +30,9 @@
       </template>
     </el-tab-pane>
     <el-tab-pane label="专项分析工具">
-      <iCard>
-        <div>开发中...</div> 
-      </iCard>
+      <div>
+        <analysisTool/>
+      </div> 
     </el-tab-pane>
     <el-tab-pane label="谈判基本信息">
       <iCard>
@@ -48,9 +48,10 @@ import quotationScoringMj from './components/quotationScoringMj'
 import quotationScoringHZ from './components/quotationScoringHz'
 import quotationScoringEcartsCard from './components/quotationScoringEcartsCard'
 import buMonitor from './components/qutaionScoringBusses'
+import analysisTool from '../../../analysisTool'
 import {icardData} from './components/data'
 export default{
-  components:{iTabsList,iCard,quotationScoringTracking,quotationScoringMj,quotationScoringHZ,quotationScoringEcartsCard,buMonitor},
+  components:{iTabsList,iCard,quotationScoringTracking,quotationScoringMj,quotationScoringHZ,quotationScoringEcartsCard,analysisTool,buMonitor},
   data(){
     return {
       cardShow:icardData
