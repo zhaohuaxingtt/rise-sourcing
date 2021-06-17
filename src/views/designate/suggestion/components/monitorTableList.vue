@@ -364,7 +364,9 @@ export default {
       // 权重供应商
       let weightSupplier = []
       // 校验是否显示加权第四根柱子
-      // let isShowWeight
+      let isShowWeightStick = false
+      isShowWeightStick = Boolean(data.filter(o => o.supplierChosen && o.supplierChosen.length > 0).length)
+
       // 根据供应商
       this.supplier.forEach((supplierName, index) => {
         // 检查该供应商是否支持汇总，这个供应商对所有零件都有报价才支持
@@ -485,22 +487,24 @@ export default {
           data: _.sum(sup.map(supItem => supItem.data))
         }
       })
-      // minPartSupplierTTo = bestPartList[0].data
-      // minPartSupplierindex = bestPartList[0].index
-      console.log('minPartSupplierTTo',minPartSupplierTToArray)
+      
+      // console.log('minPartSupplierTTo',minPartSupplierTToArray)
       // 加权汇总
       const weightSupplierTotal = _.sum(weightSupplier.map(o => Number(o)))
 
       return {
         wholePackage,
         wholePackageIndex,
+        // 分组最佳
         bestGroupSupplier,
         bestGroupSupplierIndex,
         // 报价都是最低的供应商
         minPartSupplierTToArray,
         minPartSupplierTToTotal,
+        // 权重
         weightSupplier,
         weightSupplierTotal,
+        isShowWeightStick
       }
     }
   }
