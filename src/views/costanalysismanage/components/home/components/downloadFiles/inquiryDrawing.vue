@@ -21,7 +21,7 @@
         @handleSelectionChange="handleSelectionChange"
       >
         <template #tpPartAttachmentName="scope">
-            <span class="link" @click="downloadLine(scope.row)">{{ scope.row.fileName }}</span>
+            <span class="link" @click="downloadLine(scope.row)">{{ scope.row.tpPartAttachmentName }}</span>
         </template>
       </tableList>
       <!-- 分页 -->
@@ -124,8 +124,8 @@ export default {
                 const {code,data} = res; 
                 this.tableLoading =  false;
                 if(code === '200' && data){
-                    const { inquiryDrawingsVO={},total } = data;
-                    const { inquiryDrawingsVOS } = inquiryDrawingsVO;
+                    const { inquiryDrawingsVO={} } = data;
+                    const { inquiryDrawingsVOS, total } = inquiryDrawingsVO;
                     this.tableData = inquiryDrawingsVOS;
                     this.page.totalCount = total;
                 }
