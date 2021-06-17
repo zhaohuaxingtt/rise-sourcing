@@ -2,14 +2,14 @@
  * @Author: ldh
  * @Date: 2021-04-26 17:27:20
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-06-17 10:51:50
+ * @LastEditTime: 2021-06-17 13:14:07
  * @Description: In User Settings Edit
  * @FilePath: \front-supplier\src\api\rfqManageMent\quotationdetail\index.js
  */
 import axios from '@/utils/axios'
 import axiosFile from '@/utils/axios.download'
 import router from '../../../router/index'
-const supplierId = router.currentRoute.query.supplierId?router.currentRoute.query.supplierId:''
+const supplierId = ()=> router.currentRoute.query.supplierId?router.currentRoute.query.supplierId:''
 const requst = axios(process.env.VUE_APP_QUOTATION)
 const requstxw = axios(process.env.VUE_APP_SUPPLIER_WDL)
 const requstFile = axiosFile(process.env.VUE_APP_QUOTATION)
@@ -27,7 +27,7 @@ export function getPartsQuotations(params) {
 // 提交报价单
 export function submitPartsQuotation(params) {
   return requst({
-    url: `/part/submit-partsQuotation?supplierId=${supplierId}`,
+    url: `/part/submit-partsQuotation?supplierId=${supplierId()}`,
     method: 'POST',
     data: params
   })
@@ -36,7 +36,7 @@ export function submitPartsQuotation(params) {
 // 获取RFQ、零件采购项目、报价单状态
 export function getStates(params) {
   return requst({
-    url: `/part/quotation/getStates?supplierId=${supplierId}`,
+    url: `/part/quotation/getStates?supplierId=${supplierId()}`,
     method: 'POST',
     data: params
   })
@@ -45,7 +45,7 @@ export function getStates(params) {
 // 获取零件信息与要求数据
 export function getInfoRequirement(params) {
   return requstPart({
-    url: `/info-requirement?supplierId=${supplierId}`,
+    url: `/info-requirement?supplierId=${supplierId()}`,
     method: 'POST',
     data: params
   })
@@ -54,7 +54,7 @@ export function getInfoRequirement(params) {
 // 获取全量供应商场地
 export function getSupplierInfo(params) {
   return requst({
-    url: `/part/getSupplierInfo?supplierId=${supplierId}`,
+    url: `/part/getSupplierInfo?supplierId=${supplierId()}`,
     method: 'POST',
     data: params
   })
@@ -63,7 +63,7 @@ export function getSupplierInfo(params) {
 // 获取供应商场地
 export function getSupplierPartLocation(params) {
   return requst({
-    url: `/supplier-part-location?supplierId=${supplierId}`,
+    url: `/supplier-part-location?supplierId=${supplierId()}`,
     method: 'POST',
     data: params
   })
@@ -72,7 +72,7 @@ export function getSupplierPartLocation(params) {
 // 保存供应商场地
 export function saveSupplierPartAddLocation(params) {
   return requst({
-    url: `/supplier-part-addLocation?supplierId=${supplierId}`,
+    url: `/supplier-part-addLocation?supplierId=${supplierId()}`,
     method: 'POST',
     data: params
   })
@@ -81,7 +81,7 @@ export function saveSupplierPartAddLocation(params) {
 // 获取生产能力
 export function getSupplierPlantCaps(params) {
   return requst({
-    url: `/supplier-plant-caps?supplierId=${supplierId}`,
+    url: `/supplier-plant-caps?supplierId=${supplierId()}`,
     method: 'POST',
     data: params
   })
@@ -90,7 +90,7 @@ export function getSupplierPlantCaps(params) {
 // 保存生产能力
 export function saveSupplierPlantCap(params) {
   return requst({
-    url: `/supplier-plant-cap?supplierId=${supplierId}`,
+    url: `/supplier-plant-cap?supplierId=${supplierId()}`,
     method: 'POST',
     data: params
   })
@@ -110,7 +110,7 @@ export function cbdDownloadFile(params) {
 // 上传报价
 export function uploadModuleCbd(params) {
   return requst({
-    url: `/part/cbd/uploadModuleCbd?supplierId=${supplierId}`,
+    url: `/part/cbd/uploadModuleCbd?supplierId=${supplierId()}`,
     method: 'POST',
     data: params
   })
@@ -119,7 +119,7 @@ export function uploadModuleCbd(params) {
 // 获取模具费用
 export function getMouldFee(params) {
   return requst({
-    url: `/part/getMouldFee?supplierId=${supplierId}`,
+    url: `/part/getMouldFee?supplierId=${supplierId()}`,
     method: 'POST',
     data: params
   })
@@ -128,7 +128,7 @@ export function getMouldFee(params) {
 // 获取开发费用
 export function getDevFee(params) {
   return requst({
-    url: `/part/getDevFee?supplierId=${supplierId}`,
+    url: `/part/getDevFee?supplierId=${supplierId()}`,
     method: 'POST',
     data: params
   })
@@ -137,7 +137,7 @@ export function getDevFee(params) {
 // 保存模具费用和开发费用
 export function saveModuleDevFee(params) {
   return requst({
-    url: `/part/module-dev-fee?supplierId=${supplierId}`,
+    url: `/part/module-dev-fee?supplierId=${supplierId()}`,
     method: 'POST',
     data: params
   })
@@ -146,7 +146,7 @@ export function saveModuleDevFee(params) {
 // 查询工装样件
 export function getToolingSample(quotationId) {
   return requst({
-    url: `/part/tooling-sample/${ quotationId }?supplierId=${supplierId}`,
+    url: `/part/tooling-sample/${ quotationId }?supplierId=${supplierId()}`,
     method: 'GET'
   })
 }
@@ -154,7 +154,7 @@ export function getToolingSample(quotationId) {
 // 保存工装样件
 export function saveToolingSample(params) {
   return requst({
-    url: `/part/tooling-sample?supplierId=${supplierId}`,
+    url: `/part/tooling-sample?supplierId=${supplierId()}`,
     method: 'POST',
     data: params
   })
@@ -163,7 +163,7 @@ export function saveToolingSample(params) {
 // 保存包装运输操作费
 export function savePackageTransport(params) {
   return requst({
-    url: `/part/quotation/package-transport?supplierId=${supplierId}`,
+    url: `/part/quotation/package-transport?supplierId=${supplierId()}`,
     method: 'PUT',
     data: params
   })
@@ -172,14 +172,14 @@ export function savePackageTransport(params) {
 // 获取包装运输操作费
 export function getPackageTransport({quotationId}) {
   return requst({
-    url: `/part/quotation/package-transport/${quotationId}?supplierId=${supplierId}`,
+    url: `/part/quotation/package-transport/${quotationId}?supplierId=${supplierId()}`,
     method: 'GET'
   })
 }
 // 获取cbd
 export function findFiles(parmars) {
   return requstxw({
-    url: `/file/fileHistory?supplierId=${supplierId}`,
+    url: `/file/fileHistory?supplierId=${supplierId()}`,
     method: 'POST',
     data: parmars
   })
@@ -188,7 +188,7 @@ export function findFiles(parmars) {
 //下载成本汇总模板
 export function downPartCbdLoadFile(parmars) {
   return requstFile({
-    url: `/cbd-files/partCbdFile?supplierId=${supplierId}`,
+    url: `/cbd-files/partCbdFile?supplierId=${supplierId()}`,
     method: 'POST',
     data: parmars
   })
@@ -196,7 +196,7 @@ export function downPartCbdLoadFile(parmars) {
 //解析成本汇总模块
 export function cbdfiles(parmars) {
   return requstxw({
-    url: `/cbd-files/uploadPartCbd?supplierId=${supplierId}`,
+    url: `/cbd-files/uploadPartCbd?supplierId=${supplierId()}`,
     method: 'POST',
     data: parmars
   })
@@ -211,7 +211,7 @@ export function partsQuotations(rfqId,lv,supplierId) {
 // 获取关联零件列表
 export function getMouldPartList(params) {
   return requstdl({
-    url: `/mould-parts-list?supplierId=${supplierId}`,
+    url: `/mould-parts-list?supplierId=${supplierId()}`,
     method: 'POST',
     data: params
   })
@@ -220,7 +220,7 @@ export function getMouldPartList(params) {
 // 获取关联零件列表
 export function copyPartsQuotation(params) {
   return requstxw({
-    url: `/part/copy-partsQuotation?supplierId=${supplierId}`,
+    url: `/part/copy-partsQuotation?supplierId=${supplierId()}`,
     method: 'POST',
     data: params
   })
@@ -229,7 +229,7 @@ export function copyPartsQuotation(params) {
 // 获取关联零件列表
 export function postCostSummary(params) {
   return requstxw({
-    url: `/part/cost-summary/postCostSummary?supplierId=${supplierId}`,
+    url: `/part/cost-summary/postCostSummary?supplierId=${supplierId()}`,
     method: 'POST',
     data: params
   })
@@ -237,7 +237,7 @@ export function postCostSummary(params) {
 // 保存关联零件列表
 export function saveMouldPartList(params) {
   return requstdl({
-    url: `/mould-parts?supplierId=${supplierId}`,
+    url: `/mould-parts?supplierId=${supplierId()}`,
     method: 'POST',
     data: params
   })
@@ -246,7 +246,7 @@ export function saveMouldPartList(params) {
 // 获取rfq下所有模具
 export function getAllMouldFee(params) {
   return requst({
-    url: `/part/getAllMouldFee?supplierId=${supplierId}`,
+    url: `/part/getAllMouldFee?supplierId=${supplierId()}`,
     method: 'POST',
     data: params
   })
@@ -255,7 +255,7 @@ export function getAllMouldFee(params) {
 // 获取rfq所有零件号和fs号
 export function getAllPartForMould(params) {
   return requst({
-    url: `/part/getAllPartForMould/${ params.rfqId }?supplierId=${supplierId}`,
+    url: `/part/getAllPartForMould/${ params.rfqId }?supplierId=${supplierId()}`,
     method: 'GET',
   })
 }
@@ -263,7 +263,7 @@ export function getAllPartForMould(params) {
 // 保存rfq下报价
 export function saveModuleFee(params) {
   return requst({
-    url: `/part/module-fee?supplierId=${supplierId}`,
+    url: `/part/module-fee?supplierId=${supplierId()}`,
     method: 'POST',
     data: params
   })
@@ -271,7 +271,7 @@ export function saveModuleFee(params) {
 // 保存rfq下报价
 export function deleteFile(params) {
   return requstxw({
-    url: `/file/deleteFiles?supplierId=${supplierId}`,
+    url: `/file/deleteFiles?supplierId=${supplierId()}`,
     method: 'POST',
     data: params
   })
@@ -280,7 +280,7 @@ export function deleteFile(params) {
 // 获取降价信息
 export function getLtcPlan(quotationId) {
   return requst({
-    url: `/part/ltc-plan/${quotationId}?supplierId=${supplierId}`,
+    url: `/part/ltc-plan/${quotationId}?supplierId=${supplierId()}`,
     method: 'GET',
   })
 }
@@ -288,7 +288,7 @@ export function getLtcPlan(quotationId) {
 // 保存降价计划
 export function saveLtcPlan(data) {
   return requst({
-    url: `/part/ltc-plan/save?supplierId=${supplierId}`,
+    url: `/part/ltc-plan/save?supplierId=${supplierId()}`,
     method: 'POST',
     data,
   })
@@ -297,7 +297,7 @@ export function saveLtcPlan(data) {
 // 获取报价单备注
 export function getComments(params) {
   return requst({
-    url: `/part/comments/${ params.quotationId }?supplierId=${supplierId}`,
+    url: `/part/comments/${ params.quotationId }?supplierId=${supplierId()}`,
     method: 'GET'
   })
 }
@@ -305,7 +305,7 @@ export function getComments(params) {
 // 保存报价单备注
 export function saveComments(data) {
   return requst({
-    url: `/part/comments?supplierId=${supplierId}`,
+    url: `/part/comments?supplierId=${supplierId()}`,
     method: 'POST',
     data,
   })
@@ -314,7 +314,7 @@ export function saveComments(data) {
 // 获取附件列表
 export function getFileHistory(data) {
   return requst({
-    url: `/file/fileHistory?supplierId=${supplierId}`,
+    url: `/file/fileHistory?supplierId=${supplierId()}`,
     method: 'POST',
     data,
   })
@@ -323,7 +323,7 @@ export function getFileHistory(data) {
 // 关联附件
 export function uploadFileList(data) {
   return requst({
-    url: `/file/uploadFileList?supplierId=${supplierId}`,
+    url: `/file/uploadFileList?supplierId=${supplierId()}`,
     method: 'POST',
     data,
   })
@@ -332,7 +332,7 @@ export function uploadFileList(data) {
 // 删除附件
 export function deleteFiles(data) {
   return requst({
-    url: `/file/deleteFiles?supplierId=${supplierId}`,
+    url: `/file/deleteFiles?supplierId=${supplierId()}`,
     method: 'POST',
     data,
   })
@@ -341,7 +341,7 @@ export function deleteFiles(data) {
 // 获取送样进度
 export function getSampleProgress(params) {
   return requst({
-    url: `/part/sample-progress/${ params.quotationId }?supplierId=${supplierId}`,
+    url: `/part/sample-progress/${ params.quotationId }?supplierId=${supplierId()}`,
     method: 'GET'
   })
 }
@@ -349,7 +349,7 @@ export function getSampleProgress(params) {
 // 保存送样进度
 export function saveSampleProgress(data) {
   return requst({
-    url: `/part/sample-progress?supplierId=${supplierId}`,
+    url: `/part/sample-progress?supplierId=${supplierId()}`,
     method: 'POST',
     data,
   })
@@ -358,7 +358,7 @@ export function saveSampleProgress(data) {
 // 引用批量价格
 export function quoteBatchPrice(data) {
   return requst({
-    url: `/part/quoteBatchPrice?supplierId=${supplierId}`,
+    url: `/part/quoteBatchPrice?supplierId=${supplierId()}`,
     method: 'POST',
     data,
   })
@@ -367,7 +367,7 @@ export function quoteBatchPrice(data) {
 // 取消引用批量价格
 export function cancelQuoteBatchPrice(params) {
   return requst({
-    url: `/part/cancelQuoteBatchPrice/${ params.quotationId }?supplierId=${supplierId}`,
+    url: `/part/cancelQuoteBatchPrice/${ params.quotationId }?supplierId=${supplierId()}`,
     method: 'PATCH',
   })
 }
