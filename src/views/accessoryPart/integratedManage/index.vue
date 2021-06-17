@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-26 11:16:51
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-06-16 18:11:25
+ * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-06-16 22:13:15
  * @Description: 配件综合管理页面
  * @FilePath: \front-web\src\views\accessoryPart\integratedManage\index.vue
 -->
@@ -81,7 +81,7 @@
           <!------------------------------------------------------------------------>
           <!--                  退回EPS弹窗                                       --->
           <!------------------------------------------------------------------------>
-          <backEpsDialog :dialogVisible="backEpsDialogVisible" @changeVisible="changebackEpsDialogVisible" @handleBack="handleBackEPS" />
+          <backEpsDialog ref="backEPS" :dialogVisible="backEpsDialogVisible" @changeVisible="changebackEpsDialogVisible" @handleBack="handleBackEPS" />
           <!------------------------------------------------------------------------>
           <!--                    退回弹窗                                        --->
           <!------------------------------------------------------------------------>
@@ -400,6 +400,8 @@ export default {
         } else {
           iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
         }
+      }).finally(() => {
+        this.$refs.backEPS.changeSaveLoading && this.$refs.backEPS.changeSaveLoading(false)
       })
     },
     /**
