@@ -210,6 +210,8 @@ export default {
 .navBar{
   display: flex;
   justify-content: space-between;
+  border-bottom: 1px solid #E3E3E3;
+  padding-bottom: 5px;
 }
 .iDialogNextStep {
   ::v-deep .el-dialog {

@@ -463,6 +463,7 @@ export const form = {
     'search.contingencyAmount': "", //综合偏差
     'search.contingencyPercent': "", //综合偏差金额
     'search.totalBudget': "", //总预算
+    'search.DeptSelect': "", // 专业科室
 }
 
 // addRfq
@@ -484,15 +485,15 @@ export const tabtitle = [
 ]
 
 export const budgetManagement3rd = [
-    {value: 1, message: 0, name: "车型项目", activePath: '404', url: '404', key: "LK_CHEXINGXIANGMUGAILAN"},
-    {value: 2, message: 0, name: "Common Sourcing", activePath: '/tooling/budgetManagement', url: '/tooling/budgetManagement', key: "LK_YUSUANGUANLI"},
+    {value: 1, message: 0, name: "车型项目", activePath: 'carTypeOverview', url: '/tooling/budgetManagement/carTypeOverview', key: "LK_CHEXINGXIANGMU"},
+    {value: 2, message: 0, name: "Common Sourcing", activePath: 'commonSourcing', url: '/tooling/budgetManagement/commonSourcing', key: "Common Sourcing"},
 ]
 
 export const dataBaseData = [
     {
         props: 'tmCartypeProName',
         name: '车型项目',
-        key: '车型项目',
+        key: 'LK_CHEXINGXIANGMU',
         tooltip: false
     },
     {
@@ -549,7 +550,7 @@ export const tmCartypeProList = [
     {
         props: 'tmCartypeProName',
         name: '车型项目',
-        key: '车型项目',
+        key: 'LK_CHEXINGXIANGMU',
         tooltip: false
     },
     {

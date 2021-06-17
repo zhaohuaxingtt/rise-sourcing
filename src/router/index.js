@@ -222,25 +222,9 @@ export const staticRouter = [{
                         path: '/tooling/budgetManagement/carTypeOverview',
                         name: 'carTypeOverview',
                         meta: {
-                            title: '车型概览'
+                            title: '生成投资清单'
                         },
                         component: () => import (`@/views/ws2/budgetManagement/carTypeOverview`),
-                    },
-                    {
-                        path: '/tooling/baApplyIndex',
-                        name: 'baApplyIndex',
-                        meta: {
-                            title: 'BA申请'
-                        },
-                        component: () => import (`@/views/ws2/baApply`),
-                    },
-                    {
-                        path: '/tooling/baApprovalIndex',
-                        name: 'baApprovalIndex',
-                        meta: {
-                            title: 'BA审批'
-                        },
-                        component: () => import (`@/views/ws2/baApproval`),
                     },
                     {
                         path: '/tooling/budgetManagement/generateInvestmentList',
@@ -265,6 +249,30 @@ export const staticRouter = [{
                             title: '投资清单Common'
                         },
                         component: () => import (`@/views/ws2/budgetManagement/investmentListCommon`),
+                    },
+                    {
+                        path: '/tooling/budgetManagement/commonSourcing',
+                        name: 'commonSourcing',
+                        meta: {
+                            title: 'commonSourcing'
+                        },
+                        component: () => import (`@/views/ws2/budgetManagement/commonSourcing`),
+                    },
+                    {
+                        path: '/tooling/baApplyIndex',
+                        name: 'baApplyIndex',
+                        meta: {
+                            title: 'BA申请'
+                        },
+                        component: () => import (`@/views/ws2/baApply`),
+                    },
+                    {
+                        path: '/tooling/baApprovalIndex',
+                        name: 'baApprovalIndex',
+                        meta: {
+                            title: 'BA审批'
+                        },
+                        component: () => import (`@/views/ws2/baApproval`),
                     },
                     //历史数据库
                     {
