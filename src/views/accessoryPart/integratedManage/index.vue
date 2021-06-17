@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-26 11:16:51
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-17 16:16:47
+ * @LastEditTime: 2021-06-17 18:40:19
  * @Description: 配件综合管理页面
  * @FilePath: \front-web\src\views\accessoryPart\integratedManage\index.vue
 -->
@@ -197,7 +197,7 @@ export default {
     joinRfq(rfq) {
       const params = {
         insertRfqPackage: {
-          rfqId: rfq.rfqId,
+          rfqId: rfq.id,
           operationType: '1',
           rfqPartDTOList: this.selectParts.map(item => {
             return {
