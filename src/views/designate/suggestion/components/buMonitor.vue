@@ -25,10 +25,10 @@
                 
                 <span class="combine" v-if="multiEditControl">
                   <!-- 合并功能 -->
-                <iButton @click="combine">
+                <iButton @click="combine" v-if="!hideCombine">
                     {{ $t("nominationSuggestion.ZuHe") }}
                   </iButton>
-                  <iButton @click="cancelSummaryGroup">
+                  <iButton @click="cancelSummaryGroup" v-if="!hideCombine">
                     {{ $t("nominationSuggestion.QuXiaoZuHe") }}
                   </iButton>
                   <!-- 退出编辑 -->
@@ -117,9 +117,15 @@ export default {
       type: Boolean,
       default: false
     },
+    // 隐藏更新时间
     hideUpdateTime: {
       type: Boolean,
       default: false
+    },
+    // 隐藏组合功能
+    hideCombine: {
+      type: Boolean,
+      default: true
     },
     title: {
       type: String,
