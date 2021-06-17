@@ -9,7 +9,7 @@
 			<!-- 报告清单 -->
 			<span class="pageTitle">{{$t('TPZS.BGQD')}}</span>
 			<!-- 导出 -->
-			<iButton>{{$t('LK_DAOCHU')}}</iButton>
+			<iButton @click="openExport">{{$t('LK_DAOCHU')}}</iButton>
 		</div>
 		<iSearch class="margin-top20" @reset="handleSearchReset" @sure="getTableList">
 			<el-form>
@@ -34,6 +34,8 @@
 				<negotiationBasic class="margin-left20"></negotiationBasic>
 			</el-col>
 		</el-row>
+		<!-- 导出弹窗 -->
+		<exportReport v-model="visible"></exportReport>
 	</iPage>
 </template>
 
@@ -44,14 +46,16 @@
 	import specialTools from './components/specialTools';
 	import quotationAnalysis from './components/quotationAnalysis';
 	import negotiationBasic from './components/negotiationBasic';
+	import exportReport from './components/exportReport'
 	export default{
 		components:{
-			iPage,iCard,iSelect,iInput,iButton,iSearch,specialTools,quotationAnalysis,negotiationBasic
+			iPage,iCard,iSelect,iInput,iButton,iSearch,specialTools,quotationAnalysis,negotiationBasic,exportReport
 		},
 		data() {
 			return {
 				search,
 				fromGroup: {},//下拉框数据
+				visible:false
 			}
 		},
 		created() {
@@ -67,6 +71,10 @@
 					}
 				})
 			},
+			// 打开导出弹窗
+			openExport(){
+				this.visible=true
+			}
 		}
 	}
 </script>

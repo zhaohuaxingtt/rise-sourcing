@@ -1,8 +1,8 @@
 /*
  * @Author: Luoshuang
  * @Date: 2021-06-01 14:50:12
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-14 11:47:13
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-06-16 20:49:55
  * @Description: 配件相关接口
  * @FilePath: \front-web\src\api\accessoryPart\index.js
  */
@@ -17,18 +17,18 @@ const requstSourcing = axios(process.env.VUE_APP_SOURCING_WDL)
 // 获取配件列表数据
 export function getAccessoryOneInfoList(params) {
   return requst({
-      url: '/tp-records/accessoryInfo/getAccessoryOneInfoList/',
-      method: "POST",
-      data: params
+    url: '/tp-records/accessoryInfo/getAccessoryOneInfoList/',
+    method: "POST",
+    data: params
   })
 }
 
 // 获取配件管理列表数据
 export function getAccessoryManageList(params) {
   return requst({
-      url: '/tp-records/accessoryInfo/getAccessoryManageList/',
-      method: "POST",
-      data: params
+    url: '/tp-records/accessoryInfo/getAccessoryManageList/',
+    method: "POST",
+    data: params
   })
 }
 
@@ -77,7 +77,7 @@ export function getDeptList(params) {
 }
 
 // 获取采购员下拉
-export function getUserList({deptId}) {
+export function getUserList({ deptId }) {
   return requst({
     url: `/tp-records/accessoryInfo/findRespLinie/${deptId}`,
     method: 'GET'

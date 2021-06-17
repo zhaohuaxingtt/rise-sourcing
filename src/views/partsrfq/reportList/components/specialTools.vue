@@ -14,16 +14,28 @@
 				<span class="openPage">{{scope.row.version}}</span>
 			</template>
 		</tableList>
+		<iPagination
+		    v-update
+		    @size-change="handleSizeChange($event, getTableList)"
+		    @current-change="handleCurrentChange($event, getTableList)"
+		    background
+		    :page-sizes="page.pageSizes"
+		    :page-size="page.pageSize"
+		    :layout="page.layout"
+		    :current-page='page.currPage'
+		    :total="page.totalCount"/>
 	</iCard>
 </template>
 
 <script>
-	import {iCard} from 'rise';
+	import {iCard,iPagination} from 'rise';
 	import tableList from './tableList';
 	import {specialToolsTitle} from './data';
+	import {pageMixins} from '@/utils/pageMixins';
 	export default{
+		mixins: [pageMixins],
 		components:{
-			iCard,tableList
+			iCard,tableList,iPagination
 		},
 		data() {
 			return {

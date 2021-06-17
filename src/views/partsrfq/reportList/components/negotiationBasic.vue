@@ -14,16 +14,28 @@
 				<span class="openPage">{{scope.row.version}}</span>
 			</template>
 		</tableList>
+		<iPagination
+		    v-update
+		    @size-change="handleSizeChange($event, getTableList)"
+		    @current-change="handleCurrentChange($event, getTableList)"
+		    background
+		    :page-sizes="page.pageSizes"
+		    :page-size="page.pageSize"
+		    :layout="page.layout"
+		    :current-page='page.currPage'
+		    :total="page.totalCount"/>
 	</iCard>
 </template>
 
 <script>
-	import {iCard} from 'rise';
+	import {iCard,iPagination} from 'rise';
 	import tableList from './tableList';
 	import {negotiationBasicTitle} from './data';
+	import {pageMixins} from '@/utils/pageMixins';
 	export default{
+		mixins: [pageMixins],
 		components:{
-			iCard,tableList
+			iCard,tableList,iPagination
 		},
 		data() {
 			return {
@@ -32,6 +44,23 @@
 				tableLoading:false,
 			}
 		},
+		methods:{
+			// 获取谈判基本信息表格数据
+			getTableList(form){
+				// this.tableLoading=true
+				// let data={
+				// 	pageNo:this.page.currPage,
+				// 	pageSize:this.page.pageSize,
+				// 	...form
+				// }
+				// depSupplierList(data).then(res=>{
+				// 	if (res.data) {
+				// 		this.tableListData=res.data
+				// 		this.tableLoading=false
+				// 	}
+				// })
+			},
+		}
 	}
 </script>
 
