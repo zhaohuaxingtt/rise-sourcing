@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-26 16:20:16
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-17 16:16:35
+ * @LastEditTime: 2021-06-17 18:41:57
  * @Description: 附件综合管理
  * @FilePath: \front-web\src\views\designateFiles\fileManage\index.vue
 -->
@@ -284,7 +284,7 @@ export default {
     joinRfq(rfq) {
       const params = {
         insertRfqPackage: {
-          rfqId: rfq.rfqId,
+          rfqId: rfq.id,
           operationType: '1',
           rfqPartDTOList: this.selectParts.map(item => {
             return {
@@ -300,7 +300,7 @@ export default {
               partPrejectType: 'PT18',
             }
           }),
-          userId: store.state.permission.userInfo.id
+          userId: this.$store.state.permission.userInfo.id
         }
       }
       insertRfq(params).then(res => {
