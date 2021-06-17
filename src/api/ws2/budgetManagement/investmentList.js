@@ -19,7 +19,7 @@ export function getDepartmentsList(parmars) {
 export function proDeptPullDown(parmars) {
     return INVESTMENT({
         url: '/proDeptPullDown',
-        method: 'POST',
+        method: 'GET',
         params: parmars
     })
 }

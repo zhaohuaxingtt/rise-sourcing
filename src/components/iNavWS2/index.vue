@@ -5,24 +5,13 @@
  -->
 <template>
   <div class="btnList flex-align-center">
-    <div class="carTypeOverview" v-if="$route.path.indexOf('budgetManagement/carTypeOverview') > -1">
-      <el-switch
-          v-model="onleySelf"
-          @change="changeCarTypeOverview"
-          inactive-text="仅看自己">
-      </el-switch>
-      <el-switch
-          v-model="checkHistory"
-          @change="changeCheckHistory"
-          inactive-text="查看历史">
-      </el-switch>
-      <Popover
-          content="点击进入【生成投资清单】页面"
-          placement="top-start"
-          trigger="hover">
-        <iButton slot="reference" icon="el-icon-circle-plus-outline" type="primary" @click="addCarType">新增车型项目</iButton>
-      </Popover>
-    </div>
+    <iNavMvp
+        :lev='2'
+        :routerPage="true"
+        :list="budgetManagement3rd"
+        class="iNavMvp"
+        v-if="$route.path.indexOf('budgetManagement') > -1"
+    ></iNavMvp>
     <iButton
         v-if="$route.path.indexOf('budgetManagement/generateInvestmentList') > -1"
         class="nextStep"
@@ -60,8 +49,10 @@ import {
   icon,
   iButton,
 } from "rise";
-import { Switch, Popover } from "element-ui";
+import { Popover } from "element-ui";
 import logButton from "pages/ws2/budgetManagement/components/logButton";
+import {budgetManagement3rd} from "pages/ws2/budgetManagement/components/data";
+import {iNavMvp} from "@/components";
 
 export default {
   props: {
@@ -73,6 +64,7 @@ export default {
   components: {
     icon,
     iButton,
+    iNavMvp,
     Popover
   },
   data() {
@@ -83,6 +75,7 @@ export default {
       dataBase: false,
       onleySelf: true,
       checkHistory: false,
+      budgetManagement3rd: budgetManagement3rd,
     }
   },
   created() {
@@ -93,21 +86,6 @@ export default {
     }
   },
   methods: {
-    changeCarTypeOverview(val){
-      this.$store.commit('SET_onleySelf', this.onleySelf)
-    },
-    changeCheckHistory(val){
-      this.$store.commit('SET_checkHistory', this.checkHistory)
-    },
-    addCarType(){
-      this.$router.push({
-        path: '/tooling/budgetManagement/generateInvestmentList',
-        query: {
-          id: 'add',
-          sourceStatus: ''
-        },
-      })
-    },
     changeDataBase() {
       this.dataBase = true
       this.activeIndex = 999
@@ -124,21 +102,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.carTypeOverview{
-  > div{
-    margin-right: 10px;
-  }
-  ::v-deep .el-switch__label.is-active{
-    color: #41434A;
-  }
-  ::v-deep .el-button--primary{
-    font-size: 16px;
-    color: #1660F1;
-    background-color: #EEF2FB;
-    border-color: #EEF2FB;
-    //margin-right: 10px;
-  }
-}
 .bounce-enter-active {
   animation: bounce-in .5s;
 }
@@ -180,7 +143,9 @@ export default {
   }
 }
 
-
+.iNavMvp{
+  margin-right: 30px;
+}
 .tabs {
   display: flex;
 

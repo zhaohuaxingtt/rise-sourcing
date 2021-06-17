@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="monthlyPlan">
     <div class="monthlyHeader">
       <span class="versionNum">版本号</span>
       <iSelect
@@ -15,15 +15,21 @@
           :key="index"
         ></el-option>
       </iSelect>
-      <icon class="refreshIcon" symbol name="icontabdingweiicon" />
+      <icon class="refreshIcon" symbol name="iconmojukanbanshuaxin" />
       <span class="refresh">刷新</span>
       <span class="refreshTime">刷新日期：2021.01.31</span>
-      <iButton @click="saveAsList">{{ $t("上传清单") }}</iButton>
-      <iButton @click="saveAsList">{{ $t("保存") }}</iButton>
-      <iButton @click="saveAsList">{{ $t("保存为新版本") }}</iButton>
-      <iButton @click="saveAsList">{{ $t("下载清单") }}</iButton>
+      <div v-if="pageEdit">
+        <iButton @click="saveAsList">{{ $t("退出编辑") }}</iButton>
+        <iButton @click="saveAsList">{{ $t("上传清单") }}</iButton>
+        <iButton @click="saveAsList">{{ $t("保存") }}</iButton>
+        <iButton @click="saveAsList">{{ $t("保存为新版本") }}</iButton>
+      </div>
+      <div v-else>
+        <iButton @click="saveAsList">{{ $t("编辑") }}</iButton>
+        <iButton @click="saveAsList">{{ $t("下载清单") }}</iButton>
+      </div>
     </div>
-    <iCard class="margin-top20">
+    <iCard class="margin-top20 mainCard">
       <div class="cardTop">
         <div class="yearlyPlan">
           <span class="planTitle">2021月度计划</span>
@@ -74,50 +80,279 @@
       </div>
 
       <div id="echart"></div>
+      <iTableList
+        :tableData="tableListData"
+        :tableTitle="tableTitle"
+        :filterTable="false"
+        :titlePopover="false"
+        :selection="false"
+        :show-summary="true"
+        @handleSelectionChange="handleSelectionChange"
+        :height="tableHeight - 660 > 200 ? tableHeight - 660 : 200"
+      >
+        <template #jan="scope">
+          <iInput
+            v-model="scope.row.jan"
+            :placeholder="$t('LK_QINGSHURU')"
+            v-if="pageEdit"
+          ></iInput>
+          <div v-if="!pageEdit">{{ scope.row.jan }}</div>
+        </template>
+        <template #feb="scope">
+          <iInput
+            v-model="scope.row.feb"
+            :placeholder="$t('LK_QINGSHURU')"
+            v-if="pageEdit"
+          ></iInput>
+          <div v-if="!pageEdit">{{ scope.row.feb }}</div>
+        </template>
+        <template #mar="scope">
+          <iInput
+            v-model="scope.row.mar"
+            :placeholder="$t('LK_QINGSHURU')"
+            v-if="pageEdit"
+          ></iInput>
+          <div v-if="!pageEdit">{{ scope.row.mar }}</div>
+        </template>
+        <template #apr="scope">
+          <iInput
+            v-model="scope.row.apr"
+            :placeholder="$t('LK_QINGSHURU')"
+            v-if="pageEdit"
+          ></iInput>
+          <div v-if="!pageEdit">{{ scope.row.apr }}</div>
+        </template>
+        <template #may="scope">
+          <iInput
+            v-model="scope.row.may"
+            :placeholder="$t('LK_QINGSHURU')"
+            v-if="pageEdit"
+          ></iInput>
+          <div v-if="!pageEdit">{{ scope.row.may }}</div>
+        </template>
+        <template #june="scope">
+          <iInput
+            v-model="scope.row.june"
+            :placeholder="$t('LK_QINGSHURU')"
+            v-if="pageEdit"
+          ></iInput>
+          <div v-if="!pageEdit">{{ scope.row.june }}</div>
+        </template>
+        <template #july="scope">
+          <iInput
+            v-model="scope.row.july"
+            :placeholder="$t('LK_QINGSHURU')"
+            v-if="pageEdit"
+          ></iInput>
+          <div v-if="!pageEdit">{{ scope.row.july }}</div>
+        </template>
+        <template #aug="scope">
+          <iInput
+            v-model="scope.row.aug"
+            :placeholder="$t('LK_QINGSHURU')"
+            v-if="pageEdit"
+          ></iInput>
+          <div v-if="!pageEdit">{{ scope.row.aug }}</div>
+        </template>
+        <template #sep="scope">
+          <iInput
+            v-model="scope.row.sep"
+            :placeholder="$t('LK_QINGSHURU')"
+            v-if="pageEdit"
+          ></iInput>
+          <div v-if="!pageEdit">{{ scope.row.sep }}</div>
+        </template>
+        <template #oct="scope">
+          <iInput
+            v-model="scope.row.oct"
+            :placeholder="$t('LK_QINGSHURU')"
+            v-if="pageEdit"
+          ></iInput>
+          <div v-if="!pageEdit">{{ scope.row.oct }}</div>
+        </template>
+        <template #nov="scope">
+          <iInput
+            v-model="scope.row.nov"
+            :placeholder="$t('LK_QINGSHURU')"
+            v-if="pageEdit"
+          ></iInput>
+          <div v-if="!pageEdit">{{ scope.row.nov }}</div>
+        </template>
+        <template #dec="scope">
+          <iInput
+            v-model="scope.row.dec"
+            :placeholder="$t('LK_QINGSHURU')"
+            v-if="pageEdit"
+          ></iInput>
+          <div v-if="!pageEdit">{{ scope.row.dec }}</div>
+        </template>
+      </iTableList>
     </iCard>
   </div>
 </template>
 
 <script>
-import { iSelect, iButton, iCard, icon } from "rise";
+import { iSelect, iButton, iCard, iInput, icon } from "rise";
 import echarts from "@/utils/echarts";
-import tableTitle from "./components/data";
+import { tableTitle, dataList } from "./components/data";
+import { iTableList } from "@/components";
+import { cloneDeep } from 'lodash';
+import { tableHeight } from "@/utils/tableHeight";
 
 export default {
+  mixins: [ tableHeight ],
   components: {
     iSelect,
     iButton,
     iCard,
+    iInput,
     icon,
+    iTableList,
   },
   data() {
     return {
       version: "20210101-V1",
       versionList: ["20210101-V1", "20210101-V2"],
       tabIndex: 0, //柱状图tab
+      isCurrentYear: true,
+      pageEdit: false,
+      tableListData: dataList,
+      tableTitle: tableTitle,
     };
+  },
+  mounted() {
+    this.showEcharts();
   },
   methods: {
     changeVersion() {},
-    saveAsList() {},
+    saveAsList() {
+      this.pageEdit = !this.pageEdit;
+    },
     tabClick(index) {
       if (this.tabIndex === index) {
         return;
       }
       this.tabIndex = index;
     },
+    showEcharts() {
+      this.$nextTick(() => {
+        const chart = echarts().init(document.getElementById("echart"));
+        let series = [];
+        const colorList = ["#0040be", "#6073ff", "#0053ef", "#3c7eff", "#54a6ed", "#8bd2ff"];
+        // const colorList = ["#8bd2ff", "#54a6ed", "#3c7eff", "#0053ef", "#6073ff", "#0040be"];
+        this.tableListData.forEach((element, index) => {
+          let temp = {};
+          let data = [];
+          temp.name = element.department;
+          temp.type = "bar";
+          temp.barWidth = 60;
+          temp.stack = "total";
+          temp.color = colorList[index];
+          // temp.label = {
+          //   show: true
+          // }
+          data.push(element.jan)
+          data.push(element.feb)
+          data.push(element.mar)
+          data.push(element.apr)
+          data.push(element.may)
+          data.push(element.june)
+          data.push(element.july)
+          data.push(element.aug)
+          data.push(element.sep)
+          data.push(element.oct)
+          data.push(element.nov)
+          data.push(element.dec)
+          temp.emphasis = {
+            focus: 'series'
+          }
+          temp.data = data;
+          series.push(temp);
+        });
+        let option = {
+          tooltip: {
+            formatter: function (params) {
+              //这里就是控制显示的样式
+              return `${params.seriesName}<br/><span style="color: #1763F7; font-weight: bold">${params.data}</span>`
+            },
+            backgroundColor: "#ffffff",
+            extraCssText:
+              "color: #1B1D21; box-shadow: 0px 0px 20px rgba(27, 29, 33, 0.12);",
+          },
+          grid: {
+            left: "0%",
+            right: "0",
+            bottom: "0%",
+            top: "12%",
+            containLabel: true,
+          },
+          xAxis: {
+            type: "category",
+            data: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+            axisTick: {
+              show: false,
+            },
+            axisLine: {
+              show: true,
+              lineStyle: {
+                color: "#CDD4E2",
+              },
+            },
+            axisLabel: {
+              textStyle: {
+                color: "#485465",
+                fontSize: 10,
+              },
+            },
+          },
+          yAxis: {
+            type: "value",
+            axisTick: {
+              show: false,
+            },
+            axisLabel: {
+              show: false,
+            },
+            splitLine: {
+              show: false,
+            },
+            axisLine: {
+              show: false,
+            },
+          },
+          series: series
+        };
+        chart.setOption(option);
+      });
+    },
+    getDepartData(array, key) {
+      let temp = cloneDeep(array);
+      return temp.map(item => {
+        return item[key]
+      });
+    }
   },
 };
 </script>
 
 <style lang="scss" scoped>
+.monthlyPlan {
+  height: 92%;
+  display: flex;
+  flex-direction: column;
+}
+
+.mainCard {
+  flex: 1;
+}
+
 .monthlyHeader {
   display: flex;
   align-items: center;
   margin-top: 20px;
 
   .versionSelect {
-    width: 200px;
+    width: 120px;
     margin: 0 20px;
   }
 
@@ -135,11 +370,6 @@ export default {
     font-size: 14px;
     margin-left: 20px;
   }
-
-  .monthlyCard {
-    // height: calc(100% - 210px);
-    height: 500px;
-  }
 }
 
 .refresh {
@@ -150,8 +380,8 @@ export default {
 
 #echart {
   width: 100%;
-  height: 200px;
-  background-color: grey;
+  height: 300px;
+  margin-bottom: 20px;
 }
 
 .cardTop {

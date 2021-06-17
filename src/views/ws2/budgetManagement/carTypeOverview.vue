@@ -5,6 +5,24 @@
 <template>
   <div>
     <div v-permission="TOOLING_BUDGET_OVERVIEW">
+      <div class="carTypeOverview">
+        <el-switch
+            v-model="onleySelf"
+            @change="changeCarTypeOverview"
+            inactive-text="仅看自己">
+        </el-switch>
+        <el-switch
+            v-model="checkHistory"
+            @change="changeCheckHistory"
+            inactive-text="查看历史">
+        </el-switch>
+        <Popover
+            content="点击进入【生成投资清单】页面"
+            placement="top-start"
+            trigger="hover">
+          <iButton slot="reference" icon="el-icon-circle-plus-outline" type="primary" @click="addCarType">新增车型项目</iButton>
+        </Popover>
+      </div>
       <iSearch
           class="margin-bottom20 giSearch"
           style="margin-top: 20px"
@@ -165,10 +183,11 @@
 import {
   iMessage,
   iSearch,
-  iSelect
+  iSelect,
+  iButton
 } from "rise";
-import { form } from "./components/data";
-import {Popover} from "element-ui"
+import {budgetManagement3rd, form} from "./components/data";
+import {Switch, Popover} from "element-ui"
 import {tabtitle} from "./components/data";
 import echarts from "@/utils/echarts";
 import {
@@ -188,7 +207,8 @@ export default {
   components: {
     Popover,
     iSearch,
-    iSelect
+    iSelect,
+    iButton
   },
   data() {
     return {
@@ -204,7 +224,11 @@ export default {
       timeStarEnd: [],
       count: 8,
       cardHeight: 600,
-      getTousandNum: getTousandNum
+      getTousandNum: getTousandNum,
+      query: true,
+      onleySelf: true,
+      checkHistory: false,
+      budgetManagement3rd: budgetManagement3rd,
     };
   },
   computed: {
@@ -222,9 +246,24 @@ export default {
   mounted() {
     this.findCartypePro();
     this.getProcureGroup();
-    this.cardHeight = this.tableHeight - document.querySelector('.giSearch').offsetHeight - document.querySelector('.navBar').offsetHeight - document.querySelector('.left').offsetHeight - 100
+    this.cardHeight = this.tableHeight - document.querySelector('.giSearch').offsetHeight - document.querySelector('.navBar').offsetHeight - document.querySelector('.left').offsetHeight - 160
   },
   methods: {
+    changeCarTypeOverview(val){
+      this.$store.commit('SET_onleySelf', this.onleySelf)
+    },
+    changeCheckHistory(val){
+      this.$store.commit('SET_checkHistory', this.checkHistory)
+    },
+    addCarType(){
+      this.$router.push({
+        path: '/tooling/budgetManagement/generateInvestmentList',
+        query: {
+          id: 'add',
+          sourceStatus: ''
+        },
+      })
+    },
     load () {
       if(!this.loading){
         this.loading = true
@@ -502,6 +541,23 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+.carTypeOverview{
+  margin-top: 20px;
+  text-align: right;
+  > div{
+    margin-right: 10px;
+  }
+  ::v-deep .el-switch__label.is-active{
+    color: #41434A;
+  }
+  ::v-deep .el-button--primary{
+    font-size: 16px;
+    color: #1660F1;
+    background-color: #EEF2FB;
+    border-color: #EEF2FB;
+    //margin-right: 10px;
+  }
+}
 @keyframes scale
 {
   30% {
