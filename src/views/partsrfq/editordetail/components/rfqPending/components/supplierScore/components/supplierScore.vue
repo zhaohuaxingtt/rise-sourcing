@@ -23,6 +23,7 @@
         @openActionPropsPage="openActionPropsPage"
         @openMultiHeaderPropsPage="openMultiHeaderPropsPage"
         :disabled="!editStatus"
+        @link="link"
     ></tablelist>
     <!------------------------------------------------------------------------>
     <!--                  表格分页                                          --->
@@ -119,8 +120,11 @@ export default {
           this.page.pageSize = res.size
           this.page.totalCount = res.total
           this.tableLoading = false;
+
+          this.supplierProducePlaces = this.tableListData.map(item => ({ key: item.companyAddressCode, value: item.companyAddressCode, label: item.companyAddress }))
         } catch {
           this.tableLoading = false;
+          this.supplierProducePlaces = []
         }
       }
     },
@@ -214,11 +218,17 @@ export default {
         this.getTableList()
       }
     },
-    supplierProducePlacesVisibleChange(data) {
-      if (data.id === this.currentSupplierId) return
-      this.supplierProducePlaces = []
-      this.currentSupplierId = data.id
-      this.getSupplierProducePlace(data.id)
+    supplierProducePlacesVisibleChange(status, data) {
+      if (status) {
+        // if (data.id === this.currentSupplierId) return
+        this.supplierProducePlaces = []
+        this.currentSupplierId = data.id
+        this.getSupplierProducePlace(data.id)
+      } else {
+        setTimeout(() => {
+          this.supplierProducePlaces = this.tableListData.map(item => ({ key: item.companyAddressCode, value: item.companyAddressCode, label: item.companyAddress }))
+        }, 100)
+      }
     },
     // 获取供应商生产地
     getSupplierProducePlace(supplierId) {
@@ -268,6 +278,15 @@ export default {
         this.saveLoading = false
       })
       .catch(() => this.saveLoading = false)
+    },
+    // 列表link点击
+    link(data, key) {
+      switch(key) {
+        case "shortNameZh":
+          window.open(`xxxx?supplierId=${ data.id }`/* SP4地址 */, "_blank")
+          break;
+        default:
+      }
     }
   }
 }
