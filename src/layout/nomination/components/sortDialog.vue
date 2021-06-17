@@ -4,7 +4,7 @@
       <div class="font18 font-weight">{{$t('strategicdoc.ZiDingYi')}}</div>
       <div class="control">
         <iButton @click="submit">{{ $t('LK_BAOCUN') }}</iButton>
-        <iButton @click="reset">{{ $t('LK_CHONGZHI') }}</iButton>
+        <iButton :loading="isLoading" @click="reset">{{ $t('LK_CHONGZHI') }}</iButton>
       </div>
     </div>
     <div class="body">
@@ -53,7 +53,8 @@ import tableList from '@/views/designate/supplier/components/tableList'
 import filters from '@/utils/filters'
 import _ from 'lodash'
 import {
-  updateTabPageManager
+  updateTabPageManager,
+  tabPageLayoutsReset,
 } from '@/api/designate'
 
 export default {
@@ -85,7 +86,8 @@ export default {
       tableListData: [],
       phaseType: {},
       Selection: [],
-      controlHeight: 0
+      controlHeight: 0,
+      isLoading:false,
     }
   },
   methods: {
@@ -107,8 +109,21 @@ export default {
         return a.sort - b.sort
       })
     },
-    reset() {
-      this.getFetchData()
+    async reset() {
+        this.isLoading = true;
+      const nominateId = this.$store.getters.nomiAppId ; 
+      await tabPageLayoutsReset(nominateId).then((res)=>{
+        const { code } = res;
+        this.isLoading = false;
+        if(code == '200'){
+          this.getFetchData();
+        }else{
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
+      }).catch((err)=>{
+        this.isLoading = false;
+      })
+      
     },
     async submit() {
       const { query } = this.$route;

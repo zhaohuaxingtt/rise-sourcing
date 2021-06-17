@@ -25,7 +25,7 @@ import {permissionTitle} from '@/utils'
 //权限key暂时先去掉
 export const supplierScoreTitle = [
     {props: 'svwCode', name: 'SVW号', key: 'LK_SWHAO'},
-    {props: 'shortNameZh', name: '供应商名', key: 'LK_GONGYINGSHANGMING'},
+    {props: 'shortNameZh', name: '供应商名', key: 'LK_GONGYINGSHANGMING', type: "link", disabled: true},
     {props: 'companyAddress', name: '供应商生产场地', key: 'LK_GONGYINGSHANGSHENGCHANCHANGDI'},
     {props: 'action', name: '零件评分', key: 'LK_LINGJIANPINGFEN'},
 ]
