@@ -560,25 +560,5 @@ export default {
 </style>
 <style lang="scss">
 .mapControl.el-select-dropdown {
-  .el-select-dropdown__item {
-    padding-left: 20px;
-    &:after {
-      left: 10px;
-      right: auto !important;
-      // content: '' !important;
-      box-sizing: content-box;
-      border: 1px solid #fff;
-      border-left: 0;
-      border-top: 0;
-      height: 7PX;
-      left: 4px;
-      position: absolute;
-      top: 1px;
-      transform: rotate(45deg) scaleY(0);
-      width: 3PX;
-      transition: transform .15s ease-in .05s;
-      transform-origin: center;
-    }
-  }
 }
 </style>
