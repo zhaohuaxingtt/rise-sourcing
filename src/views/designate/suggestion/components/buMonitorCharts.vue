@@ -167,7 +167,7 @@ export default {
               params.dataIndex === 1 && (tpl = `
               <div class="toolTipBox-content">
                 <p>Compared to Best TTO <br> for Whole Package: 
-                  <span class="value">${Number(params.data/wholePackage*100).toFixed(2)}%</span>
+                  <span class="value">${Number((params.data-wholePackage)/wholePackage*100).toFixed(2)}%</span>
                 </p>
               </div>`)
 
@@ -180,7 +180,7 @@ export default {
               params.dataIndex === 3 && (tpl = `
               <div class="toolTipBox-content">
                 <p>Compared to Best TTO <br> for Whole Package: 
-                  <span class="value">${Number(params.data/wholePackage*100).toFixed(2)}%</span>
+                  <span class="value">${Number((params.data-wholePackage)/wholePackage*100).toFixed(2)}%</span>
                 </p>
               </div>`)
 
@@ -245,13 +245,17 @@ export default {
           },
           series
         };
-        console.log(JSON.stringify(option))
+        // console.log(JSON.stringify(option))
         vm.setOption(option);
       })
     },
     genSeries() {
       const self = this
-      const bgColor = '#94c8fc'
+      const bgColor = '#dfeaf5'
+      const textStyle = {
+        color: '#efefef',
+        fontSize: '10'
+      }
       const series = []
       const wholePackageIndex = self.data.wholePackageIndex
       const wholePackage = self.data.wholePackage
@@ -295,10 +299,7 @@ export default {
         label: {
           show: true,
           position: 'inside',
-          textStyle: {
-            color: '#ddd',
-            fontSize: '10'
-          },
+          textStyle,
           formatter: function(params) {
             const fz = Number(params.data)
             const fm = Number(bestGroupSupplierTotal)
@@ -322,10 +323,7 @@ export default {
         label: {
           show: true,
           position: 'inside',
-          textStyle: {
-            color: '#ddd',
-            fontSize: '10'
-          },
+          textStyle,
           formatter: function(params) {
             const fz = Number(params.data)
             const fm = Number(bestGroupSupplierTotal)
@@ -366,11 +364,39 @@ export default {
       }))
 
       // 单个零件最小
-      const minPartSupplierindex = self.data.minPartSupplierindex
-      const minPartSupplierTTo = self.data.minPartSupplierTTo
-      
-      series.push({
-        data: ['', '', minPartSupplierTTo, ''],
+      const minPartSupplierTToArray = self.data.minPartSupplierTToArray
+      const minPartSupplierTToTotal = self.data.minPartSupplierTToTotal
+      let partPercent = 0
+  
+      minPartSupplierTToArray.forEach((item, index) => {
+        series.push({
+          data: ['', '', item.data, ''],
+          type: 'bar',
+          barWidth: 30,
+          stack: 'total',
+          label: {
+            show: true,
+            position: 'inside',
+            textStyle,
+            formatter: function(params) {
+              const fz = Number(params.data)
+              const fm = Number(minPartSupplierTToTotal)
+              const percent =(item.index === minPartSupplierTToArray.length - 1) ? (100 - partPercent) : Math.floor(fz/fm*100)
+              partPercent += percent
+              return `${params.data}\n(${percent}%)`
+            }
+          },
+          itemStyle: {
+            normal: {
+              barBorderRadius: item.index === (minPartSupplierTToArray.length - 1) ? [5, 5, 0, 0] : [0, 0, 0, 0],
+              color: colorPanel[item.index]
+            },
+          }
+        })
+      })
+      // 零件最佳柱子label
+      minPartSupplierTToTotal&& (series.push({
+        data: ['', '', 1, ''],
         type: 'bar',
         barWidth: 30,
         stack: 'total',
@@ -381,16 +407,16 @@ export default {
             color: '#485465'
           },
           formatter: function() {
-            return minPartSupplierTTo
+            return minPartSupplierTToTotal
           }
         },
         itemStyle: {
           normal: {
             barBorderRadius: [5, 5, 0, 0],
-            color: colorPanel[minPartSupplierindex]
+            color: bgColor
           },
         }
-      })
+      }))
 
       // 权重柱状图
       const weightSupplier = self.data.weightSupplier || []
@@ -405,10 +431,7 @@ export default {
           label: {
             show: true,
             position: 'inside',
-            textStyle: {
-              color: '#ddd',
-              fontSize: '10'
-            },
+            textStyle,
             formatter: function(params) {
               const fz = Number(params.data)
               const fm = Number(weightSupplierTotal)
@@ -534,27 +557,27 @@ export default {
     }
   }
 }
-::v-deep.mapControl {
-  &.el-select-dropdown.is-multiple {
-    .el-select-dropdown__item {
-      padding-left: 20px;
-      &:after {
-        left: 10px;
-        right: auto !important;
-        // content: '' !important;
-        box-sizing: content-box;
-        border: 1px solid #fff;
-        border-left: 0;
-        border-top: 0;
-        height: 7px;
-        left: 4px;
-        position: absolute;
-        top: 1px;
-        transform: rotate(45deg) scaleY(0);
-        width: 3px;
-        transition: transform .15s ease-in .05s;
-        transform-origin: center;
-      }
+</style>
+<style lang="scss">
+.mapControl.el-select-dropdown {
+  .el-select-dropdown__item {
+    padding-left: 20px;
+    &:after {
+      left: 10px;
+      right: auto !important;
+      // content: '' !important;
+      box-sizing: content-box;
+      border: 1px solid #fff;
+      border-left: 0;
+      border-top: 0;
+      height: 7PX;
+      left: 4px;
+      position: absolute;
+      top: 1px;
+      transform: rotate(45deg) scaleY(0);
+      width: 3PX;
+      transition: transform .15s ease-in .05s;
+      transform-origin: center;
     }
   }
 }
