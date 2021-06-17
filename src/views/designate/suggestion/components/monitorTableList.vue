@@ -227,9 +227,10 @@ export default {
     // 编辑百分比
     handleEditPercent(row, Index) {
       const percent = row.percent || []
-      const count = percent.map(o => Number(o)).reduce((total, n) => total += n)
-      // console.log('handleEditPercent', row, Index, count)
-      if (isNaN(count) || count > 100) {
+      const count = _.sum(percent.map(o => Number(o)))
+      // 校验是否包含负数比例
+      const containNGNumber = percent.filter(m => m < 0).length
+      if (isNaN(count) || count > 100 || containNGNumber) {
         percent[Index] = 0
         Vue.set(row, 'percent', percent)
         iMessage.error(this.$t('nominationSuggestion.NingShuRuDeBiLiBuHeFa'))
@@ -318,7 +319,7 @@ export default {
           }
         })
       })
-      console.log(data, str, count)
+      // console.log(data, str, count)
       return Number(count).toFixed(0)
     },
     /**
