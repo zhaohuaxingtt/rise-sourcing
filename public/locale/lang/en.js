@@ -954,6 +954,9 @@
         'LK_LINGJIANMINGCHENZHONG': '零件名称（中）',   //  零件名称（中）
         'LK_LINGJIANMINGCHENDE': '零件名称（德）',  //  零件名称（德）
         'LK_CSF': 'CSF',    //  CSF
+        'LK_BAOCUNWEIZUIXINBANBEN': '保存为最新版本',  //  
+        'LK_SHUAXIN': '刷新',   //  刷新
+        'LK_SHUAXINRIQI': '刷新日期',   //  刷新日期
 
         // 定点管理
         'nominationLanguage': {
