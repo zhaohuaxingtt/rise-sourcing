@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-05-28 17:30:52
- * @LastEditTime: 2021-06-17 19:39:42
+ * @LastEditTime: 2021-06-17 21:54:28
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\api\designate\index.js
@@ -14,7 +14,7 @@ const requst = axios(process.env.VUE_APP_RFQ)
 // 获取模具预算管理列表
 export function getMouldBudget(params) {
   return requst({
-      url: `/mould-budget/${ params.currPage }/${ params.pageSize }?${ serialize(params.rfqIds, Array) }&${ serialize(params.fsIds, Array) }`,
+      url: `/mould-budget/${ params.currPage }/${ params.pageSize }?${ serialize(params.fsIds, Array) }`,
       method: "GET"
   })
 }
@@ -106,5 +106,14 @@ export function sugesstionInitReCord(params) {
       url: "suggestion/initRecord",
       method: "GET",
       params,
+  })
+}
+
+
+// 决策资料tablist的重置
+export function tabPageLayoutsReset(nominateId) {
+  return requst({
+      url: `tabPageLayouts/findTabPageInitStatus?nominateId=${nominateId}`,
+      method: "GET",
   })
 }

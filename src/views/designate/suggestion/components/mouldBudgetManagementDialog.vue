@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-05-24 13:45:08
- * @LastEditTime: 2021-06-17 19:38:03
+ * @LastEditTime: 2021-06-17 21:54:19
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\designate\suggestion\components\mouldBudgetManagementDialog.vue
@@ -121,11 +121,9 @@ export default {
       const form = {
         currPage: this.page.currPage,
         pageSize: this.page.pageSize,
-        rfqIds: this.rfqIds.map(item => ({ rfqIds: item })),
+        // rfqIds: this.rfqIds.map(item => ({ rfqIds: item })),
         fsIds: this.fsIds.map(item => ({ fsIds: item }))
       }
-
-      if (this.fsIds.length === 0) delete form.fsIds
 
       getMouldBudget(form)
       .then(res => {
