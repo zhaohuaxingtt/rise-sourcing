@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-28 15:03:47
- * @LastEditTime: 2021-06-17 12:03:33
+ * @LastEditTime: 2021-06-17 18:31:16
  * @LastEditors: Please set LastEditors
  * @Description: 特殊表格实现
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\table.vue
@@ -19,6 +19,7 @@
     :header-cell-class-name='headerClassName'
     :cell-class-name='cellClassName'
     :span-method="spanMethod"
+    @sort-change="sortChangeTable"
   >
     <template v-for='(item,index) in tableTitle'>
       <!-----------------存在index selection情况------------------------>
@@ -42,8 +43,9 @@
         :width="item.width"
         :prop='item.props'
         align="center"
-        :sortable='(item.props == "cfPartAPrice" || item.props == "partNo")'
+        :sortable='item.props == "cfPartAPrice"'
         :resizable="false"
+        :sort-method="sortFunction"
       >
         <!----------在表头上方需要显示评分的点，插入表头标签------>
         <template slot="header" slot-scope="scope">
@@ -132,6 +134,9 @@ export default{
     }
   },
   methods:{
+    sortChangeTable({column, prop, order}){
+      this.$emit('sortChangeTable',order)
+    },
     moment(date){
       return moment(date)
     },
