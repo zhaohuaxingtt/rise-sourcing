@@ -43,8 +43,8 @@
                   <!-- 分页 -->
                    <iPagination
                       v-update
-                      @size-change="handleSizeChange($event, getTableListFn)"
-                      @current-change="handleCurrentChange($event, getTableListFn)"
+                      @size-change="handleSizeChange($event, getList)"
+                      @current-change="handleCurrentChange($event, getList)"
                       background
                       :current-page="page.currPage"
                       :page-sizes="page.pageSizes"
