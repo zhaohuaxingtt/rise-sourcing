@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-26 13:54:01
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-16 15:40:54
+ * @LastEditTime: 2021-06-17 00:01:31
  * @Description: 创建RFQ界面
        配件：选择的配件需要是分配了询价采购员的且是同一个询价采购员, 创建时能选择LINIE
        附件：选择的附件需要时分配了LINIE且为同一个LINIE, 创建时不能再选择LINIE
@@ -21,10 +21,10 @@
         <iFormItem v-for="(item, index) in basicInfo" :key="index" :label="item.label" :class="item.row ? 'row'+item.row : ''">
           <iText v-if="!item.editable">{{detailData[item.value]}}</iText>
           <iInput v-else-if="item.type === 'input'" v-model="detailData[item.value]"></iInput>
-          <iSelect v-else-if="item.type === 'select'" v-model="detailData[item.value]" :disabled="(item.value ==='linie' && linie) || (item.value ==='linieDept' && linieDept)">
+          <iSelect v-else-if="item.type === 'select'" v-model="detailData[item.value]" :disabled="linieAndDeptDisable(item.value)" @change="val => handleDeptChange(item.value, val)">
             <el-option
-              :value="item.id"
-              :label="item.name"
+              :value="item.value"
+              :label="item.label"
               v-for="(item, index) in fromGroup[item.selectOption]"
               :key="index"
             ></el-option>
@@ -41,7 +41,7 @@
         <span class="font18 font-weight"></span>
           <div class="floatright">
             <!--------------------保存按钮----------------------------------->
-            <iButton @click="handleSave" >保存</iButton>
+            <iButton @click="handleSave" :loading="saveLoading">保存</iButton>
             <!--------------------添加按钮----------------------------------->
             <iButton @click="handleAddParts" >添加</iButton>
             <!--------------------删除按钮----------------------------------->
@@ -87,6 +87,7 @@ import { insertRfq } from '@/api/accessoryPart/index'
 import {
   dictkey,
 } from "@/api/partsprocure/editordetail";
+import { getDeptList, getUserList } from '@/api/accessoryPart/index'
 export default {
   mixins: [pageMixins],
   components: { iPage, topComponents, iCard, iFormGroup, iFormItem, iText, iButton, iInput, iSelect, iPagination, tableList, addAccessoryPartDialog, updateFactoryDialog, addFileDialog, capacityPlanningDialog },
@@ -110,7 +111,8 @@ export default {
       selectPlanRow: {},
       fromGroup: {},
       linie: '',
-      linieDept: ''
+      linieDept: '',
+      saveLoading: false
     }
   },
   computed: {
@@ -120,7 +122,9 @@ export default {
     }
   },
   created() {
-    this.getProcureGroup()
+    // this.getProcureGroup()
+    this.getDepOption()
+    // this.getUserOptions()
     if (this.$route.query.ids) {
       this.ids = this.$route.query.ids
       this.getList()
@@ -133,6 +137,58 @@ export default {
     }
   },
   methods: {
+    handleDelete() {
+      if(this.selectItems.length < 1) {
+        iMessage.warn('请选择需要删除的行')
+        return
+      }
+      // const selectIds = this.selectItems.map(item => item)
+      this.tableData = this.tableData.filter(item => !this.selectItems.includes(item))
+    },
+    handleDeptChange(type, val) {
+      if (type === 'linieDept') {
+        this.getUserOptions()
+      }
+    },
+    /**
+     * @Description: 获取linie部门下拉
+     * @Author: Luoshuang
+     * @param {*}
+     * @return {*}
+     */    
+    getDepOption() {
+      getDeptList({tag:'4'}).then(res => {
+        if (res?.result) {
+          this.fromGroup = {...this.fromGroup, LINIE_DEPT: res.data?.map(item => {return {value:item.id, label:item.nameZh}})}
+        } else {
+          this.fromGroup = {...this.fromGroup, LINIE_DEPT: []}
+        }
+      })
+    },
+    /**
+     * @Description: 获取linie下拉
+     * @Author: Luoshuang
+     * @param {*}
+     * @return {*}
+     */    
+    getUserOptions() {
+      getUserList({deptId:this.detailData.linieDept,tag:'4'}).then(res => {
+        if (res?.result) {
+          this.fromGroup = {...this.fromGroup, LINIE: res.data?.map(item => {return {value:item.id, label:item.nameZh}})}
+        } else {
+          this.fromGroup = {...this.fromGroup, LINIE: []}
+        }
+      })
+    },
+    linieAndDeptDisable(type) {
+      if (type === 'linie' && this.linie) {
+        return true
+      }
+      if (type === 'linieDept' && this.linieDept) {
+        return true
+      }
+      return false
+    },
     //获取上方group信息
     getProcureGroup() {
       dictkey().then((res) => {
@@ -209,21 +265,22 @@ export default {
      * @return {*}
      */    
     handleSave() {
+      this.saveLoading = true
       const params = {
         insertRfqPackage: {
           rfqId: this.detailData.rfqId,
           rfqPartDTOList: this.tableData.map(item => {
             return {
-              buyerName: item.csfUser, // 询价采购员
-              linieName: item.csfUser, // linie
-              linieUserId: item.csfuserId, // linie
+              buyerName: item.csfUser || this.detailData.linie, // 询价采购员
+              linieName: item.csfUser || this.detailData.linie, // linie
+              linieUserId: item.csfuserId || this.detailData.linieDept, // linie
               partNum: item.partNum, // 零件号
               fsnrGsnrNum: item.spnrNum, // fs号
               stuffId: item.stuffId, // 工艺组ID，还没有
               stuffName: item.stuffName, // 工艺组name，还没有
             }
           }),
-          userId: store.state.permission.userInfo.id
+          userId: this.$store.state.permission.userInfo.id
         }
       }
       insertRfq(params).then(res => {
@@ -234,6 +291,8 @@ export default {
         } else {
           iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
         }
+      }).finally(() => {
+        this.saveLoading = false
       })
     },
     /**
