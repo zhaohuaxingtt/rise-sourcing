@@ -329,6 +329,7 @@ export default {
      * Recommend Scenario 自定义最低，加权最低
      */
     calculateBestTTo(data = []) {
+      if (!data.length) return {}
       // Best TTO for Whole Package
       const GroupKey = 'gid'
       const res = [[], []]
@@ -404,71 +405,6 @@ export default {
 
       // 
       const weightSupplierTotal = _.sum(weightSupplier.map(o => Number(o)))
-      
-
-      // Best TTO by Group
-      // 筛选出所有的分组
-      // const groups = _.uniq(data.filter(o => o[GroupKey]).map(o => o[GroupKey]))
-      // let bestGroup = []
-      // let weightedGroup = []
-      // let bestGroupObjs = []
-      // // 取出分组最低
-      // groups.forEach((gid, index) => {
-      //   const groupedArray = data.filter(o => o[GroupKey] === gid)
-      //   // 已分组，取最低TTO，组内求和
-      //   bestGroup[index] = groupedArray.map(o => {
-      //     const tto = [...(o.TTo || [])].filter(p => p > 0)
-      //     return Number(tto.sort()[0])
-      //   }).reduce((total, n) => total += n)
-      //   // 分组权重
-      //   weightedGroup[index] = this.cacleSc(groupedArray)
-      //   // 记录分组信息
-      //   bestGroupObjs[index] = groupedArray
-      //   // console.log('g', groupedArray, this.cacleSc(groupedArray))
-      // })
-      // // 取出未分组最低，未分组的按照单独分组处理
-      // const unGroupedList = data.filter(o => !o[GroupKey])
-      // if (unGroupedList.length) {
-      //   unGroupedList.forEach(item => {
-      //     const tto1 = [...(item.TTo || [])].filter(o => o > 0)
-      //     bestGroup.push(Number(tto1.sort()[0]))
-      //     // 分组权重
-      //     weightedGroup.push(this.cacleSc([item]))
-      //     // 记录当前单个分组
-      //     bestGroupObjs.push(item)
-      //   })
-      // }
-
-      // bestGroup = bestGroup.sort()
-      // weightedGroup = weightedGroup.sort()
-      // console.log('weightedGroup',bestGroup, weightedGroup)
-
-      // // 分组 / 加权最低
-      // bestGroup.forEach((groupValue, gIndex) => {
-      //   !res[gIndex] && (res[gIndex] = [])
-      //   !res[gIndex][0] && (res[gIndex][0] = '')
-      //   res[gIndex][1] = groupValue
-      //   !res[gIndex][2] && (res[gIndex][2] = '')
-      //   !res[gIndex][3] && (res[gIndex][3] = '')
-
-      //   res[gIndex][3] = weightedGroup[gIndex]
-      // })
-
-      // // Best TTO by Part
-      // const TTO = data.map(o => o.TTo)
-      // const filtedTTo = TTO.flat(Infinity).filter(o => Number(o) > 0).sort((a, b) => { return a - b})
-      // const bestByPartTto = filtedTTo[0]
-
-      // console.log('calculateBestTTo', res)
-      // // 插入汇总
-      // const resLength = res.length
-      // res[resLength-1][0] = wholePackage
-      // // 插入单个零件最低
-      // res[resLength-1][2] = bestByPartTto
-
-      // // 分组汇总
-      // const groupedInTotal = _.sum(bestGroup)
-      // const groupedWeightInTotal = _.sum(weightedGroup.map(o => Number(o) || 0))
       return {
         wholePackage,
         wholePackageIndex,
@@ -479,14 +415,6 @@ export default {
         minPartSupplierindex,
         weightSupplier,
         weightSupplierTotal,
-
-        // bestGroup,
-        // weightedGroup,
-        // groupedInTotal,
-        // groupedWeightInTotal,
-        // bestGroupObjs,
-        // bestByPartTto,
-        // data: res
       }
     }
   }

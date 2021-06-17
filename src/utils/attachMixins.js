@@ -126,7 +126,7 @@ export const attachMixins = {
 
     },
     // 删除文件,
-    async deleteFile(fileList = []) {
+    async deleteFile(fileList = [], callback) {
       let idList = []
       if (!(fileList && fileList.length)) {
         if (!this.multipleSelection.length) {
@@ -145,7 +145,7 @@ export const attachMixins = {
         const res = await batchDeletefile({idList})
         if (res.code === '200') {
           iMessage.success(this.$t('LK_CAOZUOCHENGGONG'))
-          this.getFetchData()
+          callback && typeof callback === 'function' && (callback())
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }

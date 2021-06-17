@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:17:25
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-08 16:38:10
+ * @LastEditTime: 2021-06-16 19:59:09
  * @Description: 上会/备案RS单
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\rs\components\meeting\index.vue
 -->
@@ -41,11 +41,11 @@
       </div></div>
     </iCard>
     <iCard v-if="!isPreview" title="上会备注" class="margin-top20">
-      <iButton slot="header-control" @click="handleSaveRemarks">保存</iButton>
+      <iButton slot="header-control" @click="handleSaveRemarks" :loading="saveLoading">保存</iButton>
       <div class="meetingRemark">
         <div class="meetingRemark-item" v-for="(item, index) in remarkItem" :key="index">
           <span class="meetingRemark-item-title">{{item.label}}</span>
-          <iInput class="margin-top10" type="textarea" :rows="10" resize="none" v-model="item.value" @input="val => handleInput(val, item.type)"></iInput>
+          <iInput class="margin-top10" type="textarea" :rows="10" resize="none" v-model="remarks[item.type]" @input="val => handleInput(val, item.type)"></iInput>
         </div>
       </div>
     </iCard>
@@ -88,13 +88,11 @@ export default {
       rightTitle: nomalDetailTitleBlue,
       // tableTitle: nomalTableTitle,
       tableData: [],
-      basicData: {
-        partName: '发动机控制器 STEUERGERAET, MOTOR',
-        partNum: 'See below'
-      },
-      remarkItem: meetingRemark,
+      basicData: {},
+      remarkItem: [],
       checkList: checkList,
-      resetRemarkType: ''
+      resetRemarkType: '',
+      saveLoading: false
     }
   },
   computed: {
@@ -126,6 +124,7 @@ export default {
      * @return {*}
      */    
     handleSaveRemarks() {
+      this.saveLoading = true
       const params = {
         meetRemark: this.remarks[this.resetRemarkType],
         nominateAppId: this.nominateId,
@@ -138,6 +137,8 @@ export default {
         } else {
           iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
         }
+      }).finally(() => {
+        this.saveLoading = false
       })
     },
     /**
@@ -148,6 +149,12 @@ export default {
      * @return {*}
      */    
     handleInput(val, type) {
+      this.remarkItem = this.remarkItem.map(item => {
+        return {
+          ...item,
+          value: item.type === type ? val : item.value
+        }
+      })
       this.remarks[type] = val
       this.resetRemarkType = type
     },
@@ -170,8 +177,8 @@ export default {
     getTopList() {
       getList(this.nominateId).then(res => {
         if (res?.result) {
-          this.basicData = res.data
-          this.tableData = res.data.lines
+          this.basicData = res.data || {}
+          this.tableData = res.data?.lines
         } else {
           this.basicData = {}
           this.tableData = []
@@ -189,8 +196,8 @@ export default {
       getRemark(this.nominateId).then(res => {
         if (res?.result) {
           res.data.forEach(element => {
-            this.remarks[element.remarkType] = element.remark
-            this.remarkItem = this.remarkItem.map(item => {
+            this.remarks[element.remarkType] = element.remark || ''
+            this.remarkItem = meetingRemark.map(item => {
               return {...item, value: this.remarks[item.type]}
             })
           })
