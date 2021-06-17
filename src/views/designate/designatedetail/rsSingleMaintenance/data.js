@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-24 15:31:35
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-14 18:06:06
+ * @LastEditTime: 2021-06-17 20:24:49
  * @Description: 
  * @FilePath: \front-web\src\views\designate\designatedetail\rsSingleMaintenance\data.js
  */
@@ -13,7 +13,7 @@ export const rsTableTitle = [
   {props:'partName',name:'零件名称', key: "", tooltip: true},
   {props:'supplierName',name:'厂商名', key: "", tooltip: true},
   {props:'supplierId',name:'供应商', key: "", tooltip: true},
-  {props:'prodLocation',name:'来源', key: "", tooltip: true},
+  {props:'source',name:'来源', key: "", tooltip: true},
   {props:'aprice',name:'A价', key: "", tooltip: false, editable: true, required: true, type: 'input', isChange: 'apriceIsChange'},
   {props:'bprice',name:'B价', key: "", tooltip: false, editable: true, required: true, type: 'input', isChange: 'bpriceIsChange'},
   {props:'investFee',name:'投资费(不含税)', key: "", tooltip: false, editable: true, required: true, type: 'input', width: 120, isChange: 'investFeeIsChange'},
