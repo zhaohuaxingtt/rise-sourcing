@@ -9,7 +9,9 @@
     <!-- 供应商列表 -->
     <supplierTable />
     <!-- 业务分配模拟 -->
-    <buMonitor :readOnly="false" />
+    <buMonitor
+      :hideCombine="false"
+      :readOnly="false" />
   </div>
 </template>
 <script>
