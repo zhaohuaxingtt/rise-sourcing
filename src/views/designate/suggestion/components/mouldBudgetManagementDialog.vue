@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-05-24 13:45:08
- * @LastEditTime: 2021-06-17 17:43:08
+ * @LastEditTime: 2021-06-17 19:38:03
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\designate\suggestion\components\mouldBudgetManagementDialog.vue
@@ -76,7 +76,10 @@ export default {
       default: false,
     },
     rfqIds: {
-      // ["1111", "2222"]
+      type: Array,
+      require: true
+    },
+    fsIds: {
       type: Array,
       require: true
     }
@@ -115,11 +118,16 @@ export default {
     getMouldBudget() {
       this.loading = true
 
-      getMouldBudget({
+      const form = {
         currPage: this.page.currPage,
         pageSize: this.page.pageSize,
-        rfqIds: this.rfqIds.join('&rfqIds=')
-      })
+        rfqIds: this.rfqIds.map(item => ({ rfqIds: item })),
+        fsIds: this.fsIds.map(item => ({ fsIds: item }))
+      }
+
+      if (this.fsIds.length === 0) delete form.fsIds
+
+      getMouldBudget(form)
       .then(res => {
         if (res.code == 200) {
           this.tableListData = Array.isArray(res.data.records) ? res.data.records : []
