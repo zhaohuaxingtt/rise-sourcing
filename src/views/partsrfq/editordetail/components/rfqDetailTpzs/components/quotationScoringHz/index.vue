@@ -85,7 +85,9 @@ export default{
     suppliertopList:[],
     supplierLeftLit:[],
     showRound:true,
-    quoteShow:true
+    quoteShow:true,
+    partInfoList:[],
+    bdlPriceTotalInfoList:[]
   }},
   mounted(){
     this.init()
@@ -95,12 +97,14 @@ export default{
   },
   methods:{
     sortChangeTable(props){
+      const notSortData = defaultSort(translateData(this.partInfoList),'groupId').filter(items=>items.groupId!='')
+      const sortData = defaultSort(translateData(this.partInfoList),'groupId').filter(items=>items.groupId =='')
       if(props == "ascending"){
-        return true
+        this.exampelData = [...notSortData,...sortData.sort((a,b)=>a.cfAprice - b.cfAprice),...subtotal(this.title,this.exampelData,this.bdlPriceTotalInfoList)]
       }else if(props == "descending"){
-        return true
+         this.exampelData = [...notSortData,...sortData.sort((a,b)=>b.cfAprice - a.cfAprice),...subtotal(this.title,this.exampelData,this.bdlPriceTotalInfoList)]
       }else{
-        return true
+        this.exampelData = [...notSortData,...sortData,...subtotal(this.title,this.exampelData,this.bdlPriceTotalInfoList)]
       }
     },
     changeRound(){
@@ -265,6 +269,8 @@ export default{
       fsPartsAsRow(this.$route.query.id,this.round).then(res=>{
         this.fsTableLoading = false
         if(res.data && res.data.partInfoList && res.data.partInfoList.length){
+          this.partInfoList = res.data.partInfoList
+          this.bdlPriceTotalInfoList = res.data.bdlPriceTotalInfoList
           const relTitle = getRenderTableTile(this.backChoose,res.data.partInfoList[0].bdlInfoList.length)
           this.title = relTitle.title
           this.reRenderLastChild = relTitle.xhLastChildProps
