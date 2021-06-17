@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-26 13:54:01
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-17 00:01:31
+ * @LastEditTime: 2021-06-17 11:48:41
  * @Description: 创建RFQ界面
        配件：选择的配件需要是分配了询价采购员的且是同一个询价采购员, 创建时能选择LINIE
        附件：选择的附件需要时分配了LINIE且为同一个LINIE, 创建时不能再选择LINIE
@@ -269,20 +269,25 @@ export default {
       const params = {
         insertRfqPackage: {
           rfqId: this.detailData.rfqId,
+          operationType: '1',
           rfqPartDTOList: this.tableData.map(item => {
             return {
-              buyerName: item.csfUser || this.detailData.linie, // 询价采购员
-              linieName: item.csfUser || this.detailData.linie, // linie
-              linieUserId: item.csfuserId || this.detailData.linieDept, // linie
+              buyerName: item.buyerName || this.detailData.linie, // 询价采购员
+              linieName: item.linieName || this.fromGroup.LINIE.find(item => item.value === this.detailData.linie).label, // linie
+              linieUserId: item.linieUserId || this.detailData.linie, // linie
               partNum: item.partNum, // 零件号
               fsnrGsnrNum: item.spnrNum, // fs号
               stuffId: item.stuffId, // 工艺组ID，还没有
               stuffName: item.stuffName, // 工艺组name，还没有
+              purchasePrjectId: item.purchasingProjectId,
+              partNameZh: item.partNameZh,
+              partPrejectType: this.$route.query.type === '1' ? 'PT17' : 'PT18',
             }
           }),
           userId: this.$store.state.permission.userInfo.id
         }
       }
+      console.log(this.fromGroup.LINIE)
       insertRfq(params).then(res => {
         if (res?.result) {
           iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
