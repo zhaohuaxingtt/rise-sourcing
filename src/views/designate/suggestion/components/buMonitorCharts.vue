@@ -17,6 +17,7 @@
       <div class="control">
         <!-- 方案选择 -->
         <iSelect
+          popper-class="mapControl"
           v-model="mapControl"
           @change="load"
           :multiple="true"
@@ -282,6 +283,7 @@ export default {
       const bestGroupSupplierMinIndex = self.data.bestGroupSupplierIndex
       
       const bestGroupSupplierTotal = bestGroupSupplier && bestGroupSupplier[2]
+      let totalGroupPercent = 0
 
       console.log('----',bestGroupSupplier)
       
@@ -301,6 +303,7 @@ export default {
             const fz = Number(params.data)
             const fm = Number(bestGroupSupplierTotal)
             const percent = Math.floor(fz/fm*100)
+            totalGroupPercent += percent
             return `${params.data}\n(${percent}%)`
           }
         },
@@ -326,7 +329,8 @@ export default {
           formatter: function(params) {
             const fz = Number(params.data)
             const fm = Number(bestGroupSupplierTotal)
-            const percent = Math.floor(fz/fm*100)
+            // const percent = Math.floor(fz/fm*100)
+            const percent = 100 - totalGroupPercent
             return `${params.data}\n(${percent}%)`
           }
         },
@@ -337,7 +341,8 @@ export default {
           },
         }
       })
-      series.push({
+      // 分组最佳柱子label
+      bestGroupSupplierTotal&& (series.push({
         data: ['', 1, '', ''],
         type: 'bar',
         barWidth: 30,
@@ -358,7 +363,7 @@ export default {
             color: bgColor
           },
         }
-      })
+      }))
 
       // 单个零件最小
       const minPartSupplierindex = self.data.minPartSupplierindex
@@ -390,6 +395,7 @@ export default {
       // 权重柱状图
       const weightSupplier = self.data.weightSupplier || []
       const weightSupplierTotal = self.data.weightSupplierTotal || 0
+      let totalPercent = 0
       weightSupplier.forEach((item, index) => {
         series.push({
           data: ['', '', '', item],
@@ -406,7 +412,8 @@ export default {
             formatter: function(params) {
               const fz = Number(params.data)
               const fm = Number(weightSupplierTotal)
-              const percent = Math.floor(fz/fm*100)
+              const percent =(index === weightSupplier.length - 1) ? (100 - totalPercent) : Math.floor(fz/fm*100)
+              totalPercent += percent
               return `${params.data}\n(${percent}%)`
             }
           },
@@ -418,7 +425,8 @@ export default {
           }
         })
       })
-      series.push({
+      // 最后一根柱子的label
+      weightSupplierTotal && (series.push({
         data: ['', '', '', '1'],
         type: 'bar',
         barWidth: 30,
@@ -439,7 +447,7 @@ export default {
             color: '#ffffff'
           },
         }
-      })
+      }))
       return series
     }
   },
@@ -515,6 +523,38 @@ export default {
       font-weight: 600;
       display: inline-block;
       padding-left: 10px;
+    }
+  }
+}
+.control {
+  ::v-deep.el-select {
+    .el-select__tags {
+      height: 26px !important;
+      overflow: hidden;
+    }
+  }
+}
+::v-deep.mapControl {
+  &.el-select-dropdown.is-multiple {
+    .el-select-dropdown__item {
+      padding-left: 20px;
+      &:after {
+        left: 10px;
+        right: auto !important;
+        // content: '' !important;
+        box-sizing: content-box;
+        border: 1px solid #fff;
+        border-left: 0;
+        border-top: 0;
+        height: 7px;
+        left: 4px;
+        position: absolute;
+        top: 1px;
+        transform: rotate(45deg) scaleY(0);
+        width: 3px;
+        transition: transform .15s ease-in .05s;
+        transform-origin: center;
+      }
     }
   }
 }
