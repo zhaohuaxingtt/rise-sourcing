@@ -40,8 +40,8 @@
         <!-- 分页 -->
         <iPagination
             class="margin-bottom20"
-            @size-change="handleSizeChange($event, purchaseFactory)"
-            @current-change="handleCurrentChange($event, purchaseFactory)"
+            @size-change="handleSizeChange($event, getList)"
+            @current-change="handleCurrentChange($event, getList)"
             background
             :page-sizes="page.pageSizes"
             :page-size="page.pageSize"
