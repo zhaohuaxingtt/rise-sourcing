@@ -39,11 +39,11 @@
             <el-popover
                 placement="top-start"
                 trigger="hover"
-              >
+            >
               <div v-katex="dropPotentialTips"></div>
               <div class="margin-left45 margin-top10">
-               <span  class="font-weight" style="color:#000305">降本单价</span>
-               <span style="color:#4C6C9C">{{dropPotential.costReductionUnitPrice}}元</span>
+                <span class="font-weight" style="color:#000305">降本单价</span>
+                <span style="color:#4C6C9C">{{ dropPotential.costReductionUnitPrice }}元</span>
               </div>
               <icon symbol name="iconxinxitishi" class="tipIcon" slot="reference"></icon>
             </el-popover>
@@ -61,8 +61,17 @@
           <iInput class="valueWidth"></iInput>
         </div>
         <div class="itemBox">
-          <iLabel label="已实现额外降价" slot="label" class="labelWidth" icons="iconxinxitishi"
-                  :tip="1"></iLabel>
+          <div class="warpBox">
+            <iLabel label="已实现额外降价" slot="label" class="labelWidth"></iLabel>
+            <el-popover
+                placement="top-start"
+                trigger="hover"
+            >
+              <div class="font-weight">已实现额外降价</div>
+              <div v-katex="additionalPriceReductionTips"></div>
+              <icon symbol name="iconxinxitishi" class="tipIcon2" slot="reference"></icon>
+            </el-popover>
+          </div>
           <iText class="valueWidth font-weight">100,000</iText>
         </div>
       </div>
@@ -84,9 +93,14 @@ export default {
   },
   computed: {
     dropPotentialTips() {
-      return  `\\begin{array}{l}\\\\\\Delta\\%\\;\\;\\;=\\;\\left(\\frac{\\mathrm{计划总产量}}{\\mathrm{预计总产量}}\\;\\;-\\;1\\right)\\times\\mathrm{固定成本}\\%\\\\\\\\\\;\\;\\;\\;\\;\\;\\;\\;\\;
+      return `\\begin{array}{l}\\\\\\Delta\\%\\;\\;\\;=\\;\\left(\\frac{\\mathrm{计划总产量}}{\\mathrm{预计总产量}}\\;\\;-\\;1\\right)\\times\\mathrm{固定成本}\\%\\\\\\\\\\;\\;\\;\\;\\;\\;\\;\\;\\;
       =\\left(\\frac{${this.dropPotential.totalPlannedOutputTipsData}}{${this.dropPotential.estimatedTotalProductionTipsData}}-\\;1\\right)\\times${this.dropPotential.fixedCost}\\\\\\\\\\;\\;\\;\\;\\;\\;\\;\\;\\;
       =${this.dropPotential.result}\\%\\\\\\end{array}`;
+    },
+    additionalPriceReductionTips() {
+      return `\\begin{array}{l}\\\\=\\;\\mathrm{总降价}\\;-\\;LTC\\mathrm{降价}\\\\\\\\
+      =${this.additionalPriceReduction.totalPriceReduction}\\%\\;-（${this.additionalPriceReduction.priceReduction}\\%）\\\\\\\\
+      =${this.additionalPriceReduction.result}\\%\\\\\\end{array}`
     },
   },
   data() {
@@ -99,7 +113,12 @@ export default {
         estimatedTotalProductionTipsData: 250000,
         fixedCost: 22,
         result: -4.4,
-        costReductionUnitPrice: -0.88
+        costReductionUnitPrice: -0.88,
+      },
+      additionalPriceReduction: {
+        totalPriceReduction: -3.4,
+        priceReduction: -1.4,
+        result: -2.0
       }
     };
   },
@@ -164,15 +183,24 @@ export default {
     align-items: center;
     font-size: 16px;
 
-    .warpBox{
+    .warpBox {
       position: relative;
-      .tipIcon{
+
+      .tipIcon {
         position: absolute;
         left: 190px;
         top: 50%;
         transform: translateY(-50%);
       }
+
+      .tipIcon2{
+        position: absolute;
+        left: 125px;
+        top: 50%;
+        transform: translateY(-50%);
+      }
     }
+
     .up {
       color: #C00000;
     }
