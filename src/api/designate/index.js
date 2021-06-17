@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-05-28 17:30:52
- * @LastEditTime: 2021-06-17 19:39:42
+ * @LastEditTime: 2021-06-17 21:21:51
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\api\designate\index.js
@@ -106,5 +106,14 @@ export function sugesstionInitReCord(params) {
       url: "suggestion/initRecord",
       method: "GET",
       params,
+  })
+}
+
+
+// 决策资料tablist的重置
+export function tabPageLayoutsReset(nominateId) {
+  return requst({
+      url: `tabPageLayouts/findTabPageInitStatus?nominateId=${nominateId}`,
+      method: "GET",
   })
 }
