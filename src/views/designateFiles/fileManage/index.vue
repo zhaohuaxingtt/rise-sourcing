@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-26 16:20:16
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-06-16 18:20:32
+ * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-06-17 16:16:35
  * @Description: 附件综合管理
  * @FilePath: \front-web\src\views\designateFiles\fileManage\index.vue
 -->
@@ -93,7 +93,7 @@
           <!------------------------------------------------------------------------>
           <!--                    加入已有RFQ弹窗                                  --->
           <!------------------------------------------------------------------------>
-          <joinRfqDialog ref="joinRfq" :dialogVisible="joinRfqDialogVisible" @changeVisible="changeJoinRfqDialogVisible" @joinRfq="joinRfq" partType="13" />
+          <joinRfqDialog ref="joinRfq" :dialogVisible="joinRfqDialogVisible" @changeVisible="changeJoinRfqDialogVisible" @joinRfq="joinRfq" partType="PT18" />
         </div>
       </el-tab-pane>
       <!-- <el-tab-pane label="进度监控" name="progress"></el-tab-pane> -->
@@ -105,7 +105,7 @@
 import { iPage, iSearch, iSelect, iInput, iCard, iButton, iPagination, iMessage, iNavMvp, iDatePicker } from 'rise'
 import { pageMixins } from "@/utils/pageMixins"
 import tableList from '@/views/designate/designatedetail/components/tableList'
-import { tableTitle, tableMockData, searchList } from './data'
+import { tableTitle, searchList } from './data'
 import linieDialog from './components/setLinie'
 import backDialog from './components/back'
 import { cloneDeep, uniq } from 'lodash'
@@ -124,7 +124,7 @@ export default {
   components: { iPage, iSearch, iSelect, iInput, iCard, iButton, iPagination, tableList, linieDialog, backDialog, iNavMvp, joinRfqDialog, iDatePicker },
   data() {
     return {
-      tableData: tableMockData,
+      tableData: [],
       tableTitle: tableTitle,
       tableLoading: false,
       searchList: searchList,
@@ -295,6 +295,9 @@ export default {
               fsnrGsnrNum: item.spnrNum, // fs号
               stuffId: item.stuffId, // 工艺组ID
               stuffName: item.stuffName, // 工艺组name
+              purchasePrjectId: item.purchasingProjectId,
+              partNameZh: item.partNameCh,
+              partPrejectType: 'PT18',
             }
           }),
           userId: store.state.permission.userInfo.id

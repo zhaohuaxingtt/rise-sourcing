@@ -1,7 +1,7 @@
 /*
  * @Author: HaoJiang
  * @Date: 2021-05-27 14:29:09
- * @LastEditTime: 2021-06-08 15:07:38
+ * @LastEditTime: 2021-06-17 17:47:42
  * @LastEditors: Please set LastEditors
  * @Description: 定点管理状态管理，缓存定点管理 - 决策资料 - 预览状态，
  * 其他页面统一通过isPreview这个状态，禁用自己页面编辑
@@ -24,7 +24,9 @@ const state = {
   // 定点管理 当前步骤状态
   phaseType:'1',
   // 定点管理AppId，desinateId
-  nomiAppId: ''
+  nomiAppId: '',
+  // 该定点申请中是否有单一供应商
+  isSingle:false,
 };
 
 const mutations = {
@@ -45,6 +47,9 @@ const mutations = {
   },
   SET_NOMIAPP_ID(state,id){
     state.nomiAppId = id
+  },
+  SET_SINGLE_STATUS(state,type){
+    state.isSingle = type
   }
 };
 
@@ -66,10 +71,11 @@ const actions = {
     return new Promise((resole,reject)=>{
       findFrontPageSeat(params).then(res=>{
         const {data={},code} = res;
-        const {phaseType="1"} = data;
+        const {phaseType="1",isSingle=false} = data;
         if(code == 200 && data){
           commit('SET_NOMINATION_STEP', data);
           commit('SET_PHASE_TYPE', phaseType);
+          commit('SET_SINGLE_STATUS', isSingle);
           resole(data);
         }else{
           commit('SET_NOMINATION_STEP', {});
@@ -117,6 +123,7 @@ const getters = {
   phaseType: (state) => state.phaseType,
   disableNominationType: (state) => state.disableNominationType,
   nomiAppId: (state) => state.nomiAppId,
+  isSingle: (state) => state.isSingle,
 };
 
 export default {

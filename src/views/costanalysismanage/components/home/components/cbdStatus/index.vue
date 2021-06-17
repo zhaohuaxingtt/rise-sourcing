@@ -20,13 +20,17 @@
       <!-- 表格区域 -->
       <tableList :activeItems="null" selection indexKey :tableData="tableData" :tableTitle="tableTitle" :tableLoading="tableLoading" @handleSelectionChange="handleSelectionChange" @openPage="openPage"></tableList>
       <!-- 分页 -->
-      <iPagination v-update @size-change="handleSizeChange($event, getTableList)" @current-change="handleCurrentChange($event, getTableList)" background :page-sizes="page.pageSizes"
-      :page-size="page.pageSize"
-      :layout="page.layout"
-      :current-page="page.currPage"
-      :total="page.totalCount"
-      class="padding-bottom20"
-    />
+      <iPagination 
+        v-update 
+        @size-change="handleSizeChange($event, getList)" 
+        @current-change="handleCurrentChange($event, getList)" 
+        background :page-sizes="page.pageSizes"
+        :page-size="page.pageSize"
+        :layout="page.layout"
+        :current-page="page.currPage"
+        :total="page.totalCount"
+        class="padding-bottom20"
+     />
     </div>
     </iDialog>
 </template>
