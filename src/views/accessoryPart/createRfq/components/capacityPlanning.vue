@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-26 20:06:02
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-07 18:16:56
+ * @LastEditTime: 2021-06-17 15:09:45
  * @Description: 产能计划弹窗
  * @FilePath: \front-web\src\views\accessoryPart\createRfq\components\capacityPlanning.vue
 -->
@@ -26,12 +26,12 @@
           </div>
       </div>
     </template>
-    <tableList class="left-title-table" :selection="false" :tableData="tableData" :tableTitle="tableTitle" :tableLoading="tableLoading" ></tableList>
+    <tableList class="left-title-table" :selection="false" :tableData="tableData" :tableTitle="tableTitle" :tableLoading="tableLoading" @tableValueChange="tableValueChange"></tableList>
   </iDialog>
 </template>
 
 <script>
-import { iDialog, iButton } from 'rise'
+import { iDialog, iButton, iMessage } from 'rise'
 import tableList from '@/views/designate/designatedetail/components/tableList'
 import { pageMixins } from "@/utils/pageMixins"
 import { planTableTitle } from '../data'
@@ -64,6 +64,10 @@ export default {
     }
   },
   methods: {
+    tableValueChange(val, row, item) {
+      this.tableData = [{...this.tableData[0], [item.props]:val}]
+      console.log(this.tableData)
+    },
     /**
      * @Description: 保存修改的产量
      * @Author: Luoshuang
@@ -76,13 +80,13 @@ export default {
         if (index === 0) {
           return accum
         } else {
-          return [...accum, {year: curr.name, output: this.tableData[0][index]}]
+          return [...accum, {year: curr.name, output: this.tableData[0][curr.name]}]
         }
       },[])
       updateOutputPlan({
         partOutputPlanInsertFacadeDTOS: {
           partOutputPlanInsertList: outputPlanList,
-          purchasingProjectId: this.$route.query.purchaseProjectId,
+          purchasingProjectId: this.detailInfo.purchasingProjectId,
         }
       })
         .then(res => {
@@ -106,7 +110,7 @@ export default {
     getData() {
       this.tableLoading = true
       getOutputPlan({
-        'partOutputPlanReqDTO.purchaseProjectId': this.detailInfo.purchaseProjectId,
+        'partOutputPlanReqDTO.purchaseProjectId': this.detailInfo.purchasingProjectId,
         'partOutputPlanReqDTO.year': moment(this.detailInfo.timeToMarket).year() + 1
       })
         .then((res) => {
@@ -118,7 +122,7 @@ export default {
           if (res.data && res.data.partRecordsResDTO) {
             if (Array.isArray(res.data.partRecordsResDTO.outputPlanList)) {
               res.data.partRecordsResDTO.outputPlanList.forEach((planData, index) => {
-                this.tableTitle.push({props: planData.year, name: planData.year, key: planData.year})
+                this.tableTitle.push({props: planData.year, name: planData.year, key: planData.year, editable: true, type: 'input', isPC: true})
                 this.tableData[0][planData.year] = planData.output
               })
             }
