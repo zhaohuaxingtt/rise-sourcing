@@ -39,7 +39,7 @@
       </div>
       <!--------------表格模块-------------->
     </div>
-    <tableList v-loading='fsTableLoading' :round='round' :tableTitle='title' v-if='layout == "1"' :ratingList='ratingList' :tableData='exampelData' @handleSelectionChange='handleSelectionChange'></tableList>
+    <tableList v-loading='fsTableLoading' @sortChangeTable='sortChangeTable' :round='round' :tableTitle='title' v-if='layout == "1"' :ratingList='ratingList' :tableData='exampelData' @handleSelectionChange='handleSelectionChange'></tableList>
     <tableListSupplier v-loading='supplierTableLoading' :centerSupplierData='suppliertopList' :supplierLeftLit='supplierLeftLit' :tableTitle='supplierTile'  :tableData='supplierData' v-if='layout == "2"'></tableListSupplier>
     <!--------------弹窗-------------->
     <iDialog title="组合名" :visible.sync="groupVisble" width='25%' >
@@ -94,6 +94,15 @@ export default{
     return {vm:this}
   },
   methods:{
+    sortChangeTable(props){
+      if(props == "ascending"){
+        return true
+      }else if(props == "descending"){
+        return true
+      }else{
+        return true
+      }
+    },
     changeRound(){
       this.init()
     },
