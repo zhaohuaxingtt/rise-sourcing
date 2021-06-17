@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-24 14:39:43
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-17 15:53:57
+ * @LastEditTime: 2021-06-17 16:25:03
  * @Description: RS单维护界面
  * @FilePath: \front-web\src\views\designate\designatedetail\rsSingleMaintenance\index.vue
 -->
@@ -79,7 +79,7 @@
 <script>
 import { iPage, iCard, iButton, iSearch, iInput, iMessage } from 'rise'
 import tableList from '../components/tableList'
-import { rsTableTitle, rsMockData, defaultLtcs } from './data'
+import { rsTableTitle, defaultLtcs } from './data'
 import detailTop from '../components/topComponents'
 import rsDialog from '@/views/partsprocure/editordetail/components/designateInfo/components/rsEEdition'
 import { getList, readQuotation, downloadRSDoc, updateRS } from '@/api/designate/decisiondata/rs'

@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-26 11:16:51
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-17 15:48:46
+ * @LastEditTime: 2021-06-17 16:16:47
  * @Description: 配件综合管理页面
  * @FilePath: \front-web\src\views\accessoryPart\integratedManage\index.vue
 -->
@@ -101,7 +101,7 @@
 import { iPage, iSearch, iSelect, iInput, iCard, iButton, iPagination, iMessage, iNavMvp } from 'rise'
 import { pageMixins } from "@/utils/pageMixins"
 import tableList from '@/views/designate/designatedetail/components/tableList'
-import { tableTitle, tableMockData, searchList } from './data'
+import { tableTitle, searchList } from './data'
 import assignInquiryDepartmentDialog from '../signForPartsDemand/components/assignInquiryDepartment'
 import assignInquiryBuyerDialog from '../signForPartsDemand/components/assignInquiryBuyer'
 import backEpsDialog from './components/backEps'
@@ -125,7 +125,7 @@ export default {
   components: { iPage, iSearch, iSelect, iInput, iCard, iButton, iPagination, tableList, assignInquiryDepartmentDialog, assignInquiryBuyerDialog,backEpsDialog, backDialog, iNavMvp, joinRfqDialog },
   data() {
     return {
-      tableData: tableMockData,
+      tableData: [],
       tableTitle: tableTitle,
       tableLoading: false,
       searchList: searchList,
