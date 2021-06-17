@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-24 14:39:43
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-15 17:42:19
+ * @LastEditTime: 2021-06-17 09:15:28
  * @Description: RS单维护界面
  * @FilePath: \front-web\src\views\designate\designatedetail\rsSingleMaintenance\index.vue
 -->
@@ -273,7 +273,7 @@ export default {
           result = result && item.partName.includes(this.form.partName)
         }
         if (this.form.supplierNo) {
-          result = result && item.supplierNo.includes(this.form.supplierNo)
+          result = result && item.supplierId.includes(this.form.supplierNo)
         }
         if (this.form.supplierName) {
           result = result && item.supplierName.includes(this.form.supplierName)

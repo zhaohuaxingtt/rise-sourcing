@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-25 16:14:32
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-03 16:28:28
+ * @LastEditTime: 2021-06-16 22:10:48
  * @Description: 退回EPS弹窗
  * @FilePath: \front-web\src\views\accessoryPart\integratedManage\components\backEps.vue
 -->
@@ -15,7 +15,7 @@
     width="878px"
   >
     <template slot="footer">
-      <iButton @click="handleConfirm">保存</iButton>
+      <iButton @click="handleConfirm" :loading="saveLoading">保存</iButton>
       <iButton @click="clearDialog">取消</iButton>
     </template>
     <el-form label-position="top">
@@ -49,7 +49,8 @@ export default {
       reasonType: '',
       reasonDescription: '',
       backTypeOption: [],
-      loading: false
+      loading: false,
+      saveLoading: false
     }
   },
   created() {
@@ -76,7 +77,11 @@ export default {
       this.$emit('changeVisible', false)
     },
     handleConfirm() {
+      this.saveLoading = true
       this.$emit('handleBack', this.reasonType, this.reasonDescription)
+    },
+    changeSaveLoading(loading) {
+      this.saveLoading = loading
     }
   }
 }
