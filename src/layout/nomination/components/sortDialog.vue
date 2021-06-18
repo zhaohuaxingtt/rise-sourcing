@@ -52,6 +52,7 @@ import { pageMixins } from '@/utils/pageMixins'
 import tableList from '@/views/designate/supplier/components/tableList'
 import filters from '@/utils/filters'
 import _ from 'lodash'
+import { decisionType } from './data'
 import {
   updateTabPageManager,
   tabPageLayoutsReset,
@@ -128,10 +129,9 @@ export default {
           }
           // 取接口回来的顺序
           nodeList.forEach(tab => {
-            const targetItem = this.tableListData.find(o => o.name === tab.tabName)
-            if (targetItem) {
-              nodes.push(targetItem)
-            }
+            const targetItem = decisionType.find(o => o.name === tab.tabName)
+            targetItem && (tab.path = targetItem.path)
+            nodes.push(tab)
           })
           this.tableListData = nodes
           this.submit(false)
@@ -172,7 +172,6 @@ export default {
       })
     },
     getFetchData() {
-      console.log(this.$store.getters)
       const nominationStep = this.$store.getters.nominationStep
       const tableListData = nominationStep.nodeList || []
       this.tableListData = _.cloneDeep(tableListData)
