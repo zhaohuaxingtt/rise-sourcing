@@ -243,22 +243,22 @@
             </template>
             <template #applyAmount="scope">
               <div class="linkStyle">
-                <span @click="clickMoney(scope.row, '已申请金额')">{{ scope.row.applyAmount }}</span>
+                <span @click="clickMoney(scope.row)">{{ scope.row.applyAmount }}</span>
               </div>
             </template>
             <template #nomiAmount="scope">
               <div class="linkStyle">
-                <span @click="clickMoney(scope.row, '已定点金额')">{{ scope.row.nomiAmount }}</span>
+                <span @click="clickNomiAmountDetail(scope.row)">{{ scope.row.nomiAmount }}</span>
               </div>
             </template>
             <template #baAmount="scope">
               <div class="linkStyle">
-                <span @click="clickMoney(scope.row, '已BA金额')">{{ scope.row.baAmount }}</span>
+                <span @click="clickBaAmountDetail(scope.row)">{{ scope.row.baAmount }}</span>
               </div>
             </template>
             <template #bmAmount="scope">
               <div class="linkStyle">
-                <span @click="clickMoney(scope.row, '已BM金额')">{{ scope.row.bmAmount }}</span>
+                <span @click="clickBmAmountDetail(scope.row)">{{ scope.row.bmAmount }}</span>
               </div>
             </template>
           </iTableList>
@@ -343,9 +343,23 @@
     <moneyComponent
         v-model="moneyComponentShow"
         :moneyComponentParams="moneyComponentParams"
-        :title="moneyComponentTitle"
         @refresh="getInvestmentVerisionList"
     ></moneyComponent>
+    <nomiAmountDetail
+        v-model="nomiAmountDetailShow"
+        :moneyComponentParams="nomiAmountDetailParams"
+        @refresh="getInvestmentVerisionList"
+    ></nomiAmountDetail>
+    <baAmountDetail
+        v-model="baAmountDetailShow"
+        :moneyComponentParams="baAmountDetailParams"
+        @refresh="getInvestmentVerisionList"
+    ></baAmountDetail>
+    <bmAmountDetail
+        v-model="bmAmountDetailShow"
+        :moneyComponentParams="bmAmountDetailParams"
+        @refresh="getInvestmentVerisionList"
+    ></bmAmountDetail>
   </div>
 </template>
 <script>
@@ -370,7 +384,10 @@ import conversionRatio from "./components/conversionRatio";
 import confirmAssociatedCarline from "./components/confirmAssociatedCarline";
 import saveAs from "./components/saveAs";
 import referenceCarProject from "./components/referenceCarProject";
-import moneyComponent from "./components/money";
+import moneyComponent from "./components/applyAmountDetail";
+import nomiAmountDetail from "./components/nomiAmountDetail";
+import baAmountDetail from "./components/baAmountDetail";
+import bmAmountDetail from "./components/bmAmountDetail";
 import {
   getCartypePulldown,
   saveCustomCart,
@@ -409,6 +426,9 @@ export default {
     referenceCarProject,
     confirmAssociatedCarline,
     moneyComponent,
+    nomiAmountDetail,
+    baAmountDetail,
+    bmAmountDetail,
     Popover
   },
   data() {
@@ -427,6 +447,9 @@ export default {
       params: {},
       referenceCarProjectParams: {},
       moneyComponentParams: {},
+      nomiAmountDetailParams: {},
+      baAmountDetailParams: {},
+      bmAmountDetailParams: {},
       addRowShow: false,
       referenceModelShow: false,
       conversionRatioShow: false,
@@ -434,6 +457,9 @@ export default {
       confirmAssociatedCarlineShow: false,
       referenceCarProjectShow: false,
       moneyComponentShow: false,
+      nomiAmountDetailShow: false,
+      baAmountDetailShow: false,
+      bmAmountDetailShow: false,
       moneyComponentTitle: '',
       modelProtitesList: [],
       modelCategoryList: [],
@@ -479,6 +505,7 @@ export default {
     // this.isAdd = this.$route.query.id == 'add' ? true : false
     // this.getInvestmentData()
     this.params = this.$route.query
+    this.form['search.DeptSelect'] = ''
     this.beginType = this.params.sourceStatus
     this.getModelProtitesPullDown()
     this.getInvestmentVerisionList()
@@ -1148,15 +1175,33 @@ export default {
         sourceProjectId: this.params.id
       }
     },
-    clickMoney(row, title) {
+    clickMoney(row) {
       this.moneyComponentShow = true
-      this.moneyComponentTitle = title
       this.moneyComponentParams = {
-        carTypeProId: row.refCartypeProId,
-        categoryId: row.categoryId,
-        sourceProjectId: this.params.id
+        tmCategoryId: row.categoryId,
+        tmCartypeProId: this.params.id
       }
-
+    },
+    clickNomiAmountDetail(row) {
+      this.nomiAmountDetailShow = true
+      this.nomiAmountDetailParams = {
+        tmCategoryId: row.categoryId,
+        tmCartypeProId: this.params.id
+      }
+    },
+    clickBaAmountDetail(row) {
+      this.baAmountDetailShow = true
+      this.baAmountDetailParams = {
+        tmCategoryId: row.categoryId,
+        tmCartypeProId: this.params.id
+      }
+    },
+    clickBmAmountDetail(row) {
+      this.bmAmountDetailShow = true
+      this.bmAmountDetailParams = {
+        tmCategoryId: row.categoryId,
+        tmCartypeProId: this.params.id
+      }
     },
     deleteIRow() {
       if (this.selectTableData.length == 0) {

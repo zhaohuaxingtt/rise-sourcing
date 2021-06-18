@@ -1,11 +1,11 @@
-<!--
+  <!--
  * @Author: yz
  * @Date: 2021-04-21 17:24:15
 -->
 <template>
   <iDialog :title="$t(title)" :visible.sync="value" width="95%" top="5vh" @close='clearDiolog' z-index="1000" class="iDialogAdd">
     <div slot="title" class="title">
-      <div class="text">{{ $t(title) + '：' + RFQID }}</div>
+      <div class="text">{{ $t(title) }}</div>
     </div>
     <div class="changeContent">
       <div v-loading="tableLoading">
@@ -44,11 +44,11 @@ import {
 import {
   iTableList
 } from "@/components"
-import {RFQList, form} from "../components/data";
+import {nomiAmountDetailList, form} from "../components/data";
 import {pageMixins} from "@/utils/pageMixins";
 import {tableHeight} from "@/utils/tableHeight";
 import {getTousandNum} from "@/utils/tool";
-import {detail} from "@/api/ws2/budgetApproval";
+import {nomiAmountDetail} from "@/api/ws2/dataBase";
 
 export default {
   mixins: [pageMixins, tableHeight],
@@ -58,32 +58,32 @@ export default {
     iPagination,
   },
   props: {
-    title: {type: String, default: '已申请金额'},
-    RFQID: {type: String, default: ''},
+    title: {type: String, default: '已定点金额'},
+    moneyComponentParams: {type: Object, default: () => {}},
     value: {type: Boolean},
   },
   data() {
     return {
       form: form,
       tableListData: [],
-      tableTitle: RFQList,
+      tableTitle: nomiAmountDetailList,
       tableLoading: false,
       getTousandNum: getTousandNum
     }
   },
   mounted() {
-    // this.findAddColumnInvestmentBuild()
   },
   methods: {
     detail() {
       this.tableLoading = true
-      detail({
-        rfqIds: [this.RFQID],
+      nomiAmountDetail({
         current: this.page.currPage,
         size: this.page.pageSize,
+        tmCartypeProId: this.moneyComponentParams.tmCartypeProId,
+        tmCategoryId: this.moneyComponentParams.tmCategoryId,
       }).then((res) => {
         const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
-        if (Number(res.code) === 200) {
+        if (Number(res.code) === 0) {
           this.page.currPage = Number(res.pageNum);
           this.page.pageSize = Number(res.pageSize);
           this.page.totalCount = Number(res.total);
@@ -101,7 +101,8 @@ export default {
   watch: {
     value(val) {
       if (val) {
-        // this.detail()
+        console.log(this.moneyComponentParams)
+        this.detail()
       }
     }
   }
