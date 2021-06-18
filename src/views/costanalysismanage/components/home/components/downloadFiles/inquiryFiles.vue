@@ -86,7 +86,7 @@ export default {
         async download(fileList){
              const data = {
               applicationName: 'rise',
-              fileList:fileList.join(),
+              fileList:fileList,
             };
             await downloadFile(data);
         },

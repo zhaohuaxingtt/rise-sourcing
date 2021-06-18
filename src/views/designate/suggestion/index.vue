@@ -10,6 +10,7 @@
     <supplierTable />
     <!-- 业务分配模拟 -->
     <buMonitor
+      :mode="'nomi'"
       :hideCombine="false"
       :readOnly="false" />
   </div>
