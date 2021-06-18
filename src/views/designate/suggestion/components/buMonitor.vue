@@ -32,7 +32,7 @@
                     {{ $t("nominationSuggestion.QuXiaoZuHe") }}
                   </iButton>
                   <!-- 退出编辑 -->
-                  <iButton @click="multiEditControl = false">
+                  <iButton @click="exit">
                     {{ $t("nominationSuggestion.TuiChuBianJi") }}
                   </iButton>
                   <iButton @click="submit">
@@ -63,6 +63,7 @@
             <div class="margin-top20">
               <monitorTableList
                 @updateCharts="updateCharts"
+                @unSaveWarning="setUnSaveWarning"
                 :tableData="tableListData"
                 :supplier="supplierList"
                 :batchEdit="multiEditControl"
@@ -102,17 +103,23 @@ import { iDialog, iInput, iCard, iButton, iMessage } from 'rise'
 import buMonitorCharts from './buMonitorCharts'
 import monitorTableList from './monitorTableList'
 import _ from 'lodash'
-import {
-  getSimulateRecord,
-  getNomiSimulateRecord,
-  setSummaryGroup,
-  cancelSummaryGroup,
-  refreshSimulateRecord,
-  saveSimulateRecord
-} from '@/api/designate/suggestion'
+// {
+//   getSimulateRecord,
+//   getNomiSimulateRecord,
+//   setSummaryGroup,
+//   cancelSummaryGroup,
+//   refreshSimulateRecord,
+//   saveSimulateRecord
+// }
+import * as nego from '@/api/designate/suggestion'
+import * as nomi from '@/api/designate/suggestion/nomi'
 
 export default {
   props: {
+    mode: {
+      type: String,
+      default: 'nego'
+    },
     readOnly: {
       type: Boolean,
       default: false
@@ -150,6 +157,21 @@ export default {
     buMonitorCharts,
     monitorTableList
   },
+  computed: {
+    scenarioType() {
+      return {
+        'nego': 1,
+        'nomi': 2
+      }
+    },
+    api() {
+      const api = {
+        nego,
+        nomi
+      }
+      return api[this.mode] ? api[this.mode] : api['nego']
+    }
+  },
   data() {
     return {
       rfqId: this.$route.query.desinateId || '',
@@ -166,7 +188,8 @@ export default {
       groupForm: {
         groupName:''
       },
-      params: {}
+      params: {},
+      unSaveWarning: false
     }
   },
   created() {
@@ -180,6 +203,10 @@ export default {
     // 生成随机id
     randomid() {
       return Math.floor(Math.random() * 10000000)
+    },
+    // 需要退出警告
+    setUnSaveWarning(state) {
+      this.unSaveWarning = state
     },
     // 组合
     combine() {
@@ -207,6 +234,7 @@ export default {
       const partPrjCode = selectedData.map(o => o.partPrjCode)
       const params = {
         rfqId: this.rfqId,
+        scenarioType: this.scenarioType[this.mode],
         groupName: this.groupForm.groupName,
         partPrjCode
       }
@@ -214,7 +242,7 @@ export default {
       const confirmInfo = await this.$confirm(this.$t('submitSure'))
       if (confirmInfo !== 'confirm') return
       try {
-        const res = await setSummaryGroup(params)
+        const res = await this.api.setSummaryGroup(params)
         if (res.code === '200') {
           iMessage.success(this.$t('LK_CAOZUOCHENGGONG'))
           this.combineVisible = false
@@ -237,13 +265,14 @@ export default {
       let groupIdList = _.uniq(selectedData.filter(o => o.groupId).map(o => o.groupId)) || []
       const params = {
         rfqId: this.rfqId,
+        scenarioType: this.scenarioType[this.mode],
         groupIdList
       }
       console.log(params)
       const confirmInfo = await this.$confirm(this.$t('submitSure'))
       if (confirmInfo !== 'confirm') return
       try {
-        const res = await cancelSummaryGroup(params)
+        const res = await this.api.cancelSummaryGroup(params)
         if (res.code === '200') {
           iMessage.success(this.$t('LK_CAOZUOCHENGGONG'))
           this.combineVisible = false
@@ -257,7 +286,7 @@ export default {
     },
     // 刷新
     refresh: _.debounce(function() {
-      refreshSimulateRecord({rfqId: this.rfqId}).then(res => {
+      this.api.refreshSimulateRecord({rfqId: this.rfqId}).then(res => {
         if (res.code === '200') {
           this.getFetchData()
         } else {
@@ -272,7 +301,7 @@ export default {
     getFetchData() {
       if (!this.rfqId) return iMessage.error(this.$t('nominationLanguage.DingDianIDNotNull'))
       this.tableLoading = true
-      getSimulateRecord({
+      this.api.getSimulateRecord({
         rfqId: this.rfqId
       }).then(res => {
         this.tableLoading = false
@@ -348,7 +377,7 @@ export default {
 
       data.partInfoList = tableListData
       try {
-        const res = await saveSimulateRecord(data)
+        const res = await this.api.saveSimulateRecord(data)
         if (res.code === '200') {
           iMessage.success(this.$t('LK_CAOZUOCHENGGONG'))
           this.getFetchData()
@@ -364,7 +393,7 @@ export default {
     getChartData() {
       if (!this.rfqId) return
       this.chartLoading = true
-      getNomiSimulateRecord({
+      this.api.getNomiSimulateRecord({
         rfqId: this.rfqId
       }).then(res => {
         this.chartLoading = false
@@ -380,6 +409,16 @@ export default {
     },
     updateCharts(data) {
       this.chartData = data
+    },
+    // 退出编辑
+    async exit() {
+      if (this.unSaveWarning) {
+        const confirmInfo = await this.$confirm(this.$t('exitEditSure'))
+        if (confirmInfo !== 'confirm') return
+      }
+      this.multiEditControl = false
+      this.setUnSaveWarning(false)
+      this.getFetchData()
     },
     handleCollapse(e){this.$emit('handleCollapse',e)}
   }

@@ -223,9 +223,9 @@ export function negoAnalysisSummaryRound(rfqId){
 }
 
 //报价分析-获取场景布局
-export function negoAnalysisSummaryLayout(layoutType){
+export function negoAnalysisSummaryLayout(layoutType,scenarioType){
     return nego({
-        url: `/nego-assistant/nego-analysis-summary-layout/${layoutType}`,
+        url: `/nego-assistant/nego-analysis-summary-layout/${scenarioType}/${layoutType}`,
         method: 'GET'
     })
 }
@@ -260,6 +260,21 @@ export function fsPartsAsRow(rfqId,round){
 export function fsSupplierAsRow(rfqId,round){
     return nego({
         url: `/nego-assistant/nego-analysis-summary/fs-supplier-as-row/${rfqId}/${round}`,
+        method: 'GET'
+    })
+}
+
+//ab价-fs横轴
+export function fsPartsAsRowDd(mimoId){
+    return nego({
+        url: `/nego-assistant/nego-analysis-summary/nomi-fs-parts-as-row/${mimoId}`,
+        method: 'GET'
+    })
+}
+//ab价-供应商轴
+export function fsSupplierAsRowDd(mimoId){
+    return nego({
+        url: `/nego-assistant/nego-analysis-summary/nomi-fs-supplier-as-row/${mimoId}`,
         method: 'GET'
     })
 }

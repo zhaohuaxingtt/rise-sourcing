@@ -11,19 +11,19 @@
     <div class="quotationHz margin-bottom20">
       <!--------------输入框模块-------------->
       <div class='search'>
-        <div class="needAddWhi">
+        <div class="needAddWhi" v-if='!disabel'>
           <span>Hide/unHide：</span>
           <iSelect v-model="backChoose" multiple :collapse-tags='true' @visible-change='visibleChange'>
             <el-option v-for='(items,index) in backChooseLists' :key='index' :label="items.label" :value="items.props"></el-option>
           </iSelect> 
         </div>
-        <div v-if='showRound'>
+        <div v-if='showRound && !disabel'>
           <span>Quota. Round：</span>
           <iSelect v-model="round" @change="changeRound" style="width:100px">
             <el-option :label="items" :value="items" v-for='(items,index) in rundList' :key='index'></el-option>
           </iSelect> 
         </div>
-        <div>
+        <div v-if='!disabel'>
           <span>Layout: </span>
           <iSelect v-model="layout" @change="changeLayout">
             <el-option label="FS-Parts as Row" value="1"></el-option>
@@ -31,7 +31,7 @@
           </iSelect> 
         </div>            
       </div>
-      <div class="btnSearch">
+      <div class="btnSearch" v-if='!disabel'>
         <iButton @click="quote" v-if='quoteShow'>引用报价</iButton>
         <iButton @click="group"  v-if='layout == "1"'>组合</iButton>
         <iButton @click="removeGroup"  v-if='layout == "1"'>取消组合</iButton>
@@ -39,7 +39,7 @@
       </div>
       <!--------------表格模块-------------->
     </div>
-    <tableList v-loading='fsTableLoading' @sortChangeTable='sortChangeTable' :round='round' :tableTitle='title' v-if='layout == "1"' :ratingList='ratingList' :tableData='exampelData' @handleSelectionChange='handleSelectionChange'></tableList>
+    <tableList v-loading='fsTableLoading' @sortChangeTabless='sortChange' :round='round' :tableTitle='title' v-if='layout == "1"' :ratingList='ratingList' :tableData='exampelData' @handleSelectionChange='handleSelectionChange'></tableList>
     <tableListSupplier v-loading='supplierTableLoading' :centerSupplierData='suppliertopList' :supplierLeftLit='supplierLeftLit' :tableTitle='supplierTile'  :tableData='supplierData' v-if='layout == "2"'></tableListSupplier>
     <!--------------弹窗-------------->
     <iDialog title="组合名" :visible.sync="groupVisble" width='25%' >
@@ -87,8 +87,29 @@ export default{
     showRound:true,
     quoteShow:true,
     partInfoList:[],
-    bdlPriceTotalInfoList:[]
+    bdlPriceTotalInfoList:[],
+    oldExampelData:[],
+    templateSummary:1,
+    disabel:false
   }},
+  watch:{
+    /**
+     * @description:当前界面是否处于一个disble模式。取决于当前路由中是否存在 isPreview 字段
+     * @param {*}
+     * @return {*}
+     */
+    '$route':function(){
+     try {
+      if(this.$route.query.isPreview == 1){
+        this.disabel = true
+      }else{
+        this.disabel = false
+      }
+      } catch (error) {
+        this.disabel = false
+    }
+    }
+  },
   mounted(){
     this.init()
   },
@@ -96,15 +117,25 @@ export default{
     return {vm:this}
   },
   methods:{
-    sortChangeTable(props){
-      const notSortData = defaultSort(translateData(this.partInfoList),'groupId').filter(items=>items.groupId!='')
-      const sortData = defaultSort(translateData(this.partInfoList),'groupId').filter(items=>items.groupId =='')
-      if(props == "ascending"){
-        this.exampelData = [...notSortData,...sortData.sort((a,b)=>a.cfAprice - b.cfAprice),...subtotal(this.title,this.exampelData,this.bdlPriceTotalInfoList)]
-      }else if(props == "descending"){
-         this.exampelData = [...notSortData,...sortData.sort((a,b)=>b.cfAprice - a.cfAprice),...subtotal(this.title,this.exampelData,this.bdlPriceTotalInfoList)]
-      }else{
-        this.exampelData = [...notSortData,...sortData,...subtotal(this.title,this.exampelData,this.bdlPriceTotalInfoList)]
+    /**
+     * @description: 排除group total km buget 列不需要排序外，其他的都是需要排序的列。
+     * @param {*} props -表格中返回的标识。正排序 还是 反排序 还是 默认
+     * @return {*}
+     */
+    sortChange(props){
+      try {
+        const notSortData = this.oldExampelData.filter(items=> items.groupId != null && items.groupId != '-')
+        const sortData = this.oldExampelData.filter(items=> items.groupId == null && items.groupId != '-')
+        const totalData = this.oldExampelData.filter((items)=> items.groupId == '-')
+        if(props == "ascending"){
+          this.exampelData = [...notSortData,...sortData.sort((a,b)=>a.cfPartAPrice - b.cfPartAPrice),...totalData]
+        }else if(props == "descending"){
+          this.exampelData = [...notSortData,...sortData.sort((a,b)=>b.cfPartAPrice - a.cfPartAPrice),...totalData]
+        }else{
+          this.exampelData = this.oldExampelData
+        }
+      } catch (error) {
+        this.exampelData = this.oldExampelData
       }
     },
     changeRound(){
@@ -154,7 +185,8 @@ export default{
     negoAnalysisSummaryGroupsDelete(){
       const sendata = {
           groupIdList: this.getPartGroupNumber(),
-          rfqId: this.$route.query.id
+          rfqId: this.$route.query.id,
+          scenarioType:this.templateSummary
         }
         negoAnalysisSummaryGroupDelete(sendata).then(res=>{
           if(res.code == 200){
@@ -175,7 +207,8 @@ export default{
       const sendata = {
           groupName: this.groupName,
           partPrjCode: this.getPartNumber(this.groupSelectData),
-          rfqId: this.$route.query.id
+          rfqId: this.$route.query.id,
+          scenarioType:this.templateSummary
         }
         negoAnalysisSummaryGroup(sendata).then(res=>{
           if(res.code == 200){
@@ -209,7 +242,7 @@ export default{
      */
     negoAnalysisSummaryLayout(type){
       this.backChooseLists = backChooseList(this.layout);
-      negoAnalysisSummaryLayout(type).then(res=>{
+      negoAnalysisSummaryLayout(type,this.templateSummary).then(res=>{
         if(res.data && res.data.layout){
           this.backChoose = JSON.parse(res.data.layout) // 
         }
@@ -277,6 +310,7 @@ export default{
           this.exampelData = defaultSort(translateData(res.data.partInfoList),'groupId')
           this.ratingList = translateRating(res.data.partInfoList,res.data.bdlRateInfoList)
           this.exampelData = [...this.exampelData,...subtotal(this.title,this.exampelData,res.data.bdlPriceTotalInfoList)]
+          this.oldExampelData = JSON.parse(JSON.stringify(this.exampelData))
         }
       }).catch(err=>{
         this.fsTableLoading = false

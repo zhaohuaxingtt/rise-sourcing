@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-06-16 15:25:24
- * @LastEditTime: 2021-06-16 19:36:29
+ * @LastEditTime: 2021-06-18 15:23:59
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\store\module\sourcing.js
@@ -76,6 +76,14 @@ const state = {
       activePath: "partsnomination",
       key: "LK_DINGDIANGUANLI"
     },
+    // {
+    //   value: 9,
+    //   name: "定点信 / LOI",
+    //   message: 0,
+    //   url: "/sourcing/partsletter",
+    //   activePath: "partsletter",
+    //   key: "LK_DINGDIANXINLOI"
+    // },
   ]
 }
 

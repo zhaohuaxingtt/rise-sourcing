@@ -205,6 +205,7 @@ export default {
       }).then(res => {
         if (res.code === '200') {
           iMessage.success(this.$t('LK_CAOZUOCHENGGONG'))
+          this.getFetchDataList()
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }

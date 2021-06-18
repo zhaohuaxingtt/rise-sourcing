@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-06-17 13:48:56
+ * @LastEditTime: 2021-06-18 19:07:21
  * @LastEditors: Please set LastEditors
  * @Description: 系统静态路由.
  * @FilePath: \front-web\src\router\index.js
@@ -283,7 +283,14 @@ export const staticRouter = [{
                 name: "configgradedept",
                 meta: { title: "配置评分部门" },
                 component: () => import("@/views/configgradedept"),
-            }
+            },
+            // 定点信相关路由
+            {
+                path: "/sourcing/partsletter",
+                name: "partsletter",
+                component: () => 
+                    import ("@/views/letterAndLoi")
+            },
         ],
     },
     {

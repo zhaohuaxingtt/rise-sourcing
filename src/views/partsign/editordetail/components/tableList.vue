@@ -1,14 +1,14 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-24 16:57:16
- * @LastEditTime: 2021-05-27 19:50:45
+ * @LastEditTime: 2021-06-18 19:03:40
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsign\editordetail\components\enquiry\components\tablelist.vue
 -->
 <template>
-  <el-table class="table" :height="height" :data="tableData" :cell-class-name="cellClassName" v-loading="tableLoading" @selection-change="handleSelectionChange" :empty-text="$t('LK_ZANWUSHUJU')">
-    <el-table-column v-if="selection" type="selection" align="center"></el-table-column>
+  <el-table ref="table" class="table" :class="singleSelect ? 'singleSelectTable' : ''" :height="height" :data="tableData" :cell-class-name="cellClassName" v-loading="tableLoading" @selection-change="handleSelectionChange" @select="handleSelect" :empty-text="$t('LK_ZANWUSHUJU')">
+    <el-table-column v-if="selection || singleSelect" type="selection" align="center"></el-table-column>
     <el-table-column v-if="index" type="index" align="center" :label="indexLabel"></el-table-column>
     <template v-for="(item, $index) in tableTitle">
       <el-table-column :key="$index" align="center" :label="$t(item.key)" :prop="item.props" :show-overflow-tooltip="item.tooltip" :width="item.width">
@@ -42,6 +42,10 @@ export default {
       type: Boolean,
       default: true
     },
+    singleSelect: {
+      type: Boolean,
+      default: false
+    },
     index: {
       type: Boolean,
       default: false
@@ -58,13 +62,39 @@ export default {
     }
   },
   methods: {
-    handleSelectionChange(list){
+    handleSelectionChange(list) {
+      if (this.singleSelect) return
       this.$emit('handleSelectionChange', list)
+    },
+    handleSelect(selection, row) {
+      if (this.singleSelect) {
+        this.tableData.forEach(item => {
+          if (item === row) return
+          this.$refs.table.toggleRowSelection(item, false)
+        })
+
+        this.$refs.table.toggleRowSelection(row, !!selection.length)
+        this.$emit('handleSingleSelectChange', selection.length ? row : null)
+      }
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
+.table {
+  ::v-deep .el-input {
+    width: 97%; // 解决tooltip异常弹出
+  }
 
+  ::v-deep .el-checkbox {
+    z-index: 0
+  }
+}
+
+.singleSelectTable {
+  ::v-deep .el-table__header-wrapper .el-checkbox {
+    display: none;
+  }
+}
 </style>

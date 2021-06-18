@@ -67,7 +67,6 @@ import {
   iPagination,
 } from "rise";
 import Upload from '@/components/Upload'
-import { navList } from "@/views/partsign/home/components/data";
 import { pageMixins } from "@/utils/pageMixins";
 import tableList from "@/views/partsign/editordetail/components/tableList";
 import { tableTitle } from "./data";
@@ -106,6 +105,7 @@ export default {
         }
     },
     created(){
+      console.log(this.$route.path);
       this.getList();
       this.updateNavList
     },
