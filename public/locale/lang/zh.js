@@ -885,6 +885,7 @@
         'LK_QINGXUANZEDINGDIANSHENQINGLEIXING': '请选择定点申请类型', // 请选择定点申请类型
         'LK_DINGDIANSHENQINGLEIXING': '定点申请类型', // 定点申请类型
         'LK_GAIDINGDIANSHENQINGZHONGYOUDANYIGONGYINGSHANG': '该定点申请中有单一供应商', // 该定点申请中有单一供应商
+        'LK_DINGDIANXINLOI':'定点信 / LOI', // 定点信 / LOI
 
         // 定点管理
         'nominationLanguage': {
