@@ -26,7 +26,7 @@
             {{ $t("LK_BAOCUN") }}
           </iButton>
           <iButton
-            @click="mouldVisibal = true"
+            @click="showMouldVisibal"
           >
             {{ $t("nominationSuggestion.MoJuYuSuanGuanLi") }}
           </iButton>
@@ -95,7 +95,7 @@
     <!-- 批量编辑弹窗 -->
     <batchEditDialog :visible.sync="batchEditVisibal" :supplierList="supplierList" @submit="onBatchEdit" />
     <!-- 模具弹窗 -->
-    <mouldDialog :visible.sync="mouldVisibal" :rfqIds="rfqIds" />
+    <mouldDialog :visible.sync="mouldVisibal" :rfqIds="rfqIds" :fsIds="fsIds" />
   </iCard>
 </template>
 
@@ -169,7 +169,8 @@ export default {
         layout: "total, prev, pager, next, jumper"
       },
       // 全量rfqId，用于模具预算管理列表查询
-      rfqIds: []
+      rfqIds: [],
+      fsIds: []
     }
   },
   mounted() {
@@ -389,6 +390,17 @@ export default {
       }).catch(e => {
         this.tableLoading = false
       })
+    },
+    showMouldVisibal() {
+      if (this.selectData.length > 0) {
+        this.rfqIds = _.uniq(this.selectData.map(item => item.rfqId))
+        this.fsIds = this.selectData.map(item => item.fsnrGsnrNum)
+      } else {
+        this.rfqIds = _.uniq(this.data.map(item => item.rfqId))
+        this.fsIds = this.data.map(item => item.fsnrGsnrNum)
+      }
+
+      this.mouldVisibal = true
     }
   }
 }

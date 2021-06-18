@@ -39,7 +39,7 @@
       </div>
       <!--------------表格模块-------------->
     </div>
-    <tableList v-loading='fsTableLoading' :round='round' :tableTitle='title' v-if='layout == "1"' :ratingList='ratingList' :tableData='exampelData' @handleSelectionChange='handleSelectionChange'></tableList>
+    <tableList v-loading='fsTableLoading' @sortChangeTable='sortChangeTable' :round='round' :tableTitle='title' v-if='layout == "1"' :ratingList='ratingList' :tableData='exampelData' @handleSelectionChange='handleSelectionChange'></tableList>
     <tableListSupplier v-loading='supplierTableLoading' :centerSupplierData='suppliertopList' :supplierLeftLit='supplierLeftLit' :tableTitle='supplierTile'  :tableData='supplierData' v-if='layout == "2"'></tableListSupplier>
     <!--------------弹窗-------------->
     <iDialog title="组合名" :visible.sync="groupVisble" width='25%' >
@@ -85,7 +85,9 @@ export default{
     suppliertopList:[],
     supplierLeftLit:[],
     showRound:true,
-    quoteShow:true
+    quoteShow:true,
+    partInfoList:[],
+    bdlPriceTotalInfoList:[]
   }},
   mounted(){
     this.init()
@@ -94,6 +96,17 @@ export default{
     return {vm:this}
   },
   methods:{
+    sortChangeTable(props){
+      const notSortData = defaultSort(translateData(this.partInfoList),'groupId').filter(items=>items.groupId!='')
+      const sortData = defaultSort(translateData(this.partInfoList),'groupId').filter(items=>items.groupId =='')
+      if(props == "ascending"){
+        this.exampelData = [...notSortData,...sortData.sort((a,b)=>a.cfAprice - b.cfAprice),...subtotal(this.title,this.exampelData,this.bdlPriceTotalInfoList)]
+      }else if(props == "descending"){
+         this.exampelData = [...notSortData,...sortData.sort((a,b)=>b.cfAprice - a.cfAprice),...subtotal(this.title,this.exampelData,this.bdlPriceTotalInfoList)]
+      }else{
+        this.exampelData = [...notSortData,...sortData,...subtotal(this.title,this.exampelData,this.bdlPriceTotalInfoList)]
+      }
+    },
     changeRound(){
       this.init()
     },
@@ -256,6 +269,8 @@ export default{
       fsPartsAsRow(this.$route.query.id,this.round).then(res=>{
         this.fsTableLoading = false
         if(res.data && res.data.partInfoList && res.data.partInfoList.length){
+          this.partInfoList = res.data.partInfoList
+          this.bdlPriceTotalInfoList = res.data.bdlPriceTotalInfoList
           const relTitle = getRenderTableTile(this.backChoose,res.data.partInfoList[0].bdlInfoList.length)
           this.title = relTitle.title
           this.reRenderLastChild = relTitle.xhLastChildProps

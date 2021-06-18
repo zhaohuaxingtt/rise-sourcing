@@ -275,7 +275,7 @@ export default {
           this.data = res.data || []
           this.data.map(o => {
             o.createDate = window.moment(o.createDate).format('YYYY-MM-DD HH:mm:ss')
-            o.taskTime = o.createDate
+            o.taskTime = o.taskTime ? window.moment(o.taskTime).format('YYYY-MM-DD HH:mm:ss') : ''
             return o
           })
           this.page.totalCount = res.total || 0

@@ -49,7 +49,12 @@
           </template>
         </el-table-column>
         <el-table-column :key="index" align='center' v-else :label="items.key ? $t(items.key) : items.name"
-                         :prop="items.props" fixed="left"></el-table-column>
+                         :prop="items.props" fixed="left">
+          <template v-slot="scope">
+            <span class="link-underline" v-if="items.type === 'link'" @click="handleClickByLink(scope.row, items.props)">{{ scope.row[items.props] }}</span>
+            <span v-else>{{ scope.row[items.props] }}</span>
+          </template>                 
+        </el-table-column>
       </template>
     </template>
   </el-table>
@@ -85,9 +90,7 @@ export default {
       this.$emit('openMultiHeaderPropsPage', row, key)
     },
     supplierProducePlacesVisibleChange(status, row) {
-      if (status) {
-        this.$emit('supplierProducePlacesVisibleChange', row)
-      }
+      this.$emit('supplierProducePlacesVisibleChange', status, row)
     },
     supplierProducePlacesChange(value, row) {
       if (value) {
@@ -99,6 +102,9 @@ export default {
         this.$set(row, "companyAddressCode", ""),
         this.$set(row, "companyAddress", "")
       }
+    },
+    handleClickByLink(row, key) {
+      this.$emit("link", row, key)
     }
   }
 }

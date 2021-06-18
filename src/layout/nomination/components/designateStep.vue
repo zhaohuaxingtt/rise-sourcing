@@ -40,6 +40,11 @@
                         <icon v-else-if="phaseType > item.id" symbol name="icondingdianguanli-yiwancheng" class="step-icon  click-icon"></icon>
                         <!-- 未完成 -->
                         <icon v-else symbol name="icondingdianguanlijiedian-yiwancheng" class="step-icon"></icon>
+
+                        <!-- 单一供应商需要单独展示icon -->
+                        <el-tooltip v-if="item.hasInfo && isSingle" :content="$t('LK_GAIDINGDIANSHENQINGZHONGYOUDANYIGONGYINGSHANG')"   placement="top">
+                            <icon symbol name="icontishi-cheng" class="info-icon"></icon>
+                        </el-tooltip>
                     </p>
                     
                     <p class="step-text">{{$t(item.key) || item.name}}</p>
@@ -116,6 +121,9 @@ export default {
         },
         disableNominationType(){
             return this.$store.getters.disableNominationType;
+        },
+        isSingle(){
+            return this.$store.getters.isSingle;
         }
     },
     data(){
@@ -340,6 +348,14 @@ export default {
                 flex-direction: column;
                 .step-icon-box{
                     width: 100%;
+                    position: relative;
+                    .info-icon{
+                        position:absolute;
+                        width: 20px;
+                        height: 20px;
+                        top: -5px;
+                        right: 10px;
+                    }
                 }
             }
             .step-text{

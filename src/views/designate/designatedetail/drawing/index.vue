@@ -103,6 +103,15 @@ export default {
         fileType: '101',
       }
       this.getDataList(params)
+    },
+
+    // 下载
+    dowloadSingleFile(item){
+      const { fileName } = item;
+      downloadFile({
+        applicationName: "rise",
+        fileList: fileName
+      });
     }
   },
   watch: {
