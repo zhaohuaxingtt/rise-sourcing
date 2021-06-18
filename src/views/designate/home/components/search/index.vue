@@ -217,6 +217,7 @@ export default {
     },
     reset() {
       this.form = {}
+      this.$emit('search', {})
     }
   },
   // watch: {
