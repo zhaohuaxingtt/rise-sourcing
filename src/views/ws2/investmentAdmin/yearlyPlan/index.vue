@@ -85,11 +85,47 @@
       </div>
       <div class="manual-content">
         <div>
-          <div id="total"></div>
-          <div class="manual-l-txt"></div>
-          <div class="manual-l-txt"></div>
+          <div id="totalLeft"></div>
+          <div class="manual-l-txt">
+            <div class="manual-l-title">820.00</div>
+            <div class="manual-lprice">111</div>
+            <div class="manual-lprice">222</div>
+            <div class="manual-lprice">333</div>
+            <div class="manual-lprice">444</div>
+            <div class="manual-lprice">555</div>
+            <div class="manual-lprice">666</div>
+          </div>
+          <div class="manual-l-txt">
+            <div class="manual-l-title">820.00</div>
+            <div class="manual-lprice">111</div>
+            <div class="manual-lprice">222</div>
+            <div class="manual-lprice">333</div>
+            <div class="manual-lprice">444</div>
+            <div class="manual-lprice">555</div>
+            <div class="manual-lprice">666</div>
+          </div>
         </div>
-        <div></div>
+        <div>
+          <div id="totalRight"></div>
+          <div class="manual-l-txt">
+            <div class="manual-l-title">820.00</div>
+            <div class="manual-lprice">111</div>
+            <div class="manual-lprice">222</div>
+            <div class="manual-lprice">333</div>
+            <div class="manual-lprice">444</div>
+            <div class="manual-lprice">555</div>
+            <div class="manual-lprice">666</div>
+          </div>
+          <div class="manual-l-txt">
+            <div class="manual-l-title">820.00</div>
+            <div class="manual-lprice">111</div>
+            <div class="manual-lprice">222</div>
+            <div class="manual-lprice">333</div>
+            <div class="manual-lprice">444</div>
+            <div class="manual-lprice">555</div>
+            <div class="manual-lprice">666</div>
+          </div>
+        </div>
       </div>
     </iDialog>
   </div>
@@ -233,11 +269,63 @@ export default {
       }else{
         _this.manualvisible = true;
         setTimeout(() => {
-          const total = echarts().init(document.getElementById("total"));
-          total.setOption(
+          const totalLeft = echarts().init(document.getElementById("totalLeft"));
+          const totalRight = echarts().init(document.getElementById("totalRight"));
+          totalRight.setOption(
+            {
+                title: {
+                    text: 'Total',
+                    textStyle:{
+                      color:'#485465',        //颜色
+                      fontWeight:'bold',    //粗细
+                      fontSize:22,     //大小
+                  },
+                },
+                tooltip: {
+                    
+                },
+                legend: {
+                    data: []
+                },
+                grid: {
+                    left: '8%',
+                    right: '8%',
+                    bottom: '3%',
+                    top: '10%',
+                    containLabel: true
+                },
+                xAxis: {
+                    show: false
+                },
+                yAxis: {
+                    type: 'category',
+                    data: ['Risk', 'BUB', 'CSX', 'CSP', 'CSM', 'CSI', 'CSE']
+                },
+                series: [
+                    {
+                        name: '2011年',
+                        type: 'bar',
+                        data: [18203, 23489, 29034, 104970, 131744, 630230, 630230],
+                        barWidth: 30,
+                        itemStyle:{
+                            normal:{
+                              color:'#D5DFF1',
+                              barBorderRadius: 5
+                            },
+                        },
+                    },
+                ]
+            }
+          )
+          totalLeft.setOption(
               {
                 title: {
                     text: 'Total',
+                    textStyle:{
+                      color:'#485465',        //颜色
+                      fontWeight:'bold',    //粗细
+                      fontSize:22,     //大小
+                  },
                 },
                 tooltip: {
                     
@@ -264,9 +352,12 @@ export default {
                         name: '2011年',
                         type: 'bar',
                         data: [18203, 23489, 29034, 104970, 131744, 630230],
-                        barWidth: 40,
+                        barWidth: 30,
                         itemStyle:{
-                            normal:{color:'#ACBFE3'}
+                            normal:{
+                              color:'#ACBFE3',
+                              barBorderRadius: 5
+                            },
                         },
                     },
                 ]
@@ -332,11 +423,28 @@ export default {
       bottom: 0;
 
       .manual-l-txt{
-        flex: 1;
-        // height: 100%;
+        text-align: right;
+        white-space:nowrap;
+        margin-right: 47px;
+
+        &:nth-child(1){
+          margin-right: 0;
+        }
+
+        .manual-lprice{
+          color: #485465;
+          font-size: 16px;
+          margin-top: 70px;
+        }
+        
+        .manual-l-title{
+          font-size: 22px;
+          color: #485465;
+          font-weight: bold;
+        }
       }
 
-      #total{
+      #totalLeft, #totalRight{
         flex: 3;
         padding-left: 32px;
         // height: 100%;
@@ -346,6 +454,7 @@ export default {
         display: flex;
         flex: 1;
         height: 100%;
+        padding-top: 30px;
       }
     }
 
