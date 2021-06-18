@@ -32,7 +32,7 @@
                     {{ $t("nominationSuggestion.QuXiaoZuHe") }}
                   </iButton>
                   <!-- 退出编辑 -->
-                  <iButton @click="multiEditControl = false">
+                  <iButton @click="exit">
                     {{ $t("nominationSuggestion.TuiChuBianJi") }}
                   </iButton>
                   <iButton @click="submit">
@@ -63,6 +63,7 @@
             <div class="margin-top20">
               <monitorTableList
                 @updateCharts="updateCharts"
+                @unSaveWarning="setUnSaveWarning"
                 :tableData="tableListData"
                 :supplier="supplierList"
                 :batchEdit="multiEditControl"
@@ -166,7 +167,8 @@ export default {
       groupForm: {
         groupName:''
       },
-      params: {}
+      params: {},
+      unSaveWarning: false
     }
   },
   created() {
@@ -180,6 +182,10 @@ export default {
     // 生成随机id
     randomid() {
       return Math.floor(Math.random() * 10000000)
+    },
+    // 需要退出警告
+    setUnSaveWarning(state) {
+      this.unSaveWarning = state
     },
     // 组合
     combine() {
@@ -380,6 +386,16 @@ export default {
     },
     updateCharts(data) {
       this.chartData = data
+    },
+    // 退出编辑
+    async exit() {
+      if (this.unSaveWarning) {
+        const confirmInfo = await this.$confirm(this.$t('exitEditSure'))
+        if (confirmInfo !== 'confirm') return
+      }
+      this.multiEditControl = false
+      this.setUnSaveWarning(false)
+      this.getFetchData()
     },
     handleCollapse(e){this.$emit('handleCollapse',e)}
   }
