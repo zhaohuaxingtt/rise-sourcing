@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-05-28 14:32:26
- * @LastEditTime: 2021-06-16 17:40:27
+ * @LastEditTime: 2021-06-18 15:15:01
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\data.js
@@ -267,6 +267,9 @@ export function subtotal(tableHeader,dataList,priceInfo){
   try {
     const total = {}
     tableHeader.forEach(items=>{
+      if(items.props == 'groupName'){
+        total["groupId"] = '-'
+      }
       if(items.props == 'partNo'){
         total[items.props] = 'Subtotal'
       }else{
@@ -305,13 +308,12 @@ export function getLowNumber(totalList){
   }
   temLits.sort((a,b)=>{a.tto - b.tto})
   templateData[temLits[0].number+'ttoStatus'] = 1
-  console.log(templateData)
   return templateData
 }
 
 /**
  * @description:追加一个km数据和bukege 
- * @param {*} type
+ * @param {*} type exampleDatas 某一列的数据
  * @return {*}
  */
 export function kmOrbukeage(type,priceInfo,exampleDatas){
@@ -321,6 +323,9 @@ export function kmOrbukeage(type,priceInfo,exampleDatas){
     for(let key in exampleData){
       if(removeKeysNumber(key) != 'supplierId'){
         exampleData[key] = ''
+      }
+      if(key == 'groupId'){
+        exampleData[key] = '-'
       }
     }
     for(let key in exampleData){
