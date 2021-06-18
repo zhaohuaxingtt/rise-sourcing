@@ -37,8 +37,8 @@
     </el-tab-pane>
     <el-tab-pane label="专项分析工具">
       <div>
-        <analysisTool v-if="false"/>
-        <pcaOverview v-if="true"/>
+        <analysisTool v-if="true"/>
+        <pcaOverview v-if="false"/>
       </div>
     </el-tab-pane>
     <el-tab-pane label="谈判基本信息">
