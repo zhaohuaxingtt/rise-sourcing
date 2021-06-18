@@ -80,8 +80,8 @@ export default {
         // 下载附件
         async download(fileList){
              const data = {
-              applicationName: 'rise',
-              fileList
+              applicationName: 'procurereq-service',
+              fileList:fileList,
             };
             await downloadFile(data);
         },

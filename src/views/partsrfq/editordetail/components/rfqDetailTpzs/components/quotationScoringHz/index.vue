@@ -154,7 +154,8 @@ export default{
     negoAnalysisSummaryGroupsDelete(){
       const sendata = {
           groupIdList: this.getPartGroupNumber(),
-          rfqId: this.$route.query.id
+          rfqId: this.$route.query.id,
+          scenarioType:1
         }
         negoAnalysisSummaryGroupDelete(sendata).then(res=>{
           if(res.code == 200){
@@ -175,7 +176,8 @@ export default{
       const sendata = {
           groupName: this.groupName,
           partPrjCode: this.getPartNumber(this.groupSelectData),
-          rfqId: this.$route.query.id
+          rfqId: this.$route.query.id,
+          scenarioType:1
         }
         negoAnalysisSummaryGroup(sendata).then(res=>{
           if(res.code == 200){
