@@ -80,7 +80,7 @@ export default {
         // 下载附件
         async download(fileList){
              const data = {
-              applicationName: 'rise',
+              applicationName: 'procurereq-service',
               fileList:fileList.join(),
             };
             await downloadFile(data);
@@ -92,14 +92,14 @@ export default {
             if(!selectItems.length){
             iMessage.warn(this.$t('LK_QINGXUANZHEXUYAOXIAZHAIDEFUJIAN'));
             }else{
-                const list = selectItems.map((item)=>item.id);
+                const list = selectItems.map((item)=>item.tpPartAttachmentName);
                 this.download(list);
             }
         },
         // 单文件下载
         downloadLine(row){
-            const {id} = row;
-            this.download([id]);
+            const {tpPartAttachmentName} = row;
+            this.download([tpPartAttachmentName]);
         },
         // 获取列表
         async getList(){
