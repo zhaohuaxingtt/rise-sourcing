@@ -46,9 +46,6 @@
           <div>CSP</div>
           <div>CSX</div>
           <div>BU-B</div>
-          <span class="unitText margin-right20">
-            {{ $t("LK_DANWEI") }}: {{ $t("LK_BAIWANYUAN") }}
-          </span>
         </div>
         <div class="tab-box">
           <icon
@@ -95,6 +92,7 @@
             v-model="scope.row.jan"
             :placeholder="$t('LK_QINGSHURU')"
             v-if="pageEdit"
+            @input="handleInputChange(scope.row)"
           ></iInput>
           <div v-if="!pageEdit">{{ scope.row.jan }}</div>
         </template>
@@ -103,6 +101,7 @@
             v-model="scope.row.feb"
             :placeholder="$t('LK_QINGSHURU')"
             v-if="pageEdit"
+            @input="handleInputChange(scope.row)"
           ></iInput>
           <div v-if="!pageEdit">{{ scope.row.feb }}</div>
         </template>
@@ -111,6 +110,7 @@
             v-model="scope.row.mar"
             :placeholder="$t('LK_QINGSHURU')"
             v-if="pageEdit"
+            @input="handleInputChange(scope.row)"
           ></iInput>
           <div v-if="!pageEdit">{{ scope.row.mar }}</div>
         </template>
@@ -119,6 +119,7 @@
             v-model="scope.row.apr"
             :placeholder="$t('LK_QINGSHURU')"
             v-if="pageEdit"
+            @input="handleInputChange(scope.row)"
           ></iInput>
           <div v-if="!pageEdit">{{ scope.row.apr }}</div>
         </template>
@@ -127,6 +128,7 @@
             v-model="scope.row.may"
             :placeholder="$t('LK_QINGSHURU')"
             v-if="pageEdit"
+            @input="handleInputChange(scope.row)"
           ></iInput>
           <div v-if="!pageEdit">{{ scope.row.may }}</div>
         </template>
@@ -135,6 +137,7 @@
             v-model="scope.row.june"
             :placeholder="$t('LK_QINGSHURU')"
             v-if="pageEdit"
+            @input="handleInputChange(scope.row)"
           ></iInput>
           <div v-if="!pageEdit">{{ scope.row.june }}</div>
         </template>
@@ -143,6 +146,7 @@
             v-model="scope.row.july"
             :placeholder="$t('LK_QINGSHURU')"
             v-if="pageEdit"
+            @input="handleInputChange(scope.row)"
           ></iInput>
           <div v-if="!pageEdit">{{ scope.row.july }}</div>
         </template>
@@ -151,6 +155,7 @@
             v-model="scope.row.aug"
             :placeholder="$t('LK_QINGSHURU')"
             v-if="pageEdit"
+            @input="handleInputChange(scope.row)"
           ></iInput>
           <div v-if="!pageEdit">{{ scope.row.aug }}</div>
         </template>
@@ -159,6 +164,7 @@
             v-model="scope.row.sep"
             :placeholder="$t('LK_QINGSHURU')"
             v-if="pageEdit"
+            @input="handleInputChange(scope.row)"
           ></iInput>
           <div v-if="!pageEdit">{{ scope.row.sep }}</div>
         </template>
@@ -167,6 +173,7 @@
             v-model="scope.row.oct"
             :placeholder="$t('LK_QINGSHURU')"
             v-if="pageEdit"
+            @input="handleInputChange(scope.row)"
           ></iInput>
           <div v-if="!pageEdit">{{ scope.row.oct }}</div>
         </template>
@@ -175,6 +182,7 @@
             v-model="scope.row.nov"
             :placeholder="$t('LK_QINGSHURU')"
             v-if="pageEdit"
+            @input="handleInputChange(scope.row)"
           ></iInput>
           <div v-if="!pageEdit">{{ scope.row.nov }}</div>
         </template>
@@ -183,6 +191,7 @@
             v-model="scope.row.dec"
             :placeholder="$t('LK_QINGSHURU')"
             v-if="pageEdit"
+            @input="handleInputChange(scope.row)"
           ></iInput>
           <div v-if="!pageEdit">{{ scope.row.dec }}</div>
         </template>
@@ -245,11 +254,11 @@ export default {
           let data = [];
           temp.name = element.department;
           temp.type = "bar";
-          temp.barWidth = 60;
+          temp.barWidth = 50;
           temp.stack = "total";
           temp.color = colorList[index];
           // temp.label = {
-          //   show: true
+          //   show: true,
           // }
           data.push(element.jan)
           data.push(element.feb)
@@ -267,7 +276,7 @@ export default {
             focus: 'series'
           }
           temp.data = data;
-          series.push(temp);
+          series.unshift(temp);
         });
         let option = {
           tooltip: {
@@ -330,6 +339,12 @@ export default {
       return temp.map(item => {
         return item[key]
       });
+    },
+    handleInputChange(row) {
+      row.amount = 0;
+      row.amount = Number(row.jan) + Number(row.feb) + Number(row.mar) + Number(row.apr) + Number(row.may) + Number(row.june) + 
+          Number(row.july) + Number(row.aug) + Number(row.sep) + Number(row.oct) + Number(row.nov) + Number(row.dec);
+      this.showEcharts();
     }
   },
 };
@@ -363,6 +378,9 @@ export default {
   .refreshIcon {
     margin-left: 30px;
     margin-right: 10px;
+    width: 15px;
+    height: 15px;
+    cursor: pointer;
   }
 
   .refreshTime {
@@ -376,6 +394,7 @@ export default {
   font-size: 16px;
   color: $color-blue;
   font-weight: bold;
+  cursor: pointer;
 }
 
 #echart {
@@ -464,8 +483,9 @@ export default {
 }
 
 .icon {
-  height: 18px;
-  margin-right: 10px;
+  height: 24px;
+  width: 16px;
+  margin-right: 5px;
 }
 
 .planTitle {
