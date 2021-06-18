@@ -40,7 +40,7 @@
           <el-checkbox
             v-model="scope.row.selected"
             v-if="batchEdit"
-            @change="handleSelectionChange"></el-checkbox>
+            @change="handleSelectionChange(scope)"></el-checkbox>
           <div class="tableSelection" v-if="scope.row.groupId">{{scope.row.groupName}}</div>
         </template>
       </el-table-column>
@@ -194,16 +194,18 @@ export default {
       })
     },
     // section选择
-    handleSelectionChange() {
-      let selectedData = this.data.filter(o => o.selected)
-      selectedData.forEach(item => {
-        if (item.groupId){
-          const groupedArray = this.data.filter(o => o.groupId === item.groupId)
-          selectedData = [...selectedData, ...groupedArray]
-        }
-      })
+    handleSelectionChange(scope) {
+      const row = scope.row
+      const selected = row.selected
+      let selectedData = this.selectedData
+      const newSelectedData = row.groupId ? this.data.filter(o => o.groupId === row.groupId) : [row]
+      if (!selected) {
+        selectedData = _.pullAllBy(selectedData, newSelectedData, 'id')
+      } else {
+        selectedData = selectedData.concat(newSelectedData)
+      }
       this.selectedData = _.uniqBy(selectedData, o => o.id)
-      console.log('selectedData', this.selectedData, this.data)
+      // console.log('selectedData', this.selectedData, this.data)
     },
     // 点击cell，分比例
     handleCellClick(row, Index) {
