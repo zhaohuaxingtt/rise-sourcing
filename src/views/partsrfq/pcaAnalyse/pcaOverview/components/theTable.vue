@@ -12,8 +12,16 @@
         :tableTitle="tableTitle"
         :tableLoading="tableLoading"
         :index="true"
+        :tiledTableData="tiledTableListData"
+        :treeTable="true"
         @handleSelectionChange="handleSelectionChange"
     >
+      <template #2="scope">
+        <div class="reportContainer">
+          <span class="number">{{scope.row.children && scope.row.children.length}}</span>
+          <icon symbol name="iconwenjianshuliangbeijing" class="reportIcon" v-if="scope.row.children"/>
+        </div>
+      </template>
     </tableList>
     <iPagination
         v-update
@@ -30,7 +38,7 @@
 </template>
 
 <script>
-import {iCard, iButton, iPagination} from 'rise';
+import {iCard, iButton, iPagination, icon} from 'rise';
 import tableList from '@/components/ws3/commonTable';
 import {pageMixins} from '@/utils/pageMixins';
 import resultMessageMixin from '@/utils/resultMessageMixin';
@@ -43,10 +51,27 @@ export default {
     iButton,
     tableList,
     iPagination,
+    icon
   },
   data() {
     return {
-      tableListData: [],
+      tableListData: [
+        {
+          id: 1, '1': 1, '2': 2,
+          children: [
+            {id: 2, '1': 1, '2': 2},
+          ],
+        },
+        {
+          id: 3, '1': 1, '2': 2,
+          children: [
+            {id: 4, '1': 1, '2': 2},
+            {id: 5, '1': 1, '2': 2},
+            {id: 6, '1': 1, '2': 2},
+          ],
+        },
+      ],
+      tiledTableListData: [],
       tableTitle,
       tableLoading: false,
       selectTableData: [],
@@ -91,8 +116,22 @@ export default {
          this.tableListData = [];
          this.tableLoading = false;
        }*/
+      this.getTiledTableListData();
     },
     handleEdit() {},
+    getTiledTableListData() {
+      this.tiledTableListData = [];
+      this.tableListData.map((item, index) => {
+        item.treeIndex = index + 1;
+        this.tiledTableListData.push(item);
+        if (item.children) {
+          item.children.map((itemChildren, indexChildren) => {
+            itemChildren.treeIndex = `${index + 1}.${indexChildren + 1}`;
+            this.tiledTableListData.push(itemChildren);
+          });
+        }
+      });
+    },
   },
 };
 </script>
@@ -102,4 +141,17 @@ export default {
   margin-top: 0;
   margin-bottom: 0;
 }
+.reportContainer{
+  position: relative;
+  .reportIcon{
+    font-size: 20px;
+  }
+  .number{
+    position: absolute;
+    left: 48.5%;
+    font-size: 14px;
+    color: #FFFFFF;
+  }
+}
+
 </style>
