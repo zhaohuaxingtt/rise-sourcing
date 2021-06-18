@@ -96,15 +96,17 @@ export default {
   mounted() {
   },
   methods: {
+    init() {
+      // 初始化，默认isShowWeightStick判断是否展示权重柱子
+      const isShowWeightStick = this.data.isShowWeightStick || false
+      this.mapControl = isShowWeightStick ? [] : [0, 1, 2]
+      this.load()
+    },
     load() {
       const vm = echarts().init(document.getElementById("charts0"));
       const self = this
       const bgColor = '#94c8fc'
       const mapControl = this.mapControl
-      // 分组汇总 权重汇总
-      
-      const groupedInTotal = self.data.groupedInTotal
-      const groupedWeightInTotal = self.data.groupedWeightInTotal
       this.$nextTick(() => {
         // 业务指标
         const quota = [
@@ -155,6 +157,8 @@ export default {
             },
             formatter: function(params) {
               const wholePackage = self.data && self.data.wholePackage
+              const minPartSupplierTToTotal = self.data.minPartSupplierTToTotal
+              const weightSupplierTotal = self.data.weightSupplierTotal || 0
               let tpl = ''
 
               // toolTip Best TTO \n for Whole Package
@@ -174,18 +178,20 @@ export default {
               // toolTip Best TTO \n by Part
               params.dataIndex === 2 && (tpl = `
               <div class="toolTipBox-content">
-                <p>Best TTO <br> by Part: <span class="value">${params.data}</span></p>
+                <p>Compared to Best TTO <br> for Whole Package: 
+                  <span class="value">${Number((params.data-minPartSupplierTToTotal)/minPartSupplierTToTotal*100).toFixed(2)}%</span>
+                </p>
               </div>`)
 
               params.dataIndex === 3 && (tpl = `
               <div class="toolTipBox-content">
                 <p>Compared to Best TTO <br> for Whole Package: 
-                  <span class="value">${Number((params.data-wholePackage)/wholePackage*100).toFixed(2)}%</span>
+                  <span class="value">${Number((params.data-weightSupplierTotal)/weightSupplierTotal*100).toFixed(2)}%</span>
                 </p>
               </div>`)
 
               return `
-              <div class="toolTipBox ${params.data === 0 ? 'hide' : ''}">
+              <div class="toolTipBox" style="${!params.data ? 'display: none' : ''}">
                 ${tpl}
               </div>
               `
@@ -364,7 +370,7 @@ export default {
       }))
 
       // 单个零件最小
-      const minPartSupplierTToArray = self.data.minPartSupplierTToArray
+      const minPartSupplierTToArray = self.data.minPartSupplierTToArray || []
       const minPartSupplierTToTotal = self.data.minPartSupplierTToTotal
       let partPercent = 0
   
@@ -421,56 +427,59 @@ export default {
       // 权重柱状图
       const weightSupplier = self.data.weightSupplier || []
       const weightSupplierTotal = self.data.weightSupplierTotal || 0
+      const isShowWeightStick = self.data.isShowWeightStick || false
       let totalPercent = 0
-      weightSupplier.forEach((item, index) => {
-        series.push({
-          data: ['', '', '', item],
+      if (isShowWeightStick) {
+        weightSupplier.forEach((item, index) => {
+          series.push({
+            data: ['', '', '', item],
+            type: 'bar',
+            barWidth: 30,
+            stack: 'total',
+            label: {
+              show: true,
+              position: 'inside',
+              textStyle,
+              formatter: function(params) {
+                const fz = Number(params.data)
+                const fm = Number(weightSupplierTotal)
+                const percent =(index === weightSupplier.length - 1) ? (100 - totalPercent) : Math.floor(fz/fm*100)
+                totalPercent += percent
+                return `${params.data}\n(${percent}%)`
+              }
+            },
+            itemStyle: {
+              normal: {
+                barBorderRadius: index === (weightSupplier.length - 1) ? [5, 5, 0, 0] : [0, 0, 0, 0],
+                color: colorPanel[index]
+              },
+            }
+          })
+        })
+        // 最后一根柱子的label
+        weightSupplierTotal && (series.push({
+          data: ['', '', '', '1'],
           type: 'bar',
           barWidth: 30,
           stack: 'total',
           label: {
             show: true,
-            position: 'inside',
-            textStyle,
-            formatter: function(params) {
-              const fz = Number(params.data)
-              const fm = Number(weightSupplierTotal)
-              const percent =(index === weightSupplier.length - 1) ? (100 - totalPercent) : Math.floor(fz/fm*100)
-              totalPercent += percent
-              return `${params.data}\n(${percent}%)`
+            position: 'top',
+            textStyle: {
+              color: '#485465'
+            },
+            formatter: function() {
+              return weightSupplierTotal
             }
           },
           itemStyle: {
             normal: {
-              barBorderRadius: index === (weightSupplier.length - 1) ? [5, 5, 0, 0] : [0, 0, 0, 0],
-              color: colorPanel[index]
+              barBorderRadius: [0, 0, 0, 0],
+              color: '#ffffff'
             },
           }
-        })
-      })
-      // 最后一根柱子的label
-      weightSupplierTotal && (series.push({
-        data: ['', '', '', '1'],
-        type: 'bar',
-        barWidth: 30,
-        stack: 'total',
-        label: {
-          show: true,
-          position: 'top',
-          textStyle: {
-            color: '#485465'
-          },
-          formatter: function() {
-            return weightSupplierTotal
-          }
-        },
-        itemStyle: {
-          normal: {
-            barBorderRadius: [0, 0, 0, 0],
-            color: '#ffffff'
-          },
-        }
-      }))
+        }))
+      }
       return series
     }
   },
@@ -479,7 +488,7 @@ export default {
       handler(newVal) {
         this.dataList = (newVal && newVal.data) || []
         this.$nextTick(() => {
-          this.load()
+          this.init()
         })
       },
       immediate: true,
@@ -560,25 +569,5 @@ export default {
 </style>
 <style lang="scss">
 .mapControl.el-select-dropdown {
-  .el-select-dropdown__item {
-    padding-left: 20px;
-    &:after {
-      left: 10px;
-      right: auto !important;
-      // content: '' !important;
-      box-sizing: content-box;
-      border: 1px solid #fff;
-      border-left: 0;
-      border-top: 0;
-      height: 7PX;
-      left: 4px;
-      position: absolute;
-      top: 1px;
-      transform: rotate(45deg) scaleY(0);
-      width: 3PX;
-      transition: transform .15s ease-in .05s;
-      transform-origin: center;
-    }
-  }
 }
 </style>

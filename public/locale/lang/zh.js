@@ -13,6 +13,8 @@
         "saveSure":'您确定要保存吗？',
         "nextSure":'您确定要进行下一步吗？请确定数据已经完全保存',
         "copyChosenSure":'您确定要复制选中的数据吗？',
+        "exitEditSure":'您的数据没保存，确定要退出编辑吗？',
+        "resetSure":'您确定要重置吗？',
         'all': '全部',
         'search': '搜索',
         'setting': '设置',
@@ -885,6 +887,7 @@
         'LK_QINGXUANZEDINGDIANSHENQINGLEIXING': '请选择定点申请类型', // 请选择定点申请类型
         'LK_DINGDIANSHENQINGLEIXING': '定点申请类型', // 定点申请类型
         'LK_GAIDINGDIANSHENQINGZHONGYOUDANYIGONGYINGSHANG': '该定点申请中有单一供应商', // 该定点申请中有单一供应商
+        'LK_DINGDIANXINLOI':'定点信 / LOI', // 定点信 / LOI
 
         // 定点管理
         'nominationLanguage': {
@@ -1022,6 +1025,7 @@
             "ShangChuanFaShengCuoWu": "上传发生错误，请稍后重试",
             "ShanChuHang": "删除行",
             "XinZengHang": "新增行",
+            "WuFaChongZhi": "无法重置"
         },
         "BJZS":{
             "LK_BAOJIAZUSHOU_MJ":"报价分析汇总-模具",

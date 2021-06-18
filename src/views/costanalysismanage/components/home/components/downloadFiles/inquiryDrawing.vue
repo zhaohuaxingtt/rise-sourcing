@@ -81,7 +81,7 @@ export default {
         async download(fileList){
              const data = {
               applicationName: 'procurereq-service',
-              fileList:fileList.join(),
+              fileList:fileList,
             };
             await downloadFile(data);
         },
