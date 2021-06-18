@@ -220,6 +220,8 @@ export default {
       } else {
         supplierChosen.push(curSupplier)
       }
+      // 添加未保存警告
+      this.$emit('unSaveWarning', true)
       Vue.set(row, 'supplierChosen', supplierChosen)
       Vue.set(row, 'percent', percent)
       // console.log('handleCellClick', curSupplier, cIndex, supplierChosen, row)
@@ -237,7 +239,8 @@ export default {
         return
       }
       this.chartData = this.calculateBestTTo(this.data)
-      
+      // 添加未保存警告
+      this.$emit('unSaveWarning', true)
       this.$nextTick(() => {
         this.$emit('updateCharts', this.chartData)
       })
