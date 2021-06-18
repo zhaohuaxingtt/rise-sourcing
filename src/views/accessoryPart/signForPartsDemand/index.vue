@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-25 13:57:11
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-07 02:15:14
+ * @LastEditTime: 2021-06-16 22:12:52
  * @Description: 
  * @FilePath: \front-web\src\views\accessoryPart\signForPartsDemand\index.vue
 -->
@@ -13,7 +13,7 @@
       <el-tab-pane :label="$t('LK_XUNYUANZHIHANG')" name="source">
         <div>
           <div class="margin-bottom33">
-            <iNavMvp @change="change" right routerPage lev="2" :list="navList" />
+            <iNavMvp @change="change" right routerPage lev="2" :list="navList" @message="clickMessage" />
           </div>
           <!----------------------------------------------------------------->
           <!---------------------------搜索区域------------------------------->
@@ -43,11 +43,11 @@
               <span class="font18 font-weight">配件需求签收</span>
                 <div class="floatright">
                   <!--------------------签收按钮----------------------------------->
-                  <iButton @click="signAccessory">签收</iButton>
+                  <iButton @click="signAccessory" :loading="signLoading">签收</iButton>
                   <!--------------------退回EPS按钮----------------------------------->
                   <iButton @click="changebackDialogVisible(true)" >退回EPS</iButton>
                   <!--------------------分配询价科室按钮----------------------------------->
-                  <iButton @click="changeInquiryDialogVisible(true)" >分配询价科室</iButton>
+                  <iButton @click="openInquiryDialog" >分配询价科室</iButton>
                   <!--------------------分配询价采购员按钮----------------------------------->
                   <iButton @click="openBuyerDialog" >分配询价采购员</iButton>
                   <!--------------------导出按钮----------------------------------->
@@ -68,15 +68,15 @@
           <!------------------------------------------------------------------------>
           <!--                  分配询价科室弹窗                                   --->
           <!------------------------------------------------------------------------>
-          <assignInquiryDepartmentDialog :dialogVisible="inquiryDialogVisible" @changeVisible="changeInquiryDialogVisible" @sendAccessory="sendAccessoryDept" :deptId="selectDeptId" />
+          <assignInquiryDepartmentDialog ref="sendliniedept" :dialogVisible="inquiryDialogVisible" @changeVisible="changeInquiryDialogVisible" @sendAccessory="sendAccessoryDept" />
           <!------------------------------------------------------------------------>
           <!--                  分配询价采购员弹窗                                 --->
           <!------------------------------------------------------------------------>
-          <assignInquiryBuyerDialog :dialogVisible="buyerDialogVisible" @changeVisible="changeBuyerDialogVisible" @sendAccessory="sendAccessoryLINIE" />
+          <assignInquiryBuyerDialog ref="sendlinie" :dialogVisible="buyerDialogVisible" @changeVisible="changeBuyerDialogVisible" @sendAccessory="sendAccessoryLINIE" :deptId="selectDeptId" />
           <!------------------------------------------------------------------------>
           <!--                  退回EPS弹窗                                       --->
           <!------------------------------------------------------------------------>
-          <backDialog :dialogVisible="backDialogVisible" @changeVisible="changebackDialogVisible" @handleBack="handleBackEPS" />
+          <backDialog ref="backEPS" :dialogVisible="backDialogVisible" @changeVisible="changebackDialogVisible" @handleBack="handleBackEPS" />
         </div>
       </el-tab-pane>
       <!-- <el-tab-pane label="进度监控" name="progress"></el-tab-pane> -->
@@ -91,13 +91,20 @@ import tableList from '../../designate/designatedetail/components/tableList'
 import { tableTitle, searchList } from '../signForPartsDemand/data'
 import assignInquiryDepartmentDialog from './components/assignInquiryDepartment'
 import assignInquiryBuyerDialog from './components/assignInquiryBuyer'
-import backDialog from './components/backEps'
-import { navList } from "@/views/partsign/home/components/data"
+import backDialog from '../integratedManage/components/backEps'
 import { cloneDeep } from 'lodash'
 import { getAccessoryOneInfoList, signAccessoryInfo, sendAccessoryInfo, downLoadAccessoryList, backEPS } from '@/api/accessoryPart/index'
 import { uniq } from 'lodash'
-import {findBySearches} from "@/api/partsrfq/home";
+import {findBySearches,getCartypeDict} from "@/api/partsrfq/home";
 import { getDictByCode } from '@/api/dictionary'
+import {
+  dictkey,
+} from "@/api/partsprocure/editordetail";
+import { clickMessage } from "@/views/partsign/home/components/data"
+
+// eslint-disable-next-line no-undef
+const { mapState, mapActions } = Vuex.createNamespacedHelpers("sourcing")
+
 export default {
   mixins: [pageMixins],
   components: { iPage, iSearch, iSelect, iInput, iCard, iButton, iPagination, tableList, iDatePicker, assignInquiryDepartmentDialog, assignInquiryBuyerDialog, backDialog, iNavMvp },
@@ -118,21 +125,66 @@ export default {
       buyerDialogVisible: false,
       backDialogVisible: false,
       selectParts: [],
-      navList: cloneDeep(navList),
       tab: "source",
       selectOptions: {
-        yesOrNoOption: [{value: '1', label: '是'},{value: '0', label: '否'}]
+        yesOrNoOption: [{value: '1', label: '是'},{value: '0', label: '否'}],
+        carTypeProjectOptions: [],
+        cartTypeOptions: []
       },
       selectDeptId: '',
-      downloadLoading: false
+      downloadLoading: false,
+      signLoading: false
     }
   },
   created() {
-    this.getSelectOptions()
-    this.getTableList()
-    this.getCarTypeOptions()
+    this.init()
+    this.updateNavList
+  },
+  computed: {
+    ...mapState(["navList"]),
+    ...mapActions(["updateNavList"])
   },
   methods: {
+    async init() {
+       this.getSelectOptions()
+      //  this.getCarTypeOptions()
+       this.getProcureGroup()
+       this.getCartypeDict()
+      this.getTableList()
+    },
+    //获取上方group信息
+    getProcureGroup() {
+      dictkey().then((res) => {
+        if (res.data) {
+          this.fromGroup = res.data;
+          this.selectOptions.carTypeProjectOptions = res.data.CAR_TYPE_PRO.map(item => {
+            return {
+              ...item,
+              value: item.code,
+              key: item.code,
+              name: item.name
+            }
+          })
+        }
+      });
+    },
+    // 获取车型字典
+    getCartypeDict() {
+      getCartypeDict()
+      .then(res => {
+        if (res.code == 200) {
+          this.selectOptions.cartTypeOptions = 
+            Array.isArray(res.data) ?
+            res.data.map(item => ({
+              ...item,
+              key: item.code,
+              label: item.name,
+              value: item.value
+            })) :
+            []
+        }
+      })
+    },
     /**
      * @Description: 调取数据字典获取下拉
      * @Author: Luoshuang
@@ -157,7 +209,7 @@ export default {
      */    
     getSelectOptions() {
       // 配件状态
-      this.getDictionary('accessoryTypeOption', 'ACCESSORY_STAT')
+      this.getDictionary('accessoryTypeOption', 'SPARE_PART_STATE')
     },
     /**
      * @Description: 车型项目下拉框
@@ -167,7 +219,7 @@ export default {
      */    
     async getCarTypeOptions() {
       const res = await findBySearches('01')
-      this.selectOptions.carTypeOptions = res.data
+      this.selectOptions.carTypeProjectOptions = res.data
     },
     /**
      * @Description: 退回EPS
@@ -190,6 +242,8 @@ export default {
         } else {
           iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
         }
+      }).finally(() => {
+        this.$refs.backEPS.changeSaveLoading && this.$refs.backEPS.changeSaveLoading(false)
       })
     },
     /**
@@ -206,6 +260,18 @@ export default {
       await downLoadAccessoryList(params)
       this.downloadLoading = false
     },
+    openInquiryDialog() {
+      if (this.selectParts.length < 1) {
+        iMessage.warn('请选择配件')
+        return
+      }
+      const selectPartsDept = uniq(this.selectParts.map(item => item.csfuserDept))
+      if (selectPartsDept.length !== 1 || selectPartsDept[0]) {
+        iMessage.warn('请选择未分配部门的配件')
+        return
+      }
+      this.changeInquiryDialogVisible(true)
+    },
     /**
      * @Description: 打开分配询价采购员弹窗，若未勾选配件或勾选的配件没有部门或勾选的配件的部门不一致则给出提示不允许操作
      * @Author: Luoshuang
@@ -217,13 +283,18 @@ export default {
         iMessage.warn('请选择配件')
         return
       }
-      const selectPartsDept = uniq(this.selectParts.map(item => item.csfuserId))
+      const selectPartsDept = uniq(this.selectParts.map(item => item.csfuserDept))
+      const selectPartsUser = uniq(this.selectParts.map(item => item.csfuserId))
       if (selectPartsDept.length !== 1) {
         iMessage.warn('请选择相同部门的配件')
         return
       }
       if (!selectPartsDept[0]) {
         iMessage.warn('请选择有部门的配件')
+        return
+      }
+      if (selectPartsUser.length !== 1 || selectPartsUser[0]) {
+        iMessage.warn('请选择未分配采购员的配件')
         return
       }
       this.selectDeptId = selectPartsDept[0]
@@ -239,8 +310,8 @@ export default {
     sendAccessory({respDept, respLINIE}) {
       const params = {
         accessoryIdList: this.selectParts.map(item => item.id),
-        respDept,
-        respLINIE
+        csfDept: respDept,
+        csfUserId: respLINIE
       }
       sendAccessoryInfo(params).then(res => {
         if (res.result) {
@@ -250,6 +321,12 @@ export default {
           this.getTableList()
         } else {
           iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
+        }
+      }).finally(() => {
+        if(respDept) {
+          this.$refs.sendliniedept.changeLoading && this.$refs.sendliniedept.changeLoading(false)
+        } else {
+          this.$refs.sendlinie.changeLoading && this.$refs.sendlinie.changeLoading(false)
         }
       })
     },
@@ -282,6 +359,7 @@ export default {
         iMessage.warn('请选择需要签收的配件')
         return
       }
+      this.signLoading = true
       const params = {
         accessoryIdList: this.selectParts.map(item => item.id)
       }
@@ -292,6 +370,8 @@ export default {
         } else {
           iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
         }
+      }).finally(() => {
+        this.signLoading = false
       })
     },
     /**
@@ -393,7 +473,9 @@ export default {
       }).finally(() => {
         this.tableLoading = false
       })
-    }
+    },
+    // 通过待办数跳转
+    clickMessage,
   }
 }
 </script>

@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-25 16:11:07
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-07 17:50:51
+ * @LastEditTime: 2021-06-16 17:22:08
  * @Description: 分配询价采购员弹窗
  * @FilePath: \front-web\src\views\designateFiles\fileManage\components\setLinie.vue
 -->
@@ -15,12 +15,20 @@
     width="381px"
   >
     <template slot="footer">
-      <iButton @click="handleConfirm">确认</iButton>
+      <iButton @click="handleConfirm" :loading="saveLoading">确认</iButton>
       <iButton @click="clearDialog">取消</iButton>
     </template>
     <el-form>
       <el-form-item label="请选择分配的负责人">
-        <iSelect 
+        <iSelect filterable v-model="respLINIE" placeholder="请选择">
+          <el-option
+            v-for="item in options"
+            :key="item.id"
+            :label="item.nameZh"
+            :value="item.id">
+          </el-option>
+        </iSelect> 
+        <!-- <iSelect 
           v-model="respLINIE"
           filterable
           remote
@@ -35,7 +43,7 @@
             :label="item.nameZh"
             :value="item.id">
           </el-option>
-        </iSelect> 
+        </iSelect>  -->
       </el-form-item>
     </el-form>
   </iDialog>
@@ -44,6 +52,8 @@
 <script>
 import { iDialog, iButton, iSelect } from 'rise'
 import { findBuyer } from '@/api/designateFiles/index'
+import { iMessage } from '../../../../components'
+import { cloneDeep } from 'lodash'
 export default {
   components: { iDialog, iButton, iSelect },
   props: {
@@ -53,32 +63,51 @@ export default {
     return {
       respDept: '',
       respLINIE: '',
-      options: '',
-      loading: false
+      options: [],
+      optionsTemp: [],
+      loading: false,
+      saveLoading: false
     }
   },
+  created() {
+    this.getLinieOption()
+  },
   methods: {
+    /**
+     * @Description: 获取linie下拉框
+     * @Author: Luoshuang
+     * @param {*}
+     * @return {*}
+     */    
+    getLinieOption() {
+      findBuyer().then(res => {
+        if (res?.result) {
+          this.options = res.data || []
+        } else {
+          // iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+        }
+      })
+    },
     clearDialog() {
       this.respDept = ''
       this.respLINIE = ''
       this.$emit('changeVisible', false)
     },
     handleConfirm() {
-      this.$emit('updateLinie', this.respDept, this.respLINIE)
+      if (!this.respLINIE) {
+        iMessage.warn('请选择LINIE')
+      }
+      this.saveLoading = true
+      this.findOption = this.options.find(item => item.id === this.respLINIE)
+      this.$emit('updateLinie', this.findOption)
     },
     remoteMethod(query) {
       if (query !== '') {
         this.loading = true;
-        // setTimeout(() => {
-        //   this.loading = false;
-        //   this.options = this.list.filter(item => {
-        //     return item.label.toLowerCase()
-        //       .indexOf(query.toLowerCase()) > -1;
-        //   });
-        // }, 200);
         findBuyer(query).then(res => {
           if (res?.result) {
-            this.options = res.data || []
+            this.options = cloneDeep(res.data || [])
+            this.optionsTemp = cloneDeep(res.data)
           } else {
             iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
           }
@@ -88,6 +117,9 @@ export default {
       } else {
         this.options = [];
       }
+    },
+    changeLoading(loading) {
+      this.saveLoading = loading
     }
   }
 }

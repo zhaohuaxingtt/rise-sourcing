@@ -59,7 +59,10 @@ export default {
                 return {}
 			}
         },
-        isEdit:false,
+        isEdit:{
+            type:Boolean,
+            default:false,
+        }
     },
     created(){
         console.log(this.groupNode,'groupNode');

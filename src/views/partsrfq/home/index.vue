@@ -1,7 +1,7 @@
 <!--
  * @Author: moxuan
  * @Date: 2021-02-25 09:59:25
- * @LastEditTime: 2021-06-07 19:42:24
+ * @LastEditTime: 2021-06-16 18:23:57
  * @LastEditors: Please set LastEditors
  * @Description: RFQ模块首页
  * @FilePath: \rise\src\views\partsrfq\home\index.vue
@@ -12,7 +12,7 @@
       <el-tab-pane :label="$t('LK_XUNYUANZHIHANG')" name="source">
         <div>
           <div class="margin-bottom33">
-            <iNavMvp @change="change" right routerPage lev="2" :list="navList" />
+            <iNavMvp @change="change" right routerPage lev="2" :list="navList" @message="clickMessage" />
           </div>
           <!------------------------------------------------------------------------>
           <!--                  search 搜索模块                                   --->
@@ -85,7 +85,7 @@
                          v-permission="PARTSRFQ_REINQUIRY">{{ $t('LK_ZHUANXUNJIA') }}
                 </iButton>
                 <!--创建定点申请：在列表中选择RFQ，点击该键，会跳转到定点申请创建页面，RFQ的内容会自动带入到定点申请的各页签中-->
-                <iButton disabled v-permission="PARTSRFQ_CREATEAPPLICATION">
+                <iButton v-permission="PARTSRFQ_CREATEAPPLICATION" :loading="createDesignateLoading" @click="openNominateTypeDialog">
                   {{ $t('LK_CHUANGJIANDINGDIANSHENQING') }}
                 </iButton>
                 <iButton @click="exportTable" v-permission="PARTSRFQ_EXPORT">{{ $t('LK_DAOCHU') }}</iButton>
@@ -96,6 +96,7 @@
                 :tableTitle="tableTitle"
                 :tableLoading="tableLoading"
                 @handleSelectionChange="handleSelectionChange"
+                openPageGetRowData
                 @openPage='openPage'
                 open-page-props="id"
                 :index="true"
@@ -103,9 +104,9 @@
             >
               <template v-slot:icon="scope">
                 <div @click="toTop(scope.data)" class="icon-style">
-                  <icon class="icon icon-color-active" name="iconliebiaoyizhiding"
+                  <icon symbol class="icon icon-color-active" name="iconliebiaoyizhiding"
                         v-if="+scope.data.recordId > 0"></icon>
-                  <icon class="icon" name="iconliebiaoyizhiding" v-else></icon>
+                  <icon symbol class="icon" name="iconliebiaoweizhiding" v-else></icon>
                 </div>
               </template>
               <template #b="scope">
@@ -149,6 +150,7 @@
             /> -->
             <scoringDeptDialog ref="scoringDeptDialog" :visible.sync="scoringDeptVisible" :ids="rfqIds" :customAction="true" @handleSave="scoringDeptSave" />
           </iCard>
+          <nominateTypeDialog :visible.sync="nominateTypeDialogVisible" @confirm="createDesignate" />
         </div>
       </el-tab-pane>
       <!-- <el-tab-pane label="进度监控" name="progress"></el-tab-pane> -->
@@ -157,7 +159,7 @@
 
 </template>
 <script>
-import {iPage, iButton, iCard, iMessage, iPagination, iInput, iSelect, icon} from "@/components";
+import {iPage, iButton, iCard, iMessage, iPagination, iInput, iSelect, icon} from "rise";
 import { iNavMvp, iSearch } from "rise";
 import tablelist from "pages/partsrfq/components/tablelist";
 import assignmentOfScoringTasks from "pages/partsrfq/home/components/assignmentOfScoringTasks";
@@ -171,10 +173,14 @@ import {rfqCommonFunMixins} from "pages/partsrfq/components/commonFun";
 import {getAllScoringDepartmentInfo} from '@/api/partsrfq/home'
 import { getProcureGroup } from "@/api/partsprocure/home";
 import scoringDeptDialog from "@/views/partsrfq/editordetail/components/rfqPending/components/supplierScore/components/scoringDeptDialog"
-import { navList } from "@/views/partsign/home/components/data";
-import { cloneDeep } from "lodash";
 import { getKmFileHistory } from "@/api/costanalysismanage/costanalysis"
 import { downloadFile } from "@/api/file"
+import { selectRfq } from "@/api/designate/designatedetail/addRfq"
+import nominateTypeDialog from "./components/nominateTypeDialog"
+import { clickMessage } from "@/views/partsign/home/components/data"
+
+// eslint-disable-next-line no-undef
+const { mapState, mapActions } = Vuex.createNamespacedHelpers("sourcing")
 
 export default {
   components: {
@@ -190,6 +196,7 @@ export default {
     icon,
     // assignmentOfScoringTasks
     scoringDeptDialog,
+    nominateTypeDialog
   },
   mixins: [pageMixins, filters, rfqCommonFunMixins],
   data() {
@@ -220,11 +227,12 @@ export default {
       selectDatalist:[],
       scoringDeptVisible: false,
       rfqIds: [],
-      navList: cloneDeep(navList),
       attachmentLoading: false,
       attachmentTableTitle,
       attachmentTableListData: [], 
-      cartTypeOptions: []
+      cartTypeOptions: [],
+      createDesignateLoading: false,
+      nominateTypeDialogVisible: false,
     };
   },
   created() {
@@ -233,6 +241,12 @@ export default {
     this.getCarTypeOptions()
     this.getPartTypeOptions()
     this.getRfqStatusOptions()
+
+    this.updateNavList
+  },
+  computed: {
+    ...mapState(["navList"]),
+    ...mapActions(["updateNavList"])
   },
   methods: {
     //获取转派评分任务列表
@@ -250,9 +264,9 @@ export default {
       })
     },
     //动态获取转派评分任务
-    openPage(id) {
+    openPage(row) {
       this.$router.push({
-        path: `/sourcing/partsrfq/editordetail?id=${id}`
+        path: `/sourcing/partsrfq/editordetail?id=${row.id}&round=${row.currentRounds}&carTypeNames=${row.carTypeNames}`
       })
     },
     //获取表格数据
@@ -460,7 +474,42 @@ export default {
             []
         }
       })
-    }
+    },
+    openNominateTypeDialog() {
+      if (this.selectTableData.length !== 1) return iMessage.warn(this.$t("LK_QINGXUANZEYITIAORFQ"))
+      this.nominateTypeDialogVisible = true
+    },
+    // 创建定点申请
+    createDesignate(nominateProcessType) {
+      this.nominateTypeDialogVisible = false
+      this.createDesignateLoading = true
+
+      selectRfq({
+        nominateProcessType,
+        rfqIdArr: [ this.selectTableData[0].id ]
+      })
+      .then(res => {
+        const message = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
+
+        if (res.code == 200) {
+          iMessage.success(message)
+          this.$router.push({
+            path: "/designate/rfqdetail", 
+            query: {
+              desinateId: res.data, 
+              designateType: nominateProcessType
+            }
+          })
+        } else {
+          iMessage.error(message)
+        }
+
+        this.createDesignateLoading = false
+      })
+      .catch(() => this.createDesignateLoading = false)
+    },
+    // 通过待办数跳转
+    clickMessage,
   }
 }
 </script>

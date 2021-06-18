@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-04-23 09:18:12
- * @LastEditTime: 2021-06-07 18:23:15
+ * @LastEditTime: 2021-06-18 15:35:50
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-supplier\src\views\rfqManageMent\partsOffer\components\ecartsCard\data.js
@@ -19,7 +19,28 @@ export const form = {
  * @param {*}
  * @return {*}
  */
-export const color = ['#315efb','#F44336','#9C27B0','#3F51B5','#2196F3','#009688','#FF9800','#607D8B','#0deca6','#969df7']
+ export const color = [
+  '#315efb',
+  '#F44336',
+  '#9C27B0',
+  '#3F51B5',
+  '#2196F3',
+  '#009688',
+  '#FF9800',
+  '#607D8B',
+  '#0deca6',
+  '#969df7',
+  '#1763f7',
+  '#77cbff',
+  '#21d59b',
+  '#75a340',
+  '#ffb04d',
+  '#ffd72e',
+  '#a07cbf',
+  '#e2a8ce',
+  '#9ab9f6',
+  '#ff8e01'
+]
 /**
  * @description: echarts 图所有配置文件 
  * @param {*} options
@@ -151,7 +172,7 @@ export function translateGetLunci(params,gjhLunchi) {
   try {
       //处理颜色问题
       params.forEach((element,index) => {
-        element['color'] = params.length < 10?color[index]:getLineColor()
+        element['color'] = params.length < color.length?color[index]:getLineColor()
         element['type'] = 'line',
         options['legend'].push(element['name'])
       });

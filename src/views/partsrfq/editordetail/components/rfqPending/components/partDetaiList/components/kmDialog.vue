@@ -1,8 +1,8 @@
 <!--
  * @Author: ldh
  * @Date: 2021-05-29 16:29:00
- * @LastEditTime: 2021-06-03 20:49:54
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-06-14 16:32:10
+ * @LastEditors: ldh
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqPending\components\partDetaiList\components\kmDialog.vue
 -->
@@ -30,17 +30,18 @@
         :tableData="tableListData"
         :tableTitle="tableTitle"
         :tableLoading="loading"
+        :cellClassName="cellClass"
         @handleSelectionChange="handleSelectionChange">
         <template #sendKmFlag="scope">
-          <span>{{ scope.row.sendKmFlag | sendKmFlagFilter }}</span>
+          <span>{{ scope.row.cbdLevel == "L3" ? scope.row.sendKmFlag : "" }}</span>
         </template>  
       </tableList>
     </div>
     <template #footer class="footer">
       <iPagination v-update
         class="pagination"
-        @size-change="handleSizeChange($event, getList)"
-        @current-change="handleCurrentChange($event, getList)"
+        @size-change="handleSizeChange($event, getPartsBySupplier)"
+        @current-change="handleCurrentChange($event, getPartsBySupplier)"
         background
         :current-page="page.currPage"
         :page-sizes="page.pageSizes"
@@ -82,6 +83,8 @@ export default {
       if (nv) { 
         // 请求
         this.getPartsBySupplier()
+      } else {
+        this.page.currPage = 1
       }
 
       this.$emit("update:visible", nv)
@@ -93,14 +96,14 @@ export default {
     //   userInfo: state => state.permission.userInfo,
     // }),
   },
-  filters: {
-    sendKmFlagFilter(value) {
-      const obj = {
-        "0": "未发送",
-        "1": "已发送"
-      }
-    }
-  },
+  // filters: {
+  //   sendKmFlagFilter(value) {
+  //     const obj = {
+  //       "0": "未发送",
+  //       "1": "已发送"
+  //     }
+  //   }
+  // },
   data() {
     return {
       loading: false,
@@ -141,21 +144,24 @@ export default {
       .catch(() => this.loading = false)
     },
     handleSelectionChange(list) {
-      this.multipleSelection = list
+      this.multipleSelection = list.filter(item => item.cbdLevel === "L3")
     },
     // 提交
     handleSend() {
       if (this.multipleSelection.length < 1) return iMessage.warn(this.$t("nominationSuggestion.QingXuanZeZhiShaoYiTiaoShuJu"))
+      if (this.multipleSelection.some(item => item.cbdLevel != "L3")) return iMessage.warn(this.$t("nominationSuggestion.QingXuanZeCbdCengJiWeiL3DeShuJu"))
       if (this.multipleSelection.some(item => item.sendKmFlag == 1)) return iMessage.warn(this.$t("nominationSuggestion.QingWuXuanZeYiFaSongDeShuJu"))
 
       this.sendLoading = true
-      sendKm(this.multipleSelection.map(item => ({
-        fsNum: item.fsnrGsnrNum,
-        quotationId: item.quotationId,
-        rfqId: this.rfqId,
-        round: item.round,
-        supplierId: item.supplierId
-      })))
+      sendKm({
+        sendKmDTOS: this.multipleSelection.map(item => ({
+          fsNum: item.fsnrGsnrNum,
+          quotationId: item.quotationId,
+          rfqId: this.rfqId,
+          round: item.round,
+          supplierId: item.supplierId
+        }))
+      })
       .then(res => {
         if (res.code == 200) {
           iMessage.success(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
@@ -173,6 +179,7 @@ export default {
     // 撤回
     handleRecall() {
       if (this.multipleSelection.length < 1) return iMessage.warn(this.$t("nominationSuggestion.QingXuanZeZhiShaoYiTiaoShuJu"))
+      if (this.multipleSelection.some(item => item.cbdLevel != "L3")) return iMessage.warn(this.$t("nominationSuggestion.QingXuanZeCbdCengJiWeiL3DeShuJu"))
       if (this.multipleSelection.some(item => item.sendKmFlag == 0)) return iMessage.warn(this.$t("nominationSuggestion.QingWuXuanZeWeiFaSongDeShuJu"))
 
       this.recallLoading = true
@@ -192,6 +199,11 @@ export default {
         this.recallLoading = false
       })
       .catch(() => this.recallLoading = false)
+    },
+    cellClass(row) {
+      if (row.row.cbdLevel != "L3") {
+        return "hideCheckbox"
+      }
     }
   }
 };

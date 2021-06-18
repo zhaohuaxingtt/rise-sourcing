@@ -1,21 +1,21 @@
 /*
  * @Author: your name
  * @Date: 2021-05-28 17:30:52
- * @LastEditTime: 2021-06-01 11:06:44
+ * @LastEditTime: 2021-06-17 21:54:28
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\api\designate\index.js
  */
 import axios from "@/utils/axios"
+import { serialize } from "@/utils"
 
 const requst = axios(process.env.VUE_APP_RFQ)
 
 // 获取模具预算管理列表
 export function getMouldBudget(params) {
   return requst({
-      url: `/mould-budget/${ params.currPage }/${ params.pageSize }`,
-      method: "GET",
-      params: params
+      url: `/mould-budget/${ params.currPage }/${ params.pageSize }?${ serialize(params.fsIds, Array) }`,
+      method: "GET"
   })
 }
 
@@ -81,4 +81,39 @@ export function updateTabPageManager(data) {
     method: "POST",
     data,
 })
+}
+
+//获取定点类型
+export function getNominateType() {
+  return requst({
+    url: '/nominate-create/get-nominate-process-type',
+    method: 'GET'
+  })
+}
+
+// 单一供应商下一步前保存
+export function sugesstionInit(params) {
+  return requst({
+      url: "suggestion/init",
+      method: "GET",
+      params,
+  })
+}
+
+// 定点建议下一步前保存
+export function sugesstionInitReCord(params) {
+  return requst({
+      url: "suggestion/initRecord",
+      method: "GET",
+      params,
+  })
+}
+
+
+// 决策资料tablist的重置
+export function tabPageLayoutsReset(nominateId) {
+  return requst({
+      url: `tabPageLayouts/findTabPageInitStatus?nominateId=${nominateId}`,
+      method: "GET",
+  })
 }

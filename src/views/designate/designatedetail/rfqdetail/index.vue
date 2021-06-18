@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-21 09:23:11
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-03 15:17:13
+ * @LastEditTime: 2021-06-10 21:41:06
  * @Description: RFQ & 零件清单界面
  * @FilePath: \front-web\src\views\designate\designatedetail\rfqdetail\index.vue
 -->
@@ -24,7 +24,7 @@
         </div>
       </div>
       <tableList
-        :activeItems='"rfqId"'
+        :activeItems='"id"'
         selection
         indexKey
         :tableData="rfqTableListData"
@@ -126,6 +126,7 @@ export default {
     saveParts() {
       if (this.partsSelectedItems.length < 1) {
         iMessage.warn('请选择需要保存的零件')
+        return
       }
       this.partsTableLoading = true
       const params = {
@@ -220,7 +221,10 @@ export default {
      * @param {*} row
      * @return {*}
      */    
-    openRfqPage(row){},
+    openRfqPage(row){
+      const router =  this.$router.resolve({path: `/sourcing/partsrfq/editordetail?id=${row.id}`})
+      window.open(router.href,'_blank')
+    },
     /**
      * @Description: rfq清单列表置顶处理事件
      * @Author: Luoshuang
@@ -265,7 +269,10 @@ export default {
      * @param {*} row
      * @return {*}
      */    
-    openPartsPage(row){},
+    openPartsPage(row){
+      const router =  this.$router.resolve({path: `/sourcing/partsrfq/editordetail?id=${row.rfqId}`})
+      window.open(router.href,'_blank')
+    },
     /**
      * @Description: 零件列表处理事件
      * @Author: Luoshuang

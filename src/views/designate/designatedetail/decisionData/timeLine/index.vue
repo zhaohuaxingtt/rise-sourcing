@@ -36,7 +36,7 @@
                     <!-- 供应商编辑列表 -->
                     <ul class="supplier-edit-list">
                         <li  v-for="(supplierItem,supplierIndex) in item.nomiTimeAxisSupplierResultVOList" :key="'nomiTimeAxisSupplierResultVOListEdit_'+supplierIndex">
-                            <supplierItem :itemIndex="supplierIndex" :supplierData="supplierItem" @editSupplierLine="editSupplierLine"/>
+                            <supplierItem :itemIndex="supplierIndex" :key="'nomiTimeAxisSupplierResultVOListEdit_item_'+supplierIndex" :supplierData="supplierItem" @editSupplierLine="editSupplierLine"/>
                         </li>
                     </ul>
                 </iCard>
@@ -96,7 +96,6 @@ import groupStep from './components/groupStep'
 import supplierStep from './components/supplierStep'
 import supplierLine from './components/supplierLine'
 import supplierItem from './components/supplierItem'
-import { cloneDeep } from 'lodash'
 import {
     getTimeaxis,
     saveTimeaxis,
@@ -142,6 +141,8 @@ export default {
             const data = {
                 nomiTimeAxisList:detailData
             }
+            const {query={}} = this.$route;
+            const {desinateId=''} = query; 
             await saveTimeaxis(data).then((res)=>{
                 const {code} = res;
                 this.isLoading = false;
@@ -149,7 +150,7 @@ export default {
                     iMessage.success(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
                     this.getDetail();
                     this.isEdit = false;
-                    this.$store.dispatch('updateNominationStep',{nominateId , phaseType:'5'});
+                    this.$store.dispatch('updateNominationStep',{desinateId , phaseType:'5'});
                 }else {
                     iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
                 }
@@ -159,8 +160,8 @@ export default {
         // 获取timeLine详情
         getDetail(){
             const {query={}} = this.$route;
-            const {nominateId=''} = query;  // 34
-            getTimeaxis(nominateId).then((res)=>{
+            const {desinateId=''} = query;  // 34
+            getTimeaxis(desinateId).then((res)=>{
                 const {code,data} = res;
                 if(code == 200 && data){
                     this.detailData = this.resetDetail(data);

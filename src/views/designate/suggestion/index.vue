@@ -9,7 +9,10 @@
     <!-- 供应商列表 -->
     <supplierTable />
     <!-- 业务分配模拟 -->
-    <buMonitor />
+    <buMonitor
+      :mode="'nomi'"
+      :hideCombine="false"
+      :readOnly="false" />
   </div>
 </template>
 <script>

@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-24 14:39:43
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-07 21:55:33
+ * @LastEditTime: 2021-06-17 16:25:03
  * @Description: RS单维护界面
  * @FilePath: \front-web\src\views\designate\designatedetail\rsSingleMaintenance\index.vue
 -->
@@ -43,9 +43,9 @@
       <div class="margin-bottom20 clearFloat">
           <div class="floatright">
             <!--------------------返回按钮----------------------------------->
-            <iButton @click="handleSave">保存</iButton>
+            <iButton @click="handleSave" :loading="saveLoading">保存</iButton>
             <!--------------------选择按钮----------------------------------->
-            <iButton @click="downloadTemp">下载模板</iButton>
+            <iButton @click="downloadTemp" :loading="downloadLoading">下载模板</iButton>
             <!--------------------返回按钮----------------------------------->
             <!-- <iButton @click="goBack">上传</iButton> -->
             <el-upload
@@ -62,8 +62,8 @@
             </el-upload>
             <!--------------------选择按钮----------------------------------->
             <iButton @click="handleReadQuotation" :loading="readQuotationLoading">读取报价单</iButton>
-            <!--------------------返回按钮----------------------------------->
-            <iButton @click="changersEeditionDialogVisible(true)">RS单预览</iButton>
+            <!--------------------RS单预览按钮----------------------------------->
+            <iButton @click="handlePreviewRS">RS单预览</iButton>
             
           </div>
       </div>
@@ -72,24 +72,24 @@
         <!------------------------------------------------------------------------>
         <tableList :activeItems='"rfqId"' selection indexKey :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="tableLoading" @handleSelectionChange="handleSelectionChange" @openPage="openPage" @updateSlot='toTop' @changeTableValue="changeTableValue"></tableList>
     </iCard>
-    <rsDialog :dialogVisible="rsEeditionDialogVisible" @changeVisible="changersEeditionDialogVisible" />
+    <rsDialog :dialogVisible="rsEeditionDialogVisible" @changeVisible="changersEeditionDialogVisible" :otherPreview="true" :otherNominationType="otherNominationType" :otherNominationId="otherNominationId" :otherPartProjectType="otherPartProjectType" />
   </iPage>
 </template>
 
 <script>
 import { iPage, iCard, iButton, iSearch, iInput, iMessage } from 'rise'
 import tableList from '../components/tableList'
-import { rsTableTitle, rsMockData } from './data'
+import { rsTableTitle, defaultLtcs } from './data'
 import detailTop from '../components/topComponents'
 import rsDialog from '@/views/partsprocure/editordetail/components/designateInfo/components/rsEEdition'
 import { getList, readQuotation, downloadRSDoc, updateRS } from '@/api/designate/decisiondata/rs'
-import { cloneDeep, omit } from 'lodash'
+import { cloneDeep } from 'lodash'
 import moment from 'moment'
 export default {
   components: { iPage, iCard, iButton, tableList, iSearch, iInput, detailTop, rsDialog },
   data() {
     return {
-      tableListData: rsMockData,
+      tableListData: [],
       tableTitle: rsTableTitle,
       tableLoading: false,
       form: {
@@ -103,13 +103,33 @@ export default {
       tableListDataTemp: [],
       selectedTableData: [],
       readQuotationLoading: false,
-      uploadUrl: process.env.VUE_APP_SOURCING_MH
+      uploadUrl: process.env.VUE_APP_SOURCING_MH,
+      otherNominationType: '',
+      otherNominationId: '',
+      otherPartProjectType: '',
+      saveLoading: false,
+      downloadLoading: false
     }
   },
   created() {
+    this.otherNominationId = this.$route.query.desinateId
     this.getTableList()
   },
   methods: {
+    handlePreviewRS() {
+      if (this.selectedTableData.length < 1) {
+        iMessage.warn('请选择需要预览的RS单')
+        return
+      }
+      if (this.selectedTableData.length > 1) {
+        iMessage.warn('只能选择一条RS单预览')
+        return
+      }
+      this.otherNominationId = this.selectedTableData[0].nominateAppId
+      this.otherNominationType = this.selectedTableData[0].nominateProcessType
+      this.otherPartProjectType = this.selectedTableData[0].partProjectType
+      this.changersEeditionDialogVisible(true)
+    },
     /**
      * @Description: 修改表格
      * @Author: Luoshuang
@@ -143,8 +163,10 @@ export default {
         iMessage.warn('请选择需要下载的数据')
         return
       }
+      this.downloadLoading = true
       const params = {recordIds:this.tableListData.map(item => item.nominateRecordId)}
       await downloadRSDoc(params)
+      this.downloadLoading = false
     },
     /**
      * @Description: 读取报价单
@@ -153,6 +175,10 @@ export default {
      * @return {*}
      */    
     handleReadQuotation() {
+      if (this.selectedTableData.length < 1) {
+        iMessage.warn('请选择需要读取的报价单')
+        return
+      }
       this.readQuotationLoading = true
       const params = {
         nominateId: this.$route.query.desinateId,
@@ -183,18 +209,19 @@ export default {
      * @return {*}
      */    
     handleSave() {
+      this.saveLoading = true
       const params = this.tableListData.map(item => {
         return {
           nominateDetailId: item.nominateDetailId,
-          aPrice: item.aPrice,
-          bPrice: item.bPrice,
+          aPrice: item.aprice,
+          bPrice: item.bprice,
           investFee: item.investFee,
           investFeeIsShared: item.investFeeIsShared,
           devFee: item.devFee,
           devFeeIsShared: item.devFeeIsShared,
-          ltcs: item.ltcs.map((ltcsItem, ltcIndex) => {
+          ltcs: defaultLtcs.map((ltcsItem, ltcIndex) => {
             return {
-              ltcDate: moment(item['ltcDate'+(ltcIndex+1)]).format('yyyy-MM'),
+              ltcDate: item['ltcDate'+(ltcIndex+1)] ? moment(item['ltcDate'+(ltcIndex+1)]).format('yyyy-MM') : '',
               ltcDateIsChange:item['ltcDateIsChange'+(ltcIndex+1)],
               ltcRate:item['ltcRate'+(ltcIndex+1)],
               ltcRateIsChange:item['ltcRateIsChange'+(ltcIndex+1)]
@@ -209,6 +236,8 @@ export default {
         } else {
           iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
         }
+      }).finally(() => {
+        this.saveLoading = false
       })
     },
     /**
@@ -245,7 +274,7 @@ export default {
           result = result && item.partName.includes(this.form.partName)
         }
         if (this.form.supplierNo) {
-          result = result && item.supplierNo.includes(this.form.supplierNo)
+          result = result && item.supplierId.includes(this.form.supplierNo)
         }
         if (this.form.supplierName) {
           result = result && item.supplierName.includes(this.form.supplierName)
@@ -262,27 +291,25 @@ export default {
     getTableList() {
       getList(this.$route.query.desinateId).then(res => {
         if (res?.result) {
-          this.tableListData = cloneDeep(res.data?.lines).map(item => {
-            const singleItem = {...item}
-            item.ltcs.forEach((element, index) => {
-              singleItem['ltcDate'+(index+1)] = element.ltcDate,
-              singleItem['ltcDateIsChange'+(index+1)] = element.ltcDateIsChange,
-              singleItem['ltcRate'+(index+1)] = element.ltcRate,
-              singleItem['ltcRateIsChange'+(index+1)] = element.ltcRateIsChange
-            });
+          this.otherNominationType = res.data?.nominateProcessType
+          const cloneData = cloneDeep(res.data?.lines).map(item => {
+            const singleItem = { ...item }
+            const watchChangeData = ['aprice','bprice','investFee','investFeeIsShared','devFee','devFeeIsShared']
+            watchChangeData?.forEach((element, index) => {
+              singleItem[element+'Temp'] = cloneDeep(item[element] === null ? '' : item[element])
+            })
+            defaultLtcs?.forEach((element, index) => {
+              singleItem['ltcDate'+(index+1)] = cloneDeep(item.ltcs && item.ltcs[index]?.ltcDate ? item.ltcs[index].ltcDate : element.ltcDate),
+              singleItem['ltcDate'+(index+1)+'Temp'] = cloneDeep(item.ltcs && item.ltcs[index]?.ltcDate ? moment(item.ltcs[index].ltcDate).format('yyyy-MM') : element.ltcDate),
+              singleItem['ltcDateIsChange'+(index+1)] = item.ltcs && item.ltcs[index]?.ltcDateIsChange ? item.ltcs[index].ltcDateIsChange : element.ltcDateIsChange,
+              singleItem['ltcRate'+(index+1)] = cloneDeep(item.ltcs && item.ltcs[index]?.ltcRate ? item.ltcs[index].ltcRate : element.ltcRate),
+              singleItem['ltcRate'+(index+1)+'Temp'] = cloneDeep(item.ltcs && item.ltcs[index]?.ltcRate ? item.ltcs[index].ltcRate : element.ltcRate),
+              singleItem['ltcRateIsChange'+(index+1)] = item.ltcs && item.ltcs[index]?.ltcRateIsChange ? item.ltcs[index].ltcRateIsChange : element.ltcRateIsChange
+            })
             return singleItem
           })
-          console.log(this.tableListData)
-          this.tableListDataTemp = cloneDeep(res.data?.lines).map(item => {
-            const singleItem = {...item}
-            item.ltcs.forEach((element, index) => {
-              singleItem['ltcDate'+(index+1)] = element.ltcDate,
-              singleItem['ltcDateIsChange'+(index+1)] = element.ltcDateIsChange,
-              singleItem['ltcRate'+(index+1)] = element.ltcRate,
-              singleItem['ltcRateIsChange'+(index+1)] = element.ltcRateIsChange
-            });
-            return singleItem
-          })
+          this.tableListData = cloneData
+          this.tableListDataTemp = cloneDeep(cloneData)
         } else {
           this.tableListData = []
           this.tableListDataTemp = []

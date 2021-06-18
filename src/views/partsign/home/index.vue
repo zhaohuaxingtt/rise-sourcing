@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-24 09:17:57
- * @LastEditTime: 2021-06-05 14:34:08
+ * @LastEditTime: 2021-06-17 10:50:50
  * @LastEditors: Please set LastEditors
  * @Description: 零件签收列表界面.
  * @FilePath: \rise\src\views\partsign\index.vue
@@ -230,7 +230,7 @@ import {
   iSelect,
 } from "@/components";
 import tablelist from "./components/tableList";
-import { tableTitle, form, needTranslate, navList } from "./components/data";
+import { tableTitle, form, needTranslate, clickMessage } from "./components/data";
 import { getTabelData, getPageGroup, patchRecords } from "@/api/partsign/home";
 import { pageMixins } from "@/utils/pageMixins";
 import backItems from "./components/backItems";
@@ -239,8 +239,11 @@ import local from "@/utils/localstorage";
 import { iMessageBox } from "../../../components";
 import filters from "@/utils/filters";
 import { iNavMvp } from "rise";
-import { cloneDeep } from "lodash";
-import { getAgentTasksNum } from "@/api/partsrfq/home"
+import { cloneDeep } from "lodash"
+
+// eslint-disable-next-line no-undef
+const { mapState, mapActions } = Vuex.createNamespacedHelpers("sourcing")
+
 export default {
   components: {
     iPage,
@@ -267,11 +270,10 @@ export default {
       backmark: "",
       inquiryBuyer: "",
       inquiryBuyerList: [],
-      form: form,
+      form: cloneDeep(form),
       fromGroup: [],
       tab: "source",
       needTranslate: needTranslate,
-      navList: cloneDeep(navList)
     };
   },
   created() {
@@ -281,12 +283,16 @@ export default {
 
     this.getPageGroup();
     this.getTableList();
-    this.getAgentTasksNum();
+    this.updateNavList
   },
   provide() {
     return {
       vm: this,
     };
+  },
+  computed: {
+    ...mapState(["navList"]),
+    ...mapActions(["updateNavList"])
   },
   methods: {
     //在跳转到详情界面之前，需要将数据格式化为中文。
@@ -471,66 +477,12 @@ export default {
       this.patchRecordsForTranslate(val.id, this.selectTableData);
       this.diologChangeItems = false;
     },
-    // 获取待办数
-    getAgentTasksNum() {
-      getAgentTasksNum()
-      .then(res => {
-        if (res.code == 200) {
-          Object.keys(res.data).forEach(key => {
-            for (let i = 0, item; (item = this.navList[i++]); ) {
-              switch(key) {
-                case "partAgentNum": // 零件签收待办
-                  if (item.url.indexOf("partsign") > -1) {
-                    this.$set(item, "message", res.data[key] || 4)
-                  }
-                  break;
-                case "purchaseProjectAgentNum": // 采购项目待办
-                  if (item.url.indexOf("partsprocure") > -1) {
-                    this.$set(item, "message", res.data[key] || 3)
-                  }
-                  break;
-                case "rfqAgentNum": // RFQ待办
-                  if (item.url.indexOf("partsrfq") > -1) {
-                    this.$set(item, "message", res.data[key] || 5)
-                  }
-                  break;
-                case "normiAgentNun": // 定点管理待办
-                  if (item.url.indexOf("partsnomination") > -1) {
-                    this.$set(item, "message", res.data[key] || 7)
-                  }
-                  break;
-                default:
-                  break;
-              }
-            }
-          })
-        } else {
-          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
-        }
-      })
-      .catch(() => {})
-    },
     // 通过待办数跳转
-    clickMessage(data) {
-      if (data.url.indexOf("partsign") > -1) {
-        return this.$router.push({
-          query: {
-            status: "1"
-          }
-        })
-      }
-
-      if (data.url.indexOf("partsprocure") > -1) {
-        return this.$router.push({
-          path: "/sourcing/partsprocure",
-          query: {
-            partStatus: "10"
-          }
-        })
-      }
-    }
+    clickMessage,
   },
   beforeRouteUpdate(to, from, next) {
+    this.form = cloneDeep(form)
+
     Object.keys(to.query).forEach(key => {
       this.$set(this.form, key, to.query[key])
     })

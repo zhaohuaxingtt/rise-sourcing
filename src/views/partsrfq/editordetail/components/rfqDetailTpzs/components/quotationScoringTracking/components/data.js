@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-05-25 21:01:30
- * @LastEditTime: 2021-06-05 16:59:17
+ * @LastEditTime: 2021-06-12 15:21:11
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringTracking\components\data.js
@@ -78,7 +78,7 @@ export const iconList_car = { //汽车图标
   'a1':{
     icon:'iconbaojiafenxi-zhengchejindu-huang1' //黄色浅黄
   },
-  'default':{
+  'a0':{
     icon:'icondingdianguanlijiedian-yiwancheng' //default
   }
 }
@@ -90,6 +90,9 @@ export const iconList_all_times = { //整体任务进度以及每格进度
     icon:'iconbaojiapingfengenzong-jiedian-huang' //红色
   },
   'a1':{
+    icon:'iconbaojiapingfengenzong-jiedian-hei' //黑色
+  },
+  'a0':{
     icon:'iconbaojiapingfengenzong-jiedian-hei' //黑色
   },
   'a4':{
@@ -119,16 +122,17 @@ export function buildTitleTabel(params) {
    //评分数据
    let supplierRateTitle = []
    try {
-    if(!params.rateTableHead) throw 'rateTableHead 无数据';
+    if(params.rateTableHead) throw 'rateTableHead 无数据';
     params.rateTableHead.forEach(items=>{
       const temlateData = JSON.parse(JSON.stringify(tableTile))
       temlateData.name = items.rateTableHeadDetailVO.rateDepartName
-      temlateData.props = 'round'+items.rateHead
+      temlateData.props = 'rateHead'+items.rateHead
       supplierRateTitle.push(temlateData)
    })
    } catch (error) {
-    supplierRateTitle = [{props:'ep',name:'EP',key: '',tooltip:false, width:'100'},{props:'MQ',name:'MQ',key: '',tooltip:false, width:'100'},{props:'PL',name:'PL',key: '',tooltip:false, width:'100'}]
+    supplierRateTitle = [{props:'ep',name:'EP',key: '',tooltip:false, width:'100'},{props:'mq',name:'MQ',key: '',tooltip:false, width:'100'},{props:'pl',name:'PL',key: '',tooltip:false, width:'100'}]
    }
+   console.log([...supplierTitle,...supplierRateTitle])
    return [...supplierTitle,...supplierRateTitle]
 }
 
@@ -138,12 +142,22 @@ export function buildTitleTabel(params) {
  * @return {*}
  */
 export function buildTableData(data){
-  const datas = []
-  data.roundQuotationVOS.forEach(element=>{
-    for(let key in element.detailVOMap){
-      element[key] = element.detailVOMap[key]
-    }
-    datas.push(element)
-  })
-  return datas
+  try {
+    const datas = []
+    data.roundQuotationVOS.forEach(element=>{
+      for(let key in element.detailVOMap){
+        element[key] = element.detailVOMap[key]
+      }
+      // const rateList = data.rateDepartInfoVOS.find(e=>e.supplierId == element.supplierId)
+      // if(rateList){
+      //   for(let key in rateList.detailVOMap){
+      //     element[key] = rateList.detailVOMap[key]
+      //   }
+      // }
+      datas.push(Object.assign(element,{ep:'A',mq:'A',pl:'A'}))
+    })
+    return datas
+  } catch (error) {
+    console.log(error)
+  }
 }

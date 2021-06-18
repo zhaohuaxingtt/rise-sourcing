@@ -9,13 +9,13 @@
 //  RECORD("RECORD","备案");
 export const applyType = [
     {id:'MEETING',name:'上会',key:'LK_SHANGHUI'},
-    {id:'CIRCULATE',name:'流转',key:'LK_LIUZHUAN'},
+    {id:'TRANFORM',name:'流转',key:'LK_LIUZHUAN'},
     {id:'RECORD',name:'备案',key:'LK_BEIAN'},
 ]
 // 定点申请步骤栏
 export const applyStep = [
     {id:1,name:'RFQ & 零件清单',key:'nominationLanguage.RFQANDLINGJIANQINGDAN',path:'/designate/rfqdetail'},
-    {id:2,name:'供应商 & 单⼀供应商',key:'nominationLanguage.GONGYINGSHANGANDDANYIGONGYINGSHANG',path:'/designate/supplier'},
+    {id:2,name:'供应商 & 单⼀供应商',key:'nominationLanguage.GONGYINGSHANGANDDANYIGONGYINGSHANG',path:'/designate/supplier',hasInfo:true},
     {id:3,name:'定点建议',key:'nominationLanguage.DINGDIANJIANYI',path:'/designate/suggestion'},
     {id:4,name:'审批⼈ & 审批记录',key:'nominationLanguage.SHENPIRENANDSHENPIJILU',path:'/designate/approvalpersonrecord'},
     {id:5,name:'决策资料',key:'nominationLanguage.JUECEZILIAO',path:'/designate/decisiondata/title'},
@@ -30,7 +30,7 @@ export const decisionType = [
     {key:'SingleSourcing',name:'Single Sourcing',path:'/designate/decisiondata/singlesourcing'},
     {key:'ABPrice',name:'A-B Price',path:'/designate/decisiondata/abprice'},
     {key:'CostAnalysis',name:'Cost Analysis',path:'/designate/decisiondata/costanalysis'},
-    {key:'TimeLine',name:'Time Line',path:'/designate/decisiondata/timeline'},
+    {key:'TimeLine',name:'Timeline',path:'/designate/decisiondata/timeline'},
     {key:'Strategy',name:'Strategy',path:'/designate/decisiondata/strategy'},
     {key:'BNKReference',name:'BNK Reference',path:'/designate/decisiondata/bnkreference'},
     {key:'AwardingScenario',name:'Awarding Scenario',path:'/designate/decisiondata/awardingscenario'},
@@ -55,7 +55,7 @@ export const sortTableData = [
     {key:'SingleSourcing',name:'Single Sourcing',visible: false, sort: 5},
     {key:'ABPrice',name:'A-B Price',visible: false, sort: 6},
     {key:'CostAnalysis',name:'Cost Analysis',visible: false, sort: 7},
-    {key:'TimeLine',name:'Time Line',visible: true, sort: 8},
+    {key:'TimeLine',name:'Timeline',visible: true, sort: 8},
     {key:'Strategy',name:'Strategy',visible: true, sort: 9},
     {key:'BNKReference',name:'BNK Reference',visible: true, sort: 10},
     {key:'AwardingScenario',name:'Awarding Scenario',visible: true, sort: 11},

@@ -73,6 +73,24 @@ export function nominateUnRreeze(data) {
   })
 }
 
+// 冻结
+export function rsFrozen(data) {
+  return requst({
+    url: '/rs/frozen',
+    method: "POST",
+    data
+  })
+}
+
+// 解冻
+export function rsUnFrozen(data) {
+  return requst({
+    url: '/rs/unfreeze',
+    method: "POST",
+    data
+  })
+}
+
 // 定点确认
 export function nominateConfirm(data) {
   return requst({

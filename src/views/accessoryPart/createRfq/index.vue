@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-26 13:54:01
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-07 20:08:05
+ * @LastEditTime: 2021-06-17 13:44:37
  * @Description: 创建RFQ界面
        配件：选择的配件需要是分配了询价采购员的且是同一个询价采购员, 创建时能选择LINIE
        附件：选择的附件需要时分配了LINIE且为同一个LINIE, 创建时不能再选择LINIE
@@ -21,7 +21,14 @@
         <iFormItem v-for="(item, index) in basicInfo" :key="index" :label="item.label" :class="item.row ? 'row'+item.row : ''">
           <iText v-if="!item.editable">{{detailData[item.value]}}</iText>
           <iInput v-else-if="item.type === 'input'" v-model="detailData[item.value]"></iInput>
-          <iSelect v-else-if="item.type === 'select'" v-model="detailData[item.value]"></iSelect>
+          <iSelect v-else-if="item.type === 'select'" v-model="detailData[item.value]" :disabled="linieAndDeptDisable(item.value)" @change="val => handleDeptChange(item.value, val)">
+            <el-option
+              :value="item.value"
+              :label="item.label"
+              v-for="(item, index) in fromGroup[item.selectOption]"
+              :key="index"
+            ></el-option>
+          </iSelect>
         </iFormItem>
       </iFormGroup>
       <div style="text-align:right;">
@@ -34,7 +41,7 @@
         <span class="font18 font-weight"></span>
           <div class="floatright">
             <!--------------------保存按钮----------------------------------->
-            <iButton @click="handleSave" >保存</iButton>
+            <iButton @click="handleSave" :loading="saveLoading">保存</iButton>
             <!--------------------添加按钮----------------------------------->
             <iButton @click="handleAddParts" >添加</iButton>
             <!--------------------删除按钮----------------------------------->
@@ -56,7 +63,7 @@
     <!------------------------------------------------------------------------>
     <!--                  添加附件弹窗                                          --->
     <!------------------------------------------------------------------------>
-    <addFileDialog :dialogVisible="fileDialogVisible" @changeVisible="changefileDialogVisible" />
+    <addFileDialog :dialogVisible="fileDialogVisible" @changeVisible="changefileDialogVisible" @selectPart="selectPart" />
     <!------------------------------------------------------------------------>
     <!--                  产能计划弹窗                                          --->
     <!------------------------------------------------------------------------>
@@ -77,6 +84,10 @@ import capacityPlanningDialog from './components/capacityPlanning'
 import { getPartBySP } from '@/api/accessoryPart/index'
 import { changeProcure } from "@/api/partsprocure/home";
 import { insertRfq } from '@/api/accessoryPart/index'
+import {
+  dictkey,
+} from "@/api/partsprocure/editordetail";
+import { getDeptList, getUserList } from '@/api/accessoryPart/index'
 export default {
   mixins: [pageMixins],
   components: { iPage, topComponents, iCard, iFormGroup, iFormItem, iText, iButton, iInput, iSelect, iPagination, tableList, addAccessoryPartDialog, updateFactoryDialog, addFileDialog, capacityPlanningDialog },
@@ -97,23 +108,95 @@ export default {
       tableLoading: false,
       ids: [],
       basicLoading: false,
-      selectPlanRow: {}
+      selectPlanRow: {},
+      fromGroup: {},
+      linie: '',
+      linieDept: '',
+      saveLoading: false
     }
   },
   computed: {
     tableTitle() {
       const type = this.$route.query.type
-      console.log(type)
       return type === '1' ? tableTitle : fileTableTitle
     }
   },
   created() {
+    // this.getProcureGroup()
+    this.getDepOption()
+    // this.getUserOptions()
     if (this.$route.query.ids) {
       this.ids = this.$route.query.ids
       this.getList()
     }
+    if (this.$route.query.linie && this.$route.query.linieDept) {
+      this.detailData.linie = this.$route.query.linie
+      this.linie = this.$route.query.linie
+      this.detailData.linieDept = this.$route.query.linieDept
+      this.linieDept = this.$route.query.linieDept
+    }
   },
   methods: {
+    handleDelete() {
+      if(this.selectItems.length < 1) {
+        iMessage.warn('请选择需要删除的行')
+        return
+      }
+      // const selectIds = this.selectItems.map(item => item)
+      this.tableData = this.tableData.filter(item => !this.selectItems.includes(item))
+    },
+    handleDeptChange(type, val) {
+      if (type === 'linieDept') {
+        this.getUserOptions()
+      }
+    },
+    /**
+     * @Description: 获取linie部门下拉
+     * @Author: Luoshuang
+     * @param {*}
+     * @return {*}
+     */    
+    getDepOption() {
+      getDeptList({tag:'4'}).then(res => {
+        if (res?.result) {
+          this.fromGroup = {...this.fromGroup, LINIE_DEPT: res.data?.map(item => {return {value:item.id, label:item.nameZh}})}
+        } else {
+          this.fromGroup = {...this.fromGroup, LINIE_DEPT: []}
+        }
+      })
+    },
+    /**
+     * @Description: 获取linie下拉
+     * @Author: Luoshuang
+     * @param {*}
+     * @return {*}
+     */    
+    getUserOptions() {
+      getUserList({deptId:this.detailData.linieDept,tag:'4'}).then(res => {
+        if (res?.result) {
+          this.fromGroup = {...this.fromGroup, LINIE: res.data?.map(item => {return {value:item.id, label:item.nameZh}})}
+        } else {
+          this.fromGroup = {...this.fromGroup, LINIE: []}
+        }
+      })
+    },
+    linieAndDeptDisable(type) {
+      if (type === 'linie' && this.linie) {
+        return true
+      }
+      if (type === 'linieDept' && this.linieDept) {
+        return true
+      }
+      return false
+    },
+    //获取上方group信息
+    getProcureGroup() {
+      dictkey().then((res) => {
+        if (res.data) {
+          this.fromGroup = res.data;
+        }
+      });
+    },
     /**
      * @Description: 点击批量更新采购工厂
      * @Author: Luoshuang
@@ -128,7 +211,7 @@ export default {
       this.changefactoryDialogVisible(true)
     },
     updateFactory(procureFactory) {
-      this.pushKey();
+      // this.pushKey();
       // 复制参数对应key
       let batch = {
         procureFactory: procureFactory,
@@ -139,6 +222,8 @@ export default {
       }).then((res) => {
         if (res.data) {
           iMessage.success(this.$t("LK_XIUGAICHENGGONG"));
+          this.changefactoryDialogVisible(false)
+          this.getList()
         } else {
           iMessage.error(res.desZh);
         }
@@ -180,21 +265,26 @@ export default {
      * @return {*}
      */    
     handleSave() {
+      this.saveLoading = true
       const params = {
         insertRfqPackage: {
           rfqId: this.detailData.rfqId,
+          operationType: '1',
           rfqPartDTOList: this.tableData.map(item => {
             return {
-              buyerName: item.csfUser, // 询价采购员
-              linieName: item.csfUser, // linie
-              linieUserId: item.csfuserId, // linie
+              buyerName: item.buyerName, // 询价采购员
+              linieName: item.linieName || this.fromGroup.LINIE.find(item => item.value === this.detailData.linie).label, // linie
+              linieUserId: item.linieUserId || this.detailData.linie, // linie
               partNum: item.partNum, // 零件号
               fsnrGsnrNum: item.spnrNum, // fs号
               stuffId: item.stuffId, // 工艺组ID，还没有
               stuffName: item.stuffName, // 工艺组name，还没有
+              purchasePrjectId: item.purchasingProjectId,
+              partNameZh: item.partNameZh,
+              partPrejectType: this.$route.query.type === '1' ? 'PT17' : 'PT18',
             }
           }),
-          userId: store.state.permission.userInfo.id
+          userId: this.$store.state.permission.userInfo.id
         }
       }
       insertRfq(params).then(res => {
@@ -205,6 +295,8 @@ export default {
         } else {
           iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
         }
+      }).finally(() => {
+        this.saveLoading = false
       })
     },
     /**
@@ -214,7 +306,9 @@ export default {
      * @return {*}
      */    
     selectPart(selectParts) {
-      this.ids = [...this.ids, ...selectParts]
+      this.ids = [...this.ids.split(','), ...selectParts].join(',')
+      this.changeAccDialogVisible(false)
+      this.changefileDialogVisible(false)
       this.getList()
     },
     /**

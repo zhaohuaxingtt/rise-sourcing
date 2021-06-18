@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-25 10:09:50
- * @LastEditTime: 2021-05-31 14:50:25
+ * @LastEditTime: 2021-06-11 14:32:57
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsrfq\editordetail\index.vue
@@ -30,7 +30,7 @@
         <iButton @click="updateRfqStatus('03')" v-permission="PARTSRFQ_EDITORDETAIL_TRANSFERNEGOTIATION">
           {{ $t('LK_ZHUANTANPAN') }}
         </iButton>
-        <iButton @click="createAFixedPointApplication" disabled v-permission="PARTSRFQ_EDITORDETAIL_CREATEAPPLICATION">
+        <iButton v-permission="PARTSRFQ_EDITORDETAIL_CREATEAPPLICATION" :loading="createDesignateLoading" @click="nominateTypeDialogVisible = true">
           {{ $t('LK_CHUANGJIANDINGDIANSHENQING') }}
         </iButton>
         <iButton @click="backPage">{{ $t('LK_FANHUI') }}</iButton>
@@ -131,6 +131,8 @@
     <!--------------------------------------------------------------->
     <rfq-detail-tpzs v-if='navActivtyValue == 2'></rfq-detail-tpzs>
     <new-rfq-round v-model="newRfqRoundDialog" @refreshBaseInfo="getBaseInfo" v-if="tabShowStatus"/>
+
+    <nominateTypeDialog :visible.sync="nominateTypeDialogVisible" @confirm="createDesignate" />
   </iPage>
 </template>
 <script>
@@ -154,6 +156,9 @@ import {getRfqDataList, editRfqData, addRfq} from "@/api/partsrfq/home";
 import store from '@/store'
 import {rfqCommonFunMixins} from "pages/partsrfq/components/commonFun";
 import {navList} from './components/data'
+import nominateTypeDialog from "@/views/partsrfq/home/components/nominateTypeDialog"
+import { selectRfq } from "@/api/designate/designatedetail/addRfq"
+
 export default {
   components: {
     iButton,
@@ -168,7 +173,8 @@ export default {
     rfqDetailInfo,
     newRfqRound,
     iNavMvp,
-    rfqDetailTpzs
+    rfqDetailTpzs,
+    nominateTypeDialog
   },
   mixins: [rfqCommonFunMixins],
   data() {
@@ -181,7 +187,8 @@ export default {
       baseInfoLoading: false,
       tabShowStatus: true,
       newRfqRoundList: [],
-      newRfqOpenValidateLoading: false
+      newRfqOpenValidateLoading: false,
+      nominateTypeDialogVisible: false,
     }
   },
   created() {
@@ -263,8 +270,6 @@ export default {
       this.resultMessage(res)
       this.getBaseInfo()
     },
-    createAFixedPointApplication() {
-    },
     edit() {
       const rfqName = this.baseInfo.rfqName
       if (!rfqName && this.editStatus) {
@@ -342,7 +347,36 @@ export default {
       }
     },
     // eslint-disable-next-line no-undef
-    moment
+    moment,
+    // 创建定点申请
+    createDesignate(nominateProcessType) {
+      this.nominateTypeDialogVisible = false
+      this.createDesignateLoading = true
+
+      selectRfq({
+        nominateProcessType,
+        rfqIdArr: [ this.$route.query.id ]
+      })
+      .then(res => {
+        const message = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
+
+        if (res.code == 200) {
+          iMessage.success(message)
+          this.$router.push({
+            path: "/designate/rfqdetail", 
+            query: {
+              desinateId: res.data, 
+              designateType: nominateProcessType
+            }
+          })
+        } else {
+          iMessage.error(message)
+        }
+
+        this.createDesignateLoading = false
+      })
+      .catch(() => this.createDesignateLoading = false)
+    }
   }
 }
 </script>

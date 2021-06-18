@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-26 11:16:58
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-07 02:06:20
+ * @LastEditTime: 2021-06-14 12:24:54
  * @Description: 
  * @FilePath: \front-web\src\views\accessoryPart\integratedManage\data.js
  */
@@ -45,15 +45,15 @@ export const searchList = [
   {value: 'assemblyPartNum', label: '批量供货总成号', type: 'input', i18n_label: '',},
   {value: 'spnrNum', label: 'SP号', type: 'input', i18n_label: '',},
   {value: 'sparePartCode', label: '编号', type: 'input', i18n_label: '',},
-  {value: 'carType', label: '配件车型', type: 'select', i18n_label: '', selectOption: ''},
-  {value: 'carProject', label: '配件车型项目', type: 'select', i18n_label: '', selectOption: 'carTypeOptions'},
+  {value: 'carType', label: '配件车型', type: 'select', i18n_label: '', selectOption: 'carTypeOptions'},
+  {value: 'carProject', label: '配件车型项目', type: 'select', i18n_label: '', selectOption: 'carTypeProjectOptions', width: 150},
   {value: 'state', label: '配件状态', type: 'select', i18n_label: '', selectOption: 'accessoryTypeOption'},
   {value: 'respDept', label: 'LINIE科室', type: 'input', i18n_label: '',},
   {value: 'respLINIE', label: 'LINIE', type: 'input', i18n_label: '',},
   {value: 'csfUserDept', label: '询价科室', type: 'input'},
   {value: 'csfUserId', label: '询价采购员', type: 'input', i18n_label: '',},
-  {value: 'partStatus', label: '零件状态', type: 'select', i18n_label: '', selectOption: ''},
-  {value: 'partState', label: '合同状态', type: 'select', i18n_label: '', selectOption: ''},
+  {value: 'partStatus', label: '零件状态', type: 'select', i18n_label: '', selectOption: 'partStateOption'},
+  {value: 'partState', label: '合同状态', type: 'select', i18n_label: '', selectOption: 'contactStateOption'},
   {value: 'cfTargetPrice', label: '是否有财务目标价', type: 'select', i18n_label: '', selectOption: 'yesOrNoOption'},
   {value: 'nomiType', label: '定点状态', type: 'select', i18n_label: '', selectOption: 'nominateStateOption'},
   {value: 'idState', label: 'ID状态', type: 'select', i18n_label: '', selectOption: 'accessoryIdStateOption'}

@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-05-27 12:32:54
- * @LastEditTime: 2021-06-07 13:45:52
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-06-14 16:46:47
+ * @LastEditors: ldh
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\costanalysismanage\components\home\index.vue
 -->
@@ -49,6 +49,12 @@
           <iInput
             v-model="form.partNum"
             :placeholder="$t('costanalysismanage.QingShuRuLingJianHao')"
+          ></iInput>
+        </el-form-item>
+        <el-form-item :label="$t('costanalysismanage.LingJianMing')">
+          <iInput
+            v-model="form.partName"
+            :placeholder="$t('costanalysismanage.QingShuRuLingJianMing')"
           ></iInput>
         </el-form-item>
         <el-form-item :label="$t('costanalysismanage.CheXingXiangMu')">
@@ -141,7 +147,7 @@
           <span>{{ scope.row.createDate | dateFilter("YYYY-MM-DD") }}</span>
         </template>
         <template #currentRoundsEndTime="scope">
-          <span>{{ scope.row.deadDate | dateFilter("YYYY-MM-DD") }}</span>
+          <span>{{ scope.row.currentRoundsEndTime | dateFilter("YYYY-MM-DD") }}</span>
         </template>
         <template #technoMaterial="scope">
           <span class="link-underline" @click="download(scope.row)">{{ $t("costanalysismanage.XiaZai") }}</span>
@@ -151,7 +157,7 @@
             <div v-if="scope.row.sendDate" class="attention margin-left4"><span>!</span></div>
         </template>
         <template #analysisReport="scope">
-          <icon class="tick link-underline" symbol name="iconbaojiazhuangtailiebiao_yibaojia" @click.native="analysisReport(scope.row)"/>
+          <span class="link-underline" @click="analysisReport(scope.row)">{{ scope.row.analysisReport | dateFilter("YYYY-MM-DD") }}</span>
         </template>
         <template #recordId="scope">
           <icon class="link-underline" symbol :name="+scope.row.recordId > 0 ? 'iconliebiaoyizhiding' : 'iconliebiaoweizhiding'" @click.native="updateOrder(scope.row)" />
@@ -172,7 +178,7 @@
     <!-- 技术资料下载弹窗 -->
     <downloadDialog :rfqNum='rfqNum' :dialogVisible='downloadDialogVisible' @changeVisible="changeVisible"/>
     <!-- CBD弹窗 -->
-    <cbdDialog :rfqNum='rfqNum' :dialogVisible='cbdDialogVisible'  @changeVisible="changeVisible"/>
+    <cbdDialog v-if="cbdDialogVisible" :rfqId='rfqNum' :dialogVisible='cbdDialogVisible'  @changeVisible="changeVisible"/>
   </div>
 </template>
 
@@ -285,7 +291,7 @@ export default {
       .then(res => {
         if (res.code == 200) {
           this.tableListData = Array.isArray(res.data) ? res.data : []
-          this.totalCount = res.total || 0
+          this.page.totalCount = res.total || 0
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }
@@ -306,31 +312,35 @@ export default {
     },
     // 跳转RFQ详情
     jumpRfq(row) {
-      this.$router.push({
-        path: "/costanalysismanage/rfqdetail",
-        query: {
-          rfqId: row.id
-        }
-      })
-      // window.open(`/#/costanalysismanage/rfqdetail?rfqId=${ row.id }`, "_blank")
+      // this.$router.push({
+      //   path: "/costanalysismanage/rfqdetail",
+      //   query: {
+      //     rfqId: row.id
+      //   }
+      // })
+      window.open(`/#/costanalysismanage/rfqdetail?rfqId=${ row.id }`, "_blank")
     },
     // 下载
     download(row) {
       console.log(row);
-      const { rfqNum='1' } = row;
-      this.rfqNum = rfqNum;
+      const { id='' } = row;
+      this.rfqNum = id;
       this.downloadDialogVisible = true
     },
-    // CBD
+    // CBD弹窗
     cbd(row) {
+      console.log(row);
+      const { id='' } = row;
+      this.rfqNum = id;
       this.cbdDialogVisible = true
     },
     // 分析报告
     analysisReport(row) {
-      this.$router.push({
-        path: "/costanalysismanage/costanalysis",
-        query: { rfqId: row.id }
-      })
+      // this.$router.push({
+      //   path: "/costanalysismanage/costanalysis",
+      //   query: { rfqId: row.id }
+      // })
+      window.open(`/#/costanalysismanage/costanalysis?rfqId=${ row.id }`, "_blank")
     },
     // 变更顺序
     updateOrder(row) {
@@ -358,6 +368,7 @@ export default {
     changeVisible(type){
       this.downloadDialogVisible = type;
       this.cbdDialogVisible = type;
+      this.rfqNum = null;
     }
   }
 }

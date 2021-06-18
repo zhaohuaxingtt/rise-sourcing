@@ -2,7 +2,7 @@
  * @Descripttion: 
  * @Author: Luoshuang
  * @Date: 2021-05-21 14:30:41
- * @LastEditTime: 2021-06-07 21:52:26
+ * @LastEditTime: 2021-06-17 15:08:11
 -->
 <template>
   <el-table ref="multipleTable" fit tooltip-effect='light' :height="height" :data='tableData' v-loading='tableLoading' @selection-change="handleSelectionChange" :empty-text="$t('LK_ZANWUSHUJU')" >
@@ -29,6 +29,11 @@
         </tempalte>
       </el-table-column>
       <!---------------------------可编辑列---------------------------------->
+      <el-table-column :key="index" align='center' :width="items.width" :min-width="items.minWidth" :show-overflow-tooltip='items.tooltip' v-else-if="items.isPC" :prop="items.props" :label="items.key ? $t(items.key) : items.name">
+        <template slot-scope="scope">
+          <iInput type="number" v-if="items.type === 'input'" v-model="scope.row[items.props]"  @input="val=>changeValue(val, scope.row, items)"></iInput>
+        </template>
+      </el-table-column>
       <el-table-column :key="index" align='center' :width="items.width" :min-width="items.minWidth" :show-overflow-tooltip='items.tooltip' v-else-if="items.editable" :prop="items.props" :label="items.key ? $t(items.key) : items.name">
         <template slot="header">
           <span>{{items.key ? $t(items.key) : items.name}}</span>
@@ -65,10 +70,13 @@
             placement="right"
             trigger="hover"
             popper-class="tableTitleTip"
-            :content="getFileList(scope.row)"
             :visible-arrow="false">
+            <template slot="">
+              <p v-for="(item, index) in (scope.row.fileList || [])" :key="index">{{item.fileName}}</p>
+            </template>
             <span slot="reference" @click="handleAttachmentDonwload(scope.row)" class="openLinkText cursor">下载</span>
           </el-popover>
+          <span v-else-if="items.props === 'ltcRateOfThree'">{{(scope.row.ltcs[0]?scope.row.ltcs[0].ltcRate:'')+'/'+(scope.row.ltcs[1]?scope.row.ltcs[1].ltcRate:'')+'/'+(scope.row.ltcs[2]?scope.row.ltcs[2].ltcRate:'')}}</span>
           <!------------------正常--------------------------->
           <span v-else>{{scope.row[items.props]}}</span>
         </template>
@@ -77,8 +85,8 @@
             <template slot-scope="scope">
               <!----------------------------备注列-------------------------------->
               <span v-if="childItem.props === 'beizhu'" class="openLinkText cursor">查看</span>
-              <span v-else>{{scope.row[childItem.props]}}</span>
-              <icon v-if="scope.row.withIcon && scope.row.withIcon.includes(childItem.props)" symbol class="cursor" name='icontishi-cheng' style="margin-left:8px" @click.native="$emit('openDialog')"></icon>
+              <span v-else-if="childItem.type === 'rate'">{{getRate(scope.row, childItem.props).rate}}</span>
+              <icon v-if="childItem.type === 'rate' && getRate(scope.row, childItem.props).partSupplierRate === 0" symbol class="cursor" name='icontishi-cheng' style="margin-left:8px" @click.native="$emit('openDialog', scope.row)"></icon>
             </template>
           </el-table-column>
         </template>
@@ -109,6 +117,10 @@ export default{
   },
   inject:['vm'],
   methods:{
+    getRate(row, props) {
+      const findItem = row.departmentRate.find(item => item.rateDepart === props)
+      return findItem || {}
+    },
     handleAttachmentDonwload(row) {
       if (row.fileList?.length < 1) {
         return
@@ -116,12 +128,15 @@ export default{
       this.$emit('handleFileDownload', row.fileList?.map(item => item.fileName))
     },
     getFileList(row) {
-      return row.fileList?.map(item => item.fileName).join('<br/>')
+      return row.fileList?.map(item => item.fileName).join('\n')
     },
     changeValue(val, row, item) {
-      // console.log(val, row, item)
-      row[item.isChange] = true
-      // this.$emit('changeTableValue', val, row, item)
+      if (item.isPC) {
+        this.$emit('tableValueChange', val, row, item)
+        console.log(val, row, item)
+      } else {
+        row[item.isChange] = row[item.props+'Temp'] != (val === null ? '' : val)
+      }
     },
     getValue(row, item) {
       if (item.parentProps) {

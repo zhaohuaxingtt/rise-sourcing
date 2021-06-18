@@ -8,23 +8,25 @@
           </iButton>
           <!-- 复制 -->
           <iButton
-            @click="handleBatchEdit"
+            @click="copyLines"
           >
             {{ $t("nominationSupplier.COPY") }}
           </iButton>
           <!-- 删除 -->
           <iButton
+            :disabled="checkCanbeDelete"
+            @click="handleBatchDelete"
           >
             {{ $t("nominationLanguage.ShanChu") }}
           </iButton>
           <iButton
-            @click="setEditState(false)"
-            :loading="startLoding"
+            @click="submit"
+            :loading="submiting"
           >
             {{ $t("LK_BAOCUN") }}
           </iButton>
           <iButton
-            @click="mouldVisibal = true"
+            @click="showMouldVisibal"
           >
             {{ $t("nominationSuggestion.MoJuYuSuanGuanLi") }}
           </iButton>
@@ -35,32 +37,37 @@
         :tableData="data"
         :tableTitle="supplierTitle"
         :tableLoading="tableLoading"
+        v-loading="tableLoading"
         @handleSelectionChange="handleSelectionChange"
+        ref="tablelist"
       >
         <template #rfqNum="scope">
           <a class="link-underline" href="javascript:;">{{scope.row.rfqNum}}</a>
         </template>
         <!-- 供应商名 -->
         <template #supplierName="scope">
-          <div v-if="scope.row.isEdit">
+          <div>
             <iSelect
               v-model="scope.row.supplierName"
+              @focus="getRfqDepartment(scope.row)"
+              @change="onSupplierChange(arguments, scope.row)"
               :placeholder="$t('LK_QINGXUANZE')">
               <el-option
-                :value="items.key"
-                :label="items.value"
-                v-for="(items, index) in []"
+                :value="items.supplierName"
+                :label="items.supplierName"
+                v-for="(items, index) in (scope.row.departmentOption || [])"
                 :key="index"
               ></el-option>
             </iSelect>
           </div>
-          <span v-else>{{scope.row.supplierName}}</span>
+          <!-- <span v-else>{{scope.row.supplierName}}</span> -->
         </template>
         <!-- 比例 -->
-        <template #percent="scope">
-          <div v-if="scope.row.isEdit">
-            <iSelect
-              v-model="scope.row.percent"
+        <template #ratio="scope">
+          <div>
+            <iInput v-model="scope.row.ratio" :placeholder="$t('LK_QINGSHURU')" />
+            <!-- <iSelect
+              v-model="scope.row.ratio"
               :placeholder="$t('LK_QINGXUANZE')">
               <el-option
                 :value="items.key"
@@ -68,27 +75,27 @@
                 v-for="(items, index) in []"
                 :key="index"
               ></el-option>
-            </iSelect>
+            </iSelect> -->
           </div>
-          <span v-else>{{scope.row.percent}}</span>
+          <!-- <span v-else>{{scope.row.ratio}}</span> -->
         </template>
       </tablelist>
-      <iPagination
+      <!-- <iPagination
         v-update
-        @size-change="handleSizeChange($event, getTableList)"
-        @current-change="handleCurrentChange($event, getTableList)"
+        @size-change="handleSizeChange($event, getDataList)"
+        @current-change="handleCurrentChange($event, getDataList)"
         background
         :current-page="page.currPage"
         :page-sizes="page.pageSizes"
         :page-size="page.pageSize"
         :layout="page.layout"
         :total="page.totalCount"
-      />
+      /> -->
 
     <!-- 批量编辑弹窗 -->
-    <batchEditDialog :visible.sync="batchEditVisibal" />
+    <batchEditDialog :visible.sync="batchEditVisibal" :supplierList="supplierList" @submit="onBatchEdit" />
     <!-- 模具弹窗 -->
-    <mouldDialog :visible.sync="mouldVisibal" :rfqIds="rfqIds" />
+    <mouldDialog :visible.sync="mouldVisibal" :rfqIds="rfqIds" :fsIds="fsIds" />
   </iCard>
 </template>
 
@@ -96,17 +103,26 @@
 import Vue from 'vue'
 import {
   supplierTitle,
-  mokeSupplierData
+  // mokeSupplierData
 } from './data'
 import tablelist from "./tableList";
 import batchEditDialog from "./batchEditDialog"
 // import mouldDialog from "./mouldDialog"
 import mouldDialog from "./mouldBudgetManagementDialog"
+import { pageMixins } from '@/utils/pageMixins'
+import {
+  getSuggestionList,
+  updateSuggestion,
+  getPartSupplierList,
+  deleteSuggestion
+} from '@/api/designate/suggestion/part'
+import _ from 'lodash'
 
 import {
   iCard,
   iButton,
-  iPagination,
+  iInput,
+  // iPagination,
   iMessage,
   iSelect
 } from "rise";
@@ -116,17 +132,19 @@ export default {
     iCard,
     iButton,
     iSelect,
-    iPagination,
+    iInput,
+    // iPagination,
     tablelist,
     batchEditDialog,
     mouldDialog
   },
+  mixins: [ pageMixins ],
   data() {
     return {
       // 表头
       supplierTitle,
       // 表单数据
-      data: mokeSupplierData,
+      data: [],
       // 表单选择的数据
       selectData: [],
       // 控制右边按钮整体切换
@@ -135,44 +153,254 @@ export default {
       batchEditVisibal: false,
       // 模具弹窗
       mouldVisibal: false,
+      // 列表加载状态
+      tableLoading: false,
+      // 支持删除的行，us规定，只允许删除新增的行，不允许删除系统带出的行
+      canBeDelete: false,
+      // 最后一条数据的index,用于复制数据
+      lastSelecteDataIndex: 0,
+      // 供应商列表
+      supplierList: [],
+      submiting: false,
       page: {
         currPage: 1,
         pageSize: 10,
-        totalCount: 2
+        totalCount: 0,
+        layout: "total, prev, pager, next, jumper"
       },
       // 全量rfqId，用于模具预算管理列表查询
-      rfqIds: []
+      rfqIds: [],
+      fsIds: []
+    }
+  },
+  mounted() {
+    this.getDataList()
+  },
+  computed: {
+    // 检查选中的条目是否可以被删除
+    checkCanbeDelete() {
+      let state = false
+      if (this.selectData.length === 0) return state = true
+      state = this.selectData.filter(o => o.isAdd || !o.sysDefault).length !== this.selectData.length
+      return state
     }
   },
   methods: {
+    // 生成随机id
+    randomid() {
+      return Math.floor(Math.random() * 10000000)
+    },
+    // 获取供应商信息
+    async getSupplierData() {
+      const data = this.selectData.map(o => {
+        return {
+          fsnrGsnrNum: o.fsnrGsnrNum,
+          nominateAppId: this.$store.getters.nomiAppId || '',
+          rfqId: o.rfqId
+        }
+      })
+      try {
+        const res = await getPartSupplierList(data)
+        if (res.code === '200') {
+          this.supplierList = res.data
+        } else {
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
+      } catch (e) {
+        iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
+      }
+    },
+    // 获取单个零件供应商信息
+    getRfqDepartment(item) {
+      if (item.departmentOption) return
+      const params = [{
+        fsnrGsnrNum: item.fsnrGsnrNum,
+        nominateAppId: this.$store.getters.nomiAppId || '',
+        rfqId: item.rfqId
+      }]
+      getPartSupplierList(params).then(res => {
+        if (res.code === '200') {
+          Vue.set(item, 'departmentOption', res.data)
+        } else {
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
+      }).catch(e => {
+        iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
+      })
+    },
+    // 切换供应商回调
+    onSupplierChange(data, row) {
+      const val = data && data[0] || ''
+      const list = row.departmentOption || []
+      const op = list.find(o => o.supplierName === val) || {}
+      Vue.set(row, 'supplierId', op.supplierId || '')
+      Vue.set(row, 'sapNum', op.sap || '')
+    },
+    // 批量删除
+    async handleBatchDelete() {
+      const confirmInfo = await this.$confirm(this.$t('deleteSure'))
+      if (confirmInfo !== 'confirm') return
+      // this.selectData.forEach((item) => {
+      //   const dIndex = this.data.findIndex(o => o.sid === item.sid)
+      //   if (dIndex > -1) {
+      //     this.data.splice(dIndex, 1)
+      //   }
+      // })
+      const data = {
+        ids: this.selectData.map(o => o.id)
+      }
+      try {
+        const res = await deleteSuggestion(data)
+        if (res.code === '200') {
+          iMessage.success(this.$t('LK_CAOZUOCHENGGONG'))
+          setTimeout(() => {
+            this.getDataList()
+          }, 1500)
+        } else {
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
+      } catch (e) {
+        iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
+      }
+    },
     // 批量编辑
     handleBatchEdit() {
       if (!this.selectData.length) {
-        iMessage.error('请选择')
+        iMessage.error(this.$t('nominationSuggestion.QingXuanZeZhiShaoYiTiaoShuJu'))
         return
       }
       this.batchEditVisibal = true
     },
-    handlEdit() {
-      if (!this.selectData.length) {
-        iMessage.error('请选择')
-        return
-      }
-      this.editControl = true
-      this.setEditState(true)
-    },
-    setEditState(state = false) {
-      this.selectData.forEach(item => {
-        const tar = this.selectData.find(o => o.id === item.id)
-        tar && (Vue.set(tar, 'isEdit', state))
+    onBatchEdit(data) {
+      console.log(data)
+      // 批量更新选中数据
+      this.selectData.forEach(o => {
+        const tar = this.data.find(s => s.sid === o.sid) || {}
+        data.supplierId && (this.$set(tar, 'supplierId', data.supplierId))
+        data.supplierName && (this.$set(tar, 'supplierName', data.supplierName))
+        data.ratio && (this.$set(tar, 'ratio', data.ratio))
       })
     },
-    // 单一供应商
+    // 保存修改记录
+    async submit() {
+      if (!this.selectData.length) {
+        iMessage.error(this.$t('nominationSuggestion.QingXuanZeZhiShaoYiTiaoShuJu'))
+        return
+      }
+      const confirmInfo = await this.$confirm(this.$t('submitSure'))
+      if (confirmInfo !== 'confirm') return
+      this.submiting = true
+      const data = this.selectData.map(o => {
+        return {
+          fsnrGsnrNum: o.fsnrGsnrNum,
+          id: o.id,
+          nominateAppId: this.$store.getters.nomiAppId || '',
+          ratio: o.ratio,
+          sourceId: o.sourceId,
+          supplierId: o.supplierId,
+          supplierName: o.supplierName
+        }
+      })
+      updateSuggestion(data).then(res => {
+        if (res.code === '200') {
+          iMessage.success(this.$t('LK_CAOZUOCHENGGONG'))
+          this.getDataList()
+        } else {
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
+        this.submiting = false
+      }).catch(e => {
+        this.submiting = false
+        iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
+      })
+    },
+    // handlEdit() {
+    //   if (!this.selectData.length) {
+    //     iMessage.error('请选择')
+    //     return
+    //   }
+    //   this.editControl = true
+    //   this.setEditState(true)
+    // },
+    // setEditState(state = false) {
+    //   this.selectData.forEach(item => {
+    //     const tar = this.selectData.find(o => o.id === item.id)
+    //     tar && (Vue.set(tar, 'isEdit', state))
+    //   })
+    // },
+    // 批量选择
     handleSelectionChange(data) {
       this.selectData = data
+      if (data.length) {
+        this.getSupplierData()
+      } else {
+        this.supplierList = []
+      }
+      
     },
-    getTableList() {
+    // 复制条目
+    async copyLines(){
+      if (!this.selectData.length) {
+        iMessage.error(this.$t('nominationSuggestion.QingXuanZeZhiShaoYiTiaoShuJu'))
+        return
+      }
+      const data = this.selectData[this.selectData.length - 1]
+      this.lastSelecteDataIndex = this.data.findIndex(o => o.sid === data.sid)
+      const confirmInfo = await this.$confirm(this.$t('copyChosenSure'))
+      if (confirmInfo !== 'confirm') return
+      // 复制数组
+      const tempArray = _.cloneDeep(this.selectData)
+      tempArray.map(o => {
+        // 重新分配唯一识别id
+        o.sid = this.randomid()
+        // 标识该条数据可以删除
+        o.isAdd = true
+        o.sourceId = o.id
+        delete o.id
+        return o
+      })
+      // 计算插入开始结束位置
+      const start = this.lastSelecteDataIndex + 1
+      // const end = this.lastSelecteDataIndex + this.selectData.length
+      // 插入数组
+      this.data.splice(start, 0, tempArray)
+      this.data = Array.from(new Set(this.data.flat(Infinity)))
+    },
+    getDataList() {
+      this.tableLoading = true
+      getSuggestionList({
+        nominateAppId: this.$store.getters.nomiAppId || '',
+        current: this.page.currPage,
+        size: this.page.pageSize
+      }).then(res => {
+        this.tableLoading = false
+        if (res.code === '200') {
+          this.data = res.data || []
+          // this.data = this.data.slice(0, 4)
+          this.data.map(o => {
+            !o.sid && (o.sid = this.randomid())
+            return
+          })
+          this.page.totalCount = res.total || this.data.length
+          console.log(this.selectTableData)
+        } else {
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
+        console.log(res)
+      }).catch(e => {
+        this.tableLoading = false
+      })
+    },
+    showMouldVisibal() {
+      if (this.selectData.length > 0) {
+        this.rfqIds = _.uniq(this.selectData.map(item => item.rfqId))
+        this.fsIds = this.selectData.map(item => item.fsnrGsnrNum)
+      } else {
+        this.rfqIds = _.uniq(this.data.map(item => item.rfqId))
+        this.fsIds = this.data.map(item => item.fsnrGsnrNum)
+      }
 
+      this.mouldVisibal = true
     }
   }
 }

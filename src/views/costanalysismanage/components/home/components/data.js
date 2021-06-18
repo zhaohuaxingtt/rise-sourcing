@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2021-05-27 13:45:35
- * @LastEditTime: 2021-06-04 17:07:47
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-06-14 16:48:28
+ * @LastEditors: ldh
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\costanalysismanage\components\home\components\data.js
  */
@@ -10,10 +10,10 @@ import { permissionTitle } from "@/utils"
 
 // 技术资料下载弹窗---询价附件表单头
 export const FilesTitle = [
-    {props:'tpPartAttachmentName',name:'文件名称', key: "LK_WENJIANMINGCHENG", tooltip: true},
-    {props:'size',name:'大小(MB)', key: "LK_DAXIAOMB", tooltip: true},
+    {props:'fileName',name:'文件名称', key: "LK_WENJIANMINGCHENG", tooltip: true},
+    {props:'fileSize',name:'大小(MB)', key: "LK_DAXIAOMB", tooltip: true},
     {props:'createDate',name:'上传日期', key: "LK_SHANGCHUANRIQI", tooltip: true},
-    {props:'userName',name:'上传人', key: "LK_SHANGCHUANREN", tooltip: true},
+    {props:'createBy',name:'上传人', key: "LK_SHANGCHUANREN", tooltip: true},
   ]
 
 
@@ -28,22 +28,23 @@ export const FilesTitle = [
 
   // CBD状态弹窗表头
   export const CbdTitle = [
-    {props:'a',name:'FS号', key: "LK_FSHAO", tooltip: true},
-    {props:'b',name:'零件号', key: "LK_LINGJIANHAO", tooltip: true},
-    {props:'c',name:'零件名（中）', key: "LK_LINGJIANMINGZHONG", tooltip: true},
-    {props:'d',name:'零件名（德）', key: "LK_LINGJIANMINGDE", tooltip: true},
-    {props:'e',name:'车型项目', key: "partsignLanguage.CheXingXiangMu", tooltip: true},
-    {props:'f',name:'供应商', key: "LK_GONGYINGSHANGMING", tooltip: true},
-    {props:'g',name:'发送时间', key: "costanalysismanage.FaSongShiJian", tooltip: true},
-    {props:'h',name:'RFQ轮次', key: "costanalysismanage.RfqLunCi", tooltip: true},
-    {props:'i',name:'RFQ状态', key: "LK_RFQZHUANGTAI", tooltip: true},
-    {props:'j',name:'heavy item', key: "LK_HEAVYITEM", tooltip: true},
+    {props:'fsnrGsnrNum',name:'FS号', key: "LK_FSHAO", tooltip: true},
+    {props:'partNum',name:'零件号', key: "LK_LINGJIANHAO", tooltip: true},
+    {props:'partNameZh',name:'零件名（中）', key: "LK_LINGJIANMINGZHONG", tooltip: true},
+    {props:'partNameDe',name:'零件名（德）', key: "LK_LINGJIANMINGDE", tooltip: true},
+    {props:'cartypeProjectZh',name:'车型项目', key: "partsignLanguage.CheXingXiangMu", tooltip: true},
+    {props:'supplierName',name:'供应商', key: "LK_GONGYINGSHANGMING", tooltip: true},
+    {props:'sendDate',name:'发送时间', key: "costanalysismanage.FaSongShiJian", tooltip: true},
+    {props:'round',name:'RFQ轮次', key: "costanalysismanage.RfqLunCi", tooltip: true},
+    {props:'rfqStatus',name:'RFQ状态', key: "LK_RFQZHUANGTAI", tooltip: true},
+    {props:'heavyItem',name:'heavy item', key: "LK_HEAVYITEM", tooltip: true},
   ]
 
 export const queryForm = {
   rfqId: "",
   rfqStatus: "",
   partNum: "",
+  partName: "",
   carType: "",
   pca: "",
   tia: "",

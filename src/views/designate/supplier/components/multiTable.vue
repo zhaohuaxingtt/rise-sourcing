@@ -32,7 +32,7 @@
       :tableData="tableListData"
       :tableTitle="multiSupplierTitle"
       :tableLoading="tableLoading"
-      :treeProps="{'tree-props': {children: 'children', hasChildren: 'hasChildren'}, 'row-key': 'id'}"
+      :treeProps="{'tree-props': {children: 'children'}, 'row-key': 'id'}"
       @handleSelectionChange="handleMutiSelectionChange"
       @openPage="openPage"
       :activeItems="'partNum'"
@@ -43,10 +43,10 @@
       </el-tooltip>
     </template>
     <!-- 厂商 -->
-    <template #fsnrGsnrName="scope">
+    <template #factoryNameCh="scope">
       <div>
-        <span class="factoryDesc">{{scope.row.fsnrGsnrName }}</span>
-        <el-tooltip effect="light" :content="'FRM评级：CCC'" v-if="scope.row.frmWarning">
+        <span class="factoryDesc">{{scope.row.factoryNameCh }}</span>
+        <el-tooltip effect="light" :content="`FRM评级：${scope.row.frmRate}`" v-if="scope.row.isFRMRate === 1">
           <span>
             <icon symbol name="iconzhongyaoxinxitishi" />
           </span>
@@ -89,9 +89,12 @@ import {
   getSupplierList,
   addSuppliersInfo
 } from '@/api/designate/supplier' 
+import { pageMixins } from '@/utils/pageMixins'
+import filters from "@/utils/filters"
 import _ from 'lodash'
 
 export default {
+  mixins: [ filters, pageMixins ],
   components: {
     iCard,
     iButton,
@@ -110,19 +113,17 @@ export default {
       multiEditState: false,
       multiEditControl: false,
       selectMultiData: [],
-      submiting: false,
-      page: {
-        currPage: 1,
-        pageSize: 10,
-        totalCount: 0,
-        layout: "total, prev, pager, next, jumper"
-      }
+      submiting: false
     }
   },
   mounted() {
     this.getFetchDataList()
   },
   methods: {
+    // 生成随机id
+    randomid() {
+      return Math.floor(Math.random() * 10000000)
+    },
     // 加入展示
     addShow(type = true) {
       if (!this.selectMultiData.length) {
@@ -170,7 +171,17 @@ export default {
       }).then(res => {
         this.tableLoading = false
         if (res.code === '200') {
-          this.tableListData = res.data || []
+          const tableListData = res.data || []
+          tableListData.map(o => {
+            o.id = this.randomid()
+            o.nestedList && o.nestedList.length && (o.nestedList.map(item => {
+              item.id = this.randomid()
+              return item
+            }))
+            o.children = o.nestedList || []
+            return o
+          })
+          this.tableListData = tableListData
           this.oriTableListData = _.cloneDeep(this.tableListData)
           if (this.page) {
             this.page.totalCount = Number(res.total || 0)

@@ -109,7 +109,7 @@
       <!-- 车型项目 -->
       <el-form-item :label="$t('nominationLanguage.CheXingXiangMu')">
         <iSelect
-          v-model="form.cartypeProjectZh"
+          v-model="form.carTypeProj"
           :placeholder="$t('LK_QINGXUANZE')"
           v-permission="PARTSPROCURE_PARTNUMBER"
           filterable
@@ -120,7 +120,7 @@
             :label="$t('all') | capitalizeFilter"
           ></el-option>
           <el-option
-            :value="items.key"
+            :value="items.code"
             :label="items.value"
             v-for="(items, index) in ($attrs && $attrs.carTypeList) || []"
             :key="index"
@@ -217,6 +217,7 @@ export default {
     },
     reset() {
       this.form = {}
+      this.$emit('search', {})
     }
   },
   // watch: {

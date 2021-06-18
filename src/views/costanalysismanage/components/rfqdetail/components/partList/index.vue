@@ -18,11 +18,15 @@ s<!--
       <tableList
         class="table"
         index
+        :cellClassName="cellClass"
         :tableData="tableListData"
         :tableTitle="tableTitle"
         :tableLoading="loading"
+        @handleSelectionChange="handleSelectionChange"
       >
         <template #partNum="scope">
+          <!-- <span v-if="scope.row.sendKmFlag == 1" class="link-underline" @click="jumpPartDetail(scope.row)">{{ scope.row.partNum }}</span>
+          <span v-else>{{ scope.row.partNum }}</span> -->
           <span class="link-underline" @click="jumpPartDetail(scope.row)">{{ scope.row.partNum }}</span>
         </template>
         <template #cbdStatus="scope">
@@ -86,6 +90,7 @@ export default {
       tableListData: [],
       saveLoading: false,
       downloadDialogVisible: false,
+      multipleSelection: []
     }
   },
   mounted() {
@@ -113,11 +118,15 @@ export default {
       })
       .catch(() => this.loading = false)
     },
+    handleSelectionChange(list) {
+      this.multipleSelection = list.filter(item => item.sendKmFlag == 1)
+    },
     // 保存
     handleSave() {
       this.saveLoading = true
 
-      if (this.tableListData.some(item => item.sendKmFlag == 1 && (!item.pcaResult || !item.tiaResult))) return iMessage.warn(this.$t("costanalysismanage.SavePcaResAndTiaResTips"))
+      if (!this.multipleSelection.length) return iMessage.warn(this.$t("costanalysismanage.QingXuanZeXuYaoBaoCunDeShuJu"))
+      if (this.multipleSelection.some(item => item.sendKmFlag == 1 && (!item.pcaResult || !item.tiaResult))) return iMessage.warn(this.$t("costanalysismanage.SavePcaResAndTiaResTips"))
 
       savePcaAndTia({
         savePcaTiaDTOS: this.tableListData.map(item => ({
@@ -149,7 +158,7 @@ export default {
     handleDownloadCbd() {},
     // 跳转零件详情
     jumpPartDetail(row) {
-      window.open(`/#/supplier/quotationdetail?partNum=${ row.partNum }&rfqId=${ this.rfqId }&round=${ row.round }&fsNum=${ row.fsnrGsnrNum }`, "_blank")
+      window.open(`/#/supplier/quotationdetail?partNum=${ row.partNum }&fix=true&rfqId=${ this.rfqId }&round=${ row.round }&fsNum=${ row.fsnrGsnrNum }&supplierId=${ row.supplierId }`, "_blank")
     },
     handleInputByPcaResult(value, row) {
       this.$set(row, "pcaResult", numberProcessor(value, 2))
@@ -160,6 +169,11 @@ export default {
     // 关闭弹窗
     changeVisible(type){
       this.downloadDialogVisible = type
+    },
+    cellClass(row) {
+      if (row.row.sendKmFlag != 1) {
+        return "hideCheckbox"
+      }
     }
   }
 }

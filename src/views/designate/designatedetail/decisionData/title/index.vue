@@ -52,7 +52,7 @@ export default {
              {label:'Project Type',key:'projectType'},
              {label:'Part',key:'nominateName'},
              {label:'Project',key:'projects'},
-             {label:'SOP Time',key:'SOPTime'},
+             {label:'SOP Time',key:'soptime'},
              {label:'Buyer',key:'buyer'},
              {label:'Single Sourcing',key:'singleSourcing'},
              {label:'PCA/TIA',key:'PCA/TIA'},
@@ -66,10 +66,10 @@ export default {
        // 获取title信息
        async getInfo(){
          const { query } = this.$route;
-         const {id ='1'} = query;
+         const {desinateId =''} = query;
          const { titleData } = this;
          const newData = cloneDeep(titleData);
-        await findLayoutTitleInfo({nominateId:id}).then((res)=>{
+        await findLayoutTitleInfo({nominateId:desinateId}).then((res)=>{
             const {data,code} = res;
             if(code == 200 && data){
                console.log(data);

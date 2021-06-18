@@ -134,6 +134,8 @@
             'QingXuanZeRfqZhuangTai': '', // 请选择RFQ状态
             'LingJianHao': '', // 零件号
             'QingShuRuLingJianHao': '', // 请输入零件号
+            'LingJianMing': '', // 零件名
+            'QingShuRuLingJianMing': '', // 请输入零件名
             'CheXingXiangMu': '', // 车型项目
             'QingXuanZeCheXingXiangMu': '', // 请选择车型项目
             'Pca': 'PCA', // PCA
@@ -190,6 +192,7 @@
             'GongYingShang': '供应商', // 供应商
             'PcaFenXiJieGuo': '', // PCA分析结果
             'TiaFenXiJieGuo': '', // TIA分析结果
+            'QingXuanZeXuYaoBaoCunDeShuJu': '', // 请选择需要保存的数据
             'SavePcaResAndTiaResTips': '', // 请填写完整PCA分析结果和TIA分析结果
 
             'BaoGaoQingDan':'报告清单',// 报告清单
@@ -895,7 +898,7 @@
         'LK_FUJIANQINGDAN':'附件清单', // 附件清单
         'LK_SHANGCHUANWENJIAN':'上传文件', // 上传文件
         'LK_DAORU':'导入', // 导入
-        'LK_PEIJIANMUBANXIAZAI':'配件模板下载', // 配件模板下载
+        'LK_FUJIANMUBANXIAZAI':'附件模板下载', // 附件模板下载
         'LK_DAORUYUAN':'导⼊员', // 导⼊员
         'LK_YULAN':'预览', // 预览
         'LK_TIAOZHUANZHILINGJIANQINGDANTIANJIA':'跳转⾄零件清单添加', // 跳转⾄零件清单添加
@@ -1012,6 +1015,21 @@
             'SHENPIRENANDSHENPIJILU':'审批⼈ & 审批记录', // 审批⼈ & 审批记录
             'JUECEZILIAO':'决策资料', // 决策资料
             'DINGDIAN':'定点', // 定点
+            'LK_QINGXUANZEYITIAORFQ': '请选择一条RFQ', // 请选择一条RFQ
+            'LK_QINGXUANZEDINGDIANSHENQINGLEIXING': '请选择定点申请类型', // 请选择定点申请类型
+            'LK_DINGDIANSHENQINGLEIXING': '定点申请类型', // 定点申请类型
+            'LK_GAIDINGDIANSHENQINGZHONGYOUDANYIGONGYINGSHANG': '该定点申请中有单一供应商', // 该定点申请中有单一供应商
+            'LK_DINGDIANXINLOI':'定点信 / LOI', // 定点信 / LOI
+            'LK_DINGDIANXIN':'定点信', // 定点信
+            'LK_LOI':'LOI', // LOI
+            'LK_DINGDIANXINBIANHAO':'定点信编号', // 定点信编号
+            'LK_DINGDIANXINZHUANGTAI':'定点信状态',//  定点信状态
+            'LK_DINGDIANXINDANHAO':'定点申请单号', // 定点申请单号
+            'LK_DINGDIANSHIJIANQIZHI':'定点时间起⽌', //  定点时间起⽌
+            'LK_SHIFOUXIANSHIZIJI':'是否显⽰⾃⼰', //  是否显⽰⾃⼰
+            'LK_GONGYINGSHANGFANKUI':'供应商反馈', // 供应商反馈
+            'LK_SHIFOUQIANSHUXIEYI':'是否签署协议', // 是否签署协议
+            'LK_DINGDIANRIQI':'定点⽇期', //定点⽇期
         },
 
         // 定点建议
@@ -1044,7 +1062,12 @@
             'ChongFuTiJiao': '重复提交', // 重复提交
             'QiYuShuJuZhengChangTiJiao': '其余数据正常提交', // 其余数据正常提交
             'ChongFuCheHui': '重复撤回', // 重复撤回
-            'QiYuShuJuZhengChangCheHui': '其余数据正常撤回', // 其余数据正常撤回
+            'QiYuShuJuZhengChangCheHui': '其余数据正常撤回', // 其余数据正常撤回 
+            'QingXuanZeCbdCengJiWeiL3DeShuJu': '请选择CBD层级为L3的数据', // 请选择CBD层级为L3的数据
+        },
+        "BJZS":{
+            "LK_BAOJIAZUSHOU_MJ":"报价分析汇总-模具",
+            "LK_BAOJIAZUSHOU_MJDANWEIYUAN":"报价分析汇总-模具（单元：元）"
         }
     })
 }))

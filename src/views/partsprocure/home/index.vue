@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 09:50:42
- * @LastEditTime: 2021-06-05 14:37:46
+ * @LastEditTime: 2021-06-16 19:40:20
  * @LastEditors: Please set LastEditors
  * @Description: 零件采购项目建立首页。
  * @FilePath: \rise\src\views\partsprocure\home\index.vue
@@ -12,7 +12,7 @@
       <el-tab-pane :label="$t('LK_XUNYUANZHIHANG')" name="source">
         <div>
           <div class="margin-bottom33">
-            <iNavMvp @change="change" right routerPage lev="2" :list="navList" />
+            <iNavMvp @change="change" right routerPage lev="2" :list="navList" @message="clickMessage" />
           </div>
           <!------------------------------------------------------------------------>
           <!--                  search 搜索模块                                   --->
@@ -295,7 +295,7 @@ import {
   iSearch,
   iInput,
   iSelect,
-} from "@/components";
+} from "rise";
 import { iNavMvp } from "rise";
 import { pageMixins } from "@/utils/pageMixins";
 import backItems from "@/views/partsign/home/components/backItems";
@@ -310,8 +310,11 @@ import { insertRfq } from "@/api/partsrfq/home";
 import changeItems from "../../partsign/home/components/changeItems";
 import filters from "@/utils/filters";
 import creatFs from "./components/creatFs";
-import { navList } from "@/views/partsign/home/components/data";
-import { cloneDeep } from "lodash";
+import { cloneDeep } from "lodash"
+import { clickMessage } from "@/views/partsign/home/components/data"
+
+// eslint-disable-next-line no-undef
+const { mapState, mapActions } = Vuex.createNamespacedHelpers("sourcing")
 
 export default {
   mixins: [pageMixins, filters],
@@ -336,18 +339,19 @@ export default {
       tableTitle: tableTitle,
       selectTableData: [],
       diologChangeItems: false,
-      form: form,
+      form: cloneDeep(form),
       fromGroup: [],
       diologBack: false, //退回
       startLoding: false,
       tab: "source",
-      navList: cloneDeep(navList)
     };
   },
   computed: {
     projectIds() {
       return this.getPurchasePrjectId();
     },
+    ...mapState(["navList"]),
+    ...mapActions(["updateNavList"])
   },
   created() {
     Object.keys(this.$route.query).forEach(key => {
@@ -356,6 +360,7 @@ export default {
 
     this.getTableListFn();
     this.getProcureGroup();
+    this.updateNavList
   },
   methods: {
     // 跳转详情
@@ -440,9 +445,9 @@ export default {
       getTabelData(this.form)
         .then((res) => {
           this.tableLoading = false;
-          this.page.currPage = res.data.pageData.pageNum;
-          this.page.pageSize = res.data.pageData.pageSize;
-          this.page.totalCount = res.data.pageData.total;
+          // this.page.currPage = res.data.pageData.pageNum;
+          // this.page.pageSize = res.data.pageData.pageSize;
+          this.page.totalCount = res.data.pageData.total || 0
           this.tableListData = res.data.pageData.data;
         })
         .catch(() => (this.tableLoading = false));
@@ -575,16 +580,20 @@ export default {
     },
     openCreateParts() {
       this.$router.push({ path: "/sourcing/createparts/home" })
-    }
+    },
+    // 通过待办数跳转
+    clickMessage,
   },
   beforeRouteUpdate(to, from, next) {
-    Object.keys(this.$route.query).forEach(key => {
+    this.form = cloneDeep(form)
+
+    Object.keys(to.query).forEach(key => {
       this.$set(this.form, `search.${ key }`, to.query[key])
     })
 
     this.getTableListFn()
     next()
-  }
+  },
 };
 </script>
 <style lang="scss" scoped>

@@ -46,7 +46,7 @@ export const attachMixins = {
         }, params))
         if (res1.code === '200') {
           const list = res1.data || []
-          const fileList = list.map(o => o.filePath)
+          const fileList = list.map(o => o.fileName)
           if (fileList.length) {
             const params = {
               applicationName: 'rise',
@@ -126,7 +126,7 @@ export const attachMixins = {
 
     },
     // 删除文件,
-    async deleteFile(fileList = []) {
+    async deleteFile(fileList = [], callback) {
       let idList = []
       if (!(fileList && fileList.length)) {
         if (!this.multipleSelection.length) {
@@ -145,7 +145,7 @@ export const attachMixins = {
         const res = await batchDeletefile({idList})
         if (res.code === '200') {
           iMessage.success(this.$t('LK_CAOZUOCHENGGONG'))
-          this.getFetchData()
+          callback && typeof callback === 'function' && (callback())
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }
@@ -155,7 +155,7 @@ export const attachMixins = {
     },
     // 下载文件
     downloadFile() {
-      const fileList = this.multipleSelection.map(o => o.filePath)
+      const fileList = this.multipleSelection.map(o => o.fileName)
       if (!fileList.length) return iMessage.error(this.$t('nominationSuggestion.QingXuanZeZhiShaoYiTiaoShuJu'))
       try {
         console.log(fileList)
@@ -169,6 +169,14 @@ export const attachMixins = {
       } catch (e) {
         console.log(e)
       }
+    },
+    // 
+    dowloadSingleFile(item) {
+      const params = {
+        applicationName: 'rise',
+        fileList: [item.fileName]
+      }
+      downloadFile(params)
     },
   }
 } 

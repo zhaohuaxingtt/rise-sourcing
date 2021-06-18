@@ -40,7 +40,7 @@
           <el-checkbox
             v-model="scope.row.selected"
             v-if="batchEdit"
-            @change="handleSelectionChange"></el-checkbox>
+            @change="handleSelectionChange(scope)"></el-checkbox>
           <div class="tableSelection" v-if="scope.row.groupId">{{scope.row.groupName}}</div>
         </template>
       </el-table-column>
@@ -115,10 +115,12 @@
           <template slot-scope="scope">
             <div v-if="batchEdit">
               <iInput
+                v-if="scope.row && scope.row.supplierChosen[hindex - 1] "
                 :placeholder="scope.row.percent && scope.row.percent[hindex - 1] || $t('LK_QINGSHURU')"
                 v-model="scope.row.percent[hindex - 1]"
-                @change="handleEditPercent(scope.row, hindex)"
+                @change="handleEditPercent(scope.row, hindex - 1)"
               ></iInput>
+              <span v-else>{{scope.row.percent && scope.row.percent[hindex - 1] || ''}}</span>
             </div>
             <div v-else>{{scope.row.percent && scope.row.percent[hindex - 1] || '' }}</div>
           </template>
@@ -192,34 +194,55 @@ export default {
       })
     },
     // section选择
-    handleSelectionChange() {
-      let selectedData = this.tableData.filter(o => o.selected)
-      selectedData.forEach(item => {
-        if (item.groupId){
-          const groupedArray = this.tableData.filter(o => o.groupId === item.groupId)
-          selectedData = [...selectedData, ...groupedArray]
-        }
-      })
+    handleSelectionChange(scope) {
+      const row = scope.row
+      const selected = row.selected
+      let selectedData = this.selectedData
+      const newSelectedData = row.groupId ? this.data.filter(o => o.groupId === row.groupId) : [row]
+      if (!selected) {
+        selectedData = _.pullAllBy(selectedData, newSelectedData, 'id')
+      } else {
+        selectedData = selectedData.concat(newSelectedData)
+      }
       this.selectedData = _.uniqBy(selectedData, o => o.id)
-      // console.log(this.selectedData)
+      // console.log('selectedData', this.selectedData, this.data)
     },
     // 点击cell，分比例
     handleCellClick(row, Index) {
       const curSupplier = this.supplier[Index]
       const supplierChosen = row.supplierChosen && row.supplierChosen || []
+      const percent = row.percent || []
+      const cIndex = supplierChosen.findIndex(o => o === curSupplier)
+      if (!this.batchEdit) return
       if (supplierChosen.includes(curSupplier))  {
-        const cIndex = supplierChosen.findIndex(o => o === curSupplier)
+        // 只有一家供应商报价
         if (supplierChosen.length === 1) return
         supplierChosen.splice(cIndex, 1)
+        percent.splice(percent, 1)
       } else {
         supplierChosen.push(curSupplier)
       }
+      // 添加未保存警告
+      this.$emit('unSaveWarning', true)
       Vue.set(row, 'supplierChosen', supplierChosen)
+      Vue.set(row, 'percent', percent)
+      // console.log('handleCellClick', curSupplier, cIndex, supplierChosen, row)
     },
     // 编辑百分比
     handleEditPercent(row, Index) {
-      console.log(row, Index)
+      const percent = row.percent || []
+      const count = _.sum(percent.map(o => Number(o)))
+      // 校验是否包含负数比例
+      const containNGNumber = percent.filter(m => m < 0).length
+      if (isNaN(count) || count > 100 || containNGNumber) {
+        percent[Index] = 0
+        Vue.set(row, 'percent', percent)
+        iMessage.error(this.$t('nominationSuggestion.NingShuRuDeBiLiBuHeFa'))
+        return
+      }
       this.chartData = this.calculateBestTTo(this.data)
+      // 添加未保存警告
+      this.$emit('unSaveWarning', true)
       this.$nextTick(() => {
         this.$emit('updateCharts', this.chartData)
       })
@@ -282,6 +305,50 @@ export default {
         })
       })
     },
+    cacleSc(data = [], index = null) {
+      let count = 0
+      let str = ''
+      data.forEach((item) => {
+        const tto = item.TTo || []
+        tto.forEach((t, tIndex) => {
+          if (index !== null) {
+            if (index === tIndex) {
+              const percent = ((item.percentCalc[tIndex] || 0) / 100).toFixed(2)
+              count += Number(t) * percent
+              str += `${Number(t)}* ${percent} +`
+            }
+          } else {
+            const percent = ((item.percentCalc[tIndex] || 0) / 100).toFixed(2)
+            count += Number(t) * percent
+            str += `${Number(t)}* ${percent} +`
+          }
+        })
+      })
+      // console.log(data, str, count)
+      return Number(count).toFixed(0)
+    },
+    // 筛选出分组最低的供应商
+    filterBestGrouper(data) {
+      let gState = true
+      let bestGroup = []
+      // 校验改分组是否所有供应商都有报价
+      data.forEach(item => {
+        gState = !(item.TTo.filter(o => Number(o) === 0).length)
+      })
+      this.supplier.forEach((supplierName, index) => {
+        // 检查该供应商是否支持汇总，这个供应商对所有零件都有报价才支持
+        const cstStatus = !data.map(dataItem => dataItem.TTo[index]).filter(p => p === 0).length
+        const wholePackageData = data.map(o => o.TTo[index])
+        cstStatus && (bestGroup[index] = {
+          index,
+          data: _.sum(wholePackageData)
+        })
+      })
+      if (!bestGroup.length) return false
+      bestGroup = _.sortBy(bestGroup, ['data'])
+      // console.log('--bestGroup', bestGroup)
+      return bestGroup[0]
+    },
     /**
      * 计算柱状图最佳TTO
      * Best TTO for Whole Package 所有零件报价最低的厂商
@@ -290,73 +357,160 @@ export default {
      * Recommend Scenario 自定义最低，加权最低
      */
     calculateBestTTo(data = []) {
+      if (!data.length) return {}
       // Best TTO for Whole Package
       const GroupKey = 'gid'
       const res = [[], []]
-      const countSupplier = []
+      let countSupplier = []
+      // 分组汇总
+      let bestGroup = []
+      // 单个零件最低
+      let partSupplier = []
+      // 权重供应商
+      let weightSupplier = []
+      // 校验是否显示加权第四根柱子
+      let isShowWeightStick = false
+      isShowWeightStick = Boolean(data.filter(o => o.supplierChosen && o.supplierChosen.length > 0).length)
+
       // 根据供应商
-      this.supplier.forEach((item, index) => {
-        countSupplier[index] = data.map(o => Number(o.TTo[index])).reduce((total, n) => total += n)
-      })
-      console.log('1', data, countSupplier)
-      res[0][0] = 0
-      res[1][0] = countSupplier.reduce((total, n) => total += n)
+      this.supplier.forEach((supplierName, index) => {
+        // 检查该供应商是否支持汇总，这个供应商对所有零件都有报价才支持
+        const cstStatus = !data.map(dataItem => dataItem.TTo[index]).filter(p => p === 0).length
+        const wholePackageData = data.map(o => o.TTo[index])
+        cstStatus && (countSupplier[index] = {
+          index,
+          data:  _.sum(wholePackageData)
+        })
+        // 分组最优数据支持
+        // bestGroup[index] = {
+        //   index,
+        //   data:  _.sum(data.map(o => {
+        //     let itemValue = Number(o.TTo[index])
+        //     if (!(o.supplierChosen.includes(supplierName) && itemValue)) {
+        //       itemValue = 0
+        //     }
+        //     return itemValue
+        //   }))
+        // }
 
-      
-
-      // Best TTO by Group
-      // 筛选出所有的分组
-      const groups = _.uniq(data.filter(o => o[GroupKey]).map(o => o[GroupKey]))
-      const bestGroup = []
-      groups.forEach((gid, index) => {
-        const groupedArray = data.filter(o => o[GroupKey] === gid)
-        bestGroup[index] = groupedArray.map(o => {
-          const tto = [...(o.TTo || [])]
-          return Number(tto.sort()[0])
-        }).reduce((total, n) => total += n)
-        console.log(index, groupedArray.map(o => {
-          const tto = [...(o.TTo || [])]
-          return Number(tto.sort()[0])
-        }))
-      })
-
-      res[0][1] = bestGroup[0] || 0
-      res[1][1] = bestGroup[1] || 0
-
-      // Best TTO by Part
-      const TTO = data.map(o => o.TTo)
-      const filtedTTo = TTO.flat(Infinity).sort((a, b) => { return a - b})
-      const countTTo = filtedTTo.reduce((total, n) => {
-        total = Number(total) + Number(n);
-        return total
-      })
-      res[0][2] = filtedTTo[0]
-      res[1][2] = countTTo
-
-      // Recommend Scenario 加权最低
-      const weightedTTo = []
-      data.forEach((item, index) => {
-        let count = 0
-        const tto = item.TTo || []
-        tto.forEach((t, tIndex) => {
-          const percent = (item.percent[tIndex] / 100)
-          if (!isNaN(percent)) {
-            count = Number(count) + Number(t) * percent
-            count = Number(count).toFixed(0)
+        // 分供应商筛选出报价最高和最低的零件
+        let baojiaTTo = []
+        let baojiaArray = []
+        data.forEach((dataItem) => {
+          // 取出供应商有效报价的零件价格
+          if (dataItem.TTo[index] && dataItem.supplierChosen.includes(supplierName)) {
+            baojiaTTo.push(dataItem.TTo[index])
+            baojiaArray.push(dataItem)
           }
         })
-        weightedTTo[index] = count
-      })
-      const countWeightedTTo = weightedTTo.reduce((total, n) => {
-        total = Number(total) + Number(n);
-        return total
-      })
+        baojiaTTo = baojiaTTo.sort()
+        partSupplier[index] = !baojiaTTo.length ? [0, 0] : [
+          baojiaTTo[0],
+          baojiaTTo[baojiaTTo.length - 1]
+        ]
 
-      res[0][3] = weightedTTo.sort()[0]
-      res[1][3] = countWeightedTTo
+        // 求对应供应商的权重
+        weightSupplier[index] = this.cacleSc(baojiaArray, index)
 
-      console.log('calculateBestTTo', res, bestGroup, weightedTTo)
-      return res
+      })
+      // 总计
+      countSupplier = countSupplier.sort((a, b) => a.data - b.data)
+      console.log('countSupplier', countSupplier)
+      // 分组排序
+      // bestGroup = bestGroup.sort((a, b) => a.data - b.data)
+
+      
+      const wholePackage = (countSupplier[0] && countSupplier[0].data) || 0
+      const wholePackageIndex = (countSupplier[0] && countSupplier[0].index) || 0
+
+      // 取出分组最低
+      const groups = _.uniq(data.filter(o => o[GroupKey]).map(o => o[GroupKey]))
+      console.log('groups', groups)
+      // let weightedGroup = []
+      groups.forEach((gid, index) => {
+        const groupedArray = data.filter(o => o[GroupKey] === gid)
+        // 已分组，取最低TTO，
+        const itemBestGroup = this.filterBestGrouper(groupedArray)
+        if (itemBestGroup) {
+          bestGroup.push(itemBestGroup)
+        }
+        // 分组权重
+        // weightedGroup[index] = this.cacleSc(groupedArray)
+      })
+      
+      // 取出未分组最低，未分组的按照单独分组处理
+      const unGroupedList = data.filter(o => !o[GroupKey])
+      if (unGroupedList.length) {
+        unGroupedList.forEach(item => {
+          const itemBestGroup = this.filterBestGrouper([item])
+          if (itemBestGroup) {
+            bestGroup.push(itemBestGroup)
+          }
+          // 分组权重
+          // weightedGroup.push(this.cacleSc([item]))
+        })
+      }
+      bestGroup = _.sortBy(bestGroup, ['data'])
+      // console.log('bestGroup', bestGroup)
+      // 筛选分组最低数据
+      const bestGroupTotal = _.sum(bestGroup.map(o => o.data))
+      const bestGroupSupplier = [bestGroup[0].data, bestGroupTotal - bestGroup[0].data]
+      const bestGroupSupplierIndex = bestGroup[0].index
+      bestGroupSupplier.push(bestGroupTotal)
+      
+      // console.log('weightSupplier', weightSupplier)
+
+
+
+      // 零件最低
+      let minPartSupplierTToTotal = 0
+      let minPartSupplierTToArray = []
+      data.forEach((item) => {
+        const tto = item.TTo.filter(p => p>0).sort()
+        minPartSupplierTToTotal += Number(tto[0])
+      })
+      let bestPartList = []
+      data.forEach(item => {
+        let minTTo = item.TTo.map((data, index) => {
+          return {
+          index, 
+          data
+        }
+        })
+        
+        minTTo = _.sortBy(minTTo.filter(o=> o.data > 0), ['data'])
+        console.log('minTTo[0]', minTTo[0])
+        if (minTTo[0]) {
+          bestPartList.push(minTTo[0])
+        }
+      })
+      bestPartList = bestPartList.sort()
+      this.supplier.forEach((supplierName, index) => {
+        const sup = bestPartList.filter(o => o.index === index)
+        minPartSupplierTToArray[index] = {
+          index,
+          data: _.sum(sup.map(supItem => supItem.data))
+        }
+      })
+      
+      // console.log('minPartSupplierTTo',minPartSupplierTToArray)
+      // 加权汇总
+      const weightSupplierTotal = _.sum(weightSupplier.map(o => Number(o)))
+
+      return {
+        wholePackage,
+        wholePackageIndex,
+        // 分组最佳
+        bestGroupSupplier,
+        bestGroupSupplierIndex,
+        // 报价都是最低的供应商
+        minPartSupplierTToArray,
+        minPartSupplierTToTotal,
+        // 权重
+        weightSupplier,
+        weightSupplierTotal,
+        isShowWeightStick
+      }
     }
   }
 }

@@ -3,8 +3,8 @@
     <div class="dialog-Header" slot="title">
       <div class="font18 font-weight">{{$t('strategicdoc.ZiDingYi')}}</div>
       <div class="control">
-        <iButton @click="submit">{{ $t('LK_BAOCUN') }}</iButton>
-        <iButton @click="reset">{{ $t('LK_CHONGZHI') }}</iButton>
+        <iButton :loading="submiting" @click="submit">{{ $t('LK_BAOCUN') }}</iButton>
+        <iButton :loading="isLoading" @click="reset">{{ $t('LK_CHONGZHI') }}</iButton>
       </div>
     </div>
     <div class="body">
@@ -53,7 +53,8 @@ import tableList from '@/views/designate/supplier/components/tableList'
 import filters from '@/utils/filters'
 import _ from 'lodash'
 import {
-  updateTabPageManager
+  updateTabPageManager,
+  tabPageLayoutsReset,
 } from '@/api/designate'
 
 export default {
@@ -85,7 +86,9 @@ export default {
       tableListData: [],
       phaseType: {},
       Selection: [],
-      controlHeight: 0
+      controlHeight: 0,
+      isLoading:false,
+      submiting: false
     }
   },
   methods: {
@@ -107,32 +110,65 @@ export default {
         return a.sort - b.sort
       })
     },
-    reset() {
-      this.getFetchData()
+    async reset() {
+      const nominateId = this.$store.getters.nomiAppId ; 
+      const confirmInfo = await this.$confirm(this.$t('resetSure'))
+      if (confirmInfo !== 'confirm') return
+      this.isLoading = true;
+      tabPageLayoutsReset(nominateId).then((res)=>{
+        const { code } = res;
+        this.isLoading = false;
+        if(code == '200'){
+          const nodes = []
+          // 从接口取菜单顺序
+          let nodeList = res.data.nodeList
+          if (!nodeList.length) {
+            iMessage.error(this.$t('strategicdoc.WuFaChongZhi'))
+            return
+          }
+          // 取接口回来的顺序
+          nodeList.forEach(tab => {
+            const targetItem = this.tableListData.find(o => o.name === tab.tabName)
+            if (targetItem) {
+              nodes.push(targetItem)
+            }
+          })
+          this.tableListData = nodes
+          this.submit(false)
+        }else{
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
+      }).catch((err)=>{
+        iMessage.error(this.$i18n.locale === "zh" ? err.desZh : err.desEn)
+        this.isLoading = false;
+      })
+      
     },
-    async submit() {
+    async submit(confirm = true) {
       const { query } = this.$route;
       const {desinateId} = query;
       const data = {
-        nominateTabPageDTO: {
-          nodes: this.tableListData,
-          nominateId: this.$store.getters.nomiAppId
-          // phaseType: this.phaseType
-          
-        },
+        nodes: this.tableListData,
         nominateId: this.$store.getters.nomiAppId
+        // phaseType: this.phaseType
       }
-      const confirmInfo = await this.$confirm(this.$t('submitSure'))
-      if (confirmInfo !== 'confirm') return
+      if (confirm) {
+        const confirmInfo = await this.$confirm(this.$t('submitSure'))
+        if (confirmInfo !== 'confirm') return
+      }
+      this.submiting = true
       updateTabPageManager(data).then((res)=>{
         if (res.code === '200') {
           iMessage.success(this.$t('LK_CAOZUOCHENGGONG'));
+          const nominateId = this.$store.getters.nomiAppId || this.$route.query.desinateId
+          this.$store.dispatch('setNominationStep',{nominateId})
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }
-          
+        this.submiting = false
       }).catch(e => {
-          iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
+        this.submiting = false
+        iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
       })
     },
     getFetchData() {

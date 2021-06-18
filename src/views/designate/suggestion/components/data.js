@@ -16,31 +16,31 @@ export const supplierTitle = [
     tooltip: false
   },
   {
-    props: 'sapNum',
+    props: 'fsnrGsnrNum',
     name: 'FSNR/GSNR',
     key: '',
     tooltip: false
   },
   {
-    props: 'rfqNum',
+    props: 'rfqId',
     name: 'RFQ编号',
     key: 'nominationLanguage.RFQBianHao',
     tooltip: false
   },
   {
-    props: 'factory',
+    props: 'purchasingFactory',
     name: '采购工厂',
     key: 'nominationSupplier.CaiGouGongChang',
     tooltip: false
   },
   {
-    props: 'fsnrGsnrNameEn',
+    props: 'partNameZh',
     name: '零件名(中)',
     key: 'nominationLanguage.LingJianMingCN',
     tooltip: false
   },
   {
-    props: 'fsnrGsnrNameEn',
+    props: 'partNameDe',
     name: '零件名(德)',
     key: 'nominationLanguage.LingJianMingDE',
     tooltip: false
@@ -52,14 +52,14 @@ export const supplierTitle = [
     tooltip: false
   },
   {
-    props: 'supplierNum',
+    props: 'supplierId',
     name: '供应商号',
     key: 'nominationSupplier.GongYingShangHao',
     tooltip: false
   },
   {
-    props: 'percent',
-    name: 'SAP号',
+    props: 'ratio',
+    name: '',
     key: 'nominationSuggestion.BiLi',
     tooltip: false
   }
@@ -258,4 +258,19 @@ export const mouldBudgetManagementDialogTableTitle = [
   { props: "csfPDiretor", name: "CSF(P)负责人", tooltip: true, key: "nominationSuggestion.CsfPFuZeRen" },
   { props: "approvalStatus", name: "审批状态", tooltip: true, key: "nominationSuggestion.ShenPiZhuangTai" },
   { props: "approvalComments", name: "审批意见", tooltip: true, key: "nominationSuggestion.ShenPiYiJian" },
+]
+
+export const colorPanel = [
+  '#005cfa',
+  '#94c8fc',
+  '#137cbd',
+  '#92b2f1',
+  '#1316bd',
+  '#604198',
+  '#ef2121',
+  '#1890ff',
+  '#1373cc',
+  '#0e5699',
+  '#0a3a66',
+  '#051d33',
 ]

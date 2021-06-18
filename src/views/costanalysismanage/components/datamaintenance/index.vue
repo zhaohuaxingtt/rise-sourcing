@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-05-27 12:33:07
- * @LastEditTime: 2021-06-07 18:14:42
+ * @LastEditTime: 2021-06-10 21:54:38
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\costanalysismanage\components\datamaintenance\index.vue
@@ -36,7 +36,7 @@
           <template #fileName="scope">
             <span class="link-underline" @click="download(scope.row)">{{ scope.row.fileName }}</span>
           </template>
-          <template #date="scope">
+          <template #uploadDate="scope">
             <span>{{ scope.row.uploadDate | dateFilter("YYYY-MM-DD") }}</span>
           </template>
         </tableList>
@@ -111,7 +111,7 @@ export default {
       .then(res => {
         if (res.code == 200) {
           this.tableListData = Array.isArray(res.data) ? res.data : []
-          this.totalCount = res.total || 0
+          this.page.totalCount = res.total || 0
           this.multipleSelection = []
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
@@ -173,7 +173,7 @@ export default {
         this.fileList = []
         clearTimeout(this.timer)
         iMessage.success(`${ file.name } ${ this.$t("LK_SHANGCHUANCHENGGONG") }`)
-        this.fileList.push({ tpPartAttachmentName: res.data[0].fileName, tpPartAttachmentPath: res.data[0].filePath, size: (file.size / 1024 / 1024).toFixed(3) })
+        this.fileList.push({ tpPartAttachmentName: res.data[0].fileName, tpPartAttachmentPath: res.data[0].filePath, size: file.size })
         this.timer = setTimeout(() => {
           this.uploadFiles()
           clearTimeout(this.timer)

@@ -21,9 +21,18 @@
           <!-- 新建定点申请 -->
           <iButton
             @click="createNomination"
-            v-permission="PARTSPROCURE_TRANSFER"
           >
             {{ $t("nominationLanguage.XinJianLingJIanDingDianShengQIng") }}
+          </iButton>
+
+          <!-- 冻结RS -->
+          <iButton @click="frozeRS(true)">
+            {{$t('nominationLanguage.DongJieRS')}}
+          </iButton>
+
+          <!-- 解冻RS -->
+          <iButton @click="frozeRS(false)">
+            {{$t('nominationLanguage.JieDongRS')}}
           </iButton>
           
           <!-- 冻结 -->
@@ -86,6 +95,14 @@
           {{scope.row.nominateName}}
         </a>
       </template>
+      <!-- 定点类型 -->
+      <template #nominateProcessType="scope">
+        <span>{{(scope.row.nominateProcessType && scope.row.nominateProcessType.desc) || ''}}</span>
+      </template>
+      <!-- 定点类型 -->
+      <template #applicationStatus="scope">
+        <span>{{(scope.row.applicationStatus && scope.row.applicationStatus.desc) || ''}}</span>
+      </template>
 
       <!-- re冻结日期 -->
       <template #rsFreezeDate="scope">
@@ -101,16 +118,21 @@
       <template #nominateDate="scope">
         <span>{{scope.row.nominateDate | dateFilter("YYYY-MM-DD")}}</span>
       </template>
+
+      <template #freezeDate="scope">
+        <span>{{scope.row.freezeDate | dateFilter("YYYY-MM-DD")}}</span>
+      </template>
       
       </tablelist>
       <iPagination
         v-update
+        @size-change="handleSizeChange($event, getFetchData)"
         @current-change="handleCurrentChange($event, getFetchData)"
         background
-        :current-page="page.currPage"
-        :page-sizes="page.pageSize"
+        :page-sizes="page.pageSizes"
         :page-size="page.pageSize"
         :layout="page.layout"
+        :current-page="page.currPage"
         :total="page.totalCount"
       />
     </iCard>
@@ -130,7 +152,9 @@ import {
   nominateRreeze,
   nominateUnRreeze,
   nominateConfirm,
-  getCarTypePro
+  getCarTypePro,
+  rsFrozen,
+  rsUnFrozen
 } from '@/api/designate/nomination'
 // 前端配置文件里面的定点类型
 // import { applyType } from '@/layout/nomination/components/data'
@@ -155,13 +179,7 @@ export default {
       tableTitle: tableTitle,
       selectTableData: [],
       startLoding: false,
-      carTypeList: [],
-      page: {
-        currPage: 1,
-        pageSize: 15,
-        totalCount: 0,
-        layout: "total, prev, pager, next, jumper"
-      }
+      carTypeList: []
     }
   },
   components: {
@@ -184,7 +202,8 @@ export default {
       // 缓存/更新定点申请类型
       this.$store.dispatch('setNominationTypeDisable', false)
       this.$nextTick(() => {
-        this.$router.push({path: '/designate/rfqdetail'})
+        const routeData = this.$router.resolve({path: '/designate/rfqdetail'})
+        window.open(routeData.href, '_blank')
       })
     },
     // 查看详情
@@ -194,7 +213,14 @@ export default {
       // 禁用nominateProcessType编辑
       this.$store.dispatch('setNominationTypeDisable', true)
       this.$nextTick(() => {
-        this.$router.push({path: '/designate/rfqdetail', query: {desinateId: row.id, designateType: row.nominateProcessType}})
+        const routeData = this.$router.resolve({
+          path: '/designate/rfqdetail',
+          query: {
+            desinateId: row.id, 
+            designateType: (row.nominateProcessType && row.nominateProcessType.code) || ''
+          }
+        })
+        window.open(routeData.href, '_blank')
       })
     },
     // 获取车型项目
@@ -328,7 +354,32 @@ export default {
         })
       }
     },
-
+    // rs冻结
+    async frozeRS(state){
+      const {selectTableData} = this;
+      if(!selectTableData.length){
+        iMessage.warn(this.$t('nominationSuggestion.QingXuanZeZhiShaoYiTiaoShuJu'));
+      }else{
+        const confirmInfo = await this.$confirm(this.$t('LK_NINQUERENZHIXINGDONGJIECAOZUOMA'));
+        if (confirmInfo !== 'confirm') return;
+        const nomiAppIdList = selectTableData.map((item)=>Number(item.id));
+        const data = {
+          ids: nomiAppIdList,
+        };
+        try {
+          const res = state ? await rsFrozen(data) : await rsUnFrozen(data)
+          const { code } = res;
+          if(code == 200){
+            iMessage.success(this.$t('LK_CAOZUOCHENGGONG'));
+            this.getFetchData()
+          }else{
+            iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+          }
+        } catch(e) {
+          iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
+        }
+      }
+    },
 
   }
 }

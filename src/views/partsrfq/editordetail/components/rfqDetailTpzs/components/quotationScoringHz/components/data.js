@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-05-28 14:32:26
- * @LastEditTime: 2021-06-08 19:15:37
+ * @LastEditTime: 2021-06-18 15:15:01
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\data.js
@@ -9,7 +9,7 @@
 import {_getMathNumber} from '@/utils'
 //表格全集。
 export const fstitle = [
-  {type:'selection',props:'groupProps',label:'Group',i18n:'',width:'50',tooltip:false},
+  {type:'selection',props:'groupName',label:'Group',i18n:'',width:'80',tooltip:false},
   {type:'',props:'partNo',label:'Part No.',i18n:'',width:'100',tooltip:false},
   {type:'',props:'partName',label:'Part Name',i18n:'',width:'100',tooltip:false},
   {type:'',props:'partPrjCode',label:'FS/GS/SP No.',i18n:'',width:'100',tooltip:false},
@@ -43,11 +43,11 @@ export const fstableTileXh = function(index){
     {type:'',props:`${index?index:''}tto`,label:'TTO',i18n:'',width:'100',tooltip:false},
     {type:'',props:`${index?index:''}externalDevelopmentCost`,label:'External Development cost',i18n:'',width:'100',tooltip:false},
     {type:'',props:`${index?index:''}releaseCost`,label:'release cost',i18n:'',width:'100',tooltip:false},
-    // {type:'',props:`a${index?index:''}quo.de`,label:'Quotation details',i18n:'',width:'',tooltip:false},
+    {type:'',props:`Quotationdetails`,label:'Quo.details',i18n:'',width:'100',tooltip:false},
   ]
 }
 //cache list
-export const whiteList = ['groupProps','partNo','partName','cfPartAPrice','cfPartBPrice','pca','tia','ebr','lcAPrice','lcBPrice','tooling','ltc','ltcStaringDate','tto'] //默认需要显示的数据
+export const whiteList = ['groupName','partNo','partName','cfPartAPrice','cfPartBPrice','pca','tia','ebr','lcAPrice','lcBPrice','tooling','ltc','ltcStaringDate','tto'] //默认需要显示的数据
 /**
  * @description：通过需要循环的表格和基础表格，在通过白名单将需要所有的百名单删选出来
  * @param {*} whiteList
@@ -239,12 +239,14 @@ export function translateRating(supplierList,ratingList) {
 
 export function translateData(list){
   list.forEach(items=>{
+    items['active'] = false;
     items.bdlInfoList.forEach((bdl,index)=>{
       for(let keys in bdl){
         items[index>0?(index+keys):keys] = bdl[keys]
       }
     })
   })
+  console.log(list)
   return list
 }
 /**
@@ -265,6 +267,9 @@ export function subtotal(tableHeader,dataList,priceInfo){
   try {
     const total = {}
     tableHeader.forEach(items=>{
+      if(items.props == 'groupName'){
+        total["groupId"] = '-'
+      }
       if(items.props == 'partNo'){
         total[items.props] = 'Subtotal'
       }else{
@@ -272,7 +277,10 @@ export function subtotal(tableHeader,dataList,priceInfo){
           dataList.forEach(element => {
             for(let key in element){
                 if(items.props == key){
-                  total[key] = _getMathNumber(`${total[key] || 0}+${element[key] || 0}`)
+                  total[key] = _getMathNumber(`${total[key] || 0}+${element[key] || 0}*${element['ebr']}`)
+                  if(removeKeysNumber(key) == "tto"){
+                    total[getPorpsNumber(key)+"Status"] = 0
+                  }
                 }
               }
           });
@@ -280,16 +288,32 @@ export function subtotal(tableHeader,dataList,priceInfo){
       }
       
     })
-    return [total,kmOrbukeage('KM',priceInfo,dataList[0]),kmOrbukeage('Budget',priceInfo,dataList[0])]
+    return [getLowNumber(total),kmOrbukeage('KM',priceInfo,dataList[0]),kmOrbukeage('Budget',priceInfo,dataList[0])]
   } catch (error) {
     console.warn(error)
     return {partNo:'Subtotal'}
   }
 }
 
+export function getLowNumber(totalList){
+  const templateData = JSON.parse(JSON.stringify(totalList))
+  const temLits = []
+  for(let i in templateData){
+    if(removeKeysNumber(i) == "tto"){
+      temLits.push({
+        tto:templateData[i],
+        number:getPorpsNumber(i)
+      })
+    }
+  }
+  temLits.sort((a,b)=>{a.tto - b.tto})
+  templateData[temLits[0].number+'ttoStatus'] = 1
+  return templateData
+}
+
 /**
  * @description:追加一个km数据和bukege 
- * @param {*} type
+ * @param {*} type exampleDatas 某一列的数据
  * @return {*}
  */
 export function kmOrbukeage(type,priceInfo,exampleDatas){
@@ -300,6 +324,9 @@ export function kmOrbukeage(type,priceInfo,exampleDatas){
       if(removeKeysNumber(key) != 'supplierId'){
         exampleData[key] = ''
       }
+      if(key == 'groupId'){
+        exampleData[key] = '-'
+      }
     }
     for(let key in exampleData){
       if(removeKeysNumber(key) == 'supplierId'){
@@ -309,7 +336,7 @@ export function kmOrbukeage(type,priceInfo,exampleDatas){
           exampleData[number+'lcAPrice'] = value.kmAPrice
           exampleData[number+'tooling'] = value.kmTooling
         }else{
-          exampleData[number+'lcAPrice'] = value.budget
+          exampleData[number+'tooling'] = value.budget
         }
       }
       if(key == 'ebr'){
@@ -368,8 +395,7 @@ export const centerSupplierList = function(index){
     {type:'',props:`${index}prototypePrice`,label:'Prototype price',i18n:'',width:'100',tooltip:false},
     {type:'',props:`${index}tto`,label:'TTO',i18n:'',width:'100',tooltip:false},
     {type:'',props:`${index}externalDevelopmentCost`,label:'External Development cost',i18n:'',width:'100',tooltip:false},
-    {type:'',props:`${index}releaseCost`,label:'release cost',i18n:'',width:'100',tooltip:false},
-    {type:'',props:`btn`,label:'Quotation details',i18n:'',width:'100',tooltip:false},
+    {type:'',props:`${index}releaseCost`,label:'release cost',i18n:'',width:'100',tooltip:false}
   ]
 }
 

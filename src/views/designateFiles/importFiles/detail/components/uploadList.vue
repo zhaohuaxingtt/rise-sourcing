@@ -40,8 +40,8 @@
         <!-- 分页 -->
         <iPagination
             class="margin-bottom20"
-            @size-change="handleSizeChange($event, purchaseFactory)"
-            @current-change="handleCurrentChange($event, purchaseFactory)"
+            @size-change="handleSizeChange($event, getList)"
+            @current-change="handleCurrentChange($event, getList)"
             background
             :page-sizes="page.pageSizes"
             :page-size="page.pageSize"
@@ -58,7 +58,6 @@ import {
     iButton,
     iMessage,
 } from 'rise';
-import uploadButton from 'pages/partsrfq/components/uploadButton'
 import {pageMixins} from '@/utils/pageMixins'
 import { filesTableTitle } from '../data'
 import tableList from "@/views/partsign/editordetail/components/tableList";
@@ -74,12 +73,10 @@ export default {
     name:'uploadList',
     mixins:[pageMixins],
     components:{
-        uploadButton,
         iPagination,
         iButton,
         tableList,
         Upload,
-        iMessage,
     },
     props:{
         uploadId:{
@@ -89,9 +86,7 @@ export default {
     },
     data(){
         return{
-            tableListData:[
-                {fileName:'xxx.png',uploadDate:'2021-01-10',uploadBy:'xxx'},
-            ],
+            tableListData:[],
             tableTitle:filesTableTitle,
             loading:false,
             selectItems:[],
@@ -102,10 +97,6 @@ export default {
         this.getList();
     },
     methods:{
-        // 上传附件
-        uploadAttachments(data,size){
-            console.log(data,size);
-        },
 
         // 获取列表
         async getList(){
@@ -129,17 +120,27 @@ export default {
         },
         // 上传附件
         async onDraingUploadsucess(data){
-            const filesData = data.data;
+            console.log(data,'data');
             const { uploadId } = this;
-            const sendData = {
-                affixId:uploadId,
-                ...filesData,
-            }
-            await uploadAttachments(sendData).then((res)=>{
+            const filesData = data.data;
+            const {id,fileName,filePath} = filesData;
+            const formData = new FormData(); 
+            formData.append('file', data.file);
+            formData.append('affixId', uploadId);
+            formData.append('id', id);
+            formData.append('fileName', fileName);
+            formData.append('filePath', filePath);
+            // const sendData = {
+            //     affixId:uploadId,
+            //     ...filesData,
+            // }
+            await uploadAttachments(formData).then((res)=>{
                 const { code } = res;
                 if(code == 200) this.getList();
 
-            }).catch((err)=>{});
+            }).catch((e)=>{
+                iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
+            });
         },
         
         handleSelectionChange(val) {
@@ -172,7 +173,7 @@ export default {
             if(!selectItems.length){
              iMessage.warn(this.$t('LK_QINGXUANZHEXUYAOXIAZHAIDEFUJIAN'));
             }else{
-                const list = selectItems.map((item)=>item.id);
+                const list = selectItems.map((item)=>item.fileName);
                 const data = {
                     applicationName: 'rise',
                     fileList:list.join(),

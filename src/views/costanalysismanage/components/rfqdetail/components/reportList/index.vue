@@ -62,9 +62,9 @@ import { reportListTableTitle as tableTitle } from "../data"
 import { pageMixins } from "@/utils/pageMixins"
 import { getFileHistory } from "@/api/costanalysismanage/rfqdetail"
 import {
-  uploadDaring,
   batchDeleteDaring,
 } from '@/api/designate/decisiondata/drawing'
+import { uploadDaring } from '@/api/costanalysismanage/rfqdetail'
 import { downloadFile } from '@/api/file'
 
 export default {
@@ -76,7 +76,6 @@ export default {
         iPagination,
         tableList,
         Upload,
-        iMessage,
     },
     created(){
         this.getList();
@@ -100,8 +99,8 @@ export default {
         },
         // 单文件下载
         downloadLine(row){
-            const {id} = row;
-            this.download([id]);
+            const {tpPartAttachmentName} = row;
+            this.download([tpPartAttachmentName]);
         },
         // 批量下载附件
         downloadList(){
@@ -109,7 +108,7 @@ export default {
             if(!selectItems.length){
             iMessage.warn(this.$t('LK_QINGXUANZHEXUYAOXIAZHAIDEFUJIAN'));
             }else{
-                const list = selectItems.map((item)=>item.id);
+                const list = selectItems.map((item)=>item.tpPartAttachmentName);
                 this.download(list);
             }
         },
@@ -127,10 +126,10 @@ export default {
                 pageSize:page.pageSize,
             }
             getFileHistory(params).then((res)=>{
-                const {code,data} = res; 
+                const {code,data,total} = res; 
                 if(code === '200' && data){
-                    const {records,total} = data;
-                    this.tableListData = records;
+                    // const {records,total} = data;
+                    this.tableListData = data;
                     this.page.totalCount = total;
                 }
                 this.loading =  false;

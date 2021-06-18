@@ -23,6 +23,7 @@
                 <iButton @click="gotoRsMainten">RS单维护</iButton>
                 <iButton @click="exportNominate">{{$t('LK_DAOCHU')}}</iButton>
                 <iButton @click="submit">{{$t('LK_TIJIAO')}}</iButton>
+                <iButton @click="toNextStep">{{$t('LK_XIAYIBU')}}</iButton>
                 <iButton v-if="isDecision" @click="preview">{{$t('LK_YULAN')}}</iButton>
                 <logButton class="margin-left20" @click="log"  />
                 <span class="title-font margin-left20"><icon symbol name="icondatabaseweixuanzhong"></icon></span>
@@ -31,7 +32,7 @@
         <!-- 步骤栏 -->
         <div class="step-list flex-between-center-center margin-top30 margin-bottom30">
             <div class="step-list-item flex-center-center" v-for="(item,index) in applyStep" :key="'applyStep'+index">
-                <div :class="phaseType >=item.id ? 'click-item step-list-item' : 'step-list-item' " @click="goToRoute(item)">
+                <div :class="phaseType >=item.id ? 'click-item step-list-item' : 'step-list-item' ">
                     <p class="step-icon-box">
                         <!-- 正在进行中 -->
                         <icon v-if="phaseType == item.id" symbol name="icondingdianguanlijiedian-jinhangzhong"  class="step-icon"></icon> 
@@ -39,6 +40,11 @@
                         <icon v-else-if="phaseType > item.id" symbol name="icondingdianguanli-yiwancheng" class="step-icon  click-icon"></icon>
                         <!-- 未完成 -->
                         <icon v-else symbol name="icondingdianguanlijiedian-yiwancheng" class="step-icon"></icon>
+
+                        <!-- 单一供应商需要单独展示icon -->
+                        <el-tooltip v-if="item.hasInfo && isSingle" :content="$t('LK_GAIDINGDIANSHENQINGZHONGYOUDANYIGONGYINGSHANG')"   placement="top">
+                            <icon symbol name="icontishi-cheng" class="info-icon"></icon>
+                        </el-tooltip>
                     </p>
                     
                     <p class="step-text">{{$t(item.key) || item.name}}</p>
@@ -68,8 +74,12 @@ import {
     nominateAppSExport,
     nominateAppSsubmit,
     nominateAppSDetail,
+    getNominateType,
+    updatePresenPageSeat,
+    sugesstionInit,
+    sugesstionInitReCord
 } from '@/api/designate'
-import { applyType,applyStep } from './data'
+import { applyStep } from './data'
 export default {
     name:'designateStep',
     components:{
@@ -86,23 +96,23 @@ export default {
         },
     },
     created(){
+        this.getApplyType()
         // 判断当前路由是否是决策资料相关路由 是则显示预览按钮
         const { path,query,name } = this.$route;
-        const {id ='1'} = query;
+        // const {desinateId =''} = query;
         // 禁用定点类型逻辑：只有新增定点管理和处于designateRfqdetail页面才支持修改定点类型，其他页面禁止编辑
         const nominationTypeDisable = Boolean(query.desinateId) || name !== 'designateRfqdetail'
         this.isDecision = path.indexOf('/designate/decisiondata/')>-1;
         this.desinateId = query.desinateId
         this.designateType = query.designateType
 
-        this.getStepStatus(id);
-        this.getDesignateType(id);
+        // this.getDesignateType(desinateId);
         // 控制定点类型是否可编辑
         this.$store.dispatch('setNominationTypeDisable', nominationTypeDisable)
         // 设置定点类型
-        this.$store.dispatch('setNominationType', this.designateType)
+        this.designateType && (this.$store.dispatch('setNominationType', this.designateType || 'MEETING'))
         // 缓存定点ID
-        this.$store.dispatch('setNominateId', this.desinateId)
+        this.$store.dispatch('setNominateId', this.desinateId || '')
 
     },
      computed:{
@@ -111,17 +121,34 @@ export default {
         },
         disableNominationType(){
             return this.$store.getters.disableNominationType;
+        },
+        isSingle(){
+            return this.$store.getters.isSingle;
         }
     },
     data(){
         return{
             desinateId: '',
             designateType: 'RECORD',
-            applyType:applyType,
+            applyType:[],
             applyStep:applyStep
         }
     },
     methods:{
+        getApplyType() {
+            getNominateType().then(res => {
+                if (res?.result) {
+                    const apply = []
+                    for (let keys in res.data) {
+                        apply.push({id:keys,name:res.data[keys]})
+                    }
+                    this.applyType = apply
+                } else {
+                    this.applyType = []
+                    iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+                }
+            })
+        },
         gotoRsMainten() {
             this.$router.push({path: '/sourcing/designate/rsSingleMaintenance', query: {desinateId:this.$route.query.desinateId}})
         },
@@ -143,14 +170,13 @@ export default {
             this.$store.dispatch('setNominationType', data)
         },
 
-        // 获取步骤状态
-        async getStepStatus(nominateId){
-            const data= {nominateId};
-            await this.$store.dispatch('setNominationStep',data);
-        },
-
         // 跳转
         goToRoute(item){
+            // 新增模式下不允许跳转
+            if (!this.desinateId) {
+                iMessage.error(this.$t('nominationLanguage.QingChuangJianWanDingDianShenQingDan'))
+                return
+            }
             if(this.phaseType < item.id) return;
             const {path,query} = this.$route;
             if(item.path === path ) return;
@@ -159,6 +185,90 @@ export default {
               query: {
                 ...query,
               }
+            })
+        },
+        // 单一供应商保存
+        async onSupplierSave() {
+            let state = false
+            try {
+                const res = await sugesstionInit({
+                    nominateAppId: this.$store.getters.nomiAppId,
+                })
+                if (res.code === '200') {
+                    state = true
+                } else {
+                    iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+                }
+            } catch (e) {
+                iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
+                state = false
+            }
+            return state
+        },
+         // 定点建议
+        async onSuggestionSave() {
+            let state = false
+            try {
+                const res = await sugesstionInitReCord({
+                    nominateAppId: this.$store.getters.nomiAppId,
+                })
+                if (res.code === '200') {
+                    state = true
+                } else {
+                    iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+                }
+            } catch (e) {
+                iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
+                state = false
+            }
+            return state
+        },
+        // 跳转下一步
+        async toNextStep() {
+            let step = Number(this.$store.getters.phaseType || '1')
+            step = step > 5 ? 4 : step
+            const phaseType = Number(step) + 1
+            const confirmInfo = await this.$confirm(this.$t('nextSure'))
+            if (confirmInfo !== 'confirm') return
+            const nominationStep = this.$store.getters.nominationStep
+            const nodeList = nominationStep.nodeList || []
+            const beforeNode = {
+                phaseType: step,
+                phaseNodeNow: 0
+            }
+            console.log(step, phaseType)
+            // 当前步骤在单一供应商
+            if (step === 2) {
+                const proc = await this.onSupplierSave()
+                console.log('step 2', proc)
+                if (!proc) return
+            }
+            // 当前步骤在定点建议
+            if (step === 3) {
+                const proc = await this.onSuggestionSave()
+                console.log('step 3', proc)
+                if (!proc) return
+            }
+            updatePresenPageSeat({
+                nominateId: this.$store.getters.nomiAppId,
+                phaseType: this.$store.getters.phaseType,
+                nodeList,
+                currentNode: step < 5 ? beforeNode : nominationStep.currentNode,
+                node: step < 5 ? beforeNode : nominationStep.currentNode,
+            }).then(res => {
+                if (res.code === '200') {
+                    let item = applyStep.find(o => o.id === phaseType )
+                    const {query, path} = this.$route;
+                    // 在决策资料前的步骤，支持正确的step跳转
+                    if (path.indexOf('/designate/decisiondata') === -1) {
+                        this.$router.push({
+                            path:item.path,
+                            query: {
+                                ...query,
+                            }
+                        })
+                    }
+                }
             })
         },
 
@@ -209,7 +319,6 @@ export default {
 
 <style lang="scss" scoped>
 .designateStep{
-    padding: 0 50px;
     .pageTitle{
         .title-text{
             font-size: 20px;
@@ -226,6 +335,7 @@ export default {
         }
     }
     .step-list{
+        padding: 0 70px;
         .step-list-item{
             position: relative;
             flex-grow: 1;
@@ -238,6 +348,14 @@ export default {
                 flex-direction: column;
                 .step-icon-box{
                     width: 100%;
+                    position: relative;
+                    .info-icon{
+                        position:absolute;
+                        width: 20px;
+                        height: 20px;
+                        top: -5px;
+                        right: 10px;
+                    }
                 }
             }
             .step-text{
@@ -253,9 +371,9 @@ export default {
                 height: 36px;
             }
             .click-item{
-                &:hover{
-                    cursor: pointer;
-                }
+                // &:hover{
+                //     cursor: pointer;
+                // }
             }
             .step-between-icon{
                 width: 100%;

@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-27 17:45:44
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-07 11:52:14
+ * @LastEditTime: 2021-06-09 15:46:39
  * @Description: 零件采购项目-定点信息
  * @FilePath: \front-web\src\views\partsprocure\editordetail\components\designateInfo\index.vue
 -->
@@ -42,7 +42,7 @@
     <!------------------------------------------------------------------------>
     <!--                  电子RS单弹窗                                          --->
     <!------------------------------------------------------------------------>
-    <rsEEditionDialog :dialogVisible="rsEeditionDialogVisible" @changeVisible="changersEeditionDialogVisible" :nominateAppId="nominateAppId" :nominateType="nominateType" />
+    <rsEEditionDialog :dialogVisible="rsEeditionDialogVisible" @changeVisible="changersEeditionDialogVisible" :otherPreview="true" :otherNominationType="nominateType" :otherNominationId="nominateAppId" :otherPartProjectType="otherPartProjectType" />
   </iCard>
 </template>
 
@@ -54,7 +54,7 @@ import { pageMixins } from "@/utils/pageMixins"
 import rsPaperDialog from './components/rsPaper'
 import selDialog from './components/sel'
 import rsEEditionDialog from './components/rsEEdition'
-import { findNominateInfo, getNominateFileInfo } from "@/api/partsprocure/editordetail"
+import { findNominateInfo } from "@/api/partsprocure/editordetail"
 export default {
   mixins: [pageMixins],
   components: { tableList, iCard, iButton, iPagination, rsPaperDialog, selDialog, rsEEditionDialog },
@@ -67,7 +67,8 @@ export default {
       rsEeditionDialogVisible: false,
       tableLoading: false,
       nominateAppId: '',
-      nominateType: ''
+      nominateType: '',
+      otherPartProjectType: ''
     }
   },
   props: {
@@ -94,6 +95,7 @@ export default {
           this.tableData = [res.data]
           this.nominateAppId = res.data.nominateAppId || ''
           this.nominateType = res.data.applicationStatus || ''
+          this.otherPartProjectType = res.data.partProjectType || ''
         } else {
           iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
         }

@@ -27,7 +27,8 @@ export function getAllSupplier(parmars) {
 
 export function getAllAnnex(parmars) {
     return requst({
-        url: '/supplier/getAllAnnex',
+        // url: '/supplier/getAllAnnex',
+        url: '/supplier/getAnnexPage', // 之前接口没分页 换个分页接口
         method: 'POST',
         data: parmars
     })
@@ -222,9 +223,9 @@ export function negoAnalysisSummaryRound(rfqId){
 }
 
 //报价分析-获取场景布局
-export function negoAnalysisSummaryLayout(layoutType){
+export function negoAnalysisSummaryLayout(layoutType,scenarioType){
     return nego({
-        url: `/nego-assistant/nego-analysis-summary-layout/${layoutType}`,
+        url: `/nego-assistant/nego-analysis-summary-layout/${scenarioType}/${layoutType}`,
         method: 'GET'
     })
 }

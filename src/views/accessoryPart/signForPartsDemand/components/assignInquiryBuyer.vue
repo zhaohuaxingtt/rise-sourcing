@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-25 16:11:07
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-03 16:39:24
+ * @LastEditTime: 2021-06-16 17:34:47
  * @Description: 分配询价采购员弹窗
  * @FilePath: \front-web\src\views\accessoryPart\signForPartsDemand\components\assignInquiryBuyer.vue
 -->
@@ -15,7 +15,7 @@
     width="381px"
   >
     <template slot="footer">
-      <iButton @click="handleConfirm">确认</iButton>
+      <iButton @click="handleConfirm" :loading="loading">确认</iButton>
       <iButton @click="handleCancel">取消</iButton>
     </template>
     <el-form>
@@ -45,7 +45,8 @@ export default {
   data() {
     return {
       respLINIE: '',
-      userOptions: []
+      userOptions: [],
+      loading: false
     }
   },
   watch: {
@@ -58,7 +59,7 @@ export default {
   },
   methods: {
     getUserList() {
-      getUserList({deptId:this.deptId}).then(res => {
+      getUserList({deptId:this.deptId,tag:'9'}).then(res => {
         if (res.result) {
           this.userOptions = res.data?.map(item => {return {value:item.id, label:item.nameZh}})
         } else {
@@ -78,7 +79,11 @@ export default {
         iMessage.warn('请选择询价采购员')
         return
       }
+      this.loading = true
       this.$emit('sendAccessory', this.respLINIE)
+    },
+    changeLoading(loading) {
+      this.loading = loading
     }
   }
 }

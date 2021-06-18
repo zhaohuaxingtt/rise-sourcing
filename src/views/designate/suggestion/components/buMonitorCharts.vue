@@ -7,7 +7,8 @@
     </div>
     <div class="legendLine">
       <ul class="legend">
-        <li v-for="(item, index) in supplier" class="corlor1" :key="index">
+        <li v-for="(item, index) in supplier" :key="index">
+          <i :style="`background: ${colorPanel[index]}`"></i>
           {{item}}
         </li>
         <!-- <li>SH Huashi</li>
@@ -16,13 +17,15 @@
       <div class="control">
         <!-- 方案选择 -->
         <iSelect
+          popper-class="mapControl"
           v-model="mapControl"
           @change="load"
+          :multiple="true"
           :placeholder="$t('nominationSuggestion.FanAnXuanZhe')">
-          <el-option
+          <!-- <el-option
             value=""
-            :label="$t('all') | capitalizeFilter"
-          ></el-option>
+            :label="$t('nominationSuggestion.FanAnXuanZhe') | capitalizeFilter"
+          ></el-option> -->
           <el-option
             :value="items.key"
             :label="items.value"
@@ -39,6 +42,10 @@
 import { iSelect } from "rise";
 import echarts from "@/utils/echarts";
 import {rich} from './lib/chart'
+import {
+  colorPanel
+} from './data'
+import _ from 'lodash'
 
 export default {
   components: {
@@ -50,18 +57,18 @@ export default {
       default: 'Nomination Scenario Overview'
     },
     data: {
-      type: Array,
-      default: () => ([[0, 0, 0, 0], [0, 0, 0, 0]])
+      type: Object,
+      default: () => ({})
     },
     // 供应商数组
     supplier: {
       type:Array,
-      default: () => ([])
+      default: () => ({})
     }
   },
   data() {
     return {
-      mapControl: '',
+      mapControl: [],
       mapOptions: [
         {
           key: 0,
@@ -80,15 +87,26 @@ export default {
           value: '手动分配'
         }
       ],
-      dataList: []
+      dataList: [],
+      // 色板
+      colorPanel
       
     }
   },
   mounted() {
   },
   methods: {
-    load(mapControl = '') {
+    init() {
+      // 初始化，默认isShowWeightStick判断是否展示权重柱子
+      const isShowWeightStick = this.data.isShowWeightStick || false
+      this.mapControl = isShowWeightStick ? [] : [0, 1, 2]
+      this.load()
+    },
+    load() {
       const vm = echarts().init(document.getElementById("charts0"));
+      const self = this
+      const bgColor = '#94c8fc'
+      const mapControl = this.mapControl
       this.$nextTick(() => {
         // 业务指标
         const quota = [
@@ -97,22 +115,87 @@ export default {
           'Best TTO \n by Part',
           'Recommend \n Scenario']
         // xAxisData
-        const xAxisData = mapControl === '' ? quota : [quota[mapControl]]
+        const xAxisData = !mapControl.length ? quota : mapControl.map(i => {
+          return quota[i]
+        })
+        console.log('-load-', xAxisData, mapControl)
         // seriesData
-        let seriesData0 = this.dataList[0]
-        let seriesData1 = this.dataList[1]
-        if (mapControl !== '') {
-          seriesData0 = [seriesData0[mapControl] || 0]
-          seriesData1 = [seriesData1[mapControl] || 0]
-        }
+        
+        
+        let series = this.genSeries()
+        series.map(o => {
+          if (mapControl.length) {
+            const tarData = []
+            const tmpData = _.cloneDeep(o.data)
+            tmpData.forEach((item, index) => {
+              if (mapControl.includes(index)) {
+                tarData.push(item)
+              }
+            })
+            o.data = tarData
+          }
+          return o
+        })
+        console.log('series', series)
 
         let option = {
           grid: {
             left: '10',
             right: '0',
-            bottom: '20',
+            bottom: '0',
             top: '10%',
             containLabel: true
+          },
+          tooltip: {
+            show: true,
+            padding: 0,
+            enterable: true,
+            transitionDuration: 1,
+            textStyle: {
+                color: '#000',
+                decoration: 'none',
+            },
+            formatter: function(params) {
+              const wholePackage = self.data && self.data.wholePackage
+              const minPartSupplierTToTotal = self.data.minPartSupplierTToTotal
+              const weightSupplierTotal = self.data.weightSupplierTotal || 0
+              let tpl = ''
+
+              // toolTip Best TTO \n for Whole Package
+              params.dataIndex === 0 && (tpl = `
+              <div class="toolTipBox-content">
+                <p>Best TTO <br> for Whole Package: <span class="value">${params.data}</span></p>
+              </div>`)
+
+              // toolTip Best TTO \n by Group
+              params.dataIndex === 1 && (tpl = `
+              <div class="toolTipBox-content">
+                <p>Compared to Best TTO <br> for Whole Package: 
+                  <span class="value">${Number((params.data-wholePackage)/wholePackage*100).toFixed(2)}%</span>
+                </p>
+              </div>`)
+
+              // toolTip Best TTO \n by Part
+              params.dataIndex === 2 && (tpl = `
+              <div class="toolTipBox-content">
+                <p>Compared to Best TTO <br> for Whole Package: 
+                  <span class="value">${Number((params.data-minPartSupplierTToTotal)/minPartSupplierTToTotal*100).toFixed(2)}%</span>
+                </p>
+              </div>`)
+
+              params.dataIndex === 3 && (tpl = `
+              <div class="toolTipBox-content">
+                <p>Compared to Best TTO <br> for Whole Package: 
+                  <span class="value">${Number((params.data-weightSupplierTotal)/weightSupplierTotal*100).toFixed(2)}%</span>
+                </p>
+              </div>`)
+
+              return `
+              <div class="toolTipBox" style="${!params.data ? 'display: none' : ''}">
+                ${tpl}
+              </div>
+              `
+            }
           },
           xAxis: {
             type: 'category',
@@ -166,66 +249,254 @@ export default {
             },
         
           },
-          series: [
-            {
-              data: seriesData0,
-              type: 'bar',
-              barWidth: 30,
-                stack: 'total',
-              label: {
-                show: false,
-                position: 'top',
-                textStyle: {
-                  color: '#485465'
-                }
-              },
-              itemStyle: {
-                normal: {
-                  color: function(params){
-                    let colorlist = ['#005cfa','#005cfa','#005cfa','#005cfa'];
-                    return colorlist[params.dataIndex];
-                  }
-                },
-              }
-            },
-            {
-              data: seriesData1,
-              type: 'bar',
-              barWidth: 30,
-                stack: 'total',
-              label: {
-                show: true,
-                position: 'top',
-                textStyle: {
-                  color: '#485465'
-                }
-              },
-              itemStyle: {
-                normal: {
-                  barBorderRadius: [5, 5, 0, 0],
-                  color: function(params){
-                    let colorlist = ['#94c8fc','#94c8fc','#94c8fc','#94c8fc'];
-                    return colorlist[params.dataIndex];
-                  }
-                },
-              }
-            }
-          ]
+          series
         };
+        // console.log(JSON.stringify(option))
         vm.setOption(option);
       })
+    },
+    genSeries() {
+      const self = this
+      const bgColor = '#dfeaf5'
+      const textStyle = {
+        color: '#efefef',
+        fontSize: '10'
+      }
+      const series = []
+      const wholePackageIndex = self.data.wholePackageIndex
+      const wholePackage = self.data.wholePackage
+      // Best TTO for Whole Package
+      series.push({
+        data: [wholePackage, '', '', ''],
+        type: 'bar',
+        barWidth: 30,
+        stack: 'total',
+        label: {
+          show: true,
+          position: 'top',
+          textStyle: {
+            color: '#485465'
+          },
+          formatter: wholePackage
+        },
+        itemStyle: {
+          normal: {
+            barBorderRadius: [5, 5, 0, 0],
+            color: colorPanel[wholePackageIndex]
+          },
+        }
+      })
+      // Best TTO by Group
+      const bestGroupSupplier = self.data.bestGroupSupplier
+      const bestGroupSupplierMin = bestGroupSupplier && bestGroupSupplier[0]
+      const bestGroupSupplierMax = bestGroupSupplier && bestGroupSupplier[1]
+      const bestGroupSupplierMinIndex = self.data.bestGroupSupplierIndex
+      
+      const bestGroupSupplierTotal = bestGroupSupplier && bestGroupSupplier[2]
+      let totalGroupPercent = 0
+
+      console.log('----',bestGroupSupplier)
+      
+      series.push({
+        data: ['', bestGroupSupplierMin, '', ''],
+        type: 'bar',
+        barWidth: 30,
+        stack: 'total',
+        label: {
+          show: true,
+          position: 'inside',
+          textStyle,
+          formatter: function(params) {
+            const fz = Number(params.data)
+            const fm = Number(bestGroupSupplierTotal)
+            const percent = Math.floor(fz/fm*100)
+            totalGroupPercent += percent
+            return `${params.data}\n(${percent}%)`
+          }
+        },
+        itemStyle: {
+          normal: {
+            barBorderRadius: [0, 0, 0, 0],
+            color: colorPanel[bestGroupSupplierMinIndex]
+          },
+        }
+      })
+      series.push({
+        data: ['', bestGroupSupplierMax, '', ''],
+        type: 'bar',
+        barWidth: 30,
+        stack: 'total',
+        label: {
+          show: true,
+          position: 'inside',
+          textStyle,
+          formatter: function(params) {
+            const fz = Number(params.data)
+            const fm = Number(bestGroupSupplierTotal)
+            // const percent = Math.floor(fz/fm*100)
+            const percent = 100 - totalGroupPercent
+            return `${params.data}\n(${percent}%)`
+          }
+        },
+        itemStyle: {
+          normal: {
+            barBorderRadius: [5, 5, 0, 0],
+            color: bgColor
+          },
+        }
+      })
+      // 分组最佳柱子label
+      bestGroupSupplierTotal&& (series.push({
+        data: ['', 1, '', ''],
+        type: 'bar',
+        barWidth: 30,
+        stack: 'total',
+        label: {
+          show: true,
+          position: 'top',
+          textStyle: {
+            color: '#485465'
+          },
+          formatter: function() {
+            return bestGroupSupplierTotal
+          }
+        },
+        itemStyle: {
+          normal: {
+            barBorderRadius: [5, 5, 0, 0],
+            color: bgColor
+          },
+        }
+      }))
+
+      // 单个零件最小
+      const minPartSupplierTToArray = self.data.minPartSupplierTToArray || []
+      const minPartSupplierTToTotal = self.data.minPartSupplierTToTotal
+      let partPercent = 0
+  
+      minPartSupplierTToArray.forEach((item, index) => {
+        series.push({
+          data: ['', '', item.data, ''],
+          type: 'bar',
+          barWidth: 30,
+          stack: 'total',
+          label: {
+            show: true,
+            position: 'inside',
+            textStyle,
+            formatter: function(params) {
+              const fz = Number(params.data)
+              const fm = Number(minPartSupplierTToTotal)
+              const percent =(item.index === minPartSupplierTToArray.length - 1) ? (100 - partPercent) : Math.floor(fz/fm*100)
+              partPercent += percent
+              return `${params.data}\n(${percent}%)`
+            }
+          },
+          itemStyle: {
+            normal: {
+              barBorderRadius: item.index === (minPartSupplierTToArray.length - 1) ? [5, 5, 0, 0] : [0, 0, 0, 0],
+              color: colorPanel[item.index]
+            },
+          }
+        })
+      })
+      // 零件最佳柱子label
+      minPartSupplierTToTotal&& (series.push({
+        data: ['', '', 1, ''],
+        type: 'bar',
+        barWidth: 30,
+        stack: 'total',
+        label: {
+          show: true,
+          position: 'top',
+          textStyle: {
+            color: '#485465'
+          },
+          formatter: function() {
+            return minPartSupplierTToTotal
+          }
+        },
+        itemStyle: {
+          normal: {
+            barBorderRadius: [5, 5, 0, 0],
+            color: bgColor
+          },
+        }
+      }))
+
+      // 权重柱状图
+      const weightSupplier = self.data.weightSupplier || []
+      const weightSupplierTotal = self.data.weightSupplierTotal || 0
+      const isShowWeightStick = self.data.isShowWeightStick || false
+      let totalPercent = 0
+      if (isShowWeightStick) {
+        weightSupplier.forEach((item, index) => {
+          series.push({
+            data: ['', '', '', item],
+            type: 'bar',
+            barWidth: 30,
+            stack: 'total',
+            label: {
+              show: true,
+              position: 'inside',
+              textStyle,
+              formatter: function(params) {
+                const fz = Number(params.data)
+                const fm = Number(weightSupplierTotal)
+                const percent =(index === weightSupplier.length - 1) ? (100 - totalPercent) : Math.floor(fz/fm*100)
+                totalPercent += percent
+                return `${params.data}\n(${percent}%)`
+              }
+            },
+            itemStyle: {
+              normal: {
+                barBorderRadius: index === (weightSupplier.length - 1) ? [5, 5, 0, 0] : [0, 0, 0, 0],
+                color: colorPanel[index]
+              },
+            }
+          })
+        })
+        // 最后一根柱子的label
+        weightSupplierTotal && (series.push({
+          data: ['', '', '', '1'],
+          type: 'bar',
+          barWidth: 30,
+          stack: 'total',
+          label: {
+            show: true,
+            position: 'top',
+            textStyle: {
+              color: '#485465'
+            },
+            formatter: function() {
+              return weightSupplierTotal
+            }
+          },
+          itemStyle: {
+            normal: {
+              barBorderRadius: [0, 0, 0, 0],
+              color: '#ffffff'
+            },
+          }
+        }))
+      }
+      return series
     }
   },
   watch: {
     data: {
       handler(newVal) {
-        this.dataList = newVal
+        this.dataList = (newVal && newVal.data) || []
         this.$nextTick(() => {
-          this.load()
+          this.init()
         })
       },
       immediate: true,
       deep: true
+    },
+    mapControl() {
+      console.log(this.mapControl)
+      this.load()
     }
   }
 }
@@ -244,8 +515,8 @@ export default {
         font-size: 16px;
         display: inline-block;
         padding-right: 15px;
-        &:before {
-          content: '';
+        i {
+          // content: '';
           display: inline-block;
           width: 10px;
           height: 10px;
@@ -264,7 +535,39 @@ export default {
   }
   #charts0 {
     width: 100%;
-    height: 560px;
+    height: 350PX;
   }
+  ::v-deep.toolTipBox {
+    background: #fff;
+    border-radius: 5px;
+    padding: 20px;
+    border: 1px solid #efefef;
+    &.hide {
+      display: none !important;
+    }
+    p {
+      font-size: 12px;
+      font-weight: 100;
+    }
+    .value {
+      font-size: 12px;
+      color: #000;
+      font-weight: 600;
+      display: inline-block;
+      padding-left: 10px;
+    }
+  }
+}
+.control {
+  ::v-deep.el-select {
+    .el-select__tags {
+      height: 26px !important;
+      overflow: hidden;
+    }
+  }
+}
+</style>
+<style lang="scss">
+.mapControl.el-select-dropdown {
 }
 </style>

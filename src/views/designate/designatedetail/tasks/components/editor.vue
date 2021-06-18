@@ -7,10 +7,17 @@
       >
       <div class="floatright">
         <span v-if="multiEditControl">
-          <iButton>
+          <upload
+            class="upload-trigger margin-right10"
+            :hideTip="true"
+            :accept="'.jpg,.jpeg,.png,.gif'"
+            :buttonText="$t('strategicdoc.ShangChuanTuPian')"
+            @on-success="onUploadsucess"
+          />
+          <iButton @click="submit" :loading="submiting">
             {{ $t("LK_BAOCUN") }}
           </iButton>
-          <iButton>
+          <iButton @click="multiEditControl = false">
             {{ $t("strategicdoc.JieSuBianJi") }}
           </iButton>
         </span>
@@ -21,14 +28,15 @@
         </span>
       </div>
       <div class="clearfix"></div>
-      <div class="editor-content margin-top20" id="textEditor">
-        <!-- <iInput
-          type="textarea"
-          :placeholder="$t('strategicdoc.BeiZuXinXi')"
-          :autosize="{ minRows: 4, maxRows: 6}"
-          v-model="value">
-        </iInput>  -->
-      </div>
+      <iEditor
+        class="editor-content margin-top20"
+        id="textEditor"
+        :menus=[]
+        :disabled="!multiEditControl"
+        v-model="content"
+        ref="editor"
+
+       />
     </div>
   </iCard>
 </template>
@@ -37,34 +45,80 @@
 import {
   iInput,
   iCard,
-  iButton
+  iButton,
+  iMessage,
+  iEditor
 } from 'rise'
+import upload from '@/components/Upload'
+import { 
+  addBackgroundAndObjectiveInfo,
+  getBackgroundAndObjectiveInfo
+} from '@/api/designate/decisiondata/tasks'
 
 export default {
   data() {
     return {
-      value: '',
+      id: '',
+      content: '',
+      Edditor: {},
+      pictures: [],
+      submiting: false,
       multiEditControl: false
     }
   },
   components: {
     // iInput,
     iCard,
-    iButton
+    iButton,
+    iEditor,
+    upload
   },
   mounted() {
-    this.init()
+    this.getFetchData()
   },
   methods: {
-    init() {
-      const wangEditor = window.wangEditor
-      const Edditor = new wangEditor('#textEditor')
-      Edditor.config.menus = []
-      Edditor.config.placeholder = this.$t('strategicdoc.BeiZuXinXi')
-      Edditor.config.zIndex = 100
-      Edditor.create()
-      window.Edditor = Edditor
-    }
+    onUploadsucess(data) {
+      this.content += `<p><img src="${data && data.data && data.data.filePath || ''}" /></p>`
+      this.$refs.editor.html(this.content)
+    },
+    getFetchData() {
+      getBackgroundAndObjectiveInfo({
+        nominateId: this.$store.getters.nomiAppId || '',
+      }).then(res => {
+        if (res.code === '200') {
+          if (res.data) {
+            this.content = res.data.content || ''
+            this.$refs.editor.html(this.content)
+            this.id = res.data.id
+            this.pictures = []
+          }
+        } else {
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
+      })
+    },
+    // 保存修改记录
+    async submit() {
+      this.submiting = true
+      const data = {
+        nominateId: this.$store.getters.nomiAppId || '',
+        content: this.content,
+        id: this.id,
+        pictures: this.pictures.join(',')
+      }
+      addBackgroundAndObjectiveInfo(data).then(res => {
+        if (res.code === '200') {
+          iMessage.success(this.$t('LK_CAOZUOCHENGGONG'))
+          this.getFetchData()()
+        } else {
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
+        this.submiting = false
+      }).catch(e => {
+        this.submiting = false
+        iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
+      })
+    },
   }
 }
 </script>
@@ -83,6 +137,16 @@ export default {
     min-height: 100px;
     max-height: 500px;
     border: 0px !important;
+    .w-e-text {
+      font-size: 12px !important;
+      p {
+        margin: 0px;
+        font-size: 12px !important;
+      }
+    }
   }
+}
+.upload-trigger {
+  display: inline-block;
 }
 </style>

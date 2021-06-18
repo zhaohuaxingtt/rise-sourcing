@@ -14,19 +14,23 @@
           <span class="title">CBD状态</span>
 
           <div class="floatright">
-              <iButton>{{$t('LK_XIAZAI')}}</iButton>
+              <iButton disabled>{{$t('LK_XIAZAI')}}</iButton>
           </div>
       </div>
       <!-- 表格区域 -->
       <tableList :activeItems="null" selection indexKey :tableData="tableData" :tableTitle="tableTitle" :tableLoading="tableLoading" @handleSelectionChange="handleSelectionChange" @openPage="openPage"></tableList>
       <!-- 分页 -->
-      <iPagination v-update @size-change="handleSizeChange($event, getTableList)" @current-change="handleCurrentChange($event, getTableList)" background :page-sizes="page.pageSizes"
-      :page-size="page.pageSize"
-      :layout="page.layout"
-      :current-page="page.currPage"
-      :total="page.totalCount"
-      class="padding-bottom20"
-    />
+      <iPagination 
+        v-update 
+        @size-change="handleSizeChange($event, getList)" 
+        @current-change="handleCurrentChange($event, getList)" 
+        background :page-sizes="page.pageSizes"
+        :page-size="page.pageSize"
+        :layout="page.layout"
+        :current-page="page.currPage"
+        :total="page.totalCount"
+        class="padding-bottom20"
+     />
     </div>
     </iDialog>
 </template>
@@ -40,6 +44,7 @@ import {
 import tableList from '@/views/designate/designatedetail/components/tableList'
 import { pageMixins } from "@/utils/pageMixins"
 import { CbdTitle } from '../data'
+import { getKmCbdList } from "@/api/costanalysismanage/rfqdetail"
 export default {
     name:'cbdStatus',
     mixins: [pageMixins],
@@ -54,17 +59,22 @@ export default {
         dialogVisible:{
             type:Boolean,
             default:false
+        },
+        rfqId:{
+            type:String,
+            default:'',
         }
     },
     data(){
         return{
-            tableData:[
-                {'a':'FS号','b':'3q11','c':'空调器','d':'KTQ','e':'B-MPV2','f':'XXX','g':'2021-01-01','h':'1','i':'已关闭','j':'BUC.TIA'},
-        ],
+            tableData:[],
             tableTitle:CbdTitle,
             selectItems:[],
             tableLoading:false,
         }
+    },
+    created(){
+        this.getList();
     },
     methods:{
         openPage(){
@@ -77,6 +87,27 @@ export default {
         
         clearDialog() {
             this.$emit('changeVisible', false);
+        },
+        
+        // 获取CBD列表信息
+        async getList(){
+            this.tableLoading = true;
+            const {rfqId} = this;
+            const { page } = this;
+            const data = {
+                rfqId,
+                pageNo:page.currPage,
+                pageSize:page.pageSize,
+            }
+            await getKmCbdList(data).then((res)=>{
+                const {code,data} = res;
+                if(code == 200 && data){
+                    console.log(data);
+                    this.tableData = data;
+                    this.page.totalCount = res.total;
+                }
+                this.tableLoading = false;
+            }).catch((err)=>{ this.tableLoading = false; })
         },
     }
 }

@@ -6,8 +6,10 @@
 
 
 import axios from "@/utils/axios"
+import axiosDownload from '@/utils/axios.download'
 
 const requst = axios(process.env.VUE_APP_PARTS)
+const requestDownload = axiosDownload(process.env.VUE_APP_PARTS)
 
 // 获取附件列表数据
 export function getAffixList(params) {
@@ -30,7 +32,7 @@ export function getAffixList(params) {
 
 // 下载模板
 export function downloadImportFile() {
-    return requst({
+    return requestDownload({
         url: '/affix/affix-requirement-files',
         method: "GET",
     })
@@ -67,10 +69,10 @@ export function uploadAttachments(data) {
 
 // 删除附件
 export function deleteattachments(data) {
+    const {attachmentIds=[]} = data;
     return requst({
-        url: '/affix/affix-requirement-attachments',
+        url: `/affix/affix-requirement-attachments?attachmentIds=${attachmentIds}`,
         method: "DELETE",
-        data,
     })
 }
 

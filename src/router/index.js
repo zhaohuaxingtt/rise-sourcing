@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-05-27 13:42:07
+ * @LastEditTime: 2021-06-18 11:22:22
  * @LastEditors: Please set LastEditors
  * @Description: 系统静态路由.
  * @FilePath: \front-web\src\router\index.js
@@ -399,7 +399,14 @@ export const staticRouter = [{
                 name: "createRfq",
                 meta: { title: "创建RFQ" },
                 component: () => import("@/views/accessoryPart/createRfq/index"),
-            }
+            },
+            // 定点信相关理由
+            {
+                path: "/sourcing/partsletter",
+                name: "partsletter",
+                component: () => 
+                    import ("@/views/letterAndLoi")
+            },
         ],
     },
     {

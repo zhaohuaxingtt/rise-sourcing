@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:17:25
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-05-31 11:29:01
+ * @LastEditTime: 2021-06-16 19:59:09
  * @Description: 上会/备案RS单
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\rs\components\meeting\index.vue
 -->
@@ -35,15 +35,17 @@
           </div>
         </div>
       </div>
-      <tableList :selection="false" :tableTitle="tableTitle" :tabelData="tableData" class="rsTable" />
-      <div class="beizhu">备注 Remarks:<span class="beizhu-value"></span></div>
+      <tableList v-update :selection="false" :tableTitle="tableTitle" :tableData="tableData" class="rsTable" />
+      <div class="beizhu">备注 Remarks:<div class="beizhu-value" v-if="isPreview">
+        <p v-for="(item,index) in remarkItem" :key="index">{{item.value}}</p>
+      </div></div>
     </iCard>
     <iCard v-if="!isPreview" title="上会备注" class="margin-top20">
-      <iButton slot="header-control">保存</iButton>
+      <iButton slot="header-control" @click="handleSaveRemarks" :loading="saveLoading">保存</iButton>
       <div class="meetingRemark">
         <div class="meetingRemark-item" v-for="(item, index) in remarkItem" :key="index">
           <span class="meetingRemark-item-title">{{item.label}}</span>
-          <iInput class="margin-top10" type="textarea" :rows="10" resize="none"></iInput>
+          <iInput class="margin-top10" type="textarea" :rows="10" resize="none" v-model="remarks[item.type]" @input="val => handleInput(val, item.type)"></iInput>
         </div>
       </div>
     </iCard>
@@ -68,36 +70,144 @@
 </template>
 
 <script>
-import { iCard, iButton, iInput, icon } from 'rise'
+import { iCard, iButton, iInput, icon, iMessage } from 'rise'
 import { nomalDetailTitle, nomalDetailTitleBlue, nomalTableTitle, meetingRemark, checkList } from './data'
 import tableList from '@/views/designate/designatedetail/components/tableList'
+import { getList, getRemark, updateRemark } from '@/api/designate/decisiondata/rs'
 export default {
   props: {
-    isPreview: {type:Boolean, default:false}
+    isPreview: {type:Boolean, default:false},
+    nominateId: {type:String},
+    projectType: {type:String}
   },
   components: { iCard, tableList, iButton, iInput, icon },
   data() {
     return {
+      remarks: {},
       leftTitle: nomalDetailTitle,
       rightTitle: nomalDetailTitleBlue,
-      tableTitle: nomalTableTitle,
+      // tableTitle: nomalTableTitle,
       tableData: [],
-      basicData: {
-        partName: '发动机控制器 STEUERGERAET, MOTOR',
-        partNum: 'See below'
-      },
-      remarkItem: meetingRemark,
-      checkList: checkList
+      basicData: {},
+      remarkItem: [],
+      checkList: checkList,
+      resetRemarkType: '',
+      saveLoading: false
     }
   },
   computed: {
+    tableTitle() {
+      if (this.projectType === 'PT17') {
+        return sparePartTableTitle
+      } else if (this.projectType === 'PT18') {
+        return accessoryTableTitle
+      }
+      return nomalTableTitle
+    },
     cardTitle() {
-      // '附件采购 CSC Nomination Recommendation – Accessory Purchasing'
-      // '配件采购 CSC Nomination Recommendation - Spare Part Purchasing'
+      if (this.projectType === 'PT17') {
+        return '配件采购 CSC Nomination Recommendation - Spare Part Purchasing'
+      } else if (this.projectType === 'PT18') {
+        return '附件采购 CSC Nomination Recommendation – Accessory Purchasing'
+      }
       return '生产采购 CSC Nomination Recommendation - Production Purchasing'
+    },
+    getRemarkAll() {
+      return this.remarkItem.map(item => item.value).join('\n')
     }
   },
-  methods: {}
+  methods: {
+    /**
+     * @Description: 保存备注
+     * @Author: Luoshuang
+     * @param {*}
+     * @return {*}
+     */    
+    handleSaveRemarks() {
+      this.saveLoading = true
+      const params = {
+        meetRemark: this.remarks[this.resetRemarkType],
+        nominateAppId: this.nominateId,
+        remarkType: this.resetRemarkType
+      }
+      updateRemark(params).then(res => {
+        if (res?.result) {
+          iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+          this.getRemark()
+        } else {
+          iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+        }
+      }).finally(() => {
+        this.saveLoading = false
+      })
+    },
+    /**
+     * @Description: 备注变化时保存当前修改的备注类型
+     * @Author: Luoshuang
+     * @param {*} val
+     * @param {*} type
+     * @return {*}
+     */    
+    handleInput(val, type) {
+      this.remarkItem = this.remarkItem.map(item => {
+        return {
+          ...item,
+          value: item.type === type ? val : item.value
+        }
+      })
+      this.remarks[type] = val
+      this.resetRemarkType = type
+    },
+    /**
+     * @Description: 页面初始化
+     * @Author: Luoshuang
+     * @param {*}
+     * @return {*}
+     */    
+    init() {
+      this.getTopList()
+      this.getRemark()
+    },
+    /**
+     * @Description: 获取表格初始数据
+     * @Author: Luoshuang
+     * @param {*}
+     * @return {*}
+     */    
+    getTopList() {
+      getList(this.nominateId).then(res => {
+        if (res?.result) {
+          this.basicData = res.data || {}
+          this.tableData = res.data?.lines
+        } else {
+          this.basicData = {}
+          this.tableData = []
+          iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+        }
+      })
+    },
+    /**
+     * @Description: 获取备注
+     * @Author: Luoshuang
+     * @param {*}
+     * @return {*}
+     */    
+    getRemark() {
+      getRemark(this.nominateId).then(res => {
+        if (res?.result) {
+          res.data.forEach(element => {
+            this.remarks[element.remarkType] = element.remark || ''
+            this.remarkItem = meetingRemark.map(item => {
+              return {...item, value: this.remarks[item.type]}
+            })
+          })
+        } else {
+          this.remarks = {}
+          iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+        }
+      })
+    }
+  }
 }
 </script>
 
@@ -188,18 +298,25 @@ export default {
         }
       }
       &-value {
+        padding: 10px 24px;
+        line-height: 29px;
         background-color: #fff;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
       }
     }
   }
 }
 .beizhu {
   background-color: rgba(22, 96, 241, 0.03);
-  height: 40px;
+  // height: 40px;
   padding: 12px 14px;
   font-weight: bold;
+  display: flex;
   &-value {
     font-weight: 400;
+    margin-left: 20px;
   }
 }
 .meetingRemark {

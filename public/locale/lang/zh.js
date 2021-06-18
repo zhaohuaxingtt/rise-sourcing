@@ -10,6 +10,11 @@
         "revokeSure":'您确定要执行撤回操作吗？',
         "submitSure":'您确定要执行提交操作吗？',
         "cancelSure":'您确定要取消吗？',
+        "saveSure":'您确定要保存吗？',
+        "nextSure":'您确定要进行下一步吗？请确定数据已经完全保存',
+        "copyChosenSure":'您确定要复制选中的数据吗？',
+        "exitEditSure":'您的数据没保存，确定要退出编辑吗？',
+        "resetSure":'您确定要重置吗？',
         'all': '全部',
         'search': '搜索',
         'setting': '设置',
@@ -136,6 +141,8 @@
             'QingXuanZeRfqZhuangTai': '请选择RFQ状态', // 请选择RFQ状态
             'LingJianHao': '零件号', // 零件号
             'QingShuRuLingJianHao': '请输入零件号', // 请输入零件号
+            'LingJianMing': '零件名', // 零件名
+            'QingShuRuLingJianMing': '请输入零件名', // 请输入零件名
             'CheXingXiangMu': '车型项目', // 车型项目
             'QingXuanZeCheXingXiangMu': '请选择车型项目', // 请选择车型项目
             'Pca': 'PCA', // PCA
@@ -192,6 +199,7 @@
             'GongYingShang': '供应商', // 供应商
             'PcaFenXiJieGuo': 'PCA分析结果', // PCA分析结果
             'TiaFenXiJieGuo': 'TIA分析结果', // TIA分析结果
+            'QingXuanZeXuYaoBaoCunDeShuJu': '请选择需要保存的数据', // 请选择需要保存的数据
             'SavePcaResAndTiaResTips': '请填写完整PCA分析结果和TIA分析结果', // 请填写完整PCA分析结果和TIA分析结果
 
             'BaoGaoQingDan':'报告清单',// 报告清单
@@ -912,7 +920,7 @@
         'LK_FUJIANQINGDAN':'附件清单', // 附件清单
         'LK_SHANGCHUANWENJIAN':'上传文件', // 上传文件
         'LK_DAORU':'导入', // 导入
-        'LK_PEIJIANMUBANXIAZAI':'配件模板下载', // 配件模板下载
+        'LK_FUJIANMUBANXIAZAI':'附件模板下载', // 附件模板下载
         'LK_DAORUYUAN':'导⼊员', // 导⼊员
         'LK_YULAN':'预览', // 预览
         'LK_TIAOZHUANZHILINGJIANQINGDANTIANJIA':'跳转⾄零件清单添加', // 跳转⾄零件清单添加
@@ -942,6 +950,22 @@
         'LK_DIJIUNIANXUQIULIANG':'第9年需求量', // 第9年需求量
         'LK_DISHINIANXUQIULIANG':'第10年需求量', // 第10年需求量
         'LK_QINGXUANZEZHISHAOYITIAOSHUJU': '请选择至少一条数据', // 请选择至少一条数据
+        'LK_XIAYIBU': '下一步', // 下一步
+        'LK_QINGXUANZEYITIAORFQ': '请选择一条RFQ', // 请选择一条RFQ
+        'LK_QINGXUANZEDINGDIANSHENQINGLEIXING': '请选择定点申请类型', // 请选择定点申请类型
+        'LK_DINGDIANSHENQINGLEIXING': '定点申请类型', // 定点申请类型
+        'LK_GAIDINGDIANSHENQINGZHONGYOUDANYIGONGYINGSHANG': '该定点申请中有单一供应商', // 该定点申请中有单一供应商
+        'LK_DINGDIANXINLOI':'定点信 / LOI', // 定点信 / LOI
+        'LK_DINGDIANXIN':'定点信', // 定点信
+        'LK_LOI':'LOI', // LOI
+        'LK_DINGDIANXINBIANHAO':'定点信编号', // 定点信编号
+        'LK_DINGDIANXINZHUANGTAI':'定点信状态',//  定点信状态
+        'LK_DINGDIANXINDANHAO':'定点申请单号', // 定点申请单号
+        'LK_DINGDIANSHIJIANQIZHI':'定点时间起⽌', //  定点时间起⽌
+        'LK_SHIFOUXIANSHIZIJI':'是否显⽰⾃⼰', //  是否显⽰⾃⼰
+        'LK_GONGYINGSHANGFANKUI':'供应商反馈', // 供应商反馈
+        'LK_SHIFOUQIANSHUXIEYI':'是否签署协议', // 是否签署协议
+        'LK_DINGDIANRIQI':'定点⽇期', //定点⽇期
 
         'LK_ALLBMAPPLY': '所有BM申请',    //  所有BM申请
         'LK_DAIQUERENBMDAN': '待确认BM单',    //  待确认BM单
@@ -1025,6 +1049,8 @@
             'HuiYi': '会议', // 会议
             'RSZhuangTai': 'RS单状态', // RS单状态
             'RSDongJieRiQi':'RS冻结日期', // RS冻结日期
+            'DongJieRiQi':'冻结日期', // 冻结日期
+            'HuiYiZhuangTai': '会议状态', //会议状态
             'BaoJiaYiZhiXingZhuangTai':'报价一致性校验状态', // 报价一致性校验状态
             'SELDanJuQUeRenZH': 'SEL单据确认状态', // SEL单据确认状态
             'DingDianRiQi': '定点日期', // 定点日期
@@ -1036,7 +1062,10 @@
             'JUECEZILIAO':'决策资料', // 决策资料
             'DINGDIAN':'定点', // 定点
             'QUXIAODINGDIAN':'取消定点', // 取消定点
-            'DingDianIDNotNull': '定点申请单id不能为空' //定点申请单id不能为空
+            'DingDianIDNotNull': '定点申请单id不能为空', //定点申请单id不能为空
+            'DongJieRS': '冻结RS单', //冻结RS单
+            'JieDongRS': '解冻RS单',//解冻RS单
+            'QingChuangJianWanDingDianShenQingDan': '请创建完定点申请单再继续下一步',//解冻RS单
         },
         // 单一供应商
         "nominationSupplier": {
@@ -1102,6 +1131,8 @@
             'QiYuShuJuZhengChangCheHui': '其余数据正常撤回', // 其余数据正常撤回
             'FenZuMingChen': '分组名称', //分组名称
             'QingShuRuFenZuMing': '请输入分组名', //请输入分组名
+            'NingShuRuDeBiLiBuHeFa': '您输入的比例不合法', //您输入的比例不合法
+            'QingXuanZeCbdCengJiWeiL3DeShuJu': '请选择CBD层级为L3的数据', // 请选择CBD层级为L3的数据
         },
         // 决策资料
         "strategicdoc": {
@@ -1109,6 +1140,7 @@
             "QuanBuXiaZai": "全部下载",
             "XiaZai": "下载",
             "ShangChuan": "上传",
+            "ShangChuanTuPian": "上传图片",
             "ShanChu": "删除",
             "ShangChuanRiQi": "上传日期",
             "ShangChuanWenJian": "上传文件",
@@ -1120,7 +1152,14 @@
             "ShangChuanXianXiaRS": "上传线下RS文件",
             "JieSuBianJi": "结束编辑",
             "BeiZuXinXi": "备注信息",
-            "ShangChuanFaShengCuoWu": "上传发生错误，请稍后重试"
+            "ShangChuanFaShengCuoWu": "上传发生错误，请稍后重试",
+            "ShanChuHang": "删除行",
+            "XinZengHang": "新增行",
+            "WuFaChongZhi": "无法重置"
         },
+        "BJZS":{
+            "LK_BAOJIAZUSHOU_MJ":"报价分析汇总-模具",
+            "LK_BAOJIAZUSHOU_MJDANWEIYUAN":"报价分析汇总-模具（单元：元）"
+        }
     })
 }))

@@ -33,8 +33,12 @@ import {
   iTabsList,
   icon,
 } from "rise";
+import {
+    updatePresenPageSeat
+} from '@/api/designate'
 import { decisionType } from './data'
 import sortDialog from './sortDialog'
+import {mapGetters} from 'vuex'
 
 export default {
     name:'decisionDataHeader',
@@ -49,9 +53,14 @@ export default {
             default:'1'
         }
     },
+    watch: {
+        nominationStep() {
+            this.init()
+        }
+    },
     data(){
         return{
-            decisionType:decisionType,
+            decisionType: [],
             defaultTab:'Title',
             sortDialogVisibal: false
         }
@@ -65,11 +74,32 @@ export default {
         },50)
         
     },
+    computed: {
+        ...mapGetters({
+            'nominationStep': 'nominationStep'
+        })
+    },
     methods:{
+        init() {
+            const nominationStep = this.nominationStep
+            let tableListData = nominationStep.nodeList || []
+            tableListData = tableListData.filter(o => !o.flag)
+            this.decisionType = tableListData.map(o => {
+                const tabName = o.tabName
+                const tabTarget = decisionType.find(item => item.name === tabName)
+                if (tabTarget) {
+                    o.key = tabTarget.key
+                    o.name = tabTarget.name
+                    o.path = tabTarget.path
+                }
+                return o
+            })
+        },
         // tab切换
         handleClick(tab){
             const { query } =  this.$route;
             const { name='Title' } = tab;
+            this.updateSteps()
             this.$router.push({
                 path: name,
                 query,
@@ -87,6 +117,21 @@ export default {
                     isPreview:'0'
                 },
             });
+        },
+        // 更新进度
+        updateSteps() {
+            const nominationStep = this.$store.getters.nominationStep
+            const nodeList = nominationStep.nodeList || []
+            const { path } = this.$route;
+            const tabName = (decisionType.find(o => o.path === path) || {}).key || ''
+            const node = nodeList.find(o => o.tabName === tabName) || {}
+            updatePresenPageSeat({
+                nominateId: this.$store.getters.nomiAppId,
+                phaseType: 5,
+                nodeList,
+                currentNode: node,
+                node
+            })
         }
     }
 }

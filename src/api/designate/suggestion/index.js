@@ -9,7 +9,7 @@ import axios from "@/utils/axios"
 
 const requst = axios(process.env.VUE_APP_NEGO)
 
-// 获取定点管理列表
+// 获取业务分配模拟列表
 export function getSimulateRecord(params) {
   return requst({
       url: `/nego-assistant/allocation-simulate-record/${params.rfqId}`,
@@ -17,7 +17,7 @@ export function getSimulateRecord(params) {
   })
 }
 
-// 获取定点管理列表
+// 获取业务分配模拟列表
 export function getNomiSimulateRecord(params) {
   return requst({
       url: `/nego-assistant/nomi-simulate-record/${params.rfqId}`,
@@ -39,6 +39,23 @@ export function cancelSummaryGroup(data) {
   return requst({
       url: `/nego-assistant/nego-analysis-summary-group`,
       method: "DELETE",
+      data
+  })
+}
+
+// 刷新
+export function refreshSimulateRecord(params) {
+  return requst({
+      url: `/nego-assistant/allocation-simulate-record-refresh/${params.rfqId}`,
+      method: "GET"
+  })
+}
+
+// 保存
+export function saveSimulateRecord(data) {
+  return requst({
+      url: `/nego-assistant/allocation-simulate-record-save`,
+      method: "POST",
       data
   })
 }
