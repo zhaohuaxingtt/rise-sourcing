@@ -1,15 +1,19 @@
 <template>
   <div>
     <theSearch @getTableList="getTableList" class="margin-bottom20" name="theSearch"/>
+    <theTable ref="theTable"/>
   </div>
 </template>
 
 <script>
-import theSearch from './components/theSearch'
+import theSearch from './components/theSearch';
+import theTable from './components/theTable';
+
 export default {
-   components: {
-     theSearch
-   },
+  components: {
+    theSearch,
+    theTable,
+  },
   methods: {
     getTableList(req) {
       this.$refs.theTable.getTableList(req);
