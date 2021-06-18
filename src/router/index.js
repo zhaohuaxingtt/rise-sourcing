@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-06-18 10:24:08
+ * @LastEditTime: 2021-06-18 11:22:22
  * @LastEditors: Please set LastEditors
  * @Description: 系统静态路由.
  * @FilePath: \front-web\src\router\index.js
@@ -280,7 +280,7 @@ export const staticRouter = [{
             },
             // 定点信相关理由
             {
-                path: "/sourcing/letter",
+                path: "/sourcing/partsletter",
                 name: "partsletter",
                 component: () => 
                     import ("@/views/letterAndLoi")

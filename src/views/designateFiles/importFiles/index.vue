@@ -105,6 +105,7 @@ export default {
         }
     },
     created(){
+      console.log(this.$route.path);
       this.getList();
       this.updateNavList
     },
