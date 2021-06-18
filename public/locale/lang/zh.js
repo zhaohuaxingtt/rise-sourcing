@@ -14,6 +14,7 @@
         "nextSure":'您确定要进行下一步吗？请确定数据已经完全保存',
         "copyChosenSure":'您确定要复制选中的数据吗？',
         "exitEditSure":'您的数据没保存，确定要退出编辑吗？',
+        "resetSure":'您确定要重置吗？',
         'all': '全部',
         'search': '搜索',
         'setting': '设置',
@@ -1024,6 +1025,7 @@
             "ShangChuanFaShengCuoWu": "上传发生错误，请稍后重试",
             "ShanChuHang": "删除行",
             "XinZengHang": "新增行",
+            "WuFaChongZhi": "无法重置"
         },
         "BJZS":{
             "LK_BAOJIAZUSHOU_MJ":"报价分析汇总-模具",

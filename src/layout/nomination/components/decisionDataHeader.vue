@@ -89,7 +89,7 @@ export default {
                 const tabTarget = decisionType.find(item => item.name === tabName)
                 if (tabTarget) {
                     o.key = tabTarget.key
-                    o.name = tabTarget.key
+                    o.name = tabTarget.name
                     o.path = tabTarget.path
                 }
                 return o

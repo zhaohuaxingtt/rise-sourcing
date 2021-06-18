@@ -3,7 +3,7 @@
     <div class="dialog-Header" slot="title">
       <div class="font18 font-weight">{{$t('strategicdoc.ZiDingYi')}}</div>
       <div class="control">
-        <iButton @click="submit">{{ $t('LK_BAOCUN') }}</iButton>
+        <iButton :loading="submiting" @click="submit">{{ $t('LK_BAOCUN') }}</iButton>
         <iButton :loading="isLoading" @click="reset">{{ $t('LK_CHONGZHI') }}</iButton>
       </div>
     </div>
@@ -88,6 +88,7 @@ export default {
       Selection: [],
       controlHeight: 0,
       isLoading:false,
+      submiting: false
     }
   },
   methods: {
@@ -110,31 +111,52 @@ export default {
       })
     },
     async reset() {
-        this.isLoading = true;
       const nominateId = this.$store.getters.nomiAppId ; 
-      await tabPageLayoutsReset(nominateId).then((res)=>{
+      const confirmInfo = await this.$confirm(this.$t('resetSure'))
+      if (confirmInfo !== 'confirm') return
+      this.isLoading = true;
+      tabPageLayoutsReset(nominateId).then((res)=>{
         const { code } = res;
         this.isLoading = false;
         if(code == '200'){
-          this.getFetchData();
+          const nodes = []
+          // 从接口取菜单顺序
+          let nodeList = res.data.nodeList
+          if (!nodeList.length) {
+            iMessage.error(this.$t('strategicdoc.WuFaChongZhi'))
+            return
+          }
+          // 取接口回来的顺序
+          nodeList.forEach(tab => {
+            const targetItem = this.tableListData.find(o => o.name === tab.tabName)
+            if (targetItem) {
+              nodes.push(targetItem)
+            }
+          })
+          this.tableListData = nodes
+          this.submit(false)
         }else{
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }
       }).catch((err)=>{
+        iMessage.error(this.$i18n.locale === "zh" ? err.desZh : err.desEn)
         this.isLoading = false;
       })
       
     },
-    async submit() {
+    async submit(confirm = true) {
       const { query } = this.$route;
       const {desinateId} = query;
       const data = {
-          nodes: this.tableListData,
-          nominateId: this.$store.getters.nomiAppId
-          // phaseType: this.phaseType
-        }
-      const confirmInfo = await this.$confirm(this.$t('submitSure'))
-      if (confirmInfo !== 'confirm') return
+        nodes: this.tableListData,
+        nominateId: this.$store.getters.nomiAppId
+        // phaseType: this.phaseType
+      }
+      if (confirm) {
+        const confirmInfo = await this.$confirm(this.$t('submitSure'))
+        if (confirmInfo !== 'confirm') return
+      }
+      this.submiting = true
       updateTabPageManager(data).then((res)=>{
         if (res.code === '200') {
           iMessage.success(this.$t('LK_CAOZUOCHENGGONG'));
@@ -143,9 +165,10 @@ export default {
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }
-          
+        this.submiting = false
       }).catch(e => {
-          iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
+        this.submiting = false
+        iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
       })
     },
     getFetchData() {
