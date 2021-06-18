@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-28 15:03:47
- * @LastEditTime: 2021-06-18 14:12:52
+ * @LastEditTime: 2021-06-18 15:52:12
  * @LastEditors: Please set LastEditors
  * @Description: 特殊表格实现
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\table.vue
@@ -188,7 +188,7 @@ export default{
           spanArr.push(1);
           position = 0;
         }else{
-          if(item[groupKey] && item[groupKey] === dataList[index-1][groupKey] ){
+          if(item[groupKey] && item[groupKey] === dataList[index-1][groupKey] && item[groupKey] !='-' ){
             spanArr[position] += 1;
             spanArr.push(0);
           }else{
