@@ -3,8 +3,16 @@
     <div class="margin-bottom20 clearFloat">
       <span class="font18 font-weight">{{ $t('TPZS.PCAZONGLAN') }}</span>
       <div class="floatright">
-        <!--编辑-->
-        <iButton @click="handleEdit">{{ $t('LK_BIANJI') }}</iButton>
+        <template v-if="!tableStatus">
+          <!--编辑-->
+          <iButton @click="handleEdit">{{ $t('LK_BIANJI') }}</iButton>
+        </template>
+        <template v-else>
+          <!--取消-->
+          <iButton @click="handleCancel">{{ $t('LK_QUXIAO') }}</iButton>
+          <!--保存-->
+          <iButton @click="handleSave">{{ $t('LK_BAOCUN') }}</iButton>
+        </template>
       </div>
     </div>
     <tableList
@@ -18,8 +26,13 @@
     >
       <template #2="scope">
         <div class="reportContainer">
-          <span class="number">{{scope.row.children && scope.row.children.length}}</span>
-          <icon symbol name="iconwenjianshuliangbeijing" class="reportIcon" v-if="scope.row.children"/>
+          <template v-if="scope.row.children">
+            <span class="number">{{ scope.row.children && scope.row.children.length }}</span>
+            <icon symbol name="iconwenjianshuliangbeijing" class="reportIcon"/>
+          </template>
+          <template v-else>
+            <div @click="handleOpenPreviewDialog" class="openLinkText cursor">{{ scope.row['2'] }}</div>
+          </template>
         </div>
       </template>
     </tableList>
@@ -33,7 +46,8 @@
         :layout="page.layout"
         :current-page='page.currPage'
         :total="page.totalCount"/>
-
+    <!--    预览弹窗-->
+    <previewDialog v-model="previewDialog"/>
   </iCard>
 </template>
 
@@ -42,6 +56,7 @@ import {iCard, iButton, iPagination, icon} from 'rise';
 import tableList from '@/components/ws3/commonTable';
 import {pageMixins} from '@/utils/pageMixins';
 import resultMessageMixin from '@/utils/resultMessageMixin';
+import previewDialog from './previewDialog';
 import {tableTitle} from './data';
 
 export default {
@@ -51,7 +66,8 @@ export default {
     iButton,
     tableList,
     iPagination,
-    icon
+    icon,
+    previewDialog,
   },
   data() {
     return {
@@ -80,6 +96,8 @@ export default {
       inDepthRatingDialogLoading: false,
       exportFinancialReportDialog: false,
       exportFinancialReportDialogLoading: false,
+      tableStatus: '',
+      previewDialog: false,
     };
   },
   created() {
@@ -118,7 +136,13 @@ export default {
        }*/
       this.getTiledTableListData();
     },
-    handleEdit() {},
+    handleEdit() {
+      this.tableStatus = 'edit';
+    },
+    handleCancel() {
+      this.tableStatus = '';
+    },
+    handleSave() {},
     getTiledTableListData() {
       this.tiledTableListData = [];
       this.tableListData.map((item, index) => {
@@ -132,6 +156,9 @@ export default {
         }
       });
     },
+    handleOpenPreviewDialog() {
+      this.previewDialog = true;
+    },
   },
 };
 </script>
@@ -141,17 +168,25 @@ export default {
   margin-top: 0;
   margin-bottom: 0;
 }
-.reportContainer{
+
+.reportContainer {
   position: relative;
-  .reportIcon{
+
+  .reportIcon {
     font-size: 20px;
   }
-  .number{
+
+  .number {
     position: absolute;
     left: 48.5%;
     font-size: 14px;
     color: #FFFFFF;
   }
+}
+
+.openLinkText {
+  color: $color-blue;
+  text-decoration: underline;
 }
 
 </style>
