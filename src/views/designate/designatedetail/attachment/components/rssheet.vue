@@ -13,14 +13,14 @@
       >
       <div class="floatright">
         <!-- 下载 -->
-        <iButton @click="downloadFile" class="margin-right10">
+        <iButton @click="downloadFile" class="btn">
           {{ $t("strategicdoc.XiaZai") }}
         </iButton>
         <span>
           <!-- 删除 -->
         <iButton
-          class="margin-right10"
-          @click="deleteFile"
+          class="btn"
+          @click="deleteFile($event, getFetchDataList)"
           v-if="!$store.getters.isPreview"
         >
           {{ $t("strategicdoc.ShanChu") }}
@@ -33,12 +33,12 @@
           {{ $t("strategicdoc.ShangChuanXianXiaRS") }}
         </iButton> -->
         <upload
-          class="upload-trigger"
+          class="upload-trigger btn"
           v-if="!$store.getters.isPreview"
           :hideTip="true"
           :accept="'.doc,.docx,.xls,.xlsx,.ppt,.pptx,.jpg,.jpeg,.png,.pdf,.tif'"
           :buttonText="$t('strategicdoc.ShangChuanXianXiaRS')"
-          @on-success="onUploadsucess({fileType: '103'})"
+          @on-success="onUploadsucess(Object.assign(...arguments, {fileType: '103'}), getFetchDataList)"
         />
         </span>
       </div>
@@ -127,4 +127,8 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+.btn {
+  margin-right: 10px;
+  display: inline-block;
+}
 </style>
