@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-25 13:01:23
- * @LastEditTime: 2021-06-09 23:41:11
+ * @LastEditTime: 2021-06-18 10:41:33
  * @LastEditors: Please set LastEditors
  * @Description: 报价助手界面
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\index.vue
@@ -48,7 +48,7 @@ import quotationScoringMj from './components/quotationScoringMj'
 import quotationScoringHZ from './components/quotationScoringHz'
 import quotationScoringEcartsCard from './components/quotationScoringEcartsCard'
 import buMonitor from './components/qutaionScoringBusses'
-import analysisTool from '../../../analysisTool'
+import analysisTool from '../../../analysisTool/volumepricing'
 import {icardData} from './components/data'
 export default{
   components:{iTabsList,iCard,quotationScoringTracking,quotationScoringMj,quotationScoringHZ,quotationScoringEcartsCard,analysisTool,buMonitor},
