@@ -5,13 +5,13 @@
 <template>
   <iDialog :title="$t(title)" :visible.sync="value" width="95%" top="5vh" @close='clearDiolog' z-index="1000" class="iDialogAdd">
     <div slot="title" class="title">
-      <div class="text">{{ $t(title) + '：' + RFQID }}</div>
+      <div class="text">{{ $t(title) }}</div>
     </div>
     <div class="changeContent">
       <div v-loading="tableLoading">
         <iTableList
             :selection="false"
-            :height="tableHeight - 260"
+            :height="tableHeight - 290"
             :tableData="tableListData"
             :tableTitle="tableTitle"
         >
@@ -19,6 +19,7 @@
             <div>{{ getTousandNum(scope.row.budget) }}</div>
           </template>
         </iTableList>
+        <div class="money">货币：人民币  |  单位：元  |  不含税 </div>
         <iPagination
             v-update
             @size-change="handleSizeChange($event, findAddColumnInvestmentBuild)"
@@ -43,11 +44,11 @@ import {
 import {
   iTableList
 } from "@/components"
-import {RFQList, form} from "../components/data";
+import {appliedList, form} from "../components/data";
 import {pageMixins} from "@/utils/pageMixins";
 import {tableHeight} from "@/utils/tableHeight";
 import {getTousandNum} from "@/utils/tool";
-import {detail} from "@/api/ws2/budgetApproval";
+import {applyAmountDetail} from "@/api/ws2/dataBase";
 
 export default {
   mixins: [pageMixins, tableHeight],
@@ -57,33 +58,32 @@ export default {
     iPagination,
   },
   props: {
-    title: {type: String, default: 'RFQ号'},
-    RFQID: {type: String, default: ''},
+    title: {type: String, default: '已申请金额'},
+    moneyComponentParams: {type: Object, default: () => {}},
     value: {type: Boolean},
   },
   data() {
     return {
       form: form,
       tableListData: [],
-      tableTitle: RFQList,
+      tableTitle: appliedList,
       tableLoading: false,
       getTousandNum: getTousandNum
     }
   },
   mounted() {
-    // this.findAddColumnInvestmentBuild()
   },
   methods: {
     detail() {
-      console.log([this.RFQID])
       this.tableLoading = true
-      detail({
-        rfqIds: [this.RFQID],
+      applyAmountDetail({
         current: this.page.currPage,
         size: this.page.pageSize,
+        tmCartypeProId: this.moneyComponentParams.tmCartypeProId,
+        tmCategoryId: this.moneyComponentParams.tmCategoryId,
       }).then((res) => {
         const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
-        if (Number(res.code) === 200) {
+        if (Number(res.code) === 0) {
           this.page.currPage = Number(res.pageNum);
           this.page.pageSize = Number(res.pageSize);
           this.page.totalCount = Number(res.total);
@@ -101,6 +101,7 @@ export default {
   watch: {
     value(val) {
       if (val) {
+        console.log(this.moneyComponentParams)
         this.detail()
       }
     }
@@ -159,6 +160,13 @@ export default {
   .add {
     float: right;
     margin-bottom: 10px;
+  }
+  .money{
+    text-align: right;
+    margin-top: 10px;
+    font-size: 14px;
+    font-weight: 400;
+    color: #999999;
   }
 }
 </style>

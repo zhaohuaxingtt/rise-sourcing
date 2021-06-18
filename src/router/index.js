@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-06-18 11:22:22
+ * @LastEditTime: 2021-06-18 15:34:28
  * @LastEditors: Please set LastEditors
  * @Description: 系统静态路由.
  * @FilePath: \front-web\src\router\index.js
@@ -184,6 +184,32 @@ export const staticRouter = [{
                 component: () => import (`@/views/ws2/baApply/details`),
             },
             {
+                path: '/investmentAdmin',
+                name: 'toolingModelDetails',
+                meta: {
+                    title: '模具投资付款管理员'
+                },
+                component: () => import (`@/views/ws2/investmentAdmin`),
+                children: [
+                    {
+                        path: '/investmentAdmin/yearlyPlan',
+                        name: 'investmentAdminYearlyPlan',
+                        meta: {
+                            title: '年度计划'
+                        },
+                        component: () => import (`@/views/ws2/investmentAdmin/yearlyPlan`),
+                    },
+                    {
+                        path: '/investmentAdmin/monthlyPlan',
+                        name: 'investmentAdminMonthlyPlan',
+                        meta: {
+                            title: '月度计划'
+                        },
+                        component: () => import (`@/views/ws2/investmentAdmin/monthlyPlan`),
+                    }
+                ]
+            },
+            {
                 path: '/tooling',
                 name: 'tooling',
                 meta: {
@@ -204,9 +230,41 @@ export const staticRouter = [{
                         path: '/tooling/budgetManagement/carTypeOverview',
                         name: 'carTypeOverview',
                         meta: {
-                            title: '车型概览'
+                            title: '生成投资清单'
                         },
                         component: () => import (`@/views/ws2/budgetManagement/carTypeOverview`),
+                    },
+                    {
+                        path: '/tooling/budgetManagement/generateInvestmentList',
+                        name: 'generateInvestmentList',
+                        meta: {
+                            title: '生成投资清单'
+                        },
+                        component: () => import (`@/views/ws2/budgetManagement/generateInvestmentList`),
+                    },
+                    {
+                        path: '/tooling/budgetManagement/investmentListJV',
+                        name: 'investmentListJV',
+                        meta: {
+                            title: '投资清单JV'
+                        },
+                        component: () => import (`@/views/ws2/budgetManagement/investmentListJV`),
+                    },
+                    {
+                        path: '/tooling/budgetManagement/investmentListCommon',
+                        name: 'investmentListCommon',
+                        meta: {
+                            title: '投资清单Common'
+                        },
+                        component: () => import (`@/views/ws2/budgetManagement/investmentListCommon`),
+                    },
+                    {
+                        path: '/tooling/budgetManagement/commonSourcing',
+                        name: 'commonSourcing',
+                        meta: {
+                            title: 'commonSourcing'
+                        },
+                        component: () => import (`@/views/ws2/budgetManagement/commonSourcing`),
                     },
                     {
                         path: '/tooling/baApplyIndex',
@@ -223,22 +281,6 @@ export const staticRouter = [{
                             title: 'BA审批'
                         },
                         component: () => import (`@/views/ws2/baApproval`),
-                    },
-                    {
-                        path: '/tooling/budgetManagement/generateInvestmentList',
-                        name: 'generateInvestmentList',
-                        meta: {
-                            title: '生成投资清单'
-                        },
-                        component: () => import (`@/views/ws2/budgetManagement/generateInvestmentList`),
-                    },
-                    {
-                        path: '/tooling/budgetManagement/investmentList',
-                        name: 'investmentList',
-                        meta: {
-                            title: '投资清单'
-                        },
-                        component: () => import (`@/views/ws2/budgetManagement/investmentList`),
                     },
                     //历史数据库
                     {
@@ -257,6 +299,14 @@ export const staticRouter = [{
                             title: '预算审批'
                         },
                         component: () => import (`@/views/ws2/budgetApproval`),
+                    },
+                    {
+                        path: '/tooling/bmApplyIndex',
+                        name: 'bmApplyIndex',
+                        meta: {
+                            title: 'BM申请'
+                        },
+                        component: () => import (`@/views/ws2/bmApply`),
                     },
                 ]
             },
@@ -279,13 +329,13 @@ export const staticRouter = [{
                     import (`@/views/ws2/budgetManagement/generateInvestmentList`)
             },
             {
-                path: '/ws2/budgetManagement/investmentList',
-                name: 'investmentList',
+                path: '/ws2/budgetManagement/investmentListCommon',
+                name: 'investmentListCommon',
                 meta: {
                     title: '模具-投资清单'
                 },
                 component: () =>
-                    import (`@/views/ws2/budgetManagement/investmentList`)
+                    import (`@/views/ws2/budgetManagement/investmentListCommon`)
             },
             {
                 path: "/ws3-register",
@@ -350,7 +400,7 @@ export const staticRouter = [{
                 meta: { title: "创建RFQ" },
                 component: () => import("@/views/accessoryPart/createRfq/index"),
             },
-            // 定点信相关理由
+            // 定点信相关路由
             {
                 path: "/sourcing/partsletter",
                 name: "partsletter",

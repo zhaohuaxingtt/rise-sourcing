@@ -5,7 +5,7 @@
         <el-radio-button label="mouldInvestment">{{ $t('模具投资') }}</el-radio-button>
         <el-radio-button label="modelBag">{{ $t('车型包') }}</el-radio-button>
       </el-radio-group>
-      <div class="rightModel">
+      <div class="rightModel" v-if="leftModel === 'mouldInvestment'">
         <div :class="[rightModel === 1 ? 'active' : '']" @click="rightModel = 1">{{ $t('材料组汇总') }}</div>
         <div :class="[rightModel === 2 ? 'active' : '']" @click="rightModel = 2">{{ $t('零件号明细') }}</div>
       </div>
@@ -15,7 +15,7 @@
       <partNoPart v-if="rightModel === 2"></partNoPart>
     </div>
     <div v-if="leftModel === 'modelBag'" style="margin-top: 20px;font-size: 22px">
-      车型包正在开发中，敬请期待！
+      <modelBag></modelBag>
     </div>
   </div>
 </template>
@@ -27,6 +27,7 @@ import {
 } from "@/api/ws2/dataBase";
 import summaryPart from "./mouldInvestment/summary";
 import partNoPart from "./mouldInvestment/partNo";
+import modelBag from "./modelBag/index";
 import {form, dataBaseData} from "../budgetManagement/components/data";
 import {pageMixins} from "@/utils/pageMixins";
 
@@ -35,6 +36,7 @@ export default {
   components: {
     summaryPart,
     partNoPart,
+    modelBag
   },
   data() {
     return {

@@ -218,7 +218,7 @@ export const addListInvestment = [{
         tooltip: false
     },
 ]
-export const investmentListEntities = [{
+export const investmentListJV = [{
     //export const tableTitle = permissionTitle("PARTSPROCURE_PARTSPROCURELIST",[{
         props: 'categoryCode',
         name: '材料组编号',
@@ -332,6 +332,85 @@ export const investmentListEntities = [{
         tooltip: false
     },
 ]
+export const investmentListCommon = [{
+    //export const tableTitle = permissionTitle("PARTSPROCURE_PARTSPROCURELIST",[{
+        props: 'categoryCode',
+        name: '材料组编号',
+        key: 'LK_CAILIAOZUBIANHAO2',
+        width: 120,
+        tooltip: false
+    },
+    {
+        props: 'categoryNameZh',
+        name: '材料组名称（中）',
+        key: 'LK_CAILIAOZUMINGCENGZHONG',
+        width: 150,
+        tooltip: false
+    },
+    {
+        props: 'categoryNameDe',
+        name: '材料组名称（德）',
+        key: 'LK_CAILIAOZUMINGCENGDE',
+        width: 150,
+        tooltip: false
+    },
+    {
+        props: 'commodity',
+        name: '零件包-CN',
+        key: '零件包-CN',
+        width: 100,
+        tooltip: false
+    },
+    {
+        props: 'budgetAmount',
+        name: '零件包-DE',
+        key: '零件包-DE',
+        width: 220,
+        tooltip: false
+    },
+    {
+        props: 'moldProperties',
+        name: '专业科室',
+        key: '专业科室',
+        width: 130,
+        tooltip: false
+    },
+    {
+        props: 'sourcingType',
+        name: '预算金额',
+        key: '（Mio.RMB）',
+        width: 150,
+        tooltip: false
+    },
+    {
+        props: 'linie',
+        name: '数据来源',
+        key: '数据来源',
+        width: 200,
+        tooltip: false
+    },
+    {
+        props: 'zp',
+        name: '支持信息',
+        key: '支持信息',
+        width: 60,
+        tooltip: false
+    },
+    {
+        props: 'refCartypeName',
+        name: '参考项目',
+        key: '参考项目',
+        width: 130,
+        tooltip: false
+    },
+    {
+        props: 'refMoldAmount',
+        name: '参考项目模具定点金额（Mio.RMB）',
+        key: '参考项目模具定点金额（Mio.RMB）',
+        width: 320,
+        tooltip: false
+    },
+]
 //零件采购列表入参
 export const form = {
     'search.buyerName': '', //询价采购员
@@ -384,6 +463,7 @@ export const form = {
     'search.contingencyAmount': "", //综合偏差
     'search.contingencyPercent': "", //综合偏差金额
     'search.totalBudget': "", //总预算
+    'search.DeptSelect': "", // 专业科室
 }
 
 // addRfq
@@ -395,20 +475,25 @@ export const addRfqTitle = [
 ]
 
 export const tabtitle = [
-    {value: 1, message: 0, name: "车型项目概览", activePath: '/tooling/bmApplyIndex', url: '/tooling/bmApplyIndex', key: "LK_CHEXINGXIANGMUGAILAN"},
+    {value: 1, message: 0, name: "车型项目概览", activePath: '404', url: '404', key: "LK_CHEXINGXIANGMUGAILAN"},
     {value: 2, message: 0, name: "预算管理", activePath: '/tooling/budgetManagement', url: '/tooling/budgetManagement', key: "LK_YUSUANGUANLI"},
     {value: 3, message: 0, name: "预算审批", activePath: '/tooling/budgetApproval', url: '/tooling/budgetApproval', key: "LK_YUSUANSHENPI"},
     {value: 4, message: 0, name: "BA申请", activePath: '/tooling/baApplyIndex', url: '/tooling/baApplyIndex', key: "LK_BASHENQING"},
     {value: 5, message: 0, name: "BM申请", activePath: '/tooling/bmApplyIndex', url: '/tooling/bmApplyIndex', key: "LK_BMSHENQING"},
-    {value: 6, message: 0, name: "投资报告", activePath: '/tooling/bmApplyIndex', url: '/tooling/bmApplyIndex', key: "LK_TOUZIBAOGAO"},
+    {value: 6, message: 0, name: "投资报告", activePath: '404', url: '404', key: "LK_TOUZIBAOGAO"},
     {value: 7, message: 0, name: "BA审批", activePath: '/tooling/baApprovalIndex', url: '/tooling/baApprovalIndex', key: "LK_BAAPPROVAL"},
+]
+
+export const budgetManagement3rd = [
+    {value: 1, message: 0, name: "车型项目", activePath: 'carTypeOverview', url: '/tooling/budgetManagement/carTypeOverview', key: "LK_CHEXINGXIANGMU"},
+    {value: 2, message: 0, name: "Common Sourcing", activePath: 'commonSourcing', url: '/tooling/budgetManagement/commonSourcing', key: "Common Sourcing"},
 ]
 
 export const dataBaseData = [
     {
         props: 'tmCartypeProName',
         name: '车型项目',
-        key: '车型项目',
+        key: 'LK_CHEXINGXIANGMU',
         tooltip: false
     },
     {
@@ -465,7 +550,7 @@ export const tmCartypeProList = [
     {
         props: 'tmCartypeProName',
         name: '车型项目',
-        key: '车型项目',
+        key: 'LK_CHEXINGXIANGMU',
         tooltip: false
     },
     {
@@ -547,6 +632,222 @@ export const partsList = [
         props: 'entryAmount',
         name: '模具入账金额',
         key: '模具入账金额',
+        tooltip: false
+    },
+]
+
+export const appliedList = [
+    {
+        props: 'categoryName',
+        name: '材料组',
+        key: '材料组',
+        tooltip: false
+    },
+    {
+        props: 'rfqId',
+        name: 'RFQ号',
+        key: 'RFQ号',
+        tooltip: false
+    },
+    {
+        props: 'partNum',
+        name: '零件号',
+        key: '零件号',
+        tooltip: false
+    },
+    {
+        props: 'partNameZh',
+        name: '零件名称（中）',
+        key: '零件名称（中）',
+        tooltip: false
+    },
+    {
+        props: 'partNameDe',
+        name: '零件名称（德）',
+        key: '零件名称（德）',
+        tooltip: false
+    },
+    {
+        props: 'budgetApplyAmount',
+        name: '申请金额',
+        key: '申请金额',
+        tooltip: false
+    },
+    {
+        props: 'applyAmountStatus',
+        name: '申请状态',
+        key: '申请状态',
+        tooltip: false
+    },
+    {
+        props: 'purchaserName',
+        name: '询价采购员',
+        key: '询价采购员',
+        tooltip: false
+    },
+]
+
+export const nomiAmountDetailList = [
+    {
+        props: 'categoryName',
+        name: '材料组',
+        key: '材料组',
+        tooltip: false
+    },
+    {
+        props: 'rfqId',
+        name: 'RFQ号',
+        key: 'RFQ号',
+        tooltip: false
+    },
+    {
+        props: 'partNum',
+        name: '零件号',
+        key: '零件号',
+        tooltip: false
+    },
+    {
+        props: 'partNameZh',
+        name: '零件名称（中）',
+        key: '零件名称（中）',
+        tooltip: false
+    },
+    {
+        props: 'partNameDe',
+        name: '零件名称（德）',
+        key: '零件名称（德）',
+        tooltip: false
+    },
+    {
+        props: 'nomiAmount',
+        name: '定点金额',
+        key: '定点金额',
+        tooltip: false
+    },
+    {
+        props: 'supplierName',
+        name: '定点供应商',
+        key: '定点供应商',
+        tooltip: false
+    },
+    {
+        props: 'purchaserName',
+        name: '询价采购员',
+        key: '询价采购员',
+        tooltip: false
+    },
+    {
+        props: 'nomiDate',
+        name: '定点日期',
+        key: '定点日期',
+        tooltip: false
+    },
+]
+
+export const baAmountDetailList = [
+    {
+        props: 'categoryName',
+        name: '材料组',
+        key: '材料组',
+        tooltip: false
+    },
+    {
+        props: 'rfqId',
+        name: 'RFQ号',
+        key: 'RFQ号',
+        tooltip: false
+    },
+    {
+        props: 'partNum',
+        name: '零件号',
+        key: '零件号',
+        tooltip: false
+    },
+    {
+        props: 'partNameZh',
+        name: '零件名称（中）',
+        key: '零件名称（中）',
+        tooltip: false
+    },
+    {
+        props: 'partNameDe',
+        name: '零件名称（德）',
+        key: '零件名称（德）',
+        tooltip: false
+    },
+    {
+        props: 'baAmount',
+        name: '申请BA金额',
+        key: '申请BA金额',
+        tooltip: false
+    },
+    {
+        props: 'baNum',
+        name: 'A号',
+        key: 'A号',
+        tooltip: false
+    },
+    {
+        props: 'purchaserName',
+        name: '询价采购员',
+        key: '询价采购员',
+        tooltip: false
+    },
+]
+
+export const bmAmountDetailList = [
+    {
+        props: 'categoryName',
+        name: '材料组',
+        key: '材料组',
+        tooltip: false
+    },
+    {
+        props: 'rfqId',
+        name: 'RFQ号',
+        key: 'RFQ号',
+        tooltip: false
+    },
+    {
+        props: 'partNum',
+        name: '零件号',
+        key: '零件号',
+        tooltip: false
+    },
+    {
+        props: 'partNameZh',
+        name: '零件名称（中）',
+        key: '零件名称（中）',
+        tooltip: false
+    },
+    {
+        props: 'partNameDe',
+        name: '零件名称（德）',
+        key: '零件名称（德）',
+        tooltip: false
+    },
+    {
+        props: 'bmAmount',
+        name: 'BM单金额',
+        key: 'BM单金额',
+        tooltip: false
+    },
+    {
+        props: 'bmNum',
+        name: 'BM单号',
+        key: 'BM单号',
+        tooltip: false
+    },
+    {
+        props: 'wbsCode',
+        name: 'WBS编号',
+        key: 'WBS编号',
+        tooltip: false
+    },
+    {
+        props: 'purchaserName',
+        name: '询价采购员',
+        key: '询价采购员',
         tooltip: false
     },
 ]

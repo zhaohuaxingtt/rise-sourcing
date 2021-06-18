@@ -148,7 +148,7 @@ export default {
                   //     'investmentListParams'
                   // )
                   this.$router.push({
-                    path: '/tooling/budgetManagement/investmentList',
+                    path: '/tooling/budgetManagement/investmentListCommon',
                     query: {
                       id: carTypeProject,
                       sourceStatus: sourceStatus,
@@ -193,7 +193,7 @@ export default {
       //     'investmentListParams'
       // )
       this.$router.push({
-        path: '/tooling/budgetManagement/investmentList',
+        path: '/tooling/budgetManagement/investmentListCommon',
         query: {
           id: this.$store.state.mouldManagement.budgetManagement.carTypeProject,
           sourceStatus: this.$store.state.mouldManagement.budgetManagement.sourceStatus,
@@ -210,6 +210,8 @@ export default {
 .navBar{
   display: flex;
   justify-content: space-between;
+  border-bottom: 1px solid #E3E3E3;
+  padding-bottom: 5px;
 }
 .iDialogNextStep {
   ::v-deep .el-dialog {

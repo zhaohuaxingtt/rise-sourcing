@@ -360,7 +360,7 @@
         'LK_CAILIAOZUXINXI': '材料组信息', //材料组信息
         'LK_CF': '财务控制员', //财务控制员
         'LK_CAIWUMUBIAOJIA': '财务目标价', //财务目标价
-        'LK_CAIGOUGONGCHANG': '采购工厂', //采购工厂
+        'LK_CAIGOUGONGCHANG': '生产工厂', //采购工厂
         'LK_CAIGOUTIAOKUAN': '采购条款', //采购条款
         'LK_CAIGOUXIANGMUJIANLI': '零件采购项目', //采购项目建立
         'LK_CAIGOUXIANGMUXINXI': '采购项目信息', //采购项目信息
@@ -966,6 +966,58 @@
         'LK_GONGYINGSHANGFANKUI':'供应商反馈', // 供应商反馈
         'LK_SHIFOUQIANSHUXIEYI':'是否签署协议', // 是否签署协议
         'LK_DINGDIANRIQI':'定点⽇期', //定点⽇期
+
+        'LK_ALLBMAPPLY': '所有BM申请',    //  所有BM申请
+        'LK_DAIQUERENBMDAN': '待确认BM单',    //  待确认BM单
+        'LK_AEKOZENGZHIBMDAN': 'Aeko增值BM单',  //  Aeko增值BM单
+        'LK_AEKOJIANZHIBMDAN': 'Aeko减值BM单',  //  Aeko减值BM单
+        'LK_BMDANZHUANGTAI': 'BM单状态',    //  BM单状态
+        'LK_AEKOLEIXING': 'Aeko类型',   //  Aeko类型
+        'LK_BMDANLIUSHUIHAO': 'BM单流⽔号',   //  BM单流⽔号
+        'LK_BMDANHAO': 'BM单号',    //  BM单号
+        'LK_WBSBIANHAO': 'WBS编号',   //  WBS编号
+        'LK_DAIBIAOLINGJIAN': '代表零件',  //  代表零件
+        'LK_BMDANJINE':  'BM单金额', //  BM单金额
+        'LK_BMZHUANGTAI': 'BM单状态',   //  BM单状态
+        'LK_DINGDIANLEIXING': '定点类型',   //  定点类型
+        'LK_AEKOZENGZHIJINE': 'Aeko增值金额',  //  Aeko增值金额
+        'LK_XIAZAIQINGDAN': '下载清单', //  下载清单
+        'LK_QUERENSHENQING': '确认申请',    //  确认申请
+        'LK_ZUOFEI': '作废', // 作废
+        'LK_DAIBIAOLINGJIANHAO': '代表零件号',  //  代表零件号
+        'LK_CAIGOUSHENQINGHAO': '采购申请号',   //  采购申请号
+        'LK_KEMU': '科目',  //  科目
+        'LK_CHENGBENZHONGXIN': '成本中心',  //  成本中心
+        'LK_CHENGBENKONGZHIYU': '成本控制域',   //  成本控制域
+        'LK_ZONGZHANGKEMU': '总账科目', //  总账科目
+        'LK_TONGJIDINGDAN': '统计订单', //  统计订单
+        'LK_WULIAOZHU': '物料组',   //  物料组
+        'LK_JIAOHUORIQI': '交货日期',   //  交货日期
+        'LK_CAIGOUZU': '采购组',    //  采购组
+        'LK_BUHANSUICHENGBEN':  '不含税成本',   //  不含税成本
+        'LK_HANSUICHENGBEN': '含税成本',    //  含税成本
+        'LK_DUANWENBEN': '短文本',  //  短文本
+        'LK_LINGJIANMINGCHENZHONG': '零件名称（中）',   //  零件名称（中）
+        'LK_LINGJIANMINGCHENDE': '零件名称（德）',  //  零件名称（德）
+        'LK_CSF': 'CSF',    //  CSF
+        'LK_BAOCUNWEIZUIXINBANBEN': '保存为最新版本',  //  保存为最新版本
+        'LK_SHUAXIN': '刷新',   //  刷新
+        'LK_SHUAXINRIQI': '刷新日期',   //  刷新日期
+        'LK_SHANGBANNIANSOPFUKUANDUIBI': '上半年SOP付款⽐',   //  上半年SOP付款⽐
+        'LK_XIABANNIANSOPFUKUANDUIBI': '下半年SOP付款⽐',   //  下半年SOP付款⽐
+        'LK_SOPSHIJIAN': 'SOP时间', //  SOP时间
+        'LK_YUSUANJINE': '预算⾦额',    //  预算⾦额
+        'LK_BMJINE': 'BM金额',  //  BM金额
+        'LK_YIFUKUANJINEWANGNIAN': '已付款⾦额-往年',   //  已付款⾦额-往年
+        'LK_YIFUKUAIJINEDANGNIAN': '已付款⾦额-当年',   //  已付款⾦额-当年
+        'LK_JIHUAFUKUANDANGNIAN': '计划付款-当年', // 计划付款-当年
+        'LK_JIHUAFUKUANCINIAN': '计划付款-次年', // 计划付款-次年
+        'LK_SOPFUKUANBI': 'SOP付款比',  //  SOP付款比
+        'LK_XIANGMUCAIGOUYUAN': '项目采购员',   //  项目采购员
+        'LK_XITONGJISUAN': '系统计算',  //  系统计算
+        'LK_RENMINBI': '人民币',    //  人民币
+        'LK_BUHANSUI': '不含税',    //  不含税
+        'LK_SHOUGONGTIAOZHENG': '手工调整', //  手工调整
 
         // 定点管理
         'nominationLanguage': {
