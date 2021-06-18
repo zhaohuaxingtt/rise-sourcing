@@ -39,7 +39,7 @@
       </div>
       <!--------------表格模块-------------->
     </div>
-    <tableList v-loading='fsTableLoading' @sortChangeTable='sortChangeTable' :round='round' :tableTitle='title' v-if='layout == "1"' :ratingList='ratingList' :tableData='exampelData' @handleSelectionChange='handleSelectionChange'></tableList>
+    <tableList v-loading='fsTableLoading' @sortChangeTabless='sortChange' :round='round' :tableTitle='title' v-if='layout == "1"' :ratingList='ratingList' :tableData='exampelData' @handleSelectionChange='handleSelectionChange'></tableList>
     <tableListSupplier v-loading='supplierTableLoading' :centerSupplierData='suppliertopList' :supplierLeftLit='supplierLeftLit' :tableTitle='supplierTile'  :tableData='supplierData' v-if='layout == "2"'></tableListSupplier>
     <!--------------弹窗-------------->
     <iDialog title="组合名" :visible.sync="groupVisble" width='25%' >
@@ -87,7 +87,8 @@ export default{
     showRound:true,
     quoteShow:true,
     partInfoList:[],
-    bdlPriceTotalInfoList:[]
+    bdlPriceTotalInfoList:[],
+    oldExampelData:[]
   }},
   mounted(){
     this.init()
@@ -96,15 +97,25 @@ export default{
     return {vm:this}
   },
   methods:{
-    sortChangeTable(props){
-      const notSortData = defaultSort(translateData(this.partInfoList),'groupId').filter(items=>items.groupId!='')
-      const sortData = defaultSort(translateData(this.partInfoList),'groupId').filter(items=>items.groupId =='')
-      if(props == "ascending"){
-        this.exampelData = [...notSortData,...sortData.sort((a,b)=>a.cfAprice - b.cfAprice),...subtotal(this.title,this.exampelData,this.bdlPriceTotalInfoList)]
-      }else if(props == "descending"){
-         this.exampelData = [...notSortData,...sortData.sort((a,b)=>b.cfAprice - a.cfAprice),...subtotal(this.title,this.exampelData,this.bdlPriceTotalInfoList)]
-      }else{
-        this.exampelData = [...notSortData,...sortData,...subtotal(this.title,this.exampelData,this.bdlPriceTotalInfoList)]
+    /**
+     * @description: 排除group total km buget 列不需要排序外，其他的都是需要排序的列。
+     * @param {*} props -表格中返回的标识。正排序 还是 反排序 还是 默认
+     * @return {*}
+     */
+    sortChange(props){
+      try {
+        const notSortData = this.oldExampelData.filter(items=> items.groupId != null && items.groupId != '-')
+        const sortData = this.oldExampelData.filter(items=> items.groupId == null && items.groupId != '-')
+        const totalData = this.oldExampelData.filter((items)=> items.groupId == '-')
+        if(props == "ascending"){
+          this.exampelData = [...notSortData,...sortData.sort((a,b)=>a.cfPartAPrice - b.cfPartAPrice),...totalData]
+        }else if(props == "descending"){
+          this.exampelData = [...notSortData,...sortData.sort((a,b)=>b.cfPartAPrice - a.cfPartAPrice),...totalData]
+        }else{
+          this.exampelData = this.oldExampelData
+        }
+      } catch (error) {
+        this.exampelData = this.oldExampelData
       }
     },
     changeRound(){
@@ -279,6 +290,7 @@ export default{
           this.exampelData = defaultSort(translateData(res.data.partInfoList),'groupId')
           this.ratingList = translateRating(res.data.partInfoList,res.data.bdlRateInfoList)
           this.exampelData = [...this.exampelData,...subtotal(this.title,this.exampelData,res.data.bdlPriceTotalInfoList)]
+          this.oldExampelData = JSON.parse(JSON.stringify(this.exampelData))
         }
       }).catch(err=>{
         this.fsTableLoading = false

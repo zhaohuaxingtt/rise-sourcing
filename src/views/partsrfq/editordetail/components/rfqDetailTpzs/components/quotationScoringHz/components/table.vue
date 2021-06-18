@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-28 15:03:47
- * @LastEditTime: 2021-06-17 18:31:16
+ * @LastEditTime: 2021-06-18 14:12:52
  * @LastEditors: Please set LastEditors
  * @Description: 特殊表格实现
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\table.vue
@@ -35,6 +35,21 @@
             <el-checkbox @change="handleSelectionChange" class="checkBox" v-model="scope.row.active"><span>{{scope.row[item.props]}}</span></el-checkbox>
         </template>
       </el-table-column>
+      <el-table-column
+        v-else-if="item.props == 'cfPartAPrice'"
+        :key="index"
+        :label="item.i18n ? $t(item.i18n) : item.label"
+        :width="item.width"
+        :prop='item.props'
+        align="center"
+        :sortable='"custom"'
+      >
+        <template slot-scope="scope">
+          <template v-if='removeKeysNumber(item.props) == "cfPartAPrice"'>
+              <span :class="{chengse:scope.row['cfPartAPriceStatus'] == 2}">{{scope.row[item.props]}}</span>
+          </template>
+        </template>
+      </el-table-column>
       <!-----------------表格中内容模块------------------------>
       <el-table-column
         v-else
@@ -43,9 +58,6 @@
         :width="item.width"
         :prop='item.props'
         align="center"
-        :sortable='item.props == "cfPartAPrice"'
-        :resizable="false"
-        :sort-method="sortFunction"
       >
         <!----------在表头上方需要显示评分的点，插入表头标签------>
         <template slot="header" slot-scope="scope">
@@ -135,7 +147,7 @@ export default{
   },
   methods:{
     sortChangeTable({column, prop, order}){
-      this.$emit('sortChangeTable',order)
+      this.$emit('sortChangeTabless',order)
     },
     moment(date){
       return moment(date)
