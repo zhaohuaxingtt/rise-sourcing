@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-04-23 09:18:12
- * @LastEditTime: 2021-06-18 15:35:50
+ * @LastEditTime: 2021-06-18 17:19:19
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-supplier\src\views\rfqManageMent\partsOffer\components\ecartsCard\data.js
@@ -176,17 +176,28 @@ export function translateGetLunci(params,gjhLunchi) {
         element['type'] = 'line',
         options['legend'].push(element['name'])
       });
+      params.forEach((e,i)=>{
+        for(let a = e.data.length-1;a>=0;a--){
+          if(e.data[a].value){
+            e.data = [...e.data,...[{round: "",symbolSize: "",value: null},e.data[a]]]
+            break;
+          }
+        }
+      })
       params[0].data.forEach(element => {
         options['xAxis'].push({value:`${gjhLunchi}${' '}${element.round}`,textStyle:{color:'#7E84A3',fontSize:12}})
       })
+      options['xAxis'] = [...options['xAxis'],...[{value:'',textStyle:{color:'#7E84A3',fontSize:12}},{value:'有效报价',textStyle:{color:'#7E84A3',fontSize:12}}]]
       options.series = params
   } catch (error) {
+    console.log(error)
     options = {
       legend:[],
       xAxis:[],
       series:[]
     }
   }
+  console.log(options)
   return options 
 }
 
