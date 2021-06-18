@@ -968,6 +968,16 @@
             'LK_DINGDIANSHENQINGLEIXING': '定点申请类型', // 定点申请类型
             'LK_GAIDINGDIANSHENQINGZHONGYOUDANYIGONGYINGSHANG': '该定点申请中有单一供应商', // 该定点申请中有单一供应商
             'LK_DINGDIANXINLOI':'定点信 / LOI', // 定点信 / LOI
+            'LK_DINGDIANXIN':'定点信', // 定点信
+            'LK_LOI':'LOI', // LOI
+            'LK_DINGDIANXINBIANHAO':'定点信编号', // 定点信编号
+            'LK_DINGDIANXINZHUANGTAI':'定点信状态',//  定点信状态
+            'LK_DINGDIANXINDANHAO':'定点申请单号', // 定点申请单号
+            'LK_DINGDIANSHIJIANQIZHI':'定点时间起⽌', //  定点时间起⽌
+            'LK_SHIFOUXIANSHIZIJI':'是否显⽰⾃⼰', //  是否显⽰⾃⼰
+            'LK_GONGYINGSHANGFANKUI':'供应商反馈', // 供应商反馈
+            'LK_SHIFOUQIANSHUXIEYI':'是否签署协议', // 是否签署协议
+            'LK_DINGDIANRIQI':'定点⽇期', //定点⽇期
         },
 
         // 定点建议
