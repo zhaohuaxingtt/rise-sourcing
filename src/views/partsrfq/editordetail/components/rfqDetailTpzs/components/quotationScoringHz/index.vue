@@ -103,17 +103,20 @@ export default{
      * @return {*}
      */
     sortChange(props){
-      const notSortData = this.oldExampelData.filter(items=> items.groupId != null && items.groupId != '-')
-      const sortData = this.oldExampelData.filter(items=> items.groupId == null && items.groupId != '-')
-      const totalData = this.oldExampelData.filter((items)=> items.groupId == '-')
-      if(props == "ascending"){
-        this.exampelData = [...notSortData,...sortData.sort((a,b)=>a.cfPartAPrice - b.cfPartAPrice),...totalData]
-      }else if(props == "descending"){
-         this.exampelData = [...notSortData,...sortData.sort((a,b)=>b.cfPartAPrice - a.cfPartAPrice),...totalData]
-      }else{
+      try {
+        const notSortData = this.oldExampelData.filter(items=> items.groupId != null && items.groupId != '-')
+        const sortData = this.oldExampelData.filter(items=> items.groupId == null && items.groupId != '-')
+        const totalData = this.oldExampelData.filter((items)=> items.groupId == '-')
+        if(props == "ascending"){
+          this.exampelData = [...notSortData,...sortData.sort((a,b)=>a.cfPartAPrice - b.cfPartAPrice),...totalData]
+        }else if(props == "descending"){
+          this.exampelData = [...notSortData,...sortData.sort((a,b)=>b.cfPartAPrice - a.cfPartAPrice),...totalData]
+        }else{
+          this.exampelData = this.oldExampelData
+        }
+      } catch (error) {
         this.exampelData = this.oldExampelData
       }
-      console.log(notSortData,sortData,totalData)
     },
     changeRound(){
       this.init()
