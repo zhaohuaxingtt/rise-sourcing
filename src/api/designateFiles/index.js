@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-02 14:54:29
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-16 17:23:00
+ * @LastEditTime: 2021-06-18 18:22:38
  * @Description: 附件相关api
  * @FilePath: \front-web\src\api\designateFiles\index.js
  */
@@ -36,5 +36,14 @@ export function findBuyer(buyerName) {
     url: `/annex/annex-buyer-name`,
     method: 'GET',
     params: {buyerName}
+  })
+}
+
+// 删除附件
+export function deleteAffix(params) {
+  return requst({
+    url: '/affix/delete',
+    method: 'DELETE',
+    data: params
   })
 }
