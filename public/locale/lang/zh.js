@@ -1109,6 +1109,8 @@
             'YINGXIANGCHENGBENZHANBI': '影响成本占比', //影响成本占比
             'XIANSHIYINGCANG': '显示/隐藏', //显示/隐藏
             'WANCHENG': '完成', //完成
+            'QINGSHURUBIANHAOMINGCHENG': '请输入编号/名称', //请输入编号/名称
+            'QINGSHURUCHUANGJIANRENMINGCHENG': '请输入创建人名称', //请输入创建人名称
 			// ---------------------------------舒杰报告清单start-----------------------------------------------
 			'BGQD':"报告清单",//报告清单
 			'ZXFXGJ':"专项分析工具",//专项分析工具

@@ -1020,6 +1020,8 @@
             'YINGXIANGCHENGBENZHANBI': 'Affect the proportion of cost', //影响成本占比
             'XIANSHIYINGCANG': 'show/hide', //显示/隐藏
             'WANCHENG': 'finish', //完成
+            'QINGSHURUBIANHAOMINGCHENG': 'Please enter the number/name', //请输入编号/名称
+            'QINGSHURUCHUANGJIANRENMINGCHENG': 'Please enter the name of the creator', //请输入创建人名称
             'QUXIAN': ' curve', //曲线
             'ZUIXINDINGDIANDANJIA': 'The latest fixed-point unit price', //最新定点单价
             'MUBIAODANJIA': 'Target unit price', //目标单价
