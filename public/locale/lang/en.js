@@ -959,6 +959,19 @@
         'LK_SHUAXINRIQI': '刷新日期',   //  刷新日期
         'LK_SHANGBANNIANSOPFUKUANDUIBI': '上半年SOP付款⽐',   //  上半年SOP付款⽐
         'LK_XIABANNIANSOPFUKUANDUIBI': '下半年SOP付款⽐',   //  下半年SOP付款⽐
+        'LK_SOPSHIJIAN': 'SOP时间', //  SOP时间
+        'LK_YUSUANJINE': '预算⾦额',    //  预算⾦额
+        'LK_BMJINE': 'BM金额',  //  BM金额
+        'LK_YIFUKUANJINEWANGNIAN': '已付款⾦额-往年',   //  已付款⾦额-往年
+        'LK_YIFUKUAIJINEDANGNIAN': '已付款⾦额-当年',   //  已付款⾦额-当年
+        'LK_JIHUAFUKUANDANGNIAN': '计划付款-当年', // 计划付款-当年
+        'LK_JIHUAFUKUANCINIAN': '计划付款-次年', // 计划付款-次年
+        'LK_SOPFUKUANBI': 'SOP付款比',  //  SOP付款比
+        'LK_XIANGMUCAIGOUYUAN': '项目采购员',   //  项目采购员
+        'LK_XITONGJISUAN': '系统计算',  //  系统计算
+        'LK_RENMINBI': '人民币',    //  人民币
+        'LK_BUHANSUI': '不含税',    //  不含税
+        'LK_SHOUGONGTIAOZHENG': '手工调整', //  手工调整
 
         // 定点管理
         'nominationLanguage': {
