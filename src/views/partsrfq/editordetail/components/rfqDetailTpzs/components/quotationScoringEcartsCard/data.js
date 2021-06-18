@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-04-23 09:18:12
- * @LastEditTime: 2021-06-16 20:09:50
+ * @LastEditTime: 2021-06-18 15:35:50
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-supplier\src\views\rfqManageMent\partsOffer\components\ecartsCard\data.js
@@ -19,7 +19,7 @@ export const form = {
  * @param {*}
  * @return {*}
  */
-export const color = [
+ export const color = [
   '#315efb',
   '#F44336',
   '#9C27B0',
@@ -172,7 +172,7 @@ export function translateGetLunci(params,gjhLunchi) {
   try {
       //处理颜色问题
       params.forEach((element,index) => {
-        element['color'] = params.length < 10?color[index]:getLineColor()
+        element['color'] = params.length < color.length?color[index]:getLineColor()
         element['type'] = 'line',
         options['legend'].push(element['name'])
       });
