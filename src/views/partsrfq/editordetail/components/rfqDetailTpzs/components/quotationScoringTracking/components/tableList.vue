@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-26 19:14:39
- * @LastEditTime: 2021-06-19 13:28:56
+ * @LastEditTime: 2021-06-19 16:45:44
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringTracking\components\tableList.vue
@@ -53,19 +53,19 @@
           <!--------------------------------------------------------->
           <!------------------------内容是打勾------------------------>
           <!--------------------------------------------------------->
-            <span v-if='scope.row[item.props].schedule == 3' class="cursor" @click="openUrl('3',scope.row,item.props)">
+            <span v-if='scope.row[item.props].schedule == 3' class="cursor" @click="openUrl('3',scope.row,item.props,scope.row[item.props].schedule)">
               <icon name='iconbaojiazhuangtailiebiao_yibaojia' symbol></icon>
             </span>
           <!--------------------------------------------------------->
           <!------------------------内容是打叉------------------------>
           <!--------------------------------------------------------->
-            <span v-else-if='scope.row[item.props].schedule == 2' class="cursor" @click="openUrl('2',scope.row,item.props)">
+            <span v-else-if='scope.row[item.props].schedule == 2' class="cursor" @click="openUrl('2',scope.row,item.props,scope.row[item.props].schedule)">
               <icon name='iconbaojiazhuangtailiebiao_yijujue' symbol></icon>
             </span>
           <!--------------------------------------------------------->
           <!------------------------内容是横岗百分比------------------->
           <!--------------------------------------------------------->
-          <span v-else class="cursor" @click="openUrl('1',scope.row,item.props)">{{scope.row[item.props].schedule}}</span>
+          <span v-else class="cursor" @click="openUrl('1',scope.row,item.props,scope.row[item.props].schedule)">{{scope.row[item.props].schedule}}</span>
           </template>
         </el-table-column>
       </template>
@@ -106,12 +106,41 @@ export default{
       dialogVisible:false
     }
   },
-  mounted(){
-    // this.$nextTick(()=>{
-    //   this.height = document.querySelector('.el-table').offsetHeight
-    // })
-  },
   methods:{
+      /**
+   * @description: 跳转到报价汇总问题 
+   * @param {*}
+   * @return {*}
+   */
+  getQueryDatas(type,items,round,value){
+      const map = {
+            rfqId:this.$route.query.id || '',
+            round:round.replace(/[^0-9]/ig,""),
+            supplierId:items.supplierId,
+            fsNum:items[round].partPrjCode || ''
+          }
+      if(round.replace(/[^0-9]/ig,"") != this.$route.query.round || this.$route.query.rfqStateNotRunning){
+        map['fix'] = true
+      }else{
+        if(type == 3){
+          map['agentQutation'] = true
+          map['currentTab'] = "costsummary"
+        }
+        if(type == 2){
+          map['fix'] = true
+        }else{
+          if(value.indexOf('/') > -1){
+            map['agentQutation'] = true
+            map['currentTab'] = "costsummary"
+     
+          }else{
+            map['watingSupplier'] = true
+            map['fix'] = true
+          }
+        }
+      }
+      return map
+    },
     /**
      * @description: 打开评分弹窗。
      * @param {*}
@@ -120,16 +149,25 @@ export default{
     optionLog(){
       this.dialogVisible = !this.dialogVisible
     },
-    openUrl(type,items,round){
+    /**
+     * @description: 跳转逻辑。第一 出现在界面上的所有图标都可以跳转。
+     *                        第二 最新轮次跳转过去才和报价状态有关系，其他的都代表以及结束的轮次，只有预览的效果 fix 为 true
+     *                        第三  当供应商状态为 √  报价成本汇总 代供应商报价
+     *                                           x  详细信息    无按钮
+     *                                            m/n 同 打勾
+     *                                            -  报价成本汇总  接受报价，拒绝报价
+     * 
+     *                        第四：基于以上第三点 都取决于rfq状态，如果rfq是已经关闭的状态 则为 fix 
+     * @param {*} type
+     * @param {*} items
+     * @param {*} round
+     * @return {*}
+     */
+    openUrl(type,items,round,value){
+      const datas = this.getQueryDatas(type,items,round,value)
       const router = this.$router.resolve({
         path:'/supplier/quotationdetail',
-        query:{
-          rfqId:this.$route.query.id || '',
-          round:round.replace(/[^0-9]/ig,""),
-          supplierId:items.supplierId,
-          fsNum:items[round].partPrjCode || '',
-          agentQutation:type == 2?null:true
-        }
+        query:datas
       })
       window.open(router.href,'_blank')
     }
