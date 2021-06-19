@@ -316,35 +316,37 @@ export default {
         },
         itemStyle: {
           normal: {
-            barBorderRadius: [0, 0, 0, 0],
+            barBorderRadius: Number(bestGroupSupplierTotal) === bestGroupSupplierMin ? [5, 5, 0, 0] : [0, 0, 0, 0],
             color: colorPanel[bestGroupSupplierMinIndex]
           },
         }
       })
-      series.push({
-        data: ['', bestGroupSupplierMax, '', ''],
-        type: 'bar',
-        barWidth: 30,
-        stack: 'total',
-        label: {
-          show: true,
-          position: 'inside',
-          textStyle,
-          formatter: function(params) {
-            const fz = Number(params.data)
-            const fm = Number(bestGroupSupplierTotal)
-            // const percent = Math.floor(fz/fm*100)
-            const percent = 100 - totalGroupPercent
-            return `${params.data}\n(${percent}%)`
-          }
-        },
-        itemStyle: {
-          normal: {
-            barBorderRadius: [5, 5, 0, 0],
-            color: bgColor
+      if (Number(bestGroupSupplierTotal) !== bestGroupSupplierMin) {
+        series.push({
+          data: ['', bestGroupSupplierMax, '', ''],
+          type: 'bar',
+          barWidth: 30,
+          stack: 'total',
+          label: {
+            show: true,
+            position: 'inside',
+            textStyle,
+            formatter: function(params) {
+              const fz = Number(params.data)
+              const fm = Number(bestGroupSupplierTotal)
+              // const percent = Math.floor(fz/fm*100)
+              const percent = 100 - totalGroupPercent
+              return `${params.data}\n(${percent}%)`
+            }
           },
-        }
-      })
+          itemStyle: {
+            normal: {
+              barBorderRadius: [5, 5, 0, 0],
+              color: bgColor
+            },
+          }
+        })
+      }
       // 分组最佳柱子label
       bestGroupSupplierTotal&& (series.push({
         data: ['', 1, '', ''],
