@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-05-28 14:32:26
- * @LastEditTime: 2021-06-18 15:15:01
+ * @LastEditTime: 2021-06-20 00:46:34
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\data.js
@@ -14,7 +14,7 @@ export const fstitle = [
   {type:'',props:'partName',label:'Part Name',i18n:'',width:'100',tooltip:false},
   {type:'',props:'partPrjCode',label:'FS/GS/SP No.',i18n:'',width:'100',tooltip:false},
   {type:'',props:'factory',label:'Factory',i18n:'',width:'100',tooltip:false},
-  {type:'',props:'cfPartAPrice',label:'CF Part A Price',i18n:'',width:'100',tooltip:false},
+  {type:'',props:'cfPartAPrice',label:'CF Part A Price',i18n:'',width:'130',tooltip:false},
   {type:'',props:'cfPartBPrice',label:'CF Part B Price',i18n:'',width:'100',tooltip:false},
   {type:'',props:'pca',label:'PCA',i18n:'',width:'100',tooltip:false},
   {type:'',props:'tia',label:'TIA',i18n:'',width:'100',tooltip:false},
@@ -69,7 +69,7 @@ export function backChooseList(type) {
      allTablelist = [...fstitle,...fstableTileXh(0)]
   }else{ //supplier as list
     whiteLists = supplierWhiteList
-    allTablelist = [...supplierTile,...centerSupplierList(0),...lastSupplier]
+    allTablelist = [...supplierTile,...centerSupplierList(0),...lastSupplier,...leftSideData]
   }
   const arrayList = []
   allTablelist.forEach(items=>{
@@ -135,7 +135,7 @@ export function getRenderTableTile(whiteListService,supplierLength){
       if(items.props == 'supplierName'){
         relTabelListDefault.push(items)
       }else{
-        supplierDataList[0].bdlRateInfoList.forEach((itemss,index)=>{
+        supplierDataList[0].bdlRateInfoList.filter(i=>i.supplierId ==supplierDataList[0].bdlRateInfoList[0].supplierId).forEach((itemss,index)=>{
           const ratess = JSON.parse(JSON.stringify(rateTitelList))
           ratess.props = (index == 0?'':index) + 'rate';
           ratess.label = itemss.rateDepart
@@ -374,15 +374,15 @@ export const supplierTile = [
 export const centerSupplierList = function(index){
   index = index?index:''
   return [
-    {type:'',props:`${index}lcAPrice`,label:'A Price',i18n:'',width:'100',tooltip:false},
-    {type:'',props:`${index}skdAPrice`,label:'SKDAPrice',i18n:'',width:'100',tooltip:false},
+    {type:'',props:`${index}lcAPrice`,label:'LC A Price',i18n:'',width:'100',tooltip:false},
+    {type:'',props:`${index}skdAPrice`,label:'SKD A Price',i18n:'',width:'100',tooltip:false},
     {type:'',props:`${index}factory`,label:'SH',i18n:'',width:'',tooltip:false,list:[
-      {type:'',props:`${index}lcBPrice`,label:'B Price',i18n:'',width:'100',tooltip:false},
+      {type:'',props:`${index}lcBPrice`,label:'LC B Price',i18n:'',width:'100',tooltip:false},
       {type:'',props:`${index}skdBPrice`,label:'SKD B Price',i18n:'',width:'100',tooltip:false},
       {type:'',props:`${index}productionLocation`,label:'Prod.Loc.',i18n:'',width:'100',tooltip:false},
     ]},
     {type:'',props:`${index}lcAPriceWithoutAllocation`,label:'LC A Price without allocation',i18n:'',width:'120',tooltip:false},
-    {type:'',props:`${index}skdBPriceWithoutAllocation`,label:'SKD A Price without allocation',i18n:'',width:'120',tooltip:false},
+    {type:'',props:`${index}skdAPriceWithoutAllocation`,label:'SKD A Price without allocation',i18n:'',width:'120',tooltip:false},
     {type:'',props:`${index}lcBPriceWithoutAllocation`,label:'LC B Price without allocation',i18n:'',width:'120',tooltip:false},
     {type:'',props:`${index}skdBPriceWithoutAllocation`,label:'SKD B Price without allocation',i18n:'',width:'120',tooltip:false}, 
     {type:'',props:`${index}bnk`,label:'BNK',i18n:'',width:'120',tooltip:false},
@@ -395,7 +395,8 @@ export const centerSupplierList = function(index){
     {type:'',props:`${index}prototypePrice`,label:'Prototype price',i18n:'',width:'100',tooltip:false},
     {type:'',props:`${index}tto`,label:'TTO',i18n:'',width:'100',tooltip:false},
     {type:'',props:`${index}externalDevelopmentCost`,label:'External Development cost',i18n:'',width:'100',tooltip:false},
-    {type:'',props:`${index}releaseCost`,label:'release cost',i18n:'',width:'100',tooltip:false}
+    {type:'',props:`${index}releaseCost`,label:'release cost',i18n:'',width:'100',tooltip:false},
+    {type:'',props:`Quotationdetails`,label:'Quo.details',i18n:'',width:'100',tooltip:false},
   ]
 }
 
@@ -420,13 +421,17 @@ export const translateDataListSupplier = function(supplierlist) {
   let topData = []
   try {
     supplierlist.forEach((items,wcIndex)=>{
-      if(wcIndex == 0) topData = items.partInfoList
-      const map = {}
-      for(let i = 0;i<items.bdlRateInfoList.length;i++){
-         for(let key in items.bdlRateInfoList[i]){
-           map[(i==0?'':i)+key] = items.bdlRateInfoList[i][key]
-        }
+      if(wcIndex == 0) topData = items.partInfoList //每个供应商对应的零件数据都可以是一样的
+      const map = {
+        supplierName:items.supplierName
       }
+      items.bdlRateInfoList.filter(filterRate=>filterRate.supplierId == items.supplierId).forEach((items,index)=>{
+        for(let key in items){
+          if(key != 'supplierName' || key != 'supplierId'){
+           map[(index==0?'':index)+key] = items[key]
+          }
+       }
+      })
       for(let ii = 0; ii<items.partInfoList.length;ii++){  
         for(let keys in items.partInfoList[ii]){
           map[(ii==0?'':ii) + keys] = items.partInfoList[ii][keys]
@@ -434,6 +439,7 @@ export const translateDataListSupplier = function(supplierlist) {
       }
       relData.push(map) 
     })
+    console.log(relData)
     return {dataList:relData,topList:topData}
   } catch (error) {
     console.log(error)

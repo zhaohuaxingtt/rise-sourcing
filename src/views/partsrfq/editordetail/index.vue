@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-25 10:09:50
- * @LastEditTime: 2021-06-11 14:32:57
+ * @LastEditTime: 2021-06-20 02:01:50
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsrfq\editordetail\index.vue
@@ -158,7 +158,9 @@ import {rfqCommonFunMixins} from "pages/partsrfq/components/commonFun";
 import {navList} from './components/data'
 import nominateTypeDialog from "@/views/partsrfq/home/components/nominateTypeDialog"
 import { selectRfq } from "@/api/designate/designatedetail/addRfq"
-
+import { getPartSrcPrjs } from '@/api/partsrfq/editordetail';
+import { pageMixins } from "@/utils/pageMixins";
+import { tableTitle,form } from "@/views/partsprocure/home/components/data";
 export default {
   components: {
     iButton,
@@ -176,7 +178,7 @@ export default {
     rfqDetailTpzs,
     nominateTypeDialog
   },
-  mixins: [rfqCommonFunMixins],
+  mixins: [rfqCommonFunMixins,pageMixins],
   data() {
     return {
       navActivtyValue: '',
@@ -189,10 +191,13 @@ export default {
       newRfqRoundList: [],
       newRfqOpenValidateLoading: false,
       nominateTypeDialogVisible: false,
+      parmarsHasRfq: JSON.parse(JSON.stringify(form)),
     }
   },
   created() {
+    console.log('aaaa')
     this.getBaseInfo()
+    this.getTableList()
   },
   provide: function() {
     return {
@@ -200,6 +205,23 @@ export default {
     }
   },
   methods: {
+    /**
+     * @description:  //获取表格数据 为新件轮次做数据准备
+     * @param {*}
+     * @return {*}
+     */
+    getTableList() {
+      if (this.$route.query.id) {
+        this.confirmTableLoading = true
+        this.parmarsHasRfq['search.size'] = this.page.pageSize
+        this.parmarsHasRfq['search.current'] = this.page.currPage
+        this.parmarsHasRfq['search.rfqId'] = this.$route.query.id
+        this.parmarsHasRfq['search.projectStatus'] = ''
+        getPartSrcPrjs(this.parmarsHasRfq).then(res => {
+          this.$store.dispatch('setPendingPartsList', res.data.pageData.data)
+        }).catch(() => this.confirmTableLoading = false)
+      }
+    },
     changeRouter(router){
       
     },

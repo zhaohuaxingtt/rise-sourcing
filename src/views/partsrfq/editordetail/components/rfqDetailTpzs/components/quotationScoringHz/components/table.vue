@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-28 15:03:47
- * @LastEditTime: 2021-06-18 15:52:12
+ * @LastEditTime: 2021-06-20 02:07:19
  * @LastEditors: Please set LastEditors
  * @Description: 特殊表格实现
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\table.vue
@@ -45,9 +45,7 @@
         :sortable='"custom"'
       >
         <template slot-scope="scope">
-          <template v-if='removeKeysNumber(item.props) == "cfPartAPrice"'>
-              <span :class="{chengse:scope.row['cfPartAPriceStatus'] == 2}">{{scope.row[item.props]}}</span>
-          </template>
+          <span :class="{chengse:scope.row['cfPartAPriceStatus'] == 2}">{{scope.row[item.props]}}</span>
         </template>
       </el-table-column>
       <!-----------------表格中内容模块------------------------>
@@ -358,6 +356,14 @@ export default{
     }
     ::v-deep .rightBorder{
       border-right: 1px solid #C5CCD6;
+    }
+    ::v-deep .is-sortable{
+      .cell{
+        display: flex;
+        .caret-wrapper{
+          top: -7px;
+        }
+      }
     }
   }
   .headerContent{
