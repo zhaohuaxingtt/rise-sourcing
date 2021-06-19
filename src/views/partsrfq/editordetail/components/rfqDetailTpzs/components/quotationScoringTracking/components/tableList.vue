@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-26 19:14:39
- * @LastEditTime: 2021-06-18 11:51:31
+ * @LastEditTime: 2021-06-19 13:28:56
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringTracking\components\tableList.vue
@@ -40,6 +40,15 @@
           </template>
         </el-table-column>
         <el-table-column v-if="(item.props+'').indexOf('round') > -1" :key="index" align="center" :label="item.key ? $t(item.key) : item.name" :prop="item.props" :show-overflow-tooltip="item.tooltip" :width="item.width">
+          <template slot="header">
+            <el-tooltip effect="light">
+              <template slot="content">
+               <p>{{`询价开始时间: ${item.roundHeadDetailVO.roundsStartTime || "-"}`}}</p>
+               <p>{{`询价结束时间: ${item.roundHeadDetailVO.roundsEndTime || "-"}`}}</p>
+              </template>
+              <span>{{item.key ? $t(item.key) : item.name}}</span>
+            </el-tooltip>
+          </template> 
           <template slot-scope="scope">
           <!--------------------------------------------------------->
           <!------------------------内容是打勾------------------------>
@@ -119,7 +128,7 @@ export default{
           round:round.replace(/[^0-9]/ig,""),
           supplierId:items.supplierId,
           fsNum:items[round].partPrjCode || '',
-          agentQutation:true
+          agentQutation:type == 2?null:true
         }
       })
       window.open(router.href,'_blank')
