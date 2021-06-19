@@ -329,15 +329,12 @@ export default {
     },
     // 筛选出分组最低的供应商
     filterBestGrouper(data) {
-      let gState = true
       let bestGroup = []
-      // 校验改分组是否所有供应商都有报价
-      data.forEach(item => {
-        gState = !(item.TTo.filter(o => Number(o) === 0).length)
-      })
+      // 循环供应商
       this.supplier.forEach((supplierName, index) => {
-        // 检查该供应商是否支持汇总，这个供应商对所有零件都有报价才支持
+        // 以纵向供应商维度，每个零件都必须有报价
         const cstStatus = !data.map(dataItem => dataItem.TTo[index]).filter(p => p === 0).length
+        // 取出该供应商所有零件报价的TTo
         const wholePackageData = data.map(o => o.TTo[index])
         cstStatus && (bestGroup[index] = {
           index,
@@ -345,8 +342,10 @@ export default {
         })
       })
       if (!bestGroup.length) return false
+      // 根据TTO之和排序
       bestGroup = _.sortBy(bestGroup, ['data'])
       // console.log('--bestGroup', bestGroup)
+      // 返回零件之和最低的供应商
       return bestGroup[0]
     },
     /**
@@ -360,19 +359,14 @@ export default {
       if (!data.length) return {}
       // Best TTO for Whole Package
       const GroupKey = 'gid'
-      const res = [[], []]
-      let countSupplier = []
-      // 分组汇总
-      let bestGroup = []
-      // 单个零件最低
-      let partSupplier = []
-      // 权重供应商
-      let weightSupplier = []
+      
       // 校验是否显示加权第四根柱子
       let isShowWeightStick = false
       isShowWeightStick = Boolean(data.filter(o => o.supplierChosen && o.supplierChosen.length > 0).length)
 
+      // 'Best TTO \n for Whole Package'
       // 根据供应商
+      let countSupplier = []
       this.supplier.forEach((supplierName, index) => {
         // 检查该供应商是否支持汇总，这个供应商对所有零件都有报价才支持
         const cstStatus = !data.map(dataItem => dataItem.TTo[index]).filter(p => p === 0).length
@@ -381,61 +375,27 @@ export default {
           index,
           data:  _.sum(wholePackageData)
         })
-        // 分组最优数据支持
-        // bestGroup[index] = {
-        //   index,
-        //   data:  _.sum(data.map(o => {
-        //     let itemValue = Number(o.TTo[index])
-        //     if (!(o.supplierChosen.includes(supplierName) && itemValue)) {
-        //       itemValue = 0
-        //     }
-        //     return itemValue
-        //   }))
-        // }
-
-        // 分供应商筛选出报价最高和最低的零件
-        let baojiaTTo = []
-        let baojiaArray = []
-        data.forEach((dataItem) => {
-          // 取出供应商有效报价的零件价格
-          if (dataItem.TTo[index] && dataItem.supplierChosen.includes(supplierName)) {
-            baojiaTTo.push(dataItem.TTo[index])
-            baojiaArray.push(dataItem)
-          }
-        })
-        baojiaTTo = baojiaTTo.sort()
-        partSupplier[index] = !baojiaTTo.length ? [0, 0] : [
-          baojiaTTo[0],
-          baojiaTTo[baojiaTTo.length - 1]
-        ]
-
-        // 求对应供应商的权重
-        weightSupplier[index] = this.cacleSc(baojiaArray, index)
-
       })
-      // 总计
+      // wholePackage 排序
       countSupplier = countSupplier.sort((a, b) => a.data - b.data)
-      console.log('countSupplier', countSupplier)
-      // 分组排序
-      // bestGroup = bestGroup.sort((a, b) => a.data - b.data)
-
-      
+      // console.log('countSupplier', countSupplier)
       const wholePackage = (countSupplier[0] && countSupplier[0].data) || 0
       const wholePackageIndex = (countSupplier[0] && countSupplier[0].index) || 0
 
-      // 取出分组最低
+      // 'Best TTO \n by Group'
+      // 分组汇总
+      let bestGroup = []
+      // 取出所有已分组的组名，没有分组的零件当单独一个分组
       const groups = _.uniq(data.filter(o => o[GroupKey]).map(o => o[GroupKey]))
-      console.log('groups', groups)
-      // let weightedGroup = []
-      groups.forEach((gid, index) => {
+      // console.log('groups', groups)
+      groups.forEach((gid) => {
+        // 循环已分组的零件组
         const groupedArray = data.filter(o => o[GroupKey] === gid)
         // 已分组，取最低TTO，
         const itemBestGroup = this.filterBestGrouper(groupedArray)
         if (itemBestGroup) {
           bestGroup.push(itemBestGroup)
         }
-        // 分组权重
-        // weightedGroup[index] = this.cacleSc(groupedArray)
       })
       
       // 取出未分组最低，未分组的按照单独分组处理
@@ -461,15 +421,17 @@ export default {
       // console.log('weightSupplier', weightSupplier)
 
 
-
+      // Best TTO \n by Part
       // 零件最低
       let minPartSupplierTToTotal = 0
       let minPartSupplierTToArray = []
+      // 求最低tto之和，遍历零件，过滤掉未报价的供应商，取报价最低的TTO求和
       data.forEach((item) => {
         const tto = item.TTo.filter(p => p>0).sort()
         minPartSupplierTToTotal += Number(tto[0])
       })
       let bestPartList = []
+      // 记录供应商的，和供应商的tto
       data.forEach(item => {
         let minTTo = item.TTo.map((data, index) => {
           return {
@@ -477,9 +439,9 @@ export default {
           data
         }
         })
-        
+        // 过滤掉未报价的供应商
         minTTo = _.sortBy(minTTo.filter(o=> o.data > 0), ['data'])
-        console.log('minTTo[0]', minTTo[0])
+        // console.log('minTTo[0]', minTTo[0])
         if (minTTo[0]) {
           bestPartList.push(minTTo[0])
         }
@@ -494,10 +456,26 @@ export default {
       })
       
       // console.log('minPartSupplierTTo',minPartSupplierTToArray)
+      // Recommend \n Scenario
       // 加权汇总
+      let weightSupplier = []
+      this.supplier.forEach((supplierName, index) => {
+        // 分供应商筛选出报价最高和最低的零件
+        let baojiaArray = []
+        data.forEach((dataItem) => {
+          // 取出供应商有效报价的零件价格
+          if (dataItem.TTo[index] && dataItem.supplierChosen.includes(supplierName)) {
+            baojiaArray.push(dataItem)
+          }
+        })
+        // 求对应供应商的权重
+        weightSupplier[index] = this.cacleSc(baojiaArray, index)
+
+      })
       const weightSupplierTotal = _.sum(weightSupplier.map(o => Number(o)))
 
       return {
+        // 整体最佳
         wholePackage,
         wholePackageIndex,
         // 分组最佳
@@ -509,6 +487,7 @@ export default {
         // 权重
         weightSupplier,
         weightSupplierTotal,
+        // 是否显示第四根柱子
         isShowWeightStick
       }
     }
