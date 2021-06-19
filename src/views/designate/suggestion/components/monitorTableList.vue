@@ -362,7 +362,7 @@ export default {
       
       // 校验是否显示加权第四根柱子
       let isShowWeightStick = false
-      isShowWeightStick = Boolean(data.filter(o => o.supplierChosen && o.supplierChosen.length > 0).length)
+      isShowWeightStick = Boolean(data.filter(o => o.supplierChosen && o.supplierChosen.length > 1).length)
 
       // 'Best TTO \n for Whole Package'
       // 根据供应商
