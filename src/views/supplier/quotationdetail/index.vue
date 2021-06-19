@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-05-26 13:55:55
- * @LastEditTime: 2021-06-19 20:41:05
+ * @LastEditTime: 2021-06-19 22:11:36
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\supplier\quotationdetail\index.vue
@@ -23,6 +23,10 @@ export default {
      * @return {*}
      */
     sueReject(){
+      if(this.rejectRason == ''){
+        iMessage.warn('拒绝理由不能为空')
+        return
+      }
       this.quotations(2)
     },
     /**
