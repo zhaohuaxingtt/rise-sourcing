@@ -1,13 +1,13 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-28 15:03:47
- * @LastEditTime: 2021-06-15 14:48:49
+ * @LastEditTime: 2021-06-19 23:59:11
  * @LastEditors: Please set LastEditors
  * @Description: 特殊表格实现
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\table.vue
 -->
 <template>
-<div class="selsTable">
+<div class="selsTable" :style="{paddingTop:paddingTop}">
   <el-table
     tooltip-effect="light"
     :height="height"
@@ -30,7 +30,7 @@
           <el-tooltip :content="scope.column.label" effect='light'><span class="labelHader">{{scope.column.label}}</span></el-tooltip>
           <div class="headerContent" v-if='scope.column.label == "Supplier"'>
             <div class="c" :style="{width:cWidth}">
-              <ul class="ca" style="width:200px;">
+              <ul class="ca" :style="{width:tableTitle.find(i=>i.label == 'Ratings').list.length * 50 + 100 + 'PX'}">
                 <li v-for='(items,index) in supplierLeftLit' :key='index'>
                   {{items.name}}
                 </li>
@@ -62,13 +62,23 @@
               />
           </template>
         </template>
+        <!--------------时间格式------------>
+        <template slot-scope="scope">
+          <template v-if='removeKeysNumber(item.props) == "ltcStaringDate" || removeKeysNumber(item.props) == "supplierSopDate"'>
+            <span>{{scope.row[item.props]?moment(scope.row[item.props]).format("YYYY-MM-DD"):''}}</span>
+          </template>
+          <template v-else slot-scope="scope">
+            <span>{{scope.row[item.props]}}</span>
+          </template>
+        </template>
+
       </el-table-column>
     </template>
   </el-table>
   </div>
 </template>
 <script>
-import {supplierTableTop} from './data'
+import {supplierTableTop,removeKeysNumber} from './data'
 export default{
   props:{
     tableData:{
@@ -103,8 +113,20 @@ export default{
     }
   },
   methods:{
+    moment(date){
+      // eslint-disable-next-line no-undef
+      return moment(date)
+    },
+    removeKeysNumber(key){
+      return removeKeysNumber(key)
+    },
     getTopWidth(){
       this.cWidth = this.$el.querySelector('.el-table__header').offsetWidth - 100 + 'px'
+    }
+  },
+  computed:{
+    paddingTop:function(){
+      return this.supplierLeftLit.length * 30 + 20 + 'PX'
     }
   }
 }
@@ -122,6 +144,7 @@ export default{
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis;
+        display: inherit;
       }
     }
     ::v-deep.el-table__header{
@@ -141,7 +164,7 @@ export default{
       width: 100px;
       //background-color: red;
       z-index: 123;
-      bottom: 58px;
+      bottom: 56PX;
       left:-13px;
       border: 1px solid #C5CCD6;
       border-bottom: none;
@@ -183,7 +206,6 @@ export default{
   .selsTable{
     width: 100%;
     overflow-x: scroll;
-    padding-top: 320px;
   }
 
 </style>

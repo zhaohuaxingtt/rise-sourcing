@@ -244,7 +244,8 @@ export function negoAnalysisSummaryLayoutSave(layout,layoutType){
         method: 'POST',
         data:{
             layout:layout,
-            layoutType:layoutType
+            layoutType:layoutType,
+            scenarioType:1
         }
     })
 }
