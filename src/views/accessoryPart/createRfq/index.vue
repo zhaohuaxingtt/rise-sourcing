@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-26 13:54:01
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-18 16:14:37
+ * @LastEditTime: 2021-06-20 08:41:17
  * @Description: 创建RFQ界面
        配件：选择的配件需要是分配了询价采购员的且是同一个询价采购员, 创建时能选择LINIE
        附件：选择的附件需要时分配了LINIE且为同一个LINIE, 创建时不能再选择LINIE
@@ -81,13 +81,11 @@ import addAccessoryPartDialog from './components/addAccessoryPart'
 import updateFactoryDialog from './components/updateFactory'
 import addFileDialog from './components/addFile'
 import capacityPlanningDialog from './components/capacityPlanning'
-import { getPartBySP } from '@/api/accessoryPart/index'
+import { getPartBySP, insertRfq, autoInquiry, getDeptList, getUserList } from '@/api/accessoryPart/index'
 import { changeProcure } from "@/api/partsprocure/home";
-import { insertRfq } from '@/api/accessoryPart/index'
 import {
   dictkey,
 } from "@/api/partsprocure/editordetail";
-import { getDeptList, getUserList } from '@/api/accessoryPart/index'
 export default {
   mixins: [pageMixins],
   components: { iPage, topComponents, iCard, iFormGroup, iFormItem, iText, iButton, iInput, iSelect, iPagination, tableList, addAccessoryPartDialog, updateFactoryDialog, addFileDialog, capacityPlanningDialog },
@@ -260,12 +258,12 @@ export default {
       })
     },
     /**
-     * @Description: 保存，关联零件保存
+     * @Description: 保存，关联零件保存，自动发起询价
      * @Author: Luoshuang
      * @param {*}
      * @return {*}
      */    
-    handleSave() {
+    async handleSave() {
       this.saveLoading = true
       const params = {
         insertRfqPackage: {
@@ -288,17 +286,34 @@ export default {
           userId: this.$store.state.permission.userInfo.id
         }
       }
-      insertRfq(params).then(res => {
-        if (res?.result) {
+      const res = await insertRfq(params)
+      if (res?.result) {
+        if (this.$route.query.type === '1') {
+          const inquiryParams = {
+            rfqId: this.detailData.rfqId,
+            stuffId: this.tableData[0].stuffId,
+            supplierSapCodes: this.tableData.map(item => item.supplierSapCode)
+          }
+          autoInquiry(inquiryParams).then(res => {
+            if (res?.result) {
+              iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+              const router =  this.$router.resolve({path: `/sourcing/partsrfq/editordetail?id=${this.detailData.rfqId}`})
+              window.open(router.href,'_blank')
+            } else {
+              iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+            }
+          }).finally(() => {
+            this.saveLoading = false
+          })
+        } else {
           iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+          this.saveLoading = false
           const router =  this.$router.resolve({path: `/sourcing/partsrfq/editordetail?id=${this.detailData.rfqId}`})
           window.open(router.href,'_blank')
-        } else {
-          iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
         }
-      }).finally(() => {
-        this.saveLoading = false
-      })
+      } else {
+        iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+      }
     },
     /**
      * @Description: 添加配件附件
