@@ -1,7 +1,7 @@
 <!--
  * @Author: moxuan
  * @Date: 2021-03-05 17:33:00
- * @LastEditors: Please set LastEditors
+ * @LastEditors: ldh
  * @Description: RFQ-table组件。
 -->
 <template>
