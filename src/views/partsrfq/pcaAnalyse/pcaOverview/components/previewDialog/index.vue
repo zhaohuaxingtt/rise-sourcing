@@ -12,18 +12,22 @@
       </div>
     </div>
     <div class="content">
-
+      <div class="left">
+        <barChart chartHeight="700px"/>
+      </div>
     </div>
   </iDialog>
 </template>
 
 <script>
 import {iDialog, iButton} from 'rise';
+import barChart from './components/barChart';
 
 export default {
   components: {
     iDialog,
     iButton,
+    barChart,
   },
   props: {
     value: {type: Boolean},
@@ -51,6 +55,10 @@ export default {
 <style scoped lang="scss">
 .content {
   padding-bottom: 20px;
+  display: flex;
+  .left{
+    width: 50%;
+  }
 }
 
 
