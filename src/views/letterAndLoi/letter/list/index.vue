@@ -23,9 +23,8 @@
             </el-form-item>
         </el-form>
     </iSearch>
-    <div class="contain">
-        <!-- 操作区域 -->
-        <div class="btn-list margin-bottom20">
+    <iCard class="contain margin-top20">
+        <template v-slot:header-control>
             <iButton @click="submit">确认并提交</iButton>
             <iButton @click="lineSure">LINIE确认</iButton>
             <iButton @click="lineBack">LINIE退回</iButton>
@@ -34,7 +33,7 @@
             <iButton @click="closeLetter">关闭 </iButton>
             <iButton @click="activate">激活 </iButton>
             <iButton>导出 </iButton>
-        </div>
+        </template>
         <!-- 表单区域 -->
         <tableList
             class="table"
@@ -70,7 +69,7 @@
             :total="page.totalCount"
         />
 
-    </div>
+    </iCard>
 
     <!-- 转派弹窗 -->
     <turnSendDialog v-if="turnSendVisible" :dialogVisible="turnSendVisible" @changeVisible="changeVisible"/>
@@ -88,6 +87,7 @@ import {
     iPagination,
     iButton,
     iMessage,
+    iCard,
 } from 'rise';
 import {
     letterListSearch,
@@ -110,6 +110,7 @@ export default {
         iButton,
         turnSendDialog,
         closeLetterDialog,
+        iCard,
     },
     data(){
         return{
@@ -278,8 +279,6 @@ export default {
         }
         .contain{
             background: #fff;
-            margin-top: 20px;
-            padding: 20px 30px;
             .btn-list{
                 text-align: right;
             }

@@ -58,8 +58,7 @@ export default {
     data(){
       return{
         tab:'source',
-        tabType:'letter',
-        cardType:'letter',
+        cardType:'LOI',
         tabData:letterAndLoiType,
       }
     },
