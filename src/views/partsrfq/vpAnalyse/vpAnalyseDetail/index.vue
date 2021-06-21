@@ -61,6 +61,9 @@
         <analyzeChart/>
       </iCard>
     </div>
+
+    <!-- 自定义零件列表 -->
+    <customPart :partList="partList" :visible="customDialog.visible" :Key="customDialog.key" />
   </iPage>
 </template>
 
@@ -70,6 +73,7 @@ import baseInfo from './components/baseInfo';
 import totalUnitPriceTable from './components/totalUnitPriceTable';
 import curveChart from './components/curveChart';
 import analyzeChart from './components/analyzeChart';
+import customPart from './components/customPart'
 
 export default {
   components: {
@@ -80,12 +84,17 @@ export default {
     icon,
     iCard,
     curveChart,
-    analyzeChart
+    analyzeChart,
+    customPart
   },
   data() {
     return {
       partList: ['18D023607', '18D023602'],
       partItemCurrent: 0,
+      customDialog: {
+        key: 0,
+        visible: false
+      }
     };
   },
   methods: {
@@ -97,7 +106,11 @@ export default {
       console.log(this.partList);
       this.partItemCurrent = 0;
     },
-    handleOpenCustomDialog() {},
+    //点击跳转自定义零件弹窗
+    handleOpenCustomDialog() {
+      this.customDialog.key = new Date().getTime()
+      this.customDialog.visible = true
+    },
   },
 };
 </script>
