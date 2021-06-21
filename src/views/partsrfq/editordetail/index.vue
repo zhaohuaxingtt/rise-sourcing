@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-25 10:09:50
- * @LastEditTime: 2021-06-20 02:01:50
+ * @LastEditTime: 2021-06-21 15:09:32
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsrfq\editordetail\index.vue
@@ -185,7 +185,11 @@ export default {
       navList: navList,
       editStatus: false,
       newRfqRoundDialog: false,
-      baseInfo: {},
+      baseInfo: {
+        currentRoundsStatus:'',
+        currentRounds:'',
+        currentStatus:''
+      },
       baseInfoLoading: false,
       tabShowStatus: true,
       newRfqRoundList: [],
@@ -195,16 +199,19 @@ export default {
     }
   },
   created() {
-    console.log('aaaa')
     this.getBaseInfo()
     this.getTableList()
   },
-  provide: function() {
+  provide: function(){
     return {
-      getBaseInfo: this.getBaseInfo
+      getBaseInfo:this.getBaseInfo, //当前是一个请求
+      getbaseInfoData:this.getbaseInfoData  //直接reture当前请求完的数据
     }
   },
   methods: {
+    getbaseInfoData(){
+      return this.baseInfo
+    },
     /**
      * @description:  //获取表格数据 为新件轮次做数据准备
      * @param {*}

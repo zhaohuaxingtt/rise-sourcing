@@ -1,7 +1,7 @@
 <!--
 * @author:shujie
 * @Date: 2021-3-5 10:56:32
- * @LastEditors: ldh
+ * @LastEditors: Luoshuang
 * @Description: BDL列表
  -->
 <template>
@@ -225,8 +225,8 @@ export default {
       }
     },
     // 跳转
-    openPage() {
-
+    openPage(row) {
+      window.open(`${ process.env.VUE_APP_PORTAL_URL }/supplier/supplierList/details?subSupplierId=${row.supplierSubId}&supplierType=${row.supplierType}&nameZh=${row.supplierNameZh}&nameEn=${row.supplierNameEn}`, '_blank')
     },
     log() {
       // this.logVisible = true

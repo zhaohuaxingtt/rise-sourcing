@@ -1,6 +1,6 @@
 <template>
   <iCard class="supplierTable singleSupplier">
-      <div class="margin-bottom20 clearFloat">
+      <div class="margin-bottom20 clearFloat" v-if="!onlyTable">
         <div class="floatright">
           <!-- 批量编辑 -->
           <iButton @click="handleBatchEdit">
@@ -46,7 +46,7 @@
         </template>
         <!-- 供应商名 -->
         <template #supplierName="scope">
-          <div>
+          <div v-if="!onlyTable">
             <iSelect
               v-model="scope.row.supplierName"
               @focus="getRfqDepartment(scope.row)"
@@ -60,11 +60,11 @@
               ></el-option>
             </iSelect>
           </div>
-          <!-- <span v-else>{{scope.row.supplierName}}</span> -->
+          <span v-else>{{scope.row.supplierName}}</span>
         </template>
         <!-- 比例 -->
         <template #ratio="scope">
-          <div>
+          <div v-if="!onlyTable">
             <iInput v-model="scope.row.ratio" :placeholder="$t('LK_QINGSHURU')" />
             <!-- <iSelect
               v-model="scope.row.ratio"
@@ -77,7 +77,7 @@
               ></el-option>
             </iSelect> -->
           </div>
-          <!-- <span v-else>{{scope.row.ratio}}</span> -->
+          <span v-else>{{scope.row.ratio}}</span>
         </template>
       </tablelist>
       <!-- <iPagination
@@ -139,6 +139,12 @@ export default {
     mouldDialog
   },
   mixins: [ pageMixins ],
+  props: {
+    onlyTable: {
+      type: Boolean,
+      default: false
+    }
+  },
   data() {
     return {
       // 表头

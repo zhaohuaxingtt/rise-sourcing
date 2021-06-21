@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-26 19:14:39
- * @LastEditTime: 2021-06-19 19:35:04
+ * @LastEditTime: 2021-06-21 15:12:07
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringTracking\components\tableList.vue
@@ -88,6 +88,7 @@ import {icon} from 'rise'
 import riteDialog from '@/views/designate/designatedetail/decisionData/bdl/partsRating.vue'
 import { getPorpsNumber } from '../../quotationScoringHz/components/data'
 export default{
+  inject:['getbaseInfoData'],
   components:{icon,riteDialog},
   props:{
     tableTile:{
@@ -103,7 +104,8 @@ export default{
   data(){
     return {
       height:0,
-      dialogVisible:false
+      dialogVisible:false,
+      baseInfo:{}
     }
   },
   methods:{
@@ -119,7 +121,7 @@ export default{
             supplierId:items.supplierId,
             fsNum:items[round].partPrjCode || ''
           }
-      if(round.replace(/[^0-9]/ig,"") != this.$route.query.round || this.$route.query.rfqStateNotRunning){
+      if(round.replace(/[^0-9]/ig,"") != this.getbaseInfoData().currentRounds || this.getbaseInfoData().currentStatus == "已关闭"){
         map['fix'] = true
       }else{
         if(type == 3){

@@ -26,26 +26,25 @@
                     </el-form>
                 </iSearch>
             </iCard>
-            <iCard>
-                
-            <!-- 表格区域 -->
-            <tableList
-                class="table"
-                index
-                :tableData="tableListData"
-                :tableTitle="tableTitle"
-                :tableLoading="loading"
-                @handleSelectionChange="handleSelectionChange"
-            >
-                <!-- RFQ编号 -->
-                <template #rfqId="scope">
-                    <span @click="goFilesList(scope.row.rfqId)" class="link-underline" >{{scope.row.rfqId}}</span>
-                </template>
-                <!-- 附件 -->
-                <template #LK_FUJIAN="scope">
-                    <span @click="checkUploadList(scope.row.id)" class="link-underline" >{{$t('LK_SHANGCHUAN')}}</span>
-                </template>
-            </tableList>
+            <iCard class="margin-top20">
+                <!-- 表格区域 -->
+                <tableList
+                    class="table"
+                    index
+                    :tableData="tableListData"
+                    :tableTitle="tableTitle"
+                    :tableLoading="loading"
+                    @handleSelectionChange="handleSelectionChange"
+                >
+                    <!-- RFQ编号 -->
+                    <template #rfqId="scope">
+                        <span @click="goFilesList(scope.row.rfqId)" class="link-underline" >{{scope.row.rfqId}}</span>
+                    </template>
+                    <!-- 附件 -->
+                    <template #LK_FUJIAN="scope">
+                        <span @click="checkUploadList(scope.row.id)" class="link-underline" >{{$t('LK_SHANGCHUAN')}}</span>
+                    </template>
+                </tableList>
                 <!-- 分页 -->
                 <iPagination
                     class="margin-bottom20"
