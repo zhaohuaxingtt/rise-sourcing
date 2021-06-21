@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-05-28 14:32:26
- * @LastEditTime: 2021-06-21 18:11:16
+ * @LastEditTime: 2021-06-21 19:58:46
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\data.js
@@ -426,7 +426,7 @@ export const centerSupplierList = function(index,factoryList=[]){
     {type:'',props:`${index}tto`,label:'TTO',i18n:'',width:'100',tooltip:false},
     {type:'',props:`${index}externalDevelopmentCost`,label:'External Development cost',i18n:'',width:'100',tooltip:false},
     {type:'',props:`${index}releaseCost`,label:'release cost',i18n:'',width:'100',tooltip:false},
-    {type:'',props:`Quotationdetails`,label:'Quo.details',i18n:'',width:'100',tooltip:false},
+    {type:'',props:`${index}Quotationdetails`,label:'Quo.details',i18n:'',width:'100',tooltip:false},
   ]
 }
 
