@@ -1023,6 +1023,7 @@
             'QINGSHURUBIANHAOMINGCHENG': 'Please enter the number/name', //请输入编号/名称
             'QINGSHURUCHUANGJIANRENMINGCHENG': 'Please enter the name of the creator', //请输入创建人名称,
             'PCAZONGLAN': 'PCA overview', //PCA总览
+            'BAOGAOMINGCHENG': 'Report name', //报告名称
             'QUXIAN': ' curve', //曲线
             'ZUIXINDINGDIANDANJIA': 'The latest fixed-point unit price', //最新定点单价
             'MUBIAODANJIA': 'Target unit price', //目标单价,

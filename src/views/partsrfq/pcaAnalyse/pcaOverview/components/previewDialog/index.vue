@@ -6,24 +6,34 @@
       @close="clearDiolog"
   >
     <div slot="title">
-      <span class="font18 font-weight">报告名称</span>
+      <span class="font18 font-weight">{{ $t('TPZS.BAOGAOMINGCHENG') }}</span>
       <div class="floatright margin-right40">
-        <iButton>{{ $t('LK_XIAZAI') }}</iButton>
+        <iButton @click="handleDownload">{{ $t('LK_XIAZAI') }}</iButton>
       </div>
     </div>
-    <div class="content">
-
+    <div class="content" id="content">
+      <div class="left">
+        <barChart chartHeight="700px"/>
+      </div>
+      <div class="right">
+        <theTable/>
+      </div>
     </div>
   </iDialog>
 </template>
 
 <script>
 import {iDialog, iButton} from 'rise';
+import barChart from './components/barChart';
+import theTable from './components/theTable';
+import {downloadPDF} from '../../../../../../utils/pdf';
 
 export default {
   components: {
     iDialog,
     iButton,
+    barChart,
+    theTable,
   },
   props: {
     value: {type: Boolean},
@@ -40,6 +50,12 @@ export default {
     clearDiolog() {
       this.$emit('input', false);
     },
+    handleDownload() {
+      downloadPDF({
+        idEle: 'content',
+        pdfName: 'PCA Overview',
+      });
+    },
   },
   watch: {
     value(val) {
@@ -51,6 +67,15 @@ export default {
 <style scoped lang="scss">
 .content {
   padding-bottom: 20px;
+  display: flex;
+
+  .left {
+    width: 40%;
+  }
+
+  .right {
+    width: 60%;
+  }
 }
 
 
