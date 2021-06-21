@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-28 15:03:47
- * @LastEditTime: 2021-06-19 23:59:11
+ * @LastEditTime: 2021-06-21 20:33:31
  * @LastEditors: Please set LastEditors
  * @Description: 特殊表格实现
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\table.vue
@@ -37,7 +37,12 @@
               </ul>
               <ul class="cb" v-for='(items,index) in centerSupplierData' :key='index'>
                 <template v-for="(itemss,index) in supplierLeftLit">
-                    <li :key='index'>{{items[itemss.props]}}</li>
+                    <li :key='index' v-if='itemss.name != "F-Target"'>{{items[itemss.props]}}</li>
+                    <li :key="index" v-else class="ftaget">
+                      <span>{{items['cfPartAPrice']}}</span>
+                      <span></span>
+                      <span>{{items['cfPartBPrice']}}</span>
+                    </li>
                 </template>
               </ul>
               <div class="cc" style="width:100px">
@@ -67,6 +72,9 @@
           <template v-if='removeKeysNumber(item.props) == "ltcStaringDate" || removeKeysNumber(item.props) == "supplierSopDate"'>
             <span>{{scope.row[item.props]?moment(scope.row[item.props]).format("YYYY-MM-DD"):''}}</span>
           </template>
+          <template v-else-if='removeKeysNumber(item.props) == "Quotationdetails"'>
+             <span class="link" @click="optionPage(scope.row,getPorpsNumber(item.props))">查看详情</span>
+          </template>
           <template v-else slot-scope="scope">
             <span>{{scope.row[item.props]}}</span>
           </template>
@@ -78,8 +86,9 @@
   </div>
 </template>
 <script>
-import {supplierTableTop,removeKeysNumber} from './data'
+import {supplierTableTop,removeKeysNumber,getPorpsNumber} from './data'
 export default{
+  inject:['getbaseInfoData'],
   props:{
     tableData:{
       type:Array,
@@ -113,6 +122,20 @@ export default{
     }
   },
   methods:{
+    getPorpsNumber(props){return getPorpsNumber(props)},
+    optionPage(items,index){
+      const router = this.$router.resolve({
+        path:'/supplier/quotationdetail',
+        query:{
+          rfqId:this.$route.query.id,
+          round:this.getbaseInfoData().currentRounds,
+          supplierId:items.supplierId,
+          fsNum:items[index+'partPrjCode'],
+          fix:true
+        }
+      })
+      window.open(router.href,'_blank')
+    },
     moment(date){
       // eslint-disable-next-line no-undef
       return moment(date)
@@ -132,6 +155,17 @@ export default{
 }
 </script>
 <style lang='scss' scoped>
+  .ftaget{
+    text-align: left;
+    span{
+      width: 100PX;
+      display: inline-block;
+      height: 100%;
+      border-right: 1px solid #C5CCD6;
+      text-align: center;
+      float: left;
+    }
+  }
   .el-table {
     overflow: visible;
     ::v-deep.cell{

@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-28 15:03:47
- * @LastEditTime: 2021-06-20 02:09:57
+ * @LastEditTime: 2021-06-21 20:42:04
  * @LastEditors: Please set LastEditors
  * @Description: 特殊表格实现
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\table.vue
@@ -36,7 +36,7 @@
         </template>
       </el-table-column>
       <el-table-column
-        v-else-if="item.props == 'cfPartAPrice'"
+        v-else-if="item.props == 'cfPartAPrice' || item.props == 'partNo'"
         :key="index"
         :label="item.i18n ? $t(item.i18n) : item.label"
         :width="item.width"
@@ -45,7 +45,7 @@
         :sortable='"custom"'
       >
         <template slot-scope="scope">
-          <span :class="{chengse:scope.row['cfPartAPriceStatus'] == 2}">{{scope.row[item.props]}}</span>
+          <span :class="{chengse:(scope.row['cfPartAPriceStatus'] == 2 && item.props != 'partNo')}">{{scope.row[item.props]}}</span>
         </template>
       </el-table-column>
       <!-----------------表格中内容模块------------------------>
@@ -133,7 +133,7 @@ export default{
       default:''
     }
   },
-  inject:['vm'],
+  inject:['vm','getbaseInfoData'],
   computed:{
     cWidth(){
       const index = this.tableTitle.findIndex((item)=>item.label == 'EBR')
@@ -162,10 +162,10 @@ export default{
         path:'/supplier/quotationdetail',
         query:{
           rfqId:this.$route.query.id,
-          round:this.round,
+          round:this.getbaseInfoData().currentRounds,
           supplierId:items.supplierId,
           fsNum:items.partPrjCode,
-          agentQutation:true
+          fix:true
         }
       })
       window.open(router.href,'_blank')
