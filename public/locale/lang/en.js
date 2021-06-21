@@ -910,6 +910,9 @@
             'LK_GONGYINGSHANGFANKUI':'供应商反馈', // 供应商反馈
             'LK_SHIFOUQIANSHUXIEYI':'是否签署协议', // 是否签署协议
             'LK_DINGDIANRIQI':'定点⽇期', //定点⽇期
+            'LK_LOIBIANHAO':'LOI编号', // LOI编号
+            'LK_LOIZHUANGTAI':'LOI状态', // LOI状态
+            'LK_LOISHENGCHENGSHIJIAN':'LOI⽣成时间', // LOI⽣成时间
         },
    
         // 定点建议

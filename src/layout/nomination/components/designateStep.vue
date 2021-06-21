@@ -193,7 +193,7 @@ export default {
             let state = false
             try {
                 const res = await supplierInitReCord({
-                    nominateAppId: this.$store.getters.nomiAppId,
+                    nominateId: this.$store.getters.nomiAppId,
                 })
                 if (res.code === '200') {
                     state = true
@@ -257,11 +257,11 @@ export default {
             }
             console.log(step, phaseType)
             // 当前步骤在rfq零件清单
-            // if (step === 1) {
-            //     const proc = await this.onRfqPartListNextStepSave()
-            //     console.log('step 1', proc)
-            //     if (!proc) return
-            // }
+            if (step === 1) {
+                const proc = await this.onRfqPartListNextStepSave()
+                console.log('step 1', proc)
+                if (!proc) return
+            }
             // 当前步骤在单一供应商
             if (step === 2) {
                 const proc = await this.onSupplierSave()
