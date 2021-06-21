@@ -56,6 +56,28 @@ export default {
           },
         };
       });
+      const markPointStyle = {
+        itemStyle: {
+          color: '#fff',
+        },
+        label: {
+          color: '#000',
+        },
+      };
+      this.seriesArray[0].markPoint = {
+        data: [
+          {
+            coord: [0, 1780],
+            value: '1900€',
+            ...markPointStyle,
+          },
+          {
+            coord: [1, 1580],
+            value: '1780€',
+            ...markPointStyle,
+          },
+        ],
+      };
     },
     initEcharts() {
       const barWidth = 60;
