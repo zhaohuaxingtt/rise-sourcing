@@ -2,7 +2,7 @@
  * @Author: ldh
  * @Date: 2021-04-26 17:27:20
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-06-17 13:14:07
+ * @LastEditTime: 2021-06-21 11:14:27
  * @Description: In User Settings Edit
  * @FilePath: \front-supplier\src\api\rfqManageMent\quotationdetail\index.js
  */
@@ -263,7 +263,7 @@ export function getAllPartForMould(params) {
 // 保存rfq下报价
 export function saveModuleFee(params) {
   return requst({
-    url: `/part/module-fee?supplierId=${supplierId()}`,
+    url: `/part/module-fee?supplierId=${params.supplierId}`,
     method: 'POST',
     data: params
   })
