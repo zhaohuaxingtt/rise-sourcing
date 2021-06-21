@@ -1,7 +1,7 @@
 /*
  * @Author: HaoJiang
  * @Date: 2021-05-20 14:29:09
- * @LastEditTime: 2021-06-15 14:58:00
+ * @LastEditTime: 2021-06-21 16:11:00
  * @LastEditors: Luoshuang
  * @Description: 定点管理
  * @metaParams: hideTabLV3 隐藏三级导航
@@ -211,5 +211,13 @@ export default [
       }
     ]
   },
-  
+  {                          
+    path: "/designate/designatesuggestion",
+    name: "designateSuggestion",
+    meta: {
+        title: "定点管理-定点建议",
+    },
+    component: () =>
+      import ("@/views/designate/suggestion/index")
+  }
 ]

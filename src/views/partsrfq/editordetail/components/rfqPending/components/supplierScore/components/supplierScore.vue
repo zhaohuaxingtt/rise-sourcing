@@ -255,7 +255,7 @@ export default {
             res.data.map(item => ({
               ...item,
               key: item.code,
-              label: item.address,
+              label: `${ item.province }_${ item.city }_${ item.address }`,
               value: item.code
             })) : 
             []
