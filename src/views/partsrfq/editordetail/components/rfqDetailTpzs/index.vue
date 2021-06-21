@@ -51,7 +51,7 @@ import pcaOverview from '../../../pcaAnalyse/pcaOverview';
 import specialAnalysisTool from "./components/specialAnalysisTool";
 import negotiateBasicInfor from "./components/negotiateBasicInfor";
 export default {
-  components: { iTabsList, iCard, quotationScoringTracking, quotationScoringMj, quotationScoringHZ, quotationScoringEcartsCard, buMonitor, specialAnalysisTool, negotiateBasicInfor },
+  components: { iTabsList, iCard, quotationScoringTracking, quotationScoringMj, quotationScoringHZ, quotationScoringEcartsCard, buMonitor, specialAnalysisTool, negotiateBasicInfor,analysisTool,pcaOverview },
   data() {
     return {
       cardShow: icardData
@@ -59,7 +59,7 @@ export default {
   },
   methods: {
     /**
-     * @description: 报价折叠 
+     * @description: 报价折叠
      * @param {*} e
      * @param {*} key
      * @return {*}
@@ -78,7 +78,7 @@ export default {
     },
     //点击报告清单
     clickReport() {
-      
+
     }
   }
 }
