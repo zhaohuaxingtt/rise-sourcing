@@ -1,7 +1,6 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-25 13:01:23
- * @LastEditTime: 2021-06-17 16:40:05
  * @LastEditors: zbin
  * @Description: 报价助手界面
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\index.vue
@@ -68,9 +67,26 @@ export default {
           i.show = e
         }
       })
+    },
+    //点击返回
+    clickReturn() {
+
+    },
+    //点击报告清单
+    clickReport() {
+      
     }
   }
 }
 </script>
 <style lang='scss' scoped>
+.mainContent {
+  position: relative;
+  justify-content: space-between;
+  .buttonBox {
+    position: absolute;
+    top: 10px;
+    right: 2px;
+  }
+}
 </style>

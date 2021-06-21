@@ -14,7 +14,10 @@
               :empty-text="$t('LK_ZANWUSHUJU')"
               v-loading='tableLoading'
               @selection-change="handleSelectionChange"
-              :row-class-name="handleTableRow">
+              :row-class-name="handleTableRow"
+              row-key="id"
+              :tree-props="{children: treeProps}"
+    >
       <el-table-column v-if="selection" type='selection' width="50" align='center'></el-table-column>
       <el-table-column v-if='index' type='index' width='50' align='center' label='#'
                        :index="indexMethod"
@@ -111,6 +114,7 @@ import {iInput, iSelect, icon} from 'rise';
 export default {
   props: {
     tableData: {type: Array},
+    tiledTableData: {type: Array},
     tableTitle: {type: Array},
     tableLoading: {type: Boolean, default: false},
     selection: {type: Boolean, default: true},
@@ -139,6 +143,8 @@ export default {
     fileSizeProps: {type: String, default: 'fileSize'},
     mergeValue: {type: String, default: ''},
     customIndex: {type: Number, default: 0},
+    treeTable: {type: Boolean, default: false},
+    treeProps: {type: String, default: 'children'},
   },
   components: {
     iInput,
@@ -186,7 +192,11 @@ export default {
       row.row.index = row.rowIndex;
     },
     indexMethod(index) {
-      return index + 1 + this.customIndex;
+      if (this.treeTable) {
+        return this.tiledTableData[index].treeIndex;
+      } else {
+        return index + 1 + this.customIndex;
+      }
     },
   },
 };
