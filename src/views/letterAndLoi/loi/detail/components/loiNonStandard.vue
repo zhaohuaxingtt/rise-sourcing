@@ -1,7 +1,7 @@
 <!--
  * @Author: wentliao
  * @Date: 2021-06-21 13:35:11
- * @Description: 定点信详情页面-非标准定点信内容区
+ * @Description: LOI详情页面-非标准LOI内容区
 -->
 <template>
     <iCard class="nonStandard-files">
@@ -63,7 +63,7 @@ import tableList from "@/views/partsign/editordetail/components/tableList"
 import { pageMixins } from "@/utils/pageMixins"
 import { historyListTitle as tableTitle } from '../../../data'
 export default {
-    name:'nonStandard',
+    name:'loiNonStandard',
     mixins: [ pageMixins ],
     props:{
         isEdit:{
