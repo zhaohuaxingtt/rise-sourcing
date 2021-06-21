@@ -19,14 +19,19 @@
       <span class="refresh">刷新</span>
       <span class="refreshTime">刷新日期：2021.01.31</span>
       <div v-if="pageEdit">
-        <iButton @click="saveAsList">{{ $t("退出编辑") }}</iButton>
-        <iButton @click="saveAsList">{{ $t("上传清单") }}</iButton>
+        <iButton @click="exitEdit">{{ $t("退出编辑") }}</iButton>
+        <!-- <iButton @click="uploadList">{{ $t("上传清单") }}</iButton> -->
+        <upload-button 
+            @uploadedCallback="uploadAttachments" 
+            :upload-button-loading="uploadLoading"
+            :buttonText="$t('上传清单')" 
+            class="margin-left8" />
         <iButton @click="saveAsList">{{ $t("保存") }}</iButton>
-        <iButton @click="saveAsList">{{ $t("保存为新版本") }}</iButton>
+        <iButton @click="saveAsNew">{{ $t("保存为新版本") }}</iButton>
       </div>
       <div v-else>
-        <iButton @click="saveAsList">{{ $t("编辑") }}</iButton>
-        <iButton @click="saveAsList">{{ $t("下载清单") }}</iButton>
+        <iButton @click="edit">{{ $t("编辑") }}</iButton>
+        <iButton @click="downloadList">{{ $t("下载清单") }}</iButton>
       </div>
     </div>
     <iCard class="margin-top20 mainCard">
@@ -36,8 +41,12 @@
           <span class="totalText">Total:</span>
           <span class="refresh">720.0</span>
           <span class="unitText margin-left20"
-            >{{ $t("LK_DANWEI") }}: {{ $t("LK_BAIWANYUAN") }}</span
+            >{{ $t("LK_HUOBI") }}: {{ $t("LK_RENMINBI") }}</span
           >
+          <span class="marginUnit unitText">|</span>
+          <span class="unitText">{{ $t("LK_DANWEI") }}: {{ $t("LK_BAIWANYUAN") }}</span>
+          <span class="marginUnit unitText">|</span>
+          <span class="unitText">{{$t('LK_BUHANSUI')}}</span>
         </div>
         <div class="legend">
           <div>CSE</div>
@@ -197,6 +206,7 @@
         </template>
       </iTableList>
     </iCard>
+    <new-version-dialog v-model="saveNewVersion" @handleConfirm="handleConfirm"/>
   </div>
 </template>
 
@@ -207,6 +217,8 @@ import { tableTitle, dataList } from "./components/data";
 import { iTableList } from "@/components";
 import { cloneDeep } from 'lodash';
 import { tableHeight } from "@/utils/tableHeight";
+import NewVersionDialog from './components/newVersionDialog.vue';
+import uploadButton from './components/uploadButton';
 
 export default {
   mixins: [ tableHeight ],
@@ -217,6 +229,8 @@ export default {
     iInput,
     icon,
     iTableList,
+    NewVersionDialog,
+    uploadButton,
   },
   data() {
     return {
@@ -227,15 +241,42 @@ export default {
       pageEdit: false,
       tableListData: dataList,
       tableTitle: tableTitle,
+      saveNewVersion: false, //保存为新版本对话框
+      uploadLoading: false,
+      selectIndex: -1,//table选择index
     };
   },
   mounted() {
     this.showEcharts();
   },
   methods: {
-    changeVersion() {},
+    //选择版本
+    changeVersion() {
+
+    },
+    //编辑
+    edit() {
+      this.pageEdit = true;
+    },
+    //退出编辑
+    exitEdit() {
+      this.pageEdit = false;
+    },
+    //保存为新版本
+    saveAsNew() {
+      this.saveNewVersion = true;
+    },
+    // //上传清单
+    // uploadList() {
+
+    // },
+    //保存
     saveAsList() {
-      this.pageEdit = !this.pageEdit;
+
+    },
+    //下载清单
+    downloadList() {
+
     },
     tabClick(index) {
       if (this.tabIndex === index) {
@@ -257,9 +298,9 @@ export default {
           temp.barWidth = 50;
           temp.stack = "total";
           temp.color = colorList[index];
-          // temp.label = {
-          //   show: true,
-          // }
+          temp.label = {
+            show: false,
+          }
           data.push(element.jan)
           data.push(element.feb)
           data.push(element.mar)
@@ -276,6 +317,13 @@ export default {
             focus: 'series'
           }
           temp.data = data;
+          if (index == 0) {
+            temp.itemStyle = {
+              normal: {
+                barBorderRadius :[5, 5, 0, 0]
+              }
+            }
+          }
           series.unshift(temp);
         });
         let option = {
@@ -332,12 +380,26 @@ export default {
           series: series
         };
         chart.setOption(option);
-      });
-    },
-    getDepartData(array, key) {
-      let temp = cloneDeep(array);
-      return temp.map(item => {
-        return item[key]
+        chart.on('mouseover', function (params) {
+          let optionTemp = cloneDeep(option);
+          let colorTempList = ["#D8D9FD", "#DFE3FF", "#D8E5FF", "#DDEDFC", "#E8F6FF"];
+          this.selectIndex = params.componentIndex;
+          colorTempList.splice(params.componentIndex, 0, "#0053EF")
+          optionTemp.series.map((item, index) => {
+            item.color = colorTempList[ index % colorTempList.length];
+            if (params.componentIndex == index ) {
+              item.label = {
+                show: true,
+              }
+            }
+            return item;    
+          })
+           chart.setOption(optionTemp, true);
+        });
+        chart.on('mouseout', function() {
+          this.selectIndex = -1;
+          chart.setOption(option);
+        });
       });
     },
     handleInputChange(row) {
@@ -345,7 +407,14 @@ export default {
       row.amount = Number(row.jan) + Number(row.feb) + Number(row.mar) + Number(row.apr) + Number(row.may) + Number(row.june) + 
           Number(row.july) + Number(row.aug) + Number(row.sep) + Number(row.oct) + Number(row.nov) + Number(row.dec);
       this.showEcharts();
-    }
+    },
+    //保存新版本
+    handleConfirm(val) {
+      this.saveNewVersion = false;
+    },
+    uploadAttachments(data) {
+
+    },
   },
 };
 </script>
@@ -502,6 +571,10 @@ export default {
 
 .unitText {
   font-size: 14px;
-  color: #aeb4bb;
+  color: #485465;
+}
+
+.marginUnit {
+  margin: 0 5px;
 }
 </style>
