@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-25 13:01:23
- * @LastEditors: zbin
+ * @LastEditors: Please set LastEditors
  * @Description: 报价助手界面
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\index.vue
 -->
@@ -29,7 +29,9 @@
       </template>
     </el-tab-pane>
     <el-tab-pane label="专项分析工具">
-      <specialAnalysisTool />
+      <specialAnalysisTool v-if="false"/>
+      <analysisTool v-if="false"/>
+      <pcaOverview v-if="true"/>
     </el-tab-pane>
     <el-tab-pane label="谈判基本信息">
       <negotiateBasicInfor></negotiateBasicInfor>
@@ -44,6 +46,8 @@ import quotationScoringHZ from './components/quotationScoringHz'
 import quotationScoringEcartsCard from './components/quotationScoringEcartsCard'
 import buMonitor from './components/qutaionScoringBusses'
 import { icardData } from './components/data'
+import analysisTool from '../../../vpAnalyse/vpAnalyseList'
+import pcaOverview from '../../../pcaAnalyse/pcaOverview';
 import specialAnalysisTool from "./components/specialAnalysisTool";
 import negotiateBasicInfor from "./components/negotiateBasicInfor";
 export default {
