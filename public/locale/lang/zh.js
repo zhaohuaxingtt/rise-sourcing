@@ -1111,6 +1111,8 @@
 			'QINGSHURUBIANHAOMINGCHENG': '请输入编号/名称', //请输入编号/名称
 			'QINGSHURUCHUANGJIANRENMINGCHENG': '请输入创建人名称', //请输入创建人名称
 			'PCAZONGLAN': 'PCA总览', //PCA总览
+			'PINLEIGUANLIZHUSHOU': '品类管理助手', //品类管理助手
+			'TANPANZHUSHOU': '谈判助手', //谈判助手
 			// ---------------------------------舒杰报告清单start-----------------------------------------------
 			'BGQD': '报告清单', //报告清单
 			'ZXFXGJ': '专项分析工具', //专项分析工具

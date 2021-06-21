@@ -23,6 +23,11 @@ export default [{
 			component: () =>
 				import("@/views/partsrfq/reportList"),
 		},
+		{
+			path: 'partsrfq/externalNegotiationAssistant',
+			name: 'vpAnalyseDetail',
+			component: () => import('../../views/partsrfq/externalAccessToAnalysisTools/negotiationAssistant')
+		},
 	]
 }]
 
