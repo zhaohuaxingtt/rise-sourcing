@@ -28,7 +28,7 @@
     <!------------------------------------------------------------------------>
     <!--                  表格分页                                          --->
     <!------------------------------------------------------------------------>
-    <iPagination
+    <!-- <iPagination
         v-update
         @size-change="handleSizeChange($event, getTableList)"
         @current-change="handleCurrentChange($event, getTableList)"
@@ -38,7 +38,7 @@
         :layout="page.layout"
         :current-page='page.currPage'
         :total="page.totalCount"
-    />
+    /> -->
     <!------------------------------------------------------------------------>
     <!--                  备注弹框                                          --->
     <!------------------------------------------------------------------------>
@@ -108,7 +108,9 @@ export default {
         try {
           const req = {
             rfqId: id,
-            userId: store.state.permission.userInfo.id
+            userId: store.state.permission.userInfo.id,
+            current: this.page.currPage,
+            size: this.page.pageSize
           }
           const res = await getAllSupplier(req)
           // const tpb = await getRaterAndCoordinatorByDepartmentId({'rfqId':id})
@@ -116,12 +118,19 @@ export default {
           this.tableTitle = JSON.parse(JSON.stringify(supplierScoreTitle))
           const tpb = res.records[0] ? (res.records[0].rateEntity ? res.records[0].rateEntity : []) : []
           this.tableListData = this.trnaslateDataForView(res.records || [], tpb);
-          this.page.currPage = res.current
-          this.page.pageSize = res.size
+          // this.page.currPage = res.current
+          // this.page.pageSize = res.size
           this.page.totalCount = res.total
           this.tableLoading = false;
 
-          this.supplierProducePlaces = this.tableListData.map(item => ({ key: item.companyAddressCode, value: item.companyAddressCode, label: item.companyAddress }))
+          this.supplierProducePlaces = this.tableListData.map(item => {
+            if (!item.companyAddressCode && item.companyAddress) {
+              item.companyAddressCode = item.companyAddress
+              item.isNoCodeData = true
+            }
+
+            return ({ key: item.companyAddressCode, value: item.companyAddressCode, label: item.companyAddress })
+          })
         } catch {
           this.tableLoading = false;
           this.supplierProducePlaces = []
@@ -263,7 +272,7 @@ export default {
       updateBatchSupplierProducePlace(
         this.tableListData.map(item => ({
           companyAddress: item.companyAddress,
-          companyAddressCode: item.companyAddressCode,
+          companyAddressCode: item.isNoCodeData ? null : item.companyAddressCode,
           rfqBdlId: item.rfqBdlId
         }))
       )

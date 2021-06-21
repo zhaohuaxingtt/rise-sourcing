@@ -100,6 +100,15 @@ export function sugesstionInit(params) {
   })
 }
 
+// rfq零件清单下一步前保存
+export function supplierInitReCord(params) {
+  return requst({
+      url: "/supplier/initSupplier",
+      method: "GET",
+      params,
+  })
+}
+
 // 定点建议下一步前保存
 export function sugesstionInitReCord(params) {
   return requst({

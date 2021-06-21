@@ -52,7 +52,7 @@
             </template>
             <!-- 定点信编号 -->
             <template #key2="scope">
-                <a class="trigger" href="javascript:;">
+                <a class="trigger" href="javascript:;" @click="goToDetail(scope.row)">
                     <span class="link" >{{ scope.row.key2 }}</span>
                 </a>
             </template>
@@ -256,6 +256,15 @@ export default {
             }else{
                 console.log(isNext,'CANCEL');
             }
+        },
+
+        // 跳转至定点信详情页
+        goToDetail(){
+             const routeData = this.$router.resolve({
+            path: '/sourcing/partsletter/letterdetail',
+            query: {}
+            })
+            window.open(routeData.href, '_blank')
         }
     }
 }
