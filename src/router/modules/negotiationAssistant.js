@@ -28,6 +28,24 @@ export default [{
 			name: 'vpAnalyseDetail',
 			component: () => import('../../views/partsrfq/externalAccessToAnalysisTools/negotiationAssistant')
 		},
+		{
+			path: "partsrfq/bob",
+			name: "bob",
+			meta: {
+					title: "BOB",
+			},
+			component: () =>
+					import ("@/views/partsrfq/bob/bob.vue"),
+		},
+		{
+			path: "partsrfq/bobNew",
+			name: "bobNew",
+			meta: {
+					title: "BOBNew",
+			},
+			component: () =>
+					import ("@/views/partsrfq/bob/newReport"),
+		},
 	]
 }]
 
