@@ -42,3 +42,13 @@ export const letterListTitle=[
   { props: "key11", name: "是否签署协议", key: "LK_SHIFOUQIANSHUXIEYI", tooltip: true },
   { props: "key12", name: "定点⽇期", key: "LK_DINGDIANRIQI", tooltip: true },
 ]
+
+
+// 历史定点信表头
+export const historyListTitle=[
+  { props: "key1", name: "定点信编号", key: "LK_DINGDIANXINBIANHAO", tooltip: true },
+  { props: "fileName", name: "文件名称", key: "LK_WENJIANMINGCHENG", tooltip: true },
+  { props: "key3", name: "大小", key: "LK_DAXIAOMB", tooltip: true },
+  { props: "key4", name: "上传日期", key: "LK_SHANGCHUANRIQI", tooltip: true },
+  { props: "key5", name: "上传人", key: "LK_SHANGCHUANREN", tooltip: true },
+]
