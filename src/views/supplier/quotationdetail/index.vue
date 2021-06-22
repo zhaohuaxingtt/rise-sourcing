@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-05-26 13:55:55
- * @LastEditTime: 2021-06-19 22:11:36
+ * @LastEditTime: 2021-06-21 16:13:52
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\supplier\quotationdetail\index.vue
@@ -52,8 +52,10 @@ export default {
         if(res.code == 200){
           this.getPartsQuotations()
           iMessage.success('操作成功！')
+          this.dialogVisible = false
         }else{
           iMessage.error(res.desZh)
+          this.dialogVisible = false
         }
       }).catch(err=>{
         iMessage.error(err.desZh)
