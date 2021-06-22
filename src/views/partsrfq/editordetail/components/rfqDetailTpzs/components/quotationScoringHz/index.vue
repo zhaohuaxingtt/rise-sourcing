@@ -13,7 +13,7 @@
       <div class='search'>
         <div class="needAddWhi" v-if='!disabel'>
           <span>Hide/unHide：</span>
-          <iSelect v-model="backChoose" multiple :collapse-tags='true' @visible-change='visibleChange'>
+          <iSelect v-model="backChoose" multiple :collapse-tags='true' @remove-tag='removeTags' @visible-change='visibleChange'>
             <el-option v-for='(items,index) in backChooseLists' :key='index' :label="items.label" :value="items.props"></el-option>
           </iSelect> 
         </div>
@@ -117,6 +117,9 @@ export default{
     return {vm:this}
   },
   methods:{
+    removeTags(){
+      this.negoAnalysisSummaryLayoutSave()
+    },
     /**
      * @description: 排除group total km buget 列不需要排序外，其他的都是需要排序的列。
      * @param {*} props -表格中返回的标识。正排序 还是 反排序 还是 默认
