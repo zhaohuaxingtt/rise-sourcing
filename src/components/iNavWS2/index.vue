@@ -10,7 +10,7 @@
         :routerPage="true"
         :list="budgetManagement3rd"
         class="iNavMvp"
-        v-if="$route.path.indexOf('budgetManagement') > -1"
+        v-if="$route.path.indexOf('budgetManagement') > -1 && $route.path.indexOf('addModelBag') === -1"
     ></iNavMvp>
     <iButton
         v-if="$route.path.indexOf('budgetManagement/generateInvestmentList') > -1"

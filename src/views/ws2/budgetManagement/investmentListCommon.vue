@@ -867,7 +867,7 @@ export default {
                   data: [notAekoValue],
                   itemStyle: {
                     normal: {
-                      // barBorderRadius: [5, 5, 0, 0],
+                      barBorderRadius: [5, 5, 0, 0],
                     }
                   }
                 },

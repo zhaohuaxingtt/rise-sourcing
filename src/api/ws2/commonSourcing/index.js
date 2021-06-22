@@ -17,3 +17,35 @@ export function pageCarTypePackage(parmars) {
         data: parmars
     })
 }
+//车型包排序值上移、下移
+export function dataMove(parmars) {
+    return VUE_APP_CSBUDGET({
+        url: '/dataMove',
+        method: 'POST',
+        data: parmars
+    })
+}
+//CommonSourcing预算管理数据
+export function commonSourcingView(parmars) {
+    return VUE_APP_CSBUDGET({
+        url: '/commonSourcingView',
+        method: 'POST',
+        data: parmars
+    })
+}
+//车型包下拉信息
+export function carTypePackageCombo(parmars) {
+    return VUE_APP_CSBUDGET({
+        url: '/carTypePackageCombo',
+        method: 'GET',
+        params: parmars
+    })
+}
+//根据车型包ID查询版本信息下拉
+export function packageVersionCombo(parmars) {
+    return VUE_APP_CSBUDGET({
+        url: '/packageVersionCombo',
+        method: 'GET',
+        params: parmars
+    })
+}
