@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-06-22 15:45:09
+ * @LastEditTime: 2021-06-22 15:52:15
  * @LastEditors: Please set LastEditors
  * @Description: 系统静态路由.
  * @FilePath: \front-web\src\router\index.js
@@ -289,9 +289,18 @@ export const staticRouter = [{
             {
                 path: "/sourcing/partsletter",
                 name: "partsletter",
-                component: () => 
-                    import ("@/views/letterAndLoi")
-            }
+                component: () => import ("@/views/letterAndLoi")
+            },
+            {
+                path: "/sourcing/partsletter/letterdetail",
+                name: "letterdetail",
+                component: () => import ("@/views/letterAndLoi/letter/detail")
+            },
+            {
+                path: "/sourcing/partsletter/loidetail",
+                name: "loidetail",
+                component: () => import ("@/views/letterAndLoi/loi/detail")
+            },
         ],
     },
     {

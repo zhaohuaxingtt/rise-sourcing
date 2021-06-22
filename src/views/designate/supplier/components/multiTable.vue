@@ -173,9 +173,9 @@ export default {
         if (res.code === '200') {
           const tableListData = res.data || []
           tableListData.map(o => {
-            o.id = this.randomid()
+            o.sid = this.randomid()
             o.nestedList && o.nestedList.length && (o.nestedList.map(item => {
-              item.id = this.randomid()
+              item.sid = this.randomid()
               return item
             }))
             o.children = o.nestedList || []

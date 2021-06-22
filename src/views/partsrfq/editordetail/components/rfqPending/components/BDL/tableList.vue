@@ -13,17 +13,24 @@
 			<el-table-column :key="index" align="center" v-if="item.props == 'supplierNameZh'" :prop="item.props" :label="$t(item.key)"  :show-overflow-tooltip="item.tooltip">
 				<template slot-scope="scope">
 					<!-- <span class="openLinkText cursor" @click="openPage">{{scope.row.supplierNameZh}}</span> -->
-					<span>{{ scope.row.supplierNameZh }}</span>
-					<!-----------Spring10新增：如果供应商FRM评级为C,则认为有风险被标识出来------------------------------------------------------->
-					<el-popover
-            v-if="scope.row.Frm === 'C'"
-            placement="bottom"
-            trigger="hover"
-            popper-class="tableTitleTip"
-            content="FRM评级：C"
-            :visible-arrow="false">
-            <icon symbol class="cursor margin-left8" name='iconzhongyaoxinxitishi' ></icon>
-          </el-popover>
+					<span class="openLinkText cursor" @click="openPage(scope.row)">{{ scope.row.supplierNameZh }}
+						<!-----------Spring10新增：如果供应商FRM评级为C,则认为有风险被标识出来------------------------------------------------------->
+						<el-tooltip effect="light" :content="`FRM评级：${scope.row.frm}`" v-if="scope.row.frm">
+          <span>
+            <icon symbol class="cursor margin-left8" name="iconzhongyaoxinxitishi" />
+          </span>
+        </el-tooltip>
+						<!-- <el-popover
+							
+							placement="bottom"
+							trigger="hover"
+							popper-class="tableTitleTip"
+							:content="`FRM评级：${scope.row.Frm}`"
+							:visible-arrow="false">
+							<icon symbol class="cursor margin-left8" name='iconzhongyaoxinxitishi' ></icon>
+						</el-popover> -->
+					</span>
+					
 				</template>
 			</el-table-column>
 			<!-- <el-table-column :key="index" align="center" v-if="item.props == 'c'" :prop="item.props" :label="item.name">
@@ -124,8 +131,8 @@
 			handleSelectionChange(val) {
 				this.$emit("handleSelectionChange", val);
 			},
-			openPage() {
-				this.$emit("openPage");
+			openPage(row) {
+				this.$emit("openPage", row);
 			},
 			onJump360(row) {
 				window.open("https://www.baidu.com/");

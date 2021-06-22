@@ -77,7 +77,8 @@ import {
     getNominateType,
     updatePresenPageSeat,
     sugesstionInit,
-    sugesstionInitReCord
+    sugesstionInitReCord,
+    supplierInitReCord
 } from '@/api/designate'
 import { applyStep } from './data'
 export default {
@@ -187,6 +188,24 @@ export default {
               }
             })
         },
+         // RFQ & 零件清单下一步前保存
+        async onRfqPartListNextStepSave() {
+            let state = false
+            try {
+                const res = await supplierInitReCord({
+                    nominateId: this.$store.getters.nomiAppId,
+                })
+                if (res.code === '200') {
+                    state = true
+                } else {
+                    iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+                }
+            } catch (e) {
+                iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
+                state = false
+            }
+            return state
+        },
         // 单一供应商保存
         async onSupplierSave() {
             let state = false
@@ -237,6 +256,12 @@ export default {
                 phaseNodeNow: 0
             }
             console.log(step, phaseType)
+            // 当前步骤在rfq零件清单
+            if (step === 1) {
+                const proc = await this.onRfqPartListNextStepSave()
+                console.log('step 1', proc)
+                if (!proc) return
+            }
             // 当前步骤在单一供应商
             if (step === 2) {
                 const proc = await this.onSupplierSave()
