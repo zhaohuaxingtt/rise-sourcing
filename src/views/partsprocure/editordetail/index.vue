@@ -230,7 +230,7 @@
 				</div>
 			</iFormGroup>
 		</iCard>
-		<iTabsList class="margin-top20" type="border-card">
+		<iTabsList  class="margin-top20" type='card'>
 			<!-------------------------已定点时显示定点信息tab-  ----------------------------------------->
 			<el-tab-pane :label="$t('LK_DINGDIANXINXI')" v-if="detailData.status == '15'">
 				<designateInfo :params="infoItem" />
@@ -281,7 +281,7 @@
 		iButton,
 		iTabsList,
 		iMessage,
-	} from "@/components";
+	} from "rise";
 	import logistics from "./components/logistics";
 	import targePrice from "./components/targetPrice";
 	import materialGroupInfo from "./components/materialGroupInfo";
