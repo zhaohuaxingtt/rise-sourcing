@@ -264,7 +264,7 @@ export const staticRouter = [{
                         meta: {
                             title: 'commonSourcing'
                         },
-                        component: () => import (`@/views/ws2/budgetManagement/commonSourcing`),
+                        component: () => import (`@/views/ws2/budgetManagement/commonSourcing/index`),
                     },
                     {
                         path: '/tooling/baApplyIndex',
@@ -309,6 +309,14 @@ export const staticRouter = [{
                         component: () => import (`@/views/ws2/bmApply`),
                     },
                 ]
+            },
+            {
+                path: '/tooling/budgetManagement/addModelBag',
+                name: 'addModelBag',
+                meta: {
+                    title: 'addModelBag'
+                },
+                component: () => import (`@/views/ws2/budgetManagement/commonSourcing/addModelBag`),
             },
             {
                 path: '/tooling/dataBase',

@@ -864,7 +864,7 @@
         'LK_AMOUNTMONEYRMB': '金额（RMB）', //  金额（RMB）
         'LK_FIXEDINVESTTOTAL': '总定点投资金额',    //  总定点投资金额
 
-        'LK_XIAYIBU': '下一步',    //  下一步
+        // 'LK_XIAYIBU': '下一步',    //  下一步
 
         'LK_BAAPPROVAL': 'BA审批',  //  BA审批
         'LK_BADANSTATUS': 'BA单状态', // BA单状态
