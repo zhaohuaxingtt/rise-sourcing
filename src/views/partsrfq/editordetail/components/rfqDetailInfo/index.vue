@@ -1,6 +1,6 @@
 <template>
   <div>
-    <iTabsList class="margin-top20" type='border-card' @tab-click="handleTabClick">
+    <iTabsList class="margin-top20" type='card' @tab-click="handleTabClick" >
       <el-tab-pane :label="$t(item.keystring)" v-for="item of tabList" :key="item.label" v-permisstion='item.permissionKey'>
         <component :is="item.component" v-if="activityTabIndex === item.index"/>
       </el-tab-pane>
@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import {iTabsList} from "@/components";
+import {iTabsList} from "rise";
 import targetPrice from './components/targetPrice'
 import referenceOutput from './components/referenceOutput'
 import logisticsRequirements from './components/logisticsRequirements'

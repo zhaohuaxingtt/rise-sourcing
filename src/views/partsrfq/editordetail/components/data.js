@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-02-25 10:10:32
- * @LastEditTime: 2021-05-25 11:30:43
+ * @LastEditTime: 2021-06-22 15:51:29
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsrfq\editordetail\components\data.js

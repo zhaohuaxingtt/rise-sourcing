@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-26 13:54:01
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-20 08:41:17
+ * @LastEditTime: 2021-06-22 14:36:18
  * @Description: 创建RFQ界面
        配件：选择的配件需要是分配了询价采购员的且是同一个询价采购员, 创建时能选择LINIE
        附件：选择的附件需要时分配了LINIE且为同一个LINIE, 创建时不能再选择LINIE
@@ -312,6 +312,7 @@ export default {
           window.open(router.href,'_blank')
         }
       } else {
+        this.saveLoading = false
         iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
       }
     },
