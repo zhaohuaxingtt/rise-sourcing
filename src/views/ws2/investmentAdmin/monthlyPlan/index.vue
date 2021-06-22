@@ -19,14 +19,19 @@
       <span class="refresh">刷新</span>
       <span class="refreshTime">刷新日期：2021.01.31</span>
       <div v-if="pageEdit">
-        <iButton @click="saveAsList">{{ $t("退出编辑") }}</iButton>
-        <iButton @click="saveAsList">{{ $t("上传清单") }}</iButton>
+        <iButton @click="exitEdit">{{ $t("退出编辑") }}</iButton>
+        <!-- <iButton @click="uploadList">{{ $t("上传清单") }}</iButton> -->
+        <upload-button 
+            @uploadedCallback="uploadAttachments" 
+            :upload-button-loading="uploadLoading"
+            :buttonText="$t('上传清单')" 
+            class="margin-left8" />
         <iButton @click="saveAsList">{{ $t("保存") }}</iButton>
-        <iButton @click="saveAsList">{{ $t("保存为新版本") }}</iButton>
+        <iButton @click="saveAsNew">{{ $t("保存为新版本") }}</iButton>
       </div>
       <div v-else>
-        <iButton @click="saveAsList">{{ $t("编辑") }}</iButton>
-        <iButton @click="saveAsList">{{ $t("下载清单") }}</iButton>
+        <iButton @click="edit">{{ $t("编辑") }}</iButton>
+        <iButton @click="downloadList">{{ $t("下载清单") }}</iButton>
       </div>
     </div>
     <iCard class="margin-top20 mainCard">
@@ -36,8 +41,12 @@
           <span class="totalText">Total:</span>
           <span class="refresh">720.0</span>
           <span class="unitText margin-left20"
-            >{{ $t("LK_DANWEI") }}: {{ $t("LK_BAIWANYUAN") }}</span
+            >{{ $t("LK_HUOBI") }}: {{ $t("LK_RENMINBI") }}</span
           >
+          <span class="marginUnit unitText">|</span>
+          <span class="unitText">{{ $t("LK_DANWEI") }}: {{ $t("LK_BAIWANYUAN") }}</span>
+          <span class="marginUnit unitText">|</span>
+          <span class="unitText">{{$t('LK_BUHANSUI')}}</span>
         </div>
         <div class="legend">
           <div>CSE</div>
@@ -46,9 +55,6 @@
           <div>CSP</div>
           <div>CSX</div>
           <div>BU-B</div>
-          <span class="unitText margin-right20">
-            {{ $t("LK_DANWEI") }}: {{ $t("LK_BAIWANYUAN") }}
-          </span>
         </div>
         <div class="tab-box">
           <icon
@@ -95,6 +101,7 @@
             v-model="scope.row.jan"
             :placeholder="$t('LK_QINGSHURU')"
             v-if="pageEdit"
+            @input="handleInputChange(scope.row)"
           ></iInput>
           <div v-if="!pageEdit">{{ scope.row.jan }}</div>
         </template>
@@ -103,6 +110,7 @@
             v-model="scope.row.feb"
             :placeholder="$t('LK_QINGSHURU')"
             v-if="pageEdit"
+            @input="handleInputChange(scope.row)"
           ></iInput>
           <div v-if="!pageEdit">{{ scope.row.feb }}</div>
         </template>
@@ -111,6 +119,7 @@
             v-model="scope.row.mar"
             :placeholder="$t('LK_QINGSHURU')"
             v-if="pageEdit"
+            @input="handleInputChange(scope.row)"
           ></iInput>
           <div v-if="!pageEdit">{{ scope.row.mar }}</div>
         </template>
@@ -119,6 +128,7 @@
             v-model="scope.row.apr"
             :placeholder="$t('LK_QINGSHURU')"
             v-if="pageEdit"
+            @input="handleInputChange(scope.row)"
           ></iInput>
           <div v-if="!pageEdit">{{ scope.row.apr }}</div>
         </template>
@@ -127,6 +137,7 @@
             v-model="scope.row.may"
             :placeholder="$t('LK_QINGSHURU')"
             v-if="pageEdit"
+            @input="handleInputChange(scope.row)"
           ></iInput>
           <div v-if="!pageEdit">{{ scope.row.may }}</div>
         </template>
@@ -135,6 +146,7 @@
             v-model="scope.row.june"
             :placeholder="$t('LK_QINGSHURU')"
             v-if="pageEdit"
+            @input="handleInputChange(scope.row)"
           ></iInput>
           <div v-if="!pageEdit">{{ scope.row.june }}</div>
         </template>
@@ -143,6 +155,7 @@
             v-model="scope.row.july"
             :placeholder="$t('LK_QINGSHURU')"
             v-if="pageEdit"
+            @input="handleInputChange(scope.row)"
           ></iInput>
           <div v-if="!pageEdit">{{ scope.row.july }}</div>
         </template>
@@ -151,6 +164,7 @@
             v-model="scope.row.aug"
             :placeholder="$t('LK_QINGSHURU')"
             v-if="pageEdit"
+            @input="handleInputChange(scope.row)"
           ></iInput>
           <div v-if="!pageEdit">{{ scope.row.aug }}</div>
         </template>
@@ -159,6 +173,7 @@
             v-model="scope.row.sep"
             :placeholder="$t('LK_QINGSHURU')"
             v-if="pageEdit"
+            @input="handleInputChange(scope.row)"
           ></iInput>
           <div v-if="!pageEdit">{{ scope.row.sep }}</div>
         </template>
@@ -167,6 +182,7 @@
             v-model="scope.row.oct"
             :placeholder="$t('LK_QINGSHURU')"
             v-if="pageEdit"
+            @input="handleInputChange(scope.row)"
           ></iInput>
           <div v-if="!pageEdit">{{ scope.row.oct }}</div>
         </template>
@@ -175,6 +191,7 @@
             v-model="scope.row.nov"
             :placeholder="$t('LK_QINGSHURU')"
             v-if="pageEdit"
+            @input="handleInputChange(scope.row)"
           ></iInput>
           <div v-if="!pageEdit">{{ scope.row.nov }}</div>
         </template>
@@ -183,11 +200,13 @@
             v-model="scope.row.dec"
             :placeholder="$t('LK_QINGSHURU')"
             v-if="pageEdit"
+            @input="handleInputChange(scope.row)"
           ></iInput>
           <div v-if="!pageEdit">{{ scope.row.dec }}</div>
         </template>
       </iTableList>
     </iCard>
+    <new-version-dialog v-model="saveNewVersion" @handleConfirm="handleConfirm"/>
   </div>
 </template>
 
@@ -198,6 +217,8 @@ import { tableTitle, dataList } from "./components/data";
 import { iTableList } from "@/components";
 import { cloneDeep } from 'lodash';
 import { tableHeight } from "@/utils/tableHeight";
+import NewVersionDialog from './components/newVersionDialog.vue';
+import uploadButton from './components/uploadButton';
 
 export default {
   mixins: [ tableHeight ],
@@ -208,6 +229,8 @@ export default {
     iInput,
     icon,
     iTableList,
+    NewVersionDialog,
+    uploadButton,
   },
   data() {
     return {
@@ -218,15 +241,42 @@ export default {
       pageEdit: false,
       tableListData: dataList,
       tableTitle: tableTitle,
+      saveNewVersion: false, //保存为新版本对话框
+      uploadLoading: false,
+      selectIndex: -1,//table选择index
     };
   },
   mounted() {
     this.showEcharts();
   },
   methods: {
-    changeVersion() {},
+    //选择版本
+    changeVersion() {
+
+    },
+    //编辑
+    edit() {
+      this.pageEdit = true;
+    },
+    //退出编辑
+    exitEdit() {
+      this.pageEdit = false;
+    },
+    //保存为新版本
+    saveAsNew() {
+      this.saveNewVersion = true;
+    },
+    // //上传清单
+    // uploadList() {
+
+    // },
+    //保存
     saveAsList() {
-      this.pageEdit = !this.pageEdit;
+
+    },
+    //下载清单
+    downloadList() {
+
     },
     tabClick(index) {
       if (this.tabIndex === index) {
@@ -245,12 +295,12 @@ export default {
           let data = [];
           temp.name = element.department;
           temp.type = "bar";
-          temp.barWidth = 60;
+          temp.barWidth = 50;
           temp.stack = "total";
           temp.color = colorList[index];
-          // temp.label = {
-          //   show: true
-          // }
+          temp.label = {
+            show: false,
+          }
           data.push(element.jan)
           data.push(element.feb)
           data.push(element.mar)
@@ -267,7 +317,14 @@ export default {
             focus: 'series'
           }
           temp.data = data;
-          series.push(temp);
+          if (index == 0) {
+            temp.itemStyle = {
+              normal: {
+                barBorderRadius :[5, 5, 0, 0]
+              }
+            }
+          }
+          series.unshift(temp);
         });
         let option = {
           tooltip: {
@@ -323,14 +380,41 @@ export default {
           series: series
         };
         chart.setOption(option);
+        chart.on('mouseover', function (params) {
+          let optionTemp = cloneDeep(option);
+          let colorTempList = ["#D8D9FD", "#DFE3FF", "#D8E5FF", "#DDEDFC", "#E8F6FF"];
+          this.selectIndex = params.componentIndex;
+          colorTempList.splice(params.componentIndex, 0, "#0053EF")
+          optionTemp.series.map((item, index) => {
+            item.color = colorTempList[ index % colorTempList.length];
+            if (params.componentIndex == index ) {
+              item.label = {
+                show: true,
+              }
+            }
+            return item;    
+          })
+           chart.setOption(optionTemp, true);
+        });
+        chart.on('mouseout', function() {
+          this.selectIndex = -1;
+          chart.setOption(option);
+        });
       });
     },
-    getDepartData(array, key) {
-      let temp = cloneDeep(array);
-      return temp.map(item => {
-        return item[key]
-      });
-    }
+    handleInputChange(row) {
+      row.amount = 0;
+      row.amount = Number(row.jan) + Number(row.feb) + Number(row.mar) + Number(row.apr) + Number(row.may) + Number(row.june) + 
+          Number(row.july) + Number(row.aug) + Number(row.sep) + Number(row.oct) + Number(row.nov) + Number(row.dec);
+      this.showEcharts();
+    },
+    //保存新版本
+    handleConfirm(val) {
+      this.saveNewVersion = false;
+    },
+    uploadAttachments(data) {
+
+    },
   },
 };
 </script>
@@ -363,6 +447,9 @@ export default {
   .refreshIcon {
     margin-left: 30px;
     margin-right: 10px;
+    width: 15px;
+    height: 15px;
+    cursor: pointer;
   }
 
   .refreshTime {
@@ -376,6 +463,7 @@ export default {
   font-size: 16px;
   color: $color-blue;
   font-weight: bold;
+  cursor: pointer;
 }
 
 #echart {
@@ -464,8 +552,9 @@ export default {
 }
 
 .icon {
-  height: 18px;
-  margin-right: 10px;
+  height: 24px;
+  width: 16px;
+  margin-right: 5px;
 }
 
 .planTitle {
@@ -482,6 +571,10 @@ export default {
 
 .unitText {
   font-size: 14px;
-  color: #aeb4bb;
+  color: #485465;
+}
+
+.marginUnit {
+  margin: 0 5px;
 }
 </style>

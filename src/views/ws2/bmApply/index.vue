@@ -45,10 +45,11 @@
 
     <!-- 所有BM申请单 -->
     <template v-if="tableIndex === 0">
-      <SearchBlock />
+      <AllBmListBlock />
+      <!-- <SearchBlock @sure="allSerch" />
       <iCard>
         <div class="table-head">
-          <iButton @click="modifyA">{{ $t('LK_XIAZAIQINGDAN') }}</iButton><!-- 下载清单 -->
+          <iButton @click="modifyA">{{ $t('LK_XIAZAIQINGDAN') }}</iButton>
         </div>
         <iTableList
           :tableData="allTableList"
@@ -58,7 +59,7 @@
         >
           
         </iTableList>
-      </iCard>
+      </iCard> -->
       
     </template>
 
@@ -315,13 +316,18 @@ import {
   iInput,
   iSelect,
 } from "rise";
-import SearchBlock from "./components/searchBlock";
-import { allTableHead, bmTableHead, aekoTableHead, aekoBmTableHead, bmPopupTableHead } from "./components/data";
+// import SearchBlock from "./components/searchBlock";
+import { allTableHead, bmTableHead, bmApplyForm,
+        aekoTableHead, aekoBmTableHead, bmPopupTableHead 
+} from "./components/data";
+import { bmTableCount, findAllBmList, findBmWaitConfirmList, findBmAekoAddList, findBmAekoMinusList } from "@/api/ws2/bmApply";
 import BmPopup from "./components/popup";
+import AllBmListBlock from "./components/allBmListBlock";
 export default {
   components: {
-    icon, SearchBlock, iTableList, iCard,
-    iButton, BmPopup, iInput, iSelect
+    icon, iTableList, iCard,
+    iButton, BmPopup, iInput, iSelect,
+    AllBmListBlock,
   },
   data(){
     return {
@@ -342,10 +348,55 @@ export default {
       bmVisible: false,
       factoryList: [],  //  工厂下拉列表
       departmentList: [], //  科室下拉列表
+      page: {
+        currPage: 1,
+        pageSize: 10,
+      },
     }
   },
 
   methods: {
+
+    getPageData(){
+      const { tableIndex } = this;
+      const questFunMap = {
+        0: findAllBmList, //  所有列表
+        1: findBmWaitConfirmList, //  待确认列表
+        2: findBmAekoAddList, //  Aeko增值BM单
+        4: findBmAekoMinusList, //  Aeko减值BM单
+      }
+      const paramMap = {
+        0: bmApplyForm,
+      }
+      const questFun = questFunMap[tableIndex];
+      const param = paramMap[tableIndex];
+
+      questFun(param).then(res => {
+        const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn;
+      })
+    },
+
+    //  查询所有
+    // allSerch(data){
+    //   this.allTableLoading = true;
+    //   const param = {
+    //     ...data,
+    //     current: this.page.currPage,
+    //     size: this.page.pageSize,
+    //   }
+    //   findAllBmList(param).then(res => {
+    //     const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn;
+    //     if(res.data){
+    //       this.allTableList = res.data
+    //     }else{
+    //       iMessage.error(result);
+    //     }
+
+    //     this.allTableLoading = false;
+    //   }).catch(err => {
+    //     this.allTableLoading = false;
+    //   })
+    // },
 
     //  打开BM单流水号
     openBMDetail(scope){
@@ -353,8 +404,12 @@ export default {
     },
 
     selectHeadTable(type){
+      if(this.tableIndex === type){
+        return
+      }
       this.selectTableList = [];
       this.tableIndex = type;
+      this.getPageData();
     },
 
     handleSelectionChange(val){

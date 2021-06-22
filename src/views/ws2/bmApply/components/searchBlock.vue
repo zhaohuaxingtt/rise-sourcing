@@ -18,8 +18,8 @@
             filterable
         >
           <el-option
-              :value="item.id"
-              :label="item.cartypeNname"
+              :value="item.tmCartypeProId"
+              :label="item.tmCartypeProName"
               v-for="(item, index) in fromGroup"
               :key="index"
           ></el-option>
@@ -30,12 +30,12 @@
       <el-form-item :label="$t('LK_BMDANZHUANGTAI')">
         <iSelect
             :placeholder="$t('LK_ALL')"
-            v-model="form['tmCartypeProId']"
+            v-model="form['bmStatus']"
             filterable
         >
           <el-option
-              :value="item.id"
-              :label="item.cartypeNname"
+              :value="item.bmStatus"
+              :label="item.bmStatusName"
               v-for="(item, index) in bmStatusList"
               :key="index"
           ></el-option>
@@ -46,12 +46,12 @@
       <el-form-item :label="$t('LK_AEKOLEIXING')">
         <iSelect
             :placeholder="$t('LK_ALL')"
-            v-model="form['tmCartypeProId']"
+            v-model="form['akeoType']"
             filterable
         >
           <el-option
-              :value="item.id"
-              :label="item.cartypeNname"
+              :value="item.akeoType"
+              :label="item.akeoTypeName"
               v-for="(item, index) in aekoTypeList"
               :key="index"
           ></el-option>
@@ -62,12 +62,12 @@
       <el-form-item :label="$t('LK_ZHUANYEKESHI')">
         <iSelect
             :placeholder="$t('LK_ALL')"
-            v-model="form['tmCartypeProId']"
+            v-model="form['deptId']"
             filterable
         >
           <el-option
-              :value="item.id"
-              :label="item.cartypeNname"
+              :value="item.deptId"
+              :label="item.deptName"
               v-for="(item, index) in departmentList"
               :key="index"
           ></el-option>
@@ -76,7 +76,7 @@
 
       <!-- 零件号 -->
       <el-form-item :label="$t('LK_SPAREPARTSNUMBER')">
-        <iInput :placeholder="$t('LK_QINGSHURU')" v-model="form['tmCartypeProId']" ></iInput>
+        <iInput :placeholder="$t('LK_QINGSHURU')" v-model="form['behalfPartsNum']" ></iInput>
       </el-form-item>
 
        <!-- 申请日期起止 -->
@@ -96,12 +96,12 @@
       <el-form-item label="Linie">
         <iSelect
             :placeholder="$t('LK_ALL')"
-            v-model="form['tmCartypeProId']"
+            v-model="form['linieId']"
             filterable
         >
           <el-option
-              :value="item.id"
-              :label="item.cartypeNname"
+              :value="item.linieId"
+              :label="item.linieName"
               v-for="(item, index) in linieList"
               :key="index"
           ></el-option>
@@ -113,6 +113,7 @@
 
 <script>
 import { bmApplyForm } from "./data";
+import { deptPullDown, bmCarTypePullDown, liniePullDown, bmAekoTypePullDown, bmStatusPullDown } from "@/api/ws2/bmApply";
 import {
   iSearch,
   iMessage,
@@ -120,6 +121,7 @@ import {
   iInput,
   iButton
 } from "rise";
+import Moment from 'moment';
 export default {
   components: {
     iSearch, iSelect, iInput
@@ -137,9 +139,68 @@ export default {
     }
   },
 
-  methods: {
-    sure(){
+  created(){
 
+    this.getSerchData();
+    
+  },
+
+  methods: {
+
+    getSerchData(){
+      this.loadingiSearch = true;
+
+      //  车型项目、专业科室、linle、Aeko类型、BM单状态
+      Promise.all([bmCarTypePullDown(), deptPullDown(), liniePullDown(), bmAekoTypePullDown(), bmStatusPullDown()]).then(res => {
+        const result0 = this.$i18n.locale === 'zh' ? res[0].desZh : res[0].desEn;
+        const result1 = this.$i18n.locale === 'zh' ? res[1].desZh : res[1].desEn;
+        const result2 = this.$i18n.locale === 'zh' ? res[2].desZh : res[2].desEn;
+        const result3 = this.$i18n.locale === 'zh' ? res[3].desZh : res[3].desEn;
+        const result4 = this.$i18n.locale === 'zh' ? res[4].desZh : res[4].desEn;
+
+        if(res[0].data){
+          this.fromGroup = res[0].data;
+        }else{
+          iMessage.error(result0);
+        }
+
+        if(res[1].data){
+          this.departmentList = res[1].data;
+        }else{
+          iMessage.error(result1);
+        }
+
+        if(res[2].data){
+          this.linieList = res[2].data;
+        }else{
+          iMessage.error(result2);
+        }
+
+        if(res[3].data){
+          this.aekoTypeList = res[3].data;
+        }else{
+          iMessage.error(result3);
+        }
+
+        if(res[4].data){
+          this.bmStatusList = res[4].data;
+        }else{
+          iMessage.error(result4);
+        }
+
+        this.loadingiSearch = false;
+      }).catch(err => {
+        this.loadingiSearch = false;
+      })
+    },
+
+    dateChange(date){
+      this.form['startDate'] = date ? Moment(date[0]).format('YYYY-MM-DD') : '';
+      this.form['endDate'] = date ? Moment(date[1]).format('YYYY-MM-DD') : '';
+    },
+
+    sure(){
+      this.$emit('sure', this.form);
     },
 
     reset(){
