@@ -122,6 +122,8 @@ import {
   iButton
 } from "rise";
 import Moment from 'moment';
+import _ from 'lodash';
+
 export default {
   components: {
     iSearch, iSelect, iInput
@@ -134,7 +136,7 @@ export default {
       aekoTypeList: [], //  aeko类型
       departmentList: [], //  专业科室
       linieList: [],  //  linie
-      form: bmApplyForm,
+      form: _.cloneDeep(bmApplyForm), 
       pickerDate: '',
     }
   },
@@ -204,7 +206,8 @@ export default {
     },
 
     reset(){
-
+      this.form = bmApplyForm;
+      this.$emit('sure', bmApplyForm);
     },
   }
 }

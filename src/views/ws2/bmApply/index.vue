@@ -13,7 +13,7 @@
       </div>
       <div class="page-head-flex" :class="tableIndex === 1 ? 'head-on' : ''" @click="selectHeadTable(1)">
         <div class="line-divL line-div">
-          <div class="title">1</div>
+          <div class="title">{{tableCount.watiConfirmCount}}</div>
           <div class="describe">{{$t('LK_DAIQUERENBMDAN')}}</div>
         </div>
         <div class="line-divR line-div">
@@ -23,7 +23,7 @@
       </div>
       <div class="page-head-flex" :class="tableIndex === 2 ? 'head-on' : ''" @click="selectHeadTable(2)">
         <div class="line-divL line-div">
-          <div class="title">2</div>
+          <div class="title">{{tableCount.aekoAddCount}}</div>
           <div class="describe">{{$t('LK_AEKOZENGZHIBMDAN')}}</div>
         </div>
         <div class="line-divR line-div">
@@ -33,7 +33,7 @@
       </div>
       <div class="page-head-flex" :class="tableIndex === 3 ? 'head-on' : ''" @click="selectHeadTable(3)">
         <div class="line-divL line-div">
-          <div class="title">44</div>
+          <div class="title">{{tableCount.aekoMinusCount}}</div>
           <div class="describe">{{$t('LK_AEKOJIANZHIBMDAN')}}</div>
         </div>
         <div class="line-divR line-div">
@@ -46,80 +46,21 @@
     <!-- 所有BM申请单 -->
     <template v-if="tableIndex === 0">
       <AllBmListBlock />
-      <!-- <SearchBlock @sure="allSerch" />
-      <iCard>
-        <div class="table-head">
-          <iButton @click="modifyA">{{ $t('LK_XIAZAIQINGDAN') }}</iButton>
-        </div>
-        <iTableList
-          :tableData="allTableList"
-          :tableTitle="allTableHead"
-          :tableLoading="allTableLoading"
-          @handleSelectionChange="handleSelectionChange"
-        >
-          
-        </iTableList>
-      </iCard> -->
-      
     </template>
 
     <!-- 待确认BM单 -->
     <template v-if="tableIndex === 1">
-      <iCard>
-        <div class="table-head">
-          <iButton @click="modifyA">{{ $t('LK_QUERENSHENQING') }}</iButton><!-- 确认申请 -->
-          <iButton @click="modifyA">{{ $t('LK_ZUOFEI') }}</iButton><!-- 作废 -->
-          <iButton @click="modifyA">{{ $t('LK_XIAZAIQINGDAN') }}</iButton><!-- 下载清单 -->
-        </div>
-        <iTableList
-          :tableData="bmTableList"
-          :tableTitle="bmTableHead"
-          :tableLoading="allTableLoading"
-          @handleSelectionChange="handleSelectionChange"
-        >
-          <template #data1="scope">
-            <div class="table-txtStyle" @click="openBMDetail(scope.row)">{{scope.row.data1}}</div>
-          </template>
-        </iTableList>
-      </iCard>
+      <ToBeConfirmed @openBMDetail="openBMDetail" />
     </template>
 
     <!-- Aeko增值金额 -->
     <template v-if="tableIndex === 2">
-      <iCard>
-        <div class="table-head">
-          <iButton @click="modifyA">{{ $t('LK_QUERENSHENQING') }}</iButton><!-- 确认申请 -->
-          <iButton @click="modifyA">{{ $t('LK_ZUOFEI') }}</iButton><!-- 作废 -->
-          <iButton @click="modifyA">{{ $t('LK_XIAZAIQINGDAN') }}</iButton><!-- 下载清单 -->
-        </div>
-        <iTableList
-          :tableData="aekoTableList"
-          :tableTitle="aekoTableHead"
-          :tableLoading="allTableLoading"
-          @handleSelectionChange="handleSelectionChange"
-        >
-          
-        </iTableList>
-      </iCard>
+      <IncrementBlock />
     </template>
 
     <!-- Aeko减值BM单 -->
     <template v-if="tableIndex === 3">
-      <iCard>
-        <div class="table-head">
-          <iButton @click="modifyA">{{ $t('LK_QUERENSHENQING') }}</iButton><!-- 确认申请 -->
-          <iButton @click="modifyA">{{ $t('LK_ZUOFEI') }}</iButton><!-- 作废 -->
-          <iButton @click="modifyA">{{ $t('LK_XIAZAIQINGDAN') }}</iButton><!-- 下载清单 -->
-        </div>
-        <iTableList
-          :tableData="aekoBmTableList"
-          :tableTitle="aekoBmTableHead"
-          :tableLoading="allTableLoading"
-          @handleSelectionChange="handleSelectionChange"
-        >
-          
-        </iTableList>
-      </iCard>
+      <ImpairmentBlock />
     </template>
 
     <!-- BM单流水号弹窗 -->
@@ -171,10 +112,10 @@
               <div class="disabled">CSA-0098100177</div>
             </div>
             <div class="item">
-              <div class="txt">
+              <div class="txt required">
                 <span>{{ $t('LK_CHENGBENKONGZHIYU') }}</span><!-- 成本控制域 -->
               </div>
-              <div class="disabled">CSA-0098100177</div>
+              <iInput class="input" :placeholder="$t('LK_QINGSHURU')"></iInput>
             </div>
             <div class="item">
               <div class="txt required">
@@ -187,9 +128,9 @@
           <div class="popup-formItem">
             <div class="item">
               <div class="txt">
-                <span>{{ $t('LK_TONGJIDINGDAN') }}</span><!-- 统计订单 -->
+                <span>{{ $t('LK_XUQIUGENZHONGHAO') }}</span><!-- 需求跟踪号 -->
               </div>
-              <iInput class="input" :placeholder="$t('LK_QINGSHURU')"></iInput>
+              <div class="disabled">CSA-0098100177</div>
             </div>
             <div class="item">
               <div class="txt">
@@ -206,7 +147,7 @@
             </div>
             <div class="item">
               <div class="txt">
-                <span>{{ $t('LK_WULIAOZHU') }}</span><!-- 物料组 -->
+                <span>{{ $t('costanalysismanage.GongYingShang') }}</span><!-- 供应商 -->
               </div>
               <div class="disabled">CSA-0098100177</div>
             </div>
@@ -214,7 +155,12 @@
               <div class="txt">
                 <span>{{ $t('LK_JIAOHUORIQI') }}</span><!-- 交货日期 -->
               </div>
-              <div class="disabled">CSA-0098100177</div>
+              <el-date-picker
+                v-model="value1"
+                type="date"
+                class="input"
+                placeholder="选择日期">
+              </el-date-picker>
             </div>
           </div>
 
@@ -246,7 +192,7 @@
             </div>
             <div class="item">
               <div class="txt">
-                <span>FS/GS</span><!-- FS/GS -->
+                <span>{{$t('LK_SHENQINGREN')}}</span><!-- 申请人 -->
               </div>
               <div class="disabled">CSA-0098100177</div>
             </div>
@@ -266,7 +212,7 @@
               <div class="disabled">CSA-0098100177</div>
             </div>
             <div class="item">
-              <div class="txt required">
+              <div class="txt">
                 <span>{{ $t('LK_SOPRIQI') }}</span><!-- SOP日期 -->
               </div>
               <div class="disabled">CSA-0098100177</div>
@@ -280,13 +226,63 @@
           </div>
 
           <div class="popup-formItem">
-            <div class="lastItem">
+            <div class="item">
               <div class="txt">
-                <span>{{ $t('LK_DUANWENBEN') }}</span><!-- 短文本 -->
+                <span>{{ $t('LK_JILIANGDANWEI') }}</span><!-- 计量单位 -->
+              </div>
+              <div class="disabled">CSA-0098100177</div>
+            </div>
+            <div class="item">
+              <div class="txt">
+                <span>{{ $t('LK_SHULIANG') }}</span><!-- 数量 -->
+              </div>
+              <div class="disabled">CSA-0098100177</div>
+            </div>
+            <div class="item">
+              <div class="txt">
+                <span>FS/GS</span><!-- FS/GS -->
+              </div>
+              <div class="disabled">CSA-0098100177</div>
+            </div>
+            <div class="item">
+              <div class="txt">
+                <span>{{ $t('LK_TONGJIDINGDAN') }}</span><!-- 统计订单 -->
               </div>
               <iInput class="input" :placeholder="$t('LK_QINGSHURU')"></iInput>
             </div>
           </div>
+
+          <div class="popup-formItem">
+            <div class="item">
+              <div class="txt">
+                <span>{{ $t('LK_WULIAOZHU') }}</span><!-- 物料组 -->
+              </div>
+              <div class="disabled">CSA-0098100177</div>
+            </div>
+            <div class="item">
+              <div class="txt">
+                <span>{{ $t('LK_HUOBI') }}</span><!-- 货币 -->
+              </div>
+              <div class="disabled">CSA-0098100177</div>
+            </div>
+            <div class="popup-item">
+              <div class="txt">
+                <span>{{ $t('LK_DUANWENBEN') }}</span>
+              </div>
+              <iInput class="input" :placeholder="$t('LK_QINGSHURU')"></iInput>
+            </div>
+          </div>
+
+          
+
+          <!-- <div class="popup-formItem">
+            <div class="lastItem">
+              <div class="txt">
+                <span>{{ $t('LK_DUANWENBEN') }}</span>
+              </div>
+              <iInput class="input" :placeholder="$t('LK_QINGSHURU')"></iInput>
+            </div>
+          </div> -->
         </div>
 
         <iTableList
@@ -317,99 +313,74 @@ import {
   iSelect,
 } from "rise";
 // import SearchBlock from "./components/searchBlock";
-import { allTableHead, bmTableHead, bmApplyForm,
-        aekoTableHead, aekoBmTableHead, bmPopupTableHead 
-} from "./components/data";
-import { bmTableCount, findAllBmList, findBmWaitConfirmList, findBmAekoAddList, findBmAekoMinusList } from "@/api/ws2/bmApply";
+import { bmPopupTableHead } from "./components/data";
+import { bmTableCount, getBmDetailById, getBmPartsList } from "@/api/ws2/bmApply";
 import BmPopup from "./components/popup";
 import AllBmListBlock from "./components/allBmListBlock";
+import ToBeConfirmed from "./components/toBeConfirmed";
+import IncrementBlock from "./components/incrementBlock";
+import ImpairmentBlock from "./components/impairmentBlock";
+
 export default {
   components: {
-    icon, iTableList, iCard,
+    icon, iTableList, ImpairmentBlock,
     iButton, BmPopup, iInput, iSelect,
-    AllBmListBlock,
+    AllBmListBlock, ToBeConfirmed, IncrementBlock
   },
   data(){
     return {
       tableIndex: 1,
-      allTableHead,
-      bmTableHead,
-      aekoTableHead,
-      aekoBmTableHead,
       bmPopupTableHead,
       allTableLoading: false,
-      allTableList: [], //  所有BM申请列表
-      bmTableList: [
-        {data1: '111111'}
-      ],  //  待确认BM列表
       aekoTableList: [],  //  aeko增值BM单
-      aekoBmTableList: [],  //  Aeko减值BM单
       selectTableList: [],
       bmVisible: false,
       factoryList: [],  //  工厂下拉列表
       departmentList: [], //  科室下拉列表
-      page: {
-        currPage: 1,
-        pageSize: 10,
-      },
+      tableCount: {
+        aekoAddCount: 0,
+        aekoMinusCount: 0,
+        watiConfirmCount: 0
+      }
     }
+  },
+
+  created(){
+    this.bmTableCount();  //  获取table数量
   },
 
   methods: {
 
-    getPageData(){
-      const { tableIndex } = this;
-      const questFunMap = {
-        0: findAllBmList, //  所有列表
-        1: findBmWaitConfirmList, //  待确认列表
-        2: findBmAekoAddList, //  Aeko增值BM单
-        4: findBmAekoMinusList, //  Aeko减值BM单
-      }
-      const paramMap = {
-        0: bmApplyForm,
-      }
-      const questFun = questFunMap[tableIndex];
-      const param = paramMap[tableIndex];
-
-      questFun(param).then(res => {
-        const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn;
+    //  打开详情
+    openBMDetail(scope){
+      console.log('openBMDetail', scope);
+      this.bmVisible = true;
+      Promise.all([getBmDetailById({id: scope.id}), getBmPartsList({id: scope.id})]).then(res => {
+        console.log('111111111', res);
       })
     },
 
-    //  查询所有
-    // allSerch(data){
-    //   this.allTableLoading = true;
-    //   const param = {
-    //     ...data,
-    //     current: this.page.currPage,
-    //     size: this.page.pageSize,
-    //   }
-    //   findAllBmList(param).then(res => {
-    //     const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn;
-    //     if(res.data){
-    //       this.allTableList = res.data
-    //     }else{
-    //       iMessage.error(result);
-    //     }
-
-    //     this.allTableLoading = false;
-    //   }).catch(err => {
-    //     this.allTableLoading = false;
-    //   })
-    // },
-
-    //  打开BM单流水号
-    openBMDetail(scope){
-      this.bmVisible = true;
+    bmTableCount(){
+      bmTableCount().then(res => {
+        const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn;
+        if(res.data){
+          this.tableCount = res.data;
+        }else{
+          iMessage.error(result);
+        }
+      })
     },
+
+    // //  打开BM单流水号
+    // openBMDetail(scope){
+    //   this.bmVisible = true;
+    // },
 
     selectHeadTable(type){
       if(this.tableIndex === type){
         return
       }
-      this.selectTableList = [];
       this.tableIndex = type;
-      this.getPageData();
     },
 
     handleSelectionChange(val){
@@ -427,6 +398,19 @@ export default {
   .popup-formItem{
     display: flex;
     margin-bottom: 20px;
+
+    .popup-item{
+      display: flex;
+      flex: 2;
+      padding-left: 80px;
+
+      .txt{
+        width: 116px;
+      }
+      .input{
+        flex: 1 !important;
+      }
+    }
     
     .lastItem{
       width: 50%;
@@ -446,7 +430,7 @@ export default {
 
     .item{
       display: flex;
-      flex: 1;
+      flex: 0 1 auto;
       margin-left: 80px;
       line-height: 35px;
 
@@ -459,9 +443,9 @@ export default {
       }
 
       .txt{
-        flex: 1;
         font-size: 16px;
         color: #4B4B4C;
+        width: 116px;
       }
 
       .disabled{
