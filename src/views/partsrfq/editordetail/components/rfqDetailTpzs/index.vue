@@ -30,8 +30,9 @@
     </el-tab-pane>
     <el-tab-pane label="专项分析工具">
       <specialAnalysisTool v-if="false"/>
-      <analysisTool v-if="false"/>
-      <pcaOverview v-if="true"/>
+      <analysisTool v-if="true"/>
+      <pcaOverview v-if="false"/>
+      <tiaOverview v-if="false"/>
     </el-tab-pane>
     <el-tab-pane label="谈判基本信息">
       <negotiateBasicInfor></negotiateBasicInfor>
@@ -48,10 +49,11 @@ import buMonitor from './components/qutaionScoringBusses'
 import { icardData } from './components/data'
 import analysisTool from '../../../vpAnalyse/vpAnalyseList'
 import pcaOverview from '../../../pcaAnalyse/pcaOverview';
+import tiaOverview from '../../../tiaAnalyse/tiaOverview';
 import specialAnalysisTool from "./components/specialAnalysisTool";
 import negotiateBasicInfor from "./components/negotiateBasicInfor";
 export default {
-  components: { iTabsList, iCard, quotationScoringTracking, quotationScoringMj, quotationScoringHZ, quotationScoringEcartsCard, buMonitor, specialAnalysisTool, negotiateBasicInfor,analysisTool,pcaOverview },
+  components: { iTabsList, iCard, quotationScoringTracking, quotationScoringMj, quotationScoringHZ, quotationScoringEcartsCard, buMonitor, specialAnalysisTool, negotiateBasicInfor,analysisTool,pcaOverview, tiaOverview },
   data() {
     return {
       cardShow: icardData
