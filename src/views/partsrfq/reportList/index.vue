@@ -17,7 +17,7 @@
 					<iSelect v-if="item.type=='select'">
 						<el-option :value="item.code" :label="item.name" v-for="item in fromGroup[item.select]" :key="item.code"></el-option>
 					</iSelect>
-					<iInput v-else ></iInput>
+					<iInput v-else :placeholder="$t(item.placeholder)"></iInput>
 				</el-form-item>
 			</el-form>
 		</iSearch>

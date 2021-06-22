@@ -1,10 +1,10 @@
 // 搜索
 export const search=[
-	{props: 'headcount', name: '报告名称', type: 'input',key:'TPZS.BGMC'},
+	{props: 'headcount', name: '报告名称', type: 'input',key:'TPZS.BGMC',placeholder:'TPZS.QSRBGMC'},
 	{props: 'managerNumber', name: '分析工具类型', type: 'select',select:'EMPLOYEE_GENDER',key:'TPZS.FXGJLX'},
-	{props: 'developerNumber', name: '材料组', type: 'input',key:'LK_CAILIAOZU'},
-	{props: 'productionNumber', name: '零件号', type: 'input',key:'LK_LINGJIANHAO'},
-	{props: 'isSetTradeUnion', name: 'RFQ号/名称', type: 'input', key:'TPZS.RFQHMC'},
+	{props: 'developerNumber', name: '材料组', type: 'input',key:'LK_CAILIAOZU',placeholder:'TPZS.QSRCLZ'},
+	{props: 'productionNumber', name: '零件号', type: 'input',key:'LK_LINGJIANHAO',placeholder:'TPZS.QSRLJH'},
+	{props: 'isSetTradeUnion', name: 'RFQ号/名称', type: 'input', key:'TPZS.RFQHMC',placeholder:'TPZS.QSRRFQMC'},
 ]
 
 // 专项分析工具

@@ -1,10 +1,7 @@
 <!--
- * @Author: your name
- * @Date: 2021-02-24 16:57:16
- * @LastEditTime: 2021-05-27 19:50:45
- * @LastEditors: Please set LastEditors
- * @Description: In User Settings Edit
- * @FilePath: \rise\src\views\partsign\editordetail\components\enquiry\components\tablelist.vue
+ * @Author: shujie
+ * @Date: 2021-06-24 16:57:16
+ * @Description: 舒杰RFQ table 封装
 -->
 <template>
 	<el-table class="table" :height="height" :data="tableData" :cell-class-name="cellClassName" v-loading="tableLoading"
