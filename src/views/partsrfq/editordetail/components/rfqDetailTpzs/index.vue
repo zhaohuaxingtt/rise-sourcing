@@ -1,7 +1,6 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-25 13:01:23
- * @LastEditTime: 2021-06-18 10:52:22
  * @LastEditors: Please set LastEditors
  * @Description: 报价助手界面
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\index.vue
@@ -15,66 +14,50 @@
           <quotationScoringTracking v-if='cardShow.find(items=>items.key == "1").show'></quotationScoringTracking>
         </iCard>
         <!--------------------报价分析汇总-零件----------------------------------------->
-        <iCard title="报价分析汇总-零件" @handleCollapse='handleCollapse($event,"2")' collapse class="margin-top20"
-               :defalutCollVal='cardShow.find(items=>items.key == "2").show'>
+        <iCard title="报价分析汇总-零件" @handleCollapse='handleCollapse($event,"2")' collapse class="margin-top20" :defalutCollVal='cardShow.find(items=>items.key == "2").show'>
           <quotationScoringHZ v-if='cardShow.find(items=>items.key == "2").show'></quotationScoringHZ>
         </iCard>
         <!--------------------报价分析汇总-模具----------------------------------------->
-        <quotationScoringMj v-if='cardShow.find(items=>items.key == "3").show' class="margin-top20"
-                            titleKey='LK_BJFXHZMJ'></quotationScoringMj>
-        <iCard title="报价分析汇总-模具" v-else class="margin-top20" @handleCollapse='handleCollapse($event,"3")' collapse
-               :defalutCollVal='false'></iCard>
+        <quotationScoringMj v-if='cardShow.find(items=>items.key == "3").show' class="margin-top20" titleKey='LK_BJFXHZMJ'></quotationScoringMj>
+        <iCard title="报价分析汇总-模具" v-else class="margin-top20" @handleCollapse='handleCollapse($event,"3")' collapse :defalutCollVal='false'></iCard>
         <!--------------------报价分析汇总-报价趋势----------------------------------------->
         <quotationScoringEcartsCard v-if='cardShow.find(items=>items.key == "4").show'></quotationScoringEcartsCard>
-        <iCard title="报价分析汇总-报价趋势" v-else class="margin-top20" @handleCollapse='handleCollapse($event,"4")' collapse
-               :defalutCollVal='false'></iCard>
+        <iCard title="报价分析汇总-报价趋势" v-else class="margin-top20" @handleCollapse='handleCollapse($event,"4")' collapse :defalutCollVal='false'></iCard>
         <!--------------------报价分析汇总-业务分配模拟----------------------------------------->
-        <buMonitor @handleCollapse='handleCollapse($event,"5")' :collapse='true'
-                   v-if='cardShow.find(items=>items.key == "5").show' class="margin-top20"></buMonitor>
-        <iCard title="报价分析汇总-业务分配模拟" v-else class="margin-top20" @handleCollapse='handleCollapse($event,"5")' collapse
-               :defalutCollVal='false'></iCard>
+        <buMonitor @handleCollapse='handleCollapse($event,"5")' :collapse='true' v-if='cardShow.find(items=>items.key == "5").show' class="margin-top20"></buMonitor>
+        <iCard title="报价分析汇总-业务分配模拟" v-else class="margin-top20" @handleCollapse='handleCollapse($event,"5")' collapse :defalutCollVal='false'></iCard>
       </template>
     </el-tab-pane>
     <el-tab-pane label="专项分析工具">
-      <div>
-        <analysisTool/>
-        <pcaOverview v-if="false"/>
-      </div>
+      <specialAnalysisTool v-if="false"/>
+      <analysisTool v-if="true"/>
+      <pcaOverview v-if="false"/>
+      <tiaOverview v-if="false"/>
     </el-tab-pane>
     <el-tab-pane label="谈判基本信息">
-      <iCard>
-        <div>开发中...</div>
-      </iCard>
+      <negotiateBasicInfor></negotiateBasicInfor>
     </el-tab-pane>
   </iTabsList>
 </template>
 <script>
-import {iTabsList, iCard} from 'rise';
-import quotationScoringTracking from './components/quotationScoringTracking';
-import quotationScoringMj from './components/quotationScoringMj';
-import quotationScoringHZ from './components/quotationScoringHz';
-import quotationScoringEcartsCard from './components/quotationScoringEcartsCard';
-import buMonitor from './components/qutaionScoringBusses';
-import analysisTool from '../../../vpAnalyse/vpAnalyseList';
+import { iTabsList, iCard } from 'rise'
+import quotationScoringTracking from './components/quotationScoringTracking'
+import quotationScoringMj from './components/quotationScoringMj'
+import quotationScoringHZ from './components/quotationScoringHz'
+import quotationScoringEcartsCard from './components/quotationScoringEcartsCard'
+import buMonitor from './components/qutaionScoringBusses'
+import { icardData } from './components/data'
+import analysisTool from '../../../vpAnalyse/vpAnalyseList'
 import pcaOverview from '../../../pcaAnalyse/pcaOverview';
-import {icardData} from './components/data';
-
+import tiaOverview from '../../../tiaAnalyse/tiaOverview';
+import specialAnalysisTool from "./components/specialAnalysisTool";
+import negotiateBasicInfor from "./components/negotiateBasicInfor";
 export default {
-  components: {
-    iTabsList,
-    iCard,
-    quotationScoringTracking,
-    quotationScoringMj,
-    quotationScoringHZ,
-    quotationScoringEcartsCard,
-    analysisTool,
-    pcaOverview,
-    buMonitor,
-  },
+  components: { iTabsList, iCard, quotationScoringTracking, quotationScoringMj, quotationScoringHZ, quotationScoringEcartsCard, buMonitor, specialAnalysisTool, negotiateBasicInfor,analysisTool,pcaOverview, tiaOverview },
   data() {
     return {
-      cardShow: icardData,
-    };
+      cardShow: icardData
+    }
   },
   methods: {
     /**
@@ -84,15 +67,32 @@ export default {
      * @return {*}
      */
     handleCollapse(e, key) {
-      console.log(e, key);
+      console.log(e, key)
       this.cardShow.forEach(i => {
         if (i.key == key) {
-          i.show = e;
+          i.show = e
         }
-      });
+      })
     },
-  },
-};
+    //点击返回
+    clickReturn() {
+
+    },
+    //点击报告清单
+    clickReport() {
+
+    }
+  }
+}
 </script>
 <style lang='scss' scoped>
+.mainContent {
+  position: relative;
+  justify-content: space-between;
+  .buttonBox {
+    position: absolute;
+    top: 10px;
+    right: 2px;
+  }
+}
 </style>
