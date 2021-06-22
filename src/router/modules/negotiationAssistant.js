@@ -1,4 +1,12 @@
 /*
+ * @Author: your name
+ * @Date: 2021-06-18 11:39:52
+ * @LastEditTime: 2021-06-18 15:02:07
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: \front-web\src\router\modules\negotiationAssistant.js
+ */
+/*
  * @Author: yourName
  * @Description: 谈判助手
  *
@@ -22,6 +30,15 @@ export default [{
 			},
 			component: () =>
 				import("@/views/partsrfq/reportList"),
+		},
+		{
+			path: "partsrfq/bobAnalysis",
+			name: "bobAnalysis",
+			meta: {
+				title: "Bob分析",
+			},
+			component: () =>
+				import("@/views/partsrfq/bobAnalysis"),
 		},
 	]
 }]

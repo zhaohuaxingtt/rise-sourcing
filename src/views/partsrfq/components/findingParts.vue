@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-17 11:40:10
- * @LastEditTime: 2021-06-18 10:25:11
+ * @LastEditTime: 2021-06-18 14:35:49
  * @LastEditors: Please set LastEditors
  * @Description: 查找零件弹窗
  * @FilePath: \front-web\src\views\partsrfq\components\findingPart.vue
@@ -25,30 +25,39 @@
             <iSelect></iSelect>
           </el-form-item>
           <el-form-item :label="$t('LK_RFQHAO')">
-            <iInput placeholder="请输入" v-model="form.rfq"></iInput>
+            <iInput
+              placeholder="请输入"
+              v-model="form.aaa"
+            ></iInput>
           </el-form-item>
           <el-form-item :label="$t('LK_FSHAO')">
-            <iInput placeholder="请输入" v-model="form.fs"></iInput>
+            <iInput
+              placeholder="请输入"
+              v-model="form.bbb"
+            ></iInput>
           </el-form-item>
           <el-form-item :label="$t('partsprocure.PARTSPROCUREPARTNUMBER')">
-            <iInput placeholder="请输入" v-model="form.qq"></iInput>
+            <iInput
+              placeholder="请输入"
+              v-model="form.ccc"
+            ></iInput>
           </el-form-item>
         </el-form>
       </iSearch>
     </div>
     <div class="searchContent">
-        <div class="title">
-            <span>搜索结果</span>
-            <iButton>{{$t('LK_TIANJIA')}}</iButton>
-        </div>
-         <iTableList
-          :tableData="confirmTableData"
-          :tableTitle="confirmTableHead"
-          class="table-footerStyle"
-        >
-        </iTableList>
+      <div class="title">
+        <span>搜索结果</span>
+        <iButton>{{$t('LK_TIANJIA')}}</iButton>
+      </div>
+      <iTableList
+        :tableData="confirmTableData"
+        :tableTitle="confirmTableHead"
+        class="table-footerStyle"
+      >
+      </iTableList>
     </div>
-    
+
     <span
       slot="footer"
       class="dialog-footer"
@@ -59,7 +68,14 @@
   </iDialog>
 </template>
 <script>
-import { iButton, iDialog,iSearch,iSelect,iInput,iTableList } from "@/components";
+import {
+  iButton,
+  iDialog,
+  iSearch,
+  iSelect,
+  iInput,
+  iTableList,
+} from "@/components";
 import { confirmTableHead } from "./data";
 
 export default {
@@ -69,7 +85,7 @@ export default {
     iSearch,
     iSelect,
     iInput,
-    iTableList
+    iTableList,
   },
 
   props: {
@@ -82,21 +98,24 @@ export default {
         return [];
       },
     },
-    form:{
-        rfq:"",
-        fs:"", 
-        qq:""
-    }
   },
   data() {
     return {
-        confirmTableData:[{
-            'id':1,
-            "rfqName":"aaa"
-        },{
-            "id":2
-        }],
-        confirmTableHead
+      confirmTableData: [
+        {
+          id: 1,
+          rfqName: "aaa",
+        },
+        {
+          id: 2,
+        },
+      ],
+      confirmTableHead,
+      form: {
+        aaa: "",
+        bbb: "",
+        ccc: "",
+      },
     };
   },
   methods: {
@@ -106,12 +125,8 @@ export default {
     submit() {
       this.$emit("submit");
     },
-    sure(val){
-
-    },
-    reset(val){
-
-    }
+    sure(val) {},
+    reset(val) {},
   },
 };
 </script>
@@ -119,13 +134,13 @@ export default {
 .search {
   padding: 0 10px 20px 10px;
 }
-.searchContent{
+.searchContent {
   padding: 0 10px 20px 10px;
-    .title{
-        display: flex;
-        justify-content: space-between;
-        margin-bottom: 25px;
-    }
+  .title {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 25px;
+  }
 }
 </style>
 

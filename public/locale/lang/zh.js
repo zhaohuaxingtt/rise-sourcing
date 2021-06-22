@@ -373,6 +373,7 @@
         'LK_CANKAOCHEXING': '参考车型', //参考车型
         'LK_CANKAOLINGJIANHAO': '参考零件号', //参考零件号
         'LK_CANKAOLINGJIANMING': '参考零件名 ', //参考零件名
+        'LK_CHAZHAOLINGJIAN': '查找零件 ', //查找零件
         'LK_CAOZUO': '操作', //操作
         'LK_CAOZUOREN': '操作人', //操作人
         'LK_UpdateDate': '操作时间', //操作时间
@@ -437,6 +438,7 @@
         'LK_FANXIANGQIANQIJUZUJINRMBDAY': '翻箱前器具租金（RMB/DAY）', //翻箱前器具租金（RMB/DAY）
         'LK_FANHUI': '返回', //返回
         'LK_FUZEREN': '负责人', //负责人
+        'LK_FENXIKU': '分析库', //分析库
         'LK_FUZERENDIANHUA': '负责人电话', //负责人电话
         'LK_FUZERENYOUXIANG': '负责人邮箱', //负责人邮箱
         'LK_FUJIANLIEBIAO': '附件列表', //附件列表
