@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-05-27 12:33:07
- * @LastEditTime: 2021-06-10 21:54:38
+ * @LastEditTime: 2021-06-22 11:08:57
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\costanalysismanage\components\datamaintenance\index.vue
@@ -58,7 +58,7 @@
 
 <script>
 import { icon, iCard, iButton, iPagination, iMessage } from "rise"
-import logButton from "@/views/partsign/editordetail/components/logButton"
+import logButton from "@/components/logButton"
 import tableList from "@/views/partsign/editordetail/components/tableList"
 import uploadButton from "../uploadButton"
 import { tableTitle } from "./components/data"

@@ -63,7 +63,7 @@ import changeItems from "../home/components/changeItems";
 import { partDetailTitle, partTitle } from "./components/data";
 // import { getPartInfo } from "@/api/partsign/editordetail";
 import {patchRecords} from "@/api/partsign/home";
-import logButton from '@/views/partsign/editordetail/components/logButton'
+import logButton from '@/components/logButton'
 import local from "@/utils/localstorage";
 export default {
   components: {

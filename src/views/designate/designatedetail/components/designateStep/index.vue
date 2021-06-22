@@ -46,7 +46,7 @@ import {
   icon,
   iSelect,
 } from "@/components";
-import logButton from '@/views/partsign/editordetail/components/logButton'
+import logButton from '@/components/logButton'
 import { applyType,applyStep } from './data'
 export default {
     name:'designateStep',

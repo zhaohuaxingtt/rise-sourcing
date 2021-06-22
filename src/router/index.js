@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-06-18 19:07:21
+ * @LastEditTime: 2021-06-22 15:45:09
  * @LastEditors: Please set LastEditors
  * @Description: 系统静态路由.
  * @FilePath: \front-web\src\router\index.js
@@ -14,6 +14,7 @@
 import designateRoutes from './modules/designate'
 import createpartsRoutes from './modules/createparts'
 import costanalysismanageRoutes from './modules/costanalysismanage'
+import supplierscoreRoutes from './modules/supplierscore'
 
 Vue.use(VueRouter);
 export const staticRouter = [{
@@ -290,7 +291,7 @@ export const staticRouter = [{
                 name: "partsletter",
                 component: () => 
                     import ("@/views/letterAndLoi")
-            },
+            }
         ],
     },
     {
@@ -328,6 +329,7 @@ export default new VueRouter({
         ...staticRouter,
         ...designateRoutes,
         ...createpartsRoutes,
-        ...costanalysismanageRoutes
+        ...costanalysismanageRoutes,
+        ...supplierscoreRoutes
     ]
 });

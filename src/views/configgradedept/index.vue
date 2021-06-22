@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-17 13:44:35
- * @LastEditTime: 2021-06-18 18:52:20
+ * @LastEditTime: 2021-06-22 15:01:36
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\configgradedept\index.vue
@@ -131,9 +131,10 @@
 
 <script>
 import { iPage, icon, iSearch, iSelect, iCard, iButton, iInput, iMessage } from "rise"
-import logButton from "@/views/partsign/editordetail/components/logButton"
+import logButton from "@/components/logButton"
 import tableList from "@/views/partsign/editordetail/components/tableList"
 import deptDialog from "./components/deptDialog"
+import filters from "@/utils/filters"
 import { queryForm, tableTitle } from "./components/data"
 import { cloneDeep, isEqual } from "lodash"
 
@@ -150,6 +151,7 @@ export default {
     tableList,
     deptDialog
   },
+  mixins: [ filters ],
   data() {
     return {
       options: [],
@@ -166,7 +168,7 @@ export default {
         { key: 1, value: 1, label: "是" },
         { key: 0, value: 0, label: "否" }
       ],
-      deptDialogVisible: true
+      deptDialogVisible: false
     }
   },
   created() {

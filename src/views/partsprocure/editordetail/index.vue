@@ -292,7 +292,7 @@
 	import sheet from "./components/drawingSheet/sheet";
 	import remarks from "./components/remarks";
 	import backItems from "@/views/partsign/home/components/backItems";
-	import logButton from "@/views/partsign/editordetail/components/logButton";
+	import logButton from "@/components/logButton";
 	import {
 		getTabelData,
 		changeProcure,

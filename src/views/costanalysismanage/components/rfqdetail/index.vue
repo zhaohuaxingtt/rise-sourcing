@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-05-27 17:27:15
- * @LastEditTime: 2021-06-09 14:35:49
+ * @LastEditTime: 2021-06-22 11:09:08
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\costanalysismanage\components\rfqdetail\index.vue
@@ -26,7 +26,7 @@
 
 <script>
 import { iPage, iButton } from "rise"
-import logButton from "@/views/partsign/editordetail/components/logButton"
+import logButton from "@/components/logButton"
 import infos from "./components/infos"
 import partList from "./components/partList"
 import reportList from "./components/reportList"
