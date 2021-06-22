@@ -59,6 +59,15 @@ export default [{
       component: () =>
         import("@/views/partsrfq/bob/newReport"),
     },
+    {
+      path: "partsrfq/specialAnalysisTool",
+      name: "specialAnalysisTool",
+      meta: {
+        title: "specialAnalysisTool",
+      },
+      component: () =>
+        import("@/views/partsrfq/negotiationsAssistant/index.vue"),
+    },
   ]
 }]
 

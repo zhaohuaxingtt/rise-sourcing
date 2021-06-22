@@ -6,20 +6,19 @@
  * @Descripttion: your project
 -->
 <template>
-  <iCard>
-    <div slot="header" class="title">
-      <div></div>
+  <iCard :title="title">
+    <div slot="header-control">
       <icon name="iconzhuanxiangfenxigongju-landian" symbol></icon>
     </div>
     <icon class="icon-t" name="iconchubupingji" symbol></icon>
     <div class="buttom">
       <div>
-        <div>{{$t('TPZS.FX')}}</div>
-        <div>{{$t('TPZS.BG')}}</div>
+        <div>{{$t('TPZS.FX')+labelData.analysisTotal}}</div>
+        <div>{{$t('TPZS.BG')+labelData.reportTotal}}</div>
       </div>
       <div>
-        <div>{{$t('TPZS.SCGXSJ')}}</div>
-        <div>{{$t('TPZS.SCDCSJ')}}</div>
+        <div>{{$t('TPZS.SCGXSJ')+labelData.analysisLastUpdateDate}}</div>
+        <div>{{$t('TPZS.SCDCSJ')+labelData.reportLastUpdateDate}}</div>
       </div>
     </div>
   </iCard>
@@ -31,21 +30,30 @@ export default {
   components: { iCard, icon, iLabel },
   props: {
     title: { type: String, default: '' },
-    xxx: { type: String, default: '' }
-  },
-  data() {
-    return {
-    }
+    totalBobOverview: {
+      type: Object, default: () => {
+        return {}
+      }
+    },
   },
   watch: {
     title: {
       handler(data) {
-        console.log(data);
+        this.title = data
       },
       deep: true,
       immediate: true,
     },
+    totalBobOverview(data) {
+      this.labelData = data
+    }
 
+  },
+  data() {
+    return {
+      labelData: {},
+      title: ''
+    }
   },
   created() {
     console.log(this.title);
@@ -54,16 +62,11 @@ export default {
 </script>
 
 <style>
-.title {
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-}
 .icon-t {
   font-size: 25rem;
 }
-.buttom{
-  display:flex;
+.buttom {
+  display: flex;
   justify-content: space-between;
 }
 </style>

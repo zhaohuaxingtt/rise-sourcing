@@ -195,7 +195,7 @@
 			'LingJianXiangMuLeiXing': '零件项目类型', // 零件项目类型
 			'CheXingDaLei': '车型大类', // 车型大类
 			'RfqLunCi': 'RFQ轮次', // RFQ轮次
-			'GongYingShang': '供应商', // 供应商
+			'GongYingShang': '', // 
 			'PcaFenXiJieGuo': 'PCA分析结果', // PCA分析结果
 			'TiaFenXiJieGuo': 'TIA分析结果', // TIA分析结果
 			'SavePcaResAndTiaResTips': '请填写完整PCA分析结果和TIA分析结果', // 请填写完整PCA分析结果和TIA分析结果
@@ -988,7 +988,7 @@
 			'DingDianRiQi': '定点日期', // 定点日期
 			'DINGDIANSHENQINGLEIXING': '定点申请类型', // 定点申请类型
 			'RFQANDLINGJIANQINGDAN': 'RFQ & 零件清单', // RFQ & 零件清单
-			'GONGYINGSHANGANDDANYIGONGYINGSHANG': '供应商 & 单⼀供应商', // 供应商 & 单⼀供应商
+			'GONGYINGSHANGANDDANYIGONGYINGSHANG': ' & 单⼀供应商', //  & 单⼀供应商
 			'DINGDIANJIANYI': '定点建议', // 定点建议
 			'SHENPIRENANDSHENPIJILU': '审批⼈ & 审批记录', // 审批⼈ & 审批记录
 			'JUECEZILIAO': '决策资料', // 决策资料
@@ -1095,7 +1095,7 @@
 		'TPZS': {
 			'FENXI': '分析', //分析
 			'YULAN': '预览', //预览
-			'GONGYINGSHANG': '供应商', //供应商
+			'GONGYINGSHANG': '', //
 			'CHEXINGXIANGMU': '车型项目', //车型项目
 			'CHEXING': '车型', //车型
 			'GONGCHANG': '工厂', //工厂
@@ -1181,6 +1181,20 @@
 			'DWL':"单位：辆",//单位：辆
 			'ZF':"涨幅",//涨幅
 			'SMZQ':"生命周期",//生命周期
+			'PLGLZS':"品类管理助手",//品类管理助手
+			'JRZXFXGJ':"进入专项分析工具",//进入专项分析工具
+			'CLZRFQLJH':"材料组，RFQ，零件号…",//材料组，RFQ，零件号…
+			'JHCL':"计划产量",//计划产量
+			'SJCL':"实际产量",//实际产量
+			'LJLB':"零件列表",//零件列表
+			'QLLJ':"全量零件",//全量零件
+			'YXLJ':"已选零件",//已选零件
+			'CZLJ':"查找零件",//查找零件
+			'GYS':"供应商",//供应商
+			'DQJHCL':"当前计划产量",//当前计划产量
+			'DQSJCL':"当前实际产量",//当前实际产量
+			'SOPSH':"SOP时间",//SOP时间
+			'JRFX':"进入分析",//进入分析
 		},
 	});
 }));

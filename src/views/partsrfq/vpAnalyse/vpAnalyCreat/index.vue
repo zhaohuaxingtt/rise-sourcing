@@ -10,14 +10,16 @@
     <div class="header">{{$t('TPZS.VPFX')}}
       <div>
         <iButton>{{$t('TPZS.VPFXK')}}</iButton>
-        <icon class="icon-x" name='icondatabasexuanzhongzhuangtai' symbol></icon>
+        <icon class="icon-x" name='icondatabaseweixuanzhong' symbol></icon>
       </div>
     </div>
-    <el-row class="margin-top25">
+    <el-row class="flex-between-center-center margin-top25">
       <el-col class="margin-right20" :span="12">
         <carVolumeAnalysis />
       </el-col>
-      <el-col :span="12"></el-col>
+      <el-col :span="12">
+        <partsTable />
+      </el-col>
     </el-row>
   </iPage>
 </template> 
@@ -27,9 +29,10 @@
 // 例如：import 《组件名称》 from '《组件路径》';
 import { iCard, iPage, iButton, icon } from "rise";
 import carVolumeAnalysis from "./components/carVolumeAnalysis.vue";
+import partsTable from "./components/partsTable.vue";
 export default {
   // import引入的组件需要注入到对象中才能使用
-  components: { iCard, iPage, iButton, icon, carVolumeAnalysis },
+  components: { iCard, iPage, iButton, icon, carVolumeAnalysis, partsTable },
   data() {
     // 这里存放数据
     return {

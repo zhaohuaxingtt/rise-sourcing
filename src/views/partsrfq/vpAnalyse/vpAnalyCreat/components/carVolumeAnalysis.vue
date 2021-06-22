@@ -6,16 +6,16 @@
  * @Descripttion: your project
 -->
 <template>
-  <iCard :title="$t('TPZS.CXJHCLYXSLJCLFX')">
+  <iCard style="height:870px" :title="$t('TPZS.CXJHCLYXSLJCLFX')">
     <template slot="header-control">
       <div class="header">
-        <div class="flex">
+        <div class="flex-between-center-center margin-right40">
           <div class="circle"></div>
-          <span>dsada</span>
+          <div class="legend margin-left3">{{$t('TPZS.JHCL')}}</div>
         </div>
-        <div>
+        <div class="flex-between-center-center">
           <icon style="font-size:10px" name='iconshenpiliu-yishenpi-mourenshenpi' symbol></icon>
-          <span>{{}}</span>
+          <div class="legend margin-left3">{{$t('TPZS.SJCL')}}</div>
         </div>
       </div>
     </template>
@@ -81,7 +81,6 @@ export default {
       ],
       tableTitle: tableTitle,
       tableLoading: false,
-      tableTitle,
     }
   },
   // 监听属性 类似于data概念
@@ -90,10 +89,6 @@ export default {
   watch: {},
   // 方法集合
   methods: {
-    handlePer(val) {
-      console.log(val);
-      return 123
-    }
   },
   // 生命周期 - 创建完成（可以访问当前this实例）
   created() {
@@ -101,7 +96,6 @@ export default {
   },
   // 生命周期 - 挂载完成（可以访问DOM元素）
   mounted() {
-    this.hadnleBar()
   },
 }
 </script>
@@ -119,6 +113,10 @@ export default {
     align-items: baseline;
     margin-right: 40px;
   }
+}
+.legend {
+  font-size: 12px !important;
+  font-weight: bold;
 }
 .table-title {
   display: flex;
