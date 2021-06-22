@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 10:50:38
- * @LastEditTime: 2021-06-22 17:20:48
+ * @LastEditTime: 2021-06-22 21:03:42
  * @LastEditors: Please set LastEditors
  * @Description: 费用详情
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails.vue
@@ -32,13 +32,13 @@
 
 <script>
 import { iCard, iButton } from "rise";
-import table1 from "./table1.vue";
-import table2 from "./table2.vue";
-import table3 from "./table3.vue";
-import table4 from "./table4.vue";
-import table5 from "./table5.vue";
-import table6 from "./table6.vue";
-import { dataList1,dataList2,dataList3,dataList4,dataList5,dataList6 } from "./data.js";
+import table1 from "./components/table1.vue";
+import table2 from "./components/table2.vue";
+import table3 from "./components/table3.vue";
+import table4 from "./components/table4.vue";
+import table5 from "./components/table5.vue";
+import table6 from "./components/table6.vue";
+import { dataList1,dataList2,dataList3,dataList4,dataList5,dataList6 } from "./components/data.js";
 
 export default {
   components: {
