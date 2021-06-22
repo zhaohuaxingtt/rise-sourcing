@@ -23,6 +23,12 @@ export default [{
 			component: () =>
 				import("@/views/partsrfq/reportList"),
 		},
+		{
+			path: "partsrfq/vpAnalyCreat",
+			name: "vpAnalyCreat",
+			component: () =>
+				import("@/views/partsrfq/vpAnalyse/vpAnalyCreat/index.vue"),
+		},
 	]
 }]
 
