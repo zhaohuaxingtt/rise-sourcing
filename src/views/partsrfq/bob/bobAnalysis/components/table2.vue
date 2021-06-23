@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 15:31:51
- * @LastEditTime: 2021-06-22 16:08:37
+ * @LastEditTime: 2021-06-23 10:31:48
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails\table2.vue
@@ -11,7 +11,7 @@
     <el-table
       :data="dataList"
       :tree-props="{ hasChildren: 'hasChildren', children: 'children' }"
-       :row-key="getRowKey"
+      :row-key="getRowKey"
       :expand-row-keys="expends"
       v-loading="loading"
       :max-height="maxHeight"
@@ -39,22 +39,19 @@
 <script>
 export default {
   props: {
-    expends:{
-      type:Array,
+    expends: {
+      type: Array,
       default: function () {
-        return []
-      }
+        return [];
+      },
     },
-    getRowKey:{
-      type   : Function,
-      default: params => {}
+
+    dataList: {
+      type: Array,
+      default: function () {
+        return [];
+      },
     },
-    dataList:{
-      type:Array,
-       default: function () {
-        return []
-      }
-    }
   },
   data() {
     return {
@@ -90,161 +87,12 @@ export default {
           prop: "SupplierF",
         },
       ],
-      // dataList: [
-      //   {
-      //     id: "1",
-      //     title: "制造费",
-      //     SupplierA: "25.00",
-      //     SupplierB: "25.00",
-      //     SupplierC: "30.48",
-      //     SupplierD: "20.04",
-      //     SupplierE: "25.40",
-      //     SupplierF: "29.90",
-      //     children: [
-      //       {
-      //         id: "11",
-      //         title: "工序1",
-      //         SupplierA: "1.67",
-      //         SupplierB: "1.67",
-      //         SupplierC: "2.12",
-      //         SupplierD: "1.67",
-      //         SupplierE: "1.38",
-      //         SupplierF: "1.98",
-      //         children: [
-      //           {
-      //             id: "111",
-      //             title: "生产节拍",
-      //             SupplierA: "1.67",
-      //             SupplierB: "1.67",
-      //             SupplierC: "2.12",
-      //             SupplierD: "1.67",
-      //             SupplierE: "1.38",
-      //             SupplierF: "1.98",
-      //           },
-      //           {
-      //             id: "112",
-      //             title: "件数/生产节拍",
-      //             SupplierA: "1.67",
-      //             SupplierB: "1.67",
-      //             SupplierC: "2.12",
-      //             SupplierD: "1.67",
-      //             SupplierE: "1.38",
-      //             SupplierF: "1.98",
-      //           },
-      //           {   
-      //             id: "113",
-      //             title: "人工成本",
-      //             SupplierA: "1.67",
-      //             SupplierB: "1.67",
-      //             SupplierC: "2.12",
-      //             SupplierD: "1.67",
-      //             SupplierE: "1.38",
-      //             SupplierF: "1.98",
-      //             children: [
-      //               {
-      //                 id: "1131",
-      //                 title: "直接人工费率",
-      //                 SupplierA: "1.67",
-      //                 SupplierB: "1.67",
-      //                 SupplierC: "2.12",
-      //                 SupplierD: "1.67",
-      //                 SupplierE: "1.38",
-      //                 SupplierF: "1.98",
-      //               },
-      //               {
-      //                 id: "1132",
-      //                 title: "直接人工数量",
-      //                 SupplierA: "1.67",
-      //                 SupplierB: "1.67",
-      //                 SupplierC: "2.12",
-      //                 SupplierD: "1.67",
-      //                 SupplierE: "1.38",
-      //                 SupplierF: "1.98",
-      //               },
-      //             ],
-      //           },
-      //           {
-      //             id: "114",
-      //             title: "设备成本",
-      //             SupplierA: "1.67",
-      //             SupplierB: "1.67",
-      //             SupplierC: "2.12",
-      //             SupplierD: "1.67",
-      //             SupplierE: "1.38",
-      //             SupplierF: "1.98",
-      //             children: [
-      //               {
-      //                 id: "1141",
-      //                 title: "设备费率",
-      //                 SupplierA: "1.67",
-      //                 SupplierB: "1.67",
-      //                 SupplierC: "2.12",
-      //                 SupplierD: "1.67",
-      //                 SupplierE: "1.38",
-      //                 SupplierF: "1.98",
-      //               },
-      //               {
-      //                 id: "1142",
-      //                 title: "设备名称/型号",
-      //                 SupplierA: "1.67",
-      //                 SupplierB: "1.67",
-      //                 SupplierC: "2.12",
-      //                 SupplierD: "1.67",
-      //                 SupplierE: "1.38",
-      //                 SupplierF: "1.98",
-      //               },
-      //             ],
-      //           },
-      //           {
-      //             id: "115",
-      //             title: "间接制造成本",
-      //             SupplierA: "1.67",
-      //             SupplierB: "1.67",
-      //             SupplierC: "2.12",
-      //             SupplierD: "1.67",
-      //             SupplierE: "1.38",
-      //             SupplierF: "1.98",
-      //             children: [
-      //               {
-      //                 id: "1151",
-      //                 title: "间接制造成本%",
-      //                 SupplierA: "1.67",
-      //                 SupplierB: "1.67",
-      //                 SupplierC: "2.12",
-      //                 SupplierD: "1.67",
-      //                 SupplierE: "1.38",
-      //                 SupplierF: "1.98",
-      //               },
-      //               {
-      //                 id: "1152",
-      //                 title: "间接制造成本",
-      //                 SupplierA: "1.67",
-      //                 SupplierB: "1.67",
-      //                 SupplierC: "2.12",
-      //                 SupplierD: "1.67",
-      //                 SupplierE: "1.38",
-      //                 SupplierF: "1.98",
-      //               },
-      //               {
-      //                 id: "1153",
-      //                 title: "生产切换成本",
-      //                 SupplierA: "1.67",
-      //                 SupplierB: "1.67",
-      //                 SupplierC: "2.12",
-      //                 SupplierD: "1.67",
-      //                 SupplierE: "1.38",
-      //                 SupplierF: "1.98",
-      //               },
-      //             ],
-      //           },
-      //         ],
-      //       },
-      //     ],
-      //   },
-      // ],
     };
   },
   methods: {
+    getRowKey(row) {
+      return row.id;
+    },
     rowClick(row, event, column) {
       this.$emit("row-click", row, event, column);
     },

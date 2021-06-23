@@ -40,7 +40,7 @@
       </div>
     </div>
     <!--信息-->
-    <baseInfo class="margin-bottom20"/>
+    <baseInfo class="margin-bottom20" :dataInfo="dataInfo"/>
     <!--总单价表格-->
     <totalUnitPriceTable class="margin-bottom20"/>
 
@@ -63,7 +63,7 @@
     </div>
 
     <!-- 自定义零件列表 -->
-    <customPart :partList="partList" :visible="customDialog.visible" :Key="customDialog.key" />
+    <customPart :partList="partList" :visible="customDialog.visible" :Key="customDialog.key"/>
   </iPage>
 </template>
 
@@ -73,7 +73,8 @@ import baseInfo from './components/baseInfo';
 import totalUnitPriceTable from './components/totalUnitPriceTable';
 import curveChart from './components/curveChart';
 import analyzeChart from './components/analyzeChart';
-import customPart from './components/customPart'
+import customPart from './components/customPart';
+import {getAnalysisProcessing} from '../../../../api/partsrfq/vpAnalysis/vpAnalyseDetail';
 
 export default {
   components: {
@@ -85,7 +86,10 @@ export default {
     iCard,
     curveChart,
     analyzeChart,
-    customPart
+    customPart,
+  },
+  created() {
+    this.getDataInfo();
   },
   data() {
     return {
@@ -93,8 +97,9 @@ export default {
       partItemCurrent: 0,
       customDialog: {
         key: 0,
-        visible: false
-      }
+        visible: false,
+      },
+      dataInfo: {},
     };
   },
   methods: {
@@ -108,8 +113,19 @@ export default {
     },
     //点击跳转自定义零件弹窗
     handleOpenCustomDialog() {
-      this.customDialog.key = new Date().getTime()
-      this.customDialog.visible = true
+      this.customDialog.key = new Date().getTime();
+      this.customDialog.visible = true;
+    },
+    async getDataInfo() {
+      try {
+        const req = {
+          id: 1
+        };
+        const res = await getAnalysisProcessing(req);
+        this.dataInfo = res.data;
+      } catch {
+        this.dataInfo = {};
+      }
     },
   },
 };

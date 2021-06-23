@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 16:16:27
- * @LastEditTime: 2021-06-22 16:08:45
+ * @LastEditTime: 2021-06-23 10:32:22
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails\table4.vue
@@ -54,10 +54,6 @@ export default {
         return []
       }
     },
-    getRowKey:{
-      type   : Function,
-      default: params => {}
-    },
     dataList:{
       type:Array,
        default: function () {
@@ -99,87 +95,12 @@ export default {
           prop: "SupplierF",
         },
       ],
-      // dataList: [
-      //   {
-      //     id: "1",
-      //     title: "其他费用",
-      //     SupplierA: "25.00",
-      //     SupplierB: "25.00",
-      //     SupplierC: "30.48",
-      //     SupplierD: "20.04",
-      //     SupplierE: "25.40",
-      //     SupplierF: "29.90",
-      //     children: [
-      //       {
-      //         id: "2",
-      //         title: "分摊开发费",
-      //         SupplierA: "23.46",
-      //         SupplierB: "25.00",
-      //         SupplierC: "25.00",
-      //         SupplierD: "25.00",
-      //         SupplierE: "25.00",
-      //         SupplierF: "25.00",
-      //         children: [
-      //           {
-      //             id: "21",
-      //             title: "金额",
-      //             SupplierA: "23.46",
-      //             SupplierB: "25.00",
-      //             SupplierC: "25.00",
-      //             SupplierD: "25.00",
-      //             SupplierE: "25.00",
-      //             SupplierF: "25.00",
-      //           },
-      //           {
-      //             id: "22",
-      //             title: "分摊数量",
-      //             SupplierA: "23.46",
-      //             SupplierB: "25.00",
-      //             SupplierC: "25.00",
-      //             SupplierD: "25.00",
-      //             SupplierE: "25.00",
-      //             SupplierF: "25.00",
-      //           },
-      //         ],
-      //       },
-      //       {
-      //         id: "3",
-      //         title: "分摊模具费",
-      //         SupplierA: "23.46",
-      //         SupplierB: "25.00",
-      //         SupplierC: "25.00",
-      //         SupplierD: "25.00",
-      //         SupplierE: "25.00",
-      //         SupplierF: "25.00",
-      //         children: [
-      //           {
-      //             id: "31",
-      //             title: "金额",
-      //             SupplierA: "23.46",
-      //             SupplierB: "25.00",
-      //             SupplierC: "25.00",
-      //             SupplierD: "25.00",
-      //             SupplierE: "25.00",
-      //             SupplierF: "25.00",
-      //           },
-      //           {
-      //             id: "32",
-      //             title: "分摊数量",
-      //             SupplierA: "23.46",
-      //             SupplierB: "25.00",
-      //             SupplierC: "25.00",
-      //             SupplierD: "25.00",
-      //             SupplierE: "25.00",
-      //             SupplierF: "25.00",
-      //           },
-      //         ],
-      //       }
-      //     ],
-      //   },
-      // ],
     };
   },
   methods: {
+     getRowKey(row){
+      return row.id
+    },
     formatter(row) {
       if (row.indexOf("（") > 0) {
        let str= row.split('（')
