@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-28 15:03:47
- * @LastEditTime: 2021-06-23 18:50:51
+ * @LastEditTime: 2021-06-23 20:35:31
  * @LastEditors: Please set LastEditors
  * @Description: 特殊表格实现
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\table.vue
@@ -19,7 +19,7 @@
     :header-cell-class-name='headerClassName'
     :cell-class-name='cellClassName'
     :span-method="spanMethod"
-
+    @sort-change="sortChangeTable"
   >
     <template v-for='(item,index) in tableTitle'>
       <!-----------------存在index selection情况------------------------>
@@ -29,9 +29,10 @@
         :label="item.i18n ? $t(item.i18n) : item.label"
         :width="item.width || 50"
         align="center"
+        :prop='item.prop'
       >
         <template slot-scope="scope">
-            <el-checkbox @change="handleSelectionChange" class="checkBox" v-model="scope.row.active"><span>{{scope.row[item.props]}}</span></el-checkbox>
+            <el-checkbox @change="handleSelectionChange(scope.row,scope.$index)" class="checkBox" v-model="scope.row.active"><span>{{scope.row[item.props]}}</span></el-checkbox>
         </template>
       </el-table-column>
       <el-table-column
@@ -274,7 +275,8 @@ export default{
      * @param {*} val
      * @return {*}
      */
-    handleSelectionChange(){
+    handleSelectionChange(e,index){
+      this.$set(this.tableData,index,e)
       this.$emit('handleSelectionChange',this.tableData.filter(items=>items.active))
     }
   }
@@ -282,7 +284,6 @@ export default{
 </script>
 <style lang='scss' scoped>
   .checkBox{
-    z-index: 9999;
     ::v-deep.el-checkbox__label{
       display: block;
       padding-left: 0px;
