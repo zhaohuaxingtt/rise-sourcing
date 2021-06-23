@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 10:50:38
- * @LastEditTime: 2021-06-22 21:03:42
+ * @LastEditTime: 2021-06-23 11:11:54
  * @LastEditors: Please set LastEditors
  * @Description: 费用详情
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails.vue
@@ -21,12 +21,12 @@
         </div>
       </div>
     </template>
-    <table1 :dataList="dataList1" :getRowKey="getRowKey" :expends="expends"></table1>
-    <table2 :dataList="dataList2" :getRowKey="getRowKey" :expends="expends"></table2>
-    <table3 :dataList="dataList3" :getRowKey="getRowKey" :expends="expends"></table3>
-    <table4 :dataList="dataList4" :getRowKey="getRowKey" :expends="expends"></table4>
-    <table5 :dataList="dataList5" :getRowKey="getRowKey" :expends="expends"></table5>
-    <table6 :dataList="dataList6" :getRowKey="getRowKey" :expends="expends"></table6>
+    <table1 :dataList="dataList1"></table1>
+    <table2 :dataList="dataList2"></table2>
+    <table3 :dataList="dataList3"></table3>
+    <table4 :dataList="dataList4"></table4>
+    <table5 :dataList="dataList5"></table5>
+    <table6 :dataList="dataList6"></table6>
   </iCard>
 </template>
 
@@ -38,7 +38,14 @@ import table3 from "./components/table3.vue";
 import table4 from "./components/table4.vue";
 import table5 from "./components/table5.vue";
 import table6 from "./components/table6.vue";
-import { dataList1,dataList2,dataList3,dataList4,dataList5,dataList6 } from "./components/data.js";
+import {
+  dataList1,
+  dataList2,
+  dataList3,
+  dataList4,
+  dataList5,
+  dataList6,
+} from "./components/data.js";
 
 export default {
   components: {
@@ -61,25 +68,59 @@ export default {
       dataList4,
       dataList5,
       dataList6,
+      dataLists:[],
       expends: [],
     };
   },
   methods: {
     open() {
-      this.flag=false
-      this.flag1=true
-      let dataLists=[]
-      dataLists= dataLists.concat(dataList1).concat(dataList2).concat(dataList3).concat(dataList4).concat(dataList5).concat(dataList6)
-      this.getTreeExpandKeys(dataLists);
-      this.expends= Array.from(new Set(this.expends))
+      this.dataLists = this.dataLists
+        .concat(dataList1)
+        .concat(dataList2)
+        .concat(dataList3)
+        .concat(dataList4)
+        .concat(dataList5)
+        .concat(dataList6);
+      // this.getTreeExpandKeys(dataLists);
+      // this.expends = Array.from(new Set(this.expends));
+      let els = this.$el.getElementsByClassName("el-table__expand-icon");
+      if (this.dataLists.length != 0 && els.length != 0) {
+        this.flag = false;
+        this.flag1 = true;
+        for (let j1 = 0; j1 < els.length; j1++) {
+          els[j1].classList.add("dafult");
+        }
+        if (
+          this.$el.getElementsByClassName("el-table__expand-icon--expanded")
+        ) {
+          const open = this.$el.getElementsByClassName(
+            "el-table__expand-icon--expanded"
+          );
+          for (let j = 0; j < open.length; j++) {
+            open[j].classList.remove("dafult");
+          }
+          const dafult = this.$el.getElementsByClassName("dafult");
+          for (let a = 0; a < dafult.length; a++) {
+            dafult[a].click();
+          }
+        }
+      }
     },
-    close(){
-      this.flag=true  
-      this.flag1=false  
-      this.expends=[]
-    },
-    getRowKey(row) {
-      return row.id;
+    close() {
+      if (this.dataLists.length != 0) {
+        this.flag = true;
+        this.flag1 = false;
+        const elsopen = this.$el.getElementsByClassName(
+          "el-table__expand-icon--expanded"
+        );
+        if (
+          this.$el.getElementsByClassName("el-table__expand-icon--expanded")
+        ) {
+          for (let i = 0; i < elsopen.length; i++) {
+            elsopen[i].click();
+          }
+        }
+      }
     },
     // 递归获取checked属性方法
     getTreeExpandKeys(obj) {

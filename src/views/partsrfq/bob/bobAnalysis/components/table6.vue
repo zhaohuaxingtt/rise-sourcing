@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 16:16:27
- * @LastEditTime: 2021-06-22 16:08:52
+ * @LastEditTime: 2021-06-23 10:35:03
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails\table4.vue
@@ -13,7 +13,7 @@
       :tree-props="{ hasChildren: 'hasChildren', children: 'children' }"
        :row-key="getRowKey"
       :expand-row-keys="expends"
-      v-loading="loading"
+      v-loading="loading"                                                                                                                                                                                                                                                            
       :max-height="maxHeight"
       @selection-change="handleSelectionChange"
       @row-click="rowClick"
@@ -48,10 +48,6 @@ export default {
       default: function () {
         return []
       }
-    },
-    getRowKey:{
-      type   : Function,
-      default: params => {}
     },
     dataList:{
       type:Array,
@@ -94,77 +90,12 @@ export default {
           prop: "SupplierF",
         },
       ],
-      // dataList: [
-      //   {
-      //     id: "1",
-      //     title: "利润",
-      //     SupplierA: "25.00",
-      //     SupplierB: "25.00",
-      //     SupplierC: "30.48",
-      //     SupplierD: "20.04",
-      //     SupplierE: "25.40",
-      //     SupplierF: "29.90",
-      //     children: [
-      //       {
-      //         id: "2",
-      //         title: "利润率%",
-      //         SupplierA: "23.46",
-      //         SupplierB: "25.00",
-      //         SupplierC: "25.00",
-      //         SupplierD: "25.00",
-      //         SupplierE: "25.00",
-      //         SupplierF: "25.00",
-      //       },
-      //       {
-      //         id: "3",
-      //         title: "材料利润",
-      //         SupplierA: "23.46",
-      //         SupplierB: "25.00",
-      //         SupplierC: "25.00",
-      //         SupplierD: "25.00",
-      //         SupplierE: "25.00",
-      //         SupplierF: "25.00",
-      //         children: [
-      //           {
-      //             id: "31",
-      //             title: "材料利润%",
-      //             SupplierA: "23.46",
-      //             SupplierB: "25.00",
-      //             SupplierC: "25.00",
-      //             SupplierD: "25.00",
-      //             SupplierE: "25.00",
-      //             SupplierF: "25.00",
-      //           },
-      //         ],
-      //       },
-      //       {
-      //         id: "4",
-      //         title: "制造利润",
-      //         SupplierA: "23.46",
-      //         SupplierB: "25.00",
-      //         SupplierC: "25.00",
-      //         SupplierD: "25.00",
-      //         SupplierE: "25.00",
-      //         SupplierF: "25.00",
-      //         children: [
-      //           {
-      //             id: "41",
-      //             title: "制造利润",
-      //             SupplierA: "23.46",
-      //             SupplierB: "25.00",
-      //             SupplierC: "25.00",
-      //             SupplierD: "25.00",
-      //             SupplierE: "25.00",
-      //             SupplierF: "25.00",
-      //           },
-      //         ],
-      //       },
-      //     ],
-      //   },
-      // ],
     };
   },
   methods: {
+     getRowKey(row){ 
+      return row.id
+    },
     formatter(row) {
       if (row.indexOf("（") > 0) {
         let str = row.split("（");

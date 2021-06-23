@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 11:38:57
- * @LastEditTime: 2021-06-22 14:00:58
+ * @LastEditTime: 2021-06-23 10:31:55
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails\table1.vue
@@ -45,10 +45,6 @@ export default {
         return []
       }
     },
-    getRowKey:{
-      type   : Function,
-      default: params => {}
-    },
     dataList:{
       type:Array,
        default: function () {
@@ -90,33 +86,12 @@ export default {
           prop: "SupplierF",
         },
       ],
-      // dataList: [
-      //   {
-      //     id: "1",
-      //     title: "报废成本",
-      //     SupplierA: "25.00",
-      //     SupplierB: "25.00",
-      //     SupplierC: "30.48",
-      //     SupplierD: "20.04",
-      //     SupplierE: "25.40",
-      //     SupplierF: "29.90",
-      //     children: [
-      //       {
-      //         id: "11",
-      //         title: "报废率%",
-      //         SupplierA: "25.00",
-      //         SupplierB: "25.00",
-      //         SupplierC: "30.48",
-      //         SupplierD: "20.04",
-      //         SupplierE: "25.40",
-      //         SupplierF: "29.90",
-      //       },
-      //     ],
-      //   },
-      // ],
     };
   },
   methods: {
+    getRowKey(row){
+      return row.id
+    },
     rowClick(row, event, column) {
       this.$emit("row-click", row, event, column);
     },

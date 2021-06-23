@@ -67,16 +67,7 @@ export default [{
       },
       component: () =>
         import("@/views/partsrfq/negotiationsAssistant/index.vue"),
-    },
-    {
-      path: "partsrfq/bobAnalysis",
-      name: "bobAnalysis",
-      meta: {
-        title: "Bob分析",
-      },
-      component: () =>
-        import("@/views/partsrfq/bob/bobAnalysis"),
-    },
+    }
   ]
 }]
 

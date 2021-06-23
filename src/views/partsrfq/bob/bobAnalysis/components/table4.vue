@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 16:16:27
- * @LastEditTime: 2021-06-22 14:01:24
+ * @LastEditTime: 2021-06-23 10:33:10
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails\table4.vue
@@ -11,7 +11,7 @@
     <el-table
       :data="dataList"
       :tree-props="{ hasChildren: 'hasChildren', children: 'children' }"
-       :row-key="getRowKey"
+      :row-key="getRowKey"
       :expand-row-keys="expends"
       v-loading="loading"
       :max-height="maxHeight"
@@ -54,10 +54,7 @@ export default {
         return []
       }
     },
-    getRowKey:{
-      type   : Function,
-      default: params => {}
-    },
+
     dataList:{
       type:Array,
        default: function () {
@@ -99,87 +96,12 @@ export default {
           prop: "SupplierF",
         },
       ],
-      // dataList: [
-      //   {
-      //     id: "1",
-      //     title: "管理费",
-      //     SupplierA: "25.00",
-      //     SupplierB: "25.00",
-      //     SupplierC: "30.48",
-      //     SupplierD: "20.04",
-      //     SupplierE: "25.40",
-      //     SupplierF: "29.90",
-      //     children: [
-      //       {
-      //         id: "2",
-      //         title: "原材料与散件管理费（不含SVW指定散件）",
-      //         SupplierA: "23.46",
-      //         SupplierB: "25.00",
-      //         SupplierC: "25.00",
-      //         SupplierD: "25.00",
-      //         SupplierE: "25.00",
-      //         SupplierF: "25.00",
-      //         children: [
-      //           {
-      //             id: "21",
-      //             title: "原材料与散件管理费 % （不含SVW指定散件）",
-      //             SupplierA: "23.46",
-      //             SupplierB: "25.00",
-      //             SupplierC: "25.00",
-      //             SupplierD: "25.00",
-      //             SupplierE: "25.00",
-      //             SupplierF: "25.00",
-      //           },
-      //           {
-      //             id: "22",
-      //             title: "原材料与散件总成本",
-      //             SupplierA: "23.46",
-      //             SupplierB: "25.00",
-      //             SupplierC: "25.00",
-      //             SupplierD: "25.00",
-      //             SupplierE: "25.00",
-      //             SupplierF: "25.00",
-      //           },
-      //         ],
-      //       },
-      //       {
-      //         id: "3",
-      //         title: "制造管理费",
-      //         SupplierA: "23.46",
-      //         SupplierB: "25.00",
-      //         SupplierC: "25.00",
-      //         SupplierD: "25.00",
-      //         SupplierE: "25.00",
-      //         SupplierF: "25.00",
-      //         children: [
-      //           {
-      //             id: "31",
-      //             title: "制造管理费%",
-      //             SupplierA: "23.46",
-      //             SupplierB: "25.00",
-      //             SupplierC: "25.00",
-      //             SupplierD: "25.00",
-      //             SupplierE: "25.00",
-      //             SupplierF: "25.00",
-      //           },
-      //           {
-      //             id: "32",
-      //             title: "制造总成本",
-      //             SupplierA: "23.46",
-      //             SupplierB: "25.00",
-      //             SupplierC: "25.00",
-      //             SupplierD: "25.00",
-      //             SupplierE: "25.00",
-      //             SupplierF: "25.00",
-      //           },
-      //         ],
-      //       }
-      //     ],
-      //   },
-      // ],
     };
   },
   methods: {
+     getRowKey(row){
+      return row.id
+    },
     formatter(row) {
       if (row.indexOf("（") > 0) {
        let str= row.split('（')
