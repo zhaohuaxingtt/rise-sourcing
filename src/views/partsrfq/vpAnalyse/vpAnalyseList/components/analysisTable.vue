@@ -150,7 +150,7 @@ import {pageMixins} from '@/utils/pageMixins';
 import {tableTitle} from './data'
 import {iMessage} from '@/components';
 import tableList from '@/components/ws3/commonTable';
-import {getVpAnalysisDataList, fetchStaick, fetchEdit, fetchDel} from '@/api/partsrfq/vpAnalysis/vpAnalysisList'
+import {getVpAnalysisDataList, fetchStaick, fetchEdit, fetchDel} from '@/api/partsrfq/vpAnalysisList'
 export default {
   name: 'analysisTable',
   mixins: [pageMixins],

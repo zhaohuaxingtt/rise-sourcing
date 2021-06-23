@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-06-18 16:03:35
- * @LastEditTime: 2021-06-21 17:53:17
+ * @LastEditTime: 2021-06-23 10:40:28
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\vpAnalyse\vpAnalyseDetail\components\customPart\index.vue
@@ -65,10 +65,15 @@
 import {iDialog, iButton, icon, iSelect} from 'rise'
 import tableList from '@/components/ws3/commonTable';
 import {tableTitle} from './components/data';
+import {getCustomPartDataList} from '@/api/partsrfq/vpCustomPart'
 export default {
   name: 'CustomPart',
   components: {iDialog, iButton, icon, iSelect, tableList},
   props: {
+    batchNumber: {
+      type: Number,
+      default: 1
+    },
     partList: {
       type: Array,
       default: () => []
@@ -93,6 +98,7 @@ export default {
     this.initInsertPartData()
     this.initTestTableData()
     this.initTestPartNumData()
+    this.initTableData()
     this.backupsTableData = JSON.parse(JSON.stringify(this.tableListData))
   },
   methods: {
@@ -108,6 +114,15 @@ export default {
         {partNum: '18D023603', carProject: 'XXXXXXX', carType: 'XXXXXXX', factory: 'XXXXXXX', supplier: 'XXXXXXX', isShow: true, sort: 3},
         {partNum: '18D023604', carProject: 'XXXXXXX', carType: 'XXXXXXX', factory: 'XXXXXXX', supplier: 'XXXXXXX', isShow: true, sort: 4},
       ]
+    },
+    // 获取自定义零件列表数据
+    initTableData() {
+      const params = {
+        batchNumber: this.batchNumber
+      }
+      getCustomPartDataList(params).then(res => {
+        console.log('res', res);
+      })
     },
     // 初始化测试零件号数据
     initTestPartNumData() {
