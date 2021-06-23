@@ -49,3 +49,19 @@ export function packageVersionCombo(parmars) {
         params: parmars
     })
 }
+//获取科室下拉信息
+export function getDepartmentsCombo(parmars) {
+    return VUE_APP_CSBUDGET({
+        url: '/getDepartmentsCombo',
+        method: 'GET',
+        params: parmars
+    })
+}
+//材料组数据字典
+export function cateGoryCombo(parmars) {
+    return VUE_APP_CSBUDGET({
+        url: '/cateGoryCombo',
+        method: 'GET',
+        params: parmars
+    })
+}

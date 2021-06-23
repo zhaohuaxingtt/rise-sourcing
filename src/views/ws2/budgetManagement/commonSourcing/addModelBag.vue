@@ -73,26 +73,32 @@
             <span>{{$t('科室')}}:</span>
             <iSelect
                 :placeholder="$t('LK_QINGXUANZE')"
-                v-model="packageNameZh"
+                v-model="departmentsCombo"
                 filterable
+                multiple
+                collapse-tags
+                class="multipleSelect"
             >
               <el-option
-                  :value="item"
-                  :label="item"
-                  v-for="(item, index) in [1,2]"
+                  :value="item.deptId"
+                  :label="item.commodity"
+                  v-for="(item, index) in DepartmentsComboList"
                   :key="index"
               ></el-option>
             </iSelect>
             <span>{{ $t('LK_CAILIAOZU') }}:</span>
             <iSelect
                 :placeholder="$t('LK_QINGXUANZE')"
-                v-model="packageNameZh"
+                v-model="materialGroup"
                 filterable
+                multiple
+                collapse-tags
+                class="multipleSelect"
             >
               <el-option
-                  :value="item"
-                  :label="item"
-                  v-for="(item, index) in [1,2]"
+                  :value="item.id"
+                  :label="item.name"
+                  v-for="(item, index) in materialGroupList"
                   :key="index"
               ></el-option>
             </iSelect>
@@ -121,9 +127,10 @@ import {
   iTableList
 } from "@/components"
 import {iButton, iMessage, iSelect, iCard} from 'rise'
-import {carTypePackageCombo, packageVersionCombo, commonSourcingView} from '@/api/ws2/commonSourcing'
+import {cateGoryCombo, getDepartmentsCombo, carTypePackageCombo, packageVersionCombo, commonSourcingView} from '@/api/ws2/commonSourcing'
 import {iNavWS2} from "@/components";
 import echarts from "@/utils/echarts";
+import {getCartypePulldown} from "@/api/ws2/budgetManagement/edit";
 
 export default {
   name: "commonSourcing",
@@ -145,14 +152,15 @@ export default {
       carTypePackageList: [],
       packageVersion: '',
       packageVersionList: [],
+      departmentsCombo: [],
+      DepartmentsComboList: [],
+      materialGroup: [],
+      materialGroupList: [],
     }
   },
   mounted() {
     let carTypePackageId = this.$route.query.carTypePackageId
-    this.carTypePackageCombo(carTypePackageId)
-    if(carTypePackageId){
-      this.packageVersionCombo(this.$route.query.carTypePackageId)
-    }
+    this.getSelect(carTypePackageId)
     const chart1 = echarts().init(document.getElementById("chart1"));
     const chart2 = echarts().init(document.getElementById("chart2"));
     const chart3 = echarts().init(document.getElementById("chart3"));
@@ -352,6 +360,68 @@ export default {
 
   },
   methods: {
+    async getSelect(carTypePackageId) {
+      // this.tableLoading = true
+      await Promise.all([
+          carTypePackageCombo(),
+          packageVersionCombo({carTypePackageId: carTypePackageId}),
+          getDepartmentsCombo(),
+          cateGoryCombo()
+      ]).then((res) => {
+        const result0 = this.$i18n.locale === 'zh' ? res[0].desZh : res[0].desEn
+        const result1 = this.$i18n.locale === 'zh' ? res[1].desZh : res[1].desEn
+        const result2 = this.$i18n.locale === 'zh' ? res[2].desZh : res[2].desEn
+        const result3 = this.$i18n.locale === 'zh' ? res[3].desZh : res[3].desEn
+        if (res[0].data) {
+          this.carTypePackageList = res[0].data;
+          this.carTypePackageId = carTypePackageId
+        } else {
+          iMessage.error(result0);
+        }
+        if (res[1].data) {
+          this.packageVersionList = res[1].data;
+          this.packageVersion = this.packageVersionList.length > 0 ? this.packageVersionList[0].versionId : ''
+        } else {
+          iMessage.error(result1);
+        }
+        if (res[2].data) {
+          this.DepartmentsComboList = res[2].data;
+        } else {
+          iMessage.error(result2);
+        }
+        if (res[3].data) {
+          this.materialGroupList = res[3].data;
+        } else {
+          iMessage.error(result3);
+        }
+        this.getTableListFn()
+        // this.tableLoading = false
+      }).catch(() => {
+        // this.tableLoading = false
+      });
+
+    },
+    getCommonSourcingView(){
+      // this.tableLoading = true
+      commonSourcingView({
+        carTypePackageId: this.carTypePackageId,
+        categoryId: '',
+        commodity: '',
+        versionId	: this.packageVersion,
+      }).then((res) => {
+        const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
+        if (Number(res.code) === 0) {
+          this.carTypePackageList = res.data
+          this.carTypePackageId = carTypePackageId
+          this.packageVersionCombo(carTypePackageId)
+        } else {
+          iMessage.error(result);
+        }
+        // this.tableLoading = false
+      }). catch(err => {
+        //this.tableLoading = false
+      })
+    },
     carTypePackageCombo(carTypePackageId){
       // this.tableLoading = true
       carTypePackageCombo().then((res) => {
@@ -417,7 +487,14 @@ export default {
   font-size: 20px;
   font-weight: bold;
 }
-
+.multipleSelect {
+  ::v-deep .el-tag {
+    max-width: calc(100% - 65px);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
 .main {
   padding: 30px 40px;
 
