@@ -139,6 +139,7 @@ import tableList from '@/components/ws3/commonTable';
 import {tableTitle, tableEditTitle} from './data';
 import {getVpCostDetail} from '../../../../../api/partsrfq/vpAnalysis/vpAnalyseDetail';
 import {numberProcessor} from '@/utils';
+import _ from 'lodash';
 
 export default {
   components: {
@@ -169,6 +170,8 @@ export default {
       totalShowOnly: ['管理费', '利润费'],
       apportionShowOnly: ['专用设备费', '分摊模具费', '分摊开发费', '研发费', '管理费', '利润费'],
       unitPriceShowOnly: ['专用设备费', '分摊模具费', '分摊开发费', '研发费'],
+      recordTableData: [],
+      recordHideTableData: [],
     };
   },
   methods: {
@@ -180,6 +183,8 @@ export default {
     },
     handleEdit() {
       this.tableStatus = 'edit';
+      this.recordTableData = _.cloneDeep(this.tableListData);
+      this.recordHideTableData = _.cloneDeep(this.hideTableData);
     },
     handleAdd() {
       const time = new Date().getTime();
@@ -246,10 +251,12 @@ export default {
       });
     },
     handleCancel() {
+      this.tableListData = this.recordTableData;
+      this.hideTableData = this.recordHideTableData;
       this.tableStatus = '';
     },
     handleFinish() {
-      this.handleCancel();
+      this.tableStatus = '';
     },
     async getEditTableList() {
       try {
