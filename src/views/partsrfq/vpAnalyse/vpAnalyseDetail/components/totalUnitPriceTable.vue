@@ -8,7 +8,7 @@
       <div class="floatright">
         <template v-if="tableStatus === 'edit'">
           <!--新增-->
-          <iButton @click="handleAdd">{{ $t('LK_BIANJI') }}</iButton>
+          <iButton @click="handleAdd">{{ $t('LK_XINZENG') }}</iButton>
           <!--删除-->
           <iButton @click="handleDelete">{{ $t('delete') }}</iButton>
           <!--取消-->
@@ -29,11 +29,48 @@
         :tableTitle="tableTitle"
         :tableLoading="tableLoading"
         :index="true"
+        @handleSelectionChange="handleSelectionChange"
     >
-      <template #showOrHide='scope'>
-        <div>
-          {{ scope.row.showOrHide }}
-          <icon symbol name="iconxianshi" class="iconStyle"/>
+      <!--自定义列开始-->
+      <template #type="scope">
+        <template v-if="costShowOnly.includes(scope.row.type)">
+          {{ scope.row.type }}
+        </template>
+        <template v-else>
+          <iInput v-model="scope.row.type"/>
+        </template>
+      </template>
+      <template #total="scope">
+        <template v-if="totalShowOnly.includes(scope.row.type)">
+          {{ scope.row.total }}
+        </template>
+        <template v-else>
+          <iInput v-model="scope.row.total" @input="handleNumber($event,scope.row, 'total')"/>
+        </template>
+      </template>
+      <template #apportionedNum="scope">
+        <template v-if="apportionShowOnly.includes(scope.row.type)">
+          {{ scope.row.apportionedNum }}
+        </template>
+        <template v-else>
+          <iInput v-model="scope.row.apportionedNum" @input="handleNumber($event,scope.row, 'apportionedNum')"/>
+        </template>
+      </template>
+      <template #affectUnitPrice="scope">
+        <template v-if="unitPriceShowOnly.includes(scope.row.type)">
+          {{ scope.row.affectUnitPrice }}
+        </template>
+        <template v-else>
+          <iInput v-model="scope.row.affectUnitPrice" @input="handleNumber($event,scope.row, 'affectUnitPrice')"/>
+        </template>
+      </template>
+      <template #proportionOfAffectedCost="scope">
+        {{ scope.row.proportionOfAffectedCost }}%
+      </template>
+      <!--自定义列结束-->
+      <template #isShow="scope">
+        <div @click="handleHide(scope.row)">
+          <icon symbol name="iconxianshi" class="iconStyle cursor"/>
         </div>
       </template>
     </tableList>
@@ -42,16 +79,54 @@
 
     <!--    隐藏-->
     <tableList
-        :tableData="tableEditListData"
+        v-if="tableStatus === 'edit'"
+        :tableData="hideTableData"
         :tableTitle="tableTitle"
         :tableLoading="tableLoading"
         :index="true"
         :customIndex="tableListData.length"
+        @handleSelectionChange="handleHideSelectionChange"
     >
-      <template #showOrHide='scope'>
-        <div>
-          {{ scope.row.showOrHide }}
-          <icon symbol name="iconyincang" class="iconStyle"/>
+      <!--自定义列开始-->
+      <template #type="scope">
+        <template v-if="costShowOnly.includes(scope.row.type)">
+          {{ scope.row.type }}
+        </template>
+        <template v-else>
+          <iInput v-model="scope.row.type"/>
+        </template>
+      </template>
+      <template #total="scope">
+        <template v-if="totalShowOnly.includes(scope.row.type)">
+          {{ scope.row.total }}
+        </template>
+        <template v-else>
+          <iInput v-model="scope.row.total" @input="handleNumber($event,scope.row, 'total')"/>
+        </template>
+      </template>
+      <template #apportionedNum="scope">
+        <template v-if="apportionShowOnly.includes(scope.row.type)">
+          {{ scope.row.apportionedNum }}
+        </template>
+        <template v-else>
+          <iInput v-model="scope.row.apportionedNum" @input="handleNumber($event,scope.row, 'apportionedNum')"/>
+        </template>
+      </template>
+      <template #affectUnitPrice="scope">
+        <template v-if="unitPriceShowOnly.includes(scope.row.type)">
+          {{ scope.row.affectUnitPrice }}
+        </template>
+        <template v-else>
+          <iInput v-model="scope.row.affectUnitPrice" @input="handleNumber($event,scope.row, 'affectUnitPrice')"/>
+        </template>
+      </template>
+      <template #proportionOfAffectedCost="scope">
+        {{ scope.row.proportionOfAffectedCost }}%
+      </template>
+      <!--自定义列结束-->
+      <template #isShow="scope">
+        <div @click="handleShow(scope.row)">
+          <icon symbol name="iconyincang" class="iconStyle cursor"/>
         </div>
       </template>
     </tableList>
@@ -59,9 +134,11 @@
 </template>
 
 <script>
-import {iCard, iButton, icon} from 'rise';
+import {iCard, iButton, icon, iInput, iMessage, iMessageBox} from 'rise';
 import tableList from '@/components/ws3/commonTable';
 import {tableTitle, tableEditTitle} from './data';
+import {getVpCostDetail} from '../../../../../api/partsrfq/vpAnalysis/vpAnalyseDetail';
+import {numberProcessor} from '@/utils';
 
 export default {
   components: {
@@ -69,33 +146,155 @@ export default {
     iButton,
     tableList,
     icon,
+    iInput,
+  },
+  computed: {
+    pageType() {
+      return this.$route.query.type;
+    },
+  },
+  created() {
+    this.getTableList();
   },
   data() {
     return {
-      tableListData: [
-        {'1': 1},
-        {'1': 1},
-        {'1': 1},
-      ],
-      tableEditListData: [
-        {'1': 1},
-        {'1': 1},
-      ],
+      tableListData: [],
+      selectTableData: [],
+      hideTableData: [],
+      hideSelectTableData: [],
       tableTitle: tableTitle,
       tableLoading: false,
       tableStatus: '',
+      costShowOnly: ['专用设备费', '分摊模具费', '分摊开发费', '研发费', '管理费', '利润费'],
+      totalShowOnly: ['管理费', '利润费'],
+      apportionShowOnly: ['专用设备费', '分摊模具费', '分摊开发费', '研发费', '管理费', '利润费'],
+      unitPriceShowOnly: ['专用设备费', '分摊模具费', '分摊开发费', '研发费'],
     };
   },
   methods: {
+    handleSelectionChange(val) {
+      this.selectTableData = val;
+    },
+    handleHideSelectionChange(val) {
+      this.hideSelectTableData = val;
+    },
     handleEdit() {
       this.tableStatus = 'edit';
     },
-    handleAdd() {},
-    handleDelete() {},
+    handleAdd() {
+      const time = new Date().getTime();
+      const newItemList = this.tableTitle.map(item => {
+        return item.props;
+      });
+      const newItem = {};
+      newItemList.map(item => {
+        newItem[item] = '';
+      });
+      this.tableListData.push({
+        ...newItem,
+        time,
+      });
+    },
+    handleDelete() {
+      if (this.selectTableData.length === 0 && this.hideSelectTableData.length === 0) {
+        return iMessage.warn(this.$t('LK_NINDANGQIANHAIWEIXUANZE'));
+      }
+      iMessageBox(
+          this.$t('LK_SHIFOUQUERENSHANCHU'),
+          this.$t('LK_WENXINTISHI'),
+          {confirmButtonText: this.$t('LK_QUEDING'), cancelButtonText: this.$t('LK_QUXIAO')},
+      ).then(async () => {
+        let ids = [], times = [], hideIds = [], hideTimes = [];
+        // 显示表格
+        this.selectTableData.map(item => {
+          if (item.id) {
+            ids.push(item.id);
+          }
+          if (item.time) {
+            times.push(item.time);
+          }
+        });
+        if (times.length !== 0) {
+          this.tableListData = this.tableListData.filter(item => {
+            return !times.includes(item.time);
+          });
+        }
+        if (ids.length !== 0) {
+          this.tableListData = this.tableListData.filter(item => {
+            return !ids.includes(item.id);
+          });
+        }
+        // 隐藏表格
+        this.hideSelectTableData.map(item => {
+          if (item.id) {
+            hideIds.push(item.id);
+          }
+          if (item.time) {
+            hideTimes.push(item.time);
+          }
+        });
+        if (hideTimes.length !== 0) {
+          this.hideTableData = this.hideTableData.filter(item => {
+            return !hideTimes.includes(item.time);
+          });
+        }
+        if (hideIds.length !== 0) {
+          this.hideTableData = this.hideTableData.filter(item => {
+            return !hideIds.includes(item.id);
+          });
+        }
+      });
+    },
     handleCancel() {
       this.tableStatus = '';
     },
-    handleFinish() {},
+    handleFinish() {
+      this.handleCancel();
+    },
+    async getEditTableList() {
+      try {
+        this.tableLoading = true;
+        this.tableListData = [];
+        this.hideTableData = [];
+        const req = {
+          analysisSchemeId: 1,
+        };
+        const res = await getVpCostDetail(req);
+        res.data.map(item => {
+          if (item.isShow) {
+            this.tableListData.push(item);
+          } else {
+            this.hideTableData.push(item);
+          }
+        });
+        this.tableLoading = false;
+      } catch {
+        this.tableListData = [];
+        this.hideTableData = [];
+        this.tableLoading = false;
+      }
+    },
+    getTableList() {
+      switch (this.pageType) {
+        case 'edit':
+          this.getEditTableList();
+      }
+    },
+    handleHide(row) {
+      this.tableListData = this.tableListData.filter(item => {
+        return item.id !== row.id;
+      });
+      this.hideTableData.push(row);
+    },
+    handleShow(row) {
+      this.hideTableData = this.hideTableData.filter(item => {
+        return item.id !== row.id;
+      });
+      this.tableListData.push(row);
+    },
+    handleNumber(val, row, props) {
+      this.$set(row, props, numberProcessor(val));
+    },
   },
   watch: {
     tableStatus(val) {
