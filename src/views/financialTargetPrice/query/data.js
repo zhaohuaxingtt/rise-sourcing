@@ -2,17 +2,9 @@
  * @Author: Luoshuang
  * @Date: 2021-06-22 17:03:48
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-22 17:29:29
+ * @LastEditTime: 2021-06-23 13:47:12
  * @Description: 
  * @FilePath: \front-web\src\views\financialTargetPrice\query\data.js
- */
-/*
- * @Author: Luoshuang
- * @Date: 2021-06-22 11:35:28
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-22 16:56:51
- * @Description: 
- * @FilePath: \front-web\src\views\financialTargetPrice\maintenance\data.js
  */
 
 
