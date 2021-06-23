@@ -128,7 +128,7 @@ export default {
         const xAxisData = !mapControl.length ? quota : mapControl.map(i => {
           return quota[i]
         })
-        console.log('-load-', xAxisData, mapControl)
+        // console.log('-load-', xAxisData, mapControl)
         // seriesData
         
         
@@ -263,7 +263,8 @@ export default {
           },
           series
         };
-        // console.log(JSON.stringify(option))
+        console.log(JSON.stringify(option))
+        vm.clear()
         vm.setOption(option);
       })
     },
@@ -420,6 +421,7 @@ export default {
         type: 'bar',
         barWidth: 30,
         stack: 'total',
+        _data: minPartSupplierTToTotal,
         label: {
           show: true,
           position: 'top',
@@ -474,6 +476,7 @@ export default {
         type: 'bar',
         barWidth: 30,
         stack: 'total',
+        _data: weightSupplierTotal,
         label: {
           show: true,
           position: 'top',

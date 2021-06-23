@@ -220,7 +220,7 @@ export default {
         // 只有一家供应商报价
         if (supplierChosen.length === 1) return
         supplierChosen.splice(cIndex, 1)
-        percent.splice(percent, 1)
+        percent.splice(cIndex, 1)
       } else {
         supplierChosen.push(curSupplier)
       }
@@ -230,6 +230,10 @@ export default {
       Vue.set(row, 'percent', percent)
       // 同步编辑到percentCalc
       this.onPercentChangeWhiteBack(row)
+      this.chartData = this.calculateBestTTo(this.data)
+      this.$nextTick(() => {
+        this.$emit('updateCharts', this.chartData)
+      })
       // console.log('handleCellClick', curSupplier, cIndex, supplierChosen, row)
     },
     // 编辑百分比
@@ -257,12 +261,23 @@ export default {
       const supplierChosen = item.supplierChosen || []
       const percentCalc = item.percentCalc || []
       supplierChosen.forEach((o, index) => {
+        // 找到对应的供应商修改的tto
         const value = item.percent[index]
+        // 找到供应商的index
         const calcIndex = this.supplier.findIndex(p => p === o)
-        percentCalc[calcIndex] = Number(value)
+        percentCalc[calcIndex] = Number(value) || 0
       })
-      console.log('percentCalc', percentCalc)
+      percentCalc.map((calcValue, index) => {
+        const supName = this.supplier[index]
+        // console.log('supplierChosen', calcValue, supName, percentCalc)
+        if (!supplierChosen.includes(supName) && calcValue > 0) {
+          percentCalc[index] = 0
+          // console.log('supplierChosen2', calcValue, supName, percentCalc)
+        }
+        return calcValue
+      })
       Vue.set(item, 'percentCalc', percentCalc)
+      // console.log('percentCalc', percentCalc, item)
     },
     /**
      * 分组函数，用于element-ui table 分组合并
@@ -342,7 +357,7 @@ export default {
         })
       })
       count = _.sum(weightedArray)
-      console.log(data, str, count)
+      // console.log(data, str, count)
       return Number(count).toFixed(0)
     },
     // 筛选出分组最低的供应商
@@ -383,7 +398,7 @@ export default {
       
       // 校验是否显示加权第四根柱子
       let isShowWeightStick = false
-      isShowWeightStick = Boolean(data.filter(o => o.supplierChosen && o.supplierChosen.length > 1).length)
+      isShowWeightStick = Boolean(data.filter(o => o.supplierChosen && (o.supplierChosen.length > 1 || (o.supplierChosen.length === 1 && o.percent && o.percent[0] !== 100))).length)
 
       // 'Best TTO \n for Whole Package'
       // 根据供应商
