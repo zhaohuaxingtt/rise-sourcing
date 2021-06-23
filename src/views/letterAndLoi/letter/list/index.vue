@@ -25,14 +25,14 @@
     </iSearch>
     <iCard class="contain margin-top20">
         <template v-slot:header-control>
-            <iButton @click="submit">确认并提交</iButton>
-            <iButton @click="lineSure">LINIE确认</iButton>
-            <iButton @click="lineBack">LINIE退回</iButton>
-            <iButton @click="back">撤回</iButton>
-            <iButton @click="turnSend">转派 </iButton>
-            <iButton @click="closeLetter">关闭 </iButton>
-            <iButton @click="activate">激活 </iButton>
-            <iButton>导出 </iButton>
+            <iButton @click="submit">{{$t('LK_QUERENBINGTIJIAO')}}</iButton>
+            <iButton @click="lineSure">{{$t('LK_LINEQUEREN')}}</iButton>
+            <iButton @click="lineBack">{{$t('LK_LINETUIHUI')}}</iButton>
+            <iButton @click="back">{{$t('partsprocure.CheHui')}}</iButton>
+            <iButton @click="turnSend">{{$t('partsprocure.PARTSPROCURETRANSFER')}} </iButton> 
+            <iButton @click="closeLetter">{{$t('LK_GUANBI')}} </iButton>
+            <iButton @click="activate">{{$t('LK_JIHUO')}} </iButton>
+            <iButton>{{$t('LK_DAOCHU')}} </iButton>
         </template>
         <!-- 表单区域 -->
         <tableList
