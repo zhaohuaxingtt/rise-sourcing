@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-26 13:54:01
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-22 14:36:18
+ * @LastEditTime: 2021-06-23 10:15:42
  * @Description: 创建RFQ界面
        配件：选择的配件需要是分配了询价采购员的且是同一个询价采购员, 创建时能选择LINIE
        附件：选择的附件需要时分配了LINIE且为同一个LINIE, 创建时不能再选择LINIE
@@ -81,7 +81,7 @@ import addAccessoryPartDialog from './components/addAccessoryPart'
 import updateFactoryDialog from './components/updateFactory'
 import addFileDialog from './components/addFile'
 import capacityPlanningDialog from './components/capacityPlanning'
-import { getPartBySP, insertRfq, autoInquiry, getDeptList, getUserList } from '@/api/accessoryPart/index'
+import { getPartBySP, insertRfq, autoInquiry, getDeptList, getUserList, updateRfq } from '@/api/accessoryPart/index'
 import { changeProcure } from "@/api/partsprocure/home";
 import {
   dictkey,
@@ -180,10 +180,10 @@ export default {
       })
     },
     linieAndDeptDisable(type) {
-      if (type === 'linie' && this.linie) {
+      if (type === 'linie' && this.$route.query.type !== '1') {
         return true
       }
-      if (type === 'linieDept' && this.linieDept) {
+      if (type === 'linieDept' && this.$route.query.type !== '1') {
         return true
       }
       return false
@@ -258,12 +258,58 @@ export default {
       })
     },
     /**
-     * @Description: 保存，关联零件保存，自动发起询价
+     * @Description: 配件保存
      * @Author: Luoshuang
      * @param {*}
      * @return {*}
      */    
-    async handleSave() {
+    async handleAccessorySave() {
+      if (!this.detailData.linie || !this.detailData.linieDept) {
+        iMessage.warn('请选择部门和LINIE')
+        return
+      }
+      this.saveLoading = true
+      const params = {
+        linieDept: this.detailData.linieDept,
+        linieId: this.detailData.linie,
+        linieName: this.fromGroup.LINIE.find(item => item.value === this.detailData.linie)?.label || this.tableData[0].linieName,
+        rfqId: this.detailData.rfqId,
+        spNums: this.tableData.map(item => item.spnrNum),
+        stuffId: this.tableData[0].stuffId,
+        supplierSapCodes: this.tableData.map(item => item.supplierSapCode)
+      }
+      const res = await autoInquiry(params)
+      if (res?.result) {
+        const updateRfqParams = {
+          updateRfqStatusPackage: {
+            tmRfqIdList: [this.detailData.rfqId],
+            updateType: '06',
+            userId: this.$store.state.permission.userInfo.id
+          }
+        }
+        updateRfq(updateRfqParams).then(res => {
+          if(res?.result) {
+            iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+            const router =  this.$router.resolve({path: `/sourcing/partsrfq/editordetail?id=${this.detailData.rfqId}`})
+            window.open(router.href,'_blank')
+          } else {
+            iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+          }
+        }).finally(() => {
+          this.saveLoading = false
+        })
+      } else {
+        iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+        this.saveLoading = false
+      }
+    },
+    /**
+     * @Description: 附件保存
+     * @Author: Luoshuang
+     * @param {*}
+     * @return {*}
+     */    
+    async handleAttachmentSave() {
       this.saveLoading = true
       const params = {
         insertRfqPackage: {
@@ -272,15 +318,15 @@ export default {
           rfqPartDTOList: this.tableData.map(item => {
             return {
               buyerName: item.buyerName, // 询价采购员
-              linieName: item.linieName || this.fromGroup.LINIE.find(item => item.value === this.detailData.linie).label, // linie
-              linieUserId: item.linieUserId || this.detailData.linie, // linie
+              linieName: item.linieName, // linie
+              linieUserId: item.linieUserId, // linie
               partNum: item.partNum, // 零件号
               fsnrGsnrNum: item.spnrNum, // fs号
               stuffId: item.stuffId, // 工艺组ID，还没有
               stuffName: item.stuffName, // 工艺组name，还没有
               purchasePrjectId: item.purchasingProjectId,
               partNameZh: item.partNameZh,
-              partPrejectType: this.$route.query.type === '1' ? 'PT17' : 'PT18',
+              partPrejectType: 'PT18',
             }
           }),
           userId: this.$store.state.permission.userInfo.id
@@ -288,32 +334,26 @@ export default {
       }
       const res = await insertRfq(params)
       if (res?.result) {
-        if (this.$route.query.type === '1') {
-          const inquiryParams = {
-            rfqId: this.detailData.rfqId,
-            stuffId: this.tableData[0].stuffId,
-            supplierSapCodes: this.tableData.map(item => item.supplierSapCode)
-          }
-          autoInquiry(inquiryParams).then(res => {
-            if (res?.result) {
-              iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
-              const router =  this.$router.resolve({path: `/sourcing/partsrfq/editordetail?id=${this.detailData.rfqId}`})
-              window.open(router.href,'_blank')
-            } else {
-              iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
-            }
-          }).finally(() => {
-            this.saveLoading = false
-          })
-        } else {
-          iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
-          this.saveLoading = false
-          const router =  this.$router.resolve({path: `/sourcing/partsrfq/editordetail?id=${this.detailData.rfqId}`})
-          window.open(router.href,'_blank')
-        }
+        iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+        this.saveLoading = false
+        const router =  this.$router.resolve({path: `/sourcing/partsrfq/editordetail?id=${this.detailData.rfqId}`})
+        window.open(router.href,'_blank')
       } else {
         this.saveLoading = false
         iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+      }
+    },
+    /**
+     * @Description: 保存，关联零件保存，自动发起询价
+     * @Author: Luoshuang
+     * @param {*}
+     * @return {*}
+     */    
+    handleSave() {
+      if (this.$route.query.type === '1') {
+        this.handleAccessorySave()
+      } else {
+        this.handleAttachmentSave()
       }
     },
     /**
