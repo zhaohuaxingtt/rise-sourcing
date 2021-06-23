@@ -1,20 +1,17 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-24 16:57:16
- * @LastEditTime: 2021-06-22 19:56:51
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-06-23 15:21:06
+ * @LastEditors: ldh
  * @Description: In User Settings Edit
- * @FilePath: \rise\src\views\partsign\editordetail\components\enquiry\components\tablelist.vue
+ * @FilePath: \front-web\src\views\partsign\editordetail\components\tableList.vue
 -->
 <template>
   <el-table ref="table" class="table" :class="singleSelect ? 'singleSelectTable' : ''" :height="height" :data="tableData" :cell-class-name="cellClassName" v-loading="tableLoading" @selection-change="handleSelectionChange" @select="handleSelect" :empty-text="$t('LK_ZANWUSHUJU')">
     <el-table-column v-if="selection || singleSelect" type="selection" align="center"></el-table-column>
     <el-table-column v-if="index" type="index" align="center" :label="indexLabel"></el-table-column>
     <template v-for="(item, $index) in tableTitle">
-      <el-table-column v-if="item.type === 'group'" align="center" :key="$index" :label="$t(item.key)" :show-overflow-tooltip="item.tooltip" :width="item.width">
-        <slot :name="item.props"></slot>
-      </el-table-column>
-      <el-table-column v-else align="center" :key="$index" :label="$t(item.key)" :prop="item.props" :show-overflow-tooltip="item.tooltip" :width="item.width">
+      <el-table-column align="center" :key="$index" :label="$t(item.key)" :prop="item.props" :show-overflow-tooltip="item.tooltip" :width="item.width">
         <template v-if="$scopedSlots[item.props] || $slots[item.props]" v-slot="scope">
           <slot :name="item.props" :row="scope.row"></slot>
         </template>
