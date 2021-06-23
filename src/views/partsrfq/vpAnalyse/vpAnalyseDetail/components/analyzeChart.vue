@@ -2,7 +2,7 @@
   <div>
     <div class="chartBox">
       <div class="supplyingTime">
-        <div>2019-02</div>
+        <div>{{dataInfo.supplyBeginTime}}</div>
         <div>供货起始时间</div>
       </div>
       <div class="massProductionTime" :style="{'left': (this.massProductionTimeRate - this.OffsetData) + '%'}">
@@ -16,7 +16,7 @@
         <div>计划量产达成率</div>
       </div>
       <div class="supplyingEndTime">
-        <div>2019-02</div>
+        <div>{{dataInfo.supplyEndTime}}</div>
         <div>供货结束时间</div>
       </div>
     </div>
@@ -48,8 +48,14 @@
               <icon symbol name="iconxinxitishi" class="tipIcon" slot="reference"></icon>
             </el-popover>
           </div>
-          <iText class="valueWidth bgGreen" v-if="dataInfo.reductionPotential < 0">{{ dataInfo.reductionPotential }}</iText>
-          <iText class="valueWidth bgRed" v-else-if="dataInfo.reductionPotential > 0">{{ dataInfo.reductionPotential }}</iText>
+          <iText class="valueWidth bgGreen" v-if="dataInfo.reductionPotential < 0">{{
+              dataInfo.reductionPotential
+            }}
+          </iText>
+          <iText class="valueWidth bgRed" v-else-if="dataInfo.reductionPotential > 0">{{
+              dataInfo.reductionPotential
+            }}
+          </iText>
           <iText class="valueWidth" v-else>{{ dataInfo.reductionPotential }}</iText>
         </div>
       </div>
@@ -114,7 +120,7 @@ export default {
     },
   },
   created() {
-    this.getMathematicalFormulaData()
+    this.getMathematicalFormulaData();
   },
   data() {
     return {
@@ -138,16 +144,18 @@ export default {
   methods: {
     getMathematicalFormulaData() {
       this.dropPotential = {
-        totalPlannedOutputTipsData: this.dataInfo.planTotalPro,
-        estimatedTotalProductionTipsData: this.dataInfo.estimatedActualTotalPro,
-        fixedCost: this.dataInfo.costProportion,
-        result: this.dataInfo.reductionPotential,
+        totalPlannedOutputTipsData: this.dataInfo.planTotalPro ? this.dataInfo.planTotalPro : '',
+        estimatedTotalProductionTipsData: this.dataInfo.estimatedActualTotalPro
+            ? this.dataInfo.estimatedActualTotalPro
+            : '',
+        fixedCost: this.dataInfo.costProportion ? this.dataInfo.costProportion : '',
+        result: this.dataInfo.reductionPotential ? this.dataInfo.reductionPotential : '',
         costReductionUnitPrice: -0.88,
       };
       this.additionalPriceReduction = {
         totalPriceReduction: -3.4,
         priceReduction: -1.4,
-        result: this.dataInfo.achievedReductionPrice,
+        result: this.dataInfo.achievedReductionPrice ? this.dataInfo.achievedReductionPrice : '',
       };
     },
   },

@@ -15,3 +15,12 @@ export function getAnalysisProcessing(params) {
     data: params
   })
 }
+
+//固定成本--列表查询
+export function getVpCostDetail(params) {
+  return request({
+    url: '/vpCostDetail',
+    method: 'POST',
+    data: params
+  })
+}
