@@ -2,7 +2,7 @@
  * @Descripttion: 
  * @Author: Luoshuang
  * @Date: 2021-05-21 14:30:41
- * @LastEditTime: 2021-06-17 15:08:11
+ * @LastEditTime: 2021-06-23 16:27:12
 -->
 <template>
   <el-table ref="multipleTable" fit tooltip-effect='light' :height="height" :data='tableData' v-loading='tableLoading' @selection-change="handleSelectionChange" :empty-text="$t('LK_ZANWUSHUJU')" >
@@ -77,6 +77,8 @@
             <span slot="reference" @click="handleAttachmentDonwload(scope.row)" class="openLinkText cursor">下载</span>
           </el-popover>
           <span v-else-if="items.props === 'ltcRateOfThree'">{{(scope.row.ltcs[0]?scope.row.ltcs[0].ltcRate:'')+'/'+(scope.row.ltcs[1]?scope.row.ltcs[1].ltcRate:'')+'/'+(scope.row.ltcs[2]?scope.row.ltcs[2].ltcRate:'')}}</span>
+          <!------------------枚举列--------------------------->
+          <span v-else-if="items.isObject">{{scope.row[items.props].name || scope.row[items.props] }}</span>
           <!------------------正常--------------------------->
           <span v-else>{{scope.row[items.props]}}</span>
         </template>

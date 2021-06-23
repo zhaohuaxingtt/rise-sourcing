@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-28 15:03:47
- * @LastEditTime: 2021-06-21 21:23:20
+ * @LastEditTime: 2021-06-23 19:12:58
  * @LastEditors: Please set LastEditors
  * @Description: 特殊表格实现
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\table.vue
@@ -19,7 +19,7 @@
     :header-cell-class-name='headerClassName'
     :cell-class-name='cellClassName'
     :span-method="spanMethod"
-    @sort-change="sortChangeTable"
+
   >
     <template v-for='(item,index) in tableTitle'>
       <!-----------------存在index selection情况------------------------>
@@ -29,7 +29,6 @@
         :label="item.i18n ? $t(item.i18n) : item.label"
         :width="item.width || 50"
         align="center"
-        :prop='item.prop'
       >
         <template slot-scope="scope">
             <el-checkbox @change="handleSelectionChange" class="checkBox" v-model="scope.row.active"><span>{{scope.row[item.props]}}</span></el-checkbox>
@@ -283,6 +282,7 @@ export default{
 </script>
 <style lang='scss' scoped>
   .checkBox{
+    z-index: 9999;
     ::v-deep.el-checkbox__label{
       display: block;
       padding-left: 0px;
