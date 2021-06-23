@@ -22,7 +22,7 @@
         </div>
         <div>
           <iButton @click="confirmApply">{{ $t('LK_QUERENSHENQING') }}</iButton><!-- 确认申请 -->
-          <iButton @click="modifyA">{{ $t('LK_ZUOFEI') }}</iButton><!-- 作废 -->
+          <iButton @click="toVoid" :loading="bmCancelLoading">{{ $t('LK_ZUOFEI') }}</iButton><!-- 作废 -->
           <iButton @click="downloadList">{{ $t('LK_XIAZAIQINGDAN') }}</iButton><!-- 下载清单 -->
         </div>
         
@@ -40,7 +40,7 @@
 
         <!-- RS单号 -->
         <template #rsNum="scope">
-          <div class="table-txtStyle" @click="openBMDetail(scope.row)">{{scope.row.rsNum}}</div>
+          <div class="table-txtStyle">{{scope.row.rsNum}}</div>
         </template>
       </iTableList>
 
@@ -79,7 +79,7 @@ import {
 } from "rise";
 import UnitExplain from "./unitExplain";
 import { bmTableHead } from "./data";
-import { bmCarTypePullDown, findBmWaitConfirmList } from "@/api/ws2/bmApply";
+import { bmCarTypePullDown, findBmWaitConfirmList, bmCancel } from "@/api/ws2/bmApply";
 import { pageMixins } from "@/utils/pageMixins";
 import { excelExport } from '@/utils/filedowLoad';
 
@@ -87,6 +87,19 @@ export default {
   components: {
     iTableList, iCard, iButton, iPagination,
     UnitExplain, iSelect
+  },
+
+  props: {
+    refresh: {
+      type: Boolean,
+      default: false
+    }
+  },
+
+  watch: {
+    refresh(){
+      this.getTableData();
+    }
   },
 
   mixins: [pageMixins],
@@ -103,6 +116,7 @@ export default {
         currPage: 1,
         pageSize: 10,
       },
+      bmCancelLoading: false,
     }
   },
 
@@ -112,6 +126,33 @@ export default {
   },
 
   methods: {
+
+    //  作废
+    toVoid(){
+      if(!this.selectTableList.length){
+        return iMessage.warn(this.$t('LK_QINGXUANZHE'))
+      }
+
+      this.bmCancelLoading = true;
+
+      bmCancel({
+        ids: this.selectTableList.map(item => item.id)
+      }).then(res => {
+        const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn;
+
+        if(res.data){
+          iMessage.success(result);
+          this.getTableData();
+          this.selectTableList = [];
+        }else{
+          iMessage.error(result);
+        }
+
+        this.bmCancelLoading = false;
+      }).catch(err => {
+        this.bmCancelLoading = false;
+      })
+    },
 
     //  打开详情
     openBMDetail(scope){

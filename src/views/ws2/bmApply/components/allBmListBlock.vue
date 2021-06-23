@@ -13,7 +13,7 @@
         >
           <!-- BM单流⽔号 -->
           <template #bmSerial="scope">
-            <div class="table-link">{{scope.row.bmSerial}}</div>
+            <div class="table-link" @click="openBMDetail(scope.row)">{{scope.row.bmSerial}}</div>
           </template>
 
           <!-- RS单号 -->
@@ -82,11 +82,29 @@ export default {
     }
   },
 
+  props: {
+    refresh: {
+      type: Boolean,
+      default: false
+    }
+  },
+
+  watch: {
+    refresh(){
+      this.getTableData();
+    }
+  },
+
   created(){
     this.getTableData();
   },
 
   methods: {
+
+    //  打开详情
+    openBMDetail(scope){
+      this.$emit('openBMDetail', scope);
+    },
 
     //  下载清单
     downloadList(){

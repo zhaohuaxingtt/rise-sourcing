@@ -424,37 +424,37 @@ export const aekoBmTableHead = [
 //  Aeko减值BM单表头
 export const bmPopupTableHead = [
   {
-    props: 'data1',
+    props: 'behalfPartsNum',
     name: '零件号',
     key: 'LK_LINGJIANHAO',
     tooltip: false
   },
   {
-    props: 'data2',
+    props: 'partsNameZh',
     name: '零件名称（中）',
     key: 'LK_LINGJIANMINGCHENZHONG',
     tooltip: false
   },
   {
-    props: 'data3',
+    props: 'partsNameDe',
     name: '零件名称（德）',
     key: 'LK_LINGJIANMINGCHENDE',
     tooltip: false
   },
   {
-    props: 'data4',
+    props: 'partsFs',
     name: 'FS号',
     key: 'LK_FSHAO',
     tooltip: false
   },
   {
-    props: 'data5',
+    props: 'partsCsf',
     name: 'CSF',
     key: 'LK_CSF',
     tooltip: false
   },
   {
-    props: 'data11',
+    props: 'linieName',
     name: 'Linie',
     key: 'LK_LINIE',
     tooltip: false
