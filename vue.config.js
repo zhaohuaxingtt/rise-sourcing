@@ -117,7 +117,7 @@ module.exports = {
         host: "0.0.0.0",
         port: 8080,
         https: false,
-        hotOnly: true,
+        hot: true,
         proxy: {
 					'/api': {
 						// target: 'http://10.160.138.38:8788',
@@ -332,7 +332,14 @@ module.exports = {
 							pathRewrite: {
 								"^/partApi": ""
 							}
-						}
+						},
+            '/vpAnalysisApi': {
+              target: 'http://10.160.138.157:8036',
+							changeOrigin: true,
+							pathRewrite: {
+								"^/vpAnalysisApi": ""
+							}
+            }
         }
     }
 }
