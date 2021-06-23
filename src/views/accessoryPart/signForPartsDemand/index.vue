@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-25 13:57:11
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-16 22:12:52
+ * @LastEditTime: 2021-06-22 14:41:49
  * @Description: 
  * @FilePath: \front-web\src\views\accessoryPart\signForPartsDemand\index.vue
 -->
@@ -92,7 +92,6 @@ import { tableTitle, searchList } from '../signForPartsDemand/data'
 import assignInquiryDepartmentDialog from './components/assignInquiryDepartment'
 import assignInquiryBuyerDialog from './components/assignInquiryBuyer'
 import backDialog from '../integratedManage/components/backEps'
-import { cloneDeep } from 'lodash'
 import { getAccessoryOneInfoList, signAccessoryInfo, sendAccessoryInfo, downLoadAccessoryList, backEPS } from '@/api/accessoryPart/index'
 import { uniq } from 'lodash'
 import {findBySearches,getCartypeDict} from "@/api/partsrfq/home";
