@@ -96,6 +96,8 @@
         :selection="false"
         :show-summary="true"
         @handleSelectionChange="handleSelectionChange"
+        @cellMouseLeave="cellMouseLeave"
+        @cellMouseEnter="cellMouseEnter"
         :height="tableHeight - 660 > 200 ? tableHeight - 660 : 200"
         :class="
           selectIndex == 1
@@ -264,6 +266,7 @@ export default {
       saveNewVersion: false, //保存为新版本对话框
       uploadLoading: false,
       selectIndex: -1, //table选择index
+      fromTable: false, //是否在表格
     };
   },
   mounted() {
@@ -302,16 +305,22 @@ export default {
       this.$nextTick(() => {
         const chart = echarts().init(document.getElementById("echart"));
         let series = [];
-        const colorList = [
-          "#0040be",
-          "#6073ff",
-          "#0053ef",
-          "#3c7eff",
-          "#54a6ed",
-          "#8bd2ff",
-        ];
-        // const colorList = ["#8bd2ff", "#54a6ed", "#3c7eff", "#0053ef", "#6073ff", "#0040be"];
+        let colorList = [];
+        if (this.fromTable) {
+          colorList = ["#D8D9FD", "#DFE3FF", "#D8E5FF", "#DDEDFC", "#E8F6FF"];
+          colorList.splice(this.selectIndex - 1, 0, "#0053EF");
+        } else {
+          colorList = [
+            "#0040be",
+            "#6073ff",
+            "#0053ef",
+            "#3c7eff",
+            "#54a6ed",
+            "#8bd2ff",
+          ];
+        }
         this.tableListData.forEach((element, index) => {
+          element.index = index;
           let temp = {};
           let data = [];
           temp.name = element.department;
@@ -319,9 +328,16 @@ export default {
           temp.barWidth = 50;
           temp.stack = "total";
           temp.color = colorList[index];
-          temp.label = {
-            show: false,
-          };
+          if (this.fromTable && index == this.selectIndex - 1) {
+            temp.label = {
+              show: true,
+            };
+          } else {
+            temp.label = {
+              show: false,
+            };
+          }
+
           data.push(element.jan);
           data.push(element.feb);
           data.push(element.mar);
@@ -465,6 +481,18 @@ export default {
       this.saveNewVersion = false;
     },
     uploadAttachments(data) {},
+    cellMouseLeave() {
+      this.selectIndex = -1;
+      this.fromTable = false;
+      this.showEcharts();
+      this.$forceUpdate();
+    },
+    cellMouseEnter(val) {
+      console.log("valIndex=>", val.index);
+      this.selectIndex = val.index + 1;
+      this.fromTable = true;
+      this.showEcharts();
+    },
   },
 };
 </script>
@@ -721,7 +749,6 @@ export default {
     tr:nth-child(6) {
       td {
         border-top: 1px solid #0053ef;
-        border-bottom: 1px solid #0053ef;
       }
       td:first-child {
         border-left: 1px solid #0053ef;
