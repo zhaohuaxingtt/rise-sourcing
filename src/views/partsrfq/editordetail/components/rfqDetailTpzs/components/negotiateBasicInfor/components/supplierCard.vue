@@ -9,7 +9,7 @@
   <div>
     <iCard class="right margin-top5"  v-for="(item,index) in 3" :key="index">
       <div class="flex">
-        <icon class="icon-s" name="icongongyingshangshenqingzhong" symbol></icon>
+        <icon class="icon-s" name="iconpilianggongyingshangzonglan" symbol></icon>
         <span>供应商</span>
       </div>
       <iLabel class="margin-top8 title" :label="$t('LK_CHEXINGXIANGMU')+':'"></iLabel>

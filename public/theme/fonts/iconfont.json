@@ -6,6 +6,20 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "22334275",
+      "name": "批量供应商总览",
+      "font_class": "pilianggongyingshangzonglan",
+      "unicode": "e6af",
+      "unicode_decimal": 59055
+    },
+    {
+      "icon_id": "22292890",
+      "name": "做框架原因",
+      "font_class": "zuokuangjiayuanyin",
+      "unicode": "e6ae",
+      "unicode_decimal": 59054
+    },
+    {
       "icon_id": "22283927",
       "name": "上升-VP",
       "font_class": "shangsheng-VP",
