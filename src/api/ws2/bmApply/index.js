@@ -2,6 +2,42 @@ import axios from '@/utils/axios'
 
 const VUE_APP_BMAPPROVE = axios(process.env.VUE_APP_BMAPPROVE);
 
+// 作废
+export function bmCancel(parmars) {
+  return VUE_APP_BMAPPROVE({
+      url: '/bmCancel',
+      method: 'POST',
+      data: parmars
+  })
+}
+
+//  详情保存
+export function bmDetailUpdate(parmars) {
+  return VUE_APP_BMAPPROVE({
+      url: '/bmDetailUpdate',
+      method: 'POST',
+      data: parmars
+  })
+}
+
+// 零件号列表
+export function getBmPartsList(parmars) {
+  return VUE_APP_BMAPPROVE({
+      url: '/getBmPartsList',
+      method: 'GET',
+      params: parmars
+  })
+}
+
+// BM详情
+export function getBmDetailById(parmars) {
+  return VUE_APP_BMAPPROVE({
+      url: '/getBmDetailById',
+      method: 'GET',
+      params: parmars
+  })
+}
+
 //  Aeko减值BM单
 export function findBmAekoMinusList(parmars) {
   return VUE_APP_BMAPPROVE({

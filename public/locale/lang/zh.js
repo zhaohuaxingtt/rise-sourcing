@@ -1018,6 +1018,13 @@
         'LK_RENMINBI': '人民币',    //  人民币
         'LK_BUHANSUI': '不含税',    //  不含税
         'LK_SHOUGONGTIAOZHENG': '手工调整', //  手工调整
+        'LK_QINGXUANZHE': '请先选择',   //  请先选择
+        'LK_XUQIUGENZHONGHAO': '需求跟踪号',    //  需求跟踪号
+        'LK_JILIANGDANWEI': '计量单位', //  计量单位
+        'LK_SHULIANG': '数量',  //  数量
+        'LK_LIZI': '例',    //  例
+        'LK_LIZISHUOMING': '代表零件号的车型项目/零件号/零件名称/供应商简称',  //  代表零件号的车型项目/零件号/零件名称/供应商简称
+        'LK_BMAPPLYBAOCUNMSG': '你有必填字段未填',  //  你有必填字段未填
 
         // 定点管理
         'nominationLanguage': {

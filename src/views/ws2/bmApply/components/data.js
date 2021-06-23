@@ -17,6 +17,7 @@ export const allTableHead = [
     props: 'bmSerial',
     name: 'BM单流⽔号',
     key: 'LK_BMDANLIUSHUIHAO',
+    width: 150,
     tooltip: false
   },
   {
@@ -29,6 +30,7 @@ export const allTableHead = [
     props: 'wbsCode',
     name: 'WBS编号',
     key: 'LK_WBSBIANHAO',
+    width: 170,
     tooltip: false
   },
   {
@@ -53,6 +55,7 @@ export const allTableHead = [
     props: 'designatedSupplierName',
     name: '定点供应商',
     key: 'LK_FIXEDPOINTSUPPLIER',
+    width: 100,
     tooltip: false
   },
   {
@@ -65,6 +68,7 @@ export const allTableHead = [
     props: 'bmStatusName',
     name: 'BM单状态',
     key: 'LK_BMZHUANGTAI',
+    width: 100,
     tooltip: false
   },
   {
@@ -89,6 +93,7 @@ export const allTableHead = [
     props: 'areaControlPerson',
     name: '区域控制员',
     key: 'LK_REGINOCONTROLLER',
+    width: 100,
     tooltip: false
   },
   {
@@ -119,6 +124,7 @@ export const allTableHead = [
     props: 'aekoAddAmount',
     name: 'Aeko增值金额',
     key: 'LK_AEKOZENGZHIJINE',
+    width: 100,
     tooltip: false
   },
 ]
@@ -126,181 +132,192 @@ export const allTableHead = [
 //  待确认BM单表头
 export const bmTableHead = [
   {
-    props: 'data1',
+    props: 'bmSerial',
     name: 'BM单流⽔号',
     key: 'LK_BMDANLIUSHUIHAO',
+    width: 150,
     tooltip: false
   },
   {
-    props: 'data2',
+    props: 'bmNum',
     name: 'BM单号',
     key: 'LK_BMDANHAO',
     tooltip: false
   },
   {
-    props: 'data3',
+    props: 'wbsCode',
     name: 'WBS编号',
     key: 'LK_WBSBIANHAO',
+    width: 170,
     tooltip: false
   },
   {
-    props: 'data4',
+    props: 'tmCartypeProName',
     name: '车型项目',
     key: 'LK_CHEXINGXIANGMU',
     tooltip: false
   },
   {
-    props: 'data5',
+    props: 'behalfPartsName',
     name: '代表零件',
     key: 'LK_DAIBIAOLINGJIAN',
     tooltip: false
   },
   {
-    props: 'data6',
+    props: 'productionFactoryName',
     name: '采购工厂',
     key: 'LK_CAIGOUGONGCHANG',
     tooltip: false
   },
   {
-    props: 'data7',
+    props: 'designatedSupplierName',
     name: '定点供应商',
     key: 'LK_FIXEDPOINTSUPPLIER',
+    width: 100,
     tooltip: false
   },
   {
-    props: 'data8',
+    props: 'bmAmount',
     name: 'BM单金额',
     key: 'LK_BMDANJINE',
+    width: 100,
     tooltip: false
   },
   {
-    props: 'data9',
+    props: 'bmStatusName',
     name: 'BM单状态',
     key: 'LK_BMZHUANGTAI',
+    width: 100,
     tooltip: false
   },
   {
-    props: 'data10',
+    props: 'deptName',
     name: '科室',
     key: 'LK_KESHI',
     tooltip: false
   },
   {
-    props: 'data11',
+    props: 'linieName',
     name: 'Linie',
     key: 'LK_LINIE',
     tooltip: false
   },
   {
-    props: 'data12',
+    props: 'rsNum',
     name: 'RS单号',
     key: 'LK_RSODDNUMBERS',
     tooltip: false
   },
   {
-    props: 'data15',
+    props: 'nomiType',
     name: '定点类型',
     key: 'LK_DINGDIANLEIXING',
     tooltip: false
   },
   {
-    props: 'data13',
+    props: 'areaControlPerson',
     name: '区域控制员',
     key: 'LK_REGINOCONTROLLER',
+    width: 100,
     tooltip: false
   },
 ]
 
-//  待确认BM单表头
+//  aeko增值
 export const aekoTableHead = [
   {
-    props: 'data1',
+    props: 'bmSerial',
     name: 'BM单流⽔号',
     key: 'LK_BMDANLIUSHUIHAO',
+    width: 150,
     tooltip: false
   },
   {
-    props: 'data2',
+    props: 'bmNum',
     name: 'BM单号',
     key: 'LK_BMDANHAO',
     tooltip: false
   },
   {
-    props: 'data3',
+    props: 'wbsCode',
     name: 'WBS编号',
     key: 'LK_WBSBIANHAO',
+    width: 170,
     tooltip: false
   },
   {
-    props: 'data4',
+    props: 'tmCartypeProName',
     name: '车型项目',
     key: 'LK_CHEXINGXIANGMU',
     tooltip: false
   },
   {
-    props: 'data5',
+    props: 'behalfPartsName',
     name: '代表零件号',
     key: 'LK_DAIBIAOLINGJIANHAO',
     tooltip: false
   },
   {
-    props: 'data6',
+    props: 'productionFactoryName',
     name: '采购工厂',
     key: 'LK_CAIGOUGONGCHANG',
     tooltip: false
   },
   {
-    props: 'data7',
+    props: 'designatedSupplierName',
     name: '定点供应商',
     key: 'LK_FIXEDPOINTSUPPLIER',
+    width: 100,
     tooltip: false
   },
   {
-    props: 'data17',
+    props: 'aekoNum',
     name: 'Aeko号',
     key: 'LK_AEKOHAO',
     tooltip: false
   },
   {
-    props: 'data18',
+    props: 'aekoAddAmount',
     name: 'Aeko增值金额',
     key: 'LK_AEKOZENGZHIJINE',
+    width: 100,
     tooltip: false
   },
   {
-    props: 'data8',
+    props: 'bmAmount',
     name: 'BM单金额',
     key: 'LK_BMDANJINE',
     tooltip: false
   },
   {
-    props: 'data9',
+    props: 'bmStatus',
     name: 'BM单状态',
     key: 'LK_BMZHUANGTAI',
     tooltip: false
   },
   {
-    props: 'data10',
+    props: 'deptName',
     name: '科室',
     key: 'LK_KESHI',
     tooltip: false
   },
   {
-    props: 'data11',
+    props: 'linieName',
     name: 'Linie',
     key: 'LK_LINIE',
     tooltip: false
   },
   {
-    props: 'data12',
+    props: 'rsNum',
     name: 'RS单号',
     key: 'LK_RSODDNUMBERS',
     tooltip: false
   },
   {
-    props: 'data13',
+    props: 'areaControlPerson',
     name: '区域控制员',
     key: 'LK_REGINOCONTROLLER',
+    width: 100,
     tooltip: false
   },
 ]
@@ -308,93 +325,98 @@ export const aekoTableHead = [
 //  Aeko减值BM单表头
 export const aekoBmTableHead = [
   {
-    props: 'data1',
+    props: 'bmSerial',
     name: 'BM单流⽔号',
     key: 'LK_BMDANLIUSHUIHAO',
+    width: 150,
     tooltip: false
   },
   {
-    props: 'data2',
+    props: 'bmNum',
     name: 'BM单号',
     key: 'LK_BMDANHAO',
     tooltip: false
   },
   {
-    props: 'data3',
+    props: 'wbsCode',
     name: 'WBS编号',
     key: 'LK_WBSBIANHAO',
+    width: 170,
     tooltip: false
   },
   {
-    props: 'data4',
+    props: 'tmCartypeProName',
     name: '车型项目',
     key: 'LK_CHEXINGXIANGMU',
     tooltip: false
   },
   {
-    props: 'data5',
+    props: 'behalfPartsName',
     name: '代表零件号',
     key: 'LK_DAIBIAOLINGJIANHAO',
     tooltip: false
   },
   {
-    props: 'data6',
+    props: 'productionFactoryName',
     name: '采购工厂',
     key: 'LK_CAIGOUGONGCHANG',
     tooltip: false
   },
   {
-    props: 'data7',
+    props: 'designatedSupplierName',
     name: '定点供应商',
     key: 'LK_FIXEDPOINTSUPPLIER',
+    width: 100,
     tooltip: false
   },
   {
-    props: 'data17',
+    props: 'aekoNum',
     name: 'Aeko号',
     key: 'LK_AEKOHAO',
     tooltip: false
   },
   {
-    props: 'data18',
-    name: 'Aeko增值金额',
+    props: 'aekoMinusAmount',
+    name: 'Aeko减值金额',
     key: 'LK_AEKOZENGZHIJINE',
+    width: 100,
     tooltip: false
   },
   {
-    props: 'data8',
+    props: 'bmAmount',
     name: 'BM单金额',
     key: 'LK_BMDANJINE',
     tooltip: false
   },
   {
-    props: 'data9',
+    props: 'bmStatus',
     name: 'BM单状态',
     key: 'LK_BMZHUANGTAI',
     tooltip: false
   },
   {
-    props: 'data10',
+    props: 'deptName',
     name: '科室',
     key: 'LK_KESHI',
     tooltip: false
   },
   {
-    props: 'data11',
+    props: 'linieName',
     name: 'Linie',
     key: 'LK_LINIE',
     tooltip: false
   },
   {
-    props: 'data12',
+    props: 'rsNum',
     name: 'RS单号',
     key: 'LK_RSODDNUMBERS',
     tooltip: false
   },
   {
-    props: 'data13',
+    props: 'areaControlPerson',
     name: '区域控制员',
     key: 'LK_REGINOCONTROLLER',
+    width: 100,
     tooltip: false
   },
 ]
@@ -402,37 +424,37 @@ export const aekoBmTableHead = [
 //  Aeko减值BM单表头
 export const bmPopupTableHead = [
   {
-    props: 'data1',
+    props: 'behalfPartsNum',
     name: '零件号',
     key: 'LK_LINGJIANHAO',
     tooltip: false
   },
   {
-    props: 'data2',
+    props: 'partsNameZh',
     name: '零件名称（中）',
     key: 'LK_LINGJIANMINGCHENZHONG',
     tooltip: false
   },
   {
-    props: 'data3',
+    props: 'partsNameDe',
     name: '零件名称（德）',
     key: 'LK_LINGJIANMINGCHENDE',
     tooltip: false
   },
   {
-    props: 'data4',
+    props: 'partsFs',
     name: 'FS号',
     key: 'LK_FSHAO',
     tooltip: false
   },
   {
-    props: 'data5',
+    props: 'partsCsf',
     name: 'CSF',
     key: 'LK_CSF',
     tooltip: false
   },
   {
-    props: 'data11',
+    props: 'linieName',
     name: 'Linie',
     key: 'LK_LINIE',
     tooltip: false
