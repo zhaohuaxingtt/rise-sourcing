@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-26 11:16:51
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-17 18:40:19
+ * @LastEditTime: 2021-06-23 10:37:50
  * @Description: 配件综合管理页面
  * @FilePath: \front-web\src\views\accessoryPart\integratedManage\index.vue
 -->
@@ -609,11 +609,12 @@ export default {
       }
       const selectLINIE = uniq(this.selectParts.map(item => item.respLinie))
       const selectLINIEDept = uniq(this.selectParts.map(item => item.respDept))
-      if (selectLINIE.length > 1) {
-        iMessage.warn('请选择相同LINIE的配件')
+      const selectStuffId = uniq(this.selectParts.map(item => item.stuffId))
+      if (selectStuffId.length > 1) {
+        iMessage.warn('请选择相同工艺组的配件')
         return
-      } if (!selectLINIE[0]) {
-        iMessage.warn('请选择已分配LINIE的配件')
+      } if (!selectStuffId[0]) {
+        iMessage.warn('请选择已分配工艺组的配件')
         return
       }
       this.selectLinieDept = selectLINIEDept[0]

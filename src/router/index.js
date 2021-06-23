@@ -1,8 +1,8 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-06-21 15:35:08
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-06-22 11:04:44
+ * @LastEditors: Luoshuang
  * @Description: 系统静态路由.
  * @FilePath: \front-web\src\router\index.js
  *
@@ -14,6 +14,7 @@
 import designateRoutes from './modules/designate'
 import createpartsRoutes from './modules/createparts'
 import costanalysismanageRoutes from './modules/costanalysismanage'
+import financialtargetpriceRoutes from './modules/financialtargetprice'
 
 Vue.use(VueRouter);
 export const staticRouter = [{
@@ -331,6 +332,7 @@ export default new VueRouter({
         ...staticRouter,
         ...designateRoutes,
         ...createpartsRoutes,
-        ...costanalysismanageRoutes
+        ...costanalysismanageRoutes,
+        ...financialtargetpriceRoutes
     ]
 });
