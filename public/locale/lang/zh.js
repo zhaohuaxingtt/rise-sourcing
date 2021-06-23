@@ -195,7 +195,7 @@
 			'LingJianXiangMuLeiXing': '零件项目类型', // 零件项目类型
 			'CheXingDaLei': '车型大类', // 车型大类
 			'RfqLunCi': 'RFQ轮次', // RFQ轮次
-			'GongYingShang': '', // 
+			'GongYingShang': '供应商', //
 			'PcaFenXiJieGuo': 'PCA分析结果', // PCA分析结果
 			'TiaFenXiJieGuo': 'TIA分析结果', // TIA分析结果
 			'SavePcaResAndTiaResTips': '请填写完整PCA分析结果和TIA分析结果', // 请填写完整PCA分析结果和TIA分析结果
@@ -1095,7 +1095,7 @@
 		'TPZS': {
 			'FENXI': '分析', //分析
 			'YULAN': '预览', //预览
-			'GONGYINGSHANG': '', //
+			'GONGYINGSHANG': '供应商', //
 			'CHEXINGXIANGMU': '车型项目', //车型项目
 			'CHEXING': '车型', //车型
 			'GONGCHANG': '工厂', //工厂

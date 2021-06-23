@@ -3,6 +3,7 @@
     <iNavMvp :list="newTabRouterList" class="margin-bottom20" routerPage :lev="1"/>
     <pcaOverview v-if="pageType === 'pca'"/>
     <tiaOverview v-if="pageType === 'tia'"/>
+	<bobOverview v-if="pageType === 'bob'"/>
   </iPage>
 </template>
 
@@ -11,13 +12,15 @@ import {iPage, iNavMvp} from 'rise';
 import {tabRouterList} from '../data';
 import pcaOverview from '../../pcaAnalyse/pcaOverview';
 import tiaOverview from '../../tiaAnalyse/tiaOverview';
+import bobOverview from '../../bob/bob';
 
 export default {
   components: {
     iPage,
     iNavMvp,
     pcaOverview,
-    tiaOverview
+    tiaOverview,
+	bobOverview
   },
   data() {
     return {

@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-06-16 20:44:29
- * @LastEditTime: 2021-06-18 14:45:10
+ * @LastEditTime: 2021-06-22 20:31:05
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\analysisTool\index.vue
@@ -16,14 +16,14 @@
         <span class="buttonBox" v-if="!editMode">
           <iButton @click="clickEdit">编辑</iButton>
           <iButton>新建</iButton>
-          <iButton>删除</iButton>
+          <iButton @click="clickDel">删除</iButton>
         </span>
         <span class="buttonBox" v-if="editMode">
           <iButton @click="clickEdit">取消</iButton>
           <iButton @click="clickSaveEdit">保存</iButton>
         </span>
       </div>
-      <analysisTable :editMode="editMode"/>
+      <analysisTable ref="analysisTable" :editMode="editMode"/>
     </iCard>
   </div>
 </template>
@@ -32,7 +32,7 @@
 import {iCard, iButton} from 'rise'
 import analysisSearch from './components/analysisSearch'
 import analysisTable from './components/analysisTable'
-
+import {fetchEdit} from '@/api/partsrfq/vpAnalysis/vpAnalysisList'
 export default {
   name: 'AnalysisTool',
   components: {iCard, iButton, analysisSearch, analysisTable},
@@ -52,7 +52,12 @@ export default {
     },
     //点击保存编辑数据
     clickSaveEdit() {
-
+      this.editMode = false
+      this.$refs.analysisTable.clickSaveEdit()
+    },
+    //点击删除按钮
+    clickDel() {
+      this.$refs.analysisTable.clickSaveDel()
     }
   }
 }

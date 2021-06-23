@@ -2,7 +2,7 @@
  * @version: 1.0
  * @Author: zbin
  * @Date: 2021-06-16 09:54:11
- * @LastEditors: zbin
+ * @LastEditors: Please set LastEditors
  * @Descripttion: your project
  */
 /*
@@ -67,16 +67,7 @@ export default [{
       },
       component: () =>
         import("@/views/partsrfq/negotiationsAssistant/index.vue"),
-    },
-    {
-      path: "partsrfq/bobAnalysis",
-      name: "bobAnalysis",
-      meta: {
-        title: "Bob分析",
-      },
-      component: () =>
-        import("@/views/partsrfq/bobAnalysis"),
-    },
+    }
   ]
 }]
 

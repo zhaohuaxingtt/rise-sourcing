@@ -91,7 +91,7 @@ module.exports = {
 			'Ellipsis': 'Ellipsis'
 		};
 		//开启gizp压缩
-	
+
 	},
 	//引入全局css变量
 	css: {
@@ -332,7 +332,14 @@ module.exports = {
 							pathRewrite: {
 								"^/partApi": ""
 							}
-						}
+						},
+            '/vpAnalysisApi': {
+              target: 'http://10.160.143.185:18036',
+							changeOrigin: true,
+							pathRewrite: {
+								"^/vpAnalysisApi": ""
+							}
+            }
         }
     }
 }

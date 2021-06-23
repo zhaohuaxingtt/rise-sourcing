@@ -2,7 +2,7 @@
   <div>
     <div class="chartBox">
       <div class="supplyingTime">
-        <div>2019-02</div>
+        <div>{{dataInfo.supplyBeginTime}}</div>
         <div>供货起始时间</div>
       </div>
       <div class="massProductionTime" :style="{'left': (this.massProductionTimeRate - this.OffsetData) + '%'}">
@@ -16,7 +16,7 @@
         <div>计划量产达成率</div>
       </div>
       <div class="supplyingEndTime">
-        <div>2019-02</div>
+        <div>{{dataInfo.supplyEndTime}}</div>
         <div>供货结束时间</div>
       </div>
     </div>
@@ -24,11 +24,11 @@
       <div class="left">
         <div class="itemBox">
           <iLabel label="计划产量（截至上月末）" slot="label" class="labelWidth"></iLabel>
-          <iText class="valueWidth">100,000</iText>
+          <iText class="valueWidth">{{ dataInfo.planProEndLastMonth }}</iText>
         </div>
         <div class="itemBox">
           <iLabel label="实际累计产量（截至上月末）" slot="label" class="labelWidth"></iLabel>
-          <iText class="valueWidth">125,000</iText>
+          <iText class="valueWidth">{{ dataInfo.actualProEndLastMonth }}</iText>
           <icon symbol name="iconshangsheng-VP" class="margin-left15"></icon>
           <span class="up">25%</span>
         </div>
@@ -48,17 +48,25 @@
               <icon symbol name="iconxinxitishi" class="tipIcon" slot="reference"></icon>
             </el-popover>
           </div>
-          <iText class="valueWidth bgGreen">- 4.4%</iText>
+          <iText class="valueWidth bgGreen" v-if="dataInfo.reductionPotential < 0">{{
+              dataInfo.reductionPotential
+            }}
+          </iText>
+          <iText class="valueWidth bgRed" v-else-if="dataInfo.reductionPotential > 0">{{
+              dataInfo.reductionPotential
+            }}
+          </iText>
+          <iText class="valueWidth" v-else>{{ dataInfo.reductionPotential }}</iText>
         </div>
       </div>
       <div class="right">
         <div class="itemBox">
           <iLabel label="计划总产量" slot="label" class="labelWidth"></iLabel>
-          <iText class="valueWidth">100,000</iText>
+          <iText class="valueWidth">{{ dataInfo.planTotalPro }}</iText>
         </div>
         <div class="itemBox">
           <iLabel label="预计总产量" slot="label" class="labelWidth"></iLabel>
-          <iInput class="valueWidth"></iInput>
+          <iInput class="valueWidth">{{ dataInfo.estimatedActualTotalPro }}</iInput>
         </div>
         <div class="itemBox">
           <div class="warpBox">
@@ -72,7 +80,7 @@
               <icon symbol name="iconxinxitishi" class="tipIcon2" slot="reference"></icon>
             </el-popover>
           </div>
-          <iText class="valueWidth font-weight">100,000</iText>
+          <iText class="valueWidth font-weight">{{ dataInfo.achievedReductionPrice }}</iText>
         </div>
       </div>
     </div>
@@ -91,6 +99,14 @@ export default {
     iLabel,
     iText,
   },
+  props: {
+    dataInfo: {
+      type: Object,
+      default: () => {
+        return {};
+      },
+    },
+  },
   computed: {
     dropPotentialTips() {
       return `\\begin{array}{l}\\\\\\Delta\\%\\;\\;\\;=\\;\\left(\\frac{\\mathrm{计划总产量}}{\\mathrm{预计总产量}}\\;\\;-\\;1\\right)\\times\\mathrm{固定成本}\\%\\\\\\\\\\;\\;\\;\\;\\;\\;\\;\\;\\;
@@ -100,8 +116,11 @@ export default {
     additionalPriceReductionTips() {
       return `\\begin{array}{l}\\\\=\\;\\mathrm{总降价}\\;-\\;LTC\\mathrm{降价}\\\\\\\\
       =${this.additionalPriceReduction.totalPriceReduction}\\%\\;-（${this.additionalPriceReduction.priceReduction}\\%）\\\\\\\\
-      =${this.additionalPriceReduction.result}\\%\\\\\\end{array}`
+      =${this.additionalPriceReduction.result}\\%\\\\\\end{array}`;
     },
+  },
+  created() {
+    this.getMathematicalFormulaData();
   },
   data() {
     return {
@@ -118,9 +137,27 @@ export default {
       additionalPriceReduction: {
         totalPriceReduction: -3.4,
         priceReduction: -1.4,
-        result: -2.0
-      }
+        result: -2.0,
+      },
     };
+  },
+  methods: {
+    getMathematicalFormulaData() {
+      this.dropPotential = {
+        totalPlannedOutputTipsData: this.dataInfo.planTotalPro ? this.dataInfo.planTotalPro : '',
+        estimatedTotalProductionTipsData: this.dataInfo.estimatedActualTotalPro
+            ? this.dataInfo.estimatedActualTotalPro
+            : '',
+        fixedCost: this.dataInfo.costProportion ? this.dataInfo.costProportion : '',
+        result: this.dataInfo.reductionPotential ? this.dataInfo.reductionPotential : '',
+        costReductionUnitPrice: -0.88,
+      };
+      this.additionalPriceReduction = {
+        totalPriceReduction: -3.4,
+        priceReduction: -1.4,
+        result: this.dataInfo.achievedReductionPrice ? this.dataInfo.achievedReductionPrice : '',
+      };
+    },
   },
 };
 </script>
@@ -193,7 +230,7 @@ export default {
         transform: translateY(-50%);
       }
 
-      .tipIcon2{
+      .tipIcon2 {
         position: absolute;
         left: 125px;
         top: 50%;
