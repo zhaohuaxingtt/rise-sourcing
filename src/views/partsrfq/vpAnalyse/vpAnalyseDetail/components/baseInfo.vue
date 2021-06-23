@@ -2,22 +2,26 @@
   <iCard tabCard>
     <iFormGroup row="4" inline>
       <iFormItem>
+        <!--        供应商-->
         <iLabel :label="$t('TPZS.GONGYINGSHANG')" slot="label"/>
         <iSelect>
           <el-option :value="1" :label="1"></el-option>
         </iSelect>
       </iFormItem>
       <iFormItem>
+        <!--        车型项目-->
         <iLabel :label="$t('TPZS.CHEXINGXIANGMU')" slot="label"/>
-        <iText></iText>
+        <iText>{{ dataInfo.carClassifyProject }}</iText>
       </iFormItem>
       <iFormItem>
+        <!--        车型-->
         <iLabel :label="$t('TPZS.CHEXING')" slot="label"/>
-        <iText></iText>
+        <iText>{{ dataInfo.carClassify }}</iText>
       </iFormItem>
       <iFormItem>
+        <!--        工厂-->
         <iLabel :label="$t('TPZS.GONGCHANG')" slot="label"/>
-        <iText></iText>
+        <iText>{{ dataInfo.factory }}</iText>
       </iFormItem>
     </iFormGroup>
   </iCard>
@@ -33,7 +37,15 @@ export default {
     iFormItem,
     iLabel,
     iText,
-    iSelect
+    iSelect,
+  },
+  props: {
+    dataInfo: {
+      type: Object,
+      default: () => {
+        return {};
+      },
+    },
   },
   data() {
     return {};
