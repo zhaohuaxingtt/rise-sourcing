@@ -25,17 +25,23 @@
     </iSearch>
     <iCard class="contain margin-top20" title="预定点通知书(LOI)">
         <template v-slot:header-control>
-            <iButton @click="submit">确认并提交</iButton>
-            <iButton @click="lineSure">LINIE确认</iButton>
-            <iButton @click="lineBack">LINIE退回</iButton>
-            <iButton @click="back">撤回</iButton>
-            <iButton @click="closeLoi">关闭 </iButton>
-            <iButton @click="activate">激活 </iButton>
-            <template v-if="isEdit">
-                <iButton>取消</iButton>
-                <iButton>保存</iButton>
-            </template>
-            <iButton v-else @click="editRemark">编辑备注 </iButton>
+            <iButton @click="submit">{{$t('LK_QUERENBINGTIJIAO')}}</iButton>
+            <iButton @click="lineSure">{{$t('LK_LINEQUEREN')}}</iButton>
+            <iButton @click="lineBack">{{$t('LK_LINETUIHUI')}}</iButton>
+
+            <!-- 前期采购K2 -->
+            <iButton >FS K2确认</iButton>  
+
+            <!-- 专业采购K2 -->
+            <iButton >LINIE K2确认</iButton>  
+            <iButton >驳回</iButton>
+
+            
+
+            <iButton @click="back">{{$t('partsprocure.CheHui')}}</iButton>
+            <iButton @click="closeLoi">{{$t('LK_GUANBI')}} </iButton>
+            <iButton @click="activate">{{$t('LK_JIHUO')}} </iButton>
+            <iButton @click="editRemark">{{$t('LK_BIANJIBEIZHU')}} </iButton>
         </template>
         <!-- 表单区域 -->
         <tableList
@@ -58,11 +64,6 @@
                     <span class="link" >{{ scope.row.key2 }}</span>
                 </a>
             </template>
-            <!-- 备注 -->
-            <template #key11="scope">
-                    <span v-if="isEdit"><iInput v-model="scope.row.key11"/></span>
-                    <span v-else>{{scope.row.key11}}</span>
-            </template>
         </tableList>
         <!-- 分页 -->
         <iPagination
@@ -81,6 +82,8 @@
     
     <!-- 关闭定点信弹窗 -->
     <closeLoiDialog v-if="closeLoiVisible" :dialogVisible="closeLoiVisible" @changeVisible="changeVisible"/>
+    <!-- 编辑备注弹窗 -->
+    <remarkDialog  v-if="remarkVisible" :dialogVisible="remarkVisible" @changeVisible="changeVisible" /> 
   </div>
 </template>
 
@@ -102,6 +105,7 @@ import {
 import { pageMixins } from "@/utils/pageMixins";
 import tableList from "@/views/partsign/editordetail/components/tableList"
 import closeLoiDialog from './components/closeLoiDialog'
+import remarkDialog from './components/remarkDialog'
 export default {
     name:'loiList',
      mixins: [pageMixins],
@@ -115,6 +119,7 @@ export default {
         iButton,
         iCard,
         closeLoiDialog,
+        remarkDialog,
     },
     data(){
         return{
@@ -136,8 +141,8 @@ export default {
             ],
             tableTitle:loiListTitle,
             selectItems:[],
-            isEdit:false,
             closeLoiVisible:false,
+            remarkVisible:false,
         }
     },
     methods:{
@@ -252,6 +257,17 @@ export default {
             }
         },
 
+        // 编辑备注
+        async editRemark(){ 
+            const isNext  = await this.isSelectItem(true);
+            if(isNext){
+                this.changeVisible('remarkVisible', true)
+                console.log(isNext,'OK');
+            }else{
+                console.log(isNext,'CANCEL');
+            }
+        },
+
         // 跳转至定点信详情页
         goToDetail(){
              const routeData = this.$router.resolve({
@@ -260,15 +276,6 @@ export default {
             })
             window.open(routeData.href, '_blank')
         },
-        // 改变编辑备注按钮状态
-        changeRemarkStatus(){
-            const { isEdit } = this;
-            this.isEdit = !isEdit;
-        },
-        // 编辑备注
-        editRemark(){
-            this.isEdit = true;
-        }
     }
 }
 </script>

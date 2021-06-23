@@ -901,6 +901,34 @@
         'LK_LOIBIANHAO':'LOI编号', // LOI编号
         'LK_LOIZHUANGTAI':'LOI状态', // LOI状态
         'LK_LOISHENGCHENGSHIJIAN':'LOI⽣成时间', // LOI⽣成时间
+        'LK_QUERENBINGTIJIAO':'确认并提交', // 确认并提交
+        'LK_LINEQUEREN':'LINIE确认', // LINIE确认
+        'LK_LINETUIHUI':'LINIE退回', // LINIE退回
+        'LK_GUANBI':'关闭', // 关闭
+        'LK_JIHUO':'激活', // 激活
+        'LK_GUANBIDINGDIANXIN':'关闭定点信' , // 关闭定点信
+        'LK_QINGSHURUGUANBIYUANYIN':'请输⼊关闭原因', // 请输⼊关闭原因
+        'LK_MUBIAOXUNJIACAIGOUYUAN':'目标询价采购员', // 目标询价采购员
+        'LK_MUBIAOLINE':'⽬标LINIE', // ⽬标LINIE
+        'LK_GAILAN':'概览', // 概览
+        'LK_BAOBIAOGUANLI':'报表管理', // 报表管理
+        'LK_WANCHENGDINGDIANXIN':'完成定点信', // 完成定点信
+        'LK_DAOCHUBIAOZHUNDINGDIANXIN':'导出标准定点信', // 导出标准定点信
+        'LK_LISHIDINGDIANXIN':'历史定点信', // 历史定点信
+        'LK_BIAOZHUNDINGDIANXIN':'标准定点信', // 标准定点信
+        'LK_FEIBIAOZHUNDINGDIANXIN':'⾮标准定点信',  // ⾮标准定点信
+        'LK_GONGYINGSHANGLIANXIR':'供应商联系⼈', // 供应商联系⼈
+        'LK_SHANGCHUANSHIWENJIANQINGXUANZHUANZHIZHENGCHANGFANGXIANGHOUSHANGCHUAN':'上传时文件请旋转至正常方向后上传', // 上传时文件请旋转至正常方向后上传
+        'LK_BIANJIBEIZHU':'编辑备注', // 编辑备注
+        'LK_GUANBILOI':'关闭LOI', // 关闭LOI
+        'LK_WANCHENGLOI':'完成LOI', // 完成LOI
+        'LK_DAOCHUBIAOZHUNLOI':'导出标准LOI', // 导出标准LOI
+        'LK_LISHILOI':'历史LOI', // 历史LOI
+        'LK_BIAOZHUNLOI':'标准LOI', // 标准LOI
+        'LK_FEIBIAOZHUNLOI':'⾮标准LOI', // ⾮标准LOI
+        'LK_PILIANGLOI':'批量LOI', // 批量LOI
+        'LK_KAIFALOI':'开发LOI', // 开发LOI
+        'LK_KAIFAPILIANGLOI':'开发+批量LOI' , // 开发+批量LOI
 
         // 定点管理
         'nominationLanguage': {

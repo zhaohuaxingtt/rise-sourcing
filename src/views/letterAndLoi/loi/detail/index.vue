@@ -6,39 +6,39 @@
 <template>
     <iPage class="loiDetail">
         <div class="header clearFloat">
-        <div class="title">LOI编号: LOI21-10341</div>
+        <div class="title">{{$t('LK_LOIBIANHAO')}}: LOI21-10341</div>
         <div class="control">
             <span v-if="isEdit">
-                <iButton>保存</iButton>
-                <iButton @click="changeEditStatus">取消</iButton>
+                <iButton>{{$t('LK_BAOCUN')}}</iButton>
+                <iButton @click="changeEditStatus">{{$t('LK_QUXIAO')}}</iButton>
             </span>
             <span v-else>
-                <iButton @click="edit">编辑</iButton>
-                <iButton>LINIE确认</iButton>
-                <iButton>LINIE退回</iButton>
-                <iButton v-if="radioType=='NonStandard'">完成LOI</iButton>
-                <iButton>导出标准LOI</iButton>
-                <iButton @click="changeShowHistory">历史LOI </iButton>
+                <iButton @click="edit">{{$t('LK_BIANJI')}}</iButton>
+                <iButton>{{$t('LK_LINEQUEREN')}}</iButton>
+                <iButton>{{$t('LK_LINETUIHUI')}}</iButton>
+                <iButton v-if="radioType=='NonStandard'">{{$t('LK_WANCHENGLOI')}}</iButton>
+                <iButton>{{$t('LK_DAOCHUBIAOZHUNLOI')}}</iButton>
+                <iButton @click="changeShowHistory">{{$t('LK_LISHILOI')}} </iButton>
             </span>
             <logButton class="margin-left20" />
         </div>
         </div>
         <iCard class="margin-top30">
            <el-radio-group v-model="radioType" :disabled="!isEdit">
-                <el-radio :label="'standard'">标准LOI</el-radio>
-                <el-radio :label="'NonStandard'">⾮标准LOI</el-radio>
+                <el-radio :label="'standard'">{{$t('LK_BIAOZHUNLOI')}}</el-radio>
+                <el-radio :label="'NonStandard'">{{$t('LK_FEIBIAOZHUNLOI')}}</el-radio>
             </el-radio-group>
             <div class="sendTypeBox margin-top20" v-if="radioType=='standard'">
               <el-radio-group v-model="sendType" :disabled="!isEdit">
-                <el-radio :label="'kye1'">批量LOI</el-radio>
-                <el-radio :label="'key2'">开发LOI</el-radio>
-                <el-radio :label="'key3'">开发+批量LOI</el-radio>
+                <el-radio :label="'kye1'">{{$t('LK_PILIANGLOI')}}</el-radio>
+                <el-radio :label="'key2'">{{$t('LK_KAIFALOI')}}</el-radio>
+                <el-radio :label="'key3'">{{$t('LK_KAIFAPILIANGLOI')}}</el-radio>
               </el-radio-group>
             </div>
             <div class="contain margin-top30">
                 <iFormGroup row="2">
                     <div class="col">
-                        <iFormItem label='供应商联系⼈：'>
+                        <iFormItem :label="$t('LK_GONGYINGSHANGLIANXIR')+':'">
                             <iSelect v-update v-if="isEdit">
                                 <el-option
                                     v-for="item in selectOptions || []"

@@ -1,19 +1,19 @@
 <!--
  * @Author: wentliao
- * @Date: 2021-06-18 16:56:36
- * @Description: 关闭定点信弹窗
+ * @Date: 2021-06-23 15:11:21
+ * @Description: 备注弹窗
 -->
 <template>
   <iDialog
-    :title="$t('LK_GUANBIDINGDIANXIN')"
+    :title="$t('LK_BIANJIBEIZHU')"
     :visible.sync="dialogVisible"
     @close="clearDialog"
     width="50%"
-    class="turnSendDialog"
+    class="remarkDialog"
     >
     <iInput
         type="textarea"
-        :placeholder="$t('LK_QINGSHURUGUANBIYUANYIN')"
+        :placeholder="$t('LK_QINGSHURUBEIZHU')"
         rows="10" 
         resize="none"
         v-model="reason"
@@ -32,7 +32,7 @@ import {
     iButton,
 } from 'rise';
 export default {
-    name:"closeLetterDialog",
+    name:"closeLoiDialog",
     components:{
         iDialog,
         iInput,
@@ -48,14 +48,14 @@ export default {
     },
     methods:{
         clearDialog() {
-        this.$emit('changeVisible','closeLetterVisible', false)
+        this.$emit('changeVisible','remarkVisible', false)
         },
     }
 }
 </script>
 
 <style lang="scss" scoped>
-.turnSendDialog{
+.remarkDialog{
     .confirmBtn{
         text-align: right;
     }
