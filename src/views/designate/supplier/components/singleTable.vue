@@ -165,6 +165,8 @@ export default {
       batchEditVisibal: false,
       submiting: false,
       selectOptions: {},
+      // 记录删除的行
+      deletedRowList: []
     }
   },
   mounted() {
@@ -200,7 +202,7 @@ export default {
       if (confirmInfo !== 'confirm') return
       this.submiting = true
       addsingleSuppliersInfo({
-        items: this.singleListData,
+        items: [...this.singleListData, ...this.deletedRowList],
         nominateId: this.$store.getters.nomiAppId
       }).then(res => {
         if (res.code === '200') {
@@ -225,8 +227,14 @@ export default {
       if (confirmInfo !== 'confirm') return
       this.selectSingleData.forEach(item => {
         const dIndex = this.selectSingleData.findIndex(o => o.sid === item.sid)
+        const row = this.selectSingleData[dIndex]
+        
         if (dIndex >= 0) {
           this.singleListData.splice(dIndex, 1)
+          row.isDelete = 1
+          if (!this.deletedRowList.find(o => o.sid === row.sid)) {
+            this.deletedRowList.push(row)
+          }
         }
       })
       
@@ -272,12 +280,15 @@ export default {
       }).then(res => {
         this.tableLoading = false
         if (res.code === '200') {
-          this.singleListData = res.data || []
-          this.singleListData.map(o => {
+          let singleListData = res.data || []
+          singleListData.map(o => {
             o.sid = this.randomid()
             o.nominateId = this.$store.getters.nomiAppId
             return o
           })
+          // 过滤掉已经删除的项目
+          singleListData = singleListData.filter(o => o.isDelete !== 1)
+          this.singleListData = singleListData
           // 备份列表数据
           this.oriTableListData = _.cloneDeep(this.singleListData)
           if (this.page) {
