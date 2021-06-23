@@ -5,7 +5,7 @@
 -->
 <template>
   <iDialog
-    title="历史定点信"
+    :title="$t('LK_LISHIDINGDIANXIN')"
     :visible.sync="dialogVisible"
     @close="clearDialog"
     width="90%"

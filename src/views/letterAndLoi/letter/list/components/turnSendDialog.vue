@@ -5,7 +5,7 @@
 -->
 <template>
     <iDialog
-        title="转派"
+        :title="$t('partsprocure.PARTSPROCURETRANSFER')"
         :visible.sync="dialogVisible"
         @close="clearDialog"
         width="300px"
@@ -13,7 +13,7 @@
     >
         <div>
             <el-form>
-                <el-form-item label="目标询价采购员">
+                <el-form-item :label="$t('LK_MUBIAOXUNJIACAIGOUYUAN')">
                     <iSelect v-update v-model="turnSendFrom.key1" :placeholder="$t('partsprocure.CHOOSE')">
                     <el-option
                         v-for="item in selectOptionKey1 || []"
@@ -23,7 +23,7 @@
                     </el-option>  
                     </iSelect> 
                 </el-form-item>
-                <el-form-item label="⽬标LINIE">
+                <el-form-item :label="$t('LK_MUBIAOLINE')">
                     <iSelect v-update v-model="turnSendFrom.key2" :placeholder="$t('partsprocure.CHOOSE')">
                     <el-option
                         v-for="item in selectOptionKey2 || []"
@@ -35,7 +35,7 @@
                 </el-form-item>
             </el-form>
             <p class="confirmBtn padding-bottom20">
-                <iButton>确定</iButton>
+                <iButton>{{$t('LK_QUEDING')}}</iButton>
             </p>
         </div>   
     </iDialog>
