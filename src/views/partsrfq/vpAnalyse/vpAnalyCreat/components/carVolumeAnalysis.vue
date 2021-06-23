@@ -20,19 +20,34 @@
       </div>
     </template>
     <tableList class="margin-top20" :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="tableLoading" :selection='false' :index="false" @handleSelectionChange="handleSelectionChange">
-      <template #yield="scope">
+      <template #actualProEndLastMonth="scope">
         <div>
           <el-row>
-            <el-col v-for="(item,index) in scope.row.yield" :key="index" class="flex" :span="20">
-              <div :class="'per-'+index" :style="'width:'+ item.vale1+'%;'"></div>
-              <div>{{item.vale1}}</div>
+            <el-col :span="20">
+              <div class="flex">
+                <div class="per-0" :style="'width:'+scope.row.actualProEndLastMonthValue+'%'">
+                </div>
+                <div>
+                  {{scope.row.actualProEndLastMonth}}
+                </div>
+              </div>
+              <div class="flex">
+                <div class="per-1" :style="'width:'+scope.row.planTotalProValue+'%'"></div>
+                <div>
+                  {{scope.row.planTotalPro}}
+                </div>
+              </div>
             </el-col>
             <el-col :span="2"></el-col>
           </el-row>
         </div>
       </template>
-      <template #isSetTradeUnion="scope">
-        <el-progress color="#92B8FF" :stroke-width="10" :percentage="scope.row.isSetTradeUnion"></el-progress>
+      <template #increaseRate="scope">
+        <span class="red" v-if="scope.row.increaseRate>=0">{{'+'+scope.row.increaseRate+'%'}}</span>
+        <span class="green" v-else>{{scope.row.increaseRate+'%'}}</span>
+      </template>
+      <template #lifeCycle="scope">
+        <el-progress color="#92B8FF" :stroke-width="10" :percentage="scope.row.lifeCycle"></el-progress>
       </template>
     </tableList>
   </iCard>
@@ -44,41 +59,14 @@
 import { iCard, icon } from "rise";
 import { tableTitle } from "./data.js";
 import tableList from '@/components/ws3/commonTable';
-
+import { getCarModelProjectList } from "@/api/partsrfq/vpAnalysis/vpAnalyseCreate";
 export default {
   // import引入的组件需要注入到对象中才能使用
   components: { iCard, icon, tableList },
   data() {
     // 这里存放数据
     return {
-      tableListData: [
-        {
-          developerNumber: '车型1',
-          productionNumber: 21,
-          yield: [
-            {
-              vale1: '60',
-              vale2: 312
-            }, {
-              vale1: 11
-            }
-          ],
-          isSetTradeUnion: '12'
-        },
-        {
-          developerNumber: '车型1',
-          productionNumber: 21,
-          yield: [
-            {
-              vale1: 12,
-              vale2: 312
-            }, {
-              vale1: 11
-            }
-          ],
-          isSetTradeUnion: 12
-        },
-      ],
+      tableListData: [],
       tableTitle: tableTitle,
       tableLoading: false,
     }
@@ -89,10 +77,40 @@ export default {
   watch: {},
   // 方法集合
   methods: {
+    async getTableList() {
+      this.tableLoading = true;
+      try {
+        const req = {
+
+        };
+        const res = await getCarModelProjectList(req);
+        if (res.result) {
+          this.tableListData = res.data;
+          var actualProEndLastMonthSum = 0
+          var planTotalProSum = 0
+          // 求和-》百分比
+          res.data.forEach((item) => {
+            actualProEndLastMonthSum = actualProEndLastMonthSum + item.actualProEndLastMonth
+            planTotalProSum = planTotalProSum + item.planTotalPro
+          })
+          res.data.map((item) => {
+            item.increaseRate = item.increaseRate.toFixed(2)//保留2位小数
+            item.actualProEndLastMonthValue = item.actualProEndLastMonth / actualProEndLastMonthSum * 100//计算百分比
+            item.planTotalProValue = item.planTotalPro / planTotalProSum * 100
+            item.actualProEndLastMonth = String(item.actualProEndLastMonth).replace(/\B(?=(\d{3})+(?!\d))/g, ',')//千位符
+            return item.planTotalPro = String(item.planTotalPro).replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+          })
+        }
+        this.tableLoading = false;
+      } catch {
+        this.tableListData = [];
+        this.tableLoading = false;
+      }
+    }
   },
   // 生命周期 - 创建完成（可以访问当前this实例）
   created() {
-
+    this.getTableList()
   },
   // 生命周期 - 挂载完成（可以访问DOM元素）
   mounted() {
@@ -113,6 +131,12 @@ export default {
     align-items: baseline;
     margin-right: 40px;
   }
+}
+.green {
+  color: #70ad47;
+}
+.red {
+  color: #c00000;
 }
 .legend {
   font-size: 12px !important;
@@ -149,9 +173,6 @@ export default {
       border-bottom-right-radius: 5px;
     }
   }
-}
-::v-deep td:nth-child(3) {
-  color: #c00000 !important;
 }
 ::v-deep td:nth-child(4) {
   .el-progress__text {

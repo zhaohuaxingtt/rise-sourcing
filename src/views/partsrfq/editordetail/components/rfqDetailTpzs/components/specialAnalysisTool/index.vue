@@ -16,38 +16,50 @@
       </div>
     </div>
     <enterSpecificAnalysisToolsDialog @getDataList='getDataList' v-model="viewModelDialog" />
-    <el-row class="margin-top30" type="flex" justify="space-between">
+    <el-row v-if="current===0" class="margin-top30" type="flex" justify="space-between">
       <el-col class="margin-right20" :span="12">
-        <bob :totalBobOverview="totalBobOverview" :title="'BoB(Best of Best)'" />
+        <card @click.native="handlePage(1)" :totalBobOverview="totalBobOverview" :title="'BoB(Best of Best)'" />
       </el-col>
       <el-col :span="12">
-        <bob :totalBobOverview="totalVolumePricingOverview" :title="'Volume Pricing'" />
+        <card @click.native="handlePage(2)" :totalBobOverview="totalVolumePricingOverview" :title="'Volume Pricing'" />
       </el-col>
     </el-row>
+    <vpAnalyseList v-else-if="current===2" class="margin-top20" />
   </div>
 </template>
 
 <script>
-import bob from "./components/bob";
+import card from "./components/card";
 import { iPage, iNavMvp, iButton, icon } from "rise";
 import enterSpecificAnalysisToolsDialog from "./components/enterSpecificAnalysisToolsDialog";
 import { navList } from "./data";
 import { totalBobOverview, totalVolumePricingOverview } from "@/api/partsrfq/specialAnalysisTool/specialAnalysisTool.js";
+import vpAnalyseList from "@/views/partsrfq/vpAnalyse/vpAnalyseList/index.vue";
 export default {
-  components: { bob, iPage, iNavMvp, iButton, icon, enterSpecificAnalysisToolsDialog },
+  components: { card, iPage, iNavMvp, iButton, icon, enterSpecificAnalysisToolsDialog, vpAnalyseList },
   data() {
     return {
       navList,
       title: '',
       viewModelDialog: false,
       totalBobOverview: {},
-      totalVolumePricingOverview: {}
+      totalVolumePricingOverview: {},
+      current: 0
     }
   },
   created() {
     this.getDataList()
   },
   methods: {
+    handlePage(val) {
+      console.log(this.$route.path);
+      if (this.$route.path === '/sourcing/partsrfq/specialAnalysisTool') {
+        // 展示项
+        this.current = val
+      } else if (this.$route.path === '/sourcing/partsrfq/assistant') {
+        // 路由跳转
+      }
+    },
     async getDataList(val) {
       const pms = {
         isInsideEnter: this.$route.path === '/sourcing/partsrfq/assistant' ? true : false,
@@ -61,8 +73,8 @@ export default {
     handleSearch() {
       this.viewModelDialog = true
     },
-    handleReport(){
-      this.$router.push({path:'/sourcing/partsrfq/reportList'})
+    handleReport() {
+      this.$router.push({ path: '/sourcing/partsrfq/reportList' })
     }
   }
 }
