@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-24 16:57:16
- * @LastEditTime: 2021-06-18 19:03:40
+ * @LastEditTime: 2021-06-22 19:56:51
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsign\editordetail\components\enquiry\components\tablelist.vue
@@ -11,7 +11,10 @@
     <el-table-column v-if="selection || singleSelect" type="selection" align="center"></el-table-column>
     <el-table-column v-if="index" type="index" align="center" :label="indexLabel"></el-table-column>
     <template v-for="(item, $index) in tableTitle">
-      <el-table-column :key="$index" align="center" :label="$t(item.key)" :prop="item.props" :show-overflow-tooltip="item.tooltip" :width="item.width">
+      <el-table-column v-if="item.type === 'group'" align="center" :key="$index" :label="$t(item.key)" :show-overflow-tooltip="item.tooltip" :width="item.width">
+        <slot :name="item.props"></slot>
+      </el-table-column>
+      <el-table-column v-else align="center" :key="$index" :label="$t(item.key)" :prop="item.props" :show-overflow-tooltip="item.tooltip" :width="item.width">
         <template v-if="$scopedSlots[item.props] || $slots[item.props]" v-slot="scope">
           <slot :name="item.props" :row="scope.row"></slot>
         </template>
@@ -60,6 +63,9 @@ export default {
     cellClassName: {
       type: Function
     }
+  },
+  created() {
+    console.log(this.$slots)
   },
   methods: {
     handleSelectionChange(list) {

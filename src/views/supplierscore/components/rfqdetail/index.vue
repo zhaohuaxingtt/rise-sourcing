@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-22 10:45:39
- * @LastEditTime: 2021-06-22 15:49:48
+ * @LastEditTime: 2021-06-22 16:27:49
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\supplierscore\components\rfqdetail\index.vue
@@ -31,6 +31,7 @@ import { iPage, icon, iTabsList, iMessage } from "rise"
 import logButton from "@/components/logButton"
 import infos from "./components/infos"
 import partList from "./components/partList"
+import supplierScore from "./components/supplierScore"
 
 export default {
   components: {
@@ -39,7 +40,8 @@ export default {
     iTabsList,
     logButton,
     infos,
-    partList
+    partList,
+    supplierScore
   },
   data() {
     return {

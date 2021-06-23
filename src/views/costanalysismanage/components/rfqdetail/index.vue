@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-05-27 17:27:15
- * @LastEditTime: 2021-06-22 11:09:08
+ * @LastEditTime: 2021-06-22 17:08:18
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\costanalysismanage\components\rfqdetail\index.vue
@@ -11,7 +11,6 @@
     <div class="header clearFloat">
       <div class="title">{{ $t("costanalysismanage.RfqBianHao") }}: {{ rfqId }}</div>
       <div class="control">
-        <!-- <iButton @click="handleBack">{{ $t("costanalysismanage.FanHui") }}</iButton> -->
         <logButton class="margin-left20" />
         <span class="margin-left20">
           <icon symbol name="icondatabaseweixuanzhong" class="font24"></icon>
@@ -25,7 +24,7 @@
 </template>
 
 <script>
-import { iPage, iButton } from "rise"
+import { iPage } from "rise"
 import logButton from "@/components/logButton"
 import infos from "./components/infos"
 import partList from "./components/partList"
@@ -34,7 +33,6 @@ import reportList from "./components/reportList"
 export default {
   components: {
     iPage,
-    iButton,
     logButton,
     infos,
     partList,
