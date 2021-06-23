@@ -6,7 +6,7 @@
       </span>
     </div>
     <div class="legendLine">
-      <ul class="legend">
+      <ul class="legend" :class="{scroll: supplierList.length > 3}">
         <li v-for="(item, index) in supplierList" :key="index">
           <i :style="`background: ${colorPanel[item.index || 0]}`"></i>
           {{item.data}}
@@ -317,6 +317,7 @@ export default {
         data: ['', bestGroupSupplierMin, '', ''],
         type: 'bar',
         barWidth: 30,
+        barMinHeight: 30,
         stack: 'total',
         label: {
           show: true,
@@ -342,6 +343,7 @@ export default {
           data: ['', bestGroupSupplierMax, '', ''],
           type: 'bar',
           barWidth: 30,
+          barMinHeight: 30,
           stack: 'total',
           label: {
             show: true,
@@ -397,6 +399,7 @@ export default {
           data: ['', '', item.data, ''],
           type: 'bar',
           barWidth: 30,
+          barMinHeight: 30,
           stack: 'total',
           label: {
             show: true,
@@ -452,6 +455,7 @@ export default {
           data: ['', '', '', item.data],
           type: 'bar',
           barWidth: 30,
+          barMinHeight: 30,
           stack: 'total',
           label: {
             show: true,
@@ -530,6 +534,11 @@ export default {
     padding-top: 10px;
     .legend {
       max-width: 245px;
+      &.scroll {
+        max-height: 50PX;
+        overflow: hidden;
+        overflow-y: scroll;
+      }
       li {
         font-size: 16px;
         display: inline-block;
