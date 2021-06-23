@@ -15,7 +15,7 @@
       </div>
     </template>
     <div class="btn">
-      <iButton>{{$t('TPZS.CZLJ')}}</iButton>
+      <iButton @click="hanleParts">{{$t('TPZS.CZLJ')}}</iButton>
       <iButton>{{$t('LK_QUEREN')}}</iButton>
       <iButton>{{$t('TPZS.JRFX')}}</iButton>
     </div>
@@ -31,6 +31,7 @@
         </el-tab-pane>
       </iTabsList>
     </div>
+    <searchPartDialog v-model="partsDialog" />
   </iCard>
 </template>
 
@@ -41,15 +42,17 @@ import { iCard, icon, iTabsList, iButton, iPagination } from "rise";
 import { partsTableTitle } from "./data.js";
 import tableList from '@/components/ws3/commonTable';
 import { pageMixins } from '@/utils/pageMixins';
+import searchPartDialog from "./searchPartDialog.vue";
 
 
 export default {
   // import引入的组件需要注入到对象中才能使用
-  components: { iCard, icon, tableList, iTabsList, iButton, iPagination },
+  components: { iCard, icon, tableList, iTabsList, iButton, iPagination, searchPartDialog },
   mixins: [pageMixins],
   data() {
     // 这里存放数据
     return {
+      partsDialog: false,
       tableListData: [],
       tableTitle: partsTableTitle,
       tableLoading: false,
@@ -61,7 +64,9 @@ export default {
   watch: {},
   // 方法集合
   methods: {
-
+    hanleParts() {
+      this.partsDialog = true
+    }
   },
   // 生命周期 - 创建完成（可以访问当前this实例）
   created() {
