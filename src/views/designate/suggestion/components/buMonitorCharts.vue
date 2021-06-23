@@ -8,8 +8,8 @@
     <div class="legendLine">
       <ul class="legend">
         <li v-for="(item, index) in supplierList" :key="index">
-          <i :style="`background: ${colorPanel[index]}`"></i>
-          {{item}}
+          <i :style="`background: ${colorPanel[item.index || 0]}`"></i>
+          {{item.data}}
         </li>
         <!-- <li>SH Huashi</li>
         <li class="corlor1">NBHX</li> -->
@@ -105,7 +105,10 @@ export default {
       const supplierList = []
       this.supplier.forEach((sup, index) => {
         if (supplierInvo.includes(index)) {
-          supplierList.push(sup)
+          supplierList.push({
+            data: sup,
+            index: this.supplier.findIndex(o => o === sup)
+          })
         }
       })
       this.supplierList = supplierList
@@ -263,7 +266,7 @@ export default {
           },
           series
         };
-        console.log(JSON.stringify(option))
+        // console.log(JSON.stringify(option))
         vm.clear()
         vm.setOption(option);
       })
