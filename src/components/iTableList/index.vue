@@ -37,6 +37,8 @@
       :show-summary="showSummary"
       :summary-method="getSummaries"
       :row-class-name="tableRowClassName"
+      @cell-mouse-leave="cellMouseLeave" 
+      @cell-mouse-enter="cellMouseEnter"
     >
       <el-table-column
         v-if="selection"
@@ -186,6 +188,12 @@ export default {
         return "";
       }
     },
+    cellMouseLeave() {
+      this.$emit("cellMouseLeave");
+    },
+    cellMouseEnter(row) {
+      this.$emit("cellMouseEnter", row);
+    }
   },
 };
 </script>

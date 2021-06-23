@@ -21,11 +21,12 @@
       <div v-if="pageEdit">
         <iButton @click="exitEdit">{{ $t("退出编辑") }}</iButton>
         <!-- <iButton @click="uploadList">{{ $t("上传清单") }}</iButton> -->
-        <upload-button 
-            @uploadedCallback="uploadAttachments" 
-            :upload-button-loading="uploadLoading"
-            :buttonText="$t('上传清单')" 
-            class="margin-left8" />
+        <upload-button
+          @uploadedCallback="uploadAttachments"
+          :upload-button-loading="uploadLoading"
+          :buttonText="$t('上传清单')"
+          class="margin-left8"
+        />
         <iButton @click="saveAsList">{{ $t("保存") }}</iButton>
         <iButton @click="saveAsNew">{{ $t("保存为新版本") }}</iButton>
       </div>
@@ -44,9 +45,11 @@
             >{{ $t("LK_HUOBI") }}: {{ $t("LK_RENMINBI") }}</span
           >
           <span class="marginUnit unitText">|</span>
-          <span class="unitText">{{ $t("LK_DANWEI") }}: {{ $t("LK_BAIWANYUAN") }}</span>
+          <span class="unitText"
+            >{{ $t("LK_DANWEI") }}: {{ $t("LK_BAIWANYUAN") }}</span
+          >
           <span class="marginUnit unitText">|</span>
-          <span class="unitText">{{$t('LK_BUHANSUI')}}</span>
+          <span class="unitText">{{ $t("LK_BUHANSUI") }}</span>
         </div>
         <div class="legend">
           <div>CSE</div>
@@ -84,7 +87,6 @@
           </div>
         </div>
       </div>
-
       <div id="echart"></div>
       <iTableList
         :tableData="tableListData"
@@ -94,7 +96,24 @@
         :selection="false"
         :show-summary="true"
         @handleSelectionChange="handleSelectionChange"
+        @cellMouseLeave="cellMouseLeave"
+        @cellMouseEnter="cellMouseEnter"
         :height="tableHeight - 660 > 200 ? tableHeight - 660 : 200"
+        :class="
+          selectIndex == 1
+            ? 'tableSelectOne'
+            : selectIndex == 2
+            ? 'tableSelectTwo'
+            : selectIndex == 3
+            ? 'tableSelectThree'
+            : selectIndex == 4
+            ? 'tableSelectFour'
+            : selectIndex == 5
+            ? 'tableSelectFive'
+            : selectIndex == 6
+            ? 'tableSelectSix'
+            : ''
+        "
       >
         <template #jan="scope">
           <iInput
@@ -206,7 +225,10 @@
         </template>
       </iTableList>
     </iCard>
-    <new-version-dialog v-model="saveNewVersion" @handleConfirm="handleConfirm"/>
+    <new-version-dialog
+      v-model="saveNewVersion"
+      @handleConfirm="handleConfirm"
+    />
   </div>
 </template>
 
@@ -215,13 +237,13 @@ import { iSelect, iButton, iCard, iInput, icon } from "rise";
 import echarts from "@/utils/echarts";
 import { tableTitle, dataList } from "./components/data";
 import { iTableList } from "@/components";
-import { cloneDeep } from 'lodash';
+import { cloneDeep } from "lodash";
 import { tableHeight } from "@/utils/tableHeight";
-import NewVersionDialog from './components/newVersionDialog.vue';
-import uploadButton from './components/uploadButton';
+import NewVersionDialog from "./components/newVersionDialog.vue";
+import uploadButton from "./components/uploadButton";
 
 export default {
-  mixins: [ tableHeight ],
+  mixins: [tableHeight],
   components: {
     iSelect,
     iButton,
@@ -243,7 +265,8 @@ export default {
       tableTitle: tableTitle,
       saveNewVersion: false, //保存为新版本对话框
       uploadLoading: false,
-      selectIndex: -1,//table选择index
+      selectIndex: -1, //table选择index
+      fromTable: false, //是否在表格
     };
   },
   mounted() {
@@ -251,9 +274,7 @@ export default {
   },
   methods: {
     //选择版本
-    changeVersion() {
-
-    },
+    changeVersion() {},
     //编辑
     edit() {
       this.pageEdit = true;
@@ -271,13 +292,9 @@ export default {
 
     // },
     //保存
-    saveAsList() {
-
-    },
+    saveAsList() {},
     //下载清单
-    downloadList() {
-
-    },
+    downloadList() {},
     tabClick(index) {
       if (this.tabIndex === index) {
         return;
@@ -288,9 +305,22 @@ export default {
       this.$nextTick(() => {
         const chart = echarts().init(document.getElementById("echart"));
         let series = [];
-        const colorList = ["#0040be", "#6073ff", "#0053ef", "#3c7eff", "#54a6ed", "#8bd2ff"];
-        // const colorList = ["#8bd2ff", "#54a6ed", "#3c7eff", "#0053ef", "#6073ff", "#0040be"];
+        let colorList = [];
+        if (this.fromTable) {
+          colorList = ["#D8D9FD", "#DFE3FF", "#D8E5FF", "#DDEDFC", "#E8F6FF"];
+          colorList.splice(this.selectIndex - 1, 0, "#0053EF");
+        } else {
+          colorList = [
+            "#0040be",
+            "#6073ff",
+            "#0053ef",
+            "#3c7eff",
+            "#54a6ed",
+            "#8bd2ff",
+          ];
+        }
         this.tableListData.forEach((element, index) => {
+          element.index = index;
           let temp = {};
           let data = [];
           temp.name = element.department;
@@ -298,31 +328,38 @@ export default {
           temp.barWidth = 50;
           temp.stack = "total";
           temp.color = colorList[index];
-          temp.label = {
-            show: false,
+          if (this.fromTable && index == this.selectIndex - 1) {
+            temp.label = {
+              show: true,
+            };
+          } else {
+            temp.label = {
+              show: false,
+            };
           }
-          data.push(element.jan)
-          data.push(element.feb)
-          data.push(element.mar)
-          data.push(element.apr)
-          data.push(element.may)
-          data.push(element.june)
-          data.push(element.july)
-          data.push(element.aug)
-          data.push(element.sep)
-          data.push(element.oct)
-          data.push(element.nov)
-          data.push(element.dec)
+
+          data.push(element.jan);
+          data.push(element.feb);
+          data.push(element.mar);
+          data.push(element.apr);
+          data.push(element.may);
+          data.push(element.june);
+          data.push(element.july);
+          data.push(element.aug);
+          data.push(element.sep);
+          data.push(element.oct);
+          data.push(element.nov);
+          data.push(element.dec);
           temp.emphasis = {
-            focus: 'series'
-          }
+            focus: "series",
+          };
           temp.data = data;
           if (index == 0) {
             temp.itemStyle = {
               normal: {
-                barBorderRadius :[5, 5, 0, 0]
-              }
-            }
+                barBorderRadius: [5, 5, 0, 0],
+              },
+            };
           }
           series.unshift(temp);
         });
@@ -330,7 +367,7 @@ export default {
           tooltip: {
             formatter: function (params) {
               //这里就是控制显示的样式
-              return `${params.seriesName}<br/><span style="color: #1763F7; font-weight: bold">${params.data}</span>`
+              return `${params.seriesName}<br/><span style="color: #1763F7; font-weight: bold">${params.data}</span>`;
             },
             backgroundColor: "#ffffff",
             extraCssText:
@@ -345,7 +382,20 @@ export default {
           },
           xAxis: {
             type: "category",
-            data: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+            data: [
+              "Jan",
+              "Feb",
+              "Mar",
+              "Apr",
+              "May",
+              "Jun",
+              "Jul",
+              "Aug",
+              "Sep",
+              "Oct",
+              "Nov",
+              "Dec",
+            ],
             axisTick: {
               show: false,
             },
@@ -377,43 +427,71 @@ export default {
               show: false,
             },
           },
-          series: series
+          series: series,
         };
         chart.setOption(option);
-        chart.on('mouseover', function (params) {
+        let _this = this;
+        chart.on("mouseover", function (params) {
           let optionTemp = cloneDeep(option);
-          let colorTempList = ["#D8D9FD", "#DFE3FF", "#D8E5FF", "#DDEDFC", "#E8F6FF"];
-          this.selectIndex = params.componentIndex;
-          colorTempList.splice(params.componentIndex, 0, "#0053EF")
+          let colorTempList = [
+            "#D8D9FD",
+            "#DFE3FF",
+            "#D8E5FF",
+            "#DDEDFC",
+            "#E8F6FF",
+          ];
+          _this.selectIndex = 6 - params.componentIndex;
+          colorTempList.splice(params.componentIndex, 0, "#0053EF");
           optionTemp.series.map((item, index) => {
-            item.color = colorTempList[ index % colorTempList.length];
-            if (params.componentIndex == index ) {
+            item.color = colorTempList[index % colorTempList.length];
+            if (params.componentIndex == index) {
               item.label = {
                 show: true,
-              }
+              };
             }
-            return item;    
-          })
-           chart.setOption(optionTemp, true);
+            return item;
+          });
+          chart.setOption(optionTemp, true);
         });
-        chart.on('mouseout', function() {
-          this.selectIndex = -1;
+        chart.on("mouseout", function () {
+          _this.selectIndex = -1;
           chart.setOption(option);
         });
       });
     },
     handleInputChange(row) {
       row.amount = 0;
-      row.amount = Number(row.jan) + Number(row.feb) + Number(row.mar) + Number(row.apr) + Number(row.may) + Number(row.june) + 
-          Number(row.july) + Number(row.aug) + Number(row.sep) + Number(row.oct) + Number(row.nov) + Number(row.dec);
+      row.amount =
+        Number(row.jan) +
+        Number(row.feb) +
+        Number(row.mar) +
+        Number(row.apr) +
+        Number(row.may) +
+        Number(row.june) +
+        Number(row.july) +
+        Number(row.aug) +
+        Number(row.sep) +
+        Number(row.oct) +
+        Number(row.nov) +
+        Number(row.dec);
       this.showEcharts();
     },
     //保存新版本
     handleConfirm(val) {
       this.saveNewVersion = false;
     },
-    uploadAttachments(data) {
-
+    uploadAttachments(data) {},
+    cellMouseLeave() {
+      this.selectIndex = -1;
+      this.fromTable = false;
+      this.showEcharts();
+      this.$forceUpdate();
+    },
+    cellMouseEnter(val) {
+      console.log("valIndex=>", val.index);
+      this.selectIndex = val.index + 1;
+      this.fromTable = true;
+      this.showEcharts();
     },
   },
 };
@@ -576,5 +654,109 @@ export default {
 
 .marginUnit {
   margin: 0 5px;
+}
+
+.tableSelectOne {
+  // @include table-row-border(1);
+  ::v-deep .el-table__body-wrapper {
+    tbody {
+      tr:nth-child(1) {
+        td {
+          border-top: 1px solid #0053ef;
+          border-bottom: 1px solid #0053ef;
+        }
+        td:first-child {
+          border-left: 1px solid #0053ef;
+        }
+        td:last-child {
+          border-right: 1px solid #0053ef;
+        }
+      }
+    }
+  }
+}
+
+.tableSelectTwo {
+  ::v-deep tbody {
+    tr:nth-child(2) {
+      td {
+        border-top: 1px solid #0053ef;
+        border-bottom: 1px solid #0053ef;
+      }
+      td:first-child {
+        border-left: 1px solid #0053ef;
+      }
+      td:last-child {
+        border-right: 1px solid #0053ef;
+      }
+    }
+  }
+}
+
+.tableSelectThree {
+  ::v-deep tbody {
+    tr:nth-child(3) {
+      td {
+        border-top: 1px solid #0053ef;
+        border-bottom: 1px solid #0053ef;
+      }
+      td:first-child {
+        border-left: 1px solid #0053ef;
+      }
+      td:last-child {
+        border-right: 1px solid #0053ef;
+      }
+    }
+  }
+}
+
+.tableSelectFour {
+  ::v-deep tbody {
+    tr:nth-child(4) {
+      td {
+        border-top: 1px solid #0053ef;
+        border-bottom: 1px solid #0053ef;
+      }
+      td:first-child {
+        border-left: 1px solid #0053ef;
+      }
+      td:last-child {
+        border-right: 1px solid #0053ef;
+      }
+    }
+  }
+}
+
+.tableSelectFive {
+  ::v-deep tbody {
+    tr:nth-child(5) {
+      td {
+        border-top: 1px solid #0053ef;
+        border-bottom: 1px solid #0053ef;
+      }
+      td:first-child {
+        border-left: 1px solid #0053ef;
+      }
+      td:last-child {
+        border-right: 1px solid #0053ef;
+      }
+    }
+  }
+}
+
+.tableSelectSix {
+  ::v-deep tbody {
+    tr:nth-child(6) {
+      td {
+        border-top: 1px solid #0053ef;
+      }
+      td:first-child {
+        border-left: 1px solid #0053ef;
+      }
+      td:last-child {
+        border-right: 1px solid #0053ef;
+      }
+    }
+  }
 }
 </style>
