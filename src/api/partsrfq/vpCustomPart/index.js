@@ -17,3 +17,11 @@ export function getCustomPartDataList(params) {
       data: params
   })
 }
+
+export function fetchSaveCustomPart(params) {
+  return request({
+      url: '/vpParts/partsCustomerList',
+      method: 'PUT',
+      data: params
+  })
+}
