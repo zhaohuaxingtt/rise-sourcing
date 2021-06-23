@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-22 11:14:02
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-22 17:33:14
+ * @LastEditTime: 2021-06-23 18:00:48
  * @Description: 财务目标价-目标价查询
  * @FilePath: \front-web\src\views\financialTargetPrice\query\index.vue
 -->
@@ -38,7 +38,7 @@
         <span class="font18 font-weight"></span>
         <div class="floatright">
           <!--------------------指派按钮----------------------------------->
-          <iButton @click="handleExport" >指派</iButton>
+          <iButton @click="openAssignDialog" >指派</iButton>
           <!--------------------导出按钮----------------------------------->
           <iButton @click="handleUpload" >导出</iButton>
         </div>
@@ -72,13 +72,13 @@
     <!------------------------------------------------------------------------>
     <modificationRecordDialog :dialogVisible="updateDialogVisible" @changeVisible="changeUpdateDialogVisible" />
     <!------------------------------------------------------------------------>
-    <!--                  附件弹窗                                      --->
-    <!------------------------------------------------------------------------>
-    <attachmentDialog :dialogVisible="attachmentDialogVisible" @changeVisible="changeAttachmentDialogVisible" />
-    <!------------------------------------------------------------------------>
     <!--                  审批记录弹窗                                      --->
     <!------------------------------------------------------------------------>
     <approvalRecordDialog :dialogVisible="approvalDialogVisible" @changeVisible="changeApprovalDialogVisible" />
+    <!------------------------------------------------------------------------>
+    <!--                  指派弹窗                                      --->
+    <!------------------------------------------------------------------------>
+    <assignDialog :dialogVisible="assignDialogVisible" @changeVisible="changeAssignDialogVisible" />
   </iPage>
 </template>
 
@@ -89,11 +89,11 @@ import { tableTitle, searchList } from './data'
 import { pageMixins } from "@/utils/pageMixins"
 import tableList from '../components/tableList'
 import modificationRecordDialog from '../maintenance/components/modificationRecord'
-import attachmentDialog from '@/views/costanalysismanage/components/home/components/downloadFiles/index'
 import approvalRecordDialog from '../maintenance/components/approvalRecord'
+import assignDialog from './components/assign'
 export default {
   mixins: [pageMixins],
-  components: {iPage,headerNav,iCard,tableList,iPagination,iButton,iSelect,iDatePicker,iInput,iSearch,modificationRecordDialog,attachmentDialog,approvalRecordDialog},
+  components: {iPage,headerNav,iCard,tableList,iPagination,iButton,iSelect,iDatePicker,iInput,iSearch,modificationRecordDialog,approvalRecordDialog, assignDialog},
   data() {
     return {
       tableTitle: tableTitle,
@@ -103,7 +103,7 @@ export default {
       isEdit: false,
       tableLoading: false,
       selectOptions: {},
-      attachmentDialogVisible: false,
+      assignDialogVisible: false,
       updateDialogVisible: false,
       approvalDialogVisible: false
     }
@@ -146,22 +146,22 @@ export default {
       this.updateDialogVisible = visible
     },
     /**
-     * @Description: 附件查看
+     * @Description: 指派
      * @Author: Luoshuang
-     * @param {*} row
+     * @param {*}
      * @return {*}
      */    
-    openAttachmentDialog(row){
-      this.changeAttachmentDialogVisible(true)
+    openAssignDialog(){
+      this.changeAssignDialogVisible(true)
     },
     /**
-     * @Description: 修改附件弹窗状态
+     * @Description: 修改指派弹窗状态
      * @Author: Luoshuang
      * @param {*} visible
      * @return {*}
      */    
-    changeAttachmentDialogVisible(visible) {
-      this.attachmentDialogVisible = visible
+    changeAssignDialogVisible(visible) {
+      this.assignDialogVisible = visible
     },
     /**
      * @Description: 获取表格数据

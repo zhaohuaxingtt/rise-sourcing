@@ -6,10 +6,10 @@
       </span>
     </div>
     <div class="legendLine">
-      <ul class="legend">
+      <ul class="legend" :class="{scroll: supplierList.length > 3}">
         <li v-for="(item, index) in supplierList" :key="index">
-          <i :style="`background: ${colorPanel[index]}`"></i>
-          {{item}}
+          <i :style="`background: ${colorPanel[item.index || 0]}`"></i>
+          {{item.data}}
         </li>
         <!-- <li>SH Huashi</li>
         <li class="corlor1">NBHX</li> -->
@@ -105,7 +105,10 @@ export default {
       const supplierList = []
       this.supplier.forEach((sup, index) => {
         if (supplierInvo.includes(index)) {
-          supplierList.push(sup)
+          supplierList.push({
+            data: sup,
+            index: this.supplier.findIndex(o => o === sup)
+          })
         }
       })
       this.supplierList = supplierList
@@ -263,7 +266,7 @@ export default {
           },
           series
         };
-        console.log(JSON.stringify(option))
+        // console.log(JSON.stringify(option))
         vm.clear()
         vm.setOption(option);
       })
@@ -314,6 +317,7 @@ export default {
         data: ['', bestGroupSupplierMin, '', ''],
         type: 'bar',
         barWidth: 30,
+        barMinHeight: 30,
         stack: 'total',
         label: {
           show: true,
@@ -339,6 +343,7 @@ export default {
           data: ['', bestGroupSupplierMax, '', ''],
           type: 'bar',
           barWidth: 30,
+          barMinHeight: 30,
           stack: 'total',
           label: {
             show: true,
@@ -394,6 +399,7 @@ export default {
           data: ['', '', item.data, ''],
           type: 'bar',
           barWidth: 30,
+          barMinHeight: 30,
           stack: 'total',
           label: {
             show: true,
@@ -449,6 +455,7 @@ export default {
           data: ['', '', '', item.data],
           type: 'bar',
           barWidth: 30,
+          barMinHeight: 30,
           stack: 'total',
           label: {
             show: true,
@@ -527,6 +534,11 @@ export default {
     padding-top: 10px;
     .legend {
       max-width: 245px;
+      &.scroll {
+        max-height: 50PX;
+        overflow: hidden;
+        overflow-y: scroll;
+      }
       li {
         font-size: 16px;
         display: inline-block;
