@@ -198,7 +198,7 @@ export default {
   methods: {
     async init() {
       // this.getChartData()
-      this.getFetchData()
+      this.refresh()
     },
     // 生成随机id
     randomid() {
@@ -390,23 +390,23 @@ export default {
       console.log(data)
     },
     // 柱状图数据
-    getChartData() {
-      if (!this.rfqId) return
-      this.chartLoading = true
-      this.api.getNomiSimulateRecord({
-        rfqId: this.rfqId
-      }).then(res => {
-        this.chartLoading = false
-        if (res.code === '200') {
-          const tableListData = res.data.partInfoList || []
+    // getChartData() {
+    //   if (!this.rfqId) return
+    //   this.chartLoading = true
+    //   this.api.getNomiSimulateRecord({
+    //     rfqId: this.rfqId
+    //   }).then(res => {
+    //     this.chartLoading = false
+    //     if (res.code === '200') {
+    //       const tableListData = res.data.partInfoList || []
           
-        } else {
-          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
-        }
-      }).catch(e => {
-        this.chartLoading = false
-      })
-    },
+    //     } else {
+    //       iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+    //     }
+    //   }).catch(e => {
+    //     this.chartLoading = false
+    //   })
+    // },
     updateCharts(data) {
       this.chartData = data
     },

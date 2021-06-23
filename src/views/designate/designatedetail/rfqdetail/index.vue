@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-21 09:23:11
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-10 21:41:06
+ * @LastEditTime: 2021-06-22 18:05:51
  * @Description: RFQ & 零件清单界面
  * @FilePath: \front-web\src\views\designate\designatedetail\rfqdetail\index.vue
 -->
@@ -124,14 +124,14 @@ export default {
      * @return {*}
      */    
     saveParts() {
-      if (this.partsSelectedItems.length < 1) {
-        iMessage.warn('请选择需要保存的零件')
-        return
-      }
+      // if (this.partsSelectedItems.length < 1) {
+      //   iMessage.warn('请选择需要保存的零件')
+      //   return
+      // }
       this.partsTableLoading = true
       const params = {
         nominateAppId: this.desinateId,
-        partPrjList: this.partsSelectedItems.map(item => {
+        partPrjList: (this.partsSelectedItems.length > 0 ? this.partsSelectedItems : this.partsTableListData).map(item => {
           return {
             id: item.id,
             partPrjCode: item.fsnrGsnrNum,
