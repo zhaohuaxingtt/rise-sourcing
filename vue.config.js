@@ -127,6 +127,7 @@ module.exports = {
 							"^/api": ""
 						}
 					},
+					
 					'/quotationApiDL': {
 						// target: 'http://10.160.138.38:8788',
 						target: 'http://10.122.18.166:8021',
@@ -339,7 +340,14 @@ module.exports = {
 							pathRewrite: {
 								"^/vpAnalysisApi": ""
 							}
-            }
+            },
+						'/bobApi':{
+							target: 'http://192.168.50.230:8036',
+							changeOrigin: true,
+							pathRewrite: {
+								"^/bobApi": ""
+							}
+						}
         }
     }
 }
