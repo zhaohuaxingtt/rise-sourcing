@@ -56,8 +56,8 @@
               </el-row>
             </el-form>
             <div class="end">
-              <iButton  type="primary" @click="searchChartData">确定</iButton>
-              <iButton type="primary"  @click="handleSearchReset">重制</iButton>
+              <iButton  type="primary" @click="searchChartData">{{ $t('LK_QUEDING') }}</iButton>
+              <iButton type="primary"  @click="handleSearchReset">{{ $t('LK_ZHONGZHI') }}</iButton>
             </div>
         </iCard>
       </el-col>
@@ -145,7 +145,7 @@ export default {
       },
       showSelectDiv:false,
       analysisSchemeId:5,
-      
+      value:false
     }
   },
   mounted(){
@@ -183,8 +183,8 @@ export default {
       this.$refs.toolTipSelect.focus()
     },
     initChartData(){
-      const data=require('./data.json')
-      this.chartData = data
+      // const data=require('./data.json')
+      // this.chartData = data
     },
     handleSearchReset(){
       this.form={
