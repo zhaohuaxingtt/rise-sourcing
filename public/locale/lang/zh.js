@@ -406,6 +406,7 @@
         'LK_CHUANGJIANSHIJIAN': '创建时间', //创建时间
         'LK_CONGLINGJIANPAISHENG': '从零件派生', //从零件派生
         'LK_DAXIAOMB': '大小（MB）', //大小（MB）
+        'LK_DAXIAO': '大小', // 大小
         'LK_DAIBANSHIXIANG': '待办事项', //待办事项
         'LK_DAIQUERENBANBEN': '待确认版本', //待确认版本
         'LK_DANWEI': '价格单位', //单位
@@ -959,6 +960,7 @@
             'LeiXing': '类型', // 类型
             'XingMuLeiXing': '项目类型', // 项目类型
             'HuiYi': '会议', // 会议
+            'HuiYiMingCheng': '会议名称', // 会议名称
             'RSZhuangTai': 'RS单状态', // RS单状态
             'RSDongJieRiQi':'RS冻结日期', // RS冻结日期
             'DongJieRiQi':'冻结日期', // 冻结日期
@@ -978,6 +980,15 @@
             'DongJieRS': '冻结RS单', //冻结RS单
             'JieDongRS': '解冻RS单',//解冻RS单
             'QingChuangJianWanDingDianShenQingDan': '请创建完定点申请单再继续下一步',//解冻RS单
+            'QianZiDanHao': '签字单号', //签字单号
+            'QianZiDanZhuangTai': '签字单状态',//签字单状态
+            'FuHeJieZhiRiQi': '复核截止日期',//复核截止日期
+            'FuHeShiFouJieZhi': '复核是否截止',//复核是否截止
+            'FaQiFuHe': '发起复核',//发起复核
+            'TuiHuiZhiTongGuoZHuangTai': '退回至通过状态',//退回至通过状态
+            'SELDanJuQUeRen': 'SEL单据确认', // SEL单据确认
+            'QianZiDan': '签字单', //签字单号
+            'SELFenTanDanFuJianLieBiao': 'SEL分摊单附件列表',//SEL分摊单附件列表
         },
         // 单一供应商
         "nominationSupplier": {
