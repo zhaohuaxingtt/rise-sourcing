@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 10:50:38
- * @LastEditTime: 2021-06-23 11:11:54
+ * @LastEditTime: 2021-06-24 15:30:40
  * @LastEditors: Please set LastEditors
  * @Description: 费用详情
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails.vue
@@ -14,19 +14,20 @@
         <div>
           <iButton v-show="flag" @click="open">全部展开</iButton>
           <iButton v-show="flag1" @click="close">全部收回</iButton>
-          <iButton>备注</iButton>
+          <iButton @click="remarks">备注</iButton>
           <iButton>还原</iButton>
           <iButton>数据分组</iButton>
           <iButton>导出</iButton>
         </div>
       </div>
     </template>
-    <table1 :dataList="dataList1"></table1>
+    <table1 :tableList="tableList"></table1>
     <table2 :dataList="dataList2"></table2>
     <table3 :dataList="dataList3"></table3>
     <table4 :dataList="dataList4"></table4>
     <table5 :dataList="dataList5"></table5>
     <table6 :dataList="dataList6"></table6>
+    <myDialog :key="Math.random()" :visible="visible"></myDialog>
   </iCard>
 </template>
 
@@ -38,6 +39,7 @@ import table3 from "./components/table3.vue";
 import table4 from "./components/table4.vue";
 import table5 from "./components/table5.vue";
 import table6 from "./components/table6.vue";
+import myDialog from "./components/myDialog.vue";
 import {
   dataList1,
   dataList2,
@@ -45,6 +47,7 @@ import {
   dataList4,
   dataList5,
   dataList6,
+  tableList,
 } from "./components/data.js";
 
 export default {
@@ -57,6 +60,7 @@ export default {
     table4,
     table5,
     table6,
+    myDialog,
   },
   data() {
     return {
@@ -68,23 +72,27 @@ export default {
       dataList4,
       dataList5,
       dataList6,
-      dataLists:[],
+      tableList,
       expends: [],
+      visible: false,
     };
+  },
+  mounted() {
+    console.log(this);
   },
   methods: {
     open() {
-      this.dataLists = this.dataLists
-        .concat(dataList1)
-        .concat(dataList2)
-        .concat(dataList3)
-        .concat(dataList4)
-        .concat(dataList5)
-        .concat(dataList6);
+      // this.dataLists = this.dataLists
+      //   .concat(dataList1)
+      //   .concat(dataList2)
+      //   .concat(dataList3)
+      //   .concat(dataList4)
+      //   .concat(dataList5)
+      //   .concat(dataList6);
       // this.getTreeExpandKeys(dataLists);
       // this.expends = Array.from(new Set(this.expends));
       let els = this.$el.getElementsByClassName("el-table__expand-icon");
-      if (this.dataLists.length != 0 && els.length != 0) {
+      if (this.tableList.dataList.length != 0 && els.length != 0) {
         this.flag = false;
         this.flag1 = true;
         for (let j1 = 0; j1 < els.length; j1++) {
@@ -107,7 +115,7 @@ export default {
       }
     },
     close() {
-      if (this.dataLists.length != 0) {
+      if (this.tableList.dataList.length != 0) {
         this.flag = true;
         this.flag1 = false;
         const elsopen = this.$el.getElementsByClassName(
@@ -122,6 +130,9 @@ export default {
         }
       }
     },
+    down(e) {
+      console.log(e);
+    },
     // 递归获取checked属性方法
     getTreeExpandKeys(obj) {
       // obj是传入的array
@@ -134,6 +145,9 @@ export default {
           }
         });
       }
+    },
+    remarks() {
+      this.visible = true;
     },
   },
 };
