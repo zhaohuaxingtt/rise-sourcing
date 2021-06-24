@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-06-16 20:44:29
- * @LastEditTime: 2021-06-22 20:31:05
+ * @LastEditTime: 2021-06-23 10:35:49
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\analysisTool\index.vue
@@ -32,7 +32,6 @@
 import {iCard, iButton} from 'rise'
 import analysisSearch from './components/analysisSearch'
 import analysisTable from './components/analysisTable'
-import {fetchEdit} from '@/api/partsrfq/vpAnalysis/vpAnalysisList'
 export default {
   name: 'AnalysisTool',
   components: {iCard, iButton, analysisSearch, analysisTable},

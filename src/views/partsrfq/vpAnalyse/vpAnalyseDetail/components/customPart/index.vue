@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-06-18 16:03:35
- * @LastEditTime: 2021-06-21 17:53:17
+ * @LastEditTime: 2021-06-23 17:31:10
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\vpAnalyse\vpAnalyseDetail\components\customPart\index.vue
@@ -27,14 +27,14 @@
           :index="true"
           @handleSelectionChange="handleSelectionChange"
         >
-          <template #partNum="scope">
+          <template #partsId="scope">
             <div v-if="addMode && scope.row.index === tableListData.length - 1">
-              <iSelect v-model="scope.row.partNum" filterable @change="changePartNum">
-                <el-option v-for="(item, index) in partNumData" :key="index" :value='item.partNum' :label='item.partNum'></el-option>
+              <iSelect v-model="scope.row.partsId" filterable @change="changePartNum">
+                <el-option v-for="(item, index) in partNumData" :key="index" :value='item.partsId' :label='item.partsId'></el-option>
               </iSelect>
             </div>
             <div v-else>
-              {{scope.row.partNum}}
+              {{scope.row.partsId}}
             </div>
           </template>
           <template #isShow="scope">
@@ -63,12 +63,18 @@
 
 <script>
 import {iDialog, iButton, icon, iSelect} from 'rise'
+import {iMessage} from '@/components';
 import tableList from '@/components/ws3/commonTable';
 import {tableTitle} from './components/data';
+import {getCustomPartDataList, fetchSaveCustomPart} from '@/api/partsrfq/vpCustomPart'
 export default {
   name: 'CustomPart',
   components: {iDialog, iButton, icon, iSelect, tableList},
   props: {
+    batchNumber: {
+      type: Number,
+      default: 1
+    },
     partList: {
       type: Array,
       default: () => []
@@ -90,31 +96,50 @@ export default {
     }
   },
   created() {
+    this.initTableData()
     this.initInsertPartData()
-    this.initTestTableData()
     this.initTestPartNumData()
-    this.backupsTableData = JSON.parse(JSON.stringify(this.tableListData))
+    // this.initTestTableData()
+
   },
   methods: {
     // 初始化添加零件号数据
     initInsertPartData() {
-      this.insertPartData = {partNum: null, carProject: '选择后自动带出', carType: '选择后自动带出', factory: '选择后自动带出', supplier: '选择后自动带出', isShow: true, sort: 4}
+      this.insertPartData = {partsId: null, carProject: '选择后自动带出', carType: '选择后自动带出', factory: '选择后自动带出', supplier: '选择后自动带出', isShow: true}
     },
     // 初始化测试表格数据
     initTestTableData() {
       this.tableListData = [
-        {partNum: '18D023601', carProject: 'XXXXXXX', carType: 'XXXXXXX', factory: 'XXXXXXX', supplier: 'XXXXXXX', isShow: true, sort: 1},
-        {partNum: '18D023602', carProject: 'XXXXXXX', carType: 'XXXXXXX', factory: 'XXXXXXX', supplier: 'XXXXXXX', isShow: true, sort: 2},
-        {partNum: '18D023603', carProject: 'XXXXXXX', carType: 'XXXXXXX', factory: 'XXXXXXX', supplier: 'XXXXXXX', isShow: true, sort: 3},
-        {partNum: '18D023604', carProject: 'XXXXXXX', carType: 'XXXXXXX', factory: 'XXXXXXX', supplier: 'XXXXXXX', isShow: true, sort: 4},
+        {partsId: '18D023601', carProject: 'XXXXXXX', carType: 'XXXXXXX', factory: 'XXXXXXX', supplier: 'XXXXXXX', isShow: true, sort: 1},
+        {partsId: '18D023602', carProject: 'XXXXXXX', carType: 'XXXXXXX', factory: 'XXXXXXX', supplier: 'XXXXXXX', isShow: true, sort: 2},
+        {partsId: '18D023603', carProject: 'XXXXXXX', carType: 'XXXXXXX', factory: 'XXXXXXX', supplier: 'XXXXXXX', isShow: true, sort: 3},
+        {partsId: '18D023604', carProject: 'XXXXXXX', carType: 'XXXXXXX', factory: 'XXXXXXX', supplier: 'XXXXXXX', isShow: true, sort: 4},
       ]
+    },
+    // 获取自定义零件列表数据
+    initTableData() {
+      const params = {
+        batchNumber: this.batchNumber
+      }
+      getCustomPartDataList(params).then(res => {
+        if(res && res.code == 200) {
+          this.tableListData = res.data
+          this.backupsTableData = JSON.parse(JSON.stringify(this.tableListData))
+        }
+      })
     },
     // 初始化测试零件号数据
     initTestPartNumData() {
       this.partNumData = [
-        {partNum: '18D023605', carProject: 'XXXXXXX', carType: 'XXXXXXX', factory: 'XXXXXXX', supplier: 'XXXXXXX', isShow: true, sort: 4},
-        {partNum: '18D023606', carProject: 'XXXXXXX', carType: 'XXXXXXX', factory: 'XXXXXXX', supplier: 'XXXXXXX', isShow: true, sort: 5},
-        {partNum: '18D023607', carProject: 'XXXXXXX', carType: 'XXXXXXX', factory: 'XXXXXXX', supplier: 'XXXXXXX', isShow: true, sort: 6},
+        {partsId: '18D023605',  isShow: true, partsDetail: 
+          {carProject: 'XXXXXXX', carType: 'XXXXXXX', factory: 'XXXXXXX', supplier: 'XXXXXXX'}
+        },
+        {partsId: '18D023606',  isShow: true, partsDetail: 
+          {carProject: 'XXXXXXX', carType: 'XXXXXXX', factory: 'XXXXXXX', supplier: 'XXXXXXX'}
+        },
+        {partsId: '18D023607',  isShow: true, partsDetail: 
+          {carProject: 'XXXXXXX', carType: 'XXXXXXX', factory: 'XXXXXXX', supplier: 'XXXXXXX'}
+        },
       ]
     },
     // 改变选中事件
@@ -124,7 +149,7 @@ export default {
     // 改变是否显示状态
     changeStatus(row) {
       row.isShow = !row.isShow
-      const dataIndex = this.tableListData.findIndex(item => item.partNum == row.partNum)
+      const dataIndex = this.tableListData.findIndex(item => item.partsId == row.partsId)
       this.tableListData.splice(dataIndex, 1, row)
     },
     // 判断排序图标显示
@@ -181,12 +206,20 @@ export default {
       const index1 = row.index
       const index2 = index1 - 1
       this.tableListData.splice(index2,1,...this.tableListData.splice(index1, 1 , this.tableListData[index2]))
+      this.exchangeSort(this.tableListData[index1], this.tableListData[index2])
     },
     // 向下移
     clickMoveDown(row) {
       const index1 = row.index
       const index2 = index1 + 1
       this.tableListData.splice(index2,1,...this.tableListData.splice(index1, 1 , this.tableListData[index2]))
+      this.exchangeSort(this.tableListData[index1], this.tableListData[index2])
+    },
+    // 交换排序号
+    exchangeSort(obj1, obj2) {
+      const tempSort = obj1.sort
+      obj1.sort = obj2.sort
+      obj2.sort = tempSort
     },
     // 点击删除按钮
     del() {
@@ -195,7 +228,7 @@ export default {
         const str = "请选中要删除的数据"
       }
       this.selections.forEach(selectRow => {
-        const index = this.tableListData.findIndex(item => item.partNum == selectRow.partNum)
+        const index = this.tableListData.findIndex(item => item.partsId == selectRow.partsId)
         this.tableListData.splice(index, index + 1)
       })
       this.selections = []
@@ -207,9 +240,9 @@ export default {
     },
     // 新增时，改变选中零件编号
     changePartNum(val) {
-      const data = this.partNumData.find(item => item.partNum == val)
-      this.tableListData[this.tableListData.length - 1] = data
-      this.insertPartData = data
+      const data = this.partNumData.find(item => item.partsId == val)
+      this.tableListData[this.tableListData.length - 1] = JSON.parse(JSON.stringify(data))
+      this.insertPartData = JSON.parse(JSON.stringify(data))
     },
     // 取消添加
     cancelAdd() {
@@ -219,18 +252,41 @@ export default {
     // 保存添加
     saveAdd() {
       // 此处需要校验零件号是否重复，还要校验零件号是否为空
-      if(!this.insertPartData.partNum) {
-        
+      if(!this.insertPartData.partsId) {
+        iMessage.error('零件号不能为空')
+        return
       }
+      let count = 0
+      this.tableListData.forEach(item => {
+        if(item.partsId == this.insertPartData.partsId) count++
+      })
+      if(count > 1) {
+        iMessage.error('零件号不能重复')
+        return
+      }
+      const maxSortObj = window._.maxBy(this.tableListData, function(o) { return o.sort; });
+      const endObj = this.tableListData[this.tableListData.length - 1]
+      endObj['sort'] = maxSortObj.sort + 1
+      console.log('tableListData', this.tableListData);
       this.addMode = false
     },
     // 点击重置按钮
     reset() {
+      console.log('backupsTableData', this.backupsTableData);
       this.tableListData = JSON.parse(JSON.stringify(this.backupsTableData))
     },
     // 点击保存按钮
     save() {
-
+      const params = {
+        batchNumber: this.batchNumber,
+        vpPartsList: this.tableListData
+      }
+      fetchSaveCustomPart(params).then(res => {
+        if(res && res.code == 200) {
+          iMessage.success(res.desZh)
+          this.initTableData()
+        }
+      })
     }
   }
 }
