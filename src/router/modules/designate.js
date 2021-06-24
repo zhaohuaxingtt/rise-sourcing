@@ -25,6 +25,15 @@ export default [
             import ("@/views/designate/home"),
       },
       {
+        path: "/sourcing/partsnomination/rsreview",
+        name: "designateRsReview",
+        meta: {
+          title: "上会RS单复核",
+        },
+        component: () =>
+            import ("@/views/designate/home/rsReview"),
+      },
+      {
         path: "/sourcing/designate/rfqdetail/addRfq",
         name: "designateAddRfq",
         meta: {
