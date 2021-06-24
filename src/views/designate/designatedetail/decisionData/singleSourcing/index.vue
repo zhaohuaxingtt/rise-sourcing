@@ -26,6 +26,16 @@
                     :tableTitle="tableTitle"
                     :tableLoading="loading"
                 >
+                    <template #suppliersName="scope">
+                        <div>
+                            <span class="factoryDesc margin-right5">{{scope.row.suppliersName }}</span>
+                            <el-tooltip effect="light" :content="`${$t('LK_FRMPINGJI')}：${scope.row.frmRate}`" v-if="scope.row.isFRMRate === 1">
+                            <span>
+                                <icon symbol name="iconzhongyaoxinxitishi" />
+                            </span>
+                            </el-tooltip>
+                        </div>
+                    </template>
                 </tableList>
                 <iPagination
                     class="margin-bottom20"
@@ -51,6 +61,7 @@ import {
   iFormItem,
   iText,
   iMessage,
+  icon,
 } from "rise";
 import {pageMixins} from '@/utils/pageMixins'
 import tableList from "@/views/partsign/editordetail/components/tableList"
@@ -66,6 +77,7 @@ export default {
         iFormItem,
         iText,
         tableList,
+        icon,
     },
     name:'SingleSourcing',
     data(){

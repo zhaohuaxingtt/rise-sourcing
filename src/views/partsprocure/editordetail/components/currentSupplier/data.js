@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-06-23 14:39:45
- * @LastEditTime: 2021-06-23 17:43:06
+ * @LastEditTime: 2021-06-24 15:14:00
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\editordetail\components\currentSupplier\data.js
@@ -16,5 +16,5 @@ export const tableTileList = [
 ]
 
 export const tabelTitleListLast = [
-  {props:'ratio',name:'现供份额', key: "", tooltip: true, width: ''},
+  {props:'ratio',name:'现供份额(%)', key: "", tooltip: true, width: ''},
 ]

@@ -4,7 +4,8 @@
             (global = global || self, factory(window.i18n))
 }(this, function (i18n) {
     'use strict'
-    i18n.setLocaleMessage('en', {
+    i18n.setLocaleMessage('en', 
+    {
         'delete': "delete",
         "deleteSure":'are you sureAre you sure you want to do this?',
         'all': 'all',
@@ -1061,6 +1062,7 @@
             'LK_PILIANGLOI':'批量LOI', // 批量LOI
             'LK_KAIFALOI':'开发LOI', // 开发LOI
             'LK_KAIFAPILIANGLOI':'开发+批量LOI' , // 开发+批量LOI
+            'LK_FRMPINGJI':'FRM评级', // FRM评级
         },
 
         // 定点建议
@@ -1100,5 +1102,6 @@
             "LK_BAOJIAZUSHOU_MJ":"报价分析汇总-模具",
             "LK_BAOJIAZUSHOU_MJDANWEIYUAN":"报价分析汇总-模具（单元：元）"
         }
-    })
+    }
+    )
 }))

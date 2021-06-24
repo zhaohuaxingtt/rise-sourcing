@@ -322,7 +322,7 @@ export default {
               const supplier = suppDataList.find(o => o.supplierName === suppName) || {}
               const recommendSupplier = o.recommendBdlInfoList.find(o => o.recommendSupplier === suppName) || {}
               o.TTo[index] = supplier.tto || 0
-              o.percentCalc[index] = recommendSupplier.share || 0
+              o.percentCalc[index] = Number(recommendSupplier.share).toFixed(2) || 0
             })
             // 绑定推荐供应商
             const recommendBdlInfoList = o.recommendBdlInfoList || []
@@ -330,7 +330,7 @@ export default {
             // o.percent = []
     
             o.supplierChosen = recommendBdlInfoList.map(o => o.recommendSupplier)
-            o.percent = recommendBdlInfoList.map(o => o.share)
+            o.percent = recommendBdlInfoList.map(o => Number(o.share).toFixed(2))
             // this.supplierList.forEach((sup, supIndex) => {
             //   const curSupplier = recommendBdlInfoList.find(o => o.recommendSupplier === sup)
             //   o.supplierChosen[supIndex] = curSupplier ? curSupplier.recommendSupplier : ''
