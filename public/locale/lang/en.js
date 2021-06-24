@@ -4,8 +4,7 @@
             (global = global || self, factory(window.i18n))
 }(this, function (i18n) {
     'use strict'
-    i18n.setLocaleMessage('en', 
-    {
+    var oldLanguage = {
         'delete': "delete",
         "deleteSure":'are you sureAre you sure you want to do this?',
         'all': 'all',
@@ -987,5 +986,20 @@
             "LK_BAOJIAZUSHOU_MJDANWEIYUAN":"报价分析汇总-模具（单元：元）"
         }
     }
-    )
+    var xmlHttp = ''
+    if(window.XMLHttpRequest){ 
+        xmlHttp = new XMLHttpRequest();
+    }else{
+        // eslint-disable-next-line no-undef
+        xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    xmlHttp.open("GET", "http://10.122.18.136:8088/i18n/getTranslationMap?from=sourcing",false);
+    xmlHttp.setRequestHeader("Content-type","application/json");
+    xmlHttp.setRequestHeader("Accept","*/*");
+    xmlHttp.send()
+    xmlHttp.onreadystatechange = function(request) {
+        console.log(request)
+        i18n.setLocaleMessage('en', 
+        )
+    }
 }))
