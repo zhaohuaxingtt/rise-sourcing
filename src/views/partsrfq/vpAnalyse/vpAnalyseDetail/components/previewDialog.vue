@@ -37,6 +37,7 @@ import curveChart from './curveChart';
 import analyzeChart from './analyzeChart';
 import {downloadPDF, dataURLtoFile} from '@/utils/pdf';
 import {uploadFile} from '@/api/file/upload';
+import {addVpReports} from '../../../../../api/partsrfq/vpAnalysis/vpAnalyseDetail';
 
 export default {
   props: {
@@ -72,7 +73,8 @@ export default {
         callback: async (pdf, pdfName) => {
           try {
             this.downloadButtonLoading = true;
-            const filename = pdfName + '.pdf';
+            const time = new Date().getTime();
+            const filename = pdfName + time + '.pdf';
             const pdfFile = pdf.output('datauristring');
             const blob = dataURLtoFile(pdfFile, filename);
             const formData = new FormData();
@@ -81,9 +83,11 @@ export default {
             const res = await uploadFile(formData);
             const data = res.data[0];
             const req = {
-              fileName: data.fileName,
-              filePath: data.filePath,
+              analysisSchemeId: 1,
+              downloadName: data.fileName,
+              downloadUrl: data.filePath,
             };
+            await addVpReports(req);
             this.downloadButtonLoading = false;
           } catch {
             this.downloadButtonLoading = false;
