@@ -335,7 +335,7 @@ module.exports = {
 							}
 						},
             '/vpAnalysisApi': {
-              target: 'http://10.160.143.185:18036',
+              target: 'http://192.168.50.138:8036',
 							changeOrigin: true,
 							pathRewrite: {
 								"^/vpAnalysisApi": ""

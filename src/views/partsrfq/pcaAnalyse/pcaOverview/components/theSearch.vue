@@ -35,10 +35,10 @@ export default {
   data() {
     return {
       form: {
-        a: '',
-        b: '',
-        c: '',
-        d: '',
+        category: '',
+        partNum: '',
+        rfq: '',
+        createBy: '',
       },
       tableSearch,
     };
