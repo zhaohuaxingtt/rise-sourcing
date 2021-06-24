@@ -1,19 +1,20 @@
 <template>
   <iCard>
     <div class="margin-bottom20 clearFloat">
-      <span class="font18 font-weight">{{ $t('TPZS.PCAZONGLAN') }}</span>
-      <div class="floatright">
-        <template v-if="!tableStatus">
-          <!--编辑-->
-          <iButton @click="handleEdit">{{ $t('LK_BIANJI') }}</iButton>
-        </template>
-        <template v-else>
-          <!--取消-->
-          <iButton @click="handleCancel">{{ $t('LK_QUXIAO') }}</iButton>
-          <!--保存-->
-          <iButton @click="handleSave">{{ $t('LK_BAOCUN') }}</iButton>
-        </template>
-      </div>
+      <span class="font18 font-weight" v-if="pageType === 'PCA'">{{ $t('TPZS.PCAZONGLAN') }}</span>
+      <span class="font18 font-weight" v-else-if="pageType === 'TIA'">{{ $t('TPZS.TIAZONGLAN') }}</span>
+      <!--      <div class="floatright">
+              <template v-if="!tableStatus">
+                &lt;!&ndash;编辑&ndash;&gt;
+                <iButton @click="handleEdit">{{ $t('LK_BIANJI') }}</iButton>
+              </template>
+              <template v-else>
+                &lt;!&ndash;取消&ndash;&gt;
+                <iButton @click="handleCancel">{{ $t('LK_QUXIAO') }}</iButton>
+                &lt;!&ndash;保存&ndash;&gt;
+                <iButton @click="handleSave">{{ $t('LK_BAOCUN') }}</iButton>
+              </template>
+            </div>-->
     </div>
     <tableList
         :tableData="tableListData"
@@ -22,16 +23,21 @@
         :index="true"
         :tiledTableData="tiledTableListData"
         :treeTable="true"
+        treeProps="fileList"
+        rowKey="id"
         @handleSelectionChange="handleSelectionChange"
     >
-      <template #2="scope">
+      <template #fileName="scope">
         <div class="reportContainer">
-          <template v-if="scope.row.children">
-            <span class="number">{{ scope.row.children && scope.row.children.length }}</span>
+          <template v-if="scope.row.fileList">
+            <span class="number">{{ scope.row.fileList && scope.row.fileList.length }}</span>
             <icon symbol name="iconwenjianshuliangbeijing" class="reportIcon"/>
           </template>
           <template v-else>
-            <div @click="handleOpenPreviewDialog" class="openLinkText cursor">{{ scope.row['2'] }}</div>
+            <div @click="handleOpenPreviewDialog(scope.row)" class="openLinkText cursor">{{
+                scope.row['fileName']
+              }}
+            </div>
           </template>
         </div>
       </template>
@@ -47,58 +53,54 @@
         :current-page='page.currPage'
         :total="page.totalCount"/>
     <!--    预览弹窗-->
-    <previewDialog v-model="previewDialog"/>
+    <previewDialog v-model="previewDialog" :fileUrl="fileUrl"/>
   </iCard>
 </template>
 
 <script>
-import {iCard, iButton, iPagination, icon} from 'rise';
+import {iCard, iPagination, icon} from 'rise';
 import tableList from '@/components/ws3/commonTable';
 import {pageMixins} from '@/utils/pageMixins';
 import resultMessageMixin from '@/utils/resultMessageMixin';
 import previewDialog from './previewDialog';
 import {tableTitle} from './data';
+import {getRfqKmInfo} from '../../../../../api/partsrfq/pcaAndTiaAnalysis';
 
 export default {
   mixins: [pageMixins, resultMessageMixin],
   components: {
     iCard,
-    iButton,
     tableList,
     iPagination,
     icon,
     previewDialog,
   },
+  props: {
+    propsPageType: {
+      type: String,
+      default: '',
+    },
+  },
   data() {
     return {
-      tableListData: [
-        {
-          id: 1, '1': 1, '2': 2,
-          children: [
-            {id: 2, '1': 1, '2': 2},
-          ],
-        },
-        {
-          id: 3, '1': 1, '2': 2,
-          children: [
-            {id: 4, '1': 1, '2': 2},
-            {id: 5, '1': 1, '2': 2},
-            {id: 6, '1': 1, '2': 2},
-          ],
-        },
-      ],
+      tableListData: [],
       tiledTableListData: [],
       tableTitle,
       tableLoading: false,
       selectTableData: [],
-      inDepthRatingDialog: false,
-      vwagRatingDialog: false,
-      inDepthRatingDialogLoading: false,
-      exportFinancialReportDialog: false,
-      exportFinancialReportDialogLoading: false,
       tableStatus: '',
       previewDialog: false,
+      fileUrl: '',
     };
+  },
+  computed: {
+    pageType() {
+      if (this.$route.query.type) {
+        return this.$route.query.type.toUpperCase();
+      } else {
+        return this.propsPageType.toUpperCase();
+      }
+    },
   },
   created() {
     this.getTableList();
@@ -108,32 +110,33 @@ export default {
       this.selectTableData = val;
     },
     async getTableList() {
-      // this.tableLoading = true;
+      this.tableLoading = true;
       const searchItem = this.$parent.$children.filter(item => {
         return item.$attrs.name === 'theSearch';
       });
       const searchForm = searchItem[0].form;
-      /* try {
-         const req = {
-           pageNo: this.page.currPage,
-           pageSize: this.page.pageSize,
-           ...searchForm,
-         };
-         const res = await getFrmList(req);
-         if (res.result) {
-           this.tableListData = res.data;
-           this.page.currPage = res.pageNum;
-           this.page.pageSize = res.pageSize;
-           this.page.totalCount = res.total || 0;
-         } else {
-           this.resultMessage(res);
-           this.tableListData = [];
-         }
-         this.tableLoading = false;
-       } catch {
-         this.tableListData = [];
-         this.tableLoading = false;
-       }*/
+      try {
+        const req = {
+          heavyItem: this.pageType,
+          current: this.page.currPage,
+          size: this.page.pageSize,
+          ...searchForm,
+        };
+        const res = await getRfqKmInfo(req);
+        if (res.result) {
+          this.tableListData = res.data;
+          this.page.currPage = res.pageNum;
+          this.page.pageSize = res.pageSize;
+          this.page.totalCount = res.total || 0;
+        } else {
+          this.resultMessage(res);
+          this.tableListData = [];
+        }
+        this.tableLoading = false;
+      } catch {
+        this.tableListData = [];
+        this.tableLoading = false;
+      }
       this.getTiledTableListData();
     },
     handleEdit() {
@@ -148,16 +151,17 @@ export default {
       this.tableListData.map((item, index) => {
         item.treeIndex = index + 1;
         this.tiledTableListData.push(item);
-        if (item.children) {
-          item.children.map((itemChildren, indexChildren) => {
+        if (item.fileList) {
+          item.fileList.map((itemChildren, indexChildren) => {
             itemChildren.treeIndex = `${index + 1}.${indexChildren + 1}`;
             this.tiledTableListData.push(itemChildren);
           });
         }
       });
     },
-    handleOpenPreviewDialog() {
+    handleOpenPreviewDialog(row) {
       this.previewDialog = true;
+      this.fileUrl = row.filePath;
     },
   },
 };

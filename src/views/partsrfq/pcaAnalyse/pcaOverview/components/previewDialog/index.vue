@@ -7,55 +7,38 @@
   >
     <div slot="title">
       <span class="font18 font-weight">{{ $t('TPZS.BAOGAOMINGCHENG') }}</span>
-      <div class="floatright margin-right40">
+<!--      <div class="floatright margin-right40">
         <iButton @click="handleDownload">{{ $t('LK_XIAZAI') }}</iButton>
-      </div>
+      </div>-->
     </div>
     <div class="content" id="content">
-      <div class="left">
-        <barChart chartHeight="700px"/>
-      </div>
-      <div class="right">
-        <theTable/>
-      </div>
+      <iframe :src="fileUrl" width="100%" height="700px"/>
     </div>
   </iDialog>
 </template>
 
 <script>
-import {iDialog, iButton} from 'rise';
-import barChart from './components/barChart';
-import theTable from './components/theTable';
-import {downloadPDF} from '../../../../../../utils/pdf';
+import {iDialog} from 'rise';
 
 export default {
   components: {
-    iDialog,
-    iButton,
-    barChart,
-    theTable,
+    iDialog
   },
   props: {
     value: {type: Boolean},
+    fileUrl: {
+      type: String,
+      default: '',
+    },
   },
   data() {
     return {
-      form: {
-        returnReason: '',
-      },
-      returnReasonList: [],
     };
   },
   methods: {
     clearDiolog() {
       this.$emit('input', false);
-    },
-    handleDownload() {
-      downloadPDF({
-        idEle: 'content',
-        pdfName: 'PCA Overview',
-      });
-    },
+    }
   },
   watch: {
     value(val) {

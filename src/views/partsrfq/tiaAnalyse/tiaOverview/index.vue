@@ -1,23 +1,14 @@
 <template>
-  <div>
-    <theSearch @getTableList="getTableList" class="margin-bottom20" name="theSearch"/>
-    <theTable ref="theTable"/>
-  </div>
+  <pcaOverview/>
 </template>
 
 <script>
-import theSearch from './components/theSearch';
-import theTable from './components/theTable';
+
+import pcaOverview from '../../pcaAnalyse/pcaOverview';
 
 export default {
   components: {
-    theSearch,
-    theTable,
-  },
-  methods: {
-    getTableList(req) {
-      this.$refs.theTable.getTableList(req);
-    },
+    pcaOverview,
   },
 };
 </script>

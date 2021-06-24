@@ -1,6 +1,6 @@
 /*
  * @Author: moxuan
- * @Description: pca总览
+ * @Description: vp详情
  */
 
 import axios from '@/utils/axios'
@@ -20,6 +20,15 @@ export function getAnalysisProcessing(params) {
 export function getVpCostDetail(params) {
   return request({
     url: '/vpCostDetail',
+    method: 'POST',
+    data: params
+  })
+}
+
+//新增报告
+export function addVpReports(params) {
+  return request({
+    url: '/vpReports',
     method: 'POST',
     data: params
   })

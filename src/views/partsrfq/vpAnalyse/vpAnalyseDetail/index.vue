@@ -11,7 +11,7 @@
         <!--返回-->
         <iButton>{{ $t('LK_FANHUI') }}</iButton>
         <!--预览-->
-        <iButton>{{ $t('TPZS.YULAN') }}</iButton>
+        <iButton @click="handlePreview">{{ $t('TPZS.YULAN') }}</iButton>
         <!--保存-->
         <iButton>{{ $t('LK_BAOCUN') }}</iButton>
       </div>
@@ -40,9 +40,13 @@
       </div>
     </div>
     <!--信息-->
-    <baseInfo class="margin-bottom20" :dataInfo="dataInfo"/>
+    <iCard tabCard class="margin-bottom20">
+      <baseInfo :dataInfo="dataInfo"/>
+    </iCard>
     <!--总单价表格-->
-    <totalUnitPriceTable class="margin-bottom20"/>
+    <iCard tabCard class="margin-bottom20">
+      <totalUnitPriceTable/>
+    </iCard>
 
     <!--图形-->
     <div class="chartBox">
@@ -64,6 +68,8 @@
 
     <!-- 自定义零件列表 -->
     <customPart :partList="partList" :visible="customDialog.visible" :Key="customDialog.key"/>
+
+    <previewDialog v-model="previewDialog"/>
   </iPage>
 </template>
 
@@ -74,6 +80,7 @@ import totalUnitPriceTable from './components/totalUnitPriceTable';
 import curveChart from './components/curveChart';
 import analyzeChart from './components/analyzeChart';
 import customPart from './components/customPart';
+import previewDialog from './components/previewDialog';
 import {getAnalysisProcessing} from '../../../../api/partsrfq/vpAnalysis/vpAnalyseDetail';
 
 export default {
@@ -87,6 +94,7 @@ export default {
     curveChart,
     analyzeChart,
     customPart,
+    previewDialog,
   },
   created() {
     this.getDataInfo();
@@ -100,6 +108,7 @@ export default {
         visible: false,
       },
       dataInfo: {},
+      previewDialog: false,
     };
   },
   methods: {
@@ -119,13 +128,16 @@ export default {
     async getDataInfo() {
       try {
         const req = {
-          id: 1
+          id: 1,
         };
         const res = await getAnalysisProcessing(req);
         this.dataInfo = res.data;
       } catch {
         this.dataInfo = {};
       }
+    },
+    handlePreview() {
+      this.previewDialog = true;
     },
   },
 };
