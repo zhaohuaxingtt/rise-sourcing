@@ -9,6 +9,7 @@ import JsPDF from 'jspdf';
 export function downloadPDF({
   idEle: ele,
   pdfName: pdfName,
+  callback: callback,
 }) {
   let el = document.getElementById(ele);  //通过getElementById获取要导出的内容
   let eleW = el.offsetWidth;// 获得该容器的宽
@@ -71,5 +72,24 @@ export function downloadPDF({
     }
     //可动态生成
     pdf.save(pdfName);
+    if (callback) {
+      callback(pdf, pdfName);
+    }
   });
+}
+
+// pdf 转 file对象
+export function dataURLtoFile(dataurl, filename) {
+  var arr = dataurl.split(',');
+  var mime = arr[0].match(/:(.*?);/)[1];
+  var bstr = atob(arr[1]);
+  var n = bstr.length;
+  var u8arr = new Uint8Array(n);
+  while (n--) {
+    u8arr[n] = bstr.charCodeAt(n);
+  }
+  //转换成file对象
+  return new File([u8arr], filename, {type: mime});
+  //转换成成blob对象
+  //return new Blob([u8arr],{type:mime});
 }

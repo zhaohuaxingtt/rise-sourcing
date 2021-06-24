@@ -24,3 +24,12 @@ export function getVpCostDetail(params) {
     data: params
   })
 }
+
+//新增报告
+export function addVpReports(params) {
+  return request({
+    url: '/vpReports',
+    method: 'POST',
+    data: params
+  })
+}

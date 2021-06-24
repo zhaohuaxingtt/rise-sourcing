@@ -1,5 +1,5 @@
 <template>
-  <iCard>
+  <div>
     <div class="margin-bottom20 clearFloat">
       <span class="font18 font-weight">
         <span class="margin-right30">{{ $t('TPZS.ZONGDANJIA') }}：52.77</span>
@@ -18,7 +18,7 @@
         </template>
         <template v-else>
           <!--编辑-->
-          <iButton @click="handleEdit" v-if="tableStatus !== 'edit'">{{ $t('LK_BIANJI') }}</iButton>
+          <iButton @click="handleEdit" v-if="tableStatus !== 'edit' && showEditButton">{{ $t('LK_BIANJI') }}</iButton>
         </template>
       </div>
     </div>
@@ -130,11 +130,11 @@
         </div>
       </template>
     </tableList>
-  </iCard>
+  </div>
 </template>
 
 <script>
-import {iCard, iButton, icon, iInput, iMessage, iMessageBox} from 'rise';
+import {iButton, icon, iInput, iMessage, iMessageBox} from 'rise';
 import tableList from '@/components/ws3/commonTable';
 import {tableTitle, tableEditTitle} from './data';
 import {getVpCostDetail} from '../../../../../api/partsrfq/vpAnalysis/vpAnalyseDetail';
@@ -143,11 +143,16 @@ import _ from 'lodash';
 
 export default {
   components: {
-    iCard,
     iButton,
     tableList,
     icon,
     iInput,
+  },
+  props: {
+    showEditButton: {
+      type: Boolean,
+      default: true
+    }
   },
   computed: {
     pageType() {
