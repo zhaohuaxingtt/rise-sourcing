@@ -2,7 +2,7 @@
  * @Descripttion: RFQ & 零件清单数据
  * @Author: Luoshuang
  * @Date: 2021-05-21 11:30:46
- * @LastEditTime: 2021-06-02 20:57:20
+ * @LastEditTime: 2021-06-23 16:22:29
  */
 
 export const rfqListTitle = [
@@ -33,7 +33,7 @@ export const partsListTitle = [
   {props:'partNameZh',name:'零件名（中）', key: "", tooltip: true, width: 120},
   {props:'partNameDe',name:'零件名（德）', key: "", tooltip: true, width: 120},
   {props:'procureFactory',name:'采购工厂', key: "", tooltip: true},
-  {props:'partProjectType',name:'零件项目类型', key: "", tooltip: true, width: 120},
+  {props:'partProjectType',name:'零件项目类型', key: "", tooltip: true, width: 120, isObject: true},
   {props:'cartypeCategory',name:'车型大类', key: "", tooltip: true},
   {props:'cartypeProjectZh',name:'车型项目', key: "", tooltip: true},
   {props:'partStatus',name:'零件状态', key: "", tooltip: true},

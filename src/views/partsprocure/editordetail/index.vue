@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2021-06-15 10:33:00
+ * @LastEditTime: 2021-06-23 14:08:40
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\editordetail\index.vue
@@ -29,6 +29,10 @@
 		<div class="margin-bottom20 clearFloat">
 			<span class="font18 font-weight">{{$t("LK_LINGJIANCAIGOUXIANGMU")}}</span>
 			<div class="floatright">
+				<!-------------------------------------------------------------------------------->
+				<!---维护现供供应商逻辑：1，只有当零件采购项目类型为[GS零件]或[GS common sourcing]时才---->
+				<!---出现此按钮。------------------------------------------------------------------->
+				<iButton v-if='currentSupplierButton' @click="curentSupplierDialog.show = true">维护现供供应商</iButton>	
 				<iButton @click="start" v-permission="PARTSPROCURE_EDITORDETAIL_STARTUP"
 					v-if="detailData.status == '16'">{{ $t("LK_QIDONGXIANGMU") }}</iButton>
 				<iButton @click="creatFs" v-permission="PARTSPROCURE_EDITORDETAIL_GENERATEFSGSNR">
@@ -268,6 +272,10 @@
 		<!--  -->
 		<splitFactory v-if='splitPurch.splitPurchBoolean' ref='purchaseFactory' :splitPurchBoolean="splitPurch" :purchaseProjectId="purchasePrjectId" :firstId='firstId' :update="updateTabs">
 		</splitFactory>
+		<!---------------------------------------------------------------->
+		<!----------------------------现供供应商维护模块--------------------->
+		<!---------------------------------------------------------------->
+		<currentSupplier :dialogVisible='curentSupplierDialog'></currentSupplier>
 	</iPage>
 </template>
 <script>
@@ -293,6 +301,7 @@
 	import remarks from "./components/remarks";
 	import backItems from "@/views/partsign/home/components/backItems";
 	import logButton from "@/views/partsign/editordetail/components/logButton";
+	import currentSupplier from './components/currentSupplier'
 	import {
 		getTabelData,
 		changeProcure,
@@ -330,7 +339,8 @@ import designateInfo from './components/designateInfo'
 			logButton,
 			backItems,
 			splitFactory,
-			designateInfo
+			designateInfo,
+			currentSupplier
 		},
 		data() {
 			return {
@@ -346,6 +356,7 @@ import designateInfo from './components/designateInfo'
 					splitPurchBoolean: false,
 				}, //拆分采购工厂
 				purchasePrjectId: "",
+				curentSupplierDialog:{show:false}
 			};
 		},
 		created() {
@@ -566,6 +577,16 @@ import designateInfo from './components/designateInfo'
 			updateOutput(data) {
 				this.$refs.outputPlan.updateOutput(data)
 			},
+		},
+		computed:{
+   /**
+    * @description: 现供供应商按钮逻辑。
+    * @param {*}
+    * @return {*}
+    */
+			currentSupplierButton:function(){
+				return this.detailData.partPrejectType == "PT11" || this.detailData.partPrejectType == "PT10"
+			}
 		}
 	};
 </script>

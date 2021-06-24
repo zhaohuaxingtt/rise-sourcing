@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-28 15:03:47
- * @LastEditTime: 2021-06-21 21:19:44
+ * @LastEditTime: 2021-06-23 20:35:31
  * @LastEditors: Please set LastEditors
  * @Description: 特殊表格实现
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\table.vue
@@ -32,7 +32,7 @@
         :prop='item.prop'
       >
         <template slot-scope="scope">
-            <el-checkbox @change="handleSelectionChange" class="checkBox" v-model="scope.row.active"><span>{{scope.row[item.props]}}</span></el-checkbox>
+            <el-checkbox @change="handleSelectionChange(scope.row,scope.$index)" class="checkBox" v-model="scope.row.active"><span>{{scope.row[item.props]}}</span></el-checkbox>
         </template>
       </el-table-column>
       <el-table-column
@@ -275,7 +275,8 @@ export default{
      * @param {*} val
      * @return {*}
      */
-    handleSelectionChange(){
+    handleSelectionChange(e,index){
+      this.$set(this.tableData,index,e)
       this.$emit('handleSelectionChange',this.tableData.filter(items=>items.active))
     }
   }

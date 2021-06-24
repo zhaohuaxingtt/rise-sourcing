@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-04-23 09:18:12
- * @LastEditTime: 2021-06-18 17:19:19
+ * @LastEditTime: 2021-06-23 17:27:41
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-supplier\src\views\rfqManageMent\partsOffer\components\ecartsCard\data.js
@@ -176,6 +176,10 @@ export function translateGetLunci(params,gjhLunchi) {
         element['type'] = 'line',
         options['legend'].push(element['name'])
       });
+      params[0].data.forEach(element => {
+        options['xAxis'].push({value:`${gjhLunchi}${' '}${element.round}`,textStyle:{color:'#7E84A3',fontSize:12}})
+      })
+      options['xAxis'] = [...options['xAxis'],...[{value:'',textStyle:{color:'#7E84A3',fontSize:12}},{value:'有效报价',textStyle:{color:'#7E84A3',fontSize:12}}]]
       params.forEach((e,i)=>{
         for(let a = e.data.length-1;a>=0;a--){
           if(e.data[a].value){
@@ -184,10 +188,6 @@ export function translateGetLunci(params,gjhLunchi) {
           }
         }
       })
-      params[0].data.forEach(element => {
-        options['xAxis'].push({value:`${gjhLunchi}${' '}${element.round}`,textStyle:{color:'#7E84A3',fontSize:12}})
-      })
-      options['xAxis'] = [...options['xAxis'],...[{value:'',textStyle:{color:'#7E84A3',fontSize:12}},{value:'有效报价',textStyle:{color:'#7E84A3',fontSize:12}}]]
       options.series = params
   } catch (error) {
     console.log(error)

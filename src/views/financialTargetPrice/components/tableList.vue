@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-22 14:42:20
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-22 16:34:29
+ * @LastEditTime: 2021-06-23 18:10:26
  * @Description: 财务目标价公用表格
  * @FilePath: \front-web\src\views\financialTargetPrice\components\tableList.vue
 -->
@@ -53,6 +53,8 @@
           <span class="openLinkText cursor" v-else-if="items.props === 'xiugai'" @click="$emit('openModifyDialog',scope.row)">查看</span>
           <!------------------审批记录列--------------------------->
           <span class="openLinkText cursor" v-else-if="items.props === 'shenpi'" @click="$emit('openApprovalDialog',scope.row)">查看</span>
+          <!------------------审批列--------------------------->
+          <span class="openLinkText cursor" v-else-if="items.props === 'shenpipi'" @click="$emit('openApprovalDetailDialog',scope.row)">审批</span>
           <!------------------正常--------------------------->
           <span v-else>{{scope.row[items.props]}}</span>
         </template>
