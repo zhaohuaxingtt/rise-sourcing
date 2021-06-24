@@ -57,8 +57,8 @@ export default {
         pdfName: 'PCA Overview',
         callback: async (pdf, pdfName) => {
           const filename = pdfName + '.pdf';
-          const pdffile = pdf.output('datauristring');
-          const blob = dataURLtoFile(pdffile, filename);
+          const pdfFile = pdf.output('datauristring');
+          const blob = dataURLtoFile(pdfFile, filename);
           const formData = new FormData();
           formData.append('multipartFile', blob);
           formData.append('applicationName', 'rise');
