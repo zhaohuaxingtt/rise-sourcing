@@ -326,10 +326,12 @@ export default {
           formatter: function(params) {
             const fz = Number(params.data)
             const fm = Number(bestGroupSupplierTotal)
-            const percent = Math.floor(fz/fm*100)
-            totalGroupPercent += percent
-            return `${params.data}\n(${percent}%)`
-          }
+            const percent = parseFloat(fz/fm*100).toFixed(2)
+            totalGroupPercent += Number(percent)
+            return `${params.data}\n{p|(${percent}%)}`
+          },
+          rich,
+          interval: 0
         },
         itemStyle: {
           normal: {
@@ -354,8 +356,10 @@ export default {
               const fm = Number(bestGroupSupplierTotal)
               // const percent = Math.floor(fz/fm*100)
               const percent = 100 - totalGroupPercent
-              return `${params.data}\n(${percent}%)`
-            }
+              return `${params.data}\n{p|(${percent.toFixed(2)}%)}`
+            },
+            rich,
+            interval: 0
           },
           itemStyle: {
             normal: {
@@ -408,10 +412,12 @@ export default {
             formatter: function(params) {
               const fz = Number(params.data)
               const fm = Number(minPartSupplierTToTotal)
-              const percent =(item.index === minPartSupplierTToArray.length - 1) ? (100 - partPercent) : Math.floor(fz/fm*100)
-              partPercent += percent
-              return `${params.data}\n(${percent}%)`
-            }
+              const percent =(item.index === minPartSupplierTToArray.length - 1) ? (100 - partPercent).toFixed(2) : parseFloat(fz/fm*100).toFixed(2)
+              partPercent += Number(percent)
+              return `${params.data}\n{p|(${percent}%)}`
+            },
+            rich,
+            interval: 0
           },
           itemStyle: {
             normal: {
@@ -449,7 +455,7 @@ export default {
       // 权重柱状图
       const weightSupplier = self.data.weightSupplier || []
       const weightSupplierTotal = self.data.weightSupplierTotal || 0
-      let totalPercent = 0
+      let weightPercent = 0
       weightSupplier.forEach((item, index) => {
         series.push({
           data: ['', '', '', item.data],
@@ -464,10 +470,12 @@ export default {
             formatter: function(params) {
               const fz = Number(params.data)
               const fm = Number(weightSupplierTotal)
-              const percent =(index === weightSupplier.length - 1) ? (100 - totalPercent) : Math.floor(fz/fm*100)
-              totalPercent += percent
-              return `${params.data}\n(${percent}%)`
-            }
+              const percent =(index === weightSupplier.length - 1) ? (100 - weightPercent).toFixed(2) : (fz/fm*100).toFixed(2)
+              weightPercent += Number(percent)
+              return `${params.data}\n{p|(${percent}%)}`
+            },
+            rich,
+            interval: 0
           },
           itemStyle: {
             normal: {
