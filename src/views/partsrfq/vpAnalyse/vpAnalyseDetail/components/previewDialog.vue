@@ -4,7 +4,10 @@
       width="90%"
       @close="clearDiolog"
   >
-    <iButton class="downloadButton" @click="handleDownload">{{ $t('LK_XIAZAI') }}</iButton>
+    <iButton class="downloadButton" @click="handleDownload" :loading="downloadButtonLoading">{{
+        $t('LK_XIAZAI')
+      }}
+    </iButton>
     <div id="content">
       <div class="margin-bottom20 margin-top20 clearFloat" slot="title">
         <span class="font18 font-weight">Volume Pricing 报告</span>
@@ -53,6 +56,11 @@ export default {
     curveChart,
     analyzeChart,
   },
+  data() {
+    return {
+      downloadButtonLoading: false,
+    };
+  },
   methods: {
     clearDiolog() {
       this.$emit('input', false);
@@ -62,13 +70,24 @@ export default {
         idEle: 'content',
         pdfName: 'Volume Pricing Overview',
         callback: async (pdf, pdfName) => {
-          const filename = pdfName + '.pdf';
-          const pdfFile = pdf.output('datauristring');
-          const blob = dataURLtoFile(pdfFile, filename);
-          const formData = new FormData();
-          formData.append('multipartFile', blob);
-          formData.append('applicationName', 'rise');
-          await uploadFile(formData);
+          try {
+            this.downloadButtonLoading = true;
+            const filename = pdfName + '.pdf';
+            const pdfFile = pdf.output('datauristring');
+            const blob = dataURLtoFile(pdfFile, filename);
+            const formData = new FormData();
+            formData.append('multipartFile', blob);
+            formData.append('applicationName', 'rise');
+            const res = await uploadFile(formData);
+            const data = res.data[0];
+            const req = {
+              fileName: data.fileName,
+              filePath: data.filePath,
+            };
+            this.downloadButtonLoading = false;
+          } catch {
+            this.downloadButtonLoading = false;
+          }
         },
       });
     },

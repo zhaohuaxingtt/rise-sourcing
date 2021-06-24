@@ -78,6 +78,7 @@ export function downloadPDF({
   });
 }
 
+// pdf 转 file对象
 export function dataURLtoFile(dataurl, filename) {
   var arr = dataurl.split(',');
   var mime = arr[0].match(/:(.*?);/)[1];
