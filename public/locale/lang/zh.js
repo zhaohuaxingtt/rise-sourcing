@@ -929,6 +929,7 @@
         'LK_PILIANGLOI':'批量LOI', // 批量LOI
         'LK_KAIFALOI':'开发LOI', // 开发LOI
         'LK_KAIFAPILIANGLOI':'开发+批量LOI' , // 开发+批量LOI
+        'LK_FRMPINGJI':'FRM评级', // FRM评级
 
         // 定点管理
         'nominationLanguage': {
