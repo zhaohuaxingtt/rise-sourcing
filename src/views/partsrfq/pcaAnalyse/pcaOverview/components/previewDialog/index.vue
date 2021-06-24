@@ -26,7 +26,8 @@
 import {iDialog, iButton} from 'rise';
 import barChart from './components/barChart';
 import theTable from './components/theTable';
-import {downloadPDF} from '../../../../../../utils/pdf';
+import {downloadPDF, dataURLtoFile} from '../../../../../../utils/pdf';
+import {uploadFile} from '@/api/file/upload';
 
 export default {
   components: {
@@ -54,6 +55,15 @@ export default {
       downloadPDF({
         idEle: 'content',
         pdfName: 'PCA Overview',
+        callback: async (pdf, pdfName) => {
+          const filename = pdfName + '.pdf';
+          const pdffile = pdf.output('datauristring');
+          const blob = dataURLtoFile(pdffile, filename);
+          const formData = new FormData();
+          formData.append('multipartFile', blob);
+          formData.append('applicationName', 'rise');
+          await uploadFile(formData);
+        },
       });
     },
   },
