@@ -333,13 +333,13 @@ module.exports = {
 								"^/partApi": ""
 							}
 						},
-            '/vpAnalysisApi': {
-              target: 'http://10.160.143.185:18036',
+            '/vpApi': {
+              target: 'http://10.160.138.234:8036',
 							changeOrigin: true,
 							pathRewrite: {
-								"^/vpAnalysisApi": ""
+								"^/vpApi": ""
 							}
-            }
+            },
         }
     }
 }
