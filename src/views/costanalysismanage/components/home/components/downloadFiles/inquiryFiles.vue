@@ -96,7 +96,7 @@ export default {
         downloadList(){
             const  {selectItems } = this;
             if(!selectItems.length){
-            iMessage.warn(this.$t('LK_QINGXUANZHEXUYAOXIAZHAIDEFUJIAN'));
+            iMessage.warn(this.$t('QINGXUANZHEXUYAOXIAZHAIDEFUJIAN', '请选择需要下载的附件'));
             }else{
                 const list = selectItems.map((item)=>item.fileName);
                 this.download(list);
