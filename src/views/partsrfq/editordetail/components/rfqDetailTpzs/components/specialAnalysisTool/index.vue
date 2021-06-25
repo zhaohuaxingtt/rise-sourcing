@@ -7,11 +7,6 @@
 -->
 <template>
   <div>
-    <div v-if="$route.path==='/sourcing/partsrfq/assistant'" class="margin-bottom20 clearFloat">
-      <div class="floatright">
-        <iButton @click="handleSearch">{{$t('search')}}</iButton>
-      </div>
-    </div>
     <enterSpecificAnalysisToolsDialog @getDataList='getDataList' v-model="viewModelDialog" />
     <el-row class="margin-top30">
       <el-col v-for="(item,index) in cardData" :key="index" :span="12">

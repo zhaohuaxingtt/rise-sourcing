@@ -7,6 +7,18 @@
 -->
 <template>
   <div>
+    <div v-if="$route.path==='/sourcing/partsrfq/externalNegotiationAssistant'" class="btn">
+      <iButton v-if="pageType!=='card'" @click="entrance('card')">{{$t('LK_FANHUI')}}</iButton>
+      <iButton v-if="pageType==='card'" @click="handleSearch">{{$t('search')}}</iButton>
+      <iButton v-if="pageType==='card'" @click="handleReport">{{$t('TPZS.BGQD')}}</iButton>
+      <icon class="icondatabaseweixuanzhong" name="icondatabaseweixuanzhong" symbol></icon>
+    </div>
+    <div v-if="$route.path==='/sourcing/partsrfq/assistant'" class="margin-bottom20 clearFloat">
+      <div class="floatright">
+        <iButton v-if="pageType==='card'" @click="handleSearch">{{$t('search')}}</iButton>
+        <iButton v-if="pageType!=='card'" @click="entrance('card')">{{$t('LK_FANHUI')}}</iButton>
+      </div>
+    </div>
     <specialAnalysisTool v-if="pageType === 'card'" @entrance="entrance" ref="specialAnalysisTool" />
     <pcaOverview v-else-if="pageType === 'PCA'" />
     <tiaOverview v-else-if="pageType === 'TIA'" />
@@ -22,6 +34,7 @@ import tiaOverview from '../../tiaAnalyse/tiaOverview';
 import vpAnalyseList from "@/views/partsrfq/vpAnalyse/vpAnalyseList/index.vue";
 import bobOverview from '../../bob/bob';
 import specialAnalysisTool from '@/views/partsrfq/editordetail/components/rfqDetailTpzs/components/specialAnalysisTool/index.vue';
+import { icon, iButton } from "rise";
 
 
 
@@ -31,7 +44,8 @@ export default {
     tiaOverview,
     bobOverview,
     vpAnalyseList,
-    specialAnalysisTool
+    specialAnalysisTool, icon,
+    iButton,
   },
   data() {
     return {
@@ -44,9 +58,14 @@ export default {
   },
   methods: {
     entrance(val) {
-      console.log(val);
       this.pageType = val
-    }
+    },
+    handleSearch() {
+      this.$refs.specialAnalysisTool.handleSearch()
+    },
+    handleReport() {
+      this.$router.push({ path: '/sourcing/partsrfq/reportList' })
+    },
   },
 };
 </script>
@@ -60,5 +79,13 @@ export default {
   display: flex;
   justify-content: flex-end;
   align-items: center;
+}
+::v-deep .routerpage {
+  position: relative;
+}
+.btn {
+  position: absolute;
+  top: 5.5rem;
+  right: 3rem;
 }
 </style>

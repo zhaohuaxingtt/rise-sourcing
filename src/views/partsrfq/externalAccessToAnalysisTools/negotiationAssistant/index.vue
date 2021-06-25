@@ -9,13 +9,9 @@
   <iPage>
     <div class="flex-between-center-center margin-bottom20">
       <iNavMvp :list="tabRouterList" routerPage :lev="1" :query='$route.query' @change='changeRouter' />
-      <div>
-        <iButton @click="handleSearch">{{$t('search')}}</iButton>
-        <iButton @click="handleReport">{{$t('TPZS.BGQD')}}</iButton>
-        <icon class="icondatabaseweixuanzhong" name="icondatabaseweixuanzhong" symbol></icon>
-      </div>
+     
     </div>
-    <gather ref="gather"/>
+    <gather ref="gather" />
   </iPage>
 </template>
 
@@ -31,25 +27,20 @@ export default {
   components: {
     iPage,
     iNavMvp,
-    icon, 
-    iButton,
+    
     gather
   },
   data() {
     return {
       tabRouterList,
+      flag: false,
     };
   },
 
   created() {
   },
   methods: {
-    handleSearch() {
-      this.$refs.gather.$refs.specialAnalysisTool.handleSearch()
-    },
-    handleReport() {
-      this.$router.push({ path: '/sourcing/partsrfq/reportList' })
-    },
+   
   },
 };
 </script>
