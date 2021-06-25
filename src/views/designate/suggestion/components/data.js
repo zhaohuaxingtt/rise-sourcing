@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2021-05-24 13:53:50
- * @LastEditTime: 2021-05-29 18:00:13
- * @LastEditors: ldh
+ * @LastEditTime: 2021-06-25 11:28:05
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\designate\suggestion\components\data.js
  */
@@ -249,15 +249,15 @@ export const mokeMouldMonitorData = [
 ]
 
 export const mouldBudgetManagementDialogTableTitle = [
-  { props: "partNum", name: "零件号", tooltip: true, key: "nominationSuggestion.LingJianHao" },
-  { props: "fsnrGsnrNum", name: "FSNR/GSNR", tooltip: true, key: "nominationSuggestion.FsnrGsnr" },
-  { props: "rfqId", name: "RFQ编号", tooltip: true, key: "nominationSuggestion.RfqBianHao" },
-  { props: "applyTime", name: "申请日期", tooltip: true, key: "nominationSuggestion.ShenQingRiQi" },
-  { props: "cartypeProZh", name: "车型项目", tooltip: true, key: "nominationSuggestion.CheXingXiangMu" },
-  { props: "budget", name: "投资预算(RMB)", tooltip: true, key: "nominationSuggestion.TouZiYuSuanRmb" },
-  { props: "csfPDiretor", name: "CSF(P)负责人", tooltip: true, key: "nominationSuggestion.CsfPFuZeRen" },
-  { props: "approvalStatus", name: "审批状态", tooltip: true, key: "nominationSuggestion.ShenPiZhuangTai" },
-  { props: "approvalComments", name: "审批意见", tooltip: true, key: "nominationSuggestion.ShenPiYiJian" },
+  { props: "partNum", name: "零件号", tooltip: true, key: "LINGJIANHAO" },
+  { props: "fsnrGsnrNum", name: "FSNR/GSNR", tooltip: true, key: "FSNRGSNR" },
+  { props: "rfqId", name: "RFQ编号", tooltip: true, key: "RFQBIANHAO" },
+  { props: "applyTime", name: "申请日期", tooltip: true, key: "SHENQINGRIQI" },
+  { props: "cartypeProZh", name: "车型项目", tooltip: true, key: "CHEXINGXIANGMU" },
+  { props: "budget", name: "投资预算(RMB)", tooltip: true, key: "TOUZIYUSUANRMB" },
+  { props: "csfPDiretor", name: "CSF(P)负责人", tooltip: true, key: "CSFPFUZEREN" },
+  { props: "approvalStatus", name: "审批状态", tooltip: true, key: "SHENPIZHUANGTAI" },
+  { props: "approvalComments", name: "审批意见", tooltip: true, key: "SHENPIYIJIAN" },
 ]
 
 export const colorPanel = [

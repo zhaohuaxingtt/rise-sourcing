@@ -10,13 +10,12 @@
           <h1 class="flex-between-center margin-bottom20 font18">
               <span>Part List</span>
               <div v-if="isPreview!='1'">
-                  <!-- <iButton>{{$t('LK_TIAOZHUANZHILINGJIANQINGDANTIANJIA')}}</iButton> -->
-                  <iButton :loading="saveLoading" @click="save">{{$t('LK_BAOCUN')}}</iButton>
+                  <iButton :loading="saveLoading" @click="save">{{language('LK_BAOCUN','保存')}}</iButton>
               </div>
           </h1>
           <!-- table区域 -->
           <el-table
-           :empty-text="$t('LK_ZANWUSHUJU')"
+           :empty-text="language('LK_ZANWUSHUJU','暂无数据')"
            :data="tableListData"
             v-loading="loading"
           >

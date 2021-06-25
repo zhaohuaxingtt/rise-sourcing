@@ -931,6 +931,9 @@
         'LK_KAIFALOI':'开发LOI', // 开发LOI
         'LK_KAIFAPILIANGLOI':'开发+批量LOI' , // 开发+批量LOI
         'LK_FRMPINGJI':'FRM评级', // FRM评级
+        'LK_CBDSTATUS':'CBD状态', // CBD状态
+        'LK_YES': '是',//是
+        'LK_NO': '否',//是
 
         // 定点管理
         'nominationLanguage': {
@@ -989,6 +992,8 @@
             'SELDanJuQUeRen': 'SEL单据确认', // SEL单据确认
             'QianZiDan': '签字单', //签字单号
             'SELFenTanDanFuJianLieBiao': 'SEL分摊单附件列表',//SEL分摊单附件列表
+            'XinJianQianZiDan': '新建签字单',//新建签字单
+            'MQianZiDanLiebiao': 'M签字单列表',//M签字单列表
         },
         // 单一供应商
         "nominationSupplier": {

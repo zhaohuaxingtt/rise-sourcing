@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2021-06-24 15:50:07
+ * @LastEditTime: 2021-06-25 13:38:07
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\editordetail\index.vue
@@ -177,7 +177,7 @@
 								<el-option :value="item.id" :label="item.name" v-for="item in fromGroup.CF_CONTROL" :key="item.name"></el-option>
 							</iSelect>
 						</iFormItem>
-						<iFormItem :label="$t('LK_LINGJIANCHENGBENFENXIYUAN') + ':'" name=''>
+						<iFormItem :label="language('LINGJIANCHENGBENFENXIYUAN', '零件成本分析员') + ':'" name=''>
 							<!-- <iSelect class="multipleSelect" v-model="detailData.c" multiple collapse-tags>
 								<el-option :value="item.code" :label="item.name" v-for="item in fromGroup.CF_CONTROL" :key="item.name"></el-option>
 							</iSelect> -->
@@ -185,7 +185,7 @@
 								{{ detailData.partCostUserName }}
 							</iText>
 						</iFormItem>
-						<iFormItem :label="$t('LK_MUJUCHENGBENFENXIYUAN') + ':'" name=''>
+						<iFormItem :label="language('MUJUCHENGBENFENXIYUAN', '模具成本分析员') + ':'" name=''>
 							<!-- <iSelect class="multipleSelect" v-model="detailData.d" multiple collapse-tags>
 								<el-option :value="item.code" :label="item.name" v-for="item in fromGroup.CF_CONTROL" :key="item.name"></el-option>
 							</iSelect> -->

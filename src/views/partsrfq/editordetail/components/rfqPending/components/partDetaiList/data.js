@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-03-04 15:18:55
- * @LastEditTime: 2021-06-02 17:33:11
+ * @LastEditTime: 2021-06-25 14:49:43
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqPending\components\partDetaiList\data.js
@@ -24,10 +24,10 @@ export const tableTitle = [
   ]
 
 export const kmDialogTableTitle = [
-  { props: "partNum", name: "零件号", tooltip: true, key: "partsprocure.LingJianHao" },
-  { props: "fsnrGsnrNum", name: "FSNR/GSNR", tooltip: true, key: "partsprocure.FsnrGsnr" },
-  { props: "supplierName", name: "供应商名称", tooltip: true, key: "partsprocure.GongYingShangMingCheng" },
-  { props: "cbdLevel", name: "CBD层级", tooltip: true, key: "partsprocure.CbdCengJi" },
-  { props: "isQuotationCbd", name: "是否已报CBD", tooltip: true, key: "partsprocure.ShiFouYiBaoCbd" },
-  { props: "sendKmFlag", name: "发送状态", tooltip: true, key: "partsprocure.FaSongZhuangTai" },
+  { props: "partNum", name: "零件号", tooltip: true, key: "LINGJIANHAO" },
+  { props: "fsnrGsnrNum", name: "FSNR/GSNR", tooltip: true, key: "FSNRGSNR" },
+  { props: "supplierName", name: "供应商名称", tooltip: true, key: "GONGYINGSHANGMINGCHENG" },
+  { props: "cbdLevel", name: "CBD层级", tooltip: true, key: "CBDCENGJI" },
+  { props: "isQuotationCbd", name: "是否已报CBD", tooltip: true, key: "SHIFOUYIBAOCBD" },
+  { props: "sendKmFlag", name: "发送状态", tooltip: true, key: "FASONGZHUANGTAI" },
 ]

@@ -1,7 +1,7 @@
 <!--
  * @Author: moxuan
  * @Date: 2021-02-25 09:59:25
- * @LastEditTime: 2021-06-16 18:23:57
+ * @LastEditTime: 2021-06-25 13:47:44
  * @LastEditors: Please set LastEditors
  * @Description: RFQ模块首页
  * @FilePath: \rise\src\views\partsrfq\home\index.vue
@@ -101,6 +101,7 @@
                 open-page-props="id"
                 :index="true"
                 icon-props="recordId"
+                :lang="true"
             >
               <template v-slot:icon="scope">
                 <div @click="toTop(scope.data)" class="icon-style">
@@ -109,7 +110,7 @@
                   <icon symbol class="icon" name="iconliebiaoweizhiding" v-else></icon>
                 </div>
               </template>
-              <template #b="scope">
+              <template #kmAnalysis="scope">
                 <el-popover
                   v-if="scope.row.kmAnalysis"
                   placement="left"

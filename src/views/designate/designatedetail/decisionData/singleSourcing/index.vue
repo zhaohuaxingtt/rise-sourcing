@@ -7,7 +7,7 @@
     <iCard title="⽣产采购单⼀供应商说明 Single Sourcing for Production Purchasing">
         <div class="decision-data-singleSourcing-content">
             <div class="margin-top30 margin-bottom30">
-                <iFormGroup inline>
+                <iFormGroup inline row="2">
                     <iFormItem label-width="130px"  label="项⽬名称 Project:">
                         <iText tooltip style="width:250px">{{projectName}}</iText>
                     </iFormItem>
@@ -21,6 +21,7 @@
                 <tableList
                     :selection="false"
                     class="table"
+                    :lang="true"
                     index
                     :tableData="tableListData"
                     :tableTitle="tableTitle"
@@ -29,7 +30,7 @@
                     <template #suppliersName="scope">
                         <div>
                             <span class="factoryDesc margin-right5">{{scope.row.suppliersName }}</span>
-                            <el-tooltip effect="light" :content="`${$t('LK_FRMPINGJI')}：${scope.row.frmRate}`" v-if="scope.row.isFRMRate === 1">
+                            <el-tooltip effect="light" :content="`${language('LK_FRMPINGJI','FRM评级')}：${scope.row.frmRate}`" v-if="scope.row.isFRMRate === 1">
                             <span>
                                 <icon symbol name="iconzhongyaoxinxitishi" />
                             </span>

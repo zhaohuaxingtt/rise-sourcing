@@ -2,14 +2,14 @@
  * @Author: Luoshuang
  * @Date: 2021-05-25 20:57:31
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-08 19:29:47
+ * @LastEditTime: 2021-06-25 11:20:35
  * @Description: 零件评分弹窗
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\bdl\partsRating.vue
 -->
 
 <template>
   <iDialog 
-    title="零件评分"
+    :title="language('LINGJIANPINGFEN','零件评分')"
     :visible.sync="dialogVisible"
     @close="clearDialog"
     width="95%"
