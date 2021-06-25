@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-19 14:29:21
- * @LastEditTime: 2021-06-25 00:44:19
+ * @LastEditTime: 2021-06-25 16:08:02
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\ui\index.vue
@@ -149,13 +149,13 @@
 								<el-form-item label="活动名称">
 								<iInput></iInput>
 							</el-form-item>
-							<el-form-item :label="language('LANGRUIGEKEY1','活动名称1212')">
+							<el-form-item :label="language('LANGRUIGEKEY1','活动名称12123')">
 								<iInput></iInput>
 							</el-form-item>
 							<el-form-item :label="language('LANGRUIGEKEY2','活动名称12')">
 								<iInput></iInput>
 							</el-form-item>
-							<el-form-item :label="language('LANGRUIGEKEY3','活动名称')">
+							<el-form-item :label="language('LANGRUIGEKEY3',languageText)">
 								<iInput></iInput>
 							</el-form-item>	
 					</el-form>
@@ -298,6 +298,7 @@
 				TabelData: [],
 				radio: 1,
 				loading: false,
+				languageText:'4',
 				iconList: [
 					"iconhomeweixuanzhong",
 					"iconcaidanshouqi",
