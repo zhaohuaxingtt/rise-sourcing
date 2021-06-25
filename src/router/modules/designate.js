@@ -1,8 +1,8 @@
 /*
  * @Author: HaoJiang
  * @Date: 2021-05-20 14:29:09
- * @LastEditTime: 2021-06-21 16:11:00
- * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-06-25 10:19:12
+ * @LastEditors: Please set LastEditors
  * @Description: 定点管理
  * @metaParams: hideTabLV3 隐藏三级导航
  *
@@ -32,6 +32,33 @@ export default [
         },
         component: () =>
             import ("@/views/designate/home/rsReview"),
+      },
+      {
+        path: "/sourcing/partsnomination/rsreview/details",
+        name: "designateRsreviewDetails",
+        meta: {
+          title: "上会RS单复核详情",
+        },
+        component: () =>
+            import ("@/views/designate/home/rsReview/details"),
+      },
+      {
+        path: "/sourcing/partsnomination/signSheet",
+        name: "designateSignSheet",
+        meta: {
+          title: "签字单列表",
+        },
+        component: () =>
+            import ("@/views/designate/home/signSheet"),
+      },
+      {
+        path: "/sourcing/partsnomination/newSignSheet",
+        name: "designateNewSignSheet",
+        meta: {
+          title: "新建签字单",
+        },
+        component: () =>
+            import ("@/views/designate/home/signSheet/newSignSheet"),
       },
       {
         path: "/sourcing/designate/rfqdetail/addRfq",
