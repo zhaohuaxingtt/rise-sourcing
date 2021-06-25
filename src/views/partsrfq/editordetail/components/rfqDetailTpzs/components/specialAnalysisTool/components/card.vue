@@ -6,11 +6,11 @@
  * @Descripttion: your project
 -->
 <template>
-  <iCard :title="title">
+  <iCard :title="labelData.title">
     <div slot="header-control">
       <icon name="iconzhuanxiangfenxigongju-landian" symbol></icon>
     </div>
-    <icon class="icon-t" name="iconchubupingji" symbol></icon>
+    <img class="cursor" :src="labelData.imgUrl" alt="" width="100%" height="300px">
     <div class="buttom">
       <div>
         <div>{{$t('TPZS.FX')+labelData.analysisTotal}}</div>
@@ -29,7 +29,6 @@ import { iCard, icon, iLabel } from "rise";
 export default {
   components: { iCard, icon, iLabel },
   props: {
-    title: { type: String, default: '' },
     cardData: {
       type: Object, default: () => {
         return {}
@@ -37,22 +36,17 @@ export default {
     },
   },
   watch: {
-    title: {
+    cardData: {
       handler(data) {
-        this.title = data
+        this.labelData = data
       },
       deep: true,
       immediate: true,
-    },
-    cardData(data) {
-      this.labelData = data
     }
-
   },
   data() {
     return {
       labelData: {},
-      title: ''
     }
   },
   created() {
