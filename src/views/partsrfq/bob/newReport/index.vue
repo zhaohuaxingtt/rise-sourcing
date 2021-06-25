@@ -13,7 +13,9 @@
 				<!--BoB分析库-->
 				<iButton @click="goToBob">BoB{{ $t('分析库') }}</iButton>
         <!--查找零件-->
-        <iButton class="margin-left30" @click="findPart">{{ $t("查找零件") }}</iButton>
+        <iButton class="margin-left30" @click="findPart">{{
+          $t("查找零件")
+        }}</iButton>
       </div>
     </div>
     <el-row :gutter="20" class="margin-top20">
@@ -111,7 +113,11 @@
         <bobAnalysis></bobAnalysis>
       </el-col>
     </el-row>
-    <findingParts :value="value"></findingParts>
+    <findingParts
+      :value="value"
+      @sure="sure"
+      @close="closeDialog"
+    ></findingParts>
   </iPage>
 </template>
 
@@ -129,7 +135,7 @@ export default {
     iSelect,
     CrownBar,
     bobAnalysis,
-    findingParts
+    findingParts,
   },
   data() {
     return {

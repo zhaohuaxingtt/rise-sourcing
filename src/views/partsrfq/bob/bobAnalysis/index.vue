@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 10:50:38
- * @LastEditTime: 2021-06-24 15:30:40
+ * @LastEditTime: 2021-06-25 14:43:31
  * @LastEditors: Please set LastEditors
  * @Description: 费用详情
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails.vue
@@ -27,7 +27,7 @@
     <table4 :dataList="dataList4"></table4>
     <table5 :dataList="dataList5"></table5>
     <table6 :dataList="dataList6"></table6>
-    <myDialog :key="Math.random()" :visible="visible"></myDialog>
+    <remarkDialog  :visible="visible" @sure="sure" @cancel="cancel"></remarkDialog>
   </iCard>
 </template>
 
@@ -39,7 +39,7 @@ import table3 from "./components/table3.vue";
 import table4 from "./components/table4.vue";
 import table5 from "./components/table5.vue";
 import table6 from "./components/table6.vue";
-import myDialog from "./components/myDialog.vue";
+import remarkDialog from "./components/remarkDialog.vue";
 import {
   dataList1,
   dataList2,
@@ -60,7 +60,7 @@ export default {
     table4,
     table5,
     table6,
-    myDialog,
+    remarkDialog
   },
   data() {
     return {
@@ -130,8 +130,8 @@ export default {
         }
       }
     },
-    down(e) {
-      console.log(e);
+    cancel(e) {
+      this.visible=e
     },
     // 递归获取checked属性方法
     getTreeExpandKeys(obj) {

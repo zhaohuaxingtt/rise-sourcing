@@ -1,23 +1,23 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-06-18 16:03:35
- * @LastEditTime: 2021-06-23 17:31:10
+ * @LastEditTime: 2021-06-25 14:23:36
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\vpAnalyse\vpAnalyseDetail\components\customPart\index.vue
 -->
 <template>
   <div>
-    <iDialog title="自定义" :visible.sync="visible" width="70%">
+    <iDialog :title="$t('LK_CUSTOM_TITLE')" :visible.sync="visible" width="70%">
       <div style="text-align: right" v-if="!addMode">
-        <iButton @click="del">删除</iButton>
-        <iButton @click="add">新增</iButton>
-        <iButton @click="reset">重置</iButton>
-        <iButton @click="save">保存</iButton>
+        <iButton @click="del">{{$t('delete')}}</iButton>
+        <iButton @click="add">{{$t('LK_XINZENG')}}</iButton>
+        <iButton @click="reset">{{$t('LK_CHONGZHI')}}</iButton>
+        <iButton @click="save">{{$t('LK_BAOCUN')}}</iButton>
       </div>
       <div style="text-align: right" v-if="addMode">
-        <iButton @click="cancelAdd">取消</iButton>
-        <iButton @click="saveAdd">保存</iButton>
+        <iButton @click="cancelAdd">{{$t('LK_QUXIAO')}}</iButton>
+        <iButton @click="saveAdd">{{$t('LK_BAOCUN')}}</iButton>
       </div>
       <div class="tableBox">
         <tableList
@@ -66,7 +66,7 @@ import {iDialog, iButton, icon, iSelect} from 'rise'
 import {iMessage} from '@/components';
 import tableList from '@/components/ws3/commonTable';
 import {tableTitle} from './components/data';
-import {getCustomPartDataList, fetchSaveCustomPart} from '@/api/partsrfq/vpCustomPart'
+import {getCustomPartDataList, fetchSaveCustomPart} from '@/api/partsrfq/vpAnalysis/vpCustomPart'
 export default {
   name: 'CustomPart',
   components: {iDialog, iButton, icon, iSelect, tableList},

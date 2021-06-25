@@ -24,7 +24,7 @@
 
 <script>
 import {iSearch, iInput, iText} from 'rise';
-import {tableSearch} from './data';
+import {tableSearch, externalTableSearch} from './data';
 
 export default {
   components: {
@@ -37,11 +37,19 @@ export default {
       form: {
         category: '',
         partNum: '',
-        rfq: '',
+        rfq: this.$route.query.id ? this.$route.query.id : '',
         createBy: '',
       },
-      tableSearch,
     };
+  },
+  computed: {
+    tableSearch() {
+      if (this.$route.path.indexOf('externalNegotiationAssistant') > 0) {
+        return externalTableSearch;
+      } else {
+        return tableSearch;
+      }
+    },
   },
   methods: {
     handleSearchReset() {

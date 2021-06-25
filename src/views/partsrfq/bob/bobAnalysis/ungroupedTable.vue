@@ -1,13 +1,13 @@
 <!--
  * @Author: your name
- * @Date: 2021-06-21 11:38:57
- * @LastEditTime: 2021-06-25 14:47:43
+ * @Date: 2021-06-24 16:19:33
+ * @LastEditTime: 2021-06-24 16:20:16
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
- * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails\table1.vue
+ * @FilePath: \front-web\src\views\partsrfq\bob\bobAnalysis\ungroupedTable.vue
 -->
 <template>
-  <div>
+  <iCard>
     <el-table
       ref="treeList"
       :data="tableList.dataList"
@@ -31,21 +31,30 @@
         :prop="i.prop"
         align="center"
       >
-      <template slot-scope="scope">
-         <div v-if=" testing(scope.row[i.prop])">
-           <span v-for="item in scope.row[i.prop]" :key="item.id" class="margin-right20">{{item}}</span>
-         </div>
-         <div v-else>
-           <span>{{scope.row[i.prop]}}</span>
-         </div>
-      </template>
+        <template slot-scope="scope">
+          <div v-if="testing(scope.row[i.prop])">
+            <span
+              v-for="item in scope.row[i.prop]"
+              :key="item.id"
+              class="margin-right20"
+              >{{ item }}</span
+            >
+          </div>
+          <div v-else>
+            <span>{{ scope.row[i.prop] }}</span>
+          </div>
+        </template>
       </el-table-column>
     </el-table>
-  </div>
+  </iCard>
 </template>
 
 <script>
+import { iCard } from "rise";
 export default {
+  components: {
+    iCard,
+  },
   props: {
     expends: {
       type: Array,
@@ -61,14 +70,14 @@ export default {
       },
     },
   },
-  computed:{
-    testing(val){      
-      return function(val){
-        if(val instanceof Array){
-           return true
+  computed: {
+    testing(val) {
+      return function (val) {
+        if (val instanceof Array) {
+          return true;
         }
-      }
-    }
+      };
+    },
   },
   watch: {
     expends: {
@@ -115,24 +124,17 @@ export default {
     };
   },
   methods: {
-    addclass(row){
-        var that=this
-        if (row.columnIndex==that.num) {
-          return 'addcss'
-        }
-    },
     getRowKey(row) {
       return row.id;
     },
-    render(h, { column, $index }){
-      console.log(h,column,$index)
+    render(h, { column, $index }) {
+      console.log(h, column, $index);
     },
     rowClick(row, event, column) {
       this.$emit("row-click", row, event, column);
     },
 
     cellClick(row, column, cell, event) {
-      console.log(row,column,cell,event)
       this.$emit("cell-click", row, column, cell, event);
     },
     // 格子双击事件
@@ -157,11 +159,5 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss" scoped></style>
 
-</style>
-<style lang="scss">
-  .addcss{
-  color: red;
-}
-</style>

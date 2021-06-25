@@ -1,6 +1,14 @@
+<!--
+ * @Author: your name
+ * @Date: 2021-06-24 17:51:32
+ * @LastEditTime: 2021-06-25 14:14:57
+ * @LastEditors: your name
+ * @Description: In User Settings Edit
+ * @FilePath: \front-web\src\views\partsrfq\vpAnalyse\vpAnalyseList\components\reportPreview.vue
+-->
 <template>
   <div>
-    <iDialog title="Volume Pricing报告-零件号" :visible.sync="visible" width="90%">
+    <iDialog :title="$t('LK_VP_PORT_NO')" :visible.sync="visible" width="90%">
       <iframe :src="reportUrl" class="report"></iframe>
     </iDialog>
   </div>
