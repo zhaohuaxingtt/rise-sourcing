@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-22 09:12:02
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-23 18:23:18
+ * @LastEditTime: 2021-06-24 11:02:16
  * @Description: 财务目标价-目标价审批
  * @FilePath: \front-web\src\views\financialTargetPrice\approval\index.vue
 -->
@@ -20,9 +20,9 @@
             <el-option value="" :label="$t('all')"></el-option>
             <el-option
               v-for="item in selectOptions[item.selectOption] || []"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value">
+              :key="item.code"
+              :label="item.name"
+              :value="item.code">
             </el-option>
           </iSelect> 
           <iDatePicker v-else-if="item.type === 'date'" value-format="" type="date" v-model="searchParams[item.value]"></iDatePicker>
@@ -80,13 +80,14 @@ import { tableTitle, searchList } from './data'
 import { pageMixins } from "@/utils/pageMixins"
 import tableList from '../components/tableList'
 import approvalDialog from './components/approval'
+import { dictkey } from "@/api/partsprocure/editordetail"
 export default {
   mixins: [pageMixins],
   components: {iPage,headerNav,iCard,tableList,iPagination,iButton,iSelect,iDatePicker,iInput,iSearch,approvalDialog},
   data() {
     return {
       tableTitle: tableTitle,
-      tableData: [{partNum:'2342342'}],
+      tableData: [{partNum:'2342342',purchasePrjectId:'119'}],
       searchList: searchList,
       searchParams: {},
       isEdit: false,
@@ -95,7 +96,27 @@ export default {
       approvalDialogVisible: false
     }
   },
+  created() {
+    this.getProcureGroup()
+  },
   methods: {
+    /**
+     * @Description: 获取下拉框
+     * @Author: Luoshuang
+     * @param {*}
+     * @return {*}
+     */    
+    getProcureGroup() {
+      dictkey().then((res) => {
+        if (res.data) {
+          this.selectOptions = res.data;
+        }
+      });
+    },
+    openPage(row) {
+      const router =  this.$router.resolve({path: '/sourcing/partsprocure/editordetail', query: { item: JSON.stringify(row) }})
+      window.open(router.href,'_blank')
+    },
     openApprovalDetailDialog(row){
       this.changeApprovalDialogVisible(true)
     },

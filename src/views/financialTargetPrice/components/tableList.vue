@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-22 14:42:20
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-23 18:10:26
+ * @LastEditTime: 2021-06-24 10:33:32
  * @Description: 财务目标价公用表格
  * @FilePath: \front-web\src\views\financialTargetPrice\components\tableList.vue
 -->
@@ -48,7 +48,7 @@
           <!------------------图纸列--------------------------->
           <span class="openLinkText cursor" v-if="items.props === 'tuzhi'" @click="$emit('openAttachmentDialog',scope.row)">查看</span>
           <!------------------操作列--------------------------->
-          <span class="openLinkText cursor" v-else-if="items.props === 'caozuo'">编辑</span>
+          <span class="openLinkText cursor" v-else-if="items.props === 'caozuo'" @click="$emit('openEditdetail', scope.row)" >编辑</span>
           <!------------------修改记录列--------------------------->
           <span class="openLinkText cursor" v-else-if="items.props === 'xiugai'" @click="$emit('openModifyDialog',scope.row)">查看</span>
           <!------------------审批记录列--------------------------->
