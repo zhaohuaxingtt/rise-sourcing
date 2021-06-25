@@ -40,7 +40,7 @@
       <!--------------表格模块-------------->
     </div>
     <tableList v-loading='fsTableLoading' @sortChangeTabless='sortChange' :round='round' :tableTitle='title' v-if='layout == "1"' :ratingList='ratingList' :tableData='exampelData' @handleSelectionChange='handleSelectionChange'></tableList>
-    <tableListSupplier v-loading='supplierTableLoading' :centerSupplierData='suppliertopList' :supplierLeftLit='supplierLeftLit' :tableTitle='supplierTile'  :tableData='supplierData' v-if='layout == "2"'></tableListSupplier>
+    <tableListSupplier :leftData='leftData' :rightData='rightData' v-loading='supplierTableLoading' :centerSupplierData='suppliertopList' :supplierLeftLit='supplierLeftLit' :tableTitle='supplierTile'  :tableData='supplierData' v-if='layout == "2"'></tableListSupplier>
     <!--------------弹窗-------------->
     <iDialog title="组合名" :visible.sync="groupVisble" width='25%' >
       <div class="mine_height">
@@ -355,6 +355,8 @@ export default{
           this.supplierTile = getRenderTableTileSupplier(this.backChoose,res.data.bdlInfoList)
           this.supplierLeftLit = getleftTittleList(this.backChoose)
           this.suppliertopList = translateDataListSupplier(res.data.bdlInfoList).topList
+          this.leftData = res.data.kmAPrice
+          this.rightData = res.data.kmTooling
         } 
       }).catch(err=>{
         this.supplierTableLoading = false
