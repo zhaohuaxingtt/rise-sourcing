@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-26 20:06:02
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-17 15:09:45
+ * @LastEditTime: 2021-06-25 13:58:42
  * @Description: 产能计划弹窗
  * @FilePath: \front-web\src\views\accessoryPart\createRfq\components\capacityPlanning.vue
 -->
@@ -17,12 +17,12 @@
   >
     <template slot="title">
       <div class="clearFloat">
-        <span class="font18 font-weight">产能计划</span>
+        <span class="font18 font-weight">{{language('CHANNENGJIHUA','产能计划')}}</span>
           <div class="floatright">
             <!--------------------保存按钮----------------------------------->
-            <iButton @click="handleSave" :loading="saveLoading" >保存</iButton>
+            <iButton @click="handleSave" :loading="saveLoading" >{{language('BAOCUN','保存')}}</iButton>
             <!--------------------添加按钮----------------------------------->
-            <iButton @click="clearDialog" >结束编辑</iButton>
+            <iButton @click="clearDialog" >{{language('JIESHUBIANJI','结束编辑')}}</iButton>
           </div>
       </div>
     </template>
@@ -116,7 +116,7 @@ export default {
         .then((res) => {
           this.tableTitle = cloneDeep(planTableTitle)
           this.tableData = [
-            {a: '产量（PC）'}
+            {a: this.language('CHANLIANG_PC','产量（PC）')}
           ]
 
           if (res.data && res.data.partRecordsResDTO) {
@@ -140,7 +140,7 @@ export default {
     clearDialog() {
       this.tableTitle = cloneDeep(planTableTitle)
       this.tableData = [
-            {a: '产量（PC）'}
+            {a: this.language('CHANLIANG_PC','产量（PC）')}
           ]
       this.$emit('changeVisible', false)
     }
