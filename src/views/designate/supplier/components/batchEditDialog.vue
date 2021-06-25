@@ -1,12 +1,12 @@
 <template>
-  <iDialog class="dialog" title="批量编辑" v-bind="$props" :visible.sync="visible" v-on="$listeners">
+  <iDialog class="dialog" :title="language('LK_BATCHEDIT','批量编辑')" v-bind="$props" :visible.sync="visible" v-on="$listeners">
     <div class="body">
       <el-form>
         <!-- 单一原因 -->
-        <el-form-item :label="$t('nominationSupplier.DanYiYuanYin')">
+        <el-form-item :label="language('nominationSupplier_DanYiYuanYin','单一原因')">
           <iSelect
             v-model="form.singleReason"
-            :placeholder="$t('LK_QINGXUANZE')"
+            :placeholder="language('LK_QINGXUANZE','请选择')"
           >
             <el-option
               :value="items.label"
@@ -17,10 +17,10 @@
           </iSelect>
         </el-form-item>
         <!-- 部门 -->
-        <el-form-item :label="$t('nominationSupplier.BuMen')">
+        <el-form-item :label="language('nominationSupplier_BuMen','部门')">
           <iSelect
             v-model="form.department"
-            :placeholder="$t('LK_QINGXUANZE')"
+            :placeholder="language('LK_QINGXUANZE','请选择')"
           >
             <el-option
               :value="items.value"
@@ -32,7 +32,7 @@
         </el-form-item>
       </el-form>
       <div class="footer" slot="footer">
-        <iButton @click="submit">{{ $t("LK_BAOCUN") }}</iButton>
+        <iButton @click="submit">{{ language("LK_BAOCUN",'保存') }}</iButton>
       </div>
     </div>
   </iDialog>
