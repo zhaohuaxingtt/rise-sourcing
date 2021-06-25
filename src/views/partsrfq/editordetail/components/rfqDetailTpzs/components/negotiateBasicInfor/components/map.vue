@@ -6,22 +6,50 @@
  * @Descripttion: 总览
 -->
 <template>
-  <div class="chartmap" ref="chart"></div>
+  <div>
+    <div :class="tableData.length<13?'flex top':'flex scroll'">
+      <div class="flex margin-right50" v-for="(item,index) in tableData" :key="index">
+        <div :style="'background:'+color[index]" class="circle margin-right4"></div>
+        <div>{{item.name}}</div>
+      </div>
+    </div>
+    <div class="chartmap" ref="chart"></div>
+  </div>
 </template>
 
 <script>
 import world from "./china.json";
 import echarts from '@/utils/echarts'
+import { iCard, icon, iLabel } from "rise";
 export default {
-  components: {},
+  components: { iCard, icon, iLabel },
   data() {
     return {
+      color: ['#B9DDFA', '#8BC7F7', '#46B3F3', '#009FEF', '#008CEE', '#0078ED', '#0050EB', '#0641C8', '#0B31A5', '#46647C', '#235A7A', '#005078'],
+      tableData: [
+        { name: '重庆', value: [107.51, 29.63], symbolSize: 2 },
+        { name: '甘肃', value: [103.82, 36.05], symbolSize: 2 },
+        { name: '山东', value: [118.01, 36.37], symbolSize: 2 },
+        { name: '陕西', value: [108.94, 34.46], symbolSize: 2 },
+        { name: '河南', value: [113.46, 34.25], symbolSize: 2 },
+        { name: '安徽', value: [117.28, 31.86], symbolSize: 2 },
+        { name: '江苏', value: [120.26, 32.54], symbolSize: 2 },
+        { name: '上海', value: [121.46, 31.28], symbolSize: 2 },
+        { name: '四川', value: [103.36, 30.65], symbolSize: 2 },
+        { name: '四川', value: [103.36, 30.65], symbolSize: 2 },
+        { name: '四川', value: [103.36, 30.65], symbolSize: 2 },
+        { name: '四川', value: [103.36, 30.65], symbolSize: 2 },
+        { name: '四川', value: [103.36, 30.65], symbolSize: 2 },
+        { name: '四川', value: [103.36, 30.65], symbolSize: 2 },
+        { name: '四川', value: [103.36, 30.65], symbolSize: 2 },
+        { name: '陕西', value: [103.36, 30.65], symbolSize: 2 },
+
+      ]
     }
   },
   created() {
   },
   mounted() {
-    console.log(world);
     this.handleMap()
   },
   methods: {
@@ -29,7 +57,6 @@ export default {
       this.$nextTick(() => {
         const myChart = echarts().init(this.$refs.chart);
         echarts().registerMap('world', world);
-        console.log(world);
         myChart.setOption({
           legend: {
             top: 0,
@@ -37,9 +64,25 @@ export default {
 
             icon: "circle",
           },
-
           tooltip: {
             trigger: 'item',
+            backgroundColor: '#fff',
+            borderColor: '#EEF1F7',
+            borderWidth: 1,
+
+            formatter: (params) => {
+              return `<div class='tooltip'>
+                          <div class='flex'>
+                            <div class="img"></div><div class='title'>${'供应商'}</div>
+                          </div>
+                          <div class='label'>${this.$t('LK_CHEXINGXIANGMU') + ':'}</div>
+                          <div class='value'>${1}</div>
+                          <div class='label'>${this.$t('TPZS.SQDZDZ')}</div>
+                          <div class='value'>${1}</div>
+                          <div class='label'>${this.$t('TPZS.ZXSE')}</div>
+                          <div class='value'>${1}</div>
+                      </div>`
+            },
           },
           toolbox: {
             show: false,
@@ -50,6 +93,7 @@ export default {
               dataView: { readOnly: false },
               restore: {},
               saveAsImage: {}
+
             }
           },
           geo: {
@@ -82,6 +126,18 @@ export default {
               },
             },
           },
+          color: ['#B9DDFA',
+            '#8BC7F7',
+            '#46B3F3',
+            '#009FEF',
+            '#008CEE',
+            '#0078ED',
+            '#0050EB',
+            '#0641C8',
+            '#0B31A5',
+            '#46647C',
+            '#235A7A',
+            '#005078'],
           series: [
             {
               type: 'map',
@@ -97,7 +153,7 @@ export default {
             },
 
             {
-              type: 'scatter',
+              type: 'effectScatter',
               coordinateSystem: 'geo',       // 表示使用的坐标系为地理坐标系
               zlevel: 3,
               rippleEffect: {
@@ -117,49 +173,20 @@ export default {
               },
               itemStyle: {
                 normal: {
-                  color: '#1763F7',
+                  color: (e) => {
+                    return this.color[e.dataIndex]
+                  },
                   borderColor: '#aac3f5',
                   borderWidth: 3,
                 },
                 emphasis: {
                   borderColor: '#a5ddd6',
                   borderWidth: 5,
-                  color: "#fff",//移入后的颜色
+                  color: "#000",//移入后的颜色
                 }
               },
-              data: [{ name: "芬兰", value: [24.909912, 60.169095], symbolSize: 8 },
-              { name: "德国", value: [13.402393, 52.518569], symbolSize: 8 },
-              { name: "英国", value: [-0.126608, 51.208425], symbolSize: 8 },
-              { name: "韩国", value: [126.979208, 37.53875], symbolSize: 8 },
-              { name: "日本", value: [139.710164, 35.706962], symbolSize: 8 },]
+              data: this.tableData
             },
-            // {
-            //   type: 'scatter',
-
-            //   coordinateSystem: 'geo',       // 表示使用的坐标系为地理坐标系
-            //   zlevel: 3,
-            //   rippleEffect: {
-            //     brushType: 'fill'        // 波纹绘制效果
-            //   },
-            //   label: {
-            //     normal: {                  // 默认的文本标签显示样式
-            //       show: true,
-            //       color: '#000',
-            //       position: 'top',      // 标签显示的位置
-            //       formatter: '{b}'       // 标签内容格式器
-            //     },
-
-            //   },
-            //   itemStyle: {
-            //     normal: {
-            //       color: '#05BB8B',
-            //       borderColor: '#a5ddd6',
-            //       borderWidth: 3,
-            //     }
-            //   },
-            //   data: data
-
-            // }
           ]
         });
       })
@@ -173,9 +200,54 @@ export default {
   width: 100rem;
   height: 60rem;
 }
-.right {
+
+.title {
+  margin-left: 5px;
+  color: #7e84a3;
+  font-size: 20px;
+}
+.img {
+  width: 33px;
+  height: 25px;
+  background: url("~@/assets/images/zl.png") center center no-repeat;
+  background-size: 33px auto;
+}
+.label {
+  color: #7e84a3;
+  font-size: 20px;
+  text-align: left;
+}
+.value {
+  color: #131523;
+  font-size: 16px;
+  text-align: left;
+}
+.tooltip {
+  padding: 30px;
   width: 339px;
-  /* right: 0px;
-  position: relative; */
+}
+.circle {
+  width: 14px;
+  height: 14px;
+  border-radius: 10px;
+  border: 1px solid;
+  border: none;
+}
+.top {
+  width: 100%;
+  height: 30px;
+  color: #0d2451;
+  font-size: 16px;
+}
+.scroll {
+  overflow-x: scroll;
+  overflow-y: hidden;
+  width: 79%;
+  height: 40px;
+  color: #0d2451;
+  font-size: 16px;
+}
+.flex {
+  align-items: center;
 }
 </style>

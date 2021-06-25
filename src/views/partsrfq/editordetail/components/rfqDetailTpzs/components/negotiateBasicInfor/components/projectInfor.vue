@@ -13,10 +13,10 @@
         <iLabel :label="'RFQ'" slot="label"></iLabel>
         <iText>{{  }}</iText>
       </iFormItem>
-      <iFormItem>
+      <!-- <iFormItem>
         <iLabel :label="$t('LK_CHEXING')" slot="label"></iLabel>
         <iText>{{  }}</iText>
-      </iFormItem>
+      </iFormItem> -->
       <iFormItem>
         <iLabel :label="$t('LK_CAILIAOZU')" slot="label"></iLabel>
         <iText>{{  }}</iText>
@@ -59,14 +59,14 @@
         <iLabel icons="iconxinxitishi" :tip="$t('TPZS.LCHTIPS')" :label="$t('TPZS.CFQK')" slot="label"></iLabel>
         <iText>{{  }}</iText>
       </iFormItem>
-      <iFormItem>
+      <!-- <iFormItem>
         <iLabel :label="$t('TPZS.CXLC')" slot="label"></iLabel>
         <iText>{{  }}</iText>
       </iFormItem>
       <iFormItem>
         <iLabel :label="$t('TPZS.SOPRQ')" slot="label"></iLabel>
         <iText>{{  }}</iText>
-      </iFormItem>
+      </iFormItem> -->
     </iFormGroup>
   </div>
 </template>

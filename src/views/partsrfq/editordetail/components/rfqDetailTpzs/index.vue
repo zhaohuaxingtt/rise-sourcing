@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-25 13:01:23
- * @LastEditors: Please set LastEditors
+ * @LastEditors: zbin
  * @Description: 报价助手界面
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\index.vue
 -->
@@ -29,7 +29,7 @@
       </template>
     </el-tab-pane>
     <el-tab-pane label="专项分析工具">
-      <specialAnalysisTool v-if="false"/>
+      <specialAnalysisTool v-if="true"/>
       <analysisTool v-if="true"/>
       <pcaOverview v-if="false"/>
       <tiaOverview v-if="false"/>

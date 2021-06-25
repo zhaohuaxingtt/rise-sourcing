@@ -1,19 +1,28 @@
 <!--
+ * @Author: your name
+ * @Date: 2021-06-21 19:38:02
+ * @LastEditTime: 2021-06-25 11:26:05
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: \front-web\src\views\partsrfq\vpAnalyse\vpAnalyseList\components\analysisTable.vue
+-->
+<!--
  * @Author: youyuan
  * @Date: 2021-06-16 20:44:29
- * @LastEditTime: 2021-06-22 20:53:36
+ * @LastEditTime: 2021-06-24 17:27:45
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\analysisTool\components\analysisTable.vue
 -->
 <template>
-  <div>
+  <div class="vpMainBox">
     <el-table
       :data="tableListData"
       style="width: 100%;margin-bottom: 20px;"
       row-key="number"
       default-expand-all
-      :tree-props="{children: 'children'}">
+      :tree-props="{children: 'children'}"
+      @selection-change="handleSelectionChange">
       <el-table-column
         type="selection"
         width="55">
@@ -27,18 +36,24 @@
         width="50">
       </el-table-column>
       <el-table-column
+        prop="analysisSchemeName"
         align="center"
         header-align="center"
-        label="分析名称">
+        label="分析名称"
+        width="250">
         <template slot-scope="scope">
           <div class="openPage">
             <span v-if="!editMode">
-              <span v-if="scope.row.type == '方案'">{{scope.row.analysisSchemeName}}</span>
-              <span v-if="scope.row.type == '报告'">{{scope.row.reportName}}</span>
+              <span v-if="scope.row.type == $t('LK_SCHEME_TYPE')" @click="clickScheme(scope.row)">{{scope.row.analysisSchemeName}}</span>
+              <span v-if="scope.row.type == $t('LK_REPORT_TYPE')" @click="clickReport(scope.row)">{{scope.row.reportName}}</span>
             </span>
             <span v-else>
-              <iInput v-if="scope.row.type == '方案'" v-model="scope.row.analysisSchemeName"></iInput>
-              <iInput v-if="scope.row.type == '报告'" v-model="scope.row.reportName"></iInput>
+              <iInput style="width: 60%" v-if="scope.row.type == $t('LK_SCHEME_TYPE')" v-model="scope.row.analysisSchemeName"></iInput>
+              <iInput style="width: 60%" v-if="scope.row.type == $t('LK_REPORT_TYPE')" v-model="scope.row.reportName"></iInput>
+            </span>
+            <span v-if="scope.row.type == $t('LK_SCHEME_TYPE')">
+              <span class="number">{{scope.row.reportCount}}</span>
+              <icon class="numberIcon"  style="{font-size:24px}" symbol name="iconwenjianshuliangbeijing"></icon>
             </span>
           </div>
         </template>
@@ -62,9 +77,9 @@
         label="默认项">
         <template slot-scope="scope">
           <div v-if="!editMode">
-            {{scope.row.isDefault != 1 ? scope.row.isDefaul == 0 ? '否' : null : '是'}}
+            {{scope.row.isDefault != 1 ? scope.row.isDefaul == $t('nominationLanguage.No') ? '否' : null : $t('nominationLanguage.Yes')}}
           </div>
-          <div v-else-if="editMode && scope.row.type == '方案' && scope.row.isDefault != null">
+          <div v-else-if="editMode && scope.row.type == $t('LK_SCHEME_TYPE') && scope.row.isDefault != null">
             <iSelect v-model="scope.row.isDefault">
               <el-option :value="item.value" :label="item.label" v-for="(item, index) in defaultData" :key="index"></el-option>
             </iSelect>
@@ -101,36 +116,14 @@
         header-align="center"
         width="50">
         <template slot-scope="scope">
-          <div class="stickIcon" v-if="scope.row.type == '方案'" @click="clickStick(scope.row)">
+          <div class="stickIcon" v-if="scope.row.type == $t('LK_SCHEME_TYPE')" @click="clickStick(scope.row)">
             <icon v-if="scope.row.isTop && scope.row.isTop == 1" style="{font-size:24px}" symbol name="iconliebiaoyizhiding"></icon>
             <icon v-else style="{font-size:24px}" symbol name="iconliebiaoweizhiding" @click="clickStick(scope.row)" ></icon>
           </div>
         </template>
       </el-table-column>
     </el-table>
-    <!-- 列表 -->
-    <!-- <tableList
-      :tableData="tableListData"
-      :tableTitle="tableTitle"
-      :tableLoading="false"
-      :index="true"
-      :treeTable="true"
-      treeProps="vpReportVOList"
-      @handleSelectionChange="handleSelectionChange"
-      >
-      <template #name="scope">
-        <span v-if="scope.row.type == '方案'">{{scope.row.analysisSchemeName}}</span>
-        <span v-if="scope.row.type == '报告'">{{scope.row.reportName}}</span>
-      </template>
-      <template #isDefault="scope">
-        {{scope.isDefault == 1 ? '是' : '否'}}
-      </template>
-      <template #action="scope">
-        <icon v-if="scope.row.isTop" style="{font-size:24px}" symbol name="iconliebiaoyizhiding"  @click="clickStick(scope.row)"></icon>
-        <icon v-else style="{font-size:24px}" symbol name="iconliebiaoweizhiding" @click="clickStick(scope.row)" ></icon>
-      </template>
-    </tableList> -->
-    <!-- 分页 -->
+
     <iPagination
       v-update
       @size-change="handleSizeChange($event, getTableData)"
@@ -141,36 +134,39 @@
       :layout="page.layout"
       :current-page='page.currPage'
       :total="page.totalCount"/>
+
+      <reportPreview :visible="reportVisible" :reportUrl="reportUrl"/>
   </div>
 </template>
 
 <script>
 import {icon, iPagination, iInput, iSelect} from 'rise'
-import {pageMixins} from '@/utils/pageMixins';
-import {tableTitle} from './data'
-import {iMessage} from '@/components';
+import {getVpAnalysisDataList, fetchStaick, fetchEdit, fetchDel} from '@/api/partsrfq/vpAnalysis/vpAnalysisList'
 import tableList from '@/components/ws3/commonTable';
-import {getVpAnalysisDataList, fetchStaick, fetchEdit, fetchDel} from '@/api/partsrfq/vpAnalysisList'
+import {iMessage} from '@/components';
+import {pageMixins} from '@/utils/pageMixins';
+import reportPreview from './reportPreview'
 export default {
   name: 'analysisTable',
   mixins: [pageMixins],
-  components: {icon, iPagination, iInput, iSelect, tableList},
+  components: {icon, iPagination, iInput, iSelect, tableList, reportPreview},
   props: {
     editMode: {
       type: Boolean,
       default: false
-    }
+    },
   },
   data () {
     return {
-      tableTitle,
       tableListData: [],
       tableLoading: false,
       defaultData: [
-        {value: 1, label: '是'},
-        {value: 0, label: '否'},
+        {value: 1, label: this.$t('nominationLanguage.Yes')},
+        {value: 0, label: this.$t('nominationLanguage.No')},
       ],
       selectionData: [],
+      reportVisible: false,
+      reportUrl: null
     }
   },
   created() {
@@ -189,10 +185,14 @@ export default {
       this.handleTableNumber(this.tableListData, 1, null)
     },
     // 初始化列表数据
-    getTableData() {
+    getTableData(searchData) {
       const params = {
         pageNo: this.page.currPage,
         pageSize: this.page.pageSize,
+        createByName: searchData ? searchData.createByName : null,
+        materialGroup: searchData ? searchData.materialGroup : null,
+        partsNo: searchData ? searchData.partsNo : null,
+        rfqNo: searchData ? searchData.rfqNo : null,
       }
       getVpAnalysisDataList(params).then(res => {
         if(res && res.code == 200) {
@@ -236,7 +236,6 @@ export default {
       const params = {
         id: row.id
       }
-      console.log('params', params);
       fetchStaick(params).then(res => {
         if(res && res.code == 200) {
           iMessage.success(res.desZh)
@@ -261,7 +260,7 @@ export default {
       const ids = []
       const reportIds = []
       this.selectionData.map(item => {
-        if(item.type == '方案') ids.push(item.id)
+        if(item.type == this.$t('LK_SCHEME_TYPE')) ids.push(item.id)
         else reportIds.push(item.id)
       })
       const params = {
@@ -274,22 +273,56 @@ export default {
           this.getTableData()
         }
       })
+    },
+    //点击方案名称，跳转总单价页面
+    clickScheme(row) {
+      const schemeUrl = '/sourcing/partsrfq/vpAnalyseDetail'
+      this.$router.push({
+        path: schemeUrl,
+        query: {
+          schemeId: row.id
+        }
+      })
+    },
+    //点击报告名称，打开报告预览弹窗
+    clickReport(row) {
+      this.reportVisible = true
+      if(row.downloadUrl) this.reportUrl = row.downloadUrl
     }
   }
 }
 </script>
 
-<style lang='scss' scoped>
-.openPage{
-	color: $color-blue;
-	font-size: 14px;
-	text-decoration: underline;
-	cursor: pointer;
-	width: 100px;
-	@include text_;
-}
-.stickIcon:hover {
-  cursor: pointer;
+<style lang='scss'>
+.vpMainBox {
+  .el-table__expand-icon{
+    float: right!important;
+  }
+  .openPage{
+    position: relative;
+    color: $color-blue;
+    font-size: 14px;
+    cursor: pointer;
+    width: 90%;
+    .number {
+      position: absolute;
+      right: 12px;
+      top: 2px;
+      color: #fff;
+      font-size: 10px;
+      z-index: 1;
+    }
+    .numberIcon {
+      position: absolute;
+      font-size: 24px;
+      right: 10px;
+      top: 3px;
+    }
+  }
+  
+  .stickIcon:hover {
+    cursor: pointer;
+  }
 }
  
 </style>

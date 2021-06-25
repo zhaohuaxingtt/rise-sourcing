@@ -1,6 +1,6 @@
 /*
  * @Author: moxuan
- * @Description: pca总览
+ * @Description: vp详情
  */
 
 import axios from '@/utils/axios'

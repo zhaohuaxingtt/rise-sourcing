@@ -951,6 +951,20 @@
 		'LK_QINGXUANZEDINGDIANSHENQINGLEIXING': '请选择定点申请类型', // 请选择定点申请类型
 		'LK_DINGDIANSHENQINGLEIXING': '定点申请类型', // 定点申请类型
 
+    //vp
+    'LK_SCHEME_TYPE': '方案', // 方案类型
+    'LK_REPORT_TYPE': '报告', // 方案报告
+    'LK_CREATE': '新建',//新建
+    'LK_PART_NO': '零件号',//零件号
+    'LK_RFQ_NOORNAME': 'RFQ号/名称',//RGQ号/名称
+    'LK_CREATEBY': '创建人',//RGQ号/名称
+    'LK_VP_PORT_NO': 'Volume Pricing报告-零件号', //Volume Pricing报告-零件号
+    'LK_CUSTOM_TITLE': '自定义',//自定义零件列表title
+    'LK_FACTORY': '工厂',//工厂
+    'LK_SUPPLIER': '供应商',//供应商
+    'LK_SHOWORHIDE': '显示/隐藏',//显示/隐藏
+    'LK_SORT': '排序', //排序
+
 		// 定点管理
 		'nominationLanguage': {
 			'DingDianXiangQing': '定点详情', // 定点详情
@@ -1139,6 +1153,7 @@
 			'SCGXSJ': "上次更新时间:", //上次更新时间
 			'SCDCSJ': "上次导出时间:", //上次导出时间
 			'PLGYSGL': "批量供应商概览", //批量供应商概览
+			'PLGYSZL': "批量供应商总览", //批量供应商总览
 			'GYS360': "供应商360", //供应商360
 			'DW': "单位:", //单位
 			'XMGL': "项目概览:", //项目概览
@@ -1176,7 +1191,7 @@
 			'SQDZDZ': "上汽大众地址：", //上汽大众地址：
 			'ZXSE': "总销售额：", //总销售额：
 			'DDJV': "定点记录", //定点记录
-      'VPFX':"Volume Pricing分析-",//Volume Pricing分析-
+      'VPFX':"Volume Pricing分析",//Volume Pricing分析
 			'VPFXK':"Volume Pricing分析库",//Volume Pricing分析库
 			'CXJHCLYXSLJCLFX':"车型计划产量与现实累计产量分析（截止2021-02）",//车型计划产量与现实累计产量分析（截止2021-02）
 			'DWL':"单位：辆",//单位：辆

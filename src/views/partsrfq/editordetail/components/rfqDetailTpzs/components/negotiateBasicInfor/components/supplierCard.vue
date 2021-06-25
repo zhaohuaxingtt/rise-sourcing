@@ -7,18 +7,20 @@
 -->
 <template>
   <div>
-    <iCard class="right margin-top5"  v-for="(item,index) in 3" :key="index">
-      <div class="flex">
-        <icon class="icon-s" name="iconpilianggongyingshangzonglan" symbol></icon>
-        <span>供应商</span>
-      </div>
-      <iLabel class="margin-top8 title" :label="$t('LK_CHEXINGXIANGMU')+':'"></iLabel>
-      <div>{{}}</div>
-      <iLabel class="margin-top8 title" :label="$t('TPZS.SQDZDZ')"></iLabel>
-      <div>{{}}</div>
-      <iLabel class="margin-top8 title" :label="$t('TPZS.ZXSE')"></iLabel>
-      <div>{{}}</div>
-    </iCard>
+    <div :class="tableData.length<3?'':'ben'">
+      <iCard class="right margin-top5" v-for="(item,index) in tableData" :key="index">
+        <div class="flex">
+          <icon class="icon-s" name="iconpilianggongyingshangzonglan" symbol></icon>
+          <span>{{item.name}}</span>
+        </div>
+        <iLabel class="margin-top8 title" :label="$t('LK_CHEXINGXIANGMU')+':'"></iLabel>
+        <div>{{}}</div>
+        <iLabel class="margin-top8 title" :label="$t('TPZS.SQDZDZ')"></iLabel>
+        <div>{{}}</div>
+        <iLabel class="margin-top8 title" :label="$t('TPZS.ZXSE')"></iLabel>
+        <div>{{}}</div>
+      </iCard>
+    </div>
   </div>
 </template>
 
@@ -28,6 +30,26 @@ export default {
   components: { iCard, icon, iLabel },
   data() {
     return {
+      tableData: [
+        {
+          name: '供应商'
+        },
+        {
+          name: ''
+        },
+        {
+          name: ''
+        },
+        {
+          name: ''
+        },
+        {
+          name: ''
+        },
+        {
+          name: ''
+        },
+      ]
     }
   },
   created() {
@@ -41,12 +63,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.chartmap {
-  width: 100rem;
-  height: 60rem;
-}
 .right {
   width: 339px;
+  // height: 251px;
   /* right: 0px;
   position: relative; */
 }
@@ -58,5 +77,11 @@ export default {
 }
 .title {
   color: #7e84a3;
+}
+.ben {
+  overflow: scroll;
+  overflow-x: hidden;
+  z-index: 5;
+  height: 58.3125rem;
 }
 </style>

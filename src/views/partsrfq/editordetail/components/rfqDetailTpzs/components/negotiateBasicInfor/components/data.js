@@ -6,16 +6,17 @@
  * @Descripttion: your project
  */
 export const tableTitle = [
+  { props: 'dataCategory', name: 'FS号', key: 'LK_FSHAO', },
   { props: 'dataCategory', name: '零件号', key: 'TPZS.LJH', },
   {
     props: 'dataValue', name: '零件名', key: 'TPZS.LJM', width: 120,
   },
   { props: 'calculateValue', name: '工厂', key: 'TPZS.GC', },
-  { props: 'description', name: 'SOP', key: 'TPZS.XMMC', },
   { props: 'description', name: 'EBR%', key: 'TPZS.SOP', },
-  { props: 'description', name: '项目名称', key: 'TPZS.EBR', },
   { props: 'description', name: '全生命周期产量', key: 'TPZS.QSMZQCL', },
   { props: 'description', name: '峰值年产量', key: 'TPZS.FZNCL', },
+  { props: 'description', name: '项目名称', key: 'TPZS.EBR', },
+  { props: 'description', name: 'SOP日期', key: 'LK_SOPRIQI', },
 ]
 export const supplierTableTitle = [
   { props: 'dataCategory', name: '供应商', key: 'costanalysismanage.GongYingShang', },

@@ -15,7 +15,7 @@
               v-loading='tableLoading'
               @selection-change="handleSelectionChange"
               :row-class-name="handleTableRow"
-              row-key="id"
+              :row-key="rowKey"
               :tree-props="{children: treeProps}"
     >
       <el-table-column v-if="selection" type='selection' width="50" align='center'></el-table-column>
@@ -145,6 +145,7 @@ export default {
     customIndex: {type: Number, default: 0},
     treeTable: {type: Boolean, default: false},
     treeProps: {type: String, default: 'children'},
+    rowKey: {type: String, default: 'id'},
   },
   components: {
     iInput,

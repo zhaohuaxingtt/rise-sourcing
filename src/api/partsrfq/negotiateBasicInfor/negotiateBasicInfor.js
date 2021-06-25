@@ -7,7 +7,7 @@
  */
 import axios from '@/utils/axios'
 
-const requst = axios(process.env.VUE_APP_RFQ)
+const requst = axios(process.env.VUE_APP_VP_ANALYSE)
 
 export function powerBiUrl(parmars) {
     return requst({

@@ -43,7 +43,7 @@ import { partsTableTitle } from "./data.js";
 import tableList from '@/components/ws3/commonTable';
 import { pageMixins } from '@/utils/pageMixins';
 import searchPartDialog from "./searchPartDialog.vue";
-
+import { getCarModelPartsList } from "@/api/partsrfq/vpAnalysis/vpAnalyseCreate";
 
 export default {
   // import引入的组件需要注入到对象中才能使用
@@ -66,11 +66,27 @@ export default {
   methods: {
     hanleParts() {
       this.partsDialog = true
+    },
+    async getTableList() {
+      this.tableLoading = true;
+      try {
+        const req = {
+
+        };
+        const res = await getCarModelPartsList(req);
+        if (res.result) {
+          this.tableListData = res.data;
+        }
+        this.tableLoading = false;
+      } catch {
+        this.tableListData = [];
+        this.tableLoading = false;
+      }
     }
   },
   // 生命周期 - 创建完成（可以访问当前this实例）
   created() {
-
+    this.getTableList()
   },
   // 生命周期 - 挂载完成（可以访问DOM元素）
   mounted() {
