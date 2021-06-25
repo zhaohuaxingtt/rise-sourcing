@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-03-18 20:15:17
- * @LastEditTime: 2021-04-28 16:14:17
+ * @LastEditTime: 2021-06-25 16:13:35
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\api\usercenter\index.js
@@ -45,5 +45,16 @@ export function getUserInfoByToken(){
     return requst({
         url:'/getUserInfoByToken',
         method:"GET",
+    })
+}
+
+export function sendKey(data){
+    return requst({
+        url:'http://10.122.18.136:8088/i18n/addTranslationMap',
+        method:"POST",
+        data:{
+            cliant:'sourcing',
+            dataList:data
+        }
     })
 }

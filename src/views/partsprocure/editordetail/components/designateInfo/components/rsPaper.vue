@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-27 21:20:41
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-07 10:39:39
+ * @LastEditTime: 2021-06-25 13:07:35
  * @Description: 
  * @FilePath: \front-web\src\views\partsprocure\editordetail\components\designateInfo\components\rsPaper.vue
 -->
@@ -16,10 +16,10 @@
   >
     <template slot="title">
       <div class="clearFloat">
-        <span class="font18 font-weight">纸质RS单</span>
+        <span class="font18 font-weight">{{language('ZHIZHIRSDAN','纸质RS单')}}</span>
           <div class="floatright">
             <!--------------------下载按钮----------------------------------->
-            <iButton @click="handleDownload" class="margin-right20" >下载</iButton>
+            <iButton @click="handleDownload" class="margin-right20" >{{language('XIAZAI','下载')}}</iButton>
           </div>
       </div>
     </template>
@@ -95,7 +95,7 @@ export default {
      */    
     handleDownload() {
       if (this.selectData.length < 1) {
-        iMessage.warn('请选择需要下载的附件')
+        iMessage.warn(this.language('QINGXUANZEXUYAOXIAZAIDEWENJIAN','请选择需要下载的文件'))
         return
       }
       this.handleFileDownload(this.selectData.map(item => item.fileName))

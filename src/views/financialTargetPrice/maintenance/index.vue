@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-22 09:12:31
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-22 16:39:19
+ * @LastEditTime: 2021-06-24 16:56:22
  * @Description: 财务目标价-目标价维护
  * @FilePath: \front-web\src\views\financialTargetPrice\maintenance\index.vue
 -->
@@ -20,12 +20,12 @@
             <el-option value="" :label="$t('all')"></el-option>
             <el-option
               v-for="item in selectOptions[item.selectOption] || []"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value">
+              :key="item.code"
+              :label="item.name"
+              :value="item.code">
             </el-option>
           </iSelect> 
-          <iDatePicker v-else-if="item.type === 'date'" value-format="" type="date" v-model="searchParams[item.value]"></iDatePicker>
+          <iDatePicker v-else-if="item.type === 'dateRange'" value-format="" type="daterange" v-model="searchParams[item.value]"></iDatePicker>
           <iInput v-else v-model="searchParams[item.value]"></iInput> 
         </el-form-item>
       </el-form>
@@ -46,7 +46,18 @@
           <!--------------------导出批量维护按钮----------------------------------->
           <iButton @click="handleExport" >导出批量维护</iButton>
           <!--------------------导入批量维护按钮----------------------------------->
-          <iButton @click="handleUpload" >导入批量维护</iButton>
+          <el-upload
+            class=" margin-left10 margin-right10"
+            :action="uploadUrl + '/cf-target-price-applies/export/import'"
+            accept='.xlsx'
+            style="display:inline-block;"
+            :show-file-list='false'
+            :on-progress='()=>{uploadLoading=true}'
+            :on-error='()=>{uploadLoading=false;iMessage.error("上传失败！")}'
+            :on-success='fileSuccess'
+          >
+            <iButton :loading='uploadLoading'>导入批量维护</iButton>
+          </el-upload>
         </div>
       </div>
       <tableList 
@@ -62,6 +73,7 @@
         @openModifyDialog="openUpdateDialog"
         @openAttachmentDialog="openAttachmentDialog"
         @openApprovalDialog="openApprovalDialog"
+        @openEditdetail="openEditdetail"
       >
       </tableList>
       <!------------------------------------------------------------------------>
@@ -98,13 +110,15 @@ import tableList from '../components/tableList'
 import modificationRecordDialog from './components/modificationRecord'
 import attachmentDialog from '@/views/costanalysismanage/components/home/components/downloadFiles/index'
 import approvalRecordDialog from './components/approvalRecord'
+import { dictkey } from "@/api/partsprocure/editordetail"
+import { getTargetPriceList } from "@/api/financialTargetPrice/index"
 export default {
   mixins: [pageMixins],
   components: {iPage,headerNav,iCard,tableList,iPagination,iButton,iSelect,iDatePicker,iInput,iSearch,modificationRecordDialog,attachmentDialog,approvalRecordDialog},
   data() {
     return {
       tableTitle: tableTitle,
-      tableData: [{partNum:'2342342'}],
+      tableData: [{partNum:'2342342',purchasePrjectId:'119'}],
       searchList: searchList,
       searchParams: {},
       isEdit: false,
@@ -112,10 +126,53 @@ export default {
       selectOptions: {},
       attachmentDialogVisible: false,
       updateDialogVisible: false,
-      approvalDialogVisible: false
+      approvalDialogVisible: false,
+      uploadUrl: process.env.VUE_APP_SOURCING_MH,
     }
   },
+  created() {
+    this.getProcureGroup()
+    this.getTableList()
+  },
   methods: {
+    fileSuccess(res){
+      if(res.code == 200){
+        // this.vm.init()
+        this.uploadLoading=false;
+        iMessage.success("上传成功！")
+        this.getTableList()
+      }else{
+        this.uploadLoading = false;
+        iMessage.error(res.desZh)
+      }
+    },
+    /**
+     * @Description: 获取下拉框
+     * @Author: Luoshuang
+     * @param {*}
+     * @return {*}
+     */    
+    getProcureGroup() {
+      dictkey().then((res) => {
+        if (res.data) {
+          this.selectOptions = res.data;
+        }
+      });
+    },
+    /**
+     * @Description: 点击操作列
+     * @Author: Luoshuang
+     * @param {*} row
+     * @return {*}
+     */    
+    openEditdetail(row) {
+      const router =  this.$router.resolve({path: '/financialtargetprice/detail', query: { item: JSON.stringify(row) }})
+      window.open(router.href,'_blank')
+    },
+    openPage(row) {
+      const router =  this.$router.resolve({path: '/sourcing/partsprocure/editordetail', query: { item: JSON.stringify(row) }})
+      window.open(router.href,'_blank')
+    },
     /**
      * @Description: 审批记录查看
      * @Author: Luoshuang
@@ -179,7 +236,16 @@ export default {
     getTableList() {
       const params = {
         ...this.searchParams,
+        current: this.page.currPage,
+        size: this.page.pageSize
       }
+      getTargetPriceList(params).then(res => {
+        if (res?.result) {
+          
+        } else {
+          
+        }
+      })
     },
     /**
      * @Description: 更改编辑状态

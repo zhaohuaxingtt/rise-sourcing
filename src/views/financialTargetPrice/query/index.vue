@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-22 11:14:02
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-23 18:00:48
+ * @LastEditTime: 2021-06-24 11:42:40
  * @Description: 财务目标价-目标价查询
  * @FilePath: \front-web\src\views\financialTargetPrice\query\index.vue
 -->
@@ -20,12 +20,12 @@
             <el-option value="" :label="$t('all')"></el-option>
             <el-option
               v-for="item in selectOptions[item.selectOption] || []"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value">
+              :key="item.code"
+              :label="item.name"
+              :value="item.code">
             </el-option>
           </iSelect> 
-          <iDatePicker v-else-if="item.type === 'date'" value-format="" type="date" v-model="searchParams[item.value]"></iDatePicker>
+          <iDatePicker v-else-if="item.type === 'dateRange'" value-format="" type="daterange" v-model="searchParams[item.value]"></iDatePicker>
           <iInput v-else v-model="searchParams[item.value]"></iInput> 
         </el-form-item>
       </el-form>
@@ -91,6 +91,8 @@ import tableList from '../components/tableList'
 import modificationRecordDialog from '../maintenance/components/modificationRecord'
 import approvalRecordDialog from '../maintenance/components/approvalRecord'
 import assignDialog from './components/assign'
+import { dictkey } from "@/api/partsprocure/editordetail"
+import { getCartypeDict} from "@/api/partsrfq/home"
 export default {
   mixins: [pageMixins],
   components: {iPage,headerNav,iCard,tableList,iPagination,iButton,iSelect,iDatePicker,iInput,iSearch,modificationRecordDialog,approvalRecordDialog, assignDialog},
@@ -108,7 +110,40 @@ export default {
       approvalDialogVisible: false
     }
   },
+  created() {
+    this.getProcureGroup()
+    this.getCartypeDict()
+  },
   methods: {
+    // 获取车型字典
+    getCartypeDict() {
+      getCartypeDict()
+      .then(res => {
+        if (res.code == 200) {
+          this.selectOptions = {
+            ...this.selectOptions,
+            cartTypeOptions: Array.isArray(res.data) ? res.data : []
+          }
+        }
+      })
+    },
+    /**
+     * @Description: 获取下拉框
+     * @Author: Luoshuang
+     * @param {*}
+     * @return {*}
+     */    
+    getProcureGroup() {
+      dictkey().then((res) => {
+        if (res.data) {
+          this.selectOptions = {...this.selectOptions,...res.data};
+        }
+      });
+    },
+    openPage(row) {
+      const router =  this.$router.resolve({path: '/sourcing/partsprocure/editordetail', query: { item: JSON.stringify(row) }})
+      window.open(router.href,'_blank')
+    },
     /**
      * @Description: 审批记录查看
      * @Author: Luoshuang

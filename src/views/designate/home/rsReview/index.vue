@@ -46,10 +46,19 @@
             {{ $t("nominationLanguage.SELDanJuQUeRen") }}
           </iButton>
           <!-- 签字单 -->
-          <iButton
-          >
-            {{ $t("nominationLanguage.QianZiDan") }}
-          </iButton>
+          <iDropdown class="margin-left10 margin-right10" @command="toPath">
+            <iButton type="default">
+              {{ $t("nominationLanguage.QianZiDan") }}
+              <i class="el-icon-arrow-down el-icon--right"></i>
+            </iButton>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item
+                :command="item.path"
+                v-for="(item, index) in signMenu" :key="index">
+                  {{$t(item.key)}}
+              </el-dropdown-item>
+            </el-dropdown-menu>
+          </iDropdown>
           <!-- 定点 -->
           <iButton
           >
@@ -132,10 +141,11 @@
 </template>
 
 <script>
-import { tableTitle, mokeResData } from './components/data'
+import { tableTitle, signMenu, mokeResData } from './components/data'
 import headerNav from '@/views/designate/home/components/headerNav'
 import search from './components/search'
 import tablelist from "@/views/designate/supplier/components/tableList";
+import selDialog from '../components/selDialog'
 import { 
   getNominationList,
   batchRevoke,
@@ -150,7 +160,6 @@ import {
 import { 
   getSelList
 } from '@/api/designate/nomination/selsheet'
-import selDialog from '../components/selDialog'
 // 前端配置文件里面的定点类型
 // import { applyType } from '@/layout/nomination/components/data'
 
@@ -162,7 +171,8 @@ import {
   iCard,
   iButton,
   iPagination,
-  iMessage
+  iMessage,
+  iDropdown
 } from "rise";
 
 export default {
@@ -177,7 +187,9 @@ export default {
       carTypeList: [],
       // SEL单据确认状态
       selStatus: true,
-      selDialogVisibal: false
+      selDialogVisibal: false,
+      // 签字单菜单
+      signMenu,
     }
   },
   components: {
@@ -185,6 +197,7 @@ export default {
     iCard,
     iButton,
     iPagination,
+    iDropdown,
     headerNav,
     search,
     tablelist,
@@ -196,6 +209,9 @@ export default {
     this.getCarTypePro()
   },
   methods: {
+    toPath(path) {
+      this.$router.push({path})
+    },
     // 确认sel附件单
     confirmSelSheet(type = true) {
       this.selStatus = type

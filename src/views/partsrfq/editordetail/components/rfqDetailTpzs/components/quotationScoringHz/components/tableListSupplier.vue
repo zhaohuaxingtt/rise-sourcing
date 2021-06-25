@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-28 15:03:47
- * @LastEditTime: 2021-06-21 20:33:31
+ * @LastEditTime: 2021-06-25 17:49:13
  * @LastEditors: Please set LastEditors
  * @Description: 特殊表格实现
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\table.vue
@@ -46,10 +46,10 @@
                 </template>
               </ul>
               <div class="cc" style="width:100px">
-                450.000
+                {{leftData}}
               </div>
               <div class="cd" style="width:100px">
-                450.000
+                {{rightData}}
               </div>
             </div>
           </div>
@@ -90,6 +90,14 @@ import {supplierTableTop,removeKeysNumber,getPorpsNumber} from './data'
 export default{
   inject:['getbaseInfoData'],
   props:{
+    leftData:{
+      type:String,
+      default:''
+    },
+    rightData:{
+      type:String,
+      default:''
+    },
     tableData:{
       type:Array,
       default:()=>[]

@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-27 17:45:44
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-09 15:46:39
+ * @LastEditTime: 2021-06-25 13:04:55
  * @Description: 零件采购项目-定点信息
  * @FilePath: \front-web\src\views\partsprocure\editordetail\components\designateInfo\index.vue
 -->
@@ -10,14 +10,14 @@
 <template>
   <iCard>
     <div class="margin-bottom20 clearFloat">
-      <span class="font18 font-weight">定点信息</span>
+      <span class="font18 font-weight">{{language('DINGDIANXINXI','定点信息')}}</span>
       <div class="floatright">
         <!--------------------纸质RS单----------------------------------->
-        <iButton @click="changersPaperDialogVisible(true)">纸质RS单</iButton>
+        <iButton @click="changersPaperDialogVisible(true)">{{language('ZHIZHIRSDAN','纸质RS单')}}</iButton>
         <!--------------------电子RS单----------------------------------->
-        <iButton @click="changersEeditionDialogVisible(true)">电子RS单</iButton>
+        <iButton @click="changersEeditionDialogVisible(true)">{{language('DIANZIRSDAN','电子RS单')}}</iButton>
         <!--------------------SEL分摊单----------------------------------->
-        <iButton @click="changeselDialogVisible(true)">SEL分摊单</iButton>
+        <iButton @click="changeselDialogVisible(true)">{{language('SELFENTANDAN ','SEL分摊单')}}</iButton>
         
       </div>
     </div>

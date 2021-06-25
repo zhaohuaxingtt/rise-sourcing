@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-26 11:16:51
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-23 10:37:50
+ * @LastEditTime: 2021-06-25 13:40:13
  * @Description: 配件综合管理页面
  * @FilePath: \front-web\src\views\accessoryPart\integratedManage\index.vue
 -->
@@ -20,9 +20,9 @@
           <!----------------------------------------------------------------->
           <iSearch @sure="getTableList" @reset="reset">
             <el-form>
-              <el-form-item v-for="(item, index) in searchList" :key="index" :label="item.label">
+              <el-form-item v-for="(item, index) in searchList" :key="index" :label="language(item.key,item.label)">
                 <iSelect v-update v-if="item.type === 'select'" v-model="searchParams[item.value]">
-                  <el-option value="" :label="$t('all')"></el-option>
+                  <el-option value="" :label="language('ALL','全部')"></el-option>
                   <el-option
                     v-for="item in selectOptions[item.selectOption] || []"
                     :key="item.value"
@@ -39,24 +39,24 @@
           <!----------------------------------------------------------------->
           <iCard class="margin-top20">
             <div class="margin-bottom20 clearFloat">
-              <span class="font18 font-weight">配件综合查询</span>
+              <span class="font18 font-weight">{{language('PEIJIANZONGHECHAXUN','配件综合查询')}}</span>
                 <div class="floatright">
                   <!--------------------分配询价科室按钮----------------------------------->
-                  <iButton @click="openInquiryDialog" >分配询价科室</iButton>
+                  <iButton @click="openInquiryDialog" >{{language('FENPEIXUNJIAKESHI','分配询价科室')}}</iButton>
                   <!--------------------分配询价采购员按钮----------------------------------->
-                  <iButton @click="openBuyerDialog" >分配询价采购员</iButton>
+                  <iButton @click="openBuyerDialog" >{{language('FENPEIXUNJIACAIGOUYUAN','分配询价采购员')}}</iButton>
                   <!--------------------退回按钮----------------------------------->
-                  <iButton @click="changebackDialogVisible(true)" >退回</iButton>
+                  <iButton @click="changebackDialogVisible(true)" >{{language('TUIHUI','退回')}}</iButton>
                   <!--------------------退回EPS按钮----------------------------------->
-                  <iButton @click="changebackEpsDialogVisible(true)" >退回EPS</iButton>
+                  <iButton @click="changebackEpsDialogVisible(true)" >{{language('TUIHUIEPS','退回EPS')}}</iButton>
                   <!--------------------创建RFQ----------------------------------->
-                  <iButton @click="handleCreateRFQ">创建RFQ</iButton>
+                  <iButton @click="handleCreateRFQ">{{language('CHUANGJIANRFQ','创建RFQ')}}</iButton>
                   <!--------------------加入已有RFQ----------------------------------->
-                  <iButton @click="handleJoinRFQ">加入已有RFQ</iButton>
+                  <iButton @click="handleJoinRFQ">{{language('JIARUYIYOURFQ','加入已有RFQ')}}</iButton>
                   <!--------------------下载报表----------------------------------->
-                  <iButton @click="downloadAll" :loading="downloadAllLoading">下载报表</iButton>
+                  <iButton @click="downloadAll" :loading="downloadAllLoading">{{language('XIAZAIBAOBIAO','下载报表')}}</iButton>
                   <!--------------------导出按钮----------------------------------->
-                  <iButton @click="donwloadList" :loading="downloadLoading" >导出</iButton>
+                  <iButton @click="donwloadList" :loading="downloadLoading" >{{language('DAOCHU','导出')}}</iButton>
                 </div>
             </div>
             <tableList :activeItems='"spnrNum"' selection indexKey :tableData="tableData" :tableTitle="tableTitle" :tableLoading="tableLoading" @handleSelectionChange="handleSelectionChange" @openPage="openPage"></tableList>
@@ -146,7 +146,7 @@ export default {
       selectParts: [],
       tab: "source",
       selectOptions: {
-        yesOrNoOption: [{value: '1', label: '是'},{value: '0', label: '否'}],
+        yesOrNoOption: [{value: '1', label: this.language('YES','是')},{value: '0', label: this.language('NO','否')}],
         carTypeProjectOptions: [],
         carTypeOptions: []
       },
@@ -245,12 +245,12 @@ export default {
      */    
     handleJoinRFQ() {
       if (this.selectParts.length < 1) {
-        iMessage.warn('请选择配件')
+        iMessage.warn(this.language('QINGXUANZEPEIJIAN','请选择配件'))
         return
       }
       const selectRfq = uniq(this.selectParts.map(item => item.rfqNum))
       if (selectRfq.length > 1 || selectRfq[0]) {
-        iMessage.warn('请选择未分配RFQ的附件')
+        iMessage.warn(this.language('QINGXUANZEWEIFENPEIRFQDEPEIJIAN','请选择未分配RFQ的附件'))
         return
       }
       this.changeJoinRfqDialogVisible(true)
@@ -415,12 +415,12 @@ export default {
      */ 
     openInquiryDialog() {
       if (this.selectParts.length < 1) {
-        iMessage.warn('请选择配件')
+        iMessage.warn(this.language('QINGXUANZEPEIJIAN','请选择配件'))
         return
       }
       const selectPartsDept = uniq(this.selectParts.map(item => item.csfuserDept))
       if (selectPartsDept.length !== 1 || selectPartsDept[0]) {
-        iMessage.warn('请选择未分配部门的配件')
+        iMessage.warn(this.language('QINGXUANZEWEIFENPEIBUMENDEPEIJIAN','请选择未分配部门的配件'))
         return
       }
       this.changeInquiryDialogVisible(true)
@@ -433,21 +433,21 @@ export default {
      */    
     openBuyerDialog() {
       if (this.selectParts.length < 1) {
-        iMessage.warn('请选择配件')
+        iMessage.warn(this.language('QINGXUANZEPEIJIAN','请选择配件'))
         return
       }
       const selectPartsDept = uniq(this.selectParts.map(item => item.csfuserDept))
       const selectPartsUser = uniq(this.selectParts.map(item => item.csfuserId))
       if (selectPartsDept.length !== 1) {
-        iMessage.warn('请选择相同部门的配件')
+        iMessage.warn(this.language('QINGXUANZEXIANGTONGBUMENDEPEIJIAN','请选择相同部门的配件'))
         return
       }
       if (!selectPartsDept[0]) {
-        iMessage.warn('请选择有部门的配件')
+        iMessage.warn(this.language('QINGXUANZEYOUBUMENDEPEIJIAN','请选择有部门的配件'))
         return
       }
       if (selectPartsUser.length !== 1 || selectPartsUser[0]) {
-        iMessage.warn('请选择未分配采购员的配件')
+        iMessage.warn(this.language('QINGXUANZEWEIFENPEICAIGOUYUANDEPEIJIAN','请选择未分配采购员的配件'))
         return
       }
       this.selectDeptId = selectPartsDept[0]
@@ -553,7 +553,7 @@ export default {
      */    
     changeInquiryDialogVisible(visible) {
       if (this.selectParts.length < 1) {
-        iMessage.warn('请选择配件')
+        iMessage.warn(this.language('QINGXUANZEPEIJIAN','请选择配件'))
         return
       }
       this.inquiryDialogVisible = visible
@@ -566,7 +566,7 @@ export default {
      */    
     changeBuyerDialogVisible(visible) {
       if (this.selectParts.length < 1) {
-        iMessage.warn('请选择配件')
+        iMessage.warn(this.language('QINGXUANZEPEIJIAN','请选择配件'))
         return
       }
       this.buyerDialogVisible = visible
@@ -579,7 +579,7 @@ export default {
      */    
     changebackDialogVisible(visible) {
       if (this.selectParts.length < 1) {
-        iMessage.warn('请选择配件')
+        iMessage.warn(this.language('QINGXUANZEPEIJIAN','请选择配件'))
         return
       }
       this.backDialogVisible = visible
@@ -591,7 +591,7 @@ export default {
      */    
     changebackEpsDialogVisible(visible) {
       if (this.selectParts.length < 1) {
-        iMessage.warn('请选择配件')
+        iMessage.warn(this.language('QINGXUANZEPEIJIAN','请选择配件'))
         return
       }
       this.backEpsDialogVisible = visible
@@ -604,17 +604,17 @@ export default {
      */    
     handleCreateRFQ() {
       if (this.selectParts.length < 1) {
-        iMessage.warn('请选择配件')
+        iMessage.warn(this.language('QINGXUANZEPEIJIAN','请选择配件'))
         return
       }
       const selectLINIE = uniq(this.selectParts.map(item => item.respLinie))
       const selectLINIEDept = uniq(this.selectParts.map(item => item.respDept))
       const selectStuffId = uniq(this.selectParts.map(item => item.stuffId))
       if (selectStuffId.length > 1) {
-        iMessage.warn('请选择相同工艺组的配件')
+        iMessage.warn(this.language('QINGXUANZEXIANGTONGGONGYIZUDEPEIJIAN','请选择相同工艺组的配件'))
         return
       } if (!selectStuffId[0]) {
-        iMessage.warn('请选择已分配工艺组的配件')
+        iMessage.warn(this.language('QINGXUANZEYIFENPEIGONGYIZUDEPEIJIAN','请选择已分配工艺组的配件'))
         return
       }
       this.selectLinieDept = selectLINIEDept[0]

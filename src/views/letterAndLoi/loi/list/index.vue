@@ -28,16 +28,6 @@
             <iButton @click="submit">{{$t('LK_QUERENBINGTIJIAO')}}</iButton>
             <iButton @click="lineSure">{{$t('LK_LINEQUEREN')}}</iButton>
             <iButton @click="lineBack">{{$t('LK_LINETUIHUI')}}</iButton>
-
-            <!-- 前期采购K2 -->
-            <iButton >FS K2确认</iButton>  
-
-            <!-- 专业采购K2 -->
-            <iButton >LINIE K2确认</iButton>  
-            <iButton >驳回</iButton>
-
-            
-
             <iButton @click="back">{{$t('partsprocure.CheHui')}}</iButton>
             <iButton @click="closeLoi">{{$t('LK_GUANBI')}} </iButton>
             <iButton @click="activate">{{$t('LK_JIHUO')}} </iButton>
