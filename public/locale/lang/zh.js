@@ -932,8 +932,6 @@
         'LK_KAIFAPILIANGLOI':'开发+批量LOI' , // 开发+批量LOI
         'LK_FRMPINGJI':'FRM评级', // FRM评级
         'LK_CBDSTATUS':'CBD状态', // CBD状态
-        'LK_YES': '是',//是
-        'LK_NO': '否',//是
 
         // 定点管理
         'nominationLanguage': {
