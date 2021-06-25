@@ -5,19 +5,20 @@
       <iSelect
         class="versionSelect"
         :placeholder="$t('partsprocure.PLEENTER')"
-        v-model="version"
+        v-model="versionData"
         @change="changeVersion"
+        value-key="id"
       >
         <el-option
           :value="item"
-          :label="item"
+          :label="item.version"
           v-for="(item, index) in versionList"
           :key="index"
         ></el-option>
       </iSelect>
-      <icon class="refreshIcon" symbol name="iconmojukanbanshuaxin" />
-      <span class="refresh">刷新</span>
-      <span class="refreshTime">刷新日期：2021.01.31</span>
+      <icon class="refreshIcon" @click="handleRefresh" symbol name="iconmojukanbanshuaxin" />
+      <span class="refresh" @click="handleRefresh">刷新</span>
+      <span class="refreshTime">刷新日期：{{ versionData.updateDate }}</span>
       <div v-if="pageEdit">
         <iButton @click="exitEdit">{{ $t("退出编辑") }}</iButton>
         <!-- <iButton @click="uploadList">{{ $t("上传清单") }}</iButton> -->
@@ -40,7 +41,7 @@
         <div class="yearlyPlan">
           <span class="planTitle">2021月度计划</span>
           <span class="totalText">Total:</span>
-          <span class="refresh">720.0</span>
+          <span class="refresh">{{ total }}</span>
           <span class="unitText margin-left20"
             >{{ $t("LK_HUOBI") }}: {{ $t("LK_RENMINBI") }}</span
           >
@@ -52,12 +53,7 @@
           <span class="unitText">{{ $t("LK_BUHANSUI") }}</span>
         </div>
         <div class="legend">
-          <div>CSE</div>
-          <div>CSI</div>
-          <div>CSM</div>
-          <div>CSP</div>
-          <div>CSX</div>
-          <div>BU-B</div>
+          <div v-for="(item, index) in tableListData" :key="index">{{ item.commodity }}</div>
         </div>
         <div class="tab-box">
           <icon
@@ -88,6 +84,7 @@
         </div>
       </div>
       <div id="echart"></div>
+      <!-- :height="tableHeight - 660 > 200 ? tableHeight - 660 : 200" -->
       <iTableList
         :tableData="tableListData"
         :tableTitle="tableTitle"
@@ -98,7 +95,6 @@
         @handleSelectionChange="handleSelectionChange"
         @cellMouseLeave="cellMouseLeave"
         @cellMouseEnter="cellMouseEnter"
-        :height="tableHeight - 660 > 200 ? tableHeight - 660 : 200"
         :class="
           selectIndex == 1
             ? 'tableSelectOne'
@@ -115,113 +111,113 @@
             : ''
         "
       >
-        <template #jan="scope">
+        <template #planAmountM1="scope">
           <iInput
-            v-model="scope.row.jan"
+            v-model="scope.row.planAmountM1"
             :placeholder="$t('LK_QINGSHURU')"
             v-if="pageEdit"
             @input="handleInputChange(scope.row)"
           ></iInput>
-          <div v-if="!pageEdit">{{ scope.row.jan }}</div>
+          <div v-if="!pageEdit">{{ scope.row.planAmountM1 }}</div>
         </template>
-        <template #feb="scope">
+        <template #planAmountM2="scope">
           <iInput
-            v-model="scope.row.feb"
+            v-model="scope.row.planAmountM2"
             :placeholder="$t('LK_QINGSHURU')"
             v-if="pageEdit"
             @input="handleInputChange(scope.row)"
           ></iInput>
-          <div v-if="!pageEdit">{{ scope.row.feb }}</div>
+          <div v-if="!pageEdit">{{ scope.row.planAmountM2 }}</div>
         </template>
-        <template #mar="scope">
+        <template #planAmountM3="scope">
           <iInput
-            v-model="scope.row.mar"
+            v-model="scope.row.planAmountM3"
             :placeholder="$t('LK_QINGSHURU')"
             v-if="pageEdit"
             @input="handleInputChange(scope.row)"
           ></iInput>
-          <div v-if="!pageEdit">{{ scope.row.mar }}</div>
+          <div v-if="!pageEdit">{{ scope.row.planAmountM3 }}</div>
         </template>
-        <template #apr="scope">
+        <template #planAmountM4="scope">
           <iInput
-            v-model="scope.row.apr"
+            v-model="scope.row.planAmountM4"
             :placeholder="$t('LK_QINGSHURU')"
             v-if="pageEdit"
             @input="handleInputChange(scope.row)"
           ></iInput>
-          <div v-if="!pageEdit">{{ scope.row.apr }}</div>
+          <div v-if="!pageEdit">{{ scope.row.planAmountM4 }}</div>
         </template>
-        <template #may="scope">
+        <template #planAmountM5="scope">
           <iInput
-            v-model="scope.row.may"
+            v-model="scope.row.planAmountM5"
             :placeholder="$t('LK_QINGSHURU')"
             v-if="pageEdit"
             @input="handleInputChange(scope.row)"
           ></iInput>
-          <div v-if="!pageEdit">{{ scope.row.may }}</div>
+          <div v-if="!pageEdit">{{ scope.row.planAmountM5 }}</div>
         </template>
-        <template #june="scope">
+        <template #planAmountM6="scope">
           <iInput
-            v-model="scope.row.june"
+            v-model="scope.row.planAmountM6"
             :placeholder="$t('LK_QINGSHURU')"
             v-if="pageEdit"
             @input="handleInputChange(scope.row)"
           ></iInput>
-          <div v-if="!pageEdit">{{ scope.row.june }}</div>
+          <div v-if="!pageEdit">{{ scope.row.planAmountM6 }}</div>
         </template>
-        <template #july="scope">
+        <template #planAmountM7="scope">
           <iInput
-            v-model="scope.row.july"
+            v-model="scope.row.planAmountM7"
             :placeholder="$t('LK_QINGSHURU')"
             v-if="pageEdit"
             @input="handleInputChange(scope.row)"
           ></iInput>
-          <div v-if="!pageEdit">{{ scope.row.july }}</div>
+          <div v-if="!pageEdit">{{ scope.row.planAmountM7 }}</div>
         </template>
-        <template #aug="scope">
+        <template #planAmountM8="scope">
           <iInput
-            v-model="scope.row.aug"
+            v-model="scope.row.planAmountM8"
             :placeholder="$t('LK_QINGSHURU')"
             v-if="pageEdit"
             @input="handleInputChange(scope.row)"
           ></iInput>
-          <div v-if="!pageEdit">{{ scope.row.aug }}</div>
+          <div v-if="!pageEdit">{{ scope.row.planAmountM8 }}</div>
         </template>
-        <template #sep="scope">
+        <template #planAmountM9="scope">
           <iInput
-            v-model="scope.row.sep"
+            v-model="scope.row.planAmountM9"
             :placeholder="$t('LK_QINGSHURU')"
             v-if="pageEdit"
             @input="handleInputChange(scope.row)"
           ></iInput>
-          <div v-if="!pageEdit">{{ scope.row.sep }}</div>
+          <div v-if="!pageEdit">{{ scope.row.planAmountM9 }}</div>
         </template>
-        <template #oct="scope">
+        <template #planAmountM10="scope">
           <iInput
-            v-model="scope.row.oct"
+            v-model="scope.row.planAmountM10"
             :placeholder="$t('LK_QINGSHURU')"
             v-if="pageEdit"
             @input="handleInputChange(scope.row)"
           ></iInput>
-          <div v-if="!pageEdit">{{ scope.row.oct }}</div>
+          <div v-if="!pageEdit">{{ scope.row.planAmountM10 }}</div>
         </template>
-        <template #nov="scope">
+        <template #planAmountM11="scope">
           <iInput
-            v-model="scope.row.nov"
+            v-model="scope.row.planAmountM11"
             :placeholder="$t('LK_QINGSHURU')"
             v-if="pageEdit"
             @input="handleInputChange(scope.row)"
           ></iInput>
-          <div v-if="!pageEdit">{{ scope.row.nov }}</div>
+          <div v-if="!pageEdit">{{ scope.row.planAmountM11 }}</div>
         </template>
-        <template #dec="scope">
+        <template #planAmountM12="scope">
           <iInput
-            v-model="scope.row.dec"
+            v-model="scope.row.planAmountM12"
             :placeholder="$t('LK_QINGSHURU')"
             v-if="pageEdit"
             @input="handleInputChange(scope.row)"
           ></iInput>
-          <div v-if="!pageEdit">{{ scope.row.dec }}</div>
+          <div v-if="!pageEdit">{{ scope.row.planAmountM12 }}</div>
         </template>
       </iTableList>
     </iCard>
@@ -241,6 +237,15 @@ import { cloneDeep } from "lodash";
 import { tableHeight } from "@/utils/tableHeight";
 import NewVersionDialog from "./components/newVersionDialog.vue";
 import uploadButton from "./components/uploadButton";
+import { 
+  queryPlanVersionList, 
+  refreshVersion, 
+  saveNewVersion, 
+  exportPlanCommutityList, 
+  queryPlanMonthList, 
+  saveMonthData 
+} from "@/api/ws2/investmentAdmin";
+import { iMessage } from '../../../../components';
 
 export default {
   mixins: [tableHeight],
@@ -256,25 +261,30 @@ export default {
   },
   data() {
     return {
-      version: "20210101-V1",
-      versionList: ["20210101-V1", "20210101-V2"],
+      versionData: {},
+      versionList: [],
       tabIndex: 0, //柱状图tab
-      isCurrentYear: true,
       pageEdit: false,
       tableListData: dataList,
       tableTitle: tableTitle,
       saveNewVersion: false, //保存为新版本对话框
-      uploadLoading: false,
+      uploadLoading: false, //上传加载
       selectIndex: -1, //table选择index
       fromTable: false, //是否在表格
+      refreshLoading: false, //刷新加载
     };
   },
+  created() {
+    this.getVersionList();
+  },
   mounted() {
-    this.showEcharts();
+    // this.showEcharts();
   },
   methods: {
     //选择版本
-    changeVersion() {},
+    changeVersion() {
+      this.getMonthList();
+    },
     //编辑
     edit() {
       this.pageEdit = true;
@@ -292,14 +302,39 @@ export default {
 
     // },
     //保存
-    saveAsList() {},
+    saveAsList() {
+      let param = {
+        versionId: this.versionData.id,
+        // versionId: "1407690871637319681",
+        planType: this.tabIndex === 0 ? "current_year" : "next_year",
+        dataList: this.tableListData
+      };
+      saveMonthData(param).then(res => {
+        if (Number(res.code) === 0) {
+          this.pageEdit = false;
+          return iMessage.success(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+        } else {
+          return iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+        }
+      });
+    },
     //下载清单
-    downloadList() {},
+    downloadList() {
+      let param = {
+        versionId: this.versionData.id,
+        // versionId: "1407690871637319681",
+        planType: this.tabIndex === 0 ? "current_year" : "next_year",
+      };
+      exportPlanCommutityList(param).then(res => {
+        
+      });
+    },
     tabClick(index) {
       if (this.tabIndex === index) {
         return;
       }
       this.tabIndex = index;
+      this.getMonthList();
     },
     showEcharts() {
       this.$nextTick(() => {
@@ -323,7 +358,7 @@ export default {
           element.index = index;
           let temp = {};
           let data = [];
-          temp.name = element.department;
+          temp.name = element.commodity;
           temp.type = "bar";
           temp.barWidth = 50;
           temp.stack = "total";
@@ -338,18 +373,18 @@ export default {
             };
           }
 
-          data.push(element.jan);
-          data.push(element.feb);
-          data.push(element.mar);
-          data.push(element.apr);
-          data.push(element.may);
-          data.push(element.june);
-          data.push(element.july);
-          data.push(element.aug);
-          data.push(element.sep);
-          data.push(element.oct);
-          data.push(element.nov);
-          data.push(element.dec);
+          data.push(element.planAmountM1);
+          data.push(element.planAmountM2);
+          data.push(element.planAmountM3);
+          data.push(element.planAmountM4);
+          data.push(element.planAmountM5);
+          data.push(element.planAmountM6);
+          data.push(element.planAmountM7);
+          data.push(element.planAmountM8);
+          data.push(element.planAmountM9);
+          data.push(element.planAmountM10);
+          data.push(element.planAmountM11);
+          data.push(element.planAmountM12);
           temp.emphasis = {
             focus: "series",
           };
@@ -440,7 +475,7 @@ export default {
             "#DDEDFC",
             "#E8F6FF",
           ];
-          _this.selectIndex = 6 - params.componentIndex;
+          _this.selectIndex = this.data - params.componentIndex;
           colorTempList.splice(params.componentIndex, 0, "#0053EF");
           optionTemp.series.map((item, index) => {
             item.color = colorTempList[index % colorTempList.length];
@@ -462,36 +497,114 @@ export default {
     handleInputChange(row) {
       row.amount = 0;
       row.amount =
-        Number(row.jan) +
-        Number(row.feb) +
-        Number(row.mar) +
-        Number(row.apr) +
-        Number(row.may) +
-        Number(row.june) +
-        Number(row.july) +
-        Number(row.aug) +
-        Number(row.sep) +
-        Number(row.oct) +
-        Number(row.nov) +
-        Number(row.dec);
+        Number(row.planAmountM1) +
+        Number(row.planAmountM2) +
+        Number(row.planAmountM3) +
+        Number(row.planAmountM4) +
+        Number(row.planAmountM5) +
+        Number(row.planAmountM6) +
+        Number(row.planAmountM7) +
+        Number(row.planAmountM8) +
+        Number(row.planAmountM9) +
+        Number(row.planAmountM10) +
+        Number(row.planAmountM11) +
+        Number(row.planAmountM12);
       this.showEcharts();
     },
     //保存新版本
     handleConfirm(val) {
-      this.saveNewVersion = false;
+      let param = {
+        versionId: this.versionData.id,
+        // versionId: "1407690871637319681",
+        planType: this.tabIndex === 0 ? "current_year" : "next_year",
+        dataList: this.tableListData,
+        dateStr: val
+      };
+      saveNewVersion(param).then(res => {
+        this.saveNewVersion = false;
+        if (Number(res.code) === 0) {
+          return iMessage.success(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+        } else {
+          return iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+        }
+      }).catch((e) => {
+        this.saveNewVersion = false;
+      });
     },
     uploadAttachments(data) {},
     cellMouseLeave() {
       this.selectIndex = -1;
       this.fromTable = false;
       this.showEcharts();
-      this.$forceUpdate();
     },
     cellMouseEnter(val) {
-      console.log("valIndex=>", val.index);
       this.selectIndex = val.index + 1;
       this.fromTable = true;
       this.showEcharts();
+    },
+    //获取版本列表
+    getVersionList() {
+      queryPlanVersionList().then(res => {
+        if (Number(res.code) === 0 && res.data.length > 0) {
+          this.versionData = res.data[0];
+          this.versionList = res.data;
+          this.getMonthList();
+        }
+      });
+    },
+    //刷新
+    handleRefresh() {
+      this.refreshLoading = true;
+      refreshVersion(this.versionData).then(res => {
+        this.refreshLoading = false;
+        if (Number(res.code) === 0) {
+          iMessage.success(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+        } else {
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+        }
+      }).catch((e) => {
+        this.refreshLoading = false;
+      });
+      this.getVersionList();
+    },
+    //查询列表数据
+    getMonthList() {
+      let param = {
+        planType: this.tabIndex === 0 ? "current_year" : "next_year",
+        versionId: this.versionData.id,
+        // versionId: "1407690871637319681"
+      };
+      queryPlanMonthList(param).then(res => {
+        if (Number(res.code) === 0) {
+          this.tableListData = res.data;
+          this.tableListData.map(item => {
+            item.amount =
+              Number(item.planAmountM1) +
+              Number(item.planAmountM2) +
+              Number(item.planAmountM3) +
+              Number(item.planAmountM4) +
+              Number(item.planAmountM5) +
+              Number(item.planAmountM6) +
+              Number(item.planAmountM7) +
+              Number(item.planAmountM8) +
+              Number(item.planAmountM9) +
+              Number(item.planAmountM10) +
+              Number(item.planAmountM11) +
+              Number(item.planAmountM12);
+            return item;
+          });
+          this.showEcharts();
+        }
+      });
+    },
+    computed: {
+      total: function() {
+        let res = 0;
+        this.tableListData.forEach(item => {
+          res += item.amount;
+        });
+        return res;
+      }
     },
   },
 };
@@ -514,7 +627,7 @@ export default {
   margin-top: 20px;
 
   .versionSelect {
-    width: 120px;
+    width: 130px;
     margin: 0 20px;
   }
 
