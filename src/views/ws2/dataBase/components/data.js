@@ -139,3 +139,61 @@ export const partNoData = [
         tooltip: false
     },
 ]
+
+export const addModelBagTitle = [
+    {
+        props: 'index',
+        name: '序号',
+        key: '序号',
+        tooltip: false
+    },
+    {
+        props: 'partNameZh',
+        name: '零件包名称（中）',
+        key: '零件包名称（中）',
+        tooltip: false
+    },
+    {
+        props: 'partNameDe',
+        name: '零件包名称（德）',
+        key: '零件包名称（德）',
+        tooltip: false
+    },
+    {
+        props: 'categoryId',
+        name: '材料组',
+        key: '材料组',
+        width: 200,
+        tooltip: false
+    },
+    {
+        props: 'remark',
+        name: '备注',
+        key: '备注',
+        tooltip: false
+    },
+    {
+        props: 'targetBudgetTotal',
+        name: '目标预算',
+        key: '目标预算',
+        tooltip: false
+    },
+    {
+        props: 'commodity',
+        name: '科室',
+        key: '科室',
+        tooltip: false
+    },
+    {
+        props: 'fixedPointAllotTotal',
+        name: '定点预分配',
+        key: '定点预分配',
+        tooltip: false
+    },
+    {
+        props: 'sendDate',
+        name: '发送日期',
+        key: '发送日期',
+        tooltip: false
+    },
+]
