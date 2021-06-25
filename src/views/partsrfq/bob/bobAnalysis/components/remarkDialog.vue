@@ -1,14 +1,14 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-24 10:58:04
- * @LastEditTime: 2021-06-24 15:31:12
+ * @LastEditTime: 2021-06-25 14:44:09
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\bob\bobAnalysis\components\dialog.vue
 -->
 <template>
   <div>
-    <iDialog :visible="visible" :width="width" :title="title" append-to-body>
+    <iDialog :visible="visible" :width="width" :title="title" @close="cancel">
       <iInput
         type="textarea"
         clearable
@@ -37,6 +37,9 @@ export default {
       remark: "",
     };
   },
+  mounted(){
+    console.log(this)
+  },
   props: {
     visible: {
       type: Boolean,
@@ -50,16 +53,15 @@ export default {
       type: String,
       default: "备注",
     },
-    methods: {
+  },
+   methods: {
       sure() {
         this.$emit("remake", this.remark, this.visible);
       },
       cancel() {
-        console.log(111);
-        this.$emit("down", this.visible);
+        this.$emit("cancel", false);
       },
     },
-  },
 };
 </script>
 

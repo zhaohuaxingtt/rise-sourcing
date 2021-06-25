@@ -13,7 +13,9 @@
         <!--BoB分析库-->
         <iButton>BoB{{ $t("分析库") }}</iButton>
         <!--查找零件-->
-        <iButton class="margin-left30" @click="findPart">{{ $t("查找零件") }}</iButton>
+        <iButton class="margin-left30" @click="findPart">{{
+          $t("查找零件")
+        }}</iButton>
       </div>
     </div>
     <el-row :gutter="20" class="margin-top20">
@@ -103,7 +105,11 @@
         <bobAnalysis></bobAnalysis>
       </el-col>
     </el-row>
-    <findingParts :value="value"></findingParts>
+    <findingParts
+      :value="value"
+      @sure="sure"
+      @close="closeDialog"
+    ></findingParts>
   </iPage>
 </template>
 
@@ -112,6 +118,7 @@ import { iPage, iButton, iCard, iSelect } from "rise";
 import CrownBar from "./components/crownBar.vue";
 import bobAnalysis from "@/views/partsrfq/bob/bobAnalysis/index.vue";
 import findingParts from "@/views/partsrfq/components/findingParts.vue";
+
 export default {
   components: {
     iPage,
@@ -120,7 +127,7 @@ export default {
     iSelect,
     CrownBar,
     bobAnalysis,
-    findingParts
+    findingParts,
   },
   data() {
     return {
@@ -135,7 +142,7 @@ export default {
         num: "",
       },
       showSelectDiv: false,
-      value:false
+      value: false,
     };
   },
   mounted() {
@@ -143,9 +150,14 @@ export default {
     this.initChartData();
   },
   methods: {
-    findPart(){
-      this.value=true
+    findPart() {
+      this.value = true;
     },
+    closeDialog(val) {
+      console.log(val);
+      this.value = val;
+    },
+
     closeDiv() {
       this.showSelectDiv = false;
     },
