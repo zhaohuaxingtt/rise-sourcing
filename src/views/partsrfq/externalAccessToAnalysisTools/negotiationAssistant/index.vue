@@ -1,55 +1,67 @@
+<!--
+ * @version: 1.0
+ * @Author: zbin
+ * @Date: 2021-06-22 11:05:40
+ * @LastEditors: zbin
+ * @Descripttion: your project
+-->
 <template>
   <iPage>
-    <iNavMvp :list="newTabRouterList" class="margin-bottom20" routerPage :lev="1"/>
-    <pcaOverview v-if="pageType === 'pca'"/>
-    <tiaOverview v-if="pageType === 'tia'"/>
-	<bobOverview v-if="pageType === 'bob'"/>
+    <div class="flex-between-center-center margin-bottom20">
+      <iNavMvp :list="tabRouterList" routerPage :lev="1" :query='$route.query' @change='changeRouter' />
+      <div>
+        <iButton @click="handleSearch">{{$t('search')}}</iButton>
+        <iButton @click="handleReport">{{$t('TPZS.BGQD')}}</iButton>
+        <icon class="icondatabaseweixuanzhong" name="icondatabaseweixuanzhong" symbol></icon>
+      </div>
+    </div>
+    <gather ref="gather"/>
   </iPage>
 </template>
 
 <script>
-import {iPage, iNavMvp} from 'rise';
-import {tabRouterList} from '../data';
-import pcaOverview from '../../pcaAnalyse/pcaOverview';
-import tiaOverview from '../../tiaAnalyse/tiaOverview';
-import bobOverview from '../../bob/bob';
+import { icon, iButton } from "rise";
+import { iPage, iNavMvp } from 'rise';
+import { tabRouterList } from '../data';
+import gather from './gather';
+
+
 
 export default {
   components: {
     iPage,
     iNavMvp,
-    pcaOverview,
-    tiaOverview,
-	bobOverview
+    icon, 
+    iButton,
+    gather
   },
   data() {
     return {
       tabRouterList,
-      newTabRouterList: [],
     };
   },
-  computed: {
-    pageType() {
-      return this.$route.query.type;
-    },
-  },
+
   created() {
-    this.handleTabRouter();
   },
   methods: {
-    handleTabRouter() {
-      this.newTabRouterList = this.tabRouterList.map(item => {
-        if (item.name === '谈判助手') {
-          item.url = item.url + `?type=${this.pageType}`;
-          item.activePath = item.url + `?type=${this.pageType}`;
-        }
-        return item;
-      });
+    handleSearch() {
+      this.$refs.gather.$refs.specialAnalysisTool.handleSearch()
+    },
+    handleReport() {
+      this.$router.push({ path: '/sourcing/partsrfq/reportList' })
     },
   },
 };
 </script>
 
-<style scoped>
-
+<style >
+.icondatabaseweixuanzhong {
+  font-size: 21px;
+  margin-left: 1.875rem;
+}
+.flex-end {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
 </style>

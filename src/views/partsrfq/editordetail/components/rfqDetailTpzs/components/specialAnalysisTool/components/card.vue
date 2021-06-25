@@ -30,7 +30,7 @@ export default {
   components: { iCard, icon, iLabel },
   props: {
     title: { type: String, default: '' },
-    totalBobOverview: {
+    cardData: {
       type: Object, default: () => {
         return {}
       }
@@ -44,7 +44,7 @@ export default {
       deep: true,
       immediate: true,
     },
-    totalBobOverview(data) {
+    cardData(data) {
       this.labelData = data
     }
 
@@ -56,7 +56,6 @@ export default {
     }
   },
   created() {
-    console.log(this.title);
   }
 }
 </script>
