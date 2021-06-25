@@ -129,7 +129,6 @@
         <iSelect
           v-model="form.applicationStatus"
           :placeholder="$t('LK_QINGXUANZE')"
-          v-permission="PARTSPROCURE_PARTNUMBER"
         >
           <el-option
             value=""
@@ -166,7 +165,6 @@
         <iSelect
           v-model="form.selStatus"
           :placeholder="$t('LK_QINGXUANZE')"
-          v-permission="PARTSPROCURE_PARTNUMBER"
         >
           <el-option
             value=""

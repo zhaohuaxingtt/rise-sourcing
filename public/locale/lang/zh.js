@@ -990,6 +990,8 @@
             'SELDanJuQUeRen': 'SEL单据确认', // SEL单据确认
             'QianZiDan': '签字单', //签字单号
             'SELFenTanDanFuJianLieBiao': 'SEL分摊单附件列表',//SEL分摊单附件列表
+            'XinJianQianZiDan': '新建签字单',//新建签字单
+            'MQianZiDanLiebiao': 'M签字单列表',//M签字单列表
         },
         // 单一供应商
         "nominationSupplier": {
