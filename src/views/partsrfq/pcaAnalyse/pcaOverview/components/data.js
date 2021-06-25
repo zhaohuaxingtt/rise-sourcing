@@ -71,7 +71,7 @@ export const externalTableSearch = [
 
 export const tableTitle = [
   {props: 'partNum', name: '零件号', key: 'LK_LINGJIANHAO'},
-  {props: 'fileName', name: '报告名称', key: 'TPZS.BGMC'},
+  {props: 'fileName', name: '报告名称', key: 'TPZS.BGMC', tooltip: true},
   {props: 'categoryName', name: '材料组', key: 'LK_CAILIAOZU'},
   {props: 'rfqName', name: 'RFQ'},
   {props: 'createBy', name: '创建人', key: 'TPZS.CJR'},
