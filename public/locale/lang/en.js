@@ -4,7 +4,7 @@
             (global = global || self, factory(window.i18n))
 }(this, function (i18n) {
     'use strict'
-    i18n.setLocaleMessage('en', {
+    var oldLanguage = {
         'delete': "delete",
         "deleteSure":'are you sureAre you sure you want to do this?',
         'all': 'all',
@@ -941,6 +941,7 @@
             'LK_PILIANGLOI':'批量LOI', // 批量LOI
             'LK_KAIFALOI':'开发LOI', // 开发LOI
             'LK_KAIFAPILIANGLOI':'开发+批量LOI' , // 开发+批量LOI
+            'LK_FRMPINGJI':'FRM评级', // FRM评级
         },
    
         // 定点建议
@@ -984,5 +985,22 @@
             "LK_BAOJIAZUSHOU_MJ":"报价分析汇总-模具",
             "LK_BAOJIAZUSHOU_MJDANWEIYUAN":"报价分析汇总-模具（单元：元）"
         }
-    })
+    }
+    var xmlHttp = ''
+    if(window.XMLHttpRequest){ 
+        xmlHttp = new XMLHttpRequest();
+    }else{
+        // eslint-disable-next-line no-undef
+        xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    xmlHttp.onreadystatechange = function() {
+        if (xmlHttp.readyState==4 && xmlHttp.status==200){
+            const data = JSON.parse(xmlHttp.responseText)
+            i18n.setLocaleMessage('en', Object.assign(oldLanguage,data.data.cn))
+        }
+    }
+    xmlHttp.open("GET", "http://10.122.18.136:8088/i18n/getTranslationMap?from=sourcing",false);
+    xmlHttp.setRequestHeader("Content-type","application/json");
+    xmlHttp.setRequestHeader("Accept","*/*");
+    xmlHttp.send()
 }))

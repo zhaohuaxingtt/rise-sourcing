@@ -4,7 +4,7 @@
         (global = global || self, factory(window.i18n))
 }(this, function(i18n) {
     'use strict'
-    i18n.setLocaleMessage('zh', {
+    const oldLanguage = {
         'delete': "删除",
         "deleteSure":'您确定要执行删除操作吗？',
         "revokeSure":'您确定要执行撤回操作吗？',
@@ -406,6 +406,7 @@
         'LK_CHUANGJIANSHIJIAN': '创建时间', //创建时间
         'LK_CONGLINGJIANPAISHENG': '从零件派生', //从零件派生
         'LK_DAXIAOMB': '大小（MB）', //大小（MB）
+        'LK_DAXIAO': '大小', // 大小
         'LK_DAIBANSHIXIANG': '待办事项', //待办事项
         'LK_DAIQUERENBANBEN': '待确认版本', //待确认版本
         'LK_DANWEI': '价格单位', //单位
@@ -929,6 +930,7 @@
         'LK_PILIANGLOI':'批量LOI', // 批量LOI
         'LK_KAIFALOI':'开发LOI', // 开发LOI
         'LK_KAIFAPILIANGLOI':'开发+批量LOI' , // 开发+批量LOI
+        'LK_FRMPINGJI':'FRM评级', // FRM评级
 
         // 定点管理
         'nominationLanguage': {
@@ -958,6 +960,7 @@
             'LeiXing': '类型', // 类型
             'XingMuLeiXing': '项目类型', // 项目类型
             'HuiYi': '会议', // 会议
+            'HuiYiMingCheng': '会议名称', // 会议名称
             'RSZhuangTai': 'RS单状态', // RS单状态
             'RSDongJieRiQi':'RS冻结日期', // RS冻结日期
             'DongJieRiQi':'冻结日期', // 冻结日期
@@ -977,6 +980,15 @@
             'DongJieRS': '冻结RS单', //冻结RS单
             'JieDongRS': '解冻RS单',//解冻RS单
             'QingChuangJianWanDingDianShenQingDan': '请创建完定点申请单再继续下一步',//解冻RS单
+            'QianZiDanHao': '签字单号', //签字单号
+            'QianZiDanZhuangTai': '签字单状态',//签字单状态
+            'FuHeJieZhiRiQi': '复核截止日期',//复核截止日期
+            'FuHeShiFouJieZhi': '复核是否截止',//复核是否截止
+            'FaQiFuHe': '发起复核',//发起复核
+            'TuiHuiZhiTongGuoZHuangTai': '退回至通过状态',//退回至通过状态
+            'SELDanJuQUeRen': 'SEL单据确认', // SEL单据确认
+            'QianZiDan': '签字单', //签字单号
+            'SELFenTanDanFuJianLieBiao': 'SEL分摊单附件列表',//SEL分摊单附件列表
         },
         // 单一供应商
         "nominationSupplier": {
@@ -1072,5 +1084,22 @@
             "LK_BAOJIAZUSHOU_MJ":"报价分析汇总-模具",
             "LK_BAOJIAZUSHOU_MJDANWEIYUAN":"报价分析汇总-模具（单元：元）"
         }
-    })
+    }
+    var xmlHttp = ''
+    if(window.XMLHttpRequest){ 
+        xmlHttp = new XMLHttpRequest();
+    }else{
+        // eslint-disable-next-line no-undef
+        xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    xmlHttp.onreadystatechange = function() {
+        if (xmlHttp.readyState==4 && xmlHttp.status==200){
+            const data = JSON.parse(xmlHttp.responseText)
+            i18n.setLocaleMessage('zh', Object.assign(oldLanguage,data.data.zh))
+        }
+    }
+    xmlHttp.open("GET", "http://10.122.18.136:8088/i18n/getTranslationMap?from=sourcing",false);
+    xmlHttp.setRequestHeader("Content-type","application/json");
+    xmlHttp.setRequestHeader("Accept","*/*");
+    xmlHttp.send()
 }))

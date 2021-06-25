@@ -3,7 +3,7 @@
  * @Date: 2021-05-20 14:29:09
  * @LastEditTime: 2021-05-20 14:24:02
  * @LastEditors: Please set LastEditors
- * @Description: 定点表格信息
+ * @Description: sel上会复核
  *
  */
 
@@ -26,6 +26,7 @@ export const tableTitle = [{
   //export const tableTitle = permissionTitle("nominationLanguage_nominationLanguageLIST",[{
   props: 'id',
   name: '申请单号',
+  width: 150,
   key: 'nominationLanguage.ShenQingDanHao',
   tooltip: false
 },
@@ -43,39 +44,21 @@ export const tableTitle = [{
   tooltip: false
 },
 {
-  props: 'nominateProcessType',
-  name: '类型',
-  key: 'nominationLanguage.LeiXing',
-  tooltip: true
-},
-{
 	props: 'applicationStatus',
 	name: '状态',
 	key: 'LK_ZHUANGTAI',
 	tooltip:false
 },
 {
-	props: 'freezeDate',
-	name: '冻结日期',
-	key: 'nominationLanguage.DongJieRiQi',
-	tooltip:false
-},
-{
-  props: 'carType',
+  props: 'partProjType',
   name: '项目类型',
-  key: 'nominationLanguage.XingMuLeiXing',
-  tooltip: false
-},
-{
-  props: 'meetingPresentId',
-  name: '会议',
-  key: 'nominationLanguage.HuiYi',
+  key: 'nominationLanguage.LeiXing',
   tooltip: true
 },
 {
-  props: 'meetingStatus',
-  name: '会议状态',
-  key: 'nominationLanguage.HuiYiZhuangTai',
+  props: 'meetingName',
+  name: '会议',
+  key: 'nominationLanguage.HuiYi',
   tooltip: true
 },
 {
@@ -119,44 +102,45 @@ export const tableTitle = [{
   tooltip: false
 },
 {
-  props: 'nominateDate',
-  name: '定点日期',
+	props: 'checkDueDate',
+	name: '复核截止日期',
   width: 150,
-  key: 'nominationLanguage.DingDianRiQi',
+	key: 'nominationLanguage.FuHeJieZhiRiQi',
+	tooltip:false
+},
+{
+	props: 'signId',
+	name: '签字单号',
+	key: 'nominationLanguage.QianZiDanHao',
+	tooltip:false
+},
+{
+  props: 'signStatus',
+  name: '签字单状态',
+  width: 150,
+  key: 'nominationLanguage.QianZiDanZhuangTai',
   tooltip: false
 },
 {
-  props: 'LK_CAOZUO',
-  name: '操作',
-  key: 'LK_CAOZUO',
+  props: 'freezeDate',
+  name: '冻结日期',
+  width: 150,
+  key: 'nominationLanguage.DongJieRiQi',
   tooltip: false
-}
+},
 ]
 
-// sel确认单
-export const seltTableTitle = [
+export const mokeResData = [
   {
-    props: 'fileName',
-    name: '文件名称',
-    key: 'LK_WENJIANMING',
-    tooltip: false
+    id: '762345662',
+    selStatus: '未分摊'
   },
   {
-    props: 'fileSize',
-    name: '大小',
-    key: 'LK_DAXIAO',
-    tooltip: false
+    id: '762345664',
+    selStatus: '已确认'
   },
   {
-    props: 'uploadDate',
-    name: '上传日期',
-    key: 'strategicdoc.ShangChuanRiQi',
-    tooltip: false
-  },
-  {
-    props: 'uploadBy',
-    name: '上传人',
-    key: 'strategicdoc.ShangChuanRen',
-    tooltip: false
+    id: '762345665',
+    selStatus: '未确认'
   }
 ]

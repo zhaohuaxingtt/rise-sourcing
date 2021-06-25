@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-06-01 11:57:45
- * @LastEditTime: 2021-06-01 21:07:56
+ * @LastEditTime: 2021-06-25 00:23:44
  * @LastEditors: Please set LastEditors
  * @Description: 打包找到所有翻译key，发送到后台配置
  * @FilePath: \front-web\loadersPlugins\language.js

@@ -1,6 +1,6 @@
 <!--
- * @Author: wentliao
- * @Date: 2021-05-20 14:07:50
+ * @Author: haojiang
+ * @Date: 2021-06-20 14:07:50
  * @Description: 
 -->
 <template>
@@ -10,65 +10,53 @@
     <!-- 筛选框 -->
     <div style="clear: both"></div>
     <!-- 搜索区 -->
-    <search @search="getFetchData" :carTypeList="carTypeList" />
+    <search @search="getFetchData" />
     <!-- 表格 -->
     <iCard class="designateTable">
       <div class="margin-bottom20 clearFloat">
         <div class="floatright">
-          <!-- 新建定点申请 -->
+          <!-- 发起复核 -->
           <iButton
-            @click="createNomination"
           >
-            {{ $t("nominationLanguage.XinJianLingJIanDingDianShengQIng") }}
+            {{ $t("nominationLanguage.FaQiFuHe") }}
           </iButton>
-
-          <!-- 冻结RS -->
-          <iButton @click="frozeRS(true)">
-            {{$t('nominationLanguage.DongJieRS')}}
+          <!-- 退回 -->
+          <iButton
+          >
+            {{ $t("LK_TUIHUI") }}
           </iButton>
-
-          <!-- 解冻RS -->
-          <iButton @click="frozeRS(false)">
-            {{$t('nominationLanguage.JieDongRS')}}
+          <!-- 退回至通过状态（复核撤回） -->
+          <iButton
+          >
+            {{ $t("nominationLanguage.TuiHuiZhiTongGuoZHuangTai") }}
           </iButton>
-          
           <!-- 冻结 -->
-          <iButton @click="freeze">
-            {{$t('LK_DONGJIE')}}
+          <iButton
+          >
+            {{ $t("LK_DONGJIE") }}
           </iButton>
-
           <!-- 解冻 -->
-          <iButton @click="freeze(false)">
-            {{$t('LK_JIEDONG')}}
+          <iButton
+          >
+            {{ $t("LK_JIEDONG") }}
           </iButton>
-
+          <!-- SEL单据确认 -->
+          <iButton
+          >
+            {{ $t("nominationLanguage.SELDanJuQUeRen") }}
+          </iButton>
+          <!-- 签字单 -->
+          <iButton
+          >
+            {{ $t("nominationLanguage.QianZiDan") }}
+          </iButton>
           <!-- 定点 -->
-          <iButton @click="confirm">
-            {{$t('nominationLanguage.DINGDIAN')}}
+          <iButton
+          >
+            {{ $t("nominationLanguage.DINGDIAN") }}
           </iButton>
 
-
-          <!--  <iButton @click="creatFs" v-permission="PARTSPROCURE_GENERATEFSBUTTON">
-            {{ $t('partsprocure.PARTSPROCUREGENERATEFSGSNR') }}
-          </iButton> -->
-          <!-- 撤回 -->
-          <iButton
-            @click="handleBatchRevoke"
-          >
-            {{ $t("nominationLanguage.CheHui") }}
-          </iButton>
-          <!-- 批量删除 -->
-          <iButton
-            @click="handleBatchDelete"
-          >
-            {{ $t("nominationLanguage.ShanChu") }}
-          </iButton>
-          <iButton
-            @click="openPage"
-            :loading="startLoding"
-          >
-            {{ $t("nominationLanguage.TiJiaoYiZhiXingJiaoYan") }}
-          </iButton>
+          
         </div>
       </div>
       <tablelist
@@ -116,6 +104,13 @@
       <template #freezeDate="scope">
         <span>{{scope.row.freezeDate | dateFilter("YYYY-MM-DD")}}</span>
       </template>
+      <template #selStatus="scope">
+        <div>
+          <a href="javascript:;" class="selStatus-link" @click="confirmSelSheet(false)" v-if="scope.row.selStatus === '已确认'">{{scope.row.selStatus}}</a>
+          <a href="javascript:;" class="selStatus-link" @click="confirmSelSheet(true)" v-else-if="scope.row.selStatus === '未确认'">{{scope.row.selStatus}}</a>
+          <span v-else>{{scope.row.selStatus}}</span>
+        </div>
+      </template>
       
       </tablelist>
       <iPagination
@@ -130,16 +125,15 @@
         :total="page.totalCount"
       />
     </iCard>
-
     <!-- sel确认弹窗 -->
-    <selDialog :visible.sync="selDialogVisibal" />
+    <selDialog :visible.sync="selDialogVisibal" :selStatus="selStatus" :readOnly="true" />
     
   </iPage>
 </template>
 
 <script>
-import { tableTitle } from './components/data'
-import headerNav from './components/headerNav'
+import { tableTitle, mokeResData } from './components/data'
+import headerNav from '@/views/designate/home/components/headerNav'
 import search from './components/search'
 import tablelist from "@/views/designate/supplier/components/tableList";
 import { 
@@ -153,9 +147,12 @@ import {
   rsFrozen,
   rsUnFrozen
 } from '@/api/designate/nomination'
+import { 
+  getSelList
+} from '@/api/designate/nomination/selsheet'
+import selDialog from '../components/selDialog'
 // 前端配置文件里面的定点类型
 // import { applyType } from '@/layout/nomination/components/data'
-import selDialog from './components/selDialog'
 
 import { pageMixins } from '@/utils/pageMixins'
 import filters from "@/utils/filters"
@@ -178,6 +175,8 @@ export default {
       selectTableData: [],
       startLoding: false,
       carTypeList: [],
+      // SEL单据确认状态
+      selStatus: true,
       selDialogVisibal: false
     }
   },
@@ -197,6 +196,11 @@ export default {
     this.getCarTypePro()
   },
   methods: {
+    // 确认sel附件单
+    confirmSelSheet(type = true) {
+      this.selStatus = type
+      this.selDialogVisibal = true
+    },
     // 新建零件定点申请
     createNomination() {
       // 缓存/更新定点申请类型
@@ -231,26 +235,27 @@ export default {
         }
       })
     },
-    // 获取定点管理列表
-    getFetchData(params = {}) {
-      this.tableLoading = true
-      getNominationList({
-        ...params,
-        current: this.page.currPage,
-        size: this.page.pageSize
-      }).then(res => {
-        this.tableLoading = false
-        if (res.code === '200') {
-          this.tableListData = res.data.records || []
-          this.page.totalCount = res.data.total
-          console.log(this.selectTableData)
-        } else {
-          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
-        }
-        console.log(res)
-      }).catch(e => {
-        this.tableLoading = false
-      })
+    // 获取rs列表
+    getFetchData() {
+      this.tableListData = mokeResData
+      // this.tableLoading = true
+      // getSelList({
+      //   ...params,
+      //   current: this.page.currPage,
+      //   size: this.page.pageSize
+      // }).then(res => {
+      //   this.tableLoading = false
+      //   if (res.code === '200') {
+      //     this.tableListData = res.data.records || []
+      //     this.page.totalCount = res.data.total
+      //     console.log(this.selectTableData)
+      //   } else {
+      //     iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+      //   }
+      //   console.log(res)
+      // }).catch(e => {
+      //   this.tableLoading = false
+      // })
     },
     // 多选
     handleSelectionChange(data) {
@@ -388,5 +393,9 @@ export default {
 <style lang="scss" scoped>
 .designateSearch {
   margin-top: 20px;
+}
+.selStatus-link {
+  font-size: 12px;
+  text-decoration: underline;
 }
 </style>

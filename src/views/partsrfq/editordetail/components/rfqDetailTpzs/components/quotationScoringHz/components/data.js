@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-05-28 14:32:26
- * @LastEditTime: 2021-06-22 11:50:28
+ * @LastEditTime: 2021-06-24 13:27:47
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\data.js
@@ -234,7 +234,7 @@ export function translateRating(supplierList,ratingList) {
         titleList.push(itemsq.rateDepart)
       })
      }
-     maps.push({rate:c[0].supplierName,isAllPartRateConsistent:c[0].rfmRate})
+     maps.push({rate:c[0].supplierName,isAllPartRateConsistent:c[0].rfmRate,isRateRisk:c[0].isRateRisk})
      //拿到评分部门list 为每个部门设置评分
      titleList.forEach(itemsbb=>{
        const map = c.find(it=>it.rateDepart == itemsbb)
