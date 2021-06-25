@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-05-27 12:32:54
- * @LastEditTime: 2021-06-14 16:46:47
- * @LastEditors: ldh
+ * @LastEditTime: 2021-06-25 14:27:38
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\costanalysismanage\components\home\index.vue
 -->
@@ -22,20 +22,20 @@
       :searchKey="PARTSIGN_CONFIRMBUTTON"
     >
       <el-form>
-        <el-form-item :label="$t('costanalysismanage.RfqBianHao')">
+        <el-form-item :label="language('RFQBIANHAO', 'RFQ编号')">
           <iInput
             v-model="form.rfqId"
-            :placeholder="$t('costanalysismanage.QingShuRuRfqBianHao')"
+            :placeholder="language('QINGSHURURFQBIANHAO', '请输入RFQ编号')"
           ></iInput>
         </el-form-item>
-        <el-form-item :label="$t('costanalysismanage.RfqZhuangTai')">
+        <el-form-item :label="language('RFQZHUANGTAI', 'RFQ状态')">
           <iSelect
             v-model="form.rfqStatus"
-            :placeholder="$t('costanalysismanage.QingXuanZeRfqZhuangTai')"
+            :placeholder="language('QINGXUANZERFQZHUANGTAI', '请选择RFQ状态')"
           >
             <el-option
               value=""
-              :label="$t('all') | capitalizeFilter"
+              :label="language('ALL', '全部') | capitalizeFilter"
             ></el-option>
             <el-option
               :value="item.value"
@@ -45,26 +45,26 @@
             ></el-option>
           </iSelect>
         </el-form-item>
-        <el-form-item :label="$t('costanalysismanage.LingJianHao')">
+        <el-form-item :label="language('LINGJIANHAO', '零件号')">
           <iInput
             v-model="form.partNum"
-            :placeholder="$t('costanalysismanage.QingShuRuLingJianHao')"
+            :placeholder="language('QINGSHURULINGJIANHAO', '请输入零件号')"
           ></iInput>
         </el-form-item>
-        <el-form-item :label="$t('costanalysismanage.LingJianMing')">
+        <el-form-item :label="language('LINGJIANMING', '零件名')">
           <iInput
             v-model="form.partName"
-            :placeholder="$t('costanalysismanage.QingShuRuLingJianMing')"
+            :placeholder="language('QINGSHURULINGJIANMING', '请输入零件名')"
           ></iInput>
         </el-form-item>
-        <el-form-item :label="$t('costanalysismanage.CheXingXiangMu')">
+        <el-form-item :label="language('CHEXINGXIANGMU', '车型项目')">
           <iSelect
             v-model="form.carType"
-            :placeholder="$t('costanalysismanage.QingXuanZeCheXingXiangMu')"
+            :placeholder="language('QINGXUANZECHEXINGXIANGMU', '请选择车型项目')"
           >
             <el-option
               value=""
-              :label="$t('all') | capitalizeFilter"
+              :label="language('ALL', '全部') | capitalizeFilter"
             ></el-option>
             <el-option
               :value="item.value"
@@ -74,38 +74,38 @@
             ></el-option>
           </iSelect>
         </el-form-item>
-        <el-form-item :label="$t('costanalysismanage.Pca')">
+        <el-form-item label="PCA">
           <iInput
             v-model="form.pca"
-            :placeholder="$t('costanalysismanage.QingShuRuPca')"
+            :placeholder="language('QINGSHURUPCA', '请输入PCA')"
           ></iInput>
         </el-form-item>
-        <el-form-item :label="$t('costanalysismanage.Tia')">
+        <el-form-item label="TIA">
           <iInput
             v-model="form.tia"
-            :placeholder="$t('costanalysismanage.QingShuRuTia')"
+            :placeholder="language('QINGSHURUTIA', '请输入TIA')"
           ></iInput>
         </el-form-item>
-        <el-form-item :label="$t('costanalysismanage.HeavyItem')">
+        <el-form-item label="Heavy Item">
           <iSelect
             v-model="form.heavyItem"
-            :placeholder="$t('costanalysismanage.QingXuanZeHeavyItem')"
+            :placeholder="language('QINGXUANZEHEAVYITEM', '请选择Heavy Item')"
           >
             <el-option
               value=""
-              :label="$t('all') | capitalizeFilter"
+              :label="language('ALL', '全部') | capitalizeFilter"
             ></el-option>
             <el-option v-for="item in heavyItemOptions" :key="item.code" :value="item.value" :label="item[$i18n.locale]" />
           </iSelect>
         </el-form-item>
-        <el-form-item :label="$t('costanalysismanage.Commodity')">
+        <el-form-item label="COMMODITY">
           <iSelect
             v-model="form.commodity"
-            :placeholder="$t('costanalysismanage.QingXuanZeCommodity')"
+            :placeholder="language('QINGXUANZECOMMODITY', '请选择COMMODITY')"
           >
             <el-option
               value=""
-              :label="$t('all') | capitalizeFilter"
+              :label="language('ALL', '全部') | capitalizeFilter"
             ></el-option>
             <el-option
               :value="items.key"
@@ -115,14 +115,14 @@
             ></el-option>
           </iSelect>
         </el-form-item>
-        <el-form-item :label="$t('costanalysismanage.Linie')">
+        <el-form-item label="LINIE">
           <iSelect
             v-model="form.linieId"
-            :placeholder="$t('costanalysismanage.QingXuanZeLinie')"
+            :placeholder="language('QINGXUANZELINIE', '请选择LINIE')"
           >
             <el-option
               value=""
-              :label="$t('all') | capitalizeFilter"
+              :label="language('ALL', '全部') | capitalizeFilter"
             ></el-option>
             <el-option
               :value="items.key"
@@ -134,9 +134,10 @@
         </el-form-item>
       </el-form>
     </iSearch>
-    <iCard class="margin-top20" :title="$t('costanalysismanage.RfqLieBiao')">
+    <iCard class="margin-top20" :title="language('RFQLIEBIAO', 'RFQ列表')">
       <tableList
         index
+        :lang="true"
         :tableData="tableListData"
         :tableTitle="tableTitle"
         :tableLoading="loading">
@@ -150,7 +151,7 @@
           <span>{{ scope.row.currentRoundsEndTime | dateFilter("YYYY-MM-DD") }}</span>
         </template>
         <template #technoMaterial="scope">
-          <span class="link-underline" @click="download(scope.row)">{{ $t("costanalysismanage.XiaZai") }}</span>
+          <span class="link-underline" @click="download(scope.row)">{{ language("XIAZAI", "下载") }}</span>
         </template>
         <template #sendDate="scope">
             <span class="link-underline" @click="cbd(scope.row)">{{ scope.row.sendDate | dateFilter("YYYY-MM-DD") }}</span>
