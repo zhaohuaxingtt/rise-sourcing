@@ -2,46 +2,46 @@
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:50:41
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-24 15:23:57
+ * @LastEditTime: 2021-06-25 11:26:50
  * @Description: 
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\rs\components\meeting\data.js
  */
 
 export const nomalDetailTitle = [
-  {props: 'partName', name: '零件名称', enName: 'Part Name'},
-  {props: 'partNo', name: '零件号', enName: 'Part-No'},
-  {props: 'fsnrGsnrNum', name: 'FS号', enName: 'FS-No'},
-  {props: 'rfqDocDate', name: '询价资料日期', enName: 'RFQ Doc. Date'},
-  {props: 'fsBuyer', name: '前期采购员', enName: 'FS'},
-  {props: 'project', name: '项目', enName: 'Project'},
-  {props: 'buyer', name: '采购员', enName: 'Buyer'},
-  {props: 'sop', name: '投产时间', enName: 'SOP'},
-  {props: 'epen', name: '工程师', enName: 'EP/EN'},
-  {props: 'carLine', name: '车型', enName: 'Carline'},
-  {props: 'lifeTime', name: '生命周期', enName: 'Lifetime'}
+  {props: 'partName', name: '零件名称', enName: 'Part Name', key:'LINGJIANMINGCHENG'},
+  {props: 'partNo', name: '零件号', enName: 'Part-No', key: 'LINGJIANHAO'},
+  {props: 'fsnrGsnrNum', name: 'FS号', enName: 'FS-No', key: 'FSNO'},
+  {props: 'rfqDocDate', name: '询价资料日期', enName: 'RFQ Doc. Date', key: 'XUNJIAZILIAORIQI'},
+  {props: 'fsBuyer', name: '前期采购员', enName: 'FS', key: 'QIANQICAIGOUYUAN'},
+  {props: 'project', name: '项目', enName: 'Project', key: 'XIANGMU'},
+  {props: 'buyer', name: '采购员', enName: 'Buyer', key: 'CAIGOUYUAN'},
+  {props: 'sop', name: '投产时间', enName: 'SOP', key: 'TOUCHANSHIJIAN'},
+  {props: 'epen', name: '工程师', enName: 'EP/EN', key: 'GONGCHENGSHI'},
+  {props: 'carLine', name: '车型', enName: 'Carline', key: 'CHEXING'},
+  {props: 'lifeTime', name: '生命周期', enName: 'Lifetime', key: 'SHENGMINGZHOUQI'}
 ]
 
 export const nomalDetailTitleBlue = [
   [
-    {props: 'currency', name: '货币', enName: 'Currency'},
-    {props: 'unit', name: '单位', enName: 'Unit'},
+    {props: 'currency', name: '货币', enName: 'Currency', key: 'HUOBI'},
+    {props: 'unit', name: '单位', enName: 'Unit', key: 'DANWEI'},
   ],
-  {props: 'mtz', name: '原材料补差价', enName: 'MTZ'},
-  {props: 'materialGroup', name: '材料组', enName: 'Material Group'},
-  {props: 'rawMaterial', name: '原材料', enName: 'Raw Material'},
-  {props: 'plannedInvest', name: '现供应商', enName: 'Current Supplier'},
-  {props: 'setPrice', name: '设定价格', enName: 'Set Price'},
-  {props: 'emtermin', name: '分摊', enName: 'Amrtisiert'},
-  {props: 'quantity', name: '每车用量', enName: 'Quantity'}
+  {props: 'mtz', name: '原材料补差价', enName: 'MTZ', key: 'YUANCAILIAOBUCHAJIA'},
+  {props: 'materialGroup', name: '材料组', enName: 'Material Group', key: 'CAILIAOZU'},
+  {props: 'rawMaterial', name: '原材料', enName: 'Raw Material', key: 'YUANCAILIAO'},
+  {props: 'plannedInvest', name: '现供应商', enName: 'Current Supplier', key:'XIANGONGYINGSHANG'},
+  {props: 'setPrice', name: '设定价格', enName: 'Set Price', key:'SHEDINGJIAGE'},
+  {props: 'emtermin', name: '分摊', enName: 'Amrtisiert', key: 'FENTAN'},
+  {props: 'quantity', name: '每车用量', enName: 'Quantity', key: 'MEICHEYONGLIANG'}
 ]
 
 // GS
 export const gsDetailTitleBlue = [
   [
-    {props: 'currency', name: '货币', enName: 'Currency'},
-    {props: 'unit', name: '单位', enName: 'Unit'},
+    {props: 'currency', name: '货币', enName: 'Currency', key: 'HUOBI'},
+    {props: 'unit', name: '单位', enName: 'Unit', key: 'DANWEI'},
   ],
-  {props: 'mtz', name: '原材料补差价', enName: 'MTZ'},
+  {props: 'mtz', name: '原材料补差价', enName: 'MTZ', key: ''},
   {props: 'materialGroup', name: '材料组', enName: 'Material Group'},
   {props: 'rawMaterial', name: '原材料', enName: 'Raw Material'},
   {props: 'plannedInvest', name: '计划投资', enName: 'Planned Invest'},
@@ -147,9 +147,9 @@ export const gsTableTitle = [
 ]
 
 export const meetingRemark = [
-  {label: '询价采购员上会备注', value: 'ww', type: 'CSF_MEET_MEMO'},
-  {label: 'LINIE上会备注', value: 'xxx', type: 'LINIE_MEET_MEMO'},
-  {label: 'CS*1上会备注', value: 'ttt', type: 'CS1_MEET_MEMO'}
+  {label: '询价采购员上会备注', value: 'ww', type: 'CSF_MEET_MEMO', key: 'XUNJIACAIGOUYUANSHANGHUIBEIZHU'},
+  {label: 'LINIE上会备注', value: 'xxx', type: 'LINIE_MEET_MEMO', key: 'LINIESHANGHUIBEIZHU'},
+  {label: 'CS*1上会备注', value: 'ttt', type: 'CS1_MEET_MEMO', key: 'CS1SHANGHUIBEIZHU'}
 ]
 
 export const checkList = [
