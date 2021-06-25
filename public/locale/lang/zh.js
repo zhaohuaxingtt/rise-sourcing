@@ -951,6 +951,20 @@
 		'LK_QINGXUANZEDINGDIANSHENQINGLEIXING': '请选择定点申请类型', // 请选择定点申请类型
 		'LK_DINGDIANSHENQINGLEIXING': '定点申请类型', // 定点申请类型
 
+    //vp
+    'LK_SCHEME_TYPE': '方案', // 方案类型
+    'LK_REPORT_TYPE': '报告', // 方案报告
+    'LK_CREATE': '新建',//新建
+    'LK_PART_NO': '零件号',//零件号
+    'LK_RFQ_NOORNAME': 'RFQ号/名称',//RGQ号/名称
+    'LK_CREATEBY': '创建人',//RGQ号/名称
+    'LK_VP_PORT_NO': 'Volume Pricing报告-零件号', //Volume Pricing报告-零件号
+    'LK_CUSTOM_TITLE': '自定义',//自定义零件列表title
+    'LK_FACTORY': '工厂',//工厂
+    'LK_SUPPLIER': '供应商',//供应商
+    'LK_SHOWORHIDE': '显示/隐藏',//显示/隐藏
+    'LK_SORT': '排序', //排序
+
 		// 定点管理
 		'nominationLanguage': {
 			'DingDianXiangQing': '定点详情', // 定点详情

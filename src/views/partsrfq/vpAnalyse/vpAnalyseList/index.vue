@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-06-16 20:44:29
- * @LastEditTime: 2021-06-24 16:18:12
+ * @LastEditTime: 2021-06-25 14:43:38
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\analysisTool\index.vue
@@ -10,17 +10,17 @@
   <div>
     <analysisSearch :rfqNo="rfqNo" @handleSubmitSearch="handleSubmitSearch"/>
     
-    <iCard :title="title" class="margin-top20">
+    <iCard class="margin-top20">
       <div slot="header" class="headBox">
-        <p class="headTitle">{{title}}</p>
+        <p class="headTitle">{{$t('TPZS.VPFXK')}}</p>
         <span class="buttonBox" v-if="!editMode">
-          <iButton @click="clickEdit">编辑</iButton>
-          <iButton @click="clickAdd">新建</iButton>
-          <iButton @click="clickDel">删除</iButton>
+          <iButton @click="clickEdit">{{$t('LK_BIANJI')}}</iButton>
+          <iButton @click="clickAdd">{{$t('LK_CREATE')}}</iButton>
+          <iButton @click="clickDel">{{$t('delete')}}</iButton>
         </span>
         <span class="buttonBox" v-if="editMode">
-          <iButton @click="clickEdit">取消</iButton>
-          <iButton @click="clickSaveEdit">保存</iButton>
+          <iButton @click="clickEdit">{{$t('LK_QUXIAO')}}</iButton>
+          <iButton @click="clickSaveEdit">{{$t('LK_BAOCUN')}}</iButton>
         </span>
       </div>
       <analysisTable ref="analysisTable" :editMode="editMode"/>
@@ -37,7 +37,6 @@ export default {
   components: {iCard, iButton, analysisSearch, analysisTable},
   data () {
     return {
-      title: 'volume Pricing分析库',
       editMode: false, //模式， 0：正常模式 1：编辑模式
       rfqNo: '123123',    //rfq编号
       searchData: null,
