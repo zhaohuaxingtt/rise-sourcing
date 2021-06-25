@@ -99,11 +99,12 @@
           :tableLoading="tableLoading"
           @handleSelectionChange="handleSelectionChange"
       >
-
-        <template #categoryBud<template #rfqId="scope">
-        <div class="linkStyle"><span @click="clickRfqId(scope.row.rfqId)">{{ scope.row.rfqId }}</span></div>
-      </template>get="scope">
-          <div class="linkStyle"><span @click="clickCategoryBudget(scope.row)">{{ getTousandNum(scope.row.categoryBudget) }}</span></div>
+        <template #rfqId="scope">
+          <div class="linkStyle"><span @click="clickRfqId(scope.row.rfqId)">{{ scope.row.rfqId }}</span></div>
+        </template>
+        <template #categoryBudget="scope">
+          <div class="linkStyle"><span @click="clickCategoryBudget(scope.row)">{{ scope.row.categoryBudget }}</span>
+          </div>
         </template>
         <template #budgetApplyAmount="scope">
           <div class="linkStyle" :class="(Number(scope.row.budgetApplyAmount) > Number(scope.row.budgetLeftoverAmount)) && 'red'"><span

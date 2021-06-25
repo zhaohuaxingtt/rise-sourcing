@@ -12,6 +12,8 @@ export const form = {
      'search.nomiType': "", //材料组
      'search.deptId': "", //材料组
      'search.cartypeProType': "", //材料组
+     'search.cartypeBag': "", //车型包
+     'search.partBag': "", //零件包
 }
 
 export const summaryData = [
@@ -194,6 +196,50 @@ export const addModelBagTitle = [
         props: 'sendDate',
         name: '发送日期',
         key: '发送日期',
+        tooltip: false
+    },
+]
+export const modelBagData = [
+    {
+        props: 'packageNameZh',
+        name: '车型包',
+        key: '车型包',
+        width: 150,
+        tooltip: false
+    },
+    {
+        props: 'partNameZh',
+        name: '零件包名称',
+        key: '零件包名称',
+        width: 150,
+        tooltip: false
+    },
+    {
+        props: 'nomiAmountTotal',
+        name: '定点金额-TOTAL',
+        key: '定点金额-TOTAL',
+        width: 200,
+        tooltip: false
+    },
+    {
+        props: 'nomiAmountSvw',
+        name: '定点金额-SVW',
+        key: '定点金额-SVW',
+        width: 200,
+        tooltip: false
+    },
+    {
+        props: 'categoryNameZh',
+        name: '材料组',
+        key: '材料组',
+        width: 150,
+        tooltip: false
+    },
+    {
+        props: 'remark',
+        name: '备注',
+        key: '备注',
+        width: 200,
         tooltip: false
     },
 ]

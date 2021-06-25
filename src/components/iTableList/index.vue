@@ -91,10 +91,23 @@
         >
           <template slot="header" slot-scope="" v-if="titlePopover">
             <Popover
+                v-if="items.name !== '定点金额-SVW'"
                 placement="top-start"
                 :content="$t(items.key)"
                 trigger="hover">
-              <div slot="reference" class="tableHeader">{{ $t(items.key) }}</div>
+              <div slot="reference" class="tableHeader">
+                {{ $t(items.key) }}
+              </div>
+            </Popover>
+            <Popover
+                v-else
+                placement="top-start"
+                content="定点金额-SVW = 系统内该车型包中所有车型项目的common sourcing零件已定点金额汇总"
+                trigger="hover">
+              <div slot="reference" class="tableHeader">
+                {{ $t(items.key) }}
+                <icon symbol  name="iconxinxitishi"></icon>
+              </div>
             </Popover>
           </template>
           <template slot="header" slot-scope="" v-else>
@@ -111,7 +124,7 @@
 
 <script>
 import {Popover} from "element-ui"
-import {iSelect} from "rise"
+import {iSelect, icon} from "rise"
 import { cloneDeep } from 'lodash'
 
 export default {
@@ -135,6 +148,7 @@ export default {
   components: {
     Popover,
     iSelect,
+    icon,
   },
   data() {
     return {
