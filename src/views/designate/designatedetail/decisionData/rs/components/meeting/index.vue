@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:17:25
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-16 19:59:09
+ * @LastEditTime: 2021-06-25 10:16:27
  * @Description: 上会/备案RS单
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\rs\components\meeting\index.vue
 -->
@@ -40,7 +40,7 @@
         <p v-for="(item,index) in remarkItem" :key="index">{{item.value}}</p>
       </div></div>
     </iCard>
-    <iCard v-if="!isPreview" title="上会备注" class="margin-top20">
+    <iCard v-if="!isPreview && !showSignatureForm" title="上会备注" class="margin-top20">
       <iButton slot="header-control" @click="handleSaveRemarks" :loading="saveLoading">保存</iButton>
       <div class="meetingRemark">
         <div class="meetingRemark-item" v-for="(item, index) in remarkItem" :key="index">
@@ -49,7 +49,7 @@
         </div>
       </div>
     </iCard>
-    <iCard class="checkDate" :class="!isPreview && 'margin-top20'" :title="'申请日期：2020-01-01'">
+    <iCard v-if="!showSignatureForm" class="checkDate" :class="!isPreview && 'margin-top20'" :title="'申请日期：2020-01-01'">
       <div class="checkList">
         <div class="checkList-item" v-for="(item, index) in checkList" :key="index">
           <icon v-if="item.status === '1'" symle name="iconrs-wancheng"></icon>
@@ -71,21 +71,22 @@
 
 <script>
 import { iCard, iButton, iInput, icon, iMessage } from 'rise'
-import { nomalDetailTitle, nomalDetailTitleBlue, nomalTableTitle, meetingRemark, checkList } from './data'
+import { nomalDetailTitle, nomalDetailTitleBlue, nomalTableTitle, meetingRemark, checkList, gsDetailTitleBlue, gsTableTitle } from './data'
 import tableList from '@/views/designate/designatedetail/components/tableList'
 import { getList, getRemark, updateRemark } from '@/api/designate/decisiondata/rs'
 export default {
   props: {
     isPreview: {type:Boolean, default:false},
     nominateId: {type:String},
-    projectType: {type:String}
+    projectType: {type:String},
+    showSignatureForm: {type:Boolean, default:false}
   },
   components: { iCard, tableList, iButton, iInput, icon },
   data() {
     return {
       remarks: {},
       leftTitle: nomalDetailTitle,
-      rightTitle: nomalDetailTitleBlue,
+      // rightTitle: nomalDetailTitleBlue,
       // tableTitle: nomalTableTitle,
       tableData: [],
       basicData: {},
@@ -96,11 +97,19 @@ export default {
     }
   },
   computed: {
+    rightTitle() {
+      if (this.projectType === 'PT11') {
+        return gsDetailTitleBlue
+      }
+      return nomalDetailTitleBlue
+    },
     tableTitle() {
       if (this.projectType === 'PT17') {
         return sparePartTableTitle
       } else if (this.projectType === 'PT18') {
         return accessoryTableTitle
+      } else if (this.projectType === 'PT11') {
+        return gsTableTitle
       }
       return nomalTableTitle
     },
