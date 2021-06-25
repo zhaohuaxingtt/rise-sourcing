@@ -7,7 +7,7 @@
  */
 import axios from '@/utils/axios'
 
-const requst = axios(process.env.VUE_APP_VP)
+const requst = axios(process.env.VUE_APP_AON)
 
 export function totalBobOverview(parmars) {
   return requst({

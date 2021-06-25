@@ -9,7 +9,7 @@
 
 import axios from '@/utils/axios'
 
-const request = axios(process.env.VUE_APP_VP)
+const request = axios(process.env.VUE_APP_AON)
 
 export function getVpAnalysisDataList(params) {
   return request({

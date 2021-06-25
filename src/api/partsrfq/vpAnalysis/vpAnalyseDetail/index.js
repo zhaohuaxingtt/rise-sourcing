@@ -5,7 +5,7 @@
 
 import axios from '@/utils/axios'
 
-const request = axios(process.env.VUE_APP_VP_ANALYSE)
+const request = axios(process.env.VUE_APP_AON)
 
 //Volume Pricing零件分析
 export function getAnalysisProcessing(params) {

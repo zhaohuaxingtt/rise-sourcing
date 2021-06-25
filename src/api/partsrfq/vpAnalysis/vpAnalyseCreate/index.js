@@ -7,7 +7,7 @@
  */
 import axios from '@/utils/axios'
 
-const request = axios(process.env.VUE_APP_VP_ANALYSE)
+const request = axios(process.env.VUE_APP_AON)
 
 //车型计划产量与现实累计产量分析（截止2021-02）
 export function getCarModelProjectList(params) {
@@ -17,7 +17,7 @@ export function getCarModelProjectList(params) {
     data: params
   })
 }
-//零件列表 
+//零件列表
 export function getCarModelPartsList(params) {
   return request({
     url: '/vpAnalysisScheme/getCarModelPartsList',

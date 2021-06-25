@@ -334,27 +334,13 @@ module.exports = {
 								"^/partApi": ""
 							}
 						},
-            '/vpApi': {
-              target: 'http://10.160.138.234:8036',
+            '/aonApi': {
+              target: 'http://192.168.50.138:8036',
               changeOrigin: true,
 							pathRewrite: {
-								"^/vpApi": ""
+								"^/aonApi": ""
 							}
-            },
-            '/vpAnalysisApi': {
-              target: 'http://192.168.50.138:8036',
-							changeOrigin: true,
-							pathRewrite: {
-								"^/vpAnalysisApi": ""
-							}
-            },
-						'/bobApi':{
-							target: 'http://192.168.50.230:8036',
-							changeOrigin: true,
-							pathRewrite: {
-								"^/bobApi": ""
-							}
-						}
+            }
         }
     }
 }

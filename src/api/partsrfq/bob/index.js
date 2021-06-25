@@ -8,7 +8,7 @@
 import axios from '@/utils/axios'
 import store from "@/store";
 
-const requst = axios(process.env.VUE_APP_BOB)
+const requst = axios(process.env.VUE_APP_AON)
 
 export function getBobLevelOne(parmars) {
     return requst({
