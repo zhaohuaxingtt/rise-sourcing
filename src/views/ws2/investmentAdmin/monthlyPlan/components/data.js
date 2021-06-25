@@ -1,7 +1,8 @@
 
 export const tableTitle = [
     {
-        props: 'department',
+        // props: 'department',
+        props: 'commodity',
         name: '科室',
         key: 'LK_KESHI',
         tooltip: false
@@ -13,73 +14,85 @@ export const tableTitle = [
         tooltip: false
     },
     {
-        props: 'jan',
+        // props: 'jan',
+        props: 'planAmountM1',
         name: '一月',
         key: '一月',
         tooltip: false
     },
     {
-        props: 'feb',
+        // props: 'feb',
+        props: 'planAmountM2',
         name: '二月',
         key: '二月',
         tooltip: false
     },
     {
-        props: 'mar',
+        // props: 'mar',
+        props: 'planAmountM3',
         name: '三月',
         key: '三月',
         tooltip: false
     },
     {
-        props: 'apr',
+        // props: 'apr',
+        props: 'planAmountM4',
         name: '四月',
         key: '四月',
         tooltip: false
     },
     {
-        props: 'may',
+        // props: 'may',
+        props: 'planAmountM5',
         name: '五月',
         key: '五月',
         tooltip: false
     },
     {
-        props: 'june',
+        // props: 'june',
+        props: 'planAmountM6',
         name: '六月',
         key: '六月',
         tooltip: false
     },
     {
-        props: 'july',
+        // props: 'july',
+        props: 'planAmountM7',
         name: '七月',
         key: '七月',
         tooltip: false
     },
     {
-        props: 'aug',
+        // props: 'aug',
+        props: 'planAmountM8',
         name: '八月',
         key: '八月',
         tooltip: false
     },
     {
-        props: 'sep',
+        // props: 'sep',
+        props: 'planAmountM9',
         name: '九月',
         key: '九月',
         tooltip: false
     },
     {
-        props: 'oct',
+        // props: 'oct',
+        props: 'planAmountM10',
         name: '十月',
         key: '十月',
         tooltip: false
     },
     {
-        props: 'nov',
+        // props: 'nov',
+        props: 'planAmountM11',
         name: '十一月',
         key: '十一月',
         tooltip: false
     },
     {
-        props: 'dec',
+        // props: 'dec',
+        props: 'planAmountM12',
         name: '十二月',
         key: '十二月',
         tooltip: false
