@@ -2,24 +2,24 @@
  * @Author: Luoshuang
  * @Date: 2021-05-26 16:00:14
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-07 17:38:05
+ * @LastEditTime: 2021-06-25 13:56:48
  * @Description: 批量更新采购工厂
  * @FilePath: \front-web\src\views\accessoryPart\createRfq\components\updateFactory.vue
 -->
 
 <template>
   <iDialog 
-    title="批量更新采购工厂"
+    :title="language('PILIANGGENGXINCAIGOUGONGCHANG','批量更新采购工厂')"
     :visible.sync="dialogVisible"
     @close="clearDialog"
     width="381px"
   >
     <template slot="footer">
-      <iButton @click="handleConfirm" :loading="loading">确认</iButton>
-      <iButton @click="clearDialog">取消</iButton>
+      <iButton @click="handleConfirm" :loading="loading">{{language('QUEREN','确认')}}</iButton>
+      <iButton @click="clearDialog">{{language('QUXIAO','取消')}}</iButton>
     </template>
     <el-form>
-      <el-form-item label="请选择采购工厂">
+      <el-form-item :label="language('QINGXUANZECAIGOUGONGCHANG','请选择采购工厂')">
         <iSelect v-model="factory">
           <el-option
             :value="item.id"

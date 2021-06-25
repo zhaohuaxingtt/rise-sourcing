@@ -1,14 +1,14 @@
 <!--
  * @Author: your name
  * @Date: 2021-05-24 16:03:20
- * @LastEditTime: 2021-05-24 19:18:28
+ * @LastEditTime: 2021-06-25 11:52:33
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\createParts\index.vue
 -->
 <template>
   <iPage class="createParts">
-    <iNavMvp :lev="1" :list="navList" routerPage class="nav" />
+    <iNavMvp :lev="1" :list="navList" :lang="true" routerPage class="nav" />
     <router-view></router-view>
   </iPage>
 </template>

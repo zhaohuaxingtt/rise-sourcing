@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-22 10:32:07
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-22 11:25:14
+ * @LastEditTime: 2021-06-24 10:28:17
  * @Description: 
  * @FilePath: \front-web\src\views\financialTargetPrice\components\data.js
  */
@@ -40,7 +40,7 @@ export const MENU = [
     message: 0,
     url: '/financialtargetprice/maintenance',
     activePath: 'maintenance',
-    key: 'LK_MUBIAOJIAWEIHU'
+    key: '目标价维护'
   },
   {
     value: 2,
@@ -48,7 +48,7 @@ export const MENU = [
     message: 0,
     url: '/financialtargetprice/approval',
     activePath: 'approval',
-    key: 'LK_MUBIAOJIASHENPI'
+    key: '目标价审批'
   },
   {
     value: 7,
@@ -56,6 +56,6 @@ export const MENU = [
     message: 0,
     url: '/financialtargetprice/query',
     activePath: 'query',
-    key: 'LK_MUBIAOJIACHAXUN'
+    key: '目标价查询'
   },
 ]

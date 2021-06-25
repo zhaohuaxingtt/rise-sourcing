@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-22 17:47:09
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-23 17:02:28
+ * @LastEditTime: 2021-06-24 17:44:16
  * @Description: 目标价详情
  * @FilePath: \front-web\src\views\financialTargetPrice\targetPriceDetail\index.vue
 -->
@@ -30,6 +30,7 @@ import { iPage, iCard } from 'rise'
 import history from './components/history'
 import basic from './components/basic'
 import designateInfo from './components/designateInfo'
+import { getTargetPriceDetail } from "@/api/financialTargetPrice/index"
 export default {
   components: {iPage,iCard,history,basic,designateInfo},
   data() {
@@ -37,7 +38,17 @@ export default {
       basicIsEdit: false,
     }
   },
+  created() {
+    if (this.$route.query.id) {
+      this.getDetail()
+    }
+  },
   methods: {
+    getDetail() {
+      getTargetPriceDetail(this.$route.query.id).then(res => {
+        
+      })
+    },
     /**
      * @Description: 保存基础信息编辑
      * @Author: Luoshuang
