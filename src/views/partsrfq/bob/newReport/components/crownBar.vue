@@ -18,17 +18,33 @@ export default {
         title:{
           type:String,
           default:''
+        },
+        type:{
+          type:String,
+          default:'Best of Best'
+        },
+        by:{
+          type:String,
+          default:'supplier'
         }
     },
     data(){
         return {
             chartArray:[],
             labelArray:[],
-            lineArray:[],
-            lineDataArray:[],
-            legendArray:[],
+            legendKeys:{
+              '原材料/散件':'rawMaterialSummary',
+              '制造费':'manufacturingCostSummary',
+              '报废成本':'discardCostsSummary',
+              '管理费':'administrationCostsSummary',
+              '其他费用':'otherCostsSummary',
+              '利润':'profit'},
+            legendArray:['原材料/散件','制造费','报废成本','管理费','其他费用','利润'],
             dataArray:[],
             sum:window._.sum,
+            min:window._.min,
+            max:window._.max,
+            sumBy:window._.sumBy,
             minBy:window._.minBy,
             toPairs:window._.toPairs,
             omit:window._.omit,
@@ -41,6 +57,19 @@ export default {
         }
     },
     methods: {
+    bos(arr){
+      const min=this.min(arr)
+      let send=this.max(arr)
+      arr.forEach((i)=>{
+        if(i>min){
+          if(i<send){
+            send=i
+          }
+        }
+      })
+      // console.log(send)
+      return send
+    },
     initCharts() {
       const myChart = echarts().init(this.$refs.chart);
       // 绘制图表
@@ -74,13 +103,16 @@ export default {
                 show:false,
                 alignWithLabel: true
               },
+              axisLabel:{
+                interval:0
+              },
               triggerEvent:true
           }
           ],
           yAxis: [
               {
                   type: 'value',
-                  name: '\n\n\n车型项目名称\nCBD报价时间',
+                  name: '\n\n\n车型项目名称\n\nCBD报价时间',
                   axisLabel:{
                     color:'#7E84A3',
 
@@ -105,73 +137,77 @@ export default {
       myChart.setOption(option);
       const that=this
       myChart.on('click', function (params) {
-        if(params.targetType==='axisLabel'&&params.value==='Best of Best'){
+        if(params.targetType==='axisLabel'&&params.value===that.type){
           that.$emit('select',params)
         }
       });
     },
-  },
-  mounted() {
-    this.initCharts();
-  },
-  watch:{
-    title:{
-      handler(str){
-        if(this.$refs.chart&&this.chartArray.length>0){
-            this.initCharts();
-        }
-      },
-      immediate:true
-    },
-      chartData:{
-          handler(newVal){
-            if(newVal){
+    initData(newVal){
+      if(newVal){
+              console.log(newVal)
               this.chartArray=newVal
+              this.labelArray=[]
+              this.dataArray=[]
               const tempArr = []
-                newVal.forEach((row,i)=>{
-                  if(i===0){
-                    this.labelArray=row.list.map((v)=>{
-                      const index=3
-                      const all=3
-                      const temp='途观2015\n2019.03'
-                      const str=v.key+'\n第{Blue|'+index+'}/'+all+'轮\n\n'+temp
-                      return {
-                        value:str,
-                        textStyle:{
-                          rich:{
-                            Blue:{
-                              fontSize: 20,
-                              fontWeight: 500,
-                              color: '#1763F7',
-                            },
-                          }
-                        }
-                      }
-                    })
-
-                    this.labelArray.push('Best of Best')
+              const dataList1 = [ ]
+              const typeList = []
+              newVal.forEach((row,i)=>{
+                // console.log(row)
+                const temp=row.vehicleType+'\n\n'+window.moment(row.cbdQuotationTime).format('yyyy.MM')
+                const turn=(row.turn===-1)?'最新轮':row.turn
+                let name=row.supplierId
+                if(this.by==='num'){
+                  name=row.spareParts
+                }
+                const str=name+'\n第{Blue|'+row.turn+'}/'+row.totalTurn+'轮\n\n'+temp
+                this.labelArray.push({
+                  value:str,
+                  textStyle:{
+                    rich:{
+                      Blue:{
+                        fontSize: 20,
+                        fontWeight: 500,
+                        color: '#1763F7',
+                      },
+                    }
                   }
-                  this.legendArray.push(row.name); 
-                  const dataList=row.list.map((v)=>{
-                      if(!tempArr[v.key]){
-                        tempArr[v.key]=[]
-                      }
-                      tempArr[v.key].push(v.value)
-                      return [v.key,v.value]
-                    })
-                  const min=this.minBy(dataList.map(v=>v[1]))
-                  if(i===0){
-                    tempArr['Best of Best']=[]
+                })
+                // console.log(this.labelArray)
+                this.legendArray.map((v,i)=>{
+                  if(!tempArr[v]){
+                    tempArr[v]=[]
+                    dataList1[v]=[]
                   }
-                  
-                  dataList.push(['Best of Best',min])
-                  tempArr['Best of Best'].push(min)
-                  const dataList0=this.cloneDeep(dataList)
-                  const dataList1=this.cloneDeep(dataList).map((v)=>{
-                    return this.sum(this.take(tempArr[v[0]],i+1))
+                  tempArr[v].push(row[this.legendKeys[v]])
+                  const sum=this.sumBy(this.take(this.legendArray,i+1),(k)=>{
+                    return row[this.legendKeys[k]]
                   })
-                  this.dataArray.push({
-                    name:row.name,
+                  // console.log(sum)
+                  dataList1[v].push(sum)
+                  // console.log(dataList1)
+                })
+              })
+              console.log(tempArr)
+              const minList=[]
+              this.legendArray.forEach((row,i)=>{
+                const dataList0=this.cloneDeep(tempArr[row])
+                console.log(this.type)
+                
+                const min=this.min(tempArr[row])
+                let data=min
+                if(this.type==='Best of Average'){
+                  data=Number((this.sum(tempArr[row])/tempArr[row].length).toFixed(2))
+                }else if(this.type==='Best of Second'){
+                  data=this.bos(tempArr[row])
+                }
+                minList.push(data)
+                if(i===0){
+                  tempArr[this.type]=[]
+                }
+                // console.log(dataList0)
+                // console.log(dataList1)
+                this.dataArray.push({
+                    name:row,
                     type: 'bar',
                     barGap:'-100%',
                     z:20-i,
@@ -183,8 +219,12 @@ export default {
                       position:'insideTop',
                       color:'white',
                       formatter: (params) =>{
-                        const indexName=params.name.split('\n')[0]
-                        return tempArr[indexName][(params.seriesIndex-1)/2]
+                        // console.log(params)
+                        if(params.name===this.type){
+                          return data
+                        }else{
+                          return (tempArr[row][params.dataIndex])
+                        }
                       },
                       rich:{
                         lv: {
@@ -203,10 +243,10 @@ export default {
                       barBorderRadius:[5, 5, 0, 0]
                     },
                     barWidth:'30%',
-                    data:dataList1,
+                    data:[...dataList1[row],this.sum(minList)],
                   })
-                  this.dataArray.push({
-                    name:row.name+'lv',
+                this.dataArray.push({
+                    name:row+'lv',
                     type: 'bar',
                     stack:'lv',
                     emphasis: {
@@ -216,8 +256,8 @@ export default {
                       show: true,
                       position:'right',
                       formatter:(params)=>{
-                        if(min===params.value&&params.name!=='Best of Best'){
-                          return '{lv|}'
+                        if(data===params.value&&params.name!==this.type&&this.type!=='Best of Average'){
+                          return '\t{lv|}'
                         } else{
                           return ''
                         }
@@ -242,9 +282,12 @@ export default {
                       color:'#fff',
                     },
                     barWidth:30,
-                    data:dataList0.map((v)=>v[1]),
-                  })             
-                })
+                    data:[...dataList0,minList[minList.length-1]]
+                  })
+              })
+              console.log(this.dataArray)
+          
+                this.labelArray.push(this.type)
                 this.dataArray.push({
                     name:'sum',
                     type: 'bar',
@@ -256,27 +299,25 @@ export default {
                       fontSize: 18,
                       align: 'center',
                       formatter: (params) =>{
-                        console.log(params)
-                        const indexName=params.name.split('\n')[0]
-                        console.log(indexName)
-                        const min=this.minBy(this.toPairs(this.omit(tempArr,'Best of Best')),(arr)=> {
-                          return this.sum(arr[1])
-                        })
+                        // console.log(params)
+                        const min=this.min(dataList1['利润'])
                         // const sum=this.sum(tempArr[params.name])
-                        if(params.name==='Best of Best'){
-                          const sum=this.sum(tempArr[params.name])
-                          return '{bold|'+sum+'}'
+                        const index=params.dataIndex
+                        if(params.name===this.type){
+                          const sum=this.sum(minList)
+                          console.log(sum)
+                          return sum
+                          // return '{bold|'+sum+'}'
                         }
                         else if(min){
-                          const sum=this.sum(tempArr[indexName])
-                          const minValue=this.sum(min[1])
-                          if(minValue===sum){
+                          const sum=dataList1['利润'][index]
+                          if(min===sum){
                             return '{Ball|} {BB|Best Ball}\n'+sum
                           }else{
                             return sum
                           }
                         } else {
-                          const sum=this.sum(tempArr[indexName])
+                          const sum=dataList1['利润'][index]
                           return sum
                         }
                       },
@@ -314,16 +355,42 @@ export default {
                       barBorderRadius:[5, 5, 0, 0]
                     },
                     barWidth:'30%',
-                    data:this.dataArray.map((v)=>{
-                      return 0}
-                    ),
+                    data:this.labelArray.map((i)=>0)
                 })
-                
-                this.chartArray=newVal;
+                console.log(this.dataArray)
                 if(this.$refs.chart&&this.chartArray.length>0){
                     this.initCharts();
                 }
             }
+    }
+  },
+  mounted() {
+    this.initCharts();
+  },
+  watch:{
+    title:{
+      handler(str){
+        if(this.$refs.chart&&this.chartArray.length>0){
+            this.initCharts();
+        }
+      },
+      immediate:true
+    },
+    by:{
+      handler(str){
+        this.initData(this.chartData)
+      },
+      immediate:true
+    },
+    type:{
+      handler(str){
+        this.initData(this.chartData)
+      },
+      immediate:true
+    },
+      chartData:{
+          handler(newVal){
+              this.initData(newVal)
                 
             },
             immediate:true,

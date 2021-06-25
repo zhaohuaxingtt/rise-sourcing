@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 11:38:57
- * @LastEditTime: 2021-06-23 10:31:55
+ * @LastEditTime: 2021-06-23 15:13:17
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails\table1.vue
@@ -11,7 +11,7 @@
     <el-table
       :data="dataList"
       :tree-props="{ hasChildren: 'hasChildren', children: 'children' }"
-       :row-key="getRowKey"
+      :row-key="getRowKey"
       :expand-row-keys="expends"
       v-loading="loading"
       :max-height="maxHeight"
@@ -38,19 +38,19 @@
 
 <script>
 export default {
- props: {
-    expends:{
-      type:Array,
+  props: {
+    expends: {
+      type: Array,
       default: function () {
-        return []
-      }
+        return [];
+      },
     },
-    dataList:{
-      type:Array,
-       default: function () {
-        return []
-      }
-    }
+    dataList: {
+      type: Array,
+      default: function () {
+        return [];
+      },
+    },
   },
   data() {
     return {
@@ -89,8 +89,8 @@ export default {
     };
   },
   methods: {
-    getRowKey(row){
-      return row.id
+    getRowKey(row) {
+      return row.id;
     },
     rowClick(row, event, column) {
       this.$emit("row-click", row, event, column);

@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-17 11:40:10
- * @LastEditTime: 2021-06-18 14:35:49
+ * @LastEditTime: 2021-06-24 15:30:14
  * @LastEditors: Please set LastEditors
  * @Description: 查找零件弹窗
  * @FilePath: \front-web\src\views\partsrfq\components\findingPart.vue
@@ -79,6 +79,7 @@ import {
 import { confirmTableHead } from "./data";
 
 export default {
+  name:"findingParts",
   components: {
     iButton,
     iDialog,
@@ -120,9 +121,11 @@ export default {
   },
   methods: {
     clearDiolog() {
+      console.log(111)
       this.$emit("close", false);
     },
     submit() {
+      console.log(111)
       this.$emit("submit");
     },
     sure(val) {},

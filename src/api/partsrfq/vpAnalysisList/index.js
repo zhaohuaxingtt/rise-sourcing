@@ -1,7 +1,7 @@
 /*
  * @Author: youyuan
  * @Date: 2021-06-22 11:23:31
- * @LastEditTime: 2021-06-22 20:42:58
+ * @LastEditTime: 2021-06-24 14:15:46
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\api\partsrfq\vpAnalysis\vpAnalysisList\index.js
@@ -9,11 +9,11 @@
 
 import axios from '@/utils/axios'
 
-const request = axios(process.env.VUE_APP_VP_ANALYSE)
+const request = axios(process.env.VUE_APP_VP)
 
 export function getVpAnalysisDataList(params) {
   return request({
-      url: '/web/aon/vpAnalysisScheme/page',
+      url: '/vpAnalysisScheme/page',
       method: 'POST',
       data: params
   })
@@ -21,7 +21,7 @@ export function getVpAnalysisDataList(params) {
 
 export function fetchStaick(params) {
   return request({
-      url: '/web/aon/vpAnalysisScheme/stick',
+      url: '/vpAnalysisScheme/stick',
       method: 'PUT',
       data: params
   })
@@ -29,7 +29,7 @@ export function fetchStaick(params) {
 
 export function fetchEdit(params) {
   return request({
-    url: '/web/aon/vpAnalysisScheme/updateVp',
+    url: '/vpAnalysisScheme/updateVp',
     method: 'PUT',
     data: params
   })
@@ -37,7 +37,7 @@ export function fetchEdit(params) {
 
 export function fetchDel(params) {
   return request({
-    url: '/web/aon/vpAnalysisScheme/removeVpScheme',
+    url: '/vpAnalysisScheme/removeVpScheme',
     method: 'POST',
     data: params
   })
