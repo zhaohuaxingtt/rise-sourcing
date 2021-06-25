@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-23 11:59:22
- * @LastEditTime: 2021-06-23 18:13:50
+ * @LastEditTime: 2021-06-24 15:12:54
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\editordetail\components\currentSupplier\index.vue
@@ -20,7 +20,17 @@
     </div>
     <el-table :data='dataListTop' v-loading='loadingTop'>
       <template v-for='(items,index) in titleListTop'>
-        <el-table-column align="center" :key='index' :label='items.name' :prop='items.props'></el-table-column>
+        <el-table-column align="center" :key='index' :label='items.name' :prop='items.props'>
+          <template slot-scope="scope">
+              <template v-if='items.props == "ratio"' >
+                  <span v-if='!edit'>{{scope.row[items.props]}}</span>
+                  <iInput v-else v-model="scope.row[items.props]"></iInput>
+              </template>
+              <template v-else>
+                {{scope.row[items.props]}}
+              </template>
+          </template>
+        </el-table-column>
       </template>
     </el-table>
     <div class="line"></div>

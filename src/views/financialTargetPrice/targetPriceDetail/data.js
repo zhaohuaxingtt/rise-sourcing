@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-23 13:46:59
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-23 16:45:48
+ * @LastEditTime: 2021-06-24 18:33:14
  * @Description: 
  * @FilePath: \front-web\src\views\financialTargetPrice\targetPriceDetail\data.js
  */
@@ -31,26 +31,26 @@ export const historyTableTitle = [
 
 export const detailList = [
   {value: 'partNum', label: '零件号', type: 'input', i18n_label: '',},
-  {value: 'partNameCh', label: '零件名(中)', type: 'input', i18n_label: '',},
-  {value: 'partNameDe', label: '采购工厂', type: 'input', i18n_label: '',},
-  {value: 'sparePartCode', label: '目标价类型', type: 'input', i18n_label: '',},
-  {value: 'spnrNum', label: 'FsNr/GsNr', type: 'input', i18n_label: '',},
-  {value: 'annualQuantity', label: '价格单位', type: 'input', i18n_label: '',},
-  {value: 'carType', label: '单位', type: 'input', i18n_label: '',},
-  {value: 'carProject', label: '期望目标价', type: 'input', i18n_label: '',},
-  {value: 'assemblyPartNum', label: 'CF LC_A Target', type: 'input', i18n_label: '', editable: true},
-  {value: 'state', label: 'CF SKD_B Target', type: 'input', i18n_label: '', editable: true},
-  {value: 'isEop', label: 'CF CKD Landed', type: 'input', i18n_label: '', editable: true},
-  {value: 'idState', label: 'CF CKD Duty(%)', type: 'input', i18n_label: '', editable: true},
-  {value: 'csfuserId', label: 'CF LC_B Target', type: 'input', i18n_label: '', editable: true},
-  {value: 'csfuserDept', label: 'CF SKD_A Target', type: 'input', i18n_label: '', editable: true},
-  {value: 'sendDate', label: 'CF CKD Ex-work', type: 'input', i18n_label: '', editable: true},
-  {value: 'respDept', label: '汇率', type: 'input', i18n_label: '',},
-  {value: 'respLinie', label: 'LC货币', type: 'select', i18n_label: '',selectOption: '', editable: true},
-  {value: 'brand', label: 'SKD货币', type: 'select', i18n_label: '',selectOption: '', editable: true},
-  {value: 'supplierSapCode', label: 'CKD货币', type: 'select', i18n_label: '',selectOption: '', editable: true},
-  {value: 'supplierSvwCode', label: 'RW价', type: 'input', i18n_label: '',},
-  {value: 'supplierSvwTempCode', label: '备注', type: 'input', i18n_label: '',row: 2, editable: true}
+  {value: 'partNameZh', label: '零件名(中)', type: 'input', i18n_label: '',},
+  {value: 'procureFactory', label: '采购工厂', type: 'input', i18n_label: '',},
+  {value: 'applytarType', label: '目标价类型', type: 'input', i18n_label: '',},
+  {value: 'fsNum', label: 'FsNr/GsNr', type: 'input', i18n_label: '',},
+  {value: 'priceUnit', label: '价格单位', type: 'input', i18n_label: '',},
+  {value: 'unit', label: '单位', type: 'input', i18n_label: '',},
+  {value: 'expTargetpri', label: '期望目标价', type: 'input', i18n_label: '',},
+  {value: 'lcAPrice', label: 'CF LC_A Target', type: 'input', i18n_label: '', editable: true},
+  {value: 'skdBPrice', label: 'CF SKD_B Target', type: 'input', i18n_label: '', editable: true},
+  {value: 'ckdLanded', label: 'CF CKD Landed', type: 'input', i18n_label: '', editable: true},
+  {value: 'ckdDuty', label: 'CF CKD Duty(%)', type: 'input', i18n_label: '', editable: true},
+  {value: 'lcBPrice', label: 'CF LC_B Target', type: 'input', i18n_label: '', editable: true},
+  {value: 'skdAPrice', label: 'CF SKD_A Target', type: 'input', i18n_label: '', editable: true},
+  {value: 'ckdExwork', label: 'CF CKD Ex-work', type: 'input', i18n_label: '', editable: true},
+  {value: 'ckdExchangeRate', label: '汇率', type: 'input', i18n_label: '',},
+  {value: 'lcTcCurrencyId', label: 'LC货币', type: 'select', i18n_label: '',selectOption: '', editable: true},
+  {value: 'skdTcCurrencyId', label: 'SKD货币', type: 'select', i18n_label: '',selectOption: '', editable: true},
+  {value: 'ckdTcCurrencyId', label: 'CKD货币', type: 'select', i18n_label: '',selectOption: '', editable: true},
+  {value: 'rwPrice', label: 'RW价', type: 'input', i18n_label: '',},
+  {value: 'modifyReason', label: '备注', type: 'input', i18n_label: '',row: 2, editable: true}
 ]
 
 export const designateSearchList = [

@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2021-06-23 14:08:40
+ * @LastEditTime: 2021-06-24 15:50:07
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\editordetail\index.vue
@@ -209,7 +209,11 @@
 							</iText>
 						</iFormItem>
 						<iFormItem :label="$t('LK_SOPRIQI') + ':'" name="test">
-							<iText v-permission="PARTSPROCURE_EDITORDETAIL_SOPDATE">
+							<!----------------------------------------------------------------------------------------------->
+							<!---------------sop时间如果是GS零件的时候，是可以手动选择的------------------------------------------>
+							<!----------------------------------------------------------------------------------------------->
+							<iDatePicker v-if='currentSupplierButton' v-moudel='detailData.sopDate' type="date"></iDatePicker>
+							<iText v-else v-permission="PARTSPROCURE_EDITORDETAIL_SOPDATE">
 								{{ detailData.sopDate }}
 							</iText>
 						</iFormItem>

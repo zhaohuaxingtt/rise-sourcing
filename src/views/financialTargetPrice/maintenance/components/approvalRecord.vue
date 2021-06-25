@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-22 16:30:06
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-22 16:57:02
+ * @LastEditTime: 2021-06-24 17:26:21
  * @Description: 审批记录弹窗
  * @FilePath: \front-web\src\views\financialTargetPrice\maintenance\components\approvalRecord.vue
 -->
@@ -33,11 +33,13 @@ import { iDialog, iButton, iSelect, iInput, iSearch, iPagination, iMessage } fro
 import tableList from '../../components/tableList'
 import { pageMixins } from "@/utils/pageMixins"
 import { approvalTableTitle } from '../data'
+import { getApprovalHistoryList } from "@/api/financialTargetPrice/index"
 export default {
   mixins: [pageMixins],
   components: { iDialog, iButton, iSelect, iInput, tableList, iSearch, iPagination },
   props: {
-    dialogVisible: { type: Boolean, default: false }
+    dialogVisible: { type: Boolean, default: false },
+    id: {type:String}
   },
   data() {
     return {
@@ -73,25 +75,28 @@ export default {
      * @return {*}
      */    
     getTableList() {
-      // this.tableLoading = true
-      const params = {
-        ...this.searchParams,
-        current: this.page.currPage,
-        size: this.page.pageSize
+      this.tableLoading = true
+      if (!id) {
+        return
       }
-      // getAccessoryManageList(params).then(res => {
-      //   if(res.result) {
-      //     this.tableData = res.data.records
-      //     this.page.pageSize = res.data.size
-      //     this.page.currPage = res.data.current
-      //     this.page.totalCount = res.data.total
-      //   } else {
-      //     this.tableData = []
-      //     iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
-      //   }
-      // }).finally(() => {
-      //   this.tableLoading = false
-      // })
+      const params = {
+        id: this.id,
+        pageNo: this.page.currPage,
+        pageSize: this.page.pageSize
+      }
+      getApprovalHistoryList(params).then(res => {
+        if(res.result) {
+          // this.tableData = res.data.records
+          // this.page.pageSize = res.data.size
+          // this.page.currPage = res.data.current
+          // this.page.totalCount = res.data.total
+        } else {
+          this.tableData = []
+          iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
+        }
+      }).finally(() => {
+        this.tableLoading = false
+      })
     },
     clearDialog() {
       this.$emit('changeVisible', false)
