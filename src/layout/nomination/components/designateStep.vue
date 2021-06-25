@@ -47,7 +47,9 @@
                         </el-tooltip>
                     </p>
                     
-                    <p class="step-text">{{$t(item.key) || item.name}}</p>
+                    <p class="step-text">
+                        {{language(item.key,item.name)}}
+                    </p>
                 </div>
                 <p v-if="index+1 !== applyStep.length" class="margin-bottom30" >
                     <!-- 正在进行中 -->
