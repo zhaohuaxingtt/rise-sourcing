@@ -21,7 +21,7 @@ export function getCarModelProjectList(params) {
 export function getCarModelPartsList(params) {
   return request({
     url: '/vpAnalysisScheme/getCarModelPartsList',
-    method: 'GET',
+    method: 'POST',
     data: params
   })
 }

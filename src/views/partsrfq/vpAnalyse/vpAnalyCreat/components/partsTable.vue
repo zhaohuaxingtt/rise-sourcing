@@ -27,7 +27,7 @@
           <tableList :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="tableLoading" :selection='false' :index="false" @handleSelectionChange="handleSelectionChange" />
           <iPagination v-update @size-change="handleSizeChange($event, getTableList)" @current-change="handleCurrentChange($event, getTableList)" background :page-sizes="page.pageSizes" :page-size="page.pageSize" :layout="page.layout" :current-page='page.currPage' :total="page.totalCount" />
         </el-tab-pane>
-        <el-tab-pane :label="$t('TPZS.QLLJ')">
+        <el-tab-pane :label="$t('TPZS.YXLJ')">
         </el-tab-pane>
       </iTabsList>
     </div>

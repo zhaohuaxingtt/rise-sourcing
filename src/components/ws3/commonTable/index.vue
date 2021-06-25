@@ -1,7 +1,7 @@
 <!--
  * @Author: yourname
  * @Date: 2021-04-13 17:30:36
- * @LastEditTime: 2021-06-01 15:34:01
+ * @LastEditTime: 2021-06-25 17:57:07
  * @LastEditors: zbin
  * @Description: 通用表格
 -->
@@ -13,7 +13,9 @@
               :data='tableData'
               :empty-text="$t('LK_ZANWUSHUJU')"
               v-loading='tableLoading'
+              highlight-current-row
               @selection-change="handleSelectionChange"
+              @current-change="handleCurrentChange"
               :row-class-name="handleTableRow"
               :row-key="rowKey"
               :tree-props="{children: treeProps}"
@@ -177,6 +179,9 @@ export default {
     },
     handleSelectionChange(val) {
       this.$emit('handleSelectionChange', val);
+    },
+    handleCurrentChange(val) {
+      this.$emit('handleCurrentChange', val);
     },
     handleSelectChange(type, val, time) {
       const res = {

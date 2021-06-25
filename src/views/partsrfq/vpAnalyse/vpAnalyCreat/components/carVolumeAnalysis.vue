@@ -19,7 +19,7 @@
         </div>
       </div>
     </template>
-    <tableList class="margin-top20" :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="tableLoading" :selection='false' :index="false" @handleSelectionChange="handleSelectionChange">
+    <tableList class="margin-top20" :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="tableLoading" :selection='false' :index="false" @handleCurrentChange="handleCurrentChange">
       <template #actualProEndLastMonth="scope">
         <div>
           <el-row>
@@ -106,6 +106,9 @@ export default {
         this.tableListData = [];
         this.tableLoading = false;
       }
+    },
+    handleCurrentChange(data){
+      
     }
   },
   // 生命周期 - 创建完成（可以访问当前this实例）
