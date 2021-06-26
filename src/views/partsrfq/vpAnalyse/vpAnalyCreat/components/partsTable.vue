@@ -67,11 +67,12 @@ export default {
     hanleParts() {
       this.partsDialog = true
     },
-    async getTableList() {
+    async getTableList(data) {
       this.tableLoading = true;
       try {
         const req = {
-
+          carClassify:data.carClassify,
+          id:this.$store.state.permission.userInfo.id
         };
         const res = await getCarModelPartsList(req);
         if (res.result) {

@@ -34,15 +34,15 @@ export default {
         { name: '河南', value: [113.46, 34.25], symbolSize: 2 },
         { name: '安徽', value: [117.28, 31.86], symbolSize: 2 },
         { name: '江苏', value: [120.26, 32.54], symbolSize: 2 },
-        { name: '上海', value: [121.46, 31.28], symbolSize: 2 },
-        { name: '四川', value: [103.36, 30.65], symbolSize: 2 },
-        { name: '四川', value: [103.36, 30.65], symbolSize: 2 },
-        { name: '四川', value: [103.36, 30.65], symbolSize: 2 },
-        { name: '四川', value: [103.36, 30.65], symbolSize: 2 },
-        { name: '四川', value: [103.36, 30.65], symbolSize: 2 },
-        { name: '四川', value: [103.36, 30.65], symbolSize: 2 },
-        { name: '四川', value: [103.36, 30.65], symbolSize: 2 },
-        { name: '陕西', value: [103.36, 30.65], symbolSize: 2 },
+        // { name: '上海', value: [121.46, 31.28], symbolSize: 2 },
+        // { name: '四川', value: [103.36, 30.65], symbolSize: 2 },
+        // { name: '四川', value: [103.36, 30.65], symbolSize: 2 },
+        // { name: '四川', value: [103.36, 30.65], symbolSize: 2 },
+        // { name: '四川', value: [103.36, 30.65], symbolSize: 2 },
+        // { name: '四川', value: [103.36, 30.65], symbolSize: 2 },
+        // { name: '四川', value: [103.36, 30.65], symbolSize: 2 },
+        // { name: '四川', value: [103.36, 30.65], symbolSize: 2 },
+        // { name: '陕西', value: [103.36, 30.65], symbolSize: 2 },
 
       ]
     }
@@ -216,6 +216,8 @@ export default {
   color: #7e84a3;
   font-size: 20px;
   text-align: left;
+  margin-top: 8px;
+  margin-bottom: 8px;
 }
 .value {
   color: #131523;
@@ -246,6 +248,7 @@ export default {
   height: 40px;
   color: #0d2451;
   font-size: 16px;
+  white-space: nowrap;
 }
 .flex {
   align-items: center;

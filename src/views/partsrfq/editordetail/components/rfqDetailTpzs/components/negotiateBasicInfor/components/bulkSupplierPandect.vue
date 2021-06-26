@@ -16,8 +16,8 @@
 
 <script>
 import { iCard, icon } from "rise";
-import map1 from "./map";
-import supplierCard from "./supplierCard";
+import map1 from "./map.vue";
+import supplierCard from "./supplierCard.vue";
 export default {
   components: { iCard, icon, map1, supplierCard },
   data() {

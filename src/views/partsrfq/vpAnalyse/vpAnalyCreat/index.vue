@@ -15,10 +15,10 @@
     </div>
     <el-row class="flex-between-center-center margin-top25">
       <el-col class="margin-right20" :span="12">
-        <carVolumeAnalysis />
+        <carVolumeAnalysis @handleCurrentChange="handleCurrentChange" />
       </el-col>
       <el-col :span="12">
-        <partsTable />
+        <partsTable ref="partsTable" />
       </el-col>
     </el-row>
   </iPage>
@@ -45,6 +45,9 @@ export default {
   watch: {},
   // 方法集合
   methods: {
+    handleCurrentChange(data) {
+      this.$refs.partsTable.getTableList(data)
+    }
 
   },
   // 生命周期 - 创建完成（可以访问当前this实例）

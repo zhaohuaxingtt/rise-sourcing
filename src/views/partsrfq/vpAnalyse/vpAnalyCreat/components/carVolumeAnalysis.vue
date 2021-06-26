@@ -14,7 +14,7 @@
           <div class="legend margin-left3">{{$t('TPZS.JHCL')}}</div>
         </div>
         <div class="flex-between-center-center">
-          <icon style="font-size:10px" name='iconshenpiliu-yishenpi-mourenshenpi' symbol></icon>
+          <div style="background-color:#5993FF" class="circle"></div>
           <div class="legend margin-left3">{{$t('TPZS.SJCL')}}</div>
         </div>
       </div>
@@ -107,8 +107,8 @@ export default {
         this.tableLoading = false;
       }
     },
-    handleCurrentChange(data){
-      
+    handleCurrentChange(data) {
+      this.$emit('handleCurrentChange',data)
     }
   },
   // 生命周期 - 创建完成（可以访问当前this实例）

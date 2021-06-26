@@ -8,7 +8,7 @@
 <template>
   <div>
     <div :class="tableData.length<3?'':'ben'">
-      <iCard class="right margin-top5" v-for="(item,index) in tableData" :key="index">
+      <iCard class="right margin-bottom5" v-for="(item,index) in tableData" :key="index">
         <div class="flex">
           <icon class="icon-s" name="iconpilianggongyingshangzonglan" symbol></icon>
           <span>{{item.name}}</span>
