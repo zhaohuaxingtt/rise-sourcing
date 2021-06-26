@@ -6,11 +6,13 @@
         <iSelect
           class="iSelect1"
           :placeholder="$t('LK_ALL')"
+          v-model="versionId"
+          @change="versionChange"
           filterable
         >
           <el-option
               :value="item.id"
-              :label="item.cartypeNname"
+              :label="item.version"
               v-for="(item, index) in editionList"
               :key="index"
           ></el-option>
@@ -20,7 +22,7 @@
         <icon symbol name="iconmojukanbanshuaxin" class="refresh-icon"></icon>
         {{ $t('LK_SHUAXIN') }}<!-- 刷新 -->
       </div>
-      <div class="date">{{ $t('LK_SHUAXINRIQI') }}：2021.01.31</div><!-- 刷新日期 -->
+      <div class="date">{{ $t('LK_SHUAXINRIQI') }}：{{listDetail.updateDate}}</div><!-- 刷新日期 -->
       <div class="date">
         <span>{{$t('LK_HUOBI')}}：{{$t('LK_RENMINBI')}}</span>
         <span>{{$t('LK_DANWEI')}}：{{$t('LK_BAIWANYUAN')}}</span>
@@ -46,6 +48,8 @@ import {
   iInput,
   iButton
 } from "rise";
+import { queryPlanVersionList } from "@/api/ws2/investmentAdmin/yearlyPlan";
+
 export default {
   components: {
     iSelect, icon
@@ -53,10 +57,38 @@ export default {
   data(){
     return {
       editionList: [],
+      listDetail: {},
+      versionId: '',
     }
   },
 
+  created(){
+    this.getVersionList();
+  },
+
   methods: {
+
+    //  版本选择
+    versionChange(e, a){
+      this.listDetail = {...this.editionList.filter(item => item.id === e)[0]};
+      this.$emit('receiVereceive', this.listDetail);
+    },
+
+    //  获取版本号
+    getVersionList(){
+      queryPlanVersionList().then(res => {
+        const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn;
+
+        if(res.code === "0"){
+          this.editionList = res.data;
+          this.listDetail = res.data[0];
+          this.versionId = res.data[0].id;
+          this.$emit('receiVereceive', res.data[0]);
+        }else{
+          iMessage.error(result);
+        }
+      })
+    },
 
     //  刷新
     refresh(){
