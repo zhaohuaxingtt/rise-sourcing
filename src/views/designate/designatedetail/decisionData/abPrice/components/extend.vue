@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-06-09 15:26:57
- * @LastEditTime: 2021-06-18 17:55:23
+ * @LastEditTime: 2021-06-26 16:11:17
  * @LastEditors: Please set LastEditors
  * @Description: fs 供应商 横轴纵轴界面。基于报价分析界面组件。
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\abPrice\index.vue
@@ -17,7 +17,8 @@ export default{
     return {
       showRound:false,
       quoteShow:false,
-      templateSummary:2 //请求模板类型
+      templateSummary:2, //请求模板类型
+      abPrice:true
     }
   },
   methods:{
@@ -56,10 +57,14 @@ export default{
       fsSupplierAsRowDd(this.$route.query.desinateId).then(res=>{
         this.supplierTableLoading = false
         if(res.code == 200 && res.data && res.data.bdlInfoList){
-          this.supplierData = translateDataListSupplier(res.data.bdlInfoList).dataList
-          this.supplierTile = getRenderTableTileSupplier(this.backChoose,res.data.bdlInfoList)
-          this.supplierLeftLit = getleftTittleList(this.backChoose)
-          this.suppliertopList = translateDataListSupplier(res.data.bdlInfoList).topList
+            const data = translateDataListSupplier(res.data.bdlInfoList)
+            this.supplierData = data.dataList
+            this.supplierTile = getRenderTableTileSupplier(this.backChoose,res.data.bdlInfoList)
+            this.supplierLeftLit = getleftTittleList(this.backChoose)
+            this.suppliertopList = data.topList
+            this.leftData = res.data.kmAPrice
+            this.rightData = res.data.kmTooling
+            this.reRenderTable() 
         } 
       }).catch(err=>{
         this.supplierTableLoading = false

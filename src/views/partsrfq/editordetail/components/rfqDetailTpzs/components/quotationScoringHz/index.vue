@@ -33,14 +33,14 @@
       </div>
       <div class="btnSearch" v-if='!disabel'>
         <iButton @click="quote" v-if='quoteShow'>引用报价</iButton>
-        <iButton @click="group"  v-if='layout == "1"'>组合</iButton>
-        <iButton @click="removeGroup"  v-if='layout == "1"'>取消组合</iButton>
+        <iButton @click="group"  v-if='layout == "1" && !abPrice'>组合</iButton>
+        <iButton @click="removeGroup"  v-if='layout == "1" && !abPrice'>取消组合</iButton>
         <!-- <iButton>导出</iButton> -->
       </div>
       <!--------------表格模块-------------->
     </div>
     <tableList v-loading='fsTableLoading' @sortChangeTabless='sortChange' :round='round' :tableTitle='title' v-if='layout == "1"' :ratingList='ratingList' :tableData='exampelData' @handleSelectionChange='handleSelectionChange'></tableList>
-    <tableListSupplier v-loading='supplierTableLoading' :centerSupplierData='suppliertopList' :supplierLeftLit='supplierLeftLit' :tableTitle='supplierTile'  :tableData='supplierData' v-if='layout == "2"'></tableListSupplier>
+    <tableListSupplier ref='tableSupplier' :cWidth='cWidth' :leftData='leftData' :rightData='rightData' v-loading='supplierTableLoading' :centerSupplierData='suppliertopList' :supplierLeftLit='supplierLeftLit' :tableTitle='supplierTile'  :tableData='supplierData' v-if='layout == "2" && showTable'></tableListSupplier>
     <!--------------弹窗-------------->
     <iDialog title="组合名" :visible.sync="groupVisble" width='25%' >
       <div class="mine_height">
@@ -90,7 +90,10 @@ export default{
     bdlPriceTotalInfoList:[],
     oldExampelData:[],
     templateSummary:1,
-    disabel:false
+    disabel:false,
+    showTable:true,
+    cWidth:'0px',
+    abPrice:false
   }},
   watch:{
     /**
@@ -117,6 +120,19 @@ export default{
     return {vm:this}
   },
   methods:{
+    reRenderTable(){
+      this.showTable = false,
+      setTimeout(() => {
+        this.showTable = true
+      },0)
+      setTimeout(() => {
+        this.getTopWidth()
+      }, 500);
+    },
+    getTopWidth(){
+      console.log(this.$refs.tableSupplier)
+      this.cWidth = this.$refs.tableSupplier.$el.querySelector('.el-table__body').offsetWidth - 100 + 'px'
+    },
     removeTags(){
       this.negoAnalysisSummaryLayoutSave()
     },
@@ -347,18 +363,25 @@ export default{
      * @return {*}
      */
     supplierfsSupplierAsRow(){
-      this.supplierTableLoading = true
-      fsSupplierAsRow(this.$route.query.id,this.round).then(res=>{
-        this.supplierTableLoading = false
-        if(res.code == 200 && res.data && res.data.bdlInfoList){
-          this.supplierData = translateDataListSupplier(res.data.bdlInfoList).dataList
-          this.supplierTile = getRenderTableTileSupplier(this.backChoose,res.data.bdlInfoList)
-          this.supplierLeftLit = getleftTittleList(this.backChoose)
-          this.suppliertopList = translateDataListSupplier(res.data.bdlInfoList).topList
-        } 
-      }).catch(err=>{
-        this.supplierTableLoading = false
-        iMessage.error(err.desZh)
+      return new Promise(r=>{
+        this.supplierTableLoading = true
+        fsSupplierAsRow(this.$route.query.id,this.round).then(res=>{
+          this.supplierTableLoading = false
+          if(res.code == 200 && res.data && res.data.bdlInfoList){
+            const data = translateDataListSupplier(res.data.bdlInfoList)
+            this.supplierData = data.dataList
+            this.supplierTile = getRenderTableTileSupplier(this.backChoose,res.data.bdlInfoList)
+            this.supplierLeftLit = getleftTittleList(this.backChoose)
+            this.suppliertopList = data.topList
+            this.leftData = res.data.kmAPrice
+            this.rightData = res.data.kmTooling
+            this.reRenderTable() 
+            r()
+          } 
+        }).catch(err=>{
+          this.supplierTableLoading = false
+          iMessage.error(err.desZh)
+        })
       })
     }
   }

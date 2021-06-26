@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-28 15:03:47
- * @LastEditTime: 2021-06-21 20:33:31
+ * @LastEditTime: 2021-06-26 15:26:11
  * @LastEditors: Please set LastEditors
  * @Description: 特殊表格实现
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\table.vue
@@ -14,6 +14,7 @@
     :data="tableData"
     v-loading="loading"
     :empty-text="$t('LK_ZANWUSHUJU')"
+    ref='table'
   >
     <template v-for='(item,index) in tableTitle'>
       <!-----------------表格中内容模块------------------------>
@@ -46,10 +47,10 @@
                 </template>
               </ul>
               <div class="cc" style="width:100px">
-                450.000
+                {{leftData}}
               </div>
               <div class="cd" style="width:100px">
-                450.000
+                {{rightData}}
               </div>
             </div>
           </div>
@@ -90,6 +91,14 @@ import {supplierTableTop,removeKeysNumber,getPorpsNumber} from './data'
 export default{
   inject:['getbaseInfoData'],
   props:{
+    leftData:{
+      type:String,
+      default:''
+    },
+    rightData:{
+      type:String,
+      default:''
+    },
     tableData:{
       type:Array,
       default:()=>[]
@@ -105,20 +114,21 @@ export default{
     supplierLeftLit:{
       type:Array,
       default:()=>[]
+    },
+    cWidth:{
+      type:String,
+      default:'0px'
     }
   },
   data(){
     return {
-    cWidth:'0px',
     supplierTableTop:supplierTableTop
   }},
   watch:{
-    tableTitle(){
-      this.$nextTick(()=>{
+    tableData(){
         setTimeout(() => {
            this.getTopWidth() 
-        }, 500);
-      })
+        }, 2000);
     }
   },
   methods:{
@@ -143,9 +153,9 @@ export default{
     removeKeysNumber(key){
       return removeKeysNumber(key)
     },
-    getTopWidth(){
-      this.cWidth = this.$el.querySelector('.el-table__header').offsetWidth - 100 + 'px'
-    }
+    doLayout(){
+      this.$refs.table.doLayout()
+    },
   },
   computed:{
     paddingTop:function(){
