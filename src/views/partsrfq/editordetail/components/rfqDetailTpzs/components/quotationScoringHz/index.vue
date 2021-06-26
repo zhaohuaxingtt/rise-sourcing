@@ -33,8 +33,8 @@
       </div>
       <div class="btnSearch" v-if='!disabel'>
         <iButton @click="quote" v-if='quoteShow'>引用报价</iButton>
-        <iButton @click="group"  v-if='layout == "1"'>组合</iButton>
-        <iButton @click="removeGroup"  v-if='layout == "1"'>取消组合</iButton>
+        <iButton @click="group"  v-if='layout == "1" && !abPrice'>组合</iButton>
+        <iButton @click="removeGroup"  v-if='layout == "1" && !abPrice'>取消组合</iButton>
         <!-- <iButton>导出</iButton> -->
       </div>
       <!--------------表格模块-------------->
@@ -92,7 +92,8 @@ export default{
     templateSummary:1,
     disabel:false,
     showTable:true,
-    cWidth:'0px'
+    cWidth:'0px',
+    abPrice:false
   }},
   watch:{
     /**
