@@ -334,79 +334,79 @@ export const investmentListJV = [{
 ]
 export const investmentListCommon = [{
     //export const tableTitle = permissionTitle("PARTSPROCURE_PARTSPROCURELIST",[{
-        props: 'categoryCode',
+        props: 'cateGoryCode',
         name: '材料组编号',
         key: 'LK_CAILIAOZUBIANHAO2',
         width: 120,
         tooltip: false
     },
     {
-        props: 'categoryNameZh',
+        props: 'cateGoryNameCN',
         name: '材料组名称（中）',
         key: 'LK_CAILIAOZUMINGCENGZHONG',
         width: 150,
         tooltip: false
     },
     {
-        props: 'categoryNameDe',
+        props: 'cateGoryNameDe',
         name: '材料组名称（德）',
         key: 'LK_CAILIAOZUMINGCENGDE',
         width: 150,
         tooltip: false
     },
     {
-        props: 'commodity',
+        props: 'partsPackageCN',
         name: '零件包-CN',
         key: '零件包-CN',
-        width: 100,
+        width: 230,
         tooltip: false
     },
     {
-        props: 'budgetAmount',
+        props: 'partsPackageDe',
         name: '零件包-DE',
         key: '零件包-DE',
-        width: 220,
+        width: 230,
         tooltip: false
     },
     {
-        props: 'moldProperties',
+        props: 'commodity',
         name: '专业科室',
         key: '专业科室',
         width: 130,
         tooltip: false
     },
     {
-        props: 'sourcingType',
+        props: 'budgetAmount',
         name: '预算金额',
-        key: '（Mio.RMB）',
+        key: '预算金额',
         width: 150,
         tooltip: false
     },
     {
-        props: 'linie',
+        props: 'dataSource',
         name: '数据来源',
         key: '数据来源',
         width: 200,
         tooltip: false
     },
     {
-        props: 'zp',
-        name: '支持信息',
-        key: '支持信息',
-        width: 60,
+        props: 'remark',
+        name: '备注',
+        key: '备注',
+        width: 200,
         tooltip: false
     },
     {
-        props: 'refCartypeName',
+        props: 'refCarTypeProName',
         name: '参考项目',
         key: '参考项目',
-        width: 130,
+        width: 200,
         tooltip: false
     },
     {
         props: 'refMoldAmount',
-        name: '参考项目模具定点金额（Mio.RMB）',
-        key: '参考项目模具定点金额（Mio.RMB）',
+        name: '参考项目模具定点金额',
+        key: '参考项目模具定点金额',
         width: 320,
         tooltip: false
     },

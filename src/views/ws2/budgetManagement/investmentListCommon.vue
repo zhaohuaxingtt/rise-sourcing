@@ -112,8 +112,8 @@
         <div class="header margin-bottom20">
           <div></div>
           <div>
-            <iButton @click="saveAsRow">{{ $t('全部清零') }}</iButton>
-            <iButton @click="downloadList">{{ $t('LK_BAOCUN') }}</iButton>
+            <iButton @click="clearAll">{{ $t('全部清零') }}</iButton>
+            <iButton @click="saveCommon">{{ $t('LK_BAOCUN') }}</iButton>
             <iButton @click="toJV">{{ $t('查看JV预算') }}</iButton>
           </div>
         </div>
@@ -126,133 +126,17 @@
               :titlePopover="false"
               @handleSelectionChange="handleSelectionChange"
           >
-            <template #refCartypeName="scope">
-              <div class="linkStyle" v-if="scope.row.refCartypeProId">
-                <span @click="clickRefCartypeName(scope.row)">{{ scope.row.refCartypeName }}</span>
-              </div>
-              <div v-else>
-                <span @click="clickRefCartypeName(scope.row)" style="color: #1663f6; cursor: pointer;">-</span>
-              </div>
+             <template #budgetAmount="scope">
+              <iInput v-if="Number(scope.row.dataSource) === 1" v-model="scope.row.budgetAmount" :placeholder="$t('LK_QINGSHURU')"></iInput>
+              <div v-else>{{ getTousandNum(scope.row.budgetAmount) }}</div>
+            </template>
+            <template #dataSource="scope">
+              <div>{{ Number(scope.row.dataSource) === 1 ? 'JV预算' : 'CommonSourcing预算' }}</div>
             </template>
             <template #refMoldAmount="scope">
-              <div v-if="scope.row.refCartypeProId"><span>{{ scope.row.refMoldAmount }}</span></div>
-              <div v-else>-</div>
-            </template>
-            <template #budgetAmount="scope">
-              <iInput v-model="scope.row.budgetAmount" v-if="pageEdit" :placeholder="$t('LK_QINGSHURU')"
-                      @input="changeBudgetAmount(scope.row.budgetAmount)" maxlength="20"></iInput>
-              <div v-if="!pageEdit">{{ scope.row.budgetAmount }}</div>
-            </template>
-            <template #moldProperties="scope">
-              <iSelect
-                  v-show="pageEdit"
-                  :placeholder="$t('LK_QINGXUANZE')"
-                  v-model="scope.row.moldProperties"
-                  filterable
-                  @change="changeCarTypeProject"
-              >
-                <el-option
-                    :value="item.modelProtitesName"
-                    :label="item.modelProtitesName"
-                    v-for="(item, index) in modelProtitesList"
-                    :key="index"
-                ></el-option>
-              </iSelect>
-              <div v-if="!pageEdit">{{ scope.row.moldProperties }}</div>
-            </template>
-            <template #commodity="scope">
-              <iSelect
-                  v-show="pageEdit"
-                  :placeholder="$t('LK_QINGXUANZE')"
-                  v-model="scope.row.commodity"
-                  filterable
-              >
-                <el-option
-                    :value="item.commodityName"
-                    :label="item.commodityName"
-                    v-for="(item, index) in DeptPullDown"
-                    :key="index"
-                ></el-option>
-              </iSelect>
-              <div v-if="!pageEdit">{{ scope.row.commodity }}</div>
-            </template>
-            <template #linie="scope">
-              <iSelect
-                  class="multipleSelect"
-                  v-show="pageEdit"
-                  :placeholder="$t('LK_QINGXUANZE')"
-                  v-model="scope.row.linieArr"
-                  collapse-tags
-                  multiple
-                  filterable
-              >
-                <el-option
-                    :value="item.linieID"
-                    :label="$i18n.locale == 'zh' ? item.linieName : item.linieNameEn"
-                    v-for="(item, index) in liniePullDown"
-                    :key="index"
-                ></el-option>
-              </iSelect>
-              <Popover
-                  v-if="!pageEdit"
-                  placement="top-start"
-                  :content="scope.row.linieName"
-                  trigger="hover">
-                <div slot="reference" class="ellipsisDiv">{{ scope.row.linieName }}</div>
-              </Popover>
-            </template>
-            <template #sourcingType="scope">
-              <div v-if="!pageEdit">{{ scope.row.sourcingType == 1 ? 'Common' : 'JV' }}</div>
-              <iSelect
-                  v-show="pageEdit"
-                  :placeholder="$t('LK_QINGXUANZE')"
-                  v-model="scope.row.sourcingType"
-                  filterable
-                  @change="changeCarTypeProject"
-              >
-                <el-option :value="1" label="Common"></el-option>
-                <el-option :value="2" label="JV"></el-option>
-              </iSelect>
-            </template>
-            <template #remarks="scope">
-              <iInput v-model="scope.row.remarks" :placeholder="$t('LK_QINGSHURU')" v-if="pageEdit"></iInput>
-              <div v-if="!pageEdit">{{ scope.row.remarks }}</div>
+              <div>{{ getTousandNum(scope.row.refMoldAmount) }}</div>
             </template>
           </iTableList>
-          <div class="buttomInput">
-            <div>
-              <h4>SUB-TOTAL:</h4>
-              <iInput v-model="form['search.SUBTOTA']" disabled></iInput>
-            </div>
-            <div>
-              <h4>AEKO:</h4>
-              <iInput v-model="form['search.aekoPercent']" @input="changePerent" :disabled="!pageEdit"></iInput>
-              % of Sub-Total
-            </div>
-            <div>
-              <h4>{{ $t('LK_AEKOJINE') }}:</h4>
-              <iInput v-model="form['search.AEKOMoney']" disabled></iInput>
-            </div>
-            <div>
-              <h4>{{ $t('LK_ZONGHEPIANCHA') }}:</h4>
-              <iInput v-model="form['search.contingencyPercent']" @input="changePerent"
-                      :disabled="isLocked || !pageEdit"></iInput>
-              % of Sub-Total
-            </div>
-            <div>
-              <h4>{{ $t('LK_ZHONGHEPIANCHAJINE') }}:</h4>
-              <iInput v-model="form['search.contingencyAmount']" disabled></iInput>
-            </div>
-            <div>
-              <h4>{{ $t('LK_ZONGYUSUAN') }}:</h4>
-              <iInput v-model="form['search.totalBudget']" :disabled="isLocked || !pageEdit" @input="changeTotalBudget">
-                <div slot="suffix" @click="isLocked = !isLocked">
-                  <icon symbol name="iconzongyusuansuoding" class="icon" v-if="isLocked"/>
-                  <icon symbol name="iconzongyusuanweisuoding" class="icon" v-if="!isLocked"/>
-                </div>
-              </iInput>
-            </div>
-          </div>
         </div>
         <!------------------------------------------------------------------------>
         <!--                  表格分页                                          --->
@@ -273,44 +157,12 @@
       <!--                  转派弹出框                                         --->
       <!------------------------------------------------------------------------>
     </div>
-
-    <addRow
-        v-model="addRowShow"
-        :carTypeProId="$store.state.mouldManagement.budgetManagement.carTypeProject"
-        :isInvestmentList="true"
-        :version="form['search.version']"
-        :sourceStatus="params.sourceStatus"
-        :sourcePage="2"
-        @updateTable="findInvestmentList"
-    ></addRow>
-    <referenceModel
-        v-model="referenceModelShow"
-        :carTypeProId="$store.state.mouldManagement.budgetManagement.carTypeProject"
-        :sourceStatus="$store.state.mouldManagement.budgetManagement.sourceStatus"
-        :carType="this.fromGroup"
-        :listVerisonId="form['search.version']"
-        @updateTable="findInvestmentList"
-    ></referenceModel>
-    <conversionRatio
-        v-model="conversionRatioShow"
-        @conversionSave="conversionSave"
-    ></conversionRatio>
-    <saveAs
-        v-model="saveAsShow"
-        :saveParams="saveParams"
-        @refresh="getInvestmentVerisionList"
-    ></saveAs>
     <confirmAssociatedCarline
         v-model="confirmAssociatedCarlineShow"
         :associatedCarlineParams="associatedCarlineParams"
         @confirm="confirmAssociatedCarlineChange"
         @notConfirm="form['search.relatedCarType'] = ''"
     ></confirmAssociatedCarline>
-    <referenceCarProject
-        v-model="referenceCarProjectShow"
-        :referenceCarProjectParams="referenceCarProjectParams"
-        @refresh="getInvestmentVerisionList"
-    ></referenceCarProject>
   </div>
 </template>
 <script>
@@ -318,7 +170,6 @@ import {
   iButton,
   iCard,
   iMessage,
-  icon,
   iInput,
   iSelect,
 } from "rise";
@@ -329,12 +180,7 @@ import {Popover} from "element-ui"
 import {pageMixins} from "@/utils/pageMixins";
 import {tableHeight} from "@/utils/tableHeight";
 import {investmentListCommon, form} from "./components/data";
-import addRow from "./components/addRow";
-import referenceModel from "./components/referenceModel";
-import conversionRatio from "./components/conversionRatio";
 import confirmAssociatedCarline from "./components/confirmAssociatedCarline";
-import saveAs from "./components/saveAs";
-import referenceCarProject from "./components/referenceCarProject";
 import {
   getCartypePulldown,
   saveCustomCart,
@@ -342,19 +188,16 @@ import {
 import {
   getInvestmentVerisionList,
   getInvestmentData,
-  getDepartmentsList,
-  findInvestmentList,
   getModelProtitesPullDown,
-  investmentDelete,
-  relationMainCarType,
-  investmentUpdate,
-  proDeptPullDown,
+   proDeptPullDown,
   liniePullDownByDept,
-  exportInvestmentList
+  getCarTypeBudget,
+  budgetMerge,
+  commonSave,
 } from "@/api/ws2/budgetManagement/investmentList";
-import {insertRfq} from "@/api/partsrfq/home";
 import echarts from "@/utils/echarts";
 import {cloneDeep} from 'lodash'
+ import {getTousandNum} from "@/utils/tool";
 
 export default {
   mixins: [pageMixins, tableHeight],
@@ -365,59 +208,23 @@ export default {
     iTableList,
     iInput,
     iSelect,
-    icon,
-    addRow,
-    referenceModel,
-    conversionRatio,
-    saveAs,
-    referenceCarProject,
-    confirmAssociatedCarline,
+     confirmAssociatedCarline,
     Popover
   },
   data() {
     return {
-      aekoPercent: '',
-      AEKOMoney: '',
-      contingencyPercent: '',
-      contingencyAmount: '',
-      totalBudget: '',
-      headerLoading: false,
+       headerLoading: false,
       contentLoading: false,
-      isLocked: false,
       pageEdit: false,
 
       carType: '',
       params: {},
-      referenceCarProjectParams: {},
-      addRowShow: false,
-      referenceModelShow: false,
-      conversionRatioShow: false,
-      saveAsShow: false,
       confirmAssociatedCarlineShow: false,
-      referenceCarProjectShow: false,
       modelProtitesList: [],
-      modelCategoryList: [],
-      fixedPointTypeList: [],
-      projectTypeList: [],
       versionList: [],
-      commodityList: [],
       mainCarTypeList: [],
-      carTypeProjectDisabled: false,
-      addCarTypeProject: '',
       isAdd: '',
       beginType: 1,
-      saveParams: {
-        investmentListEntities: [],
-        aekoAmount: '',
-        aekoPercent: '',
-        contingencyAmount: '',
-        contingencyPercent: '',
-        investmentVersionId: '',
-        totalBudget: '',
-        approveInvestment: '',
-        versionId: '',
-        version: '',
-      },
       associatedCarlineParams: {},
       versionName: '',
       createDate: '',
@@ -431,6 +238,8 @@ export default {
       fromGroup: [],
       DeptPullDown: [],
       liniePullDown: [],
+      carTypeBudget: '',
+      getTousandNum: getTousandNum
     };
   },
   computed: {},
@@ -441,49 +250,10 @@ export default {
     this.beginType = this.params.sourceStatus
     this.getModelProtitesPullDown()
     this.getInvestmentVerisionList()
-    // this.getDepartmentsList() 专业科室
   },
   mounted() {
   },
   methods: {
-    saveReference() {
-      this.tableListData = this.tableListData.map(item => {
-        item.refCartypeName = '钢材'
-        item.refMoldAmount = '100'
-        return item
-      })
-      this.saveRow()
-    },
-    changeBudgetAmount(val) {
-      let total = 0
-      this.tableListData.map(item => total += Number(item.budgetAmount))
-      this.form['search.SUBTOTA'] = total.toFixed(2)
-      this.changePerent()
-    },
-    changePerent() {
-      if (this.isLocked) {
-        this.form['search.AEKOMoney'] = (Number(this.form['search.aekoPercent']) * Number(this.form['search.SUBTOTA']) * 0.01).toFixed(2)
-        this.form['search.contingencyAmount'] = (Number(this.form['search.totalBudget']) - Number(this.form['search.SUBTOTA']) - Number(this.form['search.AEKOMoney'])).toFixed(2)
-        this.form['search.contingencyPercent'] = ((Number(this.form['search.contingencyAmount']) / Number(this.form['search.SUBTOTA'])) * 100).toFixed(2)
-      } else {
-        this.form['search.AEKOMoney'] = (Number(this.form['search.aekoPercent']) * Number(this.form['search.SUBTOTA']) * 0.01).toFixed(2)
-        this.form['search.contingencyAmount'] = (Number(this.form['search.contingencyPercent']) * Number(this.form['search.SUBTOTA']) * 0.01).toFixed(2)
-        this.form['search.totalBudget'] = (Number(this.form['search.AEKOMoney']) + Number(this.form['search.contingencyAmount']) + Number(this.form['search.SUBTOTA'])).toFixed(2)
-      }
-    },
-    changeTotalBudget() {
-      this.form['search.AEKOMoney'] = (Number(this.form['search.totalBudget']) - Number(this.form['search.SUBTOTA']) - Number(this.form['search.contingencyAmount'])).toFixed(2)
-      this.form['search.aekoPercent'] = ((Number(this.form['search.AEKOMoney']) / Number(this.form['search.SUBTOTA'])) * 100).toFixed(2)
-    },
-    conversionSave(val) {
-      let conversionVal = val / 100
-      this.tableListData = cloneDeep(this.tableListDataClone).map(item => {
-        item.budgetAmount = (Number(item.budgetAmount) * conversionVal).toFixed(2)
-        return item
-      })
-      this.form['search.SUBTOTA'] = (Number(this.clone['search.SUBTOTA']) * conversionVal).toFixed(2)
-      this.changePerent()
-    },
     changeVersion(val) {
       if (val) {
         this.versionName = this.versionList.find(item => item.id == val).version
@@ -506,18 +276,6 @@ export default {
         }
       }
     },
-    // getModelProtitesPullDown() {
-    //   getModelProtitesPullDown().then((res) => {
-    //     if (Number(res.code) === 0) {
-    //       this.modelProtitesList = res.data
-    //     } else {
-    //       iMessage.error(res.desZh);
-    //     }
-    //     // this.tableLoading = false
-    //   }).catch(() => {
-    //     // this.tableLoading = false
-    //   });
-    // },
     async getModelProtitesPullDown() {
       this.form['search.carTypeProject'] = ''
       this.form['search.materialName'] = ''
@@ -527,11 +285,12 @@ export default {
         carTypeProject: this.params.id,
         sourceStatus: this.params.sourceStatus
       });
-      await Promise.all([getModelProtitesPullDown(), getCartypePulldown(), proDeptPullDown(), liniePullDownByDept({deptId: ''})]).then((res) => {
+      await Promise.all([getModelProtitesPullDown(), getCartypePulldown(), proDeptPullDown(), liniePullDownByDept({deptId: ''}), getCarTypeBudget(this.params.id)]).then((res) => {
         const result0 = this.$i18n.locale === 'zh' ? res[0].desZh : res[0].desEn
         const result1 = this.$i18n.locale === 'zh' ? res[1].desZh : res[1].desEn
         const result2 = this.$i18n.locale === 'zh' ? res[2].desZh : res[2].desEn
         const result3 = this.$i18n.locale === 'zh' ? res[3].desZh : res[3].desEn
+        const result4 = this.$i18n.locale === 'zh' ? res[4].desZh : res[4].desEn
         if (Number(res[0].code) === 0) {
           this.modelProtitesList = res[0].data
         } else {
@@ -555,59 +314,32 @@ export default {
         } else {
           iMessage.error(result3);
         }
+        if (Number(res[4].code) === 0) {
+          this.carTypeBudget = res[4].data.carTypeBudget
+        } else {
+          iMessage.error(result4);
+        }
         this.loadingiSearch = false
       }).catch(() => {
         this.loadingiSearch = false
       });
 
     },
-    getDepartmentsList() {
-      getDepartmentsList().then((res) => {
-        const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
-        if (Number(res.code) === 0) {
-          this.commodityList = res.data
-        } else {
-          iMessage.error(result);
-        }
-        // this.tableLoading = false
-      }).catch(() => {
-        // this.tableLoading = false
-      });
-    },
     findInvestmentList() {
       this.tableLoading = true
-      findInvestmentList({
-        // commodity: this.form['search.professionalDepartments'],
-        listVerisonId: this.form['search.version'],
-      }).then((res) => {
+      budgetMerge(50172104).then((res) => {
         const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
         if (Number(res.code) === 0) {
-          res.data.investmentListEntities = res.data.investmentListEntities ? res.data.investmentListEntities : []
-          this.tableListData = res.data.investmentListEntities.map(item => {
-            item.budgetAmount = Number(item.budgetAmount).toFixed(2)
-            let linieName = ''
-            item.linieArr = item.linie ? (item.linie.split(',')).map(key => Number(key)) : []
-            if (this.$i18n.locale == 'zh') {
-              item.linieArr.map(a => {
-                linieName += this.liniePullDown.find(b => b.linieID == a) ? (this.liniePullDown.find(b => b.linieID == a).linieName + '/') : ''
-              })
-            } else {
-              item.linieArr.map(a => {
-                linieName += this.liniePullDown.find(b => b.linieID == a) ? (this.liniePullDown.find(b => b.linieID == a).linieNameEn + '/') : ''
-              })
-            }
-            // item.linieArr.map(a => {
-            //   linieName += this.liniePullDown.find(b => b.linieID == a) ? (this.liniePullDown.find(b => b.linieID == a).linieName + '/') : ''
-            // })
-            item.linieName = linieName.slice(0, linieName.length - 1)
-            return item
+          let tableListData = []
+          res.data.map((a, index) => {
+            a.map(b => {
+              b.index = index
+              return b
+            })
+            tableListData = tableListData.concat(a)
           })
+          this.tableListData = tableListData
           this.tableListDataClone = cloneDeep(this.tableListData)
-          this.form['search.aekoPercent'] = Number(res.data.aekoPercent).toFixed(2)
-          this.form['search.AEKOMoney'] = Number(res.data.aekoAmount).toFixed(2)
-          this.form['search.contingencyPercent'] = Number(res.data.contingencyPercent).toFixed(2)
-          this.form['search.contingencyAmount'] = Number(res.data.contingencyAmount).toFixed(2)
-          this.form['search.totalBudget'] = Number(res.data.totalBudget).toFixed(2)
         } else {
           iMessage.error(result);
         }
@@ -625,6 +357,7 @@ export default {
       }).then((res) => {
         const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
         if (Number(res.code) === 0) {
+          console.log(1)
           this.form['search.carTypeName'] = res.data.carTypeName
           this.form['search.sopDate'] = res.data.sopDate
           this.form['search.purchasingFactory'] = res.data.purchasingFactory ? res.data.purchasingFactory.join('') : ''
@@ -632,8 +365,6 @@ export default {
           this.mainCarTypeList = res.data.mainCarTypeList
           // this.form['search.relatedCarType'] = res.data.mainCarTypeList[0] ? res.data.mainCarTypeList[0].id : ''
           this.form['search.relatedCarType'] = ''
-          this.saveParams.version = res.data.defaultVersion.slice(4)
-
           let contingency = Number(res.data.contingency) ? Number(res.data.contingency).toFixed(2) : 0
           let aekoValue = Number(res.data.aekoValue) ? Number(res.data.aekoValue).toFixed(2) : 0
           let notAekoValue = Number(res.data.notAekoValue) ? Number(res.data.notAekoValue).toFixed(2) : 0
@@ -643,10 +374,8 @@ export default {
 
           let notAekoPriceDetail = res.data.notAekoPriceDetail
           let aekoPriceDetail = res.data.aekoPriceDetail
-
-          this.findInvestmentList()
-
-          this.$nextTick(() => {
+           this.findInvestmentList()
+           this.$nextTick(() => {
             const chart1 = echarts().init(document.getElementById("chart1"));
             const chart2 = echarts().init(document.getElementById("chart2"));
             const chart3 = echarts().init(document.getElementById("chart3"));
@@ -721,7 +450,7 @@ export default {
                   emphasis: {
                     focus: 'series'
                   },
-                  data: [contingency]
+                   data: [totalValue]
                 },
                 {
                   name: 'aekoValue',
@@ -738,7 +467,12 @@ export default {
                   emphasis: {
                     focus: 'series'
                   },
-                  data: [aekoValue]
+                   itemStyle: {
+                    normal: {
+                      barBorderRadius: [5, 5, 0, 0],
+                    }
+                  },
+                  data: [this.carTypeBudget]
                 },
                 {
                   name: '',
@@ -783,7 +517,7 @@ export default {
               },
               xAxis: {
                 type: 'category',
-                data: [this.$t("LK_ZONGYUSUAN")],
+                 data: [[form['search.carTypeName'] + ' ' + this.versionName]],
                 axisTick: {
                   show: false
                 },
@@ -1003,7 +737,7 @@ export default {
                   ],
                   itemStyle: {
                     normal: {
-                      // barBorderRadius: [5, 5, 5, 5],
+                        barBorderRadius: [5, 5, 0, 0],
                     }
                   }
                 },
@@ -1105,13 +839,14 @@ export default {
                     aekoPriceDetail.bmAmount],
                   itemStyle: {
                     normal: {
-                      // barBorderRadius: [5, 5, 0, 0],
+                      barBorderRadius: [5, 5, 0, 0],
                     }
                   }
                 },
               ]
             }
             option2.series[option2.series.length - 1].label.formatter = totalValue
+            option1.series[option1.series.length - 1].label.formatter = totalValue + this.carTypeBudget
             chart1.setOption(option1);
             chart2.setOption(option2);
             chart3.setOption(option3);
@@ -1199,105 +934,27 @@ export default {
         // this.tableLoading = false
       });
     },
-    handleAddCarTypeProject() {
-      this.tableLoading = true
-      saveCustomCart({cartypeProjectName: this.addCarTypeProject}).then((res) => {
-        const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
-        if (Number(res.code) === 0) {
-          iMessage.success(result);
-        } else {
-          iMessage.error(result);
+    clearAll(){
+      this.tableListData = this.tableListData.map(item => {
+        if(Number(item.dataSource) === 1){
+          item.budgetAmount = 0
         }
-        this.tableLoading = false
-      }).catch(() => {
-        this.tableLoading = false
-      });
-    },
-    addRow() {
-      this.addRowShow = true
-    },
-    clickRefCartypeName(row) {
-      this.referenceCarProjectShow = true
-      this.referenceCarProjectParams = {
-        carTypeProId: row.refCartypeProId,
-        categoryId: row.categoryId,
-        sourceProjectId: this.params.id
-      }
-    },
-    deleteIRow() {
-      if (this.selectTableData.length == 0) {
-        iMessage.warn('请先勾选');
-        return
-      }
-      this.tableLoading = true
-      investmentDelete(this.selectTableData, {investmentVersionId: this.form['search.version']}).then((res) => {
-        const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
-        if (Number(res.code) === 0) {
-          this.getInvestmentVerisionList()
-          // this.findInvestmentList()
-          iMessage.success(result);
-        } else {
-          iMessage.error(result);
-          // this.tableLoading = false
-        }
-      }).catch(() => {
-        // this.tableLoading = false
-      });
-    },
-    saveRow() {
-      this.tableLoading = true
-      investmentUpdate({
-        investmentListEntities: this.tableListData.map(item => {
-          item.linie = item.linieArr.join(',')
-          return item
-        }),
-        aekoAmount: this.form['search.AEKOMoney'],
-        aekoPercent: this.form['search.aekoPercent'],
-        contingencyAmount: this.form['search.contingencyAmount'],
-        contingencyPercent: this.form['search.contingencyPercent'],
-        investmentVersionId: this.form['search.version'],
-        totalBudget: this.form['search.totalBudget'],
-        approveInvestment: this.form['search.approvalInvestment'],
-      }).then((res) => {
-        const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
-        if (Number(res.code) === 0) {
-          // this.findInvestmentList()
-          this.getInvestmentVerisionList()
-          iMessage.success(result);
-        } else {
-          iMessage.error(result);
-          this.tableLoading = false
-        }
-      }).catch(() => {
-        this.tableLoading = false
-      });
-    },
-    saveAsRow() {
-      this.saveParams.investmentListEntities = this.tableListData.map(item => {
-        item.linie = item.linieArr.join(',')
         return item
       })
-      this.saveParams.aekoAmount = this.form['search.AEKOMoney']
-      this.saveParams.aekoPercent = this.form['search.aekoPercent']
-      this.saveParams.contingencyAmount = this.form['search.contingencyAmount']
-      this.saveParams.contingencyPercent = this.form['search.contingencyPercent']
-      this.saveParams.investmentVersionId = this.form['search.version']
-      this.saveParams.totalBudget = this.form['search.totalBudget']
-      this.saveParams.approveInvestment = this.form['search.approvalInvestment']
-      this.saveParams.versionId = this.form['search.version']
-      this.saveAsShow = true
     },
-    downloadList() {
+    saveCommon(){
       this.tableLoading = true
-      exportInvestmentList({
-        listVerisonId: this.form['search.version'],
-      }).then((res) => {
+      commonSave({budgetAndInListIdVOList: this.tableListData}).then((res) => {
+        const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
+        if (Number(res.code) === 0) {
+          iMessage.success(result);
+        } else {
+          iMessage.error(result);
+        }
         this.tableLoading = false
       }).catch(() => {
         this.tableLoading = false
       });
-      // let url = process.env.VUE_APP_INVESTMENT + '/exportInvestmentList?listVerisonId=' + this.form['search.version']
-      // window.open(url)
     },
     toJV() {
       this.$router.push({
@@ -1308,8 +965,6 @@ export default {
         },
       })
     },
-
-
     //表格选中值集
     handleSelectionChange(val) {
       this.selectTableData = val;
@@ -1317,12 +972,6 @@ export default {
 
   },
   watch: {
-    // aekoPercent(val){
-    //   this.AEKOMoney = (val * this.form['search.SUBTOTA'] * 0.01).toFixed(2)
-    // },
-    // AEKOMoney(val){
-    //   this.aekoPercent = (val * 100 / this.form['search.SUBTOTA']).toFixed(0)
-    // },
   }
 };
 </script>

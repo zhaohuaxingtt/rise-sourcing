@@ -1,12 +1,13 @@
 <template>
-  <div class="main">
+  <div class="main" v-loading="mainLoading">
     <div class="header">
-      <div>
+      <div v-loading="searchLoading">
         <span class="font20W">车型包:</span>
         <iSelect
             :placeholder="$t('LK_QINGXUANZE')"
             v-model="carTypePackageId"
             class="font20W"
+            @change="getCommonSourcingView"
             filterable
         >
           <el-option
@@ -20,6 +21,7 @@
         <iSelect
             :placeholder="$t('LK_QINGXUANZE')"
             v-model="packageVersion"
+            @change="getCommonSourcingView"
             filterable
         >
           <el-option
@@ -32,8 +34,8 @@
       </div>
       <iNavWS2></iNavWS2>
     </div>
-    <div class="content" v-loading="tableLoading">
-      <div class="charts">
+    <div class="content">
+      <div class="charts" v-loading="contentLoading">
         <div class="left">
           <div class="title">
             <span>{{ $t('模具投资清单') }}</span>
@@ -45,30 +47,14 @@
         </div>
         <div class="right">
           <span class="unit">{{ $t("LK_DANWEI") }}: {{ $t("LK_BAIWANYUAN") }}</span>
-          <div>
-            <div class="title">Tiguan X 2021</div>
-            <div class="chart" id="chart2"></div>
-          </div>
-          <div>
-            <div class="title">Tiguan X 2021</div>
-            <div class="chart" id="chart3"></div>
-          </div>
-          <div>
-            <div class="title">Tiguan X 2021</div>
-            <div class="chart" id="chart4"></div>
-          </div>
-          <div>
-            <div class="title">Tiguan X 2021</div>
-            <div class="chart" id="chart5"></div>
-          </div>
-          <div>
-            <div class="title">Tiguan X 2021</div>
-            <div class="chart" id="chart6"></div>
+          <div v-for="(item, index) in carTypeBudgetDetailVOSCount" :key="index">
+            <div class="title">{{ item.carTypeProName }}</div>
+            <div class="chart" :id="'chart' + (index + 2)"></div>
           </div>
         </div>
       </div>
       <iCard class="table">
-        <div class="search">
+         <div class="search" v-loading="searchLoading">
           <div>
             <span>{{$t('科室')}}:</span>
             <iSelect
@@ -78,6 +64,8 @@
                 multiple
                 collapse-tags
                 class="multipleSelect"
+                clearable
+                @change="getCommonSourcingView"
             >
               <el-option
                   :value="item.deptId"
@@ -94,6 +82,8 @@
                 multiple
                 collapse-tags
                 class="multipleSelect"
+                 clearable
+                @change="getCommonSourcingView"
             >
               <el-option
                   :value="item.id"
@@ -104,13 +94,14 @@
             </iSelect>
           </div>
           <div class="btn">
-            <iButton>{{$t('保存为新版本')}}</iButton>
+             <iButton @click="saveAs">{{$t('保存为新版本')}}</iButton>
             <iButton>{{$t('上传清单')}}</iButton>
             <iButton>{{$t('下载清单')}}</iButton>
             <iButton>{{$t('发送项目采购员')}}</iButton>
           </div>
         </div>
         <iTableList
+            v-loading="contentLoading"
             :tableData="tableListData"
             :tableTitle="tableTitle"
             @handleSelectionChange="handleSelectionChange"
@@ -149,7 +140,13 @@ import {
   iTableList
 } from "@/components"
 import {iButton, iMessage, iSelect, iCard} from 'rise'
-import {cateGoryCombo, getDepartmentsCombo, carTypePackageCombo, packageVersionCombo, commonSourcingView} from '@/api/ws2/commonSourcing'
+ import {
+  cateGoryCombo,
+  getDepartmentsCombo,
+  carTypePackageCombo,
+  packageVersionCombo,
+  commonSourcingView,
+  saveAsVersion} from '@/api/ws2/commonSourcing'
 import {iNavWS2} from "@/components";
 import echarts from "@/utils/echarts";
 import {getCartypePulldown} from "@/api/ws2/budgetManagement/edit";
@@ -167,8 +164,11 @@ export default {
   data() {
     return {
       packageNameZh: '',
-      tableLoading: false,
+      mainLoading: false,
+      searchLoading: false,
+      contentLoading: false,
       tableListData: [],
+       carTypeBudgetDetailVOSCount: [],
       tableTitle: addModelBagTitle,
       selectTableData: [],
       carTypePackageId: '',
@@ -184,12 +184,10 @@ export default {
   mounted() {
     let carTypePackageId = this.$route.query.carTypePackageId
     this.getSelect(carTypePackageId)
-
-
-  },
+   },
   methods: {
     async getSelect(carTypePackageId) {
-      // this.tableLoading = true
+      this.searchLoading = true
       await Promise.all([
           carTypePackageCombo(),
           packageVersionCombo({carTypePackageId: carTypePackageId}),
@@ -222,15 +220,15 @@ export default {
         } else {
           iMessage.error(result3);
         }
-        this.getCommonSourcingView()
-        // this.tableLoading = false
+         this.getCommonSourcingView(carTypePackageId)
+        this.searchLoading = false
       }).catch(() => {
-        // this.tableLoading = false
+         this.searchLoading = false
       });
 
     },
     getCommonSourcingView(carTypePackageId){
-      // this.tableLoading = true
+       this.contentLoading = true
       commonSourcingView({
         carTypePackageId: this.carTypePackageId,
         categoryId: this.materialGroup,
@@ -239,30 +237,64 @@ export default {
       }).then((res) => {
         const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
         if (Number(res.code) === 0) {
-          this.tableListData = res.data.partsPackageDetailVOS
-          let carTypeBudgetDetailVOS = res.data.carTypeBudgetDetailVOS
-          let carTypeBudgetPackageTotal = res.data.carTypeBudgetPackageTotal
-          let carTypeSharePackageTotal = res.data.carTypeSharePackageTotal
-          let option1Data = ['车型包总目标预算', '车型包定点预分配'].concat(carTypeBudgetDetailVOS.map(item => item.carTypeProName)).reverse()
-          let option1Series = [carTypeBudgetPackageTotal, carTypeSharePackageTotal].concat(carTypeBudgetDetailVOS.map(item => item.allocated)).reverse()
-          for(let i = 0; i < carTypeBudgetDetailVOS.length; i++){
-            let item = carTypeBudgetDetailVOS.map(item => item.allocated)
+           this.tableListData = res.data.partsPackageDetailVOS ? res.data.partsPackageDetailVOS : []
+          let carTypeBudgetDetailVOS = res.data.carTypeBudgetDetailVOS ? res.data.carTypeBudgetDetailVOS : []
+          this.carTypeBudgetDetailVOSCount = carTypeBudgetDetailVOS
+          let carTypeBudgetPackageTotal = res.data.carTypeBudgetPackageTotal ? res.data.carTypeBudgetPackageTotal : []
+          let carTypeSharePackageTotal = res.data.carTypeSharePackageTotal ? res.data.carTypeSharePackageTotal : []
+          let option1Data = ['车型包总目标预算', '车型包定点预分配'].concat(carTypeBudgetDetailVOS.map(item => item.carTypeProName))
+          let option1DataReverse = option1Data.slice(0).reverse()
+          let option1Series = [carTypeBudgetPackageTotal, carTypeSharePackageTotal].concat(carTypeBudgetDetailVOS.map(item => item.allocated))
+          let option1SeriesReverse = option1Series.slice(0).reverse()
+          let option1SeriesTemp = []
+          for(let i = 0; i < option1Series.length; i++){
+            if(i === 0 || i === 1){
+              option1SeriesTemp[i] = 0
+            } else {
+              option1SeriesTemp[i] = option1Series[1]
+              for(let j = 2; j <= i; j++){
+                option1SeriesTemp[i] -= option1Series[j]
+              }
+            }
+            if(option1SeriesTemp[i] < 0){
+              option1SeriesTemp[i] = 0
+            }
           }
-          let option1SeriesTemp = [0, 0].concat(carTypeBudgetDetailVOS.map(item => item.allocated)).reverse()
+          let option1SeriesTempReverse = option1SeriesTemp.slice(0).reverse()
 
+          let markLine = []
+          if(option1Series.length > 2){
+            markLine = [
+              [
+                {
+                  coord: [option1Series[1], '车型包定点预分配']
+                },
+                {
+                  coord: [option1Series[1], 'Passat Lingyu Classic']
+                },
+              ]
+            ]
+          }
+          for(let i = 0; i < option1SeriesTemp.length; i++){
+            if(i > 1){
+              markLine.push([
+                {
+                  coord: [option1SeriesTemp[i], option1Data[i]]
+                },
+                {
+                  coord: [option1SeriesTemp[i], option1Data[i + 1]]
+                },
+              ])
+            }
+          }
           const chart1 = echarts().init(document.getElementById("chart1"));
-          const chart2 = echarts().init(document.getElementById("chart2"));
-          const chart3 = echarts().init(document.getElementById("chart3"));
-          const chart4 = echarts().init(document.getElementById("chart4"));
-          const chart5 = echarts().init(document.getElementById("chart5"));
-          const chart6 = echarts().init(document.getElementById("chart6"));
           let option1 = {
             tooltip: {
               show: false
             },
             grid: {
               left: '0%',
-              right: '0%',
+               right: '10%',
               bottom: '0%',
               top: '0%',
               containLabel: true
@@ -305,7 +337,7 @@ export default {
                   fontSize: 10
                 },
               },
-              data: option1Data
+              data: option1DataReverse
             },
             series: [
               {
@@ -322,10 +354,10 @@ export default {
                     color: 'rgba(0,0,0,0)'
                   }
                 },
-                data: [9, 8, 7, 6, 5, 4, 3, 2, 1, 0]
+                data: option1SeriesTempReverse
               },
               {
-                name: '2011年',
+                name: '投资',
                 type: 'bar',
                 barWidth: 14,
                 stack: 'total',
@@ -334,173 +366,173 @@ export default {
                   show: true,
                   position: 'right'
                 },
-                data: option1Series
+                itemStyle: {
+                  normal: {
+                    barBorderRadius: [0, 5, 5, 0],
+                  }
+                },
+                markLine: {
+                  symbol: 'none',
+                  data: markLine
+                },
+                data: option1SeriesReverse
               }
             ]
           };
-          let option2 = {
-            tooltip: {
-              show: false
-            },
-            grid: {
-              left: '0%',
-              right: '0',
-              bottom: '0%',
-              top: '12%',
-              containLabel: true
-            },
-            xAxis: {
-              type: 'category',
-              // data: ['非AEKO', '未申请', '已申请', '未定点', '已定点', '无BA', '有BA', '无BM', '有BM'],
-              data: ['目标预算', '待分配', '定点预分配', '已定点'],
-              axisTick: {
-                show: false
-              },
-              axisLine: {
-                show: true,
-                lineStyle: {
-                  color: '#CDD4E2'
-                }
-              },
-              axisLabel: {
-                textStyle: {
-                  color: '#485465',
-                  fontSize: 10
-                },
-              },
-            },
-            yAxis: {
-              type: 'value',
-              axisTick: {
-                show: false
-              },
-              axisLabel: {
-                show: false
-              },
-              splitLine: {
-                show: false
-              },
-              axisLine: {
-                show: false
-              },
-            },
-            series: [
-              {
-                name: '辅助',
-                type: 'bar',
-                stack: 'total',
-                itemStyle: {
-                  barBorderColor: 'rgba(0,0,0,0)',
-                  color: 'rgba(0,0,0,0)'
-                },
-                emphasis: {
-                  itemStyle: {
-                    barBorderColor: 'rgba(0,0,0,0)',
-                    color: 'rgba(0,0,0,0)'
-                  }
-                },
-                data: [10, 9, 8, 7, 6, 5, 4, 3, 2, 1]
-              },
-              {
-                name: '',
-                type: 'bar',
-                stack: 'total',
-                color: '#73A1FA',
-                barWidth: '20',
-                label: {
-                  show: true,
-                  position: 'top',
-                  textStyle: {
-                    color: '#485465',
-                    fontSize: 12
-                  }
-                },
-                emphasis: {
-                  focus: 'series'
-                },
-                data: [10, 9, 8, 7, 6, 5, 4, 3, 2, 1],
-                itemStyle: {
-                  normal: {
-                    // barBorderRadius: [5, 5, 5, 5],
-                  }
-                }
-              },
-            ]
-          }
+           chart1.setOption(option1);
 
-          chart1.setOption(option1);
-          chart2.setOption(option2);
-          chart3.setOption(option2);
-          chart4.setOption(option2);
-          chart5.setOption(option2);
-          chart6.setOption(option2);
+          this.$nextTick(() => {
+            carTypeBudgetDetailVOS.map((item, index) => {
+              let key = index + 2
+              // let series = [item.budget, item.pendingAllocate, item.allocated, item.fixed]
+              let seriesPop = [item.budgetCount, item.pendingAllocateCount, item.allocatedCount, item.fixed]
+              let series = [9000000, 8000000, 1000000, 500000]
+              let seriesTemp = [0, series[0] - series[1], 0, 0]
+              const chart = echarts().init(document.getElementById("chart" + key));
+              let option = {
+                tooltip: {
+                  formatter: function (params) {//这里就是控制显示的样式
+                    return `<div style="font-size: 12px; text-align: center">
+                              <div style="color: #131523;">零件包</div>
+                              <div style="color: #1660F1;">${seriesPop[params.dataIndex]}</div>
+                            </div>`
+                  },
+                  backgroundColor: '#ffffff',
+                  extraCssText: 'color: #1B1D21; box-shadow: 0px 0px 20px rgba(27, 29, 33, 0.12);'
+                },
+                grid: {
+                  left: '0%',
+                  right: '0',
+                  bottom: '0%',
+                  top: '12%',
+                  containLabel: true
+                },
+                xAxis: {
+                  type: 'category',
+                  data: ['目标预算', '待分配', '定点预分配', '已定点'],
+                  axisTick: {
+                    show: false
+                  },
+                  axisLine: {
+                    show: true,
+                    lineStyle: {
+                      color: '#CDD4E2'
+                    }
+                  },
+                  axisLabel: {
+                    textStyle: {
+                      color: '#485465',
+                      fontSize: 10
+                    },
+                  },
+                },
+                yAxis: {
+                  type: 'value',
+                  axisTick: {
+                    show: false
+                  },
+                  axisLabel: {
+                    show: false
+                  },
+                  splitLine: {
+                    show: false
+                  },
+                  axisLine: {
+                    show: false
+                  },
+                },
+                series: [
+                  {
+                    name: '辅助',
+                    type: 'bar',
+                    stack: 'total',
+                    itemStyle: {
+                      barBorderColor: 'rgba(0,0,0,0)',
+                      color: 'rgba(0,0,0,0)'
+                    },
+                    emphasis: {
+                      itemStyle: {
+                        barBorderColor: 'rgba(0,0,0,0)',
+                        color: 'rgba(0,0,0,0)'
+                      }
+                    },
+                    data: seriesTemp
+                  },
+                  {
+                    name: '',
+                    type: 'bar',
+                    stack: 'total',
+                    color: '#73A1FA',
+                    barWidth: '20',
+                    label: {
+                      show: true,
+                      position: 'top',
+                      textStyle: {
+                        color: '#485465',
+                        fontSize: 12
+                      }
+                    },
+                    emphasis: {
+                      focus: 'series'
+                    },
+                    data: series,
+                    itemStyle: {
+                      normal: {
+                        barBorderRadius: [5, 5, 0, 0],
+                      }
+                    },
+                    markLine: {
+                      symbol: 'none',
+                      data: [
+                        [{
+                          coord: ['目标预算', series[0]]
+                        },{
+                          coord: ['待分配', series[0]]
+                        }],
+                        [{
+                          coord: ['待分配', series[2]]
+                        },{
+                          coord: ['定点预分配', series[2]]
+                        }],
+                      ]
+                    }
+                  },
+                ]
+              }
+              chart.setOption(option);
+            })
+          })
         } else {
           iMessage.error(result);
         }
-        // this.tableLoading = false
+        this.contentLoading = false
       }). catch(err => {
-        //this.tableLoading = false
-      })
-    },
-    carTypePackageCombo(carTypePackageId){
-      // this.tableLoading = true
-      carTypePackageCombo().then((res) => {
-        const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
-        if (Number(res.code) === 0) {
-          this.carTypePackageList = res.data
-          this.carTypePackageId = carTypePackageId
-          this.packageVersionCombo(carTypePackageId)
-        } else {
-          iMessage.error(result);
-        }
-        // this.tableLoading = false
-      }). catch(err => {
-        //this.tableLoading = false
-      })
-    },
-    packageVersionCombo(carTypePackageId){
-      // this.tableLoading = true
-      packageVersionCombo({
-        carTypePackageId: carTypePackageId,
-      }).then((res) => {
-        const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
-        if (Number(res.code) === 0) {
-          this.packageVersionList = res.data
-          this.packageVersion = this.packageVersionList.length > 0 ? this.packageVersionList[0].versionId : ''
-        } else {
-          iMessage.error(result);
-        }
-        // this.tableLoading = false
-      }). catch(err => {
-        //this.tableLoading = false
+        this.contentLoading = false
       })
     },
     //表格选中值集
     handleSelectionChange(val) {
       this.selectTableData = val;
     },
-    commonSourcingView(carTypePackageId) {
-      this.tableLoading = true
-      commonSourcingView({
-        carTypePackageId: carTypePackageId,
-        categoryId: this.packageNameZh,
-        commodity: this.packageNameZh,
-        versionId: this.packageNameZh,
+    handleTableRow(row){
+      row.index = row.rowIndex
+    },
+    saveAs(){
+      this.mainLoading = true
+      saveAsVersion({
+        carTypePackageId: this.carTypePackageId,
+        versionId: this.packageVersion,
       }).then((res) => {
         const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
         if (Number(res.code) === 0) {
-          this.tableListData = res.data;
+          iMessage.success(result);
         } else {
           iMessage.error(result);
         }
-        this.tableLoading = false
+        this.mainLoading = false
       }).catch(err => {
-        this.tableLoading = false
+        this.mainLoading = false
       })
-    },
-    handleTableRow(row){
-      console.log(row)
-      row.index = row.rowIndex
     }
   }
 }
@@ -596,7 +628,7 @@ export default {
 
           #chart1 {
             width: 440px;
-            height: 300px;
+            height: 400px;
           }
         }
       }

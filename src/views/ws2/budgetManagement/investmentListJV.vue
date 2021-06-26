@@ -819,7 +819,7 @@ export default {
                   data: [this.form['search.SUBTOTA']],
                   itemStyle: {
                     normal: {
-                      // barBorderRadius: [5, 5, 0, 0],
+                      barBorderRadius: [5, 5, 0, 0],
                     }
                   }
                 },
@@ -954,7 +954,7 @@ export default {
                   ],
                   itemStyle: {
                     normal: {
-                      // barBorderRadius: [5, 5, 5, 5],
+                        barBorderRadius: [5, 5, 0, 0],
                     }
                   }
                 },

@@ -65,3 +65,11 @@ export function cateGoryCombo(parmars) {
         params: parmars
     })
 }
+//车型包版本另存为
+export function saveAsVersion(parmars) {
+    return VUE_APP_CSBUDGET({
+        url: '/saveAsVersion',
+        method: 'GET',
+        params: parmars
+    })
+}
