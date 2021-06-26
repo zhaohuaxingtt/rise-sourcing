@@ -1,9 +1,9 @@
 <template>
   <div class="container">
-    <HeadTool @refresh="refresh">
+    <HeadTool @refresh="refresh" @receiVereceive="receiVereceive">
       <template slot="btns">
-        <iButton @click="save">{{ $t('LK_BAOCUN') }}</iButton><!-- 保存 -->
-        <iButton @click="saveNewVersion">{{ $t('LK_BAOCUNWEIZUIXINBANBEN') }}</iButton><!-- 保存为最新版本 -->
+        <iButton @click="save" :loading="saveLoading">{{ $t('LK_BAOCUN') }}</iButton><!-- 保存 -->
+        <iButton @click="saveNew" :loading="saveNewLoading">{{ $t('LK_BAOCUNWEIZUIXINBANBEN') }}</iButton><!-- 保存为最新版本 -->
       </template>
     </HeadTool>
 
@@ -13,14 +13,14 @@
         <iCard class="c-card-l">
           <div class="title">{{ $t('LK_SHANGBANNIANSOPFUKUANDUIBI') }}</div>
           <icon symbol name="iconSOPfukuanbi" class="card-icon"></icon>
-          <iInput v-model="no1"></iInput>
+          <iInput v-model="ratioInput.firstHalfYearPercent"></iInput>
         </iCard>
 
         <!-- 下半年SOP付款⽐ -->
         <iCard class="c-card-l">
           <div class="title">{{ $t('LK_XIABANNIANSOPFUKUANDUIBI') }}</div>
           <icon symbol name="iconSOPfukuanbi" class="card-icon"></icon>
-          <iInput v-model="no1"></iInput>
+          <iInput v-model="ratioInput.secondHalfYearPercent"></iInput>
         </iCard>
       </div>
       <div class="c-right">
@@ -49,17 +49,31 @@
           <span>{{$t('LK_DANWEI')}}：{{$t('LK_BAIWANYUAN')}}</span>
           <span>{{$t('LK_BUHANSUI')}}</span>
         </div><!-- 货币：人民币  |  单位：百万元  |  不含税  -->
-        <iButton @click="save">{{ $t('LK_XIAZAIQINGDAN') }}</iButton><!-- 下载清单 -->
+        <iButton @click="downloadExport">{{ $t('LK_XIAZAIQINGDAN') }}</iButton><!-- 下载清单 -->
       </template>
 
       <template slot="content">
         <iTableList
             :tableData="systemListData"
             :tableTitle="budgetApprovalData"
+            :tableLoading="systemTableLoading"
+            :getSummaries="getSummaries"
             :activeItems="'partNum'"
             :selection="false"
+            :show-summary="true"
+            class="baApply-table"
         >
-
+          <template #carTypeProName="scope">
+            <div class="backlog" v-if="scope.row.statType === 'backlog'">
+              backlog
+            </div>
+            <div v-else>
+              {{scope.row.carTypeProName}}
+            </div>
+          </template>
+          <template #sopPercent="scope">
+            {{scope.row.sopPercent || 0}}%
+          </template>
         </iTableList>
       </template>
       
@@ -73,7 +87,7 @@
             {{$t('LK_SHOUGONGTIAOZHENG')}}-{{'2021'}}
           </div>
           <div>
-            <iButton @click="save">{{ $t('LK_BAOCUN') }}</iButton><!-- 保存 -->
+            <iButton @click="manualSave" :loading="manualSaveLoading">{{ $t('LK_BAOCUN') }}</iButton><!-- 保存 -->
             <iButton @click="save">{{ $t('LK_XIAZAIQINGDAN') }}</iButton><!-- 下载清单 -->
           </div>
         </div>
@@ -87,47 +101,39 @@
         <div>
           <div id="totalLeft"></div>
           <div class="manual-l-txt">
-            <div class="manual-l-title">820.00</div>
-            <div class="manual-lprice">111</div>
-            <div class="manual-lprice">222</div>
-            <div class="manual-lprice">333</div>
-            <div class="manual-lprice">444</div>
-            <div class="manual-lprice">555</div>
-            <div class="manual-lprice">666</div>
+            <div class="manual-l-title">{{setSystemTotal}}</div>
+            <div class="manual-lprice" v-for="(item, index) in planYearCommutity" :key="index">
+              {{isThen ? item.planAmountSystemCurrent : item.planAmountSystemNext}}
+            </div>
           </div>
-          <div class="manual-l-txt">
-            <div class="manual-l-title">820.00</div>
-            <div class="manual-lprice">111</div>
-            <div class="manual-lprice">222</div>
-            <div class="manual-lprice">333</div>
-            <div class="manual-lprice">444</div>
-            <div class="manual-lprice">555</div>
-            <div class="manual-lprice">666</div>
+          <div class="manual-l-txt" style="margin-right: 100px;">
+            <div class="manual-l-title">Rate</div>
+            <div class="manual-lprice" v-for="(item, index) in setSystemRate" :key="index">{{item}}</div>
           </div>
         </div>
         <div>
           <div id="totalRight"></div>
+          <!-- <div class="test"></div> -->
           <div class="manual-l-txt">
-            <div class="manual-l-title">820.00</div>
-            <div class="manual-lprice">111</div>
-            <div class="manual-lprice">222</div>
-            <div class="manual-lprice">333</div>
-            <div class="manual-lprice">444</div>
-            <div class="manual-lprice">555</div>
-            <div class="manual-lprice">666</div>
+            <div class="manual-l-title">{{setManualTotal}}</div>
+            <div class="manual-lpriceInput" v-for="(item, index) in planYearCommutity" :key="index">
+              <iInput v-if="isThen" class="right-input" v-model="item.planAmountAmualCurrent"></iInput>
+              <iInput v-else class="right-input" v-model="item.planAmountAmualNext"></iInput>
+            </div>
           </div>
           <div class="manual-l-txt">
-            <div class="manual-l-title">820.00</div>
-            <div class="manual-lprice">111</div>
-            <div class="manual-lprice">222</div>
-            <div class="manual-lprice">333</div>
-            <div class="manual-lprice">444</div>
-            <div class="manual-lprice">555</div>
-            <div class="manual-lprice">666</div>
+            <div class="manual-l-title">Rate</div>
+            <div class="manual-lpriceInputTxt" v-for="(item, index) in setManualRate" :key="index">{{item}}</div>
           </div>
         </div>
       </div>
     </iDialog>
+
+    <!-- 保存为最新版本 -->
+    <new-version-dialog
+      v-model="saveNewVersion"
+      @handleConfirm="handleConfirm"
+    />
   </div>
 </template>
 
@@ -141,12 +147,58 @@ import HeadTool from "../components/headTool";
 import echarts from "@/utils/echarts";
 import Popup from "./components/popup";
 import { budgetApprovalData } from "./components/data";
+import { saveVersion, refreshVersion,
+  saveNewVersion, queryPlanYearSystem, downloadExport,
+  queryPlanPercentage, queryPlanYearCommutity, saveCommutityAmualData
+} from "@/api/ws2/investmentAdmin/yearlyPlan";
+import NewVersionDialog from "../monthlyPlan/components/newVersionDialog";
+import _ from 'lodash';
 
 
 export default {
   components: {
     HeadTool, iButton, iCard, iInput, icon, Popup, iTableList,
-    iDialog,
+    iDialog, NewVersionDialog
+  },
+
+  computed: {
+    setManualTotal: function() {  //  手工计算-总价
+      const { isThen, planYearCommutity } = this;
+      const key = isThen ? 'planAmountAmualCurrent' : 'planAmountAmualNext';
+      const arr = planYearCommutity.map(item => item[key]).filter(n => n);
+      const total = arr.reduce((prev,curr) => {
+        console.log('prev+curr', ~~prev, ~~curr, prev+curr);
+        return (~~prev + ~~curr).toFixed(2);
+      },0)
+
+      return total;
+    },
+    setManualRate: function() { //  计算手工占比
+      const { isThen, planYearCommutity } = this;
+      const key = isThen ? 'planAmountAmualCurrent' : 'planAmountAmualNext';
+      const arr = planYearCommutity.map(item => {
+        return this.getPercent(Math.abs(item[key] || 0), Math.abs(this.setManualTotal)); 
+      });
+      return arr;
+    },
+    setSystemTotal: function() {  //  系统计算-总价
+      const { isThen, planYearCommutity } = this;
+      const key = isThen ? 'planAmountSystemCurrent' : 'planAmountSystemNext';
+      const arr = planYearCommutity.filter(item => item.commodity !== 'Risk' ).map(item => item[key]).filter(n => n);
+      const total = arr.reduce((prev,curr) => {
+        return (prev+curr).toFixed(2);
+      },0)
+
+      return total;
+    },
+    setSystemRate: function() { //  计算系统占比
+      const { isThen, planYearCommutity } = this;
+      const key = isThen ? 'planAmountSystemCurrent' : 'planAmountSystemNext';
+      const arr = planYearCommutity.filter(item => item.commodity !== 'Risk' ).map(item => {
+        return this.getPercent(item[key] || 0, this.setSystemTotal);
+      });
+      return arr;
+    }
   },
 
   data(){
@@ -154,123 +206,285 @@ export default {
       no1: '',
       systemVisible: false,
       manualvisible: false,
+      saveNewLoading: false,
       systemListData: [],
       budgetApprovalData,
+      ratioInput: {
+        firstHalfYearPercent: 0,  //  上半年SOP付款比
+        secondHalfYearPercent: 0, //  下半年SOP付款比
+      },
+      saveLoading: false,
+      saveNewVersion: false,
+      systemTableLoading: false,
+      vereceive: {},
+      planYearCommutity: [],
+      isThen: true,
+      manualSaveLoading: false,
     }
   },
 
   mounted(){
-    const _this = this;
-    const myChart = echarts().init(document.getElementById("echarts"));
-    myChart.setOption({
-        tooltip: {
-        backgroundColor: "#ffffff",
-              extraCssText:
-                "color: #1B1D21; box-shadow: 0px 0px 20px rgba(27, 29, 33, 0.12);",
-        formatter: function (params) {
-          return `<span style="color: #1763F7; font-weight: bold">${params.data}</span>`
-        },
-      },
-      grid: {
-        left: '3%',
-        right: '4%',
-        bottom: '3%',
-        containLabel: true
-      },
-      xAxis: [{
-        type: 'category',
-        data: ['2021', '2022']
-      }],
-      yAxis: [{
-        show: false,
-        type: 'value'
-      }],
-      series: [
-        {
-          name: '系统计算Backlog',
-          type: 'bar',
-          stack: '系统',
-          data: [50, 50],
-          itemStyle:{
-            normal:{color:'#056FCC'}
-          },
-        },
-        
-        {
-          name: '系统计算下半年',
-          type: 'bar',
-          stack: '系统',
-          barWidth: 40,
-          itemStyle:{
-            normal:{color:'#3B9EF8'}
-          },
-          data: [10, 10],
-        },
-        {
-          name: '系统计算上半年',
-          type: 'bar',
-          stack: '系统',
-          barWidth: 40,
-          itemStyle:{
-            normal:{color:'#90C7FF'}
-          },
-          data: [30, 30],
-          label: {
-            show: true,
-            position: 'top',
-            color: 'black',
-            formatter: function (params){
-              if(params.name === '2021'){
-                return 100
-              }else{
-                return params.value
-              }
-            }
-          }
-        },
-        
-        {
-          name: '⼿⼯调整Risk',
-          type: 'bar',
-          stack: '手工',
-          data: [50, 10],
-          itemStyle:{
-            normal:{color:'#2F48D1'}
-          },
-        },
-        {
-          name: '⼿⼯调整',
-          type: 'bar',
-          stack: '手工',
-          barWidth: 40,
-          itemStyle:{
-            normal:{color:'#708BFA'}
-          },
-          data: [120, 132],
-          label: {
-            show: true,
-            position: 'top',
-            color: 'black',
-            formatter: function (params){
-              return params.value
-            }
-          }
-        },
-        
-      ]
-    })
+  },
 
-    myChart.on('click', function(params) {
-      const arr1 = ['系统计算上半年', '系统计算下半年', '系统计算Backlog'];
-      const arr2 = ['⼿⼯调整', '⼿⼯调整Risk'];
-      if(arr1.includes(params.seriesName)){
+  methods: {
+
+    manualSave(){
+      this.manualSaveLoading = true;
+      const { isThen, planYearCommutity } = this;
+      const params = {
+        dataList : planYearCommutity
+      }
+      saveCommutityAmualData(planYearCommutity).then(res => {
+        const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn;
+
+        if(res.code === '0'){
+          iMessage.success(result);
+          this.manualvisible = false;
+        }else{
+          iMessage.error(result);
+        }
+      })
+    },
+
+    //  求占比
+    getPercent(num, total){
+      num = parseFloat(num);
+      total = parseFloat(total);
+      if (isNaN(num) || isNaN(total)) {
+          return "-";
+      }
+      return total <= 0 ? "0%" : (Math.round(num / total * 10000) / 100.00)+"%";
+    },
+
+    //  下载清单
+    downloadExport(){
+      downloadExport({
+        versionId: this.vereceive.id
+      }).then(res => {
         
-        _this.systemVisible = true;
-      }else{
-        _this.manualvisible = true;
-        setTimeout(() => {
+      })
+    },
+
+    getSummaries(param){
+      const { columns, data } = param;
+      const sums = [];
+      const keyArr = ['carTypeProName', 'sop', 'sopPercent', 'linieName'];
+
+      columns.forEach((column, index) => {
+        if (index === 0) {
+          sums[index] = 'Total';
+          return;
+        }
+        if(!keyArr.includes(column.property)){  //  只有金额字段才需要显示总价
+          const values = data.map(item => Number(item[column.property]));
+          if (!values.every(value => isNaN(value))) {
+            sums[index] = values.reduce((prev, curr) => {
+              const value = Number(curr);
+              if (!isNaN(value)) {
+                return prev + curr;
+              } else {
+                return prev;
+              }
+            }, 0);
+          } else {
+            sums[index] = 'N/A';
+          }
+        }else{
+          sums[index] = '';
+        }
+        
+      });
+      return sums;
+    },
+
+    handleConfirm(val) {
+      if(val){
+        saveNewVersion({
+          ...this.ratioInput,
+          dateStr: val,
+        }).then(res => {
+          const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn;
+
+          if(res.code === "0"){
+            iMessage.success(result);
+          }else{
+            iMessage.error(result);
+          }
+
+          this.saveNewVersion = false;
+        }).catch(err => {
+          this.saveNewVersion = false;
+        })
+      }
+    },
+
+    //  保存为新版本
+    saveNew(){
+      this.saveNewVersion = true;
+    },
+
+    getHistogram(){
+      queryPlanPercentage({
+        versionId: this.vereceive.id
+      }).then(res => {
+        const _this = this;
+        const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn;
+        if(res.code === "0"){
+          this.ratioInput.firstHalfYearPercent = res.data.firstHalfYearPercent;
+          this.ratioInput.secondHalfYearPercent = res.data.secondHalfYearPercent;
+          const resData = res.data;
+          const myChart = echarts().init(document.getElementById("echarts"));
+          myChart.setOption({
+              tooltip: {
+              backgroundColor: "#ffffff",
+                    extraCssText:
+                      "color: #1B1D21; box-shadow: 0px 0px 20px rgba(27, 29, 33, 0.12);",
+              formatter: function (params) {
+                return `<span style="color: #1763F7; font-weight: bold">${params.data}</span>`
+              },
+            },
+            grid: {
+              left: '3%',
+              right: '4%',
+              bottom: '3%',
+              containLabel: true
+            },
+            xAxis: [{
+              type: 'category',
+              data: [_this.vereceive.year, _this.vereceive.year + 1]
+            }],
+            yAxis: [{
+              show: false,
+              type: 'value'
+            }],
+            series: [
+              {
+                name: '系统计算Backlog',
+                type: 'bar',
+                stack: '系统',
+                data: [resData.planSystemCurrentBacklog, resData.planSystemNextBacklog],
+                itemStyle:{
+                  normal:{color:'#056FCC'}
+                },
+              },
+              
+              {
+                name: '系统计算下半年',
+                type: 'bar',
+                stack: '系统',
+                barWidth: 40,
+                itemStyle:{
+                  normal:{color:'#3B9EF8'}
+                },
+                data: [resData.planSystemCurrentSecond, resData.planSystemNextSecond],
+              },
+              {
+                name: '系统计算上半年',
+                type: 'bar',
+                stack: '系统',
+                barWidth: 40,
+                itemStyle:{
+                  normal:{color:'#90C7FF'}
+                },
+                data: [resData.planSystemCurrentFirst, resData.planSystemNextFirst],
+                label: {
+                  show: true,
+                  position: 'top',
+                  color: 'black',
+                  formatter: function (params){
+                    const {
+                      planSystemCurrentBacklog, planSystemCurrentSecond, planSystemCurrentFirst,
+                      planSystemNextBacklog, planSystemNextSecond, planSystemNextFirst
+                    } = resData;
+                    if(params.name == _this.vereceive.year){ //  当年
+                      return planSystemCurrentBacklog + planSystemCurrentSecond + planSystemCurrentFirst;
+                    }else{
+                      return planSystemNextBacklog + planSystemNextSecond + planSystemNextFirst;
+                    }
+                  }
+                }
+              },
+              
+              {
+                name: '⼿⼯调整Risk',
+                type: 'bar',
+                stack: '手工',
+                data: [resData.planManualCurrentRisk, resData.planManualNextRisk],
+                itemStyle:{
+                  normal:{color:'#2F48D1'}
+                },
+              },
+              {
+                name: '⼿⼯调整',
+                type: 'bar',
+                stack: '手工',
+                barWidth: 40,
+                itemStyle:{
+                  normal:{color:'#708BFA'}
+                },
+                data: [resData.planManualCurrent, resData.planManualNext],
+                label: {
+                  show: true,
+                  position: 'top',
+                  color: 'black',
+                  formatter: function (params){
+                    const { planManualCurrentRisk, planManualCurrent, planManualNextRisk, planManualNext } = resData;
+                    if(params.name == _this.vereceive.year){ //  当年
+                      return planManualCurrentRisk + planManualCurrent;
+                    }else{
+                      return planManualNextRisk + planManualNext;
+                    }
+                  }
+                }
+              },
+              
+            ]
+          })
+
+          myChart.on('click', function(params) {
+            const arr1 = ['系统计算上半年', '系统计算下半年', '系统计算Backlog'];
+            _this.isThen = params.name == _this.vereceive.year; //  是否为当年
+            
+            if(arr1.includes(params.seriesName)){ //  系统计算列表
+              _this.systemTableLoading = true;
+              _this.systemVisible = true;
+              queryPlanYearSystem({
+                versionId: _this.vereceive.id
+              }).then(res => {
+                const result = _this.$i18n.locale === 'zh' ? res.desZh : res.desEn;
+                if(res.code === '0'){
+                  _this.systemListData = res.data;
+                }else{
+                  iMessage.error(result);
+                }
+
+                _this.systemTableLoading = false;
+              }).catch(err => {
+                _this.systemTableLoading = false;
+              })
+            }else{
+              _this.manualvisible = true;
+              _this.queryPlanYearCommutity();  //  手工调整
+            }
+          });
+        }else{
+          iMessage.error(result);
+        }
+      })
+    },
+
+    queryPlanYearCommutity(){
+      queryPlanYearCommutity({
+        versionId: this.vereceive.id
+      }).then(res => {
+        const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn;
+        if(res.code === '0'){
+          this.planYearCommutity = _.cloneDeep(res.data);
+          const _this = this;
           const totalLeft = echarts().init(document.getElementById("totalLeft"));
           const totalRight = echarts().init(document.getElementById("totalRight"));
+          const resData = _.cloneDeep(res.data);
+          const resDataL = res.data.filter(item => item.commodity !== 'Risk');
           totalRight.setOption(
             {
                 title: {
@@ -289,7 +503,7 @@ export default {
                 },
                 grid: {
                     left: '8%',
-                    right: '8%',
+                    right: '18%',
                     bottom: '3%',
                     top: '10%',
                     containLabel: true
@@ -299,13 +513,19 @@ export default {
                 },
                 yAxis: {
                     type: 'category',
-                    data: ['Risk', 'BUB', 'CSX', 'CSP', 'CSM', 'CSI', 'CSE']
+                    data: resData.map(item => item.commodity).reverse()
                 },
                 series: [
                     {
                         name: '2011年',
                         type: 'bar',
-                        data: [18203, 23489, 29034, 104970, 131744, 630230, 630230],
+                        data: resData.reverse().map(item => {
+                          if(_this.isThen){ //  当年
+                            return item.planAmountAmualCurrent;
+                          }
+
+                          return item.planAmountAmualNext;
+                        }),
                         barWidth: 30,
                         itemStyle:{
                             normal:{
@@ -335,7 +555,7 @@ export default {
                 },
                 grid: {
                     left: '8%',
-                    right: '8%',
+                    right: '18%',
                     bottom: '3%',
                     top: '10%',
                     containLabel: true
@@ -345,13 +565,19 @@ export default {
                 },
                 yAxis: {
                     type: 'category',
-                    data: ['BUB', 'CSX', 'CSP', 'CSM', 'CSI', 'CSE']
+                    data: resDataL.map(item => item.commodity).reverse()
                 },
                 series: [
                     {
                         name: '2011年',
                         type: 'bar',
-                        data: [18203, 23489, 29034, 104970, 131744, 630230],
+                        data: resDataL.reverse().map(item => {
+                          if(_this.isThen){ //  当年
+                            return item.planAmountSystemCurrent;
+                          }
+
+                          return item.planAmountSystemNext;
+                        }),
                         barWidth: 30,
                         itemStyle:{
                             normal:{
@@ -363,31 +589,55 @@ export default {
                 ]
             }
           )
-        }, 3000)
+        }else{
+          iMessage.error(result);
+        }
         
-        
-      }
-      // console.log(params, arr1.includes(params.seriesName));
-      // var name = parseInt(params.name);
-    });
-  },
+      })
+    },
 
-  methods: {
+    //  接受版本选择
+    receiVereceive(vereceive){
+      this.vereceive = vereceive;
+      this.getHistogram();  //  获取柱状图数据
+    },
 
     //  刷新
     refresh(){
+      refreshVersion({
+        versionId: this.vereceive.id
+      }).then(res => {
+        const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn;
 
+        if(res.code === "0"){
+          iMessage.success(result);
+        }else{
+          iMessage.error(result);
+        }
+      })
     },
 
     //  保存
     save(){
+      this.saveLoading = true;
+      const params = {
+        ...this.ratioInput,
+        versionId: this.vereceive.id,
+      }
+      saveVersion(params).then(res => {
+        const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn;
+        if(res.code === "0"){
+          iMessage.success(result);
+          this.getHistogram();
+        }else{
+          iMessage.error(result);
+        }
 
+        this.saveLoading = false;
+      }).catch(err => {
+        this.saveLoading = false;
+      })
     },
-
-    //  保存为最新版本
-    saveNewVersion(){
-
-    }
   }
 }
 </script>
@@ -396,6 +646,21 @@ export default {
 .container{
   padding-top: 20px;
   height: 92%;
+
+  .baApply-table{
+    ::v-deep .el-input__inner{
+      width: 120px !important;
+    }
+
+    ::v-deep .el-table__footer-wrapper .is-center{
+      color: #000 !important;
+      font-weight: bold !important;
+    }
+
+    ::v-deep .el-table__body .el-table__row:nth-last-child(1){
+      font-weight: bold !important;
+    }
+  }
 
   .manualIDialog{
     display: flex;
@@ -422,6 +687,11 @@ export default {
       left: 0;
       bottom: 0;
 
+      .test{
+        flex: 1;
+        height: 100%;
+      }
+
       .manual-l-txt{
         text-align: right;
         white-space:nowrap;
@@ -429,6 +699,30 @@ export default {
 
         &:nth-child(1){
           margin-right: 0;
+        }
+
+        & .manual-lpriceInput:nth-child(2){
+          margin-top: 60px !important;
+        }
+
+        & .manual-lpriceInputTxt:nth-child(2){
+          margin-top: 60px !important;
+        }
+
+        .manual-lpriceInputTxt{
+          font-size: 16px;
+          margin-top: 40px;
+          height: 35px;
+          line-height: 30px;
+        }
+
+        .manual-lpriceInput{
+          font-size: 16px;
+          margin-top: 40px;
+
+          .right-input{
+            width: 100px;
+          }
         }
 
         .manual-lprice{
@@ -445,14 +739,22 @@ export default {
       }
 
       #totalLeft, #totalRight{
-        flex: 3;
+        flex: 1;
         padding-left: 32px;
-        // height: 100%;
+        width: 0;
+        
+        ::v-deep div{
+          width: 100% !important;
+
+          ::v-deep canvas{
+            width: 100% !important;
+          }
+        }
       }
 
       & > div{
         display: flex;
-        flex: 1;
+        width: 100%;
         height: 100%;
         padding-top: 30px;
       }

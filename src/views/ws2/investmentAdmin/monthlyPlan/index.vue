@@ -36,7 +36,7 @@
         <iButton @click="downloadList">{{ $t("下载清单") }}</iButton>
       </div>
     </div>
-    <iCard class="margin-top20 mainCard">
+    <iCard class="margin-top20 mainCard" v-loading="tableLoading">
       <div class="cardTop">
         <div class="yearlyPlan">
           <span class="planTitle">2021月度计划</span>
@@ -52,7 +52,7 @@
           <span class="marginUnit unitText">|</span>
           <span class="unitText">{{ $t("LK_BUHANSUI") }}</span>
         </div>
-        <div class="legend">
+        <div class="legend" v-if="tableListData">
           <div v-for="(item, index) in tableListData" :key="index">{{ item.commodity }}</div>
         </div>
         <div class="tab-box">
@@ -92,6 +92,7 @@
         :titlePopover="false"
         :selection="false"
         :show-summary="true"
+        :tableLoading="tableLoading"
         @handleSelectionChange="handleSelectionChange"
         @cellMouseLeave="cellMouseLeave"
         @cellMouseEnter="cellMouseEnter"
@@ -265,13 +266,15 @@ export default {
       versionList: [],
       tabIndex: 0, //柱状图tab
       pageEdit: false,
-      tableListData: dataList,
+      tableListData: [],
       tableTitle: tableTitle,
       saveNewVersion: false, //保存为新版本对话框
       uploadLoading: false, //上传加载
       selectIndex: -1, //table选择index
       fromTable: false, //是否在表格
       refreshLoading: false, //刷新加载
+      tableLoading: false,
+      clearEchart: false,
     };
   },
   created() {
@@ -283,6 +286,7 @@ export default {
   methods: {
     //选择版本
     changeVersion() {
+      this.clearEchart = true;
       this.getMonthList();
     },
     //编辑
@@ -464,6 +468,10 @@ export default {
           },
           series: series,
         };
+        if (this.clearEchart) {
+          chart.clear();
+          this.clearEchart = false;
+        }
         chart.setOption(option);
         let _this = this;
         chart.on("mouseover", function (params) {
@@ -486,7 +494,7 @@ export default {
             }
             return item;
           });
-          chart.setOption(optionTemp, true);
+          chart.setOption(optionTemp);
         });
         chart.on("mouseout", function () {
           _this.selectIndex = -1;
@@ -574,6 +582,7 @@ export default {
         versionId: this.versionData.id,
         // versionId: "1407690871637319681"
       };
+      this.tableLoading = true;
       queryPlanMonthList(param).then(res => {
         if (Number(res.code) === 0) {
           this.tableListData = res.data;
@@ -594,7 +603,10 @@ export default {
             return item;
           });
           this.showEcharts();
+          this.tableLoading = false;
         }
+      }).catch((e) => {
+        this.tableLoading = false;
       });
     },
     computed: {
