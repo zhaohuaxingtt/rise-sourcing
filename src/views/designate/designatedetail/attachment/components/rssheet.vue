@@ -1,7 +1,7 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-05-27 09:42:07
- * @LastEditTime: 2021-06-26 22:41:31
+ * @LastEditTime: 2021-06-26 22:55:56
  * @LastEditors: Please set LastEditors
  * @Description: 决策资料 - 附件
 -->
@@ -23,7 +23,7 @@
           @click="deleteFile($event, getFetchDataList)"
           v-if="!$store.getters.isPreview"
         >
-          {{ language("strategicdoc_ShanChu",'删除') }}
+          {{ language("LK_SHANCHU",'删除') }}
         </iButton>
         <!-- 上传文件 -->
         <!-- <iButton
