@@ -17,8 +17,8 @@
         ></el-option>
       </iSelect>
       <icon class="refreshIcon" @click="handleRefresh" symbol name="iconmojukanbanshuaxin" />
-      <span class="refresh" @click="handleRefresh">刷新</span>
-      <span class="refreshTime">刷新日期：{{ versionData.updateDate }}</span>
+      <span class="refresh cursor" @click="handleRefresh">刷新</span>
+      <span class="refreshTime">刷新日期：{{ translateData(versionData.updateDate) }}</span>
       <div v-if="pageEdit">
         <iButton @click="exitEdit">{{ $t("退出编辑") }}</iButton>
         <!-- <iButton @click="uploadList">{{ $t("上传清单") }}</iButton> -->
@@ -39,9 +39,9 @@
     <iCard class="margin-top20 mainCard" v-loading="tableLoading">
       <div class="cardTop">
         <div class="yearlyPlan">
-          <span class="planTitle">2021月度计划</span>
+          <span class="planTitle">{{ getYear(versionData.updateDate) }}月度计划</span>
           <span class="totalText">Total:</span>
-          <span class="refresh">{{ total }}</span>
+          <span class="refresh">{{ totalAmount }}</span>
           <span class="unitText margin-left20"
             >{{ $t("LK_HUOBI") }}: {{ $t("LK_RENMINBI") }}</span
           >
@@ -554,7 +554,19 @@ export default {
     getVersionList() {
       queryPlanVersionList().then(res => {
         if (Number(res.code) === 0 && res.data.length > 0) {
-          this.versionData = res.data[0];
+          const currentYear = new Date().getFullYear();
+          let currentYearVersion = [];
+          res.data.forEach((item, index) => {
+            let year = item.version.substring(0, 4);
+            if (year == currentYear) {
+              let temp = {};
+              temp.index = index;
+              temp.version = item.version.split("V")[1];
+              currentYearVersion.push(temp);
+            }
+          });
+          currentYearVersion.sort(function(a, b) { return b.version - a.version});
+          this.versionData = res.data[currentYearVersion[0].index];
           this.versionList = res.data;
           this.getMonthList();
         }
@@ -563,7 +575,8 @@ export default {
     //刷新
     handleRefresh() {
       this.refreshLoading = true;
-      refreshVersion(this.versionData).then(res => {
+      console.log('zz=>', this.versionData.id)
+      refreshVersion(this.versionData.id).then(res => {
         this.refreshLoading = false;
         if (Number(res.code) === 0) {
           iMessage.success(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
@@ -609,15 +622,22 @@ export default {
         this.tableLoading = false;
       });
     },
-    computed: {
-      total: function() {
-        let res = 0;
-        this.tableListData.forEach(item => {
-          res += item.amount;
-        });
-        return res;
-      }
+    translateData(date) {
+      return window.moment(date).format("YYYY-MM-DD");
     },
+    getYear(date) {
+      let year = Number(window.moment(date).format("YYYY"));
+      return this.tabIndex === 0 ? year : year + 1;
+    }
+  },
+  computed: {
+    totalAmount() {
+      let res = 0;
+      this.tableListData.forEach(item => {
+        res += item.amount;
+      });
+      return res;
+    }
   },
 };
 </script>
@@ -666,7 +686,6 @@ export default {
   font-size: 16px;
   color: $color-blue;
   font-weight: bold;
-  cursor: pointer;
 }
 
 #echart {
