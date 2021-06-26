@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-06-25 14:53:35
+ * @LastEditTime: 2021-06-25 19:31:02
  * @LastEditors: Please set LastEditors
  * @Description: 公共utils部分
  * @FilePath: \rise\src\utils\index.js
@@ -156,7 +156,7 @@ let languageList = [];
 // eslint-disable-next-line no-undef
 Vue.prototype.language = function(languageKey,name){
   if(process.env.NODE_ENV == 'dev'){
-    languageList.push(languageKey+'----'+name)
+    languageList.push(languageKey+'----'+name+ '----' + this.$router.currentRoute.path)
   }
   return this.$t(languageKey)
 }
@@ -164,7 +164,6 @@ Vue.prototype.language = function(languageKey,name){
 router.afterEach(()=>{
   if(process.env.NODE_ENV == 'dev' && languageList.length !== 0){
     let languageLists = Array.from(new Set(languageList))
-    console.log(languageLists)
     sendKey(languageLists).then(res=>{
       if(res.code == 200){
         languageList = []
