@@ -1,7 +1,7 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-05-27 09:42:07
- * @LastEditTime: 2021-04-19 17:15:37
+ * @LastEditTime: 2021-06-26 22:41:31
  * @LastEditors: Please set LastEditors
  * @Description: 决策资料 - 附件
 -->
@@ -9,12 +9,12 @@
   <iCard class="margin-bottom25">
     <div class="margin-bottom25 clearFloat">
       <span class="font18 font-weight">
-        {{ $t("RS Sheet") }}</span
+        {{ language("RS Sheet","RS Sheet") }}</span
       >
       <div class="floatright">
         <!-- 下载 -->
         <iButton @click="downloadFile" class="btn">
-          {{ $t("strategicdoc.XiaZai") }}
+          {{ language("strategicdoc_XiaZai",'下载') }}
         </iButton>
         <span>
           <!-- 删除 -->
@@ -23,21 +23,21 @@
           @click="deleteFile($event, getFetchDataList)"
           v-if="!$store.getters.isPreview"
         >
-          {{ $t("strategicdoc.ShanChu") }}
+          {{ language("strategicdoc_ShanChu",'删除') }}
         </iButton>
         <!-- 上传文件 -->
         <!-- <iButton
           v-if="!$store.getters.isPreview"
           @click="$router.push({path: '/designate/decisiondata/attachment/upload'})"
         >
-          {{ $t("strategicdoc.ShangChuanXianXiaRS") }}
+          {{ language("strategicdoc.ShangChuanXianXiaRS") }}
         </iButton> -->
         <upload
           class="upload-trigger btn"
           v-if="!$store.getters.isPreview"
           :hideTip="true"
           :accept="'.doc,.docx,.xls,.xlsx,.ppt,.pptx,.jpg,.jpeg,.png,.pdf,.tif'"
-          :buttonText="$t('strategicdoc.ShangChuanXianXiaRS')"
+          :buttonText="language('strategicdoc_ShangChuanXianXiaRS','上传线下RS文件')"
           @on-success="onUploadsucess(Object.assign(...arguments, {fileType: '103'}), getFetchDataList)"
         />
         </span>
@@ -74,7 +74,7 @@ import {
   uploadtableTitle, 
   // mokeUploadTableListData
 } from './data'
-import tablelist from "./tableList";
+import tablelist from "@/views/designate/supplier/components/tableList";
 import {
   iCard,
   iButton,
