@@ -115,7 +115,29 @@
             :tableTitle="tableTitle"
             @handleSelectionChange="handleSelectionChange"
             :activeItems="'partNum'"
+            :row-class-name="handleTableRow"
         >
+          <template #categoryId="scope">
+            <iSelect
+                :placeholder="$t('LK_QINGXUANZE')"
+                v-model="scope.row.categoryId"
+                class="tempSelect"
+                filterable
+            >
+              <el-option
+                  :value="item.id"
+                  :label="item.name"
+                  v-for="(item, index) in materialGroupList"
+                  :key="index"
+              ></el-option>
+            </iSelect>
+          </template>
+          <template #targetBudgetTotal="scope">
+            <div class="linkStyle"><span @click="clicktargetBudgetTotal(scope.row.rfqId)">{{ scope.row.targetBudgetTotal }}</span></div>
+          </template>
+          <template #fixedPointAllotTotal="scope">
+            <div class="linkStyle"><span @click="clicktargetBudgetTotal(scope.row.rfqId)">{{ scope.row.fixedPointAllotTotal }}</span></div>
+          </template>
         </iTableList>
       </iCard>
     </div>
@@ -131,6 +153,7 @@ import {cateGoryCombo, getDepartmentsCombo, carTypePackageCombo, packageVersionC
 import {iNavWS2} from "@/components";
 import echarts from "@/utils/echarts";
 import {getCartypePulldown} from "@/api/ws2/budgetManagement/edit";
+import {addModelBagTitle} from "pages/ws2/dataBase/components/data";
 
 export default {
   name: "commonSourcing",
@@ -146,7 +169,7 @@ export default {
       packageNameZh: '',
       tableLoading: false,
       tableListData: [],
-      tableTitle: [],
+      tableTitle: addModelBagTitle,
       selectTableData: [],
       carTypePackageId: '',
       carTypePackageList: [],
@@ -161,202 +184,7 @@ export default {
   mounted() {
     let carTypePackageId = this.$route.query.carTypePackageId
     this.getSelect(carTypePackageId)
-    const chart1 = echarts().init(document.getElementById("chart1"));
-    const chart2 = echarts().init(document.getElementById("chart2"));
-    const chart3 = echarts().init(document.getElementById("chart3"));
-    const chart4 = echarts().init(document.getElementById("chart4"));
-    const chart5 = echarts().init(document.getElementById("chart5"));
-    const chart6 = echarts().init(document.getElementById("chart6"));
-    let option1 = {
-      tooltip: {
-        show: false
-      },
-      grid: {
-        left: '0%',
-        right: '0%',
-        bottom: '0%',
-        top: '0%',
-        containLabel: true
-      },
-      axisLine: {
-        show: true,
-        lineStyle: {
-          color: '#CDD4E2'
-        }
-      },
-      xAxis: {
-        type: 'value',
-        axisTick: {
-          show: false
-        },
-        axisLabel: {
-          show: false
-        },
-        splitLine: {
-          show: false
-        },
-        axisLine: {
-          show: false
-        },
-        boundaryGap: [0, 0.01]
-      },
-      yAxis: {
-        type: 'category',
-        axisTick: {
-          show: false
-        },
-        axisLine: {
-          show: true,
-          lineStyle: {
-            color: '#CDD4E2'
-          }
-        },
-        axisLabel: {
-          textStyle: {
-            color: '#485465',
-            fontSize: 10
-          },
-        },
-        data: [
-          '车型包总目标预算',
-          '车型包总目标预算',
-          '车型包总目标预算',
-          '车型包总目标预算',
-          '车型包总目标预算',
-          '车型包总目标预算',
-          '车型包总目标预算',
-          '车型包总目标预算',
-          '车型包总目标预算',
-          '车型包总目标预算',
-        ]
-      },
-      series: [
-        {
-          name: '辅助',
-          type: 'bar',
-          stack: 'total',
-          itemStyle: {
-            barBorderColor: 'rgba(0,0,0,0)',
-            color: 'rgba(0,0,0,0)'
-          },
-          emphasis: {
-            itemStyle: {
-              barBorderColor: 'rgba(0,0,0,0)',
-              color: 'rgba(0,0,0,0)'
-            }
-          },
-          data: [9, 8, 7, 6, 5, 4, 3, 2, 1, 0]
-        },
-        {
-          name: '2011年',
-          type: 'bar',
-          barWidth: 14,
-          stack: 'total',
-          color: '#1763F7',
-          label: {
-            show: true,
-            position: 'right'
-          },
-          data: [10, 9, 8, 7, 6, 5, 4, 3, 2, 1]
-        }
-      ]
-    };
-    let option2 = {
-      tooltip: {
-        show: false
-      },
-      grid: {
-        left: '0%',
-        right: '0',
-        bottom: '0%',
-        top: '12%',
-        containLabel: true
-      },
-      xAxis: {
-        type: 'category',
-        // data: ['非AEKO', '未申请', '已申请', '未定点', '已定点', '无BA', '有BA', '无BM', '有BM'],
-        data: ['目标预算', '待分配', '定点预分配', '已定点'],
-        axisTick: {
-          show: false
-        },
-        axisLine: {
-          show: true,
-          lineStyle: {
-            color: '#CDD4E2'
-          }
-        },
-        axisLabel: {
-          textStyle: {
-            color: '#485465',
-            fontSize: 10
-          },
-        },
-      },
-      yAxis: {
-        type: 'value',
-        axisTick: {
-          show: false
-        },
-        axisLabel: {
-          show: false
-        },
-        splitLine: {
-          show: false
-        },
-        axisLine: {
-          show: false
-        },
-      },
-      series: [
-        {
-          name: '辅助',
-          type: 'bar',
-          stack: 'total',
-          itemStyle: {
-            barBorderColor: 'rgba(0,0,0,0)',
-            color: 'rgba(0,0,0,0)'
-          },
-          emphasis: {
-            itemStyle: {
-              barBorderColor: 'rgba(0,0,0,0)',
-              color: 'rgba(0,0,0,0)'
-            }
-          },
-          data: [10, 9, 8, 7, 6, 5, 4, 3, 2, 1]
-        },
-        {
-          name: '',
-          type: 'bar',
-          stack: 'total',
-          color: '#73A1FA',
-          barWidth: '20',
-          label: {
-            show: true,
-            position: 'top',
-            textStyle: {
-              color: '#485465',
-              fontSize: 12
-            }
-          },
-          emphasis: {
-            focus: 'series'
-          },
-          data: [10, 9, 8, 7, 6, 5, 4, 3, 2, 1],
-          itemStyle: {
-            normal: {
-              // barBorderRadius: [5, 5, 5, 5],
-            }
-          }
-        },
-      ]
-    }
 
-    chart1.setOption(option1);
-    chart2.setOption(option2);
-    chart3.setOption(option2);
-    chart4.setOption(option2);
-    chart5.setOption(option2);
-    chart6.setOption(option2);
 
   },
   methods: {
@@ -394,26 +222,218 @@ export default {
         } else {
           iMessage.error(result3);
         }
-        this.getTableListFn()
+        this.getCommonSourcingView()
         // this.tableLoading = false
       }).catch(() => {
         // this.tableLoading = false
       });
 
     },
-    getCommonSourcingView(){
+    getCommonSourcingView(carTypePackageId){
       // this.tableLoading = true
       commonSourcingView({
         carTypePackageId: this.carTypePackageId,
-        categoryId: '',
-        commodity: '',
+        categoryId: this.materialGroup,
+        commodity: this.departmentsCombo,
         versionId	: this.packageVersion,
       }).then((res) => {
         const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
         if (Number(res.code) === 0) {
-          this.carTypePackageList = res.data
-          this.carTypePackageId = carTypePackageId
-          this.packageVersionCombo(carTypePackageId)
+          this.tableListData = res.data.partsPackageDetailVOS
+          let carTypeBudgetDetailVOS = res.data.carTypeBudgetDetailVOS
+          let carTypeBudgetPackageTotal = res.data.carTypeBudgetPackageTotal
+          let carTypeSharePackageTotal = res.data.carTypeSharePackageTotal
+          let option1Data = ['车型包总目标预算', '车型包定点预分配'].concat(carTypeBudgetDetailVOS.map(item => item.carTypeProName)).reverse()
+          let option1Series = [carTypeBudgetPackageTotal, carTypeSharePackageTotal].concat(carTypeBudgetDetailVOS.map(item => item.allocated)).reverse()
+          for(let i = 0; i < carTypeBudgetDetailVOS.length; i++){
+            let item = carTypeBudgetDetailVOS.map(item => item.allocated)
+          }
+          let option1SeriesTemp = [0, 0].concat(carTypeBudgetDetailVOS.map(item => item.allocated)).reverse()
+
+          const chart1 = echarts().init(document.getElementById("chart1"));
+          const chart2 = echarts().init(document.getElementById("chart2"));
+          const chart3 = echarts().init(document.getElementById("chart3"));
+          const chart4 = echarts().init(document.getElementById("chart4"));
+          const chart5 = echarts().init(document.getElementById("chart5"));
+          const chart6 = echarts().init(document.getElementById("chart6"));
+          let option1 = {
+            tooltip: {
+              show: false
+            },
+            grid: {
+              left: '0%',
+              right: '0%',
+              bottom: '0%',
+              top: '0%',
+              containLabel: true
+            },
+            axisLine: {
+              show: true,
+              lineStyle: {
+                color: '#CDD4E2'
+              }
+            },
+            xAxis: {
+              type: 'value',
+              axisTick: {
+                show: false
+              },
+              axisLabel: {
+                show: false
+              },
+              splitLine: {
+                show: false
+              },
+              axisLine: {
+                show: false
+              },
+            },
+            yAxis: {
+              type: 'category',
+              axisTick: {
+                show: false
+              },
+              axisLine: {
+                show: true,
+                lineStyle: {
+                  color: '#CDD4E2'
+                }
+              },
+              axisLabel: {
+                textStyle: {
+                  color: '#485465',
+                  fontSize: 10
+                },
+              },
+              data: option1Data
+            },
+            series: [
+              {
+                name: '辅助',
+                type: 'bar',
+                stack: 'total',
+                itemStyle: {
+                  barBorderColor: 'rgba(0,0,0,0)',
+                  color: 'rgba(0,0,0,0)'
+                },
+                emphasis: {
+                  itemStyle: {
+                    barBorderColor: 'rgba(0,0,0,0)',
+                    color: 'rgba(0,0,0,0)'
+                  }
+                },
+                data: [9, 8, 7, 6, 5, 4, 3, 2, 1, 0]
+              },
+              {
+                name: '2011年',
+                type: 'bar',
+                barWidth: 14,
+                stack: 'total',
+                color: '#1763F7',
+                label: {
+                  show: true,
+                  position: 'right'
+                },
+                data: option1Series
+              }
+            ]
+          };
+          let option2 = {
+            tooltip: {
+              show: false
+            },
+            grid: {
+              left: '0%',
+              right: '0',
+              bottom: '0%',
+              top: '12%',
+              containLabel: true
+            },
+            xAxis: {
+              type: 'category',
+              // data: ['非AEKO', '未申请', '已申请', '未定点', '已定点', '无BA', '有BA', '无BM', '有BM'],
+              data: ['目标预算', '待分配', '定点预分配', '已定点'],
+              axisTick: {
+                show: false
+              },
+              axisLine: {
+                show: true,
+                lineStyle: {
+                  color: '#CDD4E2'
+                }
+              },
+              axisLabel: {
+                textStyle: {
+                  color: '#485465',
+                  fontSize: 10
+                },
+              },
+            },
+            yAxis: {
+              type: 'value',
+              axisTick: {
+                show: false
+              },
+              axisLabel: {
+                show: false
+              },
+              splitLine: {
+                show: false
+              },
+              axisLine: {
+                show: false
+              },
+            },
+            series: [
+              {
+                name: '辅助',
+                type: 'bar',
+                stack: 'total',
+                itemStyle: {
+                  barBorderColor: 'rgba(0,0,0,0)',
+                  color: 'rgba(0,0,0,0)'
+                },
+                emphasis: {
+                  itemStyle: {
+                    barBorderColor: 'rgba(0,0,0,0)',
+                    color: 'rgba(0,0,0,0)'
+                  }
+                },
+                data: [10, 9, 8, 7, 6, 5, 4, 3, 2, 1]
+              },
+              {
+                name: '',
+                type: 'bar',
+                stack: 'total',
+                color: '#73A1FA',
+                barWidth: '20',
+                label: {
+                  show: true,
+                  position: 'top',
+                  textStyle: {
+                    color: '#485465',
+                    fontSize: 12
+                  }
+                },
+                emphasis: {
+                  focus: 'series'
+                },
+                data: [10, 9, 8, 7, 6, 5, 4, 3, 2, 1],
+                itemStyle: {
+                  normal: {
+                    // barBorderRadius: [5, 5, 5, 5],
+                  }
+                }
+              },
+            ]
+          }
+
+          chart1.setOption(option1);
+          chart2.setOption(option2);
+          chart3.setOption(option2);
+          chart4.setOption(option2);
+          chart5.setOption(option2);
+          chart6.setOption(option2);
         } else {
           iMessage.error(result);
         }
@@ -478,11 +498,28 @@ export default {
         this.tableLoading = false
       })
     },
+    handleTableRow(row){
+      console.log(row)
+      row.index = row.rowIndex
+    }
   }
 }
 </script>
 
 <style lang="scss" scoped>
+.linkStyle {
+  span {
+    color: #1663F6;
+    border-bottom: 1px solid #1663F6;
+    cursor: pointer;
+  }
+  &.red{
+    span{
+      color: #E30D0D;
+      border-bottom: 1px solid #E30D0D;
+    }
+  }
+}
 .font20W {
   font-size: 20px;
   font-weight: bold;
@@ -498,17 +535,17 @@ export default {
 .main {
   padding: 30px 40px;
 
-  ::v-deep .el-select {
-    width: 220px;
-    margin-left: 20px;
-    margin-right: 20px;
-  }
   .header {
     font-size: 16px;
     display: flex;
     justify-content: space-between;
     margin: 20px 0;
 
+    ::v-deep .el-select {
+      width: 220px;
+      margin-left: 20px;
+      margin-right: 20px;
+    }
     .font20W ::v-deep .el-input__inner {
       font-size: 20px;
       font-weight: bold;
@@ -608,6 +645,13 @@ export default {
         display: flex;
         justify-content: space-between;
         font-size: 16px;
+        margin-bottom: 20px;
+
+        ::v-deep .el-select {
+          width: 220px;
+          margin-left: 20px;
+          margin-right: 20px;
+        }
       }
     }
   }

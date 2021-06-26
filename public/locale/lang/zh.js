@@ -795,10 +795,10 @@
         'LK_MOJUSHUXIN': '模具属性',//模具属性
         // 'LK_LINIE': 'LINIE',//LINIE
         'LK_ZP': 'ZP',//ZP
-        'LK_CANKAOCHEXINXIANGMU': '参考⻋型项⽬',//参考⻋型项⽬
-        'LK_CANKAOCHEXINXIANGMUYI': '参考⻋型项⽬⼀',//参考⻋型项⽬⼀
-        'LK_CANKAOCHEXINXIANGMUER': '参考⻋型项⽬⼆',//参考⻋型项⽬⼆
-        'LK_CANKAOCHEXINXIANGMUSAN': '参考⻋型项⽬三',//参考⻋型项⽬三
+        'LK_CANKAOCHEXINXIANGMU': '参考车型项目',//参考车型项目
+        'LK_CANKAOCHEXINXIANGMUYI': '参考车型项目⼀',//参考车型项目⼀
+        'LK_CANKAOCHEXINXIANGMUER': '参考车型项目⼆',//参考车型项目⼆
+        'LK_CANKAOCHEXINXIANGMUSAN': '参考车型项目三',//参考车型项目三
         'LK_QITACHEXINXIANGMUBEIXUAN': '其它⻋型项⽬备选',//其它⻋型项⽬备选
         'LK_CHEXINXIANGMULEIXIN': '⻋型项⽬类型',//⻋型项⽬类型
         'LK_CHEXINXIANGMUQIZHINIANFEN': '⻋型项⽬起⽌年份',//⻋型项⽬起⽌年份
