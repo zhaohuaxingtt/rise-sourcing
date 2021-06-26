@@ -8,51 +8,52 @@
     <!-- 搜索区域 -->
     <iSearch @sure="getList" @reset="reset">
         <el-form>
-            <el-form-item v-for="(item,index) in letterListSearch" :key="'letterListSearch_'+index" :label="$t(item.labelKey)">
-                <iSelect v-update v-if="item.type === 'select'" v-model="searchParams[item.props]" :placeholder="$t('partsprocure.CHOOSE')">
-                  <el-option v-if="item.props!='key13'" value="" :label="$t('all')"></el-option>
+            <el-form-item v-for="(item,index) in letterListSearch" :key="'letterListSearch_'+index" :label="language(item.labelKey,item.name)">
+                <iSelect v-update v-if="item.type === 'select'" v-model="searchParams[item.props]" :placeholder="language('partsprocure.CHOOSE','请选择')">
+                  <el-option v-if="item.props!='showSelf'" value="" :label="language('all','全部')"></el-option>
                   <el-option
                     v-for="item in selectOptions[item.selectOption] || []"
                     :key="item.value"
-                    :label="item.label"
+                    :label="language(item.key,item.label)"
                     :value="item.value">
                   </el-option>  
                 </iSelect> 
-                <iDatePicker style="width:185px" :placeholder="$t('partsprocure.CHOOSE')" v-else-if="item.type === 'datePicker'" type="daterange"  value-format="" v-model="searchParams[item.props]"></iDatePicker>
-                <iInput :placeholder="$t('partsprocure.CHOOSE')" v-else v-model="searchParams[item.props]"></iInput> 
+                <iDatePicker style="width:185px" :placeholder="language('partsprocure.CHOOSE','请选择')" v-else-if="item.type === 'datePicker'" type="daterange"  value-format="yyyy-MM-dd" v-model="searchParams[item.props]"></iDatePicker>
+                <iInput :placeholder="language('LK_QINGSHURU','请输入')" v-else v-model="searchParams[item.props]"></iInput> 
             </el-form-item>
         </el-form>
     </iSearch>
     <iCard class="contain margin-top20">
         <template v-slot:header-control>
-            <iButton @click="submit">{{$t('LK_QUERENBINGTIJIAO')}}</iButton>
-            <iButton @click="lineSure">{{$t('LK_LINEQUEREN')}}</iButton>
-            <iButton @click="lineBack">{{$t('LK_LINETUIHUI')}}</iButton>
-            <iButton @click="back">{{$t('partsprocure.CheHui')}}</iButton>
-            <iButton @click="turnSend">{{$t('partsprocure.PARTSPROCURETRANSFER')}} </iButton> 
-            <iButton @click="closeLetter">{{$t('LK_GUANBI')}} </iButton>
-            <iButton @click="activate">{{$t('LK_JIHUO')}} </iButton>
-            <iButton>{{$t('LK_DAOCHU')}} </iButton>
+            <iButton @click="submit">{{language('LK_QUERENBINGTIJIAO','确认并提交')}}</iButton>
+            <iButton @click="lineSure">{{language('LK_LINEQUEREN','LINIE确认')}}</iButton>
+            <iButton @click="lineBack">{{language('LK_LINETUIHUI','LINIE退回')}}</iButton>
+            <iButton @click="back">{{language('partsprocure.CheHui','撤回')}}</iButton>
+            <iButton @click="turnSend">{{language('partsprocure.PARTSPROCURETRANSFER','转派')}} </iButton> 
+            <iButton @click="closeLetter">{{language('LK_GUANBI','关闭')}} </iButton>
+            <iButton @click="activate">{{language('LK_JIHUO','激活')}} </iButton>
+            <iButton>{{language('LK_DAOCHU','导出')}} </iButton>
         </template>
         <!-- 表单区域 -->
         <tableList
             class="table"
             index
+            :lang="true"
             :tableData="tableListData"
             :tableTitle="tableTitle"
             :tableLoading="loading"
             @handleSelectionChange="handleSelectionChange"
         >
             <!-- 定点申请单号 -->
-            <template #key1="scope">
+            <template #nominateAppId="scope">
                 <a class="trigger" href="javascript:;" @click="goToDesignate(scope.row)">
-                    <span class="link" >{{ scope.row.key1 }}</span>
+                    <span class="link" >{{ scope.row.nominateAppId }}</span>
                 </a>
             </template>
             <!-- 定点信编号 -->
-            <template #key2="scope">
+            <template #letterNum="scope">
                 <a class="trigger" href="javascript:;" @click="goToDetail(scope.row)">
-                    <span class="link" >{{ scope.row.key2 }}</span>
+                    <span class="link" >{{ scope.row.letterNum }}</span>
                 </a>
             </template>
         </tableList>
@@ -97,6 +98,9 @@ import { pageMixins } from "@/utils/pageMixins";
 import tableList from "@/views/partsign/editordetail/components/tableList"
 import turnSendDialog from './components/turnSendDialog'
 import closeLetterDialog from './components/closeLetterDialog'
+import {
+    getLetterList
+} from '@/api/letterAndLoi/letter'
 export default {
     name:'letterList',
     mixins: [pageMixins],
@@ -116,19 +120,26 @@ export default {
         return{
             letterListSearch:letterListSearch,
             searchParams:{
-                key13:'true',
-                key7:'',
+                showSelf:'YES',
+                status:'',
             },
             selectOptions:{
-                status:[],
-                isShowMe:[
-                    {label:this.$t('nominationLanguage.Yes'),value:'true'},
-                    {label:this.$t('nominationLanguage.No'),value:'false'},
+                status:[
+                     {label:'前期处理中',key:'CSF_HANDLING',value:'CSF_HANDLING'},
+                     {label:'Linie确认中',key:'LINIE_CONFIRING',value:'LINIE_CONFIRING'},
+                     {label:'供应商确认中',key:'SUPPLIER_CONFIRING',value:'SUPPLIER_CONFIRING'},
+                     {label:'完成',key:'COMPLETIED',value:'COMPLETIED'},
+                     {label:'关闭',key:'CLOSED',value:'CLOSED'},
+                     {label:'作废',key:'TOVOID',value:'TOVOID'},
+                ],
+                showSelf:[
+                    {label:'是',key:'nominationLanguage.Yes',value:'YES'},
+                    {label:'否',key:'nominationLanguage.No',value:'NO'},
                 ],
             },
             loading:false,
             tableListData:[
-                {key1:'50912471',key2:'NL21-10180',key3:'51120086',key4:'068',key5:'10047',key6:'博世汽⻋技术服务(中国)有限公司',key7:'前期处理中',key8:'供应商反馈',key9:'⾼真',key10:'王颖',key11:'已签署',key12:'2021-04-23'}
+                {nominateAppId:'50912471',letterNum:'NL21-10180',rfqId:'51120086',supplierNum:'068',supplierSapNum:'10047',supplierName:'博世汽⻋技术服务(中国)有限公司',statusDesc:'前期处理中',supplierResult:'供应商反馈',fsName:'⾼真',linieName:'王颖',isSignAgreement:'已签署',nominateDate:'2021-04-23'}
             ],
             tableTitle:letterListTitle,
             selectItems:[],
@@ -136,15 +147,40 @@ export default {
             closeLetterVisible:false, // 关闭定点信弹窗
         }
     },
+    created(){
+        this.getList();
+    },
     methods:{
         // 获取列表
-        getList(){
+        async getList(){
             console.log(this.searchParams);
+            const {searchParams} = this;
+            // 若有定点起止时间将其拆分成两个字段
+            const {nominateDate=[]} = searchParams;
+            const data = {};
+            if(nominateDate.length){
+                data['nominateDateStart'] = nominateDate[0];
+                data['nominateDateEnd'] = nominateDate[1];
+            }
+            await getLetterList({...searchParams,...data}).then((res)=>{
+                const {code,data={}} = res;
+                if(code==200){
+                   const {records=[],total} = data;
+                   this.tableListData = records;
+                   this.page.totalCount = total;
+                }
+            }).catch((err)=>{
+
+            })
+            
         },
 
         // 重置
         reset(){
-
+            this.searchParams = {
+                showSelf:'YES',
+                status:'',
+            }
         },
         
         handleSelectionChange(val) {
@@ -153,11 +189,13 @@ export default {
         
         // 跳转定点申请详情页
         goToDesignate(row){
+            console.log(row);
+            const { nominateAppId,nominateProcessType={} } = row;
             const routeData = this.$router.resolve({
             path: '/designate/rfqdetail',
             query: {
-                // desinateId: row.id, 
-                // designateType: (row.nominateProcessType && row.nominateProcessType.code) || ''
+                desinateId: nominateAppId, 
+                designateType: (nominateProcessType && nominateProcessType.code) || ''
             }
             })
             window.open(routeData.href, '_blank')
@@ -171,13 +209,13 @@ export default {
         async isSelectItem(type=false){
             const {selectItems} = this;
             if(!selectItems.length){
-                iMessage.warn(this.$t('createparts.QingXuanZeZhiShaoYiTiaoShuJu'));
+                iMessage.warn(this.language('createparts.QingXuanZeZhiShaoYiTiaoShuJu','请选择至少一条数据'));
                 return false;
             }else{
                 if(type){
                     return true;
                 }else{
-                 const confirmInfo = await this.$confirm(this.$t('submitSure'));
+                 const confirmInfo = await this.$confirm(this.language('submitSure','您确定要执行提交操作吗？'));
                  return confirmInfo == 'confirm';
                 }
                 
