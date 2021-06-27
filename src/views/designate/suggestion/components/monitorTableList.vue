@@ -1,7 +1,7 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-02-24 09:42:07
- * @LastEditTime: 2021-04-19 17:15:37
+ * @LastEditTime: 2021-06-26 21:50:30
  * @LastEditors: Please set LastEditors
 -->
 
@@ -19,7 +19,7 @@
       v-loading='tableLoading'
       @selection-change="handleSelectionChange"
       :span-method="spanMethod"
-      :empty-text="$t('LK_ZANWUSHUJU')"
+      :empty-text="language('LK_ZANWUSHUJU','暂无数据')"
       ref="monitorTable">
       <!-- <el-table-column
         v-if="selection"
@@ -118,7 +118,7 @@
             <div v-if="batchEdit">
               <iInput
                 v-if="scope.row && scope.row.supplierChosen[hindex - 1] "
-                :placeholder="scope.row.percent && scope.row.percent[hindex - 1] || $t('LK_QINGSHURU')"
+                :placeholder="scope.row.percent && scope.row.percent[hindex - 1] || language('LK_QINGSHURU','请输入')"
                 v-model="scope.row.percent[hindex - 1]"
                 @change="handleEditPercent(scope.row, hindex - 1)"
               ></iInput>
@@ -183,7 +183,7 @@ export default {
     },
     handlEdit() {
       if (!this.selectData.length) {
-        iMessage.error('请选择')
+        iMessage.error(this.language('LK_QINGSHURU','请输入'))
         return
       }
       this.editControl = true
@@ -245,7 +245,7 @@ export default {
       if (isNaN(count) || count > 100 || containNGNumber) {
         // percent[Index] = 0
         // Vue.set(row, 'percent', percent)
-        iMessage.error(this.$t('nominationSuggestion.NingShuRuDeBiLiBuHeFa'))
+        iMessage.error(this.language('nominationSuggestion_NingShuRuDeBiLiBuHeFa', '您输入的比例不合法'))
         return
       }
       this.onPercentChangeWhiteBack(row)

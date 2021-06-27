@@ -1,7 +1,7 @@
 /*
  * @Author: HaoJiang
  * @Date: 2021-05-20 14:29:09
- * @LastEditTime: 2021-06-25 10:19:12
+ * @LastEditTime: 2021-06-26 22:52:39
  * @LastEditors: Please set LastEditors
  * @Description: 定点管理
  * @metaParams: hideTabLV3 隐藏三级导航
@@ -198,15 +198,15 @@ export default [
             component: () =>
               import ("@/views/designate/designatedetail/attachment")
           },
-          {                             
-            path: "/designate/decisiondata/attachment/upload",
-            name: "designateDecisionAttachmentUpload",
-            meta: {
-                title: "定点管理-决策资料-attachmentUpload",
-            },
-            component: () =>
-              import ("@/views/designate/designatedetail/attachment/upload")
-          },
+          // {                             
+          //   path: "/designate/decisiondata/attachment/upload",
+          //   name: "designateDecisionAttachmentUpload",
+          //   meta: {
+          //       title: "定点管理-决策资料-attachmentUpload",
+          //   },
+          //   component: () =>
+          //     import ("@/views/designate/designatedetail/attachment/upload")
+          // },
           {                             
             path: "/designate/decisiondata/tasks",
             name: "designateDecisionTasks",

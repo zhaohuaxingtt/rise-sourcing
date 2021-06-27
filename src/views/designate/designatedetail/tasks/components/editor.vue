@@ -3,7 +3,7 @@
   <iCard class="editor">
     <div class="clearFloat">
       <span class="font18 font-weight">
-        {{ $t("Background & Objective") }}</span
+        {{ language("Background & Objective","Background & Objective") }}</span
       >
       <div class="floatright">
         <span v-if="multiEditControl">
@@ -11,19 +11,19 @@
             class="upload-trigger margin-right10"
             :hideTip="true"
             :accept="'.jpg,.jpeg,.png,.gif'"
-            :buttonText="$t('strategicdoc.ShangChuanTuPian')"
+            :buttonText="language('strategicdoc_ShangChuanTuPian','上传图片')"
             @on-success="onUploadsucess"
           />
           <iButton @click="submit" :loading="submiting">
-            {{ $t("LK_BAOCUN") }}
+            {{ language("LK_BAOCUN",'保存') }}
           </iButton>
           <iButton @click="multiEditControl = false">
-            {{ $t("strategicdoc.JieSuBianJi") }}
+            {{ language("strategicdoc_JieSuBianJi",'结束编辑') }}
           </iButton>
         </span>
         <span v-else>
           <iButton v-if="!$store.getters.isPreview" @click="multiEditControl = true">
-            {{ $t("LK_BIANJI") }}
+            {{ language("LK_BIANJI",'编辑') }}
           </iButton>
         </span>
       </div>
@@ -108,7 +108,7 @@ export default {
       }
       addBackgroundAndObjectiveInfo(data).then(res => {
         if (res.code === '200') {
-          iMessage.success(this.$t('LK_CAOZUOCHENGGONG'))
+          iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'))
           this.getFetchData()()
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
