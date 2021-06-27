@@ -2,44 +2,44 @@
   <iCard class="margin-top20">
     <div class="margin-bottom20 clearFloat">
         <span class="font18 font-weight">
-          {{ $t("Tasks") }}</span
+          {{ language("Tasks",'Tasks') }}</span
         >
         <div class="floatright" v-if="editControl">
           <iButton
             @click="addRow"
           >
-            {{ $t("strategicdoc.XinZengHang") }}
+            {{ language("strategicdoc_XinZengHang",'新增行') }}
           </iButton>
           <iButton
             @click="deleteRow"
           >
-            {{ $t("strategicdoc.ShanChuHang") }}
+            {{ language("strategicdoc_ShanChuHang",'删除行') }}
           </iButton>
           <iButton
             @click="save"
             :loading="submiting"
           >
-            {{ $t("LK_BAOCUN") }}
+            {{ language("LK_BAOCUN",'保存') }}
           </iButton>
           <iButton
             v-if="!$store.getters.isPreview"
             @click="handlCancel"
             :loading="startLoding"
           >
-            {{ $t("strategicdoc.JieSuBianJi") }}
+            {{ language("strategicdoc_JieSuBianJi",'结束编辑') }}
           </iButton>
         </div>
         <div class="floatright" v-else>
           <!-- 编辑 -->
           <iButton v-if="!$store.getters.isPreview" @click="handlEdit">
-            {{ $t("nominationSupplier.Edit") }}
+            {{ language("nominationSupplier_Edit",'编辑') }}
           </iButton>
           <iButton @click="exportTasks" v-if="!$store.getters.isPreview">
-            {{ $t("nominationSupplier.Export") }}
+            {{ language("nominationSupplier_Export",'导出') }}
           </iButton>
         </div>
       </div>
-      <tablelist
+      <tableList
         index
         :selection="!$store.getters.isPreview"
         :tableData="data"
@@ -78,7 +78,7 @@
           <div v-if="editControl">
             <iSelect
               v-model="scope.row.isFinishFlag"
-              :placeholder="$t('LK_QINGXUANZE')">
+              :placeholder="language('LK_QINGXUANZE','请选择')">
               <el-option
                 :value="items.key"
                 :label="items.value"
@@ -101,7 +101,7 @@
             </a>
           </div>
         </template>
-      </tablelist>
+      </tableList>
       <iPagination
         v-update
         @size-change="handleSizeChange($event, getTableListFn)"
@@ -130,7 +130,7 @@ import {
 import { excelExport } from '@/utils/filedowLoad'
 import { pageMixins } from '@/utils/pageMixins'
 import filters from "@/utils/filters"
-import tablelist from "./tableList";
+import tableList from '@/views/designate/supplier/components/tableList'
 
 import {
   iCard,
@@ -152,7 +152,7 @@ export default {
     iPagination,
     iDatePicker,
     icon,
-    tablelist
+    tableList
   },
   mixins: [ filters, pageMixins ],
   data() {
@@ -202,18 +202,18 @@ export default {
     },
     async deleteRow() {
       if (!this.selectedData.length) {
-        iMessage.error(this.$t('nominationSuggestion.QingXuanZeZhiShaoYiTiaoShuJu'))
+        iMessage.error(this.language('nominationSuggestion_QingXuanZeZhiShaoYiTiaoShuJu','请选择至少一条数据'))
         return
       }
       const data = {
         taskIds: this.selectedData.map(o => o.id)
       }
       console.log(data)
-      const confirmInfo = await this.$confirm(this.$t('deleteSure'))
+      const confirmInfo = await this.$confirm(this.language('deleteSure','您确定要执行删除操作吗？'))
       if (confirmInfo !== 'confirm') return
       deleteNominateTask(data).then(res => {
         if (res.code === '200') {
-          iMessage.success(this.$t('LK_CAOZUOCHENGGONG'))
+          iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'))
           this.getFetchData()
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
@@ -229,7 +229,7 @@ export default {
     },
     async save() {
       if (!this.selectedData.length) {
-        iMessage.error(this.$t('nominationSuggestion.QingXuanZeZhiShaoYiTiaoShuJu'))
+        iMessage.error(this.language('nominationSuggestion_QingXuanZeZhiShaoYiTiaoShuJu','请选择至少一条数据'))
         return
       }
       const data = {
@@ -247,12 +247,12 @@ export default {
         })
       }
       console.log(data)
-      const confirmInfo = await this.$confirm(this.$t('saveSure'))
+      const confirmInfo = await this.$confirm(this.language('saveSure'))
       if (confirmInfo !== 'confirm') return
       this.submiting = true
       addNominateTask(data).then(res => {
         if (res.code === '200') {
-          iMessage.success(this.$t('LK_CAOZUOCHENGGONG'))
+          iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'))
           this.getFetchData()
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
@@ -316,7 +316,7 @@ export default {
     },
     async exportTasks() {
       if (!this.selectedData.length) {
-        iMessage.error(this.$t('nominationSuggestion.QingXuanZeZhiShaoYiTiaoShuJu'))
+        iMessage.error(this.language('nominationSuggestion_QingXuanZeZhiShaoYiTiaoShuJu','请选择至少一条数据'))
         return
       }
       console.log(this.selectedData)

@@ -21,10 +21,10 @@
           v-model="mapControl"
           @change="load"
           :multiple="true"
-          :placeholder="$t('nominationSuggestion.FanAnXuanZhe')">
+          :placeholder="language('nominationSuggestion_FanAnXuanZhe','方案选择')">
           <!-- <el-option
             value=""
-            :label="$t('nominationSuggestion.FanAnXuanZhe') | capitalizeFilter"
+            :label="language('nominationSuggestion.FanAnXuanZhe') | capitalizeFilter"
           ></el-option> -->
           <el-option
             :value="items.key"
@@ -72,19 +72,19 @@ export default {
       mapOptions: [
         {
           key: 0,
-          value: '整体最佳'
+          value: this.language('ZHENGTIZUIJIA','整体最佳')
         },
         {
           key: 1,
-          value: '分组最佳'
+          value: this.language('FENZUZUIJIA','分组最佳')
         },
         {
           key: 2,
-          value: '单一零件最佳'
+          value: this.language('DANYILINGJIANZUIJIA','单一零件最佳')
         },
         {
           key: 3,
-          value: '手动分配'
+          value: this.language('SHOUDONGFENPEI','手动分配')
         }
       ],
       dataList: [],

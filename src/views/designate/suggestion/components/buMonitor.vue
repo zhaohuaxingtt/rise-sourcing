@@ -1,7 +1,7 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-05-25 09:42:07
- * @LastEditTime: 2021-06-09 23:21:46
+ * @LastEditTime: 2021-06-26 22:02:00
  * @Description: 业务分配模拟
 -->
 
@@ -17,7 +17,7 @@
                 {{ title }}
               </span>
               <span class="updateTime" v-if="!hideUpdateTime">
-                {{$t("nominationSuggestion.ShuaXinShiJian")}}:
+                {{language("nominationSuggestion_ShuaXinShiJian","刷新时间")}}:
                 {{updateTime}}
               </span>
               
@@ -26,32 +26,32 @@
                 <span class="combine" v-if="multiEditControl">
                   <!-- 合并功能 -->
                 <iButton @click="combine" v-if="!hideCombine">
-                    {{ $t("nominationSuggestion.ZuHe") }}
+                    {{ language("nominationSuggestion_ZuHe",'组合') }}
                   </iButton>
                   <iButton @click="cancelSummaryGroup" v-if="!hideCombine">
-                    {{ $t("nominationSuggestion.QuXiaoZuHe") }}
+                    {{ language("nominationSuggestion_QuXiaoZuHe",'取消组合') }}
                   </iButton>
                   <!-- 退出编辑 -->
                   <iButton @click="exit">
-                    {{ $t("nominationSuggestion.TuiChuBianJi") }}
+                    {{ language("nominationSuggestion_TuiChuBianJi",'退出编辑') }}
                   </iButton>
                   <iButton @click="submit">
-                    {{ $t("LK_BAOCUN") }}
+                    {{ language("LK_BAOCUN",'保存') }}
                   </iButton>
                 </span>
                 <span class="combine" v-else>
                   <!-- 编辑 -->
                   <iButton @click="multiEditControl = true">
-                    {{ $t("LK_BIANJI") }}
+                    {{ language("LK_BIANJI",'编辑') }}
                   </iButton>
                 </span>
                 <!-- 重置 -->
                 <iButton @click="getFetchData">
-                  {{ $t("nominationSupplier.Reset") }}
+                  {{ language("nominationSupplier_Reset",'重置') }}
                 </iButton>
                 <!-- 刷新 -->
                 <iButton @click="refresh">
-                  {{ $t("nominationSupplier.Refresh") }}
+                  {{ language("nominationSupplier_Refresh",'刷新') }}
                 </iButton>
               </div>
               
@@ -85,14 +85,14 @@
     <!-- 弹窗 -->
     <iDialog class="combineDialog" :visible.sync="combineVisible">
       <div class="dialog-Header" slot="title">
-        <div class="font18 font-weight">{{$t('nominationSuggestion.FenZuMingChen')}}</div>
+        <div class="font18 font-weight">{{language('nominationSuggestion_FenZuMingChen','分组名称')}}</div>
       </div>
       <div class="body">
         <iInput v-model="groupForm.groupName" />
       </div>
       <div slot="footer" class="footer">
         <iButton @click="summaryGroup">
-          {{ $t("LK_TIJIAO") }}
+          {{ language("LK_TIJIAO",'提交') }}
         </iButton>
       </div>
     </iDialog>
@@ -137,7 +137,7 @@ export default {
     title: {
       type: String,
       default: function(){
-        return this.$t("nominationSuggestion.YeWuFenPeiMoNi")
+        return this.language("nominationSuggestion_YeWuFenPeiMoNi",'业务分配模拟')
       }
     },
     cardTitle:{
@@ -212,7 +212,7 @@ export default {
     combine() {
       const selectedData = this.$refs.monitorTable.selectedData
       if (!(selectedData && selectedData.length)) {
-        iMessage.error(this.$t('nominationSuggestion.QingXuanZeZhiShaoYiTiaoShuJu'))
+        iMessage.error(this.language('nominationSuggestion_QingXuanZeZhiShaoYiTiaoShuJu','请选择至少一条数据'))
         return
       }
       this.combineVisible = !this.combineVisible
@@ -222,12 +222,12 @@ export default {
     async summaryGroup() {
       const selectedData = this.$refs.monitorTable.selectedData || []
       if (!(selectedData && selectedData.length)) {
-        iMessage.error(this.$t('nominationSuggestion.QingXuanZeZhiShaoYiTiaoShuJu'))
+        iMessage.error(this.language('nominationSuggestion_QingXuanZeZhiShaoYiTiaoShuJu','请选择至少一条数据'))
         return
       }
       // 分组名
       if (!this.groupForm.groupName) {
-        iMessage.error(this.$t('nominationSuggestion.QingShuRuFenZuMing'))
+        iMessage.error(this.language('nominationSuggestion_QingShuRuFenZuMing','请输入分组名'))
         return
       }
       // 零件号数组
@@ -239,12 +239,12 @@ export default {
         partPrjCode
       }
       console.log(params)
-      const confirmInfo = await this.$confirm(this.$t('submitSure'))
+      const confirmInfo = await this.$confirm(this.language('submitSure','您确定要执行提交操作吗？'))
       if (confirmInfo !== 'confirm') return
       try {
         const res = await this.api.setSummaryGroup(params)
         if (res.code === '200') {
-          iMessage.success(this.$t('LK_CAOZUOCHENGGONG'))
+          iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'))
           this.combineVisible = false
           this.refresh()
         } else {
@@ -258,7 +258,7 @@ export default {
     async cancelSummaryGroup() {
       const selectedData = this.$refs.monitorTable.selectedData || []
       if (!(selectedData && selectedData.length)) {
-        iMessage.error(this.$t('nominationSuggestion.QingXuanZeZhiShaoYiTiaoShuJu'))
+        iMessage.error(this.language('nominationSuggestion_QingXuanZeZhiShaoYiTiaoShuJu','请选择至少一条数据'))
         return
       }
       // 零件号数组
@@ -269,12 +269,12 @@ export default {
         groupIdList
       }
       console.log(params)
-      const confirmInfo = await this.$confirm(this.$t('submitSure'))
+      const confirmInfo = await this.$confirm(this.language('submitSure','您确定要执行提交操作吗？',''))
       if (confirmInfo !== 'confirm') return
       try {
         const res = await this.api.cancelSummaryGroup(params)
         if (res.code === '200') {
-          iMessage.success(this.$t('LK_CAOZUOCHENGGONG'))
+          iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'))
           this.combineVisible = false
           this.refresh()
         } else {
@@ -299,7 +299,7 @@ export default {
     }, 500),
     // 获取模拟列表
     getFetchData() {
-      if (!this.rfqId) return iMessage.error(this.$t('nominationLanguage.DingDianIDNotNull'))
+      if (!this.rfqId) return iMessage.error(this.language('nominationLanguage_DingDianIDNotNull','定点申请单id不能为空'))
       this.tableLoading = true
       this.api.getSimulateRecord({
         rfqId: this.rfqId
@@ -350,7 +350,7 @@ export default {
       })
     },
     async submit() {
-      const confirmInfo = await this.$confirm(this.$t('submitSure'))
+      const confirmInfo = await this.$confirm(this.language('submitSure','您确定要执行提交操作吗？'))
       if (confirmInfo !== 'confirm') return
       
       let data = _.cloneDeep(this.params)
@@ -379,7 +379,7 @@ export default {
       try {
         const res = await this.api.saveSimulateRecord(data)
         if (res.code === '200') {
-          iMessage.success(this.$t('LK_CAOZUOCHENGGONG'))
+          iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'))
           this.getFetchData()
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
@@ -413,7 +413,7 @@ export default {
     // 退出编辑
     async exit() {
       if (this.unSaveWarning) {
-        const confirmInfo = await this.$confirm(this.$t('exitEditSure'))
+        const confirmInfo = await this.$confirm(this.language('exitEditSure','您的数据没保存，确定要退出编辑吗？'))
         if (confirmInfo !== 'confirm') return
       }
       this.multiEditControl = false

@@ -1,10 +1,10 @@
 <template>
   <iDialog class="dialog" v-bind="$props" :visible.sync="visible" v-on="$listeners">
     <div class="dialog-Header" slot="title">
-      <div class="font18 font-weight">{{$t('strategicdoc.PaiXu')}}</div>
+      <div class="font18 font-weight">{{language('strategicdoc_PaiXu','排序')}}</div>
       <!-- <div class="control">
-        <iButton @click="$emit('update:visible', false)">{{ $t('LK_QUEDING') }}</iButton>
-        <iButton @click="$emit('update:visible', false)">{{ $t('LK_QUXIAO') }}</iButton>
+        <iButton @click="$emit('update:visible', false)">{{ language('LK_QUEDING','确定') }}</iButton>
+        <iButton @click="$emit('update:visible', false)">{{ language('LK_QUXIAO','取消') }}</iButton>
       </div> -->
     </div>
     <div class="body" v-loading="tableLoading">
