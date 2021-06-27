@@ -56,7 +56,7 @@
     </template>
     <!-- 是否展示 -->
     <template #isPresent="scope">
-      <span>{{scope.row.isPresent === 1 ? '是' : '否' }}</span>
+      <span>{{scope.row.isPresent === 1 ? language('LK_YES','是') : language('LK_NO','否') }}</span>
     </template>
     </tablelist>
     <iPagination

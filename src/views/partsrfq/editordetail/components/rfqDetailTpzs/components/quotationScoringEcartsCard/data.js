@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-04-23 09:18:12
- * @LastEditTime: 2021-06-23 17:27:41
+ * @LastEditTime: 2021-06-28 00:36:52
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-supplier\src\views\rfqManageMent\partsOffer\components\ecartsCard\data.js
@@ -71,7 +71,7 @@ export function chartsOptions(options,title,unit) {
             const Xname = params[0].name
             htmlContentText += '<div style="margin-bottom:10px;"> '+ Xname + '<div/>'
             for (let index = 0; index < params.length; index++) {
-              if(params[index].data.value != null && params[index].seriesName){
+              if(params[index].data.value != null && params[index].seriesName && params[index].data.symbolSize > 0){
                 htmlContentText += '<div>';
                 htmlContentText += '<span style="margin-right:5px;display:inline-block;height:13px;width:13px;font-size: 12pt; border-radius:50%;background-color:'+params[index].color+'"></span>';
                 htmlContentText += '<span>'+(params[index].seriesName.indexOf('series')> -1?'Null':params[index].seriesName) +"："+params[index].data.value+'</span>';

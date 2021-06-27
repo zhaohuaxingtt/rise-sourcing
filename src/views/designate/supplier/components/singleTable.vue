@@ -2,7 +2,7 @@
   <iCard class="supplierTable singleSupplier margin-top20">
     <div class="margin-bottom20 clearFloat">
         <span class="font18 font-weight">
-          {{ language("nominationSupplier_DanYiGongYingShang") }}</span
+          {{ language("DANYIGONGYINGSHANG",'单一供应商') }}</span
         >
         <div class="floatright" v-if="singleEditControl">
           <!-- 批量编辑 -->
