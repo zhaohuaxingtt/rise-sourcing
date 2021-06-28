@@ -74,11 +74,11 @@ export function getLetterList(data) {
   }
 
   // 定点信列表--转派 
-  export function transfer(params) {
+  export function transfer(data) {
     return requst({
       url: '/nominate-letter/transfer',
-      method: 'GET',
-      params,
+      method: 'POST',
+      data,
     })
   }
 
@@ -94,7 +94,16 @@ export function getLetterList(data) {
   // 获取列表专业采购员及前期采购员列表
   export function getBuyers(params) {
     return requst({
-      url: '/buyers',
+      url: '/nominate-letter/buyers',
+      method: 'GET',
+      params,
+    })
+  }
+
+  // 获取供应商联系人列表
+  export function getSupplierUsers(params) {
+    return requst({
+      url: '/nominate-letter/supplierUsers',
       method: 'GET',
       params,
     })
@@ -117,3 +126,13 @@ export function getLetterList(data) {
       params,
     })
   }
+
+  // 更新定点详情
+  export function update(data) {
+    return requst({
+      url: '/nominate-letter/update',
+      method: 'POST',
+      data,
+    })
+  }
+
