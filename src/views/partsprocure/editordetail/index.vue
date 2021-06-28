@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2021-06-15 10:33:00
+ * @LastEditTime: 2021-06-25 17:20:51
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\editordetail\index.vue
@@ -29,6 +29,7 @@
 		<div class="margin-bottom20 clearFloat">
 			<span class="font18 font-weight">{{$t("LK_LINGJIANCAIGOUXIANGMU")}}</span>
 			<div class="floatright">
+				<iButton v-if="isAssembly" @click="handleCreateNomiApplication">{{ $t("生成定点申请单") }}</iButton>
 				<iButton @click="start" v-permission="PARTSPROCURE_EDITORDETAIL_STARTUP"
 					v-if="detailData.status == '16'">{{ $t("LK_QIDONGXIANGMU") }}</iButton>
 				<iButton @click="creatFs" v-permission="PARTSPROCURE_EDITORDETAIL_GENERATEFSGSNR">
@@ -332,6 +333,11 @@ import designateInfo from './components/designateInfo'
 			splitFactory,
 			designateInfo
 		},
+		computed: {
+			isAssembly() {
+				return this.detailData.partType === "A"
+			}
+		},
 		data() {
 			return {
 				firstId:'',
@@ -346,6 +352,7 @@ import designateInfo from './components/designateInfo'
 					splitPurchBoolean: false,
 				}, //拆分采购工厂
 				purchasePrjectId: "",
+				createNomiApplicationLoading: false
 			};
 		},
 		created() {
@@ -481,26 +488,32 @@ import designateInfo from './components/designateInfo'
 				detailData['linieUserId'] = this.detailData.linieUserId
 				const linie = this.fromGroup.LINIE.find(items=>items.id == this.detailData.linieUserId)
 				detailData['linieName'] = linie ? linie.name : ""
- 				changeProcure({
-					detailData,
-				}).then((res) => {
-					if (res.data) {
-						if(res.data.procureFactoryIds.length <= 1 ){
-							iMessage.success(this.$t('LK_YIBAOCUN'));
-							this.getDatail();
-						}else{
-							iMessage.success(this.$t('LK_YIBAOCUN'));
-							this.getDatail();
-							// iMessageBox(this.$t('LK_AREYOUSPLITE'),this.$t('LK_WENXINTISHI')).then(res=>{
-							// 	//如果这条ID存在 则默认查询出来的采购工厂将会为第一条
-							// 	this.firstId = this.detailData.procureFactory
-							// 	this.splitPurchFn()
-							// })
+
+				return new Promise((resolve, reject) => {
+					changeProcure({
+						detailData,
+					}).then((res) => {
+						if (res.data) {
+							if(res.data.procureFactoryIds.length <= 1 ){
+								iMessage.success(this.$t('LK_YIBAOCUN'));
+								this.getDatail();
+							}else{
+								iMessage.success(this.$t('LK_YIBAOCUN'));
+								this.getDatail();
+								// iMessageBox(this.$t('LK_AREYOUSPLITE'),this.$t('LK_WENXINTISHI')).then(res=>{
+								// 	//如果这条ID存在 则默认查询出来的采购工厂将会为第一条
+								// 	this.firstId = this.detailData.procureFactory
+								// 	this.splitPurchFn()
+								// })
+							}
+
+							resolve(res)
+						} else {
+							iMessage.error(res.desZh);
+							reject(res)
 						}
-					} else {
-						iMessage.error(res.desZh);
-					}
-				});
+					});
+				})
 			},
 			// 生成fs号
 			creatFs() {
@@ -566,6 +579,31 @@ import designateInfo from './components/designateInfo'
 			updateOutput(data) {
 				this.$refs.outputPlan.updateOutput(data)
 			},
+			// 生成定点申请单
+			async handleCreateNomiApplication() {
+				const createNomiApplication = function () {}
+
+				try {
+					await this.save()
+					this.createNomiApplicationLoading = true
+					const res = await createNomiApplication()
+					if (res.code == 200) {
+						if (res.data.length === 0) {
+							iMessage.error(this.$t("该零件无本体或加工装配费定点记录，请手动创建零件采购项目并进行后续流程"))
+						} else if (res.data.length === 1) {
+							window.open("/#/designate/rfqdetail?desinateId=100&designateType=TRANFORM", "_blank")
+						} else if (res.data.length > 1) {
+
+						}
+					} else {
+						iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+					}
+				} catch(e) {
+					console.error(e)
+				} finally {
+					this.createNomiApplicationLoading = false
+				}
+			}
 		}
 	};
 </script>
