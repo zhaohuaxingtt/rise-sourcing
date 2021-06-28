@@ -6,7 +6,7 @@
 <template>
   <iPage class="designateHome">
     <!-- 头部 -->
-    <headerNav class="margin-bottom30" />
+    <headerNav />
     <!-- 筛选框 -->
     <div style="clear: both"></div>
     <!-- 搜索区 -->
@@ -14,66 +14,60 @@
     <!-- 表格 -->
     <iCard class="designateTable">
       <div class="margin-bottom20 clearFloat">
-        <span class="font18 font-weight">
-          {{ $t("nominationLanguage.DingDianShenQingZongHeGuanLi") }}</span
-        >
         <div class="floatright">
           <!-- 新建定点申请 -->
           <iButton
             @click="createNomination"
           >
-            {{ $t("nominationLanguage.XinJianLingJIanDingDianShengQIng") }}
+            {{ language('nominationLanguage_XinJianLingJIanDingDianShengQIng', '新建零件定点申请') }}
           </iButton>
 
           <!-- 冻结RS -->
           <iButton @click="frozeRS(true)">
-            {{$t('nominationLanguage.DongJieRS')}}
+            {{language('nominationLanguage_DongJieRS', '冻结RS单')}}
           </iButton>
 
           <!-- 解冻RS -->
           <iButton @click="frozeRS(false)">
-            {{$t('nominationLanguage.JieDongRS')}}
+            {{language('nominationLanguage_JieDongRS', '解冻RS单')}}
           </iButton>
           
           <!-- 冻结 -->
           <iButton @click="freeze">
-            {{$t('LK_DONGJIE')}}
+            {{language('LK_DONGJIE', '冻结')}}
           </iButton>
 
           <!-- 解冻 -->
           <iButton @click="freeze(false)">
-            {{$t('LK_JIEDONG')}}
+            {{language('LK_JIEDONG', '解冻')}}
           </iButton>
 
           <!-- 定点 -->
           <iButton @click="confirm">
-            {{$t('nominationLanguage.DINGDIAN')}}
+            {{language('nominationLanguage_DINGDIAN', '定点')}}
           </iButton>
 
 
           <!--  <iButton @click="creatFs" v-permission="PARTSPROCURE_GENERATEFSBUTTON">
-            {{ $t('partsprocure.PARTSPROCUREGENERATEFSGSNR') }}
+            {{ language('partsprocure.PARTSPROCUREGENERATEFSGSNR') }}
           </iButton> -->
           <!-- 撤回 -->
           <iButton
             @click="handleBatchRevoke"
-            v-permission="PARTSPROCURE_CANCELPROCUREMENTITEMS"
           >
-            {{ $t("nominationLanguage.CheHui") }}
+            {{ language("nominationLanguage_CheHui", '撤回') }}
           </iButton>
           <!-- 批量删除 -->
           <iButton
             @click="handleBatchDelete"
-            v-permission="PARTSPROCURE_BATCHMAINTENANCE"
           >
-            {{ $t("nominationLanguage.ShanChu") }}
+            {{ language("nominationLanguage_ShanChu", '删除') }}
           </iButton>
           <iButton
             @click="openPage"
             :loading="startLoding"
-            v-permission="PARTSPROCURE_STARTINQUIRY"
           >
-            {{ $t("nominationLanguage.TiJiaoYiZhiXingJiaoYan") }}
+            {{ language("nominationLanguage_TiJiaoYiZhiXingJiaoYan", '提交一致性校验') }}
           </iButton>
         </div>
       </div>
@@ -81,6 +75,7 @@
         :tableData="tableListData"
         :tableTitle="tableTitle"
         :tableLoading="tableLoading"
+        :lang="true"
         @handleSelectionChange="handleSelectionChange"
       >
       <!-- <template #LK_CAOZUO="scope">
@@ -136,6 +131,9 @@
         :total="page.totalCount"
       />
     </iCard>
+
+    <!-- sel确认弹窗 -->
+    <selDialog :visible.sync="selDialogVisibal" />
     
   </iPage>
 </template>
@@ -158,6 +156,7 @@ import {
 } from '@/api/designate/nomination'
 // 前端配置文件里面的定点类型
 // import { applyType } from '@/layout/nomination/components/data'
+import selDialog from './components/selDialog'
 
 import { pageMixins } from '@/utils/pageMixins'
 import filters from "@/utils/filters"
@@ -179,7 +178,8 @@ export default {
       tableTitle: tableTitle,
       selectTableData: [],
       startLoding: false,
-      carTypeList: []
+      carTypeList: [],
+      selDialogVisibal: false
     }
   },
   components: {
@@ -189,7 +189,8 @@ export default {
     iPagination,
     headerNav,
     search,
-    tablelist
+    tablelist,
+    selDialog
   },
   mounted() {
     this.getFetchData()
@@ -259,16 +260,16 @@ export default {
     // 批量撤回
     async handleBatchRevoke() {
       if (!this.selectTableData.length) {
-        iMessage.error(this.$t('nominationSuggestion.QingXuanZeZhiShaoYiTiaoShuJu'))
+        iMessage.error(this.language('nominationSuggestion_QingXuanZeZhiShaoYiTiaoShuJu','请选择至少一条数据'))
         return
       }
-      const confirmInfo = await this.$confirm(this.$t('revokeSure'))
+      const confirmInfo = await this.$confirm(this.language('revokeSure','您确定要执行撤回操作吗？'))
       if (confirmInfo !== 'confirm') return
       const idList = this.selectTableData.map(o => Number(o.id))
       try {
         const res = await batchRevoke({nominateIdArr: idList})
         if (res.code === '200') {
-          iMessage.success(this.$t('LK_CAOZUOCHENGGONG'))
+          iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'))
           this.getFetchData()
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
@@ -280,16 +281,16 @@ export default {
     // 批量删除
     async handleBatchDelete() {
       if (!this.selectTableData.length) {
-        iMessage.error(this.$t('nominationSuggestion.QingXuanZeZhiShaoYiTiaoShuJu'))
+        iMessage.error(this.language('nominationSuggestion_QingXuanZeZhiShaoYiTiaoShuJu', '请选择至少一条数据'))
         return
       }
-      const confirmInfo = await this.$confirm(this.$t('deleteSure'))
+      const confirmInfo = await this.$confirm(this.language('deleteSure','您确定要执行删除操作吗？'))
       if (confirmInfo !== 'confirm') return
       const idList = this.selectTableData.map(o => Number(o.id))
       try {
         const res = await batchDelete({nominateIdArr: idList})
         if (res.code === '200') {
-          iMessage.success(this.$t('LK_CAOZUOCHENGGONG'))
+          iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'))
           this.getFetchData()
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
@@ -306,9 +307,9 @@ export default {
     async freeze(type = true){
       const {selectTableData} = this;
       if(!selectTableData.length){
-        iMessage.warn(this.$t('nominationSuggestion.QingXuanZeZhiShaoYiTiaoShuJu'));
+        iMessage.warn(this.language('nominationSuggestion_QingXuanZeZhiShaoYiTiaoShuJu','请选择至少一条数据'));
       }else{
-        const confirmInfo = await this.$confirm(this.$t('LK_NINQUERENZHIXINGDONGJIECAOZUOMA'));
+        const confirmInfo = await this.$confirm(this.language('LK_NINQUERENZHIXINGDONGJIECAOZUOMA','您确定要执行冻结操作吗？'));
         if (confirmInfo !== 'confirm') return;
         const nominateIdArr = selectTableData.map((item)=>Number(item.id));
         const data = {
@@ -318,7 +319,7 @@ export default {
           const res = type ? await nominateRreeze(data) : await nominateUnRreeze(data)
           const { code } = res;
           if(code == 200){
-            iMessage.success(this.$t('LK_CAOZUOCHENGGONG'));
+            iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
             this.getFetchData()
           }else{
             iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
@@ -333,9 +334,9 @@ export default {
     async confirm(){
       const {selectTableData} = this;
       if(!selectTableData.length){
-        iMessage.warn(this.$t('nominationSuggestion.QingXuanZeZhiShaoYiTiaoShuJu'));
+        iMessage.warn(this.language('nominationSuggestion_QingXuanZeZhiShaoYiTiaoShuJu','请选择至少一条数据'));
       }else{
-        const confirmInfo = await this.$confirm(this.$t('LK_NINQUERENZHIXINGDONGJIECAOZUOMA'));
+        const confirmInfo = await this.$confirm(this.language('LK_NINQUERENZHIXINGDINGDIANCAOZUOMA','您确定执行定点操作吗？'));
         if (confirmInfo !== 'confirm') return;
         const nomiAppIdList = selectTableData.map((item)=>Number(item.id));
         const data = {
@@ -344,7 +345,7 @@ export default {
         await nominateConfirm(data).then((res)=>{
           const { code } = res;
           if(code == 200){
-            iMessage.success(this.$t('LK_CAOZUOCHENGGONG'));
+            iMessage.success(this.language('LK_CAOZUOCHENGGONG', '操作成功'));
             this.getFetchData()
           }else{
             iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
@@ -358,9 +359,9 @@ export default {
     async frozeRS(state){
       const {selectTableData} = this;
       if(!selectTableData.length){
-        iMessage.warn(this.$t('nominationSuggestion.QingXuanZeZhiShaoYiTiaoShuJu'));
+        iMessage.warn(this.language('nominationSuggestion_QingXuanZeZhiShaoYiTiaoShuJu','请选择至少一条数据'));
       }else{
-        const confirmInfo = await this.$confirm(this.$t('LK_NINQUERENZHIXINGDONGJIECAOZUOMA'));
+        const confirmInfo = await this.$confirm(this.language('LK_NINQUERENZHIXINGDONGJIECAOZUOMA', '您确定要执行冻结操作吗？'));
         if (confirmInfo !== 'confirm') return;
         const nomiAppIdList = selectTableData.map((item)=>Number(item.id));
         const data = {
@@ -370,7 +371,7 @@ export default {
           const res = state ? await rsFrozen(data) : await rsUnFrozen(data)
           const { code } = res;
           if(code == 200){
-            iMessage.success(this.$t('LK_CAOZUOCHENGGONG'));
+            iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
             this.getFetchData()
           }else{
             iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)

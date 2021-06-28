@@ -1,34 +1,34 @@
 <template>
   <iCard class="supplierTable singleSupplier">
-      <div class="margin-bottom20 clearFloat">
+      <div class="margin-bottom20 clearFloat" v-if="!onlyTable">
         <div class="floatright">
           <!-- 批量编辑 -->
           <iButton @click="handleBatchEdit">
-            {{ $t("nominationSupplier.BatchEdit") }}
+            {{ language("LK_BATCHEDIT",'批量编辑') }}
           </iButton>
           <!-- 复制 -->
           <iButton
             @click="copyLines"
           >
-            {{ $t("nominationSupplier.COPY") }}
+            {{ language("LK_COPY",'复制') }}
           </iButton>
           <!-- 删除 -->
           <iButton
             :disabled="checkCanbeDelete"
             @click="handleBatchDelete"
           >
-            {{ $t("nominationLanguage.ShanChu") }}
+            {{ language("LK_DELETE",'删除') }}
           </iButton>
           <iButton
             @click="submit"
             :loading="submiting"
           >
-            {{ $t("LK_BAOCUN") }}
+            {{ language("LK_BAOCUN","保存") }}
           </iButton>
           <iButton
             @click="showMouldVisibal"
           >
-            {{ $t("nominationSuggestion.MoJuYuSuanGuanLi") }}
+            {{ language("nominationSuggestion_MoJuYuSuanGuanLi","磨具预算管理") }}
           </iButton>
         </div>
       </div>
@@ -37,6 +37,7 @@
         :tableData="data"
         :tableTitle="supplierTitle"
         :tableLoading="tableLoading"
+        :lang="true"
         v-loading="tableLoading"
         @handleSelectionChange="handleSelectionChange"
         ref="tablelist"
@@ -46,12 +47,12 @@
         </template>
         <!-- 供应商名 -->
         <template #supplierName="scope">
-          <div>
+          <div v-if="!onlyTable">
             <iSelect
               v-model="scope.row.supplierName"
               @focus="getRfqDepartment(scope.row)"
               @change="onSupplierChange(arguments, scope.row)"
-              :placeholder="$t('LK_QINGXUANZE')">
+              :placeholder="language('LK_QINGXUANZE','请选择')">
               <el-option
                 :value="items.supplierName"
                 :label="items.supplierName"
@@ -60,15 +61,15 @@
               ></el-option>
             </iSelect>
           </div>
-          <!-- <span v-else>{{scope.row.supplierName}}</span> -->
+          <span v-else>{{scope.row.supplierName}}</span>
         </template>
         <!-- 比例 -->
         <template #ratio="scope">
-          <div>
-            <iInput v-model="scope.row.ratio" :placeholder="$t('LK_QINGSHURU')" />
+          <div v-if="!onlyTable">
+            <iInput v-model="scope.row.ratio" :placeholder="language('LK_QINGSHURU','请输入')" />
             <!-- <iSelect
               v-model="scope.row.ratio"
-              :placeholder="$t('LK_QINGXUANZE')">
+              :placeholder="language('LK_QINGXUANZE','请选择')">
               <el-option
                 :value="items.key"
                 :label="items.value"
@@ -77,7 +78,7 @@
               ></el-option>
             </iSelect> -->
           </div>
-          <!-- <span v-else>{{scope.row.ratio}}</span> -->
+          <span v-else>{{scope.row.ratio}}</span>
         </template>
       </tablelist>
       <!-- <iPagination
@@ -105,7 +106,7 @@ import {
   supplierTitle,
   // mokeSupplierData
 } from './data'
-import tablelist from "./tableList";
+import tablelist from "@/views/designate/supplier/components/tableList";
 import batchEditDialog from "./batchEditDialog"
 // import mouldDialog from "./mouldDialog"
 import mouldDialog from "./mouldBudgetManagementDialog"
@@ -139,6 +140,12 @@ export default {
     mouldDialog
   },
   mixins: [ pageMixins ],
+  props: {
+    onlyTable: {
+      type: Boolean,
+      default: false
+    }
+  },
   data() {
     return {
       // 表头
@@ -238,7 +245,7 @@ export default {
     },
     // 批量删除
     async handleBatchDelete() {
-      const confirmInfo = await this.$confirm(this.$t('deleteSure'))
+      const confirmInfo = await this.$confirm(this.language('deleteSure','您确定要执行删除操作吗？'))
       if (confirmInfo !== 'confirm') return
       // this.selectData.forEach((item) => {
       //   const dIndex = this.data.findIndex(o => o.sid === item.sid)
@@ -252,7 +259,7 @@ export default {
       try {
         const res = await deleteSuggestion(data)
         if (res.code === '200') {
-          iMessage.success(this.$t('LK_CAOZUOCHENGGONG'))
+          iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'))
           setTimeout(() => {
             this.getDataList()
           }, 1500)
@@ -266,7 +273,7 @@ export default {
     // 批量编辑
     handleBatchEdit() {
       if (!this.selectData.length) {
-        iMessage.error(this.$t('nominationSuggestion.QingXuanZeZhiShaoYiTiaoShuJu'))
+        iMessage.error(this.language('nominationSuggestion_QingXuanZeZhiShaoYiTiaoShuJu','请选择至少一条数据'))
         return
       }
       this.batchEditVisibal = true
@@ -284,10 +291,10 @@ export default {
     // 保存修改记录
     async submit() {
       if (!this.selectData.length) {
-        iMessage.error(this.$t('nominationSuggestion.QingXuanZeZhiShaoYiTiaoShuJu'))
+        iMessage.error(this.language('nominationSuggestion_QingXuanZeZhiShaoYiTiaoShuJu','请选择至少一条数据'))
         return
       }
-      const confirmInfo = await this.$confirm(this.$t('submitSure'))
+      const confirmInfo = await this.$confirm(this.language('submitSure','您确定要执行提交操作吗？'))
       if (confirmInfo !== 'confirm') return
       this.submiting = true
       const data = this.selectData.map(o => {
@@ -303,7 +310,7 @@ export default {
       })
       updateSuggestion(data).then(res => {
         if (res.code === '200') {
-          iMessage.success(this.$t('LK_CAOZUOCHENGGONG'))
+          iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'))
           this.getDataList()
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
@@ -341,12 +348,12 @@ export default {
     // 复制条目
     async copyLines(){
       if (!this.selectData.length) {
-        iMessage.error(this.$t('nominationSuggestion.QingXuanZeZhiShaoYiTiaoShuJu'))
+        iMessage.error(this.language('nominationSuggestion_QingXuanZeZhiShaoYiTiaoShuJu','请选择至少一条数据'))
         return
       }
       const data = this.selectData[this.selectData.length - 1]
       this.lastSelecteDataIndex = this.data.findIndex(o => o.sid === data.sid)
-      const confirmInfo = await this.$confirm(this.$t('copyChosenSure'))
+      const confirmInfo = await this.$confirm(this.language('copyChosenSure','您确定要复制选中的数据吗？'))
       if (confirmInfo !== 'confirm') return
       // 复制数组
       const tempArray = _.cloneDeep(this.selectData)

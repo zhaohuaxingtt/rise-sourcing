@@ -6,46 +6,46 @@
 <template>
     <iPage class="filesDetailList">
         <div v-if="!showUploadList">
-            <p class="title margin-bottom10">{{$t('LK_FUJIANQINGDAN')}}：{{importfilesId}}</p>
+            <p class="title margin-bottom10">{{language('LK_FUJIANQINGDAN','附件清单')}}：{{importfilesId}}</p>
             <iCard collapse>
                 <!-- 搜索区域 -->
                 <iSearch @sure="sure" @reset="reset">
                     <el-form>
-                        <el-form-item :label="$t('LK_FUJIANLINGJIANHAO')">
+                        <el-form-item :label="language('LK_FUJIANLINGJIANHAO','附件零件号')">
                             <iInput v-model="searchParams['partNum']"></iInput> 
                         </el-form-item>
-                        <el-form-item :label="$t('LK_FUJIANLINGJIANMINGCHENG')">
+                        <el-form-item :label="language('LK_FUJIANLINGJIANMINGCHENG','附件零件名称')">
                             <iInput v-model="searchParams['partNameCh']"></iInput> 
                         </el-form-item>
-                        <el-form-item :label="$t('LK_SHIYONGCHEXING')">
+                        <el-form-item :label="language('LK_SHIYONGCHEXING','使⽤⻋型')">
                             <iInput v-model="searchParams['carType']"></iInput> 
                         </el-form-item>
-                        <el-form-item :label="$t('LK_FUJIANSHANGSHISHIJIAN')">
+                        <el-form-item :label="language('LK_FUJIANSHANGSHISHIJIAN','附件上市时间')">
                             <iDatePicker format="yyyy-MM-dd" value-format="yyyy-MM-dd" v-model="searchParams['timeToMarket']"></iDatePicker> 
                         </el-form-item>
                     </el-form>
                 </iSearch>
             </iCard>
-            <iCard>
-                
-            <!-- 表格区域 -->
-            <tableList
-                class="table"
-                index
-                :tableData="tableListData"
-                :tableTitle="tableTitle"
-                :tableLoading="loading"
-                @handleSelectionChange="handleSelectionChange"
-            >
-                <!-- RFQ编号 -->
-                <template #rfqId="scope">
-                    <span @click="goFilesList(scope.row.rfqId)" class="link-underline" >{{scope.row.rfqId}}</span>
-                </template>
-                <!-- 附件 -->
-                <template #LK_FUJIAN="scope">
-                    <span @click="checkUploadList(scope.row.id)" class="link-underline" >{{$t('LK_SHANGCHUAN')}}</span>
-                </template>
-            </tableList>
+            <iCard class="margin-top20">
+                <!-- 表格区域 -->
+                <tableList
+                    class="table"
+                    index
+                    :lang="true"
+                    :tableData="tableListData"
+                    :tableTitle="tableTitle"
+                    :tableLoading="loading"
+                    @handleSelectionChange="handleSelectionChange"
+                >
+                    <!-- RFQ编号 -->
+                    <template #rfqId="scope">
+                        <span @click="goFilesList(scope.row.rfqId)" class="link-underline" >{{scope.row.rfqId}}</span>
+                    </template>
+                    <!-- 附件 -->
+                    <template #LK_FUJIAN="scope">
+                        <span @click="checkUploadList(scope.row.id)" class="link-underline" >{{language('LK_SHANGCHUAN','上传')}}</span>
+                    </template>
+                </tableList>
                 <!-- 分页 -->
                 <iPagination
                     class="margin-bottom20"

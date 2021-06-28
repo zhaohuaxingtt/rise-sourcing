@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-25 10:09:50
- * @LastEditTime: 2021-06-11 14:32:57
+ * @LastEditTime: 2021-06-21 15:09:32
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsrfq\editordetail\index.vue
@@ -158,7 +158,9 @@ import {rfqCommonFunMixins} from "pages/partsrfq/components/commonFun";
 import {navList} from './components/data'
 import nominateTypeDialog from "@/views/partsrfq/home/components/nominateTypeDialog"
 import { selectRfq } from "@/api/designate/designatedetail/addRfq"
-
+import { getPartSrcPrjs } from '@/api/partsrfq/editordetail';
+import { pageMixins } from "@/utils/pageMixins";
+import { tableTitle,form } from "@/views/partsprocure/home/components/data";
 export default {
   components: {
     iButton,
@@ -176,30 +178,57 @@ export default {
     rfqDetailTpzs,
     nominateTypeDialog
   },
-  mixins: [rfqCommonFunMixins],
+  mixins: [rfqCommonFunMixins,pageMixins],
   data() {
     return {
       navActivtyValue: '',
       navList: navList,
       editStatus: false,
       newRfqRoundDialog: false,
-      baseInfo: {},
+      baseInfo: {
+        currentRoundsStatus:'',
+        currentRounds:'',
+        currentStatus:''
+      },
       baseInfoLoading: false,
       tabShowStatus: true,
       newRfqRoundList: [],
       newRfqOpenValidateLoading: false,
       nominateTypeDialogVisible: false,
+      parmarsHasRfq: JSON.parse(JSON.stringify(form)),
     }
   },
   created() {
     this.getBaseInfo()
+    this.getTableList()
   },
-  provide: function() {
+  provide: function(){
     return {
-      getBaseInfo: this.getBaseInfo
+      getBaseInfo:this.getBaseInfo, //当前是一个请求
+      getbaseInfoData:this.getbaseInfoData  //直接reture当前请求完的数据
     }
   },
   methods: {
+    getbaseInfoData(){
+      return this.baseInfo
+    },
+    /**
+     * @description:  //获取表格数据 为新件轮次做数据准备
+     * @param {*}
+     * @return {*}
+     */
+    getTableList() {
+      if (this.$route.query.id) {
+        this.confirmTableLoading = true
+        this.parmarsHasRfq['search.size'] = this.page.pageSize
+        this.parmarsHasRfq['search.current'] = this.page.currPage
+        this.parmarsHasRfq['search.rfqId'] = this.$route.query.id
+        this.parmarsHasRfq['search.projectStatus'] = ''
+        getPartSrcPrjs(this.parmarsHasRfq).then(res => {
+          this.$store.dispatch('setPendingPartsList', res.data.pageData.data)
+        }).catch(() => this.confirmTableLoading = false)
+      }
+    },
     changeRouter(router){
       
     },

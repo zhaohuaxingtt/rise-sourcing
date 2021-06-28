@@ -11,19 +11,19 @@
     <div class="quotationHz margin-bottom20">
       <!--------------输入框模块-------------->
       <div class='search'>
-        <div class="needAddWhi">
+        <div class="needAddWhi" v-if='!disabel'>
           <span>Hide/unHide：</span>
-          <iSelect v-model="backChoose" multiple :collapse-tags='true' @visible-change='visibleChange'>
+          <iSelect v-model="backChoose" multiple :collapse-tags='true' @remove-tag='removeTags' @visible-change='visibleChange'>
             <el-option v-for='(items,index) in backChooseLists' :key='index' :label="items.label" :value="items.props"></el-option>
           </iSelect> 
         </div>
-        <div v-if='showRound'>
+        <div v-if='showRound && !disabel'>
           <span>Quota. Round：</span>
           <iSelect v-model="round" @change="changeRound" style="width:100px">
             <el-option :label="items" :value="items" v-for='(items,index) in rundList' :key='index'></el-option>
           </iSelect> 
         </div>
-        <div>
+        <div v-if='!disabel'>
           <span>Layout: </span>
           <iSelect v-model="layout" @change="changeLayout">
             <el-option label="FS-Parts as Row" value="1"></el-option>
@@ -31,16 +31,16 @@
           </iSelect> 
         </div>            
       </div>
-      <div class="btnSearch">
+      <div class="btnSearch" v-if='!disabel'>
         <iButton @click="quote" v-if='quoteShow'>引用报价</iButton>
-        <iButton @click="group"  v-if='layout == "1"'>组合</iButton>
-        <iButton @click="removeGroup"  v-if='layout == "1"'>取消组合</iButton>
+        <iButton @click="group"  v-if='layout == "1" && !abPrice'>组合</iButton>
+        <iButton @click="removeGroup"  v-if='layout == "1" && !abPrice'>取消组合</iButton>
         <!-- <iButton>导出</iButton> -->
       </div>
       <!--------------表格模块-------------->
     </div>
     <tableList v-loading='fsTableLoading' @sortChangeTabless='sortChange' :round='round' :tableTitle='title' v-if='layout == "1"' :ratingList='ratingList' :tableData='exampelData' @handleSelectionChange='handleSelectionChange'></tableList>
-    <tableListSupplier v-loading='supplierTableLoading' :centerSupplierData='suppliertopList' :supplierLeftLit='supplierLeftLit' :tableTitle='supplierTile'  :tableData='supplierData' v-if='layout == "2"'></tableListSupplier>
+    <tableListSupplier ref='tableSupplier' :cWidth='cWidth' :leftData='leftData' :rightData='rightData' v-loading='supplierTableLoading' :centerSupplierData='suppliertopList' :supplierLeftLit='supplierLeftLit' :tableTitle='supplierTile'  :tableData='supplierData' v-if='layout == "2" && showTable'></tableListSupplier>
     <!--------------弹窗-------------->
     <iDialog title="组合名" :visible.sync="groupVisble" width='25%' >
       <div class="mine_height">
@@ -88,8 +88,31 @@ export default{
     quoteShow:true,
     partInfoList:[],
     bdlPriceTotalInfoList:[],
-    oldExampelData:[]
+    oldExampelData:[],
+    templateSummary:1,
+    disabel:false,
+    showTable:true,
+    cWidth:'0px',
+    abPrice:false
   }},
+  watch:{
+    /**
+     * @description:当前界面是否处于一个disble模式。取决于当前路由中是否存在 isPreview 字段
+     * @param {*}
+     * @return {*}
+     */
+    '$route':function(){
+     try {
+      if(this.$route.query.isPreview == 1){
+        this.disabel = true
+      }else{
+        this.disabel = false
+      }
+      } catch (error) {
+        this.disabel = false
+    }
+    }
+  },
   mounted(){
     this.init()
   },
@@ -97,6 +120,22 @@ export default{
     return {vm:this}
   },
   methods:{
+    reRenderTable(){
+      this.showTable = false,
+      setTimeout(() => {
+        this.showTable = true
+      },0)
+      setTimeout(() => {
+        this.getTopWidth()
+      }, 500);
+    },
+    getTopWidth(){
+      console.log(this.$refs.tableSupplier)
+      this.cWidth = this.$refs.tableSupplier.$el.querySelector('.el-table__body').offsetWidth - 100 + 'px'
+    },
+    removeTags(){
+      this.negoAnalysisSummaryLayoutSave()
+    },
     /**
      * @description: 排除group total km buget 列不需要排序外，其他的都是需要排序的列。
      * @param {*} props -表格中返回的标识。正排序 还是 反排序 还是 默认
@@ -166,7 +205,7 @@ export default{
       const sendata = {
           groupIdList: this.getPartGroupNumber(),
           rfqId: this.$route.query.id,
-          scenarioType:1
+          scenarioType:this.templateSummary
         }
         negoAnalysisSummaryGroupDelete(sendata).then(res=>{
           if(res.code == 200){
@@ -188,7 +227,7 @@ export default{
           groupName: this.groupName,
           partPrjCode: this.getPartNumber(this.groupSelectData),
           rfqId: this.$route.query.id,
-          scenarioType:1
+          scenarioType:this.templateSummary
         }
         negoAnalysisSummaryGroup(sendata).then(res=>{
           if(res.code == 200){
@@ -222,7 +261,7 @@ export default{
      */
     negoAnalysisSummaryLayout(type){
       this.backChooseLists = backChooseList(this.layout);
-      negoAnalysisSummaryLayout(type,1).then(res=>{
+      negoAnalysisSummaryLayout(type,this.templateSummary).then(res=>{
         if(res.data && res.data.layout){
           this.backChoose = JSON.parse(res.data.layout) // 
         }
@@ -324,18 +363,25 @@ export default{
      * @return {*}
      */
     supplierfsSupplierAsRow(){
-      this.supplierTableLoading = true
-      fsSupplierAsRow(this.$route.query.id,this.round).then(res=>{
-        this.supplierTableLoading = false
-        if(res.code == 200 && res.data && res.data.bdlInfoList){
-          this.supplierData = translateDataListSupplier(res.data.bdlInfoList).dataList
-          this.supplierTile = getRenderTableTileSupplier(this.backChoose,res.data.bdlInfoList)
-          this.supplierLeftLit = getleftTittleList(this.backChoose)
-          this.suppliertopList = translateDataListSupplier(res.data.bdlInfoList).topList
-        } 
-      }).catch(err=>{
-        this.supplierTableLoading = false
-        iMessage.error(err.desZh)
+      return new Promise(r=>{
+        this.supplierTableLoading = true
+        fsSupplierAsRow(this.$route.query.id,this.round).then(res=>{
+          this.supplierTableLoading = false
+          if(res.code == 200 && res.data && res.data.bdlInfoList){
+            const data = translateDataListSupplier(res.data.bdlInfoList)
+            this.supplierData = data.dataList
+            this.supplierTile = getRenderTableTileSupplier(this.backChoose,res.data.bdlInfoList)
+            this.supplierLeftLit = getleftTittleList(this.backChoose)
+            this.suppliertopList = data.topList
+            this.leftData = res.data.kmAPrice
+            this.rightData = res.data.kmTooling
+            this.reRenderTable() 
+            r()
+          } 
+        }).catch(err=>{
+          this.supplierTableLoading = false
+          iMessage.error(err.desZh)
+        })
       })
     }
   }

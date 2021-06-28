@@ -1,7 +1,7 @@
 <!--
 * @author:shujie
 * @Date: 2021-2-25 11:42:11
- * @LastEditors: ldh
+ * @LastEditors: Please set LastEditors
 * @Description: 待办事项-零件清单
  -->
 <template>
@@ -11,7 +11,7 @@
           $t('delete')
         }}
       </iButton>
-      <iButton @click="sendKM">{{ $t('LK_FASONGKM') }}</iButton>
+      <iButton @click="sendKM">{{ language('FASONGKM', '发送KM') }}</iButton>
       <iButton @click="showApplyPrice" v-permission="PARTSRFQ_EDITORDETAIL_PARTDETAILIST_NEWPRICE">
         {{ $t('LK_XINSHENQINGCAIWUMUBIAOJIA') }}
       </iButton>

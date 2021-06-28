@@ -1,18 +1,18 @@
 <template>
   <iDialog class="dialog" v-bind="$props" :visible.sync="visible" v-on="$listeners">
     <div class="dialog-Header" slot="title">
-      <div class="font18 font-weight">{{$t('strategicdoc.ShangChuan')}}</div>
+      <div class="font18 font-weight">{{language('strategicdoc_ShangChuan','上传弹窗')}}</div>
       <div class="control">
-        <iButton @click="downloadFile">{{ $t('LK_XIAZAI') }}</iButton>
-        <iButton @click="deleteFile">{{ $t('LK_SHANCHU') }}</iButton>
+        <iButton @click="downloadFile">{{ language('LK_XIAZAI','下载') }}</iButton>
+        <iButton @click="deleteFile">{{ language('LK_SHANCHU','删除') }}</iButton>
         <upload
           class="upload-trigger"
           :hideTip="true"
           :accept="'.jpg,.jpeg,.png,.pdf,.tif'"
-          :buttonText="$t('strategicdoc.ShangChuanWenJian')"
+          :buttonText="language('strategicdoc_ShangChuanWenJian','上传文件')"
           @on-success="onUploadsucess(Object.assign(...arguments, {fileType: '101'}), getDataList)"
         />
-        <!-- <iButton>{{ $t('strategicdoc.ShangChuanWenJian') }}</iButton> -->
+        <!-- <iButton>{{ language('strategicdoc.ShangChuanWenJian') }}</iButton> -->
       </div>
     </div>
     <div class="body" v-loading="tableLoading">

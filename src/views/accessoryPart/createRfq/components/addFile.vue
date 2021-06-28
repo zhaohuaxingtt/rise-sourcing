@@ -2,14 +2,14 @@
  * @Author: Luoshuang
  * @Date: 2021-05-26 19:46:16
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-16 15:33:16
+ * @LastEditTime: 2021-06-25 14:00:18
  * @Description: 添加附件弹窗
  * @FilePath: \front-web\src\views\accessoryPart\createRfq\components\addFile.vue
 -->
 
 <template>
   <iDialog 
-    title="添加附件"
+    :title="language('TIANJIAFUJIAN','添加附件')"
     :visible.sync="dialogVisible"
     @close="clearDialog"
     width="90%"
@@ -17,7 +17,7 @@
   >
     <iSearch @sure="sure" @reset="reset">
       <el-form>
-        <el-form-item v-for="(item, index) in searchList" :key="index" :label="item.label">
+        <el-form-item v-for="(item, index) in searchList" :key="index" :label="language(item.key, item.label)">
           <iSelect v-if="item.type === 'select'" v-model="searchParams[item.value]"></iSelect> 
           <iDatePicker v-else-if="item.type === 'date'" value-format="" v-model="searchParams[item.value]"></iDatePicker>
           <iInput v-else v-model="searchParams[item.value]"></iInput> 
@@ -27,7 +27,7 @@
     <div class="margin-bottom20 clearFloat margin-top20">
       <div class="floatright">
         <!--------------------选择按钮----------------------------------->
-        <iButton @click="handleSelectPart" >选择</iButton>
+        <iButton @click="handleSelectPart" >{{language('XUANZE','选择')}}</iButton>
       </div>
     </div>
     <tableList :activeItems='"a1"' selection indexKey :tableData="tableData" :tableTitle="tableTitle" :tableLoading="tableLoading" @handleSelectionChange="handleSelectionChange" @openPage="openPage"></tableList>
@@ -123,7 +123,7 @@ export default {
      */    
     handleSelectPart() {
       if (this.selectParts.length < 1) {
-        iMessage.warn('请选择附件')
+        iMessage.warn(this.language('QINGXUANZEFUJIAN','请选择附件'))
         return
       }
       this.$emit('selectPart', this.selectParts.map(item => item.spnrNum))

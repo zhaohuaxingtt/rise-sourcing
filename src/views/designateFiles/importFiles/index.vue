@@ -6,7 +6,7 @@
 <template>
     <iPage class="importFiles">
         <el-tabs v-model="tab" class="tab">
-            <el-tab-pane :label="$t('LK_XUNYUANZHIHANG')" name="source">
+            <el-tab-pane :label="language('LK_XUNYUANZHIHANG','寻源')" name="source">
                  <div class="margin-bottom33">
                     <iNavMvp right routerPage lev="2" :list="navList" @message="clickMessage" />
                 </div>
@@ -17,20 +17,21 @@
                       <span class="margin-right10">
                           <Upload 
                               hideTip
-                              :buttonText="$t('LK_DAORU')"
+                              :buttonText="language('LK_DAORU','导入')"
                               accept=" .xls,.xlsx"
                               :request="uploadImportFile"
                               :onHttpUploaded="onHttpUploaded"
                               @on-success="onDraingUploadsucess"
                           />
                       </span>
-                      <iButton  @click="downloadTemplate" > {{$t('LK_FUJIANMUBANXIAZAI')}} </iButton>
+                      <iButton  @click="downloadTemplate" > {{language('LK_FUJIANMUBANXIAZAI','附件模板下载')}} </iButton>
                     </div>
                   </div>
                   <!-- 表格区域 -->
                   <tableList
                       class="table"
                       index
+                      :lang="true"
                       :tableData="tableListData"
                       :tableTitle="tableTitle"
                       :tableLoading="loading"

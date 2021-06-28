@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2021-05-24 13:53:50
- * @LastEditTime: 2021-05-29 18:00:13
- * @LastEditors: ldh
+ * @LastEditTime: 2021-06-25 11:28:05
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\designate\suggestion\components\data.js
  */
@@ -249,28 +249,48 @@ export const mokeMouldMonitorData = [
 ]
 
 export const mouldBudgetManagementDialogTableTitle = [
-  { props: "partNum", name: "零件号", tooltip: true, key: "nominationSuggestion.LingJianHao" },
-  { props: "fsnrGsnrNum", name: "FSNR/GSNR", tooltip: true, key: "nominationSuggestion.FsnrGsnr" },
-  { props: "rfqId", name: "RFQ编号", tooltip: true, key: "nominationSuggestion.RfqBianHao" },
-  { props: "applyTime", name: "申请日期", tooltip: true, key: "nominationSuggestion.ShenQingRiQi" },
-  { props: "cartypeProZh", name: "车型项目", tooltip: true, key: "nominationSuggestion.CheXingXiangMu" },
-  { props: "budget", name: "投资预算(RMB)", tooltip: true, key: "nominationSuggestion.TouZiYuSuanRmb" },
-  { props: "csfPDiretor", name: "CSF(P)负责人", tooltip: true, key: "nominationSuggestion.CsfPFuZeRen" },
-  { props: "approvalStatus", name: "审批状态", tooltip: true, key: "nominationSuggestion.ShenPiZhuangTai" },
-  { props: "approvalComments", name: "审批意见", tooltip: true, key: "nominationSuggestion.ShenPiYiJian" },
+  { props: "partNum", name: "零件号", tooltip: true, key: "LINGJIANHAO" },
+  { props: "fsnrGsnrNum", name: "FSNR/GSNR", tooltip: true, key: "FSNRGSNR" },
+  { props: "rfqId", name: "RFQ编号", tooltip: true, key: "RFQBIANHAO" },
+  { props: "applyTime", name: "申请日期", tooltip: true, key: "SHENQINGRIQI" },
+  { props: "cartypeProZh", name: "车型项目", tooltip: true, key: "CHEXINGXIANGMU" },
+  { props: "budget", name: "投资预算(RMB)", tooltip: true, key: "TOUZIYUSUANRMB" },
+  { props: "csfPDiretor", name: "CSF(P)负责人", tooltip: true, key: "CSFPFUZEREN" },
+  { props: "approvalStatus", name: "审批状态", tooltip: true, key: "SHENPIZHUANGTAI" },
+  { props: "approvalComments", name: "审批意见", tooltip: true, key: "SHENPIYIJIAN" },
 ]
 
 export const colorPanel = [
   '#005cfa',
-  '#94c8fc',
-  '#137cbd',
-  '#92b2f1',
-  '#1316bd',
-  '#604198',
-  '#ef2121',
-  '#1890ff',
-  '#1373cc',
-  '#0e5699',
-  '#0a3a66',
-  '#051d33',
+  '#4C97FB',
+  '#1F64BF',
+  '#5F77E8',
+  '#253EB5',
+  '#4CC1FB',
+  '#1E7FAF',
+  '#7E68EB',
+  '#4229BE',
+  '#9B68EB',
+  '#5E22BE',
+  '#60BFD0',
+  '#3A8593',
+  '#3BCDB5',
+  '#269582',
+  '#66CD78',
+  '#429050',
+  '#9ACD66',
+  '#649137',
+  '#C6D13B',
+  '#8B9323',
+  '#F3D01E',
+  '#B29503',
+  '#F5BC3B',
+  '#BA860E',
+  '#EE9C60',
+  '#A54A07',
+  '#E2846E',
+  '#983720',
+  '#8289A8',
+  '#353C5D',
 ]
+

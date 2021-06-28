@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:18:01
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-16 17:51:37
+ * @LastEditTime: 2021-06-25 11:36:21
  * @Description: 流转RS单
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\rs\components\circulation\index.vue
 -->
@@ -23,14 +23,14 @@
     <iCard :title="'流转定点推荐 - ' + cardTitle" :class="!isPreview && 'margin-top20'">
       <tableList :selection="false" :tableTitle="tableTitle" :tableData="tableData" class="rsTable" />
     </iCard>
-    <iCard title="备注" :class="!isPreview && 'margin-top20'">
+    <iCard :title="language('BEIZHU','备注')" :class="!isPreview && 'margin-top20'">
       <template slot="header-control" v-if="!isPreview">
-        <iButton v-if="!isEdit" @click="handleEdit">编辑</iButton>
+        <iButton v-if="!isEdit" @click="handleEdit">{{language('BIANJI','编辑')}}</iButton>
         <template v-else>
-          <iButton @click="handleDeleteRemark">删除</iButton>
-          <iButton @click="handleAddRemark">添加</iButton>
-          <iButton @click="handleSaveRemarks" :loading="saveLoading">保存</iButton>
-          <iButton @click="cancelEdit">取消</iButton>
+          <iButton @click="handleDeleteRemark">{{language('SHANCHU','删除')}}</iButton>
+          <iButton @click="handleAddRemark">{{language('TIANJIA','添加')}}</iButton>
+          <iButton @click="handleSaveRemarks" :loading="saveLoading">{{language('BAOCUN','保存')}}</iButton>
+          <iButton @click="cancelEdit">{{language('QUXIAO','取消')}}</iButton>
         </template>
       </template>
       <div class="meetingRemark">

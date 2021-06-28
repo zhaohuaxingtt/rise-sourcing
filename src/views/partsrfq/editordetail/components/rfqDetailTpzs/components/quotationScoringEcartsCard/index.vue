@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-04-23 09:16:48
- * @LastEditTime: 2021-06-16 17:48:11
+ * @LastEditTime: 2021-06-20 01:33:52
  * @LastEditors: Please set LastEditors
  * @Description: 供应商维度展示
  * @FilePath: \front-supplier\src\views\rfqManageMent\partsOffer\components\ecartsCard\index.vue
@@ -52,7 +52,7 @@
           </span>
       </el-form>
     </div>
-    <div id='echartsPage'></div>
+    <div id='echartsPage' v-loading='refreshLoading'></div>
   </iCard>
 </template>
 <script>
@@ -160,10 +160,7 @@ export default{
       quotations(this.getQuery()).then(res=>{
         this.refreshLoading = false
         if(res.data && res.data){
-          this.updateEchars(translateGetLunci(res.data,this.$t('LK_LUNCI')))
-          
-        }else{
-          iMessage.error(res.desZh)
+          this.updateEchars(translateGetLunci(res.data,this.$t('LK_LUNCI'))) 
         }
       }).catch(err=>{
         this.refreshLoading = false
