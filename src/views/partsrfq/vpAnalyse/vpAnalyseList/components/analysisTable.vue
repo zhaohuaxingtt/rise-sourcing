@@ -1,15 +1,7 @@
 <!--
- * @Author: your name
- * @Date: 2021-06-21 19:38:02
- * @LastEditTime: 2021-06-25 11:26:05
- * @LastEditors: Please set LastEditors
- * @Description: In User Settings Edit
- * @FilePath: \front-web\src\views\partsrfq\vpAnalyse\vpAnalyseList\components\analysisTable.vue
--->
-<!--
  * @Author: youyuan
  * @Date: 2021-06-16 20:44:29
- * @LastEditTime: 2021-06-24 17:27:45
+ * @LastEditTime: 2021-06-28 19:48:12
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\analysisTool\components\analysisTable.vue
@@ -20,7 +12,7 @@
       :data="tableListData"
       style="width: 100%;margin-bottom: 20px;"
       row-key="number"
-      default-expand-all
+      :max-height="450"
       :tree-props="{children: 'children'}"
       @selection-change="handleSelectionChange">
       <el-table-column
@@ -196,7 +188,7 @@ export default {
       }
       getVpAnalysisDataList(params).then(res => {
         if(res && res.code == 200) {
-          this.page.total = res.total
+          this.page.total = res.totalCount
           this.tableListData = res.data
           this.handleTableNumber(this.tableListData, 1, null)
         }
@@ -249,10 +241,11 @@ export default {
         vpEditDTOList: this.tableListData
       }
       fetchEdit(params).then(res => {
-        if(res && res.code == 200) {
-          iMessage.success(res.desZh)
-          this.getTableData()
+        if(res) {
+          if(res. code == 200) iMessage.success(res.desZh)
+          else iMessage.error(res.desZh)
         }
+        this.getTableData()
       })
     },
     //点击提交删除选中数据
@@ -280,6 +273,7 @@ export default {
       this.$router.push({
         path: schemeUrl,
         query: {
+          type: 'edit',
           schemeId: row.id
         }
       })
