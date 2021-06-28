@@ -1,5 +1,299 @@
+<!--
+ * @Author: haojiang
+ * @Date: 2021-05-20 14:07:50
+ * @Description: 
+-->
 <template>
-  <div>
-    rs
-  </div>
+  <iPage class="designateHome">
+    <!-- 搜索区 -->
+    <search @search="getFetchData" />
+    <!-- 表格 -->
+    <iCard class="designateTable">
+      <div class="margin-bottom20 clearFloat">
+        <div class="floatright">
+          <!-- 新建 -->
+          <iButton @click="createNewSignSheet">
+            {{language('XINJIAN', '新建')}}
+          </iButton>
+          <!-- 提交 -->
+          <iButton @click="submit">
+            {{language('LK_TIJIAO', '提交')}}
+          </iButton>
+          <!-- 删除 -->
+          <iButton
+            @click="handleDelete"
+          >
+            {{ language("SHANCHU", '删除') }}
+          </iButton>
+        </div>
+      </div>
+      <tablelist
+        :tableData="tableListData"
+        :tableTitle="tableTitle"
+        :tableLoading="tableLoading"
+        :lang="true"
+        @handleSelectionChange="handleSelectionChange"
+      >
+      <!-- 签字单 -->
+      <template #signId="scope">
+        <a
+          href="javascript:;"
+          @click="viewDetail(scope.row)">
+          {{scope.row.signId}}
+        </a>
+      </template>
+
+      <!-- 提交日期 -->
+      <template #submitDate="scope">
+        <span>{{scope.row.submitDate | dateFilter("YYYY-MM-DD")}}</span>
+      </template>
+      <!-- 截止日期 -->
+      <template #dueDate="scope">
+        <span>{{scope.row.dueDate | dateFilter("YYYY-MM-DD")}}</span>
+      </template>
+      
+      </tablelist>
+      <iPagination
+        v-update
+        @size-change="handleSizeChange($event, getFetchData)"
+        @current-change="handleCurrentChange($event, getFetchData)"
+        background
+        :page-sizes="page.pageSizes"
+        :page-size="page.pageSize"
+        :layout="page.layout"
+        :current-page="page.currPage"
+        :total="page.totalCount"
+      />
+    </iCard>
+    
+  </iPage>
 </template>
+
+<script>
+import { tableTitle,mokeData } from './components/data'
+import search from './components/search'
+import tablelist from "@/views/designate/supplier/components/tableList";
+import { 
+  getNominationList,
+  batchRevoke,
+  batchDelete,
+  nominateRreeze,
+  nominateUnRreeze,
+  nominateConfirm,
+  rsFrozen,
+  rsUnFrozen
+} from '@/api/designate/nomination'
+
+import { pageMixins } from '@/utils/pageMixins'
+import filters from "@/utils/filters"
+
+import {
+  iPage,
+  iCard,
+  iButton,
+  iPagination,
+  iMessage
+} from "rise";
+
+export default {
+  mixins: [ filters, pageMixins ],
+  data() {
+    return {
+      tableListData: mokeData,
+      tableLoading: false,
+      tableTitle: tableTitle,
+      selectTableData: [],
+      startLoding: false,
+      selDialogVisibal: false
+    }
+  },
+  components: {
+    iPage,
+    iCard,
+    iButton,
+    iPagination,
+    search,
+    tablelist
+  },
+  mounted() {
+    // this.getFetchData()
+  },
+  methods: {
+    // 新建签字单
+    createNewSignSheet() {
+      // 缓存/更新定点申请类型
+      this.$store.dispatch('setNominationTypeDisable', false)
+      this.$nextTick(() => {
+        const routeData = this.$router.resolve({path: '/designate/rfqdetail'})
+        window.open(routeData.href, '_blank')
+      })
+    },
+    // 查看详情
+    viewDetail(row) {
+      const routeData = this.$router.resolve({
+          path: '/sourcing/partsnomination/signSheet/details',
+          query: {
+            signId: row.signId
+          }
+        })
+        window.open(routeData.href, '_blank')
+    },
+    // 获取定点管理列表
+    getFetchData(params = {}) {
+      this.tableLoading = true
+      getNominationList({
+        ...params,
+        current: this.page.currPage,
+        size: this.page.pageSize
+      }).then(res => {
+        this.tableLoading = false
+        if (res.code === '200') {
+          this.tableListData = res.data.records || []
+          this.page.totalCount = res.data.total
+          console.log(this.selectTableData)
+        } else {
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
+        console.log(res)
+      }).catch(e => {
+        this.tableLoading = false
+      })
+    },
+    // 多选
+    handleSelectionChange(data) {
+      this.selectTableData = data
+    },
+    // 批量撤回
+    async handleBatchRevoke() {
+      if (!this.selectTableData.length) {
+        iMessage.error(this.language('nominationSuggestion_QingXuanZeZhiShaoYiTiaoShuJu','请选择至少一条数据'))
+        return
+      }
+      const confirmInfo = await this.$confirm(this.language('revokeSure','您确定要执行撤回操作吗？'))
+      if (confirmInfo !== 'confirm') return
+      const idList = this.selectTableData.map(o => Number(o.id))
+      try {
+        const res = await batchRevoke({nominateIdArr: idList})
+        if (res.code === '200') {
+          iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'))
+          this.getFetchData()
+        } else {
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
+      } catch (e) {
+        iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
+      }
+    },
+    // 批量删除
+    async handleBatchDelete() {
+      if (!this.selectTableData.length) {
+        iMessage.error(this.language('nominationSuggestion_QingXuanZeZhiShaoYiTiaoShuJu', '请选择至少一条数据'))
+        return
+      }
+      const confirmInfo = await this.$confirm(this.language('deleteSure','您确定要执行删除操作吗？'))
+      if (confirmInfo !== 'confirm') return
+      const idList = this.selectTableData.map(o => Number(o.id))
+      try {
+        const res = await batchDelete({nominateIdArr: idList})
+        if (res.code === '200') {
+          iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'))
+          this.getFetchData()
+        } else {
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
+      } catch (e) {
+        iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
+      }
+    },
+    /**
+     * 冻结
+     * type: true 冻结
+     * type: false 解冻
+     */
+    async freeze(type = true){
+      const {selectTableData} = this;
+      if(!selectTableData.length){
+        iMessage.warn(this.language('nominationSuggestion_QingXuanZeZhiShaoYiTiaoShuJu','请选择至少一条数据'));
+      }else{
+        const confirmInfo = await this.$confirm(this.language('LK_NINQUERENZHIXINGDONGJIECAOZUOMA','您确定要执行冻结操作吗？'));
+        if (confirmInfo !== 'confirm') return;
+        const nominateIdArr = selectTableData.map((item)=>Number(item.id));
+        const data = {
+          nominateIdArr,
+        };
+        try {
+          const res = type ? await nominateRreeze(data) : await nominateUnRreeze(data)
+          const { code } = res;
+          if(code == 200){
+            iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
+            this.getFetchData()
+          }else{
+            iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+          }
+        } catch (e) {
+          iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
+        }
+      }
+    },
+
+    // 定点
+    async confirm(){
+      const {selectTableData} = this;
+      if(!selectTableData.length){
+        iMessage.warn(this.language('nominationSuggestion_QingXuanZeZhiShaoYiTiaoShuJu','请选择至少一条数据'));
+      }else{
+        const confirmInfo = await this.$confirm(this.language('LK_NINQUERENZHIXINGDINGDIANCAOZUOMA','您确定执行定点操作吗？'));
+        if (confirmInfo !== 'confirm') return;
+        const nomiAppIdList = selectTableData.map((item)=>Number(item.id));
+        const data = {
+          nomiAppIdList,
+        };
+        await nominateConfirm(data).then((res)=>{
+          const { code } = res;
+          if(code == 200){
+            iMessage.success(this.language('LK_CAOZUOCHENGGONG', '操作成功'));
+            this.getFetchData()
+          }else{
+            iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+          }
+        }).catch((e)=>{
+          iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
+        })
+      }
+    },
+    // rs冻结
+    async frozeRS(state){
+      const {selectTableData} = this;
+      if(!selectTableData.length){
+        iMessage.warn(this.language('nominationSuggestion_QingXuanZeZhiShaoYiTiaoShuJu','请选择至少一条数据'));
+      }else{
+        const confirmInfo = await this.$confirm(this.language('LK_NINQUERENZHIXINGDONGJIECAOZUOMA', '您确定要执行冻结操作吗？'));
+        if (confirmInfo !== 'confirm') return;
+        const nomiAppIdList = selectTableData.map((item)=>Number(item.id));
+        const data = {
+          ids: nomiAppIdList,
+        };
+        try {
+          const res = state ? await rsFrozen(data) : await rsUnFrozen(data)
+          const { code } = res;
+          if(code == 200){
+            iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
+            this.getFetchData()
+          }else{
+            iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+          }
+        } catch(e) {
+          iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
+        }
+      }
+    },
+
+  }
+}
+</script>
+
+<style lang="scss" scoped>
+.designateSearch {
+  margin-top: 20px;
+}
+</style>
