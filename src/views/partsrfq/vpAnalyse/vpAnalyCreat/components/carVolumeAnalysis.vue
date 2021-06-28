@@ -85,6 +85,7 @@ export default {
         };
         const res = await getCarModelProjectList(req);
         if (res.result) {
+          this.handleCurrentChange(res.data[0])
           this.tableListData = res.data;
           var actualProEndLastMonthSum = 0
           var planTotalProSum = 0
@@ -108,7 +109,7 @@ export default {
       }
     },
     handleCurrentChange(data) {
-      this.$emit('handleCurrentChange',data)
+      this.$emit('handleCurrentChange', data)
     }
   },
   // 生命周期 - 创建完成（可以访问当前this实例）

@@ -5,6 +5,7 @@
  * @LastEditors: zbin
  * @Descripttion: your project
  */
+
 export const tableTitle = [
   { props: 'carClassify', name: '单位：辆', key: 'TPZS.DWL', width: 100 },
   { props: 'actualProEndLastMonth', name: '', key: '' },
@@ -21,12 +22,12 @@ export const partsTableTitle = [
   { props: 'supplyBeginTime', name: 'SOP时间', key: 'TPZS.SOPSH', width: 100 },
 ]
 export const partsDialogTableTitle = [
-  { props: 'developerNumber', name: '零件号', key: 'LK_SPAREPARTSNUMBER' },
-  { props: 'yield', name: 'FS号', key: 'LK_FSHAO' },
-  { props: 'productionNumber', name: 'RFQ号', key: 'LK_RFQHAO' },
-  { props: 'isSetTradeUnion', name: '车型项目名称', key: 'LK_CHEXINGXIANGMUMINGCHENG' },
-  { props: 'isSetTradeUnion', name: '工厂', key: 'TPZS.GC' },
-  { props: 'isSetTradeUnion', name: '状态', key: 'LK_ZHUANGTAI' },
-  { props: 'isSetTradeUnion', name: '材料组', key: 'TPZS.CLZ' },
-  { props: 'isSetTradeUnion', name: '供应商名称', key: 'LK_GONGYINGSHANGMINGCHENG' },
+  { props: 'partsId', name: '零件号', key: 'LK_SPAREPARTSNUMBER' },
+  { props: 'fsId', name: 'FS号', key: 'LK_FSHAO' },
+  { props: 'rfqId', name: 'RFQ号', key: 'LK_RFQHAO' },
+  { props: 'carClassifyProject', name: '车型项目名称', key: 'LK_CHEXINGXIANGMUMINGCHENG' },
+  { props: 'factory', name: '工厂', key: 'TPZS.GC' },
+  { props: 'fixedPointStatus', name: '状态', key: 'LK_ZHUANGTAI' },
+  { props: 'materialGroup', name: '材料组', key: 'TPZS.CLZ' },
+  { props: 'supplierName', name: '供应商名称', key: 'LK_GONGYINGSHANGMINGCHENG' },
 ]
