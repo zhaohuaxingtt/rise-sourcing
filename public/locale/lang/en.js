@@ -985,6 +985,24 @@
         'LK_FUKUANJIHUADINGZHIYUCHAKAN':  '付款计划制定与查看',   //  付款计划制定与查看
         'LK_YUAN': '元',    //  元
 
+        'LK_TUICHUBIANJI': '退出编辑',    //  退出编辑
+        'LK_SHANGCHUANQINGDAN': '上传清单',    //  上传清单
+        'LK_YUEDUJIHUA': '月度计划',    //  月度计划
+        'LK_DANGNIANFUKUANJIHUA': '当年付款计划',    //  当年付款计划
+        'LK_CINIANFUKUANJIHUA': '次年付款计划',    //  次年付款计划
+        'LK_YIYUE': 'Jan',    //  一月
+        'LK_ERYUE': 'Feb',    //  二月
+        'LK_SANYUE': 'Mar',    //  三月
+        'LK_WUYUE': 'Apr',    //  四月
+        'LK_YIYUE': 'May',    //  五月
+        'LK_LIUYUE': 'Jun',    //  六月
+        'LK_QIYUE': 'Jul',    //  七月
+        'LK_BAYUE': 'Aug',    //  八月
+        'LK_JIUYUE': 'Sep',    //  九月
+        'LK_SHIYUE': 'Oct',    //  十月
+        'LK_SHIYIYUE': 'Nov',    //  十一月
+        'LK_SHIERYUE': 'Dec',    //  十二月
+
         // 定点管理
         'nominationLanguage': {
             'DingDianGuanLi': '定点管理',
