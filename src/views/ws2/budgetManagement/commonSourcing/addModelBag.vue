@@ -94,9 +94,21 @@
             </iSelect>
           </div>
           <div class="btn">
-             <iButton @click="saveAs">{{$t('保存为新版本')}}</iButton>
-            <iButton>{{$t('上传清单')}}</iButton>
-            <iButton>{{$t('下载清单')}}</iButton>
+            <iButton @click="saveAs">{{$t('保存为新版本')}}</iButton>
+            <Upload
+                class="upload"
+                ref="uploadRef"
+                :action="actionUrl"
+                :on-change="beforeUpload"
+                :on-success="onSuccess"
+                :before-upload="beforeAvatarUpload"
+                :before-remove="beforeRemove"
+                :limit="1"
+                :show-file-list="false"
+                :file-list="fileList">
+              <iButton>{{ $t('上传清单') }}</iButton>
+            </Upload>
+            <iButton @click="hanldeDownload">{{$t('下载清单')}}</iButton>
             <iButton>{{$t('发送项目采购员')}}</iButton>
           </div>
         </div>
@@ -140,17 +152,20 @@ import {
   iTableList
 } from "@/components"
 import {iButton, iMessage, iSelect, iCard} from 'rise'
+import {Upload} from "element-ui"
  import {
   cateGoryCombo,
   getDepartmentsCombo,
   carTypePackageCombo,
   packageVersionCombo,
   commonSourcingView,
+   commonSourcingExport,
   saveAsVersion} from '@/api/ws2/commonSourcing'
 import {iNavWS2} from "@/components";
 import echarts from "@/utils/echarts";
 import {getCartypePulldown} from "@/api/ws2/budgetManagement/edit";
-import {addModelBagTitle} from "pages/ws2/dataBase/components/data";
+import {addModelBagTitle, form} from "pages/ws2/dataBase/components/data";
+import {download} from "@/api/ws2/dataBase";
 
 export default {
   name: "commonSourcing",
@@ -159,7 +174,8 @@ export default {
     iNavWS2,
     iSelect,
     iTableList,
-    iCard
+    Upload,
+    iCard,
   },
   data() {
     return {
@@ -179,6 +195,11 @@ export default {
       DepartmentsComboList: [],
       materialGroup: [],
       materialGroupList: [],
+    }
+  },
+  computed: {
+    actionUrl() {
+      return process.env.VUE_APP_CSBUDGET + '/upload/' + this.packageVersion
     }
   },
   mounted() {
@@ -227,7 +248,7 @@ export default {
       });
 
     },
-    getCommonSourcingView(carTypePackageId){
+    getCommonSourcingView(){
        this.contentLoading = true
       commonSourcingView({
         carTypePackageId: this.carTypePackageId,
@@ -517,6 +538,23 @@ export default {
     handleTableRow(row){
       row.index = row.rowIndex
     },
+    hanldeDownload(){
+      this.mainLoading = true;
+      let params = {
+        cartypePackageId: this.carTypePackageId,
+        versionId: this.packageVersion
+      }
+      commonSourcingExport(params)
+          .then((res) => {
+            const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
+            if (Number(res.code) === 0) {
+              iMessage.success(result)
+            } else {
+              iMessage.error(result)
+            }
+            this.mainLoading = false;
+          }).catch(() => (this.mainLoading = false));
+    },
     saveAs(){
       this.mainLoading = true
       saveAsVersion({
@@ -683,6 +721,11 @@ export default {
           width: 220px;
           margin-left: 20px;
           margin-right: 20px;
+        }
+
+        .upload{
+          display: inline-block;
+          margin: 0 10px;
         }
       }
     }
