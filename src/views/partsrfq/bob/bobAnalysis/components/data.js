@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-06-21 20:05:57
- * @LastEditTime: 2021-06-23 20:03:18
+ * @LastEditTime: 2021-06-28 14:45:19
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails\data1.js
@@ -541,31 +541,53 @@ export const tableList = {
   headerList: [
     {
       id: "1",
-      label: "Supplier A",
-      prop: "SupplierA",
+      label: "",
+      prop: "title",
     },
     {
       id: "2",
+      label: "Supplier A",
+      prop: "SupplierA",
+      children: [
+        {
+          id: "2-1",
+          label: "",
+          prop: "sA",
+        },
+        {
+          id: "2-2",
+          label: "",
+          prop: "sB",
+        },
+        {
+          id: "2-3",
+          label: "",
+          prop: "sC",
+        },
+      ],
+    },
+    {
+      id: "3",
       label: "Supplier B",
       prop: "SupplierB",
     },
     {
-      id: "3",
+      id: "4",
       label: "Supplier C",
       prop: "SupplierC",
     },
     {
-      id: "4",
+      id: "5",
       label: "Supplier D",
       prop: "SupplierD",
     },
     {
-      id: "5",
+      id: "6",
       label: "Supplier E",
       prop: "SupplierE",
     },
     {
-      id: "6",
+      id: "7",
       label: "Supplier F",
       prop: "SupplierF",
     },
@@ -574,22 +596,22 @@ export const tableList = {
     {
       id: "1",
       title: "原材料/散件费用",
-      SupplierA: "25.00",
+      SupplierA: "23.46",
       SupplierB: "25.00",
-      SupplierC: "30.48",
-      SupplierD: "20.04",
-      SupplierE: "25.40",
-      SupplierF: "29.90",
+      SupplierC: "25.00",
+      SupplierD: "25.00",
+      SupplierE: "25.00",
+      SupplierF: "25.00",
       children: [
         {
           id: "1-1",
           title: "散件 1",
-          SupplierA: "23.46",
-          SupplierB: "25.00",
-          SupplierC: "25.00",
-          SupplierD: "25.00",
-          SupplierE: "25.00",
-          SupplierF: "25.00",
+          sA: "23.46",
+          sB: "25.00",
+          sC: "25.00",
+          sD: "25.00",
+          sE: "25.00",
+          sF: "25.00",
           children: [
             {
               id: "1-1-1",
@@ -698,8 +720,14 @@ export const tableList = {
         {
           id: "1-2",
           title: "散件 2",
-          SupplierA: ["23.46", "25", "26"],
-          SupplierB: ["23.46", "25", "26"],
+          SupplierA: [
+            {
+              sA: "25.00",
+              sB: "25.00",
+              sC: "30.48",
+            },
+          ],
+          SupplierB: [{ sD: "20.04", sE: "25.40", sF: "29.90" }],
           SupplierC: ["23.46", "25", "26"],
           SupplierD: ["23.46", "25", "26"],
           SupplierE: ["23.46", "25", "26"],

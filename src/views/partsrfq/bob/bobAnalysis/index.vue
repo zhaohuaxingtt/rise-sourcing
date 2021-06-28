@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 10:50:38
- * @LastEditTime: 2021-06-25 14:43:31
+ * @LastEditTime: 2021-06-25 16:32:00
  * @LastEditors: Please set LastEditors
  * @Description: 费用详情
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails.vue
@@ -10,7 +10,11 @@
   <iCard>
     <template v-slot:header>
       <div class="flex-between-center titleBox">
-        <span>费用详情</span>
+        <div>
+          <span>费用详情</span>
+          <span v-if="remark" class="margin-left40">{{ remark }}</span>
+        </div>
+
         <div>
           <iButton v-show="flag" @click="open">全部展开</iButton>
           <iButton v-show="flag1" @click="close">全部收回</iButton>
@@ -21,13 +25,18 @@
         </div>
       </div>
     </template>
+    <demo></demo>
     <table1 :tableList="tableList"></table1>
     <table2 :dataList="dataList2"></table2>
     <table3 :dataList="dataList3"></table3>
     <table4 :dataList="dataList4"></table4>
     <table5 :dataList="dataList5"></table5>
     <table6 :dataList="dataList6"></table6>
-    <remarkDialog  :visible="visible" @sure="sure" @cancel="cancel"></remarkDialog>
+    <remarkDialog
+      :visible="visible"
+      @remake="sure"
+      @cancel="cancel"
+    ></remarkDialog>
   </iCard>
 </template>
 
@@ -40,6 +49,7 @@ import table4 from "./components/table4.vue";
 import table5 from "./components/table5.vue";
 import table6 from "./components/table6.vue";
 import remarkDialog from "./components/remarkDialog.vue";
+
 import {
   dataList1,
   dataList2,
@@ -60,7 +70,7 @@ export default {
     table4,
     table5,
     table6,
-    remarkDialog
+    remarkDialog,
   },
   data() {
     return {
@@ -75,6 +85,7 @@ export default {
       tableList,
       expends: [],
       visible: false,
+      remark: "",
     };
   },
   mounted() {
@@ -130,8 +141,12 @@ export default {
         }
       }
     },
-    cancel(e) {
-      this.visible=e
+    cancel(flag) {
+      this.visible = flag;
+    },
+    sure(val, flag) {
+      this.visible = flag;
+      this.remark = val;
     },
     // 递归获取checked属性方法
     getTreeExpandKeys(obj) {

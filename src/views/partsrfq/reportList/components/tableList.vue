@@ -20,11 +20,12 @@
 </template>
 
 <script>
-	import tablelist from '@/views/partsign/home/components/tableList'
-
 	export default {
 		props: {
-			...tablelist.props,
+			tableLoading: {
+				type: Boolean,
+				default: false
+			},
 			tableData: {
 				type: Array,
 				default: () => ([])
