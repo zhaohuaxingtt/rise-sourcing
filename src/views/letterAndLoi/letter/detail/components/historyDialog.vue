@@ -15,10 +15,10 @@
         <tableList
             class="table"
             index
+            :lang="true"
             :tableData="tableListData"
             :tableTitle="tableTitle"
             :tableLoading="loading"
-            @handleSelectionChange="handleSelectionChange"
         >
             <template #fileName="scope">
                 <a class="trigger" href="javascript:;" @click="downloadLine(scope.row)">
@@ -49,6 +49,9 @@ import {
 import tableList from "@/views/partsign/editordetail/components/tableList"
 import { historyListTitle } from '../../../data'
 import { pageMixins } from "@/utils/pageMixins"
+import {
+  getHistoryLetter,
+} from '@/api/letterAndLoi/letter'
 export default {
     name:'historyDialog',
     mixins: [ pageMixins ],
@@ -61,13 +64,16 @@ export default {
       dialogVisible:{
         type:Boolean,
         default:false,
+      },
+      nominateLetterId:{
+        type:String,
+        default:'',
       }
     },
     data(){
       return{
         tableTitle:historyListTitle,
         tableListData:[],
-        selectItems:[],
       }
     },
     created(){
@@ -78,11 +84,21 @@ export default {
           this.$emit('changeVisible', false)
         },
         // 获取列表
-        getList(){
-
-        },
-        handleSelectionChange(val) {
-            this.selectItems = val;
+        async getList(){
+          const { nominateLetterId,page } = this; 
+          const data = {
+            nominateLetterId,
+             current:page.currPage,
+            size:page.pageSizes,
+          };
+          await getHistoryLetter(data).then((res)=>{
+            const { code,data={} } = res;
+            if(code == 200){
+              const {records=[],total} = data;
+              this.tableListData = records;
+              this.page.totalCount = total;
+            }
+          })
         },
     }
 }

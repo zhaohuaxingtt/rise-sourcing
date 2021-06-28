@@ -1,7 +1,7 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-05-25 09:42:07
- * @LastEditTime: 2021-06-26 22:02:00
+ * @LastEditTime: 2021-06-28 15:52:43
  * @Description: 业务分配模拟
 -->
 
@@ -33,7 +33,7 @@
                   </iButton>
                   <!-- 退出编辑 -->
                   <iButton @click="exit">
-                    {{ language("nominationSuggestion_TuiChuBianJi",'退出编辑') }}
+                    {{ language("TUICHUBIANJI",'退出编辑') }}
                   </iButton>
                   <iButton @click="submit">
                     {{ language("LK_BAOCUN",'保存') }}
