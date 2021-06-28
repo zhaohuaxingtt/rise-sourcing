@@ -346,10 +346,10 @@ export function updateBatchSupplierProducePlace(params) {
 //根据供应商查询其中报价单的状态
 
 // 撤回发送KM
-export function hasShowDelegate(supplierId) {
+export function hasShowDelegate(params) {
     return quotation({
-        url: `/hasShowDelegate/${supplierId}`,
-        method: 'POST'
+        url: `/hasShowDelegate/${params.rfqId}/${params.round}/${params.supplierId}`,
+        method: 'GET'
     })
 }
 
