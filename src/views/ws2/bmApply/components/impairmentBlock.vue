@@ -122,7 +122,7 @@ export default {
 
         if(res.data){
           iMessage.success(result);
-          this.getTableData();
+          this.findBmAekoMinusList();
         }else{
           iMessage.error(result);
         }
@@ -148,7 +148,7 @@ export default {
 
         if(res.data){
           iMessage.success(result);
-          this.getTableData();
+          this.findBmAekoMinusList();
           this.selectTableList = [];
         }else{
           iMessage.error(result);
