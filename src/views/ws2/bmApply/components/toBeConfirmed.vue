@@ -21,7 +21,7 @@
           </iSelect>
         </div>
         <div>
-          <iButton @click="confirmApply">{{ $t('LK_QUERENSHENQING') }}</iButton><!-- 确认申请 -->
+          <iButton @click="confirmApply" :loading="confirmApplyLoading">{{ $t('LK_QUERENSHENQING') }}</iButton><!-- 确认申请 -->
           <iButton @click="toVoid" :loading="bmCancelLoading">{{ $t('LK_ZUOFEI') }}</iButton><!-- 作废 -->
           <iButton @click="downloadList">{{ $t('LK_XIAZAIQINGDAN') }}</iButton><!-- 下载清单 -->
         </div>
@@ -79,7 +79,7 @@ import {
 } from "rise";
 import UnitExplain from "./unitExplain";
 import { bmTableHead } from "./data";
-import { bmCarTypePullDown, findBmWaitConfirmList, bmCancel } from "@/api/ws2/bmApply";
+import { bmCarTypePullDown, findBmWaitConfirmList, bmCancel, bmConfirm } from "@/api/ws2/bmApply";
 import { pageMixins } from "@/utils/pageMixins";
 import { excelExport } from '@/utils/filedowLoad';
 
@@ -117,6 +117,7 @@ export default {
         pageSize: 10,
       },
       bmCancelLoading: false,
+      confirmApplyLoading: false,
     }
   },
 
@@ -174,7 +175,23 @@ export default {
 
     //  确认申请
     confirmApply(){
+      this.confirmApplyLoading = true;
+      bmConfirm({
+        ids: this.selectTableList.map(item => item.id)
+      }).then(res => {
+        const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn;
 
+        if(res.data){
+          iMessage.success(result);
+          this.getTableData();
+        }else{
+          iMessage.error(result);
+        }
+
+        this.confirmApplyLoading = false;
+      }).catch(err => {
+        this.confirmApplyLoading = false;
+      })
     },
 
     getCarTypePullDown(){

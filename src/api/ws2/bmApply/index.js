@@ -2,6 +2,15 @@ import axios from '@/utils/axios'
 
 const VUE_APP_BMAPPROVE = axios(process.env.VUE_APP_BMAPPROVE);
 
+// 确认申请
+export function bmConfirm(parmars) {
+  return VUE_APP_BMAPPROVE({
+      url: '/bmConfirm',
+      method: 'POST',
+      data: parmars
+  })
+}
+
 // 作废
 export function bmCancel(parmars) {
   return VUE_APP_BMAPPROVE({
