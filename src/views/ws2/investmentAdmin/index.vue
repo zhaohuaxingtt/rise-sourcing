@@ -33,8 +33,8 @@ export default {
       tabIndex: 0,
       urlList: {
         0: '',
-        1: '/investmentAdmin/yearlyPlan',
-        2: '/investmentAdmin/monthlyPlan'
+        1: '/tooling/investmentAdmin/yearlyPlan',
+        2: '/tooling/investmentAdmin/monthlyPlan'
       },
     }
   },

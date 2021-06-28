@@ -18,7 +18,7 @@
 
           <!-- RS单号 -->
           <template #rsNum="scope">
-            <div class="table-link">{{scope.row.rsNum}}</div>
+            <div  @click="openViewPdf" class="table-link">{{scope.row.rsNum}}</div>
           </template>
         </iTableList>
 
@@ -100,6 +100,12 @@ export default {
   },
 
   methods: {
+
+    //  预览RSpdf
+    openViewPdf(scope){
+      const url = process.env.VUE_APP_BACOMMODITYAPPLY + '/exportRsFull/' + scope.row.rsNum;
+      window.open(url);
+    },
 
     //  打开详情
     openBMDetail(scope){
