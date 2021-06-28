@@ -12,7 +12,7 @@
       <el-tab-pane :label="$t('LK_XUNYUANZHIHANG')" name="source">
         <div>
           <div class="margin-bottom33">
-            <iNavMvp @change="change" right routerPage lev="2" :list="navList" @message="clickMessage" />
+            <iNavMvp @change="change" lang right routerPage lev="2" :list="navList" @message="clickMessage" />
           </div>
           <!------------------------------------------------------------------------>
           <!--                  search 搜索模块                                   --->

@@ -251,6 +251,7 @@ module.exports = {
                 // target: 'http://10.160.141.72:8029', // 李自豪
                 // target: 'http://192.168.50.152:8029', // 谭易平
                 // target: 'http://10.160.137.16:8029', // 马浩
+                // target: 'http://192.168.50.240:9029', // 廖理
                 changeOrigin: true,
                 pathRewrite: {
                     "^/rfqApi": "",

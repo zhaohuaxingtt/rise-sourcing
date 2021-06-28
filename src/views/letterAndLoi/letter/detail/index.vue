@@ -6,15 +6,15 @@
 <template>
     <iPage class="letterDetail">
         <div class="header clearFloat">
-        <div class="title">{{language('LK_DINGDIANXINBIANHAO','定点信编号')}}: {{letterNum}}</div>
+        <div class="title">{{language('LK_DINGDIANXINBIANHAO','定点信编号')}}: {{detailInfo.letterNum}}</div>
         <div class="control">
             <span v-if="isEdit">
-                <iButton>{{language('LK_BAOCUN','保存')}}</iButton>
+                <iButton @click="save">{{language('LK_BAOCUN','保存')}}</iButton>
                 <iButton @click="changeEditStatus">{{language('LK_QUXIAO','取 消')}}</iButton>
             </span>
             <span v-else>
                 <iButton @click="edit">{{language('LK_BIANJI','编辑')}}</iButton>
-                <iButton >{{language('LK_QUERENBINGTIJIAO','确认并提交')}}</iButton>
+                <!-- <iButton >{{language('LK_QUERENBINGTIJIAO','确认并提交')}}</iButton> -->
                 <iButton @click="lineSure">{{language('LK_LINEQUEREN','LINIE确认')}}</iButton>
                 <iButton @click="lineBack">{{language('LK_LINETUIHUI','LINIE退回')}}</iButton>
                 <iButton v-if="radioType=='NonStandard'">{{language('LK_WANCHENGDINGDIANXIN','完成定点信')}}</iButton>
@@ -33,31 +33,31 @@
                 <iFormGroup row="2">
                     <div class="col">
                         <iFormItem :label="language('LK_GONGYINGSHANGLIANXIR','供应商联系⼈')+':'">
-                            <iSelect v-update v-if="isEdit">
+                            <iSelect v-update v-if="isEdit" v-model="detailInfo.supplierUserId">
                                 <el-option
-                                    v-for="item in selectOptions || []"
-                                    :key="item.value"
-                                    :label="item.label"
-                                    :value="item.value">
+                                    v-for="item in supplierList || []"
+                                    :key="item.id"
+                                    :label="$i18n.locale === 'zh' ? item.nameZh : item.nameEn"
+                                    :value="item.id">
                                 </el-option>  
                             </iSelect>
-                            <iText v-else>{{supplierUserName}}</iText>
+                            <iText v-else>{{detailInfo.supplierUserName}}</iText>
                         </iFormItem>
                         <iFormItem label='LINIE：'>
-                            <iSelect v-update v-if="isEdit">
+                            <iSelect v-update v-if="isEdit" v-model="detailInfo.linieId">
                                 <el-option
-                                    v-for="item in selectOptions || []"
-                                    :key="item.value"
-                                    :label="item.label"
-                                    :value="item.value">
+                                    v-for="item in linieList || []"
+                                    :key="item.id"
+                                    :label="$i18n.locale === 'zh' ? item.nameZh : item.nameEn"
+                                    :value="item.id">
                                 </el-option>  
                             </iSelect>
-                            <iText v-else>{{linieName}}</iText>
+                            <iText v-else>{{detailInfo.linieName}}</iText>
                         </iFormItem>
                     </div>
                 </iFormGroup>
                 <!-- 标准定点信 -->
-                <el-checkbox v-if="radioType=='standard'" v-model="isCheckClause" :disabled="!isEdit">包含以下条款：所有批量前⽣产（PVS) 和零批量（0-Serien）所需要的零件按照批量供货价格结算，Alle PVS-u，0-Serien-Telle warden zum Serienpreis abgerechnet</el-checkbox>
+                <el-checkbox v-if="radioType=='standard'" v-model="detailInfo.isCheckClause" :disabled="!isEdit">包含以下条款：所有批量前⽣产（PVS) 和零批量（0-Serien）所需要的零件按照批量供货价格结算，Alle PVS-u，0-Serien-Telle warden zum Serienpreis abgerechnet</el-checkbox>
                 
             </div>
         </iCard>
@@ -79,6 +79,7 @@ import {
     iFormItem,
     iText,
     iSelect,
+    iMessage,
 } from 'rise';
 import logButton from "@/views/partsign/editordetail/components/logButton"
 import historyDialog from './components/historyDialog'
@@ -88,6 +89,9 @@ import {
     downloadLetterFile,
     liniefirm,
     liniereturn,
+    getSupplierUsers,
+    getBuyers,
+    update,
 } from  '@/api/letterAndLoi/letter'
 export default {
     name:'letterDetail',
@@ -109,12 +113,12 @@ export default {
             isEdit:false, // 编辑状态
             showHistory:false, // 历史定点信弹窗
             selectOptions:[],
-            letterNum:'',
-            supplierUserName:'', // 供应商名称
-            linieName:'', // line名称
             nomiAppId:'', // 定点申请id
-            isCheckClause:false, // 是否勾选协议
             nominateLetterId:'', // 定点信id
+            linieList:[], // line列表
+            supplierList:[], // 供应商列表
+            detailInfo:{}, // 详情
+
         }
     },
     created(){
@@ -124,6 +128,9 @@ export default {
         // 编辑状态变更
         changeEditStatus(){
             const { isEdit } = this;
+            if(isEdit){
+                this.getDetail();
+            }
             this.isEdit = !isEdit;
         },
         // 编辑
@@ -142,17 +149,34 @@ export default {
             await getLetterDetail({nominateLetterId:id}).then((res)=>{
                 const {code,data={}} = res;
                 if(code == 200){
-                    const { templateType,letterNum,supplierUserName,linieName,nomiAppId,isCheckClause,nominateLetterId } = data;
+                    const { templateType,nominateAppId,nominateLetterId,supplierId } = data;
+                    this.detailInfo = data;
                     this.radioType = templateType==0 ? 'standard' : 'NonStandard';
-                    this.letterNum = letterNum;
-                    this.supplierUserName = supplierUserName;
-                    this.linieName = linieName;
-                    this.nomiAppId = nomiAppId;
-                    this.isCheckClause = isCheckClause;
+                    this.nomiAppId = nominateAppId;
                     this.nominateLetterId = nominateLetterId;
+                    this.getUserList(supplierId);
 
+                }else{
+                     iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
                 }
             }).catch((err)=>{})
+        },
+        // 获取联系人列表
+        getUserList(suppierId){
+            // 供应商
+            getSupplierUsers({suppierId}).then((res)=>{
+               const { code,data=[] } = res;
+                if(code==200){
+                    this.supplierList = data;
+                }
+            })
+            // line
+            getBuyers({tagId:4}).then((res)=>{
+               const { code,data=[] } = res;
+               if(code ==200){
+                   this.linieList = data;
+               }
+            })
         },
         // 导出定点信
         async downloadFiles(){
@@ -168,6 +192,8 @@ export default {
                  const { code } = res;
                  if(code == 200){
                      this.getDetail();
+                 }else{
+                      iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
                  }
                 }).catch((err)=>{});
             }
@@ -183,8 +209,39 @@ export default {
                  const { code } = res;
                  if(code == 200){
                      this.getDetail();
+                 }else{
+                      iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
                  }
                 }).catch((err)=>{});
+            }
+        },
+
+        // 保存
+        async save(){
+            console.log(this.detailInfo);
+            const { detailInfo,linieList,radioType } = this;
+            const { supplierUserId ,linieId} = detailInfo;
+            // 获取所选供应商和line的名称
+            const linieName = linieList.filter((item)=>item.id == linieId);
+            const supplierUserName = linieList.filter((item)=>item.id == supplierUserId);
+            const data = {
+                ...detailInfo,
+                linieName:linieName[0] ? linieName[0].nameZh : '',
+                supplierUserName:supplierUserName[0] ? supplierUserName[0].nameZh : '',
+                templateType:radioType==='standard' ? 0 : 1,
+            }
+            console.log(data);
+            const confirmInfo = await this.$confirm(this.language('submitSure','您确定要执行提交操作吗？'));
+            if(confirmInfo){
+                await update(data).then((res)=>{
+                    if(res.code==200){
+                         iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
+                         this.getDetail();
+                         this.isEdit = false;
+                    }else{
+                         iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+                    }
+                })
             }
         },
     }

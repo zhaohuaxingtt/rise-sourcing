@@ -56,6 +56,10 @@
                     <span class="link" >{{ scope.row.letterNum }}</span>
                 </a>
             </template>
+            <!-- 定点信状态 -->
+            <template #status="scope">
+                <span >{{ scope.row.status && scope.row.status.desc }}</span>
+            </template>
         </tableList>
         <!-- 分页 -->
         <iPagination
@@ -155,28 +159,30 @@ export default {
     methods:{
         // 获取列表
         async getList(){
-            console.log(this.searchParams);
+            this.loading = true;
             const {searchParams,page} = this;
             // 若有定点起止时间将其拆分成两个字段
             const {nominateDate=[]} = searchParams;
             const data = {
                 current:page.currPage,
-                size:page.pageSizes,
-
+                size:page.pageSize
             };
             if(nominateDate.length){
                 data['nominateDateStart'] = nominateDate[0];
                 data['nominateDateEnd'] = nominateDate[1];
             }
             await getLetterList({...searchParams,...data}).then((res)=>{
+                this.loading = false;
                 const {code,data={}} = res;
                 if(code==200){
                    const {records=[],total} = data;
                    this.tableListData = records;
                    this.page.totalCount = total;
+                }else{
+                    iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
                 }
             }).catch((err)=>{
-
+                this.loading = false;
             })
             
         },
@@ -253,7 +259,12 @@ export default {
                 const {selectItems} = this;
                 const nominateLetterIds = (selectItems.map((item)=>item.nominateLetterId)).join();
                 await fsConfirm({nominateLetterIds}).then((res)=>{
-
+                    if(res.code == 200){
+                        iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
+                        this.getList();
+                    }else{
+                        iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+                    }
                 }).catch((err)=>{});
             }else{
                 console.log(isNext,'CANCEL');
@@ -265,11 +276,17 @@ export default {
         async lineSure(){
             const isNext  = await this.isSelectItem();
             if(isNext){
+                // iMessage.warn('定点信【定点信编号】不是【Linie确认中】状态，Linie不能操作！');
                 const {selectItems} = this;
                 const nominateLetterIds = (selectItems.map((item)=>item.nominateLetterId)).join();
                 await liniefirm({nominateLetterIds}).then((res)=>{
+                    if(res.code == 200){
+                        iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
+                        this.getList();
+                    }else{
+                         iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+                    }
                 }).catch((err)=>{});
-                // iMessage.warn('定点信【定点信编号】不是【Linie确认中】状态，Linie不能操作！');
                 console.log(isNext,'OK');
             }else{
                 console.log(isNext,'CANCEL');
@@ -279,11 +296,17 @@ export default {
         async lineBack(){
             const isNext  = await this.isSelectItem();
             if(isNext){
+                // iMessage.warn('定点信【定点信编号】不是【Linie确认中】状态，Linie不能操作！');
                 const {selectItems} = this;
                 const nominateLetterIds = (selectItems.map((item)=>item.nominateLetterId)).join();
                 await liniereturn({nominateLetterIds}).then((res)=>{
+                    if(res.code==200){
+                        iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
+                        this.getList();
+                    }else{
+                         iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+                    }
                 }).catch((err)=>{})
-                // iMessage.warn('定点信【定点信编号】不是【Linie确认中】状态，Linie不能操作！');
                 console.log(isNext,'OK');
             }else{
                 console.log(isNext,'CANCEL');
@@ -297,6 +320,12 @@ export default {
                 const {selectItems} = this;
                 const nominateLetterIds = (selectItems.map((item)=>item.nominateLetterId)).join();
                 await fsRecall({nominateLetterIds}).then((res)=>{
+                    if(res.code == 200){
+                        iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
+                        this.getList();
+                    }else{
+                        iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+                    }
                 }).catch((err)=>{});
                 console.log(isNext,'OK');
             }else{
@@ -333,8 +362,12 @@ export default {
                 const {selectItems} = this;
                 const nominateLetterIds = (selectItems.map((item)=>item.nominateLetterId)).join();
                 await fsActivate({nominateLetterIds}).then((res)=>{
-                     iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
-                     this.getList();
+                    if(res.code==200){
+                        iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
+                        this.getList();
+                    }else{
+                        iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+                    }
                 }).catch((e)=>{
                     iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
                 });
@@ -358,10 +391,10 @@ export default {
 
         // 跳转至定点信详情页
         goToDetail(row){
-            const { letterNum } = row;
+            const { nominateLetterId } = row;
             const routeData = this.$router.resolve({
             path: '/sourcing/partsletter/letterdetail',
-            query: {id:letterNum}
+            query: {id:nominateLetterId}
             })
             window.open(routeData.href, '_blank')
         }
