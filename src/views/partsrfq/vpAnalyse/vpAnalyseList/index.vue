@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-06-16 20:44:29
- * @LastEditTime: 2021-06-25 14:43:38
+ * @LastEditTime: 2021-06-28 10:24:26
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\analysisTool\index.vue
@@ -40,6 +40,7 @@ export default {
       editMode: false, //模式， 0：正常模式 1：编辑模式
       rfqNo: '123123',    //rfq编号
       searchData: null,
+      backUpData: [],
     }
   },
   created() {
@@ -48,6 +49,10 @@ export default {
   methods: {
     //点击编辑/取消按钮，进入/退出编辑模式
     clickEdit() {
+      if(!this.editMode) 
+        this.backUpData = window._.cloneDeep(this.$refs.analysisTable.tableListData)
+      else 
+        this.$refs.analysisTable.tableListData = window._.cloneDeep(this.backUpData)
       this.editMode = !this.editMode
     },
     //点击保存编辑数据
