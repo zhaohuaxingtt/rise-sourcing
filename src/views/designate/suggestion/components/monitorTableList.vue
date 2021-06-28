@@ -1,7 +1,7 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-02-24 09:42:07
- * @LastEditTime: 2021-06-26 21:50:30
+ * @LastEditTime: 2021-06-28 11:32:50
  * @LastEditors: Please set LastEditors
 -->
 
@@ -398,7 +398,7 @@ export default {
       
       // 校验是否显示加权第四根柱子
       let isShowWeightStick = false
-      isShowWeightStick = Boolean(data.filter(o => o.supplierChosen && (o.supplierChosen.length > 1 || (o.supplierChosen.length === 1 && o.percent && o.percent[0] !== 100))).length)
+      isShowWeightStick = Boolean(data.filter(o => o.supplierChosen && (o.supplierChosen.length > 1 || (o.supplierChosen.length === 1 && o.percent && o.percent[0] !== 100.00))).length)
 
       // 'Best TTO \n for Whole Package'
       // 根据供应商

@@ -9,17 +9,21 @@
             <span class="margin-right10" v-if="isEdit">
                 <Upload 
                     hideTip
-                    :buttonText="$t('LK_SHANGCHUAN')"
-                    accept=".pdf"
-                    @on-success="onDraingUploadsucess"
+                    :buttonText="language('LK_SHANGCHUAN','上传')"
+                    accept=".doc,.docx,.xls,.xlsx,.ppt,.pptx,.jpg,.jpeg,.png,.pdf,.tif"
+                    @on-success="onUploadsucess(Object.assign(...arguments, {fileType: '120'}), getFetchDataList)"
+                    
                 />
             </span>
-            <iButton >{{$t('LK_XIAZAI')}}</iButton>
-            <iButton v-if="isEdit">{{$t('delete')}}</iButton>
+            <iButton @click="downloadFile">{{language('LK_XIAZAI','下载')}}</iButton>
+            <iButton 
+            v-if="isEdit" 
+            @click="deleteFile($event, getFetchDataList)"
+          >{{language('delete','删除')}}</iButton>
         </template>
         <p class="title">
-            {{$t('LK_FUJIAN')}}
-            <span class="title-tips">{{$t('LK_SHANGCHUANSHIWENJIANQINGXUANZHUANZHIZHENGCHANGFANGXIANGHOUSHANGCHUAN')}}</span>
+            {{language('LK_FUJIAN','附件')}}
+            <span class="title-tips">{{language('LK_SHANGCHUANSHIWENJIANQINGXUANZHUANZHIZHENGCHANGFANGXIANGHOUSHANGCHUAN','上传时文件请旋转至正常方向后上传')}}</span>
         </p>
         <div> 
             <tableList
@@ -62,13 +66,18 @@ import Upload from '@/components/Upload'
 import tableList from "@/views/partsign/editordetail/components/tableList"
 import { pageMixins } from "@/utils/pageMixins"
 import { historyListTitle as tableTitle } from '../../../data'
+import { attachMixins } from '@/utils/attachMixins'
 export default {
     name:'nonStandard',
-    mixins: [ pageMixins ],
+    mixins: [ pageMixins,attachMixins ],
     props:{
         isEdit:{
             type:Boolean,
             default:false,
+        },
+        nomiAppId:{
+            type:String,
+            default:'',
         }
     },
     components:{
@@ -84,11 +93,20 @@ export default {
             tableTitle,
         }
     },
+    created(){
+        this.getFetchDataList();
+    },
     methods:{
         // 获取列表
-        getList(){
-
-        },
+        async getFetchDataList() {
+            const params = {
+                nomiAppId: this.nomiAppId,
+                sortColumn: 'sort',
+                isAsc: true,
+                fileType: '120',
+            }
+            await this.getDataList(params)
+        }
     }
 }
 </script>
