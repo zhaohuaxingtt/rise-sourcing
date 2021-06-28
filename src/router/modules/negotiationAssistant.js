@@ -34,7 +34,7 @@ export default [{
       path: "partsrfq/vpAnalyCreat",
       name: "vpAnalyCreat",
       component: () =>
-        import("@/views/partsrfq/vpAnalyse/vpAnalyCreat/index.vue"),
+        import("@/views/partsrfq/vpAnalyse/vpAnalyCreat/index"),
     },
     {
       path: 'partsrfq/externalNegotiationAssistant',
@@ -48,7 +48,7 @@ export default [{
         title: "BOB",
       },
       component: () =>
-        import("@/views/partsrfq/bob/bob.vue"),
+        import("@/views/partsrfq/bob/bob"),
     },
     { 
       path: "partsrfq/bobNew",

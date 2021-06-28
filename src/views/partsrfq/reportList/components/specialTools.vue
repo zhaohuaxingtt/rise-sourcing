@@ -12,7 +12,7 @@
 			index
 			@handleSelectionChange="handleSelectionChange">
 			<template #name="scope">
-				<span class="openPage">{{scope.row.name}}</span>
+				<span class="openPage" @click="openPdf(scope.row.downloadUrl)">{{scope.row.name}}</span>
 			</template>
 			<template #isDefault="scope">
 				<span>{{scope.row.isDefault?'是':'否'}}</span>
@@ -80,6 +80,9 @@
 						this.tableListData=res.data
 					}
 				})
+			},
+			openPdf(url){
+				window.open(url)
 			}
 		}
 	}
