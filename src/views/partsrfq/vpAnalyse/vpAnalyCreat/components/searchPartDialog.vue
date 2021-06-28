@@ -8,16 +8,16 @@
 <template>
   <!--查找零件-->
   <iDialog :title="$t('TPZS.CZLJ')" :visible.sync="value" width="95%" @close="clearDiolog">
-    <searchDialog />
+    <searchDialog @getTableList="getTableList"/>
     <el-divider></el-divider>
-    <tableDialog />
+    <tableDialog @clearDiolog="clearDiolog" v-bind="$attrs" v-on="$listeners" ref="tableDialog" />
     <div slot="footer" class="dialog-footer">
     </div>
   </iDialog>
 </template>
 
 <script>
-import { iDialog, iButton } from 'rise';
+import { iDialog } from 'rise';
 import searchDialog from './searchDialog.vue';
 import tableDialog from './tableDialog.vue';
 
@@ -40,6 +40,9 @@ export default {
     };
   },
   methods: {
+    getTableList(req){
+      this.$refs.tableDialog.getTableList(req)
+    },
     clearDiolog() {
       this.$emit('input', false);
     },

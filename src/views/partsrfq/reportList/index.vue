@@ -11,20 +11,20 @@
 			<!-- 导出 -->
 			<iButton @click="openExport">{{$t('LK_DAOCHU')}}</iButton>
 		</div>
-		<iSearch class="margin-top20" @reset="handleSearchReset" @sure="getTableList">
+		<iSearch class="margin-top20" @sure="sure" @reset="reset">
 			<el-form>
 				<el-form-item :label="item.key?$t(item.key):item.name" v-for="(item,index) in search" :key="index">
-					<iSelect v-if="item.type=='select'">
+					<iSelect v-if="item.type=='select'" v-model="searchCriteria[item.props]">
 						<el-option :value="item.code" :label="item.name" v-for="item in fromGroup[item.select]" :key="item.code"></el-option>
 					</iSelect>
-					<iInput v-else :placeholder="$t(item.placeholder)"></iInput>
+					<iInput v-else :placeholder="$t(item.placeholder)" v-model="searchCriteria[item.props]"></iInput>
 				</el-form-item>
 			</el-form>
 		</iSearch>
 		<!-- 专项分析工具 -->
-		<specialTools></specialTools>
+		<specialTools :searchCriteria="searchCriteria" ref="specialTools"></specialTools>
 		<!------------------------------------内部进入------------------------------------>
-		<el-row>
+		<el-row v-if="inside">
 			<el-col :span="12">
 				<!-- 报价分析 -->
 				<quotationAnalysis class="margin-right20"></quotationAnalysis>
@@ -35,12 +35,12 @@
 			</el-col>
 		</el-row>
 		<!-- 导出弹窗 -->
-		<exportReport v-model="visible"></exportReport>
+		<exportReport v-model="visible" :tableListData="selectAllData"></exportReport>
 	</iPage>
 </template>
 
 <script>
-	import {iPage,iCard,iSelect,iInput,iButton,iSearch} from 'rise';
+	import {iPage,iCard,iSelect,iInput,iButton,iSearch,iMessage} from 'rise';
 	import {search} from './components/data';
 	import {selectDictByKeys} from '@/api/dictionary';
 	import specialTools from './components/specialTools';
@@ -55,16 +55,31 @@
 			return {
 				search,
 				fromGroup: {},//下拉框数据
-				visible:false
+				visible:false,
+				searchCriteria:{
+					name:"",
+					toolType:"",
+					materialGroup:"",
+					partsNo:"",
+					rfq:"",
+				},
+				selectAllData:[],//所有选择的数据
+				inside:true,//是否内部进入
 			}
 		},
 		created() {
+			if (this.$route.query.rfq) {
+				this.searchCriteria.rfq=this.$route.query.rfq
+				this.inside=true
+			}else{
+				this.inside=false
+			}
 			this.getAllSelect()
 		},
 		methods:{
 			// 字段查询下拉框
 			getAllSelect() {
-				let data = [{keys: "PART_STATE"},{keys:"EMPLOYEE_GENDER"}]
+				let data = [{keys: "REPORT_TOOL_TYPE"}]
 				selectDictByKeys(data).then(res => {
 					if (res.data) {
 						this.fromGroup = res.data
@@ -73,8 +88,24 @@
 			},
 			// 打开导出弹窗
 			openExport(){
-				this.visible=true
-			}
+				this.selectAllData=this.$refs.specialTools.selectData
+				if (this.selectAllData.length<11) {
+					this.visible=true
+				}else{
+					iMessage.error($t('TPZS.ZDDCBG'))
+				}
+			},
+			//搜索
+			sure(){
+				this.$refs.specialTools.getTableList()
+			},
+			// 重置
+			reset() {
+				this.searchCriteria = {};
+				this.$nextTick(()=>{
+					this.$refs.specialTools.getTableList()
+				})
+			},
 		}
 	}
 </script>

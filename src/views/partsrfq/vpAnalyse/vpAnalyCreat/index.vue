@@ -13,7 +13,7 @@
         <icon class="icon-x" name='icondatabaseweixuanzhong' symbol></icon>
       </div>
     </div>
-    <el-row class="flex-between-center-center margin-top25">
+    <el-row type="flex" justify="space-between" class="margin-top25">
       <el-col class="margin-right20" :span="12">
         <carVolumeAnalysis @handleCurrentChange="handleCurrentChange" />
       </el-col>

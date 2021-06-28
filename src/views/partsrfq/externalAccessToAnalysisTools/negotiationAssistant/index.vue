@@ -9,50 +9,34 @@
   <iPage>
     <div class="flex-between-center-center margin-bottom20">
       <iNavMvp :list="tabRouterList" routerPage :lev="1" :query='$route.query' @change='changeRouter' />
-     
     </div>
-    <gather ref="gather" />
+    <gather />
   </iPage>
 </template>
 
 <script>
-import { icon, iButton } from "rise";
 import { iPage, iNavMvp } from 'rise';
 import { tabRouterList } from '../data';
 import gather from './gather';
-
-
 
 export default {
   components: {
     iPage,
     iNavMvp,
-    
     gather
   },
   data() {
     return {
       tabRouterList,
-      flag: false,
     };
   },
-
   created() {
   },
   methods: {
-   
+
   },
 };
 </script>
 
 <style >
-.icondatabaseweixuanzhong {
-  font-size: 21px;
-  margin-left: 1.875rem;
-}
-.flex-end {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-}
 </style>

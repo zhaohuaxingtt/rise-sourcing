@@ -16,9 +16,10 @@
 				:tableData="tableListData"
 				:tableTitle="tableTitle"
 				:tableLoading="tableLoading"
-				index>
-				<template #version="scope">
-					<span class="openPage">{{scope.row.version}}</span>
+				index
+				@handleSelectionChange="handleSelectionChange">
+				<template #isDefault="scope">
+					<span>{{scope.row.isDefault?'是':'否'}}</span>
 				</template>
 			</tableList>
 		</div>
@@ -28,10 +29,11 @@
 <script>
 	import {iDialog,iButton,iMessage} from 'rise';
 	import tableList from './tableList';
-	import {pageMixins} from '@/utils/pageMixins';
 	import {specialToolsTitle} from './data';
+	import resultMessageMixin from '@/utils/resultMessageMixin';
+	import {downloadFile} from '@/api/file';
 	export default {
-		mixins: [pageMixins],
+		mixins: [resultMessageMixin],
 		components: {
 			iDialog,
 			iButton,
@@ -39,26 +41,40 @@
 			iMessage
 		},
 		props:{
-			value:{type:Boolean,default:false}
+			value:{type:Boolean,default:false},
+			tableListData:{
+				type:Array,
+				default:()=>[]
+			}
 		},
 		data() {
 			return {
 				tableTitle: specialToolsTitle,
 				tableLoading: false,
-				tableListData:[],
+				selectData:[]
 			};
 		},
-		created() {
-		},
 		methods: {
+			handleSelectionChange(list){
+				this.selectData=list
+			},
 			clearDiolog() {
 				this.$emit('input', false);
 			},
 			down(){
-				if (!this.group.id) {
-					iMessage.warn('未选择需要导出的报告')
+				if (this.selectData.length==0) {
+					iMessage.warn($t('TPZS.CANNOTSELECT'))
 					return
 				}
+				let fileName=[]
+				this.selectData.map(item=>{
+					fileName.push(item.downloadName)
+				})
+				const req = {
+					applicationName: 'rise',
+					fileList: [fileName],
+				}
+				downloadFile(req)
 			},
 		},
 	};

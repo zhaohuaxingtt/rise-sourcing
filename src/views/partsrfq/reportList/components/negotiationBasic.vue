@@ -37,6 +37,12 @@
 		components:{
 			iCard,tableList,iPagination
 		},
+		props:{
+			searchCriteria:{
+				type:Object,
+				default:()=>{}
+			}
+		},
 		data() {
 			return {
 				tableListData:[{version:111}],
@@ -44,22 +50,10 @@
 				tableLoading:false,
 			}
 		},
+		created() {
+		},
 		methods:{
-			// 获取谈判基本信息表格数据
-			getTableList(form){
-				// this.tableLoading=true
-				// let data={
-				// 	pageNo:this.page.currPage,
-				// 	pageSize:this.page.pageSize,
-				// 	...form
-				// }
-				// depSupplierList(data).then(res=>{
-				// 	if (res.data) {
-				// 		this.tableListData=res.data
-				// 		this.tableLoading=false
-				// 	}
-				// })
-			},
+			
 		}
 	}
 </script>

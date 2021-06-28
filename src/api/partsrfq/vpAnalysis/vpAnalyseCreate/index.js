@@ -6,6 +6,7 @@
  * @Descripttion: your project
  */
 import axios from '@/utils/axios'
+const requstParts = axios(process.env.VUE_APP_PARTSPROCURE)
 
 const request = axios(process.env.VUE_APP_AON)
 
@@ -17,10 +18,34 @@ export function getCarModelProjectList(params) {
     data: params
   })
 }
-//零件列表
-export function getCarModelPartsList(params) {
+//零件列表-全量零件
+export function getPartsList(params) {
   return request({
-    url: '/vpAnalysisScheme/getCarModelPartsList',
+    url: '/vpAnalysisScheme/getPartsList',
+    method: 'POST',
+    data: params
+  })
+}
+//零件列表
+export function materialGroupSelectDict(params) {
+  return requstParts({
+    url: '/materialGroupSelectDict',
+    method: 'GET',
+    data: params
+  })
+}
+//零件列表-添加/确认
+export function searchCarPartsAdd(params) {
+  return request({
+    url: '/vpAnalysisScheme/searchCarPartsAdd',
+    method: 'POST',
+    data: params
+  })
+}
+//零件列表-查找零件
+export function searchCarParts(params) {
+  return request({
+    url: '/vpAnalysisScheme/searchCarParts',
     method: 'POST',
     data: params
   })

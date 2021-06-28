@@ -10,30 +10,30 @@
     <el-row type="flex" align='bottom' justify="start">
       <el-col :span="4">
         <el-form-item :label="$t('TPZS.CLZ')">
-          <iInput :placeholder="$t('LK_QINGSHURU')" v-model="form.tsPpSupplierName"></iInput>
-        </el-form-item>
-      </el-col>
-      <el-col :span="4">
-        <el-form-item :label="$t('LK_RFQHAO')">
-          <iSelect :placeholder="$t('LK_QINGXUANZE')" v-model="form.status">
-            <el-option :value="item.code" :label="item.name" v-for="item of formGoup.statusList" :key="item.code"></el-option>
+          <iSelect :placeholder="$t('LK_QINGXUANZE')" v-model="form.materialGroupCode">
+            <el-option :value="item.code" :label="item.name" v-for="item of formGoup.materialGroupList" :key="item.code"></el-option>
           </iSelect>
         </el-form-item>
       </el-col>
       <el-col :span="4">
+        <el-form-item :label="$t('LK_RFQHAO')">
+          <iInput :placeholder="$t('LK_QINGSHURU')" v-model="form.rfqId"></iInput>
+        </el-form-item>
+      </el-col>
+      <el-col :span="4">
         <el-form-item :label="$t('LK_FSHAO')">
-          <iInput :placeholder="$t('LK_QINGSHURU')" v-model="form.principalName"></iInput>
+          <iInput :placeholder="$t('LK_QINGSHURU')" v-model="form.fsId"></iInput>
         </el-form-item>
       </el-col>
       <el-col :span="4">
         <el-form-item :label="$t('LK_LINGJIANHAO')">
-          <iInput :placeholder="$t('LK_QINGSHURU')" v-model="form.principalName"></iInput>
+          <iInput :placeholder="$t('LK_QINGSHURU')" v-model="form.partsId"></iInput>
         </el-form-item>
       </el-col>
       <el-col :span="8">
         <el-form-item>
-          <iButton>{{$t('LK_QUEREN')}}</iButton>
-          <iButton>{{$t('LK_ZHONGZHI')}}</iButton>
+          <iButton @click="getTableList">{{$t('LK_QUEREN')}}</iButton>
+          <iButton @click="handleSearchReset">{{$t('LK_ZHONGZHI')}}</iButton>
         </el-form-item>
       </el-col>
     </el-row>
@@ -42,6 +42,7 @@
 
 <script>
 import { iSearch, iInput, iSelect, iDatePicker, iButton } from 'rise'
+import { materialGroupSelectDict } from "@/api/partsrfq/vpAnalysis/vpAnalyseCreate/index.js";
 export default {
   components: {
     iSearch,
@@ -51,66 +52,43 @@ export default {
   data() {
     return {
       form: {
-        tsPpSupplierName: '',
-        status: '',
-        principalName: '',
-        signalFrom: '',
-        relativeDept: '',
-        submitDateStart: '',
-        submitDateEnd: '',
-        supplyingRelationship: '',
-        processType: '',
-        furtherRatingResult: '',
-        isBreak: '',
-        riskBigType: '',
-        riskSmallType: '',
-        effectiveTime: '',
+        materialGroup: '',
+        materialGroupCode: '',
+        rfqId: '',
+        fsId: '',
+        partsId: '',
       },
       formGoup: {
-        statusList: [],
-        supplyingRelationshipList: [],
-        processTypeList: [],
-        furtherRatingResultList: [],
-        isBreakList: [
-          {
-            name: '是',
-            code: true
-          },
-          {
-            name: '否',
-            code: false
-          }
-        ],
-        riskBigTypeList: [],
-        riskSmallTypeList: [],
+        materialGroupList: [],
       },
       fieldList: []
     }
   },
   created() {
+    this.getDictByCode()
   },
   methods: {
+    async getDictByCode() {
+      const res = await materialGroupSelectDict()
+      this.formGoup.materialGroupList = res.data
+    },
     handleSearchReset() {
       this.form = {
-        tsPpSupplierName: '',
-        status: '',
-        principalName: '',
-        signalFrom: '',
-        relativeDept: '',
-        submitDateStart: '',
-        submitDateEnd: '',
-        supplyingRelationship: '',
-        processType: '',
-        furtherRatingResult: '',
-        isBreak: '',
-        riskBigType: '',
-        riskSmallType: '',
-        effectiveTime: '',
-        submitTime: []
+        materialGroup: '',
+        rfqId: '',
+        fsId: '',
+        partsId: '',
+        materialGroupCode: ''
       }
       this.getTableList()
     },
     getTableList() {
+      this.form.materialGroupCode && this.formGoup.materialGroupList.forEach((item) => {
+        if (item.code === this.form.materialGroupCode) {
+          this.form.materialGroup = item.name
+          return
+        }
+      })
       this.$emit('getTableList', this.form)
     },
   }
