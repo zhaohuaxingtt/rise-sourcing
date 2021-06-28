@@ -9,9 +9,13 @@
 			:tableData="tableListData"
 			:tableTitle="tableTitle"
 			:tableLoading="tableLoading"
-			index>
-			<template #version="scope">
-				<span class="openPage">{{scope.row.version}}</span>
+			index
+			@handleSelectionChange="handleSelectionChange">
+			<template #name="scope">
+				<span class="openPage">{{scope.row.name}}</span>
+			</template>
+			<template #isDefault="scope">
+				<span>{{scope.row.isDefault?'是':'否'}}</span>
 			</template>
 		</tableList>
 		<iPagination
@@ -32,18 +36,52 @@
 	import tableList from './tableList';
 	import {specialToolsTitle} from './data';
 	import {pageMixins} from '@/utils/pageMixins';
+	import {reportList} from "@/api/partsrfq/reportList"
 	export default{
 		mixins: [pageMixins],
 		components:{
 			iCard,tableList,iPagination
 		},
-		data() {
-			return {
-				tableListData:[{version:111}],
-				tableTitle:specialToolsTitle,
-				tableLoading:false,
+		props:{
+			searchCriteria:{
+				type:Object,
+				default:()=>{}
 			}
 		},
+		computed:{
+		},
+		data() {
+			return {
+				tableListData:[],
+				tableTitle:specialToolsTitle,
+				tableLoading:false,
+				selectData:[]
+			}
+		},
+		created() {
+			this.getTableList()
+		},
+		methods:{
+			handleSelectionChange(list){
+				this.selectData=list
+			},
+			getTableList(){
+				this.tableLoading=true
+				let data={
+					...this.searchCriteria,
+					pageNo:this.page.currPage,
+					pageSize:this.page.pageSize,
+				}
+				reportList(data).then(res=>{
+					if (res.data) {
+						this.page.currPage = res.pageNum;
+						this.page.totalCount = res.total;
+						this.tableLoading=false
+						this.tableListData=res.data
+					}
+				})
+			}
+		}
 	}
 </script>
 

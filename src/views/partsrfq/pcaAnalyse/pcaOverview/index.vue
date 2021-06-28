@@ -1,7 +1,7 @@
 <template>
   <div>
     <theSearch @getTableList="getTableList" class="margin-bottom20" name="theSearch"/>
-    <theTable ref="theTable"/>
+    <theTable ref="theTable" :pageType="pageType"/>
   </div>
 </template>
 
@@ -10,6 +10,12 @@ import theSearch from './components/theSearch';
 import theTable from './components/theTable';
 
 export default {
+  props: {
+    pageType: {
+      type: String,
+      default: ''
+    }
+  },
   components: {
     theSearch,
     theTable,
