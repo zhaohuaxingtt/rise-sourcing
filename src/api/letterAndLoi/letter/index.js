@@ -108,3 +108,12 @@ export function getLetterList(data) {
         params,
     })
   }
+
+  // 获取历史定点信 
+  export function getHistoryLetter(params) {
+    return requst({
+      url: '/nominate-letter/history-page',
+      method: 'GET',
+      params,
+    })
+  }

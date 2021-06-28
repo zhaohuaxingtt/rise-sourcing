@@ -156,10 +156,14 @@ export default {
         // 获取列表
         async getList(){
             console.log(this.searchParams);
-            const {searchParams} = this;
+            const {searchParams,page} = this;
             // 若有定点起止时间将其拆分成两个字段
             const {nominateDate=[]} = searchParams;
-            const data = {};
+            const data = {
+                current:page.currPage,
+                size:page.pageSizes,
+
+            };
             if(nominateDate.length){
                 data['nominateDateStart'] = nominateDate[0];
                 data['nominateDateEnd'] = nominateDate[1];

@@ -14,10 +14,11 @@
             </span>
             <span v-else>
                 <iButton @click="edit">{{language('LK_BIANJI','编辑')}}</iButton>
-                <iButton>{{language('LK_LINEQUEREN','LINIE确认')}}</iButton>
-                <iButton>{{language('LK_LINETUIHUI','LINIE退回')}}</iButton>
+                <iButton >{{language('LK_QUERENBINGTIJIAO','确认并提交')}}</iButton>
+                <iButton @click="lineSure">{{language('LK_LINEQUEREN','LINIE确认')}}</iButton>
+                <iButton @click="lineBack">{{language('LK_LINETUIHUI','LINIE退回')}}</iButton>
                 <iButton v-if="radioType=='NonStandard'">{{language('LK_WANCHENGDINGDIANXIN','完成定点信')}}</iButton>
-                <iButton>{{language('LK_DAOCHUBIAOZHUNDINGDIANXIN','导出标准定点信')}}</iButton>
+                <iButton @click="downloadFiles">{{language('LK_DAOCHUBIAOZHUNDINGDIANXIN','导出标准定点信')}}</iButton>
                 <iButton @click="changeShowHistory">{{language('LK_LISHIDINGDIANXIN','历史定点信')}} </iButton>
             </span>
             <logButton class="margin-left20" />
@@ -40,7 +41,7 @@
                                     :value="item.value">
                                 </el-option>  
                             </iSelect>
-                            <iText v-else>王佩君</iText>
+                            <iText v-else>{{supplierUserName}}</iText>
                         </iFormItem>
                         <iFormItem label='LINIE：'>
                             <iSelect v-update v-if="isEdit">
@@ -51,21 +52,21 @@
                                     :value="item.value">
                                 </el-option>  
                             </iSelect>
-                            <iText v-else>王默薇</iText>
+                            <iText v-else>{{linieName}}</iText>
                         </iFormItem>
                     </div>
                 </iFormGroup>
                 <!-- 标准定点信 -->
-                <el-checkbox v-if="radioType=='standard'" v-model="checked" :disabled="!isEdit">包含以下条款：所有批量前⽣产（PVS) 和零批量（0-Serien）所需要的零件按照批量供货价格结算，Alle PVS-u，0-Serien-Telle warden zum Serienpreis abgerechnet</el-checkbox>
+                <el-checkbox v-if="radioType=='standard'" v-model="isCheckClause" :disabled="!isEdit">包含以下条款：所有批量前⽣产（PVS) 和零批量（0-Serien）所需要的零件按照批量供货价格结算，Alle PVS-u，0-Serien-Telle warden zum Serienpreis abgerechnet</el-checkbox>
                 
             </div>
         </iCard>
 
         <!-- 非标准定点信 -->
-        <nonStandard class="margin-top20" v-if="radioType=='NonStandard'" :isEdit="isEdit"/>
+        <nonStandard class="margin-top20" v-if="radioType=='NonStandard'" :isEdit="isEdit" :nomiAppId="nomiAppId"/>
 
         <!-- 历史定点信弹窗 -->
-        <historyDialog v-if="showHistory" :dialogVisible="showHistory" @changeVisible="changeShowHistory" />
+        <historyDialog v-if="showHistory" :dialogVisible="showHistory" @changeVisible="changeShowHistory" :nominateLetterId ="nominateLetterId"/>
     </iPage>
 </template>
 
@@ -84,6 +85,9 @@ import historyDialog from './components/historyDialog'
 import nonStandard from './components/nonStandard'
 import {
     getLetterDetail,
+    downloadLetterFile,
+    liniefirm,
+    liniereturn,
 } from  '@/api/letterAndLoi/letter'
 export default {
     name:'letterDetail',
@@ -105,8 +109,12 @@ export default {
             isEdit:false, // 编辑状态
             showHistory:false, // 历史定点信弹窗
             selectOptions:[],
-            checked:false,
             letterNum:'',
+            supplierUserName:'', // 供应商名称
+            linieName:'', // line名称
+            nomiAppId:'', // 定点申请id
+            isCheckClause:false, // 是否勾选协议
+            nominateLetterId:'', // 定点信id
         }
     },
     created(){
@@ -127,18 +135,58 @@ export default {
             const { showHistory } = this;
             this.showHistory = !showHistory;
         },
+        // 获取定点信详情
         async getDetail(){
             const {query} = this.$route;
             const {id=''} = query;
             await getLetterDetail({nominateLetterId:id}).then((res)=>{
                 const {code,data={}} = res;
                 if(code == 200){
-                    const { templateType,letterNum } = data;
+                    const { templateType,letterNum,supplierUserName,linieName,nomiAppId,isCheckClause,nominateLetterId } = data;
                     this.radioType = templateType==0 ? 'standard' : 'NonStandard';
                     this.letterNum = letterNum;
+                    this.supplierUserName = supplierUserName;
+                    this.linieName = linieName;
+                    this.nomiAppId = nomiAppId;
+                    this.isCheckClause = isCheckClause;
+                    this.nominateLetterId = nominateLetterId;
+
                 }
             }).catch((err)=>{})
-        }
+        },
+        // 导出定点信
+        async downloadFiles(){
+            const { nominateLetterId }  = this;
+            await downloadLetterFile({nominateLetterId});
+        },
+        // line确认
+        async lineSure(){
+            const { nominateLetterId } = this;
+            const confirmInfo = await this.$confirm(this.language('submitSure','您确定要执行提交操作吗？'));
+            if(confirmInfo){
+                 await liniefirm({nominateLetterIds:nominateLetterId}).then((res)=>{
+                 const { code } = res;
+                 if(code == 200){
+                     this.getDetail();
+                 }
+                }).catch((err)=>{});
+            }
+            
+        },
+
+        // line退回
+        async lineBack(){
+            const { nominateLetterId } = this;
+            const confirmInfo = await this.$confirm(this.language('submitSure','您确定要执行提交操作吗？'));
+            if(confirmInfo){
+                 await liniereturn({nominateLetterIds:nominateLetterId}).then((res)=>{
+                 const { code } = res;
+                 if(code == 200){
+                     this.getDetail();
+                 }
+                }).catch((err)=>{});
+            }
+        },
     }
 }
 </script>
