@@ -64,7 +64,7 @@
     </template>
 
     <!-- BM单流水号弹窗 -->
-    <BmPopup :visible="bmVisible" @changeLayer="() => this.bmVisible = false" title="BM单流⽔号：CSA-0098100177">
+    <BmPopup :visible="bmVisible" @changeLayer="() => this.bmVisible = false" :title="`${$t('LK_BMDANLIUSHUIHAO')}：${bmNumber}`">
       <template slot="btns">
         <iButton :loading="saveLoading" @click="save">{{ $t('LK_BAOCUN') }}</iButton><!-- 保存 -->
         
@@ -340,6 +340,7 @@ export default {
       detailObj: {},
       saveLoading: false,
       refresh: false,
+      bmNumber: '',
     }
   },
 
@@ -392,6 +393,7 @@ export default {
 
         if(res[0].data){
           this.detailObj = res[0].data;
+          this.bmNumber = scope.bmSerial;
         }else{
           iMessage.error(result0);
         }

@@ -2,7 +2,7 @@
   <div class="block">
     <iCard>
       <div class="table-head">
-        <iButton @click="modifyA">{{ $t('LK_QUERENSHENQING') }}</iButton><!-- 确认申请 -->
+        <iButton @click="confirmApply" :loading="confirmApplyLoading">{{ $t('LK_QUERENSHENQING') }}</iButton><!-- 确认申请 -->
         <iButton @click="toVoid" :loading="bmCancelLoading">{{ $t('LK_ZUOFEI') }}</iButton><!-- 作废 -->
         <iButton @click="downloadList">{{ $t('LK_XIAZAIQINGDAN') }}</iButton><!-- 下载清单 -->
       </div>
@@ -57,7 +57,7 @@ import {
 } from "rise";
 import { aekoBmTableHead } from "./data";
 import { excelExport } from '@/utils/filedowLoad';
-import { findBmAekoMinusList, bmCancel } from "@/api/ws2/bmApply";
+import { findBmAekoMinusList, bmCancel, bmConfirm } from "@/api/ws2/bmApply";
 import { pageMixins } from "@/utils/pageMixins";
 import UnitExplain from "./unitExplain";
 
@@ -91,6 +91,7 @@ export default {
         currPage: 1,
         pageSize: 10,
       },
+      confirmApplyLoading: false,
     }
   },
 
@@ -99,6 +100,27 @@ export default {
   },
 
   methods: {
+
+    //  确认申请
+    confirmApply(){
+      this.confirmApplyLoading = true;
+      bmConfirm({
+        ids: this.selectTableList.map(item => item.id)
+      }).then(res => {
+        const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn;
+
+        if(res.data){
+          iMessage.success(result);
+          this.getTableData();
+        }else{
+          iMessage.error(result);
+        }
+
+        this.confirmApplyLoading = false;
+      }).catch(err => {
+        this.confirmApplyLoading = false;
+      })
+    },
 
     //  作废
     toVoid(){
