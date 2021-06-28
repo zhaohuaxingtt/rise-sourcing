@@ -2,7 +2,7 @@
  * @version: 1.0
  * @Author: zbin
  * @Date: 2021-06-16 09:54:11
- * @LastEditors: zbin
+ * @LastEditors: Please set LastEditors
  * @Descripttion: your project
  */
 /*
@@ -50,7 +50,7 @@ export default [{
       component: () =>
         import("@/views/partsrfq/bob/bob.vue"),
     },
-    {
+    { 
       path: "partsrfq/bobNew",
       name: "bobNew",
       meta: {

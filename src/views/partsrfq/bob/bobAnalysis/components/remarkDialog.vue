@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-24 10:58:04
- * @LastEditTime: 2021-06-25 14:44:09
+ * @LastEditTime: 2021-06-25 15:01:14
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\bob\bobAnalysis\components\dialog.vue
@@ -56,7 +56,7 @@ export default {
   },
    methods: {
       sure() {
-        this.$emit("remake", this.remark, this.visible);
+        this.$emit("remake", this.remark, false);
       },
       cancel() {
         this.$emit("cancel", false);

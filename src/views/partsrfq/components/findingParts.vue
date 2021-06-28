@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-17 11:40:10
- * @LastEditTime: 2021-06-24 15:30:14
+ * @LastEditTime: 2021-06-28 16:27:56
  * @LastEditors: Please set LastEditors
  * @Description: 查找零件弹窗
  * @FilePath: \front-web\src\views\partsrfq\components\findingPart.vue
@@ -22,24 +22,24 @@
       >
         <el-form>
           <el-form-item :label="$t('LK_CAILIAOZU')">
-            <iSelect></iSelect>
+            <iSelect v-model="form.categoryCode"></iSelect>
           </el-form-item>
           <el-form-item :label="$t('LK_RFQHAO')">
             <iInput
               placeholder="请输入"
-              v-model="form.aaa"
+              v-model="form.rfqId"
             ></iInput>
           </el-form-item>
           <el-form-item :label="$t('LK_FSHAO')">
             <iInput
               placeholder="请输入"
-              v-model="form.bbb"
+              v-model="form.fsNum"
             ></iInput>
           </el-form-item>
           <el-form-item :label="$t('partsprocure.PARTSPROCUREPARTNUMBER')">
             <iInput
               placeholder="请输入"
-              v-model="form.ccc"
+              v-model="form.partNum"
             ></iInput>
           </el-form-item>
         </el-form>
@@ -57,14 +57,6 @@
       >
       </iTableList>
     </div>
-
-    <span
-      slot="footer"
-      class="dialog-footer"
-    >
-      <iButton @click="submit">{{$t('LK_QUEREN')}}</iButton>
-      <iButton @click="clearDiolog">{{$t('LK_QUXIAO')}}</iButton>
-    </span>
   </iDialog>
 </template>
 <script>
@@ -77,7 +69,7 @@ import {
   iTableList,
 } from "@/components";
 import { confirmTableHead } from "./data";
-
+import {pagePart} from "@/api/partsrfq/negotiateBasicInfor/negotiateBasicInfor.js"
 export default {
   name:"findingParts",
   components: {
@@ -113,13 +105,25 @@ export default {
       ],
       confirmTableHead,
       form: {
-        aaa: "",
-        bbb: "",
-        ccc: "",
+        categoryCode: "",
+        rfqId: "",
+        fsNum: "",
+        partNum:"",
+
       },
     };
   },
+  created() {
+    this.pagePart()
+  },
   methods: {
+    pagePart(){
+     pagePart(this.form).then((res)=>{
+       console.log(res)
+     }).catch((e) => {
+       
+     })
+    },
     clearDiolog() {
       console.log(111)
       this.$emit("close", false);

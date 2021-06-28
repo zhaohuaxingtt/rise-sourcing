@@ -161,6 +161,15 @@ export default {
     this.getChartData()
   },
   methods:{
+    findPart(){
+      this.value=true
+    },
+    closeDialog(val){
+      this.value=val
+    },
+    sure(){
+      
+    },
     changeBy(e){
       this.chartType=e
       this.form={
@@ -216,6 +225,7 @@ export default {
       getBobLevelOne({
         analysisSchemeId:this.analysisSchemeId
       }).then((res)=>{
+        console.log(res)
         const allData=res.data||[]
         this.chartData=allData.filter((r)=>r.isIntroduce===0)
       })

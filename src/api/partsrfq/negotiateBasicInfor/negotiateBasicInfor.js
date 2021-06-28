@@ -2,7 +2,7 @@
  * @version: 1.0
  * @Author: zbin
  * @Date: 2021-06-21 15:15:44
- * @LastEditors: zbin
+ * @LastEditors: Please set LastEditors
  * @Descripttion: your project
  */
 import axios from '@/utils/axios'
@@ -13,5 +13,13 @@ export function powerBiUrl(parmars) {
     return requst({
         url: '/batchOverview/getSupplierPbi',
         method: 'GET',
+    })
+}
+
+export function pagePart(parmars) {
+    return requst({
+        url: '/costAnalysisTool/part/pagePart',
+        method: 'post',
+        data: parmars
     })
 }
