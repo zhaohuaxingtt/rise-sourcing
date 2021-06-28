@@ -6,32 +6,32 @@
 <template>
     <iPage class="letterDetail">
         <div class="header clearFloat">
-        <div class="title">{{$t('LK_DINGDIANXINBIANHAO')}}: {{letterNum}}</div>
+        <div class="title">{{language('LK_DINGDIANXINBIANHAO','定点信编号')}}: {{letterNum}}</div>
         <div class="control">
             <span v-if="isEdit">
-                <iButton>{{$t('LK_BAOCUN')}}</iButton>
-                <iButton @click="changeEditStatus">{{$t('LK_QUXIAO')}}</iButton>
+                <iButton>{{language('LK_BAOCUN','保存')}}</iButton>
+                <iButton @click="changeEditStatus">{{language('LK_QUXIAO','取 消')}}</iButton>
             </span>
             <span v-else>
-                <iButton @click="edit">{{$t('LK_BIANJI')}}</iButton>
-                <iButton>{{$t('LK_LINEQUEREN')}}</iButton>
-                <iButton>{{$t('LK_LINETUIHUI')}}</iButton>
-                <iButton v-if="radioType=='NonStandard'">{{$t('LK_WANCHENGDINGDIANXIN')}}</iButton>
-                <iButton>{{$t('LK_DAOCHUBIAOZHUNDINGDIANXIN')}}</iButton>
-                <iButton @click="changeShowHistory">{{$t('LK_LISHIDINGDIANXIN')}} </iButton>
+                <iButton @click="edit">{{language('LK_BIANJI','编辑')}}</iButton>
+                <iButton>{{language('LK_LINEQUEREN','LINIE确认')}}</iButton>
+                <iButton>{{language('LK_LINETUIHUI','LINIE退回')}}</iButton>
+                <iButton v-if="radioType=='NonStandard'">{{language('LK_WANCHENGDINGDIANXIN','完成定点信')}}</iButton>
+                <iButton>{{language('LK_DAOCHUBIAOZHUNDINGDIANXIN','导出标准定点信')}}</iButton>
+                <iButton @click="changeShowHistory">{{language('LK_LISHIDINGDIANXIN','历史定点信')}} </iButton>
             </span>
             <logButton class="margin-left20" />
         </div>
         </div>
         <iCard class="margin-top30">
            <el-radio-group v-model="radioType" :disabled="!isEdit">
-                <el-radio :label="'standard'">{{$t('LK_BIAOZHUNDINGDIANXIN')}}</el-radio>
-                <el-radio :label="'NonStandard'">{{$t('LK_FEIBIAOZHUNDINGDIANXIN')}}</el-radio>
+                <el-radio :label="'standard'">{{language('LK_BIAOZHUNDINGDIANXIN','标准定点信')}}</el-radio>
+                <el-radio :label="'NonStandard'">{{language('LK_FEIBIAOZHUNDINGDIANXIN','⾮标准定点信')}}</el-radio>
             </el-radio-group>
             <div class="contain margin-top30">
                 <iFormGroup row="2">
                     <div class="col">
-                        <iFormItem :label="$t('LK_GONGYINGSHANGLIANXIR')+':'">
+                        <iFormItem :label="language('LK_GONGYINGSHANGLIANXIR','供应商联系⼈')+':'">
                             <iSelect v-update v-if="isEdit">
                                 <el-option
                                     v-for="item in selectOptions || []"

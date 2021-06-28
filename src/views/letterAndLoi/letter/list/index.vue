@@ -32,7 +32,7 @@
             <iButton @click="turnSend">{{language('partsprocure.PARTSPROCURETRANSFER','转派')}} </iButton> 
             <iButton @click="closeLetter">{{language('LK_GUANBI','关闭')}} </iButton>
             <iButton @click="activate">{{language('LK_JIHUO','激活')}} </iButton>
-            <iButton>{{language('LK_DAOCHU','导出')}} </iButton>
+            <iButton @click="downloadFiles">{{language('LK_DAOCHU','导出')}} </iButton>
         </template>
         <!-- 表单区域 -->
         <tableList
@@ -73,7 +73,7 @@
     </iCard>
 
     <!-- 转派弹窗 -->
-    <turnSendDialog v-if="turnSendVisible" :dialogVisible="turnSendVisible" @changeVisible="changeVisible"/>
+    <turnSendDialog v-if="turnSendVisible" :dialogVisible="turnSendVisible" @changeVisible="changeVisible" @getList="getList" :selectItems="selectItems"/>
     <!-- 关闭定点信弹窗 -->
     <closeLetterDialog v-if="closeLetterVisible" :dialogVisible="closeLetterVisible" @changeVisible="changeVisible" @getList="getList" :selectItems="selectItems"/>
   </div>
@@ -105,6 +105,7 @@ import {
     fsRecall,
     liniereturn,
     fsActivate,
+    downloadLetterFile,
 } from '@/api/letterAndLoi/letter'
 import { getDictByCode } from '@/api/dictionary'
 export default {
@@ -333,6 +334,18 @@ export default {
                 }).catch((e)=>{
                     iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
                 });
+                console.log(isNext,'OK');
+            }else{
+                console.log(isNext,'CANCEL');
+            }
+        },
+        // 导出定点信
+        async downloadFiles(){
+            const isNext  = await this.isSelectItem();
+            if(isNext){
+                const {selectItems} = this;
+                const nominateLetterIds = (selectItems.map((item)=>item.nominateLetterId)).join();
+                await downloadLetterFile({nominateLetterIds});
                 console.log(isNext,'OK');
             }else{
                 console.log(isNext,'CANCEL');

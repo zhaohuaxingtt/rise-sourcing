@@ -30,11 +30,11 @@ import {
     iDialog,
     iInput,
     iButton,
+    iMessage,
 } from 'rise';
 import {
     fsClose,
 } from '@/api/letterAndLoi/letter'
-import { iMessage } from '../../../../../components';
 export default {
     name:"closeLetterDialog",
     components:{

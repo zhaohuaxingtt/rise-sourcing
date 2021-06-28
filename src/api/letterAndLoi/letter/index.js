@@ -5,8 +5,10 @@
  */
 
 import axios from "@/utils/axios"
+import axiosDownload from '@/utils/axios.download'
 
 const requst = axios(process.env.VUE_APP_RFQ)
+const requestDownload = axiosDownload(process.env.VUE_APP_RFQ)
 
 // 获取定点信列表数据
 export function getLetterList(data) {
@@ -71,11 +73,38 @@ export function getLetterList(data) {
     })
   }
 
+  // 定点信列表--转派 
+  export function transfer(params) {
+    return requst({
+      url: '/nominate-letter/transfer',
+      method: 'GET',
+      params,
+    })
+  }
+
   // 获取定点信详情
   export function getLetterDetail(params) {
     return requst({
       url: '/nominate-letter/detail',
       method: 'GET',
       params,
+    })
+  }
+
+  // 获取列表专业采购员及前期采购员列表
+  export function getBuyers(params) {
+    return requst({
+      url: '/buyers',
+      method: 'GET',
+      params,
+    })
+  }
+  
+  // 导出定点信
+  export function downloadLetterFile(params) {
+    return requestDownload({
+        url: '/nominate-letter/standard-nominate-letter',
+        method: "GET",
+        params,
     })
   }
