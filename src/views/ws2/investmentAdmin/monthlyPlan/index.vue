@@ -1,7 +1,7 @@
 <template>
   <div class="monthlyPlan">
     <div class="monthlyHeader">
-      <span class="versionNum">版本号</span>
+      <span class="versionNum">{{ $t('LK_BANBENHAO') }}</span>
       <iSelect
         class="versionSelect"
         :placeholder="$t('partsprocure.PLEENTER')"
@@ -17,29 +17,29 @@
         ></el-option>
       </iSelect>
       <icon class="refreshIcon" @click="handleRefresh" symbol name="iconmojukanbanshuaxin" />
-      <span class="refresh cursor" @click="handleRefresh">刷新</span>
-      <span class="refreshTime">刷新日期：{{ translateData(versionData.updateDate) }}</span>
+      <span class="refresh cursor" @click="handleRefresh">{{ $t('LK_SHUAXIN') }}</span>
+      <span class="refreshTime">{{ $t('LK_SHUAXINRIQI') }}：{{ translateData(versionData.updateDate) }}</span>
       <div v-if="pageEdit">
-        <iButton @click="exitEdit">{{ $t("退出编辑") }}</iButton>
+        <iButton @click="exitEdit">{{ $t("LK_TUICHUBIANJI") }}</iButton>
         <!-- <iButton @click="uploadList">{{ $t("上传清单") }}</iButton> -->
         <upload-button
           @uploadedCallback="uploadAttachments"
           :upload-button-loading="uploadLoading"
-          :buttonText="$t('上传清单')"
+          :buttonText="$t('LK_SHANGCHUANQINGDAN')"
           class="margin-left8"
         />
-        <iButton @click="saveAsList">{{ $t("保存") }}</iButton>
-        <iButton @click="saveAsNew">{{ $t("保存为新版本") }}</iButton>
+        <iButton @click="saveAsList">{{ $t("LK_BAOCUN") }}</iButton>
+        <iButton @click="saveAsNew">{{ $t("LK_BAOCUNWEIXINBANBEN") }}</iButton>
       </div>
       <div v-else>
-        <iButton @click="edit">{{ $t("编辑") }}</iButton>
-        <iButton @click="downloadList">{{ $t("下载清单") }}</iButton>
+        <iButton @click="edit">{{ $t("LK_BIANJI") }}</iButton>
+        <iButton @click="downloadList">{{ $t("LK_XIAZAIQINGDAN") }}</iButton>
       </div>
     </div>
     <iCard class="margin-top20 mainCard" v-loading="tableLoading">
       <div class="cardTop">
         <div class="yearlyPlan">
-          <span class="planTitle">{{ getYear(versionData.updateDate) }}月度计划</span>
+          <span class="planTitle">{{ getYear(versionData.updateDate) }}{{ $t('LK_YUEDUJIHUA') }}</span>
           <span class="totalText">Total:</span>
           <span class="refresh">{{ totalAmount }}</span>
           <span class="unitText margin-left20"
@@ -67,7 +67,7 @@
             class="margin-right20"
             :class="tabIndex === 0 ? 'tabOn' : 'tabItem'"
           >
-            当年付款计划
+            {{ $t('LK_DANGNIANFUKUANJIHUA') }}
           </div>
           <icon
             v-if="tabIndex === 1"
@@ -79,7 +79,7 @@
             @click="tabClick(1)"
             :class="tabIndex === 1 ? 'tabOn' : 'tabItem'"
           >
-            次年付款计划
+            {{ $t('LK_CINIANFUKUANJIHUA') }}
           </div>
         </div>
       </div>
@@ -575,7 +575,6 @@ export default {
     //刷新
     handleRefresh() {
       this.refreshLoading = true;
-      console.log('zz=>', this.versionData.id)
       refreshVersion(this.versionData.id).then(res => {
         this.refreshLoading = false;
         if (Number(res.code) === 0) {

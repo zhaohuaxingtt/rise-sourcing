@@ -926,10 +926,10 @@
 
         'LK_ALLBMAPPLY': '所有BM申请',    //  所有BM申请
         'LK_DAIQUERENBMDAN': '待确认BM单',    //  待确认BM单
-        'LK_AEKOZENGZHIBMDAN': 'Aeko增值BM单',  //  Aeko增值BM单
-        'LK_AEKOJIANZHIBMDAN': 'Aeko减值BM单',  //  Aeko减值BM单
+        'LK_AEKOZENGZHIBMDAN': 'AEKO增值BM单',  //  Aeko增值BM单
+        'LK_AEKOJIANZHIBMDAN': 'AEKO减值BM单',  //  Aeko减值BM单
         'LK_BMDANZHUANGTAI': 'BM单状态',    //  BM单状态
-        'LK_AEKOLEIXING': 'Aeko类型',   //  Aeko类型
+        'LK_AEKOLEIXING': 'AEKO类型',   //  AEKO类型
         'LK_BMDANLIUSHUIHAO': 'BM单流⽔号',   //  BM单流⽔号
         'LK_BMDANHAO': 'BM单号',    //  BM单号
         'LK_WBSBIANHAO': 'WBS编号',   //  WBS编号
@@ -982,6 +982,26 @@
         'LK_LIZI': '例',    //  例
         'LK_LIZISHUOMING': '代表零件号的车型项目/零件号/零件名称/供应商简称',  //  代表零件号的车型项目/零件号/零件名称/供应商简称
         'LK_BMAPPLYBAOCUNMSG': '你有必填字段未填',  //  你有必填字段未填
+        'LK_FUKUANJIHUADINGZHIYUCHAKAN':  '付款计划制定与查看',   //  付款计划制定与查看
+        'LK_YUAN': '元',    //  元
+
+        'LK_TUICHUBIANJI': '退出编辑',    //  退出编辑
+        'LK_SHANGCHUANQINGDAN': '上传清单',    //  上传清单
+        'LK_YUEDUJIHUA': '月度计划',    //  月度计划
+        'LK_DANGNIANFUKUANJIHUA': '当年付款计划',    //  当年付款计划
+        'LK_CINIANFUKUANJIHUA': '次年付款计划',    //  次年付款计划
+        'LK_YIYUE': 'Jan',    //  一月
+        'LK_ERYUE': 'Feb',    //  二月
+        'LK_SANYUE': 'Mar',    //  三月
+        'LK_WUYUE': 'Apr',    //  四月
+        'LK_YIYUE': 'May',    //  五月
+        'LK_LIUYUE': 'Jun',    //  六月
+        'LK_QIYUE': 'Jul',    //  七月
+        'LK_BAYUE': 'Aug',    //  八月
+        'LK_JIUYUE': 'Sep',    //  九月
+        'LK_SHIYUE': 'Oct',    //  十月
+        'LK_SHIYIYUE': 'Nov',    //  十一月
+        'LK_SHIERYUE': 'Dec',    //  十二月
 
         // 定点管理
         'nominationLanguage': {

@@ -185,7 +185,7 @@ export const staticRouter = [{
                 component: () => import (`@/views/ws2/baApply/details`),
             },
             {
-                path: '/investmentAdmin',
+                path: '/tooling/investmentAdmin',
                 name: 'toolingModelDetails',
                 meta: {
                     title: '模具投资付款管理员'
@@ -193,7 +193,7 @@ export const staticRouter = [{
                 component: () => import (`@/views/ws2/investmentAdmin`),
                 children: [
                     {
-                        path: '/investmentAdmin/yearlyPlan',
+                        path: '/tooling/investmentAdmin/yearlyPlan',
                         name: 'investmentAdminYearlyPlan',
                         meta: {
                             title: '年度计划'
@@ -201,7 +201,7 @@ export const staticRouter = [{
                         component: () => import (`@/views/ws2/investmentAdmin/yearlyPlan`),
                     },
                     {
-                        path: '/investmentAdmin/monthlyPlan',
+                        path: '/tooling/investmentAdmin/monthlyPlan',
                         name: 'investmentAdminMonthlyPlan',
                         meta: {
                             title: '月度计划'

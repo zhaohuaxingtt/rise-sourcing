@@ -263,7 +263,7 @@
         'LK_YITUIHUI': '已退回', // 以退回
         'LK_YONGHUMING': '用户名', // 用户名
         'LK_ZHUANPAICHENGGONG': '转派成功', // 转派成功
-        'LK_AEKOHAO': 'Aeko号', //Aeko号
+        'LK_AEKOHAO': 'AEKO号', //AEKO号
         'LK_BDLLIEBIAO': 'BDL列表', //BDL列表
         'LK_BMG': 'BMG', //BMG
         'LK_BOMDANXINXI': 'BOM单信息', //BOM单信息
@@ -1003,10 +1003,10 @@
 
         'LK_ALLBMAPPLY': '所有BM申请',    //  所有BM申请
         'LK_DAIQUERENBMDAN': '待确认BM单',    //  待确认BM单
-        'LK_AEKOZENGZHIBMDAN': 'Aeko增值BM单',  //  Aeko增值BM单
-        'LK_AEKOJIANZHIBMDAN': 'Aeko减值BM单',  //  Aeko减值BM单
+        'LK_AEKOZENGZHIBMDAN': 'AEKO增值BM单',  //  Aeko增值BM单
+        'LK_AEKOJIANZHIBMDAN': 'AEKO减值BM单',  //  Aeko减值BM单
         'LK_BMDANZHUANGTAI': 'BM单状态',    //  BM单状态
-        'LK_AEKOLEIXING': 'Aeko类型',   //  Aeko类型
+        'LK_AEKOLEIXING': 'AEKO类型',   //  AEKO类型
         'LK_BMDANLIUSHUIHAO': 'BM单流⽔号',   //  BM单流⽔号
         'LK_BMDANHAO': 'BM单号',    //  BM单号
         'LK_WBSBIANHAO': 'WBS编号',   //  WBS编号
@@ -1059,6 +1059,26 @@
         'LK_LIZI': '例',    //  例
         'LK_LIZISHUOMING': '代表零件号的车型项目/零件号/零件名称/供应商简称',  //  代表零件号的车型项目/零件号/零件名称/供应商简称
         'LK_BMAPPLYBAOCUNMSG': '你有必填字段未填',  //  你有必填字段未填
+        'LK_FUKUANJIHUADINGZHIYUCHAKAN':  '付款计划制定与查看',   //  付款计划制定与查看
+        'LK_YUAN': '元',    //  元
+
+        'LK_TUICHUBIANJI': '退出编辑',    //  退出编辑
+        'LK_SHANGCHUANQINGDAN': '上传清单',    //  上传清单
+        'LK_YUEDUJIHUA': '月度计划',    //  月度计划
+        'LK_DANGNIANFUKUANJIHUA': '当年付款计划',    //  当年付款计划
+        'LK_CINIANFUKUANJIHUA': '次年付款计划',    //  次年付款计划
+        'LK_YIYUE': '一月',    //  一月
+        'LK_ERYUE': '二月',    //  二月
+        'LK_SANYUE': '三月',    //  三月
+        'LK_WUYUE': '四月',    //  四月
+        'LK_YIYUE': '五月',    //  五月
+        'LK_LIUYUE': '六月',    //  六月
+        'LK_QIYUE': '七月',    //  七月
+        'LK_BAYUE': '八月',    //  八月
+        'LK_JIUYUE': '九月',    //  九月
+        'LK_SHIYUE': '十月',    //  十月
+        'LK_SHIYIYUE': '十一月',    //  十一月
+        'LK_SHIERYUE': '十二月',    //  十二月
 
         // 定点管理
         'nominationLanguage': {
