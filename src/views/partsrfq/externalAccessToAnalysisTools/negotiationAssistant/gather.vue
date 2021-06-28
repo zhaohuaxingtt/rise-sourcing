@@ -21,7 +21,7 @@
     </div>
     <specialAnalysisTool v-if="pageType === 'card'" @entrance="entrance" ref="specialAnalysisTool"/>
     <pcaOverview v-else-if="pageType === 'PCA'" pageType="PCA"/>
-    <tiaOverview v-else-if="pageType === 'TIA'" pageType="TIA"/>
+    <pcaOverview v-else-if="pageType === 'TIA'" pageType="TIA"/>
     <bobOverview v-else-if="pageType === 'BoB(Best of Best)'"/>
     <vpAnalyseList v-else-if="pageType==='Volume Pricing'"/>
   </div>
@@ -30,7 +30,6 @@
 <script>
 import {tabRouterList} from '../data';
 import pcaOverview from '../../pcaAnalyse/pcaOverview';
-import tiaOverview from '../../tiaAnalyse/tiaOverview';
 import vpAnalyseList from '@/views/partsrfq/vpAnalyse/vpAnalyseList/index.vue';
 import bobOverview from '../../bob/bob';
 import specialAnalysisTool
@@ -40,7 +39,6 @@ import {icon, iButton} from 'rise';
 export default {
   components: {
     pcaOverview,
-    tiaOverview,
     bobOverview,
     vpAnalyseList,
     specialAnalysisTool, icon,
