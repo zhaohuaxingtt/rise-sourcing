@@ -26,7 +26,7 @@
     </iCard>
     <!-- 零件详情tab页 -->
     <div class="iTabs">
-      <iTabs-list type="border-card">
+      <iTabs-list type="card" class="margin-top20" >
         <el-tab-pane :label="$t('LK_XINXIDANXIANGQING')" v-permission="PARTSIGN_EDITORDETAIL_INFORMATIONSHEETDETAILS">
           <iCard>
             <partInfo :title="item" :data="partDetails" v-for="(item,index) in partDetailTitle" :key="index"></partInfo>
@@ -52,7 +52,7 @@
   </iPage>
 </template>
 <script>
-import { iPage, iButton, iCard, iTabsList, icon, iMessage ,iMessageBox} from "@/components";
+import { iPage, iButton, iCard, iTabsList, icon, iMessage ,iMessageBox} from "rise";
 import partInfo from "./components/partInfo";
 import enquiry from "./components/enquiry/enquiry";
 import enquiryUnconfirmed from "./components/enquiry/unconfirmed";

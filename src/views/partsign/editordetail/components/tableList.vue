@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-24 16:57:16
- * @LastEditTime: 2021-06-23 15:21:06
- * @LastEditors: ldh
+ * @LastEditTime: 2021-06-28 10:57:15
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsign\editordetail\components\tableList.vue
 -->
@@ -11,7 +11,7 @@
     <el-table-column v-if="selection || singleSelect" type="selection" align="center"></el-table-column>
     <el-table-column v-if="index" type="index" align="center" :label="indexLabel"></el-table-column>
     <template v-for="(item, $index) in tableTitle">
-      <el-table-column align="center" :key="$index" :label="$t(item.key)" :prop="item.props" :show-overflow-tooltip="item.tooltip" :width="item.width">
+      <el-table-column :key="$index" align="center" :label="lang ? language(item.key, item.name) : $t(item.key)" :prop="item.props" :show-overflow-tooltip="item.tooltip" :width="item.width">
         <template v-if="$scopedSlots[item.props] || $slots[item.props]" v-slot="scope">
           <slot :name="item.props" :row="scope.row"></slot>
         </template>
@@ -59,6 +59,10 @@ export default {
     },
     cellClassName: {
       type: Function
+    },
+    lang: {
+      type: Boolean,
+      default: false
     }
   },
   created() {

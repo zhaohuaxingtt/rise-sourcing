@@ -5,7 +5,7 @@
 -->
 <template>
   <iDialog
-    title="关闭定点信"
+    :title="$t('LK_GUANBIDINGDIANXIN')"
     :visible.sync="dialogVisible"
     @close="clearDialog"
     width="50%"
@@ -13,7 +13,7 @@
     >
     <iInput
         type="textarea"
-        placeholder="请输⼊关闭原因"
+        :placeholder="$t('LK_QINGSHURUGUANBIYUANYIN')"
         rows="10" 
         resize="none"
         v-model="reason"

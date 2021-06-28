@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-21 09:23:11
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-10 21:41:06
+ * @LastEditTime: 2021-06-25 11:49:07
  * @Description: RFQ & 零件清单界面
  * @FilePath: \front-web\src\views\designate\designatedetail\rfqdetail\index.vue
 -->
@@ -12,15 +12,15 @@
     <!-- <designateStep/> -->
     <iCard class="margin-top20" >
       <div class="margin-bottom20 clearFloat">
-        <span class="font18 font-weight">RFQ清单</span>
+        <span class="font18 font-weight">{{language('RFQQINGDAN','RFQ清单')}}</span>
         <div class="floatright">
-          <iInput placeholder="请输入零件号/RFQ编号/RFQ名称/LINIE" v-model="searchParam" class="margin-right20 input" @blur="searchRfqTableList" >
+          <iInput :placeholder="language('QINGSHURULINGJIANHAORFQLINIE','请输入零件号/RFQ编号/RFQ名称/LINIE')" v-model="searchParam" class="margin-right20 input" @blur="searchRfqTableList" >
             <icon symble slot="suffix" name="iconshaixuankuangsousuo" />
           </iInput>
           <!--------------------新增按钮----------------------------------->
-          <iButton @click="addRfq">新增</iButton>
+          <iButton @click="addRfq">{{language('XINZENG','新增')}}</iButton>
           <!--------------------删除按钮----------------------------------->
-          <iButton @click="deleteRfq">删除</iButton>
+          <iButton @click="deleteRfq">{{language('SHANCHU','删除')}}</iButton>
         </div>
       </div>
       <tableList
@@ -38,10 +38,10 @@
     </iCard>
     <iCard class="margin-top20" >
       <div class="margin-bottom20 clearFloat">
-        <span class="font18 font-weight">零件清单</span>
+        <span class="font18 font-weight">{{language('LINGJIANQINGDAN','零件清单')}}</span>
         <div class="floatright">
           <!--------------------保存按钮----------------------------------->
-          <iButton @click="saveParts">保存</iButton>
+          <iButton @click="saveParts">{{language('BAOCUN','保存')}}</iButton>
         </div>
       </div>
       <tableList
@@ -124,14 +124,14 @@ export default {
      * @return {*}
      */    
     saveParts() {
-      if (this.partsSelectedItems.length < 1) {
-        iMessage.warn('请选择需要保存的零件')
-        return
-      }
+      // if (this.partsSelectedItems.length < 1) {
+      //   iMessage.warn('请选择需要保存的零件')
+      //   return
+      // }
       this.partsTableLoading = true
       const params = {
         nominateAppId: this.desinateId,
-        partPrjList: this.partsSelectedItems.map(item => {
+        partPrjList: (this.partsSelectedItems.length > 0 ? this.partsSelectedItems : this.partsTableListData).map(item => {
           return {
             id: item.id,
             partPrjCode: item.fsnrGsnrNum,
@@ -158,7 +158,7 @@ export default {
      */    
     deleteRfq() {
       if (this.rfqSelectedItems.length < 1) {
-        iMessage.warn('请选择需要删除的行')
+        iMessage.warn(this.language('QINGXUANZEYAOSHANCHUDEHANG','请选择需要删除的行'))
         return
       }
       this.rfqTableLoading = true

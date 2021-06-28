@@ -6,10 +6,10 @@
       </span>
     </div>
     <div class="legendLine">
-      <ul class="legend">
-        <li v-for="(item, index) in supplier" :key="index">
-          <i :style="`background: ${colorPanel[index]}`"></i>
-          {{item}}
+      <ul class="legend" :class="{scroll: supplierList.length > 3}">
+        <li v-for="(item, index) in supplierList" :key="index">
+          <i :style="`background: ${colorPanel[item.index || 0]}`"></i>
+          {{item.data}}
         </li>
         <!-- <li>SH Huashi</li>
         <li class="corlor1">NBHX</li> -->
@@ -21,10 +21,10 @@
           v-model="mapControl"
           @change="load"
           :multiple="true"
-          :placeholder="$t('nominationSuggestion.FanAnXuanZhe')">
+          :placeholder="language('nominationSuggestion_FanAnXuanZhe','方案选择')">
           <!-- <el-option
             value=""
-            :label="$t('nominationSuggestion.FanAnXuanZhe') | capitalizeFilter"
+            :label="language('nominationSuggestion.FanAnXuanZhe') | capitalizeFilter"
           ></el-option> -->
           <el-option
             :value="items.key"
@@ -72,24 +72,26 @@ export default {
       mapOptions: [
         {
           key: 0,
-          value: '整体最佳'
+          value: this.language('ZHENGTIZUIJIA','整体最佳')
         },
         {
           key: 1,
-          value: '分组最佳'
+          value: this.language('FENZUZUIJIA','分组最佳')
         },
         {
           key: 2,
-          value: '单一零件最佳'
+          value: this.language('DANYILINGJIANZUIJIA','单一零件最佳')
         },
         {
           key: 3,
-          value: '手动分配'
+          value: this.language('SHOUDONGFENPEI','手动分配')
         }
       ],
       dataList: [],
       // 色板
-      colorPanel
+      colorPanel,
+      // 需要展示的供应商
+      supplierList: []
       
     }
   },
@@ -99,6 +101,17 @@ export default {
     init() {
       // 初始化，默认isShowWeightStick判断是否展示权重柱子
       const isShowWeightStick = this.data.isShowWeightStick || false
+      const supplierInvo = this.data.supplier || []
+      const supplierList = []
+      this.supplier.forEach((sup, index) => {
+        if (supplierInvo.includes(index)) {
+          supplierList.push({
+            data: sup,
+            index: this.supplier.findIndex(o => o === sup)
+          })
+        }
+      })
+      this.supplierList = supplierList
       this.mapControl = isShowWeightStick ? [] : [0, 1, 2]
       this.load()
     },
@@ -118,7 +131,7 @@ export default {
         const xAxisData = !mapControl.length ? quota : mapControl.map(i => {
           return quota[i]
         })
-        console.log('-load-', xAxisData, mapControl)
+        // console.log('-load-', xAxisData, mapControl)
         // seriesData
         
         
@@ -157,6 +170,8 @@ export default {
             },
             formatter: function(params) {
               const wholePackage = self.data && self.data.wholePackage
+              const bestGroupSupplier = self.data.bestGroupSupplier
+              const bestGroupSupplierTotal = bestGroupSupplier && bestGroupSupplier[2] || 0
               const minPartSupplierTToTotal = self.data.minPartSupplierTToTotal
               const weightSupplierTotal = self.data.weightSupplierTotal || 0
               let tpl = ''
@@ -171,7 +186,7 @@ export default {
               params.dataIndex === 1 && (tpl = `
               <div class="toolTipBox-content">
                 <p>Compared to Best TTO <br> for Whole Package: 
-                  <span class="value">${Number((params.data-wholePackage)/wholePackage*100).toFixed(2)}%</span>
+                  <span class="value">${Number((wholePackage - bestGroupSupplierTotal)/wholePackage*100).toFixed(2)}%</span>
                 </p>
               </div>`)
 
@@ -179,14 +194,14 @@ export default {
               params.dataIndex === 2 && (tpl = `
               <div class="toolTipBox-content">
                 <p>Compared to Best TTO <br> for Whole Package: 
-                  <span class="value">${Number((params.data-minPartSupplierTToTotal)/minPartSupplierTToTotal*100).toFixed(2)}%</span>
+                  <span class="value">${Number((wholePackage - minPartSupplierTToTotal)/wholePackage*100).toFixed(2)}%</span>
                 </p>
               </div>`)
 
               params.dataIndex === 3 && (tpl = `
               <div class="toolTipBox-content">
                 <p>Compared to Best TTO <br> for Whole Package: 
-                  <span class="value">${Number((params.data-weightSupplierTotal)/weightSupplierTotal*100).toFixed(2)}%</span>
+                  <span class="value">${Number((wholePackage-weightSupplierTotal)/wholePackage*100).toFixed(2)}%</span>
                 </p>
               </div>`)
 
@@ -252,12 +267,13 @@ export default {
           series
         };
         // console.log(JSON.stringify(option))
+        vm.clear()
         vm.setOption(option);
       })
     },
     genSeries() {
       const self = this
-      const bgColor = '#dfeaf5'
+      const bgColor = '#94c8fc'
       const textStyle = {
         color: '#efefef',
         fontSize: '10'
@@ -295,12 +311,13 @@ export default {
       const bestGroupSupplierTotal = bestGroupSupplier && bestGroupSupplier[2]
       let totalGroupPercent = 0
 
-      console.log('----',bestGroupSupplier)
+      // console.log('----',bestGroupSupplier)
       
       series.push({
         data: ['', bestGroupSupplierMin, '', ''],
         type: 'bar',
         barWidth: 30,
+        barMinHeight: 30,
         stack: 'total',
         label: {
           show: true,
@@ -309,10 +326,12 @@ export default {
           formatter: function(params) {
             const fz = Number(params.data)
             const fm = Number(bestGroupSupplierTotal)
-            const percent = Math.floor(fz/fm*100)
-            totalGroupPercent += percent
-            return `${params.data}\n(${percent}%)`
-          }
+            const percent = parseFloat(fz/fm*100).toFixed(2)
+            totalGroupPercent += Number(percent)
+            return `${params.data}\n{p|(${percent}%)}`
+          },
+          rich,
+          interval: 0
         },
         itemStyle: {
           normal: {
@@ -326,6 +345,7 @@ export default {
           data: ['', bestGroupSupplierMax, '', ''],
           type: 'bar',
           barWidth: 30,
+          barMinHeight: 30,
           stack: 'total',
           label: {
             show: true,
@@ -336,8 +356,10 @@ export default {
               const fm = Number(bestGroupSupplierTotal)
               // const percent = Math.floor(fz/fm*100)
               const percent = 100 - totalGroupPercent
-              return `${params.data}\n(${percent}%)`
-            }
+              return `${params.data}\n{p|(${percent.toFixed(2)}%)}`
+            },
+            rich,
+            interval: 0
           },
           itemStyle: {
             normal: {
@@ -381,6 +403,7 @@ export default {
           data: ['', '', item.data, ''],
           type: 'bar',
           barWidth: 30,
+          barMinHeight: 30,
           stack: 'total',
           label: {
             show: true,
@@ -389,10 +412,12 @@ export default {
             formatter: function(params) {
               const fz = Number(params.data)
               const fm = Number(minPartSupplierTToTotal)
-              const percent =(item.index === minPartSupplierTToArray.length - 1) ? (100 - partPercent) : Math.floor(fz/fm*100)
-              partPercent += percent
-              return `${params.data}\n(${percent}%)`
-            }
+              const percent =(item.index === minPartSupplierTToArray.length - 1) ? (100 - partPercent).toFixed(2) : parseFloat(fz/fm*100).toFixed(2)
+              partPercent += Number(percent)
+              return `${params.data}\n{p|(${percent}%)}`
+            },
+            rich,
+            interval: 0
           },
           itemStyle: {
             normal: {
@@ -408,6 +433,7 @@ export default {
         type: 'bar',
         barWidth: 30,
         stack: 'total',
+        _data: minPartSupplierTToTotal,
         label: {
           show: true,
           position: 'top',
@@ -429,59 +455,61 @@ export default {
       // 权重柱状图
       const weightSupplier = self.data.weightSupplier || []
       const weightSupplierTotal = self.data.weightSupplierTotal || 0
-      const isShowWeightStick = self.data.isShowWeightStick || false
-      let totalPercent = 0
-      if (isShowWeightStick) {
-        weightSupplier.forEach((item, index) => {
-          series.push({
-            data: ['', '', '', item],
-            type: 'bar',
-            barWidth: 30,
-            stack: 'total',
-            label: {
-              show: true,
-              position: 'inside',
-              textStyle,
-              formatter: function(params) {
-                const fz = Number(params.data)
-                const fm = Number(weightSupplierTotal)
-                const percent =(index === weightSupplier.length - 1) ? (100 - totalPercent) : Math.floor(fz/fm*100)
-                totalPercent += percent
-                return `${params.data}\n(${percent}%)`
-              }
-            },
-            itemStyle: {
-              normal: {
-                barBorderRadius: index === (weightSupplier.length - 1) ? [5, 5, 0, 0] : [0, 0, 0, 0],
-                color: colorPanel[index]
-              },
-            }
-          })
-        })
-        // 最后一根柱子的label
-        weightSupplierTotal && (series.push({
-          data: ['', '', '', '1'],
+      let weightPercent = 0
+      weightSupplier.forEach((item, index) => {
+        series.push({
+          data: ['', '', '', item.data],
           type: 'bar',
           barWidth: 30,
+          barMinHeight: 30,
           stack: 'total',
           label: {
             show: true,
-            position: 'top',
-            textStyle: {
-              color: '#485465'
+            position: 'inside',
+            textStyle,
+            formatter: function(params) {
+              const fz = Number(params.data)
+              const fm = Number(weightSupplierTotal)
+              const percent =(index === weightSupplier.length - 1) ? (100 - weightPercent).toFixed(2) : (fz/fm*100).toFixed(2)
+              weightPercent += Number(percent)
+              return `${params.data}\n{p|(${percent}%)}`
             },
-            formatter: function() {
-              return weightSupplierTotal
-            }
+            rich,
+            interval: 0
           },
           itemStyle: {
             normal: {
-              barBorderRadius: [0, 0, 0, 0],
-              color: '#ffffff'
+              barBorderRadius: index === (weightSupplier.length - 1) ? [5, 5, 0, 0] : [0, 0, 0, 0],
+              color: colorPanel[index]
             },
           }
-        }))
-      }
+        })
+      })
+      // 最后一根柱子的label
+      weightSupplierTotal && (series.push({
+        data: ['', '', '', '1'],
+        type: 'bar',
+        barWidth: 30,
+        stack: 'total',
+        _data: weightSupplierTotal,
+        label: {
+          show: true,
+          position: 'top',
+          textStyle: {
+            color: '#485465'
+          },
+          formatter: function() {
+            return weightSupplierTotal
+          }
+        },
+        itemStyle: {
+          normal: {
+            barBorderRadius: [0, 0, 0, 0],
+            color: '#ffffff'
+          },
+        }
+      }))
+      
       return series
     }
   },
@@ -513,6 +541,12 @@ export default {
     justify-content: space-between;
     padding-top: 10px;
     .legend {
+      max-width: 245px;
+      &.scroll {
+        max-height: 50PX;
+        overflow: hidden;
+        overflow-y: scroll;
+      }
       li {
         font-size: 16px;
         display: inline-block;

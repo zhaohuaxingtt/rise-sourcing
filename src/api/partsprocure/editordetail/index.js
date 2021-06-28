@@ -196,3 +196,20 @@ export function getNominateFileInfo({nomiAppId, sortColumn, isAsc, fileType, pag
 		method: 'GET'
 	})
 }
+
+// 创建采购项目
+export function supplierCurentTop(params){
+  return sourcing({
+    url: "https://www.fastmock.site/mock/5cd3e97d6126b18b5e16f3e499489335/api/supplierCurent",
+    method: "get",
+    data: params
+  })
+}
+// 创建采购项目
+export function supplierCurentBottom(params){
+  return sourcing({
+    url: "https://www.fastmock.site/mock/5cd3e97d6126b18b5e16f3e499489335/api/supplierCurent",
+    method: "get",
+    data: params
+  })
+}

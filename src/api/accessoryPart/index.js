@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-01 14:50:12
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-20 08:33:12
+ * @LastEditTime: 2021-06-23 10:01:25
  * @Description: 配件相关接口
  * @FilePath: \front-web\src\api\accessoryPart\index.js
  */
@@ -139,7 +139,16 @@ export function getPartBySP(params) {
 // 自动发起询价
 export function autoInquiry(params) {
   return requstSourcing({
-    url: '/rfqs/autoInquiry',
+    url: '/rfqs/rfqAutoRound',
+    method: 'PATCH',
+    data: params
+  })
+}
+
+// 自动发起询价
+export function updateRfq(params) {
+  return requstSourcing({
+    url: '/rfqs/updateRfq',
     method: 'PATCH',
     data: params
   })

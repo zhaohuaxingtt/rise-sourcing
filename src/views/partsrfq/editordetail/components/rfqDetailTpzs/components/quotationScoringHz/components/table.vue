@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-28 15:03:47
- * @LastEditTime: 2021-06-21 21:19:44
+ * @LastEditTime: 2021-06-25 18:34:19
  * @LastEditors: Please set LastEditors
  * @Description: 特殊表格实现
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\table.vue
@@ -32,7 +32,7 @@
         :prop='item.prop'
       >
         <template slot-scope="scope">
-            <el-checkbox @change="handleSelectionChange" class="checkBox" v-model="scope.row.active"><span>{{scope.row[item.props]}}</span></el-checkbox>
+            <el-checkbox @change="handleSelectionChange(scope.row,scope.$index)" class="checkBox" v-model="scope.row.active"><span>{{scope.row[item.props]}}</span></el-checkbox>
         </template>
       </el-table-column>
       <el-table-column
@@ -69,10 +69,20 @@
         <!----------在表头上方动态循环点------------------------>
               <template v-for='(rating,index) in ratingList.ratingList'>
                 <ul :key="index" class="lastChild">
-                  <li v-for='(itemsss,index) in rating' :key='index'>
-                    <span style="margin-rigth:10px;">{{itemsss.rate}}</span>
-                    <span><icon v-if='itemsss.isAllPartRateConsistent' name='iconbaojiadan-youfujian' symbol></icon></span>
-                  </li>
+                  <template v-for='(itemsss,indexss) in rating'>
+                    <li :key='indexss' v-if='indexss > 0'>
+                      <span style="margin-rigth:10px;">{{itemsss.rate}}</span>
+                      <span><icon v-if='itemsss.isAllPartRateConsistent' name='icontishi-cheng' symbol></icon></span>
+                    </li>
+                    <li v-else :key='indexss'>
+                      <span>
+                        {{itemsss.rate}}
+                      </span>
+                      <el-tooltip  effect="light" v-if='itemsss.isRateRisk' :content="`FRM评级：${itemsss.isAllPartRateConsistent}`">
+                          <icon name='icontishi-cheng' symbol></icon>
+                      </el-tooltip>
+                    </li>
+                  </template>
                 </ul>
               </template>
             </div>
@@ -95,10 +105,18 @@
               <span :class="{lvse:lvseFn(scope.row,item.props,'ttoStatus')}">{{scope.row[item.props]}}</span>
           </template>
           <template v-else-if='removeKeysNumber(item.props) == "Quotationdetails" && scope.$index < tableData.length -3'>
-             <span class="link" @click="optionPage(scope.row)">查看详情</span>
+             <span class="link" @click="optionPage(scope.row,getPorpsNumber(item.props))">查看详情</span>
           </template>
           <template v-else-if='removeKeysNumber(item.props) == "supplierSopDate" || removeKeysNumber(item.props) == "ltcStaringDate"'>
             <span>{{scope.row[item.props]?moment(scope.row[item.props]).format("YYYY-MM-DD"):''}}</span>
+          </template>
+          <template v-else-if ='removeKeysNumber(item.props) == "developmentCost"'>
+            <p style="color:red;" v-if='scope.row[getPorpsNumber(item.props)+"developmentCostHasShare"]'>*</p>
+            <p>{{scope.row[item.props]}}</p>
+          </template>
+          <template v-else-if ='removeKeysNumber(item.props) == "tooling"'>
+            <p style="color:red;" v-if='scope.row[getPorpsNumber(item.props)+"toolingHasShare"]'>*</p>
+            <p>{{scope.row[item.props]}}</p>
           </template>
           <template v-else>
             <span>{{scope.row[item.props]}}</span>
@@ -157,13 +175,13 @@ export default{
         return false
       }
     },
-    optionPage(items){
+    optionPage(items,index){
       const router = this.$router.resolve({
         path:'/supplier/quotationdetail',
         query:{
           rfqId:this.$route.query.id,
-          round:this.getbaseInfoData().currentRounds,
-          supplierId:items.supplierId,
+          round:this.round,
+          supplierId:items[index+'supplierId'],
           fsNum:items.partPrjCode,
           fix:true
         }
@@ -275,7 +293,8 @@ export default{
      * @param {*} val
      * @return {*}
      */
-    handleSelectionChange(){
+    handleSelectionChange(e,index){
+      this.$set(this.tableData,index,e)
       this.$emit('handleSelectionChange',this.tableData.filter(items=>items.active))
     }
   }

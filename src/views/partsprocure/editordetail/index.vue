@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2021-06-25 17:20:51
+ * @LastEditTime: 2021-06-28 11:01:26
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\editordetail\index.vue
@@ -30,6 +30,10 @@
 			<span class="font18 font-weight">{{$t("LK_LINGJIANCAIGOUXIANGMU")}}</span>
 			<div class="floatright">
 				<iButton v-if="isAssembly" @click="handleCreateNomiApplication">{{ $t("生成定点申请单") }}</iButton>
+				<!-------------------------------------------------------------------------------->
+				<!---维护现供供应商逻辑：1，只有当零件采购项目类型为[GS零件]或[GS common sourcing]时才---->
+				<!---出现此按钮。------------------------------------------------------------------->
+				<iButton v-if='currentSupplierButton' @click="curentSupplierDialog.show = true">维护现供供应商</iButton>	
 				<iButton @click="start" v-permission="PARTSPROCURE_EDITORDETAIL_STARTUP"
 					v-if="detailData.status == '16'">{{ $t("LK_QIDONGXIANGMU") }}</iButton>
 				<iButton @click="creatFs" v-permission="PARTSPROCURE_EDITORDETAIL_GENERATEFSGSNR">
@@ -174,7 +178,7 @@
 								<el-option :value="item.id" :label="item.name" v-for="item in fromGroup.CF_CONTROL" :key="item.name"></el-option>
 							</iSelect>
 						</iFormItem>
-						<iFormItem :label="$t('LK_LINGJIANCHENGBENFENXIYUAN') + ':'" name=''>
+						<iFormItem :label="language('LINGJIANCHENGBENFENXIYUAN', '零件成本分析员') + ':'" name=''>
 							<!-- <iSelect class="multipleSelect" v-model="detailData.c" multiple collapse-tags>
 								<el-option :value="item.code" :label="item.name" v-for="item in fromGroup.CF_CONTROL" :key="item.name"></el-option>
 							</iSelect> -->
@@ -182,7 +186,7 @@
 								{{ detailData.partCostUserName }}
 							</iText>
 						</iFormItem>
-						<iFormItem :label="$t('LK_MUJUCHENGBENFENXIYUAN') + ':'" name=''>
+						<iFormItem :label="language('MUJUCHENGBENFENXIYUAN', '模具成本分析员') + ':'" name=''>
 							<!-- <iSelect class="multipleSelect" v-model="detailData.d" multiple collapse-tags>
 								<el-option :value="item.code" :label="item.name" v-for="item in fromGroup.CF_CONTROL" :key="item.name"></el-option>
 							</iSelect> -->
@@ -206,7 +210,11 @@
 							</iText>
 						</iFormItem>
 						<iFormItem :label="$t('LK_SOPRIQI') + ':'" name="test">
-							<iText v-permission="PARTSPROCURE_EDITORDETAIL_SOPDATE">
+							<!----------------------------------------------------------------------------------------------->
+							<!---------------sop时间如果是GS零件的时候，是可以手动选择的------------------------------------------>
+							<!----------------------------------------------------------------------------------------------->
+							<iDatePicker v-if='currentSupplierButton' v-moudel='detailData.sopDate' type="date"></iDatePicker>
+							<iText v-else v-permission="PARTSPROCURE_EDITORDETAIL_SOPDATE">
 								{{ detailData.sopDate }}
 							</iText>
 						</iFormItem>
@@ -231,7 +239,7 @@
 				</div>
 			</iFormGroup>
 		</iCard>
-		<iTabsList class="margin-top20" type="border-card">
+		<iTabsList  class="margin-top20" type='card'>
 			<!-------------------------已定点时显示定点信息tab-  ----------------------------------------->
 			<el-tab-pane :label="$t('LK_DINGDIANXINXI')" v-if="detailData.status == '15'">
 				<designateInfo :params="infoItem" />
@@ -269,6 +277,10 @@
 		<!--  -->
 		<splitFactory v-if='splitPurch.splitPurchBoolean' ref='purchaseFactory' :splitPurchBoolean="splitPurch" :purchaseProjectId="purchasePrjectId" :firstId='firstId' :update="updateTabs">
 		</splitFactory>
+		<!---------------------------------------------------------------->
+		<!----------------------------现供供应商维护模块--------------------->
+		<!---------------------------------------------------------------->
+		<currentSupplier :dialogVisible='curentSupplierDialog'></currentSupplier>
 	</iPage>
 </template>
 <script>
@@ -282,7 +294,7 @@
 		iButton,
 		iTabsList,
 		iMessage,
-	} from "@/components";
+	} from "rise";
 	import logistics from "./components/logistics";
 	import targePrice from "./components/targetPrice";
 	import materialGroupInfo from "./components/materialGroupInfo";
@@ -294,6 +306,7 @@
 	import remarks from "./components/remarks";
 	import backItems from "@/views/partsign/home/components/backItems";
 	import logButton from "@/components/logButton";
+	import currentSupplier from './components/currentSupplier'
 	import {
 		getTabelData,
 		changeProcure,
@@ -331,9 +344,18 @@ import designateInfo from './components/designateInfo'
 			logButton,
 			backItems,
 			splitFactory,
-			designateInfo
+			designateInfo,
+			currentSupplier
 		},
 		computed: {
+			/**
+				* @description: 现供供应商按钮逻辑。
+				* @param {*}
+				* @return {*}
+				*/
+			currentSupplierButton:function(){
+				return this.detailData.partPrejectType == "PT11" || this.detailData.partPrejectType == "PT10"
+			},
 			isAssembly() {
 				return this.detailData.partType === "A"
 			}
@@ -352,7 +374,8 @@ import designateInfo from './components/designateInfo'
 					splitPurchBoolean: false,
 				}, //拆分采购工厂
 				purchasePrjectId: "",
-				createNomiApplicationLoading: false
+				createNomiApplicationLoading: false,
+				curentSupplierDialog:{show:false}
 			};
 		},
 		created() {
@@ -593,7 +616,7 @@ import designateInfo from './components/designateInfo'
 						} else if (res.data.length === 1) {
 							window.open("/#/designate/rfqdetail?desinateId=100&designateType=TRANFORM", "_blank")
 						} else if (res.data.length > 1) {
-
+							console.log()
 						}
 					} else {
 						iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
@@ -603,9 +626,9 @@ import designateInfo from './components/designateInfo'
 				} finally {
 					this.createNomiApplicationLoading = false
 				}
-			}
 		}
-	};
+	}
+}
 </script>
 <style lang="scss" scoped>
 	.partsprocureEditordetail {

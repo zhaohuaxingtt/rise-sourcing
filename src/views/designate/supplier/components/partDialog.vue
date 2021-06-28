@@ -1,14 +1,14 @@
 <template>
   <iDialog class="dialog" v-bind="$props" :visible.sync="visible" v-on="$listeners">
     <div class="dialog-Header" slot="title">
-      <div class="font18 font-weight">{{$t('LK_LINGJIANQINGDAN')}}</div>
+      <div class="font18 font-weight">{{language('LK_LINGJIANQINGDAN', '零件清单')}}</div>
       <div class="control">
-        <iButton @click="add">{{ $t('LK_TIANJIA') }}</iButton>
-        <iButton @click="close">{{ $t('LK_QUXIAO') }}</iButton>
+        <iButton @click="add">{{ language('LK_TIANJIA','添加') }}</iButton>
+        <iButton @click="close">{{ language('LK_QUXIAO', '取消') }}</iButton>
       </div>
     </div>
     <div class="body">
-      <tableList index :height="controlHeight ? '91%' : '100%'" v-show="visible" class="table margin-top20" :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="loading" @handleSelectionChange="handleSelectionChange">
+      <tableList index :height="controlHeight ? '91%' : '100%'" v-show="visible" class="table margin-top20" :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="loading" :lang="true" @handleSelectionChange="handleSelectionChange">
         <!-- <template #isTop="scope">
           <a class="link-underline" v-if="scope.row.isTop">
             <icon symbol name="iconliebiaoyizhiding" class="icon" />
@@ -84,7 +84,7 @@ export default {
     },
     add() {
       if (!this.multipleSelection.length) {
-        iMessage.error(this.$t('nominationSuggestion.QingXuanZeZhiShaoYiTiaoShuJu'))
+        iMessage.error(this.language('nominationSuggestion_QingXuanZeZhiShaoYiTiaoShuJu','请选择至少一条数据'))
         return
       }
       this.$emit('add', this.multipleSelection)

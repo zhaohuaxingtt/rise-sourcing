@@ -1,7 +1,7 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-02-24 09:42:07
- * @LastEditTime: 2021-04-19 17:15:37
+ * @LastEditTime: 2021-06-26 21:50:30
  * @LastEditors: Please set LastEditors
 -->
 
@@ -19,7 +19,7 @@
       v-loading='tableLoading'
       @selection-change="handleSelectionChange"
       :span-method="spanMethod"
-      :empty-text="$t('LK_ZANWUSHUJU')"
+      :empty-text="language('LK_ZANWUSHUJU','暂无数据')"
       ref="monitorTable">
       <!-- <el-table-column
         v-if="selection"
@@ -70,13 +70,14 @@
       <!-- 循环取出厂商以及TTO -->
       <el-table-column
         align='center'
+        width="150"
         label-class-name="tline"
         v-for="(head, hindex) in supplier"
         :key="hindex"
         >
         <template slot="header">
           <div class="auoHeader">
-            <p>{{head}}</p>
+            <p style="padding: 0 10px">{{head}}</p>
             <p>TTO</p>
           </div>
         </template>
@@ -94,6 +95,7 @@
       >
         <el-table-column
           align='center'
+          width="150"
           :key="hindex"
           :label="`Recommend Supplier ${hindex + 1}`">
           <template slot="header">
@@ -109,14 +111,14 @@
         </el-table-column>
         <el-table-column
           align='center'
-          width="80"
+          width="100"
           :key="hindex"
           :label="`Share ${hindex}(%)`">
           <template slot-scope="scope">
             <div v-if="batchEdit">
               <iInput
                 v-if="scope.row && scope.row.supplierChosen[hindex - 1] "
-                :placeholder="scope.row.percent && scope.row.percent[hindex - 1] || $t('LK_QINGSHURU')"
+                :placeholder="scope.row.percent && scope.row.percent[hindex - 1] || language('LK_QINGSHURU','请输入')"
                 v-model="scope.row.percent[hindex - 1]"
                 @change="handleEditPercent(scope.row, hindex - 1)"
               ></iInput>
@@ -181,7 +183,7 @@ export default {
     },
     handlEdit() {
       if (!this.selectData.length) {
-        iMessage.error('请选择')
+        iMessage.error(this.language('LK_QINGSHURU','请输入'))
         return
       }
       this.editControl = true
@@ -218,7 +220,7 @@ export default {
         // 只有一家供应商报价
         if (supplierChosen.length === 1) return
         supplierChosen.splice(cIndex, 1)
-        percent.splice(percent, 1)
+        percent.splice(cIndex, 1)
       } else {
         supplierChosen.push(curSupplier)
       }
@@ -226,6 +228,12 @@ export default {
       this.$emit('unSaveWarning', true)
       Vue.set(row, 'supplierChosen', supplierChosen)
       Vue.set(row, 'percent', percent)
+      // 同步编辑到percentCalc
+      this.onPercentChangeWhiteBack(row)
+      this.chartData = this.calculateBestTTo(this.data)
+      this.$nextTick(() => {
+        this.$emit('updateCharts', this.chartData)
+      })
       // console.log('handleCellClick', curSupplier, cIndex, supplierChosen, row)
     },
     // 编辑百分比
@@ -235,17 +243,41 @@ export default {
       // 校验是否包含负数比例
       const containNGNumber = percent.filter(m => m < 0).length
       if (isNaN(count) || count > 100 || containNGNumber) {
-        percent[Index] = 0
-        Vue.set(row, 'percent', percent)
-        iMessage.error(this.$t('nominationSuggestion.NingShuRuDeBiLiBuHeFa'))
+        // percent[Index] = 0
+        // Vue.set(row, 'percent', percent)
+        iMessage.error(this.language('nominationSuggestion_NingShuRuDeBiLiBuHeFa', '您输入的比例不合法'))
         return
       }
+      this.onPercentChangeWhiteBack(row)
       this.chartData = this.calculateBestTTo(this.data)
       // 添加未保存警告
       this.$emit('unSaveWarning', true)
       this.$nextTick(() => {
         this.$emit('updateCharts', this.chartData)
       })
+    },
+    // 输入百分比回写
+    onPercentChangeWhiteBack(item) {
+      const supplierChosen = item.supplierChosen || []
+      const percentCalc = item.percentCalc || []
+      supplierChosen.forEach((o, index) => {
+        // 找到对应的供应商修改的tto
+        const value = item.percent[index]
+        // 找到供应商的index
+        const calcIndex = this.supplier.findIndex(p => p === o)
+        percentCalc[calcIndex] = Number(value) || 0
+      })
+      percentCalc.map((calcValue, index) => {
+        const supName = this.supplier[index]
+        // console.log('supplierChosen', calcValue, supName, percentCalc)
+        if (!supplierChosen.includes(supName) && calcValue > 0) {
+          percentCalc[index] = 0
+          // console.log('supplierChosen2', calcValue, supName, percentCalc)
+        }
+        return calcValue
+      })
+      Vue.set(item, 'percentCalc', percentCalc)
+      // console.log('percentCalc', percentCalc, item)
     },
     /**
      * 分组函数，用于element-ui table 分组合并
@@ -308,22 +340,23 @@ export default {
     cacleSc(data = [], index = null) {
       let count = 0
       let str = ''
+      const weightedArray = []
       data.forEach((item) => {
         const tto = item.TTo || []
         tto.forEach((t, tIndex) => {
+          // 传了index 求单一零件的 推荐供应商tto 汇总
           if (index !== null) {
             if (index === tIndex) {
               const percent = ((item.percentCalc[tIndex] || 0) / 100).toFixed(2)
-              count += Number(t) * percent
-              str += `${Number(t)}* ${percent} +`
+              weightedArray.push(Number(t) * percent)
             }
           } else {
             const percent = ((item.percentCalc[tIndex] || 0) / 100).toFixed(2)
-            count += Number(t) * percent
-            str += `${Number(t)}* ${percent} +`
+            weightedArray.push(Number(t) * percent)
           }
         })
       })
+      count = _.sum(weightedArray)
       // console.log(data, str, count)
       return Number(count).toFixed(0)
     },
@@ -359,10 +392,13 @@ export default {
       if (!data.length) return {}
       // Best TTO for Whole Package
       const GroupKey = 'gid'
+
+      // 需要展示的供应商，统计出需要展示的涉及的供应商
+      let supplier = []
       
       // 校验是否显示加权第四根柱子
       let isShowWeightStick = false
-      isShowWeightStick = Boolean(data.filter(o => o.supplierChosen && o.supplierChosen.length > 1).length)
+      isShowWeightStick = Boolean(data.filter(o => o.supplierChosen && (o.supplierChosen.length > 1 || (o.supplierChosen.length === 1 && o.percent && o.percent[0] !== 100))).length)
 
       // 'Best TTO \n for Whole Package'
       // 根据供应商
@@ -381,6 +417,8 @@ export default {
       // console.log('countSupplier', countSupplier)
       const wholePackage = (countSupplier[0] && countSupplier[0].data) || 0
       const wholePackageIndex = (countSupplier[0] && countSupplier[0].index) || 0
+      // 记录该供应商
+      supplier.push(wholePackageIndex)
 
       // 'Best TTO \n by Group'
       // 分组汇总
@@ -417,6 +455,8 @@ export default {
       const bestGroupSupplier = [bestGroup[0].data, bestGroupTotal - bestGroup[0].data]
       const bestGroupSupplierIndex = bestGroup[0].index
       bestGroupSupplier.push(bestGroupTotal)
+      // 记录该供应商
+      supplier.push(bestGroupSupplierIndex)
       
       // console.log('weightSupplier', weightSupplier)
 
@@ -427,7 +467,7 @@ export default {
       let minPartSupplierTToArray = []
       // 求最低tto之和，遍历零件，过滤掉未报价的供应商，取报价最低的TTO求和
       data.forEach((item) => {
-        const tto = item.TTo.filter(p => p>0).sort()
+        const tto = item.TTo.filter(p => p > 0).sort((a,b)=>a-b)
         minPartSupplierTToTotal += Number(tto[0])
       })
       let bestPartList = []
@@ -446,12 +486,18 @@ export default {
           bestPartList.push(minTTo[0])
         }
       })
-      bestPartList = bestPartList.sort()
+      bestPartList = bestPartList.sort((a,b)=>a-b)
       this.supplier.forEach((supplierName, index) => {
         const sup = bestPartList.filter(o => o.index === index)
-        minPartSupplierTToArray[index] = {
-          index,
-          data: _.sum(sup.map(supItem => supItem.data))
+        const dataCount = _.sum(sup.map(supItem => supItem.data))
+        
+        if (dataCount) {
+          // 记录该供应商
+          supplier.push(index)
+          minPartSupplierTToArray[index] = {
+            index,
+            data: dataCount
+          }
         }
       })
       
@@ -463,18 +509,25 @@ export default {
         // 分供应商筛选出报价最高和最低的零件
         let baojiaArray = []
         data.forEach((dataItem) => {
-          // 取出供应商有效报价的零件价格
+          // 取出推荐供应商有效报价的零件价格
           if (dataItem.TTo[index] && dataItem.supplierChosen.includes(supplierName)) {
             baojiaArray.push(dataItem)
           }
         })
         // 求对应供应商的权重
-        weightSupplier[index] = this.cacleSc(baojiaArray, index)
-
+        const weightSupplierItem = this.cacleSc(baojiaArray, index)
+        if (Number(weightSupplierItem) > 0) {
+          weightSupplier[index] = {
+            index,
+            data: weightSupplierItem
+          }
+          // 记录该供应商
+          supplier.push(index)
+        }
       })
-      const weightSupplierTotal = _.sum(weightSupplier.map(o => Number(o)))
-
-      return {
+      // supplier = _.uniq(supplier)
+      const weightSupplierTotal = _.sum(weightSupplier.map(o => Number(o.data)))
+      const res = {
         // 整体最佳
         wholePackage,
         wholePackageIndex,
@@ -488,8 +541,11 @@ export default {
         weightSupplier,
         weightSupplierTotal,
         // 是否显示第四根柱子
-        isShowWeightStick
+        isShowWeightStick,
+        supplier
       }
+      console.log('res', res, supplier)
+      return res
     }
   }
 }

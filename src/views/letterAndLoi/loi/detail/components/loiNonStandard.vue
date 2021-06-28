@@ -19,7 +19,7 @@
         </template>
         <p class="title">
             {{$t('LK_FUJIAN')}}
-            <span class="title-tips">上传时文件请旋转至正常方向后上传</span>
+            <span class="title-tips">{{$t('LK_SHANGCHUANSHIWENJIANQINGXUANZHUANZHIZHENGCHANGFANGXIANGHOUSHANGCHUAN')}}</span>
         </p>
         <div> 
             <tableList

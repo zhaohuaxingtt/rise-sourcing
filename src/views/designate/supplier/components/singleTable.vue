@@ -2,41 +2,41 @@
   <iCard class="supplierTable singleSupplier margin-top20">
     <div class="margin-bottom20 clearFloat">
         <span class="font18 font-weight">
-          {{ $t("nominationSupplier.DanYiGongYingShang") }}</span
+          {{ language("DANYIGONGYINGSHANG",'单一供应商') }}</span
         >
         <div class="floatright" v-if="singleEditControl">
           <!-- 批量编辑 -->
           <iButton @click="handleBatchEdit">
-            {{ $t("nominationSupplier.BatchEdit") }}
+            {{ language("nominationSupplier_BatchEdit",'批量编辑') }}
           </iButton>
           <iButton
             @click="partDialogVisibal = !partDialogVisibal"
           >
-            {{ $t("LK_XINZENG") }}
+            {{ language("LK_XINZENG",'新增') }}
           </iButton>
           <iButton
             @click="submit"
             :loading="submiting"
           >
-            {{ $t("LK_BAOCUN") }}
+            {{ language("LK_BAOCUN",'保存') }}
           </iButton>
           <iButton
             @click="singleEditControl = false"
           >
-            {{ $t("LK_QUXIAO") }}
+            {{ language("LK_QUXIAO",'取消') }}
           </iButton>
           <iButton
             @click="deleteRow"
           >
-            {{ $t("LK_SHANCHU") }}
+            {{ language("LK_SHANCHU",'删除') }}
           </iButton>
         </div>
         <div class="floatright" v-else>
           <iButton @click="handlEdit">
-            {{ $t("nominationSupplier.Edit") }}
+            {{ language("nominationSupplier_Edit",'编辑') }}
           </iButton>
           <iButton @click="exportSupplier">
-            {{ $t("nominationSupplier.Export") }}
+            {{ language("nominationSupplier_Export",'导出') }}
           </iButton>
         </div>
       </div>
@@ -45,6 +45,7 @@
         :tableData="singleListData"
         :tableTitle="singleSupplierTitle"
         :tableLoading="tableLoading"
+        :lang="true"
         @handleSelectionChange="handleSingleSelectionChange"
         @openPage="openPage"
         :activeItems="'partNum'"
@@ -59,7 +60,7 @@
               v-model="scope.row.suppliersName"
               @focus="getRfqDepartment(scope.row)"
               @change="onSupplierChange(arguments, scope.row)"
-              :placeholder="$t('LK_QINGXUANZE')">
+              :placeholder="language('LK_QINGXUANZE','请选择')">
               <el-option
                 :value="items.supplierName"
                 :label="items.supplierName"
@@ -75,7 +76,7 @@
           <div v-if="singleEditControl || scope.row.isEdit">
             <iSelect
               v-model="scope.row.singleReason"
-              :placeholder="$t('LK_QINGXUANZE')">
+              :placeholder="language('LK_QINGXUANZE','请选择')">
               <el-option
                 :value="items.label"
                 :label="items.label"
@@ -91,7 +92,7 @@
           <div v-if="singleEditControl || scope.row.isEdit">
             <iSelect
               v-model="scope.row.department"
-              :placeholder="$t('LK_QINGXUANZE')">
+              :placeholder="language('LK_QINGXUANZE','请选择')">
               <el-option
                 :value="items.value"
                 :label="items.value"
@@ -165,6 +166,8 @@ export default {
       batchEditVisibal: false,
       submiting: false,
       selectOptions: {},
+      // 记录删除的行
+      deletedRowList: []
     }
   },
   mounted() {
@@ -196,15 +199,15 @@ export default {
       })
     },
     async submit() {
-      const confirmInfo = await this.$confirm(this.$t('submitSure'))
+      const confirmInfo = await this.$confirm(this.language('submitSure','您确定要执行提交操作吗？'))
       if (confirmInfo !== 'confirm') return
       this.submiting = true
       addsingleSuppliersInfo({
-        items: this.singleListData,
+        items: [...this.singleListData, ...this.deletedRowList],
         nominateId: this.$store.getters.nomiAppId
       }).then(res => {
         if (res.code === '200') {
-          iMessage.success(this.$t('LK_CAOZUOCHENGGONG'))
+          iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'))
           this.getFetchDataList()
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
@@ -218,22 +221,28 @@ export default {
     // 删除
     async deleteRow() {
       if (!this.selectSingleData.length) {
-        iMessage.error(this.$t('nominationSuggestion.QingXuanZeZhiShaoYiTiaoShuJu'))
+        iMessage.error(this.language('nominationSuggestion_QingXuanZeZhiShaoYiTiaoShuJu','请选择至少一条数据'))
         return
       }
-      const confirmInfo = await this.$confirm(this.$t('deleteSure'))
+      const confirmInfo = await this.$confirm(this.language('deleteSure','您确定要执行删除操作吗？'))
       if (confirmInfo !== 'confirm') return
       this.selectSingleData.forEach(item => {
         const dIndex = this.selectSingleData.findIndex(o => o.sid === item.sid)
+        const row = this.selectSingleData[dIndex]
+        
         if (dIndex >= 0) {
           this.singleListData.splice(dIndex, 1)
+          row.isDelete = 1
+          if (!this.deletedRowList.find(o => o.sid === row.sid)) {
+            this.deletedRowList.push(row)
+          }
         }
       })
       
     },
     // 取消
     async cancel() {
-      // const confirmInfo = await this.$confirm(this.$t('cancelSure'))
+      // const confirmInfo = await this.$confirm(this.language('cancelSure'))
       // if (confirmInfo !== 'confirm') return
       // this.singleListData = _.cloneDeep(this.oriTableListData)
     },
@@ -272,12 +281,15 @@ export default {
       }).then(res => {
         this.tableLoading = false
         if (res.code === '200') {
-          this.singleListData = res.data || []
-          this.singleListData.map(o => {
+          let singleListData = res.data || []
+          singleListData.map(o => {
             o.sid = this.randomid()
             o.nominateId = this.$store.getters.nomiAppId
             return o
           })
+          // 过滤掉已经删除的项目
+          singleListData = singleListData.filter(o => o.isDelete !== 1)
+          this.singleListData = singleListData
           // 备份列表数据
           this.oriTableListData = _.cloneDeep(this.singleListData)
           if (this.page) {
@@ -293,7 +305,7 @@ export default {
     // 批量编辑
     handleBatchEdit() {
       if (!this.selectSingleData.length) {
-        iMessage.error(this.$t('nominationSuggestion.QingXuanZeZhiShaoYiTiaoShuJu'))
+        iMessage.error(this.language('nominationSuggestion_QingXuanZeZhiShaoYiTiaoShuJu','请选择至少一条数据'))
         return
       }
       this.batchEditVisibal = true
@@ -322,7 +334,7 @@ export default {
     // 导出
     async exportSupplier() {
       if (!this.selectSingleData.length) {
-        iMessage.error(this.$t('nominationSuggestion.QingXuanZeZhiShaoYiTiaoShuJu'))
+        iMessage.error(this.language('nominationSuggestion_QingXuanZeZhiShaoYiTiaoShuJu','请选择至少一条数据'))
         return
       }
       excelExport(this.selectSingleData, this.singleSupplierTitle)

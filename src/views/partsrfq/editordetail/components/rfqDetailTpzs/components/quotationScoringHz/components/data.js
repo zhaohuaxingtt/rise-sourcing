@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-05-28 14:32:26
- * @LastEditTime: 2021-06-22 11:50:28
+ * @LastEditTime: 2021-06-26 15:15:39
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\data.js
@@ -124,10 +124,10 @@ export function getRenderTableTile(whiteListService,supplierLength){
  * @param {*} supplierLength
  * @return {*}
  */
- export function getRenderTableTileSupplier(whiteListService,supplierDataList){
+ export function getRenderTableTileSupplier(whiteListService=[],supplierDataList){
    try {
     const relWhiteList = [...supplierWhiteList,...whiteListService] //
-    const xuhTable = centerSupplierList(0,supplierDataList[0].partInfoList)
+    const xuhTable =  JSON.parse(JSON.stringify(centerSupplierList(0,supplierDataList[0].partInfoList)))
     const relTabelListDefault = []
     let relTableListXh = []
     let templateListxh = []
@@ -163,7 +163,7 @@ export function getRenderTableTile(whiteListService,supplierLength){
     }
     for(let i = 0; i<supplierDataList[0].partInfoList.length;i++){
       if(i>0){
-        relTableListXh = [...relTableListXh,...addtitle(templateListxh,i,supplierDataList[0].partInfoList)]
+        relTableListXh = [...relTableListXh,...addtitle(JSON.parse(JSON.stringify(templateListxh)),i,supplierDataList[0].partInfoList)]
       }
     }
     return [...relTabelListDefault,...relTableListXh,...lastSupplier]
@@ -234,7 +234,7 @@ export function translateRating(supplierList,ratingList) {
         titleList.push(itemsq.rateDepart)
       })
      }
-     maps.push({rate:c[0].supplierName,isAllPartRateConsistent:c[0].rfmRate})
+     maps.push({rate:c[0].supplierName,isAllPartRateConsistent:c[0].rfmRate,isRateRisk:c[0].isRateRisk})
      //拿到评分部门list 为每个部门设置评分
      titleList.forEach(itemsbb=>{
        const map = c.find(it=>it.rateDepart == itemsbb)
@@ -292,9 +292,11 @@ export function subtotal(tableHeader,dataList,priceInfo){
           dataList.forEach(element => {
             for(let key in element){
                 if(items.props == key){
-                  total[key] = _getMathNumber(`${total[key] || 0}+${element[key] || 0}*${element['ebr']}`)
-                  if(removeKeysNumber(key) == "tto"){
-                    total[getPorpsNumber(key)+"Status"] = 0
+                  //需要 Lc Aprice . Lc Bprice TTo 
+                  if(removeKeysNumber(key) == "lcAPrice" || removeKeysNumber(key) == "lcBPrice" || removeKeysNumber(key) == "tto"){
+                    total[key] = _getMathNumber(`${total[key] || 0}+${element[key] || 0}*${element['ebr'] || 1}`)
+                  }else{
+                    total[key] = _getMathNumber(`${total[key] || 0}+${element[key] || 0}`)
                   }
                 }
               }

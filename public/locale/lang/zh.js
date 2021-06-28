@@ -4,7 +4,7 @@
         (global = global || self, factory(window.i18n))
 }(this, function(i18n) {
     'use strict'
-    i18n.setLocaleMessage('zh', {
+    const oldLanguage = {
         'delete': "删除",
         "deleteSure":'您确定要执行删除操作吗？',
         "revokeSure":'您确定要执行撤回操作吗？',
@@ -406,6 +406,7 @@
         'LK_CHUANGJIANSHIJIAN': '创建时间', //创建时间
         'LK_CONGLINGJIANPAISHENG': '从零件派生', //从零件派生
         'LK_DAXIAOMB': '大小（MB）', //大小（MB）
+        'LK_DAXIAO': '大小', // 大小
         'LK_DAIBANSHIXIANG': '待办事项', //待办事项
         'LK_DAIQUERENBANBEN': '待确认版本', //待确认版本
         'LK_DANWEI': '价格单位', //单位
@@ -901,6 +902,36 @@
         'LK_LOIBIANHAO':'LOI编号', // LOI编号
         'LK_LOIZHUANGTAI':'LOI状态', // LOI状态
         'LK_LOISHENGCHENGSHIJIAN':'LOI⽣成时间', // LOI⽣成时间
+        'LK_QUERENBINGTIJIAO':'确认并提交', // 确认并提交
+        'LK_LINEQUEREN':'LINIE确认', // LINIE确认
+        'LK_LINETUIHUI':'LINIE退回', // LINIE退回
+        'LK_GUANBI':'关闭', // 关闭
+        'LK_JIHUO':'激活', // 激活
+        'LK_GUANBIDINGDIANXIN':'关闭定点信' , // 关闭定点信
+        'LK_QINGSHURUGUANBIYUANYIN':'请输⼊关闭原因', // 请输⼊关闭原因
+        'LK_MUBIAOXUNJIACAIGOUYUAN':'目标询价采购员', // 目标询价采购员
+        'LK_MUBIAOLINE':'⽬标LINIE', // ⽬标LINIE
+        'LK_GAILAN':'概览', // 概览
+        'LK_BAOBIAOGUANLI':'报表管理', // 报表管理
+        'LK_WANCHENGDINGDIANXIN':'完成定点信', // 完成定点信
+        'LK_DAOCHUBIAOZHUNDINGDIANXIN':'导出标准定点信', // 导出标准定点信
+        'LK_LISHIDINGDIANXIN':'历史定点信', // 历史定点信
+        'LK_BIAOZHUNDINGDIANXIN':'标准定点信', // 标准定点信
+        'LK_FEIBIAOZHUNDINGDIANXIN':'⾮标准定点信',  // ⾮标准定点信
+        'LK_GONGYINGSHANGLIANXIR':'供应商联系⼈', // 供应商联系⼈
+        'LK_SHANGCHUANSHIWENJIANQINGXUANZHUANZHIZHENGCHANGFANGXIANGHOUSHANGCHUAN':'上传时文件请旋转至正常方向后上传', // 上传时文件请旋转至正常方向后上传
+        'LK_BIANJIBEIZHU':'编辑备注', // 编辑备注
+        'LK_GUANBILOI':'关闭LOI', // 关闭LOI
+        'LK_WANCHENGLOI':'完成LOI', // 完成LOI
+        'LK_DAOCHUBIAOZHUNLOI':'导出标准LOI', // 导出标准LOI
+        'LK_LISHILOI':'历史LOI', // 历史LOI
+        'LK_BIAOZHUNLOI':'标准LOI', // 标准LOI
+        'LK_FEIBIAOZHUNLOI':'⾮标准LOI', // ⾮标准LOI
+        'LK_PILIANGLOI':'批量LOI', // 批量LOI
+        'LK_KAIFALOI':'开发LOI', // 开发LOI
+        'LK_KAIFAPILIANGLOI':'开发+批量LOI' , // 开发+批量LOI
+        'LK_FRMPINGJI':'FRM评级', // FRM评级
+        'LK_CBDSTATUS':'CBD状态', // CBD状态
 
         // 定点管理
         'nominationLanguage': {
@@ -930,6 +961,7 @@
             'LeiXing': '类型', // 类型
             'XingMuLeiXing': '项目类型', // 项目类型
             'HuiYi': '会议', // 会议
+            'HuiYiMingCheng': '会议名称', // 会议名称
             'RSZhuangTai': 'RS单状态', // RS单状态
             'RSDongJieRiQi':'RS冻结日期', // RS冻结日期
             'DongJieRiQi':'冻结日期', // 冻结日期
@@ -949,6 +981,17 @@
             'DongJieRS': '冻结RS单', //冻结RS单
             'JieDongRS': '解冻RS单',//解冻RS单
             'QingChuangJianWanDingDianShenQingDan': '请创建完定点申请单再继续下一步',//解冻RS单
+            'QianZiDanHao': '签字单号', //签字单号
+            'QianZiDanZhuangTai': '签字单状态',//签字单状态
+            'FuHeJieZhiRiQi': '复核截止日期',//复核截止日期
+            'FuHeShiFouJieZhi': '复核是否截止',//复核是否截止
+            'FaQiFuHe': '发起复核',//发起复核
+            'TuiHuiZhiTongGuoZHuangTai': '退回至通过状态',//退回至通过状态
+            'SELDanJuQUeRen': 'SEL单据确认', // SEL单据确认
+            'QianZiDan': '签字单', //签字单号
+            'SELFenTanDanFuJianLieBiao': 'SEL分摊单附件列表',//SEL分摊单附件列表
+            'XinJianQianZiDan': '新建签字单',//新建签字单
+            'MQianZiDanLiebiao': 'M签字单列表',//M签字单列表
         },
         // 单一供应商
         "nominationSupplier": {
@@ -1044,5 +1087,22 @@
             "LK_BAOJIAZUSHOU_MJ":"报价分析汇总-模具",
             "LK_BAOJIAZUSHOU_MJDANWEIYUAN":"报价分析汇总-模具（单元：元）"
         }
-    })
+    }
+    var xmlHttp = ''
+    if(window.XMLHttpRequest){ 
+        xmlHttp = new XMLHttpRequest();
+    }else{
+        // eslint-disable-next-line no-undef
+        xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    xmlHttp.onreadystatechange = function() {
+        if (xmlHttp.readyState==4 && xmlHttp.status==200){
+            const data = JSON.parse(xmlHttp.responseText)
+            i18n.setLocaleMessage('zh', Object.assign(oldLanguage,data.data.zh))
+        }
+    }
+    xmlHttp.open("GET", "http://10.122.18.136:8088/i18n/getTranslationMap?from=sourcing",false);
+    xmlHttp.setRequestHeader("Content-type","application/json");
+    xmlHttp.setRequestHeader("Accept","*/*");
+    xmlHttp.send()
 }))

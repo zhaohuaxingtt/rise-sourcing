@@ -2,24 +2,24 @@
  * @Author: Luoshuang
  * @Date: 2021-05-25 16:11:07
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-16 17:34:47
+ * @LastEditTime: 2021-06-25 13:29:13
  * @Description: 分配询价采购员弹窗
  * @FilePath: \front-web\src\views\accessoryPart\signForPartsDemand\components\assignInquiryBuyer.vue
 -->
 
 <template>
   <iDialog 
-    title="分配询价采购员"
+    :title="language('FENPEIXUNJIACAIGOUYUAN','分配询价采购员')"
     :visible.sync="dialogVisible"
     @close="clearDialog"
     width="381px"
   >
     <template slot="footer">
-      <iButton @click="handleConfirm" :loading="loading">确认</iButton>
-      <iButton @click="handleCancel">取消</iButton>
+      <iButton @click="handleConfirm" :loading="loading">{{language('QUEREN','确认')}}</iButton>
+      <iButton @click="handleCancel">{{language('QUXIAO','取消')}}</iButton>
     </template>
     <el-form>
-      <el-form-item label="请选择询价采购员">
+      <el-form-item :label="language('QINGXUANZEXUNJIACAIGOUYUAN','请选择询价采购员')">
         <iSelect v-model="respLINIE">
           <el-option
             v-for="item in userOptions"
@@ -76,7 +76,7 @@ export default {
     },
     handleConfirm() {
       if (this.respLINIE === '') {
-        iMessage.warn('请选择询价采购员')
+        iMessage.warn(this.language('QINGXUANZEXUNJIACAIGOUYUAN','请选择询价采购员'))
         return
       }
       this.loading = true

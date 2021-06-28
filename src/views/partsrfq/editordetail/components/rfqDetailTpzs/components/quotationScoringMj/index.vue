@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-27 14:55:03
- * @LastEditTime: 2021-06-16 14:29:22
+ * @LastEditTime: 2021-06-23 20:56:28
  * @LastEditors: Please set LastEditors
  * @Description: 采购员报价与基本分析模具界面
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringMj\index.vue
@@ -9,9 +9,11 @@
 <script>
 import {getRfqSupplierList} from '@/api/designate/supplier'
 import quotationMj from 'rise/web/mouldOffer/components/moduleCost'
-import {iMessageBox} from 'rise'
+import {hasShowDelegate} from '@/api/partsrfq/editordetail'
+import {iMessageBox,iMessage} from 'rise'
 export default {
   extends:quotationMj,
+  inject:['getbaseInfoData'],
   data(){
     return {
       useCardSlot:false,
@@ -20,12 +22,16 @@ export default {
       supplierList:[],
       myDisabled:true,
       titleKey:"BJZS.LK_BAOJIAZUSHOU_MJDANWEIYUAN",
-      oldSupplierId:''
+      oldSupplierId:'',
+      quotationSupplierState:true
     }
   },
   computed:{
     disabled(){
       return !this.dgysBj
+    },
+    hastateSupplierBj(){
+      return this.getbaseInfoData().currentRoundsStatus != "已关闭" && this.quotationSupplierState
     }
   },
   watch:{
@@ -45,16 +51,27 @@ export default {
     this.partInfo.carTypeNames = this.$route.query.carTypeNames
     this.getRfqSupplierList().then(r=>{
       this.getAllMouldFee()
+      this.hasShowDelegate()
     })
     this.getAllPartForMould()
   },
   methods:{
+    hasShowDelegate(){
+      hasShowDelegate(this.supplierId).then(res=>{
+        if(res.code == 200){
+          this.quotationSupplierState = res.data
+        }
+      }).catch(err=>{
+        iMessage.error(err.desZh)
+      })
+    },
     getFee(res){
       if(this.dgysBj && this.tableListData.length > 0){
         iMessageBox("您确定要切换供应商吗？").then(res=>{
           this.tableListData = []
           this.getAllMouldFee()
           this.getAllPartForMould()
+          this.hasShowDelegate()
         }).catch(()=>{
           this.supplierId = this.oldSupplierId
         })
@@ -62,6 +79,7 @@ export default {
         this.tableListData = []
         this.getAllMouldFee()
         this.getAllPartForMould()
+        this.hasShowDelegate()
       }
     },
     getRfqSupplierList(){

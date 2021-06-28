@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-05-27 12:33:07
- * @LastEditTime: 2021-06-22 11:08:57
+ * @LastEditTime: 2021-06-28 10:56:20
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\costanalysismanage\components\datamaintenance\index.vue
@@ -14,14 +14,14 @@
         <icon symbol name="icondatabaseweixuanzhong" class="font24"></icon>
       </span>
     </div>
-    <iCard class="card margin-top65" :title="$t('costanalysismanage.RenGongChengBenShuJuWeiHu')">
+    <iCard class="card margin-top65" :title="language('RENGONGCHENGBENSHUJUWEIHU', '人工成本数据维护')">
       <template v-slot:header-control>
-        <iButton @click="handleExport">{{ $t("costanalysismanage.DaoChu") }}</iButton>
+        <iButton @click="handleExport">{{ language("DAOCHU", "导出") }}</iButton>
         <uploadButton uploadClass="uploadButton" :params="uploadParams" :beforeUpload="beforeUpload" @success="uploadSuccess" @error="uploadError">
-          <iButton :loading="uploadLoading">{{ $t("costanalysismanage.ShangChuan") }}</iButton>
+          <iButton :loading="uploadLoading">{{ language("SHANGCHUAN", "上传") }}</iButton>
         </uploadButton>
-        <iButton @click="handleDownload">{{ $t("costanalysismanage.XiaZai") }}</iButton>
-        <iButton :loading="deleteLoading" @click="handleDelete">{{ $t("costanalysismanage.ShanChu") }}</iButton>
+        <iButton @click="handleDownload">{{ language("XIAZAI", "下载") }}</iButton>
+        <iButton :loading="deleteLoading" @click="handleDelete">{{ language("SHANCHU", "删除") }}</iButton>
       </template>
       <div class="body">
         <tableList
@@ -30,6 +30,7 @@
           :tableData="tableListData"
           :tableTitle="tableTitle"
           :tableLoading="loading"
+          :lang="true"
           height="calc(100% - 54px)"
           @handleSelectionChange="handleSelectionChange"
         >
@@ -172,7 +173,7 @@ export default {
       } else {
         this.fileList = []
         clearTimeout(this.timer)
-        iMessage.success(`${ file.name } ${ this.$t("LK_SHANGCHUANCHENGGONG") }`)
+        iMessage.success(`${ file.name } ${ this.language("SHANGCHUANCHENGGONG", "上传成功") }`)
         this.fileList.push({ tpPartAttachmentName: res.data[0].fileName, tpPartAttachmentPath: res.data[0].filePath, size: file.size })
         this.timer = setTimeout(() => {
           this.uploadFiles()
@@ -182,11 +183,11 @@ export default {
     },
     uploadError(err, file) {
       this.uploadLoading = false
-      iMessage.error(`${ file.name } ${ this.$t('LK_SHANGCHUANSHIBAI') }`)
+      iMessage.error(`${ file.name } ${ this.language("SHANGCHUANSHIBAI", "上传失败") }`)
     },
     // 多选下载
     handleDownload() {
-      if (this.multipleSelection.length < 1) return iMessage.warn(this.$t("costanalysismanage.QingXuanZeXuYaoXiaZaiDeWenJian"))
+      if (this.multipleSelection.length < 1) return iMessage.warn(this.language("QINGXUANZEXUYAOXIAZAIDEWENJIAN", "请选择需要下载的文件"))
 
       downloadFile({
         applicationName: "rise",
@@ -202,7 +203,7 @@ export default {
     },
     // 删除
     handleDelete() {
-      if (this.multipleSelection.length < 1) return iMessage.warn(this.$t("costanalysismanage.QingXuanZeXuYaoShanChuDeWenJian"))
+      if (this.multipleSelection.length < 1) return iMessage.warn(this.language("QINGXUANZEXUYAOSHANCHUDEWENJIAN", "请选择需要删除的文件"))
       this.deleteLoading = true
       deleteFileHistory({
         idList: this.multipleSelection.map(item => item.id)

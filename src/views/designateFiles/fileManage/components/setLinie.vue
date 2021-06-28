@@ -2,25 +2,25 @@
  * @Author: Luoshuang
  * @Date: 2021-05-25 16:11:07
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-16 17:22:08
+ * @LastEditTime: 2021-06-25 14:21:30
  * @Description: 分配询价采购员弹窗
  * @FilePath: \front-web\src\views\designateFiles\fileManage\components\setLinie.vue
 -->
 
 <template>
   <iDialog 
-    title="分配LINIE/CSS"
+    :title="language('FENPEILINIECSS','分配LINIE/CSS')"
     :visible.sync="dialogVisible"
     @close="clearDialog"
     width="381px"
   >
     <template slot="footer">
-      <iButton @click="handleConfirm" :loading="saveLoading">确认</iButton>
-      <iButton @click="clearDialog">取消</iButton>
+      <iButton @click="handleConfirm" :loading="saveLoading">{{language('QUEREN','确认')}}</iButton>
+      <iButton @click="clearDialog">{{language('QUXIAO','取消')}}</iButton>
     </template>
     <el-form>
-      <el-form-item label="请选择分配的负责人">
-        <iSelect filterable v-model="respLINIE" placeholder="请选择">
+      <el-form-item :label="language('QINGXUANZEFENPEIDEFUZEREN','请选择分配的负责人')">
+        <iSelect filterable v-model="respLINIE" :placeholder="language('QINGXUANZE','请选择')">
           <el-option
             v-for="item in options"
             :key="item.id"
@@ -95,7 +95,7 @@ export default {
     },
     handleConfirm() {
       if (!this.respLINIE) {
-        iMessage.warn('请选择LINIE')
+        iMessage.warn(this.language('QINGXUANZELINIE','请选择LINIE'))
       }
       this.saveLoading = true
       this.findOption = this.options.find(item => item.id === this.respLINIE)

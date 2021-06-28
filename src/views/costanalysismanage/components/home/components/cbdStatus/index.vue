@@ -11,14 +11,22 @@
     >
     <div class="cbdStatus">
         <div class="header clearFloat margin-bottom15">
-          <span class="title">CBD状态</span>
+          <span class="title">{{language('LK_CBDSTATUS','CBD状态')}}</span>
 
           <div class="floatright">
-              <iButton disabled>{{$t('LK_XIAZAI')}}</iButton>
+              <iButton disabled>{{language('LK_XIAZAI','下载')}}</iButton>
           </div>
       </div>
       <!-- 表格区域 -->
-      <tableList :activeItems="null" selection indexKey :tableData="tableData" :tableTitle="tableTitle" :tableLoading="tableLoading" @handleSelectionChange="handleSelectionChange" @openPage="openPage"></tableList>
+      <tableList 
+        index
+        :lang="true"
+        :tableData="tableData"
+        :tableTitle="tableTitle"
+        :tableLoading="tableLoading"
+        @handleSelectionChange="handleSelectionChange"
+        > 
+      </tableList>
       <!-- 分页 -->
       <iPagination 
         v-update 
@@ -41,7 +49,7 @@ import {
     iButton,
     iPagination,
 } from 'rise'
-import tableList from '@/views/designate/designatedetail/components/tableList'
+import tableList from "@/views/partsign/editordetail/components/tableList"
 import { pageMixins } from "@/utils/pageMixins"
 import { CbdTitle } from '../data'
 import { getKmCbdList } from "@/api/costanalysismanage/rfqdetail"

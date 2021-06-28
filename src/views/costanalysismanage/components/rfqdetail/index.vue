@@ -9,7 +9,7 @@
 <template>
   <iPage class="rfqdetail">
     <div class="header clearFloat">
-      <div class="title">{{ $t("costanalysismanage.RfqBianHao") }}: {{ rfqId }}</div>
+      <div class="title">{{ language("RFQBIANHAO", "RFQ编号") }}: {{ rfqId }}</div>
       <div class="control">
         <logButton class="margin-left20" />
         <span class="margin-left20">

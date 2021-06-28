@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-05-24 16:28:13
- * @LastEditTime: 2021-06-25 15:17:02
+ * @LastEditTime: 2021-06-28 10:58:26
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\createparts\components\data.js
@@ -12,7 +12,7 @@ export const navList = [
     name: "手工采购项目创建",
     url: "/sourcing/createparts/home",
     activePath: "/createparts/home",
-    key: "createparts.ShouGongCaiGouXiangMuChuangJian"
+    key: "SHOUGONGCAIGOUXIANGMUCHUANGJIAN"
   },
   // {
   //   value: 2,
@@ -33,6 +33,6 @@ export const navList = [
     name: "工厂迁移",
     url: "/sourcing/createparts/factoryrelocate",
     activePath: "/createparts/factoryrelocate",
-    key: 'createparts.GongChangQianYi'
+    key: "GONGCHANGQIANYI"
   }
 ]

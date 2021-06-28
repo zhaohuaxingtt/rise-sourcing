@@ -6,32 +6,32 @@
 <template>
     <iPage class="letterDetail">
         <div class="header clearFloat">
-        <div class="title">定点信编号: NL21-10180</div>
+        <div class="title">{{$t('LK_DINGDIANXINBIANHAO')}}: NL21-10180</div>
         <div class="control">
             <span v-if="isEdit">
-                <iButton>保存</iButton>
-                <iButton @click="changeEditStatus">取消</iButton>
+                <iButton>{{$t('LK_BAOCUN')}}</iButton>
+                <iButton @click="changeEditStatus">{{$t('LK_QUXIAO')}}</iButton>
             </span>
             <span v-else>
-                <iButton @click="edit">编辑</iButton>
-                <iButton>LINIE确认</iButton>
-                <iButton>LINIE退回</iButton>
-                <iButton v-if="radioType=='NonStandard'">完成定点信</iButton>
-                <iButton>导出标准定点信</iButton>
-                <iButton @click="changeShowHistory">历史定点信 </iButton>
+                <iButton @click="edit">{{$t('LK_BIANJI')}}</iButton>
+                <iButton>{{$t('LK_LINEQUEREN')}}</iButton>
+                <iButton>{{$t('LK_LINETUIHUI')}}</iButton>
+                <iButton v-if="radioType=='NonStandard'">{{$t('LK_WANCHENGDINGDIANXIN')}}</iButton>
+                <iButton>{{$t('LK_DAOCHUBIAOZHUNDINGDIANXIN')}}</iButton>
+                <iButton @click="changeShowHistory">{{$t('LK_LISHIDINGDIANXIN')}} </iButton>
             </span>
             <logButton class="margin-left20" />
         </div>
         </div>
         <iCard class="margin-top30">
            <el-radio-group v-model="radioType" :disabled="!isEdit">
-                <el-radio :label="'standard'">标准定点信</el-radio>
-                <el-radio :label="'NonStandard'">⾮标准定点信</el-radio>
+                <el-radio :label="'standard'">{{$t('LK_BIAOZHUNDINGDIANXIN')}}</el-radio>
+                <el-radio :label="'NonStandard'">{{$t('LK_FEIBIAOZHUNDINGDIANXIN')}}</el-radio>
             </el-radio-group>
             <div class="contain margin-top30">
                 <iFormGroup row="2">
                     <div class="col">
-                        <iFormItem label='供应商联系⼈：'>
+                        <iFormItem :label="$t('LK_GONGYINGSHANGLIANXIR')+':'">
                             <iSelect v-update v-if="isEdit">
                                 <el-option
                                     v-for="item in selectOptions || []"
