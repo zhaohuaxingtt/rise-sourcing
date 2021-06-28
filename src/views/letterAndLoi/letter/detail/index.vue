@@ -6,7 +6,7 @@
 <template>
     <iPage class="letterDetail">
         <div class="header clearFloat">
-        <div class="title">{{$t('LK_DINGDIANXINBIANHAO')}}: NL21-10180</div>
+        <div class="title">{{$t('LK_DINGDIANXINBIANHAO')}}: {{letterNum}}</div>
         <div class="control">
             <span v-if="isEdit">
                 <iButton>{{$t('LK_BAOCUN')}}</iButton>
@@ -82,6 +82,9 @@ import {
 import logButton from "@/views/partsign/editordetail/components/logButton"
 import historyDialog from './components/historyDialog'
 import nonStandard from './components/nonStandard'
+import {
+    getLetterDetail,
+} from  '@/api/letterAndLoi/letter'
 export default {
     name:'letterDetail',
     components:{
@@ -89,7 +92,6 @@ export default {
         logButton,
         iButton,
         iCard,
-        // standard,
         historyDialog,
         nonStandard,
         iFormGroup,
@@ -104,9 +106,11 @@ export default {
             showHistory:false, // 历史定点信弹窗
             selectOptions:[],
             checked:false,
+            letterNum:'',
         }
     },
     created(){
+        this.getDetail();
     },
     methods:{
         // 编辑状态变更
@@ -122,6 +126,18 @@ export default {
         changeShowHistory(){
             const { showHistory } = this;
             this.showHistory = !showHistory;
+        },
+        async getDetail(){
+            const {query} = this.$route;
+            const {id=''} = query;
+            await getLetterDetail({nominateLetterId:id}).then((res)=>{
+                const {code,data={}} = res;
+                if(code == 200){
+                    const { templateType,letterNum } = data;
+                    this.radioType = templateType==0 ? 'standard' : 'NonStandard';
+                    this.letterNum = letterNum;
+                }
+            }).catch((err)=>{})
         }
     }
 }

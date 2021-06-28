@@ -14,7 +14,7 @@
                   <el-option
                     v-for="item in selectOptions[item.selectOption] || []"
                     :key="item.value"
-                    :label="language(item.key,item.label)"
+                    :label="item.label"
                     :value="item.value">
                   </el-option>  
                 </iSelect> 
@@ -75,7 +75,7 @@
     <!-- 转派弹窗 -->
     <turnSendDialog v-if="turnSendVisible" :dialogVisible="turnSendVisible" @changeVisible="changeVisible"/>
     <!-- 关闭定点信弹窗 -->
-    <closeLetterDialog v-if="closeLetterVisible" :dialogVisible="closeLetterVisible" @changeVisible="changeVisible"/>
+    <closeLetterDialog v-if="closeLetterVisible" :dialogVisible="closeLetterVisible" @changeVisible="changeVisible" @getList="getList" :selectItems="selectItems"/>
   </div>
 </template>
 
@@ -99,8 +99,14 @@ import tableList from "@/views/partsign/editordetail/components/tableList"
 import turnSendDialog from './components/turnSendDialog'
 import closeLetterDialog from './components/closeLetterDialog'
 import {
-    getLetterList
+    getLetterList,
+    fsConfirm,
+    liniefirm,
+    fsRecall,
+    liniereturn,
+    fsActivate,
 } from '@/api/letterAndLoi/letter'
+import { getDictByCode } from '@/api/dictionary'
 export default {
     name:'letterList',
     mixins: [pageMixins],
@@ -124,14 +130,7 @@ export default {
                 status:'',
             },
             selectOptions:{
-                status:[
-                     {label:'前期处理中',key:'CSF_HANDLING',value:'CSF_HANDLING'},
-                     {label:'Linie确认中',key:'LINIE_CONFIRING',value:'LINIE_CONFIRING'},
-                     {label:'供应商确认中',key:'SUPPLIER_CONFIRING',value:'SUPPLIER_CONFIRING'},
-                     {label:'完成',key:'COMPLETIED',value:'COMPLETIED'},
-                     {label:'关闭',key:'CLOSED',value:'CLOSED'},
-                     {label:'作废',key:'TOVOID',value:'TOVOID'},
-                ],
+                status:[],
                 showSelf:[
                     {label:'是',key:'nominationLanguage.Yes',value:'YES'},
                     {label:'否',key:'nominationLanguage.No',value:'NO'},
@@ -139,7 +138,8 @@ export default {
             },
             loading:false,
             tableListData:[
-                {nominateAppId:'50912471',letterNum:'NL21-10180',rfqId:'51120086',supplierNum:'068',supplierSapNum:'10047',supplierName:'博世汽⻋技术服务(中国)有限公司',statusDesc:'前期处理中',supplierResult:'供应商反馈',fsName:'⾼真',linieName:'王颖',isSignAgreement:'已签署',nominateDate:'2021-04-23'}
+                {nominateAppId:'50912471',letterNum:'NL21-10180',nominateLetterId:'1',rfqId:'51120086',supplierNum:'068',supplierSapNum:'10047',supplierName:'博世汽⻋技术服务(中国)有限公司',statusDesc:'前期处理中',supplierResult:'供应商反馈',fsName:'⾼真',linieName:'王颖',isSignAgreement:'已签署',nominateDate:'2021-04-23'},
+                {nominateAppId:'50912472',letterNum:'NL21-10181',nominateLetterId:'2',rfqId:'51120086',supplierNum:'068',supplierSapNum:'10047',supplierName:'博世汽⻋技术服务(中国)有限公司',statusDesc:'前期处理中',supplierResult:'供应商反馈',fsName:'⾼真',linieName:'王颖',isSignAgreement:'已签署',nominateDate:'2021-04-23'}
             ],
             tableTitle:letterListTitle,
             selectItems:[],
@@ -148,6 +148,7 @@ export default {
         }
     },
     created(){
+        this.getSelectOptions();
         this.getList();
     },
     methods:{
@@ -173,6 +174,23 @@ export default {
 
             })
             
+        },
+
+        // 调取数据字典获取下拉
+        async getDictionary(optionName, optionType) {
+            await getDictByCode(optionType).then(res => {
+                if(res?.result) {
+                this.selectOptions[optionName] = res.data[0].subDictResultVo.map(item => {
+                    return { value: item.code, label: this.$i18n.locale === "zh" ? item.name : item.nameEn }
+                })
+                }
+            })
+        },
+
+        async getSelectOptions(){
+            // 定点信状态
+            await this.getDictionary('status','NOMINATION_LETTER_STATUS');
+            console.log(this.selectOptions);
         },
 
         // 重置
@@ -227,7 +245,11 @@ export default {
          async submit(){
             const isNext  = await this.isSelectItem();
             if(isNext){
-                console.log(isNext,'OK');
+                const {selectItems} = this;
+                const nominateLetterIds = (selectItems.map((item)=>item.nominateLetterId)).join();
+                await fsConfirm({nominateLetterIds}).then((res)=>{
+
+                }).catch((err)=>{});
             }else{
                 console.log(isNext,'CANCEL');
             }
@@ -238,7 +260,11 @@ export default {
         async lineSure(){
             const isNext  = await this.isSelectItem();
             if(isNext){
-                iMessage.warn('定点信【定点信编号】不是【Linie确认中】状态，Linie不能操作！');
+                const {selectItems} = this;
+                const nominateLetterIds = (selectItems.map((item)=>item.nominateLetterId)).join();
+                await liniefirm({nominateLetterIds}).then((res)=>{
+                }).catch((err)=>{});
+                // iMessage.warn('定点信【定点信编号】不是【Linie确认中】状态，Linie不能操作！');
                 console.log(isNext,'OK');
             }else{
                 console.log(isNext,'CANCEL');
@@ -248,7 +274,11 @@ export default {
         async lineBack(){
             const isNext  = await this.isSelectItem();
             if(isNext){
-                iMessage.warn('定点信【定点信编号】不是【Linie确认中】状态，Linie不能操作！');
+                const {selectItems} = this;
+                const nominateLetterIds = (selectItems.map((item)=>item.nominateLetterId)).join();
+                await liniereturn({nominateLetterIds}).then((res)=>{
+                }).catch((err)=>{})
+                // iMessage.warn('定点信【定点信编号】不是【Linie确认中】状态，Linie不能操作！');
                 console.log(isNext,'OK');
             }else{
                 console.log(isNext,'CANCEL');
@@ -259,6 +289,10 @@ export default {
         async back(){
             const isNext  = await this.isSelectItem();
             if(isNext){
+                const {selectItems} = this;
+                const nominateLetterIds = (selectItems.map((item)=>item.nominateLetterId)).join();
+                await fsRecall({nominateLetterIds}).then((res)=>{
+                }).catch((err)=>{});
                 console.log(isNext,'OK');
             }else{
                 console.log(isNext,'CANCEL');
@@ -288,9 +322,17 @@ export default {
         },
 
         // 激活
-        async activate(){
+        async activate(){ 
             const isNext  = await this.isSelectItem();
             if(isNext){
+                const {selectItems} = this;
+                const nominateLetterIds = (selectItems.map((item)=>item.nominateLetterId)).join();
+                await fsActivate({nominateLetterIds}).then((res)=>{
+                     iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
+                     this.getList();
+                }).catch((e)=>{
+                    iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
+                });
                 console.log(isNext,'OK');
             }else{
                 console.log(isNext,'CANCEL');
@@ -298,10 +340,11 @@ export default {
         },
 
         // 跳转至定点信详情页
-        goToDetail(){
-             const routeData = this.$router.resolve({
+        goToDetail(row){
+            const { letterNum } = row;
+            const routeData = this.$router.resolve({
             path: '/sourcing/partsletter/letterdetail',
-            query: {}
+            query: {id:letterNum}
             })
             window.open(routeData.href, '_blank')
         }

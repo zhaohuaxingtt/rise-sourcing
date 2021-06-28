@@ -19,7 +19,7 @@
         v-model="reason"
      />
      <div class="confirmBtn padding-bottom20 padding-top20">
-         <iButton>{{$t('LK_QUEDING')}}</iButton>
+         <iButton @click="sumbit">{{$t('LK_QUEDING')}}</iButton>
          <iButton @click="clearDialog">{{$t('LK_QUXIAO')}}</iButton>
      </div>
     </iDialog>
@@ -31,6 +31,10 @@ import {
     iInput,
     iButton,
 } from 'rise';
+import {
+    fsClose,
+} from '@/api/letterAndLoi/letter'
+import { iMessage } from '../../../../../components';
 export default {
     name:"closeLetterDialog",
     components:{
@@ -39,7 +43,11 @@ export default {
         iButton,
     },
     props:{
-        dialogVisible: { type: Boolean, default: false }
+        dialogVisible: { type: Boolean, default: false },
+        selectItems:{
+            type:Array,
+            default:()=>[],
+        }
     },
     data(){
         return{
@@ -48,8 +56,28 @@ export default {
     },
     methods:{
         clearDialog() {
-        this.$emit('changeVisible','closeLetterVisible', false)
+            this.$emit('changeVisible','closeLetterVisible', false)
         },
+        // 确认提交
+        async sumbit(){
+            const {selectItems,reason} = this;
+            const nominateLetterIds = (selectItems.map((item)=>item.nominateLetterId)).join();
+            const data = {
+                nominateLetterIds,
+                reason,
+            };
+            if(!reason){
+                return iMessage.warn(this.language('LK_QINGSHURUGUANBIYUANYIN','请输⼊关闭原因'))
+            }
+            await fsClose(data).then((res)=>{
+                const {code } = res;
+                if(code==200){
+                    iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
+                    this.clearDialog();
+                    this.$emit('getList');
+                }
+            }).catch((err)=>{});
+        }
     }
 }
 </script>
