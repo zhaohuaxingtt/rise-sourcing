@@ -76,10 +76,10 @@ export default {
     previewDialog,
   },
   props: {
-    propsPageType: {
+    pageType: {
       type: String,
-      default: '',
-    },
+      default: ''
+    }
   },
   data() {
     return {
@@ -92,15 +92,6 @@ export default {
       previewDialog: false,
       fileUrl: '',
     };
-  },
-  computed: {
-    pageType() {
-      if (this.$route.query.type) {
-        return this.$route.query.type.toUpperCase();
-      } else {
-        return this.propsPageType.toUpperCase();
-      }
-    },
   },
   created() {
     this.getTableList();
