@@ -6,7 +6,7 @@
  * @Descripttion: 项目信息
 -->
 <template>
-  <div >
+  <div>
     <div class="info">{{$t('TPZS.XMXX')}}</div>
     <iFormGroup :key="$index" row="4" inline>
       <iFormItem>
@@ -74,10 +74,11 @@
 <script>
 // 这里可以导入其他文件（比如：组件，工具js，第三方插件js，json文件，图片文件等等）
 // 例如：import 《组件名称》 from '《组件路径》';
-import {  iFormItem, iText, iFormGroup, iLabel, icon } from "rise";
+import { iFormItem, iText, iFormGroup, iLabel, icon } from "rise";
+import { getRfqInfo } from "@/api/partsrfq/negotiateBasicInfor/negotiateBasicInfor.js";
 export default {
   // import引入的组件需要注入到对象中才能使用
-  components: {  iFormItem, iText, iFormGroup, iLabel, icon },
+  components: { iFormItem, iText, iFormGroup, iLabel, icon },
   data() {
     // 这里存放数据
     return {
@@ -90,11 +91,23 @@ export default {
   watch: {},
   // 方法集合
   methods: {
-
+    async getTableList() {
+      this.tableLoading = true;
+      try {
+        const res = await getRfqInfo(this.$route.query.id);
+        if (res.result) {
+          this.tableListData = res.data;
+        }
+        this.tableLoading = false;
+      } catch {
+        this.tableListData = [];
+        this.tableLoading = false;
+      }
+    },
   },
   // 生命周期 - 创建完成（可以访问当前this实例）
   created() {
-
+    this.getTableList()
   },
   // 生命周期 - 挂载完成（可以访问DOM元素）
   mounted() {
@@ -107,7 +120,7 @@ export default {
 .info {
   font-weight: Bold;
 }
-.row4[data-v-018a401a] .el-form-item__label{
+.row4[data-v-018a401a] .el-form-item__label {
   width: 8rem !important;
 }
 </style>

@@ -6,26 +6,26 @@
  * @Descripttion: your project
  */
 export const tableTitle = [
-  { props: 'dataCategory', name: 'FS号', key: 'LK_FSHAO', },
-  { props: 'dataCategory', name: '零件号', key: 'TPZS.LJH', },
+  { props: 'fsNum', name: 'FS号', key: 'LK_FSHAO', },
+  { props: 'partNum', name: '零件号', key: 'TPZS.LJH', },
   {
-    props: 'dataValue', name: '零件名', key: 'TPZS.LJM', width: 120,
+    props: 'partNameZh', name: '零件名', key: 'TPZS.LJM', width: 120,
   },
-  { props: 'calculateValue', name: '工厂', key: 'TPZS.GC', },
-  { props: 'description', name: 'EBR%', key: 'TPZS.SOP', },
-  { props: 'description', name: '全生命周期产量', key: 'TPZS.QSMZQCL', },
-  { props: 'description', name: '峰值年产量', key: 'TPZS.FZNCL', },
-  { props: 'description', name: '项目名称', key: 'TPZS.EBR', },
-  { props: 'description', name: 'SOP日期', key: 'LK_SOPRIQI', },
+  { props: 'procureFactory', name: '工厂', key: 'TPZS.GC', },
+  { props: 'ebrCalculatedValue', name: 'EBR%', key: 'TPZS.EBR', },
+  { props: 'cycleOutput', name: '全生命周期产量', key: 'TPZS.QSMZQCL', },
+  { props: 'maxOutput', name: '峰值年产量', key: 'TPZS.FZNCL', },
+  { props: 'cartypeProjectZh', name: '项目名称', key: 'TPZS.XMMC', },
+  { props: 'sopDate', name: 'SOP日期', key: 'LK_SOPRIQI', },
 ]
 export const supplierTableTitle = [
-  { props: 'dataCategory', name: '供应商', key: 'costanalysismanage.GongYingShang', },
+  { props: 'supplierNameZh', name: '供应商', key: 'costanalysismanage.GongYingShang', },
   {
-    props: 'dataValue', name: 'SAP号', key: 'nominationSupplier.SAPHao', width: 120,
+    props: 'sapNum', name: 'SAP号', key: 'nominationSupplier.SAPHao', width: 120,
   },
-  { props: 'calculateValue', name: '所在地', key: 'TPZS.SZD', },
-  { props: 'description', name: '是否MBDL', key: 'TPZS.SFMBDL', },
-  { props: 'description', name: '报价状态', key: 'TPZS.BJZT', },
+  { props: 'pupplierProductionPlace', name: '所在地', key: 'TPZS.SZD', },
+  { props: 'isSelectMbdl', name: '是否MBDL', key: 'TPZS.SFMBDL', },
+  { props: 'quotationStatusCode', name: '报价状态', key: 'TPZS.BJZT', },
   { props: 'description', name: 'MQ打分', key: 'TPZS.MQDF', },
   { props: 'description', name: 'PL打分', key: 'TPZS.PLDF', },
   { props: 'description', name: 'EP打分', key: 'TPZS.EPDF', },
