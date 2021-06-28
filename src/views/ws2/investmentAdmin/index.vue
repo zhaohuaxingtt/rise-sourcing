@@ -8,6 +8,9 @@
         <div @click="tabClick(0)" class="tab-item" :class="tabIndex === 0 ? 'tab-on' : ''">付款看板</div>
         <div @click="tabClick(1)" class="tab-item tab-line" :class="tabIndex === 1 ? 'tab-on' : ''">年度计划</div>
         <div @click="tabClick(2)" class="tab-item tab-line" :class="tabIndex === 2 ? 'tab-on' : ''">月度计划</div>
+        <!-- <div v-permission="TOOLING_PAYMENTPLAN_PAYMENTBOARD" @click="tabClick(0)" class="tab-item" :class="tabIndex === 0 ? 'tab-on' : ''">付款看板</div>
+        <div v-permission="TOOLING_PAYMENTPLAN_YEAR" @click="tabClick(1)" class="tab-item tab-line" :class="tabIndex === 1 ? 'tab-on' : ''">年度计划</div>
+        <div v-permission="TOOLING_PAYMENTPLAN_MONTH" @click="tabClick(2)" class="tab-item tab-line" :class="tabIndex === 2 ? 'tab-on' : ''">月度计划</div> -->
         <iNavWS2 />
       </div>
     </div>

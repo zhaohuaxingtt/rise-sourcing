@@ -45,22 +45,30 @@
 
     <!-- 所有BM申请单 -->
     <template v-if="tableIndex === 0">
-      <AllBmListBlock @openBMDetail="openBMDetail" :refresh="refresh" />
+      <div>
+        <AllBmListBlock @openBMDetail="openBMDetail" :refresh="refresh" />
+      </div>
     </template>
 
     <!-- 待确认BM单 -->
     <template v-if="tableIndex === 1">
-      <ToBeConfirmed @openBMDetail="openBMDetail" :refresh="refresh" />
+      <div>
+        <ToBeConfirmed @openBMDetail="openBMDetail" :refresh="refresh" />
+      </div>
     </template>
 
     <!-- Aeko增值金额 -->
     <template v-if="tableIndex === 2">
-      <IncrementBlock @openBMDetail="openBMDetail" :refresh="refresh" />
+      <div>
+        <IncrementBlock @openBMDetail="openBMDetail" :refresh="refresh" />
+      </div>
     </template>
 
     <!-- Aeko减值BM单 -->
     <template v-if="tableIndex === 3">
-      <ImpairmentBlock @openBMDetail="openBMDetail" :refresh="refresh" />
+      <div>
+        <ImpairmentBlock @openBMDetail="openBMDetail" :refresh="refresh" />
+      </div>
     </template>
 
     <!-- BM单流水号弹窗 -->

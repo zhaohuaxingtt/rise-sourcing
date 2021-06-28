@@ -103,6 +103,10 @@ export default {
 
     //  确认申请
     confirmApply(){
+      if(!this.selectTableList.length){
+        return iMessage.warn(this.$t('LK_QINGXUANZHE'))
+      }
+      
       this.confirmApplyLoading = true;
       bmConfirm({
         ids: this.selectTableList.map(item => item.id)
