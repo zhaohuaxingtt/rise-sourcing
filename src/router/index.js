@@ -1,8 +1,8 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-06-18 11:22:22
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-06-22 11:04:44
+ * @LastEditors: Luoshuang
  * @Description: 系统静态路由.
  * @FilePath: \front-web\src\router\index.js
  *
@@ -14,6 +14,7 @@
 import designateRoutes from './modules/designate'
 import createpartsRoutes from './modules/createparts'
 import costanalysismanageRoutes from './modules/costanalysismanage'
+import financialtargetpriceRoutes from './modules/financialtargetprice'
 
 Vue.use(VueRouter);
 const originalPush = VueRouter.prototype.push
@@ -408,12 +409,21 @@ export const staticRouter = [{
                 meta: { title: "创建RFQ" },
                 component: () => import("@/views/accessoryPart/createRfq/index"),
             },
-            // 定点信相关理由
+            // 定点信相关路由
             {
                 path: "/sourcing/partsletter",
                 name: "partsletter",
-                component: () => 
-                    import ("@/views/letterAndLoi")
+                component: () => import ("@/views/letterAndLoi")
+            },
+            {
+                path: "/sourcing/partsletter/letterdetail",
+                name: "letterdetail",
+                component: () => import ("@/views/letterAndLoi/letter/detail")
+            },
+            {
+                path: "/sourcing/partsletter/loidetail",
+                name: "loidetail",
+                component: () => import ("@/views/letterAndLoi/loi/detail")
             },
         ],
     },
@@ -452,6 +462,7 @@ export default new VueRouter({
         ...staticRouter,
         ...designateRoutes,
         ...createpartsRoutes,
-        ...costanalysismanageRoutes
+        ...costanalysismanageRoutes,
+        ...financialtargetpriceRoutes
     ]
 });

@@ -2,25 +2,25 @@
  * @Author: Luoshuang
  * @Date: 2021-05-24 15:31:35
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-17 20:24:49
+ * @LastEditTime: 2021-06-25 12:00:21
  * @Description: 
  * @FilePath: \front-web\src\views\designate\designatedetail\rsSingleMaintenance\data.js
  */
 
 export const rsTableTitle = [
-  {props:'fsnrGsnrNum',name:'零件采购项目编号', key: "", tooltip: true, width: 150},
-  {props:'partNo',name:'零件号', key: "", tooltip: true, width: 120},
-  {props:'partName',name:'零件名称', key: "", tooltip: true},
-  {props:'supplierName',name:'厂商名', key: "", tooltip: true},
-  {props:'supplierId',name:'供应商', key: "", tooltip: true},
-  {props:'source',name:'来源', key: "", tooltip: true},
-  {props:'aprice',name:'A价', key: "", tooltip: false, editable: true, required: true, type: 'input', isChange: 'apriceIsChange'},
-  {props:'bprice',name:'B价', key: "", tooltip: false, editable: true, required: true, type: 'input', isChange: 'bpriceIsChange'},
-  {props:'investFee',name:'投资费(不含税)', key: "", tooltip: false, editable: true, required: true, type: 'input', width: 120, isChange: 'investFeeIsChange'},
-  {props:'investFeeIsShared',name:'是否分摊', key: "", tooltip: false, editable: true, required: true, type: 'select', selectOption:[{value: true, label: '是'},{value: false, label: '否'}], isChange: 'investFeeIsSharedIsChange'},
-  {props:'devFee',name:'开发费(含税)', key: "", tooltip: false, editable: true, required: true, type: 'input', width: 120, isChange: 'devFeeIsChange'},
-  {props:'devFeeIsShared',name:'是否分摊', key: "", tooltip: false, editable: true, required: true, type: 'select', selectOption:[{value: true, label: '是'},{value: false, label: '否'}], isChange: 'devFeeIsSharedIsChange'},
-  {props:'beginYearReduce',name:'年降开始', key: "", tooltip: true},
+  {props:'fsnrGsnrNum',name:'零件采购项目编号', key: "LINGJIANCAIGOUXIANGMUBIANHAO", tooltip: true, width: 150},
+  {props:'partNo',name:'零件号', key: "LINGJIANHAO", tooltip: true, width: 120},
+  {props:'partName',name:'零件名称', key: "LINGJIANMINGCHENG", tooltip: true},
+  {props:'supplierName',name:'厂商名', key: "CHANGSHANGMING", tooltip: true},
+  {props:'supplierId',name:'供应商', key: "GONGYINGSHANG", tooltip: true},
+  {props:'source',name:'来源', key: "LAIYUAN", tooltip: true},
+  {props:'aprice',name:'A价', key: "AJIA", tooltip: false, editable: true, required: true, type: 'input', isChange: 'apriceIsChange'},
+  {props:'bprice',name:'B价', key: "BJIA", tooltip: false, editable: true, required: true, type: 'input', isChange: 'bpriceIsChange'},
+  {props:'investFee',name:'投资费(不含税)', key: "TOUZIFEI_BUHANSHUI", tooltip: false, editable: true, required: true, type: 'input', width: 120, isChange: 'investFeeIsChange'},
+  {props:'investFeeIsShared',name:'是否分摊', key: "SHIFOUFENTAN", tooltip: false, editable: true, required: true, type: 'select', selectOption:[{value: true, label: '是'},{value: false, label: '否'}], isChange: 'investFeeIsSharedIsChange'},
+  {props:'devFee',name:'开发费(含税)', key: "KAIFAFEI_BUHANSHUI", tooltip: false, editable: true, required: true, type: 'input', width: 120, isChange: 'devFeeIsChange'},
+  {props:'devFeeIsShared',name:'是否分摊', key: "SHIFOUFENTAN", tooltip: false, editable: true, required: true, type: 'select', selectOption:[{value: true, label: '是'},{value: false, label: '否'}], isChange: 'devFeeIsSharedIsChange'},
+  {props:'beginYearReduce',name:'年降开始', key: "NIANJIANGKAISHI", tooltip: true},
   {props:'ltcDate1', propsIndex: 1,name:'LTC Date1', key: "", tooltip: false, editable: true, required: true, type: 'date', width: 130, isChange: 'ltcDateIsChange1'},
   {props:'ltcRate1', propsIndex: 1,name:'LTC Rate1', key: "", tooltip: false, editable: true, required: true, type: 'rate', width: 100, isChange: 'ltcRateIsChange1'},
   {props:'ltcDate2', propsIndex: 2,name:'LTC Date2', key: "", tooltip: false, editable: true, required: true, type: 'date', width: 130, isChange: 'ltcDateIsChange2'},

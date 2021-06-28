@@ -6,18 +6,18 @@
 <template>
   <iPage class="letterAndLoi">
     <el-tabs v-model="tab" class="tab">
-      <el-tab-pane label="概览" name="overview"></el-tab-pane>
-      <el-tab-pane :label="$t('LK_XUNYUANZHIHANG')" name="source">
+      <el-tab-pane :label="language('LK_GAILAN','概览')" name="overview"></el-tab-pane>
+      <el-tab-pane :label="language('LK_XUNYUANZHIHANG','寻源')" name="source">
         <div class="margin-bottom33">
             <iNavMvp right routerPage lev="2" :list="navList" @message="clickMessage" />
         </div>
       </el-tab-pane>
-      <el-tab-pane label="报表管理" name="report"></el-tab-pane>
+      <el-tab-pane :label="language('LK_BAOBIAOGUANLI','报表管理')" name="report"></el-tab-pane>
     </el-tabs>
     <!-- 类型TAB -->
     <iTabsList type="card" v-model="cardType">
       <template v-for="(item,index) in tabData">
-        <el-tab-pane  :key="'tabData_'+index" :label="$t(item.label)" :name="item.key"></el-tab-pane>
+        <el-tab-pane  :key="'tabData_'+index" :label="language(item.label,item.name)" :name="item.key"></el-tab-pane>
       </template>
     </iTabsList>
 
@@ -58,7 +58,6 @@ export default {
     data(){
       return{
         tab:'source',
-        tabType:'letter',
         cardType:'letter',
         tabData:letterAndLoiType,
       }

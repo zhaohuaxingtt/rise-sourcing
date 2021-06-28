@@ -8,23 +8,23 @@
         <!-- 顶部信息栏 -->
         <div class="pageTitle flex-between-center-center">
             <div class="flex flex-between-center-center">
-                <span class="title-text margin-left10">{{$t('nominationLanguage.DingDianGuanLi')}}: {{desinateId}}</span>
-                <span class="select-text margin-left10">{{$t('nominationLanguage.DINGDIANSHENQINGLEIXING')}}：</span>
+                <span class="title-text margin-left10">{{language('nominationLanguage.DingDianGuanLi','定点管理')}}: {{desinateId}}</span>
+                <span class="select-text margin-left10">{{language('nominationLanguage.DINGDIANSHENQINGLEIXING','定点申请类型')}}：</span>
                 <iSelect v-model="designateType" @change="onDesignateTypeChange" :disabled="disableNominationType">
                     <el-option
                     :value="item.id"
-                    :label="$t(item.key) || item.name"
+                    :label="language(item.key,item.name)"
                     v-for="(item, index) in applyType"
                     :key="index"
                     ></el-option>
                 </iSelect>
             </div>
             <div class="btnList flex-align-center">
-                <iButton @click="gotoRsMainten">RS单维护</iButton>
-                <iButton @click="exportNominate">{{$t('LK_DAOCHU')}}</iButton>
-                <iButton @click="submit">{{$t('LK_TIJIAO')}}</iButton>
-                <iButton @click="toNextStep">{{$t('LK_XIAYIBU')}}</iButton>
-                <iButton v-if="isDecision" @click="preview">{{$t('LK_YULAN')}}</iButton>
+                <iButton @click="gotoRsMainten">{{language('LK_RSWEIHUDAN','RS单维护')}}</iButton>
+                <iButton @click="exportNominate">{{language('LK_DAOCHU','导出')}}</iButton>
+                <iButton @click="submit">{{language('LK_TIJIAO','提交')}}</iButton>
+                <iButton @click="toNextStep">{{language('LK_XIAYIBU','下一步')}}</iButton>
+                <iButton v-if="isDecision" @click="preview">{{language('LK_YULAN','预览')}}</iButton>
                 <logButton class="margin-left20" @click="log"  />
                 <span class="title-font margin-left20"><icon symbol name="icondatabaseweixuanzhong"></icon></span>
             </div>
@@ -42,12 +42,14 @@
                         <icon v-else symbol name="icondingdianguanlijiedian-yiwancheng" class="step-icon"></icon>
 
                         <!-- 单一供应商需要单独展示icon -->
-                        <el-tooltip v-if="item.hasInfo && isSingle" :content="$t('LK_GAIDINGDIANSHENQINGZHONGYOUDANYIGONGYINGSHANG')"   placement="top">
+                        <el-tooltip v-if="item.hasInfo && isSingle" :content="language('LK_GAIDINGDIANSHENQINGZHONGYOUDANYIGONGYINGSHANG','该定点申请中有单一供应商')"   placement="top">
                             <icon symbol name="icontishi-cheng" class="info-icon"></icon>
                         </el-tooltip>
                     </p>
                     
-                    <p class="step-text">{{$t(item.key) || item.name}}</p>
+                    <p class="step-text">
+                        {{language(item.key,item.name)}}
+                    </p>
                 </div>
                 <p v-if="index+1 !== applyStep.length" class="margin-bottom30" >
                     <!-- 正在进行中 -->
@@ -77,7 +79,8 @@ import {
     getNominateType,
     updatePresenPageSeat,
     sugesstionInit,
-    sugesstionInitReCord
+    sugesstionInitReCord,
+    supplierInitReCord
 } from '@/api/designate'
 import { applyStep } from './data'
 export default {
@@ -174,7 +177,7 @@ export default {
         goToRoute(item){
             // 新增模式下不允许跳转
             if (!this.desinateId) {
-                iMessage.error(this.$t('nominationLanguage.QingChuangJianWanDingDianShenQingDan'))
+                iMessage.error(this.language('nominationLanguage.QingChuangJianWanDingDianShenQingDan','请创建完定点申请单再继续下一步'))
                 return
             }
             if(this.phaseType < item.id) return;
@@ -186,6 +189,24 @@ export default {
                 ...query,
               }
             })
+        },
+         // RFQ & 零件清单下一步前保存
+        async onRfqPartListNextStepSave() {
+            let state = false
+            try {
+                const res = await supplierInitReCord({
+                    nominateId: this.$store.getters.nomiAppId,
+                })
+                if (res.code === '200') {
+                    state = true
+                } else {
+                    iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+                }
+            } catch (e) {
+                iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
+                state = false
+            }
+            return state
         },
         // 单一供应商保存
         async onSupplierSave() {
@@ -228,7 +249,7 @@ export default {
             let step = Number(this.$store.getters.phaseType || '1')
             step = step > 5 ? 4 : step
             const phaseType = Number(step) + 1
-            const confirmInfo = await this.$confirm(this.$t('nextSure'))
+            const confirmInfo = await this.$confirm(this.language('nextSure','您确定要进行下一步吗？请确定数据已经完全保存'))
             if (confirmInfo !== 'confirm') return
             const nominationStep = this.$store.getters.nominationStep
             const nodeList = nominationStep.nodeList || []
@@ -237,6 +258,12 @@ export default {
                 phaseNodeNow: 0
             }
             console.log(step, phaseType)
+            // 当前步骤在rfq零件清单
+            if (step === 1) {
+                const proc = await this.onRfqPartListNextStepSave()
+                console.log('step 1', proc)
+                if (!proc) return
+            }
             // 当前步骤在单一供应商
             if (step === 2) {
                 const proc = await this.onSupplierSave()
@@ -279,10 +306,10 @@ export default {
             const data = {
                 nominateIdArr:[Number(desinateId)],
             }
-            const confirmInfo = await this.$confirm(this.$t('submitSure'))
+            const confirmInfo = await this.$confirm(this.language('submitSure','您确定要执行提交操作吗？'))
             if (confirmInfo !== 'confirm') return
             nominateAppSsubmit(data).then((res)=>{
-                iMessage.success(this.$t('LK_CAOZUOCHENGGONG'));
+                iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
             }).catch(e => {
                 iMessage.error(this.$i18n.locale === "zh" ? e.desZh : event.desEn)
             })
@@ -295,7 +322,7 @@ export default {
                 nominateIdArr:[Number(desinateId)],
             }
             nominateAppSExport(data).then((res)=>{
-                iMessage.success(this.$t('LK_CAOZUOCHENGGONG'));
+                iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
             }).catch(e => {
                 iMessage.error(this.$i18n.locale === "zh" ? e.desZh : event.desEn)
             })

@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 09:50:42
- * @LastEditTime: 2021-06-16 19:40:20
+ * @LastEditTime: 2021-06-25 11:40:19
  * @LastEditors: Please set LastEditors
  * @Description: 零件采购项目建立首页。
  * @FilePath: \rise\src\views\partsprocure\home\index.vue
@@ -207,7 +207,7 @@
               >
               <div class="floatright">
                 <!-- 手工采购项目创建 -->
-                <iButton @click="openCreateParts">{{ $t("partsprocure.SHOUGONGCAIGOUXIANGMUCHUANGJIAN") }}</iButton>
+                <iButton @click="openCreateParts">{{ language("SHOUGONGCAIGOUXIANGMUCHUANGJIAN", "手工采购项目创建") }}</iButton>
                 <iButton
                   @click="openDiologChangeItems"
                   v-permission="PARTSPROCURE_TRANSFER"

@@ -244,7 +244,8 @@ export function negoAnalysisSummaryLayoutSave(layout,layoutType){
         method: 'POST',
         data:{
             layout:layout,
-            layoutType:layoutType
+            layoutType:layoutType,
+            scenarioType:1
         }
     })
 }
@@ -260,6 +261,21 @@ export function fsPartsAsRow(rfqId,round){
 export function fsSupplierAsRow(rfqId,round){
     return nego({
         url: `/nego-assistant/nego-analysis-summary/fs-supplier-as-row/${rfqId}/${round}`,
+        method: 'GET'
+    })
+}
+
+//ab价-fs横轴
+export function fsPartsAsRowDd(mimoId){
+    return nego({
+        url: `/nego-assistant/nego-analysis-summary/nomi-fs-parts-as-row/${mimoId}`,
+        method: 'GET'
+    })
+}
+//ab价-供应商轴
+export function fsSupplierAsRowDd(mimoId){
+    return nego({
+        url: `/nego-assistant/nego-analysis-summary/nomi-fs-supplier-as-row/${mimoId}`,
         method: 'GET'
     })
 }
@@ -326,4 +342,14 @@ export function updateBatchSupplierProducePlace(params) {
     })
 }
 
+
+//根据供应商查询其中报价单的状态
+
+// 撤回发送KM
+export function hasShowDelegate(supplierId) {
+    return quotation({
+        url: `/hasShowDelegate/${supplierId}`,
+        method: 'POST'
+    })
+}
 

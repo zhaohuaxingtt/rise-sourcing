@@ -1,7 +1,7 @@
 /*
  * @Author: HaoJiang
  * @Date: 2021-05-20 14:29:09
- * @LastEditTime: 2021-05-20 14:24:02
+ * @LastEditTime: 2021-06-25 14:59:38
  * @LastEditors: Please set LastEditors
  * @Description: 定点表格信息
  *
@@ -26,14 +26,14 @@ export const tableTitle = [{
   //export const tableTitle = permissionTitle("nominationLanguage_nominationLanguageLIST",[{
   props: 'id',
   name: '申请单号',
-  key: 'nominationLanguage.ShenQingDanHao',
+  key: 'nominationLanguage_ShenQingDanHao',
   tooltip: false
 },
 {
   props: 'nominateName',
   name: '申请单名',
   width: 200,
-  key: 'nominationLanguage.ShenQingDanMing',
+  key: 'nominationLanguage_ShenQingDanMing',
   tooltip: false
 },
 {
@@ -45,7 +45,7 @@ export const tableTitle = [{
 {
   props: 'nominateProcessType',
   name: '类型',
-  key: 'nominationLanguage.LeiXing',
+  key: 'nominationLanguage_LeiXing',
   tooltip: true
 },
 {
@@ -57,32 +57,32 @@ export const tableTitle = [{
 {
 	props: 'freezeDate',
 	name: '冻结日期',
-	key: 'nominationLanguage.DongJieRiQi',
+	key: 'nominationLanguage_DongJieRiQi',
 	tooltip:false
 },
 {
   props: 'carType',
   name: '项目类型',
-  key: 'nominationLanguage.XingMuLeiXing',
+  key: 'nominationLanguage_XingMuLeiXing',
   tooltip: false
 },
 {
   props: 'meetingPresentId',
   name: '会议',
-  key: 'nominationLanguage.HuiYi',
+  key: 'nominationLanguage_HuiYi',
   tooltip: true
 },
 {
   props: 'meetingStatus',
   name: '会议状态',
-  key: 'nominationLanguage.HuiYiZhuangTai',
+  key: 'nominationLanguage_HuiYiZhuangTai',
   tooltip: true
 },
 {
   props: 'nominateUserName',
   name: '询价采购员',
   width: 150,
-  key: 'nominationLanguage.XunJiaCaiGouYuan',
+  key: 'nominationLanguage_XunJiaCaiGouYuan',
   tooltip: true
 },
 {
@@ -94,35 +94,35 @@ export const tableTitle = [{
 {
   props: 'rsStatus',
   name: 'RS单状态',
-  key: 'nominationLanguage.RSZhuangTai',
+  key: 'nominationLanguage_RSZhuangTai',
   tooltip: false
 },
 {
   props: 'rsFreezeDate',
   name: 'RS冻结日期',
   width: 150,
-  key: 'nominationLanguage.RSDongJieRiQi',
+  key: 'nominationLanguage_RSDongJieRiQi',
   tooltip: false
 },
 {
   props: 'isPriceConsistent',
   name: '报价一致性校验状态',
   width: 150,
-  key: 'nominationLanguage.BaoJiaYiZhiXingZhuangTai',
+  key: 'nominationLanguage_BaoJiaYiZhiXingZhuangTai',
   tooltip: false
 },
 {
   props: 'selStatus',
   name: 'SEL单据确认状态',
   width: 150,
-  key: 'nominationLanguage.SELDanJuQUeRenZH',
+  key: 'nominationLanguage_SELDanJuQUeRenZH',
   tooltip: false
 },
 {
   props: 'nominateDate',
   name: '定点日期',
   width: 150,
-  key: 'nominationLanguage.DingDianRiQi',
+  key: 'nominationLanguage_DingDianRiQi',
   tooltip: false
 },
 {
@@ -131,4 +131,32 @@ export const tableTitle = [{
   key: 'LK_CAOZUO',
   tooltip: false
 }
+]
+
+// sel确认单
+export const seltTableTitle = [
+  {
+    props: 'fileName',
+    name: '文件名称',
+    key: 'LK_WENJIANMING',
+    tooltip: false
+  },
+  {
+    props: 'fileSize',
+    name: '大小',
+    key: 'LK_DAXIAO',
+    tooltip: false
+  },
+  {
+    props: 'uploadDate',
+    name: '上传日期',
+    key: 'strategicdoc_ShangChuanRiQi',
+    tooltip: false
+  },
+  {
+    props: 'uploadBy',
+    name: '上传人',
+    key: 'strategicdoc_ShangChuanRen',
+    tooltip: false
+  }
 ]

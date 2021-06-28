@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-05-24 17:06:01
- * @LastEditTime: 2021-06-07 16:16:55
+ * @LastEditTime: 2021-06-25 13:28:44
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\createparts\components\home\index.vue
@@ -23,29 +23,29 @@
       :icon="true"
     >
       <el-form>
-        <el-form-item :label="$t('createparts.LingJianHao')">
-          <iInput :placeholder="$t('createparts.QingShuRuLingJianHao')" v-model="form.partNum" />
+        <el-form-item :label="language('LINGJIANHAO', '零件号')">
+          <iInput :placeholder="language('QINGSHURULINGJIANHAO', '请输入零件号')" v-model="form.partNum" />
         </el-form-item>
-        <el-form-item :label="$t('createparts.LingJianMingZhong')">
-          <iInput :placeholder="$t('createparts.QingShuRuLingJianMingZhong')" v-model="form.partNameZh" />
+        <el-form-item :label="language('LINGJIANMINGZHONG', '零件名(中)')">
+          <iInput :placeholder="language('QINGSHURULINGJIANMINGZHONG', '请输入零件名(中)')" v-model="form.partNameZh" />
         </el-form-item>
-        <el-form-item :label="$t('createparts.LingJianMingDe')">
-          <iInput :placeholder="$t('createparts.QingShuRuLingJianMingDe')" v-model="form.partNameDe" />
+        <el-form-item :label="language('LINGJIANMINGDE', '零件名(德)')">
+          <iInput :placeholder="language('QINGSHURULINGJIANMINGDE', '请输入零件名(德)')" v-model="form.partNameDe" />
         </el-form-item>
-        <el-form-item :label="$t('createparts.LingJianZhuangTai')">
-          <iSelect :placeholder="$t('createparts.QingXuanZeLingJianZhuangTai')" v-model="form.partStatus">
+        <el-form-item :label="language('LINGJIANZHUANGTAI', '零件状态')">
+          <iSelect :placeholder="language('QINGXUANZELINGJIANZHUANGTAI', '请选择零件状态')" v-model="form.partStatus">
             <el-option
               value=""
-              :label="$t('all') | capitalizeFilter"
+              :label="language('ALL', '全部') | capitalizeFilter"
             ></el-option>
             <el-option v-for="item in dictMap.PART_STATE" :key="item.code" :value="item.value" :label="item[$i18n.locale]" />
           </iSelect>
         </el-form-item>
-        <el-form-item :label="$t('createparts.LingJianLaiYuan')">
-          <iSelect :placeholder="$t('createparts.QingXuanZeLingJianLaiYuan')" v-model="form.source">
+        <el-form-item :label="language('LINGJIANLAIYUAN', '零件来源')">
+          <iSelect :placeholder="language('QINGXUANZELINGJIANLAIYUAN', '请选择零件来源')" v-model="form.source">
             <el-option
               value=""
-              :label="$t('all') | capitalizeFilter"
+              :label="language('ALL', '全部') | capitalizeFilter"
             ></el-option>
             <el-option v-for="item in dictMap.SOURCE_OF_PART" :key="item.code" :value="item.value" :label="item[$i18n.locale]" />
           </iSelect>
@@ -54,7 +54,7 @@
     </iSearch>
     <iCard class="margin-top20">
       <template v-slot:header-control>
-        <iButton :loading="createPartsLoading" @click="createParts">{{ $t("createparts.ChuangJianCaiGouXiangMu") }}</iButton>
+        <iButton :loading="createPartsLoading" @click="createParts">{{ language("CHUANGJIANCAIGOUXIANGMU", "创建采购项目") }}</iButton>
       </template>
       <div class="body">
         <tableList
@@ -63,13 +63,14 @@
           :tableData="tableListData"
           :tableTitle="tableTitle"
           :tableLoading="loading"
+          :lang="true"
           @handleSelectionChange="handleSelectionChange"
         >
           <template #date="scope">
             <span>{{ scope.row.date | dateFilter("YYYY-MM-DD") }}</span>
           </template>
           <template #log="scope">
-            <span class="link" @click="log(scope.row)">{{ $t("createparts.ChaKan") }}</span>
+            <span class="link" @click="log(scope.row)">{{ language("CHAKAN", "查看") }}</span>
           </template>
         </tableList>
         <iPagination 
@@ -197,7 +198,7 @@ export default {
     },
     // 创建采购项⽬
     createParts() {
-      if (this.multipleSelection.length < 1) return iMessage.warn(this.$t("createparts.QingXuanZeZhiShaoYiTiaoShuJu"))
+      if (this.multipleSelection.length < 1) return iMessage.warn(this.language("QINGXUANZEZHISHAOYITIAOSHUJU", "请选择至少一条数据"))
       this.createPartsLoading = true
 
       createParts({

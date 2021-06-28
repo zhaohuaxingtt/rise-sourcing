@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-05-27 17:27:15
- * @LastEditTime: 2021-06-09 14:35:49
+ * @LastEditTime: 2021-06-25 14:28:25
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\costanalysismanage\components\rfqdetail\index.vue
@@ -9,7 +9,7 @@
 <template>
   <iPage class="rfqdetail">
     <div class="header clearFloat">
-      <div class="title">{{ $t("costanalysismanage.RfqBianHao") }}: {{ rfqId }}</div>
+      <div class="title">{{ language("RFQBIANHAO", "RFQ编号") }}: {{ rfqId }}</div>
       <div class="control">
         <!-- <iButton @click="handleBack">{{ $t("costanalysismanage.FanHui") }}</iButton> -->
         <logButton class="margin-left20" />
