@@ -76,9 +76,9 @@ export const loiListTitle = [
 
 // 历史定点信表头
 export const historyListTitle=[
-  { props: "key1", name: "定点信编号", key: "LK_DINGDIANXINBIANHAO", tooltip: true },
+  { props: "letterNum", name: "定点信编号", key: "LK_DINGDIANXINBIANHAO", tooltip: true },
   { props: "fileName", name: "文件名称", key: "LK_WENJIANMINGCHENG", tooltip: true },
-  { props: "key3", name: "大小", key: "LK_DAXIAOMB", tooltip: true },
-  { props: "key4", name: "上传日期", key: "LK_SHANGCHUANRIQI", tooltip: true },
-  { props: "key5", name: "上传人", key: "LK_SHANGCHUANREN", tooltip: true },
+  { props: "fileSize", name: "大小", key: "LK_DAXIAOMB", tooltip: true },
+  { props: "uploadDate", name: "上传日期", key: "LK_SHANGCHUANRIQI", tooltip: true },
+  { props: "uploadBy", name: "上传人", key: "LK_SHANGCHUANREN", tooltip: true },
 ]
