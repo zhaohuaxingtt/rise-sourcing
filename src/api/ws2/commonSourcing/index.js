@@ -1,6 +1,9 @@
 import axios from '@/utils/axios'
+import axiosFile from "@/utils/axios.download";
 
 const VUE_APP_CSBUDGET = axios(process.env.VUE_APP_CSBUDGET)
+const MODELCARFile = axiosFile(process.env.VUE_APP_CSBUDGET)
+
 //分页条件审批列表
 // export function pageApproval(parmars) {
 //     return VUE_APP_CSBUDGET({
@@ -29,6 +32,14 @@ export function dataMove(parmars) {
 export function commonSourcingView(parmars) {
     return VUE_APP_CSBUDGET({
         url: '/commonSourcingView',
+        method: 'POST',
+        data: parmars
+    })
+}
+//下载
+export function commonSourcingExport(parmars) {
+    return MODELCARFile({
+        url: '/export',
         method: 'POST',
         data: parmars
     })
