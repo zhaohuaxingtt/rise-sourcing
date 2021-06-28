@@ -982,6 +982,7 @@
         'LK_LIZI': '例',    //  例
         'LK_LIZISHUOMING': '代表零件号的车型项目/零件号/零件名称/供应商简称',  //  代表零件号的车型项目/零件号/零件名称/供应商简称
         'LK_BMAPPLYBAOCUNMSG': '你有必填字段未填',  //  你有必填字段未填
+        'LK_FUKUANJIHUADINGZHIYUCHAKAN':  '付款计划制定与查看',   //  付款计划制定与查看
 
         // 定点管理
         'nominationLanguage': {

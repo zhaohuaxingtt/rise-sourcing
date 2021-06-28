@@ -482,6 +482,7 @@ export const tabtitle = [
     {value: 5, message: 0, name: "BM申请", activePath: '/tooling/bmApplyIndex', url: '/tooling/bmApplyIndex', key: "LK_BMSHENQING"},
     {value: 6, message: 0, name: "投资报告", activePath: '404', url: '404', key: "LK_TOUZIBAOGAO"},
     {value: 7, message: 0, name: "BA审批", activePath: '/tooling/baApprovalIndex', url: '/tooling/baApprovalIndex', key: "LK_BAAPPROVAL"},
+    {value: 8, message: 0, name: "付款计划制定与查看", activePath: '/tooling/investmentAdmin', url: '/tooling/investmentAdmin', key: "LK_FUKUANJIHUADINGZHIYUCHAKAN"},
 ]
 
 export const budgetManagement3rd = [
