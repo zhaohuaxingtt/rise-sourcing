@@ -1,7 +1,7 @@
 <template>
   <div>
     <theSearch @getTableList="getTableList" class="margin-bottom20" name="theSearch"/>
-    <theTable ref="theTable" pageType="pageType"/>
+    <theTable ref="theTable" :pageType="pageType"/>
   </div>
 </template>
 
