@@ -109,13 +109,14 @@
               <iButton>{{ $t('上传清单') }}</iButton>
             </Upload>
             <iButton @click="hanldeDownload">{{$t('下载清单')}}</iButton>
-            <iButton>{{$t('发送项目采购员')}}</iButton>
+            <iButton @click="sendToAdmin">{{$t('发送项目采购员')}}</iButton>
           </div>
         </div>
         <iTableList
             v-loading="contentLoading"
             :tableData="tableListData"
             :tableTitle="tableTitle"
+            :typeIndex="true"
             @handleSelectionChange="handleSelectionChange"
             :activeItems="'partNum'"
             :row-class-name="handleTableRow"
@@ -125,6 +126,7 @@
                 :placeholder="$t('LK_QINGXUANZE')"
                 v-model="scope.row.categoryId"
                 class="tempSelect"
+                @change="id => changeMaterial(id, scope.row)"
                 filterable
             >
               <el-option
@@ -136,14 +138,23 @@
             </iSelect>
           </template>
           <template #targetBudgetTotal="scope">
-            <div class="linkStyle"><span @click="clicktargetBudgetTotal(scope.row.rfqId)">{{ scope.row.targetBudgetTotal }}</span></div>
+            <div class="linkStyle"><span @click="clicktargetBudgetTotal(scope.row)">{{ getTousandNum(scope.row.targetBudgetTotal) }}</span></div>
           </template>
           <template #fixedPointAllotTotal="scope">
-            <div class="linkStyle"><span @click="clicktargetBudgetTotal(scope.row.rfqId)">{{ scope.row.fixedPointAllotTotal }}</span></div>
+            <div class="linkStyle"><span @click="clickfixedPointAllotTotal(scope.row.id)">{{ getTousandNum(scope.row.fixedPointAllotTotal) }}</span></div>
           </template>
         </iTableList>
       </iCard>
     </div>
+    <targetBudget
+        v-model="targetBudgetShow"
+        :id="targetBudgetId"
+    ></targetBudget>
+    <fixedAssignment
+        v-model="fixedAssignmentShow"
+        :id="fixedAssignmentId"
+        :fixedAssignmentInfo="fixedAssignmentInfo"
+    ></fixedAssignment>
   </div>
 </template>
 
@@ -159,13 +170,18 @@ import {Upload} from "element-ui"
   carTypePackageCombo,
   packageVersionCombo,
   commonSourcingView,
-   commonSourcingExport,
-  saveAsVersion} from '@/api/ws2/commonSourcing'
+  commonSourcingExport,
+  saveAsVersion,
+  sendToAdmin,
+  updateCateGory,
+ } from '@/api/ws2/commonSourcing'
 import {iNavWS2} from "@/components";
 import echarts from "@/utils/echarts";
-import {getCartypePulldown} from "@/api/ws2/budgetManagement/edit";
+import targetBudget from "../components/targetBudget";
+import fixedAssignment from "../components/fixedAssignment";
+
 import {addModelBagTitle, form} from "pages/ws2/dataBase/components/data";
-import {download} from "@/api/ws2/dataBase";
+import {getTousandNum} from "@/utils/tool";
 
 export default {
   name: "commonSourcing",
@@ -176,6 +192,8 @@ export default {
     iTableList,
     Upload,
     iCard,
+    targetBudget,
+    fixedAssignment,
   },
   data() {
     return {
@@ -183,6 +201,11 @@ export default {
       mainLoading: false,
       searchLoading: false,
       contentLoading: false,
+      targetBudgetShow: false,
+      fixedAssignmentShow: false,
+      targetBudgetId: '',
+      fixedAssignmentId: '',
+      fixedAssignmentInfo: '',
       tableListData: [],
        carTypeBudgetDetailVOSCount: [],
       tableTitle: addModelBagTitle,
@@ -195,6 +218,7 @@ export default {
       DepartmentsComboList: [],
       materialGroup: [],
       materialGroupList: [],
+      getTousandNum: getTousandNum
     }
   },
   computed: {
@@ -258,7 +282,8 @@ export default {
       }).then((res) => {
         const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
         if (Number(res.code) === 0) {
-           this.tableListData = res.data.partsPackageDetailVOS ? res.data.partsPackageDetailVOS : []
+          this.getPackageVersionCombo()
+          this.tableListData = res.data.partsPackageDetailVOS ? res.data.partsPackageDetailVOS : []
           let carTypeBudgetDetailVOS = res.data.carTypeBudgetDetailVOS ? res.data.carTypeBudgetDetailVOS : []
           this.carTypeBudgetDetailVOSCount = carTypeBudgetDetailVOS
           let carTypeBudgetPackageTotal = res.data.carTypeBudgetPackageTotal ? res.data.carTypeBudgetPackageTotal : []
@@ -555,6 +580,48 @@ export default {
             this.mainLoading = false;
           }).catch(() => (this.mainLoading = false));
     },
+    changeMaterial(id, row){
+      console.log(id)
+      this.mainLoading = true;
+      let params = {
+        carTypePackageId: this.carTypePackageId,
+        versionId: this.packageVersion,
+        categoryId: id,
+        partsPackageId: row.id,
+      }
+      updateCateGory(params)
+          .then((res) => {
+            const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
+            if (Number(res.code) === 0) {
+              iMessage.success(result)
+            } else {
+              iMessage.error(result)
+            }
+            this.mainLoading = false;
+          }).catch(() => (this.mainLoading = false));
+    },
+    sendToAdmin(){
+      this.mainLoading = true;
+      let params = {
+        carTypePackageId: this.carTypePackageId,
+        versionId: this.packageVersion
+      }
+      sendToAdmin(params)
+          .then((res) => {
+            const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
+            const message = this.$i18n.locale === 'zh' ? res.data.messageZh : res.data.messageEn
+            if (Number(res.code) === 0) {
+              if(res.data.message){
+                iMessage.success(res.data.message)
+              } else {
+                iMessage.success(result)
+              }
+            } else {
+              iMessage.error(result)
+            }
+            this.mainLoading = false;
+          }).catch(() => (this.mainLoading = false));
+    },
     saveAs(){
       this.mainLoading = true
       saveAsVersion({
@@ -563,6 +630,7 @@ export default {
       }).then((res) => {
         const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
         if (Number(res.code) === 0) {
+          this.getPackageVersionCombo()
           iMessage.success(result);
         } else {
           iMessage.error(result);
@@ -571,6 +639,35 @@ export default {
       }).catch(err => {
         this.mainLoading = false
       })
+    },
+    getPackageVersionCombo(){
+      this.mainLoading = true
+      packageVersionCombo({
+        carTypePackageId: this.carTypePackageId,
+      }).then((res) => {
+        const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
+        if (Number(res.code) === 0) {
+          this.packageVersionList = res.data;
+          this.packageVersion = this.packageVersionList.length > 0 ? this.packageVersionList[0].versionId : ''
+        } else {
+          iMessage.error(result);
+        }
+        this.mainLoading = false
+      }).catch(err => {
+        this.mainLoading = false
+      })
+    },
+    clicktargetBudgetTotal(row){
+      this.targetBudgetShow = true
+      this.targetBudgetId = row.id
+      console.log(this.materialGroupList.find(item => Number(item.id) === Number(row.categoryId)))
+      let info = this.materialGroupList.find(item => Number(item.id) === Number(row.categoryId)).value + ' ' + row.partNameZh
+      this.fixedAssignmentInfo = info
+      console.log(info)
+    },
+    clickfixedPointAllotTotal(id){
+      this.fixedAssignmentShow = true
+      this.fixedAssignmentId = id
     }
   }
 }

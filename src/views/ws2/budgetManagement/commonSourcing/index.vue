@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-loading="mainLoading">
     <div class="header">
       <div>
         车型包名称
@@ -10,12 +10,13 @@
       <Upload
           class="upload-demo"
           :action="actionUrl"
-          :on-preview="handlePreview"
-          :on-remove="handleRemove"
+          :on-change="beforeUpload"
+          :on-success="onSuccess"
+          :before-upload="beforeAvatarUpload"
           :before-remove="beforeRemove"
           multiple
-          :limit="3"
-          :on-exceed="handleExceed"
+          :limit="1"
+          :show-file-list="false"
           :file-list="fileList">
         <iButton icon="el-icon-circle-plus-outline" type="primary">新增车型项目</iButton>
       </Upload>
@@ -67,6 +68,7 @@ export default {
   data() {
     return {
       packageNameZh: '',
+      mainLoading: false,
       tableLoading: false,
       tableListData: []
     }
@@ -80,6 +82,19 @@ export default {
     this.pageCarTypePackage()
   },
   methods: {
+    onSuccess(res){
+      const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
+      if (Number(res.code) === 0) {
+        this.pageCarTypePackage()
+        iMessage.success(result);
+      } else {
+        iMessage.error(result);
+      }
+      this.mainLoading = false
+    },
+    beforeAvatarUpload(){
+      this.mainLoading = true
+    },
     toBagList(carTypePackageId){
       this.$router.push({
         path: '/tooling/budgetManagement/addModelBag',

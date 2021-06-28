@@ -144,12 +144,6 @@ export const partNoData = [
 
 export const addModelBagTitle = [
     {
-        props: 'index',
-        name: '序号',
-        key: '序号',
-        tooltip: false
-    },
-    {
         props: 'partNameZh',
         name: '零件包名称（中）',
         key: '零件包名称（中）',
@@ -240,6 +234,23 @@ export const modelBagData = [
         name: '备注',
         key: '备注',
         width: 200,
+        tooltip: false
+    },
+]
+
+export const targetBudgeTableTitle = [
+    {
+        props: 'carTypeProName',
+        name: '车型项目',
+        key: '车型项目',
+        width: 150,
+        tooltip: false
+    },
+    {
+        props: 'amount',
+        name: '目标预算（百万元）',
+        key: '目标预算（百万元）',
+        width: 180,
         tooltip: false
     },
 ]

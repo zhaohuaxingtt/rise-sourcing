@@ -28,6 +28,14 @@ export function dataMove(parmars) {
         data: parmars
     })
 }
+//修改材料组信息
+export function updateCateGory(parmars) {
+    return VUE_APP_CSBUDGET({
+        url: '/updateCateGory',
+        method: 'POST',
+        data: parmars
+    })
+}
 //CommonSourcing预算管理数据
 export function commonSourcingView(parmars) {
     return VUE_APP_CSBUDGET({
@@ -40,6 +48,14 @@ export function commonSourcingView(parmars) {
 export function commonSourcingExport(parmars) {
     return MODELCARFile({
         url: '/export',
+        method: 'POST',
+        data: parmars
+    })
+}
+//发送项目管理员
+export function sendToAdmin(parmars) {
+    return VUE_APP_CSBUDGET({
+        url: '/sendToAdmin',
         method: 'POST',
         data: parmars
     })
@@ -82,5 +98,19 @@ export function saveAsVersion(parmars) {
         url: '/saveAsVersion',
         method: 'GET',
         params: parmars
+    })
+}
+//查看目标预算详情
+export function partsPackageBudgetDetail(parmars) {
+    return VUE_APP_CSBUDGET({
+        url: '/partsPackageBudgetDetail/' + parmars ,
+        method: 'GET',
+    })
+}
+//查看定点分配预算详情
+export function partsPackageShareDetail(parmars) {
+    return VUE_APP_CSBUDGET({
+        url: '/partsPackageShareDetail/' + parmars ,
+        method: 'GET',
     })
 }
