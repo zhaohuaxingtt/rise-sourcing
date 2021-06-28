@@ -11,7 +11,7 @@
                     hideTip
                     :buttonText="language('LK_SHANGCHUAN','上传')"
                     accept=".doc,.docx,.xls,.xlsx,.ppt,.pptx,.jpg,.jpeg,.png,.pdf,.tif"
-                    @on-success="onUploadsucess(Object.assign(...arguments, {fileType: '120'}), getFetchDataList)"
+                    @on-success="onUploadsucess(Object.assign(...arguments, {fileType: '119'}), getFetchDataList)"
                     
                 />
             </span>
@@ -103,7 +103,7 @@ export default {
                 nomiAppId: this.nomiAppId,
                 sortColumn: 'sort',
                 isAsc: true,
-                fileType: '120',
+                fileType: '119',
             }
             await this.getDataList(params)
         }
