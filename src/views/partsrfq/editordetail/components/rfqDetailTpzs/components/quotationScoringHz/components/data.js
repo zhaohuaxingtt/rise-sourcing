@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-05-28 14:32:26
- * @LastEditTime: 2021-06-26 15:15:39
+ * @LastEditTime: 2021-06-28 18:46:48
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\data.js
@@ -294,9 +294,9 @@ export function subtotal(tableHeader,dataList,priceInfo){
                 if(items.props == key){
                   //需要 Lc Aprice . Lc Bprice TTo 
                   if(removeKeysNumber(key) == "lcAPrice" || removeKeysNumber(key) == "lcBPrice" || removeKeysNumber(key) == "tto"){
-                    total[key] = _getMathNumber(`${total[key] || 0}+${element[key] || 0}*${element['ebr'] || 1}`)
+                    total[key] = _getMathNumber(`${total[key] || 0}+${element[key] || 0}*${element['ebr'] || 1}`).tofixed(4)
                   }else{
-                    total[key] = _getMathNumber(`${total[key] || 0}+${element[key] || 0}`)
+                    total[key] = _getMathNumber(`${total[key] || 0}+${element[key] || 0}`).tofixed(4)
                   }
                 }
               }
