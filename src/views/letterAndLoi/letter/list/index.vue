@@ -14,7 +14,7 @@
                   <el-option
                     v-for="item in selectOptions[item.selectOption] || []"
                     :key="item.value"
-                    :label="language(item.key,item.label)"
+                    :label="item.label"
                     :value="item.value">
                   </el-option>  
                 </iSelect> 
@@ -32,7 +32,7 @@
             <iButton @click="turnSend">{{language('partsprocure.PARTSPROCURETRANSFER','转派')}} </iButton> 
             <iButton @click="closeLetter">{{language('LK_GUANBI','关闭')}} </iButton>
             <iButton @click="activate">{{language('LK_JIHUO','激活')}} </iButton>
-            <iButton>{{language('LK_DAOCHU','导出')}} </iButton>
+            <iButton @click="downloadFiles">{{language('LK_DAOCHU','导出')}} </iButton>
         </template>
         <!-- 表单区域 -->
         <tableList
@@ -56,6 +56,10 @@
                     <span class="link" >{{ scope.row.letterNum }}</span>
                 </a>
             </template>
+            <!-- 定点信状态 -->
+            <template #status="scope">
+                <span >{{ scope.row.status && scope.row.status.desc }}</span>
+            </template>
         </tableList>
         <!-- 分页 -->
         <iPagination
@@ -73,9 +77,9 @@
     </iCard>
 
     <!-- 转派弹窗 -->
-    <turnSendDialog v-if="turnSendVisible" :dialogVisible="turnSendVisible" @changeVisible="changeVisible"/>
+    <turnSendDialog v-if="turnSendVisible" :dialogVisible="turnSendVisible" @changeVisible="changeVisible" @getList="getList" :selectItems="selectItems"/>
     <!-- 关闭定点信弹窗 -->
-    <closeLetterDialog v-if="closeLetterVisible" :dialogVisible="closeLetterVisible" @changeVisible="changeVisible"/>
+    <closeLetterDialog v-if="closeLetterVisible" :dialogVisible="closeLetterVisible" @changeVisible="changeVisible" @getList="getList" :selectItems="selectItems"/>
   </div>
 </template>
 
@@ -99,8 +103,15 @@ import tableList from "@/views/partsign/editordetail/components/tableList"
 import turnSendDialog from './components/turnSendDialog'
 import closeLetterDialog from './components/closeLetterDialog'
 import {
-    getLetterList
+    getLetterList,
+    fsConfirm,
+    liniefirm,
+    fsRecall,
+    liniereturn,
+    fsActivate,
+    downloadLetterFile,
 } from '@/api/letterAndLoi/letter'
+import { getDictByCode } from '@/api/dictionary'
 export default {
     name:'letterList',
     mixins: [pageMixins],
@@ -124,14 +135,7 @@ export default {
                 status:'',
             },
             selectOptions:{
-                status:[
-                     {label:'前期处理中',key:'CSF_HANDLING',value:'CSF_HANDLING'},
-                     {label:'Linie确认中',key:'LINIE_CONFIRING',value:'LINIE_CONFIRING'},
-                     {label:'供应商确认中',key:'SUPPLIER_CONFIRING',value:'SUPPLIER_CONFIRING'},
-                     {label:'完成',key:'COMPLETIED',value:'COMPLETIED'},
-                     {label:'关闭',key:'CLOSED',value:'CLOSED'},
-                     {label:'作废',key:'TOVOID',value:'TOVOID'},
-                ],
+                status:[],
                 showSelf:[
                     {label:'是',key:'nominationLanguage.Yes',value:'YES'},
                     {label:'否',key:'nominationLanguage.No',value:'NO'},
@@ -139,7 +143,8 @@ export default {
             },
             loading:false,
             tableListData:[
-                {nominateAppId:'50912471',letterNum:'NL21-10180',rfqId:'51120086',supplierNum:'068',supplierSapNum:'10047',supplierName:'博世汽⻋技术服务(中国)有限公司',statusDesc:'前期处理中',supplierResult:'供应商反馈',fsName:'⾼真',linieName:'王颖',isSignAgreement:'已签署',nominateDate:'2021-04-23'}
+                {nominateAppId:'50912471',letterNum:'NL21-10180',nominateLetterId:'1',rfqId:'51120086',supplierNum:'068',supplierSapNum:'10047',supplierName:'博世汽⻋技术服务(中国)有限公司',statusDesc:'前期处理中',supplierResult:'供应商反馈',fsName:'⾼真',linieName:'王颖',isSignAgreement:'已签署',nominateDate:'2021-04-23'},
+                {nominateAppId:'50912472',letterNum:'NL21-10181',nominateLetterId:'2',rfqId:'51120086',supplierNum:'068',supplierSapNum:'10047',supplierName:'博世汽⻋技术服务(中国)有限公司',statusDesc:'前期处理中',supplierResult:'供应商反馈',fsName:'⾼真',linieName:'王颖',isSignAgreement:'已签署',nominateDate:'2021-04-23'}
             ],
             tableTitle:letterListTitle,
             selectItems:[],
@@ -148,31 +153,55 @@ export default {
         }
     },
     created(){
+        this.getSelectOptions();
         this.getList();
     },
     methods:{
         // 获取列表
         async getList(){
-            console.log(this.searchParams);
-            const {searchParams} = this;
+            this.loading = true;
+            const {searchParams,page} = this;
             // 若有定点起止时间将其拆分成两个字段
             const {nominateDate=[]} = searchParams;
-            const data = {};
+            const data = {
+                current:page.currPage,
+                size:page.pageSize
+            };
             if(nominateDate.length){
                 data['nominateDateStart'] = nominateDate[0];
                 data['nominateDateEnd'] = nominateDate[1];
             }
             await getLetterList({...searchParams,...data}).then((res)=>{
+                this.loading = false;
                 const {code,data={}} = res;
                 if(code==200){
                    const {records=[],total} = data;
                    this.tableListData = records;
                    this.page.totalCount = total;
+                }else{
+                    iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
                 }
             }).catch((err)=>{
-
+                this.loading = false;
             })
             
+        },
+
+        // 调取数据字典获取下拉
+        async getDictionary(optionName, optionType) {
+            await getDictByCode(optionType).then(res => {
+                if(res?.result) {
+                this.selectOptions[optionName] = res.data[0].subDictResultVo.map(item => {
+                    return { value: item.code, label: this.$i18n.locale === "zh" ? item.name : item.nameEn }
+                })
+                }
+            })
+        },
+
+        async getSelectOptions(){
+            // 定点信状态
+            await this.getDictionary('status','NOMINATION_LETTER_STATUS');
+            console.log(this.selectOptions);
         },
 
         // 重置
@@ -227,7 +256,16 @@ export default {
          async submit(){
             const isNext  = await this.isSelectItem();
             if(isNext){
-                console.log(isNext,'OK');
+                const {selectItems} = this;
+                const nominateLetterIds = (selectItems.map((item)=>item.nominateLetterId)).join();
+                await fsConfirm({nominateLetterIds}).then((res)=>{
+                    if(res.code == 200){
+                        iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
+                        this.getList();
+                    }else{
+                        iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+                    }
+                }).catch((err)=>{});
             }else{
                 console.log(isNext,'CANCEL');
             }
@@ -238,7 +276,17 @@ export default {
         async lineSure(){
             const isNext  = await this.isSelectItem();
             if(isNext){
-                iMessage.warn('定点信【定点信编号】不是【Linie确认中】状态，Linie不能操作！');
+                // iMessage.warn('定点信【定点信编号】不是【Linie确认中】状态，Linie不能操作！');
+                const {selectItems} = this;
+                const nominateLetterIds = (selectItems.map((item)=>item.nominateLetterId)).join();
+                await liniefirm({nominateLetterIds}).then((res)=>{
+                    if(res.code == 200){
+                        iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
+                        this.getList();
+                    }else{
+                         iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+                    }
+                }).catch((err)=>{});
                 console.log(isNext,'OK');
             }else{
                 console.log(isNext,'CANCEL');
@@ -248,7 +296,17 @@ export default {
         async lineBack(){
             const isNext  = await this.isSelectItem();
             if(isNext){
-                iMessage.warn('定点信【定点信编号】不是【Linie确认中】状态，Linie不能操作！');
+                // iMessage.warn('定点信【定点信编号】不是【Linie确认中】状态，Linie不能操作！');
+                const {selectItems} = this;
+                const nominateLetterIds = (selectItems.map((item)=>item.nominateLetterId)).join();
+                await liniereturn({nominateLetterIds}).then((res)=>{
+                    if(res.code==200){
+                        iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
+                        this.getList();
+                    }else{
+                         iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+                    }
+                }).catch((err)=>{})
                 console.log(isNext,'OK');
             }else{
                 console.log(isNext,'CANCEL');
@@ -259,6 +317,16 @@ export default {
         async back(){
             const isNext  = await this.isSelectItem();
             if(isNext){
+                const {selectItems} = this;
+                const nominateLetterIds = (selectItems.map((item)=>item.nominateLetterId)).join();
+                await fsRecall({nominateLetterIds}).then((res)=>{
+                    if(res.code == 200){
+                        iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
+                        this.getList();
+                    }else{
+                        iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+                    }
+                }).catch((err)=>{});
                 console.log(isNext,'OK');
             }else{
                 console.log(isNext,'CANCEL');
@@ -288,9 +356,33 @@ export default {
         },
 
         // 激活
-        async activate(){
+        async activate(){ 
             const isNext  = await this.isSelectItem();
             if(isNext){
+                const {selectItems} = this;
+                const nominateLetterIds = (selectItems.map((item)=>item.nominateLetterId)).join();
+                await fsActivate({nominateLetterIds}).then((res)=>{
+                    if(res.code==200){
+                        iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
+                        this.getList();
+                    }else{
+                        iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+                    }
+                }).catch((e)=>{
+                    iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
+                });
+                console.log(isNext,'OK');
+            }else{
+                console.log(isNext,'CANCEL');
+            }
+        },
+        // 导出定点信
+        async downloadFiles(){
+            const isNext  = await this.isSelectItem();
+            if(isNext){
+                const {selectItems} = this;
+                const nominateLetterIds = (selectItems.map((item)=>item.nominateLetterId)).join();
+                await downloadLetterFile({nominateLetterIds});
                 console.log(isNext,'OK');
             }else{
                 console.log(isNext,'CANCEL');
@@ -298,10 +390,11 @@ export default {
         },
 
         // 跳转至定点信详情页
-        goToDetail(){
-             const routeData = this.$router.resolve({
+        goToDetail(row){
+            const { nominateLetterId } = row;
+            const routeData = this.$router.resolve({
             path: '/sourcing/partsletter/letterdetail',
-            query: {}
+            query: {id:nominateLetterId}
             })
             window.open(routeData.href, '_blank')
         }

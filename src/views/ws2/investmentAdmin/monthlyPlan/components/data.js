@@ -17,84 +17,84 @@ export const tableTitle = [
         // props: 'jan',
         props: 'planAmountM1',
         name: '一月',
-        key: '一月',
+        key: 'LK_YIYUE',
         tooltip: false
     },
     {
         // props: 'feb',
         props: 'planAmountM2',
         name: '二月',
-        key: '二月',
+        key: 'LK_ERYUE',
         tooltip: false
     },
     {
         // props: 'mar',
         props: 'planAmountM3',
         name: '三月',
-        key: '三月',
+        key: 'LK_SANYUE',
         tooltip: false
     },
     {
         // props: 'apr',
         props: 'planAmountM4',
         name: '四月',
-        key: '四月',
+        key: 'LK_SIYUE',
         tooltip: false
     },
     {
         // props: 'may',
         props: 'planAmountM5',
         name: '五月',
-        key: '五月',
+        key: 'LK_WUYUE',
         tooltip: false
     },
     {
         // props: 'june',
         props: 'planAmountM6',
         name: '六月',
-        key: '六月',
+        key: 'LK_LIUYUE',
         tooltip: false
     },
     {
         // props: 'july',
         props: 'planAmountM7',
         name: '七月',
-        key: '七月',
+        key: 'LK_QIYUE',
         tooltip: false
     },
     {
         // props: 'aug',
         props: 'planAmountM8',
         name: '八月',
-        key: '八月',
+        key: 'LK_BAYUE',
         tooltip: false
     },
     {
         // props: 'sep',
         props: 'planAmountM9',
         name: '九月',
-        key: '九月',
+        key: 'LK_JIUYUE',
         tooltip: false
     },
     {
         // props: 'oct',
         props: 'planAmountM10',
         name: '十月',
-        key: '十月',
+        key: 'LK_SHIYUE',
         tooltip: false
     },
     {
         // props: 'nov',
         props: 'planAmountM11',
         name: '十一月',
-        key: '十一月',
+        key: 'LK_SHIYIYUE',
         tooltip: false
     },
     {
         // props: 'dec',
         props: 'planAmountM12',
         name: '十二月',
-        key: '十二月',
+        key: 'LK_SHIERYUE',
         tooltip: false
     },
 ]

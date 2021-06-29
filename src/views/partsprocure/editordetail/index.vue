@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2021-06-25 13:38:07
+ * @LastEditTime: 2021-06-28 15:10:01
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\editordetail\index.vue
@@ -32,7 +32,7 @@
 				<!-------------------------------------------------------------------------------->
 				<!---维护现供供应商逻辑：1，只有当零件采购项目类型为[GS零件]或[GS common sourcing]时才---->
 				<!---出现此按钮。------------------------------------------------------------------->
-				<iButton v-if='currentSupplierButton' @click="curentSupplierDialog.show = true">维护现供供应商</iButton>	
+				<iButton v-if='currentSupplierButton' @click="curentSupplierDialog.show = true">{{language('WEIHUXIANGGYS','维护现供供应商')}}</iButton>	
 				<iButton @click="start" v-permission="PARTSPROCURE_EDITORDETAIL_STARTUP"
 					v-if="detailData.status == '16'">{{ $t("LK_QIDONGXIANGMU") }}</iButton>
 				<iButton @click="creatFs" v-permission="PARTSPROCURE_EDITORDETAIL_GENERATEFSGSNR">
@@ -212,7 +212,7 @@
 							<!----------------------------------------------------------------------------------------------->
 							<!---------------sop时间如果是GS零件的时候，是可以手动选择的------------------------------------------>
 							<!----------------------------------------------------------------------------------------------->
-							<iDatePicker v-if='currentSupplierButton' v-moudel='detailData.sopDate' type="date"></iDatePicker>
+							<iDatePicker v-if='currentSupplierButton' v-model='detailData.sopDate' type="date"></iDatePicker>
 							<iText v-else v-permission="PARTSPROCURE_EDITORDETAIL_SOPDATE">
 								{{ detailData.sopDate }}
 							</iText>
@@ -293,6 +293,7 @@
 		iButton,
 		iTabsList,
 		iMessage,
+		iDatePicker
 	} from "rise";
 	import logistics from "./components/logistics";
 	import targePrice from "./components/targetPrice";
@@ -344,7 +345,8 @@ import designateInfo from './components/designateInfo'
 			backItems,
 			splitFactory,
 			designateInfo,
-			currentSupplier
+			currentSupplier,
+			iDatePicker
 		},
 		data() {
 			return {

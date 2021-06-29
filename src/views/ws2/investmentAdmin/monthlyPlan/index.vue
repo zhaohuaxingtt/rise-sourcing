@@ -1,7 +1,7 @@
 <template>
   <div class="monthlyPlan">
     <div class="monthlyHeader">
-      <span class="versionNum">版本号</span>
+      <span class="versionNum">{{ $t('LK_BANBENHAO') }}</span>
       <iSelect
         class="versionSelect"
         :placeholder="$t('partsprocure.PLEENTER')"
@@ -16,30 +16,32 @@
           :key="index"
         ></el-option>
       </iSelect>
-      <icon class="refreshIcon" @click="handleRefresh" symbol name="iconmojukanbanshuaxin" />
-      <span class="refresh cursor" @click="handleRefresh">刷新</span>
-      <span class="refreshTime">刷新日期：{{ translateData(versionData.updateDate) }}</span>
+      <div @click="handleRefresh">
+        <icon class="refreshIcon" symbol name="iconmojukanbanshuaxin" />
+        <span class="refresh cursor">{{ $t('LK_SHUAXIN') }}</span>
+      </div>
+      <span class="refreshTime">{{ $t('LK_SHUAXINRIQI') }}：{{ translateData(versionData.updateDate) }}</span>
       <div v-if="pageEdit">
-        <iButton @click="exitEdit">{{ $t("退出编辑") }}</iButton>
+        <iButton @click="exitEdit">{{ $t("LK_TUICHUBIANJI") }}</iButton>
         <!-- <iButton @click="uploadList">{{ $t("上传清单") }}</iButton> -->
         <upload-button
-          @uploadedCallback="uploadAttachments"
+          @uploadedCallback="uploadList"
           :upload-button-loading="uploadLoading"
-          :buttonText="$t('上传清单')"
+          :buttonText="$t('LK_SHANGCHUANQINGDAN')"
           class="margin-left8"
         />
-        <iButton @click="saveAsList">{{ $t("保存") }}</iButton>
-        <iButton @click="saveAsNew">{{ $t("保存为新版本") }}</iButton>
+        <iButton @click="saveAsList">{{ $t("LK_BAOCUN") }}</iButton>
+        <iButton @click="saveAsNew">{{ $t("LK_BAOCUNWEIXINBANBEN") }}</iButton>
       </div>
       <div v-else>
-        <iButton @click="edit">{{ $t("编辑") }}</iButton>
-        <iButton @click="downloadList">{{ $t("下载清单") }}</iButton>
+        <iButton @click="edit">{{ $t("LK_BIANJI") }}</iButton>
+        <iButton @click="downloadList">{{ $t("LK_XIAZAIQINGDAN") }}</iButton>
       </div>
     </div>
     <iCard class="margin-top20 mainCard" v-loading="tableLoading">
       <div class="cardTop">
         <div class="yearlyPlan">
-          <span class="planTitle">{{ getYear(versionData.updateDate) }}月度计划</span>
+          <span class="planTitle">{{ getYear(versionData.updateDate) }}{{ $t('LK_YUEDUJIHUA') }}</span>
           <span class="totalText">Total:</span>
           <span class="refresh">{{ totalAmount }}</span>
           <span class="unitText margin-left20"
@@ -67,7 +69,7 @@
             class="margin-right20"
             :class="tabIndex === 0 ? 'tabOn' : 'tabItem'"
           >
-            当年付款计划
+            {{ $t('LK_DANGNIANFUKUANJIHUA') }}
           </div>
           <icon
             v-if="tabIndex === 1"
@@ -79,7 +81,7 @@
             @click="tabClick(1)"
             :class="tabIndex === 1 ? 'tabOn' : 'tabItem'"
           >
-            次年付款计划
+            {{ $t('LK_CINIANFUKUANJIHUA') }}
           </div>
         </div>
       </div>
@@ -117,7 +119,7 @@
             v-model="scope.row.planAmountM1"
             :placeholder="$t('LK_QINGSHURU')"
             v-if="pageEdit"
-            @input="handleInputChange(scope.row)"
+            @input="handleInputChange(scope.row, 'planAmountM1')"
           ></iInput>
           <div v-if="!pageEdit">{{ scope.row.planAmountM1 }}</div>
         </template>
@@ -126,7 +128,7 @@
             v-model="scope.row.planAmountM2"
             :placeholder="$t('LK_QINGSHURU')"
             v-if="pageEdit"
-            @input="handleInputChange(scope.row)"
+            @input="handleInputChange(scope.row, 'planAmountM2')"
           ></iInput>
           <div v-if="!pageEdit">{{ scope.row.planAmountM2 }}</div>
         </template>
@@ -135,7 +137,7 @@
             v-model="scope.row.planAmountM3"
             :placeholder="$t('LK_QINGSHURU')"
             v-if="pageEdit"
-            @input="handleInputChange(scope.row)"
+            @input="handleInputChange(scope.row, 'planAmountM3')"
           ></iInput>
           <div v-if="!pageEdit">{{ scope.row.planAmountM3 }}</div>
         </template>
@@ -144,7 +146,7 @@
             v-model="scope.row.planAmountM4"
             :placeholder="$t('LK_QINGSHURU')"
             v-if="pageEdit"
-            @input="handleInputChange(scope.row)"
+            @input="handleInputChange(scope.row, 'planAmountM4')"
           ></iInput>
           <div v-if="!pageEdit">{{ scope.row.planAmountM4 }}</div>
         </template>
@@ -153,7 +155,7 @@
             v-model="scope.row.planAmountM5"
             :placeholder="$t('LK_QINGSHURU')"
             v-if="pageEdit"
-            @input="handleInputChange(scope.row)"
+            @input="handleInputChange(scope.row, 'planAmountM5')"
           ></iInput>
           <div v-if="!pageEdit">{{ scope.row.planAmountM5 }}</div>
         </template>
@@ -162,7 +164,7 @@
             v-model="scope.row.planAmountM6"
             :placeholder="$t('LK_QINGSHURU')"
             v-if="pageEdit"
-            @input="handleInputChange(scope.row)"
+            @input="handleInputChange(scope.row, 'planAmountM6')"
           ></iInput>
           <div v-if="!pageEdit">{{ scope.row.planAmountM6 }}</div>
         </template>
@@ -171,7 +173,7 @@
             v-model="scope.row.planAmountM7"
             :placeholder="$t('LK_QINGSHURU')"
             v-if="pageEdit"
-            @input="handleInputChange(scope.row)"
+            @input="handleInputChange(scope.row, 'planAmountM7')"
           ></iInput>
           <div v-if="!pageEdit">{{ scope.row.planAmountM7 }}</div>
         </template>
@@ -180,7 +182,7 @@
             v-model="scope.row.planAmountM8"
             :placeholder="$t('LK_QINGSHURU')"
             v-if="pageEdit"
-            @input="handleInputChange(scope.row)"
+            @input="handleInputChange(scope.row, 'planAmountM8')"
           ></iInput>
           <div v-if="!pageEdit">{{ scope.row.planAmountM8 }}</div>
         </template>
@@ -189,7 +191,7 @@
             v-model="scope.row.planAmountM9"
             :placeholder="$t('LK_QINGSHURU')"
             v-if="pageEdit"
-            @input="handleInputChange(scope.row)"
+            @input="handleInputChange(scope.row, 'planAmountM9')"
           ></iInput>
           <div v-if="!pageEdit">{{ scope.row.planAmountM9 }}</div>
         </template>
@@ -198,7 +200,7 @@
             v-model="scope.row.planAmountM10"
             :placeholder="$t('LK_QINGSHURU')"
             v-if="pageEdit"
-            @input="handleInputChange(scope.row)"
+            @input="handleInputChange(scope.row, 'planAmountM10')"
           ></iInput>
           <div v-if="!pageEdit">{{ scope.row.planAmountM10 }}</div>
         </template>
@@ -207,7 +209,7 @@
             v-model="scope.row.planAmountM11"
             :placeholder="$t('LK_QINGSHURU')"
             v-if="pageEdit"
-            @input="handleInputChange(scope.row)"
+            @input="handleInputChange(scope.row, 'planAmountM11')"
           ></iInput>
           <div v-if="!pageEdit">{{ scope.row.planAmountM11 }}</div>
         </template>
@@ -216,7 +218,7 @@
             v-model="scope.row.planAmountM12"
             :placeholder="$t('LK_QINGSHURU')"
             v-if="pageEdit"
-            @input="handleInputChange(scope.row)"
+            @input="handleInputChange(scope.row, 'planAmountM12')"
           ></iInput>
           <div v-if="!pageEdit">{{ scope.row.planAmountM12 }}</div>
         </template>
@@ -244,7 +246,8 @@ import {
   saveNewVersion, 
   exportPlanCommutityList, 
   queryPlanMonthList, 
-  saveMonthData 
+  saveMonthData,
+  importMonthData
 } from "@/api/ws2/investmentAdmin";
 import { iMessage } from '../../../../components';
 
@@ -275,6 +278,7 @@ export default {
       refreshLoading: false, //刷新加载
       tableLoading: false,
       clearEchart: false,
+      noChangeTableListData: [], //未编辑数据
     };
   },
   created() {
@@ -295,16 +299,14 @@ export default {
     },
     //退出编辑
     exitEdit() {
+      this.tableListData = cloneDeep(this.noChangeTableListData);
+      this.showEcharts();
       this.pageEdit = false;
     },
     //保存为新版本
     saveAsNew() {
       this.saveNewVersion = true;
     },
-    // //上传清单
-    // uploadList() {
-
-    // },
     //保存
     saveAsList() {
       let param = {
@@ -502,7 +504,8 @@ export default {
         });
       });
     },
-    handleInputChange(row) {
+    handleInputChange(row, key) {
+      row[key] = row[key].replace(/[^\d.]/g,'');
       row.amount = 0;
       row.amount =
         Number(row.planAmountM1) +
@@ -575,7 +578,6 @@ export default {
     //刷新
     handleRefresh() {
       this.refreshLoading = true;
-      console.log('zz=>', this.versionData.id)
       refreshVersion(this.versionData.id).then(res => {
         this.refreshLoading = false;
         if (Number(res.code) === 0) {
@@ -615,6 +617,7 @@ export default {
               Number(item.planAmountM12);
             return item;
           });
+          this.noChangeTableListData = cloneDeep(this.tableListData);
           this.showEcharts();
           this.tableLoading = false;
         }
@@ -628,6 +631,21 @@ export default {
     getYear(date) {
       let year = Number(window.moment(date).format("YYYY"));
       return this.tabIndex === 0 ? year : year + 1;
+    },
+    //上传清单 importMonthData
+    async uploadList(formData) {
+      this.uploadLoading = true;
+      formData.append("planType", this.tabIndex === 0 ? "current_year" : "next_year");
+      formData.append("versionId ", this.versionData.id);
+      const res = await importMonthData({data: formData, versionId: this.versionData.id});
+      if (Number(res.code) === 0) {
+        this.uploadLoading = false;
+        this.getMonthList();
+        return iMessage.success(this.$i18n.locale === 'zh' ? msg.desZh : msg.desEn)
+      } else {
+        this.uploadLoading = false;
+        return iMessage.error(this.$i18n.locale === 'zh' ? msg.desZh : msg.desEn)
+      }
     }
   },
   computed: {
@@ -659,7 +677,7 @@ export default {
   margin-top: 20px;
 
   .versionSelect {
-    width: 130px;
+    width: 140px;
     margin: 0 20px;
   }
 
@@ -668,7 +686,7 @@ export default {
   }
 
   .refreshIcon {
-    margin-left: 30px;
+    margin-left: 10px;
     margin-right: 10px;
     width: 15px;
     height: 15px;

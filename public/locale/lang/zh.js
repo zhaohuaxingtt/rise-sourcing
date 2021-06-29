@@ -1069,6 +1069,23 @@
         'SPR_FRM_DEP_OBJPLACE': '请选择呈现对象', // 请选择呈现对象
         'SPR_FRM_DEP_AVGPLACE': '请选择行业均值', // 请选择行业均值
 
+        'LK_TUICHUBIANJI': '退出编辑',    //  退出编辑
+        'LK_SHANGCHUANQINGDAN': '上传清单',    //  上传清单
+        'LK_YUEDUJIHUA': '月度计划',    //  月度计划
+        'LK_DANGNIANFUKUANJIHUA': '当年付款计划',    //  当年付款计划
+        'LK_CINIANFUKUANJIHUA': '次年付款计划',    //  次年付款计划
+        'LK_YIYUE': '一月',    //  一月
+        'LK_ERYUE': '二月',    //  二月
+        'LK_SANYUE': '三月',    //  三月
+        'LK_SIYUE': '四月',    //  四月
+        'LK_WUYUE': '五月',    //  五月
+        'LK_LIUYUE': '六月',    //  六月
+        'LK_QIYUE': '七月',    //  七月
+        'LK_BAYUE': '八月',    //  八月
+        'LK_JIUYUE': '九月',    //  九月
+        'LK_SHIYUE': '十月',    //  十月
+        'LK_SHIYIYUE': '十一月',    //  十一月
+        'LK_SHIERYUE': '十二月',    //  十二月
 
         // 定点管理
         'nominationLanguage': {

@@ -36,9 +36,6 @@ export default {
     myUpload(content) {
       const formData = new FormData();
       formData.append("file", content.file);
-      // formData.append("riseCode", this.dataInfo.riseCode);
-      // formData.append("type", this.dataInfo.type);
-      // formData.append("subType", this.dataInfo.subType);
       this.$emit("uploadedCallback", formData);
     },
   },

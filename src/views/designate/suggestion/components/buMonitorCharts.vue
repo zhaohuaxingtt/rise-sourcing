@@ -203,6 +203,10 @@ export default {
                 <p>Compared to Best TTO <br> for Whole Package: 
                   <span class="value">${Number((wholePackage-weightSupplierTotal)/wholePackage*100).toFixed(2)}%</span>
                 </p>
+                <p style="display: ${(params.data/weightSupplierTotal*100) < 10 ? 'block' : 'none'}">${self.language('GONGYINGSHANGTTO','供应商TTO')}: ${params.data}</p>
+                <p style="display: ${(params.data/weightSupplierTotal*100) < 10 ? 'block' : 'none'}">
+                  share: ${Number(params.data/weightSupplierTotal*100).toFixed(2)}%
+                </p>
               </div>`)
 
               return `
@@ -328,7 +332,7 @@ export default {
             const fm = Number(bestGroupSupplierTotal)
             const percent = parseFloat(fz/fm*100).toFixed(2)
             totalGroupPercent += Number(percent)
-            return `${params.data}\n{p|(${percent}%)}`
+            return `${params.data}\n{p|${percent}%}`
           },
           rich,
           interval: 0
@@ -356,7 +360,7 @@ export default {
               const fm = Number(bestGroupSupplierTotal)
               // const percent = Math.floor(fz/fm*100)
               const percent = 100 - totalGroupPercent
-              return `${params.data}\n{p|(${percent.toFixed(2)}%)}`
+              return `${params.data}\n{p|${percent.toFixed(2)}%}`
             },
             rich,
             interval: 0
@@ -414,7 +418,7 @@ export default {
               const fm = Number(minPartSupplierTToTotal)
               const percent =(item.index === minPartSupplierTToArray.length - 1) ? (100 - partPercent).toFixed(2) : parseFloat(fz/fm*100).toFixed(2)
               partPercent += Number(percent)
-              return `${params.data}\n{p|(${percent}%)}`
+              return `${params.data}\n{p|${percent}%}`
             },
             rich,
             interval: 0
@@ -461,7 +465,7 @@ export default {
           data: ['', '', '', item.data],
           type: 'bar',
           barWidth: 30,
-          barMinHeight: 30,
+          // barMinHeight: 30,
           stack: 'total',
           label: {
             show: true,
@@ -472,7 +476,7 @@ export default {
               const fm = Number(weightSupplierTotal)
               const percent =(index === weightSupplier.length - 1) ? (100 - weightPercent).toFixed(2) : (fz/fm*100).toFixed(2)
               weightPercent += Number(percent)
-              return `${params.data}\n{p|(${percent}%)}`
+              return percent < 10 ?  '' : `${params.data}\n{p|${percent}%}`
             },
             rich,
             interval: 0

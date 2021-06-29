@@ -46,6 +46,13 @@
         width="50"
         align="center"
       ></el-table-column>
+      <el-table-column
+          v-if="typeIndex"
+          type="index"
+          align="center"
+          label="序号"
+          width="50">
+      </el-table-column>
       <template v-for="(items, index) in tableTitle">
         <el-table-column
           :key="index"
@@ -133,6 +140,7 @@ export default {
     tableTitle: { type: Array },
     tableLoading: { type: Boolean, default: false },
     selection: { type: Boolean, default: true },
+    typeIndex: { type: Boolean, default: false },
     index: { type: Boolean, default: false },
     indexLabel: { type: String, default: "#" },
     height: { type: Number || String },
