@@ -2,7 +2,7 @@
  * @version: 1.0
  * @Author: zbin
  * @Date: 2021-06-21 15:15:44
- * @LastEditors: zbin
+ * @LastEditors: Please set LastEditors
  * @Descripttion: your project
  */
 import axios from '@/utils/axios'
@@ -15,7 +15,7 @@ export function powerBiUrl(parmars) {
     method: 'GET',
   })
 }
-
+//分页查询零件采购项目列表
 export function pagePart(parmars) {
   return requst({
     url: '/costAnalysisTool/part/pagePart',
@@ -44,6 +44,14 @@ export function getRfqInfo(parmars) {
   return requst({
     url: `/costAnalysisTool/rfq/getRfqInfo?rfqId=${parmars}`,
     method: 'GET',
+    data: parmars
+  })
+}
+//材料组下拉框
+export function category(parmars) {
+  return requst({
+    url: `/common/category`,
+    method: 'POST',
     data: parmars
   })
 }
