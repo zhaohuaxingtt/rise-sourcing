@@ -26,7 +26,7 @@ export default {
         by:{
           type:String,
           default:'supplier'
-        }
+        },
     },
     data(){
         return {
@@ -144,7 +144,7 @@ export default {
     },
     initData(newVal){
       if(newVal){
-              console.log(newVal)
+              // console.log(newVal)
               this.chartArray=newVal
               this.labelArray=[]
               this.dataArray=[]
@@ -188,11 +188,11 @@ export default {
                   // console.log(dataList1)
                 })
               })
-              console.log(tempArr)
+              // console.log(tempArr)
               const minList=[]
               this.legendArray.forEach((row,i)=>{
                 const dataList0=this.cloneDeep(tempArr[row])
-                console.log(this.type)
+                // console.log(this.type)
                 
                 const min=this.min(tempArr[row])
                 let data=min
@@ -287,7 +287,7 @@ export default {
                     data:[...dataList0,minList[minList.length-1]]
                   })
               })
-              console.log(this.dataArray)
+              // console.log(this.dataArray)
           
                 this.labelArray.push(this.type)
                 this.dataArray.push({
@@ -307,7 +307,7 @@ export default {
                         const index=params.dataIndex
                         if(params.name===this.type){
                           const sum=this.sum(minList)
-                          console.log(sum)
+                          // console.log(sum)
                           return sum
                           // return '{bold|'+sum+'}'
                         }
@@ -359,7 +359,7 @@ export default {
                     barWidth:'30%',
                     data:this.labelArray.map((i)=>0)
                 })
-                console.log(this.dataArray)
+                // console.log(this.dataArray)
                 if(this.$refs.chart&&this.chartArray.length>0){
                     this.initCharts();
                 }

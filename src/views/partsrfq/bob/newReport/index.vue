@@ -7,7 +7,7 @@
       >
       <div class="flex-align-center">
         <!--预览-->
-				<iButton class="margin-left30" >{{ $t('LK_YULAN') }}</iButton>
+				<iButton class="margin-left30" @click="pre=true">{{ $t('LK_YULAN') }}</iButton>
 				<!--保存-->
 				<iButton class="margin-left30" >{{ $t('LK_BAOCUN') }}</iButton>
 				<!--BoB分析库-->
@@ -131,6 +131,10 @@
       @sure="sure"
       @close="closeDialog"
     ></findingParts>
+    <preview
+      :value="pre"
+      @close="closePreView"
+    ></preview>
   </iPage>
 </template>
 
@@ -141,6 +145,7 @@ import bobAnalysis from "@/views/partsrfq/bob/bobAnalysis/index.vue";
 import ungroupedTable from "@/views/partsrfq/bob/bobAnalysis/ungroupedTable.vue";
 import findingParts from "@/views/partsrfq/components/findingParts.vue";
 import {getBobLevelOne,removeBobOut} from '@/api/partsrfq/bob'
+import preview from './preview.vue';
 import OutBar from './components/outBar.vue';
 import {
   dataList1,
@@ -163,7 +168,8 @@ export default {
     ungroupedTable,
     findingParts,
     OutBar,
-    icon
+    icon,
+    preview
   },
   data() {
     return {
@@ -181,7 +187,8 @@ export default {
       },
       showSelectDiv:false,
       analysisSchemeId:5,
-      value:false
+      value:false,
+      pre:false
     }
   },
   mounted(){
@@ -196,6 +203,9 @@ export default {
     },
     closeDialog(val){
       this.value=val
+    },
+    closePreView(val){
+      this.pre=val
     },
     sure(){
       
