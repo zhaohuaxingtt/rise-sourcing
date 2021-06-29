@@ -1,7 +1,7 @@
 <!--
  * @Author: moxuan
  * @Date: 2021-02-25 09:59:25
- * @LastEditTime: 2021-06-25 13:47:44
+ * @LastEditTime: 2021-06-28 22:22:27
  * @LastEditors: Please set LastEditors
  * @Description: RFQ模块首页
  * @FilePath: \rise\src\views\partsrfq\home\index.vue
@@ -12,7 +12,7 @@
       <el-tab-pane :label="$t('LK_XUNYUANZHIHANG')" name="source">
         <div>
           <div class="margin-bottom33">
-            <iNavMvp @change="change" right routerPage lev="2" :list="navList" @message="clickMessage" />
+            <iNavMvp lang @change="change" right routerPage lev="2" :list="navList" @message="clickMessage" />
           </div>
           <!------------------------------------------------------------------------>
           <!--                  search 搜索模块                                   --->
@@ -477,7 +477,7 @@ export default {
       })
     },
     openNominateTypeDialog() {
-      if (this.selectTableData.length !== 1) return iMessage.warn(this.$t("LK_QINGXUANZEYITIAORFQ"))
+      if (this.selectTableData.length !== 1) return iMessage.warn(this.language("LK_QINGXUANZEYITIAORFQ","请选择一条RFQ"))
       this.nominateTypeDialogVisible = true
     },
     // 创建定点申请

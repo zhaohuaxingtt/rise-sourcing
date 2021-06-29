@@ -926,10 +926,10 @@
 
         'LK_ALLBMAPPLY': '所有BM申请',    //  所有BM申请
         'LK_DAIQUERENBMDAN': '待确认BM单',    //  待确认BM单
-        'LK_AEKOZENGZHIBMDAN': 'Aeko增值BM单',  //  Aeko增值BM单
-        'LK_AEKOJIANZHIBMDAN': 'Aeko减值BM单',  //  Aeko减值BM单
+        'LK_AEKOZENGZHIBMDAN': 'AEKO增值BM单',  //  Aeko增值BM单
+        'LK_AEKOJIANZHIBMDAN': 'AEKO减值BM单',  //  Aeko减值BM单
         'LK_BMDANZHUANGTAI': 'BM单状态',    //  BM单状态
-        'LK_AEKOLEIXING': 'Aeko类型',   //  Aeko类型
+        'LK_AEKOLEIXING': 'AEKO类型',   //  AEKO类型
         'LK_BMDANLIUSHUIHAO': 'BM单流⽔号',   //  BM单流⽔号
         'LK_BMDANHAO': 'BM单号',    //  BM单号
         'LK_WBSBIANHAO': 'WBS编号',   //  WBS编号
@@ -982,95 +982,26 @@
         'LK_LIZI': '例',    //  例
         'LK_LIZISHUOMING': '代表零件号的车型项目/零件号/零件名称/供应商简称',  //  代表零件号的车型项目/零件号/零件名称/供应商简称
         'LK_BMAPPLYBAOCUNMSG': '你有必填字段未填',  //  你有必填字段未填
+        'LK_FUKUANJIHUADINGZHIYUCHAKAN':  '付款计划制定与查看',   //  付款计划制定与查看
+        'LK_YUAN': '元',    //  元
 
-        // 定点管理
-        'nominationLanguage': {
-            'DingDianGuanLi': '定点管理',
-            'LingJianHao': '零件号',
-            'ShenQingDanHao': '申请单号',
-            'RFQBianHao': 'RFQ编号',
-            'LiuChengLeiXing': '流程类型',
-            'ShenQingZhuangTai': '申请状态',
-            'LingJianMing': '零件名',
-            'LingJianMingCN': '零件名(中)',
-            'LingJianMingDE': '零件名(德)',
-            'XunJiaCaiGouYuan': '询价采购员',
-            'CheXingXiangMu': '车型项目',
-            'BaoJiaYiZhiXingJiaoYan': '报价一致性校验',
-            'ShiFouDnaYiGongYingShang': '是否单一供应商',
-            'XianShiZiJi': '显示自己',
-            'Yes': '是',
-            'No': '否',
-            'DingDianShenQingZongHeGuanLi': '定点申请综合管理',
-            'XinJianLingJIanDingDianShengQIng': '新建零件定点申请',
-            'CheHui': '撤回',
-            'ShanChu': '删除',
-            'TiJiaoYiZhiXingJiaoYan': '提交一致性校验',
-            'ShenQingDanMing': '申请单名',
-            'LeiXing': '类型',
-            'XingMuLeiXing': '项目类型',
-            'HuiYi': '会议',
-            'RSZhuangTai': 'RS单状态',
-            'RSDongJieRiQi':'RS冻结日期',
-            'BaoJiaYiZhiXingZhuangTai':'报价一致性校验状态',
-            'SELDanJuQUeRenZH': 'SEL单据确认状态',
-            'DingDianRiQi': '定点日期',
-            'DINGDIANSHENQINGLEIXING':'定点申请类型', // 定点申请类型
-            'RFQANDLINGJIANQINGDAN':'RFQ & 零件清单', // RFQ & 零件清单
-            'GONGYINGSHANGANDDANYIGONGYINGSHANG':'供应商 & 单⼀供应商', // 供应商 & 单⼀供应商
-            'DINGDIANJIANYI':'定点建议', // 定点建议
-            'SHENPIRENANDSHENPIJILU':'审批⼈ & 审批记录', // 审批⼈ & 审批记录
-            'JUECEZILIAO':'决策资料', // 决策资料
-            'DINGDIAN':'定点', // 定点
-            'LK_QINGXUANZEYITIAORFQ': '请选择一条RFQ', // 请选择一条RFQ
-            'LK_QINGXUANZEDINGDIANSHENQINGLEIXING': '请选择定点申请类型', // 请选择定点申请类型
-            'LK_DINGDIANSHENQINGLEIXING': '定点申请类型', // 定点申请类型
-            'LK_GAIDINGDIANSHENQINGZHONGYOUDANYIGONGYINGSHANG': '该定点申请中有单一供应商', // 该定点申请中有单一供应商
-            'LK_DINGDIANXINLOI':'定点信 / LOI', // 定点信 / LOI
-            'LK_DINGDIANXIN':'定点信', // 定点信
-            'LK_LOI':'LOI', // LOI
-            'LK_DINGDIANXINBIANHAO':'定点信编号', // 定点信编号
-            'LK_DINGDIANXINZHUANGTAI':'定点信状态',//  定点信状态
-            'LK_DINGDIANXINDANHAO':'定点申请单号', // 定点申请单号
-            'LK_DINGDIANSHIJIANQIZHI':'定点时间起⽌', //  定点时间起⽌
-            'LK_SHIFOUXIANSHIZIJI':'是否显⽰⾃⼰', //  是否显⽰⾃⼰
-            'LK_GONGYINGSHANGFANKUI':'供应商反馈', // 供应商反馈
-            'LK_SHIFOUQIANSHUXIEYI':'是否签署协议', // 是否签署协议
-            'LK_DINGDIANRIQI':'定点⽇期', //定点⽇期
-            'LK_LOIBIANHAO':'LOI编号', // LOI编号
-            'LK_LOIZHUANGTAI':'LOI状态', // LOI状态
-            'LK_LOISHENGCHENGSHIJIAN':'LOI⽣成时间', // LOI⽣成时间
-            'LK_QUERENBINGTIJIAO':'确认并提交', // 确认并提交
-            'LK_LINEQUEREN':'LINIE确认', // LINIE确认
-            'LK_LINETUIHUI':'LINIE退回', // LINIE退回
-            'LK_GUANBI':'关闭', // 关闭
-            'LK_JIHUO':'激活', // 激活
-            'LK_GUANBIDINGDIANXIN':'关闭定点信' , // 关闭定点信
-            'LK_QINGSHURUGUANBIYUANYIN':'请输⼊关闭原因', // 请输⼊关闭原因
-            'LK_MUBIAOXUNJIACAIGOUYUAN':'目标询价采购员', // 目标询价采购员
-            'LK_MUBIAOLINE':'⽬标LINIE', // ⽬标LINIE
-            'LK_GAILAN':'概览', // 概览
-            'LK_BAOBIAOGUANLI':'报表管理', // 报表管理
-            'LK_WANCHENGDINGDIANXIN':'完成定点信', // 完成定点信
-            'LK_DAOCHUBIAOZHUNDINGDIANXIN':'导出标准定点信', // 导出标准定点信
-            'LK_LISHIDINGDIANXIN':'历史定点信', // 历史定点信
-            'LK_BIAOZHUNDINGDIANXIN':'标准定点信', // 标准定点信
-            'LK_FEIBIAOZHUNDINGDIANXIN':'⾮标准定点信',  // ⾮标准定点信
-            'LK_GONGYINGSHANGLIANXIR':'供应商联系⼈', // 供应商联系⼈
-            'LK_SHANGCHUANSHIWENJIANQINGXUANZHUANZHIZHENGCHANGFANGXIANGHOUSHANGCHUAN':'上传时文件请旋转至正常方向后上传', // 上传时文件请旋转至正常方向后上传
-            'LK_BIANJIBEIZHU':'编辑备注', // 编辑备注
-            'LK_GUANBILOI':'关闭LOI', // 关闭LOI
-            'LK_WANCHENGLOI':'完成LOI', // 完成LOI
-            'LK_DAOCHUBIAOZHUNLOI':'导出标准LOI', // 导出标准LOI
-            'LK_LISHILOI':'历史LOI', // 历史LOI
-            'LK_BIAOZHUNLOI':'标准LOI', // 标准LOI
-            'LK_FEIBIAOZHUNLOI':'⾮标准LOI', // ⾮标准LOI
-            'LK_PILIANGLOI':'批量LOI', // 批量LOI
-            'LK_KAIFALOI':'开发LOI', // 开发LOI
-            'LK_KAIFAPILIANGLOI':'开发+批量LOI' , // 开发+批量LOI
-            'LK_FRMPINGJI':'FRM评级', // FRM评级
-            'LK_CBDSTATUS':'CBD状态', // CBD状态
-        },
+        'LK_TUICHUBIANJI': '退出编辑',    //  退出编辑
+        'LK_SHANGCHUANQINGDAN': '上传清单',    //  上传清单
+        'LK_YUEDUJIHUA': '月度计划',    //  月度计划
+        'LK_DANGNIANFUKUANJIHUA': '当年付款计划',    //  当年付款计划
+        'LK_CINIANFUKUANJIHUA': '次年付款计划',    //  次年付款计划
+        'LK_YIYUE': 'Jan',    //  一月
+        'LK_ERYUE': 'Feb',    //  二月
+        'LK_SANYUE': 'Mar',    //  三月
+        'LK_SIYUE': 'Apr',    //  四月
+        'LK_WUYUE': 'May',    //  五月
+        'LK_LIUYUE': 'Jun',    //  六月
+        'LK_QIYUE': 'Jul',    //  七月
+        'LK_BAYUE': 'Aug',    //  八月
+        'LK_JIUYUE': 'Sep',    //  九月
+        'LK_SHIYUE': 'Oct',    //  十月
+        'LK_SHIYIYUE': 'Nov',    //  十一月
+        'LK_SHIERYUE': 'Dec',    //  十二月
 
         // 定点建议
         'nominationSuggestion': {

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-loading="mainLoading">
     <div class="header">
       <div>
         车型包名称
@@ -9,14 +9,15 @@
       </div>
       <Upload
           class="upload-demo"
+          ref="uploadRef"
           :action="actionUrl"
-          :on-preview="handlePreview"
-          :on-remove="handleRemove"
+          :on-change="beforeUpload"
+          :on-success="onSuccess"
+          :before-upload="beforeAvatarUpload"
           :before-remove="beforeRemove"
-          multiple
-          :limit="3"
-          :on-exceed="handleExceed"
-          :file-list="fileList">
+          :limit="1"
+          :show-file-list="false"
+          :file-list="uploadFiles">
         <iButton icon="el-icon-circle-plus-outline" type="primary">新增车型项目</iButton>
       </Upload>
     </div>
@@ -67,6 +68,7 @@ export default {
   data() {
     return {
       packageNameZh: '',
+      mainLoading: false,
       tableLoading: false,
       tableListData: []
     }
@@ -80,6 +82,32 @@ export default {
     this.pageCarTypePackage()
   },
   methods: {
+    onSuccess(res){
+      const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
+      this.$refs['uploadRef'].clearFiles();
+      if (Number(res.code) === 0) {
+        this.$router.push({
+          path: '/tooling/budgetManagement/addModelBag',
+          query: {
+            carTypePackageId: res.data.carTypePackageId
+          }
+        })
+        iMessage.success(result);
+      } else {
+        iMessage.error(result);
+      }
+      this.mainLoading = false
+    },
+    beforeAvatarUpload(file) {
+      this.mainLoading = true;
+      let FileExt = file.name.replace(/.+\./, "").toLowerCase();
+      let flag = ["xls", "xlsx"].includes(FileExt);
+      if (!flag) {
+        this.mainLoading = false;
+        iMessage.error("只能上传excel文件!");
+      }
+      return flag;
+    },
     toBagList(carTypePackageId){
       this.$router.push({
         path: '/tooling/budgetManagement/addModelBag',

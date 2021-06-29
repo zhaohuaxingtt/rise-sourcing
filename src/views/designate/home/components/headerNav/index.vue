@@ -6,7 +6,7 @@
 <template>
 <div class="headerNav-wraper margin-bottom10">
   <div class="headerNav">
-    <iNavMvp :list="list" @change="change" :lev="1" routerPage></iNavMvp>
+    <iNavMvp :list="list" lang @change="change" :lev="1" routerPage></iNavMvp>
     <div class="ext">
       <div class="pull-right">
         <a href="javascript:;" class="iconMenu">
@@ -20,7 +20,7 @@
           ></icon>
         </a>
       </div>
-      <iNavMvp @change="change" class="pull-right" right routerPage lev="2" :list="navList" @message="clickMessage" />
+      <iNavMvp @change="change" lang class="pull-right" right routerPage lev="2" :list="navList" @message="clickMessage" />
     </div>
     
   </div>

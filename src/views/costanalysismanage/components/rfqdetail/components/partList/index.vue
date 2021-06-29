@@ -7,7 +7,7 @@ s<!--
  * @FilePath: \front-web\src\views\costanalysismanage\components\rfqdetail\components\partList\index.vue
 -->
 <template>
-  <iCard :title="language('LINGJIANQINGDAN', '零件清单')">
+  <iCard :title="language('LK_LINGJIANQINGDAN','零件清单')">
     <template v-slot:header-control>
       <iButton @click="handleSave" :loading="saveLoading">{{ language("BAOCUN", "保存") }}</iButton>
       <iButton @click="handleDownloadTechnicalData">{{ language("XIAZAIJISHUZILIAO", "下载技术资料") }}</iButton>

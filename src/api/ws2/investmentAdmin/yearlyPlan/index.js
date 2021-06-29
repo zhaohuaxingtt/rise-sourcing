@@ -5,6 +5,15 @@ const requestFile = axiosFile(process.env.VUE_APP_PLANYEAR);
 
 const VUE_APP_PLANYEAR = axios(process.env.VUE_APP_PLANYEAR);
 
+//  手工调整清单下载
+export function exportPlanCommutityList(params) {
+    return requestFile({
+      url: `/exportPlanCommutityList/${params.versionId}`,
+      method: 'GET',
+      data: params,
+    })
+}
+
 //  保存手工调整数据
 export function saveCommutityAmualData(params) {
     return VUE_APP_PLANYEAR({
@@ -39,7 +48,7 @@ export function downloadExport(params) {
       method: 'GET',
       data: params,
     })
-  }
+}
 
 //  查询系统计算列表
 export function queryPlanYearSystem(params) {

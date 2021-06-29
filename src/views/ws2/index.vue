@@ -100,7 +100,6 @@ export default {
 
         return item;
       })
-      console.log('list', list, ksy1, ksy2);
       return list;
     }
   },

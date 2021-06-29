@@ -88,7 +88,7 @@
           </div>
           <div>
             <iButton @click="manualSave" :loading="manualSaveLoading">{{ $t('LK_BAOCUN') }}</iButton><!-- 保存 -->
-            <iButton @click="save">{{ $t('LK_XIAZAIQINGDAN') }}</iButton><!-- 下载清单 -->
+            <iButton @click="downloadList">{{ $t('LK_XIAZAIQINGDAN') }}</iButton><!-- 下载清单 -->
           </div>
         </div>
       </template>
@@ -149,7 +149,7 @@ import Popup from "./components/popup";
 import { budgetApprovalData } from "./components/data";
 import { saveVersion, refreshVersion,
   saveNewVersion, queryPlanYearSystem, downloadExport,
-  queryPlanPercentage, queryPlanYearCommutity, saveCommutityAmualData
+  queryPlanPercentage, queryPlanYearCommutity, saveCommutityAmualData, exportPlanCommutityList
 } from "@/api/ws2/investmentAdmin/yearlyPlan";
 import NewVersionDialog from "../monthlyPlan/components/newVersionDialog";
 import _ from 'lodash';
@@ -228,6 +228,15 @@ export default {
 
   methods: {
 
+    //  下载手工清单
+    downloadList(){
+      exportPlanCommutityList({
+        versionId: this.vereceive.id
+      }).then(res => {
+
+      })
+    },
+
     manualSave(){
       this.manualSaveLoading = true;
       const { isThen, planYearCommutity } = this;
@@ -256,7 +265,7 @@ export default {
       return total <= 0 ? "0%" : (Math.round(num / total * 10000) / 100.00)+"%";
     },
 
-    //  下载清单
+    //  下载系统清单
     downloadExport(){
       downloadExport({
         versionId: this.vereceive.id

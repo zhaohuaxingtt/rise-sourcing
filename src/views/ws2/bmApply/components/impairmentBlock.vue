@@ -19,7 +19,7 @@
 
         <!-- RS单号 -->
         <template #rsNum="scope">
-          <div class="table-txtStyle">{{scope.row.rsNum}}</div>
+          <div @click="openViewPdf" class="table-txtStyle">{{scope.row.rsNum}}</div>
         </template>
       </iTableList>
 
@@ -101,8 +101,19 @@ export default {
 
   methods: {
 
+    //  预览RSpdf
+    openViewPdf(scope){
+      const url = process.env.VUE_APP_BACOMMODITYAPPLY + '/exportRsFull/' + scope.row.rsNum;
+      window.open(url);
+    },
+
     //  确认申请
     confirmApply(){
+
+      if(!this.selectTableList.length){
+        return iMessage.warn(this.$t('LK_QINGXUANZHE'))
+      }
+      
       this.confirmApplyLoading = true;
       bmConfirm({
         ids: this.selectTableList.map(item => item.id)
@@ -111,7 +122,7 @@ export default {
 
         if(res.data){
           iMessage.success(result);
-          this.getTableData();
+          this.findBmAekoMinusList();
         }else{
           iMessage.error(result);
         }
@@ -137,7 +148,7 @@ export default {
 
         if(res.data){
           iMessage.success(result);
-          this.getTableData();
+          this.findBmAekoMinusList();
           this.selectTableList = [];
         }else{
           iMessage.error(result);
