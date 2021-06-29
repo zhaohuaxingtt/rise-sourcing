@@ -10,7 +10,7 @@
     <div class="changeContent">
       <iFormGroup row="1" icon>
         <iFormItem label="" name="memo">
-          <i-input type="textarea" :rows="10" resize="none" :placeholder="!disabled ? $t('LK_QINGSHURUBEIZHU') : ''" v-model="memo" :disabled="disabled"></i-input>
+          <i-input type="textarea" :rows="10" resize="none" :placeholder="$t('LK_QINGSHURUBEIZHU')" v-model="remark"></i-input>
         </iFormItem>
       </iFormGroup>
     </div>
@@ -22,8 +22,11 @@
 </template>
 <script>
 import { iButton, iDialog, iFormGroup, iFormItem, iInput, iMessage } from '@/components'
+import { modifyRfqToRemark } from "@/api/partsrfq/negotiateBasicInfor/negotiateBasicInfor.js";
+import resultMessageMixin from '@/utils/resultMessageMixin.js';
 
 export default {
+  mixins: [resultMessageMixin],
   components: {
     iButton,
     iDialog,
@@ -34,20 +37,35 @@ export default {
   props: {
     title: { type: String, default: 'LK_BEIZHU' },
     value: { type: Boolean },
-    repeatClick: Boolean,
-    memo: { type: String, default: '' },
-    disabled: { type: Boolean, default: false }
+    remark: { type: String, default: '' }
+  },
+  watch: {
+    remark(data) {
+      this.remark = data
+    }
   },
   data() {
-    return {}
+    return {
+      remark: ''
+    }
   },
   methods: {
     clearDiolog() {
       this.$emit('input', false)
     },
-    submit() {
-      if (this.memo == '' || this.memo == null) return iMessage.warn(this.$t('LK_BEIZHUBUNENGWEIKONG'))
-      this.$emit('submit', this.memo)
+    getRemark() {
+
+    },
+    async submit() {
+      const pms = {
+        remark: this.remark,
+        rfqCode: this.$route.query.id
+      }
+      const res = await modifyRfqToRemark(pms)
+      this.resultMessage(res, () => {
+        this.clearDiolog()
+        this.$emit('getRemark')
+      })
     }
   }
 }

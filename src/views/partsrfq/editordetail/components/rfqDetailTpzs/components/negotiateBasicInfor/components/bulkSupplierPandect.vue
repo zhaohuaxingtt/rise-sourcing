@@ -41,6 +41,7 @@ export default {
   .card-right {
     position: absolute;
     right: 0;
+    z-index: 2;
   }
 }
 </style>

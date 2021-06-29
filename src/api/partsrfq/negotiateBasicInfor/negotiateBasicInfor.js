@@ -2,7 +2,7 @@
  * @version: 1.0
  * @Author: zbin
  * @Date: 2021-06-21 15:15:44
- * @LastEditors: Please set LastEditors
+ * @LastEditors: zbin
  * @Descripttion: your project
  */
 import axios from '@/utils/axios'
@@ -51,6 +51,22 @@ export function getRfqInfo(parmars) {
 export function category(parmars) {
   return requst({
     url: `/common/category`,
+    method: 'POST',
+    data: parmars
+  })
+}
+//备注select
+export function getRfqToRemark(parmars) {
+  return requst({
+    url: `/rfqToRemarkEntity/getRfqToRemark?rfqCode=${parmars}`,
+    method: 'GET',
+    data: parmars
+  })
+}
+//备注save
+export function modifyRfqToRemark(parmars) {
+  return requst({
+    url: `/rfqToRemarkEntity/modifyRfqToRemark`,
     method: 'POST',
     data: parmars
   })

@@ -7,12 +7,12 @@
 -->
 <template>
   <iCard class="supplier-item" :title="$t('TPZS.PLGYSGL')" collapse>
-    <div class="title">{{}}</div>
+    <div class="title">{{remark}}</div>
     <div class="title-btn">
       <iButton>{{$t('TPZS.GYS360')}}</iButton>
       <iButton @click="handleRemark">{{$t('costanalysismanage.BeiZhu')}}</iButton>
     </div>
-    <remarkDialog v-model="remarkDialog" />
+    <remarkDialog @getRemark="getRemark" :remark='remark' v-model="remarkDialog" />
     <div id='powerBi'>
       <!-- <iframe :src='url.embedUrl' scrolling="auto" frameborder="0" width="100%" height="500px"></iframe> -->
     </div>
@@ -24,11 +24,14 @@ import { iCard, iButton, } from "rise";
 import { powerBiUrl } from "@/api/partsrfq/negotiateBasicInfor/negotiateBasicInfor.js";
 import * as pbi from 'powerbi-client';
 import remarkDialog from "./remarkDialog.vue";
+import { getRfqToRemark } from "@/api/partsrfq/negotiateBasicInfor/negotiateBasicInfor.js";
+
 // import pie from "./pie";
 export default {
   components: { iCard, iButton, remarkDialog },
   data() {
     return {
+      remark: '',
       remarkDialog: false,
       url: {
         accessToken: "", //验证token
@@ -51,10 +54,18 @@ export default {
     }
   },
   created() {
+    this.getRemark()
     this.filter = { ...this.filter, filterType: pbi.models.FilterType.BasicFilter },
       this.powerBiUrl()
   },
   methods: {
+    // 获取备注
+    async getRemark() {
+      const res = await getRfqToRemark(this.$route.query.id)
+      if (res.result) {
+        this.remark = res.data.remark
+      }
+    },
     // 激活弹窗
     handleRemark() {
       this.remarkDialog = true
@@ -159,7 +170,7 @@ export default {
   }
   .title {
     position: absolute;
-    top: 2.3rem;
+    top: 1.9rem;
     left: 11rem;
   }
   position: relative;
