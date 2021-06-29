@@ -11,35 +11,35 @@
     <iFormGroup :key="$index" row="4" inline>
       <iFormItem>
         <iLabel :label="'RFQ'" slot="label"></iLabel>
-        <iText>{{  }}</iText>
+        <iText>{{  form.rfqName }}</iText>
       </iFormItem>
       <!-- <iFormItem>
         <iLabel :label="$t('LK_CHEXING')" slot="label"></iLabel>
-        <iText>{{  }}</iText>
+        <iText>{{  form.xxxxx }}</iText>
       </iFormItem> -->
       <iFormItem>
         <iLabel :label="$t('LK_CAILIAOZU')" slot="label"></iLabel>
-        <iText>{{  }}</iText>
+        <iText>{{  form.categoryName }}</iText>
       </iFormItem>
       <iFormItem>
         <iLabel :label="'FS'" slot="label"></iLabel>
-        <iText>{{  }}</iText>
+        <iText>{{  form.xxxxx }}</iText>
       </iFormItem>
       <iFormItem>
         <iLabel :label="'FOP'" slot="label"></iLabel>
-        <iText>{{  }}</iText>
+        <iText>{{  form.fop }}</iText>
       </iFormItem>
       <iFormItem>
         <iLabel :label="$t('TPZS.MQXTY')" slot="label"></iLabel>
-        <iText>{{  }}</iText>
+        <iText>{{  form.mq }}</iText>
       </iFormItem>
       <iFormItem>
         <iLabel :label="$t('TPZS.PLXTY')" slot="label"></iLabel>
-        <iText>{{  }}</iText>
+        <iText>{{  form.pl }}</iText>
       </iFormItem>
       <iFormItem>
         <iLabel :label="$t('TPZS.CFXTY')" slot="label"></iLabel>
-        <iText>{{  }}</iText>
+        <iText>{{  form.cf }}</iText>
       </iFormItem>
       <iFormItem>
         <iLabel icons="iconxinxitishi" :tip="$t('TPZS.LCHTIPS')" :label="$t('TPZS.FOPQK')" slot="label"></iLabel>
@@ -49,23 +49,23 @@
       </iFormItem>
       <iFormItem>
         <iLabel icons="iconxinxitishi" :tip="$t('TPZS.LCHTIPS')" :label="$t('TPZS.MQQK')" slot="label"></iLabel>
-        <iText>{{  }}</iText>
+        <iText>{{  form.xxxxx }}</iText>
       </iFormItem>
       <iFormItem>
         <iLabel icons="iconxinxitishi" :tip="$t('TPZS.LCHTIPS')" :label="$t('TPZS.PLQK')" slot="label"></iLabel>
-        <iText>{{  }}</iText>
+        <iText>{{  form.xxxxx }}</iText>
       </iFormItem>
       <iFormItem>
         <iLabel icons="iconxinxitishi" :tip="$t('TPZS.LCHTIPS')" :label="$t('TPZS.CFQK')" slot="label"></iLabel>
-        <iText>{{  }}</iText>
+        <iText>{{  form.xxxxx }}</iText>
       </iFormItem>
       <!-- <iFormItem>
         <iLabel :label="$t('TPZS.CXLC')" slot="label"></iLabel>
-        <iText>{{  }}</iText>
+        <iText>{{  form.xxxxx }}</iText>
       </iFormItem>
       <iFormItem>
         <iLabel :label="$t('TPZS.SOPRQ')" slot="label"></iLabel>
-        <iText>{{  }}</iText>
+        <iText>{{  form.xxxxx }}</iText>
       </iFormItem> -->
     </iFormGroup>
   </div>
@@ -82,18 +82,18 @@ export default {
   data() {
     // 这里存放数据
     return {
-      form:{
-        rfqName:'',
-        categoryName:'',
-        rfqName:'',//fs
-        fop:'',
-        mq:'',
-        pl:'',
-        cf:'',
-        rfqName:'',//FOP情况
-        mqGradeStatus:'',
-        plStatus:'',
-        rfqName:'',//cf情况
+      form: {
+        rfqName: '',
+        categoryName: '',
+        rfqName: '',//fs
+        fop: '',
+        mq: '',
+        pl: '',
+        cf: '',
+        rfqName: '',//FOP情况
+        mqGradeStatus: '',
+        plStatus: '',
+        rfqName: '',//cf情况
       }
     }
   },
@@ -108,11 +108,11 @@ export default {
       try {
         const res = await getRfqInfo(this.$route.query.id);
         if (res.result) {
-          this.tableListData = res.data;
+          this.form = res.data;
         }
         this.tableLoading = false;
       } catch {
-        this.tableListData = [];
+        this.form = {};
         this.tableLoading = false;
       }
     },
