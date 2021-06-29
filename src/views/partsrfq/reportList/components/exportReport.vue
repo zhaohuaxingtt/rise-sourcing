@@ -18,9 +18,6 @@
 				:tableLoading="tableLoading"
 				index
 				@handleSelectionChange="handleSelectionChange">
-				<template #isDefault="scope">
-					<span>{{scope.row.isDefault?'是':'否'}}</span>
-				</template>
 			</tableList>
 		</div>
 	</iDialog>
@@ -63,7 +60,7 @@
 			},
 			down(){
 				if (this.selectData.length==0) {
-					iMessage.warn($t('TPZS.CANNOTSELECT'))
+					iMessage.error(this.$t('TPZS.CANNOTSELECT'))
 					return
 				}
 				let fileName=[]
