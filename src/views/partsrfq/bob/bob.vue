@@ -75,7 +75,7 @@
 									<iInput v-model="scope.row.name" />
 								</div>
 								<div v-else>
-								{{scope.row.name}}
+								<iButton type="text" @click="pre=true">{{scope.row.name}}</iButton>
 								</div>
 							</el-col>
 							<el-col :span="4" >
@@ -136,6 +136,10 @@
         :current-page='page.currPage'
         :total="page.totalCount"/>
 		</iCard>
+		<preview
+      :value="pre"
+      @close="closePreView"
+    ></preview>
   </div>
 </template>
 
@@ -144,10 +148,11 @@ import{iCard,iInput,iSearch,iButton,iPagination,iSelect,icon, iMessage}from 'ris
 import {getBobAnalysisDataList, fetchStaick, fetchEdit, fetchDel} from '@/api/partsrfq/bob/analysisList'
 import {pageMixins} from '@/utils/pageMixins';
 import iNumIcon from './iNumIcon.vue'
+import preview from './newReport/preview.vue';
 export default {
 	mixins: [pageMixins],
   components:{
-    iCard,iInput,iSearch,iButton,iPagination,iSelect,icon,iMessage,iNumIcon
+    iCard,iInput,iSearch,iButton,iPagination,iSelect,icon,iMessage,iNumIcon,preview
   },
   data(){
     return {
@@ -158,6 +163,7 @@ export default {
 			tableListData:[],
       backUpData: [],
       selection: [],
+			pre:false
     }
   },
 	mounted(){
@@ -169,6 +175,9 @@ export default {
     this.getTableList()
 	},
 	methods:{
+		closePreView(val){
+      this.pre=val
+    },
 		indexMethod(e){
 			const rows=[]
 			this.tableListData.forEach((r)=>{

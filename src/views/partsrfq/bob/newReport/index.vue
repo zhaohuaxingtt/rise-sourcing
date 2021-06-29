@@ -294,7 +294,7 @@ export default {
       })
     },
     changeOut(){
-
+      this.findPart()
     }
   },
   computed:{
