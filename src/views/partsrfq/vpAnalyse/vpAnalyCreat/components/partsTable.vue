@@ -2,11 +2,11 @@
  * @version: 1.0
  * @Author: zbin
  * @Date: 2021-06-21 16:12:47
- * @LastEditors: Please set LastEditors
+ * @LastEditors: zbin
  * @Descripttion: your project
 -->
 <template>
-  <iCard style="height:870px" :title="$t('TPZS.CXJHCLYXSLJCLFX')">
+  <iCard style="min-height:870px" :title="$t('TPZS.CXJHCLYXSLJCLFX')">
     <template slot="header">
       <div> <span class="title">
           {{$t('TPZS.LJLB')}}
@@ -30,7 +30,8 @@
           <iPagination v-update @size-change="handleSizeChange($event)" @current-change="handleCurrentChange($event)" background :page-sizes="page.pageSizes" :page-size="pageData.pageSize" :layout="page.layout" :current-page='pageData.currPage' :total="pageData.totalCount" />
         </el-tab-pane>
         <el-tab-pane name="selected" :label="$t('TPZS.YXLJ')">
-          <tableList ref="tableList" :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="tableLoading" :selection='true' :index="true" @handleSelectionChange="handleSelectionChange1" />
+          <tableList ref="tableList" :tableData="tablePageData" :tableTitle="tableTitle" :tableLoading="tableLoading" :selection='true' :index="true" @handleSelectionChange="handleSelectionChange1" />
+          <iPagination v-update @size-change="handleSizeChange($event)" @current-change="handleCurrentChange($event)" background :page-sizes="page.pageSizes" :page-size="pageData.pageSize" :layout="page.layout" :current-page='pageData.currPage' :total="pageData.totalCount" />
         </el-tab-pane>
       </iTabsList>
     </div>
@@ -71,7 +72,9 @@ export default {
         totalCount: 0
       },
       //分页表格
-      tablePageData: []
+      tablePageData: [],
+      // 中间
+      middleListData: []
     }
   },
 
@@ -92,8 +95,6 @@ export default {
       this.tableLoading = true;
       try {
         const req = {
-          current: this.page.currPage,
-          size: this.page.pageSize,
           partsStatus: this.activityTabIndex,
           carClassify: this.carClassify,
           userId: this.$store.state.permission.userInfo.id
@@ -118,13 +119,14 @@ export default {
       console.log('beginIndex', beginIndex);
       console.log('endIndex', endIndex);
       this.tableListData.forEach((item, index) => {
-        if(index >= beginIndex && index <= endIndex) this.tablePageData.push(item)
+        if (index >= beginIndex && index <= endIndex) this.tablePageData.push(item)
       })
       console.log('tablePageData', this.tablePageData);
     },
     // 每页数量发生改变
     handleSizeChange(val) {
       this.$set(this.pageData, 'pageSize', val)
+      this.$set(this.pageData, 'currPage', 1)
       this.setPageTableData()
     },
     // 当前页发生改变
@@ -134,10 +136,22 @@ export default {
     },
     handleTabClick(target) {
       this.activityTabIndex = target.name
-      // this.getTableList()
+      if (target.name === 'selected') {
+        this.tableListData = this.selectTableData
+        this.pageData = {
+          currPage: 1,
+          pageSize: 10,
+          totalCount: this.tableListData.length
+        }
+        // this.$refs.tableList.$refs.dataTable.toggleAllSelection()
+        this.setPageTableData()
+      } else {
+        this.getTableList()
+      }
     },
-    add(val) {
+    add(val, data) {
       this.activityTabIndex = val
+      this.selectTableData = data
     },
     handleSelectionChange(data) {
       this.selectTableData = data
@@ -165,7 +179,6 @@ export default {
   },
   // 生命周期 - 挂载完成（可以访问DOM元素）
   mounted() {
-    this.$refs.tableList.$refs.dataTable.toggleAllSelection()
   },
 }
 </script>

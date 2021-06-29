@@ -21,7 +21,7 @@
 import { iButton } from "rise";
 import tableList from '@/components/ws3/commonTable';
 import { partsDialogTableTitle } from "./data";
-import { searchCarParts, searchCarPartsAdd } from "@/api/partsrfq/vpAnalysis/vpAnalyseCreate/index.js";
+import { searchCarParts } from "@/api/partsrfq/vpAnalysis/vpAnalyseCreate/index.js";
 import { iMessage } from '../../../../../components';
 import resultMessageMixin from "@/utils/resultMessageMixin.js";
 
@@ -83,11 +83,8 @@ export default {
         iMessage.warn(this.$t('TPZS.QXZYTSJ'))
         return false
       }
-      const res = await searchCarPartsAdd(this.selectTableData)
-      this.resultMessage(res, () => {
-        this.$emit('clearDiolog')
-        this.$listeners.add('selected')
-      })
+      this.$emit('clearDiolog')
+      this.$listeners.add('selected', this.selectTableData)
     },
   },
   // 生命周期 - 创建完成（可以访问当前this实例）
