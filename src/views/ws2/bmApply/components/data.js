@@ -42,7 +42,7 @@ export const allTableHead = [
   {
     props: 'behalfPartsName',
     name: '代表零件',
-    key: 'LK_DAIBIAOLINGJIAN',
+    key: 'LK_DAIBIAOLINGJIANHAO',
     tooltip: false
   },
   {
@@ -80,7 +80,7 @@ export const allTableHead = [
   {
     props: 'linieName',
     name: 'Linie',
-    key: 'LK_LINIE',
+    key: 'LK_RSODDNUMBERS',
     tooltip: false
   },
   {
@@ -160,7 +160,7 @@ export const bmTableHead = [
   {
     props: 'behalfPartsName',
     name: '代表零件',
-    key: 'LK_DAIBIAOLINGJIAN',
+    key: 'LK_DAIBIAOLINGJIANHAO',
     tooltip: false
   },
   {
@@ -445,6 +445,12 @@ export const bmPopupTableHead = [
     props: 'partsFs',
     name: 'FS号',
     key: 'LK_FSHAO',
+    tooltip: false
+  },
+  {
+    props: 'bmAmount',
+    name: '不含税成本',
+    key: 'LK_BUHANSUICHENGBEN',
     tooltip: false
   },
   {
