@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-06-16 20:44:29
- * @LastEditTime: 2021-06-28 19:48:12
+ * @LastEditTime: 2021-06-29 15:38:29
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\analysisTool\components\analysisTable.vue
@@ -35,18 +35,24 @@
         width="250">
         <template slot-scope="scope">
           <div class="openPage">
-            <span v-if="!editMode">
-              <span v-if="scope.row.type == $t('LK_SCHEME_TYPE')" @click="clickScheme(scope.row)">{{scope.row.analysisSchemeName}}</span>
-              <span v-if="scope.row.type == $t('LK_REPORT_TYPE')" @click="clickReport(scope.row)">{{scope.row.reportName}}</span>
-            </span>
-            <span v-else>
-              <iInput style="width: 60%" v-if="scope.row.type == $t('LK_SCHEME_TYPE')" v-model="scope.row.analysisSchemeName"></iInput>
-              <iInput style="width: 60%" v-if="scope.row.type == $t('LK_REPORT_TYPE')" v-model="scope.row.reportName"></iInput>
-            </span>
-            <span v-if="scope.row.type == $t('LK_SCHEME_TYPE')">
-              <span class="number">{{scope.row.reportCount}}</span>
-              <icon class="numberIcon"  style="{font-size:24px}" symbol name="iconwenjianshuliangbeijing"></icon>
-            </span>
+            <el-row :gutter="20">
+              <el-col :span="18">
+                <span v-if="!editMode">
+                  <span v-if="scope.row.type == $t('LK_SCHEME_TYPE')" @click="clickScheme(scope.row)">{{scope.row.analysisSchemeName}}</span>
+                  <span v-if="scope.row.type == $t('LK_REPORT_TYPE')" @click="clickReport(scope.row)">{{scope.row.reportName}}</span>
+                </span>
+                <span v-else>
+                  <iInput v-if="scope.row.type == $t('LK_SCHEME_TYPE')" v-model="scope.row.analysisSchemeName"></iInput>
+                  <iInput v-if="scope.row.type == $t('LK_REPORT_TYPE')" v-model="scope.row.reportName"></iInput>
+                </span>
+              </el-col>
+              <el-col :span="6">
+                <span v-if="scope.row.type == $t('LK_SCHEME_TYPE')">
+                  <span class="number">{{scope.row.reportCount}}</span>
+                  <icon class="numberIcon"  style="{font-size:24px}" symbol name="iconwenjianshuliangbeijing"></icon>
+                </span>
+              </el-col>
+            </el-row>
           </div>
         </template>
       </el-table-column>
@@ -69,9 +75,9 @@
         label="默认项">
         <template slot-scope="scope">
           <div v-if="!editMode">
-            {{scope.row.isDefault != 1 ? scope.row.isDefaul == $t('nominationLanguage.No') ? '否' : null : $t('nominationLanguage.Yes')}}
+            {{scope.row.isDefault === '是' || scope.row.isDefault === '否' ? scope.row.isDefault : null}}
           </div>
-          <div v-else-if="editMode && scope.row.type == $t('LK_SCHEME_TYPE') && scope.row.isDefault != null">
+          <div v-else-if="editMode && scope.row.type == $t('LK_SCHEME_TYPE') && scope.row.isDefault != '空' && scope.row.isDefault" >
             <iSelect v-model="scope.row.isDefault">
               <el-option :value="item.value" :label="item.label" v-for="(item, index) in defaultData" :key="index"></el-option>
             </iSelect>
@@ -92,13 +98,13 @@
         label="创建人">
       </el-table-column>
       <el-table-column
-        prop="updateDate"
+        prop="createDate"
         align="center"
         header-align="center"
         label="创建日期">
       </el-table-column>
       <el-table-column
-        prop="listTimeEditDate"
+        prop="updateDate"
         align="center"
         header-align="center"
         label="上次修改日期">
@@ -153,8 +159,8 @@ export default {
       tableListData: [],
       tableLoading: false,
       defaultData: [
-        {value: 1, label: this.$t('nominationLanguage.Yes')},
-        {value: 0, label: this.$t('nominationLanguage.No')},
+        {value: '是', label: this.$t('nominationLanguage.Yes')},
+        {value: '否', label: this.$t('nominationLanguage.No')},
       ],
       selectionData: [],
       reportVisible: false,
@@ -188,7 +194,7 @@ export default {
       }
       getVpAnalysisDataList(params).then(res => {
         if(res && res.code == 200) {
-          this.page.total = res.totalCount
+          this.page.totalCount = res.total
           this.tableListData = res.data
           this.handleTableNumber(this.tableListData, 1, null)
         }

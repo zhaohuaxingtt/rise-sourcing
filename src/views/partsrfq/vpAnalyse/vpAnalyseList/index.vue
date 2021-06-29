@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-06-16 20:44:29
- * @LastEditTime: 2021-06-28 10:24:26
+ * @LastEditTime: 2021-06-29 13:51:11
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\analysisTool\index.vue
@@ -44,7 +44,9 @@ export default {
     }
   },
   created() {
-
+    console.log('query', this.$router.query);
+    this.rfqNo = this.$route ? this.$route.query.rfqNo ? this.$route.query.rfqNo : this.rfqNo : this.rfqNo
+    console.log('rfqNo', rfqNo);
   },
   methods: {
     //点击编辑/取消按钮，进入/退出编辑模式

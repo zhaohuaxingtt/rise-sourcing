@@ -88,7 +88,7 @@
 					prop="materialGroup">
 				</el-table-column>
 				<el-table-column 	:label="$t('RFQ')"
-					prop="rfqName">
+					prop="rfqNo">
 				</el-table-column>
 				<el-table-column 	:label="$t('默认项')"
 				>
@@ -97,7 +97,6 @@
 							<iSelect v-model="scope.row.isDefault" @change="setDefault">
 								<el-option value="是" label="是" />
 								<el-option value="否" label="否" />
-								<el-option value="空" label="空" />
 							</iSelect>
 						</div>
 						<div v-else>
@@ -109,7 +108,7 @@
 					prop="fileType">
 				</el-table-column>
 				<el-table-column 	:label="$t('创建人')"
-					prop="createBy">
+					prop="createNameZh">
 				</el-table-column>
 				<el-table-column 	:label="$t('LK_CHUANGJIANRIQI')"
 					prop="createDate">
@@ -154,7 +153,7 @@ export default {
     return {
 			form:{
 			},
-			rfqID:'5',
+			rfqID:'333',
 			edit:false,
 			tableListData:[],
       backUpData: [],
