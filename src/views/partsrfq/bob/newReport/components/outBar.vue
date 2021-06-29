@@ -4,9 +4,8 @@
 </template>
 <script >
 import echarts from '@/utils/echarts'
-import crown from '@/assets/images/bob.png'
-import lv from '@/assets/images/lv.png'
-import ball from '@/assets/images/ball.png'
+import bobChange from '@/assets/images/bob-change.png'
+import del from '@/assets/images/bob-del.png'
 export default {
     props:{
         chartData:{
@@ -15,18 +14,6 @@ export default {
               
             ]
         },
-        title:{
-          type:String,
-          default:''
-        },
-        type:{
-          type:String,
-          default:'Best of Best'
-        },
-        by:{
-          type:String,
-          default:'supplier'
-        }
     },
     data(){
         return {
@@ -51,9 +38,8 @@ export default {
             words:window._.words,
             cloneDeep:window._.cloneDeep,
             take:window._.take,
-            crown:crown,
-            lv:lv,
-            ball:ball
+            bobChange:bobChange,
+            del:del,
         }
     },
     methods: {
@@ -75,19 +61,24 @@ export default {
       // 绘制图表
       const option = {
           title:{
-            text:this.title,
-            subtext:'Unit: CNY/pcs',
-            subtextStyle:{
-              color:'#7E84A3',
-              fontSize :12
+            text:'{del|}',
+            left:'right',
+            top:20,
+            triggerEvent:true,
+            textStyle:{
+              rich:{
+                del: {
+                  height: 20,
+                  align: 'right',
+                  backgroundColor: {
+                      image: this.del
+                  }
+              },
+              }
             }
           },
           legend: {
-            top:'10',
-            left:'right',
-            icon:'circle',
-            fontSize: '10',
-            data: this.legendArray
+            show:false
           },
           grid:{
             containLabel:true
@@ -112,7 +103,7 @@ export default {
           yAxis: [
               {
                   type: 'value',
-                  name: '\n\n\n车型项目名称\n\nCBD报价时间',
+                  name: '',
                   axisLabel:{
                     color:'#7E84A3',
 
@@ -124,8 +115,6 @@ export default {
                     show:false,
                   },
                   splitNumber:4,
-                  nameLocation:'start',
-                  offset:40,
               }
           ],
           emphasis: {
@@ -137,8 +126,12 @@ export default {
       myChart.setOption(option);
       const that=this
       myChart.on('click', function (params) {
-        if(params.targetType==='axisLabel'&&params.value===that.type){
-          that.$emit('select',params)
+        console.log(params)
+        if(params.componentType==='title'){
+          that.$emit('del')
+        }
+        if(params.componentType==='xAxis'){
+          that.$emit('change')
         }
       });
     },
@@ -149,18 +142,14 @@ export default {
               this.labelArray=[]
               this.dataArray=[]
               const tempArr = []
-              const dataList1 = [ ]
-              const typeList = []
+              const dataList1 = []
               newVal.forEach((row,i)=>{
                 // console.log(row)
-                const temp=row.vehicleType+'\n\n'+window.moment(row.cbdQuotationTime).format('yyyy.MM')
-                const turn=(row.turn===-1)?'最新轮':row.turn
-                //todo
                 let name=row.supplierId
                 if(this.by==='num'){
                   name=row.spareParts
                 }
-                const str=name+'\n第{Blue|'+row.turn+'}/'+row.totalTurn+'轮\n\n'+temp
+                const str=name+'\t{bobChange|}\n第{Blue|'+row.turn+'}/'+row.totalTurn+'轮\n\n\n\n'
                 this.labelArray.push({
                   value:str,
                   textStyle:{
@@ -170,7 +159,14 @@ export default {
                         fontWeight: 500,
                         color: '#1763F7',
                       },
-                    }
+                      bobChange:{
+                        height: 25,
+                        backgroundColor: {
+                          image: this.bobChange
+                        }
+                      }
+                    },
+                    
                   }
                 })
                 // console.log(this.labelArray)
@@ -192,19 +188,10 @@ export default {
               const minList=[]
               this.legendArray.forEach((row,i)=>{
                 const dataList0=this.cloneDeep(tempArr[row])
-                console.log(this.type)
-                
+
                 const min=this.min(tempArr[row])
                 let data=min
-                if(this.type==='Best of Average'){
-                  data=Number((this.sum(tempArr[row])/tempArr[row].length).toFixed(2))
-                }else if(this.type==='Best of Second'){
-                  data=this.bos(tempArr[row])
-                }
                 minList.push(data)
-                if(i===0){
-                  tempArr[this.type]=[]
-                }
                 // console.log(dataList0)
                 // console.log(dataList1)
                 this.dataArray.push({
@@ -220,22 +207,9 @@ export default {
                       position:'insideTop',
                       color:'white',
                       formatter: (params) =>{
-                        // console.log(params)
-                        if(params.name===this.type){
-                          return data
-                        }else{
-                          return (tempArr[row][params.dataIndex])
-                        }
+                        console.log(tempArr[row])
+                        return (tempArr[row][0])
                       },
-                      rich:{
-                        lv: {
-                                height: 15,
-                                align: 'right',
-                                backgroundColor: {
-                                    image: this.lv
-                                }
-                            },
-                      }
                     },
                     labelLine: {
                         show: false
@@ -243,56 +217,16 @@ export default {
                     itemStyle: {
                       barBorderRadius:[5, 5, 0, 0]
                     },
-                    barWidth:'30%',
+                    barWidth:'20%',
                     data:[...dataList1[row],this.sum(minList)],
                   })
-                this.dataArray.push({
-                    name:row+'lv',
-                    type: 'bar',
-                    stack:'lv',
-                    emphasis: {
-                      focus: 'series'
-                    },
-                    label:{
-                      show: true,
-                      position:'right',
-                      formatter:(params)=>{
-                        if(data===params.value&&params.name!==this.type&&this.type!=='Best of Average'){
-                          return '\t\t{lv|}'
-                        } else{
-                          return ''
-                        }
-                        
-                      },
-                      color:'white',
-                      rich:{
-                        lv: {
-                                height: 10,
-                                align: 'right',
-                                backgroundColor: {
-                                    image: this.lv
-                                }
-                            },
-                      }
-                    },
-                    labelLine: {
-                        show: false
-                    },
-                    itemStyle: {
-                      barBorderRadius:[5, 5, 0, 0],
-                      color:'#fff',
-                    },
-                    barWidth:30,
-                    data:[...dataList0,minList[minList.length-1]]
-                  })
+                
               })
-              console.log(this.dataArray)
-          
-                this.labelArray.push(this.type)
-                this.dataArray.push({
+              this.dataArray.push({
                     name:'sum',
                     type: 'bar',
-                    stack:'lv',
+                    barGap:'-100%',
+                    z:1,
                     label:{
                       show: true,
                       position: 'top',
@@ -301,64 +235,23 @@ export default {
                       align: 'center',
                       formatter: (params) =>{
                         // console.log(params)
-                        const min=this.min(dataList1['利润'])
-                        // const sum=this.sum(tempArr[params.name])
-                        const index=params.dataIndex
-                        if(params.name===this.type){
-                          const sum=this.sum(minList)
-                          console.log(sum)
+                        
+                          const sum=dataList1['利润'][0]
                           return sum
-                          // return '{bold|'+sum+'}'
-                        }
-                        else if(min){
-                          const sum=dataList1['利润'][index]
-                          if(min===sum){
-                            return '{Ball|} {BB|Best Ball}\n'+sum
-                          }else{
-                            return sum
-                          }
-                        } else {
-                          const sum=dataList1['利润'][index]
-                          return sum
-                        }
                       },
-                      rich:{
-                        BB:{
-                          fontSize: 16,
-                          fontWeight: 400,
-                          color: '#7E84A3',
-                        },
-                        bold:{
-                          fontSize: 18,
-                          fontWeight: 'bold',
-                          color: '#000',
-                        },
-                        Crown:{
-                                height: 15,
-                                align: 'center',
-                                backgroundColor: {
-                                    image: this.crown
-                                }
-                            },
-                        Ball:{
-                                height: 15,
-                                align: 'center',
-                                backgroundColor: {
-                                    image: this.ball
-                                }
-                            },
-                      }
                     },
                     labelLine: {
                         show: false
                     },
                     itemStyle: {
-                      barBorderRadius:[5, 5, 0, 0]
+                      barBorderRadius:[5, 5, 0, 0],
+                      color:'#fff'
                     },
-                    barWidth:'30%',
-                    data:this.labelArray.map((i)=>0)
+                    barWidth:'20%',
+                    data:[dataList1['利润'][0]]
                 })
                 console.log(this.dataArray)
+          
                 if(this.$refs.chart&&this.chartArray.length>0){
                     this.initCharts();
                 }
