@@ -121,7 +121,7 @@
             v-if="pageEdit"
             @input="handleInputChange(scope.row, 'planAmountM1')"
           ></iInput>
-          <div v-if="!pageEdit">{{ scope.row.planAmountM1 }}</div>
+          <div v-else>{{ scope.row.planAmountM1 }}</div>
         </template>
         <template #planAmountM2="scope">
           <iInput
@@ -130,7 +130,7 @@
             v-if="pageEdit"
             @input="handleInputChange(scope.row, 'planAmountM2')"
           ></iInput>
-          <div v-if="!pageEdit">{{ scope.row.planAmountM2 }}</div>
+          <div v-else>{{ scope.row.planAmountM2 }}</div>
         </template>
         <template #planAmountM3="scope">
           <iInput
@@ -139,7 +139,7 @@
             v-if="pageEdit"
             @input="handleInputChange(scope.row, 'planAmountM3')"
           ></iInput>
-          <div v-if="!pageEdit">{{ scope.row.planAmountM3 }}</div>
+          <div v-else>{{ scope.row.planAmountM3 }}</div>
         </template>
         <template #planAmountM4="scope">
           <iInput
@@ -148,7 +148,7 @@
             v-if="pageEdit"
             @input="handleInputChange(scope.row, 'planAmountM4')"
           ></iInput>
-          <div v-if="!pageEdit">{{ scope.row.planAmountM4 }}</div>
+          <div v-else>{{ scope.row.planAmountM4 }}</div>
         </template>
         <template #planAmountM5="scope">
           <iInput
@@ -157,7 +157,7 @@
             v-if="pageEdit"
             @input="handleInputChange(scope.row, 'planAmountM5')"
           ></iInput>
-          <div v-if="!pageEdit">{{ scope.row.planAmountM5 }}</div>
+          <div v-else>{{ scope.row.planAmountM5 }}</div>
         </template>
         <template #planAmountM6="scope">
           <iInput
@@ -166,7 +166,7 @@
             v-if="pageEdit"
             @input="handleInputChange(scope.row, 'planAmountM6')"
           ></iInput>
-          <div v-if="!pageEdit">{{ scope.row.planAmountM6 }}</div>
+          <div v-else>{{ scope.row.planAmountM6 }}</div>
         </template>
         <template #planAmountM7="scope">
           <iInput
@@ -175,7 +175,7 @@
             v-if="pageEdit"
             @input="handleInputChange(scope.row, 'planAmountM7')"
           ></iInput>
-          <div v-if="!pageEdit">{{ scope.row.planAmountM7 }}</div>
+          <div v-else>{{ scope.row.planAmountM7 }}</div>
         </template>
         <template #planAmountM8="scope">
           <iInput
@@ -184,7 +184,7 @@
             v-if="pageEdit"
             @input="handleInputChange(scope.row, 'planAmountM8')"
           ></iInput>
-          <div v-if="!pageEdit">{{ scope.row.planAmountM8 }}</div>
+          <div v-else>{{ scope.row.planAmountM8 }}</div>
         </template>
         <template #planAmountM9="scope">
           <iInput
@@ -193,7 +193,7 @@
             v-if="pageEdit"
             @input="handleInputChange(scope.row, 'planAmountM9')"
           ></iInput>
-          <div v-if="!pageEdit">{{ scope.row.planAmountM9 }}</div>
+          <div v-else>{{ scope.row.planAmountM9 }}</div>
         </template>
         <template #planAmountM10="scope">
           <iInput
@@ -202,7 +202,7 @@
             v-if="pageEdit"
             @input="handleInputChange(scope.row, 'planAmountM10')"
           ></iInput>
-          <div v-if="!pageEdit">{{ scope.row.planAmountM10 }}</div>
+          <div v-else>{{ scope.row.planAmountM10 }}</div>
         </template>
         <template #planAmountM11="scope">
           <iInput
@@ -211,7 +211,7 @@
             v-if="pageEdit"
             @input="handleInputChange(scope.row, 'planAmountM11')"
           ></iInput>
-          <div v-if="!pageEdit">{{ scope.row.planAmountM11 }}</div>
+          <div v-else>{{ scope.row.planAmountM11 }}</div>
         </template>
         <template #planAmountM12="scope">
           <iInput
@@ -220,7 +220,7 @@
             v-if="pageEdit"
             @input="handleInputChange(scope.row, 'planAmountM12')"
           ></iInput>
-          <div v-if="!pageEdit">{{ scope.row.planAmountM12 }}</div>
+          <div v-else>{{ scope.row.planAmountM12 }}</div>
         </template>
       </iTableList>
     </iCard>
@@ -499,7 +499,7 @@ export default {
             "#DDEDFC",
             "#E8F6FF",
           ];
-          _this.selectIndex = this.data - params.componentIndex;
+          _this.selectIndex = _this.tableListData.length - params.componentIndex + 1;
           colorTempList.splice(params.componentIndex, 0, "#0053EF");
           optionTemp.series.map((item, index) => {
             item.color = colorTempList[index % colorTempList.length];
@@ -556,7 +556,6 @@ export default {
         this.saveNewVersion = false;
       });
     },
-    uploadAttachments(data) {},
     cellMouseLeave() {
       this.selectIndex = -1;
       this.fromTable = false;
