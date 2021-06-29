@@ -269,7 +269,7 @@
         'LK_FS_GSHAO': 'FS/GS No.',//FS/GS号
         'LK_FSHAO': 'FS No.',//FS号
         'LK_INBOUNDWULIUFANGSHI': 'INBOUND Logistics Mode',//INBOUND物流方式
-        'LK_LINIE': 'LINIE',//LINIE
+        'LK_LINIE': 'Linie',//Linie
         'LK_LINIEBEIZHU': 'Linie Remark',//Linie备注
         'LK_LINIEBUMEN': 'Linie Department',//LINIE部门
         'LK_LINIESHANGHUIBEIZHU': 'Linie meeting remark',//Linie上会备注
@@ -984,6 +984,13 @@
         'LK_BMAPPLYBAOCUNMSG': '你有必填字段未填',  //  你有必填字段未填
         'LK_FUKUANJIHUADINGZHIYUCHAKAN':  '付款计划制定与查看',   //  付款计划制定与查看
         'LK_YUAN': '元',    //  元
+
+        'SPR_FRM_DEP_FINANA': '财报分析', //财报分析
+        'SPR_FRM_DEP_CXWHDX': '维护呈现对象', //维护呈现对象
+        'SPR_FRM_DEP_JRHYJZ': '加入行业均值', //加入行业均值
+        'SPR_FRM_DEP_WHHYJZ': '维护行业均值', //维护行业均值
+        'SPR_FRM_DEP_OBJPLACE': '请选择呈现对象', // 请选择呈现对象
+        'SPR_FRM_DEP_AVGPLACE': '请选择行业均值', // 请选择行业均值
 
         // 定点管理
         'nominationLanguage': {
