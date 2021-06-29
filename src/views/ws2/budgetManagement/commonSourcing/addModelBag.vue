@@ -475,7 +475,7 @@ export default {
                   axisLabel: {
                     textStyle: {
                       color: '#485465',
-                      fontSize: 10
+                      fontSize: 8
                     },
                   },
                 },
