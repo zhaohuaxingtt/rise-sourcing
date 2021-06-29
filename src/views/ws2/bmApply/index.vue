@@ -85,7 +85,7 @@
               <div class="txt">
                 <span>{{ $t('LK_BMDANLIUSHUIHAO') }}</span><!-- BM单流水号 -->
               </div>
-              <div class="disabled">{{detailObj.bmNum}}</div>
+              <div class="disabled">{{detailObj.bmSerial}}</div>
             </div>
             <div class="item">
               <div class="txt">
@@ -124,13 +124,13 @@
               <div class="txt required">
                 <span>{{ $t('LK_CHENGBENKONGZHIYU') }}</span><!-- 成本控制域 -->
               </div>
-              <iInput v-model="detailObj.costControlDomain" class="input" :placeholder="$t('LK_QINGSHURU')"></iInput>
+              <iInput type="number" v-model="detailObj.costControlDomain" class="input" :placeholder="$t('LK_QINGSHURU')"></iInput>
             </div>
             <div class="item">
               <div class="txt required">
                 <span>{{ $t('LK_ZONGZHANGKEMU') }}</span><!-- 总账科目 -->
               </div>
-              <iInput v-model="detailObj.generalLedger" class="input" :placeholder="$t('LK_QINGSHURU')"></iInput>
+              <iInput type="number" v-model="detailObj.generalLedger" class="input" :placeholder="$t('LK_QINGSHURU')"></iInput>
             </div>
           </div>
 
@@ -364,6 +364,7 @@ export default {
     //  保存
     save(){
       const { wbsCode, costControlDomain, generalLedger, procureGroup	 } = this.detailObj;
+      // console.log('wbsCode, costControlDomain, generalLedger, procureGroup', !wbsCode, costControlDomain, generalLedger, procureGroup)
       if(!wbsCode && !costControlDomain && !generalLedger && !procureGroup){
         return iMessage.warn(this.$t('LK_BMAPPLYBAOCUNMSG'));
       }
@@ -401,11 +402,15 @@ export default {
         const result2 = this.$i18n.locale === 'zh' ? res[2].desZh : res[2].desEn;
         const result3 = this.$i18n.locale === 'zh' ? res[3].desZh : res[3].desEn;
         const result4 = this.$i18n.locale === 'zh' ? res[4].desZh : res[4].desEn;
-        console.log('11111111111', res);
 
         if(res[0].data){
+          const date = new Date();
           this.detailObj = res[0].data;
           this.bmNumber = scope.bmSerial;
+
+          this.detailObj.deliveryDate === null ? 
+            this.detailObj.deliveryDate = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}` : 
+            this.detailObj.deliveryDate
         }else{
           iMessage.error(result0);
         }
@@ -417,7 +422,10 @@ export default {
         }
 
         if(res[2].data){
-          this.factoryList = res[2].data;
+          this.factoryList = res[2].data.map(item => ({
+            productionFactoryId: item.productionFactoryId,
+            productionFactoryName: `${item.productionFactoryId}-${item.productionFactoryName}`
+          }));
         }else{
           iMessage.error(result2);
         }
@@ -429,9 +437,12 @@ export default {
         }
 
         if(res[4].data){
+          
           this.fromGroup = res[4].data;
-          this.fromGroupName = res[4].data.filter(item => item.tmCartypeProId == res[0].data.tmCartypeProId)[0].tmCartypeProName;
-          console.log('this.fromGroupName', this.fromGroupName,res[4].data)
+          const arr = res[4].data.filter(item => item.tmCartypeProId == res[0].data.tmCartypeProId);
+          if(arr.lenght){
+            this.fromGroupName = arr[0].tmCartypeProName;
+          }
         }else{
           iMessage.error(result4);
         }
