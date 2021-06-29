@@ -2,7 +2,7 @@
  * @version: 1.0
  * @Author: zbin
  * @Date: 2021-06-21 16:12:47
- * @LastEditors: zbin
+ * @LastEditors: Please set LastEditors
  * @Descripttion: your project
 -->
 <template>
@@ -26,8 +26,8 @@
       <iTabsList v-model="activityTabIndex" @tab-click="handleTabClick" type="card" slot="components" class='margin-top20'>
         <!-------------------------已选零件-  ----------------------------------------->
         <el-tab-pane name="unSelect" :label="$t('TPZS.QLLJ')">
-          <tableList :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="tableLoading" :selection='true' :index="true" @handleSelectionChange="handleSelectionChange" />
-          <iPagination v-update @size-change="handleSizeChange($event, getTableList)" @current-change="handleCurrentChange($event, getTableList)" background :page-sizes="page.pageSizes" :page-size="page.pageSize" :layout="page.layout" :current-page='page.currPage' :total="page.totalCount" />
+          <tableList :tableData="tablePageData" :tableTitle="tableTitle" :tableLoading="tableLoading" :selection='true' :index="true" @handleSelectionChange="handleSelectionChange" />
+          <iPagination v-update @size-change="handleSizeChange($event)" @current-change="handleCurrentChange($event)" background :page-sizes="page.pageSizes" :page-size="pageData.pageSize" :layout="page.layout" :current-page='pageData.currPage' :total="pageData.totalCount" />
         </el-tab-pane>
         <el-tab-pane name="selected" :label="$t('TPZS.YXLJ')">
           <tableList ref="tableList" :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="tableLoading" :selection='true' :index="true" @handleSelectionChange="handleSelectionChange1" />
@@ -64,8 +64,17 @@ export default {
       selectTableData1: [],
       activityTabIndex: 'unSelect',
       carClassify: '',
+      //分页数据
+      pageData: {
+        currPage: 1,
+        pageSize: 10,
+        totalCount: 0
+      },
+      //分页表格
+      tablePageData: []
     }
   },
+
   // 监听属性 类似于data概念
   computed: {},
   // 监控data中的数据变化
@@ -92,15 +101,36 @@ export default {
         const res = await getPartsList(req);
         if (res.result) {
           this.tableListData = res.data;
-          this.page.currPage = res.pageNum;
-          this.page.pageSize = res.pageSize;
-          this.page.totalCount = res.total;
+          this.pageData.totalCount = res.data.length
+          this.setPageTableData()
         }
         this.tableLoading = false;
       } catch {
         this.tableListData = [];
         this.tableLoading = false;
       }
+    },
+    // 根据分页数据获取指定范围的数据
+    setPageTableData() {
+      this.tablePageData = []
+      const beginIndex = (this.pageData.currPage - 1) * this.pageData.pageSize
+      const endIndex = (this.pageData.currPage * this.pageData.pageSize) - 1
+      console.log('beginIndex', beginIndex);
+      console.log('endIndex', endIndex);
+      this.tableListData.forEach((item, index) => {
+        if(index >= beginIndex && index <= endIndex) this.tablePageData.push(item)
+      })
+      console.log('tablePageData', this.tablePageData);
+    },
+    // 每页数量发生改变
+    handleSizeChange(val) {
+      this.$set(this.pageData, 'pageSize', val)
+      this.setPageTableData()
+    },
+    // 当前页发生改变
+    handleCurrentChange(val) {
+      this.$set(this.pageData, 'currPage', val)
+      this.setPageTableData()
     },
     handleTabClick(target) {
       this.activityTabIndex = target.name
