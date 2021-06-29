@@ -30,7 +30,7 @@
           <iPagination v-update @size-change="handleSizeChange($event, getTableList)" @current-change="handleCurrentChange($event, getTableList)" background :page-sizes="page.pageSizes" :page-size="page.pageSize" :layout="page.layout" :current-page='page.currPage' :total="page.totalCount" />
         </el-tab-pane>
         <el-tab-pane name="selected" :label="$t('TPZS.YXLJ')">
-          <tableList :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="tableLoading" :selection='true' :index="true" @handleSelectionChange="handleSelectionChange1" />
+          <tableList ref="tableList" :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="tableLoading" :selection='true' :index="true" @handleSelectionChange="handleSelectionChange1" />
         </el-tab-pane>
       </iTabsList>
     </div>
@@ -104,7 +104,7 @@ export default {
     },
     handleTabClick(target) {
       this.activityTabIndex = target.name
-      this.getTableList()
+      // this.getTableList()
     },
     add(val) {
       this.activityTabIndex = val
@@ -135,6 +135,7 @@ export default {
   },
   // 生命周期 - 挂载完成（可以访问DOM元素）
   mounted() {
+    this.$refs.tableList.$refs.dataTable.toggleAllSelection()
   },
 }
 </script>

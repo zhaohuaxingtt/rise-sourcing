@@ -82,7 +82,19 @@ export default {
   data() {
     // 这里存放数据
     return {
-
+      form:{
+        rfqName:'',
+        categoryName:'',
+        rfqName:'',//fs
+        fop:'',
+        mq:'',
+        pl:'',
+        cf:'',
+        rfqName:'',//FOP情况
+        mqGradeStatus:'',
+        plStatus:'',
+        rfqName:'',//cf情况
+      }
     }
   },
   // 监听属性 类似于data概念

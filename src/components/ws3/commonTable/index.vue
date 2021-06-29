@@ -1,13 +1,14 @@
 <!--
  * @Author: yourname
  * @Date: 2021-04-13 17:30:36
- * @LastEditTime: 2021-06-25 17:57:07
+ * @LastEditTime: 2021-06-29 10:22:21
  * @LastEditors: zbin
  * @Description: 通用表格
 -->
 <template>
   <el-form :model="{tableData}" status-icon :rules="rules" ref="commonTableForm">
     <el-table :height="height"
+              ref="dataTable"
               :span-method="handleMerge"
               tooltip-effect='light'
               :data='tableData'

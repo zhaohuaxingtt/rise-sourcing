@@ -10,8 +10,9 @@
     <div class="title">{{}}</div>
     <div class="title-btn">
       <iButton>{{$t('TPZS.GYS360')}}</iButton>
-      <iButton>{{$t('costanalysismanage.BeiZhu')}}</iButton>
+      <iButton @click="handleRemark">{{$t('costanalysismanage.BeiZhu')}}</iButton>
     </div>
+    <remarkDialog v-model="remarkDialog" />
     <div id='powerBi'>
       <!-- <iframe :src='url.embedUrl' scrolling="auto" frameborder="0" width="100%" height="500px"></iframe> -->
     </div>
@@ -22,11 +23,13 @@
 import { iCard, iButton, } from "rise";
 import { powerBiUrl } from "@/api/partsrfq/negotiateBasicInfor/negotiateBasicInfor.js";
 import * as pbi from 'powerbi-client';
+import remarkDialog from "./remarkDialog.vue";
 // import pie from "./pie";
 export default {
-  components: { iCard, iButton, },
+  components: { iCard, iButton, remarkDialog },
   data() {
     return {
+      remarkDialog: false,
       url: {
         accessToken: "", //验证token
         embedUrl: "", //报告信息内嵌地址
@@ -52,6 +55,10 @@ export default {
       this.powerBiUrl()
   },
   methods: {
+    // 激活弹窗
+    handleRemark() {
+      this.remarkDialog = true
+    },
     // 获取财报iframeurl
     powerBiUrl() {
       powerBiUrl().then(res => {

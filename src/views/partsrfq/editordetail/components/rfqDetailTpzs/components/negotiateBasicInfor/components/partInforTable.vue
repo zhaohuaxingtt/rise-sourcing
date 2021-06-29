@@ -44,6 +44,10 @@ export default {
         };
         const res = await pageRfqPartPurPro(req);
         if (res.result) {
+          res.data.map((item) => {
+            item.cycleOutput = String(item.cycleOutput).replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+            return item.maxOutput = String(item.maxOutput).replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+          })
           this.tableListData = res.data;
         }
         this.tableLoading = false;
