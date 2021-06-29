@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-23 15:16:47
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-23 16:30:59
+ * @LastEditTime: 2021-06-25 17:21:08
  * @Description: 基础信息
  * @FilePath: \front-web\src\views\financialTargetPrice\targetPriceDetail\components\basic.vue
 -->
@@ -31,18 +31,60 @@
 <script>
 import { iCard, iFormGroup, iFormItem, iText, iInput, iSelect, iButton } from 'rise'
 import { detailList } from '../data'
+import { getTargetPriceDetail } from "@/api/financialTargetPrice/index"
 export default {
   props: {
     isEdit: {
       type: Boolean,
       default: false
-    }
+    },
+    id: {type:String}
   },
   components: {iCard, iFormGroup, iFormItem, iText, iInput, iSelect, iButton},
   data() {
     return {
       detailList: detailList,
       detailData: {}
+    }
+  },
+  created() {
+    this.getDetail()
+  },
+  methods: {
+    getDetail() {
+      if (!this.$route.query.applyId) {
+        return
+      }
+      getTargetPriceDetail(this.$route.query.applyId).then(res => {
+        
+      })
+    },
+    /**
+     * @Description: 保存基础信息编辑
+     * @Author: Luoshuang
+     * @param {*}
+     * @return {*}
+     */    
+    handleBasicSave() {
+      this.changeBasicIsEdit(false)
+    },
+    /**
+     * @Description: 取消基础信息编辑
+     * @Author: Luoshuang
+     * @param {*}
+     * @return {*}
+     */    
+    handleBasicCancel() {
+      this.changeBasicIsEdit(false)
+    },
+    /**
+     * @Description: 切换基础信息部分编辑状态
+     * @Author: Luoshuang
+     * @param {*} isEdit
+     * @return {*}
+     */    
+    changeBasicIsEdit(isEdit) {
+      this.basicIsEdit = isEdit
     }
   }
 }

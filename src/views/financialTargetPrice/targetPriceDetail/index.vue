@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-22 17:47:09
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-24 17:44:16
+ * @LastEditTime: 2021-06-29 09:48:56
  * @Description: 目标价详情
  * @FilePath: \front-web\src\views\financialTargetPrice\targetPriceDetail\index.vue
 -->
@@ -13,7 +13,7 @@
     <!------------------------------------------------------------------------>
     <!--                 基础信息                                          --->
     <!------------------------------------------------------------------------>
-    <basic @changeIsEdit="changeBasicIsEdit" :isEdit="basicIsEdit" @handleCancel="handleBasicCancel" @handleSave="handleBasicSave"></basic>
+    <basic />
     <!------------------------------------------------------------------------>
     <!--                 修改历史                                          --->
     <!------------------------------------------------------------------------>
@@ -26,57 +26,18 @@
 </template>
 
 <script>
-import { iPage, iCard } from 'rise'
+import { iPage } from 'rise'
 import history from './components/history'
 import basic from './components/basic'
 import designateInfo from './components/designateInfo'
-import { getTargetPriceDetail } from "@/api/financialTargetPrice/index"
 export default {
-  components: {iPage,iCard,history,basic,designateInfo},
+  components: {iPage,history,basic,designateInfo},
   data() {
     return {
-      basicIsEdit: false,
     }
   },
-  created() {
-    if (this.$route.query.id) {
-      this.getDetail()
-    }
+  computed: {
   },
-  methods: {
-    getDetail() {
-      getTargetPriceDetail(this.$route.query.id).then(res => {
-        
-      })
-    },
-    /**
-     * @Description: 保存基础信息编辑
-     * @Author: Luoshuang
-     * @param {*}
-     * @return {*}
-     */    
-    handleBasicSave() {
-      this.changeBasicIsEdit(false)
-    },
-    /**
-     * @Description: 取消基础信息编辑
-     * @Author: Luoshuang
-     * @param {*}
-     * @return {*}
-     */    
-    handleBasicCancel() {
-      this.changeBasicIsEdit(false)
-    },
-    /**
-     * @Description: 切换基础信息部分编辑状态
-     * @Author: Luoshuang
-     * @param {*} isEdit
-     * @return {*}
-     */    
-    changeBasicIsEdit(isEdit) {
-      this.basicIsEdit = isEdit
-    }
-  }
 }
 </script>
 

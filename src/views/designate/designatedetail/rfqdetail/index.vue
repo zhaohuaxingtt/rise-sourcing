@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-21 09:23:11
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-06-28 18:41:12
+ * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-06-29 09:55:56
  * @Description: RFQ & 零件清单界面
  * @FilePath: \front-web\src\views\designate\designatedetail\rfqdetail\index.vue
 -->
@@ -62,7 +62,7 @@
 </template>
 
 <script>
-import { iPage, iCard, iPagination, iMessage, iButton, iInput, icon } from "rise"
+import { iPage, iCard, iMessage, iButton, iInput, icon } from "rise"
 import tableList from '../components/tableList'
 import { rfqListTitle, partsListTitle } from './data'
 import { pageMixins } from "@/utils/pageMixins";
@@ -70,7 +70,7 @@ import { getRfqList, getPartList, updatePart, deleteRfq } from '@/api/designate/
 import { cloneDeep } from 'lodash'
 export default {
   mixins: [pageMixins],
-  components:{ iPage, iCard, tableList, iPagination, iButton, iInput, icon },
+  components:{ iPage, iCard, tableList, iButton, iInput, icon },
   data() {
     return {
       rfqTableTitle: rfqListTitle,
