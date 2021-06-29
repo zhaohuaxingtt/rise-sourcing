@@ -40,7 +40,7 @@ export const allTableHead = [
     tooltip: false
   },
   {
-    props: 'behalfPartsName',
+    props: 'behalfPartsNum',
     name: '代表零件号',
     key: 'LK_DAIBIAOLINGJIANHAO',
     width: 150,
@@ -81,7 +81,7 @@ export const allTableHead = [
   {
     props: 'linieName',
     name: 'Linie',
-    key: 'LK_RSODDNUMBERS',
+    key: 'LK_XINDELINIE',
     tooltip: false
   },
   {
@@ -159,7 +159,7 @@ export const bmTableHead = [
     tooltip: false
   },
   {
-    props: 'behalfPartsName',
+    props: 'behalfPartsNum',
     name: '代表零件号',
     key: 'LK_DAIBIAOLINGJIANHAO',
     width: 150,
@@ -260,7 +260,7 @@ export const aekoTableHead = [
     tooltip: false
   },
   {
-    props: 'behalfPartsName',
+    props: 'behalfPartsNum',
     name: '代表零件号',
     key: 'LK_DAIBIAOLINGJIANHAO',
     width: 150,
@@ -366,7 +366,7 @@ export const aekoBmTableHead = [
     tooltip: false
   },
   {
-    props: 'behalfPartsName',
+    props: 'behalfPartsNum',
     name: '代表零件号',
     key: 'LK_DAIBIAOLINGJIANHAO',
     width: 150,
