@@ -287,11 +287,20 @@ export default {
 		},
     //保存编辑
 		saveEdit(){
+      let count = 0
+      this.tableListData.forEach(item => {
+        if(item.isDefault == '是') count++
+      })
+      if(count > 1) {
+        iMessage.error(this.$t('只能存在一个默认方案'))
+        return
+      }
       this.edit = false
       const params = this.tableListData
+    
       fetchEdit(params).then(res => {
         if(res) {
-          if(res. code == 200) iMessage.success(res.desZh)
+          if(res.code == 200) iMessage.success(res.desZh)
           else iMessage.error(res.desZh)
           this.getTableList()
         }

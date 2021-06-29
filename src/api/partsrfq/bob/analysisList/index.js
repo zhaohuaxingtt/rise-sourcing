@@ -1,7 +1,7 @@
 /*
  * @Author: youyuan
  * @Date: 2021-06-28 10:46:03
- * @LastEditTime: 2021-06-28 17:07:14
+ * @LastEditTime: 2021-06-29 19:07:47
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\api\partsrfq\bob\analysisList\index.js
@@ -28,7 +28,7 @@ export function fetchStaick(params) {
 
 export function fetchEdit(params) {
   return request({
-    url: '/bobAnalysisScheme',
+    url: '/bobAnalysisScheme/bobAnalysisSchemeEdit',
     method: 'POST',
     data: params
   })
