@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-17 11:40:10
- * @LastEditTime: 2021-06-28 16:27:56
+ * @LastEditTime: 2021-06-29 11:50:56
  * @LastEditors: Please set LastEditors
  * @Description: 查找零件弹窗
  * @FilePath: \front-web\src\views\partsrfq\components\findingPart.vue
@@ -9,38 +9,27 @@
 
 <template>
   <iDialog
-    :title="$t('LK_CHAZHAOLINGJIAN')"
+    :title="$t('TPZS.CZLJ')"
     :visible.sync="value"
     width="90%"
     @close="clearDiolog"
   >
     <div class="search">
-      <iSearch
-        :icon=true
-        @sure="sure"
-        @reset="reset"
-      >
+      <iSearch :icon="true" @sure="sure" @reset="reset">
         <el-form>
           <el-form-item :label="$t('LK_CAILIAOZU')">
-            <iSelect v-model="form.categoryCode"></iSelect>
+            <iSelect v-model="form.categoryCode">
+              <!-- <el-option value='' label='全部' v-for=""></el-option> -->
+            </iSelect>
           </el-form-item>
           <el-form-item :label="$t('LK_RFQHAO')">
-            <iInput
-              placeholder="请输入"
-              v-model="form.rfqId"
-            ></iInput>
+            <iInput placeholder="请输入" v-model="form.rfqId"></iInput>
           </el-form-item>
           <el-form-item :label="$t('LK_FSHAO')">
-            <iInput
-              placeholder="请输入"
-              v-model="form.fsNum"
-            ></iInput>
+            <iInput placeholder="请输入" v-model="form.fsNum"></iInput>
           </el-form-item>
           <el-form-item :label="$t('partsprocure.PARTSPROCUREPARTNUMBER')">
-            <iInput
-              placeholder="请输入"
-              v-model="form.partNum"
-            ></iInput>
+            <iInput placeholder="请输入" v-model="form.partNum"></iInput>
           </el-form-item>
         </el-form>
       </iSearch>
@@ -48,37 +37,34 @@
     <div class="searchContent">
       <div class="title">
         <span>搜索结果</span>
-        <iButton>{{$t('LK_TIANJIA')}}</iButton>
+        <iButton>{{ $t("LK_TIANJIA") }}</iButton>
       </div>
-      <iTableList
+      <tableList
         :tableData="confirmTableData"
         :tableTitle="confirmTableHead"
         class="table-footerStyle"
       >
-      </iTableList>
+      </tableList>
     </div>
   </iDialog>
 </template>
 <script>
-import {
-  iButton,
-  iDialog,
-  iSearch,
-  iSelect,
-  iInput,
-  iTableList,
-} from "@/components";
+import { iButton, iDialog, iSearch, iSelect, iInput } from "@/components";
 import { confirmTableHead } from "./data";
-import {pagePart} from "@/api/partsrfq/negotiateBasicInfor/negotiateBasicInfor.js"
+import {
+  pagePart,
+  category,
+} from "@/api/partsrfq/negotiateBasicInfor/negotiateBasicInfor.js";
+import tableList from "@/views/partsrfq/reportList/components/tableList";
 export default {
-  name:"findingParts",
+  name: "findingParts",
   components: {
     iButton,
     iDialog,
     iSearch,
     iSelect,
     iInput,
-    iTableList,
+    tableList,
   },
 
   props: {
@@ -94,46 +80,56 @@ export default {
   },
   data() {
     return {
-      confirmTableData: [
-        {
-          id: 1,
-          rfqName: "aaa",
-        },
-        {
-          id: 2,
-        },
-      ],
+      confirmTableData: [],
       confirmTableHead,
       form: {
         categoryCode: "",
         rfqId: "",
         fsNum: "",
-        partNum:"",
-
+        partNum: "",
       },
     };
   },
   created() {
-    this.pagePart()
+    this.pagePart();
+    // this.category();
   },
   methods: {
-    pagePart(){
-     pagePart(this.form).then((res)=>{
-       console.log(res)
-     }).catch((e) => {
-       
-     })
+    async pagePart() {
+      let res= await category();
+      pagePart(this.form)
+        .then((res) => {
+          if (res.code === "200") {
+            this.confirmTableData = res.data;
+            this.confirmTableData.forEach((value, index) => {
+              value.index = index + 1;
+            });
+            console.log(this.confirmTableData);
+          }
+        })
+        .catch((e) => {});
     },
+
     clearDiolog() {
-      console.log(111)
+      console.log(111);
       this.$emit("close", false);
     },
     submit() {
-      console.log(111)
+      console.log(111);
       this.$emit("submit");
     },
-    sure(val) {},
-    reset(val) {},
+    sure() {
+      this.pagePart();
+    },
+    reset() {
+      this.form = {
+        categoryCode: "",
+        rfqId: "",
+        fsNum: "",
+        partNum: "",
+      };
+      this.pagePart();
+    },
   },
 };
 </script>

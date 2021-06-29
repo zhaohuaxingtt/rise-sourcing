@@ -26,9 +26,9 @@
                 <!--比较类型-->
                 <el-form-item :label="$t('比较类型')">
                   <iSelect v-model="chartType" @change="changeBy">
-                      <el-option value="supplier" label="按供应商比较"></el-option>
-                      <el-option value="turn" label="按轮次比较"></el-option>
-                      <el-option value="spareParts" label="按零件号比较"></el-option>
+                      <el-option value="supplier" :label="$t('按供应商比较')"></el-option>
+                      <el-option value="turn" :label="$t('按轮次比较')"></el-option>
+                      <el-option value="spareParts" :label="$t('按零件号比较')"></el-option>
                   </iSelect>
                 </el-form-item>
                 <!--供应商-->
@@ -48,13 +48,12 @@
                   </el-select>
                 </el-form-item>
                 <!--零件号-->
-                <el-form-item :label="$t('LK_SPAREPARTSNUMBER')">
+                <el-form-item :label="$t('LK_SPAREPARTSNUMBER')+'/'+$t('LK_FSHAO')">
                   <el-select multiple clearable value-key :multiple-limit="(chartType==='spareParts')?5:1"  v-model="form.spareParts">
-                    <el-option :value="2">2</el-option>
-                    <el-option :value="3">3</el-option>
+                    <el-option :value="2+'/'+1" >2/1</el-option>
+                    <el-option :value="3+'/'+1" >3/1</el-option>
                   </el-select>
                 </el-form-item>
-                
               </el-row>
             </el-form>
             <div class="end">
@@ -65,14 +64,27 @@
       </el-col>
       <el-col :span="20">
         <iCard style="height:500px" collapse>
-          <crown-bar :chartData="chartData" :title="chartTitle" @select="showSelect" :type="bobType" :by="chartType"/>
-          <div class="toolTip-div" ref="toolTipDiv" v-show="showSelectDiv">
-            <iSelect v-model="bobType" ref="toolTipSelect" @blur="closeDiv" @change="changeType">
-                <el-option value="Best of Best" label="Best of Best"></el-option>
-                <el-option value="Best of Average" label="Best of Average"></el-option>
-                <el-option value="Best of Second" label="Best of Second"></el-option>
-            </iSelect>
-          </div>
+          <iRow>
+            <el-col :span="(inside)?18:24">
+              <crown-bar :chartData="chartData" :title="chartTitle" @select="showSelect" :type="bobType" :by="chartType"/>
+              <div class="toolTip-div" ref="toolTipDiv" v-show="showSelectDiv">
+                <iSelect v-model="bobType" ref="toolTipSelect" @blur="closeDiv" @change="changeType">
+                    <el-option value="Best of Best" label="Best of Best"></el-option>
+                    <el-option value="Best of Average" label="Best of Average"></el-option>
+                    <el-option value="Best of Second" label="Best of Second"></el-option>
+                </iSelect>
+              </div>
+            </el-col>
+            <el-col :span="6" v-if="inside">
+              <div  class="left-dash1">
+              <out-bar v-if="chartData1.length>0" :chartData="chartData1" @del="delOut" @change="changeOut"></out-bar>
+              <div v-else @click="findPart" class="icon-add">
+                <icon  style="font-size:260px" name="iconbob-daitianjia" symbol></icon>
+                <div style="text-align:center">{{$t('待添加')}}</div>
+              </div>
+              </div>
+            </el-col>
+          </iRow>
         </iCard>
       </el-col>
     </el-row>
@@ -105,12 +117,13 @@
           </el-form>
           <div class="end">
             <iButton type="primary" @click="getChartData">确定</iButton>
-            <iButton type="primary" @click="handleSearchReset">重制</iButton>
+            <iButton type="primary" @click="handleSearchReset">重置</iButton>
           </div>
         </iCard>
       </el-col>
       <el-col :span="20">
         <bobAnalysis></bobAnalysis>
+        <ungroupedTable class="margin-top20" :tableList="tableList"></ungroupedTable>
       </el-col>
     </el-row>
     <findingParts
@@ -122,11 +135,23 @@
 </template>
 
 <script>
-import { iPage, iButton, iCard, iSelect } from "rise";
+import { iPage, iButton, iCard, iSelect, icon } from "rise";
 import CrownBar from "./components/crownBar.vue";
 import bobAnalysis from "@/views/partsrfq/bob/bobAnalysis/index.vue";
+import ungroupedTable from "@/views/partsrfq/bob/bobAnalysis/ungroupedTable.vue";
 import findingParts from "@/views/partsrfq/components/findingParts.vue";
-import {getBobLevelOne} from '@/api/partsrfq/bob'
+import {getBobLevelOne,removeBobOut} from '@/api/partsrfq/bob'
+import OutBar from './components/outBar.vue';
+import {
+  dataList1,
+  dataList2,
+  dataList3,
+  dataList4,
+  dataList5,
+  dataList6,
+  tableList,
+} from "@/views/partsrfq/bob/bobAnalysis/components/data.js";
+
 export default {
   components: {
     iPage,
@@ -135,15 +160,20 @@ export default {
     iSelect,
     CrownBar,
     bobAnalysis,
+    ungroupedTable,
     findingParts,
+    OutBar,
+    icon
   },
   data() {
     return {
       rfq:'2222',
-      inside:false,
+      inside:true,
       chartData:[],
+      chartData1:[],
       chartType:'supplier',
       bobType:'Best of Best',
+      tableList,
       form:{
         supplier:[],
         turn:[],
@@ -218,7 +248,11 @@ export default {
         turn:this.form.turn.join(',')
       }).then((res)=>{
         const allData=res.data||[]
-        this.chartData=allData.filter((r)=>r.isIntroduce===0)
+        this.chartData=allData.bobLevelOneVOList.filter((r)=>r.isIntroduce===0)
+        this.chartData1=allData.bobLevelOneVOList.filter((r)=>r.isIntroduce===1)
+        this.chartType=allData.analysisDimension
+        this.bobType=allData.defaultBobOptions
+
       })
     },
     getChartData(){
@@ -227,8 +261,26 @@ export default {
       }).then((res)=>{
         console.log(res)
         const allData=res.data||[]
-        this.chartData=allData.filter((r)=>r.isIntroduce===0)
+        this.chartData=allData.bobLevelOneVOList.filter((r)=>r.isIntroduce===0)
+        this.chartData1=allData.bobLevelOneVOList.filter((r)=>r.isIntroduce===1)
+        this.chartType=allData.analysisDimension
+        this.bobType=allData.defaultBobOptions
       })
+    },
+    delOut(){
+      removeBobOut({
+        id:this.chartData1[0].id
+      }).then((res)=>{
+        if(res.code==200){
+						this.$message.success(res.desZh)
+						this.getChartData()
+					}else{
+						this.$message.error(res.desZh)
+					}
+      })
+    },
+    changeOut(){
+
     }
   },
   computed:{
@@ -268,6 +320,15 @@ export default {
     top: 0;
     left: 0;
     padding: 10px;
+  }
+  .left-dash1{
+    border: none;
+    border-left: 5px dashed grey;
+    .icon-add{
+      margin-top: 100px;
+      margin-bottom: 20px;
+      text-align: center;
+    }
   }
 }
 </style>
