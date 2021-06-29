@@ -715,7 +715,7 @@ export default {
     font-size: 16px;
     display: flex;
     justify-content: space-between;
-    margin: 20px 0;
+    margin-bottom: 20px;
 
     ::v-deep .el-select {
       width: 220px;
