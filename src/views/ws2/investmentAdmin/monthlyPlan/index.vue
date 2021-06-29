@@ -23,7 +23,7 @@
         <iButton @click="exitEdit">{{ $t("LK_TUICHUBIANJI") }}</iButton>
         <!-- <iButton @click="uploadList">{{ $t("上传清单") }}</iButton> -->
         <upload-button
-          @uploadedCallback="uploadAttachments"
+          @uploadedCallback="uploadList"
           :upload-button-loading="uploadLoading"
           :buttonText="$t('LK_SHANGCHUANQINGDAN')"
           class="margin-left8"
@@ -244,7 +244,8 @@ import {
   saveNewVersion, 
   exportPlanCommutityList, 
   queryPlanMonthList, 
-  saveMonthData 
+  saveMonthData,
+  importMonthData
 } from "@/api/ws2/investmentAdmin";
 import { iMessage } from '../../../../components';
 
@@ -275,6 +276,7 @@ export default {
       refreshLoading: false, //刷新加载
       tableLoading: false,
       clearEchart: false,
+      noChangeTableListData: [], //未编辑数据
     };
   },
   created() {
@@ -295,16 +297,14 @@ export default {
     },
     //退出编辑
     exitEdit() {
+      this.tableListData = cloneDeep(this.noChangeTableListData);
+      this.showEcharts();
       this.pageEdit = false;
     },
     //保存为新版本
     saveAsNew() {
       this.saveNewVersion = true;
     },
-    // //上传清单
-    // uploadList() {
-
-    // },
     //保存
     saveAsList() {
       let param = {
@@ -614,6 +614,7 @@ export default {
               Number(item.planAmountM12);
             return item;
           });
+          this.noChangeTableListData = cloneDeep(this.tableListData);
           this.showEcharts();
           this.tableLoading = false;
         }
@@ -627,6 +628,21 @@ export default {
     getYear(date) {
       let year = Number(window.moment(date).format("YYYY"));
       return this.tabIndex === 0 ? year : year + 1;
+    },
+    //上传清单 importMonthData
+    async uploadList(formData) {
+      this.uploadLoading = true;
+      formData.append("planType", this.tabIndex === 0 ? "current_year" : "next_year");
+      formData.append("versionId ", this.versionData.id);
+      const res = await importMonthData({data: formData, versionId: this.versionData.id});
+      if (Number(res.code) === 0) {
+        this.uploadLoading = false;
+        this.getMonthList();
+        return iMessage.success(this.$i18n.locale === 'zh' ? msg.desZh : msg.desEn)
+      } else {
+        this.uploadLoading = false;
+        return iMessage.error(this.$i18n.locale === 'zh' ? msg.desZh : msg.desEn)
+      }
     }
   },
   computed: {
@@ -658,7 +674,7 @@ export default {
   margin-top: 20px;
 
   .versionSelect {
-    width: 130px;
+    width: 140px;
     margin: 0 20px;
   }
 

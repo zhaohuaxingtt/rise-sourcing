@@ -1070,8 +1070,8 @@
         'LK_YIYUE': '一月',    //  一月
         'LK_ERYUE': '二月',    //  二月
         'LK_SANYUE': '三月',    //  三月
-        'LK_WUYUE': '四月',    //  四月
-        'LK_YIYUE': '五月',    //  五月
+        'LK_SIYUE': '四月',    //  四月
+        'LK_WUYUE': '五月',    //  五月
         'LK_LIUYUE': '六月',    //  六月
         'LK_QIYUE': '七月',    //  七月
         'LK_BAYUE': '八月',    //  八月

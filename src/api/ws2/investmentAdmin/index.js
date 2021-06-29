@@ -53,3 +53,12 @@ export function saveMonthData(params) {
         data: params.dataList
     })
 }
+
+//月度数据导入
+export function importMonthData(params) {
+    return VUE_APP_TOOLING({
+        url: `/planMonth/importMonthData/${params.versionId}`,
+        method: 'POST',
+        data: params.data
+    })
+}
