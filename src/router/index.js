@@ -187,11 +187,20 @@ export const staticRouter = [{
             {
                 path: '/tooling/investmentAdmin',
                 name: 'toolingModelDetails',
+                redirect: '/tooling/investmentAdmin/payBlock',
                 meta: {
                     title: '模具投资付款管理员'
                 },
                 component: () => import (`@/views/ws2/investmentAdmin`),
                 children: [
+                    {
+                        path: '/tooling/investmentAdmin/payBlock',
+                        name: 'investmentAdminPayBlock',
+                        meta: {
+                            title: '付款看板'
+                        },
+                        component: () => import (`@/views/ws2/investmentAdmin/payBlock`),
+                    },
                     {
                         path: '/tooling/investmentAdmin/yearlyPlan',
                         name: 'investmentAdminYearlyPlan',
