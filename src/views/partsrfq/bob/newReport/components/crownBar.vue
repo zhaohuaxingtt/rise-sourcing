@@ -1,6 +1,6 @@
 
 <template>
-  <div style="height:460px" ref="chart"></div>
+  <div style="height: 460px" ref="chart"></div>
 </template>
 <script >
 import echarts from '@/utils/echarts'
@@ -218,6 +218,7 @@ export default {
                     label:{
                       show: true,
                       position:'insideTop',
+                      fontSize: 14,
                       color:'white',
                       formatter: (params) =>{
                         // console.log(params)
@@ -296,7 +297,7 @@ export default {
                     label:{
                       show: true,
                       position: 'top',
-                      color:'#3C4F74',
+                      color:'#7E84A3',
                       fontSize: 18,
                       align: 'center',
                       formatter: (params) =>{

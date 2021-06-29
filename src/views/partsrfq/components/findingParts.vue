@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-17 11:40:10
- * @LastEditTime: 2021-06-29 11:50:56
+ * @LastEditTime: 2021-06-29 17:18:06
  * @LastEditors: Please set LastEditors
  * @Description: 查找零件弹窗
  * @FilePath: \front-web\src\views\partsrfq\components\findingPart.vue
@@ -19,7 +19,7 @@
         <el-form>
           <el-form-item :label="$t('LK_CAILIAOZU')">
             <iSelect v-model="form.categoryCode">
-              <!-- <el-option value='' label='全部' v-for=""></el-option> -->
+              <el-option :value='item.categoryCode' :label='item.categoryName' v-for="item in optionList" :key="item.categoryId"></el-option>
             </iSelect>
           </el-form-item>
           <el-form-item :label="$t('LK_RFQHAO')">
@@ -43,6 +43,7 @@
         :tableData="confirmTableData"
         :tableTitle="confirmTableHead"
         class="table-footerStyle"
+        @handleSelectionChange="handleSelectionChange"
       >
       </tableList>
     </div>
@@ -80,6 +81,7 @@ export default {
   },
   data() {
     return {
+      optionList:[],
       confirmTableData: [],
       confirmTableHead,
       form: {
@@ -96,7 +98,9 @@ export default {
   },
   methods: {
     async pagePart() {
-      let res= await category();
+      let res= await category({});
+      console.log(res)
+      this.optionList=res.data
       pagePart(this.form)
         .then((res) => {
           if (res.code === "200") {
@@ -120,6 +124,9 @@ export default {
     },
     sure() {
       this.pagePart();
+    },
+    handleSelectionChange(val){
+      console.log(val)
     },
     reset() {
       this.form = {

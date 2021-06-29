@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 10:50:38
- * @LastEditTime: 2021-06-25 16:32:00
+ * @LastEditTime: 2021-06-29 17:48:22
  * @LastEditors: Please set LastEditors
  * @Description: 费用详情
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails.vue
@@ -89,19 +89,12 @@ export default {
     };
   },
   mounted() {
-    console.log(this);
+    this.$nextTick( () =>{
+      this.open()
+    });
   },
   methods: {
     open() {
-      // this.dataLists = this.dataLists
-      //   .concat(dataList1)
-      //   .concat(dataList2)
-      //   .concat(dataList3)
-      //   .concat(dataList4)
-      //   .concat(dataList5)
-      //   .concat(dataList6);
-      // this.getTreeExpandKeys(dataLists);
-      // this.expends = Array.from(new Set(this.expends));
       let els = this.$el.getElementsByClassName("el-table__expand-icon");
       if (this.tableList.dataList.length != 0 && els.length != 0) {
         this.flag = false;
