@@ -15,6 +15,7 @@
         <tableList
             class="table"
             index
+            :lang="true"
             :tableData="tableListData"
             :tableTitle="tableTitle"
             :tableLoading="loading"
@@ -45,10 +46,15 @@
 import {
   iDialog,
   iPagination,
+  iMessage,
 } from 'rise';
 import tableList from "@/views/partsign/editordetail/components/tableList"
-import { historyListTitle } from '../../../data'
+import { historyLoiListTitle as  tableTitle } from '../../../data'
 import { pageMixins } from "@/utils/pageMixins"
+import {
+    historyLoiPage
+} from '@/api/letterAndLoi/loi'
+import { downloadFile } from '@/api/file'
 export default {
     name:'historyDialog',
     mixins: [ pageMixins ],
@@ -61,11 +67,16 @@ export default {
       dialogVisible:{
         type:Boolean,
         default:false,
+      },
+      loiInfo:{
+        type:Object,
+        default:()=>{},
       }
     },
     data(){
       return{
-        tableTitle:historyListTitle,
+        loading:false,
+        tableTitle:tableTitle,
         tableListData:[],
         selectItems:[],
       }
@@ -78,11 +89,39 @@ export default {
           this.$emit('changeVisible', false)
         },
         // 获取列表
-        getList(){
-
+        async getList(){
+          this.loading = true;
+          const { loiInfo={},page } = this;
+          const { id,loiNum } = loiInfo;
+          const data = {
+            id,loiNum,
+            isHistory:1,
+            current:page.currPage,
+            size:page.pageSize,
+          }
+          await historyLoiPage(data).then((res)=>{
+            this.loading = false;
+            const {code,data=[],total} = res;
+            if(code == 200){
+              this.tableListData = data;
+              this.page.totalCount = total;
+            }else{
+              iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+            }
+          }).catch((err=>{
+            this.loading = false;
+          }))
         },
         handleSelectionChange(val) {
             this.selectItems = val;
+        },
+        // 下载附件
+        async downloadLine(row){
+            const params = {
+            applicationName: 'rise',
+            fileList:[row.fileName]
+          };
+          await downloadFile(params);
         },
     }
 }

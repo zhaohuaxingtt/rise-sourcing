@@ -8,9 +8,9 @@
     <!-- 搜索区域 -->
     <iSearch @sure="getList" @reset="reset">
         <el-form>
-            <el-form-item v-for="(item,index) in letterListSearch" :key="'letterListSearch_'+index" :label="$t(item.labelKey)">
-                <iSelect v-update v-if="item.type === 'select'" v-model="searchParams[item.props]" :placeholder="$t('partsprocure.CHOOSE')">
-                  <el-option v-if="item.props!='key13'" value="" :label="$t('all')"></el-option>
+            <el-form-item v-for="(item,index) in letterListSearch" :key="'letterListSearch_'+index" :label="language(item.labelKey,item.label)">
+                <iSelect v-update v-if="item.type === 'select'" v-model="searchParams[item.props]" :placeholder="language('partsprocure.CHOOSE','请选择')">
+                  <el-option v-if="item.props!='show'" value="" :label="language('all','全部')"></el-option>
                   <el-option
                     v-for="item in selectOptions[item.selectOption] || []"
                     :key="item.value"
@@ -18,41 +18,46 @@
                     :value="item.value">
                   </el-option>  
                 </iSelect> 
-                <iDatePicker :placeholder="$t('partsprocure.CHOOSE')" v-else-if="item.type === 'datePicker'" value-format="" v-model="searchParams[item.props]"></iDatePicker>
-                <iInput :placeholder="$t('partsprocure.CHOOSE')" v-else v-model="searchParams[item.props]"></iInput> 
+                <iDatePicker  style="width:185px" :placeholder="language('partsprocure.CHOOSE','请选择')" v-else-if="item.type === 'datePicker'" type="daterange"  value-format="yyyy-MM-dd" v-model="searchParams[item.props]"></iDatePicker>
+                <iInput :placeholder="language('partsprocure.CHOOSE','请选择')" v-else v-model="searchParams[item.props]"></iInput> 
             </el-form-item>
         </el-form>
     </iSearch>
     <iCard class="contain margin-top20" title="预定点通知书(LOI)">
         <template v-slot:header-control>
-            <iButton @click="submit">{{$t('LK_QUERENBINGTIJIAO')}}</iButton>
-            <iButton @click="lineSure">{{$t('LK_LINEQUEREN')}}</iButton>
-            <iButton @click="lineBack">{{$t('LK_LINETUIHUI')}}</iButton>
-            <iButton @click="back">{{$t('partsprocure.CheHui')}}</iButton>
-            <iButton @click="closeLoi">{{$t('LK_GUANBI')}} </iButton>
-            <iButton @click="activate">{{$t('LK_JIHUO')}} </iButton>
-            <iButton @click="editRemark">{{$t('LK_BIANJIBEIZHU')}} </iButton>
+            <iButton @click="submit">{{language('LK_QUERENBINGTIJIAO','确认并提交')}}</iButton>
+            <iButton @click="lineSure">{{language('LK_LINEQUEREN','LINIE确认')}}</iButton>
+            <iButton @click="lineBack">{{language('LK_LINETUIHUI','LINIE退回')}}</iButton>
+            <iButton @click="back">{{language('partsprocure.CheHui','撤回')}}</iButton>
+            <iButton @click="closeLoi">{{language('LK_GUANBI','关闭')}} </iButton>
+            <iButton @click="activate">{{language('LK_JIHUO','激活')}} </iButton>
+            <iButton @click="editRemark">{{language('LK_BIANJIBEIZHU','编辑备注')}} </iButton>
         </template>
         <!-- 表单区域 -->
         <tableList
             class="table"
             index
+            :lang="true"
             :tableData="tableListData"
             :tableTitle="tableTitle"
             :tableLoading="loading"
             @handleSelectionChange="handleSelectionChange"
         >
             <!-- 定点申请单号 -->
-            <template #key1="scope">
+            <template #nominateAppId="scope">
                 <a class="trigger" href="javascript:;" @click="goToDesignate(scope.row)">
-                    <span class="link" >{{ scope.row.key1 }}</span>
+                    <span class="link" >{{ scope.row.nominateAppId }}</span>
                 </a>
             </template>
             <!-- LOI编号 -->
-            <template #key2="scope">
+            <template #loiNum="scope">
                 <a class="trigger" href="javascript:;" @click="goToDetail(scope.row)">
-                    <span class="link" >{{ scope.row.key2 }}</span>
+                    <span class="link" >{{ scope.row.loiNum }}</span>
                 </a>
+            </template>
+            LOI状态
+            <template #loiStatus="scope">
+                <span >{{ scope.row.loiStatus &&  scope.row.loiStatus.desc}}</span>
             </template>
         </tableList>
         <!-- 分页 -->
@@ -71,9 +76,9 @@
     </iCard>
     
     <!-- 关闭定点信弹窗 -->
-    <closeLoiDialog v-if="closeLoiVisible" :dialogVisible="closeLoiVisible" @changeVisible="changeVisible"/>
+    <closeLoiDialog v-if="closeLoiVisible" :dialogVisible="closeLoiVisible" @changeVisible="changeVisible" @getList="getList" :selectItems="selectItems"/>
     <!-- 编辑备注弹窗 -->
-    <remarkDialog  v-if="remarkVisible" :dialogVisible="remarkVisible" @changeVisible="changeVisible" /> 
+    <remarkDialog  v-if="remarkVisible" :dialogVisible="remarkVisible" @changeVisible="changeVisible" @getList="getList" :selectItems="selectItems"/> 
   </div>
 </template>
 
@@ -96,6 +101,15 @@ import { pageMixins } from "@/utils/pageMixins";
 import tableList from "@/views/partsign/editordetail/components/tableList"
 import closeLoiDialog from './components/closeLoiDialog'
 import remarkDialog from './components/remarkDialog'
+import {
+    getloiList,
+    confirmSubmitLio,
+    liniefirm,
+    linieBackLio,
+    recallLio,
+    activationLoi,
+} from '@/api/letterAndLoi/loi'
+import { getDictByCode } from '@/api/dictionary'
 export default {
     name:'loiList',
      mixins: [pageMixins],
@@ -115,19 +129,19 @@ export default {
         return{
             letterListSearch:loiListSearch,
             searchParams:{
-                key13:'true',
-                key7:'',
+                show:'true',
+                loiStatus:'',
             },
             selectOptions:{
                 status:[],
                 isShowMe:[
-                    {label:this.$t('nominationLanguage.Yes'),value:'true'},
-                    {label:this.$t('nominationLanguage.No'),value:'false'},
+                    {label:this.language('nominationLanguage.Yes','是'),value:'true'},
+                    {label:this.language('nominationLanguage.No','否'),value:'false'},
                 ],
             },
             loading:false,
             tableListData:[
-                {key1:'50912471',key2:'NL21-10180',key3:'51120086',key4:'068',key5:'10047',key6:'博世汽⻋技术服务(中国)有限公司',key7:'前期处理中',key8:'供应商反馈',key9:'⾼真',key10:'王颖',key11:'备注',}
+                {nominateAppId:'50912471',rfqId:'NL21-10180',supplierId:'51120086',sapNum:'068',supplierName:'博世汽⻋技术服务(中国)有限公司',loiStatusValue:'前期处理中',supplierResult:'供应商反馈',csfName:'⾼真',remark:'备注',}
             ],
             tableTitle:loiListTitle,
             selectItems:[],
@@ -135,10 +149,56 @@ export default {
             remarkVisible:false,
         }
     },
+    created(){
+        this.getSelectOptions();
+        this.getList();
+    },
     methods:{
         // 获取列表
-        getList(){
+        async getList(){
             console.log(this.searchParams);
+             this.loading = true;
+            const {searchParams,page} = this;
+            // 若有定点起止时间将其拆分成两个字段
+            const {nominateDate=[]} = searchParams;
+            const data = {
+                current:page.currPage,
+                size:page.pageSize
+            };
+            if(nominateDate.length){
+                data['startDate'] = nominateDate[0];
+                data['endDate'] = nominateDate[1];
+            }
+            await getloiList({...searchParams,...data}).then((res)=>{
+                 this.loading = false;
+                const {code,data=[],total} = res;
+                if(code==200){
+                   this.tableListData = data;
+                   this.page.totalCount = total;
+                }else{
+                    iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+                }
+            }).catch((err)=>{
+                this.loading = false;
+            })
+        },
+
+        
+
+        // 调取数据字典获取下拉
+        async getDictionary(optionName, optionType) {
+            await getDictByCode(optionType).then(res => {
+                if(res?.result) {
+                this.selectOptions[optionName] = res.data[0].subDictResultVo.map(item => {
+                    return { value: item.code, label: this.$i18n.locale === "zh" ? item.name : item.nameEn }
+                })
+                }
+            })
+        },
+
+        async getSelectOptions(){
+            // 定点信状态
+            await this.getDictionary('status','NOMINATION_LOI_STATUS');
         },
 
         // 重置
@@ -155,8 +215,8 @@ export default {
             const routeData = this.$router.resolve({
             path: '/designate/rfqdetail',
             query: {
-                // desinateId: row.id, 
-                // designateType: (row.nominateProcessType && row.nominateProcessType.code) || ''
+                desinateId: row.nominateAppId, 
+                designateType: (row.nominateProcessType && row.nominateProcessType.code) || ''
             }
             })
             window.open(routeData.href, '_blank')
@@ -170,13 +230,13 @@ export default {
         async isSelectItem(type=false){
             const {selectItems} = this;
             if(!selectItems.length){
-                iMessage.warn(this.$t('createparts.QingXuanZeZhiShaoYiTiaoShuJu'));
+                iMessage.warn(this.language('createparts.QingXuanZeZhiShaoYiTiaoShuJu','请选择至少一条数据'));
                 return false;
             }else{
                 if(type){
                     return true;
                 }else{
-                 const confirmInfo = await this.$confirm(this.$t('submitSure'));
+                 const confirmInfo = await this.$confirm(this.language('submitSure','您确定要执行提交操作吗？'));
                  return confirmInfo == 'confirm';
                 }
                 
@@ -188,7 +248,16 @@ export default {
          async submit(){
             const isNext  = await this.isSelectItem();
             if(isNext){
-                console.log(isNext,'OK');
+                const {selectItems} = this;
+                const ids = (selectItems.map((item)=>item.id));
+                await confirmSubmitLio({ids}).then((res)=>{
+                    if(res.code == 200){
+                        iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
+                        this.getList();
+                    }else{
+                        iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+                    }
+                })
             }else{
                 console.log(isNext,'CANCEL');
             }
@@ -199,8 +268,17 @@ export default {
         async lineSure(){
             const isNext  = await this.isSelectItem();
             if(isNext){
-                iMessage.warn('定点信【定点信编号】不是【Linie确认中】状态，Linie不能操作！');
-                console.log(isNext,'OK');
+                const {selectItems} = this;
+                const ids = (selectItems.map((item)=>item.id));
+                // iMessage.warn('定点信【定点信编号】不是【Linie确认中】状态，Linie不能操作！');
+                await liniefirm({ids}).then((res)=>{
+                    if(res.code == 200){
+                        iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
+                        this.getList();
+                    }else{
+                         iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+                    }
+                })
             }else{
                 console.log(isNext,'CANCEL');
             }
@@ -209,7 +287,17 @@ export default {
         async lineBack(){
             const isNext  = await this.isSelectItem();
             if(isNext){
-                iMessage.warn('定点信【定点信编号】不是【Linie确认中】状态，Linie不能操作！');
+                // iMessage.warn('定点信【定点信编号】不是【Linie确认中】状态，Linie不能操作！');
+                const {selectItems} = this;
+                const ids = (selectItems.map((item)=>item.id));
+                await linieBackLio({ids}).then((res)=>{
+                    if(res.code == 200){
+                        iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
+                        this.getList();
+                    }else{
+                         iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+                    }
+                })
                 console.log(isNext,'OK');
             }else{
                 console.log(isNext,'CANCEL');
@@ -220,14 +308,23 @@ export default {
         async back(){
             const isNext  = await this.isSelectItem();
             if(isNext){
-                console.log(isNext,'OK');
+                const {selectItems} = this;
+                const ids = (selectItems.map((item)=>item.id));
+                await recallLio({ids}).then((res)=>{
+                    if(res.code == 200){
+                        iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
+                        this.getList();
+                    }else{
+                         iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+                    }
+                })
             }else{
                 console.log(isNext,'CANCEL');
             }
         },
         
-        // 关闭定点信
-        async closeLoi(){
+        // 关闭LOI
+        async closeLoi(){ 
             const isNext  = await this.isSelectItem(true);
             if(isNext){
                 this.changeVisible('closeLoiVisible',true);
@@ -241,7 +338,16 @@ export default {
         async activate(){
             const isNext  = await this.isSelectItem();
             if(isNext){
-                console.log(isNext,'OK');
+                const {selectItems} = this;
+                const ids = (selectItems.map((item)=>item.id));
+                await activationLoi({ids}).then((res)=>{
+                    if(res.code == 200){
+                        iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
+                        this.getList();
+                    }else{
+                         iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+                    }
+                })
             }else{
                 console.log(isNext,'CANCEL');
             }
@@ -259,10 +365,11 @@ export default {
         },
 
         // 跳转至定点信详情页
-        goToDetail(){
+        goToDetail(row){
+            const { id } = row; 
              const routeData = this.$router.resolve({
             path: '/sourcing/partsletter/loidetail',
-            query: {}
+            query: {id,}
             })
             window.open(routeData.href, '_blank')
         },

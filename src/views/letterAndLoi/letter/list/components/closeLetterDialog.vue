@@ -75,7 +75,9 @@ export default {
                     iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
                     this.clearDialog();
                     this.$emit('getList');
-                }
+                }else{
+                    iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+                    }
             }).catch((err)=>{});
         }
     }

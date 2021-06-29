@@ -6,73 +6,70 @@
 <template>
     <iPage class="loiDetail">
         <div class="header clearFloat">
-        <div class="title">{{$t('LK_LOIBIANHAO')}}: LOI21-10341</div>
+        <div class="title">{{language('LK_LOIBIANHAO','LOI编号')}}: {{loiInfo.loiNum}}</div>
         <div class="control">
             <span v-if="isEdit">
-                <iButton>{{$t('LK_BAOCUN')}}</iButton>
-                <iButton @click="changeEditStatus">{{$t('LK_QUXIAO')}}</iButton>
+                <iButton @click="save">{{language('LK_BAOCUN','保存')}}</iButton>
+                <iButton @click="changeEditStatus">{{language('LK_QUXIAO','取消')}}</iButton>
             </span>
             <span v-else>
-                <iButton @click="edit">{{$t('LK_BIANJI')}}</iButton>
-                <iButton>{{$t('LK_LINEQUEREN')}}</iButton>
-                <iButton>{{$t('LK_LINETUIHUI')}}</iButton>
-                <iButton v-if="radioType=='NonStandard'">{{$t('LK_WANCHENGLOI')}}</iButton>
-                <iButton>{{$t('LK_DAOCHUBIAOZHUNLOI')}}</iButton>
-                <iButton @click="changeShowHistory">{{$t('LK_LISHILOI')}} </iButton>
+                <iButton @click="edit">{{language('LK_BIANJI','编辑')}}</iButton>
+                <iButton @click="lineSure">{{language('LK_LINEQUEREN','LINE确认')}}</iButton>
+                <iButton @click="lineBack">{{language('LK_LINETUIHUI','LINE退回')}}</iButton>
+                <iButton v-if="radioType=='NonStandard'">{{language('LK_WANCHENGLOI','完成LOI')}}</iButton>
+                <iButton @click="exportLoi">{{language('LK_DAOCHUBIAOZHUNLOI','导出标准LOI')}}</iButton>
+                <iButton @click="changeShowHistory">{{language('LK_LISHILOI','历史LOI')}} </iButton>
             </span>
             <logButton class="margin-left20" />
         </div>
         </div>
         <iCard class="margin-top30">
            <el-radio-group v-model="radioType" :disabled="!isEdit">
-                <el-radio :label="'standard'">{{$t('LK_BIAOZHUNLOI')}}</el-radio>
-                <el-radio :label="'NonStandard'">{{$t('LK_FEIBIAOZHUNLOI')}}</el-radio>
+                <el-radio :label="'standard'">{{language('LK_BIAOZHUNLOI','标准LOI')}}</el-radio>
+                <el-radio :label="'NonStandard'">{{language('LK_FEIBIAOZHUNLOI','⾮标准LOI')}}</el-radio>
             </el-radio-group>
             <div class="sendTypeBox margin-top20" v-if="radioType=='standard'">
-              <el-radio-group v-model="sendType" :disabled="!isEdit">
-                <el-radio :label="'kye1'">{{$t('LK_PILIANGLOI')}}</el-radio>
-                <el-radio :label="'key2'">{{$t('LK_KAIFALOI')}}</el-radio>
-                <el-radio :label="'key3'">{{$t('LK_KAIFAPILIANGLOI')}}</el-radio>
+              <el-radio-group v-model="loiInfo.templateType" :disabled="!isEdit">
+                <el-radio :label="0">{{language('LK_PILIANGLOI','批量LOI')}}</el-radio>
+                <el-radio :label="1">{{language('LK_KAIFALOI','开发LOI')}}</el-radio>
+                <el-radio :label="2">{{language('LK_KAIFAPILIANGLOI','开发+批量LOI')}}</el-radio>
               </el-radio-group>
             </div>
             <div class="contain margin-top30">
                 <iFormGroup row="2">
                     <div class="col">
-                        <iFormItem :label="$t('LK_GONGYINGSHANGLIANXIR')+':'">
-                            <iSelect v-update v-if="isEdit">
+                        <iFormItem :label="language('LK_GONGYINGSHANGLIANXIR','供应商联系⼈')+':'">
+                            <iSelect v-update v-if="isEdit" v-model="loiInfo.supplierUserId">
                                 <el-option
-                                    v-for="item in selectOptions || []"
-                                    :key="item.value"
-                                    :label="item.label"
-                                    :value="item.value">
+                                    v-for="item in supplierList || []"
+                                    :key="item.id"
+                                    :label="$i18n.locale === 'zh' ? item.nameZh : item.nameEn"
+                                    :value="item.id">
                                 </el-option>  
                             </iSelect>
-                            <iText v-else>王佩君</iText>
+                            <iText v-else>{{loiInfo.supplierUserName}}</iText>
                         </iFormItem>
                         <iFormItem label='LINIE：'>
-                            <iSelect v-update v-if="isEdit">
+                            <iSelect v-update v-if="isEdit" v-model="loiInfo.linieUserId">
                                 <el-option
-                                    v-for="item in selectOptions || []"
-                                    :key="item.value"
-                                    :label="item.label"
-                                    :value="item.value">
+                                    v-for="item in linieList || []"
+                                    :key="item.id"
+                                    :label="$i18n.locale === 'zh' ? item.nameZh : item.nameEn"
+                                    :value="item.id">
                                 </el-option>  
                             </iSelect>
-                            <iText v-else>王默薇</iText>
+                            <iText v-else>{{loiInfo.linieName}}</iText>
                         </iFormItem>
                     </div>
                 </iFormGroup>
-                <!-- 标准定点信 -->
-                <el-checkbox v-if="radioType=='standard'" v-model="checked" :disabled="!isEdit">包含以下条款：所有批量前⽣产（PVS) 和零批量（0-Serien）所需要的零件按照批量供货价格结算，Alle PVS-u，0-Serien-Telle warden zum Serienpreis abgerechnet</el-checkbox>
-                
             </div>
         </iCard>
 
-        <!-- 非标准定点信 -->
-        <loiNonStandard class="margin-top20" v-if="radioType=='NonStandard'" :isEdit="isEdit"/>
+        <!-- 非标准LOI -->
+        <loiNonStandard class="margin-top20" v-if="radioType=='NonStandard'" :isEdit="isEdit" :nomiAppId="nomiAppId"/>
 
-        <!-- 历史定点信弹窗 -->
-        <historyDialog v-if="showHistory" :dialogVisible="showHistory" @changeVisible="changeShowHistory" />
+        <!-- 历史LOI弹窗 -->
+        <historyDialog v-if="showHistory" :dialogVisible="showHistory" @changeVisible="changeShowHistory" :loiInfo="loiInfo"/>
     </iPage>
 </template>
 
@@ -85,10 +82,22 @@ import {
     iFormItem,
     iText,
     iSelect,
+    iMessage,
 } from 'rise';
 import logButton from "@/views/partsign/editordetail/components/logButton"
 import historyDialog from './components/historyDialog'
 import loiNonStandard from './components/loiNonStandard'
+import {
+    findNomiLoiInfo,
+    editTemplateLoi,
+    liniefirm,
+    linieBackLio,
+    exportTemplateLoi,
+} from '@/api/letterAndLoi/loi'
+import {
+    getSupplierUsers,
+    getBuyers,
+} from  '@/api/letterAndLoi/letter'
 export default {
     name:'loiDetail',
     components:{
@@ -106,14 +115,18 @@ export default {
     data(){
         return{
             radioType:'standard',
-            sendType:'kye1',
             isEdit:false, // 编辑状态
             showHistory:false, // 历史定点信弹窗
             selectOptions:[],
             checked:false,
+            loiInfo:{},
+            supplierList:[], // 供应商列表
+            linieList:[], // line列表
+
         }
     },
     created(){
+        this.getDetail();
     },
     methods:{
         // 编辑状态变更
@@ -125,11 +138,120 @@ export default {
         edit(){
             this.changeEditStatus();
         },
+        // 保存
+        async save(){
+            const { loiInfo,radioType } = this;
+            const {id,linieUserId,loiNum,supplierUserId,templateType,} = loiInfo;
+            const linieName = this.getName('linieList',linieUserId) || loiInfo.linieName;
+            const supplierUserName = this.getName('supplierList',supplierUserId) || loiInfo.supplierUserName;
+            const data = {
+                id,linieUserId,loiNum,supplierUserId,templateType,
+                type:radioType==='standard' ? '0' : '1',
+                linieName,
+                supplierUserName,
+            };
+            await editTemplateLoi(data).then((res)=>{
+                const {code} = res;
+                if(code == 200){
+                    iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
+                    this.getDetail();
+                    this.isEdit = false;
+                }else{
+                    iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+                }
+            })
+
+        },
+        // LINE确认
+        async lineSure(){
+            const { loiInfo } = this;
+            const { id } = loiInfo;
+            const confirmInfo = await this.$confirm(this.language('submitSure','您确定要执行提交操作吗？'));
+            if(!confirmInfo) return;
+            await liniefirm({ids:[id]}).then((res)=>{
+                if(res.code == 200){
+                    iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
+                    this.getDetail();
+                }else{
+                        iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+                }
+            })
+        },
+        // LINE退回
+        async lineBack(){
+            const { loiInfo } = this;
+            const { id } = loiInfo;
+            const confirmInfo = await this.$confirm(this.language('submitSure','您确定要执行提交操作吗？'));
+            if(!confirmInfo) return;
+            await linieBackLio({ids:[id]}).then((res)=>{
+                    if(res.code == 200){
+                        iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
+                        this.getDetail();
+                    }else{
+                         iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+                    }
+                })
+        },
         //  历史定点信弹窗状态变更
         changeShowHistory(){
             const { showHistory } = this;
             this.showHistory = !showHistory;
-        }
+        },
+        async getDetail(){
+            const {query} = this.$route;
+            const {id=''} = query;
+            this.nomiAppId = id;
+            await findNomiLoiInfo({id}).then((res)=>{
+                const {code,data={}} = res;
+                if(code == 200){
+                    this.loiInfo = data;
+                    const { type,supplierId } = data; 
+                    // templateType   0(标准定点信:批量LOI)，1(标准定点信:开发LOI)，2(标准定点信:开发+批量LOI)
+                    // type   0(标准定LOI) 1(非标准定LOI)
+                    this.radioType = type == '1' ? 'NonStandard': 'standard' ;
+                    this.getUserList(supplierId);
+                }else{
+                    iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+                }
+            })
+
+        },
+
+        // 导出标准LOI exportTemplateLoi
+        async exportLoi(){
+            const {query} = this.$route;
+            const {id=''} = query;
+            await exportTemplateLoi({id});
+        },
+
+        // 查一下选中联系人id对应的name
+        getName(listKey,id){
+            const list = this[listKey] || [];
+            const filterList = list.filter((item)=>item.id == id);
+            if(filterList.length){
+                return filterList[0].nameZh
+            }else{
+                return null;
+            }
+        },
+        
+        // 获取联系人列表
+        getUserList(suppierId){
+            // 供应商
+            getSupplierUsers({suppierId}).then((res)=>{
+               const { code,data=[] } = res;
+                if(code==200){
+                    this.supplierList = data;
+                }
+            })
+            // line
+            getBuyers({tagId:4}).then((res)=>{
+               const { code,data=[] } = res;
+               if(code ==200){
+                   this.linieList = data;
+               }
+            })
+        },
     }
 }
 </script>
