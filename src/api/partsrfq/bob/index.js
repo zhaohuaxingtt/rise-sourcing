@@ -17,3 +17,11 @@ export function getBobLevelOne(parmars) {
         data: parmars
     })
 }
+
+export function removeBobOut(parmars) {
+    return requst({
+        url: '/bobLevelOne/remove',
+        method: 'POST',
+        data: parmars
+    })
+}
