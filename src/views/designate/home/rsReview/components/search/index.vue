@@ -61,8 +61,8 @@
           :placeholder="$t('LK_QINGSHURU')"
         ></iInput>
       </el-form-item>
-      <!-- LINE -->
-      <el-form-item label="LINE">
+      <!-- LINIE -->
+      <el-form-item label="LINIE">
         <iInput
           v-model="form.linieName"
           :placeholder="$t('LK_QINGSHURU')"
