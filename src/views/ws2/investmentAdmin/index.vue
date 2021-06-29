@@ -5,6 +5,7 @@
         付款计划制定与查看
       </div>
       <div class="tab-box">
+        <icon @click.native="powerBiUrl" v-if="tabIndex === 0" symbol name="iconicon-xiazai" class="card-icon"></icon>
         <div @click="tabClick(0)" class="tab-item" :class="tabIndex === 0 ? 'tab-on' : ''">付款看板</div>
         <div @click="tabClick(1)" class="tab-item tab-line" :class="tabIndex === 1 ? 'tab-on' : ''">年度计划</div>
         <div @click="tabClick(2)" class="tab-item tab-line" :class="tabIndex === 2 ? 'tab-on' : ''">月度计划</div>
@@ -21,18 +22,23 @@
 </template>
 
 <script>
+import {
+  icon
+} from "@/components";
 import {iPage, iMessage, iDialog, iButton, iNavMvp} from "rise";
 import { iNavWS2 } from "@/components";
+import store from '@/store';
 export default {
   components: {
     iPage,
-    iNavWS2
+    iNavWS2,
+    icon
   },
   data(){
     return {
       tabIndex: 0,
       urlList: {
-        0: '',
+        0: '/tooling/investmentAdmin/payBlock',
         1: '/tooling/investmentAdmin/yearlyPlan',
         2: '/tooling/investmentAdmin/monthlyPlan'
       },
@@ -40,6 +46,10 @@ export default {
   },
 
   methods: {
+
+    powerBiUrl(){
+      store.state.investmentAdmin.report.print();
+    },
 
     tabClick(index){
       const { urlList } = this;
@@ -63,6 +73,13 @@ export default {
   .tab-box{
     display: flex;
     align-items: center;
+
+    .card-icon{
+      width: 20px;
+      height: 20px;
+      margin-right: 20px;
+      cursor: pointer;
+    }
 
     .tab-on{
       color: #1660F1 !important;

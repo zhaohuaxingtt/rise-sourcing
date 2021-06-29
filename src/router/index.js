@@ -193,6 +193,14 @@ export const staticRouter = [{
                 component: () => import (`@/views/ws2/investmentAdmin`),
                 children: [
                     {
+                        path: '/tooling/investmentAdmin/payBlock',
+                        name: 'investmentAdminPayBlock',
+                        meta: {
+                            title: '付款看板'
+                        },
+                        component: () => import (`@/views/ws2/investmentAdmin/payBlock`),
+                    },
+                    {
                         path: '/tooling/investmentAdmin/yearlyPlan',
                         name: 'investmentAdminYearlyPlan',
                         meta: {
