@@ -91,7 +91,7 @@
               <div class="txt">
                 <span>{{ $t('LK_CHEXINGXIANGMU') }}</span><!-- 车型项目 -->
               </div>
-              <div class="disabled">{{detailObj.tmCartypeProId}}</div>
+              <div class="disabled">{{fromGroupName}}</div>
             </div>
             <div class="item">
               <div class="txt">
@@ -212,13 +212,13 @@
               <div class="txt">
                 <span>{{ $t('LK_BUHANSUICHENGBEN') }}</span><!-- 不含税成本 -->
               </div>
-              <div class="disabled">{{detailObj.bmAmount}}</div>
+              <div class="disabled">{{getTousandNum(detailObj.bmAmount)}}</div>
             </div>
             <div class="item">
               <div class="txt">
                 <span>{{ $t('LK_HANSUICHENGBEN') }}</span><!-- 含税成本 -->
               </div>
-              <div class="disabled">{{detailObj.taxCost}}</div>
+              <div class="disabled">{{getTousandNum(detailObj.taxCost)}}</div>
             </div>
             <div class="item">
               <div class="txt">
@@ -321,6 +321,7 @@ import AllBmListBlock from "./components/allBmListBlock";
 import ToBeConfirmed from "./components/toBeConfirmed";
 import IncrementBlock from "./components/incrementBlock";
 import ImpairmentBlock from "./components/impairmentBlock";
+import { getTousandNum } from "@/utils/tool";
 
 
 export default {
@@ -349,6 +350,8 @@ export default {
       saveLoading: false,
       refresh: false,
       bmNumber: '',
+      getTousandNum,
+      fromGroupName: '',
     }
   },
 
@@ -398,6 +401,7 @@ export default {
         const result2 = this.$i18n.locale === 'zh' ? res[2].desZh : res[2].desEn;
         const result3 = this.$i18n.locale === 'zh' ? res[3].desZh : res[3].desEn;
         const result4 = this.$i18n.locale === 'zh' ? res[4].desZh : res[4].desEn;
+        console.log('11111111111', res);
 
         if(res[0].data){
           this.detailObj = res[0].data;
@@ -426,6 +430,8 @@ export default {
 
         if(res[4].data){
           this.fromGroup = res[4].data;
+          this.fromGroupName = res[4].data.filter(item => item.tmCartypeProId == res[0].data.tmCartypeProId)[0].tmCartypeProName;
+          console.log('this.fromGroupName', this.fromGroupName,res[4].data)
         }else{
           iMessage.error(result4);
         }

@@ -256,6 +256,7 @@
         'LK_YONGHUMING': 'UserName',// 用户名
         'LK_ZHUANPAICHENGGONG': 'Turn sent successfully',// 转派成功
         'LK_AEKOHAO': 'AEKO No.',//Aeko号
+        'LK_XINDEAEKOHAO': 'AEKO No',    //  AEKO号
         'LK_BDLLIEBIAO': 'BDL List',//BDL列表
         'LK_BMG': 'BMG',//BMG
         'LK_BOMDANXINXI': 'BOM information',//BOM单信息
@@ -269,6 +270,7 @@
         'LK_FS_GSHAO': 'FS/GS No.',//FS/GS号
         'LK_FSHAO': 'FS No.',//FS号
         'LK_INBOUNDWULIUFANGSHI': 'INBOUND Logistics Mode',//INBOUND物流方式
+        'LK_XINDELINIE': 'Linie',
         'LK_LINIE': 'Linie',//Linie
         'LK_LINIEBEIZHU': 'Linie Remark',//Linie备注
         'LK_LINIEBUMEN': 'Linie Department',//LINIE部门
@@ -773,7 +775,6 @@
         'LK_SHIFOUZUOGUOCOMMONSOURING': 'Common Sourcing',//是否做过Common Sourcing
         'LK_CommonSourcing': 'Common Sourcing',
         'LK_MOJUSHUXIN': 'Mold Property',//模具属性
-        // 'LK_LINIE': 'Linie',//LINIE
         'LK_ZP': 'ZP',//ZP
         'LK_CANKAOCHEXINXIANGMU': 'Refer Project',//参考⻋型项⽬
         'LK_CANKAOCHEXINXIANGMUYI': '1st Refer',//参考⻋型项⽬⼀
@@ -937,7 +938,7 @@
         'LK_BMDANJINE':  'BM单金额', //  BM单金额
         'LK_BMZHUANGTAI': 'BM单状态',   //  BM单状态
         'LK_DINGDIANLEIXING': '定点类型',   //  定点类型
-        'LK_AEKOZENGZHIJINE': 'Aeko增值金额',  //  Aeko增值金额
+        'LK_AEKOZENGZHIJINE': 'AEKO增值金额',  //  Aeko增值金额
         'LK_XIAZAIQINGDAN': '下载清单', //  下载清单
         'LK_QUERENSHENQING': '确认申请',    //  确认申请
         'LK_ZUOFEI': '作废', // 作废
