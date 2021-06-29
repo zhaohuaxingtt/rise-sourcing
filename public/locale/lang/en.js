@@ -993,8 +993,8 @@
         'LK_YIYUE': 'Jan',    //  一月
         'LK_ERYUE': 'Feb',    //  二月
         'LK_SANYUE': 'Mar',    //  三月
-        'LK_WUYUE': 'Apr',    //  四月
-        'LK_YIYUE': 'May',    //  五月
+        'LK_SIYUE': 'Apr',    //  四月
+        'LK_WUYUE': 'May',    //  五月
         'LK_LIUYUE': 'Jun',    //  六月
         'LK_QIYUE': 'Jul',    //  七月
         'LK_BAYUE': 'Aug',    //  八月
