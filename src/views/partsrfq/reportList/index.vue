@@ -89,10 +89,13 @@
 			// 打开导出弹窗
 			openExport(){
 				this.selectAllData=this.$refs.specialTools.selectData
-				if (this.selectAllData.length<11) {
-					this.visible=true
+				console.log(this.selectAllData.length);
+				if (this.selectAllData.length == 0) {
+					iMessage.error(this.$t('TPZS.CANNOTSELECT'))
+				}else if(this.selectAllData.length>10){
+					iMessage.error(this.$t('TPZS.ZDDCBG'))
 				}else{
-					iMessage.error($t('TPZS.ZDDCBG'))
+					this.visible=true
 				}
 			},
 			//搜索
