@@ -318,6 +318,7 @@ export default {
       saveMonthData(param).then(res => {
         if (Number(res.code) === 0) {
           this.pageEdit = false;
+          this.noChangeTableListData = cloneDeep(this.tableListData);
           return iMessage.success(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
         } else {
           return iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
