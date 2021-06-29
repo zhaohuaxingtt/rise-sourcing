@@ -187,6 +187,7 @@ export const staticRouter = [{
             {
                 path: '/tooling/investmentAdmin',
                 name: 'toolingModelDetails',
+                redirect: '/tooling/investmentAdmin/payBlock',
                 meta: {
                     title: '模具投资付款管理员'
                 },
