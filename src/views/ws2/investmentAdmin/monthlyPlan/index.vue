@@ -348,6 +348,7 @@ export default {
         const chart = echarts().init(document.getElementById("echart"));
         let series = [];
         let colorList = [];
+        let monthTotal = (new Array(12)).fill(0);
         if (this.fromTable) {
           colorList = ["#D8D9FD", "#DFE3FF", "#D8E5FF", "#DDEDFC", "#E8F6FF"];
           colorList.splice(this.selectIndex - 1, 0, "#0053EF");
@@ -379,19 +380,10 @@ export default {
               show: false,
             };
           }
-
-          data.push(element.planAmountM1);
-          data.push(element.planAmountM2);
-          data.push(element.planAmountM3);
-          data.push(element.planAmountM4);
-          data.push(element.planAmountM5);
-          data.push(element.planAmountM6);
-          data.push(element.planAmountM7);
-          data.push(element.planAmountM8);
-          data.push(element.planAmountM9);
-          data.push(element.planAmountM10);
-          data.push(element.planAmountM11);
-          data.push(element.planAmountM12);
+          for (let monthIndex = 0; monthIndex < 12; monthIndex++) {
+            monthTotal[monthIndex] += element[`planAmountM${monthIndex + 1}`];
+            data.push(element[`planAmountM${monthIndex + 1}`]);
+          }
           temp.emphasis = {
             focus: "series",
           };
@@ -404,6 +396,26 @@ export default {
             };
           }
           series.unshift(temp);
+        });
+        series.unshift({//monthTotal
+          name: "total",
+          type: "bar",
+          barWidth: 50,
+          barGap: '-100%',
+          itemStyle: {
+            normal: {
+              color: 'rgba(128, 128, 128, 0)'   // 设置背景颜色为透明
+            }
+          },
+          label: {                 
+            normal: {
+              show: true, //显示数值
+              position: 'top',       //  位置设为top
+              formatter: '{c}',
+              textStyle: { color: '#7E84A3' } //设置数值颜色
+            }
+          },
+          data: monthTotal
         });
         let option = {
           tooltip: {
@@ -480,6 +492,7 @@ export default {
         chart.on("mouseover", function (params) {
           let optionTemp = cloneDeep(option);
           let colorTempList = [
+            "rgba(128, 128, 128, 0)",
             "#D8D9FD",
             "#DFE3FF",
             "#D8E5FF",
