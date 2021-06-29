@@ -130,6 +130,7 @@
       :value="value"
       @sure="sure"
       @close="closeDialog"
+      @handleSelectionChange="handleSelectionChange"
     ></findingParts>
     <preview
       :value="pre"
@@ -248,6 +249,9 @@ export default {
         spareParts:[]
       }
       this.getChartData()
+    },
+    handleSelectionChange(val){
+      console.log(val)
     },
     searchChartData(){
       getBobLevelOne({
