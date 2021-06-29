@@ -1,7 +1,7 @@
 /*
  * @Author: HaoJiang
  * @Date: 2021-05-20 14:29:09
- * @LastEditTime: 2021-06-24 17:52:42
+ * @LastEditTime: 2021-06-29 13:57:39
  * @LastEditors: Please set LastEditors
  * @Description: sel上会复核
  *
@@ -150,7 +150,7 @@ export const signMenu = [
   {
     name: '新建签字单',
     key: 'nominationLanguage.XinJianQianZiDan',
-    path: '/sourcing/partsnomination/newSignSheet'
+    path: '/sourcing/partsnomination/signSheet/details?mode=add'
   },
   {
     name: 'M签字单列表',

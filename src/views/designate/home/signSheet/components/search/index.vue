@@ -1,7 +1,7 @@
 <!--
  * @Author: Haojiang
  * @Date: 2021-06-28 09:29:08
- * @LastEditTime: 2021-06-28 11:13:08
+ * @LastEditTime: 2021-06-29 14:04:16
  * @LastEditors: Please set LastEditors
  * @Description: m签字单搜索
  * @FilePath: /front-web/src/views/designate/home/signSheet/components/search/index.vue
@@ -37,8 +37,8 @@
           :placeholder="language('LK_QINGSHURU','请输入')"
         ></iInput>
       </el-form-item>
-      <!-- LINE -->
-      <el-form-item label="LINE">
+      <!-- LINIE -->
+      <el-form-item label="LINIE">
         <iInput
           v-model="form.linieName"
           :placeholder="language('LK_QINGSHURU','请输入')"

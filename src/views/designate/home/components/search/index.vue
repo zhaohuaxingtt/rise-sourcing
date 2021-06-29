@@ -90,8 +90,8 @@
           :placeholder="language('LK_QINGSHURU','请输入')"
         ></iInput>
       </el-form-item>
-      <!-- LINE -->
-      <el-form-item label="LINE">
+      <!-- LINIE -->
+      <el-form-item label="LINIE">
         <iInput
           v-model="form.linieNameZh"
           :placeholder="language('LK_QINGSHURU','请输入')"
