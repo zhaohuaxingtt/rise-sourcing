@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 11:38:57
- * @LastEditTime: 2021-06-28 14:42:56
+ * @LastEditTime: 2021-06-28 21:00:04
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails\table1.vue
@@ -32,17 +32,16 @@
         align="center"
         :width="i.prop=='title'?'200':''"
       >
-        <el-table-column
+        <!-- <el-table-column
           v-for="item in i.children"
           :key="item.id"
           :label="item.label"
           :prop="item.prop"
           align="center"
           :show-header="false"
-          
         >
-        </el-table-column>
-        <!-- <template slot-scope="scope">
+        </el-table-column> -->
+        <template slot-scope="scope">
           <span v-if="testing(scope.row[i.prop])" class="flex">
             <span
               v-for="(item, index) in scope.row[i.prop]"
@@ -53,9 +52,10 @@
               >{{ item }}</span>
           </span>
           <span v-else>
-            <span>{{ scope.row[i.prop] }}</span>
+            <span  :class="checkClass(item, scope, index)"
+              @click="clickCol(item, scope, index)">{{ scope.row[i.prop] }}</span>
           </span>
-        </template> -->
+        </template>
       </el-table-column>
     </el-table>
   </div>
@@ -178,9 +178,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-::v-deep .el-table tr:nth-child(even){
-    display: none;
-}
+// ::v-deep .el-table tr:nth-child(even){
+//     display: none;
+// }
 </style>
 <style lang="scss">
 .addcss {

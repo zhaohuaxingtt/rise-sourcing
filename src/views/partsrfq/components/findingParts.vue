@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-17 11:40:10
- * @LastEditTime: 2021-06-28 16:27:56
+ * @LastEditTime: 2021-06-28 20:47:40
  * @LastEditors: Please set LastEditors
  * @Description: 查找零件弹窗
  * @FilePath: \front-web\src\views\partsrfq\components\findingPart.vue
@@ -22,7 +22,9 @@
       >
         <el-form>
           <el-form-item :label="$t('LK_CAILIAOZU')">
-            <iSelect v-model="form.categoryCode"></iSelect>
+            <iSelect v-model="form.categoryCode">
+                <el-option value='' label='全部' v-for=""></el-option>
+            </iSelect>
           </el-form-item>
           <el-form-item :label="$t('LK_RFQHAO')">
             <iInput
@@ -95,13 +97,6 @@ export default {
   data() {
     return {
       confirmTableData: [
-        {
-          id: 1,
-          rfqName: "aaa",
-        },
-        {
-          id: 2,
-        },
       ],
       confirmTableHead,
       form: {
@@ -119,11 +114,18 @@ export default {
   methods: {
     pagePart(){
      pagePart(this.form).then((res)=>{
-       console.log(res)
+        if(res.code==="200"){
+          this.confirmTableData=res.data
+          this.confirmTableData.forEach((value, index) => {
+            value.index=index+1
+          })
+          console.log(this.confirmTableData)
+        }
      }).catch((e) => {
        
      })
     },
+    
     clearDiolog() {
       console.log(111)
       this.$emit("close", false);
