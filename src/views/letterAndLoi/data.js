@@ -52,7 +52,7 @@ export const letterListTitle=[
   { props: "supplierNum", name: "供应商号", key: "nominationSupplier.GongYingShangHao", tooltip: true },
   { props: "supplierSapNum", name: "供应商SAP号", key: "LK_GONGYINGSHANGSAPHAO", tooltip: true },
   { props: "supplierName", name: "供应商名称", key: "LK_GONGYINGSHANGMINGCHENG", tooltip: true },
-  { props: "statusDesc", name: "定点信状态", key: "LK_DINGDIANXINZHUANGTAI", tooltip: true },
+  { props: "status", name: "定点信状态", key: "LK_DINGDIANXINZHUANGTAI", tooltip: true },
   { props: "supplierResult", name: "供应商反馈", key: "LK_GONGYINGSHANGFANKUI", tooltip: true },
   { props: "fsName", name: "询价采购员", key: "costanalysismanage.XunJiaCaiGouYuan", tooltip: true },
   { props: "linieName", name: "LINIE", key: "LK_LINIE", tooltip: true },

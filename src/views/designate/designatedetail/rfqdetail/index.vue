@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-21 09:23:11
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-25 11:49:07
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-06-28 18:41:12
  * @Description: RFQ & 零件清单界面
  * @FilePath: \front-web\src\views\designate\designatedetail\rfqdetail\index.vue
 -->
@@ -38,7 +38,7 @@
     </iCard>
     <iCard class="margin-top20" >
       <div class="margin-bottom20 clearFloat">
-        <span class="font18 font-weight">{{language('LINGJIANQINGDAN','零件清单')}}</span>
+        <span class="font18 font-weight">{{language('LK_LINGJIANQINGDAN','零件清单')}}</span>
         <div class="floatright">
           <!--------------------保存按钮----------------------------------->
           <iButton @click="saveParts">{{language('BAOCUN','保存')}}</iButton>

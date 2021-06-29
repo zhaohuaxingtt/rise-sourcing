@@ -88,13 +88,13 @@ export default { //
         getMemberList(){
             // tagId: 4 专业采购员，10 前期采购员
            getBuyers({tagId:4}).then((res)=>{
-               const { code,data={} } = res;
+               const { code,data=[] } = res;
                if(code ==200){
                    this.linieList = data;
                }
             })
             getBuyers({tagId:10}).then((res)=>{
-                const { code,data={} } = res;
+                const { code,data=[] } = res;
                if(code ==200){
                    this.cfList = data;
                }
@@ -108,7 +108,7 @@ export default { //
             if(!targetCf || !targetLinie){
                 iMessage.warn(this.language('LK_QINGXUANZE','请选择'));
             }
-            const nominateLetterIds = (selectItems.map((item)=>item.nominateLetterId)).join();
+            const nominateLetterIds = selectItems.map((item)=>item.nominateLetterId);
             const data = {
                 ...turnSendFrom,
                 nominateLetterIds,
@@ -119,6 +119,8 @@ export default { //
                     iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
                     this.clearDialog();
                     this.$emit('getList');
+                }else{
+                    iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
                 }
             })
         },
