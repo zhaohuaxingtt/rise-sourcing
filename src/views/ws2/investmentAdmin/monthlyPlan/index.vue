@@ -16,8 +16,10 @@
           :key="index"
         ></el-option>
       </iSelect>
-      <icon class="refreshIcon" @click="handleRefresh" symbol name="iconmojukanbanshuaxin" />
-      <span class="refresh cursor" @click="handleRefresh">{{ $t('LK_SHUAXIN') }}</span>
+      <div @click="handleRefresh">
+        <icon class="refreshIcon" symbol name="iconmojukanbanshuaxin" />
+        <span class="refresh cursor">{{ $t('LK_SHUAXIN') }}</span>
+      </div>
       <span class="refreshTime">{{ $t('LK_SHUAXINRIQI') }}：{{ translateData(versionData.updateDate) }}</span>
       <div v-if="pageEdit">
         <iButton @click="exitEdit">{{ $t("LK_TUICHUBIANJI") }}</iButton>
@@ -117,7 +119,7 @@
             v-model="scope.row.planAmountM1"
             :placeholder="$t('LK_QINGSHURU')"
             v-if="pageEdit"
-            @input="handleInputChange(scope.row)"
+            @input="handleInputChange(scope.row, 'planAmountM1')"
           ></iInput>
           <div v-if="!pageEdit">{{ scope.row.planAmountM1 }}</div>
         </template>
@@ -126,7 +128,7 @@
             v-model="scope.row.planAmountM2"
             :placeholder="$t('LK_QINGSHURU')"
             v-if="pageEdit"
-            @input="handleInputChange(scope.row)"
+            @input="handleInputChange(scope.row, 'planAmountM2')"
           ></iInput>
           <div v-if="!pageEdit">{{ scope.row.planAmountM2 }}</div>
         </template>
@@ -135,7 +137,7 @@
             v-model="scope.row.planAmountM3"
             :placeholder="$t('LK_QINGSHURU')"
             v-if="pageEdit"
-            @input="handleInputChange(scope.row)"
+            @input="handleInputChange(scope.row, 'planAmountM3')"
           ></iInput>
           <div v-if="!pageEdit">{{ scope.row.planAmountM3 }}</div>
         </template>
@@ -144,7 +146,7 @@
             v-model="scope.row.planAmountM4"
             :placeholder="$t('LK_QINGSHURU')"
             v-if="pageEdit"
-            @input="handleInputChange(scope.row)"
+            @input="handleInputChange(scope.row, 'planAmountM4')"
           ></iInput>
           <div v-if="!pageEdit">{{ scope.row.planAmountM4 }}</div>
         </template>
@@ -153,7 +155,7 @@
             v-model="scope.row.planAmountM5"
             :placeholder="$t('LK_QINGSHURU')"
             v-if="pageEdit"
-            @input="handleInputChange(scope.row)"
+            @input="handleInputChange(scope.row, 'planAmountM5')"
           ></iInput>
           <div v-if="!pageEdit">{{ scope.row.planAmountM5 }}</div>
         </template>
@@ -162,7 +164,7 @@
             v-model="scope.row.planAmountM6"
             :placeholder="$t('LK_QINGSHURU')"
             v-if="pageEdit"
-            @input="handleInputChange(scope.row)"
+            @input="handleInputChange(scope.row, 'planAmountM6')"
           ></iInput>
           <div v-if="!pageEdit">{{ scope.row.planAmountM6 }}</div>
         </template>
@@ -171,7 +173,7 @@
             v-model="scope.row.planAmountM7"
             :placeholder="$t('LK_QINGSHURU')"
             v-if="pageEdit"
-            @input="handleInputChange(scope.row)"
+            @input="handleInputChange(scope.row, 'planAmountM7')"
           ></iInput>
           <div v-if="!pageEdit">{{ scope.row.planAmountM7 }}</div>
         </template>
@@ -180,7 +182,7 @@
             v-model="scope.row.planAmountM8"
             :placeholder="$t('LK_QINGSHURU')"
             v-if="pageEdit"
-            @input="handleInputChange(scope.row)"
+            @input="handleInputChange(scope.row, 'planAmountM8')"
           ></iInput>
           <div v-if="!pageEdit">{{ scope.row.planAmountM8 }}</div>
         </template>
@@ -189,7 +191,7 @@
             v-model="scope.row.planAmountM9"
             :placeholder="$t('LK_QINGSHURU')"
             v-if="pageEdit"
-            @input="handleInputChange(scope.row)"
+            @input="handleInputChange(scope.row, 'planAmountM9')"
           ></iInput>
           <div v-if="!pageEdit">{{ scope.row.planAmountM9 }}</div>
         </template>
@@ -198,7 +200,7 @@
             v-model="scope.row.planAmountM10"
             :placeholder="$t('LK_QINGSHURU')"
             v-if="pageEdit"
-            @input="handleInputChange(scope.row)"
+            @input="handleInputChange(scope.row, 'planAmountM10')"
           ></iInput>
           <div v-if="!pageEdit">{{ scope.row.planAmountM10 }}</div>
         </template>
@@ -207,7 +209,7 @@
             v-model="scope.row.planAmountM11"
             :placeholder="$t('LK_QINGSHURU')"
             v-if="pageEdit"
-            @input="handleInputChange(scope.row)"
+            @input="handleInputChange(scope.row, 'planAmountM11')"
           ></iInput>
           <div v-if="!pageEdit">{{ scope.row.planAmountM11 }}</div>
         </template>
@@ -216,7 +218,7 @@
             v-model="scope.row.planAmountM12"
             :placeholder="$t('LK_QINGSHURU')"
             v-if="pageEdit"
-            @input="handleInputChange(scope.row)"
+            @input="handleInputChange(scope.row, 'planAmountM12')"
           ></iInput>
           <div v-if="!pageEdit">{{ scope.row.planAmountM12 }}</div>
         </template>
@@ -502,7 +504,8 @@ export default {
         });
       });
     },
-    handleInputChange(row) {
+    handleInputChange(row, key) {
+      row[key] = row[key].replace(/[^\d.]/g,'');
       row.amount = 0;
       row.amount =
         Number(row.planAmountM1) +
@@ -683,7 +686,7 @@ export default {
   }
 
   .refreshIcon {
-    margin-left: 30px;
+    margin-left: 10px;
     margin-right: 10px;
     width: 15px;
     height: 15px;
