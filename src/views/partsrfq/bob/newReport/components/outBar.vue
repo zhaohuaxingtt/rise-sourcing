@@ -14,6 +14,10 @@ export default {
               
             ]
         },
+        preview:{
+          type:Boolean,
+          default:true
+        }
     },
     data(){
         return {
@@ -61,6 +65,7 @@ export default {
       // 绘制图表
       const option = {
           title:{
+            show:this.preview,
             text:'{del|}',
             left:'right',
             top:20,
@@ -137,7 +142,7 @@ export default {
     },
     initData(newVal){
       if(newVal){
-              console.log(newVal)
+              // console.log(newVal)
               this.chartArray=newVal
               this.labelArray=[]
               this.dataArray=[]
@@ -149,7 +154,11 @@ export default {
                 if(this.by==='num'){
                   name=row.spareParts
                 }
-                const str=name+'\t{bobChange|}\n第{Blue|'+row.turn+'}/'+row.totalTurn+'轮\n\n\n\n'
+                let img='\t{bobChange|}'
+                if(!this.preview){
+                  img=''
+                }
+                const str=name+img+'\n第{Blue|'+row.turn+'}/'+row.totalTurn+'轮\n\n\n\n'
                 this.labelArray.push({
                   value:str,
                   textStyle:{
@@ -184,7 +193,7 @@ export default {
                   // console.log(dataList1)
                 })
               })
-              console.log(tempArr)
+              // console.log(tempArr)
               const minList=[]
               this.legendArray.forEach((row,i)=>{
                 const dataList0=this.cloneDeep(tempArr[row])
@@ -264,6 +273,7 @@ export default {
   watch:{
     title:{
       handler(str){
+        console.log()
         if(this.$refs.chart&&this.chartArray.length>0){
             this.initCharts();
         }
@@ -273,21 +283,23 @@ export default {
     by:{
       handler(str){
         this.initData(this.chartData)
-      },
-      immediate:true
+      }
     },
     type:{
       handler(str){
         this.initData(this.chartData)
-      },
-      immediate:true
+      }
     },
       chartData:{
           handler(newVal){
-              this.initData(newVal)
+              if(newVal&&newVal.length>0){
+                this.initData(newVal)
+              }
+              
                 
             },
-            immediate:true,
+            deep:true,
+            immediate:true
       }
   }
 };
