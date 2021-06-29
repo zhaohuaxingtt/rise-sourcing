@@ -288,11 +288,12 @@ module.exports = {
                 }
             },
             '/ws2Api': { // ws2Api.../ 王鹏霄
+								// target: 'http://0fba5e3347c7.ngrok.io',
                 // target: 'http://rise-front-web.apps.vmocp-dev.csvw',    //  sit
                 // target: 'http://192.168.50.183:8022',    //  鑫哥
-                // target: 'http://192.168.50.56:8022',    //  霄哥
+                // target: 'http://192.168.50.58:8022',    //  霄哥
                 target: 'http://10.122.18.166:8022',    //  dev
-                // target: 'http://192.168.50.160:8022',// 圆圆
+                // target: 'http://192.168.50.165:8022',// 圆圆
                 // target: 'http://192.168.50.40:8022',// 立立
                 // target: 'http://cbbbc967414f.ngrok.io',
                 changeOrigin: true,
