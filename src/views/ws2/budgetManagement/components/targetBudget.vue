@@ -8,7 +8,7 @@
       <div class="text">{{ $t(title) }}</div>
     </div>
     <div class="info">
-      {{ fixedAssignmentInfo }}
+      {{ targetBudgetInfo }}
     </div>
     <iTableList
         v-loading="tableListLoading"
@@ -50,7 +50,7 @@ export default {
     title: {type: String, default: '目标预算详情'},
     value: {type: Boolean},
     id: {type: String, default: ''},
-    fixedAssignmentInfo: {type: String, default: ''},
+    targetBudgetInfo: {type: String, default: ''},
   },
   data() {
     return {
@@ -89,6 +89,7 @@ export default {
   watch: {
     value(val){
       if(val){
+        console.log(this.targetBudgetInfo)
         this.partsPackageBudgetDetail()
       }
     }
@@ -111,7 +112,13 @@ export default {
     line-height: 25px;
   }
 }
+.info{
+  font-size: 16px;
+  color: #000000;
+  margin-bottom: 10px;
+}
 .TOTAL{
+  color: #000000;
   font-size: 16px;
   font-weight: bold;
   display: flex;

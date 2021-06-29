@@ -254,3 +254,20 @@ export const targetBudgeTableTitle = [
         tooltip: false
     },
 ]
+
+export const fixedAssignmentTitle = [
+    {
+        props: 'carTypeProName',
+        name: '车型项目',
+        key: '车型项目',
+        width: 150,
+        tooltip: false
+    },
+    {
+        props: 'amount',
+        name: '分配值（百万元）',
+        key: '分配值（百万元）',
+        width: 180,
+        tooltip: false
+    },
+]

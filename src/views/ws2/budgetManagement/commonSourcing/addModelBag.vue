@@ -141,7 +141,7 @@
             <div class="linkStyle"><span @click="clicktargetBudgetTotal(scope.row)">{{ getTousandNum(scope.row.targetBudgetTotal) }}</span></div>
           </template>
           <template #fixedPointAllotTotal="scope">
-            <div class="linkStyle"><span @click="clickfixedPointAllotTotal(scope.row.id)">{{ getTousandNum(scope.row.fixedPointAllotTotal) }}</span></div>
+            <div class="linkStyle"><span @click="clickfixedPointAllotTotal(scope.row)">{{ getTousandNum(scope.row.fixedPointAllotTotal) }}</span></div>
           </template>
         </iTableList>
       </iCard>
@@ -149,11 +149,13 @@
     <targetBudget
         v-model="targetBudgetShow"
         :id="targetBudgetId"
+        :targetBudgetInfo="targetBudgetInfo"
     ></targetBudget>
     <fixedAssignment
         v-model="fixedAssignmentShow"
         :id="fixedAssignmentId"
         :fixedAssignmentInfo="fixedAssignmentInfo"
+        @fixedAssignmentSave="getCommonSourcingView"
     ></fixedAssignment>
   </div>
 </template>
@@ -206,6 +208,7 @@ export default {
       targetBudgetId: '',
       fixedAssignmentId: '',
       fixedAssignmentInfo: '',
+      targetBudgetInfo: '',
       tableListData: [],
        carTypeBudgetDetailVOSCount: [],
       tableTitle: addModelBagTitle,
@@ -430,18 +433,22 @@ export default {
           this.$nextTick(() => {
             carTypeBudgetDetailVOS.map((item, index) => {
               let key = index + 2
-              // let series = [item.budget, item.pendingAllocate, item.allocated, item.fixed]
+              let series = [item.budget, item.pendingAllocate, item.allocated, item.fixed]
               let seriesPop = [item.budgetCount, item.pendingAllocateCount, item.allocatedCount, item.fixed]
-              let series = [9000000, 8000000, 1000000, 500000]
+              // let series = [9000000, 8000000, 1000000, 500000]
               let seriesTemp = [0, series[0] - series[1], 0, 0]
               const chart = echarts().init(document.getElementById("chart" + key));
               let option = {
                 tooltip: {
                   formatter: function (params) {//这里就是控制显示的样式
-                    return `<div style="font-size: 12px; text-align: center">
+                    if(params.dataIndex === 3){
+                      return
+                    } else {
+                      return `<div style="font-size: 12px; text-align: center">
                               <div style="color: #131523;">零件包</div>
                               <div style="color: #1660F1;">${seriesPop[params.dataIndex]}</div>
                             </div>`
+                    }
                   },
                   backgroundColor: '#ffffff',
                   extraCssText: 'color: #1B1D21; box-shadow: 0px 0px 20px rgba(27, 29, 33, 0.12);'
@@ -660,14 +667,16 @@ export default {
     clicktargetBudgetTotal(row){
       this.targetBudgetShow = true
       this.targetBudgetId = row.id
-      console.log(this.materialGroupList.find(item => Number(item.id) === Number(row.categoryId)))
-      let info = this.materialGroupList.find(item => Number(item.id) === Number(row.categoryId)).value + ' ' + row.partNameZh
-      this.fixedAssignmentInfo = info
-      console.log(info)
+      let category = this.materialGroupList.find(item => Number(item.id) === Number(row.categoryId))
+      let info = (category ? category.value : '') + ' ' + row.partNameZh
+      this.targetBudgetInfo = info
     },
-    clickfixedPointAllotTotal(id){
+    clickfixedPointAllotTotal(row){
       this.fixedAssignmentShow = true
-      this.fixedAssignmentId = id
+      this.fixedAssignmentId = row.id
+      let category = this.materialGroupList.find(item => Number(item.id) === Number(row.categoryId))
+      let info = (category ? category.value : '') + ' ' + row.partNameZh
+      this.fixedAssignmentInfo = info
     }
   }
 }

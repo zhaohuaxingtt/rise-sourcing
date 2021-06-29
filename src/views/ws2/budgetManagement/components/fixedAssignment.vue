@@ -7,6 +7,9 @@
     <div slot="title" class="title">
       <div class="text">{{ $t(title) }}</div>
     </div>
+    <div class="info">
+      {{ fixedAssignmentInfo }}
+    </div>
     <iTableList
         v-loading="tableListLoading"
         :tableData="tableListData"
@@ -31,12 +34,13 @@
 import {iDialog, iSearch, iInput, iButton, icon, iMessage} from 'rise'
 import {Popover} from "element-ui"
 import {pageMixins} from "@/utils/pageMixins";
-import {targetBudgeTableTitle} from "pages/ws2/dataBase/components/data";
+import {fixedAssignmentTitle} from "pages/ws2/dataBase/components/data";
 import {
   iTableList
 } from "@/components"
 import {
-  partsPackageBudgetDetail
+  partsPackageShareDetail,
+  updatePackageShareAmount
 } from '@/api/ws2/commonSourcing'
 
 export default {
@@ -51,21 +55,22 @@ export default {
     title: {type: String, default: '定点预分配详情'},
     value: {type: Boolean},
     id: {type: String, default: ''},
+    fixedAssignmentInfo: {type: String, default: ''},
   },
   data() {
     return {
       tableTotal: '',
       tableListLoading: false,
       tableListData: '',
-      tableTitle: targetBudgeTableTitle,
+      tableTitle: fixedAssignmentTitle,
     }
   },
   mounted() {
   },
   methods: {
-    partsPackageBudgetDetail(){
+    partsPackageShareDetail(){
       this.tableListLoading = true
-      partsPackageBudgetDetail(this.id).then((res) => {
+      partsPackageShareDetail(this.id).then((res) => {
         const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
         if (Number(res.code) === 0) {
           this.tableListData = res.data
@@ -82,14 +87,29 @@ export default {
       this.$emit('input', false)
     },
     save() {
-      this.$emit('input', false)
-      this.$emit('conversionSave', this.tableListData)
+      this.tableListLoading = true
+      updatePackageShareAmount({
+        packageDetailAmountVOList: this.tableListData,
+        partsPackageId: this.id
+      }).then((res) => {
+        const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
+        if (Number(res.code) === 0) {
+          iMessage.success(result);
+          this.$emit('input', false)
+          this.$emit('fixedAssignmentSave')
+        } else {
+          iMessage.error(result);
+        }
+        this.tableListLoading = false
+      }).catch(err => {
+        this.tableListLoading = false
+      })
     },
   },
   watch: {
     value(val){
       if(val){
-        this.partsPackageBudgetDetail()
+        this.partsPackageShareDetail()
       }
     }
   }
@@ -111,7 +131,13 @@ export default {
     line-height: 25px;
   }
 }
+.info{
+  font-size: 16px;
+  color: #000000;
+  margin-bottom: 10px;
+}
 .TOTAL{
+  color: #000000;
   font-size: 16px;
   font-weight: bold;
   display: flex;

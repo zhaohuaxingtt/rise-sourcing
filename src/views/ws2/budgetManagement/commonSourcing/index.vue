@@ -9,15 +9,15 @@
       </div>
       <Upload
           class="upload-demo"
+          ref="uploadRef"
           :action="actionUrl"
           :on-change="beforeUpload"
           :on-success="onSuccess"
           :before-upload="beforeAvatarUpload"
           :before-remove="beforeRemove"
-          multiple
           :limit="1"
           :show-file-list="false"
-          :file-list="fileList">
+          :file-list="uploadFiles">
         <iButton icon="el-icon-circle-plus-outline" type="primary">新增车型项目</iButton>
       </Upload>
     </div>
@@ -84,16 +84,29 @@ export default {
   methods: {
     onSuccess(res){
       const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
+      this.$refs['uploadRef'].clearFiles();
       if (Number(res.code) === 0) {
-        this.pageCarTypePackage()
+        this.$router.push({
+          path: '/tooling/budgetManagement/addModelBag',
+          query: {
+            carTypePackageId: res.data.carTypePackageId
+          }
+        })
         iMessage.success(result);
       } else {
         iMessage.error(result);
       }
       this.mainLoading = false
     },
-    beforeAvatarUpload(){
-      this.mainLoading = true
+    beforeAvatarUpload(file) {
+      this.mainLoading = true;
+      let FileExt = file.name.replace(/.+\./, "").toLowerCase();
+      let flag = ["xls", "xlsx"].includes(FileExt);
+      if (!flag) {
+        this.mainLoading = false;
+        iMessage.error("只能上传excel文件!");
+      }
+      return flag;
     },
     toBagList(carTypePackageId){
       this.$router.push({

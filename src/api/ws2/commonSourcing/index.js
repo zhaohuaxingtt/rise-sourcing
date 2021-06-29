@@ -60,6 +60,14 @@ export function sendToAdmin(parmars) {
         data: parmars
     })
 }
+//修改定点分配详情信息
+export function updatePackageShareAmount(parmars) {
+    return VUE_APP_CSBUDGET({
+        url: '/updatePackageShareAmount',
+        method: 'POST',
+        data: parmars
+    })
+}
 //车型包下拉信息
 export function carTypePackageCombo(parmars) {
     return VUE_APP_CSBUDGET({
