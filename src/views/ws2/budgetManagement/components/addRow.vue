@@ -55,8 +55,8 @@
                 @change="sure"
             >
               <el-option
-                  :value="item.commodityName"
-                  :label="item.commodityName"
+                  :value="item.commodity"
+                  :label="item.commodity"
                   v-for="(item, index) in DeptPullDown"
                   :key="index"
               ></el-option>

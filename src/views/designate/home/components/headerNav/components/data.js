@@ -1,28 +1,27 @@
 /*
  * @Author: HaoJiang
  * @Date: 2021-05-20 14:29:09
- * @LastEditTime: 2021-05-20 14:24:02
+ * @LastEditTime: 2021-06-30 13:56:08
  * @LastEditors: Please set LastEditors
  * @Description: 定点申请头部
  *
  */
-import Vue from 'vue'
-
 export const TAB = [
   {
     value: 1,
-    label: '定点管理',
-    key: Vue.prototype.$t('nominationLanguage.DingDianGuanLi'),
-    url: '/nomination',
-    message: 0
+    name: '寻源执行',
+    message: 0,
+    url: '/sourcing/partsign',
+    activePath: 'partsign',
+    key: 'XUANYUANCAIDAN'
   },
-  {
-    value: 2,
-    label: '进度监控',
-    key: Vue.prototype.$t('partsignLanguage.JinDuJianKong'),
-    url: '/nomination',
-    message: 0
-  }
+  // {
+  //   value: 2,
+  //   label: '进度监控',
+  //   key: Vue.prototype.$t('partsignLanguage.JinDuJianKong'),
+  //   url: '/nomination',
+  //   message: 0
+  // }
 ]
 
 export const MENU = [
@@ -89,5 +88,18 @@ export const MENU = [
     url: '/sourcing/partsnomination',
     activePath: 'partsnomination',
     key: 'LK_DINGDIANGUANLI'
+  },
+]
+
+export const heaederSubMenu = [
+  {
+    key:'nomination',
+    name:'定点申请综合管理',
+    path:'/sourcing/partsnomination'
+  },
+  {
+    key:'rsReview',
+    name:'上会RS单复核',
+    path:'/sourcing/partsnomination/rsReview'
   },
 ]

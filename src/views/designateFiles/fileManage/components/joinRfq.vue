@@ -2,14 +2,14 @@
  * @Author: Luoshuang
  * @Date: 2021-06-05 14:14:49
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-07 16:21:33
+ * @LastEditTime: 2021-06-25 14:19:44
  * @Description: 加入已有rfq
  * @FilePath: \front-web\src\views\designateFiles\fileManage\components\joinRfq.vue
 -->
 
 <template>
   <iDialog 
-    title="加入已有RFQ"
+    :title="language('JIARUYIYOURFQ','加入已有RFQ')"
     :visible.sync="dialogVisible"
     @close="clearDialog"
     width="90%"
@@ -21,28 +21,28 @@
     <iSearch class="margin-bottom20" :icon="false" @reset="handleSearchReset" @sure="getTableList"
               :resetKey="PARTSRFQ_RESET" :searchKey="PARTSRFQ_SEARCH">
       <el-form>
-        <el-form-item :label="$t('LK_LINGJIANHAO_FSNR_RFQBIANHAO_CAIGOUYUAN')" style="width: 340px">
-          <iInput :placeholder="$t('LK_QINGXUANZE')" v-model="form.searchConditions"
+        <el-form-item :label="language('LINGJIANHAO_FSNR_RFQBIANHAO_CAIGOUYUAN','零件号/FSNR/RFQ编号/采购员')" style="width: 340px">
+          <iInput :placeholder="language('QINGSHURU','请输入')" v-model="form.searchConditions"
                   v-permission="PARTSRFQ_SEARCHBOX"></iInput>
         </el-form-item>
-        <el-form-item :label="$t('LK_CHEXINGXIANGMU')">
-          <iSelect :placeholder="$t('LK_QINGXUANZE')" v-model="form.carType"
+        <el-form-item :label="language('CHEXINGXIANGMU','车型项目')">
+          <iSelect :placeholder="language('QINGXUANZE','请选择')" v-model="form.carType"
                     v-permission="PARTSRFQ_MODELPROJECT">
-            <el-option value="" :label="$t('all') | capitalizeFilter"></el-option>
+            <el-option value="" :label="language('ALL','全部') | capitalizeFilter"></el-option>
             <el-option v-for="items in carTypeOptions" :key='items.code' :value='items.code' :label="items.name"/>
           </iSelect>
         </el-form-item>
-        <el-form-item :label="$t('LK_RFQZHUANGTAI')">
-          <iSelect :placeholder="$t('LK_QINGXUANZE')" v-model="form.rfqStatus"
+        <el-form-item :label="language('RFQZHUANGTAI','RFQ状态')">
+          <iSelect :placeholder="language('QINGXUANZE','请选择')" v-model="form.rfqStatus"
                     v-permission="PARTSRFQ_RFQSTATUS">
-            <el-option value="" :label="$t('all') | capitalizeFilter"></el-option>
+            <el-option value="" :label="language('ALL','全部') | capitalizeFilter"></el-option>
             <el-option v-for="items in rfqStatusOptions" :key='items.code' :value='items.code'
                         :label="items.name"/>
           </iSelect>
         </el-form-item>
-        <el-form-item :label="$t('LK_CHEXING')">
-          <iSelect :placeholder="$t('LK_QINGXUANZE')" v-model="form.car">
-            <el-option value="" :label="$t('all') | capitalizeFilter"></el-option>
+        <el-form-item :label="language('CHEXING','车型')">
+          <iSelect :placeholder="language('QINGXUANZE','请选择')" v-model="form.car">
+            <el-option value="" :label="language('ALL','全部') | capitalizeFilter"></el-option>
             <el-option v-for="items in cartOptions" :key='items.code' :value='items.code'
                         :label="items.name"/>
           </iSelect>
@@ -54,11 +54,11 @@
       <!--                  table模块，向外入参表格数据，表头                    --->
       <!------------------------------------------------------------------------>
       <div class="margin-bottom20 clearFloat">
-        <span class="font18 font-weight">{{ $t('LK_RFQZONGHEGUANLI') }}</span>
+        <span class="font18 font-weight">{{ language('RFQZONGHEGUANLI','RFQ综合管理') }}</span>
         <div class="floatright">
           <!--加入该键-->
           <iButton @click="joinRfq" :loading="activateButtonLoading">
-            加入
+            {{language('JIARU','加入')}}
           </iButton>
         </div>
       </div>
@@ -172,11 +172,11 @@ export default {
     },
     joinRfq() {
       if (this.selectTableData.length < 1) {
-        iMessage.warn('请选择一条RFQ')
+        iMessage.warn(this.language('QINGXUANZEYITIAORFQ','请选择一条RFQ'))
         return
       }
       if (this.selectTableData.length > 1) {
-        iMessage.warn('只能选择一条RFQ')
+        iMessage.warn(this.language('ZHINENGXUANZEYITIAORFQ','只能选择一条RFQ'))
         return
       }
       this.changeActiveButtonLoading(true)

@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-26 11:16:51
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-14 12:16:53
+ * @LastEditTime: 2021-06-25 13:40:13
  * @Description: 配件综合管理页面
  * @FilePath: \front-web\src\views\accessoryPart\integratedManage\index.vue
 -->
@@ -13,16 +13,16 @@
       <el-tab-pane :label="$t('LK_XUNYUANZHIHANG')" name="source">
         <div>
           <div class="margin-bottom33">
-            <iNavMvp @change="change" right routerPage lev="2" :list="navList" />
+            <iNavMvp lang @change="change" right routerPage lev="2" :list="navList" @message="clickMessage" />
           </div>
           <!----------------------------------------------------------------->
           <!---------------------------搜索区域------------------------------->
           <!----------------------------------------------------------------->
           <iSearch @sure="getTableList" @reset="reset">
             <el-form>
-              <el-form-item v-for="(item, index) in searchList" :key="index" :label="item.label">
+              <el-form-item v-for="(item, index) in searchList" :key="index" :label="language(item.key,item.label)">
                 <iSelect v-update v-if="item.type === 'select'" v-model="searchParams[item.value]">
-                  <el-option value="" :label="$t('all')"></el-option>
+                  <el-option value="" :label="language('ALL','全部')"></el-option>
                   <el-option
                     v-for="item in selectOptions[item.selectOption] || []"
                     :key="item.value"
@@ -39,24 +39,24 @@
           <!----------------------------------------------------------------->
           <iCard class="margin-top20">
             <div class="margin-bottom20 clearFloat">
-              <span class="font18 font-weight">配件综合查询</span>
+              <span class="font18 font-weight">{{language('PEIJIANZONGHECHAXUN','配件综合查询')}}</span>
                 <div class="floatright">
                   <!--------------------分配询价科室按钮----------------------------------->
-                  <iButton @click="openInquiryDialog" >分配询价科室</iButton>
+                  <iButton @click="openInquiryDialog" >{{language('FENPEIXUNJIAKESHI','分配询价科室')}}</iButton>
                   <!--------------------分配询价采购员按钮----------------------------------->
-                  <iButton @click="openBuyerDialog" >分配询价采购员</iButton>
+                  <iButton @click="openBuyerDialog" >{{language('FENPEIXUNJIACAIGOUYUAN','分配询价采购员')}}</iButton>
                   <!--------------------退回按钮----------------------------------->
-                  <iButton @click="changebackDialogVisible(true)" >退回</iButton>
+                  <iButton @click="changebackDialogVisible(true)" >{{language('TUIHUI','退回')}}</iButton>
                   <!--------------------退回EPS按钮----------------------------------->
-                  <iButton @click="changebackEpsDialogVisible(true)" >退回EPS</iButton>
+                  <iButton @click="changebackEpsDialogVisible(true)" >{{language('TUIHUIEPS','退回EPS')}}</iButton>
                   <!--------------------创建RFQ----------------------------------->
-                  <iButton @click="handleCreateRFQ">创建RFQ</iButton>
+                  <iButton @click="handleCreateRFQ">{{language('CHUANGJIANRFQ','创建RFQ')}}</iButton>
                   <!--------------------加入已有RFQ----------------------------------->
-                  <iButton @click="handleJoinRFQ">加入已有RFQ</iButton>
+                  <iButton @click="handleJoinRFQ">{{language('JIARUYIYOURFQ','加入已有RFQ')}}</iButton>
                   <!--------------------下载报表----------------------------------->
-                  <iButton @click="downloadAll" :loading="downloadAllLoading">下载报表</iButton>
+                  <iButton @click="downloadAll" :loading="downloadAllLoading">{{language('XIAZAIBAOBIAO','下载报表')}}</iButton>
                   <!--------------------导出按钮----------------------------------->
-                  <iButton @click="donwloadList" :loading="downloadLoading" >导出</iButton>
+                  <iButton @click="donwloadList" :loading="downloadLoading" >{{language('DAOCHU','导出')}}</iButton>
                 </div>
             </div>
             <tableList :activeItems='"spnrNum"' selection indexKey :tableData="tableData" :tableTitle="tableTitle" :tableLoading="tableLoading" @handleSelectionChange="handleSelectionChange" @openPage="openPage"></tableList>
@@ -81,7 +81,7 @@
           <!------------------------------------------------------------------------>
           <!--                  退回EPS弹窗                                       --->
           <!------------------------------------------------------------------------>
-          <backEpsDialog :dialogVisible="backEpsDialogVisible" @changeVisible="changebackEpsDialogVisible" @handleBack="handleBackEPS" />
+          <backEpsDialog ref="backEPS" :dialogVisible="backEpsDialogVisible" @changeVisible="changebackEpsDialogVisible" @handleBack="handleBackEPS" />
           <!------------------------------------------------------------------------>
           <!--                    退回弹窗                                        --->
           <!------------------------------------------------------------------------>
@@ -89,7 +89,7 @@
           <!------------------------------------------------------------------------>
           <!--                    加入已有RFQ弹窗                                  --->
           <!------------------------------------------------------------------------>
-          <joinRfqDialog ref="joinRfq" :dialogVisible="joinRfqDialogVisible" @changeVisible="changeJoinRfqDialogVisible" @joinRfq="joinRfq" partType="12" />
+          <joinRfqDialog ref="joinRfq" :dialogVisible="joinRfqDialogVisible" @changeVisible="changeJoinRfqDialogVisible" @joinRfq="joinRfq" partType="PT17" />
         </div>
       </el-tab-pane>
       <!-- <el-tab-pane label="进度监控" name="progress"></el-tab-pane> -->
@@ -101,13 +101,12 @@
 import { iPage, iSearch, iSelect, iInput, iCard, iButton, iPagination, iMessage, iNavMvp } from 'rise'
 import { pageMixins } from "@/utils/pageMixins"
 import tableList from '@/views/designate/designatedetail/components/tableList'
-import { tableTitle, tableMockData, searchList } from './data'
+import { tableTitle, searchList } from './data'
 import assignInquiryDepartmentDialog from '../signForPartsDemand/components/assignInquiryDepartment'
 import assignInquiryBuyerDialog from '../signForPartsDemand/components/assignInquiryBuyer'
 import backEpsDialog from './components/backEps'
 import backDialog from './components/back'
-import { navList } from "@/views/partsign/home/components/data"
-import { cloneDeep, uniq } from 'lodash'
+import { uniq } from 'lodash'
 import { getAccessoryManageList, sendAccessoryInfo, downLoadAccessoryList, downLoadAccessoryAll, back, backEPS } from '@/api/accessoryPart/index'
 import { getDictByCode } from '@/api/dictionary'
 import {findBySearches,getCartypeDict} from "@/api/partsrfq/home";
@@ -116,12 +115,17 @@ import { insertRfq } from '@/api/accessoryPart/index'
 import {
   dictkey,
 } from "@/api/partsprocure/editordetail";
+import { clickMessage } from "@/views/partsign/home/components/data"
+
+// eslint-disable-next-line no-undef
+const { mapState, mapActions } = Vuex.createNamespacedHelpers("sourcing")
+
 export default {
   mixins: [pageMixins],
   components: { iPage, iSearch, iSelect, iInput, iCard, iButton, iPagination, tableList, assignInquiryDepartmentDialog, assignInquiryBuyerDialog,backEpsDialog, backDialog, iNavMvp, joinRfqDialog },
   data() {
     return {
-      tableData: tableMockData,
+      tableData: [],
       tableTitle: tableTitle,
       tableLoading: false,
       searchList: searchList,
@@ -140,10 +144,9 @@ export default {
       backDialogVisible: false,
       backEpsDialogVisible: false,
       selectParts: [],
-      navList: cloneDeep(navList),
       tab: "source",
       selectOptions: {
-        yesOrNoOption: [{value: '1', label: '是'},{value: '0', label: '否'}],
+        yesOrNoOption: [{value: '1', label: this.language('YES','是')},{value: '0', label: this.language('NO','否')}],
         carTypeProjectOptions: [],
         carTypeOptions: []
       },
@@ -155,6 +158,11 @@ export default {
   },
   created() {
     this.init()
+    this.updateNavList
+  },
+  computed: {
+    ...mapState(["navList"]),
+    ...mapActions(["updateNavList"])
   },
   methods: {
     async init() {
@@ -189,7 +197,7 @@ export default {
     joinRfq(rfq) {
       const params = {
         insertRfqPackage: {
-          rfqId: rfq.rfqId,
+          rfqId: rfq.id,
           operationType: '1',
           rfqPartDTOList: this.selectParts.map(item => {
             return {
@@ -200,9 +208,12 @@ export default {
               fsnrGsnrNum: item.spnrNum, // fs号
               stuffId: item.stuffId, // 工艺组ID
               stuffName: item.stuffName, // 工艺组name
+              purchasePrjectId: item.purchasingProjectId,
+              partNameZh: item.partNameCh,
+              partPrejectType: 'PT17',
             }
           }),
-          userId: store.state.permission.userInfo.id
+          userId: this.$store.state.permission.userInfo.id
         }
       }
       insertRfq(params).then(res => {
@@ -234,12 +245,12 @@ export default {
      */    
     handleJoinRFQ() {
       if (this.selectParts.length < 1) {
-        iMessage.warn('请选择配件')
+        iMessage.warn(this.language('QINGXUANZEPEIJIAN','请选择配件'))
         return
       }
       const selectRfq = uniq(this.selectParts.map(item => item.rfqNum))
       if (selectRfq.length > 1 || selectRfq[0]) {
-        iMessage.warn('请选择未分配RFQ的附件')
+        iMessage.warn(this.language('QINGXUANZEWEIFENPEIRFQDEPEIJIAN','请选择未分配RFQ的附件'))
         return
       }
       this.changeJoinRfqDialogVisible(true)
@@ -392,6 +403,8 @@ export default {
         } else {
           iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
         }
+      }).finally(() => {
+        this.$refs.backEPS.changeSaveLoading && this.$refs.backEPS.changeSaveLoading(false)
       })
     },
     /**
@@ -402,12 +415,12 @@ export default {
      */ 
     openInquiryDialog() {
       if (this.selectParts.length < 1) {
-        iMessage.warn('请选择配件')
+        iMessage.warn(this.language('QINGXUANZEPEIJIAN','请选择配件'))
         return
       }
-      const selectPartsDept = uniq(this.selectParts.map(item => item.respDept))
+      const selectPartsDept = uniq(this.selectParts.map(item => item.csfuserDept))
       if (selectPartsDept.length !== 1 || selectPartsDept[0]) {
-        iMessage.warn('请选择未分配部门的配件')
+        iMessage.warn(this.language('QINGXUANZEWEIFENPEIBUMENDEPEIJIAN','请选择未分配部门的配件'))
         return
       }
       this.changeInquiryDialogVisible(true)
@@ -420,16 +433,21 @@ export default {
      */    
     openBuyerDialog() {
       if (this.selectParts.length < 1) {
-        iMessage.warn('请选择配件')
+        iMessage.warn(this.language('QINGXUANZEPEIJIAN','请选择配件'))
         return
       }
-      const selectPartsDept = uniq(this.selectParts.map(item => item.respDept))
+      const selectPartsDept = uniq(this.selectParts.map(item => item.csfuserDept))
+      const selectPartsUser = uniq(this.selectParts.map(item => item.csfuserId))
       if (selectPartsDept.length !== 1) {
-        iMessage.warn('请选择相同部门的配件')
+        iMessage.warn(this.language('QINGXUANZEXIANGTONGBUMENDEPEIJIAN','请选择相同部门的配件'))
         return
       }
       if (!selectPartsDept[0]) {
-        iMessage.warn('请选择有部门的配件')
+        iMessage.warn(this.language('QINGXUANZEYOUBUMENDEPEIJIAN','请选择有部门的配件'))
+        return
+      }
+      if (selectPartsUser.length !== 1 || selectPartsUser[0]) {
+        iMessage.warn(this.language('QINGXUANZEWEIFENPEICAIGOUYUANDEPEIJIAN','请选择未分配采购员的配件'))
         return
       }
       this.selectDeptId = selectPartsDept[0]
@@ -445,8 +463,8 @@ export default {
     sendAccessory({respDept, respLINIE}) {
       const params = {
         accessoryIdList: this.selectParts.map(item => item.id),
-        respDept,
-        respLINIE
+        csfDept: respDept,
+        csfUserId: respLINIE
       }
       sendAccessoryInfo(params).then(res => {
         if (res.result) {
@@ -535,7 +553,7 @@ export default {
      */    
     changeInquiryDialogVisible(visible) {
       if (this.selectParts.length < 1) {
-        iMessage.warn('请选择配件')
+        iMessage.warn(this.language('QINGXUANZEPEIJIAN','请选择配件'))
         return
       }
       this.inquiryDialogVisible = visible
@@ -548,7 +566,7 @@ export default {
      */    
     changeBuyerDialogVisible(visible) {
       if (this.selectParts.length < 1) {
-        iMessage.warn('请选择配件')
+        iMessage.warn(this.language('QINGXUANZEPEIJIAN','请选择配件'))
         return
       }
       this.buyerDialogVisible = visible
@@ -561,7 +579,7 @@ export default {
      */    
     changebackDialogVisible(visible) {
       if (this.selectParts.length < 1) {
-        iMessage.warn('请选择配件')
+        iMessage.warn(this.language('QINGXUANZEPEIJIAN','请选择配件'))
         return
       }
       this.backDialogVisible = visible
@@ -573,7 +591,7 @@ export default {
      */    
     changebackEpsDialogVisible(visible) {
       if (this.selectParts.length < 1) {
-        iMessage.warn('请选择配件')
+        iMessage.warn(this.language('QINGXUANZEPEIJIAN','请选择配件'))
         return
       }
       this.backEpsDialogVisible = visible
@@ -586,12 +604,25 @@ export default {
      */    
     handleCreateRFQ() {
       if (this.selectParts.length < 1) {
-        iMessage.warn('请选择配件')
+        iMessage.warn(this.language('QINGXUANZEPEIJIAN','请选择配件'))
         return
       }
-      const router =  this.$router.resolve({path: '/sourcing/createrfq', query: { type: '1', ids: this.selectParts.map(item => item.spnrNum).join(',') }})
+      const selectLINIE = uniq(this.selectParts.map(item => item.respLinie))
+      const selectLINIEDept = uniq(this.selectParts.map(item => item.respDept))
+      const selectStuffId = uniq(this.selectParts.map(item => item.stuffId))
+      if (selectStuffId.length > 1) {
+        iMessage.warn(this.language('QINGXUANZEXIANGTONGGONGYIZUDEPEIJIAN','请选择相同工艺组的配件'))
+        return
+      } if (!selectStuffId[0]) {
+        iMessage.warn(this.language('QINGXUANZEYIFENPEIGONGYIZUDEPEIJIAN','请选择已分配工艺组的配件'))
+        return
+      }
+      this.selectLinieDept = selectLINIEDept[0]
+      const router =  this.$router.resolve({path: '/sourcing/createrfq', query: { type: '1', ids: this.selectParts.map(item => item.spnrNum).join(','),linie:selectLINIE[0], linieDept:selectLINIEDept[0] }})
       window.open(router.href,'_blank')
-    }
+    },
+    // 通过待办数跳转
+    clickMessage,
   }
 }
 </script>

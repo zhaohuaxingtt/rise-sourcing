@@ -1,7 +1,7 @@
 <!--
  * @Author: moxuan
  * @Date: 2021-02-25 09:59:25
- * @LastEditTime: 2021-06-11 17:49:18
+ * @LastEditTime: 2021-06-30 12:51:29
  * @LastEditors: Please set LastEditors
  * @Description: RFQ模块首页
  * @FilePath: \rise\src\views\partsrfq\home\index.vue
@@ -12,7 +12,7 @@
       <el-tab-pane :label="$t('LK_XUNYUANZHIHANG')" name="source">
         <div>
           <div class="margin-bottom33">
-            <iNavMvp @change="change" right routerPage lev="2" :list="navList" />
+            <iNavMvp lang @change="change" right routerPage lev="2" :list="navList" @message="clickMessage" />
           </div>
           <!------------------------------------------------------------------------>
           <!--                  search 搜索模块                                   --->
@@ -64,31 +64,31 @@
               <div class="floatright">
                 <!--激活RFQ：仅前期采购员有该按钮权限。已经关闭的RFQ，如果需要再次打开时，点击该键-->
                 <iButton @click="editRfq('02')" :loading="activateButtonLoading" v-permission="PARTSRFQ_ACTIVATERFQ">
-                  {{ $t('LK_JIHUORFQ') }}
+                  {{ language('LK_JIHUORFQS','激活RFQ') }}
                 </iButton>
                 <!--新建RFQ：点击该键，系统会跳到下一界面。具体新建RFQ见另一user story，当RFQ类型为FS时，仅前期采购员有该按钮权限-->
-                <iButton @click="newRfq" v-permission="PARTSRFQ_NEWRFQ">{{ $t('LK_XINJIANRFQ') }}</iButton>
+                <iButton @click="newRfq" v-permission="PARTSRFQ_NEWRFQ">{{ language('LK_XINJIANRFQS','新建RFQ') }}</iButton>
                 <!--关闭RFQ：仅前期采购员有该按钮权限。以下情况可关闭：RFQ零件状态是全部定点或全部结束，当前RFQ没有零件-->
                 <iButton @click="editRfq('01')" :loading="closeButtonLoading" v-permission="PARTSRFQ_CLOSERFQ">
-                  {{ $t('LK_GUANBIRFQ') }}
+                  {{ language('LK_GUANBIRFQS','关闭RFQ') }}
                 </iButton>
                 <!--转派评分任务：选中RFQ之后，可以手动转派任务给EP/MQ同事-->
                 <iButton @click="assignmentOfScoringTasks" v-permission="PARTSRFQ_ASSIGNMENTTASKS">
-                  {{ $t('LK_ZHUANPAIPINGFENRENWU') }}
+                  {{ language('LK_ZHUANPAIPINGFENRENWUS','转派任务评分') }}
                 </iButton>
                 <!--转谈判：只会出现在前期采购员界面-->
                 <iButton @click="editRfq('03')" :loading="transferNegotiationButtonLoading"
-                         v-permission="PARTSRFQ_TRANSFERNEGOTIATION">{{ $t('LK_ZHUANTANPAN') }}
+                         v-permission="PARTSRFQ_TRANSFERNEGOTIATION">{{ language('LK_ZHUANTANPANS','转谈判') }}
                 </iButton>
                 <!--转询价：只会出现在专业采购员界面-->
                 <iButton @click="editRfq('04')" :loading="transferInquiryButtonLoading"
-                         v-permission="PARTSRFQ_REINQUIRY">{{ $t('LK_ZHUANXUNJIA') }}
+                         v-permission="PARTSRFQ_REINQUIRY">{{ language('LK_ZHUANXUNJIAS','转询价') }}
                 </iButton>
                 <!--创建定点申请：在列表中选择RFQ，点击该键，会跳转到定点申请创建页面，RFQ的内容会自动带入到定点申请的各页签中-->
                 <iButton v-permission="PARTSRFQ_CREATEAPPLICATION" :loading="createDesignateLoading" @click="openNominateTypeDialog">
-                  {{ $t('LK_CHUANGJIANDINGDIANSHENQING') }}
+                  {{ language('LK_CHUANGJIANDINGDIANSHENQINGS','创建定点申请') }}
                 </iButton>
-                <iButton @click="exportTable" v-permission="PARTSRFQ_EXPORT">{{ $t('LK_DAOCHU') }}</iButton>
+                <iButton @click="exportTable" v-permission="PARTSRFQ_EXPORT">{{ language('LK_DAOCHUS','导出') }}</iButton>
               </div>
             </div>
             <tablelist
@@ -101,6 +101,7 @@
                 open-page-props="id"
                 :index="true"
                 icon-props="recordId"
+                :lang="true"
             >
               <template v-slot:icon="scope">
                 <div @click="toTop(scope.data)" class="icon-style">
@@ -109,7 +110,7 @@
                   <icon symbol class="icon" name="iconliebiaoweizhiding" v-else></icon>
                 </div>
               </template>
-              <template #b="scope">
+              <template #kmAnalysis="scope">
                 <el-popover
                   v-if="scope.row.kmAnalysis"
                   placement="left"
@@ -173,12 +174,14 @@ import {rfqCommonFunMixins} from "pages/partsrfq/components/commonFun";
 import {getAllScoringDepartmentInfo} from '@/api/partsrfq/home'
 import { getProcureGroup } from "@/api/partsprocure/home";
 import scoringDeptDialog from "@/views/partsrfq/editordetail/components/rfqPending/components/supplierScore/components/scoringDeptDialog"
-import { navList } from "@/views/partsign/home/components/data";
-import { cloneDeep } from "lodash";
 import { getKmFileHistory } from "@/api/costanalysismanage/costanalysis"
 import { downloadFile } from "@/api/file"
 import { selectRfq } from "@/api/designate/designatedetail/addRfq"
 import nominateTypeDialog from "./components/nominateTypeDialog"
+import { clickMessage } from "@/views/partsign/home/components/data"
+
+// eslint-disable-next-line no-undef
+const { mapState, mapActions } = Vuex.createNamespacedHelpers("sourcing")
 
 export default {
   components: {
@@ -225,7 +228,6 @@ export default {
       selectDatalist:[],
       scoringDeptVisible: false,
       rfqIds: [],
-      navList: cloneDeep(navList),
       attachmentLoading: false,
       attachmentTableTitle,
       attachmentTableListData: [], 
@@ -240,6 +242,12 @@ export default {
     this.getCarTypeOptions()
     this.getPartTypeOptions()
     this.getRfqStatusOptions()
+
+    this.updateNavList
+  },
+  computed: {
+    ...mapState(["navList"]),
+    ...mapActions(["updateNavList"])
   },
   methods: {
     //获取转派评分任务列表
@@ -259,7 +267,7 @@ export default {
     //动态获取转派评分任务
     openPage(row) {
       this.$router.push({
-        path: `/sourcing/partsrfq/editordetail?id=${row.id}&round=${row.currentRounds}`
+        path: `/sourcing/partsrfq/editordetail?id=${row.id}&round=${row.currentRounds}&carTypeNames=${row.carTypeNames}`
       })
     },
     //获取表格数据
@@ -469,7 +477,7 @@ export default {
       })
     },
     openNominateTypeDialog() {
-      if (this.selectTableData.length !== 1) return iMessage.warn(this.$t("LK_QINGXUANZEYITIAORFQ"))
+      if (this.selectTableData.length !== 1) return iMessage.warn(this.language("LK_QINGXUANZEYITIAORFQ","请选择一条RFQ"))
       this.nominateTypeDialogVisible = true
     },
     // 创建定点申请
@@ -500,7 +508,9 @@ export default {
         this.createDesignateLoading = false
       })
       .catch(() => this.createDesignateLoading = false)
-    }
+    },
+    // 通过待办数跳转
+    clickMessage,
   }
 }
 </script>

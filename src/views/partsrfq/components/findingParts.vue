@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-17 11:40:10
- * @LastEditTime: 2021-06-29 19:57:15
+ * @LastEditTime: 2021-06-30 11:01:25
  * @LastEditors: Please set LastEditors
  * @Description: 查找零件弹窗
  * @FilePath: \front-web\src\views\partsrfq\components\findingPart.vue
@@ -127,6 +127,7 @@ export default {
       this.pagePart();
     },
     handleSelectionChange(val){
+      console.log(val)
       this.colData=val
     },
     reset() {

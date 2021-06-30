@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-04-23 09:18:12
- * @LastEditTime: 2021-06-07 18:23:15
+ * @LastEditTime: 2021-06-28 00:36:52
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-supplier\src\views\rfqManageMent\partsOffer\components\ecartsCard\data.js
@@ -19,7 +19,28 @@ export const form = {
  * @param {*}
  * @return {*}
  */
-export const color = ['#315efb','#F44336','#9C27B0','#3F51B5','#2196F3','#009688','#FF9800','#607D8B','#0deca6','#969df7']
+ export const color = [
+  '#315efb',
+  '#F44336',
+  '#9C27B0',
+  '#3F51B5',
+  '#2196F3',
+  '#009688',
+  '#FF9800',
+  '#607D8B',
+  '#0deca6',
+  '#969df7',
+  '#1763f7',
+  '#77cbff',
+  '#21d59b',
+  '#75a340',
+  '#ffb04d',
+  '#ffd72e',
+  '#a07cbf',
+  '#e2a8ce',
+  '#9ab9f6',
+  '#ff8e01'
+]
 /**
  * @description: echarts 图所有配置文件 
  * @param {*} options
@@ -50,7 +71,7 @@ export function chartsOptions(options,title,unit) {
             const Xname = params[0].name
             htmlContentText += '<div style="margin-bottom:10px;"> '+ Xname + '<div/>'
             for (let index = 0; index < params.length; index++) {
-              if(params[index].data.value != null && params[index].seriesName){
+              if(params[index].data.value != null && params[index].seriesName && params[index].data.symbolSize > 0){
                 htmlContentText += '<div>';
                 htmlContentText += '<span style="margin-right:5px;display:inline-block;height:13px;width:13px;font-size: 12pt; border-radius:50%;background-color:'+params[index].color+'"></span>';
                 htmlContentText += '<span>'+(params[index].seriesName.indexOf('series')> -1?'Null':params[index].seriesName) +"："+params[index].data.value+'</span>';
@@ -151,21 +172,32 @@ export function translateGetLunci(params,gjhLunchi) {
   try {
       //处理颜色问题
       params.forEach((element,index) => {
-        element['color'] = params.length < 10?color[index]:getLineColor()
+        element['color'] = params.length < color.length?color[index]:getLineColor()
         element['type'] = 'line',
         options['legend'].push(element['name'])
       });
       params[0].data.forEach(element => {
         options['xAxis'].push({value:`${gjhLunchi}${' '}${element.round}`,textStyle:{color:'#7E84A3',fontSize:12}})
       })
+      options['xAxis'] = [...options['xAxis'],...[{value:'',textStyle:{color:'#7E84A3',fontSize:12}},{value:'有效报价',textStyle:{color:'#7E84A3',fontSize:12}}]]
+      params.forEach((e,i)=>{
+        for(let a = e.data.length-1;a>=0;a--){
+          if(e.data[a].value){
+            e.data = [...e.data,...[{round: "",symbolSize: "",value: null},e.data[a]]]
+            break;
+          }
+        }
+      })
       options.series = params
   } catch (error) {
+    console.log(error)
     options = {
       legend:[],
       xAxis:[],
       series:[]
     }
   }
+  console.log(options)
   return options 
 }
 

@@ -7,22 +7,27 @@ s<!--
  * @FilePath: \front-web\src\views\costanalysismanage\components\rfqdetail\components\partList\index.vue
 -->
 <template>
-  <iCard :title="$t('costanalysismanage.LingJianQingDan')">
+  <iCard :title="language('LK_LINGJIANQINGDAN','零件清单')">
     <template v-slot:header-control>
-      <iButton @click="handleSave" :loading="saveLoading">{{ $t("costanalysismanage.BaoCun") }}</iButton>
-      <iButton @click="handleDownloadTechnicalData">{{ $t("costanalysismanage.XiaZaiJiShuZiLiao") }}</iButton>
+      <iButton @click="handleSave" :loading="saveLoading">{{ language("BAOCUN", "保存") }}</iButton>
+      <iButton @click="handleDownloadTechnicalData">{{ language("XIAZAIJISHUZILIAO", "下载技术资料") }}</iButton>
       <!-- 涉及L3模板 -->
-      <iButton @click="handleDownloadCbd" disabled>{{ $t("costanalysismanage.XiaZaiCbd") }}</iButton>
+      <iButton @click="handleDownloadCbd" disabled>{{ language("XIAZAICBD", "下载CBD") }}</iButton>
     </template>
     <div class="body">
       <tableList
         class="table"
         index
+        :lang="true"
+        :cellClassName="cellClass"
         :tableData="tableListData"
         :tableTitle="tableTitle"
         :tableLoading="loading"
+        @handleSelectionChange="handleSelectionChange"
       >
         <template #partNum="scope">
+          <!-- <span v-if="scope.row.sendKmFlag == 1" class="link-underline" @click="jumpPartDetail(scope.row)">{{ scope.row.partNum }}</span>
+          <span v-else>{{ scope.row.partNum }}</span> -->
           <span class="link-underline" @click="jumpPartDetail(scope.row)">{{ scope.row.partNum }}</span>
         </template>
         <template #cbdStatus="scope">
@@ -86,6 +91,7 @@ export default {
       tableListData: [],
       saveLoading: false,
       downloadDialogVisible: false,
+      multipleSelection: []
     }
   },
   mounted() {
@@ -113,11 +119,15 @@ export default {
       })
       .catch(() => this.loading = false)
     },
+    handleSelectionChange(list) {
+      this.multipleSelection = list.filter(item => item.sendKmFlag == 1)
+    },
     // 保存
     handleSave() {
       this.saveLoading = true
 
-      if (this.tableListData.some(item => item.sendKmFlag == 1 && (!item.pcaResult || !item.tiaResult))) return iMessage.warn(this.$t("costanalysismanage.SavePcaResAndTiaResTips"))
+      if (!this.multipleSelection.length) return iMessage.warn(this.language("QINGXUANZEXUYAOBAOCUNDESHUJU", "请选择需要保存的数据"))
+      if (this.multipleSelection.some(item => item.sendKmFlag == 1 && (!item.pcaResult || !item.tiaResult))) return iMessage.warn(this.language("SAVEPCARESANDTIARESTIPS", "请填写完整PCA分析结果和TIA分析结果"))
 
       savePcaAndTia({
         savePcaTiaDTOS: this.tableListData.map(item => ({
@@ -149,7 +159,7 @@ export default {
     handleDownloadCbd() {},
     // 跳转零件详情
     jumpPartDetail(row) {
-      window.open(`/#/supplier/quotationdetail?partNum=${ row.partNum }&rfqId=${ this.rfqId }&round=${ row.round }&fsNum=${ row.fsnrGsnrNum }`, "_blank")
+      window.open(`/#/supplier/quotationdetail?partNum=${ row.partNum }&fix=true&rfqId=${ this.rfqId }&round=${ row.round }&fsNum=${ row.fsnrGsnrNum }&supplierId=${ row.supplierId }`, "_blank")
     },
     handleInputByPcaResult(value, row) {
       this.$set(row, "pcaResult", numberProcessor(value, 2))
@@ -160,6 +170,11 @@ export default {
     // 关闭弹窗
     changeVisible(type){
       this.downloadDialogVisible = type
+    },
+    cellClass(row) {
+      if (row.row.sendKmFlag != 1) {
+        return "hideCheckbox"
+      }
     }
   }
 }

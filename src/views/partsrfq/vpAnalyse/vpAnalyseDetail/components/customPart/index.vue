@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-06-18 16:03:35
- * @LastEditTime: 2021-06-25 14:23:36
+ * @LastEditTime: 2021-06-30 17:38:32
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\vpAnalyse\vpAnalyseDetail\components\customPart\index.vue
@@ -29,8 +29,15 @@
         >
           <template #partsId="scope">
             <div v-if="addMode && scope.row.index === tableListData.length - 1">
-              <iSelect v-model="scope.row.partsId" filterable @change="changePartNum">
-                <el-option v-for="(item, index) in partNumData" :key="index" :value='item.partsId' :label='item.partsId'></el-option>
+              <iSelect 
+                v-model="scope.row.partsId" 
+                filterable 
+                remote
+                placeholder="请至少输入3位数零件号"
+                :remote-method="remoteMethod"
+                :loading="remoteLoading"
+                @change="changePartNum">
+                <el-option  v-for="(item, index) in partNumData" :key="index" :value='item.partsId' :label='item.partsId'></el-option>
               </iSelect>
             </div>
             <div v-else>
@@ -45,7 +52,7 @@
               <icon symbol name="iconyincang" class="statusIcon" v-if="!scope.row.isShow" />
             </div>
           </template>
-          <template #sort="scope">
+          <template #sort="scope" v-if="!addMode">
             <span @click="clickMoveDown(scope.row)">
               <icon symbol name="iconpaixu-xiangxia" v-if="checkShowSortIcon(scope.row.index, 'ptdown')" class="sortIcon" />
             </span> 
@@ -66,7 +73,7 @@ import {iDialog, iButton, icon, iSelect} from 'rise'
 import {iMessage} from '@/components';
 import tableList from '@/components/ws3/commonTable';
 import {tableTitle} from './components/data';
-import {getCustomPartDataList, fetchSaveCustomPart} from '@/api/partsrfq/vpAnalysis/vpCustomPart'
+import {getCustomPartDataList, fetchSaveCustomPart, getCustomPartListByPartId} from '@/api/partsrfq/vpAnalysis/vpCustomPart'
 export default {
   name: 'CustomPart',
   components: {iDialog, iButton, icon, iSelect, tableList},
@@ -93,12 +100,13 @@ export default {
       addMode: false,
       partNumData: [],
       insertPartData: null,
+      remoteLoading: false
     }
   },
   created() {
     this.initTableData()
     this.initInsertPartData()
-    this.initTestPartNumData()
+    // this.initTestPartNumData()
     // this.initTestTableData()
 
   },
@@ -238,16 +246,33 @@ export default {
       this.addMode = true
       this.tableListData.push(this.insertPartData)
     },
+    // 新增时，根据输入零件号检索
+    remoteMethod(val) {
+      console.log('val', val);
+      if(val.length < 3) {
+        return 
+      }
+      this.remoteLoading = true
+      getCustomPartListByPartId(val).then(res => {
+        this.remoteLoading = false
+        if(res && res.code == 200) {
+          this.partNumData = res.data
+        } else {
+          iMessage.error(res.desZh)
+        }
+      })
+    },
     // 新增时，改变选中零件编号
     changePartNum(val) {
       const data = this.partNumData.find(item => item.partsId == val)
-      this.tableListData[this.tableListData.length - 1] = JSON.parse(JSON.stringify(data))
-      this.insertPartData = JSON.parse(JSON.stringify(data))
+      this.tableListData.replace(this.tableListData.length - 1, this.tableListData.length, window._.cloneDeep(data))
+      this.insertPartData = window._.cloneDeep(data)
     },
     // 取消添加
     cancelAdd() {
       this.addMode = false
       this.tableListData.splice(this.tableListData.length - 1, this.tableListData.length)
+      this.initInsertPartData()
     },
     // 保存添加
     saveAdd() {
@@ -267,8 +292,8 @@ export default {
       const maxSortObj = window._.maxBy(this.tableListData, function(o) { return o.sort; });
       const endObj = this.tableListData[this.tableListData.length - 1]
       endObj['sort'] = maxSortObj.sort + 1
-      console.log('tableListData', this.tableListData);
       this.addMode = false
+      this.initInsertPartData()
     },
     // 点击重置按钮
     reset() {

@@ -1,10 +1,10 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 15:12:41
- * @LastEditTime: 2021-04-01 20:10:49
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-06-18 16:33:15
+ * @LastEditors: Luoshuang
  * @Description: 零件采购项目批量维护界面
- * @FilePath: \rise\src\views\partsprocure\batchmiantain\index.vue
+ * @FilePath: \front-web\src\views\partsprocure\batchmiantain\index.vue
 -->
 
 <template>
@@ -79,7 +79,7 @@
         <el-form-item :label="$t('LK_LINGJIANLEIXING')">
           <iSelect :placeholder="$t('LK_QINGXUANZE')" v-model="batch.partType">
             <el-option
-              :value="item.id"
+              :value="item.code"
               :label="item.name"
               v-for="(item, index) in fromGroup.PART_TYPE"
               :key="index"
@@ -90,7 +90,7 @@
           <iSelect
             :placeholder="$t('LK_QINGXUANZE')"
             v-model="cartypeProject"
-            value-key="id"
+            value-key="code"
           >
             <el-option
               :value="item"
@@ -350,7 +350,7 @@ export default {
       this.batch.stuffCode = this.stuff.stuffCode;
       this.batch.stuffId = this.stuff.id;
       this.batch.cartypeProjectZh = this.cartypeProject.name;
-      this.batch.cartypeProjectNum = this.cartypeProject.id;
+      this.batch.cartypeProjectNum = this.cartypeProject.code;
       this.batch.linieName = this.linie.name;
       this.batch.linieNum = this.linie.id;
       this.batch.categoryCode = this.categoryObj.categoryCode;

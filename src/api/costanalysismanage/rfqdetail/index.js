@@ -20,7 +20,7 @@ export function getFileHistory(params) {
 	return requst({
 		url: `/file-history/${nomiAppId}/${sortColumn}/${isAsc}/${fileType}/${pageNo}/${pageSize}`,
 		method: "GET",
-		params,
+		// params,
 	})
 }
 
@@ -57,3 +57,12 @@ export function getKmCbdList(params) {
 	})
 }
 
+
+//   报告清单---上传
+export function uploadDaring(data) {
+	return requst({
+		url: `/upload-file`,
+		method: "POST",
+		data
+	})
+  }

@@ -1,7 +1,7 @@
 /*
  * @Author: HaoJiang
  * @Date: 2021-05-20 14:29:09
- * @LastEditTime: 2021-05-20 14:24:02
+ * @LastEditTime: 2021-06-25 15:24:50
  * @LastEditors: Please set LastEditors
  * @Description: 定点表格信息
  *
@@ -24,25 +24,25 @@ export const multiSupplierTitle = [
   {
     props: 'factoryNameCh',
     name: '厂商名',
-    key: 'nominationSupplier.ChangShangMing',
+    key: 'nominationSupplier_ChangShangMing',
     tooltip: false
   },
   {
     props: 'sapNum',
     name: 'SAP号',
-    key: 'nominationSupplier.SAPHao',
+    key: 'nominationSupplier_SAPHao',
     tooltip: false
   },
   {
     props: 'factoryNameEng',
     name: '厂商名(英)',
-    key: 'nominationSupplier.ChangShangMingEN',
+    key: 'nominationSupplier_ChangShangMingEN',
     tooltip: false
   },
   {
     props: 'isPresent',
     name: '是否展示',
-    key: 'nominationSupplier.ShiFouZhanShi',
+    key: 'nominationSupplier_ShiFouZhanShi',
     tooltip: false
   },
 ]
@@ -118,7 +118,7 @@ export const singleSupplierTitle = [
   {
     props: 'rfqId',
     name: 'RFQ编号',
-    key: 'nominationLanguage.RFQBianHao',
+    key: 'nominationLanguage_RFQBianHao',
     tooltip: false
   },
   {
@@ -130,49 +130,49 @@ export const singleSupplierTitle = [
   {
     props: 'partNum',
     name: '零件号',
-    key: 'nominationLanguage.LingJianHao',
+    key: 'nominationLanguage_LingJianHao',
     tooltip: false
   },
   {
     props: 'partNameCh',
     name: '零件名(中)',
-    key: 'nominationLanguage.LingJianMingCN',
+    key: 'nominationLanguage_LingJianMingCN',
     tooltip: false
   },
   {
     props: 'partNameGer',
     name: '零件名(德)',
-    key: 'nominationLanguage.LingJianMingDE',
+    key: 'nominationLanguage_LingJianMingDE',
     tooltip: false
   },
   {
     props: 'suppliersName',
     name: '供应商名',
-    key: 'nominationSupplier.GongYingShangMing',
+    key: 'nominationSupplier_GongYingShangMing',
     tooltip: false
   },
   {
     props: 'sapNum',
     name: 'SAP号',
-    key: 'nominationSupplier.SAPHao',
+    key: 'nominationSupplier_SAPHao',
     tooltip: false
   },
   {
     props: 'singleReason',
     name: '单一原因',
-    key: 'nominationSupplier.DanYiYuanYin',
+    key: 'nominationSupplier_DanYiYuanYin',
     tooltip: false
   },
   {
     props: 'department',
     name: '部门',
-    key: 'nominationSupplier.BuMen',
+    key: 'nominationSupplier_BuMen',
     tooltip: false
   },
   {
     props: 'updateDate',
     name: '更新时间',
-    key: 'nominationSupplier.GengXinShiJian',
+    key: 'nominationSupplier_GengXinShiJian',
     tooltip: false
   },
 ]
@@ -208,7 +208,7 @@ export const partTitle = [
   {
     props: 'rfqId',
     name: 'RFQ编号',
-    key: 'nominationLanguage.RFQBianHao',
+    key: 'nominationLanguage_RFQBianHao',
     tooltip: false
   },
   {
@@ -220,61 +220,61 @@ export const partTitle = [
   {
     props: 'partNum',
     name: '零件号',
-    key: 'nominationLanguage.LingJianHao',
+    key: 'nominationLanguage_LingJianHao',
     tooltip: false
   },
   {
     props: 'partNameZh',
     name: '零件名(中)',
-    key: 'nominationLanguage.LingJianMingCN',
+    key: 'nominationLanguage_LingJianMingCN',
     tooltip: false
   },
   {
     props: 'partNameDe',
     name: '零件名(德)',
-    key: 'nominationLanguage.LingJianMingDE',
+    key: 'nominationLanguage_LingJianMingDE',
     tooltip: false
   },
   {
     props: 'procureFactory',
     name: '采购工厂',
-    key: 'nominationSupplier.CaiGouGongChang',
+    key: 'nominationSupplier_CaiGouGongChang',
     tooltip: false
   },
   {
     props: 'partProjectType',
     name: '零件项目类型',
-    key: 'nominationSupplier.LingJianXiangMuLeiXing',
+    key: 'nominationSupplier_LingJianXiangMuLeiXing',
     tooltip: false
   },
   {
     props: 'cartypeCategory',
     name: '车型大类',
-    key: 'nominationSupplier.CheXingDaLei',
+    key: 'nominationSupplier_CheXingDaLei',
     tooltip: false
   },
   {
     props: 'cartypeProjectZh',
     name: '车型项目',
-    key: 'nominationSupplier.CheXingXiangMu',
+    key: 'nominationSupplier_CheXingXiangMu',
     tooltip: false
   },
   {
     props: 'orderDate',
     name: '更新时间',
-    key: 'nominationSupplier.GengXinShiJian',
+    key: 'nominationSupplier_GengXinShiJian',
     tooltip: false
   },
   {
     props: 'partStatus',
     name: '零件状态',
-    key: 'nominationSupplier.LingJianZhuangTai',
+    key: 'nominationSupplier_LingJianZhuangTai',
     tooltip: false
   },
   {
     props: 'buyerName',
     name: '询价采购员',
-    key: 'nominationSupplier.XunJiaCaiGouYuan',
+    key: 'nominationSupplier_XunJiaCaiGouYuan',
     tooltip: false
   },
   {
@@ -286,7 +286,7 @@ export const partTitle = [
   {
     props: 'fsnrGsnrNameEn',
     name: 'CF目标价',
-    key: 'nominationSupplier.CFMuBiaoJia',
+    key: 'nominationSupplier_CFMuBiaoJia',
     tooltip: false
   },
   {

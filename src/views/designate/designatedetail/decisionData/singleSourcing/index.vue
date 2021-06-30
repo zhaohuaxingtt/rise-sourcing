@@ -7,7 +7,7 @@
     <iCard title="⽣产采购单⼀供应商说明 Single Sourcing for Production Purchasing">
         <div class="decision-data-singleSourcing-content">
             <div class="margin-top30 margin-bottom30">
-                <iFormGroup inline>
+                <iFormGroup inline row="2">
                     <iFormItem label-width="130px"  label="项⽬名称 Project:">
                         <iText tooltip style="width:250px">{{projectName}}</iText>
                     </iFormItem>
@@ -21,11 +21,22 @@
                 <tableList
                     :selection="false"
                     class="table"
+                    :lang="true"
                     index
                     :tableData="tableListData"
                     :tableTitle="tableTitle"
                     :tableLoading="loading"
                 >
+                    <template #suppliersName="scope">
+                        <div>
+                            <span class="factoryDesc margin-right5">{{scope.row.suppliersName }}</span>
+                            <el-tooltip effect="light" :content="`${language('LK_FRMPINGJI','FRM评级')}：${scope.row.frmRate}`" v-if="scope.row.isFRMRate === 1">
+                            <span>
+                                <icon symbol name="iconzhongyaoxinxitishi" />
+                            </span>
+                            </el-tooltip>
+                        </div>
+                    </template>
                 </tableList>
                 <iPagination
                     class="margin-bottom20"
@@ -50,6 +61,8 @@ import {
   iFormGroup,
   iFormItem,
   iText,
+  iMessage,
+  icon,
 } from "rise";
 import {pageMixins} from '@/utils/pageMixins'
 import tableList from "@/views/partsign/editordetail/components/tableList"
@@ -65,6 +78,7 @@ export default {
         iFormItem,
         iText,
         tableList,
+        icon,
     },
     name:'SingleSourcing',
     data(){
@@ -105,18 +119,23 @@ export default {
                 size:page.pageSize,
             };
             await getSingleSourcing(params).then((res)=>{
-                const {resultPage={},nominateId='',cartypeProjectZhList=[]} = res;
-                const {code,total,data} = resultPage;
-                console.log(res);
-                if(code == '200' && data){
-                    this.tableListData = data;
+                const {code,data={}} =res;
+                if(code == '200'){
+                    const {resultPage={},nominateId='',cartypeProjectZhList=[]} = data;
+                    const {total} = resultPage;
+                    this.tableListData = resultPage.data || [];
                     this.page.totalCount = total;
                     this.nominateId = nominateId;
-                    this.projectName = cartypeProjectZhList.join();
+                    this.projectName = cartypeProjectZhList ? cartypeProjectZhList.join() : '';
+                }else{
+                    iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
                 }
                 this.loading =  false;
 
-            }).catch((err)=>{ this.loading =  false; });
+            }).catch((e)=>{
+                    e && iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
+                    this.loading =  false; 
+                });
         },
     }
 

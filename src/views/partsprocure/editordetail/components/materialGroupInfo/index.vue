@@ -1,10 +1,10 @@
 <!--
  * @Author: your name
  * @Date: 2021-03-01 10:29:09
- * @LastEditTime: 2021-05-31 15:16:17
+ * @LastEditTime: 2021-06-23 19:34:30
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
- * @FilePath: \rise\src\views\partsprocure\editordetail\components\materialGroupInfo\index.vue
+ * @FilePath: \front-web\src\views\partsprocure\editordetail\components\materialGroupInfo\index.vue
 -->
 <template>
   <iCard class="materialGroupInfo" tabCard v-loading="loading">
@@ -224,7 +224,7 @@ export default {
       this.loading = false
     },
     jumpBdl() {
-      window.open(`${ process.env.VUE_APP_PORTAL_URL }/#/supplier/application-BDL`, '_blank')
+      window.open(`${ process.env.VUE_APP_PORTAL_URL }/supplier/supplierList`, '_blank')
     }
   },
 };

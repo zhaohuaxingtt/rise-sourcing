@@ -1,10 +1,10 @@
 <!--
  * @Author: your name
- * @Date: 2021-06-24 16:19:33
- * @LastEditTime: 2021-06-24 16:20:16
+ * @Date: 2021-06-21 11:38:57
+ * @LastEditTime: 2021-06-30 11:51:57
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
- * @FilePath: \front-web\src\views\partsrfq\bob\bobAnalysis\ungroupedTable.vue
+ * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails\table1.vue
 -->
 <template>
   <iCard>
@@ -23,26 +23,41 @@
       @cell-click="cellClick"
       @expand-change="expandChange"
     >
-      <el-table-column label="" prop="title" width="250"> </el-table-column>
+      <!-- <el-table-column label="" prop="title" width="250"> </el-table-column> -->
       <el-table-column
         v-for="i in tableList.headerList"
         :key="i.id"
         :label="i.label"
         :prop="i.prop"
         align="center"
+        :width="i.prop=='title'?'200':''"
       >
+        <el-table-column
+          v-for="item in i.children"
+          :key="item.id"
+          :label="item.label"
+          :prop="item.prop"
+          align="center"
+          :show-header="false"
+        >
+        <template>
+          
+        </template>
+        </el-table-column>
         <template slot-scope="scope">
-          <div v-if="testing(scope.row[i.prop])">
+          <span v-if="testing(scope.row[i.prop])" class="flex">
             <span
-              v-for="item in scope.row[i.prop]"
+              v-for="(item, index) in scope.row[i.prop]"
               :key="item.id"
               class="margin-right20"
-              >{{ item }}</span
-            >
-          </div>
-          <div v-else>
-            <span>{{ scope.row[i.prop] }}</span>
-          </div>
+              :class="checkClass(item, scope, index)"
+              @click="clickCol(item, scope, index)"
+              >{{ item }}</span>
+          </span>
+          <span v-else>
+            <span  :class="checkClass(item, scope, index)"
+              @click="clickCol(item, scope, index)">{{ scope.row[i.prop] }}</span>
+          </span>
         </template>
       </el-table-column>
     </el-table>
@@ -50,10 +65,10 @@
 </template>
 
 <script>
-import { iCard } from "rise";
+import {iCard} from 'rise'
 export default {
-  components: {
-    iCard,
+  components:{
+    iCard
   },
   props: {
     expends: {
@@ -78,6 +93,31 @@ export default {
         }
       };
     },
+    checkClass(a, b, c) {
+      return function (a, b, c) {
+        const id = b.row.id;
+        let check = this.checkList.findIndex((item) => {
+          return item.index === c;
+        });
+        if (check > -1) {
+          switch (id) {
+            case "1-2-1":
+              console.log(id);
+              return "top";
+            case "1-2-7":
+              console.log(id);
+              return "bottom";
+            case "1-2":
+              console.log(id);
+              return "nocolor";
+            default:
+              console.log(id);
+              return "middle";
+          }
+        }
+        return "nocolor";
+      };
+    },
   },
   watch: {
     expends: {
@@ -89,47 +129,32 @@ export default {
   },
   data() {
     return {
-      headerList: [
-        {
-          id: "1",
-          label: "Supplier A",
-          prop: "SupplierA",
-        },
-        {
-          id: "2",
-          label: "Supplier B",
-          prop: "SupplierB",
-        },
-        {
-          id: "3",
-          label: "Supplier C",
-          prop: "SupplierC",
-        },
-        {
-          id: "4",
-          label: "Supplier D",
-          prop: "SupplierD",
-        },
-        {
-          id: "5",
-          label: "Supplier E",
-          prop: "SupplierE",
-        },
-        {
-          id: "6",
-          label: "Supplier F",
-          prop: "SupplierF",
-        },
-      ],
+      checkList: [],
     };
   },
   methods: {
+    addclass(row) {
+      var that = this;
+      if (row.columnIndex == that.num) {
+        return "addcss";
+      }
+    },
+    clickCol(a, b, c) {
+      const i = this.checkList.findIndex((item) => item.index == c);
+      console.log("i", i);
+      if (i > -1) this.checkList.splice(i, i + 1);
+      else
+        this.checkList.push({
+          id: b.row.id,
+          index: c,
+        });
+      console.log("checkList", this.checkList);
+    },
+
     getRowKey(row) {
       return row.id;
     },
-    render(h, { column, $index }) {
-      console.log(h, column, $index);
-    },
+    render(h, { column, $index }) {},
     rowClick(row, event, column) {
       this.$emit("row-click", row, event, column);
     },
@@ -159,5 +184,29 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
-
+<style lang="scss" scoped>
+// ::v-deep .el-table tr:nth-child(even){
+//     display: none;
+// }
+</style>
+<style lang="scss">
+.addcss {
+  color: red;
+}
+.nocolor {
+  border: none;
+}
+.top {
+  border: 1px solid blue;
+  border-bottom: none;
+}
+.middle {
+  border: 1px solid blue;
+  border-bottom: none;
+  border-top: none;
+}
+.bottom {
+  border: 1px solid blue;
+  border-top: none;
+}
+</style>

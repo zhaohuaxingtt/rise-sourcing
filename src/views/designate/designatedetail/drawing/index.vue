@@ -2,20 +2,20 @@
   <iCard class="designate-drawing">
     <div class="margin-bottom25 clearFloat">
       <span class="font18 font-weight">
-        {{ $t("Drawing") }}</span
+        {{ language("Drawing",'Drawing') }}</span
       >
       <div class="floatright" v-if="!$store.getters.isPreview">
         <!-- 排序 -->
         <iButton @click="sortVisibal = true">
-          {{ $t("strategicdoc.PaiXu") }}
+          {{ language("strategicdoc_PaiXu",'排序') }}
         </iButton>
         <!-- 全部下载 -->
         <iButton @click="batchDownloadAll">
-          {{ $t("strategicdoc.QuanBuXiaZai") }}
+          {{ language("strategicdoc_QuanBuXiaZai",'全部下载') }}
         </iButton>
         <!-- 上传 -->
         <iButton @click="uploadVisibal = true">
-          {{ $t("strategicdoc.ShangChuan") }}
+          {{ language("strategicdoc_ShangChuan",'上传') }}
         </iButton>
       </div>
     </div>
@@ -34,7 +34,7 @@
           </div>
         </el-col>
       </el-row>
-      <div class="data-null" v-else>{{$t('LK_ZANWUSHUJU')}}</div>
+      <div class="data-null" v-else>{{language('LK_ZANWUSHUJU','暂无数据')}}</div>
     </div>
     <!-- 排序弹窗 -->
     <sortDialog :visible.sync="sortVisibal" :nomiAppId="nomiAppId" />
@@ -103,6 +103,15 @@ export default {
         fileType: '101',
       }
       this.getDataList(params)
+    },
+
+    // 下载
+    dowloadSingleFile(item){
+      const { fileName } = item;
+      downloadFile({
+        applicationName: "rise",
+        fileList: fileName
+      });
     }
   },
   watch: {
