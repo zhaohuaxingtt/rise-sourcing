@@ -183,7 +183,7 @@
             'BenLunZhuangTai': '本轮状态', // 本轮状态
             'BenLunBaoJiaJieZhiRi': '本轮报价截止日', // 本轮报价截止日
             'LunCiLeiXing': '轮次类型', // 轮次类型
-            
+
             // 零件清单
             'LingJianQingDan': '零件清单', // 零件清单
             'BaoCun': '保存', // 保存
@@ -1157,12 +1157,12 @@
             'BuMen': '部门',
             'GengXinShiJian': '更新时间',
             // 零件清单
-            "LingJianXiangMuLeiXing": "零件项目类型", 
-            "CheXingDaLei": "车型大类", 
+            "LingJianXiangMuLeiXing": "零件项目类型",
+            "CheXingDaLei": "车型大类",
             "CheXingXiangMu": "车型项目",
-            "LingJianZhuangTai": "零件状态", 
-            "XunJiaCaiGouYuan": "询价采购员", 
-            "LINIE": "LINIE", 
+            "LingJianZhuangTai": "零件状态",
+            "XunJiaCaiGouYuan": "询价采购员",
+            "LINIE": "LINIE",
             "CFMuBiaoJia": "CF目标价",
             "BatchEdit": "批量编辑",
             "Edit": "编辑",
@@ -1233,10 +1233,125 @@
         "BJZS":{
             "LK_BAOJIAZUSHOU_MJ":"报价分析汇总-模具",
             "LK_BAOJIAZUSHOU_MJDANWEIYUAN":"报价分析汇总-模具（单元：元）"
-        }
+        },
+        //谈判助手
+        'TPZS': {
+            'FENXI': '分析', //分析
+            'YULAN': '预览', //预览
+            'GONGYINGSHANG': '供应商', //
+            'CHEXINGXIANGMU': '车型项目', //车型项目
+            'CHEXING': '车型', //车型
+            'GONGCHANG': '工厂', //工厂
+            'ZONGDANJIA': '总单价', //总单价
+            'GUDINGCHENGBENZHANBI': '固定成本占比', //固定成本占比
+            'FEIYONGLEIXING': '费用类型', //费用类型
+            'FEIYONGZONGE': '费用总额', //费用总额
+            'FENTANSHULIANG': '分摊数量', //分摊数量
+            'YINGXIANGDANJIA': '影响单价', //影响单价
+            'YINGXIANGCHENGBENZHANBI': '影响成本占比', //影响成本占比
+            'XIANSHIYINGCANG': '显示/隐藏', //显示/隐藏
+            'WANCHENG': '完成', //完成
+            'QINGSHURUBIANHAOMINGCHENG': '请输入编号/名称', //请输入编号/名称
+            'QINGSHURUCHUANGJIANRENMINGCHENG': '请输入创建人名称', //请输入创建人名称
+            'PCAZONGLAN': 'PCA总览', //PCA总览
+            'PINLEIGUANLIZHUSHOU': '品类管理助手', //品类管理助手
+            'TANPANZHUSHOU': '谈判助手', //谈判助手
+            'BAOGAOMINGCHENG': '报告名称', //报告名称
+            'TIAZONGLAN': 'TIA总览', //报告名称
+            // ---------------------------------舒杰报告清单start-----------------------------------------------
+            'BGQD': '报告清单', //报告清单
+            'ZXFXGJ': '专项分析工具', //专项分析工具
+            'BJFX': '报价分析', //报价分析
+            'TPJBXX': '谈判基本信息', //谈判基本信息
+            'BGMC': '报告名称', //报告名称
+            'FXGJLX': '分析工具类型', //分析工具类型
+            'RFQHMC': 'RFQ号/名称', //报告清单
+            'MRX': '默认项', //默认项
+            'WJLX': '文件类型', //文件类型
+            'CJR': '创建人', //创建人
+            'SCXGRQ': '上次修改日期', //上次修改日期
+            'RFQ': 'RFQ', //RFQ
+            'FX': "分析:", //分析
+            'QSRBGMC':'请输入报告名称...',//请输入报告名称...
+            'QSRCLZ':'请输入材料组...',//请输入材料组...
+            'QSRLJH':'请输入零件号...',//请输入零件号...
+            'QSRRFQMC':'请输入RFQ/名称...',//请输入RFQ/名称...
+            'ZDDCBG':'最多导出10条报告',//最多导出10条报告
+            'CANNOTSELECT':'未选择需要导出的报告',//未选择需要导出的报告
+
+            // ---------------------------------舒杰报告清单end-------------------------------------------------
+            // 张兵
+            'BG': "报告:", //报告
+            'SCGXSJ': "上次更新时间:", //上次更新时间
+            'SCDCSJ': "上次导出时间:", //上次导出时间
+            'PLGYSGL': "批量供应商概览", //批量供应商概览
+            'PLGYSZL': "批量供应商总览", //批量供应商总览
+            'GYS360': "供应商360", //供应商360
+            'DW': "单位:", //单位
+            'XMGL': "项目概览:", //项目概览
+            'XMXX': "项目信息", //项目信息
+            'MQXTY': "MQ协调员", //MQ协调员
+            'PLXTY': "PL协调员", //PL协调员
+            'CFXTY': "CF协调员", //CF协调员
+            'FOPQK': "FOP情况", //FOP情况
+            'MQQK': "MQ情况", //MQ情况
+            'PLQK': "PL情况", //PL情况
+            'CFQK': "CF情况", //CF情况
+            'CXLC': "车型量产", //车型量产
+            'SOPRQ': "SOP日期", //SOP日期
+            'LCHTIPS': "绿：已提交，且没有超期<br/> 黄：没有提交，还没有超期（2周内）<br/> 橙：没有提交，还没有超期（2-4周内）<br/> 红：没有提交，且超期", //绿：已提交，且没有超期 黄：没有提交，还没有超期（2周内） 橙：没有提交，还没有超期（2-4周内） 红：没有提交，且超期
+            'LJLBXX': "零件列表信息", //零件列表信息
+            'LJH': "零件号", //零件号
+            'LJM': "零件名", //零件名
+            'GC': "工厂", //工厂
+            'SOP': "SOP", //SOP
+            'EBR': "EBR%", //EBR%
+            'XMMC': "项目名称", //项目名称
+            'QSMZQCL': "全生命周期产量", //全生命周期产量
+            'FZNCL': "峰值年产量", //峰值年产量
+            'GYSXX': "供应商信息", //供应商信息
+            'SZD': "所在地", //所在地
+            'SFMBDL': "是否MBDL", //是否MBDL
+            'BJZT': "报价状态", //报价状态
+            'MQDF': "MQ打分", //MQ打分
+            'PLDF': "PL打分", //PL打分
+            'EPDF': "EP打分", //EP打分
+            'CLZMC': "材料组名称", //材料组名称
+            'GYZMC': "工艺组名称", //工艺组名称
+            'DDJE': "定点金额", //定点金额
+            'DDSJ': "定点时间", //定点时间
+            'SQDZDZ': "上汽大众地址：", //上汽大众地址：
+            'ZXSE': "总销售额：", //总销售额：
+            'DDJV': "定点记录", //定点记录
+            'VPFX':"Volume Pricing分析",//Volume Pricing分析
+            'VPFXK':"Volume Pricing分析库",//Volume Pricing分析库
+            'CXJHCLYXSLJCLFX':"车型计划产量与现实累计产量分析（截止2021-02）",//车型计划产量与现实累计产量分析（截止2021-02）
+            'DWL':"单位：辆",//单位：辆
+            'ZF':"涨幅",//涨幅
+            'SMZQ':"生命周期",//生命周期
+            'PLGLZS':"品类管理助手",//品类管理助手
+            'JRZXFXGJ':"进入专项分析工具",//进入专项分析工具
+            'CLZRFQLJH':"材料组，RFQ，零件号…",//材料组，RFQ，零件号…
+            'JHCL':"计划产量",//计划产量
+            'SJCL':"实际产量",//实际产量
+            'LJLB':"零件列表",//零件列表
+            'QLLJ':"全量零件",//全量零件
+            'YXLJ':"已选零件",//已选零件
+            'CZLJ':"查找零件",//查找零件
+            'GYS':"供应商",//供应商
+            'DQJHCL':"当前计划产量",//当前计划产量
+            'DQSJCL':"当前实际产量",//当前实际产量
+            'SOPSH':"SOP时间",//SOP时间
+            'JRFX':"进入分析",//进入分析
+            'CLZ':"材料组",//材料组
+            'SSJG':"搜索结果",//搜索结果
+            'JHCLDQSJCLSOP':"计划产量、当前实际产量、SOP时间所展示信息均为该零件号在该⻋型最近⼀次定点的批量供货时间起点所对应的信息。",//计划产量、当前实际产量、SOP时间所展示信息均为该零件号在该⻋型最近⼀次定点的批量供货时间起点所对应的信息。
+            'QXZYTSJ':"请选择一条数据",//请选择一条数据
+            'QUXIAN': '曲线'
+        },
     }
     var xmlHttp = ''
-    if(window.XMLHttpRequest){ 
+    if(window.XMLHttpRequest){
         xmlHttp = new XMLHttpRequest();
     }else{
         // eslint-disable-next-line no-undef

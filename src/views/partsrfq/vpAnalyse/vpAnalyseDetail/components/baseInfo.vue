@@ -1,0 +1,55 @@
+<template>
+  <iFormGroup row="4" inline>
+    <iFormItem>
+      <!--        供应商-->
+      <iLabel :label="$t('TPZS.GONGYINGSHANG')" slot="label"/>
+      <iSelect>
+        <el-option :value="1" :label="1"></el-option>
+      </iSelect>
+    </iFormItem>
+    <iFormItem>
+      <!--        车型项目-->
+      <iLabel :label="$t('TPZS.CHEXINGXIANGMU')" slot="label"/>
+      <iText>{{ dataInfo.carTypeProj }}</iText>
+    </iFormItem>
+    <iFormItem>
+      <!--        车型-->
+      <iLabel :label="$t('TPZS.CHEXING')" slot="label"/>
+      <iText>{{ dataInfo.carType }}</iText>
+    </iFormItem>
+    <iFormItem>
+      <!--        工厂-->
+      <iLabel :label="$t('TPZS.GONGCHANG')" slot="label"/>
+      <iText>{{ dataInfo.factory }}</iText>
+    </iFormItem>
+  </iFormGroup>
+</template>
+
+<script>
+import {iFormGroup, iFormItem, iLabel, iText, iSelect} from 'rise';
+
+export default {
+  components: {
+    iFormGroup,
+    iFormItem,
+    iLabel,
+    iText,
+    iSelect,
+  },
+  props: {
+    dataInfo: {
+      type: Object,
+      default: () => {
+        return {};
+      },
+    },
+  },
+  data() {
+    return {};
+  },
+};
+</script>
+
+<style scoped>
+
+</style>

@@ -91,7 +91,7 @@ module.exports = {
 			'Ellipsis': 'Ellipsis'
 		};
 		//开启gizp压缩
-	
+
 	},
 	//引入全局css变量
 	css: {
@@ -251,7 +251,6 @@ module.exports = {
                 // target: 'http://10.160.141.72:8029', // 李自豪
                 // target: 'http://192.168.50.152:8029', // 谭易平
                 // target: 'http://10.160.137.16:8029', // 马浩
-                // target: 'http://192.168.50.240:9029', // 廖理
                 changeOrigin: true,
                 pathRewrite: {
                     "^/rfqApi": "",
@@ -289,12 +288,11 @@ module.exports = {
                 }
             },
             '/ws2Api': { // ws2Api.../ 王鹏霄
-								// target: 'http://0fba5e3347c7.ngrok.io',
                 // target: 'http://rise-front-web.apps.vmocp-dev.csvw',    //  sit
                 // target: 'http://192.168.50.183:8022',    //  鑫哥
-                // target: 'http://192.168.50.58:8022',    //  霄哥
+                // target: 'http://192.168.50.56:8022',    //  霄哥
                 target: 'http://10.122.18.166:8022',    //  dev
-                // target: 'http://192.168.50.165:8022',// 圆圆
+                // target: 'http://192.168.50.160:8022',// 圆圆
                 // target: 'http://192.168.50.40:8022',// 立立
                 // target: 'http://cbbbc967414f.ngrok.io',
                 changeOrigin: true,
@@ -334,7 +332,14 @@ module.exports = {
 							pathRewrite: {
 								"^/partApi": ""
 							}
+						},
+					'/aonApi': {
+						target: 'http://10.122.18.166:8036',
+						changeOrigin: true,
+						pathRewrite: {
+							"^/aonApi": ""
 						}
+					}
         }
     }
 }

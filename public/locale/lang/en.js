@@ -926,7 +926,7 @@
         'LK_LINGJIANMINGCHENZHONG': '零件名称（中）',   //  零件名称（中）
         'LK_LINGJIANMINGCHENDE': '零件名称（德）',  //  零件名称（德）
         'LK_CSF': 'CSF',    //  CSF
-        'LK_BAOCUNWEIZUIXINBANBEN': '保存为最新版本',  //  
+        'LK_BAOCUNWEIZUIXINBANBEN': '保存为最新版本',  //
         'LK_SHUAXIN': '刷新',   //  刷新
         'LK_SHUAXINRIQI': '刷新日期',   //  刷新日期
         'LK_SHANGBANNIANSOPFUKUANDUIBI': '上半年SOP付款⽐',   //  上半年SOP付款⽐
@@ -1097,16 +1097,41 @@
             'ChongFuTiJiao': '重复提交', // 重复提交
             'QiYuShuJuZhengChangTiJiao': '其余数据正常提交', // 其余数据正常提交
             'ChongFuCheHui': '重复撤回', // 重复撤回
-            'QiYuShuJuZhengChangCheHui': '其余数据正常撤回', // 其余数据正常撤回 
+            'QiYuShuJuZhengChangCheHui': '其余数据正常撤回', // 其余数据正常撤回
             'QingXuanZeCbdCengJiWeiL3DeShuJu': '请选择CBD层级为L3的数据', // 请选择CBD层级为L3的数据
         },
         "BJZS":{
             "LK_BAOJIAZUSHOU_MJ":"报价分析汇总-模具",
             "LK_BAOJIAZUSHOU_MJDANWEIYUAN":"报价分析汇总-模具（单元：元）"
+        },
+        //谈判助手
+        "TPZS": {
+            'FENXI': ' Analyze', //分析
+            'YULAN': 'preview', //预览
+            'GONGYINGSHANG': 'Supplier', //供应商
+            'CHEXINGXIANGMU': 'Model project', //车型项目
+            'CHEXING': 'Model', //车型
+            'GONGCHANG': 'Factory', //工厂
+            'ZONGDANJIA': 'Total unit price', //总单价
+            'GUDINGCHENGBENZHANBI': 'Percentage of fixed costs', //固定成本占比
+            'FEIYONGLEIXING': 'Types of fee', //费用类型
+            'FEIYONGZONGE': 'Total cost', //费用总额
+            'FENTANSHULIANG': 'Apportioned quantity', //分摊数量
+            'YINGXIANGDANJIA': 'Affect the unit price', //影响单价
+            'YINGXIANGCHENGBENZHANBI': 'Affect the proportion of cost', //影响成本占比
+            'XIANSHIYINGCANG': 'show/hide', //显示/隐藏
+            'WANCHENG': 'finish', //完成
+            'QINGSHURUBIANHAOMINGCHENG': 'Please enter the number/name', //请输入编号/名称
+            'QINGSHURUCHUANGJIANRENMINGCHENG': 'Please enter the name of the creator', //请输入创建人名称,
+            'PCAZONGLAN': 'PCA overview', //PCA总览
+            'BAOGAOMINGCHENG': 'Report name', //报告名称
+            'QUXIAN': ' curve', //曲线
+            'ZUIXINDINGDIANDANJIA': 'The latest fixed-point unit price', //最新定点单价
+            'MUBIAODANJIA': 'Target unit price', //目标单价,
         }
     }
     var xmlHttp = ''
-    if(window.XMLHttpRequest){ 
+    if(window.XMLHttpRequest){
         xmlHttp = new XMLHttpRequest();
     }else{
         // eslint-disable-next-line no-undef

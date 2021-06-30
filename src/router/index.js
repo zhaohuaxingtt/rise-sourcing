@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-06-29 17:15:19
+ * @LastEditTime: 2021-05-27 13:42:07
  * @LastEditors: Please set LastEditors
  * @Description: 系统静态路由.
  * @FilePath: \front-web\src\router\index.js
@@ -16,6 +16,8 @@ import createpartsRoutes from './modules/createparts'
 import costanalysismanageRoutes from './modules/costanalysismanage'
 import financialtargetpriceRoutes from './modules/financialtargetprice'
 import steeldemandcreation from './modules/steeldemandcreation'
+import negotiationAssistant from './modules/negotiationAssistant'
+
 Vue.use(VueRouter);
 const originalPush = VueRouter.prototype.push
 
@@ -185,41 +187,6 @@ export const staticRouter = [{
                 component: () => import (`@/views/ws2/baApply/details`),
             },
             {
-                path: '/tooling/investmentAdmin',
-                name: 'toolingModelDetails',
-                redirect: '/tooling/investmentAdmin/payBlock',
-                meta: {
-                    title: '模具投资付款管理员'
-                },
-                component: () => import (`@/views/ws2/investmentAdmin`),
-                children: [
-                    {
-                        path: '/tooling/investmentAdmin/payBlock',
-                        name: 'investmentAdminPayBlock',
-                        meta: {
-                            title: '付款看板'
-                        },
-                        component: () => import (`@/views/ws2/investmentAdmin/payBlock`),
-                    },
-                    {
-                        path: '/tooling/investmentAdmin/yearlyPlan',
-                        name: 'investmentAdminYearlyPlan',
-                        meta: {
-                            title: '年度计划'
-                        },
-                        component: () => import (`@/views/ws2/investmentAdmin/yearlyPlan`),
-                    },
-                    {
-                        path: '/tooling/investmentAdmin/monthlyPlan',
-                        name: 'investmentAdminMonthlyPlan',
-                        meta: {
-                            title: '月度计划'
-                        },
-                        component: () => import (`@/views/ws2/investmentAdmin/monthlyPlan`),
-                    }
-                ]
-            },
-            {
                 path: '/tooling',
                 name: 'tooling',
                 meta: {
@@ -240,41 +207,9 @@ export const staticRouter = [{
                         path: '/tooling/budgetManagement/carTypeOverview',
                         name: 'carTypeOverview',
                         meta: {
-                            title: '生成投资清单'
+                            title: '车型概览'
                         },
                         component: () => import (`@/views/ws2/budgetManagement/carTypeOverview`),
-                    },
-                    {
-                        path: '/tooling/budgetManagement/generateInvestmentList',
-                        name: 'generateInvestmentList',
-                        meta: {
-                            title: '生成投资清单'
-                        },
-                        component: () => import (`@/views/ws2/budgetManagement/generateInvestmentList`),
-                    },
-                    {
-                        path: '/tooling/budgetManagement/investmentListJV',
-                        name: 'investmentListJV',
-                        meta: {
-                            title: '投资清单JV'
-                        },
-                        component: () => import (`@/views/ws2/budgetManagement/investmentListJV`),
-                    },
-                    {
-                        path: '/tooling/budgetManagement/investmentListCommon',
-                        name: 'investmentListCommon',
-                        meta: {
-                            title: '投资清单Common'
-                        },
-                        component: () => import (`@/views/ws2/budgetManagement/investmentListCommon`),
-                    },
-                    {
-                        path: '/tooling/budgetManagement/commonSourcing',
-                        name: 'commonSourcing',
-                        meta: {
-                            title: 'commonSourcing'
-                        },
-                        component: () => import (`@/views/ws2/budgetManagement/commonSourcing/index`),
                     },
                     {
                         path: '/tooling/baApplyIndex',
@@ -291,6 +226,22 @@ export const staticRouter = [{
                             title: 'BA审批'
                         },
                         component: () => import (`@/views/ws2/baApproval`),
+                    },
+                    {
+                        path: '/tooling/budgetManagement/generateInvestmentList',
+                        name: 'generateInvestmentList',
+                        meta: {
+                            title: '生成投资清单'
+                        },
+                        component: () => import (`@/views/ws2/budgetManagement/generateInvestmentList`),
+                    },
+                    {
+                        path: '/tooling/budgetManagement/investmentList',
+                        name: 'investmentList',
+                        meta: {
+                            title: '投资清单'
+                        },
+                        component: () => import (`@/views/ws2/budgetManagement/investmentList`),
                     },
                     //历史数据库
                     {
@@ -310,23 +261,7 @@ export const staticRouter = [{
                         },
                         component: () => import (`@/views/ws2/budgetApproval`),
                     },
-                    {
-                        path: '/tooling/bmApplyIndex',
-                        name: 'bmApplyIndex',
-                        meta: {
-                            title: 'BM申请'
-                        },
-                        component: () => import (`@/views/ws2/bmApply`),
-                    },
                 ]
-            },
-            {
-                path: '/tooling/budgetManagement/addModelBag',
-                name: 'addModelBag',
-                meta: {
-                    title: 'addModelBag'
-                },
-                component: () => import (`@/views/ws2/budgetManagement/commonSourcing/addModelBag`),
             },
             {
                 path: '/tooling/dataBase',
@@ -347,13 +282,13 @@ export const staticRouter = [{
                     import (`@/views/ws2/budgetManagement/generateInvestmentList`)
             },
             {
-                path: '/ws2/budgetManagement/investmentListCommon',
-                name: 'investmentListCommon',
+                path: '/ws2/budgetManagement/investmentList',
+                name: 'investmentList',
                 meta: {
                     title: '模具-投资清单'
                 },
                 component: () =>
-                    import (`@/views/ws2/budgetManagement/investmentListCommon`)
+                    import (`@/views/ws2/budgetManagement/investmentList`)
             },
             {
                 path: "/ws3-register",
@@ -385,7 +320,7 @@ export const staticRouter = [{
                 name: "fileManage",
                 meta: { title: "附件综合管理" },
                 component: () => import("@/views/designateFiles/fileManage/index"),
-            },   
+            },
             // 配件相关路由
             {
                 path: "/sourcing/signforpartsdemand",
@@ -409,7 +344,7 @@ export const staticRouter = [{
             {
                 path: "/supplier/quotationdetail",
                 name: "quotationDetail",
-                component: () => 
+                component: () =>
                     import ("@/views/supplier/quotationdetail")
             },
             {
@@ -417,23 +352,7 @@ export const staticRouter = [{
                 name: "createRfq",
                 meta: { title: "创建RFQ" },
                 component: () => import("@/views/accessoryPart/createRfq/index"),
-            },
-            // 定点信相关路由
-            {
-                path: "/sourcing/partsletter",
-                name: "partsletter",
-                component: () => import ("@/views/letterAndLoi")
-            },
-            {
-                path: "/sourcing/partsletter/letterdetail",
-                name: "letterdetail",
-                component: () => import ("@/views/letterAndLoi/letter/detail")
-            },
-            {
-                path: "/sourcing/partsletter/loidetail",
-                name: "loidetail",
-                component: () => import ("@/views/letterAndLoi/loi/detail")
-            },
+            }
         ],
     },
     {
@@ -473,6 +392,8 @@ export default new VueRouter({
         ...createpartsRoutes,
         ...costanalysismanageRoutes,
         ...financialtargetpriceRoutes,
-        ...steeldemandcreation
+        ...steeldemandcreation,
+        //谈判助手
+        ...negotiationAssistant
     ]
 });

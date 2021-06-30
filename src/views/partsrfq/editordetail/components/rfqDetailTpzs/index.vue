@@ -31,12 +31,12 @@
     </el-tab-pane>
     <el-tab-pane label="专项分析工具">
       <iCard>
-        <div>开发中...</div> 
+        <div>开发中...</div>
       </iCard>
     </el-tab-pane>
     <el-tab-pane label="谈判基本信息">
       <iCard>
-        <div>开发中...</div> 
+        <div>开发中...</div>
       </iCard>
     </el-tab-pane>
   </iTabsList>
@@ -58,7 +58,7 @@ export default{
   },
   methods:{
     /**
-     * @description: 报价折叠 
+     * @description: 报价折叠
      * @param {*} e
      * @param {*} key
      * @return {*}

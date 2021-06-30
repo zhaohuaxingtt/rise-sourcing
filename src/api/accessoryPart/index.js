@@ -67,18 +67,19 @@ export function sendAccessoryInfo(params) {
   })
 }
 
-// 获取部门下拉 tag- LINIE:4   询价：9
-export function getDeptList({tag}) {
+// 获取部门下拉
+export function getDeptList(params) {
   return requst({
-    url: `/tp-records/accessoryInfo/findRespDept/${tag}`,
+    url: '/tp-records/accessoryInfo/findRespDept',
     method: 'POST',
+    data: params
   })
 }
 
 // 获取采购员下拉
 export function getUserList({deptId, tag}) {
   return requst({
-    url: `/tp-records/accessoryInfo/findRespLinie/${tag}/${deptId}`,
+    url: `/tp-records/accessoryInfo/findRespLinie/${deptId}`,
     method: 'GET'
   })
 }
@@ -127,29 +128,10 @@ export function insertRfq(params) {
   })
 }
 
-// 根据sp号查询零件信息
 export function getPartBySP(params) {
   return requstSourcing({
     url: '/part-src-prjs/findAccessoryAffixProjects',
     method: 'POST',
-    data: params
-  })
-}
-
-// 自动发起询价
-export function autoInquiry(params) {
-  return requstSourcing({
-    url: '/rfqs/rfqAutoRound',
-    method: 'PATCH',
-    data: params
-  })
-}
-
-// 自动发起询价
-export function updateRfq(params) {
-  return requstSourcing({
-    url: '/rfqs/updateRfq',
-    method: 'PATCH',
     data: params
   })
 }
