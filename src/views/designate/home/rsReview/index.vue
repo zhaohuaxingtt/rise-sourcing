@@ -132,7 +132,7 @@
       />
     </iCard>
     <!-- sel确认弹窗 -->
-    <selDialog :visible.sync="selDialogVisibal" :nomiAppId="selNominateId" :selStatus="selStatus" :readOnly="true" />
+    <selDialog :visible.sync="selDialogVisibal" :nomiAppId="selNominateId" :selStatus="selStatus" @refresh="getFetchData" :readOnly="true" />
     
   </iPage>
 </template>
@@ -155,6 +155,9 @@ import {
   batchRevokeToPass,
   batchConfirmSelSheet
 } from '@/api/designate/nomination/selsheet'
+import { 
+  createSignSheet
+} from '@/api/designate/nomination/signsheet'
 // 前端配置文件里面的定点类型
 // import { applyType } from '@/layout/nomination/components/data'
 
@@ -206,25 +209,39 @@ export default {
   },
   methods: {
     toPath(path) {
-      this.$router.push({path})
+      // 新增签字单
+      let query = {}
+      if (path === '/sourcing/partsnomination/signSheet/details?mode=add') {
+        createSignSheet({}).then(res => {
+          if (res.code === '200') {
+            query = {
+              signCode: res.data.signCode,
+              id: res.data.id,
+              status: res.data.status
+            }
+            this.$router.push({path, query})
+          } else {
+            iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+          }
+        }).catch(e => {
+          iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
+        })
+      } else {
+        this.$router.push({path, query})
+      }
+      
     },
     // 查看详情
     viewRsSheetDetail(row) {
-      // 缓存nominateProcessType
-      // this.$store.dispatch('setNominationType', row.nominateProcessType)
-      // 禁用nominateProcessType编辑
-      this.$store.dispatch('setNominationTypeDisable', true)
-      this.$nextTick(() => {
-        const routeData = this.$router.resolve({
-          path: '/sourcing/partsnomination/rsreview/details',
-          query: {
-            otherNominationId: row.id, 
-            otherNominationType: 'METTING',
-            otherPartProjectType: row.partProjType
-          }
-        })
-        window.open(routeData.href, '_blank')
+      const routeData = this.$router.resolve({
+        path: '/sourcing/partsnomination/rsreview/details',
+        query: {
+          otherNominationId: row.id, 
+          otherNominationType: 'METTING',
+          otherPartProjectType: row.partProjType
+        }
       })
+      window.open(routeData.href, '_blank')
     },
     // 获取车型项目
     getCarTypePro() {
@@ -235,24 +252,27 @@ export default {
       })
     },
     // 获取rs列表
-    async getFetchData() {
+    async getFetchData(params) {
       this.tableLoading = true
       try {
         // const res = checklistData
-        const res = await getSelList({
+        const res = await getSelList(Object.assign({
           current: this.page.currPage,
           size: this.page.pageSize
-        })
-        console.log('--res--', res,this.$i18n.locale)
+        }, params))
         this.tableLoading = false
         if (res.code === '200') {
           this.tableListData = res.data.records || []
           this.page.totalCount = res.data.total
         } else {
+          this.tableListData = []
+          this.page.totalCount = 0
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }
       } catch(e) {
         this.tableLoading = false
+        this.tableListData = []
+        this.page.totalCount = 0
         iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
       }
     },

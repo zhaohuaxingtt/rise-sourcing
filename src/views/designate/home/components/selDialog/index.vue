@@ -15,7 +15,7 @@
           />
         </span>
         <span v-if="selStatus">
-          <iButton @click="deleteFile">{{ language('LK_QUEREN','确认') }}</iButton>
+          <iButton @click="selConfirm">{{ language('LK_QUEREN','确认') }}</iButton>
           <iButton @click="downloadFile">{{ language('LK_XIAZAI','下载') }}</iButton>
         </span>
         <!-- <iButton>{{ language('strategicdoc.ShangChuanWenJian') }}</iButton> -->
@@ -58,6 +58,9 @@ import upload from '@/components/Upload'
 //   batchUploadSelAttach,
 //   batchDeleteSelAttach
 // } from '@/api/designate/nomination/selAttach'
+import {
+  batchConfirmSelSheet
+} from '@/api/designate/nomination/selsheet'
 
 export default {
   components: { tableList, iPagination, iDialog, iButton, upload },
@@ -92,7 +95,14 @@ export default {
   watch: {
     visible: {
       handler() {
-        this.$nextTick(() => { if (this.visible) this.getFetchData() })
+        this.$nextTick(() => { 
+          if (this.visible) {
+            this.getFetchData()
+          } else{
+            // 刷新父列表
+            this.$emit('refresh', {})
+          }
+        })
       },
       deep: true
     }
@@ -123,6 +133,24 @@ export default {
         pageSize: (this.page && this.page.pageSize) || 10
       })
       this.getDataList(params)
+    },
+    // SEL单据确认
+    async selConfirm() {
+      const confirmInfo = await this.$confirm(this.language('LK_EXCUTESURE','您确定要执行该操作吗？'))
+      if (confirmInfo !== 'confirm') return
+      try {
+        const res = await batchConfirmSelSheet({nominateIdArr: [this.nomiAppId]})
+        if (res.code === '200') {
+          iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'))
+          this.getFetchData()
+          // 刷新父列表
+          this.$emit('refresh', {})
+        } else {
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
+      } catch (e) {
+        iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
+      }
     },
     
   }

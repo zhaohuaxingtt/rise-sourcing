@@ -111,7 +111,13 @@
       <!-- SEL单据确认状态 -->
       <template #selStatus="scope">
         <div>
-          <a href="javascript:;" class="selStatus-link" @click="confirmSelSheet(scope.row)" v-if="scope.row.selStatus && scope.row.selStatus.code === 'Unconfirmed'">{{scope.row.selStatus && scope.row.selStatus.desc || scope.row.selStatus}}</a>
+          <a
+            href="javascript:;" 
+            class="selStatus-link" 
+            @click="confirmSelSheet(scope.row)" 
+            v-if="scope.row.selStatus && scope.row.selStatus.code === 'Unconfirmed' && curentUserRole.includes('9')">
+          {{scope.row.selStatus && scope.row.selStatus.desc || scope.row.selStatus}}
+        </a>
           <span v-else>{{scope.row.selStatus && scope.row.selStatus.desc || scope.row.selStatus}}</span>
         </div>
       </template>
