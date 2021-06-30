@@ -4,7 +4,7 @@
  * @Description:财报分析
  -->
 <template>
-	<iPage class="page-content">
+	<iPage class="page-content" v-permission="TOOLING_PAYMENTPLAN_PAYMENTBOARD">
 		<!-- <div class="flex-between-center margin-bottom20">
 			<span class="title">{{$t('SPR_FRM_DEP_FINANA')}}</span>
 			<div class="flex-align-center"> -->

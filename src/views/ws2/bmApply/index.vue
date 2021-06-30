@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="page-head">
-      <div class="page-head-flex" :class="tableIndex === 0 ? 'head-on' : ''" @click="selectHeadTable(0)">
+      <div v-permission="TOOLING_BUDGET_BMAPPLICATION_ALL" class="page-head-flex" :class="tableIndex === 0 ? 'head-on' : ''" @click="selectHeadTable(0)">
         <div class="line-divL line-div">
           <div class="title">All</div>
           <div class="describe">{{$t('LK_ALLBMAPPLY')}}</div>
@@ -11,7 +11,7 @@
           <icon v-else symbol name="iconsuoyouBAshenqingweixuanzhong" class="openIcon"></icon>
         </div>
       </div>
-      <div class="page-head-flex" :class="tableIndex === 1 ? 'head-on' : ''" @click="selectHeadTable(1)">
+      <div v-permission="TOOLING_BUDGET_BMAPPLICATION_TOBECONFIRMED" class="page-head-flex" :class="tableIndex === 1 ? 'head-on' : ''" @click="selectHeadTable(1)">
         <div class="line-divL line-div">
           <div class="title">{{tableCount.watiConfirmCount}}</div>
           <div class="describe">{{$t('LK_DAIQUERENBMDAN')}}</div>
@@ -21,7 +21,7 @@
           <icon v-else symbol name="icondaiquerenBAshenqingzhuijiajineweixuanzhong" class="openIcon"></icon>
         </div>
       </div>
-      <div class="page-head-flex" :class="tableIndex === 2 ? 'head-on' : ''" @click="selectHeadTable(2)">
+      <div v-permission="TOOLING_BUDGET_BMAPPLICATION_AEKOINCREASE" class="page-head-flex" :class="tableIndex === 2 ? 'head-on' : ''" @click="selectHeadTable(2)">
         <div class="line-divL line-div">
           <div class="title">{{tableCount.aekoAddCount}}</div>
           <div class="describe">{{$t('LK_AEKOZENGZHIBMDAN')}}</div>
@@ -31,7 +31,7 @@
           <icon v-else symbol name="iconAekozengzhiBMdanweixuanzhong" class="openIcon"></icon>
         </div>
       </div>
-      <div class="page-head-flex" :class="tableIndex === 3 ? 'head-on' : ''" @click="selectHeadTable(3)">
+      <div v-permission="TOOLING_BUDGET_BMAPPLICATION_AEKOREDUCE" class="page-head-flex" :class="tableIndex === 3 ? 'head-on' : ''" @click="selectHeadTable(3)">
         <div class="line-divL line-div">
           <div class="title">{{tableCount.aekoMinusCount}}</div>
           <div class="describe">{{$t('LK_AEKOJIANZHIBMDAN')}}</div>
@@ -45,28 +45,28 @@
 
     <!-- 所有BM申请单 -->
     <template v-if="tableIndex === 0">
-      <div>
+      <div v-permission="TOOLING_BUDGET_BMAPPLICATION_ALL">
         <AllBmListBlock @openBMDetail="openBMDetail" :refresh="refresh" />
       </div>
     </template>
 
     <!-- 待确认BM单 -->
     <template v-if="tableIndex === 1">
-      <div>
+      <div v-permission="TOOLING_BUDGET_BMAPPLICATION_TOBECONFIRMED">
         <ToBeConfirmed @openBMDetail="openBMDetail" :refresh="refresh" />
       </div>
     </template>
 
     <!-- Aeko增值金额 -->
     <template v-if="tableIndex === 2">
-      <div>
+      <div v-permission="TOOLING_BUDGET_BMAPPLICATION_AEKOINCREASE">
         <IncrementBlock @openBMDetail="openBMDetail" :refresh="refresh" />
       </div>
     </template>
 
     <!-- Aeko减值BM单 -->
     <template v-if="tableIndex === 3">
-      <div>
+      <div v-permission="TOOLING_BUDGET_BMAPPLICATION_AEKOREDUCE">
         <ImpairmentBlock @openBMDetail="openBMDetail" :refresh="refresh" />
       </div>
     </template>
