@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-06-21 20:05:57
- * @LastEditTime: 2021-06-28 20:35:39
+ * @LastEditTime: 2021-06-30 10:54:21
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails\data1.js
@@ -548,48 +548,133 @@ export const tableList = {
       id: "2",
       label: "Supplier A",
       prop: "SupplierA",
-      // children: [
-      //   {
-      //     id: "2-1",
-      //     label: "",
-      //     prop: "sA",
-      //   },
-      //   {
-      //     id: "2-2",
-      //     label: "",
-      //     prop: "sB",
-      //   },
-      //   {
-      //     id: "2-3",
-      //     label: "",
-      //     prop: "sC",
-      //   },
-      // ],
+      children: [
+        {
+          id: "2-1",
+          label: "",
+          prop: "sA",
+        },
+        {
+          id: "2-2",
+          label: "",
+          prop: "sB",
+        },
+        {
+          id: "2-3",
+          label: "",
+          prop: "sC",
+        },
+      ],
     },
     {
       id: "3",
       label: "Supplier B",
       prop: "SupplierB",
+      children: [
+        {
+          id: "3-1",
+          label: "",
+          prop: "sA",
+        },
+        {
+          id: "3-2",
+          label: "",
+          prop: "sB",
+        },
+        {
+          id: "3-3",
+          label: "",
+          prop: "sC",
+        },
+      ],
     },
     {
       id: "4",
       label: "Supplier C",
       prop: "SupplierC",
+      children: [
+        {
+          id: "4-1",
+          label: "",
+          prop: "sA",
+        },
+        {
+          id: "4-2",
+          label: "",
+          prop: "sB",
+        },
+        {
+          id: "4-3",
+          label: "",
+          prop: "sC",
+        },
+      ],
     },
     {
       id: "5",
       label: "Supplier D",
       prop: "SupplierD",
+      children: [
+        {
+          id: "5-1",
+          label: "",
+          prop: "sA",
+        },
+        {
+          id: "5-2",
+          label: "",
+          prop: "sB",
+        },
+        {
+          id: "5-3",
+          label: "",
+          prop: "sC",
+        },
+      ],
     },
     {
       id: "6",
       label: "Supplier E",
       prop: "SupplierE",
+      children: [
+        {
+          id: "6-1",
+          label: "",
+          prop: "sA",
+        },
+        {
+          id: "6-2",
+          label: "",
+          prop: "sB",
+        },
+        {
+          id: "6-3",
+          label: "",
+          prop: "sC",
+        },
+      ],
     },
     {
       id: "7",
       label: "Supplier F",
       prop: "SupplierF",
+      children: [
+        {
+          id: "7-1",
+          label: "",
+          prop: "sA",
+        },
+        {
+          id: "7-2",
+          label: "",
+          prop: "sB",
+        },
+        {
+          id: "7-3",
+          label: "",
+          prop: "sC",
+        },
+      ],
     },
   ],
   dataList: [

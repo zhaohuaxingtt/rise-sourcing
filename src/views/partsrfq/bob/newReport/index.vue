@@ -310,7 +310,9 @@ export default {
       };
       this.getChartData();
     },
-    add(val) {},
+    add(val) {
+      console.log(val)
+    },
     searchChartData() {
       getBobLevelOne({
         analysisSchemeId: this.analysisSchemeId,
