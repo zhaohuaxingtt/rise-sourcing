@@ -548,6 +548,8 @@ export default {
       saveNewVersion(param).then(res => {
         this.saveNewVersion = false;
         if (Number(res.code) === 0) {
+          this.getVersionList();
+          this.pageEdit = false;
           return iMessage.success(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
         } else {
           return iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
