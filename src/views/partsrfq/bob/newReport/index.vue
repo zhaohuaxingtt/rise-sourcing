@@ -358,7 +358,9 @@ export default {
         }
       });
     },
-    changeOut() {},
+    changeOut(){
+      this.findPart()
+    }
   },
   computed: {
     chartTitle() {
