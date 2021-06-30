@@ -367,7 +367,6 @@
         'LK_CHEHUI': 'Withdraw',//撤回
         'LK_CHENGBEN': 'Cost',//成本
         'LK_CHICUN': 'Dimension',//尺寸
-        'LK_CHUANGJIANDINGDIANSHENQING': 'Create SQO Application',//创建定点申请
         'LK_CHUANGJIANRENGONGHAO': 'Creator Employee No.',//创建人工号
         'LK_CHUANGJIANRENXINGMING': 'Creator Name',//创建人姓名
         'LK_CHUANGJIANRIQI': 'Creation date',//创建日期
@@ -379,7 +378,6 @@
         'LK_DANWEI': 'Unit',//单位
         'LK_DANGQIANBANBEN': 'Current Version',//当前版本
         'LK_DANGQIANLUNCI': 'Current round',//当前轮次
-        'LK_DAOCHU': 'Export',//导出
         'LK_DAORUSHIJIAN': 'Import time',//导入时间
         'LK_DENGJIPEIZHI': 'Level Configuration',//等级配置
         'LK_DIANJISHANGCHUAN': 'Click to Upload',//点击上传
@@ -430,14 +428,12 @@
         'LK_GONGYINGSHANGPINGFEN': 'Supplier Rating',//供应商评分
         'LK_GONGYINGSHANGPINGFENFUJIAN': 'Supplier Rating Attachment',//供应商评分附件
         'LK_GONGYINGSHANGSHENGCHANCHANGDI': 'Supplier Manufacturing Spot',//供应商生产场地
-        'LK_GUANBIRFQ': 'Close RFQ',//关闭RFQ
         'LK_HUIYIDIDIAN': 'Meeting place',//会议地点
         'LK_HUIYIJIBENXINXI': 'Basic information about the meeting',//会议基本信息
         'LK_HUIYIQITAXINXI': 'other information for the meeting',//会议其它信息
         'LK_HUIYISHIJIAN': 'Meeting time',//会议时间
         'LK_HUOBI': 'Currency',//货币
         'LK_JICHUXINXI': 'Basic information',//基础信息
-        'LK_JIHUORFQ': 'Activate RFQ',//激活RFQ
         'LK_JISHUJIAOLIUHUI': 'Techonology Meeting',//技术交底会
         'LK_EP': 'EP',//技术评分人
         'LK_JIAGEMINGXI': 'Price Details',//价格明细
@@ -646,7 +642,6 @@
         'LK_XIANGMUCHEXING': 'Project Car Type',//项目车型
         'LK_XINJIANXINXIDANQIANSHOU': 'TP Apps Sign in',//新件信息单签收
         'LK_XINJIANXINXILIUSHUIDANHAO': 'New Tp Sequence No.',//新件信息流水单号
-        'LK_XINJIANRFQ': 'Create New RFQ',//新建RFQ
         'LK_XINJIANRFQLUNCI': 'Create New RFQ Round',//新建RFQ轮次
         'LK_XINJIANXINXIDANBEIZHU': 'Create new part info. remark',//新建信息单备注
         'LK_XINJIANXINXIDANLIUSHUIHAO': 'Part info. Sheet No.',//新建信息单流水号
@@ -691,9 +686,6 @@
         'LK_ZHONGXINSHENQING': 'Reapply',//重新申请
         'LK_ZHONGZHI': 'Reset',//重置
         'LK_ZHUANPAI': 'Handover',//转派
-        'LK_ZHUANPAIPINGFENRENWU': 'Transfer rating task',//转派评分任务
-        'LK_ZHUANTANPAN': 'To Negotiation',//转谈判
-        'LK_ZHUANXUNJIA': 'To inquiry',//转询价
         'LK_ZHUANGXIANGSHU': 'Number of Containers',//装箱数
         'LK_ZHUANGTAI': 'Status',//状态
         'LK_ZUIXINRWJIA': 'Latest RW Price',//最新RW价
