@@ -31,7 +31,7 @@ export default {
   mixins: [resultMessageMixin],
   components: { tableList, iButton },
   props: {
-    carClassify: { type: String, default: '' }
+    carType: { type: String, default: '' }
   },
   data() {
     // 这里存放数据
@@ -39,7 +39,7 @@ export default {
       tableListData: [],
       tableTitle: partsDialogTableTitle,
       tableLoading: false,
-      carClassify: '',
+      carType: '',
       selectTableData: [],
     }
   },
@@ -47,9 +47,9 @@ export default {
   computed: {},
   // 监控data中的数据变化
   watch: {
-    carClassify: {
+    carType: {
       handler(data) {
-        this.carClassify = data
+        this.carType = data
       },
       deep: true,
       immediate: true
@@ -61,7 +61,7 @@ export default {
       this.tableLoading = true;
       try {
         const req = {
-          carClassify: this.carClassify,
+          carType: this.carType,
           userId: this.$store.state.permission.userInfo.id,
           ...data
         };
