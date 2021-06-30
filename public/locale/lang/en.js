@@ -99,29 +99,6 @@
             'XiaYiYe': 'Next Page', //下一页
             'QianWangYe': 'Go To Page' //前往    页
         },
-        // 手工采购项目创建
-        'createparts': {
-            'ShouGongCaiGouXiangMuChuangJian': '', // 手工采购项目创建
-            'GangCaiPiLiangCaiGou': '', // 钢材批量采购
-            'GangCaiYiCiXingCaiGou': '', // 钢材一次性采购
-            'GongChangQianYi': '', // 工厂迁移
-            'QingShuRu': '', // 请输入
-            'QingShuRuLingJianHao': '', // 请输入零件号
-            'QingShuRuLingJianMingZhong': '', // 请输入零件名(中)
-            'QingShuRuLingJianMingDe': '', // 请输入零件名(德)
-            'QingXuanZeLingJianLaiYuan': '', // 请选择零件来源
-            'QingXuanZeLingJianZhuangTai': '', // 请选择零件状态
-            'LingJianHao': '零件号', // 零件号
-            'LingJianMingZhong': '', // 零件名(中)
-            'LingJianMingDe': '', // 零件名(德)
-            'LingJianLaiYuan': '', // 零件来源
-            'ChuangJianCaiGouXiangMu': '', // 创建采购项目
-            'LingJianZhuangTai': '', // 零件状态
-            'JiHuoShiJian': '', // 激活时间
-            'CaoZuoRiZhi': '', // 操作日志
-            'ChaKan': '', // 查看
-            'QingXuanZeZhiShaoYiTiaoShuJu': '', // 请选择至少一条数据
-        },
         // 成本分析管理
         'costanalysismanage': {
             'ChengBenFenXiGuanLi': '', // 成本分析管理
@@ -133,7 +110,6 @@
             'RfqZhuangTai': '', // RFQ状态
             'QingXuanZeRfqZhuangTai': '', // 请选择RFQ状态
             'LingJianHao': '', // 零件号
-            'QingShuRuLingJianHao': '', // 请输入零件号
             'LingJianMing': '', // 零件名
             'QingShuRuLingJianMing': '', // 请输入零件名
             'CheXingXiangMu': '', // 车型项目
