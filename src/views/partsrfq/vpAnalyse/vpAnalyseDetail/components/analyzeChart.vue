@@ -125,7 +125,7 @@ export default {
   data() {
     return {
       massProductionTimeRate: 45,
-      achievementRate: 65,
+      achievementRate: '',
       OffsetData: 4,
       dropPotential: {
         totalPlannedOutputTipsData: 200000,
@@ -143,6 +143,7 @@ export default {
   },
   methods: {
     getMathematicalFormulaData() {
+      this.achievementRate = this.dataInfo.achievementRate
       this.dropPotential = {
         totalPlannedOutputTipsData: this.dataInfo.planTotalPro ? this.dataInfo.planTotalPro : '',
         estimatedTotalProductionTipsData: this.dataInfo.estimatedActualTotalPro
