@@ -926,7 +926,7 @@
         'LK_LINGJIANMINGCHENZHONG': '零件名称（中）',   //  零件名称（中）
         'LK_LINGJIANMINGCHENDE': '零件名称（德）',  //  零件名称（德）
         'LK_CSF': 'CSF',    //  CSF
-        'LK_BAOCUNWEIZUIXINBANBEN': '保存为最新版本',  //  
+        'LK_BAOCUNWEIZUIXINBANBEN': '保存为最新版本',  //
         'LK_SHUAXIN': '刷新',   //  刷新
         'LK_SHUAXINRIQI': '刷新日期',   //  刷新日期
         'LK_SHANGBANNIANSOPFUKUANDUIBI': '上半年SOP付款⽐',   //  上半年SOP付款⽐
@@ -960,6 +960,95 @@
         'SPR_FRM_DEP_WHHYJZ': '维护行业均值', //维护行业均值
         'SPR_FRM_DEP_OBJPLACE': '请选择呈现对象', // 请选择呈现对象
         'SPR_FRM_DEP_AVGPLACE': '请选择行业均值', // 请选择行业均值
+
+        // 定点管理
+        'nominationLanguage': {
+            'DingDianGuanLi': '定点管理',
+            'LingJianHao': '零件号',
+            'ShenQingDanHao': '申请单号',
+            'RFQBianHao': 'RFQ编号',
+            'LiuChengLeiXing': '流程类型',
+            'ShenQingZhuangTai': '申请状态',
+            'LingJianMing': '零件名',
+            'LingJianMingCN': '零件名(中)',
+            'LingJianMingDE': '零件名(德)',
+            'XunJiaCaiGouYuan': '询价采购员',
+            'CheXingXiangMu': '车型项目',
+            'BaoJiaYiZhiXingJiaoYan': '报价一致性校验',
+            'ShiFouDnaYiGongYingShang': '是否单一供应商',
+            'XianShiZiJi': '显示自己',
+            'Yes': '是',
+            'No': '否',
+            'DingDianShenQingZongHeGuanLi': '定点申请综合管理',
+            'XinJianLingJIanDingDianShengQIng': '新建零件定点申请',
+            'CheHui': '撤回',
+            'ShanChu': '删除',
+            'TiJiaoYiZhiXingJiaoYan': '提交一致性校验',
+            'ShenQingDanMing': '申请单名',
+            'LeiXing': '类型',
+            'XingMuLeiXing': '项目类型',
+            'HuiYi': '会议',
+            'RSZhuangTai': 'RS单状态',
+            'RSDongJieRiQi':'RS冻结日期',
+            'BaoJiaYiZhiXingZhuangTai':'报价一致性校验状态',
+            'SELDanJuQUeRenZH': 'SEL单据确认状态',
+            'DingDianRiQi': '定点日期',
+            'DINGDIANSHENQINGLEIXING':'定点申请类型', // 定点申请类型
+            'RFQANDLINGJIANQINGDAN':'RFQ & 零件清单', // RFQ & 零件清单
+            'GONGYINGSHANGANDDANYIGONGYINGSHANG':'供应商 & 单⼀供应商', // 供应商 & 单⼀供应商
+            'DINGDIANJIANYI':'定点建议', // 定点建议
+            'SHENPIRENANDSHENPIJILU':'审批⼈ & 审批记录', // 审批⼈ & 审批记录
+            'JUECEZILIAO':'决策资料', // 决策资料
+            'DINGDIAN':'定点', // 定点
+            'LK_QINGXUANZEYITIAORFQ': '请选择一条RFQ', // 请选择一条RFQ
+            'LK_QINGXUANZEDINGDIANSHENQINGLEIXING': '请选择定点申请类型', // 请选择定点申请类型
+            'LK_DINGDIANSHENQINGLEIXING': '定点申请类型', // 定点申请类型
+            'LK_GAIDINGDIANSHENQINGZHONGYOUDANYIGONGYINGSHANG': '该定点申请中有单一供应商', // 该定点申请中有单一供应商
+            'LK_DINGDIANXINLOI':'定点信 / LOI', // 定点信 / LOI
+            'LK_DINGDIANXIN':'定点信', // 定点信
+            'LK_LOI':'LOI', // LOI
+            'LK_DINGDIANXINBIANHAO':'定点信编号', // 定点信编号
+            'LK_DINGDIANXINZHUANGTAI':'定点信状态',//  定点信状态
+            'LK_DINGDIANXINDANHAO':'定点申请单号', // 定点申请单号
+            'LK_DINGDIANSHIJIANQIZHI':'定点时间起⽌', //  定点时间起⽌
+            'LK_SHIFOUXIANSHIZIJI':'是否显⽰⾃⼰', //  是否显⽰⾃⼰
+            'LK_GONGYINGSHANGFANKUI':'供应商反馈', // 供应商反馈
+            'LK_SHIFOUQIANSHUXIEYI':'是否签署协议', // 是否签署协议
+            'LK_DINGDIANRIQI':'定点⽇期', //定点⽇期
+            'LK_LOIBIANHAO':'LOI编号', // LOI编号
+            'LK_LOIZHUANGTAI':'LOI状态', // LOI状态
+            'LK_LOISHENGCHENGSHIJIAN':'LOI⽣成时间', // LOI⽣成时间
+            'LK_QUERENBINGTIJIAO':'确认并提交', // 确认并提交
+            'LK_LINEQUEREN':'LINIE确认', // LINIE确认
+            'LK_LINETUIHUI':'LINIE退回', // LINIE退回
+            'LK_GUANBI':'关闭', // 关闭
+            'LK_JIHUO':'激活', // 激活
+            'LK_GUANBIDINGDIANXIN':'关闭定点信' , // 关闭定点信
+            'LK_QINGSHURUGUANBIYUANYIN':'请输⼊关闭原因', // 请输⼊关闭原因
+            'LK_MUBIAOXUNJIACAIGOUYUAN':'目标询价采购员', // 目标询价采购员
+            'LK_MUBIAOLINE':'⽬标LINIE', // ⽬标LINIE
+            'LK_GAILAN':'概览', // 概览
+            'LK_BAOBIAOGUANLI':'报表管理', // 报表管理
+            'LK_WANCHENGDINGDIANXIN':'完成定点信', // 完成定点信
+            'LK_DAOCHUBIAOZHUNDINGDIANXIN':'导出标准定点信', // 导出标准定点信
+            'LK_LISHIDINGDIANXIN':'历史定点信', // 历史定点信
+            'LK_BIAOZHUNDINGDIANXIN':'标准定点信', // 标准定点信
+            'LK_FEIBIAOZHUNDINGDIANXIN':'⾮标准定点信',  // ⾮标准定点信
+            'LK_GONGYINGSHANGLIANXIR':'供应商联系⼈', // 供应商联系⼈
+            'LK_SHANGCHUANSHIWENJIANQINGXUANZHUANZHIZHENGCHANGFANGXIANGHOUSHANGCHUAN':'上传时文件请旋转至正常方向后上传', // 上传时文件请旋转至正常方向后上传
+            'LK_BIANJIBEIZHU':'编辑备注', // 编辑备注
+            'LK_GUANBILOI':'关闭LOI', // 关闭LOI
+            'LK_WANCHENGLOI':'完成LOI', // 完成LOI
+            'LK_DAOCHUBIAOZHUNLOI':'导出标准LOI', // 导出标准LOI
+            'LK_LISHILOI':'历史LOI', // 历史LOI
+            'LK_BIAOZHUNLOI':'标准LOI', // 标准LOI
+            'LK_FEIBIAOZHUNLOI':'⾮标准LOI', // ⾮标准LOI
+            'LK_PILIANGLOI':'批量LOI', // 批量LOI
+            'LK_KAIFALOI':'开发LOI', // 开发LOI
+            'LK_KAIFAPILIANGLOI':'开发+批量LOI' , // 开发+批量LOI
+            'LK_FRMPINGJI':'FRM评级', // FRM评级
+            'LK_CBDSTATUS':'CBD状态', // CBD状态
+        },
         'LK_TUICHUBIANJI': '退出编辑',    //  退出编辑
         'LK_SHANGCHUANQINGDAN': '上传清单',    //  上传清单
         'LK_YUEDUJIHUA': '月度计划',    //  月度计划
@@ -980,10 +1069,35 @@
         "BJZS":{
             "LK_BAOJIAZUSHOU_MJ":"报价分析汇总-模具",
             "LK_BAOJIAZUSHOU_MJDANWEIYUAN":"报价分析汇总-模具（单元：元）"
+        },
+        //谈判助手
+        "TPZS": {
+            'FENXI': ' Analyze', //分析
+            'YULAN': 'preview', //预览
+            'GONGYINGSHANG': 'Supplier', //供应商
+            'CHEXINGXIANGMU': 'Model project', //车型项目
+            'CHEXING': 'Model', //车型
+            'GONGCHANG': 'Factory', //工厂
+            'ZONGDANJIA': 'Total unit price', //总单价
+            'GUDINGCHENGBENZHANBI': 'Percentage of fixed costs', //固定成本占比
+            'FEIYONGLEIXING': 'Types of fee', //费用类型
+            'FEIYONGZONGE': 'Total cost', //费用总额
+            'FENTANSHULIANG': 'Apportioned quantity', //分摊数量
+            'YINGXIANGDANJIA': 'Affect the unit price', //影响单价
+            'YINGXIANGCHENGBENZHANBI': 'Affect the proportion of cost', //影响成本占比
+            'XIANSHIYINGCANG': 'show/hide', //显示/隐藏
+            'WANCHENG': 'finish', //完成
+            'QINGSHURUBIANHAOMINGCHENG': 'Please enter the number/name', //请输入编号/名称
+            'QINGSHURUCHUANGJIANRENMINGCHENG': 'Please enter the name of the creator', //请输入创建人名称,
+            'PCAZONGLAN': 'PCA overview', //PCA总览
+            'BAOGAOMINGCHENG': 'Report name', //报告名称
+            'QUXIAN': ' curve', //曲线
+            'ZUIXINDINGDIANDANJIA': 'The latest fixed-point unit price', //最新定点单价
+            'MUBIAODANJIA': 'Target unit price', //目标单价,
         }
     }
     var xmlHttp = ''
-    if(window.XMLHttpRequest){ 
+    if(window.XMLHttpRequest){
         xmlHttp = new XMLHttpRequest();
     }else{
         // eslint-disable-next-line no-undef

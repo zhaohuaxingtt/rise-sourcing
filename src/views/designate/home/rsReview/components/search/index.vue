@@ -107,21 +107,24 @@
       <el-form-item :label="$t('nominationLanguage.DongJieRiQi')">
         <iDatePicker
           v-model='form.freezeDate'
-          value-format="yyyy-MM-dd HH:mm:ss">
+          value-format="yyyy-MM-dd">
         </iDatePicker>
       </el-form-item>
       <!-- 定点日期 -->
       <el-form-item :label="$t('nominationLanguage.DingDianRiQi')">
         <iDatePicker
-          v-model='form.nominate_date'
-          value-format="yyyy-MM-dd HH:mm:ss">
+          v-model='form.nominateDate'
+          value-format="yyyy-MM-dd">
         </iDatePicker>
       </el-form-item>
        <!-- 复核截止日期 -->
       <el-form-item :label="$t('nominationLanguage.FuHeJieZhiRiQi')">
         <iDatePicker
-          v-model='form.checkDate'
-          value-format="yyyy-MM-dd HH:mm:ss">
+          v-model='form.recheckDueDate'
+          @change="oncheckDateChange"
+          type="daterange"
+          value-format="yyyy-MM-dd"
+          clearable>
         </iDatePicker>
       </el-form-item>
       <!-- 申请状态 -->
@@ -226,6 +229,7 @@ import {
   iSelect,
   iDatePicker
 } from "rise";
+import _ from 'lodash'
 
 export default {
   data() {
@@ -242,15 +246,21 @@ export default {
     iDatePicker
   },
   mounted() {
-    console.log(this)
   },
   methods: {
     sure() {
-      this.$emit('search', this.form)
+      const form = _.cloneDeep(this.form)
+      delete form.recheckDueDate
+      this.$emit('search', form)
     },
     reset() {
       this.form = {}
       this.$emit('search', {})
+    },
+    oncheckDateChange(data) {
+      console.log(data)
+      this.form.startRecheckDueDate = data[0]
+      this.form.endRecheckDueDate = data[1]
     }
   },
   // watch: {

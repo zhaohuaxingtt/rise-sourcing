@@ -12,20 +12,15 @@
     >
       <el-form>
         <el-form-item :label="$t('车型包')">
-          <iSelect
-            class="multipleSelect"
-            :placeholder="$t('partsprocure.PLEENTER')"
+          <Autocomplete
             v-model="form['search.cartypeBag']"
-            filterable
+            :fetch-suggestions="querySearchCartypeBag"
+            :placeholder="$t('partsprocure.PLEENTER')"
+            @keyup.enter.native="getTableListFn"
             clearable
           >
-            <el-option
-              :value="item"
-              :label="item"
-              v-for="(item, index) in cartypeBagList"
-              :key="index"
-            ></el-option>
-          </iSelect>
+            <i slot="suffix" class="el-input__icon el-icon-search" @click="getTableListFn"></i>
+          </Autocomplete>
         </el-form-item>
         <el-form-item :label="$t('LK_CHEXINGXIANGMU')">
           <iInput v-model="form['search.tmCartypeProId']" :placeholder="$t('LK_RFQPLEASEENTERQUERY')">
@@ -33,20 +28,15 @@
           </iInput>
         </el-form-item>
         <el-form-item :label="$t('零件包')">
-          <iSelect
-            class="multipleSelect"
-            :placeholder="$t('partsprocure.PLEENTER')"
-            v-model="form['search.partBag']"
-            filterable
-            clearable
+          <Autocomplete
+              v-model="form['search.partBag']"
+              :fetch-suggestions="querySearchPartBag"
+              :placeholder="$t('partsprocure.PLEENTER')"
+              @keyup.enter.native="getTableListFn"
+              clearable
           >
-            <el-option
-              :value="item"
-              :label="item"
-              v-for="(item, index) in partBagList"
-              :key="index"
-            ></el-option>
-          </iSelect>
+            <i slot="suffix" class="el-input__icon el-icon-search" @click="getTableListFn"></i>
+          </Autocomplete>
         </el-form-item>
 <!--        <el-form-item :label="$t('LK_LINGJIANMINGCHENG')">-->
 <!--          <iInput v-model="form['search.partNameZh']" :placeholder="$t('LK_RFQPLEASEENTERQUERY')">-->
@@ -120,7 +110,7 @@
 import {iCard, iSearch, iSelect, iPagination, iButton, iInput, iMessage} from 'rise';
 import { excelExport } from '@/utils/filedowLoad'
 import {getTousandNum} from "@/utils/tool";
-import {Upload} from "element-ui"
+import {Upload, Autocomplete} from "element-ui"
 import {
   packageFindByCarType,
   packageFindByPart,
@@ -135,6 +125,8 @@ import {
 import {form, modelBagData} from "../components/data";
 import {pageMixins} from "@/utils/pageMixins";
 import {tableHeight} from "@/utils/tableHeight";
+import { cloneDeep } from 'lodash'
+
 import {
   getCartypePulldown,
 } from "@/api/ws2/budgetManagement/edit";
@@ -145,12 +137,12 @@ export default {
   components: {
     iCard,
     iSearch,
-    iSelect,
     iTableList,
     iPagination,
     iButton,
     iInput,
-    Upload
+    Upload,
+    Autocomplete,
   },
   data() {
     return {
@@ -165,6 +157,7 @@ export default {
       tableListData: [],
       multipleSelection: [],
       tableTitle: modelBagData,
+      tableTitleTemp: [],
       getTousandNum: getTousandNum
     }
   },
@@ -174,10 +167,35 @@ export default {
     }
   },
   created() {
+    this.tableTitleTemp = cloneDeep(this.tableTitle)
     this.page.pageSizes = [10, 20, 50, 100, 300]
     this.getModelProtitesPullDown()
   },
   methods: {
+    querySearchCartypeBag(queryString, cb) {
+      packageFindByCarType({carType: queryString})
+          .then((res) => {
+            const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
+            if (Number(res.code) === 0) {
+              cb(res.data.map(item => ({value: item})));
+            } else {
+              iMessage.error(result)
+            }
+          }).catch(() => {
+      });
+    },
+    querySearchPartBag(queryString, cb) {
+      packageFindByPart({partName: queryString})
+          .then((res) => {
+            const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
+            if (Number(res.code) === 0) {
+              cb(res.data.map(item => ({value: item})));
+            } else {
+              iMessage.error(result)
+            }
+          }).catch(() => {
+      });
+    },
     async getModelProtitesPullDown() {
       for (let i in this.form) {
         this.form[i] = "";
@@ -241,6 +259,7 @@ export default {
                   }
                 ])
               })
+              this.tableTitle = cloneDeep(this.tableTitleTemp)
               this.tableTitle = this.tableTitle.concat(temp)
               this.tableListData = this.tableListData.map(a => {
                 a.hisPartsList.map((b, index) => {
@@ -366,6 +385,14 @@ export default {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+  }
+}
+.giSearch{
+  ::v-deep .el-autocomplete{
+    width: 220px;
+    input {
+      height: 35px;
+    }
   }
 }
 </style>

@@ -35,7 +35,7 @@
 import {TAB, MENU, heaederSubMenu} from './components/data'
 import {
   iNavMvp,
-  icon,
+  // icon,
   iTabsList
 } from "rise";
 import { clickMessage } from "@/views/partsign/home/components/data"
@@ -54,7 +54,7 @@ export default {
   },
   components: {
     iNavMvp,
-    icon,
+    // icon,
     iTabsList
   },
   created() {

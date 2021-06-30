@@ -17,18 +17,18 @@ const requstSourcing = axios(process.env.VUE_APP_SOURCING_WDL)
 // 获取配件列表数据
 export function getAccessoryOneInfoList(params) {
   return requst({
-      url: '/tp-records/accessoryInfo/getAccessoryOneInfoList/',
-      method: "POST",
-      data: params
+    url: '/tp-records/accessoryInfo/getAccessoryOneInfoList/',
+    method: "POST",
+    data: params
   })
 }
 
 // 获取配件管理列表数据
 export function getAccessoryManageList(params) {
   return requst({
-      url: '/tp-records/accessoryInfo/getAccessoryManageList/',
-      method: "POST",
-      data: params
+    url: '/tp-records/accessoryInfo/getAccessoryManageList/',
+    method: "POST",
+    data: params
   })
 }
 

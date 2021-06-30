@@ -1,5 +1,5 @@
 <template>
-  <div v-loading="mainLoading">
+  <div v-loading="mainLoading" v-permission="TOOLING_BUDGET_COMMONSOURCING_MODELBAGBUDGET">
     <div class="header">
       <div>
         车型包名称
@@ -18,7 +18,7 @@
           :limit="1"
           :show-file-list="false"
           :file-list="uploadFiles">
-        <iButton icon="el-icon-circle-plus-outline" type="primary">新增车型项目</iButton>
+        <iButton icon="el-icon-circle-plus-outline" type="primary">新增车型包</iButton>
       </Upload>
     </div>
     <div class="content" v-loading="tableLoading">

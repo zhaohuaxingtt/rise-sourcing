@@ -1,5 +1,5 @@
 <template>
-  <div class="main" v-loading="mainLoading">
+  <div class="main" v-loading="mainLoading" v-permission="TOOLING_BUDGET_COMMONSOURCING_MODELBAGLIST">
     <div class="header">
       <div v-loading="searchLoading">
         <span class="font20W">车型包:</span>
@@ -285,6 +285,7 @@ export default {
       }).then((res) => {
         const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
         if (Number(res.code) === 0) {
+          let _this = this
           this.getPackageVersionCombo()
           this.tableListData = res.data.partsPackageDetailVOS ? res.data.partsPackageDetailVOS : []
           let carTypeBudgetDetailVOS = res.data.carTypeBudgetDetailVOS ? res.data.carTypeBudgetDetailVOS : []
@@ -413,7 +414,10 @@ export default {
                 color: '#1763F7',
                 label: {
                   show: true,
-                  position: 'right'
+                  position: 'right',
+                  formatter: (params) => {
+                    return _this.getTousandNum(Number(params.value).toFixed(2))
+                  }
                 },
                 itemStyle: {
                   normal: {
@@ -475,7 +479,7 @@ export default {
                   axisLabel: {
                     textStyle: {
                       color: '#485465',
-                      fontSize: 10
+                      fontSize: 6
                     },
                   },
                 },
@@ -523,6 +527,9 @@ export default {
                       textStyle: {
                         color: '#485465',
                         fontSize: 12
+                      },
+                      formatter: (params) => {
+                        return _this.getTousandNum(Number(params.value).toFixed(2))
                       }
                     },
                     emphasis: {
@@ -588,7 +595,6 @@ export default {
           }).catch(() => (this.mainLoading = false));
     },
     changeMaterial(id, row){
-      console.log(id)
       this.mainLoading = true;
       let params = {
         carTypePackageId: this.carTypePackageId,
@@ -600,7 +606,13 @@ export default {
           .then((res) => {
             const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
             if (Number(res.code) === 0) {
-              iMessage.success(result)
+              if(Number(res.data.isRepeat) === 1){
+                let category = this.materialGroupList.find(item => Number(item.id) === Number(id))
+                let info = (category ? category.value : '')
+                iMessage.warn(`请注意！材料组：${info}，已存在。`)
+              } else {
+                iMessage.success(result)
+              }
             } else {
               iMessage.error(result)
             }

@@ -3,11 +3,11 @@
     <div class="header">
       <el-radio-group v-model="leftModel">
         <el-radio-button label="mouldInvestment">{{ $t('模具投资') }}</el-radio-button>
-        <el-radio-button label="modelBag">{{ $t('车型包') }}</el-radio-button>
+        <el-radio-button label="modelBag" v-permission="TOOLING_DATABASE_MODELBAG">{{ $t('车型包') }}</el-radio-button>
       </el-radio-group>
       <div class="rightModel" v-if="leftModel === 'mouldInvestment'">
-        <div :class="[rightModel === 1 ? 'active' : '']" @click="rightModel = 1">{{ $t('材料组汇总') }}</div>
-        <div :class="[rightModel === 2 ? 'active' : '']" @click="rightModel = 2">{{ $t('零件号明细') }}</div>
+        <div :class="[rightModel === 1 ? 'active' : '']" @click="rightModel = 1" v-permission="TOOLING_DATABASE_SUMMARY">{{ $t('材料组汇总') }}</div>
+        <div :class="[rightModel === 2 ? 'active' : '']" @click="rightModel = 2" v-permission="TOOLING_DATABASE_PARTNO">{{ $t('零件号明细') }}</div>
       </div>
     </div>
     <div v-if="leftModel === 'mouldInvestment'">
@@ -90,7 +90,6 @@ export default {
 .header {
   display: flex;
   justify-content: space-between;
-  border-top: 1px solid #E3E3E3;
   padding-top: 20px;
   margin-top: 2px;
 
