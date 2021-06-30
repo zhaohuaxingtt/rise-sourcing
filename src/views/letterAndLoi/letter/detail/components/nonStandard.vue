@@ -29,6 +29,7 @@
             <tableList
                 class="table"
                 index
+                :lang="true"
                 :tableData="tableListData"
                 :tableTitle="tableTitle"
                 :tableLoading="loading"
@@ -43,8 +44,8 @@
             <iPagination 
                 v-update
                 class="margin-top30"
-                @size-change="handleSizeChange($event, getList)"
-                @current-change="handleCurrentChange($event, getList)"
+                @size-change="handleSizeChange($event, getFetchDataList)"
+                @current-change="handleCurrentChange($event, getFetchDataList)"
                 background
                 :current-page="page.currPage"
                 :page-sizes="page.pageSizes"
@@ -67,6 +68,7 @@ import tableList from "@/views/partsign/editordetail/components/tableList"
 import { pageMixins } from "@/utils/pageMixins"
 import { historyListTitle as tableTitle } from '../../../data'
 import { attachMixins } from '@/utils/attachMixins'
+import { downloadFile } from '@/api/file'
 export default {
     name:'nonStandard',
     mixins: [ pageMixins,attachMixins ],
@@ -106,7 +108,16 @@ export default {
                 fileType: '119',
             }
             await this.getDataList(params)
-        }
+        },
+        
+        // 下载
+        async downloadLine(row){
+            const params = {
+            applicationName: 'rise',
+            fileList:[row.fileName]
+          };
+          await downloadFile(params);
+        },
     }
 }
 </script>

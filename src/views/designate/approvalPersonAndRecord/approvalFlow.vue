@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-27 00:41:04
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-05-31 15:28:50
+ * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-06-28 21:57:24
  * @Description: 审批流弹窗
  * @FilePath: \front-web\src\views\designate\approvalPersonAndRecord\approvalFlow.vue
 -->
@@ -24,7 +24,7 @@
             <!-- <icon symbol class="cursor" name='iconshenpiliu-yishenpi-mourenshenpi'></icon> -->
           </template>
           <template slot="title">
-            <div class="flow-title" v-if="item.status !== '未审批'">
+            <div class="flow-title" >
               <div class="flow-status">{{item.status}}</div>
               <div class="flow-approval">{{item.approval}}</div>
               <div class="flow-position">{{item.title}}</div>
@@ -32,13 +32,13 @@
             </div>
           </template>
           <template slot="description">
-            <div v-if="item.status === '未审批'" class="margin-bottom30">
+            <div class="margin-bottom30">
               <div v-for="(nItem, nIndex) in item.approvalList" :key="nIndex">
                 <span>{{nItem.name}}</span>
-                <span>{{nItem.title}}</span>
+                <span style="margin-left:20px">{{nItem.title}}</span>
               </div>
             </div>
-            <div v-else-if="item.status === '以拒绝'" class="margin-bottom30">
+            <div v-if="item.status === '以拒绝'" class="margin-bottom30">
               <div class="refuse"> 拒绝原因：{{item.refuseReason}}</div>
               <div class="margin-bottom10 margin-top15 clearFloat">
                 <span class="refuse">解释内容</span>
@@ -58,23 +58,67 @@
 
 <script>
 import { iDialog, iButton, iInput, icon } from 'rise'
-import { flowData } from './data'
+import { flowData, mockData } from './data'
+import { getInstDetail } from '@/api/designate/decisiondata/approval'
 export default {
   components: { iDialog, iButton, iInput, icon },
   props: {
-    dialogVisible: { type: Boolean, default: false }
+    dialogVisible: { type: Boolean, default: false },
+    processInstanceId: {type: String}
+  },
+  watch: {
+    dialogVisible(val) {
+      if (val) {
+        this.getFlow()
+      }
+    }
   },
   data() {
     return {
       backType: '',
       backReason: '',
-      flowData,
+      flowData: flowData,
       currentStep: 2
     }
   },
   methods: {
     clearDialog() {
       this.$emit('changeVisible', false)
+    },
+    async getFlow() {
+      const res = await getInstDetail(this.processInstanceId) || mockData
+        if(res) {
+          this.flowData = [
+            ...res.finishedNodeMap.approvalUsers.map((item, index) => {
+              return {
+                step: index,
+                status: '已审批',
+                approval: item.nameZh,
+                title: item.positionList,
+              }
+            }),
+            {
+              step: (res.finishedNodeMap.approvalUsers || []).length,
+              status: '审批中',
+              approvalList: res.currentNode.approvalUserDTOList.map(item => {
+                return {
+                  name: item.nameZh,
+                  title: item.positionList
+                }
+              })
+            },
+            {
+              step: (res.finishedNodeMap.approvalUsers || []).length + 1,
+              status: '未审批',
+              approvalList: res.unfinishedNodeMap.approvalUsers.map(item => {
+                return {
+                  name: item.nameZh,
+                  title: item.positionList
+                }
+              })
+            }
+          ]
+        }
     }
   }
 }
