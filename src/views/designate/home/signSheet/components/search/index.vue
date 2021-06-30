@@ -89,7 +89,7 @@
       <el-form-item :label="language('JIEZHIQIZHIRIQI','截止起止日期')">
         <iDatePicker
           v-model='form.checkDate'
-          type="datetimerange"
+          type="daterange"
           value-format="yyyy-MM-dd HH:mm:ss">
         </iDatePicker>
       </el-form-item>

@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-23 15:37:22
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-23 17:50:31
+ * @LastEditTime: 2021-06-29 09:49:17
  * @Description: 定点信息
  * @FilePath: \front-web\src\views\financialTargetPrice\targetPriceDetail\components\designateInfo.vue
 -->
@@ -55,6 +55,7 @@ import {iCard,iPagination,iButton,iInput,iSelect,iSearch,iDatePicker} from 'rise
 import { designateSearchList, designateTableList } from '../data'
 import tableList from '../../components/tableList'
 import { pageMixins } from "@/utils/pageMixins"
+import { getNomiRecords } from "@/api/financialTargetPrice/index"
 export default {
   mixins: [pageMixins],
   components: {iCard,iPagination,iButton,tableList,iInput,iSelect,iSearch,iDatePicker},
@@ -65,6 +66,25 @@ export default {
       tableLoading: false,
       searchList: designateSearchList,
       searchParams: {}
+    }
+  },
+  created() {
+    this.getTableList()
+  },
+  methods: {
+    getTableList() {
+      this.tableLoading = true
+      const params = {
+        ...this.searchParams,
+        current: this.page.currPage,
+        size: this.page.pageSize,
+        partProjId: this.$route.query.purchasingProjectId
+      }
+      getNomiRecords(params).then(res => {
+        // if (res?.result) {}
+      }).finally(() => {
+        this.tableLoading = false
+      })
     }
   }
 }
