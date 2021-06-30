@@ -5,12 +5,12 @@
         <div>{{dataInfo.supplyBeginTime}}</div>
         <div>供货起始时间</div>
       </div>
-      <div class="massProductionTime" :style="{'left': (this.massProductionTimeRate - this.OffsetData) + '%'}">
+      <div class="massProductionTime" :style="{'left': (45 - this.OffsetData) + '%'}">
         <icon symbol name="iconbaojiapingfengenzong-jiedian-cheng" class="iconStyle"/>
         <div class="margin-top12 iconColor">{{ this.massProductionTimeRate }}%</div>
         <div>量产时间</div>
       </div>
-      <div class="achievementRate" :style="{'left': (this.achievementRate - this.OffsetData) + '%'}">
+      <div class="achievementRate" :style="{'left': (65 - this.OffsetData) + '%'}">
         <icon symbol name="iconVP-jihuazongchanliang" class="iconStyle"/>
         <div class="margin-top12 iconColor">{{ this.achievementRate }}%</div>
         <div>计划量产达成率</div>
@@ -144,6 +144,7 @@ export default {
   methods: {
     getMathematicalFormulaData() {
       this.achievementRate = this.dataInfo.achievementRate
+      this.massProductionTimeRate = this.dataInfo.massProductionRatio
       this.dropPotential = {
         totalPlannedOutputTipsData: this.dataInfo.planTotalPro ? this.dataInfo.planTotalPro : '',
         estimatedTotalProductionTipsData: this.dataInfo.estimatedActualTotalPro

@@ -3,7 +3,7 @@
     <iFormItem>
       <!--        供应商-->
       <iLabel :label="$t('TPZS.GONGYINGSHANG')" slot="label"/>
-      <iSelect>
+      <iSelect v-model="dataInfo.supplierName">
         <el-option :value="1" :label="1"></el-option>
       </iSelect>
     </iFormItem>
