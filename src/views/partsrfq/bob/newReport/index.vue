@@ -104,7 +104,6 @@
                 @select="showSelect"
                 :type="bobType"
                 :by="chartType"
-                
               />
               <div class="toolTip-div" ref="toolTipDiv" v-show="showSelectDiv">
                 <iSelect
@@ -185,19 +184,18 @@
       </el-col>
       <el-col :span="20">
         <bobAnalysis></bobAnalysis>
-        <ungroupedTable
-          class="margin-top20"
-          :tableList="tableList"
-        ></ungroupedTable>
+       
       </el-col>
     </el-row>
     <findingParts
+      v-if="value"
+      v-show="value"
       :value="value"
       @sure="sure"
       @close="closeDialog"
       @add="add"
     ></findingParts>
-    <preview :value="pre" @close="closePreView"></preview>
+    <preview :value="pre" @close="closePreView" v-if="pre" v-show="pre"></preview>
   </iPage>
 </template>
 
@@ -205,20 +203,10 @@
 import { iPage, iButton, iCard, iSelect, icon } from "rise";
 import CrownBar from "./components/crownBar.vue";
 import bobAnalysis from "@/views/partsrfq/bob/bobAnalysis/index.vue";
-import ungroupedTable from "@/views/partsrfq/bob/bobAnalysis/ungroupedTable.vue";
 import findingParts from "@/views/partsrfq/components/findingParts.vue";
 import { getBobLevelOne, removeBobOut } from "@/api/partsrfq/bob";
 import preview from "./preview.vue";
 import OutBar from "./components/outBar.vue";
-import {
-  dataList1,
-  dataList2,
-  dataList3,
-  dataList4,
-  dataList5,
-  dataList6,
-  tableList,
-} from "@/views/partsrfq/bob/bobAnalysis/components/data.js";
 
 export default {
   components: {
@@ -228,7 +216,6 @@ export default {
     iSelect,
     CrownBar,
     bobAnalysis,
-    ungroupedTable,
     findingParts,
     OutBar,
     icon,
@@ -242,7 +229,6 @@ export default {
       chartData1: [],
       chartType: "supplier",
       bobType: "Best of Best",
-      tableList,
       form: {
         supplier: [],
         turn: [],
@@ -311,7 +297,7 @@ export default {
       this.getChartData();
     },
     add(val) {
-      console.log(val)
+      console.log(val);
     },
     searchChartData() {
       getBobLevelOne({
@@ -360,9 +346,9 @@ export default {
         }
       });
     },
-    changeOut(){
-      this.findPart()
-    }
+    changeOut() {
+      this.findPart();
+    },
   },
   computed: {
     chartTitle() {
