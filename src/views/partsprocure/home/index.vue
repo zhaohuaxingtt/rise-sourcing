@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 09:50:42
- * @LastEditTime: 2021-06-09 18:05:27
+ * @LastEditTime: 2021-06-25 11:40:19
  * @LastEditors: Please set LastEditors
  * @Description: 零件采购项目建立首页。
  * @FilePath: \rise\src\views\partsprocure\home\index.vue
@@ -12,7 +12,7 @@
       <el-tab-pane :label="$t('LK_XUNYUANZHIHANG')" name="source">
         <div>
           <div class="margin-bottom33">
-            <iNavMvp @change="change" right routerPage lev="2" :list="navList" />
+            <iNavMvp @change="change" lang right routerPage lev="2" :list="navList" @message="clickMessage" />
           </div>
           <!------------------------------------------------------------------------>
           <!--                  search 搜索模块                                   --->
@@ -207,7 +207,7 @@
               >
               <div class="floatright">
                 <!-- 手工采购项目创建 -->
-                <iButton @click="openCreateParts">{{ $t("partsprocure.SHOUGONGCAIGOUXIANGMUCHUANGJIAN") }}</iButton>
+                <iButton @click="openCreateParts">{{ language("SHOUGONGCAIGOUXIANGMUCHUANGJIAN", "手工采购项目创建") }}</iButton>
                 <iButton
                   @click="openDiologChangeItems"
                   v-permission="PARTSPROCURE_TRANSFER"
@@ -310,8 +310,11 @@ import { insertRfq } from "@/api/partsrfq/home";
 import changeItems from "../../partsign/home/components/changeItems";
 import filters from "@/utils/filters";
 import creatFs from "./components/creatFs";
-import { navList } from "@/views/partsign/home/components/data";
-import { cloneDeep } from "lodash";
+import { cloneDeep } from "lodash"
+import { clickMessage } from "@/views/partsign/home/components/data"
+
+// eslint-disable-next-line no-undef
+const { mapState, mapActions } = Vuex.createNamespacedHelpers("sourcing")
 
 export default {
   mixins: [pageMixins, filters],
@@ -336,18 +339,19 @@ export default {
       tableTitle: tableTitle,
       selectTableData: [],
       diologChangeItems: false,
-      form: form,
+      form: cloneDeep(form),
       fromGroup: [],
       diologBack: false, //退回
       startLoding: false,
       tab: "source",
-      navList: cloneDeep(navList)
     };
   },
   computed: {
     projectIds() {
       return this.getPurchasePrjectId();
     },
+    ...mapState(["navList"]),
+    ...mapActions(["updateNavList"])
   },
   created() {
     Object.keys(this.$route.query).forEach(key => {
@@ -356,6 +360,7 @@ export default {
 
     this.getTableListFn();
     this.getProcureGroup();
+    this.updateNavList
   },
   methods: {
     // 跳转详情
@@ -575,16 +580,20 @@ export default {
     },
     openCreateParts() {
       this.$router.push({ path: "/sourcing/createparts/home" })
-    }
+    },
+    // 通过待办数跳转
+    clickMessage,
   },
   beforeRouteUpdate(to, from, next) {
-    Object.keys(this.$route.query).forEach(key => {
+    this.form = cloneDeep(form)
+
+    Object.keys(to.query).forEach(key => {
       this.$set(this.form, `search.${ key }`, to.query[key])
     })
 
     this.getTableListFn()
     next()
-  }
+  },
 };
 </script>
 <style lang="scss" scoped>

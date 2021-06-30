@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-04-23 09:16:48
- * @LastEditTime: 2021-06-14 10:46:08
+ * @LastEditTime: 2021-06-20 01:33:52
  * @LastEditors: Please set LastEditors
  * @Description: 供应商维度展示
  * @FilePath: \front-supplier\src\views\rfqManageMent\partsOffer\components\ecartsCard\index.vue
@@ -14,7 +14,7 @@
     <div class="margin-bottom20 echarts">
       <el-form inline>
           <el-form-item label="价格维度">
-            <iSelect :placeholder='$t("partsprocure.CHOOSE")' v-model="form.priceLatitude">
+            <iSelect style="width:80px;" :placeholder='$t("partsprocure.CHOOSE")' v-model="form.priceLatitude">
               <el-option label="mixPrice" value='1'></el-option>
               <el-option label="To" value='2'></el-option>
             </iSelect>
@@ -40,7 +40,7 @@
             </iSelect>
           </el-form-item>
           <el-form-item :label="$t('LK_DANGQIANLUNCI')">
-            <iSelect :placeholder='$t("partsprocure.CHOOSE")' multiple collapse-tags v-model="luncSelect"  @visible-change="removeOther($event,'luncSelect')">
+            <iSelect style="width:140px;" :placeholder='$t("partsprocure.CHOOSE")' multiple collapse-tags v-model="luncSelect"  @visible-change="removeOther($event,'luncSelect')">
               <el-option label="All" value="all"></el-option>
               <el-option v-for="(items,index) in RoundList" :key='index' :label="items" :value='items'></el-option>
             </iSelect>
@@ -48,17 +48,18 @@
           <span class="floatright">
             <iButton @click="refresh" :loading='refreshLoading'>{{$t('rfq.RFQINQUIRE')}}</iButton>
             <iButton @click="reset">{{$t('rfq.RFQRESET')}}</iButton>
+            <iButton @click="exportExcel" :loading='exportLoading'>导出</iButton>
           </span>
       </el-form>
     </div>
-    <div id='echartsPage'></div>
+    <div id='echartsPage' v-loading='refreshLoading'></div>
   </iCard>
 </template>
 <script>
 import {iCard,iSelect,iButton,iMessage} from 'rise'
 import echarts from '@/utils/echarts'
 import {chartsOptions,form,translateGetLunci} from './data'
-import { quotations,findRfqInfoList } from '@/api/rfqManageMent/mouldOffer'
+import { quotations,findRfqInfoList,downLoadExcel } from '@/api/rfqManageMent/mouldOffer'
 export default{
   components:{iCard,iSelect,iButton},
   data(){
@@ -73,7 +74,8 @@ export default{
       partList:[],
       refreshLoading:false,
       supplierlist:[],
-      supplierSelectlist:['all']
+      supplierSelectlist:['all'],
+      exportLoading:false
     }
   },
   created(){
@@ -84,6 +86,14 @@ export default{
     this.supplierPart()
   },
   methods:{
+    /**
+     * @description: 导出excel
+     * @param {*}
+     * @return {*}
+     */
+    exportExcel(){
+      downLoadExcel(Object.assign(this.getQuery()))
+    },
     removeOther(row,type){
       if(!row){
         if(this[type].find(items=>items == "all")){
@@ -93,9 +103,10 @@ export default{
     },
     reset(){
       this.form.priceLatitude = "1"
-      this.fsSelect = []
-      this.luncSelect = []
-      this.partsSelect = []
+      this.fsSelect = ['all']
+      this.luncSelect = ['all']
+      this.partsSelect = ['all']
+      this.supplierSelectlist = ['all']
       this.getDataList()
     },
     /**
@@ -104,10 +115,10 @@ export default{
      * @return {*}
      */   
     changeParts(row){    
+      this.fslist = []
       if(row.find(items=>items == "all") || row.length == 0){
         return false
       }
-      this.fslist = []
       row.forEach(item=>{
         this.fslist = [...this.partList.find(items=>items.name == item).list,...this.fslist]
       })
@@ -146,17 +157,10 @@ export default{
      * @return {*}
      */    
     getDataList(){
-      this.form.partNum = this.partsSelect.find(items=>items == "all")?[]:this.partsSelect
-      this.form.round = this.luncSelect.find(items=>items == "all")?[]:this.luncSelect.sort((a,b)=>{return a-b})
-      this.form.supplierID = this.supplierSelectlist.find(items=>items == "all")?[]:this.supplierSelectlist
-      this.form.fsSelect = this.fsSelect.find(items=>items == 'all')?[]:this.fsSelect
-      quotations(this.form).then(res=>{
+      quotations(this.getQuery()).then(res=>{
         this.refreshLoading = false
         if(res.data && res.data){
-          this.updateEchars(translateGetLunci(res.data,this.$t('LK_LUNCI')))
-          
-        }else{
-          iMessage.error(res.desZh)
+          this.updateEchars(translateGetLunci(res.data,this.$t('LK_LUNCI'))) 
         }
       }).catch(err=>{
         this.refreshLoading = false
@@ -173,6 +177,21 @@ export default{
       }).catch(err=>{
         console.log(err)
       })
+    },
+    getQuery(){
+      this.form.partNum = this.partsSelect.find(items=>items == "all")?[]:this.partsSelect
+      this.form.round = this.luncSelect.find(items=>items == "all")?[]:this.luncSelect.sort((a,b)=>{return a-b})
+      this.form.supplierID = this.supplierSelectlist.find(items=>items == "all")?[]:this.supplierSelectlist
+      this.form.fsSelect = this.fsSelect.find(items=>items == 'all')?[]:this.fsSelect
+      const templateMap = {}
+      Object.keys(this.form).forEach(items=>{
+        if(items == "fsSelect"){
+          templateMap["fsNum"] = this.form[items]
+        }else{
+          templateMap[items] = this.form[items]
+        }
+      })
+      return templateMap
     },
     translatePartList(datas){
       let partList = []
@@ -199,7 +218,6 @@ export default{
           })
         }
       });
-      console.log(partList)
       return partList
     }
   }
@@ -224,5 +242,11 @@ export default{
     width: 280px;
   }
   }
+  }
+  ::v-deep .el-select__tags{
+    span{
+      white-space: nowrap;
+      display: inherit;
+    }
   }
 </style>

@@ -69,10 +69,10 @@ export function uploadAttachments(data) {
 
 // 删除附件
 export function deleteattachments(data) {
+    const {attachmentIds=[]} = data;
     return requst({
-        url: '/affix/affix-requirement-attachments',
+        url: `/affix/affix-requirement-attachments?attachmentIds=${attachmentIds}`,
         method: "DELETE",
-        data,
     })
 }
 

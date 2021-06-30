@@ -1,0 +1,284 @@
+<!--
+ * @Author: haojiang
+ * @Date: 2021-05-20 14:07:50
+ * @Description: 
+-->
+<template>
+  <iSearch
+    class="designateSearch margin-bottom20"
+    @sure="sure"
+    @reset="reset"
+    :resetKey="NORNIMATION_RESETBUTTON"
+    :searchKey="NORNIMATION_CONFIRMBUTTON"
+  >
+    <el-form>
+      <!-- 零件号 -->
+      <el-form-item :label="$t('nominationLanguage.LingJianHao')">
+        <iInput
+          v-model="form.partNum"
+          :placeholder="$t('LK_QINGSHURU')"
+        ></iInput>
+      </el-form-item>
+      <!-- 零件名 -->
+      <el-form-item :label="$t('nominationLanguage.LingJianMing')">
+        <iInput
+          v-model="form.partName"
+          :placeholder="$t('LK_QINGSHURU')"
+        ></iInput>
+      </el-form-item>
+      <!-- FSNR/GSNR -->
+      <el-form-item :label="$t('FsnrGsnr')">
+        <iInput
+          v-model="form.fsnrGsnrNum"
+          :placeholder="$t('LK_QINGSHURU')"
+        ></iInput>
+      </el-form-item>
+      <!-- 车型项目 -->
+      <el-form-item :label="$t('nominationLanguage.CheXingXiangMu')">
+        <iSelect
+          v-model="form.carTypeProj"
+          :placeholder="$t('LK_QINGXUANZE')"
+          filterable
+          clearable
+        >
+          <el-option
+            value=""
+            :label="$t('all') | capitalizeFilter"
+          ></el-option>
+          <el-option
+            :value="items.code"
+            :label="items.value"
+            v-for="(items, index) in ($attrs && $attrs.carTypeList) || []"
+            :key="index"
+            style="max-width: 190px"
+          ></el-option>
+        </iSelect>
+      </el-form-item>
+      <!-- 询价采购员 -->
+      <el-form-item :label="$t('nominationLanguage.XunJiaCaiGouYuan')">
+        <iInput
+          v-model="form.buyerName"
+          :placeholder="$t('LK_QINGSHURU')"
+        ></iInput>
+      </el-form-item>
+      <!-- LINIE -->
+      <el-form-item label="LINIE">
+        <iInput
+          v-model="form.linieName"
+          :placeholder="$t('LK_QINGSHURU')"
+        ></iInput>
+      </el-form-item>
+      <!-- 申请单号 -->
+      <el-form-item :label="$t('nominationLanguage.ShenQingDanHao')">
+        <iInput
+          v-model="form.nominateId"
+          :placeholder="$t('LK_QINGSHURU')"
+        ></iInput>
+      </el-form-item>
+        <!-- RFQ编号 -->
+      <el-form-item :label="$t('nominationLanguage.RFQBianHao')">
+        <iInput
+          v-model="form.rfqIq"
+          :placeholder="$t('LK_QINGSHURU')"
+        ></iInput>
+      </el-form-item>
+      <!-- 会议 -->
+      <el-form-item :label="$t('nominationLanguage.HuiYi')">
+        <iInput
+          v-model="form.meetingName"
+          :placeholder="$t('LK_QINGSHURU')"
+        ></iInput>
+      </el-form-item>
+      <!-- 签字单号 -->
+      <el-form-item :label="$t('nominationLanguage.QianZiDanHao')">
+        <iInput
+          v-model="form.signId"
+          :placeholder="$t('LK_QINGSHURU')"
+        ></iInput>
+      </el-form-item>
+      <!-- rs冻结日期 -->
+      <el-form-item :label="$t('nominationLanguage.RSDongJieRiQi')">
+        <iDatePicker
+          v-model='form.rsFreezeDate'
+          value-format="yyyy-MM-dd HH:mm:ss">
+        </iDatePicker>
+      </el-form-item>
+      <!-- 冻结日期 -->
+      <el-form-item :label="$t('nominationLanguage.DongJieRiQi')">
+        <iDatePicker
+          v-model='form.freezeDate'
+          value-format="yyyy-MM-dd">
+        </iDatePicker>
+      </el-form-item>
+      <!-- 定点日期 -->
+      <el-form-item :label="$t('nominationLanguage.DingDianRiQi')">
+        <iDatePicker
+          v-model='form.nominateDate'
+          value-format="yyyy-MM-dd">
+        </iDatePicker>
+      </el-form-item>
+       <!-- 复核截止日期 -->
+      <el-form-item :label="$t('nominationLanguage.FuHeJieZhiRiQi')">
+        <iDatePicker
+          v-model='form.recheckDueDate'
+          @change="oncheckDateChange"
+          type="daterange"
+          value-format="yyyy-MM-dd"
+          clearable>
+        </iDatePicker>
+      </el-form-item>
+      <!-- 申请状态 -->
+      <el-form-item :label="$t('nominationLanguage.ShenQingZhuangTai')">
+        <iSelect
+          v-model="form.applicationStatus"
+          :placeholder="$t('LK_QINGXUANZE')"
+        >
+          <el-option
+            value=""
+            :label="$t('all') | capitalizeFilter"
+          ></el-option>
+          <el-option
+            :value="items.id"
+            :label="items.name"
+            v-for="(items, index) in applyStates"
+            :key="index"
+          ></el-option>
+        </iSelect>
+      </el-form-item>
+      <!-- 报价一致性校验 -->
+      <el-form-item :label="$t('nominationLanguage.BaoJiaYiZhiXingJiaoYan')">
+        <iSelect
+          v-model="form.isPriceConsistent"
+          :placeholder="$t('LK_QINGXUANZE')"
+        >
+          <el-option
+            value=""
+            :label="$t('all') | capitalizeFilter"
+          ></el-option>
+          <el-option
+            :value="items.key"
+            :label="items.value"
+            v-for="(items, index) in []"
+            :key="index"
+          ></el-option>
+        </iSelect>
+      </el-form-item>
+      <!-- SEL单据确认状态 -->
+      <el-form-item :label="$t('nominationLanguage.BaoJiaYiZhiXingJiaoYan')">
+        <iSelect
+          v-model="form.selStatus"
+          :placeholder="$t('LK_QINGXUANZE')"
+        >
+          <el-option
+            value=""
+            :label="$t('all') | capitalizeFilter"
+          ></el-option>
+          <el-option
+            :value="items.key"
+            :label="items.value"
+            v-for="(items, index) in []"
+            :key="index"
+          ></el-option>
+        </iSelect>
+      </el-form-item>
+      <!-- 是否单一供应商 -->
+      <el-form-item :label="$t('nominationLanguage.ShiFouDnaYiGongYingShang')">
+        <iSelect
+          v-model="form.singleSourcing"
+          :placeholder="$t('LK_QINGXUANZE')"
+        >
+          <el-option
+            value=""
+            :label="$t('all') | capitalizeFilter"
+          ></el-option>
+          <el-option :value="true" :label="$t('nominationLanguage.Yes')"
+          ></el-option>
+          <el-option :value="false" :label="$t('nominationLanguage.No')"
+          ></el-option>
+        </iSelect>
+      </el-form-item>
+      <!-- 签字单状态 -->
+      <el-form-item :label="$t('nominationLanguage.QianZiDanZhuangTai')">
+        <iSelect
+          v-model="form.signStatus"
+          :placeholder="$t('LK_QINGXUANZE')"
+        >
+          <el-option
+            value=""
+            :label="$t('all') | capitalizeFilter"
+          ></el-option>
+          <el-option
+            :value="items.id"
+            :label="items.name"
+            v-for="(items, index) in []"
+            :key="index"
+          ></el-option>
+        </iSelect>
+      </el-form-item>
+    </el-form>
+  </iSearch>
+</template>
+
+<script>
+
+import { applyType } from '@/layout/nomination/components/data'
+import { form, applyStates } from '../data'
+import {
+  iSearch,
+  iInput,
+  iSelect,
+  iDatePicker
+} from "rise";
+import _ from 'lodash'
+
+export default {
+  data() {
+    return {
+      form,
+      ptocessType: applyType,
+      applyStates
+    }
+  },
+  components: {
+    iSearch,
+    iInput,
+    iSelect,
+    iDatePicker
+  },
+  mounted() {
+  },
+  methods: {
+    sure() {
+      const form = _.cloneDeep(this.form)
+      delete form.recheckDueDate
+      this.$emit('search', form)
+    },
+    reset() {
+      this.form = {}
+      this.$emit('search', {})
+    },
+    oncheckDateChange(data) {
+      console.log(data)
+      this.form.startRecheckDueDate = data[0]
+      this.form.endRecheckDueDate = data[1]
+    }
+  },
+  // watch: {
+  //   form: {
+  //     handler(newVal) {
+  //       this.$nextTick(() => {
+          
+  //       })
+  //     },
+  //     immediate: true,
+  //     deep: true
+  //   }
+  // }
+}
+</script>
+
+<style lang="scss" scoped>
+.designateSearch {
+  margin-top: 20px;
+}
+</style>

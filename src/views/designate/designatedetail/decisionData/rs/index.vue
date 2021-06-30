@@ -2,14 +2,14 @@
  * @Author: Luoshuang
  * @Date: 2021-05-28 13:35:30
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-08 16:31:19
+ * @LastEditTime: 2021-06-25 10:15:07
  * @Description: 定点管理-决策资料-RS
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\rs\index.vue
 -->
 
 <template>
   <circulation ref="circulation" v-if="isCirculation" :isPreview="isPreview" :nominateId="nominateId" :projectType="projectType" />
-  <meeting ref="meeting" v-else :isPreview="isPreview" :nominateId="nominateId" :projectType="projectType"  />
+  <meeting ref="meeting" v-else :isPreview="isPreview" :nominateId="nominateId" :projectType="projectType" :showSignatureForm="showSignatureForm" />
 </template>
 
 <script>
@@ -21,7 +21,8 @@ export default {
     otherPreview: {type: Boolean, default: false},
     otherNominationType: {type:String},
     otherNominationId: {type:String},
-    otherPartProjectType: {type:String}
+    otherPartProjectType: {type:String},
+    showSignatureForm: {type:Boolean, default: false}
   },
   data() {
     return {}

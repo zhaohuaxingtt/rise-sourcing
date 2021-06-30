@@ -1,7 +1,7 @@
 /*
  * @Author: haojiang
  * @Date: 2021-02-24 14:28:34
- * @LastEditTime: 2021-05-10 16:21:04
+ * @LastEditTime: 2021-06-26 23:00:37
  * @LastEditors: Please set LastEditors
  * @Description: 针对所有的分页插件，实行方法混入。
  * @FilePath: \rise\src\utils\attachMixins.js
@@ -36,7 +36,7 @@ export const attachMixins = {
       this.multipleSelection = list
     },
     async batchDownload(params = {}) {
-      if (!this.nomiAppId && !params.nomiAppId) return iMessage.error(this.$t('nominationLanguage.DingDianIDNotNull'))
+      if (!this.nomiAppId && !params.nomiAppId) return iMessage.error(this.language('nominationLanguage_DingDianIDNotNull','定点申请单id不能为空'))
       try {
         const res1 = await getdDecisiondataListAll(Object.assign({
           nomiAppId: this.nomiAppId || this.$store.getters.nomiAppId,
@@ -61,7 +61,7 @@ export const attachMixins = {
       }
     },
     getDataList(params = {}) {
-      if (!this.nomiAppId && params.nomiAppId) return iMessage.error(this.$t('nominationLanguage.DingDianIDNotNull'))
+      if (!this.nomiAppId && params.nomiAppId) return iMessage.error(this.language('nominationLanguage_DingDianIDNotNull','定点申请单id不能为空'))
       this.tableLoading = true
       params = Object.assign({
         nomiAppId: this.nomiAppId || this.$store.getters.nomiAppId,
@@ -94,7 +94,7 @@ export const attachMixins = {
       if (!data.data.fileName && !data.data.filePath) {
         this.tableLoading = false
         // 上传发生错误，oss无文件名，路径返回
-        iMessage.error(this.$t('strategicdoc.ShangChuanFaShengCuoWu'))
+        iMessage.error(this.language('strategicdoc_ShangChuanFaShengCuoWu','上传发生错误，请稍后重试'))
         return
       }
       this.tableLoading = true
@@ -126,14 +126,14 @@ export const attachMixins = {
 
     },
     // 删除文件,
-    async deleteFile(fileList = []) {
+    async deleteFile(fileList = [], callback) {
       let idList = []
       if (!(fileList && fileList.length)) {
         if (!this.multipleSelection.length) {
-          iMessage.error(this.$t('nominationSuggestion.QingXuanZeZhiShaoYiTiaoShuJu'))
+          iMessage.error(this.language('nominationSuggestion_QingXuanZeZhiShaoYiTiaoShuJu','请选择至少一条数据'))
           return
         }
-        const confirmInfo = await this.$confirm(this.$t('deleteSure'))
+        const confirmInfo = await this.$confirm(this.language('deleteSure','您确定要执行删除操作吗？'))
         if (confirmInfo !== 'confirm') return
         idList = this.multipleSelection.map(o => o.id)
       } else {
@@ -144,8 +144,8 @@ export const attachMixins = {
       try {
         const res = await batchDeletefile({idList})
         if (res.code === '200') {
-          iMessage.success(this.$t('LK_CAOZUOCHENGGONG'))
-          this.getFetchData()
+          iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'))
+          callback && typeof callback === 'function' && (callback())
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }
@@ -156,7 +156,7 @@ export const attachMixins = {
     // 下载文件
     downloadFile() {
       const fileList = this.multipleSelection.map(o => o.fileName)
-      if (!fileList.length) return iMessage.error(this.$t('nominationSuggestion.QingXuanZeZhiShaoYiTiaoShuJu'))
+      if (!fileList.length) return iMessage.error(this.language('nominationSuggestion_QingXuanZeZhiShaoYiTiaoShuJu','请选择至少一条数据'))
       try {
         console.log(fileList)
         if (fileList.length) {

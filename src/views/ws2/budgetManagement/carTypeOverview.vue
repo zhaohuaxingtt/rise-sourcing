@@ -5,6 +5,24 @@
 <template>
   <div>
     <div v-permission="TOOLING_BUDGET_OVERVIEW">
+      <div class="carTypeOverview">
+        <el-switch
+            v-model="onleySelf"
+            @change="changeCarTypeOverview"
+            inactive-text="仅看自己">
+        </el-switch>
+        <el-switch
+            v-model="checkHistory"
+            @change="changeCheckHistory"
+            inactive-text="查看历史">
+        </el-switch>
+        <Popover
+            content="点击进入【生成投资清单】页面"
+            placement="top-start"
+            trigger="hover">
+          <iButton slot="reference" icon="el-icon-circle-plus-outline" type="primary" @click="addCarType">新增车型项目</iButton>
+        </Popover>
+      </div>
       <iSearch
           class="margin-bottom20 giSearch"
           style="margin-top: 20px"
@@ -138,7 +156,12 @@
               </div>
             </div>
             <div class="unit">
-              {{$t("LK_DANWEI")}}: {{$t("LK_BAIWANYUAN")}}
+              <div class="repeatCateGoryCount">
+                <div v-if="item.isCommonSourcing">
+                  {{$t("重复材料组")}}: <span>{{ item.repeatCateGoryCount }}</span>
+                </div>
+              </div>
+              <div class="wanyuan">{{$t("LK_DANWEI")}}: {{$t("LK_BAIWANYUAN")}}</div>
             </div>
             <Popover
                 :content="Number(item.isBudget) === 3 ? '点击进入【模具投资清单】页面' : '点击进入未完成/需要继续编辑的【生成投资清单】页面'"
@@ -165,10 +188,11 @@
 import {
   iMessage,
   iSearch,
-  iSelect
+  iSelect,
+  iButton
 } from "rise";
-import { form } from "./components/data";
-import {Popover} from "element-ui"
+import {budgetManagement3rd, form} from "./components/data";
+import {Switch, Popover} from "element-ui"
 import {tabtitle} from "./components/data";
 import echarts from "@/utils/echarts";
 import {
@@ -188,7 +212,8 @@ export default {
   components: {
     Popover,
     iSearch,
-    iSelect
+    iSelect,
+    iButton
   },
   data() {
     return {
@@ -204,7 +229,11 @@ export default {
       timeStarEnd: [],
       count: 8,
       cardHeight: 600,
-      getTousandNum: getTousandNum
+      getTousandNum: getTousandNum,
+      query: true,
+      onleySelf: true,
+      checkHistory: false,
+      budgetManagement3rd: budgetManagement3rd,
     };
   },
   computed: {
@@ -222,15 +251,160 @@ export default {
   mounted() {
     this.findCartypePro();
     this.getProcureGroup();
-    this.cardHeight = this.tableHeight - document.querySelector('.giSearch').offsetHeight - document.querySelector('.navBar').offsetHeight - document.querySelector('.left').offsetHeight - 100
+    this.cardHeight = this.tableHeight - document.querySelector('.giSearch').offsetHeight - document.querySelector('.navBar').offsetHeight - document.querySelector('.left').offsetHeight - 160
   },
   methods: {
+    changeCarTypeOverview(val){
+      this.$store.commit('SET_onleySelf', this.onleySelf)
+    },
+    changeCheckHistory(val){
+      this.$store.commit('SET_checkHistory', this.checkHistory)
+    },
+    addCarType(){
+      this.$router.push({
+        path: '/tooling/budgetManagement/generateInvestmentList',
+        query: {
+          id: 'add',
+          sourceStatus: ''
+        },
+      })
+    },
     load () {
       if(!this.loading){
         this.loading = true
         setTimeout(() => {
           this.count += 8
           this.contentData = this.contentData.concat(this.initContentData.slice(this.count - 8, this.count))
+          let _this = this
+          _this.$nextTick(() => {
+            this.contentData.map((item, index) => {
+              let chartData = [
+                (item.generalBudget ? item.generalBudget.toFixed(2) : 0),
+                (item.fixedAmount ? item.fixedAmount.toFixed(2) : 0),
+                (item.bmAmount ? item.bmAmount.toFixed(2) : 0),
+                (item.paymentAmount ? item.paymentAmount.toFixed(2) : 0)
+              ]
+              const vm1 = echarts().init(document.getElementById("chart" + index));
+              let option1 = {
+                grid: {
+                  left: '0%',
+                  right: '0',
+                  bottom: '0%',
+                  top: '12%',
+                  containLabel: true
+                },
+                xAxis: {
+                  type: 'category',
+                  data: [this.$t("LK_ZONGYUSUAN"), this.$t("LK_DINGDIANJINE"), this.$t("LK_BMDAN"), this.$t("LK_FUKUAN")],
+                  axisTick: {
+                    show: false
+                  },
+                  axisLine: {
+                    lineStyle: {
+                      color: '#CDD4E2'
+                    }
+                  },
+                  axisLabel: {
+                    textStyle: {
+                      color: '#485465',
+                      fontSize: 10
+                    },
+                  },
+                },
+                yAxis: {
+                  type: 'value',
+                  axisTick: {
+                    show: false
+                  },
+                  axisLabel: {
+                    show: false
+                  },
+                  splitLine: {
+                    show: false
+                  },
+                  axisLine: {
+                    show: false
+                  },
+
+                },
+                series: [{
+                  data: chartData,
+                  type: 'bar',
+                  barWidth: 30,
+                  stack: 'total',
+                  label: {
+                    show: true,
+                    position: 'top',
+                    textStyle: {
+                      color: '#485465'
+                    },
+                    formatter: function(p){
+                      return _this.getTousandNum(p.value)
+                    },
+                  },
+                  itemStyle: {
+                    normal: {
+                      barBorderRadius: [5, 5, 0, 0],
+                      color: function (params) {
+                        let colorlist = ['#1763F7', '#73A1FA', '#B0C5F5', '#CEE1FF'];
+                        return colorlist[params.dataIndex];
+                      }
+                    },
+                  }
+                }]
+              };
+              if(item.isCommonSourcing){
+                let chartData_commonSourcing = [
+                  (item.csGeneralBudget ? item.csGeneralBudget.toFixed(2) : 0),
+                  (item.csFixedAmount ? item.csFixedAmount.toFixed(2) : 0),
+                  (item.csBmAmount ? item.csBmAmount.toFixed(2) : 0),
+                  (item.csPaymentAmount ? item.csPaymentAmount.toFixed(2) : 0)
+                ]
+                option1.series[0].label.show = false
+                option1.series[0].itemStyle.normal.barBorderRadius = [0, 0, 0, 0]
+                option1.series.push({
+                  data: chartData_commonSourcing,
+                  type: 'bar',
+                  barWidth: 30,
+                  stack: 'total',
+                  label: {
+                    show: false,
+                  },
+                  itemStyle: {
+                    normal: {
+                      barBorderRadius: [5, 5, 0, 0],
+                      color: function (params) {
+                        let colorlist = ['#55C2D0','#87D4DE','#BBE7EC','#D4F8F7'];
+                        return colorlist[params.dataIndex];
+                      }
+                    },
+                  }
+                })
+                option1.series.push({
+                  name: '',
+                  type: 'bar',
+                  stack: 'total',
+                  color: '#B3D0FF',
+                  label: {
+                    show: true,
+                    position: 'top',
+                    textStyle: {
+                      color: '#485465'
+                    },
+                    formatter: function(p){
+                      let dataIndex = p.dataIndex
+                      return _this.getTousandNum((Number(chartData[dataIndex]) + Number(chartData_commonSourcing[dataIndex])).toFixed(2))
+                    },
+                  },
+                  emphasis: {
+                    focus: 'series'
+                  },
+                  data: [0, 0, 0, 0]
+                })
+              }
+              vm1.setOption(option1);
+            })
+          })
           this.loading = false
         }, 1000)
       }
@@ -269,7 +443,7 @@ export default {
       // )
       if(isBudget == 3){
         this.$router.push({
-          path: '/tooling/budgetManagement/investmentList',
+          path: '/tooling/budgetManagement/investmentListCommon',
           query: {
             id: id,
             sourceStatus: sourceStatus
@@ -405,6 +579,12 @@ export default {
                     (item.bmAmount ? item.bmAmount.toFixed(2) : 0),
                     (item.paymentAmount ? item.paymentAmount.toFixed(2) : 0)
                 ]
+                let chartData_commonSourcing = [
+                  (item.csGeneralBudget ? item.csGeneralBudget.toFixed(2) : 0),
+                  (item.csFixedAmount ? item.csFixedAmount.toFixed(2) : 0),
+                  (item.csBmAmount ? item.csBmAmount.toFixed(2) : 0),
+                  (item.csPaymentAmount ? item.csPaymentAmount.toFixed(2) : 0)
+                ]
                 const vm1 = echarts().init(document.getElementById("chart" + index));
                 let option1 = {
                   grid: {
@@ -452,6 +632,7 @@ export default {
                     data: chartData,
                     type: 'bar',
                     barWidth: 30,
+                    stack: 'total',
                     label: {
                       show: true,
                       position: 'top',
@@ -473,7 +654,113 @@ export default {
                     }
                   }]
                 };
-                vm1.setOption(option1);
+                let option2 = {
+                  grid: {
+                    left: '0%',
+                    right: '0',
+                    bottom: '0%',
+                    top: '12%',
+                    containLabel: true
+                  },
+                  xAxis: {
+                    type: 'category',
+                    data: [this.$t("LK_ZONGYUSUAN"), this.$t("LK_DINGDIANJINE"), this.$t("LK_BMDAN"), this.$t("LK_FUKUAN")],
+                    axisTick: {
+                      show: false
+                    },
+                    axisLine: {
+                      lineStyle: {
+                        color: '#CDD4E2'
+                      }
+                    },
+                    axisLabel: {
+                      textStyle: {
+                        color: '#485465',
+                        fontSize: 10
+                      },
+                    },
+                  },
+                  yAxis: {
+                    type: 'value',
+                    axisTick: {
+                      show: false
+                    },
+                    axisLabel: {
+                      show: false
+                    },
+                    splitLine: {
+                      show: false
+                    },
+                    axisLine: {
+                      show: false
+                    },
+
+                  },
+                  series: [
+                      {
+                      data: chartData,
+                      type: 'bar',
+                      barWidth: 30,
+                      stack: 'total',
+                      label: {
+                        show: false
+                      },
+                      itemStyle: {
+                        normal: {
+                          barBorderRadius: [0, 0, 0, 0],
+                          color: function (params) {
+                            let colorlist = ['#1763F7', '#73A1FA', '#B0C5F5', '#CEE1FF'];
+                            return colorlist[params.dataIndex];
+                          }
+                        },
+                      }
+                    },
+                    {
+                      data: chartData_commonSourcing,
+                      type: 'bar',
+                      barWidth: 30,
+                      stack: 'total',
+                      label: {
+                        show: false,
+                      },
+                      itemStyle: {
+                        normal: {
+                          barBorderRadius: [5, 5, 0, 0],
+                          color: function (params) {
+                            let colorlist = ['#55C2D0','#87D4DE','#BBE7EC','#D4F8F7'];
+                            return colorlist[params.dataIndex];
+                          }
+                        },
+                      }
+                    },
+                    {
+                      data: [0, 0, 0, 0],
+                      name: '',
+                      type: 'bar',
+                      stack: 'total',
+                      color: '#B3D0FF',
+                      label: {
+                        show: true,
+                        position: 'top',
+                        textStyle: {
+                          color: '#485465'
+                        },
+                        formatter: function(p){
+                          let dataIndex = p.dataIndex
+                          return _this.getTousandNum((Number(chartData[dataIndex]) + Number(chartData_commonSourcing[dataIndex])).toFixed(2))
+                        },
+                      },
+                      emphasis: {
+                        focus: 'series'
+                      },
+                    }
+                  ]
+                };
+                if(item.isCommonSourcing){
+                  vm1.setOption(option2);
+                } else {
+                  vm1.setOption(option1);
+                }
               })
             })
           } else {
@@ -502,6 +789,23 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+.carTypeOverview{
+  margin-top: 20px;
+  text-align: right;
+  > div{
+    margin-right: 10px;
+  }
+  ::v-deep .el-switch__label.is-active{
+    color: #41434A;
+  }
+  ::v-deep .el-button--primary{
+    font-size: 16px;
+    color: #1660F1;
+    background-color: #EEF2FB;
+    border-color: #EEF2FB;
+    //margin-right: 10px;
+  }
+}
 @keyframes scale
 {
   30% {
@@ -720,10 +1024,21 @@ export default {
       }
 
       .unit {
-        font-size: 12px;
         color: #485465;
-        text-align: right;
         margin-top: 24px;
+        display: flex;
+        justify-content: space-between;
+        .repeatCateGoryCount{
+          font-size: 10px;
+          span{
+            color: #55C2D0;
+            font-size: 14px;
+            font-weight: bold;
+          }
+        }
+        .wanyuan{
+          font-size: 12px;
+        }
       }
 
       .chart {

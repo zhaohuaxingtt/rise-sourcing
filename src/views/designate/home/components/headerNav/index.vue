@@ -4,9 +4,10 @@
  * @Description: 
 -->
 <template>
+<div class="headerNav-wraper margin-bottom10">
   <div class="headerNav">
-    <iNavMvp :list="list" @change="change" :lev="1" routerPage></iNavMvp>
-    <div class="ext">
+    <iNavMvp :list="list" lang @change="change" :lev="1" routerPage></iNavMvp>
+    <!-- <div class="ext">
       <div class="pull-right">
         <a href="javascript:;" class="iconMenu">
           <icon symbol
@@ -18,42 +19,68 @@
             name="icondatabaseweixuanzhong"
           ></icon>
         </a>
-      </div>
-      <iNavMvp @change="change" class="pull-right" right routerPage lev="2" :list="menu" />
-      <!-- <ul>
-        <li v-for="(item, index) in menu" :key="index">
-          <a href="javascript:;" @click="$router.push({ path: item.url })">{{item.name}}</a>
-        </li>
-      </ul> -->
-    </div>
-    
+      </div> -->
+<!--       
+    </div> -->
+    <iNavMvp @change="change" lang class="pull-right" right routerPage lev="2" :list="navList" @message="clickMessage" />
   </div>
+  <div class="headerNav-sub margin-top30">
+    <iTabsList type="card" v-model="tab" @tab-click="handleTabClick">
+      <el-tab-pane v-for="(item,index) in heaederSubMenu" :key="index" :label="item.name" :name="item.key"></el-tab-pane>
+    </iTabsList>
+  </div>
+</div>
 </template>
 <script>
-import {TAB, MENU} from './components/data'
+import {TAB, MENU, heaederSubMenu} from './components/data'
 import {
   iNavMvp,
-  icon
+  // icon,
+  iTabsList
 } from "rise";
+import { clickMessage } from "@/views/partsign/home/components/data"
+
+// eslint-disable-next-line no-undef
+const { mapState, mapActions } = Vuex.createNamespacedHelpers("sourcing")
 
 export default {
   data() {
     return {
       list: TAB,
-      menu: MENU
+      menu: MENU,
+      heaederSubMenu,
+      tab: ''
     }
   },
   components: {
     iNavMvp,
-    icon
+    // icon,
+    iTabsList
   },
   created() {
-    console.log(this.list)
+    const heaederSubMenuItem = this.heaederSubMenu.find(o => o.path === this.$route.path)
+    this.tab = heaederSubMenuItem ? heaederSubMenuItem.key : 'nomination'
+    this.updateNavList
+  },
+  computed: {
+    ...mapState(["navList"]),
+    ...mapActions(["updateNavList"])
   },
   methods: {
     change() {
 
-    }
+    },
+    // tab切换
+    handleTabClick(){
+      const { query } =  this.$route;
+      const path = this.heaederSubMenu.find(o => o.key === this.tab).path
+      this.$router.push({
+          path,
+          query,
+      });
+    },
+    // 通过待办数跳转
+    clickMessage,
   }
 }
 </script>
@@ -62,6 +89,17 @@ export default {
 .headerNav {
   display: flex;
   justify-content: space-between;
+  position: relative;
+  &:after {
+    content: '';
+    width: 100%;
+    height: 1px;
+    display: block;
+    background: rgba(197, 206, 229, 0.5);
+    position: absolute;
+    left: 0px;
+    bottom: -0.5rem;
+  }
   .ext {
     ul {
       display: inline-block;
@@ -125,7 +163,13 @@ export default {
     }
   }
 }
-
+.headerNav-sub {
+  ::v-deep.el-tabs {
+    .el-tabs__header {
+      margin-bottom: 0px;
+    }
+  }
+}
 .pull-right{
   float: right;
 }

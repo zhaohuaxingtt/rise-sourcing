@@ -2,25 +2,25 @@
  * @Author: Luoshuang
  * @Date: 2021-05-26 13:43:37
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-09 10:49:53
+ * @LastEditTime: 2021-06-25 14:15:09
  * @Description: 
  * @FilePath: \front-web\src\views\designateFiles\fileManage\components\back.vue
 -->
 
 <template>
   <iDialog 
-    title="退回原因"
+    :title="language('TUIHUIYUANYIN','退回原因')"
     :visible.sync="dialogVisible"
     @close="clearDialog"
     width="878px"
   >
     <template slot="footer">
-      <iButton @click="handleConfirm" :loading="loading">保存</iButton>
-      <iButton @click="clearDialog">取消</iButton>
+      <iButton @click="handleConfirm" :loading="loading">{{language('BAOCUN','保存')}}</iButton>
+      <iButton @click="clearDialog">{{language('QUXIAO','取消')}}</iButton>
     </template>
     <el-form>
       <el-form-item>
-        <iInput v-model="reason" placeholder="请输入撤销原因" type="textarea" :rows="12" resize="none" ></iInput> 
+        <iInput v-model="reason" :placeholder="language('QINGSHURUCHEXIAOYUANYIN','请输入撤销原因')" type="textarea" :rows="12" resize="none" ></iInput> 
       </el-form-item>
     </el-form>
   </iDialog>

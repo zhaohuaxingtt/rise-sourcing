@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-28 15:03:47
- * @LastEditTime: 2021-06-14 16:56:25
+ * @LastEditTime: 2021-06-25 18:43:20
  * @LastEditors: Please set LastEditors
  * @Description: 特殊表格实现
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\table.vue
@@ -13,29 +13,39 @@
     :height="height"
     :data="tableData"
     v-loading="loading"
-    @selection-change="handleSelectionChange"
     @cell-click="handleCellClick"
     :empty-text="$t('LK_ZANWUSHUJU')"
     :row-class-name="tableRowClassName"
     :header-cell-class-name='headerClassName'
     :cell-class-name='cellClassName'
     :span-method="spanMethod"
+    @sort-change="sortChangeTable"
   >
     <template v-for='(item,index) in tableTitle'>
       <!-----------------存在index selection情况------------------------>
       <el-table-column
         :key="index"
-        v-if="['selection', 'index'].includes(item.type)"
-        :type="item.type"
+        v-if="item.props == 'groupName'"
         :label="item.i18n ? $t(item.i18n) : item.label"
         :width="item.width || 50"
         align="center"
-        :prop='"cfPartAPrice"'
-        :resizable="false"
-        :selectable='selectable'
+        :prop='item.prop'
       >
         <template slot-scope="scope">
-            <span v-if='scope.row[groupName]'>{{scope.row[groupName]}}</span>
+            <el-checkbox @change="handleSelectionChange(scope.row,scope.$index)" class="checkBox" v-model="scope.row.active"><span>{{scope.row[item.props]}}</span></el-checkbox>
+        </template>
+      </el-table-column>
+      <el-table-column
+        v-else-if="item.props == 'cfPartAPrice' || item.props == 'partNo'"
+        :key="index"
+        :label="item.i18n ? $t(item.i18n) : item.label"
+        :width="item.width"
+        :prop='item.props'
+        align="center"
+        :sortable='"custom"'
+      >
+        <template slot-scope="scope">
+          <span :class="{chengse:(scope.row['cfPartAPriceStatus'] == 2 && item.props != 'partNo')}">{{scope.row[item.props]}}</span>
         </template>
       </el-table-column>
       <!-----------------表格中内容模块------------------------>
@@ -46,12 +56,10 @@
         :width="item.width"
         :prop='item.props'
         align="center"
-        :sortable='(item.props == "cfPartAPrice" || item.props == "partNo")'
-        :resizable="false"
       >
         <!----------在表头上方需要显示评分的点，插入表头标签------>
         <template slot="header" slot-scope="scope">
-          <span>{{scope.column.label}}</span>
+          <el-tooltip :content="scope.column.label" effect='light'><span class="labelHader">{{scope.column.label}}</span></el-tooltip>
           <div class="headerContent" v-if='scope.column.label == "EBR"'>
             <div class="c" :style="{width:cWidth}">
               <ul style="width:99.5px">
@@ -61,10 +69,20 @@
         <!----------在表头上方动态循环点------------------------>
               <template v-for='(rating,index) in ratingList.ratingList'>
                 <ul :key="index" class="lastChild">
-                  <li v-for='(itemsss,index) in rating' :key='index'>
-                    <span style="margin-rigth:10px;">{{itemsss.rate}}</span>
-                    <span><icon v-if='itemsss.isAllPartRateConsistent' name='iconbaojiadan-youfujian' symbol></icon></span>
-                  </li>
+                  <template v-for='(itemsss,indexss) in rating'>
+                    <li :key='indexss' v-if='indexss > 0'>
+                      <span style="margin-rigth:10px;">{{itemsss.rate}}</span>
+                      <span><icon v-if='itemsss.isAllPartRateConsistent' name='icontishi-cheng' symbol></icon></span>
+                    </li>
+                    <li v-else :key='indexss'>
+                      <span>
+                        {{itemsss.rate}}
+                      </span>
+                      <el-tooltip  effect="light" v-if='itemsss.isRateRisk' :content="`FRM评级：${itemsss.isAllPartRateConsistent}`">
+                          <icon name='icontishi-cheng' symbol></icon>
+                      </el-tooltip>
+                    </li>
+                  </template>
                 </ul>
               </template>
             </div>
@@ -72,13 +90,33 @@
         </template>
         <template slot-scope="scope">
           <template v-if='removeKeysNumber(item.props) == "cfPartAPrice"'>
-              <span :class="{chengse:scope.row[item.props].cfPartAPriceStatus == 2}">{{scope.row[item.props]}}</span>
+              <span :class="{chengse:scope.row['cfPartAPriceStatus'] == 2}">{{scope.row[item.props]}}</span>
+          </template>
+          <template v-else-if='removeKeysNumber(item.props) == "cfPartBPrice"'>
+              <span :class="{chengse:scope.row['cfPartBPriceStatus'] == 2}">{{scope.row[item.props]}}</span>
           </template>
           <template v-else-if='removeKeysNumber(item.props) == "lcAPrice"'>
-              <span :class="{lvse:scope.row[item.props].lcAPriceStatus == 1}">{{scope.row[item.props]}}</span>
+              <span :class="{lvse:lvseFn(scope.row,item.props,'lcAPriceStatus')}">{{scope.row[item.props]}}</span>
+          </template>
+          <template v-else-if='removeKeysNumber(item.props) == "lcBPrice"'>
+              <span :class="{lvse:lvseFn(scope.row,item.props,'lcBPriceStatus')}">{{scope.row[item.props]}}</span>
+          </template>
+          <template v-else-if='removeKeysNumber(item.props) == "tto"'>
+              <span :class="{lvse:lvseFn(scope.row,item.props,'ttoStatus')}">{{scope.row[item.props]}}</span>
           </template>
           <template v-else-if='removeKeysNumber(item.props) == "Quotationdetails" && scope.$index < tableData.length -3'>
-             <span class="link" @click="optionPage(scope.row)">查看详情</span>
+             <span class="link" @click="optionPage(scope.row,getPorpsNumber(item.props))">查看详情</span>
+          </template>
+          <template v-else-if='removeKeysNumber(item.props) == "supplierSopDate" || removeKeysNumber(item.props) == "ltcStaringDate"'>
+            <span>{{scope.row[item.props]?moment(scope.row[item.props]).format("YYYY-MM-DD"):''}}</span>
+          </template>
+          <template v-else-if ='removeKeysNumber(item.props) == "developmentCost"'>
+            <p style="color:red;" v-if='scope.row[getPorpsNumber(item.props)+"developmentCostHasShare"]'>*</p>
+            <p>{{scope.row[item.props]}}</p>
+          </template>
+          <template v-else-if ='removeKeysNumber(item.props) == "tooling"'>
+            <p style="color:red;" v-if='scope.row[getPorpsNumber(item.props)+"toolingHasShare"]'>*</p>
+            <p>{{scope.row[item.props]}}</p>
           </template>
           <template v-else>
             <span>{{scope.row[item.props]}}</span>
@@ -92,6 +130,7 @@
 <script>
 import {removeKeysNumber,getPorpsNumber} from './data'
 import {icon} from 'rise'
+import moment from 'moment'
 export default{
   components:{icon},
   props:{
@@ -106,9 +145,13 @@ export default{
     ratingList:{
       type:Array,
       default:()=> {}
+    },
+    round:{
+      type:String,
+      default:''
     }
   },
-  inject:['vm'],
+  inject:['vm','getbaseInfoData'],
   computed:{
     cWidth(){
       const index = this.tableTitle.findIndex((item)=>item.label == 'EBR')
@@ -119,8 +162,31 @@ export default{
     }
   },
   methods:{
-    optionPage(){
-      
+    sortChangeTable({column, prop, order}){
+      this.$emit('sortChangeTabless',order)
+    },
+    moment(date){
+      return moment(date)
+    },
+    lvseFn(row,props,String){
+      try {
+        return row[getPorpsNumber(props)+String] == 1
+      } catch (error) {
+        return false
+      }
+    },
+    optionPage(items,index){
+      const router = this.$router.resolve({
+        path:'/supplier/quotationdetail',
+        query:{
+          rfqId:this.$route.query.id,
+          round:this.round,
+          supplierId:items[index+'supplierId'],
+          fsNum:items.partPrjCode,
+          fix:true
+        }
+      })
+      window.open(router.href,'_blank')
     },
         /**
      * 分组函数，用于element-ui table 分组合并
@@ -138,7 +204,7 @@ export default{
           spanArr.push(1);
           position = 0;
         }else{
-          if(item[groupKey] && item[groupKey] === dataList[index-1][groupKey] ){
+          if(item[groupKey] && item[groupKey] === dataList[index-1][groupKey] && item[groupKey] !='-' ){
             spanArr[position] += 1;
             spanArr.push(0);
           }else{
@@ -222,13 +288,26 @@ export default{
         return true
       }
     },
-    handleSelectionChange(val){
-      this.$emit('handleSelectionChange',val)
+    /**
+     * @description: 自定义表格选中。 
+     * @param {*} val
+     * @return {*}
+     */
+    handleSelectionChange(e,index){
+      this.$set(this.tableData,index,e)
+      this.$emit('handleSelectionChange',this.tableData.filter(items=>items.active))
     }
   }
 }
 </script>
 <style lang='scss' scoped>
+  .checkBox{
+    ::v-deep.el-checkbox__label{
+      display: block;
+      padding-left: 0px;
+      font-size: 12px;
+    }
+  }
   .lvse{
     color:$color-green;
   }
@@ -246,14 +325,18 @@ export default{
         height: 30px;
         span{
           display: inline-block;
-          word-break: break-all;
-          overflow: hidden;
+          width: 100%;
         }
         .el-checkbox{
           width: 18px;
         }
         .caret-wrapper{
           top: -8px;
+        }
+        .labelHader{
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
         }
       }
     }
@@ -293,6 +376,14 @@ export default{
     ::v-deep .rightBorder{
       border-right: 1px solid #C5CCD6;
     }
+    ::v-deep .is-sortable{
+      .cell{
+        display: flex;
+        .caret-wrapper{
+          top: -7px;
+        }
+      }
+    }
   }
   .headerContent{
     position: relative;
@@ -327,6 +418,10 @@ export default{
         flex: 1;
         &:last-child{
           border-right: 0px;
+        }
+        span{
+          display: inline;
+          margin-right: 10px;
         }
       }
     }

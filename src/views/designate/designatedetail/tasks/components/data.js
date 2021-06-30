@@ -23,6 +23,12 @@ export const tasksTitle = [
     name: 'STATUS',
     key: 'STATUS',
     tooltip: false
+  },
+  {
+    props: 'edit',
+    name: 'HIDE/UNHIDE',
+    key: 'HIDE/UNHIDE',
+    tooltip: false
   }
 ]
 

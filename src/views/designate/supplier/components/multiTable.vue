@@ -2,26 +2,26 @@
   <iCard class="multiSupplier supplierTable">
     <div class="margin-bottom20 clearFloat">
       <span class="font18 font-weight">
-        {{ $t("nominationSupplier.GongYingShangLieBiao") }}</span
+        {{ language("nominationSupplier_GongYingShangLieBiao",'供应商列表') }}</span
       >
       <div class="floatright">
         <span v-if="multiEditControl">
           <iButton @click="addShow(true)">
-            {{ $t("nominationSupplier.JiaRuZhanShi") }}
+            {{ language("nominationSupplier_JiaRuZhanShi",'加入展示') }}
           </iButton>
           <iButton @click="addShow(false)">
-            {{ $t("nominationSupplier.QuXiaoZhanShi") }}
+            {{ language("nominationSupplier_QuXiaoZhanShi",'取消展示') }}
           </iButton>
           <iButton @click="submit" :loading="submiting">
-            {{ $t("LK_BAOCUN") }}
+            {{ language("LK_BAOCUN", '保存') }}
           </iButton>
           <iButton @click="multiEditControl = false">
-            {{ $t("LK_QUXIAO") }}
+            {{ language("LK_QUXIAO",'取消') }}
           </iButton>
         </span>
         <span v-else>
           <iButton @click="multiEditControl = true">
-            {{ $t("LK_BIANJI") }}
+            {{ language("LK_BIANJI",'编辑') }}
           </iButton>
         </span>
         
@@ -33,6 +33,7 @@
       :tableTitle="multiSupplierTitle"
       :tableLoading="tableLoading"
       :treeProps="{'tree-props': {children: 'children'}, 'row-key': 'id'}"
+      :lang="true"
       @handleSelectionChange="handleMutiSelectionChange"
       @openPage="openPage"
       :activeItems="'partNum'"
@@ -46,7 +47,7 @@
     <template #factoryNameCh="scope">
       <div>
         <span class="factoryDesc">{{scope.row.factoryNameCh }}</span>
-        <el-tooltip effect="light" :content="`FRM评级：${scope.row.frmRate}`" v-if="scope.row.isFRMRate === 1">
+        <el-tooltip effect="light" :content="`${language('LK_FRMPINGJI','FRM评级')}：${scope.row.frmRate}`" v-if="scope.row.isFRMRate === 1">
           <span>
             <icon symbol name="iconzhongyaoxinxitishi" />
           </span>
@@ -55,7 +56,7 @@
     </template>
     <!-- 是否展示 -->
     <template #isPresent="scope">
-      <span>{{scope.row.isPresent === 1 ? '是' : '否' }}</span>
+      <span>{{scope.row.isPresent === 1 ? language('LK_YES','是') : language('LK_NO','否') }}</span>
     </template>
     </tablelist>
     <iPagination
@@ -127,7 +128,7 @@ export default {
     // 加入展示
     addShow(type = true) {
       if (!this.selectMultiData.length) {
-        iMessage.error(this.$t('nominationSuggestion.QingXuanZeZhiShaoYiTiaoShuJu'))
+        iMessage.error(this.language('nominationSuggestion_QingXuanZeZhiShaoYiTiaoShuJu','请选择至少一条数据'))
         return
       }
       this.selectMultiData.map(o => {
@@ -135,7 +136,7 @@ export default {
       })
     },
     async submit() {
-      const confirmInfo = await this.$confirm(this.$t('submitSure'))
+      const confirmInfo = await this.$confirm(this.language('submitSure','您确定要执行提交操作吗？'))
       if (confirmInfo !== 'confirm') return
       this.submiting = true
       addSuppliersInfo({
@@ -143,7 +144,7 @@ export default {
         nominateId: this.$store.getters.nomiAppId
       }).then(res => {
         if (res.code === '200') {
-          iMessage.success(this.$t('LK_CAOZUOCHENGGONG'))
+          iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'))
           this.getFetchDataList()
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
@@ -156,7 +157,7 @@ export default {
     },
     // 取消
     async cancel() {
-      const confirmInfo = await this.$confirm(this.$t('cancelSure'))
+      const confirmInfo = await this.$confirm(this.language('cancelSure','您确定要取消吗？'))
       if (confirmInfo !== 'confirm') return
       this.tableListData = _.cloneDeep(this.oriTableListData)
     },
@@ -173,9 +174,9 @@ export default {
         if (res.code === '200') {
           const tableListData = res.data || []
           tableListData.map(o => {
-            o.id = this.randomid()
+            o.sid = this.randomid()
             o.nestedList && o.nestedList.length && (o.nestedList.map(item => {
-              item.id = this.randomid()
+              item.sid = this.randomid()
               return item
             }))
             o.children = o.nestedList || []

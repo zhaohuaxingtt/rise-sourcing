@@ -1,0 +1,46 @@
+<!--
+ * @Author: Luoshuang
+ * @Date: 2021-06-22 17:47:09
+ * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-06-29 09:48:56
+ * @Description: 目标价详情
+ * @FilePath: \front-web\src\views\financialTargetPrice\targetPriceDetail\index.vue
+-->
+
+<template>
+  <iPage class="targetPriceDetail">
+    <div class="font20 font-weight">零件号：3df4324432</div>
+    <!------------------------------------------------------------------------>
+    <!--                 基础信息                                          --->
+    <!------------------------------------------------------------------------>
+    <basic />
+    <!------------------------------------------------------------------------>
+    <!--                 修改历史                                          --->
+    <!------------------------------------------------------------------------>
+    <history />
+    <!------------------------------------------------------------------------>
+    <!--                 定点信息                                          --->
+    <!------------------------------------------------------------------------>
+    <designateInfo />
+  </iPage>
+</template>
+
+<script>
+import { iPage } from 'rise'
+import history from './components/history'
+import basic from './components/basic'
+import designateInfo from './components/designateInfo'
+export default {
+  components: {iPage,history,basic,designateInfo},
+  data() {
+    return {
+    }
+  },
+  computed: {
+  },
+}
+</script>
+
+<style lang="scss" scoped>
+
+</style>
