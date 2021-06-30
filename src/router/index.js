@@ -1,8 +1,8 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-06-22 11:04:44
- * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-06-29 17:15:19
+ * @LastEditors: Please set LastEditors
  * @Description: 系统静态路由.
  * @FilePath: \front-web\src\router\index.js
  *
@@ -15,7 +15,7 @@ import designateRoutes from './modules/designate'
 import createpartsRoutes from './modules/createparts'
 import costanalysismanageRoutes from './modules/costanalysismanage'
 import financialtargetpriceRoutes from './modules/financialtargetprice'
-
+import steeldemandcreation from './modules/steeldemandcreation'
 Vue.use(VueRouter);
 const originalPush = VueRouter.prototype.push
 
@@ -472,6 +472,7 @@ export default new VueRouter({
         ...designateRoutes,
         ...createpartsRoutes,
         ...costanalysismanageRoutes,
-        ...financialtargetpriceRoutes
+        ...financialtargetpriceRoutes,
+        ...steeldemandcreation
     ]
 });
