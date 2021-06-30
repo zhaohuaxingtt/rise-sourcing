@@ -1,24 +1,24 @@
 <template>
   <iDialog class="dialog" v-bind="$props" :visible.sync="visible" v-on="$listeners">
     <div class="dialog-Header" slot="title">
-      <div class="font18 font-weight">{{$t('nominationLanguage.SELFenTanDanFuJianLieBiao')}}</div>
+      <div class="font18 font-weight">{{language('FENTANFUJIANLIEBIAO', 'SEL分摊单附件列表')}}</div>
       <div class="control">
         <span v-if="!readOnly">
-          <iButton @click="downloadFile">{{ $t('LK_XIAZAI') }}</iButton>
-          <iButton @click="deleteFile">{{ $t('LK_SHANCHU') }}</iButton>
+          <iButton @click="downloadFile">{{ language('LK_XIAZAI','下载') }}</iButton>
+          <iButton @click="deleteFile([], getFetchData)">{{ language('LK_SHANCHU','删除') }}</iButton>
           <upload
             class="upload-trigger"
             :hideTip="true"
             :accept="'.jpg,.jpeg,.png,.pdf,.tif'"
-            :buttonText="$t('strategicdoc.ShangChuanWenJian')"
-            @on-success="onUploadConfirm"
+            :buttonText="language('strategicdoc_ShangChuanWenJian','上传文件')"
+            @on-success="onUploadsucess(Object.assign(...arguments, {fileType, hostId: nomiAppId}), getFetchData)"
           />
         </span>
         <span v-if="selStatus">
-          <iButton @click="deleteFile">{{ $t('LK_QUEREN') }}</iButton>
-          <iButton @click="downloadFile">{{ $t('LK_XIAZAI') }}</iButton>
+          <iButton @click="deleteFile">{{ language('LK_QUEREN','确认') }}</iButton>
+          <iButton @click="downloadFile">{{ language('LK_XIAZAI','下载') }}</iButton>
         </span>
-        <!-- <iButton>{{ $t('strategicdoc.ShangChuanWenJian') }}</iButton> -->
+        <!-- <iButton>{{ language('strategicdoc.ShangChuanWenJian') }}</iButton> -->
       </div>
     </div>
     <div class="body" v-loading="tableLoading">
@@ -53,11 +53,11 @@ import upload from '@/components/Upload'
 // import { downloadFile } from '@/api/file'
 
 // sel 单据确认表格
-import {
-  getNomiSelAttachList,
-  batchUploadSelAttach,
-  batchDeleteSelAttach
-} from '@/api/designate/nomination/selAttach'
+// import {
+//   getNomiSelAttachList,
+//   batchUploadSelAttach,
+//   batchDeleteSelAttach
+// } from '@/api/designate/nomination/selAttach'
 
 export default {
   components: { tableList, iPagination, iDialog, iButton, upload },
@@ -71,6 +71,14 @@ export default {
     selStatus: {
       type: Boolean,
       default: false
+    },
+    nomiAppId: {
+      type: String,
+      default: ''
+    },
+    fileType: {
+      type: String,
+      default: '105'
     },
     readOnly: {
       type: Boolean,
@@ -104,89 +112,19 @@ export default {
   methods: {
     // 获取sel附件列表
     getFetchData() {
-      if (!this.$store.getters.nomiAppId) return iMessage.error(this.$t('nominationLanguage.DingDianIDNotNull'))
+      if (!this.nomiAppId) return iMessage.error(this.language('nominationLanguage_DingDianIDNotNull','定点申请单id不能为空'))
       this.tableLoading = true
       const params = Object.assign({
-        nomiAppId: this.nomiAppId || this.$store.getters.nomiAppId,
+        nomiAppId: this.nomiAppId,
         sortColumn: 'sort',
         isAsc: true,
-        fileType: '105',
+        fileType: this.fileType,
         pageNo: (this.page && this.page.currPage) || 1,
         pageSize: (this.page && this.page.pageSize) || 10
       })
-      // console.log('-请求参数--', params)
-      getNomiSelAttachList(params).then(res => {
-        if (res.code === '200') {
-          this.dataList = res.data.records || res.data || []
-          if (this.page) {
-            this.page.totalCount = Number(res.total)
-          }
-        } else {
-          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
-        }
-        this.tableLoading = false
-        console.log(res)
-      }).catch(e => {
-        console.log(e)
-        this.tableLoading = false
-      })
+      this.getDataList(params)
     },
-    // 上传成功回调
-    onUploadConfirm(data) {
-      if (!data.data.fileName && !data.data.filePath) {
-        this.tableLoading = false
-        // 上传发生错误，oss无文件名，路径返回
-        iMessage.error(this.$t('strategicdoc.ShangChuanFaShengCuoWu'))
-        return
-      }
-      this.tableLoading = true
-      const params = {
-        // 业务配置相关
-        fileType: data.fileType || 105,
-        hostId: data.hostId || this.$store.getters.nomiAppId || '',
-        fileCode: data.fileCode || '0',
-        // 文件内容🇭相关
-        fileName: data.data.fileName || '',
-        filePath: data.data.filePath || '',
-        fileSize: data.file.size || 0,
-        size: data.file.size || 0
-      }
-      console.log(params, data)
-      batchUploadSelAttach(params).then(res => {
-        if (res.code === '200') {
-          iMessage.success('上传成功')
-          this.getFetchData()
-        } else {
-          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
-        }
-        this.tableLoading = false
-      }).catch(e => {
-        this.tableLoading = false
-        iMessage.error(this.$i18n.locale === "zh" ? e.desZh : event.desEn)
-      })
-    },
-    // 删除文件
-    async deleteSelFile() {
-      if (!this.multipleSelection.length) {
-        iMessage.error(this.$t('nominationSuggestion.QingXuanZeZhiShaoYiTiaoShuJu'))
-        return
-      }
-      const confirmInfo = await this.$confirm(this.$t('deleteSure'))
-      if (confirmInfo !== 'confirm') return
-      const idList = this.multipleSelection.map(o => o.id)
-      
-      try {
-        const res = await batchDeleteSelAttach({idList})
-        if (res.code === '200') {
-          iMessage.success(this.$t('LK_CAOZUOCHENGGONG'))
-          this.getFetchData()
-        } else {
-          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
-        }
-      } catch (e) {
-        iMessage.error(this.$i18n.locale === "zh" ? e.desZh : event.desEn)
-      }
-    }
+    
   }
 }
 </script>
