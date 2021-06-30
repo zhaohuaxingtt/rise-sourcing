@@ -1,20 +1,19 @@
 /*
  * @Author: HaoJiang
  * @Date: 2021-05-20 14:29:09
- * @LastEditTime: 2021-06-30 12:03:47
+ * @LastEditTime: 2021-06-30 13:56:08
  * @LastEditors: Please set LastEditors
  * @Description: 定点申请头部
  *
  */
-import Vue from 'vue'
-
 export const TAB = [
   {
     value: 1,
-    label: '寻源执行',
-    key: 'XUNYUANZHIHANG',
-    url: '#',
-    message: 0
+    name: '寻源执行',
+    message: 0,
+    url: '/sourcing/partsign',
+    activePath: 'partsign',
+    key: 'XUANYUANCAIDAN'
   },
   // {
   //   value: 2,

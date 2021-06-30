@@ -28,7 +28,7 @@
           @uploadedCallback="uploadList"
           :upload-button-loading="uploadLoading"
           :buttonText="$t('LK_SHANGCHUANQINGDAN')"
-          class="margin-left8"
+          class="margin-left10 margin-right10"
         />
         <iButton @click="saveAsList">{{ $t("LK_BAOCUN") }}</iButton>
         <iButton @click="saveAsNew">{{ $t("LK_BAOCUNWEIXINBANBEN") }}</iButton>
@@ -626,7 +626,7 @@ export default {
       });
     },
     translateData(date) {
-      return window.moment(date).format("YYYY-MM-DD");
+      return window.moment(date).format("YYYY.MM.DD");
     },
     getYear(date) {
       let year = Number(window.moment(date).format("YYYY"));

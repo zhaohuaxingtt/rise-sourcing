@@ -22,7 +22,7 @@
         :page-size="page.pageSize"
         :layout="page.layout"
         :total="page.totalCount"
-		v-update
+		    v-update
       />
     </div>
   </iCard>

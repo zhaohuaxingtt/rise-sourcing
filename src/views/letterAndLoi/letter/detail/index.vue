@@ -149,10 +149,10 @@ export default {
             await getLetterDetail({nominateLetterId:id}).then((res)=>{
                 const {code,data={}} = res;
                 if(code == 200){
-                    const { templateType,nominateAppId,nominateLetterId,supplierId } = data;
+                    const { templateType,nominateLetterId,supplierId } = data;
                     this.detailInfo = data;
                     this.radioType = templateType==0 ? 'standard' : 'NonStandard';
-                    this.nomiAppId = nominateAppId;
+                    this.nomiAppId = id;
                     this.nominateLetterId = nominateLetterId;
                     this.getUserList(supplierId);
 

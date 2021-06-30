@@ -264,6 +264,7 @@
         'LK_YONGHUMING': '用户名', // 用户名
         'LK_ZHUANPAICHENGGONG': '转派成功', // 转派成功
         'LK_AEKOHAO': 'AEKO号', //AEKO号
+        'LK_XINDEAEKOHAO': 'AEKO号',    //  AEKO号
         'LK_BDLLIEBIAO': 'BDL列表', //BDL列表
         'LK_BMG': 'BMG', //BMG
         'LK_BOMDANXINXI': 'BOM单信息', //BOM单信息
@@ -277,6 +278,7 @@
         'LK_FS_GSHAO': 'FS/GS号', //FS/GS号
         'LK_FSHAO': 'FS号', //FS号
         'LK_INBOUNDWULIUFANGSHI': 'INBOUND物流方式', //INBOUND物流方式
+        'LK_XINDELINIE': 'Linie',
         'LK_LINIE': 'Linie', //Linie
         'LK_LINIEBEIZHU': 'Linie备注', //Linie备注
         'LK_LINIEBUMEN': 'LINIE部门', //LINIE部门
@@ -399,7 +401,6 @@
         'LK_CHEHUI': '撤回', //撤回
         'LK_CHENGBEN': '成本', //成本
         'LK_CHICUN': '尺寸', //尺寸
-        'LK_CHUANGJIANDINGDIANSHENQING': '创建定点申请', //创建定点申请
         'LK_CHUANGJIANRENGONGHAO': '创建人工号', //创建人工号
         'LK_CHUANGJIANRENXINGMING': '创建人姓名', //创建人姓名
         'LK_CHUANGJIANRIQI': '创建日期', //创建日期
@@ -412,7 +413,6 @@
         'LK_DANWEI': '价格单位', //单位
         'LK_DANGQIANBANBEN': '当前版本', //当前版本
         'LK_DANGQIANLUNCI': '当前轮次', //当前轮次
-        'LK_DAOCHU': '导出', //导出
         'LK_DAORUSHIJIAN': '导入时间', //导入时间
         'LK_DENGJIPEIZHI': '等级配置', //等级配置
         'LK_DIANJISHANGCHUAN': '点击上传 ', //点击上传
@@ -463,14 +463,12 @@
         'LK_GONGYINGSHANGPINGFEN': '供应商评分', //供应商评分
         'LK_GONGYINGSHANGPINGFENFUJIAN': '供应商评分附件', //供应商评分附件
         'LK_GONGYINGSHANGSHENGCHANCHANGDI': '供应商工厂地址', //供应商工厂地址
-        'LK_GUANBIRFQ': '关闭RFQ', //关闭RFQ
         'LK_HUIYIDIDIAN': '会议地点', //会议地点
         'LK_HUIYIJIBENXINXI': '会议基本信息', //会议基本信息
         'LK_HUIYIQITAXINXI': '会议其它信息', //会议其它信息
         'LK_HUIYISHIJIAN': '会议时间', //会议时间
         'LK_HUOBI': '货币', //货币
         'LK_JICHUXINXI': '基础信息', //基础信息
-        'LK_JIHUORFQ': '激活RFQ', //激活RFQ
         'LK_JISHUJIAOLIUHUI': '技术交底会', //技术交底会
         'LK_EP': '技术评分人', //技术评分人
         'LK_JIAGEMINGXI': '价格明细', //价格明细
@@ -679,7 +677,6 @@
         'LK_XIANGMUCHEXING': '项目车型 ', //项目车型
         'LK_XINJIANXINXIDANQIANSHOU': '新件信息单签收', //新件信息单签收
         'LK_XINJIANXINXILIUSHUIDANHAO': '新件信息流水单号 ', //新件信息流水单号
-        'LK_XINJIANRFQ': '新建RFQ', //新建RFQ
         'LK_XINJIANRFQLUNCI': '新建RFQ轮次', //新建RFQ轮次
         'LK_XINJIANXINXIDANBEIZHU': '新建信息单备注', //新建信息单备注
         'LK_XINJIANXINXIDANLIUSHUIHAO': '新件信息单流水号', //新建信息单流水号
@@ -724,9 +721,6 @@
         'LK_ZHONGXINSHENQING': '重新申请', //重新申请
         'LK_ZHONGZHI': '重置', //重置
         'LK_ZHUANPAI': '转派', //转派
-        'LK_ZHUANPAIPINGFENRENWU': '转派评分任务', //转派评分任务
-        'LK_ZHUANTANPAN': '转谈判', //转谈判
-        'LK_ZHUANXUNJIA': '转询价', //转询价
         'LK_ZHUANGXIANGSHU': '装箱数', //装箱数
         'LK_ZHUANGTAI': '状态', //状态
         'LK_ZUIXINRWJIA': '最新RW价', //最新RW价
@@ -794,7 +788,6 @@
         'LK_SHIFOUZUOGUOCOMMONSOURING': '是否做过Common Sourcing',//是否做过Common Sourcing  -------------- common sourcing
         'LK_CommonSourcing': 'Common Sourcing',
         'LK_MOJUSHUXIN': '模具属性',//模具属性
-        // 'LK_LINIE': 'LINIE',//LINIE
         'LK_ZP': 'ZP',//ZP
         'LK_CANKAOCHEXINXIANGMU': '参考车型项目',//参考车型项目
         'LK_CANKAOCHEXINXIANGMUYI': '参考车型项目⼀',//参考车型项目⼀
@@ -1014,7 +1007,7 @@
         'LK_BMDANJINE':  'BM单金额', //  BM单金额
         'LK_BMZHUANGTAI': 'BM单状态',   //  BM单状态
         'LK_DINGDIANLEIXING': '定点类型',   //  定点类型
-        'LK_AEKOZENGZHIJINE': 'Aeko增值金额',  //  Aeko增值金额
+        'LK_AEKOZENGZHIJINE': 'AEKO增值金额',  //  Aeko增值金额
         'LK_XIAZAIQINGDAN': '下载清单', //  下载清单
         'LK_QUERENSHENQING': '确认申请',    //  确认申请
         'LK_ZUOFEI': '作废', // 作废

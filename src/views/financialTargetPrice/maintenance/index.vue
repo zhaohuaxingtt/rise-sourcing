@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-22 09:12:31
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-24 16:56:22
+ * @LastEditTime: 2021-06-25 16:59:17
  * @Description: 财务目标价-目标价维护
  * @FilePath: \front-web\src\views\financialTargetPrice\maintenance\index.vue
 -->
@@ -118,7 +118,7 @@ export default {
   data() {
     return {
       tableTitle: tableTitle,
-      tableData: [{partNum:'2342342',purchasePrjectId:'119'}],
+      tableData: [{partNum:'2342342',purchasePrjectId:'119',applyId:'1'}],
       searchList: searchList,
       searchParams: {},
       isEdit: false,

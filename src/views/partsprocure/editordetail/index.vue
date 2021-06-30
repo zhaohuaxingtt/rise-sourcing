@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2021-06-28 15:10:01
+ * @LastEditTime: 2021-06-29 12:53:01
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\editordetail\index.vue
@@ -46,7 +46,7 @@
 				</iButton>
 				<iButton @click="openDiologClose" v-permission="PARTSPROCURE_EDITORDETAIL_ENDPROJECT"
 					v-if="detailData.status != '16'">{{ $t("LK_JIESHUXIANGMU") }}</iButton>
-				<iButton @click="save" v-permission="PARTSPROCURE_EDITORDETAIL_BASICINFOSAVE">{{ $t("LK_BAOCUN") }}
+				<iButton @click="saveFn" v-permission="PARTSPROCURE_EDITORDETAIL_BASICINFOSAVE">{{ $t("LK_BAOCUN") }}
 				</iButton>
 				<iButton @click="back" v-permission="PARTSPROCURE_EDITORDETAIL_RETURN">{{ $t("LK_FANHUI") }}</iButton>
 				<logButton class="margin-left20" @click="log" v-permission="PARTSPROCURE_EDITORDETAIL_LOG" />
@@ -193,8 +193,21 @@
 								{{ detailData.mouldCostUserName }}
 							</iText>
 						</iFormItem>
-						<iFormItem label="Common Sourcing：" name="test">
+						<iFormItem name="test">
+							<template slot="label">
+								<span>Common Sourcing:</span>
+								<span>
+									<el-tooltip effect="light">
+										<icon name='iconxinxitishi' symbol/>
+										<template slot="content">
+											<p>tu guan : commonSourcing</p>
+											<p>FS0323JJ00 : commonSourcing</p>
+										</template>
+									</el-tooltip>
+								</span>	
+							</template>
 							<!--------预设值会有一个联动，如果 为是  零件采购项目类型是fs commonsourcing  如果是否，则是fs零件 ps:和设计刘洋沟通前端不做联动，仅仅在数据初始化时做----------> 
+							<!--------预设置联动第二版：如果零件采购项目为FS common sourcing，但是否common sourcing选择否，则在保存/生成FS号时提示采购员：“[零件采购项目]与[是否common sourcing]不统一，请确认是否继续”---->
 							<iSelect v-model="detailData.isCommonSourcing"
 								v-permission="PARTSPROCURE_EDITORDETAIL_COMMONSOURCING">
 								<el-option :value="true" label="是"></el-option>
@@ -293,7 +306,9 @@
 		iButton,
 		iTabsList,
 		iMessage,
-		iDatePicker
+		iDatePicker,
+		icon,
+		iMessageBox
 	} from "rise";
 	import logistics from "./components/logistics";
 	import targePrice from "./components/targetPrice";
@@ -320,7 +335,6 @@
 		detailData
 	} from "./components/data";
 	import splitFactory from "./components/splitFactory";
-import { iMessageBox } from '../../../components';
 import designateInfo from './components/designateInfo'
 	export default {
 		components: {
@@ -346,7 +360,8 @@ import designateInfo from './components/designateInfo'
 			splitFactory,
 			designateInfo,
 			currentSupplier,
-			iDatePicker
+			iDatePicker,
+			icon
 		},
 		data() {
 			return {
@@ -476,6 +491,9 @@ import designateInfo from './components/designateInfo'
 					}
 				});
 			},
+			saveFn(){
+				this.fsProjectTypeAnIscommonSroucing(this.save)
+			},
 			//修改详情。
 			save(val) {
 				let detailData = {};
@@ -521,6 +539,9 @@ import designateInfo from './components/designateInfo'
 			},
 			// 生成fs号
 			creatFs() {
+				this.fsProjectTypeAnIscommonSroucing(this.sendRequsetToCreateFS)
+			},
+			sendRequsetToCreateFS(){
 				let fs = {
 					purchaseProjectIds: [this.infoItem.purchasePrjectId],
 				};
@@ -583,6 +604,20 @@ import designateInfo from './components/designateInfo'
 			updateOutput(data) {
 				this.$refs.outputPlan.updateOutput(data)
 			},
+   /**
+    * @description: 限制保存和提交的零件类型和是否commonsourcing是否匹配
+    * @param {*}
+    * @return {*}
+    */
+			fsProjectTypeAnIscommonSroucing(callBack){
+				if((!this.detailData.isCommonSourcing) && this.detailData.partPrejectType == "PT09"){
+					iMessageBox(this.language('当前零件采购项目类型与commonSourcing为[否]不统一，是否继续？','SPIRNT11COMMONSS')).then(res=>{
+						callBack()
+					})
+				}else{
+					callBack()
+				}
+			}
 		},
 		computed:{
    /**
