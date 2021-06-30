@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-06-16 15:25:24
- * @LastEditTime: 2021-06-30 10:34:22
+ * @LastEditTime: 2021-06-30 11:04:37
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\store\module\sourcing.js
@@ -76,22 +76,22 @@ const state = {
       activePath: "partsnomination",
       key: "LK_DINGDIANGUANLI"
     },
-    {
-      value: 9,
-      name: "钢材需求创建",
-      message: 0,
-      url: "/sourcing/steeldemandcreation",
-      activePath: "steeldemandcreation",
-      key: "GANGCAIXUQIUCHUANGJIAN"
-    },
-    {
-      value: 9,
-      name: "定点信 / LOI",
-      message: 0,
-      url: "/sourcing/partsletter",
-      activePath: "partsletter",
-      key: "LK_DINGDIANXINLOI"
-    },
+    // {
+    //   value: 9,
+    //   name: "钢材需求创建",
+    //   message: 0,
+    //   url: "/sourcing/steeldemandcreation",
+    //   activePath: "steeldemandcreation",
+    //   key: "GANGCAIXUQIUCHUANGJIAN"
+    // },
+    // {
+    //   value: 9,
+    //   name: "定点信 / LOI",
+    //   message: 0,
+    //   url: "/sourcing/partsletter",
+    //   activePath: "partsletter",
+    //   key: "LK_DINGDIANXINLOI"
+    // },
   ],
   navListLeft:[
     {
