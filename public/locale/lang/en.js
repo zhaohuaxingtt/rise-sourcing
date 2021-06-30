@@ -1066,40 +1066,6 @@
         'LK_SHIYUE': 'Oct',    //  十月
         'LK_SHIYIYUE': 'Nov',    //  十一月
         'LK_SHIERYUE': 'Dec',    //  十二月
-
-        // 定点建议
-        'nominationSuggestion': {
-            "MoJuYuSuanGuanLi": "模具预算管理",
-            "BiLi": "比例(%)",
-            "TouZiYuSuan": "投资预算(RMB)",
-            "CSFuZeRen": "CSF(P)负责人",
-            "YeWuFenPeiMoNi": "业务分配模拟",
-            "ShuaXinShiJian": "刷新时间",
-            "FanAnXuanZhe": "方案选择",
-            "ZuHe": '组合',
-            "QuXiaoZuHe": "取消组合",
-            "TuiChuBianJi": "退出编辑",
-            'GengXinShiJian': '更新时间',
-            'TiJiao': '提交', // 提交
-            'CheHui': '撤回', // 撤回
-            'QingXuanZeZhiShaoYiTiaoShuJu': '请选择至少一条数据', // 请选择至少一条数据
-            'QingWuXuanZeYiFaSongDeShuJu': '请勿选择已发送的数据', // 请勿选择已发送的数据
-            'QingWuXuanZeWeiFaSongDeShuJu': '请勿选择未发送的数据', // 请勿选择未发送的数据
-            'LingJianHao': '零件号', // 零件号
-            'FsnrGsnr': 'FSNR/GSNR', // FSNR/GSNR
-            'RfqBianHao': 'RFQ编号', // RFQ编号
-            'ShenQingRiQi': '申请日期', // 申请日期
-            'CheXingXiangMu': '车型项目', // 车型项目
-            'TouZiYuSuanRmb': '投资预算(RMB)', // 投资预算(RMB)
-            'CsfPFuZeRen': 'CSF(P)负责人', // CSF(P)负责人
-            'ShenPiZhuangTai': '审批状态', // 审批状态
-            'ShenPiYiJian': '审批意见', // 审批意见
-            'ChongFuTiJiao': '重复提交', // 重复提交
-            'QiYuShuJuZhengChangTiJiao': '其余数据正常提交', // 其余数据正常提交
-            'ChongFuCheHui': '重复撤回', // 重复撤回
-            'QiYuShuJuZhengChangCheHui': '其余数据正常撤回', // 其余数据正常撤回
-            'QingXuanZeCbdCengJiWeiL3DeShuJu': '请选择CBD层级为L3的数据', // 请选择CBD层级为L3的数据
-        },
         "BJZS":{
             "LK_BAOJIAZUSHOU_MJ":"报价分析汇总-模具",
             "LK_BAOJIAZUSHOU_MJDANWEIYUAN":"报价分析汇总-模具（单元：元）"
