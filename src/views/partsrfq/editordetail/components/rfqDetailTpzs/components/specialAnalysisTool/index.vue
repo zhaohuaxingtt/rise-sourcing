@@ -23,6 +23,8 @@ import enterSpecificAnalysisToolsDialog from "./components/enterSpecificAnalysis
 import { totalOverview } from "@/api/partsrfq/specialAnalysisTool/specialAnalysisTool.js";
 import VPIndex from '@/assets/images/VPIndex.png'
 import BoBIndex from '@/assets/images/BoBIndex.png'
+import TIAIndex from '@/assets/images/TIAIndex.png'
+import PCAIndex from '@/assets/images/PCAIndex.png'
 
 export default {
   components: { card, iPage, enterSpecificAnalysisToolsDialog, iButton },
@@ -46,20 +48,28 @@ export default {
         keyword: val || ''
       }
       const res = await totalOverview(pms)
-      res.data.map((item) => {
-        switch (item.title) {
-          case 'BoB(Best of Best)':
-            item.imgUrl = BoBIndex
-            break;
-          case 'Volume Pricing':
-            item.imgUrl = VPIndex
-            break;
-          default:
-            break;
-        }
-      })
-      this.cardData = res.data
-      this.cardData.push({ title: 'PCA' }, { title: 'TIA' })
+      if (res.result) {
+        this.cardData = res.data
+        this.cardData.push({ title: 'PCA' }, { title: 'TIA' })
+        this.cardData.map((item) => {
+          switch (item.title) {
+            case 'BoB(Best of Best)':
+              item.imgUrl = BoBIndex
+              break;
+            case 'Volume Pricing':
+              item.imgUrl = VPIndex
+              break;
+            case 'TIA':
+              item.imgUrl = TIAIndex
+              break;
+            case 'PCA':
+              item.imgUrl = PCAIndex
+              break;
+            default:
+              break;
+          }
+        })
+      }
     },
     handleSearch() {
       this.viewModelDialog = true
