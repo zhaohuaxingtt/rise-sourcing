@@ -204,7 +204,7 @@ import { iPage, iButton, iCard, iSelect, icon } from "rise";
 import CrownBar from "./components/crownBar.vue";
 import bobAnalysis from "@/views/partsrfq/bob/bobAnalysis/index.vue";
 import findingParts from "@/views/partsrfq/components/findingParts.vue";
-import { getBobLevelOne, removeBobOut } from "@/api/partsrfq/bob";
+import { getBobLevelOne, removeBobOut,addBobOut } from "@/api/partsrfq/bob";
 import preview from "./preview.vue";
 import OutBar from "./components/outBar.vue";
 
@@ -297,7 +297,21 @@ export default {
       this.getChartData();
     },
     add(val) {
-      console.log(val);
+      addBobOut({
+        "analysisSchemeId": this.analysisSchemeId,
+        "fs": val.fsNum,
+        "partNumber":val.partNum,
+        "rfqId":val.rfqId,
+        "supplierId": val.supplierId
+      }).then((res) => {
+        if (res.code == 200) {
+          this.$message.success(res.desZh);
+          this.getChartData();
+        } else {
+          this.$message.error(res.desZh);
+        }
+      });
+      console.log(val)
     },
     searchChartData() {
       getBobLevelOne({
@@ -346,9 +360,12 @@ export default {
         }
       });
     },
-    changeOut() {
-      this.findPart();
-    },
+    changeOut(){
+      removeBobOut({
+        id: this.chartData1[0].id,
+      })
+      this.findPart()
+    }
   },
   computed: {
     chartTitle() {
