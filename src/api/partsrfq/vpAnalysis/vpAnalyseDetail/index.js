@@ -33,3 +33,12 @@ export function addVpReports(params) {
     data: params
   })
 }
+
+//Volume Pricing保存或者更新方案
+export function saveOrUpdateScheme(params) {
+  return request({
+    url: '/vpAnalysisScheme/saveOrUpdateScheme',
+    method: 'POST',
+    data: params
+  })
+}

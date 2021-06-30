@@ -66,7 +66,7 @@
         </div>
         <div class="itemBox">
           <iLabel label="预计总产量" slot="label" class="labelWidth"></iLabel>
-          <iInput class="valueWidth">{{ dataInfo.estimatedActualTotalPro }}</iInput>
+          <iInput class="valueWidth" v-model="dataInfo.estimatedActualTotalPro"></iInput>
         </div>
         <div class="itemBox">
           <div class="warpBox">
