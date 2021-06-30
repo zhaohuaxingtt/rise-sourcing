@@ -249,9 +249,14 @@ export default {
         if(res.code === '0'){
           iMessage.success(result);
           this.manualvisible = false;
+          this.getHistogram();  //  获取柱状图数据
         }else{
           iMessage.error(result);
         }
+
+        this.manualSaveLoading = false;
+      }).catch(err => {
+        this.manualSaveLoading = false;
       })
     },
 
