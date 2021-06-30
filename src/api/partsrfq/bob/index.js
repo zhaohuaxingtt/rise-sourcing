@@ -25,3 +25,12 @@ export function removeBobOut(parmars) {
         data: parmars
     })
 }
+
+export function addBobOut(parmars) {
+    return requst({
+        url: '/bobLevelOne/add',
+        method: 'POST',
+        data: parmars
+    })
+}
+
