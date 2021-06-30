@@ -10,12 +10,12 @@
     <iFormItem>
       <!--        车型项目-->
       <iLabel :label="$t('TPZS.CHEXINGXIANGMU')" slot="label"/>
-      <iText>{{ dataInfo.carClassifyProject }}</iText>
+      <iText>{{ dataInfo.carTypeProj }}</iText>
     </iFormItem>
     <iFormItem>
       <!--        车型-->
       <iLabel :label="$t('TPZS.CHEXING')" slot="label"/>
-      <iText>{{ dataInfo.carClassify }}</iText>
+      <iText>{{ dataInfo.carType }}</iText>
     </iFormItem>
     <iFormItem>
       <!--        工厂-->
