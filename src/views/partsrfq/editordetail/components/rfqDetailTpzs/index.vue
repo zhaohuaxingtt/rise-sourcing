@@ -30,14 +30,10 @@
       </template>
     </el-tab-pane>
     <el-tab-pane label="专项分析工具">
-      <iCard>
-        <div>开发中...</div>
-      </iCard>
+      <gather />
     </el-tab-pane>
     <el-tab-pane label="谈判基本信息">
-      <iCard>
-        <div>开发中...</div>
-      </iCard>
+      <negotiateBasicInfor></negotiateBasicInfor>
     </el-tab-pane>
   </iTabsList>
 </template>
@@ -49,8 +45,12 @@ import quotationScoringHZ from './components/quotationScoringHz'
 import quotationScoringEcartsCard from './components/quotationScoringEcartsCard'
 import buMonitor from './components/qutaionScoringBusses'
 import {icardData} from './components/data'
+import gather from "@/views/partsrfq/externalAccessToAnalysisTools/negotiationAssistant/gather.vue";
+import negotiateBasicInfor from "./components/negotiateBasicInfor";
+
+
 export default{
-  components:{iTabsList,iCard,quotationScoringTracking,quotationScoringMj,quotationScoringHZ,quotationScoringEcartsCard,buMonitor},
+  components:{iTabsList,iCard,quotationScoringTracking,quotationScoringMj,quotationScoringHZ,quotationScoringEcartsCard,buMonitor, gather, negotiateBasicInfor},
   data(){
     return {
       cardShow:icardData
@@ -69,6 +69,14 @@ export default{
           i.show = e
         }
       })
+    },
+    //点击返回
+    clickReturn() {
+
+    },
+    //点击报告清单
+    clickReport() {
+
     }
   }
 }
