@@ -2,8 +2,8 @@
   <div>
     <div class="margin-bottom20 clearFloat">
       <span class="font18 font-weight">
-        <span class="margin-right30">{{ $t('TPZS.ZONGDANJIA') }}：52.77</span>
-        <span>{{ $t('TPZS.GUDINGCHENGBENZHANBI') }}：22%</span>
+        <span class="margin-right30">{{ $t('TPZS.ZONGDANJIA') }}：{{dataInfo.totalPrice}}</span>
+        <span>{{ $t('TPZS.GUDINGCHENGBENZHANBI') }}：{{dataInfo.costProportion}}%</span>
       </span>
       <div class="floatright">
         <template v-if="tableStatus === 'edit'">
@@ -137,7 +137,6 @@
 import {iButton, icon, iInput, iMessage, iMessageBox} from 'rise';
 import tableList from '@/components/ws3/commonTable';
 import {tableTitle, tableEditTitle} from './data';
-import {getVpCostDetail} from '../../../../../api/partsrfq/vpAnalysis/vpAnalyseDetail';
 import {numberProcessor} from '@/utils';
 import _ from 'lodash';
 
@@ -151,16 +150,19 @@ export default {
   props: {
     showEditButton: {
       type: Boolean,
-      default: true
-    }
+      default: true,
+    },
+    dataInfo: {
+      type: Object,
+      default: () => {
+        return {};
+      },
+    },
   },
   computed: {
     pageType() {
       return this.$route.query.type;
     },
-  },
-  created() {
-    this.getTableList();
   },
   data() {
     return {
@@ -263,33 +265,20 @@ export default {
     handleFinish() {
       this.tableStatus = '';
     },
-    async getEditTableList() {
+    getTableList() {
       try {
-        this.tableLoading = true;
         this.tableListData = [];
         this.hideTableData = [];
-        const req = {
-          analysisSchemeId: 1,
-        };
-        const res = await getVpCostDetail(req);
-        res.data.map(item => {
+        this.dataInfo.costDetailList.map(item => {
           if (item.isShow) {
             this.tableListData.push(item);
           } else {
             this.hideTableData.push(item);
           }
         });
-        this.tableLoading = false;
       } catch {
         this.tableListData = [];
         this.hideTableData = [];
-        this.tableLoading = false;
-      }
-    },
-    getTableList() {
-      switch (this.pageType) {
-        case 'edit':
-          this.getEditTableList();
       }
     },
     handleHide(row) {
@@ -315,6 +304,12 @@ export default {
       } else {
         this.tableTitle = tableTitle;
       }
+    },
+    dataInfo: {
+      deep: true,
+      handler() {
+        this.getTableList();
+      },
     },
   },
 };

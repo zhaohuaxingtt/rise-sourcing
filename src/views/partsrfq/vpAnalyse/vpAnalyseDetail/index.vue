@@ -4,7 +4,7 @@
  * @Description: VP分析详情
 -->
 <template>
-  <iPage>
+  <iPage v-loading="pageLoading">
     <div class="margin-bottom20 clearFloat">
       <span class="font18 font-weight">Volume Pricing{{ $t('TPZS.FENXI') }}</span>
       <div class="floatright">
@@ -22,7 +22,7 @@
              v-for="(item,index) of partList"
              :key="item"
              :class="{'partItemActive': partItemCurrent === index}"
-             @click="handlePartItemClick(index)"
+             @click="handlePartItemClick(item ,index)"
         >
           <div class="quxiaoIconBox" @click="handlePartItemClose(index)">
             <icon symbol
@@ -31,7 +31,7 @@
                   v-if="partItemCurrent === index && partList.length > 1 "
             />
           </div>
-          {{ item }}
+          {{ item.partsId }}
         </div>
       </div>
       <!--      自定义图标-->
@@ -45,7 +45,7 @@
     </iCard>
     <!--总单价表格-->
     <iCard tabCard class="margin-bottom20">
-      <totalUnitPriceTable/>
+      <totalUnitPriceTable :dataInfo="dataInfo"/>
     </iCard>
 
     <!--图形-->
@@ -101,24 +101,28 @@ export default {
   },
   data() {
     return {
-      partList: ['18D023607', '18D023602'],
+      partList: [],
       partItemCurrent: 0,
+      currentBatchNumber: '',
       customDialog: {
         key: 0,
         visible: false,
       },
       dataInfo: {},
       previewDialog: false,
+      pageLoading: false,
     };
   },
   methods: {
-    handlePartItemClick(index) {
+    handlePartItemClick(item, index) {
       this.partItemCurrent = index;
+      this.currentBatchNumber = item.batchNumber;
+      this.getDataInfo()
     },
     handlePartItemClose(index) {
       this.partList.splice(index, 1);
-      console.log(this.partList);
       this.partItemCurrent = 0;
+      this.currentBatchNumber = this.partList[0].batchNumber;
     },
     //点击跳转自定义零件弹窗
     handleOpenCustomDialog() {
@@ -127,13 +131,21 @@ export default {
     },
     async getDataInfo() {
       try {
-        const req = {
-          id: 1,
-        };
+        this.pageLoading = true;
+        let req = {};
+        if (this.$route.query.type === 'edit') {
+          req.id = this.$route.query.schemeId;
+        }
+        req.batchNumber = this.currentBatchNumber;
         const res = await getAnalysisProcessing(req);
         this.dataInfo = res.data;
+        this.partList = res.data.partsList.filter(item => {
+          return item.isShow;
+        });
+        this.pageLoading = false;
       } catch {
         this.dataInfo = {};
+        this.pageLoading = false;
       }
     },
     handlePreview() {
