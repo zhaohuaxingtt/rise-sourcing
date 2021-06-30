@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-04-21 16:39:36
- * @LastEditTime: 2021-05-06 16:03:40
+ * @LastEditTime: 2021-06-17 13:18:39
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-supplier\src\api\rfqManageMent\mouldOffer\index.js
@@ -9,6 +9,8 @@
 import axios from '@/utils/axios'
 const requst = axios(process.env.VUE_APP_SUPPLIER_RFQLIST)
 const requstBjd = axios(process.env.VUE_APP_SUPPLIER_CBHUIZ)
+import router from '../../../router/index'
+const supplierId = ()=> router.currentRoute.query.supplierId?router.currentRoute.query.supplierId:''
 // 查询RFQ信息
 export function findByRfqs(parmars) {
     return requst({
@@ -30,7 +32,7 @@ export function getOneRfq(parmars) {
  */
 export function getCostSummary(parmars) {
     return requstBjd({
-        url: '/part/cost-summary/getCostSummary',
+        url: `/part/cost-summary/getCostSummary?supplierId=${supplierId()}`,
         method: 'POST',
         data: parmars
     })
@@ -42,14 +44,14 @@ export function getCostSummary(parmars) {
  */
  export function packageTransport(quId) {
     return requstBjd({
-        url: `/part/quotation/package-transport/${quId}`,
+        url: `/part/quotation/package-transport/${quId}?supplierId=${supplierId()}`,
         method: 'GET'
     })
 }
 // 查询供应商评分附件
 export function getAllAnnex(parmars) {
     return requst({
-        url: '/supplier/getAllAnnex',
+        url: `/supplier/getAllAnnex?supplierId=${supplierId()}`,
         method: 'POST',
         data: parmars
     })
@@ -58,7 +60,7 @@ export function getAllAnnex(parmars) {
 // 查询时间计划信息
 export function findTimePlan(params) {
     return requst({
-        url: '/time-plan',
+        url: `/time-plan?supplierId=${supplierId()}`,
         method: 'POST',
         data: params
     })

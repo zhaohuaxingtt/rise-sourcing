@@ -3,19 +3,19 @@
     <iFormItem>
       <!--        供应商-->
       <iLabel :label="$t('TPZS.GONGYINGSHANG')" slot="label"/>
-      <iSelect>
+      <iSelect v-model="dataInfo.supplierName">
         <el-option :value="1" :label="1"></el-option>
       </iSelect>
     </iFormItem>
     <iFormItem>
       <!--        车型项目-->
       <iLabel :label="$t('TPZS.CHEXINGXIANGMU')" slot="label"/>
-      <iText>{{ dataInfo.carClassifyProject }}</iText>
+      <iText>{{ dataInfo.carTypeProj }}</iText>
     </iFormItem>
     <iFormItem>
       <!--        车型-->
       <iLabel :label="$t('TPZS.CHEXING')" slot="label"/>
-      <iText>{{ dataInfo.carClassify }}</iText>
+      <iText>{{ dataInfo.carType }}</iText>
     </iFormItem>
     <iFormItem>
       <!--        工厂-->

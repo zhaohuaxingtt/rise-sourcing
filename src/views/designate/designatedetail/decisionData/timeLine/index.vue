@@ -36,7 +36,7 @@
                     <!-- 供应商编辑列表 -->
                     <ul class="supplier-edit-list">
                         <li  v-for="(supplierItem,supplierIndex) in item.nomiTimeAxisSupplierResultVOList" :key="'nomiTimeAxisSupplierResultVOListEdit_'+supplierIndex">
-                            <supplierItem :itemIndex="supplierIndex" :supplierData="supplierItem" @editSupplierLine="editSupplierLine"/>
+                            <supplierItem :itemIndex="supplierIndex" :key="'nomiTimeAxisSupplierResultVOListEdit_item_'+supplierIndex" :supplierData="supplierItem" @editSupplierLine="editSupplierLine"/>
                         </li>
                     </ul>
                 </iCard>
@@ -96,7 +96,6 @@ import groupStep from './components/groupStep'
 import supplierStep from './components/supplierStep'
 import supplierLine from './components/supplierLine'
 import supplierItem from './components/supplierItem'
-import { cloneDeep } from 'lodash'
 import {
     getTimeaxis,
     saveTimeaxis,

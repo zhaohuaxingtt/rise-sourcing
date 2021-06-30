@@ -2,24 +2,24 @@
  * @Author: Luoshuang
  * @Date: 2021-05-25 15:57:31
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-14 13:04:44
+ * @LastEditTime: 2021-06-25 13:27:44
  * @Description: 分配询价科室弹窗
  * @FilePath: \front-web\src\views\accessoryPart\signForPartsDemand\components\assignInquiryDepartment.vue
 -->
 
 <template>
   <iDialog 
-    title="分配询价科室"
+    :title="language('FENPEIXUNJIAKESHI','分配询价科室')"
     :visible.sync="dialogVisible"
     @close="clearDialog"
     width="381px"
   >
     <template slot="footer">
-      <iButton @click="handleConfirm" :loading="loading">确认</iButton>
-      <iButton @click="handleCancel">取消</iButton>
+      <iButton @click="handleConfirm" :loading="loading">{{language('QUEREN','确认')}}</iButton>
+      <iButton @click="handleCancel">{{language('QUXIAO','取消')}}</iButton>
     </template>
     <el-form>
-      <el-form-item label="请选择询价科室">
+      <el-form-item :label="language('QINGXUANZEXUNJIAKESHI','请选择询价科室')">
         <iSelect v-model="respDept">
           <el-option
             v-for="item in deptOptions"
@@ -56,7 +56,10 @@ export default {
     }
   },
   created() {
-    getDeptList().then(res => {
+    const params = {
+      tag: '26'
+    }
+    getDeptList(params).then(res => {
       if (res.result) {
         this.deptOptions = res.data?.map(item => {return {value:item.id, label:item.nameZh}})
       } else {
@@ -75,7 +78,7 @@ export default {
     },
     handleConfirm() {
       if (this.respDept === '') {
-        iMessage.warn('请选择询价部门')
+        iMessage.warn(this.language('QINGXUANZEXUNJIABUMEN','请选择询价部门'))
         return
       }
       this.loading = true

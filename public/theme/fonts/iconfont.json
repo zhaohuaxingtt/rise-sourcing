@@ -6,6 +6,69 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "4739388",
+      "name": "历史数据",
+      "font_class": "lishishuju",
+      "unicode": "e6b8",
+      "unicode_decimal": 59064
+    },
+    {
+      "icon_id": "22552983",
+      "name": "跳转选中状态",
+      "font_class": "tiaozhuanxuanzhongzhuangtai",
+      "unicode": "e6b3",
+      "unicode_decimal": 59059
+    },
+    {
+      "icon_id": "22552984",
+      "name": "状态提示-未完成",
+      "font_class": "zhuangtaitishi-weiwancheng",
+      "unicode": "e6b4",
+      "unicode_decimal": 59060
+    },
+    {
+      "icon_id": "22552985",
+      "name": "跳转按钮",
+      "font_class": "tiaozhuananniu",
+      "unicode": "e6b5",
+      "unicode_decimal": 59061
+    },
+    {
+      "icon_id": "22552986",
+      "name": "状态提示-已完成",
+      "font_class": "zhuangtaitishi-yiwancheng",
+      "unicode": "e6b6",
+      "unicode_decimal": 59062
+    },
+    {
+      "icon_id": "22552987",
+      "name": "状态提示-中间状态",
+      "font_class": "zhuangtaitishi-zhongjianzhuangtai",
+      "unicode": "e6b7",
+      "unicode_decimal": 59063
+    },
+    {
+      "icon_id": "22537846",
+      "name": "下箭头",
+      "font_class": "xiajiantou",
+      "unicode": "e6b1",
+      "unicode_decimal": 59057
+    },
+    {
+      "icon_id": "22537847",
+      "name": "上箭头",
+      "font_class": "shangjiantou",
+      "unicode": "e6b2",
+      "unicode_decimal": 59058
+    },
+    {
+      "icon_id": "22404328",
+      "name": "流程节点-未开始",
+      "font_class": "liuchengjiedian-weikaishi",
+      "unicode": "e6b0",
+      "unicode_decimal": 59056
+    },
+    {
       "icon_id": "22334275",
       "name": "批量供应商总览",
       "font_class": "pilianggongyingshangzonglan",

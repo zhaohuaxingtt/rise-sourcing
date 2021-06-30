@@ -1,8 +1,8 @@
 @font-face {
   font-family: "iconfont"; /* Project id 2285260 */
-  src: url('iconfont.woff2?t=1624257266517') format('woff2'),
-       url('iconfont.woff?t=1624257266517') format('woff'),
-       url('iconfont.ttf?t=1624257266517') format('truetype');
+  src: url('iconfont.woff2?t=1625043963492') format('woff2'),
+       url('iconfont.woff?t=1625043963492') format('woff'),
+       url('iconfont.ttf?t=1625043963492') format('truetype');
 }
 
 .iconfont {
@@ -11,6 +11,42 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.iconlishishuju:before {
+  content: "\e6b8";
+}
+
+.icontiaozhuanxuanzhongzhuangtai:before {
+  content: "\e6b3";
+}
+
+.iconzhuangtaitishi-weiwancheng:before {
+  content: "\e6b4";
+}
+
+.icontiaozhuananniu:before {
+  content: "\e6b5";
+}
+
+.iconzhuangtaitishi-yiwancheng:before {
+  content: "\e6b6";
+}
+
+.iconzhuangtaitishi-zhongjianzhuangtai:before {
+  content: "\e6b7";
+}
+
+.iconxiajiantou:before {
+  content: "\e6b1";
+}
+
+.iconshangjiantou:before {
+  content: "\e6b2";
+}
+
+.iconliuchengjiedian-weikaishi:before {
+  content: "\e6b0";
 }
 
 .iconpilianggongyingshangzonglan:before {

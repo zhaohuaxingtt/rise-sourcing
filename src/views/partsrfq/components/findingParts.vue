@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-17 11:40:10
- * @LastEditTime: 2021-06-29 17:18:06
+ * @LastEditTime: 2021-06-30 11:01:25
  * @LastEditors: Please set LastEditors
  * @Description: 查找零件弹窗
  * @FilePath: \front-web\src\views\partsrfq\components\findingPart.vue
@@ -37,7 +37,7 @@
     <div class="searchContent">
       <div class="title">
         <span>搜索结果</span>
-        <iButton>{{ $t("LK_TIANJIA") }}</iButton>
+        <iButton @click="add">{{ $t("LK_TIANJIA") }}</iButton>
       </div>
       <tableList
         :tableData="confirmTableData"
@@ -90,6 +90,7 @@ export default {
         fsNum: "",
         partNum: "",
       },
+      colData:{}
     };
   },
   created() {
@@ -127,6 +128,7 @@ export default {
     },
     handleSelectionChange(val){
       console.log(val)
+      this.colData=val
     },
     reset() {
       this.form = {
@@ -137,6 +139,9 @@ export default {
       };
       this.pagePart();
     },
+    add(){
+      this.$emit('add', this.colData);
+    }
   },
 };
 </script>

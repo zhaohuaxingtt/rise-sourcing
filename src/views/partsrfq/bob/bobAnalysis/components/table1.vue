@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 11:38:57
- * @LastEditTime: 2021-06-28 21:00:04
+ * @LastEditTime: 2021-06-30 10:59:18
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails\table1.vue
@@ -32,7 +32,7 @@
         align="center"
         :width="i.prop=='title'?'200':''"
       >
-        <!-- <el-table-column
+        <el-table-column
           v-for="item in i.children"
           :key="item.id"
           :label="item.label"
@@ -40,7 +40,10 @@
           align="center"
           :show-header="false"
         >
-        </el-table-column> -->
+        <template>
+          
+        </template>
+        </el-table-column>
         <template slot-scope="scope">
           <span v-if="testing(scope.row[i.prop])" class="flex">
             <span

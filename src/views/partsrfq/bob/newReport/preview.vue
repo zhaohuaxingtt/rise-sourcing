@@ -6,21 +6,31 @@
     @close="clearDiolog"
     @opened="open"
   >
-    <div>
-				<iButton class="margin-left30" style="float:right" @click="handleDownload">{{ $t('LK_XIAZAI') }}</iButton>
-    </div>
     <iCard :collapse="false" id="downloadRef">
-      <iRow>
-            <el-col :span="(inside)?18:24">
-              <crown-bar :chartData="chartData" :title="chartTitle" :type="bobType" :by="chartType"/>
-            </el-col>
-            <el-col :span="6" v-if="inside">
-              <div  class="left-dash1">
-                <out-bar :chartData="chartData1" :preview="false"></out-bar>
-              </div>
-            </el-col>
-          </iRow>
-      <div>{{$t('费用详情')}}</div>
+      <div>
+        <iButton
+          class="margin-left30"
+          style="float: right"
+          @click="handleDownload"
+          >{{ $t("LK_XIAZAI") }}</iButton
+        >
+      </div>
+      <el-row :gutter="40">
+        <el-col :span="inside ? 18 : 24">
+          <crown-bar
+            :chartData="chartData"
+            :title="chartTitle"
+            :type="bobType"
+            :by="chartType"
+          />
+        </el-col>
+        <el-col :span="6" v-if="inside">
+          <div class="left-dash1">
+            <out-bar :chartData="chartData1" :preview="false"></out-bar>
+          </div>
+        </el-col>
+      </el-row>
+      <div>{{ $t("费用详情") }}</div>
       <table1 :tableList="tableList"></table1>
       <table2 :dataList="dataList2"></table2>
       <table3 :dataList="dataList3"></table3>
@@ -32,11 +42,11 @@
 </template>
 
 <script>
-import { iPage, iButton, iCard, iSelect, icon,iDialog } from "rise";
+import { iPage, iButton, iCard, iSelect, icon, iDialog } from "rise";
 import CrownBar from "./components/crownBar.vue";
 import bobAnalysis from "@/views/partsrfq/bob/bobAnalysis/index.vue";
-import {getBobLevelOne} from '@/api/partsrfq/bob'
-import {downloadPDF, dataURLtoFile} from '@/utils/pdf';
+import { getBobLevelOne } from "@/api/partsrfq/bob";
+import { downloadPDF, dataURLtoFile } from "@/utils/pdf";
 import {
   dataList1,
   dataList2,
@@ -52,7 +62,7 @@ import table3 from "../bobAnalysis/components/table3.vue";
 import table4 from "../bobAnalysis/components/table4.vue";
 import table5 from "../bobAnalysis/components/table5.vue";
 import table6 from "../bobAnalysis/components/table6.vue";
-import OutBar from './components/outBar.vue';
+import OutBar from "./components/outBar.vue";
 export default {
   components: {
     iDialog,
@@ -65,23 +75,22 @@ export default {
     table3,
     table4,
     table5,
-    table6
+    table6,
   },
-  props:{
-      value: { 
-        type: Boolean,
-        default:false
-      }
+  props: {
+    value: {
+      type: Boolean,
+      default: false,
     },
+  },
   data() {
-    
     return {
-      rfq:'2222',
-      inside:true,
-      chartData:[],
-      chartData1:[],
-      chartType:'supplier',
-      bobType:'Best of Best',
+      rfq: "2222",
+      inside: true,
+      chartData: [],
+      chartData1: [],
+      chartType: "supplier",
+      bobType: "Best of Best",
       tableList,
       dataList1,
       dataList2,
@@ -89,36 +98,34 @@ export default {
       dataList4,
       dataList5,
       dataList6,
-      form:{
-        supplier:[],
-        turn:[],
-        spareParts:[]
+      form: {
+        supplier: [],
+        turn: [],
+        spareParts: [],
       },
-      showSelectDiv:false,
-      analysisSchemeId:5,
+      showSelectDiv: false,
+      analysisSchemeId: 5,
       flag: true,
       flag1: false,
       expends: [],
-      reportName:'',
-      id:'',
-      chartTitle:''
-    }
+      reportName: "",
+      id: "",
+      chartTitle: "",
+    };
   },
-  mounted(){
-    this.inside=true
+  mounted() {
+    this.inside = true;
     this.reportName = this.$route.query.name;
     this.id = this.$route.query.id;
     // this.initChartData()
     // this.analysisSchemeId = this.$route.query.analysisSchemeId;
-    this.getChartData()
-
+    this.getChartData();
   },
-  methods:{
+  methods: {
     open() {
       let els = this.$el.getElementsByClassName("el-table__expand-icon");
 
       if (this.tableList.dataList.length != 0 && els.length != 0) {
-
         this.flag = false;
         this.flag1 = true;
         for (let j1 = 0; j1 < els.length; j1++) {
@@ -137,78 +144,82 @@ export default {
           for (let a = 0; a < dafult.length; a++) {
             dafult[a].click();
           }
-
         }
       }
     },
-    findPart(){
-      this.value=true
+    findPart() {
+      this.value = true;
     },
-    closeDialog(val){
-      this.value=val
+    closeDialog(val) {
+      this.value = val;
     },
-    sure(){
-      
-    },
+    sure() {},
     handleDownload() {
       downloadPDF({
-        idEle: 'downloadRef',
-        pdfName: 'BOB Preview',
+        idEle: "downloadRef",
+        pdfName: "BOB Preview",
       });
     },
-    goToBob(){
-      this.$router.push('bob')
+    goToBob() {
+      this.$router.push("bob");
     },
-    closeDiv(){
-      this.showSelectDiv=false
+    closeDiv() {
+      this.showSelectDiv = false;
     },
-    showSelect(e){
-      console.log(e)
-      const position=e.event.target.position
-      this.showSelectDiv=true
-      this.$refs.toolTipDiv.style.left=position[0]+210+'px'
-      this.$refs.toolTipDiv.style.top=position[1]+15+'px'
-      this.$refs.toolTipSelect.focus()
+    showSelect(e) {
+      console.log(e);
+      const position = e.event.target.position;
+      this.showSelectDiv = true;
+      this.$refs.toolTipDiv.style.left = position[0] + 210 + "px";
+      this.$refs.toolTipDiv.style.top = position[1] + 15 + "px";
+      this.$refs.toolTipSelect.focus();
     },
-    initChartData(){
+    initChartData() {
       // const data=require('./data.json')
       // this.chartData = data
     },
-    handleSearchReset(){
-      this.form={
-        supplier:[],
-        turn:[],
-        spareParts:[]
-      }
-      this.getChartData()
+    handleSearchReset() {
+      this.form = {
+        supplier: [],
+        turn: [],
+        spareParts: [],
+      };
+      this.getChartData();
     },
-    searchChartData(){
+    searchChartData() {
       getBobLevelOne({
-        analysisSchemeId:this.analysisSchemeId,
-        analysisDimension:this.chartType,
-        spareParts:this.form.spareParts.join(','),
-        supplier:this.form.supplier.join(','),
-        turn:this.form.turn.join(',')
-      }).then((res)=>{
-        const allData=res.data||[]
-        this.chartData=allData.bobLevelOneVOList.filter((r)=>r.isIntroduce===0)
-        this.chartData1=allData.bobLevelOneVOList.filter((r)=>r.isIntroduce===1)
-        this.chartType=allData.analysisDimension
-        this.bobType=allData.defaultBobOptions
-
-      })
+        analysisSchemeId: this.analysisSchemeId,
+        analysisDimension: this.chartType,
+        spareParts: this.form.spareParts.join(","),
+        supplier: this.form.supplier.join(","),
+        turn: this.form.turn.join(","),
+      }).then((res) => {
+        const allData = res.data || [];
+        this.chartData = allData.bobLevelOneVOList.filter(
+          (r) => r.isIntroduce === 0
+        );
+        this.chartData1 = allData.bobLevelOneVOList.filter(
+          (r) => r.isIntroduce === 1
+        );
+        this.chartType = allData.analysisDimension;
+        this.bobType = allData.defaultBobOptions;
+      });
     },
-    getChartData(){
+    getChartData() {
       getBobLevelOne({
-        analysisSchemeId:this.analysisSchemeId
-      }).then((res)=>{
-        console.log(res)
-        const allData=res.data||[]
-        this.chartData=allData.bobLevelOneVOList.filter((r)=>r.isIntroduce===0)
-        this.chartData1=allData.bobLevelOneVOList.filter((r)=>r.isIntroduce===1)
-        this.chartType=allData.analysisDimension
-        this.bobType=allData.defaultBobOptions
-      })
+        analysisSchemeId: this.analysisSchemeId,
+      }).then((res) => {
+        console.log(res);
+        const allData = res.data || [];
+        this.chartData = allData.bobLevelOneVOList.filter(
+          (r) => r.isIntroduce === 0
+        );
+        this.chartData1 = allData.bobLevelOneVOList.filter(
+          (r) => r.isIntroduce === 1
+        );
+        this.chartType = allData.analysisDimension;
+        this.bobType = allData.defaultBobOptions;
+      });
     },
   },
 };
@@ -235,10 +246,10 @@ export default {
     left: 0;
     padding: 10px;
   }
-  .left-dash1{
+  .left-dash1 {
     border: none;
     border-left: 5px dashed grey;
-    .icon-add{
+    .icon-add {
       margin-top: 100px;
       margin-bottom: 20px;
       text-align: center;

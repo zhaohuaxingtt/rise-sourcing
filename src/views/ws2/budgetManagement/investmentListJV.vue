@@ -107,8 +107,26 @@
         <!--                  table模块，向外入参表格数据，表头                    --->
         <!------------------------------------------------------------------------>
         <div class="header margin-bottom20">
-          <div></div>
+          <div class="search">
+            {{ $t('LK_ZHUANYEKESHI') }}:
+            <iSelect
+                :placeholder="$t('LK_QINGXUANZE')"
+                v-model="form['search.DeptSelect']"
+                filterable
+                @change="findInvestmentList"
+            >
+              <el-option
+                  :value="item.deptId"
+                  :label="item.commodity"
+                  v-for="(item, index) in DeptPullDown2"
+                  :key="index"
+              ></el-option>
+            </iSelect>
+          </div>
           <div>
+            <iButton v-show="pageEdit" @click="pageEdit = false"
+                     :disabled="versionList[0] && form['search.version'] != versionList[0].id">{{ $t('退出编辑') }}
+            </iButton>
             <iButton v-show="!pageEdit" @click="pageEdit = true"
                      :disabled="versionList[0] && form['search.version'] != versionList[0].id">{{ $t('LK_BIANJI') }}
             </iButton>
@@ -119,6 +137,7 @@
             <iButton v-show="pageEdit" @click="saveAsRow">{{ $t('LK_BAOCUNWEIXINBANBEN') }}</iButton>
             <iButton @click="downloadList">下载投资清单</iButton>
             <iButton v-show="pageEdit" @click="conversionRatioShow = true">{{ $t('LK_ANBILIZHESUAN') }}</iButton>
+            <iButton @click="toJV">{{ $t('查看Common预算') }}</iButton>
           </div>
         </div>
         <div>
@@ -172,8 +191,8 @@
                   filterable
               >
                 <el-option
-                    :value="item.commodityName"
-                    :label="item.commodityName"
+                    :value="item.commodity"
+                    :label="item.commodity"
                     v-for="(item, index) in DeptPullDown"
                     :key="index"
                 ></el-option>
@@ -222,6 +241,26 @@
               <iInput v-model="scope.row.remarks" :placeholder="$t('LK_QINGSHURU')" v-if="pageEdit"></iInput>
               <div v-if="!pageEdit">{{ scope.row.remarks }}</div>
             </template>
+            <template #applyAmount="scope">
+              <div class="linkStyle">
+                <span @click="clickMoney(scope.row)">{{ scope.row.applyAmount }}</span>
+              </div>
+            </template>
+            <template #nomiAmount="scope">
+              <div class="linkStyle">
+                <span @click="clickNomiAmountDetail(scope.row)">{{ scope.row.nomiAmount }}</span>
+              </div>
+            </template>
+            <template #baAmount="scope">
+              <div class="linkStyle">
+                <span @click="clickBaAmountDetail(scope.row)">{{ scope.row.baAmount }}</span>
+              </div>
+            </template>
+            <template #bmAmount="scope">
+              <div class="linkStyle">
+                <span @click="clickBmAmountDetail(scope.row)">{{ scope.row.bmAmount }}</span>
+              </div>
+            </template>
           </iTableList>
           <div class="buttomInput">
             <div>
@@ -258,20 +297,6 @@
             </div>
           </div>
         </div>
-        <!------------------------------------------------------------------------>
-        <!--                  表格分页                                          --->
-        <!------------------------------------------------------------------------>
-        <!--        <iPagination-->
-        <!--            v-update-->
-        <!--            @size-change="handleSizeChange($event, getTableListFn)"-->
-        <!--            @current-change="handleCurrentChange($event, getTableListFn)"-->
-        <!--            background-->
-        <!--            :current-page="page.currPage"-->
-        <!--            :page-sizes="page.pageSizes"-->
-        <!--            :page-size="page.pageSize"-->
-        <!--            :layout="page.layout"-->
-        <!--            :total="page.totalCount"-->
-        <!--        />-->
       </iCard>
       <!------------------------------------------------------------------------>
       <!--                  转派弹出框                                         --->
@@ -315,6 +340,26 @@
         :referenceCarProjectParams="referenceCarProjectParams"
         @refresh="getInvestmentVerisionList"
     ></referenceCarProject>
+    <moneyComponent
+        v-model="moneyComponentShow"
+        :moneyComponentParams="moneyComponentParams"
+        @refresh="getInvestmentVerisionList"
+    ></moneyComponent>
+    <nomiAmountDetail
+        v-model="nomiAmountDetailShow"
+        :moneyComponentParams="nomiAmountDetailParams"
+        @refresh="getInvestmentVerisionList"
+    ></nomiAmountDetail>
+    <baAmountDetail
+        v-model="baAmountDetailShow"
+        :moneyComponentParams="baAmountDetailParams"
+        @refresh="getInvestmentVerisionList"
+    ></baAmountDetail>
+    <bmAmountDetail
+        v-model="bmAmountDetailShow"
+        :moneyComponentParams="bmAmountDetailParams"
+        @refresh="getInvestmentVerisionList"
+    ></bmAmountDetail>
   </div>
 </template>
 <script>
@@ -332,13 +377,17 @@ import {
 import {Popover} from "element-ui"
 import {pageMixins} from "@/utils/pageMixins";
 import {tableHeight} from "@/utils/tableHeight";
-import {investmentListEntities, form} from "./components/data";
+import {investmentListJV, form} from "./components/data";
 import addRow from "./components/addRow";
 import referenceModel from "./components/referenceModel";
 import conversionRatio from "./components/conversionRatio";
 import confirmAssociatedCarline from "./components/confirmAssociatedCarline";
 import saveAs from "./components/saveAs";
 import referenceCarProject from "./components/referenceCarProject";
+import moneyComponent from "./components/applyAmountDetail";
+import nomiAmountDetail from "./components/nomiAmountDetail";
+import baAmountDetail from "./components/baAmountDetail";
+import bmAmountDetail from "./components/bmAmountDetail";
 import {
   getCartypePulldown,
   saveCustomCart,
@@ -376,6 +425,10 @@ export default {
     saveAs,
     referenceCarProject,
     confirmAssociatedCarline,
+    moneyComponent,
+    nomiAmountDetail,
+    baAmountDetail,
+    bmAmountDetail,
     Popover
   },
   data() {
@@ -393,12 +446,21 @@ export default {
       carType: '',
       params: {},
       referenceCarProjectParams: {},
+      moneyComponentParams: {},
+      nomiAmountDetailParams: {},
+      baAmountDetailParams: {},
+      bmAmountDetailParams: {},
       addRowShow: false,
       referenceModelShow: false,
       conversionRatioShow: false,
       saveAsShow: false,
       confirmAssociatedCarlineShow: false,
       referenceCarProjectShow: false,
+      moneyComponentShow: false,
+      nomiAmountDetailShow: false,
+      baAmountDetailShow: false,
+      bmAmountDetailShow: false,
+      moneyComponentTitle: '',
       modelProtitesList: [],
       modelCategoryList: [],
       fixedPointTypeList: [],
@@ -428,12 +490,13 @@ export default {
       tableListData: [],
       tableListDataClone: [],
       tableLoading: false,
-      tableTitle: investmentListEntities,
+      tableTitle: investmentListJV,
       selectTableData: [],
       form: form,
       clone: {},
       fromGroup: [],
       DeptPullDown: [],
+      DeptPullDown2: [],
       liniePullDown: [],
     };
   },
@@ -442,6 +505,7 @@ export default {
     // this.isAdd = this.$route.query.id == 'add' ? true : false
     // this.getInvestmentData()
     this.params = this.$route.query
+    this.form['search.DeptSelect'] = ''
     this.beginType = this.params.sourceStatus
     this.getModelProtitesPullDown()
     this.getInvestmentVerisionList()
@@ -510,18 +574,6 @@ export default {
         }
       }
     },
-    // getModelProtitesPullDown() {
-    //   getModelProtitesPullDown().then((res) => {
-    //     if (Number(res.code) === 0) {
-    //       this.modelProtitesList = res.data
-    //     } else {
-    //       iMessage.error(res.desZh);
-    //     }
-    //     // this.tableLoading = false
-    //   }).catch(() => {
-    //     // this.tableLoading = false
-    //   });
-    // },
     async getModelProtitesPullDown() {
       this.form['search.carTypeProject'] = ''
       this.form['search.materialName'] = ''
@@ -548,6 +600,8 @@ export default {
         }
         if (Number(res[2].code) === 0) {
           this.DeptPullDown = res[2].data
+          this.DeptPullDown2 = cloneDeep(res[2].data)
+          this.DeptPullDown2.unshift({deptId: '', commodity: 'ALL'})
         } else {
           iMessage.error(result2);
         }
@@ -580,12 +634,15 @@ export default {
     },
     findInvestmentList() {
       this.tableLoading = true
+      let detpItem = this.DeptPullDown2.find(item => Number(item.deptId) === Number(this.form['search.DeptSelect']))
       findInvestmentList({
-        // commodity: this.form['search.professionalDepartments'],
+        commodity: detpItem ? detpItem.commodity : '',
+        deptId: this.form['search.DeptSelect'],
         listVerisonId: this.form['search.version'],
       }).then((res) => {
         const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
         if (Number(res.code) === 0) {
+          let subTotal = 0
           res.data.investmentListEntities = res.data.investmentListEntities ? res.data.investmentListEntities : []
           this.tableListData = res.data.investmentListEntities.map(item => {
             item.budgetAmount = Number(item.budgetAmount).toFixed(2)
@@ -603,15 +660,19 @@ export default {
             // item.linieArr.map(a => {
             //   linieName += this.liniePullDown.find(b => b.linieID == a) ? (this.liniePullDown.find(b => b.linieID == a).linieName + '/') : ''
             // })
+            subTotal += Number(item.budgetAmount)
             item.linieName = linieName.slice(0, linieName.length - 1)
             return item
           })
           this.tableListDataClone = cloneDeep(this.tableListData)
+          this.form['search.SUBTOTA'] = subTotal.toFixed(2)
+          this.clone['search.SUBTOTA'] = subTotal.toFixed(2)
           this.form['search.aekoPercent'] = Number(res.data.aekoPercent).toFixed(2)
-          this.form['search.AEKOMoney'] = Number(res.data.aekoAmount).toFixed(2)
+          this.form['search.AEKOMoney'] = (Number(this.form['search.aekoPercent']) * Number(this.form['search.SUBTOTA']) * 0.01).toFixed(2)
           this.form['search.contingencyPercent'] = Number(res.data.contingencyPercent).toFixed(2)
-          this.form['search.contingencyAmount'] = Number(res.data.contingencyAmount).toFixed(2)
-          this.form['search.totalBudget'] = Number(res.data.totalBudget).toFixed(2)
+          this.form['search.contingencyAmount'] = (Number(this.form['search.contingencyPercent']) * Number(this.form['search.SUBTOTA']) * 0.01).toFixed(2)
+          this.form['search.totalBudget'] = (Number(this.form['search.SUBTOTA']) + Number(this.form['search.AEKOMoney']) + Number(this.form['search.contingencyAmount'])).toFixed(2)
+          this.getInvestmentData()
         } else {
           iMessage.error(result);
         }
@@ -622,7 +683,10 @@ export default {
     },
     getInvestmentData() {
       this.headerLoading = true
+      let detpItem = this.DeptPullDown2.find(item => Number(item.deptId) === Number(this.form['search.DeptSelect']))
       getInvestmentData({
+        commodity: detpItem ? detpItem.commodity : '',
+        deptId: this.form['search.DeptSelect'],
         investmentVersionId: this.form['search.version'],
         carTypeId: this.params.id,
         carType: this.params.sourceStatus
@@ -637,18 +701,12 @@ export default {
           // this.form['search.relatedCarType'] = res.data.mainCarTypeList[0] ? res.data.mainCarTypeList[0].id : ''
           this.form['search.relatedCarType'] = ''
           this.saveParams.version = res.data.defaultVersion.slice(4)
-
-          let contingency = Number(res.data.contingency) ? Number(res.data.contingency).toFixed(2) : 0
-          let aekoValue = Number(res.data.aekoValue) ? Number(res.data.aekoValue).toFixed(2) : 0
-          let notAekoValue = Number(res.data.notAekoValue) ? Number(res.data.notAekoValue).toFixed(2) : 0
-          let totalValue = Number(res.data.notAekoValue) ? Number(res.data.totalValue).toFixed(2) : 0
-          this.form['search.SUBTOTA'] = Number(res.data.subTotal) ? Number(res.data.subTotal).toFixed(2) : 0
-          this.clone['search.SUBTOTA'] = Number(res.data.subTotal) ? Number(res.data.subTotal).toFixed(2) : 0
+          // this.form['search.SUBTOTA'] = Number(res.data.subTotal) ? Number(res.data.subTotal).toFixed(2) : 0
+          // this.clone['search.SUBTOTA'] = Number(res.data.subTotal) ? Number(res.data.subTotal).toFixed(2) : 0
 
           let notAekoPriceDetail = res.data.notAekoPriceDetail
           let aekoPriceDetail = res.data.aekoPriceDetail
-
-          this.findInvestmentList()
+          let _this = this
 
           this.$nextTick(() => {
             const chart1 = echarts().init(document.getElementById("chart1"));
@@ -658,13 +716,15 @@ export default {
               tooltip: {
                 formatter: function (params) {//这里就是控制显示的样式
                   if (params.seriesIndex == 0) {
-                    return Number((contingency / totalValue) * 100).toFixed(2) + '%'
+                    return Number((_this.form['search.contingencyAmount'] / _this.form['search.totalBudget']) * 100).toFixed(2) + '%'
                   } else if (params.seriesIndex == 1) {
-                    return Number((aekoValue / totalValue) * 100).toFixed(2) + '%'
+                    return Number((_this.form['search.AEKOMoney'] / _this.form['search.totalBudget']) * 100).toFixed(2) + '%'
                   } else if (params.seriesIndex == 2) {
-                    return Number((notAekoValue / totalValue) * 100).toFixed(2) + '%'
+                    return Number((_this.form['search.SUBTOTA'] / _this.form['search.totalBudget']) * 100).toFixed(2) + '%'
                   }
                 },
+                backgroundColor: '#ffffff',
+                extraCssText: 'color: #1B1D21; box-shadow: 0px 0px 20px rgba(27, 29, 33, 0.12);'
               },
               grid: {
                 left: '0%',
@@ -722,7 +782,7 @@ export default {
                   emphasis: {
                     focus: 'series'
                   },
-                  data: [contingency]
+                  data: [this.form['search.contingencyAmount']]
                 },
                 {
                   name: 'aekoValue',
@@ -739,7 +799,7 @@ export default {
                   emphasis: {
                     focus: 'series'
                   },
-                  data: [aekoValue]
+                  data: [this.form['search.AEKOMoney']]
                 },
                 {
                   name: 'notAekoValue',
@@ -756,10 +816,10 @@ export default {
                   emphasis: {
                     focus: 'series'
                   },
-                  data: [notAekoValue],
+                  data: [this.form['search.SUBTOTA']],
                   itemStyle: {
                     normal: {
-                      // barBorderRadius: [5, 5, 0, 0],
+                      barBorderRadius: [5, 5, 0, 0],
                     }
                   }
                 },
@@ -838,7 +898,6 @@ export default {
                 axisLine: {
                   show: false
                 },
-
               },
               series: [
                 {
@@ -895,7 +954,7 @@ export default {
                   ],
                   itemStyle: {
                     normal: {
-                      // barBorderRadius: [5, 5, 5, 5],
+                        barBorderRadius: [5, 5, 0, 0],
                     }
                   }
                 },
@@ -997,13 +1056,13 @@ export default {
                     aekoPriceDetail.bmAmount],
                   itemStyle: {
                     normal: {
-                      // barBorderRadius: [5, 5, 0, 0],
+                      barBorderRadius: [5, 5, 0, 0],
                     }
                   }
                 },
               ]
             }
-            option1.series[option1.series.length - 1].label.formatter = totalValue
+            option1.series[option1.series.length - 1].label.formatter = this.form['search.totalBudget']
             chart1.setOption(option1);
             chart2.setOption(option2);
             chart3.setOption(option3);
@@ -1081,7 +1140,7 @@ export default {
           }
           this.versionName = this.versionList[0] ? this.versionList[0].version : ''
           this.createDate = this.versionList[0] ? this.versionList[0].createDate : ''
-          this.getInvestmentData()
+          this.findInvestmentList()
         } else {
           iMessage.error(result);
         }
@@ -1113,6 +1172,34 @@ export default {
         carTypeProId: row.refCartypeProId,
         categoryId: row.categoryId,
         sourceProjectId: this.params.id
+      }
+    },
+    clickMoney(row) {
+      this.moneyComponentShow = true
+      this.moneyComponentParams = {
+        tmCategoryId: row.categoryId,
+        tmCartypeProId: this.params.id
+      }
+    },
+    clickNomiAmountDetail(row) {
+      this.nomiAmountDetailShow = true
+      this.nomiAmountDetailParams = {
+        tmCategoryId: row.categoryId,
+        tmCartypeProId: this.params.id
+      }
+    },
+    clickBaAmountDetail(row) {
+      this.baAmountDetailShow = true
+      this.baAmountDetailParams = {
+        tmCategoryId: row.categoryId,
+        tmCartypeProId: this.params.id
+      }
+    },
+    clickBmAmountDetail(row) {
+      this.bmAmountDetailShow = true
+      this.bmAmountDetailParams = {
+        tmCategoryId: row.categoryId,
+        tmCartypeProId: this.params.id
       }
     },
     deleteIRow() {
@@ -1168,6 +1255,7 @@ export default {
         item.linie = item.linieArr.join(',')
         return item
       })
+      let detpItem = this.DeptPullDown2.find(item => Number(item.deptId) === Number(this.form['search.DeptSelect']))
       this.saveParams.aekoAmount = this.form['search.AEKOMoney']
       this.saveParams.aekoPercent = this.form['search.aekoPercent']
       this.saveParams.contingencyAmount = this.form['search.contingencyAmount']
@@ -1176,6 +1264,8 @@ export default {
       this.saveParams.totalBudget = this.form['search.totalBudget']
       this.saveParams.approveInvestment = this.form['search.approvalInvestment']
       this.saveParams.versionId = this.form['search.version']
+      this.saveParams.commodity = detpItem ? detpItem.commodity : ''
+      this.saveParams.deptId = this.form['search.DeptSelect']
       this.saveAsShow = true
     },
     downloadList() {
@@ -1190,15 +1280,16 @@ export default {
       // let url = process.env.VUE_APP_INVESTMENT + '/exportInvestmentList?listVerisonId=' + this.form['search.version']
       // window.open(url)
     },
-    // 跳转详情
-    // openPage(item) {
-    //   this.$router.push({
-    //     path: "/partsprocure/editordetail",
-    //     query: {
-    //       item: JSON.stringify(item),
-    //     },
-    //   });
-    // },
+
+    toJV() {
+      this.$router.push({
+        path: '/tooling/budgetManagement/investmentListCommon',
+        query: {
+          id: this.params.id,
+          sourceStatus: this.params.sourceStatus
+        },
+      })
+    },
 
 
     //表格选中值集
