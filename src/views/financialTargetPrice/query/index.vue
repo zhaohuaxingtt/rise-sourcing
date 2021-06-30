@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-22 11:14:02
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-24 11:42:40
+ * @LastEditTime: 2021-06-28 09:15:20
  * @Description: 财务目标价-目标价查询
  * @FilePath: \front-web\src\views\financialTargetPrice\query\index.vue
 -->
@@ -93,6 +93,7 @@ import approvalRecordDialog from '../maintenance/components/approvalRecord'
 import assignDialog from './components/assign'
 import { dictkey } from "@/api/partsprocure/editordetail"
 import { getCartypeDict} from "@/api/partsrfq/home"
+import { appoint } from '@/api/financialTargetPrice/index'
 export default {
   mixins: [pageMixins],
   components: {iPage,headerNav,iCard,tableList,iPagination,iButton,iSelect,iDatePicker,iInput,iSearch,modificationRecordDialog,approvalRecordDialog, assignDialog},
@@ -107,7 +108,8 @@ export default {
       selectOptions: {},
       assignDialogVisible: false,
       updateDialogVisible: false,
-      approvalDialogVisible: false
+      approvalDialogVisible: false,
+      selectItems: []
     }
   },
   created() {
@@ -115,6 +117,21 @@ export default {
     this.getCartypeDict()
   },
   methods: {
+    /**
+     * @Description: 指派操作
+     * @Author: Luoshuang
+     * @param {*} priceAnaId 价格分析员id
+     * @return {*}
+     */    
+    targetAppoint(priceAnaId) {
+      const params = {
+        idList: this.selectItems.map(item => item.applyId),
+        priceAnaId
+      }
+      appoint(params).then(res => {
+
+      })
+    },
     // 获取车型字典
     getCartypeDict() {
       getCartypeDict()

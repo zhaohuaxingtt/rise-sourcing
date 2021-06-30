@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-22 09:12:02
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-24 11:02:16
+ * @LastEditTime: 2021-06-28 11:30:06
  * @Description: 财务目标价-目标价审批
  * @FilePath: \front-web\src\views\financialTargetPrice\approval\index.vue
 -->
@@ -81,6 +81,7 @@ import { pageMixins } from "@/utils/pageMixins"
 import tableList from '../components/tableList'
 import approvalDialog from './components/approval'
 import { dictkey } from "@/api/partsprocure/editordetail"
+import { getApprovalTargetPriceList } from '@/api/financialTargetPrice/index'  
 export default {
   mixins: [pageMixins],
   components: {iPage,headerNav,iCard,tableList,iPagination,iButton,iSelect,iDatePicker,iInput,iSearch,approvalDialog},
@@ -98,8 +99,19 @@ export default {
   },
   created() {
     this.getProcureGroup()
+    this.getTableList()
   },
   methods: {
+    getTableList() {
+      const params = {
+        ...this.searchParams,
+        current: this.page.currPage,
+        size: this.page.pageSize
+      }
+      getApprovalTargetPriceList(params).then(res => {
+
+      })
+    },
     /**
      * @Description: 获取下拉框
      * @Author: Luoshuang

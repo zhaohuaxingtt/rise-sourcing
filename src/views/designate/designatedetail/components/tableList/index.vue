@@ -2,7 +2,7 @@
  * @Descripttion: 
  * @Author: Luoshuang
  * @Date: 2021-05-21 14:30:41
- * @LastEditTime: 2021-06-25 11:28:58
+ * @LastEditTime: 2021-06-28 18:04:42
 -->
 <template>
   <el-table ref="multipleTable" fit tooltip-effect='light' :height="height" :data='tableData' v-loading='tableLoading' @selection-change="handleSelectionChange" :empty-text="language('ZANWUSHUJU', '暂无数据')" >
@@ -40,8 +40,8 @@
           <span v-if="items.required" style="color:red;">*</span>
         </template>
         <template slot-scope="scope">
-          <iInput v-if="items.type === 'input'" v-model="scope.row[items.props]" :class="scope.row[items.isChange] && 'isChange'" @input="val=>changeValue(val, scope.row, items)"></iInput>
-          <iSelect v-else-if="items.type === 'select'" v-model="scope.row[items.props]" :class="scope.row[items.isChange] && 'isChange'" @change="val=>changeValue(val, scope.row, items)">
+          <iInput v-if="items.type === 'input'" v-model="scope.row[items.props]" :class="scope.row[items.isChange] && editCompare && 'isChange'" @input="val=>changeValue(val, scope.row, items)"></iInput>
+          <iSelect v-else-if="items.type === 'select'" v-model="scope.row[items.props]" :class="scope.row[items.isChange] && editCompare && 'isChange'" @change="val=>changeValue(val, scope.row, items)">
             <el-option
               :value="item.value"
               :label="item.label"
@@ -49,10 +49,10 @@
               :key="index"
             ></el-option>
           </iSelect>
-          <iDatePicker v-else-if="items.type === 'date' && items.parentProps" type="month" :value="getValue(scope.row, items)" @change="val=>changeValue(val, scope.row, items)" format="yyyy-MM" value-format="yyyy-MM" :class="scope.row[items.isChange] && 'isChange'"></iDatePicker>
-          <iDatePicker v-else-if="items.type === 'date'" type="month" v-model="scope.row[items.props]" @change="val=>changeValue(val, scope.row, items)" format="yyyy-MM" value-format="yyyy-MM" :class="scope.row[items.isChange] && 'isChange'"></iDatePicker>
-          <iInput v-else-if="items.type === 'rate' && items.parentProps" :value="getValue(scope.row, items)" @input="val=>changeValue(val, scope.row, items)" :class="scope.row[items.isChange] && 'isChange'"></iInput>
-          <iInput v-else-if="items.type === 'rate'" v-model="scope.row[items.props]" @input="val=>changeValue(val, scope.row, items)" :class="scope.row[items.isChange] && 'isChange'"></iInput>
+          <iDatePicker v-else-if="items.type === 'date' && items.parentProps" type="month" :value="getValue(scope.row, items)" @change="val=>changeValue(val, scope.row, items)" format="yyyy-MM" value-format="yyyy-MM" :class="scope.row[items.isChange] && editCompare && 'isChange'"></iDatePicker>
+          <iDatePicker v-else-if="items.type === 'date'" type="month" v-model="scope.row[items.props]" @change="val=>changeValue(val, scope.row, items)" format="yyyy-MM" value-format="yyyy-MM" :class="scope.row[items.isChange] && editCompare && 'isChange'"></iDatePicker>
+          <iInput v-else-if="items.type === 'rate' && items.parentProps" :value="getValue(scope.row, items)" @input="val=>changeValue(val, scope.row, items)" :class="scope.row[items.isChange] && editCompare && 'isChange'"></iInput>
+          <iInput v-else-if="items.type === 'rate'" v-model="scope.row[items.props]" @input="val=>changeValue(val, scope.row, items)" :class="scope.row[items.isChange] && editCompare && 'isChange'"></iInput>
         </template>
       </el-table-column>
       <!-------------------------正常列--------------------------->
@@ -115,7 +115,8 @@ export default{
     indexKey:Boolean,
     notEdit:Boolean,
     doubleHeader:Boolean,
-    selectedItems:{type:Array}
+    selectedItems:{type:Array},
+    editCompare: {type: Boolean, default: true}
   },
   inject:['vm'],
   methods:{
@@ -133,6 +134,7 @@ export default{
       return row.fileList?.map(item => item.fileName).join('\n')
     },
     changeValue(val, row, item) {
+      this.$set(row, item.props, val)
       if (item.isPC) {
         this.$emit('tableValueChange', val, row, item)
         console.log(val, row, item)
