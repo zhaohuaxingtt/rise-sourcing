@@ -13,7 +13,7 @@
         <!--预览-->
         <iButton @click="handlePreview">{{ $t('TPZS.YULAN') }}</iButton>
         <!--保存-->
-        <iButton>{{ $t('LK_BAOCUN') }}</iButton>
+        <iButton @click="saveOrUpdateScheme">{{ $t('LK_BAOCUN') }}</iButton>
       </div>
     </div>
     <div class="partBox margin-bottom20">
@@ -45,7 +45,7 @@
     </iCard>
     <!--总单价表格-->
     <iCard tabCard class="margin-bottom20">
-      <totalUnitPriceTable :dataInfo="dataInfo"/>
+      <totalUnitPriceTable :dataInfo="dataInfo" ref="totalUnitPriceTable"/>
     </iCard>
 
     <!--图形-->
@@ -62,7 +62,7 @@
             <iButton>{{ $t('LK_BAOCUN') }}</iButton>
           </div>
         </div>
-        <analyzeChart/>
+        <analyzeChart ref="analyzeChart"/>
       </iCard>
     </div>
 
@@ -81,9 +81,11 @@ import curveChart from './components/curveChart';
 import analyzeChart from './components/analyzeChart';
 import customPart from './components/customPart';
 import previewDialog from './components/previewDialog';
-import {getAnalysisProcessing} from '../../../../api/partsrfq/vpAnalysis/vpAnalyseDetail';
+import {getAnalysisProcessing, saveOrUpdateScheme} from '../../../../api/partsrfq/vpAnalysis/vpAnalyseDetail';
+import resultMessageMixin from '@/utils/resultMessageMixin';
 
 export default {
+  mixins: [resultMessageMixin],
   components: {
     iPage,
     iButton,
@@ -102,6 +104,7 @@ export default {
   data() {
     return {
       partList: [],
+      partHideList: [],
       partItemCurrent: 0,
       currentBatchNumber: '',
       customDialog: {
@@ -117,7 +120,7 @@ export default {
     handlePartItemClick(item, index) {
       this.partItemCurrent = index;
       this.currentBatchNumber = item.batchNumber;
-      this.getDataInfo()
+      this.getDataInfo();
     },
     handlePartItemClose(index) {
       this.partList.splice(index, 1);
@@ -142,9 +145,27 @@ export default {
         this.partList = res.data.partsList.filter(item => {
           return item.isShow;
         });
+        this.partHideList = res.data.partsList.filter(item => {
+          return !item.isShow;
+        });
         this.pageLoading = false;
       } catch {
         this.dataInfo = {};
+        this.pageLoading = false;
+      }
+    },
+    async saveOrUpdateScheme() {
+      try {
+        this.pageLoading = true;
+        const req = {
+          costDetailList: this.$refs.totalUnitPriceTable.tableListData,
+          estimatedActualTotalPro: this.$refs.analyzeChart.dataInfo.estimatedActualTotalPro,
+          partsList: this.partList.concat(this.partHideList),
+        };
+        const res = saveOrUpdateScheme(req);
+        this.resultMessage(res);
+        this.pageLoading = false;
+      } catch {
         this.pageLoading = false;
       }
     },
