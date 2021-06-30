@@ -55,7 +55,7 @@
                     <span class="link" >{{ scope.row.loiNum }}</span>
                 </a>
             </template>
-            LOI状态
+            <!-- LOI状态 -->
             <template #loiStatus="scope">
                 <span >{{ scope.row.loiStatus &&  scope.row.loiStatus.desc}}</span>
             </template>

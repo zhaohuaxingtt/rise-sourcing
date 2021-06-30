@@ -886,7 +886,7 @@
         'LK_DINGDIANXINBIANHAO':'定点信编号', // 定点信编号
         'LK_DINGDIANXINZHUANGTAI':'定点信状态',//  定点信状态
         'LK_DINGDIANXINDANHAO':'定点申请单号', // 定点申请单号
-        'LK_DINGDIANSHIJIANQIZHI':'定点时间起⽌', //  定点时间起⽌
+        // 'LK_DINGDIANSHIJIANQIZHI':'定点时间起⽌', //  定点时间起⽌
         'LK_SHIFOUXIANSHIZIJI':'是否显⽰⾃⼰', //  是否显⽰⾃⼰
         'LK_GONGYINGSHANGFANKUI':'供应商反馈', // 供应商反馈
         'LK_SHIFOUQIANSHUXIEYI':'是否签署协议', // 是否签署协议
@@ -924,6 +924,7 @@
         'LK_KAIFAPILIANGLOI':'开发+批量LOI' , // 开发+批量LOI
         'LK_FRMPINGJI':'FRM评级', // FRM评级
         'LK_CBDSTATUS':'CBD状态', // CBD状态
+        'LK_LETTER_XINZENGDINGDIANXIN':'新增定点信', // 新增定点信
 
         // 定点管理
         'nominationLanguage': {
