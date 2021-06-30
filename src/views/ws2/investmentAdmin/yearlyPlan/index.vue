@@ -620,6 +620,7 @@ export default {
 
         if(res.code === "0"){
           iMessage.success(result);
+          this.getHistogram();  //  获取柱状图数据
         }else{
           iMessage.error(result);
         }

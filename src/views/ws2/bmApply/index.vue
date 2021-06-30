@@ -91,7 +91,15 @@
               <div class="txt">
                 <span>{{ $t('LK_CHEXINGXIANGMU') }}</span><!-- 车型项目 -->
               </div>
-              <div class="disabled">{{fromGroupName}}</div>
+              <iSelect v-if="isCarTypeList" v-model="detailObj.tmCartypeProId" class="input" :placeholder="$t('LK_QINGXUANZE')">
+                <el-option
+                    :value="item.tmCartypeProId"
+                    :label="item.tmCartypeProName"
+                    v-for="(item, index) in fromGroup"
+                    :key="index"
+                ></el-option>
+              </iSelect>
+              <div v-else class="disabled">{{fromGroupName}}</div>
             </div>
             <div class="item">
               <div class="txt">
@@ -289,7 +297,9 @@
           :tableLoading="allTableLoading"
           :selection="false"
         >
-          
+          <template #partsFs="scope">
+            <div @click="jumpDetails(scope)" class="table-link">{{scope.row.partsFs}}</div>
+          </template>
         </iTableList>
       </template>
     </BmPopup>
@@ -322,6 +332,7 @@ import ToBeConfirmed from "./components/toBeConfirmed";
 import IncrementBlock from "./components/incrementBlock";
 import ImpairmentBlock from "./components/impairmentBlock";
 import { getTousandNum } from "@/utils/tool";
+import store from '@/store';
 
 
 export default {
@@ -352,14 +363,27 @@ export default {
       bmNumber: '',
       getTousandNum,
       fromGroupName: '',
+      isCarTypeList: true,
     }
   },
 
   created(){
+    const key = store.state.permission.whiteBtnList['TOOLING_BUDGET_BMAPPLICATION_SELECT'];  //  车型下拉列表
     this.bmTableCount();  //  获取table数量
+    this.isCarTypeList = key ? true : false;
   },
 
   methods: {
+
+    jumpDetails(scope){
+      this.$router.push({
+        path: "/sourcing/partsprocure/editordetail",
+        query: {
+          item: JSON.stringify(scope),
+        },
+      });
+    },
+
 
     //  保存
     save(){
@@ -483,6 +507,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.table-link{
+  color: #1663F6;
+  text-decoration: underline;
+  font-family: Arial;
+  cursor: pointer;
+}
 .popup-form{
   border-bottom: 2px solid #E3E3E3;
   margin-bottom: 20px;

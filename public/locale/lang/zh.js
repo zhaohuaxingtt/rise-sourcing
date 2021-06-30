@@ -1008,7 +1008,7 @@
         'LK_AEKOJIANZHIBMDAN': 'AEKO减值BM单',  //  Aeko减值BM单
         'LK_BMDANZHUANGTAI': 'BM单状态',    //  BM单状态
         'LK_AEKOLEIXING': 'AEKO类型',   //  AEKO类型
-        'LK_BMDANLIUSHUIHAO': 'BM单流⽔号',   //  BM单流⽔号
+        'LK_BMDANLIUSHUIHAO': 'BM单流水号',   //  BM单流⽔号LK_BMDANLIUSHUIHAO
         'LK_BMDANHAO': 'BM单号',    //  BM单号
         'LK_WBSBIANHAO': 'WBS编号',   //  WBS编号
         'LK_DAIBIAOLINGJIAN': '代表零件',  //  代表零件
