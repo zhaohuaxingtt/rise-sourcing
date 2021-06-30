@@ -40,9 +40,10 @@ export const allTableHead = [
     tooltip: false
   },
   {
-    props: 'behalfPartsName',
-    name: '代表零件',
+    props: 'behalfPartsNum',
+    name: '代表零件号',
     key: 'LK_DAIBIAOLINGJIANHAO',
+    width: 150,
     tooltip: false
   },
   {
@@ -80,7 +81,7 @@ export const allTableHead = [
   {
     props: 'linieName',
     name: 'Linie',
-    key: 'LK_RSODDNUMBERS',
+    key: 'LK_XINDELINIE',
     tooltip: false
   },
   {
@@ -110,21 +111,21 @@ export const allTableHead = [
   },
   {
     props: 'akeoTypeName',
-    name: 'Aeko类型',
+    name: 'AEKO类型',
     key: 'LK_AEKOLEIXING',
     tooltip: false
   },
   {
     props: 'aekoNum',
-    name: 'Aeko号',
-    key: 'LK_AEKOHAO',
+    name: 'AEKO号',
+    key: 'LK_XINDEAEKOHAO',
     tooltip: false
   },
   {
     props: 'aekoAddAmount',
     name: 'Aeko增值金额',
     key: 'LK_AEKOZENGZHIJINE',
-    width: 100,
+    width: 150,
     tooltip: false
   },
 ]
@@ -158,9 +159,10 @@ export const bmTableHead = [
     tooltip: false
   },
   {
-    props: 'behalfPartsName',
-    name: '代表零件',
+    props: 'behalfPartsNum',
+    name: '代表零件号',
     key: 'LK_DAIBIAOLINGJIANHAO',
+    width: 150,
     tooltip: false
   },
   {
@@ -199,13 +201,19 @@ export const bmTableHead = [
   {
     props: 'linieName',
     name: 'Linie',
-    key: 'LK_LINIE',
+    key: 'LK_XINDELINIE',
     tooltip: false
   },
   {
     props: 'rsNum',
     name: 'RS单号',
     key: 'LK_RSODDNUMBERS',
+    tooltip: false
+  },
+  {
+    props: 'moldProperties',
+    name: '模具属性',
+    key: 'LK_MOJUSHUXIN',
     tooltip: false
   },
   {
@@ -252,9 +260,10 @@ export const aekoTableHead = [
     tooltip: false
   },
   {
-    props: 'behalfPartsName',
+    props: 'behalfPartsNum',
     name: '代表零件号',
     key: 'LK_DAIBIAOLINGJIANHAO',
+    width: 150,
     tooltip: false
   },
   {
@@ -272,15 +281,15 @@ export const aekoTableHead = [
   },
   {
     props: 'aekoNum',
-    name: 'Aeko号',
-    key: 'LK_AEKOHAO',
+    name: 'AEKO号',
+    key: 'LK_XINDEAEKOHAO',
     tooltip: false
   },
   {
     props: 'aekoAddAmount',
     name: 'Aeko增值金额',
     key: 'LK_AEKOZENGZHIJINE',
-    width: 100,
+    width: 150,
     tooltip: false
   },
   {
@@ -304,13 +313,19 @@ export const aekoTableHead = [
   {
     props: 'linieName',
     name: 'Linie',
-    key: 'LK_LINIE',
+    key: 'LK_XINDELINIE',
     tooltip: false
   },
   {
     props: 'rsNum',
     name: 'RS单号',
     key: 'LK_RSODDNUMBERS',
+    tooltip: false
+  },
+  {
+    props: 'moldProperties',
+    name: '模具属性',
+    key: 'LK_MOJUSHUXIN',
     tooltip: false
   },
   {
@@ -351,9 +366,10 @@ export const aekoBmTableHead = [
     tooltip: false
   },
   {
-    props: 'behalfPartsName',
+    props: 'behalfPartsNum',
     name: '代表零件号',
     key: 'LK_DAIBIAOLINGJIANHAO',
+    width: 150,
     tooltip: false
   },
   {
@@ -371,15 +387,15 @@ export const aekoBmTableHead = [
   },
   {
     props: 'aekoNum',
-    name: 'Aeko号',
-    key: 'LK_AEKOHAO',
+    name: 'AEKO号',
+    key: 'LK_XINDEAEKOHAO',
     tooltip: false
   },
   {
     props: 'aekoMinusAmount',
     name: 'Aeko减值金额',
     key: 'LK_AEKOZENGZHIJINE',
-    width: 100,
+    width: 150,
     tooltip: false
   },
   {
@@ -403,13 +419,19 @@ export const aekoBmTableHead = [
   {
     props: 'linieName',
     name: 'Linie',
-    key: 'LK_LINIE',
+    key: 'LK_XINDELINIE',
     tooltip: false
   },
   {
     props: 'rsNum',
     name: 'RS单号',
     key: 'LK_RSODDNUMBERS',
+    tooltip: false
+  },
+  {
+    props: 'moldProperties',
+    name: '模具属性',
+    key: 'LK_MOJUSHUXIN',
     tooltip: false
   },
   {
@@ -462,7 +484,7 @@ export const bmPopupTableHead = [
   {
     props: 'linieName',
     name: 'Linie',
-    key: 'LK_LINIE',
+    key: 'LK_XINDELINIE',
     tooltip: false
   },
 ]
