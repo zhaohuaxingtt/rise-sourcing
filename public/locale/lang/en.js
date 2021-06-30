@@ -960,95 +960,6 @@
         'SPR_FRM_DEP_WHHYJZ': '维护行业均值', //维护行业均值
         'SPR_FRM_DEP_OBJPLACE': '请选择呈现对象', // 请选择呈现对象
         'SPR_FRM_DEP_AVGPLACE': '请选择行业均值', // 请选择行业均值
-
-        // 定点管理
-        'nominationLanguage': {
-            'DingDianGuanLi': '定点管理',
-            'LingJianHao': '零件号',
-            'ShenQingDanHao': '申请单号',
-            'RFQBianHao': 'RFQ编号',
-            'LiuChengLeiXing': '流程类型',
-            'ShenQingZhuangTai': '申请状态',
-            'LingJianMing': '零件名',
-            'LingJianMingCN': '零件名(中)',
-            'LingJianMingDE': '零件名(德)',
-            'XunJiaCaiGouYuan': '询价采购员',
-            'CheXingXiangMu': '车型项目',
-            'BaoJiaYiZhiXingJiaoYan': '报价一致性校验',
-            'ShiFouDnaYiGongYingShang': '是否单一供应商',
-            'XianShiZiJi': '显示自己',
-            'Yes': '是',
-            'No': '否',
-            'DingDianShenQingZongHeGuanLi': '定点申请综合管理',
-            'XinJianLingJIanDingDianShengQIng': '新建零件定点申请',
-            'CheHui': '撤回',
-            'ShanChu': '删除',
-            'TiJiaoYiZhiXingJiaoYan': '提交一致性校验',
-            'ShenQingDanMing': '申请单名',
-            'LeiXing': '类型',
-            'XingMuLeiXing': '项目类型',
-            'HuiYi': '会议',
-            'RSZhuangTai': 'RS单状态',
-            'RSDongJieRiQi':'RS冻结日期',
-            'BaoJiaYiZhiXingZhuangTai':'报价一致性校验状态',
-            'SELDanJuQUeRenZH': 'SEL单据确认状态',
-            'DingDianRiQi': '定点日期',
-            'DINGDIANSHENQINGLEIXING':'定点申请类型', // 定点申请类型
-            'RFQANDLINGJIANQINGDAN':'RFQ & 零件清单', // RFQ & 零件清单
-            'GONGYINGSHANGANDDANYIGONGYINGSHANG':'供应商 & 单⼀供应商', // 供应商 & 单⼀供应商
-            'DINGDIANJIANYI':'定点建议', // 定点建议
-            'SHENPIRENANDSHENPIJILU':'审批⼈ & 审批记录', // 审批⼈ & 审批记录
-            'JUECEZILIAO':'决策资料', // 决策资料
-            'DINGDIAN':'定点', // 定点
-            'LK_QINGXUANZEYITIAORFQ': '请选择一条RFQ', // 请选择一条RFQ
-            'LK_QINGXUANZEDINGDIANSHENQINGLEIXING': '请选择定点申请类型', // 请选择定点申请类型
-            'LK_DINGDIANSHENQINGLEIXING': '定点申请类型', // 定点申请类型
-            'LK_GAIDINGDIANSHENQINGZHONGYOUDANYIGONGYINGSHANG': '该定点申请中有单一供应商', // 该定点申请中有单一供应商
-            'LK_DINGDIANXINLOI':'定点信 / LOI', // 定点信 / LOI
-            'LK_DINGDIANXIN':'定点信', // 定点信
-            'LK_LOI':'LOI', // LOI
-            'LK_DINGDIANXINBIANHAO':'定点信编号', // 定点信编号
-            'LK_DINGDIANXINZHUANGTAI':'定点信状态',//  定点信状态
-            'LK_DINGDIANXINDANHAO':'定点申请单号', // 定点申请单号
-            'LK_DINGDIANSHIJIANQIZHI':'定点时间起⽌', //  定点时间起⽌
-            'LK_SHIFOUXIANSHIZIJI':'是否显⽰⾃⼰', //  是否显⽰⾃⼰
-            'LK_GONGYINGSHANGFANKUI':'供应商反馈', // 供应商反馈
-            'LK_SHIFOUQIANSHUXIEYI':'是否签署协议', // 是否签署协议
-            'LK_DINGDIANRIQI':'定点⽇期', //定点⽇期
-            'LK_LOIBIANHAO':'LOI编号', // LOI编号
-            'LK_LOIZHUANGTAI':'LOI状态', // LOI状态
-            'LK_LOISHENGCHENGSHIJIAN':'LOI⽣成时间', // LOI⽣成时间
-            'LK_QUERENBINGTIJIAO':'确认并提交', // 确认并提交
-            'LK_LINEQUEREN':'LINIE确认', // LINIE确认
-            'LK_LINETUIHUI':'LINIE退回', // LINIE退回
-            'LK_GUANBI':'关闭', // 关闭
-            'LK_JIHUO':'激活', // 激活
-            'LK_GUANBIDINGDIANXIN':'关闭定点信' , // 关闭定点信
-            'LK_QINGSHURUGUANBIYUANYIN':'请输⼊关闭原因', // 请输⼊关闭原因
-            'LK_MUBIAOXUNJIACAIGOUYUAN':'目标询价采购员', // 目标询价采购员
-            'LK_MUBIAOLINE':'⽬标LINIE', // ⽬标LINIE
-            'LK_GAILAN':'概览', // 概览
-            'LK_BAOBIAOGUANLI':'报表管理', // 报表管理
-            'LK_WANCHENGDINGDIANXIN':'完成定点信', // 完成定点信
-            'LK_DAOCHUBIAOZHUNDINGDIANXIN':'导出标准定点信', // 导出标准定点信
-            'LK_LISHIDINGDIANXIN':'历史定点信', // 历史定点信
-            'LK_BIAOZHUNDINGDIANXIN':'标准定点信', // 标准定点信
-            'LK_FEIBIAOZHUNDINGDIANXIN':'⾮标准定点信',  // ⾮标准定点信
-            'LK_GONGYINGSHANGLIANXIR':'供应商联系⼈', // 供应商联系⼈
-            'LK_SHANGCHUANSHIWENJIANQINGXUANZHUANZHIZHENGCHANGFANGXIANGHOUSHANGCHUAN':'上传时文件请旋转至正常方向后上传', // 上传时文件请旋转至正常方向后上传
-            'LK_BIANJIBEIZHU':'编辑备注', // 编辑备注
-            'LK_GUANBILOI':'关闭LOI', // 关闭LOI
-            'LK_WANCHENGLOI':'完成LOI', // 完成LOI
-            'LK_DAOCHUBIAOZHUNLOI':'导出标准LOI', // 导出标准LOI
-            'LK_LISHILOI':'历史LOI', // 历史LOI
-            'LK_BIAOZHUNLOI':'标准LOI', // 标准LOI
-            'LK_FEIBIAOZHUNLOI':'⾮标准LOI', // ⾮标准LOI
-            'LK_PILIANGLOI':'批量LOI', // 批量LOI
-            'LK_KAIFALOI':'开发LOI', // 开发LOI
-            'LK_KAIFAPILIANGLOI':'开发+批量LOI' , // 开发+批量LOI
-            'LK_FRMPINGJI':'FRM评级', // FRM评级
-            'LK_CBDSTATUS':'CBD状态', // CBD状态
-        },
         'LK_TUICHUBIANJI': '退出编辑',    //  退出编辑
         'LK_SHANGCHUANQINGDAN': '上传清单',    //  上传清单
         'LK_YUEDUJIHUA': '月度计划',    //  月度计划
@@ -1066,40 +977,6 @@
         'LK_SHIYUE': 'Oct',    //  十月
         'LK_SHIYIYUE': 'Nov',    //  十一月
         'LK_SHIERYUE': 'Dec',    //  十二月
-
-        // 定点建议
-        'nominationSuggestion': {
-            "MoJuYuSuanGuanLi": "模具预算管理",
-            "BiLi": "比例(%)",
-            "TouZiYuSuan": "投资预算(RMB)",
-            "CSFuZeRen": "CSF(P)负责人",
-            "YeWuFenPeiMoNi": "业务分配模拟",
-            "ShuaXinShiJian": "刷新时间",
-            "FanAnXuanZhe": "方案选择",
-            "ZuHe": '组合',
-            "QuXiaoZuHe": "取消组合",
-            "TuiChuBianJi": "退出编辑",
-            'GengXinShiJian': '更新时间',
-            'TiJiao': '提交', // 提交
-            'CheHui': '撤回', // 撤回
-            'QingXuanZeZhiShaoYiTiaoShuJu': '请选择至少一条数据', // 请选择至少一条数据
-            'QingWuXuanZeYiFaSongDeShuJu': '请勿选择已发送的数据', // 请勿选择已发送的数据
-            'QingWuXuanZeWeiFaSongDeShuJu': '请勿选择未发送的数据', // 请勿选择未发送的数据
-            'LingJianHao': '零件号', // 零件号
-            'FsnrGsnr': 'FSNR/GSNR', // FSNR/GSNR
-            'RfqBianHao': 'RFQ编号', // RFQ编号
-            'ShenQingRiQi': '申请日期', // 申请日期
-            'CheXingXiangMu': '车型项目', // 车型项目
-            'TouZiYuSuanRmb': '投资预算(RMB)', // 投资预算(RMB)
-            'CsfPFuZeRen': 'CSF(P)负责人', // CSF(P)负责人
-            'ShenPiZhuangTai': '审批状态', // 审批状态
-            'ShenPiYiJian': '审批意见', // 审批意见
-            'ChongFuTiJiao': '重复提交', // 重复提交
-            'QiYuShuJuZhengChangTiJiao': '其余数据正常提交', // 其余数据正常提交
-            'ChongFuCheHui': '重复撤回', // 重复撤回
-            'QiYuShuJuZhengChangCheHui': '其余数据正常撤回', // 其余数据正常撤回 
-            'QingXuanZeCbdCengJiWeiL3DeShuJu': '请选择CBD层级为L3的数据', // 请选择CBD层级为L3的数据
-        },
         "BJZS":{
             "LK_BAOJIAZUSHOU_MJ":"报价分析汇总-模具",
             "LK_BAOJIAZUSHOU_MJDANWEIYUAN":"报价分析汇总-模具（单元：元）"
