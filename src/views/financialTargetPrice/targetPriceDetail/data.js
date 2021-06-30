@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-23 13:46:59
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-25 15:05:35
+ * @LastEditTime: 2021-06-30 14:53:00
  * @Description: 
  * @FilePath: \front-web\src\views\financialTargetPrice\targetPriceDetail\data.js
  */
@@ -33,9 +33,9 @@ export const detailList = [
   {value: 'partNum', label: '零件号', type: 'input', i18n_label: '',},
   {value: 'partNameZh', label: '零件名(中)', type: 'input', i18n_label: '',},
   {value: 'procureFactory', label: '采购工厂', type: 'input', i18n_label: '',},
-  {value: 'applytarType', label: '目标价类型', type: 'input', i18n_label: '',},
-  {value: 'fsNum', label: 'FsNr/GsNr', type: 'input', i18n_label: '',},
-  {value: 'priceUnit', label: '价格单位', type: 'input', i18n_label: '',},
+  {value: 'applyType', label: '目标价类型', type: 'input', i18n_label: '',},
+  {value: 'fsnrGsnrNum', label: 'FsNr/GsNr', type: 'input', i18n_label: '',},
+  // {value: 'priceUnit', label: '价格单位', type: 'input', i18n_label: '',},
   {value: 'unit', label: '单位', type: 'input', i18n_label: '',},
   {value: 'expTargetpri', label: '期望目标价', type: 'input', i18n_label: '',},
   {value: 'lcAPrice', label: 'CF LC_A Target', type: 'input', i18n_label: '', editable: true},
@@ -57,17 +57,17 @@ export const designateSearchList = [
   {value: 'fsNum', label: 'FsNr/GsNr', type: 'input', i18n_label: '',},
   {value: 'partName', label: '零件名称', type: 'input', i18n_label: '',},
   {value: 'partNum', label: '零件号', type: 'input', i18n_label: '',},
-  {value: 'buyerId', label: '询价采购员', type: 'select', i18n_label: '',},
-  {value: 'linieId', label: 'LINIE', type: 'select', i18n_label: '',},
-  {value: 'carTypeName', label: '车型项目', type: 'select', i18n_label: '',},
+  {value: 'buyerId', label: '询价采购员', type: 'select', i18n_label: '',selectOption: ''},
+  {value: 'linieId', label: 'LINIE', type: 'select', i18n_label: '',selectOption: 'LINIE'},
+  {value: 'carTypeName', label: '车型项目', type: 'select', i18n_label: '',selectOption: 'CAR_TYPE_PRO'},
   {value: 'svwNum', label: 'SVW号', type: 'input', i18n_label: '',},
   {value: 'tempNum', label: '临时号', type: 'input', i18n_label: '',},
-  {value: 'factoryNameCh', label: '厂商名', type: 'input', i18n_label: '', editable: true},
-  {value: 'isManCreate', label: '手动创建', type: 'select', i18n_label: '', editable: true},
-  {value: 'nominateTime', label: '定点日期起止', type: 'dateRange', i18n_label: '', editable: true},
-  {value: 'priceStatus', label: '价格状态', type: 'select', i18n_label: '', editable: true},
-  {value: 'partProjectType', label: '零件采购项目类型', type: 'select', i18n_label: '', editable: true},
-  {value: 'carTypeCode	', label: '车型', type: 'select', i18n_label: '', editable: true}
+  {value: 'factoryNameCh', label: '厂商名', type: 'input', i18n_label: ''},
+  {value: 'isManCreate', label: '手动创建', type: 'select', i18n_label: '',selectOption:''},
+  {value: 'nominateTime', label: '定点日期起止', type: 'dateRange', i18n_label: ''},
+  {value: 'priceStatus', label: '价格状态', type: 'select', i18n_label: '',selectOption:'PRICE_STATE'},
+  {value: 'partProjectType', label: '零件采购项目类型', type: 'select', i18n_label: '',selectOption:'PART_PROJECT_TYPE'},
+  {value: 'carTypeCode	', label: '车型', type: 'select', i18n_label: '',selectOption:''}
 ]
 
 export const designateTableList = [

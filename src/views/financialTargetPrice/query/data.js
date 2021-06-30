@@ -2,29 +2,29 @@
  * @Author: Luoshuang
  * @Date: 2021-06-22 17:03:48
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-24 15:53:38
+ * @LastEditTime: 2021-06-30 18:24:19
  * @Description: 
  * @FilePath: \front-web\src\views\financialTargetPrice\query\data.js
  */
 
 
 export const tableTitle = [
-  {props:'fsNum',name:'FsNr/GsNr', key: "", tooltip: true, width: 120},
+  {props:'fsnrGsnrNum',name:'FsNr/GsNr', key: "", tooltip: true, width: 120},
   {props:'partNum',name:'零件号', key: "", tooltip: true, width: 120},
   {props:'partNameZh',name:'零件名称', key: "", tooltip: true, width: 120},
   {props:'rfqId',name:'RFQ编号', key: "", tooltip: true, width: 100},
-  {props:'',name:'CSF/CSS', key: "", tooltip: true, width: 120},
+  {props:'buyerName',name:'CSF/CSS', key: "", tooltip: true, width: 120},
   {props:'linieName',name:'LINIE', key: "", tooltip: true, width: 120},
   {props:'cfControllerZh',name:'CF', key: "", tooltip: true, width: 120},
-  {props:'lcB',name:'LC_B', key: "", tooltip: true},
-  {props:'lcA',name:'LC_A', key: "", tooltip: true},
+  {props:'lcBPrice',name:'LC_B', key: "", tooltip: true},
+  {props:'lcAPrice',name:'LC_A', key: "", tooltip: true},
   {props:'rwPrice',name:'RW价', key: "", tooltip: true},
-  {props:'procureFactory',name:'采购工厂', key: "", tooltip: true, width: 100},
+  {props:'procureFactoryName',name:'采购工厂', key: "", tooltip: true, width: 100},
   {props:'applyDate',name:'申请日期', key: "", tooltip: true, width: 120},
   {props:'applyDateEnd',name:'截止日期', key: "", tooltip: true, width: 120},
   {props:'responseDate',name:'返回日期', key: "", tooltip: true, width: 120},
   {props:'expTargetpri',name:'期望目标价', key: "", tooltip: true},
-  {props:'approveStatsName',name:'审批状态', key: "", tooltip: true, width: 120},
+  {props:'approveStatus',name:'审批状态', key: "", tooltip: true, width: 120},
   {props:'xiugai',name:'修改记录', key: "", tooltip: true, width: 120},
   {props:'shenpi',name:'审批记录', key: "", tooltip: true, width: 120},
   {props:'setKz',name:'SET属性', key: "", tooltip: true, width: 120},

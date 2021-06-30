@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-22 17:47:09
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-29 09:48:56
+ * @LastEditTime: 2021-06-30 14:41:42
  * @Description: 目标价详情
  * @FilePath: \front-web\src\views\financialTargetPrice\targetPriceDetail\index.vue
 -->
@@ -13,15 +13,15 @@
     <!------------------------------------------------------------------------>
     <!--                 基础信息                                          --->
     <!------------------------------------------------------------------------>
-    <basic />
+    <basic :id="applyId" />
     <!------------------------------------------------------------------------>
     <!--                 修改历史                                          --->
     <!------------------------------------------------------------------------>
-    <history />
+    <history :id="applyId" />
     <!------------------------------------------------------------------------>
     <!--                 定点信息                                          --->
     <!------------------------------------------------------------------------>
-    <designateInfo />
+    <designateInfo :partProjId="purchasingProjectId" />
   </iPage>
 </template>
 
@@ -34,9 +34,25 @@ export default {
   components: {iPage,history,basic,designateInfo},
   data() {
     return {
+      detailData: {}
+    }
+  },
+  created() {
+    const params = JSON.parse(this.$route.query.item)
+    if(params) {
+      this.detailData = params
     }
   },
   computed: {
+    applyId() {
+      return this.detailData.applyId || ''
+    },
+    recordId() {
+      return this.detailData.recordId || ''
+    },
+    purchasingProjectId() {
+      return this.detailData.purchasingProjectId || ''
+    }
   },
 }
 </script>

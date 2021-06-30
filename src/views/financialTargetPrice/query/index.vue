@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-22 11:14:02
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-28 09:15:20
+ * @LastEditTime: 2021-06-30 18:30:24
  * @Description: 财务目标价-目标价查询
  * @FilePath: \front-web\src\views\financialTargetPrice\query\index.vue
 -->
@@ -40,7 +40,7 @@
           <!--------------------指派按钮----------------------------------->
           <iButton @click="openAssignDialog" >指派</iButton>
           <!--------------------导出按钮----------------------------------->
-          <iButton @click="handleUpload" >导出</iButton>
+          <iButton @click="handleExport" >导出</iButton>
         </div>
       </div>
       <tableList 
@@ -70,11 +70,11 @@
     <!------------------------------------------------------------------------>
     <!--                  修改记录弹窗                                      --->
     <!------------------------------------------------------------------------>
-    <modificationRecordDialog :dialogVisible="updateDialogVisible" @changeVisible="changeUpdateDialogVisible" />
+    <modificationRecordDialog :dialogVisible="updateDialogVisible" @changeVisible="changeUpdateDialogVisible" :id="applyId" />
     <!------------------------------------------------------------------------>
     <!--                  审批记录弹窗                                      --->
     <!------------------------------------------------------------------------>
-    <approvalRecordDialog :dialogVisible="approvalDialogVisible" @changeVisible="changeApprovalDialogVisible" />
+    <approvalRecordDialog :dialogVisible="approvalDialogVisible" @changeVisible="changeApprovalDialogVisible" :id="applyId" />
     <!------------------------------------------------------------------------>
     <!--                  指派弹窗                                      --->
     <!------------------------------------------------------------------------>
@@ -83,7 +83,7 @@
 </template>
 
 <script>
-import { iPage, iCard, iPagination, iButton, iSelect, iDatePicker, iInput, iSearch } from 'rise'
+import { iPage, iCard, iPagination, iButton, iSelect, iDatePicker, iInput, iSearch, iMessage } from 'rise'
 import headerNav from '../components/headerNav'
 import { tableTitle, searchList } from './data'
 import { pageMixins } from "@/utils/pageMixins"
@@ -93,14 +93,15 @@ import approvalRecordDialog from '../maintenance/components/approvalRecord'
 import assignDialog from './components/assign'
 import { dictkey } from "@/api/partsprocure/editordetail"
 import { getCartypeDict} from "@/api/partsrfq/home"
-import { appoint } from '@/api/financialTargetPrice/index'
+import { appoint, getTargetPriceList } from '@/api/financialTargetPrice/index'
+import { excelExport } from "@/utils/filedowLoad"
 export default {
   mixins: [pageMixins],
   components: {iPage,headerNav,iCard,tableList,iPagination,iButton,iSelect,iDatePicker,iInput,iSearch,modificationRecordDialog,approvalRecordDialog, assignDialog},
   data() {
     return {
       tableTitle: tableTitle,
-      tableData: [{partNum:'2342342'}],
+      tableData: [],
       searchList: searchList,
       searchParams: {},
       isEdit: false,
@@ -109,14 +110,27 @@ export default {
       assignDialogVisible: false,
       updateDialogVisible: false,
       approvalDialogVisible: false,
-      selectItems: []
+      selectItems: [],
+      rfqId: '',
+      applyId: ''
     }
   },
   created() {
     this.getProcureGroup()
     this.getCartypeDict()
+    this.getTableList()
   },
   methods: {
+    /**
+     * @Description: 附件查看
+     * @Author: Luoshuang
+     * @param {*} row
+     * @return {*}
+     */    
+    openAttachmentDialog(row){
+      this.rfqId = row.rfqId || ''
+      this.changeAttachmentDialogVisible(true)
+    },
     /**
      * @Description: 指派操作
      * @Author: Luoshuang
@@ -129,7 +143,13 @@ export default {
         priceAnaId
       }
       appoint(params).then(res => {
-
+        if (res?.result) {
+          iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+          this.changeAssignDialogVisible(false)
+          this.getTableList()
+        } else {
+          iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+        }
       })
     },
     // 获取车型字典
@@ -168,6 +188,7 @@ export default {
      * @return {*}
      */    
     openApprovalDialog(row){
+      this.applyId = row.applyId || ''
       this.changeApprovalDialogVisible(true)
     },
     /**
@@ -186,6 +207,7 @@ export default {
      * @return {*}
      */    
     openUpdateDialog(row){
+      this.applyId = row.applyId || ''
       this.changeUpdateDialogVisible(true)
     },
     /**
@@ -204,6 +226,10 @@ export default {
      * @return {*}
      */    
     openAssignDialog(){
+      if (this.selectItems.length < 1) {
+        iMessage.warn('至少选择一条记录')
+        return
+      }
       this.changeAssignDialogVisible(true)
     },
     /**
@@ -222,9 +248,28 @@ export default {
      * @return {*}
      */    
     getTableList() {
+      this.tableLoading = true
       const params = {
         ...this.searchParams,
+        current: this.page.currPage,
+        size: this.page.pageSize
       }
+      getTargetPriceList(params).then(res => {
+        if (res?.result) {
+          this.page = {
+            ...this.page,
+            totalCount: Number(res.total),
+            currPage: Number(res.pageNum),
+            pageSize: Number(res.pageSize)
+          }
+          this.tableData = res.data
+        } else {
+          this.tableData = []
+          iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+        }
+      }).finally(() => {
+        this.tableLoading = false
+      })
     },
     /**
      * @Description: 更改编辑状态
@@ -235,7 +280,9 @@ export default {
     changeEdit(isEdit) {
       this.isEdit = isEdit
     },
-    handleExport() {},
+    handleExport() {
+      excelExport(this.tableData, this.tableTitle)
+    },
     handleUpload() {},
     /**
      * @Description: 保存编辑后的内容

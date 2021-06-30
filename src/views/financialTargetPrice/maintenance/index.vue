@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-22 09:12:31
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-25 16:59:17
+ * @LastEditTime: 2021-06-30 15:03:48
  * @Description: 财务目标价-目标价维护
  * @FilePath: \front-web\src\views\financialTargetPrice\maintenance\index.vue
 -->
@@ -74,6 +74,7 @@
         @openAttachmentDialog="openAttachmentDialog"
         @openApprovalDialog="openApprovalDialog"
         @openEditdetail="openEditdetail"
+        :selectedItems="selectItems"
       >
       </tableList>
       <!------------------------------------------------------------------------>
@@ -89,20 +90,20 @@
     <!------------------------------------------------------------------------>
     <!--                  修改记录弹窗                                      --->
     <!------------------------------------------------------------------------>
-    <modificationRecordDialog :dialogVisible="updateDialogVisible" @changeVisible="changeUpdateDialogVisible" />
+    <modificationRecordDialog :dialogVisible="updateDialogVisible" @changeVisible="changeUpdateDialogVisible" :id="applyId" />
     <!------------------------------------------------------------------------>
     <!--                  附件弹窗                                      --->
     <!------------------------------------------------------------------------>
-    <attachmentDialog :dialogVisible="attachmentDialogVisible" @changeVisible="changeAttachmentDialogVisible" />
+    <attachmentDialog :dialogVisible="attachmentDialogVisible" @changeVisible="changeAttachmentDialogVisible" :rfqNum="rfqId" />
     <!------------------------------------------------------------------------>
     <!--                  审批记录弹窗                                      --->
     <!------------------------------------------------------------------------>
-    <approvalRecordDialog :dialogVisible="approvalDialogVisible" @changeVisible="changeApprovalDialogVisible" />
+    <approvalRecordDialog :dialogVisible="approvalDialogVisible" @changeVisible="changeApprovalDialogVisible" :id="applyId" />
   </iPage>
 </template>
 
 <script>
-import { iPage, iCard, iPagination, iButton, iSelect, iDatePicker, iInput, iSearch } from 'rise'
+import { iPage, iCard, iPagination, iButton, iSelect, iDatePicker, iInput, iSearch, iMessage } from 'rise'
 import headerNav from '../components/headerNav'
 import { tableTitle, searchList } from './data'
 import { pageMixins } from "@/utils/pageMixins"
@@ -111,14 +112,15 @@ import modificationRecordDialog from './components/modificationRecord'
 import attachmentDialog from '@/views/costanalysismanage/components/home/components/downloadFiles/index'
 import approvalRecordDialog from './components/approvalRecord'
 import { dictkey } from "@/api/partsprocure/editordetail"
-import { getTargetPriceList } from "@/api/financialTargetPrice/index"
+import { getTargetPriceList, exportTargetPriceList, setPrice } from "@/api/financialTargetPrice/index"
+import { getDictByCode } from '@/api/dictionary'
 export default {
   mixins: [pageMixins],
   components: {iPage,headerNav,iCard,tableList,iPagination,iButton,iSelect,iDatePicker,iInput,iSearch,modificationRecordDialog,attachmentDialog,approvalRecordDialog},
   data() {
     return {
       tableTitle: tableTitle,
-      tableData: [{partNum:'2342342',purchasePrjectId:'119',applyId:'1'}],
+      tableData: [],
       searchList: searchList,
       searchParams: {},
       isEdit: false,
@@ -128,6 +130,10 @@ export default {
       updateDialogVisible: false,
       approvalDialogVisible: false,
       uploadUrl: process.env.VUE_APP_SOURCING_MH,
+      recordId: '',
+      applyId: '',
+      rfqId: '',
+      selectItems: []
     }
   },
   created() {
@@ -135,6 +141,9 @@ export default {
     this.getTableList()
   },
   methods: {
+    handleSelectionChange(val) {
+      this.selectItems = val
+    },
     fileSuccess(res){
       if(res.code == 200){
         // this.vm.init()
@@ -170,7 +179,7 @@ export default {
       window.open(router.href,'_blank')
     },
     openPage(row) {
-      const router =  this.$router.resolve({path: '/sourcing/partsprocure/editordetail', query: { item: JSON.stringify(row) }})
+      const router =  this.$router.resolve({path: '/sourcing/partsprocure/editordetail', query: { item: JSON.stringify({...row,purchasePrjectId:row.purchasingProjectId}) }})
       window.open(router.href,'_blank')
     },
     /**
@@ -180,6 +189,7 @@ export default {
      * @return {*}
      */    
     openApprovalDialog(row){
+      this.applyId = row.applyId || ''
       this.changeApprovalDialogVisible(true)
     },
     /**
@@ -198,6 +208,7 @@ export default {
      * @return {*}
      */    
     openUpdateDialog(row){
+      this.recordId = row.recordId || ''
       this.changeUpdateDialogVisible(true)
     },
     /**
@@ -216,6 +227,7 @@ export default {
      * @return {*}
      */    
     openAttachmentDialog(row){
+      this.rfqId = row.rfqId || ''
       this.changeAttachmentDialogVisible(true)
     },
     /**
@@ -234,6 +246,7 @@ export default {
      * @return {*}
      */    
     getTableList() {
+      this.tableLoading = true
       const params = {
         ...this.searchParams,
         current: this.page.currPage,
@@ -241,10 +254,19 @@ export default {
       }
       getTargetPriceList(params).then(res => {
         if (res?.result) {
-          
+          this.page = {
+            ...this.page,
+            totalCount: Number(res.total),
+            currPage: Number(res.pageNum),
+            pageSize: Number(res.pageSize)
+          }
+          this.tableData = res.data
         } else {
-          
+          this.tableData = []
+          iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
         }
+      }).finally(() => {
+        this.tableLoading = false
       })
     },
     /**
@@ -254,9 +276,23 @@ export default {
      * @return {*}
      */    
     changeEdit(isEdit) {
+      if (this.selectItems.length < 1) {
+        iMessage.warn('请选择一条记录')
+        return
+      }
+      if (this.selectItems.length > 1) {
+        iMessage.warn('只能选择一条记录')
+        return
+      }
       this.isEdit = isEdit
     },
-    handleExport() {},
+    async handleExport() {
+      if (this.selectItems.length < 1) {
+        iMessage.warn('请至少选择一条记录')
+        return
+      }
+      await exportTargetPriceList({idList: this.selectItems.map(item => item.applyId)})
+    },
     handleUpload() {},
     /**
      * @Description: 保存编辑后的内容
@@ -265,7 +301,22 @@ export default {
      * @return {*}
      */    
     handleSave() {
-      this.changeEdit(false)
+      this.tableLoading = true
+      const params = {
+        ...this.selectItems[0],
+        partPrjCode: this.selectItems[0].fsnrGsnrNum
+      }
+      setPrice(params).then(res => {
+        if (res?.result) {
+          iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+          this.changeEdit(false)
+          this.getTableList()
+        } else {
+          iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+        }
+      }).finally(() => {
+        this.tableLoading = false
+      })
     },
     /**
      * @Description: 取消编辑
@@ -275,6 +326,7 @@ export default {
      */    
     handleCancel() {
       this.changeEdit(false)
+      this.getTableList()
     }
   }
 }
