@@ -56,9 +56,18 @@
                     <span class="link" >{{ scope.row.letterNum }}</span>
                 </a>
             </template>
+            <!-- RFQ编号 -->
+            <!-- 后端未处理 直接返回的零件列表 自己取第一个 -->
+            <template #parts="scope">
+                <span>{{getRfqId(scope.row)}}</span>
+            </template>
             <!-- 定点信状态 -->
             <template #status="scope">
                 <span >{{ scope.row.status && scope.row.status.desc }}</span>
+            </template>
+            <!-- 是否签署协议 -->
+            <template #isSignAgreement="scope">
+                <span>{{scope.row.isSignAgreement ? language('nominationLanguage.Yes','是') :language('nominationLanguage.No','否')}}</span>
             </template>
         </tableList>
         <!-- 分页 -->
@@ -110,6 +119,7 @@ import {
     liniereturn,
     fsActivate,
     downloadLetterFile,
+    letterExport,
 } from '@/api/letterAndLoi/letter'
 import { getDictByCode } from '@/api/dictionary'
 export default {
@@ -143,8 +153,8 @@ export default {
             },
             loading:false,
             tableListData:[
-                {nominateAppId:'50912471',letterNum:'NL21-10180',nominateLetterId:'1',rfqId:'51120086',supplierNum:'068',supplierSapNum:'10047',supplierName:'博世汽⻋技术服务(中国)有限公司',statusDesc:'前期处理中',supplierResult:'供应商反馈',fsName:'⾼真',linieName:'王颖',isSignAgreement:'已签署',nominateDate:'2021-04-23'},
-                {nominateAppId:'50912472',letterNum:'NL21-10181',nominateLetterId:'2',rfqId:'51120086',supplierNum:'068',supplierSapNum:'10047',supplierName:'博世汽⻋技术服务(中国)有限公司',statusDesc:'前期处理中',supplierResult:'供应商反馈',fsName:'⾼真',linieName:'王颖',isSignAgreement:'已签署',nominateDate:'2021-04-23'}
+                // {nominateAppId:'50912471',letterNum:'NL21-10180',nominateLetterId:'1',rfqId:'51120086',supplierNum:'068',supplierSapNum:'10047',supplierName:'博世汽⻋技术服务(中国)有限公司',statusDesc:'前期处理中',supplierResult:'供应商反馈',fsName:'⾼真',linieName:'王颖',isSignAgreement:'已签署',nominateDate:'2021-04-23'},
+                // {nominateAppId:'50912472',letterNum:'NL21-10181',nominateLetterId:'2',rfqId:'51120086',supplierNum:'068',supplierSapNum:'10047',supplierName:'博世汽⻋技术服务(中国)有限公司',statusDesc:'前期处理中',supplierResult:'供应商反馈',fsName:'⾼真',linieName:'王颖',isSignAgreement:'已签署',nominateDate:'2021-04-23'}
             ],
             tableTitle:letterListTitle,
             selectItems:[],
@@ -381,8 +391,8 @@ export default {
             const isNext  = await this.isSelectItem();
             if(isNext){
                 const {selectItems} = this;
-                const nominateLetterIds = (selectItems.map((item)=>item.nominateLetterId)).join();
-                await downloadLetterFile({nominateLetterIds});
+                const nominateLetterIds = selectItems.map((item)=>item.nominateLetterId);
+                await letterExport({nominateLetterIds});
                 console.log(isNext,'OK');
             }else{
                 console.log(isNext,'CANCEL');
@@ -397,7 +407,17 @@ export default {
             query: {id:nominateLetterId}
             })
             window.open(routeData.href, '_blank')
-        }
+        },
+
+        // RFQ编号获取处理一下
+        getRfqId(row){
+            if(row && row.parts && row.parts.length){
+                const parts = row.parts[0] || {};
+                return parts.rfqId || ''
+            }else{
+                return ''
+            }
+        },
     }
 }
 </script>

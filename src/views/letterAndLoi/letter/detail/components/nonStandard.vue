@@ -11,7 +11,7 @@
                     hideTip
                     :buttonText="language('LK_SHANGCHUAN','上传')"
                     accept=".doc,.docx,.xls,.xlsx,.ppt,.pptx,.jpg,.jpeg,.png,.pdf,.tif"
-                    @on-success="onUploadsucess(Object.assign(...arguments, {fileType: '119'}), getFetchDataList)"
+                    @on-success="onUploadsucess(Object.assign(...arguments, {fileType: '119',hostId:nomiAppId}), getFetchDataList)"
                     
                 />
             </span>
@@ -30,7 +30,7 @@
                 class="table"
                 index
                 :lang="true"
-                :tableData="tableListData"
+                :tableData="dataList"
                 :tableTitle="tableTitle"
                 :tableLoading="loading"
                 @handleSelectionChange="handleSelectionChange"
@@ -91,7 +91,6 @@ export default {
     },
     data(){
         return{
-            tableListData:[],
             tableTitle,
         }
     },
