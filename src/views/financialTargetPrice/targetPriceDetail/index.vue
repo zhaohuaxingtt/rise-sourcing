@@ -2,14 +2,14 @@
  * @Author: Luoshuang
  * @Date: 2021-06-22 17:47:09
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-30 14:41:42
+ * @LastEditTime: 2021-07-01 15:49:20
  * @Description: 目标价详情
  * @FilePath: \front-web\src\views\financialTargetPrice\targetPriceDetail\index.vue
 -->
 
 <template>
   <iPage class="targetPriceDetail">
-    <div class="font20 font-weight">零件号：3df4324432</div>
+    <div class="font20 font-weight">{{language('LINGJIANHAO','零件号')}}：{{detailData.partNum}}</div>
     <!------------------------------------------------------------------------>
     <!--                 基础信息                                          --->
     <!------------------------------------------------------------------------>

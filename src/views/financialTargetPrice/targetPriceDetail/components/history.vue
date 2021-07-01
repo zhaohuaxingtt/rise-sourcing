@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-23 14:08:28
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-30 14:05:30
+ * @LastEditTime: 2021-07-01 15:48:27
  * @Description: 修改历史card
  * @FilePath: \front-web\src\views\financialTargetPrice\targetPriceDetail\components\history.vue
 -->
@@ -10,10 +10,10 @@
 <template>
   <iCard class="margin-top20">
     <div class="margin-bottom20 clearFloat">
-      <span class="font18 font-weight">修改历史</span>
+      <span class="font18 font-weight">{{language('XIUGAILISHI','修改历史')}}</span>
         <div class="floatright">
           <!--------------------分配询价科室按钮----------------------------------->
-          <iButton @click="handleExport" >导出</iButton>
+          <iButton @click="handleExport" >{{language('DAOCHU','导出')}}</iButton>
         </div>
     </div>
     <!------------------------------------------------------------------------>

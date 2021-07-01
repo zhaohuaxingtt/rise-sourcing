@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-24 15:55:46
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-30 18:03:31
+ * @LastEditTime: 2021-07-01 15:15:55
  * @Description: 财务目标价相关Api
  * @FilePath: \front-web\src\api\financialTargetPrice\index.js
  */
@@ -135,6 +135,31 @@ export function targetPriceCompare(id) {
 export function targetPriceReject(params) {
   return requst({
     url: `/cf-target-price-applies/${params.id}/reject`,
+    method: 'POST',
+    data: params
+  })
+}
+
+// 获取cf下拉
+export function getCFList() {
+  return requst({
+    url: '/cf-target-price-applies/cf-user/list',
+    method: 'GET'
+  })
+}
+
+// 零件状态
+export function getPartStatus() {
+  return requst({
+    url: '/cf-target-price-applies/cf-start/list',
+    method: 'GET'
+  })
+}
+
+// 财务目标价-价格明细保存
+export function savePriceDetail(params) { 
+  return requst({
+    url: '/cf-target-price-applies/savePriceDetail',
     method: 'POST',
     data: params
   })

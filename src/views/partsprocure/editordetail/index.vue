@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2021-06-30 18:32:28
+ * @LastEditTime: 2021-07-01 16:09:18
  * @LastEditors: Luoshuang
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\editordetail\index.vue
@@ -276,7 +276,7 @@
 			</el-tab-pane>
 			<el-tab-pane :label="$t('LK_SHENQINGMUBIAOJIA')"
 				v-permission="PARTSPROCURE_EDITORDETAIL_APPLYFORTARGETPRICE">
-				<targePrice :purchaseProjectId="purchasePrjectId" :fsnrGsnrNum="fsnrGsnrNum"></targePrice>
+				<targePrice :purchaseProjectId="purchasePrjectId" :fsnrGsnrNum="fsnrGsnrNum" :partPrejectType="partPrejectType"></targePrice>
 			</el-tab-pane>
 			<el-tab-pane :label="$t('LK_BEIZHUXINXI')" v-permission="PARTSPROCURE_EDITORDETAIL_REMARKSINFORMATION">
 				<remarks :detailData="detailData"></remarks>
@@ -379,12 +379,14 @@ import designateInfo from './components/designateInfo'
 				purchasePrjectId: "",
 				curentSupplierDialog:{show:false},
 				fsnrGsnrNum: '',
+				partPrejectType: ''
 			};
 		},
 		created() {
 			this.infoItem = JSON.parse(this.$route.query.item);
 			this.purchasePrjectId = this.infoItem.purchasePrjectId;
 			this.fsnrGsnrNum = this.infoItem.fsnrGsnrNum;
+			this.partPrejectType = this.infoItem.partPrejectType;
 			this.getDatail();
 			this.getProcureGroup();
 		},
