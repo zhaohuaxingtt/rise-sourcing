@@ -10,59 +10,54 @@
     <!-- 筛选框 -->
     <div style="clear: both"></div>
     <!-- 搜索区 -->
-    <search @search="getFetchData" />
+    <search @search="getFetchData" :carTypeList="carTypeList" />
     <!-- 表格 -->
     <iCard class="designateTable">
       <div class="margin-bottom20 clearFloat">
         <div class="floatright">
           <!-- 发起复核 -->
           <iButton
+            @click="initRsReview"
           >
-            {{ $t("nominationLanguage.FaQiFuHe") }}
+            {{ language("FAQIFUHE", '发起复核') }}
           </iButton>
           <!-- 退回 -->
           <iButton
+            @click="handleBatchRevoke"
           >
-            {{ $t("LK_TUIHUI") }}
+            {{ language("LK_TUIHUI",'退回') }}
           </iButton>
           <!-- 退回至通过状态（复核撤回） -->
           <iButton
+            @click="handleBatchRevokeToPass"
           >
-            {{ $t("nominationLanguage.TuiHuiZhiTongGuoZHuangTai") }}
-          </iButton>
-          <!-- 冻结 -->
-          <iButton
-          >
-            {{ $t("LK_DONGJIE") }}
-          </iButton>
-          <!-- 解冻 -->
-          <iButton
-          >
-            {{ $t("LK_JIEDONG") }}
+            {{ language("TUIHUIZHITONGGUOZHUANGTAI","退回至通过状态") }}
           </iButton>
           <!-- SEL单据确认 -->
           <iButton
+            @click="selConfirm"
           >
-            {{ $t("nominationLanguage.SELDanJuQUeRen") }}
+            {{ language("LK_SELDANJUQUEREN","SEL单据确认") }}
           </iButton>
           <!-- 签字单 -->
           <iDropdown class="margin-left10 margin-right10" @command="toPath">
             <iButton type="default">
-              {{ $t("nominationLanguage.QianZiDan") }}
+              {{ language("LK_QIANZIDAN",'签字单') }}
               <i class="el-icon-arrow-down el-icon--right"></i>
             </iButton>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item
                 :command="item.path"
                 v-for="(item, index) in signMenu" :key="index">
-                  {{$t(item.key)}}
+                  {{language(item.key, item.name)}}
               </el-dropdown-item>
             </el-dropdown-menu>
           </iDropdown>
           <!-- 定点 -->
           <iButton
+            @click="confirm"
           >
-            {{ $t("nominationLanguage.DINGDIAN") }}
+            {{ language("nominationLanguage_DINGDIAN", "定点") }}
           </iButton>
 
           
@@ -72,6 +67,7 @@
         :tableData="tableListData"
         :tableTitle="tableTitle"
         :tableLoading="tableLoading"
+        v-loading="tableLoading"
         @handleSelectionChange="handleSelectionChange"
       >
       <!-- <template #LK_CAOZUO="scope">
@@ -79,11 +75,11 @@
       </template> -->
       
       <!-- 定点单号 -->
-      <template #nominateName="scope">
+      <template #id="scope">
         <a
           href="javascript:;"
-          @click="viewNominationDetail(scope.row)">
-          {{scope.row.nominateName}}
+          @click="viewRsSheetDetail(scope.row)">
+          {{scope.row.id}}
         </a>
       </template>
       <!-- 定点类型 -->
@@ -113,11 +109,12 @@
       <template #freezeDate="scope">
         <span>{{scope.row.freezeDate | dateFilter("YYYY-MM-DD")}}</span>
       </template>
+      <!-- SEL单据确认状态 -->
       <template #selStatus="scope">
         <div>
-          <a href="javascript:;" class="selStatus-link" @click="confirmSelSheet(false)" v-if="scope.row.selStatus === '已确认'">{{scope.row.selStatus}}</a>
-          <a href="javascript:;" class="selStatus-link" @click="confirmSelSheet(true)" v-else-if="scope.row.selStatus === '未确认'">{{scope.row.selStatus}}</a>
-          <span v-else>{{scope.row.selStatus}}</span>
+          <a href="javascript:;" class="selStatus-link" @click="confirmSelSheet(scope.row)" v-if="scope.row.selStatus && scope.row.selStatus.code === 'Confirmed'">{{scope.row.selStatus && scope.row.selStatus.desc || scope.row.selStatus}}</a>
+          <a href="javascript:;" class="selStatus-link" @click="confirmSelSheet(scope.row)" v-else-if="scope.row.selStatus && scope.row.selStatus.code === 'Unconfirmed'">{{scope.row.selStatus && scope.row.selStatus.desc || scope.row.selStatus}}</a>
+          <span v-else>{{scope.row.selStatus && scope.row.selStatus.desc || scope.row.selStatus}}</span>
         </div>
       </template>
       
@@ -135,31 +132,32 @@
       />
     </iCard>
     <!-- sel确认弹窗 -->
-    <selDialog :visible.sync="selDialogVisibal" :selStatus="selStatus" :readOnly="true" />
+    <selDialog :visible.sync="selDialogVisibal" :nomiAppId="selNominateId" :selStatus="selStatus" @refresh="getFetchData" :readOnly="true" />
     
   </iPage>
 </template>
 
 <script>
-import { tableTitle, signMenu, mokeResData } from './components/data'
+import { tableTitle, signMenu } from './components/data'
+import checklistData from './lib/checklist.json'
 import headerNav from '@/views/designate/home/components/headerNav'
 import search from './components/search'
 import tablelist from "@/views/designate/supplier/components/tableList";
 import selDialog from '../components/selDialog'
-import { 
-  getNominationList,
-  batchRevoke,
-  batchDelete,
-  nominateRreeze,
-  nominateUnRreeze,
+import {
   nominateConfirm,
   getCarTypePro,
-  rsFrozen,
-  rsUnFrozen
 } from '@/api/designate/nomination'
 import { 
-  getSelList
+  getSelList,
+  selSheetSubmit,
+  batchRevoke,
+  batchRevokeToPass,
+  batchConfirmSelSheet
 } from '@/api/designate/nomination/selsheet'
+import { 
+  createSignSheet
+} from '@/api/designate/nomination/signsheet'
 // 前端配置文件里面的定点类型
 // import { applyType } from '@/layout/nomination/components/data'
 
@@ -171,8 +169,8 @@ import {
   iCard,
   iButton,
   iPagination,
-  iMessage,
-  iDropdown
+  iDropdown,
+  iMessage
 } from "rise";
 
 export default {
@@ -186,7 +184,8 @@ export default {
       startLoding: false,
       carTypeList: [],
       // SEL单据确认状态
-      selStatus: true,
+      selNominateId: '',
+      selStatus: false,
       selDialogVisibal: false,
       // 签字单菜单
       signMenu,
@@ -210,38 +209,43 @@ export default {
   },
   methods: {
     toPath(path) {
-      this.$router.push({path})
+      // 新增签字单
+      if (path === '/sourcing/partsnomination/signSheet/details?mode=add') {
+        this.createSignSheet(path)
+      } else {
+        this.$router.push({path})
+      }
+      
     },
-    // 确认sel附件单
-    confirmSelSheet(type = true) {
-      this.selStatus = type
-      this.selDialogVisibal = true
-    },
-    // 新建零件定点申请
-    createNomination() {
-      // 缓存/更新定点申请类型
-      this.$store.dispatch('setNominationTypeDisable', false)
-      this.$nextTick(() => {
-        const routeData = this.$router.resolve({path: '/designate/rfqdetail'})
-        window.open(routeData.href, '_blank')
+    // 新增签字单
+    createSignSheet(path) {
+      let query = {}
+      createSignSheet({}).then(res => {
+        if (res.code === '200') {
+          query = {
+            signCode: res.data.signCode,
+            id: res.data.id,
+            status: res.data.status && res.data.status.name || res.data.status
+          }
+          this.$router.push({path, query})
+        } else {
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
+      }).catch(e => {
+        iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
       })
     },
     // 查看详情
-    viewNominationDetail(row) {
-      // 缓存nominateProcessType
-      // this.$store.dispatch('setNominationType', row.nominateProcessType)
-      // 禁用nominateProcessType编辑
-      this.$store.dispatch('setNominationTypeDisable', true)
-      this.$nextTick(() => {
-        const routeData = this.$router.resolve({
-          path: '/designate/rfqdetail',
-          query: {
-            desinateId: row.id, 
-            designateType: (row.nominateProcessType && row.nominateProcessType.code) || ''
-          }
-        })
-        window.open(routeData.href, '_blank')
+    viewRsSheetDetail(row) {
+      const routeData = this.$router.resolve({
+        path: '/sourcing/partsnomination/rsreview/details',
+        query: {
+          otherNominationId: row.id, 
+          otherNominationType: 'METTING',
+          otherPartProjectType: row.partProjType
+        }
       })
+      window.open(routeData.href, '_blank')
     },
     // 获取车型项目
     getCarTypePro() {
@@ -252,44 +256,68 @@ export default {
       })
     },
     // 获取rs列表
-    getFetchData() {
-      this.tableListData = mokeResData
-      // this.tableLoading = true
-      // getSelList({
-      //   ...params,
-      //   current: this.page.currPage,
-      //   size: this.page.pageSize
-      // }).then(res => {
-      //   this.tableLoading = false
-      //   if (res.code === '200') {
-      //     this.tableListData = res.data.records || []
-      //     this.page.totalCount = res.data.total
-      //     console.log(this.selectTableData)
-      //   } else {
-      //     iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
-      //   }
-      //   console.log(res)
-      // }).catch(e => {
-      //   this.tableLoading = false
-      // })
+    async getFetchData(params) {
+      this.tableLoading = true
+      try {
+        // const res = checklistData
+        const res = await getSelList(Object.assign({
+          current: this.page.currPage,
+          size: this.page.pageSize
+        }, params))
+        this.tableLoading = false
+        if (res.code === '200') {
+          this.tableListData = res.data.records || []
+          this.page.totalCount = res.data.total
+        } else {
+          this.tableListData = []
+          this.page.totalCount = 0
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
+      } catch(e) {
+        this.tableLoading = false
+        this.tableListData = []
+        this.page.totalCount = 0
+        iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
+      }
     },
     // 多选
     handleSelectionChange(data) {
       this.selectTableData = data
     },
+    // 发起复核
+    async initRsReview() {
+      if (!this.selectTableData.length) {
+        iMessage.warn(this.language('nominationSuggestion_QingXuanZeZhiShaoYiTiaoShuJu', '请选择至少一条数据'))
+        return
+      }
+      const confirmInfo = await this.$confirm(this.language('NINGQUEDINGYAOFAQIFUHEMA','您确定要发起复核吗？'))
+      if (confirmInfo !== 'confirm') return
+      const idList = this.selectTableData.map(o => Number(o.id))
+      try {
+        const res = await selSheetSubmit({nominateIdArr: idList})
+        if (res.code === '200') {
+          iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'))
+          this.getFetchData()
+        } else {
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
+      } catch (e) {
+        iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
+      }
+    },
     // 批量撤回
     async handleBatchRevoke() {
       if (!this.selectTableData.length) {
-        iMessage.error(this.$t('nominationSuggestion.QingXuanZeZhiShaoYiTiaoShuJu'))
+        iMessage.warn(this.language('nominationSuggestion_QingXuanZeZhiShaoYiTiaoShuJu', '请选择至少一条数据'))
         return
       }
-      const confirmInfo = await this.$confirm(this.$t('revokeSure'))
+      const confirmInfo = await this.$confirm(this.language('revokeSure'))
       if (confirmInfo !== 'confirm') return
       const idList = this.selectTableData.map(o => Number(o.id))
       try {
         const res = await batchRevoke({nominateIdArr: idList})
         if (res.code === '200') {
-          iMessage.success(this.$t('LK_CAOZUOCHENGGONG'))
+          iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'))
           this.getFetchData()
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
@@ -298,19 +326,19 @@ export default {
         iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
       }
     },
-    // 批量删除
-    async handleBatchDelete() {
+    // 批量退回至通过状态
+    async handleBatchRevokeToPass() {
       if (!this.selectTableData.length) {
-        iMessage.error(this.$t('nominationSuggestion.QingXuanZeZhiShaoYiTiaoShuJu'))
+        iMessage.warn(this.language('nominationSuggestion_QingXuanZeZhiShaoYiTiaoShuJu','请选择至少一条数据'))
         return
       }
-      const confirmInfo = await this.$confirm(this.$t('deleteSure'))
+      const confirmInfo = await this.$confirm(this.language('revokeSure','您确定要执行撤回操作吗？'))
       if (confirmInfo !== 'confirm') return
       const idList = this.selectTableData.map(o => Number(o.id))
       try {
-        const res = await batchDelete({nominateIdArr: idList})
+        const res = await batchRevokeToPass({nominateIdArr: idList})
         if (res.code === '200') {
-          iMessage.success(this.$t('LK_CAOZUOCHENGGONG'))
+          iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'))
           this.getFetchData()
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
@@ -319,44 +347,34 @@ export default {
         iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
       }
     },
-    /**
-     * 冻结
-     * type: true 冻结
-     * type: false 解冻
-     */
-    async freeze(type = true){
-      const {selectTableData} = this;
-      if(!selectTableData.length){
-        iMessage.warn(this.$t('nominationSuggestion.QingXuanZeZhiShaoYiTiaoShuJu'));
-      }else{
-        const confirmInfo = await this.$confirm(this.$t('LK_NINQUERENZHIXINGDONGJIECAOZUOMA'));
-        if (confirmInfo !== 'confirm') return;
-        const nominateIdArr = selectTableData.map((item)=>Number(item.id));
-        const data = {
-          nominateIdArr,
-        };
-        try {
-          const res = type ? await nominateRreeze(data) : await nominateUnRreeze(data)
-          const { code } = res;
-          if(code == 200){
-            iMessage.success(this.$t('LK_CAOZUOCHENGGONG'));
-            this.getFetchData()
-          }else{
-            iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
-          }
-        } catch (e) {
-          iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
+    // SEL单据确认
+    async selConfirm() {
+      if (!this.selectTableData.length) {
+        iMessage.warn(this.language('nominationSuggestion_QingXuanZeZhiShaoYiTiaoShuJu','请选择至少一条数据'))
+        return
+      }
+      const confirmInfo = await this.$confirm(this.language('LK_EXCUTESURE','您确定要执行该操作吗？'))
+      if (confirmInfo !== 'confirm') return
+      const idList = this.selectTableData.map(o => Number(o.id))
+      try {
+        const res = await batchConfirmSelSheet({nominateIdArr: idList})
+        if (res.code === '200') {
+          iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'))
+          this.getFetchData()
+        } else {
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }
+      } catch (e) {
+        iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
       }
     },
-
     // 定点
     async confirm(){
       const {selectTableData} = this;
       if(!selectTableData.length){
-        iMessage.warn(this.$t('nominationSuggestion.QingXuanZeZhiShaoYiTiaoShuJu'));
+        iMessage.warn(this.language('nominationSuggestion_QingXuanZeZhiShaoYiTiaoShuJu', '请选择至少一条数据'));
       }else{
-        const confirmInfo = await this.$confirm(this.$t('LK_NINQUERENZHIXINGDONGJIECAOZUOMA'));
+        const confirmInfo = await this.$confirm(this.language('LK_NINQUERENZHIXINGDINGDIANCAOZUOMA','您确定要执行定点操作吗？'));
         if (confirmInfo !== 'confirm') return;
         const nomiAppIdList = selectTableData.map((item)=>Number(item.id));
         const data = {
@@ -365,7 +383,7 @@ export default {
         await nominateConfirm(data).then((res)=>{
           const { code } = res;
           if(code == 200){
-            iMessage.success(this.$t('LK_CAOZUOCHENGGONG'));
+            iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
             this.getFetchData()
           }else{
             iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
@@ -375,32 +393,13 @@ export default {
         })
       }
     },
-    // rs冻结
-    async frozeRS(state){
-      const {selectTableData} = this;
-      if(!selectTableData.length){
-        iMessage.warn(this.$t('nominationSuggestion.QingXuanZeZhiShaoYiTiaoShuJu'));
-      }else{
-        const confirmInfo = await this.$confirm(this.$t('LK_NINQUERENZHIXINGDONGJIECAOZUOMA'));
-        if (confirmInfo !== 'confirm') return;
-        const nomiAppIdList = selectTableData.map((item)=>Number(item.id));
-        const data = {
-          ids: nomiAppIdList,
-        };
-        try {
-          const res = state ? await rsFrozen(data) : await rsUnFrozen(data)
-          const { code } = res;
-          if(code == 200){
-            iMessage.success(this.$t('LK_CAOZUOCHENGGONG'));
-            this.getFetchData()
-          }else{
-            iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
-          }
-        } catch(e) {
-          iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
-        }
-      }
-    },
+    // sel附件列表弹窗
+    confirmSelSheet(row) {
+      console.log(row)
+      this.selStatus = !(row.selStatus && row.selStatus.code === 'Confirmed')
+      this.selNominateId = row.id
+      this.selDialogVisibal = true
+    }
 
   }
 }

@@ -1,9 +1,9 @@
 /*
  * @Author: HaoJiang
  * @Date: 2021-05-20 14:29:09
- * @LastEditTime: 2021-06-29 17:09:09
+ * @LastEditTime: 2021-06-30 16:06:53
  * @LastEditors: Please set LastEditors
- * @Description: sel上会复核
+ * @Description: 定点表格信息
  *
  */
 
@@ -26,7 +26,6 @@ export const tableTitle = [{
   //export const tableTitle = permissionTitle("nominationLanguage_nominationLanguageLIST",[{
   props: 'id',
   name: '申请单号',
-  width: 150,
   key: 'nominationLanguage_ShenQingDanHao',
   tooltip: false
 },
@@ -43,6 +42,12 @@ export const tableTitle = [{
   key: 'PROJECT',
   tooltip: false
 },
+// {
+//   props: 'nominateProcessType',
+//   name: '类型',
+//   key: 'nominationLanguage_LeiXing',
+//   tooltip: true
+// },
 {
 	props: 'applicationStatus',
 	name: '状态',
@@ -50,14 +55,13 @@ export const tableTitle = [{
 	tooltip:false
 },
 {
-  props: 'partProjType',
-  name: '零件项目类型',
-  key: 'LINGJIANXIANGMULEIXING',
-  width: 150,
-  tooltip: true
+  props: 'carType',
+  name: '项目类型',
+  key: 'nominationLanguage_XingMuLeiXing',
+  tooltip: false
 },
 {
-  props: 'meetingName',
+  props: 'meetingPresentId',
   name: '会议',
   key: 'nominationLanguage_HuiYi',
   tooltip: true
@@ -88,74 +92,44 @@ export const tableTitle = [{
   key: 'nominationLanguage_RSDongJieRiQi',
   tooltip: false
 },
-{
-  props: 'isPriceConsistent',
-  name: '报价一致性校验状态',
-  width: 150,
-  key: 'nominationLanguage_BaoJiaYiZhiXingZhuangTai',
-  tooltip: false
-},
-{
-  props: 'selStatus',
-  name: 'SEL单据确认状态',
-  width: 150,
-  key: 'nominationLanguage_SELDanJuQUeRenZH',
-  tooltip: false
-},
-{
-	props: 'checkDueDate',
-	name: '复核截止日期',
-  width: 150,
-	key: 'nominationLanguage.FuHeJieZhiRiQi',
-	tooltip:false
-},
-{
-	props: 'signId',
-	name: '签字单号',
-	key: 'nominationLanguage.QianZiDanHao',
-	tooltip:false
-},
-{
-  props: 'signStatus',
-  name: '签字单状态',
-  width: 150,
-  key: 'nominationLanguage.QianZiDanZhuangTai',
-  tooltip: false
-},
-{
-  props: 'freezeDate',
-  name: '冻结日期',
-  width: 150,
-  key: 'nominationLanguage_DongJieRiQi',
-  tooltip: false
-},
-]
 
-export const mokeResData = [
-  {
-    id: '762345662',
-    selStatus: '未分摊'
-  },
-  {
-    id: '762345664',
-    selStatus: '已确认'
-  },
-  {
-    id: '762345665',
-    selStatus: '未确认'
-  }
-]
-
-// 签字单下拉菜单
-export const signMenu = [
-  {
-    name: '新建签字单',
-    key: 'XINJIANQIANZIDAN',
-    path: '/sourcing/partsnomination/signSheet/details?mode=add'
-  },
-  {
-    name: 'M签字单列表',
-    key: 'MQIANZIDANLIEBIAO',
-    path: '/sourcing/partsnomination/signSheet'
-  },
+// {
+// 	props: 'freezeDate',
+// 	name: '冻结日期',
+// 	key: 'nominationLanguage_DongJieRiQi',
+// 	tooltip:false
+// },
+// {
+//   props: 'meetingStatus',
+//   name: '会议状态',
+//   key: 'nominationLanguage_HuiYiZhuangTai',
+//   tooltip: true
+// },
+// {
+//   props: 'isPriceConsistent',
+//   name: '报价一致性校验状态',
+//   width: 150,
+//   key: 'nominationLanguage_BaoJiaYiZhiXingZhuangTai',
+//   tooltip: false
+// },
+// {
+//   props: 'selStatus',
+//   name: 'SEL单据确认状态',
+//   width: 150,
+//   key: 'nominationLanguage_SELDanJuQUeRenZH',
+//   tooltip: false
+// },
+// {
+//   props: 'nominateDate',
+//   name: '定点日期',
+//   width: 150,
+//   key: 'nominationLanguage_DingDianRiQi',
+//   tooltip: false
+// },
+// {
+//   props: 'LK_CAOZUO',
+//   name: '操作',
+//   key: 'LK_CAOZUO',
+//   tooltip: false
+// }
 ]

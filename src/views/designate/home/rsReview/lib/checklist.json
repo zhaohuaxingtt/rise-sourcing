@@ -1,0 +1,240 @@
+{
+  "result": true,
+  "code": "200",
+  "desEn": "success",
+  "desZh": "操作成功",
+  "data": {
+      "records": [
+          {
+              "id": "32",
+              "nominateName": "02V963553G3automatik Getribeautomatik Getribe",
+              "carType": null,
+              "applicationStatus": {
+                  "code": "NEW",
+                  "desc": "草稿",
+                  "dictName": "NEW"
+              },
+              "partProjType": "123",
+              "meetingName": null,
+              "nominateUserName": "周彤",
+              "linieName": "超级管理员",
+              "rsStatus": null,
+              "rsFreezeDate": null,
+              "isPriceConsistent": null,
+              "selStatus": null,
+              "checkDueDate": null,
+              "signId": null,
+              "signStatus": null,
+              "freezeDate": null
+          },
+          {
+              "id": "32",
+              "nominateName": "02V963553G3automatik Getribeautomatik Getribe",
+              "carType": null,
+              "applicationStatus": {
+                  "code": "NEW",
+                  "desc": "草稿",
+                  "dictName": "NEW"
+              },
+              "partProjType": "123",
+              "meetingName": null,
+              "nominateUserName": "周彤",
+              "linieName": "超级管理员",
+              "rsStatus": null,
+              "rsFreezeDate": null,
+              "isPriceConsistent": null,
+              "selStatus": null,
+              "checkDueDate": null,
+              "signId": null,
+              "signStatus": null,
+              "freezeDate": null
+          },
+          {
+              "id": "32",
+              "nominateName": "02V963553G3automatik Getribeautomatik Getribe",
+              "carType": null,
+              "applicationStatus": {
+                  "code": "NEW",
+                  "desc": "草稿",
+                  "dictName": "NEW"
+              },
+              "partProjType": "123",
+              "meetingName": null,
+              "nominateUserName": "周彤",
+              "linieName": "超级管理员",
+              "rsStatus": null,
+              "rsFreezeDate": null,
+              "isPriceConsistent": null,
+              "selStatus": null,
+              "checkDueDate": null,
+              "signId": null,
+              "signStatus": null,
+              "freezeDate": null
+          },
+          {
+              "id": "32",
+              "nominateName": "02V963553G3automatik Getribeautomatik Getribe",
+              "carType": null,
+              "applicationStatus": {
+                  "code": "NEW",
+                  "desc": "草稿",
+                  "dictName": "NEW"
+              },
+              "partProjType": "123",
+              "meetingName": null,
+              "nominateUserName": "周彤",
+              "linieName": "超级管理员",
+              "rsStatus": null,
+              "rsFreezeDate": null,
+              "isPriceConsistent": null,
+              "selStatus": null,
+              "checkDueDate": null,
+              "signId": null,
+              "signStatus": null,
+              "freezeDate": null
+          },
+          {
+              "id": "32",
+              "nominateName": "02V963553G3automatik Getribeautomatik Getribe",
+              "carType": null,
+              "applicationStatus": {
+                  "code": "NEW",
+                  "desc": "草稿",
+                  "dictName": "NEW"
+              },
+              "partProjType": "123",
+              "meetingName": null,
+              "nominateUserName": "周彤",
+              "linieName": "超级管理员",
+              "rsStatus": null,
+              "rsFreezeDate": null,
+              "isPriceConsistent": null,
+              "selStatus": null,
+              "checkDueDate": null,
+              "signId": null,
+              "signStatus": null,
+              "freezeDate": null
+          },
+          {
+              "id": "32",
+              "nominateName": "02V963553G3automatik Getribeautomatik Getribe",
+              "carType": null,
+              "applicationStatus": {
+                  "code": "NEW",
+                  "desc": "草稿",
+                  "dictName": "NEW"
+              },
+              "partProjType": "123",
+              "meetingName": null,
+              "nominateUserName": "周彤",
+              "linieName": "超级管理员",
+              "rsStatus": null,
+              "rsFreezeDate": null,
+              "isPriceConsistent": null,
+              "selStatus": null,
+              "checkDueDate": null,
+              "signId": null,
+              "signStatus": null,
+              "freezeDate": null
+          },
+          {
+              "id": "32",
+              "nominateName": "02V963553G3automatik Getribeautomatik Getribe",
+              "carType": null,
+              "applicationStatus": {
+                  "code": "NEW",
+                  "desc": "草稿",
+                  "dictName": "NEW"
+              },
+              "partProjType": "123",
+              "meetingName": null,
+              "nominateUserName": "周彤",
+              "linieName": "超级管理员",
+              "rsStatus": null,
+              "rsFreezeDate": null,
+              "isPriceConsistent": null,
+              "selStatus": null,
+              "checkDueDate": null,
+              "signId": null,
+              "signStatus": null,
+              "freezeDate": null
+          },
+          {
+              "id": "32",
+              "nominateName": "02V963553G3automatik Getribeautomatik Getribe",
+              "carType": null,
+              "applicationStatus": {
+                  "code": "NEW",
+                  "desc": "草稿",
+                  "dictName": "NEW"
+              },
+              "partProjType": "123",
+              "meetingName": null,
+              "nominateUserName": "周彤",
+              "linieName": "超级管理员",
+              "rsStatus": null,
+              "rsFreezeDate": null,
+              "isPriceConsistent": null,
+              "selStatus": null,
+              "checkDueDate": null,
+              "signId": null,
+              "signStatus": null,
+              "freezeDate": null
+          },
+          {
+              "id": "32",
+              "nominateName": "02V963553G3automatik Getribeautomatik Getribe",
+              "carType": null,
+              "applicationStatus": {
+                  "code": "NEW",
+                  "desc": "草稿",
+                  "dictName": "NEW"
+              },
+              "partProjType": "123",
+              "meetingName": null,
+              "nominateUserName": "周彤",
+              "linieName": "超级管理员",
+              "rsStatus": null,
+              "rsFreezeDate": null,
+              "isPriceConsistent": null,
+              "selStatus": null,
+              "checkDueDate": null,
+              "signId": null,
+              "signStatus": null,
+              "freezeDate": null
+          },
+          {
+              "id": "32",
+              "nominateName": "02V963553G3automatik Getribeautomatik Getribe",
+              "carType": null,
+              "applicationStatus": {
+                  "code": "NEW",
+                  "desc": "草稿",
+                  "dictName": "NEW"
+              },
+              "partProjType": "123",
+              "meetingName": null,
+              "nominateUserName": "周彤",
+              "linieName": "超级管理员",
+              "rsStatus": null,
+              "rsFreezeDate": null,
+              "isPriceConsistent": null,
+              "selStatus": null,
+              "checkDueDate": null,
+              "signId": null,
+              "signStatus": null,
+              "freezeDate": null
+          }
+      ],
+      "total": 53012,
+      "size": 10,
+      "current": 1,
+      "orders": [],
+      "optimizeCountSql": true,
+      "hitCount": false,
+      "countId": null,
+      "maxLimit": null,
+      "searchCount": true,
+      "pages": 5302
+  }
+}

@@ -1,7 +1,7 @@
 /*
  * @Author: HaoJiang
  * @Date: 2021-05-20 14:29:09
- * @LastEditTime: 2021-06-25 14:59:38
+ * @LastEditTime: 2021-06-30 11:15:58
  * @LastEditors: Please set LastEditors
  * @Description: 定点表格信息
  *
@@ -150,13 +150,13 @@ export const seltTableTitle = [
   {
     props: 'uploadDate',
     name: '上传日期',
-    key: 'strategicdoc_ShangChuanRiQi',
+    key: 'LK_SHANGCHUANRIQI',
     tooltip: false
   },
   {
     props: 'uploadBy',
     name: '上传人',
-    key: 'strategicdoc_ShangChuanRen',
+    key: 'LK_SHANGCHUANREN',
     tooltip: false
   }
 ]

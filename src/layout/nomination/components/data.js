@@ -63,3 +63,12 @@ export const sortTableData = [
     {key:'MTZ',name:'MTZ',visible: true, sort: 13},
     {key:'Attachment',name:'Attachment',visible: true, sort: 14},
 ]
+
+// 上会选择弹窗
+export const mettingTableTitle = [
+    {props:'meetingName',name:'会议名称',key: 'HUIYIMINGCHENG',tooltip:false},
+    {props:'meetingType',name:'会议类型',key: 'HUIYILEIXING',tooltip:false},
+    {props:'startDate',name:'开始日期',key: 'KAISHIRIQI',tooltip:false},
+    {props:'startTime',name:'开始时间',key: 'KAISHISHIJIAN',tooltip:false},
+    {props:'meetingSite',name:'会议地点',key: 'KAISHIDIDIAN',tooltip:false},
+  ]

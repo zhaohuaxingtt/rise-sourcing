@@ -68,7 +68,7 @@
             :loading="startLoding"
           >
             {{ language("nominationLanguage_TiJiaoYiZhiXingJiaoYan", '提交一致性校验') }}
-          </iButton>
+          </iButton>        
         </div>
       </div>
       <tablelist
@@ -108,6 +108,19 @@
       <!-- <template #isPriceConsistent="scope">
         <span>{{scope.row.isPriceConsistent ? '通过' : '不通过'}}</span>
       </template> -->
+      <!-- SEL单据确认状态 -->
+      <template #selStatus="scope">
+        <div>
+          <a
+            href="javascript:;" 
+            class="selStatus-link" 
+            @click="confirmSelSheet(scope.row)" 
+            v-if="scope.row.selStatus && scope.row.selStatus.code === 'Unconfirmed' && curentUserRole.includes('9')">
+          {{scope.row.selStatus && scope.row.selStatus.desc || scope.row.selStatus}}
+        </a>
+          <span v-else>{{scope.row.selStatus && scope.row.selStatus.desc || scope.row.selStatus}}</span>
+        </div>
+      </template>
 
       <!-- 定点日期 -->
       <template #nominateDate="scope">
@@ -133,7 +146,7 @@
     </iCard>
 
     <!-- sel确认弹窗 -->
-    <selDialog :visible.sync="selDialogVisibal" />
+    <selDialog :visible.sync="selDialogVisibal" :nomiAppId="selNominateId" :readOnly="false" />
     
   </iPage>
 </template>
@@ -179,6 +192,8 @@ export default {
       selectTableData: [],
       startLoding: false,
       carTypeList: [],
+      // 定点管理员上传sel状态待确认的sel附件列表
+      selNominateId: '',
       selDialogVisibal: false
     }
   },
@@ -309,7 +324,12 @@ export default {
       if(!selectTableData.length){
         iMessage.warn(this.language('nominationSuggestion_QingXuanZeZhiShaoYiTiaoShuJu','请选择至少一条数据'));
       }else{
-        const confirmInfo = await this.$confirm(this.language('LK_NINQUERENZHIXINGDONGJIECAOZUOMA','您确定要执行冻结操作吗？'));
+        let confirmInfo = null;
+        if (type) {
+          confirmInfo = await this.$confirm(this.language('LK_NINQUERENZHIXINGDONGJIECAOZUOMA', '您确定要执行冻结操作吗？'));
+        } else {
+          confirmInfo = await this.$confirm(this.language('LK_NINQUERENZHIXINGJIEDONGCAOZUOMA', '您确定要执行解冻操作吗？'));
+        }
         if (confirmInfo !== 'confirm') return;
         const nominateIdArr = selectTableData.map((item)=>Number(item.id));
         const data = {
@@ -361,7 +381,12 @@ export default {
       if(!selectTableData.length){
         iMessage.warn(this.language('nominationSuggestion_QingXuanZeZhiShaoYiTiaoShuJu','请选择至少一条数据'));
       }else{
-        const confirmInfo = await this.$confirm(this.language('LK_NINQUERENZHIXINGDONGJIECAOZUOMA', '您确定要执行冻结操作吗？'));
+        let confirmInfo = null
+        if (state) {
+          confirmInfo = await this.$confirm(this.language('LK_NINQUERENZHIXINGDONGJIECAOZUOMA', '您确定要执行冻结操作吗？'));
+        } else {
+          confirmInfo = await this.$confirm(this.language('LK_NINQUERENZHIXINGJIEDONGCAOZUOMA', '您确定要执行解冻操作吗？'));
+        }
         if (confirmInfo !== 'confirm') return;
         const nomiAppIdList = selectTableData.map((item)=>Number(item.id));
         const data = {
@@ -381,7 +406,12 @@ export default {
         }
       }
     },
-
+    // sel附件列表弹窗
+    confirmSelSheet(row) {
+      console.log(row)
+      this.selNominateId = row.id
+      this.selDialogVisibal = true
+    }
   }
 }
 </script>
@@ -389,5 +419,9 @@ export default {
 <style lang="scss" scoped>
 .designateSearch {
   margin-top: 20px;
+}
+.selStatus-link {
+  font-size: 12px;
+  text-decoration: underline;
 }
 </style>

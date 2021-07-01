@@ -1,7 +1,7 @@
 <!--
  * @Author: Haojiang
  * @Date: 2021-06-24 17:53:08
- * @LastEditTime: 2021-06-28 12:16:02
+ * @LastEditTime: 2021-06-30 17:58:16
  * @LastEditors: Please set LastEditors
  * @Description: m签字单新增、详情
  * @FilePath: /front-web/src/views/designate/home/signSheet/newSignSheet.vue
@@ -11,59 +11,154 @@
     
       <div class="margin-bottom20 clearFloat">
         <span class="font18 font-weight">
-          {{ language("XINJIANQIANZIDAN",'新建签字单') }}</span
+          {{ mode === 'add' ? language("XINJIANQIANZIDAN",'新建签字单') : language("LK_QIANZIDAN",'签字单') }}</span
         >
         <div class="floatright">
           <span v-if="mode === 'add'">
-            <iButton>
+            <iButton @click="handleSave">
               {{ language("BAOCUN",'保存') }}
             </iButton>
-            <iButton>
+            <iButton @click="handleSubmit">
               {{ language("LK_TIJIAO",'提交') }}
             </iButton>
-            <iButton>
+            <iButton @click="handleRemove">
               {{ language("YICHU",'移除') }}
             </iButton>
-            <iButton>
+            <iButton @click="$router.back()">
               {{ language("FANHUI",'返回') }}
             </iButton>
           </span>
           <span v-else>
-            <iButton @click="multiEditControl = true">
-              {{ language("LK_BIANJI",'返回') }}
+            <iButton @click="$router.back()">
+              {{ language("LK_FANHUI",'返回') }}
             </iButton>
           </span>
           
         </div>
       </div>
       <iCard>
-        <el-form>
-          <!-- 签字单号 -->
-          <el-form-item :label="language('QIANZIDANHAO','签字单号')">
-            <iInput
-              v-model="form.signId"
-              :placeholder="language('LK_QINGSHURU','请输入')"
-            ></iInput>
-          </el-form-item>
-          <!-- 状态 -->
-          <el-form-item :label="language('ZHUANGTAI','状态')">
-            <iInput
-              v-model="form.status"
-              :placeholder="language('LK_QINGSHURU','请输入')"
-            ></iInput>
-          </el-form-item>
+        <el-form class="signsheet-filter" :inline="true">
+          <el-row gutter="20">
+            <el-col span="6">
+              <!-- 签字单号 -->
+              <el-form-item :label="`${language('QIANZIDANHAO','签字单号')}:`">
+                <iInput
+                  v-model="form.signCode"
+                  :disabled="true"
+                  :placeholder="language('LK_QINGSHURU','请输入')"
+                ></iInput>
+              </el-form-item>
+            </el-col>
+            <el-col span="6">
+              <!-- 状态 -->
+              <el-form-item :label="`${language('ZHUANGTAI','状态')}:`">
+                <iInput
+                  v-model="form.status"
+                  :disabled="true"
+                  :placeholder="language('LK_QINGSHURU','请输入')"
+                ></iInput>
+              </el-form-item>
+            </el-col>
+            <el-col span="12">
+              <!-- 描述 -->
+              <el-form-item :label="`${language('MIAOSHU','描述')}:`" class="desc">
+                <iInput
+                  v-model="form.description"
+                  :placeholder="language('LK_QINGSHURU','请输入')"
+                ></iInput>
+              </el-form-item>
+            </el-col>
+          </el-row>
         </el-form>
+
+        <!-- 表格 -->
+        <tablelist
+        :tableData="tableListData"
+        :tableTitle="tableTitle"
+        :tableLoading="tableLoading"
+        @handleSelectionChange="handleSelectionChange"
+      >
+      <!-- 定点单号 -->
+      <template #nominateName="scope">
+        <a
+          href="javascript:;"
+          @click="viewNominationDetail(scope.row)">
+          {{scope.row.nominateName}}
+        </a>
+      </template>
+      <!-- 定点类型 -->
+      <template #nominateProcessType="scope">
+        <span>{{(scope.row.nominateProcessType && scope.row.nominateProcessType.desc) || ''}}</span>
+      </template>
+      <!-- 定点类型 -->
+      <template #applicationStatus="scope">
+        <span>{{(scope.row.applicationStatus && scope.row.applicationStatus.desc) || ''}}</span>
+      </template>
+
+      <!-- re冻结日期 -->
+      <template #rsFreezeDate="scope">
+        <span>{{scope.row.rsFreezeDate | dateFilter("YYYY-MM-DD")}}</span>
+      </template>
+      
+      <!-- 一致性校验 -->
+      <!-- <template #isPriceConsistent="scope">
+        <span>{{scope.row.isPriceConsistent ? '通过' : '不通过'}}</span>
+      </template> -->
+
+      <!-- 定点日期 -->
+      <template #nominateDate="scope">
+        <span>{{scope.row.nominateDate | dateFilter("YYYY-MM-DD")}}</span>
+      </template>
+
+      <template #freezeDate="scope">
+        <span>{{scope.row.freezeDate | dateFilter("YYYY-MM-DD")}}</span>
+      </template>
+      <template #selStatus="scope">
+        <div>
+          <a href="javascript:;" class="selStatus-link" @click="confirmSelSheet(false)" v-if="scope.row.selStatus === '已确认'">{{scope.row.selStatus}}</a>
+          <a href="javascript:;" class="selStatus-link" @click="confirmSelSheet(true)" v-else-if="scope.row.selStatus === '未确认'">{{scope.row.selStatus}}</a>
+          <span v-else>{{scope.row.selStatus}}</span>
+        </div>
+      </template>
+      
+      </tablelist>
+      <iPagination
+        v-update
+        @size-change="handleSizeChange($event, getFetchData)"
+        @current-change="handleCurrentChange($event, getFetchData)"
+        background
+        :page-sizes="page.pageSizes"
+        :page-size="page.pageSize"
+        :layout="page.layout"
+        :current-page="page.currPage"
+        :total="page.totalCount"
+      />
+      </iCard>
+
+      <iCard class="margin-top20">
+        <!-- 引入定点申请综合管理页面 -->
+        <designateSign :mode="'sign'" @choose="handleChoose" :refresh.sync="designateSignRefresh" />
       </iCard>
   </iPage>
 </template>
 <script>
+import {detailsTableTitle as tableTitle, } from './components/data'
 import { pageMixins } from '@/utils/pageMixins'
 import filters from "@/utils/filters"
 import tablelist from "@/views/designate/supplier/components/tableList";
+import designateSign from "@/views/designate/home/designateSign/index";
+import {
+  getNomiSelectedPage,
+  getNomiNotSelectedPage,
+  saveSignSheet,
+  removeSignsheetItems,
+  
+} from '@/api/designate/nomination/signsheet'
 
 import {
   iPage,
   iCard,
+  iInput,
   iButton,
   iPagination,
   iMessage
@@ -73,21 +168,145 @@ export default {
   mixins: [ filters, pageMixins ],
   data() {
     return {
-      mode: 'add',
+      mode: this.$route.query.mode || '',
       form: {
-        signId: this.$router.query.signId,
-        status: '草稿'
+        signId: '',
+        status: '草稿',
+        description: ''
       },
-      
+      tableTitle,
+      tableListData: [],
+      tableLoading: false,
+      designateSignRefresh: false
     }
   },
   components: {
     iPage,
     iCard,
+    iInput,
     iButton,
     iPagination,
-    tablelist
+    tablelist,
+    designateSign
   },
+  created() {
+    const {query = {}} = this.$route
+    const {signCode, status, id} = query
+    this.form.signId = id
+    this.form.signCode = signCode
+    this.form.status = status
+    this.getChooseData()
+  },
+  methods: {
+    handleChoose(data) {
+      console.log(data)
+      this.tableListData = data
+    },
+    // 多选
+    handleSelectionChange(data) {
+      this.selectTableData = data
+    },
+    // 获取已经选择的数据
+    getChooseData(params) {
+      this.tableLoading = true
+      getNomiSelectedPage({
+        ...params,
+        signId: Number(this.form.signId) || '',
+        current: this.page.currPage,
+        size: this.page.pageSize
+      }).then(res => {
+        this.tableLoading = false
+        if (res.code === '200') {
+          this.tableListData = res.data.records || []
+          this.page.totalCount = res.data.total
+          console.log(this.selectTableData)
+        } else {
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
+        console.log(res)
+      }).catch(e => {
+        this.tableLoading = false
+      })
+    },
+    // 保存
+    async handleSave() {
+      const confirmInfo = await this.$confirm(this.language('LK_SAVESURE','您确定要执行保存操作吗？'))
+      if (confirmInfo !== 'confirm') return
+      const idList = this.selectTableData.map(o => Number(o.id))
+      
+      try {
+        const params = {
+          signId: Number(this.form.signId) || '', 
+          description: this.form.description, 
+          nominateIdArr: idList}
+        console.log(this.form, params)
+        const res = await saveSignSheet(params)
+        if (res.code === '200') {
+          iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'))
+          this.getFetchData()
+        } else {
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
+      } catch (e) {
+        iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
+      }
+    },
+    async handleSubmit() {
+      const confirmInfo = await this.$confirm(this.language('submitSure','您确定要执行提交操作吗？'))
+      if (confirmInfo !== 'confirm') return
+      const idList = this.selectTableData.map(o => Number(o.id))
+      try {
+        const res = await saveSignSheet({
+          signId: this.form.signId, 
+          description: this.form.description, 
+          nominateIdArr: idList})
+        if (res.code === '200') {
+          iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'))
+          this.getFetchData()
+        } else {
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
+      } catch (e) {
+        iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
+      }
+    },
+    // 移除项目
+    async handleRemove() {
+      const confirmInfo = await this.$confirm(this.language('LK_REMOVESURE','您确定要执行移除操作吗？'))
+      if (confirmInfo !== 'confirm') return
+      const idList = this.selectTableData.map(o => Number(o.id))
+      try {
+        const res = await removeSignsheetItems({
+          signId: this.form.signId, 
+          description: this.form.description, 
+          nominateIdArr: idList})
+        if (res.code === '200') {
+          iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'))
+          this.getFetchData()
+        } else {
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
+      } catch (e) {
+        iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
+      }
+    },
+  }
 
 }
 </script>
+<style lang="scss" scoped>
+.signsheet-filter {
+  .el-form-item {
+    ::v-deep .el-form-item__label {
+      padding-right: 30px;
+    }
+    
+  }
+  .desc {
+    width: 100%;
+    ::v-deep .el-form-item__content {
+      width: 90%;
+    }
+  }
+}
+</style>
