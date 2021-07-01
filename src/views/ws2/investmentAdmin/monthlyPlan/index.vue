@@ -30,11 +30,11 @@
           :buttonText="$t('LK_SHANGCHUANQINGDAN')"
           class="margin-left10 margin-right10"
         />
-        <iButton @click="saveAsList">{{ $t("LK_BAOCUN") }}</iButton>
+        <iButton @click="saveAsList" v-if="versionData.isLatestVersion">{{ $t("LK_BAOCUN") }}</iButton>
         <iButton @click="saveAsNew">{{ $t("LK_BAOCUNWEIXINBANBEN") }}</iButton>
       </div>
       <div v-else>
-        <iButton @click="edit">{{ $t("LK_BIANJI") }}</iButton>
+        <iButton @click="edit" v-if="versionData.isLatestVersion">{{ $t("LK_BIANJI") }}</iButton>
         <iButton @click="downloadList">{{ $t("LK_XIAZAIQINGDAN") }}</iButton>
       </div>
     </div>
@@ -250,6 +250,7 @@ import {
   importMonthData
 } from "@/api/ws2/investmentAdmin";
 import { iMessage } from '../../../../components';
+import store from '@/store';
 
 export default {
   mixins: [tableHeight],
@@ -291,6 +292,8 @@ export default {
     //选择版本
     changeVersion() {
       this.clearEchart = true;
+      this.pageEdit = false;
+      this.$store.commit('SET_versionId', this.versionData.id);
       this.getMonthList();
     },
     //编辑
@@ -573,19 +576,23 @@ export default {
       queryPlanVersionList().then(res => {
         if (Number(res.code) === 0 && res.data.length > 0) {
           const currentYear = new Date().getFullYear();
-          let currentYearVersion = [];
-          res.data.forEach((item, index) => {
-            let year = item.version.substring(0, 4);
-            if (year == currentYear) {
-              let temp = {};
-              temp.index = index;
-              temp.version = item.version.split("V")[1];
-              currentYearVersion.push(temp);
+          this.versionList = res.data;
+          this.versionList.map((item, index) => {
+            if (this.versionList.map(temp => temp.year).indexOf(item.year) == index) {
+              item.isLatestVersion = true;
+              if (currentYear == item.year) {
+                this.versionData = item;
+              }
+            } else {
+              item.isLatestVersion = false;
+            }
+            return item;
+          });
+          this.versionList.map(item => {
+            if (store.state.investmentAdmin.versionId == item.id) {
+              this.versionData = item; 
             }
           });
-          currentYearVersion.sort(function(a, b) { return b.version - a.version});
-          this.versionData = res.data[currentYearVersion[0].index];
-          this.versionList = res.data;
           this.getMonthList();
         }
       });
@@ -670,7 +677,7 @@ export default {
         res += item.amount;
       });
       return res;
-    }
+    },
   },
 };
 </script>
