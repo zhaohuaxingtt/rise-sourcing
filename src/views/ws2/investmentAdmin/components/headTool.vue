@@ -50,8 +50,12 @@ import {
 } from "rise";
 import { queryPlanVersionList } from "@/api/ws2/investmentAdmin/yearlyPlan";
 import store from '@/store';
+import _ from 'lodash'
 
 export default {
+  props: {
+    refreshStatus: Boolean,
+  },
   components: {
     iSelect, icon
   },
@@ -60,6 +64,12 @@ export default {
       editionList: [],
       listDetail: {},
       versionId: '',
+    }
+  },
+
+  watch: {
+    refreshStatus(){
+      this.getVersionList();
     }
   },
 
@@ -83,10 +93,13 @@ export default {
 
         if(res.code === "0"){
           const versionId = store.state.investmentAdmin.versionId;
+          const vereceive = _.cloneDeep(res.data[0]);
+          const id = versionId === '' ? res.data[0].id : versionId;
           this.editionList = res.data;
           this.listDetail = res.data[0];
-          this.versionId = versionId === '' ? res.data[0].id : versionId;
-          this.$emit('receiVereceive', res.data[0]);
+          this.versionId = id;
+          vereceive.id = id;
+          this.$emit('receiVereceive', vereceive);
         }else{
           iMessage.error(result);
         }

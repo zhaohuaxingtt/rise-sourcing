@@ -4,29 +4,14 @@
  * @Description:财报分析
  -->
 <template>
-	<iPage class="page-content">
-	<!-- <iPage class="page-content" v-permission="TOOLING_PAYMENTPLAN_PAYMENTBOARD"> -->
-		<!-- <div class="flex-between-center margin-bottom20">
-			<span class="title">{{$t('SPR_FRM_DEP_FINANA')}}</span>
-			<div class="flex-align-center"> -->
-				<!-- 维护呈现对象 -->
-				<!-- <iButton @click='openVisible'>{{$t('SPR_FRM_DEP_CXWHDX')}}</iButton> -->
-				<!-- 加入行业均值 -->
-				<!-- <iButton @click='openIndustry'>{{$t('SPR_FRM_DEP_JRHYJZ')}}</iButton> -->
-				<!-- 维护行业均值 -->
-				<!-- <iButton @click='onJumpIndustryAverage'>{{$t('SPR_FRM_DEP_WHHYJZ')}}</iButton>
-			</div>
-		</div> -->
-    <!-- <iButton @click='downloadList'>{{$t('LK_XIAZAIQINGDAN')}}</iButton> -->
-		<iCard id='powerBi'>
-			<!-- <iframe :src='url.embedUrl' scrolling="auto" frameborder="0" width="100%" height="500px"></iframe> -->
-		</iCard>
-		<!-- 维护呈现对象 -->
-		<!-- <changeItem v-model="visible" :option="1" :selectData='supplierNameData' :tip="$t('SPR_FRM_DEP_OBJPLACE')" multiple :title="$t('SPR_FRM_DEP_CXWHDX')" @sure="sureChangeItems"></changeItem> -->
-		<!-- 加入行业均值 -->
-		<!-- <changeItem v-model="industry" :option="2" :selectData='averageNameData' :tip="$t('SPR_FRM_DEP_AVGPLACE')" :title="$t('SPR_FRM_DEP_JRHYJZ')" @sure="sureIndustryChangeItems">
-		</changeItem> -->
-	</iPage>
+	<div>
+		<iPage class="page-content" v-permission="TOOLING_PAYMENTPLAN_PAYMENTBOARD">
+			<iCard id='powerBi'>
+				
+			</iCard>
+		</iPage>
+	</div>
+	
 </template>
 
 <script>

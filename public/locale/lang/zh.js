@@ -1081,6 +1081,9 @@
         'LK_SHIYIYUE': '十一月',    //  十一月
         'LK_SHIERYUE': '十二月',    //  十二月
 
+        'LK_FUKUANKANBAN': '付款看板',  //  付款看板
+        'LK_NIANDUJIHUA': '年度计划',   //  年度计划
+
         // 定点管理
         'nominationLanguage': {
             "DingDianXiangQing": '定点详情', // 定点详情
