@@ -71,3 +71,19 @@ export function modifyRfqToRemark(parmars) {
     data: parmars
   })
 }
+//map
+export function batchSupplierMapOverview(parmars) {
+  return requst({
+    url: `/batchOverview/batchSupplierMapOverview`,
+    method: 'POST',
+    data: parmars
+  })
+}
+//定点记录
+export function listFixedPointHistory(parmars) {
+  return requst({
+    url: `/costAnalysisTool/rfq/listFixedPointHistory`,
+    method: 'POST',
+    data: parmars
+  })
+}

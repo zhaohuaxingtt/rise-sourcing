@@ -7,7 +7,7 @@
  */
 
 export const tableTitle = [
-  { props: 'carClassify', name: '单位：辆', key: 'TPZS.DWL', width: 100 },
+  { props: 'carType', name: '单位：辆', key: 'TPZS.DWL', width: 100 },
   { props: 'actualProEndLastMonth', name: '', key: '' },
   { props: 'increaseRate', name: '涨幅', key: 'TPZS.ZF', width: 100 },
   { props: 'lifeCycle', name: '生命周期', key: 'TPZS.SMZQ', width: 100 },

@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-24 20:14:24
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-04 20:02:48
+ * @LastEditTime: 2021-06-18 15:38:37
  * @Description: 添加规则弹窗
  * @FilePath: \front-web\src\views\designate\defaultLogic\addRule.vue
 -->
@@ -53,7 +53,7 @@
         </iSelect>
       </el-form-item>
       <el-form-item v-if="item.input1 !== '' && item.input1 !== 0 && item.input1 !== 4" :label="' '">
-        <iInput :placeholder="$t('LK_QINGSHURU')" v-model="item.input3" type="number" oninput="if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+5)}"></iInput>
+        <iInput :placeholder="$t('LK_QINGSHURU')" v-model="item.input3" type="number" oninput="if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"></iInput>
       </el-form-item>
       <icon v-if="index > 0" symbol name="icondingdianshenqingyusheluoji-shanchu" @click.native="handleDeleteRule(index)" class="delete-icon cursor"></icon>
     </el-form>

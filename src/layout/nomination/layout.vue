@@ -24,6 +24,7 @@ import {
 } from "rise";
 import designateStep from './components/designateStep.vue'
 import decisionDataHeader from './components/decisionDataHeader'
+import { applyStep } from './components/data'
 
 export default {
   components: {
@@ -45,9 +46,28 @@ export default {
   },
   methods: {
     // 获取步骤状态
-    getStepStatus(){
+    async getStepStatus(){
       const nominateId = this.$store.getters.nomiAppId || this.$route.query.desinateId
-      this.$store.dispatch('setNominationStep',{nominateId})
+      await this.$store.dispatch('setNominationStep',{nominateId})
+      // 检查是否带强制路由参数，force表示不做step检测跳转
+      if (this.$route.query.route === 'force') return
+      this.$nextTick(() => {
+        let phaseType = this.$store.getters.phaseType
+        // 已经到决策资料阶段，默认phaseType=5
+        phaseType = phaseType >= 5 ? 5 : phaseType
+        let item = applyStep.find(o => o.id === phaseType )
+        const {query, path} = this.$route;
+        // 在决策资料前的步骤，支持正确的step跳转
+        if (path.indexOf('/designate/decisiondata') === -1) {
+          this.$router.push({
+            path:item.path,
+            query: {
+                ...query,
+            }
+          })
+        }
+        
+      })
     },
   },
   watch:{$route(to,from){

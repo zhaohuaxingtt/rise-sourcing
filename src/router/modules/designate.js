@@ -1,7 +1,7 @@
 /*
  * @Author: HaoJiang
  * @Date: 2021-05-20 14:29:09
- * @LastEditTime: 2021-06-09 15:27:25
+ * @LastEditTime: 2021-06-28 11:12:08
  * @LastEditors: Please set LastEditors
  * @Description: 定点管理
  * @metaParams: hideTabLV3 隐藏三级导航
@@ -23,6 +23,42 @@ export default [
         },
         component: () =>
             import ("@/views/designate/home"),
+      },
+      {
+        path: "/sourcing/partsnomination/rsreview",
+        name: "designateRsReview",
+        meta: {
+          title: "上会RS单复核",
+        },
+        component: () =>
+            import ("@/views/designate/home/rsReview"),
+      },
+      {
+        path: "/sourcing/partsnomination/rsreview/details",
+        name: "designateRsreviewDetails",
+        meta: {
+          title: "上会RS单复核详情",
+        },
+        component: () =>
+            import ("@/views/designate/home/rsReview/details"),
+      },
+      {
+        path: "/sourcing/partsnomination/signSheet",
+        name: "designateSignSheet",
+        meta: {
+          title: "签字单列表",
+        },
+        component: () =>
+            import ("@/views/designate/home/signSheet"),
+      },
+      {
+        path: "/sourcing/partsnomination/signSheet/details",
+        name: "designateNewSignSheet",
+        meta: {
+          title: "新建签字单",
+        },
+        component: () =>
+            import ("@/views/designate/home/signSheet/details"),
       },
       {
         path: "/sourcing/designate/rfqdetail/addRfq",
@@ -148,6 +184,7 @@ export default [
             name: "approvalPersonAndRecord",
             meta: {
                 title: "定点管理-审批人审批记录",
+                hideTabLV3: true,
             },
             component: () =>
               import ("@/views/designate/approvalPersonAndRecord/index")
@@ -161,15 +198,15 @@ export default [
             component: () =>
               import ("@/views/designate/designatedetail/attachment")
           },
-          {                             
-            path: "/designate/decisiondata/attachment/upload",
-            name: "designateDecisionAttachmentUpload",
-            meta: {
-                title: "定点管理-决策资料-attachmentUpload",
-            },
-            component: () =>
-              import ("@/views/designate/designatedetail/attachment/upload")
-          },
+          // {                             
+          //   path: "/designate/decisiondata/attachment/upload",
+          //   name: "designateDecisionAttachmentUpload",
+          //   meta: {
+          //       title: "定点管理-决策资料-attachmentUpload",
+          //   },
+          //   component: () =>
+          //     import ("@/views/designate/designatedetail/attachment/upload")
+          // },
           {                             
             path: "/designate/decisiondata/tasks",
             name: "designateDecisionTasks",
@@ -210,5 +247,13 @@ export default [
       }
     ]
   },
-  
+  {                          
+    path: "/designate/designatesuggestion",
+    name: "designateSuggestion",
+    meta: {
+        title: "定点管理-定点建议",
+    },
+    component: () =>
+      import ("@/views/designate/suggestion/index")
+  }
 ]

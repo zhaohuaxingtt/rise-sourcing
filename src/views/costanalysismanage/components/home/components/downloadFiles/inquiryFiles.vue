@@ -6,16 +6,17 @@
 <template>
   <div class="inquiryFiles">
       <div class="header clearFloat margin-bottom15">
-          <span class="title">{{$t('LK_XUNJIAFUJIAN')}}</span>
-          <span class="tips">{{$t('LK_WENJIANQINGXUANZHUANZHIZHENGCHANG')}}</span>
+          <span class="title">{{language('LK_XUNJIAFUJIAN','询价附件')}}</span>
+          <span class="tips">{{language('LK_WENJIANQINGXUANZHUANZHIZHENGCHANG','上传附件:文件请旋转至正常方向后上传')}}</span>
 
           <div class="floatright">
-              <iButton @click="downloadList" >{{$t('LK_XIAZAI')}}</iButton>
+              <iButton @click="downloadList" >{{language('LK_XIAZAI','下载')}}</iButton>
           </div>
       </div>
       <!-- 表格区域 -->
       <tableList
         index
+        :lang="true"
         :tableData="tableData"
         :tableTitle="tableTitle"
         :tableLoading="tableLoading"
@@ -86,7 +87,7 @@ export default {
         async download(fileList){
              const data = {
               applicationName: 'rise',
-              fileList:fileList.join(),
+              fileList:fileList,
             };
             await downloadFile(data);
         },
@@ -95,7 +96,7 @@ export default {
         downloadList(){
             const  {selectItems } = this;
             if(!selectItems.length){
-            iMessage.warn(this.$t('LK_QINGXUANZHEXUYAOXIAZHAIDEFUJIAN'));
+            iMessage.warn(this.$t('QINGXUANZHEXUYAOXIAZHAIDEFUJIAN', '请选择需要下载的附件'));
             }else{
                 const list = selectItems.map((item)=>item.fileName);
                 this.download(list);

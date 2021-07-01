@@ -7,7 +7,7 @@
 -->
 <template>
   <div>
-    <div :class="tableData.length<13?'flex top':'flex scroll'">
+    <div :class="tableData.length<13?'flex top-1':'flex scroll'">
       <div class="flex margin-right50" v-for="(item,index) in tableData" :key="index">
         <div :style="'background:'+color[index]" class="circle margin-right4"></div>
         <div>{{item.name}}</div>
@@ -71,6 +71,7 @@ export default {
             borderWidth: 1,
 
             formatter: (params) => {
+              console.log(params);
               return `<div class='tooltip'>
                           <div class='flex'>
                             <div class="img"></div><div class='title'>${'供应商'}</div>
@@ -163,8 +164,9 @@ export default {
               },
               symbolSize: 15,
               label: {
+                show: false,
                 normal: {                  // 默认的文本标签显示样式
-                  color: '#000',
+                  color: '#fff',
                   show: true,
                   position: 'top',      // 标签显示的位置
                   formatter: '{b}'       // 标签内容格式器
@@ -235,7 +237,7 @@ export default {
   border: 1px solid;
   border: none;
 }
-.top {
+.top-1 {
   width: 100%;
   height: 30px;
   color: #0d2451;

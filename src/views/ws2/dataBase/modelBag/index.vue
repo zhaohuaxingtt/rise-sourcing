@@ -1,0 +1,371 @@
+<template>
+  <div v-permission="TOOLING_DATABASE_SUMMARY">
+    <iSearch
+        class="margin-bottom20 giSearch"
+        style="margin-top: 20px"
+        @sure="getTableListFn"
+        @reset="reset"
+        :icon="false"
+        :resetKey="PARTSPROCURE_RESET"
+        :searchKey="PARTSPROCURE_CONFIRM"
+        v-loading="loadingiSearch"
+    >
+      <el-form>
+        <el-form-item :label="$t('车型包')">
+          <iSelect
+            class="multipleSelect"
+            :placeholder="$t('partsprocure.PLEENTER')"
+            v-model="form['search.cartypeBag']"
+            filterable
+            clearable
+          >
+            <el-option
+              :value="item"
+              :label="item"
+              v-for="(item, index) in cartypeBagList"
+              :key="index"
+            ></el-option>
+          </iSelect>
+        </el-form-item>
+        <el-form-item :label="$t('LK_CHEXINGXIANGMU')">
+          <iInput v-model="form['search.tmCartypeProId']" :placeholder="$t('LK_RFQPLEASEENTERQUERY')">
+            <i slot="suffix" class="el-input__icon el-icon-search" @click="getTableListFn"></i>
+          </iInput>
+        </el-form-item>
+        <el-form-item :label="$t('零件包')">
+          <iSelect
+            class="multipleSelect"
+            :placeholder="$t('partsprocure.PLEENTER')"
+            v-model="form['search.partBag']"
+            filterable
+            clearable
+          >
+            <el-option
+              :value="item"
+              :label="item"
+              v-for="(item, index) in partBagList"
+              :key="index"
+            ></el-option>
+          </iSelect>
+        </el-form-item>
+<!--        <el-form-item :label="$t('LK_LINGJIANMINGCHENG')">-->
+<!--          <iInput v-model="form['search.partNameZh']" :placeholder="$t('LK_RFQPLEASEENTERQUERY')">-->
+<!--            <i slot="suffix" class="el-input__icon el-icon-search" @click="getTableListFn"></i>-->
+<!--          </iInput>-->
+<!--        </el-form-item>-->
+      </el-form>
+
+
+    </iSearch>
+    <iCard>
+      <div class="icardHeader">
+        <div></div>
+        <div>
+          <iButton @click="hanldeSave">{{ $t('LK_BAOCUN') }}</iButton>
+          <iButton @click="hanldeDownload">{{ $t('下载模板') }}</iButton>
+          <Upload
+            class="upload"
+            ref="uploadRef"
+            :action="actionUrl"
+            :on-change="beforeUpload"
+            :on-success="onSuccess"
+            :before-upload="beforeAvatarUpload"
+            :before-remove="beforeRemove"
+            :limit="1"
+            :show-file-list="false"
+            :file-list="fileList">
+            <iButton>{{ $t('批量上传') }}</iButton>
+          </Upload>
+          <iButton @click="hanldeExport">{{ $t('LK_DAOCHU') }}</iButton>
+        </div>
+      </div>
+<!--      550-->
+      <iTableList
+          :tableData="tableListData"
+          :tableTitle="tableTitle"
+          :tableLoading="tableLoading"
+          @handleSelectionChange="handleSelectionChange"
+      >
+        <template #nomiAmountTotal="scope">
+          <iInput
+                  v-model="scope.row.nomiAmountTotal"
+                  :placeholder="$t('LK_QINGSHURU')"
+                  onkeyup="value=value.replace(/[^\d^\.]+/g,'').replace('.','$#$').replace(/\./g,'').replace('$#$','.')"
+          ></iInput>
+        </template>
+        <template #nomiAmountSvw="scope">
+          {{getTousandNum(scope.row.nomiAmountSvw)}}
+        </template>
+
+        <icon symbol name="iconxinxitishi" slot="reference"></icon>
+
+      </iTableList>
+      <div class="bottomTip">{{ $t('货币：人民币  |  单位：元  |  不含税 ') }}</div>
+      <iPagination
+          v-update
+          @size-change="handleSizeChange($event, getTableListFn)"
+          @current-change="handleCurrentChange($event, getTableListFn)"
+          background
+          :current-page="page.currPage"
+          :page-sizes="page.pageSizes"
+          :page-size="page.pageSize"
+          :layout="page.layout"
+          :total="page.totalCount"
+      />
+    </iCard>
+  </div>
+</template>
+
+<script>
+import {iCard, iSearch, iSelect, iPagination, iButton, iInput, iMessage} from 'rise';
+import { excelExport } from '@/utils/filedowLoad'
+import {getTousandNum} from "@/utils/tool";
+import {Upload} from "element-ui"
+import {
+  packageFindByCarType,
+  packageFindByPart,
+  findByPage,
+  save,
+  download,
+  modelBagExport,
+} from "@/api/ws2/dataBase";
+import {
+  iTableList
+} from "@/components"
+import {form, modelBagData} from "../components/data";
+import {pageMixins} from "@/utils/pageMixins";
+import {tableHeight} from "@/utils/tableHeight";
+import {
+  getCartypePulldown,
+} from "@/api/ws2/budgetManagement/edit";
+
+
+export default {
+  mixins: [pageMixins, tableHeight],
+  components: {
+    iCard,
+    iSearch,
+    iSelect,
+    iTableList,
+    iPagination,
+    iButton,
+    iInput,
+    Upload
+  },
+  data() {
+    return {
+      leftModel: 'mouldInvestment',
+      rightModel: 1,
+      form: form,
+      loadingiSearch: false,
+      tableLoading: false,
+      carTypeList: [],
+      cartypeBagList: [],
+      partBagList: [],
+      tableListData: [],
+      multipleSelection: [],
+      tableTitle: modelBagData,
+      getTousandNum: getTousandNum
+    }
+  },
+  computed: {
+    actionUrl() {
+      return process.env.VUE_APP_MODELCAR + '/upload'
+    }
+  },
+  created() {
+    this.page.pageSizes = [10, 20, 50, 100, 300]
+    this.getModelProtitesPullDown()
+  },
+  methods: {
+    async getModelProtitesPullDown() {
+      for (let i in this.form) {
+        this.form[i] = "";
+      }
+      this.loadingiSearch = true
+      await Promise.all([packageFindByCarType({carType: ''}), packageFindByPart({partName: ''})]).then((res) => {
+        const result0 = this.$i18n.locale === 'zh' ? res[0].desZh : res[0].desEn
+        const result1 = this.$i18n.locale === 'zh' ? res[1].desZh : res[1].desEn
+        if (res[0].data) {
+          this.cartypeBagList = res[0].data;
+        } else {
+          iMessage.error(result0);
+        }
+        if (res[1].data) {
+          this.partBagList = res[1].data;
+        } else {
+          iMessage.error(result1);
+        }
+        this.getTableListFn()
+        this.loadingiSearch = false
+      }).catch(() => {
+        this.loadingiSearch = false
+      });
+
+    },
+    getTableListFn() {
+      this.tableLoading = true;
+      let params = {
+        currentPage: this.page.currPage,
+        pageSize: this.page.pageSize,
+        categoryNameZh: form['search.tmCartypeProId'],
+        packageNameZh: form['search.cartypeBag'],
+        partNameZh: form['search.partBag'],
+      }
+      findByPage(params)
+        .then((res) => {
+          const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
+          if (Number(res.code) === 0) {
+            this.page.currPage = res.data.current;
+            this.page.pageSize = res.data.size;
+            this.page.totalCount = res.data.total;
+            this.tableListData = res.data.records;
+            if(this.tableListData && this.tableListData.length > 0){
+              let temp = []
+              this.tableListData[0].hisPartsList.map((item, index) => {
+                let key = index + 1
+                temp = temp.concat([
+                  {
+                    props: 'categoryNameZh' + key,
+                    name: `车型项目${key}名称`,
+                    key: `车型项目${key}名称`,
+                    width: 200,
+                    tooltip: false
+                  },
+                  {
+                    props: 'nomiAmount' + key,
+                    name: `车型项目${key}金额`,
+                    key: `车型项目${key}金额`,
+                    width: 200,
+                    tooltip: false
+                  }
+                ])
+              })
+              this.tableTitle = this.tableTitle.concat(temp)
+              this.tableListData = this.tableListData.map(a => {
+                a.hisPartsList.map((b, index) => {
+                  let key = index + 1
+                  a['categoryNameZh' + key] = b.categoryNameZh
+                  a['nomiAmount' + key] = b.nomiAmount
+                })
+                return a
+              })
+            }
+          } else {
+            iMessage.error(result)
+          }
+          this.tableLoading = false;
+        }).catch(() => (this.tableLoading = false));
+    },
+    reset() {
+      for (let i in this.form) {
+        this.form[i] = "";
+      }
+      this.getTableListFn()
+    },
+    handleSelectionChange(list) {
+      this.multipleSelection = list
+    },
+    exportFile() {
+      if (!this.multipleSelection.length) return iMessage.warn(this.$t('请先选择'))
+      excelExport(this.multipleSelection, this.tableTitle, '材料组汇总')
+    },
+
+    hanldeSave(){
+      this.tableLoading = true;
+      save(this.tableListData)
+        .then((res) => {
+          const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
+          if (Number(res.code) === 0) {
+            iMessage.success(result)
+          } else {
+            iMessage.error(result)
+          }
+          this.tableLoading = false;
+        }).catch(() => (this.tableLoading = false));
+    },
+    hanldeDownload(){
+      this.tableLoading = true;
+      let params = {
+        currentPage: this.page.currPage,
+        pageSize: this.page.pageSize,
+        categoryNameZh: form['search.tmCartypeProId'],
+        packageNameZh: form['search.cartypeBag'],
+        partNameZh: form['search.partBag'],
+        packageNameZhList: this.multipleSelection
+      }
+      download(params)
+        .then((res) => {
+          const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
+          if (Number(res.code) === 0) {
+            iMessage.success(result)
+          } else {
+            iMessage.error(result)
+          }
+          this.tableLoading = false;
+        }).catch(() => (this.tableLoading = false));
+    },
+    hanldeExport(){
+      this.tableLoading = true;
+      let params = {
+        currentPage: this.page.currPage,
+        pageSize: this.page.pageSize,
+        categoryNameZh: form['search.tmCartypeProId'],
+        packageNameZh: form['search.cartypeBag'],
+        partNameZh: form['search.partBag'],
+        packageNameZhList: this.multipleSelection
+      }
+      modelBagExport(params)
+        .then((res) => {
+          const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
+          if (Number(res.code) === 0) {
+            iMessage.success(result)
+          } else {
+            iMessage.error(result)
+          }
+          this.tableLoading = false;
+        }).catch(() => (this.tableLoading = false));
+    },
+    beforeUpload(){
+      this.tableLoading = true;
+    },
+    onSuccess(){
+      this.$refs['uploadRef'].clearFiles();
+      this.getTableListFn()
+    },
+    beforeAvatarUpload(file) {
+      let FileExt = file.name.replace(/.+\./, "").toLowerCase();
+      let flag = ["xls", "xlsx"].includes(FileExt);
+      if (!flag) iMessage.error("只能上传excel文件!");
+      this.tableLoading = false;
+      return flag;
+    },
+  }
+}
+</script>
+
+<style scoped lang="scss">
+.icardHeader {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  .upload{
+    display: inline-block;
+    margin: 0 10px;
+  }
+}
+.bottomTip{
+  color: #999999;
+  font-size: 14px;
+  text-align: right;
+  margin: 10px 0;
+}
+.multipleSelect{
+  ::v-deep .el-tag{
+    max-width: calc(100% - 65px);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+</style>

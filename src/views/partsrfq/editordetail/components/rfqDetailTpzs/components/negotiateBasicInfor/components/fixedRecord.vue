@@ -16,6 +16,7 @@
 // 例如：import 《组件名称》 from '《组件路径》';
 import { iFormItem, iText, iFormGroup, iLabel, icon, iCard } from "rise";
 import tableList from '@/components/ws3/commonTable';
+import { listFixedPointHistory } from "@/api/partsrfq/negotiateBasicInfor/negotiateBasicInfor.js";
 import { fixedRecordTableTitle } from "./data";
 export default {
   // import引入的组件需要注入到对象中才能使用
@@ -34,11 +35,26 @@ export default {
   watch: {},
   // 方法集合
   methods: {
-
+    async getTableList() {
+      this.tableLoading = true;
+      try {
+        const pms = {
+          rfqId: this.$route.query.id
+        }
+        const res = await listFixedPointHistory(pms);
+        if (res.result) {
+          this.tableListData = res.data;
+        }
+        this.tableLoading = false;
+      } catch {
+        this.tableListData = [];
+        this.tableLoading = false;
+      }
+    }
   },
   // 生命周期 - 创建完成（可以访问当前this实例）
   created() {
-
+    this.getTableList()
   },
   // 生命周期 - 挂载完成（可以访问DOM元素）
   mounted() {

@@ -11,12 +11,12 @@ import store from '../store'
 // 按钮权限
 // eslint-disable-next-line no-undef
 Vue.directive('permission', {
-        inserted: function(el, binding) {
+        inserted: function(el, binding) {  // dist
             if (binding.modifiers.disabled) {
                 if (store.state.permission.whiteBtnList[binding.expression]) {
                     el.classList.add("is-disabled")
                 }
-            } else {
+            } else { //remov
                 if (!store.state.permission.whiteBtnList[binding.expression]) {
                     el.parentNode.removeChild(el)
                 }

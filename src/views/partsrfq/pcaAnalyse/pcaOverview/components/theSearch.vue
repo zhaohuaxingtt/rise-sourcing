@@ -53,7 +53,12 @@ export default {
   },
   methods: {
     handleSearchReset() {
-      this.form = {};
+      this.form = {
+        category: '',
+        partNum: '',
+        rfq: this.$route.query.id ? this.$route.query.id : '',
+        createBy: '',
+      };
       this.getTableList();
     },
     getTableList() {

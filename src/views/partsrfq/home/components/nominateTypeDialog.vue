@@ -1,25 +1,25 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-11 11:34:55
- * @LastEditTime: 2021-06-11 14:20:01
+ * @LastEditTime: 2021-06-28 20:21:12
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\home\components\nominateTypeDialog.vue
 -->
 <template>
-  <iDialog class="nominateTypeDialog" :title="$t('LK_QINGXUANZEDINGDIANSHENQINGLEIXING')" v-bind="$props" :visible.sync="visible" v-on="$listeners">
+  <iDialog class="nominateTypeDialog" :title="language('LK_QINGXUANZEDINGDIANSHENQINGLEIXING','请选择定点申请类型')" v-bind="$props" :visible.sync="visible" v-on="$listeners">
     <div class="body">
       <iFormGroup class="total margin-left20" :row="1" inline>
-        <iFormItem class="item" :label="$t('LK_DINGDIANSHENQINGLEIXING')">
-          <iSelect v-model="nominateType" :loading="loading">
+        <iFormItem class="item" :label="language('LK_DINGDIANSHENQINGLEIXING','定点申请类型')">
+          <iSelect v-model="nominateType" :loading="loading" :placeholder='language("SELECT","请选择")'>
             <el-option v-for="item in options" :key="item.key" :value="item.value" :label="item.label" />
           </iSelect>
         </iFormItem>
       </iFormGroup>
     </div>
     <div slot="footer" class="footer">
-      <iButton @click="confirm">确定</iButton>
-      <iButton @click="visible = false">取消</iButton>
+      <iButton @click="confirm">{{language('SURE','确定')}}</iButton>
+      <iButton @click="visible = false">{{language('REMOVE','取消')}}</iButton>
     </div>
   </iDialog>
 </template>

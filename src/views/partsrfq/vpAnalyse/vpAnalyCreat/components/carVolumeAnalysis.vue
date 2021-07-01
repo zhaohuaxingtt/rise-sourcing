@@ -2,7 +2,7 @@
  * @version: 1.0
  * @Author: zbin
  * @Date: 2021-06-21 16:12:47
- * @LastEditors: Please set LastEditors
+ * @LastEditors: zbin
  * @Descripttion: your project
 -->
 <template>
@@ -81,7 +81,8 @@ export default {
       this.tableLoading = true;
       try {
         const req = {
-
+          rfqId: this.$route.query.rfqId,
+          userId: this.$store.state.permission.userInfo.id
         };
         const res = await getCarModelProjectList(req);
         if (res.result) {

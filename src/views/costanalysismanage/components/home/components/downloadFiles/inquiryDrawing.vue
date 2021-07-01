@@ -6,22 +6,23 @@
 <template>
     <div class="inquiryDrawing">
         <div class="header clearFloat margin-bottom15">
-          <span class="title">{{$t('LK_XUNJIATUZHI')}}</span>
+          <span class="title">{{language('LK_XUNJIATUZHI','询价图纸')}}</span>
 
           <div class="floatright">
-              <iButton @click="downloadList">{{$t('LK_XIAZAI')}}</iButton>
+              <iButton @click="downloadList">{{language('LK_XIAZAI','下载')}}</iButton>
           </div>
       </div>
       <!-- 表格区域 -->
       <tableList
         index
+        :lang="true"
         :tableData="tableData"
         :tableTitle="tableTitle"
         :tableLoading="tableLoading"
         @handleSelectionChange="handleSelectionChange"
       >
         <template #tpPartAttachmentName="scope">
-            <span class="link" @click="downloadLine(scope.row)">{{ scope.row.fileName }}</span>
+            <span class="link" @click="downloadLine(scope.row)">{{ scope.row.tpPartAttachmentName }}</span>
         </template>
       </tableList>
       <!-- 分页 -->
@@ -80,8 +81,8 @@ export default {
         // 下载附件
         async download(fileList){
              const data = {
-              applicationName: 'rise',
-              fileList:fileList.join(),
+              applicationName: 'procurereq-service',
+              fileList:fileList,
             };
             await downloadFile(data);
         },
@@ -90,16 +91,16 @@ export default {
         downloadList(){
             const  {selectItems } = this;
             if(!selectItems.length){
-            iMessage.warn(this.$t('LK_QINGXUANZHEXUYAOXIAZHAIDEFUJIAN'));
+            iMessage.warn(this.language('LK_QINGXUANZHEXUYAOXIAZHAIDEFUJIAN','请选择需要下载的附件'));
             }else{
-                const list = selectItems.map((item)=>item.id);
+                const list = selectItems.map((item)=>item.tpPartAttachmentName);
                 this.download(list);
             }
         },
         // 单文件下载
         downloadLine(row){
-            const {id} = row;
-            this.download([id]);
+            const {tpPartAttachmentName} = row;
+            this.download([tpPartAttachmentName]);
         },
         // 获取列表
         async getList(){
@@ -124,8 +125,8 @@ export default {
                 const {code,data} = res; 
                 this.tableLoading =  false;
                 if(code === '200' && data){
-                    const { inquiryDrawingsVO={},total } = data;
-                    const { inquiryDrawingsVOS } = inquiryDrawingsVO;
+                    const { inquiryDrawingsVO={} } = data;
+                    const { inquiryDrawingsVOS, total } = inquiryDrawingsVO;
                     this.tableData = inquiryDrawingsVOS;
                     this.page.totalCount = total;
                 }
