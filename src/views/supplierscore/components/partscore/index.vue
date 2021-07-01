@@ -34,7 +34,7 @@
           :data="tableListData"
           :empty-text="$t('LK_ZANWUSHUJU')">
           <el-table-column type="index" align="center" label="#"></el-table-column>
-          <el-table-column align="center" v-for="(item, $index) in tableTitle" :key="$index" :label="item.key" :show-overflow-tooltip="true"></el-table-column>
+          <el-table-column align="center" v-for="(item, $index) in tableTitle" :key="$index" :label="item.key" :prop="item.props" :show-overflow-tooltip="true"></el-table-column>
           <template>
             <el-table-column align="center" :label="rateTag">
               <el-table-column align="center" v-for="item in deptScoreTableTitle" :key="item.props" :label="item.key">
