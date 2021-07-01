@@ -21,7 +21,7 @@
         <iSelect
             :placeholder="$t('LK_QINGXUANZE')"
             v-model="packageVersion"
-            @change="getCommonSourcingView"
+            @change="changeVersion"
             filterable
         >
           <el-option
@@ -68,7 +68,7 @@
                 @change="getCommonSourcingView"
             >
               <el-option
-                  :value="item.deptId"
+                  :value="item.commodity"
                   :label="item.commodity"
                   v-for="(item, index) in DepartmentsComboList"
                   :key="index"
@@ -101,6 +101,7 @@
                 :action="actionUrl"
                 :on-change="beforeUpload"
                 :on-success="onSuccess"
+                :on-error="onError"
                 :before-upload="beforeAvatarUpload"
                 :before-remove="beforeRemove"
                 :limit="1"
@@ -123,6 +124,7 @@
         >
           <template #categoryId="scope">
             <iSelect
+                v-if="currentVersion"
                 :placeholder="$t('LK_QINGXUANZE')"
                 v-model="scope.row.categoryId"
                 class="tempSelect"
@@ -136,12 +138,15 @@
                   :key="index"
               ></el-option>
             </iSelect>
+            <div v-else>{{ materialGroupList.find(item => scope.row.categoryId === item.id).name  }}</div>
           </template>
           <template #targetBudgetTotal="scope">
-            <div class="linkStyle"><span @click="clicktargetBudgetTotal(scope.row)">{{ getTousandNum(scope.row.targetBudgetTotal) }}</span></div>
+            <div v-if="currentVersion" class="linkStyle"><span @click="clicktargetBudgetTotal(scope.row)">{{ getTousandNum(scope.row.targetBudgetTotal) }}</span></div>
+            <div v-else>{{ getTousandNum(scope.row.targetBudgetTotal) }}</div>
           </template>
           <template #fixedPointAllotTotal="scope">
-            <div class="linkStyle"><span @click="clickfixedPointAllotTotal(scope.row)">{{ getTousandNum(scope.row.fixedPointAllotTotal) }}</span></div>
+            <div v-if="currentVersion" class="linkStyle"><span @click="clickfixedPointAllotTotal(scope.row)">{{ getTousandNum(scope.row.fixedPointAllotTotal) }}</span></div>
+            <div v-else>{{ getTousandNum(scope.row.fixedPointAllotTotal) }}</div>
           </template>
         </iTableList>
       </iCard>
@@ -155,6 +160,7 @@
         v-model="fixedAssignmentShow"
         :id="fixedAssignmentId"
         :fixedAssignmentInfo="fixedAssignmentInfo"
+        :targetBudgetAmount="targetBudgetAmount"
         @fixedAssignmentSave="getCommonSourcingView"
     ></fixedAssignment>
   </div>
@@ -208,6 +214,7 @@ export default {
       targetBudgetId: '',
       fixedAssignmentId: '',
       fixedAssignmentInfo: '',
+      targetBudgetAmount: '',
       targetBudgetInfo: '',
       tableListData: [],
        carTypeBudgetDetailVOSCount: [],
@@ -221,6 +228,7 @@ export default {
       DepartmentsComboList: [],
       materialGroup: [],
       materialGroupList: [],
+      currentVersion: '',
       getTousandNum: getTousandNum
     }
   },
@@ -255,6 +263,9 @@ export default {
       }
       this.mainLoading = false
     },
+    onError(){
+      this.mainLoading = false
+    },
     changeCarType(){
       this.mainLoading = true
       packageVersionCombo({
@@ -264,6 +275,7 @@ export default {
         if (Number(res.code) === 0) {
           this.packageVersionList = res.data;
           this.packageVersion = this.packageVersionList.length > 0 ? this.packageVersionList[0].versionId : ''
+          this.currentVersion = true
           this.getCommonSourcingView()
         } else {
           iMessage.error(result);
@@ -294,6 +306,7 @@ export default {
         if (res[1].data) {
           this.packageVersionList = res[1].data;
           this.packageVersion = this.packageVersionList.length > 0 ? this.packageVersionList[0].versionId : ''
+          this.currentVersion = true
         } else {
           iMessage.error(result1);
         }
@@ -313,6 +326,14 @@ export default {
          this.searchLoading = false
       });
 
+    },
+    changeVersion(val){
+      if(val == this.packageVersionList[0].versionId){
+        this.currentVersion = true
+      } else {
+        this.currentVersion = false
+      }
+      this.getCommonSourcingView()
     },
     getCommonSourcingView(){
        this.contentLoading = true
@@ -620,7 +641,9 @@ export default {
       this.mainLoading = true;
       let params = {
         cartypePackageId: this.carTypePackageId,
-        versionId: this.packageVersion
+        versionId: this.packageVersion,
+        commodity: this.departmentsCombo,
+        categoryId: this.materialGroup,
       }
       commonSourcingExport(params)
           .then((res) => {
@@ -725,6 +748,7 @@ export default {
     clickfixedPointAllotTotal(row){
       this.fixedAssignmentShow = true
       this.fixedAssignmentId = row.id
+      this.targetBudgetAmount = row.fixedPointAllotTotal
       let category = this.materialGroupList.find(item => Number(item.id) === Number(row.categoryId))
       let info = (category ? category.value : '') + ' ' + row.partNameZh
       this.fixedAssignmentInfo = info
