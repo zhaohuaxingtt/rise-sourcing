@@ -49,6 +49,7 @@ import {
   iButton
 } from "rise";
 import { queryPlanVersionList } from "@/api/ws2/investmentAdmin/yearlyPlan";
+import store from '@/store';
 
 export default {
   components: {
@@ -72,6 +73,7 @@ export default {
     versionChange(e, a){
       this.listDetail = {...this.editionList.filter(item => item.id === e)[0]};
       this.$emit('receiVereceive', this.listDetail);
+      this.$store.commit('SET_versionId', e);
     },
 
     //  获取版本号
@@ -80,9 +82,10 @@ export default {
         const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn;
 
         if(res.code === "0"){
+          const versionId = store.state.investmentAdmin.versionId;
           this.editionList = res.data;
           this.listDetail = res.data[0];
-          this.versionId = res.data[0].id;
+          this.versionId = versionId === '' ? res.data[0].id : versionId;
           this.$emit('receiVereceive', res.data[0]);
         }else{
           iMessage.error(result);
