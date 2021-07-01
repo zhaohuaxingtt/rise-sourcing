@@ -104,7 +104,6 @@ export default {
   data() {
     return {
       partList: [],
-      partHideList: [],
       partItemCurrent: 0,
       currentBatchNumber: '',
       customDialog: {
@@ -145,9 +144,6 @@ export default {
         this.partList = res.data.partsList.filter(item => {
           return item.isShow;
         });
-        this.partHideList = res.data.partsList.filter(item => {
-          return !item.isShow;
-        });
         this.pageLoading = false;
       } catch {
         this.dataInfo = {};
@@ -160,7 +156,6 @@ export default {
         const req = {
           costDetailList: this.$refs.totalUnitPriceTable.tableListData,
           estimatedActualTotalPro: this.$refs.analyzeChart.dataInfo.estimatedActualTotalPro,
-          partsList: this.partList.concat(this.partHideList),
         };
         const res = saveOrUpdateScheme(req);
         this.resultMessage(res);

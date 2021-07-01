@@ -2,22 +2,26 @@
   <div>
     <div class="chartBox">
       <div class="supplyingTime">
-        <div>{{dataInfo.supplyBeginTime}}</div>
-        <div>供货起始时间</div>
+        <div>{{ dataInfo.supplyBeginTime }}</div>
+        <!--        供货起始时间-->
+        <div>{{ $t('TPZS.GHQSSJ') }}</div>
       </div>
       <div class="massProductionTime" :style="{'left': (45 - this.OffsetData) + '%'}">
         <icon symbol name="iconbaojiapingfengenzong-jiedian-cheng" class="iconStyle"/>
         <div class="margin-top12 iconColor">{{ this.massProductionTimeRate }}%</div>
-        <div>量产时间</div>
+        <!--        量产时间-->
+        <div>{{ $t('TPZS.LCSJ') }}</div>
       </div>
       <div class="achievementRate" :style="{'left': (65 - this.OffsetData) + '%'}">
-        <icon symbol name="iconVP-jihuazongchanliang" class="iconStyle"/>
         <div class="margin-top12 iconColor">{{ this.achievementRate }}%</div>
-        <div>计划量产达成率</div>
+        <!--        计划量产达成率-->
+        <div>{{ $t('TPZS.JHLCDCL') }}</div>
+        <icon symbol name="iconVP-jihuazongchanliang" class="iconStyle"/>
       </div>
       <div class="supplyingEndTime">
-        <div>{{dataInfo.supplyEndTime}}</div>
-        <div>供货结束时间</div>
+        <div>{{ dataInfo.supplyEndTime }}</div>
+        <!--        供货结束时间-->
+        <div>{{ $t('TPZS.GHJSSJ') }}</div>
       </div>
     </div>
     <div class="formBox">
@@ -29,8 +33,19 @@
         <div class="itemBox">
           <iLabel label="实际累计产量（截至上月末）" slot="label" class="labelWidth"></iLabel>
           <iText class="valueWidth">{{ dataInfo.actualProEndLastMonth }}</iText>
-          <icon symbol name="iconshangsheng-VP" class="margin-left15"></icon>
-          <span class="up">25%</span>
+          <template v-if="true">
+           <div class="flex-align-center">
+             <icon symbol name="iconshangsheng-VP" class="margin-left15 margin-right5"></icon>
+             <span class="up">25%</span>
+           </div>
+          </template>
+          <template v-if="false">
+           <div class="flex-align-center">
+             <icon symbol name="iconxiajiang-VP" class="margin-left15 margin-right5"></icon>
+             <span class="down">-25%</span>
+           </div>
+          </template>
+
         </div>
         <div class="itemBox">
           <div class="warpBox">
@@ -91,9 +106,11 @@
 import {icon, iInput, iLabel, iText} from 'rise';
 import VueKatex from 'vue-katex';
 import 'katex/dist/katex.min.css';
+import Test from '../../../editordetail/components/rfqDetailTpzs/components/negotiateBasicInfor/components/test';
 
 export default {
   components: {
+    Test,
     icon,
     iInput,
     iLabel,
@@ -143,8 +160,8 @@ export default {
   },
   methods: {
     getMathematicalFormulaData() {
-      this.achievementRate = this.dataInfo.achievementRate
-      this.massProductionTimeRate = this.dataInfo.massProductionRatio
+      this.achievementRate = this.dataInfo.achievementRate;
+      this.massProductionTimeRate = this.dataInfo.massProductionRatio;
       this.dropPotential = {
         totalPlannedOutputTipsData: this.dataInfo.planTotalPro ? this.dataInfo.planTotalPro : '',
         estimatedTotalProductionTipsData: this.dataInfo.estimatedActualTotalPro
@@ -168,7 +185,7 @@ export default {
 .chartBox {
   position: relative;
   width: 90%;
-  margin: 0 auto;
+  margin: 50px auto 0;
   height: 5px;
   background: #E8EFFE;
   border-radius: 10px;
@@ -181,6 +198,7 @@ export default {
   }
 
   .iconStyle {
+    margin-top: 10px;
     font-size: 20px;
   }
 
@@ -197,7 +215,7 @@ export default {
   .achievementRate {
     text-align: center;
     position: absolute;
-    bottom: -62px;
+    top: -73px;
 
     .iconColor {
       color: #4C6C9C
@@ -244,6 +262,10 @@ export default {
       color: #C00000;
     }
 
+    .down{
+      color: #70AD47;
+    }
+
     .labelWidth {
       width: 250px
     }
@@ -268,7 +290,7 @@ export default {
   }
 
   .itemBox + .itemBox {
-    margin-top: 35px;
+    margin-top: 20px;
   }
 }
 </style>
