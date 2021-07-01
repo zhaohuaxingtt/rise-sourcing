@@ -34,3 +34,11 @@ export function addBobOut(parmars) {
     })
 }
 
+export function chargeRetrieve(parmars) {
+    return requst({
+        url: '/bobRoundDetail/chargeRetrieve',
+        method: 'POST',
+        data: parmars
+    })
+}
+

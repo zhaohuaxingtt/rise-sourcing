@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 10:50:38
- * @LastEditTime: 2021-06-30 11:32:48
+ * @LastEditTime: 2021-06-30 22:33:56
  * @LastEditors: Please set LastEditors
  * @Description: 费用详情
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails.vue
@@ -21,33 +21,67 @@
             <iButton v-show="flag1" @click="close">全部收回</iButton>
             <iButton @click="remarks">备注</iButton>
             <iButton>还原</iButton>
-            <iButton>数据分组</iButton>
+            <iButton @click="group">数据分组</iButton>
             <iButton>导出</iButton>
           </div>
         </div>
       </template>
-      <table1 :tableList="tableList"></table1>
-     
-      <!-- <table2 :dataList="dataList2"></table2>
-    <table3 :dataList="dataList3"></table3>
-    <table4 :dataList="dataList4"></table4>
-    <table5 :dataList="dataList5"></table5>
-    <table6 :dataList="dataList6"></table6> -->
+      <table1
+        :tableList="groupby ? groupList : tableList"
+        v-if="totalTable"
+      ></table1>
+      <groupedTable
+        class="margin-top20"
+        :tableList="groupList"
+        v-if="!totalTable"
+        @groupBy="groupBtn"
+      ></groupedTable>
+      <iDialog :visible.sync="visible1" title="分组至" width="20%">
+        <el-form>
+          <el-form-item label="选择组">
+            <el-cascader
+              v-model="value"
+              :options="ungroupList"
+              label="title"
+              value="prop"
+              @change="handleChange"
+            ></el-cascader>
+          </el-form-item>
+          <el-form-item label="分组至">
+            <el-select v-model="value" clearable placeholder="请选择">
+              <el-option
+                v-for="item in options"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              >
+              </el-option>
+            </el-select>
+          </el-form-item>
+        </el-form>
+        <span slot="footer" class="dialog-footer">
+          <el-button type="primary" @click="dialogVisible = false"
+            >确 定</el-button
+          >
+        </span>
+      </iDialog>
       <remarkDialog
         :visible="visible"
         @remake="sure"
         @cancel="cancel"
       ></remarkDialog>
     </iCard>
-     <ungroupedTable
-          class="margin-top20"
-          :tableList="tableList"
-        ></ungroupedTable>
+    <ungroupedTable
+      class="margin-top20"
+      :tableList="ungroupList"
+      v-if="groupby"
+      @groupBy="groupBtn"
+    ></ungroupedTable>
   </div>
 </template>
 
 <script>
-import { iCard, iButton } from "rise";
+import { iCard, iButton, iDialog } from "rise";
 import table1 from "./components/table1.vue";
 import table2 from "./components/table2.vue";
 import table3 from "./components/table3.vue";
@@ -56,23 +90,19 @@ import table5 from "./components/table5.vue";
 import table6 from "./components/table6.vue";
 import remarkDialog from "./components/remarkDialog.vue";
 import ungroupedTable from "@/views/partsrfq/bob/bobAnalysis/ungroupedTable.vue";
+import groupedTable from "@/views/partsrfq/bob/bobAnalysis/groupedTable.vue";
+import { chargeRetrieve } from "@/api/partsrfq/bob";
 
-import {
-  dataList1,
-  dataList2,
-  dataList3,
-  dataList4,
-  dataList5,
-  dataList6,
-  tableList,
-} from "./components/data.js";
+import { tableList, ungroupList, groupList } from "./components/data.js";
 
 export default {
   components: {
     iCard,
+    iDialog,
     iButton,
     table1,
     ungroupedTable,
+    groupedTable,
     remarkDialog,
   },
   data() {
@@ -80,17 +110,32 @@ export default {
       flag: true,
       flag1: false,
       tableList,
+      ungroupList,
+      groupList,
       expends: [],
       visible: false,
+      visible1: false,
       remark: "",
+      groupby: false,
+      totalTable: true,
+      value: "",
     };
   },
   mounted() {
     this.$nextTick(() => {
       this.open();
+      this.chargeRetrieve();
     });
   },
   methods: {
+    chargeRetrieve() {
+      chargeRetrieve({
+        schemaId: 5,
+        viewType: "all",
+      })
+        .then((res) => {})
+        .catch((err) => {});
+    },
     open() {
       let els = this.$el.getElementsByClassName("el-table__expand-icon");
       if (this.tableList.dataList.length != 0 && els.length != 0) {
@@ -154,12 +199,23 @@ export default {
     remarks() {
       this.visible = true;
     },
+    group() {
+      this.totalTable = false;
+      this.groupby = true;
+    },
+    groupBtn(e) {
+      this.visible1 = e;
+    },
+    handleChange(value) {
+      console.log(value);
+    },
   },
 };
 </script>
 
 <style lang="scss" scoped>
-.titleBox {
-  width: 100%;
-}
+// .titleBox {
+//   width: 100%;
+//   font-weight: bold;
+// }
 </style>

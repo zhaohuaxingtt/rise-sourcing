@@ -1,24 +1,13 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 11:38:57
- * @LastEditTime: 2021-06-30 22:19:30
+ * @LastEditTime: 2021-06-30 21:46:57
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails\table1.vue
 -->
 <template>
-  <iCard>
-    <template v-slot:header>
-      <div class="flex-between-center titleBox">
-        <div>
-          <span>待分配区域</span>
-          <span v-if="remark" class="margin-left40">{{ remark }}</span>
-        </div>
-        <div>
-          <iButton @click="groupBy">分组至</iButton>
-        </div>
-      </div>
-    </template>
+  <div>
     <el-table
       ref="treeList"
       :data="tableList.dataList"
@@ -43,51 +32,39 @@
         align="left"
         :width="i.prop == 'title' ? '200' : ''"
       >
-      <template v-if="i.children">
-        <el-table-column
-        :render-header="(h,opt)=>{renderHeader(h, opt)}"
-          v-for="item in i.children" 
-          :key="item.id"
-          :label="item.label"
-          :prop="item.prop"
-          align="left"
-        >
-          
-        </el-table-column>
-        </template>
+          <el-table-column
+            v-for="item in i.children"
+            :key="item.id"
+            :label="item.label"
+            :prop="item.prop"
+            align="left"
+            :render-header="render"
+          >
+
+          </el-table-column>
 
         <!-- <template slot-scope="scope">
-          <span v-if="testing(scope.row[i.prop])" class="flex">
+          <span v-if="testing(scope.row[i.prop])" >
             <span
               v-for="(item, index) in scope.row[i.prop]"
               :key="item.id"
               class="margin-right20"
               :class="checkClass(item, scope, index)"
               @click="clickCol(item, scope, index)"
-              >{{ item }}</span
-            >
+              >{{ item }}</span>
           </span>
           <span v-else>
-            <span
-              :class="checkClass(item, scope, index)"
-              @click="clickCol(item, scope, index)"
-              >{{ scope.row[i.prop] }}</span
-            >
+            <span  :class="checkClass(item, scope, index)"
+              @click="clickCol(item, scope, index)">{{ scope.row[i.prop] }}</span>
           </span>
         </template> -->
       </el-table-column>
     </el-table>
-  </iCard>
+  </div>
 </template>
 
 <script>
-import { iCard, iButton } from "rise";
-
 export default {
-  components: {
-    iCard,
-    iButton,
-  },
   props: {
     expends: {
       type: Array,
@@ -104,34 +81,6 @@ export default {
     },
   },
   computed: {
-    testing(val) {
-      return function (val) {
-        if (val instanceof Array) {
-          return true;
-        }
-      };
-    },
-    checkClass(a, b, c) {
-      return function (a, b, c) {
-        const id = b.row.id;
-        let check = this.checkList.findIndex((item) => {
-          return item.index === c;
-        });
-        if (check > -1) {
-          switch (id) {
-            case "1-2-1":
-              return "top";
-            case "1-2-7":
-              return "bottom";
-            case "1-2":
-              return "nocolor";
-            default:
-              return "middle";
-          }
-        }
-        return "nocolor";
-      };
-    },
   },
   watch: {
     expends: {
@@ -140,31 +89,17 @@ export default {
           this.$refs.treeList.expandRowKeys = Array.from(val);
       },
     },
-    tableList: {
+    'tableList.headerList': {
       handler(val) {
-        let newArr = [];
-        val.dataList.forEach((value, index) => {
-          newArr[index] = value;
-          newArr[index].children = value.children.filter(
-            (item) => !item.isShow
-          );
-        });
+        this.$set(this.tableList, val);
       },
-      immediate: true,
+      immediate:true,
+      deep:true
     },
   },
   data() {
     return {
       checkList: [],
-      auditData: [], //表格行内容数据
-      auditDataColumnCode: [], //表头动态列内容数据Code备份  业务需求 可忽略
-      auditDataColumn: [], //表头动态列内容数据集合
-      checkAllOptions: [], //全选备用赋值数组   二维  注意没写错 这里暂时先定义成一维数组 业务需求 需要动态验证是否选中
-      noCheckAllOptions: [], //全选备用赋值数组 二维
-      checkedOptions: [], //列选择项 选中控制 二维
-      checkOptionCount: [], //实时记录当前列 选中数量
-      checkAll: [], //表头全选按钮 选中控制
-      isIndeterminate: [], //表头 不确定状态控制
     };
   },
   methods: {
@@ -176,23 +111,18 @@ export default {
     },
     clickCol(a, b, c) {
       const i = this.checkList.findIndex((item) => item.index == c);
-      console.log("i", i);
       if (i > -1) this.checkList.splice(i, i + 1);
       else
         this.checkList.push({
           id: b.row.id,
           index: c,
         });
-      console.log("checkList", this.checkList);
     },
 
     getRowKey(row) {
       return row.id;
     },
-    
-    renderHeader(h, opt) {
-      return '<div>aaaf</div>'
-    },
+    render(h, { column, $index }) {},
     rowClick(row, event, column) {
       this.$emit("row-click", row, event, column);
     },
@@ -218,12 +148,6 @@ export default {
       }
       // console.log(row, expanded)
     },
-    select(e, col) {
-      console.log(e, col);
-    },
-    groupBy(){
-      this.$emit('groupBy', true);
-    }
   },
 };
 </script>
@@ -252,11 +176,5 @@ export default {
 .bottom {
   border: 1px solid blue;
   border-top: none;
-}
-.titleBox {
-  width: 100%;
-  color: #000000;
-  font-size: 18px;
-  font-weight: bold;
 }
 </style>
