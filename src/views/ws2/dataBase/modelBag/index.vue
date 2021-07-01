@@ -332,7 +332,7 @@ export default {
         categoryNameZh: form['search.tmCartypeProId'],
         packageNameZh: form['search.cartypeBag'],
         partNameZh: form['search.partBag'],
-        packageNameZhList: this.multipleSelection
+        packageDataList: this.multipleSelection
       }
       modelBagExport(params)
         .then((res) => {
