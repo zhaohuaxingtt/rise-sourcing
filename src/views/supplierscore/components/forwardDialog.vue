@@ -27,15 +27,15 @@
       </iFormGroup>
     </div>
     <div slot="footer" class="footer">
-      <iButton :loading="confirmLoading" @click="confirm">{{ language("QUEREN", "确认") }}</iButton>
-      <iButton @click="visible = false">{{ language("QUXIAO", "取消") }}</iButton>
+      <iButton :loading="confirmLoading" @click="handleConfirm">{{ language("QUEREN", "确认") }}</iButton>
+      <iButton @click="status = false">{{ language("QUXIAO", "取消") }}</iButton>
     </div>
   </iDialog>
 </template>
 
 <script>
 import { iDialog, iSelect, iFormGroup, iFormItem, iButton, iMessage } from "@/components"
-import { getNominateType } from "@/api/supplierscore"
+import { getRater } from "@/api/supplierscore"
 
 export default {
   components: { iDialog, iSelect, iFormGroup, iFormItem, iButton },
@@ -49,7 +49,7 @@ export default {
   watch: {
     status(nv) {
       if (nv) {
-        this.getOptions()
+        this.getRater()
       } else {
         this.options = []
         this.userInfo = null
@@ -75,14 +75,28 @@ export default {
     }
   },
   methods: {
-    getOptions() {
-      const getOptions = function() {}
-
+    getRater() {
       this.loading = true
-      getOptions()
+      getRater()
       .then(res => {
         if (res.code == 200) {
-          this.options = Array.isArray(res.data) ? res.data : []
+          if (Array.isArray(res.data.epList) && res.data.epList.length > 0) {
+            this.options = res.data.epList.map(item => ({
+              ...item,
+              key: item.id,
+              label: item.nameZh,
+              value: item.id
+            }))
+          }
+
+          if (Array.isArray(res.data.mqList) && res.data.mqList.length > 0) {
+            this.options = res.data.mqList.map(item => ({
+              ...item,
+              key: item.id,
+              label: item.nameZh,
+              value: item.id
+            }))
+          }
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }
@@ -101,6 +115,9 @@ export default {
     },
     // 确认
     handleConfirm() {
+      // if (!this.userInfo) return iMessage.warn(this.language("QINGXUANZEPINGFENREN", "请选择评分人"))
+      if (!this.userInfo) return iMessage.warn("请选择评分人")
+
       this.$emit("confirm", this.userInfo)
       // this.status = false
     },

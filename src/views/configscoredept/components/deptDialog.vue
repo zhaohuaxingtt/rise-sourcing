@@ -20,7 +20,8 @@
             <el-col :span="4" class="padding-right50">
               <el-form-item :label="$t('部门编号')">
                 <iSelect
-                  v-model="form"
+                  filterable
+                  v-model="form.deptNum"
                   :placeholder="$t('请选择部门编号')"
                 >
                   <el-option
@@ -30,7 +31,7 @@
                   <el-option
                     :value="item.value"
                     :label="item.label"
-                    v-for="item in options"
+                    v-for="item in deptNumOptions"
                     :key="item.key"
                   ></el-option>
                 </iSelect>
@@ -39,7 +40,8 @@
             <el-col :span="4" class="padding-right50">
               <el-form-item :label="$t('部门中文名')">
                 <iSelect
-                  v-model="form"
+                  filterable
+                  v-model="form.nameZh"
                   :placeholder="$t('请选择部门中文名')"
                 >
                   <el-option
@@ -49,7 +51,7 @@
                   <el-option
                     :value="item.value"
                     :label="item.label"
-                    v-for="item in options"
+                    v-for="item in nameZhOptions"
                     :key="item.key"
                   ></el-option>
                 </iSelect>
@@ -58,7 +60,8 @@
             <el-col :span="4" class="padding-right50">
               <el-form-item :label="$t('部门英文名')">
                 <iSelect
-                  v-model="form"
+                  filterable
+                  v-model="form.nameEn"
                   :placeholder="$t('请选择部门英文名')"
                 >
                   <el-option
@@ -68,7 +71,7 @@
                   <el-option
                     :value="item.value"
                     :label="item.label"
-                    v-for="item in options"
+                    v-for="item in nameEnOptions"
                     :key="item.key"
                   ></el-option>
                 </iSelect>
@@ -103,32 +106,20 @@
           @handleSingleSelectChange="handleSingleSelectChange" />
       </div>
     </div>
-    <template #footer class="footer">
-      <iPagination v-update
-        class="pagination"
-        @size-change="handleSizeChange($event, getList)"
-        @current-change="handleCurrentChange($event, getList)"
-        background
-        :current-page="page.currPage"
-        :page-sizes="page.pageSizes"
-        :page-size="page.pageSize"
-        :layout="page.layout"
-        :total="page.totalCount" />
-    </template>
   </iDialog>
 </template>
 
 <script>
-import { iDialog, iSelect, iButton, iPagination, iMessage } from "rise"
+import { iDialog, iSelect, iButton, iMessage } from "rise"
 import tableList from "@/views/partsign/editordetail/components/tableList"
 import filters from "@/utils/filters"
-import { pageMixins } from "@/utils/pageMixins"
 import { deptDialogQueryForm as queryForm, deptDialogTableTitle as tableTitle } from "./data"
 import { cloneDeep } from "lodash"
+import { getAllDept } from "@/api/configscoredept"
 
 export default {
-  components: { iDialog, iSelect, iButton, iPagination, tableList },
-  mixins: [ filters, pageMixins ],
+  components: { iDialog, iSelect, iButton, tableList },
+  mixins: [ filters ],
   props: {
     ...iDialog.props,
     visible: {
@@ -140,9 +131,8 @@ export default {
     visible(nv) {
       if (nv) { 
         // 请求
-        this.getList()
+        this.getAllDept()
       } else {
-        this.page.currPage = 1
         this.form = cloneDeep(queryForm)
         this.tableListData = []
       }
@@ -150,40 +140,40 @@ export default {
       this.$emit("update:visible", nv)
     },
   },
-  computed: {
-    // eslint-disable-next-line no-undef
-    // ...Vuex.mapState({
-    //   userInfo: state => state.permission.userInfo,
-    // }),
-  },
   data() {
     return {
-      options: [],
+      deptNumOptions: [],
+      nameZhOptions: [],
+      nameEnOptions: [],
       form: cloneDeep(queryForm),
       loading: false,
       tableTitle,
-      tableListData: [{}, {}, {}, {}, {}],
+      tableListData: [],
       selectRow: null,
       sendLoading: false,
       recallLoading: false
     };
   },
   methods: {
-    getList() {
-      const getList = function() {}
-
+    getAllDept() {
       this.loading = true
 
-      getList({
-        ...this.form,
-        currPage: this.page.currPage,
-        pageSize: this.page.pageSize
-      })
+      getAllDept(this.form)
       .then(res => {
         if (res.code == 200) {
           this.selectRow = null
           this.tableListData = Array.isArray(res.data) ? res.data : []
-          this.page.totalCount = res.total || 0
+
+          if (Object.keys(this.form).every(key => !this.form[key])) {
+            this.deptNumOptions = []
+            this.nameZhOptions = []
+            this.nameEnOptions = []
+            this.tableListData.forEach(item => {
+              this.deptNumOptions.push({ key: item.deptNum, label: item.deptNum, value: item.deptNum })
+              this.nameZhOptions.push({ key: item.nameZh, label: item.nameZh, value: item.nameZh })
+              this.nameEnOptions.push({ key: item.nameEn, label: item.nameEn, value: item.nameEn })
+            })
+          }
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }
@@ -197,13 +187,12 @@ export default {
     },
     // 确认
     handleQuery() {
-      this.page.currPage = 1
-      this.getList()
+      this.getAllDept()
     },
     // 重置
     handleReset() {
       this.form = cloneDeep(queryForm)
-      this.getList()
+      this.getAllDept()
     },
     // 确定
     handleConfrim() {

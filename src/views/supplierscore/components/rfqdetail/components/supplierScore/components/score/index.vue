@@ -16,7 +16,7 @@
         <iButton :loading="backLoading" @click="handleBack">退回至采购员</iButton>
         <!-- <iButton @click="editStatus = true">{{ language("BIANJI", "编辑") }}</iButton> -->
         <iButton @click="editStatus = true">编辑</iButton>
-        <iButton >{{ $t("提交") }}</iButton>
+        <iButton :loading="submitLoading" @click="handleSubmit">{{ language("TIJIAO", "提交") }}</iButton>
         <!-- <iButton :loading="approveLoading" @click="handleApprove">{{ language("PIZHUN", "批准") }}</iButton> -->
         <iButton :loading="approveLoading" @click="handleApprove">批准</iButton>
         <!-- <iButton @click="handleReject">{{ language("JUJUE", "拒绝") }}</iButton> -->
@@ -45,7 +45,7 @@
         </el-table-column>
         <template>
           <el-table-column align="center" :label="rateTag">
-            <el-table-column align="center" v-for="item in deptScoreTableTitle" :key="item.props" :label="item.key" :show-overflow-tooltip="true">
+            <el-table-column align="center" v-for="item in deptScoreTableTitle" :key="item.props" :label="item.key">
               <template v-if="item.props === 'rate'" #header="scope">
                 <span>{{ scope.column.label }}<i class="required">*</i></span>
               </template>
@@ -96,7 +96,7 @@ import remarkDialog from "@/views/supplierscore/components/remarkDialog"
 import { pageMixins } from "@/utils/pageMixins"
 import { scoreTableTitle as tableTitle, deptScoreTableTitle } from "../data"
 import { cloneDeep, isEqual } from "lodash"
-import { getRfqBdlRatingsByCurrentDept, backRfqBdlRatings, approveRfqBdlRatings, rejectRfqBdlRatings, updateRfqBdlRatings, updateRfqBdlRatingMemo } from "@/api/supplierscore"
+import { getRfqBdlRatingsByCurrentDept, forward, backRfqBdlRatings, submitRfqBdlRatings, approveRfqBdlRatings, rejectRfqBdlRatings, updateRfqBdlRatings, updateRfqBdlRatingMemo } from "@/api/supplierscore"
 
 export default {
   components: {
@@ -129,6 +129,7 @@ export default {
       forwardDialogVisible: false,
       currentRow: {},
       backLoading: false,
+      submitLoading: false,
       approveLoading: false,
       rejectDialogVisible: false,
       saveLoading: false,
@@ -166,8 +167,10 @@ export default {
     confirmForward(userInfo) {
       this.$refs.forwardDialog.updateConfirmLoading(true)
 
-      updateRfqBdlRatingMemo({
-        
+      forward({
+        raterId: userInfo.id,
+        rater: userInfo.nameZh,
+        rfqIds: [ this.rfqId ]
       })
       .then(res => {
         const message = this.$i18n.locale === "zh" ? res.desZh : res.desEn
@@ -205,6 +208,28 @@ export default {
         this.backLoading = false
       })
       .catch(() => this.backLoading = false)
+    },
+    // 提交
+    handleSubmit() {
+      this.submitLoading = true
+
+      submitRfqBdlRatings({
+        rfqId: this.rfqId
+      })
+      .then(res => {
+        const message = this.$i18n.locale === "zh" ? res.desZh : res.desEn
+
+        if (res.code == 200) {
+          iMessage.success(message)
+          // this.$emit("updateRfq")
+          this.getRfqBdlRatingsByCurrentDept()
+        } else {
+          iMessage.error(message)
+        }
+
+        this.submitLoading = false
+      })
+      .catch(() => this.submitLoading = false)
     },
     // 批准
     handleApprove() {
@@ -303,7 +328,7 @@ export default {
         )
       }
 
-      if (this.tableListData.some(item => !item.grade && item.grade !== 0)) {
+      if (this.tableListData.some(item => !item.rate && item.rate !== 0)) {
         // return iMessage.warn(this.language("PINGFENLIEWEIBITIANXIANG", "评分列为必填项"))
         return iMessage.warn("评分列为必填项")
       }

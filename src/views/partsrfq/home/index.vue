@@ -470,7 +470,7 @@ export default {
               ...item,
               key: item.code,
               label: item.name,
-              value: item.value
+              value: item.name
             })) :
             []
         }

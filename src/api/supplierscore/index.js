@@ -9,10 +9,55 @@
 import axios from "@/utils/axios"
 const requst = axios(process.env.VUE_APP_RFQ)
 
+export function findDropDownBox(params) {
+  return requst({
+    url: "/rfqs/findDropDownBox",
+    method: "POST",
+    data: params
+  })
+}
+
+// 获取评分人列表
+export function getRater() {
+  return requst({
+    url: `/rfq-bdl-ratings/getRater`,
+    method: "GET"
+  })
+}
+
+// 模糊查询Linie
+export function findLinieByName(params, options) {
+  return requst({
+    url: `/rfq-bdl-ratings/findLinieByName`,
+    method: "GET",
+    params,
+    ...options
+  })
+}
+
+// 模糊查询询价采购员
+export function findInquiryBuyerByName(params, options) {
+  return requst({
+    url: `/rfq-bdl-ratings/findInquiryBuyerByName`,
+    method: "GET",
+    params,
+    ...options
+  })
+}
+
 // 查询需要审批的部门进行打分的RFQ
 export function searchRfqBdlRatings(params) {
   return requst({
     url: "/rfq-bdl-ratings/search",
+    method: "POST",
+    data: params
+  })
+}
+
+// 转派
+export function forward(params) {
+  return requst({
+    url: `/rfq-bdl-ratings/forward`,
     method: "POST",
     data: params
   })
@@ -38,6 +83,14 @@ export function getRfqBdlRatingsByCurrentDept(params) {
 export function backRfqBdlRatings(params) {
   return requst({
     url: `/rfq-bdl-ratings/${ params.rfqId }/back`,
+    method: "PATCH"
+  })
+}
+
+// 提交评分
+export function submitRfqBdlRatings(params) {
+  return requst({
+    url: `/rfq-bdl-ratings/${ params.rfqId }/submit`,
     method: "PATCH"
   })
 }

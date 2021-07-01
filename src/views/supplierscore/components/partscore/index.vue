@@ -37,7 +37,7 @@
           <el-table-column align="center" v-for="(item, $index) in tableTitle" :key="$index" :label="item.key" :show-overflow-tooltip="true"></el-table-column>
           <template>
             <el-table-column align="center" :label="rateTag">
-              <el-table-column align="center" v-for="item in deptScoreTableTitle" :key="item.props" :label="item.key" :show-overflow-tooltip="true">
+              <el-table-column align="center" v-for="item in deptScoreTableTitle" :key="item.props" :label="item.key">
                 <template v-if="item.props === 'grade'" #header="scope">
                   <span>{{ scope.column.label }}<i class="required">*</i></span>
                 </template>

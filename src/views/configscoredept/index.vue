@@ -28,7 +28,7 @@
       <el-form>
         <el-form-item :label="$t('部门编号')">
           <iSelect
-            v-model="form.dept"
+            v-model="form.rateDepartNum"
             :placeholder="$t('请选择部门编号')"
           >
             <el-option
@@ -38,14 +38,14 @@
             <el-option
               :value="item.value"
               :label="item.label"
-              v-for="item in options"
+              v-for="item in rateDepartNumOptions"
               :key="item.key"
             ></el-option>
           </iSelect>
         </el-form-item>
         <el-form-item :label="$t('部门评分类型')">
           <iSelect
-            v-model="form.deptScoreType"
+            v-model="form.rateTag"
             :placeholder="$t('请选择部门评分类型')"
           >
             <el-option
@@ -55,7 +55,7 @@
             <el-option
               :value="item.value"
               :label="item.label"
-              v-for="item in options"
+              v-for="item in scoreDeptOptions"
               :key="item.key"
             ></el-option>
           </iSelect>
@@ -83,33 +83,34 @@
           height="100%"
           @handleSelectionChange="handleSelectionChange"
         >
-          <template #deptScoreType="scope">
+          <template #rateTag="scope">
             <iSelect
               v-if="editStauts"
-              v-model="scope.row.deptScoreType"
+              v-model="scope.row.rateTag"
               :placeholder="$t('请选择部门评分类型')"
               class="deptScoreTypeSelect"
             >
               <el-option
                 :value="item.value"
                 :label="item.label"
-                v-for="item in options"
+                v-for="item in scoreDeptOptions"
                 :key="item.key"
               ></el-option>
             </iSelect>
-            <span v-else>{{ scope.row.deptScoreType }}</span>
+            <span v-else>{{ scope.row.rateTag }}</span>
           </template>
-          <template #deptNum="scope">
-            <iInput class="deptNumSelect" placeholder="请选择部门编号" v-model="scope.row.deptNum" readonly @click.native="handleSelectDeptNum(scope.row)">
+          <template #rateDepartNum="scope">
+            <iInput v-if="editStauts" class="deptNumSelect" placeholder="请选择部门编号" v-model="scope.row.rateDepartNum" readonly @click.native="handleSelectDeptNum(scope.row)">
               <div class="inputSearchIcon" slot="suffix">
                 <icon symbol name="iconshaixuankuangsousuo" />
               </div>
             </iInput>
+            <span v-else>{{ scope.row.rateDepartNum }}</span>
           </template>
-          <template #isAudit="scope">
+          <template #isCheck="scope">
             <iSelect
               v-if="editStauts"
-              v-model="scope.row.isAudit"
+              v-model="scope.row.isCheck"
               :placeholder="$t('请选择')"
               class="isAuditSelect"
             >
@@ -120,7 +121,7 @@
                 :key="item.key"
               ></el-option>
             </iSelect>
-            <span v-else>{{ scope.row.isAudit }}</span>
+            <span v-else>{{ scope.row.isCheck }}</span>
           </template>
         </tableList>
       </div>
@@ -137,7 +138,8 @@ import deptDialog from "./components/deptDialog"
 import filters from "@/utils/filters"
 import { queryForm, tableTitle } from "./components/data"
 import { cloneDeep, isEqual } from "lodash"
-import { getRfqRateDeparts } from "@/api/configscoredept"
+import { getDictByCode } from "@/api/dictionary"
+import { getRfqRateDeparts, saveRfqRateDeparts, deleteRfqRateDeparts } from "@/api/configscoredept"
 
 export default {
   components: {
@@ -155,7 +157,8 @@ export default {
   mixins: [ filters ],
   data() {
     return {
-      options: [],
+      rateDepartNumOptions: [],
+      scoreDeptOptions: [],
       form: cloneDeep(queryForm),
       editStauts: false,
       loading: false,
@@ -166,19 +169,37 @@ export default {
       saveLoading: false,
       deleteLoading: false,
       isAuditOptions: [
-        { key: 1, value: 1, label: "是" },
-        { key: 0, value: 0, label: "否" }
+        { key: 1, value: "1", label: "是" },
+        { key: 0, value: "0", label: "否" }
       ],
+      currentRow: null,
       deptDialogVisible: false
     }
   },
   created() {
-    // this.getRfqRateDeparts()
+    this.getDictByCode()
+    this.getRfqRateDeparts()
   },
   methods: {
+    getDictByCode() {
+      getDictByCode("score_dept")
+      .then(res => {
+        if (res.code == 200) {
+          this.scoreDeptOptions = 
+            Array.isArray(res.data) && res.data[0] && Array.isArray(res.data[0].subDictResultVo) ?
+            res.data[0].subDictResultVo.map(item => ({
+              key: item.code,
+              label: item.name,
+              value: item.code
+            })) :
+            []
+        } else {
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
+      })
+      .catch(() => {})
+    },
     getRfqRateDeparts() {
-      const getList = function() {}
-
       this.loading = true
       getRfqRateDeparts(this.form)
       .then(res => {
@@ -186,6 +207,13 @@ export default {
           this.tableListData = Array.isArray(res.data) ? res.data : []
           this.multipleSelection = []
           this.tableListDataCache = cloneDeep(this.tableListData)
+
+          if (Object.keys(this.form).every(key => !this.form[key])) {
+            this.rateDepartNumOptions = []
+            this.tableListData.forEach(item => {
+              this.rateDepartNumOptions.push({ key: item.rateDepartNum, label: item.rateDepartNum, value: item.rateDepartNum })
+            })
+          }
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }
@@ -199,12 +227,12 @@ export default {
     },
     // 查询
     sure() {
-      this.getList()
+      this.getRfqRateDeparts()
     },
     // 重置
     reset() {
       this.form = cloneDeep(queryForm)
-      this.getList()
+      this.getRfqRateDeparts()
     },
     // 结束编辑
     handleCloseEdit() {
@@ -221,18 +249,16 @@ export default {
     },
     // 保存
     handleSave() {
-      const save = function() {}
-
       this.saveLoading = true
-      save({
-        ids: this.tableListData
-      })
+      saveRfqRateDeparts(
+        this.tableListData
+      )
       .then(res => {
         const message = this.$i18n.locale === "zh" ? res.desZh : res.desEn
 
         if (res.code == 200) {
           iMessage.success(message)
-          this.getList()
+          this.getRfqRateDeparts()
         } else {
           iMessage.error(message)
         }
@@ -246,7 +272,7 @@ export default {
       if (!isEqual(this.tableListData, this.tableListDataCache)) {
         this.$confirm(this.$t("您还有数据更改尚未保存, 请确认是否需要恢复成初始数据"))
         .then(() => {
-          this.getList()
+          this.getRfqRateDeparts()
         })
         .catch(() => {})
       } else {
@@ -256,27 +282,25 @@ export default {
     // 新增行
     handleAdd() {
       this.tableListData.unshift({
-        deptScoreType: "",
-        deptNum: "",
-        isAudit: ""
+        rateTag: "",
+        rateDepartNum: "",
+        isCheck: ""
       })
     },
     // 删除行
     handleDelete() {
-      const deleteRows = function() {}
-
       if (!this.multipleSelection.length) return iMessage.warn(this.$t("请选择需要删除的数据"))
 
       this.deleteLoading = true
-      deleteRows({
-        ids: this.multipleSelection.map(item => item.id)
-      })
+      deleteRfqRateDeparts(
+        this.multipleSelection.map(item => item.id)
+      )
       .then(res => {
         const message = this.$i18n.locale === "zh" ? res.desZh : res.desEn
 
         if (res.code == 200) {
           iMessage.success(message)
-          this.getList()
+          this.getRfqRateDeparts()
         } else {
           iMessage.error(message)
         }
@@ -286,13 +310,14 @@ export default {
       .catch(() => this.deleteLoading = false)
     },
     // 选择部门编号
-    async handleSelectDeptNum(row) {
+    handleSelectDeptNum(row) {
+      this.currentRow = row
       this.deptDialogVisible = true
-      
     },
     // 获取选择的部门编号
     selectDeptNum(data) {
-      console.log(data)
+      this.currentRow.rateDepartNum = data.deptNum
+      this.currentRow = null
     }
   }
 }
