@@ -242,7 +242,6 @@ import NewVersionDialog from "./components/newVersionDialog.vue";
 import uploadButton from "./components/uploadButton";
 import { 
   queryPlanVersionList, 
-  refreshVersion, 
   saveNewVersion, 
   exportPlanCommutityList, 
   queryPlanMonthList, 
@@ -600,16 +599,6 @@ export default {
     //刷新
     handleRefresh() {
       this.refreshLoading = true;
-      refreshVersion(this.versionData.id).then(res => {
-        this.refreshLoading = false;
-        if (Number(res.code) === 0) {
-          iMessage.success(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
-        } else {
-          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
-        }
-      }).catch((e) => {
-        this.refreshLoading = false;
-      });
       this.getVersionList();
     },
     //查询列表数据
@@ -642,6 +631,10 @@ export default {
           this.noChangeTableListData = cloneDeep(this.tableListData);
           this.showEcharts();
           this.tableLoading = false;
+          if (this.refreshLoading) {
+            this.refreshLoading = false;
+            iMessage.success(this.$t('LK_CAOZUOCHENGGONG'));
+          }
         }
       }).catch((e) => {
         this.tableLoading = false;
