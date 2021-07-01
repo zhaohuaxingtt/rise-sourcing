@@ -16,7 +16,8 @@
         <iButton :loading="backLoading" @click="handleBack">退回至采购员</iButton>
         <!-- <iButton @click="editStatus = true">{{ language("BIANJI", "编辑") }}</iButton> -->
         <iButton @click="editStatus = true">编辑</iButton>
-        <iButton :loading="submitLoading" @click="handleSubmit">{{ language("TIJIAO", "提交") }}</iButton>
+        <!-- <iButton :loading="submitLoading" @click="handleSubmit">{{ language("TIJIAO", "提交") }}</iButton> -->
+        <iButton :loading="submitLoading" @click="handleSubmit">提交</iButton>
         <!-- <iButton :loading="approveLoading" @click="handleApprove">{{ language("PIZHUN", "批准") }}</iButton> -->
         <iButton :loading="approveLoading" @click="handleApprove">批准</iButton>
         <!-- <iButton @click="handleReject">{{ language("JUJUE", "拒绝") }}</iButton> -->
