@@ -19,6 +19,8 @@
           @click="log"
           :nextStepLoading="nextStepLoading"
           :dataBaseInit="dataBaseInit"
+          :navList="budgetManagement3rd"
+          :isIconShow="isIconShow"
           @nextStep="nextStep"
           @changeDataBase="$refs.iNavMvpRef.activeIndex = 999"
       ></iNavWS2>
@@ -47,6 +49,7 @@ import {
   getRelationCarTypeById,
   saveInvestBuildBottom,
 } from "@/api/ws2/budgetManagement/edit";
+import {budgetManagement3rd} from "pages/ws2/budgetManagement/components/data";
 
 export default {
   components: {
@@ -55,6 +58,30 @@ export default {
     iDialog,
     iButton,
     iNavMvp
+  },
+  watch: {
+    $route: {
+      deep: true,
+      immediate: true, // 一旦监听到路由的变化立即执行
+      handler(to, from) {
+        const index = to.name.indexOf('investmentAdmin');
+        let list = [];
+        if(index >= 0){
+          list = budgetManagement3rd.filter(item => item.value >=3 && item.value <= 5);
+          this.isIconShow = to.name.indexOf('PayBlock') >= 0 ? true : false
+        }else{
+          list = budgetManagement3rd.filter(item => item.value === 1 || item.value === 2);
+          this.isIconShow = false;
+        }
+
+        list = list.map((item, index) => ({
+          ...item,
+          value: index + 1
+        }))
+
+        this.budgetManagement3rd = list;
+      },
+    },
   },
   data() {
     return {
@@ -66,6 +93,8 @@ export default {
       iDialogLoading: false,
       nextStepLoading: false,
       dataBaseInit: false,
+      budgetManagement3rd,
+      isIconShow: false,
     };
   },
   computed: {

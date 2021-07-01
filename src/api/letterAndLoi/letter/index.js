@@ -109,6 +109,15 @@ export function getLetterList(data) {
     })
   }
   
+  // 列表到处定点信  
+  export function letterExport(data) {
+    return requestDownload({
+      url: '/nominate-letter/export',
+      method: 'POST',
+      data,
+    })
+  }
+  
   // 导出定点信
   export function downloadLetterFile(params) {
     return requestDownload({
@@ -119,11 +128,11 @@ export function getLetterList(data) {
   }
 
   // 获取历史定点信 
-  export function getHistoryLetter(params) {
+  export function getHistoryLetter(data) {
     return requst({
-      url: '/nominate-letter/history-page',
-      method: 'GET',
-      params,
+      url: '/nominate-letter/historyPage',
+      method: 'POST',
+      data,
     })
   }
 
@@ -133,6 +142,24 @@ export function getLetterList(data) {
       url: '/nominate-letter/update',
       method: 'POST',
       data,
+    })
+  }
+
+  // 新增定点信  
+  export function fsAdd(params) {
+    return requst({
+        url: '/nominate-letter/fs-add',
+        method: "GET",
+        params,
+    })
+  }
+
+  // 完成定点信
+  export function fsComplete(params) {
+    return requst({
+        url: '/nominate-letter/fs-complete',
+        method: "GET",
+        params,
     })
   }
 

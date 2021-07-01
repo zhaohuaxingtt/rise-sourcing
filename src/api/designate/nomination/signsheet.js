@@ -1,7 +1,7 @@
 /*
  * @Author: haojiang
  * @Date: 2021-06-30 10:09:30
- * @LastEditTime: 2021-06-30 10:36:54
+ * @LastEditTime: 2021-07-01 17:41:17
  * @LastEditors: Please set LastEditors
  * @Description: 签字单
  * @FilePath: /front-web/src/api/designate/nomination/signsheet.js
@@ -50,7 +50,8 @@ export function getNomiNotSelectedPage(params) {
   return requst({
       url: `/nominate/sign/nomi/non-selected-page`,
       method: "post",
-      data: params
+      data: params,
+      timeout: 25000
   })
 }
 

@@ -1,7 +1,7 @@
 <!--
  * @Author: Haojiang
  * @Date: 2021-06-28 09:29:08
- * @LastEditTime: 2021-06-29 14:04:16
+ * @LastEditTime: 2021-07-01 18:15:11
  * @LastEditors: Please set LastEditors
  * @Description: m签字单搜索
  * @FilePath: /front-web/src/views/designate/home/signSheet/components/search/index.vue
@@ -47,7 +47,7 @@
       <!-- 签字单状态 -->
       <el-form-item :label="language('QIANZIDANZHUANGTAI','签字单状态')">
         <iSelect
-          v-model="form.signStatus"
+          v-model="form.status"
           :placeholder="language('LK_QINGXUANZE','请选择')"
         >
           <el-option
@@ -57,7 +57,7 @@
           <el-option
             :value="items.id"
             :label="language(items.key, items.name)"
-            v-for="(items, index) in ptocessType"
+            v-for="(items, index) in signStatus || []"
             :key="index"
           ></el-option>
         </iSelect>
@@ -96,7 +96,7 @@
       <!-- 签字单号 -->
       <el-form-item :label="language('QIANZIDANHAO','签字单号')">
         <iInput
-          v-model="form.signId"
+          v-model="form.id"
           :placeholder="language('LK_QINGSHURU','请输入')"
         ></iInput>
       </el-form-item>

@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-06-29 17:15:19
+ * @LastEditTime: 2021-07-01 18:11:09
  * @LastEditors: Please set LastEditors
  * @Description: 系统静态路由.
  * @FilePath: \front-web\src\router\index.js
@@ -187,15 +187,58 @@ export const staticRouter = [{
             },
             component: () => import (`@/views/ws2/baApply/details`),
         },
+        // {
+        //     path: '/tooling/investmentAdmin',
+        //     name: 'toolingModelDetails',
+        //     redirect: '/tooling/investmentAdmin/payBlock',
+        //     meta: {
+        //         title: '模具投资付款管理员'
+        //     },
+        //     component: () => import (`@/views/ws2/investmentAdmin`),
+        //     children: [
+        //         {
+        //             path: '/tooling/investmentAdmin/payBlock',
+        //             name: 'investmentAdminPayBlock',
+        //             meta: {
+        //                 title: '付款看板'
+        //             },
+        //             component: () => import (`@/views/ws2/investmentAdmin/payBlock`),
+        //         },
+        //         {
+        //             path: '/tooling/investmentAdmin/yearlyPlan',
+        //             name: 'investmentAdminYearlyPlan',
+        //             meta: {
+        //                 title: '年度计划'
+        //             },
+        //             component: () => import (`@/views/ws2/investmentAdmin/yearlyPlan`),
+        //         },
+        //         {
+        //             path: '/tooling/investmentAdmin/monthlyPlan',
+        //             name: 'investmentAdminMonthlyPlan',
+        //             meta: {
+        //                 title: '月度计划'
+        //             },
+        //             component: () => import (`@/views/ws2/investmentAdmin/monthlyPlan`),
+        //         }
+        //     ]
+        // },
         {
-            path: '/tooling/investmentAdmin',
-            name: 'toolingModelDetails',
-            redirect: '/tooling/investmentAdmin/payBlock',
+            path: '/tooling',
+            name: 'tooling',
             meta: {
-                title: '模具投资付款管理员'
+                title: '模具'
             },
-            component: () => import (`@/views/ws2/investmentAdmin`),
+            component: () => import (`@/views/ws2`),
             children: [
+                {
+                    path: '/',
+                    redirect: 'budgetManagement/carTypeOverview',
+                },
+                //  付款计划制定与查看
+                {
+                    path: '/tooling/investmentAdmin',
+                    redirect: '/tooling/investmentAdmin/payBlock',
+                },
                 {
                     path: '/tooling/investmentAdmin/payBlock',
                     name: 'investmentAdminPayBlock',
@@ -219,20 +262,6 @@ export const staticRouter = [{
                         title: '月度计划'
                     },
                     component: () => import (`@/views/ws2/investmentAdmin/monthlyPlan`),
-                }
-            ]
-        },
-        {
-            path: '/tooling',
-            name: 'tooling',
-            meta: {
-                title: '模具'
-            },
-            component: () => import (`@/views/ws2`),
-            children: [
-                {
-                    path: '/',
-                    redirect: 'budgetManagement/carTypeOverview',
                 },
                 // 预算管理
                 {
