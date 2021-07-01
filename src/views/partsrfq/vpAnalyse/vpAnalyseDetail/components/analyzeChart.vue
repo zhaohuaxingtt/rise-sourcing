@@ -6,13 +6,13 @@
         <!--        供货起始时间-->
         <div>{{ $t('TPZS.GHQSSJ') }}</div>
       </div>
-      <div class="massProductionTime" :style="{'left': (45 - this.OffsetData) + '%'}">
+      <div class="massProductionTime" :style="{'left': (this.massProductionTimeRateDot - this.OffsetData) + '%'}">
         <icon symbol name="iconbaojiapingfengenzong-jiedian-cheng" class="iconStyle"/>
         <div class="margin-top12 iconColor">{{ this.massProductionTimeRate }}%</div>
         <!--        量产时间-->
         <div>{{ $t('TPZS.LCSJ') }}</div>
       </div>
-      <div class="achievementRate" :style="{'left': (65 - this.OffsetData) + '%'}">
+      <div class="achievementRate" :style="{'left': (this.achievementRateDot - this.OffsetData) + '%'}">
         <div class="margin-top12 iconColor">{{ this.achievementRate }}%</div>
         <!--        计划量产达成率-->
         <div>{{ $t('TPZS.JHLCDCL') }}</div>
@@ -27,29 +27,32 @@
     <div class="formBox">
       <div class="left">
         <div class="itemBox">
-          <iLabel label="计划产量（截至上月末）" slot="label" class="labelWidth"></iLabel>
+          <!--          计划产量（截至上月末）-->
+          <iLabel :label="$t('TPZS.JHCLJZSYM')" slot="label" class="labelWidth"></iLabel>
           <iText class="valueWidth">{{ dataInfo.planProEndLastMonth }}</iText>
         </div>
         <div class="itemBox">
-          <iLabel label="实际累计产量（截至上月末）" slot="label" class="labelWidth"></iLabel>
+          <!--          实际累计产量（截至上月末）-->
+          <iLabel :label="$t('TPZS.SJLJCL')" slot="label" class="labelWidth"></iLabel>
           <iText class="valueWidth">{{ dataInfo.actualProEndLastMonth }}</iText>
           <template v-if="true">
-           <div class="flex-align-center">
-             <icon symbol name="iconshangsheng-VP" class="margin-left15 margin-right5"></icon>
-             <span class="up">25%</span>
-           </div>
+            <div class="flex-align-center">
+              <icon symbol name="iconshangsheng-VP" class="margin-left15 margin-right5"></icon>
+              <span class="up">25%</span>
+            </div>
           </template>
           <template v-if="false">
-           <div class="flex-align-center">
-             <icon symbol name="iconxiajiang-VP" class="margin-left15 margin-right5"></icon>
-             <span class="down">-25%</span>
-           </div>
+            <div class="flex-align-center">
+              <icon symbol name="iconxiajiang-VP" class="margin-left15 margin-right5"></icon>
+              <span class="down">-25%</span>
+            </div>
           </template>
 
         </div>
         <div class="itemBox">
           <div class="warpBox">
-            <iLabel label="Volume Pricing降幅潜力" slot="label" class="labelWidth font-weight">
+            <!--            Volume Pricing降幅潜力-->
+            <iLabel :label="$t('TPZS.VPJFQL')" slot="label" class="labelWidth font-weight">
             </iLabel>
             <el-popover
                 placement="top-start"
@@ -57,8 +60,9 @@
             >
               <div v-katex="dropPotentialTips"></div>
               <div class="margin-left45 margin-top10">
-                <span class="font-weight" style="color:#000305">降本单价</span>
-                <span style="color:#4C6C9C">{{ dropPotential.costReductionUnitPrice }}元</span>
+                <!--                降本单价-->
+                <span class="font-weight" style="color:#000305">{{ $t('TPZS.JBDJ') }}</span>
+                <span style="color:#4C6C9C">{{ dropPotential.costReductionUnitPrice }}{{ $t('TPZS.YUAN') }}</span>
               </div>
               <icon symbol name="iconxinxitishi" class="tipIcon" slot="reference"></icon>
             </el-popover>
@@ -76,21 +80,24 @@
       </div>
       <div class="right">
         <div class="itemBox">
-          <iLabel label="计划总产量" slot="label" class="labelWidth"></iLabel>
+          <!--          计划总产量-->
+          <iLabel :label="$t('TPZS.JHZCL')" slot="label" class="labelWidth"></iLabel>
           <iText class="valueWidth">{{ dataInfo.planTotalPro }}</iText>
         </div>
         <div class="itemBox">
-          <iLabel label="预计总产量" slot="label" class="labelWidth"></iLabel>
+          <!--          预计总产量-->
+          <iLabel :label="$t('TPZS.YJZCL')" slot="label" class="labelWidth"></iLabel>
           <iInput class="valueWidth" v-model="dataInfo.estimatedActualTotalPro"></iInput>
         </div>
         <div class="itemBox">
           <div class="warpBox">
-            <iLabel label="已实现额外降价" slot="label" class="labelWidth"></iLabel>
+            <!--            已实现额外降价-->
+            <iLabel :label="$t('TPZS.YSXEWJJ')" slot="label" class="labelWidth"></iLabel>
             <el-popover
                 placement="top-start"
                 trigger="hover"
             >
-              <div class="font-weight">已实现额外降价</div>
+              <div class="font-weight">{{ $t('TPZS.YSXEWJJ') }}</div>
               <div v-katex="additionalPriceReductionTips"></div>
               <icon symbol name="iconxinxitishi" class="tipIcon2" slot="reference"></icon>
             </el-popover>
@@ -106,11 +113,9 @@
 import {icon, iInput, iLabel, iText} from 'rise';
 import VueKatex from 'vue-katex';
 import 'katex/dist/katex.min.css';
-import Test from '../../../editordetail/components/rfqDetailTpzs/components/negotiateBasicInfor/components/test';
 
 export default {
   components: {
-    Test,
     icon,
     iInput,
     iLabel,
@@ -142,8 +147,10 @@ export default {
   data() {
     return {
       massProductionTimeRate: 45,
+      massProductionTimeRateDot: 0,
       achievementRate: '',
-      OffsetData: 4,
+      achievementRateDot: '',
+      OffsetData: 1,
       dropPotential: {
         totalPlannedOutputTipsData: 200000,
         estimatedTotalProductionTipsData: 250000,
@@ -160,8 +167,10 @@ export default {
   },
   methods: {
     getMathematicalFormulaData() {
-      this.achievementRate = this.dataInfo.achievementRate;
-      this.massProductionTimeRate = this.dataInfo.massProductionRatio;
+      this.achievementRate = this.dataInfo.achievementRate ? this.dataInfo.achievementRate : '';
+      this.massProductionTimeRate = this.dataInfo.massProductionRatio ? this.dataInfo.massProductionRatio : '';
+      this.achievementRateDot = this.getDotRange(this.achievementRate);
+      this.massProductionTimeRateDot = this.getDotRange(this.massProductionTimeRate);
       this.dropPotential = {
         totalPlannedOutputTipsData: this.dataInfo.planTotalPro ? this.dataInfo.planTotalPro : '',
         estimatedTotalProductionTipsData: this.dataInfo.estimatedActualTotalPro
@@ -169,13 +178,22 @@ export default {
             : '',
         fixedCost: this.dataInfo.costProportion ? this.dataInfo.costProportion : '',
         result: this.dataInfo.reductionPotential ? this.dataInfo.reductionPotential : '',
-        costReductionUnitPrice: -0.88,
+        costReductionUnitPrice: this.dataInfo.costReductionPrice ? this.dataInfo.costReductionPrice : '',
       };
       this.additionalPriceReduction = {
-        totalPriceReduction: -3.4,
-        priceReduction: -1.4,
+        totalPriceReduction: this.dataInfo.totalPriceReduction ? this.dataInfo.totalPriceReduction : '',
+        priceReduction: this.dataInfo.ltcPriceReduction ? this.dataInfo.ltcPriceReduction : '',
         result: this.dataInfo.achievedReductionPrice ? this.dataInfo.achievedReductionPrice : '',
       };
+    },
+    getDotRange(num) {
+      if (num < 10) {
+        return 10;
+      } else if (num > 82) {
+        return 82;
+      } else {
+        return num;
+      }
     },
   },
 };
@@ -185,7 +203,7 @@ export default {
 .chartBox {
   position: relative;
   width: 90%;
-  margin: 50px auto 0;
+  margin: 60px auto 0;
   height: 5px;
   background: #E8EFFE;
   border-radius: 10px;
@@ -233,7 +251,7 @@ export default {
 .formBox {
   display: flex;
   justify-content: space-between;
-  margin-top: 100px;
+  margin-top: 90px;
 
   .itemBox {
     display: flex;
@@ -262,7 +280,7 @@ export default {
       color: #C00000;
     }
 
-    .down{
+    .down {
       color: #70AD47;
     }
 

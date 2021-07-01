@@ -24,7 +24,7 @@
              :class="{'partItemActive': partItemCurrent === index}"
              @click="handlePartItemClick(item ,index)"
         >
-          <div class="quxiaoIconBox" @click="handlePartItemClose(index)">
+          <div class="quxiaoIconBox" @click="handlePartItemClose($event,item)">
             <icon symbol
                   name="iconrs-quxiao"
                   class="quxiaoIcon"
@@ -74,14 +74,18 @@
 </template>
 
 <script>
-import {iPage, iButton, icon, iCard} from 'rise';
+import {iPage, iButton, icon, iCard, iMessageBox} from 'rise';
 import baseInfo from './components/baseInfo';
 import totalUnitPriceTable from './components/totalUnitPriceTable';
 import curveChart from './components/curveChart';
 import analyzeChart from './components/analyzeChart';
 import customPart from './components/customPart';
 import previewDialog from './components/previewDialog';
-import {getAnalysisProcessing, saveOrUpdateScheme} from '../../../../api/partsrfq/vpAnalysis/vpAnalyseDetail';
+import {
+  getAnalysisProcessing,
+  saveOrUpdateScheme,
+  deletePartsCustomerList,
+} from '../../../../api/partsrfq/vpAnalysis/vpAnalyseDetail';
 import resultMessageMixin from '@/utils/resultMessageMixin';
 
 export default {
@@ -106,6 +110,7 @@ export default {
       partList: [],
       partItemCurrent: 0,
       currentBatchNumber: '',
+      currentPartsId: '',
       customDialog: {
         key: 0,
         visible: false,
@@ -119,12 +124,28 @@ export default {
     handlePartItemClick(item, index) {
       this.partItemCurrent = index;
       this.currentBatchNumber = item.batchNumber;
+      this.currentPartsId = item.id;
       this.getDataInfo();
     },
-    handlePartItemClose(index) {
-      this.partList.splice(index, 1);
-      this.partItemCurrent = 0;
-      this.currentBatchNumber = this.partList[0].batchNumber;
+    handlePartItemClose(e, item) {
+      e.stopPropagation();
+      iMessageBox(
+          this.$t('LK_SHIFOUQUERENSHANCHU'),
+          this.$t('LK_WENXINTISHI'),
+          {confirmButtonText: this.$t('LK_QUEDING'), cancelButtonText: this.$t('LK_QUXIAO')},
+      ).then(async () => {
+        const req = {
+          id: item.id,
+        };
+        const res = await deletePartsCustomerList(req);
+        if (res.result) {
+          this.partItemCurrent = 0;
+          this.currentBatchNumber = this.partList[0].batchNumber;
+          this.currentPartsId = this.partList[0].id;
+          this.getDataInfo();
+        }
+        this.resultMessage(res);
+      });
     },
     //点击跳转自定义零件弹窗
     handleOpenCustomDialog() {
@@ -139,11 +160,15 @@ export default {
           req.id = this.$route.query.schemeId;
         }
         req.batchNumber = this.currentBatchNumber;
+        if (this.$route.query.type === 'add') {
+          req.batchNumber = this.$route.query.batchNumber;
+        }
         const res = await getAnalysisProcessing(req);
         this.dataInfo = res.data;
         this.partList = res.data.partsList.filter(item => {
           return item.isShow;
         });
+        this.currentPartsId = this.partList[0].id;
         this.pageLoading = false;
       } catch {
         this.dataInfo = {};
@@ -154,6 +179,8 @@ export default {
       try {
         this.pageLoading = true;
         const req = {
+          userId: this.$store.state.permission.userInfo.id,
+          partsId: this.currentPartsId,
           costDetailList: this.$refs.totalUnitPriceTable.tableListData,
           estimatedActualTotalPro: this.$refs.analyzeChart.dataInfo.estimatedActualTotalPro,
         };
@@ -167,7 +194,7 @@ export default {
     handlePreview() {
       this.previewDialog = true;
     },
-  },
+  }
 };
 </script>
 
