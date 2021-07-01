@@ -223,7 +223,7 @@ export const modelBagData = [
         tooltip: false
     },
     {
-        props: 'categoryNameZh',
+        props: 'materialNameZh',
         name: '材料组',
         key: '材料组',
         width: 150,

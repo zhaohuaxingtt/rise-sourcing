@@ -23,7 +23,7 @@
           </Autocomplete>
         </el-form-item>
         <el-form-item :label="$t('LK_CHEXINGXIANGMU')">
-          <iInput v-model="form['search.tmCartypeProId']" :placeholder="$t('LK_RFQPLEASEENTERQUERY')">
+          <iInput v-model="form['search.tmCartypeProId']" :placeholder="$t('LK_RFQPLEASEENTERQUERY')" @keyup.enter.native="getTableListFn">
             <i slot="suffix" class="el-input__icon el-icon-search" @click="getTableListFn"></i>
           </iInput>
         </el-form-item>
@@ -84,7 +84,7 @@
           ></iInput>
         </template>
         <template #nomiAmountSvw="scope">
-          <div class="linkStyle"><span @click="clickNomiAmountSvw(scope.row.categoryNameZh)">{{ getTousandNum(scope.row.nomiAmountSvw) }}</span></div>
+          <div class="linkStyle"><span @click="clickNomiAmountSvw(scope.row.materialNameZh)">{{ getTousandNum(scope.row.nomiAmountSvw) }}</span></div>
         </template>
       </iTableList>
       <div class="bottomTip">{{ $t('货币：人民币  |  单位：元  |  不含税 ') }}</div>
@@ -169,8 +169,8 @@ export default {
     this.getModelProtitesPullDown()
   },
   methods: {
-    clickNomiAmountSvw(categoryNameZh){
-      this.$emit('toMouldInvestMent', categoryNameZh)
+    clickNomiAmountSvw(materialNameZh){
+      this.$emit('toMouldInvestMent', materialNameZh)
     },
     querySearchCartypeBag(queryString, cb) {
       packageFindByCarType({carType: queryString})

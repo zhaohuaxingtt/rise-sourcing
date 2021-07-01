@@ -7,7 +7,7 @@
             :placeholder="$t('LK_QINGXUANZE')"
             v-model="carTypePackageId"
             class="font20W"
-            @change="getCommonSourcingView"
+            @change="changeCarType"
             filterable
         >
           <el-option
@@ -234,6 +234,45 @@ export default {
     this.getSelect(carTypePackageId)
    },
   methods: {
+    beforeAvatarUpload(file) {
+      this.mainLoading = true;
+      let FileExt = file.name.replace(/.+\./, "").toLowerCase();
+      let flag = ["xls", "xlsx"].includes(FileExt);
+      if (!flag) {
+        this.mainLoading = false;
+        iMessage.error("只能上传excel文件!");
+      }
+      return flag;
+    },
+    onSuccess(res){
+      const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
+      this.$refs['uploadRef'].clearFiles();
+      if (Number(res.code) === 0) {
+        this.getCommonSourcingView()
+        iMessage.success(result);
+      } else {
+        iMessage.error(result);
+      }
+      this.mainLoading = false
+    },
+    changeCarType(){
+      this.mainLoading = true
+      packageVersionCombo({
+        carTypePackageId: this.carTypePackageId,
+      }).then((res) => {
+        const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
+        if (Number(res.code) === 0) {
+          this.packageVersionList = res.data;
+          this.packageVersion = this.packageVersionList.length > 0 ? this.packageVersionList[0].versionId : ''
+          this.getCommonSourcingView()
+        } else {
+          iMessage.error(result);
+        }
+        this.mainLoading = false
+      }).catch(err => {
+        this.mainLoading = false
+      })
+    },
     async getSelect(carTypePackageId) {
       this.searchLoading = true
       await Promise.all([
@@ -286,7 +325,7 @@ export default {
         const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
         if (Number(res.code) === 0) {
           let _this = this
-          this.getPackageVersionCombo()
+          // this.getPackageVersionCombo()
           this.tableListData = res.data.partsPackageDetailVOS ? res.data.partsPackageDetailVOS : []
           let carTypeBudgetDetailVOS = res.data.carTypeBudgetDetailVOS ? res.data.carTypeBudgetDetailVOS : []
           this.carTypeBudgetDetailVOSCount = carTypeBudgetDetailVOS
@@ -344,7 +383,7 @@ export default {
             },
             grid: {
               left: '0%',
-               right: '10%',
+               right: '20%',
               bottom: '0%',
               top: '0%',
               containLabel: true
