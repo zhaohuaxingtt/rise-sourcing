@@ -12,16 +12,16 @@
       <div class="margin-bottom20 clearFloat">
         <div class="floatright">
           <!-- 新建 -->
-          <iButton @click="createNewSignSheet">
-            {{language('XINJIAN', '新建')}}
+          <iButton @click="createSignSheet">
+            {{language('LK_XINJIANNEW', '新建')}}
           </iButton>
           <!-- 提交 -->
-          <iButton @click="submit">
+          <iButton @click="handleBatchSumit">
             {{language('LK_TIJIAO', '提交')}}
           </iButton>
           <!-- 删除 -->
           <iButton
-            @click="handleDelete"
+            @click="handleBatchDelete"
           >
             {{ language("SHANCHU", '删除') }}
           </iButton>
@@ -35,14 +35,17 @@
         @handleSelectionChange="handleSelectionChange"
       >
       <!-- 签字单 -->
-      <template #signId="scope">
+      <template #id="scope">
         <a
           href="javascript:;"
           @click="viewDetail(scope.row)">
-          {{scope.row.signId}}
+          {{scope.row.id}}
         </a>
       </template>
-
+      <!-- 签字单状态 -->
+      <template #status="scope">
+        <span>{{scope.row.status && scope.row.status.name || scope.row.status}}</span>
+      </template>
       <!-- 提交日期 -->
       <template #submitDate="scope">
         <span>{{scope.row.submitDate | dateFilter("YYYY-MM-DD")}}</span>
@@ -74,15 +77,18 @@ import { tableTitle,mokeData } from './components/data'
 import search from './components/search'
 import tablelist from "@/views/designate/supplier/components/tableList";
 import { 
-  getNominationList,
-  batchRevoke,
-  batchDelete,
   nominateRreeze,
   nominateUnRreeze,
   nominateConfirm,
   rsFrozen,
   rsUnFrozen
 } from '@/api/designate/nomination'
+import {
+  getSignList,
+  batchSubmit,
+  batchDelete,
+  createSignSheet
+} from '@/api/designate/nomination/signsheet'
 
 import { pageMixins } from '@/utils/pageMixins'
 import filters from "@/utils/filters"
@@ -99,7 +105,7 @@ export default {
   mixins: [ filters, pageMixins ],
   data() {
     return {
-      tableListData: mokeData,
+      tableListData: [],
       tableLoading: false,
       tableTitle: tableTitle,
       selectTableData: [],
@@ -116,16 +122,25 @@ export default {
     tablelist
   },
   mounted() {
-    // this.getFetchData()
+    this.getFetchData()
   },
   methods: {
     // 新建签字单
-    createNewSignSheet() {
-      // 缓存/更新定点申请类型
-      this.$store.dispatch('setNominationTypeDisable', false)
-      this.$nextTick(() => {
-        const routeData = this.$router.resolve({path: '/designate/rfqdetail'})
-        window.open(routeData.href, '_blank')
+    createSignSheet() {
+      let query = {}
+      createSignSheet({}).then(res => {
+        if (res.code === '200') {
+          query = {
+            signCode: res.data.signCode,
+            id: res.data.id,
+            status: res.data.status && res.data.status.name || res.data.status
+          }
+          this.$router.push({path: '/sourcing/partsnomination/signSheet/details?mode=add', query})
+        } else {
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
+      }).catch(e => {
+        iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
       })
     },
     // 查看详情
@@ -133,7 +148,9 @@ export default {
       const routeData = this.$router.resolve({
           path: '/sourcing/partsnomination/signSheet/details',
           query: {
-            signId: row.signId
+            signCode: row.signCode,
+            id: row.id,
+            status: row.status && row.status.name || row.status
           }
         })
         window.open(routeData.href, '_blank')
@@ -141,7 +158,7 @@ export default {
     // 获取定点管理列表
     getFetchData(params = {}) {
       this.tableLoading = true
-      getNominationList({
+      getSignList({
         ...params,
         current: this.page.currPage,
         size: this.page.pageSize
@@ -163,17 +180,17 @@ export default {
     handleSelectionChange(data) {
       this.selectTableData = data
     },
-    // 批量撤回
-    async handleBatchRevoke() {
+    // 批量保存
+    async handleBatchSumit() {
       if (!this.selectTableData.length) {
         iMessage.error(this.language('nominationSuggestion_QingXuanZeZhiShaoYiTiaoShuJu','请选择至少一条数据'))
         return
       }
-      const confirmInfo = await this.$confirm(this.language('revokeSure','您确定要执行撤回操作吗？'))
+      const confirmInfo = await this.$confirm(this.language('submitSure','您确定要执行提交操作吗？'))
       if (confirmInfo !== 'confirm') return
       const idList = this.selectTableData.map(o => Number(o.id))
       try {
-        const res = await batchRevoke({nominateIdArr: idList})
+        const res = await batchSubmit({signIdArr: idList})
         if (res.code === '200') {
           iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'))
           this.getFetchData()
@@ -194,7 +211,7 @@ export default {
       if (confirmInfo !== 'confirm') return
       const idList = this.selectTableData.map(o => Number(o.id))
       try {
-        const res = await batchDelete({nominateIdArr: idList})
+        const res = await batchDelete({signIdArr: idList})
         if (res.code === '200') {
           iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'))
           this.getFetchData()
@@ -286,7 +303,7 @@ export default {
           iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
         }
       }
-    },
+    }
 
   }
 }
