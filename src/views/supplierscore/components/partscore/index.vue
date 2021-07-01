@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-24 10:38:09
- * @LastEditTime: 2021-06-24 11:28:20
+ * @LastEditTime: 2021-06-30 17:30:07
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\supplierscore\components\partscore\index.vue
@@ -12,11 +12,13 @@
       <div class="title">{{ $t("零件评分") }}</div>
       <div class="control">
         <div v-if="editStatus">
-          <iButton @click="editStatus = false">{{ $t("结束编辑") }}</iButton>
-          <iButton :loading="saveLoading" @click="handleSave">{{ $t("保存") }}</iButton>
+          <!-- <iButton @click="handleCloseEdit">{{ language("JIESHUBIANJI", "结束编辑") }}</iButton> -->
+          <iButton @click="handleCloseEdit">结束编辑</iButton>
+          <iButton :loading="saveLoading" @click="handleSave">{{ language("BAOCUN", "保存") }}</iButton>
         </div>
         <div v-else>
-          <iButton @click="editStatus = true">{{ $t("进入编辑") }}</iButton>
+          <!-- <iButton @click="editStatus = true">{{ language("JINRUBIANJI", "进入编辑") }}</iButton> -->
+          <iButton @click="editStatus = true">进入编辑</iButton>
         </div>
         <logButton class="margin-left20" />
         <span class="margin-left20">
@@ -27,40 +29,63 @@
     <iCard class="margin-top30">
       <div class="body">
         <el-table
-          height="calc(100% - 50px)"
+          height="100%"
           v-loading="loading"
           :data="tableListData"
           :empty-text="$t('LK_ZANWUSHUJU')">
-          <el-table-column type="selection" align="center"></el-table-column>
           <el-table-column type="index" align="center" label="#"></el-table-column>
-          <el-table-column align="center" :label="$t('零件号')" prop="partNum" :show-overflow-tooltip="true"></el-table-column>
-          <el-table-column align="center" :label="$t('FS号')" prop="fsNum" :show-overflow-tooltip="true"></el-table-column>
-          <el-table-column align="center" :label="$t('采购工厂')" prop="purchasingFactory" :show-overflow-tooltip="true"></el-table-column>
-          <el-table-column align="center" :label="$t('零件名称(中)')" prop="partNameZh" :show-overflow-tooltip="true"></el-table-column>
-          <el-table-column align="center" :label="$t('零件名称(德)')" prop="partNameDe" :show-overflow-tooltip="true"></el-table-column>
-          <el-table-column align="center" :label="$t('车型项目')" prop="carProjectType" :show-overflow-tooltip="true"></el-table-column>
-          <el-table-column align="center" :label="$t('相关车型')" prop="relatedModels" :show-overflow-tooltip="true"></el-table-column>
+          <el-table-column align="center" v-for="(item, $index) in tableTitle" :key="$index" :label="item.key" :show-overflow-tooltip="true"></el-table-column>
+          <template>
+            <el-table-column align="center" :label="rateTag">
+              <el-table-column align="center" v-for="item in deptScoreTableTitle" :key="item.props" :label="item.key" :show-overflow-tooltip="true">
+                <template v-if="item.props === 'grade'" #header="scope">
+                  <span>{{ scope.column.label }}<i class="required">*</i></span>
+                </template>
+                <template v-if="item.props === 'grade'" v-slot="scope">
+                  <div v-if="editStatus">
+                    <iInput v-model="scope.row.grade" />
+                    <!-- <iSelect v-model="scope.row.grade">
+                      <el-option value="合格" :label="language('HEGE', '合格')" />
+                      <el-option value="不合格" :label="language('BUHEGE', '不合格')" />
+                      <el-option value="合格" label="合格" />
+                      <el-option value="不合格" label="不合格" />
+                    </iSelect> -->
+                  </div>
+                  <span v-else>{{ scope.row.grade }}</span>
+                </template>
+                <template v-else-if="item.props === 'externaFee' || item.props === 'addFee'" v-slot="scope">
+                  <iInput v-if="editStatus" v-model="scope.row[item.props]" />
+                  <span v-else>{{ scope.row[item.props] }}</span>
+                </template>
+                <template v-else-if="item.props === 'confirmCycle'" v-slot="scope">
+                  <iInput v-if="editStatus" v-model="scope.row.confirmCycle" />
+                  <span v-else>{{ scope.row.confirmCycle }}</span>
+                </template>
+                <template v-else-if="item.props === 'remark'" v-slot="scope">
+                  <!-- <span v-if="editStatus" class="link-underline" @click="editRemark(scope.row)">{{ language("BIANJI", "编辑") }}</span> -->
+                  <span v-if="editStatus" class="link-underline" @click="editRemark(scope.row)">编辑</span>
+                  <span v-else class="link-underline" @click="editRemark(scope.row)">{{ language("CHAKAN", "查看") }}</span>
+                </template>
+                <template v-else v-slot="scope">
+                  <span>{{ scope.row[item.props] }}</span>
+                </template>
+              </el-table-column>
+            </el-table-column>
+          </template>
         </el-table>
-        <iPagination 
-          v-update
-          class="margin-top30"
-          @size-change="handleSizeChange($event, getList)"
-          @current-change="handleCurrentChange($event, getList)"
-          background
-          :current-page="page.currPage"
-          :page-sizes="page.pageSizes"
-          :page-size="page.pageSize"
-          :layout="page.layout"
-          :total="page.totalCount" />
       </div>
+      <remarkDialog ref="remarkDialog" :visible.sync="remarkDialogVisible" :data="currentRow.memo" :disabled="!editStatus" @confirm="confirmRemark" @cancel="currentRow = {}" />
     </iCard>
   </iPage>
 </template>
 
 <script>
-import { iPage, iButton, icon, iCard, iPagination, iMessage } from "rise"
-import { pageMixins } from "@/utils/pageMixins"
+import { iPage, iButton, icon, iCard, iInput, iSelect, iMessage, iMessageBox } from "rise"
 import logButton from "@/components/logButton"
+import remarkDialog from "@/views/supplierscore/components/remarkDialog"
+import { tableTitle, deptScoreTableTitle } from "./components/data"
+import { cloneDeep, isEqual } from "lodash"
+import { getRfqPartRatingsByCurrentDept, updateRfqPartRatings, updateRfqPartRatingMemo } from "@/api/supplierscore"
 
 export default {
   components: {
@@ -68,37 +93,161 @@ export default {
     iButton,
     icon,
     iCard,
-    iPagination,
-    logButton
+    iInput,
+    iSelect,
+    logButton,
+    remarkDialog
   },
-  mixins: [ pageMixins ],
   data() {
     return {
+      rfqId: "",
+      supplierId: "",
       editStatus: false,
       saveLoading: false,
       loading: false,
-      tableListData: []
+      tableTitle,
+      deptScoreTableTitle,
+      tableListData: [],
+      tableListDataCache: [],
+      rateTag: "",
+      remarkDialogVisible: false,
+      currentRow: {}
     }
   },
+  created() {
+    this.rfqId = this.$route.query.rfqId
+    this.supplierId = this.$route.query.supplierId
+    this.getRfqPartRatingsByCurrentDept()
+  },
   methods: {
+    getRfqPartRatingsByCurrentDept() {
+      this.loading = true
+
+      getRfqPartRatingsByCurrentDept({
+        rfqId: this.rfqId,
+        supplierId: this.supplierId
+      })
+      .then(res => {
+        if (res.code == 200) {
+          this.tableListData = Array.isArray(res.data) ? res.data : []
+          this.tableListDataCache = cloneDeep(this.tableListData)
+          this.rateTag = this.tableListData[0] ? this.tableListData[0].rateTag : ""
+        } else {
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
+
+        this.loading = false
+      })
+      .catch(() => this.loading = false)
+    },
+    // 结束编辑
+    handleCloseEdit() {
+      if (!isEqual(this.tableListData, this.tableListDataCache)) {
+        // iMessageBox(
+        //   this.language("DISCARDCHANGE", "内容已经发生变化，是否确定要放弃修改？"), 
+        //   this.language("TISHI", "提示"),  
+        //   { 
+        //     confirmButtonText: this.language("QUEREN", "确认")
+        //   }
+        // )
+        iMessageBox(
+          "内容已经发生变化，是否确定要放弃修改？", 
+          "提示", 
+          { 
+            confirmButtonText: "确认"
+          }
+        )
+        .then(() => {
+          this.editStatus = false
+          this.tableListData = cloneDeep(this.tableListDataCache)
+        })
+        .catch(() => {})
+      } else {
+        this.editStatus = false
+      }
+    },
     // 保存
     handleSave() {
-      const save = function () {}
+      if (isEqual(this.tableListData, this.tableListDataCache)) {
+        // return iMessageBox(
+        //   this.language("NOCHANGEDONTSAVE", "没有发现更改，不需要保存。"), 
+        //   this.language("TISHI", "提示"), 
+        //   { 
+        //     showCancelButton: false, 
+        //     confirmButtonText: this.language("QUEREN", "确认") 
+        //   }
+        // )
+        return iMessageBox(
+          "没有发现更改，不需要保存。", 
+          "提示", 
+          { 
+            showCancelButton: false, 
+            confirmButtonText: "确认" 
+          }
+        )
+      }
+
+      if (this.tableListData.some(item => !item.grade && item.grade !== 0)) {
+        // return iMessage.warn(this.language("PINGFENLIEWEIBITIANXIANG", "评分列为必填项"))
+        return iMessage.warn("评分列为必填项")
+      }
 
       this.saveLoading = true
-      save()
+
+      updateRfqPartRatings(
+        this.tableListData.map(item => ({
+          addFee: item.addFee,
+          confirmCycle: item.confirmCycle,
+          externalFee: item.externaFee,
+          id: item.id,
+          rate: item.grade
+        }))
+      )
       .then(res => {
         const message = this.$i18n.locale === "zh" ? res.desZh : res.desEn
 
         if (res.code == 200) {
           iMessage.success(message)
-          this.editStatus = false
+          this.getRfqPartRatingsByCurrentDept()
         } else {
           iMessage.error(message)
         }
+
+        this.saveLoading = false
       })
       .catch(() => this.saveLoading = false)
-    }
+    },
+    // 编辑/查看 备注
+    editRemark(row) {
+      this.currentRow = row
+      this.remarkDialogVisible = true
+    },
+    // 确认备注
+    confirmRemark(remark) {
+      this.$refs.remarkDialog.updateConfirmLoading(true)
+
+      updateRfqPartRatingMemo({
+        id: this.currentRow.id,
+        memo: remark
+      })
+      .then(res => {
+        const message = this.$i18n.locale === "zh" ? res.desZh : res.desEn
+
+        if (res.code == 200) {
+          iMessage.success(message)
+          this.$set(this.currentRow, "memo", remark)
+          this.remarkDialogVisible = false
+          this.currentRow = {}
+          // this.getRfqPartRatingsByCurrentDept() 测试数据是否正确更新用
+        } else {
+          iMessage.error(message)
+        }
+
+        this.$refs.remarkDialog.updateConfirmLoading(false)
+      })
+      .catch(() => this.$refs.remarkDialog.updateConfirmLoading(false))
+      
+    },
   }
 }
 </script>
@@ -129,6 +278,13 @@ export default {
 
   .body {
     height: calc(100vh - 240px);
+  }
+
+  .required {
+    color: #E30D0D;
+    font-style: normal;
+    margin-left: 2px;
+    font-size: 14px;
   }
 }
 </style>

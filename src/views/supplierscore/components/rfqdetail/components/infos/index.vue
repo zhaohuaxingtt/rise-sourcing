@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-22 11:13:15
- * @LastEditTime: 2021-06-22 15:49:16
+ * @LastEditTime: 2021-06-28 19:21:34
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\supplierscore\components\rfqdetail\components\infos\index.vue
@@ -16,7 +16,7 @@
         :row="item.row"
         :label="$t(item.key)"
       >
-        <iText>{{ partInfo[item.props] }}</iText>
+        <iText>{{ rfqInfo[item.props] }}</iText>
       </iFormItem>
     </iFormGroup>
   </iCard>
@@ -34,7 +34,7 @@ export default {
     iText
   },
   props: {
-    partInfo: {
+    rfqInfo: {
       type: Object,
       require: true
     },

@@ -1,14 +1,14 @@
 <!--
  * @Author: your name
- * @Date: 2021-06-22 16:16:21
- * @LastEditTime: 2021-06-28 17:55:24
+ * @Date: 2021-06-28 16:14:19
+ * @LastEditTime: 2021-06-28 17:44:14
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
- * @FilePath: \front-web\src\views\supplierscore\components\rfqdetail\components\supplierScore\components\attachment\index.vue
+ * @FilePath: \front-web\src\views\supplierscore\components\rfqdetail\components\inquiryAttachment\components\inquiryAttachment\index.vue
 -->
 <template>
-  <!-- <iCard class="attachment" :title="language('GONGYINGSHANGPINGFENFUJIAN', '供应商评分附件')"> -->
-  <iCard class="attachment" title="供应商评分附件">
+  <!-- <iCard :title="language('XUNJIAFUJIAN', '询价附件')"> -->
+  <iCard title="询价附件">
     <template #header-control>
       <!-- <iButton :loading="downloadLoading" @click="handleDownload">{{ language("XIAZAI", "下载") }}</iButton> -->
       <iButton :loading="downloadLoading" @click="handleDownload">下载</iButton>
@@ -30,8 +30,8 @@
       <iPagination 
         v-update
         class="margin-top30"
-        @size-change="handleSizeChange($event, getList)"
-        @current-change="handleCurrentChange($event, getList)"
+        @size-change="handleSizeChange($event, getAllAnnex)"
+        @current-change="handleCurrentChange($event, getAllAnnex)"
         background
         :current-page="page.currPage"
         :page-sizes="page.pageSizes"
@@ -46,7 +46,7 @@
 import { iCard, iButton, iPagination, iMessage } from "rise"
 import tableList from "@/views/partsign/editordetail/components/tableList"
 import { pageMixins } from "@/utils/pageMixins"
-import { attachmentTableTile as tableTitle } from "../data"
+import { inquiryAttachmentTableTitle as tableTitle } from "../data"
 import { getAllAnnex } from "@/api/partsrfq/editordetail"
 import { downloadFile } from "@/api/file"
 
@@ -76,7 +76,7 @@ export default {
       loading: false,
       tableTitle,
       tableListData: [],
-      multipleSelection: [],
+      multipleSelection: []
     }
   },
   methods: {
@@ -84,7 +84,7 @@ export default {
       this.loading = true
 
       getAllAnnex({
-        fileType: "1",
+        fileType: "2",
         rfqId: this.rfqId,
         userId: this.userInfo.id,
         current: this.page.currPage,
@@ -107,9 +107,9 @@ export default {
     handleSelectionChange(list) {
       this.multipleSelection = list
     },
-    // 下载
     async handleDownload() {
-      if (!this.multipleSelection.length) return iMessage.warn(this.$t("请选择需要下载的文件"))
+      // if (this.multipleSelection.length < 1) return iMessage.warn(this.language("QINGXUANZEXUYAOXIAZAIDEWENJIAN", "请选择需要下载的文件"))
+      if (this.multipleSelection.length < 1) return iMessage.warn("请选择需要下载的文件")
 
       this.downloadLoading = true
       await downloadFile({
@@ -125,11 +125,11 @@ export default {
         applicationName: "rise",
         fileList: row.fileName
       })
-    }
-  }
+    },
+  },
 }
 </script>
 
 <style lang="scss" scoped>
-.attachment {}
+
 </style>

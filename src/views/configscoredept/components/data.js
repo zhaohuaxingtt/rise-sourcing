@@ -1,10 +1,10 @@
 /*
  * @Author: your name
  * @Date: 2021-06-18 10:40:28
- * @LastEditTime: 2021-06-18 17:32:44
+ * @LastEditTime: 2021-06-30 18:34:51
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
- * @FilePath: \front-web\src\views\configgradedept\components\data.js
+ * @FilePath: \front-web\src\views\configscoredept\components\data.js
  */
 export const queryForm = {}
 

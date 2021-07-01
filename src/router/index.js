@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-06-28 10:55:55
+ * @LastEditTime: 2021-06-30 19:07:33
  * @LastEditors: Please set LastEditors
  * @Description: 系统静态路由.
  * @FilePath: \front-web\src\router\index.js
@@ -281,10 +281,10 @@ export const staticRouter = [{
                 component: () => import("@/views/accessoryPart/createRfq/index"),
             },
             {
-                path: "/configgradedept",
-                name: "configgradedept",
+                path: "/configscoredept",
+                name: "configscoredept",
                 meta: { title: "配置评分部门" },
-                component: () => import("@/views/configgradedept"),
+                component: () => import("@/views/configscoredept"),
             },
             // 定点信相关路由
             {

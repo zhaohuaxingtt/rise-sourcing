@@ -1,13 +1,13 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-17 13:44:35
- * @LastEditTime: 2021-06-22 15:01:36
+ * @LastEditTime: 2021-06-30 20:06:36
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
- * @FilePath: \front-web\src\views\configgradedept\index.vue
+ * @FilePath: \front-web\src\views\configscoredept\index.vue
 -->
 <template>
-  <iPage class="configgradedept">
+  <iPage class="configscoredept">
     <div class="header clearFloat">
       <div class="title">{{ $t("配置评分部门") }}</div>
       <div class="control">
@@ -137,6 +137,7 @@ import deptDialog from "./components/deptDialog"
 import filters from "@/utils/filters"
 import { queryForm, tableTitle } from "./components/data"
 import { cloneDeep, isEqual } from "lodash"
+import { getRfqRateDeparts } from "@/api/configscoredept"
 
 export default {
   components: {
@@ -172,14 +173,14 @@ export default {
     }
   },
   created() {
-    // this.getList()
+    // this.getRfqRateDeparts()
   },
   methods: {
-    getList() {
+    getRfqRateDeparts() {
       const getList = function() {}
 
       this.loading = true
-      getList(this.form)
+      getRfqRateDeparts(this.form)
       .then(res => {
         if (res.code == 200) {
           this.tableListData = Array.isArray(res.data) ? res.data : []
@@ -298,7 +299,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.configgradedept {
+.configscoredept {
   .header {
     position: relative;
 

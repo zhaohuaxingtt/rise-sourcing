@@ -1,14 +1,14 @@
 <!--
  * @Author: your name
- * @Date: 2021-06-22 16:16:21
- * @LastEditTime: 2021-06-28 17:55:24
+ * @Date: 2021-06-28 17:22:08
+ * @LastEditTime: 2021-06-28 17:44:55
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
- * @FilePath: \front-web\src\views\supplierscore\components\rfqdetail\components\supplierScore\components\attachment\index.vue
+ * @FilePath: \front-web\src\views\supplierscore\components\rfqdetail\components\inquiryAttachment\components\inquiryDrawing\index.vue
 -->
 <template>
-  <!-- <iCard class="attachment" :title="language('GONGYINGSHANGPINGFENFUJIAN', '供应商评分附件')"> -->
-  <iCard class="attachment" title="供应商评分附件">
+  <!-- <iCard :title="language('XUNJIATUZHI', '询价图纸')"> -->
+  <iCard title="询价图纸">
     <template #header-control>
       <!-- <iButton :loading="downloadLoading" @click="handleDownload">{{ language("XIAZAI", "下载") }}</iButton> -->
       <iButton :loading="downloadLoading" @click="handleDownload">下载</iButton>
@@ -23,15 +23,15 @@
         :tableLoading="loading"
         @handleSelectionChange="handleSelectionChange"
       >
-        <template #fileName="scope">
-          <span class="link-underline" @click="download(scope.row)">{{ scope.row.fileName }}</span>
+        <template #tpPartAttachmentName="scope">
+          <span class="link-underline" @click="download(scope.row)">{{ scope.row.tpPartAttachmentName }}</span>
         </template>
       </tableList>
       <iPagination 
         v-update
         class="margin-top30"
-        @size-change="handleSizeChange($event, getList)"
-        @current-change="handleCurrentChange($event, getList)"
+        @size-change="handleSizeChange($event, getRfqDataList)"
+        @current-change="handleCurrentChange($event, getRfqDataList)"
         background
         :current-page="page.currPage"
         :page-sizes="page.pageSizes"
@@ -46,8 +46,8 @@
 import { iCard, iButton, iPagination, iMessage } from "rise"
 import tableList from "@/views/partsign/editordetail/components/tableList"
 import { pageMixins } from "@/utils/pageMixins"
-import { attachmentTableTile as tableTitle } from "../data"
-import { getAllAnnex } from "@/api/partsrfq/editordetail"
+import { inquiryDrawingTableTitle as tableTitle } from "../data"
+import { getRfqDataList } from "@/api/partsrfq/home"
 import { downloadFile } from "@/api/file"
 
 export default {
@@ -76,24 +76,25 @@ export default {
       loading: false,
       tableTitle,
       tableListData: [],
-      multipleSelection: [],
+      multipleSelection: []
     }
   },
   methods: {
-    getAllAnnex() {
+    getRfqDataList() {
       this.loading = true
 
-      getAllAnnex({
-        fileType: "1",
-        rfqId: this.rfqId,
-        userId: this.userInfo.id,
-        current: this.page.currPage,
-        size: this.page.pageSize,
+      getRfqDataList({
+        otherInfoPackage: {
+          findType: "12",
+          rfqId: this.rfqId,
+          current: this.page.currPage,
+          size: this.page.pageSize,
+        }
       })
       .then(res => {
-        if (res.code == 200) {
-          this.tableListData = Array.isArray(res.data) ? res.data : []
-          this.page.totalCount = res.total || 0
+        if (res.code == 200 && res.data.inquiryDrawingsVO) {
+          this.tableListData = Array.isArray(res.data.inquiryDrawingsVO.inquiryDrawingsVOS) ? res.data.inquiryDrawingsVO.inquiryDrawingsVOS : []
+          this.page.totalCount = res.data.inquiryDrawingsVO.total || 0
         } else {
           this.tableListData = []
           this.page.totalCount = 0
@@ -107,14 +108,14 @@ export default {
     handleSelectionChange(list) {
       this.multipleSelection = list
     },
-    // 下载
     async handleDownload() {
-      if (!this.multipleSelection.length) return iMessage.warn(this.$t("请选择需要下载的文件"))
+      // if (this.multipleSelection.length < 1) return iMessage.warn(this.language("QINGXUANZEXUYAOXIAZAIDEWENJIAN", "请选择需要下载的文件"))
+      if (this.multipleSelection.length < 1) return iMessage.warn("请选择需要下载的文件")
 
       this.downloadLoading = true
       await downloadFile({
         applicationName: "rise",
-        fileList: this.multipleSelection.map(item => item.fileName)
+        fileList: this.multipleSelection.map(item => item.tpPartAttachmentName)
       })
 
       this.downloadLoading = false
@@ -123,13 +124,13 @@ export default {
     download(row) {
       downloadFile({
         applicationName: "rise",
-        fileList: row.fileName
+        fileList: row.tpPartAttachmentName
       })
-    }
-  }
+    },
+  },
 }
 </script>
 
 <style lang="scss" scoped>
-.attachment {}
+
 </style>

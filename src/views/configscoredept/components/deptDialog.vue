@@ -1,10 +1,10 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-18 15:11:44
- * @LastEditTime: 2021-06-18 19:04:10
+ * @LastEditTime: 2021-06-30 18:34:57
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
- * @FilePath: \front-web\src\views\configgradedept\components\deptDialog.vue
+ * @FilePath: \front-web\src\views\configscoredept\components\deptDialog.vue
 -->
 <template>
   <iDialog 

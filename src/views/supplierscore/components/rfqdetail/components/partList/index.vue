@@ -1,17 +1,19 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-22 11:35:46
- * @LastEditTime: 2021-06-22 15:40:54
+ * @LastEditTime: 2021-06-28 15:58:55
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\supplierscore\components\rfqdetail\components\partList\index.vue
 -->
 <template>
-  <iCard class="partList" :title="$t('零件清单')">
+  <!-- <iCard class="partList" :title="language('LINGJIANQINGDAN', '零件清单')"> -->
+    <iCard class="partList" :title="$t('零件清单')">
     <div class="body">
       <tableList
         class="table"
         index
+        :lang="false"
         :selection="false"
         :tableData="tableListData"
         :tableTitle="tableTitle"
@@ -19,8 +21,8 @@
       <iPagination 
         v-update
         class="margin-top30"
-        @size-change="handleSizeChange($event, getList)"
-        @current-change="handleCurrentChange($event, getList)"
+        @size-change="handleSizeChange($event, init)"
+        @current-change="handleCurrentChange($event, init)"
         background
         :current-page="page.currPage"
         :page-sizes="page.pageSizes"
@@ -36,6 +38,7 @@ import { iCard, iPagination, iMessage } from "rise"
 import tableList from "@/views/partsign/editordetail/components/tableList"
 import { partListTableTitle as tableTitle } from "../data"
 import { pageMixins } from "@/utils/pageMixins"
+import { getPartSrcPrjs } from "@/api/partsrfq/editordetail"
 
 export default {
   components: {
@@ -45,9 +48,9 @@ export default {
   },
   mixins: [ pageMixins ],
   props: {
-    partInfo: {
-      type: Object,
-      default: () => ({})
+    rfqId: {
+      type: String,
+      require: true
     }
   },
   data() {
@@ -59,14 +62,21 @@ export default {
   },
   methods: {
     init() {
-      const getList = function () {}
-
       this.loading = true
-      getList()
+      getPartSrcPrjs({
+        "search.current": this.page.currPage,
+        "search.size": this.page.pageSize,
+        "search.rfqId": this.rfqId
+      })
       .then(res => {
         if (res.code == 200) {
-          this.tableListData = Array.isArray(res.data) ? res.data : []
-          this.page.totalCount = res.total || 0
+          if (res.data && res.data.pageData) {
+            this.tableListData = Array.isArray(res.data.pageData.data) ? res.data.pageData.data : []
+            this.page.totalCount = res.data.pageData.total || 0
+          } else {
+            this.tableListData = []
+            this.page.totalCount = 0
+          }
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }
