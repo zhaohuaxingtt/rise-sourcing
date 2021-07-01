@@ -19,8 +19,8 @@
     >
     </iTableList>
     <div class="TOTAL">
-      <div>TOTAL</div>
-      <div>{{ tableTotal }}</div>
+      <div>Total</div>
+      <div>{{ getTousandNum(tableTotal) }}</div>
     </div>
     <span slot="footer" class="dialog-footer">
     </span>
@@ -73,7 +73,7 @@ export default {
             item.amount = this.getTousandNum(item.amount)
             return item
           })
-          this.tableTotal = cloneDeep(res.data).map(item => Number(item.amount)).reduce((a, b) => a + b).toFixed(1)
+          this.tableTotal = cloneDeep(res.data).map(item => Number(item.amount)).reduce((a, b) => a + b).toFixed(2)
         } else {
           iMessage.error(result);
         }

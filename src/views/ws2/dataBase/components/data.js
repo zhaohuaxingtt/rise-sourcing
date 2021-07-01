@@ -24,7 +24,7 @@ export const summaryData = [
         tooltip: false
     },
     {
-        props: 'sopTime',
+        props: 'sop',
         name: 'SOP时间',
         key: 'SOP时间',
         tooltip: false
