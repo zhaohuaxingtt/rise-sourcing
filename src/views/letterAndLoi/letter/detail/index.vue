@@ -9,23 +9,23 @@
         <div class="title">{{language('LK_DINGDIANXINBIANHAO','定点信编号')}}: {{detailInfo.letterNum}}</div>
         <div class="control">
             <span v-if="isEdit">
-                <iButton @click="save">{{language('LK_BAOCUN','保存')}}</iButton>
+                <iButton :loading="btnLoading.save" @click="save">{{language('LK_BAOCUN','保存')}}</iButton>
                 <iButton @click="changeEditStatus">{{language('LK_QUXIAO','取 消')}}</iButton>
             </span>
             <span v-else>
                 <!-- 状态为作废时显示 -->
-                <iButton @click="add" v-if="detailInfo.status=='TOVOID'">{{language('LK_LETTER_XINZENGDINGDIANXIN','新增定点信')}}</iButton>
+                <iButton :loading="btnLoading.add" @click="add" v-if="detailInfo.status=='TOVOID'">{{language('LK_LETTER_XINZENGDINGDIANXIN','新增定点信')}}</iButton>
                 <!-- 状态为前期确认中时显示编辑按钮 -->
                 <template v-if="detailInfo.status=='CSF_HANDLING'" >
                     <iButton @click="edit">{{language('LK_BIANJI','编辑')}}</iButton>
-                    <iButton @click="sureSubmit">{{language('LK_QUERENBINGTIJIAO','确认并提交')}}</iButton>
+                    <iButton :loading="btnLoading.sureSubmit"  @click="sureSubmit">{{language('LK_QUERENBINGTIJIAO','确认并提交')}}</iButton>
                 </template>
                 <!-- 状态为完成时不显示 -->
                 <template v-if="detailInfo.status!='COMPLETIED'">
-                    <iButton @click="lineSure">{{language('LK_LINEQUEREN','LINIE确认')}}</iButton>
-                    <iButton @click="lineBack">{{language('LK_LINETUIHUI','LINIE退回')}}</iButton>
+                    <iButton :loading="btnLoading.lineSure"  @click="lineSure">{{language('LK_LINEQUEREN','LINIE确认')}}</iButton>
+                    <iButton :loading="btnLoading.lineBack" @click="lineBack">{{language('LK_LINETUIHUI','LINIE退回')}}</iButton>
                 </template>
-                <iButton v-if="radioType=='NonStandard'" @click="complete">{{language('LK_WANCHENGDINGDIANXIN','完成定点信')}}</iButton>
+                <iButton :loading="btnLoading.complete" v-if="radioType=='NonStandard'" @click="complete">{{language('LK_WANCHENGDINGDIANXIN','完成定点信')}}</iButton>
                 <iButton @click="downloadFiles">{{language('LK_DAOCHUBIAOZHUNDINGDIANXIN','导出标准定点信')}}</iButton>
                 <iButton @click="changeShowHistory">{{language('LK_LISHIDINGDIANXIN','历史定点信')}} </iButton>
             </span>
@@ -128,6 +128,14 @@ export default {
             linieList:[], // line列表
             supplierList:[], // 供应商列表
             detailInfo:{}, // 详情
+            btnLoading:{
+                save:false,
+                add:false,
+                sureSubmit:false,
+                lineSure:false,
+                lineBack:false,
+                complete:false,
+            },
 
         }
     },
@@ -229,7 +237,6 @@ export default {
 
         // 保存
         async save(){
-            console.log(this.detailInfo);
             const { detailInfo,linieList,supplierList,radioType } = this;
             const { supplierUserId ,linieId} = detailInfo;
             // 获取所选供应商和line的名称
@@ -241,10 +248,11 @@ export default {
                 supplierUserName:supplierUserName[0] ? supplierUserName[0].nameZh : '',
                 templateType:radioType==='standard' ? 0 : 1,
             }
-            console.log(data);
             const confirmInfo = await this.$confirm(this.language('submitSure','您确定要执行提交操作吗？'));
             if(confirmInfo){
+                this.btnLoading.save = true;
                 await update(data).then((res)=>{
+                    this.btnLoading.save = false;
                     if(res.code==200){
                          iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
                          this.getDetail();
@@ -252,6 +260,8 @@ export default {
                     }else{
                          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
                     }
+                }).catch((err)=>{
+                    this.btnLoading.save = false;
                 })
             }
         },
@@ -261,7 +271,9 @@ export default {
             const { nominateLetterId } = this;
             const confirmInfo = await this.$confirm(this.language('submitSure','您确定要执行提交操作吗？'));
             if(!confirmInfo) return;
+            this.btnLoading.add = true;
             await fsAdd({nominateLetterId}).then((res)=>{
+                this.btnLoading.add = false;
                 const {code} = res;
                 if(code==200){
                     iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
@@ -269,6 +281,8 @@ export default {
                 }else{
                     iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
                 }
+            }).catch((err)=>{
+                this.btnLoading.add = false;
             })
         },
 
@@ -277,7 +291,9 @@ export default {
             const { nominateLetterId } = this;
             const confirmInfo = await this.$confirm(this.language('submitSure','您确定要执行提交操作吗？'));
             if(!confirmInfo) return;
+            this.btnLoading.complete = true;
             await fsComplete({nominateLetterId}).then((res)=>{
+                this.btnLoading.complete = false;
                 const {code} = res;
                 if(code==200){
                     iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
@@ -285,6 +301,8 @@ export default {
                 }else{
                     iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
                 }
+            }).catch((err)=>{
+                this.btnLoading.complete = false;
             })
         },
 
@@ -293,14 +311,18 @@ export default {
             const { nominateLetterId } = this;
             const confirmInfo = await this.$confirm(this.language('submitSure','您确定要执行提交操作吗？'));
             if(!confirmInfo) return;
+            this.btnLoading.sureSubmit = true;
             await fsConfirm({nominateLetterIds:nominateLetterId}).then((res)=>{
+                    this.btnLoading.sureSubmit = false;
                     if(res.code == 200){
                         iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
                         this.getDetail();
                     }else{
                         iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
                     }
-                }).catch((err)=>{});
+                }).catch((err)=>{
+                    this.btnLoading.sureSubmit = false;
+                });
         },
     }
 }

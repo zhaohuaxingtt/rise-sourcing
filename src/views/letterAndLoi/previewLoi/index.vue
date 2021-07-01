@@ -23,7 +23,7 @@
             </template>
         </tableList>
         <!-- 分页 -->
-        <iPagination
+        <!-- <iPagination
             v-update
             @size-change="handleSizeChange($event, getList)"
             @current-change="handleCurrentChange($event, getList)"
@@ -33,7 +33,7 @@
             :page-size="page.pageSize"
             :layout="page.layout"
             :total="page.totalCount"
-        />
+        /> -->
         </iCard>
     </iPage>
 </template>
@@ -42,25 +42,25 @@
 import {
     iPage,
     iCard,
-    iPagination,
+    // iPagination,
     iMessage,
 } from 'rise';
 import tableList from "@/views/partsign/editordetail/components/tableList"
 import {
     loiListTitle,
 } from '../data';
-import { pageMixins } from "@/utils/pageMixins";
+// import { pageMixins } from "@/utils/pageMixins";
 import {
-    getloiList,
+    findNomiLoiSingle,
 } from '@/api/letterAndLoi/loi'
 export default {
     name:'previewLoi',
-    mixins: [pageMixins],
+    // mixins: [pageMixins],
     components:{
         iPage,
         iCard,
         tableList,
-        iPagination,
+        // iPagination,
     },
     data(){
         return{
@@ -76,16 +76,18 @@ export default {
         async getList(){
             this.loading = true;
             const { page } = this;
+            const { query } = this.$route;
+            const { id } = query;
             const data = {
-                current:page.currPage,
-                size:page.pageSize
+                // current:page.currPage,
+                // size:page.pageSize
             };
-            await getloiList(data).then((res)=>{
+            await findNomiLoiSingle(id).then((res)=>{
                  this.loading = false;
-                const {code,data=[],total} = res;
+                const {code,data} = res;
                 if(code==200){
-                   this.tableListData = data;
-                   this.page.totalCount = total;
+                   this.tableListData = [data];
+                //    this.page.totalCount = total;
                 }else{
                     iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
                 }

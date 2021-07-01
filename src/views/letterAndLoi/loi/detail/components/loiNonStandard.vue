@@ -108,7 +108,6 @@ export default {
                 fileType: '124',
             }
             await this.getDataList(params);
-            this.$emit('setFileListLen',this.dataList.length);
         },
         async downloadLine(row){
             const params = {

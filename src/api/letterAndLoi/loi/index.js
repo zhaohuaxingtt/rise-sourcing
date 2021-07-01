@@ -127,3 +127,11 @@ export function getloiList(data) {
       params,
     })
   }
+
+  // 预览列表 
+  export function findNomiLoiSingle(id) {
+    return requst({
+      url: `/loi/findNomiLoiSingle/${id}`,
+      method: 'GET',
+    })
+  }

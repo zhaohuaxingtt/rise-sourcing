@@ -73,7 +73,7 @@
         </iCard>
 
         <!-- 非标准LOI -->
-        <loiNonStandard class="margin-top20" v-if="radioType=='NonStandard'" :isEdit="isEdit" :nomiAppId="nomiAppId" @setFileListLen="setFileListLen"/>
+        <loiNonStandard class="margin-top20" v-if="radioType=='NonStandard'" :isEdit="isEdit" :nomiAppId="nomiAppId" />
 
         <!-- 历史LOI弹窗 -->
         <historyDialog v-if="showHistory" :dialogVisible="showHistory" @changeVisible="changeShowHistory" :loiInfo="loiInfo"/>
@@ -139,7 +139,6 @@ export default {
                 save:false,
                 lineDone:false,
             },
-            fileListLen:0, // 非标准定点信附件列表长度
 
         }
     },
@@ -251,10 +250,6 @@ export default {
             const { id } = loiInfo;
             const confirmInfo = await this.$confirm(this.language('submitSure','您确定要执行提交操作吗？'));
             if(!confirmInfo) return;
-            // 点击后校验非标准定点信是否至少包含一个附件 若无附件时点击后则提示采购员：请上传非标准定点信后再点击完成LOI！
-            if(!this.fileListLen){
-                return iMessage.warn(this.language('LOI_DETAIL_QINGSHANGCHUANFUJIANHOUTIJIAO','请上传非标准定点信后再点击完成LOI！'));
-            }
             this.btnLoading.lineDone = true;
             await cfsLoiDone({id}).then((res)=>{
                 this.btnLoading.lineDone = false;
@@ -331,11 +326,6 @@ export default {
                    this.linieList = data;
                }
             })
-        },
-        
-        // 设置fileListLen
-        setFileListLen(len){
-            this.fileListLen = len || 0;
         },
     }
 }
