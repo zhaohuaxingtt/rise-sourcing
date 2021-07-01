@@ -14,7 +14,7 @@
         <div>
             <el-form>
                 <el-form-item :label="language('LK_MUBIAOXUNJIACAIGOUYUAN','目标询价采购员')">
-                    <iSelect v-update v-model="turnSendFrom.targetCf" :placeholder="language('partsprocure.CHOOSE','请选择')">
+                    <iSelect v-update v-model="turnSendFrom.targetCsfCssId" :placeholder="language('partsprocure.CHOOSE','请选择')">
                     <el-option
                         v-for="item in cfList || []"
                         :key="item.id"
@@ -24,7 +24,7 @@
                     </iSelect> 
                 </el-form-item>
                 <el-form-item :label="language('LK_MUBIAOLINE','⽬标LINIE')">
-                    <iSelect v-update v-model="turnSendFrom.targetLinie" :placeholder="language('partsprocure.CHOOSE','请选择')">
+                    <iSelect v-update v-model="turnSendFrom.targetLinieId" :placeholder="language('partsprocure.CHOOSE','请选择')">
                     <el-option
                         v-for="item in linieList || []"
                         :key="item.id"
@@ -35,7 +35,7 @@
                 </el-form-item>
             </el-form>
             <p class="confirmBtn padding-bottom20">
-                <iButton @click="submit">{{language('LK_QUEDING','确定')}}</iButton>
+                <iButton :loading="isLoading" @click="submit">{{language('LK_QUEDING','确定')}}</iButton>
             </p>
         </div>   
     </iDialog>
@@ -69,11 +69,12 @@ export default { //
     data(){
         return{
             turnSendFrom:{
-                targetCf:'',
-                targetLinie:'',
+                targetCsfCssId:'',
+                targetLinieId:'',
             },
             cfList:[], // 前期采购员
             linieList:[], // 专业采购员
+            isLoading:false,
         }
     },
     created(){
@@ -101,19 +102,37 @@ export default { //
             })
         },
 
+        // 查一下选中联系人id对应的name
+        getName(listKey,id){
+            const list = this[listKey] || [];
+            const filterList = list.filter((item)=>item.id == id);
+            if(filterList.length){
+                return filterList[0].nameZh
+            }else{
+                return null;
+            }
+        },
+
         // 提交
         async submit(){
-            const { turnSendFrom,selectItems } = this;
-            const {targetCf,targetLinie} = turnSendFrom;
-            if(!targetCf || !targetLinie){
-                iMessage.warn(this.language('LK_QINGXUANZE','请选择'));
+            const { turnSendFrom,selectItems, } = this;
+            const {targetCsfCssId,targetLinieId} = turnSendFrom;
+            if(!targetCsfCssId || !targetLinieId){
+                 return iMessage.warn(this.language('LK_QINGXUANZE','请选择'));
             }
+            
+            const targetCsfCssName = this.getName('cfList',targetCsfCssId) || '';
+            const targetLinieName = this.getName('linieList',targetLinieId) || '';
             const nominateLetterIds = selectItems.map((item)=>item.nominateLetterId);
             const data = {
                 ...turnSendFrom,
+                targetCsfCssName,
+                targetLinieName,
                 nominateLetterIds,
             };
+            this.isLoading = true;
             await transfer(data).then((res)=>{
+                this.isLoading = false;
                 const { code } = res;
                 if(code==200){
                     iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
@@ -122,6 +141,8 @@ export default { //
                 }else{
                     iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
                 }
+            }).catch((err)=>{ 
+                this.isLoading = false; 
             })
         },
     }

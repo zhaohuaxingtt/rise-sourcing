@@ -90,17 +90,12 @@
 import { tableTitle } from '../components/data'
 import search from './components/search'
 import tablelist from "@/views/designate/supplier/components/tableList";
-import { 
-  getNominationList,
-  batchRevoke,
-  batchDelete,
-  nominateRreeze,
-  nominateUnRreeze,
-  nominateConfirm,
+import {
   getCarTypePro,
-  rsFrozen,
-  rsUnFrozen
 } from '@/api/designate/nomination'
+import {
+  getNomiNotSelectedPage
+} from '@/api/designate/nomination/signsheet'
 // 前端配置文件里面的定点类型
 // import { applyType } from '@/layout/nomination/components/data'
 
@@ -170,7 +165,7 @@ export default {
     // 获取定点管理列表
     getFetchData(params = {}) {
       this.tableLoading = true
-      getNominationList({
+      getNomiNotSelectedPage({
         ...params,
         current: this.page.currPage,
         size: this.page.pageSize

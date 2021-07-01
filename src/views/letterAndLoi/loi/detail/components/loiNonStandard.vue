@@ -11,7 +11,7 @@
                     hideTip
                     :buttonText="language('LK_SHANGCHUAN','上传')"
                     accept=".doc,.docx,.xls,.xlsx,.ppt,.pptx,.jpg,.jpeg,.png,.pdf,.tif"
-                    @on-success="onUploadsucess(Object.assign(...arguments, {fileType: '124'}), getFetchDataList)"
+                    @on-success="onUploadsucess(Object.assign(...arguments, {fileType: '124',hostId:nomiAppId}), getFetchDataList)"
                 />
             </span>
             <iButton @click="downloadFile">{{language('LK_XIAZAI','下载')}}</iButton>
@@ -107,7 +107,7 @@ export default {
                 isAsc: true,
                 fileType: '124',
             }
-            await this.getDataList(params)
+            await this.getDataList(params);
         },
         async downloadLine(row){
             const params = {

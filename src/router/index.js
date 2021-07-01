@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-06-29 17:15:19
+ * @LastEditTime: 2021-07-01 18:11:09
  * @LastEditors: Please set LastEditors
  * @Description: 系统静态路由.
  * @FilePath: \front-web\src\router\index.js
@@ -320,6 +320,22 @@ export const staticRouter = [{
                         title: 'BM申请'
                     },
                     component: () => import (`@/views/ws2/bmApply`),
+                },
+                {
+                    path: '/tooling/carTypeProOverview',
+                    name: 'carTypeProOverview',
+                    meta: {
+                        title: '车型项目概览'
+                    },
+                    component: () => import (`@/views/ws2/investmentReport`),
+                },
+                {
+                    path: '/tooling/investmentReport',
+                    name: 'investmentReport',
+                    meta: {
+                        title: '投资报告'
+                    },
+                    component: () => import (`@/views/ws2/investmentReport`),
                 },
             ]
         },
