@@ -101,11 +101,11 @@ export function getloiList(data) {
   }
 
   // 导出标准LOI  
-  export function exportTemplateLoi(data) {
+  export function exportTemplateLoi(params) {
     return requestDownload({
         url: '/loi/exportTemplateLoi',
-        method: "POST",
-        data,
+        method: "GET",
+        params,
     })
   }
 
@@ -113,6 +113,16 @@ export function getloiList(data) {
   export function historyLoiPage(params) {
     return requst({
       url: '/loi/historyLoiPage',
+      method: 'GET',
+      params,
+    })
+  }
+
+
+  // 完成LOI
+  export function cfsLoiDone(params) {
+    return requst({
+      url: '/loi/cfsLoiDone',
       method: 'GET',
       params,
     })
