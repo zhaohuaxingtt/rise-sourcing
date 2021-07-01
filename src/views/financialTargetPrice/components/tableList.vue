@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-22 14:42:20
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-01 12:54:25
+ * @LastEditTime: 2021-07-01 19:37:14
  * @Description: 财务目标价公用表格
  * @FilePath: \front-web\src\views\financialTargetPrice\components\tableList.vue
 -->
@@ -56,7 +56,7 @@
           <!------------------审批列--------------------------->
           <span class="openLinkText cursor" v-else-if="items.props === 'shenpipi'" @click="$emit('openApprovalDetailDialog',scope.row)">审批</span>
           <!------------------审批状态列--------------------------->
-          <span v-else-if="items.props === 'approveStatus'">{{scope.row.approveStatus ? scope.row.approveStatus.desc || scope.row.applyStatus : ''}}</span>
+          <span v-else-if="items.props === 'approveStatus'">{{scope.row.approveStatus ? scope.row.approveStatus.desc || scope.row.approveStatus : ''}}</span>
           <!------------------正常--------------------------->
           <span v-else>{{scope.row[items.props]}}</span>
         </template>

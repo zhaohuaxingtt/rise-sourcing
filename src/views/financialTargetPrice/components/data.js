@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-22 10:32:07
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-01 15:52:53
+ * @LastEditTime: 2021-07-01 17:14:17
  * @Description: 
  * @FilePath: \front-web\src\views\financialTargetPrice\components\data.js
  */
@@ -10,7 +10,7 @@
 export const TAB = [
   {
     value: 1,
-    label: '寻源执行',
+    name: '寻源执行',
     key: 'LK_XUNYUANZHIHANG',
     url: '/sourcing/partsign',
     activePath: 'sourcing',
@@ -18,14 +18,14 @@ export const TAB = [
   },
   {
     value: 2,
-    label: '进度监控',
+    name: '进度监控',
     key: 'LK_JINDUJIANKONG',
     url: '/nomination',
     message: 0
   },
   {
     value: 3,
-    label: '财务目标价管理',
+    name: '财务目标价管理',
     key: 'CAIWUMUBIAOJIAGUANLI',
     url: '/financialtargetprice',
     activePath: 'financialtargetprice',
