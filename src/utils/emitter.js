@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-07-01 17:19:43
- * @LastEditTime: 2021-07-01 17:19:44
+ * @LastEditTime: 2021-07-01 18:12:11
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\utils\emitter.js
@@ -15,7 +15,7 @@ function broadcast(componentName, eventName, params) {
       } else {
         broadcast.apply(child, [componentName, eventName].concat([params]));
       }
-    });
+    }); 
   }
   export default {
     methods: {
