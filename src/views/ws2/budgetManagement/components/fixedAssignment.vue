@@ -18,11 +18,26 @@
         :selection="false"
     >
       <template #amount="scope">
-        <iInput v-model="scope.row.amount"></iInput>
+        <iInput
+            v-model="scope.row.amount"
+            @focus="focus(scope.row.index)"
+            @blur="blur(scope.row.index)"
+            @change="changeAmount"
+            onkeyup="value=value.replace(/[^\d^\.]+/g,'').replace('.','$#$').replace(/\./g,'').replace('$#$','.')"
+        ></iInput>
       </template>
     </iTableList>
     <div class="TOTAL">
-      <div>TOTAL</div>
+      <div>
+        Total
+        <Popover
+            class="iconTips"
+            placement="top-start"
+            content="车型项目分配总值需小于目标预算值"
+            trigger="hover">
+          <icon symbol name="iconxinxitishi" slot="reference"></icon>
+        </Popover>
+      </div>
       <div>{{ tableTotal }}</div>
     </div>
     <span slot="footer" class="dialog-footer">
@@ -42,6 +57,7 @@ import {
   partsPackageShareDetail,
   updatePackageShareAmount
 } from '@/api/ws2/commonSourcing'
+import {getTousandNum, delcommafy} from "@/utils/tool";
 
 export default {
   mixins: [pageMixins],
@@ -49,6 +65,8 @@ export default {
     iDialog,
     iInput,
     iButton,
+    icon,
+    Popover,
     iTableList,
   },
   props: {
@@ -56,6 +74,7 @@ export default {
     value: {type: Boolean},
     id: {type: String, default: ''},
     fixedAssignmentInfo: {type: String, default: ''},
+    targetBudgetAmount: {type: String, default: ''},
   },
   data() {
     return {
@@ -63,18 +82,35 @@ export default {
       tableListLoading: false,
       tableListData: '',
       tableTitle: fixedAssignmentTitle,
+      getTousandNum: getTousandNum,
+      delcommafy: delcommafy,
     }
   },
   mounted() {
   },
   methods: {
+    focus(index){
+      this.tableListData[index].amount = this.delcommafy(this.tableListData[index].amount)
+    },
+    blur(index){
+      let value = this.tableListData[index].amount
+      value = value.replace(/[^\d^\.]+/g,'').replace('.','$#$').replace(/\./g,'').replace('$#$','.')
+      this.tableListData[index].amount = this.getTousandNum(Number(value).toFixed(2))
+    },
+    changeAmount(){
+      this.tableTotal = this.getTousandNum(this.tableListData.map(item => Number(this.delcommafy(item.amount))).reduce((a, b) => a + b).toFixed(2))
+    },
     partsPackageShareDetail(){
       this.tableListLoading = true
       partsPackageShareDetail(this.id).then((res) => {
         const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
         if (Number(res.code) === 0) {
-          this.tableListData = res.data
-          this.tableTotal = this.tableListData.map(item => Number(item.amount)).reduce((a, b) => a + b).toFixed(1)
+          this.tableListData = res.data.map((item, index) => {
+            item.index = index
+            item.amount = this.getTousandNum(Number(item.amount).toFixed(2))
+            return item
+          })
+          this.tableTotal = this.getTousandNum(this.tableListData.map(item => Number(this.delcommafy(item.amount))).reduce((a, b) => a + b).toFixed(2))
         } else {
           iMessage.error(result);
         }
@@ -87,10 +123,18 @@ export default {
       this.$emit('input', false)
     },
     save() {
+      if(this.tableListData.some(item => item.amount == 0 || item.amount === undefined || item.amount === null || item.amount === '')){
+        iMessage.warn('【零件包】并未进行预算分配！');
+        return
+      }
       this.tableListLoading = true
       updatePackageShareAmount({
-        packageDetailAmountVOList: this.tableListData,
-        partsPackageId: this.id
+        packageDetailAmountVOList: this.tableListData.map(item => {
+          item.amount = Number(this.delcommafy(item.amount))
+          return item
+        }),
+        partsPackageId: this.id,
+        targetBudgetAmount: this.targetBudgetAmount
       }).then((res) => {
         const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
         if (Number(res.code) === 0) {
@@ -143,6 +187,10 @@ export default {
   display: flex;
   text-align: center;
   justify-content: space-around;
+}
+.iconTips{
+  margin-left: 5px;
+  cursor: pointer;
 }
 </style>
 

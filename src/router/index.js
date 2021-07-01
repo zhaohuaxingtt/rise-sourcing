@@ -350,6 +350,22 @@ export const staticRouter = [{
                     },
                     component: () => import (`@/views/ws2/bmApply`),
                 },
+                {
+                    path: '/tooling/carTypeProOverview',
+                    name: 'carTypeProOverview',
+                    meta: {
+                        title: '车型项目概览'
+                    },
+                    component: () => import (`@/views/ws2/investmentReport`),
+                },
+                {
+                    path: '/tooling/investmentReport',
+                    name: 'investmentReport',
+                    meta: {
+                        title: '投资报告'
+                    },
+                    component: () => import (`@/views/ws2/investmentReport`),
+                },
             ]
         },
         {
