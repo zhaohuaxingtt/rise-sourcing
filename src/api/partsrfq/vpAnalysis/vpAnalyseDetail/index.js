@@ -42,3 +42,12 @@ export function saveOrUpdateScheme(params) {
     data: params
   })
 }
+
+//零件信息--自定义列表删除
+export function deletePartsCustomerList(params) {
+  return request({
+    url: '/vpParts/partsCustomerList',
+    method: 'DELETE',
+    data: params
+  })
+}
