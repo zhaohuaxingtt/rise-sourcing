@@ -30,7 +30,7 @@
           </iSelect>
         </el-form-item>
         <el-form-item :label="$t('LK_CAILIAOZU')">
-          <iInput v-model="form['search.categoryName']" :placeholder="$t('LK_RFQPLEASEENTERQUERY')">
+          <iInput v-model="categoryName" :placeholder="$t('LK_RFQPLEASEENTERQUERY')">
             <i slot="suffix" class="el-input__icon el-icon-search" @click="getTableListFn"></i>
           </iInput>
         </el-form-item>
@@ -104,6 +104,9 @@ export default {
     iButton,
     iInput,
   },
+  props: {
+    categoryNameZh: {type: String, default: ''},
+  },
   data() {
     return {
       leftModel: 'mouldInvestment',
@@ -115,10 +118,12 @@ export default {
       tableListData: [],
       multipleSelection: [],
       tableTitle: summaryData,
+      categoryName: '',
 
     }
   },
-  created() {
+   created() {
+    this.categoryName = this.categoryNameZh
     this.page.pageSizes = [10, 20, 50, 100, 300]
     this.getModelProtitesPullDown()
   },
@@ -148,7 +153,7 @@ export default {
         current: this.page.currPage,
         size: this.page.pageSize,
         tmCartypeProIds: form['search.tmCartypeProId'],
-        categoryName: form['search.categoryName'],
+        categoryName: this.categoryName,
         partNum: form['search.partNum'],
         // partNameZh: form['search.partNameZh'],
       }
