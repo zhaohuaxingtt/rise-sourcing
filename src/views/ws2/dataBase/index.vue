@@ -11,11 +11,11 @@
       </div>
     </div>
     <div v-if="leftModel === 'mouldInvestment'">
-      <summaryPart v-if="rightModel === 1"></summaryPart>
+      <summaryPart v-if="rightModel === 1" :categoryNameZh="categoryNameZh"></summaryPart>
       <partNoPart v-if="rightModel === 2"></partNoPart>
     </div>
     <div v-if="leftModel === 'modelBag'" style="margin-top: 20px;font-size: 22px">
-      <modelBag></modelBag>
+      <modelBag @toMouldInvestMent="backMouldInvestment"></modelBag>
     </div>
   </div>
 </template>
@@ -45,6 +45,7 @@ export default {
       form: form,
       loadingiSearch: false,
       tableLoading: false,
+      categoryNameZh: '',
       tableListData: [],
       tableTitle: dataBaseData,
 
@@ -54,6 +55,11 @@ export default {
     this.getTableListFn()
   },
   methods: {
+    backMouldInvestment(categoryNameZh){
+      this.categoryNameZh = categoryNameZh
+      this.leftModel = 'mouldInvestment'
+      this.rightModel = 1
+    },
     getTableListFn() {
       this.tableLoading = true;
       let params = {

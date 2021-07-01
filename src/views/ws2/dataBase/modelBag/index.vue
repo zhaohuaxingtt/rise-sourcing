@@ -84,11 +84,8 @@
           ></iInput>
         </template>
         <template #nomiAmountSvw="scope">
-          {{getTousandNum(scope.row.nomiAmountSvw)}}
+          <div class="linkStyle"><span @click="clickNomiAmountSvw(scope.row.categoryNameZh)">{{ getTousandNum(scope.row.nomiAmountSvw) }}</span></div>
         </template>
-
-        <icon symbol name="iconxinxitishi" slot="reference"></icon>
-
       </iTableList>
       <div class="bottomTip">{{ $t('货币：人民币  |  单位：元  |  不含税 ') }}</div>
       <iPagination
@@ -172,6 +169,9 @@ export default {
     this.getModelProtitesPullDown()
   },
   methods: {
+    clickNomiAmountSvw(categoryNameZh){
+      this.$emit('toMouldInvestMent', categoryNameZh)
+    },
     querySearchCartypeBag(queryString, cb) {
       packageFindByCarType({carType: queryString})
           .then((res) => {
@@ -332,7 +332,7 @@ export default {
         categoryNameZh: form['search.tmCartypeProId'],
         packageNameZh: form['search.cartypeBag'],
         partNameZh: form['search.partBag'],
-        packageNameZhList: this.multipleSelection
+        packageDataList: this.multipleSelection
       }
       modelBagExport(params)
         .then((res) => {
@@ -392,6 +392,19 @@ export default {
     width: 220px;
     input {
       height: 35px;
+    }
+  }
+}
+.linkStyle {
+  span {
+    color: #1663F6;
+    border-bottom: 1px solid #1663F6;
+    cursor: pointer;
+  }
+  &.red{
+    span{
+      color: #E30D0D;
+      border-bottom: 1px solid #E30D0D;
     }
   }
 }
