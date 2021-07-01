@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-24 15:55:46
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-28 20:55:52
+ * @LastEditTime: 2021-06-30 18:03:31
  * @Description: 财务目标价相关Api
  * @FilePath: \front-web\src\api\financialTargetPrice\index.js
  */
@@ -86,6 +86,55 @@ export function getNomiRecords(params) {
 export function appoint(params) {
   return requst({
     url: `/cf-target-price-applies/appoint`,
+    method: 'POST',
+    data: params
+  })
+}
+
+// 申请财务目标价
+export function applyCFTarget(params) {
+  return requst({
+    url: '/cf-target-price-applies/apply-cf-target',
+    method: 'POST',
+    data: params
+  })
+}
+
+// 查询申请记录
+export function getCfTargetApplyHistory({fsNum, pageNo, pageSize}) {
+  return requst({
+    url: `/cf-target-price-applies/apply-cf-target/list/${fsNum}/${pageNo}/${pageSize}`,
+    method: 'GET'
+  })
+}
+
+// 查询审核通过的财务目标价    零件采购项目-价格明细
+export function getTargetPriceDd(fsNum) {
+  return requst({
+    url: `/cf-target-price-applies/getTargetPrice/${fsNum}`,
+    method: 'GET'
+  })
+}
+
+// 财务目标价-批准
+export function targetPriceApprove(params) {
+  return requst({
+    url: '/cf-target-price-applies/approve',
+    method: 'POST',
+    data: params
+  })
+}
+
+export function targetPriceCompare(id) {
+  return requst({
+    url: `/cf-target-price-applies/${id}/compare`,
+    method: 'GET'
+  })
+}
+
+export function targetPriceReject(params) {
+  return requst({
+    url: `/cf-target-price-applies/${params.id}/reject`,
     method: 'POST',
     data: params
   })

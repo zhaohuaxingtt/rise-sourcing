@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-22 17:03:48
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-24 14:46:37
+ * @LastEditTime: 2021-06-30 17:48:59
  * @Description: 
  * @FilePath: \front-web\src\views\financialTargetPrice\approval\data.js
  */
@@ -41,21 +41,21 @@ export const searchList = [
 ]
 
 export const detailList = [
-  {value: 'FsNr/GsNr', label: '零件号', type: 'input', i18n_label: '',},
-  {value: 'partNameCh', label: '零件名称', type: 'input', i18n_label: '',},
-  {value: 'supplierSapCode', label: 'Old CF LC_B Target', type: 'input', i18n_label: '',},
-  {value: 'supplierNameZh', label: 'New CF LC_B Target(人民币)', type: 'input', i18n_label: ''},
-  {value: 'supplierSapCode', label: 'Old CF LC_A Target', type: 'input', i18n_label: '',},
-  {value: 'supplierNameZh', label: 'Old CF LC_A Target(人民币)', type: 'input', i18n_label: ''},
-  {value: 'supplierSapCode', label: 'New CF SKD_B Target', type: 'input', i18n_label: '',},
-  {value: 'supplierNameZh', label: 'Old CF SKD_B Target(人民币)', type: 'input', i18n_label: ''},
-  {value: 'supplierSapCode', label: 'Old CF SKD_A Target', type: 'input', i18n_label: '',},
-  {value: 'supplierNameZh', label: 'New CF SKD_A Target(人民币)', type: 'input', i18n_label: ''},
-  {value: 'supplierSapCode', label: 'Old CF CKD Landed', type: 'input', i18n_label: '',},
-  {value: 'supplierNameZh', label: 'New CF CKD Landed(人民币)', type: 'input', i18n_label: ''},
-  {value: 'supplierSapCode', label: 'Old CF CKD Duty(%)', type: 'input', i18n_label: '',},
-  {value: 'supplierNameZh', label: 'New CF CKD Duty(%)', type: 'input', i18n_label: ''},
-  {value: 'supplierSapCode', label: 'Old CF CKD Ex-work', type: 'input', i18n_label: '',},
-  {value: 'supplierNameZh', label: 'New CF CKD Ex-work(人民币)', type: 'input', i18n_label: ''},
-  {value: 'supplierSapCode', label: '修改原因', type: 'input', i18n_label: '',},
+  {value: 'fsnrGsnrNum', label: '零件号', type: 'input', i18n_label: '',},
+  {value: 'partNameZh', label: '零件名称', type: 'input', i18n_label: '',},
+  {value: 'lcBPrice', label: 'Old CF LC_B Target', type: 'input', i18n_label: '',parent: 'oldCfInfVO'},
+  {value: 'lcBPrice', label: 'New CF LC_B Target(人民币)', type: 'input', i18n_label: '',parent: 'newCfInfVO'},
+  {value: 'lcAPrice', label: 'Old CF LC_A Target', type: 'input', i18n_label: '',parent: 'oldCfInfVO'},
+  {value: 'lcAPrice', label: 'New CF LC_A Target(人民币)', type: 'input', i18n_label: '',parent: 'newCfInfVO'},
+  {value: 'skdBPrice', label: 'Old CF SKD_B Target', type: 'input', i18n_label: '',parent: 'oldCfInfVO'},
+  {value: 'skdBPrice', label: 'New CF SKD_B Target(人民币)', type: 'input', i18n_label: '',parent: 'newCfInfVO'},
+  {value: 'skdAPrice', label: 'Old CF SKD_A Target', type: 'input', i18n_label: '',parent: 'oldCfInfVO'},
+  {value: 'skdAPrice', label: 'New CF SKD_A Target(人民币)', type: 'input', i18n_label: '',parent: 'newCfInfVO'},
+  {value: 'ckdLanded', label: 'Old CF CKD Landed', type: 'input', i18n_label: '',parent: 'oldCfInfVO'},
+  {value: 'ckdLanded', label: 'New CF CKD Landed(人民币)', type: 'input', i18n_label: '',parent: 'newCfInfVO'},
+  {value: 'ckdDuty', label: 'Old CF CKD Duty(%)', type: 'input', i18n_label: '',parent: 'oldCfInfVO'},
+  {value: 'ckdDuty', label: 'New CF CKD Duty(%)', type: 'input', i18n_label: '',parent: 'newCfInfVO'},
+  {value: 'ckdExwork', label: 'Old CF CKD Ex-work', type: 'input', i18n_label: '',parent: 'oldCfInfVO'},
+  {value: 'ckdExwork', label: 'New CF CKD Ex-work(人民币)', type: 'input', i18n_label: '',parent: 'newCfInfVO'},
+  {value: 'rejectReason', label: '修改原因', type: 'input', i18n_label: '',parent: 'oldCfInfVO'},
 ]

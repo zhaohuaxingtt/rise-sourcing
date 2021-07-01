@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-23 18:12:01
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-23 18:39:49
+ * @LastEditTime: 2021-06-30 18:05:59
  * @Description: 审批弹窗
  * @FilePath: \front-web\src\views\financialTargetPrice\approval\components\approval.vue
 -->
@@ -19,9 +19,9 @@
         <span class="font18 font-weight">审批</span>
           <div class="floatright">
             <!--------------------批准按钮----------------------------------->
-            <iButton @click="handleSave" :loading="saveLoading" >批准</iButton>
+            <iButton @click="handleApprove" :loading="approveLoading" >批准</iButton>
             <!--------------------拒绝按钮----------------------------------->
-            <iButton @click="clearDialog" >拒绝</iButton>
+            <iButton @click="handleReject" >拒绝</iButton>
             <!--------------------取消按钮----------------------------------->
             <iButton @click="clearDialog" >取消</iButton>
           </div>
@@ -29,7 +29,7 @@
     </template>
     <iFormGroup row="2" class="approvalDetail">
       <iFormItem v-for="(item, index) in detailList" :key="index" :label="item.label+':'" :class="item.row ? 'row'+item.row : ''">
-        <iText>{{detailData[item.value]}}</iText>
+        <iText>{{item.parent && detailData[item.parent] ? detailData[item.parent][item.value] : detailData[item.value]}}</iText>
       </iFormItem>
     </iFormGroup>
     <div class="refuseReason">
@@ -42,34 +42,70 @@
 <script>
 import { iDialog, iButton, iText, iMessage, iFormGroup, iFormItem, iInput } from 'rise'
 import { detailList } from '../data'
+import { targetPriceCompare, targetPriceApprove, targetPriceReject } from '@/api/financialTargetPrice/index'  
 export default {
   components: { iDialog, iButton, iText, iFormGroup, iFormItem, iInput },
   props: {
-    dialogVisible: { type: Boolean, default: false }
+    dialogVisible: { type: Boolean, default: false },
+    applyId: {type: String}
   },
   data() {
     return {
       detailList: detailList,
-      detailData: {}
+      detailData: {},
+      approveLoading: false
     }
   },
   watch: {
     dialogVisible(val) {
       if(val) {
-        
-        
+        this.getDetail()
       }
     }
   },
   methods: {
-    /**
-     * @Description: 表格数据选中
-     * @Author: Luoshuang
-     * @param {*} val 选中的行
-     * @return {*}
-     */    
-    handleSelectionChange(val) {
-      this.selectParts = val
+    handleReject() {
+      if (!this.detailData.rejectReason) {
+        iMessage.warn('请输入拒绝原因')
+        return
+      }
+      const params = {
+        id: this.applyId,
+        rejectReason: this.detailData.rejectReason
+      }
+      targetPriceReject(params).then(res => {
+        if (res?.result) {
+          iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+          this.$emit('changeVisible', false)
+        } else {
+          iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+        }
+      })
+    },
+    handleApprove() {
+      this.approveLoading = true
+      targetPriceApprove({idList:[this.applyId]}).then(res => {
+        if (res?.result) {
+          iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+          this.$emit('changeVisible', false)
+        } else {
+          iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+        }
+      }).finally(() => {
+        this.approveLoading = false
+      })
+    },
+    getDetail() {
+      if (!this.applyId) {
+        return
+      }
+      targetPriceCompare(this.applyId).then(res => {
+        if (res?.result) {
+          this.detailData = res.data
+        } else {
+          iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+        }
+      })
     },
     clearDialog() {
       this.$emit('changeVisible', false)

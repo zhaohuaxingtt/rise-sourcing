@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-22 09:12:02
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-28 11:30:06
+ * @LastEditTime: 2021-06-30 18:30:58
  * @Description: 财务目标价-目标价审批
  * @FilePath: \front-web\src\views\financialTargetPrice\approval\index.vue
 -->
@@ -38,9 +38,9 @@
         <span class="font18 font-weight"></span>
         <div class="floatright">
           <!--------------------指派按钮----------------------------------->
-          <iButton @click="openAssignDialog" >批准</iButton>
+          <iButton @click="handleApprove" >批准</iButton>
           <!--------------------导出按钮----------------------------------->
-          <iButton @click="handleUpload" >导出</iButton>
+          <iButton @click="handleExport" >导出</iButton>
         </div>
       </div>
       <tableList 
@@ -69,32 +69,35 @@
     <!------------------------------------------------------------------------>
     <!--                      审批弹窗                                      --->
     <!------------------------------------------------------------------------>
-    <approvalDialog :dialogVisible="approvalDialogVisible" @changeVisible="changeApprovalDialogVisible" />
+    <approvalDialog :dialogVisible="approvalDialogVisible" @changeVisible="changeApprovalDialogVisible" :applyId="applyId" />
   </iPage>
 </template>
 
 <script>
-import { iPage, iCard, iPagination, iButton, iSelect, iDatePicker, iInput, iSearch } from 'rise'
+import { iPage, iCard, iPagination, iButton, iSelect, iDatePicker, iInput, iSearch, iMessage } from 'rise'
 import headerNav from '../components/headerNav'
 import { tableTitle, searchList } from './data'
 import { pageMixins } from "@/utils/pageMixins"
 import tableList from '../components/tableList'
 import approvalDialog from './components/approval'
 import { dictkey } from "@/api/partsprocure/editordetail"
-import { getApprovalTargetPriceList } from '@/api/financialTargetPrice/index'  
+import { getApprovalTargetPriceList, targetPriceApprove } from '@/api/financialTargetPrice/index'  
+import { excelExport } from "@/utils/filedowLoad"
 export default {
   mixins: [pageMixins],
   components: {iPage,headerNav,iCard,tableList,iPagination,iButton,iSelect,iDatePicker,iInput,iSearch,approvalDialog},
   data() {
     return {
       tableTitle: tableTitle,
-      tableData: [{partNum:'2342342',purchasePrjectId:'119'}],
+      tableData: [],
       searchList: searchList,
       searchParams: {},
       isEdit: false,
       tableLoading: false,
       selectOptions: {},
-      approvalDialogVisible: false
+      approvalDialogVisible: false,
+      selectedItems: [],
+      applyId: ''
     }
   },
   created() {
@@ -102,14 +105,48 @@ export default {
     this.getTableList()
   },
   methods: {
+    handleSelectionChange(val) {
+      this.selectedItems = val
+    },
+    handleApprove() {
+      if (this.selectedItems.length < 1) {
+        iMessage.warn('至少选择一条记录')
+        return
+      }
+      this.tableLoading = true
+      targetPriceApprove({idList:this.selectedItems.map(item => item.applyId)}).then(res => {
+        if (res?.result) {
+          iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+          this.getTableList()
+        } else {
+          iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+        }
+      }).finally(() => {
+        this.tableLoading = false
+      })
+    },
     getTableList() {
+      this.tableLoading = true
       const params = {
         ...this.searchParams,
         current: this.page.currPage,
         size: this.page.pageSize
       }
       getApprovalTargetPriceList(params).then(res => {
-
+        if (res?.result) {
+          this.page = {
+            ...this.page,
+            totalCount: Number(res.total),
+            currPage: Number(res.pageNum),
+            pageSize: Number(res.pageSize)
+          }
+          this.tableData = res.data
+        } else {
+          this.tableData = []
+          iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+        }
+      }).finally(() => {
+        this.tableLoading = false
       })
     },
     /**
@@ -130,20 +167,13 @@ export default {
       window.open(router.href,'_blank')
     },
     openApprovalDetailDialog(row){
+      this.applyId = row.applyId
       this.changeApprovalDialogVisible(true)
     },
     changeApprovalDialogVisible(visible) {
       this.approvalDialogVisible = visible
-    },
-    /**
-     * @Description: 获取表格数据
-     * @Author: Luoshuang
-     * @param {*}
-     * @return {*}
-     */    
-    getTableList() {
-      const params = {
-        ...this.searchParams,
+      if (!visible) {
+        this.getTableList()
       }
     },
     /**
@@ -155,7 +185,9 @@ export default {
     changeEdit(isEdit) {
       this.isEdit = isEdit
     },
-    handleExport() {},
+    handleExport() {
+      excelExport(this.tableData, this.tableTitle)
+    },
     handleUpload() {},
     /**
      * @Description: 保存编辑后的内容

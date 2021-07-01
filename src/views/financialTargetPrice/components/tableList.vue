@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-22 14:42:20
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-24 10:33:32
+ * @LastEditTime: 2021-06-30 14:26:29
  * @Description: 财务目标价公用表格
  * @FilePath: \front-web\src\views\financialTargetPrice\components\tableList.vue
 -->
@@ -26,8 +26,8 @@
           <span v-if="items.required" style="color:red;">*</span>
         </template>
         <template slot-scope="scope">
-          <iInput v-if="isEdit && items.type === 'input'" v-model="scope.row[items.props]" @input="val=>changeValue(val, scope.row, items)"></iInput>
-          <iSelect v-else-if="isEdit && items.type === 'select'" v-model="scope.row[items.props]" @change="val=>changeValue(val, scope.row, items)">
+          <iInput v-if="isEdit && selectedItems.some(item => item.applyId === scope.row.applyId) && items.type === 'input'" v-model="scope.row[items.props]" @input="val=>changeValue(val, scope.row, items)"></iInput>
+          <iSelect v-else-if="isEdit  && selectedItems.some(item => item.applyId === scope.row.applyId) && items.type === 'select'" v-model="scope.row[items.props]" @change="val=>changeValue(val, scope.row, items)">
             <el-option
               :value="item.value"
               :label="item.label"
@@ -55,6 +55,8 @@
           <span class="openLinkText cursor" v-else-if="items.props === 'shenpi'" @click="$emit('openApprovalDialog',scope.row)">查看</span>
           <!------------------审批列--------------------------->
           <span class="openLinkText cursor" v-else-if="items.props === 'shenpipi'" @click="$emit('openApprovalDetailDialog',scope.row)">审批</span>
+          <!------------------审批状态列--------------------------->
+          <span v-else-if="items.props === 'approveStatus'">{{scope.row.approveStatus ? scope.row.approveStatus.desc : ''}}</span>
           <!------------------正常--------------------------->
           <span v-else>{{scope.row[items.props]}}</span>
         </template>

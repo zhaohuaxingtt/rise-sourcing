@@ -2,14 +2,14 @@
  * @Author: Luoshuang
  * @Date: 2021-06-22 11:35:28
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-24 17:35:48
+ * @LastEditTime: 2021-06-30 10:43:07
  * @Description: 
  * @FilePath: \front-web\src\views\financialTargetPrice\maintenance\data.js
  */
 
 
 export const tableTitle = [
-  {props:'fsNum',name:'FS/GS/SP No.', key: "", tooltip: true, width: 120},
+  {props:'fsnrGsnrNum',name:'FS/GS/SP No.', key: "", tooltip: true, width: 120},
   {props:'partNum',name:'零件号', key: "", tooltip: true, width: 120},
   {props:'partNameZh',name:'零件名称', key: "", tooltip: true, width: 120},
   {props:'rfqId',name:'RFQ编号', key: "", tooltip: true, width: 100},
@@ -17,11 +17,11 @@ export const tableTitle = [
   {props:'tuzhi',name:'图纸', key: "", tooltip: true},
   {props:'caozuo',name:'操作', key: "", tooltip: true},
   {props:'cfControllerZh',name:'CF', key: "", tooltip: true, width: 120},
-  {props:'lcA',name:'LC_A', key: "", tooltip: true, editable: true, type: 'input'},
-  {props:'lcB',name:'LC_B', key: "", tooltip: true, editable: true, type: 'input'},
-  {props:'approveStatsName',name:'审批状态', key: "", tooltip: true},
+  {props:'lcAPrice',name:'LC_A', key: "", tooltip: true, editable: true, type: 'input'},
+  {props:'lcBPrice',name:'LC_B', key: "", tooltip: true, editable: true, type: 'input'},
+  {props:'approveStatus',name:'审批状态', key: "", tooltip: true},
   {props:'buyerName',name:'CSF/CSS', key: "", tooltip: true, width: 120},
-  {props:'procureFactory',name:'采购工厂', key: "", tooltip: true, width: 100},
+  {props:'procureFactoryName',name:'采购工厂', key: "", tooltip: true, width: 100},
   {props:'linieName',name:'LINIE', key: "", tooltip: true, width: 120},
   {props:'applyDate',name:'申请日期', key: "", tooltip: true, width: 100},
   {props:'applyDateEnd',name:'截止日期', key: "", tooltip: true, width: 120},
@@ -43,11 +43,11 @@ export const searchList = [
   {value: 'partName', label: '零件名称', type: 'input', i18n_label: '',},
   {value: 'partProjectType', label: '零件项目类型', type: 'select', i18n_label: '',selectOption:'PART_PROJECT_TYPE'},
   {value: 'buyerId', label: '询价采购员', type: 'select', i18n_label: '',selectOption: ''},
-  {value: 'linieId', label: 'LINIE', type: 'select', i18n_label: '',selectOption: 'LINIE'},
+  {value: 'linieName', label: 'LINIE', type: 'select', i18n_label: '',selectOption: 'LINIE'},
   {value: 'partStatus', label: '零件状态', type: 'select', i18n_label: '', selectOption: ''},
   {value: 'carTypeName', label: '车型项目', type: 'select', i18n_label: '', selectOption: 'CAR_TYPE_PRO'},
   {value: 'procureFactoryId', label: '采购工厂', type: 'select', i18n_label: '', selectOption: 'PURCHASE_FACTORY'},
-  {value: 'lcPriceType', label: '目标价分类', type: 'select', i18n_label: '',selectOption: ''},
+  {value: 'applyType', label: '目标价分类', type: 'select', i18n_label: '',selectOption: ''},
   {value: 'applyDate', label: '申请日期起止', type: 'dateRange', i18n_label: '',},
   {value: 'responseDate', label: '返回日期起止', type: 'dateRange', i18n_label: '',}
 ]
@@ -69,7 +69,7 @@ export const modifyTableTitle = [
   {props:'memo',name:'备注', key: "", tooltip: true, width: 120},
   {props:'applyDate',name:'申请日期', key: "", tooltip: true, width: 100},
   {props:'applyStatus',name:'有效状态', key: "", tooltip: true, width: 120},
-  {props:'approveType',name:'审批状态', key: "", tooltip: true, width: 120},
+  {props:'approveStatus',name:'审批状态', key: "", tooltip: true, width: 120},
   {props:'modifer',name:'修改人', key: "", tooltip: true},
   {props:'modifyDate',name:'修改日期', key: "", tooltip: true, width: 120},
 ]
