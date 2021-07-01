@@ -8,8 +8,8 @@
 <template>
   <iCard :title="$t('TPZS.PLGYSZL')" collapse>
     <div class="center">
-      <supplierCard class="card-right" />
-      <map1 />
+      <!-- <supplierCard :mapListData="mapListData" class="card-right" /> -->
+      <map1 :mapListData="mapListData" />
     </div>
   </iCard>
 </template>
@@ -23,6 +23,7 @@ export default {
   components: { iCard, icon, map1, supplierCard },
   data() {
     return {
+      mapListData: []
     }
   },
   created() {
@@ -36,6 +37,7 @@ export default {
         rfqId: this.$route.query.id
       }
       const res = await batchSupplierMapOverview(pms)
+      this.mapListData = res.data
     }
   }
 }

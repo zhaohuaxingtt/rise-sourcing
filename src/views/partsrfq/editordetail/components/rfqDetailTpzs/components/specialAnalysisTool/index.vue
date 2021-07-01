@@ -39,9 +39,6 @@ export default {
     this.getDataList()
   },
   methods: {
-    handleCut(val) {
-
-    },
     async getDataList(val) {
       const pms = {
         isInsideEnter: this.$route.path === '/sourcing/partsrfq/assistant' ? true : false,
