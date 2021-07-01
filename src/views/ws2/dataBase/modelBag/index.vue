@@ -345,18 +345,25 @@ export default {
           this.tableLoading = false;
         }).catch(() => (this.tableLoading = false));
     },
-    beforeUpload(){
-      this.tableLoading = true;
-    },
-    onSuccess(){
+    onSuccess(res){
+      const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
       this.$refs['uploadRef'].clearFiles();
-      this.getTableListFn()
+      if (Number(res.code) === 0) {
+        this.getTableListFn()
+        iMessage.success(result);
+      } else {
+        iMessage.error(result);
+      }
+      this.tableLoading = false
     },
     beforeAvatarUpload(file) {
+      this.tableLoading = true;
       let FileExt = file.name.replace(/.+\./, "").toLowerCase();
       let flag = ["xls", "xlsx"].includes(FileExt);
-      if (!flag) iMessage.error("只能上传excel文件!");
-      this.tableLoading = false;
+      if (!flag) {
+        this.tableLoading = false;
+        iMessage.error("只能上传excel文件!");
+      }
       return flag;
     },
   }
