@@ -72,7 +72,7 @@
     </div>
 
     <!-- 自定义零件列表 -->
-    <customPart :partList="partList" :visible="customDialog.visible" :Key="customDialog.key"/>
+    <customPart v-if="customDialog.visible" :partList="partList" :visible="customDialog.visible" :Key="customDialog.key" @saveCustomPart="saveCustomPart"/>
 
     <previewDialog v-model="previewDialog"/>
   </iPage>
@@ -234,6 +234,11 @@ export default {
         }
       });
     },
+    // 保存自定义零件
+    saveCustomPart() {
+      this.$set(this.customDialog, 'visible', false)
+      this.getDataInfo()
+    }
   },
 };
 </script>

@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-06-18 16:03:35
- * @LastEditTime: 2021-07-02 14:55:35
+ * @LastEditTime: 2021-07-02 16:55:34
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\vpAnalyse\vpAnalyseDetail\components\customPart\index.vue
@@ -79,10 +79,6 @@ export default {
   name: 'CustomPart',
   components: {iDialog, iButton, icon, iSelect, tableList},
   props: {
-    batchNumber: {
-      type: Number,
-      default: 1
-    },
     partList: {
       type: Array,
       default: () => []
@@ -105,11 +101,15 @@ export default {
     }
   },
   created() {
-    this.initTableData()
-    this.initInsertPartData()
     // this.initTestPartNumData()
     // this.initTestTableData()
-
+    this.initTableData()
+    this.initInsertPartData()
+  },
+  computed: {
+    batchNumber() {
+      return (this.partList ? this.partList.find(item => item.batchNumber) : null).batchNumber
+    }
   },
   methods: {
     // 初始化添加零件号数据
@@ -297,6 +297,7 @@ export default {
         if(res && res.code == 200) {
           iMessage.success(res.desZh)
           this.initTableData()
+          this.$emit('saveCustomPart')
         }
       })
     }
