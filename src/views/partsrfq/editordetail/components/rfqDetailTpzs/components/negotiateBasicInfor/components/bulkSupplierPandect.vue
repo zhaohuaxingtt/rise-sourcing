@@ -8,7 +8,7 @@
 <template>
   <iCard :title="$t('TPZS.PLGYSZL')" collapse>
     <div class="center">
-      <!-- <supplierCard :mapListData="mapListData" class="card-right" /> -->
+      <supplierCard :mapListData="mapListData" class="card-right" />
       <map1 :mapListData="mapListData" />
     </div>
   </iCard>

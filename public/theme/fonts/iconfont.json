@@ -6,6 +6,13 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "22611425",
+      "name": "上汽大众",
+      "font_class": "shangqidazhong",
+      "unicode": "e6ba",
+      "unicode_decimal": 59066
+    },
+    {
       "icon_id": "22593115",
       "name": "下降-VP",
       "font_class": "xiajiang-VP",

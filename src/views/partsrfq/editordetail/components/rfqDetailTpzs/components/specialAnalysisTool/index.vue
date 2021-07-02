@@ -46,6 +46,7 @@ export default {
       }
       const res = await totalOverview(pms)
       if (res.result) {
+        this.viewModelDialog = false
         this.cardData = res.data
         this.cardData.push({ title: 'PCA' }, { title: 'TIA' })
         this.cardData.map((item) => {
