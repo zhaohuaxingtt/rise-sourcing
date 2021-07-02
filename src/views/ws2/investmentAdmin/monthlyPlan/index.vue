@@ -30,11 +30,11 @@
           :buttonText="$t('LK_SHANGCHUANQINGDAN')"
           class="margin-left10 margin-right10"
         />
-        <iButton @click="saveAsList" v-if="versionData.isLatestVersion">{{ $t("LK_BAOCUN") }}</iButton>
+        <iButton @click="saveAsList" v-if="versionData.editFlag">{{ $t("LK_BAOCUN") }}</iButton>
         <iButton @click="saveAsNew">{{ $t("LK_BAOCUNWEIXINBANBEN") }}</iButton>
       </div>
       <div v-else>
-        <iButton @click="edit" v-if="versionData.isLatestVersion">{{ $t("LK_BIANJI") }}</iButton>
+        <iButton @click="edit" v-if="versionData.editFlag">{{ $t("LK_BIANJI") }}</iButton>
         <iButton @click="downloadList">{{ $t("LK_XIAZAIQINGDAN") }}</iButton>
       </div>
     </div>
@@ -521,7 +521,7 @@ export default {
       });
     },
     handleInputChange(row, key) {
-      row[key] = row[key].replace(/[^\d.]/g,'');
+      row[key] = Number(row[key].replace(/[^\d.]/g,''));
       row.amount = 0;
       row.amount =
         Number(row.planAmountM1) +
@@ -578,12 +578,9 @@ export default {
           this.versionList = res.data;
           this.versionList.map((item, index) => {
             if (this.versionList.map(temp => temp.year).indexOf(item.year) == index) {
-              item.isLatestVersion = true;
               if (currentYear == item.year) {
                 this.versionData = item;
               }
-            } else {
-              item.isLatestVersion = false;
             }
             return item;
           });

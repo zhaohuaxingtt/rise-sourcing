@@ -1,140 +1,144 @@
 <template>
-  <div class="container">
-    <HeadTool @refresh="refresh" @receiVereceive="receiVereceive">
-      <template slot="btns">
-        <iButton @click="save" :loading="saveLoading">{{ $t('LK_BAOCUN') }}</iButton><!-- 保存 -->
-        <iButton @click="saveNew" :loading="saveNewLoading">{{ $t('LK_BAOCUNWEIZUIXINBANBEN') }}</iButton><!-- 保存为最新版本 -->
-      </template>
-    </HeadTool>
+  <div>
+    <!-- v-permission="TOOLING_PAYMENTPLAN_YEAR" -->
+    <div class="page-container" v-permission="TOOLING_PAYMENTPLAN_YEAR">
+      <HeadTool @refresh="refresh" @receiVereceive="receiVereceive" :refreshStatus="refreshStatus">
+        <template slot="btns">
+          <iButton v-if="vereceive.editFlag" @click="save" :loading="saveLoading">{{ $t('LK_BAOCUN') }}</iButton><!-- 保存 -->
+          <iButton @click="saveNew" :loading="saveNewLoading">{{ $t('LK_BAOCUNWEIZUIXINBANBEN') }}</iButton><!-- 保存为最新版本 -->
+        </template>
+      </HeadTool>
 
-    <div class="content">
-      <div class="c-left">
-        <!-- 上半年SOP付款⽐ -->
-        <iCard class="c-card-l">
-          <div class="title">{{ $t('LK_SHANGBANNIANSOPFUKUANDUIBI') }}</div>
-          <icon symbol name="iconSOPfukuanbi" class="card-icon"></icon>
-          <iInput v-model="ratioInput.firstHalfYearPercent"></iInput>
-        </iCard>
+      <div class="content">
+        <div class="c-left">
+          <!-- 上半年SOP付款⽐ -->
+          <iCard class="c-card-l">
+            <div class="title">{{ $t('LK_SHANGBANNIANSOPFUKUANDUIBI') }}</div>
+            <icon symbol name="iconSOPfukuanbi" class="card-icon"></icon>
+            <iInput :disabled="!vereceive.editFlag" v-model="ratioInput.firstHalfYearPercent"></iInput>
+          </iCard>
 
-        <!-- 下半年SOP付款⽐ -->
-        <iCard class="c-card-l">
-          <div class="title">{{ $t('LK_XIABANNIANSOPFUKUANDUIBI') }}</div>
-          <icon symbol name="iconSOPfukuanbi" class="card-icon"></icon>
-          <iInput v-model="ratioInput.secondHalfYearPercent"></iInput>
-        </iCard>
+          <!-- 下半年SOP付款⽐ -->
+          <iCard class="c-card-l">
+            <div class="title">{{ $t('LK_XIABANNIANSOPFUKUANDUIBI') }}</div>
+            <icon symbol name="iconSOPfukuanbi" class="card-icon"></icon>
+            <iInput :disabled="!vereceive.editFlag" v-model="ratioInput.secondHalfYearPercent"></iInput>
+          </iCard>
+        </div>
+        <div class="c-right">
+          <iCard class="c-card-r">
+            <div class="right-head">
+              <div class="right-title">年度计划</div>
+              <div class="right-sildBox">
+                <div>系统计算上半年</div>
+                <div>系统计算下半年</div>
+                <div>系统计算Backlog</div>
+                <div>⼿⼯调整</div>
+                <div>⼿⼯调整Risk</div>
+              </div>
+            </div>
+            <div id="echarts"></div>
+          </iCard>
+        </div>
       </div>
-      <div class="c-right">
-        <iCard class="c-card-r">
-          <div class="right-head">
-            <div class="right-title">年度计划</div>
-            <div class="right-sildBox">
-              <div>系统计算上半年</div>
-              <div>系统计算下半年</div>
-              <div>系统计算Backlog</div>
-              <div>⼿⼯调整</div>
-              <div>⼿⼯调整Risk</div>
+
+
+      <!-- 系统计算 -->
+      <Popup :visible="systemVisible" @changeLayer="() => this.systemVisible = false" :title="$t('LK_XITONGJISUAN')">
+        <template slot="btns">
+          <div class="btns-txt">
+            <span>{{$t('LK_HUOBI')}}：{{$t('LK_RENMINBI')}}</span>
+            <span>{{$t('LK_DANWEI')}}：{{$t('LK_BAIWANYUAN')}}</span>
+            <span>{{$t('LK_BUHANSUI')}}</span>
+          </div><!-- 货币：人民币  |  单位：百万元  |  不含税  -->
+          <iButton @click="downloadExport">{{ $t('LK_XIAZAIQINGDAN') }}</iButton><!-- 下载清单 -->
+        </template>
+
+        <template slot="content">
+          <iTableList
+              :tableData="systemListData"
+              :tableTitle="budgetApprovalData"
+              :tableLoading="systemTableLoading"
+              :getSummaries="getSummaries"
+              :activeItems="'partNum'"
+              :selection="false"
+              :show-summary="true"
+              class="baApply-table"
+          >
+            <template #carTypeProName="scope">
+              <div class="backlog" v-if="scope.row.statType === 'backlog'">
+                backlog
+              </div>
+              <div v-else>
+                {{scope.row.carTypeProName}}
+              </div>
+            </template>
+            <template #sopPercent="scope">
+              {{scope.row.sopPercent || 0}}%
+            </template>
+          </iTableList>
+        </template>
+        
+      </Popup>
+
+      <!-- 手工调整 -->
+      <iDialog :visible="manualvisible" @close='() => this.manualvisible = false' width="80%" z-index="1000" class="manualIDialog">
+        <template slot="title">
+          <div class="manual-head">
+            <div class="title">
+              {{$t('LK_SHOUGONGTIAOZHENG')}}-{{'2021'}}
+            </div>
+            <div>
+              <iButton v-if="vereceive.editFlag" @click="manualSave" :loading="manualSaveLoading">{{ $t('LK_BAOCUN') }}</iButton><!-- 保存 -->
+              <iButton @click="downloadList">{{ $t('LK_XIAZAIQINGDAN') }}</iButton><!-- 下载清单 -->
             </div>
           </div>
-          <div id="echarts"></div>
-        </iCard>
-      </div>
-    </div>
-
-
-    <!-- 系统计算 -->
-    <Popup :visible="systemVisible" @changeLayer="() => this.systemVisible = false" :title="$t('LK_XITONGJISUAN')">
-      <template slot="btns">
-        <div class="btns-txt">
+        </template>
+        <div class="btns-txt manual-txt"><!-- 货币：人民币  |  单位：百万元  |  不含税  -->
           <span>{{$t('LK_HUOBI')}}：{{$t('LK_RENMINBI')}}</span>
           <span>{{$t('LK_DANWEI')}}：{{$t('LK_BAIWANYUAN')}}</span>
           <span>{{$t('LK_BUHANSUI')}}</span>
-        </div><!-- 货币：人民币  |  单位：百万元  |  不含税  -->
-        <iButton @click="downloadExport">{{ $t('LK_XIAZAIQINGDAN') }}</iButton><!-- 下载清单 -->
-      </template>
-
-      <template slot="content">
-        <iTableList
-            :tableData="systemListData"
-            :tableTitle="budgetApprovalData"
-            :tableLoading="systemTableLoading"
-            :getSummaries="getSummaries"
-            :activeItems="'partNum'"
-            :selection="false"
-            :show-summary="true"
-            class="baApply-table"
-        >
-          <template #carTypeProName="scope">
-            <div class="backlog" v-if="scope.row.statType === 'backlog'">
-              backlog
+        </div>
+        <div class="manual-content">
+          <div>
+            <div id="totalLeft"></div>
+            <div class="manual-l-txt">
+              <div class="manual-l-title">{{setSystemTotal}}</div>
+              <div class="manual-lprice" v-for="(item, index) in planYearCommutity" :key="index">
+                {{isThen ? item.planAmountSystemCurrent : item.planAmountSystemNext}}
+              </div>
             </div>
-            <div v-else>
-              {{scope.row.carTypeProName}}
+            <div class="manual-l-txt" style="margin-right: 100px;">
+              <div class="manual-l-title">Rate</div>
+              <div class="manual-lprice" v-for="(item, index) in setSystemRate" :key="index">{{item}}</div>
             </div>
-          </template>
-          <template #sopPercent="scope">
-            {{scope.row.sopPercent || 0}}%
-          </template>
-        </iTableList>
-      </template>
-      
-    </Popup>
-
-    <!-- 手工调整 -->
-    <iDialog :visible="manualvisible" @close='() => this.manualvisible = false' width="80%" z-index="1000" class="manualIDialog">
-      <template slot="title">
-        <div class="manual-head">
-          <div class="title">
-            {{$t('LK_SHOUGONGTIAOZHENG')}}-{{'2021'}}
           </div>
           <div>
-            <iButton @click="manualSave" :loading="manualSaveLoading">{{ $t('LK_BAOCUN') }}</iButton><!-- 保存 -->
-            <iButton @click="downloadList">{{ $t('LK_XIAZAIQINGDAN') }}</iButton><!-- 下载清单 -->
-          </div>
-        </div>
-      </template>
-      <div class="btns-txt manual-txt"><!-- 货币：人民币  |  单位：百万元  |  不含税  -->
-        <span>{{$t('LK_HUOBI')}}：{{$t('LK_RENMINBI')}}</span>
-        <span>{{$t('LK_DANWEI')}}：{{$t('LK_BAIWANYUAN')}}</span>
-        <span>{{$t('LK_BUHANSUI')}}</span>
-      </div>
-      <div class="manual-content">
-        <div>
-          <div id="totalLeft"></div>
-          <div class="manual-l-txt">
-            <div class="manual-l-title">{{setSystemTotal}}</div>
-            <div class="manual-lprice" v-for="(item, index) in planYearCommutity" :key="index">
-              {{isThen ? item.planAmountSystemCurrent : item.planAmountSystemNext}}
+            <div id="totalRight"></div>
+            <!-- <div class="test"></div> -->
+            <div class="manual-l-txt">
+              <div class="manual-l-title">{{setManualTotal}}</div>
+              <div class="manual-lpriceInput" v-for="(item, index) in planYearCommutity" :key="index">
+                <iInput v-if="isThen" class="right-input" v-model="item.planAmountAmualCurrent"></iInput>
+                <iInput v-else class="right-input" v-model="item.planAmountAmualNext"></iInput>
+              </div>
+            </div>
+            <div class="manual-l-txt">
+              <div class="manual-l-title">Rate</div>
+              <div class="manual-lpriceInputTxt" v-for="(item, index) in setManualRate" :key="index">{{item}}</div>
             </div>
           </div>
-          <div class="manual-l-txt" style="margin-right: 100px;">
-            <div class="manual-l-title">Rate</div>
-            <div class="manual-lprice" v-for="(item, index) in setSystemRate" :key="index">{{item}}</div>
-          </div>
         </div>
-        <div>
-          <div id="totalRight"></div>
-          <!-- <div class="test"></div> -->
-          <div class="manual-l-txt">
-            <div class="manual-l-title">{{setManualTotal}}</div>
-            <div class="manual-lpriceInput" v-for="(item, index) in planYearCommutity" :key="index">
-              <iInput v-if="isThen" class="right-input" v-model="item.planAmountAmualCurrent"></iInput>
-              <iInput v-else class="right-input" v-model="item.planAmountAmualNext"></iInput>
-            </div>
-          </div>
-          <div class="manual-l-txt">
-            <div class="manual-l-title">Rate</div>
-            <div class="manual-lpriceInputTxt" v-for="(item, index) in setManualRate" :key="index">{{item}}</div>
-          </div>
-        </div>
-      </div>
-    </iDialog>
+      </iDialog>
 
-    <!-- 保存为最新版本 -->
-    <new-version-dialog
-      v-model="saveNewVersion"
-      @handleConfirm="handleConfirm"
-    />
+      <!-- 保存为最新版本 -->
+      <new-version-dialog
+        v-model="saveNewVersion"
+        @handleConfirm="handleConfirm"
+      />
+    </div>
   </div>
+  
 </template>
 
 <script>
@@ -186,7 +190,7 @@ export default {
       const key = isThen ? 'planAmountSystemCurrent' : 'planAmountSystemNext';
       const arr = planYearCommutity.filter(item => item.commodity !== 'Risk' ).map(item => item[key]).filter(n => n);
       const total = arr.reduce((prev,curr) => {
-        return (prev+curr).toFixed(2);
+        return (~~prev + ~~curr).toFixed(2);
       },0)
 
       return total;
@@ -220,6 +224,7 @@ export default {
       planYearCommutity: [],
       isThen: true,
       manualSaveLoading: false,
+      refreshStatus: true,
     }
   },
 
@@ -644,6 +649,7 @@ export default {
         if(res.code === "0"){
           iMessage.success(result);
           this.getHistogram();
+          this.refreshStatus = !this.refreshStatus;
         }else{
           iMessage.error(result);
         }
@@ -658,9 +664,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.container{
-  padding-top: 20px;
-  height: 92%;
+.page-container{
+  width: 95.5%;
+  height: 94%;
+  position: absolute;
+  top: 0;
+  padding-top: 80px;
 
   .baApply-table{
     ::v-deep .el-input__inner{

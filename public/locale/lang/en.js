@@ -961,6 +961,9 @@
         'SPR_FRM_DEP_OBJPLACE': '请选择呈现对象', // 请选择呈现对象
         'SPR_FRM_DEP_AVGPLACE': '请选择行业均值', // 请选择行业均值
 
+        'LK_FUKUANKANBAN': '付款看板',  //  付款看板
+        'LK_NIANDUJIHUA': '年度计划',   //  年度计划
+
         // 定点管理
         'nominationLanguage': {
             'DingDianGuanLi': '定点管理',
