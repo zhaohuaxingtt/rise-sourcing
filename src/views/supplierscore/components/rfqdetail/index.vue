@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-22 10:45:39
- * @LastEditTime: 2021-06-29 15:56:20
+ * @LastEditTime: 2021-07-02 18:29:14
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\supplierscore\components\rfqdetail\index.vue
@@ -9,7 +9,7 @@
 <template>
   <iPage class="rfqdetail">
     <div class="header clearFloat">
-      <div class="title">{{ $t("costanalysismanage.RfqBianHao") }}: {{ rfqId }}</div>
+      <div class="title">{{ language("RFQBIANHAO", "RFQ编号") }}: {{ rfqId }}</div>
       <div class="control">
         <logButton class="margin-left20" />
         <span class="margin-left20">
@@ -19,7 +19,7 @@
     </div>
     <infos class="margin-top30" :rfqInfo="rfqInfo" />
     <iTabsList class="margin-top20" type="card" v-model="currentTab" @tab-click="tabChange">
-      <el-tab-pane v-for="(tab, $tabIndex) in tabs" :key="$tabIndex" :label="$t(tab.key)" :name="tab.name">
+      <el-tab-pane v-for="(tab, $tabIndex) in tabs" :key="$tabIndex" :label="language(tab.key, tab.label)" :name="tab.name">
         <component :ref="tab.name" :is="component" :rfqId="rfqId" v-for="(component, $componentIndex) in tab.components" :class="$componentIndex !== 0 ? 'margin-top20' : ''" :key="$componentIndex" :disabled="disabled" @updateRfq="updateRfq" />
       </el-tab-pane>
     </iTabsList>

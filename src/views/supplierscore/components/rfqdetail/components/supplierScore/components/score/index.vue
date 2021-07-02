@@ -1,31 +1,24 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-22 16:16:26
- * @LastEditTime: 2021-06-30 18:13:02
+ * @LastEditTime: 2021-07-02 18:08:30
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\supplierscore\components\rfqdetail\components\supplierScore\components\score\index.vue
 -->
 <template>
-  <iCard class="score" :title="$t('供应商评分')">
+  <iCard class="score" :title="language('GONGYINGSHANGPINGFEN', '供应商评分')">
     <template #header-control>
       <div v-if="!editStatus">
-        <!-- <iButton @click="forwardDialogVisible = true">{{ language("ZHUANPAI", "转派") }}</iButton> -->
-        <iButton @click="forwardDialogVisible = true">转派</iButton> 
-        <!-- <iButton :loading="backLoading" @click="handleBack">{{ language("TUIHUIZHICAIGOUYUAN", "退回至采购员") }}</iButton> -->
-        <iButton :loading="backLoading" @click="handleBack">退回至采购员</iButton>
-        <!-- <iButton @click="editStatus = true">{{ language("BIANJI", "编辑") }}</iButton> -->
-        <iButton @click="editStatus = true">编辑</iButton>
-        <!-- <iButton :loading="submitLoading" @click="handleSubmit">{{ language("TIJIAO", "提交") }}</iButton> -->
-        <iButton :loading="submitLoading" @click="handleSubmit">提交</iButton>
-        <!-- <iButton :loading="approveLoading" @click="handleApprove">{{ language("PIZHUN", "批准") }}</iButton> -->
-        <iButton :loading="approveLoading" @click="handleApprove">批准</iButton>
-        <!-- <iButton @click="handleReject">{{ language("JUJUE", "拒绝") }}</iButton> -->
-        <iButton @click="handleReject">拒绝</iButton>
+        <iButton @click="forwardDialogVisible = true">{{ language("ZHUANPAI", "转派") }}</iButton>
+        <iButton :loading="backLoading" @click="handleBack">{{ language("TUIHUIZHICAIGOUYUAN", "退回至采购员") }}</iButton>
+        <iButton @click="editStatus = true">{{ language("BIANJI", "编辑") }}</iButton>
+        <iButton :loading="submitLoading" @click="handleSubmit">{{ language("TIJIAO", "提交") }}</iButton>
+        <iButton :loading="approveLoading" @click="handleApprove">{{ language("PIZHUN", "批准") }}</iButton>
+        <iButton @click="handleReject">{{ language("JUJUE", "拒绝") }}</iButton>
       </div>
       <div v-else>
-        <!-- <iButton @click="handleCloseEdit">{{ language("JIESHUBIANJI", "结束编辑") }}</iButton> -->
-        <iButton @click="handleCloseEdit">结束编辑</iButton>
+        <iButton @click="handleCloseEdit">{{ language("JIESHUBIANJI", "结束编辑") }}</iButton>
         <iButton :loading="saveLoading" @click="handleSave">{{ language("BAOCUN", "保存") }}</iButton>
       </div>
     </template>
@@ -33,12 +26,11 @@
       <el-table
         v-loading="loading"
         :data="tableListData"
-        :empty-text="$t('LK_ZANWUSHUJU')">
+        :empty-text="language('ZANWUSHUJU', '暂无数据')">
         <el-table-column type="index" align="center" label="#"></el-table-column>
-        <el-table-column align="center" v-for="(item, $index) in tableTitle" :key="$index" :label="item.key" :show-overflow-tooltip="true">
+        <el-table-column align="center" v-for="(item, $index) in tableTitle" :key="$index" :label="language(item.key, item.name)" :show-overflow-tooltip="true">
           <template v-if="item.props === 'partScore'" v-slot="scope">
-            <!-- <span class="link-underline" @click="viewPartScore(scope.row)">{{ language("CHAKAN", "查看") }}</span> -->
-            <span class="link-underline" @click="viewPartScore(scope.row)">查看</span>
+            <span class="link-underline" @click="viewPartScore(scope.row)">{{ language("CHAKAN", "查看") }}</span>
           </template>
           <template v-else v-slot="scope">
             <span>{{ scope.row[item.props] }}</span>
@@ -46,7 +38,7 @@
         </el-table-column>
         <template>
           <el-table-column align="center" :label="rateTag">
-            <el-table-column align="center" v-for="item in deptScoreTableTitle" :key="item.props" :label="item.key">
+            <el-table-column align="center" v-for="item in deptScoreTableTitle" :key="item.props" :label="language(item.key, item.name)">
               <template v-if="item.props === 'rate'" #header="scope">
                 <span>{{ scope.column.label }}<i class="required">*</i></span>
               </template>
@@ -56,8 +48,6 @@
                   <!-- <iSelect v-model="scope.row.rate">
                     <el-option value="合格" :label="language('HEGE', '合格')" />
                     <el-option value="不合格" :label="language('BUHEGE', '不合格')" />
-                    <el-option value="合格" label="合格" />
-                    <el-option value="不合格" label="不合格" />
                   </iSelect> -->
                 </div>
                 <span v-else>{{ scope.row.rate }}</span>
@@ -71,8 +61,7 @@
                 <span v-else>{{ scope.row.confirmCycle }}</span>
               </template>
               <template v-else-if="item.props === 'remark'" v-slot="scope">
-                <!-- <span v-if="editStatus" class="link-underline" @click="editRemark(scope.row)">{{ language("BIANJI", "编辑") }}</span> -->
-                <span v-if="editStatus" class="link-underline" @click="editRemark(scope.row)">编辑</span>
+                <span v-if="editStatus" class="link-underline" @click="editRemark(scope.row)">{{ language("BIANJI", "编辑") }}</span>
                 <span v-else class="link-underline" @click="editRemark(scope.row)">{{ language("CHAKAN", "查看") }}</span>
               </template>
               <template v-else v-slot="scope">
@@ -285,18 +274,11 @@ export default {
     // 结束编辑
     handleCloseEdit() {
       if (!isEqual(this.tableListData, this.tableListDataCache)) {
-      // iMessageBox(
-        //   this.language("DISCARDCHANGE", "内容已经发生变化，是否确定要放弃修改？"), 
-        //   this.language("TISHI", "提示"),  
-        //   { 
-        //     confirmButtonText: this.language("QUEREN", "确认")
-        //   }
-        // )
         iMessageBox(
-          "内容已经发生变化，是否确定要放弃修改？", 
-          "提示", 
+          this.language("DISCARDCHANGE", "内容已经发生变化，是否确定要放弃修改？"), 
+          this.language("TISHI", "提示"),  
           { 
-            confirmButtonText: "确认"
+            confirmButtonText: this.language("QUEREN", "确认")
           }
         )
         .then(() => {
@@ -311,27 +293,18 @@ export default {
     // 保存
     handleSave() {
       if (isEqual(this.tableListData, this.tableListDataCache)) {
-        // return iMessageBox(
-        //   this.language("NOCHANGEDONTSAVE", "没有发现更改，不需要保存。"), 
-        //   this.language("TISHI", "提示"), 
-        //   { 
-        //     showCancelButton: false, 
-        //     confirmButtonText: this.language("QUEREN", "确认") 
-        //   }
-        // )
         return iMessageBox(
-          "没有发现更改，不需要保存。", 
-          "提示", 
+          this.language("NOCHANGEDONTSAVE", "没有发现更改，不需要保存。"), 
+          this.language("TISHI", "提示"), 
           { 
             showCancelButton: false, 
-            confirmButtonText: "确认" 
+            confirmButtonText: this.language("QUEREN", "确认") 
           }
         )
       }
 
       if (this.tableListData.some(item => !item.rate && item.rate !== 0)) {
-        // return iMessage.warn(this.language("PINGFENLIEWEIBITIANXIANG", "评分列为必填项"))
-        return iMessage.warn("评分列为必填项")
+        return iMessage.warn(this.language("PINGFENLIEWEIBITIANXIANG", "评分列为必填项"))
       }
 
       this.saveLoading = true

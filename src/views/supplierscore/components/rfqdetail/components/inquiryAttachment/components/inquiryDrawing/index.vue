@@ -1,23 +1,21 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-28 17:22:08
- * @LastEditTime: 2021-06-28 17:44:55
+ * @LastEditTime: 2021-07-02 18:01:42
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\supplierscore\components\rfqdetail\components\inquiryAttachment\components\inquiryDrawing\index.vue
 -->
 <template>
-  <!-- <iCard :title="language('XUNJIATUZHI', '询价图纸')"> -->
-  <iCard title="询价图纸">
+  <iCard :title="language('XUNJIATUZHI', '询价图纸')">
     <template #header-control>
-      <!-- <iButton :loading="downloadLoading" @click="handleDownload">{{ language("XIAZAI", "下载") }}</iButton> -->
-      <iButton :loading="downloadLoading" @click="handleDownload">下载</iButton>
+      <iButton :loading="downloadLoading" @click="handleDownload">{{ language("XIAZAI", "下载") }}</iButton>
     </template>
     <div class="body">
       <tableList
         class="table"
         index
-        :lang="false"
+        :lang="true"
         :tableData="tableListData"
         :tableTitle="tableTitle"
         :tableLoading="loading"
@@ -109,8 +107,7 @@ export default {
       this.multipleSelection = list
     },
     async handleDownload() {
-      // if (this.multipleSelection.length < 1) return iMessage.warn(this.language("QINGXUANZEXUYAOXIAZAIDEWENJIAN", "请选择需要下载的文件"))
-      if (this.multipleSelection.length < 1) return iMessage.warn("请选择需要下载的文件")
+      if (this.multipleSelection.length < 1) return iMessage.warn(this.language("QINGXUANZEXUYAOXIAZAIDEWENJIAN", "请选择需要下载的文件"))
 
       this.downloadLoading = true
       await downloadFile({

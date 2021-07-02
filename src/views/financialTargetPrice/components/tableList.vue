@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-22 14:42:20
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-01 19:37:14
+ * @LastEditTime: 2021-07-02 17:04:25
  * @Description: 财务目标价公用表格
  * @FilePath: \front-web\src\views\financialTargetPrice\components\tableList.vue
 -->
@@ -46,15 +46,15 @@
         </template>
         <template slot-scope="scope">
           <!------------------图纸列--------------------------->
-          <span class="openLinkText cursor" v-if="items.props === 'tuzhi'" @click="$emit('openAttachmentDialog',scope.row)">查看</span>
+          <span class="openLinkText cursor" v-if="items.props === 'tuzhi'" @click="$emit('openAttachmentDialog',scope.row)">{{language('CHAKAN','查看')}}</span>
           <!------------------操作列--------------------------->
-          <span class="openLinkText cursor" v-else-if="items.props === 'caozuo'" @click="$emit('openEditdetail', scope.row)" >编辑</span>
+          <span class="openLinkText cursor" v-else-if="items.props === 'caozuo'" @click="$emit('openEditdetail', scope.row)" >{{language('BIANJI','编辑')}}</span>
           <!------------------修改记录列--------------------------->
-          <span class="openLinkText cursor" v-else-if="items.props === 'xiugai'" @click="$emit('openModifyDialog',scope.row)">查看</span>
+          <span class="openLinkText cursor" v-else-if="items.props === 'xiugai'" @click="$emit('openModifyDialog',scope.row)">{{language('CHAKAN','查看')}}</span>
           <!------------------审批记录列--------------------------->
-          <span class="openLinkText cursor" v-else-if="items.props === 'shenpi'" @click="$emit('openApprovalDialog',scope.row)">查看</span>
+          <span class="openLinkText cursor" v-else-if="items.props === 'shenpi'" @click="$emit('openApprovalDialog',scope.row)">{{language('CHAKAN','查看')}}</span>
           <!------------------审批列--------------------------->
-          <span class="openLinkText cursor" v-else-if="items.props === 'shenpipi'" @click="$emit('openApprovalDetailDialog',scope.row)">审批</span>
+          <span class="openLinkText cursor" v-else-if="items.props === 'shenpipi'" @click="$emit('openApprovalDetailDialog',scope.row)">{{language('SHENPI','审批')}}</span>
           <!------------------审批状态列--------------------------->
           <span v-else-if="items.props === 'approveStatus'">{{scope.row.approveStatus ? scope.row.approveStatus.desc || scope.row.approveStatus : ''}}</span>
           <!------------------正常--------------------------->
