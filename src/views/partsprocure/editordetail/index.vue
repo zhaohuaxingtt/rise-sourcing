@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2021-07-02 09:58:03
+ * @LastEditTime: 2021-07-02 10:38:18
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\editordetail\index.vue
@@ -676,11 +676,11 @@ import { getDictByCode } from '@/api/dictionary'
 			updateOutput(data) {
 				this.$refs.outputPlan.updateOutput(data)
 			},
-   /**
-    * @description: 限制保存和提交的零件类型和是否commonsourcing是否匹配
-    * @param {*}
-    * @return {*}
-    */
+			/**
+				* @description: 限制保存和提交的零件类型和是否commonsourcing是否匹配
+				* @param {*}
+				* @return {*}
+				*/
 			fsProjectTypeAnIscommonSroucing(callBack){
 				if((!this.detailData.isCommonSourcing) && this.detailData.partPrejectType == "PT09"){
 					iMessageBox(this.language('当前零件采购项目类型与commonSourcing为[否]不统一，是否继续？','SPIRNT11COMMONSS')).then(res=>{
@@ -690,18 +690,7 @@ import { getDictByCode } from '@/api/dictionary'
 					callBack()
 				}
 			}
-		},
-		computed:{
-   /**
-    * @description: 现供供应商按钮逻辑。
-    * @param {*}
-    * @return {*}
-    */
-			currentSupplierButton:function(){
-				return this.detailData.partPrejectType == "PT11" || this.detailData.partPrejectType == "PT10"
-			}
 		}
-	}
 }
 </script>
 <style lang="scss" scoped>
