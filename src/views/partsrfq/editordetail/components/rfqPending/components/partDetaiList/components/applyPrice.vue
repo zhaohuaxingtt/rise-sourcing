@@ -84,6 +84,21 @@
 				}
 			}
 		},
+		watch: {
+			applyPriceShow(val) {
+				if (val) {
+					if (this.handleSelectArr[0] && (this.handleSelectArr[0].partProjectType === 'PT19' || this.handleSelectArr[0].partProjectType === 'PT04')) {
+						this.targetprice = {
+							...this.targetprice,
+							cfTargetPriceDetail: {
+								...this.targetprice.cfTargetPriceDetail,
+								applyType: 'SKD'
+							}
+						}
+					}
+				}
+			}
+		},
 		data() {
 			return {
 				applyPriceShow: false,

@@ -1,23 +1,17 @@
+<!--
+ * @Author: haojiang
+ * @Date: 2021-06-30 16:51:56
+ * @LastEditTime: 2021-07-01 15:46:24
+ * @LastEditors: Please set LastEditors
+ * @Description: 提交定点申请，如果是上会类型，上会弹窗
+ * @FilePath: /front-web/src/views/designate/home/components/mettingDialog/index.vue
+-->
 <template>
   <iDialog class="dialog" v-bind="$props" :visible.sync="visible" v-on="$listeners">
     <div class="dialog-Header" slot="title">
-      <div class="font18 font-weight">{{language('FENTANFUJIANLIEBIAO', 'SEL分摊单附件列表')}}</div>
+      <div class="font18 font-weight">{{language('XUANZEHUIYI', '选择会议')}}</div>
       <div class="control">
-        <span v-if="!readOnly">
-          <iButton @click="downloadFile">{{ language('LK_XIAZAI','下载') }}</iButton>
-          <iButton @click="deleteFile([], getFetchData)">{{ language('LK_SHANCHU','删除') }}</iButton>
-          <upload
-            class="upload-trigger"
-            :hideTip="true"
-            :accept="'.jpg,.jpeg,.png,.pdf,.tif'"
-            :buttonText="language('strategicdoc_ShangChuanWenJian','上传文件')"
-            @on-success="onUploadsucess(Object.assign(...arguments, {fileType, hostId: nomiAppId}), getFetchData)"
-          />
-        </span>
-        <span v-if="selStatus">
-          <iButton @click="selConfirm">{{ language('LK_QUEREN','确认') }}</iButton>
-          <iButton @click="downloadFile">{{ language('LK_XIAZAI','下载') }}</iButton>
-        </span>
+       
         <!-- <iButton>{{ language('strategicdoc.ShangChuanWenJian') }}</iButton> -->
       </div>
     </div>
@@ -44,44 +38,24 @@
 
 <script>
 import { iPagination, iDialog, iMessage, iButton } from '@/components'
-import { seltTableTitle as tableTitle } from '../data'
+import { mettingTableTitle as tableTitle } from './data'
 import tableList from '@/views/designate/supplier/components/tableList'
 import filters from '@/utils/filters'
 import { attachMixins } from '@/utils/attachMixins'
 import { pageMixins } from '@/utils/pageMixins'
-import upload from '@/components/Upload'
-// import { downloadFile } from '@/api/file'
 
-// sel 单据确认表格
-// import {
-//   getNomiSelAttachList,
-//   batchUploadSelAttach,
-//   batchDeleteSelAttach
-// } from '@/api/designate/nomination/selAttach'
 import {
   batchConfirmSelSheet
 } from '@/api/designate/nomination/selsheet'
 
 export default {
-  components: { tableList, iPagination, iDialog, iButton, upload },
+  components: { tableList, iPagination, iDialog, iButton },
   mixins: [ pageMixins, filters, attachMixins ],
   props: {
     ...iDialog.props,
     visible: {
       type: Boolean,
       default: false
-    },
-    selStatus: {
-      type: Boolean,
-      default: false
-    },
-    nomiAppId: {
-      type: String,
-      default: ''
-    },
-    fileType: {
-      type: String,
-      default: '105'
     },
     readOnly: {
       type: Boolean,

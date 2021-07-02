@@ -151,7 +151,7 @@
 	} from '@/api/partsprocure/home'
 import { iMessageBox } from '../../../../../components';
 import { pageMixins } from '@/utils/pageMixins'
-import { applyCFTarget, getCfTargetApplyHistory, getTargetPriceDd } from '@/api/financialTargetPrice/index'
+import { applyCFTarget, getCfTargetApplyHistory, getTargetPriceDd, savePriceDetail } from '@/api/financialTargetPrice/index'
 import { cloneDeep } from 'lodash'
 	export default {
 		components: {
@@ -170,7 +170,24 @@ import { cloneDeep } from 'lodash'
 			purchaseProjectId: {
 				type: String
 			},
-			fsnrGsnrNum: {type: String}
+			fsnrGsnrNum: {type: String},
+			partPrejectType: {type:String}
+		},
+		watch: {
+			partPrejectType: {
+				handler(val) {
+					if (val === 'PT19' || val === 'PT04') {
+						this.targetprice = {
+							...this.targetprice,
+							cfTargetPriceDetail: {
+								...this.targetprice.cfTargetPriceDetail,
+								applyType: 'SKD'
+							}
+						}
+					}
+				},
+				immediate: true
+			}
 		},
 		data() {
 			return {
@@ -193,7 +210,7 @@ import { cloneDeep } from 'lodash'
 		},
 		methods: {
 			getTargetPriceDetail() {
-				getTargetPriceDd(this.fsnrGsnrNum).then(res => {
+				getTargetPriceDd(this.purchaseProjectId).then(res => {
 					if (res?.result) {
 						this.targetprice = {
 							...this.targetprice,
@@ -252,18 +269,12 @@ import { cloneDeep } from 'lodash'
 			// 保存 ,申请财务目标价
 			save(type) {
 				let targetprice = {
-					purchaseProjectId: this.purchaseProjectId,
-					cfTargetPriceDetail: { ...this.targetprice.cfTargetPriceDetail, type }, // save 保存  apply 申请
-					rwApplication:null
+					...this.targetprice.cfTargetPriceDetail
 				};
-				if(!targetprice.cfTargetPriceDetail.expTargetpri){
-					targetprice.cfTargetPriceDetail.expTargetpri = 0
-				}
-				changeProcure({
-					targetprice,
-				}).then((res) => {
+				savePriceDetail(targetprice).then((res) => {
 					if (res.data) {
 						iMessage.success(this.$t('LK_CAOZUOCHENGGONG'))
+						this.getTargetPriceDetail()
 						this.targePriceDetail()
 						this.getTargetPrice()
 					}else{

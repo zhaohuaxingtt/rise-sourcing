@@ -8,9 +8,9 @@
 -->
 
 <template>
-  <iCard title="基础信息" collapse class="margin-top30" :loading="loading">
+  <iCard :title="language('JICHUXINXI','基础信息')" collapse class="margin-top30" :loading="loading">
     <iFormGroup row="4" class="targetPriceDetail">
-      <iFormItem v-for="(item, index) in detailList" :key="index" :label="item.label+':'" :class="item.row ? 'row'+item.row : ''">
+      <iFormItem v-for="(item, index) in detailList" :key="index" :label="language(item.i18n_label, item.label)+':'" :class="item.row ? 'row'+item.row : ''">
         <template v-if="item.editable && isEdit">
           <iInput v-if="item.type === 'input'" v-model="detailData[item.value]" />
           <iSelect v-else-if="item.type === 'select'" v-model="detailData[item.value]" :disabled="isDisabled(item.value)">
@@ -25,10 +25,10 @@
         <iText v-else>{{detailData[item.value]}}</iText>
       </iFormItem>
       <iFormItem :class="'row2'" style="text-align:right">
-        <iButton v-if="!isEdit" @click="changeBasicIsEdit(true)">编辑</iButton>
+        <iButton v-if="!isEdit" @click="changeBasicIsEdit(true)">{{language('BIANJI','编辑')}}</iButton>
         <template v-else>
-          <iButton @click="handleBasicSave">保存</iButton>
-          <iButton @click="handleBasicCancel">取消</iButton>
+          <iButton @click="handleBasicSave">{{language('BAOCUN','保存')}}</iButton>
+          <iButton @click="handleBasicCancel">{{language('QUXIAO','取消')}}</iButton>
         </template>
       </iFormItem>
     </iFormGroup>

@@ -2,13 +2,13 @@
  * @Author: Luoshuang
  * @Date: 2021-06-22 16:30:06
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-30 10:52:22
+ * @LastEditTime: 2021-07-01 15:36:14
  * @Description: 审批记录弹窗
  * @FilePath: \front-web\src\views\financialTargetPrice\maintenance\components\approvalRecord.vue
 -->
 <template>
   <iDialog 
-    title="审批记录"
+    :title="language('SHENPIJILU','审批记录')"
     :visible.sync="dialogVisible"
     @close="clearDialog"
     width="90%"

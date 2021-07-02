@@ -2,14 +2,14 @@
  * @Author: Luoshuang
  * @Date: 2021-06-22 15:55:07
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-30 10:40:11
+ * @LastEditTime: 2021-07-01 15:36:43
  * @Description: 修改记录弹窗
  * @FilePath: \front-web\src\views\financialTargetPrice\maintenance\components\modificationRecord.vue
 -->
 
 <template>
   <iDialog 
-    title="修改记录"
+    :title="language('XIUGAIJILU','修改记录')"
     :visible.sync="dialogVisible"
     @close="clearDialog"
     width="90%"

@@ -2,21 +2,21 @@
  * @Author: Luoshuang
  * @Date: 2021-06-23 15:37:22
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-30 15:00:02
+ * @LastEditTime: 2021-07-01 15:47:58
  * @Description: 定点信息
  * @FilePath: \front-web\src\views\financialTargetPrice\targetPriceDetail\components\designateInfo.vue
 -->
 
 <template>
-  <iCard title="定点信息" collapse class="margin-top20 designateInfo">
+  <iCard :title="language('DINGDIANXINXI','定点信息')" collapse class="margin-top20 designateInfo">
     <!------------------------------------------------------------------------>
     <!--                  搜索条件                                          --->
     <!------------------------------------------------------------------------>
     <iSearch :hiddenRight="true" class="designateSearch">
       <el-form>
-        <el-form-item v-for="(item, index) in searchList" :key="index" :label="item.label">
+        <el-form-item v-for="(item, index) in searchList" :key="index" :label="language(item.i18n_label,item.label)">
           <iSelect v-if="item.type === 'select'" :filterable="item.filterable" v-model="searchParams[item.value]">
-            <el-option value="" :label="$t('all')"></el-option>
+            <el-option value="" :label="language('ALL', '全部')"></el-option>
             <el-option
               :value="item.code"
               :label="item.name"
@@ -29,15 +29,15 @@
           
         </el-form-item>
         <el-form-item class="searchBtns">
-          <iButton @click="getTableList">确认</iButton>
-          <iButton @click="reset">重置</iButton>
+          <iButton @click="sure">{{language('QUEREN','确认')}}</iButton>
+          <iButton @click="reset">{{language('CHONGZHI','重置')}}</iButton>
         </el-form-item>
       </el-form>
     </iSearch>
     <!------------------------------------------------------------------------>
     <!--                  表格                                              --->
     <!------------------------------------------------------------------------>
-    <tableList :activeItems='"spnrNum"' selection indexKey :tableData="tableData" :tableTitle="tableTitle" :tableLoading="tableLoading" @handleSelectionChange="handleSelectionChange" @openPage="openPage"></tableList>
+    <tableList :activeItems='"spnrNum"' :selection="false" indexKey :tableData="tableData" :tableTitle="tableTitle" :tableLoading="tableLoading" @handleSelectionChange="handleSelectionChange" @openPage="openPage"></tableList>
     <!------------------------------------------------------------------------>
     <!--                  表格分页                                          --->
     <!------------------------------------------------------------------------>
@@ -58,6 +58,7 @@ import { pageMixins } from "@/utils/pageMixins"
 import { getNomiRecords } from "@/api/financialTargetPrice/index"
 import { getDictByCode } from '@/api/dictionary'
 import { dictkey } from "@/api/partsprocure/editordetail"
+import { getCartypeDict} from "@/api/partsrfq/home"
 export default {
   mixins: [pageMixins],
   components: {iCard,iPagination,iButton,tableList,iInput,iSelect,iSearch,iDatePicker},
@@ -67,8 +68,21 @@ export default {
       tableData: [],
       tableLoading: false,
       searchList: designateSearchList,
-      searchParams: {},
-      selectOptions: {}
+      searchParams: {
+        buyerId: '',
+        linieId: '',
+        carTypeName: '',
+        isManCreate: '',
+        priceStatus: '',
+        partProjectType: '',
+        carTypeCode: ''
+      },
+      selectOptions: {
+        yesOrNoOption: [
+          {code: '1', name: '是'},
+          {code: '0', name: '否'}
+        ]
+      }
     }
   },
   props: {
@@ -85,12 +99,40 @@ export default {
      }
   },
   created() {
+    this.getCartypeDict()
     this.getProcureGroup()
     this.getDicts()
   },
   methods: {
+    // 获取车型字典
+    getCartypeDict() {
+      getCartypeDict()
+      .then(res => {
+        if (res.code == 200) {
+          this.selectOptions = {
+            ...this.selectOptions,
+            cartTypeOptions: Array.isArray(res.data) ? res.data : []
+          }
+        }
+      })
+    },
+    sure() {
+      this.page = {
+        ...this.page,
+        currPage: 1
+      }
+      this.getTableList()
+    },
     reset() {
-      this.searchParams = {}
+      this.searchParams = {
+        buyerId: '',
+        linieId: '',
+        carTypeName: '',
+        isManCreate: '',
+        priceStatus: '',
+        partProjectType: '',
+        carTypeCode: ''
+      }
     },
     getDicts() {
       getDictByCode('PRICE_STATE').then(res => {

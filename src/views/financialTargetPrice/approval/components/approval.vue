@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-23 18:12:01
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-30 18:05:59
+ * @LastEditTime: 2021-07-01 14:04:05
  * @Description: 审批弹窗
  * @FilePath: \front-web\src\views\financialTargetPrice\approval\components\approval.vue
 -->
@@ -16,25 +16,25 @@
   >
     <template slot="title">
       <div class="clearFloat margin-right20">
-        <span class="font18 font-weight">审批</span>
+        <span class="font18 font-weight">{{language('SHENPI','审批')}}</span>
           <div class="floatright">
             <!--------------------批准按钮----------------------------------->
-            <iButton @click="handleApprove" :loading="approveLoading" >批准</iButton>
+            <iButton @click="handleApprove" :loading="approveLoading" >{{language('PIZHUN', '批准')}}</iButton>
             <!--------------------拒绝按钮----------------------------------->
-            <iButton @click="handleReject" >拒绝</iButton>
+            <iButton @click="handleReject" >{{language('JUJUE','拒绝')}}</iButton>
             <!--------------------取消按钮----------------------------------->
-            <iButton @click="clearDialog" >取消</iButton>
+            <iButton @click="clearDialog" >{{language('QUXIAO','取消')}}</iButton>
           </div>
       </div>
     </template>
     <iFormGroup row="2" class="approvalDetail">
-      <iFormItem v-for="(item, index) in detailList" :key="index" :label="item.label+':'" :class="item.row ? 'row'+item.row : ''">
+      <iFormItem v-for="(item, index) in detailList" :key="index" :label="language(item.i18n_label, item.label)+':'" :class="item.row ? 'row'+item.row : ''">
         <iText>{{item.parent && detailData[item.parent] ? detailData[item.parent][item.value] : detailData[item.value]}}</iText>
       </iFormItem>
     </iFormGroup>
     <div class="refuseReason">
-      <div class="refuseReason-label">拒绝原因<span style="color:red;">*</span>:</div>
-      <iInput type="textarea" :rows="4" palceholder="请输入拒绝原因"></iInput>
+      <div class="refuseReason-label">{{language('JUJUEYUANYIN','拒绝原因')}}<span style="color:red;">*</span>:</div>
+      <iInput v-model="rejectReason" type="textarea" :rows="4" :palceholder="language('QINGSHURUJUJUEYUANYIN','请输入拒绝原因')"></iInput>
     </div>
   </iDialog>
 </template>
@@ -53,7 +53,8 @@ export default {
     return {
       detailList: detailList,
       detailData: {},
-      approveLoading: false
+      approveLoading: false,
+      rejectReason: ''
     }
   },
   watch: {
@@ -65,13 +66,13 @@ export default {
   },
   methods: {
     handleReject() {
-      if (!this.detailData.rejectReason) {
-        iMessage.warn('请输入拒绝原因')
+      if (!this.rejectReason) {
+        iMessage.warn(this.language('QINGSHURUJUJUEYUANYIN','请输入拒绝原因'))
         return
       }
       const params = {
         id: this.applyId,
-        rejectReason: this.detailData.rejectReason
+        rejectReason: this.rejectReason
       }
       targetPriceReject(params).then(res => {
         if (res?.result) {
@@ -108,6 +109,7 @@ export default {
       })
     },
     clearDialog() {
+      this.rejectReason = ''
       this.$emit('changeVisible', false)
     },
   }

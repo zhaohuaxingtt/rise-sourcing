@@ -2,30 +2,30 @@
  * @Author: Luoshuang
  * @Date: 2021-05-25 16:11:07
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-23 17:59:15
+ * @LastEditTime: 2021-07-01 19:05:38
  * @Description: 分配询价采购员弹窗
  * @FilePath: \front-web\src\views\financialTargetPrice\query\components\assign.vue
 -->
 
 <template>
   <iDialog 
-    title="指派"
+    :title="language('ZHIPAI','指派')"
     :visible.sync="dialogVisible"
     @close="clearDialog"
     width="381px"
   >
     <template slot="footer">
-      <iButton @click="handleConfirm" :loading="loading">指派</iButton>
+      <iButton @click="handleConfirm" :loading="loading">{{language('ZHIPAI','指派')}}</iButton>
     </template>
     <el-form>
-      <el-form-item label="请选择指派人">
+      <el-form-item :label="language('QINGXUANZEZHIPAIREN','请选择指派人')">
         <iSelect v-model="assign">
-          <!-- <el-option
-            v-for="item in userOptions"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value">
-          </el-option>   -->
+          <el-option
+            v-for="item in assignOption"
+            :key="item.code"
+            :label="item.name"
+            :value="item.code">
+          </el-option>  
         </iSelect> 
       </el-form-item>
     </el-form>
@@ -34,6 +34,7 @@
 
 <script>
 import { iDialog, iButton, iSelect, iMessage } from 'rise'
+import { getCFList } from '@/api/financialTargetPrice/index'
 export default {
   components: { iDialog, iButton, iSelect },
   props: {
@@ -46,27 +47,39 @@ export default {
       loading: false
     }
   },
-  watch: {
-    dialogVisible(val) {
-      if (val) {
-      }
-    }
+  created() {
+    this.getCF()
   },
   methods: {
+    getCF() {
+      getCFList().then(res => {
+        if (res?.result) {
+          this.assignOption = res.data.map(item => {
+            return {
+              code: item.id,
+              name: item.nameZh
+            }
+          })
+        }
+      })
+    },
     clearDialog() {
-      this.respLINIE = ''
+      this.assign = ''
       this.$emit('changeVisible', false)
     },
     handleCancel() {
       this.clearDialog()
     },
     handleConfirm() {
-      if (this.respLINIE === '') {
-        iMessage.warn('请选择询价采购员')
+      if (this.assign === '') {
+        iMessage.warn(this.language('QINGXUANZEXUNJIACAIGOUYUAN','请选择询价采购员'))
         return
       }
       this.loading = true
-      this.$emit('sendAccessory', this.respLINIE)
+      this.$emit('sendAccessory', this.assign)
+    },
+    changeAssigLoading(loading) {
+      this.loading = loading
     },
     changeLoading(loading) {
       this.loading = loading

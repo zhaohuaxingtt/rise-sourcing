@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-22 10:32:07
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-24 10:28:17
+ * @LastEditTime: 2021-07-01 17:14:17
  * @Description: 
  * @FilePath: \front-web\src\views\financialTargetPrice\components\data.js
  */
@@ -10,7 +10,7 @@
 export const TAB = [
   {
     value: 1,
-    label: '寻源执行',
+    name: '寻源执行',
     key: 'LK_XUNYUANZHIHANG',
     url: '/sourcing/partsign',
     activePath: 'sourcing',
@@ -18,15 +18,15 @@ export const TAB = [
   },
   {
     value: 2,
-    label: '进度监控',
+    name: '进度监控',
     key: 'LK_JINDUJIANKONG',
     url: '/nomination',
     message: 0
   },
   {
     value: 3,
-    label: '财务目标价管理',
-    key: '财务目标价管理',
+    name: '财务目标价管理',
+    key: 'CAIWUMUBIAOJIAGUANLI',
     url: '/financialtargetprice',
     activePath: 'financialtargetprice',
     message: 0
@@ -40,7 +40,7 @@ export const MENU = [
     message: 0,
     url: '/financialtargetprice/maintenance',
     activePath: 'maintenance',
-    key: '目标价维护'
+    key: 'MUBIAOJIAWEIHU'
   },
   {
     value: 2,
@@ -48,7 +48,7 @@ export const MENU = [
     message: 0,
     url: '/financialtargetprice/approval',
     activePath: 'approval',
-    key: '目标价审批'
+    key: 'MUBIAOJIASHENPI'
   },
   {
     value: 7,
@@ -56,6 +56,6 @@ export const MENU = [
     message: 0,
     url: '/financialtargetprice/query',
     activePath: 'query',
-    key: '目标价查询'
+    key: 'MUBIAOJIACHAXUN'
   },
 ]

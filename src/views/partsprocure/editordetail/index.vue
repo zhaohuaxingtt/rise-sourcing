@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2021-06-30 18:32:28
+ * @LastEditTime: 2021-07-01 16:59:25
  * @LastEditors: Luoshuang
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\editordetail\index.vue
@@ -102,6 +102,22 @@
 								</el-option>
 							</iSelect>
 						</iFormItem>
+						<!------------------------零件采购项目类型为DB类型时--------------------------------------->
+						<iFormItem v-if="detailData.partPrejectType === 'PT04' || detailData.partPrejectType === 'PT19'" :label="language('HUOBILEIXING','货币类型') + ':'" name="test">
+							<iSelect v-model="detailData.currencyCode" >
+								<el-option :value="item.code" :label="item.name"
+									v-for="(item, index) in fromGroup.PP_CSTMGMT_CURRENCY" :key="index">
+								</el-option>
+							</iSelect>
+						</iFormItem>
+						<!----------------------零件采购项目类型为DB零件时----------------------------------->
+						<iFormItem v-if="detailData.partPrejectType === 'PT04' || detailData.partPrejectType === 'PT19'" :label="language('ZHIFUTIAOKUAN', '支付条款') + ':'" name="test">
+							<iSelect v-model="detailData.payClause" >
+								<el-option :value="item.code" :label="item.name"
+									v-for="(item, index) in fromGroup.TERMS_PAYMENT" :key="index">
+								</el-option>
+							</iSelect>
+						</iFormItem>
 					</div>
 					<div class="col">
 						<iFormItem label="FSNR/GSNR/SPNR：" name="test">
@@ -149,6 +165,14 @@
 								v-permission="PARTSPROCURE_EDITORDETAIL_NUMBEROFPAYMENT">
 								<el-option :value="item.code" :label="item.name"
 									v-for="(item, index) in fromGroup.PAYMENT_RULE" :key="index"></el-option>
+							</iSelect>
+						</iFormItem>
+						<!----------------------零件采购项目类型为DB零件时----------------------------------->
+						<iFormItem v-if="detailData.partPrejectType === 'PT04' || detailData.partPrejectType === 'PT19'" :label="language('CAIGOUTIAOKUAN','采购条款') + ':'" name="test">
+							<iSelect v-model="detailData.purchaseClause" >
+								<el-option :value="item.code" :label="item.name"
+									v-for="(item, index) in fromGroup.TERMS_PURCHASE" :key="index">
+								</el-option>
 							</iSelect>
 						</iFormItem>
 					</div>
@@ -276,7 +300,7 @@
 			</el-tab-pane>
 			<el-tab-pane :label="$t('LK_SHENQINGMUBIAOJIA')"
 				v-permission="PARTSPROCURE_EDITORDETAIL_APPLYFORTARGETPRICE">
-				<targePrice :purchaseProjectId="purchasePrjectId" :fsnrGsnrNum="fsnrGsnrNum"></targePrice>
+				<targePrice :purchaseProjectId="purchasePrjectId" :fsnrGsnrNum="fsnrGsnrNum" :partPrejectType="partPrejectType"></targePrice>
 			</el-tab-pane>
 			<el-tab-pane :label="$t('LK_BEIZHUXINXI')" v-permission="PARTSPROCURE_EDITORDETAIL_REMARKSINFORMATION">
 				<remarks :detailData="detailData"></remarks>
@@ -336,6 +360,7 @@
 	} from "./components/data";
 	import splitFactory from "./components/splitFactory";
 import designateInfo from './components/designateInfo'
+import { getDictByCode } from '@/api/dictionary'
 	export default {
 		components: {
 			iPage,
@@ -379,16 +404,37 @@ import designateInfo from './components/designateInfo'
 				purchasePrjectId: "",
 				curentSupplierDialog:{show:false},
 				fsnrGsnrNum: '',
+				partPrejectType: ''
 			};
 		},
 		created() {
 			this.infoItem = JSON.parse(this.$route.query.item);
 			this.purchasePrjectId = this.infoItem.purchasePrjectId;
 			this.fsnrGsnrNum = this.infoItem.fsnrGsnrNum;
+			this.partPrejectType = this.infoItem.partPrejectType;
 			this.getDatail();
 			this.getProcureGroup();
+			this.getDicts()
 		},
 		methods: {
+			getDict(type) {
+				getDictByCode(type).then(res => {
+					if (res?.result) {
+						this.fromGroup = {
+							...this.fromGroup,
+							[type]: res.data[0]?.subDictResultVo || []
+						}
+					}
+				})
+			},
+			getDicts() {
+				// 支付条款
+				this.getDict('TERMS_PAYMENT')
+				//采购条款
+				this.getDict('TERMS_PURCHASE')
+				// 审批状态CF_APPROVE_STATUS
+				this.getDict('PP_CSTMGMT_CURRENCY')
+			},
 			fillterss(data){
 				if(data){
 					return '是'
@@ -442,7 +488,10 @@ import designateInfo from './components/designateInfo'
 			getProcureGroup() {
 				dictkey().then((res) => {
 					if (res.data) {
-						this.fromGroup = res.data;
+						this.fromGroup = {
+							...this.fromGroup,
+							...res.data
+						}
 					}
 				});
 			},

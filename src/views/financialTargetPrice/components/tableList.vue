@@ -2,12 +2,12 @@
  * @Author: Luoshuang
  * @Date: 2021-06-22 14:42:20
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-30 14:26:29
+ * @LastEditTime: 2021-07-01 19:37:14
  * @Description: 财务目标价公用表格
  * @FilePath: \front-web\src\views\financialTargetPrice\components\tableList.vue
 -->
 <template>
-  <el-table ref="multipleTable" fit tooltip-effect='light' :height="height" :data='tableData' v-loading='tableLoading' @selection-change="handleSelectionChange" :empty-text="$t('LK_ZANWUSHUJU')" >
+  <el-table ref="multipleTable" fit tooltip-effect='light' :height="height" :data='tableData' v-loading='tableLoading' @selection-change="handleSelectionChange" :empty-text="language('ZANWUSHUJU', '暂无数据')" >
     <el-table-column v-if="selection" type='selection' width="50" align='center'></el-table-column>
     <el-table-column v-if='indexKey' type='index' width='50' align='center' label='#'>
       <template slot-scope="scope">
@@ -16,13 +16,13 @@
     </el-table-column>
     <template v-for="(items,index) in tableTitle">
       <!----------------------需要高亮的列并且带有打开详情事件------------------------>
-      <el-table-column :key="index" align='center' :width="items.width" :min-width="items.minWidth" :show-overflow-tooltip='items.tooltip' v-if='items.props == activeItems' :prop="items.props" :label="items.key ? $t(items.key) : items.name">
+      <el-table-column :key="index" align='center' :width="items.width" :min-width="items.minWidth" :show-overflow-tooltip='items.tooltip' v-if='items.props == activeItems' :prop="items.props" :label="items.key ? language(items.key, items.name) : items.name">
         <template slot-scope="row"><span class="openLinkText cursor" @click="openPage(row.row)">{{row.row[activeItems]}}</span></template>
       </el-table-column>
       <!---------------------------可编辑列---------------------------------->
-      <el-table-column :key="index" align='center' :width="items.width" :min-width="items.minWidth" :show-overflow-tooltip='items.tooltip' v-else-if="items.editable" :prop="items.props" :label="items.key ? $t(items.key) : items.name">
+      <el-table-column :key="index" align='center' :width="items.width" :min-width="items.minWidth" :show-overflow-tooltip='items.tooltip' v-else-if="items.editable" :prop="items.props" :label="items.key ? language(items.key, items.name) : items.name">
         <template slot="header">
-          <span>{{items.key ? $t(items.key) : items.name}}</span>
+          <span>{{items.key ? language(items.key, items.name) : items.name}}</span>
           <span v-if="items.required" style="color:red;">*</span>
         </template>
         <template slot-scope="scope">
@@ -39,10 +39,10 @@
         </template>
       </el-table-column>
       <!-------------------------正常列--------------------------->
-      <el-table-column :key="index" align='center' :width="items.width" :min-width="items.minWidth" :show-overflow-tooltip='items.tooltip'  v-else :label="items.key ? $t(items.key) : items.name" :prop="items.props">
+      <el-table-column :key="index" align='center' :width="items.width" :min-width="items.minWidth" :show-overflow-tooltip='items.tooltip'  v-else :label="items.key ? language(items.key, items.name) : items.name" :prop="items.props">
         <template slot="header">
           <span v-if="items.enName">{{items.name}}<span><br />{{items.enName}}<br v-if="items.enName1" />{{items.enName1}}</span></span>
-          <span v-else>{{items.key ? $t(items.key) : items.name}}</span>
+          <span v-else>{{items.key ? language(items.key, items.name) : items.name}}</span>
         </template>
         <template slot-scope="scope">
           <!------------------图纸列--------------------------->
@@ -56,7 +56,7 @@
           <!------------------审批列--------------------------->
           <span class="openLinkText cursor" v-else-if="items.props === 'shenpipi'" @click="$emit('openApprovalDetailDialog',scope.row)">审批</span>
           <!------------------审批状态列--------------------------->
-          <span v-else-if="items.props === 'approveStatus'">{{scope.row.approveStatus ? scope.row.approveStatus.desc : ''}}</span>
+          <span v-else-if="items.props === 'approveStatus'">{{scope.row.approveStatus ? scope.row.approveStatus.desc || scope.row.approveStatus : ''}}</span>
           <!------------------正常--------------------------->
           <span v-else>{{scope.row[items.props]}}</span>
         </template>
