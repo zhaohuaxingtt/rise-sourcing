@@ -13,7 +13,7 @@
         <!--预览-->
         <iButton @click="handlePreview">{{ $t('TPZS.YULAN') }}</iButton>
         <!--保存-->
-        <iButton @click="saveOrUpdateScheme">{{ $t('LK_BAOCUN') }}</iButton>
+        <iButton @click="saveOrUpdateScheme('all')">{{ $t('LK_BAOCUN') }}</iButton>
       </div>
     </div>
     <div class="partBox margin-bottom20">
@@ -59,12 +59,12 @@
         />
       </iCard>
 
-      <iCard class="analyzeBox">
+      <iCard class="analyzeBox" v-loading="analyzeLoading">
         <div class="margin-bottom20 clearFloat">
           <span class="font18 font-weight">Volume Pricing{{ $t('TPZS.FENXI') }}</span>
           <div class="floatright">
             <!--保存-->
-            <iButton>{{ $t('LK_BAOCUN') }}</iButton>
+            <iButton @click="saveOrUpdateScheme('analyze')">{{ $t('LK_BAOCUN') }}</iButton>
           </div>
         </div>
         <analyzeChart ref="analyzeChart" :dataInfo="dataInfo"/>
@@ -128,6 +128,7 @@ export default {
         targetScatterData: [],
         lineData: [],
       },
+      analyzeLoading: false,
     };
   },
   methods: {
@@ -187,21 +188,28 @@ export default {
         this.pageLoading = false;
       }
     },
-    async saveOrUpdateScheme() {
+    async saveOrUpdateScheme(params) {
       try {
-        this.pageLoading = true;
         const req = {
           userId: this.$store.state.permission.userInfo.id,
           partsId: this.currentPartsId,
-          costDetailList: this.$refs.totalUnitPriceTable.tableListData,
-          estimatedActualTotalPro: this.$refs.analyzeChart.dataInfo.estimatedActualTotalPro,
-          supplierId: 1
+          supplierId: 1,
         };
+        if (params === 'all') {
+          this.pageLoading = true;
+          req.costDetailList = this.$refs.totalUnitPriceTable.tableListData;
+          req.estimatedActualTotalPro = this.$refs.analyzeChart.dataInfo.estimatedActualTotalPro;
+        } else if (params === 'analyze') {
+          this.analyzeLoading = true;
+          req.estimatedActualTotalPro = this.$refs.analyzeChart.dataInfo.estimatedActualTotalPro;
+        }
         const res = saveOrUpdateScheme(req);
         this.resultMessage(res);
         this.pageLoading = false;
+        this.analyzeLoading = false;
       } catch {
         this.pageLoading = false;
+        this.analyzeLoading = false;
       }
     },
     handlePreview() {
