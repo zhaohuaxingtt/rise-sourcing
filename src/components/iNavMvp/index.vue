@@ -93,6 +93,7 @@ export default {
     //由于当前组件存在于业务组件中，他的选中只需要在加载的时候去路由上取值和当前的list对比即可
     if(this.routerPage){
       this.list.forEach((items,index)=>{
+        console.log('items,indexitems,index', items,index);
         if(this.$route.path.indexOf(items.activePath) > -1) this.activeIndex = index
       })
     }
