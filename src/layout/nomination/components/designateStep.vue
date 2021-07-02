@@ -22,7 +22,7 @@
             <div class="btnList flex-align-center">
                 <iButton @click="gotoRsMainten">{{language('LK_RSWEIHUDAN','RS单维护')}}</iButton>
                 <iButton @click="exportNominate">{{language('LK_DAOCHU','导出')}}</iButton>
-                <iButton @click="submit">{{language('LK_TIJIAO','提交')}}</iButton>
+                <iButton @click="submit" :loading="submitting">{{language('LK_TIJIAO','提交')}}</iButton>
                 <iButton @click="toNextStep">{{language('LK_XIAYIBU','下一步')}}</iButton>
                 <iButton v-if="isDecision" @click="preview">{{language('LK_YULAN','预览')}}</iButton>
                 <logButton class="margin-left20" @click="log"  />
@@ -61,6 +61,12 @@
                 </p>
             </div>
         </div>
+        <!-- 上会类型提交确认弹窗 -->
+        <mettingDialog 
+            :visible.sync="mettingDialogVisible" 
+            @success="submit(false)"
+            @resetSubmitting="submitting = false"
+            ref="mettingDialog" />
     </div>
 </template>
 
@@ -72,6 +78,7 @@ import {
   iMessage
 } from "rise";
 import logButton from '@/components/logButton'
+import mettingDialog from './mettingDialog'
 import {
     nominateAppSExport,
     nominateAppSsubmit,
@@ -80,7 +87,8 @@ import {
     updatePresenPageSeat,
     sugesstionInit,
     sugesstionInitReCord,
-    supplierInitReCord
+    supplierInitReCord,
+    checkNomiMeetingSubmit1
 } from '@/api/designate'
 import { applyStep } from './data'
 export default {
@@ -90,6 +98,7 @@ export default {
         logButton,
         icon,
         iSelect,
+        mettingDialog
     },
     props:{
         status: {
@@ -134,7 +143,9 @@ export default {
             desinateId: '',
             designateType: 'RECORD',
             applyType:[],
-            applyStep:applyStep
+            applyStep:applyStep,
+            mettingDialogVisible: false,
+            submitting: false
         }
     },
     methods:{
@@ -298,21 +309,101 @@ export default {
                 }
             })
         },
-
-        // 提交
-        async submit(){
+        // 进行上会类型定点申请第一轮校验
+        async checkNomiMeetingSubmit() {
             const { query } = this.$route;
             const {desinateId} = query;
             const data = {
                 nominateIdArr:[Number(desinateId)],
+                // meetingId: this.$store.getters.nominationType || ''
             }
-            const confirmInfo = await this.$confirm(this.language('submitSure','您确定要执行提交操作吗？'))
-            if (confirmInfo !== 'confirm') return
-            nominateAppSsubmit(data).then((res)=>{
-                iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
+            let state = true
+            let dataInfo = ''
+            try {
+                const res = await checkNomiMeetingSubmit1(data)
+                if (res && res.code === '200') {
+                    state = true
+                    if (res.data && res.data.length) {
+                        res.data.forEach((item) => {
+                            if (this.$i18n.locale === "zh") {
+                                dataInfo+= `${item.zhMsg}\n`
+                            } else {
+                                dataInfo+= `${item.engMsg}\n`
+                            }
+                        })
+                    } else {
+                        state = false
+                    }
+                } else {
+                    state = false
+                    iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+                }
+            } catch(e) {
+                state = false
+                iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
+            }
+            return {state, dataInfo}
+        },
+        // 提交
+        async submit(check = true){
+            const { query } = this.$route;
+            const {desinateId} = query;
+            const nominationType = this.$store.getters.nominationType || ''
+            const data = {
+                nominateIdArr:[Number(desinateId)],
+            }
+            this.submitting = true
+            if (check && nominationType === 'MEETING') {
+                const res = await this.checkNomiMeetingSubmit(data)
+                console.log( res)
+                if (!res.state) {
+                    this.submitting = false
+                    return
+                }
+                if (res.state) {
+                    try {
+                        const confirmNextInfo = await this.$confirm(res.dataInfo,this.language('LK_NOTICE','提示'), {
+                            confirmButtonText: this.language('LK_JIXU','继续'),
+                            cancelButtonText: this.language('QUXIAO','取消'),
+                            type: 'warning'
+                        })
+                        
+                        if (confirmNextInfo !== 'confirm') {
+                            this.submitting = false
+                            return
+                        } 
+                        // 打开上会确认弹窗
+                        this.mettingDialogVisible = true
+                        this.submitting = false
+                        return
+                    } catch (e) {
+                        this.submitting = false
+                        return
+                    }
+                    
+                }
+            }
+            
+            this.$confirm(this.language('submitSure','您确定要执行提交操作吗？')).then(confirmInfo => {
+                if (confirmInfo !== 'confirm') {
+                    this.submitting = false
+                    return
+                }
+                nominateAppSsubmit(data).then((res)=>{
+                    if (res.code === '200') {
+                        iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
+                    } else {
+                        iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+                    }
+                    this.submitting = false
+                }).catch(e => {
+                    this.submitting = false
+                    iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
+                })
             }).catch(e => {
-                iMessage.error(this.$i18n.locale === "zh" ? e.desZh : event.desEn)
+                this.submitting = false
             })
+            
         },
         // 导出
         async exportNominate(){

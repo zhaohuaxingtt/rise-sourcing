@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-05-28 17:30:52
- * @LastEditTime: 2021-06-17 21:54:28
+ * @LastEditTime: 2021-07-02 15:19:52
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\api\designate\index.js
@@ -46,6 +46,31 @@ export function updatePresenPageSeat(data) {
       data,
   })
 }
+
+// 上会类型提交之前的校验1
+export function checkNomiMeetingSubmit1(data) {
+  return requst({
+      url: "/nominate-apps/submit-check",
+      method: "POST",
+      data,
+  })
+}
+export function checkNomiMeetingSubmit2(data) {
+  return requst({
+      url: "/nominate-apps/submit-meeting-check",
+      method: "POST",
+      data,
+  })
+}
+
+export function getMeetingPage(params) {
+  return requst({
+      url: "/nominate-apps/meeting-page",
+      method: "GET",
+      params,
+  })
+}
+
 
 // 定点管理-提交
 export function nominateAppSsubmit(data) {
