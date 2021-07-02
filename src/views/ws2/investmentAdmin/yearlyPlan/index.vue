@@ -1,6 +1,7 @@
 <template>
   <div>
-    <div class="container" v-permission="TOOLING_PAYMENTPLAN_YEAR">
+    <!-- v-permission="TOOLING_PAYMENTPLAN_YEAR" -->
+    <div class="container">
       <HeadTool @refresh="refresh" @receiVereceive="receiVereceive" :refreshStatus="refreshStatus">
         <template slot="btns">
           <iButton @click="save" :loading="saveLoading">{{ $t('LK_BAOCUN') }}</iButton><!-- 保存 -->
@@ -664,8 +665,11 @@ export default {
 
 <style lang="scss" scoped>
 .container{
-  padding-top: 20px;
-  height: 92%;
+  width: 95.5%;
+  height: 94%;
+  position: absolute;
+  top: 0;
+  padding-top: 80px;
 
   .baApply-table{
     ::v-deep .el-input__inner{
