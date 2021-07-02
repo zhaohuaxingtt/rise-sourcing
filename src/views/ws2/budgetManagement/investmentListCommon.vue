@@ -353,7 +353,8 @@ export default {
       getInvestmentData({
         investmentVersionId: this.form['search.version'],
         carTypeId: this.params.id,
-        carType: this.params.sourceStatus
+        carType: this.params.sourceStatus,
+        nomiType: 'Common',
       }).then((res) => {
         const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
         if (Number(res.code) === 0) {

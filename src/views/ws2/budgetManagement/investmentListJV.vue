@@ -689,7 +689,8 @@ export default {
         deptId: this.form['search.DeptSelect'],
         investmentVersionId: this.form['search.version'],
         carTypeId: this.params.id,
-        carType: this.params.sourceStatus
+        carType: this.params.sourceStatus,
+        nomiType: 'JV',
       }).then((res) => {
         const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
         if (Number(res.code) === 0) {
