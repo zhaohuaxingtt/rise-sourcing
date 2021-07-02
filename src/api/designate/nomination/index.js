@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-05-28 17:30:52
- * @LastEditTime: 2021-07-02 15:21:33
+ * @LastEditTime: 2021-07-02 16:36:05
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\api\designate\index.js
@@ -110,11 +110,11 @@ export function getCarTypePro(data) {
 }
 
 // 提交一致性校验
-export function consistenceCheck(params) {
+export function consistenceCheck(data) {
   return requst({
     url: "/nominate-apps/consistence-check",
-    method: "GET",
-    params,
+    method: "POST",
+    data,
   })
 }
 
