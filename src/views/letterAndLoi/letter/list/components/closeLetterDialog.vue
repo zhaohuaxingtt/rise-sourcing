@@ -19,7 +19,7 @@
         v-model="reason"
      />
      <div class="confirmBtn padding-bottom20 padding-top20">
-         <iButton @click="sumbit">{{$t('LK_QUEDING')}}</iButton>
+         <iButton :loading="isLoading" @click="sumbit">{{$t('LK_QUEDING')}}</iButton>
          <iButton @click="clearDialog">{{$t('LK_QUXIAO')}}</iButton>
      </div>
     </iDialog>
@@ -52,6 +52,7 @@ export default {
     data(){
         return{
             reason:'',
+            isLoading:false,
         }
     },
     methods:{
@@ -69,7 +70,9 @@ export default {
             if(!reason){
                 return iMessage.warn(this.language('LK_QINGSHURUGUANBIYUANYIN','请输⼊关闭原因'))
             }
+            this.isLoading = true;
             await fsClose(data).then((res)=>{
+                this.isLoading = false;
                 const {code } = res;
                 if(code==200){
                     iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
@@ -78,7 +81,9 @@ export default {
                 }else{
                     iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
                     }
-            }).catch((err)=>{});
+            }).catch((err)=>{
+                this.isLoading = false;
+            });
         }
     }
 }

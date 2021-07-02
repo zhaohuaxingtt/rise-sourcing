@@ -210,26 +210,30 @@ export default {
   methods: {
     toPath(path) {
       // 新增签字单
-      let query = {}
       if (path === '/sourcing/partsnomination/signSheet/details?mode=add') {
-        createSignSheet({}).then(res => {
-          if (res.code === '200') {
-            query = {
-              signCode: res.data.signCode,
-              id: res.data.id,
-              status: res.data.status
-            }
-            this.$router.push({path, query})
-          } else {
-            iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
-          }
-        }).catch(e => {
-          iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
-        })
+        this.createSignSheet(path)
       } else {
-        this.$router.push({path, query})
+        this.$router.push({path})
       }
       
+    },
+    // 新增签字单
+    createSignSheet(path) {
+      let query = {}
+      createSignSheet({}).then(res => {
+        if (res.code === '200') {
+          query = {
+            signCode: res.data.signCode,
+            id: res.data.id,
+            status: res.data.status && res.data.status.name || res.data.status
+          }
+          this.$router.push({path, query})
+        } else {
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
+      }).catch(e => {
+        iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
+      })
     },
     // 查看详情
     viewRsSheetDetail(row) {

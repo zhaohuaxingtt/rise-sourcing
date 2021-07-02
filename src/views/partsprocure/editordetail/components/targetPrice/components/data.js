@@ -1,7 +1,7 @@
 /*
  * @author:shujie
  * @Date: 2021-3-3 17:19:13
- * @LastEditors: shujie
+ * @LastEditors: Luoshuang
  * @Description: In User Settings Edit
  */
 export const targeTitle = [{
@@ -15,7 +15,7 @@ export const targeTitle = [{
 	key:'LK_SHENQINGLEIXING'
 },
 {
-	props: 'buyerName',
+	props: 'priceAnaName',
 	name: 'CF负责人',
 	key:'LK_CFFUZEREN'
 },

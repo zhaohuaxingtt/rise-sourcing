@@ -47,7 +47,7 @@
 		<div class="header flex-between-center-center">
 			<span class="title">{{ $t('LK_SHENQINGCAIWUMUBIAOJIA') }}</span>
 			<div class="control">
-				<iButton @click="save('apply')" v-permission="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_APPLY">{{ $t('LK_SHENQING') }}</iButton>
+				<iButton @click="saveApply" :loading="applyLoading" v-permission="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_APPLY">{{ $t('LK_SHENQING') }}</iButton>
 			</div>
 		</div>
 		<iFormGroup row="2" icon inline>
@@ -69,7 +69,7 @@
 				</iInput>
 			</iFormItem>
 			<iFormItem :label="$t('LK_SHENQINGBEIZHU')" name="test" v-permission="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_SQBZ">
-				<iInput type="textarea" rows="6" resize="none" maxlength="1000" v-model="targetprice.cfTargetPriceDetail.applyMemo">
+				<iInput type="textarea" rows="6" resize="none" maxlength="1000" v-model="targetprice.cfTargetPriceDetail.memo">
 				</iInput>
 			</iFormItem>
 		</iFormGroup>
@@ -151,6 +151,7 @@
 	} from '@/api/partsprocure/home'
 import { iMessageBox } from '../../../../../components';
 import { pageMixins } from '@/utils/pageMixins'
+import { applyCFTarget, getCfTargetApplyHistory, getTargetPriceDd, savePriceDetail } from '@/api/financialTargetPrice/index'
 import { cloneDeep } from 'lodash'
 	export default {
 		components: {
@@ -168,6 +169,24 @@ import { cloneDeep } from 'lodash'
 		props: {
 			purchaseProjectId: {
 				type: String
+			},
+			fsnrGsnrNum: {type: String},
+			partPrejectType: {type:String}
+		},
+		watch: {
+			partPrejectType: {
+				handler(val) {
+					if (val === 'PT19' || val === 'PT04') {
+						this.targetprice = {
+							...this.targetprice,
+							cfTargetPriceDetail: {
+								...this.targetprice.cfTargetPriceDetail,
+								applyType: 'SKD'
+							}
+						}
+					}
+				},
+				immediate: true
 			}
 		},
 		data() {
@@ -181,34 +200,45 @@ import { cloneDeep } from 'lodash'
 				targetprice:targetPriceDetail,
 				cfTableData:[],//cf表格数据
 				rwTableData:[],//RW表格数据
+				applyLoading: false
 			}
 		},
 		created() {
+			this.getTargetPriceDetail()
 			this.getTargetPrice()
 			this.targePriceDetail()
 		},
 		methods: {
+			getTargetPriceDetail() {
+				getTargetPriceDd(this.purchaseProjectId).then(res => {
+					if (res?.result) {
+						this.targetprice = {
+							...this.targetprice,
+							cfTargetPriceDetail: {
+								...this.targetprice.cfTargetPriceDetail,
+								...res.data
+							}
+						}
+					} else {
+						iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+					}
+				})
+			},
 			getTargetPrice() {
-				getTargetPrice({
-					purchaseProjectId: this.purchaseProjectId,
-					current: this.page.currPage,
-  				size: this.page.pageSize
+				getCfTargetApplyHistory({
+					fsNum: this.fsnrGsnrNum,
+					pageNo: this.page.currPage,
+  				pageSize: this.page.pageSize
 				})
 				.then(res => {
 					if (res.code == 200) {
-						if (res.data.left) {
-							this.tableListData = []
-							this.targetprice.cfTargetPriceDetail = cloneDeep(res.data.left)
-							this.page.totalCount = 0
-						} else if (Array.isArray(res.data.right.records) && res.data.right.records.length > 0) {
-							this.tableListData = cloneDeep(res.data.right.records)
-							this.targetprice.cfTargetPriceDetail = cloneDeep(this.tableListData[0] || {})
-							this.page.totalCount = res.data.right.total || 0
-						} else {
-							this.tableListData = []
-							this.targetprice.cfTargetPriceDetail = {}
-							this.page.totalCount = 0
+						this.page = {
+							...this.page,
+							totalCount: Number(res.total),
+							currPage: Number(res.pageNum),
+							pageSize: Number(res.pageSize)
 						}
+						this.tableListData = res.data || []
 					} else {
 						iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
 					}
@@ -239,18 +269,12 @@ import { cloneDeep } from 'lodash'
 			// 保存 ,申请财务目标价
 			save(type) {
 				let targetprice = {
-					purchaseProjectId: this.purchaseProjectId,
-					cfTargetPriceDetail: { ...this.targetprice.cfTargetPriceDetail, type }, // save 保存  apply 申请
-					rwApplication:null
+					...this.targetprice.cfTargetPriceDetail
 				};
-				if(!targetprice.cfTargetPriceDetail.expTargetpri){
-					targetprice.cfTargetPriceDetail.expTargetpri = 0
-				}
-				changeProcure({
-					targetprice,
-				}).then((res) => {
+				savePriceDetail(targetprice).then((res) => {
 					if (res.data) {
 						iMessage.success(this.$t('LK_CAOZUOCHENGGONG'))
+						this.getTargetPriceDetail()
 						this.targePriceDetail()
 						this.getTargetPrice()
 					}else{
@@ -278,6 +302,24 @@ import { cloneDeep } from 'lodash'
 				}).catch(err=>{
 					iMessage.error(err.desZh)
 				});
+			},
+			saveApply() {
+				this.applyLoading = true
+				const params = {
+					...this.targetprice.cfTargetPriceDetail,
+					purchasingProjectId: this.purchaseProjectId
+				}
+				applyCFTarget(params).then((res) => {
+					if (res?.result) {
+						iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+						this.applyPriceShow = false
+						this.$emit("refresh")
+					} else {
+						iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+					}
+				}).finally(() => {
+					this.applyLoading = false
+				})
 			}
 		}
 	}

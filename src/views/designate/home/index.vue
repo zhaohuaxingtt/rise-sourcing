@@ -68,7 +68,7 @@
             :loading="startLoding"
           >
             {{ language("nominationLanguage_TiJiaoYiZhiXingJiaoYan", '提交一致性校验') }}
-          </iButton>
+          </iButton>        
         </div>
       </div>
       <tablelist
@@ -192,6 +192,7 @@ export default {
       selectTableData: [],
       startLoding: false,
       carTypeList: [],
+      // 定点管理员上传sel状态待确认的sel附件列表
       selNominateId: '',
       selDialogVisibal: false
     }
