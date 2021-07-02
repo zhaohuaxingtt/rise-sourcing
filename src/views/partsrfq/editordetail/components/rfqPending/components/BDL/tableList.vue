@@ -104,10 +104,9 @@
 					 * @param {*} this
 					 * @return {*}
 					 */						
-						if(this.getbaseInfoData().rfqType != 'GS' && this.getbaseInfoData().rfqType != 'COP'){
+						if(this.getbaseInfoData().isSelectMbdl){
 							this.toggleSelection()
 						}
-						
 					})
 				}
 			}
@@ -128,7 +127,7 @@
 					 * @param {*} this
 					 * @return {*}
 					 */					
-				if(this.getbaseInfoData().rfqType == 'GS' || this.getbaseInfoData().rfqType == 'COP') return
+				if(!this.getbaseInfoData().isSelectMbdl) return
 				if(row.bdlType == '2' || !row.isEdit){
 					return {
 						backgroundColor:'#F2F6FF'

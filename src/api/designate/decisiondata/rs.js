@@ -1,8 +1,8 @@
 /*
  * @Author: Luoshuang
  * @Date: 2021-06-04 14:41:32
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-08 12:45:52
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-06-30 17:46:01
  * @Description: rs单相关接口
  * @FilePath: \front-web\src\api\designate\decisiondata\rs.js
  */
@@ -67,6 +67,14 @@ export function downloadRSDoc(params) {
   return requestDownload({
     url: '/rs/downLoadNomiRsDoc',
     method: 'POST',
+    data: params
+  })
+}
+// 修改RS单
+export function getPrototypeList(params) {
+  return requst({
+    url: 'https://www.fastmock.site/mock/5cd3e97d6126b18b5e16f3e499489335/api/prototypeList',
+    method: 'GET',
     data: params
   })
 }
