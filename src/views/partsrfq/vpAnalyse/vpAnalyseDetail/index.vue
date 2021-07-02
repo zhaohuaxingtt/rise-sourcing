@@ -204,9 +204,12 @@ export default {
           batchNumber: this.currentBatchNumber,
           partsList: [this.partList[this.partItemCurrent]]
         };
+        if (this.$route.query.type === 'edit') {
+          req.id = this.$route.query.schemeId;
+        }
         if (params === 'all') {
           this.pageLoading = true;
-          req.costDetailList = this.$refs.totalUnitPriceTable.tableListData;
+          req.costDetailList = this.$refs.totalUnitPriceTable.tableListData.concat(this.$refs.totalUnitPriceTable.hideTableData);
           req.estimatedActualTotalPro = this.$refs.analyzeChart.dataInfo.estimatedActualTotalPro;
         } else if (params === 'analyze') {
           this.analyzeLoading = true;

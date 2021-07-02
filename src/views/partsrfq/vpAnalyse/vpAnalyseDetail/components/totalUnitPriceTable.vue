@@ -2,8 +2,8 @@
   <div>
     <div class="margin-bottom20 clearFloat">
       <span class="font18 font-weight">
-        <span class="margin-right30">{{ $t('TPZS.ZONGDANJIA') }}：{{dataInfo.totalPrice}}</span>
-        <span>{{ $t('TPZS.GUDINGCHENGBENZHANBI') }}：{{dataInfo.costProportion}}%</span>
+        <span class="margin-right30">{{ $t('TPZS.ZONGDANJIA') }}：{{ dataInfo.totalPrice }}</span>
+        <span>{{ $t('TPZS.GUDINGCHENGBENZHANBI') }}：{{ dataInfo.costProportion }}%</span>
       </span>
       <div class="floatright">
         <template v-if="tableStatus === 'edit'">
@@ -205,6 +205,7 @@ export default {
       this.tableListData.push({
         ...newItem,
         time,
+        isShow: true
       });
     },
     handleDelete() {
@@ -269,7 +270,8 @@ export default {
       try {
         this.tableListData = [];
         this.hideTableData = [];
-        this.dataInfo.costDetailList.map(item => {
+        this.copyDataInfo = _.cloneDeep(this.dataInfo);
+        this.copyDataInfo.costDetailList.map(item => {
           if (item.isShow) {
             this.tableListData.push(item);
           } else {
@@ -285,12 +287,14 @@ export default {
       this.tableListData = this.tableListData.filter(item => {
         return item.id !== row.id;
       });
+      row.isShow = false;
       this.hideTableData.push(row);
     },
     handleShow(row) {
       this.hideTableData = this.hideTableData.filter(item => {
         return item.id !== row.id;
       });
+      row.isShow = true;
       this.tableListData.push(row);
     },
     handleNumber(val, row, props) {
