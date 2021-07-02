@@ -521,7 +521,7 @@ export default {
       });
     },
     handleInputChange(row, key) {
-      row[key] = row[key].replace(/[^\d.]/g,'');
+      row[key] = Number(row[key].replace(/[^\d.]/g,''));
       row.amount = 0;
       row.amount =
         Number(row.planAmountM1) +
