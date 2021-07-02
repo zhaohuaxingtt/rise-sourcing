@@ -303,12 +303,15 @@ export default {
         } else {
           iMessage.error(result0);
         }
-        if (res[1].data) {
-          this.packageVersionList = res[1].data;
-          this.packageVersion = this.packageVersionList.length > 0 ? this.packageVersionList[0].versionId : ''
-          this.currentVersion = true
-        } else {
-          iMessage.error(result1);
+        if(carTypePackageId){
+          if (res[1].data) {
+            this.packageVersionList = res[1].data;
+            this.packageVersion = this.packageVersionList.length > 0 ? this.packageVersionList[0].versionId : ''
+            this.currentVersion = true
+          } else {
+            iMessage.error(result1);
+          }
+          this.getCommonSourcingView(carTypePackageId)
         }
         if (res[2].data) {
           this.DepartmentsComboList = res[2].data;
@@ -320,7 +323,6 @@ export default {
         } else {
           iMessage.error(result3);
         }
-         this.getCommonSourcingView(carTypePackageId)
         this.searchLoading = false
       }).catch(() => {
          this.searchLoading = false
@@ -692,8 +694,8 @@ export default {
             const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
             const message = this.$i18n.locale === 'zh' ? res.data.messageZh : res.data.messageEn
             if (Number(res.code) === 0) {
-              if(res.data.message){
-                iMessage.success(res.data.message)
+              if(message){
+                iMessage.success(message)
               } else {
                 iMessage.success(result)
               }
