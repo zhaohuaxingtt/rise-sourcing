@@ -1,14 +1,14 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-06-18 16:03:35
- * @LastEditTime: 2021-06-30 17:38:32
+ * @LastEditTime: 2021-07-02 14:55:35
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\vpAnalyse\vpAnalyseDetail\components\customPart\index.vue
 -->
 <template>
   <div>
-    <iDialog :title="$t('LK_CUSTOM_TITLE')" :visible.sync="visible" width="70%">
+    <iDialog :title="$t('TPZS.LK_CUSTOM_TITLE')" :visible.sync="visible" width="70%">
       <div style="text-align: right" v-if="!addMode">
         <iButton @click="del">{{$t('delete')}}</iButton>
         <iButton @click="add">{{$t('LK_XINZENG')}}</iButton>
@@ -33,7 +33,7 @@
                 v-model="scope.row.partsId" 
                 filterable 
                 remote
-                placeholder="请至少输入3位数零件号"
+                :placeholder="$t('TPZS.SEARCH_PART')"
                 :remote-method="remoteMethod"
                 :loading="remoteLoading"
                 @change="changePartNum">
@@ -62,6 +62,7 @@
             </span>
               <icon symbol name="iconpaixu-xiangshangjinzhi" v-if="checkShowSortIcon(scope.row.index, 'jztop')" class="sortIcon"/>
           </template>
+          <template #sort="scope" v-else></template>
         </tableList>
       </div>
     </iDialog>
@@ -113,7 +114,7 @@ export default {
   methods: {
     // 初始化添加零件号数据
     initInsertPartData() {
-      this.insertPartData = {partsId: null, carProject: '选择后自动带出', carType: '选择后自动带出', factory: '选择后自动带出', supplier: '选择后自动带出', isShow: true}
+      this.insertPartData = {partsId: null, carTypeProj: '选择后自动带出', carType: '选择后自动带出', procureFactory: '选择后自动带出', supplierName: '选择后自动带出', isShow: true}
     },
     // 初始化测试表格数据
     initTestTableData() {
@@ -166,46 +167,34 @@ export default {
         switch (code) {
           case 'ptdown':
             return true
-            break;
           case 'jzdown':
             return false
-            break;
           case 'pttop':
             return false
-            break;
           case 'jztop':
             return true
-            break;
         }
       } else if(index == this.tableListData.length - 1) {
         switch (code) {
           case 'ptdown':
             return false
-            break;
           case 'jzdown':
             return true
-            break;
           case 'pttop':
             return true
-            break;
           case 'jztop':
             return false
-            break;
         }
       } else {
         switch (code) {
           case 'ptdown':
             return true
-            break;
           case 'jzdown':
             return false
-            break;
           case 'pttop':
             return true
-            break;
           case 'jztop':
             return false
-            break;
         }
       }
     },
@@ -248,7 +237,6 @@ export default {
     },
     // 新增时，根据输入零件号检索
     remoteMethod(val) {
-      console.log('val', val);
       if(val.length < 3) {
         return 
       }
@@ -278,7 +266,7 @@ export default {
     saveAdd() {
       // 此处需要校验零件号是否重复，还要校验零件号是否为空
       if(!this.insertPartData.partsId) {
-        iMessage.error('零件号不能为空')
+        iMessage.error(this.$t('PART_REQUIRE_MESSAGE'))
         return
       }
       let count = 0
@@ -286,7 +274,7 @@ export default {
         if(item.partsId == this.insertPartData.partsId) count++
       })
       if(count > 1) {
-        iMessage.error('零件号不能重复')
+        iMessage.error(this.$t('PART_UNIQUE_MESSAGE'))
         return
       }
       const maxSortObj = window._.maxBy(this.tableListData, function(o) { return o.sort; });
@@ -297,7 +285,6 @@ export default {
     },
     // 点击重置按钮
     reset() {
-      console.log('backupsTableData', this.backupsTableData);
       this.tableListData = JSON.parse(JSON.stringify(this.backupsTableData))
     },
     // 点击保存按钮

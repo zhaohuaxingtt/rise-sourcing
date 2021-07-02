@@ -23,7 +23,7 @@
 				</el-form-item>
 				<!--集团打包-->
 				<el-form-item :label="$t('创建人')">
-					<iInput :placeholder="$t('请输入零件号')" v-model="form.owner" />
+					<iInput :placeholder="$t('请输入创建人名称')" v-model="form.owner" />
 				</el-form-item>
 			</el-row>
 		</el-form>
