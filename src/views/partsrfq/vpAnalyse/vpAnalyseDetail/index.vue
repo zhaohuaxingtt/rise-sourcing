@@ -166,7 +166,10 @@ export default {
     async getDataInfo() {
       try {
         this.pageLoading = true;
-        let req = {};
+        let req = {
+          partsId: this.currentPartsId,
+          supplierId: '1',
+        };
         if (this.$route.query.type === 'edit') {
           req.id = this.$route.query.schemeId;
         }
