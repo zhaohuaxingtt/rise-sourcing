@@ -240,6 +240,8 @@ export default {
   justify-content: space-between;
   border-bottom: 1px solid #E3E3E3;
   padding-bottom: 5px;
+  position: relative;
+  z-index: 1;
 }
 .iDialogNextStep {
   ::v-deep .el-dialog {

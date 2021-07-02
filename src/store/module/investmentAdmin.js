@@ -1,6 +1,6 @@
 const state = {
   report: null,
-  versionId: '1408259535264575490',  //  版本id
+  versionId: '',  //  版本id
 };
 
 const mutations = {

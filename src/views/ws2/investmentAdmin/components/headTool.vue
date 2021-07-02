@@ -94,9 +94,9 @@ export default {
         if(res.code === "0"){
           const versionId = store.state.investmentAdmin.versionId;
           const vereceive = _.cloneDeep(res.data[0]);
-          const id = versionId === '' ? res.data[0].id : versionId;
+          const id = versionId === '' ? vereceive.id : versionId;
           this.editionList = res.data;
-          this.listDetail = res.data[0];
+          this.listDetail = vereceive;
           this.versionId = id;
           vereceive.id = id;
           this.$emit('receiVereceive', vereceive);

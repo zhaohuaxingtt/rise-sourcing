@@ -1,9 +1,10 @@
 <template>
   <div>
-    <div class="container" v-permission="TOOLING_PAYMENTPLAN_YEAR">
+    <!-- v-permission="TOOLING_PAYMENTPLAN_YEAR" -->
+    <div class="page-container" v-permission="TOOLING_PAYMENTPLAN_YEAR">
       <HeadTool @refresh="refresh" @receiVereceive="receiVereceive" :refreshStatus="refreshStatus">
         <template slot="btns">
-          <iButton @click="save" :loading="saveLoading">{{ $t('LK_BAOCUN') }}</iButton><!-- 保存 -->
+          <iButton v-if="vereceive.editFlag" @click="save" :loading="saveLoading">{{ $t('LK_BAOCUN') }}</iButton><!-- 保存 -->
           <iButton @click="saveNew" :loading="saveNewLoading">{{ $t('LK_BAOCUNWEIZUIXINBANBEN') }}</iButton><!-- 保存为最新版本 -->
         </template>
       </HeadTool>
@@ -14,14 +15,14 @@
           <iCard class="c-card-l">
             <div class="title">{{ $t('LK_SHANGBANNIANSOPFUKUANDUIBI') }}</div>
             <icon symbol name="iconSOPfukuanbi" class="card-icon"></icon>
-            <iInput v-model="ratioInput.firstHalfYearPercent"></iInput>
+            <iInput :disabled="!vereceive.editFlag" v-model="ratioInput.firstHalfYearPercent"></iInput>
           </iCard>
 
           <!-- 下半年SOP付款⽐ -->
           <iCard class="c-card-l">
             <div class="title">{{ $t('LK_XIABANNIANSOPFUKUANDUIBI') }}</div>
             <icon symbol name="iconSOPfukuanbi" class="card-icon"></icon>
-            <iInput v-model="ratioInput.secondHalfYearPercent"></iInput>
+            <iInput :disabled="!vereceive.editFlag" v-model="ratioInput.secondHalfYearPercent"></iInput>
           </iCard>
         </div>
         <div class="c-right">
@@ -88,7 +89,7 @@
               {{$t('LK_SHOUGONGTIAOZHENG')}}-{{'2021'}}
             </div>
             <div>
-              <iButton @click="manualSave" :loading="manualSaveLoading">{{ $t('LK_BAOCUN') }}</iButton><!-- 保存 -->
+              <iButton v-if="vereceive.editFlag" @click="manualSave" :loading="manualSaveLoading">{{ $t('LK_BAOCUN') }}</iButton><!-- 保存 -->
               <iButton @click="downloadList">{{ $t('LK_XIAZAIQINGDAN') }}</iButton><!-- 下载清单 -->
             </div>
           </div>
@@ -189,7 +190,7 @@ export default {
       const key = isThen ? 'planAmountSystemCurrent' : 'planAmountSystemNext';
       const arr = planYearCommutity.filter(item => item.commodity !== 'Risk' ).map(item => item[key]).filter(n => n);
       const total = arr.reduce((prev,curr) => {
-        return (prev+curr).toFixed(2);
+        return (~~prev + ~~curr).toFixed(2);
       },0)
 
       return total;
@@ -663,7 +664,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.container{
+.page-container{
   width: 95.5%;
   height: 94%;
   position: absolute;

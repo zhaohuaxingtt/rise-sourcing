@@ -166,7 +166,7 @@
               <div class="txt">
                 <span>{{ $t('costanalysismanage.GongYingShang') }}</span><!-- 供应商 -->
               </div>
-              <div class="disabled">{{detailObj.designatedSupplierId}}</div>
+              <div class="disabled">{{detailObj.designatedSupplierName}}</div>
             </div>
             <div class="item">
               <div class="txt">
@@ -211,7 +211,7 @@
               <div class="txt">
                 <span>{{$t('LK_SHENQINGREN')}}</span><!-- 申请人 -->
               </div>
-              <div class="disabled">{{detailObj.applyPersonId}}</div>
+              <div class="disabled">{{detailObj.applyPersonName}}</div>
             </div>
           </div>
 
@@ -376,10 +376,14 @@ export default {
   methods: {
 
     jumpDetails(scope){
+      const query = {
+        ...scope,
+        partNum: scope.behalfPartsNum
+      }
       this.$router.push({
         path: "/sourcing/partsprocure/editordetail",
         query: {
-          item: JSON.stringify(scope),
+          item: JSON.stringify(query),
         },
       });
     },
