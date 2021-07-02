@@ -72,7 +72,7 @@
     </div>
 
     <!-- 自定义零件列表 -->
-    <customPart v-if="customDialog.visible" :partList="partList" :visible="customDialog.visible" :Key="customDialog.key" @saveCustomPart="saveCustomPart"/>
+    <customPart v-if="customDialog.visible" :partList="originPartList" :visible="customDialog.visible" :Key="customDialog.key" @saveCustomPart="saveCustomPart"/>
 
     <previewDialog v-model="previewDialog"/>
   </iPage>
@@ -113,6 +113,7 @@ export default {
   data() {
     return {
       partList: [],
+      originPartList: [],
       partItemCurrent: 0,
       currentBatchNumber: '',
       currentPartsId: '',
@@ -179,6 +180,7 @@ export default {
         }
         const res = await getAnalysisProcessing(req);
         this.dataInfo = res.data;
+        this.originPartList = res.data.partsList
         this.partList = res.data.partsList.filter(item => {
           return item.isShow;
         });
