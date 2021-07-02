@@ -122,6 +122,7 @@ export default {
         if(res.data){
           iMessage.success(result);
           this.findBmAekoAddList();
+          this.$emit('updateTable');
         }else{
           iMessage.error(result);
         }
@@ -149,6 +150,7 @@ export default {
           iMessage.success(result);
           this.findBmAekoAddList();
           this.selectTableList = [];
+          this.$emit('updateTable');
         }else{
           iMessage.error(result);
         }

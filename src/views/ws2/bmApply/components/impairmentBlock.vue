@@ -123,6 +123,7 @@ export default {
         if(res.data){
           iMessage.success(result);
           this.findBmAekoMinusList();
+          this.$emit('updateTable');
         }else{
           iMessage.error(result);
         }
@@ -150,6 +151,7 @@ export default {
           iMessage.success(result);
           this.findBmAekoMinusList();
           this.selectTableList = [];
+          this.$emit('updateTable');
         }else{
           iMessage.error(result);
         }
