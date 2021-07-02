@@ -7,6 +7,7 @@ const requstPartResource = axios(process.env.VUE_APP_DIC)
 const requstPartsProcure = axios(process.env.VUE_APP_PARTSPROCURE)
 const sourcing = axios(process.env.VUE_APP_PART_PROCURE)
 const sourcingDL = axios(process.env.VUE_APP_SOURCING_WDL)
+const quotation = axios(process.env.VUE_APP_QUOTATION)
 // 采购项目-获取材料组信息
 export function getMaterialGroup(params) {
 	return requstPartsProcure({
@@ -199,17 +200,25 @@ export function getNominateFileInfo({nomiAppId, sortColumn, isAsc, fileType, pag
 
 // 创建采购项目
 export function supplierCurentTop(params){
-  return sourcing({
-    url: "https://www.fastmock.site/mock/5cd3e97d6126b18b5e16f3e499489335/api/supplierCurent",
-    method: "get",
+  return quotation({
+    url: "http://10.160.142.139:18021/quotation/web/effecting-supplier/queryCurrentSupplierPage",
+    method: "POST",
+    data: params
+  })
+}
+// 创建采购项目
+export function updateCurrentSupplierPage(params){
+  return quotation({
+    url: "http://10.160.142.139:18021/quotation/web/effecting-supplier/updateCurrentSupplierPage",
+    method: "POST",
     data: params
   })
 }
 // 创建采购项目
 export function supplierCurentBottom(params){
   return sourcing({
-    url: "https://www.fastmock.site/mock/5cd3e97d6126b18b5e16f3e499489335/api/supplierCurent",
-    method: "get",
+    url: "http://10.160.142.139:9029/sourcing/web/rs/findCurrentSupplierPage",
+    method: "POST",
     data: params
   })
 }

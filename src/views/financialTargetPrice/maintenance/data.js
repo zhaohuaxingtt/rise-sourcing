@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-22 11:35:28
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-01 15:09:04
+ * @LastEditTime: 2021-07-01 18:47:57
  * @Description: 
  * @FilePath: \front-web\src\views\financialTargetPrice\maintenance\data.js
  */
@@ -42,8 +42,8 @@ export const searchList = [
   {value: 'applyStats', label: '申请状态', type: 'select', i18n_label: 'SHENQINGZHUANGTAI',selectOption:'CF_APPLY_STATUS'},
   {value: 'partName', label: '零件名称', type: 'input', i18n_label: 'LINGJIANMINGCHENG',},
   {value: 'partProjectType', label: '零件项目类型', type: 'select', i18n_label: 'LINGJIANXIANGMULEIXING',selectOption:'PART_PROJECT_TYPE'},
-  {value: 'buyerId', label: '询价采购员', type: 'select', i18n_label: 'XUNJIACAIGOUYUAN',selectOption: ''},
-  {value: 'linieName', label: 'LINIE', type: 'select', i18n_label: 'LINIE',selectOption: 'LINIE'},
+  {value: 'buyerName', label: '询价采购员', type: 'input', i18n_label: 'XUNJIACAIGOUYUAN',selectOption: ''},
+  {value: 'linieName', label: 'LINIE', type: 'input', i18n_label: 'LINIE',selectOption: 'LINIE'},
   {value: 'partStatus', label: '零件状态', type: 'select', i18n_label: 'LINGJIANZHUANGTAI', selectOption: 'PART_STATUS'},
   {value: 'carTypeName', label: '车型项目', type: 'select', i18n_label: 'CHEXINGXIANGMU', selectOption: 'CAR_TYPE_PRO'},
   {value: 'procureFactoryId', label: '采购工厂', type: 'select', i18n_label: 'CAIGOUGONGCHANG', selectOption: 'PURCHASE_FACTORY'},

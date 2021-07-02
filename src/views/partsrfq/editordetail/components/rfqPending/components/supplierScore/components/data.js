@@ -59,11 +59,11 @@ export const partScroingTitle = [
     {
         name: 'TPB',
         list: [
-            {props: 'tpGrade', name: '评分', key: 'LK_PINGFEN'},
-            {props: 'tpbExternaFee', name: '外部开发费（元）', key: 'LK_WAIBUKAIFAFEIYUAN'},
-            {props: 'tpbAddFee', name: '增加的认可费（元）', key: 'LK_ZENGJIADERENKEFEIYUAN'},
-            {props: 'tpbConfirmCycle', name: '认可周期（周）', key: 'LK_RENKEZHOUQIZHOU'},
-            {props: 'tpbMemo', name: '备注', key: 'LK_BEIZHU'},
+            {props: 'grade', name: '评分', key: 'LK_PINGFEN'},
+            {props: 'externaFee', name: '外部开发费（元）', key: 'LK_WAIBUKAIFAFEIYUAN'},
+            {props: 'addFee', name: '增加的认可费（元）', key: 'LK_ZENGJIADERENKEFEIYUAN'},
+            {props: 'confirmCycle', name: '认可周期（周）', key: 'LK_RENKEZHOUQIZHOU'},
+            {props: 'remark', name: '备注', key: 'LK_BEIZHU'},
         ]
     }
 ]

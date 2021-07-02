@@ -1,3 +1,11 @@
+<!--
+ * @Author: your name
+ * @Date: 2021-04-12 10:12:39
+ * @LastEditTime: 2021-06-22 11:10:23
+ * @LastEditors: your name
+ * @Description: In User Settings Edit
+ * @FilePath: \front-web\src\views\partsprocure\outputplan\index.vue
+-->
 <template>
   <iPage class="outputPlan">
     <div class="margin-bottom20 clearFloat">
@@ -21,7 +29,7 @@ import { iPage, iButton, icon } from '@/components'
 import outputPlan from './components/outputPlan'
 import outputRecord from './components/outputRecord'
 import volume from './components/volume'
-import logButton from '@/views/partsign/editordetail/components/logButton'
+import logButton from '@/components/logButton'
 
 export default {
   components: { iPage, iButton, icon, outputPlan, outputRecord, volume, logButton },

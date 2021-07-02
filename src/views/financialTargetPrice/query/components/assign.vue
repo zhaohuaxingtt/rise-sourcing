@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-25 16:11:07
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-01 14:18:14
+ * @LastEditTime: 2021-07-01 19:05:38
  * @Description: 分配询价采购员弹窗
  * @FilePath: \front-web\src\views\financialTargetPrice\query\components\assign.vue
 -->
@@ -77,6 +77,9 @@ export default {
       }
       this.loading = true
       this.$emit('sendAccessory', this.assign)
+    },
+    changeAssigLoading(loading) {
+      this.loading = loading
     },
     changeLoading(loading) {
       this.loading = loading

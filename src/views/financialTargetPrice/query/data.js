@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-22 17:03:48
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-01 12:48:25
+ * @LastEditTime: 2021-07-01 18:47:06
  * @Description: 
  * @FilePath: \front-web\src\views\financialTargetPrice\query\data.js
  */
@@ -39,7 +39,7 @@ export const searchList = [
   {value: 'fsNum', label: 'FsNr/GsNr', type: 'input', i18n_label: 'FSNRGSNR',},
   {value: 'partNum', label: '零件号', type: 'input', i18n_label: 'LINGJIANHAO',},
   {value: 'partName', label: '零件名称', type: 'input', i18n_label: 'LINGJIANMINGCHENG',},
-  {value: 'buyerId', label: '询价采购员', type: 'select', i18n_label: 'XUNJIACAIGOUYUAN',selectOption:''},
+  {value: 'buyerName', label: '询价采购员', type: 'input', i18n_label: 'XUNJIACAIGOUYUAN',selectOption:''},
   {value: 'cfId', label: 'CF', type: 'select', i18n_label: 'CF',selectOption:'CF_USER'},
   {value: 'applyStats', label: '申请状态', type: 'select', i18n_label: 'SHENQINGZHUANGTAI',selectOption:'CF_APPLY_STATUS'},
   {value: 'rfqId', label: 'RFQ编号', type: 'input', i18n_label: 'RFQBIANHAO'},
@@ -48,10 +48,10 @@ export const searchList = [
   {value: 'responseDate', label: '返回日期起止', type: 'dateRange', i18n_label: 'FANHUIRIQIQIZHI'},
   {value: 'partStatus', label: '零件状态', type: 'select', i18n_label: 'LINGJIANZHUANGTAI', selectOption: 'PART_STATUS'},
   {value: 'procureFactoryId', label: '采购工厂', type: 'select', i18n_label: 'CAIGOUGONGCHANG', selectOption: 'PURCHASE_FACTORY'},
-  {value: 'linieId', label: 'LINIE', type: 'select', i18n_label: 'LINIE',selectOption: 'LINIE'},
+  {value: 'linieName', label: 'LINIE', type: 'input', i18n_label: 'LINIE',selectOption: 'LINIE'},
   {value: 'lcPriceType', label: '目标价分类', type: 'select', i18n_label: 'MUBIAOJIAFENLEI',selectOption: 'CF_APPLY_TYPE'},
   {value: 'partProjectType', label: '零件项目类型', type: 'select', i18n_label: 'LINGJIANXIANGMULEIXING',selectOption:'PART_PROJECT_TYPE'},
-  {value: 'setKz', label: 'SET属性', type: 'select', i18n_label: 'SETSHUXING', selectOption: ''},
+  {value: 'setKz', label: 'SET属性', type: 'select', i18n_label: 'SETSHUXING', selectOption: 'CF_ASSIGN_START'},
   {value: 'approveStats', label: '审批状态', type: 'select', i18n_label: 'SHENPIZHUANGTAI',selectOption: 'CF_APPROVE_STATUS'},
   {value: 'carTypeName', label: '车型项目', type: 'select', i18n_label: 'CHEXINGXIANGMU', selectOption: 'CAR_TYPE_PRO'},
   {value: 'assignStats', label: '指派状态', type: 'select', i18n_label: 'ZHIPAIZHUANGTAI',selectOption: 'CF_ASSIGN_START'}
