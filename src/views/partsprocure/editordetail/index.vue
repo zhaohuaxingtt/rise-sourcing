@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2021-06-29 12:53:01
+ * @LastEditTime: 2021-07-02 11:41:07
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\editordetail\index.vue
@@ -200,8 +200,8 @@
 									<el-tooltip effect="light">
 										<icon name='iconxinxitishi' symbol/>
 										<template slot="content">
-											<p>tu guan : commonSourcing</p>
-											<p>FS0323JJ00 : commonSourcing</p>
+											<p>{{detailData.modelNameZh}} : {{detailData.carTypeSourcingType}}</p>
+											<p>{{detailData.partNum}} : {{detailData.partSourcingType}}</p>
 										</template>
 									</el-tooltip>
 								</span>	
@@ -363,6 +363,9 @@ import designateInfo from './components/designateInfo'
 			iDatePicker,
 			icon
 		},
+		provide:function(){
+			return {detailData:this.getDetailData()}
+		},
 		data() {
 			return {
 				firstId:'',
@@ -387,6 +390,9 @@ import designateInfo from './components/designateInfo'
 			this.getProcureGroup();
 		},
 		methods: {
+			getDetailData(){
+				return this.detailData
+			},
 			fillterss(data){
 				if(data){
 					return '是'
@@ -611,7 +617,7 @@ import designateInfo from './components/designateInfo'
     */
 			fsProjectTypeAnIscommonSroucing(callBack){
 				if((!this.detailData.isCommonSourcing) && this.detailData.partPrejectType == "PT09"){
-					iMessageBox(this.language('当前零件采购项目类型与commonSourcing为[否]不统一，是否继续？','SPIRNT11COMMONSS')).then(res=>{
+					iMessageBox(this.language('SPIRNT11COMMONSS','当前零件采购项目类型与commonSourcing为[否]不统一，是否继续？')).then(res=>{
 						callBack()
 					})
 				}else{
