@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-30 17:46:28
- * @LastEditTime: 2021-06-30 18:18:00
+ * @LastEditTime: 2021-07-02 17:51:38
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\supplierscore\components\forwardDialog.vue
@@ -12,15 +12,12 @@
     v-bind="$props" 
     v-on="$listeners"
     :visible.sync="status" 
-    title="转派评分任务"
+    :title="language('ZHUANPAIPINGFENRENWU', '转派评分任务')"
     :close-on-click-modal="false">
-    <!-- :title="language('ZHUANPAIPINGFENRENWU', '转派评分任务')"  -->
     <div class="body">
       <iFormGroup class="total margin-left20" :row="1" inline>
-        <!-- <iFormItem class="item" :label="language('PINGFENREN', '评分人')"> -->
-          <iFormItem class="item" label="评分人">
-          <!-- <iSelect v-model="nominateType" filterable :loading="loading" :loading-text="language('JIAZAIZHONG', '加载中')"> -->
-          <iSelect v-model="nominateType" filterable :loading="loading" loading-text="加载中" @change="handleChange">
+        <iFormItem class="item" :label="language('PINGFENREN', '评分人')">
+          <iSelect v-model="nominateType" filterable :loading="loading" :loading-text="language('JIAZAIZHONG', '加载中')">
             <el-option v-for="item in options" :key="item.key" :value="item.value" :label="item.label" />
           </iSelect>
         </iFormItem>
@@ -115,8 +112,7 @@ export default {
     },
     // 确认
     handleConfirm() {
-      // if (!this.userInfo) return iMessage.warn(this.language("QINGXUANZEPINGFENREN", "请选择评分人"))
-      if (!this.userInfo) return iMessage.warn("请选择评分人")
+      if (!this.userInfo) return iMessage.warn(this.language("QINGXUANZEPINGFENREN", "请选择评分人"))
 
       this.$emit("confirm", this.userInfo)
       // this.status = false

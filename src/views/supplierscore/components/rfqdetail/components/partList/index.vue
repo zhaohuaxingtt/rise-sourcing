@@ -1,19 +1,18 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-22 11:35:46
- * @LastEditTime: 2021-06-28 15:58:55
+ * @LastEditTime: 2021-07-02 18:03:24
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\supplierscore\components\rfqdetail\components\partList\index.vue
 -->
 <template>
-  <!-- <iCard class="partList" :title="language('LINGJIANQINGDAN', '零件清单')"> -->
-    <iCard class="partList" :title="$t('零件清单')">
+  <iCard class="partList" :title="language('LINGJIANQINGDAN', '零件清单')">
     <div class="body">
       <tableList
         class="table"
         index
-        :lang="false"
+        :lang="true"
         :selection="false"
         :tableData="tableListData"
         :tableTitle="tableTitle"

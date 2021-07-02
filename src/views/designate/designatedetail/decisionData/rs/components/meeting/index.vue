@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:17:25
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-07-02 15:52:06
+ * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-07-02 18:07:42
  * @Description: 上会/备案RS单
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\rs\components\meeting\index.vue
 -->
@@ -53,19 +53,19 @@
         </div>
       </div>
     </iCard>
-    <iCard v-if="!showSignatureForm" class="checkDate" :class="!isPreview && 'margin-top20'" :title="language('SHENQINGRIQI','申请日期')+'：2020-01-01'">
+    <iCard v-if="!showSignatureForm" class="checkDate" :class="!isPreview && 'margin-top20'" :title="language('SHENQINGRIQI','申请日期')+'：'+processApplyDate">
       <div class="checkList">
         <div class="checkList-item" v-for="(item, index) in checkList" :key="index">
-          <icon v-if="item.status === '1'" symle name="iconrs-wancheng"></icon>
-          <icon v-else-if="item.status === '2'" symle name="iconrs-quxiao"></icon>
+          <icon v-if="item.approveStatus == '1'" symbol name="iconrs-wancheng"></icon>
+          <icon v-else-if="item.approveStatus == '2'" symbol name="iconrs-quxiao"></icon>
           <div v-else class="" >-</div>
           <div class="checkList-item-info">
             <span>{{language('BUMEN','部门')}}:</span>
-            <span class="checkList-item-info-depart">{{item.department}}</span>
+            <span class="checkList-item-info-depart">{{item.approveDeptNumName}}</span>
           </div>
           <div class="checkList-item-info">
             <span>{{language('RIQI','日期')}}:</span>
-            <span>{{item.date}}</span>
+            <span>{{item.approveDate}}</span>
           </div>
         </div>
       </div>
@@ -84,7 +84,7 @@
 import { iCard, iButton, iInput, icon, iMessage } from 'rise'
 import { nomalDetailTitle, nomalDetailTitleBlue, nomalTableTitle, meetingRemark, checkList, gsDetailTitleBlue, gsTableTitle,sparePartTableTitle,accessoryTableTitle,prototypeTitleList,dbTableTitle } from './data'
 import tableList from '@/views/designate/designatedetail/components/tableList'
-import { getList, getRemark, updateRemark,getPrototypeList } from '@/api/designate/decisiondata/rs'
+import { getList, getRemark, updateRemark,getPrototypeList, getDepartApproval } from '@/api/designate/decisiondata/rs'
 export default {
   props: {
     isPreview: {type:Boolean, default:false},
@@ -106,7 +106,8 @@ export default {
       resetRemarkType: '',
       saveLoading: false,
       PrototypeList:[],
-      prototypeTitleList:prototypeTitleList
+      prototypeTitleList:prototypeTitleList,
+      processApplyDate: ''
     }
   },
   computed: {
@@ -142,6 +143,22 @@ export default {
   },
   created(){this.getPrototypeList()},
   methods: {
+    /**
+     * @Description: 获取部门审批记录
+     * @Author: Luoshuang
+     * @param n*o
+     * @return n*o
+     */    
+    getDepartApproval() {
+      getDepartApproval(this.nominateId).then(res => {
+        if (res?.result) {
+          this.checkList = res.data.nomiApprovalProcessNodeVOList
+          this.processApplyDate = res.data.processApplyDate
+        } else {
+          iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+        }
+      })
+    },
     /**
      * @description: US 描述当大于5条的时候则需要显示这个card 不管任何零件采购项目。任何linie
      * @param {*}
@@ -204,6 +221,7 @@ export default {
     init() {
       this.getTopList()
       this.getRemark()
+      this.getDepartApproval()
     },
     /**
      * @Description: 获取表格初始数据

@@ -1,7 +1,7 @@
 <!--
  * @Author: moxuan
  * @Date: 2021-02-25 09:59:25
- * @LastEditTime: 2021-06-30 12:51:29
+ * @LastEditTime: 2021-07-02 18:35:14
  * @LastEditors: Please set LastEditors
  * @Description: RFQ模块首页
  * @FilePath: \rise\src\views\partsrfq\home\index.vue
@@ -389,8 +389,7 @@ export default {
       this.resultMessage(res)
       this.getTableList()
     },
-    change() {
-    },
+    change() {},
     handleSearchReset() {
       this.form = {}
       this.getTableList()
@@ -478,15 +477,15 @@ export default {
     },
     openNominateTypeDialog() {
       if (this.selectTableData.length !== 1) return iMessage.warn(this.language("LK_QINGXUANZEYITIAORFQ","请选择一条RFQ"))
-      this.nominateTypeDialogVisible = true
+      // this.nominateTypeDialogVisible = true
+      this.createDesignate()
     },
     // 创建定点申请
-    createDesignate(nominateProcessType) {
+    createDesignate() {
       this.nominateTypeDialogVisible = false
       this.createDesignateLoading = true
 
       selectRfq({
-        nominateProcessType,
         rfqIdArr: [ this.selectTableData[0].id ]
       })
       .then(res => {
@@ -497,8 +496,8 @@ export default {
           this.$router.push({
             path: "/designate/rfqdetail", 
             query: {
-              desinateId: res.data, 
-              designateType: nominateProcessType
+              desinateId: res.data.nominateId, 
+              designateType: res.data.nominateProcessType
             }
           })
         } else {

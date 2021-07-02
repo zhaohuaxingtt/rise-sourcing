@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-17 13:44:35
- * @LastEditTime: 2021-06-30 20:06:36
+ * @LastEditTime: 2021-07-02 18:25:36
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\configscoredept\index.vue
@@ -9,7 +9,7 @@
 <template>
   <iPage class="configscoredept">
     <div class="header clearFloat">
-      <div class="title">{{ $t("配置评分部门") }}</div>
+      <div class="title">{{ language("PEIZHIPINGFENBUMEN", "配置评分部门") }}</div>
       <div class="control">
         <logButton class="margin-left20" />
         <span class="margin-left20">
@@ -26,14 +26,14 @@
       :searchKey="PARTSIGN_CONFIRMBUTTON"
     >
       <el-form>
-        <el-form-item :label="$t('部门编号')">
+        <el-form-item :label="language('BUMENBIANHAO', '部门编号')">
           <iSelect
             v-model="form.rateDepartNum"
-            :placeholder="$t('请选择部门编号')"
+            :placeholder="language('QINGXUANZEBUMENBIANHAO', '请选择部门编号')"
           >
             <el-option
               value=""
-              :label="$t('all') | capitalizeFilter"
+              :label="language('ALL', '全部') | capitalizeFilter"
             ></el-option>
             <el-option
               :value="item.value"
@@ -43,14 +43,14 @@
             ></el-option>
           </iSelect>
         </el-form-item>
-        <el-form-item :label="$t('部门评分类型')">
+        <el-form-item :label="language('BUMENPINGFENLEIXING', '部门评分类型')">
           <iSelect
             v-model="form.rateTag"
-            :placeholder="$t('请选择部门评分类型')"
+            :placeholder="language('QINGXUANZEBUMENPINGFENLEIXING', '请选择部门评分类型')"
           >
             <el-option
               value=""
-              :label="$t('all') | capitalizeFilter"
+              :label="language('ALL', '全部') | capitalizeFilter"
             ></el-option>
             <el-option
               :value="item.value"
@@ -64,19 +64,20 @@
     </iSearch>
     <iCard class="margin-top20">
       <template v-slot:header-control>
-        <iButton v-if="!editStauts" @click="editStauts = true">{{ $t("编辑") }}</iButton>
+        <iButton v-if="!editStauts" @click="editStauts = true">{{ language("BIANJI", "编辑") }}</iButton>
         <div v-else>
-          <iButton @click="handleCloseEdit">{{ $t("结束编辑") }}</iButton>
-          <iButton :loading="saveLoading" @click="handleSave">{{ $t("保存") }}</iButton>
-          <iButton @click="handleRecovery">{{ $t("恢复") }}</iButton>
-          <iButton @click="handleAdd">{{ $t("新增行") }}</iButton>
-          <iButton :loading="deleteLoading" @click="handleDelete">{{ $t("删除行") }}</iButton>
+          <iButton @click="handleCloseEdit">{{ language("JIESHUBIANJI", "结束编辑") }}</iButton>
+          <iButton :loading="saveLoading" @click="handleSave">{{ language("BAOCUN", "保存") }}</iButton>
+          <iButton @click="handleRecovery">{{ language("HUIFU", "恢复") }}</iButton>
+          <iButton @click="handleAdd">{{ language("XINZENGHANG", "新增行") }}</iButton>
+          <iButton :loading="deleteLoading" @click="handleDelete">{{ language("SHANCHUHANG",  "删除行") }}</iButton>
         </div>
       </template>
       <div class="body">
         <tableList
           class="table"
           index
+          :lang="true"
           :tableData="tableListData"
           :tableTitle="tableTitle"
           :tableLoading="loading"
@@ -87,7 +88,7 @@
             <iSelect
               v-if="editStauts"
               v-model="scope.row.rateTag"
-              :placeholder="$t('请选择部门评分类型')"
+              :placeholder="language('QINGXUANZEBUMENPINGFENLEIXING', '请选择部门评分类型')"
               class="deptScoreTypeSelect"
             >
               <el-option
@@ -100,7 +101,7 @@
             <span v-else>{{ scope.row.rateTag }}</span>
           </template>
           <template #rateDepartNum="scope">
-            <iInput v-if="editStauts" class="deptNumSelect" placeholder="请选择部门编号" v-model="scope.row.rateDepartNum" readonly @click.native="handleSelectDeptNum(scope.row)">
+            <iInput v-if="editStauts" class="deptNumSelect" :placeholder="language('QINGXUANZEBUMENBIANHAO', '请选择部门编号')" v-model="scope.row.rateDepartNum" readonly @click.native="handleSelectDeptNum(scope.row)">
               <div class="inputSearchIcon" slot="suffix">
                 <icon symbol name="iconshaixuankuangsousuo" />
               </div>
@@ -111,7 +112,7 @@
             <iSelect
               v-if="editStauts"
               v-model="scope.row.isCheck"
-              :placeholder="$t('请选择')"
+              :placeholder="language('QINGXUANZE', '请选择')"
               class="isAuditSelect"
             >
               <el-option
@@ -237,7 +238,7 @@ export default {
     // 结束编辑
     handleCloseEdit() {
       if (!isEqual(this.tableListData, this.tableListDataCache)) {
-        this.$confirm(this.$t("您还有数据更改尚未保存, 请确认是否需要退出编辑模式"))
+        this.$confirm(this.language("NOSAVEISQUIT", "您还有数据更改尚未保存, 请确认是否需要退出编辑模式"))
         .then(() => {
           this.tableListData = this.tableListData.filter(item => !item.isCache)
           this.editStauts = false
@@ -270,13 +271,13 @@ export default {
     // 恢复
     handleRecovery() {
       if (!isEqual(this.tableListData, this.tableListDataCache)) {
-        this.$confirm(this.$t("您还有数据更改尚未保存, 请确认是否需要恢复成初始数据"))
+        this.$confirm(this.language("NOSAVEISRECOVER", "您还有数据更改尚未保存, 请确认是否需要恢复成初始数据"))
         .then(() => {
           this.getRfqRateDeparts()
         })
         .catch(() => {})
       } else {
-        iMessage.warn(this.$t("当前已是初始数据"))
+        iMessage.warn(this.language("ISBASEDATA", "当前已是初始数据"))
       }
     },
     // 新增行
@@ -289,7 +290,7 @@ export default {
     },
     // 删除行
     handleDelete() {
-      if (!this.multipleSelection.length) return iMessage.warn(this.$t("请选择需要删除的数据"))
+      if (!this.multipleSelection.length) return iMessage.warn(this.language("QINGXUANZEXUYAOSHANCHUDESHUJU", "请选择需要删除的数据"))
 
       this.deleteLoading = true
       deleteRfqRateDeparts(

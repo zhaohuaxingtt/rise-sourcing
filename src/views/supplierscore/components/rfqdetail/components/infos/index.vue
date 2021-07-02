@@ -1,20 +1,20 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-22 11:13:15
- * @LastEditTime: 2021-06-28 19:21:34
+ * @LastEditTime: 2021-07-02 18:30:12
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\supplierscore\components\rfqdetail\components\infos\index.vue
 -->
 <template>
-  <iCard collapse :title="$t('LK_JICHUXINXI')" class="infos margin-top20" v-loading="loading">
+  <iCard collapse :title="language('JICHUXINXI', '基础信息')" class="infos margin-top20" v-loading="loading">
     <iFormGroup row="4">
       <iFormItem
         v-for="(item, index) in infos"
         label-width="110px"
         :key="index"
         :row="item.row"
-        :label="$t(item.key)"
+        :label="language(item.key, item.name)"
       >
         <iText>{{ rfqInfo[item.props] }}</iText>
       </iFormItem>
