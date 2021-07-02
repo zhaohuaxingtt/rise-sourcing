@@ -176,7 +176,7 @@ export default {
                   //     'investmentListParams'
                   // )
                   this.$router.push({
-                    path: '/tooling/budgetManagement/investmentListCommon',
+                    path: '/tooling/budgetManagement/investmentListJV',
                     query: {
                       id: carTypeProject,
                       sourceStatus: sourceStatus,
@@ -221,7 +221,7 @@ export default {
       //     'investmentListParams'
       // )
       this.$router.push({
-        path: '/tooling/budgetManagement/investmentListCommon',
+        path: '/tooling/budgetManagement/investmentListJV',
         query: {
           id: this.$store.state.mouldManagement.budgetManagement.carTypeProject,
           sourceStatus: this.$store.state.mouldManagement.budgetManagement.sourceStatus,

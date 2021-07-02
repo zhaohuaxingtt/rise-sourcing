@@ -52,7 +52,7 @@
               ></el-option>
             </iSelect>
           </el-form-item>
-          <el-form-item :label="$t('LK_CAIGOUGONGCHANG')">
+          <el-form-item :label="$t('生产工厂')">
             <iSelect
                 :placeholder="$t('partsprocure.CHOOSE')"
                 v-model="localFactoryName"
@@ -124,10 +124,10 @@
                 </Popover>
                 <Popover
                     v-if="Number(item.sourceStatus) === 1 || Number(item.isBudget) !== 3"
-                    :content="$t('LK_CAIGOUGONGCHANG') + ': ' + (item.locationFactory ? item.locationFactory : '')"
+                    :content="$t('生产工厂') + ': ' + (item.locationFactory ? item.locationFactory : '')"
                     placement="top-start"
                     trigger="hover">
-                  <p slot="reference">{{$t("LK_CAIGOUGONGCHANG")}}: {{ item.locationFactory }}</p>
+                  <p slot="reference">{{$t("生产工厂")}}: {{ item.locationFactory }}</p>
                 </Popover>
                 <Popover
                     v-if="Number(item.sourceStatus) === 1 || Number(item.isBudget) !== 3"
@@ -454,7 +454,7 @@ export default {
       // )
       if(isBudget == 3){
         this.$router.push({
-          path: '/tooling/budgetManagement/investmentListCommon',
+          path: '/tooling/budgetManagement/investmentListJV',
           query: {
             id: id,
             sourceStatus: sourceStatus
