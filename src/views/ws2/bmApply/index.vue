@@ -53,21 +53,21 @@
     <!-- 待确认BM单 -->
     <template v-if="tableIndex === 1">
       <div v-permission="TOOLING_BUDGET_BMAPPLICATION_TOBECONFIRMED">
-        <ToBeConfirmed @openBMDetail="openBMDetail" :refresh="refresh" />
+        <ToBeConfirmed @updateTable="updateTable" @openBMDetail="openBMDetail" :refresh="refresh" />
       </div>
     </template>
 
     <!-- Aeko增值金额 -->
     <template v-if="tableIndex === 2">
       <div v-permission="TOOLING_BUDGET_BMAPPLICATION_AEKOINCREASE">
-        <IncrementBlock @openBMDetail="openBMDetail" :refresh="refresh" />
+        <IncrementBlock @updateTable="updateTable" @openBMDetail="openBMDetail" :refresh="refresh" />
       </div>
     </template>
 
     <!-- Aeko减值BM单 -->
     <template v-if="tableIndex === 3">
       <div v-permission="TOOLING_BUDGET_BMAPPLICATION_AEKOREDUCE">
-        <ImpairmentBlock @openBMDetail="openBMDetail" :refresh="refresh" />
+        <ImpairmentBlock @updateTable="updateTable" @openBMDetail="openBMDetail" :refresh="refresh" />
       </div>
     </template>
 
@@ -374,6 +374,10 @@ export default {
   },
 
   methods: {
+
+    updateTable(){
+      this.bmTableCount();  //  获取table数量
+    },
 
     jumpDetails(scope){
       const query = {

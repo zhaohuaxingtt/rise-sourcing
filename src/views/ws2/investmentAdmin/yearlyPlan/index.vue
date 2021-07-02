@@ -119,8 +119,8 @@
             <div class="manual-l-txt">
               <div class="manual-l-title">{{setManualTotal}}</div>
               <div class="manual-lpriceInput" v-for="(item, index) in planYearCommutity" :key="index">
-                <iInput v-if="isThen" class="right-input" v-model="item.planAmountAmualCurrent"></iInput>
-                <iInput v-else class="right-input" v-model="item.planAmountAmualNext"></iInput>
+                <iInput :disabled="!vereceive.editFlag" v-if="isThen" class="right-input" v-model="item.planAmountAmualCurrent"></iInput>
+                <iInput :disabled="!vereceive.editFlag" v-else class="right-input" v-model="item.planAmountAmualNext"></iInput>
               </div>
             </div>
             <div class="manual-l-txt">
@@ -171,7 +171,6 @@ export default {
       const key = isThen ? 'planAmountAmualCurrent' : 'planAmountAmualNext';
       const arr = planYearCommutity.map(item => item[key]).filter(n => n);
       const total = arr.reduce((prev,curr) => {
-        console.log('prev+curr', ~~prev, ~~curr, prev+curr);
         return (~~prev + ~~curr).toFixed(2);
       },0)
 

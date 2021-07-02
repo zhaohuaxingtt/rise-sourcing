@@ -151,6 +151,7 @@ export default {
           iMessage.success(result);
           this.getTableData();
           this.selectTableList = [];
+          this.$emit('updateTable');
         }else{
           iMessage.error(result);
         }
@@ -194,6 +195,7 @@ export default {
         if(res.data){
           iMessage.success(result);
           this.getTableData();
+          this.$emit('updateTable');
         }else{
           iMessage.error(result);
         }
