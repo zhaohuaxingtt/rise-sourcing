@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-22 11:14:02
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-28 09:15:20
+ * @LastEditTime: 2021-07-01 19:06:20
  * @Description: 财务目标价-目标价查询
  * @FilePath: \front-web\src\views\financialTargetPrice\query\index.vue
 -->
@@ -13,19 +13,19 @@
     <!----------------------------------------------------------------->
     <!---------------------------搜索区域------------------------------->
     <!----------------------------------------------------------------->
-    <iSearch @sure="getTableList" @reset="reset">
+    <iSearch @sure="sure" @reset="reset">
       <el-form>
-        <el-form-item v-for="(item, index) in searchList" :key="index" :label="item.label">
+        <el-form-item v-for="(item, index) in searchList" :key="index" :label="language(item.i18n_label, item.label)">
           <iSelect v-if="item.type === 'select'" v-model="searchParams[item.value]">
             <el-option value="" :label="$t('all')"></el-option>
             <el-option
               v-for="item in selectOptions[item.selectOption] || []"
               :key="item.code"
               :label="item.name"
-              :value="item.code">
+              :value="item.selectOption === 'LINIE' ? item.name : item.code">
             </el-option>
           </iSelect> 
-          <iDatePicker v-else-if="item.type === 'dateRange'" value-format="" type="daterange" v-model="searchParams[item.value]"></iDatePicker>
+          <iDatePicker v-else-if="item.type === 'dateRange'" value-format="" type="daterange" v-model="searchParams[item.value]" :default-time="['00:00:00', '23:59:59']"></iDatePicker>
           <iInput v-else v-model="searchParams[item.value]"></iInput> 
         </el-form-item>
       </el-form>
@@ -38,9 +38,9 @@
         <span class="font18 font-weight"></span>
         <div class="floatright">
           <!--------------------指派按钮----------------------------------->
-          <iButton @click="openAssignDialog" >指派</iButton>
+          <iButton @click="openAssignDialog" >{{language('ZHIPAI','指派')}}</iButton>
           <!--------------------导出按钮----------------------------------->
-          <iButton @click="handleUpload" >导出</iButton>
+          <iButton @click="handleExport" >{{language('DAOCHU','导出')}}</iButton>
         </div>
       </div>
       <tableList 
@@ -70,20 +70,20 @@
     <!------------------------------------------------------------------------>
     <!--                  修改记录弹窗                                      --->
     <!------------------------------------------------------------------------>
-    <modificationRecordDialog :dialogVisible="updateDialogVisible" @changeVisible="changeUpdateDialogVisible" />
+    <modificationRecordDialog :dialogVisible="updateDialogVisible" @changeVisible="changeUpdateDialogVisible" :id="applyId" />
     <!------------------------------------------------------------------------>
     <!--                  审批记录弹窗                                      --->
     <!------------------------------------------------------------------------>
-    <approvalRecordDialog :dialogVisible="approvalDialogVisible" @changeVisible="changeApprovalDialogVisible" />
+    <approvalRecordDialog :dialogVisible="approvalDialogVisible" @changeVisible="changeApprovalDialogVisible" :id="applyId" />
     <!------------------------------------------------------------------------>
     <!--                  指派弹窗                                      --->
     <!------------------------------------------------------------------------>
-    <assignDialog :dialogVisible="assignDialogVisible" @changeVisible="changeAssignDialogVisible" />
+    <assignDialog ref="assign" :dialogVisible="assignDialogVisible" @changeVisible="changeAssignDialogVisible" @sendAccessory="targetAppoint" />
   </iPage>
 </template>
 
 <script>
-import { iPage, iCard, iPagination, iButton, iSelect, iDatePicker, iInput, iSearch } from 'rise'
+import { iPage, iCard, iPagination, iButton, iSelect, iDatePicker, iInput, iSearch, iMessage } from 'rise'
 import headerNav from '../components/headerNav'
 import { tableTitle, searchList } from './data'
 import { pageMixins } from "@/utils/pageMixins"
@@ -93,30 +93,140 @@ import approvalRecordDialog from '../maintenance/components/approvalRecord'
 import assignDialog from './components/assign'
 import { dictkey } from "@/api/partsprocure/editordetail"
 import { getCartypeDict} from "@/api/partsrfq/home"
-import { appoint } from '@/api/financialTargetPrice/index'
+import { appoint, getTargetPriceList, getPartStatus, getCFList } from '@/api/financialTargetPrice/index'
+import { excelExport } from "@/utils/filedowLoad"
+import { omit } from 'lodash'
+import { getDictByCode } from '@/api/dictionary'
 export default {
   mixins: [pageMixins],
   components: {iPage,headerNav,iCard,tableList,iPagination,iButton,iSelect,iDatePicker,iInput,iSearch,modificationRecordDialog,approvalRecordDialog, assignDialog},
   data() {
     return {
       tableTitle: tableTitle,
-      tableData: [{partNum:'2342342'}],
+      tableData: [],
       searchList: searchList,
-      searchParams: {},
+      searchParams: {
+        buyerId: '',
+        cfId: '',
+        applyStats: '',
+        carTypeCode: '',
+        partStatus: '',
+        procureFactoryId: '',
+        linieId: '',
+        lcPriceType: '',
+        partProjectType: '',
+        setKz: '',
+        approveStats: '',
+        carTypeName: '',
+        assignStats: ''
+      },
       isEdit: false,
       tableLoading: false,
       selectOptions: {},
       assignDialogVisible: false,
       updateDialogVisible: false,
       approvalDialogVisible: false,
-      selectItems: []
+      selectItems: [],
+      rfqId: '',
+      applyId: ''
     }
   },
   created() {
+    this.getDicts()
     this.getProcureGroup()
     this.getCartypeDict()
+    this.getCF()
+    this.getPartStatus()
+    this.getTableList()
   },
   methods: {
+    handleSelectionChange(val) {
+      this.selectItems = val
+    },
+    reset() {
+      this.searchParams = {
+        buyerId: '',
+        cfId: '',
+        applyStats: '',
+        carTypeCode: '',
+        partStatus: '',
+        procureFactoryId: '',
+        linieId: '',
+        lcPriceType: '',
+        partProjectType: '',
+        setKz: '',
+        approveStats: '',
+        carTypeName: '',
+        assignStats: ''
+      }
+    },
+    getDict(type) {
+      getDictByCode(type).then(res => {
+        if (res?.result) {
+          this.selectOptions = {
+            ...this.selectOptions,
+            [type]: res.data[0]?.subDictResultVo || []
+          }
+        }
+      })
+    },
+    getDicts() {
+      // 申请类型
+      this.getDict('CF_APPLY_TYPE')
+      //申请状态CF_APPLY_STATUS
+      this.getDict('CF_APPLY_STATUS')
+      // 审批状态CF_APPROVE_STATUS
+      this.getDict('CF_APPROVE_STATUS')
+      // 指派状态CF_ASSIGN_START
+      this.getDict('CF_ASSIGN_START')
+    },
+    getPartStatus() {
+      getPartStatus().then(res => {
+        if(res?.result) {
+          this.selectOptions = {
+            ...this.selectOptions,
+            PART_STATUS: res.data[0].list.map(item => {
+              return {
+                code: item.key,
+                name: item.name
+              }
+            })
+          }
+        }
+      })
+    },
+    getCF() {
+      getCFList().then(res => {
+        if (res?.result) {
+          this.selectOptions = {
+            ...this.selectOptions,
+            CF_USER: res.data.map(item => {
+              return {
+                code: item.id,
+                name: item.nameZh
+              }
+            })
+          }
+        }
+      })
+    },
+    sure() {
+      this.page = {
+        ...this.page,
+        currPage: 1
+      }
+      this.getTableList()
+    },
+    /**
+     * @Description: 附件查看
+     * @Author: Luoshuang
+     * @param {*} row
+     * @return {*}
+     */    
+    openAttachmentDialog(row){
+      this.rfqId = row.rfqId || ''
+      this.changeAttachmentDialogVisible(true)
+    },
     /**
      * @Description: 指派操作
      * @Author: Luoshuang
@@ -129,7 +239,15 @@ export default {
         priceAnaId
       }
       appoint(params).then(res => {
-
+        if (res?.result) {
+          iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+          this.changeAssignDialogVisible(false)
+          this.getTableList()
+        } else {
+          iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+        }
+      }).finally(() => {
+        this.$refs.assign.changeAssigLoading(false)
       })
     },
     // 获取车型字典
@@ -168,6 +286,7 @@ export default {
      * @return {*}
      */    
     openApprovalDialog(row){
+      this.applyId = row.applyId || ''
       this.changeApprovalDialogVisible(true)
     },
     /**
@@ -186,6 +305,7 @@ export default {
      * @return {*}
      */    
     openUpdateDialog(row){
+      this.applyId = row.applyId || ''
       this.changeUpdateDialogVisible(true)
     },
     /**
@@ -204,6 +324,10 @@ export default {
      * @return {*}
      */    
     openAssignDialog(){
+      if (this.selectItems.length < 1) {
+        iMessage.warn(this.language('ZHISHAOXUANZEYITIAOJILU','至少选择一条记录'))
+        return
+      }
       this.changeAssignDialogVisible(true)
     },
     /**
@@ -222,9 +346,32 @@ export default {
      * @return {*}
      */    
     getTableList() {
-      const params = {
+      this.tableLoading = true
+      const params = omit({
         ...this.searchParams,
-      }
+        applyDateStart: this.searchParams.applyDate ? this.searchParams.applyDate[0] : null,
+        applyDateEnd: this.searchParams.applyDate ? this.searchParams.applyDate[1] : null,
+        responseDateStart: this.searchParams.responseDate ? this.searchParams.responseDate[0] : null,
+        responseDateEnd: this.searchParams.responseDate ? this.searchParams.responseDate[1] : null,
+        current: this.page.currPage,
+        size: this.page.pageSize
+      },['applyDate','responseDate'])
+      getTargetPriceList(params).then(res => {
+        if (res?.result) {
+          this.page = {
+            ...this.page,
+            totalCount: Number(res.total),
+            currPage: Number(res.pageNum),
+            pageSize: Number(res.pageSize)
+          }
+          this.tableData = res.data
+        } else {
+          this.tableData = []
+          iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+        }
+      }).finally(() => {
+        this.tableLoading = false
+      })
     },
     /**
      * @Description: 更改编辑状态
@@ -235,7 +382,9 @@ export default {
     changeEdit(isEdit) {
       this.isEdit = isEdit
     },
-    handleExport() {},
+    handleExport() {
+      excelExport(this.tableData, this.tableTitle)
+    },
     handleUpload() {},
     /**
      * @Description: 保存编辑后的内容

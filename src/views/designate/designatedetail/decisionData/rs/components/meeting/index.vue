@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:17:25
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-06-30 17:49:53
+ * @LastEditTime: 2021-07-02 15:52:06
  * @Description: 上会/备案RS单
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\rs\components\meeting\index.vue
 -->
@@ -36,9 +36,13 @@
         </div>
       </div>
       <tableList v-update :selection="false" :tableTitle="tableTitle" :tableData="tableData" class="rsTable" />
-      <div class="beizhu">备注 Remarks:<div class="beizhu-value" v-if="isPreview">
-        <p v-for="(item,index) in remarkItem" :key="index">{{item.value}}</p>
-      </div></div>
+      <div class="beizhu">
+        备注 Remarks:
+        <div class="beizhu-value" v-if="isPreview">
+          <p v-for="(item,index) in remarkItem" :key="index">{{item.value}}</p>
+        </div>
+      </div>
+      <div v-if="projectType === 'PT04' || projectType === 'PT19'" style="text-align:right;">汇率：Exchange rate: 1{{basicData.currency}}={{basicData.cfExchangeRate}}RMB</div>
     </iCard>
     <iCard v-if="!isPreview && !showSignatureForm" :title="language('SHANGHUIBEIZHU','上会备注')" class="margin-top20">
       <iButton slot="header-control" @click="handleSaveRemarks" :loading="saveLoading">{{language('BAOCUN','保存')}}</iButton>
@@ -78,7 +82,7 @@
 
 <script>
 import { iCard, iButton, iInput, icon, iMessage } from 'rise'
-import { nomalDetailTitle, nomalDetailTitleBlue, nomalTableTitle, meetingRemark, checkList, gsDetailTitleBlue, gsTableTitle,sparePartTableTitle,accessoryTableTitle,prototypeTitleList } from './data'
+import { nomalDetailTitle, nomalDetailTitleBlue, nomalTableTitle, meetingRemark, checkList, gsDetailTitleBlue, gsTableTitle,sparePartTableTitle,accessoryTableTitle,prototypeTitleList,dbTableTitle } from './data'
 import tableList from '@/views/designate/designatedetail/components/tableList'
 import { getList, getRemark, updateRemark,getPrototypeList } from '@/api/designate/decisiondata/rs'
 export default {
@@ -107,7 +111,7 @@ export default {
   },
   computed: {
     rightTitle() {
-      if (this.projectType === 'PT11') {
+      if (this.projectType === 'PT11' || this.projectType === 'PT04' || this.projectType === 'PT19') {
         return gsDetailTitleBlue
       }
       return nomalDetailTitleBlue
@@ -117,8 +121,10 @@ export default {
         return sparePartTableTitle
       } else if (this.projectType === 'PT18') {
         return accessoryTableTitle
-      } else if (this.projectType === 'PT11') {
+      } else if (this.projectType === 'PT11') { //GS零件
         return gsTableTitle
+      } else if (this.projectType === 'PT04' || this.projectType === 'PT19') { //DB零件,DB一次性采购
+        return dbTableTitle
       }
       return nomalTableTitle
     },

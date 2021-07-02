@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-06-30 17:31:06
+ * @LastEditTime: 2021-07-02 09:56:00
  * @LastEditors: Please set LastEditors
  * @Description: 系统静态路由.
  * @FilePath: \front-web\src\router\index.js
@@ -14,6 +14,7 @@
 import designateRoutes from './modules/designate'
 import createpartsRoutes from './modules/createparts'
 import costanalysismanageRoutes from './modules/costanalysismanage'
+import supplierscoreRoutes from './modules/supplierscore'
 import financialtargetpriceRoutes from './modules/financialtargetprice'
 import steeldemandcreation from './modules/steeldemandcreation'
 Vue.use(VueRouter);
@@ -279,6 +280,12 @@ export const staticRouter = [{
                 meta: { title: "创建RFQ" },
                 component: () => import("@/views/accessoryPart/createRfq/index"),
             },
+            {
+                path: "/configscoredept",
+                name: "configscoredept",
+                meta: { title: "配置评分部门" },
+                component: () => import("@/views/configscoredept"),
+            },
             // 定点信相关路由
             {
                 path: "/sourcing/partsletter",
@@ -338,6 +345,8 @@ export default new VueRouter({
         ...designateRoutes,
         ...createpartsRoutes,
         ...costanalysismanageRoutes,
+        ...supplierscoreRoutes,
+        ...financialtargetpriceRoutes,
         ...financialtargetpriceRoutes,
         ...steeldemandcreation
     ]

@@ -25,12 +25,12 @@
     </iSearch>
     <iCard class="contain margin-top20" title="预定点通知书(LOI)">
         <template v-slot:header-control>
-            <iButton @click="submit">{{language('LK_QUERENBINGTIJIAO','确认并提交')}}</iButton>
-            <iButton @click="lineSure">{{language('LK_LINEQUEREN','LINIE确认')}}</iButton>
-            <iButton @click="lineBack">{{language('LK_LINETUIHUI','LINIE退回')}}</iButton>
-            <iButton @click="back">{{language('partsprocure.CheHui','撤回')}}</iButton>
-            <iButton @click="closeLoi">{{language('LK_GUANBI','关闭')}} </iButton>
-            <iButton @click="activate">{{language('LK_JIHUO','激活')}} </iButton>
+            <iButton :loading="btnLoading.submit" @click="submit">{{language('LK_QUERENBINGTIJIAO','确认并提交')}}</iButton>
+            <iButton :loading="btnLoading.lineSure" @click="lineSure">{{language('LK_LINEQUEREN','LINIE确认')}}</iButton>
+            <iButton :loading="btnLoading.lineBack" @click="lineBack">{{language('LK_LINETUIHUI','LINIE退回')}}</iButton>
+            <iButton :loading="btnLoading.back" @click="back">{{language('partsprocure.CheHui','撤回')}}</iButton>
+            <iButton  @click="closeLoi">{{language('LK_GUANBI','关闭')}} </iButton>
+            <iButton :loading="btnLoading.activate" @click="activate">{{language('LK_JIHUO','激活')}} </iButton>
             <iButton @click="editRemark">{{language('LK_BIANJIBEIZHU','编辑备注')}} </iButton>
         </template>
         <!-- 表单区域 -->
@@ -141,12 +141,19 @@ export default {
             },
             loading:false,
             tableListData:[
-                {nominateAppId:'50912471',rfqId:'NL21-10180',supplierId:'51120086',sapNum:'068',supplierName:'博世汽⻋技术服务(中国)有限公司',loiStatusValue:'前期处理中',supplierResult:'供应商反馈',csfName:'⾼真',remark:'备注',}
+                // {nominateAppId:'50912471',rfqId:'NL21-10180',supplierId:'51120086',sapNum:'068',supplierName:'博世汽⻋技术服务(中国)有限公司',loiStatusValue:'前期处理中',supplierResult:'供应商反馈',csfName:'⾼真',remark:'备注',}
             ],
             tableTitle:loiListTitle,
             selectItems:[],
             closeLoiVisible:false,
             remarkVisible:false,
+            btnLoading:{
+                submit:false,
+                lineSure:false,
+                lineBack:false,
+                back:false,
+                activate:false,
+            },
         }
     },
     created(){
@@ -203,7 +210,10 @@ export default {
 
         // 重置
         reset(){
-
+            this.searchParams = {
+                show:'true',
+                loiStatus:'',
+            }
         },
         
         handleSelectionChange(val) {
@@ -250,13 +260,17 @@ export default {
             if(isNext){
                 const {selectItems} = this;
                 const ids = (selectItems.map((item)=>item.id));
+                this.btnLoading.submit = true;
                 await confirmSubmitLio({ids}).then((res)=>{
+                    this.btnLoading.submit = false;
                     if(res.code == 200){
                         iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
                         this.getList();
                     }else{
                         iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
                     }
+                }).catch((err)=>{
+                    this.btnLoading.submit = false;
                 })
             }else{
                 console.log(isNext,'CANCEL');
@@ -270,14 +284,18 @@ export default {
             if(isNext){
                 const {selectItems} = this;
                 const ids = (selectItems.map((item)=>item.id));
+                this.btnLoading.lineSure = true;
                 // iMessage.warn('定点信【定点信编号】不是【Linie确认中】状态，Linie不能操作！');
                 await liniefirm({ids}).then((res)=>{
+                    this.btnLoading.lineSure = false;
                     if(res.code == 200){
                         iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
                         this.getList();
                     }else{
                          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
                     }
+                }).catch((err)=>{
+                    this.btnLoading.lineSure = false;
                 })
             }else{
                 console.log(isNext,'CANCEL');
@@ -290,15 +308,18 @@ export default {
                 // iMessage.warn('定点信【定点信编号】不是【Linie确认中】状态，Linie不能操作！');
                 const {selectItems} = this;
                 const ids = (selectItems.map((item)=>item.id));
+                this.btnLoading.lineBack = true;
                 await linieBackLio({ids}).then((res)=>{
+                this.btnLoading.lineBack = false;
                     if(res.code == 200){
                         iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
                         this.getList();
                     }else{
                          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
                     }
+                }).catch((err)=>{
+                    this.btnLoading.lineBack = false;
                 })
-                console.log(isNext,'OK');
             }else{
                 console.log(isNext,'CANCEL');
             }
@@ -310,13 +331,17 @@ export default {
             if(isNext){
                 const {selectItems} = this;
                 const ids = (selectItems.map((item)=>item.id));
+                this.btnLoading.back = true;
                 await recallLio({ids}).then((res)=>{
+                    this.btnLoading.back = false;
                     if(res.code == 200){
                         iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
                         this.getList();
                     }else{
                          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
                     }
+                }).catch((err)=>{
+                    this.btnLoading.back = false;
                 })
             }else{
                 console.log(isNext,'CANCEL');
@@ -340,13 +365,17 @@ export default {
             if(isNext){
                 const {selectItems} = this;
                 const ids = (selectItems.map((item)=>item.id));
+                this.btnLoading.activate = true;
                 await activationLoi({ids}).then((res)=>{
+                    this.btnLoading.activate = false;
                     if(res.code == 200){
                         iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
                         this.getList();
                     }else{
                          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
                     }
+                }).catch((err)=>{
+                    this.btnLoading.activate = false;
                 })
             }else{
                 console.log(isNext,'CANCEL');

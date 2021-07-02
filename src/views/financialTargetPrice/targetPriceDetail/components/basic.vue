@@ -2,26 +2,33 @@
  * @Author: Luoshuang
  * @Date: 2021-06-23 15:16:47
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-25 17:21:08
+ * @LastEditTime: 2021-06-30 11:40:39
  * @Description: 基础信息
  * @FilePath: \front-web\src\views\financialTargetPrice\targetPriceDetail\components\basic.vue
 -->
 
 <template>
-  <iCard title="基础信息" collapse class="margin-top30">
+  <iCard :title="language('JICHUXINXI','基础信息')" collapse class="margin-top30" :loading="loading">
     <iFormGroup row="4" class="targetPriceDetail">
-      <iFormItem v-for="(item, index) in detailList" :key="index" :label="item.label+':'" :class="item.row ? 'row'+item.row : ''">
+      <iFormItem v-for="(item, index) in detailList" :key="index" :label="language(item.i18n_label, item.label)+':'" :class="item.row ? 'row'+item.row : ''">
         <template v-if="item.editable && isEdit">
-          <iInput v-if="item.type === 'input'" />
-          <iSelect v-else-if="item.type === 'select'"></iSelect>
+          <iInput v-if="item.type === 'input'" v-model="detailData[item.value]" />
+          <iSelect v-else-if="item.type === 'select'" v-model="detailData[item.value]" :disabled="isDisabled(item.value)">
+            <el-option
+              :value="item.code"
+              :label="item.name"
+              v-for="(item) in currencyOptions"
+              :key="item.code"
+            ></el-option>
+          </iSelect>
         </template>
         <iText v-else>{{detailData[item.value]}}</iText>
       </iFormItem>
-      <iFormItem class="row2" style="text-align:right">
-        <iButton v-if="!isEdit" @click="$emit('changeIsEdit', true)">编辑</iButton>
+      <iFormItem :class="'row2'" style="text-align:right">
+        <iButton v-if="!isEdit" @click="changeBasicIsEdit(true)">{{language('BIANJI','编辑')}}</iButton>
         <template v-else>
-          <iButton @click="$emit('handleSave')">保存</iButton>
-          <iButton @click="$emit('handleCancel')">取消</iButton>
+          <iButton @click="handleBasicSave">{{language('BAOCUN','保存')}}</iButton>
+          <iButton @click="handleBasicCancel">{{language('QUXIAO','取消')}}</iButton>
         </template>
       </iFormItem>
     </iFormGroup>
@@ -31,32 +38,66 @@
 <script>
 import { iCard, iFormGroup, iFormItem, iText, iInput, iSelect, iButton } from 'rise'
 import { detailList } from '../data'
-import { getTargetPriceDetail } from "@/api/financialTargetPrice/index"
+import { getTargetPriceDetail, setPrice } from "@/api/financialTargetPrice/index"
+import { getDictByCode } from '@/api/dictionary'
 export default {
   props: {
-    isEdit: {
-      type: Boolean,
-      default: false
-    },
     id: {type:String}
   },
   components: {iCard, iFormGroup, iFormItem, iText, iInput, iSelect, iButton},
+  watch: {
+    id:{
+      handler(val) {
+        if(val) {
+          this.getDetail()
+        }
+      },
+      immediate: true
+     }
+  },
   data() {
     return {
+      isEdit: false,
       detailList: detailList,
-      detailData: {}
+      detailData: {},
+      loading: false,
+      currencyOptions: []
     }
   },
   created() {
-    this.getDetail()
+    this.getDict()
   },
   methods: {
+    isDisabled(type) {
+      if (type === 'lcTcCurrencyId' && this.detailData.applyType === 'SKD') {
+        return true
+      }
+      if (type === 'skdTcCurrencyId' && this.detailData.applyType === 'LC') {
+        return true
+      }
+      return false
+    },
+    getDict() {
+      getDictByCode('PP_CSTMGMT_CURRENCY').then(res => {
+        if(res?.result) {
+          this.currencyOptions = res.data[0]?.subDictResultVo || []
+        }
+      })
+    },
     getDetail() {
-      if (!this.$route.query.applyId) {
+      if (!this.id) {
         return
       }
-      getTargetPriceDetail(this.$route.query.applyId).then(res => {
-        
+      this.loading = true
+      getTargetPriceDetail(this.id).then(res => {
+        if (res?.result) {
+          this.detailData = res.data
+        } else {
+          this.detailData = {}
+          iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+        }
+      }).finally(() => {
+        this.loading = false
       })
     },
     /**
@@ -66,7 +107,21 @@ export default {
      * @return {*}
      */    
     handleBasicSave() {
-      this.changeBasicIsEdit(false)
+      this.loading = true
+      const params = {
+        ...this.detailData,
+        partPrjCode: this.detailData.fsnrGsnrNum
+      }
+      setPrice(params).then(res => {
+        if (res?.result) {
+          iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+          this.changeBasicIsEdit(false)
+        } else {
+          iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+        }
+      }).finally(() => {
+        this.loading = false
+      })
     },
     /**
      * @Description: 取消基础信息编辑
@@ -76,6 +131,7 @@ export default {
      */    
     handleBasicCancel() {
       this.changeBasicIsEdit(false)
+      this.getDetail()
     },
     /**
      * @Description: 切换基础信息部分编辑状态
@@ -84,7 +140,7 @@ export default {
      * @return {*}
      */    
     changeBasicIsEdit(isEdit) {
-      this.basicIsEdit = isEdit
+      this.isEdit = isEdit
     }
   }
 }
@@ -96,7 +152,7 @@ export default {
     .row2 {
       margin-right: 3.75rem;
       width: calc((100% - 1*3.75rem) / 2);
-      &:nth-child(2n) {
+      &:nth-child(2n+1) {
         margin-right: 0px;
       }
     }

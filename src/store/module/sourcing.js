@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2021-06-16 15:25:24
- * @LastEditTime: 2021-06-30 10:34:22
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-07-02 15:22:57
+ * @LastEditors: Luoshuang
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\store\module\sourcing.js
  */
@@ -101,6 +101,14 @@ const state = {
       url: "/sourcing/partsign",
       activePath: "sourcing",
       key: "XUANYUANCAIDAN"
+    },
+    {
+      value: 2,
+      name: '财务目标价管理',
+      key: 'CAIWUMUBIAOJIAGUANLI',
+      url: '/financialtargetprice',
+      activePath: 'financialtargetprice',
+      message: 0
     }
   ]
 }
