@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-22 09:12:31
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-01 18:43:40
+ * @LastEditTime: 2021-07-02 14:34:00
  * @Description: 财务目标价-目标价维护
  * @FilePath: \front-web\src\views\financialTargetPrice\maintenance\index.vue
 -->
@@ -297,7 +297,7 @@ export default {
      * @return {*}
      */    
     openUpdateDialog(row){
-      this.recordId = row.recordId || ''
+      this.applyId = row.applyId || ''
       this.changeUpdateDialogVisible(true)
     },
     /**
