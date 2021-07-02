@@ -1,7 +1,6 @@
 <template>
   <div>
-    <!-- v-permission="TOOLING_PAYMENTPLAN_YEAR" -->
-    <div class="container">
+    <div class="container" v-permission="TOOLING_PAYMENTPLAN_YEAR">
       <HeadTool @refresh="refresh" @receiVereceive="receiVereceive" :refreshStatus="refreshStatus">
         <template slot="btns">
           <iButton @click="save" :loading="saveLoading">{{ $t('LK_BAOCUN') }}</iButton><!-- 保存 -->
