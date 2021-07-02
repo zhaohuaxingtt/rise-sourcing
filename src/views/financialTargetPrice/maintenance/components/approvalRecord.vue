@@ -2,13 +2,13 @@
  * @Author: Luoshuang
  * @Date: 2021-06-22 16:30:06
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-24 17:26:21
+ * @LastEditTime: 2021-07-01 15:36:14
  * @Description: 审批记录弹窗
  * @FilePath: \front-web\src\views\financialTargetPrice\maintenance\components\approvalRecord.vue
 -->
 <template>
   <iDialog 
-    title="审批记录"
+    :title="language('SHENPIJILU','审批记录')"
     :visible.sync="dialogVisible"
     @close="clearDialog"
     width="90%"
@@ -75,10 +75,10 @@ export default {
      * @return {*}
      */    
     getTableList() {
-      this.tableLoading = true
-      if (!id) {
+      if (!this.id) {
         return
       }
+      this.tableLoading = true
       const params = {
         id: this.id,
         pageNo: this.page.currPage,
@@ -86,10 +86,13 @@ export default {
       }
       getApprovalHistoryList(params).then(res => {
         if(res.result) {
-          // this.tableData = res.data.records
-          // this.page.pageSize = res.data.size
-          // this.page.currPage = res.data.current
-          // this.page.totalCount = res.data.total
+          this.page = {
+            ...this.page,
+            totalCount: Number(res.total),
+            currPage: Number(res.pageNum),
+            pageSize: Number(res.pageSize)
+          }
+          this.tableData = res.data
         } else {
           this.tableData = []
           iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)

@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-21 09:23:11
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-25 11:49:07
+ * @LastEditTime: 2021-06-29 09:55:56
  * @Description: RFQ & 零件清单界面
  * @FilePath: \front-web\src\views\designate\designatedetail\rfqdetail\index.vue
 -->
@@ -38,7 +38,7 @@
     </iCard>
     <iCard class="margin-top20" >
       <div class="margin-bottom20 clearFloat">
-        <span class="font18 font-weight">{{language('LINGJIANQINGDAN','零件清单')}}</span>
+        <span class="font18 font-weight">{{language('LK_LINGJIANQINGDAN','零件清单')}}</span>
         <div class="floatright">
           <!--------------------保存按钮----------------------------------->
           <iButton @click="saveParts">{{language('BAOCUN','保存')}}</iButton>
@@ -62,7 +62,7 @@
 </template>
 
 <script>
-import { iPage, iCard, iPagination, iMessage, iButton, iInput, icon } from "rise"
+import { iPage, iCard, iMessage, iButton, iInput, icon } from "rise"
 import tableList from '../components/tableList'
 import { rfqListTitle, partsListTitle } from './data'
 import { pageMixins } from "@/utils/pageMixins";
@@ -70,7 +70,7 @@ import { getRfqList, getPartList, updatePart, deleteRfq } from '@/api/designate/
 import { cloneDeep } from 'lodash'
 export default {
   mixins: [pageMixins],
-  components:{ iPage, iCard, tableList, iPagination, iButton, iInput, icon },
+  components:{ iPage, iCard, tableList, iButton, iInput, icon },
   data() {
     return {
       rfqTableTitle: rfqListTitle,

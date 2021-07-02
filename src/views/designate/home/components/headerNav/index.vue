@@ -6,8 +6,8 @@
 <template>
 <div class="headerNav-wraper margin-bottom10">
   <div class="headerNav">
-    <iNavMvp :list="list" @change="change" :lev="1" routerPage></iNavMvp>
-    <div class="ext">
+    <iNavMvp :list="list" lang @change="change" :lev="1" routerPage></iNavMvp>
+    <!-- <div class="ext">
       <div class="pull-right">
         <a href="javascript:;" class="iconMenu">
           <icon symbol
@@ -19,10 +19,10 @@
             name="icondatabaseweixuanzhong"
           ></icon>
         </a>
-      </div>
-      <iNavMvp @change="change" class="pull-right" right routerPage lev="2" :list="navList" @message="clickMessage" />
-    </div>
-    
+      </div> -->
+<!--       
+    </div> -->
+    <iNavMvp @change="change" lang class="pull-right" right routerPage lev="2" :list="navList" @message="clickMessage" />
   </div>
   <div class="headerNav-sub margin-top30">
     <iTabsList type="card" v-model="tab" @tab-click="handleTabClick">
@@ -35,7 +35,7 @@
 import {TAB, MENU, heaederSubMenu} from './components/data'
 import {
   iNavMvp,
-  icon,
+  // icon,
   iTabsList
 } from "rise";
 import { clickMessage } from "@/views/partsign/home/components/data"
@@ -54,7 +54,7 @@ export default {
   },
   components: {
     iNavMvp,
-    icon,
+    // icon,
     iTabsList
   },
   created() {

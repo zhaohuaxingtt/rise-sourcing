@@ -2,7 +2,7 @@
  * @Descripttion: RFQ & 零件清单数据
  * @Author: Luoshuang
  * @Date: 2021-05-21 11:30:46
- * @LastEditTime: 2021-06-25 11:17:42
+ * @LastEditTime: 2021-06-28 17:07:41
  */
 
 export const rfqListTitle = [

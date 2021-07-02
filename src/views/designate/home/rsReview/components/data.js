@@ -1,7 +1,7 @@
 /*
  * @Author: HaoJiang
  * @Date: 2021-05-20 14:29:09
- * @LastEditTime: 2021-06-24 17:52:42
+ * @LastEditTime: 2021-06-29 17:09:09
  * @LastEditors: Please set LastEditors
  * @Description: sel上会复核
  *
@@ -27,14 +27,14 @@ export const tableTitle = [{
   props: 'id',
   name: '申请单号',
   width: 150,
-  key: 'nominationLanguage.ShenQingDanHao',
+  key: 'nominationLanguage_ShenQingDanHao',
   tooltip: false
 },
 {
   props: 'nominateName',
   name: '申请单名',
   width: 200,
-  key: 'nominationLanguage.ShenQingDanMing',
+  key: 'nominationLanguage_ShenQingDanMing',
   tooltip: false
 },
 {
@@ -51,21 +51,22 @@ export const tableTitle = [{
 },
 {
   props: 'partProjType',
-  name: '项目类型',
-  key: 'nominationLanguage.LeiXing',
+  name: '零件项目类型',
+  key: 'LINGJIANXIANGMULEIXING',
+  width: 150,
   tooltip: true
 },
 {
   props: 'meetingName',
   name: '会议',
-  key: 'nominationLanguage.HuiYi',
+  key: 'nominationLanguage_HuiYi',
   tooltip: true
 },
 {
   props: 'nominateUserName',
   name: '询价采购员',
   width: 150,
-  key: 'nominationLanguage.XunJiaCaiGouYuan',
+  key: 'nominationLanguage_XunJiaCaiGouYuan',
   tooltip: true
 },
 {
@@ -77,28 +78,28 @@ export const tableTitle = [{
 {
   props: 'rsStatus',
   name: 'RS单状态',
-  key: 'nominationLanguage.RSZhuangTai',
+  key: 'nominationLanguage_RSZhuangTai',
   tooltip: false
 },
 {
   props: 'rsFreezeDate',
   name: 'RS冻结日期',
   width: 150,
-  key: 'nominationLanguage.RSDongJieRiQi',
+  key: 'nominationLanguage_RSDongJieRiQi',
   tooltip: false
 },
 {
   props: 'isPriceConsistent',
   name: '报价一致性校验状态',
   width: 150,
-  key: 'nominationLanguage.BaoJiaYiZhiXingZhuangTai',
+  key: 'nominationLanguage_BaoJiaYiZhiXingZhuangTai',
   tooltip: false
 },
 {
   props: 'selStatus',
   name: 'SEL单据确认状态',
   width: 150,
-  key: 'nominationLanguage.SELDanJuQUeRenZH',
+  key: 'nominationLanguage_SELDanJuQUeRenZH',
   tooltip: false
 },
 {
@@ -125,7 +126,7 @@ export const tableTitle = [{
   props: 'freezeDate',
   name: '冻结日期',
   width: 150,
-  key: 'nominationLanguage.DongJieRiQi',
+  key: 'nominationLanguage_DongJieRiQi',
   tooltip: false
 },
 ]
@@ -149,12 +150,12 @@ export const mokeResData = [
 export const signMenu = [
   {
     name: '新建签字单',
-    key: 'nominationLanguage.XinJianQianZiDan',
-    path: '/sourcing/partsnomination/newSignSheet'
+    key: 'XINJIANQIANZIDAN',
+    path: '/sourcing/partsnomination/signSheet/details?mode=add'
   },
   {
     name: 'M签字单列表',
-    key: 'nominationLanguage.MQianZiDanLiebiao',
+    key: 'MQIANZIDANLIEBIAO',
     path: '/sourcing/partsnomination/signSheet'
   },
 ]

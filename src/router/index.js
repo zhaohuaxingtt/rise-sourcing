@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-06-30 19:07:33
+ * @LastEditTime: 2021-07-02 09:56:00
  * @LastEditors: Please set LastEditors
  * @Description: 系统静态路由.
  * @FilePath: \front-web\src\router\index.js
@@ -16,7 +16,7 @@ import createpartsRoutes from './modules/createparts'
 import costanalysismanageRoutes from './modules/costanalysismanage'
 import supplierscoreRoutes from './modules/supplierscore'
 import financialtargetpriceRoutes from './modules/financialtargetprice'
-
+import steeldemandcreation from './modules/steeldemandcreation'
 Vue.use(VueRouter);
 export const staticRouter = [{
         path: "/",
@@ -293,6 +293,11 @@ export const staticRouter = [{
                 component: () => import ("@/views/letterAndLoi")
             },
             {
+                path: "/sourcing/previewloi",
+                name: "previewLoi",
+                component: () => import ("@/views/letterAndLoi/previewLoi")
+            },
+            {
                 path: "/sourcing/partsletter/letterdetail",
                 name: "letterdetail",
                 component: () => import ("@/views/letterAndLoi/letter/detail")
@@ -341,6 +346,8 @@ export default new VueRouter({
         ...createpartsRoutes,
         ...costanalysismanageRoutes,
         ...supplierscoreRoutes,
-        ...financialtargetpriceRoutes
+        ...financialtargetpriceRoutes,
+        ...financialtargetpriceRoutes,
+        ...steeldemandcreation
     ]
 });

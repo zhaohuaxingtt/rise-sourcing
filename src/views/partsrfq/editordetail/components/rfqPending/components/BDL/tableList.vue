@@ -1,7 +1,7 @@
 <!--
 * @author:shujie
 * @Date: 2021-3-5 10:56:32
- * @LastEditors: Luoshuang
+ * @LastEditors: Please set LastEditors
 * @Description: BDL表格数据
  -->
 <template>
@@ -78,6 +78,7 @@
 		iInput
 	} from "@/components";
 	export default {
+		inject:['getbaseInfoData'],
 		components: {
 			icon,
 			iInput,
@@ -98,7 +99,15 @@
 			'tableData':function(val){
 				if(val.length>0){
 					this.$nextTick(()=>{
-						this.toggleSelection()
+					/**
+					 * @description: sprint11 新增逻辑，如果是GS零件，Mbdl不需要自动选中
+					 * @param {*} this
+					 * @return {*}
+					 */						
+						if(this.getbaseInfoData().rfqType != 'GS' && this.getbaseInfoData().rfqType != 'COP'){
+							this.toggleSelection()
+						}
+						
 					})
 				}
 			}
@@ -114,6 +123,12 @@
       },
 			//为mbdl的数据新增一个背景颜色
 			rowStyle({row,index}){
+					/**
+					 * @description: sprint11 新增逻辑，如果是GS零件，Mbdl不需要将背景颜色加深
+					 * @param {*} this
+					 * @return {*}
+					 */					
+				if(this.getbaseInfoData().rfqType == 'GS' || this.getbaseInfoData().rfqType == 'COP') return
 				if(row.bdlType == '2' || !row.isEdit){
 					return {
 						backgroundColor:'#F2F6FF'

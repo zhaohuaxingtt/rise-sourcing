@@ -15,10 +15,11 @@
         <tableList
             class="table"
             index
+            :selection="false"
+            :lang="true"
             :tableData="tableListData"
             :tableTitle="tableTitle"
             :tableLoading="loading"
-            @handleSelectionChange="handleSelectionChange"
         >
             <template #fileName="scope">
                 <a class="trigger" href="javascript:;" @click="downloadLine(scope.row)">
@@ -45,10 +46,14 @@
 import {
   iDialog,
   iPagination,
+  iMessage,
 } from 'rise';
 import tableList from "@/views/partsign/editordetail/components/tableList"
-import { historyListTitle } from '../../../data'
+import { letterHistoryTitle } from '../../../data'
 import { pageMixins } from "@/utils/pageMixins"
+import {
+  getHistoryLetter,
+} from '@/api/letterAndLoi/letter'
 export default {
     name:'historyDialog',
     mixins: [ pageMixins ],
@@ -61,13 +66,17 @@ export default {
       dialogVisible:{
         type:Boolean,
         default:false,
+      },
+      nominateLetterId:{
+        type:String,
+        default:'',
       }
     },
     data(){
       return{
-        tableTitle:historyListTitle,
+        tableTitle:letterHistoryTitle,
         tableListData:[],
-        selectItems:[],
+        loading:false,
       }
     },
     created(){
@@ -78,11 +87,27 @@ export default {
           this.$emit('changeVisible', false)
         },
         // 获取列表
-        getList(){
-
-        },
-        handleSelectionChange(val) {
-            this.selectItems = val;
+        async getList(){
+          this.loading = true;
+          const { nominateLetterId,page } = this; 
+          const data = {
+            nominateLetterId,
+            current:page.currPage,
+            size:page.pageSize,
+          };
+          await getHistoryLetter(data).then((res)=>{
+            this.loading = false;
+            const { code,data={} } = res;
+            if(code == 200){
+              const {records=[],total} = data;
+              this.tableListData = records;
+              this.page.totalCount = total;
+            }else{
+              iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+            }
+          }).catch((err)=>{
+            this.loading = false;
+          })
         },
     }
 }

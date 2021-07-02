@@ -9,23 +9,27 @@
             <span class="margin-right10" v-if="isEdit">
                 <Upload 
                     hideTip
-                    :buttonText="$t('LK_SHANGCHUAN')"
-                    accept=".pdf"
-                    @on-success="onDraingUploadsucess"
+                    :buttonText="language('LK_SHANGCHUAN','上传')"
+                    accept=".doc,.docx,.xls,.xlsx,.ppt,.pptx,.jpg,.jpeg,.png,.pdf,.tif"
+                    @on-success="onUploadsucess(Object.assign(...arguments, {fileType: '124',hostId:nomiAppId}), getFetchDataList)"
                 />
             </span>
-            <iButton >{{$t('LK_XIAZAI')}}</iButton>
-            <iButton v-if="isEdit">{{$t('delete')}}</iButton>
+            <iButton @click="downloadFile">{{language('LK_XIAZAI','下载')}}</iButton>
+            <iButton 
+            v-if="isEdit"
+             @click="deleteFile($event, getFetchDataList)"
+            >{{language('delete','删除')}}</iButton>
         </template>
         <p class="title">
-            {{$t('LK_FUJIAN')}}
-            <span class="title-tips">{{$t('LK_SHANGCHUANSHIWENJIANQINGXUANZHUANZHIZHENGCHANGFANGXIANGHOUSHANGCHUAN')}}</span>
+            {{language('LK_FUJIAN','附件')}}
+            <span class="title-tips">{{language('LK_SHANGCHUANSHIWENJIANQINGXUANZHUANZHIZHENGCHANGFANGXIANGHOUSHANGCHUAN','上传时文件请旋转至正常方向后上传')}}</span>
         </p>
         <div> 
             <tableList
                 class="table"
                 index
-                :tableData="tableListData"
+                :lang="true"
+                :tableData="dataList"
                 :tableTitle="tableTitle"
                 :tableLoading="loading"
                 @handleSelectionChange="handleSelectionChange"
@@ -39,8 +43,8 @@
             <iPagination 
                 v-update
                 class="margin-top30"
-                @size-change="handleSizeChange($event, getList)"
-                @current-change="handleCurrentChange($event, getList)"
+                @size-change="handleSizeChange($event, getFetchDataList)"
+                @current-change="handleCurrentChange($event, getFetchDataList)"
                 background
                 :current-page="page.currPage"
                 :page-sizes="page.pageSizes"
@@ -62,13 +66,19 @@ import Upload from '@/components/Upload'
 import tableList from "@/views/partsign/editordetail/components/tableList"
 import { pageMixins } from "@/utils/pageMixins"
 import { historyListTitle as tableTitle } from '../../../data'
+import { attachMixins } from '@/utils/attachMixins'
+import { downloadFile } from '@/api/file'
 export default {
     name:'loiNonStandard',
-    mixins: [ pageMixins ],
+    mixins: [ pageMixins ,attachMixins],
     props:{
         isEdit:{
             type:Boolean,
             default:false,
+        },
+        nomiAppId:{
+            type:String,
+            default:'',
         }
     },
     components:{
@@ -80,14 +90,31 @@ export default {
     },
     data(){
         return{
-            tableListData:[],
             tableTitle,
         }
     },
+    created(){
+        this.getFetchDataList();
+    },
     methods:{
         // 获取列表
-        getList(){
-
+        async getFetchDataList() {
+            const {query} = this.$route;
+            const {id=''} = query;
+            const params = {
+                nomiAppId: id,
+                sortColumn: 'sort',
+                isAsc: true,
+                fileType: '124',
+            }
+            await this.getDataList(params);
+        },
+        async downloadLine(row){
+            const params = {
+            applicationName: 'rise',
+            fileList:[row.fileName]
+          };
+          await downloadFile(params);
         },
     }
 }

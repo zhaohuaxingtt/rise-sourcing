@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2021-06-28 11:01:26
+ * @LastEditTime: 2021-07-02 09:58:03
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\editordetail\index.vue
@@ -33,7 +33,7 @@
 				<!-------------------------------------------------------------------------------->
 				<!---维护现供供应商逻辑：1，只有当零件采购项目类型为[GS零件]或[GS common sourcing]时才---->
 				<!---出现此按钮。------------------------------------------------------------------->
-				<iButton v-if='currentSupplierButton' @click="curentSupplierDialog.show = true">维护现供供应商</iButton>	
+				<iButton v-if='currentSupplierButton' @click="curentSupplierDialog.show = true">{{language('WEIHUXIANGGYS','维护现供供应商')}}</iButton>	
 				<iButton @click="start" v-permission="PARTSPROCURE_EDITORDETAIL_STARTUP"
 					v-if="detailData.status == '16'">{{ $t("LK_QIDONGXIANGMU") }}</iButton>
 				<iButton @click="creatFs" v-permission="PARTSPROCURE_EDITORDETAIL_GENERATEFSGSNR">
@@ -47,7 +47,7 @@
 				</iButton>
 				<iButton @click="openDiologClose" v-permission="PARTSPROCURE_EDITORDETAIL_ENDPROJECT"
 					v-if="detailData.status != '16'">{{ $t("LK_JIESHUXIANGMU") }}</iButton>
-				<iButton @click="save" v-permission="PARTSPROCURE_EDITORDETAIL_BASICINFOSAVE">{{ $t("LK_BAOCUN") }}
+				<iButton @click="saveFn" v-permission="PARTSPROCURE_EDITORDETAIL_BASICINFOSAVE">{{ $t("LK_BAOCUN") }}
 				</iButton>
 				<iButton @click="back" v-permission="PARTSPROCURE_EDITORDETAIL_RETURN">{{ $t("LK_FANHUI") }}</iButton>
 				<logButton class="margin-left20" @click="log" v-permission="PARTSPROCURE_EDITORDETAIL_LOG" />
@@ -103,6 +103,22 @@
 								</el-option>
 							</iSelect>
 						</iFormItem>
+						<!------------------------零件采购项目类型为DB类型时--------------------------------------->
+						<iFormItem v-if="detailData.partPrejectType === 'PT04' || detailData.partPrejectType === 'PT19'" :label="language('HUOBILEIXING','货币类型') + ':'" name="test">
+							<iSelect v-model="detailData.currencyCode" >
+								<el-option :value="item.code" :label="item.name"
+									v-for="(item, index) in fromGroup.PP_CSTMGMT_CURRENCY" :key="index">
+								</el-option>
+							</iSelect>
+						</iFormItem>
+						<!----------------------零件采购项目类型为DB零件时----------------------------------->
+						<iFormItem v-if="detailData.partPrejectType === 'PT04' || detailData.partPrejectType === 'PT19'" :label="language('ZHIFUTIAOKUAN', '支付条款') + ':'" name="test">
+							<iSelect v-model="detailData.payClause" >
+								<el-option :value="item.code" :label="item.name"
+									v-for="(item, index) in fromGroup.TERMS_PAYMENT" :key="index">
+								</el-option>
+							</iSelect>
+						</iFormItem>
 					</div>
 					<div class="col">
 						<iFormItem label="FSNR/GSNR/SPNR：" name="test">
@@ -152,6 +168,14 @@
 									v-for="(item, index) in fromGroup.PAYMENT_RULE" :key="index"></el-option>
 							</iSelect>
 						</iFormItem>
+						<!----------------------零件采购项目类型为DB零件时----------------------------------->
+						<iFormItem v-if="detailData.partPrejectType === 'PT04' || detailData.partPrejectType === 'PT19'" :label="language('CAIGOUTIAOKUAN','采购条款') + ':'" name="test">
+							<iSelect v-model="detailData.purchaseClause" >
+								<el-option :value="item.code" :label="item.name"
+									v-for="(item, index) in fromGroup.TERMS_PURCHASE" :key="index">
+								</el-option>
+							</iSelect>
+						</iFormItem>
 					</div>
 					<div class="col">
 						<iFormItem :label="$t('LK_XUNJIACAIGOUYUAN') + ':'" name="test">
@@ -194,8 +218,21 @@
 								{{ detailData.mouldCostUserName }}
 							</iText>
 						</iFormItem>
-						<iFormItem label="Common Sourcing：" name="test">
+						<iFormItem name="test">
+							<template slot="label">
+								<span>Common Sourcing:</span>
+								<span>
+									<el-tooltip effect="light">
+										<icon name='iconxinxitishi' symbol/>
+										<template slot="content">
+											<p>tu guan : commonSourcing</p>
+											<p>FS0323JJ00 : commonSourcing</p>
+										</template>
+									</el-tooltip>
+								</span>	
+							</template>
 							<!--------预设值会有一个联动，如果 为是  零件采购项目类型是fs commonsourcing  如果是否，则是fs零件 ps:和设计刘洋沟通前端不做联动，仅仅在数据初始化时做----------> 
+							<!--------预设置联动第二版：如果零件采购项目为FS common sourcing，但是否common sourcing选择否，则在保存/生成FS号时提示采购员：“[零件采购项目]与[是否common sourcing]不统一，请确认是否继续”---->
 							<iSelect v-model="detailData.isCommonSourcing"
 								v-permission="PARTSPROCURE_EDITORDETAIL_COMMONSOURCING">
 								<el-option :value="true" label="是"></el-option>
@@ -213,7 +250,7 @@
 							<!----------------------------------------------------------------------------------------------->
 							<!---------------sop时间如果是GS零件的时候，是可以手动选择的------------------------------------------>
 							<!----------------------------------------------------------------------------------------------->
-							<iDatePicker v-if='currentSupplierButton' v-moudel='detailData.sopDate' type="date"></iDatePicker>
+							<iDatePicker v-if='currentSupplierButton' v-model='detailData.sopDate' type="date"></iDatePicker>
 							<iText v-else v-permission="PARTSPROCURE_EDITORDETAIL_SOPDATE">
 								{{ detailData.sopDate }}
 							</iText>
@@ -264,7 +301,7 @@
 			</el-tab-pane>
 			<el-tab-pane :label="$t('LK_SHENQINGMUBIAOJIA')"
 				v-permission="PARTSPROCURE_EDITORDETAIL_APPLYFORTARGETPRICE">
-				<targePrice :purchaseProjectId="purchasePrjectId"></targePrice>
+				<targePrice :purchaseProjectId="purchasePrjectId" :fsnrGsnrNum="fsnrGsnrNum" :partPrejectType="partPrejectType"></targePrice>
 			</el-tab-pane>
 			<el-tab-pane :label="$t('LK_BEIZHUXINXI')" v-permission="PARTSPROCURE_EDITORDETAIL_REMARKSINFORMATION">
 				<remarks :detailData="detailData"></remarks>
@@ -294,6 +331,9 @@
 		iButton,
 		iTabsList,
 		iMessage,
+		iDatePicker,
+		icon,
+		iMessageBox
 	} from "rise";
 	import logistics from "./components/logistics";
 	import targePrice from "./components/targetPrice";
@@ -320,8 +360,8 @@
 		detailData
 	} from "./components/data";
 	import splitFactory from "./components/splitFactory";
-import { iMessageBox } from '../../../components';
 import designateInfo from './components/designateInfo'
+import { getDictByCode } from '@/api/dictionary'
 	export default {
 		components: {
 			iPage,
@@ -345,7 +385,9 @@ import designateInfo from './components/designateInfo'
 			backItems,
 			splitFactory,
 			designateInfo,
-			currentSupplier
+			currentSupplier,
+			iDatePicker,
+			icon
 		},
 		computed: {
 			/**
@@ -375,16 +417,39 @@ import designateInfo from './components/designateInfo'
 				}, //拆分采购工厂
 				purchasePrjectId: "",
 				createNomiApplicationLoading: false,
-				curentSupplierDialog:{show:false}
+				curentSupplierDialog:{show:false},
+				fsnrGsnrNum: '',
+				partPrejectType: ''
 			};
 		},
 		created() {
 			this.infoItem = JSON.parse(this.$route.query.item);
 			this.purchasePrjectId = this.infoItem.purchasePrjectId;
+			this.fsnrGsnrNum = this.infoItem.fsnrGsnrNum;
+			this.partPrejectType = this.infoItem.partPrejectType;
 			this.getDatail();
 			this.getProcureGroup();
+			this.getDicts()
 		},
 		methods: {
+			getDict(type) {
+				getDictByCode(type).then(res => {
+					if (res?.result) {
+						this.fromGroup = {
+							...this.fromGroup,
+							[type]: res.data[0]?.subDictResultVo || []
+						}
+					}
+				})
+			},
+			getDicts() {
+				// 支付条款
+				this.getDict('TERMS_PAYMENT')
+				//采购条款
+				this.getDict('TERMS_PURCHASE')
+				// 审批状态CF_APPROVE_STATUS
+				this.getDict('PP_CSTMGMT_CURRENCY')
+			},
 			fillterss(data){
 				if(data){
 					return '是'
@@ -438,7 +503,10 @@ import designateInfo from './components/designateInfo'
 			getProcureGroup() {
 				dictkey().then((res) => {
 					if (res.data) {
-						this.fromGroup = res.data;
+						this.fromGroup = {
+							...this.fromGroup,
+							...res.data
+						}
 					}
 				});
 			},
@@ -488,6 +556,9 @@ import designateInfo from './components/designateInfo'
 						iMessage.error(res.desZh);
 					}
 				});
+			},
+			saveFn(){
+				this.fsProjectTypeAnIscommonSroucing(this.save)
 			},
 			//修改详情。
 			save(val) {
@@ -540,6 +611,9 @@ import designateInfo from './components/designateInfo'
 			},
 			// 生成fs号
 			creatFs() {
+				this.fsProjectTypeAnIscommonSroucing(this.sendRequsetToCreateFS)
+			},
+			sendRequsetToCreateFS(){
 				let fs = {
 					purchaseProjectIds: [this.infoItem.purchasePrjectId],
 				};
@@ -602,30 +676,30 @@ import designateInfo from './components/designateInfo'
 			updateOutput(data) {
 				this.$refs.outputPlan.updateOutput(data)
 			},
-			// 生成定点申请单
-			async handleCreateNomiApplication() {
-				const createNomiApplication = function () {}
-
-				try {
-					await this.save()
-					this.createNomiApplicationLoading = true
-					const res = await createNomiApplication()
-					if (res.code == 200) {
-						if (res.data.length === 0) {
-							iMessage.error(this.$t("该零件无本体或加工装配费定点记录，请手动创建零件采购项目并进行后续流程"))
-						} else if (res.data.length === 1) {
-							window.open("/#/designate/rfqdetail?desinateId=100&designateType=TRANFORM", "_blank")
-						} else if (res.data.length > 1) {
-							console.log()
-						}
-					} else {
-						iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
-					}
-				} catch(e) {
-					console.error(e)
-				} finally {
-					this.createNomiApplicationLoading = false
+   /**
+    * @description: 限制保存和提交的零件类型和是否commonsourcing是否匹配
+    * @param {*}
+    * @return {*}
+    */
+			fsProjectTypeAnIscommonSroucing(callBack){
+				if((!this.detailData.isCommonSourcing) && this.detailData.partPrejectType == "PT09"){
+					iMessageBox(this.language('当前零件采购项目类型与commonSourcing为[否]不统一，是否继续？','SPIRNT11COMMONSS')).then(res=>{
+						callBack()
+					})
+				}else{
+					callBack()
 				}
+			}
+		},
+		computed:{
+   /**
+    * @description: 现供供应商按钮逻辑。
+    * @param {*}
+    * @return {*}
+    */
+			currentSupplierButton:function(){
+				return this.detailData.partPrejectType == "PT11" || this.detailData.partPrejectType == "PT10"
+			}
 		}
 	}
 }
