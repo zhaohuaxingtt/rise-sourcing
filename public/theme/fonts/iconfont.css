@@ -1,8 +1,8 @@
 @font-face {
   font-family: "iconfont"; /* Project id 2285260 */
-  src: url('iconfont.woff2?t=1625043963492') format('woff2'),
-       url('iconfont.woff?t=1625043963492') format('woff'),
-       url('iconfont.ttf?t=1625043963492') format('truetype');
+  src: url('iconfont.woff2?t=1625107846176') format('woff2'),
+       url('iconfont.woff?t=1625107846176') format('woff'),
+       url('iconfont.ttf?t=1625107846176') format('truetype');
 }
 
 .iconfont {
@@ -11,6 +11,10 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.iconxiajiang-VP:before {
+  content: "\e6b9";
 }
 
 .iconlishishuju:before {

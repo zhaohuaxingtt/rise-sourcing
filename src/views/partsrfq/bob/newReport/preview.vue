@@ -7,9 +7,9 @@
     @opened="open"
   >
     <iCard :collapse="false" id="downloadRef">
-      <div>
+      <div class="clearfix">
         <iButton
-          class="margin-left30"
+          class="margin-left10 "
           style="float: right"
           @click="handleDownload"
           >{{ $t("LK_XIAZAI") }}</iButton
@@ -255,5 +255,12 @@ export default {
       text-align: center;
     }
   }
+}
+.clearfix::after {
+  content: '';
+  display: block;
+  font-size: 0;
+  height: 0;
+  clear: both;
 }
 </style>

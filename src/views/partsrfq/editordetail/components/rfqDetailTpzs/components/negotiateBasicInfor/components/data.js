@@ -31,16 +31,16 @@ export const supplierTableTitle = [
   { props: 'description', name: 'EP打分', key: 'TPZS.EPDF', },
 ]
 export const fixedRecordTableTitle = [
-  { props: 'dataCategory', name: '零件号', key: 'TPZS.LJH', },
+  { props: 'partNum', name: '零件号', key: 'TPZS.LJH', },
   {
-    props: 'dataValue', name: 'RFQ编号', key: 'costanalysismanage.RfqBianHao', width: 120,
+    props: 'rfqId', name: 'RFQ编号', key: 'costanalysismanage.RfqBianHao', width: 120,
   },
-  { props: 'calculateValue', name: 'RFQ名称', key: 'costanalysismanage.RfqMingCheng', },
-  { props: 'description', name: '材料组名称', key: 'TPZS.CLZMC', },
-  { props: 'description', name: '工艺组名称', key: 'TPZS.GYZMC', },
-  { props: 'description', name: '零件采购项目', key: 'partsignLanguage.CaiGouXiangMuJianLi', },
-  { props: 'description', name: '车型项目名称', key: 'LK_CHEXINGXIANGMUMINGCHENG', },
-  { props: 'description', name: '定点供应商', key: 'LK_FIXEDPOINTSUPPLIER', },
-  { props: 'description', name: '定点金额', key: 'TPZS.DDJE', },
-  { props: 'description', name: '定点时间', key: 'TPZS.DDSJ', },
+  { props: 'rfqName', name: 'RFQ名称', key: 'costanalysismanage.RfqMingCheng', },
+  { props: 'categoryName', name: '材料组名称', key: 'TPZS.CLZMC', },
+  { props: 'stuffName', name: '工艺组名称', key: 'TPZS.GYZMC', },
+  { props: 'partProjectType', name: '零件采购项目', key: 'partsignLanguage.CaiGouXiangMuJianLi', },
+  { props: 'carTypeProj', name: '车型项目名称', key: 'LK_CHEXINGXIANGMUMINGCHENG', },
+  { props: 'supplierNameCn', name: '定点供应商', key: 'LK_FIXEDPOINTSUPPLIER', },
+  { props: 'apriceModel', name: '定点金额', key: 'TPZS.DDJE', },
+  { props: 'nominateTime', name: '定点时间', key: 'TPZS.DDSJ', },
 ]
