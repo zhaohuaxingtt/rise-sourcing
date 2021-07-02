@@ -664,8 +664,11 @@ export default {
 
 <style lang="scss" scoped>
 .container{
-  padding-top: 20px;
-  height: 92%;
+  width: 95.5%;
+  height: 94%;
+  position: absolute;
+  top: 0;
+  padding-top: 80px;
 
   .baApply-table{
     ::v-deep .el-input__inner{
