@@ -23,8 +23,8 @@ export const letterListSearch =[
     {props:'nominateAppId',label:'定点申请单号',type:'input',labelKey:'LK_DINGDIANXINDANHAO'},
     {props:'supplierName',label:'供应商名称',type:'input',labelKey:'LK_GONGYINGSHANGMINGCHENG'},
     {props:'supplierSapNum',label:'供应商SAP号',type:'input',labelKey:'LK_GONGYINGSHANGSAPHAO'},
-    {props:'nominateDate',label:'定点时间起⽌',type:'datePicker',labelKey:'LK_DINGDIANSHIJIANQIZHI'},
-    {props:'showSelf',label:'是否显⽰⾃⼰',type:'select',labelKey:'LK_SHIFOUXIANSHIZIJI',selectOption:'showSelf'},
+    {props:'nominateDate',label:'定点时间起⽌',type:'datePicker',labelKey:'LK_DINGDIANSHIJIANQIZHI_1'},
+    {props:'showSelf',label:'是否显⽰⾃⼰',type:'select',labelKey:'LK_SHIFOUXIANSHIZIJI_1',selectOption:'showSelf'},
 ]
 
 // loi搜索条件
@@ -41,7 +41,7 @@ export const loiListSearch = [
   {props:'supplierName',label:'供应商名称',type:'input',labelKey:'LK_GONGYINGSHANGMINGCHENG'},
   {props:'sapNum',label:'供应商SAP号',type:'input',labelKey:'LK_GONGYINGSHANGSAPHAO'},
   {props:'nominateDate',label:'LOI⽣成时间',type:'datePicker',labelKey:'LK_LOISHENGCHENGSHIJIAN'},
-  {props:'show',label:'是否显⽰⾃⼰',type:'select',labelKey:'LK_SHIFOUXIANSHIZIJI',selectOption:'isShowMe'},
+  {props:'show',label:'是否显⽰⾃⼰',type:'select',labelKey:'LK_SHIFOUXIANSHIZIJI_1',selectOption:'isShowMe'},
 ]
 
 // 定点信列表表头

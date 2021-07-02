@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-22 11:14:02
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-01 14:16:14
+ * @LastEditTime: 2021-07-01 19:06:20
  * @Description: 财务目标价-目标价查询
  * @FilePath: \front-web\src\views\financialTargetPrice\query\index.vue
 -->
@@ -22,7 +22,7 @@
               v-for="item in selectOptions[item.selectOption] || []"
               :key="item.code"
               :label="item.name"
-              :value="item.code">
+              :value="item.selectOption === 'LINIE' ? item.name : item.code">
             </el-option>
           </iSelect> 
           <iDatePicker v-else-if="item.type === 'dateRange'" value-format="" type="daterange" v-model="searchParams[item.value]" :default-time="['00:00:00', '23:59:59']"></iDatePicker>
@@ -78,7 +78,7 @@
     <!------------------------------------------------------------------------>
     <!--                  指派弹窗                                      --->
     <!------------------------------------------------------------------------>
-    <assignDialog :dialogVisible="assignDialogVisible" @changeVisible="changeAssignDialogVisible" />
+    <assignDialog ref="assign" :dialogVisible="assignDialogVisible" @changeVisible="changeAssignDialogVisible" @sendAccessory="targetAppoint" />
   </iPage>
 </template>
 
@@ -140,6 +140,9 @@ export default {
     this.getTableList()
   },
   methods: {
+    handleSelectionChange(val) {
+      this.selectItems = val
+    },
     reset() {
       this.searchParams = {
         buyerId: '',
@@ -243,6 +246,8 @@ export default {
         } else {
           iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
         }
+      }).finally(() => {
+        this.$refs.assign.changeAssigLoading(false)
       })
     },
     // 获取车型字典

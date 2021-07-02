@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-22 17:03:48
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-01 14:00:28
+ * @LastEditTime: 2021-07-01 18:47:42
  * @Description: 
  * @FilePath: \front-web\src\views\financialTargetPrice\approval\data.js
  */
@@ -35,13 +35,13 @@ export const searchList = [
   {value: 'partNum', label: '零件号', type: 'input', i18n_label: 'LINGJIANHAO',},
   {value: 'partName', label: '零件名称', type: 'input', i18n_label: 'LINGJIANMINGCHENG'},
   {value: 'cfId', label: 'CF', type: 'select', i18n_label: 'CF',selectOption:'CF_USER'},
-  {value: 'linieName', label: 'LINIE', type: 'select', i18n_label: 'LINIE',selectOption: 'LINIE'},
-  {value: 'buyerId', label: '询价采购员', type: 'select', i18n_label: 'XUNJIACAIGOUYUAN',},
+  {value: 'linieName', label: 'LINIE', type: 'input', i18n_label: 'LINIE',selectOption: 'LINIE'},
+  {value: 'buyerName', label: '询价采购员', type: 'input', i18n_label: 'XUNJIACAIGOUYUAN',},
   {value: 'applyType', label: '目标价分类', type: 'select', i18n_label: 'MUBIAOJIAFENLEI',selectOption:'CF_APPLY_TYPE'}
 ]
 
 export const detailList = [
-  {value: 'fsnrGsnrNum', label: '零件号', type: 'input', i18n_label: 'LINGJIANHAO',},
+  {value: 'partNum', label: '零件号', type: 'input', i18n_label: 'LINGJIANHAO',},
   {value: 'partNameZh', label: '零件名称', type: 'input', i18n_label: 'LINGJIANMINGCHENG',},
   {value: 'lcBPrice', label: 'Old CF LC_B Target', type: 'input', i18n_label: 'OLDCFLCBTARGET',parent: 'oldCfInfVO'},
   {value: 'lcBPrice', label: 'New CF LC_B Target(人民币)', type: 'input', i18n_label: 'NEWCFLCBTARGET_RMB',parent: 'newCfInfVO'},

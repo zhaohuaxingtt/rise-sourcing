@@ -129,7 +129,7 @@ module.exports = {
 					},
 					'/quotationApiDL': {
 						// target: 'http://10.160.138.38:8788',
-						target: 'http://10.122.18.166:8021',
+						target: 'http://10.122.17.38:8021',
 						changeOrigin: true,
 						pathRewrite: {
 							"^/quotationApiDL": ""
@@ -137,35 +137,35 @@ module.exports = {
 					},
 					'/supplierApiDL': {  // 供应商
 						// target: 'http://10.160.137.63:8788',
-						target: 'http://10.122.18.166:8025',
+						target: 'http://10.122.17.38:8025',
 						changeOrigin: true,
 						pathRewrite: {
 							"^/supplierApiDL": ""
 						}
 					},
 					'/supplierApiWdl': { //   供应商
-						target: 'http://10.122.18.166:8021',
+						target: 'http://10.122.17.38:8021',
 						changeOrigin: true,
 						pathRewrite: {
 							"^/supplierApiWdl": ""
 						}
 					},
 					'/supplierApiXW': { //   供应商
-						target: 'http://10.122.18.166:8021',
+						target: 'http://10.122.17.38:8021',
 						changeOrigin: true,
 						pathRewrite: {
 							"^/supplierApiXW": ""
 						}
 					},
 					'/supplierApiBob': { //   供应商
-						target: 'http://10.122.18.166:8025',
+						target: 'http://10.122.17.38:8025',
 						changeOrigin: true,
 						pathRewrite: {
 							"^/supplierApiBob": ""
 						}
 					},
 						'supplierApiMH': {
-							target: 'http://10.122.18.166:8025',
+							target: 'http://10.122.17.38:8025',
 							// target: 'http://192.168.50.50:8029/',
 							changeOrigin: true,
 							pathRewrite: {
@@ -173,7 +173,7 @@ module.exports = {
 							}
 						},
 						'supplierApiWDL': {
-							target: 'http://10.122.18.166:8025',
+							target: 'http://10.122.17.38:8025',
 							// target: 'http://10.160.137.16:8029/',
 							changeOrigin: true,
 							pathRewrite: {
@@ -181,7 +181,7 @@ module.exports = {
 							}
 						},
 						'supplierApiTYP': {
-							target: 'http://10.122.18.166:8025',
+							target: 'http://10.122.17.38:8025',
 								// target: 'http://192.168.50.152:8029/',
 								changeOrigin: true,
 								pathRewrite: {
@@ -189,7 +189,7 @@ module.exports = {
 								}
 						},
 						'procurementrequirementZZB': {
-							target: 'http://10.122.18.166:8023',
+							target: 'http://10.122.17.38:8023',
 								// target: 'http://10.160.141.45:8023/',
 								// target: 'http://10.160.136.144:8023/',
 								changeOrigin: true,
@@ -200,7 +200,7 @@ module.exports = {
 						'/supplierApiWJS': { //王洁松服务地址
 								// target: 'http://192.168.50.89:8029',
 								// target: 'http://192.168.50.239:8029',
-								target: 'http://10.122.18.166:8025',
+								target: 'http://10.122.17.38:8025',
 								changeOrigin: true,
 								pathRewrite: {
 										"^/supplierApiWJS": ""
@@ -214,14 +214,14 @@ module.exports = {
                 }
             },
 						'/nego': {
-							target: 'http://10.122.18.166:9022',
+							target: 'http://10.122.17.38:8035',
 							changeOrigin: true,
 							pathRewrite: {
 									"^/nego": "/nego"
 							}
 					},
             '/tpInfoApi': { //高攀弘服务地址
-                // target: 'http://10.122.18.166:8023',
+                // target: 'http://10.122.17.38:8023',
 								// target: 'http://10.160.142.20:8023',
                 target: 'http://10.160.141.45:8023',
                 changeOrigin: true,
@@ -230,21 +230,21 @@ module.exports = {
                 }
             },
             '/partProcureApi': { //赵文鹏服务地址
-                target: 'http://10.122.18.166:8025',
+                target: 'http://10.122.17.38:8025',
                 changeOrigin: true,
                 pathRewrite: {
                     "^/partProcureApi": ""
                 }
             },
             '/commonApi': { //向东，common模块的api地址
-                target: 'http://10.122.18.166:8014',
+                target: 'http://10.122.17.38:8014',
                 changeOrigin: true,
                 pathRewrite: {
                     "^/commonApi": ""
                 }
             },
             '/rfqApi': { //周德华，rfq模块的api地址
-                target: 'http://10.122.18.166:8025',
+                target: 'http://10.122.17.38:8025',
 								// target: 'http://rise-front-web.apps.vmocp-dev.csvw.com', // SIT
                 // target: 'http://10.160.137.16:8029',  // 周德华
                 // target: 'http://192.168.50.89:8029', // 王洁松
@@ -258,7 +258,7 @@ module.exports = {
                 }
             },
             '/wsApi': {
-                target: 'ws://10.122.18.166:8014',
+                target: 'ws://10.122.17.38:8014',
                 changeOrigin: true,
                 ws: true,
                 pathRewrite: {
@@ -266,14 +266,14 @@ module.exports = {
                 }
             },
             '/dictionaryApi': { // 数据字典api地址
-                target: 'http://10.122.18.166:8011',
+                target: 'http://10.122.17.38:8011',
                 changeOrigin: true,
                 pathRewrite: {
                     "^/dictionaryApi": ""
                 }
             },
             '/usercenterApi': { // usercenter.../唐开雄
-                target: 'http://10.122.18.166:8015',
+                target: 'http://10.122.17.38:8015',
                 // target:'http://10.160.137.165:8015',
                 changeOrigin: true,
                 pathRewrite: {
@@ -281,18 +281,15 @@ module.exports = {
                 }
             },
             '/partsProcureApi': { // partsProcure.../许睿
-                target: 'http://10.122.18.166:8018',
+                target: 'http://10.122.17.38:8018',
                 changeOrigin: true,
                 pathRewrite: {
                     "^/partsProcureApi": ""
                 }
             },
             '/ws2Api': { // ws2Api.../ 王鹏霄
-                // target: 'http://rise-front-web.apps.vmocp-dev.csvw',    //  sit
-                // target: 'http://192.168.50.183:8022',    //  鑫哥
-                // target: 'http://192.168.50.56:8022',    //  霄哥
-                target: 'http://10.122.18.166:8022',    //  dev
-                // target: 'http://192.168.50.160:8022',// 圆圆
+                target: 'http://10.122.17.38:8022',
+                // target: 'http://192.168.50.41:8022',// 圆圆
                 // target: 'http://192.168.50.40:8022',// 立立
                 // target: 'http://cbbbc967414f.ngrok.io',
                 changeOrigin: true,
@@ -301,14 +298,14 @@ module.exports = {
                 }
             },
 						'/supplierApiRfqlist': { //   供应商
-							target: 'http://10.122.18.166:8025',
+							target: 'http://10.122.17.38:8025',
 							changeOrigin: true,
 							pathRewrite: {
 								"^/supplierApiRfqlist": ""
 							}
 						},
 						'/supplierApi': { //   供应商
-							target: 'http://10.122.18.166:8010',
+							target: 'http://10.122.17.38:8010',
 							changeOrigin: true,
 							pathRewrite: {
 								"^/supplierApi": ""
@@ -316,11 +313,10 @@ module.exports = {
 						},
 						'/quotationApi': { // 供应商报价
 							// target: 'http://10.160.136.42:8021',
-							target: 'http://10.122.18.166:8021/',
-							// target: 'http://10.160.136.115:8021', // 智博
+							target: 'http://10.122.17.38:8021/',
 							// target: 'http://10.160.136.83:8021', // 智博
 							// target: 'http://10.160.138.206:8093', // 顾晓炜
-							// target: 'http://10.122.18.166:8093', // 高攀弘
+							// target: 'http://10.122.17.38:8093', // 高攀弘
 							changeOrigin: true,
 							pathRewrite: {
 								"^/quotationApi": ""

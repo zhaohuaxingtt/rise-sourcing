@@ -185,7 +185,7 @@
 
 <script>
 import { icon, iSearch, iInput, iSelect, iCard, iPagination, iMessage } from "rise"
-import logButton from "@/views/partsign/editordetail/components/logButton"
+import logButton from "@/components/logButton"
 import tableList from "@/views/partsign/editordetail/components/tableList"
 import downloadDialog from './components/downloadFiles'
 import cbdDialog from './components/cbdStatus'

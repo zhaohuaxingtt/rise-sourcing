@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-22 09:12:02
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-01 14:24:58
+ * @LastEditTime: 2021-07-01 18:44:28
  * @Description: 财务目标价-目标价审批
  * @FilePath: \front-web\src\views\financialTargetPrice\approval\index.vue
 -->
@@ -22,7 +22,7 @@
               v-for="item in selectOptions[item.selectOption] || []"
               :key="item.code"
               :label="item.name"
-              :value="item.code">
+              :value="item.selectOption === 'LINIE' ? item.name : item.code">
             </el-option>
           </iSelect> 
           <iDatePicker v-else-if="item.type === 'date'" value-format="" type="date" v-model="searchParams[item.value]"></iDatePicker>

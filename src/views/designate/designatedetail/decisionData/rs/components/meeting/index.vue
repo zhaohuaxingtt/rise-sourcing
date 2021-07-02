@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:17:25
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-29 16:04:35
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-07-02 15:52:06
  * @Description: 上会/备案RS单
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\rs\components\meeting\index.vue
 -->
@@ -42,7 +42,7 @@
           <p v-for="(item,index) in remarkItem" :key="index">{{item.value}}</p>
         </div>
       </div>
-      <div v-if="projectType === 'PT04' || projectType === 'PT19'" style="text-align:right;">汇率：Exchange rate: 1USD=7.8RMB</div>
+      <div v-if="projectType === 'PT04' || projectType === 'PT19'" style="text-align:right;">汇率：Exchange rate: 1{{basicData.currency}}={{basicData.cfExchangeRate}}RMB</div>
     </iCard>
     <iCard v-if="!isPreview && !showSignatureForm" :title="language('SHANGHUIBEIZHU','上会备注')" class="margin-top20">
       <iButton slot="header-control" @click="handleSaveRemarks" :loading="saveLoading">{{language('BAOCUN','保存')}}</iButton>
@@ -70,14 +70,21 @@
         </div>
       </div>
     </iCard>
+    <iCard title="Prototype Cost List" class="margin-top20" v-if='PrototypeList.length > 5'>
+      <el-table :data='PrototypeList'>
+        <template v-for="(items,index) in prototypeTitleList">
+          <el-table-column :key="index" :prop="items.props" align="center" :label="language(items.i18nKey,items.i18nName)"></el-table-column>
+        </template>
+      </el-table>
+    </iCard>
   </div>
 </template>
 
 <script>
 import { iCard, iButton, iInput, icon, iMessage } from 'rise'
-import { nomalDetailTitle, nomalDetailTitleBlue, nomalTableTitle, meetingRemark, checkList, gsDetailTitleBlue, gsTableTitle, dbTableTitle } from './data'
+import { nomalDetailTitle, nomalDetailTitleBlue, nomalTableTitle, meetingRemark, checkList, gsDetailTitleBlue, gsTableTitle,sparePartTableTitle,accessoryTableTitle,prototypeTitleList,dbTableTitle } from './data'
 import tableList from '@/views/designate/designatedetail/components/tableList'
-import { getList, getRemark, updateRemark } from '@/api/designate/decisiondata/rs'
+import { getList, getRemark, updateRemark,getPrototypeList } from '@/api/designate/decisiondata/rs'
 export default {
   props: {
     isPreview: {type:Boolean, default:false},
@@ -97,7 +104,9 @@ export default {
       remarkItem: [],
       checkList: checkList,
       resetRemarkType: '',
-      saveLoading: false
+      saveLoading: false,
+      PrototypeList:[],
+      prototypeTitleList:prototypeTitleList
     }
   },
   computed: {
@@ -131,7 +140,20 @@ export default {
       return this.remarkItem.map(item => item.value).join('\n')
     }
   },
+  created(){this.getPrototypeList()},
   methods: {
+    /**
+     * @description: US 描述当大于5条的时候则需要显示这个card 不管任何零件采购项目。任何linie
+     * @param {*}
+     * @return {*}
+     */
+    getPrototypeList(){
+      getPrototypeList().then(res=>{
+          this.PrototypeList = res.data.list
+      }).catch(err=>{
+        console.warn(err)
+      })
+    },
     /**
      * @Description: 保存备注
      * @Author: Luoshuang
