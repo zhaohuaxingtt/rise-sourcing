@@ -235,7 +235,8 @@ export default {
     //  下载手工清单
     downloadList(){
       exportPlanCommutityList({
-        versionId: this.vereceive.id
+        versionId: this.vereceive.id,
+        planType: this.isThen ? 'current_year' : 'next_year',
       }).then(res => {
 
       })

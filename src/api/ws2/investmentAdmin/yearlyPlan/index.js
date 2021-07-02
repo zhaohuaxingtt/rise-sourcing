@@ -10,7 +10,7 @@ export function exportPlanCommutityList(params) {
     return requestFile({
       url: `/exportPlanCommutityList/${params.versionId}`,
       method: 'GET',
-      data: params,
+      params: params,
     })
 }
 
