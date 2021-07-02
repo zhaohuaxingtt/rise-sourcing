@@ -13,7 +13,7 @@
         <!--预览-->
         <iButton @click="handlePreview">{{ $t('TPZS.YULAN') }}</iButton>
         <!--保存-->
-        <iButton @click="saveOrUpdateScheme">{{ $t('LK_BAOCUN') }}</iButton>
+        <iButton @click="saveOrUpdateScheme('all')">{{ $t('LK_BAOCUN') }}</iButton>
       </div>
     </div>
     <div class="partBox margin-bottom20">
@@ -51,23 +51,28 @@
     <!--图形-->
     <div class="chartBox">
       <iCard class="curveBox" :title="'Volume Pricin' + $t('TPZS.QUXIAN')">
-        <curveChart chartHeight="260px"/>
+        <curveChart
+            chartHeight="260px"
+            :newestScatterData="curveChartData.newestScatterData"
+            :targetScatterData="curveChartData.targetScatterData"
+            :lineData="curveChartData.lineData"
+        />
       </iCard>
 
-      <iCard class="analyzeBox">
+      <iCard class="analyzeBox" v-loading="analyzeLoading">
         <div class="margin-bottom20 clearFloat">
           <span class="font18 font-weight">Volume Pricing{{ $t('TPZS.FENXI') }}</span>
           <div class="floatright">
             <!--保存-->
-            <iButton>{{ $t('LK_BAOCUN') }}</iButton>
+            <iButton @click="saveOrUpdateScheme('analyze')">{{ $t('LK_BAOCUN') }}</iButton>
           </div>
         </div>
-        <analyzeChart ref="analyzeChart"/>
+        <analyzeChart ref="analyzeChart" :dataInfo="dataInfo"/>
       </iCard>
     </div>
 
     <!-- 自定义零件列表 -->
-    <customPart :partList="partList" :visible="customDialog.visible" :Key="customDialog.key"/>
+    <customPart v-if="customDialog.visible" :partList="originPartList" :visible="customDialog.visible" :Key="customDialog.key" @saveCustomPart="saveCustomPart"/>
 
     <previewDialog v-model="previewDialog"/>
   </iPage>
@@ -108,8 +113,10 @@ export default {
   data() {
     return {
       partList: [],
+      originPartList: [],
       partItemCurrent: 0,
       currentBatchNumber: '',
+      currentPartsId: '',
       customDialog: {
         key: 0,
         visible: false,
@@ -117,12 +124,20 @@ export default {
       dataInfo: {},
       previewDialog: false,
       pageLoading: false,
+      curveChartData: {
+        newestScatterData: [],
+        targetScatterData: [],
+        lineData: [],
+      },
+      analyzeLoading: false,
+      currentSupplierId: '1'
     };
   },
   methods: {
     handlePartItemClick(item, index) {
       this.partItemCurrent = index;
       this.currentBatchNumber = item.batchNumber;
+      this.currentPartsId = item.id;
       this.getDataInfo();
     },
     handlePartItemClose(e, item) {
@@ -139,6 +154,7 @@ export default {
         if (res.result) {
           this.partItemCurrent = 0;
           this.currentBatchNumber = this.partList[0].batchNumber;
+          this.currentPartsId = this.partList[0].id;
           this.getDataInfo();
         }
         this.resultMessage(res);
@@ -152,7 +168,10 @@ export default {
     async getDataInfo() {
       try {
         this.pageLoading = true;
-        let req = {};
+        let req = {
+          partsId: this.currentPartsId,
+          supplierId: this.currentSupplierId,
+        };
         if (this.$route.query.type === 'edit') {
           req.id = this.$route.query.schemeId;
         }
@@ -162,32 +181,73 @@ export default {
         }
         const res = await getAnalysisProcessing(req);
         this.dataInfo = res.data;
+        this.originPartList = res.data.partsList
         this.partList = res.data.partsList.filter(item => {
           return item.isShow;
         });
+        this.currentPartsId = this.partList[0] ? this.partList[0].id : '';
+        this.currentBatchNumber = this.partList[0] ? this.partList[0].batchNumber : '';
+        const analysisCurveData = Array.isArray(this.dataInfo.analysisCurve) ? this.dataInfo.analysisCurve : [];
+        this.handleCurveData(analysisCurveData);
         this.pageLoading = false;
       } catch {
         this.dataInfo = {};
         this.pageLoading = false;
       }
     },
-    async saveOrUpdateScheme() {
+    async saveOrUpdateScheme(params) {
       try {
-        this.pageLoading = true;
         const req = {
-          costDetailList: this.$refs.totalUnitPriceTable.tableListData,
-          estimatedActualTotalPro: this.$refs.analyzeChart.dataInfo.estimatedActualTotalPro,
+          userId: this.$store.state.permission.userInfo.id,
+          partsId: this.currentPartsId,
+          supplierId: this.currentSupplierId,
+          batchNumber: this.currentBatchNumber,
+          partsList: [this.partList[this.partItemCurrent]]
         };
-        const res = saveOrUpdateScheme(req);
+        if (this.$route.query.type === 'edit') {
+          req.id = this.$route.query.schemeId;
+        }
+        if (params === 'all') {
+          this.pageLoading = true;
+          req.costDetailList = this.$refs.totalUnitPriceTable.tableListData.concat(this.$refs.totalUnitPriceTable.hideTableData);
+          req.estimatedActualTotalPro = this.$refs.analyzeChart.dataInfo.estimatedActualTotalPro;
+        } else if (params === 'analyze') {
+          this.analyzeLoading = true;
+          req.estimatedActualTotalPro = this.$refs.analyzeChart.dataInfo.estimatedActualTotalPro;
+        }
+        const res = await saveOrUpdateScheme(req);
         this.resultMessage(res);
         this.pageLoading = false;
+        this.analyzeLoading = false;
       } catch {
         this.pageLoading = false;
+        this.analyzeLoading = false;
       }
     },
     handlePreview() {
       this.previewDialog = true;
     },
+    handleCurveData(data) {
+      this.curveChartData.newestScatterData = [];
+      this.curveChartData.targetScatterData = [];
+      this.curveChartData.lineData = [];
+      data.map(item => {
+        if (item.priceFlag === 'LP') {
+          this.curveChartData.newestScatterData.push([item.production, item.price]);
+          this.curveChartData.lineData.push([item.production, item.price]);
+        } else if (item.priceFlag === 'TP') {
+          this.curveChartData.targetScatterData.push([item.production, item.price]);
+          this.curveChartData.lineData.push([item.production, item.price]);
+        } else {
+          this.curveChartData.lineData.push([item.production, item.price]);
+        }
+      });
+    },
+    // 保存自定义零件
+    saveCustomPart() {
+      this.$set(this.customDialog, 'visible', false)
+      this.getDataInfo()
+    }
   },
 };
 </script>
