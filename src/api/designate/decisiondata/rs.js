@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-04 14:41:32
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-02 17:42:41
+ * @LastEditTime: 2021-07-02 18:25:15
  * @Description: rs单相关接口
  * @FilePath: \front-web\src\api\designate\decisiondata\rs.js
  */
@@ -82,7 +82,7 @@ export function getPrototypeList(params) {
 // 获取部门审批列表
 export function getDepartApproval(nominateAppId) {
   return requst({
-    url: `http://192.168.50.50:9029/sourcing/web/nominate/nomi-approval-process/depart-approval/${nominateAppId}`,
+    url: `/nominate/nomi-approval-process/depart-approval/${nominateAppId}`,
     method: 'GET'
   })
 }
