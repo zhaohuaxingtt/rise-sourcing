@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-22 09:12:31
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-02 14:34:00
+ * @LastEditTime: 2021-07-02 17:21:40
  * @Description: 财务目标价-目标价维护
  * @FilePath: \front-web\src\views\financialTargetPrice\maintenance\index.vue
 -->
@@ -338,6 +338,7 @@ export default {
       this.tableLoading = true
       const params = omit({
         ...this.searchParams,
+        searchType: '0',
         applyDateStart: this.searchParams.applyDate ? this.searchParams.applyDate[0] : null,
         applyDateEnd: this.searchParams.applyDate ? this.searchParams.applyDate[1] : null,
         responseDateStart: this.searchParams.responseDate ? this.searchParams.responseDate[0] : null,
