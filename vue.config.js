@@ -214,7 +214,7 @@ module.exports = {
                 }
             },
 						'/nego': {
-							target: 'http://10.122.17.38:9022',
+							target: 'http://10.122.17.38:8035',
 							changeOrigin: true,
 							pathRewrite: {
 									"^/nego": "/nego"
