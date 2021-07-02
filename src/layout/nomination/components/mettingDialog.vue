@@ -1,7 +1,7 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-06-30 16:51:56
- * @LastEditTime: 2021-07-01 15:46:24
+ * @LastEditTime: 2021-07-02 16:05:49
  * @LastEditors: Please set LastEditors
  * @Description: 提交定点申请，如果是上会类型，上会弹窗
  * @FilePath: /front-web/src/views/designate/home/components/mettingDialog/index.vue
@@ -15,8 +15,33 @@
         <!-- <iButton>{{ language('strategicdoc.ShangChuanWenJian') }}</iButton> -->
       </div>
     </div>
+    <div class="dialog-form">
+      <el-form>
+        <el-form-item :label="`${language('XUANZEHUIYILEIBIE','选择会议类别')}:`">
+          <el-radio-group v-model="meetingType">
+					<iRadio
+            v-for="(item, index) in meetingTypes"
+            :key="index"
+            :label="item.id"
+            size="small"
+            border>{{language(item.key, item.name)}}</iRadio>
+				</el-radio-group>
+      </el-form-item>
+      </el-form>
+      <div class="dialog-form-sbtn">
+        <iButton :loading="loading" @click="checkNomiMeetingSubmit">{{language('QINGXUANZE', '选择')}}</iButton>
+      </div>
+    </div>
     <div class="body" v-loading="tableLoading">
-      <tableList index :height="controlHeight ? '91%' : '100%'" v-show="visible" class="table margin-top20" :tableData="dataList" :tableTitle="tableTitle" @handleSelectionChange="handleSelectionChange">
+      <tableList
+        index
+        :radio="true"
+        :height="controlHeight ? '91%' : '100%'"
+        v-show="visible" class="table margin-top20" 
+        :tableData="tableListData" 
+        :tableTitle="tableTitle" 
+        @handleSelectionChange="handleSelectionChange"
+        :lang="true">
         <template #uploadDate="scope">
           {{scope.row.uploadDate | dateFilter('YYYY-MM-DD')}}
         </template>
@@ -25,6 +50,7 @@
     <div slot="footer" class="footer">
       <iPagination v-update
         class="pagination"
+        @size-change="handleSizeChange($event, getFetchData)"
         @current-change="handleCurrentChange($event, getFetchData)"
         background
         :current-page="page.currPage"
@@ -37,20 +63,20 @@
 </template>
 
 <script>
-import { iPagination, iDialog, iMessage, iButton } from '@/components'
-import { mettingTableTitle as tableTitle } from './data'
+import { iPagination, iDialog, iMessage, iButton,iRadio } from '@/components'
+import { mettingTableTitle as tableTitle, meetingTypes } from './data'
 import tableList from '@/views/designate/supplier/components/tableList'
 import filters from '@/utils/filters'
-import { attachMixins } from '@/utils/attachMixins'
 import { pageMixins } from '@/utils/pageMixins'
 
 import {
-  batchConfirmSelSheet
-} from '@/api/designate/nomination/selsheet'
+    checkNomiMeetingSubmit2,
+    getMeetingPage
+} from '@/api/designate'
 
 export default {
-  components: { tableList, iPagination, iDialog, iButton },
-  mixins: [ pageMixins, filters, attachMixins ],
+  components: { tableList, iPagination, iDialog, iButton, iRadio },
+  mixins: [ pageMixins, filters ],
   props: {
     ...iDialog.props,
     visible: {
@@ -84,8 +110,14 @@ export default {
   data() {
     return {
       loading: false,
+      nomiAppId: this.$route.query.desinateId,
       tableTitle,
+      meetingTypes,
+      meetingType: '',
       controlHeight: 0,
+      tableLoading: false,
+      tableListData: [],
+      selectedData: [],
       page: {
         currPage: 1,
         pageSize: 10,
@@ -94,38 +126,82 @@ export default {
     }
   },
   methods: {
-    // 获取sel附件列表
+    handleSelectionChange(data) {
+      this.selectedData = data
+    },
+    // 获取会议列表
     getFetchData() {
       if (!this.nomiAppId) return iMessage.error(this.language('nominationLanguage_DingDianIDNotNull','定点申请单id不能为空'))
       this.tableLoading = true
       const params = Object.assign({
         nomiAppId: this.nomiAppId,
-        sortColumn: 'sort',
-        isAsc: true,
-        fileType: this.fileType,
-        pageNo: (this.page && this.page.currPage) || 1,
-        pageSize: (this.page && this.page.pageSize) || 10
+        current: this.page.currPage,
+        size: this.page.pageSize
       })
-      this.getDataList(params)
-    },
-    // SEL单据确认
-    async selConfirm() {
-      const confirmInfo = await this.$confirm(this.language('LK_EXCUTESURE','您确定要执行该操作吗？'))
-      if (confirmInfo !== 'confirm') return
-      try {
-        const res = await batchConfirmSelSheet({nominateIdArr: [this.nomiAppId]})
+      getMeetingPage(params).then(res => {
+        this.tableLoading = false
         if (res.code === '200') {
-          iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'))
-          this.getFetchData()
-          // 刷新父列表
-          this.$emit('refresh', {})
+          this.tableListData = res.data.records || []
+          this.page.totalCount = res.data.total
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }
-      } catch (e) {
+        console.log(res)
+      }).catch(e => {
+        this.tableLoading = false
+        iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
+      })
+    },
+    async checkNomiMeetingSubmit() {
+      const { query } = this.$route;
+      const {desinateId} = query;
+      const data = {
+          nominateIdArr:[Number(desinateId)],
+          // nominationType: this.$store.getters.nominationType || '',
+          meetingResult: this.meetingType,
+          meeting: this.selectedData.map(o => o.id)
+      }
+      if (!this.meetingType) {
+        iMessage.error(this.language('QINGXUANZEHUIYILEIBIE','请选择会议类别'))
+        return
+      }
+      if (!data.meeting.length) {
+        iMessage.error(this.language('LK_QINGXUANZEHUIYI','请选择会议'))
+        return
+      }
+      try {
+        this.loading = true
+        const res = await checkNomiMeetingSubmit2(data)
+        if (res && res.code === '200') {
+          let dataInfo = ''
+          if (res.data && res.data.length) {
+            res.data.forEach((item) => {
+            if (this.$i18n.locale === "zh") {
+              dataInfo+= `${item.zhMsg}\n`
+            } else {
+              dataInfo+= `${item.engMsg}\n`
+            }              
+          })
+          this.$confirm(dataInfo,'提示', {
+            confirmButtonText: '确定',
+            showCancelButton: false,
+            type: 'warning'
+          })
+        } else {
+          // 校验成功
+          this.$emit('success', {})
+          this.$emit('update:visible', false)
+        }
+        
+        } else {
+            iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
+        this.loading = false
+      } catch(e) {
+        this.loading = false
         iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
       }
-    },
+    }
     
   }
 }
@@ -152,7 +228,14 @@ export default {
     box-sizing: border-box;
     padding-right: 40px;
   }
-
+  .dialog-form-sbtn {
+    min-height: 50px;
+    margin-top: 15px;
+    padding-top:15px;
+    border-top: 1px solid #f8f8f8;
+    display: flex;
+    justify-content: flex-end;
+  }
   ::v-deep .el-dialog {
     width: 1745px!important;
     position: absolute;
