@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-22 14:14:49
- * @LastEditTime: 2021-06-28 19:19:25
+ * @LastEditTime: 2021-07-02 17:52:28
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\supplierscore\index.vue
@@ -9,8 +9,7 @@
 <template>
   <iPage class="supplierScore">
     <div class="header clearFloat">
-      <!-- <div class="title">{{ language("XUNYUANZHIXING", "寻源执行") }}</div> -->
-      <div class="title">寻源执行</div>
+      <div class="title">{{ language("XUNYUANZHIXING", "寻源执行") }}</div>
       <iNavMvp class="nav" :lev="2" :list="navList" />
       <div class="control">
         <logButton class="margin-left20" />
@@ -27,12 +26,10 @@
       :searchKey="PARTSIGN_CONFIRMBUTTON">
       <el-form>
         <el-form-item :label="language('RFQBIANHAO', 'RFQ编号')">
-          <!-- <iInput v-model="form.rfqId" :placeholder="language('QINGSHURURFQBIANHAO', '请输入RFQ编号')" /> -->
-          <iInput v-model="form.rfqId" placeholder="请输入RFQ编号" />
+          <iInput v-model="form.rfqId" :placeholder="language('QINGSHURURFQBIANHAO', '请输入RFQ编号')" />
         </el-form-item>
         <el-form-item :label="language('RFQMINGCHENG', 'RFQ名称')">
-          <!-- <iInput v-model="form.rfqName" :placeholder="language('QINGSHURURFQMINGCHENG', '请输入RFQ名称')" /> -->
-          <iInput v-model="form.rfqName" placeholder="请输入RFQ名称" />
+          <iInput v-model="form.rfqName" :placeholder="language('QINGSHURURFQMINGCHENG', '请输入RFQ名称')" />
         </el-form-item>
         <el-form-item label="LINIE">
           <iSelect
@@ -41,11 +38,9 @@
             v-model="form.linieUserId"
             :remote-method="findLinieByName"
             :loading="linieLoading"
-            placeholder="请输入LINIE"
-            loading-text="加载中"
+            :placeholder="language('QINGSHURULINIE', '请输入LINIE')"
+            :loading-text="language('JIAZAIZHONG', '加载中')"
           >
-          <!-- :placeholder="language('QINGSHURULINIE', '请输入LINIE')" -->
-          <!-- :loading-text="language('JIAZAIZHONG', '加载中')" -->
             <el-option
               :value="item.value"
               :label="item.label"
@@ -54,19 +49,16 @@
             ></el-option>
           </iSelect>
         </el-form-item>
-        <!-- <el-form-item :label="language('XUNJIACAIGOUYUAN', '询价采购员')"> -->
-        <el-form-item label="询价采购员">
+        <el-form-item :label="language('XUNJIACAIGOUYUAN', '询价采购员')">
           <iSelect
             filterable
             remote
             v-model="form.buyerId"
             :remote-method="findInquiryBuyerByName"
             :loading="buyerLoading"
-            placeholder="请输入询价采购员"
-            loading-text="加载中"
+            :placeholder="language('QINGSHURUXUNJIACAIGOUYUAN', '请输入询价采购员')"
+            :loading-text="language('JIAZAIZHONG', '加载中')"
           >
-            <!-- :placeholder="language('QINGSHURUXUNJIACAIGOUYUAN', '请输入询价采购员')" -->
-            <!-- :loading-text="language('JIAZAIZHONG', '加载中')" -->
             <el-option
               :value="item.value"
               :label="item.label"
@@ -75,8 +67,7 @@
             ></el-option>
           </iSelect>
         </el-form-item>
-        <!-- <el-form-item :label="language('PINGFENZHUANGTAI', '评分状态')"> -->
-        <el-form-item label="评分状态">
+        <el-form-item :label="language('PINGFENZHUANGTAI', '评分状态')">
           <iSelect
             v-model="form.rateStatus"
             :placeholder="language('QINGXUANZEPINGFENZHUANGTAI', '请选择评分状态')"
@@ -93,31 +84,22 @@
             ></el-option>
           </iSelect>
         </el-form-item>
-        <!-- <el-form-item :label="language('LINGJIANHAO', '零件号')"> -->
-        <el-form-item label="零件号">
-          <!-- <iInput v-model="form.partNum" :placeholder="language('QINGSHURULINGJIANHAO', '请输入零件号')" /> -->
-          <iInput v-model="form.partNum" placeholder="请输入零件号" />
+        <el-form-item :label="language('LINGJIANHAO', '零件号')">
+          <iInput v-model="form.partNum" :placeholder="language('QINGSHURULINGJIANHAO', '请输入零件号')" />
         </el-form-item>
-        <!-- <el-form-item :label="language('LINGJIANMINGCHENG', '零件名称')"> -->
-        <el-form-item label="零件名称">
-          <!-- <iInput v-model="form.partName" :placeholder="language('QINGSHURULINGJIANMINGCHENG', '请输入零件名称')" /> -->
-          <iInput v-model="form.partName" placeholder="请输入零件名称" />
+        <el-form-item :label="language('LINGJIANMINGCHENG', '零件名称')">
+          <iInput v-model="form.partName" :placeholder="language('QINGSHURULINGJIANMINGCHENG', '请输入零件名称')" />
         </el-form-item>
-        <!-- <el-form-item :label="language('GONGYINGSHANGSVWHAO', '供应商SVW号')"> -->
-        <el-form-item label="供应商SVW号">
-          <!-- <iInput v-model="form.supplierSvwCode" :placeholder="language('QINGSHURUGONGYINGSHANGSVWHAO', '请输入供应商SVW号')" /> -->
-          <iInput v-model="form.supplierSvwCode" placeholder="请输入供应商SVW号" />
+        <el-form-item :label="language('GONGYINGSHANGSVWHAO', '供应商SVW号')">
+          <iInput v-model="form.supplierSvwCode" :placeholder="language('QINGSHURUGONGYINGSHANGSVWHAO', '请输入供应商SVW号')" />
         </el-form-item>
         <el-form-item :label="language('GONGYINGSHANGSAPHAO', '供应商SAP号')">
-          <!-- <iInput v-model="form.supplierSapCode" :placeholder="language('QINGSHURUGONGYINGSHANGSAPHAO', '请输入供应商SAP号')" /> -->
-          <iInput v-model="form.supplierSapCode" placeholder="请输入供应商SAP号" />
+          <iInput v-model="form.supplierSapCode" :placeholder="language('QINGSHURUGONGYINGSHANGSAPHAO', '请输入供应商SAP号')" />
         </el-form-item>
         <el-form-item :label="language('GONGYINGSHANGMINGCHENG', '供应商名称')">
-          <!-- <iInput v-model="form.supplierName" :placeholder="language('QINGSHURUGONGYINGSHANGMINGCHENG', '请输入供应商名称')" /> -->
-          <iInput v-model="form.supplierName" placeholder="请输入供应商名称" />
+          <iInput v-model="form.supplierName" :placeholder="language('QINGSHURUGONGYINGSHANGMINGCHENG', '请输入供应商名称')" />
         </el-form-item>
-        <!-- <el-form-item :label="language('CHEXING', '车型')"> -->
-        <el-form-item label="车型">
+        <el-form-item :label="language('CHEXING', '车型')">
           <iSelect
             v-model="form.modelNameZh"
             :placeholder="language('QINGXUANZECHEXING', '请选择车型')"
@@ -134,8 +116,7 @@
             ></el-option>
           </iSelect>
         </el-form-item>
-        <!-- <el-form-item :label="language('CHEXINGXIANGMU', '车型项目')"> -->
-        <el-form-item label="车型项目">
+        <el-form-item :label="language('CHEXINGXIANGMU', '车型项目')">
           <iSelect
             v-model="form.carTypeProject"
             :placeholder="language('QINGXUANZECHEXINGXIANGMU', '请选择车型项目')"
@@ -154,17 +135,15 @@
         </el-form-item>
       </el-form>
     </iSearch>
-    <!-- <iCard class="margin-top30" :title="language('GONGYINGSHANGPINGFENGUANLI', '供应商评分管理')" > -->
-    <iCard class="margin-top30" title="供应商评分管理" >
+    <iCard class="margin-top30" :title="language('GONGYINGSHANGPINGFENGUANLI', '供应商评分管理')">
       <template #header-control>
-        <!-- <iButton @click="handleTransfer">{{ language("ZHUANPAIPINGFENRENWU", "转派评分任务") }}</iButton> -->
-        <iButton @click="handleTransfer">转派评分任务</iButton>
+        <iButton @click="handleTransfer">{{ language("ZHUANPAIPINGFENRENWU", "转派评分任务") }}</iButton>
       </template>
       <div class="body">
         <tableList
           class="table"
           index
-          :lang="false"
+          :lang="true"
           :tableData="tableListData"
           :tableTitle="tableTitle"
           :tableLoading="loading"
@@ -200,7 +179,7 @@ import filters from "@/utils/filters"
 import { pageMixins } from "@/utils/pageMixins"
 import { navList, queryForm, tableTitle } from "./components/data"
 import { cloneDeep } from "lodash"
-import { findDropDownBox, findLinieByName, findInquiryBuyerByName, searchRfqBdlRatings } from "@/api/supplierscore"
+import { findDropDownBox, findLinieByName, findInquiryBuyerByName, searchRfqBdlRatings, forward } from "@/api/supplierscore"
 import { getCartypeDict, findBySearches } from "@/api/partsrfq/home"
 import axios from "axios"
 
@@ -395,8 +374,7 @@ export default {
     },
     // 转派评分任务
     handleTransfer() {
-      // if (!this.multipleSelection.length) return iMessage.warn(this.language("QINGXUANZEXUYAOZHUANPAIDEPINGFENRENWU", "请选择需要转派的评分任务"))
-      if (!this.multipleSelection.length) return iMessage.warn("请选择需要转派的评分任务")
+      if (!this.multipleSelection.length) return iMessage.warn(this.language("QINGXUANZEXUYAOZHUANPAIDEPINGFENRENWU", "请选择需要转派的评分任务"))
       this.forwardDialogVisible = true
     },
     // 确认转派

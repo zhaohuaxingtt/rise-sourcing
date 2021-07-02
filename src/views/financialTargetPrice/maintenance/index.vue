@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-22 09:12:31
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-02 14:34:00
+ * @LastEditTime: 2021-07-02 18:06:22
  * @Description: 财务目标价-目标价维护
  * @FilePath: \front-web\src\views\financialTargetPrice\maintenance\index.vue
 -->
@@ -115,6 +115,7 @@ import { dictkey } from "@/api/partsprocure/editordetail"
 import { getTargetPriceList, exportTargetPriceList, setPrice, getCFList, getPartStatus } from "@/api/financialTargetPrice/index"
 import { getDictByCode } from '@/api/dictionary'
 import {omit} from 'lodash'
+import moment from 'moment'
 export default {
   mixins: [pageMixins],
   components: {iPage,headerNav,iCard,tableList,iPagination,iButton,iSelect,iDatePicker,iInput,iSearch,modificationRecordDialog,attachmentDialog,approvalRecordDialog},
@@ -338,10 +339,11 @@ export default {
       this.tableLoading = true
       const params = omit({
         ...this.searchParams,
-        applyDateStart: this.searchParams.applyDate ? this.searchParams.applyDate[0] : null,
-        applyDateEnd: this.searchParams.applyDate ? this.searchParams.applyDate[1] : null,
-        responseDateStart: this.searchParams.responseDate ? this.searchParams.responseDate[0] : null,
-        responseDateEnd: this.searchParams.responseDate ? this.searchParams.responseDate[1] : null,
+        searchType: '0',
+        applyDateStart: this.searchParams.applyDate ? moment(this.searchParams.applyDate[0]).format('YYYY-MM-DD HH:mm:ss') : null,
+        applyDateEnd: this.searchParams.applyDate ? moment(this.searchParams.applyDate[1]).format('YYYY-MM-DD HH:mm:ss') : null,
+        responseDateStart: this.searchParams.responseDate ? moment(this.searchParams.responseDate[0]).format('YYYY-MM-DD HH:mm:ss') : null,
+        responseDateEnd: this.searchParams.responseDate ? moment(this.searchParams.responseDate[1]).format('YYYY-MM-DD HH:mm:ss') : null,
         current: this.page.currPage,
         size: this.page.pageSize
       },['applyDate','responseDate'])

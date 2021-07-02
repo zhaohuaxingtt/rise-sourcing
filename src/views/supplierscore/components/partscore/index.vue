@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-24 10:38:09
- * @LastEditTime: 2021-06-30 17:30:07
+ * @LastEditTime: 2021-07-02 18:33:52
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\supplierscore\components\partscore\index.vue
@@ -9,16 +9,14 @@
 <template>
   <iPage class="partscore">
     <div class="header clearFloat">
-      <div class="title">{{ $t("零件评分") }}</div>
+      <div class="title">{{ language("LINGJIANPINGFEN", "零件评分") }}</div>
       <div class="control">
         <div v-if="editStatus">
-          <!-- <iButton @click="handleCloseEdit">{{ language("JIESHUBIANJI", "结束编辑") }}</iButton> -->
-          <iButton @click="handleCloseEdit">结束编辑</iButton>
+          <iButton @click="handleCloseEdit">{{ language("JIESHUBIANJI", "结束编辑") }}</iButton>
           <iButton :loading="saveLoading" @click="handleSave">{{ language("BAOCUN", "保存") }}</iButton>
         </div>
         <div v-else>
-          <!-- <iButton @click="editStatus = true">{{ language("JINRUBIANJI", "进入编辑") }}</iButton> -->
-          <iButton @click="editStatus = true">进入编辑</iButton>
+          <iButton @click="editStatus = true">{{ language("JINRUBIANJI", "进入编辑") }}</iButton>
         </div>
         <logButton class="margin-left20" />
         <span class="margin-left20">
@@ -32,12 +30,12 @@
           height="100%"
           v-loading="loading"
           :data="tableListData"
-          :empty-text="$t('LK_ZANWUSHUJU')">
+          :empty-text="language('ZANWUSHUJU', '暂无数据')">
           <el-table-column type="index" align="center" label="#"></el-table-column>
-          <el-table-column align="center" v-for="(item, $index) in tableTitle" :key="$index" :label="item.key" :prop="item.props" :show-overflow-tooltip="true"></el-table-column>
+          <el-table-column align="center" v-for="(item, $index) in tableTitle" :key="$index" :label="language(item.key, item.name)" :prop="item.props" :show-overflow-tooltip="true"></el-table-column>
           <template>
             <el-table-column align="center" :label="rateTag">
-              <el-table-column align="center" v-for="item in deptScoreTableTitle" :key="item.props" :label="item.key">
+              <el-table-column align="center" v-for="item in deptScoreTableTitle" :key="item.props" :label="language(item.key, item.name)">
                 <template v-if="item.props === 'grade'" #header="scope">
                   <span>{{ scope.column.label }}<i class="required">*</i></span>
                 </template>
@@ -47,8 +45,6 @@
                     <!-- <iSelect v-model="scope.row.grade">
                       <el-option value="合格" :label="language('HEGE', '合格')" />
                       <el-option value="不合格" :label="language('BUHEGE', '不合格')" />
-                      <el-option value="合格" label="合格" />
-                      <el-option value="不合格" label="不合格" />
                     </iSelect> -->
                   </div>
                   <span v-else>{{ scope.row.grade }}</span>
@@ -62,8 +58,7 @@
                   <span v-else>{{ scope.row.confirmCycle }}</span>
                 </template>
                 <template v-else-if="item.props === 'remark'" v-slot="scope">
-                  <!-- <span v-if="editStatus" class="link-underline" @click="editRemark(scope.row)">{{ language("BIANJI", "编辑") }}</span> -->
-                  <span v-if="editStatus" class="link-underline" @click="editRemark(scope.row)">编辑</span>
+                  <span v-if="editStatus" class="link-underline" @click="editRemark(scope.row)">{{ language("BIANJI", "编辑") }}</span>
                   <span v-else class="link-underline" @click="editRemark(scope.row)">{{ language("CHAKAN", "查看") }}</span>
                 </template>
                 <template v-else v-slot="scope">
@@ -143,18 +138,11 @@ export default {
     // 结束编辑
     handleCloseEdit() {
       if (!isEqual(this.tableListData, this.tableListDataCache)) {
-        // iMessageBox(
-        //   this.language("DISCARDCHANGE", "内容已经发生变化，是否确定要放弃修改？"), 
-        //   this.language("TISHI", "提示"),  
-        //   { 
-        //     confirmButtonText: this.language("QUEREN", "确认")
-        //   }
-        // )
         iMessageBox(
-          "内容已经发生变化，是否确定要放弃修改？", 
-          "提示", 
+          this.language("DISCARDCHANGE", "内容已经发生变化，是否确定要放弃修改？"), 
+          this.language("TISHI", "提示"),  
           { 
-            confirmButtonText: "确认"
+            confirmButtonText: this.language("QUEREN", "确认")
           }
         )
         .then(() => {
@@ -169,27 +157,18 @@ export default {
     // 保存
     handleSave() {
       if (isEqual(this.tableListData, this.tableListDataCache)) {
-        // return iMessageBox(
-        //   this.language("NOCHANGEDONTSAVE", "没有发现更改，不需要保存。"), 
-        //   this.language("TISHI", "提示"), 
-        //   { 
-        //     showCancelButton: false, 
-        //     confirmButtonText: this.language("QUEREN", "确认") 
-        //   }
-        // )
         return iMessageBox(
-          "没有发现更改，不需要保存。", 
-          "提示", 
+          this.language("NOCHANGEDONTSAVE", "没有发现更改，不需要保存。"), 
+          this.language("TISHI", "提示"), 
           { 
             showCancelButton: false, 
-            confirmButtonText: "确认" 
+            confirmButtonText: this.language("QUEREN", "确认") 
           }
         )
       }
 
       if (this.tableListData.some(item => !item.grade && item.grade !== 0)) {
-        // return iMessage.warn(this.language("PINGFENLIEWEIBITIANXIANG", "评分列为必填项"))
-        return iMessage.warn("评分列为必填项")
+        return iMessage.warn(this.language("PINGFENLIEWEIBITIANXIANG", "评分列为必填项"))
       }
 
       this.saveLoading = true

@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-18 15:11:44
- * @LastEditTime: 2021-06-30 18:34:57
+ * @LastEditTime: 2021-07-02 18:24:27
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\configscoredept\components\deptDialog.vue
@@ -11,22 +11,22 @@
     class="deptDialog"
     v-bind="$props"
     v-on="$listeners"
-    :title="$t('选择部门编号')"
+    :title="language('XUANZEBUMENBIANHAO', '选择部门编号')"
     :visible.sync="visible">
     <div class="body">
       <div class="form">
         <el-form>
           <el-row>
             <el-col :span="4" class="padding-right50">
-              <el-form-item :label="$t('部门编号')">
+              <el-form-item :label="language('BUMENBIANHAO', '部门编号')">
                 <iSelect
                   filterable
                   v-model="form.deptNum"
-                  :placeholder="$t('请选择部门编号')"
+                  :placeholder="language('QINGXUANZEBUMENBIANHAO', '请选择部门编号')"
                 >
                   <el-option
                     value=""
-                    :label="$t('all') | capitalizeFilter"
+                    :label="language('ALL', '全部') | capitalizeFilter"
                   ></el-option>
                   <el-option
                     :value="item.value"
@@ -38,15 +38,15 @@
               </el-form-item>
             </el-col>
             <el-col :span="4" class="padding-right50">
-              <el-form-item :label="$t('部门中文名')">
+              <el-form-item :label="language('BUMENZHONGWENMING', '部门中文名')">
                 <iSelect
                   filterable
                   v-model="form.nameZh"
-                  :placeholder="$t('请选择部门中文名')"
+                  :placeholder="language('QINGXUANZEBUMENZHONGWENMING', '请选择部门中文名')"
                 >
                   <el-option
                     value=""
-                    :label="$t('all') | capitalizeFilter"
+                    :label="language('ALL', '全部') | capitalizeFilter"
                   ></el-option>
                   <el-option
                     :value="item.value"
@@ -58,15 +58,15 @@
               </el-form-item>
             </el-col>
             <el-col :span="4" class="padding-right50">
-              <el-form-item :label="$t('部门英文名')">
+              <el-form-item :label="language('BUMENYINGWENMING', '部门英文名')">
                 <iSelect
                   filterable
                   v-model="form.nameEn"
-                  :placeholder="$t('请选择部门英文名')"
+                  :placeholder="language('QINGXUANZEBUMENYINGWENMING', '请选择部门英文名')"
                 >
                   <el-option
                     value=""
-                    :label="$t('all') | capitalizeFilter"
+                    :label="language('ALL', '全部') | capitalizeFilter"
                   ></el-option>
                   <el-option
                     :value="item.value"
@@ -78,8 +78,8 @@
               </el-form-item>
             </el-col>
             <el-col :span="4" :offset="8" class="formControl">
-              <iButton @click="handleQuery">{{ $t("确认") }}</iButton>
-              <iButton @click="handleReset">{{ $t("重置") }}</iButton>
+              <iButton @click="handleQuery">{{ language("QUEREN", "确认") }}</iButton>
+              <iButton @click="handleReset">{{ language("CHONGZHI", "重置") }}</iButton>
             </el-col>
           </el-row>
         </el-form>
@@ -89,7 +89,7 @@
         <el-form>
           <el-row>
             <el-col :span="4" :offset="20" class="control">
-              <iButton @click="handleConfrim">{{ $t("确定") }}</iButton>
+              <iButton @click="handleConfrim">{{ language("QUEDING", "确定") }}</iButton>
             </el-col>
           </el-row>
         </el-form>
@@ -99,6 +99,7 @@
           class="table"
           index
           singleSelect
+          :lang="true"
           :tableData="tableListData"
           :tableTitle="tableTitle"
           :tableLoading="loading"
@@ -196,7 +197,7 @@ export default {
     },
     // 确定
     handleConfrim() {
-      if (!this.selectRow) return iMessage.warn("请选择一个部门编号")
+      if (!this.selectRow) return iMessage.warn(this.language("QINGXUANZEYIGEBUMENBIANHAO", "请选择一个部门编号" ))
 
       this.$emit("confrim", cloneDeep(this.selectRow))
       this.visible = false

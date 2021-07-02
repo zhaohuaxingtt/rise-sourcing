@@ -119,6 +119,13 @@ module.exports = {
         https: false,
         hotOnly: true,
         proxy: {
+					'/approvalApi': {
+						target: 'http://10.122.18.166:8012',
+						changeOrigin: true,
+						pathRewrite: {
+							"^/approvalApi": ""
+						}
+					},
 					'/api': {
 						// target: 'http://10.160.138.38:8788',
 						target: 'http://rise-gateway-runtime.apps.vmocp-dev.csvw.com/',
@@ -136,7 +143,7 @@ module.exports = {
 						}
 					},
 					'/supplierApiDL': {  // 供应商
-						// target: 'http://10.160.137.63:8788',
+						// target: 'http://10.160.138.216:9029',
 						target: 'http://10.122.17.38:8025',
 						changeOrigin: true,
 						pathRewrite: {
@@ -200,7 +207,7 @@ module.exports = {
 						'/supplierApiWJS': { //王洁松服务地址
 								// target: 'http://192.168.50.89:8029',
 								// target: 'http://192.168.50.239:8029',
-								target: 'http://10.122.17.38:8025',
+								target: 'http://192.168.50.50:9029',
 								changeOrigin: true,
 								pathRewrite: {
 										"^/supplierApiWJS": ""
@@ -214,7 +221,7 @@ module.exports = {
                 }
             },
 						'/nego': {
-							target: 'http://10.122.17.38:9022',
+							target: 'http://10.122.17.38:8035',
 							changeOrigin: true,
 							pathRewrite: {
 									"^/nego": "/nego"
