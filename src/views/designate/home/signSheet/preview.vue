@@ -1,7 +1,7 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-07-01 14:30:59
- * @LastEditTime: 2021-07-01 15:13:44
+ * @LastEditTime: 2021-07-02 17:35:00
  * @LastEditors: Please set LastEditors
  * @Description: M签字单预览导出 jira-1571
  * @FilePath: /front-web/src/views/designate/home/signSheet/signView.vue
@@ -50,9 +50,17 @@ import {
   iPage,
   iCard,
   icon,
-  iButton
+  iButton,
+  iMessage
 } from 'rise'
+import { 
+  signSheetApproveDetail
+} from '@/api/designate/nomination/signsheet'
+import { pageMixins } from '@/utils/pageMixins'
+import filters from "@/utils/filters"
+
 export default {
+  mixins: [ filters, pageMixins ],
   components: {
     iPage,
     iCard,
@@ -69,9 +77,40 @@ export default {
       startLoding: false,
     }
   },
+  created() {
+    this.getFetchData()
+  },
   methods: {
     close() {
-      
+      this.$router.back()
+    },
+    // 获取定点管理列表
+    getFetchData(params = {}) {
+      this.tableLoading = true
+      const signId = this.$route.query.signId
+      if (!signId) {
+        iMessage.error(this.language('QIANZIDANHAOBUNENGWEIKONG','签字单号不能为空'))
+        return
+      }
+      signSheetApproveDetail({
+        ...params,
+        signId,
+        current: this.page.currPage,
+        size: this.page.pageSize
+      }).then(res => {
+        this.tableLoading = false
+        if (res.code === '200') {
+          this.tableListData = res.data.records || []
+          this.page.totalCount = res.data.total
+          console.log(this.selectTableData)
+        } else {
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
+        console.log(res)
+      }).catch(e => {
+        this.tableLoading = false
+        iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
+      })
     },
     exportfile() {
       
@@ -102,6 +141,9 @@ export default {
       &::before {
         background: #fff;
       }
+      .el-table__body-wrapper {
+        min-height: 90%;
+      }
     }
   }
   .signPreview-footer {
@@ -127,7 +169,6 @@ export default {
       color: #777777;
       display: inline-block;
     }
-  } 
-  
+  }
 }
 </style>

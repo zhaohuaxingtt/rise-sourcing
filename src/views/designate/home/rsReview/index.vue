@@ -10,7 +10,7 @@
     <!-- 筛选框 -->
     <div style="clear: both"></div>
     <!-- 搜索区 -->
-    <search @search="getFetchData" :carTypeList="carTypeList" />
+    <search @search="getFetchData" :carTypeList="carTypeList" ref="searchForm" />
     <!-- 表格 -->
     <iCard class="designateTable">
       <div class="margin-bottom20 clearFloat">
@@ -82,13 +82,9 @@
           {{scope.row.id}}
         </a>
       </template>
-      <!-- 定点类型 -->
-      <template #nominateProcessType="scope">
-        <span>{{(scope.row.nominateProcessType && scope.row.nominateProcessType.desc) || ''}}</span>
-      </template>
-      <!-- 定点类型 -->
+      <!-- 状态 -->
       <template #applicationStatus="scope">
-        <span>{{(scope.row.applicationStatus && scope.row.applicationStatus.desc) || ''}}</span>
+        <span>{{(scope.row.applicationStatus && scope.row.applicationStatus.desc) || scope.row.applicationStatus}}</span>
       </template>
 
       <!-- re冻结日期 -->
@@ -263,7 +259,7 @@ export default {
         const res = await getSelList(Object.assign({
           current: this.page.currPage,
           size: this.page.pageSize
-        }, params))
+        }, this.$refs.searchForm.form, params))
         this.tableLoading = false
         if (res.code === '200') {
           this.tableListData = res.data.records || []
@@ -365,7 +361,8 @@ export default {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }
       } catch (e) {
-        iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
+        console.log('e', e)
+        iMessage.error(e && e.message ? e.message : this.$i18n.locale === "zh" ? e.desZh : e.desEn)
       }
     },
     // 定点

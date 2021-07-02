@@ -1,7 +1,7 @@
 /*
  * @Author: Hao Jiang
  * @Date: 2021-06-22 17:30:52
- * @LastEditTime: 2021-07-01 17:14:17
+ * @LastEditTime: 2021-07-02 16:52:55
  * @LastEditors: Please set LastEditors
  * @Description: sel 上会复核列表部分
  */
@@ -15,7 +15,7 @@ export function getSelList(params) {
       url: `/nominate/check/list`,
       method: "post",
       data: params,
-      timeout: 25000
+      timeout: 40000
   })
 }
 
