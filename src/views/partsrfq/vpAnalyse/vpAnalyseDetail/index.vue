@@ -51,7 +51,12 @@
     <!--图形-->
     <div class="chartBox">
       <iCard class="curveBox" :title="'Volume Pricin' + $t('TPZS.QUXIAN')">
-        <curveChart chartHeight="260px"/>
+        <curveChart
+            chartHeight="260px"
+            :newestScatterData="curveChartData.newestScatterData"
+            :targetScatterData="curveChartData.targetScatterData"
+            :lineData="curveChartData.lineData"
+        />
       </iCard>
 
       <iCard class="analyzeBox">
@@ -62,7 +67,7 @@
             <iButton>{{ $t('LK_BAOCUN') }}</iButton>
           </div>
         </div>
-        <analyzeChart ref="analyzeChart"/>
+        <analyzeChart ref="analyzeChart" :dataInfo="dataInfo"/>
       </iCard>
     </div>
 
@@ -118,6 +123,11 @@ export default {
       dataInfo: {},
       previewDialog: false,
       pageLoading: false,
+      curveChartData: {
+        newestScatterData: [],
+        targetScatterData: [],
+        lineData: [],
+      },
     };
   },
   methods: {
@@ -168,7 +178,9 @@ export default {
         this.partList = res.data.partsList.filter(item => {
           return item.isShow;
         });
-        this.currentPartsId = this.partList[0].id;
+        this.currentPartsId = this.partList[0] ? this.partList[0].id : '';
+        const analysisCurveData = Array.isArray(this.dataInfo.analysisCurve) ? this.dataInfo.analysisCurve : [];
+        this.handleCurveData(analysisCurveData);
         this.pageLoading = false;
       } catch {
         this.dataInfo = {};
@@ -183,6 +195,7 @@ export default {
           partsId: this.currentPartsId,
           costDetailList: this.$refs.totalUnitPriceTable.tableListData,
           estimatedActualTotalPro: this.$refs.analyzeChart.dataInfo.estimatedActualTotalPro,
+          supplierId: 1
         };
         const res = saveOrUpdateScheme(req);
         this.resultMessage(res);
@@ -194,7 +207,23 @@ export default {
     handlePreview() {
       this.previewDialog = true;
     },
-  }
+    handleCurveData(data) {
+      this.curveChartData.newestScatterData = [];
+      this.curveChartData.targetScatterData = [];
+      this.curveChartData.lineData = [];
+      data.map(item => {
+        if (item.priceFlag === 'LP') {
+          this.curveChartData.newestScatterData.push([item.production, item.price]);
+          this.curveChartData.lineData.push([item.production, item.price]);
+        } else if (item.priceFlag === 'TP') {
+          this.curveChartData.targetScatterData.push([item.production, item.price]);
+          this.curveChartData.lineData.push([item.production, item.price]);
+        } else {
+          this.curveChartData.lineData.push([item.production, item.price]);
+        }
+      });
+    },
+  },
 };
 </script>
 
