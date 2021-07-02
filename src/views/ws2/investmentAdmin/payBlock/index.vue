@@ -5,6 +5,7 @@
  -->
 <template>
 	<div>
+		<!-- v-permission="TOOLING_PAYMENTPLAN_PAYMENTBOARD" -->
 		<iPage class="page-content" v-permission="TOOLING_PAYMENTPLAN_PAYMENTBOARD">
 			<iCard id='powerBi'>
 				
