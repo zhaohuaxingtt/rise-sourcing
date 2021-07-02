@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-06-21 20:05:57
- * @LastEditTime: 2021-06-30 22:11:09
+ * @LastEditTime: 2021-07-02 18:07:39
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails\data1.js
@@ -537,13 +537,14 @@
 //   },
 // ];
 
+
 export const tableList = {
   headerList: [
-    {
-      id: "1",
-      label: "",
-      prop: "title",
-    },
+    // {
+    //   id: "1",
+    //   label: "",
+    //   prop: "title",
+    // },
     {
       id: "2",
       label: "Supplier A",

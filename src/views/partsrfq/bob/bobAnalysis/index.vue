@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 10:50:38
- * @LastEditTime: 2021-06-30 22:33:56
+ * @LastEditTime: 2021-07-01 10:05:25
  * @LastEditors: Please set LastEditors
  * @Description: 费用详情
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails.vue
@@ -15,7 +15,6 @@
             <span>费用详情</span>
             <span v-if="remark" class="margin-left40">{{ remark }}</span>
           </div>
-
           <div>
             <iButton v-show="flag" @click="open">全部展开</iButton>
             <iButton v-show="flag1" @click="close">全部收回</iButton>

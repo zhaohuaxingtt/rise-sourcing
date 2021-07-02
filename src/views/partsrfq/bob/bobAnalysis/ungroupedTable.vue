@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 11:38:57
- * @LastEditTime: 2021-06-30 22:19:30
+ * @LastEditTime: 2021-07-02 17:46:42
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails\table1.vue
@@ -40,20 +40,18 @@
         :key="i.id"
         :label="i.label"
         :prop="i.prop"
-        align="left"
+        align="center"
         :width="i.prop == 'title' ? '200' : ''"
       >
-      <template v-if="i.children">
-        <el-table-column
-        :render-header="(h,opt)=>{renderHeader(h, opt)}"
-          v-for="item in i.children" 
-          :key="item.id"
-          :label="item.label"
-          :prop="item.prop"
-          align="left"
-        >
-          
-        </el-table-column>
+        <template v-if="i.children">
+          <el-table-column
+            v-for="item in i.children"
+            :key="item.id"
+            :label="item.label"
+            :prop="item.prop"
+            align="left"
+          >
+          </el-table-column>
         </template>
 
         <!-- <template slot-scope="scope">
@@ -189,9 +187,9 @@ export default {
     getRowKey(row) {
       return row.id;
     },
-    
+
     renderHeader(h, opt) {
-      return '<div>aaaf</div>'
+      return "<div>aaaf</div>";
     },
     rowClick(row, event, column) {
       this.$emit("row-click", row, event, column);
@@ -221,9 +219,9 @@ export default {
     select(e, col) {
       console.log(e, col);
     },
-    groupBy(){
-      this.$emit('groupBy', true);
-    }
+    groupBy() {
+      this.$emit("groupBy", true);
+    },
   },
 };
 </script>

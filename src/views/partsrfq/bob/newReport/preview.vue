@@ -44,7 +44,7 @@
 <script>
 import { iPage, iButton, iCard, iSelect, icon, iDialog } from "rise";
 import CrownBar from "./components/crownBar.vue";
-import bobAnalysis from "@/views/partsrfq/bob/bobAnalysis/index.vue";
+// import bobAnalysis from "@/views/partsrfq/bob/bobAnalysis/index.vue";
 import { getBobLevelOne } from "@/api/partsrfq/bob";
 import { downloadPDF, dataURLtoFile } from "@/utils/pdf";
 import {
@@ -124,7 +124,6 @@ export default {
   methods: {
     open() {
       let els = this.$el.getElementsByClassName("el-table__expand-icon");
-
       if (this.tableList.dataList.length != 0 && els.length != 0) {
         this.flag = false;
         this.flag1 = true;
@@ -159,6 +158,7 @@ export default {
         idEle: "downloadRef",
         pdfName: "BOB Preview",
       });
+      
     },
     goToBob() {
       this.$router.push("bob");

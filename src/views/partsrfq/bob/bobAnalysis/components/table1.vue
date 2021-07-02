@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 11:38:57
- * @LastEditTime: 2021-06-30 21:32:42
+ * @LastEditTime: 2021-07-01 21:25:04
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails\table1.vue
@@ -22,14 +22,15 @@
       @cell-dblclick="cellBbClick"
       @cell-click="cellClick"
       @expand-change="expandChange"
+
     >
-      <!-- <el-table-column label="" prop="title" width="250"> </el-table-column> -->
+      <el-table-column label="" prop="title" width="250"> </el-table-column>
       <el-table-column
         v-for="i in tableList.headerList"
         :key="i.id"
         :label="i.label"
         :prop="i.prop"
-        align="left"
+        align="center"
         :width="i.prop == 'title' ? '200' : ''"
       >
         <template>
@@ -81,8 +82,7 @@ export default {
       },
     },
   },
-  computed: {
-  },
+  computed: {},
   watch: {
     expends: {
       handler(val) {
@@ -90,12 +90,12 @@ export default {
           this.$refs.treeList.expandRowKeys = Array.from(val);
       },
     },
-    'tableList.headerList': {
+    "tableList.headerList": {
       handler(val) {
         this.$set(this.tableList, val);
       },
-      immediate:true,
-      deep:true
+      immediate: true,
+      deep: true,
     },
   },
   data() {
@@ -104,6 +104,21 @@ export default {
     };
   },
   methods: {
+    objectSpanMethod({ row, column, rowIndex, columnIndex }) {
+      if ( rowIndex === 0) {
+        if (columnIndex % 2 === 0) {
+          return {
+            rowspan: 0,
+            colspan: 3,
+          };
+        } else {
+          return {
+            rowspan: 0,
+            colspan: 0,
+          };
+        }
+      }
+    },
     addclass(row) {
       var that = this;
       if (row.columnIndex == that.num) {

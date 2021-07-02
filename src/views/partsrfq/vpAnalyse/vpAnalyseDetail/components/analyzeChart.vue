@@ -35,16 +35,16 @@
           <!--          实际累计产量（截至上月末）-->
           <iLabel :label="$t('TPZS.SJLJCL')" slot="label" class="labelWidth"></iLabel>
           <iText class="valueWidth">{{ dataInfo.actualProEndLastMonth }}</iText>
-          <template v-if="true">
+          <template v-if="dataInfo.proGrowthRate > 0">
             <div class="flex-align-center">
               <icon symbol name="iconshangsheng-VP" class="margin-left15 margin-right5"></icon>
-              <span class="up">25%</span>
+              <span class="up">{{ dataInfo.proGrowthRate }}%</span>
             </div>
           </template>
-          <template v-if="false">
+          <template v-else-if="dataInfo.proGrowthRate < 0">
             <div class="flex-align-center">
               <icon symbol name="iconxiajiang-VP" class="margin-left15 margin-right5"></icon>
-              <span class="down">-25%</span>
+              <span class="down">{{ dataInfo.proGrowthRate }}%</span>
             </div>
           </template>
 
@@ -67,13 +67,11 @@
               <icon symbol name="iconxinxitishi" class="tipIcon" slot="reference"></icon>
             </el-popover>
           </div>
-          <iText class="valueWidth bgGreen" v-if="dataInfo.reductionPotential < 0">{{
-              dataInfo.reductionPotential
-            }}
+          <iText class="valueWidth bgGreen" v-if="dataInfo.reductionPotential < 0">
+            {{ dataInfo.reductionPotential }}%
           </iText>
-          <iText class="valueWidth bgRed" v-else-if="dataInfo.reductionPotential > 0">{{
-              dataInfo.reductionPotential
-            }}
+          <iText class="valueWidth bgRed" v-else-if="dataInfo.reductionPotential > 0">
+            {{ dataInfo.reductionPotential }}%
           </iText>
           <iText class="valueWidth" v-else>{{ dataInfo.reductionPotential }}</iText>
         </div>
@@ -141,9 +139,6 @@ export default {
       =${this.additionalPriceReduction.result}\\%\\\\\\end{array}`;
     },
   },
-  created() {
-    this.getMathematicalFormulaData();
-  },
   data() {
     return {
       massProductionTimeRate: 45,
@@ -194,6 +189,14 @@ export default {
       } else {
         return num;
       }
+    },
+  },
+  watch: {
+    dataInfo: {
+      deep: true,
+      handler() {
+        this.getMathematicalFormulaData();
+      },
     },
   },
 };
