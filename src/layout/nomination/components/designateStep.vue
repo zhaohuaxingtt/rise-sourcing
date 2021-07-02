@@ -71,7 +71,7 @@ import {
   iSelect,
   iMessage
 } from "rise";
-import logButton from '@/views/partsign/editordetail/components/logButton'
+import logButton from '@/components/logButton'
 import {
     nominateAppSExport,
     nominateAppSsubmit,

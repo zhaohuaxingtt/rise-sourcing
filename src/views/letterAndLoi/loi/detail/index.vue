@@ -91,7 +91,7 @@ import {
     iSelect,
     iMessage,
 } from 'rise';
-import logButton from "@/views/partsign/editordetail/components/logButton"
+import logButton from "@/components/logButton"
 import historyDialog from './components/historyDialog'
 import loiNonStandard from './components/loiNonStandard'
 import {

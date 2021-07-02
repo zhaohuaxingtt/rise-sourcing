@@ -1,8 +1,8 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2021-07-01 16:59:25
- * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-07-02 09:58:03
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\editordetail\index.vue
 -->
@@ -29,6 +29,7 @@
 		<div class="margin-bottom20 clearFloat">
 			<span class="font18 font-weight">{{$t("LK_LINGJIANCAIGOUXIANGMU")}}</span>
 			<div class="floatright">
+				<iButton v-if="isAssembly" @click="handleCreateNomiApplication">{{ $t("生成定点申请单") }}</iButton>
 				<!-------------------------------------------------------------------------------->
 				<!---维护现供供应商逻辑：1，只有当零件采购项目类型为[GS零件]或[GS common sourcing]时才---->
 				<!---出现此按钮。------------------------------------------------------------------->
@@ -344,7 +345,7 @@
 	import sheet from "./components/drawingSheet/sheet";
 	import remarks from "./components/remarks";
 	import backItems from "@/views/partsign/home/components/backItems";
-	import logButton from "@/views/partsign/editordetail/components/logButton";
+	import logButton from "@/components/logButton";
 	import currentSupplier from './components/currentSupplier'
 	import {
 		getTabelData,
@@ -388,6 +389,19 @@ import { getDictByCode } from '@/api/dictionary'
 			iDatePicker,
 			icon
 		},
+		computed: {
+			/**
+				* @description: 现供供应商按钮逻辑。
+				* @param {*}
+				* @return {*}
+				*/
+			currentSupplierButton:function(){
+				return this.detailData.partPrejectType == "PT11" || this.detailData.partPrejectType == "PT10"
+			},
+			isAssembly() {
+				return this.detailData.partType === "A"
+			}
+		},
 		data() {
 			return {
 				firstId:'',
@@ -402,6 +416,7 @@ import { getDictByCode } from '@/api/dictionary'
 					splitPurchBoolean: false,
 				}, //拆分采购工厂
 				purchasePrjectId: "",
+				createNomiApplicationLoading: false,
 				curentSupplierDialog:{show:false},
 				fsnrGsnrNum: '',
 				partPrejectType: ''
@@ -567,26 +582,32 @@ import { getDictByCode } from '@/api/dictionary'
 				detailData['linieUserId'] = this.detailData.linieUserId
 				const linie = this.fromGroup.LINIE.find(items=>items.id == this.detailData.linieUserId)
 				detailData['linieName'] = linie ? linie.name : ""
- 				changeProcure({
-					detailData,
-				}).then((res) => {
-					if (res.data) {
-						if(res.data.procureFactoryIds.length <= 1 ){
-							iMessage.success(this.$t('LK_YIBAOCUN'));
-							this.getDatail();
-						}else{
-							iMessage.success(this.$t('LK_YIBAOCUN'));
-							this.getDatail();
-							// iMessageBox(this.$t('LK_AREYOUSPLITE'),this.$t('LK_WENXINTISHI')).then(res=>{
-							// 	//如果这条ID存在 则默认查询出来的采购工厂将会为第一条
-							// 	this.firstId = this.detailData.procureFactory
-							// 	this.splitPurchFn()
-							// })
+
+				return new Promise((resolve, reject) => {
+					changeProcure({
+						detailData,
+					}).then((res) => {
+						if (res.data) {
+							if(res.data.procureFactoryIds.length <= 1 ){
+								iMessage.success(this.$t('LK_YIBAOCUN'));
+								this.getDatail();
+							}else{
+								iMessage.success(this.$t('LK_YIBAOCUN'));
+								this.getDatail();
+								// iMessageBox(this.$t('LK_AREYOUSPLITE'),this.$t('LK_WENXINTISHI')).then(res=>{
+								// 	//如果这条ID存在 则默认查询出来的采购工厂将会为第一条
+								// 	this.firstId = this.detailData.procureFactory
+								// 	this.splitPurchFn()
+								// })
+							}
+
+							resolve(res)
+						} else {
+							iMessage.error(res.desZh);
+							reject(res)
 						}
-					} else {
-						iMessage.error(res.desZh);
-					}
-				});
+					});
+				})
 			},
 			// 生成fs号
 			creatFs() {
@@ -680,7 +701,8 @@ import { getDictByCode } from '@/api/dictionary'
 				return this.detailData.partPrejectType == "PT11" || this.detailData.partPrejectType == "PT10"
 			}
 		}
-	};
+	}
+}
 </script>
 <style lang="scss" scoped>
 	.partsprocureEditordetail {
