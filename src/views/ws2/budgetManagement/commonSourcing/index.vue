@@ -8,19 +8,20 @@
             <i slot="suffix" class="el-input__icon el-icon-search" @click="pageCarTypePackage"></i>
           </iInput>
         </div>
-        <Upload
-            class="upload-demo"
-            ref="uploadRef"
-            :action="actionUrl"
-            :on-change="beforeUpload"
-            :on-success="onSuccess"
-            :before-upload="beforeAvatarUpload"
-            :before-remove="beforeRemove"
-            :limit="1"
-            :show-file-list="false"
-            :file-list="uploadFiles">
-          <iButton icon="el-icon-circle-plus-outline" type="primary">新增车型包</iButton>
-        </Upload>
+  <!--      <Upload-->
+  <!--          class="upload-demo"-->
+  <!--          ref="uploadRef"-->
+  <!--          :action="actionUrl"-->
+  <!--          :on-change="beforeUpload"-->
+  <!--          :on-success="onSuccess"-->
+  <!--          :before-upload="beforeAvatarUpload"-->
+  <!--          :before-remove="beforeRemove"-->
+  <!--          :limit="1"-->
+  <!--          :show-file-list="false"-->
+  <!--          :file-list="uploadFiles">-->
+  <!--        <iButton icon="el-icon-circle-plus-outline" type="primary">新增车型包</iButton>-->
+  <!--      </Upload>-->
+        <iButton icon="el-icon-circle-plus-outline" @click="addCarTypeBag" type="primary">新增车型包</iButton>
       </div>
       <div class="content" v-loading="tableLoading">
         <div class="title">
@@ -52,7 +53,6 @@
       </div>
     </div>
   </div>
-  
 </template>
 
 <script>
@@ -85,6 +85,11 @@ export default {
     this.pageCarTypePackage()
   },
   methods: {
+    addCarTypeBag(){
+      this.$router.push({
+        path: '/tooling/budgetManagement/addModelBag',
+      })
+    },
     onSuccess(res){
       const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
       this.$refs['uploadRef'].clearFiles();

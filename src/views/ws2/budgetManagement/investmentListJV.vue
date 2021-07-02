@@ -67,9 +67,9 @@
                 placement="top-start"
                 trigger="hover">
               <div class="popoverDiv">
-                <p>{{ $t('LK_CAIGOUGONGCHANG') }}</p>
+                <p>{{ $t('生产工厂') }}</p>
               </div>
-              <label slot="reference">{{ $t('LK_CAIGOUGONGCHANG') }}:</label>
+              <label slot="reference">{{ $t('生产工厂') }}:</label>
             </Popover>
             <!--            <label :title="$t('LK_CAIGOUGONGCHANG')">{{ $t('LK_CAIGOUGONGCHANG') }}:</label>-->
             <span class="infoIcardValue">{{ form['search.purchasingFactory'] }}</span>

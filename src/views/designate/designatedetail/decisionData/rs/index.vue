@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-28 13:35:30
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-25 10:15:07
+ * @LastEditTime: 2021-06-29 10:52:23
  * @Description: 定点管理-决策资料-RS
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\rs\index.vue
 -->
@@ -77,7 +77,8 @@ export default {
           APPRECIATE("PT16", "涨价"),
           FITTING("PT17", "配件"),
           ANNEX("PT18", "附件"),
-          AEKO("PT02", "AEKO零件");
+          AEKO("PT02", "AEKO零件"),
+          DB_ONE_TIME_PURCHASE("PT19", "DB一次性采购")
      * @Author: Luoshuang
      * @param {*}
      * @return {*}
