@@ -130,6 +130,7 @@ export default {
         lineData: [],
       },
       analyzeLoading: false,
+      currentSupplierId: '1'
     };
   },
   methods: {
@@ -169,7 +170,7 @@ export default {
         this.pageLoading = true;
         let req = {
           partsId: this.currentPartsId,
-          supplierId: '1',
+          supplierId: this.currentSupplierId,
         };
         if (this.$route.query.type === 'edit') {
           req.id = this.$route.query.schemeId;
@@ -185,6 +186,7 @@ export default {
           return item.isShow;
         });
         this.currentPartsId = this.partList[0] ? this.partList[0].id : '';
+        this.currentBatchNumber = this.partList[0] ? this.partList[0].batchNumber : '';
         const analysisCurveData = Array.isArray(this.dataInfo.analysisCurve) ? this.dataInfo.analysisCurve : [];
         this.handleCurveData(analysisCurveData);
         this.pageLoading = false;
@@ -198,7 +200,9 @@ export default {
         const req = {
           userId: this.$store.state.permission.userInfo.id,
           partsId: this.currentPartsId,
-          supplierId: 1,
+          supplierId: this.currentSupplierId,
+          batchNumber: this.currentBatchNumber,
+          partsList: [this.partList[this.partItemCurrent]]
         };
         if (params === 'all') {
           this.pageLoading = true;
@@ -208,7 +212,7 @@ export default {
           this.analyzeLoading = true;
           req.estimatedActualTotalPro = this.$refs.analyzeChart.dataInfo.estimatedActualTotalPro;
         }
-        const res = saveOrUpdateScheme(req);
+        const res = await saveOrUpdateScheme(req);
         this.resultMessage(res);
         this.pageLoading = false;
         this.analyzeLoading = false;
