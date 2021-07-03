@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-28 18:27:56
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-29 09:50:35
+ * @LastEditTime: 2021-07-03 11:24:36
  * @Description: 
  * @FilePath: \front-web\src\views\designate\approvalPersonAndRecord\tableList.vue
 -->
@@ -79,7 +79,7 @@ export default{
             value: item.id
           }
         }))
-        console.log(row)
+        this.$set(row, 'deptManager', '')
       })
     },
     getOptions(optionType) {
