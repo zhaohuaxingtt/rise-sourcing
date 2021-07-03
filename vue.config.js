@@ -207,7 +207,7 @@ module.exports = {
 						'/supplierApiWJS': { //王洁松服务地址
 								// target: 'http://192.168.50.89:8029',
 								// target: 'http://192.168.50.239:8029',
-								target: 'http://192.168.50.50:9029',
+								target: 'http://10.122.17.38:8025',
 								changeOrigin: true,
 								pathRewrite: {
 										"^/supplierApiWJS": ""
