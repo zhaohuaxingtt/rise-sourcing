@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-22 17:47:09
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-01 15:49:20
+ * @LastEditTime: 2021-07-03 11:59:32
  * @Description: 目标价详情
  * @FilePath: \front-web\src\views\financialTargetPrice\targetPriceDetail\index.vue
 -->
@@ -13,11 +13,11 @@
     <!------------------------------------------------------------------------>
     <!--                 基础信息                                          --->
     <!------------------------------------------------------------------------>
-    <basic :id="applyId" />
+    <basic :id="applyId" @basicSaving="basicSaving" />
     <!------------------------------------------------------------------------>
     <!--                 修改历史                                          --->
     <!------------------------------------------------------------------------>
-    <history :id="applyId" />
+    <history ref="history" :id="applyId" />
     <!------------------------------------------------------------------------>
     <!--                 定点信息                                          --->
     <!------------------------------------------------------------------------>
@@ -54,6 +54,11 @@ export default {
       return this.detailData.purchasingProjectId || ''
     }
   },
+  methods: {
+    basicSaving() {
+      this.$refs.history.getTableList()
+    }
+  }
 }
 </script>
 
