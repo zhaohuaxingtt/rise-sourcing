@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-23 15:16:47
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-30 11:40:39
+ * @LastEditTime: 2021-07-03 10:55:27
  * @Description: 基础信息
  * @FilePath: \front-web\src\views\financialTargetPrice\targetPriceDetail\components\basic.vue
 -->
@@ -36,7 +36,7 @@
 </template>
 
 <script>
-import { iCard, iFormGroup, iFormItem, iText, iInput, iSelect, iButton } from 'rise'
+import { iCard, iFormGroup, iFormItem, iText, iInput, iSelect, iButton, iMessage } from 'rise'
 import { detailList } from '../data'
 import { getTargetPriceDetail, setPrice } from "@/api/financialTargetPrice/index"
 import { getDictByCode } from '@/api/dictionary'
