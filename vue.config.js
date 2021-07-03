@@ -120,7 +120,7 @@ module.exports = {
         hotOnly: true,
         proxy: {
 					'/approvalApi': {
-						target: 'http://10.122.18.166:8012',
+						target: 'http://10.122.17.38:8012',
 						changeOrigin: true,
 						pathRewrite: {
 							"^/approvalApi": ""
