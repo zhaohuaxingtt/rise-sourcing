@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-23 15:16:47
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-03 10:55:27
+ * @LastEditTime: 2021-07-03 11:50:59
  * @Description: 基础信息
  * @FilePath: \front-web\src\views\financialTargetPrice\targetPriceDetail\components\basic.vue
 -->
@@ -12,7 +12,7 @@
     <iFormGroup row="4" class="targetPriceDetail">
       <iFormItem v-for="(item, index) in detailList" :key="index" :label="language(item.i18n_label, item.label)+':'" :class="item.row ? 'row'+item.row : ''">
         <template v-if="item.editable && isEdit">
-          <iInput v-if="item.type === 'input'" v-model="detailData[item.value]" />
+          <iInput v-if="item.type === 'input'" v-model="detailData[item.value]" :type="item.number ? 'number' : 'string'" :disabled="isDisabled(item.value)" />
           <iSelect v-else-if="item.type === 'select'" v-model="detailData[item.value]" :disabled="isDisabled(item.value)">
             <el-option
               :value="item.code"
@@ -69,10 +69,10 @@ export default {
   },
   methods: {
     isDisabled(type) {
-      if (type === 'lcTcCurrencyId' && this.detailData.applyType === 'SKD') {
+      if ((type === 'lcTcCurrencyId' || type === 'lcBPrice' || type === 'lcAPrice') && this.detailData.applyType === 'SKD') {
         return true
       }
-      if (type === 'skdTcCurrencyId' && this.detailData.applyType === 'LC') {
+      if ((type === 'skdTcCurrencyId' || type === 'skdBPrice' || type === 'skdAPrice') && this.detailData.applyType === 'LC') {
         return true
       }
       return false

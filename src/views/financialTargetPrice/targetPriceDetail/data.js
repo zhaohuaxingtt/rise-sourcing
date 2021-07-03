@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-23 13:46:59
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-01 15:46:04
+ * @LastEditTime: 2021-07-03 11:50:29
  * @Description: 
  * @FilePath: \front-web\src\views\financialTargetPrice\targetPriceDetail\data.js
  */
@@ -38,13 +38,13 @@ export const detailList = [
   // {value: 'priceUnit', label: '价格单位', type: 'input', i18n_label: '',},
   {value: 'unit', label: '单位', type: 'input', i18n_label: 'DANWEI',},
   {value: 'expTargetpri', label: '期望目标价', type: 'input', i18n_label: 'QIWANGMUBIAOJIA',},
-  {value: 'lcAPrice', label: 'CF LC_A Target', type: 'input', i18n_label: 'CFLCATARGET', editable: true},
-  {value: 'skdBPrice', label: 'CF SKD_B Target', type: 'input', i18n_label: 'CFSKDBTARGET', editable: true},
-  {value: 'ckdLanded', label: 'CF CKD Landed', type: 'input', i18n_label: 'CFCKDLANDED', editable: true},
-  {value: 'ckdDuty', label: 'CF CKD Duty(%)', type: 'input', i18n_label: 'CFCKDDUTY', editable: true},
-  {value: 'lcBPrice', label: 'CF LC_B Target', type: 'input', i18n_label: 'CFLCBTARGET', editable: true},
-  {value: 'skdAPrice', label: 'CF SKD_A Target', type: 'input', i18n_label: 'CFSKDATARGET', editable: true},
-  {value: 'ckdExwork', label: 'CF CKD Ex-work', type: 'input', i18n_label: 'CFCKDEXWORK', editable: true},
+  {value: 'lcAPrice', label: 'CF LC_A Target', type: 'input', number: true, i18n_label: 'CFLCATARGET', editable: true},
+  {value: 'skdBPrice', label: 'CF SKD_B Target', type: 'input', number: true, i18n_label: 'CFSKDBTARGET', editable: true},
+  {value: 'ckdLanded', label: 'CF CKD Landed', type: 'input', number: true, i18n_label: 'CFCKDLANDED', editable: true},
+  {value: 'ckdDuty', label: 'CF CKD Duty(%)', type: 'input', number: true, i18n_label: 'CFCKDDUTY', editable: true},
+  {value: 'lcBPrice', label: 'CF LC_B Target', type: 'input', number: true, i18n_label: 'CFLCBTARGET', editable: true},
+  {value: 'skdAPrice', label: 'CF SKD_A Target', type: 'input', number: true, i18n_label: 'CFSKDATARGET', editable: true},
+  {value: 'ckdExwork', label: 'CF CKD Ex-work', type: 'input', number: true, i18n_label: 'CFCKDEXWORK', editable: true},
   {value: 'ckdExchangeRate', label: '汇率', type: 'input', i18n_label: 'HUILV',},
   {value: 'lcTcCurrencyId', label: 'LC货币', type: 'select', i18n_label: 'LCHUOBI',selectOption: '', editable: true},
   {value: 'skdTcCurrencyId', label: 'SKD货币', type: 'select', i18n_label: 'SKDHUOBI',selectOption: '', editable: true},
