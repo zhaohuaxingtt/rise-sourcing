@@ -104,9 +104,9 @@
       </template>
       
       <!-- 一致性校验 -->
-      <!-- <template #isPriceConsistent="scope">
-        <span>{{scope.row.isPriceConsistent ? '通过' : '不通过'}}</span>
-      </template> -->
+      <template #isPriceConsistent="scope">
+        <span>{{scope.row.isPriceConsistent === null ? '' : (scope.row.isPriceConsistent ? '通过' : '不通过')}}</span>
+      </template>
       <!-- SEL单据确认状态 -->
       <template #selStatus="scope">
         <div>

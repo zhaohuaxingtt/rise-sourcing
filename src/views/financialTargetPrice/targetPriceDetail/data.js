@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-23 13:46:59
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-03 12:17:53
+ * @LastEditTime: 2021-07-03 13:49:11
  * @Description: 
  * @FilePath: \front-web\src\views\financialTargetPrice\targetPriceDetail\data.js
  */
@@ -12,8 +12,8 @@ export const historyTableTitle = [
   {props:'lcAPrice',name:'CF LC_A Target', key: "CFLCATARGET", tooltip: true, width: 120},
   {props:'lcTcCurrencyId',name:'LC货币类型', key: "LCHUOBILEIXING", tooltip: true, width: 120},
   {props:'skdTcCurrencyId',name:'SKD货币类型', key: "SKDHUOBILEIXING", tooltip: true, width: 100},
-  {props:'modifyReason',name:'备注', key: "BEIZHU", tooltip: true, width: 120},
-  {props:'approveType',name:'审批状态', key: "SHENPIZHUANGTAI", tooltip: true, width: 120},
+  {props:'memo',name:'备注', key: "BEIZHU", tooltip: true, width: 120},
+  {props:'approveStatus',name:'审批状态', key: "SHENPIZHUANGTAI", tooltip: true, width: 120},
   {props:'modifer',name:'修改人', key: "XIUGAIREN", tooltip: true, width: 120},
   {props:'modifyDate',name:'修改日期', key: "XIUGAIRIQI", tooltip: true},
   {props:'lcExchangeRate',name:'LC汇率', key: "LCHUILV", tooltip: true},
