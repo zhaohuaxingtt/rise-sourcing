@@ -1,7 +1,7 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-06-30 16:51:56
- * @LastEditTime: 2021-07-02 16:05:49
+ * @LastEditTime: 2021-07-02 20:07:09
  * @LastEditors: Please set LastEditors
  * @Description: 提交定点申请，如果是上会类型，上会弹窗
  * @FilePath: /front-web/src/views/designate/home/components/mettingDialog/index.vue
@@ -17,7 +17,7 @@
     </div>
     <div class="dialog-form">
       <el-form>
-        <el-form-item :label="`${language('XUANZEHUIYILEIBIE','选择会议类别')}:`">
+      <el-form-item :label="`${language('XUANZEHUIYILEIBIE','选择会议类别')}:`">
           <el-radio-group v-model="meetingType">
 					<iRadio
             v-for="(item, index) in meetingTypes"
@@ -26,6 +26,16 @@
             size="small"
             border>{{language(item.key, item.name)}}</iRadio>
 				</el-radio-group>
+        <el-form-item :label="`${language('XUANZEHUIYIJIEGUO','选择会议结果')}:`">
+          <el-radio-group v-model="meetingResult">
+					<iRadio
+            v-for="(item, index) in meetingResultArray"
+            :key="index"
+            :label="item.id"
+            size="small"
+            border>{{language(item.key, item.name)}}</iRadio>
+				</el-radio-group>
+      </el-form-item>
       </el-form-item>
       </el-form>
       <div class="dialog-form-sbtn">
@@ -64,7 +74,7 @@
 
 <script>
 import { iPagination, iDialog, iMessage, iButton,iRadio } from '@/components'
-import { mettingTableTitle as tableTitle, meetingTypes } from './data'
+import { mettingTableTitle as tableTitle, meetingTypes, meetingResult as meetingResultArray } from './data'
 import tableList from '@/views/designate/supplier/components/tableList'
 import filters from '@/utils/filters'
 import { pageMixins } from '@/utils/pageMixins'
@@ -114,6 +124,8 @@ export default {
       tableTitle,
       meetingTypes,
       meetingType: '',
+      meetingResultArray,
+      meetingResult: '',
       controlHeight: 0,
       tableLoading: false,
       tableListData: [],
@@ -153,19 +165,22 @@ export default {
       })
     },
     async checkNomiMeetingSubmit() {
+      console.log(this.selectedData)
       const { query } = this.$route;
       const {desinateId} = query;
+      const meetingIds = this.selectedData.map(o => o.meetingId) || []
       const data = {
           nominateIdArr:[Number(desinateId)],
           // nominationType: this.$store.getters.nominationType || '',
-          meetingResult: this.meetingType,
-          meeting: this.selectedData.map(o => o.id)
+          meetingResult: this.meetingResult,
+          meetingType: this.meetingType,
+          meetingId: meetingIds && Number(meetingIds[0]) || '',
       }
       if (!this.meetingType) {
         iMessage.error(this.language('QINGXUANZEHUIYILEIBIE','请选择会议类别'))
         return
       }
-      if (!data.meeting.length) {
+      if (!this.selectedData.length) {
         iMessage.error(this.language('LK_QINGXUANZEHUIYI','请选择会议'))
         return
       }
@@ -189,7 +204,7 @@ export default {
           })
         } else {
           // 校验成功
-          this.$emit('success', {})
+          this.$emit('success', data)
           this.$emit('update:visible', false)
         }
         
