@@ -304,6 +304,10 @@ import { cloneDeep } from 'lodash'
 				});
 			},
 			saveApply() {
+				if (!this.targetprice.cfTargetPriceDetail.applyType) {
+					iMessage.warn(this.language('请选择申请的财务目标价类型'))
+					return
+				}
 				this.applyLoading = true
 				const params = {
 					...this.targetprice.cfTargetPriceDetail,
@@ -313,7 +317,9 @@ import { cloneDeep } from 'lodash'
 					if (res?.result) {
 						iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
 						this.applyPriceShow = false
-						this.$emit("refresh")
+						this.getTargetPriceDetail()
+						this.targePriceDetail()
+						this.getTargetPrice()
 					} else {
 						iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
 					}
