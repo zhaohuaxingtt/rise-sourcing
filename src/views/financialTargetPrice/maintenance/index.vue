@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-22 09:12:31
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-03 11:09:44
+ * @LastEditTime: 2021-07-03 16:11:10
  * @Description: 财务目标价-目标价维护
  * @FilePath: \front-web\src\views\financialTargetPrice\maintenance\index.vue
 -->
@@ -44,7 +44,7 @@
           <!--------------------取消按钮----------------------------------->
           <iButton v-if="isEdit" @click="handleCancel" >{{language('QUXIAO','取消')}}</iButton>
           <!--------------------导出批量维护按钮----------------------------------->
-          <iButton @click="handleExport" >{{language('DAOCHUPILIANGWEIHU','导出批量维护')}}</iButton>
+          <iButton @click="handleExport" :loading="exportLoading" >{{language('DAOCHUPILIANGWEIHU','导出批量维护')}}</iButton>
           <!--------------------导入批量维护按钮----------------------------------->
           <el-upload
             class=" margin-left10 margin-right10"
@@ -146,7 +146,8 @@ export default {
       applyId: '',
       rfqId: '',
       selectItems: [],
-      uploadLoading: false
+      uploadLoading: false,
+      exportLoading: false
     }
   },
   created() {
@@ -386,7 +387,9 @@ export default {
         iMessage.warn(this.language('ZHISHAOXUANZEYITIAOJILU','至少选择一条记录'))
         return
       }
+      this.exportLoading = true
       await exportTargetPriceList({idList: this.selectItems.map(item => item.applyId)})
+      this.exportLoading = false
     },
     handleUpload() {},
     /**

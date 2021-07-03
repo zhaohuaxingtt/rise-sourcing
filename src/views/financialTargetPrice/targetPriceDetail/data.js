@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-23 13:46:59
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-01 15:46:04
+ * @LastEditTime: 2021-07-03 13:49:11
  * @Description: 
  * @FilePath: \front-web\src\views\financialTargetPrice\targetPriceDetail\data.js
  */
@@ -13,7 +13,7 @@ export const historyTableTitle = [
   {props:'lcTcCurrencyId',name:'LC货币类型', key: "LCHUOBILEIXING", tooltip: true, width: 120},
   {props:'skdTcCurrencyId',name:'SKD货币类型', key: "SKDHUOBILEIXING", tooltip: true, width: 100},
   {props:'memo',name:'备注', key: "BEIZHU", tooltip: true, width: 120},
-  {props:'approveType',name:'审批状态', key: "SHENPIZHUANGTAI", tooltip: true, width: 120},
+  {props:'approveStatus',name:'审批状态', key: "SHENPIZHUANGTAI", tooltip: true, width: 120},
   {props:'modifer',name:'修改人', key: "XIUGAIREN", tooltip: true, width: 120},
   {props:'modifyDate',name:'修改日期', key: "XIUGAIRIQI", tooltip: true},
   {props:'lcExchangeRate',name:'LC汇率', key: "LCHUILV", tooltip: true},
@@ -38,13 +38,13 @@ export const detailList = [
   // {value: 'priceUnit', label: '价格单位', type: 'input', i18n_label: '',},
   {value: 'unit', label: '单位', type: 'input', i18n_label: 'DANWEI',},
   {value: 'expTargetpri', label: '期望目标价', type: 'input', i18n_label: 'QIWANGMUBIAOJIA',},
-  {value: 'lcAPrice', label: 'CF LC_A Target', type: 'input', i18n_label: 'CFLCATARGET', editable: true},
-  {value: 'skdBPrice', label: 'CF SKD_B Target', type: 'input', i18n_label: 'CFSKDBTARGET', editable: true},
-  {value: 'ckdLanded', label: 'CF CKD Landed', type: 'input', i18n_label: 'CFCKDLANDED', editable: true},
-  {value: 'ckdDuty', label: 'CF CKD Duty(%)', type: 'input', i18n_label: 'CFCKDDUTY', editable: true},
-  {value: 'lcBPrice', label: 'CF LC_B Target', type: 'input', i18n_label: 'CFLCBTARGET', editable: true},
-  {value: 'skdAPrice', label: 'CF SKD_A Target', type: 'input', i18n_label: 'CFSKDATARGET', editable: true},
-  {value: 'ckdExwork', label: 'CF CKD Ex-work', type: 'input', i18n_label: 'CFCKDEXWORK', editable: true},
+  {value: 'lcAPrice', label: 'CF LC_A Target', type: 'input', number: true, i18n_label: 'CFLCATARGET', editable: true},
+  {value: 'skdBPrice', label: 'CF SKD_B Target', type: 'input', number: true, i18n_label: 'CFSKDBTARGET', editable: true},
+  {value: 'ckdLanded', label: 'CF CKD Landed', type: 'input', number: true, i18n_label: 'CFCKDLANDED', editable: true},
+  {value: 'ckdDuty', label: 'CF CKD Duty(%)', type: 'input', number: true, i18n_label: 'CFCKDDUTY', editable: true},
+  {value: 'lcBPrice', label: 'CF LC_B Target', type: 'input', number: true, i18n_label: 'CFLCBTARGET', editable: true},
+  {value: 'skdAPrice', label: 'CF SKD_A Target', type: 'input', number: true, i18n_label: 'CFSKDATARGET', editable: true},
+  {value: 'ckdExwork', label: 'CF CKD Ex-work', type: 'input', number: true, i18n_label: 'CFCKDEXWORK', editable: true},
   {value: 'ckdExchangeRate', label: '汇率', type: 'input', i18n_label: 'HUILV',},
   {value: 'lcTcCurrencyId', label: 'LC货币', type: 'select', i18n_label: 'LCHUOBI',selectOption: '', editable: true},
   {value: 'skdTcCurrencyId', label: 'SKD货币', type: 'select', i18n_label: 'SKDHUOBI',selectOption: '', editable: true},

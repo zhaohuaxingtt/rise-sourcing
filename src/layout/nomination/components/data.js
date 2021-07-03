@@ -73,12 +73,12 @@ export const mettingTableTitle = [
     {props:'meetingSite',name:'会议地点',key: 'NOMI_METTINGADDRESS',tooltip:false},
   ]
 // 选择会议类型
-export const meetingResult = [
+export const meetingTypes = [
     {id:'CSC',name:'CSC',key:'CSC'},
     {id:'PRECSC',name:'PRECSC',key:'PRECSC'},
 ]
 // 会议类型
-export const meetingTypes = [
+export const meetingResult = [
     {id:'CLOSE',name:'关闭',key:'LK_GUANBI'},
     {id:'WAIT',name:'等待',key:'LK_DENGDAI'},
     {id:'NEXT',name:'下次Pre CSC',key:'XIACIPRECSC'},

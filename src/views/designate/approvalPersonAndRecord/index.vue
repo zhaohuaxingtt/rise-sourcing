@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-26 21:04:49
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-03 11:23:32
+ * @LastEditTime: 2021-07-03 12:20:31
  * @Description: 定点-审批人&审批记录
  * @FilePath: \front-web\src\views\designate\approvalPersonAndRecord\index.vue
 -->
@@ -185,14 +185,14 @@ export default {
       //this.$route.query.desinateId 
       getApprovalNode(this.$route.query.desinateId).then(res => {
         if (res?.result) {
-          this.tableDataTemp = cloneDeep(res.data.nomiApprovalProcessNodeVOList.map(item => {
+          this.tableDataTemp = cloneDeep(res.data.nomiApprovalProcessNodeVOList?.map(item => {
             return {
               ...item,
               deptOptions: this.parentDeptOptions,
               deptSubOptions: []
             }
           }))
-          this.processInstanceId = res.data.nominateAppVo.processInstanceId
+          this.processInstanceId = res.data.nominateAppVo?.processInstanceId
           console.log(this.tableDataTemp)
         } else {
           iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)

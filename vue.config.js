@@ -120,7 +120,7 @@ module.exports = {
         hotOnly: true,
         proxy: {
 					'/approvalApi': {
-						target: 'http://10.122.18.166:8012',
+						target: 'http://10.122.17.38:8012',
 						changeOrigin: true,
 						pathRewrite: {
 							"^/approvalApi": ""
@@ -207,7 +207,7 @@ module.exports = {
 						'/supplierApiWJS': { //王洁松服务地址
 								// target: 'http://192.168.50.89:8029',
 								// target: 'http://192.168.50.239:8029',
-								target: 'http://192.168.50.50:9029',
+								target: 'http://10.122.17.38:8025',
 								changeOrigin: true,
 								pathRewrite: {
 										"^/supplierApiWJS": ""

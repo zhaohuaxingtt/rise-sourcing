@@ -1,7 +1,7 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-07-01 14:30:59
- * @LastEditTime: 2021-07-02 17:35:00
+ * @LastEditTime: 2021-07-03 16:30:32
  * @LastEditors: Please set LastEditors
  * @Description: M签字单预览导出 jira-1571
  * @FilePath: /front-web/src/views/designate/home/signSheet/signView.vue
@@ -24,6 +24,7 @@
         </div>
         <div class="signPreview-body padding-top30">
           <tablelist
+            height="450"
             index
             :selection="false"
             :tableData="tableListData"
@@ -100,9 +101,8 @@ export default {
       }).then(res => {
         this.tableLoading = false
         if (res.code === '200') {
-          this.tableListData = res.data.records || []
-          this.page.totalCount = res.data.total
-          console.log(this.selectTableData)
+          this.tableListData = res.data.nomiList || []
+          console.log(this.tableListData)
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }
