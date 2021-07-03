@@ -292,23 +292,29 @@ export default {
     handleDelete() {
       if (!this.multipleSelection.length) return iMessage.warn(this.language("QINGXUANZEXUYAOSHANCHUDESHUJU", "请选择需要删除的数据"))
 
-      this.deleteLoading = true
-      deleteRfqRateDeparts(
-        this.multipleSelection.map(item => item.id)
-      )
-      .then(res => {
-        const message = this.$i18n.locale === "zh" ? res.desZh : res.desEn
+      const ids = this.multipleSelection.filter(item => item.id).map(item => item.id)
+      if (ids.length) {
+        this.deleteLoading = true
+        deleteRfqRateDeparts(
+          ids
+        )
+        .then(res => {
+          const message = this.$i18n.locale === "zh" ? res.desZh : res.desEn
 
-        if (res.code == 200) {
-          iMessage.success(message)
-          this.getRfqRateDeparts()
-        } else {
-          iMessage.error(message)
-        }
+          if (res.code == 200) {
+            iMessage.success(this.language("SHANCHUCHENGGONG", "删除成功"))
+            this.tableListData = this.tableListData.filter(item => !this.multipleSelection.includes(item))
+          } else {
+            iMessage.error(message)
+          }
 
-        this.deleteLoading = false
-      })
-      .catch(() => this.deleteLoading = false)
+          this.deleteLoading = false
+        })
+        .catch(() => this.deleteLoading = false)
+      } else {
+        iMessage.success(this.language("SHANCHUCHENGGONG", "删除成功"))
+        this.tableListData = this.tableListData.filter(item => !this.multipleSelection.includes(item))
+      }
     },
     // 选择部门编号
     handleSelectDeptNum(row) {
