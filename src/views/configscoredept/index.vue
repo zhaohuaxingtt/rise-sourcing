@@ -212,7 +212,11 @@ export default {
     },
     getRfqRateDeparts() {
       this.loading = true
-      getRfqRateDeparts(this.form)
+
+      const form = {}
+      Object.keys(this.form).forEach(key => form[key] = this.form[key] || undefined)
+
+      getRfqRateDeparts(form)
       .then(res => {
         if (res.code == 200) {
           this.tableListData = Array.isArray(res.data) ? res.data : []
