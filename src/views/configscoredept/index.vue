@@ -122,12 +122,12 @@
                 :key="item.key"
               ></el-option>
             </iSelect>
-            <span v-else>{{ scope.row.isCheck }}</span>
+            <span v-else>{{ scope.row.isCheck | isCheckFilter }}</span>
           </template>
         </tableList>
       </div>
     </iCard>
-    <deptDialog :visible.sync="deptDialogVisible" @confrim="selectDeptNum" />
+    <deptDialog :visible.sync="deptDialogVisible" @confrim="selectDeptNum" :filterDeptNums="tableListData.map(item => item.rateDepartNum)" />
   </iPage>
 </template>
 
@@ -180,6 +180,16 @@ export default {
   created() {
     this.getDictByCode()
     this.getRfqRateDeparts()
+  },
+  filters: {
+    isCheckFilter(value) {
+      const map = {
+        0: "否",
+        1: "是"
+      }
+
+      return map[value] || value
+    }
   },
   methods: {
     getDictByCode() {
@@ -324,6 +334,8 @@ export default {
     // 获取选择的部门编号
     selectDeptNum(data) {
       this.currentRow.rateDepartNum = data.deptNum
+      
+      console.log(this.currentRow)
       this.currentRow = null
     }
   }
