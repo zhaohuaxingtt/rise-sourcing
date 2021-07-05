@@ -287,13 +287,13 @@ export default {
               const vm1 = echarts().init(document.getElementById("chart" + index));
               let option1 = {
                 tooltip: {
-                  formatter: function (params) {//这里就是控制显示的样式
-                    if (params.seriesIndex == 0) {
-                      return 'JV Sourcing'
-                    } else if (params.seriesIndex == 1) {
-                      return 'Commom Sourcing'
-                    }
-                  },
+                  // formatter: function (params) {//这里就是控制显示的样式
+                  //   if (params.seriesIndex == 0) {
+                  //     return 'JV Sourcing'
+                  //   } else if (params.seriesIndex == 1) {
+                  //     return 'Commom Sourcing'
+                  //   }
+                  // },
                   backgroundColor: '#ffffff',
                   extraCssText: 'color: #1B1D21; box-shadow: 0px 0px 20px rgba(27, 29, 33, 0.12);'
                 },
@@ -492,97 +492,6 @@ export default {
             this.initContentData = cloneDeep(res.data)
             this.contentData = res.data.slice(0, 8)
             this.$nextTick(() => {
-              // const vm = echarts().init(document.getElementById("chart0"));
-              // let option = {
-              //   grid: {
-              //     left: '0%',
-              //     right: '0',
-              //     bottom: '0%',
-              //     top: '12%',
-              //     containLabel: true
-              //   },
-              //   xAxis: {
-              //     type: 'category',
-              //     data: ['总预算', '定点金额', 'BM单', '付款'],
-              //     axisTick: {
-              //       show: false
-              //     },
-              //     axisLine:{
-              //       lineStyle:{
-              //         color: '#CDD4E2'
-              //       }
-              //     },
-              //     axisLabel:{
-              //       textStyle:{
-              //         color: '#485465'
-              //       }
-              //     },
-              //   },
-              //   yAxis: {
-              //     type: 'value',
-              //     axisTick: {
-              //       show: false
-              //     },
-              //     axisLabel: {
-              //       show: false
-              //     },
-              //     splitLine: {
-              //       show: false
-              //     },
-              //     axisLine: {
-              //       show: false
-              //     },
-              //
-              //   },
-              //   series: [
-              //     {
-              //       data: [120, 200, 150, 80],
-              //       type: 'bar',
-              //       barWidth: 30,
-              //        stack: 'total',
-              //       label: {
-              //         show: false,
-              //         position: 'top',
-              //         textStyle: {
-              //           color: '#485465'
-              //         }
-              //       },
-              //       itemStyle: {
-              //         normal: {
-              //           color: function(params){
-              //             console.log(params)
-              //             let colorlist = ['#1763F7','#73A1FA','#B0C5F5','#CEE1FF'];
-              //             return colorlist[params.dataIndex];
-              //           }
-              //         },
-              //       }
-              //     },
-              //     {
-              //       data: [150, 100, 250, 100],
-              //       type: 'bar',
-              //       barWidth: 30,
-              //        stack: 'total',
-              //       label: {
-              //         show: true,
-              //         position: 'top',
-              //         textStyle: {
-              //           color: '#485465'
-              //         }
-              //       },
-              //       itemStyle: {
-              //         normal: {
-              //           barBorderRadius: [5, 5, 0, 0],
-              //           color: function(params){
-              //             console.log(params)
-              //             let colorlist = ['#55C2D0','#87D4DE','#BBE7EC','#D4F8F7'];
-              //             return colorlist[params.dataIndex];
-              //           }
-              //         },
-              //       }
-              //     }
-              //   ]
-              // };
-              // vm.setOption(option);
               this.contentData.map((item, index) => {
                 let chartData = [
                     (item.generalBudget ? item.generalBudget.toFixed(2) : 0),
@@ -667,13 +576,13 @@ export default {
                 };
                 let option2 = {
                   tooltip: {
-                    formatter: function (params) {//这里就是控制显示的样式
-                      if (params.seriesIndex == 0) {
-                        return 'JV Sourcing'
-                      } else if (params.seriesIndex == 1) {
-                        return 'Commom Sourcing'
-                      }
-                    },
+                    // formatter: function (params) {//这里就是控制显示的样式
+                    //   if (params.seriesIndex == 0) {
+                    //     return 'JV Sourcing'
+                    //   } else if (params.seriesIndex == 1) {
+                    //     return 'Commom Sourcing'
+                    //   }
+                    // },
                     backgroundColor: '#ffffff',
                     extraCssText: 'color: #1B1D21; box-shadow: 0px 0px 20px rgba(27, 29, 33, 0.12);'
                   },
@@ -719,7 +628,8 @@ export default {
 
                   },
                   series: [
-                      {
+                    {
+                      name: 'JV Sourcing',
                       data: chartData,
                       type: 'bar',
                       barWidth: 30,
@@ -738,6 +648,7 @@ export default {
                       }
                     },
                     {
+                      name: 'Commom Sourcing',
                       data: chartData_commonSourcing,
                       type: 'bar',
                       barWidth: 30,

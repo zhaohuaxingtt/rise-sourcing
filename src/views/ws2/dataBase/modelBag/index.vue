@@ -5,7 +5,7 @@
         style="margin-top: 20px"
         @sure="getTableListFn"
         @reset="reset"
-        :icon="false"
+        :icon="true"
         :resetKey="PARTSPROCURE_RESET"
         :searchKey="PARTSPROCURE_CONFIRM"
         v-loading="loadingiSearch"
@@ -330,7 +330,7 @@ export default {
         categoryNameZh: form['search.tmCartypeProId'],
         packageNameZh: form['search.cartypeBag'],
         partNameZh: form['search.partBag'],
-        packageNameZhList: this.multipleSelection
+        packageDataList: this.multipleSelection
       }
       download(params)
         .then((res) => {

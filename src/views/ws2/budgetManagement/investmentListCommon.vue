@@ -316,6 +316,7 @@ export default {
         }
         if (Number(res[4].code) === 0) {
           this.carTypeBudget = res[4].data.carTypeBudget
+          console.log(this.carTypeBudget)
         } else {
           iMessage.error(result4);
         }
@@ -380,7 +381,9 @@ export default {
             const chart2 = echarts().init(document.getElementById("chart2"));
             const chart3 = echarts().init(document.getElementById("chart3"));
             const chart4 = echarts().init(document.getElementById("chart4"));
-            let option1 = {
+             console.log(this.carTypeBudget)
+
+             let option1 = {
               // tooltip: {
                 // formatter: function (params) {//这里就是控制显示的样式
                 //   if (params.dataIndex == 0) {
@@ -525,7 +528,7 @@ export default {
                 axisLabel: {
                   textStyle: {
                     color: '#485465',
-                    fontSize: 10
+                    fontSize: 9
                   },
                 },
               },
