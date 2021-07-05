@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-29 15:59:22
- * @LastEditTime: 2021-06-29 16:11:49
+ * @LastEditTime: 2021-07-02 18:08:53
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\supplierscore\components\rfqdetail\components\supplierScore\components\score\components\rejectDialog.vue
@@ -12,12 +12,10 @@
     v-bind="$props"
     v-on="$listeners"
     :visible.sync="status"
-    title="是否拒绝"
+    :title="language('SHIFOUJUJUE', '是否拒绝?')"
     :close-on-click-modal="false">
-    <!-- :title="language('SHIFOUJUJUE', '是否拒绝?')" -->
     <div class="body">
-      <!-- <iInput type="textarea" v-model="reason" resize="none" :placeholder="language('JUJUEYUANYIN', '拒绝原因')" /> -->
-      <iInput type="textarea" v-model="reason" resize="none" placeholder="拒绝原因" />
+      <iInput type="textarea" v-model="reason" resize="none" :placeholder="language('JUJUEYUANYIN', '拒绝原因')" />
     </div>
     <template #footer class="footer">
       <iButton :loading="confirmLoading" @click="handleConfirm">{{ language("QUEREN", "确认") }}</iButton>

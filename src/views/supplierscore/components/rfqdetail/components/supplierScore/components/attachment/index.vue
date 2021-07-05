@@ -1,23 +1,21 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-22 16:16:21
- * @LastEditTime: 2021-06-28 17:55:24
+ * @LastEditTime: 2021-07-02 18:05:59
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\supplierscore\components\rfqdetail\components\supplierScore\components\attachment\index.vue
 -->
 <template>
-  <!-- <iCard class="attachment" :title="language('GONGYINGSHANGPINGFENFUJIAN', '供应商评分附件')"> -->
-  <iCard class="attachment" title="供应商评分附件">
+  <iCard class="attachment" :title="language('GONGYINGSHANGPINGFENFUJIAN', '供应商评分附件')">
     <template #header-control>
-      <!-- <iButton :loading="downloadLoading" @click="handleDownload">{{ language("XIAZAI", "下载") }}</iButton> -->
-      <iButton :loading="downloadLoading" @click="handleDownload">下载</iButton>
+      <iButton :loading="downloadLoading" @click="handleDownload">{{ language("XIAZAI", "下载") }}</iButton>
     </template>
     <div class="body">
       <tableList
         class="table"
         index
-        :lang="false"
+        :lang="true"
         :tableData="tableListData"
         :tableTitle="tableTitle"
         :tableLoading="loading"
@@ -109,7 +107,7 @@ export default {
     },
     // 下载
     async handleDownload() {
-      if (!this.multipleSelection.length) return iMessage.warn(this.$t("请选择需要下载的文件"))
+      if (!this.multipleSelection.length) return iMessage.warn(this.language("QINGXUANZEXUYAOXIAZAIDEWENJIAN", "请选择需要下载的文件"))
 
       this.downloadLoading = true
       await downloadFile({

@@ -119,6 +119,13 @@ module.exports = {
         https: false,
         hotOnly: true,
         proxy: {
+					'/approvalApi': {
+						target: 'http://10.122.17.38:8012',
+						changeOrigin: true,
+						pathRewrite: {
+							"^/approvalApi": ""
+						}
+					},
 					'/api': {
 						// target: 'http://10.160.138.38:8788',
 						target: 'http://rise-gateway-runtime.apps.vmocp-dev.csvw.com/',
@@ -136,7 +143,7 @@ module.exports = {
 						}
 					},
 					'/supplierApiDL': {  // 供应商
-						// target: 'http://10.160.137.63:8788',
+						// target: 'http://10.160.138.216:9029',
 						target: 'http://10.122.17.38:8025',
 						changeOrigin: true,
 						pathRewrite: {

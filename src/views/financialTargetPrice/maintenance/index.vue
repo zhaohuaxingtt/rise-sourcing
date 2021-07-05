@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-22 09:12:31
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-02 14:34:00
+ * @LastEditTime: 2021-07-03 16:11:10
  * @Description: 财务目标价-目标价维护
  * @FilePath: \front-web\src\views\financialTargetPrice\maintenance\index.vue
 -->
@@ -44,7 +44,7 @@
           <!--------------------取消按钮----------------------------------->
           <iButton v-if="isEdit" @click="handleCancel" >{{language('QUXIAO','取消')}}</iButton>
           <!--------------------导出批量维护按钮----------------------------------->
-          <iButton @click="handleExport" >{{language('DAOCHUPILIANGWEIHU','导出批量维护')}}</iButton>
+          <iButton @click="handleExport" :loading="exportLoading" >{{language('DAOCHUPILIANGWEIHU','导出批量维护')}}</iButton>
           <!--------------------导入批量维护按钮----------------------------------->
           <el-upload
             class=" margin-left10 margin-right10"
@@ -115,6 +115,7 @@ import { dictkey } from "@/api/partsprocure/editordetail"
 import { getTargetPriceList, exportTargetPriceList, setPrice, getCFList, getPartStatus } from "@/api/financialTargetPrice/index"
 import { getDictByCode } from '@/api/dictionary'
 import {omit} from 'lodash'
+import moment from 'moment'
 export default {
   mixins: [pageMixins],
   components: {iPage,headerNav,iCard,tableList,iPagination,iButton,iSelect,iDatePicker,iInput,iSearch,modificationRecordDialog,attachmentDialog,approvalRecordDialog},
@@ -145,7 +146,8 @@ export default {
       applyId: '',
       rfqId: '',
       selectItems: [],
-      uploadLoading: false
+      uploadLoading: false,
+      exportLoading: false
     }
   },
   created() {
@@ -228,7 +230,7 @@ export default {
     fileError(err) {
       console.log(err.message)
       const errRes = JSON.parse(err.message)
-      this.uploadLoading=false;iMessage.error(errRes?.message || '上传失败')
+      this.uploadLoading=false;iMessage.error(this.$i18n.locale === 'zh' ? errRes?.desZh : errRes?.desEn || '上传失败')
     },
     fileSuccess(res){
       if(res.code == 200){
@@ -338,10 +340,11 @@ export default {
       this.tableLoading = true
       const params = omit({
         ...this.searchParams,
-        applyDateStart: this.searchParams.applyDate ? this.searchParams.applyDate[0] : null,
-        applyDateEnd: this.searchParams.applyDate ? this.searchParams.applyDate[1] : null,
-        responseDateStart: this.searchParams.responseDate ? this.searchParams.responseDate[0] : null,
-        responseDateEnd: this.searchParams.responseDate ? this.searchParams.responseDate[1] : null,
+        searchType: '0',
+        applyDateStart: this.searchParams.applyDate ? moment(this.searchParams.applyDate[0]).format('YYYY-MM-DD HH:mm:ss') : null,
+        applyDateEnd: this.searchParams.applyDate ? moment(this.searchParams.applyDate[1]).format('YYYY-MM-DD HH:mm:ss') : null,
+        responseDateStart: this.searchParams.responseDate ? moment(this.searchParams.responseDate[0]).format('YYYY-MM-DD HH:mm:ss') : null,
+        responseDateEnd: this.searchParams.responseDate ? moment(this.searchParams.responseDate[1]).format('YYYY-MM-DD HH:mm:ss') : null,
         current: this.page.currPage,
         size: this.page.pageSize
       },['applyDate','responseDate'])
@@ -384,7 +387,9 @@ export default {
         iMessage.warn(this.language('ZHISHAOXUANZEYITIAOJILU','至少选择一条记录'))
         return
       }
+      this.exportLoading = true
       await exportTargetPriceList({idList: this.selectItems.map(item => item.applyId)})
+      this.exportLoading = false
     },
     handleUpload() {},
     /**

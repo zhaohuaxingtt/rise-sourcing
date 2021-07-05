@@ -64,7 +64,7 @@
         <!-- 上会类型提交确认弹窗 -->
         <mettingDialog 
             :visible.sync="mettingDialogVisible" 
-            @success="submit(false)"
+            @success="submit(...arguments, false)"
             @resetSubmitting="submitting = false"
             ref="mettingDialog" />
     </div>
@@ -345,13 +345,14 @@ export default {
             return {state, dataInfo}
         },
         // 提交
-        async submit(check = true){
+        async submit(params = {}, check = true){
             const { query } = this.$route;
             const {desinateId} = query;
             const nominationType = this.$store.getters.nominationType || ''
-            const data = {
+            const data = Object.assign({
                 nominateIdArr:[Number(desinateId)],
-            }
+            }, params)
+            console.log('params', data)
             this.submitting = true
             if (check && nominationType === 'MEETING') {
                 const res = await this.checkNomiMeetingSubmit(data)
