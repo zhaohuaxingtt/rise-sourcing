@@ -6,7 +6,7 @@
 <template>
   <div class="btnList flex-align-center">
     <!-- v-permission="TOOLING_PAYMENTPLAN_PAYMENTBOARD" -->
-    <!-- <icon v-permission="TOOLING_PAYMENTPLAN_PAYMENTBOARD" @click.native="powerBiUrl" v-if="isIconShow" symbol name="iconicon-xiazai" class="card-icon"></icon> -->
+    <icon v-permission="TOOLING_PAYMENTPLAN_PAYMENTBOARD" @click.native="powerBiUrl" v-if="isIconShow" symbol name="iconicon-xiazai" class="card-icon"></icon>
     <iNavMvp
         :lev='2'
         :routerPage="true"
