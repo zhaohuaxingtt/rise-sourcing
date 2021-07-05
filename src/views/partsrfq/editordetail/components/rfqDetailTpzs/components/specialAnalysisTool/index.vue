@@ -42,7 +42,8 @@ export default {
     async getDataList(val) {
       const pms = {
         isInsideEnter: this.$route.path === '/sourcing/partsrfq/assistant' ? true : false,
-        keyword: val || ''
+        keyword: val || '',
+        rfq: this.$route.query.id
       }
       const res = await totalOverview(pms)
       if (res.result) {
