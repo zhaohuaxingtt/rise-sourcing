@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-23 13:46:59
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-05 14:31:35
+ * @LastEditTime: 2021-07-05 16:04:52
  * @Description: 
  * @FilePath: \front-web\src\views\financialTargetPrice\targetPriceDetail\data.js
  */
@@ -46,9 +46,9 @@ export const detailList = [
   {value: 'skdAPrice', label: 'CF SKD_A Target', type: 'input', number: true, i18n_label: 'CFSKDATARGET', editable: true},
   {value: 'ckdExwork', label: 'CF CKD Ex-work', type: 'input', number: true, i18n_label: 'CFCKDEXWORK', editable: true},
   {value: 'ckdExchangeRate', label: '汇率', type: 'input', i18n_label: 'HUILV',},
-  {value: 'lcTcCurrencyId', label: 'LC货币', type: 'select', i18n_label: 'LCHUOBI',selectOption: '', editable: true},
-  {value: 'skdTcCurrencyId', label: 'SKD货币', type: 'select', i18n_label: 'SKDHUOBI',selectOption: '', editable: true},
-  {value: 'ckdTcCurrencyId', label: 'CKD货币', type: 'select', i18n_label: 'CKDHUOBI',selectOption: '', editable: true},
+  {value: 'lcTcCurrencyId', label: 'LC货币', type: 'select', i18n_label: 'LK_LCHUOBI',selectOption: '', editable: true},
+  {value: 'skdTcCurrencyId', label: 'SKD货币', type: 'select', i18n_label: 'LK_SKDHUOBI',selectOption: '', editable: true},
+  {value: 'ckdTcCurrencyId', label: 'CKD货币', type: 'select', i18n_label: 'LK_CKDHUOBI',selectOption: '', editable: true},
   {value: 'rwPrice', label: 'RW价', type: 'input', i18n_label: 'RWJIA',},
   {value: 'modifyReason', label: '备注', type: 'input', i18n_label: 'BEIZHU',row: 2, editable: true}
 ]
