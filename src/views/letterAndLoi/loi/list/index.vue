@@ -23,7 +23,7 @@
             </el-form-item>
         </el-form>
     </iSearch>
-    <iCard class="contain margin-top20" title="预定点通知书(LOI)">
+    <iCard class="contain margin-top20" :title="language('LK_LOI_YUDINGDIANTONGZHISHULOI','预定点通知书(LOI)')">
         <template v-slot:header-control>
             <iButton :loading="btnLoading.submit" @click="submit">{{language('LK_QUERENBINGTIJIAO','确认并提交')}}</iButton>
             <iButton :loading="btnLoading.lineSure" @click="lineSure">{{language('LK_LINIEQUEREN','LINIE确认')}}</iButton>
