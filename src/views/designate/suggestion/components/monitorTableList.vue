@@ -1,7 +1,7 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-02-24 09:42:07
- * @LastEditTime: 2021-07-05 09:39:25
+ * @LastEditTime: 2021-07-05 10:25:24
  * @LastEditors: Please set LastEditors
 -->
 
@@ -398,7 +398,7 @@ export default {
       
       // 校验是否显示加权第四根柱子
       let isShowWeightStick = false
-      isShowWeightStick = Boolean(data.filter(o => o.supplierChosen && (o.supplierChosen.length > 1 || (o.supplierChosen.length === 1 && o.percent && o.percent[0] !== 100.00))).length)
+      isShowWeightStick = Boolean(data.filter(o => o.supplierChosen && (o.supplierChosen.length > 1 || (o.supplierChosen.length === 1 && o.percent && String(o.percent[0]) !== '100.00'))).length)
 
       // 'Best TTO \n for Whole Package'
       // 根据供应商
@@ -451,8 +451,10 @@ export default {
       bestGroup = _.sortBy(bestGroup, ['data'])
       // console.log('bestGroup', bestGroup)
       // 筛选分组最低数据
-      const bestGroupTotal = _.sum(bestGroup.map(o => o.data))
-      const bestGroupSupplier = [bestGroup[0].data, bestGroupTotal - bestGroup[0].data]
+      // const bestGroupTotal = _.sum(bestGroup.map(o => o.data))
+      const bestGroupTotal = bestGroup[0].data
+      // const bestGroupSupplier = [bestGroup[0].data, bestGroupTotal - bestGroup[0].data]
+      const bestGroupSupplier = [bestGroup[0].data]
       const bestGroupSupplierIndex = bestGroup[0].index
       bestGroupSupplier.push(bestGroupTotal)
       // 记录该供应商
