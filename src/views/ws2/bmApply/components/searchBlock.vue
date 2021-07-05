@@ -95,7 +95,7 @@
       <!-- Linie -->
       <el-form-item label="Linie">
         <iSelect
-            :placeholder="$t('LK_ALL')"
+            :placeholder="$t('LK_QINGXUANZE')"
             v-model="form['linieId']"
             filterable
         >
@@ -162,12 +162,14 @@ export default {
 
         if(res[0].data){
           this.fromGroup = res[0].data;
+          this.fromGroup.unshift({tmCartypeProId: '', tmCartypeProName: '全部'});
         }else{
           iMessage.error(result0);
         }
 
         if(res[1].data){
           this.departmentList = res[1].data;
+          this.departmentList.unshift({deptId: '', deptName: '全部'})
         }else{
           iMessage.error(result1);
         }
@@ -180,12 +182,14 @@ export default {
 
         if(res[3].data){
           this.aekoTypeList = res[3].data;
+          this.aekoTypeList.unshift({akeoType: '', akeoTypeName: '全部'})
         }else{
           iMessage.error(result3);
         }
 
         if(res[4].data){
           this.bmStatusList = res[4].data;
+          this.bmStatusList.unshift({bmStatus: '', bmStatusName: '全部'})
         }else{
           iMessage.error(result4);
         }

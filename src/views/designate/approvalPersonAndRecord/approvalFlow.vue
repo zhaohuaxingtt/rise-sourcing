@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-27 00:41:04
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-28 21:57:24
+ * @LastEditTime: 2021-07-03 11:29:08
  * @Description: 审批流弹窗
  * @FilePath: \front-web\src\views\designate\approvalPersonAndRecord\approvalFlow.vue
 -->
@@ -77,7 +77,7 @@ export default {
     return {
       backType: '',
       backReason: '',
-      flowData: flowData,
+      flowData: mockData,
       currentStep: 2
     }
   },

@@ -1,10 +1,10 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-06-15 17:12:55
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-07-03 19:01:39
+ * @LastEditors: Luoshuang
  * @Description: In User Settings Edit
- * @FilePath: \rise\src\utils\axios.js
+ * @FilePath: \front-web\src\utils\axios.js
  */
 import { iMessage } from 'rise';
 import {getToken,removeToken,setToken,setRefreshToken} from '@/utils'
@@ -63,7 +63,7 @@ import store from '@/store'
           if(document.getElementsByClassName('el-message').length == 0){
             const {response={}} = error;
             const {data} = response;
-            iMessage.error(data.message)
+            iMessage.error(data.message || data.desZh)
           }
           break;
       }

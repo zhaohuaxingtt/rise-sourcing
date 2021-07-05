@@ -61,7 +61,9 @@ import {partScroingTitle} from "./data";
 import {pageMixins} from "@/utils/pageMixins";
 import tpbRemarks from './tpbRemarks'
 import {getSupplierAllParts} from "@/api/partsrfq/editordetail";
+import { getRfqPartRatingsByCurrentDept } from "@/api/supplierscore"
 import store from '@/store'
+import { cloneDeep } from "lodash"
 export default {
   components: {
     iCard,
@@ -76,7 +78,7 @@ export default {
   data() {
     return {
       tableListData: [],
-      tableTitle: partScroingTitle,
+      tableTitle: cloneDeep(partScroingTitle),
       tableLoading: false,
       selectTableData: [],
       dialogRemarks: false,
@@ -93,19 +95,30 @@ export default {
       if (rfqId && supplierId) {
         this.tableLoading = true;
         try {
-          const req = {
-            supplierId,
+          const res = await getRfqPartRatingsByCurrentDept({
             rfqId,
-            userId:store.state.permission.userInfo.id,
-            isFake: 1
+            supplierId
+          })
+          this.tableListData = Array.isArray(res.data) ? res.data : []
+          this.tableTitle = cloneDeep(partScroingTitle)
+          if (this.tableListData[0]) {
+            this.tableTitle[this.tableTitle.length - 1].name = this.tableListData[0].rateTag
           }
-          const res = await getSupplierAllParts(req)
-          this.tableListData = res.records;
-          this.page.currPage = res.current
-          this.page.pageSize = res.size
-          this.page.totalCount = res.total
+          // const req = {
+          //   supplierId,
+          //   rfqId,
+          //   userId:store.state.permission.userInfo.id,
+          //   isFake: 1
+          // }
+          // const res = await getSupplierAllParts(req)
+          // this.tableListData = res.records;
+          // this.page.currPage = res.current
+          // this.page.pageSize = res.size
+          // this.page.totalCount = res.total
           this.tableLoading = false;
         } catch {
+          this.tableLoading = false;
+        } finally {
           this.tableLoading = false;
         }
       }

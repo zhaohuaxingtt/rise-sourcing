@@ -19,8 +19,8 @@
     >
     </iTableList>
     <div class="TOTAL">
-      <div>TOTAL</div>
-      <div>{{ tableTotal }}</div>
+      <div>Total</div>
+      <div>{{ getTousandNum(tableTotal) }}</div>
     </div>
     <span slot="footer" class="dialog-footer">
     </span>
@@ -70,10 +70,10 @@ export default {
         const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
         if (Number(res.code) === 0) {
           this.tableListData = cloneDeep(res.data).map(item => {
-            item.amount = this.getTousandNum(item.amount)
+            item.amount = this.getTousandNum(Number(item.amount).toFixed(2))
             return item
           })
-          this.tableTotal = cloneDeep(res.data).map(item => Number(item.amount)).reduce((a, b) => a + b).toFixed(1)
+          this.tableTotal = cloneDeep(res.data).map(item => Number(item.amount)).reduce((a, b) => a + b).toFixed(2)
         } else {
           iMessage.error(result);
         }

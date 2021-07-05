@@ -1,5 +1,5 @@
 <template>
-  <div class="main" v-loading="mainLoading">
+  <div class="main" v-loading="mainLoading" v-permission="TOOLING_BUDGET_COMMONSOURCING_MODELBAGLIST">
     <div class="header">
       <div v-loading="searchLoading">
         <span class="font20W">车型包:</span>
@@ -7,7 +7,7 @@
             :placeholder="$t('LK_QINGXUANZE')"
             v-model="carTypePackageId"
             class="font20W"
-            @change="getCommonSourcingView"
+            @change="changeCarType"
             filterable
         >
           <el-option
@@ -21,7 +21,7 @@
         <iSelect
             :placeholder="$t('LK_QINGXUANZE')"
             v-model="packageVersion"
-            @change="getCommonSourcingView"
+            @change="changeVersion"
             filterable
         >
           <el-option
@@ -68,7 +68,7 @@
                 @change="getCommonSourcingView"
             >
               <el-option
-                  :value="item.deptId"
+                  :value="item.commodity"
                   :label="item.commodity"
                   v-for="(item, index) in DepartmentsComboList"
                   :key="index"
@@ -101,6 +101,7 @@
                 :action="actionUrl"
                 :on-change="beforeUpload"
                 :on-success="onSuccess"
+                :on-error="onError"
                 :before-upload="beforeAvatarUpload"
                 :before-remove="beforeRemove"
                 :limit="1"
@@ -123,6 +124,7 @@
         >
           <template #categoryId="scope">
             <iSelect
+                v-if="currentVersion"
                 :placeholder="$t('LK_QINGXUANZE')"
                 v-model="scope.row.categoryId"
                 class="tempSelect"
@@ -136,12 +138,15 @@
                   :key="index"
               ></el-option>
             </iSelect>
+            <div v-else>{{ materialGroupList.find(item => scope.row.categoryId === item.id).name  }}</div>
           </template>
           <template #targetBudgetTotal="scope">
-            <div class="linkStyle"><span @click="clicktargetBudgetTotal(scope.row)">{{ getTousandNum(scope.row.targetBudgetTotal) }}</span></div>
+            <div v-if="currentVersion" class="linkStyle"><span @click="clicktargetBudgetTotal(scope.row)">{{ getTousandNum(scope.row.targetBudgetTotal) }}</span></div>
+            <div v-else>{{ getTousandNum(scope.row.targetBudgetTotal) }}</div>
           </template>
           <template #fixedPointAllotTotal="scope">
-            <div class="linkStyle"><span @click="clickfixedPointAllotTotal(scope.row)">{{ getTousandNum(scope.row.fixedPointAllotTotal) }}</span></div>
+            <div v-if="currentVersion" class="linkStyle"><span @click="clickfixedPointAllotTotal(scope.row)">{{ getTousandNum(scope.row.fixedPointAllotTotal) }}</span></div>
+            <div v-else>{{ getTousandNum(scope.row.fixedPointAllotTotal) }}</div>
           </template>
         </iTableList>
       </iCard>
@@ -155,6 +160,7 @@
         v-model="fixedAssignmentShow"
         :id="fixedAssignmentId"
         :fixedAssignmentInfo="fixedAssignmentInfo"
+        :targetBudgetAmount="targetBudgetAmount"
         @fixedAssignmentSave="getCommonSourcingView"
     ></fixedAssignment>
   </div>
@@ -208,6 +214,7 @@ export default {
       targetBudgetId: '',
       fixedAssignmentId: '',
       fixedAssignmentInfo: '',
+      targetBudgetAmount: '',
       targetBudgetInfo: '',
       tableListData: [],
        carTypeBudgetDetailVOSCount: [],
@@ -221,6 +228,7 @@ export default {
       DepartmentsComboList: [],
       materialGroup: [],
       materialGroupList: [],
+      currentVersion: '',
       getTousandNum: getTousandNum
     }
   },
@@ -234,6 +242,49 @@ export default {
     this.getSelect(carTypePackageId)
    },
   methods: {
+    beforeAvatarUpload(file) {
+      this.mainLoading = true;
+      let FileExt = file.name.replace(/.+\./, "").toLowerCase();
+      let flag = ["xls", "xlsx"].includes(FileExt);
+      if (!flag) {
+        this.mainLoading = false;
+        iMessage.error("只能上传excel文件!");
+      }
+      return flag;
+    },
+    onSuccess(res){
+      const result = this.$i18n.locale === 'zh' ? (res.desZh ? res.desZh : '') : (res.desEn ? res.desEn : '')
+      this.$refs['uploadRef'].clearFiles();
+      if (Number(res.code) === 0) {
+        this.getCommonSourcingView()
+        iMessage.success(result);
+      } else {
+        iMessage.error(result);
+      }
+      this.mainLoading = false
+    },
+    onError(){
+      this.mainLoading = false
+    },
+    changeCarType(){
+      this.mainLoading = true
+      packageVersionCombo({
+        carTypePackageId: this.carTypePackageId,
+      }).then((res) => {
+        const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
+        if (Number(res.code) === 0) {
+          this.packageVersionList = res.data;
+          this.packageVersion = this.packageVersionList.length > 0 ? this.packageVersionList[0].versionId : ''
+          this.currentVersion = true
+          this.getCommonSourcingView()
+        } else {
+          iMessage.error(result);
+        }
+        this.mainLoading = false
+      }).catch(err => {
+        this.mainLoading = false
+      })
+    },
     async getSelect(carTypePackageId) {
       this.searchLoading = true
       await Promise.all([
@@ -252,11 +303,15 @@ export default {
         } else {
           iMessage.error(result0);
         }
-        if (res[1].data) {
-          this.packageVersionList = res[1].data;
-          this.packageVersion = this.packageVersionList.length > 0 ? this.packageVersionList[0].versionId : ''
-        } else {
-          iMessage.error(result1);
+        if(carTypePackageId){
+          if (res[1].data) {
+            this.packageVersionList = res[1].data;
+            this.packageVersion = this.packageVersionList.length > 0 ? this.packageVersionList[0].versionId : ''
+            this.currentVersion = true
+          } else {
+            iMessage.error(result1);
+          }
+          this.getCommonSourcingView(carTypePackageId)
         }
         if (res[2].data) {
           this.DepartmentsComboList = res[2].data;
@@ -268,12 +323,19 @@ export default {
         } else {
           iMessage.error(result3);
         }
-         this.getCommonSourcingView(carTypePackageId)
         this.searchLoading = false
       }).catch(() => {
          this.searchLoading = false
       });
 
+    },
+    changeVersion(val){
+      if(val == this.packageVersionList[0].versionId){
+        this.currentVersion = true
+      } else {
+        this.currentVersion = false
+      }
+      this.getCommonSourcingView()
     },
     getCommonSourcingView(){
        this.contentLoading = true
@@ -285,7 +347,8 @@ export default {
       }).then((res) => {
         const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
         if (Number(res.code) === 0) {
-          this.getPackageVersionCombo()
+          let _this = this
+          // this.getPackageVersionCombo()
           this.tableListData = res.data.partsPackageDetailVOS ? res.data.partsPackageDetailVOS : []
           let carTypeBudgetDetailVOS = res.data.carTypeBudgetDetailVOS ? res.data.carTypeBudgetDetailVOS : []
           this.carTypeBudgetDetailVOSCount = carTypeBudgetDetailVOS
@@ -343,7 +406,7 @@ export default {
             },
             grid: {
               left: '0%',
-               right: '10%',
+               right: '20%',
               bottom: '0%',
               top: '0%',
               containLabel: true
@@ -413,7 +476,10 @@ export default {
                 color: '#1763F7',
                 label: {
                   show: true,
-                  position: 'right'
+                  position: 'right',
+                  formatter: (params) => {
+                    return _this.getTousandNum(Number(params.value).toFixed(2))
+                  }
                 },
                 itemStyle: {
                   normal: {
@@ -475,7 +541,7 @@ export default {
                   axisLabel: {
                     textStyle: {
                       color: '#485465',
-                      fontSize: 10
+                      fontSize: 6
                     },
                   },
                 },
@@ -523,6 +589,9 @@ export default {
                       textStyle: {
                         color: '#485465',
                         fontSize: 12
+                      },
+                      formatter: (params) => {
+                        return _this.getTousandNum(Number(params.value).toFixed(2))
                       }
                     },
                     emphasis: {
@@ -574,7 +643,9 @@ export default {
       this.mainLoading = true;
       let params = {
         cartypePackageId: this.carTypePackageId,
-        versionId: this.packageVersion
+        versionId: this.packageVersion,
+        commodity: this.departmentsCombo,
+        categoryId: this.materialGroup,
       }
       commonSourcingExport(params)
           .then((res) => {
@@ -588,7 +659,6 @@ export default {
           }).catch(() => (this.mainLoading = false));
     },
     changeMaterial(id, row){
-      console.log(id)
       this.mainLoading = true;
       let params = {
         carTypePackageId: this.carTypePackageId,
@@ -600,7 +670,13 @@ export default {
           .then((res) => {
             const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
             if (Number(res.code) === 0) {
-              iMessage.success(result)
+              if(Number(res.data.isRepeat) === 1){
+                let category = this.materialGroupList.find(item => Number(item.id) === Number(id))
+                let info = (category ? category.value : '')
+                iMessage.warn(`请注意！材料组：${info}，已存在。`)
+              } else {
+                iMessage.success(result)
+              }
             } else {
               iMessage.error(result)
             }
@@ -618,8 +694,8 @@ export default {
             const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
             const message = this.$i18n.locale === 'zh' ? res.data.messageZh : res.data.messageEn
             if (Number(res.code) === 0) {
-              if(res.data.message){
-                iMessage.success(res.data.message)
+              if(message){
+                iMessage.success(message)
               } else {
                 iMessage.success(result)
               }
@@ -674,6 +750,7 @@ export default {
     clickfixedPointAllotTotal(row){
       this.fixedAssignmentShow = true
       this.fixedAssignmentId = row.id
+      this.targetBudgetAmount = row.fixedPointAllotTotal
       let category = this.materialGroupList.find(item => Number(item.id) === Number(row.categoryId))
       let info = (category ? category.value : '') + ' ' + row.partNameZh
       this.fixedAssignmentInfo = info

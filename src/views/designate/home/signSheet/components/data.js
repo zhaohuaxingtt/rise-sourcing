@@ -1,7 +1,7 @@
 /*
  * @Author: Haojiang
  * @Date: 2021-06-28 09:26:28
- * @LastEditTime: 2021-06-29 14:04:09
+ * @LastEditTime: 2021-07-01 17:33:59
  * @LastEditors: Please set LastEditors
  * @Description: 签字单
  * @FilePath: /front-web/src/views/designate/home/signSheet/components/data.js
@@ -12,7 +12,7 @@ export const form = {}
 // M签字单
 export const tableTitle = [
   {
-    props: 'signId',
+    props: 'id',
     name: '签字单号',
     key: 'QIANZIDANHAO',
     tooltip: false
@@ -60,8 +60,9 @@ export const tableTitle = [
     tooltip: false
   },
   {
-    props: 'signStatus',
+    props: 'status',
     name: '签字单状态',
+    width: 150,
     key: 'QIANZIDANZHUANGTAI',
     tooltip: false
   },
@@ -84,40 +85,46 @@ export const mokeData = [
 // 详情- 签字单列表
 export const detailsTableTitle = [
   {
-    props: 'signId',
-    name: '签字单号',
-    key: 'QIANZIDANHAO',
+    props: 'id',
+    name: '申请单号',
+    key: 'nominationLanguage_ShenQingDanHao',
     tooltip: false
   },
   {
-    props: 'description',
+    props: 'nominateName',
     name: '申请单名',
     key: 'nominationLanguage_ShenQingDanMing',
     tooltip: false
   },
   {
-    props: 'project',
+    props: 'carTypeProj',
     name: 'PROJECT',
     key: 'PROJECT',
     tooltip: false
   },
   {
-    props: 'partTermType',
-    name: '零件项目类型',
-    key: 'LK_LINGJIANXIANGMULEIXING',
+    props: 'applicationStatus',
+    name: '状态',
+    key: 'LK_ZHUANGTAI',
+    tooltip:false
+  },
+  {
+    props: 'carType',
+    name: '项目类型',
+    key: 'nominationLanguage_XingMuLeiXing',
     tooltip: false
   },
   {
-    props: 'meetingName',
+    props: 'meetingPresentId',
     name: '会议',
-    key: 'nominationLanguage.HuiYi',
+    key: 'nominationLanguage_HuiYi',
     tooltip: true
   },
   {
-    props: 'buyerName',
+    props: 'nominateUserName',
     name: 'CSF',
     key: 'CSF',
-    tooltip: false
+    tooltip: true
   },
   {
     props: 'linieName',
@@ -131,4 +138,71 @@ export const detailsTableTitle = [
     key: 'nominationLanguage_DongJieRiQi',
     tooltip: false
   }
+]
+
+// 签字单列表预览导出
+export const signsheetViewTableTitle = [
+  {
+    props: 'yearCw',
+    name: 'Year CW',
+    key: 'Year CW',
+    tooltip: false
+  },
+  {
+    props: 'nominateId',
+    name: 'Nomination No.',
+    key: 'Nomination No.',
+    width: 150,
+    tooltip: false
+  },
+  {
+    props: 'partNameCn',
+    name: 'Part Name(CN)',
+    key: 'Part Name(CN)',
+    width: 150,
+    tooltip: false
+  },
+  {
+    props: 'partNameEn',
+    name: 'Part Name(EN)',
+    key: 'Part Name(EN)',
+    width: 150,
+    tooltip: false
+  },
+  {
+    props: 'CarLine',
+    name: 'Carline',
+    key: 'Carline',
+    tooltip: false
+  },
+  {
+    props: 'partNum',
+    name: 'SVW Part No',
+    key: 'SVW Part No',
+    tooltip: false
+  },
+  {
+    props: 'supplier',
+    name: 'Supplier',
+    key: 'Supplier',
+    tooltip: false
+  },
+  {
+    props: 'share',
+    name: 'Share',
+    key: 'Share',
+    tooltip: false
+  },
+  {
+    props: 'tto',
+    name: 'TTO',
+    key: 'TTO',
+    tooltip: false
+  },
+  {
+    props: 'rsRemark',
+    name: 'Remark',
+    key: 'Remark',
+    tooltip: false
+  },
 ]

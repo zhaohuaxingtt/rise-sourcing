@@ -475,19 +475,22 @@ export const addRfqTitle = [
 ]
 
 export const tabtitle = [
-    {value: 1, message: 0, name: "车型项目概览", activePath: '404', url: '404', key: "LK_CHEXINGXIANGMUGAILAN"},
-    {value: 2, message: 0, name: "预算管理", activePath: '/tooling/budgetManagement', url: '/tooling/budgetManagement', key: "LK_YUSUANGUANLI"},
-    {value: 3, message: 0, name: "预算审批", activePath: '/tooling/budgetApproval', url: '/tooling/budgetApproval', key: "LK_YUSUANSHENPI"},
-    {value: 4, message: 0, name: "BA申请", activePath: '/tooling/baApplyIndex', url: '/tooling/baApplyIndex', key: "LK_BASHENQING"},
-    {value: 5, message: 0, name: "BM申请", activePath: '/tooling/bmApplyIndex', url: '/tooling/bmApplyIndex', key: "LK_BMSHENQING"},
-    {value: 6, message: 0, name: "投资报告", activePath: '404', url: '404', key: "LK_TOUZIBAOGAO"},
-    {value: 7, message: 0, name: "BA审批", activePath: '/tooling/baApprovalIndex', url: '/tooling/baApprovalIndex', key: "LK_BAAPPROVAL"},
-    {value: 8, message: 0, name: "付款计划制定与查看", activePath: '/tooling/investmentAdmin', url: '/tooling/investmentAdmin', key: "LK_FUKUANJIHUADINGZHIYUCHAKAN"},
+    // {value: 1, message: 0, name: "车型项目概览", activePath: '/tooling/investmentReport', url: '/tooling/investmentReport', key: "LK_CHEXINGXIANGMUGAILAN"},
+    {value: 1, message: 0, name: "预算管理", activePath: '/tooling/budgetManagement', url: '/tooling/budgetManagement', key: "LK_YUSUANGUANLI"},
+    {value: 2, message: 0, name: "预算审批", activePath: '/tooling/budgetApproval', url: '/tooling/budgetApproval', key: "LK_YUSUANSHENPI"},
+    {value: 3, message: 0, name: "BA申请", activePath: '/tooling/baApplyIndex', url: '/tooling/baApplyIndex', key: "LK_BASHENQING"},
+    {value: 4, message: 0, name: "BM申请", activePath: '/tooling/bmApplyIndex', url: '/tooling/bmApplyIndex', key: "LK_BMSHENQING"},
+    {value: 5, message: 0, name: "投资报告", activePath: '/tooling/investmentReport', url: '/tooling/investmentReport', key: "LK_TOUZIBAOGAO"},
+    {value: 6, message: 0, name: "BA审批", activePath: '/tooling/baApprovalIndex', url: '/tooling/baApprovalIndex', key: "LK_BAAPPROVAL"},
+    {value: 7, message: 0, name: "付款计划制定与查看", activePath: '/tooling/investmentAdmin', url: '/tooling/investmentAdmin', key: "LK_FUKUANJIHUADINGZHIYUCHAKAN"},
 ]
 
 export const budgetManagement3rd = [
     {value: 1, message: 0, name: "车型项目", activePath: 'carTypeOverview', url: '/tooling/budgetManagement/carTypeOverview', key: "LK_CHEXINGXIANGMU"},
     {value: 2, message: 0, name: "Common Sourcing", activePath: 'commonSourcing', url: '/tooling/budgetManagement/commonSourcing', key: "Common Sourcing"},
+    {value: 3, message: 0, name: "付款看板", activePath: 'investmentAdminPayBlock', url: '/tooling/investmentAdmin/payBlock', key: "LK_FUKUANKANBAN"},
+    {value: 4, message: 0, name: "年度计划", activePath: 'investmentAdminYearlyPlan', url: '/tooling/investmentAdmin/yearlyPlan', key: "LK_NIANDUJIHUA"},
+    {value: 5, message: 0, name: "月度计划", activePath: 'investmentAdminMonthlyPlan', url: '/tooling/investmentAdmin/monthlyPlan', key: "LK_YUEDUJIHUA"},
 ]
 
 export const dataBaseData = [
@@ -805,8 +808,8 @@ export const bmAmountDetailList = [
     },
     {
         props: 'rfqId',
-        name: 'RFQ号',
-        key: 'RFQ号',
+        name: 'RFQ',
+        key: 'RFQ',
         tooltip: false
     },
     {
@@ -841,8 +844,8 @@ export const bmAmountDetailList = [
     },
     {
         props: 'wbsCode',
-        name: 'WBS编号',
-        key: 'WBS编号',
+        name: 'WBS code',
+        key: 'WBS code',
         tooltip: false
     },
     {

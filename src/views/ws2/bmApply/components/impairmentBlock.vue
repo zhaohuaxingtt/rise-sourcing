@@ -19,7 +19,7 @@
 
         <!-- RS单号 -->
         <template #rsNum="scope">
-          <div @click="openViewPdf" class="table-txtStyle">{{scope.row.rsNum}}</div>
+          <div @click="openViewPdf(scope.row)" class="table-txtStyle">{{scope.row.rsNum}}</div>
         </template>
       </iTableList>
 
@@ -103,7 +103,7 @@ export default {
 
     //  预览RSpdf
     openViewPdf(scope){
-      const url = process.env.VUE_APP_BACOMMODITYAPPLY + '/exportRsFull/' + scope.row.rsNum;
+      const url = process.env.VUE_APP_BACOMMODITYAPPLY + '/exportRsFull/' + scope.rsNum;
       window.open(url);
     },
 
@@ -123,6 +123,7 @@ export default {
         if(res.data){
           iMessage.success(result);
           this.findBmAekoMinusList();
+          this.$emit('updateTable');
         }else{
           iMessage.error(result);
         }
@@ -150,6 +151,7 @@ export default {
           iMessage.success(result);
           this.findBmAekoMinusList();
           this.selectTableList = [];
+          this.$emit('updateTable');
         }else{
           iMessage.error(result);
         }

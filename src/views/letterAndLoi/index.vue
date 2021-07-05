@@ -6,13 +6,13 @@
 <template>
   <iPage class="letterAndLoi">
     <el-tabs v-model="tab" class="tab">
-      <el-tab-pane :label="language('LK_GAILAN','概览')" name="overview"></el-tab-pane>
+      <!-- <el-tab-pane :label="language('LK_GAILAN','概览')" name="overview"></el-tab-pane> -->
       <el-tab-pane :label="language('LK_XUNYUANZHIHANG','寻源')" name="source">
         <div class="margin-bottom33">
             <iNavMvp right routerPage lev="2" :list="navList" @message="clickMessage" />
         </div>
       </el-tab-pane>
-      <el-tab-pane :label="language('LK_BAOBIAOGUANLI','报表管理')" name="report"></el-tab-pane>
+      <!-- <el-tab-pane :label="language('LK_BAOBIAOGUANLI','报表管理')" name="report"></el-tab-pane> -->
     </el-tabs>
     <!-- 类型TAB -->
     <iTabsList type="card" v-model="cardType">

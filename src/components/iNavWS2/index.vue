@@ -5,12 +5,14 @@
  -->
 <template>
   <div class="btnList flex-align-center">
+    <!-- v-permission="TOOLING_PAYMENTPLAN_PAYMENTBOARD" -->
+    <icon v-permission="TOOLING_PAYMENTPLAN_PAYMENTBOARD" @click.native="powerBiUrl" v-if="isIconShow" symbol name="iconicon-xiazai" class="card-icon"></icon>
     <iNavMvp
         :lev='2'
         :routerPage="true"
-        :list="budgetManagement3rd"
+        :list="navList"
         class="iNavMvp"
-        v-if="$route.path.indexOf('budgetManagement') > -1 && $route.path.indexOf('addModelBag') === -1"
+        v-if="($route.path.indexOf('budgetManagement') > -1 && $route.path.indexOf('addModelBag') === -1) || $route.path.indexOf('investmentAdmin') > -1"
     ></iNavMvp>
     <iButton
         v-if="$route.path.indexOf('budgetManagement/generateInvestmentList') > -1"
@@ -53,11 +55,17 @@ import { Popover } from "element-ui";
 import logButton from "pages/ws2/budgetManagement/components/logButton";
 import {budgetManagement3rd} from "pages/ws2/budgetManagement/components/data";
 import {iNavMvp} from "@/components";
+import store from '@/store';
 
 export default {
   props: {
     nextStepLoading: Boolean,
     dataBaseInit: Boolean,
+    navList: Array,
+    isIconShow: {
+      type: Boolean,
+      default: false
+    }
   },
   mounted() {
   },
@@ -86,6 +94,12 @@ export default {
     }
   },
   methods: {
+
+    powerBiUrl(){ //  打印
+      const report = store.state.investmentAdmin.report;
+      report.print();
+    },
+
     changeDataBase() {
       this.dataBase = true
       this.activeIndex = 999
@@ -102,6 +116,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.card-icon{
+  width: 20px;
+  height: 20px;
+  margin-right: 20px;
+  cursor: pointer;
+}
 .bounce-enter-active {
   animation: bounce-in .5s;
 }

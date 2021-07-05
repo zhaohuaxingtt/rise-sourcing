@@ -67,9 +67,9 @@
                 placement="top-start"
                 trigger="hover">
               <div class="popoverDiv">
-                <p>{{ $t('LK_CAIGOUGONGCHANG') }}</p>
+                <p>{{ $t('生产工厂') }}</p>
               </div>
-              <label slot="reference">{{ $t('LK_CAIGOUGONGCHANG') }}:</label>
+              <label slot="reference">{{ $t('生产工厂') }}:</label>
             </Popover>
             <!--            <label :title="$t('LK_CAIGOUGONGCHANG')">{{ $t('LK_CAIGOUGONGCHANG') }}:</label>-->
             <span class="infoIcardValue">{{ form['search.purchasingFactory'] }}</span>
@@ -689,7 +689,8 @@ export default {
         deptId: this.form['search.DeptSelect'],
         investmentVersionId: this.form['search.version'],
         carTypeId: this.params.id,
-        carType: this.params.sourceStatus
+        carType: this.params.sourceStatus,
+        nomiType: 'JV',
       }).then((res) => {
         const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
         if (Number(res.code) === 0) {

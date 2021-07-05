@@ -3,19 +3,19 @@
     <div class="header">
       <el-radio-group v-model="leftModel">
         <el-radio-button label="mouldInvestment">{{ $t('模具投资') }}</el-radio-button>
-        <el-radio-button label="modelBag">{{ $t('车型包') }}</el-radio-button>
+        <el-radio-button label="modelBag" v-permission="TOOLING_DATABASE_MODELBAG">{{ $t('车型包') }}</el-radio-button>
       </el-radio-group>
       <div class="rightModel" v-if="leftModel === 'mouldInvestment'">
-        <div :class="[rightModel === 1 ? 'active' : '']" @click="rightModel = 1">{{ $t('材料组汇总') }}</div>
-        <div :class="[rightModel === 2 ? 'active' : '']" @click="rightModel = 2">{{ $t('零件号明细') }}</div>
+        <div :class="[rightModel === 1 ? 'active' : '']" @click="rightModel = 1" v-permission="TOOLING_DATABASE_SUMMARY">{{ $t('材料组汇总') }}</div>
+        <div :class="[rightModel === 2 ? 'active' : '']" @click="rightModel = 2" v-permission="TOOLING_DATABASE_PARTNO">{{ $t('零件号明细') }}</div>
       </div>
     </div>
     <div v-if="leftModel === 'mouldInvestment'">
-      <summaryPart v-if="rightModel === 1"></summaryPart>
+      <summaryPart v-if="rightModel === 1" :categoryNameZh="categoryNameZh"></summaryPart>
       <partNoPart v-if="rightModel === 2"></partNoPart>
     </div>
     <div v-if="leftModel === 'modelBag'" style="margin-top: 20px;font-size: 22px">
-      <modelBag></modelBag>
+      <modelBag @toMouldInvestMent="backMouldInvestment"></modelBag>
     </div>
   </div>
 </template>
@@ -45,6 +45,7 @@ export default {
       form: form,
       loadingiSearch: false,
       tableLoading: false,
+      categoryNameZh: '',
       tableListData: [],
       tableTitle: dataBaseData,
 
@@ -54,6 +55,11 @@ export default {
     this.getTableListFn()
   },
   methods: {
+    backMouldInvestment(categoryNameZh){
+      this.categoryNameZh = categoryNameZh
+      this.leftModel = 'mouldInvestment'
+      this.rightModel = 1
+    },
     getTableListFn() {
       this.tableLoading = true;
       let params = {
@@ -90,7 +96,6 @@ export default {
 .header {
   display: flex;
   justify-content: space-between;
-  border-top: 1px solid #E3E3E3;
   padding-top: 20px;
   margin-top: 2px;
 

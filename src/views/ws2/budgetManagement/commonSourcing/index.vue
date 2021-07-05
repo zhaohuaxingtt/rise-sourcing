@@ -1,51 +1,54 @@
 <template>
-  <div v-loading="mainLoading">
-    <div class="header">
-      <div>
-        车型包名称
-        <iInput v-model="packageNameZh" :placeholder="$t('LK_RFQPLEASEENTERQUERY')" maxlength="6">
-          <i slot="suffix" class="el-input__icon el-icon-search" @click="pageCarTypePackage"></i>
-        </iInput>
-      </div>
-      <Upload
-          class="upload-demo"
-          ref="uploadRef"
-          :action="actionUrl"
-          :on-change="beforeUpload"
-          :on-success="onSuccess"
-          :before-upload="beforeAvatarUpload"
-          :before-remove="beforeRemove"
-          :limit="1"
-          :show-file-list="false"
-          :file-list="uploadFiles">
-        <iButton icon="el-icon-circle-plus-outline" type="primary">新增车型项目</iButton>
-      </Upload>
-    </div>
-    <div class="content" v-loading="tableLoading">
-      <div class="title">
-        <div>{{ $t('车型包名称') }}</div>
-        <div>{{ $t('起始时间') }}</div>
-        <div>{{ $t('最近更新时间') }}</div>
-        <div>{{ $t('更新人') }}</div>
+  <div>
+    <div v-loading="mainLoading" v-permission="TOOLING_BUDGET_COMMONSOURCING_MODELBAGBUDGET">
+      <div class="header">
         <div>
-          <span class="marginRight50">{{ $t('上移一级') }}</span>
-          <span>{{ $t('下移一级') }}</span>
+          车型包名称
+          <iInput v-model="packageNameZh" :placeholder="$t('LK_RFQPLEASEENTERQUERY')" maxlength="6">
+            <i slot="suffix" class="el-input__icon el-icon-search" @click="pageCarTypePackage"></i>
+          </iInput>
         </div>
+        <Upload
+            class="upload-demo"
+            ref="uploadRef"
+            :action="actionUrl"
+            :on-change="beforeUpload"
+            :on-success="onSuccess"
+            :before-upload="beforeAvatarUpload"
+            :before-remove="beforeRemove"
+            :limit="1"
+            :show-file-list="false"
+            :file-list="uploadFiles">
+          <iButton icon="el-icon-circle-plus-outline" type="primary">新增车型包</iButton>
+        </Upload>
+<!--        <iButton icon="el-icon-circle-plus-outline" @click="addCarTypeBag" type="primary">新增车型包</iButton>-->
       </div>
-      <div class="table" v-for="(item, index) in tableListData" :key="index">
-        <div>
-          <div class="carTypeName" @click="toBagList(item.id)">
-            <icon symbol name="iconchexingbao" class="carTypeIcon"></icon>
-            <span>{{ item.packageNameZh }}</span>
+      <div class="content" v-loading="tableLoading">
+        <div class="title">
+          <div>{{ $t('车型包名称') }}</div>
+          <div>{{ $t('起始时间') }}</div>
+          <div>{{ $t('最近更新时间') }}</div>
+          <div>{{ $t('更新人') }}</div>
+          <div>
+            <span class="marginRight50">{{ $t('上移一级') }}</span>
+            <span>{{ $t('下移一级') }}</span>
           </div>
         </div>
-        <div>{{ item.createDate }}</div>
-        <div>{{ item.updateDate }}</div>
-        <div>{{ item.updateByName }}</div>
-        <div>
-          <icon symbol @click.native="dataMove(item, 1)" name="iconshangyiyiji"
-                class="carTypeIcon marginRight50"></icon>
-          <icon symbol @click.native="dataMove(item, 2)" name="iconxiayiyiji" class="carTypeIcon"></icon>
+        <div class="table" v-for="(item, index) in tableListData" :key="index">
+          <div>
+            <div class="carTypeName" @click="toBagList(item.id)">
+              <icon symbol name="iconchexingbao" class="carTypeIcon"></icon>
+              <span>{{ item.packageNameZh }}</span>
+            </div>
+          </div>
+          <div>{{ item.createDate }}</div>
+          <div>{{ item.updateDate }}</div>
+          <div>{{ item.updateByName }}</div>
+          <div>
+            <icon symbol @click.native="dataMove(item, 1)" name="iconshangyiyiji"
+                  class="carTypeIcon marginRight50"></icon>
+            <icon symbol @click.native="dataMove(item, 2)" name="iconxiayiyiji" class="carTypeIcon"></icon>
+          </div>
         </div>
       </div>
     </div>
@@ -82,6 +85,11 @@ export default {
     this.pageCarTypePackage()
   },
   methods: {
+    // addCarTypeBag(){
+    //   this.$router.push({
+    //     path: '/tooling/budgetManagement/addModelBag',
+    //   })
+    // },
     onSuccess(res){
       const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
       this.$refs['uploadRef'].clearFiles();

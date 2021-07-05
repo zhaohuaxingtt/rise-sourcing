@@ -12,8 +12,8 @@
       <div class="margin-bottom20 clearFloat">
         <div class="floatright">
           <!-- 新建 -->
-          <iButton @click="createNewSignSheet">
-            {{language('XINJIAN', '新建')}}
+          <iButton @click="createSignSheet">
+            {{language('LK_XINJIANNEW', '新建')}}
           </iButton>
           <!-- 提交 -->
           <iButton @click="handleBatchSumit">
@@ -35,14 +35,17 @@
         @handleSelectionChange="handleSelectionChange"
       >
       <!-- 签字单 -->
-      <template #signId="scope">
+      <template #id="scope">
         <a
           href="javascript:;"
           @click="viewDetail(scope.row)">
-          {{scope.row.signId}}
+          {{scope.row.id}}
         </a>
       </template>
-
+      <!-- 签字单状态 -->
+      <template #status="scope">
+        <span>{{scope.row.status && scope.row.status.name || scope.row.status}}</span>
+      </template>
       <!-- 提交日期 -->
       <template #submitDate="scope">
         <span>{{scope.row.submitDate | dateFilter("YYYY-MM-DD")}}</span>
@@ -83,7 +86,8 @@ import {
 import {
   getSignList,
   batchSubmit,
-  batchDelete
+  batchDelete,
+  createSignSheet
 } from '@/api/designate/nomination/signsheet'
 
 import { pageMixins } from '@/utils/pageMixins'
@@ -122,12 +126,21 @@ export default {
   },
   methods: {
     // 新建签字单
-    createNewSignSheet() {
-      // 缓存/更新定点申请类型
-      this.$store.dispatch('setNominationTypeDisable', false)
-      this.$nextTick(() => {
-        const routeData = this.$router.resolve({path: '/designate/rfqdetail'})
-        window.open(routeData.href, '_blank')
+    createSignSheet() {
+      let query = {}
+      createSignSheet({}).then(res => {
+        if (res.code === '200') {
+          query = {
+            signCode: res.data.signCode,
+            id: res.data.id,
+            status: res.data.status && res.data.status.name || res.data.status
+          }
+          this.$router.push({path: '/sourcing/partsnomination/signSheet/details?mode=add', query})
+        } else {
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
+      }).catch(e => {
+        iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
       })
     },
     // 查看详情
@@ -135,7 +148,9 @@ export default {
       const routeData = this.$router.resolve({
           path: '/sourcing/partsnomination/signSheet/details',
           query: {
-            signId: row.signId
+            signCode: row.signCode,
+            id: row.id,
+            status: row.status && row.status.name || row.status
           }
         })
         window.open(routeData.href, '_blank')
@@ -175,7 +190,7 @@ export default {
       if (confirmInfo !== 'confirm') return
       const idList = this.selectTableData.map(o => Number(o.id))
       try {
-        const res = await batchSubmit({nominateIdArr: idList})
+        const res = await batchSubmit({signIdArr: idList})
         if (res.code === '200') {
           iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'))
           this.getFetchData()
@@ -196,7 +211,7 @@ export default {
       if (confirmInfo !== 'confirm') return
       const idList = this.selectTableData.map(o => Number(o.id))
       try {
-        const res = await batchDelete({nominateIdArr: idList})
+        const res = await batchDelete({signIdArr: idList})
         if (res.code === '200') {
           iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'))
           this.getFetchData()
