@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-07-05 16:17:39
- * @LastEditTime: 2021-07-05 16:53:35
+ * @LastEditTime: 2021-07-05 17:41:24
  * @LastEditors: Please set LastEditors
  * @Description: 通用下拉值
  * @FilePath: /front-web/src/views/designate/home/components/options.js
@@ -47,8 +47,8 @@ export const priceConsistentStatus = [
 ]
 // 签字单状态
 export const signSheetStatus =[
-  {id:'REJECT',name:'已拒绝',key:'LK_YIJUJUE'},
-  {id:'DRAFT',name:'草稿',key:'LK_CAOGAO'},
-  {id:'SUBMIT',name:'待审批',key:'LK_DAISHENPI'},
-  {id:'PASS',name:'通过',key:'LK_TONGGUO'},
+  {id:2,name:'草稿',key:'LK_CAOGAO'},
+  {id:3,name:'审批中',key:'LK_SHENPIZHONG'},
+  {id:4,name:'已批准',key:'LK_YIPIZHUN'},
+  {id:1,name:'已拒绝',key:'LK_YIJUJUE'}
 ]
