@@ -86,7 +86,8 @@
           ></iInput>
         </template>
         <template #nomiAmountSvw="scope">
-          <div class="linkStyle"><span @click="clickNomiAmountSvw(scope.row.materialNameZh)">{{ scope.row.nomiAmountSvw }}</span></div>
+          <div v-if="scope.row.link" class="linkStyle"><span @click="clickNomiAmountSvw(scope.row.materialNameZh)">{{ scope.row.nomiAmountSvw }}</span></div>
+          <div v-else>{{ scope.row.nomiAmountSvw }}</div>
         </template>
       </iTableList>
       <div class="bottomTip">{{ $t('货币：人民币  |  单位：元  |  不含税 ') }}</div>

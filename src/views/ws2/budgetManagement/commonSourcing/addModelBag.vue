@@ -253,7 +253,7 @@ export default {
       return flag;
     },
     onSuccess(res){
-      const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
+      const result = this.$i18n.locale === 'zh' ? (res.desZh ? res.desZh : '') : (res.desEn ? res.desEn : '')
       this.$refs['uploadRef'].clearFiles();
       if (Number(res.code) === 0) {
         this.getCommonSourcingView()

@@ -95,7 +95,7 @@ export default {
     blur(index){
       let value = this.tableListData[index].amount
       value = value.replace(/[^\d^\.]+/g,'').replace('.','$#$').replace(/\./g,'').replace('$#$','.')
-      this.tableListData[index].amount = this.getTousandNum(Number(value).toFixed(2))
+      this.tableListData[index].amount = value !== '' ? this.getTousandNum(Number(value).toFixed(2)) : ''
     },
     changeAmount(){
       this.tableTotal = this.getTousandNum(this.tableListData.map(item => Number(this.delcommafy(item.amount))).reduce((a, b) => a + b).toFixed(2))
