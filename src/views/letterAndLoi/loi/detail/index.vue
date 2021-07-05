@@ -273,11 +273,11 @@ export default {
             this.showHistory = !showHistory;
         },
         // 获取详情
-        async getDetail(){
+        async getDetail(sendId=null){
             const {query} = this.$route;
             const {id=''} = query;
-            this.nomiAppId = id;
-            await findNomiLoiInfo({id}).then((res)=>{
+            this.nomiAppId = sendId || id;
+            await findNomiLoiInfo({id:sendId || id}).then((res)=>{
                 const {code,data={}} = res;
                 if(code == 200){
                     const { loiStatus ={} } = data;
@@ -340,10 +340,11 @@ export default {
             this.btnLoading.add = true;
             await addNomiLoi({id}).then((res)=>{
                 this.btnLoading.add = false;
-                const {code} = res;
+                const {code,data} = res;
                 if(code==200){
                     iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
-                    this.getDetail();
+                    this.$router.push({ path:'/sourcing/partsletter/loidetail',query:{id: data}})
+                    this.getDetail(data);
                 }else{
                     iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
                 }
