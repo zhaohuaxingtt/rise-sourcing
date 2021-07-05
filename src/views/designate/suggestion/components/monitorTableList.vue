@@ -1,7 +1,7 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-02-24 09:42:07
- * @LastEditTime: 2021-07-05 10:25:24
+ * @LastEditTime: 2021-07-05 11:10:41
  * @LastEditors: Please set LastEditors
 -->
 
@@ -236,6 +236,26 @@ export default {
       })
       // console.log('handleCellClick', curSupplier, cIndex, supplierChosen, row)
     },
+    // 校验输入的比例是否合法
+    checkPercent() {
+      console.log(this.data)
+      let state = true
+      let info = ''
+      this.data.forEach(row => {
+        const percent = row.percent || []
+        const count = _.sum(percent.map(o => Number(o)))
+        // 校验是否包含负数比例
+        const containNGNumber = percent.filter(m => m < 0).length
+        if (state && isNaN(count) || count > 100 || containNGNumber) {
+          state = false
+          info = this.language('FENPEIBILIBUHEFA', '分配比例不合法')
+        }
+      })
+      return {
+        state,
+        info
+      }
+    },
     // 编辑百分比
     handleEditPercent(row, Index) {
       const percent = row.percent || []
@@ -245,7 +265,7 @@ export default {
       if (isNaN(count) || count > 100 || containNGNumber) {
         // percent[Index] = 0
         // Vue.set(row, 'percent', percent)
-        iMessage.error(this.language('nominationSuggestion_NingShuRuDeBiLiBuHeFa', '您输入的比例不合法'))
+        iMessage.error(this.language('NINGSHURUDEBILIBUHEFA', '您输入的比例不合法'))
         return
       }
       this.onPercentChangeWhiteBack(row)
