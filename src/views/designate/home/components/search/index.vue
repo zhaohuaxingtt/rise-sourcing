@@ -64,7 +64,7 @@
           <el-option
             :value="items.id"
             :label="language(items.key, items.name)"
-            v-for="(items, index) in applyStates"
+            v-for="(items, index) in nomiApplicationStatus"
             :key="index"
           ></el-option>
         </iSelect>
@@ -129,9 +129,9 @@
             :label="language('all','全部') | capitalizeFilter"
           ></el-option>
           <el-option
-            :value="items.key"
-            :label="items.value"
-            v-for="(items, index) in []"
+            :value="items.id"
+            :label="language(items.key, items.name)"
+            v-for="(items, index) in priceConsistentStatus"
             :key="index"
           ></el-option>
         </iSelect>
@@ -146,9 +146,9 @@
             value=""
             :label="language('all','全部') | capitalizeFilter"
           ></el-option>
-          <el-option :value="true" :label="language('nominationLanguage_Yes','是')"
+          <el-option :value="true" :label="language('YES','是')"
           ></el-option>
-          <el-option :value="false" :label="language('nominationLanguage_No','否')"
+          <el-option :value="false" :label="language('NO','否')"
           ></el-option>
         </iSelect>
       </el-form-item>
@@ -162,9 +162,9 @@
             value=""
             :label="language('all','全部') | capitalizeFilter"
           ></el-option>
-          <el-option :value="true" :label="language('nominationLanguage_Yes','是')"
+          <el-option :value="true" :label="language('YES','是')"
           ></el-option>
-          <el-option :value="false" :label="language('nominationLanguage_No','否')"
+          <el-option :value="false" :label="language('NO','否')"
           ></el-option>
         </iSelect>
       </el-form-item>
@@ -175,7 +175,11 @@
 <script>
 
 import { applyType } from '@/layout/nomination/components/data'
-import { form, applyStates } from '../data'
+import {
+  priceConsistentStatus,
+  nomiApplicationStatus
+} from '@/views/designate/home/components/options'
+import { form } from '../data'
 import {
   iSearch,
   iInput,
@@ -187,7 +191,8 @@ export default {
     return {
       form,
       ptocessType: applyType,
-      applyStates
+      nomiApplicationStatus,
+      priceConsistentStatus
     }
   },
   components: {
