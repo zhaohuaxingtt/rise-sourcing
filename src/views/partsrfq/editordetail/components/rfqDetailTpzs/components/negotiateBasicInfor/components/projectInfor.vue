@@ -85,7 +85,7 @@ export default {
       form: {
         rfqName: '',
         categoryName: '',
-        rfqName: '',//fs
+        buyerName: '',//fs
         fop: '',
         mq: '',
         pl: '',
@@ -93,7 +93,7 @@ export default {
         rfqName: '',//FOP情况
         mqGradeStatus: '',
         plStatus: '',
-        rfqName: '',//cf情况
+        targetgradestatus: '',//cf情况
       }
     }
   },

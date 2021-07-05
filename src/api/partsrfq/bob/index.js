@@ -33,4 +33,20 @@ export function addBobOut(parmars) {
         data: parmars
     })
 }
+//费用详情查询
+export function chargeRetrieve(parmars) {
+    return requst({
+        url: '/bobRoundDetail/chargeRetrieve',
+        method: 'POST',
+        data: parmars
+    })
+}
+//费用详情下载
+export function down(parmars) {
+    return requst({
+        url: '/bobRoundDetail/down',
+        method: 'GET',
+        data: parmars
+    })
+}
 

@@ -10,7 +10,10 @@
   <iDialog :title="$t('TPZS.JRZXFXGJ')" :visible.sync="value" width="381px" @close="clearDiolog">
     <el-form>
       <el-form-item :label="$t('partsignLanguage.QingShuRu')">
-        <iInput :placeholder="$t('TPZS.CLZRFQLJH')" v-model="form.keyword"></iInput>
+        <iSelect :multiple="false" remote reserve-keyword :remote-method="handleKeyword" :loading="keyLoading" filterable :placeholder="$t('TPZS.CLZRFQLJH')" v-model="form.keyword">
+          <el-option v-for="(item,index) in formGroup.keywordList" :key="index" :label="item.rfqName" :value="item.id">
+          </el-option>
+        </iSelect>
         <div class="icon-search">
           <icon name='iconshaixuankuangsousuo' symbol></icon>
         </div>
@@ -24,6 +27,7 @@
 
 <script>
 import { iDialog, iSelect, iButton, iInput, icon } from 'rise';
+import { pageRfqBaseInfo } from "@/api/partsrfq/specialAnalysisTool/specialAnalysisTool.js";
 
 export default {
   components: {
@@ -38,14 +42,35 @@ export default {
   },
   data() {
     return {
+      keyLoading: false,
       form: {
         keyword: ''
       },
+      formGroup: {
+        keywordList: []
+      }
     };
   },
   created() {
   },
   methods: {
+    async handleKeyword(val) {
+      const pms = {
+        keyword: val
+      }
+      this.keyLoading = true
+      try {
+        const res = await pageRfqBaseInfo(pms)
+        if (res.result) {
+          this.formGroup.keywordList = res.data
+        }
+        console.log(this.formGroup);
+        this.keyLoading = false
+      } catch (error) {
+        this.formGroup.keywordList = []
+        this.keyLoading = false
+      }
+    },
     clearDiolog() {
       this.$emit('input', false);
     },

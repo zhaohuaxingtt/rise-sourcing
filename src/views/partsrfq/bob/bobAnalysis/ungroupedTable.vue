@@ -1,13 +1,24 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 11:38:57
- * @LastEditTime: 2021-06-30 11:51:57
+ * @LastEditTime: 2021-07-02 17:46:42
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails\table1.vue
 -->
 <template>
   <iCard>
+    <template v-slot:header>
+      <div class="flex-between-center titleBox">
+        <div>
+          <span>待分配区域</span>
+          <span v-if="remark" class="margin-left40">{{ remark }}</span>
+        </div>
+        <div>
+          <iButton @click="groupBy">分组至</iButton>
+        </div>
+      </div>
+    </template>
     <el-table
       ref="treeList"
       :data="tableList.dataList"
@@ -30,21 +41,20 @@
         :label="i.label"
         :prop="i.prop"
         align="center"
-        :width="i.prop=='title'?'200':''"
+        :width="i.prop == 'title' ? '200' : ''"
       >
-        <el-table-column
-          v-for="item in i.children"
-          :key="item.id"
-          :label="item.label"
-          :prop="item.prop"
-          align="center"
-          :show-header="false"
-        >
-        <template>
-          
+        <template v-if="i.children">
+          <el-table-column
+            v-for="item in i.children"
+            :key="item.id"
+            :label="item.label"
+            :prop="item.prop"
+            align="left"
+          >
+          </el-table-column>
         </template>
-        </el-table-column>
-        <template slot-scope="scope">
+
+        <!-- <template slot-scope="scope">
           <span v-if="testing(scope.row[i.prop])" class="flex">
             <span
               v-for="(item, index) in scope.row[i.prop]"
@@ -52,23 +62,29 @@
               class="margin-right20"
               :class="checkClass(item, scope, index)"
               @click="clickCol(item, scope, index)"
-              >{{ item }}</span>
+              >{{ item }}</span
+            >
           </span>
           <span v-else>
-            <span  :class="checkClass(item, scope, index)"
-              @click="clickCol(item, scope, index)">{{ scope.row[i.prop] }}</span>
+            <span
+              :class="checkClass(item, scope, index)"
+              @click="clickCol(item, scope, index)"
+              >{{ scope.row[i.prop] }}</span
+            >
           </span>
-        </template>
+        </template> -->
       </el-table-column>
     </el-table>
   </iCard>
 </template>
 
 <script>
-import {iCard} from 'rise'
+import { iCard, iButton } from "rise";
+
 export default {
-  components:{
-    iCard
+  components: {
+    iCard,
+    iButton,
   },
   props: {
     expends: {
@@ -102,16 +118,12 @@ export default {
         if (check > -1) {
           switch (id) {
             case "1-2-1":
-              console.log(id);
               return "top";
             case "1-2-7":
-              console.log(id);
               return "bottom";
             case "1-2":
-              console.log(id);
               return "nocolor";
             default:
-              console.log(id);
               return "middle";
           }
         }
@@ -126,10 +138,31 @@ export default {
           this.$refs.treeList.expandRowKeys = Array.from(val);
       },
     },
+    tableList: {
+      handler(val) {
+        let newArr = [];
+        val.dataList.forEach((value, index) => {
+          newArr[index] = value;
+          newArr[index].children = value.children.filter(
+            (item) => !item.isShow
+          );
+        });
+      },
+      immediate: true,
+    },
   },
   data() {
     return {
       checkList: [],
+      auditData: [], //表格行内容数据
+      auditDataColumnCode: [], //表头动态列内容数据Code备份  业务需求 可忽略
+      auditDataColumn: [], //表头动态列内容数据集合
+      checkAllOptions: [], //全选备用赋值数组   二维  注意没写错 这里暂时先定义成一维数组 业务需求 需要动态验证是否选中
+      noCheckAllOptions: [], //全选备用赋值数组 二维
+      checkedOptions: [], //列选择项 选中控制 二维
+      checkOptionCount: [], //实时记录当前列 选中数量
+      checkAll: [], //表头全选按钮 选中控制
+      isIndeterminate: [], //表头 不确定状态控制
     };
   },
   methods: {
@@ -154,7 +187,10 @@ export default {
     getRowKey(row) {
       return row.id;
     },
-    render(h, { column, $index }) {},
+
+    renderHeader(h, opt) {
+      return "<div>aaaf</div>";
+    },
     rowClick(row, event, column) {
       this.$emit("row-click", row, event, column);
     },
@@ -179,6 +215,12 @@ export default {
         this.$emit("expand-change", row, expanded);
       }
       // console.log(row, expanded)
+    },
+    select(e, col) {
+      console.log(e, col);
+    },
+    groupBy() {
+      this.$emit("groupBy", true);
     },
   },
 };
@@ -208,5 +250,11 @@ export default {
 .bottom {
   border: 1px solid blue;
   border-top: none;
+}
+.titleBox {
+  width: 100%;
+  color: #000000;
+  font-size: 18px;
+  font-weight: bold;
 }
 </style>

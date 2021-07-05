@@ -41,9 +41,6 @@ export default {
   data() {
     return {};
   },
-  mounted() {
-    this.initEcharts();
-  },
   methods: {
     initEcharts() {
       const chart = echarts().init(this.$refs.curve);
@@ -114,6 +111,11 @@ export default {
       chart.setOption(option);
     },
   },
+  watch: {
+    newestScatterData() {
+      this.initEcharts()
+    }
+  }
 };
 </script>
 
