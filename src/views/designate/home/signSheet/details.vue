@@ -1,7 +1,7 @@
 <!--
  * @Author: Haojiang
  * @Date: 2021-06-24 17:53:08
- * @LastEditTime: 2021-06-30 17:58:16
+ * @LastEditTime: 2021-07-05 15:21:41
  * @LastEditors: Please set LastEditors
  * @Description: m签字单新增、详情
  * @FilePath: /front-web/src/views/designate/home/signSheet/newSignSheet.vue
@@ -135,10 +135,10 @@
       />
       </iCard>
 
-      <iCard class="margin-top20">
+      <div class="margin-top20">
         <!-- 引入定点申请综合管理页面 -->
         <designateSign :mode="'sign'" @choose="handleChoose" :refresh.sync="designateSignRefresh" />
-      </iCard>
+      </div>
   </iPage>
 </template>
 <script>
