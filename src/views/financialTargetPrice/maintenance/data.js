@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-22 11:35:28
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-01 18:47:57
+ * @LastEditTime: 2021-07-05 16:01:00
  * @Description: 
  * @FilePath: \front-web\src\views\financialTargetPrice\maintenance\data.js
  */
@@ -15,7 +15,7 @@ export const tableTitle = [
   {props:'rfqId',name:'RFQ编号', key: "RFQBIANHAO", tooltip: true, width: 100},
   {props:'cartypeProjectZh',name:'车型项目', key: "CHEXINGXIANGMU", tooltip: true, width: 120},
   {props:'tuzhi',name:'图纸', key: "TUZHI", tooltip: true},
-  {props:'caozuo',name:'操作', key: "CAOZUO", tooltip: true},
+  {props:'caozuo',name:'操作', key: "LK_CAOZUO", tooltip: true},
   {props:'cfControllerZh',name:'CF', key: "CF", tooltip: true, width: 120},
   {props:'lcAPrice',name:'LC_A', key: "LC_A", tooltip: true, editable: true, type: 'input'},
   {props:'lcBPrice',name:'LC_B', key: "LC_B", tooltip: true, editable: true, type: 'input'},
@@ -58,7 +58,7 @@ export const modifyTableTitle = [
   {props:'lcTcCurrencyId',name:'LC货币类型', key: "LCHUOBILEIXING", tooltip: true, width: 120},
   {props:'lcExchangeRate',name:'LC汇率', key: "LCHUILV", tooltip: true, width: 100},
   {props:'skdBPrice',name:'SKD_B Target', key: "SKDBTARGET", tooltip: true, width: 120},
-  {props:'skdBPrice',name:'SKD_A Target', key: "SKDATARGET", tooltip: true},
+  {props:'skdAPrice',name:'SKD_A Target', key: "SKDATARGET", tooltip: true},
   {props:'skdTcCurrencyId',name:'SKD货币类型', key: "SKDHUOBILEIXING", tooltip: true},
   {props:'skdExchangeRate',name:'SKD汇率', key: "SKDHUILV", tooltip: true, width: 120},
   {props:'ckdLanded',name:'CKD Landed', key: "CKDLANDED", tooltip: true},
@@ -68,7 +68,7 @@ export const modifyTableTitle = [
   {props:'ckdExwork',name:'CKD Ex-work', key: "CKDEXWORK", tooltip: true, width: 100},
   {props:'memo',name:'备注', key: "BEIZHU", tooltip: true, width: 120},
   {props:'applyDate',name:'申请日期', key: "SHENQINGRIQI", tooltip: true, width: 100},
-  {props:'applyStatus',name:'有效状态', key: "YOUXIAOZHUANGTAI", tooltip: true, width: 120},
+  {props:'valid',name:'有效状态', key: "YOUXIAOZHUANGTAI", tooltip: true, width: 120},
   {props:'approveStatus',name:'审批状态', key: "SHENPIZHUANGTAI", tooltip: true, width: 120},
   {props:'modifer',name:'修改人', key: "XIUGAIREN", tooltip: true},
   {props:'modifyDate',name:'修改日期', key: "XIUGAIRIQI", tooltip: true, width: 120},
@@ -83,7 +83,7 @@ export const approvalTableTitle = [
   {props:'ckdDuty',name:'CKD Duty(%)', key: "CKDDUTY", tooltip: true, width: 120},
   {props:'ckdExwork',name:'CKD Ex-work', key: "CKDEXWORK", tooltip: true, width: 100},
   {props:'memo',name:'备注', key: "BEIZHU", tooltip: true, width: 120},
-  {props:'validFlag',name:'有效状态', key: "YOUXIAOZHUANGTAI", tooltip: true, width: 120},
+  {props:'valid',name:'有效状态', key: "YOUXIAOZHUANGTAI", tooltip: true, width: 120},
   {props:'approveName',name:'审批人', key: "SHENPIREN", tooltip: true, width: 120},
   {props:'approveType',name:'审批类型', key: "SHENPILEIXING", tooltip: true},
   {props:'approveDate',name:'审批日期', key: "SHENPIRIQI", tooltip: true, width: 120},

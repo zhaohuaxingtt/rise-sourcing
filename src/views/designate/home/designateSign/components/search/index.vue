@@ -5,7 +5,7 @@
 -->
 <template>
   <iSearch
-    class="designateSearch margin-bottom20"
+    class="designateSearch"
     @sure="sure"
     @reset="reset"
     :resetKey="NORNIMATION_RESETBUTTON"
@@ -86,6 +86,7 @@
       <!-- 申请状态 -->
       <el-form-item :label="language('nominationLanguage_ShenQingZhuangTai','申请状态')">
         <iSelect
+          disabled
           v-model="form.applicationStatus"
           :placeholder="language('LK_QINGXUANZE','请选择')"
         >
@@ -96,7 +97,7 @@
           <el-option
             :value="items.id"
             :label="language(items.key, items.name)"
-            v-for="(items, index) in applyStates"
+            v-for="(items, index) in applicationStatus"
             :key="index"
           ></el-option>
         </iSelect>
@@ -128,9 +129,9 @@
             :label="$t('all') | capitalizeFilter"
           ></el-option>
           <el-option
-            :value="items.key"
-            :label="items.value"
-            v-for="(items, index) in []"
+            :value="items.id"
+            :label="language(items.key, items.name)"
+            v-for="(items, index) in selStatus"
             :key="index"
           ></el-option>
         </iSelect>
@@ -138,6 +139,7 @@
       <!-- 报价一致性校验 -->
       <el-form-item :label="language('nominationLanguage_BaoJiaYiZhiXingJiaoYan','报价一致性校验')">
         <iSelect
+          disabled
           v-model="form.isPriceConsistent"
           :placeholder="language('LK_QINGXUANZE','请选择')"
         >
@@ -146,9 +148,9 @@
             :label="language('all','全部') | capitalizeFilter"
           ></el-option>
           <el-option
-            :value="items.key"
-            :label="items.value"
-            v-for="(items, index) in []"
+            :value="items.id"
+            :label="language(items.key, items.name)"
+            v-for="(items, index) in priceConsistentStatus"
             :key="index"
           ></el-option>
         </iSelect>
@@ -160,7 +162,13 @@
 <script>
 
 import { applyType } from '@/layout/nomination/components/data'
-import { form, applyStates } from '../data'
+import { form } from '../data'
+import {
+  applicationStatus,
+  selStatus,
+  priceConsistentStatus 
+} from '@/views/designate/home/components/options'
+
 import {
   iSearch,
   iInput,
@@ -173,7 +181,9 @@ export default {
     return {
       form,
       ptocessType: applyType,
-      applyStates
+      applicationStatus,
+      selStatus,
+      priceConsistentStatus
     }
   },
   components: {
@@ -183,7 +193,6 @@ export default {
     iDatePicker
   },
   mounted() {
-    console.log(this)
   },
   methods: {
     sure() {
