@@ -1,7 +1,7 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-02-24 09:42:07
- * @LastEditTime: 2021-06-28 11:32:50
+ * @LastEditTime: 2021-07-05 09:39:25
  * @LastEditors: Please set LastEditors
 -->
 
@@ -39,7 +39,7 @@
         <template slot-scope="scope">
           <el-checkbox
             v-model="scope.row.selected"
-            v-if="batchEdit"
+            v-if="batchEdit && selection"
             @change="handleSelectionChange(scope)"></el-checkbox>
           <div class="tableSelection" v-if="scope.row.groupId">{{scope.row.groupName}}</div>
         </template>
