@@ -21,8 +21,8 @@
                 </template>
                 <!-- 状态为完成时不显示 -->
                 <template>
-                    <iButton :loading="btnLoading.lineSure" @click="lineSure">{{language('LK_LINEQUEREN','LINE确认')}}</iButton>
-                    <iButton :loading="btnLoading.lineBack" @click="lineBack">{{language('LK_LINETUIHUI','LINE退回')}}</iButton>
+                    <iButton :loading="btnLoading.lineSure" @click="lineSure">{{language('LK_LINIEQUEREN','LINE确认')}}</iButton>
+                    <iButton :loading="btnLoading.lineBack" @click="lineBack">{{language('LK_LINIETUIHUI','LINE退回')}}</iButton>
                 </template>
                 <iButton :loading="btnLoading.lineDone" v-if="radioType=='NonStandard'" @click="lineDone">{{language('LK_WANCHENGLOI','完成LOI')}}</iButton>
                 <iButton @click="exportLoi">{{language('LK_DAOCHUBIAOZHUNLOI','导出标准LOI')}}</iButton>
