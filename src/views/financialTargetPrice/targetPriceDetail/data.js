@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-23 13:46:59
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-03 21:50:45
+ * @LastEditTime: 2021-07-05 11:06:40
  * @Description: 
  * @FilePath: \front-web\src\views\financialTargetPrice\targetPriceDetail\data.js
  */
@@ -57,8 +57,8 @@ export const designateSearchList = [
   {value: 'fsNum', label: 'FsNr/GsNr', type: 'input', i18n_label: 'FSNRGSNR',},
   {value: 'partName', label: '零件名称', type: 'input', i18n_label: 'LINGJIANMINCHENG',},
   {value: 'partNum', label: '零件号', type: 'input', i18n_label: 'LINGJIANHAO',},
-  {value: 'buyerId', label: '询价采购员', type: 'select', i18n_label: 'XUNJIACAIGOUYUAN',selectOption: ''},
-  {value: 'linieId', label: 'LINIE', type: 'select', i18n_label: 'LINIE',selectOption: 'LINIE'},
+  {value: 'buyerId', label: '询价采购员', type: 'input', i18n_label: 'XUNJIACAIGOUYUAN',selectOption: ''},
+  {value: 'linieId', label: 'LINIE', type: 'input', i18n_label: 'LINIE',selectOption: 'LINIE'},
   {value: 'carTypeName', label: '车型项目', type: 'select', i18n_label: 'CHEXINGXIANGMU',selectOption: 'CAR_TYPE_PRO'},
   {value: 'svwNum', label: 'SVW号', type: 'input', i18n_label: 'SVWHAO',},
   {value: 'tempNum', label: '临时号', type: 'input', i18n_label: 'LINSHIHAO',},
