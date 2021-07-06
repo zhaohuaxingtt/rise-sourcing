@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2021-07-02 15:53:41
+ * @LastEditTime: 2021-07-06 12:17:46
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\editordetail\index.vue
@@ -390,7 +390,7 @@ import { getDictByCode } from '@/api/dictionary'
 			icon
 		},
 		provide:function(){
-			return {detailData:this.getDetailData()}
+			return {detailData:this.getDetailData}
 		},
 		computed: {
 			/**
@@ -399,7 +399,7 @@ import { getDictByCode } from '@/api/dictionary'
 				* @return {*}
 				*/
 			currentSupplierButton:function(){
-				return this.detailData.partPrejectType == "PT11" || this.detailData.partPrejectType == "PT10"
+				return (this.detailData.partPrejectType == "PT11" || this.detailData.partPrejectType == "PT10") && this.detailData.fsnrGsnrNum
 			},
 			isAssembly() {
 				return this.detailData.partType === "A"
@@ -581,14 +581,15 @@ import { getDictByCode } from '@/api/dictionary'
 						detailData[i] = this.detailData[i];
 					}
 				}
-				
+				const factoryItems = this.fromGroup.PURCHASE_FACTORY.find(items=>items.code == this.detailData.procureFactory)
 				detailData['cfController'] = this.detailData.cfController
 				const cfController = this.fromGroup.CF_CONTROL.find(items=>items.id == this.detailData.cfController)
 				detailData['cfControllerZh'] = cfController ? cfController.name : ""
 				detailData['linieUserId'] = this.detailData.linieUserId
 				const linie = this.fromGroup.LINIE.find(items=>items.id == this.detailData.linieUserId)
 				detailData['linieName'] = linie ? linie.name : ""
-
+				detailData['cartypeProjectNum'] = detailData.cartypeProjectZh?detailData.cartypeProjectZh:''
+				detailData['procureFactoryName'] = factoryItems ? factoryItems.name:''
 				return new Promise((resolve, reject) => {
 					changeProcure({
 						detailData,
