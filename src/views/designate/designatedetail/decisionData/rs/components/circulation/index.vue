@@ -2,14 +2,14 @@
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:18:01
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-25 11:36:21
+ * @LastEditTime: 2021-07-05 10:39:45
  * @Description: 流转RS单
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\rs\components\circulation\index.vue
 -->
 
 <template>
   <div :class="isPreview && 'isPreview'">
-    <!-- <iCard :title="'CSC推荐表/CSC Recommendation Sheet会外流转'">
+    <iCard v-if="projectType === 'PT17' || projectType === 'PT18'" :title="'CSC推荐表/CSC Recommendation Sheet会外流转'">
       <iFormGroup row="4" class="csc">
         <div class="col">
           <iFormItem v-for="(item,index) in titleData" :key="'titleData'+index"  :label="item.label+':'">
@@ -19,7 +19,7 @@
           </iFormItem>
         </div>
       </iFormGroup>
-    </iCard> -->
+    </iCard>
     <iCard :title="'流转定点推荐 - ' + cardTitle" :class="!isPreview && 'margin-top20'">
       <tableList :selection="false" :tableTitle="tableTitle" :tableData="tableData" class="rsTable" />
     </iCard>
@@ -58,13 +58,13 @@ export default {
   data() {
     return {
       titleData:[
-        {label:'零件关系',value:'配件'},
-        {label:'询价采购员',value:'胡伟'},
-        {label:'货币单位',value:'RMB'},
-        {label:'申请单号',value:''},
-        {label:'申请日期',value:'2020-01-01'},
-        {label:'LINIE采购员',value:'胡伟'},
-        {label:'Exchange rate',value:'1 RMB=1.00 RMB'},
+        {label:'零件关系',value:'配件', props: ''},
+        {label:'询价采购员',value:'胡伟', props: ''},
+        {label:'货币单位',value:'RMB', props: ''},
+        {label:'申请单号',value:'', props: ''},
+        {label:'申请日期',value:'2020-01-01', props: ''},
+        {label:'LINIE采购员',value:'胡伟', props: ''},
+        {label:'Exchange rate',value:'1 RMB=1.00 RMB', props: ''},
       ],
       tableTitle: nomalTableTitle,
       tableData: [],

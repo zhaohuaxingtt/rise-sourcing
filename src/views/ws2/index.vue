@@ -121,7 +121,7 @@ export default {
       const ksy1 = store.state.permission.whiteBtnList['TOOLING_BUDGET_BAAPPLICATION_TOTAL'];  //  是否有汇总页面权限
       const ksy2 = store.state.permission.whiteBtnList['TOOLING_BUDGET_BAAPPLICATION_DETAILS'];  //  是否有详情页权限
       const list = tabtitle.map(item => {
-        if(item.value === 4){ //  ba申请
+        if(item.activePath === '/tooling/baApplyIndex'){ //  ba申请
           const url = ksy1 ? '/tooling/baApplyIndex' : (!ksy1 && !ksy2 ? '/views/404' : '/tooling/modelDetails');
           item.activePath = url;
           item.url = url;
@@ -129,6 +129,7 @@ export default {
 
         return item;
       })
+      console.log('111111111111', list);
       return list;
     }
   },

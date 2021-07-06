@@ -454,10 +454,11 @@ export default {
         }
 
         if(res[2].data){
-          this.factoryList = res[2].data.map(item => ({
-            productionFactoryId: item.productionFactoryId,
-            productionFactoryName: `${item.productionFactoryId}-${item.productionFactoryName}`
-          }));
+          this.factoryList = res[2].data;
+          // this.factoryList = res[2].data.map(item => ({
+          //   productionFactoryId: item.productionFactoryId,
+          //   productionFactoryName: `${item.productionFactoryId}-${item.productionFactoryName}`
+          // }));
         }else{
           iMessage.error(result2);
         }

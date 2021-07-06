@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:17:25
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-02 18:07:42
+ * @LastEditTime: 2021-07-05 10:35:09
  * @Description: 上会/备案RS单
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\rs\components\meeting\index.vue
 -->
@@ -112,7 +112,7 @@ export default {
   },
   computed: {
     rightTitle() {
-      if (this.projectType === 'PT11' || this.projectType === 'PT04' || this.projectType === 'PT19') {
+      if (['PT11','PT04','PT19','PT17','PT18'].includes(this.projectType)) {
         return gsDetailTitleBlue
       }
       return nomalDetailTitleBlue

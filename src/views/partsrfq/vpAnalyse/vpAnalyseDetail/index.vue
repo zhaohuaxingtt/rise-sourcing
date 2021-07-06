@@ -41,7 +41,7 @@
     </div>
     <!--信息-->
     <iCard tabCard class="margin-bottom20">
-      <baseInfo :dataInfo="dataInfo"/>
+      <baseInfo :dataInfo="dataInfo" @handleSupplierChange="handleSupplierChange"/>
     </iCard>
     <!--总单价表格-->
     <iCard tabCard class="margin-bottom20">
@@ -246,6 +246,11 @@ export default {
     // 保存自定义零件
     saveCustomPart() {
       this.$set(this.customDialog, 'visible', false)
+      this.getDataInfo()
+    },
+    //供应商值改变
+    handleSupplierChange(val) {
+      this.currentSupplierId = val
       this.getDataInfo()
     }
   },

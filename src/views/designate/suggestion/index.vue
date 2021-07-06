@@ -1,7 +1,7 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-02-24 09:42:07
- * @LastEditTime: 2021-06-21 16:08:40
+ * @LastEditTime: 2021-07-05 09:39:01
  * @description: 定点建议页面
 -->
 <template>
@@ -12,6 +12,7 @@
     <buMonitor
       v-if="!onlyTable"
       :mode="'nomi'"
+      :tableSelection="true"
       :hideCombine="false"
       :readOnly="false" />
   </div>

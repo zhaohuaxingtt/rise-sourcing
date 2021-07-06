@@ -12,7 +12,8 @@
                 <iButton :loading="btnLoading.save" @click="save">{{language('LK_BAOCUN','保存')}}</iButton>
                 <iButton @click="changeEditStatus">{{language('LK_QUXIAO','取消')}}</iButton>
             </span>
-            <span v-else>
+            <span v-else><!-- 状态为作废时显示 -->
+                <iButton :loading="btnLoading.add" @click="add" v-if="loiStatus=='TOVOID'">{{language('LK_LETTER_XINZENGLOI','新增LOI')}}</iButton>
                 <!-- 状态为前期确认中时显示编辑按钮 -->
                 <template  v-if="loiStatus=='CSF_HANDLING'" >
                     <iButton @click="edit">{{language('LK_BIANJI','编辑')}}</iButton>
@@ -20,8 +21,8 @@
                 </template>
                 <!-- 状态为完成时不显示 -->
                 <template>
-                    <iButton :loading="btnLoading.lineSure" @click="lineSure">{{language('LK_LINEQUEREN','LINE确认')}}</iButton>
-                    <iButton :loading="btnLoading.lineBack" @click="lineBack">{{language('LK_LINETUIHUI','LINE退回')}}</iButton>
+                    <iButton :loading="btnLoading.lineSure" @click="lineSure">{{language('LK_LINIEQUEREN','LINE确认')}}</iButton>
+                    <iButton :loading="btnLoading.lineBack" @click="lineBack">{{language('LK_LINIETUIHUI','LINE退回')}}</iButton>
                 </template>
                 <iButton :loading="btnLoading.lineDone" v-if="radioType=='NonStandard'" @click="lineDone">{{language('LK_WANCHENGLOI','完成LOI')}}</iButton>
                 <iButton @click="exportLoi">{{language('LK_DAOCHUBIAOZHUNLOI','导出标准LOI')}}</iButton>
@@ -102,6 +103,7 @@ import {
     exportTemplateLoi,
     confirmSubmitLio,
     cfsLoiDone,
+    addNomiLoi,
 } from '@/api/letterAndLoi/loi'
 import {
     getSupplierUsers,
@@ -138,6 +140,7 @@ export default {
                 lineBack:false,
                 save:false,
                 lineDone:false,
+                add:false,
             },
 
         }
@@ -270,11 +273,11 @@ export default {
             this.showHistory = !showHistory;
         },
         // 获取详情
-        async getDetail(){
+        async getDetail(sendId=null){
             const {query} = this.$route;
             const {id=''} = query;
-            this.nomiAppId = id;
-            await findNomiLoiInfo({id}).then((res)=>{
+            this.nomiAppId = sendId || id;
+            await findNomiLoiInfo({id:sendId || id}).then((res)=>{
                 const {code,data={}} = res;
                 if(code == 200){
                     const { loiStatus ={} } = data;
@@ -325,6 +328,28 @@ export default {
                if(code ==200){
                    this.linieList = data;
                }
+            })
+        },
+
+        // 新增LOI
+        async add(){
+            const { loiInfo } = this;
+            const { id } = loiInfo;
+            const confirmInfo = await this.$confirm(this.language('submitSure','您确定要执行提交操作吗？'));
+            if(!confirmInfo) return;
+            this.btnLoading.add = true;
+            await addNomiLoi({id}).then((res)=>{
+                this.btnLoading.add = false;
+                const {code,data} = res;
+                if(code==200){
+                    iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
+                    this.$router.push({ path:'/sourcing/partsletter/loidetail',query:{id: data}})
+                    this.getDetail(data);
+                }else{
+                    iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+                }
+            }).catch((err)=>{
+                this.btnLoading.add = false;
             })
         },
     }

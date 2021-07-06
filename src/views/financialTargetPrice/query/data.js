@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-22 17:03:48
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-01 18:47:06
+ * @LastEditTime: 2021-07-05 16:07:44
  * @Description: 
  * @FilePath: \front-web\src\views\financialTargetPrice\query\data.js
  */
@@ -22,7 +22,7 @@ export const tableTitle = [
   {props:'procureFactoryName',name:'采购工厂', key: "CAIGOUGONGCHANG", tooltip: true, width: 100},
   {props:'applyDate',name:'申请日期', key: "SHENQINGRIQI", tooltip: true, width: 120},
   {props:'applyDateEnd',name:'截止日期', key: "JIEZHIRIQI", tooltip: true, width: 120},
-  {props:'responseDate',name:'返回日期', key: "FANHUIRIQI", tooltip: true, width: 120},
+  {props:'responseDate',name:'返回日期', key: "LK_FANHUIRIQI", tooltip: true, width: 120},
   {props:'expTargetpri',name:'期望目标价', key: "QIWANGMUBIAOJIA", tooltip: true},
   {props:'approveStatus',name:'审批状态', key: "SHENPIZHUANGTAI", tooltip: true, width: 120},
   {props:'xiugai',name:'修改记录', key: "XIUGAIJILU", tooltip: true, width: 120},
