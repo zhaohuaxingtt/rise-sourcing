@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-06-15 17:12:55
+ * @LastEditTime: 2021-07-01 14:09:22
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\utils\axios.js
@@ -9,7 +9,7 @@
 import { iMessage } from 'rise';
 import {getToken,removeToken,setToken,setRefreshToken} from '@/utils'
 import store from '@/store'
- export default function httpRequest(baseUrl='',timeOut=15000) {
+ export default function httpRequest(baseUrl='',timeOut=65000) {
     // eslint-disable-next-line no-undef
     const instance = axios.create({
       baseURL:baseUrl,
