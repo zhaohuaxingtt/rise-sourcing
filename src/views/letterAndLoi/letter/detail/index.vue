@@ -188,7 +188,7 @@ export default {
                     this.supplierList = data;
                 }
             })
-            // line
+            // linie
             getBuyers({tagId:4}).then((res)=>{
                const { code,data=[] } = res;
                if(code ==200){
