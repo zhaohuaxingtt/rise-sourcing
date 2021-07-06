@@ -1375,6 +1375,7 @@
             'SEARCH_PART': '请搜索零件号', //请搜索零件号
             'PART_REQUIRE_MESSAGE': '零件号不能为空',//零件号不能为空
             'PART_UNIQUE_MESSAGE': '零件号不能重复', //零件号不能重复
+            'YXLJZDZNTJYBT': '已选零件最多只能添加100条', //已选零件最多只能添加100条
         },
     }
     var xmlHttp = ''

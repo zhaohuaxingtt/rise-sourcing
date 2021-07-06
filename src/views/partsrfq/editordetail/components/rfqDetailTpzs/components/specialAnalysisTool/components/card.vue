@@ -6,11 +6,12 @@
  * @Descripttion: your project
 -->
 <template>
-  <iCard :title="labelData.title">
+  <iCard style="height:400px" :title="labelData.title">
     <div slot="header-control">
       <icon :name="labelData.colourType===1?'iconzhuanxiangfenxigongju-landian':labelData.colourType===2?'iconbaojiapingfengenzong-jiedian-cheng':'iconbaojiapingfengenzong-jiedian-hui'" symbol></icon>
     </div>
-    <img class="cursor" :src="labelData.imgUrl" alt="" width="100%" height="300px">
+    <img class="cursor" :src="labelData.imgUrl" alt="" width="100%" height="250px">
+    <el-divider></el-divider>
     <div class="buttom">
       <div>
         <div>{{$t('TPZS.FX')+labelData.analysisTotal}}</div>
