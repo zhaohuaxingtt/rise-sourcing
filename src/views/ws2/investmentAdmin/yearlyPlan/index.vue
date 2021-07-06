@@ -26,7 +26,7 @@
           </iCard>
         </div>
         <div class="c-right">
-          <iCard class="c-card-r">
+          <iCard class="c-card-r" v-loading="chartLoading">
             <div class="right-head">
               <div class="right-title">年度计划</div>
               <div class="right-sildBox">
@@ -119,8 +119,8 @@
             <div class="manual-l-txt">
               <div class="manual-l-title">{{setManualTotal}}</div>
               <div class="manual-lpriceInput" v-for="(item, index) in planYearCommutity" :key="index">
-                <iInput :disabled="!vereceive.editFlag" v-if="isThen" class="right-input" v-model="item.planAmountAmualCurrent"></iInput>
-                <iInput :disabled="!vereceive.editFlag" v-else class="right-input" v-model="item.planAmountAmualNext"></iInput>
+                <iInput type="number" :disabled="!vereceive.editFlag" v-if="isThen" class="right-input" v-model="item.planAmountAmualCurrent"></iInput>
+                <iInput type="number" :disabled="!vereceive.editFlag" v-else class="right-input" v-model="item.planAmountAmualNext"></iInput>
               </div>
             </div>
             <div class="manual-l-txt">
@@ -171,7 +171,7 @@ export default {
       const key = isThen ? 'planAmountAmualCurrent' : 'planAmountAmualNext';
       const arr = planYearCommutity.map(item => item[key]).filter(n => n);
       const total = arr.reduce((prev,curr) => {
-        return (~~prev + ~~curr).toFixed(2);
+        return (Number(prev) + Number(curr)).toFixed(2);
       },0)
 
       return total;
@@ -189,7 +189,7 @@ export default {
       const key = isThen ? 'planAmountSystemCurrent' : 'planAmountSystemNext';
       const arr = planYearCommutity.filter(item => item.commodity !== 'Risk' ).map(item => item[key]).filter(n => n);
       const total = arr.reduce((prev,curr) => {
-        return (~~prev + ~~curr).toFixed(2);
+        return (Number(prev) + Number(curr)).toFixed(2);
       },0)
 
       return total;
@@ -224,6 +224,7 @@ export default {
       isThen: true,
       manualSaveLoading: false,
       refreshStatus: true,
+      chartLoading: false,
     }
   },
 
@@ -326,6 +327,8 @@ export default {
 
           if(res.code === "0"){
             iMessage.success(result);
+            this.$store.commit('SET_versionId', '');
+            this.refreshStatus = !this.refreshStatus;
           }else{
             iMessage.error(result);
           }
@@ -343,6 +346,7 @@ export default {
     },
 
     getHistogram(){
+      this.chartLoading = true;
       queryPlanPercentage({
         versionId: this.vereceive.id
       }).then(res => {
@@ -416,9 +420,9 @@ export default {
                       planSystemNextBacklog, planSystemNextSecond, planSystemNextFirst
                     } = resData;
                     if(params.name == _this.vereceive.year){ //  当年
-                      return planSystemCurrentBacklog + planSystemCurrentSecond + planSystemCurrentFirst;
+                      return (planSystemCurrentBacklog + planSystemCurrentSecond + planSystemCurrentFirst).toFixed(2);
                     }else{
-                      return planSystemNextBacklog + planSystemNextSecond + planSystemNextFirst;
+                      return (planSystemNextBacklog + planSystemNextSecond + planSystemNextFirst).toFixed(2);
                     }
                   }
                 }
@@ -449,9 +453,9 @@ export default {
                   formatter: function (params){
                     const { planManualCurrentRisk, planManualCurrent, planManualNextRisk, planManualNext } = resData;
                     if(params.name == _this.vereceive.year){ //  当年
-                      return planManualCurrentRisk + planManualCurrent;
+                      return (planManualCurrentRisk + planManualCurrent).toFixed(2);
                     }else{
-                      return planManualNextRisk + planManualNext;
+                      return (planManualNextRisk + planManualNext).toFixed(2);
                     }
                   }
                 }
@@ -489,6 +493,10 @@ export default {
         }else{
           iMessage.error(result);
         }
+
+        this.chartLoading = false;
+      }).catch(err => {
+        this.chartLoading = false;
       })
     },
 
@@ -522,9 +530,9 @@ export default {
                 },
                 grid: {
                     left: '8%',
-                    right: '18%',
+                    right: '20%',
                     bottom: '3%',
-                    top: '10%',
+                    top: '8%',
                     containLabel: true
                 },
                 xAxis: {
@@ -712,12 +720,7 @@ export default {
       bottom: 0;
 
       .content-l{
-        padding-bottom: 80px;
-      }
-
-      .test{
-        flex: 1;
-        height: 100%;
+        padding-bottom: 90px !important;
       }
 
       .manual-l-txt{
@@ -730,11 +733,11 @@ export default {
         }
 
         & .manual-lpriceInput:nth-child(2){
-          margin-top: 60px !important;
+          margin-top: 48px !important;
         }
 
         & .manual-lpriceInputTxt:nth-child(2){
-          margin-top: 60px !important;
+          margin-top: 48px !important;
         }
 
         .manual-lpriceInputTxt{
@@ -756,7 +759,7 @@ export default {
         .manual-lprice{
           color: #485465;
           font-size: 16px;
-          margin-top: 70px;
+          margin-top: 56px;
         }
         
         .manual-l-title{
