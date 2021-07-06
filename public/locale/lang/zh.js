@@ -1031,8 +1031,8 @@
         'LK_BAOCUNWEIZUIXINBANBEN': '保存为最新版本',  //  保存为最新版本
         'LK_SHUAXIN': '刷新',   //  刷新
         'LK_SHUAXINRIQI': '刷新日期',   //  刷新日期
-        'LK_SHANGBANNIANSOPFUKUANDUIBI': '上半年SOP付款⽐',   //  上半年SOP付款⽐
-        'LK_XIABANNIANSOPFUKUANDUIBI': '下半年SOP付款⽐',   //  下半年SOP付款⽐
+        'LK_SHANGBANNIANSOPFUKUANDUIBI': '上半年SOP付款比',   //  上半年SOP付款⽐
+        'LK_XIABANNIANSOPFUKUANDUIBI': '下半年SOP付款比',   //  下半年SOP付款⽐
         'LK_SOPSHIJIAN': 'SOP时间', //  SOP时间
         'LK_YUSUANJINE': '预算⾦额',    //  预算⾦额
         'LK_BMJINE': 'BM金额',  //  BM金额
