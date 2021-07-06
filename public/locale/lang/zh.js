@@ -1375,6 +1375,11 @@
             'SEARCH_PART': '请搜索零件号', //请搜索零件号
             'PART_REQUIRE_MESSAGE': '零件号不能为空',//零件号不能为空
             'PART_UNIQUE_MESSAGE': '零件号不能重复', //零件号不能重复
+            'ZUIXINDINGDIANDANJIA': '最新定点单价', //最新定点单价
+            'MUBIAODANJIA': '目标单价', //目标单价
+            'CHANLIANGLIANG': '产量（辆）', //产量（辆）
+            'DANJIA': '单价', //单价
+            'YUANJIAN': '（元/件）', //（元/件）
         },
     }
     var xmlHttp = ''
