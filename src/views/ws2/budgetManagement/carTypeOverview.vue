@@ -344,14 +344,7 @@ export default {
                   barWidth: 30,
                   stack: 'total',
                   label: {
-                    show: true,
-                    position: 'top',
-                    textStyle: {
-                      color: '#485465'
-                    },
-                    formatter: function(p){
-                      return _this.getTousandNum(p.value)
-                    },
+                    show: false,
                   },
                   itemStyle: {
                     normal: {
