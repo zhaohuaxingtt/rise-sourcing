@@ -1,7 +1,7 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-07-01 14:30:59
- * @LastEditTime: 2021-07-03 16:30:32
+ * @LastEditTime: 2021-07-06 10:48:54
  * @LastEditors: Please set LastEditors
  * @Description: M签字单预览导出 jira-1571
  * @FilePath: /front-web/src/views/designate/home/signSheet/signView.vue
@@ -73,7 +73,8 @@ export default {
     return {
       tableListData: [],
       tableLoading: false,
-      tableTitle: tableTitle,
+      // tableTitle: tableTitle,
+      ltcTitle: [],
       selectTableData: [],
       startLoding: false,
     }
@@ -81,36 +82,62 @@ export default {
   created() {
     this.getFetchData()
   },
+  computed: {
+    tableTitle() {
+      return [...tableTitle, ...this.ltcTitle]
+    }
+  },
   methods: {
     close() {
       this.$router.back()
     },
     // 获取定点管理列表
-    getFetchData(params = {}) {
+    async getFetchData(params = {}) {
       this.tableLoading = true
       const signId = this.$route.query.signId
       if (!signId) {
         iMessage.error(this.language('QIANZIDANHAOBUNENGWEIKONG','签字单号不能为空'))
         return
       }
-      signSheetApproveDetail({
-        ...params,
-        signId,
-        current: this.page.currPage,
-        size: this.page.pageSize
-      }).then(res => {
+      try {
+        
+        const res = await signSheetApproveDetail({
+          ...params,
+          signId,
+          current: this.page.currPage,
+          size: this.page.pageSize
+        })
         this.tableLoading = false
-        if (res.code === '200') {
-          this.tableListData = res.data.nomiList || []
-          console.log(this.tableListData)
-        } else {
-          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
-        }
-        console.log(res)
-      }).catch(e => {
+          if (res.code === '200') {
+            
+            const ltcTitlt = res.data.ltcList || []
+            const ltcTitltKeys = ltcTitlt.map(o => window.moment(o.yearMonths).format('YYYY_MM'))
+            const tableLTCTitlt = ltcTitlt.map(o => window.moment(o.yearMonths).format('YYYY-MM'))
+            this.tableListData = res.data.nomiList || []
+            this.tableListData.map((o) => {
+              const ltcList = o.ltcList
+              ltcTitltKeys.forEach((key, index) => {
+                o[key] = ltcList[index] && Number(ltcList[index].priceReduceRate).toFixed(2) || ''
+                return o
+              })
+            })
+            tableLTCTitlt.forEach((item, index) => {
+              this.ltcTitle.push({
+                props: ltcTitltKeys[index],
+                name: `LTC ${tableLTCTitlt[index]}`,
+                key: `LTC ${tableLTCTitlt[index]}`,
+                width: 100,
+                tooltip: false
+              })
+            })
+            console.log(this.tableListData, ltcTitltKeys, this.tableTitle)
+          } else {
+            iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+          }
+      } catch(e) {
         this.tableLoading = false
         iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
-      })
+      }
     },
     exportfile() {
       
