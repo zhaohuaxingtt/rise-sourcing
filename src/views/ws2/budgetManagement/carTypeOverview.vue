@@ -52,7 +52,7 @@
               ></el-option>
             </iSelect>
           </el-form-item>
-          <el-form-item :label="$t('LK_CAIGOUGONGCHANG')">
+          <el-form-item :label="$t('生产工厂')">
             <iSelect
                 :placeholder="$t('partsprocure.CHOOSE')"
                 v-model="localFactoryName"
@@ -124,10 +124,10 @@
                 </Popover>
                 <Popover
                     v-if="Number(item.sourceStatus) === 1 || Number(item.isBudget) !== 3"
-                    :content="$t('LK_CAIGOUGONGCHANG') + ': ' + (item.locationFactory ? item.locationFactory : '')"
+                    :content="$t('生产工厂') + ': ' + (item.locationFactory ? item.locationFactory : '')"
                     placement="top-start"
                     trigger="hover">
-                  <p slot="reference">{{$t("LK_CAIGOUGONGCHANG")}}: {{ item.locationFactory }}</p>
+                  <p slot="reference">{{$t("生产工厂")}}: {{ item.locationFactory }}</p>
                 </Popover>
                 <Popover
                     v-if="Number(item.sourceStatus) === 1 || Number(item.isBudget) !== 3"
@@ -286,6 +286,17 @@ export default {
               ]
               const vm1 = echarts().init(document.getElementById("chart" + index));
               let option1 = {
+                tooltip: {
+                  // formatter: function (params) {//这里就是控制显示的样式
+                  //   if (params.seriesIndex == 0) {
+                  //     return 'JV Sourcing'
+                  //   } else if (params.seriesIndex == 1) {
+                  //     return 'Commom Sourcing'
+                  //   }
+                  // },
+                  backgroundColor: '#ffffff',
+                  extraCssText: 'color: #1B1D21; box-shadow: 0px 0px 20px rgba(27, 29, 33, 0.12);'
+                },
                 grid: {
                   left: '0%',
                   right: '0',
@@ -443,7 +454,7 @@ export default {
       // )
       if(isBudget == 3){
         this.$router.push({
-          path: '/tooling/budgetManagement/investmentListCommon',
+          path: '/tooling/budgetManagement/investmentListJV',
           query: {
             id: id,
             sourceStatus: sourceStatus
@@ -481,97 +492,6 @@ export default {
             this.initContentData = cloneDeep(res.data)
             this.contentData = res.data.slice(0, 8)
             this.$nextTick(() => {
-              // const vm = echarts().init(document.getElementById("chart0"));
-              // let option = {
-              //   grid: {
-              //     left: '0%',
-              //     right: '0',
-              //     bottom: '0%',
-              //     top: '12%',
-              //     containLabel: true
-              //   },
-              //   xAxis: {
-              //     type: 'category',
-              //     data: ['总预算', '定点金额', 'BM单', '付款'],
-              //     axisTick: {
-              //       show: false
-              //     },
-              //     axisLine:{
-              //       lineStyle:{
-              //         color: '#CDD4E2'
-              //       }
-              //     },
-              //     axisLabel:{
-              //       textStyle:{
-              //         color: '#485465'
-              //       }
-              //     },
-              //   },
-              //   yAxis: {
-              //     type: 'value',
-              //     axisTick: {
-              //       show: false
-              //     },
-              //     axisLabel: {
-              //       show: false
-              //     },
-              //     splitLine: {
-              //       show: false
-              //     },
-              //     axisLine: {
-              //       show: false
-              //     },
-              //
-              //   },
-              //   series: [
-              //     {
-              //       data: [120, 200, 150, 80],
-              //       type: 'bar',
-              //       barWidth: 30,
-              //        stack: 'total',
-              //       label: {
-              //         show: false,
-              //         position: 'top',
-              //         textStyle: {
-              //           color: '#485465'
-              //         }
-              //       },
-              //       itemStyle: {
-              //         normal: {
-              //           color: function(params){
-              //             console.log(params)
-              //             let colorlist = ['#1763F7','#73A1FA','#B0C5F5','#CEE1FF'];
-              //             return colorlist[params.dataIndex];
-              //           }
-              //         },
-              //       }
-              //     },
-              //     {
-              //       data: [150, 100, 250, 100],
-              //       type: 'bar',
-              //       barWidth: 30,
-              //        stack: 'total',
-              //       label: {
-              //         show: true,
-              //         position: 'top',
-              //         textStyle: {
-              //           color: '#485465'
-              //         }
-              //       },
-              //       itemStyle: {
-              //         normal: {
-              //           barBorderRadius: [5, 5, 0, 0],
-              //           color: function(params){
-              //             console.log(params)
-              //             let colorlist = ['#55C2D0','#87D4DE','#BBE7EC','#D4F8F7'];
-              //             return colorlist[params.dataIndex];
-              //           }
-              //         },
-              //       }
-              //     }
-              //   ]
-              // };
-              // vm.setOption(option);
               this.contentData.map((item, index) => {
                 let chartData = [
                     (item.generalBudget ? item.generalBudget.toFixed(2) : 0),
@@ -655,6 +575,17 @@ export default {
                   }]
                 };
                 let option2 = {
+                  tooltip: {
+                    // formatter: function (params) {//这里就是控制显示的样式
+                    //   if (params.seriesIndex == 0) {
+                    //     return 'JV Sourcing'
+                    //   } else if (params.seriesIndex == 1) {
+                    //     return 'Commom Sourcing'
+                    //   }
+                    // },
+                    backgroundColor: '#ffffff',
+                    extraCssText: 'color: #1B1D21; box-shadow: 0px 0px 20px rgba(27, 29, 33, 0.12);'
+                  },
                   grid: {
                     left: '0%',
                     right: '0',
@@ -697,7 +628,8 @@ export default {
 
                   },
                   series: [
-                      {
+                    {
+                      name: 'JV Sourcing',
                       data: chartData,
                       type: 'bar',
                       barWidth: 30,
@@ -716,6 +648,7 @@ export default {
                       }
                     },
                     {
+                      name: 'Commom Sourcing',
                       data: chartData_commonSourcing,
                       type: 'bar',
                       barWidth: 30,

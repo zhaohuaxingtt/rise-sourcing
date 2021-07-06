@@ -11,3 +11,8 @@ export function getTousandNum(num){
         })
     })
 }
+
+export function delcommafy(num){//去除千分位中的‘，’
+    num=num.replace(/,/gi,'');
+    return num;
+}

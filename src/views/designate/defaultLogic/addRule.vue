@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-24 20:14:24
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-18 15:38:37
+ * @LastEditTime: 2021-07-02 15:15:25
  * @Description: 添加规则弹窗
  * @FilePath: \front-web\src\views\designate\defaultLogic\addRule.vue
 -->
@@ -12,7 +12,6 @@
     title="添加规则"
     :visible.sync="dialogVisible"
     @close="clearDialog"
-    width="690px"
   >
     <template slot="footer">
       <iButton @click="handleAddRule" :disabled="rules.length > 4">添加条件</iButton>

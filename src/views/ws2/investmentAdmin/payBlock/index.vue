@@ -4,28 +4,15 @@
  * @Description:财报分析
  -->
 <template>
-	<iPage class="page-content">
-		<!-- <div class="flex-between-center margin-bottom20">
-			<span class="title">{{$t('SPR_FRM_DEP_FINANA')}}</span>
-			<div class="flex-align-center"> -->
-				<!-- 维护呈现对象 -->
-				<!-- <iButton @click='openVisible'>{{$t('SPR_FRM_DEP_CXWHDX')}}</iButton> -->
-				<!-- 加入行业均值 -->
-				<!-- <iButton @click='openIndustry'>{{$t('SPR_FRM_DEP_JRHYJZ')}}</iButton> -->
-				<!-- 维护行业均值 -->
-				<!-- <iButton @click='onJumpIndustryAverage'>{{$t('SPR_FRM_DEP_WHHYJZ')}}</iButton>
-			</div>
-		</div> -->
-    <!-- <iButton @click='downloadList'>{{$t('LK_XIAZAIQINGDAN')}}</iButton> -->
-		<iCard id='powerBi'>
-			<!-- <iframe :src='url.embedUrl' scrolling="auto" frameborder="0" width="100%" height="500px"></iframe> -->
-		</iCard>
-		<!-- 维护呈现对象 -->
-		<!-- <changeItem v-model="visible" :option="1" :selectData='supplierNameData' :tip="$t('SPR_FRM_DEP_OBJPLACE')" multiple :title="$t('SPR_FRM_DEP_CXWHDX')" @sure="sureChangeItems"></changeItem> -->
-		<!-- 加入行业均值 -->
-		<!-- <changeItem v-model="industry" :option="2" :selectData='averageNameData' :tip="$t('SPR_FRM_DEP_AVGPLACE')" :title="$t('SPR_FRM_DEP_JRHYJZ')" @sure="sureIndustryChangeItems">
-		</changeItem> -->
-	</iPage>
+	<div>
+		<!-- v-permission="TOOLING_PAYMENTPLAN_PAYMENTBOARD" -->
+		<iPage class="page-content" v-permission="TOOLING_PAYMENTPLAN_PAYMENTBOARD">
+			<iCard id='powerBi'>
+				
+			</iCard>
+		</iPage>
+	</div>
+	
 </template>
 
 <script>
@@ -141,7 +128,6 @@
 				let powerbi = new pbi.service.Service(pbi.factories.hpmFactory, pbi.factories.wpmpFactory, pbi.factories.routerFactory);
 				var reportContainer = document.getElementById('powerBi');
 				var report = powerbi.embed(reportContainer, config);
-        console.log('11111111111', report);
         this.$store.commit('SET_report', report);
 
 				// Report.off removes a given event handler if it exists.
@@ -164,8 +150,72 @@
 				report.off("rendered");
 
 				// Report.on will add an event handler which prints to Log window.
-				report.on("rendered", function() {
+				report.on("rendered", async function() {
 					console.log("Rendered");
+					//获取所有页面
+					const pages = await report.getPages();
+					let page = pages.filter(function (page) {
+							return page.isActive
+					})[0];
+
+					//获取所有视觉对象
+					const visuals = await page.getVisuals();
+					//获取单个视觉对象
+					var visual = visuals.filter(async function (visual) {
+						//56e2a71da3229e40e713
+						if(visual.name == "56e2a71da3229e40e713"){
+							console.log("表格："+visual.title);
+							//导出某个视觉对象的数据
+							var result =await visual.exportData(pbi.models.ExportDataType.Summarized);
+							console.log(result.data);
+
+
+					    var newSettings = {
+								commands: [
+										{
+											/**
+												spotlight: {
+														displayOption: models.CommandDisplayOption.Hidden
+												},
+												drill: {
+														displayOption: models.CommandDisplayOption.Hidden
+												},
+												*/
+												exportData: {
+													displayOption: pbi.models.CommandDisplayOption.Enabled
+												}
+										}
+								]
+							};
+				    	report.updateSettings(newSettings);
+					  }else{
+
+							var newSettings = {
+										commands: [
+												{
+													/**
+														spotlight: {
+																displayOption: models.CommandDisplayOption.Hidden
+														},
+														drill: {
+																displayOption: models.CommandDisplayOption.Hidden
+														},
+														*/
+														exportData: {
+															displayOption: pbi.models.CommandDisplayOption.Hidden
+														}
+												}
+										]
+							};
+							report.updateSettings(newSettings);
+					  }
+
+						return visual.title === "表格";
+				})[0];
+
+
+
+						console.log("报表渲染事件");
 				});
 				report.off("filtersApplied")
 				

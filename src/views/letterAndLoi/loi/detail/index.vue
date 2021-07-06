@@ -9,14 +9,21 @@
         <div class="title">{{language('LK_LOIBIANHAO','LOI编号')}}: {{loiInfo.loiNum}}</div>
         <div class="control">
             <span v-if="isEdit">
-                <iButton @click="save">{{language('LK_BAOCUN','保存')}}</iButton>
+                <iButton :loading="btnLoading.save" @click="save">{{language('LK_BAOCUN','保存')}}</iButton>
                 <iButton @click="changeEditStatus">{{language('LK_QUXIAO','取消')}}</iButton>
             </span>
             <span v-else>
-                <iButton @click="edit">{{language('LK_BIANJI','编辑')}}</iButton>
-                <iButton @click="lineSure">{{language('LK_LINEQUEREN','LINE确认')}}</iButton>
-                <iButton @click="lineBack">{{language('LK_LINETUIHUI','LINE退回')}}</iButton>
-                <iButton v-if="radioType=='NonStandard'">{{language('LK_WANCHENGLOI','完成LOI')}}</iButton>
+                <!-- 状态为前期确认中时显示编辑按钮 -->
+                <template  v-if="loiStatus=='CSF_HANDLING'" >
+                    <iButton @click="edit">{{language('LK_BIANJI','编辑')}}</iButton>
+                    <iButton :loading="btnLoading.submit" @click="submit">{{language('LK_QUERENBINGTIJIAO','确认并提交')}}</iButton>
+                </template>
+                <!-- 状态为完成时不显示 -->
+                <template>
+                    <iButton :loading="btnLoading.lineSure" @click="lineSure">{{language('LK_LINEQUEREN','LINE确认')}}</iButton>
+                    <iButton :loading="btnLoading.lineBack" @click="lineBack">{{language('LK_LINETUIHUI','LINE退回')}}</iButton>
+                </template>
+                <iButton :loading="btnLoading.lineDone" v-if="radioType=='NonStandard'" @click="lineDone">{{language('LK_WANCHENGLOI','完成LOI')}}</iButton>
                 <iButton @click="exportLoi">{{language('LK_DAOCHUBIAOZHUNLOI','导出标准LOI')}}</iButton>
                 <iButton @click="changeShowHistory">{{language('LK_LISHILOI','历史LOI')}} </iButton>
             </span>
@@ -66,7 +73,7 @@
         </iCard>
 
         <!-- 非标准LOI -->
-        <loiNonStandard class="margin-top20" v-if="radioType=='NonStandard'" :isEdit="isEdit" :nomiAppId="nomiAppId"/>
+        <loiNonStandard class="margin-top20" v-if="radioType=='NonStandard'" :isEdit="isEdit" :nomiAppId="nomiAppId" />
 
         <!-- 历史LOI弹窗 -->
         <historyDialog v-if="showHistory" :dialogVisible="showHistory" @changeVisible="changeShowHistory" :loiInfo="loiInfo"/>
@@ -84,7 +91,7 @@ import {
     iSelect,
     iMessage,
 } from 'rise';
-import logButton from "@/views/partsign/editordetail/components/logButton"
+import logButton from "@/components/logButton"
 import historyDialog from './components/historyDialog'
 import loiNonStandard from './components/loiNonStandard'
 import {
@@ -93,6 +100,8 @@ import {
     liniefirm,
     linieBackLio,
     exportTemplateLoi,
+    confirmSubmitLio,
+    cfsLoiDone,
 } from '@/api/letterAndLoi/loi'
 import {
     getSupplierUsers,
@@ -122,6 +131,14 @@ export default {
             loiInfo:{},
             supplierList:[], // 供应商列表
             linieList:[], // line列表
+            loiStatus:'', // LOI状态
+            btnLoading:{
+                submit:false,
+                lineSure:false,
+                lineBack:false,
+                save:false,
+                lineDone:false,
+            },
 
         }
     },
@@ -132,16 +149,39 @@ export default {
         // 编辑状态变更
         changeEditStatus(){
             const { isEdit } = this;
+            if(isEdit){
+                this.getDetail();
+            }
             this.isEdit = !isEdit;
         },
         // 编辑
         edit(){
             this.changeEditStatus();
         },
+        // 确认并提交
+        async submit(){
+            const { loiInfo } = this;
+            const { id } = loiInfo;
+            const confirmInfo = await this.$confirm(this.language('submitSure','您确定要执行提交操作吗？'));
+            if(!confirmInfo) return;
+            this.btnLoading.submit = true;
+            await confirmSubmitLio({ids:[id]}).then((res)=>{
+                this.btnLoading.submit = true;
+                if(res.code == 200){
+                    iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
+                    this.getDetail();
+                }else{
+                    iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+                }
+            }).catch((err)=>{
+                this.btnLoading.submit = false;
+            })
+        },
         // 保存
         async save(){
+            this.btnLoading.save = true;
             const { loiInfo,radioType } = this;
-            const {id,linieUserId,loiNum,supplierUserId,templateType,} = loiInfo;
+            const {id,linieUserId,loiNum,supplierUserId,templateType} = loiInfo;
             const linieName = this.getName('linieList',linieUserId) || loiInfo.linieName;
             const supplierUserName = this.getName('supplierList',supplierUserId) || loiInfo.supplierUserName;
             const data = {
@@ -151,6 +191,7 @@ export default {
                 supplierUserName,
             };
             await editTemplateLoi(data).then((res)=>{
+                this.btnLoading.save = false;
                 const {code} = res;
                 if(code == 200){
                     iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
@@ -159,6 +200,8 @@ export default {
                 }else{
                     iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
                 }
+            }).catch((err)=>{
+                this.btnLoading.save = false;
             })
 
         },
@@ -168,13 +211,17 @@ export default {
             const { id } = loiInfo;
             const confirmInfo = await this.$confirm(this.language('submitSure','您确定要执行提交操作吗？'));
             if(!confirmInfo) return;
+            this.btnLoading.lineSure = true;
             await liniefirm({ids:[id]}).then((res)=>{
+                this.btnLoading.lineSure = false;
                 if(res.code == 200){
                     iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
                     this.getDetail();
                 }else{
                         iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
                 }
+            }).catch((err)=>{
+                this.btnLoading.lineSure = false;
             })
         },
         // LINE退回
@@ -183,20 +230,46 @@ export default {
             const { id } = loiInfo;
             const confirmInfo = await this.$confirm(this.language('submitSure','您确定要执行提交操作吗？'));
             if(!confirmInfo) return;
+            this.btnLoading.lineBack = true;
             await linieBackLio({ids:[id]}).then((res)=>{
-                    if(res.code == 200){
-                        iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
-                        this.getDetail();
-                    }else{
-                         iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
-                    }
-                })
+                this.btnLoading.lineBack = false;
+                if(res.code == 200){
+                    iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
+                    this.getDetail();
+                }else{
+                        iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+                }
+            }).catch((err)=>{
+                this.btnLoading.lineBack = false;
+            })
+        },
+
+        // 完成LOI
+        async lineDone(){ 
+            const { loiInfo } = this;
+            const { id } = loiInfo;
+            const confirmInfo = await this.$confirm(this.language('submitSure','您确定要执行提交操作吗？'));
+            if(!confirmInfo) return;
+            this.btnLoading.lineDone = true;
+            await cfsLoiDone({id}).then((res)=>{
+                this.btnLoading.lineDone = false;
+                if(res.code == 200){
+                    iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
+                    this.getDetail();
+                }else{
+                        iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+                }
+            }).catch((err)=>{
+                this.btnLoading.lineDone = false;
+            })
+            
         },
         //  历史定点信弹窗状态变更
         changeShowHistory(){
             const { showHistory } = this;
             this.showHistory = !showHistory;
         },
+        // 获取详情
         async getDetail(){
             const {query} = this.$route;
             const {id=''} = query;
@@ -204,6 +277,8 @@ export default {
             await findNomiLoiInfo({id}).then((res)=>{
                 const {code,data={}} = res;
                 if(code == 200){
+                    const { loiStatus ={} } = data;
+                    this.loiStatus = loiStatus.code || '';
                     this.loiInfo = data;
                     const { type,supplierId } = data; 
                     // templateType   0(标准定点信:批量LOI)，1(标准定点信:开发LOI)，2(标准定点信:开发+批量LOI)
@@ -217,7 +292,7 @@ export default {
 
         },
 
-        // 导出标准LOI exportTemplateLoi
+        // 导出标准LOI 
         async exportLoi(){
             const {query} = this.$route;
             const {id=''} = query;

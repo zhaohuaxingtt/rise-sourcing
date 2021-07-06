@@ -1,7 +1,7 @@
 /*
  * @Author: HaoJiang
  * @Date: 2021-05-20 14:29:09
- * @LastEditTime: 2021-06-28 11:12:08
+ * @LastEditTime: 2021-07-01 14:34:34
  * @LastEditors: Please set LastEditors
  * @Description: 定点管理
  * @metaParams: hideTabLV3 隐藏三级导航
@@ -59,6 +59,15 @@ export default [
         },
         component: () =>
             import ("@/views/designate/home/signSheet/details"),
+      },
+      {
+        path: "/sourcing/partsnomination/signSheet/preview",
+        name: "designateSignSheetPreview",
+        meta: {
+          title: "签字单预览下载",
+        },
+        component: () =>
+            import ("@/views/designate/home/signSheet/preview"),
       },
       {
         path: "/sourcing/designate/rfqdetail/addRfq",

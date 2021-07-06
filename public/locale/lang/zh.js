@@ -993,6 +993,7 @@
         'LK_KAIFAPILIANGLOI':'开发+批量LOI' , // 开发+批量LOI
         'LK_FRMPINGJI':'FRM评级', // FRM评级
         'LK_CBDSTATUS':'CBD状态', // CBD状态
+        'LK_LETTER_XINZENGDINGDIANXIN':'新增定点信', // 新增定点信
 
         'LK_ALLBMAPPLY': '所有BM申请',    //  所有BM申请
         'LK_DAIQUERENBMDAN': '待确认BM单',    //  待确认BM单
@@ -1000,7 +1001,7 @@
         'LK_AEKOJIANZHIBMDAN': 'AEKO减值BM单',  //  Aeko减值BM单
         'LK_BMDANZHUANGTAI': 'BM单状态',    //  BM单状态
         'LK_AEKOLEIXING': 'AEKO类型',   //  AEKO类型
-        'LK_BMDANLIUSHUIHAO': 'BM单流⽔号',   //  BM单流⽔号
+        'LK_BMDANLIUSHUIHAO': 'BM单流水号',   //  BM单流⽔号LK_BMDANLIUSHUIHAO
         'LK_BMDANHAO': 'BM单号',    //  BM单号
         'LK_WBSBIANHAO': 'WBS编号',   //  WBS编号
         'LK_DAIBIAOLINGJIAN': '代表零件',  //  代表零件
@@ -1079,6 +1080,9 @@
         'LK_SHIYUE': '十月',    //  十月
         'LK_SHIYIYUE': '十一月',    //  十一月
         'LK_SHIERYUE': '十二月',    //  十二月
+
+        'LK_FUKUANKANBAN': '付款看板',  //  付款看板
+        'LK_NIANDUJIHUA': '年度计划',   //  年度计划
 
         // 定点管理
         'nominationLanguage': {
@@ -1371,6 +1375,17 @@
             'SEARCH_PART': '请搜索零件号', //请搜索零件号
             'PART_REQUIRE_MESSAGE': '零件号不能为空',//零件号不能为空
             'PART_UNIQUE_MESSAGE': '零件号不能重复', //零件号不能重复
+            'ZUIXINDINGDIANDANJIA': '最新定点单价', //最新定点单价
+            'MUBIAODANJIA': '目标单价', //目标单价
+            'CHANLIANGLIANG': '产量（辆）', //产量（辆）
+            'DANJIA': '单价', //单价
+            'YUANJIAN': '（元/件）', //（元/件）
+            'BAOGAO': '报告', //报告
+            'JIHUAZHONGCHANLIANG': '计划总产量', //计划总产量
+            'YUJIZONGCHANLIANG': '预计总产量', //预计总产量
+            'GUDINGCHENGBEN': '固定成本', //固定成本
+            'ZONGJIANGJIA': '总降价', //总降价
+            'JIANGJIA': '降价', //降价
         },
     }
     var xmlHttp = ''

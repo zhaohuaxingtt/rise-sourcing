@@ -8,9 +8,9 @@
 <template>
   <div>
     <enterSpecificAnalysisToolsDialog @getDataList='getDataList' v-model="viewModelDialog" />
-    <el-row class="margin-top30">
+    <el-row :gutter="16" class="margin-top30">
       <el-col v-for="(item,index) in cardData" :key="index" :span="12">
-        <card :class="index%2===0&&'margin-right20'" @click.native="$emit('entrance',item.title)" :cardData="item" />
+        <card @click.native="$emit('entrance',item.title)" :cardData="item" />
       </el-col>
     </el-row>
   </div>
@@ -42,7 +42,8 @@ export default {
     async getDataList(val) {
       const pms = {
         isInsideEnter: this.$route.path === '/sourcing/partsrfq/assistant' ? true : false,
-        keyword: val || ''
+        keyword: val || '',
+        rfq: this.$route.query.id
       }
       const res = await totalOverview(pms)
       if (res.result) {

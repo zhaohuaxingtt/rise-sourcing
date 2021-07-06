@@ -2,42 +2,42 @@
  * @Author: Luoshuang
  * @Date: 2021-06-23 15:37:22
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-29 09:49:17
+ * @LastEditTime: 2021-07-01 15:47:58
  * @Description: 定点信息
  * @FilePath: \front-web\src\views\financialTargetPrice\targetPriceDetail\components\designateInfo.vue
 -->
 
 <template>
-  <iCard title="定点信息" collapse class="margin-top20 designateInfo">
+  <iCard :title="language('DINGDIANXINXI','定点信息')" collapse class="margin-top20 designateInfo">
     <!------------------------------------------------------------------------>
     <!--                  搜索条件                                          --->
     <!------------------------------------------------------------------------>
     <iSearch :hiddenRight="true" class="designateSearch">
       <el-form>
-        <el-form-item v-for="(item, index) in searchList" :key="index" :label="item.label">
+        <el-form-item v-for="(item, index) in searchList" :key="index" :label="language(item.i18n_label,item.label)">
           <iSelect v-if="item.type === 'select'" :filterable="item.filterable" v-model="searchParams[item.value]">
-            <el-option value="" :label="$t('all')"></el-option>
-            <!-- <el-option
-              v-for="item in getOptions(item)"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value">
-            </el-option> -->
+            <el-option value="" :label="language('ALL', '全部')"></el-option>
+            <el-option
+              :value="item.code"
+              :label="item.name"
+              v-for="(item) in selectOptions[item.selectOption]"
+              :key="item.code"
+            ></el-option>
           </iSelect> 
           <iDatePicker v-else-if="item.type === 'dateRange'" type="daterange" v-model="searchParams[item.value]"></iDatePicker>
           <iInput v-else-if="item.type === 'input'" v-model="searchParams[item.value]"></iInput> 
           
         </el-form-item>
         <el-form-item class="searchBtns">
-          <iButton>确认</iButton>
-          <iButton>重置</iButton>
+          <iButton @click="sure">{{language('QUEREN','确认')}}</iButton>
+          <iButton @click="reset">{{language('CHONGZHI','重置')}}</iButton>
         </el-form-item>
       </el-form>
     </iSearch>
     <!------------------------------------------------------------------------>
     <!--                  表格                                              --->
     <!------------------------------------------------------------------------>
-    <tableList :activeItems='"spnrNum"' selection indexKey :tableData="tableData" :tableTitle="tableTitle" :tableLoading="tableLoading" @handleSelectionChange="handleSelectionChange" @openPage="openPage"></tableList>
+    <tableList :activeItems='"spnrNum"' :selection="false" indexKey :tableData="tableData" :tableTitle="tableTitle" :tableLoading="tableLoading" @handleSelectionChange="handleSelectionChange" @openPage="openPage"></tableList>
     <!------------------------------------------------------------------------>
     <!--                  表格分页                                          --->
     <!------------------------------------------------------------------------>
@@ -51,11 +51,14 @@
 </template>
 
 <script>
-import {iCard,iPagination,iButton,iInput,iSelect,iSearch,iDatePicker} from 'rise'
+import {iCard,iPagination,iButton,iInput,iSelect,iSearch,iDatePicker, iMessage} from 'rise'
 import { designateSearchList, designateTableList } from '../data'
 import tableList from '../../components/tableList'
 import { pageMixins } from "@/utils/pageMixins"
 import { getNomiRecords } from "@/api/financialTargetPrice/index"
+import { getDictByCode } from '@/api/dictionary'
+import { dictkey } from "@/api/partsprocure/editordetail"
+import { getCartypeDict} from "@/api/partsrfq/home"
 export default {
   mixins: [pageMixins],
   components: {iCard,iPagination,iButton,tableList,iInput,iSelect,iSearch,iDatePicker},
@@ -65,23 +68,119 @@ export default {
       tableData: [],
       tableLoading: false,
       searchList: designateSearchList,
-      searchParams: {}
+      searchParams: {
+        buyerId: '',
+        linieId: '',
+        carTypeName: '',
+        isManCreate: '',
+        priceStatus: '',
+        partProjectType: '',
+        carTypeCode: ''
+      },
+      selectOptions: {
+        yesOrNoOption: [
+          {code: '1', name: '是'},
+          {code: '0', name: '否'}
+        ]
+      }
     }
   },
+  props: {
+    partProjId: {type:String}
+  },
+  watch: {
+    partProjId:{
+      handler(val) {
+        if(val) {
+          this.getTableList()
+        }
+      },
+      immediate: true
+     }
+  },
   created() {
-    this.getTableList()
+    this.getCartypeDict()
+    this.getProcureGroup()
+    this.getDicts()
   },
   methods: {
+    // 获取车型字典
+    getCartypeDict() {
+      getCartypeDict()
+      .then(res => {
+        if (res.code == 200) {
+          this.selectOptions = {
+            ...this.selectOptions,
+            cartTypeOptions: Array.isArray(res.data) ? res.data : []
+          }
+        }
+      })
+    },
+    sure() {
+      this.page = {
+        ...this.page,
+        currPage: 1
+      }
+      this.getTableList()
+    },
+    reset() {
+      this.searchParams = {
+        buyerId: '',
+        linieId: '',
+        carTypeName: '',
+        isManCreate: '',
+        priceStatus: '',
+        partProjectType: '',
+        carTypeCode: ''
+      }
+    },
+    getDicts() {
+      getDictByCode('PRICE_STATE').then(res => {
+        if(res?.result) {
+          this.selectOptions = {
+            ...this.selectOptions,
+            PRICE_STATE: res.data[0]?.subDictResultVo || []
+          }
+        }
+      })
+    },
+    /**
+     * @Description: 获取下拉框
+     * @Author: Luoshuang
+     * @param {*}
+     * @return {*}
+     */    
+    getProcureGroup() {
+      dictkey().then((res) => {
+        if (res.data) {
+          this.selectOptions = {
+            ...this.selectOptions,
+            ...res.data
+          }
+        }
+      });
+    },
     getTableList() {
       this.tableLoading = true
       const params = {
         ...this.searchParams,
         current: this.page.currPage,
         size: this.page.pageSize,
-        partProjId: this.$route.query.purchasingProjectId
+        partProjId: this.partProjId
       }
       getNomiRecords(params).then(res => {
-        // if (res?.result) {}
+        if(res?.result) {
+          this.page = {
+            ...this.page,
+            totalCount: Number(res.total),
+            currPage: Number(res.pageNum),
+            pageSize: Number(res.pageSize)
+          }
+          this.tableData = res.data
+        } else {
+          this.tableData = []
+          iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
+        }
       }).finally(() => {
         this.tableLoading = false
       })

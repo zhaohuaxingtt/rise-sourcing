@@ -49,8 +49,13 @@ import {
   iButton
 } from "rise";
 import { queryPlanVersionList } from "@/api/ws2/investmentAdmin/yearlyPlan";
+import store from '@/store';
+import _ from 'lodash'
 
 export default {
+  props: {
+    refreshStatus: Boolean,
+  },
   components: {
     iSelect, icon
   },
@@ -59,6 +64,12 @@ export default {
       editionList: [],
       listDetail: {},
       versionId: '',
+    }
+  },
+
+  watch: {
+    refreshStatus(){
+      this.getVersionList();
     }
   },
 
@@ -72,6 +83,7 @@ export default {
     versionChange(e, a){
       this.listDetail = {...this.editionList.filter(item => item.id === e)[0]};
       this.$emit('receiVereceive', this.listDetail);
+      this.$store.commit('SET_versionId', e);
     },
 
     //  获取版本号
@@ -80,10 +92,14 @@ export default {
         const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn;
 
         if(res.code === "0"){
+          const versionId = store.state.investmentAdmin.versionId;
+          const vereceive = _.cloneDeep(res.data[0]);
+          const id = versionId === '' ? vereceive.id : versionId;
           this.editionList = res.data;
-          this.listDetail = res.data[0];
-          this.versionId = res.data[0].id;
-          this.$emit('receiVereceive', res.data[0]);
+          this.listDetail = vereceive;
+          this.versionId = id;
+          vereceive.id = id;
+          this.$emit('receiVereceive', vereceive);
         }else{
           iMessage.error(result);
         }

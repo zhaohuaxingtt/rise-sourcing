@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-05-24 17:06:01
- * @LastEditTime: 2021-06-25 13:28:44
+ * @LastEditTime: 2021-06-22 11:09:41
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\createparts\components\home\index.vue
@@ -91,7 +91,7 @@
 
 <script>
 import { icon, iSearch, iInput, iSelect, iCard, iButton, iPagination, iMessage } from "rise"
-import logButton from "@/views/partsign/editordetail/components/logButton"
+import logButton from "@/components/logButton"
 import tableList from "@/views/partsign/editordetail/components/tableList";
 import { tableTitle, queryForm } from "./components/data"
 import filters from "@/utils/filters"

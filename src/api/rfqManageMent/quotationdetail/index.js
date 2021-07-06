@@ -1,10 +1,10 @@
 /*
  * @Author: ldh
  * @Date: 2021-04-26 17:27:20
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-06-21 11:14:27
+ * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-07-01 17:59:48
  * @Description: In User Settings Edit
- * @FilePath: \front-supplier\src\api\rfqManageMent\quotationdetail\index.js
+ * @FilePath: \front-web\src\api\rfqManageMent\quotationdetail\index.js
  */
 import axios from '@/utils/axios'
 import axiosFile from '@/utils/axios.download'
@@ -369,5 +369,23 @@ export function cancelQuoteBatchPrice(params) {
   return requst({
     url: `/part/cancelQuoteBatchPrice/${ params.quotationId }?supplierId=${supplierId()}`,
     method: 'PATCH',
+  })
+}
+
+// DB零件-报价分析列表
+export function getCostSummaryDB(params) {
+  return requst({
+    url: '/cost/getCostSummary',
+    method: 'POST',
+    data: params
+  })
+}
+
+// DB零件-报价分析列表修改
+export function updateCostSummaryDB(params) {
+  return requst({
+    url: '/cost/updateCostSummary',
+    method: 'POST',
+    data: params
   })
 }

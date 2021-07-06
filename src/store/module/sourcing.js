@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-06-16 15:25:24
- * @LastEditTime: 2021-06-30 11:04:37
+ * @LastEditTime: 2021-07-02 18:40:12
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\store\module\sourcing.js
@@ -30,7 +30,7 @@ const state = {
     },
     {
       value: 3,
-      name: "配件需求签收",
+      name: "配件签收",
       message: 0,
       url: "/sourcing/signforpartsdemand",
       activePath: "signforpartsdemand",
@@ -38,7 +38,7 @@ const state = {
     },
     {
       value: 4,
-      name: "配件综合管理",
+      name: "配件管理",
       message: 0,
       url: "/sourcing/integratedmanage",
       activePath: "integratedmanage",
@@ -46,7 +46,7 @@ const state = {
     },
     {
       value: 5,
-      name: "附件需求导入",
+      name: "附件导入",
       message: 0,
       url: "/sourcing/importfiles",
       activePath: "importfiles",
@@ -54,7 +54,7 @@ const state = {
     },
     {
       value: 6,
-      name: "附件综合管理",
+      name: "附件管理",
       message: 0,
       url: "/sourcing/filemanage",
       activePath: "filemanage",
@@ -76,22 +76,22 @@ const state = {
       activePath: "partsnomination",
       key: "LK_DINGDIANGUANLI"
     },
-    // {
-    //   value: 9,
-    //   name: "钢材需求创建",
-    //   message: 0,
-    //   url: "/sourcing/steeldemandcreation",
-    //   activePath: "steeldemandcreation",
-    //   key: "GANGCAIXUQIUCHUANGJIAN"
-    // },
-    // {
-    //   value: 9,
-    //   name: "定点信 / LOI",
-    //   message: 0,
-    //   url: "/sourcing/partsletter",
-    //   activePath: "partsletter",
-    //   key: "LK_DINGDIANXINLOI"
-    // },
+    {
+      value: 9,
+      name: "钢材创建",
+      message: 0,
+      url: "/sourcing/steeldemandcreation",
+      activePath: "steeldemandcreation",
+      key: "GANGCAIXUQIUCHUANGJIAN"
+    },
+    {
+      value: 10,
+      name: "定点信/LOI",
+      message: 0,
+      url: "/sourcing/partsletter",
+      activePath: "partsletter",
+      key: "LK_DINGDIANXINLOI"
+    },
   ],
   navListLeft:[
     {
@@ -101,6 +101,14 @@ const state = {
       url: "/sourcing/partsign",
       activePath: "sourcing",
       key: "XUANYUANCAIDAN"
+    },
+    {
+      value: 2,
+      name: '财务目标价管理',
+      key: 'CAIWUMUBIAOJIAGUANLI',
+      url: '/financialtargetprice',
+      activePath: 'financialtargetprice',
+      message: 0
     }
   ]
 }

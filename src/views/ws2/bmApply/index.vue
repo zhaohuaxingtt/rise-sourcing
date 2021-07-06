@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="page-head">
-      <div class="page-head-flex" :class="tableIndex === 0 ? 'head-on' : ''" @click="selectHeadTable(0)">
+      <div v-permission="TOOLING_BUDGET_BMAPPLICATION_ALL" class="page-head-flex" :class="tableIndex === 0 ? 'head-on' : ''" @click="selectHeadTable(0)">
         <div class="line-divL line-div">
           <div class="title">All</div>
           <div class="describe">{{$t('LK_ALLBMAPPLY')}}</div>
@@ -11,7 +11,7 @@
           <icon v-else symbol name="iconsuoyouBAshenqingweixuanzhong" class="openIcon"></icon>
         </div>
       </div>
-      <div class="page-head-flex" :class="tableIndex === 1 ? 'head-on' : ''" @click="selectHeadTable(1)">
+      <div v-permission="TOOLING_BUDGET_BMAPPLICATION_TOBECONFIRMED" class="page-head-flex" :class="tableIndex === 1 ? 'head-on' : ''" @click="selectHeadTable(1)">
         <div class="line-divL line-div">
           <div class="title">{{tableCount.watiConfirmCount}}</div>
           <div class="describe">{{$t('LK_DAIQUERENBMDAN')}}</div>
@@ -21,7 +21,7 @@
           <icon v-else symbol name="icondaiquerenBAshenqingzhuijiajineweixuanzhong" class="openIcon"></icon>
         </div>
       </div>
-      <div class="page-head-flex" :class="tableIndex === 2 ? 'head-on' : ''" @click="selectHeadTable(2)">
+      <div v-permission="TOOLING_BUDGET_BMAPPLICATION_AEKOINCREASE" class="page-head-flex" :class="tableIndex === 2 ? 'head-on' : ''" @click="selectHeadTable(2)">
         <div class="line-divL line-div">
           <div class="title">{{tableCount.aekoAddCount}}</div>
           <div class="describe">{{$t('LK_AEKOZENGZHIBMDAN')}}</div>
@@ -31,7 +31,7 @@
           <icon v-else symbol name="iconAekozengzhiBMdanweixuanzhong" class="openIcon"></icon>
         </div>
       </div>
-      <div class="page-head-flex" :class="tableIndex === 3 ? 'head-on' : ''" @click="selectHeadTable(3)">
+      <div v-permission="TOOLING_BUDGET_BMAPPLICATION_AEKOREDUCE" class="page-head-flex" :class="tableIndex === 3 ? 'head-on' : ''" @click="selectHeadTable(3)">
         <div class="line-divL line-div">
           <div class="title">{{tableCount.aekoMinusCount}}</div>
           <div class="describe">{{$t('LK_AEKOJIANZHIBMDAN')}}</div>
@@ -45,29 +45,29 @@
 
     <!-- 所有BM申请单 -->
     <template v-if="tableIndex === 0">
-      <div>
+      <div v-permission="TOOLING_BUDGET_BMAPPLICATION_ALL">
         <AllBmListBlock @openBMDetail="openBMDetail" :refresh="refresh" />
       </div>
     </template>
 
     <!-- 待确认BM单 -->
     <template v-if="tableIndex === 1">
-      <div>
-        <ToBeConfirmed @openBMDetail="openBMDetail" :refresh="refresh" />
+      <div v-permission="TOOLING_BUDGET_BMAPPLICATION_TOBECONFIRMED">
+        <ToBeConfirmed @updateTable="updateTable" @openBMDetail="openBMDetail" :refresh="refresh" />
       </div>
     </template>
 
     <!-- Aeko增值金额 -->
     <template v-if="tableIndex === 2">
-      <div>
-        <IncrementBlock @openBMDetail="openBMDetail" :refresh="refresh" />
+      <div v-permission="TOOLING_BUDGET_BMAPPLICATION_AEKOINCREASE">
+        <IncrementBlock @updateTable="updateTable" @openBMDetail="openBMDetail" :refresh="refresh" />
       </div>
     </template>
 
     <!-- Aeko减值BM单 -->
     <template v-if="tableIndex === 3">
-      <div>
-        <ImpairmentBlock @openBMDetail="openBMDetail" :refresh="refresh" />
+      <div v-permission="TOOLING_BUDGET_BMAPPLICATION_AEKOREDUCE">
+        <ImpairmentBlock @updateTable="updateTable" @openBMDetail="openBMDetail" :refresh="refresh" />
       </div>
     </template>
 
@@ -85,13 +85,21 @@
               <div class="txt">
                 <span>{{ $t('LK_BMDANLIUSHUIHAO') }}</span><!-- BM单流水号 -->
               </div>
-              <div class="disabled">{{detailObj.bmNum}}</div>
+              <div class="disabled">{{detailObj.bmSerial}}</div>
             </div>
             <div class="item">
               <div class="txt">
                 <span>{{ $t('LK_CHEXINGXIANGMU') }}</span><!-- 车型项目 -->
               </div>
-              <div class="disabled">{{fromGroupName}}</div>
+              <iSelect v-if="isCarTypeList" v-model="detailObj.tmCartypeProId" class="input" :placeholder="$t('LK_QINGXUANZE')">
+                <el-option
+                    :value="item.tmCartypeProId"
+                    :label="item.tmCartypeProName"
+                    v-for="(item, index) in fromGroup"
+                    :key="index"
+                ></el-option>
+              </iSelect>
+              <div v-else class="disabled">{{fromGroupName}}</div>
             </div>
             <div class="item">
               <div class="txt">
@@ -124,13 +132,13 @@
               <div class="txt required">
                 <span>{{ $t('LK_CHENGBENKONGZHIYU') }}</span><!-- 成本控制域 -->
               </div>
-              <iInput v-model="detailObj.costControlDomain" class="input" :placeholder="$t('LK_QINGSHURU')"></iInput>
+              <iInput type="number" v-model="detailObj.costControlDomain" class="input" :placeholder="$t('LK_QINGSHURU')"></iInput>
             </div>
             <div class="item">
               <div class="txt required">
                 <span>{{ $t('LK_ZONGZHANGKEMU') }}</span><!-- 总账科目 -->
               </div>
-              <iInput v-model="detailObj.generalLedger" class="input" :placeholder="$t('LK_QINGSHURU')"></iInput>
+              <iInput type="number" v-model="detailObj.generalLedger" class="input" :placeholder="$t('LK_QINGSHURU')"></iInput>
             </div>
           </div>
 
@@ -158,7 +166,7 @@
               <div class="txt">
                 <span>{{ $t('costanalysismanage.GongYingShang') }}</span><!-- 供应商 -->
               </div>
-              <div class="disabled">{{detailObj.designatedSupplierId}}</div>
+              <div class="disabled">{{detailObj.designatedSupplierName}}</div>
             </div>
             <div class="item">
               <div class="txt">
@@ -203,7 +211,7 @@
               <div class="txt">
                 <span>{{$t('LK_SHENQINGREN')}}</span><!-- 申请人 -->
               </div>
-              <div class="disabled">{{detailObj.applyPersonId}}</div>
+              <div class="disabled">{{detailObj.applyPersonName}}</div>
             </div>
           </div>
 
@@ -289,7 +297,9 @@
           :tableLoading="allTableLoading"
           :selection="false"
         >
-          
+          <template #partsFs="scope">
+            <div @click="jumpDetails(scope)" class="table-link">{{scope.row.partsFs}}</div>
+          </template>
         </iTableList>
       </template>
     </BmPopup>
@@ -322,6 +332,7 @@ import ToBeConfirmed from "./components/toBeConfirmed";
 import IncrementBlock from "./components/incrementBlock";
 import ImpairmentBlock from "./components/impairmentBlock";
 import { getTousandNum } from "@/utils/tool";
+import store from '@/store';
 
 
 export default {
@@ -352,18 +363,40 @@ export default {
       bmNumber: '',
       getTousandNum,
       fromGroupName: '',
+      isCarTypeList: true,
     }
   },
 
   created(){
+    const key = store.state.permission.whiteBtnList['TOOLING_BUDGET_BMAPPLICATION_SELECT'];  //  车型下拉列表
     this.bmTableCount();  //  获取table数量
+    this.isCarTypeList = key ? true : false;
   },
 
   methods: {
 
+    updateTable(){
+      this.bmTableCount();  //  获取table数量
+    },
+
+    jumpDetails(scope){
+      const query = {
+        ...scope,
+        partNum: scope.behalfPartsNum
+      }
+      this.$router.push({
+        path: "/sourcing/partsprocure/editordetail",
+        query: {
+          item: JSON.stringify(query),
+        },
+      });
+    },
+
+
     //  保存
     save(){
       const { wbsCode, costControlDomain, generalLedger, procureGroup	 } = this.detailObj;
+      // console.log('wbsCode, costControlDomain, generalLedger, procureGroup', !wbsCode, costControlDomain, generalLedger, procureGroup)
       if(!wbsCode && !costControlDomain && !generalLedger && !procureGroup){
         return iMessage.warn(this.$t('LK_BMAPPLYBAOCUNMSG'));
       }
@@ -401,11 +434,15 @@ export default {
         const result2 = this.$i18n.locale === 'zh' ? res[2].desZh : res[2].desEn;
         const result3 = this.$i18n.locale === 'zh' ? res[3].desZh : res[3].desEn;
         const result4 = this.$i18n.locale === 'zh' ? res[4].desZh : res[4].desEn;
-        console.log('11111111111', res);
 
         if(res[0].data){
+          const date = new Date();
           this.detailObj = res[0].data;
           this.bmNumber = scope.bmSerial;
+
+          this.detailObj.deliveryDate === null ? 
+            this.detailObj.deliveryDate = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}` : 
+            this.detailObj.deliveryDate
         }else{
           iMessage.error(result0);
         }
@@ -417,7 +454,10 @@ export default {
         }
 
         if(res[2].data){
-          this.factoryList = res[2].data;
+          this.factoryList = res[2].data.map(item => ({
+            productionFactoryId: item.productionFactoryId,
+            productionFactoryName: `${item.productionFactoryId}-${item.productionFactoryName}`
+          }));
         }else{
           iMessage.error(result2);
         }
@@ -429,9 +469,12 @@ export default {
         }
 
         if(res[4].data){
+          
           this.fromGroup = res[4].data;
-          this.fromGroupName = res[4].data.filter(item => item.tmCartypeProId == res[0].data.tmCartypeProId)[0].tmCartypeProName;
-          console.log('this.fromGroupName', this.fromGroupName,res[4].data)
+          const arr = res[4].data.filter(item => item.tmCartypeProId == res[0].data.tmCartypeProId);
+          if(arr.lenght){
+            this.fromGroupName = arr[0].tmCartypeProName;
+          }
         }else{
           iMessage.error(result4);
         }
@@ -472,6 +515,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.table-link{
+  color: #1663F6;
+  text-decoration: underline;
+  font-family: Arial;
+  cursor: pointer;
+}
 .popup-form{
   border-bottom: 2px solid #E3E3E3;
   margin-bottom: 20px;
