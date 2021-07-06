@@ -124,7 +124,7 @@ export default {
       this.$emit('input', false)
     },
     save() {
-      if(this.tableListData.some(item => item.amount == 0 || item.amount === undefined || item.amount === null || item.amount === '')){
+      if(this.tableListData.some(item => item.amount === undefined || item.amount === null || item.amount === '')){
         iMessage.warn(`【${this.partNameZh}】并未进行预算分配！`);
         return
       }
