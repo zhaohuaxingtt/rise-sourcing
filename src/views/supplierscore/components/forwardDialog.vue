@@ -17,7 +17,7 @@
     <div class="body">
       <iFormGroup class="total margin-left20" :row="1" inline>
         <iFormItem class="item" :label="language('PINGFENREN', '评分人')">
-          <iSelect v-model="nominateType" filterable :loading="loading" :loading-text="language('JIAZAIZHONG', '加载中')">
+          <iSelect v-model="userId" filterable :loading="loading" :loading-text="language('JIAZAIZHONG', '加载中')" @change="handleChange">
             <el-option v-for="item in options" :key="item.key" :value="item.value" :label="item.label" />
           </iSelect>
         </iFormItem>
@@ -48,6 +48,7 @@ export default {
       if (nv) {
         this.getRater()
       } else {
+        this.userId = ""
         this.options = []
         this.userInfo = null
       }
@@ -68,6 +69,7 @@ export default {
       userInfo: null,
       loading: false,
       options: [],
+      userId: "",
       confirmLoading: false,
     }
   },

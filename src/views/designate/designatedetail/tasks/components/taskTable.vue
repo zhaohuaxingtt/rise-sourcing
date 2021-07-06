@@ -228,12 +228,8 @@ export default {
       Vue.set(row, 'isPresent', state)
     },
     async save() {
-      if (!this.selectedData.length) {
-        iMessage.error(this.language('nominationSuggestion_QingXuanZeZhiShaoYiTiaoShuJu','请选择至少一条数据'))
-        return
-      }
       const data = {
-        items: this.selectedData.map(o => {
+        items: this.data.map(o => {
           // const status = this.taskStatus.find(item => item.key === o.isFinishFlag) || {}
           return {
             id: o.id,
