@@ -1381,6 +1381,11 @@
             'DANJIA': '单价', //单价
             'YUANJIAN': '（元/件）', //（元/件）
             'BAOGAO': '报告', //报告
+            'JIHUAZHONGCHANLIANG': '计划总产量', //计划总产量
+            'YUJIZONGCHANLIANG': '预计总产量', //预计总产量
+            'GUDINGCHENGBEN': '固定成本', //固定成本
+            'ZONGJIANGJIA': '总降价', //总降价
+            'JIANGJIA': '降价', //降价
         },
     }
     var xmlHttp = ''
