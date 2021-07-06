@@ -424,6 +424,7 @@ export default {
                     },
                     itemStyle: {
                       normal: {
+                        label: false,
                         barBorderRadius: [0, 0, 0, 0],
                         color: function (params) {
                           let colorlist = ['#1763F7', '#73A1FA', '#B0C5F5', '#CEE1FF'];
@@ -443,6 +444,7 @@ export default {
                     },
                     itemStyle: {
                       normal: {
+                        label: false,
                         barBorderRadius: [5, 5, 0, 0],
                         color: function (params) {
                           let colorlist = ['#55C2D0','#87D4DE','#BBE7EC','#D4F8F7'];
@@ -704,6 +706,7 @@ export default {
                       },
                       itemStyle: {
                         normal: {
+                          label: false,
                           barBorderRadius: [0, 0, 0, 0],
                           color: function (params) {
                             let colorlist = ['#1763F7', '#73A1FA', '#B0C5F5', '#CEE1FF'];
@@ -723,6 +726,7 @@ export default {
                       },
                       itemStyle: {
                         normal: {
+                           label: false,
                           barBorderRadius: [5, 5, 0, 0],
                           color: function (params) {
                             let colorlist = ['#55C2D0','#87D4DE','#BBE7EC','#D4F8F7'];
