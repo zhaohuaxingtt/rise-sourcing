@@ -50,7 +50,7 @@
 
     <!--图形-->
     <div class="chartBox">
-      <iCard class="curveBox" :title="'Volume Pricin' + $t('TPZS.QUXIAN')">
+      <iCard class="curveBox" :title="'Volume Pricing' + $t('TPZS.QUXIAN')">
         <curveChart
             chartHeight="260px"
             :newestScatterData="curveChartData.newestScatterData"

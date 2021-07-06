@@ -8,9 +8,9 @@
 <template>
   <div>
     <enterSpecificAnalysisToolsDialog @getDataList='getDataList' v-model="viewModelDialog" />
-    <el-row class="margin-top30">
+    <el-row :gutter="16" class="margin-top30">
       <el-col v-for="(item,index) in cardData" :key="index" :span="12">
-        <card :class="index%2===0&&'margin-right20'" @click.native="$emit('entrance',item.title)" :cardData="item" />
+        <card @click.native="$emit('entrance',item.title)" :cardData="item" />
       </el-col>
     </el-row>
   </div>

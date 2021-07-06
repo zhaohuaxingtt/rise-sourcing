@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 10:50:38
- * @LastEditTime: 2021-07-01 10:05:25
+ * @LastEditTime: 2021-07-05 16:08:35
  * @LastEditors: Please set LastEditors
  * @Description: 费用详情
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails.vue
@@ -11,9 +11,16 @@
     <iCard>
       <template v-slot:header>
         <div class="flex-between-center titleBox">
-          <div>
-            <span>费用详情</span>
-            <span v-if="remark" class="margin-left40">{{ remark }}</span>
+          <div class="flex-between-center">
+            <span class="title">费用详情</span>
+            <div class="wrap">
+              <span v-if="remark" class="margin-left40 remark">{{
+                remark
+              }}</span>
+              <span v-if="remark" class="margin-left40 remark2"
+                >备注：{{ remark }}</span
+              >
+            </div>
           </div>
           <div>
             <iButton v-show="flag" @click="open">全部展开</iButton>
@@ -21,20 +28,17 @@
             <iButton @click="remarks">备注</iButton>
             <iButton>还原</iButton>
             <iButton @click="group">数据分组</iButton>
-            <iButton>导出</iButton>
+            <iButton @click="down">导出</iButton>
           </div>
         </div>
       </template>
-      <table1
-        :tableList="groupby ? groupList : tableList"
-        v-if="totalTable"
-      ></table1>
-      <groupedTable
+      <table1 :tableList="tableList" v-if="totalTable"></table1>
+      <!-- <groupedTable
         class="margin-top20"
         :tableList="groupList"
         v-if="!totalTable"
         @groupBy="groupBtn"
-      ></groupedTable>
+      ></groupedTable> -->
       <iDialog :visible.sync="visible1" title="分组至" width="20%">
         <el-form>
           <el-form-item label="选择组">
@@ -70,17 +74,17 @@
         @cancel="cancel"
       ></remarkDialog>
     </iCard>
-    <ungroupedTable
+    <!-- <ungroupedTable
       class="margin-top20"
       :tableList="ungroupList"
       v-if="groupby"
       @groupBy="groupBtn"
-    ></ungroupedTable>
+    ></ungroupedTable> -->
   </div>
 </template>
 
 <script>
-import { iCard, iButton, iDialog } from "rise";
+import { iCard, iButton, iDialog, iMessage } from "rise";
 import table1 from "./components/table1.vue";
 import table2 from "./components/table2.vue";
 import table3 from "./components/table3.vue";
@@ -90,8 +94,12 @@ import table6 from "./components/table6.vue";
 import remarkDialog from "./components/remarkDialog.vue";
 import ungroupedTable from "@/views/partsrfq/bob/bobAnalysis/ungroupedTable.vue";
 import groupedTable from "@/views/partsrfq/bob/bobAnalysis/groupedTable.vue";
-import { chargeRetrieve } from "@/api/partsrfq/bob";
-
+import {
+  chargeRetrieve,
+  getRfqToRemark,
+  modifyRfqToRemark,
+  down,
+} from "@/api/partsrfq/bob";
 import { tableList, ungroupList, groupList } from "./components/data.js";
 
 export default {
@@ -100,15 +108,15 @@ export default {
     iDialog,
     iButton,
     table1,
-    ungroupedTable,
-    groupedTable,
+    // ungroupedTable,
+    // groupedTable,
     remarkDialog,
   },
   data() {
     return {
       flag: true,
       flag1: false,
-      tableList,
+      tableList: {},
       ungroupList,
       groupList,
       expends: [],
@@ -120,19 +128,37 @@ export default {
       value: "",
     };
   },
+  created() {
+    this.rfqCode = this.$route.query.rfqId;
+
+    this.getRfqToRemark();
+  },
   mounted() {
     this.$nextTick(() => {
-      this.open();
       this.chargeRetrieve();
+      this.open();
     });
   },
   methods: {
+    getRfqToRemark() {
+      getRfqToRemark({
+        rfqCode: this.rfqCode,
+      }).then((res) => {
+        if (res) {
+          if (res.data) {
+            this.remark = res.data.remark;
+          }
+        }
+      });
+    },
     chargeRetrieve() {
       chargeRetrieve({
         schemaId: 5,
         viewType: "all",
       })
-        .then((res) => {})
+        .then((res) => {
+          this.tableList = res;
+        })
         .catch((err) => {});
     },
     open() {
@@ -181,6 +207,10 @@ export default {
     sure(val, flag) {
       this.visible = flag;
       this.remark = val;
+      modifyRfqToRemark({
+        remark: this.remark,
+        rfqCode: this.rfqCode,
+      }).then(() => iMessage.success("备注成功"));
     },
     // 递归获取checked属性方法
     getTreeExpandKeys(obj) {
@@ -208,6 +238,13 @@ export default {
     handleChange(value) {
       console.log(value);
     },
+    down() {
+      // window.open('http://10.160.137.32:8036/aon/web/aon/bobRoundDetail/down?schemaId=5')
+      // window.location.href="/aonApi/aon/web/aon/bobRoundDetail/down?schemaId=5"
+      down({
+        schemaId: 5,
+      }).then((res) => {});
+    },
   },
 };
 </script>
@@ -216,5 +253,38 @@ export default {
 // .titleBox {
 //   width: 100%;
 //   font-weight: bold;
+//   font-size: $font-size18 ;
 // }
+.wrap {
+  width: 100px;
+  position: relative;
+}
+.title {
+  font-size: $font-size18 !important;
+}
+.remark {
+  font-size: $font-size14 !important;
+  font-weight: normal;
+  color: #949494;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.remark2 {
+  font-size: $font-size14 !important;
+  font-weight: normal;
+  color: #949494;
+  position: absolute;
+  top: -40px;
+  left: 40px;
+  width: 400px;
+  padding: 10px;
+  box-shadow: 0px 3px 10px rgba(27, 29, 33, 0.16);
+  border-radius: 5px;
+  background: #ffffff;
+  display: none;
+}
+.wrap:hover .remark2 {
+  display: block;
+}
 </style>

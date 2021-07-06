@@ -1,15 +1,15 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-07-03 19:01:39
- * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-07-06 09:29:45
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\utils\axios.js
  */
 import { iMessage } from 'rise';
 import {getToken,removeToken,setToken,setRefreshToken} from '@/utils'
 import store from '@/store'
- export default function httpRequest(baseUrl='',timeOut=15000) {
+ export default function httpRequest(baseUrl='',timeOut=65000) {
     // eslint-disable-next-line no-undef
     const instance = axios.create({
       baseURL:baseUrl,

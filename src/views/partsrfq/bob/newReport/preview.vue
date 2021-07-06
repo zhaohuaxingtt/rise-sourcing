@@ -3,7 +3,7 @@
     :title="reportName"
     :visible.sync="value"
     width="95%"
-    @close="clearDiolog"
+    @close="closeDialog"
     @opened="open"
   >
     <iCard :collapse="false" id="downloadRef">
@@ -150,7 +150,8 @@ export default {
       this.value = true;
     },
     closeDialog(val) {
-      this.value = val;
+      this.$emit('closeDialog', false);
+      // this.value = val;
     },
     sure() {},
     handleDownload() {
