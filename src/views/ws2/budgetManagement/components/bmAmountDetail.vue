@@ -81,6 +81,7 @@ export default {
         size: this.page.pageSize,
         tmCartypeProId: this.moneyComponentParams.tmCartypeProId,
         tmCategoryId: this.moneyComponentParams.tmCategoryId,
+        nomiType: 'JV',
       }).then((res) => {
         const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
         if (Number(res.code) === 0) {

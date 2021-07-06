@@ -64,11 +64,10 @@
             {{ language("nominationLanguage_ShanChu", '删除') }}
           </iButton>
           <iButton
-            @click="openPage"
-            :loading="startLoding"
+            @click="consistenceCheck"
           >
             {{ language("nominationLanguage_TiJiaoYiZhiXingJiaoYan", '提交一致性校验') }}
-          </iButton>
+          </iButton>        
         </div>
       </div>
       <tablelist
@@ -105,9 +104,9 @@
       </template>
       
       <!-- 一致性校验 -->
-      <!-- <template #isPriceConsistent="scope">
-        <span>{{scope.row.isPriceConsistent ? '通过' : '不通过'}}</span>
-      </template> -->
+      <template #isPriceConsistent="scope">
+        <span>{{scope.row.isPriceConsistent === null ? '' : (scope.row.isPriceConsistent ? '通过' : '不通过')}}</span>
+      </template>
       <!-- SEL单据确认状态 -->
       <template #selStatus="scope">
         <div>
@@ -165,7 +164,8 @@ import {
   nominateConfirm,
   getCarTypePro,
   rsFrozen,
-  rsUnFrozen
+  rsUnFrozen,
+  consistenceCheck
 } from '@/api/designate/nomination'
 // 前端配置文件里面的定点类型
 // import { applyType } from '@/layout/nomination/components/data'
@@ -192,6 +192,7 @@ export default {
       selectTableData: [],
       startLoding: false,
       carTypeList: [],
+      // 定点管理员上传sel状态待确认的sel附件列表
       selNominateId: '',
       selDialogVisibal: false
     }
@@ -403,6 +404,31 @@ export default {
         } catch(e) {
           iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
         }
+      }
+    },
+    // 提交一致性校验
+    async consistenceCheck(){
+      const {selectTableData} = this;
+      if(!selectTableData.length){
+        iMessage.warn(this.language('nominationSuggestion_QingXuanZeZhiShaoYiTiaoShuJu','请选择至少一条数据'));
+      }else{
+        const confirmInfo = await this.$confirm(this.language('LK_NINQUEDINGZHIXINGYIZHIXINGJIAOYANMA','您确定执行一致性校验吗？'));
+        if (confirmInfo !== 'confirm') return;
+        const nominateIdArr = selectTableData.map((item)=>Number(item.id));
+        const data = {
+          nominateIdArr,
+        };
+        consistenceCheck(data).then((res)=>{
+          const { code } = res;
+          if(code == 200){
+            iMessage.success(this.language('LK_CAOZUOCHENGGONG', '操作成功'));
+            this.getFetchData()
+          }else{
+            iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+          }
+        }).catch((e)=>{
+          iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
+        })
       }
     },
     // sel附件列表弹窗

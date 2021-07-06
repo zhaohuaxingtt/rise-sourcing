@@ -60,7 +60,7 @@
 
 <script>
 import { iPage, iButton, icon, iCard, iPagination, iMessage } from "rise"
-import logButton from "@/views/partsign/editordetail/components/logButton"
+import logButton from "@/components/logButton"
 import uploadButton from "../uploadButton"
 import tableList from "@/views/partsign/editordetail/components/tableList"
 import { tableTitle } from "./components/data"

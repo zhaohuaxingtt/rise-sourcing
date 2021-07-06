@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-26 21:04:49
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-29 09:50:44
+ * @LastEditTime: 2021-07-03 12:20:31
  * @Description: 定点-审批人&审批记录
  * @FilePath: \front-web\src\views\designate\approvalPersonAndRecord\index.vue
 -->
@@ -132,14 +132,12 @@ export default {
         iMessage.warn('请选择需要删除的行')
         return
       }
-      console.log(this.selectItems)
       this.tableDataTemp = this.tableDataTemp.map(item => {
         return {
           ...item,
           isDelete: this.selectItems.includes(item) ? true : item.isDelete
         }
       })
-      console.log(this.tableDataTemp)
     },
     /**
      * @Description: 新增操作
@@ -185,16 +183,16 @@ export default {
     getTableList() {
       this.tableLoading = true
       //this.$route.query.desinateId 
-      getApprovalNode('50003203').then(res => {
+      getApprovalNode(this.$route.query.desinateId).then(res => {
         if (res?.result) {
-          this.tableDataTemp = cloneDeep(res.data.nomiApprovalProcessNodeVOList.map(item => {
+          this.tableDataTemp = cloneDeep(res.data.nomiApprovalProcessNodeVOList?.map(item => {
             return {
               ...item,
               deptOptions: this.parentDeptOptions,
               deptSubOptions: []
             }
           }))
-          this.processInstanceId = res.data.nominateAppVo.processInstanceId
+          this.processInstanceId = res.data.nominateAppVo?.processInstanceId
           console.log(this.tableDataTemp)
         } else {
           iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
@@ -269,7 +267,7 @@ export default {
             return true
           }
         }).map(item => omit(item, ['deptOptions','deptSubOptions'])),
-        nominateAppId: '50003203' //this.$route.query.desinateId
+        nominateAppId: this.$route.query.desinateId //this.$route.query.desinateId
       }
       console.log(params)
       updateApprovalNode(params).then(res => {

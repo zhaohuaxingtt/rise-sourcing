@@ -63,3 +63,26 @@ export const sortTableData = [
     {key:'MTZ',name:'MTZ',visible: true, sort: 13},
     {key:'Attachment',name:'Attachment',visible: true, sort: 14},
 ]
+
+// 上会选择弹窗
+export const mettingTableTitle = [
+    {props:'meetingName',name:'会议名称',key: 'HUIYIMINGCHENG',tooltip:false},
+    {props:'meetingType',name:'会议类型',key: 'HUIYILEIXING',tooltip:false},
+    {props:'startDate',name:'开始日期',key: 'LK_KAISHISHIJIAN',tooltip:false},
+    {props:'startTime',name:'开始时间',key: 'NOMI_KAISHISHIJIAN',tooltip:false},
+    {props:'meetingSite',name:'会议地点',key: 'NOMI_METTINGADDRESS',tooltip:false},
+  ]
+// 选择会议类型
+export const meetingTypes = [
+    {id:'CSC',name:'CSC',key:'CSC'},
+    {id:'PRECSC',name:'PRECSC',key:'PRECSC'},
+]
+// 会议类型
+export const meetingResult = [
+    {id:'CLOSE',name:'关闭',key:'LK_GUANBI'},
+    {id:'WAIT',name:'等待',key:'LK_DENGDAI'},
+    {id:'NEXT',name:'下次Pre CSC',key:'XIACIPRECSC'},
+    {id:'TO_TER',name:'转TER/TO-TER',key:'TERORTOTER'},
+    {id:'LOI',name:'发LOI',key:'SENDLOI'},
+    {id:'PASS',name:'会议通过',key:'HUIYITONGGUO'},
+]

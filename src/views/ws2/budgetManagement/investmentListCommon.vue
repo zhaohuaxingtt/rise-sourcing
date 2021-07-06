@@ -67,9 +67,9 @@
                 placement="top-start"
                 trigger="hover">
               <div class="popoverDiv">
-                <p>{{ $t('LK_CAIGOUGONGCHANG') }}</p>
+                <p>{{ $t('生产工厂') }}</p>
               </div>
-              <label slot="reference">{{ $t('LK_CAIGOUGONGCHANG') }}:</label>
+              <label slot="reference">{{ $t('生产工厂') }}:</label>
             </Popover>
             <!--            <label :title="$t('LK_CAIGOUGONGCHANG')">{{ $t('LK_CAIGOUGONGCHANG') }}:</label>-->
             <span class="infoIcardValue">{{ form['search.purchasingFactory'] }}</span>
@@ -316,6 +316,7 @@ export default {
         }
         if (Number(res[4].code) === 0) {
           this.carTypeBudget = res[4].data.carTypeBudget
+          console.log(this.carTypeBudget)
         } else {
           iMessage.error(result4);
         }
@@ -327,7 +328,7 @@ export default {
     },
     findInvestmentList() {
       this.tableLoading = true
-      budgetMerge(50172104).then((res) => {
+      budgetMerge(this.params.id).then((res) => {
         const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
         if (Number(res.code) === 0) {
           let tableListData = []
@@ -353,11 +354,11 @@ export default {
       getInvestmentData({
         investmentVersionId: this.form['search.version'],
         carTypeId: this.params.id,
-        carType: this.params.sourceStatus
+        carType: this.params.sourceStatus,
+        nomiType: 'Common',
       }).then((res) => {
         const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
         if (Number(res.code) === 0) {
-          console.log(1)
           this.form['search.carTypeName'] = res.data.carTypeName
           this.form['search.sopDate'] = res.data.sopDate
           this.form['search.purchasingFactory'] = res.data.purchasingFactory ? res.data.purchasingFactory.join('') : ''
@@ -380,19 +381,19 @@ export default {
             const chart2 = echarts().init(document.getElementById("chart2"));
             const chart3 = echarts().init(document.getElementById("chart3"));
             const chart4 = echarts().init(document.getElementById("chart4"));
-            let option1 = {
+             console.log(this.carTypeBudget)
+
+             let option1 = {
               // tooltip: {
-              //   formatter: function (params) {//这里就是控制显示的样式
-              //     if (params.seriesIndex == 0) {
-              //       return Number((contingency / totalValue) * 100).toFixed(2) + '%'
-              //     } else if (params.seriesIndex == 1) {
-              //       return Number((aekoValue / totalValue) * 100).toFixed(2) + '%'
-              //     } else if (params.seriesIndex == 2) {
-              //       return Number((notAekoValue / totalValue) * 100).toFixed(2) + '%'
-              //     }
-              //   },
-              //   backgroundColor: '#ffffff',
-              //   extraCssText: 'color: #1B1D21; box-shadow: 0px 0px 20px rgba(27, 29, 33, 0.12);'
+                // formatter: function (params) {//这里就是控制显示的样式
+                //   if (params.dataIndex == 0) {
+                //     return 'JV Sourcing'
+                //   } else if (params.dataIndex == 1) {
+                //     return 'Commom Sourcing'
+                //   }
+                // },
+                // backgroundColor: '#ffffff',
+                // extraCssText: 'color: #1B1D21; box-shadow: 0px 0px 20px rgba(27, 29, 33, 0.12);'
               // },
               grid: {
                 left: '0%',
@@ -527,7 +528,7 @@ export default {
                 axisLabel: {
                   textStyle: {
                     color: '#485465',
-                    fontSize: 10
+                    fontSize: 9
                   },
                 },
               },
@@ -846,7 +847,7 @@ export default {
               ]
             }
             option2.series[option2.series.length - 1].label.formatter = totalValue
-            option1.series[option1.series.length - 1].label.formatter = totalValue + this.carTypeBudget
+            option1.series[option1.series.length - 1].label.formatter = Number(totalValue + this.carTypeBudget).toFixed(2)
             chart1.setOption(option1);
             chart2.setOption(option2);
             chart3.setOption(option3);

@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-22 09:12:31
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-25 16:59:17
+ * @LastEditTime: 2021-07-03 16:11:10
  * @Description: 财务目标价-目标价维护
  * @FilePath: \front-web\src\views\financialTargetPrice\maintenance\index.vue
 -->
@@ -13,19 +13,19 @@
     <!----------------------------------------------------------------->
     <!---------------------------搜索区域------------------------------->
     <!----------------------------------------------------------------->
-    <iSearch @sure="getTableList" @reset="reset">
+    <iSearch @sure="sure" @reset="reset">
       <el-form>
-        <el-form-item v-for="(item, index) in searchList" :key="index" :label="item.label">
+        <el-form-item v-for="(item, index) in searchList" :key="index" :label="language(item.i18n_label, item.label)">
           <iSelect v-if="item.type === 'select'" v-model="searchParams[item.value]">
-            <el-option value="" :label="$t('all')"></el-option>
+            <el-option value="" :label="language('ALL','全部')"></el-option>
             <el-option
               v-for="item in selectOptions[item.selectOption] || []"
               :key="item.code"
               :label="item.name"
-              :value="item.code">
+              :value="item.selectOption === 'LINIE' ? item.name : item.code">
             </el-option>
           </iSelect> 
-          <iDatePicker v-else-if="item.type === 'dateRange'" value-format="" type="daterange" v-model="searchParams[item.value]"></iDatePicker>
+          <iDatePicker v-else-if="item.type === 'dateRange'" type="daterange" value-format="" v-model="searchParams[item.value]" :default-time="['00:00:00', '23:59:59']"></iDatePicker>
           <iInput v-else v-model="searchParams[item.value]"></iInput> 
         </el-form-item>
       </el-form>
@@ -38,13 +38,13 @@
         <span class="font18 font-weight"></span>
         <div class="floatright">
           <!--------------------保存按钮----------------------------------->
-          <iButton v-if="!isEdit" @click="changeEdit(true)">编辑</iButton>
+          <iButton v-if="!isEdit" @click="changeEdit(true)">{{language('BIANJI','编辑')}}</iButton>
           <!--------------------保存按钮----------------------------------->
-          <iButton v-if="isEdit" @click="handleSave" :loading="signLoading">保存</iButton>
+          <iButton v-if="isEdit" @click="handleSave" :loading="signLoading">{{language('BAOCUN','保存')}}</iButton>
           <!--------------------取消按钮----------------------------------->
-          <iButton v-if="isEdit" @click="handleCancel" >取消</iButton>
+          <iButton v-if="isEdit" @click="handleCancel" >{{language('QUXIAO','取消')}}</iButton>
           <!--------------------导出批量维护按钮----------------------------------->
-          <iButton @click="handleExport" >导出批量维护</iButton>
+          <iButton @click="handleExport" :loading="exportLoading" >{{language('DAOCHUPILIANGWEIHU','导出批量维护')}}</iButton>
           <!--------------------导入批量维护按钮----------------------------------->
           <el-upload
             class=" margin-left10 margin-right10"
@@ -53,10 +53,10 @@
             style="display:inline-block;"
             :show-file-list='false'
             :on-progress='()=>{uploadLoading=true}'
-            :on-error='()=>{uploadLoading=false;iMessage.error("上传失败！")}'
+            :on-error='fileError'
             :on-success='fileSuccess'
           >
-            <iButton :loading='uploadLoading'>导入批量维护</iButton>
+            <iButton :loading='uploadLoading'>{{language('DAORUPILIANGWEIHU','导入批量维护')}}</iButton>
           </el-upload>
         </div>
       </div>
@@ -74,6 +74,7 @@
         @openAttachmentDialog="openAttachmentDialog"
         @openApprovalDialog="openApprovalDialog"
         @openEditdetail="openEditdetail"
+        :selectedItems="selectItems"
       >
       </tableList>
       <!------------------------------------------------------------------------>
@@ -89,20 +90,20 @@
     <!------------------------------------------------------------------------>
     <!--                  修改记录弹窗                                      --->
     <!------------------------------------------------------------------------>
-    <modificationRecordDialog :dialogVisible="updateDialogVisible" @changeVisible="changeUpdateDialogVisible" />
+    <modificationRecordDialog :dialogVisible="updateDialogVisible" @changeVisible="changeUpdateDialogVisible" :id="applyId" />
     <!------------------------------------------------------------------------>
     <!--                  附件弹窗                                      --->
     <!------------------------------------------------------------------------>
-    <attachmentDialog :dialogVisible="attachmentDialogVisible" @changeVisible="changeAttachmentDialogVisible" />
+    <attachmentDialog :dialogVisible="attachmentDialogVisible" @changeVisible="changeAttachmentDialogVisible" :rfqNum="rfqId" />
     <!------------------------------------------------------------------------>
     <!--                  审批记录弹窗                                      --->
     <!------------------------------------------------------------------------>
-    <approvalRecordDialog :dialogVisible="approvalDialogVisible" @changeVisible="changeApprovalDialogVisible" />
+    <approvalRecordDialog :dialogVisible="approvalDialogVisible" @changeVisible="changeApprovalDialogVisible" :id="applyId" />
   </iPage>
 </template>
 
 <script>
-import { iPage, iCard, iPagination, iButton, iSelect, iDatePicker, iInput, iSearch } from 'rise'
+import { iPage, iCard, iPagination, iButton, iSelect, iDatePicker, iInput, iSearch, iMessage } from 'rise'
 import headerNav from '../components/headerNav'
 import { tableTitle, searchList } from './data'
 import { pageMixins } from "@/utils/pageMixins"
@@ -111,39 +112,135 @@ import modificationRecordDialog from './components/modificationRecord'
 import attachmentDialog from '@/views/costanalysismanage/components/home/components/downloadFiles/index'
 import approvalRecordDialog from './components/approvalRecord'
 import { dictkey } from "@/api/partsprocure/editordetail"
-import { getTargetPriceList } from "@/api/financialTargetPrice/index"
+import { getTargetPriceList, exportTargetPriceList, setPrice, getCFList, getPartStatus } from "@/api/financialTargetPrice/index"
+import { getDictByCode } from '@/api/dictionary'
+import {omit} from 'lodash'
+import moment from 'moment'
 export default {
   mixins: [pageMixins],
   components: {iPage,headerNav,iCard,tableList,iPagination,iButton,iSelect,iDatePicker,iInput,iSearch,modificationRecordDialog,attachmentDialog,approvalRecordDialog},
   data() {
     return {
       tableTitle: tableTitle,
-      tableData: [{partNum:'2342342',purchasePrjectId:'119',applyId:'1'}],
+      tableData: [],
       searchList: searchList,
-      searchParams: {},
+      searchParams: {
+        cfId: '',
+        applyStats: '',
+        partProjectType: '',
+        buyerId: '',
+        linieName: '',
+        partStatus: '',
+        carTypeName: '',
+        procureFactoryId: '',
+        applyType: ''
+      },
       isEdit: false,
       tableLoading: false,
       selectOptions: {},
       attachmentDialogVisible: false,
       updateDialogVisible: false,
       approvalDialogVisible: false,
-      uploadUrl: process.env.VUE_APP_SOURCING_MH,
+      uploadUrl: process.env.VUE_APP_SOURCING_ZDH,
+      recordId: '',
+      applyId: '',
+      rfqId: '',
+      selectItems: [],
+      uploadLoading: false,
+      exportLoading: false
     }
   },
   created() {
+    this.getDicts()
+    this.getCF()
+    this.getPartStatus()
     this.getProcureGroup()
     this.getTableList()
   },
   methods: {
+    getPartStatus() {
+      getPartStatus().then(res => {
+        if(res?.result) {
+          this.selectOptions = {
+            ...this.selectOptions,
+            PART_STATUS: res.data[0].list.map(item => {
+              return {
+                code: item.key,
+                name: item.name
+              }
+            })
+          }
+        }
+      })
+    },
+    sure() {
+      this.page = {
+        ...this.page,
+        currPage: 1
+      }
+      this.getTableList()
+    },
+    reset() {
+      this.searchParams = {
+        cfId: '',
+        applyStats: '',
+        partProjectType: '',
+        buyerId: '',
+        linieName: '',
+        partStatus: '',
+        carTypeName: '',
+        procureFactoryId: '',
+        applyType: ''
+      }
+    },
+    getCF() {
+      getCFList().then(res => {
+        if (res?.result) {
+          this.selectOptions = {
+            ...this.selectOptions,
+            CF_USER: res.data.map(item => {
+              return {
+                code: item.id,
+                name: item.nameZh
+              }
+            })
+          }
+        }
+      })
+    },
+    getDict(type) {
+      getDictByCode(type).then(res => {
+        if (res?.result) {
+          this.selectOptions = {
+            ...this.selectOptions,
+            [type]: res.data[0]?.subDictResultVo || []
+          }
+        }
+      })
+    },
+    getDicts() {
+      // 申请类型
+      this.getDict('CF_APPLY_TYPE')
+      //申请状态CF_APPLY_STATUS
+      this.getDict('CF_APPLY_STATUS')
+    },
+    handleSelectionChange(val) {
+      this.selectItems = val
+    },
+    fileError(err) {
+      console.log(err.message)
+      const errRes = JSON.parse(err.message)
+      this.uploadLoading=false;iMessage.error(this.$i18n.locale === 'zh' ? errRes?.desZh : errRes?.desEn || '上传失败')
+    },
     fileSuccess(res){
       if(res.code == 200){
         // this.vm.init()
         this.uploadLoading=false;
-        iMessage.success("上传成功！")
+        iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
         this.getTableList()
       }else{
         this.uploadLoading = false;
-        iMessage.error(res.desZh)
+        iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
       }
     },
     /**
@@ -155,7 +252,10 @@ export default {
     getProcureGroup() {
       dictkey().then((res) => {
         if (res.data) {
-          this.selectOptions = res.data;
+          this.selectOptions = {
+            ...this.selectOptions,
+            ...res.data
+          }
         }
       });
     },
@@ -170,7 +270,7 @@ export default {
       window.open(router.href,'_blank')
     },
     openPage(row) {
-      const router =  this.$router.resolve({path: '/sourcing/partsprocure/editordetail', query: { item: JSON.stringify(row) }})
+      const router =  this.$router.resolve({path: '/sourcing/partsprocure/editordetail', query: { item: JSON.stringify({...row,purchasePrjectId:row.purchasingProjectId}) }})
       window.open(router.href,'_blank')
     },
     /**
@@ -180,6 +280,7 @@ export default {
      * @return {*}
      */    
     openApprovalDialog(row){
+      this.applyId = row.applyId || ''
       this.changeApprovalDialogVisible(true)
     },
     /**
@@ -198,6 +299,7 @@ export default {
      * @return {*}
      */    
     openUpdateDialog(row){
+      this.applyId = row.applyId || ''
       this.changeUpdateDialogVisible(true)
     },
     /**
@@ -216,6 +318,7 @@ export default {
      * @return {*}
      */    
     openAttachmentDialog(row){
+      this.rfqId = row.rfqId || ''
       this.changeAttachmentDialogVisible(true)
     },
     /**
@@ -234,17 +337,32 @@ export default {
      * @return {*}
      */    
     getTableList() {
-      const params = {
+      this.tableLoading = true
+      const params = omit({
         ...this.searchParams,
+        searchType: '0',
+        applyDateStart: this.searchParams.applyDate ? moment(this.searchParams.applyDate[0]).format('YYYY-MM-DD HH:mm:ss') : null,
+        applyDateEnd: this.searchParams.applyDate ? moment(this.searchParams.applyDate[1]).format('YYYY-MM-DD HH:mm:ss') : null,
+        responseDateStart: this.searchParams.responseDate ? moment(this.searchParams.responseDate[0]).format('YYYY-MM-DD HH:mm:ss') : null,
+        responseDateEnd: this.searchParams.responseDate ? moment(this.searchParams.responseDate[1]).format('YYYY-MM-DD HH:mm:ss') : null,
         current: this.page.currPage,
         size: this.page.pageSize
-      }
+      },['applyDate','responseDate'])
       getTargetPriceList(params).then(res => {
         if (res?.result) {
-          
+          this.page = {
+            ...this.page,
+            totalCount: Number(res.total),
+            currPage: Number(res.pageNum),
+            pageSize: Number(res.pageSize)
+          }
+          this.tableData = res.data
         } else {
-          
+          this.tableData = []
+          iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
         }
+      }).finally(() => {
+        this.tableLoading = false
       })
     },
     /**
@@ -254,9 +372,25 @@ export default {
      * @return {*}
      */    
     changeEdit(isEdit) {
+      if (this.selectItems.length < 1) {
+        iMessage.warn(this.language('QINGXUANZEYITIAOJILU','请选择一条记录'))
+        return
+      }
+      if (this.selectItems.length > 1) {
+        iMessage.warn(this.language('ZHINENGXUANZEYITIAOJILU','只能选择一条记录'))
+        return
+      }
       this.isEdit = isEdit
     },
-    handleExport() {},
+    async handleExport() {
+      if (this.selectItems.length < 1) {
+        iMessage.warn(this.language('ZHISHAOXUANZEYITIAOJILU','至少选择一条记录'))
+        return
+      }
+      this.exportLoading = true
+      await exportTargetPriceList({idList: this.selectItems.map(item => item.applyId)})
+      this.exportLoading = false
+    },
     handleUpload() {},
     /**
      * @Description: 保存编辑后的内容
@@ -265,7 +399,22 @@ export default {
      * @return {*}
      */    
     handleSave() {
-      this.changeEdit(false)
+      this.tableLoading = true
+      const params = {
+        ...this.selectItems[0],
+        partPrjCode: this.selectItems[0].fsnrGsnrNum
+      }
+      setPrice(params).then(res => {
+        if (res?.result) {
+          iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+          this.changeEdit(false)
+          this.getTableList()
+        } else {
+          iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+        }
+      }).finally(() => {
+        this.tableLoading = false
+      })
     },
     /**
      * @Description: 取消编辑
@@ -275,6 +424,7 @@ export default {
      */    
     handleCancel() {
       this.changeEdit(false)
+      this.getTableList()
     }
   }
 }

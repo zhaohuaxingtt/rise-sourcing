@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-06-29 14:06:17
- * @LastEditTime: 2021-06-29 14:12:16
+ * @LastEditTime: 2021-06-30 14:42:40
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\createparts\components\factoryrelocate\components\data.js
@@ -19,7 +19,7 @@ export const tableFileTitle = [
   { props: 'h', name: '询价采购员', key: 'XUNGJIACAIGOUYUAN', tooltip: true  },
   { props: 'i', name: 'LINIE', key: 'LINIE', tooltip: true },
   { props: 'j', name: 'RS单状态', key: 'RSDANZHUANGTAI', tooltip: true  },
-  { props: 'k', name: 'RF冻结日期', key: 'RFDONGJIERIQI', tooltip: true  },
+  { props: 'k', name: 'RS冻结日期', key: 'RSDONGJIERIQI', tooltip: true  },
   { props: 'l', name: '报价一致性检验状态', key: 'BAOJIAYIZHIXINGJIANYANZHANGTAI', tooltip: true  },
   { props: 'm', name: '冻结日期', key: 'DONGJIERIQI', tooltip: true  },
   { props: 'n', name: '定点日期', key: 'DINGDIANRIQI', tooltip: true  }

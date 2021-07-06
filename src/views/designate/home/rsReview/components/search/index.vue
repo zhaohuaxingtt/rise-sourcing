@@ -223,6 +223,7 @@
 
 import { applyType } from '@/layout/nomination/components/data'
 import { form, applyStates } from '../data'
+import { getDictByCode } from '@/api/dictionary'
 import {
   iSearch,
   iInput,
@@ -236,7 +237,8 @@ export default {
     return {
       form,
       ptocessType: applyType,
-      applyStates
+      applyStates,
+      selectOptions: {}
     }
   },
   components: {
@@ -246,6 +248,8 @@ export default {
     iDatePicker
   },
   mounted() {
+    // 获取下拉枚举值
+    this.getOptions()
   },
   methods: {
     sure() {
@@ -261,7 +265,20 @@ export default {
       console.log(data)
       this.form.startRecheckDueDate = data[0]
       this.form.endRecheckDueDate = data[1]
-    }
+    },
+    getOptions() {
+      this.getDictionary('signStatus', 'signStatus')
+    },
+    // 获取数据字典
+    getDictionary(optionName, optionType, key = {value: 'code', label: 'name'}) {
+      getDictByCode(optionType).then(res => {
+        if(res?.result) {
+          this.selectOptions[optionName] = res.data[0].subDictResultVo.map(item => {
+            return { value: item.code, label: item.name }
+          })
+        }
+      })
+    },
   },
   // watch: {
   //   form: {
