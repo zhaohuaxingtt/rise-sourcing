@@ -350,8 +350,8 @@ export default {
                 const nominateLetterIds = (selectItems.map((item)=>item.nominateLetterId)).join();
                 this.btnLoading.back = true;
                 await fsRecall({nominateLetterIds}).then((res)=>{
+                    this.btnLoading.back = false;
                     if(res.code == 200){
-                        this.btnLoading.back = false;
                         iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
                         this.getList();
                     }else{
