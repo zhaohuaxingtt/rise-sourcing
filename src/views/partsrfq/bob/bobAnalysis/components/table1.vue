@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 11:38:57
- * @LastEditTime: 2021-07-01 21:25:04
+ * @LastEditTime: 2021-07-05 11:06:27
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails\table1.vue
@@ -10,8 +10,8 @@
   <div>
     <el-table
       ref="treeList"
-      :data="tableList.dataList"
-      :tree-props="{ hasChildren: 'hasChildren', children: 'children' }"
+      :data="tableList.element"
+      :tree-props="{ hasChildren: 'hasChildren', children: 'child' }"
       :row-key="getRowKey"
       :expand-row-keys="expends"
       v-loading="loading"
@@ -24,16 +24,16 @@
       @expand-change="expandChange"
 
     >
-      <el-table-column label="" prop="title" width="250"> </el-table-column>
+      <!-- <el-table-column label="" prop="title" width="250"> </el-table-column> -->
       <el-table-column
-        v-for="i in tableList.headerList"
-        :key="i.id"
-        :label="i.label"
-        :prop="i.prop"
+        v-for="i in tableList.title"
+        :key="i.value"
+        :label="i.title"
+        :prop="i.label"
         align="center"
         :width="i.prop == 'title' ? '200' : ''"
       >
-        <template>
+        <!-- <template>
           <el-table-column
             v-for="item in i.children"
             :key="item.id"
@@ -43,7 +43,7 @@
             :render-header="render"
           >
           </el-table-column>
-        </template>
+        </template> -->
 
         <!-- <template slot-scope="scope">
           <span v-if="testing(scope.row[i.prop])" >
@@ -98,9 +98,13 @@ export default {
       deep: true,
     },
   },
+  mounted(){
+    console.log(this.tableList,2222222222)
+  },
   data() {
     return {
       checkList: [],
+      hasChildren:true
     };
   },
   methods: {
@@ -136,7 +140,7 @@ export default {
     },
 
     getRowKey(row) {
-      return row.id;
+      return row.code;
     },
     render(h, { column, $index }) {},
     rowClick(row, event, column) {

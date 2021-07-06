@@ -20,7 +20,7 @@
         <icon class="refreshIcon" symbol name="iconmojukanbanshuaxin" />
         <span class="refresh cursor">{{ $t('LK_SHUAXIN') }}</span>
       </div>
-      <span class="refreshTime">{{ $t('LK_SHUAXINRIQI') }}：{{ translateData(versionData.updateDate) }}</span>
+      <span class="refreshTime">{{ $t('LK_SHUAXINRIQI') }}：{{ versionData.updateDate }}</span>
       <div v-if="pageEdit">
         <iButton @click="exitEdit">{{ $t("LK_TUICHUBIANJI") }}</iButton>
         <!-- <iButton @click="uploadList">{{ $t("上传清单") }}</iButton> -->
@@ -41,7 +41,7 @@
     <iCard class="margin-top20 mainCard" v-loading="tableLoading">
       <div class="cardTop">
         <div class="yearlyPlan">
-          <span class="planTitle">{{ getYear(versionData.updateDate) }}{{ $t('LK_YUEDUJIHUA') }}</span>
+          <span class="planTitle">{{ getYear(versionData.year) }}{{ $t('LK_YUEDUJIHUA') }}</span>
           <span class="totalText">Total:</span>
           <span class="refresh">{{ totalAmount }}</span>
           <span class="unitText margin-left20"
@@ -246,7 +246,8 @@ import {
   exportPlanCommutityList, 
   queryPlanMonthList, 
   saveMonthData,
-  importMonthData
+  importMonthData,
+  refreshVersion
 } from "@/api/ws2/investmentAdmin";
 import { iMessage } from '../../../../components';
 import store from '@/store';
@@ -319,7 +320,7 @@ export default {
       };
       saveMonthData(param).then(res => {
         if (Number(res.code) === 0) {
-          this.pageEdit = false;
+          // this.pageEdit = false;
           this.noChangeTableListData = cloneDeep(this.tableListData);
           return iMessage.success(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
         } else {
@@ -551,7 +552,6 @@ export default {
         this.saveNewVersion = false;
         if (Number(res.code) === 0) {
           this.getVersionList();
-          this.pageEdit = false;
           return iMessage.success(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
         } else {
           return iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
@@ -596,7 +596,13 @@ export default {
     //刷新
     handleRefresh() {
       this.refreshLoading = true;
-      this.getVersionList();
+      refreshVersion(this.versionData.id).then(res => {
+        if (Number(res.code) === 0) {
+          this.getVersionList();
+        } else {
+          return iMessage.error(this.$i18n.locale === 'zh' ? msg.desZh : msg.desEn)
+        }
+      });
     },
     //查询列表数据
     getMonthList() {
@@ -640,8 +646,7 @@ export default {
     translateData(date) {
       return window.moment(date).format("YYYY.MM.DD");
     },
-    getYear(date) {
-      let year = Number(window.moment(date).format("YYYY"));
+    getYear(year) {
       return this.tabIndex === 0 ? year : year + 1;
     },
     //上传清单 importMonthData

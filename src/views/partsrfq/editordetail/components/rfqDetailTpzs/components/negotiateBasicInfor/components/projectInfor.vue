@@ -86,11 +86,11 @@ export default {
         rfqName: '',
         categoryName: '',
         buyerName: '',//fs
-        fop: '',
+        ep: '',
         mq: '',
         pl: '',
         cf: '',
-        rfqName: '',//FOP情况
+        tpGradeStatus: '',//FOP情况
         mqGradeStatus: '',
         plStatus: '',
         targetgradestatus: '',//cf情况

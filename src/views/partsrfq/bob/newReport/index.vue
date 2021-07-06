@@ -219,7 +219,7 @@
       @close="closeDialog"
       @add="add"
     ></findingParts>
-    <preview ref="preview" :value="pre" @close="closePreView"></preview>
+    <preview ref="preview" :value="pre" @closeDialog="closePreView"></preview>
     <iDialog title="保存" :visible.sync="dialogVisible" width="20%">
       <div>
         <div class="margin-bottom15 flex-between-center">
@@ -233,7 +233,7 @@
           <label for="">保存为报告</label>
           <el-checkbox v-model="reportSave"></el-checkbox>
         </div>
-        <iInput v-model="analysisName" placeholder="请输入文件名称" />
+        <iInput v-model="reportName" placeholder="请输入文件名称" />
       </div>
       <span slot="footer" class="dialog-footer">
         <iButton type="primary" @click="save">确 定</iButton>
@@ -307,6 +307,7 @@ export default {
       supplierList: [],
       turnList: [],
       analysisName: "",
+      reportName:"",
       Split: window._.split,
       dialogVisible: false,
       analysisSave: false,
@@ -319,7 +320,6 @@ export default {
     this.newBuild = this.$route.query.newBuild;
     if (this.newBuild) this.analysisSave = true;
     this.getChartData();
-
     // this.getOptions();
   },
   mounted() {},
@@ -338,6 +338,7 @@ export default {
         data: {},
       }).then((res) => (this.form.turnList = res.data));
     },
+
     findPart() {
       this.value = true;
     },
@@ -345,6 +346,7 @@ export default {
       this.value = val;
     },
     closePreView(val) {
+      console.log(val, 13131313);
       this.pre = val;
     },
     sure() {},
@@ -485,13 +487,15 @@ export default {
           .then((res) => {
             iMessage.success("保存成功");
             this.dialogVisible = false;
+            this.reportSave = false;
           })
           .catch((err) => {
             iMessage.err("保存失败");
             this.dialogVisible = false;
+            this.reportSave = false;
           });
       }
-      if (that.reportSave) {
+      if (this.reportSave) {
         downloadPDF({
           idEle: "content",
           pdfName: "Volume Pricing Overview",
@@ -510,9 +514,15 @@ export default {
                 analysisSchemeId: 1,
                 downloadName: data.fileName,
                 downloadUrl: data.filePath,
+                reportName:that.reportName
               };
               await add(req);
-            } catch {}
+              that.dialogVisible = false;
+              that.reportSave = false;
+            } catch {
+              that.dialogVisible = false;
+              that.reportSave = false;
+            }
           },
         });
       }

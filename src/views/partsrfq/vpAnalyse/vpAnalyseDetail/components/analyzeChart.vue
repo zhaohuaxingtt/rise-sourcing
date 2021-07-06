@@ -129,12 +129,17 @@ export default {
   },
   computed: {
     dropPotentialTips() {
-      return `\\begin{array}{l}\\\\\\Delta\\%\\;\\;\\;=\\;\\left(\\frac{\\mathrm{计划总产量}}{\\mathrm{预计总产量}}\\;\\;-\\;1\\right)\\times\\mathrm{固定成本}\\%\\\\\\\\\\;\\;\\;\\;\\;\\;\\;\\;\\;
+      //计划总产量
+      //预计总产量
+      //固定成本
+      return `\\begin{array}{l}\\\\\\Delta\\%\\;\\;\\;=\\;\\left(\\frac{\\mathrm{${this.$t('TPZS.JIHUAZHONGCHANLIANG')}}}{\\mathrm{${this.$t('TPZS.YUJIZONGCHANLIANG')}}}\\;\\;-\\;1\\right)\\times\\mathrm{${this.$t('TPZS.GUDINGCHENGBEN')}}\\%\\\\\\\\\\;\\;\\;\\;\\;\\;\\;\\;\\;
       =\\left(\\frac{${this.dropPotential.totalPlannedOutputTipsData}}{${this.dropPotential.estimatedTotalProductionTipsData}}-\\;1\\right)\\times${this.dropPotential.fixedCost}\\%\\\\\\\\\\;\\;\\;\\;\\;\\;\\;\\;\\;
       =${this.dropPotential.result}\\%\\\\\\end{array}`;
     },
     additionalPriceReductionTips() {
-      return `\\begin{array}{l}\\\\=\\;\\mathrm{总降价}\\;-\\;LTC\\mathrm{降价}\\\\\\\\
+      //总降价
+      //降价
+      return `\\begin{array}{l}\\\\=\\;\\mathrm{${this.$t('TPZS.ZONGJIANGJIA')}}\\;-\\;LTC\\mathrm{${this.$t('TPZS.JIANGJIA')}}\\\\\\\\
       =${this.additionalPriceReduction.totalPriceReduction}\\%\\;-（${this.additionalPriceReduction.priceReduction}\\%）\\\\\\\\
       =${this.additionalPriceReduction.result}\\%\\\\\\end{array}`;
     },

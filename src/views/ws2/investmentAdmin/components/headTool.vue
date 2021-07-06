@@ -109,6 +109,7 @@ export default {
     //  刷新
     refresh(){
       this.$emit('refresh');
+      this.getVersionList();
     }
   }
 }
@@ -120,7 +121,7 @@ export default {
   justify-content: space-between;
 
   .iSelect1{
-    width: 120px;
+    width: 150px;
   }
 
   .date{
