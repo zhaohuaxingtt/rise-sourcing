@@ -287,13 +287,13 @@ export default {
               const vm1 = echarts().init(document.getElementById("chart" + index));
               let option1 = {
                 tooltip: {
-                  // formatter: function (params) {//这里就是控制显示的样式
-                  //   if (params.seriesIndex == 0) {
-                  //     return 'JV Sourcing'
-                  //   } else if (params.seriesIndex == 1) {
-                  //     return 'Commom Sourcing'
-                  //   }
-                  // },
+                  formatter: function (params) {//这里就是控制显示的样式
+                    if (params.seriesIndex == 0) {
+                      return `<div>JV Sourcing</div><div>${params.value}</div>`
+                    } else if (params.seriesIndex == 1) {
+                      return `<div>Commom Sourcing</div><div>${params.value}</div>`
+                    }
+                  },
                   backgroundColor: '#ffffff',
                   extraCssText: 'color: #1B1D21; box-shadow: 0px 0px 20px rgba(27, 29, 33, 0.12);'
                 },
@@ -576,13 +576,13 @@ export default {
                 };
                 let option2 = {
                   tooltip: {
-                    // formatter: function (params) {//这里就是控制显示的样式
-                    //   if (params.seriesIndex == 0) {
-                    //     return 'JV Sourcing'
-                    //   } else if (params.seriesIndex == 1) {
-                    //     return 'Commom Sourcing'
-                    //   }
-                    // },
+                    formatter: function (params) {//这里就是控制显示的样式
+                      if (params.seriesIndex == 0) {
+                        return `<div>JV Sourcing</div><div>${params.value}</div>`
+                      } else if (params.seriesIndex == 1) {
+                        return `<div>Commom Sourcing</div><div>${params.value}</div>`
+                      }
+                    },
                     backgroundColor: '#ffffff',
                     extraCssText: 'color: #1B1D21; box-shadow: 0px 0px 20px rgba(27, 29, 33, 0.12);'
                   },

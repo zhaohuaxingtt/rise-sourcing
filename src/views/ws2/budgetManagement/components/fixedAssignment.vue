@@ -75,6 +75,7 @@ export default {
     id: {type: String, default: ''},
     fixedAssignmentInfo: {type: String, default: ''},
     targetBudgetAmount: {type: String, default: ''},
+    partNameZh: {type: String, default: ''},
   },
   data() {
     return {
@@ -124,7 +125,7 @@ export default {
     },
     save() {
       if(this.tableListData.some(item => item.amount == 0 || item.amount === undefined || item.amount === null || item.amount === '')){
-        iMessage.warn('【零件包】并未进行预算分配！');
+        iMessage.warn(`【${this.partNameZh}】并未进行预算分配！`);
         return
       }
       this.tableListLoading = true

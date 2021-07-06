@@ -316,7 +316,7 @@ export default {
         }
         if (Number(res[4].code) === 0) {
           this.carTypeBudget = res[4].data.carTypeBudget
-          console.log(this.carTypeBudget)
+          console.log(this.carTypeBudget, 1)
         } else {
           iMessage.error(result4);
         }
@@ -350,6 +350,7 @@ export default {
       });
     },
     getInvestmentData() {
+      let _this = this
       this.headerLoading = true
       getInvestmentData({
         investmentVersionId: this.form['search.version'],
@@ -381,7 +382,7 @@ export default {
             const chart2 = echarts().init(document.getElementById("chart2"));
             const chart3 = echarts().init(document.getElementById("chart3"));
             const chart4 = echarts().init(document.getElementById("chart4"));
-             console.log(this.carTypeBudget)
+             console.log(_this.carTypeBudget, 2)
 
              let option1 = {
               // tooltip: {
@@ -473,7 +474,7 @@ export default {
                       barBorderRadius: [5, 5, 0, 0],
                     }
                   },
-                  data: [this.carTypeBudget]
+                  data: [_this.carTypeBudget]
                 },
                 {
                   name: '',

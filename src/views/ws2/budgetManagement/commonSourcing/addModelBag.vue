@@ -118,9 +118,11 @@
             :tableData="tableListData"
             :tableTitle="tableTitle"
             :typeIndex="true"
+            :selectionWidth="180"
             @handleSelectionChange="handleSelectionChange"
-            :activeItems="'partNum'"
             :row-class-name="handleTableRow"
+            :showSummary="true"
+            :getSummaries="getSummaries"
         >
           <template #categoryId="scope">
             <iSelect
@@ -142,11 +144,11 @@
           </template>
           <template #targetBudgetTotal="scope">
             <div v-if="currentVersion" class="linkStyle"><span @click="clicktargetBudgetTotal(scope.row)">{{ getTousandNum(scope.row.targetBudgetTotal) }}</span></div>
-            <div v-else>{{ getTousandNum(scope.row.targetBudgetTotal) }}</div>
+            <div v-else>{{ getTousandNum(scope.row.targetBudgetTotal.toFixed(2)) }}</div>
           </template>
           <template #fixedPointAllotTotal="scope">
             <div v-if="currentVersion" class="linkStyle"><span @click="clickfixedPointAllotTotal(scope.row)">{{ getTousandNum(scope.row.fixedPointAllotTotal) }}</span></div>
-            <div v-else>{{ getTousandNum(scope.row.fixedPointAllotTotal) }}</div>
+             <div v-else>{{ getTousandNum(scope.row.fixedPointAllotTotal.toFixed(2)) }}</div>
           </template>
         </iTableList>
       </iCard>
@@ -161,6 +163,7 @@
         :id="fixedAssignmentId"
         :fixedAssignmentInfo="fixedAssignmentInfo"
         :targetBudgetAmount="targetBudgetAmount"
+        :partNameZh="partNameZh"
         @fixedAssignmentSave="getCommonSourcingView"
     ></fixedAssignment>
   </div>
@@ -214,6 +217,7 @@ export default {
       targetBudgetId: '',
       fixedAssignmentId: '',
       fixedAssignmentInfo: '',
+      partNameZh: '',
       targetBudgetAmount: '',
       targetBudgetInfo: '',
       tableListData: [],
@@ -228,6 +232,7 @@ export default {
       DepartmentsComboList: [],
       materialGroup: [],
       materialGroupList: [],
+      summaries: [],
       currentVersion: '',
       getTousandNum: getTousandNum
     }
@@ -337,6 +342,38 @@ export default {
       }
       this.getCommonSourcingView()
     },
+    getSummaries(param){
+      const { columns, data } = param;
+      const sums = [];
+      const keyArr = ['targetBudgetTotal', 'fixedPointAllotTotal'];
+
+      columns.forEach((column, index) => {
+        if (index === 0) {
+          sums[index] = 'TOTAL（百万元）';
+          return;
+        }
+        if(keyArr.includes(column.property)){  //  只有金额字段才需要显示总价
+          const values = data.map(item => Number(item[column.property]));
+          if (!values.every(value => isNaN(value))) {
+            sums[index] = values.reduce((prev, curr) => {
+              const value = Number(curr);
+              if (!isNaN(value)) {
+                return prev + curr;
+              } else {
+                return prev;
+              }
+            }, 0);
+            sums[index] = this.getTousandNum(sums[index].toFixed(2))
+          } else {
+            sums[index] = 'N/A';
+          }
+        }else{
+          sums[index] = '';
+        }
+
+      });
+      return sums;
+    },
     getCommonSourcingView(){
        this.contentLoading = true
       commonSourcingView({
@@ -350,6 +387,7 @@ export default {
           let _this = this
           // this.getPackageVersionCombo()
           this.tableListData = res.data.partsPackageDetailVOS ? res.data.partsPackageDetailVOS : []
+          // this.summaries = ['Total', '', this.getTousandNum(this.tableListData.map(item => Number(item.targetBudgetTotal)).reduce((total, num) => total + num))]
           let carTypeBudgetDetailVOS = res.data.carTypeBudgetDetailVOS ? res.data.carTypeBudgetDetailVOS : []
           this.carTypeBudgetDetailVOSCount = carTypeBudgetDetailVOS
           let carTypeBudgetPackageTotal = res.data.carTypeBudgetPackageTotal ? res.data.carTypeBudgetPackageTotal : []
@@ -754,6 +792,7 @@ export default {
       let category = this.materialGroupList.find(item => Number(item.id) === Number(row.categoryId))
       let info = (category ? category.value : '') + ' ' + row.partNameZh
       this.fixedAssignmentInfo = info
+      this.partNameZh = row.partNameZh
     }
   }
 }
@@ -909,6 +948,14 @@ export default {
         .upload{
           display: inline-block;
           margin: 0 10px;
+        }
+      }
+      ::v-deep .el-table__footer-wrapper{
+        td{
+          font-weight: bold;
+        }
+        td:last-of-type{
+          color: #E30D0D;
         }
       }
     }

@@ -199,12 +199,23 @@ export default {
     margin-bottom: 20px;
 
     > div {
+      display: flex;
+      justify-content: center;
+      align-items: center;
       .carTypeName {
         width: 80%;
+        height: 60px;
         cursor: pointer;
-
         .carTypeIcon {
           margin-right: 45px;
+        }
+        span{
+          display: inline-block;
+          max-width: 150px;
+          min-width: 150px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
         }
       }
 
@@ -216,7 +227,7 @@ export default {
 
       .carTypeIcon {
         font-size: 30px;
-        vertical-align: middle;
+        vertical-align: 14px;
         cursor: pointer;
       }
     }
