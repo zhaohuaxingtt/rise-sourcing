@@ -317,7 +317,7 @@ module.exports = {
 						'/quotationApi': { // 供应商报价
 							// target: 'http://10.160.136.42:8021',
 							target: 'http://10.122.18.166:8021/',
-							// target: 'http://10.160.136.115:8021', // 智博
+							// target: 'http://10.160.136.115:8021',//智博
 							// target: 'http://10.160.136.83:8021', // 智博
 							// target: 'http://10.160.138.206:8093', // 顾晓炜
 							// target: 'http://10.122.18.166:8093', // 高攀弘
@@ -334,6 +334,8 @@ module.exports = {
 							}
 						},
 					'/aonApi': {
+						// target: 'http://10.160.138.185:8036',
+						// target: 'http://10.160.137.32:8036',
 						target: 'http://10.122.18.166:8036',
 						changeOrigin: true,
 						pathRewrite: {
