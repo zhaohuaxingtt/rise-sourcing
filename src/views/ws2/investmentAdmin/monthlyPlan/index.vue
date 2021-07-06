@@ -246,7 +246,8 @@ import {
   exportPlanCommutityList, 
   queryPlanMonthList, 
   saveMonthData,
-  importMonthData
+  importMonthData,
+  refreshVersion
 } from "@/api/ws2/investmentAdmin";
 import { iMessage } from '../../../../components';
 import store from '@/store';
@@ -551,7 +552,6 @@ export default {
         this.saveNewVersion = false;
         if (Number(res.code) === 0) {
           this.getVersionList();
-          this.pageEdit = false;
           return iMessage.success(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
         } else {
           return iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
@@ -596,7 +596,13 @@ export default {
     //刷新
     handleRefresh() {
       this.refreshLoading = true;
-      this.getVersionList();
+      refreshVersion(this.versionData.id).then(res => {
+        if (Number(res.code) === 0) {
+          this.getVersionList();
+        } else {
+          return iMessage.error(this.$i18n.locale === 'zh' ? msg.desZh : msg.desEn)
+        }
+      });
     },
     //查询列表数据
     getMonthList() {
