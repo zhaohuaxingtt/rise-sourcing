@@ -1380,6 +1380,7 @@
             'CHANLIANGLIANG': '产量（辆）', //产量（辆）
             'DANJIA': '单价', //单价
             'YUANJIAN': '（元/件）', //（元/件）
+            'BAOGAO': '报告', //报告
         },
     }
     var xmlHttp = ''
