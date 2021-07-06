@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-28 18:27:56
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-03 11:24:36
+ * @LastEditTime: 2021-07-06 16:17:03
  * @Description: 
  * @FilePath: \front-web\src\views\designate\approvalPersonAndRecord\tableList.vue
 -->
@@ -43,7 +43,7 @@
 <script>
 import {iSelect,iInput} from 'rise'
 import {_getMathNumber} from '@/utils'
-import { getDeptSub } from '@/api/designate/decisiondata/approval'
+import { getDeptSub, getDeptLeader } from '@/api/designate/decisiondata/approval'
 export default{
   components:{iSelect,iInput},
   props:{
@@ -70,17 +70,27 @@ export default{
     }
   },
   methods:{
+    getDeptLeader(deptId, row) {
+      // getDeptLeader(deptId).then(res => {
+      //   this.$set()
+      // })
+    },
     getDeptSubOptions(deptId, row) {
       getDeptSub(deptId).then(res => {
-        this.$set(row, 'deptSubOptions', res.data.supDeptList.map(item => {
+        this.$set(row, 'deptSubOptions', res.data.supDeptList?.map(item => {
           return {
             ...item,
             label: item.nameZh,
             value: item.id
           }
         }))
-        this.$set(row, 'deptManager', '')
       })
+      this.$set(row, 'deptManager', '')
+      const dept = row.deptOptions.find(item => item.value === deptId)
+      if  (dept) {
+        this.$set(row, 'deptManager', dept.leadUserId)
+        this.$set(row, 'deptManagerName', dept.leadUserName)
+      }
     },
     getOptions(optionType) {
       return this.options[optionType]
