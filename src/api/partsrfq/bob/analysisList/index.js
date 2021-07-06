@@ -1,7 +1,7 @@
 /*
  * @Author: youyuan
  * @Date: 2021-06-28 10:46:03
- * @LastEditTime: 2021-07-02 16:10:25
+ * @LastEditTime: 2021-07-05 15:43:27
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\api\partsrfq\bob\analysisList\index.js
@@ -100,4 +100,14 @@ export function turn({data,analysisSchemeId}) {
       data
   })
 }
+
+// 费用详情下载
+export function down(params) {
+  return request({
+      url: `/bobRoundDetail/down` ,
+      method: 'POST',
+      params
+  })
+}
+
 
