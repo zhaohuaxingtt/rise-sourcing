@@ -647,6 +647,7 @@ export default {
                       barWidth: 30,
                       stack: 'total',
                       label: {
+                        color: '#ffffff',
                         show: false,
                       },
                       itemStyle: {
