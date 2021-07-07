@@ -143,11 +143,11 @@
             <div v-else>{{ materialGroupList.find(item => scope.row.categoryId === item.id).name  }}</div>
           </template>
           <template #targetBudgetTotal="scope">
-            <div v-if="currentVersion" class="linkStyle"><span @click="clicktargetBudgetTotal(scope.row)">{{ getTousandNum(scope.row.targetBudgetTotal) }}</span></div>
+            <div v-if="currentVersion" class="linkStyle"><span @click="clicktargetBudgetTotal(scope.row)">{{ getTousandNum(scope.row.targetBudgetTotal.toFixed(2)) }}</span></div>
             <div v-else>{{ getTousandNum(scope.row.targetBudgetTotal.toFixed(2)) }}</div>
           </template>
           <template #fixedPointAllotTotal="scope">
-            <div v-if="currentVersion" class="linkStyle"><span @click="clickfixedPointAllotTotal(scope.row)">{{ getTousandNum(scope.row.fixedPointAllotTotal) }}</span></div>
+            <div v-if="currentVersion" class="linkStyle"><span @click="clickfixedPointAllotTotal(scope.row)">{{ getTousandNum(scope.row.fixedPointAllotTotal.toFixed(2)) }}</span></div>
              <div v-else>{{ getTousandNum(scope.row.fixedPointAllotTotal.toFixed(2)) }}</div>
           </template>
         </iTableList>

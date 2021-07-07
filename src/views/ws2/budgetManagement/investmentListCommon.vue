@@ -315,7 +315,6 @@ export default {
         }
         if (Number(res[4].code) === 0) {
           this.carTypeBudget = res[4].data.carTypeBudget
-          console.log(this.carTypeBudget, 1)
         } else {
           iMessage.error(result4);
         }
@@ -382,7 +381,6 @@ export default {
             const chart2 = echarts().init(document.getElementById("chart2"));
             const chart3 = echarts().init(document.getElementById("chart3"));
             const chart4 = echarts().init(document.getElementById("chart4"));
-             console.log(_this.carTypeBudget, 2)
 
              let option1 = {
               // tooltip: {
@@ -452,7 +450,7 @@ export default {
                   emphasis: {
                     focus: 'series'
                   },
-                   data: [totalValue]
+                   data: [this.carTypeBudget]
                 },
                 {
                   name: 'aekoValue',
@@ -474,7 +472,7 @@ export default {
                       barBorderRadius: [5, 5, 0, 0],
                     }
                   },
-                  data: [_this.carTypeBudget]
+                  data: [totalValue]
                 },
                 {
                   name: '',
@@ -848,7 +846,7 @@ export default {
               ]
             }
             option2.series[option2.series.length - 1].label.formatter = totalValue
-            option1.series[option1.series.length - 1].label.formatter = Number(totalValue + this.carTypeBudget).toFixed(2)
+            option1.series[option1.series.length - 1].label.formatter = (Number(totalValue) + Number(this.carTypeBudget)).toFixed(2)
             chart1.setOption(option1);
             chart2.setOption(option2);
             chart3.setOption(option3);

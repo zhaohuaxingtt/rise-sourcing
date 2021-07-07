@@ -9,7 +9,7 @@
           </iInput>
         </div>
         <div class="btns">
-          <iButton @click="hanldeDownload">{{$t('下载清单')}}</iButton>
+          <iButton @click="hanldeDownload">{{$t('下载模板')}}</iButton>
           <Upload
               class="upload-demo"
               ref="uploadRef"
@@ -170,10 +170,10 @@ export default {
     hanldeDownload(){
       this.mainLoading = true;
       let params = {
-        cartypePackageId: this.carTypePackageId,
-        versionId: this.packageVersion,
-        commodity: this.departmentsCombo,
-        categoryId: this.materialGroup,
+        cartypePackageId: null,
+        versionId: null,
+        commodity: null,
+        categoryId: null,
       }
       commonSourcingExport(params)
         .then((res) => {
