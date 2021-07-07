@@ -1,11 +1,11 @@
 <template>
   <iCard v-if="display" class="unconfirmed">
     <div class="header clearFloat">
-      <span class="title">{{ $t('LK_DAIQUERENBANBEN') }}</span>
+      <span class="title">{{ language('LK_DAIQUERENBANBEN','待确认版本') }}</span>
       <div class="control">
-        <iButton @click="confirm" :loading="confirmLoading" v-permission="PARTSIGN_EDITORDETAIL_UNCONFIRMED_CONFIRM">{{ $t('LK_QUEREN') }}</iButton>
-        <iButton @click="reject" v-permission="PARTSIGN_EDITORDETAIL_UNCONFIRMED_REFUSE">{{ $t('LK_JUJUE') }}</iButton>
-        <iButton @click="download" v-permission="PARTSIGN_EDITORDETAIL_UNCONFIRMED_EXPORT">{{ $t('LK_DAOCHU') }}</iButton>
+        <iButton @click="confirm" :loading="confirmLoading" v-permission="PARTSIGN_EDITORDETAIL_UNCONFIRMED_CONFIRM">{{ language('LK_QUEREN','确认') }}</iButton>
+        <iButton @click="reject" v-permission="PARTSIGN_EDITORDETAIL_UNCONFIRMED_REFUSE">{{ language('LK_JUJUE','拒绝') }}</iButton>
+        <iButton @click="download" v-permission="PARTSIGN_EDITORDETAIL_UNCONFIRMED_EXPORT">{{ language('LK_DAOCHU','导出') }}</iButton>
       </div>
     </div>
     <div class="body margin-top27">
@@ -30,7 +30,7 @@
         :layout="page.layout"
         :total="page.totalCount" />
     </div>
-    <backItems class="backItems" v-model="visible" :title="$t('LK_JUJUE')" @sure="refuseSure" :repeatClick="rejectLoading" />
+    <backItems class="backItems" v-model="visible" :title="language('LK_JUJUE','拒绝')" @sure="refuseSure" :repeatClick="rejectLoading" />
     <volumeDialog :visible.sync="volumeVisible" :volumeParams="volumeParams" />
   </iCard>
 </template>
@@ -95,7 +95,7 @@ export default {
       this.multipleSelection = list
     },
     confirm() {
-      if (this.multipleSelection.length !== 1) return iMessage.warn(this.$t('LK_QINGXUANZHEYITIAOXUYAOQUEREDEBANBEN'))
+      if (this.multipleSelection.length !== 1) return iMessage.warn(this.language('LK_QINGXUANZHEYITIAOXUYAOQUEREDEBANBEN','请选择一条需要确认的版本'))
       const data = this.multipleSelection[0]
       this.confirmLoading = true
       putPerCarDosage({
@@ -108,7 +108,7 @@ export default {
       })
         .then(res => {
           if(res.code == 200){
-            iMessage.success(this.$t('LK_CAOZUOCHENGGONG'))
+            iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'))
             this.confirmLoading = false
             this.$emit('updateVersion')
             this.multipleSelection = []
@@ -120,7 +120,7 @@ export default {
         .catch(() => this.confirmLoading = false)
     },
     reject() {
-      if (this.multipleSelection.length !== 1) return iMessage.warn(this.$t('LK_QINGXUANZHEYITIAOXUYAOQUEREDEBANBEN'))
+      if (this.multipleSelection.length !== 1) return iMessage.warn(this.language('LK_QINGXUANZHEYITIAOXUYAOQUEREDEBANBEN','请选择一条需要确认的版本'))
 
       this.visible = true
     },
@@ -139,7 +139,7 @@ export default {
       })
         .then(res => {
           if(res.code == 200){
-            iMessage.success(this.$t('LK_CAOZUOCHENGGONG'))
+            iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'))
             this.$emit('updateVersion')
             this.getPerCarDosageVersion()
             this.visible = false
@@ -152,7 +152,7 @@ export default {
         .catch(() => this.rejectLoading = false)
     },
     download() {
-      if (!this.multipleSelection.length) return iMessage.warn(this.$t('LK_QINGXUANZHEXUYAODAOCHUBANBEN'))
+      if (!this.multipleSelection.length) return iMessage.warn(this.language('LK_QINGXUANZHEXUYAODAOCHUBANBEN','请选择需要导出的版本'))
       excelExport(this.multipleSelection, this.tableTitle)
     },
     volume(data) {
