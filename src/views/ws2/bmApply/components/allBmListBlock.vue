@@ -28,8 +28,8 @@
 
         <iPagination
             v-update
-            @size-change="handleSizeChange($event, allSerch)"
-            @current-change="handleCurrentChange($event, allSerch)"
+            @size-change="handleSizeChange($event, getPageData)"
+            @current-change="handleCurrentChange($event, getPageData)"
             background
             :current-page="page.currPage"
             :page-sizes="page.pageSizes"
@@ -60,6 +60,8 @@ import { allTableHead, bmApplyForm } from "./data";
 import { pageMixins } from "@/utils/pageMixins";
 import UnitExplain from "./unitExplain";
 import { excelExport } from '@/utils/filedowLoad';
+import _ from 'lodash';
+import Moment from 'moment';
 
 export default {
   components: {
@@ -79,6 +81,7 @@ export default {
         currPage: 1,
         pageSize: 10,
       },
+      form: _.cloneDeep(bmApplyForm),
     }
   },
 
@@ -91,12 +94,12 @@ export default {
 
   watch: {
     refresh(){
-      this.getTableData();
+      this.getPageData();
     }
   },
 
   created(){
-    this.getTableData();
+    this.getPageData();
   },
 
   methods: {
@@ -129,13 +132,16 @@ export default {
       this.selectTableList = val;
     },
 
-    allSerch(data){
+    getPageData(){
       this.allTableLoading = true;
       const param = {
-        ...data,
+        ...this.form,
+        startDate: this.form.startDate ? Moment(this.form.startDate).format('YYYY-MM-DD') : '',
+        endDate: this.form.endDate ? Moment(this.form.endDate).format('YYYY-MM-DD') : '',
         current: this.page.currPage,
         size: this.page.pageSize,
       }
+
       findAllBmList(param).then(res => {
         const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn;
         if(res.data){
@@ -151,6 +157,11 @@ export default {
       }).catch(err => {
         this.allTableLoading = false;
       })
+    },
+
+    allSerch(data){
+      this.form = data;
+      this.getPageData();
     },
   }
 }
