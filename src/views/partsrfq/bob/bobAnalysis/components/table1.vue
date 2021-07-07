@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 11:38:57
- * @LastEditTime: 2021-07-05 11:06:27
+ * @LastEditTime: 2021-07-06 10:46:21
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails\table1.vue
@@ -10,8 +10,8 @@
   <div>
     <el-table
       ref="treeList"
-      :data="tableList.element"
-      :tree-props="{ hasChildren: 'hasChildren', children: 'child' }"
+      :data="tableList.dataList"
+      :tree-props="{ hasChildren: 'hasChildren', children: 'children' }"
       :row-key="getRowKey"
       :expand-row-keys="expends"
       v-loading="loading"
@@ -22,16 +22,15 @@
       @cell-dblclick="cellBbClick"
       @cell-click="cellClick"
       @expand-change="expandChange"
-
     >
-      <!-- <el-table-column label="" prop="title" width="250"> </el-table-column> -->
+      <el-table-column label="" prop="title" width="200"> </el-table-column>
       <el-table-column
-        v-for="i in tableList.title"
-        :key="i.value"
-        :label="i.title"
-        :prop="i.label"
+        v-for="i in tableList.headerList"
+        :key="i.id"
+        :label="i.label"
+        :prop="i.prop"
         align="center"
-        :width="i.prop == 'title' ? '200' : ''"
+        width="200"
       >
         <!-- <template>
           <el-table-column
@@ -45,21 +44,24 @@
           </el-table-column>
         </template> -->
 
-        <!-- <template slot-scope="scope">
-          <span v-if="testing(scope.row[i.prop])" >
+        <template slot-scope="scope">
+          <div v-if="testing(scope.row[i.prop])" class=" scopeBox">
             <span
               v-for="(item, index) in scope.row[i.prop]"
               :key="item.id"
-              class="margin-right20"
               :class="checkClass(item, scope, index)"
               @click="clickCol(item, scope, index)"
-              >{{ item }}</span>
-          </span>
-          <span v-else>
-            <span  :class="checkClass(item, scope, index)"
-              @click="clickCol(item, scope, index)">{{ scope.row[i.prop] }}</span>
-          </span>
-        </template> -->
+              >{{ item }}</span
+            >
+          </div>
+          <div v-else class="flex-center">
+            <span
+              :class="checkClass(item, scope, index)"
+              @click="clickCol(item, scope, index)"
+              >{{ scope.row[i.prop] }}</span
+            >
+          </div>
+        </template>
       </el-table-column>
     </el-table>
   </div>
@@ -82,7 +84,15 @@ export default {
       },
     },
   },
-  computed: {},
+  computed: {
+    testing(val) {
+      return function (val) {
+        if (val instanceof Array) {
+          return true;
+        }
+      };
+    },
+  },
   watch: {
     expends: {
       handler(val) {
@@ -98,18 +108,18 @@ export default {
       deep: true,
     },
   },
-  mounted(){
-    console.log(this.tableList,2222222222)
+  mounted() {
+    console.log(this.tableList, 2222222222);
   },
   data() {
     return {
       checkList: [],
-      hasChildren:true
+      hasChildren: true,
     };
   },
   methods: {
     objectSpanMethod({ row, column, rowIndex, columnIndex }) {
-      if ( rowIndex === 0) {
+      if (rowIndex === 0) {
         if (columnIndex % 2 === 0) {
           return {
             rowspan: 0,
@@ -129,6 +139,31 @@ export default {
         return "addcss";
       }
     },
+    checkClass(a, b, c) {
+      return function (a, b, c) {
+        const id = b.row.id;
+        let check = this.checkList.findIndex((item) => {
+          return item.index === c;
+        });
+        if (check > -1) {
+          switch (id) {
+            case "1-2-1":
+              console.log(id);
+              return "top";
+            case "1-2-7":
+              console.log(id);
+              return "bottom";
+            case "1-2":
+              console.log(id);
+              return "nocolor";
+            default:
+              console.log(id);
+              return "middle";
+          }
+        }
+        return "nocolor";
+      };
+    },
     clickCol(a, b, c) {
       const i = this.checkList.findIndex((item) => item.index == c);
       if (i > -1) this.checkList.splice(i, i + 1);
@@ -140,7 +175,7 @@ export default {
     },
 
     getRowKey(row) {
-      return row.code;
+      return row.id;
     },
     render(h, { column, $index }) {},
     rowClick(row, event, column) {
@@ -196,5 +231,11 @@ export default {
 .bottom {
   border: 1px solid blue;
   border-top: none;
+}
+.scopeBox{
+  display: flex;
+  justify-content:space-around;
+  flex-direction: row;
+  flex-wrap: nowrap;
 }
 </style>
