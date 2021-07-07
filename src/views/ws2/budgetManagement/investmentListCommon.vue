@@ -452,11 +452,6 @@ export default {
                   emphasis: {
                     focus: 'series'
                   },
-                  itemStyle: {
-                    normal: {
-                      barBorderRadius: [5, 5, 0, 0],
-                    }
-                  },
                   data: [totalValue]
                 },
                 {
@@ -475,7 +470,12 @@ export default {
                   emphasis: {
                     focus: 'series'
                   },
-                   data: [this.carTypeBudget]
+                  itemStyle: {
+                    normal: {
+                      barBorderRadius: [5, 5, 0, 0],
+                    }
+                  },
+                  data: [this.carTypeBudget]
                 },
                 {
                   name: '',
