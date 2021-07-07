@@ -645,6 +645,9 @@ export default {
             for (let monthIndex = 0; monthIndex < 12; monthIndex++) {
               // monthTotal[monthIndex] += element[`planAmountM${monthIndex + 1}`];
               // data.push(element[`planAmountM${monthIndex + 1}`]);
+              if (item[`planAmountM${monthIndex + 1}`] == null) {
+                item[`planAmountM${monthIndex + 1}`] = 0;
+              }
               let temp = cloneDeep(item[`planAmountM${monthIndex + 1}`]);
               item[`planAmountM${monthIndex + 1}`] = this.getFormatNumber(temp);
               item.amount += parseFloat(temp);
