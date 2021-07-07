@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:17:25
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-05 10:35:09
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-07-07 15:44:07
  * @Description: 上会/备案RS单
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\rs\components\meeting\index.vue
 -->
@@ -165,7 +165,7 @@ export default {
      * @return {*}
      */
     getPrototypeList(){
-      getPrototypeList().then(res=>{
+      getPrototypeList({nominateAppId:this.$route.query.desinateId}).then(res=>{
           this.PrototypeList = res.data.list
       }).catch(err=>{
         console.warn(err)
