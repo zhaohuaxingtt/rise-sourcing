@@ -254,6 +254,10 @@ export default {
               item.nomiAmountTotal = this.getTousandNum(Number(item.nomiAmountTotal).toFixed(2))
               item.nomiAmountSvw = this.getTousandNum(Number(item.nomiAmountSvw).toFixed(2))
               let start = item.hisPartsList.length
+              item.hisPartsList = item.hisPartsList.map(a => {
+                a.nomiAmount = this.getTousandNum(Number(a.nomiAmount).toFixed(2))
+                return a
+              })
               item.hisPartsList.length = 10
               item.hisPartsList.fill({carTypeProName: "", nomiAmount: ''}, start, 10)
               return item

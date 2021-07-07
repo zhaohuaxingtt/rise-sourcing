@@ -338,7 +338,11 @@ export default {
             })
             tableListData = tableListData.concat(a)
           })
-          this.tableListData = tableListData
+          this.tableListData = tableListData.map(item => {
+            item.budgetAmount = Number(item.budgetAmount).toFixed(2)
+            item.refMoldAmount = Number(item.refMoldAmount).toFixed(2)
+            return item
+          })
           this.tableListDataClone = cloneDeep(this.tableListData)
         } else {
           iMessage.error(result);
@@ -438,7 +442,7 @@ export default {
                   name: 'contingency',
                   type: 'bar',
                   stack: 'total',
-                  color: '#73A1F6',
+                  color: '#2662F3',
                   barWidth: 40,
                   label: {
                     show: true,
@@ -456,7 +460,7 @@ export default {
                   name: 'aekoValue',
                   type: 'bar',
                   stack: 'total',
-                  color: '#2662F3',
+                  color: '#73A1F6',
                   label: {
                     show: true,
                     textStyle: {
