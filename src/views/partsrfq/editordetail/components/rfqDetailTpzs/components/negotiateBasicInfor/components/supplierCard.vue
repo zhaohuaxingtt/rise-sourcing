@@ -7,7 +7,7 @@
 -->
 <template>
   <div>
-    <div :class="tableData.length<3?'':'ben'">
+    <div class="scroll">
       <iCard class="right margin-bottom5" v-for="(item,index) in tableData" :key="index">
         <div class="flex">
           <icon class="icon-s" name="iconpilianggongyingshangzonglan" symbol></icon>
@@ -75,8 +75,9 @@ export default {
   color: #7e84a3;
   margin-bottom: 8px;
 }
-.ben {
-  overflow: scroll;
+.scroll {
+  width: 100%;
+  overflow: auto;
   overflow-x: hidden;
   z-index: 5;
   height: 58.3125rem;

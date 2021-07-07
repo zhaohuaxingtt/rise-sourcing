@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-06-16 20:44:29
- * @LastEditTime: 2021-07-06 14:29:18
+ * @LastEditTime: 2021-07-07 10:55:30
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\analysisTool\index.vue
@@ -38,7 +38,7 @@ export default {
   data () {
     return {
       editMode: false, //模式， 0：正常模式 1：编辑模式
-      rfqNo: '123123',    //rfq编号
+      rfqNo: null,    //rfq编号
       round: null,        //round
       searchData: null,
       backUpData: [],

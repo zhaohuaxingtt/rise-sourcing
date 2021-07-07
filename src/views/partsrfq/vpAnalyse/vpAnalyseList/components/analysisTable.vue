@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-06-16 20:44:29
- * @LastEditTime: 2021-07-02 10:47:50
+ * @LastEditTime: 2021-07-07 10:14:05
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\analysisTool\components\analysisTable.vue
@@ -48,7 +48,9 @@
               </el-col>
               <el-col :span="6">
                 <span v-if="scope.row.type == $t('TPZS.SCHEME_TYPE')">
-                  <span class="number">{{scope.row.reportCount}}</span>
+                  <span class="number">
+                    <p>{{scope.row.reportCount}}</p>
+                  </span>
                   <icon class="numberIcon"  style="{font-size:24px}" symbol name="iconwenjianshuliangbeijing"></icon>
                 </span>
               </el-col>
@@ -140,14 +142,13 @@
 <script>
 import {icon, iPagination, iInput, iSelect} from 'rise'
 import {getVpAnalysisDataList, fetchStaick, fetchEdit, fetchDel} from '@/api/partsrfq/vpAnalysis/vpAnalysisList'
-import tableList from '@/components/ws3/commonTable';
 import {iMessage} from '@/components';
 import {pageMixins} from '@/utils/pageMixins';
 import reportPreview from './reportPreview'
 export default {
   name: 'analysisTable',
   mixins: [pageMixins],
-  components: {icon, iPagination, iInput, iSelect, tableList, reportPreview},
+  components: {icon, iPagination, iInput, iSelect, reportPreview},
   props: {
     editMode: {
       type: Boolean,
@@ -316,6 +317,7 @@ export default {
       color: #fff;
       font-size: 10px;
       z-index: 1;
+      width: 20px;
     }
     .numberIcon {
       position: absolute;
