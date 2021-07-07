@@ -87,14 +87,14 @@ export default { //
 
         // 获取目标采购员以及目标LINE的人员list
         getMemberList(){
-            // tagId: 4 专业采购员，10 前期采购员
+            // tagId: 4 专业采购员，9 前期采购员
            getBuyers({tagId:4}).then((res)=>{
                const { code,data=[] } = res;
                if(code ==200){
                    this.linieList = data;
                }
             })
-            getBuyers({tagId:10}).then((res)=>{
+            getBuyers({tagId:9}).then((res)=>{
                 const { code,data=[] } = res;
                if(code ==200){
                    this.cfList = data;

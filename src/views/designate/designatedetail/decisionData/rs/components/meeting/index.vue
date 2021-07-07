@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:17:25
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-05 10:35:09
+ * @LastEditTime: 2021-07-06 18:00:29
  * @Description: 上会/备案RS单
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\rs\components\meeting\index.vue
 -->
@@ -70,7 +70,7 @@
         </div>
       </div>
     </iCard>
-    <iCard title="Prototype Cost List" class="margin-top20" v-if='PrototypeList.length > 5'>
+    <iCard title="Prototype Cost List" class="margin-top20" v-if='!showSignatureForm && PrototypeList.length > 5'>
       <el-table :data='PrototypeList'>
         <template v-for="(items,index) in prototypeTitleList">
           <el-table-column :key="index" :prop="items.props" align="center" :label="language(items.i18nKey,items.i18nName)"></el-table-column>

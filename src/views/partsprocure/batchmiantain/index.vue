@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 15:12:41
- * @LastEditTime: 2021-07-05 15:49:38
+ * @LastEditTime: 2021-07-06 12:30:47
  * @LastEditors: Please set LastEditors
  * @Description: 零件采购项目批量维护界面
  * @FilePath: \front-web\src\views\partsprocure\batchmiantain\index.vue
@@ -55,7 +55,7 @@
         <el-form-item :label="$t('LK_LINIEBUMEN')">
           <iSelect :placeholder="$t('LK_QINGXUANZE')" v-model="batch.linieDept">
             <el-option
-              :value="item.id"
+              :value="item.code"
               :label="item.name"
               v-for="(item, index) in fromGroup.LINIE_DEPT"
               :key="index"
@@ -106,7 +106,7 @@
             v-model="batch.procureFactory"
           >
             <el-option
-              :value="item.id"
+              :value="item.code"
               :label="item.name"
               v-for="(item, index) in fromGroup.PURCHASE_FACTORY"
               :key="index"
@@ -116,7 +116,7 @@
         <el-form-item :label="$t('LK_DANWEI')">
           <iSelect :placeholder="$t('LK_QINGXUANZE')" v-model="batch.unit">
             <el-option
-              :value="item.id"
+              :value="item.code"
               :label="item.name"
               v-for="(item, index) in fromGroup.UNIT"
               :key="index"
@@ -346,15 +346,17 @@ export default {
       });
     },
     pushKey() {
+      const factoryItems = this.fromGroup.PURCHASE_FACTORY.find(items=>items.code == this.batch.procureFactory)
       this.batch.stuffName = this.stuff.stuffName;
       this.batch.stuffCode = this.stuff.stuffCode;
       this.batch.stuffId = this.stuff.id;
       this.batch.cartypeProjectZh = this.cartypeProject.name;
       this.batch.cartypeProjectNum = this.cartypeProject.code;
       this.batch.linieName = this.linie.name;
-      this.batch.linieNum = this.linie.id;
+      this.batch.linieNum = this.linie.code;
       this.batch.categoryCode = this.categoryObj.categoryCode?this.categoryObj.categoryCode:'';
       this.batch.categoryName = this.categoryObj.categoryNameZh?this.categoryObj.categoryNameZh:'';
+      this.batch['procureFactoryName'] = factoryItems?factoryItems.name:''
     },
     // 重置采购信息数据
     reset() {
