@@ -26,9 +26,9 @@ export const supplierTableTitle = [
   { props: 'pupplierProductionPlace', name: '所在地', key: 'TPZS.SZD', },
   { props: 'isSelectMbdl', name: '是否MBDL', key: 'TPZS.SFMBDL', },
   { props: 'quotationStatusCode', name: '报价状态', key: 'TPZS.BJZT', },
-  { props: 'description', name: 'MQ打分', key: 'TPZS.MQDF', },
-  { props: 'description', name: 'PL打分', key: 'TPZS.PLDF', },
-  { props: 'description', name: 'EP打分', key: 'TPZS.EPDF', },
+  { props: 'mqRate', name: 'MQ打分', key: 'TPZS.MQDF', },
+  { props: 'plRate', name: 'PL打分', key: 'TPZS.PLDF', },
+  { props: 'epRate', name: 'EP打分', key: 'TPZS.EPDF', },
 ]
 export const fixedRecordTableTitle = [
   { props: 'partNum', name: '零件号', key: 'TPZS.LJH', },

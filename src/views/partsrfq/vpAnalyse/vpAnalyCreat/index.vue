@@ -9,7 +9,7 @@
   <iPage>
     <div class="header">{{$t('TPZS.VPFX')}}{{!!$route.query.rfqId?'-'+$route.query.rfqId:''}}
       <div>
-        <iButton>{{$t('TPZS.VPFXK')}}</iButton>
+        <iButton @click="handleAnalysis">{{$t('TPZS.VPFXK')}}</iButton>
         <icon class="icon-x" name='icondatabaseweixuanzhong' symbol></icon>
       </div>
     </div>
@@ -47,8 +47,10 @@ export default {
   methods: {
     handleCurrentChange(data) {
       this.$refs.partsTable.getTableList(data)
+    },
+    handleAnalysis() {
+      this.$router.push({ path: '/sourcing/partsrfq/assistant', query: { id: this.$route.query.rfqId, round: this.$route.query.round } })
     }
-
   },
   // 生命周期 - 创建完成（可以访问当前this实例）
   created() {

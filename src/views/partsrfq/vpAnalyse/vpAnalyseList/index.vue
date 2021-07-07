@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-06-16 20:44:29
- * @LastEditTime: 2021-07-02 10:51:38
+ * @LastEditTime: 2021-07-06 14:29:18
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\analysisTool\index.vue
@@ -39,12 +39,14 @@ export default {
     return {
       editMode: false, //模式， 0：正常模式 1：编辑模式
       rfqNo: '123123',    //rfq编号
+      round: null,        //round
       searchData: null,
       backUpData: [],
     }
   },
   created() {
     this.rfqNo = this.$route.query.id ? this.$route.query.id : this.rfqNo
+    this.round = this.$route.query.round ? this.$route.query.round : this.round
   },
   methods: {
     //点击编辑/取消按钮，进入/退出编辑模式
@@ -66,7 +68,8 @@ export default {
       this.$router.push({
         path: targetUrl,
         query: {
-          rfqId: this.rfqNo
+          rfqId: this.rfqNo,
+          round: this.round
         }
       })
     },

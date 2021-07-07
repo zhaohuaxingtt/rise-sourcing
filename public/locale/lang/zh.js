@@ -1375,6 +1375,7 @@
             'SEARCH_PART': '请搜索零件号', //请搜索零件号
             'PART_REQUIRE_MESSAGE': '零件号不能为空',//零件号不能为空
             'PART_UNIQUE_MESSAGE': '零件号不能重复', //零件号不能重复
+            'YXLJZDZNTJYBT': '已选零件最多只能添加100条', //已选零件最多只能添加100条
             'ZUIXINDINGDIANDANJIA': '最新定点单价', //最新定点单价
             'MUBIAODANJIA': '目标单价', //目标单价
             'CHANLIANGLIANG': '产量（辆）', //产量（辆）

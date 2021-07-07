@@ -6,7 +6,7 @@
  * @Descripttion: your project
 -->
 <template>
-  <iCard style="height:870px" :title="$t('TPZS.CXJHCLYXSLJCLFX')">
+  <iCard style="min-height:870px" :title="$t('TPZS.CXJHCLYXSLJCLFX')">
     <template slot="header-control">
       <div class="header">
         <div class="flex-between-center-center margin-right40">
