@@ -7,18 +7,18 @@
 -->
 <template>
   <div>
-    <div :class="tableData.length<3?'':'ben'">
+    <div class="scroll">
       <iCard class="right margin-bottom5" v-for="(item,index) in tableData" :key="index">
         <div class="flex">
           <icon class="icon-s" name="iconpilianggongyingshangzonglan" symbol></icon>
-          <span>{{item.name}}</span>
+          <span>{{item.supplierName}}</span>
         </div>
-        <iLabel class="margin-top8 title" :label="$t('LK_CHEXINGXIANGMU')+':'"></iLabel>
-        <div>{{}}</div>
-        <iLabel class="margin-top8 title" :label="$t('TPZS.SQDZDZ')"></iLabel>
-        <div>{{}}</div>
-        <iLabel class="margin-top8 title" :label="$t('TPZS.ZXSE')"></iLabel>
-        <div>{{}}</div>
+        <iLabel class="margin-top8 title1" :label="$t('LK_CHEXINGXIANGMU')+':'"></iLabel>
+        <div>{{item.factoryName}}</div>
+        <iLabel class="margin-top8 title1" :label="$t('TPZS.SQDZDZ')"></iLabel>
+        <div>{{item.address}}</div>
+        <iLabel class="margin-top8 title1" :label="$t('TPZS.ZXSE')"></iLabel>
+        <div>{{item.toAmount}}</div>
       </iCard>
     </div>
   </div>
@@ -28,28 +28,23 @@
 import { iCard, icon, iLabel } from "rise";
 export default {
   components: { iCard, icon, iLabel },
+  props: {
+    mapListData: {
+      type: String, default: () => {
+        return {}
+      }
+    }
+  },
+  watch: {
+    mapListData: {
+      handler(data) {
+        this.tableData = data.listVO
+      }
+    }
+  },
   data() {
     return {
-      tableData: [
-        {
-          name: '供应商'
-        },
-        {
-          name: ''
-        },
-        {
-          name: ''
-        },
-        {
-          name: ''
-        },
-        {
-          name: ''
-        },
-        {
-          name: ''
-        },
-      ]
+      tableData: []
     }
   },
   created() {
@@ -64,6 +59,7 @@ export default {
 
 <style lang="scss" scoped>
 .right {
+  text-align: left;
   width: 339px;
   // height: 251px;
   /* right: 0px;
@@ -75,11 +71,13 @@ export default {
 .flex {
   align-items: center;
 }
-.title {
+.title1 {
   color: #7e84a3;
+  margin-bottom: 8px;
 }
-.ben {
-  overflow: scroll;
+.scroll {
+  width: 100%;
+  overflow: auto;
   overflow-x: hidden;
   z-index: 5;
   height: 58.3125rem;

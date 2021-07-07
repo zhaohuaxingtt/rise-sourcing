@@ -1,8 +1,8 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 15:12:41
- * @LastEditTime: 2021-06-18 16:33:15
- * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-07-05 15:49:38
+ * @LastEditors: Please set LastEditors
  * @Description: 零件采购项目批量维护界面
  * @FilePath: \front-web\src\views\partsprocure\batchmiantain\index.vue
 -->
@@ -45,7 +45,7 @@
         <el-form-item :label="$t('LK_LINGJIANCAIGOUXIANGMULEIXING')">
           <iSelect :placeholder="$t('LK_QINGXUANZE')" v-model="batch.type">
             <el-option
-              :value="item.id"
+              :value="item.code"
               :label="item.name"
               v-for="(item, index) in fromGroup.PART_PROJECT_TYPE"
               :key="index"
@@ -256,7 +256,7 @@ export default {
         type: "", //零件采购项目类型
         unit: "", //单位
         purchaseProjectIds: [], //采购项目id
-        categoryId: {}, // 材料组id
+        categoryId: '', // 材料组id
       },
       stuff: {},
       categoryObj: {},
@@ -298,7 +298,7 @@ export default {
     // },
     // 更新材料组值域
     updateCategoryGroup(group) {
-      this.categoryObj = null
+      this.categoryObj = {}
       this.resetStuff()
       this.category = group
     },
@@ -353,8 +353,8 @@ export default {
       this.batch.cartypeProjectNum = this.cartypeProject.code;
       this.batch.linieName = this.linie.name;
       this.batch.linieNum = this.linie.id;
-      this.batch.categoryCode = this.categoryObj.categoryCode;
-      this.batch.categoryName = this.categoryObj.categoryNameZh;
+      this.batch.categoryCode = this.categoryObj.categoryCode?this.categoryObj.categoryCode:'';
+      this.batch.categoryName = this.categoryObj.categoryNameZh?this.categoryObj.categoryNameZh:'';
     },
     // 重置采购信息数据
     reset() {

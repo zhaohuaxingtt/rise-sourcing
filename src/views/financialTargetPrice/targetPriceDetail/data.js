@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-23 13:46:59
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-03 13:49:11
+ * @LastEditTime: 2021-07-05 16:04:52
  * @Description: 
  * @FilePath: \front-web\src\views\financialTargetPrice\targetPriceDetail\data.js
  */
@@ -26,7 +26,7 @@ export const historyTableTitle = [
   {props:'ckdDuty',name:'CKD Duty(%)', key: "CKDDUTY", tooltip: true, width: 120},
   {props:'ckdExwork',name:'CKD Ex-work', key: "CKDEXWORK", tooltip: true, width: 120},
   {props:'applyDate',name:'申请日期', key: "SHENQINGRIQI", tooltip: true, width: 120},
-  {props:'applyStatus',name:'有效状态', key: "YOUXIAOZHUANGTAI", tooltip: true, width: 120},
+  {props:'valid',name:'有效状态', key: "YOUXIAOZHUANGTAI", tooltip: true, width: 120},
 ]
 
 export const detailList = [
@@ -46,9 +46,9 @@ export const detailList = [
   {value: 'skdAPrice', label: 'CF SKD_A Target', type: 'input', number: true, i18n_label: 'CFSKDATARGET', editable: true},
   {value: 'ckdExwork', label: 'CF CKD Ex-work', type: 'input', number: true, i18n_label: 'CFCKDEXWORK', editable: true},
   {value: 'ckdExchangeRate', label: '汇率', type: 'input', i18n_label: 'HUILV',},
-  {value: 'lcTcCurrencyId', label: 'LC货币', type: 'select', i18n_label: 'LCHUOBI',selectOption: '', editable: true},
-  {value: 'skdTcCurrencyId', label: 'SKD货币', type: 'select', i18n_label: 'SKDHUOBI',selectOption: '', editable: true},
-  {value: 'ckdTcCurrencyId', label: 'CKD货币', type: 'select', i18n_label: 'CKDHUOBI',selectOption: '', editable: true},
+  {value: 'lcTcCurrencyId', label: 'LC货币', type: 'select', i18n_label: 'LK_LCHUOBI',selectOption: '', editable: true},
+  {value: 'skdTcCurrencyId', label: 'SKD货币', type: 'select', i18n_label: 'LK_SKDHUOBI',selectOption: '', editable: true},
+  {value: 'ckdTcCurrencyId', label: 'CKD货币', type: 'select', i18n_label: 'LK_CKDHUOBI',selectOption: '', editable: true},
   {value: 'rwPrice', label: 'RW价', type: 'input', i18n_label: 'RWJIA',},
   {value: 'modifyReason', label: '备注', type: 'input', i18n_label: 'BEIZHU',row: 2, editable: true}
 ]
@@ -57,8 +57,8 @@ export const designateSearchList = [
   {value: 'fsNum', label: 'FsNr/GsNr', type: 'input', i18n_label: 'FSNRGSNR',},
   {value: 'partName', label: '零件名称', type: 'input', i18n_label: 'LINGJIANMINCHENG',},
   {value: 'partNum', label: '零件号', type: 'input', i18n_label: 'LINGJIANHAO',},
-  {value: 'buyerId', label: '询价采购员', type: 'select', i18n_label: 'XUNJIACAIGOUYUAN',selectOption: ''},
-  {value: 'linieId', label: 'LINIE', type: 'select', i18n_label: 'LINIE',selectOption: 'LINIE'},
+  {value: 'buyerName', label: '询价采购员', type: 'input', i18n_label: 'XUNJIACAIGOUYUAN',selectOption: ''},
+  {value: 'linieName', label: 'LINIE', type: 'input', i18n_label: 'LINIE',selectOption: 'LINIE'},
   {value: 'carTypeName', label: '车型项目', type: 'select', i18n_label: 'CHEXINGXIANGMU',selectOption: 'CAR_TYPE_PRO'},
   {value: 'svwNum', label: 'SVW号', type: 'input', i18n_label: 'SVWHAO',},
   {value: 'tempNum', label: '临时号', type: 'input', i18n_label: 'LINSHIHAO',},
@@ -67,7 +67,7 @@ export const designateSearchList = [
   {value: 'nominateTime', label: '定点日期起止', type: 'dateRange', i18n_label: 'DINGDIANRIQIQIZHI'},
   {value: 'priceStatus', label: '价格状态', type: 'select', i18n_label: 'JIAGEZHUANGTAI',selectOption:'PRICE_STATE'},
   {value: 'partProjectType', label: '零件采购项目类型', type: 'select', i18n_label: 'LINGJIANCAIGOUXIANGMULEIXING',selectOption:'PART_PROJECT_TYPE'},
-  {value: 'carTypeCode	', label: '车型', type: 'select', i18n_label: 'CHEXING',selectOption:'cartTypeOptions'}
+  {value: 'carTypeCode', label: '车型', type: 'select', i18n_label: 'CHEXING',selectOption:'cartTypeOptions'}
 ]
 
 export const designateTableList = [

@@ -8,6 +8,7 @@ import crown from '@/assets/images/bob.png'
 import lv from '@/assets/images/lv.png'
 import ball from '@/assets/images/ball.png'
 export default {
+  
     props:{
         chartData:{
             type:Array,
@@ -115,7 +116,6 @@ export default {
                   name: '\n\n\n车型项目名称\n\nCBD报价时间',
                   axisLabel:{
                     color:'#7E84A3',
-
                   },
                   axisTick:{
                     show:false
@@ -244,7 +244,7 @@ export default {
                     itemStyle: {
                       barBorderRadius:[5, 5, 0, 0]
                     },
-                    barWidth:'30%',
+                    barWidth:50,
                     data:[...dataList1[row],this.sum(minList)],
                   })
                 this.dataArray.push({
@@ -283,7 +283,7 @@ export default {
                       barBorderRadius:[5, 5, 0, 0],
                       color:'#fff',
                     },
-                    barWidth:30,
+                    barWidth:50,
                     data:[...dataList0,minList[minList.length-1]]
                   })
               })
@@ -298,7 +298,7 @@ export default {
                       show: true,
                       position: 'top',
                       color:'#7E84A3',
-                      fontSize: 18,
+                      fontSize: 14,
                       align: 'center',
                       formatter: (params) =>{
                         // console.log(params)
@@ -356,7 +356,7 @@ export default {
                     itemStyle: {
                       barBorderRadius:[5, 5, 0, 0]
                     },
-                    barWidth:'30%',
+                    barWidth:50,
                     data:this.labelArray.map((i)=>0)
                 })
                 // console.log(this.dataArray)

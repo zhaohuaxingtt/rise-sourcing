@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-22 14:42:20
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-02 17:04:25
+ * @LastEditTime: 2021-07-05 17:49:36
  * @Description: 财务目标价公用表格
  * @FilePath: \front-web\src\views\financialTargetPrice\components\tableList.vue
 -->
@@ -58,7 +58,7 @@
           <!------------------审批状态列--------------------------->
           <span v-else-if="items.props === 'approveStatus'">{{scope.row.approveStatus ? scope.row.approveStatus.desc || scope.row.approveStatus : ''}}</span>
           <!------------------正常--------------------------->
-          <span v-else>{{scope.row[items.props]}}</span>
+          <span v-else>{{scope.row[items.props] ? scope.row[items.props].desc || scope.row[items.props] : ''}}</span>
         </template>
       </el-table-column>
     </template>

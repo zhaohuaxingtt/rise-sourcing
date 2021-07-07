@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 11:38:57
- * @LastEditTime: 2021-06-30 10:59:18
+ * @LastEditTime: 2021-07-05 11:06:27
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails\table1.vue
@@ -10,8 +10,8 @@
   <div>
     <el-table
       ref="treeList"
-      :data="tableList.dataList"
-      :tree-props="{ hasChildren: 'hasChildren', children: 'children' }"
+      :data="tableList.element"
+      :tree-props="{ hasChildren: 'hasChildren', children: 'child' }"
       :row-key="getRowKey"
       :expand-row-keys="expends"
       v-loading="loading"
@@ -22,30 +22,31 @@
       @cell-dblclick="cellBbClick"
       @cell-click="cellClick"
       @expand-change="expandChange"
+
     >
       <!-- <el-table-column label="" prop="title" width="250"> </el-table-column> -->
       <el-table-column
-        v-for="i in tableList.headerList"
-        :key="i.id"
-        :label="i.label"
-        :prop="i.prop"
+        v-for="i in tableList.title"
+        :key="i.value"
+        :label="i.title"
+        :prop="i.label"
         align="center"
-        :width="i.prop=='title'?'200':''"
+        :width="i.prop == 'title' ? '200' : ''"
       >
-        <el-table-column
-          v-for="item in i.children"
-          :key="item.id"
-          :label="item.label"
-          :prop="item.prop"
-          align="center"
-          :show-header="false"
-        >
-        <template>
-          
-        </template>
-        </el-table-column>
-        <template slot-scope="scope">
-          <span v-if="testing(scope.row[i.prop])" class="flex">
+        <!-- <template>
+          <el-table-column
+            v-for="item in i.children"
+            :key="item.id"
+            :label="item.label"
+            :prop="item.prop"
+            align="left"
+            :render-header="render"
+          >
+          </el-table-column>
+        </template> -->
+
+        <!-- <template slot-scope="scope">
+          <span v-if="testing(scope.row[i.prop])" >
             <span
               v-for="(item, index) in scope.row[i.prop]"
               :key="item.id"
@@ -58,7 +59,7 @@
             <span  :class="checkClass(item, scope, index)"
               @click="clickCol(item, scope, index)">{{ scope.row[i.prop] }}</span>
           </span>
-        </template>
+        </template> -->
       </el-table-column>
     </el-table>
   </div>
@@ -81,40 +82,7 @@ export default {
       },
     },
   },
-  computed: {
-    testing(val) {
-      return function (val) {
-        if (val instanceof Array) {
-          return true;
-        }
-      };
-    },
-    checkClass(a, b, c) {
-      return function (a, b, c) {
-        const id = b.row.id;
-        let check = this.checkList.findIndex((item) => {
-          return item.index === c;
-        });
-        if (check > -1) {
-          switch (id) {
-            case "1-2-1":
-              console.log(id);
-              return "top";
-            case "1-2-7":
-              console.log(id);
-              return "bottom";
-            case "1-2":
-              console.log(id);
-              return "nocolor";
-            default:
-              console.log(id);
-              return "middle";
-          }
-        }
-        return "nocolor";
-      };
-    },
-  },
+  computed: {},
   watch: {
     expends: {
       handler(val) {
@@ -122,13 +90,39 @@ export default {
           this.$refs.treeList.expandRowKeys = Array.from(val);
       },
     },
+    "tableList.headerList": {
+      handler(val) {
+        this.$set(this.tableList, val);
+      },
+      immediate: true,
+      deep: true,
+    },
+  },
+  mounted(){
+    console.log(this.tableList,2222222222)
   },
   data() {
     return {
       checkList: [],
+      hasChildren:true
     };
   },
   methods: {
+    objectSpanMethod({ row, column, rowIndex, columnIndex }) {
+      if ( rowIndex === 0) {
+        if (columnIndex % 2 === 0) {
+          return {
+            rowspan: 0,
+            colspan: 3,
+          };
+        } else {
+          return {
+            rowspan: 0,
+            colspan: 0,
+          };
+        }
+      }
+    },
     addclass(row) {
       var that = this;
       if (row.columnIndex == that.num) {
@@ -137,18 +131,16 @@ export default {
     },
     clickCol(a, b, c) {
       const i = this.checkList.findIndex((item) => item.index == c);
-      console.log("i", i);
       if (i > -1) this.checkList.splice(i, i + 1);
       else
         this.checkList.push({
           id: b.row.id,
           index: c,
         });
-      console.log("checkList", this.checkList);
     },
 
     getRowKey(row) {
-      return row.id;
+      return row.code;
     },
     render(h, { column, $index }) {},
     rowClick(row, event, column) {

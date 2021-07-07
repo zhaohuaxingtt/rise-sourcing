@@ -22,8 +22,8 @@
                 </template>
                 <!-- 状态为完成时不显示 -->
                 <template v-if="detailInfo.status!='COMPLETIED'">
-                    <iButton :loading="btnLoading.lineSure"  @click="lineSure">{{language('LK_LINEQUEREN','LINIE确认')}}</iButton>
-                    <iButton :loading="btnLoading.lineBack" @click="lineBack">{{language('LK_LINETUIHUI','LINIE退回')}}</iButton>
+                    <iButton :loading="btnLoading.lineSure"  @click="lineSure">{{language('LK_LINIEQUEREN','LINIE确认')}}</iButton>
+                    <iButton :loading="btnLoading.lineBack" @click="lineBack">{{language('LK_LINIETUIHUI','LINIE退回')}}</iButton>
                 </template>
                 <iButton :loading="btnLoading.complete" v-if="radioType=='NonStandard'" @click="complete">{{language('LK_WANCHENGDINGDIANXIN','完成定点信')}}</iButton>
                 <iButton @click="downloadFiles">{{language('LK_DAOCHUBIAOZHUNDINGDIANXIN','导出标准定点信')}}</iButton>

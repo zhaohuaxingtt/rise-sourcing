@@ -3,8 +3,8 @@
     <iFormItem>
       <!--        供应商-->
       <iLabel :label="$t('TPZS.GONGYINGSHANG')" slot="label"/>
-      <iSelect v-model="dataInfo.supplierName">
-        <el-option :value="1" :label="1"></el-option>
+      <iSelect v-model="dataInfo.supplierName" @change="handleSupplierChange">
+        <!--        <el-option :value="1" :label="1"></el-option>-->
       </iSelect>
     </iFormItem>
     <iFormItem>
@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import {iFormGroup, iFormItem, iLabel, iText, iSelect} from 'rise';
+import { iFormGroup, iFormItem, iLabel, iText, iSelect } from 'rise'
 
 export default {
   components: {
@@ -40,14 +40,19 @@ export default {
     dataInfo: {
       type: Object,
       default: () => {
-        return {};
+        return {}
       },
     },
   },
-  data() {
-    return {};
+  data () {
+    return {}
   },
-};
+  methods: {
+    handleSupplierChange (val) {
+      this.$emit('handleSupplierChange', val)
+    },
+  },
+}
 </script>
 
 <style scoped>

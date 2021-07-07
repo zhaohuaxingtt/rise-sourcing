@@ -253,6 +253,13 @@ export default {
               item.index = index
               item.nomiAmountTotal = this.getTousandNum(Number(item.nomiAmountTotal).toFixed(2))
               item.nomiAmountSvw = this.getTousandNum(Number(item.nomiAmountSvw).toFixed(2))
+              let start = item.hisPartsList.length
+              item.hisPartsList = item.hisPartsList.map(a => {
+                a.nomiAmount = this.getTousandNum(Number(a.nomiAmount).toFixed(2))
+                return a
+              })
+              item.hisPartsList.length = 10
+              item.hisPartsList.fill({carTypeProName: "", nomiAmount: ''}, start, 10)
               return item
             });
             if(this.tableListData && this.tableListData.length > 0){
@@ -261,7 +268,7 @@ export default {
                 let key = index + 1
                 temp = temp.concat([
                   {
-                    props: 'categoryNameZh' + key,
+                    props: 'carTypeProName' + key,
                     name: `车型项目${key}名称`,
                     key: `车型项目${key}名称`,
                     width: 200,
@@ -281,7 +288,7 @@ export default {
               this.tableListData = this.tableListData.map(a => {
                 a.hisPartsList.map((b, index) => {
                   let key = index + 1
-                  a['categoryNameZh' + key] = b.categoryNameZh
+                  a['carTypeProName' + key] = b.carTypeProName
                   a['nomiAmount' + key] = b.nomiAmount
                 })
                 return a
@@ -309,7 +316,8 @@ export default {
 
     hanldeSave(){
       this.tableLoading = true;
-      save(this.tableListData.map(item => {
+      let tableListData = cloneDeep(this.tableListData)
+      save(tableListData.map(item => {
         item.nomiAmountTotal = Number(this.delcommafy(item.nomiAmountTotal))
         return item
       }))

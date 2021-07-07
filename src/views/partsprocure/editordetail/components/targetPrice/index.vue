@@ -269,10 +269,14 @@ import { cloneDeep } from 'lodash'
 			// 保存 ,申请财务目标价
 			save(type) {
 				let targetprice = {
-					...this.targetprice.cfTargetPriceDetail
+					id: this.targetprice.cfTargetPriceDetail.applyId,
+					purchasingProjectId: this.purchaseProjectId,
+					ckdDuty: this.targetprice.cfTargetPriceDetail.ckdDuty,
+					ckdExwork: this.targetprice.cfTargetPriceDetail.ckdExwork,
+					ckdLanded: this.targetprice.cfTargetPriceDetail.ckdLanded
 				};
 				savePriceDetail(targetprice).then((res) => {
-					if (res.data) {
+					if (res.result) {
 						iMessage.success(this.$t('LK_CAOZUOCHENGGONG'))
 						this.getTargetPriceDetail()
 						this.targePriceDetail()

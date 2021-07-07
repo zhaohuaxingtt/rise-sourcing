@@ -85,15 +85,15 @@ export default {
       form: {
         rfqName: '',
         categoryName: '',
-        rfqName: '',//fs
-        fop: '',
+        buyerName: '',//fs
+        ep: '',
         mq: '',
         pl: '',
         cf: '',
-        rfqName: '',//FOP情况
+        tpGradeStatus: '',//FOP情况
         mqGradeStatus: '',
         plStatus: '',
-        rfqName: '',//cf情况
+        targetgradestatus: '',//cf情况
       }
     }
   },

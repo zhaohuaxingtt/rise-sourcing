@@ -284,19 +284,14 @@ export default {
                 (item.bmAmount ? item.bmAmount.toFixed(2) : 0),
                 (item.paymentAmount ? item.paymentAmount.toFixed(2) : 0)
               ]
+              let chartData_commonSourcing = [
+                (item.csGeneralBudget ? item.csGeneralBudget.toFixed(2) : 0),
+                (item.csFixedAmount ? item.csFixedAmount.toFixed(2) : 0),
+                (item.csBmAmount ? item.csBmAmount.toFixed(2) : 0),
+                (item.csPaymentAmount ? item.csPaymentAmount.toFixed(2) : 0)
+              ]
               const vm1 = echarts().init(document.getElementById("chart" + index));
               let option1 = {
-                tooltip: {
-                  // formatter: function (params) {//这里就是控制显示的样式
-                  //   if (params.seriesIndex == 0) {
-                  //     return 'JV Sourcing'
-                  //   } else if (params.seriesIndex == 1) {
-                  //     return 'Commom Sourcing'
-                  //   }
-                  // },
-                  backgroundColor: '#ffffff',
-                  extraCssText: 'color: #1B1D21; box-shadow: 0px 0px 20px rgba(27, 29, 33, 0.12);'
-                },
                 grid: {
                   left: '0%',
                   right: '0',
@@ -364,56 +359,128 @@ export default {
                   }
                 }]
               };
-              if(item.isCommonSourcing){
-                let chartData_commonSourcing = [
-                  (item.csGeneralBudget ? item.csGeneralBudget.toFixed(2) : 0),
-                  (item.csFixedAmount ? item.csFixedAmount.toFixed(2) : 0),
-                  (item.csBmAmount ? item.csBmAmount.toFixed(2) : 0),
-                  (item.csPaymentAmount ? item.csPaymentAmount.toFixed(2) : 0)
-                ]
-                option1.series[0].label.show = false
-                option1.series[0].itemStyle.normal.barBorderRadius = [0, 0, 0, 0]
-                option1.series.push({
-                  data: chartData_commonSourcing,
-                  type: 'bar',
-                  barWidth: 30,
-                  stack: 'total',
-                  label: {
-                    show: false,
+              let option2 = {
+                tooltip: {
+                  formatter: function (params) {//这里就是控制显示的样式
+                    if (params.seriesIndex == 0) {
+                      return `<div>JV Sourcing</div><div>${params.value}</div>`
+                    } else if (params.seriesIndex == 1) {
+                      return `<div>Commom Sourcing</div><div>${params.value}</div>`
+                    }
                   },
-                  itemStyle: {
-                    normal: {
-                      barBorderRadius: [5, 5, 0, 0],
-                      color: function (params) {
-                        let colorlist = ['#55C2D0','#87D4DE','#BBE7EC','#D4F8F7'];
-                        return colorlist[params.dataIndex];
-                      }
+                  backgroundColor: '#ffffff',
+                  extraCssText: 'color: #1B1D21; box-shadow: 0px 0px 20px rgba(27, 29, 33, 0.12);'
+                },
+                grid: {
+                  left: '0%',
+                  right: '0',
+                  bottom: '0%',
+                  top: '12%',
+                  containLabel: true
+                },
+                xAxis: {
+                  type: 'category',
+                  data: [this.$t("LK_ZONGYUSUAN"), this.$t("LK_DINGDIANJINE"), this.$t("LK_BMDAN"), this.$t("LK_FUKUAN")],
+                  axisTick: {
+                    show: false
+                  },
+                  axisLine: {
+                    lineStyle: {
+                      color: '#CDD4E2'
+                    }
+                  },
+                  axisLabel: {
+                    textStyle: {
+                      color: '#485465',
+                      fontSize: 10
+                    },
+                  },
+                },
+                yAxis: {
+                  type: 'value',
+                  axisTick: {
+                    show: false
+                  },
+                  axisLabel: {
+                    show: false
+                  },
+                  splitLine: {
+                    show: false
+                  },
+                  axisLine: {
+                    show: false
+                  },
+
+                },
+                series: [
+                  {
+                    name: 'JV Sourcing',
+                    data: chartData,
+                    type: 'bar',
+                    barWidth: 30,
+                    stack: 'total',
+                    label: {
+                      show: false
+                    },
+                    itemStyle: {
+                      normal: {
+                        label: false,
+                        barBorderRadius: [0, 0, 0, 0],
+                        color: function (params) {
+                          let colorlist = ['#1763F7', '#73A1FA', '#B0C5F5', '#CEE1FF'];
+                          return colorlist[params.dataIndex];
+                        }
+                      },
+                    }
+                  },
+                  {
+                    name: 'Commom Sourcing',
+                    data: chartData_commonSourcing,
+                    type: 'bar',
+                    barWidth: 30,
+                    stack: 'total',
+                    label: {
+                      show: false,
+                    },
+                    itemStyle: {
+                      normal: {
+                        label: false,
+                        barBorderRadius: [5, 5, 0, 0],
+                        color: function (params) {
+                          let colorlist = ['#55C2D0','#87D4DE','#BBE7EC','#D4F8F7'];
+                          return colorlist[params.dataIndex];
+                        }
+                      },
+                    }
+                  },
+                  {
+                    data: [0, 0, 0, 0],
+                    name: '',
+                    type: 'bar',
+                    stack: 'total',
+                    color: '#B3D0FF',
+                    label: {
+                      show: true,
+                      position: 'top',
+                      textStyle: {
+                        color: '#485465'
+                      },
+                      formatter: function(p){
+                        let dataIndex = p.dataIndex
+                        return _this.getTousandNum((Number(chartData[dataIndex]) + Number(chartData_commonSourcing[dataIndex])).toFixed(2))
+                      },
+                    },
+                    emphasis: {
+                      focus: 'series'
                     },
                   }
-                })
-                option1.series.push({
-                  name: '',
-                  type: 'bar',
-                  stack: 'total',
-                  color: '#B3D0FF',
-                  label: {
-                    show: true,
-                    position: 'top',
-                    textStyle: {
-                      color: '#485465'
-                    },
-                    formatter: function(p){
-                      let dataIndex = p.dataIndex
-                      return _this.getTousandNum((Number(chartData[dataIndex]) + Number(chartData_commonSourcing[dataIndex])).toFixed(2))
-                    },
-                  },
-                  emphasis: {
-                    focus: 'series'
-                  },
-                  data: [0, 0, 0, 0]
-                })
+                ]
+              };
+              if(item.isCommonSourcing){
+                vm1.setOption(option2);
+              } else {
+                vm1.setOption(option1);
               }
-              vm1.setOption(option1);
             })
           })
           this.loading = false
@@ -576,13 +643,13 @@ export default {
                 };
                 let option2 = {
                   tooltip: {
-                    // formatter: function (params) {//这里就是控制显示的样式
-                    //   if (params.seriesIndex == 0) {
-                    //     return 'JV Sourcing'
-                    //   } else if (params.seriesIndex == 1) {
-                    //     return 'Commom Sourcing'
-                    //   }
-                    // },
+                    formatter: function (params) {//这里就是控制显示的样式
+                      if (params.seriesIndex == 0) {
+                        return `<div>JV Sourcing</div><div>${params.value}</div>`
+                      } else if (params.seriesIndex == 1) {
+                        return `<div>Commom Sourcing</div><div>${params.value}</div>`
+                      }
+                    },
                     backgroundColor: '#ffffff',
                     extraCssText: 'color: #1B1D21; box-shadow: 0px 0px 20px rgba(27, 29, 33, 0.12);'
                   },
@@ -639,6 +706,7 @@ export default {
                       },
                       itemStyle: {
                         normal: {
+                          label: false,
                           barBorderRadius: [0, 0, 0, 0],
                           color: function (params) {
                             let colorlist = ['#1763F7', '#73A1FA', '#B0C5F5', '#CEE1FF'];
@@ -658,6 +726,7 @@ export default {
                       },
                       itemStyle: {
                         normal: {
+                           label: false,
                           barBorderRadius: [5, 5, 0, 0],
                           color: function (params) {
                             let colorlist = ['#55C2D0','#87D4DE','#BBE7EC','#D4F8F7'];

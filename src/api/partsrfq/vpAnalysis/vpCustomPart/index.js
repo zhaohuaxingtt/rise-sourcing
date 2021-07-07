@@ -1,7 +1,7 @@
 /*
  * @Author: youyuan
  * @Date: 2021-06-23 10:34:48
- * @LastEditTime: 2021-06-24 14:16:05
+ * @LastEditTime: 2021-06-30 16:26:41
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\api\partsrfq\vpCustomPart\index.js
@@ -23,5 +23,12 @@ export function fetchSaveCustomPart(params) {
       url: '/vpParts/partsCustomerList',
       method: 'PUT',
       data: params
+  })
+}
+
+export function getCustomPartListByPartId(params) {
+  return request({
+    url: '/vpParts/partsCustomer/'+params,
+    method: 'GET'
   })
 }

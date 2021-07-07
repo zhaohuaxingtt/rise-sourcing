@@ -249,7 +249,6 @@ export default {
     this.params = this.$route.query
     this.beginType = this.params.sourceStatus
     this.getModelProtitesPullDown()
-    this.getInvestmentVerisionList()
   },
   mounted() {
   },
@@ -316,10 +315,10 @@ export default {
         }
         if (Number(res[4].code) === 0) {
           this.carTypeBudget = res[4].data.carTypeBudget
-          console.log(this.carTypeBudget)
         } else {
           iMessage.error(result4);
         }
+        this.getInvestmentVerisionList()
         this.loadingiSearch = false
       }).catch(() => {
         this.loadingiSearch = false
@@ -339,7 +338,11 @@ export default {
             })
             tableListData = tableListData.concat(a)
           })
-          this.tableListData = tableListData
+          this.tableListData = tableListData.map(item => {
+            item.budgetAmount = Number(item.budgetAmount).toFixed(2)
+            item.refMoldAmount = Number(item.refMoldAmount).toFixed(2)
+            return item
+          })
           this.tableListDataClone = cloneDeep(this.tableListData)
         } else {
           iMessage.error(result);
@@ -350,6 +353,7 @@ export default {
       });
     },
     getInvestmentData() {
+      let _this = this
       this.headerLoading = true
       getInvestmentData({
         investmentVersionId: this.form['search.version'],
@@ -381,7 +385,6 @@ export default {
             const chart2 = echarts().init(document.getElementById("chart2"));
             const chart3 = echarts().init(document.getElementById("chart3"));
             const chart4 = echarts().init(document.getElementById("chart4"));
-             console.log(this.carTypeBudget)
 
              let option1 = {
               // tooltip: {
@@ -439,7 +442,7 @@ export default {
                   name: 'contingency',
                   type: 'bar',
                   stack: 'total',
-                  color: '#73A1F6',
+                  color: '#2662F3',
                   barWidth: 40,
                   label: {
                     show: true,
@@ -451,13 +454,13 @@ export default {
                   emphasis: {
                     focus: 'series'
                   },
-                   data: [totalValue]
+                   data: [this.carTypeBudget]
                 },
                 {
                   name: 'aekoValue',
                   type: 'bar',
                   stack: 'total',
-                  color: '#2662F3',
+                  color: '#73A1F6',
                   label: {
                     show: true,
                     textStyle: {
@@ -473,7 +476,7 @@ export default {
                       barBorderRadius: [5, 5, 0, 0],
                     }
                   },
-                  data: [this.carTypeBudget]
+                  data: [totalValue]
                 },
                 {
                   name: '',
@@ -847,7 +850,7 @@ export default {
               ]
             }
             option2.series[option2.series.length - 1].label.formatter = totalValue
-            option1.series[option1.series.length - 1].label.formatter = Number(totalValue + this.carTypeBudget).toFixed(2)
+            option1.series[option1.series.length - 1].label.formatter = (Number(totalValue) + Number(this.carTypeBudget)).toFixed(2)
             chart1.setOption(option1);
             chart2.setOption(option2);
             chart3.setOption(option3);

@@ -16,7 +16,7 @@
           :key="index"
         ></el-option>
       </iSelect>
-      <div @click="handleRefresh">
+      <div @click="handleRefresh" v-if="versionData.editFlag">
         <icon class="refreshIcon" symbol name="iconmojukanbanshuaxin" />
         <span class="refresh cursor">{{ $t('LK_SHUAXIN') }}</span>
       </div>
@@ -280,6 +280,7 @@ export default {
       tableLoading: false,
       clearEchart: false,
       noChangeTableListData: [], //未编辑数据
+      newVersionDate: '', //保存新版本年份日期
     };
   },
   created() {
@@ -548,12 +549,13 @@ export default {
         dataList: this.tableListData,
         dateStr: val
       };
+      this.newVersionDate = val;
       saveNewVersion(param).then(res => {
-        this.saveNewVersion = false;
         if (Number(res.code) === 0) {
           this.getVersionList();
           return iMessage.success(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
         } else {
+          this.saveNewVersion = false;
           return iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
         }
       }).catch((e) => {
@@ -576,19 +578,28 @@ export default {
         if (Number(res.code) === 0 && res.data.length > 0) {
           const currentYear = new Date().getFullYear();
           this.versionList = res.data;
-          this.versionList.map((item, index) => {
-            if (this.versionList.map(temp => temp.year).indexOf(item.year) == index) {
-              if (currentYear == item.year) {
+          //保存为新版本，取保存的新版本
+          if (this.saveNewVersion) {
+            this.versionList.map(item => {
+              if (this.newVersionDate == item.version.split("-")[0]) {
                 this.versionData = item;
               }
-            }
-            return item;
-          });
-          this.versionList.map(item => {
-            if (store.state.investmentAdmin.versionId == item.id) {
-              this.versionData = item; 
-            }
-          });
+            });
+            this.saveNewVersion = false;
+          } else {
+            this.versionList.map((item, index) => {
+              if (this.versionList.map(temp => temp.year).indexOf(item.year) == index) {
+                if (currentYear == item.year) {
+                  this.versionData = item;
+                }
+              }
+            });
+            this.versionList.map(item => {
+              if (store.state.investmentAdmin.versionId == item.id) {
+                this.versionData = item; 
+              }
+            });
+          }
           this.getMonthList();
         }
       });

@@ -9,7 +9,7 @@
   <iCard class="supplier-item" :title="$t('TPZS.PLGYSGL')" collapse>
     <div class="title">{{remark}}</div>
     <div class="title-btn">
-      <iButton>{{$t('TPZS.GYS360')}}</iButton>
+      <iButton @click="handleHerf">{{$t('TPZS.GYS360')}}</iButton>
       <iButton @click="handleRemark">{{$t('costanalysismanage.BeiZhu')}}</iButton>
     </div>
     <remarkDialog @getRemark="getRemark" :remark='remark' v-model="remarkDialog" />
@@ -59,6 +59,10 @@ export default {
       this.powerBiUrl()
   },
   methods: {
+    // go供应商360
+    handleHerf() {
+      window.location.href = 'http://rise-front-portal.apps.vmocp-dev.csvw.com/supplier/supplierList'
+    },
     // 获取备注
     async getRemark() {
       const res = await getRfqToRemark(this.$route.query.id)

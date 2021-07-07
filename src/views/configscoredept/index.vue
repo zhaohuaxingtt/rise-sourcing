@@ -122,12 +122,12 @@
                 :key="item.key"
               ></el-option>
             </iSelect>
-            <span v-else>{{ scope.row.isCheck }}</span>
+            <span v-else>{{ scope.row.isCheck | isCheckFilter }}</span>
           </template>
         </tableList>
       </div>
     </iCard>
-    <deptDialog :visible.sync="deptDialogVisible" @confrim="selectDeptNum" />
+    <deptDialog :visible.sync="deptDialogVisible" @confrim="selectDeptNum" :filterDeptNums="tableListData.map(item => item.rateDepartNum)" />
   </iPage>
 </template>
 
@@ -181,6 +181,16 @@ export default {
     this.getDictByCode()
     this.getRfqRateDeparts()
   },
+  filters: {
+    isCheckFilter(value) {
+      const map = {
+        0: "否",
+        1: "是"
+      }
+
+      return map[value] || value
+    }
+  },
   methods: {
     getDictByCode() {
       getDictByCode("score_dept")
@@ -202,7 +212,11 @@ export default {
     },
     getRfqRateDeparts() {
       this.loading = true
-      getRfqRateDeparts(this.form)
+
+      const form = {}
+      Object.keys(this.form).forEach(key => form[key] = this.form[key] || undefined)
+
+      getRfqRateDeparts(form)
       .then(res => {
         if (res.code == 200) {
           this.tableListData = Array.isArray(res.data) ? res.data : []
@@ -292,23 +306,29 @@ export default {
     handleDelete() {
       if (!this.multipleSelection.length) return iMessage.warn(this.language("QINGXUANZEXUYAOSHANCHUDESHUJU", "请选择需要删除的数据"))
 
-      this.deleteLoading = true
-      deleteRfqRateDeparts(
-        this.multipleSelection.map(item => item.id)
-      )
-      .then(res => {
-        const message = this.$i18n.locale === "zh" ? res.desZh : res.desEn
+      const ids = this.multipleSelection.filter(item => item.id).map(item => item.id)
+      if (ids.length) {
+        this.deleteLoading = true
+        deleteRfqRateDeparts(
+          ids
+        )
+        .then(res => {
+          const message = this.$i18n.locale === "zh" ? res.desZh : res.desEn
 
-        if (res.code == 200) {
-          iMessage.success(message)
-          this.getRfqRateDeparts()
-        } else {
-          iMessage.error(message)
-        }
+          if (res.code == 200) {
+            iMessage.success(this.language("SHANCHUCHENGGONG", "删除成功"))
+            this.tableListData = this.tableListData.filter(item => !this.multipleSelection.includes(item))
+          } else {
+            iMessage.error(message)
+          }
 
-        this.deleteLoading = false
-      })
-      .catch(() => this.deleteLoading = false)
+          this.deleteLoading = false
+        })
+        .catch(() => this.deleteLoading = false)
+      } else {
+        iMessage.success(this.language("SHANCHUCHENGGONG", "删除成功"))
+        this.tableListData = this.tableListData.filter(item => !this.multipleSelection.includes(item))
+      }
     },
     // 选择部门编号
     handleSelectDeptNum(row) {
@@ -318,6 +338,8 @@ export default {
     // 获取选择的部门编号
     selectDeptNum(data) {
       this.currentRow.rateDepartNum = data.deptNum
+      
+      console.log(this.currentRow)
       this.currentRow = null
     }
   }

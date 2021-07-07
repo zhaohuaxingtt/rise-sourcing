@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-22 11:14:02
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-02 18:04:49
+ * @LastEditTime: 2021-07-05 16:06:45
  * @Description: 财务目标价-目标价查询
  * @FilePath: \front-web\src\views\financialTargetPrice\query\index.vue
 -->
@@ -38,7 +38,7 @@
         <span class="font18 font-weight"></span>
         <div class="floatright">
           <!--------------------指派按钮----------------------------------->
-          <iButton @click="openAssignDialog" >{{language('ZHIPAI','指派')}}</iButton>
+          <iButton @click="openAssignDialog" >{{language('LK_ZHIPAI','指派')}}</iButton>
           <!--------------------导出按钮----------------------------------->
           <iButton @click="handleExport" >{{language('DAOCHU','导出')}}</iButton>
         </div>

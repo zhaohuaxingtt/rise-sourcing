@@ -21,34 +21,34 @@
       <iButton @click="handleAffirm" v-if="activityTabIndex==='unSelect'">{{$t('LK_QUEREN')}}</iButton>
       <iButton @click="handleAnalyse" v-if="activityTabIndex==='selected'">{{$t('TPZS.JRFX')}}</iButton>
     </div>
-    <div class="circle">{{selectTableData1.length}}</div>
+    <div class="circle">{{middleListData.length}}</div>
     <div class="itab">
       <iTabsList v-model="activityTabIndex" @tab-click="handleTabClick" type="card" slot="components" class='margin-top20'>
         <!-------------------------已选零件-  ----------------------------------------->
         <el-tab-pane name="unSelect" :label="$t('TPZS.QLLJ')">
-          <tableList :tableData="tablePageData" :tableTitle="tableTitle" :tableLoading="tableLoading" :selection='true' :index="true" @handleSelectionChange="handleSelectionChange" />
-          <iPagination v-update @size-change="handleSizeChange($event)" @current-change="handleCurrentChange($event)" background :page-sizes="page.pageSizes" :page-size="pageData.pageSize" :layout="page.layout" :current-page='pageData.currPage' :total="pageData.totalCount" />
+          <tableList :tableData="tablePageData" :tableTitle="tableTitle" :tableLoading="tableLoading" :selection='true' @handleSelectionChange="handleSelectionChange" />
+          <iPagination :pager-count='3' v-update @size-change="handleSizeChange($event)" @current-change="handleCurrentChange($event)" background :page-sizes="page.pageSizes" :page-size="pageData.pageSize" :layout="page.layout" :current-page='pageData.currPage' :total="pageData.totalCount" />
         </el-tab-pane>
         <el-tab-pane name="selected" :label="$t('TPZS.YXLJ')">
-          <tableList ref="tableList" :tableData="tablePageData" :tableTitle="tableTitle" :tableLoading="tableLoading" :selection='true' :index="true" @handleSelectionChange="handleSelectionChange1" />
-          <iPagination v-update @size-change="handleSizeChange($event)" @current-change="handleCurrentChange($event)" background :page-sizes="page.pageSizes" :page-size="pageData.pageSize" :layout="page.layout" :current-page='pageData.currPage' :total="pageData.totalCount" />
+          <tableList ref="tableList" :tableData="tablePageData" :tableTitle="tableTitle" :tableLoading="tableLoading" :selection='true' @handleSelectionChange="handleSelectionChange" />
+          <iPagination :pager-count='3' v-update @size-change="handleSizeChange($event)" @current-change="handleCurrentChange($event)" background :page-sizes="page.pageSizes" :page-size="pageData.pageSize" :layout="page.layout" :current-page='pageData.currPage' :total="pageData.totalCount" />
         </el-tab-pane>
       </iTabsList>
     </div>
-    <searchPartDialog @add="add" :carClassify="carClassify" v-model="partsDialog" />
+    <searchPartDialog @add="add" :carType="carType" v-model="partsDialog" />
   </iCard>
 </template>
 
 <script>
 // 这里可以导入其他文件（比如：组件，工具js，第三方插件js，json文件，图片文件等等）
 // 例如：import 《组件名称》 from '《组件路径》';
-import { iCard, icon, iTabsList, iButton, iPagination } from "rise";
+import { iCard, icon, iTabsList, iButton, iPagination, iMessage } from "rise";
 import { partsTableTitle } from "./data.js";
 import tableList from '@/components/ws3/commonTable';
 import { pageMixins } from '@/utils/pageMixins';
 import resultMessageMixin from '@/utils/resultMessageMixin.js';
 import searchPartDialog from "./searchPartDialog.vue";
-import { getPartsList, searchCarPartsAdd } from "@/api/partsrfq/vpAnalysis/vpAnalyseCreate/index.js";
+import { getPartsList, saveCarParts } from "@/api/partsrfq/vpAnalysis/vpAnalyseCreate/index.js";
 
 export default {
   // import引入的组件需要注入到对象中才能使用
@@ -62,9 +62,8 @@ export default {
       tableTitle: partsTableTitle,
       tableLoading: false,
       selectTableData: [],
-      selectTableData1: [],
       activityTabIndex: 'unSelect',
-      carClassify: '',
+      carType: '',
       //分页数据
       pageData: {
         currPage: 1,
@@ -89,14 +88,13 @@ export default {
     },
     async getTableList(data) {
       if (!!data) {
-        this.carClassify = data.carClassify
+        this.carType = data.carType
       }
-      console.log(this.carClassify);
+      this.activityTabIndex='unSelect'
       this.tableLoading = true;
       try {
         const req = {
-          partsStatus: this.activityTabIndex,
-          carClassify: this.carClassify,
+          carType: this.carType,
           userId: this.$store.state.permission.userInfo.id
         };
         const res = await getPartsList(req);
@@ -116,12 +114,12 @@ export default {
       this.tablePageData = []
       const beginIndex = (this.pageData.currPage - 1) * this.pageData.pageSize
       const endIndex = (this.pageData.currPage * this.pageData.pageSize) - 1
-      console.log('beginIndex', beginIndex);
-      console.log('endIndex', endIndex);
+      // console.log('beginIndex', beginIndex);
+      // console.log('endIndex', endIndex);
       this.tableListData.forEach((item, index) => {
         if (index >= beginIndex && index <= endIndex) this.tablePageData.push(item)
       })
-      console.log('tablePageData', this.tablePageData);
+      // console.log('tablePageData', this.tablePageData);
     },
     // 每页数量发生改变
     handleSizeChange(val) {
@@ -137,7 +135,21 @@ export default {
     handleTabClick(target) {
       this.activityTabIndex = target.name
       if (target.name === 'selected') {
-        this.tableListData = this.selectTableData
+        var partsIds = []
+
+        this.selectTableData.forEach(item => {
+          this.middleListData.forEach(item => {
+            partsIds.push(item.partsId)
+          })
+          if (!partsIds.includes(item.partsId)) {
+            if (this.middleListData.length < 100) {
+              this.middleListData.push(item)
+            } else {
+              iMessage.warn(this.$t('TPZS.YXLJZDZNTJYBT'))
+            }
+          }
+        })
+        this.tableListData = this.middleListData
         this.pageData = {
           currPage: 1,
           pageSize: 10,
@@ -150,28 +162,32 @@ export default {
       }
     },
     add(val, data) {
-      this.activityTabIndex = val
       this.selectTableData = data
+      this.handleTabClick({ name: val })
     },
     handleSelectionChange(data) {
       this.selectTableData = data
     },
-    handleSelectionChange1(data) {
-      this.selectTableData1 = data
-    },
-    async handleAffirm() {
+    handleAffirm() {
       if (this.selectTableData.length === 0) {
         iMessage.warn(this.$t('TPZS.QXZYTSJ'))
         return false
       }
-      const res = await searchCarPartsAdd(this.selectTableData)
-      this.resultMessage(res, () => {
-        this.activityTabIndex = 'selected'
-        this.getTableList()
-      })
+      this.handleTabClick({ name: 'selected' })
     },
-    handleAnalyse() {
-      this.$router.push({ path: '/sourcing/partsrfq/vpAnalyseDetail', query: { type: 'add', carClassify: this.carClassify, carClassifyId: '' } })
+    async handleAnalyse() {
+      if (!this.middleListData.length) {
+        iMessage.warn(this.$t('TPZS.BQYXLJMYSJQZQLLJZTJZYXLJ'))
+        return false
+      }
+      this.tableLoading = true
+      const res = await saveCarParts(this.middleListData)
+      this.resultMessage(res, () => {
+        this.tableLoading = false
+        this.$router.push({ path: '/sourcing/partsrfq/vpAnalyseDetail', query: { type: 'add', batchNumber: res.data } })
+      }, () => {
+        this.tableLoading = false
+      })
     }
   },
   // 生命周期 - 创建完成（可以访问当前this实例）

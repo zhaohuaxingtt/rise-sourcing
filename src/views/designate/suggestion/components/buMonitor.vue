@@ -1,7 +1,7 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-05-25 09:42:07
- * @LastEditTime: 2021-06-28 15:52:43
+ * @LastEditTime: 2021-07-05 11:04:10
  * @Description: 业务分配模拟
 -->
 
@@ -64,6 +64,7 @@
               <monitorTableList
                 @updateCharts="updateCharts"
                 @unSaveWarning="setUnSaveWarning"
+                :selection="tableSelection"
                 :tableData="tableListData"
                 :supplier="supplierList"
                 :batchEdit="multiEditControl"
@@ -121,6 +122,10 @@ export default {
       default: 'nego'
     },
     readOnly: {
+      type: Boolean,
+      default: false
+    },
+    tableSelection: {
       type: Boolean,
       default: false
     },
@@ -350,6 +355,11 @@ export default {
       })
     },
     async submit() {
+      const validate = this.$refs.monitorTable.checkPercent()
+      if (!(validate && validate.state)) {
+        iMessage.error(validate.info)
+        return
+      }
       const confirmInfo = await this.$confirm(this.language('submitSure','您确定要执行提交操作吗？'))
       if (confirmInfo !== 'confirm') return
       

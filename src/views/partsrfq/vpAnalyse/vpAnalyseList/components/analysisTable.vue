@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-06-16 20:44:29
- * @LastEditTime: 2021-06-29 15:38:29
+ * @LastEditTime: 2021-07-07 10:14:05
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\analysisTool\components\analysisTable.vue
@@ -38,17 +38,19 @@
             <el-row :gutter="20">
               <el-col :span="18">
                 <span v-if="!editMode">
-                  <span v-if="scope.row.type == $t('LK_SCHEME_TYPE')" @click="clickScheme(scope.row)">{{scope.row.analysisSchemeName}}</span>
-                  <span v-if="scope.row.type == $t('LK_REPORT_TYPE')" @click="clickReport(scope.row)">{{scope.row.reportName}}</span>
+                  <span v-if="scope.row.type == $t('TPZS.SCHEME_TYPE')" @click="clickScheme(scope.row)">{{scope.row.analysisSchemeName}}</span>
+                  <span v-if="scope.row.type == $t('TPZS.REPORT_TYPE')" @click="clickReport(scope.row)">{{scope.row.reportName}}</span>
                 </span>
                 <span v-else>
-                  <iInput v-if="scope.row.type == $t('LK_SCHEME_TYPE')" v-model="scope.row.analysisSchemeName"></iInput>
-                  <iInput v-if="scope.row.type == $t('LK_REPORT_TYPE')" v-model="scope.row.reportName"></iInput>
+                  <iInput v-if="scope.row.type == $t('TPZS.SCHEME_TYPE')" v-model="scope.row.analysisSchemeName"></iInput>
+                  <iInput v-if="scope.row.type == $t('TPZS.REPORT_TYPE')" v-model="scope.row.reportName"></iInput>
                 </span>
               </el-col>
               <el-col :span="6">
-                <span v-if="scope.row.type == $t('LK_SCHEME_TYPE')">
-                  <span class="number">{{scope.row.reportCount}}</span>
+                <span v-if="scope.row.type == $t('TPZS.SCHEME_TYPE')">
+                  <span class="number">
+                    <p>{{scope.row.reportCount}}</p>
+                  </span>
                   <icon class="numberIcon"  style="{font-size:24px}" symbol name="iconwenjianshuliangbeijing"></icon>
                 </span>
               </el-col>
@@ -77,7 +79,7 @@
           <div v-if="!editMode">
             {{scope.row.isDefault === '是' || scope.row.isDefault === '否' ? scope.row.isDefault : null}}
           </div>
-          <div v-else-if="editMode && scope.row.type == $t('LK_SCHEME_TYPE') && scope.row.isDefault != '空' && scope.row.isDefault" >
+          <div v-else-if="editMode && scope.row.type == $t('TPZS.SCHEME_TYPE') && scope.row.isDefault != '空' && scope.row.isDefault" >
             <iSelect v-model="scope.row.isDefault">
               <el-option :value="item.value" :label="item.label" v-for="(item, index) in defaultData" :key="index"></el-option>
             </iSelect>
@@ -114,7 +116,7 @@
         header-align="center"
         width="50">
         <template slot-scope="scope">
-          <div class="stickIcon" v-if="scope.row.type == $t('LK_SCHEME_TYPE')" @click="clickStick(scope.row)">
+          <div class="stickIcon" v-if="scope.row.type == $t('TPZS.SCHEME_TYPE')" @click="clickStick(scope.row)">
             <icon v-if="scope.row.isTop && scope.row.isTop == 1" style="{font-size:24px}" symbol name="iconliebiaoyizhiding"></icon>
             <icon v-else style="{font-size:24px}" symbol name="iconliebiaoweizhiding" @click="clickStick(scope.row)" ></icon>
           </div>
@@ -140,14 +142,13 @@
 <script>
 import {icon, iPagination, iInput, iSelect} from 'rise'
 import {getVpAnalysisDataList, fetchStaick, fetchEdit, fetchDel} from '@/api/partsrfq/vpAnalysis/vpAnalysisList'
-import tableList from '@/components/ws3/commonTable';
 import {iMessage} from '@/components';
 import {pageMixins} from '@/utils/pageMixins';
 import reportPreview from './reportPreview'
 export default {
   name: 'analysisTable',
   mixins: [pageMixins],
-  components: {icon, iPagination, iInput, iSelect, tableList, reportPreview},
+  components: {icon, iPagination, iInput, iSelect, reportPreview},
   props: {
     editMode: {
       type: Boolean,
@@ -169,6 +170,9 @@ export default {
   },
   created() {
     this.getTableData()
+  },
+  mounted() {
+    
   },
   methods: {
     //初始化测试数据（静态数据）
@@ -194,9 +198,11 @@ export default {
       }
       getVpAnalysisDataList(params).then(res => {
         if(res && res.code == 200) {
+          console.log('res', res);
           this.page.totalCount = res.total
           this.tableListData = res.data
           this.handleTableNumber(this.tableListData, 1, null)
+          console.log('tableListData', this.tableListData);
         }
       })
     },
@@ -259,7 +265,7 @@ export default {
       const ids = []
       const reportIds = []
       this.selectionData.map(item => {
-        if(item.type == this.$t('LK_SCHEME_TYPE')) ids.push(item.id)
+        if(item.type == this.$t('TPZS.SCHEME_TYPE')) ids.push(item.id)
         else reportIds.push(item.id)
       })
       const params = {
@@ -311,6 +317,7 @@ export default {
       color: #fff;
       font-size: 10px;
       z-index: 1;
+      width: 20px;
     }
     .numberIcon {
       position: absolute;
