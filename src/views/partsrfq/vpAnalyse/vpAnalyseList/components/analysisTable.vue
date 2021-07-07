@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-06-16 20:44:29
- * @LastEditTime: 2021-07-07 10:10:40
+ * @LastEditTime: 2021-07-07 10:14:05
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\analysisTool\components\analysisTable.vue
@@ -142,14 +142,13 @@
 <script>
 import {icon, iPagination, iInput, iSelect} from 'rise'
 import {getVpAnalysisDataList, fetchStaick, fetchEdit, fetchDel} from '@/api/partsrfq/vpAnalysis/vpAnalysisList'
-import tableList from '@/components/ws3/commonTable';
 import {iMessage} from '@/components';
 import {pageMixins} from '@/utils/pageMixins';
 import reportPreview from './reportPreview'
 export default {
   name: 'analysisTable',
   mixins: [pageMixins],
-  components: {icon, iPagination, iInput, iSelect, tableList, reportPreview},
+  components: {icon, iPagination, iInput, iSelect, reportPreview},
   props: {
     editMode: {
       type: Boolean,
