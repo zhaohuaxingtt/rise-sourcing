@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-23 11:59:22
- * @LastEditTime: 2021-07-02 11:42:36
+ * @LastEditTime: 2021-07-06 12:01:50
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\editordetail\components\currentSupplier\index.vue
@@ -45,7 +45,7 @@
         <el-form-item :label='language("PART1NUMBER","零件号")'>
           <iInput v-model="searchForm.partNum"></iInput>  
         </el-form-item>
-        <el-form-item :label="language('CAIGOUGONGC','采购工厂')">
+        <el-form-item :label="language('CAIGOUGONGC1','采购工厂')">
           <iSelect v-model="searchForm.procureFactoryId">
             <template v-for="(items,index) in factoryList">
                 <el-option :key='index' :label="items.factoryName" :value="items.id"></el-option>
@@ -142,7 +142,9 @@ export default{
      * @return {*}
      */
     saveAll(){
+      if(this.dataListTop.length == 0 ) return iMessage.warn(this.language('NIHAWEIXUNAZXIAFANGGYS','请先添加供应商！'))
       updateCurrentSupplierPage({fsnrGsnrNum:this.detailData().fsnrGsnrNum,effectingSupplierDTOList:this.dataListTop}).then(res=>{
+        console.log(res)
         if(res.code == 200){
           iMessage.success(this.language('CHAOZUOCHENGGONG','操作成功！'))
           this.supplierCurentTop()
@@ -198,7 +200,7 @@ export default{
      */
     supplierCurentTop(){
       this.loadingTop = true
-      supplierCurentTop({partNum:JSON.parse(this.$route.query.item).partNum}).then(res=>{
+      supplierCurentTop({fsnrGsnrNum:this.detailData().fsnrGsnrNum}).then(res=>{
         if(res.code == 200 && res.data){
           this.loadingTop = false
           res.data.forEach((items,index)=>items['deleteFlag'] = 'a'+index)

@@ -18,7 +18,7 @@
           ></el-option>
         </iSelect>
       </div>
-      <div class="refresh" @click="refresh">
+      <div class="refresh" @click="refresh" v-if="listDetail.editFlag">
         <icon symbol name="iconmojukanbanshuaxin" class="refresh-icon"></icon>
         {{ $t('LK_SHUAXIN') }}<!-- 刷新 -->
       </div>
@@ -93,12 +93,10 @@ export default {
 
         if(res.code === "0"){
           const versionId = store.state.investmentAdmin.versionId;
-          const vereceive = _.cloneDeep(res.data[0]);
-          const id = versionId === '' ? vereceive.id : versionId;
+          const vereceive = versionId === '' ? _.cloneDeep(res.data[0]) : res.data.filter(item => item.id === versionId)[0];
           this.editionList = res.data;
           this.listDetail = vereceive;
-          this.versionId = id;
-          vereceive.id = id;
+          this.versionId = vereceive.id;
           this.$emit('receiVereceive', vereceive);
         }else{
           iMessage.error(result);
