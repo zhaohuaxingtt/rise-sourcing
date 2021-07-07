@@ -44,20 +44,26 @@
       <iFormItem>
         <iLabel icons="iconxinxitishi" :tip="$t('TPZS.LCHTIPS')" :label="$t('TPZS.FOPQK')" slot="label"></iLabel>
         <iText>
-          <icon name="iconbaojiapingfengenzong-jiedian-hong" symbol></icon>
+          <icon :name="form.tpGradeStatus==='1'?'iconbaojiapingfengenzong-jiedian-lv':form.tpGradeStatus==='2'?'iconbaojiapingfengenzong-jiedian-huang':form.tpGradeStatus==='3'?'iconbaojiapingfengenzong-jiedian-cheng':form.tpGradeStatus==='4'?'iconbaojiapingfengenzong-jiedian-hong':''" symbol></icon>
         </iText>
       </iFormItem>
       <iFormItem>
         <iLabel icons="iconxinxitishi" :tip="$t('TPZS.LCHTIPS')" :label="$t('TPZS.MQQK')" slot="label"></iLabel>
-        <iText>{{  form.xxxxx }}</iText>
+        <iText>
+          <icon :name="form.mqGradeStatus==='1'?'iconbaojiapingfengenzong-jiedian-lv':form.mqGradeStatus==='2'?'iconbaojiapingfengenzong-jiedian-huang':form.mqGradeStatus==='3'?'iconbaojiapingfengenzong-jiedian-cheng':form.mqGradeStatus==='4'?'iconbaojiapingfengenzong-jiedian-hong':''" symbol></icon>
+        </iText>
       </iFormItem>
       <iFormItem>
         <iLabel icons="iconxinxitishi" :tip="$t('TPZS.LCHTIPS')" :label="$t('TPZS.PLQK')" slot="label"></iLabel>
-        <iText>{{  form.xxxxx }}</iText>
+        <iText>
+          <icon :name="form.plStatus==='1'?'iconbaojiapingfengenzong-jiedian-lv':form.plStatus==='2'?'iconbaojiapingfengenzong-jiedian-huang':form.plStatus==='3'?'iconbaojiapingfengenzong-jiedian-cheng':form.plStatus==='4'?'iconbaojiapingfengenzong-jiedian-hong':''" symbol></icon>
+        </iText>
       </iFormItem>
       <iFormItem>
         <iLabel icons="iconxinxitishi" :tip="$t('TPZS.LCHTIPS')" :label="$t('TPZS.CFQK')" slot="label"></iLabel>
-        <iText>{{  form.xxxxx }}</iText>
+        <iText>
+          <icon :name="form.targetgradestatus==='1'?'iconbaojiapingfengenzong-jiedian-lv':form.targetgradestatus==='2'?'iconbaojiapingfengenzong-jiedian-huang':form.targetgradestatus==='3'?'iconbaojiapingfengenzong-jiedian-cheng':form.targetgradestatus==='4'?'iconbaojiapingfengenzong-jiedian-hong':''" symbol></icon>
+        </iText>
       </iFormItem>
       <!-- <iFormItem>
         <iLabel :label="$t('TPZS.CXLC')" slot="label"></iLabel>
@@ -75,7 +81,7 @@
 // 这里可以导入其他文件（比如：组件，工具js，第三方插件js，json文件，图片文件等等）
 // 例如：import 《组件名称》 from '《组件路径》';
 import { iFormItem, iText, iFormGroup, iLabel, icon } from "rise";
-import { getRfqInfo } from "@/api/partsrfq/negotiateBasicInfor/negotiateBasicInfor.js";
+import { getOneRfqInfo } from "@/api/partsrfq/negotiateBasicInfor/negotiateBasicInfor.js";
 export default {
   // import引入的组件需要注入到对象中才能使用
   components: { iFormItem, iText, iFormGroup, iLabel, icon },
@@ -106,7 +112,7 @@ export default {
     async getTableList() {
       this.tableLoading = true;
       try {
-        const res = await getRfqInfo(this.$route.query.id);
+        const res = await getOneRfqInfo(this.$route.query.id);
         if (res.result) {
           this.form = res.data;
         }
