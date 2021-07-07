@@ -438,6 +438,28 @@ export default {
               },
               series: [
                 {
+                  name: 'aekoValue',
+                  type: 'bar',
+                  stack: 'total',
+                  color: '#73A1F6',
+                  label: {
+                    show: true,
+                    textStyle: {
+                      color: '#ffffff',
+                      fontSize: 8
+                    }
+                  },
+                  emphasis: {
+                    focus: 'series'
+                  },
+                  itemStyle: {
+                    normal: {
+                      barBorderRadius: [5, 5, 0, 0],
+                    }
+                  },
+                  data: [totalValue]
+                },
+                {
                   name: 'contingency',
                   type: 'bar',
                   stack: 'total',
@@ -454,28 +476,6 @@ export default {
                     focus: 'series'
                   },
                    data: [this.carTypeBudget]
-                },
-                {
-                  name: 'aekoValue',
-                  type: 'bar',
-                  stack: 'total',
-                  color: '#73A1F6',
-                  label: {
-                    show: true,
-                    textStyle: {
-                      color: '#ffffff',
-                      fontSize: 8
-                    }
-                  },
-                  emphasis: {
-                    focus: 'series'
-                  },
-                   itemStyle: {
-                    normal: {
-                      barBorderRadius: [5, 5, 0, 0],
-                    }
-                  },
-                  data: [totalValue]
                 },
                 {
                   name: '',
