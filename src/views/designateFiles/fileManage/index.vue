@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-26 16:20:16
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-25 14:14:00
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-07-07 17:13:45
  * @Description: 附件综合管理
  * @FilePath: \front-web\src\views\designateFiles\fileManage\index.vue
 -->
@@ -10,7 +10,7 @@
 <template>
   <iPage class="signForParts" >
     <el-tabs v-model="tab" class="tab">
-      <el-tab-pane :label="$t('LK_XUNYUANZHIHANG')" name="source">
+      <el-tab-pane :label="language('LK_XUNYUANZHIHANG','寻源')" name="source">
         <div>
           <div class="margin-bottom33">
             <iNavMvp @change="change" right routerPage lev="2" :list="navList" @message="clickMessage" />
