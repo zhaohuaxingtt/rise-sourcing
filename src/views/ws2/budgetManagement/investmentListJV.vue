@@ -158,7 +158,7 @@
               </div>
             </template>
             <template #refMoldAmount="scope">
-              <div v-if="scope.row.refCartypeProId"><span>{{ getTousandNum(scope.row.refMoldAmount) }}</span></div>
+              <div v-if="scope.row.refCartypeProId"><span>{{ getTousandNum(Number(scope.row.refMoldAmount).toFixed(2)) }}</span></div>
               <div v-else>-</div>
             </template>
             <template #budgetAmount="scope">
@@ -517,14 +517,14 @@ export default {
   mounted() {
   },
   methods: {
-    saveReference() {
-      this.tableListData = this.tableListData.map(item => {
-        item.refCartypeName = '钢材'
-        item.refMoldAmount = '100'
-        return item
-      })
-      this.saveRow()
-    },
+    // saveReference() {
+    //   this.tableListData = this.tableListData.map(item => {
+    //     item.refCartypeName = '钢材'
+    //     item.refMoldAmount = '100'
+    //     return item
+    //   })
+    //   this.saveRow()
+    // },
     changeBudgetAmount(val) {
       let total = 0
       this.tableListData.map(item => total += Number(item.budgetAmount))

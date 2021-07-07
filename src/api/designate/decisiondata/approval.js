@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-28 13:41:56
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-28 19:37:59
+ * @LastEditTime: 2021-07-06 18:01:12
  * @Description: 审批流相关接口
  * @FilePath: \front-web\src\api\designate\decisiondata\approval.js
  */
@@ -38,17 +38,27 @@ export function updateApprovalNode(params) {
   })
 }
 
-export function getDept() {
-  return requstUserCenter({
-    url: '/api/dept/getDeptListByIdList',
-    method: 'GET'
+export function getDept(params = {}) {
+  return requst({
+    url: '/nominate/nomi-approval-process/depart-list',
+    method: 'POST',
+    data: params
   })
 }
 
 export function getDeptSub(id) {
-  return requstUserCenter({
-    url: '/api/dept/detail?id='+id,
-    method: 'GET'
+  return requst({
+    url: '/nominate/nomi-approval-process/depart-detail?deptId='+id,
+    method: 'POST',
+    data: {}
+  })
+}
+
+export function getDeptLeader(deptId) {
+  return requst({
+    url: '/nominate/nomi-approval-process/approval',
+    method: 'POST',
+    data: {deptId}
   })
 }
 

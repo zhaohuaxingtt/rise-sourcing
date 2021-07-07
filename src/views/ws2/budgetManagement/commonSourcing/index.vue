@@ -4,7 +4,7 @@
       <div class="header">
         <div>
           车型包名称
-          <iInput v-model="packageNameZh" :placeholder="$t('LK_RFQPLEASEENTERQUERY')" maxlength="6">
+          <iInput v-model="packageNameZh" :placeholder="$t('LK_RFQPLEASEENTERQUERY')">
             <i slot="suffix" class="el-input__icon el-icon-search" @click="pageCarTypePackage"></i>
           </iInput>
         </div>

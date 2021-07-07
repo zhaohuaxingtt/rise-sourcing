@@ -1,8 +1,8 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-07-02 17:04:39
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-07-07 15:20:12
+ * @LastEditors: Luoshuang
  * @Description: 系统静态路由.
  * @FilePath: \front-web\src\router\index.js
  *
@@ -132,7 +132,7 @@ export const staticRouter = [{
                 import ("@/views/partsrfq/editordetail"),
         },
         {
-            path: "/sourcing/partsrfq/editordetailinfo", //RFQ详情
+            path: "/sourcing/partsrfq/editorInfo", //RFQ详情
             name: "editordetail",
             meta: {
                 title: "RFQ详情",

@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-28 18:27:56
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-03 11:24:36
+ * @LastEditTime: 2021-07-06 18:59:58
  * @Description: 
  * @FilePath: \front-web\src\views\designate\approvalPersonAndRecord\tableList.vue
 -->
@@ -43,7 +43,7 @@
 <script>
 import {iSelect,iInput} from 'rise'
 import {_getMathNumber} from '@/utils'
-import { getDeptSub } from '@/api/designate/decisiondata/approval'
+import { getDeptSub, getDeptLeader } from '@/api/designate/decisiondata/approval'
 export default{
   components:{iSelect,iInput},
   props:{
@@ -70,16 +70,22 @@ export default{
     }
   },
   methods:{
+    getDeptLeader(deptId, row) {
+      getDeptLeader(deptId).then(res => {
+        this.$set(row, 'deptManager', res.data?.id)
+        this.$set(row, 'deptManagerName', res.data?.nameZh)
+      })
+    },
     getDeptSubOptions(deptId, row) {
+      this.$set(row, 'approveDeptNum', '')
       getDeptSub(deptId).then(res => {
-        this.$set(row, 'deptSubOptions', res.data.supDeptList.map(item => {
+        this.$set(row, 'deptSubOptions', res.data.supDeptList?.map(item => {
           return {
             ...item,
             label: item.nameZh,
             value: item.id
           }
         }))
-        this.$set(row, 'deptManager', '')
       })
     },
     getOptions(optionType) {
@@ -89,14 +95,16 @@ export default{
       this.$set(row, item.props, val)
       if (item.props === 'approveParentDeptNum') {
         this.getDeptSubOptions(val, row)
+        this.getDeptLeader(val, row)
         this.$emit('handleDeptChange')
       } else {
-        console.log(val, row, item)
-        const dept = row.deptSubOptions.find(item => item.value === val)
-        if  (dept) {
-          this.$set(row, 'deptManager', dept.leadUserId)
-          this.$set(row, 'deptManagerName', dept.leadUserName)
-        }
+        this.getDeptLeader(val, row)
+        // console.log(val, row, item)
+        // const dept = row.deptSubOptions.find(item => item.value === val)
+        // if  (dept) {
+        //   this.$set(row, 'deptManager', dept.leadUserId)
+        //   this.$set(row, 'deptManagerName', dept.leadUserName)
+        // }
       }
       
     },

@@ -86,8 +86,9 @@
           ></iInput>
         </template>
         <template #nomiAmountSvw="scope">
-          <div v-if="scope.row.link" class="linkStyle"><span @click="clickNomiAmountSvw(scope.row.materialNameZh)">{{ scope.row.nomiAmountSvw }}</span></div>
-          <div v-else>{{ scope.row.nomiAmountSvw }}</div>
+
+          <div v-if="scope.row.link" class="linkStyle"><span @click="clickNomiAmountSvw(scope.row.materialNameZh)">{{ getTousandNum(Number(scope.row.nomiAmountSvw).toFixed(2)) }}</span></div>
+          <div v-else>{{ getTousandNum(Number(scope.row.nomiAmountSvw).toFixed(2)) }}</div>
         </template>
       </iTableList>
       <div class="bottomTip">{{ $t('货币：人民币  |  单位：元  |  不含税 ') }}</div>
@@ -252,7 +253,6 @@ export default {
             this.tableListData = res.data.records.map((item, index) => {
               item.index = index
               item.nomiAmountTotal = this.getTousandNum(Number(item.nomiAmountTotal).toFixed(2))
-              item.nomiAmountSvw = this.getTousandNum(Number(item.nomiAmountSvw).toFixed(2))
               let start = item.hisPartsList.length
               item.hisPartsList = item.hisPartsList.map(a => {
                 a.nomiAmount = this.getTousandNum(Number(a.nomiAmount).toFixed(2))
