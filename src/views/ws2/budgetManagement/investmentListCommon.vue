@@ -1141,14 +1141,14 @@ export default {
 
         &:nth-of-type(2) {
           &::before {
-            background-color: #B3D0FF;
+            background-color: #73A1F6;
             top: 2px;
           }
         }
 
         &:nth-of-type(3) {
           &::before {
-            background-color: #73A1F6;
+            background-color: #B3D0FF;
             top: 2px;
           }
         }
