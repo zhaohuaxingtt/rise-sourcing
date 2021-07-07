@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 11:38:57
- * @LastEditTime: 2021-06-30 21:46:57
+ * @LastEditTime: 2021-07-06 10:49:50
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails\table1.vue
@@ -29,19 +29,18 @@
         :key="i.id"
         :label="i.label"
         :prop="i.prop"
-        align="left"
+        :align="i.prop == 'title'?'left':'center'"
         :width="i.prop == 'title' ? '200' : ''"
       >
-          <el-table-column
-            v-for="item in i.children"
-            :key="item.id"
-            :label="item.label"
-            :prop="item.prop"
-            align="left"
-            :render-header="render"
-          >
-
-          </el-table-column>
+        <el-table-column
+          v-for="item in i.children"
+          :key="item.id"
+          :label="item.label"
+          :prop="item.prop"
+          align="left"
+          :render-header="render"
+        >
+        </el-table-column>
 
         <!-- <template slot-scope="scope">
           <span v-if="testing(scope.row[i.prop])" >
@@ -80,8 +79,7 @@ export default {
       },
     },
   },
-  computed: {
-  },
+  computed: {},
   watch: {
     expends: {
       handler(val) {
@@ -89,12 +87,12 @@ export default {
           this.$refs.treeList.expandRowKeys = Array.from(val);
       },
     },
-    'tableList.headerList': {
+    "tableList.headerList": {
       handler(val) {
         this.$set(this.tableList, val);
       },
-      immediate:true,
-      deep:true
+      immediate: true,
+      deep: true,
     },
   },
   data() {
@@ -102,7 +100,53 @@ export default {
       checkList: [],
     };
   },
+  mounted() {
+    this.$nextTick(() => {
+      // this.chargeRetrieve();
+      this.open();
+    });
+  },
   methods: {
+    open() {
+      let els = this.$el.getElementsByClassName("el-table__expand-icon");
+      if (this.tableList.dataList.length != 0 && els.length != 0) {
+        this.flag = false;
+        this.flag1 = true;
+        for (let j1 = 0; j1 < els.length; j1++) {
+          els[j1].classList.add("dafult");
+        }
+        if (
+          this.$el.getElementsByClassName("el-table__expand-icon--expanded")
+        ) {
+          const open = this.$el.getElementsByClassName(
+            "el-table__expand-icon--expanded"
+          );
+          for (let j = 0; j < open.length; j++) {
+            open[j].classList.remove("dafult");
+          }
+          const dafult = this.$el.getElementsByClassName("dafult");
+          for (let a = 0; a < dafult.length; a++) {
+            dafult[a].click();
+          }
+        }
+      }
+    },
+    close() {
+      if (this.tableList.dataList.length != 0) {
+        this.flag = true;
+        this.flag1 = false;
+        const elsopen = this.$el.getElementsByClassName(
+          "el-table__expand-icon--expanded"
+        );
+        if (
+          this.$el.getElementsByClassName("el-table__expand-icon--expanded")
+        ) {
+          for (let i = 0; i < elsopen.length; i++) {
+            elsopen[i].click();
+          }
+        }
+      }
+    },
     addclass(row) {
       var that = this;
       if (row.columnIndex == that.num) {
