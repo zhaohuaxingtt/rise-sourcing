@@ -1,3 +1,10 @@
+const menuTooling = [
+  {
+    title: '模具投资',
+    url: '/tooling'
+  },
+]
+
 const menuPortal = [
   {
     title: '审批中心',
@@ -149,7 +156,8 @@ export default [
     activeIcon: 'iconhomexuanzhong',
     title: '',
     key: 'first',
-    url: '/index'
+    url: '/tooling',
+    subMenus: menuTooling
   },
   {
     icon: 'iconworkbenchweixuanzhong',
@@ -157,7 +165,7 @@ export default [
     title: '',
     key: 'tow',
     url: '/supplier',
-    subMenus: menuApplication
+    // subMenus: menuApplication
   },
   {
     icon: 'iconcommonfunctionweixuanzhong',
@@ -165,6 +173,6 @@ export default [
     title: '',
     key: 'three',
     url: '/bpm',
-    subMenus: menuPortal
+    // subMenus: menuPortal
   }
 ]
