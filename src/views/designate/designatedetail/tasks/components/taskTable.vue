@@ -93,10 +93,10 @@
         <template #edit="scope">
           <div>
             <!-- <div v-if="editControl && scope.row.isAdd"> -->
-            <a class="link-underline" v-if="scope.row.isPresent" @click="toggleShow(scope.row, false)">
+            <a class="link-underline" v-if="!scope.row.isPresent" @click="toggleShow(scope.row, true)">
               <icon symbol name="iconyincang" class="icon trigger-visible" />
             </a>
-            <a class="link-underline" v-else @click="toggleShow(scope.row, true)">
+            <a class="link-underline" v-else @click="toggleShow(scope.row, false)">
               <icon symbol name="iconxianshi" class="icon trigger-visible" />
             </a>
           </div>

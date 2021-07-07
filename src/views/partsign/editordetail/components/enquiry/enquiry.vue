@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-24 17:57:52
- * @LastEditTime: 2021-04-02 18:57:28
+ * @LastEditTime: 2021-07-07 16:34:14
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsign\editordetail\components\volume\index.vue
@@ -9,10 +9,10 @@
 <template>
   <iCard class="volume">
     <div class="header clearFloat">
-      <span class="title">{{ $t('LK_FUJIANLIEBIAO') }} （{{ $t('LK_DANGQIANBANBEN') }}: {{ version }}）</span>
+      <span class="title">{{ language('LK_FUJIANLIEBIAO','附件列表') }} （{{ language('LK_DANGQIANBANBEN','当前版本') }}: {{ version }}）</span>
       <div class="control">
-        <iButton @click="download" v-permission="PARTSIGN_EDITORDETAIL_ENQUIRY_DOWNLOAD">{{ $t('LK_XIAZAI') }}</iButton>
-        <iButton @click="jump" v-permission="PARTSIGN_EDITORDETAIL_ENQUIRY_ALL">{{ $t('LK_CHAKANQUANBUBANBEN') }}</iButton>
+        <iButton @click="download" v-permission="PARTSIGN_EDITORDETAIL_ENQUIRY_DOWNLOAD">{{ language('LK_XIAZAI','下载') }}</iButton>
+        <iButton @click="jump" v-permission="PARTSIGN_EDITORDETAIL_ENQUIRY_ALL">{{ language('LK_CHAKANQUANBUBANBEN','查看全部版本') }}</iButton>
       </div>
     </div>
     <div class="body margin-top27">
@@ -121,7 +121,7 @@ export default {
     },
     download() {
       if (!this.multipleSelection.length) {
-        return iMessage.warn(this.$t('LK_QINGXUANZHEXUYAOXIAZHAIWENJIAN'))
+        return iMessage.warn(this.language('LK_QINGXUANZHEXUYAOXIAZHAIWENJIAN','请选择需要下载文件'))
       }
 
       downloadFile({
@@ -130,7 +130,7 @@ export default {
       })
     },
     exportFile() {
-      if (!this.multipleSelection.length) return iMessage.warn(this.$t('LK_QINGXUANZHEXUYAODAOCHUDEMEINIANYONGCHELIANG'))
+      if (!this.multipleSelection.length) return iMessage.warn(this.language('LK_QINGXUANZHEXUYAODAOCHUDEMEINIANYONGCHELIANG','请选择需要导出的每车用量'))
       excelExport(this.multipleSelection, this.tableTitle)
     },
     preview(row) {
