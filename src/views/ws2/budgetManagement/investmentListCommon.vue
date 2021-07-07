@@ -385,8 +385,7 @@ export default {
             const chart2 = echarts().init(document.getElementById("chart2"));
             const chart3 = echarts().init(document.getElementById("chart3"));
             const chart4 = echarts().init(document.getElementById("chart4"));
-
-             let option1 = {
+            let option1 = {
               // tooltip: {
                 // formatter: function (params) {//这里就是控制显示的样式
                 //   if (params.dataIndex == 0) {
@@ -648,6 +647,7 @@ export default {
                   this.$t("LK_WEISHENQING"),
                   this.$t("LK_YISHENQING"),
                   this.$t("LK_WEIDINGDIAN"),
+                  this.$t("定点节降"),
                   this.$t("LK_YIDINGDIAN"),
                   this.$t("LK_WUBA"),
                   this.$t("LK_YOUBA"),
@@ -705,6 +705,7 @@ export default {
                     0,
                     notAekoPriceDetail.applyAmount,
                     0,
+                    Number(notAekoPriceDetail.nomiAmount) + Number(notAekoPriceDetail.nomiJAmount),
                     notAekoPriceDetail.nomiAmount,
                     0,
                     notAekoPriceDetail.baAmount,
@@ -733,6 +734,7 @@ export default {
                     notAekoPriceDetail.notApplyAmount,
                     notAekoPriceDetail.applyAmount,
                     notAekoPriceDetail.notNomiAmount,
+                    notAekoPriceDetail.nomiJAmount,
                     notAekoPriceDetail.nomiAmount,
                     notAekoPriceDetail.notBaAmount,
                     notAekoPriceDetail.baAmount,
@@ -1131,7 +1133,7 @@ export default {
           width: 10px;
           height: 10px;
           border-radius: 50%;
-          background-color: #B3D0FF;
+          background-color: #2662F3;
           position: absolute;
           left: -17px;
           top: 4px;
@@ -1139,7 +1141,7 @@ export default {
 
         &:nth-of-type(2) {
           &::before {
-            background-color: #2662F3;
+            background-color: #B3D0FF;
             top: 2px;
           }
         }
