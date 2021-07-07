@@ -394,6 +394,9 @@ export default {
           }
           for (let monthIndex = 0; monthIndex < 12; monthIndex++) {
             monthTotal[monthIndex] += parseFloat(element[`planAmountM${monthIndex + 1}`]);
+            if (index == this.tableListData.length - 1) {
+              monthTotal[monthIndex] = monthTotal[monthIndex].toFixed(2);
+            }
             data.push(element[`planAmountM${monthIndex + 1}`]);
           }
           temp.emphasis = {
