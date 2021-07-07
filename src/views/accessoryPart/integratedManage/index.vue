@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-26 11:16:51
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-25 13:40:13
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-07-07 17:12:21
  * @Description: 配件综合管理页面
  * @FilePath: \front-web\src\views\accessoryPart\integratedManage\index.vue
 -->
@@ -10,7 +10,7 @@
 <template>
   <iPage class="signForParts" >
     <el-tabs v-model="tab" class="tab">
-      <el-tab-pane :label="$t('LK_XUNYUANZHIHANG')" name="source">
+      <el-tab-pane :label="language('LK_XUNYUANZHIHANG','寻源')" name="source">
         <div>
           <div class="margin-bottom33">
             <iNavMvp lang @change="change" right routerPage lev="2" :list="navList" @message="clickMessage" />
