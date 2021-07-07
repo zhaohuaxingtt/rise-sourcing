@@ -354,6 +354,7 @@ export default {
         saveNewVersion({
           ...this.ratioInput,
           dateStr: val,
+          versionId: this.vereceive.id
         }).then(res => {
           const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn;
 
