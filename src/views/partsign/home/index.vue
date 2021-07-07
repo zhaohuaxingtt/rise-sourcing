@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-24 09:17:57
- * @LastEditTime: 2021-06-17 10:50:50
+ * @LastEditTime: 2021-07-07 15:33:08
  * @LastEditors: Please set LastEditors
  * @Description: 零件签收列表界面.
  * @FilePath: \rise\src\views\partsign\index.vue
@@ -9,7 +9,7 @@
 <template>
   <iPage class="partsignHome" v-permission="PARTSIGN_INDEXPAGE">
     <el-tabs v-model="tab" class="tab">
-      <el-tab-pane :label="$t('LK_XUNYUANZHIHANG')" name="source">
+      <el-tab-pane :label="language('LK_XUNYUANZHIHANG','寻源')" name="source">
         <div>
           <div class="margin-bottom33">
             <iNavMvp @change="change" lang right routerPage lev="2" :list="navList" @message="clickMessage" />
@@ -25,43 +25,43 @@
             :searchKey="PARTSIGN_CONFIRMBUTTON"
           >
             <el-form>
-              <el-form-item :label="$t('partsignLanguage.LingJianHao')">
+              <el-form-item :label="language('partsignLanguage.LingJianHao','零件号')">
                 <iInput
                   v-model="form.partNum"
-                  :placeholder="$t('LK_QINGSHURULINGJIANHAO')"
+                  :placeholder="language('LK_QINGSHURULINGJIANHAO','请输入零件号')"
                   v-permission="PARTSIGN_PARTNUM"
                 ></iInput>
               </el-form-item>
-              <el-form-item :label="$t('partsignLanguage.LingJianMingChengZH')">
+              <el-form-item :label="language('partsignLanguage.LingJianMingChengZH','零件名称（中）')">
                 <iInput
                   v-model="form.partNameZh"
-                  :placeholder="$t('LK_QINGSHURULINGJIANMING')"
+                  :placeholder="language('LK_QINGSHURULINGJIANMING','请输入零件名（中）')"
                   v-permission="PARTSIGN_PARTNAMEZH"
                 ></iInput>
               </el-form-item>
-              <el-form-item :label="$t('partsignLanguage.SheJiKeShi')">
+              <el-form-item :label="language('partsignLanguage.SheJiKeShi','设计科室')">
                 <iInput
                   v-model="form.dept"
-                  :placeholder="$t('LK_QINGTIANXIESHEJIKESHI')"
+                  :placeholder="language('LK_QINGTIANXIESHEJIKESHI','请填写设计科室')"
                   v-permission="PARTSIGN_DESIGNDEPARTMENT"
                 ></iInput>
               </el-form-item>
-              <el-form-item :label="$t('LK_GONGCHENGSHI')">
+              <el-form-item :label="language('LK_GONGCHENGSHI','工程师')">
                 <iInput
-                  :placeholder="$t('LK_QINGTIANXIEGONGCHENGSHI')"
+                  :placeholder="language('LK_QINGTIANXIEGONGCHENGSHI','请填写工程师')"
                   v-model="form.tpPrincepalName"
                   v-permission="PARTSIGN_ENGINEER"
                 ></iInput>
               </el-form-item>
-              <el-form-item :label="$t('LK_CHEXINGXIANGMU')">
+              <el-form-item :label="language('LK_CHEXINGXIANGMU','车型项目')">
                 <iSelect
                   v-model="form.projectCarType"
-                  :placeholder="$t('LK_QINGXUANZHECHEXINGXIANGMU')"
+                  :placeholder="language('LK_QINGXUANZHECHEXINGXIANGMU','请选择车型项目')"
                   v-permission="PARTSIGN_MODELPROJECT"
                 >
                   <el-option
                     value=""
-                    :label="$t('all') | capitalizeFilter"
+                    :label="language('all','全部') | capitalizeFilter"
                   ></el-option>
                   <el-option
                     :value="items.key"
@@ -71,15 +71,15 @@
                   ></el-option>
                 </iSelect>
               </el-form-item>
-              <el-form-item :label="$t('LK_XINXIDANFENLEI')">
+              <el-form-item :label="language('LK_XINXIDANFENLEI','信息单分类')">
                 <iSelect
                   v-model="form.tpInfoType"
-                  :placeholder="$t('LK_QINGXUANZHEXINXIFENLEI')"
+                  :placeholder="language('LK_QINGXUANZHEXINXIFENLEI','请选择信息分类')"
                   v-permission="PARTSIGN_INFORMATIONCLASSIFICATION"
                 >
                   <el-option
                     value=""
-                    :label="$t('all') | capitalizeFilter"
+                    :label="language('all','全部') | capitalizeFilter"
                   ></el-option>
                   <el-option
                     :value="items.key"
@@ -89,15 +89,15 @@
                   ></el-option>
                 </iSelect>
               </el-form-item>
-              <el-form-item :label="$t('LK_XINXIDANZHUANGTAI')">
+              <el-form-item :label="language('LK_XINXIDANZHUANGTAI','信息单状态')">
                 <iSelect
                   v-model="form.status"
-                  :placeholder="$t('LK_QINGXUANZHEXINXIDANZHUANGTAI')"
+                  :placeholder="language('LK_QINGXUANZHEXINXIDANZHUANGTAI','请选择信息单状态')"
                   v-permission="PARTSIGN_INFORMATIONSTATUS"
                 >
                   <el-option
                     value=""
-                    :label="$t('all') | capitalizeFilter"
+                    :label="language('all','全部') | capitalizeFilter"
                   ></el-option>
                   <el-option
                     :value="items.key"
@@ -107,22 +107,22 @@
                   ></el-option>
                 </iSelect>
               </el-form-item>
-              <el-form-item :label="$t('LK_XINXIDANLIUSHUIHAO')">
+              <el-form-item :label="language('LK_XINXIDANLIUSHUIHAO','信息单流水号')">
                 <iInput
                   v-model="form.tpId"
-                  :placeholder="$t('LK_QINGTIANXIEXINXIDANLIUSHUIHAO')"
+                  :placeholder="language('LK_QINGTIANXIEXINXIDANLIUSHUIHAO','请填写信息单流水号')"
                   v-permission="PARTSIGN_PARTINFOID"
                 ></iInput>
               </el-form-item>
-              <el-form-item :label="$t('LK_XUNJIAZILIAOZHUANGTAI')">
+              <el-form-item :label="language('LK_XUNJIAZILIAOZHUANGTAI','询价资料状态')">
                 <iSelect
                   v-model="form.attachmentStatus"
-                  :placeholder="$t('LK_QINGXUANZHEXUNJIAZILIAOZHUANGTAI')"
+                  :placeholder="language('LK_QINGXUANZHEXUNJIAZILIAOZHUANGTAI','请选择询价资料状态')"
                   v-permission="PARTSIGN_INQUIRYSTATUS"
                 >
                   <el-option
                     value=""
-                    :label="$t('all') | capitalizeFilter"
+                    :label="language('all','全部') | capitalizeFilter"
                   ></el-option>
                   <el-option
                     :value="items.key"
@@ -132,15 +132,15 @@
                   ></el-option>
                 </iSelect>
               </el-form-item>
-              <el-form-item :label="$t('LK_MEICHEYONGLIANGZHUANGTAI')">
+              <el-form-item :label="language('LK_MEICHEYONGLIANGZHUANGTAI','每车用量状态')">
                 <iSelect
                   v-model="form.partDosageStatus"
-                  :placeholder="$t('LK_QINGXUANZHEMEICHEYONGLIANGZHUANGTAI')"
+                  :placeholder="language('LK_QINGXUANZHEMEICHEYONGLIANGZHUANGTAI','请选择每车用量状态')"
                   v-permission="PARTSIGN_USAGEVEHICLE"
                 >
                   <el-option
                     value=""
-                    :label="$t('all') | capitalizeFilter"
+                    :label="language('all','全部') | capitalizeFilter"
                   ></el-option>
                   <el-option
                     :value="items.key"
@@ -159,21 +159,21 @@
             <div class="margin-bottom20 clearFloat">
               <!--<span class="font18 font-weight">新件信息单签收</span>-->
               <span class="font18 font-weight">{{
-                $t("LK_XINJIANXINXIDANQIANSHOU")
+                language("LK_XINJIANXINXIDANQIANSHOU",'新件信息单签收')
               }}</span>
               <div class="floatright">
                 <iButton @click="save" v-permission="PARTSIGN_SIGNBUTTON">{{
-                  $t("partsignLanguage.QianShou")
+                  language("partsignLanguage.QianShou",'签收')
                 }}</iButton>
                 <iButton
                   @click="openDiologBack"
                   v-permission="PARTSIGN_BACKBUTTON"
-                  >{{ $t("partsignLanguage.TuiHui") }}</iButton
+                  >{{ language("partsignLanguage.TuiHui",'退回') }}</iButton
                 >
                 <iButton
                   @click="openDiologChangeItems"
                   v-permission="PARTSIGN_TRANSFERBUTTON"
-                  >{{ $t("partsignLanguage.ZhuanPai") }}</iButton
+                  >{{ language("partsignLanguage.ZhuanPai",'转派') }}</iButton
                 >
               </div>
             </div>
@@ -326,7 +326,7 @@ export default {
         },
       }).then((res) => {
         if (res.code == 200) {
-          iMessage.success(this.$t("LK_CAOZUOCHENGGONG"));
+          iMessage.success(this.language("LK_CAOZUOCHENGGONG",'操作成功'));
           this.getTableList();
         } else {
           iMessage.error(res.desZh);
@@ -342,7 +342,7 @@ export default {
         },
       }).then((res) => {
         if (res.code == '200') {
-          iMessage.success(this.$t("LK_CAOZUOCHENGGONG"));
+          iMessage.success(this.language("LK_CAOZUOCHENGGONG",'操作成功'));
           this.getTableList();
         }
       });
@@ -425,20 +425,21 @@ export default {
     save() {
       if (this.selectTableData.length == 0)
         return iMessage.warn(
-          this.$t("LK_NINDANGQIANHAIWEIXUANZENINXUYAOQIANSHOUDEXINXIDAN")
+          this.language("LK_NINDANGQIANHAIWEIXUANZENINXUYAOQIANSHOUDEXINXIDAN",'抱歉，您当前还未选择您需要签收的信息单！')
         );
       if (this.selectTableData.find((items) => items.status == 1))
         return iMessage.warn(
-          this.$t(
-            "LK_NINXUANZHONGDEDANJUZHONGCUNZAIYIQIANSHOUDEXINXIDANBUNENGPILIANGQIANSHOU"
+          this.language(
+            "LK_NINXUANZHONGDEDANJUZHONGCUNZAIYIQIANSHOUDEXINXIDANBUNENGPILIANGQIANSHOU",
+            '抱歉，您选中的单据中存在已签收的信息单，不能批量签收！'
           )
         );
       iMessageBox(
-        this.$t("LK_NINSHIFOUQUERENDUIXINJIANXINXIDANJINHANGQIANSHOU"), // 暂时处理
-        this.$t("LK_WENXINTISHI"),
+        this.language("LK_NINSHIFOUQUERENDUIXINJIANXINXIDANJINHANGQIANSHOU",'您是否确认对新件信息单进行签收？'), // 暂时处理
+        this.language("LK_WENXINTISHI",'温馨提示'),
         {
-          confirmButtonText: this.$t("LK_QUEDING"),
-          cancelButtonText: this.$t("LK_QUXIAO"),
+          confirmButtonText: this.language("LK_QUEDING",'确定'),
+          cancelButtonText: this.language("LK_QUXIAO",'取 消'),
         }
       ).then((res) => {
         this.patchRecords(2, this.selectTableData);
@@ -448,12 +449,13 @@ export default {
     openDiologBack() {
       if (this.selectTableData.length == 0)
         return iMessage.warn(
-          this.$t("LK_NINDANGQIANHAIWEIXUANZENINXUYAOTUIHUIDEXINXIDAN")
+          this.language("LK_NINDANGQIANHAIWEIXUANZENINXUYAOTUIHUIDEXINXIDAN",'抱歉，您当前还未选择您需要退回的信息单！')
         );
       if (this.selectTableData.find((items) => items.status == 1))
         return iMessage.warn(
-          this.$t(
-            "LK_NINXUANZHONGDEDANJUZHONGCUNZAIYIQIANSHOUDEXINXIDANBUNENGPILIANGQIANSHOU"
+          this.language(
+            "LK_NINXUANZHONGDEDANJUZHONGCUNZAIYIQIANSHOUDEXINXIDANBUNENGPILIANGQIANSHOU",
+            '抱歉，您选中的单据中存在已签收的信息单，不能批量签收！'
           )
         );
       this.diologBack = true;
@@ -462,7 +464,7 @@ export default {
     openDiologChangeItems() {
       if (this.selectTableData.length == 0)
         return iMessage.warn(
-          this.$t("LK_NINDANGQIANHAIWEIXUANZENINXUYAOZHUANPAIDEXINXIDAN")
+          this.language("LK_NINDANGQIANHAIWEIXUANZENINXUYAOZHUANPAIDEXINXIDAN",'抱歉，您当前还未选择您需要转派的信息单！')
         );
       this.diologChangeItems = true;
     },
