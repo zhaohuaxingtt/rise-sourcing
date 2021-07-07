@@ -249,7 +249,6 @@ export default {
     this.params = this.$route.query
     this.beginType = this.params.sourceStatus
     this.getModelProtitesPullDown()
-    this.getInvestmentVerisionList()
   },
   mounted() {
   },
@@ -320,6 +319,7 @@ export default {
         } else {
           iMessage.error(result4);
         }
+        this.getInvestmentVerisionList()
         this.loadingiSearch = false
       }).catch(() => {
         this.loadingiSearch = false

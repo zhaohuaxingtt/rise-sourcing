@@ -8,19 +8,22 @@
             <i slot="suffix" class="el-input__icon el-icon-search" @click="pageCarTypePackage"></i>
           </iInput>
         </div>
-        <Upload
-            class="upload-demo"
-            ref="uploadRef"
-            :action="actionUrl"
-            :on-change="beforeUpload"
-            :on-success="onSuccess"
-            :before-upload="beforeAvatarUpload"
-            :before-remove="beforeRemove"
-            :limit="1"
-            :show-file-list="false"
-            :file-list="uploadFiles">
-          <iButton icon="el-icon-circle-plus-outline" type="primary">新增车型包</iButton>
-        </Upload>
+        <div class="btns">
+          <iButton @click="hanldeDownload">{{$t('下载清单')}}</iButton>
+          <Upload
+              class="upload-demo"
+              ref="uploadRef"
+              :action="actionUrl"
+              :on-change="beforeUpload"
+              :on-success="onSuccess"
+              :before-upload="beforeAvatarUpload"
+              :before-remove="beforeRemove"
+              :limit="1"
+              :show-file-list="false"
+              :file-list="uploadFiles">
+            <iButton icon="el-icon-circle-plus-outline" type="primary">新增车型包</iButton>
+          </Upload>
+        </div>
 <!--        <iButton icon="el-icon-circle-plus-outline" @click="addCarTypeBag" type="primary">新增车型包</iButton>-->
       </div>
       <div class="content" v-loading="tableLoading">
@@ -58,7 +61,7 @@
 <script>
 import {iInput, iButton, iMessage, icon} from 'rise'
 import {Upload} from "element-ui"
-import {pageCarTypePackage, dataMove} from '@/api/ws2/commonSourcing'
+import {pageCarTypePackage, dataMove, commonSourcingExport} from '@/api/ws2/commonSourcing'
 
 export default {
   name: "commonSourcing",
@@ -164,6 +167,25 @@ export default {
         this.tableLoading = false
       })
     },
+    hanldeDownload(){
+      this.mainLoading = true;
+      let params = {
+        cartypePackageId: this.carTypePackageId,
+        versionId: this.packageVersion,
+        commodity: this.departmentsCombo,
+        categoryId: this.materialGroup,
+      }
+      commonSourcingExport(params)
+        .then((res) => {
+          const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
+          if (Number(res.code) === 0) {
+            iMessage.success(result)
+          } else {
+            iMessage.error(result)
+          }
+          this.mainLoading = false;
+        }).catch(() => (this.mainLoading = false));
+    },
   }
 }
 </script>
@@ -174,7 +196,12 @@ export default {
   display: flex;
   justify-content: space-between;
   margin: 20px 0;
-
+  .btns{
+    display: flex;
+    ::v-deep .upload-demo{
+      margin-left: 10px;
+    }
+  }
   ::v-deep .el-input {
     width: 220px;
     margin-left: 20px;
