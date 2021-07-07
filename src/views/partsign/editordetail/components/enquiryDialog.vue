@@ -1,8 +1,8 @@
 <template>
-  <iDialog class="dialog" :title="`${$t('LK_FUJIANLIEBIAO') }（${$t('LK_DANGQIANBANBEN') } ：${ params.version }）`" v-bind="$props" :visible.sync="visible" v-on="$listeners">
+  <iDialog class="dialog" :title="`${language('LK_FUJIANLIEBIAO','附件列表') }（${language('LK_DANGQIANBANBEN','当前版本') } ：${ params.version }）`" v-bind="$props" :visible.sync="visible" v-on="$listeners">
     <div class="body">
       <div class="control" id="control">
-        <iButton @click="download" v-permission="PARTSIGN_EDITORDETAIL_ENQUIRYDIALOG_DOWNLOAD">{{ $t('LK_XIAZAI') }}</iButton>
+        <iButton @click="download" v-permission="PARTSIGN_EDITORDETAIL_ENQUIRYDIALOG_DOWNLOAD">{{ language('LK_XIAZAI','下载') }}</iButton>
       </div>
       <tableList index :height="controlHeight ? '91%' : '100%'" v-show="visible" class="table margin-top20" :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="loading" @handleSelectionChange="handleSelectionChange">
         <template #tpPartAttachmentName="scope">
@@ -107,7 +107,7 @@ export default {
     },
     download() {
       if (!this.multipleSelection.length) {
-        return iMessage.warn(this.$t('LK_QINGXUANZHEXUYAOXIAZHAIWENJIAN'))
+        return iMessage.warn(this.language('LK_QINGXUANZHEXUYAOXIAZHAIWENJIAN','请选择需要下载文件'))
       }
 
       downloadFile({
