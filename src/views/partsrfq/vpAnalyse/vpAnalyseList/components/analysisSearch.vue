@@ -1,7 +1,7 @@
 <!--
  * @Author: youy
  * @Date: 2021-06-21 19:38:02
- * @LastEditTime: 2021-06-25 10:46:24
+ * @LastEditTime: 2021-07-07 10:37:45
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\vpAnalyse\vpAnalyseList\components\analysisSearch.vue
@@ -19,11 +19,11 @@
 </template>
 
 <script>
-import {iSearch, iSelect, iInput} from 'rise'
+import {iSearch, iInput} from 'rise'
 import {search} from './data'
 export default {
   name: 'analysisSearch',
-  components: {iSearch, iSelect, iInput},
+  components: {iSearch, iInput},
   props: {
     rfqNo: {
       type: String,
@@ -44,6 +44,8 @@ export default {
       }
     }
   },
+  computed: {
+  },
   methods: {
     //点击确认按钮
     handleSubmitSearch() {
@@ -53,7 +55,7 @@ export default {
     handleSearchReset() {
       this.searchForm = {}
       this.$emit('handleSubmitSearch', null)
-    }
+    },
   } 
 }
 </script>
