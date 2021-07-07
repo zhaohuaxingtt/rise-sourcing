@@ -7,7 +7,7 @@
 -->
 <template>
   <div>
-    <div :class="tableData.length<7?'flex top-1':'flex scroll'">
+    <div class="scroll flex">
       <div class="flex margin-right50" v-for="(item,index) in tableData" :key="index">
         <div :style="'background:'+color[index]" class="circle margin-right4"></div>
         <div>{{item.supplierName}}</div>
@@ -251,16 +251,10 @@ export default {
   border: 1px solid;
   border: none;
 }
-.top-1 {
-  width: 100%;
-  height: 30px;
-  color: #0d2451;
-  font-size: 16px;
-}
 .scroll {
-  overflow-x: scroll;
+  overflow-x: auto;
   overflow-y: hidden;
-  width: 79%;
+  width: 60%;
   height: 40px;
   color: #0d2451;
   font-size: 16px;
