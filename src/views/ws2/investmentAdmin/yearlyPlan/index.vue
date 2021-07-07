@@ -65,6 +65,27 @@
               :show-summary="true"
               class="baApply-table"
           >
+            <template #budgetAmount="scope">
+              <div>{{getTousandNum(NumFormat(scope.row.budgetAmount))}}</div>
+            </template>
+            <template #nomiAmount="scope">
+              <div>{{getTousandNum(NumFormat(scope.row.nomiAmount))}}</div>
+            </template>
+            <template #bmAmount="scope">
+              <div>{{getTousandNum(NumFormat(scope.row.bmAmount))}}</div>
+            </template>
+            <template #paymentAmountLast="scope">
+              <div>{{getTousandNum(NumFormat(scope.row.paymentAmountLast))}}</div>
+            </template>
+            <template #paymentAmountCurrent="scope">
+              <div>{{getTousandNum(NumFormat(scope.row.paymentAmountCurrent))}}</div>
+            </template>
+            <template #planAmountCurrent="scope">
+              <div>{{getTousandNum(NumFormat(scope.row.planAmountCurrent))}}</div>
+            </template>
+            <template #planAmountNext="scope">
+              <div>{{getTousandNum(NumFormat(scope.row.planAmountNext))}}</div>
+            </template>
             <template #carTypeProName="scope">
               <div class="backlog" v-if="scope.row.statType === 'backlog'">
                 backlog
@@ -74,7 +95,7 @@
               </div>
             </template>
             <template #sopPercent="scope">
-              {{scope.row.sopPercent || 0}}%
+              {{getTousandNum(NumFormat(scope.row.sopPercent || 0))}}%
             </template>
           </iTableList>
         </template>
@@ -156,6 +177,7 @@ import { saveVersion, refreshVersion,
   queryPlanPercentage, queryPlanYearCommutity, saveCommutityAmualData, exportPlanCommutityList
 } from "@/api/ws2/investmentAdmin/yearlyPlan";
 import NewVersionDialog from "../monthlyPlan/components/newVersionDialog";
+import { getTousandNum, NumFormat } from "@/utils/tool";
 import _ from 'lodash';
 
 
@@ -206,6 +228,8 @@ export default {
 
   data(){
     return {
+      NumFormat,
+      getTousandNum,
       no1: '',
       systemVisible: false,
       manualvisible: false,
@@ -287,7 +311,7 @@ export default {
 
     getSummaries(param){
       const { columns, data } = param;
-      const sums = [];
+      let sums = [];
       const keyArr = ['carTypeProName', 'sop', 'sopPercent', 'linieName'];
 
       columns.forEach((column, index) => {
@@ -314,6 +338,14 @@ export default {
         }
         
       });
+
+      sums = sums.map(item => {
+        if(typeof item === 'number'){
+          item = getTousandNum(NumFormat(item));
+        }
+
+        return item;
+      })
       return sums;
     },
 
@@ -733,23 +765,23 @@ export default {
         }
 
         & .manual-lpriceInput:nth-child(2){
-          margin-top: 48px !important;
+          margin-top: 32px !important;
         }
 
         & .manual-lpriceInputTxt:nth-child(2){
-          margin-top: 48px !important;
+          margin-top: 32px !important;
         }
 
         .manual-lpriceInputTxt{
           font-size: 16px;
-          margin-top: 40px;
+          margin-top: 32px;
           height: 35px;
           line-height: 30px;
         }
 
         .manual-lpriceInput{
           font-size: 16px;
-          margin-top: 40px;
+          margin-top: 32px;
 
           .right-input{
             width: 100px;
@@ -759,7 +791,7 @@ export default {
         .manual-lprice{
           color: #485465;
           font-size: 16px;
-          margin-top: 56px;
+          margin-top: 44.8px;
         }
         
         .manual-l-title{
