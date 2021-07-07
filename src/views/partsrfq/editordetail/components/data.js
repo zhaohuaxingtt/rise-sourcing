@@ -18,8 +18,8 @@ export const navList = [{
     value: 2,
     name: "详情信息",
     message: 0,
-    url:'/sourcing/partsrfq/editordetailinfo',
-    activePath: "/sourcing/partsrfq/editordetailinfo",
+    url:'/sourcing/partsrfq/editorInfo',
+    activePath: "/sourcing/partsrfq/editorInfo",
     key:"LK_XIANGQINGXINXI"
     }, {
     value: 3,
