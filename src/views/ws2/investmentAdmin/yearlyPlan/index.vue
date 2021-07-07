@@ -86,7 +86,7 @@
         <template slot="title">
           <div class="manual-head">
             <div class="title">
-              {{$t('LK_SHOUGONGTIAOZHENG')}}-{{'2021'}}
+              {{$t('LK_SHOUGONGTIAOZHENG')}}-{{isThen ? vereceive.year : vereceive.year + 1}}
             </div>
             <div>
               <iButton v-if="vereceive.editFlag" @click="manualSave" :loading="manualSaveLoading">{{ $t('LK_BAOCUN') }}</iButton><!-- 保存 -->
@@ -100,7 +100,7 @@
           <span>{{$t('LK_BUHANSUI')}}</span>
         </div>
         <div class="manual-content">
-          <div>
+          <div class="content-l">
             <div id="totalLeft"></div>
             <div class="manual-l-txt">
               <div class="manual-l-title">{{setSystemTotal}}</div>
@@ -113,7 +113,7 @@
               <div class="manual-lprice" v-for="(item, index) in setSystemRate" :key="index">{{item}}</div>
             </div>
           </div>
-          <div>
+          <div class="content-r">
             <div id="totalRight"></div>
             <!-- <div class="test"></div> -->
             <div class="manual-l-txt">
@@ -354,7 +354,7 @@ export default {
           const resData = res.data;
           const myChart = echarts().init(document.getElementById("echarts"));
           myChart.setOption({
-              tooltip: {
+            tooltip: {
               backgroundColor: "#ffffff",
                     extraCssText:
                       "color: #1B1D21; box-shadow: 0px 0px 20px rgba(27, 29, 33, 0.12);",
@@ -575,7 +575,7 @@ export default {
                 grid: {
                     left: '8%',
                     right: '18%',
-                    bottom: '3%',
+                    bottom: '0',
                     top: '10%',
                     containLabel: true
                 },
@@ -710,6 +710,10 @@ export default {
       position: absolute;
       left: 0;
       bottom: 0;
+
+      .content-l{
+        padding-bottom: 80px;
+      }
 
       .test{
         flex: 1;

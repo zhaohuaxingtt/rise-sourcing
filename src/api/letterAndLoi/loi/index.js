@@ -135,3 +135,12 @@ export function getloiList(data) {
       method: 'GET',
     })
   }
+
+  // 新增LOI 
+  export function addNomiLoi(params) {
+    return requst({
+      url: '/loi/addNomiLoi',
+      method: 'GET',
+      params,
+    })
+  }

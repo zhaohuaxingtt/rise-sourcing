@@ -26,11 +26,11 @@
       <iTabsList v-model="activityTabIndex" @tab-click="handleTabClick" type="card" slot="components" class='margin-top20'>
         <!-------------------------已选零件-  ----------------------------------------->
         <el-tab-pane name="unSelect" :label="$t('TPZS.QLLJ')">
-          <tableList :tableData="tablePageData" :tableTitle="tableTitle" :tableLoading="tableLoading" :selection='true' :index="true" @handleSelectionChange="handleSelectionChange" />
+          <tableList :tableData="tablePageData" :tableTitle="tableTitle" :tableLoading="tableLoading" :selection='true' @handleSelectionChange="handleSelectionChange" />
           <iPagination :pager-count='3' v-update @size-change="handleSizeChange($event)" @current-change="handleCurrentChange($event)" background :page-sizes="page.pageSizes" :page-size="pageData.pageSize" :layout="page.layout" :current-page='pageData.currPage' :total="pageData.totalCount" />
         </el-tab-pane>
         <el-tab-pane name="selected" :label="$t('TPZS.YXLJ')">
-          <tableList ref="tableList" :tableData="tablePageData" :tableTitle="tableTitle" :tableLoading="tableLoading" :selection='true' :index="true" @handleSelectionChange="handleSelectionChange" />
+          <tableList ref="tableList" :tableData="tablePageData" :tableTitle="tableTitle" :tableLoading="tableLoading" :selection='true' @handleSelectionChange="handleSelectionChange" />
           <iPagination :pager-count='3' v-update @size-change="handleSizeChange($event)" @current-change="handleCurrentChange($event)" background :page-sizes="page.pageSizes" :page-size="pageData.pageSize" :layout="page.layout" :current-page='pageData.currPage' :total="pageData.totalCount" />
         </el-tab-pane>
       </iTabsList>
@@ -90,6 +90,7 @@ export default {
       if (!!data) {
         this.carType = data.carType
       }
+      this.activityTabIndex='unSelect'
       this.tableLoading = true;
       try {
         const req = {
@@ -135,12 +136,17 @@ export default {
       this.activityTabIndex = target.name
       if (target.name === 'selected') {
         var partsIds = []
-        this.middleListData.forEach(item => {
-          partsIds.push(item.partsId)
-        })
+
         this.selectTableData.forEach(item => {
+          this.middleListData.forEach(item => {
+            partsIds.push(item.partsId)
+          })
           if (!partsIds.includes(item.partsId)) {
-            this.middleListData.push(item)
+            if (this.middleListData.length < 100) {
+              this.middleListData.push(item)
+            } else {
+              iMessage.warn(this.$t('TPZS.YXLJZDZNTJYBT'))
+            }
           }
         })
         this.tableListData = this.middleListData

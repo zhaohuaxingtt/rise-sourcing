@@ -1,7 +1,7 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-02-24 09:42:07
- * @LastEditTime: 2021-06-28 11:32:50
+ * @LastEditTime: 2021-07-05 11:10:41
  * @LastEditors: Please set LastEditors
 -->
 
@@ -39,7 +39,7 @@
         <template slot-scope="scope">
           <el-checkbox
             v-model="scope.row.selected"
-            v-if="batchEdit"
+            v-if="batchEdit && selection"
             @change="handleSelectionChange(scope)"></el-checkbox>
           <div class="tableSelection" v-if="scope.row.groupId">{{scope.row.groupName}}</div>
         </template>
@@ -236,6 +236,26 @@ export default {
       })
       // console.log('handleCellClick', curSupplier, cIndex, supplierChosen, row)
     },
+    // 校验输入的比例是否合法
+    checkPercent() {
+      console.log(this.data)
+      let state = true
+      let info = ''
+      this.data.forEach(row => {
+        const percent = row.percent || []
+        const count = _.sum(percent.map(o => Number(o)))
+        // 校验是否包含负数比例
+        const containNGNumber = percent.filter(m => m < 0).length
+        if (state && isNaN(count) || count > 100 || containNGNumber) {
+          state = false
+          info = this.language('FENPEIBILIBUHEFA', '分配比例不合法')
+        }
+      })
+      return {
+        state,
+        info
+      }
+    },
     // 编辑百分比
     handleEditPercent(row, Index) {
       const percent = row.percent || []
@@ -245,7 +265,7 @@ export default {
       if (isNaN(count) || count > 100 || containNGNumber) {
         // percent[Index] = 0
         // Vue.set(row, 'percent', percent)
-        iMessage.error(this.language('nominationSuggestion_NingShuRuDeBiLiBuHeFa', '您输入的比例不合法'))
+        iMessage.error(this.language('NINGSHURUDEBILIBUHEFA', '您输入的比例不合法'))
         return
       }
       this.onPercentChangeWhiteBack(row)
@@ -398,7 +418,7 @@ export default {
       
       // 校验是否显示加权第四根柱子
       let isShowWeightStick = false
-      isShowWeightStick = Boolean(data.filter(o => o.supplierChosen && (o.supplierChosen.length > 1 || (o.supplierChosen.length === 1 && o.percent && o.percent[0] !== 100.00))).length)
+      isShowWeightStick = Boolean(data.filter(o => o.supplierChosen && (o.supplierChosen.length > 1 || (o.supplierChosen.length === 1 && o.percent && String(o.percent[0]) !== '100.00'))).length)
 
       // 'Best TTO \n for Whole Package'
       // 根据供应商
@@ -451,8 +471,10 @@ export default {
       bestGroup = _.sortBy(bestGroup, ['data'])
       // console.log('bestGroup', bestGroup)
       // 筛选分组最低数据
-      const bestGroupTotal = _.sum(bestGroup.map(o => o.data))
-      const bestGroupSupplier = [bestGroup[0].data, bestGroupTotal - bestGroup[0].data]
+      // const bestGroupTotal = _.sum(bestGroup.map(o => o.data))
+      const bestGroupTotal = bestGroup[0].data
+      // const bestGroupSupplier = [bestGroup[0].data, bestGroupTotal - bestGroup[0].data]
+      const bestGroupSupplier = [bestGroup[0].data]
       const bestGroupSupplierIndex = bestGroup[0].index
       bestGroupSupplier.push(bestGroupTotal)
       // 记录该供应商

@@ -1,7 +1,7 @@
 <!--
  * @Author: Haojiang
  * @Date: 2021-06-28 09:29:08
- * @LastEditTime: 2021-07-01 18:15:11
+ * @LastEditTime: 2021-07-05 23:06:37
  * @LastEditors: Please set LastEditors
  * @Description: m签字单搜索
  * @FilePath: /front-web/src/views/designate/home/signSheet/components/search/index.vue
@@ -57,7 +57,7 @@
           <el-option
             :value="items.id"
             :label="language(items.key, items.name)"
-            v-for="(items, index) in signStatus || []"
+            v-for="(items, index) in signSheetStatus"
             :key="index"
           ></el-option>
         </iSelect>
@@ -107,7 +107,11 @@
 <script>
 
 import { applyType } from '@/layout/nomination/components/data'
-import { form, applyStates } from '../data'
+import { form } from '../data'
+import {
+  signSheetStatus
+} from '@/views/designate/home/components/options'
+
 import {
   iSearch,
   iInput,
@@ -120,7 +124,8 @@ export default {
     return {
       form,
       ptocessType: applyType,
-      applyStates
+      signSheetStatus
+      
     }
   },
   components: {

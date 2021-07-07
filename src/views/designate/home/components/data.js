@@ -1,7 +1,7 @@
 /*
  * @Author: HaoJiang
  * @Date: 2021-05-20 14:29:09
- * @LastEditTime: 2021-07-02 17:10:11
+ * @LastEditTime: 2021-07-05 16:42:20
  * @LastEditors: Please set LastEditors
  * @Description: 定点表格信息
  *
@@ -11,15 +11,6 @@
 export const form = {
 }
 
-// 申请状态
-export const applyStates = [
-  {id:'DRAFT',name:'草稿',key:'LK_CAOGAO'},
-  {id:'SUBMIT',name:'提交中',key:'LK_TIJIAOZHONG'},
-  {id:'FREERE',name:'已冻结',key:'LK_YIDONGJIE'},
-  {id:'ONFLOW',name:'审批中/流转中',key:'LK_SHENPILIUZHUAN'},
-  {id:'FINISHFLOW',name:'审批完成/流转完成',key:'LK_SHENPILIUZHUANWANCHENG'},
-  {id:'NOMINATE',name:'已定点',key:'LK_YIDINGDIAN'},
-]
 
 // 表单表头
 export const tableTitle = [{

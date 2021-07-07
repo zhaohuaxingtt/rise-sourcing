@@ -171,7 +171,8 @@ export default {
             formatter: function(params) {
               const wholePackage = self.data && self.data.wholePackage
               const bestGroupSupplier = self.data.bestGroupSupplier
-              const bestGroupSupplierTotal = bestGroupSupplier && bestGroupSupplier[2] || 0
+              // const bestGroupSupplierTotal = bestGroupSupplier && bestGroupSupplier[2] || 0
+              const bestGroupSupplierTotal = bestGroupSupplier && bestGroupSupplier[1] || 0
               const minPartSupplierTToTotal = self.data.minPartSupplierTToTotal
               const weightSupplierTotal = self.data.weightSupplierTotal || 0
               let tpl = ''
@@ -309,11 +310,12 @@ export default {
       // Best TTO by Group
       const bestGroupSupplier = self.data.bestGroupSupplier
       const bestGroupSupplierMin = bestGroupSupplier && bestGroupSupplier[0]
-      const bestGroupSupplierMax = bestGroupSupplier && bestGroupSupplier[1]
+      // const bestGroupSupplierMax = bestGroupSupplier && bestGroupSupplier[1]
       const bestGroupSupplierMinIndex = self.data.bestGroupSupplierIndex
       
-      const bestGroupSupplierTotal = bestGroupSupplier && bestGroupSupplier[2]
-      let totalGroupPercent = 0
+      // const bestGroupSupplierTotal = bestGroupSupplier && bestGroupSupplier[2]
+      const bestGroupSupplierTotal = bestGroupSupplier && bestGroupSupplier[1]
+      // let totalGroupPercent = 0
 
       // console.log('----',bestGroupSupplier)
       
@@ -325,14 +327,17 @@ export default {
         stack: 'total',
         label: {
           show: true,
-          position: 'inside',
-          textStyle,
+          position: 'top',
+          textStyle: {
+            color: '#485465'
+          },
           formatter: function(params) {
-            const fz = Number(params.data)
-            const fm = Number(bestGroupSupplierTotal)
-            const percent = parseFloat(fz/fm*100).toFixed(2)
-            totalGroupPercent += Number(percent)
-            return `${params.data}\n{p|${percent}%}`
+            // const fz = Number(params.data)
+            // const fm = Number(bestGroupSupplierTotal)
+            // const percent = parseFloat(fz/fm*100).toFixed(2)
+            // totalGroupPercent += Number(percent)
+            // return `${params.data}\n{p|${percent}%}`
+            return `${params.data}`
           },
           rich,
           interval: 0
@@ -344,58 +349,58 @@ export default {
           },
         }
       })
-      if (Number(bestGroupSupplierTotal) !== bestGroupSupplierMin) {
-        series.push({
-          data: ['', bestGroupSupplierMax, '', ''],
-          type: 'bar',
-          barWidth: 30,
-          barMinHeight: 30,
-          stack: 'total',
-          label: {
-            show: true,
-            position: 'inside',
-            textStyle,
-            formatter: function(params) {
-              const fz = Number(params.data)
-              const fm = Number(bestGroupSupplierTotal)
-              // const percent = Math.floor(fz/fm*100)
-              const percent = 100 - totalGroupPercent
-              return `${params.data}\n{p|${percent.toFixed(2)}%}`
-            },
-            rich,
-            interval: 0
-          },
-          itemStyle: {
-            normal: {
-              barBorderRadius: [5, 5, 0, 0],
-              color: bgColor
-            },
-          }
-        })
-      }
+      // if (Number(bestGroupSupplierTotal) !== bestGroupSupplierMin) {
+      //   series.push({
+      //     data: ['', bestGroupSupplierMax, '', ''],
+      //     type: 'bar',
+      //     barWidth: 30,
+      //     barMinHeight: 30,
+      //     stack: 'total',
+      //     label: {
+      //       show: true,
+      //       position: 'inside',
+      //       textStyle,
+      //       formatter: function(params) {
+      //         const fz = Number(params.data)
+      //         const fm = Number(bestGroupSupplierTotal)
+      //         // const percent = Math.floor(fz/fm*100)
+      //         const percent = 100 - totalGroupPercent
+      //         return `${params.data}\n{p|${percent.toFixed(2)}%}`
+      //       },
+      //       rich,
+      //       interval: 0
+      //     },
+      //     itemStyle: {
+      //       normal: {
+      //         barBorderRadius: [5, 5, 0, 0],
+      //         color: bgColor
+      //       },
+      //     }
+      //   })
+      // }
       // 分组最佳柱子label
-      bestGroupSupplierTotal&& (series.push({
-        data: ['', 1, '', ''],
-        type: 'bar',
-        barWidth: 30,
-        stack: 'total',
-        label: {
-          show: true,
-          position: 'top',
-          textStyle: {
-            color: '#485465'
-          },
-          formatter: function() {
-            return bestGroupSupplierTotal
-          }
-        },
-        itemStyle: {
-          normal: {
-            barBorderRadius: [5, 5, 0, 0],
-            color: bgColor
-          },
-        }
-      }))
+      // bestGroupSupplierTotal&& (series.push({
+      //   data: ['', 1, '', ''],
+      //   type: 'bar',
+      //   barWidth: 30,
+      //   stack: 'total',
+      //   label: {
+      //     show: true,
+      //     position: 'top',
+      //     textStyle: {
+      //       color: '#485465'
+      //     },
+      //     formatter: function() {
+      //       return bestGroupSupplierTotal
+      //     }
+      //   },
+      //   itemStyle: {
+      //     normal: {
+      //       barBorderRadius: [5, 5, 0, 0],
+      //       color: bgColor
+      //     },
+      //   }
+      // }))
 
       // 单个零件最小
       const minPartSupplierTToArray = self.data.minPartSupplierTToArray || []

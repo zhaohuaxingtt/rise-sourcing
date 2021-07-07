@@ -26,8 +26,8 @@
     <iCard class="contain margin-top20">
         <template v-slot:header-control>
             <iButton :loading="btnLoading.submit" @click="submit">{{language('LK_QUERENBINGTIJIAO','确认并提交')}}</iButton>
-            <iButton :loading="btnLoading.lineSure" @click="lineSure">{{language('LK_LINEQUEREN','LINIE确认')}}</iButton>
-            <iButton :loading="btnLoading.lineBack" @click="lineBack">{{language('LK_LINETUIHUI','LINIE退回')}}</iButton>
+            <iButton :loading="btnLoading.lineSure" @click="lineSure">{{language('LK_LINIEQUEREN','LINIE确认')}}</iButton>
+            <iButton :loading="btnLoading.lineBack" @click="lineBack">{{language('LK_LINIETUIHUI','LINIE退回')}}</iButton>
             <iButton :loading="btnLoading.back" @click="back">{{language('partsprocure.CheHui','撤回')}}</iButton>
             <iButton @click="turnSend">{{language('partsprocure.PARTSPROCURETRANSFER','转派')}} </iButton> 
             <iButton @click="closeLetter">{{language('LK_GUANBI','关闭')}} </iButton>

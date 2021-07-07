@@ -71,7 +71,7 @@ export default {
             currPage: 1,
             pageSize: 10,
             status: 1,
-            purchasingRequirementId: this.params.purchasingRequirementId,
+            purchasingRequirementId: this.params.purchasingRequirementId || '',
           });
 
           this.version = "V1";

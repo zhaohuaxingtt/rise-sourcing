@@ -150,7 +150,9 @@ export default {
           query: {
             signCode: row.signCode,
             id: row.id,
-            status: row.status && row.status.name || row.status
+            status: row.status && row.status.name || row.status,
+            // 仅仅允许草稿或者已拒绝的单子编辑
+            mode: row.status && row.status.code && ['1', '2'].includes(row.status.code) ? 'add' : ''
           }
         })
         window.open(routeData.href, '_blank')
