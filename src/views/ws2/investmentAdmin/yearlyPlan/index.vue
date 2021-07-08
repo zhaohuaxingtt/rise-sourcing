@@ -125,17 +125,21 @@
             <div id="totalLeft"></div>
             <div class="manual-l-txt">
               <div class="manual-l-title">{{setSystemTotal}}</div>
-              <div class="manual-lprice" v-for="(item, index) in planYearCommutity" :key="index">
+              <div class="manual-lprice manual-lprice1" v-for="(item, index) in planYearCommutity" :key="index">
                 {{isThen ? item.planAmountSystemCurrent : item.planAmountSystemNext}}
               </div>
             </div>
             <div class="manual-l-txt" style="margin-right: 100px;">
               <div class="manual-l-title">Rate</div>
-              <div class="manual-lprice" v-for="(item, index) in setSystemRate" :key="index">{{item}}</div>
+              <div class="manual-lprice manual-lprice2" v-for="(item, index) in setSystemRate" :key="index">{{item}}</div>
             </div>
           </div>
           <div class="content-r">
             <div id="totalRight"></div>
+            <!-- <div style="flex: 1">
+              <div id="totalRight"></div>
+              <div id="moreTerm" style="dispaly: none"></div>
+            </div> -->
             <!-- <div class="test"></div> -->
             <div class="manual-l-txt">
               <div class="manual-l-title">{{setManualTotal}}</div>
@@ -250,10 +254,12 @@ export default {
       refreshStatus: true,
       chartLoading: false,
       newVersionNum: '',
+      base: 0,
     }
   },
 
   mounted(){
+    this.base = document.body.clientWidth >= 1920 ? 75 : 66;
   },
 
   methods: {
@@ -498,7 +504,7 @@ export default {
               
             ]
           })
-
+          myChart.off('click');
           myChart.on('click', function(params) {
             const arr1 = ['系统计算上半年', '系统计算下半年', '系统计算Backlog'];
             _this.isThen = params.name == _this.vereceive.year; //  是否为当年
@@ -535,18 +541,42 @@ export default {
       })
     },
 
+    setDomParameter(){
+      setTimeout(() => {
+        const RInput = document.getElementsByClassName("manual-lpriceInput");
+        const RTxt = document.getElementsByClassName("manual-lpriceInputTxt");
+        const LTxt1 = document.getElementsByClassName("manual-lprice1");
+        const LTxt2 = document.getElementsByClassName("manual-lprice2");
+        Array.prototype.forEach.call(RInput, function (element, index) {
+          element.style.marginTop = '32px';
+          element.style.height = '28px';
+          element.style.opacity = '1';
+          RTxt[index].style.marginTop = '32px';
+          RTxt[index].style.height = '28px';
+          LTxt1[index].style.marginTop = '32px';
+          LTxt1[index].style.height = '28px';
+          LTxt2[index].style.marginTop = '32px';
+          LTxt2[index].style.height = '28px';
+        });
+      }, 1000)
+      
+    },
+
     queryPlanYearCommutity(){
       queryPlanYearCommutity({
         versionId: this.vereceive.id
       }).then(res => {
         const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn;
         if(res.code === '0'){
+          const arr = ['CSX', 'CSP', 'CSM', 'CSI', 'CSE', 'BU-B', 'Risk'];
           this.planYearCommutity = _.cloneDeep(res.data);
           const _this = this;
           const totalLeft = echarts().init(document.getElementById("totalLeft"));
           const totalRight = echarts().init(document.getElementById("totalRight"));
           const resData = _.cloneDeep(res.data);
           const resDataL = res.data.filter(item => item.commodity !== 'Risk');
+          totalRight.resize({height: 66*resData.length});
+          totalLeft.resize({height: 66*resDataL.length});
           totalRight.setOption(
             {
                 title: {
@@ -566,7 +596,7 @@ export default {
                 grid: {
                     left: '8%',
                     right: '20%',
-                    bottom: '3%',
+                    bottom: '0%',
                     top: '8%',
                     containLabel: true
                 },
@@ -654,6 +684,8 @@ export default {
         }else{
           iMessage.error(result);
         }
+
+        this.setDomParameter(); //  设置dom参数
         
       })
     },
@@ -767,12 +799,12 @@ export default {
           margin-right: 0;
         }
 
-        & .manual-lpriceInput:nth-child(2){
-          margin-top: 48px !important;
-        }
+        // & .manual-lpriceInput:nth-child(2){
+        //   margin-top: 40px !important;
+        // }
 
         & .manual-lpriceInputTxt:nth-child(2){
-          margin-top: 48px !important;
+          margin-top: 40px !important;
         }
 
         .manual-lpriceInputTxt{
@@ -780,11 +812,22 @@ export default {
           margin-top: 40px;
           height: 35px;
           line-height: 30px;
+
+          // @media only screen and (min-width: 1920px) {
+          //   margin-top: 48px !important;
+          //   // background-color: chartreuse;
+          // }
         }
 
         .manual-lpriceInput{
           font-size: 16px;
-          margin-top: 40px;
+          opacity: 0;
+          // margin-top: 40px;
+
+          // @media only screen and (min-width: 1920px) {
+          //   margin-top: 48px !important;
+          //   // background-color: chartreuse;
+          // }
 
           .right-input{
             width: 100px;
@@ -799,6 +842,11 @@ export default {
           color: #485465;
           font-size: 16px;
           margin-top: 56px;
+
+          // @media only screen and (min-width: 1920px) {
+          //   margin-top: 64px !important;
+          //   // background-color: chartreuse;
+          // }
         }
         
         .manual-l-title{
@@ -808,15 +856,22 @@ export default {
         }
       }
 
+      // #totalRight{
+      //   width: 100%;
+      //   height: 100%;
+      // }
+
       #totalLeft, #totalRight{
         flex: 1;
         padding-left: 32px;
         width: 0;
         
-        ::v-deep div{
+        ::v-deep div :nth-child(1){
+          height: 100% !important;
           width: 100% !important;
 
           ::v-deep canvas{
+            height: 100% !important;
             width: 100% !important;
           }
         }

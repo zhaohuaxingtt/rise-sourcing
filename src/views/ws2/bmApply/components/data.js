@@ -18,13 +18,14 @@ export const allTableHead = [
     props: 'bmSerial',
     name: 'BM单流⽔号',
     key: 'LK_BMDANLIUSHUIHAO',
-    width: 180,
+    width: 200,
     tooltip: false
   },
   {
     props: 'bmNum',
     name: 'BM单号',
     key: 'LK_BMDANHAO',
+    width: 130,
     tooltip: false
   },
   {
@@ -72,7 +73,7 @@ export const allTableHead = [
     props: 'bmStatusName',
     name: 'BM单状态',
     key: 'LK_BMZHUANGTAI',
-    width: 100,
+    width: 150,
     tooltip: false
   },
   {
@@ -140,13 +141,14 @@ export const bmTableHead = [
     props: 'bmSerial',
     name: 'BM单流⽔号',
     key: 'LK_BMDANLIUSHUIHAO',
-    width: 180,
+    width: 200,
     tooltip: false
   },
   {
     props: 'bmNum',
     name: 'BM单号',
     key: 'LK_BMDANHAO',
+    width: 130,
     tooltip: false
   },
   {
@@ -195,7 +197,7 @@ export const bmTableHead = [
     props: 'bmStatusName',
     name: 'BM单状态',
     key: 'LK_BMZHUANGTAI',
-    width: 100,
+    width: 150,
     tooltip: false
   },
   {
@@ -244,13 +246,14 @@ export const aekoTableHead = [
     props: 'bmSerial',
     name: 'BM单流⽔号',
     key: 'LK_BMDANLIUSHUIHAO',
-    width: 180,
+    width: 200,
     tooltip: false
   },
   {
     props: 'bmNum',
     name: 'BM单号',
     key: 'LK_BMDANHAO',
+    width: 130,
     tooltip: false
   },
   {
@@ -311,6 +314,7 @@ export const aekoTableHead = [
     props: 'bmStatus',
     name: 'BM单状态',
     key: 'LK_BMZHUANGTAI',
+    width: 150,
     tooltip: false
   },
   {
@@ -353,13 +357,14 @@ export const aekoBmTableHead = [
     props: 'bmSerial',
     name: 'BM单流⽔号',
     key: 'LK_BMDANLIUSHUIHAO',
-    width: 180,
+    width: 200,
     tooltip: false
   },
   {
     props: 'bmNum',
     name: 'BM单号',
     key: 'LK_BMDANHAO',
+    width: 130,
     tooltip: false
   },
   {
@@ -420,6 +425,7 @@ export const aekoBmTableHead = [
     props: 'bmStatus',
     name: 'BM单状态',
     key: 'LK_BMZHUANGTAI',
+    width: 150,
     tooltip: false
   },
   {
