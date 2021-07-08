@@ -1,7 +1,7 @@
 /*
  * @Author: haojiang
  * @Date: 2021-06-30 10:09:30
- * @LastEditTime: 2021-07-02 16:55:01
+ * @LastEditTime: 2021-07-08 15:16:23
  * @LastEditors: Please set LastEditors
  * @Description: 签字单
  * @FilePath: /front-web/src/api/designate/nomination/signsheet.js
@@ -95,7 +95,7 @@ export function signSheetApproveDetail(params) {
 export function exportSignSheet(params) {
   return requst({
       url: `/nominate/sign/export`,
-      method: "post",
-      data: params
+      method: "GET",
+      params
   })
 }

@@ -1,7 +1,7 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-07-01 14:30:59
- * @LastEditTime: 2021-07-08 09:43:10
+ * @LastEditTime: 2021-07-08 16:05:18
  * @LastEditors: Please set LastEditors
  * @Description: M签字单预览导出 jira-1571
  * @FilePath: /front-web/src/views/designate/home/signSheet/signView.vue
@@ -14,7 +14,7 @@
         <div class="signPreview-header">
           <div class="font18 font-weight">{{'Summary list for production purchasing'}}</div>
           <div class="control">
-            <iButton @click="exportfile">
+            <iButton @click="exportSignSheet">
               {{ language('LK_DAOCHU', '导出') }}
             </iButton>
             <span class="tab-icon" @click="close">
@@ -90,6 +90,17 @@ export default {
   methods: {
     close() {
       this.$router.back()
+    },
+    exportSignSheet() {
+      const signId = this.$route.query.signId
+      if (!signId) {
+        iMessage.error(this.language('QIANZIDANHAOBUNENGWEIKONG','签字单号不能为空'))
+        return
+      }
+      const BASEURL = window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' + window.location.port : '')
+      const fileURL = `${BASEURL}${process.env.VUE_APP_RFQ}/nominate/sign/export?signId=${signId}`
+      console.log(fileURL)
+      window.open(fileURL)
     },
     // 获取定点管理列表
     async getFetchData(params = {}) {
