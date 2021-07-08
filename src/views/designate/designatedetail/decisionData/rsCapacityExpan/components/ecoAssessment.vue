@@ -1,7 +1,7 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-07-07 16:53:18
- * @LastEditTime: 2021-07-08 13:13:59
+ * @LastEditTime: 2021-07-08 15:05:01
  * @LastEditors: Please set LastEditors
  * @Description: Economic Assessment
  * @FilePath: /front-web/src/views/designate/designatedetail/decisionData/rsCapacityExpan/components/ecoAssessment.vue
@@ -186,8 +186,8 @@ export default {
             &:hover {
               background: #f5f7fa;
             }
-            // 偶数
-            &.even {
+            // 奇数
+            &.odd {
               &:nth-child(2n) {
                 background: #fff;
               }
@@ -195,7 +195,7 @@ export default {
                 background: rgb(239, 244, 254);
               }
             }
-            // 奇数
+            // 偶数
             &.even {
               &:nth-child(2n+1) {
                 background: #fff;
