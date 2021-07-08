@@ -136,7 +136,7 @@
 			},
 			//为mbdl的checkBox新增不能选中的功能
 			selectable(row,index){
-				if(row.bdlType == '2'){
+				if(this.getbaseInfoData().isSelectMbdl && row.bdlType == '2'){
 					return false
 				}else{
 					return true

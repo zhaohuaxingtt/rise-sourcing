@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-27 14:55:03
- * @LastEditTime: 2021-06-28 15:25:44
+ * @LastEditTime: 2021-07-07 18:50:22
  * @LastEditors: Please set LastEditors
  * @Description: 采购员报价与基本分析模具界面
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringMj\index.vue
@@ -47,7 +47,7 @@ export default {
   },
   created(){
     this.partInfo.rfqId = parseInt(this.$route.query.id)
-    this.partInfo.currentRounds = parseInt(this.$route.query.round)
+    this.partInfo.currentRounds = parseInt(this.getbaseInfoData().currentRounds)
     this.partInfo.carTypeNames = this.$route.query.carTypeNames
     this.getRfqSupplierList().then(r=>{
       this.getAllMouldFee()
