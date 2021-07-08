@@ -330,6 +330,14 @@ export default {
       saveMonthData(param).then(res => {
         if (Number(res.code) === 0) {
           // this.pageEdit = false;
+          this.tableListData.map(item => {
+            for (let monthIndex = 0; monthIndex < 12; monthIndex++) {
+              if (item[`planAmountM${monthIndex + 1}`] == null) {
+                item[`planAmountM${monthIndex + 1}`] = 0;
+              }
+              item[`planAmountM${monthIndex + 1}`] = this.getFormatNumber(item[`planAmountM${monthIndex + 1}`]);
+            }
+          });
           this.noChangeTableListData = cloneDeep(this.tableListData);
           return iMessage.success(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
         } else {
@@ -753,7 +761,7 @@ export default {
   margin-top: 20px;
 
   .versionSelect {
-    width: 140px;
+    width: 155px;
     margin: 0 20px;
   }
 
