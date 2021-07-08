@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2021-07-08 20:01:46
+ * @LastEditTime: 2021-07-08 20:22:42
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\editordetail\index.vue
@@ -80,7 +80,6 @@
 							</iText>
 						</iFormItem>
 						<iFormItem :label="$t('LK_LINGJIANXIANGMULEIXING') + ':'" name="test">
-							<p>{{ detailData.partProjectType }}</p>
 							<iSelect
 								v-model="detailData.partProjectType"
 								v-permission="PARTSPROCURE_EDITORDETAIL_EVENTITEMTYPE"
