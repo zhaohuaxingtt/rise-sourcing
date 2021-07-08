@@ -11,7 +11,7 @@
                 <p class="step-title">{{item.title}}</p>
                 <p class="step-tips">
                     <span v-if="isEdit && groupNode[item.key] && groupNode[item.key].isEditable" class="step-tips-edit">
-                        <span class="step-tips-block">{{groupNode[item.key] ? (groupNode[item.key].nodeWeek ? 'KW'+groupNode[item.key].nodeWeek : '-') : '-'}}</span>
+                        <span class="step-tips-block">{{groupNode[item.key] ? (groupNode[item.key].nodeWeek ? (getNodeYear(groupNode[item.key].nodeDate) +'KW'+groupNode[item.key].nodeWeek) : '-') : '-'}}</span>
                         <iDatePicker 
                             class="step-tips-picker"
                             v-model="groupNode[item.key].nodeDate" 
@@ -82,6 +82,16 @@ export default {
         changeDate(item){
             const {nodeDate} = item;
             item.nodeWeek = window.moment(nodeDate).weeks();
+        },
+
+        // 获取年份显示
+        getNodeYear(nodeDate){
+            const arr = nodeDate.split('-');
+            if(arr.length>1){
+                return arr[0]+'-'
+            }else{
+                 return ''
+            }
         }
     }
 
