@@ -10,6 +10,9 @@ const mutations = {
   SET_ENTRY_STATUS(state, data) {
     state.entryStatus = data
   },
+  SET_RFQ_ID(state, data) {
+    state.rfqId = data
+  },
 };
 
 const actions = {
@@ -18,6 +21,9 @@ const actions = {
   },
   setEntryStatus({ commit }, data) {
     commit('SET_ENTRY_STATUS', data)
+  },
+  setRfqId({ commit }, data) {
+    commit('SET_RFQ_ID', data)
   }
 }
 

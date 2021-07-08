@@ -59,8 +59,14 @@ export default {
     if (this.$route.path === '/sourcing/partsrfq/assistant') {
       window.sessionStorage.setItem('entryStatus', 1)
       window.sessionStorage.setItem('rfqId', this.$route.query.id)
+      this.$store.dispatch('setRfqId', this.$route.query.id)
+      this.$store.dispatch('setEntryStatus', 1)
     } else {
+      this.$store.dispatch('setEntryStatus', 0)
       window.sessionStorage.setItem('entryStatus', 0)
+    }
+    if (!!this.$route.query.pageType) {
+      this.pageType = this.$route.query.pageType
     }
   },
   methods: {

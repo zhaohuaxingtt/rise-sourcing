@@ -41,6 +41,7 @@ export default {
   methods: {
     async getDataList(val) {
       window.sessionStorage.setItem('rfqId', val)
+      this.$store.dispatch('setRfqId', val)
       const pms = {
         isInsideEnter: false,
         rfq: val || '',
