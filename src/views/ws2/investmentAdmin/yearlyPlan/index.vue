@@ -135,7 +135,10 @@
             </div>
           </div>
           <div class="content-r">
-            <div id="totalRight"></div>
+            <div style="flex: 1">
+              <div id="totalRight"></div>
+              <!-- <div id="moreTerm" style="dispaly: none"></div> -->
+            </div>
             <!-- <div class="test"></div> -->
             <div class="manual-l-txt">
               <div class="manual-l-title">{{setManualTotal}}</div>
@@ -498,7 +501,7 @@ export default {
               
             ]
           })
-
+          myChart.off('click');
           myChart.on('click', function(params) {
             const arr1 = ['系统计算上半年', '系统计算下半年', '系统计算Backlog'];
             _this.isThen = params.name == _this.vereceive.year; //  是否为当年
@@ -541,12 +544,68 @@ export default {
       }).then(res => {
         const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn;
         if(res.code === '0'){
+          const arr = ['CSX', 'CSP', 'CSM', 'CSI', 'CSE', 'BU-B', 'Risk'];
           this.planYearCommutity = _.cloneDeep(res.data);
           const _this = this;
           const totalLeft = echarts().init(document.getElementById("totalLeft"));
           const totalRight = echarts().init(document.getElementById("totalRight"));
           const resData = _.cloneDeep(res.data);
+          const dom = document.getElementById("totalRight");
+          dom.style.height = `${66*resData.length}px`;
+          // const resData = _.cloneDeep(res.data.filter(item => arr.includes(item.commodity)));
           const resDataL = res.data.filter(item => item.commodity !== 'Risk');
+          // const moreTerm = res.data.filter(item => !arr.includes(item.commodity));
+          console.log('moreTermmoreTerm', dom, 66*resData.length, resData);
+          // if(!moreTerm.length){
+          //   const dom = document.getElementById("moreTerm");
+          //   dom.style.display = 'block';
+          //   dom.style.height = '100px';
+          //   dom.style.width = '100%';
+          //   dom.style.marginTop = '-15px';
+          //   echarts().init(dom).setOption({
+          //     tooltip: {
+                  
+          //     },
+          //     legend: {
+          //         data: []
+          //     },
+          //     grid: {
+          //         left: '8%',
+          //         right: '20%',
+          //         bottom: '3%',
+          //         top: '0%',
+          //         containLabel: true
+          //     },
+          //     xAxis: {
+          //         show: false
+          //     },
+          //     yAxis: {
+          //         type: 'category',
+          //         data: moreTerm.map(item => item.commodity).reverse()
+          //     },
+          //     series: [
+          //         {
+          //             name: '2011年',
+          //             type: 'bar',
+          //             data: moreTerm.reverse().map(item => {
+          //               if(_this.isThen){ //  当年
+          //                 return item.planAmountAmualCurrent;
+          //               }
+
+          //               return item.planAmountAmualNext;
+          //             }),
+          //             barWidth: 30,
+          //             itemStyle:{
+          //                 normal:{
+          //                   color:'#D5DFF1',
+          //                   barBorderRadius: 5
+          //                 },
+          //             },
+          //         },
+          //     ]
+          //   })
+            
+          // }
           totalRight.setOption(
             {
                 title: {
@@ -566,7 +625,7 @@ export default {
                 grid: {
                     left: '8%',
                     right: '20%',
-                    bottom: '3%',
+                    bottom: '0%',
                     top: '8%',
                     containLabel: true
                 },
@@ -780,11 +839,21 @@ export default {
           margin-top: 40px;
           height: 35px;
           line-height: 30px;
+
+          @media only screen and (min-width: 1920px) {
+            margin-top: 48px !important;
+            // background-color: chartreuse;
+          }
         }
 
         .manual-lpriceInput{
           font-size: 16px;
           margin-top: 40px;
+
+          @media only screen and (min-width: 1920px) {
+            margin-top: 48px !important;
+            // background-color: chartreuse;
+          }
 
           .right-input{
             width: 100px;
@@ -799,6 +868,11 @@ export default {
           color: #485465;
           font-size: 16px;
           margin-top: 56px;
+
+          @media only screen and (min-width: 1920px) {
+            margin-top: 64px !important;
+            // background-color: chartreuse;
+          }
         }
         
         .manual-l-title{
@@ -808,7 +882,12 @@ export default {
         }
       }
 
-      #totalLeft, #totalRight{
+      #totalRight{
+        width: 100%;
+        height: 100%;
+      }
+
+      #totalLeft{
         flex: 1;
         padding-left: 32px;
         width: 0;
