@@ -24,6 +24,7 @@ module.exports = {
 			.set('@', resolve('src'))
 			.set('pages', resolve('src/views'))
 			if(process.env.NODE_ENV !== 'dev'){
+			    console.log(1)
 				config.optimization.splitChunks({
 					chunks: 'all',
 					cacheGroups: {
@@ -48,6 +49,7 @@ module.exports = {
 	configureWebpack: config => {
 		//为生产环境移除console debugger 代码压缩
 		if (process.env.NODE_ENV !== 'dev') { //production
+		    console.log(2)
 			config.plugins.push(
 				new UglifyJsPlugin({
 					uglifyOptions: {
