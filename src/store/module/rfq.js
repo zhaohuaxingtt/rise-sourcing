@@ -1,6 +1,6 @@
 const state = {
   pendingPartsList: [],
-  entryStatus: window.sessionStorage.getItem('entryStatus') || 0,
+  entryStatus: window.sessionStorage.getItem('entryStatus') || 0,//0:外部，1：内部
   rfqId: window.sessionStorage.getItem('rfqId') || ''
 };
 const mutations = {
