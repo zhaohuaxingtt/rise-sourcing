@@ -1,8 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-25 13:01:23
- * @LastEditTime: 2021-07-07 19:02:52
- * @LastEditors: Please set LastEditors
+ * @LastEditors: zbin
  * @Description: 报价助手界面
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\index.vue
 -->
@@ -23,10 +22,10 @@
          <iCard  title="报价分析汇总-模具" v-else class="margin-top20" @handleCollapse='handleCollapse($event,"3")' collapse :defalutCollVal='false'></iCard>
           <!--------------------报价分析汇总-报价趋势----------------------------------------->
          <quotationScoringEcartsCard v-if='cardShow.find(items=>items.key == "4").show'></quotationScoringEcartsCard>
-         <iCard title="报价趋势" v-else class="margin-top20" @handleCollapse='handleCollapse($event,"4")' collapse :defalutCollVal='false'></iCard>
+         <iCard title="报价分析汇总-报价趋势" v-else class="margin-top20" @handleCollapse='handleCollapse($event,"4")' collapse :defalutCollVal='false'></iCard>
           <!--------------------报价分析汇总-业务分配模拟----------------------------------------->
-         <buMonitor cardTitle='业务分配模拟' @handleCollapse='handleCollapse($event,"5")' :collapse='true' v-if='cardShow.find(items=>items.key == "5").show' class="margin-top20"></buMonitor>
-         <iCard title="业务分配模拟" v-else class="margin-top20" @handleCollapse='handleCollapse($event,"5")' collapse :defalutCollVal='false'></iCard>
+         <buMonitor @handleCollapse='handleCollapse($event,"5")' :collapse='true' v-if='cardShow.find(items=>items.key == "5").show' class="margin-top20"></buMonitor>
+         <iCard title="报价分析汇总-业务分配模拟" v-else class="margin-top20" @handleCollapse='handleCollapse($event,"5")' collapse :defalutCollVal='false'></iCard>
       </template>
     </el-tab-pane>
     <el-tab-pane label="专项分析工具">
@@ -45,7 +44,7 @@ import quotationScoringHZ from './components/quotationScoringHz'
 import quotationScoringEcartsCard from './components/quotationScoringEcartsCard'
 import buMonitor from './components/qutaionScoringBusses'
 import {icardData} from './components/data'
-import gather from "@/views/partsrfq/externalAccessToAnalysisTools/negotiationAssistant/gather.vue";
+import gather from "@/views/partsrfq/externalAccessToAnalysisTools/negotiationAssistant/index.vue";
 import negotiateBasicInfor from "./components/negotiateBasicInfor";
 
 

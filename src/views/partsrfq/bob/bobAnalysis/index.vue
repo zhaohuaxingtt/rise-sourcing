@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 10:50:38
- * @LastEditTime: 2021-07-05 16:08:35
+ * @LastEditTime: 2021-07-06 14:41:34
  * @LastEditors: Please set LastEditors
  * @Description: 费用详情
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails.vue
@@ -33,25 +33,26 @@
         </div>
       </template>
       <table1 :tableList="tableList" v-if="totalTable"></table1>
-      <!-- <groupedTable
+      <groupedTable
         class="margin-top20"
         :tableList="groupList"
         v-if="!totalTable"
         @groupBy="groupBtn"
-      ></groupedTable> -->
+      ></groupedTable>
       <iDialog :visible.sync="visible1" title="分组至" width="20%">
         <el-form>
           <el-form-item label="选择组">
-            <el-cascader
+            <el-input v-model="value" style="width:160px"/>
+            <!-- <el-cascader
               v-model="value"
               :options="ungroupList"
               label="title"
               value="prop"
               @change="handleChange"
-            ></el-cascader>
+            ></el-cascader> -->
           </el-form-item>
           <el-form-item label="分组至">
-            <el-select v-model="value" clearable placeholder="请选择">
+            <el-select v-model="value1" clearable placeholder="请选择">
               <el-option
                 v-for="item in options"
                 :key="item.value"
@@ -63,7 +64,7 @@
           </el-form-item>
         </el-form>
         <span slot="footer" class="dialog-footer">
-          <el-button type="primary" @click="dialogVisible = false"
+          <el-button type="primary" @click="groupToList"
             >确 定</el-button
           >
         </span>
@@ -74,12 +75,12 @@
         @cancel="cancel"
       ></remarkDialog>
     </iCard>
-    <!-- <ungroupedTable
+    <ungroupedTable
       class="margin-top20"
       :tableList="ungroupList"
       v-if="groupby"
       @groupBy="groupBtn"
-    ></ungroupedTable> -->
+    ></ungroupedTable>
   </div>
 </template>
 
@@ -100,7 +101,7 @@ import {
   modifyRfqToRemark,
   down,
 } from "@/api/partsrfq/bob";
-import { tableList, ungroupList, groupList } from "./components/data.js";
+import { tableList, ungroupList, groupList,groupByList,ungroupByList,ungroupByHeader } from "./components/data.js";
 
 export default {
   components: {
@@ -108,17 +109,20 @@ export default {
     iDialog,
     iButton,
     table1,
-    // ungroupedTable,
-    // groupedTable,
+    ungroupedTable,
+    groupedTable,
     remarkDialog,
   },
   data() {
     return {
       flag: true,
       flag1: false,
-      tableList: {},
+      tableList,
       ungroupList,
+      ungroupByList,
+      ungroupByHeader,
       groupList,
+      groupByList,
       expends: [],
       visible: false,
       visible1: false,
@@ -126,16 +130,33 @@ export default {
       groupby: false,
       totalTable: true,
       value: "",
+      value1: "",
+      options:[
+        {
+          id:1,
+          label:"散件2",
+          value:"2"
+        },
+        {
+          id:2,
+          label:"散件3",
+          value:"3"
+        },
+        {
+          id:4,
+          label:"散件4",
+          value:"4"
+        }
+      ]
     };
   },
   created() {
     this.rfqCode = this.$route.query.rfqId;
-
     this.getRfqToRemark();
   },
   mounted() {
     this.$nextTick(() => {
-      this.chargeRetrieve();
+      // this.chargeRetrieve();
       this.open();
     });
   },
@@ -235,8 +256,15 @@ export default {
     groupBtn(e) {
       this.visible1 = e;
     },
+    groupToList(){
+      this.groupList.dataList[0].children.push(this.groupByList)
+      // this.ungroupList.dataList[0]=this.ungroupByList
+      this.$set(this.ungroupList.dataList, 0, this.ungroupByList); 
+      this.$set(this.ungroupList, 'headerList', this.ungroupByHeader); 
+      console.log(this.ungroupList)
+    },
     handleChange(value) {
-      console.log(value);
+      
     },
     down() {
       // window.open('http://10.160.137.32:8036/aon/web/aon/bobRoundDetail/down?schemaId=5')

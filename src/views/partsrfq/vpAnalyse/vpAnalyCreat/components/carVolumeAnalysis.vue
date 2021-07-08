@@ -81,7 +81,7 @@ export default {
       this.tableLoading = true;
       try {
         const req = {
-          rfqId: this.$route.query.rfqId,
+          rfqId: this.$store.state.rfq.rfqId,
           userId: this.$store.state.permission.userInfo.id
         };
         const res = await getCarModelProjectList(req);

@@ -1389,6 +1389,9 @@
             'GUDINGCHENGBEN': '固定成本', //固定成本
             'ZONGJIANGJIA': '总降价', //总降价
             'JIANGJIA': '降价', //降价
+            'ZXFXGJNHYGLFXBG': '专项分析工具内有关联分析报告', //专项分析工具内有关联分析报告
+            'ZXFXGJNMYGLFXBGDHHILJ': '专项分析工具内没有相关的分析报告，且含Heavy Item零件', //专项分析工具内没有关联分析报告，但含heavy item零件
+            'ZXFXGJNMYGLFXBGQBHHILJ': '专项分析工具内没有相关的分析报告，且不含Heavy Item零件', //专项分析工具内没有关联分析报告，且不含heavy item零件
         },
     }
     var xmlHttp = ''

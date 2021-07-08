@@ -9,7 +9,7 @@
       <span class="font18 font-weight">Volume Pricing{{ $t('TPZS.FENXI') }}</span>
       <div class="floatright">
         <!--返回-->
-        <iButton>{{ $t('LK_FANHUI') }}</iButton>
+        <iButton @click="handleBack">{{ $t('LK_FANHUI') }}</iButton>
         <!--预览-->
         <iButton @click="handlePreview">{{ $t('TPZS.YULAN') }}</iButton>
         <!--保存-->
@@ -252,6 +252,9 @@ export default {
     handleSupplierChange(val) {
       this.currentSupplierId = val
       this.getDataInfo()
+    },
+    handleBack() {
+      this.$router.go(-1)
     }
   },
 };

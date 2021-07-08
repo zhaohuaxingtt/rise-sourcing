@@ -40,9 +40,9 @@ export function getRfqSupplierRate(parmars) {
   })
 }
 // 
-export function getRfqInfo(parmars) {
+export function getOneRfqInfo(parmars) {
   return requst({
-    url: `/costAnalysisTool/rfq/getRfqInfo?rfqId=${parmars}`,
+    url: `/costAnalysisTool/rfq/getOneRfqInfo?rfqId=${parmars}`,
     method: 'GET',
     data: parmars
   })
