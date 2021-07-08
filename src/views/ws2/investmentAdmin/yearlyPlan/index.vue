@@ -125,20 +125,21 @@
             <div id="totalLeft"></div>
             <div class="manual-l-txt">
               <div class="manual-l-title">{{setSystemTotal}}</div>
-              <div class="manual-lprice" v-for="(item, index) in planYearCommutity" :key="index">
+              <div class="manual-lprice manual-lprice1" v-for="(item, index) in planYearCommutity" :key="index">
                 {{isThen ? item.planAmountSystemCurrent : item.planAmountSystemNext}}
               </div>
             </div>
             <div class="manual-l-txt" style="margin-right: 100px;">
               <div class="manual-l-title">Rate</div>
-              <div class="manual-lprice" v-for="(item, index) in setSystemRate" :key="index">{{item}}</div>
+              <div class="manual-lprice manual-lprice2" v-for="(item, index) in setSystemRate" :key="index">{{item}}</div>
             </div>
           </div>
           <div class="content-r">
-            <div style="flex: 1">
+            <div id="totalRight"></div>
+            <!-- <div style="flex: 1">
               <div id="totalRight"></div>
-              <!-- <div id="moreTerm" style="dispaly: none"></div> -->
-            </div>
+              <div id="moreTerm" style="dispaly: none"></div>
+            </div> -->
             <!-- <div class="test"></div> -->
             <div class="manual-l-txt">
               <div class="manual-l-title">{{setManualTotal}}</div>
@@ -253,10 +254,12 @@ export default {
       refreshStatus: true,
       chartLoading: false,
       newVersionNum: '',
+      base: 0,
     }
   },
 
   mounted(){
+    this.base = document.body.clientWidth >= 1920 ? 75 : 66;
   },
 
   methods: {
@@ -538,6 +541,27 @@ export default {
       })
     },
 
+    setDomParameter(){
+      setTimeout(() => {
+        const RInput = document.getElementsByClassName("manual-lpriceInput");
+        const RTxt = document.getElementsByClassName("manual-lpriceInputTxt");
+        const LTxt1 = document.getElementsByClassName("manual-lprice1");
+        const LTxt2 = document.getElementsByClassName("manual-lprice2");
+        Array.prototype.forEach.call(RInput, function (element, index) {
+          element.style.marginTop = '32px';
+          element.style.height = '28px';
+          element.style.opacity = '1';
+          RTxt[index].style.marginTop = '32px';
+          RTxt[index].style.height = '28px';
+          LTxt1[index].style.marginTop = '32px';
+          LTxt1[index].style.height = '28px';
+          LTxt2[index].style.marginTop = '32px';
+          LTxt2[index].style.height = '28px';
+        });
+      }, 1000)
+      
+    },
+
     queryPlanYearCommutity(){
       queryPlanYearCommutity({
         versionId: this.vereceive.id
@@ -550,62 +574,9 @@ export default {
           const totalLeft = echarts().init(document.getElementById("totalLeft"));
           const totalRight = echarts().init(document.getElementById("totalRight"));
           const resData = _.cloneDeep(res.data);
-          const dom = document.getElementById("totalRight");
-          dom.style.height = `${66*resData.length}px`;
-          // const resData = _.cloneDeep(res.data.filter(item => arr.includes(item.commodity)));
           const resDataL = res.data.filter(item => item.commodity !== 'Risk');
-          // const moreTerm = res.data.filter(item => !arr.includes(item.commodity));
-          console.log('moreTermmoreTerm', dom, 66*resData.length, resData);
-          // if(!moreTerm.length){
-          //   const dom = document.getElementById("moreTerm");
-          //   dom.style.display = 'block';
-          //   dom.style.height = '100px';
-          //   dom.style.width = '100%';
-          //   dom.style.marginTop = '-15px';
-          //   echarts().init(dom).setOption({
-          //     tooltip: {
-                  
-          //     },
-          //     legend: {
-          //         data: []
-          //     },
-          //     grid: {
-          //         left: '8%',
-          //         right: '20%',
-          //         bottom: '3%',
-          //         top: '0%',
-          //         containLabel: true
-          //     },
-          //     xAxis: {
-          //         show: false
-          //     },
-          //     yAxis: {
-          //         type: 'category',
-          //         data: moreTerm.map(item => item.commodity).reverse()
-          //     },
-          //     series: [
-          //         {
-          //             name: '2011年',
-          //             type: 'bar',
-          //             data: moreTerm.reverse().map(item => {
-          //               if(_this.isThen){ //  当年
-          //                 return item.planAmountAmualCurrent;
-          //               }
-
-          //               return item.planAmountAmualNext;
-          //             }),
-          //             barWidth: 30,
-          //             itemStyle:{
-          //                 normal:{
-          //                   color:'#D5DFF1',
-          //                   barBorderRadius: 5
-          //                 },
-          //             },
-          //         },
-          //     ]
-          //   })
-            
-          // }
+          totalRight.resize({height: 66*resData.length});
+          totalLeft.resize({height: 66*resDataL.length});
           totalRight.setOption(
             {
                 title: {
@@ -713,6 +684,8 @@ export default {
         }else{
           iMessage.error(result);
         }
+
+        this.setDomParameter(); //  设置dom参数
         
       })
     },
@@ -826,12 +799,12 @@ export default {
           margin-right: 0;
         }
 
-        & .manual-lpriceInput:nth-child(2){
-          margin-top: 48px !important;
-        }
+        // & .manual-lpriceInput:nth-child(2){
+        //   margin-top: 40px !important;
+        // }
 
         & .manual-lpriceInputTxt:nth-child(2){
-          margin-top: 48px !important;
+          margin-top: 40px !important;
         }
 
         .manual-lpriceInputTxt{
@@ -840,20 +813,21 @@ export default {
           height: 35px;
           line-height: 30px;
 
-          @media only screen and (min-width: 1920px) {
-            margin-top: 48px !important;
-            // background-color: chartreuse;
-          }
+          // @media only screen and (min-width: 1920px) {
+          //   margin-top: 48px !important;
+          //   // background-color: chartreuse;
+          // }
         }
 
         .manual-lpriceInput{
           font-size: 16px;
-          margin-top: 40px;
+          opacity: 0;
+          // margin-top: 40px;
 
-          @media only screen and (min-width: 1920px) {
-            margin-top: 48px !important;
-            // background-color: chartreuse;
-          }
+          // @media only screen and (min-width: 1920px) {
+          //   margin-top: 48px !important;
+          //   // background-color: chartreuse;
+          // }
 
           .right-input{
             width: 100px;
@@ -869,10 +843,10 @@ export default {
           font-size: 16px;
           margin-top: 56px;
 
-          @media only screen and (min-width: 1920px) {
-            margin-top: 64px !important;
-            // background-color: chartreuse;
-          }
+          // @media only screen and (min-width: 1920px) {
+          //   margin-top: 64px !important;
+          //   // background-color: chartreuse;
+          // }
         }
         
         .manual-l-title{
@@ -882,20 +856,22 @@ export default {
         }
       }
 
-      #totalRight{
-        width: 100%;
-        height: 100%;
-      }
+      // #totalRight{
+      //   width: 100%;
+      //   height: 100%;
+      // }
 
-      #totalLeft{
+      #totalLeft, #totalRight{
         flex: 1;
         padding-left: 32px;
         width: 0;
         
-        ::v-deep div{
+        ::v-deep div :nth-child(1){
+          height: 100% !important;
           width: 100% !important;
 
           ::v-deep canvas{
+            height: 100% !important;
             width: 100% !important;
           }
         }
