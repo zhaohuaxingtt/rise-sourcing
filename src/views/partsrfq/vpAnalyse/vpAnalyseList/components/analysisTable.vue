@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-06-16 20:44:29
- * @LastEditTime: 2021-07-08 16:10:50
+ * @LastEditTime: 2021-07-08 16:40:55
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\analysisTool\components\analysisTable.vue
@@ -198,11 +198,9 @@ export default {
       }
       getVpAnalysisDataList(params).then(res => {
         if(res && res.code == 200) {
-          console.log('res', res);
           this.page.totalCount = res.total
           this.tableListData = res.data
           this.handleTableNumber(this.tableListData, 1, null)
-          console.log('tableListData', this.tableListData);
         }
       })
     },
