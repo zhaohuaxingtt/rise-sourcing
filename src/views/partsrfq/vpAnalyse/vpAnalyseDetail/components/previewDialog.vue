@@ -12,7 +12,7 @@
       <div class="margin-bottom20 margin-top20 clearFloat" slot="title">
         <span class="font18 font-weight">Volume Pricing {{ this.$t('TPZS.BAOGAO') }}</span>
       </div>
-      <baseInfo :dataInfo="dataInfo"/>
+      <baseInfo :dataInfo="dataInfo" :disabledSupplier="true"/>
       <el-divider class="margin-top20 margin-bottom20"/>
       <totalUnitPriceTable :dataInfo="dataInfo" class="margin-bottom20" :showEditButton="false"/>
       <div class="chartContainer margin-top20">
