@@ -1,8 +1,8 @@
 /*
  * @Author: HaoJiang
  * @Date: 2021-05-20 14:29:09
- * @LastEditTime: 2021-07-06 22:27:03
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-07-08 16:05:32
+ * @LastEditors: Luoshuang
  * @Description: 定点管理
  * @metaParams: hideTabLV3 隐藏三级导航
  *
@@ -273,5 +273,14 @@ export default [
     },
     component: () =>
       import ("@/views/designate/suggestion/index")
+  },
+  {                          
+    path: "/designate/designateCirculateRS",
+    name: "designateSuggestion",
+    meta: {
+        title: "定点管理-rs流转",
+    },
+    component: () =>
+      import ("@/views/designate/designatedetail/decisionData/rs/index")
   }
 ]
