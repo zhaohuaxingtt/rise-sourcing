@@ -308,8 +308,9 @@ module.exports = {
       },
       '/ws2Api': {
         // ws2Api.../ 王鹏霄
-        // target: 'http://10.122.17.38:8022',	//	dev
-        target: 'http://192.168.50.160:8022', // 圆圆
+        target: 'http://10.122.18.166:8022',	//	dev
+        // target: 'http://10.122.17.38:8022',	//	vmsit
+        // target: 'http://192.168.50.160:8022', // 圆圆
         // target: 'http://192.168.50.40:8022',// 立立
         // target: 'http://cbbbc967414f.ngrok.io',
         changeOrigin: true,
