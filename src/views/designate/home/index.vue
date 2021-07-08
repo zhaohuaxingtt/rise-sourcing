@@ -233,7 +233,8 @@ export default {
           path: '/designate/rfqdetail',
           query: {
             desinateId: row.id, 
-            designateType: (row.nominateProcessType && row.nominateProcessType.code) || ''
+            designateType: (row.nominateProcessType && row.nominateProcessType.code) || '',
+            partProjType: row.partProjType
           }
         })
         window.open(routeData.href, '_blank')
