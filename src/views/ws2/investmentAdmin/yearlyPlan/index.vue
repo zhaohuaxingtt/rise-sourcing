@@ -2,7 +2,7 @@
   <div>
     <!-- v-permission="TOOLING_PAYMENTPLAN_YEAR" -->
     <div class="page-container" v-permission="TOOLING_PAYMENTPLAN_YEAR">
-      <HeadTool @refresh="refresh" @receiVereceive="receiVereceive" :refreshStatus="refreshStatus">
+      <HeadTool @refresh="refresh" @receiVereceive="receiVereceive" :refreshStatus="refreshStatus" :newVersionNum="newVersionNum">
         <template slot="btns">
           <iButton v-if="vereceive.editFlag" @click="save" :loading="saveLoading">{{ $t('LK_BAOCUN') }}</iButton><!-- 保存 -->
           <iButton @click="saveNew" :loading="saveNewLoading">{{ $t('LK_BAOCUNWEIZUIXINBANBEN') }}</iButton><!-- 保存为最新版本 -->
@@ -249,6 +249,7 @@ export default {
       manualSaveLoading: false,
       refreshStatus: true,
       chartLoading: false,
+      newVersionNum: '',
     }
   },
 
@@ -361,7 +362,8 @@ export default {
           if(res.code === "0"){
             iMessage.success(result);
             this.$store.commit('SET_versionId', '');
-            this.refreshStatus = !this.refreshStatus;
+            // this.refreshStatus = !this.refreshStatus;
+            this.newVersionNum = res.data.version;
           }else{
             iMessage.error(result);
           }
@@ -766,33 +768,37 @@ export default {
         }
 
         & .manual-lpriceInput:nth-child(2){
-          margin-top: 32px !important;
+          margin-top: 48px !important;
         }
 
         & .manual-lpriceInputTxt:nth-child(2){
-          margin-top: 32px !important;
+          margin-top: 48px !important;
         }
 
         .manual-lpriceInputTxt{
           font-size: 16px;
-          margin-top: 32px;
+          margin-top: 40px;
           height: 35px;
           line-height: 30px;
         }
 
         .manual-lpriceInput{
           font-size: 16px;
-          margin-top: 32px;
+          margin-top: 40px;
 
           .right-input{
             width: 100px;
           }
         }
 
+        .manual-lprice1{
+          margin-top: 60%;
+        }
+
         .manual-lprice{
           color: #485465;
           font-size: 16px;
-          margin-top: 44.8px;
+          margin-top: 56px;
         }
         
         .manual-l-title{

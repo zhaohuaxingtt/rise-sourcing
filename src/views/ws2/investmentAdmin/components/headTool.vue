@@ -55,6 +55,10 @@ import _ from 'lodash'
 export default {
   props: {
     refreshStatus: Boolean,
+    newVersionNum: {
+      type: String,
+      default: ''
+    }
   },
   components: {
     iSelect, icon
@@ -70,6 +74,10 @@ export default {
   watch: {
     refreshStatus(){
       this.getVersionList();
+    },
+
+    newVersionNum(a, b){
+      this.getVersionList(a);
     }
   },
 
@@ -87,14 +95,18 @@ export default {
     },
 
     //  获取版本号
-    getVersionList(){
+    getVersionList(newversion=''){
       queryPlanVersionList().then(res => {
         const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn;
 
         if(res.code === "0"){
           const versionId = store.state.investmentAdmin.versionId;
-          const vereceive = versionId === '' ? _.cloneDeep(res.data[0]) : res.data.filter(item => item.id === versionId)[0];
+          let vereceive = versionId === '' ? res.data.filter(item => item.defaultSelected)[0] : res.data.filter(item => item.id === versionId)[0];
           this.editionList = res.data;
+          
+          if(newversion !== ''){
+            vereceive = res.data.filter(item => item.version === newversion)[0];
+          }
           this.listDetail = vereceive;
           this.versionId = vereceive.id;
           this.$emit('receiVereceive', vereceive);
