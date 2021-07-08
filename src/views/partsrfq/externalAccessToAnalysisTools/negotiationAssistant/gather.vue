@@ -10,31 +10,31 @@
     <div v-if="$route.path==='/sourcing/partsrfq/externalNegotiationAssistant'" class="btn">
       <iButton v-if="pageType!=='card'" @click="entrance('card')">{{ $t('LK_FANHUI') }}</iButton>
       <iButton v-if="pageType==='card'" @click="handleSearch">{{ $t('search') }}</iButton>
-      <iButton v-if="pageType==='card'" @click="handleReport">{{ $t('TPZS.BGQD') }}</iButton>
+      <iButton @click="handleReport">{{ $t('TPZS.BGQD') }}</iButton>
       <icon class="icondatabaseweixuanzhong" name="icondatabaseweixuanzhong" symbol></icon>
     </div>
     <div v-if="$route.path==='/sourcing/partsrfq/assistant'" class="margin-bottom20 clearFloat">
       <div class="floatright">
-        <iButton v-if="pageType==='card'" @click="handleSearch">{{ $t('search') }}</iButton>
+        <iButton @click="handleReport">{{ $t('TPZS.BGQD') }}</iButton>
         <iButton v-if="pageType!=='card'" @click="entrance('card')">{{ $t('LK_FANHUI') }}</iButton>
       </div>
     </div>
-    <specialAnalysisTool v-if="pageType === 'card'" @entrance="entrance" ref="specialAnalysisTool"/>
-    <pcaOverview v-else-if="pageType === 'PCA'" pageType="PCA"/>
-    <pcaOverview v-else-if="pageType === 'TIA'" pageType="TIA"/>
-    <bobOverview v-else-if="pageType === 'BoB(Best of Best)'"/>
-    <vpAnalyseList v-else-if="pageType==='Volume Pricing'"/>
+    <specialAnalysisTool v-if="pageType === 'card'" @entrance="entrance" ref="specialAnalysisTool" />
+    <pcaOverview v-else-if="pageType === 'PCA'" pageType="PCA" />
+    <pcaOverview v-else-if="pageType === 'TIA'" pageType="TIA" />
+    <bobOverview v-else-if="pageType === 'BoB(Best of Best)'" />
+    <vpAnalyseList v-else-if="pageType==='Volume Pricing'" />
   </div>
 </template>
 
 <script>
-import {tabRouterList} from '../data';
+import { tabRouterList } from '../data';
 import pcaOverview from '../../pcaAnalyse/pcaOverview';
 import vpAnalyseList from '@/views/partsrfq/vpAnalyse/vpAnalyseList/index.vue';
 import bobOverview from '../../bob/bob';
 import specialAnalysisTool
   from '@/views/partsrfq/editordetail/components/rfqDetailTpzs/components/specialAnalysisTool/index.vue';
-import {icon, iButton} from 'rise';
+import { icon, iButton } from 'rise';
 
 export default {
   components: {
@@ -52,6 +52,12 @@ export default {
   },
 
   created() {
+    if (this.$route.path === '/sourcing/partsrfq/assistant') {
+      window.sessionStorage.setItem('entryStatus', 1)
+      window.sessionStorage.setItem('rfqId', this.$route.query.id)
+    } else {
+      window.sessionStorage.setItem('entryStatus', 0)
+    }
   },
   methods: {
     entrance(val) {
@@ -61,7 +67,7 @@ export default {
       this.$refs.specialAnalysisTool.handleSearch();
     },
     handleReport() {
-      this.$router.push({path: '/sourcing/partsrfq/reportList'});
+      this.$router.push({ path: '/sourcing/partsrfq/reportList' });
     },
   },
 };
