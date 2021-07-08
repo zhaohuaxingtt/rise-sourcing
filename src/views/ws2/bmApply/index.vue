@@ -300,6 +300,9 @@
           <template #partsFs="scope">
             <div @click="jumpDetails(scope)" class="table-link">{{scope.row.partsFs}}</div>
           </template>
+          <template #bmAmount="scope">
+            <div>{{getTousandNum(NumFormat(scope.row.bmAmount))}}</div>
+          </template>
         </iTableList>
       </template>
     </BmPopup>
