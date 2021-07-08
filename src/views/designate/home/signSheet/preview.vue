@@ -1,7 +1,7 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-07-01 14:30:59
- * @LastEditTime: 2021-07-08 16:05:18
+ * @LastEditTime: 2021-07-08 16:56:30
  * @LastEditors: Please set LastEditors
  * @Description: M签字单预览导出 jira-1571
  * @FilePath: /front-web/src/views/designate/home/signSheet/signView.vue
@@ -120,7 +120,7 @@ export default {
         // const res = require('./components/moke.json')
         this.tableLoading = false
           if (res.code === '200') {
-            const ltcTitlt = res.data.ltcList || []
+            // const ltcTitlt = res.data.ltcList || []
             this.tableListData = res.data.nomiList || []
             // 按年份去取ltc表头
             const ltcYearObj = {}
@@ -135,7 +135,7 @@ export default {
             this.tableListData.map((o) => {
               const ltcList = o.ltcList || []
               Object.keys(ltcYearObj).forEach((ltcYear) => {
-                const ltcArray = ltcList.filter(ltc => ltc.year === ltcYear)
+                const ltcArray = ltcList.filter(ltc => window.moment(ltc.yearMonths).format('YYYY') === ltcYear)
                 const ltcValue = ltcArray.map(p => Number(p.priceReduceRate).toFixed((Number(p.priceReduceRate)%1 === 0 ? 0 : 2))).join('/')
                 o[`ltc_${ltcYear}`] = ltcValue
                 return o
