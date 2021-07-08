@@ -21,7 +21,7 @@ module.exports = {
   chainWebpack: config => {
     //定义全局别名
     config.resolve.alias.set('@', resolve('src')).set('pages', resolve('src/views'))
-    if (process.env.NODE_ENV == 'production') {
+    if (process.env.NODE_ENV !== 'dev') {
       config.optimization.splitChunks({
         chunks: 'all',
         cacheGroups: {
@@ -40,20 +40,15 @@ module.exports = {
         }
       })
       config.optimization.runtimeChunk('single')
+      //移除预加载，确保浏览器在刷新url的时候，只存在我当前路由所涉及到的内容。
+			config.plugins.delete('prefetch')
+			config.plugins.delete('preload')
+
     }
   },
   configureWebpack: config => {
     //为生产环境移除console debugger 代码压缩
     if (process.env.NODE_ENV !== 'dev') {
-      //production
-      // config.resolveLoader.modules.push('./loadersPlugins/') //新增自定义loader路径
-      // config.module.rules.push({ //新增线上翻译loader
-      // 	test:/\.vue$/,
-      // 	use:[{
-      // 		loader:'loaderLanguage'
-      // 	}]
-      // })
-      // config.plugins.push(new NodeserverUpload())
       config.plugins.push(
         new UglifyJsPlugin({
           uglifyOptions: {

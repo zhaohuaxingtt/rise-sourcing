@@ -2,7 +2,7 @@
  * @Descripttion: 
  * @Author: Luoshuang
  * @Date: 2021-05-21 14:30:41
- * @LastEditTime: 2021-06-28 18:04:42
+ * @LastEditTime: 2021-07-08 09:51:24
 -->
 <template>
   <el-table ref="multipleTable" fit tooltip-effect='light' :height="height" :data='tableData' v-loading='tableLoading' @selection-change="handleSelectionChange" :empty-text="language('ZANWUSHUJU', '暂无数据')" >
@@ -80,7 +80,7 @@
           <!------------------枚举列--------------------------->
           <span v-else-if="items.isObject">{{scope.row[items.props].name || scope.row[items.props] }}</span>
           <!------------------正常--------------------------->
-          <span v-else>{{scope.row[items.props]}}</span>
+          <span v-else>{{scope.row[items.props] ? scope.row[items.props].desc || scope.row[items.props] : ''}}</span>
         </template>
         <template v-if="items.children">
           <el-table-column v-for="(childItem, childIndex) in items.children" :key="childIndex" align='center' :width="childItem.width" :show-overflow-tooltip='childItem.tooltip'  :label="childItem.key ? language(childItem.key, childItem.name) : childItem.name" :prop="childItem.props">

@@ -128,7 +128,7 @@ export default {
         // 编辑 取消
         edit(){
             const {isEdit} = this;
-            if(!isEdit){
+            if(isEdit){
                 this.getDetail();
             }
             this.isEdit = !isEdit;
