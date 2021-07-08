@@ -39,7 +39,10 @@ module.exports = {
           }
         }
       })
-      config.optimization.runtimeChunk('single')
+      	//移除预加载，确保浏览器在刷新url的时候，只存在我当前路由所涉及到的内容。
+        config.plugins.delete('prefetch')
+    	config.plugins.delete('preload')
+        config.optimization.runtimeChunk('single')
     }
   },
   configureWebpack: config => {
