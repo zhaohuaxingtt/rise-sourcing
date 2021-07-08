@@ -1,8 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-25 13:01:23
- * @LastEditTime: 2021-06-16 14:19:13
- * @LastEditors: Luoshuang
+ * @LastEditors: zbin
  * @Description: 报价助手界面
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\index.vue
 -->
@@ -45,7 +44,7 @@ import quotationScoringHZ from './components/quotationScoringHz'
 import quotationScoringEcartsCard from './components/quotationScoringEcartsCard'
 import buMonitor from './components/qutaionScoringBusses'
 import {icardData} from './components/data'
-import gather from "@/views/partsrfq/externalAccessToAnalysisTools/negotiationAssistant/gather.vue";
+import gather from "@/views/partsrfq/externalAccessToAnalysisTools/negotiationAssistant/index.vue";
 import negotiateBasicInfor from "./components/negotiateBasicInfor";
 
 

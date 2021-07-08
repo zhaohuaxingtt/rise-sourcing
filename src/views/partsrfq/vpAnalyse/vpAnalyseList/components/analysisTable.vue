@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-06-16 20:44:29
- * @LastEditTime: 2021-07-07 10:14:05
+ * @LastEditTime: 2021-07-08 16:10:50
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\analysisTool\components\analysisTable.vue
@@ -299,11 +299,44 @@ export default {
 }
 </script>
 
-<style lang='scss'>
+<style lang='scss' scoped>
 .vpMainBox {
-  .el-table__expand-icon{
+  ::v-deep .el-table__expand-icon{
     float: right!important;
+    // line-height: 31px!important;
+    // width: 10px!important;
   }
+
+  ::v-deep .el-tree .el-tree-node__expand-icon.expanded 
+  {
+      -webkit-transform: rotate(0deg);
+      transform: rotate(0deg);
+  }
+  //有子节点 且未展开
+ ::v-deep  .el-table .el-icon-arrow-right:before{
+    background: url('../../../../../assets/images/Icon - Arrow Drop Down.png') no-repeat 0 0;
+    content: '';
+    display: block;
+    width: 10px;
+    height: 4px;
+    font-size: 10px;
+    background-size: 10px;
+  }
+  //有子节点 且已展开
+  ::v-deep .el-table .el-table__expand-icon--expanded {
+    .el-icon-arrow-right:before {
+      background: url('../../../../../assets/images/Icon - Arrow收起.png') no-repeat 0 0;
+      content: '';
+      display: block;
+      width: 10px;
+      height: 4px;
+      font-size: 10px;
+      background-size: 10px;
+      transform: rotate(270deg);
+    }
+  }
+
+
   .openPage{
     position: relative;
     color: $color-blue;
