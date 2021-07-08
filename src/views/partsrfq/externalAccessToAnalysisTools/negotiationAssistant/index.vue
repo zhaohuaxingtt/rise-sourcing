@@ -54,8 +54,7 @@ export default {
       pageType: 'card',
     };
   },
-
-  created() {
+  mounted() {
     if (this.$route.path === '/sourcing/partsrfq/assistant') {
       window.sessionStorage.setItem('entryStatus', 1)
       window.sessionStorage.setItem('rfqId', this.$route.query.id)
@@ -65,6 +64,9 @@ export default {
       this.$store.dispatch('setEntryStatus', 0)
       window.sessionStorage.setItem('entryStatus', 0)
     }
+  },
+  created() {
+
     if (!!this.$route.query.pageType) {
       this.pageType = this.$route.query.pageType
     }
