@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:18:01
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-05 10:39:45
+ * @LastEditTime: 2021-07-08 15:00:40
  * @Description: 流转RS单
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\rs\components\circulation\index.vue
 -->
@@ -53,7 +53,7 @@ export default {
   props: {
     isPreview: {type:Boolean, default:false},
     nominateId: {type:String},
-    projectType: {type:String}
+    // projectType: {type:String}
   },
   data() {
     return {
@@ -71,7 +71,8 @@ export default {
       remarkItem: [{value: '', checked: false},{value: '', checked: false},{value: '', checked: false}],
       checkList: checkList,
       isEdit: false,
-      saveLoading: false
+      saveLoading: false,
+      projectType: ''
     }
   },
   computed: {
@@ -144,9 +145,11 @@ export default {
         if (res?.result) {
           this.basicData = res.data
           this.tableData = res.data.lines
+          this.projectType = res.data.partProjectType || ''
         } else {
           this.basicData = {}
           this.tableData = []
+          this.projectType = ''
           iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
         }
       })

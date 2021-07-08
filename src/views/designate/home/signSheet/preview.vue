@@ -1,7 +1,7 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-07-01 14:30:59
- * @LastEditTime: 2021-07-06 10:48:54
+ * @LastEditTime: 2021-07-08 16:56:30
  * @LastEditors: Please set LastEditors
  * @Description: M签字单预览导出 jira-1571
  * @FilePath: /front-web/src/views/designate/home/signSheet/signView.vue
@@ -14,7 +14,7 @@
         <div class="signPreview-header">
           <div class="font18 font-weight">{{'Summary list for production purchasing'}}</div>
           <div class="control">
-            <iButton @click="exportfile">
+            <iButton @click="exportSignSheet">
               {{ language('LK_DAOCHU', '导出') }}
             </iButton>
             <span class="tab-icon" @click="close">
@@ -91,6 +91,17 @@ export default {
     close() {
       this.$router.back()
     },
+    exportSignSheet() {
+      const signId = this.$route.query.signId
+      if (!signId) {
+        iMessage.error(this.language('QIANZIDANHAOBUNENGWEIKONG','签字单号不能为空'))
+        return
+      }
+      const BASEURL = window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' + window.location.port : '')
+      const fileURL = `${BASEURL}${process.env.VUE_APP_RFQ}/nominate/sign/export?signId=${signId}`
+      console.log(fileURL)
+      window.open(fileURL)
+    },
     // 获取定点管理列表
     async getFetchData(params = {}) {
       this.tableLoading = true
@@ -100,37 +111,46 @@ export default {
         return
       }
       try {
-        
         const res = await signSheetApproveDetail({
           ...params,
           signId,
           current: this.page.currPage,
           size: this.page.pageSize
         })
+        // const res = require('./components/moke.json')
         this.tableLoading = false
           if (res.code === '200') {
-            
-            const ltcTitlt = res.data.ltcList || []
-            const ltcTitltKeys = ltcTitlt.map(o => window.moment(o.yearMonths).format('YYYY_MM'))
-            const tableLTCTitlt = ltcTitlt.map(o => window.moment(o.yearMonths).format('YYYY-MM'))
+            // const ltcTitlt = res.data.ltcList || []
             this.tableListData = res.data.nomiList || []
+            // 按年份去取ltc表头
+            const ltcYearObj = {}
+            this.tableListData.forEach(item => {
+              const itemLTC = item.ltcList || []
+              itemLTC.forEach(ltcItem => {
+                const ltcYear = window.moment(ltcItem.yearMonths).format('YYYY')
+                ltcYearObj[ltcYear] = ltcYear
+              })
+            })
+            // 根据年份做数据格式化
             this.tableListData.map((o) => {
-              const ltcList = o.ltcList
-              ltcTitltKeys.forEach((key, index) => {
-                o[key] = ltcList[index] && Number(ltcList[index].priceReduceRate).toFixed(2) || ''
+              const ltcList = o.ltcList || []
+              Object.keys(ltcYearObj).forEach((ltcYear) => {
+                const ltcArray = ltcList.filter(ltc => window.moment(ltc.yearMonths).format('YYYY') === ltcYear)
+                const ltcValue = ltcArray.map(p => Number(p.priceReduceRate).toFixed((Number(p.priceReduceRate)%1 === 0 ? 0 : 2))).join('/')
+                o[`ltc_${ltcYear}`] = ltcValue
                 return o
               })
             })
-            tableLTCTitlt.forEach((item, index) => {
+            Object.keys(ltcYearObj).forEach((year, index) => {
               this.ltcTitle.push({
-                props: ltcTitltKeys[index],
-                name: `LTC ${tableLTCTitlt[index]}`,
-                key: `LTC ${tableLTCTitlt[index]}`,
-                width: 100,
+                props: `ltc_${year}`,
+                name: `LTC ${year}`,
+                key: `LTC ${year}`,
+                width: 200,
                 tooltip: false
               })
             })
-            console.log(this.tableListData, ltcTitltKeys, this.tableTitle)
+            console.log(this.tableListData, ltcYearObj, this.tableTitle)
           } else {
             iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
           }
@@ -170,6 +190,26 @@ export default {
       }
       .el-table__body-wrapper {
         min-height: 90%;
+        &::-webkit-scrollbar{
+          /*width: 0;宽度为0隐藏*/
+          width: 0;
+
+        }
+        &::-webkit-scrollbar{
+          /*width: 0;宽度为0隐藏*/
+          width: 0;
+        }
+        &::-webkit-scrollbar-thumb{
+          border-radius: 2px;
+          height: 50px;
+          // background: #efefef;
+          background: #fff;
+        }
+        &::-webkit-scrollbar-track{
+          // box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+          border-radius: 2px;
+          background: #fff;
+        }
       }
     }
   }

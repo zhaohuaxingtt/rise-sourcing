@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:17:25
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-07-07 15:58:37
+ * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-07-08 14:58:07
  * @Description: 上会/备案RS单
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\rs\components\meeting\index.vue
 -->
@@ -89,7 +89,7 @@ export default {
   props: {
     isPreview: {type:Boolean, default:false},
     nominateId: {type:String},
-    projectType: {type:String},
+    // projectType: {type:String},
     showSignatureForm: {type:Boolean, default:false}
   },
   components: { iCard, tableList, iButton, iInput, icon },
@@ -107,7 +107,8 @@ export default {
       saveLoading: false,
       PrototypeList:[],
       prototypeTitleList:prototypeTitleList,
-      processApplyDate: ''
+      processApplyDate: '',
+      projectType: ''
     }
   },
   computed: {
@@ -153,7 +154,7 @@ export default {
       getDepartApproval(this.nominateId).then(res => {
         if (res?.result) {
           this.checkList = res.data.nomiApprovalProcessNodeVOList
-          this.processApplyDate = res.data.processApplyDate
+          this.processApplyDate = res.data.processApplyDate || ''
         } else {
           iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
         }
@@ -165,7 +166,7 @@ export default {
      * @return {*}
      */
     getPrototypeList(){
-      getPrototypeList({nominateAppId:this.$route.query.desinateId}).then(res=>{
+      getPrototypeList(this.$route.query.desinateId).then(res=>{
           this.PrototypeList = res.data.list
       }).catch(err=>{
         console.warn(err)
@@ -234,9 +235,11 @@ export default {
         if (res?.result) {
           this.basicData = res.data || {}
           this.tableData = res.data?.lines
+          this.projectType = res.data.partProjectType || ''
         } else {
           this.basicData = {}
           this.tableData = []
+          this.projectType = ''
           iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
         }
       })

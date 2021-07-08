@@ -18,7 +18,8 @@
   },
   "dependencies": {
     "core-js": "^3.6.5",
-    "lodash": "^4.17.21"
+    "lodash": "^4.17.21",
+    "rise": "^0.8.4"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.4.0",
