@@ -3,7 +3,7 @@
     <iFormItem>
       <!--        供应商-->
       <iLabel :label="$t('TPZS.GONGYINGSHANG')" slot="label"/>
-      <iSelect v-model="dataInfo.supplierName" @change="handleSupplierChange">
+      <iSelect v-model="dataInfo.supplierName" @change="handleSupplierChange" :disabled="disabledSupplier">
         <!--        <el-option :value="1" :label="1"></el-option>-->
       </iSelect>
     </iFormItem>
@@ -42,6 +42,10 @@ export default {
       default: () => {
         return {}
       },
+    },
+    disabledSupplier: {
+      type: Boolean,
+      default: false,
     },
   },
   data () {
