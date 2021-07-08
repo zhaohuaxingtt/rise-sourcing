@@ -1,7 +1,7 @@
 /*
  * @Author: HaoJiang
  * @Date: 2021-05-20 14:29:09
- * @LastEditTime: 2021-07-01 14:34:34
+ * @LastEditTime: 2021-07-06 22:27:03
  * @LastEditors: Please set LastEditors
  * @Description: 定点管理
  * @metaParams: hideTabLV3 隐藏三级导航
@@ -242,6 +242,15 @@ export default [
             },
             component: () =>
               import ("@/views/designate/designatedetail/decisionData/rs")
+          },
+          {
+            path: "/designate/decisiondata/rscapacityexpan",
+            name: "designateDecisionRSexpan",
+            meta: {
+                title: "定点管理-决策资料-扩产能",
+            },
+            component: () =>
+              import ("@/views/designate/designatedetail/decisionData/rsCapacityExpan")
           },
           {
             path: "/designate/decisiondata/abprice",
