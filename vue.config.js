@@ -19,83 +19,76 @@ module.exports = {
   productionSourceMap: false,
   parallel: require('os').cpus().length > 1,
   chainWebpack: config => {
-    //定义全局别名
-    config.resolve.alias.set('@', resolve('src')).set('pages', resolve('src/views'))
-    if (process.env.NODE_ENV == 'production') {
-      config.optimization.splitChunks({
-        chunks: 'all',
-        cacheGroups: {
-          vendors: {
-            name: 'vendors',
-            test: /[\\/]node_modules[\\/]/,
-            priority: 10
-          },
-          commons: {
-            name: 'commons',
-            test: resolve('src/components'),
-            minChunks: 3,
-            priority: 5,
-            reuseExistingChunk: true
-          }
-        }
-      })
-      	//移除预加载，确保浏览器在刷新url的时候，只存在我当前路由所涉及到的内容。
-        config.plugins.delete('prefetch')
-    	config.plugins.delete('preload')
-        config.optimization.runtimeChunk('single')
-    }
-  },
-  configureWebpack: config => {
-    //为生产环境移除console debugger 代码压缩
-    if (process.env.NODE_ENV !== 'dev') {
-      //production
-      // config.resolveLoader.modules.push('./loadersPlugins/') //新增自定义loader路径
-      // config.module.rules.push({ //新增线上翻译loader
-      // 	test:/\.vue$/,
-      // 	use:[{
-      // 		loader:'loaderLanguage'
-      // 	}]
-      // })
-      // config.plugins.push(new NodeserverUpload())
-      config.plugins.push(
-        new UglifyJsPlugin({
-          uglifyOptions: {
-            compress: {
-              drop_debugger: true,
-              drop_console: true,
-              pure_funcs: ['console.log']
-            }
-          },
-          sourceMap: false,
-          parallel: true
-        }),
-        //环境代码
-        process.env.NODE_ENV == 'dev' ? '' : new ChangeNginxConfig()
-      )
-      config.plugins.push(
-        new CompressionPlugin({
-          algorithm: 'gzip',
-          test: new RegExp('\\.(' + ['js', 'css'].join('|') + ')$'),
-          threshold: 5120,
-          minRatio: 0.8,
-          cache: true,
-          deleteOriginalAssets: false
-        })
-      )
-    }
-    config['externals'] = {
-      vue: 'Vue',
-      vuex: 'Vuex',
-      'vue-router': 'VueRouter',
-      axios: 'axios',
-      moment: 'moment',
-      'element-ui': 'ELEMENT',
-      'vue-i18n': 'VueI18n',
-      i18n: 'i18n',
-      Ellipsis: 'Ellipsis'
-    }
-    //开启gizp压缩
-  },
+		//定义全局别名
+		config.resolve.alias
+			.set('@', resolve('src'))
+			.set('pages', resolve('src/views'))
+			if(process.env.NODE_ENV !== 'dev'){
+				config.optimization.splitChunks({
+					chunks: 'all',
+					cacheGroups: {
+						vendors: {
+							name: 'vendors',
+							test: /[\\/]node_modules[\\/]/,
+							priority: 10
+						},
+						commons: {
+							name: 'commons',
+							test: resolve('src/components'),
+							minChunks: 3,
+							priority: 5,
+							reuseExistingChunk: true
+						}
+					}
+				})
+				config.optimization.runtimeChunk('single')
+				//移除预加载，确保浏览器在刷新url的时候，只存在我当前路由所涉及到的内容。
+				config.plugins.delete('prefetch')
+				config.plugins.delete('preload')
+			}
+
+	},
+	configureWebpack: config => {
+		//为生产环境移除console debugger 代码压缩
+		if (process.env.NODE_ENV !== 'dev') { //production
+			config.plugins.push(
+				new UglifyJsPlugin({
+					uglifyOptions: {
+						compress: {
+							drop_debugger: true,
+							drop_console: true,
+							pure_funcs: ['console.log']
+						}
+					},
+					sourceMap: false,
+					parallel: true
+				}),
+				//环境代码
+				process.env.NODE_ENV == 'dev' ? '' : new ChangeNginxConfig()
+			)
+			config.plugins.push(new CompressionPlugin({
+				algorithm: 'gzip',
+				test: new RegExp("\\.(" + ["js", "css"].join("|") + ")$"),
+				threshold: 5120,
+				minRatio: 0.8,
+				cache: true,
+				deleteOriginalAssets: false
+			}))
+		}
+		config["externals"] = {
+			'vue': 'Vue',
+			'vuex': 'Vuex',
+			'vue-router': 'VueRouter',
+			'axios': 'axios',
+			"moment": "moment",
+			'element-ui': 'ELEMENT',
+			'vue-i18n': 'VueI18n',
+			'i18n': 'i18n',
+			'Ellipsis': 'Ellipsis'
+		};
+		//开启gizp压缩
+	
+	},
   //引入全局css变量
   css: {
     //是否开起css分离
