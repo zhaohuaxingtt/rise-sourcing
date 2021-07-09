@@ -1,8 +1,8 @@
 <template>
-  <iCard class="outputRecord" tabCard :title="$t('LK_XUNJIAFUJIAN')">
+  <iCard class="outputRecord" tabCard :title="language('LK_XUNJIAFUJIAN','询价附件')">
     <template v-slot:header-control>
-      <iButton @click="handleDownload" :loading="downloadLoading" v-permission="PARTSPROCURE_EDITORDETAIL_DRAWINGSHEET_HANDDOWNLOAD">{{ $t('LK_XIAZAI') }}</iButton>
-      <iButton class="deleteBtn" @click="handleDelete" :loading="deleteLoading" v-permission="PARTSPROCURE_EDITORDETAIL_DRAWINGSHEET_HANDLEDELETE">{{ $t('LK_SHANCHU') }}</iButton>
+      <iButton @click="handleDownload" :loading="downloadLoading" v-permission="PARTSPROCURE_EDITORDETAIL_DRAWINGSHEET_HANDDOWNLOAD">{{ language('LK_XIAZAI','下载') }}</iButton>
+      <iButton class="deleteBtn" @click="handleDelete" :loading="deleteLoading" v-permission="PARTSPROCURE_EDITORDETAIL_DRAWINGSHEET_HANDLEDELETE">{{ language('LK_SHANCHU','删除') }}</iButton>
       <el-upload 
         class="uploadBtn" 
         multiple
@@ -12,14 +12,14 @@
         :show-file-list="false" 
         :before-upload="beforeUpload"
         accept=".pdf,.xlsx,.docx">
-          <iButton :loading="uploadLoading" v-permission="PARTSPROCURE_EDITORDETAIL_DRAWINGSHEET_HANDLEUPLOAD">{{ $t('LK_SHANGCHUANFUJIAN') }}</iButton>
+          <iButton :loading="uploadLoading" v-permission="PARTSPROCURE_EDITORDETAIL_DRAWINGSHEET_HANDLEUPLOAD">{{ language('LK_SHANGCHUANFUJIAN','上传附件') }}</iButton>
       </el-upload>
     </template>
     <div class="body">
       <tableList
         class="table"
         index
-        :indexLabel="$t('LK_BIANHAO')" 
+        :indexLabel="language('LK_BIANHAO','编号')" 
         :tableData="tableListData" 
         :tableTitle="tableTitle" 
         :tableLoading="loading"
@@ -109,7 +109,7 @@ export default {
       } else {
         this.fileList = []
         clearTimeout(this.timer)
-        iMessage.success(`${ file.name } ${ this.$t('LK_SHANGCHUANCHENGGONG') }`)
+        iMessage.success(`${ file.name } ${ this.language('LK_SHANGCHUANCHENGGONG','上传成功') }`)
         this.fileList.push({ tpPartAttachmentName: res.data[0].fileName, tpPartAttachmentPath: res.data[0].filePath, size: (file.size / 1024 / 1024).toFixed(3) })
         this.timer = setTimeout(() => {
           this.patchTpInfoByAttachment()
@@ -119,7 +119,7 @@ export default {
     },
     uploadError(err, file) {
       this.uploadLoading = false
-      iMessage.error(`${ file.name } ${ this.$t('LK_SHANGCHUANSHIBAI') }`)
+      iMessage.error(`${ file.name } ${ this.language('LK_SHANGCHUANSHIBAI','上传失败') }`)
     },
     patchTpInfoByAttachment() {
       patchTpInfoByAttachment({
@@ -154,12 +154,12 @@ export default {
       this.multipleSelection = list
     },
     handleDelete() {
-      if (!this.multipleSelection.length) return iMessage.warn(this.$t('LK_QINGXUANZHEXUYAOSHANCHUYOUJIAN'))
-      iMessageBox(this.$t('deleteSure'),this.$t('LK_WENXINTISHI')).then(()=>{
+      if (!this.multipleSelection.length) return iMessage.warn(this.language('LK_QINGXUANZHEXUYAOSHANCHUYOUJIAN','请选择需要删除的附件'))
+      iMessageBox(this.language('deleteSure','您确定要执行删除操作吗？'),this.language('LK_WENXINTISHI','温馨提示')).then(()=>{
       let deleteArr = []
       for(let i = 0, item; (item = this.multipleSelection[i++]); ) {
         if (item.source == 1) { // 1 外部NewPro  2 内部
-          return iMessage.warn(`${ item.tpPartAttachmentName } ${ this.$t('LK_WEIBUXITONGWENJIANWUFASHANCHU') }`)
+          return iMessage.warn(`${ item.tpPartAttachmentName } ${ this.language('LK_WEIBUXITONGWENJIANWUFASHANCHU','为外部系统文件，无法删除') }`)
         } else {
           deleteArr.push(item)
         }
@@ -171,7 +171,7 @@ export default {
       this.deleteLoading = true
       deleteFile({ ids: deleteArr.map(item => item.id) })
         .then(res => {
-          iMessage.success(this.$t('LK_SHANCHUCHENGGONG'))
+          iMessage.success(this.language('LK_SHANCHUCHENGGONG','删除成功'))
           this.getInfoAnnexPage()
           this.deleteLoading = false
           this.multipleSelection = []
@@ -186,7 +186,7 @@ export default {
       })
     },
     async handleDownload() {
-      if (!this.multipleSelection.length) return iMessage.warn(this.$t('LK_QINGXUANZHEXUYAOXIAZHAIDEFUJIAN'))
+      if (!this.multipleSelection.length) return iMessage.warn(this.language('LK_QINGXUANZHEXUYAOXIAZHAIDEFUJIAN','请选择需要下载的附件'))
 
       this.downloadLoading = true
       await downloadFile({

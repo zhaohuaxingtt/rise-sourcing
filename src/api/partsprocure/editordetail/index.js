@@ -166,9 +166,9 @@ export function checkFactory(params) {
 // 获取采购项目列表
 export function getParts(params) {
 	return requstPartsProcure({
-		url: "/parts",
-    method: "GET",
-    params
+		url: "/partInfoPaged",
+    	method: "POST",
+    	data: params
 	})
 }
 
@@ -200,7 +200,7 @@ export function getNominateFileInfo({nomiAppId, sortColumn, isAsc, fileType, pag
 
 // 创建采购项目
 export function supplierCurentTop(params){
-  return quotation({
+  return sourcing({
     url: "/effecting-supplier/queryCurrentSupplierPage",
     method: "POST",
     data: params
@@ -208,7 +208,7 @@ export function supplierCurentTop(params){
 }
 // 创建采购项目
 export function updateCurrentSupplierPage(params){
-  return quotation({
+  return sourcing({
     url: "/effecting-supplier/updateCurrentSupplierPage",
     method: "POST",
     data: params
