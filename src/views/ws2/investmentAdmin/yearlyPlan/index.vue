@@ -66,25 +66,35 @@
               class="baApply-table"
           >
             <template #budgetAmount="scope">
-              <div>{{getTousandNum(NumFormat(scope.row.budgetAmount))}}</div>
+              <div v-if="scope.row.statType === 'backlog'"></div>
+              <div v-else>{{getTousandNum(NumFormat(scope.row.budgetAmount))}}</div>
             </template>
             <template #nomiAmount="scope">
-              <div>{{getTousandNum(NumFormat(scope.row.nomiAmount))}}</div>
+              <div v-if="scope.row.statType === 'backlog'"></div>
+              <div v-else>{{getTousandNum(NumFormat(scope.row.nomiAmount))}}</div>
             </template>
             <template #bmAmount="scope">
-              <div>{{getTousandNum(NumFormat(scope.row.bmAmount))}}</div>
+              <div v-if="scope.row.statType === 'backlog'"></div>
+              <div v-else>{{getTousandNum(NumFormat(scope.row.bmAmount))}}</div>
             </template>
             <template #paymentAmountLast="scope">
-              <div>{{getTousandNum(NumFormat(scope.row.paymentAmountLast))}}</div>
+              <div v-if="scope.row.statType === 'backlog'"></div>
+              <div v-else>{{getTousandNum(NumFormat(scope.row.paymentAmountLast))}}</div>
             </template>
             <template #paymentAmountCurrent="scope">
-              <div>{{getTousandNum(NumFormat(scope.row.paymentAmountCurrent))}}</div>
+              <div v-if="scope.row.statType === 'backlog'"></div>
+              <div v-else>{{getTousandNum(NumFormat(scope.row.paymentAmountCurrent))}}</div>
             </template>
             <template #planAmountCurrent="scope">
               <div>{{getTousandNum(NumFormat(scope.row.planAmountCurrent))}}</div>
             </template>
             <template #planAmountNext="scope">
-              <div>{{getTousandNum(NumFormat(scope.row.planAmountNext))}}</div>
+              <div v-if="scope.row.statType === 'backlog'"></div>
+              <div v-else>{{getTousandNum(NumFormat(scope.row.planAmountNext))}}</div>
+            </template>
+            <template #linieName="scope">
+              <div v-if="scope.row.statType === 'backlog'"></div>
+              <div v-else>{{getTousandNum(NumFormat(scope.row.linieName))}}</div>
             </template>
             <template #carTypeProName="scope">
               <div class="backlog" v-if="scope.row.statType === 'backlog'">
@@ -95,7 +105,8 @@
               </div>
             </template>
             <template #sopPercent="scope">
-              {{getTousandNum(NumFormat(scope.row.sopPercent || 0))}}%
+              <div v-if="scope.row.statType === 'backlog'"></div>
+              <div v-else>{{getTousandNum(NumFormat(scope.row.sopPercent || 0))}}%</div>
             </template>
           </iTableList>
         </template>
@@ -547,15 +558,16 @@ export default {
         const RTxt = document.getElementsByClassName("manual-lpriceInputTxt");
         const LTxt1 = document.getElementsByClassName("manual-lprice1");
         const LTxt2 = document.getElementsByClassName("manual-lprice2");
+        const top = document.body.clientWidth >= 1920 ? '28px' : '32px';
         Array.prototype.forEach.call(RInput, function (element, index) {
-          element.style.marginTop = '32px';
+          element.style.marginTop = top;
           element.style.height = '28px';
           element.style.opacity = '1';
-          RTxt[index].style.marginTop = '32px';
+          RTxt[index].style.marginTop = top;
           RTxt[index].style.height = '28px';
-          LTxt1[index].style.marginTop = '32px';
+          LTxt1[index].style.marginTop = top;
           LTxt1[index].style.height = '28px';
-          LTxt2[index].style.marginTop = '32px';
+          LTxt2[index].style.marginTop = top;
           LTxt2[index].style.height = '28px';
         });
       }, 1000)
