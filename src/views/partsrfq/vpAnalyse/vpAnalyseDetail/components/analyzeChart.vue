@@ -8,15 +8,15 @@
       </div>
       <div class="massProductionTime" :style="{'left': (this.massProductionTimeRateDot - this.OffsetData) + '%'}">
         <icon symbol name="iconbaojiapingfengenzong-jiedian-cheng" class="iconStyle"/>
-        <div class="margin-top12 iconColor">{{ this.massProductionTimeRate }}%</div>
+        <div class="margin-top6 iconColor" style="line-height: 16px">{{ this.massProductionTimeRate }}%</div>
         <!--        量产时间-->
-        <div>{{ $t('TPZS.LCSJ') }}</div>
+        <div style="line-height: 16px">{{ $t('TPZS.LCSJ') }}</div>
       </div>
       <div class="achievementRate" :style="{'left': (this.achievementRateDot - this.OffsetData) + '%'}">
-        <div class="margin-top12 iconColor">{{ this.achievementRate }}%</div>
+        <div class="iconColor" style="line-height: 16px">{{ this.achievementRate }}%</div>
         <!--        计划量产达成率-->
-        <div>{{ $t('TPZS.JHLCDCL') }}</div>
-        <icon symbol name="iconVP-jihuazongchanliang" class="iconStyle"/>
+        <div style="line-height: 16px">{{ $t('TPZS.JHLCDCL') }}</div>
+        <icon symbol name="iconVP-jihuazongchanliang" class="iconStyle margin-top6"/>
       </div>
       <div class="supplyingEndTime">
         <div>{{ dataInfo.supplyEndTime }}</div>
@@ -257,15 +257,14 @@ export default {
   }
 
   .iconStyle {
-    margin-top: 10px;
     font-size: 20px;
   }
 
   .massProductionTime {
     text-align: center;
     position: absolute;
-    bottom: -62px;
-
+    bottom: -66px;
+    height: 80px;
     .iconColor {
       color: #ED7D31
     }
@@ -274,7 +273,8 @@ export default {
   .achievementRate {
     text-align: center;
     position: absolute;
-    top: -73px;
+    top: -60px;
+    height: 80px;
 
     .iconColor {
       color: #4C6C9C
