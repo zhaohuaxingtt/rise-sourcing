@@ -72,7 +72,7 @@
         <!-- FSNR/GSNR -->
       <el-form-item label="FSNR/GSNR">
         <iInput
-          v-model="form.buyerName"
+          v-model="form.fsnrGsnrNum"
           :placeholder="language('LK_QINGSHURU','请输入')"
         ></iInput>
       </el-form-item>
@@ -93,7 +93,7 @@
       <!-- LINIE -->
       <el-form-item label="LINIE">
         <iInput
-          v-model="form.linieNameZh"
+          v-model="form.linieName"
           :placeholder="language('LK_QINGSHURU','请输入')"
         ></iInput>
       </el-form-item>
