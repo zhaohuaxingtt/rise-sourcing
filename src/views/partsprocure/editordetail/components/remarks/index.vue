@@ -5,7 +5,7 @@
 				<div>
 					<p>
 						<icon symbol name="iconbeizhuxinxi"></icon>
-						<span>{{ $t('LK_XUNJIACAIGOUYUANBEIZHU') }}</span>
+						<span>{{ language('LK_XUNJIACAIGOUYUANBEIZHU','询价采购员备注') }}</span>
 					</p>
 					<iInput  type="textarea" rows="8" resize="none" v-model="detailData.csfMemo" v-permission.disabled="PARTSPROCURE_EDITORDETAIL_REMARKS_INQUIRYBUYER"></iInput>
 						<!-- partsprocure.PARTSPROCURETRANSFER -->
@@ -13,20 +13,20 @@
 				<div>
 					<p>
 						<icon symbol name="iconbeizhuxinxi"></icon>
-						<span>{{ $t('LK_LINIEBEIZHU') }}</span>
+						<span>{{ language('LK_LINIEBEIZHU','Linie备注') }}</span>
 					</p>
 					<iInput type="textarea" rows="8" resize="none" v-model="detailData.linieMemo" v-permission.disabled="PARTSPROCURE_EDITORDETAIL_REMARKS_LINIENOTES"></iInput>
 				</div>
 				<div>
 					<p>
 						<icon symbol name="iconbeizhuxinxi"></icon>
-						<span>{{ $t('LK_CS_1BEIZHU') }}</span>
+						<span>{{ language('LK_CS_1BEIZHU','CS*1备注') }}</span>
 					</p>
 					<iInput type="textarea" rows="8" resize="none" v-model="detailData.cs1Memo"  v-permission.disabled="PARTSPROCURE_EDITORDETAIL_REMARKS_CS1REMARKS"></iInput>
 				</div>
 				<!-- 保存 -->
 				<span class="save">
-					<iButton @click="save" v-permission="PARTSPROCURE_EDITORDETAIL_REMARKS_SAVE">{{ $t('LK_BAOCUN') }}
+					<iButton @click="save" v-permission="PARTSPROCURE_EDITORDETAIL_REMARKS_SAVE">{{ language('LK_BAOCUN','保存') }}
 					</iButton>
 				</span>
 			</div>
@@ -107,7 +107,7 @@
 					})
 					.then((res) => {
 						if (res.data) {
-							iMessage.success(this.$t('LK_XIUGAICHENGGONG'))
+							iMessage.success(this.language('LK_XIUGAICHENGGONG','修改成功'))
 							this.getDatail();
 						} else {
 							iMessage.error(res.desZh);

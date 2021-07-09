@@ -47,7 +47,7 @@ export default {
   methods: {
     // 获取步骤状态
     async getStepStatus(){
-      const nominateId = this.$store.getters.nomiAppId || this.$route.query.desinateId
+      const nominateId = this.$route.query.desinateId || this.$store.getters.nomiAppId
       await this.$store.dispatch('setNominationStep',{nominateId})
       // 检查是否带强制路由参数，force表示不做step检测跳转
       if (this.$route.query.route === 'force') return

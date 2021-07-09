@@ -2,7 +2,7 @@
   <iPage class="log" v-permission="LOG_HOME_INDEXPAGE">
     <div class="margin-bottom20 clearFloat">
       <div class="floatright">
-        <iButton @click="download" v-permission="LOG_HOME_DOWNLOAD">{{ $t('LK_DAOCHU') }}</iButton>
+        <iButton @click="download" v-permission="LOG_HOME_DOWNLOAD">{{ language('LK_DAOCHU','导出') }}</iButton>
         <span class="margin-left20">
 					<icon symbol name="icondatabaseweixuanzhong" class="font18"></icon>
 				</span>
@@ -10,7 +10,7 @@
     </div>
     <iCard class="card">
       <div class="header clearFloat">
-        <span class="title">{{ $t('LK_RIZHI') }}</span>
+        <span class="title">{{ language('LK_RIZHI','日志') }}</span>
       </div>
       <div class="body margin-top25">
         <tableList index height="100%" class="table" :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="loading" @handleSelectionChange="handleSelectionChange">
@@ -76,7 +76,7 @@ export default {
       this.multipleSelection = list
     },
     download() {
-      if (!this.multipleSelection.length) return iMessage.warn(this.$t('LK_QINGXUANZHEXUYAODAOCHURIZHI'))
+      if (!this.multipleSelection.length) return iMessage.warn(this.language('LK_QINGXUANZHEXUYAODAOCHURIZHI','请选择需要导出的日志'))
       excelExport(this.multipleSelection, this.tableTitle)
     }
   }

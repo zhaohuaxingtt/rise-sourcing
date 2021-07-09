@@ -5,7 +5,7 @@
 -->
 <template>
   <iDialog
-    :title="$t('LK_GUANBIDINGDIANXIN')"
+    :title="language('LK_GUANBIDINGDIANXIN','关闭定点信')"
     :visible.sync="dialogVisible"
     @close="clearDialog"
     width="50%"
@@ -13,14 +13,14 @@
     >
     <iInput
         type="textarea"
-        :placeholder="$t('LK_QINGSHURUGUANBIYUANYIN')"
+        :placeholder="language('LK_QINGSHURUGUANBIYUANYIN','请输⼊关闭原因')"
         rows="10" 
         resize="none"
         v-model="reason"
      />
      <div class="confirmBtn padding-bottom20 padding-top20">
-         <iButton :loading="isLoading" @click="sumbit">{{$t('LK_QUEDING')}}</iButton>
-         <iButton @click="clearDialog">{{$t('LK_QUXIAO')}}</iButton>
+         <iButton :loading="isLoading" @click="sumbit">{{language('LK_QUEDING','确定')}}</iButton>
+         <iButton @click="clearDialog">{{language('LK_QUXIAO','取 消')}}</iButton>
      </div>
     </iDialog>
 </template>

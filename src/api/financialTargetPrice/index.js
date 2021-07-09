@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-24 15:55:46
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-01 15:15:55
+ * @LastEditTime: 2021-07-09 10:52:41
  * @Description: 财务目标价相关Api
  * @FilePath: \front-web\src\api\financialTargetPrice\index.js
  */
@@ -39,6 +39,16 @@ export function setPrice(params) {
     data: params
   })
 }
+
+// 导入批量维护
+export function importTargetPriceList(params) {
+  return requst({
+    url: '/cf-target-price-applies/export/import',
+    method: 'POST',
+    data: params
+  })
+}
+
 
 // 导出批量维护
 export function exportTargetPriceList(params) {
