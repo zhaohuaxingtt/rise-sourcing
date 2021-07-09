@@ -46,6 +46,9 @@
             <a class="table-a" href="javascript: ;" @click="jumpDetails(scope)">{{scope.row.carTypeProjectName}}</a>
           </template>
         </iTableList>
+        <div class="unitExplain">
+          <UnitExplain />
+        </div>
         <iPagination
               v-update
               @size-change="handleSizeChange($event, findCarTypeList)"
@@ -58,25 +61,6 @@
               :total="page.totalCount"
           />
       </iCard>
-
-    <!-- <template v-else-if=" === 2">
-      <DetailsSearch @reset="handleReset" @sure="handleSure" />
-
-      <iCard>
-      <DetailsTable @handelConfirmSuccess="handelConfirmSuccess" :tableListData="tableDetailsListData" :tableLoading="tableDetailsLoading" />
-      <iPagination
-          v-update
-          @size-change="handleSizeChange($event, handleSure)"
-          @current-change="handleCurrentChange($event, handleSure)"
-          background
-          :current-page="detailPage.currPage"
-          :page-sizes="detailPage.pageSizes"
-          :page-size="detailPage.pageSize"
-          :layout="detailPage.layout"
-          :total="detailPage.totalCount"
-      />
-    </iCard>
-    </template> -->
     
   </div>
 </template>
@@ -90,6 +74,7 @@ import { pageMixins } from "@/utils/pageMixins";
 import DetailsSearch from "./components/detailsSearch";
 import DetailsTable from "./components/detailsTable";
 import { detailsForm } from "./components/data";
+import UnitExplain from "./components/unitExplain";
 import {
   iTableList
 } from "@/components"
@@ -112,8 +97,7 @@ export default {
     iSelect,
     iTableList,
     iPagination,
-    // DetailsSearch,
-    // DetailsTable
+    UnitExplain
   },
   data(){
     return {
@@ -247,6 +231,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.unitExplain{
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 10px;
+}
 .table-a{
   color: #1663F6;
   text-decoration: underline;
