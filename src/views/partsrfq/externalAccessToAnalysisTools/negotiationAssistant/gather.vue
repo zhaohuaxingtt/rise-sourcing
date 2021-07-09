@@ -18,11 +18,9 @@
         <icon class="icondatabaseweixuanzhong" name="icondatabaseweixuanzhong" symbol></icon>
       </div>
     </div>
-    <div v-if="$route.path==='/sourcing/partsrfq/assistant'" class="margin-bottom20 clearFloat">
-      <div class="floatright">
-        <iButton @click="handleReport">{{ $t('TPZS.BGQD') }}</iButton>
-        <iButton v-if="pageType!=='card'" @click="entrance('card')">{{ $t('LK_FANHUI') }}</iButton>
-      </div>
+    <div v-if="$route.path==='/sourcing/partsrfq/assistant'" class="right-btn">
+      <iButton v-if="pageType!=='card'" @click="entrance('card')">{{ $t('LK_FANHUI') }}</iButton>
+      <iButton @click="handleReport">{{ $t('TPZS.BGQD') }}</iButton>
     </div>
     <specialAnalysisTool v-if="pageType === 'card'" @entrance="entrance" ref="specialAnalysisTool" />
     <pcaOverview v-else-if="pageType === 'PCA'" pageType="PCA" />
@@ -102,7 +100,11 @@ export default {
 ::v-deep .routerpage {
   position: relative;
 }
-
+.right-btn {
+  position: absolute;
+  top: -3.5rem;
+  right: 0;
+}
 .btn {
   position: absolute;
   top: 5.5rem;

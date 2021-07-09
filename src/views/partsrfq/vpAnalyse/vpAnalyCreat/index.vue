@@ -49,7 +49,7 @@ export default {
       this.$refs.partsTable.getTableList(data)
     },
     handleAnalysis() {
-      this.$router.push({ path: '/sourcing/partsrfq/assistant', query: { id: this.$store.state.rfq.rfqId, round: this.$route.query.round, pageType: 'Volume Pricing', activityTabIndex: '1' } })
+      this.$router.push({ path: '/sourcing/partsrfq/assistant', query: { id: this.$store.state.rfq.rfqId, round: this.$route.query.round, pageType: 'Volume Pricing', activityTabIndex: 'two' } })
     }
   },
   // 生命周期 - 创建完成（可以访问当前this实例）
