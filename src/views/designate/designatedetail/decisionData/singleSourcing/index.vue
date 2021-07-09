@@ -21,7 +21,6 @@
                 <tableList
                     :selection="false"
                     class="table"
-                    :lang="true"
                     index
                     :tableData="tableListData"
                     :tableTitle="tableTitle"
@@ -35,7 +34,15 @@
                                 <icon symbol name="iconzhongyaoxinxitishi" />
                             </span>
                             </el-tooltip>
+                            <br>
+                            <span >{{scope.row.suppliersNameEn }}</span>
                         </div>
+                    </template>
+                    <!-- 零件名称 -->
+                    <template #partNameCh="scope">
+                        <span>{{scope.row.partNameCh}}</span>
+                        <br/>
+                        <span>{{scope.row.partNameEn}}</span>
                     </template>
                 </tableList>
                 <iPagination
@@ -65,7 +72,9 @@ import {
   icon,
 } from "rise";
 import {pageMixins} from '@/utils/pageMixins'
-import tableList from "@/views/partsign/editordetail/components/tableList"
+// import tableList from "@/views/partsign/editordetail/components/tableList"
+
+import tableList from '../../components/tableList'
 import {
     getSingleSourcing,
 } from '@/api/designate/decisiondata/singleSourcing'
@@ -86,13 +95,13 @@ export default {
             loading: false,
             tableListData:[],
             tableTitle:[
-                {name:'FS号\nFS No',key:'FSNo',props:'fsnrGsnrNum'},
-                {name:'零件号\nPart No.',key:'PARTNO',props:'partNum'},
-                {name:'零件名称\nPart Name',key:'PartName',props:'partNameCh'},
-                {name:'供应商名称\nSupplier Name',key:'SupplierName',props:'suppliersName'},
-                {name:'供应商编码\nSupplier No.',key:'SupplierNo.',props:'supplierId'},
-                {name:'原因\nReason',key:'Reason',props:'singleReason'},
-                {name:'原因部⻔\nCaused by',key:'Causedby',props:'department'},
+                {name:'FS号',enName:'FS No',props:'fsnrGsnrNum'},
+                {name:'零件号',enName:'Part No.',props:'partNum'},
+                {name:'零件名称',enName:'Part Name',props:'partNameCh'},
+                {name:'供应商名称',enName:'Supplier Name',props:'suppliersName'},
+                {name:'供应商编码',enName:'Supplier No.',props:'supplierId'},
+                {name:'原因',enName:'Reason',props:'singleReason'},
+                {name:'原因部⻔',enName:'Caused by',props:'department'},
             ],
             projectName:'',
             nominateId:'',
