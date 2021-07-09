@@ -58,8 +58,41 @@
                 placement="top-start"
                 trigger="hover"
             >
-              <div v-katex="dropPotentialTips"></div>
-              <div class="margin-left45 margin-top10">
+              <div class="formula">
+                <div class="row1">
+                  <div class="icon">Δ%</div>
+                  <div class="equal">=</div>
+                  <div class="left-bracket">（</div>
+                  <div class="division">
+                    <div class="item item-top">{{ this.$t('TPZS.JIHUAZHONGCHANLIANG') }}</div>
+                    <div class="item">{{this.$t('TPZS.YUJIZONGCHANLIANG')}}</div>
+                  </div>
+                  <div class="subduction"></div>
+                  <div class="subduction-num">1</div>
+                  <div class="right-bracket">）</div>
+                  <div class="multiply">✖️</div>
+                  <div class="multiply-num">{{this.$t('TPZS.GUDINGCHENGBEN')}}%</div>
+                </div>
+                <div class="row2">
+                  <div class="equal">=</div>
+                  <div class="left-bracket">（</div>
+                  <div class="division">
+                    <div class="item item-top">{{ this.dropPotential.totalPlannedOutputTipsData }}</div>
+                    <div class="item">{{this.dropPotential.estimatedTotalProductionTipsData}}</div>
+                  </div>
+                  <div class="subduction"></div>
+                  <div class="subduction-num">1</div>
+                  <div class="right-bracket">）</div>
+                  <div class="multiply">✖️</div>
+                  <div class="multiply-num">{{this.dropPotential.fixedCost}}%</div>
+                </div>
+                <div class="row2">
+                  <div class="equal">=</div>
+                  <div class="result">{{this.dropPotential.result}}%</div>
+                </div>
+              </div>
+<!--              <div v-katex="dropPotentialTips"></div>-->
+              <div class="margin-left32 margin-top10">
                 <!--                降本单价-->
                 <span class="font-weight" style="color:#000305">{{ $t('TPZS.JBDJ') }}</span>
                 <span style="color:#4C6C9C">{{ dropPotential.costReductionUnitPrice }}{{ $t('TPZS.YUAN') }}</span>
@@ -317,6 +350,68 @@ export default {
 
   .itemBox + .itemBox {
     margin-top: 20px;
+  }
+}
+.formula{
+  .row1{
+    display: flex;
+    .subduction{
+      width: 10px;
+      height: 2px;
+      background: black;
+      margin: 22px 10px 0;
+    }
+  }
+  .left-bracket{
+    margin-left: -15px;
+  }
+  .left-bracket,.right-bracket{
+    font-size: 40px;
+  }
+  .item{
+   padding: 0 20px;
+  }
+  .item-top{
+    border-bottom: 1px solid black;
+  }
+  .subduction-num{
+    margin-top: 12px;
+  }
+  .multiply{
+    margin-left: -10px;
+    margin-top: 15px;
+  }
+  .multiply-num{
+    margin-left: 5px;
+    margin-top: 14px;
+  }
+  .icon{
+    margin-top: 13px;
+    width: 22px;
+  }
+  .equal{
+    margin-top: 9px;
+    margin-left: 7px;
+    font-size: 20px;
+  }
+  .row2{
+    display: flex;
+    .equal{
+      margin-left: 29px;
+    }
+    .subduction{
+      width: 10px;
+      height: 2px;
+      background: black;
+      margin: 20px 10px 0;
+    }
+    .subduction-num{
+      margin-top: 10px;
+    }
+    .result{
+      margin-left: 10px;
+      margin-top: 13px;
+    }
   }
 }
 </style>

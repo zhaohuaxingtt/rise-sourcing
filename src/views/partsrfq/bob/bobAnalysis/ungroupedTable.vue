@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 11:38:57
- * @LastEditTime: 2021-07-02 17:46:42
+ * @LastEditTime: 2021-07-06 16:50:12
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails\table1.vue
@@ -32,6 +32,7 @@
       @row-dblclick="rowDblclick"
       @cell-dblclick="cellBbClick"
       @cell-click="cellClick"
+      @header-click="headerClick"
       @expand-change="expandChange"
     >
       <!-- <el-table-column label="" prop="title" width="250"> </el-table-column> -->
@@ -40,7 +41,7 @@
         :key="i.id"
         :label="i.label"
         :prop="i.prop"
-        align="center"
+        align="left"
         :width="i.prop == 'title' ? '200' : ''"
       >
         <template v-if="i.children">
@@ -50,6 +51,7 @@
             :label="item.label"
             :prop="item.prop"
             align="left"
+            :render-header="renderHeader"
           >
           </el-table-column>
         </template>
@@ -131,6 +133,12 @@ export default {
       };
     },
   },
+  mounted() {
+    this.$nextTick(() => {
+      // this.chargeRetrieve();
+      this.open();
+    });
+  },
   watch: {
     expends: {
       handler(val) {
@@ -166,6 +174,46 @@ export default {
     };
   },
   methods: {
+    open() {
+      let els = this.$el.getElementsByClassName("el-table__expand-icon");
+      if (this.tableList.dataList.length != 0 && els.length != 0) {
+        this.flag = false;
+        this.flag1 = true;
+        for (let j1 = 0; j1 < els.length; j1++) {
+          els[j1].classList.add("dafult");
+        }
+        if (
+          this.$el.getElementsByClassName("el-table__expand-icon--expanded")
+        ) {
+          const open = this.$el.getElementsByClassName(
+            "el-table__expand-icon--expanded"
+          );
+          for (let j = 0; j < open.length; j++) {
+            open[j].classList.remove("dafult");
+          }
+          const dafult = this.$el.getElementsByClassName("dafult");
+          for (let a = 0; a < dafult.length; a++) {
+            dafult[a].click();
+          }
+        }
+      }
+    },
+    close() {
+      if (this.tableList.dataList.length != 0) {
+        this.flag = true;
+        this.flag1 = false;
+        const elsopen = this.$el.getElementsByClassName(
+          "el-table__expand-icon--expanded"
+        );
+        if (
+          this.$el.getElementsByClassName("el-table__expand-icon--expanded")
+        ) {
+          for (let i = 0; i < elsopen.length; i++) {
+            elsopen[i].click();
+          }
+        }
+      }
+    },
     addclass(row) {
       var that = this;
       if (row.columnIndex == that.num) {
@@ -188,16 +236,47 @@ export default {
       return row.id;
     },
 
-    renderHeader(h, opt) {
-      return "<div>aaaf</div>";
+    renderHeader(h, { column }) {
+      return h("div", [
+        h("el-checkbox", {
+          // style: "display:inline-flex;margin-right:15px;",
+          on: {
+            change: this.select.bind(this, column),
+          },
+        }),
+        // h("span", column.label),
+      ]);
+    },
+    /** 是否勾选表头 */
+    select(col, checked) {
+      // 如果checked为true则是勾选了对应的表头
+      console.log(col, checked);
+      this.$nextTick(() => {
+        const els = this.$el.getElementsByClassName(col.id);
+        for (let i = 0; i < els.length; i++) {
+          if (checked) {
+            els[i].style.backgroundColor = "#0EBADD";
+          } else {
+            els[i].style.backgroundColor = "";
+          }
+        }
+
+        console.log(this.$el.getElementsByClassName(col.id));
+        // this.$el.getElementsByClassName(col.id).style.backgroudColor = "#0EBADD";
+      });
     },
     rowClick(row, event, column) {
       this.$emit("row-click", row, event, column);
     },
 
     cellClick(row, column, cell, event) {
+      console.log(row,column,cell)
       this.$emit("cell-click", row, column, cell, event);
     },
+    headerClick(column, event){
+      console.log(column)
+    },
+    
     // 格子双击事件
     cellBbClick(row, column, cell, event) {
       this.$emit("cell-dblclick", row, column, cell, event);
@@ -216,15 +295,13 @@ export default {
       }
       // console.log(row, expanded)
     },
-    select(e, col) {
-      console.log(e, col);
-    },
     groupBy() {
       this.$emit("groupBy", true);
     },
   },
 };
 </script>
+
 
 <style lang="scss" scoped>
 // ::v-deep .el-table tr:nth-child(even){

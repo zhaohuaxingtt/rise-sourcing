@@ -9,7 +9,7 @@
             <icon symbol name="iconTimeLine-Today" class="step-icon"></icon>
             <div>
                 <p class="title">{{item.durationName}}</p>
-                <p class="tips">{{item.nodeWeek ? 'KW'+item.nodeWeek :''}}</p>
+                <p class="tips">{{item.nodeWeek ? ( getNodeYear(item.nodeDate) +'KW'+item.nodeWeek) :''}}</p>
             </div>
         </li>
     </ul>
@@ -38,6 +38,17 @@ export default {
     created(){
     },
     methods:{
+        // 获取年份显示
+        getNodeYear(nodeDate){
+            if(!nodeDate) return '';
+            const date = Number(nodeDate);
+            const nodeYear = window.moment(date).year();
+            if(nodeYear){
+                return nodeYear+'-'
+            }else{
+                return ''
+            }
+        }
     }
 }
 </script>

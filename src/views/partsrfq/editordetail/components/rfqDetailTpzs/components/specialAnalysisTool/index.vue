@@ -40,17 +40,30 @@ export default {
   },
   methods: {
     async getDataList(val) {
+      window.sessionStorage.setItem('rfqId', val)
+      this.$store.dispatch('setRfqId', val)
       const pms = {
-        isInsideEnter: this.$route.path === '/sourcing/partsrfq/assistant' ? true : false,
-        keyword: val || '',
-        rfq: this.$route.query.id
+        isInsideEnter: false,
+        rfq: val || '',
       }
       const res = await totalOverview(pms)
       if (res.result) {
         this.viewModelDialog = false
         this.cardData = res.data
-        this.cardData.push({ title: 'PCA' }, { title: 'TIA' })
+        this.cardData.push({ title: 'PCA', analysisTotal: '', reportTotal: '', analysisLastUpdateDate: '', reportLastUpdateDate: '' }, { title: 'TIA', analysisTotal: '', reportTotal: '', analysisLastUpdateDate: '', reportLastUpdateDate: '' })
         this.cardData.map((item) => {
+          if (!item.analysisTotal) {
+            item.analysisTotal = ''
+          }
+          if (!item.reportTotal) {
+            item.reportTotal = ''
+          }
+          if (!item.analysisLastUpdateDate) {
+            item.analysisLastUpdateDate = ''
+          }
+          if (!item.reportLastUpdateDate) {
+            item.reportLastUpdateDate = ''
+          }
           switch (item.title) {
             case 'BoB(Best of Best)':
               item.imgUrl = BoBIndex

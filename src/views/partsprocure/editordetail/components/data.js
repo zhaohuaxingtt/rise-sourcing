@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-02-25 10:10:50
- * @LastEditTime: 2021-07-06 17:17:07
+ * @LastEditTime: 2021-07-08 20:02:13
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsprocure\editordetail\components\data.js
@@ -31,7 +31,7 @@ export const detailData = {
 	partNameDe: "", //零件德文名
 	partNameZh: "", //零件中文名
 	partNum: "", //零件号
-	partPrejectType: "", //零件项目类型
+	partProjectType: "", //零件项目类型
 	partStatus: "", //	零件状态
 	payTerms: "", //	付款条款
 	procureFactory: "", //采购工厂
