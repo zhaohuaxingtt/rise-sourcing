@@ -166,9 +166,9 @@ export function checkFactory(params) {
 // 获取采购项目列表
 export function getParts(params) {
 	return requstPartsProcure({
-		url: "/parts",
-    method: "GET",
-    params
+		url: "/partInfoPaged",
+    	method: "POST",
+    	data: params
 	})
 }
 
