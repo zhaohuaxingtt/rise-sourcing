@@ -9,7 +9,7 @@
     <div v-for="(item,index) in list" :key="index" @click="change(item,index)">
       <span class="name" :class="index==activeIndex && 'active'">{{$t(item.key)}}</span>
       <!-- <span class="circle" v-show="item.message>0">{{item.message}}</span> -->
-      <el-badge class="badge" :max="99" v-if="item.message" :value="item.message" @click.native="clickMessage(item, $event)"></el-badge>
+      <el-badge  class="badge" :max="99" v-if="item.message" :value="item.message" @click.native="clickMessage(item, $event)"></el-badge>
     </div>
   </div>
 </template>

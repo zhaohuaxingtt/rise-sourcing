@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2021-07-06 17:15:54
+ * @LastEditTime: 2021-07-08 20:22:42
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\editordetail\index.vue
@@ -81,9 +81,9 @@
 						</iFormItem>
 						<iFormItem :label="$t('LK_LINGJIANXIANGMULEIXING') + ':'" name="test">
 							<iSelect
-								v-model="detailData.partPrejectType"
+								v-model="detailData.partProjectType"
 								v-permission="PARTSPROCURE_EDITORDETAIL_EVENTITEMTYPE"
-								@change="onPartPrejectTypeChange">
+								@change="onPartProjectTypeChange">
 								<el-option :value="item.code" :label="item.name"
 									v-for="(item, index) in fromGroup.PART_PROJECT_TYPE" :key="index">
 								</el-option>
@@ -98,7 +98,7 @@
 							</iSelect>
 						</iFormItem>
 						<iFormItem :label="$t('LK_CAIGOUTIAOKUAN') + ':'" name="test"
-							v-show="detailData.partPrejectType == '46'">
+							v-show="detailData.partProjectType == '46'">
 							<iSelect v-model="detailData.purchaseClause"
 								v-permission="PARTSPROCURE_EDITORDETAIL_PURCHASETERMS">
 								<el-option :value="item.code" :label="item.name" v-for="(item, index) in fromGroup.PURCHASE_RULE" :key="index">
@@ -106,14 +106,14 @@
 							</iSelect>
 						</iFormItem>
 						<!------------------------零件采购项目类型为一次性采购/DB一次性采购类型时与是否DB件联动--------------------------------------->
-						<iFormItem v-if="['PT06', 'PT19'].includes(detailData.partPrejectType)" :label="language('SHIFOUDBJIAN','是否DB件') + ':'" name="test">
+						<iFormItem v-if="['PT06', 'PT19'].includes(detailData.partProjectType)" :label="language('SHIFOUDBJIAN','是否DB件') + ':'" name="test">
 							<iSelect v-model="detailData.isDB" @change="onIsDBChange">
 								<el-option :value="1" :label="language('YES', '是')"></el-option>
 								<el-option :value="0" :label="language('NO', '否')"></el-option>
 							</iSelect>
 						</iFormItem>
 						<!------------------------零件采购项目类型为DB类型时--------------------------------------->
-						<iFormItem v-if="['PT04', 'PT19'].includes(detailData.partPrejectType) || detailData.isDB" :label="language('HUOBILEIXING','货币类型') + ':'" name="test">
+						<iFormItem v-if="['PT04', 'PT19'].includes(detailData.partProjectType) || detailData.isDB" :label="language('HUOBILEIXING','货币类型') + ':'" name="test">
 							<iSelect v-model="detailData.currencyCode" >
 								<el-option :value="item.code" :label="item.name"
 									v-for="(item, index) in fromGroup.PP_CSTMGMT_CURRENCY" :key="index">
@@ -121,7 +121,7 @@
 							</iSelect>
 						</iFormItem>
 						<!----------------------零件采购项目类型为DB零件时----------------------------------->
-						<iFormItem v-if="['PT04', 'PT19'].includes(detailData.partPrejectType) || detailData.isDB" :label="language('ZHIFUTIAOKUAN', '支付条款') + ':'" name="test">
+						<iFormItem v-if="['PT04', 'PT19'].includes(detailData.partProjectType) || detailData.isDB" :label="language('ZHIFUTIAOKUAN', '支付条款') + ':'" name="test">
 							<iSelect v-model="detailData.payClause" >
 								<el-option :value="item.code" :label="item.name"
 									v-for="(item, index) in fromGroup.TERMS_PAYMENT" :key="index">
@@ -170,7 +170,7 @@
 							</iSelect>
 						</iFormItem>
 						<iFormItem :label="$t('LK_ZHIFUTIAOKUAN') + ':'" name="test"
-							v-show="detailData.partPrejectType == '46'">
+							v-show="detailData.partProjectType == '46'">
 							<iSelect v-model="detailData.payClause"
 								v-permission="PARTSPROCURE_EDITORDETAIL_NUMBEROFPAYMENT">
 								<el-option :value="item.code" :label="item.name"
@@ -178,7 +178,7 @@
 							</iSelect>
 						</iFormItem>
 						<!----------------------零件采购项目类型为DB零件时----------------------------------->
-						<iFormItem v-if="['PT04', 'PT19'].includes(detailData.partPrejectType) || detailData.isDB" :label="language('CAIGOUTIAOKUAN','采购条款') + ':'" name="test">
+						<iFormItem v-if="['PT04', 'PT19'].includes(detailData.partProjectType) || detailData.isDB" :label="language('CAIGOUTIAOKUAN','采购条款') + ':'" name="test">
 							<iSelect v-model="detailData.purchaseClause" >
 								<el-option :value="item.code" :label="item.name"
 									v-for="(item, index) in fromGroup.TERMS_PURCHASE" :key="index">
@@ -275,7 +275,7 @@
 							</iText>
 						</iFormItem>
 						<iFormItem :label="$t('LK_HUOBI') + ':'" name="test"
-							v-show="detailData.partPrejectType == '46'">
+							v-show="detailData.partProjectType == '46'">
 							<iSelect v-model="detailData.currencyId" v-permission="PARTSPROCURE_EDITORDETAIL_CURRENCY">
 								<el-option :value="item.code" :label="item.name"
 									v-for="(item, index) in fromGroup.CURRENCY_TYPE" :key="index"></el-option>
@@ -310,7 +310,7 @@
 			</el-tab-pane>
 			<el-tab-pane :label="$t('LK_SHENQINGMUBIAOJIA')"
 				v-permission="PARTSPROCURE_EDITORDETAIL_APPLYFORTARGETPRICE">
-				<targePrice :purchaseProjectId="purchasePrjectId" :fsnrGsnrNum="fsnrGsnrNum" :partPrejectType="partPrejectType"></targePrice>
+				<targePrice :purchaseProjectId="purchasePrjectId" :fsnrGsnrNum="fsnrGsnrNum" :partProjectType="partProjectType"></targePrice>
 			</el-tab-pane>
 			<el-tab-pane :label="$t('LK_BEIZHUXINXI')" v-permission="PARTSPROCURE_EDITORDETAIL_REMARKSINFORMATION">
 				<remarks :detailData="detailData"></remarks>
@@ -408,7 +408,7 @@ import { getDictByCode } from '@/api/dictionary'
 				* @return {*}
 				*/
 			currentSupplierButton:function(){
-				return (this.detailData.partPrejectType == "PT11" || this.detailData.partPrejectType == "PT10") && this.detailData.fsnrGsnrNum
+				return (this.detailData.partProjectType == "PT11" || this.detailData.partProjectType == "PT10") && this.detailData.fsnrGsnrNum
 			},
 			isAssembly() {
 				return this.detailData.partType === "A"
@@ -431,14 +431,14 @@ import { getDictByCode } from '@/api/dictionary'
 				createNomiApplicationLoading: false,
 				curentSupplierDialog:{show:false},
 				fsnrGsnrNum: '',
-				partPrejectType: ''
+				partProjectType: ''
 			};
 		},
 		created() {
 			this.infoItem = JSON.parse(this.$route.query.item);
 			this.purchasePrjectId = this.infoItem.purchasePrjectId;
 			this.fsnrGsnrNum = this.infoItem.fsnrGsnrNum;
-			this.partPrejectType = this.infoItem.partPrejectType;
+			this.partProjectType = this.infoItem.partProjectType;
 			this.getDatail();
 			this.getProcureGroup();
 			this.getDicts()
@@ -698,7 +698,7 @@ import { getDictByCode } from '@/api/dictionary'
 				* @return {*}
 				*/
 			fsProjectTypeAnIscommonSroucing(callBack){
-				if((!this.detailData.isCommonSourcing) && this.detailData.partPrejectType == "PT09"){
+				if((!this.detailData.isCommonSourcing) && this.detailData.partProjectType == "PT09"){
 					iMessageBox(this.language('SPIRNT11COMMONSS','当前零件采购项目类型与commonSourcing为[否]不统一，是否继续？')).then(res=>{
 						callBack()
 					})
@@ -712,15 +712,15 @@ import { getDictByCode } from '@/api/dictionary'
 			* @return {*}
 			*/
 			onIsDBChange(data) {
-				this.detailData.partPrejectType = data ? 'PT19' : 'PT06'
-				this.detailData.partPrejectType === 'PT19' && (this.detailData.isDB = 1)
+				this.detailData.partProjectType = data ? 'PT19' : 'PT06'
+				this.detailData.partProjectType === 'PT19' && (this.detailData.isDB = 1)
 			},
 			/**
 			* @description: 零件项目类型,当类型为db一次性采购，isDB默认选是
 			* @param {*}
 			* @return {*}
 			*/
-			onPartPrejectTypeChange(data) {
+			onPartProjectTypeChange(data) {
 				data === 'PT19' && (this.detailData.isDB = 1)
 			}
 		}

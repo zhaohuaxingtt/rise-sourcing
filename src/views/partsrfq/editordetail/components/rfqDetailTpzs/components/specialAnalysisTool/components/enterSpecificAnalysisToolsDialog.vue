@@ -64,7 +64,6 @@ export default {
         if (res.result) {
           this.formGroup.keywordList = res.data
         }
-        console.log(this.formGroup);
         this.keyLoading = false
       } catch (error) {
         this.formGroup.keywordList = []

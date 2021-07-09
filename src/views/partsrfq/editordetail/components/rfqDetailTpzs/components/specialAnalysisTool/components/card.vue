@@ -8,7 +8,9 @@
 <template>
   <iCard style="height:400px" :title="labelData.title">
     <div slot="header-control">
-      <icon :name="labelData.colourType===1?'iconzhuanxiangfenxigongju-landian':labelData.colourType===2?'iconbaojiapingfengenzong-jiedian-cheng':'iconbaojiapingfengenzong-jiedian-hui'" symbol></icon>
+      <el-popover placement="top-start" trigger="hover" :content="labelData.colourType===1?$t('TPZS.ZXFXGJNHYGLFXBG'):labelData.colourType===2?$t('TPZS.ZXFXGJNMYGLFXBGDHHILJ'):$t('TPZS.ZXFXGJNMYGLFXBGQBHHILJ')">
+        <icon slot="reference" :name="labelData.colourType===1?'iconzhuanxiangfenxigongju-landian':labelData.colourType===2?'iconbaojiapingfengenzong-jiedian-cheng':'iconbaojiapingfengenzong-jiedian-hui'" symbol></icon>
+      </el-popover>
     </div>
     <img class="cursor" :src="labelData.imgUrl" alt="" width="100%" height="250px">
     <el-divider></el-divider>
@@ -55,12 +57,12 @@ export default {
 }
 </script>
 
-<style>
-.icon-t {
-  font-size: 25rem;
-}
+<style lang="scss" scoped>
 .buttom {
   display: flex;
   justify-content: space-between;
+}
+::v-deep .el-divider--horizontal {
+  margin: 1.25rem 0 !important;
 }
 </style>

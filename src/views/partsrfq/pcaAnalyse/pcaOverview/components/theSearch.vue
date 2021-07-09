@@ -37,7 +37,7 @@ export default {
       form: {
         category: '',
         partNum: '',
-        rfq: this.$route.query.id ? this.$route.query.id : '',
+        rfq: this.$store.state.rfq.rfqId,
         createBy: '',
       },
     };
@@ -56,7 +56,7 @@ export default {
       this.form = {
         category: '',
         partNum: '',
-        rfq: this.$route.query.id ? this.$route.query.id : '',
+        rfq: this.$store.state.rfq.rfqId,
         createBy: '',
       };
       this.getTableList();
