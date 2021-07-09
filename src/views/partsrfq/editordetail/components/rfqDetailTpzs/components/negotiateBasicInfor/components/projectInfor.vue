@@ -135,9 +135,6 @@ export default {
 </script>
 <style lang='scss' >
 // @import url(); 引入公共css类
-.info {
-  font-weight: Bold;
-}
 .row4[data-v-018a401a] .el-form-item__label {
   width: 8rem !important;
 }

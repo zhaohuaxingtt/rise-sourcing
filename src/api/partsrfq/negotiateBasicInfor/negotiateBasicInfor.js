@@ -87,3 +87,11 @@ export function listFixedPointHistory(parmars) {
     data: parmars
   })
 }
+//材料组/供应商--列表
+export function getRfqSupplierAndCategory(parmars) {
+  return requst({
+    url: `/costAnalysisTool/rfq/getRfqSupplierAndCategory?rfqId=${parmars}`,
+    method: 'GET',
+    data: parmars
+  })
+}
