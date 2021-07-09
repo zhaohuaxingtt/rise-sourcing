@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-24 18:06:45
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-04 20:00:37
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-07-09 14:08:59
  * @Description: 定点申请预设逻辑界面
  * @FilePath: \front-web\src\views\designate\defaultLogic\index.vue
 -->
@@ -14,16 +14,16 @@
     <!------------------------------------------------------------------------>
     <detailTop right lev='2' :pageMenu='detailPage' :query='$route.query'>
       <span slot="left" class="floatleft font20 font-weight">
-        定点申请预设逻辑
+        {{language('LK_DINGDIANSHENQINGYUSHELUOJI','定点申请预设逻辑')}}
       </span>
     </detailTop>
     <iCard>
       <div class="margin-bottom20 clearFloat">
           <div class="floatright">
             <!--------------------添加按钮----------------------------------->
-            <iButton @click="handleAdd">添加</iButton>
+            <iButton @click="handleAdd">{{language('LK_TIANJIA','添加')}}</iButton>
             <!--------------------删除按钮----------------------------------->
-            <iButton @click="handleDelete">删除</iButton>
+            <iButton @click="handleDelete">{{language('LK_SHANCHU','删除')}}</iButton>
             <!--------------------恢复按钮----------------------------------->
             <!-- <iButton @click="handleRecover">恢复</iButton> -->
             <!--------------------保存按钮----------------------------------->
@@ -144,7 +144,7 @@ export default {
      */    
     handleDelete() {
       if (this.selectedItems.length < 1) {
-        iMessage.warn('请选择需要删除的规则')
+        iMessage.warn(this.language('LK_QINGXUANZEXUYAOSHANCHUDEGUIZE','请选择需要删除的规则'))
       }
       this.tableLoading = true
       const params = {

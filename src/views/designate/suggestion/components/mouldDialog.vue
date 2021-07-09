@@ -1,10 +1,10 @@
 <template>
   <iDialog class="dialog" v-bind="$props" :visible.sync="visible" v-on="$listeners">
     <div class="dialog-Header" slot="title">
-      <div class="font18 font-weight">{{$t('nominationSuggestion.MoJuYuSuanGuanLi')}}</div>
+      <div class="font18 font-weight">{{language('nominationSuggestion.MoJuYuSuanGuanLi','模具预算管理')}}</div>
       <div class="control">
-        <iButton>{{ $t('LK_TIJIAO') }}</iButton>
-        <iButton>{{ $t('LK_CHEHUI') }}</iButton>
+        <iButton>{{ language('LK_TIJIAO','提交') }}</iButton>
+        <iButton>{{ language('LK_CHEHUI','撤回') }}</iButton>
       </div>
     </div>
     <div class="body">
@@ -18,7 +18,7 @@
         <template #budget="scope">
           <div>
             <iInput
-              :placeholder="$t('LK_QINGSHURU')"
+              :placeholder="language('LK_QINGSHURU','请输入')"
               v-model="scope.row.budget"
             ></iInput>
           </div>
