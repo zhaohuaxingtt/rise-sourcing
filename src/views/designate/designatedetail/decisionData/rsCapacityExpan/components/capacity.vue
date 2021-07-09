@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-07 09:35:37
- * @LastEditTime: 2021-07-07 16:54:39
+ * @LastEditTime: 2021-07-08 17:31:30
  * @LastEditors: Please set LastEditors
  * @Description: 扩产能天，周，年表格
  * @FilePath: /front-web/src/views/designate/designatedetail/decisionData/rsCapacityExpan/components/capacity.vue
@@ -43,9 +43,9 @@
           </div>
         </template>
         <template slot-scope="scope">
-          <div class="auoHeaderCol">
-            <div>{{scope.row.dayn || ''}}</div>
-            <div>{{scope.row.daym || ''}}</div>
+          <div class="auoCol">
+            <div>{{scope.row.capacityNormDay || ''}}</div>
+            <div>{{scope.row.capacityMaxDay || ''}}</div>
           </div>
         </template>
         </el-table-column>
@@ -60,9 +60,9 @@
           </div>
         </template>
         <template slot-scope="scope">
-          <div class="auoHeaderCol">
-            <div>{{scope.row.dayn || ''}}</div>
-            <div>{{scope.row.daym || ''}}</div>
+          <div class="auoCol">
+            <div>{{scope.row.capacityNormWeek || ''}}</div>
+            <div>{{scope.row.capacityMaxWeek || ''}}</div>
           </div>
         </template>
         </el-table-column>
@@ -77,9 +77,9 @@
           </div>
         </template>
         <template slot-scope="scope">
-          <div class="auoHeaderCol">
-            <div>{{scope.row.dayn || ''}}</div>
-            <div>{{scope.row.daym || ''}}</div>
+          <div class="auoCol">
+            <div>{{scope.row.capacityNormYear || ''}}</div>
+            <div>{{scope.row.capacityMaxYear || ''}}</div>
           </div>
         </template>
         </el-table-column>
@@ -89,29 +89,41 @@
 </template>
 
 <script>
+import Vue from 'vue'
 export default {
   props: {
     lang: {
       type: String,
       default: 'en'
-    }
+    },
+    data: {
+      type: Array,
+      default: () => ([])
+    },
   },
   created() {
     this.init()
+  },
+  watch: {
+    data(data) {
+      if (data && data.length) {
+        this.dataList.map((o, index) => {
+          Vue.set(o, 'capacityNormDay', data[index] && data[index].capacityNormDay)
+          Vue.set(o, 'capacityMaxDay', data[index] && data[index].capacityMaxDay)
+          Vue.set(o, 'capacityNormWeek', data[index] && data[index].capacityMaxDay)
+          Vue.set(o, 'capacityMaxWeek', data[index] && data[index].capacityMaxDay)
+          Vue.set(o, 'capacityNormYear', data[index] && data[index].capacityMaxDay)
+          Vue.set(o, 'capacityMaxYear', data[index] && data[index].capacityMaxDay)
+          return o
+        })
+      }
+      
+    }
   },
   data() {
     return {
       dataList: [],
       spanArr: [],
-      dataZH: [
-        {
-
-          name: '目前产能',
-        },
-        {
-          name: '目前产能',
-        }
-      ],
       dataEN: [
         {
           gid: 1,
@@ -134,18 +146,11 @@ export default {
           name: 'Interim Measure'
         }
       ],
-      dic: {
-        en: {
-          CAP_CAPACITY: 'Capacity',
-          HTKEY: 'current'
-
-        }
-      }
     }
   },
   methods: {
     init() {
-      this.dataList = this.lang === 'en' ? this.dataEN : this.dataZH
+      this.dataList = this.dataEN
       this.spanArr = this.rowspan(this.dataList)
     },
     rowspan(dataList = [], groupKey = 'gid') {
@@ -276,6 +281,16 @@ export default {
       &:last-child {
         border-bottom: 0px;
       }
+    }
+  }
+  .auoCol {
+    display: flex;
+    align-content: space-between;
+    justify-content: center;
+    position: relative;
+    &>div {
+      width: 50%;
+      text-align: center;
     }
   }
 }

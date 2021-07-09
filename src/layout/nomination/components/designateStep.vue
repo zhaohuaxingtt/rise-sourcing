@@ -154,7 +154,7 @@ export default {
                 if (res?.result) {
                     const apply = []
                     for (let keys in res.data) {
-                        apply.push({id:keys,name:res.data[keys]})
+                        apply.push({id:res.data[keys].code,name:res.data[keys].desc})
                     }
                     this.applyType = apply
                 } else {
