@@ -213,7 +213,8 @@ export default {
             this.searchParams = {
                 show:'true',
                 loiStatus:'',
-            }
+            };
+            this.getList();
         },
         
         handleSelectionChange(val) {
