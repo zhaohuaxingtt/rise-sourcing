@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-25 10:09:50
- * @LastEditTime: 2021-07-07 17:42:20
+ * @LastEditTime: 2021-07-09 10:17:32
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsrfq\editordetail\index.vue
@@ -30,7 +30,7 @@
         <iButton @click="updateRfqStatus('03')" v-permission="PARTSRFQ_EDITORDETAIL_TRANSFERNEGOTIATION">
           {{ language('LK_ZHUANTANPAN','转谈判') }}
         </iButton>
-        <iButton v-permission="PARTSRFQ_EDITORDETAIL_CREATEAPPLICATION" :loading="createDesignateLoading" @click="nominateTypeDialogVisible = true">
+        <iButton v-permission="PARTSRFQ_EDITORDETAIL_CREATEAPPLICATION" :loading="createDesignateLoading" @click="createDesignate">
           {{ language('LK_CHUANGJIANDINGDIANSHENQING','创建定点申请') }}
         </iButton>
         <iButton @click="backPage">{{ language('LK_FANHUI','返回') }}</iButton>
@@ -378,12 +378,11 @@ export default {
     // eslint-disable-next-line no-undef
     moment,
     // 创建定点申请
-    createDesignate(nominateProcessType) {
-      this.nominateTypeDialogVisible = false
+    createDesignate() {
+      // this.nominateTypeDialogVisible = false
       this.createDesignateLoading = true
 
       selectRfq({
-        nominateProcessType,
         rfqIdArr: [ this.$route.query.id ]
       })
       .then(res => {
@@ -394,8 +393,8 @@ export default {
           this.$router.push({
             path: "/designate/rfqdetail", 
             query: {
-              desinateId: res.data, 
-              designateType: nominateProcessType
+              desinateId: res.data.nominateId, 
+              designateType: res.data.nominateProcessType
             }
           })
         } else {
