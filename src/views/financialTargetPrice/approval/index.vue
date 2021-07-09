@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-06-22 09:12:02
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-01 18:44:28
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-07-09 14:25:12
  * @Description: 财务目标价-目标价审批
  * @FilePath: \front-web\src\views\financialTargetPrice\approval\index.vue
 -->
@@ -17,7 +17,7 @@
       <el-form>
         <el-form-item v-for="(item, index) in searchList" :key="index" :label="language(item.i18n_label,item.label)">
           <iSelect v-if="item.type === 'select'" v-model="searchParams[item.value]">
-            <el-option value="" :label="$t('all')"></el-option>
+            <el-option value="" :label="language('all','全部')"></el-option>
             <el-option
               v-for="item in selectOptions[item.selectOption] || []"
               :key="item.code"

@@ -1,15 +1,15 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-27 00:41:04
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-03 11:29:08
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-07-09 14:04:47
  * @Description: 审批流弹窗
  * @FilePath: \front-web\src\views\designate\approvalPersonAndRecord\approvalFlow.vue
 -->
 
 <template>
   <iDialog 
-    title="审批流"
+    :title="language('LK_SHENPILIU','审批流')"
     :visible.sync="dialogVisible"
     @close="clearDialog"
     width="678px"
@@ -39,15 +39,15 @@
               </div>
             </div>
             <div v-if="item.status === '以拒绝'" class="margin-bottom30">
-              <div class="refuse"> 拒绝原因：{{item.refuseReason}}</div>
+              <div class="refuse"> {{language('LK_JUJUEYUANYIN','拒绝原因')}}：{{item.refuseReason}}</div>
               <div class="margin-bottom10 margin-top15 clearFloat">
-                <span class="refuse">解释内容</span>
+                <span class="refuse">{{language('LK_JIESHINEIRONG','解释内容')}}</span>
                 <div class="floatright">
-                  <iButton class="flow-btn">提交</iButton>
-                  <iButton class="flow-btn">保存</iButton>
+                  <iButton class="flow-btn">{{language('LK_TIJIAO','提交')}}</iButton>
+                  <iButton class="flow-btn">{{language('LK_BAOCUN','保存')}}</iButton>
                 </div>
               </div>
-              <iInput placeholder="请输入解释内容" type="textarea" :row="2" resize="none"></iInput>
+              <iInput :placeholder="language('LK_QINGSHURUJIESHINEIRONG','请输入解释内容')" type="textarea" :row="2" resize="none"></iInput>
             </div>
           </template>
         </el-step>
