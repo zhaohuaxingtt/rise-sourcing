@@ -38,6 +38,7 @@
               v-model="form['moldStatus']"
               filterable
               ref=""
+              clearable
           >
             <el-option
                 :value="item.moldStatus"
@@ -55,6 +56,7 @@
               v-model="form['locationFactoryId']"
               filterable
               ref=""
+              clearable
           >
             <el-option
                 :value="item.locationFactoryId"
@@ -94,6 +96,7 @@ import {
   iInput,
   iSelect,
 } from "rise";
+import { cloneDeep } from 'lodash';
 
 export default {
   components: {
@@ -105,7 +108,7 @@ export default {
   data(){
     return {
       loadingiSearch: false,
-      form: detailsForm,
+      form:  cloneDeep(detailsForm),
       addCarTypeProject: '',
       iDialogAddCarTypeProject: false,
       fromGroup: [],
