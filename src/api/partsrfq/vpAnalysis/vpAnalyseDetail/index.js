@@ -33,3 +33,21 @@ export function addVpReports(params) {
     data: params
   })
 }
+
+//Volume Pricing保存或者更新方案
+export function saveOrUpdateScheme(params) {
+  return request({
+    url: '/vpAnalysisScheme/saveOrUpdateScheme',
+    method: 'POST',
+    data: params
+  })
+}
+
+//零件信息--自定义列表删除
+export function deletePartsCustomerList(params) {
+  return request({
+    url: '/vpParts/partsCustomerList',
+    method: 'DELETE',
+    data: params
+  })
+}

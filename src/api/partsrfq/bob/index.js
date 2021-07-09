@@ -6,9 +6,11 @@
  */
 
 import axios from '@/utils/axios'
+import axiosDownLoad from '@/utils/axios.download'
 import store from "@/store";
 
 const requst = axios(process.env.VUE_APP_AON)
+const request = axiosDownLoad(process.env.VUE_APP_AON)
 
 export function getBobLevelOne(parmars) {
     return requst({
@@ -33,4 +35,40 @@ export function addBobOut(parmars) {
         data: parmars
     })
 }
+//费用详情查询
+export function chargeRetrieve(parmars) {
+    return requst({
+        url: '/bobRoundDetail/chargeRetrieve',
+        method: 'POST',
+        data: parmars
+    })
+}
+//费用详情下载
+export function down(params) {
+    return request({
+        url: '/bobRoundDetail/down',
+        method: 'GET',
+        params
+    })
+}
 
+
+// 获取RFQ备注信息
+export function getRfqToRemark(params) {
+    return requst({
+        url: `/rfqToRemarkEntity/getRfqToRemark` ,
+        method: 'GET',
+        params
+        // data:params
+    })
+  }
+  // 修改RFQ备注信息
+  export function modifyRfqToRemark(params) {
+    return requst({
+        url: `/rfqToRemarkEntity/modifyRfqToRemark` ,
+        method: 'POST',
+        data:params
+    })
+  }
+  
+  

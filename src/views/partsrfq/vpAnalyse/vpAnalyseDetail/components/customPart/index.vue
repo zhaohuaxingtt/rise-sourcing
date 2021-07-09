@@ -1,14 +1,14 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-06-18 16:03:35
- * @LastEditTime: 2021-06-25 14:23:36
+ * @LastEditTime: 2021-07-02 16:55:34
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\vpAnalyse\vpAnalyseDetail\components\customPart\index.vue
 -->
 <template>
   <div>
-    <iDialog :title="$t('LK_CUSTOM_TITLE')" :visible.sync="visible" width="70%">
+    <iDialog :title="$t('TPZS.LK_CUSTOM_TITLE')" :visible.sync="visible" width="70%">
       <div style="text-align: right" v-if="!addMode">
         <iButton @click="del">{{$t('delete')}}</iButton>
         <iButton @click="add">{{$t('LK_XINZENG')}}</iButton>
@@ -29,8 +29,15 @@
         >
           <template #partsId="scope">
             <div v-if="addMode && scope.row.index === tableListData.length - 1">
-              <iSelect v-model="scope.row.partsId" filterable @change="changePartNum">
-                <el-option v-for="(item, index) in partNumData" :key="index" :value='item.partsId' :label='item.partsId'></el-option>
+              <iSelect 
+                v-model="scope.row.partsId" 
+                filterable 
+                remote
+                :placeholder="$t('TPZS.SEARCH_PART')"
+                :remote-method="remoteMethod"
+                :loading="remoteLoading"
+                @change="changePartNum">
+                <el-option  v-for="(item, index) in partNumData" :key="index" :value='item.partsId' :label='item.partsId'></el-option>
               </iSelect>
             </div>
             <div v-else>
@@ -45,7 +52,7 @@
               <icon symbol name="iconyincang" class="statusIcon" v-if="!scope.row.isShow" />
             </div>
           </template>
-          <template #sort="scope">
+          <template #sort="scope" v-if="!addMode">
             <span @click="clickMoveDown(scope.row)">
               <icon symbol name="iconpaixu-xiangxia" v-if="checkShowSortIcon(scope.row.index, 'ptdown')" class="sortIcon" />
             </span> 
@@ -55,6 +62,7 @@
             </span>
               <icon symbol name="iconpaixu-xiangshangjinzhi" v-if="checkShowSortIcon(scope.row.index, 'jztop')" class="sortIcon"/>
           </template>
+          <template #sort="scope" v-else></template>
         </tableList>
       </div>
     </iDialog>
@@ -66,15 +74,11 @@ import {iDialog, iButton, icon, iSelect} from 'rise'
 import {iMessage} from '@/components';
 import tableList from '@/components/ws3/commonTable';
 import {tableTitle} from './components/data';
-import {getCustomPartDataList, fetchSaveCustomPart} from '@/api/partsrfq/vpAnalysis/vpCustomPart'
+import {getCustomPartDataList, fetchSaveCustomPart, getCustomPartListByPartId} from '@/api/partsrfq/vpAnalysis/vpCustomPart'
 export default {
   name: 'CustomPart',
   components: {iDialog, iButton, icon, iSelect, tableList},
   props: {
-    batchNumber: {
-      type: Number,
-      default: 1
-    },
     partList: {
       type: Array,
       default: () => []
@@ -93,19 +97,24 @@ export default {
       addMode: false,
       partNumData: [],
       insertPartData: null,
+      remoteLoading: false
     }
   },
   created() {
+    // this.initTestPartNumData()
+    // this.initTestTableData()
     this.initTableData()
     this.initInsertPartData()
-    this.initTestPartNumData()
-    // this.initTestTableData()
-
+  },
+  computed: {
+    batchNumber() {
+      return (this.partList ? this.partList.find(item => item.batchNumber) : null).batchNumber
+    }
   },
   methods: {
     // 初始化添加零件号数据
     initInsertPartData() {
-      this.insertPartData = {partsId: null, carProject: '选择后自动带出', carType: '选择后自动带出', factory: '选择后自动带出', supplier: '选择后自动带出', isShow: true}
+      this.insertPartData = {partsId: null, carTypeProj: '选择后自动带出', carType: '选择后自动带出', procureFactory: '选择后自动带出', supplierName: '选择后自动带出', isShow: true}
     },
     // 初始化测试表格数据
     initTestTableData() {
@@ -158,46 +167,34 @@ export default {
         switch (code) {
           case 'ptdown':
             return true
-            break;
           case 'jzdown':
             return false
-            break;
           case 'pttop':
             return false
-            break;
           case 'jztop':
             return true
-            break;
         }
       } else if(index == this.tableListData.length - 1) {
         switch (code) {
           case 'ptdown':
             return false
-            break;
           case 'jzdown':
             return true
-            break;
           case 'pttop':
             return true
-            break;
           case 'jztop':
             return false
-            break;
         }
       } else {
         switch (code) {
           case 'ptdown':
             return true
-            break;
           case 'jzdown':
             return false
-            break;
           case 'pttop':
             return true
-            break;
           case 'jztop':
             return false
-            break;
         }
       }
     },
@@ -238,22 +235,38 @@ export default {
       this.addMode = true
       this.tableListData.push(this.insertPartData)
     },
+    // 新增时，根据输入零件号检索
+    remoteMethod(val) {
+      if(val.length < 3) {
+        return 
+      }
+      this.remoteLoading = true
+      getCustomPartListByPartId(val).then(res => {
+        this.remoteLoading = false
+        if(res && res.code == 200) {
+          this.partNumData = res.data
+        } else {
+          iMessage.error(res.desZh)
+        }
+      })
+    },
     // 新增时，改变选中零件编号
     changePartNum(val) {
       const data = this.partNumData.find(item => item.partsId == val)
-      this.tableListData[this.tableListData.length - 1] = JSON.parse(JSON.stringify(data))
-      this.insertPartData = JSON.parse(JSON.stringify(data))
+      this.tableListData.replace(this.tableListData.length - 1, this.tableListData.length, window._.cloneDeep(data))
+      this.insertPartData = window._.cloneDeep(data)
     },
     // 取消添加
     cancelAdd() {
       this.addMode = false
       this.tableListData.splice(this.tableListData.length - 1, this.tableListData.length)
+      this.initInsertPartData()
     },
     // 保存添加
     saveAdd() {
       // 此处需要校验零件号是否重复，还要校验零件号是否为空
       if(!this.insertPartData.partsId) {
-        iMessage.error('零件号不能为空')
+        iMessage.error(this.$t('PART_REQUIRE_MESSAGE'))
         return
       }
       let count = 0
@@ -261,18 +274,17 @@ export default {
         if(item.partsId == this.insertPartData.partsId) count++
       })
       if(count > 1) {
-        iMessage.error('零件号不能重复')
+        iMessage.error(this.$t('PART_UNIQUE_MESSAGE'))
         return
       }
       const maxSortObj = window._.maxBy(this.tableListData, function(o) { return o.sort; });
       const endObj = this.tableListData[this.tableListData.length - 1]
       endObj['sort'] = maxSortObj.sort + 1
-      console.log('tableListData', this.tableListData);
       this.addMode = false
+      this.initInsertPartData()
     },
     // 点击重置按钮
     reset() {
-      console.log('backupsTableData', this.backupsTableData);
       this.tableListData = JSON.parse(JSON.stringify(this.backupsTableData))
     },
     // 点击保存按钮
@@ -285,6 +297,7 @@ export default {
         if(res && res.code == 200) {
           iMessage.success(res.desZh)
           this.initTableData()
+          this.$emit('saveCustomPart')
         }
       })
     }

@@ -7,7 +7,7 @@
  */
 import axios from '@/utils/axios'
 
-const requst = axios(process.env.VUE_APP_AON)
+const requst = axios(process.env.VUE_APP_AON,600000)
 
 export function totalBobOverview(parmars) {
   return requst({
@@ -30,6 +30,15 @@ export function totalVolumePricingOverview(parmars) {
 export function totalOverview(parmars) {
   return requst({
     url: '/batchOverview/totalOverview',
+    method: 'POST',
+    data: {
+      ...parmars
+    }
+  })
+}
+export function pageRfqBaseInfo(parmars) {
+  return requst({
+    url: '/costAnalysisTool/rfq/pageRfqBaseInfo',
     method: 'POST',
     data: {
       ...parmars

@@ -8,7 +8,7 @@
     <!-- 筛选框 -->
     <div style="clear: both"></div>
     <!-- 搜索区 -->
-    <search @search="getFetchData" :carTypeList="carTypeList" />
+    <search @search="getFetchData" :carTypeList="carTypeList" ref="search" />
     <!-- 表格 -->
     <iCard class="designateTable">
       <div class="margin-bottom20 clearFloat">
@@ -87,7 +87,7 @@
 </template>
 
 <script>
-import { tableTitle } from '../components/data'
+import { tableTitle } from './components/data'
 import search from './components/search'
 import tablelist from "@/views/designate/supplier/components/tableList";
 import {
@@ -140,7 +140,8 @@ export default {
     tablelist
   },
   mounted() {
-    this.getFetchData()
+    const params = this.$refs.search.form || {}
+    this.getFetchData(params)
     // 获取车型项目
     this.getCarTypePro()
   },
@@ -206,5 +207,24 @@ export default {
 <style lang="scss" scoped>
 .designateSearch {
   margin-top: 20px;
+  box-shadow: none;
+  ::v-deep.iSearch-content {
+    position: relative;
+    overflow: visible;
+    &:after {
+      content: '';
+      width: 100%;
+      height: 0px;
+      display: block;
+      border-bottom: 1px dashed #e1e1e1;
+      position: absolute;
+      left: 0px;
+      bottom: -30px
+    }
+  }
+  
+}
+.designateTable {
+  box-shadow: none;
 }
 </style>

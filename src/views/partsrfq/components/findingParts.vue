@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-17 11:40:10
- * @LastEditTime: 2021-06-30 11:01:25
+ * @LastEditTime: 2021-07-01 17:25:38
  * @LastEditors: Please set LastEditors
  * @Description: 查找零件弹窗
  * @FilePath: \front-web\src\views\partsrfq\components\findingPart.vue
@@ -52,6 +52,7 @@
 <script>
 import { iButton, iDialog, iSearch, iSelect, iInput } from "@/components";
 import { confirmTableHead } from "./data";
+import emitter from '@/utils/emitter.js'
 import {
   pagePart,
   category,
@@ -59,6 +60,7 @@ import {
 import tableList from "@/views/partsrfq/reportList/components/tableList";
 export default {
   name: "findingParts",
+  
   components: {
     iButton,
     iDialog,
@@ -67,7 +69,7 @@ export default {
     iInput,
     tableList,
   },
-
+  mixins:[emitter],
   props: {
     title: { type: String, default: "LK_SHANGCHUAN" },
     value: { type: Boolean },
@@ -95,12 +97,12 @@ export default {
   },
   created() {
     this.pagePart();
+    this.dispatch('parentCom','event',"222")
     // this.category();
   },
   methods: {
     async pagePart() {
       let res= await category({});
-      console.log(res)
       this.optionList=res.data
       pagePart(this.form)
         .then((res) => {
@@ -109,25 +111,24 @@ export default {
             this.confirmTableData.forEach((value, index) => {
               value.index = index + 1;
             });
-            console.log(this.confirmTableData);
+           
           }
         })
         .catch((e) => {});
     },
-
+    
     clearDiolog() {
-      console.log(111);
+
       this.$emit("close", false);
     },
     submit() {
-      console.log(111);
+
       this.$emit("submit");
     },
     sure() {
       this.pagePart();
     },
     handleSelectionChange(val){
-      console.log(val)
       this.colData=val
     },
     reset() {

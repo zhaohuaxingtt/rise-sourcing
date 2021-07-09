@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-22 14:14:49
- * @LastEditTime: 2021-07-02 17:52:28
+ * @LastEditTime: 2021-07-06 11:50:18
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\supplierscore\index.vue
@@ -319,10 +319,7 @@ export default {
     findBySearches() {
       findBySearches("01")
       .then(res => {
-        console.log("n,b")
         if (res.code == 200) {
-          console.log("res", res)
-
           this.carTypeProjectOptions = 
             Array.isArray(res.data) ?
             res.data.map(item => ({
@@ -392,7 +389,7 @@ export default {
         if (res.code == 200) {
           iMessage.success(message)
           this.forwardDialogVisible = false
-          this.getRfqBdlRatingsByCurrentDept()
+          this.searchRfqBdlRatings()
         } else {
           iMessage.error(message)
         }

@@ -838,6 +838,8 @@
         'LK_SHENQINGREN': '申请人',//申请人
         'LK_SHENQINGSHIJIANQIZHI': '申请时间起止',//申请时间起止
         'LK_PIZHUAN': '批准',//批准
+        'LK_SHENQINGSHIJIANQI': '申请时间起',
+        'LK_SHENQINGSHIJIANZHI': '申请时间止',
 
         'LK_CHEXINGXIANGMUGAILAN': '车型项目概览',//车型项目概览
         'LK_YUSUANGUANLI': '预算管理',//预算管理
@@ -1031,8 +1033,8 @@
         'LK_BAOCUNWEIZUIXINBANBEN': '保存为最新版本',  //  保存为最新版本
         'LK_SHUAXIN': '刷新',   //  刷新
         'LK_SHUAXINRIQI': '刷新日期',   //  刷新日期
-        'LK_SHANGBANNIANSOPFUKUANDUIBI': '上半年SOP付款⽐',   //  上半年SOP付款⽐
-        'LK_XIABANNIANSOPFUKUANDUIBI': '下半年SOP付款⽐',   //  下半年SOP付款⽐
+        'LK_SHANGBANNIANSOPFUKUANDUIBI': '上半年SOP付款比',   //  上半年SOP付款⽐
+        'LK_XIABANNIANSOPFUKUANDUIBI': '下半年SOP付款比',   //  下半年SOP付款⽐
         'LK_SOPSHIJIAN': 'SOP时间', //  SOP时间
         'LK_YUSUANJINE': '预算⾦额',    //  预算⾦额
         'LK_BMJINE': 'BM金额',  //  BM金额
@@ -1351,7 +1353,42 @@
             'SSJG':"搜索结果",//搜索结果
             'JHCLDQSJCLSOP':"计划产量、当前实际产量、SOP时间所展示信息均为该零件号在该⻋型最近⼀次定点的批量供货时间起点所对应的信息。",//计划产量、当前实际产量、SOP时间所展示信息均为该零件号在该⻋型最近⼀次定点的批量供货时间起点所对应的信息。
             'QXZYTSJ':"请选择一条数据",//请选择一条数据
-            'QUXIAN': '曲线'
+
+            'BQYXLJMYSJQZQLLJZTJZYXLJ':"抱歉，已选零件没有数据，请在全量零件中添加至已选零件",//抱歉，已选零件没有数据，请在全量零件中添加至已选零件
+            'QUXIAN': '曲线', //曲线
+            'GHQSSJ': '供货起始时间', //供货起始时间
+            'LCSJ': '量产时间', //量产时间
+            'JHLCDCL': '计划量产达成率', //计划量产达成率
+            'GHJSSJ': '供货结束时间', //供货结束时间
+            'JHCLJZSYM': '计划产量（截至上月末）', //计划产量（截至上月末）
+            'SJLJCL': '实际累计产量（截至上月末）', //实际累计产量（截至上月末）
+            'VPJFQL': 'Volume Pricing降幅潜力', //Volume Pricing降幅潜力
+            'JBDJ': '降本单价', //降本单价
+            'YUAN': '元', //元
+            'JHZCL': '计划总产量', //计划总产量
+            'YJZCL': '预计总产量', //预计总产量
+            'YSXEWJJ': '已实现额外降价', //已实现额外降价
+            'SCHEME_TYPE': '方案',  //方案类型
+            'REPORT_TYPE': '报告',  //报告类型
+            'LK_CREATE': '新建',    //新建
+            'LK_CUSTOM_TITLE': '自定义', //自定义
+            'SHOWORHIDE': '显示/隐藏',  //显示/隐藏
+            'SORT': '排序',   //排序
+            'SEARCH_PART': '请搜索零件号', //请搜索零件号
+            'PART_REQUIRE_MESSAGE': '零件号不能为空',//零件号不能为空
+            'PART_UNIQUE_MESSAGE': '零件号不能重复', //零件号不能重复
+            'YXLJZDZNTJYBT': '已选零件最多只能添加100条', //已选零件最多只能添加100条
+            'ZUIXINDINGDIANDANJIA': '最新定点单价', //最新定点单价
+            'MUBIAODANJIA': '目标单价', //目标单价
+            'CHANLIANGLIANG': '产量（辆）', //产量（辆）
+            'DANJIA': '单价', //单价
+            'YUANJIAN': '（元/件）', //（元/件）
+            'BAOGAO': '报告', //报告
+            'JIHUAZHONGCHANLIANG': '计划总产量', //计划总产量
+            'YUJIZONGCHANLIANG': '预计总产量', //预计总产量
+            'GUDINGCHENGBEN': '固定成本', //固定成本
+            'ZONGJIANGJIA': '总降价', //总降价
+            'JIANGJIA': '降价', //降价
         },
     }
     var xmlHttp = ''

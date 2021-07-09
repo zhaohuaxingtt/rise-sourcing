@@ -1,11 +1,11 @@
 <template>
   <iCard v-if="display" class="unconfirmed">
     <div class="header clearFloat">
-      <span class="title">{{ $t('LK_DAIQUERENBANBEN') }}</span>
+      <span class="title">{{ language('LK_DAIQUERENBANBEN','待确认版本') }}</span>
       <div class="control">
-        <iButton @click="confirm" :loading="confirmLoading" v-permission="PARTSIGN_EDITORDETAIL_ENQUIRY_UNCONFIRMED_CONFIRM">{{ $t('LK_QUEREN') }}</iButton>
-        <iButton @click="reject" v-permission="PARTSIGN_EDITORDETAIL_ENQUIRY_UNCONFIRMED_REFUSE">{{ $t('LK_JUJUE') }}</iButton>
-        <iButton @click="download" v-permission="PARTSIGN_EDITORDETAIL_ENQUIRY_UNCONFIRMED_DOWNLOAD" :loading="downLoading">{{ $t('LK_XIAZAI') }}</iButton>
+        <iButton @click="confirm" :loading="confirmLoading" v-permission="PARTSIGN_EDITORDETAIL_ENQUIRY_UNCONFIRMED_CONFIRM">{{ language('LK_QUEREN','确认') }}</iButton>
+        <iButton @click="reject" v-permission="PARTSIGN_EDITORDETAIL_ENQUIRY_UNCONFIRMED_REFUSE">{{ language('LK_JUJUE','拒绝') }}</iButton>
+        <iButton @click="download" v-permission="PARTSIGN_EDITORDETAIL_ENQUIRY_UNCONFIRMED_DOWNLOAD" :loading="downLoading">{{ language('LK_XIAZAI','下载') }}</iButton>
       </div>
     </div>
     <div class="body margin-top27">
@@ -30,7 +30,7 @@
         :layout="page.layout"
         :total="page.totalCount" />
     </div>
-    <backItems class="backItems" v-model="visible" :title="$t('LK_JUJUE')" @sure="refuseSure" :repeatClick="rejectLoading" />
+    <backItems class="backItems" v-model="visible" :title="language('LK_JUJUE','拒绝')" @sure="refuseSure" :repeatClick="rejectLoading" />
     <enquiryDialog :visible.sync="enquiryVisible" :params="params" />
   </iCard>
 </template>
@@ -104,7 +104,7 @@ export default {
       this.multipleSelection = list
     },
     confirm() {
-      if (this.multipleSelection.length !== 1) return iMessage.warn(this.$t('LK_QINGXUANZHEYITIAOXUYAOQUEREDEBANBEN'))
+      if (this.multipleSelection.length !== 1) return iMessage.warn(this.language('LK_QINGXUANZHEYITIAOXUYAOQUEREDEBANBEN','请选择一条需要确认的版本'))
       const data = this.multipleSelection[0]
       this.confirmLoading = true
       patchAttachmentVersion({
@@ -114,7 +114,7 @@ export default {
       })
         .then(res => {
           if(res.code == 200){
-            iMessage.success(this.$t('LK_CAOZUOCHENGGONG'))
+            iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'))
             this.confirmLoading = false
             this.$emit('updateVersion')
             this.multipleSelection = []
@@ -127,7 +127,7 @@ export default {
         .catch(() => this.confirmLoading = false)
     },
     reject() {
-      if (this.multipleSelection.length !== 1) return iMessage.warn(this.$t('LK_QINGXUANZHEYITIAOXUYAOQUEREDEBANBEN'))
+      if (this.multipleSelection.length !== 1) return iMessage.warn(this.language('LK_QINGXUANZHEYITIAOXUYAOQUEREDEBANBEN','请选择一条需要确认的版本'))
 
       this.visible = true
     },
@@ -143,7 +143,7 @@ export default {
       })
         .then(res => {
           if(res.code == 200){
-            iMessage.success(this.$t('LK_CAOZUOCHENGGONG'))
+            iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'))
             this.$emit('updateVersion')
             this.visible = false
             this.multipleSelection = []
@@ -155,7 +155,7 @@ export default {
         .catch(() => this.rejectLoading = false)
     },
     async download() {
-      if (this.multipleSelection.length !== 1) return iMessage.warn(this.$t('LK_QINGXUANZHEYIGEXUYAOXIAZAIBANBEN'))
+      if (this.multipleSelection.length !== 1) return iMessage.warn(this.language('LK_QINGXUANZHEYIGEXUYAOXIAZAIBANBEN','请选择一个需要下载的版本'))
       const data = this.multipleSelection[0]
       
       this.downLoading = true
@@ -176,7 +176,7 @@ export default {
         const list = infoRes.data.attachmentVOS.tpRecordList
         if (list.length == 0) {
           this.downLoading = false
-          return iMessage.error(this.$t('LK_SUOXUANBANBENWUFUJIAN'))
+          return iMessage.error(this.language('LK_SUOXUANBANBENWUFUJIAN','所选版本无附件'))
         }
 
         await downloadFile({
@@ -186,7 +186,7 @@ export default {
 
         this.downLoading = false
       } else {
-        iMessage.error(this.$t('LK_SUOXUANBANBENWUFUJIAN'))
+        iMessage.error(this.language('LK_SUOXUANBANBENWUFUJIAN','所选版本无附件'))
         this.downLoading = false
       }
     },

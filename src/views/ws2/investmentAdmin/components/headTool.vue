@@ -18,7 +18,7 @@
           ></el-option>
         </iSelect>
       </div>
-      <div class="refresh" @click="refresh">
+      <div class="refresh" @click="refresh" v-if="listDetail.editFlag">
         <icon symbol name="iconmojukanbanshuaxin" class="refresh-icon"></icon>
         {{ $t('LK_SHUAXIN') }}<!-- 刷新 -->
       </div>
@@ -55,6 +55,10 @@ import _ from 'lodash'
 export default {
   props: {
     refreshStatus: Boolean,
+    newVersionNum: {
+      type: String,
+      default: ''
+    }
   },
   components: {
     iSelect, icon
@@ -70,6 +74,10 @@ export default {
   watch: {
     refreshStatus(){
       this.getVersionList();
+    },
+
+    newVersionNum(a, b){
+      this.getVersionList(a);
     }
   },
 
@@ -87,18 +95,20 @@ export default {
     },
 
     //  获取版本号
-    getVersionList(){
+    getVersionList(newversion=''){
       queryPlanVersionList().then(res => {
         const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn;
 
         if(res.code === "0"){
           const versionId = store.state.investmentAdmin.versionId;
-          const vereceive = _.cloneDeep(res.data[0]);
-          const id = versionId === '' ? vereceive.id : versionId;
+          let vereceive = versionId === '' ? res.data.filter(item => item.defaultSelected)[0] : res.data.filter(item => item.id === versionId)[0];
           this.editionList = res.data;
+          
+          if(newversion !== ''){
+            vereceive = res.data.filter(item => item.version === newversion)[0];
+          }
           this.listDetail = vereceive;
-          this.versionId = id;
-          vereceive.id = id;
+          this.versionId = vereceive.id;
           this.$emit('receiVereceive', vereceive);
         }else{
           iMessage.error(result);
@@ -109,6 +119,7 @@ export default {
     //  刷新
     refresh(){
       this.$emit('refresh');
+      this.getVersionList();
     }
   }
 }
@@ -120,7 +131,7 @@ export default {
   justify-content: space-between;
 
   .iSelect1{
-    width: 120px;
+    width: 150px;
   }
 
   .date{

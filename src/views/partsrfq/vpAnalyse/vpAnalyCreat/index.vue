@@ -9,12 +9,12 @@
   <iPage>
     <div class="header">{{$t('TPZS.VPFX')}}{{!!$route.query.rfqId?'-'+$route.query.rfqId:''}}
       <div>
-        <iButton>{{$t('TPZS.VPFXK')}}</iButton>
+        <iButton @click="handleAnalysis">{{$t('TPZS.VPFXK')}}</iButton>
         <icon class="icon-x" name='icondatabaseweixuanzhong' symbol></icon>
       </div>
     </div>
-    <el-row type="flex" justify="space-between" class="margin-top25">
-      <el-col class="margin-right20" :span="12">
+    <el-row :gutter="16" type="flex" justify="space-between" class="margin-top25">
+      <el-col :span="12">
         <carVolumeAnalysis @handleCurrentChange="handleCurrentChange" />
       </el-col>
       <el-col :span="12">
@@ -47,8 +47,10 @@ export default {
   methods: {
     handleCurrentChange(data) {
       this.$refs.partsTable.getTableList(data)
+    },
+    handleAnalysis() {
+      this.$router.push({ path: '/sourcing/partsrfq/assistant', query: { id: this.$route.query.rfqId, round: this.$route.query.round } })
     }
-
   },
   // 生命周期 - 创建完成（可以访问当前this实例）
   created() {

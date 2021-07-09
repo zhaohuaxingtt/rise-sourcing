@@ -2,11 +2,11 @@
  * @version: 1.0
  * @Author: zbin
  * @Date: 2021-06-21 16:12:47
- * @LastEditors: Please set LastEditors
+ * @LastEditors: zbin
  * @Descripttion: your project
 -->
 <template>
-  <iCard style="height:870px" :title="$t('TPZS.CXJHCLYXSLJCLFX')">
+  <iCard style="min-height:870px" :title="$t('TPZS.CXJHCLYXSLJCLFX')">
     <template slot="header-control">
       <div class="header">
         <div class="flex-between-center-center margin-right40">
@@ -81,7 +81,8 @@ export default {
       this.tableLoading = true;
       try {
         const req = {
-
+          rfqId: this.$route.query.rfqId,
+          userId: this.$store.state.permission.userInfo.id
         };
         const res = await getCarModelProjectList(req);
         if (res.result) {

@@ -12,7 +12,7 @@
     v-bind="$props"
     v-on="$listeners"
     :title="language('XUANZEBUMENBIANHAO', '选择部门编号')"
-    :visible.sync="visible">
+    :visible.sync="status">
     <div class="body">
       <div class="form">
         <el-form>
@@ -100,6 +100,7 @@
           index
           singleSelect
           :lang="true"
+          :cellClassName="cellClass"
           :tableData="tableListData"
           :tableTitle="tableTitle"
           :tableLoading="loading"
@@ -126,10 +127,14 @@ export default {
     visible: {
       type: Boolean,
       default: false,
+    },
+    filterDeptNums: {
+      type: Array,
+      default: () => ([])
     }
   },
   watch: {
-    visible(nv) {
+    status(nv) {
       if (nv) { 
         // 请求
         this.getAllDept()
@@ -137,9 +142,17 @@ export default {
         this.form = cloneDeep(queryForm)
         this.tableListData = []
       }
-
-      this.$emit("update:visible", nv)
     },
+  },
+  computed: {
+    status: {
+      get() {
+        return this.visible
+      },
+      set(value) {
+        this.$emit("update:visible", value)
+      }
+    }
   },
   data() {
     return {
@@ -170,9 +183,9 @@ export default {
             this.nameZhOptions = []
             this.nameEnOptions = []
             this.tableListData.forEach(item => {
-              this.deptNumOptions.push({ key: item.deptNum, label: item.deptNum, value: item.deptNum })
-              this.nameZhOptions.push({ key: item.nameZh, label: item.nameZh, value: item.nameZh })
-              this.nameEnOptions.push({ key: item.nameEn, label: item.nameEn, value: item.nameEn })
+              item.deptNum && this.deptNumOptions.push({ key: item.deptNum, label: item.deptNum, value: item.deptNum })
+              item.nameZh && this.nameZhOptions.push({ key: item.nameZh, label: item.nameZh, value: item.nameZh })
+              item.nameEn && this.nameEnOptions.push({ key: item.nameEn, label: item.nameEn, value: item.nameEn })
             })
           }
         } else {
@@ -200,7 +213,12 @@ export default {
       if (!this.selectRow) return iMessage.warn(this.language("QINGXUANZEYIGEBUMENBIANHAO", "请选择一个部门编号" ))
 
       this.$emit("confrim", cloneDeep(this.selectRow))
-      this.visible = false
+      this.status = false
+    },
+    cellClass(rowInfo) {
+      if (this.filterDeptNums.indexOf(rowInfo.row.deptNum) > -1) {
+        return "hideCheckbox"
+      }
     }
   }
 };
@@ -239,7 +257,7 @@ export default {
     }
 
     .el-dialog__body {
-      @include pdtb(6px, 0);
+      @include pdtb(6px, 28px);
     }
 
     .pagination {

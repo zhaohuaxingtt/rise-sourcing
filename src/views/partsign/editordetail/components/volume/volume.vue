@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-24 17:57:52
- * @LastEditTime: 2021-04-02 18:57:28
+ * @LastEditTime: 2021-07-07 16:30:15
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsign\editordetail\components\volume\index.vue
@@ -9,10 +9,10 @@
 <template>
   <iCard class="volume">
     <div class="header clearFloat">
-      <span class="title">{{ $t('LK_MEICHEYONGLIANG') }}（{{ $t('LK_DANGQIANBANBEN') }} ：{{ version }}）</span>
+      <span class="title">{{ language('LK_MEICHEYONGLIANG','每车用量') }}（{{ language('LK_DANGQIANBANBEN','当前版本') }} ：{{ version }}）</span>
       <div class="control">
-        <iButton @click="jump" v-permission="PARTSIGN_EDITORDETAIL_VOLUME_ALL">{{ $t('LK_CHAKANQUANBUBANBEN') }}</iButton>
-        <iButton @click="download" v-permission="PARTSIGN_EDITORDETAIL_VOLUME_EXPORT">{{ $t('LK_DAOCHU') }}</iButton>
+        <iButton @click="jump" v-permission="PARTSIGN_EDITORDETAIL_VOLUME_ALL">{{ language('LK_CHAKANQUANBUBANBEN','查看全部版本') }}</iButton>
+        <iButton @click="download" v-permission="PARTSIGN_EDITORDETAIL_VOLUME_EXPORT">{{ language('LK_DAOCHU','导出') }}</iButton>
       </div>
     </div>
     <div class="body margin-top27">
@@ -121,7 +121,7 @@ export default {
       this.multipleSelection = list
     },
     download() {
-      if (!this.multipleSelection.length) return iMessage.warn(this.$t('LK_QINGXUANZHEXUYAODAOCHUDEMEINIANYONGCHELIANG'))
+      if (!this.multipleSelection.length) return iMessage.warn(this.language('LK_QINGXUANZHEXUYAODAOCHUDEMEINIANYONGCHELIANG','请选择需要导出的每车用量'))
       excelExport(this.multipleSelection, this.tableTitle)
     }
   }

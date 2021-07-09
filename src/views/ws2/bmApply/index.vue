@@ -220,13 +220,13 @@
               <div class="txt">
                 <span>{{ $t('LK_BUHANSUICHENGBEN') }}</span><!-- 不含税成本 -->
               </div>
-              <div class="disabled">{{getTousandNum(detailObj.bmAmount)}}</div>
+              <div class="disabled">{{getTousandNum(NumFormat(detailObj.bmAmount))}}</div>
             </div>
             <div class="item">
               <div class="txt">
                 <span>{{ $t('LK_HANSUICHENGBEN') }}</span><!-- 含税成本 -->
               </div>
-              <div class="disabled">{{getTousandNum(detailObj.taxCost)}}</div>
+              <div class="disabled">{{getTousandNum(NumFormat(detailObj.taxCost))}}</div>
             </div>
             <div class="item">
               <div class="txt">
@@ -300,6 +300,9 @@
           <template #partsFs="scope">
             <div @click="jumpDetails(scope)" class="table-link">{{scope.row.partsFs}}</div>
           </template>
+          <template #bmAmount="scope">
+            <div>{{getTousandNum(NumFormat(scope.row.bmAmount))}}</div>
+          </template>
         </iTableList>
       </template>
     </BmPopup>
@@ -331,7 +334,7 @@ import AllBmListBlock from "./components/allBmListBlock";
 import ToBeConfirmed from "./components/toBeConfirmed";
 import IncrementBlock from "./components/incrementBlock";
 import ImpairmentBlock from "./components/impairmentBlock";
-import { getTousandNum } from "@/utils/tool";
+import { getTousandNum, NumFormat } from "@/utils/tool";
 import store from '@/store';
 
 
@@ -343,7 +346,7 @@ export default {
   },
   data(){
     return {
-      tableIndex: 1,
+      tableIndex: 0,
       bmPopupTableHead,
       allTableLoading: false,
       aekoTableList: [],  //  aeko增值BM单
@@ -362,6 +365,7 @@ export default {
       refresh: false,
       bmNumber: '',
       getTousandNum,
+      NumFormat,
       fromGroupName: '',
       isCarTypeList: true,
     }
@@ -381,9 +385,11 @@ export default {
 
     jumpDetails(scope){
       const query = {
-        ...scope,
-        partNum: scope.behalfPartsNum
+        ...scope.row,
+        partNum: scope.row.behalfPartsNum,
+        purchasingRequirementId: '279830436628008960',
       }
+      console.log('跳转的参数：', query);
       this.$router.push({
         path: "/sourcing/partsprocure/editordetail",
         query: {
@@ -406,7 +412,7 @@ export default {
         const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn;
 
         if(res.data){
-          this.bmVisible = false;
+          // this.bmVisible = false;
           this.refresh = !this.refresh;
           iMessage.success(result);
         }else{
@@ -454,10 +460,11 @@ export default {
         }
 
         if(res[2].data){
-          this.factoryList = res[2].data.map(item => ({
-            productionFactoryId: item.productionFactoryId,
-            productionFactoryName: `${item.productionFactoryId}-${item.productionFactoryName}`
-          }));
+          this.factoryList = res[2].data;
+          // this.factoryList = res[2].data.map(item => ({
+          //   productionFactoryId: item.productionFactoryId,
+          //   productionFactoryName: `${item.productionFactoryId}-${item.productionFactoryName}`
+          // }));
         }else{
           iMessage.error(result2);
         }
@@ -588,6 +595,9 @@ export default {
         background: #F8F8FA;
         border-radius: 4px;
         text-align: center;
+        overflow: hidden;/*超出部分隐藏*/
+        white-space: nowrap;/*不换行*/
+        text-overflow:ellipsis;/*超出部分文字以...显示*/
       }
 
       .input{

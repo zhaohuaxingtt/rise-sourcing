@@ -1,8 +1,8 @@
 /*
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:50:41
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-07-02 15:50:50
+ * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-07-05 10:37:09
  * @Description: 
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\rs\components\meeting\data.js
  */
@@ -88,7 +88,7 @@ export const sparePartTableTitle = [
   {props:'supplierId',name:'供应商', enName: 'Supplier', key: "", minWidth: 55},
   {props:'prodLocation',name:'产地', enName: 'Prod.Location', key: "", minWidth: 75},
   {props:'share',name:'份额', enName: 'Share(%)', key: "", minWidth: 55},
-  {props:'cfTargetBPrice',name:'财务目标价', enName: 'CF Target Price', key: "", minWidth: 95},
+  {props:'bcfTargetPrice',name:'财务目标价', enName: 'CF Target Price', key: "", minWidth: 95},
   {props:'status',name:'状态', enName: 'Status', key: "", minWidth: 45},
   {props:'bprice',name:'B价', enName: 'B Price', key: "", minWidth: 45},
   {props:'ltcRateOfThree',name:'年降', enName: 'LTC', key: "", minWidth: 35},
@@ -109,7 +109,7 @@ export const accessoryTableTitle = [
   {props:'supplierId',name:'供应商', enName: 'Supplier', key: "", minWidth: 55},
   {props:'prodLocation',name:'产地', enName: 'Prod.Location', key: "", minWidth: 75},
   {props:'share',name:'份额', enName: 'Share(%)', key: "", minWidth: 55},
-  {props:'cfTargetBPrice',name:'财务目标价', enName: 'CF Target Price', key: "", minWidth: 95},
+  {props:'bcfTargetPrice',name:'财务目标价', enName: 'CF Target Price', key: "", minWidth: 95},
   {props:'status',name:'状态', enName: 'Status', key: "", minWidth: 45},
   {props:'bprice',name:'B价', enName: 'B Price', key: "", minWidth: 45},
   {props:'ltcRateOfThree',name:'年降', enName: 'LTC', key: "", minWidth: 35},

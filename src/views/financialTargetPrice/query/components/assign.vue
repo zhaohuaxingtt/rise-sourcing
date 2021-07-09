@@ -2,20 +2,20 @@
  * @Author: Luoshuang
  * @Date: 2021-05-25 16:11:07
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-01 19:05:38
+ * @LastEditTime: 2021-07-05 20:53:13
  * @Description: 分配询价采购员弹窗
  * @FilePath: \front-web\src\views\financialTargetPrice\query\components\assign.vue
 -->
 
 <template>
   <iDialog 
-    :title="language('ZHIPAI','指派')"
+    :title="language('LK_ZHIPAI','指派')"
     :visible.sync="dialogVisible"
     @close="clearDialog"
     width="381px"
   >
     <template slot="footer">
-      <iButton @click="handleConfirm" :loading="loading">{{language('ZHIPAI','指派')}}</iButton>
+      <iButton @click="handleConfirm" :loading="loading">{{language('LK_ZHIPAI','指派')}}</iButton>
     </template>
     <el-form>
       <el-form-item :label="language('QINGXUANZEZHIPAIREN','请选择指派人')">

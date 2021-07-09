@@ -2,7 +2,7 @@
   <div>
     <!-- v-permission="TOOLING_PAYMENTPLAN_YEAR" -->
     <div class="page-container" v-permission="TOOLING_PAYMENTPLAN_YEAR">
-      <HeadTool @refresh="refresh" @receiVereceive="receiVereceive" :refreshStatus="refreshStatus">
+      <HeadTool @refresh="refresh" @receiVereceive="receiVereceive" :refreshStatus="refreshStatus" :newVersionNum="newVersionNum">
         <template slot="btns">
           <iButton v-if="vereceive.editFlag" @click="save" :loading="saveLoading">{{ $t('LK_BAOCUN') }}</iButton><!-- 保存 -->
           <iButton @click="saveNew" :loading="saveNewLoading">{{ $t('LK_BAOCUNWEIZUIXINBANBEN') }}</iButton><!-- 保存为最新版本 -->
@@ -26,7 +26,7 @@
           </iCard>
         </div>
         <div class="c-right">
-          <iCard class="c-card-r">
+          <iCard class="c-card-r" v-loading="chartLoading">
             <div class="right-head">
               <div class="right-title">年度计划</div>
               <div class="right-sildBox">
@@ -65,6 +65,27 @@
               :show-summary="true"
               class="baApply-table"
           >
+            <template #budgetAmount="scope">
+              <div>{{getTousandNum(NumFormat(scope.row.budgetAmount))}}</div>
+            </template>
+            <template #nomiAmount="scope">
+              <div>{{getTousandNum(NumFormat(scope.row.nomiAmount))}}</div>
+            </template>
+            <template #bmAmount="scope">
+              <div>{{getTousandNum(NumFormat(scope.row.bmAmount))}}</div>
+            </template>
+            <template #paymentAmountLast="scope">
+              <div>{{getTousandNum(NumFormat(scope.row.paymentAmountLast))}}</div>
+            </template>
+            <template #paymentAmountCurrent="scope">
+              <div>{{getTousandNum(NumFormat(scope.row.paymentAmountCurrent))}}</div>
+            </template>
+            <template #planAmountCurrent="scope">
+              <div>{{getTousandNum(NumFormat(scope.row.planAmountCurrent))}}</div>
+            </template>
+            <template #planAmountNext="scope">
+              <div>{{getTousandNum(NumFormat(scope.row.planAmountNext))}}</div>
+            </template>
             <template #carTypeProName="scope">
               <div class="backlog" v-if="scope.row.statType === 'backlog'">
                 backlog
@@ -74,7 +95,7 @@
               </div>
             </template>
             <template #sopPercent="scope">
-              {{scope.row.sopPercent || 0}}%
+              {{getTousandNum(NumFormat(scope.row.sopPercent || 0))}}%
             </template>
           </iTableList>
         </template>
@@ -86,7 +107,7 @@
         <template slot="title">
           <div class="manual-head">
             <div class="title">
-              {{$t('LK_SHOUGONGTIAOZHENG')}}-{{'2021'}}
+              {{$t('LK_SHOUGONGTIAOZHENG')}}-{{isThen ? vereceive.year : vereceive.year + 1}}
             </div>
             <div>
               <iButton v-if="vereceive.editFlag" @click="manualSave" :loading="manualSaveLoading">{{ $t('LK_BAOCUN') }}</iButton><!-- 保存 -->
@@ -100,27 +121,31 @@
           <span>{{$t('LK_BUHANSUI')}}</span>
         </div>
         <div class="manual-content">
-          <div>
+          <div class="content-l">
             <div id="totalLeft"></div>
             <div class="manual-l-txt">
               <div class="manual-l-title">{{setSystemTotal}}</div>
-              <div class="manual-lprice" v-for="(item, index) in planYearCommutity" :key="index">
+              <div class="manual-lprice manual-lprice1" v-for="(item, index) in planYearCommutity" :key="index">
                 {{isThen ? item.planAmountSystemCurrent : item.planAmountSystemNext}}
               </div>
             </div>
             <div class="manual-l-txt" style="margin-right: 100px;">
               <div class="manual-l-title">Rate</div>
-              <div class="manual-lprice" v-for="(item, index) in setSystemRate" :key="index">{{item}}</div>
+              <div class="manual-lprice manual-lprice2" v-for="(item, index) in setSystemRate" :key="index">{{item}}</div>
             </div>
           </div>
-          <div>
+          <div class="content-r">
             <div id="totalRight"></div>
+            <!-- <div style="flex: 1">
+              <div id="totalRight"></div>
+              <div id="moreTerm" style="dispaly: none"></div>
+            </div> -->
             <!-- <div class="test"></div> -->
             <div class="manual-l-txt">
               <div class="manual-l-title">{{setManualTotal}}</div>
               <div class="manual-lpriceInput" v-for="(item, index) in planYearCommutity" :key="index">
-                <iInput :disabled="!vereceive.editFlag" v-if="isThen" class="right-input" v-model="item.planAmountAmualCurrent"></iInput>
-                <iInput :disabled="!vereceive.editFlag" v-else class="right-input" v-model="item.planAmountAmualNext"></iInput>
+                <iInput type="number" :disabled="!vereceive.editFlag" v-if="isThen" class="right-input" v-model="item.planAmountAmualCurrent"></iInput>
+                <iInput type="number" :disabled="!vereceive.editFlag" v-else class="right-input" v-model="item.planAmountAmualNext"></iInput>
               </div>
             </div>
             <div class="manual-l-txt">
@@ -156,6 +181,7 @@ import { saveVersion, refreshVersion,
   queryPlanPercentage, queryPlanYearCommutity, saveCommutityAmualData, exportPlanCommutityList
 } from "@/api/ws2/investmentAdmin/yearlyPlan";
 import NewVersionDialog from "../monthlyPlan/components/newVersionDialog";
+import { getTousandNum, NumFormat } from "@/utils/tool";
 import _ from 'lodash';
 
 
@@ -171,7 +197,7 @@ export default {
       const key = isThen ? 'planAmountAmualCurrent' : 'planAmountAmualNext';
       const arr = planYearCommutity.map(item => item[key]).filter(n => n);
       const total = arr.reduce((prev,curr) => {
-        return (~~prev + ~~curr).toFixed(2);
+        return (Number(prev) + Number(curr)).toFixed(2);
       },0)
 
       return total;
@@ -189,7 +215,7 @@ export default {
       const key = isThen ? 'planAmountSystemCurrent' : 'planAmountSystemNext';
       const arr = planYearCommutity.filter(item => item.commodity !== 'Risk' ).map(item => item[key]).filter(n => n);
       const total = arr.reduce((prev,curr) => {
-        return (~~prev + ~~curr).toFixed(2);
+        return (Number(prev) + Number(curr)).toFixed(2);
       },0)
 
       return total;
@@ -206,6 +232,8 @@ export default {
 
   data(){
     return {
+      NumFormat,
+      getTousandNum,
       no1: '',
       systemVisible: false,
       manualvisible: false,
@@ -224,10 +252,14 @@ export default {
       isThen: true,
       manualSaveLoading: false,
       refreshStatus: true,
+      chartLoading: false,
+      newVersionNum: '',
+      base: 0,
     }
   },
 
   mounted(){
+    this.base = document.body.clientWidth >= 1920 ? 75 : 66;
   },
 
   methods: {
@@ -286,7 +318,7 @@ export default {
 
     getSummaries(param){
       const { columns, data } = param;
-      const sums = [];
+      let sums = [];
       const keyArr = ['carTypeProName', 'sop', 'sopPercent', 'linieName'];
 
       columns.forEach((column, index) => {
@@ -313,6 +345,14 @@ export default {
         }
         
       });
+
+      sums = sums.map(item => {
+        if(typeof item === 'number'){
+          item = getTousandNum(NumFormat(item));
+        }
+
+        return item;
+      })
       return sums;
     },
 
@@ -321,11 +361,15 @@ export default {
         saveNewVersion({
           ...this.ratioInput,
           dateStr: val,
+          versionId: this.vereceive.id
         }).then(res => {
           const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn;
 
           if(res.code === "0"){
             iMessage.success(result);
+            this.$store.commit('SET_versionId', '');
+            // this.refreshStatus = !this.refreshStatus;
+            this.newVersionNum = res.data.version;
           }else{
             iMessage.error(result);
           }
@@ -343,6 +387,7 @@ export default {
     },
 
     getHistogram(){
+      this.chartLoading = true;
       queryPlanPercentage({
         versionId: this.vereceive.id
       }).then(res => {
@@ -354,7 +399,7 @@ export default {
           const resData = res.data;
           const myChart = echarts().init(document.getElementById("echarts"));
           myChart.setOption({
-              tooltip: {
+            tooltip: {
               backgroundColor: "#ffffff",
                     extraCssText:
                       "color: #1B1D21; box-shadow: 0px 0px 20px rgba(27, 29, 33, 0.12);",
@@ -416,9 +461,9 @@ export default {
                       planSystemNextBacklog, planSystemNextSecond, planSystemNextFirst
                     } = resData;
                     if(params.name == _this.vereceive.year){ //  当年
-                      return planSystemCurrentBacklog + planSystemCurrentSecond + planSystemCurrentFirst;
+                      return (planSystemCurrentBacklog + planSystemCurrentSecond + planSystemCurrentFirst).toFixed(2);
                     }else{
-                      return planSystemNextBacklog + planSystemNextSecond + planSystemNextFirst;
+                      return (planSystemNextBacklog + planSystemNextSecond + planSystemNextFirst).toFixed(2);
                     }
                   }
                 }
@@ -449,9 +494,9 @@ export default {
                   formatter: function (params){
                     const { planManualCurrentRisk, planManualCurrent, planManualNextRisk, planManualNext } = resData;
                     if(params.name == _this.vereceive.year){ //  当年
-                      return planManualCurrentRisk + planManualCurrent;
+                      return (planManualCurrentRisk + planManualCurrent).toFixed(2);
                     }else{
-                      return planManualNextRisk + planManualNext;
+                      return (planManualNextRisk + planManualNext).toFixed(2);
                     }
                   }
                 }
@@ -459,7 +504,7 @@ export default {
               
             ]
           })
-
+          myChart.off('click');
           myChart.on('click', function(params) {
             const arr1 = ['系统计算上半年', '系统计算下半年', '系统计算Backlog'];
             _this.isThen = params.name == _this.vereceive.year; //  是否为当年
@@ -489,7 +534,32 @@ export default {
         }else{
           iMessage.error(result);
         }
+
+        this.chartLoading = false;
+      }).catch(err => {
+        this.chartLoading = false;
       })
+    },
+
+    setDomParameter(){
+      setTimeout(() => {
+        const RInput = document.getElementsByClassName("manual-lpriceInput");
+        const RTxt = document.getElementsByClassName("manual-lpriceInputTxt");
+        const LTxt1 = document.getElementsByClassName("manual-lprice1");
+        const LTxt2 = document.getElementsByClassName("manual-lprice2");
+        Array.prototype.forEach.call(RInput, function (element, index) {
+          element.style.marginTop = '32px';
+          element.style.height = '28px';
+          element.style.opacity = '1';
+          RTxt[index].style.marginTop = '32px';
+          RTxt[index].style.height = '28px';
+          LTxt1[index].style.marginTop = '32px';
+          LTxt1[index].style.height = '28px';
+          LTxt2[index].style.marginTop = '32px';
+          LTxt2[index].style.height = '28px';
+        });
+      }, 1000)
+      
     },
 
     queryPlanYearCommutity(){
@@ -498,12 +568,15 @@ export default {
       }).then(res => {
         const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn;
         if(res.code === '0'){
+          const arr = ['CSX', 'CSP', 'CSM', 'CSI', 'CSE', 'BU-B', 'Risk'];
           this.planYearCommutity = _.cloneDeep(res.data);
           const _this = this;
           const totalLeft = echarts().init(document.getElementById("totalLeft"));
           const totalRight = echarts().init(document.getElementById("totalRight"));
           const resData = _.cloneDeep(res.data);
           const resDataL = res.data.filter(item => item.commodity !== 'Risk');
+          totalRight.resize({height: 66*resData.length});
+          totalLeft.resize({height: 66*resDataL.length});
           totalRight.setOption(
             {
                 title: {
@@ -522,9 +595,9 @@ export default {
                 },
                 grid: {
                     left: '8%',
-                    right: '18%',
-                    bottom: '3%',
-                    top: '10%',
+                    right: '20%',
+                    bottom: '0%',
+                    top: '8%',
                     containLabel: true
                 },
                 xAxis: {
@@ -575,7 +648,7 @@ export default {
                 grid: {
                     left: '8%',
                     right: '18%',
-                    bottom: '3%',
+                    bottom: '0',
                     top: '10%',
                     containLabel: true
                 },
@@ -611,6 +684,8 @@ export default {
         }else{
           iMessage.error(result);
         }
+
+        this.setDomParameter(); //  设置dom参数
         
       })
     },
@@ -711,9 +786,8 @@ export default {
       left: 0;
       bottom: 0;
 
-      .test{
-        flex: 1;
-        height: 100%;
+      .content-l{
+        padding-bottom: 90px !important;
       }
 
       .manual-l-txt{
@@ -725,12 +799,12 @@ export default {
           margin-right: 0;
         }
 
-        & .manual-lpriceInput:nth-child(2){
-          margin-top: 60px !important;
-        }
+        // & .manual-lpriceInput:nth-child(2){
+        //   margin-top: 40px !important;
+        // }
 
         & .manual-lpriceInputTxt:nth-child(2){
-          margin-top: 60px !important;
+          margin-top: 40px !important;
         }
 
         .manual-lpriceInputTxt{
@@ -738,21 +812,41 @@ export default {
           margin-top: 40px;
           height: 35px;
           line-height: 30px;
+
+          // @media only screen and (min-width: 1920px) {
+          //   margin-top: 48px !important;
+          //   // background-color: chartreuse;
+          // }
         }
 
         .manual-lpriceInput{
           font-size: 16px;
-          margin-top: 40px;
+          opacity: 0;
+          // margin-top: 40px;
+
+          // @media only screen and (min-width: 1920px) {
+          //   margin-top: 48px !important;
+          //   // background-color: chartreuse;
+          // }
 
           .right-input{
             width: 100px;
           }
         }
 
+        .manual-lprice1{
+          margin-top: 60%;
+        }
+
         .manual-lprice{
           color: #485465;
           font-size: 16px;
-          margin-top: 70px;
+          margin-top: 56px;
+
+          // @media only screen and (min-width: 1920px) {
+          //   margin-top: 64px !important;
+          //   // background-color: chartreuse;
+          // }
         }
         
         .manual-l-title{
@@ -762,15 +856,22 @@ export default {
         }
       }
 
+      // #totalRight{
+      //   width: 100%;
+      //   height: 100%;
+      // }
+
       #totalLeft, #totalRight{
         flex: 1;
         padding-left: 32px;
         width: 0;
         
-        ::v-deep div{
+        ::v-deep div :nth-child(1){
+          height: 100% !important;
           width: 100% !important;
 
           ::v-deep canvas{
+            height: 100% !important;
             width: 100% !important;
           }
         }

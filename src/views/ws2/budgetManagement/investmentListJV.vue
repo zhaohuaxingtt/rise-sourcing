@@ -158,13 +158,13 @@
               </div>
             </template>
             <template #refMoldAmount="scope">
-              <div v-if="scope.row.refCartypeProId"><span>{{ scope.row.refMoldAmount }}</span></div>
+              <div v-if="scope.row.refCartypeProId"><span>{{ getTousandNum(Number(scope.row.refMoldAmount).toFixed(2)) }}</span></div>
               <div v-else>-</div>
             </template>
             <template #budgetAmount="scope">
               <iInput v-model="scope.row.budgetAmount" v-if="pageEdit" :placeholder="$t('LK_QINGSHURU')"
                       @input="changeBudgetAmount(scope.row.budgetAmount)" maxlength="20"></iInput>
-              <div v-if="!pageEdit">{{ scope.row.budgetAmount }}</div>
+              <div v-if="!pageEdit">{{ getTousandNum(Number(scope.row.budgetAmount).toFixed(2)) }}</div>
             </template>
             <template #moldProperties="scope">
               <iSelect
@@ -243,22 +243,22 @@
             </template>
             <template #applyAmount="scope">
               <div class="linkStyle">
-                <span @click="clickMoney(scope.row)">{{ scope.row.applyAmount }}</span>
+                <span @click="clickMoney(scope.row)">{{ getTousandNum(Number(scope.row.applyAmount).toFixed(2)) }}</span>
               </div>
             </template>
             <template #nomiAmount="scope">
               <div class="linkStyle">
-                <span @click="clickNomiAmountDetail(scope.row)">{{ scope.row.nomiAmount }}</span>
+                <span @click="clickNomiAmountDetail(scope.row)">{{ getTousandNum(Number(scope.row.nomiAmount).toFixed(2)) }}</span>
               </div>
             </template>
             <template #baAmount="scope">
               <div class="linkStyle">
-                <span @click="clickBaAmountDetail(scope.row)">{{ scope.row.baAmount }}</span>
+                <span @click="clickBaAmountDetail(scope.row)">{{ getTousandNum(Number(scope.row.baAmount).toFixed(2)) }}</span>
               </div>
             </template>
             <template #bmAmount="scope">
               <div class="linkStyle">
-                <span @click="clickBmAmountDetail(scope.row)">{{ scope.row.bmAmount }}</span>
+                <span @click="clickBmAmountDetail(scope.row)">{{ getTousandNum(Number(scope.row.bmAmount).toFixed(2)) }}</span>
               </div>
             </template>
           </iTableList>
@@ -408,6 +408,7 @@ import {
 import {insertRfq} from "@/api/partsrfq/home";
 import echarts from "@/utils/echarts";
 import {cloneDeep} from 'lodash'
+import {getTousandNum, delcommafy} from "@/utils/tool";
 
 export default {
   mixins: [pageMixins, tableHeight],
@@ -498,6 +499,8 @@ export default {
       DeptPullDown: [],
       DeptPullDown2: [],
       liniePullDown: [],
+      getTousandNum: getTousandNum,
+
     };
   },
   computed: {},
@@ -514,14 +517,14 @@ export default {
   mounted() {
   },
   methods: {
-    saveReference() {
-      this.tableListData = this.tableListData.map(item => {
-        item.refCartypeName = '钢材'
-        item.refMoldAmount = '100'
-        return item
-      })
-      this.saveRow()
-    },
+    // saveReference() {
+    //   this.tableListData = this.tableListData.map(item => {
+    //     item.refCartypeName = '钢材'
+    //     item.refMoldAmount = '100'
+    //     return item
+    //   })
+    //   this.saveRow()
+    // },
     changeBudgetAmount(val) {
       let total = 0
       this.tableListData.map(item => total += Number(item.budgetAmount))
@@ -644,7 +647,8 @@ export default {
         if (Number(res.code) === 0) {
           let subTotal = 0
           res.data.investmentListEntities = res.data.investmentListEntities ? res.data.investmentListEntities : []
-          this.tableListData = res.data.investmentListEntities.map(item => {
+          this.tableListData = res.data.investmentListEntities.map((item, index) => {
+            item.index = index
             item.budgetAmount = Number(item.budgetAmount).toFixed(2)
             let linieName = ''
             item.linieArr = item.linie ? (item.linie.split(',')).map(key => Number(key)) : []
@@ -863,6 +867,7 @@ export default {
                   this.$t("LK_WEISHENQING"),
                   this.$t("LK_YISHENQING"),
                   this.$t("LK_WEIDINGDIAN"),
+                  this.$t("定点节降"),
                   this.$t("LK_YIDINGDIAN"),
                   this.$t("LK_WUBA"),
                   this.$t("LK_YOUBA"),
@@ -919,6 +924,7 @@ export default {
                     0,
                     notAekoPriceDetail.applyAmount,
                     0,
+                    Number(notAekoPriceDetail.nomiAmount) + Number(notAekoPriceDetail.nomiJAmount),
                     notAekoPriceDetail.nomiAmount,
                     0,
                     notAekoPriceDetail.baAmount,
@@ -947,6 +953,7 @@ export default {
                     notAekoPriceDetail.notApplyAmount,
                     notAekoPriceDetail.applyAmount,
                     notAekoPriceDetail.notNomiAmount,
+                    notAekoPriceDetail.nomiJAmount,
                     notAekoPriceDetail.nomiAmount,
                     notAekoPriceDetail.notBaAmount,
                     notAekoPriceDetail.baAmount,

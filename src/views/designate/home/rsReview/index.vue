@@ -93,9 +93,9 @@
       </template>
       
       <!-- 一致性校验 -->
-      <!-- <template #isPriceConsistent="scope">
+      <template #isPriceConsistent="scope">
         <span>{{scope.row.isPriceConsistent ? '通过' : '不通过'}}</span>
-      </template> -->
+      </template>
 
       <!-- 定点日期 -->
       <template #nominateDate="scope">

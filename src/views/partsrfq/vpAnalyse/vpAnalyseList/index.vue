@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-06-16 20:44:29
- * @LastEditTime: 2021-06-29 13:51:11
+ * @LastEditTime: 2021-07-07 10:55:30
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\analysisTool\index.vue
@@ -14,8 +14,8 @@
       <div slot="header" class="headBox">
         <p class="headTitle">{{$t('TPZS.VPFXK')}}</p>
         <span class="buttonBox" v-if="!editMode">
+          <iButton @click="clickAdd">{{$t('TPZS.LK_CREATE')}}</iButton>
           <iButton @click="clickEdit">{{$t('LK_BIANJI')}}</iButton>
-          <iButton @click="clickAdd">{{$t('LK_CREATE')}}</iButton>
           <iButton @click="clickDel">{{$t('delete')}}</iButton>
         </span>
         <span class="buttonBox" v-if="editMode">
@@ -38,15 +38,15 @@ export default {
   data () {
     return {
       editMode: false, //模式， 0：正常模式 1：编辑模式
-      rfqNo: '123123',    //rfq编号
+      rfqNo: null,    //rfq编号
+      round: null,        //round
       searchData: null,
       backUpData: [],
     }
   },
   created() {
-    console.log('query', this.$router.query);
-    this.rfqNo = this.$route ? this.$route.query.rfqNo ? this.$route.query.rfqNo : this.rfqNo : this.rfqNo
-    console.log('rfqNo', rfqNo);
+    this.rfqNo = this.$route.query.id ? this.$route.query.id : this.rfqNo
+    this.round = this.$route.query.round ? this.$route.query.round : this.round
   },
   methods: {
     //点击编辑/取消按钮，进入/退出编辑模式
@@ -68,7 +68,8 @@ export default {
       this.$router.push({
         path: targetUrl,
         query: {
-          rfqId: this.rfqNo
+          rfqId: this.rfqNo,
+          round: this.round
         }
       })
     },

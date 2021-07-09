@@ -93,10 +93,10 @@
         <template #edit="scope">
           <div>
             <!-- <div v-if="editControl && scope.row.isAdd"> -->
-            <a class="link-underline" v-if="scope.row.isPresent" @click="toggleShow(scope.row, false)">
+            <a class="link-underline" v-if="!scope.row.isPresent" @click="toggleShow(scope.row, true)">
               <icon symbol name="iconyincang" class="icon trigger-visible" />
             </a>
-            <a class="link-underline" v-else @click="toggleShow(scope.row, true)">
+            <a class="link-underline" v-else @click="toggleShow(scope.row, false)">
               <icon symbol name="iconxianshi" class="icon trigger-visible" />
             </a>
           </div>
@@ -228,12 +228,8 @@ export default {
       Vue.set(row, 'isPresent', state)
     },
     async save() {
-      if (!this.selectedData.length) {
-        iMessage.error(this.language('nominationSuggestion_QingXuanZeZhiShaoYiTiaoShuJu','请选择至少一条数据'))
-        return
-      }
       const data = {
-        items: this.selectedData.map(o => {
+        items: this.data.map(o => {
           // const status = this.taskStatus.find(item => item.key === o.isFinishFlag) || {}
           return {
             id: o.id,

@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import echarts from '@/utils/echarts';
+import echarts from '@/utils/echarts'
 
 export default {
   props: {
@@ -16,7 +16,7 @@ export default {
       default: () => {
         return [
           [200, 2000],
-        ];
+        ]
       },
     },
     targetScatterData: {
@@ -24,7 +24,7 @@ export default {
       default: () => {
         return [
           [250, 1912],
-        ];
+        ]
       },
     },
     lineData: {
@@ -34,36 +34,35 @@ export default {
           [10, 2500],
           [280, 1500],
           [380, 10],
-        ];
+        ]
       },
     },
   },
-  data() {
-    return {};
-  },
-  mounted() {
-    this.initEcharts();
+  data () {
+    return {}
   },
   methods: {
-    initEcharts() {
-      const chart = echarts().init(this.$refs.curve);
+    initEcharts () {
+      const chart = echarts().init(this.$refs.curve)
       const option = {
+        // ['最新定点单价', '目标单价']
         legend: {
-          data: ['最新定点单价', '目标单价'],
+          data: [this.$t('TPZS.ZUIXINDINGDIANDANJIA'), this.$t('TPZS.MUBIAODANJIA')],
           right: 10,
           itemWidth: 10,
         },
         xAxis: {
+          // 产量（辆）
           type: 'value',
-          name: '产量（辆）',
+          name: this.$t('TPZS.CHANLIANGLIANG'),
           splitLine: {
             lineStyle: {
               type: 'dashed',
             },
           },
           axisLabel: {
-            formatter: function(value) {
-              return value + 'k';
+            formatter: function (value) {
+              return value + 'k'
             },
           },
           axisLine: {
@@ -74,7 +73,8 @@ export default {
         },
         yAxis: {
           type: 'value',
-          name: '单价\n' + '（元/件）',
+          // 单价\n' + '（元/件）
+          name: this.$t('TPZS.DANJIA') + '\n' + this.$t('TPZS.YUANJIAN'),
           splitLine: {
             lineStyle: {
               type: 'dashed',
@@ -89,13 +89,15 @@ export default {
         color: '#0059FF',
         series: [
           {
-            name: '最新定点单价',
+            //最新定点单价
+            name: this.$t('TPZS.ZUIXINDINGDIANDANJIA'),
             type: 'scatter',
             data: this.newestScatterData,
             color: '#0059FF',
           },
           {
-            name: '目标单价',
+            //目标单价
+            name: this.$t('TPZS.MUBIAODANJIA'),
             type: 'scatter',
             data: this.targetScatterData,
             color: '#70AD47',
@@ -110,11 +112,16 @@ export default {
           top: 40,
           right: 80,
         },
-      };
-      chart.setOption(option);
+      }
+      chart.setOption(option)
     },
   },
-};
+  watch: {
+    newestScatterData () {
+      this.initEcharts()
+    },
+  },
+}
 </script>
 
 <style scoped lang="scss">
