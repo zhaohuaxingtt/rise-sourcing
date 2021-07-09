@@ -6,7 +6,7 @@
  * @Descripttion: 项目概览
 -->
 <template>
-  <iCard :title="$t('TPZS.XMGL')+'RFQ'+$route.query.id" class='' collapse>
+  <iCard :title="$t('TPZS.XMGL')+'RFQ'+$route.query.id" :defalutCollVal='false' collapse>
     <projectInfor />
     <el-divider></el-divider>
     <partInforTable />

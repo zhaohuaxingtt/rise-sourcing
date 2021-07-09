@@ -6,7 +6,7 @@
  * @Descripttion: 定点记录
 -->
 <template>
-  <iCard :title="$t('TPZS.DDJV')" collapse>
+  <iCard :title="$t('TPZS.DDJV')" :defalutCollVal='false' collapse>
     <tableList :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="tableLoading" :selection='false' :index="true" @handleSelectionChange="handleSelectionChange" />
   </iCard>
 </template>

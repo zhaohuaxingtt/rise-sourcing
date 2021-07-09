@@ -6,7 +6,7 @@
  * @Descripttion: 概览
 -->
 <template>
-  <iCard class="supplier-item" :title="$t('TPZS.PLGYSGL')" collapse>
+  <iCard class="supplier-item" :title="$t('TPZS.PLGYSGL')" :defalutCollVal='false' collapse>
     <div class="header-title">{{remark}}</div>
     <div class="title-btn">
       <iButton @click="handleHerf">{{$t('TPZS.GYS360')}}</iButton>
