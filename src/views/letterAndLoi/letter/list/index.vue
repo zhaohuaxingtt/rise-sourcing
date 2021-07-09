@@ -152,10 +152,7 @@ export default {
                 ],
             },
             loading:false,
-            tableListData:[
-                // {nominateAppId:'50912471',letterNum:'NL21-10180',nominateLetterId:'1',rfqId:'51120086',supplierNum:'068',supplierSapNum:'10047',supplierName:'博世汽⻋技术服务(中国)有限公司',statusDesc:'前期处理中',supplierResult:'供应商反馈',fsName:'⾼真',linieName:'王颖',isSignAgreement:'已签署',nominateDate:'2021-04-23'},
-                // {nominateAppId:'50912472',letterNum:'NL21-10181',nominateLetterId:'2',rfqId:'51120086',supplierNum:'068',supplierSapNum:'10047',supplierName:'博世汽⻋技术服务(中国)有限公司',statusDesc:'前期处理中',supplierResult:'供应商反馈',fsName:'⾼真',linieName:'王颖',isSignAgreement:'已签署',nominateDate:'2021-04-23'}
-            ],
+            tableListData:[],
             tableTitle:letterListTitle,
             selectItems:[],
             turnSendVisible:false, // 转派弹窗
