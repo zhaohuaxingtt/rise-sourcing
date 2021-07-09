@@ -160,7 +160,7 @@ export default {
       updateTabPageManager(data).then((res)=>{
         if (res.code === '200') {
           iMessage.success(this.$t('LK_CAOZUOCHENGGONG'));
-          const nominateId = this.$store.getters.nomiAppId || this.$route.query.desinateId
+          const nominateId = this.$route.query.desinateId || this.$store.getters.nomiAppId
           this.$store.dispatch('setNominationStep',{nominateId})
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)

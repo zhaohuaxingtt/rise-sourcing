@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-07-08 16:48:36
- * @LastEditTime: 2021-07-08 16:54:04
+ * @LastEditTime: 2021-07-08 18:41:50
  * @LastEditors: Please set LastEditors
  * @Description: 模具组件继承
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringMj\components\mould.vue
@@ -18,7 +18,6 @@ export default {
      * @return {*}
      */
     handleAdd() {
-      alert('aaaa')
       const mouldIdIndexes = this.tableListData.map(item => {
         const list = item.mouldId.split("_")
         return +list[list.length - 1].replace(/\D/g, "") || 0
