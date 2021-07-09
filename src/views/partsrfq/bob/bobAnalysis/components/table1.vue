@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 11:38:57
- * @LastEditTime: 2021-07-06 10:46:21
+ * @LastEditTime: 2021-07-08 10:10:19
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails\table1.vue
@@ -10,8 +10,8 @@
   <div>
     <el-table
       ref="treeList"
-      :data="tableList.dataList"
-      :tree-props="{ hasChildren: 'hasChildren', children: 'children' }"
+      :data="tableList.element"
+      :tree-props="{ hasChildren: 'hasChildren', children: 'child' }"
       :row-key="getRowKey"
       :expand-row-keys="expends"
       v-loading="loading"
@@ -23,14 +23,14 @@
       @cell-click="cellClick"
       @expand-change="expandChange"
     >
-      <el-table-column label="" prop="title" width="200"> </el-table-column>
+      <!-- <el-table-column label="" prop="title" width="200"> </el-table-column> -->
       <el-table-column
-        v-for="i in tableList.headerList"
-        :key="i.id"
-        :label="i.label"
-        :prop="i.prop"
-        align="center"
-        width="200"
+        v-for="i in tableList.title"
+        :key="i.index"
+        :label="i.title"
+        :prop="i.label"
+        :align="i.label=='title'?'left':'center'"
+        :width="i.label=='title'?'220':''"
       >
         <!-- <template>
           <el-table-column
@@ -45,22 +45,20 @@
         </template> -->
 
         <template slot-scope="scope">
-          <div v-if="testing(scope.row[i.prop])" class=" scopeBox">
+          <span v-if="testing(scope.row[i.label])" class=" scopeBox">
             <span
-              v-for="(item, index) in scope.row[i.prop]"
-              :key="item.id"
-              :class="checkClass(item, scope, index)"
-              @click="clickCol(item, scope, index)"
+              v-for="(item,index) in scope.row[i.label]"
+              :key="index"
+              class="flexSpan"
               >{{ item }}</span
             >
-          </div>
-          <div v-else class="flex-center">
+          </span>
+          <span v-else class="flex-center">
             <span
-              :class="checkClass(item, scope, index)"
-              @click="clickCol(item, scope, index)"
-              >{{ scope.row[i.prop] }}</span
+              class="flexSpan"
+              >{{ scope.row[i.label] }}</span
             >
-          </div>
+          </span>
         </template>
       </el-table-column>
     </el-table>
@@ -109,7 +107,7 @@ export default {
     },
   },
   mounted() {
-    console.log(this.tableList, 2222222222);
+  
   },
   data() {
     return {
@@ -175,7 +173,7 @@ export default {
     },
 
     getRowKey(row) {
-      return row.id;
+      return row.index;
     },
     render(h, { column, $index }) {},
     rowClick(row, event, column) {
@@ -237,5 +235,8 @@ export default {
   justify-content:space-around;
   flex-direction: row;
   flex-wrap: nowrap;
+}
+.flexSpan{
+  padding: 0 10px;
 }
 </style>

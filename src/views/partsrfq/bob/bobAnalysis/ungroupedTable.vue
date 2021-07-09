@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 11:38:57
- * @LastEditTime: 2021-07-06 16:50:12
+ * @LastEditTime: 2021-07-08 16:55:51
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails\table1.vue
@@ -19,44 +19,46 @@
         </div>
       </div>
     </template>
-    <el-table
-      ref="treeList"
-      :data="tableList.dataList"
-      :tree-props="{ hasChildren: 'hasChildren', children: 'children' }"
-      :row-key="getRowKey"
-      :expand-row-keys="expends"
-      v-loading="loading"
-      :max-height="maxHeight"
-      @selection-change="handleSelectionChange"
-      @row-click="rowClick"
-      @row-dblclick="rowDblclick"
-      @cell-dblclick="cellBbClick"
-      @cell-click="cellClick"
-      @header-click="headerClick"
-      @expand-change="expandChange"
-    >
-      <!-- <el-table-column label="" prop="title" width="250"> </el-table-column> -->
-      <el-table-column
-        v-for="i in tableList.headerList"
-        :key="i.id"
-        :label="i.label"
-        :prop="i.prop"
-        align="left"
-        :width="i.prop == 'title' ? '200' : ''"
-      >
-        <template v-if="i.children">
+    <el-tabs v-model="activeName" @tab-click="handleClick">
+      <el-tab-pane label="原材料/散件" name="first">
+        <el-table
+          ref="treeList"
+          :data="tableList.dataList"
+          :tree-props="{ hasChildren: 'hasChildren', children: 'children' }"
+          :row-key="getRowKey"
+          :expand-row-keys="expends"
+          v-loading="loading"
+          :max-height="maxHeight"
+          @selection-change="handleSelectionChange"
+          @row-click="rowClick"
+          @row-dblclick="rowDblclick"
+          @cell-dblclick="cellBbClick"
+          @cell-click="cellClick"
+          @header-click="headerClick"
+          @expand-change="expandChange"
+        >
+          <!-- <el-table-column label="" prop="title" width="250"> </el-table-column> -->
           <el-table-column
-            v-for="item in i.children"
-            :key="item.id"
-            :label="item.label"
-            :prop="item.prop"
-            align="left"
-            :render-header="renderHeader"
+            v-for="i in tableList.headerList"
+            :key="i.id"
+            :label="i.label"
+            :prop="i.prop"
+            :align="i.prop == 'title' ? 'left' : 'center'"
+            :width="i.prop == 'title' ? '200' : ''"
+            
           >
-          </el-table-column>
-        </template>
-
-        <!-- <template slot-scope="scope">
+            <template v-if="i.children">
+              <el-table-column
+                v-for="item in i.children"
+                :key="item.id"
+                :label="item.label"
+                :prop="item.prop"
+                align="center"
+                :render-header="renderHeader"
+              >
+              </el-table-column>
+            </template>
+            <!-- <template slot-scope="scope">
           <span v-if="testing(scope.row[i.prop])" class="flex">
             <span
               v-for="(item, index) in scope.row[i.prop]"
@@ -75,8 +77,69 @@
             >
           </span>
         </template> -->
-      </el-table-column>
-    </el-table>
+          </el-table-column>
+        </el-table>
+      </el-tab-pane>
+      <el-tab-pane label="制造费" name="second">
+        <el-table
+          ref="treeList1"
+          :data="tableList.dataList"
+          :tree-props="{ hasChildren: 'hasChildren', children: 'children' }"
+          :row-key="getRowKey"
+          :expand-row-keys="expends"
+          v-loading="loading"
+          :max-height="maxHeight"
+          @selection-change="handleSelectionChange"
+          @row-click="rowClick"
+          @row-dblclick="rowDblclick"
+          @cell-dblclick="cellBbClick"
+          @cell-click="cellClick"
+          @header-click="headerClick"
+          @expand-change="expandChange"
+        >
+          <!-- <el-table-column label="" prop="title" width="250"> </el-table-column> -->
+          <el-table-column
+            v-for="i in tableList.headerList"
+            :key="i.id"
+            :label="i.label"
+            :prop="i.prop"
+            :align="i.prop == 'title' ? 'left' : 'center'"
+            :width="i.prop == 'title' ? '200' : ''"
+          >
+            <template v-if="i.children">
+              <el-table-column
+                v-for="item in i.children"
+                :key="item.id"
+                :label="item.label"
+                :prop="item.prop"
+                align="center"
+                :render-header="renderHeader"
+              >
+              </el-table-column>
+            </template>
+            <!-- <template slot-scope="scope">
+          <span v-if="testing(scope.row[i.prop])" class="flex">
+            <span
+              v-for="(item, index) in scope.row[i.prop]"
+              :key="item.id"
+              class="margin-right20"
+              :class="checkClass(item, scope, index)"
+              @click="clickCol(item, scope, index)"
+              >{{ item }}</span
+            >
+          </span>
+          <span v-else>
+            <span
+              :class="checkClass(item, scope, index)"
+              @click="clickCol(item, scope, index)"
+              >{{ scope.row[i.prop] }}</span
+            >
+          </span>
+        </template> -->
+          </el-table-column>
+        </el-table>
+      </el-tab-pane>
+    </el-tabs>
   </iCard>
 </template>
 
@@ -146,18 +209,18 @@ export default {
           this.$refs.treeList.expandRowKeys = Array.from(val);
       },
     },
-    tableList: {
-      handler(val) {
-        let newArr = [];
-        val.dataList.forEach((value, index) => {
-          newArr[index] = value;
-          newArr[index].children = value.children.filter(
-            (item) => !item.isShow
-          );
-        });
-      },
-      immediate: true,
-    },
+    // tableList: {
+    //   handler(val) {
+    //     let newArr = [];
+    //     val.dataList.forEach((value, index) => {
+    //       newArr[index] = value;
+    //       newArr[index].children = value.children.filter(
+    //         (item) => !item.isShow
+    //       );
+    //     });
+    //   },
+    //   immediate: true,
+    // },
   },
   data() {
     return {
@@ -171,6 +234,7 @@ export default {
       checkOptionCount: [], //实时记录当前列 选中数量
       checkAll: [], //表头全选按钮 选中控制
       isIndeterminate: [], //表头 不确定状态控制
+      activeName: "first",
     };
   },
   methods: {
@@ -222,7 +286,7 @@ export default {
     },
     clickCol(a, b, c) {
       const i = this.checkList.findIndex((item) => item.index == c);
-      console.log("i", i);
+
       if (i > -1) this.checkList.splice(i, i + 1);
       else
         this.checkList.push({
@@ -235,7 +299,9 @@ export default {
     getRowKey(row) {
       return row.id;
     },
-
+    handleClick(val) {
+      // this.activeName = val;
+    },
     renderHeader(h, { column }) {
       return h("div", [
         h("el-checkbox", {
@@ -270,13 +336,13 @@ export default {
     },
 
     cellClick(row, column, cell, event) {
-      console.log(row,column,cell)
+      console.log(row, column, cell);
       this.$emit("cell-click", row, column, cell, event);
     },
-    headerClick(column, event){
-      console.log(column)
+    headerClick(column, event) {
+      console.log(column);
     },
-    
+
     // 格子双击事件
     cellBbClick(row, column, cell, event) {
       this.$emit("cell-dblclick", row, column, cell, event);
