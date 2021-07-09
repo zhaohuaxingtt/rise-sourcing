@@ -15,8 +15,8 @@
             :tableData="tableListData"
             :tableTitle="tableTitle"
         >
-          <template #budget="scope">
-            <div>{{ getTousandNum(scope.row.budget) }}</div>
+          <template #baAmount="scope">
+            <div>{{ getTousandNum(Number(scope.row.baAmount).toFixed(2)) }}</div>
           </template>
         </iTableList>
         <div class="money">货币：人民币  |  单位：元  |  不含税 </div>

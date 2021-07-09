@@ -249,7 +249,6 @@ export default {
     this.params = this.$route.query
     this.beginType = this.params.sourceStatus
     this.getModelProtitesPullDown()
-    this.getInvestmentVerisionList()
   },
   mounted() {
   },
@@ -316,10 +315,10 @@ export default {
         }
         if (Number(res[4].code) === 0) {
           this.carTypeBudget = res[4].data.carTypeBudget
-          console.log(this.carTypeBudget)
         } else {
           iMessage.error(result4);
         }
+        this.getInvestmentVerisionList()
         this.loadingiSearch = false
       }).catch(() => {
         this.loadingiSearch = false
@@ -339,7 +338,11 @@ export default {
             })
             tableListData = tableListData.concat(a)
           })
-          this.tableListData = tableListData
+          this.tableListData = tableListData.map(item => {
+            item.budgetAmount = Number(item.budgetAmount).toFixed(2)
+            item.refMoldAmount = Number(item.refMoldAmount).toFixed(2)
+            return item
+          })
           this.tableListDataClone = cloneDeep(this.tableListData)
         } else {
           iMessage.error(result);
@@ -350,6 +353,7 @@ export default {
       });
     },
     getInvestmentData() {
+      let _this = this
       this.headerLoading = true
       getInvestmentData({
         investmentVersionId: this.form['search.version'],
@@ -381,9 +385,7 @@ export default {
             const chart2 = echarts().init(document.getElementById("chart2"));
             const chart3 = echarts().init(document.getElementById("chart3"));
             const chart4 = echarts().init(document.getElementById("chart4"));
-             console.log(this.carTypeBudget)
-
-             let option1 = {
+            let option1 = {
               // tooltip: {
                 // formatter: function (params) {//这里就是控制显示的样式
                 //   if (params.dataIndex == 0) {
@@ -436,10 +438,27 @@ export default {
               },
               series: [
                 {
-                  name: 'contingency',
+                  name: 'aekoValue',
                   type: 'bar',
                   stack: 'total',
                   color: '#73A1F6',
+                  label: {
+                    show: true,
+                    textStyle: {
+                      color: '#ffffff',
+                      fontSize: 8
+                    }
+                  },
+                  emphasis: {
+                    focus: 'series'
+                  },
+                  data: [totalValue]
+                },
+                {
+                  name: 'contingency',
+                  type: 'bar',
+                  stack: 'total',
+                  color: '#2662F3',
                   barWidth: 40,
                   label: {
                     show: true,
@@ -451,24 +470,7 @@ export default {
                   emphasis: {
                     focus: 'series'
                   },
-                   data: [totalValue]
-                },
-                {
-                  name: 'aekoValue',
-                  type: 'bar',
-                  stack: 'total',
-                  color: '#2662F3',
-                  label: {
-                    show: true,
-                    textStyle: {
-                      color: '#ffffff',
-                      fontSize: 8
-                    }
-                  },
-                  emphasis: {
-                    focus: 'series'
-                  },
-                   itemStyle: {
+                  itemStyle: {
                     normal: {
                       barBorderRadius: [5, 5, 0, 0],
                     }
@@ -645,6 +647,7 @@ export default {
                   this.$t("LK_WEISHENQING"),
                   this.$t("LK_YISHENQING"),
                   this.$t("LK_WEIDINGDIAN"),
+                  this.$t("定点节降"),
                   this.$t("LK_YIDINGDIAN"),
                   this.$t("LK_WUBA"),
                   this.$t("LK_YOUBA"),
@@ -702,6 +705,7 @@ export default {
                     0,
                     notAekoPriceDetail.applyAmount,
                     0,
+                    Number(notAekoPriceDetail.nomiAmount) + Number(notAekoPriceDetail.nomiJAmount),
                     notAekoPriceDetail.nomiAmount,
                     0,
                     notAekoPriceDetail.baAmount,
@@ -730,6 +734,7 @@ export default {
                     notAekoPriceDetail.notApplyAmount,
                     notAekoPriceDetail.applyAmount,
                     notAekoPriceDetail.notNomiAmount,
+                    notAekoPriceDetail.nomiJAmount,
                     notAekoPriceDetail.nomiAmount,
                     notAekoPriceDetail.notBaAmount,
                     notAekoPriceDetail.baAmount,
@@ -847,7 +852,7 @@ export default {
               ]
             }
             option2.series[option2.series.length - 1].label.formatter = totalValue
-            option1.series[option1.series.length - 1].label.formatter = Number(totalValue + this.carTypeBudget).toFixed(2)
+            option1.series[option1.series.length - 1].label.formatter = (Number(totalValue) + Number(this.carTypeBudget)).toFixed(2)
             chart1.setOption(option1);
             chart2.setOption(option2);
             chart3.setOption(option3);
@@ -1128,7 +1133,7 @@ export default {
           width: 10px;
           height: 10px;
           border-radius: 50%;
-          background-color: #B3D0FF;
+          background-color: #2662F3;
           position: absolute;
           left: -17px;
           top: 4px;
@@ -1136,14 +1141,14 @@ export default {
 
         &:nth-of-type(2) {
           &::before {
-            background-color: #2662F3;
+            background-color: #73A1F6;
             top: 2px;
           }
         }
 
         &:nth-of-type(3) {
           &::before {
-            background-color: #73A1F6;
+            background-color: #B3D0FF;
             top: 2px;
           }
         }

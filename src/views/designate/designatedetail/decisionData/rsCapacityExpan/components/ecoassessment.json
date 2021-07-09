@@ -1,0 +1,34 @@
+{
+  "result": true,
+  "code": "200",
+  "desEn": "success",
+  "desZh": "操作成功",
+  "data": {
+    "dataList": [
+      {
+        "partNum": "GS-812738DT12",
+        "nomiRecordAPrice": "33223",
+        "nomiSuggestAPrice": "8982838",
+        "APriceGrowRate": "12",
+        "year": "2021"
+      },
+      {
+        "partNum": "GS-812738DT13",
+        "nomiRecordAPrice": "33223",
+        "nomiSuggestAPrice": "8982838",
+        "APriceGrowRate": "12",
+        "year": "2022"
+      }
+    ],
+    "lifeTimeList": [
+      {"year": "2021", "Num": 132},
+      {"year": "2022", "Num": 282},
+      {"year": "2023", "Num": 132},
+      {"year": "2024", "Num": 232},
+      {"year": "2025", "Num": 32},
+      {"year": "2026", "Num": 23},
+      {"year": "2027", "Num": 0}
+      
+    ]
+  }
+}

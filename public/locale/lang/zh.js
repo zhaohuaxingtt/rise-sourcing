@@ -838,6 +838,8 @@
         'LK_SHENQINGREN': '申请人',//申请人
         'LK_SHENQINGSHIJIANQIZHI': '申请时间起止',//申请时间起止
         'LK_PIZHUAN': '批准',//批准
+        'LK_SHENQINGSHIJIANQI': '申请时间起',
+        'LK_SHENQINGSHIJIANZHI': '申请时间止',
 
         'LK_CHEXINGXIANGMUGAILAN': '车型项目概览',//车型项目概览
         'LK_YUSUANGUANLI': '预算管理',//预算管理
@@ -1387,6 +1389,9 @@
             'GUDINGCHENGBEN': '固定成本', //固定成本
             'ZONGJIANGJIA': '总降价', //总降价
             'JIANGJIA': '降价', //降价
+            'ZXFXGJNHYGLFXBG': '专项分析工具内有关联分析报告', //专项分析工具内有关联分析报告
+            'ZXFXGJNMYGLFXBGDHHILJ': '专项分析工具内没有相关的分析报告，且含Heavy Item零件', //专项分析工具内没有关联分析报告，但含heavy item零件
+            'ZXFXGJNMYGLFXBGQBHHILJ': '专项分析工具内没有相关的分析报告，且不含Heavy Item零件', //专项分析工具内没有关联分析报告，且不含heavy item零件
         },
     }
     var xmlHttp = ''

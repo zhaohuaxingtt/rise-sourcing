@@ -9,7 +9,7 @@ export const tableTitle = [
   { props: 'fsNum', name: 'FS号', key: 'LK_FSHAO', },
   { props: 'partNum', name: '零件号', key: 'TPZS.LJH', },
   {
-    props: 'partNameZh', name: '零件名', key: 'TPZS.LJM', width: 120,
+    props: 'partNameZh', name: '零件名', key: 'TPZS.LJM', 
   },
   { props: 'procureFactory', name: '工厂', key: 'TPZS.GC', },
   { props: 'ebrCalculatedValue', name: 'EBR%', key: 'TPZS.EBR', },

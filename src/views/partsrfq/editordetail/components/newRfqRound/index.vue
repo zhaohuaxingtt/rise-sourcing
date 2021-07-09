@@ -1,43 +1,43 @@
 <!--
  * @Author: moxuan
  * @Date: 2021-03-05 17:24:15
- * @LastEditTime: 2021-05-14 12:30:41
+ * @LastEditTime: 2021-07-07 17:47:09
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
 -->
 <template>
-  <iDialog :title="$t(title)" :visible.sync="value" width="90%" @close='clearDiolog' z-index="1000">
+  <iDialog :title="title || language('LK_XINJIANRFQLUNCI','新建RFQ轮次')" :visible.sync="value" width="90%" @close='clearDiolog' z-index="1000">
     <div class="changeContent">
       <div class="clearFloat">
         <div class="floatright title-button-box">
           <template v-if="roundType === '00'">
-            <iButton @click="save" v-permission="PARTSRFQ_EDITORDETAIL_NEWRFQROUND_SAVE">{{ $t('LK_BAOCUN') }}</iButton>
+            <iButton @click="save" v-permission="PARTSRFQ_EDITORDETAIL_NEWRFQROUND_SAVE">{{ language('LK_BAOCUN','保存') }}</iButton>
             <iButton @click="updateRfqStatus('06')" :disabled="!saveStaus"
-                     v-permission="PARTSRFQ_EDITORDETAIL_NEWRFQROUND_SAND">{{ $t('LK_FASONGXUNJIA') }}
+                     v-permission="PARTSRFQ_EDITORDETAIL_NEWRFQROUND_SAND">{{ language('LK_FASONGXUNJIA','发送询价') }}
             </iButton>
           </template>
           <template v-else>
             <iButton @click="saveAndCreate" v-permission="PARTSRFQ_EDITORDETAIL_NEWRFQROUND_SAVEANDCREATE">
-              {{ $t('LK_BAOCUNBINGCHUANGJIAN') }}
+              {{ language('LK_BAOCUNBINGCHUANGJIAN','保存并创建') }}
             </iButton>
           </template>
         </div>
       </div>
       <iFormGroup inline icon>
-        <iFormItem :label="$t('LK_LUNCILEIXING')" name="test"
+        <iFormItem :label="language('LK_LUNCILEIXING','轮次类型')" name="test"
                    v-permission="PARTSRFQ_EDITORDETAIL_NEWRFQROUND_ROUNDTYPE">
           <i-select v-model="roundType" @change="handleSelectChange">
             <el-option v-for="items in roundTypeOptions" :key='items.code' :value='items.code' :label="items.name" :disabled="items.disabled"/>
           </i-select>
         </iFormItem>
-        <iFormItem :label="$t('LK_BENLUNBAOJIAQIZHISHIJIAN')" name="test" v-if="['00', '01'].includes(roundType)">
+        <iFormItem :label="language('LK_BENLUNBAOJIAQIZHISHIJIAN','本轮报价起止时间')" name="test" v-if="['00', '01'].includes(roundType)">
           <div class="flex">
-            <iDatePicker type="date" :placeholder="$t('LK_QINGXUANZE')" v-model="startTime" value-format="yyyy-MM-dd"
+            <iDatePicker type="date" :placeholder="language('LK_QINGXUANZE','请选择')" v-model="startTime" value-format="yyyy-MM-dd"
                             v-permission="PARTSRFQ_EDITORDETAIL_NEWRFQROUND_STARTTIME" disabled></iDatePicker>
           </div>
         </iFormItem>
         <iFormItem label="" name="test" v-if="['00', '01'].includes(roundType)">
-          <iDatePicker type="date" :placeholder="$t('LK_QINGXUANZE')" v-model="endTime" value-format="yyyy-MM-dd"
+          <iDatePicker type="date" :placeholder="language('LK_QINGXUANZE','请选择')" v-model="endTime" value-format="yyyy-MM-dd"
                           v-permission="PARTSRFQ_EDITORDETAIL_NEWRFQROUND_ENDTIME"
                           :picker-options="{
                             disabledDate(time) {
@@ -99,7 +99,7 @@ export default {
   mixins: [pageMixins, rfqCommonFunMixins],
   props: {
     // title: {type: String, default: '新建RFQ轮次'},
-    title: {type: String, default: 'LK_XINJIANRFQLUNCI'},
+    title: {type: String, default: ''},
     value: {type: Boolean},
     repeatClick: Boolean
   },
@@ -152,7 +152,7 @@ export default {
       }
     },
     sureChangeItems() {
-      if (this.selectTableData.length == '') return iMessage.warn(this.$t('LK_NINDANGQIANHAIWEIXUANZE'))
+      if (this.selectTableData.length == '') return iMessage.warn(this.language('LK_NINDANGQIANHAIWEIXUANZE','抱歉！您当前还未选择！'))
       this.$emit('sure', JSON.parse(this.selectTableData))
     },
     clearDiolog() {
@@ -171,7 +171,7 @@ export default {
          },
     async save() {
       if (this.selectTableData.length === 0) {
-        return iMessage.warn(this.$t('LK_NINDANGQIANHAIWEIXUANZERENWU'));
+        return iMessage.warn(this.language('LK_NINDANGQIANHAIWEIXUANZERENWU','抱歉，您当前还未选择任务！'));
       }
       const id = this.$route.query.id
       if (id) {

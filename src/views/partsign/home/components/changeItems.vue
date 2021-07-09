@@ -1,22 +1,22 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 11:24:15
- * @LastEditTime: 2021-05-24 20:51:23
+ * @LastEditTime: 2021-07-07 16:07:25
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsign\home\components\changeItems.vue
 -->
 <template>
-      <iDialog :title="$t(title)" :visible.sync="value" width="400px" @close='clearDiolog' top="40vh">
+      <iDialog :title="title || language('LK_XINJIANXINXIDANZHUANPAI','新件信息单转派')" :visible.sync="value" width="400px" @close='clearDiolog' top="40vh">
         <div class="changeContent">
-          <span class="fontSize14">{{ $t('LK_CAIGOUYUAN') }}：</span>
-          <iSelect v-model='inquiryBuyer' :placeholder="$t('LK_QINGXUANZHEXUNJIACAIGOUYUAN')" value-key="id">
+          <span class="fontSize14">{{ language('LK_CAIGOUYUAN','前期采购员') }}：</span>
+          <iSelect v-model='inquiryBuyer' :placeholder="language('LK_QINGXUANZHEXUNJIACAIGOUYUAN','请选择询价采购员')" value-key="id">
            <el-option v-for="(items,index) in inquiryBuyerList" :key='index' :value='items' :label="items.nameZh"/>
           </iSelect>
         </div>
         <span slot="footer" class="dialog-footer">
-          <iButton @click="$emit('input',false)">{{$t('LK_QUXIAO')}}</iButton>
-          <iButton :loading='repeatClick' @click="sureChangeItems">{{$t('LK_QUEREN')}}</iButton>
+          <iButton @click="$emit('input',false)">{{language('LK_QUXIAO','取 消')}}</iButton>
+          <iButton :loading='repeatClick' @click="sureChangeItems">{{language('LK_QUEREN','确认')}}</iButton>
         </span>
       </iDialog>
 </template>
@@ -27,7 +27,7 @@ import store from '@/store'
 export default{
   components:{iSelect,iButton,iDialog},
   props:{
-    title:{type:String,default:'LK_XINJIANXINXIDANZHUANPAI'},
+    title:{type:String,default:''},
     value:{type:Boolean},
     repeatClick:Boolean
   },
@@ -52,7 +52,7 @@ export default{
     },
     sureChangeItems(){
 		// console.log(this.inquiryBuyer);
-      if(!this.inquiryBuyer.id) return iMessage.warn(this.$t('LK_NINDANGQIANHAIWEIXUANZEXUNJIACAIGOUYUAN'))
+      if(!this.inquiryBuyer.id) return iMessage.warn(this.language('LK_NINDANGQIANHAIWEIXUANZEXUNJIACAIGOUYUAN','抱歉！您当前还未选择询价采购员！'))
       this.$emit('sure',this.inquiryBuyer)
     }
   }
