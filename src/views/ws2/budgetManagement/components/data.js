@@ -649,8 +649,8 @@ export const appliedList = [
     },
     {
         props: 'rfqId',
-        name: 'RFQ号',
-        key: 'RFQ号',
+        name: 'RFQ',
+        key: 'RFQ',
         tooltip: false
     },
     {
@@ -700,8 +700,8 @@ export const nomiAmountDetailList = [
     },
     {
         props: 'rfqId',
-        name: 'RFQ号',
-        key: 'RFQ号',
+        name: 'RFQ',
+        key: 'RFQ',
         tooltip: false
     },
     {
@@ -757,8 +757,8 @@ export const baAmountDetailList = [
     },
     {
         props: 'rfqId',
-        name: 'RFQ号',
-        key: 'RFQ号',
+        name: 'RFQ',
+        key: 'RFQ',
         tooltip: false
     },
     {
