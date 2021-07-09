@@ -44,7 +44,7 @@ import quotationScoringHZ from './components/quotationScoringHz'
 import quotationScoringEcartsCard from './components/quotationScoringEcartsCard'
 import buMonitor from './components/qutaionScoringBusses'
 import {icardData} from './components/data'
-import gather from "@/views/partsrfq/externalAccessToAnalysisTools/negotiationAssistant/index.vue";
+import gather from "@/views/partsrfq/externalAccessToAnalysisTools/negotiationAssistant/gather.vue";
 import negotiateBasicInfor from "./components/negotiateBasicInfor";
 
 
