@@ -16,6 +16,7 @@
             :placeholder="$t('LK_ALL')"
             v-model="form['tmCartypeProId']"
             filterable
+            clearable
         >
           <el-option
               :value="item.tmCartypeProId"
@@ -32,6 +33,7 @@
             :placeholder="$t('LK_ALL')"
             v-model="form['bmStatus']"
             filterable
+            clearable
         >
           <el-option
               :value="item.bmStatus"
@@ -48,6 +50,7 @@
             :placeholder="$t('LK_ALL')"
             v-model="form['akeoType']"
             filterable
+            clearable
         >
           <el-option
               :value="item.akeoType"
@@ -64,6 +67,7 @@
             :placeholder="$t('LK_ALL')"
             v-model="form['deptId']"
             filterable
+            clearable
         >
           <el-option
               :value="item.deptId"
@@ -80,7 +84,7 @@
       </el-form-item>
 
        <!-- 申请日期起止 -->
-      <el-form-item :label="$t('LK_APPLYDATESTARTANDEND')">
+      <!-- <el-form-item :label="$t('LK_APPLYDATESTARTANDEND')">
         <el-date-picker
           class="budgetApprovalDate"
           @change="dateChange"
@@ -90,7 +94,26 @@
           start-placeholder="YYYY-MM-DD"
           end-placeholder="YYYY-MM-DD">
         </el-date-picker>
+      </el-form-item> -->
+
+      <!-- 开始时间 -->
+      <el-form-item :label="$t('LK_SHENQINGSHIJIANQI')">
+        <el-date-picker
+          v-model="form['startDate']"
+          type="date"
+          placeholder="YYYY-MM-DD">
+        </el-date-picker>
       </el-form-item>
+
+      <!-- 结束时间 -->
+      <el-form-item :label="$t('LK_SHENQINGSHIJIANZHI')">
+        <el-date-picker
+          v-model="form['endDate']"
+          type="date"
+          placeholder="YYYY-MM-DD">
+        </el-date-picker>
+      </el-form-item>
+
 
       <!-- Linie -->
       <el-form-item label="Linie">
@@ -98,6 +121,7 @@
             :placeholder="$t('LK_QINGXUANZE')"
             v-model="form['linieId']"
             filterable
+            clearable
         >
           <el-option
               :value="item.linieId"
@@ -106,6 +130,11 @@
               :key="index"
           ></el-option>
         </iSelect>
+      </el-form-item>
+
+      <!-- BM单号 -->
+      <el-form-item :label="$t('LK_BMDANHAO')">
+        <iInput :placeholder="$t('LK_QINGSHURU')" v-model="form['bmNum']" ></iInput>
       </el-form-item>
     </el-form>
   </iSearch>
@@ -200,17 +229,17 @@ export default {
       })
     },
 
-    dateChange(date){
-      this.form['startDate'] = date ? Moment(date[0]).format('YYYY-MM-DD') : '';
-      this.form['endDate'] = date ? Moment(date[1]).format('YYYY-MM-DD') : '';
-    },
+    // dateChange(date){
+    //   this.form['startDate'] = date ? Moment(date[0]).format('YYYY-MM-DD') : '';
+    //   this.form['endDate'] = date ? Moment(date[1]).format('YYYY-MM-DD') : '';
+    // },
 
     sure(){
       this.$emit('sure', this.form);
     },
 
     reset(){
-      this.form = bmApplyForm;
+      this.form = _.cloneDeep(bmApplyForm);
       this.$emit('sure', bmApplyForm);
     },
   }
@@ -228,9 +257,9 @@ export default {
 .search-block{
   margin-bottom: 20px;
 
-  & .el-form-item:nth-last-child(2){
-    width: 30.6rem !important;
-  }
+  // & .el-form-item:nth-last-child(3){
+  //   width: 30.6rem !important;
+  // }
 
   ::v-deep .el-range-separator{
     width: 20px !important;

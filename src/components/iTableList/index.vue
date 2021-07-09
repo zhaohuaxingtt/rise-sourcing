@@ -43,7 +43,7 @@
       <el-table-column
         v-if="selection"
         type="selection"
-        width="50"
+        :width="selectionWidth"
         align="center"
       ></el-table-column>
       <el-table-column
@@ -143,6 +143,7 @@ export default {
     typeIndex: { type: Boolean, default: false },
     index: { type: Boolean, default: false },
     indexLabel: { type: String, default: "#" },
+    selectionWidth: { type: String, default: "50" },
     height: { type: Number || String },
     activeItems: { type: String, default: "b" },
     radio: { type: Boolean, default: false }, // 是否单选

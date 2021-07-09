@@ -1,7 +1,7 @@
 <!--
 * @author:shujie
 * @Date: 2021-3-5 10:56:32
- * @LastEditors: Luoshuang
+ * @LastEditors: Please set LastEditors
 * @Description: BDL列表
  -->
 <template>
@@ -208,7 +208,7 @@ export default {
       }
     },
     handleSelectAll(selection) {
-      if (selection.length !== this.tableData.length) { // 当前页取消选中操作
+      if (!selection.length) { // 当前页取消选中操作
         const editNoSelectTableData = [] // 没有保存过的bdl
         const noEditNoSelectTableData = [] // 保存过的bdl
         for (let i = 0, item; (item = this.tableData[i++]); ) {

@@ -6,7 +6,7 @@
  * @Descripttion: your project
 -->
 <template>
-  <iCard style="height:400px" :title="labelData.title">
+  <iCard style="min-height:400px" :title="labelData.title">
     <div slot="header-control">
       <el-popover placement="top-start" trigger="hover" :content="labelData.colourType===1?$t('TPZS.ZXFXGJNHYGLFXBG'):labelData.colourType===2?$t('TPZS.ZXFXGJNMYGLFXBGDHHILJ'):$t('TPZS.ZXFXGJNMYGLFXBGQBHHILJ')">
         <icon slot="reference" :name="labelData.colourType===1?'iconzhuanxiangfenxigongju-landian':labelData.colourType===2?'iconbaojiapingfengenzong-jiedian-cheng':'iconbaojiapingfengenzong-jiedian-hui'" symbol></icon>

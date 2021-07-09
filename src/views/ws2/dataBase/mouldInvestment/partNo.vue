@@ -190,32 +190,26 @@ export default {
         this.form[i] = "";
       }
       this.loadingiSearch = true
-      await Promise.all([getDepartmentsList(), getCartypePulldown(), getCardDetailPulldown(), proDeptPullDown()]).then((res) => {
+      await Promise.all([getCartypePulldown(), getCardDetailPulldown(), proDeptPullDown()]).then((res) => {
         const result0 = this.$i18n.locale === 'zh' ? res[0].desZh : res[0].desEn
         const result1 = this.$i18n.locale === 'zh' ? res[1].desZh : res[1].desEn
         const result2 = this.$i18n.locale === 'zh' ? res[2].desZh : res[2].desEn
-        const result3 = this.$i18n.locale === 'zh' ? res[3].desZh : res[3].desEn
-        if (Number(res[0].code) === 0) {
-          // this.departmentsList = res[0].data
+        if (res[0].data) {
+          this.carTypeList = res[0].data;
         } else {
           iMessage.error(result0);
         }
-        if (res[1].data) {
-          this.carTypeList = res[1].data;
+        this.getTableListFn()
+        if (Number(res[1].code) === 0) {
+          this.fixedPointList = res[1].data.fixedPointPullDownVOList
+          this.projectTypeList = res[1].data.projectTypePullDownVOList
         } else {
           iMessage.error(result1);
         }
-        this.getTableListFn()
         if (Number(res[2].code) === 0) {
-          this.fixedPointList = res[2].data.fixedPointPullDownVOList
-          this.projectTypeList = res[2].data.projectTypePullDownVOList
+          this.proDeptList = res[2].data
         } else {
           iMessage.error(result2);
-        }
-        if (Number(res[3].code) === 0) {
-          this.proDeptList = res[3].data
-        } else {
-          iMessage.error(result3);
         }
         this.loadingiSearch = false
       }).catch(() => {

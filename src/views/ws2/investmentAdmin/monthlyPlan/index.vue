@@ -16,7 +16,7 @@
           :key="index"
         ></el-option>
       </iSelect>
-      <div @click="handleRefresh">
+      <div @click="handleRefresh" v-if="versionData.editFlag">
         <icon class="refreshIcon" symbol name="iconmojukanbanshuaxin" />
         <span class="refresh cursor">{{ $t('LK_SHUAXIN') }}</span>
       </div>
@@ -94,6 +94,7 @@
         :titlePopover="false"
         :selection="false"
         :show-summary="true"
+        :getSummaries="getSummaries"
         :tableLoading="tableLoading"
         @handleSelectionChange="handleSelectionChange"
         @cellMouseLeave="cellMouseLeave"
@@ -114,6 +115,10 @@
             : ''
         "
       >
+        <template #amount="scope">
+          <div v-if="pageEdit">{{ scope.row.amount }}</div>
+          <div v-else>{{ getTousandNum(scope.row.amount) }}</div>
+        </template>
         <template #planAmountM1="scope">
           <iInput
             v-model="scope.row.planAmountM1"
@@ -121,7 +126,7 @@
             v-if="pageEdit"
             @input="handleInputChange(scope.row, 'planAmountM1')"
           ></iInput>
-          <div v-else>{{ scope.row.planAmountM1 }}</div>
+          <div v-else>{{ getTousandNum(scope.row.planAmountM1) }}</div>
         </template>
         <template #planAmountM2="scope">
           <iInput
@@ -130,7 +135,7 @@
             v-if="pageEdit"
             @input="handleInputChange(scope.row, 'planAmountM2')"
           ></iInput>
-          <div v-else>{{ scope.row.planAmountM2 }}</div>
+          <div v-else>{{ getTousandNum(scope.row.planAmountM2) }}</div>
         </template>
         <template #planAmountM3="scope">
           <iInput
@@ -139,7 +144,7 @@
             v-if="pageEdit"
             @input="handleInputChange(scope.row, 'planAmountM3')"
           ></iInput>
-          <div v-else>{{ scope.row.planAmountM3 }}</div>
+          <div v-else>{{ getTousandNum(scope.row.planAmountM3) }}</div>
         </template>
         <template #planAmountM4="scope">
           <iInput
@@ -148,7 +153,7 @@
             v-if="pageEdit"
             @input="handleInputChange(scope.row, 'planAmountM4')"
           ></iInput>
-          <div v-else>{{ scope.row.planAmountM4 }}</div>
+          <div v-else>{{ getTousandNum(scope.row.planAmountM4) }}</div>
         </template>
         <template #planAmountM5="scope">
           <iInput
@@ -157,7 +162,7 @@
             v-if="pageEdit"
             @input="handleInputChange(scope.row, 'planAmountM5')"
           ></iInput>
-          <div v-else>{{ scope.row.planAmountM5 }}</div>
+          <div v-else>{{ getTousandNum(scope.row.planAmountM5) }}</div>
         </template>
         <template #planAmountM6="scope">
           <iInput
@@ -166,7 +171,7 @@
             v-if="pageEdit"
             @input="handleInputChange(scope.row, 'planAmountM6')"
           ></iInput>
-          <div v-else>{{ scope.row.planAmountM6 }}</div>
+          <div v-else>{{ getTousandNum(scope.row.planAmountM6) }}</div>
         </template>
         <template #planAmountM7="scope">
           <iInput
@@ -175,7 +180,7 @@
             v-if="pageEdit"
             @input="handleInputChange(scope.row, 'planAmountM7')"
           ></iInput>
-          <div v-else>{{ scope.row.planAmountM7 }}</div>
+          <div v-else>{{ getTousandNum(scope.row.planAmountM7) }}</div>
         </template>
         <template #planAmountM8="scope">
           <iInput
@@ -184,7 +189,7 @@
             v-if="pageEdit"
             @input="handleInputChange(scope.row, 'planAmountM8')"
           ></iInput>
-          <div v-else>{{ scope.row.planAmountM8 }}</div>
+          <div v-else>{{ getTousandNum(scope.row.planAmountM8) }}</div>
         </template>
         <template #planAmountM9="scope">
           <iInput
@@ -193,7 +198,7 @@
             v-if="pageEdit"
             @input="handleInputChange(scope.row, 'planAmountM9')"
           ></iInput>
-          <div v-else>{{ scope.row.planAmountM9 }}</div>
+          <div v-else>{{ getTousandNum(scope.row.planAmountM9) }}</div>
         </template>
         <template #planAmountM10="scope">
           <iInput
@@ -202,7 +207,7 @@
             v-if="pageEdit"
             @input="handleInputChange(scope.row, 'planAmountM10')"
           ></iInput>
-          <div v-else>{{ scope.row.planAmountM10 }}</div>
+          <div v-else>{{ getTousandNum(scope.row.planAmountM10) }}</div>
         </template>
         <template #planAmountM11="scope">
           <iInput
@@ -211,7 +216,7 @@
             v-if="pageEdit"
             @input="handleInputChange(scope.row, 'planAmountM11')"
           ></iInput>
-          <div v-else>{{ scope.row.planAmountM11 }}</div>
+          <div v-else>{{ getTousandNum(scope.row.planAmountM11) }}</div>
         </template>
         <template #planAmountM12="scope">
           <iInput
@@ -220,7 +225,7 @@
             v-if="pageEdit"
             @input="handleInputChange(scope.row, 'planAmountM12')"
           ></iInput>
-          <div v-else>{{ scope.row.planAmountM12 }}</div>
+          <div v-else>{{ getTousandNum(scope.row.planAmountM12) }}</div>
         </template>
       </iTableList>
     </iCard>
@@ -246,10 +251,12 @@ import {
   exportPlanCommutityList, 
   queryPlanMonthList, 
   saveMonthData,
-  importMonthData
+  importMonthData,
+  refreshVersion
 } from "@/api/ws2/investmentAdmin";
 import { iMessage } from '../../../../components';
 import store from '@/store';
+import { getTousandNum, delcommafy } from "@/utils/tool";
 
 export default {
   mixins: [tableHeight],
@@ -279,6 +286,9 @@ export default {
       tableLoading: false,
       clearEchart: false,
       noChangeTableListData: [], //未编辑数据
+      newVersionDate: '', //保存新版本年份日期
+      getTousandNum: getTousandNum,
+      delcommafy: delcommafy
     };
   },
   created() {
@@ -320,6 +330,14 @@ export default {
       saveMonthData(param).then(res => {
         if (Number(res.code) === 0) {
           // this.pageEdit = false;
+          this.tableListData.map(item => {
+            for (let monthIndex = 0; monthIndex < 12; monthIndex++) {
+              if (item[`planAmountM${monthIndex + 1}`] == null) {
+                item[`planAmountM${monthIndex + 1}`] = 0;
+              }
+              item[`planAmountM${monthIndex + 1}`] = this.getFormatNumber(item[`planAmountM${monthIndex + 1}`]);
+            }
+          });
           this.noChangeTableListData = cloneDeep(this.tableListData);
           return iMessage.success(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
         } else {
@@ -383,7 +401,10 @@ export default {
             };
           }
           for (let monthIndex = 0; monthIndex < 12; monthIndex++) {
-            monthTotal[monthIndex] += element[`planAmountM${monthIndex + 1}`];
+            monthTotal[monthIndex] += parseFloat(element[`planAmountM${monthIndex + 1}`]);
+            if (index == this.tableListData.length - 1) {
+              monthTotal[monthIndex] = monthTotal[monthIndex].toFixed(2);
+            }
             data.push(element[`planAmountM${monthIndex + 1}`]);
           }
           temp.emphasis = {
@@ -399,7 +420,7 @@ export default {
           }
           series.unshift(temp);
         });
-        series.unshift({//monthTotal
+        series.unshift({
           name: "total",
           type: "bar",
           barWidth: 50,
@@ -521,21 +542,24 @@ export default {
       });
     },
     handleInputChange(row, key) {
-      row[key] = Number(row[key].replace(/[^\d.]/g,''));
+      let temp = row[key].replace(/[^\d.]/g,'');
+      let tempArr = temp.split('.')
+      let count = tempArr.length;
+      if (count > 2) {
+        row[key] = row[key].substring(0, row[key].length - 1);
+      } else {
+        if (count == 2 && tempArr[1].length > 2) {
+          row[key] = temp.substring(0, row[key].length - 1);;
+        } else {
+          row[key] = temp;
+        }
+      }
       row.amount = 0;
-      row.amount =
-        Number(row.planAmountM1) +
-        Number(row.planAmountM2) +
-        Number(row.planAmountM3) +
-        Number(row.planAmountM4) +
-        Number(row.planAmountM5) +
-        Number(row.planAmountM6) +
-        Number(row.planAmountM7) +
-        Number(row.planAmountM8) +
-        Number(row.planAmountM9) +
-        Number(row.planAmountM10) +
-        Number(row.planAmountM11) +
-        Number(row.planAmountM12);
+      for (let monthIndex = 0; monthIndex < 12; monthIndex++) {
+        let temp = cloneDeep(row[`planAmountM${monthIndex + 1}`]);
+        row.amount += parseFloat(temp);
+      }
+      row.amount = this.getFormatNumber(row.amount);
       this.showEcharts();
     },
     //保存新版本
@@ -547,13 +571,13 @@ export default {
         dataList: this.tableListData,
         dateStr: val
       };
+      this.newVersionDate = val;
       saveNewVersion(param).then(res => {
-        this.saveNewVersion = false;
         if (Number(res.code) === 0) {
           this.getVersionList();
-          this.pageEdit = false;
           return iMessage.success(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
         } else {
+          this.saveNewVersion = false;
           return iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
         }
       }).catch((e) => {
@@ -576,19 +600,28 @@ export default {
         if (Number(res.code) === 0 && res.data.length > 0) {
           const currentYear = new Date().getFullYear();
           this.versionList = res.data;
-          this.versionList.map((item, index) => {
-            if (this.versionList.map(temp => temp.year).indexOf(item.year) == index) {
-              if (currentYear == item.year) {
+          //保存为新版本，取保存的新版本
+          if (this.saveNewVersion) {
+            this.versionList.map(item => {
+              if (this.newVersionDate == item.version.split("-")[0]) {
                 this.versionData = item;
               }
-            }
-            return item;
-          });
-          this.versionList.map(item => {
-            if (store.state.investmentAdmin.versionId == item.id) {
-              this.versionData = item; 
-            }
-          });
+            });
+            this.saveNewVersion = false;
+          } else {
+            this.versionList.map((item, index) => {
+              if (this.versionList.map(temp => temp.year).indexOf(item.year) == index) {
+                if (currentYear == item.year) {
+                  this.versionData = item;
+                }
+              }
+            });
+            this.versionList.map(item => {
+              if (store.state.investmentAdmin.versionId == item.id) {
+                this.versionData = item; 
+              }
+            });
+          }
           this.getMonthList();
         }
       });
@@ -596,7 +629,13 @@ export default {
     //刷新
     handleRefresh() {
       this.refreshLoading = true;
-      this.getVersionList();
+      refreshVersion(this.versionData.id).then(res => {
+        if (Number(res.code) === 0) {
+          this.getVersionList();
+        } else {
+          return iMessage.error(this.$i18n.locale === 'zh' ? msg.desZh : msg.desEn)
+        }
+      });
     },
     //查询列表数据
     getMonthList() {
@@ -610,19 +649,18 @@ export default {
         if (Number(res.code) === 0) {
           this.tableListData = res.data;
           this.tableListData.map(item => {
-            item.amount =
-              Number(item.planAmountM1) +
-              Number(item.planAmountM2) +
-              Number(item.planAmountM3) +
-              Number(item.planAmountM4) +
-              Number(item.planAmountM5) +
-              Number(item.planAmountM6) +
-              Number(item.planAmountM7) +
-              Number(item.planAmountM8) +
-              Number(item.planAmountM9) +
-              Number(item.planAmountM10) +
-              Number(item.planAmountM11) +
-              Number(item.planAmountM12);
+            item.amount = 0;
+            for (let monthIndex = 0; monthIndex < 12; monthIndex++) {
+              // monthTotal[monthIndex] += element[`planAmountM${monthIndex + 1}`];
+              // data.push(element[`planAmountM${monthIndex + 1}`]);
+              if (item[`planAmountM${monthIndex + 1}`] == null) {
+                item[`planAmountM${monthIndex + 1}`] = 0;
+              }
+              let temp = cloneDeep(item[`planAmountM${monthIndex + 1}`]);
+              item[`planAmountM${monthIndex + 1}`] = this.getFormatNumber(temp);
+              item.amount += parseFloat(temp);
+            }
+            item.amount = this.getFormatNumber(item.amount);
             return item;
           });
           this.noChangeTableListData = cloneDeep(this.tableListData);
@@ -657,15 +695,50 @@ export default {
         this.uploadLoading = false;
         return iMessage.error(this.$i18n.locale === 'zh' ? msg.desZh : msg.desEn)
       }
-    }
+    },
+    getFormatNumber(num) {
+      return (Math.round(num * 100) / 100).toFixed(2);
+    },
+    getSummaries(param){
+      const { columns, data } = param;
+      const sums = [];
+      const keyArr = [];
+
+      columns.forEach((column, index) => {
+        if (index === 0) {
+          sums[index] = 'Total';
+          return;
+        }
+        if(!keyArr.includes(column.property)){  //  只有金额字段才需要显示总价
+          const values = data.map(item => Number(item[column.property]));
+          if (!values.every(value => isNaN(value))) {
+            sums[index] = values.reduce((prev, curr) => {
+              const value = Number(curr);
+              if (!isNaN(value)) {
+                return prev + curr;
+              } else {
+                return prev;
+              }
+            }, 0);
+            sums[index] = this.getTousandNum(sums[index].toFixed(2));
+          } else {
+            sums[index] = 'N/A';
+          }
+        }else{
+          sums[index] = '';
+        }
+        
+      });
+      return sums;
+    },
   },
   computed: {
     totalAmount() {
       let res = 0;
       this.tableListData.forEach(item => {
-        res += item.amount;
+        res += parseFloat(this.delcommafy(item.amount));
       });
-      return res;
+      return this.getTousandNum(res.toFixed(2));
     },
   },
 };
@@ -688,7 +761,7 @@ export default {
   margin-top: 20px;
 
   .versionSelect {
-    width: 140px;
+    width: 155px;
     margin: 0 20px;
   }
 

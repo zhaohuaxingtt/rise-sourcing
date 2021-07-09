@@ -11,7 +11,7 @@
                 <p class="step-title">{{item.title}}</p>
                 <p class="step-tips">
                     <span v-if="isEdit && groupNode[item.key] && groupNode[item.key].isEditable" class="step-tips-edit">
-                        <span class="step-tips-block">{{groupNode[item.key] ? (groupNode[item.key].nodeWeek ? 'KW'+groupNode[item.key].nodeWeek : '-') : '-'}}</span>
+                        <span class="step-tips-block">{{groupNode[item.key] ? (groupNode[item.key].nodeWeek ? (getNodeYear(groupNode[item.key].nodeDate) +'KW'+groupNode[item.key].nodeWeek) : '-') : '-'}}</span>
                         <iDatePicker 
                             class="step-tips-picker"
                             v-model="groupNode[item.key].nodeDate" 
@@ -22,7 +22,7 @@
                             
                         />
                     </span>
-                    <span v-else>{{groupNode[item.key] ? (groupNode[item.key].nodeWeek ? 'KW'+groupNode[item.key].nodeWeek : '-') : '-'}}</span>
+                    <span v-else>{{groupNode[item.key] ? (groupNode[item.key].nodeWeek ? (getNodeYear(groupNode[item.key].nodeDate) + 'KW'+groupNode[item.key].nodeWeek) : '-') : '-'}}</span>
                 </p>
                 <!-- 插入的icon显示位 -->
                 <div v-if="($slots['myStep'] || myStep) && groupNode[item.key] && groupNode[item.key]['isTodayAfter'] && ((index+1)!=stepList.length)" class="myStep">
@@ -81,7 +81,20 @@ export default {
         // 改变日期
         changeDate(item){
             const {nodeDate} = item;
+            console.log(nodeDate);
             item.nodeWeek = window.moment(nodeDate).weeks();
+        },
+
+        // 获取年份显示
+        getNodeYear(nodeDate){
+            if(!nodeDate) return '';
+            const date = Number(nodeDate);
+            const nodeYear = window.moment(date).year();
+            if(nodeYear){
+                return nodeYear+'-'
+            }else{
+                return ''
+            }
         }
     }
 

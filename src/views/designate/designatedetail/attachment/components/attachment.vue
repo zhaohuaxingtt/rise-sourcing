@@ -1,7 +1,7 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-05-27 09:42:07
- * @LastEditTime: 2021-06-26 22:55:45
+ * @LastEditTime: 2021-07-07 15:38:15
  * @LastEditors: Please set LastEditors
  * @Description: 决策资料 - 附件
 -->
@@ -30,7 +30,7 @@
           {{ language("strategicdoc.ShangChuanWenJian") }}
         </iButton> -->
         <upload
-          class="upload-trigger"
+          class="upload-trigger margin-left10"
           v-if="!$store.getters.isPreview"
           :hideTip="true"
           :accept="'.doc,.docx,.xls,.xlsx,.ppt,.pptx,.jpg,.jpeg,.png,.pdf,.tif'"

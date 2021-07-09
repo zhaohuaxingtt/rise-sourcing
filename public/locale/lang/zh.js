@@ -838,6 +838,8 @@
         'LK_SHENQINGREN': '申请人',//申请人
         'LK_SHENQINGSHIJIANQIZHI': '申请时间起止',//申请时间起止
         'LK_PIZHUAN': '批准',//批准
+        'LK_SHENQINGSHIJIANQI': '申请时间起',
+        'LK_SHENQINGSHIJIANZHI': '申请时间止',
 
         'LK_CHEXINGXIANGMUGAILAN': '车型项目概览',//车型项目概览
         'LK_YUSUANGUANLI': '预算管理',//预算管理

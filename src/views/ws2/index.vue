@@ -129,7 +129,6 @@ export default {
 
         return item;
       })
-      console.log('111111111111', list);
       return list;
     }
   },

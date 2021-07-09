@@ -1,12 +1,12 @@
 <template>
 	<div class="fs margin-left10 margin-right10">
 		<iButton  @click="creatFs()">
-			{{ $t('partsprocure.PARTSPROCUREGENERATEFSGSNR') }}
+			{{ language('partsprocure.PARTSPROCUREGENERATEFSGSNR','生成零件采购项目号') }}
 		</iButton>
 		<!-- 单条插入RFQ表格 -->
-		<iDialog :title="$t('LK_RFQLIST')" :visible.sync="visible">
+		<iDialog :title="language('LK_RFQLIST','RFQ列表')" :visible.sync="visible">
 			<div class="flex-align-center add">
-				<iButton @click="addRfq">{{ $t('LK_TIANJIA') }}</iButton>
+				<iButton @click="addRfq">{{ language('LK_TIANJIA','添加') }}</iButton>
 			</div>
 			<tableList  :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="tableLoading" @handleSelectionChange="handleSelectionChange" radio></tableList>
 			<div class="placeholder"></div>
@@ -39,7 +39,7 @@
 		methods: {
 			// 生成fs号
 			creatFs() {
-				if (this.projectIds.length == 0) return iMessage.warn(this.$t('LK_NINDANGQIANHAIWEIXUANZENINXUYAOSHENGCHENGFSHAODELINGJIANCAIGOUXIANGMU'));
+				if (this.projectIds.length == 0) return iMessage.warn(this.language('LK_NINDANGQIANHAIWEIXUANZENINXUYAOSHENGCHENGFSHAODELINGJIANCAIGOUXIANGMU','抱歉，您当前还未选择您需要生成FS号的零件采购项目！'));
 				let fs = {
 					purchaseProjectIds: this.projectIds,
 				};
@@ -51,11 +51,11 @@
 							res.data.fs.projectList.map(res=>{
 								tip=tip+res.fsnrGsnrNum+','
 							})
-							tip=tip+this.$t('LK_SHIFOUZUHEXINJIANRFQ')
-							iMessageBox(tip,'',{ confirmButtonText: this.$t('LK_QUEDING'), cancelButtonText: this.$t('LK_QUXIAO') }).then(val=>{
+							tip=tip+this.language('LK_SHIFOUZUHEXINJIANRFQ','是否组合新建RFQ')
+							iMessageBox(tip,'',{ confirmButtonText: this.language('LK_QUEDING','确定'), cancelButtonText: this.language('LK_QUXIAO','取 消') }).then(val=>{
 								insertRfq({ rfqPartDTOList: res.data.fs.projectList}).then((res) => {
 									if (res.data && res.data.rfqId) {
-										iMessage.success(this.$t('LK_CAOZUOCHENGGONG'))
+										iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'))
 										this.$emit('refresh')
 									} else {
 										iMessage.warn(res.desZh);
@@ -64,13 +64,13 @@
 							})	
 						}else if(res.data.fs.rfqResult){
 							// 单条插入RFQ
-							iMessageBox(this.$t('LK_SHIFOUJIARUYIYOURFQ'),'',{ confirmButtonText: this.$t('LK_QUEDING'), cancelButtonText: this.$t('LK_QUXIAO') }).then(val=>{
+							iMessageBox(this.language('LK_SHIFOUJIARUYIYOURFQ','是否加入已有RFQ'),'',{ confirmButtonText: this.language('LK_QUEDING','确定'), cancelButtonText: this.language('LK_QUXIAO','取 消') }).then(val=>{
 								this.visible=true
 								this.tableListData=res.data.fs.rfqResult.list
 								this.rfqPartDTOList.push(res.data.fs.rfqResult.project) 
 							})	
 						}else{
-							iMessage.success(this.$t('LK_CAOZUOCHENGGONG'))
+							iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'))
 							this.$emit('refresh')
 						}
 					} else {
@@ -92,7 +92,7 @@
 				}).then((res) => {
 						this.addLoding = false;
 						if (res.data && res.data.rfqId) {
-							iMessage.success(this.$t('LK_CAOZUOCHENGGONG'))
+							iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'))
 							this.visible=false
 							this.$emit('refresh')
 						} else {

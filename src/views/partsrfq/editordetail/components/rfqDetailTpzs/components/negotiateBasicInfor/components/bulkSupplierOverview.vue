@@ -7,7 +7,7 @@
 -->
 <template>
   <iCard class="supplier-item" :title="$t('TPZS.PLGYSGL')" collapse>
-    <div class="title">{{remark}}</div>
+    <div class="header-title">{{remark}}</div>
     <div class="title-btn">
       <iButton @click="handleHerf">{{$t('TPZS.GYS360')}}</iButton>
       <iButton @click="handleRemark">{{$t('costanalysismanage.BeiZhu')}}</iButton>
@@ -172,10 +172,12 @@ export default {
     top: 30px;
     position: absolute;
   }
-  .title {
+  .header-title {
     position: absolute;
-    top: 1.9rem;
-    left: 11rem;
+    top: 2.1rem;
+    font-size: 14px;
+    left: 11.3rem;
+    color: #a5a5a5;
   }
   position: relative;
   #powerBi {
