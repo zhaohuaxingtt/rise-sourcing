@@ -2,7 +2,7 @@
  * @Descripttion: 
  * @Author: Luoshuang
  * @Date: 2021-05-21 14:30:41
- * @LastEditTime: 2021-07-09 11:09:58
+ * @LastEditTime: 2021-07-09 17:35:11
 -->
 <template>
   <el-table ref="multipleTable" fit tooltip-effect='light' :height="height" :data='tableData' v-loading='tableLoading' @selection-change="handleSelectionChange" :empty-text="language('ZANWUSHUJU', '暂无数据')" >
@@ -61,6 +61,9 @@
           <span v-if="items.enName">{{items.name}}<span><br />{{items.enName}}<br v-if="items.enName1" />{{items.enName1}}</span></span>
           <span v-else>{{items.key ? language(items.key, items.name) : items.name}}</span>
         </template>
+        <template v-if="$scopedSlots[items.props] || $slots[items.props]" v-slot="scope">
+          <slot :name="items.props" :row="scope.row"></slot>
+        </template>
         <template slot-scope="scope">
           <!----------------------------附件综合管理-创建RFQ-产能计划列-------------------------------->
           <span v-if="items.props === 'channeng'" class="openLinkText cursor" @click="$emit('openPlan', scope.row)">编辑</span>
@@ -91,11 +94,6 @@
               <icon v-if="childItem.type === 'rate' && getRate(scope.row, childItem.props).partSupplierRate === 0" symbol class="cursor" name='icontishi-cheng' style="margin-left:8px" @click.native="$emit('openDialog', scope.row)"></icon>
             </template>
           </el-table-column>
-        </template>
-
-        
-         <template v-if="$scopedSlots[items.props] || $slots[items.props]" v-slot="scope">
-          <slot :name="items.props" :row="scope.row"></slot>
         </template>
       </el-table-column>
     </template>
