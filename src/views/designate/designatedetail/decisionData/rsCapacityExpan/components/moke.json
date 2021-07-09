@@ -1,0 +1,152 @@
+{
+  "result": true,
+  "code": "200",
+  "desEn": "success",
+  "desZh": "操作成功",
+  "data": {
+      "capacityExpHeaderVO": {
+          "partNum": "partnum",
+          "partName": "partname",
+          "linieName": "liniename",
+          "carTypeName": "cartypeNAME",
+          "supplierName": "suppliername"
+      },
+      "capacityExpPlanVOList": [
+          {
+              "date": "2021-07-08T16:28:52.925",
+              "capacityExtPlan": "",
+              "capacityNormDay": "1.00",
+              "capacityMaxDay": "1.00",
+              "capacityNormWeek": "1.00",
+              "capacityMaxWeek": "1.00",
+              "capacityNormYear": "1.00",
+              "capacityMaxYear": "1.00"
+          },
+          {
+              "date": "2021-07-08T16:28:52.925",
+              "capacityExtPlan": "",
+              "capacityNormDay": "1.00",
+              "capacityMaxDay": "1.00",
+              "capacityNormWeek": "1.00",
+              "capacityMaxWeek": "1.00",
+              "capacityNormYear": "1.00",
+              "capacityMaxYear": "1.00"
+          },
+          {
+              "date": "2021-07-08T16:28:52.925",
+              "capacityExtPlan": "",
+              "capacityNormDay": "1.00",
+              "capacityMaxDay": "1.00",
+              "capacityNormWeek": "1.00",
+              "capacityMaxWeek": "1.00",
+              "capacityNormYear": "1.00",
+              "capacityMaxYear": "1.00"
+          },
+          {
+              "date": "2021-07-08T16:28:52.925",
+              "capacityExtPlan": "",
+              "capacityNormDay": "1.00",
+              "capacityMaxDay": "1.00",
+              "capacityNormWeek": "1.00",
+              "capacityMaxWeek": "1.00",
+              "capacityNormYear": "1.00",
+              "capacityMaxYear": "1.00"
+          }
+      ],
+      "capacityExpInvestmentFeeVOList": [
+          {
+              "supplierName": "测试供应商1",
+              "nomiSuggestionInvestmentFee": "2.00",
+              "nomiRecordInvestmentFee": "2.00"
+          },
+          {
+              "supplierName": "测试供应商1",
+              "nomiSuggestionInvestmentFee": "2.00",
+              "nomiRecordInvestmentFee": "2.00"
+          },
+          {
+              "supplierName": "测试供应商1",
+              "nomiSuggestionInvestmentFee": "2.00",
+              "nomiRecordInvestmentFee": "2.00"
+          },
+          {
+              "supplierName": "测试供应商1",
+              "nomiSuggestionInvestmentFee": "2.00",
+              "nomiRecordInvestmentFee": "2.00"
+          },
+          {
+              "supplierName": "测试供应商1",
+              "nomiSuggestionInvestmentFee": "2.00",
+              "nomiRecordInvestmentFee": "2.00"
+          }
+      ],
+      "capacityExpPartInfoVOList": [
+          {
+              "partNum": "f138h123f3",
+              "partNameZh": "零件名",
+              "carTypePro": "车型测试"
+          },
+          {
+              "partNum": "f138h123f3",
+              "partNameZh": "零件名",
+              "carTypePro": "车型测试"
+          },
+          {
+              "partNum": "f138h123f3",
+              "partNameZh": "零件名",
+              "carTypePro": "车型测试"
+          },
+          {
+              "partNum": "f138h123f3",
+              "partNameZh": "零件名",
+              "carTypePro": "车型测试"
+          },
+          {
+              "partNum": "f138h123f3",
+              "partNameZh": "零件名",
+              "carTypePro": "车型测试"
+          }
+      ],
+      "capacityExpEconomicAssessmentVOList": [
+          {
+              "partNum": "f138h123f3",
+              "nomiRecordAPrice": "1.00",
+              "nomiSuggestAPrice": "2.00",
+              "nomiSuggestBPrice": "1.00",
+              "apriceGrowRate": "0.50"
+          },
+          {
+              "partNum": "f138h123f3",
+              "nomiRecordAPrice": "1.00",
+              "nomiSuggestAPrice": "2.00",
+              "nomiSuggestBPrice": "1.00",
+              "apriceGrowRate": "0.50"
+          },
+          {
+              "partNum": "f138h123f3",
+              "nomiRecordAPrice": "1.00",
+              "nomiSuggestAPrice": "2.00",
+              "nomiSuggestBPrice": "1.00",
+              "apriceGrowRate": "0.50"
+          }
+      ],
+      "capacityExpCarTypeProPlanVOList": [
+          {
+              "year": 2021,
+              "totalCarTypeProOutput": "1.00"
+          },
+          {
+              "year": 2022,
+              "totalCarTypeProOutput": "1.00"
+          },
+          {
+              "year": 2023,
+              "totalCarTypeProOutput": "1.00"
+          },
+          {
+              "year": 2024,
+              "totalCarTypeProOutput": "1.00"
+          }
+      ]
+  }
+}

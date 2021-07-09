@@ -1,7 +1,7 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-07-07 16:53:18
- * @LastEditTime: 2021-07-08 15:05:01
+ * @LastEditTime: 2021-07-09 10:28:37
  * @LastEditors: Please set LastEditors
  * @Description: Economic Assessment
  * @FilePath: /front-web/src/views/designate/designatedetail/decisionData/rsCapacityExpan/components/ecoAssessment.vue
@@ -46,7 +46,7 @@
           </el-table-column>
           <el-table-column
             align='center'
-            prop="APriceGrowRate"
+            prop="apriceGrowRate"
             width="80"
             label="△ [%]">
           </el-table-column>
@@ -60,7 +60,7 @@
           <el-table-column
             align='center'
             width="200"
-            prop="Num"
+            prop="totalCarTypeProOutput"
             label="Life-Time Demand[Cars]">
           </el-table-column>
         </el-table>
@@ -74,7 +74,7 @@
         </div>
         <ul>
           <li v-for="(item, index) in lifeTimeList" :key="index" :class="dataList.length % 2 ? 'odd' :'even'">
-            <dl><dt>{{item.year}}</dt><dd>{{item.Num}}</dd></dl>
+            <dl><dt>{{item.year}}</dt><dd>{{item.totalCarTypeProOutput}}</dd></dl>
           </li>
         </ul>
       </div>
@@ -86,14 +86,29 @@
 import {iMessage} from 'rise'
 
 export default {
+  props: {
+    data: {
+      type: Array,
+      default: () => ([])
+    },
+    timeList: {
+      type: Array,
+      default: () => ([])
+    }
+  },
+  watch: {
+    data() {
+      if (this.data && this.data.length) {
+        this.dataList = this.data
+        this.getFetchData()
+      }
+    }
+  },
   data() {
     return {
       dataList: [],
       lifeTimeList: []
     }
-  },
-  mounted(){
-    this.getFetchData()
   },
   methods: {
     getCellClass({columnIndex}) {
@@ -103,32 +118,34 @@ export default {
       if (columnIndex === 4) return 'yearHeader'
       if (columnIndex === 5) return 'yearValueHeader'
     },
-    getFetchData() {
-      try {
-        const res = require('./ecoassessment.json')
-        if (res.code === '200') {
-          const year = 'year'
-          const Num = 'Num'
-          
-          const data = res.data.dataList || []
-          const lifeTimeList = res.data.lifeTimeList || []
-          if (data.length <= lifeTimeList.length) {
-            data.map((o, index) => {
-              o[year] = lifeTimeList[index][year]
-              o[Num] = lifeTimeList[index][Num]
-            })
-            this.dataList = data
-            this.lifeTimeList = lifeTimeList.slice(data.length, lifeTimeList.length - 1)
-          }
-          
-        } else {
-          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
-        }
-      } catch(e) {
-        iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
-      }
+    async getFetchData() {
+      // const res = require('./ecoassessment.json')
+      const year = 'year'
+      const Num = 'totalCarTypeProOutput'
       
-    }
+      const data = this.dataList || []
+      const lifeTimeList = this.timeList || []
+      const dataLength = data && data.length || 0
+      const lifeTimeListLength = lifeTimeList && lifeTimeList.length || 0
+      if (dataLength) {
+        data.map((o, index) => {
+          o[year] = lifeTimeList[index][year] || ''
+          o[Num] = lifeTimeList[index][Num] || ''
+        })
+        this.dataList = data
+      }
+      // 零件行数小于年分数
+      
+      if ( dataLength && dataLength <= lifeTimeListLength) {
+        this.lifeTimeList = lifeTimeList.slice(dataLength, lifeTimeListLength)
+      } else {
+         this.lifeTimeList = [{}, {}]
+      }
+      // 针对时间表格缺一条数据的情况，填充成2条
+      if (this.lifeTimeList.length === 1) {
+        this.lifeTimeList.push({})
+      }
+    },
   }
 }
 </script>
@@ -160,7 +177,10 @@ export default {
         }
       }
       .middleLevel {
+        border: 1px solid #f0f6ff;
+        border-top: 0px;
         position: relative;
+        min-height: 69.68PX;
         .leftNote {
           position: absolute;
           left: 0px;
