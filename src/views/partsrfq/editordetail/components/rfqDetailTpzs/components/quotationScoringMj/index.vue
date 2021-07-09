@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-27 14:55:03
- * @LastEditTime: 2021-07-08 16:53:52
+ * @LastEditTime: 2021-07-08 18:43:18
  * @LastEditors: Please set LastEditors
  * @Description: 采购员报价与基本分析模具界面
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringMj\index.vue
@@ -14,6 +14,11 @@ import {iMessageBox,iMessage} from 'rise'
 export default {
   extends:quotationMj,
   inject:['getbaseInfoData'],
+  provide(){
+    return {
+      supplierId: this.supplierId
+    }
+  },
   data(){
     return {
       useCardSlot:false,
