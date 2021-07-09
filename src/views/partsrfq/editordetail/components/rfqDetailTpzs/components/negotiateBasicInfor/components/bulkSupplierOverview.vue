@@ -24,7 +24,7 @@ import { iCard, iButton, } from "rise";
 import { powerBiUrl } from "@/api/partsrfq/negotiateBasicInfor/negotiateBasicInfor.js";
 import * as pbi from 'powerbi-client';
 import remarkDialog from "./remarkDialog.vue";
-import { getRfqToRemark } from "@/api/partsrfq/negotiateBasicInfor/negotiateBasicInfor.js";
+import { getRfqToRemark, getRfqSupplierAndCategory } from "@/api/partsrfq/negotiateBasicInfor/negotiateBasicInfor.js";
 
 // import pie from "./pie";
 export default {
@@ -66,6 +66,10 @@ export default {
     // 获取备注
     async getRemark() {
       const res = await getRfqToRemark(this.$route.query.id)
+      const pms = {
+        rfqId: this.$route.query.id
+      }
+      const res1 = await getRfqSupplierAndCategory(pms.rfqId)
       if (res.result) {
         this.remark = res.data.remark
       }
