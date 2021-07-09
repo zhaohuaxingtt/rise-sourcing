@@ -38,9 +38,9 @@
             </el-radio-group>
             <div class="sendTypeBox margin-top20" v-if="radioType=='standard'">
               <el-radio-group v-model="loiInfo.templateType" :disabled="!isEdit">
-                <el-radio :label="0">{{language('LK_PILIANGLOI','批量LOI')}}</el-radio>
-                <el-radio :label="1">{{language('LK_KAIFALOI','开发LOI')}}</el-radio>
-                <el-radio :label="2">{{language('LK_KAIFAPILIANGLOI','开发+批量LOI')}}</el-radio>
+                <el-radio :label="1">{{language('LK_PILIANGLOI','批量LOI')}}</el-radio>
+                <el-radio :label="2">{{language('LK_KAIFALOI','开发LOI')}}</el-radio>
+                <el-radio :label="3">{{language('LK_KAIFAPILIANGLOI','开发+批量LOI')}}</el-radio>
               </el-radio-group>
             </div>
             <div class="contain margin-top30">
@@ -284,7 +284,7 @@ export default {
                     this.loiStatus = loiStatus.code || '';
                     this.loiInfo = data;
                     const { type,supplierId } = data; 
-                    // templateType   0(标准定点信:批量LOI)，1(标准定点信:开发LOI)，2(标准定点信:开发+批量LOI)
+                    // templateType   1(标准定点信:批量LOI)，2(标准定点信:开发LOI)，3(标准定点信:开发+批量LOI)
                     // type   0(标准定LOI) 1(非标准定LOI)
                     this.radioType = type == '1' ? 'NonStandard': 'standard' ;
                     this.getUserList(supplierId);

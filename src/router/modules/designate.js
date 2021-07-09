@@ -1,8 +1,8 @@
 /*
  * @Author: HaoJiang
  * @Date: 2021-05-20 14:29:09
- * @LastEditTime: 2021-07-08 16:05:32
- * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-07-09 11:33:31
+ * @LastEditors: Please set LastEditors
  * @Description: 定点管理
  * @metaParams: hideTabLV3 隐藏三级导航
  *
@@ -241,7 +241,7 @@ export default [
                 title: "定点管理-决策资料-RS",
             },
             component: () =>
-              import ("@/views/designate/designatedetail/decisionData/rs")
+              import ("@/views/designate/designatedetail/decisionData/rs/home")
           },
           {
             path: "/designate/decisiondata/rscapacityexpan",
