@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-06-22 11:14:02
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-07-09 14:25:29
+ * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-07-09 19:27:02
  * @Description: 财务目标价-目标价查询
  * @FilePath: \front-web\src\views\financialTargetPrice\query\index.vue
 -->
@@ -385,7 +385,11 @@ export default {
       this.isEdit = isEdit
     },
     handleExport() {
-      excelExport(this.tableData, this.tableTitle)
+      if (this.selectItems.length < 1) {
+        iMessage.warn(this.language('ZHISHAOXUANZEYITIAOJILU','至少选择一条记录'))
+        return
+      }
+      excelExport(this.selectItems, this.tableTitle)
     },
     handleUpload() {},
     /**
