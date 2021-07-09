@@ -1,8 +1,13 @@
+<!--
+ * @Author: wentliao
+ * @Date: 2021-05-11 16:31:08
+ * @Description: 
+-->
 <template>
   <div class="infos">
     <iFormGroup v-for="(infoChunk, $chunkIndex) in infoChunks" :key="$chunkIndex" row="3" class="infos" inline icon>
       <!--<iFormItem v-for="(info, $index) in infoChunk" :key="$index" class="item" :label="`${ info.label }：`">-->
-      <iFormItem v-for="(info, $index) in infoChunk" :key="$index" class="item" :label="$t(info.key)+':'">
+      <iFormItem v-for="(info, $index) in infoChunk" :key="$index" class="item" :label="language(info.key,info.label)+':'">
         <iText class="text">{{ info.value }}</iText>
       </iFormItem>
     </iFormGroup>
