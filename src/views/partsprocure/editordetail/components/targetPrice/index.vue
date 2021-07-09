@@ -171,10 +171,10 @@ import { cloneDeep } from 'lodash'
 				type: String
 			},
 			fsnrGsnrNum: {type: String},
-			partPrejectType: {type:String}
+			partProjectType: {type:String}
 		},
 		watch: {
-			partPrejectType: {
+			partProjectType: {
 				handler(val) {
 					if (val === 'PT19' || val === 'PT04') {
 						this.targetprice = {
