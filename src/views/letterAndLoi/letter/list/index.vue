@@ -226,7 +226,8 @@ export default {
             this.searchParams = {
                 showSelf:'YES',
                 status:'',
-            }
+            };
+            this.getList();
         },
         
         handleSelectionChange(val) {

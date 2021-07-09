@@ -17,6 +17,7 @@
         <iInput
           v-model="form.partNum"
           :placeholder="language('LK_QINGSHURU','请输入')"
+          clearable
         ></iInput>
       </el-form-item>
       <!-- 申请单号 -->
@@ -24,13 +25,15 @@
         <iInput
           v-model="form.nominateId"
           :placeholder="language('LK_QINGSHURU','请输入')"
+          clearable
         ></iInput>
       </el-form-item>
         <!-- RFQ编号 -->
       <el-form-item :label="language('nominationLanguage_RFQBianHao','RFQ编号')">
         <iInput
-          v-model="form.rfqIq"
+          v-model="form.rfqId"
           :placeholder="language('LK_QINGSHURU','请输入')"
+          clearable
         ></iInput>
       </el-form-item>
       <!-- 流程类型 -->
@@ -38,6 +41,7 @@
         <iSelect
           v-model="form.nominateProcessType"
           :placeholder="language('LK_QINGXUANZE','请选择')"
+          clearable
         >
           <el-option
             value=""
@@ -56,6 +60,7 @@
         <iSelect
           v-model="form.applicationStatus"
           :placeholder="language('LK_QINGXUANZE','请选择')"
+          clearable
         >
           <el-option
             value=""
@@ -74,13 +79,15 @@
         <iInput
           v-model="form.fsnrGsnrNum"
           :placeholder="language('LK_QINGSHURU','请输入')"
+          clearable
         ></iInput>
       </el-form-item>
       <!-- 零件名 -->
       <el-form-item :label="language('nominationLanguage_LingJianMing','零件名')">
         <iInput
-          v-model="form.partNameZh"
+          v-model="form.partNameCn"
           :placeholder="language('LK_QINGSHURU','请输入')"
+          clearable
         ></iInput>
       </el-form-item>
       <!-- 询价采购员 -->
@@ -88,6 +95,7 @@
         <iInput
           v-model="form.buyerName"
           :placeholder="language('LK_QINGSHURU','请输入')"
+          clearable
         ></iInput>
       </el-form-item>
       <!-- LINIE -->
@@ -95,6 +103,7 @@
         <iInput
           v-model="form.linieName"
           :placeholder="language('LK_QINGSHURU','请输入')"
+          clearable
         ></iInput>
       </el-form-item>
       <!-- 车型项目 -->
@@ -123,6 +132,7 @@
         <iSelect
           v-model="form.isPriceConsistent"
           :placeholder="language('LK_QINGXUANZE','请选择')"
+          clearable
         >
           <el-option
             value=""
@@ -141,6 +151,7 @@
         <iSelect
           v-model="form.singleSourcing"
           :placeholder="language('LK_QINGXUANZE','请选择')"
+          clearable
         >
           <el-option
             value=""
@@ -157,6 +168,7 @@
         <iSelect
           v-model="form.showMe"
           :placeholder="language('LK_QINGXUANZE','请选择')"
+          clearable
         >
           <el-option
             value=""

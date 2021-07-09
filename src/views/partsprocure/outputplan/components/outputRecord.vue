@@ -1,5 +1,5 @@
 <template>
-  <iCard class="outputRecord" tabCard collapse :title="$t('LK_LINGJIANCHANLIANGJILU')">
+  <iCard class="outputRecord" tabCard collapse :title="language('LK_LINGJIANCHANLIANGJILU','零件产量记录')">
     <template v-slot:header-control>
       <iButton v-permission="PARTSPROCURE_OUTPUTPLAN_OUTPUTRECORD_UPDATE" @click="updateOutput">{{$t('LK_GENGXINZHIXUNJIACHANLIANG')}}</iButton>
     </template>
