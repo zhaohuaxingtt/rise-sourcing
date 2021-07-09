@@ -1082,7 +1082,7 @@ export default {
 
     .infoIcard {
       margin-left: 49px;
-      max-width: 170px;
+      max-width: 200px;
 
       > div {
         display: flex;
