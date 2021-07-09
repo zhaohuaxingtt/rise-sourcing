@@ -159,7 +159,18 @@ export default {
     handleDownloadCbd() {},
     // 跳转零件详情
     jumpPartDetail(row) {
-      window.open(`/#/supplier/quotationdetail?partNum=${ row.partNum }&fix=true&rfqId=${ this.rfqId }&round=${ row.round }&fsNum=${ row.fsnrGsnrNum }&supplierId=${ row.supplierId }`, "_blank")
+      const route = this.$router.resolve({
+        path: "/supplier/quotationdetail",
+        query: { 
+          partNum: row.partNum,
+          fix: true,
+          rfqId: this.rfqId,
+          round: row.round,
+          fsNum: row.fsnrGsnrNum,
+          supplierId: row.supplierId
+        }
+      })
+      window.open(route.href, "_blank")
     },
     handleInputByPcaResult(value, row) {
       this.$set(row, "pcaResult", numberProcessor(value, 2))
