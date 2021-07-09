@@ -15,6 +15,7 @@ module.exports = {
 	outputDir: 'dist',
 	assetsDir: 'static',
 	filenameHashing: true,
+	
 	lintOnSave: process.env.NODE_ENV !== 'production',
 	productionSourceMap: false,
 	parallel: require("os").cpus().length > 1,
@@ -55,6 +56,7 @@ module.exports = {
 			// 	}]
 			// })
 			// config.plugins.push(new NodeserverUpload())
+			config.devtool= 'eval-source-map', 
 			config.plugins.push(
 				new UglifyJsPlugin({
 					uglifyOptions: {
@@ -338,8 +340,8 @@ module.exports = {
 						},
 					'/aonApi': {
 						// target: 'http://10.160.138.185:8036',
-						// target: 'http://10.160.137.32:8036',
 						target: 'http://10.122.18.166:8036',
+						// target: 'http://10.160.139.244:8036',
 						changeOrigin: true,
 						pathRewrite: {
 							"^/aonApi": ""
