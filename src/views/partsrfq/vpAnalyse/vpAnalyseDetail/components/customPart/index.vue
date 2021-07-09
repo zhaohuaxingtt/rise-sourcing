@@ -1,14 +1,14 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-06-18 16:03:35
- * @LastEditTime: 2021-07-02 16:55:34
+ * @LastEditTime: 2021-07-09 17:50:52
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\vpAnalyse\vpAnalyseDetail\components\customPart\index.vue
 -->
 <template>
   <div>
-    <iDialog :title="$t('TPZS.LK_CUSTOM_TITLE')" :visible.sync="visible" width="70%">
+    <iDialog :title="$t('TPZS.LK_CUSTOM_TITLE')" :visible.sync="visible" width="70%"  @close="handleClose">
       <div style="text-align: right" v-if="!addMode">
         <iButton @click="del">{{$t('delete')}}</iButton>
         <iButton @click="add">{{$t('LK_XINZENG')}}</iButton>
@@ -108,7 +108,10 @@ export default {
   },
   computed: {
     batchNumber() {
-      return (this.partList ? this.partList.find(item => item.batchNumber) : null).batchNumber
+      if(this.partList && this.partList.length > 0)
+        return (this.partList ? this.partList.find(item => item.batchNumber) : null).batchNumber
+      else 
+        return null
     }
   },
   methods: {
@@ -234,6 +237,7 @@ export default {
     add() {
       this.addMode = true
       this.tableListData.push(this.insertPartData)
+      console.log('tableListData', this.tableListData);
     },
     // 新增时，根据输入零件号检索
     remoteMethod(val) {
@@ -300,6 +304,11 @@ export default {
           this.$emit('saveCustomPart')
         }
       })
+    },
+    //取消事件
+    handleClose() {
+      this.addMode = false
+      this.$emit('handleCloseCustomPart')
     }
   }
 }

@@ -1,7 +1,7 @@
 <!--
  * @Author: youy
  * @Date: 2021-06-21 19:38:02
- * @LastEditTime: 2021-07-08 18:20:07
+ * @LastEditTime: 2021-07-09 11:28:34
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\vpAnalyse\vpAnalyseList\components\analysisSearch.vue
@@ -31,10 +31,7 @@ export default {
     }
   },
   created() {
-    this.searchForm = {
-      ...this.searchForm,
-      rfqNo: this.$store.state.rfq.rfqId
-    }
+    this.initData()
   },
   computed: {
     isDisabled() {
@@ -46,13 +43,21 @@ export default {
     }
   },
   methods: {
+    //初始化数据
+    initData() {
+      this.searchForm = {}
+      this.searchForm = {
+        ...this.searchForm,
+        rfqNo: this.$store.state.rfq.rfqId
+      }
+    },
     //点击确认按钮
     handleSubmitSearch() {
       this.$emit('handleSubmitSearch', this.searchForm)
     },
     //点击重置按钮
     handleSearchReset() {
-      this.searchForm = {}
+      this.initData()
       this.$emit('handleSubmitSearch', null)
     },
   } 
