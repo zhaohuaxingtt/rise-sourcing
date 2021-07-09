@@ -31,10 +31,8 @@
                 <!--比较类型-->
                 <el-form-item :label="$t('比较类型')">
                   <iSelect v-model="chartType" @change="changeBy">
-                    <el-option
-                      value="supplier"
-                      :label="$t('按供应商比较')"
-                    ></el-option>
+                    <el-option value="supplier" :label="$t('按供应商比较')">
+                    </el-option>
                     <el-option
                       value="turn"
                       :label="$t('按轮次比较')"
@@ -59,7 +57,13 @@
                       :key="index"
                       :value="i.supplierId"
                       :label="i.nameZh"
-                    ></el-option>
+                    >
+                      <span style="float: left">{{ i.nameZh }}</span>
+                      <span
+                        style="float: right; color: #8492a6; font-size: 13px"
+                        ><i class="el-icon-error"></i>
+                        </span>
+                    </el-option>
                   </el-select>
                 </el-form-item>
                 <!--轮次-->
@@ -307,7 +311,7 @@ export default {
       supplierList: [],
       turnList: [],
       analysisName: "",
-      reportName:"",
+      reportName: "",
       Split: window._.split,
       dialogVisible: false,
       analysisSave: false,
@@ -328,15 +332,15 @@ export default {
       part({
         analysisSchemeId: this.analysisSchemeId,
         data: {},
-      }).then((res) => (this.form.partList = res.data));
+      }).then((res) => (this.partList = res.data));
       supplier({
         analysisSchemeId: this.analysisSchemeId,
         data: {},
-      }).then((res) => (this.form.supplierList = res.data));
+      }).then((res) => (this.supplierList = res.data));
       turn({
         analysisSchemeId: this.analysisSchemeId,
         data: {},
-      }).then((res) => (this.form.turnList = res.data));
+      }).then((res) => (this.turnList = res.data));
     },
 
     findPart() {
@@ -346,7 +350,6 @@ export default {
       this.value = val;
     },
     closePreView(val) {
-      console.log(val, 13131313);
       this.pre = val;
     },
     sure() {},
@@ -370,7 +373,6 @@ export default {
       this.showSelectDiv = false;
     },
     showSelect(e) {
-      console.log(e);
       const position = e.event.target.position;
       this.showSelectDiv = true;
       this.$refs.toolTipDiv.style.left = position[0] + 210 + "px";
@@ -404,7 +406,6 @@ export default {
           this.$message.error(res.desZh);
         }
       });
-      console.log(val);
     },
     searchChartData() {
       getBobLevelOne({
@@ -514,7 +515,7 @@ export default {
                 analysisSchemeId: 1,
                 downloadName: data.fileName,
                 downloadUrl: data.filePath,
-                reportName:that.reportName
+                reportName: that.reportName,
               };
               await add(req);
               that.dialogVisible = false;
@@ -530,7 +531,6 @@ export default {
   },
   computed: {
     chartTitle() {
-      console.log(this.form);
       if (this.chartType === "supplier") {
         return this.form.spareParts;
       } else if (this.chartType === "turn") {
@@ -580,5 +580,8 @@ export default {
   white-space: nowrap; //不换行
   overflow: hidden; //超出隐藏
   text-overflow: ellipsis; //变成...
+}
+::v-deep .el-select-dropdown.is-multiple .el-select-dropdown__item.selected::after{
+  content:none
 }
 </style>
