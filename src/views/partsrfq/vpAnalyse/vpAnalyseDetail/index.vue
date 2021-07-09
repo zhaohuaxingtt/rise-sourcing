@@ -72,7 +72,7 @@
     </div>
 
     <!-- 自定义零件列表 -->
-    <customPart v-if="customDialog.visible" :partList="originPartList" :visible="customDialog.visible" :Key="customDialog.key" @saveCustomPart="saveCustomPart"/>
+    <customPart v-if="customDialog.visible" :partList="originPartList" :visible="customDialog.visible" :Key="customDialog.key" @saveCustomPart="saveCustomPart" @handleCloseCustomPart="handleCloseCustomPart"/>
 
     <previewDialog v-model="previewDialog"/>
   </iPage>
@@ -248,6 +248,10 @@ export default {
       this.$set(this.customDialog, 'visible', false)
       this.getDataInfo()
     },
+    // 关闭自定义零件弹窗
+    handleCloseCustomPart() {
+      this.$set(this.customDialog, 'visible', false)
+    },
     //供应商值改变
     handleSupplierChange(val) {
       this.currentSupplierId = val
@@ -255,7 +259,7 @@ export default {
     },
     handleBack() {
       this.$router.go(-1)
-    }
+    },
   },
 };
 </script>
