@@ -40,7 +40,7 @@
       <!--------------表格模块-------------->
     </div>
     <tableList v-loading='fsTableLoading' @sortChangeTabless='sortChange' :round='round' :tableTitle='title' v-if='layout == "1"' :ratingList='ratingList' :tableData='exampelData' @handleSelectionChange='handleSelectionChange'></tableList>
-    <tableListSupplier ref='tableSupplier' :cWidth='cWidth' :leftData='leftData' :rightData='rightData' v-loading='supplierTableLoading' :centerSupplierData='suppliertopList' :supplierLeftLit='supplierLeftLit' :tableTitle='supplierTile'  :tableData='supplierData' v-if='layout == "2" && showTable'></tableListSupplier>
+    <tableListSupplier ref='tableSupplier' :cWidth='cWidth' :budget='budget' :kmAPrice='kmAPrice' :kmTooling='kmTooling' v-loading='supplierTableLoading' :centerSupplierData='suppliertopList' :supplierLeftLit='supplierLeftLit' :tableTitle='supplierTile'  :tableData='supplierData' v-if='layout == "2" && showTable'></tableListSupplier>
     <!--------------弹窗-------------->
     <iDialog title="组合名" :visible.sync="groupVisble" width='25%' >
       <div class="mine_height">
@@ -93,7 +93,10 @@ export default{
     disabel:false,
     showTable:true,
     cWidth:'0px',
-    abPrice:false
+    abPrice:false,
+    kmAPrice:'',
+    budget:'',
+    kmTooling:''
   }},
   watch:{
     /**
@@ -373,8 +376,9 @@ export default{
             this.supplierTile = getRenderTableTileSupplier(this.backChoose,res.data.bdlInfoList)
             this.supplierLeftLit = getleftTittleList(this.backChoose)
             this.suppliertopList = data.topList
-            this.leftData = res.data.kmAPrice
-            this.rightData = res.data.kmTooling
+            this.kmAPrice = res.data.kmAPrice
+            this.kmTooling = res.data.kmTooling
+            this.budget = res.data.budget
             this.reRenderTable() 
             r()
           } 
