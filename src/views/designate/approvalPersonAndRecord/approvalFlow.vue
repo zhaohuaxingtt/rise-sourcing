@@ -1,15 +1,15 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-27 00:41:04
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-07-09 14:04:47
+ * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-07-10 12:27:37
  * @Description: 审批流弹窗
  * @FilePath: \front-web\src\views\designate\approvalPersonAndRecord\approvalFlow.vue
 -->
 
 <template>
   <iDialog 
-    :title="language('LK_SHENPILIU','审批流')"
+    :title="language('SHENPILIU','审批流')"
     :visible.sync="dialogVisible"
     @close="clearDialog"
     width="678px"
@@ -58,7 +58,7 @@
 
 <script>
 import { iDialog, iButton, iInput, icon } from 'rise'
-import { flowData, mockData } from './data'
+import { mockData } from './data'
 import { getInstDetail } from '@/api/designate/decisiondata/approval'
 export default {
   components: { iDialog, iButton, iInput, icon },

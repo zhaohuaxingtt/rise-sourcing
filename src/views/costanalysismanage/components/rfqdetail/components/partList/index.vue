@@ -26,9 +26,11 @@ s<!--
         @handleSelectionChange="handleSelectionChange"
       >
         <template #partNum="scope">
-          <!-- <span v-if="scope.row.sendKmFlag == 1" class="link-underline" @click="jumpPartDetail(scope.row)">{{ scope.row.partNum }}</span>
-          <span v-else>{{ scope.row.partNum }}</span> -->
-          <span class="link-underline" @click="jumpPartDetail(scope.row)">{{ scope.row.partNum }}</span>
+          <span v-if="scope.row.sendKmFlag == 1" class="link-underline" @click="jumpPartDetail(scope.row)">{{ scope.row.partNum }}</span>
+          <span v-else>{{ scope.row.partNum }}</span>
+        </template>
+        <template #round="scope">
+          <span v-if="scope.row.sendKmFlag == 1">{{ scope.row.round }}</span>
         </template>
         <template #cbdStatus="scope">
           <span class="link-underline-disabled">{{ scope.row.cbdStatus | dateFilter("YYYY-MM-DD") }}</span>
@@ -159,7 +161,18 @@ export default {
     handleDownloadCbd() {},
     // 跳转零件详情
     jumpPartDetail(row) {
-      window.open(`/#/supplier/quotationdetail?partNum=${ row.partNum }&fix=true&rfqId=${ this.rfqId }&round=${ row.round }&fsNum=${ row.fsnrGsnrNum }&supplierId=${ row.supplierId }`, "_blank")
+      const route = this.$router.resolve({
+        path: "/supplier/quotationdetail",
+        query: { 
+          partNum: row.partNum,
+          fix: true,
+          rfqId: this.rfqId,
+          round: row.round,
+          fsNum: row.fsnrGsnrNum,
+          supplierId: row.supplierId
+        }
+      })
+      window.open(route.href, "_blank")
     },
     handleInputByPcaResult(value, row) {
       this.$set(row, "pcaResult", numberProcessor(value, 2))
