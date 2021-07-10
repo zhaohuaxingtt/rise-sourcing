@@ -8,7 +8,7 @@
         <!-- 顶部信息栏 -->
         <div class="pageTitle flex-between-center-center">
             <div class="flex flex-between-center-center">
-                <span class="title-text margin-left10">{{language('nominationLanguage.DingDianGuanLi','定点管理')}}: {{desinateId}}</span>
+                <span class="title-text margin-left10">{{language('nominationLanguage.DingDianGuanLi','定点管理')}}: <span class="desinateId">{{desinateId}}</span></span>
                 <span class="select-text margin-left10">{{language('nominationLanguage.DINGDIANSHENQINGLEIXING','定点申请类型')}}：</span>
                 <iSelect v-model="designateType" @change="onDesignateTypeChange" :disabled="disableNominationType">
                     <el-option
@@ -451,6 +451,10 @@ export default {
         }
         .title-font{
             font-size: 20px;
+        }
+        .desinateId {
+            display: inline-block;
+            min-width: 80px;
         }
     }
     .step-list{

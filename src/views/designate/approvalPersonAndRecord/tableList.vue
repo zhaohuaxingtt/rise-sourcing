@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-28 18:27:56
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-06 18:59:58
+ * @LastEditTime: 2021-07-10 12:03:12
  * @Description: 
  * @FilePath: \front-web\src\views\designate\approvalPersonAndRecord\tableList.vue
 -->
@@ -72,8 +72,8 @@ export default{
   methods:{
     getDeptLeader(deptId, row) {
       getDeptLeader(deptId).then(res => {
-        this.$set(row, 'deptManager', res.data?.id)
-        this.$set(row, 'deptManagerName', res.data?.nameZh)
+        this.$set(row, 'deptManager', res.data?.positionList?.userDTOList?.map(item => item.id).join(','))
+        this.$set(row, 'deptManagerName', res.data?.positionList?.userDTOList?.map(item => item.nameZh).join(','))
       })
     },
     getDeptSubOptions(deptId, row) {
