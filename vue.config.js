@@ -162,12 +162,12 @@ module.exports = {
           '^/supplierApiXW': ''
         }
       },
-      '/supplierApiBob': {
+      '/sourcingApiBob': {
         //   供应商
         target: 'http://10.122.17.38:8025',
         changeOrigin: true,
         pathRewrite: {
-          '^/supplierApiBob': ''
+          '^/sourcingApiBob': ''
         }
       },
       supplierApiMH: {
