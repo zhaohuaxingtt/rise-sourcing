@@ -37,7 +37,7 @@ export const loiListSearch = [
   {props:'lineName',label:'LINIE',type:'input',labelKey:'partsprocure.PARTSPROCURELINIE'},
   {props:'loiStatus',label:'LOI状态',type:'select',labelKey:'LK_LOIZHUANGTAI',selectOption:'status'},
   {props:'rfqId',label:'RFQ编号',type:'input',labelKey:'costanalysismanage.RfqBianHao'},
-  {props:'key9',label:'定点申请单号',type:'input',labelKey:'LK_DINGDIANXINDANHAO'},
+  {props:'nominateAppId',label:'定点申请单号',type:'input',labelKey:'LK_DINGDIANXINDANHAO'},
   {props:'supplierName',label:'供应商名称',type:'input',labelKey:'LK_GONGYINGSHANGMINGCHENG'},
   {props:'sapNum',label:'供应商SAP号',type:'input',labelKey:'LK_GONGYINGSHANGSAPHAO'},
   {props:'nominateDate',label:'LOI⽣成时间',type:'datePicker',labelKey:'LK_LOISHENGCHENGSHIJIAN'},
