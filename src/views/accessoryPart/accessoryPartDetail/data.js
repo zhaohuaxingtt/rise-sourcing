@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-25 15:24:07
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-10 11:50:21
+ * @LastEditTime: 2021-07-10 12:58:17
  * @Description: 
  * @FilePath: \front-web\src\views\accessoryPart\accessoryPartDetail\data.js
  */
@@ -36,7 +36,7 @@ export const detailList = [
   {value: 'demandRecoveryDate', label: '需求恢复日期', type: 'input', key: 'XUQIUHUIFURIQI',},
   {value: 'sparePartUUID', label: 'UUID', type: 'input', key: 'UUID',},
   {value: 'technicianStaffNum', label: '售后技术人员工号', type: 'input', key: 'SHOUHOUJISHURENYUANGONGHAO',},
-  {value: 'technicianStaffName', label: '售后技术人员名', type: 'input', key: 'SHOUHOUJISHURENYUANMING',},
+  {value: 'technicianStaffName', label: '售后技术人员名', type: 'input', key: 'LK_SHOUHOUJISHURENYUANMING',},
   {value: 'reason', label: '理由', type: 'input', key: 'LIYOU', row: 1},
   {value: 'remark', label: '备注说明', type: 'input', key: 'BEIZHUSHUOMING', row: 1}
 ]
