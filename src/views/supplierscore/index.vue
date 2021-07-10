@@ -239,7 +239,7 @@ export default {
               key: item.key,
               label: item.name,
               value: item.key
-            })):
+            })).filter(item => item.key != "4"):
             []
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
