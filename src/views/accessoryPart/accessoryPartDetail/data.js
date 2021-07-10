@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-25 15:24:07
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-10 12:58:17
+ * @LastEditTime: 2021-07-10 18:05:50
  * @Description: 
  * @FilePath: \front-web\src\views\accessoryPart\accessoryPartDetail\data.js
  */
@@ -20,8 +20,8 @@ export const detailList = [
   {value: 'state', label: '配件状态', type: 'select', key: 'PEIJIANZHUANGTAI', selectOption: []},
   {value: 'isEop', label: '零件状态', type: 'select', key: 'LINGJIANZHUANGTAI', selectOption: []},
   {value: 'idState', label: 'ID状态', type: 'select', key: 'IDZHUANGTAI', selectOption: []},
-  {value: 'csfUserIdName', label: 'CSF科室', type: 'date', key: 'CSFKESHI',},
-  {value: 'csfUserDeptName', label: 'CSF', type: 'input', key: 'CSF',},
+  {value: 'csfUserDeptName', label: 'CSF科室', type: 'date', key: 'CSFKESHI',},
+  {value: 'csfUserIdName', label: 'CSF', type: 'input', key: 'CSF',},
   {value: 'sendDate', label: '需求发送日期', type: 'input', key: 'XUQIUFASONGRIQI',},
   {value: 'respDeptName', label: 'LINIE科室', type: 'input', key: 'LINIEKESHI',},
   {value: 'respLinieName', label: 'LINIE', type: 'input', key: 'LINIE',},
@@ -34,7 +34,7 @@ export const detailList = [
   {value: 'deliveryWarehouse', label: '送货仓库', type: 'input', key: 'SONGHUOCANGKU',},
   {value: 'signDate', label: '需求签收日期', type: 'input', key: 'XUQIUQIANSHOURIQI',},
   {value: 'demandRecoveryDate', label: '需求恢复日期', type: 'input', key: 'XUQIUHUIFURIQI',},
-  {value: 'sparePartUUID', label: 'UUID', type: 'input', key: 'UUID',},
+  {value: 'sparePartUuid', label: 'UUID', type: 'input', key: 'UUID',},
   {value: 'technicianStaffNum', label: '售后技术人员工号', type: 'input', key: 'SHOUHOUJISHURENYUANGONGHAO',},
   {value: 'technicianStaffName', label: '售后技术人员名', type: 'input', key: 'LK_SHOUHOUJISHURENYUANMING',},
   {value: 'reason', label: '理由', type: 'input', key: 'LIYOU', row: 1},
