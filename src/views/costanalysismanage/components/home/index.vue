@@ -313,13 +313,13 @@ export default {
     },
     // 跳转RFQ详情
     jumpRfq(row) {
-      // this.$router.push({
-      //   path: "/costanalysismanage/rfqdetail",
-      //   query: {
-      //     rfqId: row.id
-      //   }
-      // })
-      window.open(`/#/costanalysismanage/rfqdetail?rfqId=${ row.id }`, "_blank")
+      const route = this.$router.resolve({
+        path: "/costanalysismanage/rfqdetail",
+        query: {
+          rfqId: row.id
+        }
+      })
+      window.open(route.href, "_blank")
     },
     // 下载
     download(row) {
@@ -337,11 +337,11 @@ export default {
     },
     // 分析报告
     analysisReport(row) {
-      // this.$router.push({
-      //   path: "/costanalysismanage/costanalysis",
-      //   query: { rfqId: row.id }
-      // })
-      window.open(`/#/costanalysismanage/costanalysis?rfqId=${ row.id }`, "_blank")
+      const route = this.$router.resolve({
+        path: "/costanalysismanage/costanalysis",
+        query: { rfqId: row.id }
+      })
+      window.open(route.href, "_blank")
     },
     // 变更顺序
     updateOrder(row) {
