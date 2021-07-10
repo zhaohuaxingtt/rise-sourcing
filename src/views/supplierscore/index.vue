@@ -400,7 +400,13 @@ export default {
     },
     // 跳转RFQ详情
     jumpRfqDetail(row) {
-      window.open(`/#/supplierscore/rfqdetail?rfqId=${ row.rfqId }`, "_blank")
+      const route = this.$router.resolve({
+        path: "/supplierscore/rfqdetail",
+        query: {
+          rfqId: row.id
+        }
+      })
+      window.open(route.href, "_blank")
     }
   }
 }
