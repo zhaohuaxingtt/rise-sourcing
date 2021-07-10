@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-26 21:04:49
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-07-09 14:00:40
+ * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-07-10 12:23:54
  * @Description: 定点-审批人&审批记录
  * @FilePath: \front-web\src\views\designate\approvalPersonAndRecord\index.vue
 -->
@@ -18,7 +18,7 @@
             <!--------------------同步按钮----------------------------------->
             <span class="cursor tongbu" @click="synchronization" :loading="approvalSyncLoading"><icon symbol class="margin-right8" name='icontongbu' ></icon>{{language('LK_TONGBU','同步')}}</span>
             <!--------------------审批流按钮----------------------------------->
-            <iButton @click="openAprroveFlow" >{{language('LK_SHENPILIU','审批流')}}</iButton>
+            <iButton @click="openAprroveFlow" >{{language('SHENPILIU','审批流')}}</iButton>
             <!--------------------编辑按钮----------------------------------->
             <iButton @click="handleEdit" >{{language('LK_BIANJI','编辑')}}</iButton>
             
