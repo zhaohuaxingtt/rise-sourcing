@@ -146,7 +146,7 @@
 				this.$emit("handleSelectionChange", val);
 			},
 			openPage(row) {
-				this.$emit("openPage", row);
+				window.open(`${ process.env.VUE_APP_PORTAL_URL }/supplier/#/supplier/supplierDetail?supplierToken=&supplierType=4`, '_blank')
 			},
 			onJump360(row) {
 				window.open("https://www.baidu.com/");
