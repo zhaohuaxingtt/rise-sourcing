@@ -96,6 +96,78 @@ export default {
         .then(res => {
           if (res.code == 200) {
             this.deptScoringMap = res.data || {}
+            console.log(this.deptScoringMap)
+            // return
+            this.deptScoringMap = {
+              "技术部门": {
+                "purchase_2": {
+                  "left": [
+                    {
+                      nameZh: "王源源",
+                      id: "52",
+                      tagName: "技术部门"
+                    }
+                  ],
+                  "right": [
+                    {
+                      nameZh: "姜谷兰",
+                      id: "52",
+                      tagName: "技术部门"
+                    }
+                  ]
+                },
+                "WS1QQCGGA": {
+                  "left": [
+                    {
+                      nameZh: "宁勇男",
+                      id: "44",
+                      tagName: "技术部门"
+                    }
+                  ],
+                  "right": [
+                    {
+                      nameZh: "谈和玉",
+                      id: "45",
+                      tagName: "技术部门"
+                    }
+                  ]
+                }
+              },
+              "质量部门": {
+                "purchase_pro_2": {
+                  "left": [
+                    {
+                      nameZh: "刘发",
+                      id: "42",
+                      tagName: "质量部门"
+                    }
+                  ],
+                  "right": [
+                    {
+                      nameZh: "刘财",
+                      id: "43",
+                      tagName: "质量部门"
+                    }
+                  ]
+                },
+                "WS1QQCGGB": {
+                  "left": [
+                    {
+                      nameZh: "须奇水",
+                      id: "46",
+                      tagName: "质量部门"
+                    }
+                  ],
+                  "right": [
+                    {
+                      nameZh: "冉兴腾",
+                      id: "47",
+                      tagName: "质量部门"
+                    }
+                  ]
+                }
+              }
+            }
           } else {
             iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
           }
@@ -112,6 +184,12 @@ export default {
       .then(res => {
         if (res.code == 200) {
           this.tableListData = res.data
+          // this.tableListData = [
+            // {},
+            // {},
+            // {},
+            // {}
+          // ]
         } else {
           iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
         }

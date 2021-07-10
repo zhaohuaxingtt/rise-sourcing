@@ -336,7 +336,14 @@ export default {
     },
     // 查看零件评分
     viewPartScore(row) {
-      window.open(`/#/supplierscore/partscore?rfqId=${ this.rfqId }&supplierId=${ row.supplierId }`, "_blank")
+      const route = this.$router.resolve({
+        path: "/supplierscore/partscore",
+        query: {
+          rfqId: row.id,
+          supplierId: row.supplierId
+        }
+      })
+      window.open(route.href, "_blank")
     },
     // 编辑/查看 备注
     editRemark(row) {
