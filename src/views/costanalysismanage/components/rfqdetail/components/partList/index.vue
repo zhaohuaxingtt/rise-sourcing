@@ -26,9 +26,11 @@ s<!--
         @handleSelectionChange="handleSelectionChange"
       >
         <template #partNum="scope">
-          <!-- <span v-if="scope.row.sendKmFlag == 1" class="link-underline" @click="jumpPartDetail(scope.row)">{{ scope.row.partNum }}</span>
-          <span v-else>{{ scope.row.partNum }}</span> -->
-          <span class="link-underline" @click="jumpPartDetail(scope.row)">{{ scope.row.partNum }}</span>
+          <span v-if="scope.row.sendKmFlag == 1" class="link-underline" @click="jumpPartDetail(scope.row)">{{ scope.row.partNum }}</span>
+          <span v-else>{{ scope.row.partNum }}</span>
+        </template>
+        <template #round="scope">
+          <span v-if="scope.row.sendKmFlag == 1">{{ scope.row.round }}</span>
         </template>
         <template #cbdStatus="scope">
           <span class="link-underline-disabled">{{ scope.row.cbdStatus | dateFilter("YYYY-MM-DD") }}</span>
