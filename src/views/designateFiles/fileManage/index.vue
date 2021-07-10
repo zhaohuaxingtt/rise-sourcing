@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-26 16:20:16
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-07-07 17:13:45
+ * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-07-10 15:50:01
  * @Description: 附件综合管理
  * @FilePath: \front-web\src\views\designateFiles\fileManage\index.vue
 -->
@@ -515,7 +515,9 @@ export default {
         return
       }
       const selectLINIE = uniq(this.selectParts.map(item => item.csfuserId))
+      const selectLINIEName = uniq(this.selectParts.map(item => item.csfUser))
       const selectLINIEDept = uniq(this.selectParts.map(item => item.csfuserDept))
+      const selectLINIEDeptName = uniq(this.selectParts.map(item => item.csfuserDeptName))
       if (selectLINIE.length > 1) {
         iMessage.warn(this.language('QINGXUANZEXIANGTONGLINIEDEFUJIAN','请选择相同LINIE的附件'))
         return
@@ -524,7 +526,7 @@ export default {
         return
       }
       this.selectLinieDept = selectLINIEDept[0]
-      const router =  this.$router.resolve({path: '/sourcing/createrfq', query: { type: '2', ids: this.selectParts.map(item => item.spnrNum).join(','),linie:selectLINIE[0], linieDept:selectLINIEDept[0]}})
+      const router =  this.$router.resolve({path: '/sourcing/createrfq', query: { type: '2', ids: this.selectParts.map(item => item.spnrNum).join(','),linie:selectLINIE[0], linieName: selectLINIEName[0], linieDept:selectLINIEDept[0], linieDeptName: selectLINIEDeptName[0]}})
       window.open(router.href,'_blank')
     },
     // 通过待办数跳转
