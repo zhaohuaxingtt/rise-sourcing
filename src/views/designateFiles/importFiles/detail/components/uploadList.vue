@@ -189,6 +189,7 @@ export default {
 <style lang="scss" scoped>
     .uploadList{
         position: relative;
+        padding-bottom: 20px;
         .btn-list{
             position: absolute;
             right: 40px;

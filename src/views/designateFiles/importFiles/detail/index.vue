@@ -5,7 +5,7 @@
 -->
 <template>
     <iPage class="filesDetailList">
-        <div v-if="!showUploadList">
+        <div>
             <p class="title margin-bottom10">{{language('LK_FUJIANQINGDAN','附件清单')}}：{{importfilesId}}</p>
             <iCard collapse>
                 <!-- 搜索区域 -->
@@ -60,7 +60,7 @@
                 />
             </iCard>
         </div>
-        <div v-else>
+        <!-- <div v-else>
             <iCard>
                 <p class="uploadList-icon margin-bottom20">
                     <span @click="changeShowStatus">
@@ -69,7 +69,18 @@
                 </p>
                 <uploadList  :uploadId="uploadId" />
             </iCard>
-        </div>
+        </div> -->
+
+        <iDialog
+            v-if="dialogVisible"
+            :title="language('LK_SHANGCHUANWENJIAN','上传文件')"
+            :visible.sync="dialogVisible"
+            @close="clearDialog"
+            width="90%"
+            class="uploadListDialog"
+        >
+            <uploadList  :uploadId="uploadId" />
+        </iDialog>
     </iPage>
 </template>
 
@@ -82,6 +93,7 @@ import {
     iDatePicker,
     iPagination,
     icon,
+    iDialog,
 } from 'rise'
 import { tableTitle } from './data'
 import {pageMixins} from '@/utils/pageMixins'
@@ -102,8 +114,9 @@ export default {
         iInput,
         iDatePicker,
         iPagination,
-        icon,
+        // icon,
         tableList,
+        iDialog,
     },
     data(){
         return{
@@ -114,13 +127,11 @@ export default {
                 timeToMarket:'',
             },
             tableTitle:tableTitle,
-            tableListData:[
-                {code:'Z00856102',b:'SP123',c:'SVAA432',d:'1',e:'1111'}
-            ],
-            showUploadList:false,
+            tableListData:[],
             loading:false,
             uploadId:'',
             importfilesId:'',
+            dialogVisible:false,
         }
     },
     created(){
@@ -146,8 +157,8 @@ export default {
         },
         // 改变弹窗是否显示状态
         changeShowStatus(){
-            const {showUploadList} = this;
-            this.showUploadList = !showUploadList;
+            const {dialogVisible} = this;
+            this.dialogVisible = !dialogVisible;
         },
         // 查看上传列表
         checkUploadList(id){
