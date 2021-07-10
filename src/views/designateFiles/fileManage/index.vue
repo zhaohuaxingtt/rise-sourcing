@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-26 16:20:16
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-10 15:50:01
+ * @LastEditTime: 2021-07-10 16:42:15
  * @Description: 附件综合管理
  * @FilePath: \front-web\src\views\designateFiles\fileManage\index.vue
 -->
@@ -18,7 +18,7 @@
           <!----------------------------------------------------------------->
           <!---------------------------搜索区域------------------------------->
           <!----------------------------------------------------------------->
-          <iSearch @sure="getTableList" @reset="reset">
+          <iSearch @sure="sure" @reset="reset">
             <el-form>
               <el-form-item v-for="(item, index) in searchList" :key="index" :label="language(item.key,item.label)">
                 <iSelect v-if="item.type === 'select'" :filterable="item.filterable" v-model="searchParams[item.value]">
@@ -157,6 +157,10 @@ export default {
     ...mapActions(["updateNavList"])
   },
   methods: {
+    sure() {
+      this.page.currPage = 1
+      this.getTableList()
+    },
     /**
      * @Description: 删除附件
      * @Author: Luoshuang
