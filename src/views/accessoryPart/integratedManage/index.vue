@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-26 11:16:51
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-10 14:07:53
+ * @LastEditTime: 2021-07-10 16:41:27
  * @Description: 配件综合管理页面
  * @FilePath: \front-web\src\views\accessoryPart\integratedManage\index.vue
 -->
@@ -18,7 +18,7 @@
           <!----------------------------------------------------------------->
           <!---------------------------搜索区域------------------------------->
           <!----------------------------------------------------------------->
-          <iSearch @sure="getTableList" @reset="reset">
+          <iSearch @sure="sure" @reset="reset">
             <el-form>
               <el-form-item v-for="(item, index) in searchList" :key="index" :label="language(item.key,item.label)">
                 <iSelect v-update v-if="item.type === 'select'" v-model="searchParams[item.value]">
@@ -333,6 +333,10 @@ export default {
         nomiType: '',
         idState: ''
       }
+    },
+    sure() {
+      this.page.currPage = 1
+      this.getTableList()
     },
     /**
      * @Description: 获取列表数据
