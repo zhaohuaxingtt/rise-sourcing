@@ -67,7 +67,7 @@ export const tableTitle = permissionTitle("COSTANALYSISMANAGE_HOME_TABLE", [
   { props: "tiaName", name: "TIA", key: "costanalysismanage.Tia", tooltip: true },
   { props: "heavyItem", name: "Heavy Item", key: "costanalysismanage.HeavyItem", tooltip: true, width: 100 },
   { props: "technoMaterial", name: "技术资料", key: "costanalysismanage.JiShuZiLiao", tooltip: true },
-  { props: "sendDate", name: "CBD", key: "costanalysismanage.Cbd", tooltip: true, width: 120 },
+  { props: "sendDate", name: "CBD", key: "costanalysismanage.Cbd", tooltip: true, width: 150 },
   { props: "analysisReport", name: "分析报告", key: "costanalysismanage.FenXiBaoGao", tooltip: true },
   { props: "recordId", width: 40 }
 ])
