@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-25 13:57:11
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-25 13:23:26
+ * @LastEditTime: 2021-07-10 14:08:47
  * @Description: 
  * @FilePath: \front-web\src\views\accessoryPart\signForPartsDemand\index.vue
 -->
@@ -208,7 +208,7 @@ export default {
      */    
     getSelectOptions() {
       // 配件状态
-      this.getDictionary('accessoryTypeOption', 'SPARE_PART_STATE')
+      this.getDictionary('accessoryTypeOption', 'ACCESSORY_STATE')
     },
     /**
      * @Description: 车型项目下拉框
