@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-25 15:24:07
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-25 13:46:41
+ * @LastEditTime: 2021-07-10 11:50:21
  * @Description: 
  * @FilePath: \front-web\src\views\accessoryPart\accessoryPartDetail\data.js
  */
@@ -20,11 +20,11 @@ export const detailList = [
   {value: 'state', label: '配件状态', type: 'select', key: 'PEIJIANZHUANGTAI', selectOption: []},
   {value: 'isEop', label: '零件状态', type: 'select', key: 'LINGJIANZHUANGTAI', selectOption: []},
   {value: 'idState', label: 'ID状态', type: 'select', key: 'IDZHUANGTAI', selectOption: []},
-  {value: 'csfuserId', label: 'CSF科室', type: 'date', key: 'CSFKESHI',},
-  {value: 'csfuserDept', label: 'CSF', type: 'input', key: 'CSF',},
+  {value: 'csfUserIdName', label: 'CSF科室', type: 'date', key: 'CSFKESHI',},
+  {value: 'csfUserDeptName', label: 'CSF', type: 'input', key: 'CSF',},
   {value: 'sendDate', label: '需求发送日期', type: 'input', key: 'XUQIUFASONGRIQI',},
-  {value: 'respDept', label: '科室', type: 'input', key: 'KESHI',},
-  {value: 'respLinie', label: 'LINIE', type: 'input', key: 'LINIE',},
+  {value: 'respDeptName', label: 'LINIE科室', type: 'input', key: 'LINIEKESHI',},
+  {value: 'respLinieName', label: 'LINIE', type: 'input', key: 'LINIE',},
   {value: 'brand', label: '品牌', type: 'input', key: 'PINPAI',},
   {value: 'supplierSapCode', label: '供应商SAP号', type: 'input', key: 'GONGYINGSHANGSAPHAO',},
   {value: 'supplierSvwCode', label: '供应商SVW号', type: 'input', key: 'GONGYINGSHANGSVWHAO',},
