@@ -149,7 +149,7 @@
 				this.$emit("openPage", row);
 			},
 			onJump360(row) {
-				window.open("https://www.baidu.com/");
+				window.open(`${ process.env.VUE_APP_PORTAL_URL }/supplier/supplierList`, '_blank')
 			},
 			// 添加自定义项目
 			addCustom() {
