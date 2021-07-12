@@ -37,8 +37,8 @@
     <iDialog title="您还没有选择参考车型项目，是否继续?" :visible.sync="nextStepvalue" width="381px" top="0s" @close='clearDiolog'
              v-loading="iDialogLoading" class="iDialogNextStep">
       <span slot="footer" class="dialog-footer">
-        <iButton @click="nextStepvalue = false">{{ $t('LK_QUXIAO') }}</iButton>
-        <iButton @click="nextStepsave">{{ $t('LK_QUEREN') }}</iButton>
+        <iButton @click="nextStepvalue = false">{{ language('LK_QUXIAO','取 消') }}</iButton>
+        <iButton @click="nextStepsave">{{ language('LK_QUEREN','确认') }}</iButton>
       </span>
     </iDialog>
   </iPage>

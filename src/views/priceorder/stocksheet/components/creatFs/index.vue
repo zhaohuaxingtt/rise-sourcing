@@ -1,7 +1,7 @@
 <template>
 	<div class="fs margin-left10 margin-right10">
 		<iButton v-permission="PARTSPROCURE_GENERATEFSBUTTON" @click="creatFs()">
-			{{ $t('partsprocure.PARTSPROCUREGENERATEFSGSNR') }}
+			{{ language('partsprocure.PARTSPROCUREGENERATEFSGSNR','生成零件采购项目号') }}
 		</iButton>
 		<!-- 单条插入RFQ表格 -->
 		<iDialog title="RFQ列表" :visible.sync="visible">
@@ -39,7 +39,7 @@
 		methods: {
 			// 生成fs号
 			creatFs() {
-				if (this.projectIds.length == 0) return iMessage.warn(this.$t('LK_NINDANGQIANHAIWEIXUANZENINXUYAOSHENGCHENGFSHAODELINGJIANCAIGOUXIANGMU'));
+				if (this.projectIds.length == 0) return iMessage.warn(this.language('LK_NINDANGQIANHAIWEIXUANZENINXUYAOSHENGCHENGFSHAODELINGJIANCAIGOUXIANGMU','抱歉，您当前还未选择您需要生成FS号的零件采购项目！'));
 				let fs = {
 					purchaseProjectIds: this.projectIds,
 				};
@@ -52,10 +52,10 @@
 								tip=tip+res.fsnrGsnrNum+','
 							})
 							tip=tip+"是否组合新建RFQ"
-							iMessageBox(tip,"是否新组建RFQ",{ confirmButtonText: this.$t('LK_QUEDING'), cancelButtonText: this.$t('LK_QUXIAO') }).then(val=>{
+							iMessageBox(tip,"是否新组建RFQ",{ confirmButtonText: this.language('LK_QUEDING','确定'), cancelButtonText: this.language('LK_QUXIAO','取 消') }).then(val=>{
 								insertRfq({ rfqPartDTOList: res.data.fs.projectList}).then((res) => {
 									if (res.data && res.data.rfqId) {
-										iMessage.success(this.$t('LK_CAOZUOCHENGGONG'))
+										iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'))
 										this.$emit('refresh')
 									} else {
 										iMessage.warn(res.desZh);
@@ -64,13 +64,13 @@
 							})	
 						}else if(res.data.fs.rfqResult){
 							// 单条插入RFQ
-							iMessageBox("是否加入已有RFQ","是否加入RFQ",{ confirmButtonText: this.$t('LK_QUEDING'), cancelButtonText: this.$t('LK_QUXIAO') }).then(val=>{
+							iMessageBox("是否加入已有RFQ","是否加入RFQ",{ confirmButtonText: this.language('LK_QUEDING','确定'), cancelButtonText: this.language('LK_QUXIAO','取 消') }).then(val=>{
 								this.visible=true
 								this.tableListData=res.data.fs.rfqResult.list
 								this.rfqPartDTOList.push(res.data.fs.rfqResult.project) 
 							})	
 						}else{
-							iMessage.success(this.$t('LK_CAOZUOCHENGGONG'))
+							iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'))
 							this.$emit('refresh')
 						}
 					} else {

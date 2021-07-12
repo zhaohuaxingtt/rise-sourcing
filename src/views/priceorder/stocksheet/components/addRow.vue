@@ -17,19 +17,19 @@
           v-loading="iSearchLoading"
       >
         <el-form>
-          <el-form-item :label="$t('LK_CAILIAOZUBIANHAOZHONGWENMINGDEWEN')">
+          <el-form-item :label="language('LK_CAILIAOZUBIANHAOZHONGWENMINGDEWEN','材料组编号/中⽂名/德⽂名')">
             <iInput v-model="zhEnNo" placeholder="可输入编号中德文名称">
               <i slot="suffix" class="el-input__icon el-icon-search" @click="sure"></i>
             </iInput>
           </el-form-item>
-          <el-form-item :label="$t('LK_LINJIANLIUWEIHAO')">
-            <iInput v-model="materialName" :placeholder="$t('LK_RFQPLEASEENTERQUERY')" maxlength="6">
+          <el-form-item :label="language('LK_LINJIANLIUWEIHAO','零件六位号')">
+            <iInput v-model="materialName" :placeholder="language('LK_RFQPLEASEENTERQUERY','请输入查询')" maxlength="6">
               <i slot="suffix" class="el-input__icon el-icon-search" @click="sure"></i>
             </iInput>
           </el-form-item>
-          <el-form-item :label="$t('LK_MOJUSHUXIN')">
+          <el-form-item :label="language('LK_MOJUSHUXIN','模具属性')">
             <iSelect
-                :placeholder="$t('LK_QINGXUANZE')"
+                :placeholder="language('LK_QINGXUANZE','请选择')"
                 v-model="mouldAttr"
                 filterable
                 clearable
@@ -46,9 +46,9 @@
             <!--              <i slot="suffix" class="el-input__icon el-icon-search" @click="sure"></i>-->
             <!--            </iInput>-->
           </el-form-item>
-          <el-form-item :label="$t('LK_ZHUANYEKESHI')">
+          <el-form-item :label="language('LK_ZHUANYEKESHI','专业科室')">
             <iSelect
-                :placeholder="$t('LK_QINGXUANZE')"
+                :placeholder="language('LK_QINGXUANZE','请选择')"
                 v-model="professionalDepartments"
                 filterable
                 clearable
@@ -68,7 +68,7 @@
         </el-form>
       </iSearch>
       <div v-loading="tableLoading">
-        <iButton class="add" @click="addList">{{ $t('LK_TIANJIA') }}</iButton>
+        <iButton class="add" @click="addList">{{ language('LK_TIANJIA','添加') }}</iButton>
         <tablelist
             :height="tableHeight"
             :tableData="tableListData"
@@ -186,9 +186,7 @@ export default {
     addList() {
       if (this.multipleSelection.length == 0) {
         return iMessage.warn(
-            this.$t(
-                "请先勾选"
-            )
+            this.language( 'LK_QINGXIANGOUXUAN',"请先勾选")
         );
       }
       this.tableLoading = true

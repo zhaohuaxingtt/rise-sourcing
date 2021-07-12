@@ -29,9 +29,9 @@
           :searchKey="PARTSPROCURE_CONFIRM"
       >
         <el-form class="form1 clearfix">
-          <el-form-item :label="$t('LK_CANKAOCHEXINXIANGMUYI')">
+          <el-form-item :label="language('LK_CANKAOCHEXINXIANGMUYI','参考⻋型项⽬⼀')">
             <iSelect
-                :placeholder="$t('LK_QINGXUANZE')"
+                :placeholder="language('LK_QINGXUANZE','请选择')"
                 v-model="referenceModel1"
                 filterable
                 @change="changeCarTypeProject"
@@ -44,9 +44,9 @@
               ></el-option>
             </iSelect>
           </el-form-item>
-          <el-form-item :label="$t('LK_CANKAOCHEXINXIANGMUER')">
+          <el-form-item :label="language('LK_CANKAOCHEXINXIANGMUER','参考⻋型项⽬⼆')">
             <iSelect
-                :placeholder="$t('LK_QINGXUANZE')"
+                :placeholder="language('LK_QINGXUANZE','请选择')"
                 v-model="referenceModel2"
                 filterable
                 @change="changeCarTypeProject"
@@ -59,9 +59,9 @@
               ></el-option>
             </iSelect>
           </el-form-item>
-          <el-form-item :label="$t('LK_CANKAOCHEXINXIANGMUSAN')">
+          <el-form-item :label="language('LK_CANKAOCHEXINXIANGMUSAN','参考⻋型项⽬三')">
             <iSelect
-                :placeholder="$t('LK_QINGXUANZE')"
+                :placeholder="language('LK_QINGXUANZE','请选择')"
                 v-model="referenceModel3"
                 filterable
                 @change="changeCarTypeProject"
@@ -74,9 +74,9 @@
               ></el-option>
             </iSelect>
           </el-form-item>
-          <el-form-item :label="$t('LK_QITACHEXINXIANGMUBEIXUAN')">
+          <el-form-item :label="language('LK_QITACHEXINXIANGMUBEIXUAN','其它⻋型项⽬备选')">
             <iSelect
-                :placeholder="$t('LK_QINGXUANZE')"
+                :placeholder="language('LK_QINGXUANZE','请选择')"
                 v-model="otherModel"
                 filterable
                 @change="changeCarTypeProject"
@@ -91,9 +91,9 @@
           </el-form-item>
         </el-form>
         <el-form class="clearfix">
-          <el-form-item :label="$t('LK_CHEXINXIANGMULEIXIN')">
+          <el-form-item :label="language('LK_CHEXINXIANGMULEIXIN','⻋型项⽬类型')">
             <iSelect
-                :placeholder="$t('LK_QINGXUANZE')"
+                :placeholder="language('LK_QINGXUANZE','请选择')"
                 v-model="modelProject"
                 filterable
                 @change="changeCarTypeProject"
@@ -106,12 +106,12 @@
               ></el-option>
             </iSelect>
           </el-form-item>
-          <el-form-item :label="$t('LK_CHEXINXIANGMUQIZHINIANFEN')">
+          <el-form-item :label="language('LK_CHEXINXIANGMUQIZHINIANFEN','⻋型项⽬起⽌年份')">
             <div class="timeClass">
               <iDatePicker
                   v-model="sopBegin"
                   type="year"
-                  :placeholder="$t('LK_QINGXUANZE')"
+                  :placeholder="language('LK_QINGXUANZE','请选择')"
                   @change="changeYears('sopBegin')"
                   value-format="yyyy">
               </iDatePicker>
@@ -119,7 +119,7 @@
               <iDatePicker
                   v-model="sopEnd"
                   type="year"
-                  :placeholder="$t('LK_QINGXUANZE')"
+                  :placeholder="language('LK_QINGXUANZE','请选择')"
                   @change="changeYears('sopEnd')"
                   value-format="yyyy">
               </iDatePicker>
@@ -130,8 +130,8 @@
       </iSearch>
     </div>
     <span slot="footer" class="dialog-footer">
-      <iButton @click="save" :loading='saveLoading'>{{ $t('LK_QUEREN') }}</iButton>
-      <iButton @click="reset">{{ $t('LK_ZHONGZHI') }}</iButton>
+      <iButton @click="save" :loading='saveLoading'>{{ language('LK_QUEREN','确认') }}</iButton>
+      <iButton @click="reset">{{ language('LK_ZHONGZHI','重置') }}</iButton>
     </span>
   </iDialog>
 </template>
