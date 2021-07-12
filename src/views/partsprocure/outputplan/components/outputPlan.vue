@@ -1,16 +1,16 @@
 <template>
-  <iCard class="outputPlan tabCard" :title="$t('LK_XUNJIACHANLIANGJIHUA')" tabCard collapse v-permission="PARTSPROCURE_OUTPUTPLAN_OUTPUTRECORD_INDEXPAGE">
+  <iCard class="outputPlan tabCard" :title="language('LK_XUNJIACHANLIANGJIHUA','询价产量计划')" tabCard collapse v-permission="PARTSPROCURE_OUTPUTPLAN_OUTPUTRECORD_INDEXPAGE">
     <template v-slot:header-control>
-      <iButton @click="handleSave" :loading="saveLoading" v-permission="PARTSPROCURE_OUTPUTPLAN_OUTPUTRECORD_SAVE">{{$t('LK_BAOCUN')}}</iButton>
+      <iButton @click="handleSave" :loading="saveLoading" v-permission="PARTSPROCURE_OUTPUTPLAN_OUTPUTRECORD_SAVE">{{language('LK_BAOCUN','保存')}}</iButton>
     </template>
     <div class="body">
       <el-table
-        :empty-text="$t('LK_ZANWUSHUJU')"
+        :empty-text="language('LK_ZANWUSHUJU','暂无数据')"
         :data="tableListData"
         v-loading="loading"
         ref="table">
         <template v-for="(items, $index) in tableTitle">
-          <el-table-column :key="$index" align="center" v-if="$index == 1" :prop="items.props" :label="$t(items.key)">
+          <el-table-column :key="$index" align="center" v-if="$index == 1" :prop="items.props" :label="language(items.key,items.name)">
             <template v-slot:header>
               <iSelect v-model="startYear" class="select" @change="handleStartYearChange">
                 <el-option
@@ -24,12 +24,12 @@
               <iInput class="input" v-model="scope.row[startYear]" @input="handleInput($event, startYear)"/>
             </template>
           </el-table-column>
-          <el-table-column v-if="$index == 0" :key="$index" align="center" :label="$t(items.key)">
+          <el-table-column v-if="$index == 0" :key="$index" align="center" :label="language(items.key,items.name)">
             <template v-slot>
-              <span>{{ $t('LK_CHANLIANGPC') }}</span>
+              <span>{{ language('LK_CHANLIANGPC','产量（PC）') }}</span>
             </template>
           </el-table-column>
-          <el-table-column v-else :key="$index" align="center" :label="$t(items.key)" :prop="items.props">
+          <el-table-column v-else :key="$index" align="center" :label="language(items.key,items.name)" :prop="items.props">
             <template v-slot="scope">
               <iInput class="input" :disabled="$index == tableTitle.length - 1 || $index == tableTitle.length - 2" v-model="scope.row[items.props]" @input="handleInput($event, items.props)"/>
             </template>

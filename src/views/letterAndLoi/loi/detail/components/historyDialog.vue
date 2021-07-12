@@ -5,7 +5,7 @@
 -->
 <template>
   <iDialog
-    :title="$t('LK_LISHILOI')"
+    :title="language('LK_LISHILOI','历史LOI')"
     :visible.sync="dialogVisible"
     @close="clearDialog"
     width="90%"

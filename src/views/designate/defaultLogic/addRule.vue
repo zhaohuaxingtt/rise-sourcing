@@ -1,25 +1,25 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-24 20:14:24
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-02 15:15:25
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-07-09 14:15:42
  * @Description: 添加规则弹窗
  * @FilePath: \front-web\src\views\designate\defaultLogic\addRule.vue
 -->
 
 <template>
   <iDialog
-    title="添加规则"
+    :title="language('LK_TIANJIAGUIZE','添加规则')"
     :visible.sync="dialogVisible"
     @close="clearDialog"
   >
     <template slot="footer">
-      <iButton @click="handleAddRule" :disabled="rules.length > 4">添加条件</iButton>
-      <iButton @click="handleSave" :loading="loading">保存</iButton>
+      <iButton @click="handleAddRule" :disabled="rules.length > 4">{{language('LK_TIANJIATIAOJIAN','添加条件')}}</iButton>
+      <iButton @click="handleSave" :loading="loading">{{language('LK_BAOCUN','保存')}}</iButton>
     </template>
     <el-form class="add-rule-form">
-      <el-form-item label="预设定点类型" >
-        <iSelect :placeholder="$t('LK_QINGXUANZE')" v-model="ddType" >
+      <el-form-item :label="language('LK_YUSHEDINGDIANLEIXING','预设定点类型')" >
+        <iSelect :placeholder="language('LK_QINGXUANZE','请选择')" v-model="ddType" >
           <el-option
             v-for="item in typeOptions"
             :key="item.value"
@@ -30,8 +30,8 @@
       </el-form-item>
     </el-form>
     <el-form v-for="(item, index) in rules" :key="index" class="add-rule-form" >
-      <el-form-item :label="'条件'+(index+1)" >
-        <iSelect :placeholder="$t('LK_QINGXUANZE')" v-model="item.input1" :disabled="index < 1">
+      <el-form-item :label="language('LK_TIAOJIAN','条件') +(index+1)" >
+        <iSelect :placeholder="language('LK_QINGXUANZE','请选择')" v-model="item.input1" :disabled="index < 1">
           <el-option
             v-for="item in input1Options"
             :disabled="item.disabled || alreadyExsist(item.value)"
@@ -42,7 +42,7 @@
         </iSelect>
       </el-form-item>
       <el-form-item v-if="item.input1 !== ''" :label="' '">
-        <iSelect :placeholder="$t('LK_QINGXUANZE')" v-model="item.input2" @change="val => handleSelectChange(val, item)">
+        <iSelect :placeholder="language('LK_QINGXUANZE','请选择')" v-model="item.input2" @change="val => handleSelectChange(val, item)">
           <el-option
             v-for="item in (item.input1 === 0 ? partTypeOptions : item.input1 === 4 ? tradeOptions : input2Options )"
             :key="item.value"
@@ -52,7 +52,7 @@
         </iSelect>
       </el-form-item>
       <el-form-item v-if="item.input1 !== '' && item.input1 !== 0 && item.input1 !== 4" :label="' '">
-        <iInput :placeholder="$t('LK_QINGSHURU')" v-model="item.input3" type="number" oninput="if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"></iInput>
+        <iInput :placeholder="language('LK_QINGSHURU','请输入')" v-model="item.input3" type="number" oninput="if(value.indexOf('.')>0){value=value.slice(0,value.indexOf('.')+3)}"></iInput>
       </el-form-item>
       <icon v-if="index > 0" symbol name="icondingdianshenqingyusheluoji-shanchu" @click.native="handleDeleteRule(index)" class="delete-icon cursor"></icon>
     </el-form>
@@ -217,7 +217,7 @@ export default {
      */    
     handleSave() {
       if(this.ddType === '') {
-        iMessage.warn('请选择预设定点类型')
+        iMessage.warn(this.language('LK_QINGXUANZEYUSHEDINGDIANLEIXING','请选择预设定点类型'))
         return
       }
       if(this.rules.some(item => {
@@ -230,7 +230,7 @@ export default {
         }
         return false
       })) {
-        iMessage.warn('请将规则填写完整')
+        iMessage.warn(this.language('LK_QINGJIANGGUIZETIANXIEWANZHENG','请将规则填写完整'))
         return
       }
 

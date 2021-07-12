@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-03-01 10:29:09
- * @LastEditTime: 2021-06-23 19:34:30
+ * @LastEditTime: 2021-07-09 15:17:54
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\editordetail\components\materialGroupInfo\index.vue
@@ -13,29 +13,29 @@
         v-if="!setMaterialGroupStatus"
         @click="setMaterialGroup"
         v-permission="PARTSPROCURE_EDITORDETAIL_SETPROCESSGROUP"
-        >{{ $t("LK_SHEZHIGONGYIZU") }}</iButton
+        >{{ language("LK_SHEZHIGONGYIZU",'设置工艺组') }}</iButton
       >
       <iButton
         v-if="setMaterialGroupStatus"
         @click="confirmMaterialGroup"
         :loading="confirmLoading"
         v-permission="PARTSPROCURE_EDITORDETAIL_MATERIALGROUPINFO_CONFIRM"
-        >{{ $t("LK_QUEREN") }}</iButton
+        >{{ language("LK_QUEREN",'确认') }}</iButton
       >
       <iButton
         v-if="setMaterialGroupStatus"
         @click="back"
         v-permission="PARTSPROCURE_EDITORDETAIL_MATERIALGROUPINFO_BACK"
-        >{{ $t("LK_FANHUI") }}</iButton
+        >{{ language("LK_FANHUI",'返回') }}</iButton
       >
-      <iButton @click="jumpBdl">{{ $t('LK_CHAZHAOGONGYIZUGONGYINGSHANG') }}</iButton>
+      <iButton @click="jumpBdl">{{ language('LK_CHAZHAOGONGYIZUGONGYINGSHANG','查找工艺组供应商') }}</iButton>
     </template>
     <div class="body">
       <infos :data="info" />
       <div v-if="setMaterialGroupStatus">
         <tableList
           class="table margin-top20"
-          :indexLabel="$t('LK_BIANHAO')"
+          :indexLabel="language('LK_BIANHAO','编号')"
           :tableData="tableListData"
           :tableTitle="tableTitle"
           :tableLoading="tableLoading"
@@ -132,16 +132,16 @@ export default {
     },
     // 设置工艺组
     setMaterialGroup() {
-      if (!this.params.partNum) return iMessage.warn(this.$t('LK_QUESHIYOUXIAODELINGJIANBIANHAO'))
+      if (!this.params.partNum) return iMessage.warn(this.language('LK_QUESHIYOUXIAODELINGJIANBIANHAO','缺失有效的零件编号'))
       this.setMaterialGroupStatus = true
 
       // this.getMeterialStuff()
     },
     // 设置工艺组请求
     confirmMaterialGroup() {
-      if (this.multipleSelection.length !== 1) return iMessage.warn(this.$t('LK_CICHUBIXUXUANZEYITIAOGONGYIZUSHUJU'))
-      if (!this.info.id) return iMessage.warn(this.$t('LK_QUESHIYOUXIAODEGONGYIZUID'))
-      if (!this.params.partNum) return iMessage.warn(this.$t('LK_QUESHIYOUXIAODELINGJIANBIANHAO'))
+      if (this.multipleSelection.length !== 1) return iMessage.warn(this.language('LK_CICHUBIXUXUANZEYITIAOGONGYIZUSHUJU','抱歉，此处必须选择一条工艺组数据'))
+      if (!this.info.id) return iMessage.warn(this.language('LK_QUESHIYOUXIAODEGONGYIZUID','缺失有效的工艺组id'))
+      if (!this.params.partNum) return iMessage.warn(this.language('LK_QUESHIYOUXIAODELINGJIANBIANHAO','缺失有效的零件编号'))
       const data = this.multipleSelection[0]
 
       // console.log('data', data)

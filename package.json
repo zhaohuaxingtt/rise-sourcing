@@ -7,7 +7,7 @@
     "start:win:sit": "vue-cli-service serve --mode sit",
     "build:win:dev": "npm install rise@latest && vue-cli-service build --mode dev",
     "build:win:sit": "npm install rise@latest && vue-cli-service build --mode sit",
-    "build:win:vmsit": "npm install rise@latest && set NODE_ENV=production && vue-cli-service build --mode dev",
+    "build:win:vmsit": "npm install rise@latest && NODE_ENV=production && vue-cli-service build --mode dev",
     "build:win:uat": "vue-cli-service build --mode uat",
     "build:win:prod": "vue-cli-service build --mode prod",
     "lint": "vue-cli-service lint",
@@ -19,7 +19,7 @@
   "dependencies": {
     "core-js": "^3.6.5",
     "lodash": "^4.17.21",
-    "rise": "^0.8.4"
+    "rise": "^0.8.6"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.4.0",

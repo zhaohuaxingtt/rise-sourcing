@@ -5,6 +5,13 @@
 -->
 
 <template>
+<iDialog     
+    :title="language('LK_SHANGCHUANWENJIAN','上传文件')"
+    :visible.sync="dialogVisible"
+    @close="clearDialog"
+    width="90%"
+    class="uploadListDialog"
+>
   <div class="uploadList">
       <!-- 按钮区域 -->
       <p class="btn-list">
@@ -51,6 +58,8 @@
             :total="page.totalCount" v-update
         />
   </div>
+
+</iDialog>
 </template>
 
 <script>
@@ -58,6 +67,7 @@ import {
     iPagination,
     iButton,
     iMessage,
+    iDialog,
 } from 'rise';
 import {pageMixins} from '@/utils/pageMixins'
 import { filesTableTitle } from '../data'
@@ -78,11 +88,16 @@ export default {
         iButton,
         tableList,
         Upload,
+        iDialog,
     },
     props:{
         uploadId:{
             type:String,
             default:'',
+        },
+        dialogVisible:{
+            type:Boolean,
+            default:false,
         }
     },
     data(){
@@ -182,6 +197,9 @@ export default {
                 await downloadFile(data);
             }
         },
+        clearDialog() {
+        this.$emit('changeShowStatus');
+        },
     }
 }
 </script>
@@ -189,6 +207,7 @@ export default {
 <style lang="scss" scoped>
     .uploadList{
         position: relative;
+        padding-bottom: 20px;
         .btn-list{
             position: absolute;
             right: 40px;

@@ -1,7 +1,7 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-05-25 09:42:07
- * @LastEditTime: 2021-07-05 11:04:10
+ * @LastEditTime: 2021-07-09 14:57:34
  * @Description: 业务分配模拟
 -->
 
@@ -203,7 +203,7 @@ export default {
   methods: {
     async init() {
       // this.getChartData()
-      this.refresh()
+      this.getFetchData()
     },
     // 生成随机id
     randomid() {

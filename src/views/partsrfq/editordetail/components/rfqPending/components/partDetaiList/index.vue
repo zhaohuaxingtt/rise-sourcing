@@ -20,7 +20,7 @@
       </iButton>
     </div>
     <tableList :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="confirmTableLoading"
-               @handleSelectionChange="handleSelectionChange" @openPage="openPage" radio></tableList>
+               @handleSelectionChange="handleSelectionChange" @openPage="openPage"></tableList>
     <iPagination v-update @size-change="handleSizeChange($event, getTableList)"
                  @current-change="handleCurrentChange($event, getTableList)" background :page-sizes="page.pageSizes"
                  :page-size="page.pageSize" :current-page="page.currPage" :layout="page.layout"

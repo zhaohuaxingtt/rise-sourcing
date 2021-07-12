@@ -51,6 +51,9 @@
               <div class="detailed" @click="openDetails(scope)">{{$t('LK_DETAILEDTXT')}}</div>
             </template>
           </iTableList>
+          <div class="unitExplain">
+            <UnitExplain />
+          </div>
           <iPagination
             v-update
             @size-change="handleSizeChange($event, handleSure)"
@@ -92,6 +95,9 @@
               </div>
             </template>
           </iTableList>
+          <div class="unitExplain">
+            <UnitExplain />
+          </div>
           <iPagination
             v-update
             @size-change="handleSizeChange($event, getPageData)"
@@ -126,6 +132,9 @@
               </div>
             </template>
           </iTableList>
+          <div class="unitExplain">
+            <UnitExplain />
+          </div>
           <iPagination
             v-update
             @size-change="handleSizeChange($event, getPageData)"
@@ -250,6 +259,7 @@ import SearchBlock from "./components/searchBlock";
 import { pageMixins } from "@/utils/pageMixins";
 import ApplyPopup from "./components/applyPopup";
 import Tips from "./components/tips";
+import UnitExplain from "./components/unitExplain";
 import {
   icon,
   iTableList
@@ -269,7 +279,7 @@ export default {
     icon, iButton, iDialog,
     SearchBlock, iTableList, iCard,
     iPagination, iInput, Popover,
-    ApplyPopup, Tips
+    ApplyPopup, Tips, UnitExplain
   },
   data(){
     return {
@@ -656,6 +666,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.unitExplain{
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 10px;
+}
 .table-footerStyle{
 
   ::v-deep .el-table__row:nth-last-child(1){

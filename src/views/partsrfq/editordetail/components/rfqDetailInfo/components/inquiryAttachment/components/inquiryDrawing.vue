@@ -96,10 +96,10 @@ export default {
       if (this.selectTableData.length == 0)
         return iMessage.warn(this.$t('LK_QINGXUANZE'))
       const fileList = this.selectTableData.map(item => {
-        return item.fileName
+        return item.tpPartAttachmentName
       })
       const req = {
-        applicationName: 'rise',
+        applicationName: 'procurereq-service',
         fileList,
         /*applicationName: 'common-function-test',
         fileList: ['test (4).txt']*/
@@ -112,8 +112,8 @@ export default {
     },
     async handleOpenPage(row) {
       const req = {
-        applicationName: 'rise',
-        fileList: [row.fileName]
+        applicationName: 'procurereq-service',
+        fileList: [row.tpPartAttachmentName]
       }
       this.downloadLoading = true
       await downloadFile(req)

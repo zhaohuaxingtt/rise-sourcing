@@ -443,7 +443,8 @@ export default {
 
       this.attachmentLoading = true
       getKmFileHistory({
-        rfqId: rfqId,
+        hostId: rfqId,
+        type: 1,
         currPage: 1,
         pageSize: 99999999
       })

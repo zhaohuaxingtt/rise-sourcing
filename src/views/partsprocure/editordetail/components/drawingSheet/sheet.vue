@@ -1,16 +1,16 @@
 <!--
  * @Author: your name
  * @Date: 2021-03-04 11:13:18
- * @LastEditTime: 2021-03-27 20:56:23
+ * @LastEditTime: 2021-07-09 15:07:53
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsprocure\editordetail\components\drawingSheet\sheet.vue
 -->
 <template>
-  <iCard class="outputRecord" tabCard :title="`${ $t('LK_LINGJIANHAO') }：${ this.data.partNum || '' }`" v-loading="loading">
+  <iCard class="outputRecord" tabCard :title="`${ language('LK_LINGJIANHAO','零件号') }：${ this.data.partNum || '' }`" v-loading="loading">
     <div class="body">
       <iFormGroup v-for="(chunk, $index) in items" :key="$index" :row="3" inline>
-        <iFormItem v-for="item in chunk" :key="item.props" :label="$t(item.key)">
+        <iFormItem v-for="item in chunk" :key="item.props" :label="language(item.key,item.name)">
           <iText v-if="item.props === 'status'">{{ item.value | statusFilter }}</iText>
           <iText v-else-if="item.props === 'createDate' || item.props === 'drawingDate'">{{ item.value | dateFilter }}</iText>
           <iText v-else-if="item.props === 'isSecondTier' || item.props === 'isBMG'">{{ item.value | boolFilter }}</iText>
