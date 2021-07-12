@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-28 15:03:47
- * @LastEditTime: 2021-07-07 18:42:14
+ * @LastEditTime: 2021-07-12 14:47:36
  * @LastEditors: Please set LastEditors
  * @Description: 特殊表格实现
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\table.vue
@@ -183,7 +183,8 @@ export default{
           round:this.round,
           supplierId:items[index+'supplierId'],
           fsNum:items.partPrjCode,
-          fix:true
+          fix:true,
+          sourcing:true
         }
       })
       window.open(router.href,'_blank')
