@@ -79,10 +79,10 @@ export default {
       }
       const res1 = await getRfqSupplierAndCategory(pms.rfqId)
       const res = await powerBiUrl()
+      var rfqCategoryList = []
+      var rfqSupplierList = []
       if (res.data && res1.result) {
         this.url = res.data
-        var rfqCategoryList = []
-        var rfqSupplierList = []
         res1.data.rfqCategoryList.forEach(item => {
           rfqCategoryList.push(item.categoryName)
         })
