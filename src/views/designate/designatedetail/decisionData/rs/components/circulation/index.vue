@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:18:01
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-07-12 14:32:50
+ * @LastEditTime: 2021-07-12 14:41:11
  * @Description: 流转RS单
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\rs\components\circulation\index.vue
 -->
@@ -147,10 +147,6 @@ export default {
           this.basicData = res.data
           this.tableData = res.data.lines
           this.projectType = res.data.partProjectType || ''
-
-          if (this.basicData.partProjectType !== "PT07" && this.basicData.partProjectType !== "PT20") {
-            this.tableTitle = this.tableTitle.filter(item => item.props !== "originalPrice")
-          }
         } else {
           this.basicData = {}
           this.tableData = []
