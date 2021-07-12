@@ -1,11 +1,11 @@
 <template>
-  <iDialog class="dialog" :title="$t('LK_SHEZHIPINGFENBUMEN')" v-bind="$props" :visible.sync="visible" v-on="$listeners">
+  <iDialog class="dialog" :title="language('LK_SHEZHIPINGFENBUMEN','设置评分部门')" v-bind="$props" :visible.sync="visible" v-on="$listeners">
     <div class="body">
       <div class="control" id="control">
-        <iButton @click="handleAdd" v-if="!customAction">{{ $t('LK_XINZENG') }}</iButton>
-        <iButton @click="handleDelete" v-if="!customAction">{{ $t('LK_SHANCHU') }}</iButton>
-        <iButton @click="handleRecover" v-if="!customAction">{{ $t('LK_HUIFU') }}</iButton>
-        <iButton @click="handleSave" :loading="saveLoading">{{ $t('LK_BAOCUN') }}</iButton>
+        <iButton @click="handleAdd" v-if="!customAction">{{ language('LK_XINZENG','新增') }}</iButton>
+        <iButton @click="handleDelete" v-if="!customAction">{{ language('LK_SHANCHU','删除') }}</iButton>
+        <iButton @click="handleRecover" v-if="!customAction">{{ language('LK_HUIFU','恢复') }}</iButton>
+        <iButton @click="handleSave" :loading="saveLoading">{{ language('LK_BAOCUN','保存') }}</iButton>
       </div>
       <tableList index height="83%" class="table margin-top20" :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="loading" :cellClassName="deleteLine" @handleSelectionChange="handleSelectionChange">
         <template #rateDepart="scope">
@@ -206,7 +206,7 @@ export default {
     },
     // 前端样式删除（删除数据不传给后端，保存后刷新数据重绘掉）
     handleDelete() {
-      if (!this.multipleSelection.length) return iMessage.warn(this.$t('LK_QINGXUANZEXUYAOSHANCHUDEPINGFENBUMEN'))
+      if (!this.multipleSelection.length) return iMessage.warn(this.language('LK_QINGXUANZEXUYAOSHANCHUDEPINGFENBUMEN','请选择需要删除的评分部门'))
 
       this.multipleSelection.forEach(item => this.$set(item, 'deleteStatus', true))
     },
@@ -215,7 +215,7 @@ export default {
     },
     // 前端样式恢复
     handleRecover() {
-      if (!this.multipleSelection.length) return iMessage.warn(this.$t('LK_QINGXUANZEXUYAOHUIFUDEPINGFENBUMEN'))
+      if (!this.multipleSelection.length) return iMessage.warn(this.language('LK_QINGXUANZEXUYAOHUIFUDEPINGFENBUMEN','请选择需要恢复的评分部门'))
 
       this.multipleSelection.forEach(item => this.$set(item, 'deleteStatus', false))
     },
@@ -241,7 +241,7 @@ export default {
 
       for (let i = 0, item; (item = list[i++]);) {
         if (!item.coordinatorId || !item.raterId || !item.rateDepart || !item.rateDepartNum) {
-          return iMessage.warn(this.$t('LK_QINGXUANZEWANSHUJUZAIZUOBAOCUN'))
+          return iMessage.warn(this.language('LK_QINGXUANZEWANSHUJUZAIZUOBAOCUN','请选择完数据再做保存'))
         }
       }
 
