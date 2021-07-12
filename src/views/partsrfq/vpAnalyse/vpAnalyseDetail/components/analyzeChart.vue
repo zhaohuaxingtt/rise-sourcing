@@ -273,7 +273,7 @@ export default {
   .achievementRate {
     text-align: center;
     position: absolute;
-    top: -60px;
+    top: -57px;
     height: 80px;
 
     .iconColor {

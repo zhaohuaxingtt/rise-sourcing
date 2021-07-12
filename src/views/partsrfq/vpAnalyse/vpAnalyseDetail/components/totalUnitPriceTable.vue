@@ -33,7 +33,7 @@
     >
       <!--自定义列开始-->
       <template #type="scope">
-        <template v-if="costShowOnly.includes(scope.row.type)">
+        <template v-if="costShowOnly.includes(scope.row.type) || tableStatus !== 'edit'">
           {{ scope.row.type }}
         </template>
         <template v-else>
@@ -41,7 +41,7 @@
         </template>
       </template>
       <template #total="scope">
-        <template v-if="totalShowOnly.includes(scope.row.type)">
+        <template v-if="totalShowOnly.includes(scope.row.type) || tableStatus !== 'edit'">
           {{ scope.row.total }}
         </template>
         <template v-else>
@@ -49,7 +49,7 @@
         </template>
       </template>
       <template #apportionedNum="scope">
-        <template v-if="apportionShowOnly.includes(scope.row.type)">
+        <template v-if="apportionShowOnly.includes(scope.row.type) || tableStatus !== 'edit'">
           {{ scope.row.apportionedNum }}
         </template>
         <template v-else>
@@ -57,7 +57,7 @@
         </template>
       </template>
       <template #affectUnitPrice="scope">
-        <template v-if="unitPriceShowOnly.includes(scope.row.type)">
+        <template v-if="unitPriceShowOnly.includes(scope.row.type) || tableStatus !== 'edit'">
           {{ scope.row.affectUnitPrice }}
         </template>
         <template v-else>
