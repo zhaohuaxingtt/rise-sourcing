@@ -89,8 +89,6 @@ export default {
         res1.data.rfqSupplierList.forEach(item => {
           rfqSupplierList.push(item.supplierNameZh)
         })
-        console.log(rfqCategoryList);
-        console.log(rfqSupplierList);
         this.renderBi(rfqCategoryList, rfqSupplierList)
       }
 
