@@ -1,27 +1,27 @@
 <template>
   <iCard>
     <div class="margin-bottom20 clearFloat">
-      <span class="font18 font-weight">{{ $t('LK_XUNJIAFUJIAN') }}</span>
+      <span class="font18 font-weight">{{ language('LK_XUNJIAFUJIAN','询价附件') }}</span>
       <div class="floatright">
         <iButton @click="deleteItems"
                  v-permission="PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_INQUIRYATTACHMENT_INQUIRYATTACHMENT_DELETE">
-          {{ $t('LK_SHANCHU') }}
+          {{ language('LK_SHANCHU','删除') }}
         </iButton>
         <upload-button
             @uploadedCallback="uploadAttachments"
             :upload-button-loading="uploadAttachmentsButtonLoading"
             class="margin-left8 margin-right8"
-            :buttonText="$t('LK_SHANGCHUAN')"
+            :buttonText="language('LK_SHANGCHUAN','上传')"
             v-permission="PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_INQUIRYATTACHMENT_INQUIRYATTACHMENT_UPLOADBUTTON"/>
         <iButton @click="download"
                  :loading="downloadLoading"
                  v-permission="PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_INQUIRYATTACHMENT_INQUIRYATTACHMENT_DOWNLOADBUTTON">
-          {{ $t('LK_XIAZAI') }}
+          {{ language('LK_XIAZAI','下载') }}
         </iButton>
         <!-- 暂不做，后端暂无接口：用户可以选择“通知全部供应商”，询价附件会发送给当前RFQ BDL中所选择的全部供应商-->
         <iButton @click="notifyAllSuppliers"
                  v-permission="PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_INQUIRYATTACHMENT_INQUIRYATTACHMENT_NOTIFYALL">
-          {{ $t('LK_TONGZHIQUANBUGONGYINGSHANG') }}
+          {{ language('LK_TONGZHIQUANBUGONGYINGSHANG','通知全部供应商') }}
         </iButton>
         <!-- 暂不做，后端暂无接口：用户选择“通知已报价供应商”，系统会根据RFQ的报价记录，发给有有效报价的供应商-->
 <!--        <iButton @click="notifySuppliersWhoHaveQuoted"
@@ -116,9 +116,9 @@ export default {
     },
     deleteItems() {
       iMessageBox(
-        this.$t('LK_SHIFOUQUERENSHANCHU'), // 暂时处理
-        this.$t('LK_WENXINTISHI'),
-        { confirmButtonText: this.$t('LK_QUEDING'), cancelButtonText: this.$t('LK_QUXIAO') }
+        this.language('LK_SHIFOUQUERENSHANCHU','是否确认删除?'), // 暂时处理
+        this.language('LK_WENXINTISHI','温馨提示'),
+        { confirmButtonText: this.language('LK_QUEDING','确定'), cancelButtonText: this.language('LK_QUXIAO','取 消') }
       ).then(async () => {
         const annexIds = this.selectTableData.map(item => {
           return item.id
@@ -169,7 +169,7 @@ export default {
     },
     async download() {
       if (this.selectTableData.length == 0)
-        return iMessage.warn(this.$t('LK_QINGXUANZE'))
+        return iMessage.warn(this.language('LK_QINGXUANZE','请选择'))
       const fileList = this.selectTableData.map(item => {
         return item.fileName
       })
