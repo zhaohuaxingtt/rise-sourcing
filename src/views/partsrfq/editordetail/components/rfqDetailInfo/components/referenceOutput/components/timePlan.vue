@@ -2,27 +2,27 @@
   <div>
     <iCard>
       <div class="margin-bottom20 clearFloat">
-        <span class="font18 font-weight">{{ $t('LK_SHIJIANJIHUA') }}</span>
+        <span class="font18 font-weight">{{ language('LK_SHIJIANJIHUA','时间计划') }}</span>
         <div class="floatright">
           <template v-if="!editStatus">
             <iButton @click="edit" v-permission="PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_TIMEPLAN_EDIT">{{
-                $t('LK_BIANJI')
+                language('LK_BIANJI','编辑')
               }}
             </iButton>
           </template>
           <template v-else>
             <iButton @click="save" v-permission="PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_TIMEPLAN_SAVE">{{
-                $t('LK_BAOCUN')
+                language('LK_BAOCUN','保存')
               }}
             </iButton>
             <iButton @click="back" v-permission="PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_TIMEPLAN_BACK">{{
-                $t('LK_FANHUI')
+                language('LK_FANHUI','返回')
               }}
             </iButton>
           </template>
 
           <iButton @click="exports" v-permission="PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_TIMEPLAN_EXPORTS">
-            {{ $t('LK_DAOCHU') }}
+            {{ language('LK_DAOCHU','导出') }}
           </iButton>
         </div>
       </div>
@@ -154,7 +154,7 @@ export default {
     },
     exports() {
       if (this.selectTableData.length == 0)
-        return iMessage.warn(this.$t('LK_QINGXUANZHEXUYAODAOCHUSHUJU'))
+        return iMessage.warn(this.language('LK_QINGXUANZHEXUYAODAOCHUSHUJU','请选择需要导出的数据'))
       excelExport(this.selectTableData, this.tableTitle)
     },
   }

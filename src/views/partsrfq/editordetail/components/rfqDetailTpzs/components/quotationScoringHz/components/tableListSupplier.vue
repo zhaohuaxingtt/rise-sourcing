@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-28 15:03:47
- * @LastEditTime: 2021-06-26 15:26:11
+ * @LastEditTime: 2021-07-12 10:51:15
  * @LastEditors: Please set LastEditors
  * @Description: 特殊表格实现
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\table.vue
@@ -13,14 +13,14 @@
     :height="height"
     :data="tableData"
     v-loading="loading"
-    :empty-text="$t('LK_ZANWUSHUJU')"
+    :empty-text="language('LK_ZANWUSHUJU','暂无数据')"
     ref='table'
   >
     <template v-for='(item,index) in tableTitle'>
       <!-----------------表格中内容模块------------------------>
       <el-table-column
         :key="index"
-        :label="item.i18n ? $t(item.i18n) : item.label"
+        :label="item.i18n ? language(item.i18n,item.label) : item.label"
         :width="item.width"
         :prop='item.props'
         align="center"
@@ -47,10 +47,21 @@
                 </template>
               </ul>
               <div class="cc" style="width:100px">
-                {{leftData}}
+                <ul>
+                  <template v-for="(itemss,index) in supplierLeftLit">
+                      <li :key='index' v-if='itemss.name == "KM"'>{{kmAPrice}}</li>
+                      <li :key="index" v-else class=""></li>
+                  </template>
+                </ul>
               </div>
               <div class="cd" style="width:100px">
-                {{rightData}}
+                <ul>
+                  <template v-for="(itemss,index) in supplierLeftLit">
+                      <li :key='index' v-if='itemss.name == "KM"'>{{kmTooling}}</li>
+                      <li :key='index' v-else-if='itemss.name == "Planned Invest"'>{{budget}}</li>
+                      <li :key="index" v-else class=""></li>
+                  </template>
+                </ul>
               </div>
             </div>
           </div>
@@ -60,7 +71,7 @@
           <template v-for="(levelTowItem,levelTowIndex) in item.list">
               <el-table-column
                 :key="levelTowIndex"
-                :label="levelTowItem.i18n ? $t(levelTowItem.i18n) : levelTowItem.label"
+                :label="levelTowItem.i18n ? language(levelTowItem.i18n,levelTowItem.label) : levelTowItem.label"
                 :width="levelTowItem.width"
                 :prop='levelTowItem.props'
                 align="center"
@@ -91,11 +102,15 @@ import {supplierTableTop,removeKeysNumber,getPorpsNumber} from './data'
 export default{
   inject:['getbaseInfoData'],
   props:{
-    leftData:{
+    kmAPrice:{
       type:String,
       default:''
     },
-    rightData:{
+    kmTooling:{
+      type:String,
+      default:''
+    },
+    budget:{
       type:String,
       default:''
     },
@@ -239,11 +254,25 @@ export default{
         align-items: center;
         justify-content: center;
         background-color:rgba(22, 99, 246, 0.17);
+        ul{
+          background-color: transparent;
+          border-right: none;
+          li{
+            border-bottom: none;
+          }
+        }
       }
       .cd{
         display: flex;
         align-items: center;
         justify-content: center;
+        ul{
+          background-color: transparent;
+          border-right: none;
+          li{
+            border-bottom: none;
+          }
+        }
       }
     }
   }

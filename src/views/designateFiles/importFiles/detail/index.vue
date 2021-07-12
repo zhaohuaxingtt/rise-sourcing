@@ -41,6 +41,10 @@
                     <template #rfqId="scope">
                         <span @click="goFilesList(scope.row.rfqId)" class="link-underline" >{{scope.row.rfqId}}</span>
                     </template>
+                    <!-- 状态 -->
+                    <template #status="scope">
+                        <span>{{scope.row.status && ($i18n.locale === "zh" ? scope.row.status.desc : scope.row.status.name )}}</span>
+                    </template>
                     <!-- 附件 -->
                     <template #LK_FUJIAN="scope">
                         <span @click="checkUploadList(scope.row.id)" class="link-underline" >{{language('LK_SHANGCHUAN','上传')}}</span>
@@ -60,27 +64,13 @@
                 />
             </iCard>
         </div>
-        <!-- <div v-else>
-            <iCard>
-                <p class="uploadList-icon margin-bottom20">
-                    <span @click="changeShowStatus">
-                        <icon symbol name="iconguanbixiaoxiliebiaokapiannei" class="close-icon" ></icon>
-                    </span>
-                </p>
-                <uploadList  :uploadId="uploadId" />
-            </iCard>
-        </div> -->
 
-        <iDialog
-            v-if="dialogVisible"
-            :title="language('LK_SHANGCHUANWENJIAN','上传文件')"
-            :visible.sync="dialogVisible"
-            @close="clearDialog"
-            width="90%"
-            class="uploadListDialog"
-        >
-            <uploadList  :uploadId="uploadId" />
-        </iDialog>
+        <uploadList
+            v-if="dialogVisible"  
+            :uploadId="uploadId" 
+            :dialogVisible="dialogVisible"
+            @changeShowStatus="changeShowStatus"
+        />
     </iPage>
 </template>
 
@@ -92,8 +82,6 @@ import {
     iInput,
     iDatePicker,
     iPagination,
-    icon,
-    iDialog,
 } from 'rise'
 import { tableTitle } from './data'
 import {pageMixins} from '@/utils/pageMixins'
@@ -114,9 +102,7 @@ export default {
         iInput,
         iDatePicker,
         iPagination,
-        // icon,
         tableList,
-        iDialog,
     },
     data(){
         return{

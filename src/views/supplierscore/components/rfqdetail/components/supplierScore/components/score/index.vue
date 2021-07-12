@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-22 16:16:26
- * @LastEditTime: 2021-07-02 18:08:30
+ * @LastEditTime: 2021-07-12 10:29:12
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\supplierscore\components\rfqdetail\components\supplierScore\components\score\index.vue
@@ -336,7 +336,14 @@ export default {
     },
     // 查看零件评分
     viewPartScore(row) {
-      window.open(`/#/supplierscore/partscore?rfqId=${ this.rfqId }&supplierId=${ row.supplierId }`, "_blank")
+      const route = this.$router.resolve({
+        path: "/supplierscore/partscore",
+        query: {
+          rfqId: row.rfqId,
+          supplierId: row.supplierId
+        }
+      })
+      window.open(route.href, "_blank")
     },
     // 编辑/查看 备注
     editRemark(row) {
