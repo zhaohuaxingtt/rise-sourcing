@@ -270,8 +270,19 @@ export default {
       this.tableStatus = '';
     },
     handleFinish() {
-      this.tableStatus = '';
-      this.$emit('handlePriceTableFinish');
+      let flag = true;
+      this.tableListData.some(item => {
+        if (item.total === '' || item.affectUnitPrice === '') {
+          flag = false;
+          return true;
+        }
+      });
+      if (flag) {
+        this.$emit('handlePriceTableFinish');
+        this.tableStatus = '';
+      } else {
+        iMessage.warn(this.$t('TPZS.FEIYONGZONGEHEYINGXIANGDANJIABUENGWEIKONG'))
+      }
     },
     getTableList() {
       try {
