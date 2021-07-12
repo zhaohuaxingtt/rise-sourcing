@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 11:38:57
- * @LastEditTime: 2021-07-06 10:49:50
+ * @LastEditTime: 2021-07-08 17:05:57
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails\table1.vue
@@ -16,12 +16,14 @@
       :expand-row-keys="expends"
       v-loading="loading"
       :max-height="maxHeight"
+      :cell-style="cellFunction"
       @selection-change="handleSelectionChange"
       @row-click="rowClick"
       @row-dblclick="rowDblclick"
       @cell-dblclick="cellBbClick"
       @cell-click="cellClick"
       @expand-change="expandChange"
+      v-areaSelect
     >
       <!-- <el-table-column label="" prop="title" width="250"> </el-table-column> -->
       <el-table-column
@@ -31,6 +33,7 @@
         :prop="i.prop"
         :align="i.prop == 'title'?'left':'center'"
         :width="i.prop == 'title' ? '200' : ''"
+        v-areaSelect
       >
         <el-table-column
           v-for="item in i.children"
@@ -39,6 +42,7 @@
           :prop="item.prop"
           align="left"
           :render-header="render"
+          v-areaSelect
         >
         </el-table-column>
 
@@ -63,6 +67,7 @@
 </template>
 
 <script>
+
 export default {
   props: {
     expends: {
@@ -152,6 +157,9 @@ export default {
       if (row.columnIndex == that.num) {
         return "addcss";
       }
+    },
+    cellFunction({row, column, rowIndex, columnIndex}){
+        console.log(row, column, rowIndex, columnIndex)
     },
     clickCol(a, b, c) {
       const i = this.checkList.findIndex((item) => item.index == c);

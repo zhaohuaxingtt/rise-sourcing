@@ -6,8 +6,8 @@
  * @Descripttion: 概览
 -->
 <template>
-  <iCard class="supplier-item" :title="$t('TPZS.PLGYSGL')" collapse>
-    <div class="title">{{remark}}</div>
+  <iCard class="supplier-item" :title="$t('TPZS.PLGYSGL')" :defalutCollVal='false' collapse>
+    <div class="header-title">{{remark}}</div>
     <div class="title-btn">
       <iButton @click="handleHerf">{{$t('TPZS.GYS360')}}</iButton>
       <iButton @click="handleRemark">{{$t('costanalysismanage.BeiZhu')}}</iButton>
@@ -24,7 +24,7 @@ import { iCard, iButton, } from "rise";
 import { powerBiUrl } from "@/api/partsrfq/negotiateBasicInfor/negotiateBasicInfor.js";
 import * as pbi from 'powerbi-client';
 import remarkDialog from "./remarkDialog.vue";
-import { getRfqToRemark } from "@/api/partsrfq/negotiateBasicInfor/negotiateBasicInfor.js";
+import { getRfqToRemark, getRfqSupplierAndCategory } from "@/api/partsrfq/negotiateBasicInfor/negotiateBasicInfor.js";
 
 // import pie from "./pie";
 export default {
@@ -66,6 +66,10 @@ export default {
     // 获取备注
     async getRemark() {
       const res = await getRfqToRemark(this.$route.query.id)
+      const pms = {
+        rfqId: this.$route.query.id
+      }
+      const res1 = await getRfqSupplierAndCategory(pms.rfqId)
       if (res.result) {
         this.remark = res.data.remark
       }
@@ -172,10 +176,12 @@ export default {
     top: 30px;
     position: absolute;
   }
-  .title {
+  .header-title {
     position: absolute;
-    top: 1.9rem;
-    left: 11rem;
+    top: 2.1rem;
+    font-size: 14px;
+    left: 11.3rem;
+    color: #a5a5a5;
   }
   position: relative;
   #powerBi {
