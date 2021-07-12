@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-22 09:12:31
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-09 10:56:18
+ * @LastEditTime: 2021-07-12 12:32:39
  * @Description: 财务目标价-目标价维护
  * @FilePath: \front-web\src\views\financialTargetPrice\maintenance\index.vue
 -->
@@ -241,6 +241,7 @@ export default {
       this.selectItems = val
     },
     fileError(err) {
+      this.uploadLoading = false;
       console.log(err.message)
       const errRes = JSON.parse(err.message)
       this.uploadLoading=false;iMessage.error(this.$i18n.locale === 'zh' ? errRes?.desZh : errRes?.desEn || '上传失败')

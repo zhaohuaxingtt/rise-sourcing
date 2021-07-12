@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-26 19:14:39
- * @LastEditTime: 2021-06-22 13:42:08
+ * @LastEditTime: 2021-07-12 14:49:04
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringTracking\components\tableList.vue
@@ -9,12 +9,12 @@
 
 <template>
   <div>
-    <el-table class="table" tooltip-effect="light"  :data="tableData" v-loading="tableLoading" :empty-text="$t('LK_ZANWUSHUJU')">
+    <el-table class="table" tooltip-effect="light"  :data="tableData" v-loading="tableLoading" :empty-text="language('LK_ZANWUSHUJU','暂无数据')">
       <template v-for="(item,index) in tableTile">
         <!--------------------------------------------------------->
         <!------------------------ep模块---------------------------->
         <!--------------------------------------------------------->
-        <el-table-column v-if='item.props == "ep"' :key="index" align="center" :label="item.key ? $t(item.key) : item.name" :prop="item.props" :show-overflow-tooltip="item.tooltip" :width="item.width">
+        <el-table-column v-if='item.props == "ep"' :key="index" align="center" :label="item.key ? language(item.key,item.name) : item.name" :prop="item.props" :show-overflow-tooltip="item.tooltip" :width="item.width">
           <template slot="header" slot-scope="scope">
               <div class="mineTile">{{scope.column.label}} <span class="line" :style='`height:${height}px;`'></span></div> 
           </template>
@@ -28,25 +28,25 @@
             </span>
           </template>
         </el-table-column>
-        <el-table-column v-if='item.props == "mq" || item.props == "pl"' :key="index" :label="item.key ? $t(item.key) : item.name" :prop="item.props" :show-overflow-tooltip="item.tooltip" :width="item.width" align="center">
+        <el-table-column v-if='item.props == "mq" || item.props == "pl"' :key="index" :label="item.key ? language(item.key,item.name) : item.name" :prop="item.props" :show-overflow-tooltip="item.tooltip" :width="item.width" align="center">
           <template slot-scope="scope">
             <!-- <span>{{scope.row[item.props]?scope.row[item.props].rate:""}}</span> -->
             <span>{{scope.row[item.props]}}</span>
           </template>
         </el-table-column>
-        <el-table-column v-if="item.props == 'supplierName'" :key="index" :label="item.key ? $t(item.key) : item.name" :prop="item.props" :show-overflow-tooltip="item.tooltip" :width="item.width" align="center">
+        <el-table-column v-if="item.props == 'supplierName'" :key="index" :label="item.key ? language(item.key,item.name) : item.name" :prop="item.props" :show-overflow-tooltip="item.tooltip" :width="item.width" align="center">
           <template slot-scope="scope">
             {{scope.row[item.props]?scope.row[item.props]:"-"}}
           </template>
         </el-table-column>
-        <el-table-column v-if="(item.props+'').indexOf('round') > -1" :key="index" align="center" :label="item.key ? $t(item.key) : item.name" :prop="item.props" :show-overflow-tooltip="item.tooltip" :width="item.width">
+        <el-table-column v-if="(item.props+'').indexOf('round') > -1" :key="index" align="center" :label="item.key ? language(item.key,item.name) : item.name" :prop="item.props" :show-overflow-tooltip="item.tooltip" :width="item.width">
           <template slot="header">
             <el-tooltip effect="light">
               <template slot="content">
                <p>{{`询价开始时间: ${item.roundHeadDetailVO.roundsStartTime || "-"}`}}</p>
                <p>{{`询价结束时间: ${item.roundHeadDetailVO.roundsEndTime || "-"}`}}</p>
               </template>
-              <span>{{item.key ? $t(item.key) : item.name}}</span>
+              <span>{{item.key ? language(item.key,item.name) : item.name}}</span>
             </el-tooltip>
           </template> 
           <template slot-scope="scope">
@@ -123,21 +123,26 @@ export default{
           }
       if(round.replace(/[^0-9]/ig,"") != this.getbaseInfoData().currentRounds || this.getbaseInfoData().currentRoundsStatus == "已关闭"){
         map['fix'] = true
+        map['sourcing'] = true
       }else{
         if(type == 3){
           map['agentQutation'] = true
           map['currentTab'] = "costsummary"
+          map['sourcing'] = true
         }
         if(type == 2){
           map['fix'] = true
+          map['sourcing'] = true
         }else{
           if(value.indexOf('/') > -1){
             map['agentQutation'] = true
             map['currentTab'] = "costsummary"
+            map['sourcing'] = true
      
           }else{
             map['watingSupplier'] = true
             map['fix'] = true
+            map['sourcing'] = true
           }
         }
       }

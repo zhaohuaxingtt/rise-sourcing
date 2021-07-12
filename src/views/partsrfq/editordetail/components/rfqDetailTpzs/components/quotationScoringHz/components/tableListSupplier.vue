@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-28 15:03:47
- * @LastEditTime: 2021-07-10 18:01:54
+ * @LastEditTime: 2021-07-12 14:48:57
  * @LastEditors: Please set LastEditors
  * @Description: 特殊表格实现
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\table.vue
@@ -13,14 +13,14 @@
     :height="height"
     :data="tableData"
     v-loading="loading"
-    :empty-text="$t('LK_ZANWUSHUJU')"
+    :empty-text="language('LK_ZANWUSHUJU','暂无数据')"
     ref='table'
   >
     <template v-for='(item,index) in tableTitle'>
       <!-----------------表格中内容模块------------------------>
       <el-table-column
         :key="index"
-        :label="item.i18n ? $t(item.i18n) : item.label"
+        :label="item.i18n ? language(item.i18n,item.label) : item.label"
         :width="item.width"
         :prop='item.props'
         align="center"
@@ -71,7 +71,7 @@
           <template v-for="(levelTowItem,levelTowIndex) in item.list">
               <el-table-column
                 :key="levelTowIndex"
-                :label="levelTowItem.i18n ? $t(levelTowItem.i18n) : levelTowItem.label"
+                :label="levelTowItem.i18n ? language(levelTowItem.i18n,levelTowItem.label) : levelTowItem.label"
                 :width="levelTowItem.width"
                 :prop='levelTowItem.props'
                 align="center"
@@ -156,7 +156,8 @@ export default{
           round:this.getbaseInfoData().currentRounds,
           supplierId:items.supplierId,
           fsNum:items[index+'partPrjCode'],
-          fix:true
+          fix:true,
+          sourcing:true
         }
       })
       window.open(router.href,'_blank')

@@ -1,16 +1,21 @@
+<!--
+ * @Author: wentliao
+ * @Date: 2021-05-11 16:31:08
+ * @Description: 
+-->
 <template>
   <i-card v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_TECHNICALSEMINAR_INDEXPAGE">
     <div class="margin-bottom20 clearFloat">
-      <span class="font18 font-weight">{{ $t('LK_GONGYINGSHANGCAILIAOZHUNBEI') }}</span>
+      <span class="font18 font-weight">{{ language('LK_GONGYINGSHANGCAILIAOZHUNBEI','供应商材料准备') }}</span>
       <div class="floatright">
-        <iButton @click="add" v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_TECHNICALSEMINAR_ADD">{{$t('LK_TIANJIA')}}</iButton>
+        <iButton @click="add" v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_TECHNICALSEMINAR_ADD">{{language('LK_TIANJIA','添加')}}</iButton>
       </div>
     </div>
     <iFormGroup :row="3" inline icon class="label-zero" v-model="dynamicForm" v-if="showStatus"
                 v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_TECHNICALSEMINAR_DESTEXT">
       <template v-for="(item,index) of dynamicForm.baseInfo">
         <iFormItem label=" " :name="index" :key="index" class="form-item-style">
-          <iInput type="textarea" :rows="4" resize="none" :placeholder="$t(item.placeholderkey)" v-model="item.value"
+          <iInput type="textarea" :rows="4" resize="none" :placeholder="language(item.placeholderkey,item.placeholder)" v-model="item.value"
                   maxlength="100" show-word-limit></iInput>
           <div @click="deleteItems(index+ 1)"
                v-if="(index+1)%3 === 0">
@@ -61,7 +66,7 @@ export default {
           this.showStatus = true
         })
       } else {
-        iMessage.warn(this.$t('LK_YITIANJIADAOSHANGXIAN'))
+        iMessage.warn(this.language('LK_YITIANJIADAOSHANGXIAN','已添加到上限'))
         return false
       }
     },

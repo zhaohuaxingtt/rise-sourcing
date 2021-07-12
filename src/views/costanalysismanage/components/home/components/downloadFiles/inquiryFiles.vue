@@ -109,6 +109,9 @@ export default {
         },
         // 获取列表
         async getList(){
+            if (!this.rfqNum) {
+                return
+            }
             this.tableLoading =  true;
             const {rfqNum} = this;
             const { page } = this;
