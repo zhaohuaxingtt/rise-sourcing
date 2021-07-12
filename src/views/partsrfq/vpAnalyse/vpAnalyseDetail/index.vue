@@ -229,6 +229,7 @@ export default {
         }
         const res = await saveOrUpdateScheme(req)
         this.resultMessage(res)
+        this.getDataInfo()
         this.pageLoading = false
         this.analyzeLoading = false
         this.tableLoading = false
