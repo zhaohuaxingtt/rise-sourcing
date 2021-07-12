@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-23 11:59:22
- * @LastEditTime: 2021-07-06 12:01:50
+ * @LastEditTime: 2021-07-12 18:09:02
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\editordetail\components\currentSupplier\index.vue
@@ -19,7 +19,7 @@
       </template>
     </div>
     <el-table :data='dataListTop' v-loading='loadingTop' @selection-change="handleSelectionChangeTop">
-      <el-table-column type='selection' v-if='!edit' align="center"></el-table-column>
+      <el-table-column type='selection' v-if='!edit' align="center" width="56"></el-table-column>
       <template v-for='(items,index) in titleListTop'>
         <el-table-column align="center" :key='index' :label='language(items.key,items.name)' :prop='items.props'>
           <template slot-scope="scope">
@@ -61,7 +61,7 @@
       </el-form>
     </iSearch> 
     <el-table :data='dataListBottom' v-loading='loadingBottom' @selection-change="handleSelectionChangeBottom">
-      <el-table-column type="selection" align="center"></el-table-column>
+      <el-table-column type="selection" align="center" width="56"></el-table-column>
       <template v-for='(items,index) in titleListBottom'>
         <el-table-column align="center" :key='index' :label='language(items.key,items.name)' :prop='items.props'></el-table-column>
       </template>
