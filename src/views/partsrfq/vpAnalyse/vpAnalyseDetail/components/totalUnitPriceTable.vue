@@ -158,6 +158,10 @@ export default {
         return {};
       },
     },
+    tableLoading: {
+      type: Boolean,
+      default: false,
+    }
   },
   computed: {
     pageType() {
@@ -171,7 +175,6 @@ export default {
       hideTableData: [],
       hideSelectTableData: [],
       tableTitle: tableTitle,
-      tableLoading: false,
       tableStatus: '',
       costShowOnly: ['专用设备费', '分摊模具费', '分摊开发费', '研发费', '管理费', '利润费'],
       totalShowOnly: ['管理费', '利润费'],
@@ -265,6 +268,7 @@ export default {
     },
     handleFinish() {
       this.tableStatus = '';
+      this.$emit('handlePriceTableFinish')
     },
     getTableList() {
       try {
