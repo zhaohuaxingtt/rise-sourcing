@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-06-18 16:03:35
- * @LastEditTime: 2021-07-09 17:50:52
+ * @LastEditTime: 2021-07-12 14:02:11
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\vpAnalyse\vpAnalyseDetail\components\customPart\index.vue
@@ -257,7 +257,8 @@ export default {
     // 新增时，改变选中零件编号
     changePartNum(val) {
       const data = this.partNumData.find(item => item.partsId == val)
-      this.tableListData.replace(this.tableListData.length - 1, this.tableListData.length, window._.cloneDeep(data))
+      console.log('tableListData', this.tableListData);
+      this.tableListData.splice(this.tableListData.length - 1, this.tableListData.length, window._.cloneDeep(data))
       this.insertPartData = window._.cloneDeep(data)
     },
     // 取消添加
@@ -281,8 +282,9 @@ export default {
         iMessage.error(this.$t('PART_UNIQUE_MESSAGE'))
         return
       }
-      const maxSortObj = window._.maxBy(this.tableListData, function(o) { return o.sort; });
+      let maxSortObj = window._.maxBy(this.tableListData, function(o) { return o.sort; });
       const endObj = this.tableListData[this.tableListData.length - 1]
+      if(!maxSortObj) maxSortObj = 0
       endObj['sort'] = maxSortObj.sort + 1
       this.addMode = false
       this.initInsertPartData()
