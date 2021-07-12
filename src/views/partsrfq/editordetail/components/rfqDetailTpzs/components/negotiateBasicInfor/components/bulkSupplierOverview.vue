@@ -21,10 +21,10 @@
 
 <script>
 import { iCard, iButton, } from "rise";
-import { powerBiUrl } from "@/api/partsrfq/negotiateBasicInfor/negotiateBasicInfor.js";
 import * as pbi from 'powerbi-client';
 import remarkDialog from "./remarkDialog.vue";
-import { getRfqToRemark, getRfqSupplierAndCategory } from "@/api/partsrfq/negotiateBasicInfor/negotiateBasicInfor.js";
+import { getRfqToRemark, getRfqSupplierAndCategory, powerBiUrl } from "@/api/partsrfq/negotiateBasicInfor/negotiateBasicInfor.js";
+import { items } from '../../../../../../../partsprocure/editordetail/components/drawingSheet/data';
 
 // import pie from "./pie";
 export default {
@@ -54,9 +54,7 @@ export default {
     }
   },
   created() {
-    this.getRemark()
-    this.filter = { ...this.filter, filterType: pbi.models.FilterType.BasicFilter },
-      this.powerBiUrl()
+    this.powerBiUrl()
   },
   methods: {
     // go供应商360
@@ -66,12 +64,8 @@ export default {
     // 获取备注
     async getRemark() {
       const res = await getRfqToRemark(this.$route.query.id)
-      const pms = {
-        rfqId: this.$route.query.id
-      }
-      const res1 = await getRfqSupplierAndCategory(pms.rfqId)
       if (res.result) {
-        this.remark = res.data.remark
+        this.remark = res.data && res.data.remark
       }
     },
     // 激活弹窗
@@ -79,27 +73,33 @@ export default {
       this.remarkDialog = true
     },
     // 获取财报iframeurl
-    powerBiUrl() {
-      powerBiUrl().then(res => {
-        if (res.data) {
-          this.url = res.data
-          this.renderBi()
-        }
-      })
+    async powerBiUrl() {
+      const pms = {
+        rfqId: this.$route.query.id
+      }
+      const res1 = await getRfqSupplierAndCategory(pms.rfqId)
+      const res = await powerBiUrl()
+      if (res.data && res1.result) {
+        this.url = res.data
+        var rfqCategoryList = []
+        var rfqSupplierList = []
+        res1.data.rfqCategoryList.forEach(item => {
+          rfqCategoryList.push(item.categoryName)
+        })
+        res1.data.rfqSupplierList.forEach(item => {
+          rfqSupplierList.push(item.supplierNameZh)
+        })
+        this.renderBi(rfqCategoryList, rfqSupplierList)
+      }
+
     },
     // 初始化页面
-    renderBi() {
-      var permissions = pbi.models.Permissions.All
-
+    renderBi(rfqCategoryList, rfqSupplierList) {
       var config = {
         type: 'report',
         tokenType: pbi.models.TokenType.Embed,
         accessToken: this.url.accessToken,
         embedUrl: this.url.embedUrl,
-        // id: 'f6bfd646-b718-44dc-a378-b73e6b528204',
-        /*pageName: 'ReportSectioneb8c865100f8508cc533',
-        visualName: '47eb6c0240defd498d4b',
-        permissions: permissions,*/
         settings: {
           panes: {
             filters: {
@@ -114,21 +114,44 @@ export default {
       let powerbi = new pbi.service.Service(pbi.factories.hpmFactory, pbi.factories.wpmpFactory, pbi.factories.routerFactory);
       var reportContainer = document.getElementById('powerBi');
       var report = powerbi.embed(reportContainer, config);
-
       // Report.off removes a given event handler if it exists.
       report.off("loaded");
-
       // Report.on will add an event handler which prints to Log window.
-      const name = this.name
-      const newfilter = window._.cloneDeep(this.filter);
-      newfilter.values = [name]
-      this.values = [name]
       report.on("loaded", function() {
-        console.log("Loaded");
-        if (name !== '') {
-          report.setFilters([newfilter])
-          // report.updateFilters(pbi.models.FiltersOperations.Add, [newfilter]);
+        // 供应商集合：
+        var filter_suppliers = {
+          $schema: "http://powerbi.com/product/schema#basic",
+          target: {
+            table: "sup",
+            column: "Supplier_Name"
+          },
+          operator: "In",
+          values: rfqSupplierList,
+          filterType: pbi.models.FilterType.BasicFilter,
+          requireSingleSelection: true
+        };
+        // 材料组集合：
+        var filter_stuffs = {
+          $schema: "http://powerbi.com/product/schema#basic",
+          target: {
+            table: "stu",
+            column: "Stuff_Name"
+          },
+          operator: "In",
+          values: rfqCategoryList,
+          filterType: pbi.models.FilterType.BasicFilter,
+          requireSingleSelection: true
+        };
+        try {
+          //设置过滤条件	
+          report.setFilters([filter_suppliers, filter_stuffs]);
+          //report.updateFilters(models.FiltersOperations.Add, [filter_suppliers]);
+          console.log("Report filter was added.");
         }
+        catch (errors) {
+          console.log(errors);
+        }
+        console.log("Loaded");
       });
 
       // Report.off removes a given event handler if it exists.

@@ -144,7 +144,7 @@ export default {
         lineData: [],
       },
       analyzeLoading: false,
-      currentSupplierId: '1',
+      currentSupplierId: '',
     }
   },
   methods: {
@@ -280,7 +280,24 @@ export default {
       this.getDataInfo()
     },
     handleBack () {
-      this.$router.go(-1)
+      const type = this.$route.query.type
+      if(type === 'edit') {
+        this.$router.push({
+          path: "/sourcing/partsrfq/assistant",
+          query: {
+            id: this.$store.state.rfq.rfqId,
+            round:this.$route.query.round,
+            pageType: 'Volume Pricing',
+            activityTabIndex: 'two'
+          },
+        });
+      } else if(type === 'add') {
+        this.$router.push({
+          path: "/sourcing/partsrfq/vpAnalyCreat"
+        });
+      } else {
+        this.$router.go(-1)
+      }
     },
   },
 }

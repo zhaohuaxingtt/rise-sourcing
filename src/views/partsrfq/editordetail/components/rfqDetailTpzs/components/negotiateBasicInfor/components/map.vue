@@ -21,7 +21,7 @@
 import world from "./china.json";
 import echarts from '@/utils/echarts'
 import { iCard, icon, iLabel } from "rise";
-import svwImg from "./svw.png";
+import svwImg from "@/assets/images/svw.png";
 export default {
   components: { iCard, icon, iLabel },
   props: {
