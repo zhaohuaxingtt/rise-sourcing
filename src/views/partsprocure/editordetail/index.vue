@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2021-07-09 15:00:02
+ * @LastEditTime: 2021-07-12 13:52:39
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\editordetail\index.vue
@@ -722,6 +722,7 @@ import { getDictByCode } from '@/api/dictionary'
 			*/
 			onPartProjectTypeChange(data) {
 				data === 'PT19' && (this.detailData.isDB = 1)
+				data === 'PT06' && (this.detailData.isDB = 0)
 			}
 		}
 }
