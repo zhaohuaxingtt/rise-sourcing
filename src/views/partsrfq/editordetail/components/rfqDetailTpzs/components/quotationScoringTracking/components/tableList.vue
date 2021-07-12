@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-26 19:14:39
- * @LastEditTime: 2021-06-22 13:42:08
+ * @LastEditTime: 2021-07-12 14:43:10
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringTracking\components\tableList.vue
@@ -123,21 +123,26 @@ export default{
           }
       if(round.replace(/[^0-9]/ig,"") != this.getbaseInfoData().currentRounds || this.getbaseInfoData().currentRoundsStatus == "已关闭"){
         map['fix'] = true
+        map['sourcing'] = true
       }else{
         if(type == 3){
           map['agentQutation'] = true
           map['currentTab'] = "costsummary"
+          map['sourcing'] = true
         }
         if(type == 2){
           map['fix'] = true
+          map['sourcing'] = true
         }else{
           if(value.indexOf('/') > -1){
             map['agentQutation'] = true
             map['currentTab'] = "costsummary"
+            map['sourcing'] = true
      
           }else{
             map['watingSupplier'] = true
             map['fix'] = true
+            map['sourcing'] = true
           }
         }
       }
