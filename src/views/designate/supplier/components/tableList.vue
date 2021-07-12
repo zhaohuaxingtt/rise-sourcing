@@ -1,13 +1,13 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-02-24 09:42:07
- * @LastEditTime: 2021-06-25 14:50:23
+ * @LastEditTime: 2021-07-12 18:08:05
  * @LastEditors: Please set LastEditors
  * @Description: 来自零件签收-table组件，新增了单列的异常配置
 -->
 <template>
   <el-table fit tooltip-effect='light' :height="height" :data='tableData' default-expand-all  v-bind="treeProps" v-loading='tableLoading' @selection-change="handleSelectionChange" :empty-text="$t('LK_ZANWUSHUJU')" ref="moviesTable" :class="{'moviesTable': true, 'radio': radio}">
-    <el-table-column v-if="selection" type='selection' width="50" align='center'></el-table-column>
+    <el-table-column v-if="selection" type='selection' width="56" align='center'></el-table-column>
     <el-table-column v-if='index' type='index' width='50' align='center' :label='indexLabel'></el-table-column>
     <template v-for="(items,index) in tableTitle">
       <el-table-column :key="index" align='center' :width="items.width" :show-overflow-tooltip='items.tooltip' v-if='items.props == activeItems' :prop="items.props" :label="lang ? language(items.key, items.name) : $t(items.key)">
