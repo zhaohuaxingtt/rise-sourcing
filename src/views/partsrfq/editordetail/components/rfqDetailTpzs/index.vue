@@ -1,14 +1,13 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-25 13:01:23
- * @LastEditTime: 2021-07-10 16:20:10
- * @LastEditors: Please set LastEditors
+ * @LastEditors: zbin
  * @Description: 报价助手界面
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\index.vue
 -->
 <template>
-  <iTabsList type="card" slot="components" class='margin-top20'>
-    <el-tab-pane label="报价分析">
+  <iTabsList v-model="activityTabIndex" @tab-click="handleTabClick" type="card" slot="components" class='margin-top20'>
+    <el-tab-pane name="one" label="报价分析">
       <template>
          <!--------------------报价评分跟踪----------------------------------------->
          <iCard title="报价与评分跟踪" @handleCollapse='handleCollapse($event,"1")' collapse>
@@ -65,7 +64,7 @@ export default{
      */
 
 
-    
+
     handleCollapse(e,key){
       this.cardShow.forEach(i=>{
         if(i.key == key){
@@ -85,4 +84,7 @@ export default{
 }
 </script>
 <style lang='scss' scoped>
+.el-tabs--card {
+  position: relative;
+}
 </style>

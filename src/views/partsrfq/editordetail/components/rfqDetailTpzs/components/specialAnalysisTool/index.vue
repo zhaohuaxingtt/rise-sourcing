@@ -10,7 +10,7 @@
     <enterSpecificAnalysisToolsDialog @getDataList='getDataList' v-model="viewModelDialog" />
     <el-row :gutter="16" class="margin-top30">
       <el-col v-for="(item,index) in cardData" :key="index" :span="12">
-        <card @click.native="$emit('entrance',item.title)" :cardData="item" />
+        <card @click.native="entrance(item)" :cardData="item" />
       </el-col>
     </el-row>
   </div>
@@ -39,12 +39,28 @@ export default {
     this.getDataList()
   },
   methods: {
+    entrance(param) {
+      if (param.isDefault) {
+        switch (param.title) {
+          case 'BoB(Best of Best)':
+            // this.$router.push({ path: '/sourcing/partsrfq/vpAnalyseDetail', query: { type: 'edit', chemeId: param.reportId } })
+            break;
+          case 'Volume Pricing':
+            this.$router.push({ path: '/sourcing/partsrfq/vpAnalyseDetail', query: { type: 'edit', chemeId: param.reportId } })
+            break;
+          default:
+            break;
+        }
+      } else {
+        this.$emit('entrance', param.title)
+      }
+    },
     async getDataList(val) {
       window.sessionStorage.setItem('rfqId', val)
-      this.$store.dispatch('setRfqId', val)
+      await this.$store.dispatch('setRfqId', val)
       const pms = {
-        isInsideEnter: false,
-        rfq: val || '',
+        isInsideEnter: this.$route.path === '/sourcing/partsrfq/assistant' ? true : false,
+        rfq: this.$store.state.rfq.rfqId,
       }
       const res = await totalOverview(pms)
       if (res.result) {

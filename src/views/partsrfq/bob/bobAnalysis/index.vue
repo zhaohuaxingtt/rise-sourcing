@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 10:50:38
- * @LastEditTime: 2021-07-06 14:41:34
+ * @LastEditTime: 2021-07-08 17:05:34
  * @LastEditors: Please set LastEditors
  * @Description: 费用详情
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails.vue
@@ -38,11 +38,12 @@
         :tableList="groupList"
         v-if="!totalTable"
         @groupBy="groupBtn"
+        v-areaSelect
       ></groupedTable>
       <iDialog :visible.sync="visible1" title="分组至" width="20%">
         <el-form>
           <el-form-item label="选择组">
-            <el-input v-model="value" style="width:160px"/>
+            <el-input v-model="value" style="width: 160px" />
             <!-- <el-cascader
               v-model="value"
               :options="ungroupList"
@@ -64,9 +65,7 @@
           </el-form-item>
         </el-form>
         <span slot="footer" class="dialog-footer">
-          <el-button type="primary" @click="groupToList"
-            >确 定</el-button
-          >
+          <el-button type="primary" @click="groupToList">确 定</el-button>
         </span>
       </iDialog>
       <remarkDialog
@@ -75,12 +74,13 @@
         @cancel="cancel"
       ></remarkDialog>
     </iCard>
-    <ungroupedTable
-      class="margin-top20"
-      :tableList="ungroupList"
-      v-if="groupby"
-      @groupBy="groupBtn"
-    ></ungroupedTable>
+     <ungroupedTable
+          class="margin-top20"
+          :tableList="ungroupList"
+          v-if="groupby"
+          @groupBy="groupBtn"
+        ></ungroupedTable>
+    
   </div>
 </template>
 
@@ -101,7 +101,14 @@ import {
   modifyRfqToRemark,
   down,
 } from "@/api/partsrfq/bob";
-import { tableList, ungroupList, groupList,groupByList,ungroupByList,ungroupByHeader } from "./components/data.js";
+import {
+  tableList,
+  ungroupList,
+  groupList,
+  groupByList,
+  ungroupByList,
+  ungroupByHeader,
+} from "./components/data.js";
 
 export default {
   components: {
@@ -131,35 +138,32 @@ export default {
       totalTable: true,
       value: "",
       value1: "",
-      options:[
+
+      options: [
         {
-          id:1,
-          label:"散件2",
-          value:"2"
+          id: 1,
+          label: "散件2",
+          value: "2",
         },
         {
-          id:2,
-          label:"散件3",
-          value:"3"
+          id: 2,
+          label: "散件3",
+          value: "3",
         },
         {
-          id:4,
-          label:"散件4",
-          value:"4"
-        }
-      ]
+          id: 4,
+          label: "散件4",
+          value: "4",
+        },
+      ],
     };
   },
   created() {
     this.rfqCode = this.$route.query.rfqId;
     this.getRfqToRemark();
+    this.chargeRetrieve("all");
   },
-  mounted() {
-    this.$nextTick(() => {
-      // this.chargeRetrieve();
-      this.open();
-    });
-  },
+  mounted() {},
   methods: {
     getRfqToRemark() {
       getRfqToRemark({
@@ -172,19 +176,49 @@ export default {
         }
       });
     },
-    chargeRetrieve() {
-      chargeRetrieve({
-        schemaId: 5,
-        viewType: "all",
-      })
-        .then((res) => {
-          this.tableList = res;
+    async chargeRetrieve(type) {
+      if (type === "grouped" || type === "ungrouped") {
+        let res = await chargeRetrieve({
+          schemaId: 135,
+          viewType: "ungrouped",
+        });
+        this.ungroupList = res;
+        res.title.forEach((value, index) => {
+          if (value.rawUngroupedChild) {
+            value.rawUngroupedChild.forEach((item, i) => {
+              value.rawUngroupedChild.push({
+                label: item,
+                title: "",
+                index: Math.random(),
+              });
+            });
+            value.rawUngroupedChild.shift();
+          }
+        });
+        console.log(res, 223232323);
+        chargeRetrieve({
+          schemaId: 135,
+          viewType: "grouped",
+        }).then((res) => (this.groupList = res));
+      } else {
+        chargeRetrieve({
+          schemaId: 135,
+          viewType: type,
         })
-        .catch((err) => {});
+          .then((res) => {
+            this.tableList = res;
+            this.$nextTick(() => {
+              this.open();
+            });
+          })
+          .catch((err) => {});
+      }
     },
+
     open() {
       let els = this.$el.getElementsByClassName("el-table__expand-icon");
-      if (this.tableList.dataList.length != 0 && els.length != 0) {
+      console.log(els.length, 2222);
+      if (this.tableList.element.length != 0 && els.length != 0) {
         this.flag = false;
         this.flag1 = true;
         for (let j1 = 0; j1 < els.length; j1++) {
@@ -207,7 +241,7 @@ export default {
       }
     },
     close() {
-      if (this.tableList.dataList.length != 0) {
+      if (this.tableList.element.length != 0) {
         this.flag = true;
         this.flag1 = false;
         const elsopen = this.$el.getElementsByClassName(
@@ -225,6 +259,7 @@ export default {
     cancel(flag) {
       this.visible = flag;
     },
+   
     sure(val, flag) {
       this.visible = flag;
       this.remark = val;
@@ -252,20 +287,18 @@ export default {
     group() {
       this.totalTable = false;
       this.groupby = true;
+      // this.chargeRetrieve("grouped");
     },
     groupBtn(e) {
       this.visible1 = e;
     },
-    groupToList(){
-      this.groupList.dataList[0].children.push(this.groupByList)
+    groupToList() {
+      this.groupList.dataList[0].children.push(this.groupByList);
       // this.ungroupList.dataList[0]=this.ungroupByList
-      this.$set(this.ungroupList.dataList, 0, this.ungroupByList); 
-      this.$set(this.ungroupList, 'headerList', this.ungroupByHeader); 
-      console.log(this.ungroupList)
+      this.$set(this.ungroupList.dataList, 0, this.ungroupByList);
+      this.$set(this.ungroupList, "headerList", this.ungroupByHeader);
     },
-    handleChange(value) {
-      
-    },
+    handleChange(value) {},
     down() {
       // window.open('http://10.160.137.32:8036/aon/web/aon/bobRoundDetail/down?schemaId=5')
       // window.location.href="/aonApi/aon/web/aon/bobRoundDetail/down?schemaId=5"

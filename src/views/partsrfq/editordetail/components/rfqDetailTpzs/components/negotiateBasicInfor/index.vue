@@ -7,32 +7,43 @@
 -->
 <template>
   <div>
-    <projectOverview/>
-    <bulkSupplierOverview class="margin-top20"/>
-    <bulkSupplierPandect class="margin-top20"/>
-    <fixedRecord class="margin-top20"/>
+    <div class="right-btn">
+      <iButton @click="handleReport">{{ $t('TPZS.BGQD') }}</iButton>
+    </div>
+    <projectOverview />
+    <bulkSupplierOverview class="margin-top20" />
+    <bulkSupplierPandect class="margin-top20" />
+    <fixedRecord class="margin-top20" />
   </div>
 </template>
 
 <script>
+import { iButton } from "rise";
 import bulkSupplierOverview from "./components/bulkSupplierOverview.vue";
 import bulkSupplierPandect from "./components/bulkSupplierPandect.vue";
 import projectOverview from "./components/projectOverview.vue";
 import fixedRecord from "./components/fixedRecord.vue";
 export default {
-  components: { bulkSupplierOverview,bulkSupplierPandect,projectOverview,fixedRecord },
-  data(){
-    return{
-      title:'BoB(Best of Best)'
+  components: { bulkSupplierOverview, bulkSupplierPandect, projectOverview, fixedRecord, iButton },
+  data() {
+    return {
+      title: 'BoB(Best of Best)'
     }
   },
-  created(){
+  created() {
   },
-  methods:{
-
+  methods: {
+    handleReport() {
+      this.$router.push({ path: '/sourcing/partsrfq/reportList' });
+    },
   }
 }
 </script>
 
 <style>
+.right-btn {
+  position: absolute;
+  top: -3.5rem;
+  right: 0;
+}
 </style>

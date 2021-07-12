@@ -168,7 +168,7 @@ export default {
       this.showSelectDiv = false;
     },
     showSelect(e) {
-      console.log(e);
+
       const position = e.event.target.position;
       this.showSelectDiv = true;
       this.$refs.toolTipDiv.style.left = position[0] + 210 + "px";
@@ -210,7 +210,7 @@ export default {
       getBobLevelOne({
         analysisSchemeId: this.analysisSchemeId,
       }).then((res) => {
-        console.log(res);
+
         const allData = res.data || [];
         this.chartData = allData.bobLevelOneVOList.filter(
           (r) => r.isIntroduce === 0

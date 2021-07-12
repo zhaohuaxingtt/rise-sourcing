@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-06-16 20:44:29
- * @LastEditTime: 2021-07-08 17:14:19
+ * @LastEditTime: 2021-07-09 10:34:55
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\analysisTool\index.vue
@@ -66,7 +66,6 @@ export default {
       this.$router.push({
         path: targetUrl,
         query: {
-          rfqId: this.$store.state.rfq.rfqId ? this.$store.state.rfq.rfqId : null,
           round: this.round
         }
       })

@@ -6,7 +6,7 @@
  * @Descripttion: 总览
 -->
 <template>
-  <iCard :title="$t('TPZS.PLGYSZL')" collapse>
+  <iCard :title="$t('TPZS.PLGYSZL')" :defalutCollVal='false' collapse>
     <div class="center">
       <supplierCard :mapListData="mapListData" class="card-right" />
       <map1 :mapListData="mapListData" />

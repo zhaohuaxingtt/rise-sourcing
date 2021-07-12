@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-24 10:58:04
- * @LastEditTime: 2021-06-28 20:03:49
+ * @LastEditTime: 2021-07-07 16:27:36
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\bob\bobAnalysis\components\dialog.vue
@@ -39,7 +39,7 @@ export default {
     };
   },
   mounted() {
-    console.log(this);
+
   },
   props: {
     visible: {

@@ -6,11 +6,11 @@
  * @Descripttion: 项目概览
 -->
 <template>
-  <iCard :title="$t('TPZS.XMGL')" class='' collapse>
+  <iCard :title="$t('TPZS.XMGL')+'RFQ'+$route.query.id" :defalutCollVal='false' collapse>
     <projectInfor />
     <el-divider></el-divider>
     <partInforTable />
-    <supplierTable class="margin-top20"/>
+    <supplierTable class="margin-top20" />
   </iCard>
 </template>
 
@@ -23,7 +23,7 @@ import partInforTable from "./partInforTable.vue";
 import supplierTable from "./supplierTable.vue";
 export default {
   // import引入的组件需要注入到对象中才能使用
-  components: { iCard, iFormItem, iText, iFormGroup, iLabel, icon, projectInfor,partInforTable ,supplierTable},
+  components: { iCard, iFormItem, iText, iFormGroup, iLabel, icon, projectInfor, partInforTable, supplierTable },
   data() {
     // 这里存放数据
     return {
@@ -50,7 +50,11 @@ export default {
 </script>
 <style lang='scss' >
 // @import url(); 引入公共css类
-.el-divider--horizontal{
+.info {
+  font-weight: Bold;
+  font-size: 1rem;
+}
+.el-divider--horizontal {
   margin: 20px 0;
 }
 </style>
