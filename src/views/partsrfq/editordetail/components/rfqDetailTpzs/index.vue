@@ -28,10 +28,10 @@
         <iCard title="业务分配模拟" v-else class="margin-top20" @handleCollapse='handleCollapse($event,"5")' collapse :defalutCollVal='false'></iCard>
       </template>
     </el-tab-pane>
-    <el-tab-pane label="专项分析工具">
+    <el-tab-pane name="two" label="专项分析工具">
       <gather />
     </el-tab-pane>
-    <el-tab-pane label="谈判基本信息">
+    <el-tab-pane name="three" label="谈判基本信息">
       <negotiateBasicInfor></negotiateBasicInfor>
     </el-tab-pane>
   </iTabsList>
