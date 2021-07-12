@@ -3,7 +3,7 @@
     <div class="changeContent">
       <div class="margin-bottom20 clearFloat">
         <div class="floatright title-button-box">
-          <iButton @click="save">{{ $t('LK_BAOCUN') }}</iButton>
+          <iButton @click="save">{{ language('LK_BAOCUN','保存') }}</iButton>
         </div>
       </div>
       <tablelist
@@ -29,7 +29,7 @@
       />
     </div>
     <span slot="footer" class="dialog-footer">
-          <iButton @click="$emit('input',false)">{{ $t('LK_QUXIAO') }}</iButton>
+          <iButton @click="$emit('input',false)">{{ language('LK_QUXIAO','取 消') }}</iButton>
         </span>
   </iDialog>
 </template>
@@ -95,7 +95,7 @@ export default {
     },
     save() {
       if (this.selectTableData.length == '') {
-        iMessage.warn(this.$t('LK_NINDANGQIANHAIWEIXUANZE'))
+        iMessage.warn(this.language('LK_NINDANGQIANHAIWEIXUANZE','抱歉！您当前还未选择！'))
         return false
       }
       this.$emit('sure', this.selectTableData)

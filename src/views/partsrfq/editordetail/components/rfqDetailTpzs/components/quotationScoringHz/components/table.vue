@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-28 15:03:47
- * @LastEditTime: 2021-07-12 14:47:36
+ * @LastEditTime: 2021-07-12 14:48:47
  * @LastEditors: Please set LastEditors
  * @Description: 特殊表格实现
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\table.vue
@@ -14,7 +14,7 @@
     :data="tableData"
     v-loading="loading"
     @cell-click="handleCellClick"
-    :empty-text="$t('LK_ZANWUSHUJU')"
+    :empty-text="language('LK_ZANWUSHUJU','暂无数据')"
     :row-class-name="tableRowClassName"
     :header-cell-class-name='headerClassName'
     :cell-class-name='cellClassName'
@@ -26,7 +26,7 @@
       <el-table-column
         :key="index"
         v-if="item.props == 'groupName'"
-        :label="item.i18n ? $t(item.i18n) : item.label"
+        :label="item.i18n ? language(item.i18n,item.label) : item.label"
         :width="item.width || 50"
         align="center"
         :prop='item.prop'
@@ -38,7 +38,7 @@
       <el-table-column
         v-else-if="item.props == 'cfPartAPrice' || item.props == 'partNo'"
         :key="index"
-        :label="item.i18n ? $t(item.i18n) : item.label"
+        :label="item.i18n ? language(item.i18n,item.label) : item.label"
         :width="item.width"
         :prop='item.props'
         align="center"
@@ -52,7 +52,7 @@
       <el-table-column
         v-else
         :key="index"
-        :label="item.i18n ? $t(item.i18n) : item.label"
+        :label="item.i18n ? language(item.i18n,item.label) : item.label"
         :width="item.width"
         :prop='item.props'
         align="center"

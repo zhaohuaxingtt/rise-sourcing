@@ -1,7 +1,7 @@
 <!--
  * @Author: lyujiahong
  * @Date: 2021-02-24 09:42:07
- * @LastEditTime: 2021-04-01 20:08:22
+ * @LastEditTime: 2021-07-12 13:52:38
  * @LastEditors: Please set LastEditors
  * @Description: 零件签收-table组件。
  * @FilePath: \rise\src\views\partsign\components\tableList.vue
@@ -13,7 +13,7 @@
     :data="tableData"
     v-loading="tableLoading"
     @selection-change="handleSelectionChange"
-    :empty-text="$t('LK_ZANWUSHUJU')"
+    :empty-text="language('LK_ZANWUSHUJU','暂无数据')"
     ref="moviesTable"
     :class="radio && 'radio'"
   >
@@ -30,7 +30,7 @@
         :show-overflow-tooltip="items.tooltip"
         v-if="items.props == activeItems"
         :prop="items.props"
-        :label="items.key ? $t(items.key) : items.name"
+        :label="items.key ? language(items.key,items.name) : items.name"
       >
         <template slot-scope="row"
           ><span class="openLinkText cursor" @click="openPage(row.row)">{{
@@ -43,7 +43,7 @@
         align="center"
         :show-overflow-tooltip="items.tooltip"
         v-else-if="items.props == 'tpInfoType'"
-        :label="items.key ? $t(items.key) : items.name"
+        :label="items.key ? language(items.key,items.name) : items.name"
         :prop="items.props"
       >
         <template slot-scope="scope">
@@ -57,7 +57,7 @@
         align="center"
         :show-overflow-tooltip="items.tooltip"
         v-else
-        :label="items.key ? $t(items.key) : items.name"
+        :label="items.key ? language(items.key,items.name) : items.name"
         :prop="items.props"
       ></el-table-column>
     </template>

@@ -1,7 +1,7 @@
 <!--
  * @Author: lyujiahong
  * @Date: 2021-04-07 09:59:25
- * @LastEditTime: 2021-05-31 15:12:58
+ * @LastEditTime: 2021-07-12 13:51:42
  * @LastEditors: Please set LastEditors
  * @Description: RFQ模块首页
  * @FilePath: \rise\src\views\partsrfq\home\index.vue
@@ -62,10 +62,10 @@
                       新建组织机构
                     </iButton>
                     <!--新建RFQ：点击该键，系统会跳到下一界面。具体新建RFQ见另一user story，当RFQ类型为FS时，仅前期采购员有该按钮权限-->
-                    <iButton>{{ $t("LK_BIANJI") }}</iButton>
+                    <iButton>{{ language("LK_BIANJI",'编辑') }}</iButton>
                     <!--关闭RFQ：仅前期采购员有该按钮权限。以下情况可关闭：RFQ零件状态是全部定点或全部结束，当前RFQ没有零件-->
                     <iButton :loading="closeButtonLoading">
-                      {{ $t("LK_SHANCHU") }}
+                      {{ language("LK_SHANCHU",'删除') }}
                     </iButton>
                   </div>
                 </div>

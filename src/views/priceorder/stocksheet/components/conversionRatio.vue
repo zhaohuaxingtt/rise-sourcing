@@ -9,10 +9,10 @@
     </div>
     <div class="changeContent">
       <p>折算比例</p>
-      <iInput v-model="conversionVal" :placeholder="$t('LK_QINGSHURU')" maxlength="5"></iInput> %
+      <iInput v-model="conversionVal" :placeholder="language('LK_QINGSHURU','请输入')" maxlength="5"></iInput> %
     </div>
     <span slot="footer" class="dialog-footer">
-      <iButton @click="save" :loading='saveLoading'>{{ $t('LK_QUEREN') }}</iButton>
+      <iButton @click="save" :loading='saveLoading'>{{ language('LK_QUEREN','确认') }}</iButton>
     </span>
   </iDialog>
 </template>
