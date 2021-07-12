@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:18:01
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-08 15:00:40
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-07-12 14:41:11
  * @Description: 流转RS单
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\rs\components\circulation\index.vue
 -->
@@ -48,6 +48,7 @@ import { iCard, iButton, iInput, iFormGroup, iFormItem, iText, iMessage } from '
 import { nomalTableTitle, checkList } from './data'
 import tableList from '@/views/designate/designatedetail/components/tableList'
 import { getList, getRemark, updateRemark } from '@/api/designate/decisiondata/rs'
+import { cloneDeep } from "lodash"
 export default {
   components: { iCard, tableList, iButton, iInput, iFormGroup, iFormItem, iText },
   props: {
@@ -66,7 +67,7 @@ export default {
         {label:'LINIE采购员',value:'胡伟', props: ''},
         {label:'Exchange rate',value:'1 RMB=1.00 RMB', props: ''},
       ],
-      tableTitle: nomalTableTitle,
+      tableTitle: cloneDeep(nomalTableTitle),
       tableData: [],
       remarkItem: [{value: '', checked: false},{value: '', checked: false},{value: '', checked: false}],
       checkList: checkList,

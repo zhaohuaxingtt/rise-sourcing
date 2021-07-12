@@ -4,16 +4,16 @@
       <div class="margin-bottom5 clearFloat">
         <div class="floatright">
           <iButton @click="addSupplier" v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_TECHNICALSEMINAR_ADDSUPPLIER">
-            {{ $t('LK_TIANJIAGONGYINGSHANG') }}
+            {{ language('LK_TIANJIAGONGYINGSHANG','添加供应商') }}
           </iButton>
           <iButton @click="sendToMyEmail"
                    v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_TECHNICALSEMINAR_SENDTOMYEMAIL">
-            {{ $t('LK_FASONGZHIWODEYOUXIANG') }}
+            {{ language('LK_FASONGZHIWODEYOUXIANG','发送至我的邮箱') }}
           </iButton>
         </div>
       </div>
       <div class="margin-bottom20 clearFloat">
-        <span class="font18 font-weight">{{ $t('LK_HUIYIJIBENXINXI') }}</span>
+        <span class="font18 font-weight">{{ language('LK_HUIYIJIBENXINXI','会议基本信息') }}</span>
       </div>
       <tablelist
           :tableData="tableListData"
@@ -22,7 +22,7 @@
           :index="true"
           @handleSelectionChange="handleSelectionChange"
           open-page-props="action"
-          :customOpenPageWord="$t('LK_CHAKAN')"
+          :customOpenPageWord="language('LK_CHAKAN','查看')"
           @openPage="openPage"
           :openPageGetRowData="true"
       ></tablelist>
@@ -152,7 +152,7 @@ export default {
         return item.partNum
       })
       if (supplierIdList.length === 0) {
-        iMessage.warn(this.$t('LK_QINGTIANJIAGONGYINGSHANG'))
+        iMessage.warn(this.language('LK_QINGTIANJIAGONGYINGSHANG','请添加供应商!'))
         return
       }
       const req = {
@@ -182,7 +182,7 @@ export default {
     handleAddSupplierSave(list) {
       this.addSupplierList = list
       this.dialogAddSupplier = false
-      iMessage.success(this.$t('LK_YIBAOCUN'))
+      iMessage.success(this.language('LK_YIBAOCUN','已保存'))
     },
     async getPic(row) {
       this.drawingList = []

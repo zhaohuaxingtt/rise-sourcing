@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-26 11:16:51
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-10 16:41:27
+ * @LastEditTime: 2021-07-12 11:09:19
  * @Description: 配件综合管理页面
  * @FilePath: \front-web\src\views\accessoryPart\integratedManage\index.vue
 -->
@@ -59,7 +59,7 @@
                   <iButton @click="donwloadList" :loading="downloadLoading" >{{language('DAOCHU','导出')}}</iButton>
                 </div>
             </div>
-            <tableList :activeItems='"spnrNum"' selection indexKey :tableData="tableData" :tableTitle="tableTitle" :tableLoading="tableLoading" @handleSelectionChange="handleSelectionChange" @openPage="openPage"></tableList>
+            <tableList :activeItems='"spnrNum"' :activeItems2='"rfqNum"' selection indexKey :tableData="tableData" :tableTitle="tableTitle" :tableLoading="tableLoading" @handleSelectionChange="handleSelectionChange" @openPage="openPage" @openPage2="openPage2"></tableList>
             <!------------------------------------------------------------------------>
             <!--                  表格分页                                          --->
             <!------------------------------------------------------------------------>
@@ -165,6 +165,16 @@ export default {
     ...mapActions(["updateNavList"])
   },
   methods: {
+    /**
+     * @Description: 点击RFQ编号跳转事件
+     * @Author: Luoshuang
+     * @param {*}
+     * @return {*}
+     */    
+    openPage2(row) {
+      const router =  this.$router.resolve({path: `/sourcing/partsrfq/editordetail?id=${row.rfqNum}`})
+      window.open(router.href,'_blank')
+    },
     async init() {
        this.getSelectOptions()
       //  this.getCarTypeOptions()

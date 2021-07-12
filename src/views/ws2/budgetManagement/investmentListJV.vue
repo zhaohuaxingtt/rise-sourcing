@@ -21,7 +21,7 @@
             </Popover>
             <iSelect
                 v-show="!pageEdit"
-                :placeholder="$t('LK_QINGXUANZE')"
+                :placeholder="language('LK_QINGXUANZE','请选择')"
                 v-model="form['search.version']"
                 filterable
                 @change="changeVersion"
@@ -46,9 +46,9 @@
             </Popover>
           </div>
           <div class="search" v-show="(params.sourceStatus == 2) && pageEdit">
-            <label>{{ $t('LK_GUANLIANCHEXIN') }}:</label>
+            <label>{{ language('LK_GUANLIANCHEXIN','关联⻋型') }}:</label>
             <iSelect
-                :placeholder="$t('LK_QINGXUANZE')"
+                :placeholder="language('LK_QINGXUANZE','请选择')"
                 v-model="form['search.relatedCarType']"
                 filterable
                 @change="relationMainCarType"
@@ -96,10 +96,10 @@
         <div id="chart2"></div>
         <div id="chart3"></div>
         <div class="legend">
-          <div>{{ $t('LK_FEIAEKO') }}</div>
+          <div>{{ language('LK_FEIAEKO','⾮AEKO') }}</div>
           <div>AEKO</div>
           <div>Contingency</div>
-          <div>{{ $t("LK_DANWEI") }}: {{ $t("LK_BAIWANYUAN") }}</div>
+          <div>{{ language("LK_DANWEI",'价格单位') }}: {{ language("LK_BAIWANYUAN",'百万元') }}</div>
         </div>
       </iCard>
       <iCard v-loading="tableLoading">
@@ -130,7 +130,7 @@
             <iButton v-show="pageEdit" @click="saveRow">{{ $t('LK_BAOCUN') }}</iButton>
             <iButton v-show="pageEdit" @click="saveAsRow">{{ $t('LK_BAOCUNWEIXINBANBEN') }}</iButton>
             <iButton v-show="!pageEdit" @click="pageEdit = true"
-                     :disabled="versionList[0] && form['search.version'] != versionList[0].id">{{ $t('LK_BIANJI') }}
+                     :disabled="versionList[0] && form['search.version'] != versionList[0].id">{{ language('LK_BIANJI','编辑') }}
             </iButton>
             <iButton v-show="pageEdit" @click="addRow">{{ $t('LK_TIANJIAHANG') }}</iButton>
             <iButton v-show="pageEdit" @click="deleteIRow">{{ $t('LK_SHANCHUHANG') }}</iButton>
@@ -273,21 +273,21 @@
               % of Sub-Total
             </div>
             <div>
-              <h4>{{ $t('LK_AEKOJINE') }}:</h4>
+              <h4>{{ language('LK_AEKOJINE','AEKO⾦额') }}:</h4>
               <iInput v-model="form['search.AEKOMoney']" disabled></iInput>
             </div>
             <div>
-              <h4>{{ $t('LK_ZONGHEPIANCHA') }}:</h4>
+              <h4>{{ language('LK_ZONGHEPIANCHA','综合偏差') }}:</h4>
               <iInput v-model="form['search.contingencyPercent']" @input="changePerent"
                       :disabled="isLocked || !pageEdit"></iInput>
               % of Sub-Total
             </div>
             <div>
-              <h4>{{ $t('LK_ZHONGHEPIANCHAJINE') }}:</h4>
+              <h4>{{ language('LK_ZHONGHEPIANCHAJINE','综合偏差⾦额') }}:</h4>
               <iInput v-model="form['search.contingencyAmount']" disabled></iInput>
             </div>
             <div>
-              <h4>{{ $t('LK_ZONGYUSUAN') }}:</h4>
+              <h4>{{ language('LK_ZONGYUSUAN','总预算') }}:</h4>
               <iInput v-model="form['search.totalBudget']" :disabled="isLocked || !pageEdit" @input="changeTotalBudget">
                 <div slot="suffix" @click="isLocked = !isLocked">
                   <icon symbol name="iconzongyusuansuoding" class="icon" v-if="isLocked"/>

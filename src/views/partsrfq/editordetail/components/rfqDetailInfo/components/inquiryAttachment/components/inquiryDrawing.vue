@@ -2,12 +2,12 @@
 
   <iCard>
     <div class="margin-bottom20 clearFloat">
-      <span class="font18 font-weight">{{$t('LK_XUNJIATUZHI')}}</span>
+      <span class="font18 font-weight">{{language('LK_XUNJIATUZHI','询价图纸')}}</span>
       <div class="floatright">
         <iButton @click="download"
                  :loading="downloadLoading"
                  v-permission="PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_INQUIRYATTACHMENT_INQUIRYATTACHMENT_DRAWINGDOWNLOAD">
-          {{ $t('LK_XIAZAI') }}
+          {{ language('LK_XIAZAI','下载') }}
         </iButton>
       </div>
     </div>
@@ -94,7 +94,7 @@ export default {
     },
     async download() {
       if (this.selectTableData.length == 0)
-        return iMessage.warn(this.$t('LK_QINGXUANZE'))
+        return iMessage.warn(this.language('LK_QINGXUANZE','请选择'))
       const fileList = this.selectTableData.map(item => {
         return item.tpPartAttachmentName
       })

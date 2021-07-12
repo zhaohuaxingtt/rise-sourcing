@@ -2,7 +2,7 @@
  * @Descripttion: 
  * @Author: Luoshuang
  * @Date: 2021-05-21 14:30:41
- * @LastEditTime: 2021-07-09 17:35:11
+ * @LastEditTime: 2021-07-12 11:11:30
 -->
 <template>
   <el-table ref="multipleTable" fit tooltip-effect='light' :height="height" :data='tableData' v-loading='tableLoading' @selection-change="handleSelectionChange" :empty-text="language('ZANWUSHUJU', '暂无数据')" >
@@ -16,6 +16,9 @@
       <!----------------------需要高亮的列并且带有打开详情事件------------------------>
       <el-table-column :key="index" align='center' :width="items.width" :min-width="items.minWidth" :show-overflow-tooltip='items.tooltip' v-if='items.props == activeItems' :prop="items.props" :label="items.key ? language(items.key, items.name) : items.name">
         <template slot-scope="row"><span class="openLinkText cursor" @click="openPage(row.row)">{{row.row[activeItems]}}</span></template>
+      </el-table-column>
+      <el-table-column :key="index" align='center' :width="items.width" :min-width="items.minWidth" :show-overflow-tooltip='items.tooltip' v-else-if='items.props == activeItems2' :prop="items.props" :label="items.key ? language(items.key, items.name) : items.name">
+        <template slot-scope="row"><span class="openLinkText cursor" @click="openPage2(row.row)">{{row.row[activeItems2]}}</span></template>
       </el-table-column>
       <!----------------------需要进行排序的列------------------------>
       <el-table-column :key="index" align='center' :width="items.width" :min-width="items.minWidth"  v-else-if='items.props == "paixu"'>
@@ -119,7 +122,8 @@ export default{
     notEdit:Boolean,
     doubleHeader:Boolean,
     selectedItems:{type:Array},
-    editCompare: {type: Boolean, default: true}
+    editCompare: {type: Boolean, default: true},
+    activeItems2:{type:String,default:'b'},
   },
   inject:['vm'],
   methods:{
@@ -168,6 +172,9 @@ export default{
     },
     openPage(e){
       this.$emit('openPage',e)
+    },
+    openPage2(e){
+      this.$emit('openPage2',e)
     },	
     activeTop(e){
       this.$emit('activeTop',e)
