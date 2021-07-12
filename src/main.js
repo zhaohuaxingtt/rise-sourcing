@@ -17,7 +17,6 @@ import './permission'
 require('./auto').init()
 Vue.config.productionTip = false
 Vue.prototype.$t = (key, value) => i18n.t(key, value);
-
 Promise.all([
     import('rise/web/lang/zh.js'),
     import('rise/web/lang/en.js')

@@ -183,7 +183,7 @@
             'BenLunZhuangTai': '本轮状态', // 本轮状态
             'BenLunBaoJiaJieZhiRi': '本轮报价截止日', // 本轮报价截止日
             'LunCiLeiXing': '轮次类型', // 轮次类型
-            
+
             // 零件清单
             'LingJianQingDan': '零件清单', // 零件清单
             'BaoCun': '保存', // 保存
@@ -263,7 +263,8 @@
         'LK_YITUIHUI': '已退回', // 以退回
         'LK_YONGHUMING': '用户名', // 用户名
         'LK_ZHUANPAICHENGGONG': '转派成功', // 转派成功
-        'LK_AEKOHAO': 'Aeko号', //Aeko号
+        'LK_AEKOHAO': 'AEKO号', //AEKO号
+        'LK_XINDEAEKOHAO': 'AEKO号',    //  AEKO号
         'LK_BDLLIEBIAO': 'BDL列表', //BDL列表
         'LK_BMG': 'BMG', //BMG
         'LK_BOMDANXINXI': 'BOM单信息', //BOM单信息
@@ -277,7 +278,8 @@
         'LK_FS_GSHAO': 'FS/GS号', //FS/GS号
         'LK_FSHAO': 'FS号', //FS号
         'LK_INBOUNDWULIUFANGSHI': 'INBOUND物流方式', //INBOUND物流方式
-        'LK_LINIE': 'LINIE', //LINIE
+        'LK_XINDELINIE': 'Linie',
+        'LK_LINIE': 'Linie', //Linie
         'LK_LINIEBEIZHU': 'Linie备注', //Linie备注
         'LK_LINIEBUMEN': 'LINIE部门', //LINIE部门
         'LK_LINIESHANGHUIBEIZHU': 'Linie上会备注', //Linie上会备注
@@ -360,7 +362,7 @@
         'LK_CAILIAOZUXINXI': '材料组信息', //材料组信息
         'LK_CF': '财务控制员', //财务控制员
         'LK_CAIWUMUBIAOJIA': '财务目标价', //财务目标价
-        'LK_CAIGOUGONGCHANG': '采购工厂', //采购工厂
+        'LK_CAIGOUGONGCHANG': '生产工厂', //采购工厂
         'LK_CAIGOUTIAOKUAN': '采购条款', //采购条款
         'LK_CAIGOUXIANGMUJIANLI': '零件采购项目', //采购项目建立
         'LK_CAIGOUXIANGMUXINXI': '采购项目信息', //采购项目信息
@@ -765,6 +767,8 @@
         'LK_BAIWANYUAN': '百万元',//百万元
         'LK_ZONGYUSUAN': '总预算',//总预算
         'LK_DINGDIANJINE': '定点⾦额',//定点⾦额
+        'LK_ZUIXINGENGXINREN': '最新更新人',//最新更新人
+        'LK_ZUIXINGENGXINSHIJIAN': '最新更新时间',//最新更新时间
         'LK_BMDAN': 'BM单',//BM单
         'LK_FUKUAN': '付款',//付款
         'LK_CHEXINXIANGMU': '⻋型项⽬',//⻋型项⽬
@@ -777,19 +781,18 @@
         'LK_TIANJIAHANG': '添加⾏',//添加⾏
         'LK_SHANCHUHANG': '删除⾏',//删除⾏
         'LK_CANKAOCHEXIN': '参考⻋型',//参考⻋型
-        // 'LK_CAILIAOZUBIANHAO': '材料组编号',//材料组编号        //  ------------------------可输入编号中德文名称
+        'LK_CAILIAOZUBIANHAO2': '材料组编号',//材料组编号
         'LK_CAILIAOZUMINGCENGZHONG': '材料组名称（中）',//材料组名称（中）
         'LK_CAILIAOZUMINGCENGDE': '材料组名称（德）',//材料组名称（德）
         'LK_ZHUANYEKESHI': '专业科室',//专业科室
         'LK_SHIFOUZUOGUOCOMMONSOURING': '是否做过Common Sourcing',//是否做过Common Sourcing  -------------- common sourcing
         'LK_CommonSourcing': 'Common Sourcing',
         'LK_MOJUSHUXIN': '模具属性',//模具属性
-        // 'LK_LINIE': 'LINIE',//LINIE
         'LK_ZP': 'ZP',//ZP
-        'LK_CANKAOCHEXINXIANGMU': '参考⻋型项⽬',//参考⻋型项⽬
-        'LK_CANKAOCHEXINXIANGMUYI': '参考⻋型项⽬⼀',//参考⻋型项⽬⼀
-        'LK_CANKAOCHEXINXIANGMUER': '参考⻋型项⽬⼆',//参考⻋型项⽬⼆
-        'LK_CANKAOCHEXINXIANGMUSAN': '参考⻋型项⽬三',//参考⻋型项⽬三
+        'LK_CANKAOCHEXINXIANGMU': '参考车型项目',//参考车型项目
+        'LK_CANKAOCHEXINXIANGMUYI': '参考车型项目⼀',//参考车型项目⼀
+        'LK_CANKAOCHEXINXIANGMUER': '参考车型项目⼆',//参考车型项目⼆
+        'LK_CANKAOCHEXINXIANGMUSAN': '参考车型项目三',//参考车型项目三
         'LK_QITACHEXINXIANGMUBEIXUAN': '其它⻋型项⽬备选',//其它⻋型项⽬备选
         'LK_CHEXINXIANGMULEIXIN': '⻋型项⽬类型',//⻋型项⽬类型
         'LK_CHEXINXIANGMUQIZHINIANFEN': '⻋型项⽬起⽌年份',//⻋型项⽬起⽌年份
@@ -797,7 +800,7 @@
         'LK_CAILIAOZUBIANHAOZHONGWENMINGDEWEN': '材料组编号/中⽂名/德⽂名',//材料组编号/中⽂名/德⽂名
         'LK_CHAXUN': '查询',//查询
         // 'LK_TIANJIA': '添加',//添加
-        // 'LK_BANBENHAO': '版本号',//版本号
+        'LK_BANBENHAO2': '版本号',//版本号
         'LK_CHEXINMINGCENG': '⻋型名称',//⻋型名称
         'LK_PIZHUNTOUZHI': '批准投资',//批准投资
         'LK_FEIAEKO': '⾮AEKO',//⾮AEKO
@@ -824,13 +827,79 @@
         'LK_BAOCUNWEIXINBANBEN': '保存为新版本',//保存为新版本
         'LK_ANBILIZHESUAN': '按⽐例折算',//按⽐例折算
         'LK_ZHESUANBILI': '折算⽐例',//折算⽐例
+        'LK_CHEXINGXIANGMULEIXING': '车型项目类型',//车型项目类型
+        'LK_BUDGETAMOUNTTOTAL': '总预算金额',   //  总预算金额
+        'LK_APPLYINVESTAMOUNTTOTAL': '总申请投资金额',  //  总申请投资金额
+        'LK_FIXEDINVESTAMOUNTTOTAL': '总定点投资金额',  //  总定点投资金额
+        'LK_MOULDBUDGETSTATUS': '模具预算状态', //  模具预算状态
+        'LK_APPLYDATESTARTANDEND': '申请⽇期起⽌',  //  申请⽇期起⽌
+        'LK_RFQHAO': 'RFQ号',//RFQ号
+        'LK_YUSUANZHUANGTAI': '预算状态',//预算状态
+        'LK_SHENQINGREN': '申请人',//申请人
+        'LK_SHENQINGSHIJIANQIZHI': '申请时间起止',//申请时间起止
+        'LK_PIZHUAN': '批准',//批准
+        'LK_SHENQINGSHIJIANQI': '申请时间起',
+        'LK_SHENQINGSHIJIANZHI': '申请时间止',
+
+        'LK_CHEXINGXIANGMUGAILAN': '车型项目概览',//车型项目概览
+        'LK_YUSUANGUANLI': '预算管理',//预算管理
+        'LK_YUSUANSHENPI': '预算审批',//预算审批
+        'LK_BASHENQING': 'BA申请',//BA申请
+        'LK_BMSHENQING': 'BM申请',//BM申请
+        'LK_TOUZIBAOGAO': '投资报告',//投资报告
+
+        'LK_BANMUBER': 'BA号',  //  BA号
+        'LK_FIXEDPOINTSUPPLIER': '定点供应商', // 定点供应商
+        'LK_MODULFIXEDPOINTMONEY': '模具定点金额',  //  模具定点金额
+        'LK_REGINOCONTROLLER': '区域控制员',    //  区域控制员
+        'LK_RSODDNUMBERS': 'RS单号',    //  RS单号
+        'LK_SPAREPARTSNUMBER': '零件号',    //  零件号
+        'LK_BADETAILSPOPUPTXT1': '您将要申请',  //  您将要申请
+        'LK_BADETAILSPOPUPTXT2': '的BA账户，请确认金额：',   //  的BAzzh账户，请确认金额：
+        'LK_BANUMBERDISTRIBUTION': 'BA号分配',  //  BA号分配
+        'LK_AMOUNTMONEYRMB': '金额（RMB）', //  金额（RMB）
+        'LK_FIXEDINVESTTOTAL': '总定点投资金额',    //  总定点投资金额
+
+        // 'LK_XIAYIBU': '下一步',    //  下一步
+
+        'LK_BAAPPROVAL': 'BA审批',  //  BA审批
+        'LK_BADANSTATUS': 'BA单状态', // BA单状态
+        'LK_ALL': '全部',   //  全部
+        'LK_BAODDNUMBERS': 'BA单号',    //  BA单号
+        'LK_BAACCOUNTTYPE': 'BA账户类型',   //  BA账户类型
+        'LK_CURRENTAMOUNT': '当前金额', //  当前金额
+        'LK_APPLYAMOUNT': '申请金额',   //  申请金额
+        'LK_APPLYAMOUNTTHEN': '申请后金额', //  申请后金额
+        'LK_MODIFYANUMBER': '修改A号',  //  修改A号
+        'LK_CANCELAPPLY': '退回申请',   //  退回申请
+        'LK_MODIFIABLE': '可修改',  //  可修改
+        'LK_DEPNAME': '科室名称',   //  科室名称
+        'LK_ALLBAAPPLY': '所有BA申请',  //  所有BA申请
+        'LK_TOBECONFIRMEDBAAPPLY': '待确认BA申请',  //  待确认BA申请
+        'LK_TOBECONFIRMEDMONEY': '待确认追加金额',  //  待确认追加金额
+        'LK_DETAILEDTXT': '明细',   //  明细
+        'LK_MODIFYANUMBERTXTTIPS': '确定后，所有同⼀⻋型项⽬、同⼀⼯⼚的BA申请相关记录将⼀并更改',  //  确定后，所有同⼀⻋型项⽬、同⼀⼯⼚的BA申请相关记录将⼀并更改
+        'LK_PRIMARYAMBER': '原A号',     //  原A号
+        'LK_NEWAMBER': '新A号', //  新A号
+        'LK_CONFIRMANUMBER': '确认A号', //  确认A号
+        'LK_CONFIRMMONEY': '确认金额',  //  确认金额
+        'LK_INPUTNUMBERORMORE': '请输入5位或8位A号',    //  请输入5位或8位A号
+        'LK_PLEASEINPUTTIPS1': '请选择需要修改的数据',  //  请选择需要修改的数据
+        'LK_PLEASEINPUTTIPS2': '最多只能同时修改一条数据',  //  最多只能同时修改一条数据
+        'LK_PLEASEINPUTTIPS3': '需要先确认A号',  //  需要先确认A号
+        'LK_PLEASEINPUTTIPS4': '退回状态不能修改A号',  //  退回状态不能修改A号
+        'LK_PLEASEINPUTTIPS5': '车型项目尚未确认A号，请先前往',  //  车型项目尚未确认A号，请先前往
+        'LK_PLEASEINPUTTIPS6': '待确认BA申请',  //  待确认BA申请
+        'LK_PLEASEINPUTTIPS7': '页面中进行A号确认',  //  页面中进行A号确认
+        'LK_APPLYBANUMBER': '申请BA单',  //  申请BA单
+        'LK_OF': '的', //  的
         // 'LK_QUEDING': '确定',//确定
         'LK_HEAVYITEM': 'Heavy Item', // Heavy Item
         'LK_FENXIBAOGAO': '分析报告', // 分析报告
         'LK_PJZDFPKESHI':'配件自动分配科室',
         'LK_LINGJIANCHENGBENFENXIYUAN': '零件成本分析员', // 零件成本分析员
         'LK_MUJUCHENGBENFENXIYUAN': '模具成本分析员', // 模具成本分析员
-        'LK_FUJIANXUQIUDAORU':'附件需求导入', // 附件需求导入 
+        'LK_FUJIANXUQIUDAORU':'附件需求导入', // 附件需求导入
         'LK_PEIJIANXUQIUQIANSHOU': '配件需求签收', // 配件需求签收
         'LK_PEIJIANZONGHEGUANLI': '配件综合管理', // 配件综合管理
         'LK_FUJIANZONGHEGUANLI': '附件综合管理', // 附件综合管理
@@ -856,6 +925,8 @@
         'LK_JIESHUSHIJIAN':'结束日期', // 结束日期
         'LK_WENJIANQINGXUANZHUANZHIZHENGCHANG':'上传附件:文件请旋转至正常方向后上传', // 上传附件:文件请旋转至正常方向后上传
         'LK_FASONGKM': '发送KM', // 发送KM
+        'LK_BAAPPLYTISP1': '请先勾选',  //  请先选择车型项目
+        'LK_INPUTNUMBERORMORE1': '不能输入特殊字符',    //  不能输入特俗字符
         'LK_DONGJIE':'冻结', // 冻结
         'LK_JIEDONG':'解冻', // 解冻
         'LK_CAOGAO': '草稿',
@@ -925,6 +996,95 @@
         'LK_FRMPINGJI':'FRM评级', // FRM评级
         'LK_CBDSTATUS':'CBD状态', // CBD状态
         'LK_LETTER_XINZENGDINGDIANXIN':'新增定点信', // 新增定点信
+
+        'LK_ALLBMAPPLY': '所有BM申请',    //  所有BM申请
+        'LK_DAIQUERENBMDAN': '待确认BM单',    //  待确认BM单
+        'LK_AEKOZENGZHIBMDAN': 'AEKO增值BM单',  //  Aeko增值BM单
+        'LK_AEKOJIANZHIBMDAN': 'AEKO减值BM单',  //  Aeko减值BM单
+        'LK_BMDANZHUANGTAI': 'BM单状态',    //  BM单状态
+        'LK_AEKOLEIXING': 'AEKO类型',   //  AEKO类型
+        'LK_BMDANLIUSHUIHAO': 'BM单流水号',   //  BM单流⽔号LK_BMDANLIUSHUIHAO
+        'LK_BMDANHAO': 'BM单号',    //  BM单号
+        'LK_WBSBIANHAO': 'WBS编号',   //  WBS编号
+        'LK_DAIBIAOLINGJIAN': '代表零件',  //  代表零件
+        'LK_BMDANJINE':  'BM单金额', //  BM单金额
+        'LK_BMZHUANGTAI': 'BM单状态',   //  BM单状态
+        'LK_DINGDIANLEIXING': '定点类型',   //  定点类型
+        'LK_AEKOZENGZHIJINE': 'AEKO增值金额',  //  Aeko增值金额
+        'LK_XIAZAIQINGDAN': '下载清单', //  下载清单
+        'LK_QUERENSHENQING': '确认申请',    //  确认申请
+        'LK_ZUOFEI': '作废', // 作废
+        'LK_DAIBIAOLINGJIANHAO': '代表零件号',  //  代表零件号
+        'LK_CAIGOUSHENQINGHAO': '采购申请号',   //  采购申请号
+        'LK_KEMU': '科目',  //  科目
+        'LK_CHENGBENZHONGXIN': '成本中心',  //  成本中心
+        'LK_CHENGBENKONGZHIYU': '成本控制域',   //  成本控制域
+        'LK_ZONGZHANGKEMU': '总账科目', //  总账科目
+        'LK_TONGJIDINGDAN': '统计订单', //  统计订单
+        'LK_WULIAOZHU': '物料组',   //  物料组
+        'LK_JIAOHUORIQI': '交货日期',   //  交货日期
+        'LK_CAIGOUZU': '采购组',    //  采购组
+        'LK_BUHANSUICHENGBEN':  '不含税成本',   //  不含税成本
+        'LK_HANSUICHENGBEN': '含税成本',    //  含税成本
+        'LK_DUANWENBEN': '短文本',  //  短文本
+        'LK_LINGJIANMINGCHENZHONG': '零件名称（中）',   //  零件名称（中）
+        'LK_LINGJIANMINGCHENDE': '零件名称（德）',  //  零件名称（德）
+        'LK_CSF': 'CSF',    //  CSF
+        'LK_BAOCUNWEIZUIXINBANBEN': '保存为最新版本',  //  保存为最新版本
+        'LK_SHUAXIN': '刷新',   //  刷新
+        'LK_SHUAXINRIQI': '刷新日期',   //  刷新日期
+        'LK_SHANGBANNIANSOPFUKUANDUIBI': '上半年SOP付款比',   //  上半年SOP付款⽐
+        'LK_XIABANNIANSOPFUKUANDUIBI': '下半年SOP付款比',   //  下半年SOP付款⽐
+        'LK_SOPSHIJIAN': 'SOP时间', //  SOP时间
+        'LK_YUSUANJINE': '预算⾦额',    //  预算⾦额
+        'LK_BMJINE': 'BM金额',  //  BM金额
+        'LK_YIFUKUANJINEWANGNIAN': '已付款⾦额-往年',   //  已付款⾦额-往年
+        'LK_YIFUKUAIJINEDANGNIAN': '已付款⾦额-当年',   //  已付款⾦额-当年
+        'LK_JIHUAFUKUANDANGNIAN': '计划付款-当年', // 计划付款-当年
+        'LK_JIHUAFUKUANCINIAN': '计划付款-次年', // 计划付款-次年
+        'LK_SOPFUKUANBI': 'SOP付款比',  //  SOP付款比
+        'LK_XIANGMUCAIGOUYUAN': '项目采购员',   //  项目采购员
+        'LK_XITONGJISUAN': '系统计算',  //  系统计算
+        'LK_RENMINBI': '人民币',    //  人民币
+        'LK_BUHANSUI': '不含税',    //  不含税
+        'LK_SHOUGONGTIAOZHENG': '手工调整', //  手工调整
+        'LK_QINGXUANZHE': '请先选择',   //  请先选择
+        'LK_XUQIUGENZHONGHAO': '需求跟踪号',    //  需求跟踪号
+        'LK_JILIANGDANWEI': '计量单位', //  计量单位
+        'LK_SHULIANG': '数量',  //  数量
+        'LK_LIZI': '例',    //  例
+        'LK_LIZISHUOMING': '代表零件号的车型项目/零件号/零件名称/供应商简称',  //  代表零件号的车型项目/零件号/零件名称/供应商简称
+        'LK_BMAPPLYBAOCUNMSG': '你有必填字段未填',  //  你有必填字段未填
+        'LK_FUKUANJIHUADINGZHIYUCHAKAN':  '付款计划制定与查看',   //  付款计划制定与查看
+        'LK_YUAN': '元',    //  元
+
+        'SPR_FRM_DEP_FINANA': '财报分析', //财报分析
+        'SPR_FRM_DEP_CXWHDX': '维护呈现对象', //维护呈现对象
+        'SPR_FRM_DEP_JRHYJZ': '加入行业均值', //加入行业均值
+        'SPR_FRM_DEP_WHHYJZ': '维护行业均值', //维护行业均值
+        'SPR_FRM_DEP_OBJPLACE': '请选择呈现对象', // 请选择呈现对象
+        'SPR_FRM_DEP_AVGPLACE': '请选择行业均值', // 请选择行业均值
+
+        'LK_TUICHUBIANJI': '退出编辑',    //  退出编辑
+        'LK_SHANGCHUANQINGDAN': '上传清单',    //  上传清单
+        'LK_YUEDUJIHUA': '月度计划',    //  月度计划
+        'LK_DANGNIANFUKUANJIHUA': '当年付款计划',    //  当年付款计划
+        'LK_CINIANFUKUANJIHUA': '次年付款计划',    //  次年付款计划
+        'LK_YIYUE': '一月',    //  一月
+        'LK_ERYUE': '二月',    //  二月
+        'LK_SANYUE': '三月',    //  三月
+        'LK_SIYUE': '四月',    //  四月
+        'LK_WUYUE': '五月',    //  五月
+        'LK_LIUYUE': '六月',    //  六月
+        'LK_QIYUE': '七月',    //  七月
+        'LK_BAYUE': '八月',    //  八月
+        'LK_JIUYUE': '九月',    //  九月
+        'LK_SHIYUE': '十月',    //  十月
+        'LK_SHIYIYUE': '十一月',    //  十一月
+        'LK_SHIERYUE': '十二月',    //  十二月
+
+        'LK_FUKUANKANBAN': '付款看板',  //  付款看板
+        'LK_NIANDUJIHUA': '年度计划',   //  年度计划
 
         // 定点管理
         'nominationLanguage': {
@@ -1003,12 +1163,12 @@
             'BuMen': '部门',
             'GengXinShiJian': '更新时间',
             // 零件清单
-            "LingJianXiangMuLeiXing": "零件项目类型", 
-            "CheXingDaLei": "车型大类", 
+            "LingJianXiangMuLeiXing": "零件项目类型",
+            "CheXingDaLei": "车型大类",
             "CheXingXiangMu": "车型项目",
-            "LingJianZhuangTai": "零件状态", 
-            "XunJiaCaiGouYuan": "询价采购员", 
-            "LINIE": "LINIE", 
+            "LingJianZhuangTai": "零件状态",
+            "XunJiaCaiGouYuan": "询价采购员",
+            "LINIE": "LINIE",
             "CFMuBiaoJia": "CF目标价",
             "BatchEdit": "批量编辑",
             "Edit": "编辑",
@@ -1079,10 +1239,164 @@
         "BJZS":{
             "LK_BAOJIAZUSHOU_MJ":"报价分析汇总-模具",
             "LK_BAOJIAZUSHOU_MJDANWEIYUAN":"报价分析汇总-模具（单元：元）"
-        }
+        },
+        //谈判助手
+        'TPZS': {
+            'FENXI': '分析', //分析
+            'YULAN': '预览', //预览
+            'GONGYINGSHANG': '供应商', //
+            'CHEXINGXIANGMU': '车型项目', //车型项目
+            'CHEXING': '车型', //车型
+            'GONGCHANG': '工厂', //工厂
+            'ZONGDANJIA': '总单价', //总单价
+            'GUDINGCHENGBENZHANBI': '固定成本占比', //固定成本占比
+            'FEIYONGLEIXING': '费用类型', //费用类型
+            'FEIYONGZONGE': '费用总额', //费用总额
+            'FENTANSHULIANG': '分摊数量', //分摊数量
+            'YINGXIANGDANJIA': '影响单价', //影响单价
+            'YINGXIANGCHENGBENZHANBI': '影响成本占比', //影响成本占比
+            'XIANSHIYINGCANG': '显示/隐藏', //显示/隐藏
+            'WANCHENG': '完成', //完成
+            'QINGSHURUBIANHAOMINGCHENG': '请输入编号/名称', //请输入编号/名称
+            'QINGSHURUCHUANGJIANRENMINGCHENG': '请输入创建人名称', //请输入创建人名称
+            'PCAZONGLAN': 'PCA总览', //PCA总览
+            'PINLEIGUANLIZHUSHOU': '品类管理助手', //品类管理助手
+            'TANPANZHUSHOU': '谈判助手', //谈判助手
+            'BAOGAOMINGCHENG': '报告名称', //报告名称
+            'TIAZONGLAN': 'TIA总览', //报告名称
+            // ---------------------------------舒杰报告清单start-----------------------------------------------
+            'BGQD': '报告清单', //报告清单
+            'ZXFXGJ': '专项分析工具', //专项分析工具
+            'BJFX': '报价分析', //报价分析
+            'TPJBXX': '谈判基本信息', //谈判基本信息
+            'BGMC': '报告名称', //报告名称
+            'FXGJLX': '分析工具类型', //分析工具类型
+            'RFQHMC': 'RFQ号/名称', //报告清单
+            'MRX': '默认项', //默认项
+            'WJLX': '文件类型', //文件类型
+            'CJR': '创建人', //创建人
+            'SCXGRQ': '上次修改日期', //上次修改日期
+            'RFQ': 'RFQ', //RFQ
+            'FX': "分析:", //分析
+            'QSRBGMC':'请输入报告名称...',//请输入报告名称...
+            'QSRCLZ':'请输入材料组...',//请输入材料组...
+            'QSRLJH':'请输入零件号...',//请输入零件号...
+            'QSRRFQMC':'请输入RFQ/名称...',//请输入RFQ/名称...
+            'ZDDCBG':'最多导出10条报告',//最多导出10条报告
+            'CANNOTSELECT':'未选择需要导出的报告',//未选择需要导出的报告
+
+            // ---------------------------------舒杰报告清单end-------------------------------------------------
+            // 张兵
+            'BG': "报告:", //报告
+            'SCGXSJ': "上次更新时间:", //上次更新时间
+            'SCDCSJ': "上次导出时间:", //上次导出时间
+            'PLGYSGL': "批量供应商概览", //批量供应商概览
+            'PLGYSZL': "批量供应商总览", //批量供应商总览
+            'GYS360': "供应商360", //供应商360
+            'DW': "单位:", //单位
+            'XMGL': "项目概览:", //项目概览
+            'XMXX': "项目信息", //项目信息
+            'MQXTY': "MQ协调员", //MQ协调员
+            'PLXTY': "PL协调员", //PL协调员
+            'CFXTY': "CF协调员", //CF协调员
+            'FOPQK': "FOP情况", //FOP情况
+            'MQQK': "MQ情况", //MQ情况
+            'PLQK': "PL情况", //PL情况
+            'CFQK': "CF情况", //CF情况
+            'CXLC': "车型量产", //车型量产
+            'SOPRQ': "SOP日期", //SOP日期
+            'LCHTIPS': "绿：已提交，且没有超期<br/> 黄：没有提交，还没有超期（2周内）<br/> 橙：没有提交，还没有超期（2-4周内）<br/> 红：没有提交，且超期", //绿：已提交，且没有超期 黄：没有提交，还没有超期（2周内） 橙：没有提交，还没有超期（2-4周内） 红：没有提交，且超期
+            'LJLBXX': "零件列表信息", //零件列表信息
+            'LJH': "零件号", //零件号
+            'LJM': "零件名", //零件名
+            'GC': "工厂", //工厂
+            'SOP': "SOP", //SOP
+            'EBR': "EBR%", //EBR%
+            'XMMC': "项目名称", //项目名称
+            'QSMZQCL': "全生命周期产量", //全生命周期产量
+            'FZNCL': "峰值年产量", //峰值年产量
+            'GYSXX': "供应商信息", //供应商信息
+            'SZD': "所在地", //所在地
+            'SFMBDL': "是否MBDL", //是否MBDL
+            'BJZT': "报价状态", //报价状态
+            'MQDF': "MQ打分", //MQ打分
+            'PLDF': "PL打分", //PL打分
+            'EPDF': "EP打分", //EP打分
+            'CLZMC': "材料组名称", //材料组名称
+            'GYZMC': "工艺组名称", //工艺组名称
+            'DDJE': "定点金额", //定点金额
+            'DDSJ': "定点时间", //定点时间
+            'SQDZDZ': "上汽大众地址：", //上汽大众地址：
+            'ZXSE': "总销售额：", //总销售额：
+            'DDJV': "定点记录", //定点记录
+            'VPFX':"Volume Pricing分析",//Volume Pricing分析
+            'VPFXK':"Volume Pricing分析库",//Volume Pricing分析库
+            'CXJHCLYXSLJCLFX':"车型计划产量与现实累计产量分析（截止2021-02）",//车型计划产量与现实累计产量分析（截止2021-02）
+            'DWL':"单位：辆",//单位：辆
+            'ZF':"涨幅",//涨幅
+            'SMZQ':"生命周期",//生命周期
+            'PLGLZS':"品类管理助手",//品类管理助手
+            'JRZXFXGJ':"进入专项分析工具",//进入专项分析工具
+            'CLZRFQLJH':"材料组，RFQ，零件号…",//材料组，RFQ，零件号…
+            'JHCL':"计划产量",//计划产量
+            'SJCL':"实际产量",//实际产量
+            'LJLB':"零件列表",//零件列表
+            'QLLJ':"全量零件",//全量零件
+            'YXLJ':"已选零件",//已选零件
+            'CZLJ':"查找零件",//查找零件
+            'GYS':"供应商",//供应商
+            'DQJHCL':"当前计划产量",//当前计划产量
+            'DQSJCL':"当前实际产量",//当前实际产量
+            'SOPSH':"SOP时间",//SOP时间
+            'JRFX':"进入分析",//进入分析
+            'CLZ':"材料组",//材料组
+            'SSJG':"搜索结果",//搜索结果
+            'JHCLDQSJCLSOP':"计划产量、当前实际产量、SOP时间所展示信息均为该零件号在该⻋型最近⼀次定点的批量供货时间起点所对应的信息。",//计划产量、当前实际产量、SOP时间所展示信息均为该零件号在该⻋型最近⼀次定点的批量供货时间起点所对应的信息。
+            'QXZYTSJ':"请选择一条数据",//请选择一条数据
+
+            'BQYXLJMYSJQZQLLJZTJZYXLJ':"抱歉，已选零件没有数据，请在全量零件中添加至已选零件",//抱歉，已选零件没有数据，请在全量零件中添加至已选零件
+            'QUXIAN': '曲线', //曲线
+            'GHQSSJ': '供货起始时间', //供货起始时间
+            'LCSJ': '量产时间', //量产时间
+            'JHLCDCL': '计划量产达成率', //计划量产达成率
+            'GHJSSJ': '供货结束时间', //供货结束时间
+            'JHCLJZSYM': '计划产量（截至上月末）', //计划产量（截至上月末）
+            'SJLJCL': '实际累计产量（截至上月末）', //实际累计产量（截至上月末）
+            'VPJFQL': 'Volume Pricing降幅潜力', //Volume Pricing降幅潜力
+            'JBDJ': '降本单价', //降本单价
+            'YUAN': '元', //元
+            'JHZCL': '计划总产量', //计划总产量
+            'YJZCL': '预计总产量', //预计总产量
+            'YSXEWJJ': '已实现额外降价', //已实现额外降价
+            'SCHEME_TYPE': '方案',  //方案类型
+            'REPORT_TYPE': '报告',  //报告类型
+            'LK_CREATE': '新建',    //新建
+            'LK_CUSTOM_TITLE': '自定义', //自定义
+            'SHOWORHIDE': '显示/隐藏',  //显示/隐藏
+            'SORT': '排序',   //排序
+            'SEARCH_PART': '请搜索零件号', //请搜索零件号
+            'PART_REQUIRE_MESSAGE': '零件号不能为空',//零件号不能为空
+            'PART_UNIQUE_MESSAGE': '零件号不能重复', //零件号不能重复
+            'YXLJZDZNTJYBT': '已选零件最多只能添加100条', //已选零件最多只能添加100条
+            'ZUIXINDINGDIANDANJIA': '最新定点单价', //最新定点单价
+            'MUBIAODANJIA': '目标单价', //目标单价
+            'CHANLIANGLIANG': '产量（辆）', //产量（辆）
+            'DANJIA': '单价', //单价
+            'YUANJIAN': '（元/件）', //（元/件）
+            'BAOGAO': '报告', //报告
+            'JIHUAZHONGCHANLIANG': '计划总产量', //计划总产量
+            'YUJIZONGCHANLIANG': '预计总产量', //预计总产量
+            'GUDINGCHENGBEN': '固定成本', //固定成本
+            'ZONGJIANGJIA': '总降价', //总降价
+            'JIANGJIA': '降价', //降价
+            'ZXFXGJNHYGLFXBG': '专项分析工具内有关联分析报告', //专项分析工具内有关联分析报告
+            'ZXFXGJNMYGLFXBGDHHILJ': '专项分析工具内没有相关的分析报告，且含Heavy Item零件', //专项分析工具内没有关联分析报告，但含heavy item零件
+            'ZXFXGJNMYGLFXBGQBHHILJ': '专项分析工具内没有相关的分析报告，且不含Heavy Item零件', //专项分析工具内没有关联分析报告，且不含heavy item零件
+            'FEIYONGZONGEHEYINGXIANGDANJIABUENGWEIKONG': '费用总额和影响单价不能为空', //费用总额和影响单价不能为空
+        },
     }
     var xmlHttp = ''
-    if(window.XMLHttpRequest){ 
+    if(window.XMLHttpRequest){
         xmlHttp = new XMLHttpRequest();
     }else{
         // eslint-disable-next-line no-undef

@@ -24,7 +24,7 @@ export const iconData = [{
         active: false,
         key: 'tow',
         path: '',
-        // path: '/priceorder/stocksheet',
+        // path: '/priceorder/budgetManagement',
         // path: '/partsprocure',
         menuData: []
     },
