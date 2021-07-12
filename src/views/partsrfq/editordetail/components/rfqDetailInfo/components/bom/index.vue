@@ -3,15 +3,15 @@
     <iCard>
       <div class="margin-bottom20 clearFloat">
         <iFormGroup inline icon>
-          <iFormItem :label="$t('LK_CHUANGJIANRIQI')" name="test">
+          <iFormItem :label="language('LK_CHUANGJIANRIQI','创建日期')" name="test">
             <i-text>2020-12-10</i-text>
           </iFormItem>
-          <iFormItem :label="$t('LK_DAORUSHIJIAN')" name="test">
+          <iFormItem :label="language('LK_DAORUSHIJIAN','导入时间')" name="test">
             <i-text >2020-12-10</i-text>
           </iFormItem>
           <div class="floatright margin-top5">
-            <iButton @click="readEffectiveBOM" disabled>{{ $t('LK_DUQUYOUXIAODOM') }}</iButton>
-            <iButton @click="exports">{{$t('LK_DAOCHU')}}</iButton>
+            <iButton @click="readEffectiveBOM" disabled>{{ language('LK_DUQUYOUXIAODOM','读取有效BOM') }}</iButton>
+            <iButton @click="exports">{{language('LK_DAOCHU','导出')}}</iButton>
           </div>
         </iFormGroup>
       </div>
