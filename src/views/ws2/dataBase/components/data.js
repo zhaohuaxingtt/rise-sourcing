@@ -21,7 +21,8 @@ export const summaryData = [
         props: 'tmCartypeProName',
         name: '车型项目',
         key: '车型项目',
-        tooltip: false
+        tooltip: false,
+        width: 260,
     },
     {
         props: 'sop',
@@ -39,7 +40,8 @@ export const summaryData = [
         props: 'deptName',
         name: '专业科室',
         key: '专业科室',
-        tooltip: false
+        tooltip: false,
+        width: 110,
     },
     {
         props: 'categoryNameZh',
@@ -78,7 +80,8 @@ export const partNoData = [
         props: 'tmCartypeProName',
         name: '车型项目',
         key: '车型项目',
-        tooltip: false
+        tooltip: false,
+        width: 260,
     },
     {
         props: 'cartypeProType',
@@ -90,13 +93,15 @@ export const partNoData = [
         props: 'deptName',
         name: '专业科室',
         key: '专业科室',
-        tooltip: false
+        tooltip: false,
+        width: 110,
     },
     {
         props: 'categoryNameZh',
         name: '材料组',
         key: '材料组',
-        tooltip: false
+        tooltip: false,
+        width: 145,
     },
     {
         props: 'partNum',

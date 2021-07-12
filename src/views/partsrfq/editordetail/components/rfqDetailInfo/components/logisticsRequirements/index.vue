@@ -3,7 +3,7 @@
     <iCard>
       <div class="margin-bottom20 clearFloat">
         <div class="floatright">
-          <iButton @click="exports" v-permission="PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_LOGISTICSREQUIREMENTS_EXPORT">{{ $t('LK_DAOCHU') }}</iButton>
+          <iButton @click="exports" v-permission="PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_LOGISTICSREQUIREMENTS_EXPORT">{{ language('LK_DAOCHU','导出') }}</iButton>
         </div>
       </div>
       <tablelist
@@ -74,7 +74,7 @@ export default {
   methods: {
     exports() {
       if (this.selectTableData.length == 0)
-        return iMessage.warn(this.$t('LK_QINGXUANZHEXUYAODAOCHUSHUJU'))
+        return iMessage.warn(this.language('LK_QINGXUANZHEXUYAODAOCHUSHUJU','请选择需要导出的数据'))
       excelExport(this.selectTableData, this.tableTitle)
     },
     //获取表格数据

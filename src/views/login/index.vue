@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-03-10 15:22:16
- * @LastEditTime: 2021-03-29 18:23:29
+ * @LastEditTime: 2021-07-09 14:34:56
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\login\index.vue
@@ -11,14 +11,14 @@
         <div class="title">RISE</div>
         <div class="content">
           <el-form :rules="rules">
-            <el-form-item :label="$t('LK_YONGHUMING')" >
+            <el-form-item :label="language('LK_YONGHUMING','用户名')" >
               <el-input v-model='userName' autocomplete="off" :readonly="readonly" @focus="stopAutoComplate"></el-input>
             </el-form-item>
-            <el-form-item :label="$t('LK_MIMA')">
+            <el-form-item :label="language('LK_MIMA','密码')">
               <el-input v-model="passWord" autocomplete="off" type="password" :readonly="readonly" @focus="stopAutoComplate"></el-input>
             </el-form-item>
           </el-form>
-          <el-button :loading='loading' class="button" @click="login">{{$t("LK_DENGLU")}}</el-button>
+          <el-button :loading='loading' class="button" @click="login">{{language("LK_DENGLU",'登录')}}</el-button>
         </div>
     </div>
 </template>
@@ -45,7 +45,7 @@ export default{
   },
   methods:{
     login(){
-      if(this.passWord == '' || this.userName == '') return iMessage.error(this.$t('LK_YONGHUMINGHUOMIMABUNENGWEIKONG'))
+      if(this.passWord == '' || this.userName == '') return iMessage.error(this.language('LK_YONGHUMINGHUOMIMABUNENGWEIKONG','抱歉，用户名或密码不能为空！'))
       this.loading = true
       login({userName:this.userName,passWord:this.passWord}).then(async res=>{
         this.loading = false

@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-26 11:16:51
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-07-07 17:12:21
+ * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-07-12 11:09:19
  * @Description: 配件综合管理页面
  * @FilePath: \front-web\src\views\accessoryPart\integratedManage\index.vue
 -->
@@ -18,7 +18,7 @@
           <!----------------------------------------------------------------->
           <!---------------------------搜索区域------------------------------->
           <!----------------------------------------------------------------->
-          <iSearch @sure="getTableList" @reset="reset">
+          <iSearch @sure="sure" @reset="reset">
             <el-form>
               <el-form-item v-for="(item, index) in searchList" :key="index" :label="language(item.key,item.label)">
                 <iSelect v-update v-if="item.type === 'select'" v-model="searchParams[item.value]">
@@ -59,7 +59,7 @@
                   <iButton @click="donwloadList" :loading="downloadLoading" >{{language('DAOCHU','导出')}}</iButton>
                 </div>
             </div>
-            <tableList :activeItems='"spnrNum"' selection indexKey :tableData="tableData" :tableTitle="tableTitle" :tableLoading="tableLoading" @handleSelectionChange="handleSelectionChange" @openPage="openPage"></tableList>
+            <tableList :activeItems='"spnrNum"' :activeItems2='"rfqNum"' selection indexKey :tableData="tableData" :tableTitle="tableTitle" :tableLoading="tableLoading" @handleSelectionChange="handleSelectionChange" @openPage="openPage" @openPage2="openPage2"></tableList>
             <!------------------------------------------------------------------------>
             <!--                  表格分页                                          --->
             <!------------------------------------------------------------------------>
@@ -165,6 +165,16 @@ export default {
     ...mapActions(["updateNavList"])
   },
   methods: {
+    /**
+     * @Description: 点击RFQ编号跳转事件
+     * @Author: Luoshuang
+     * @param {*}
+     * @return {*}
+     */    
+    openPage2(row) {
+      const router =  this.$router.resolve({path: `/sourcing/partsrfq/editordetail?id=${row.rfqNum}`})
+      window.open(router.href,'_blank')
+    },
     async init() {
        this.getSelectOptions()
       //  this.getCarTypeOptions()
@@ -306,7 +316,7 @@ export default {
      */    
     getSelectOptions() {
       // 配件状态
-      this.getDictionary('accessoryTypeOption', 'SPARE_PART_STATE')
+      this.getDictionary('accessoryTypeOption', 'ACCESSORY_STATE')
       // ID状态
       this.getDictionary('accessoryIdStateOption', 'ACCESSORY_ID_STATE')
       // 定点状态
@@ -333,6 +343,10 @@ export default {
         nomiType: '',
         idState: ''
       }
+    },
+    sure() {
+      this.page.currPage = 1
+      this.getTableList()
     },
     /**
      * @Description: 获取列表数据

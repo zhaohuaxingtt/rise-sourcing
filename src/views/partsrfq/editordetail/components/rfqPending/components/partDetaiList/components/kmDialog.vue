@@ -160,7 +160,8 @@ export default {
           quotationId: item.quotationId,
           rfqId: this.rfqId,
           round: item.round,
-          supplierId: item.supplierId
+          supplierId: item.supplierId,
+          cbdSubDate: item.cbdSubDate
         }))
       })
       .then(res => {

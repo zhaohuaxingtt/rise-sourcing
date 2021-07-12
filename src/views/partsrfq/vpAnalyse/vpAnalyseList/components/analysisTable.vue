@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-06-16 20:44:29
- * @LastEditTime: 2021-07-09 16:24:38
+ * @LastEditTime: 2021-07-12 14:39:52
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\analysisTool\components\analysisTable.vue
@@ -200,6 +200,9 @@ export default {
       }
       getVpAnalysisDataList(params).then(res => {
         if(res && res.code == 200) {
+          if(!res.data || res.data.length == 0) {
+            iMessage.error('抱歉，无法查询到结果（输入错误或不存在），请确认后重新输入')
+          }
           this.page.totalCount = res.total
           this.tableListData = res.data
           this.handleTableNumber(this.tableListData, 1, null)

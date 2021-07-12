@@ -1,7 +1,7 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-07-07 16:53:18
- * @LastEditTime: 2021-07-07 17:02:48
+ * @LastEditTime: 2021-07-08 17:45:05
  * @LastEditors: Please set LastEditors
  * @Description: part Infomation
  * @FilePath: /front-web/src/views/designate/designatedetail/decisionData/rsCapacityExpan/components/partInfomation.vue
@@ -66,9 +66,32 @@
 </template>
 <script>
 export default {
+  props: {
+    data: {
+      type: Array,
+      default: () => ([])
+    },
+  },
   data() {
     return {
       dataList: [],
+    }
+  },
+  watch: {
+    data() {
+      if (this.data.length) {
+        this.data.forEach((item, index) => {
+          if (index % 2 === 0) {
+            const nextItem = this.data[index + 1] ? this.data[index + 1] : {}
+            const tmpItem = Object.assign(item, {
+              partNum1: nextItem.partNum,
+              carTypePro1: nextItem.carTypePro,
+              partNameZh1: nextItem.partNameZh
+            })
+            this.dataList.push(tmpItem)
+          }
+        })
+      }
     }
   }
 }

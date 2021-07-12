@@ -11,16 +11,16 @@
     <p class="newVersion">新版本命名</p>
     <div class="changeContent">
       <div>PSK</div>
-      <iInput v-model="saveParams.version" :placeholder="$t('LK_QINGSHURU')" maxlength="5"></iInput>
+      <iInput v-model="saveParams.version" :placeholder="language('LK_QINGSHURU','请输入')" maxlength="5"></iInput>
     </div>
     <span slot="footer" class="dialog-footer">
-      <iButton @click="save">{{ $t('LK_QUEREN') }}</iButton>
+      <iButton @click="save">{{ language('LK_QUEREN','确认') }}</iButton>
     </span>
     <iDialog title="是否确定保存为新版本？" :visible.sync="value2" width="381px" @close='clearDiolog2' v-loading="iDialogLoading2"
              :modal-append-to-body="true" append-to-body>
       <span slot="footer" class="dialog-footer">
-        <iButton @click="value2 = false">{{ $t('LK_QUXIAO') }}</iButton>
-        <iButton @click="save2">{{ $t('LK_QUEREN') }}</iButton>
+        <iButton @click="value2 = false">{{ language('LK_QUXIAO','取 消') }}</iButton>
+        <iButton @click="save2">{{ language('LK_QUEREN','确认') }}</iButton>
       </span>
     </iDialog>
   </iDialog>

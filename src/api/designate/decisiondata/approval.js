@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-28 13:41:56
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-06 18:01:12
+ * @LastEditTime: 2021-07-10 13:01:45
  * @Description: 审批流相关接口
  * @FilePath: \front-web\src\api\designate\decisiondata\approval.js
  */
@@ -54,11 +54,11 @@ export function getDeptSub(id) {
   })
 }
 
-export function getDeptLeader(deptId) {
+export function getDeptLeader(deptNum) {
   return requst({
     url: '/nominate/nomi-approval-process/approval',
     method: 'POST',
-    data: {deptId}
+    data: {deptNum}
   })
 }
 

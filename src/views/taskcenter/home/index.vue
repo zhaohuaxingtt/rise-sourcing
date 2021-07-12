@@ -2,7 +2,7 @@
   <iPage id="taskCenterHome" class="home" v-loading="loading">
     <div id="header" class="header">
       <div class="margin-bottom20 clearFloat">
-        <span class="font18 font-weight">{{$t('LK_RENWUZHONGXIN')}}</span>
+        <span class="font18 font-weight">{{language('LK_RENWUZHONGXIN','任务中心')}}</span>
         <div class="floatright">
           <!-- <logButton @click="log" /> -->
           <span class="margin-left20">
@@ -11,13 +11,13 @@
         </div>
       </div>
       <tabs v-model="type" @tab-click="handleTypeChange">
-        <tabPane :label="$t('all')" name="all" />
+        <tabPane :label="language('all','全部')" name="all" />
         <tabPane :label="taskTypeFloatMap[taskType].name || taskType" :name="taskType" v-for="(task, taskType) in taskGroup" :key="taskType" />
       </tabs>
       <iSearch class="search margin-top10" icon>
         <el-form>
-          <el-form-item :label="$t('LK_CHANGJIANGMINGCHNEG')">
-            <iInput v-model="search" class="input" :placeholder="$t('LK_RFQPLEASEENTERQUERY')">
+          <el-form-item :label="language('LK_CHANGJIANGMINGCHNEG','场景名称/任务名称')">
+            <iInput v-model="search" class="input" :placeholder="language('LK_RFQPLEASEENTERQUERY','请输入查询')">
               <icon slot="suffix" name="iconshaixuankuangsousuo" />
             </iInput>
           </el-form-item>

@@ -33,7 +33,7 @@
     >
       <!--自定义列开始-->
       <template #type="scope">
-        <template v-if="costShowOnly.includes(scope.row.type)">
+        <template v-if="costShowOnly.includes(scope.row.type) || tableStatus !== 'edit'">
           {{ scope.row.type }}
         </template>
         <template v-else>
@@ -41,23 +41,24 @@
         </template>
       </template>
       <template #total="scope">
-        <template v-if="totalShowOnly.includes(scope.row.type)">
+        <template v-if="totalShowOnly.includes(scope.row.type) || tableStatus !== 'edit'">
           {{ scope.row.total }}
         </template>
         <template v-else>
           <iInput v-model="scope.row.total" @input="handleNumber($event,scope.row, 'total')"/>
         </template>
       </template>
-      <template #apportionedNum="scope">
-        <template v-if="apportionShowOnly.includes(scope.row.type)">
-          {{ scope.row.apportionedNum }}
-        </template>
-        <template v-else>
-          <iInput v-model="scope.row.apportionedNum" @input="handleNumber($event,scope.row, 'apportionedNum')"/>
-        </template>
+      <template #apportionedNum>
+        <!--        <template v-if="apportionShowOnly.includes(scope.row.type) || tableStatus !== 'edit'">
+                  {{ scope.row.apportionedNum }}
+                </template>
+                <template v-else>
+                  <iInput v-model="scope.row.apportionedNum" @input="handleNumber($event,scope.row, 'apportionedNum')"/>
+                </template>-->
+        {{ fiexedApportionedNum }}
       </template>
       <template #affectUnitPrice="scope">
-        <template v-if="unitPriceShowOnly.includes(scope.row.type)">
+        <template v-if="unitPriceShowOnly.includes(scope.row.type) || tableStatus !== 'edit'">
           {{ scope.row.affectUnitPrice }}
         </template>
         <template v-else>
@@ -104,13 +105,14 @@
           <iInput v-model="scope.row.total" @input="handleNumber($event,scope.row, 'total')"/>
         </template>
       </template>
-      <template #apportionedNum="scope">
-        <template v-if="apportionShowOnly.includes(scope.row.type)">
-          {{ scope.row.apportionedNum }}
-        </template>
-        <template v-else>
-          <iInput v-model="scope.row.apportionedNum" @input="handleNumber($event,scope.row, 'apportionedNum')"/>
-        </template>
+      <template #apportionedNum>
+        <!--        <template v-if="apportionShowOnly.includes(scope.row.type)">
+                  {{ scope.row.apportionedNum }}
+                </template>
+                <template v-else>
+                  <iInput v-model="scope.row.apportionedNum" @input="handleNumber($event,scope.row, 'apportionedNum')"/>
+                </template>-->
+        {{ fiexedApportionedNum }}
       </template>
       <template #affectUnitPrice="scope">
         <template v-if="unitPriceShowOnly.includes(scope.row.type)">
@@ -158,6 +160,10 @@ export default {
         return {};
       },
     },
+    tableLoading: {
+      type: Boolean,
+      default: false,
+    },
   },
   computed: {
     pageType() {
@@ -171,7 +177,6 @@ export default {
       hideTableData: [],
       hideSelectTableData: [],
       tableTitle: tableTitle,
-      tableLoading: false,
       tableStatus: '',
       costShowOnly: ['专用设备费', '分摊模具费', '分摊开发费', '研发费', '管理费', '利润费'],
       totalShowOnly: ['管理费', '利润费'],
@@ -179,6 +184,7 @@ export default {
       unitPriceShowOnly: ['专用设备费', '分摊模具费', '分摊开发费', '研发费'],
       recordTableData: [],
       recordHideTableData: [],
+      fiexedApportionedNum: '',
     };
   },
   methods: {
@@ -205,7 +211,7 @@ export default {
       this.tableListData.push({
         ...newItem,
         time,
-        isShow: true
+        isShow: true,
       });
     },
     handleDelete() {
@@ -264,7 +270,19 @@ export default {
       this.tableStatus = '';
     },
     handleFinish() {
-      this.tableStatus = '';
+      let flag = true;
+      this.tableListData.some(item => {
+        if (item.total === '' || item.affectUnitPrice === '') {
+          flag = false;
+          return true;
+        }
+      });
+      if (flag) {
+        this.$emit('handlePriceTableFinish');
+        this.tableStatus = '';
+      } else {
+        iMessage.warn(this.$t('TPZS.FEIYONGZONGEHEYINGXIANGDANJIABUENGWEIKONG'))
+      }
     },
     getTableList() {
       try {
@@ -278,6 +296,7 @@ export default {
             this.hideTableData.push(item);
           }
         });
+        this.fiexedApportionedNum = this.tableListData[0].apportionedNum;
       } catch {
         this.tableListData = [];
         this.hideTableData = [];
@@ -298,7 +317,12 @@ export default {
       this.tableListData.push(row);
     },
     handleNumber(val, row, props) {
-      this.$set(row, props, numberProcessor(val));
+      this.$set(row, props, numberProcessor(val, 2));
+      if (props === 'total') {
+        this.$set(row, 'affectUnitPrice', (row.total / this.fiexedApportionedNum).toFixed(2));
+      } else if (props === 'affectUnitPrice') {
+        this.$set(row, 'total', (row.affectUnitPrice * this.fiexedApportionedNum).toFixed(2));
+      }
     },
   },
   watch: {

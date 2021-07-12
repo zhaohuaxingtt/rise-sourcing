@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-24 11:27:22
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-25 11:57:45
+ * @LastEditTime: 2021-07-09 13:39:10
  * @Description: 
  * @FilePath: \front-web\src\views\designate\designatedetail\addRfq\index.vue
 -->
@@ -170,7 +170,7 @@ export default {
       selectRfq(params).then(res => {
         if (res?.result) {
           iMessage.success(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
-          this.$router.push({path: '/designate/rfqdetail', query: {desinateId: res.data, designateType: this.$route.query.designateType ? this.$route.query.designateType : this.$store.getters.nominationType}})
+          this.$router.push({path: '/designate/rfqdetail', query: {desinateId: res.data.nominateId, designateType: res.data.nominateProcessType}})
         } else {
           iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
         }

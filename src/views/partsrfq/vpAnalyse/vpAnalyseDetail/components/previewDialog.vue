@@ -1,7 +1,7 @@
 <template>
   <iDialog
       :visible.sync="value"
-      width="90%"
+      width="95%"
       @close="clearDiolog"
   >
     <iButton class="downloadButton" @click="handleDownload" :loading="downloadButtonLoading">{{
@@ -14,11 +14,17 @@
       </div>
       <baseInfo :dataInfo="dataInfo" :disabledSupplier="true"/>
       <el-divider class="margin-top20 margin-bottom20"/>
-      <totalUnitPriceTable :dataInfo="dataInfo" class="margin-bottom20" :showEditButton="false"/>
+      <totalUnitPriceTable :dataInfo="dataInfo" class="margin-bottom20" :showEditButton="false" ref="1"/>
       <div class="chartContainer margin-top20">
         <div class="left">
           <div class="font18 font-weight margin-bottom20">Volume Pricing{{ this.$t('TPZS.QUXIAN') }}</div>
-          <curveChart chartHeight="260px" :dataInfo="dataInfo"/>
+          <curveChart
+              chartHeight="260px"
+              :dataInfo="dataInfo"
+              :newestScatterData="newestScatterData"
+              :targetScatterData="targetScatterData"
+              :lineData="lineData"
+          />
         </div>
         <div class="right">
           <div class="font18 font-weight margin-bottom20">Volume Pricing{{ this.$t('TPZS.FENXI') }}</div>
@@ -42,6 +48,24 @@ import { addVpReports } from '../../../../../api/partsrfq/vpAnalysis/vpAnalyseDe
 export default {
   props: {
     dataInfo: {
+      type: Object,
+      default: () => {
+        return {}
+      },
+    },
+    newestScatterData: {
+      type: Object,
+      default: () => {
+        return {}
+      },
+    },
+    targetScatterData: {
+      type: Object,
+      default: () => {
+        return {}
+      },
+    },
+    lineData: {
       type: Object,
       default: () => {
         return {}
@@ -95,7 +119,7 @@ export default {
         },
       })
     },
-  },
+  }
 }
 </script>
 

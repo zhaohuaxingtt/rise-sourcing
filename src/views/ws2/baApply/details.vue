@@ -11,6 +11,9 @@
 
     <iCard>
       <DetailsTable @handelConfirmSuccess="handelConfirmSuccess" :tableListData="tableListData" :tableLoading="tableLoading" />
+      <div class="unitExplain">
+        <UnitExplain />
+      </div>
       <iPagination
           v-update
           @size-change="handleSizeChange($event, handleSure)"
@@ -35,6 +38,7 @@ import { pageMixins } from "@/utils/pageMixins";
 import { iNavWS2 } from "@/components";
 import { detailsForm } from "./components/data";
 import store from '@/store';
+import UnitExplain from "./components/unitExplain";
 
 export default {
   mixins: [pageMixins],
@@ -44,7 +48,8 @@ export default {
     DetailsTable,
     iCard,
     iPagination,
-    iNavWS2
+    iNavWS2,
+    UnitExplain
   },
 
   data(){
@@ -103,6 +108,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.unitExplain{
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 10px;
+}
 .page-head{
   display: flex;
   justify-content: space-between;
