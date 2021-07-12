@@ -1,19 +1,19 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-22 16:16:26
- * @LastEditTime: 2021-07-12 16:34:16
+ * @LastEditTime: 2021-07-12 16:55:36
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\supplierscore\components\rfqdetail\components\supplierScore\components\score\index.vue
 -->
 <template>
-  <iCard class="score" :title="language('GONGYINGSHANGPINGFEN', '供应商评分')">
+  <iCard class="score" :title="language('LK_GONGYINGSHANGPINGFEN', '供应商评分')">
     <template #header-control>
       <div v-if="!editStatus">
-        <iButton @click="forwardDialogVisible = true">{{ language("ZHUANPAI", "转派") }}</iButton>
+        <iButton @click="forwardDialogVisible = true">{{ language("LK_ZHUANPAI", "转派") }}</iButton>
         <iButton :loading="backLoading" @click="handleBack">{{ language("TUIHUIZHICAIGOUYUAN", "退回至采购员") }}</iButton>
         <iButton @click="editStatus = true">{{ language("BIANJI", "编辑") }}</iButton>
-        <iButton :loading="submitLoading" @click="handleSubmit">{{ language("TIJIAO", "提交") }}</iButton>
+        <iButton :loading="submitLoading" @click="handleSubmit">{{ language("LK_TIJIAO", "提交") }}</iButton>
         <iButton :loading="approveLoading" @click="handleApprove">{{ language("PIZHUN", "批准") }}</iButton>
         <iButton @click="handleReject">{{ language("JUJUE", "拒绝") }}</iButton>
       </div>
