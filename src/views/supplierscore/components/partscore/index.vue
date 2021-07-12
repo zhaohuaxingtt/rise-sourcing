@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-24 10:38:09
- * @LastEditTime: 2021-07-12 16:36:23
+ * @LastEditTime: 2021-07-12 16:46:27
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\supplierscore\components\partscore\index.vue
@@ -9,7 +9,7 @@
 <template>
   <iPage class="partscore">
     <div class="header clearFloat">
-      <div class="title">{{ language("LINGJIANPINGFEN", "零件评分") }}</div>
+      <div class="title">{{ language("LK_LINGJIANPINGFEN", "零件评分") }}</div>
       <div class="control">
         <div v-if="editStatus">
           <iButton @click="handleCloseEdit">{{ language("JIESHUBIANJI", "结束编辑") }}</iButton>
