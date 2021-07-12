@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-22 16:16:26
- * @LastEditTime: 2021-07-12 10:29:12
+ * @LastEditTime: 2021-07-12 16:34:16
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\supplierscore\components\rfqdetail\components\supplierScore\components\score\index.vue
@@ -61,8 +61,8 @@
                 <span v-else>{{ scope.row.confirmCycle }}</span>
               </template>
               <template v-else-if="item.props === 'remark'" v-slot="scope">
-                <span v-if="editStatus" class="link-underline" @click="editRemark(scope.row)">{{ language("BIANJI", "编辑") }}</span>
-                <span v-else class="link-underline" @click="editRemark(scope.row)">{{ language("CHAKAN", "查看") }}</span>
+                <span v-if="scope.row.memo" class="link-underline" @click="editRemark(scope.row)">{{ language("CHAKAN", "查看") }}</span>
+                <span v-else class="link-underline" @click="editRemark(scope.row)">{{ language("BIANJI", "编辑") }}</span>
               </template>
               <template v-else v-slot="scope">
                 <span>{{ scope.row[item.props] }}</span>
@@ -74,7 +74,7 @@
     </div>
     <forwardDialog ref="forwardDialog" :visible.sync="forwardDialogVisible" @confirm="confirmForward" />
     <rejectDialog ref="rejectDialog" :visible.sync="rejectDialogVisible" @confirm="confirmReject" />
-    <remarkDialog ref="remarkDialog" :visible.sync="remarkDialogVisible" :data="currentRow.memo" :disabled="!editStatus" @confirm="confirmRemark" @cancel="currentRow = {}" />
+    <remarkDialog ref="remarkDialog" :visible.sync="remarkDialogVisible" :data="currentRow.memo" @confirm="confirmRemark" @cancel="currentRow = {}" />
   </iCard>
 </template>
 
