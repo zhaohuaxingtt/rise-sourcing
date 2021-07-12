@@ -37,13 +37,22 @@
       :show-summary="showSummary"
       :summary-method="getSummaries"
       :row-class-name="tableRowClassName"
+      @cell-mouse-leave="cellMouseLeave" 
+      @cell-mouse-enter="cellMouseEnter"
     >
       <el-table-column
         v-if="selection"
         type="selection"
-        width="50"
+        :width="selectionWidth"
         align="center"
       ></el-table-column>
+      <el-table-column
+          v-if="typeIndex"
+          type="index"
+          align="center"
+          label="序号"
+          width="50">
+      </el-table-column>
       <template v-for="(items, index) in tableTitle">
         <el-table-column
           :key="index"
@@ -89,10 +98,23 @@
         >
           <template slot="header" slot-scope="" v-if="titlePopover">
             <Popover
+                v-if="items.name !== '定点金额-SVW'"
                 placement="top-start"
                 :content="$t(items.key)"
                 trigger="hover">
-              <div slot="reference" class="tableHeader">{{ $t(items.key) }}</div>
+              <div slot="reference" class="tableHeader">
+                {{ $t(items.key) }}
+              </div>
+            </Popover>
+            <Popover
+                v-else
+                placement="top-start"
+                content="定点金额-SVW = 系统内该车型包中所有车型项目的common sourcing零件已定点金额汇总"
+                trigger="hover">
+              <div slot="reference" class="tableHeader">
+                {{ $t(items.key) }}
+                <icon symbol  name="iconxinxitishi"></icon>
+              </div>
             </Popover>
           </template>
           <template slot="header" slot-scope="" v-else>
@@ -109,7 +131,7 @@
 
 <script>
 import {Popover} from "element-ui"
-import {iSelect} from "rise"
+import {iSelect, icon} from "rise"
 import { cloneDeep } from 'lodash'
 
 export default {
@@ -118,8 +140,10 @@ export default {
     tableTitle: { type: Array },
     tableLoading: { type: Boolean, default: false },
     selection: { type: Boolean, default: true },
+    typeIndex: { type: Boolean, default: false },
     index: { type: Boolean, default: false },
     indexLabel: { type: String, default: "#" },
+    selectionWidth: { type: String, default: "50" },
     height: { type: Number || String },
     activeItems: { type: String, default: "b" },
     radio: { type: Boolean, default: false }, // 是否单选
@@ -133,6 +157,7 @@ export default {
   components: {
     Popover,
     iSelect,
+    icon,
   },
   data() {
     return {
@@ -186,6 +211,12 @@ export default {
         return "";
       }
     },
+    cellMouseLeave() {
+      this.$emit("cellMouseLeave");
+    },
+    cellMouseEnter(row) {
+      this.$emit("cellMouseEnter", row);
+    }
   },
 };
 </script>

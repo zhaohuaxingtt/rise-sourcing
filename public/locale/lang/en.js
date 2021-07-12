@@ -4,7 +4,7 @@
             (global = global || self, factory(window.i18n))
 }(this, function (i18n) {
     'use strict'
-    i18n.setLocaleMessage('en', {
+    var oldLanguage = {
         'delete': "delete",
         "deleteSure":'are you sureAre you sure you want to do this?',
         'all': 'all',
@@ -99,29 +99,6 @@
             'XiaYiYe': 'Next Page', //下一页
             'QianWangYe': 'Go To Page' //前往    页
         },
-        // 手工采购项目创建
-        'createparts': {
-            'ShouGongCaiGouXiangMuChuangJian': '', // 手工采购项目创建
-            'GangCaiPiLiangCaiGou': '', // 钢材批量采购
-            'GangCaiYiCiXingCaiGou': '', // 钢材一次性采购
-            'GongChangQianYi': '', // 工厂迁移
-            'QingShuRu': '', // 请输入
-            'QingShuRuLingJianHao': '', // 请输入零件号
-            'QingShuRuLingJianMingZhong': '', // 请输入零件名(中)
-            'QingShuRuLingJianMingDe': '', // 请输入零件名(德)
-            'QingXuanZeLingJianLaiYuan': '', // 请选择零件来源
-            'QingXuanZeLingJianZhuangTai': '', // 请选择零件状态
-            'LingJianHao': '零件号', // 零件号
-            'LingJianMingZhong': '', // 零件名(中)
-            'LingJianMingDe': '', // 零件名(德)
-            'LingJianLaiYuan': '', // 零件来源
-            'ChuangJianCaiGouXiangMu': '', // 创建采购项目
-            'LingJianZhuangTai': '', // 零件状态
-            'JiHuoShiJian': '', // 激活时间
-            'CaoZuoRiZhi': '', // 操作日志
-            'ChaKan': '', // 查看
-            'QingXuanZeZhiShaoYiTiaoShuJu': '', // 请选择至少一条数据
-        },
         // 成本分析管理
         'costanalysismanage': {
             'ChengBenFenXiGuanLi': '', // 成本分析管理
@@ -133,7 +110,6 @@
             'RfqZhuangTai': '', // RFQ状态
             'QingXuanZeRfqZhuangTai': '', // 请选择RFQ状态
             'LingJianHao': '', // 零件号
-            'QingShuRuLingJianHao': '', // 请输入零件号
             'LingJianMing': '', // 零件名
             'QingShuRuLingJianMing': '', // 请输入零件名
             'CheXingXiangMu': '', // 车型项目
@@ -192,6 +168,7 @@
             'GongYingShang': '供应商', // 供应商
             'PcaFenXiJieGuo': '', // PCA分析结果
             'TiaFenXiJieGuo': '', // TIA分析结果
+            'QingXuanZeXuYaoBaoCunDeShuJu': '', // 请选择需要保存的数据
             'SavePcaResAndTiaResTips': '', // 请填写完整PCA分析结果和TIA分析结果
 
             'BaoGaoQingDan':'报告清单',// 报告清单
@@ -255,6 +232,7 @@
         'LK_YONGHUMING': 'UserName',// 用户名
         'LK_ZHUANPAICHENGGONG': 'Turn sent successfully',// 转派成功
         'LK_AEKOHAO': 'AEKO No.',//Aeko号
+        'LK_XINDEAEKOHAO': 'AEKO No',    //  AEKO号
         'LK_BDLLIEBIAO': 'BDL List',//BDL列表
         'LK_BMG': 'BMG',//BMG
         'LK_BOMDANXINXI': 'BOM information',//BOM单信息
@@ -268,7 +246,8 @@
         'LK_FS_GSHAO': 'FS/GS No.',//FS/GS号
         'LK_FSHAO': 'FS No.',//FS号
         'LK_INBOUNDWULIUFANGSHI': 'INBOUND Logistics Mode',//INBOUND物流方式
-        'LK_LINIE': 'LINIE',//LINIE
+        'LK_XINDELINIE': 'Linie',
+        'LK_LINIE': 'Linie',//Linie
         'LK_LINIEBEIZHU': 'Linie Remark',//Linie备注
         'LK_LINIEBUMEN': 'Linie Department',//LINIE部门
         'LK_LINIESHANGHUIBEIZHU': 'Linie meeting remark',//Linie上会备注
@@ -390,7 +369,6 @@
         'LK_CHEHUI': 'Withdraw',//撤回
         'LK_CHENGBEN': 'Cost',//成本
         'LK_CHICUN': 'Dimension',//尺寸
-        'LK_CHUANGJIANDINGDIANSHENQING': 'Create SQO Application',//创建定点申请
         'LK_CHUANGJIANRENGONGHAO': 'Creator Employee No.',//创建人工号
         'LK_CHUANGJIANRENXINGMING': 'Creator Name',//创建人姓名
         'LK_CHUANGJIANRIQI': 'Creation date',//创建日期
@@ -402,7 +380,6 @@
         'LK_DANWEI': 'Unit',//单位
         'LK_DANGQIANBANBEN': 'Current Version',//当前版本
         'LK_DANGQIANLUNCI': 'Current round',//当前轮次
-        'LK_DAOCHU': 'Export',//导出
         'LK_DAORUSHIJIAN': 'Import time',//导入时间
         'LK_DENGJIPEIZHI': 'Level Configuration',//等级配置
         'LK_DIANJISHANGCHUAN': 'Click to Upload',//点击上传
@@ -453,14 +430,12 @@
         'LK_GONGYINGSHANGPINGFEN': 'Supplier Rating',//供应商评分
         'LK_GONGYINGSHANGPINGFENFUJIAN': 'Supplier Rating Attachment',//供应商评分附件
         'LK_GONGYINGSHANGSHENGCHANCHANGDI': 'Supplier Manufacturing Spot',//供应商生产场地
-        'LK_GUANBIRFQ': 'Close RFQ',//关闭RFQ
         'LK_HUIYIDIDIAN': 'Meeting place',//会议地点
         'LK_HUIYIJIBENXINXI': 'Basic information about the meeting',//会议基本信息
         'LK_HUIYIQITAXINXI': 'other information for the meeting',//会议其它信息
         'LK_HUIYISHIJIAN': 'Meeting time',//会议时间
         'LK_HUOBI': 'Currency',//货币
         'LK_JICHUXINXI': 'Basic information',//基础信息
-        'LK_JIHUORFQ': 'Activate RFQ',//激活RFQ
         'LK_JISHUJIAOLIUHUI': 'Techonology Meeting',//技术交底会
         'LK_EP': 'EP',//技术评分人
         'LK_JIAGEMINGXI': 'Price Details',//价格明细
@@ -669,7 +644,6 @@
         'LK_XIANGMUCHEXING': 'Project Car Type',//项目车型
         'LK_XINJIANXINXIDANQIANSHOU': 'TP Apps Sign in',//新件信息单签收
         'LK_XINJIANXINXILIUSHUIDANHAO': 'New Tp Sequence No.',//新件信息流水单号
-        'LK_XINJIANRFQ': 'Create New RFQ',//新建RFQ
         'LK_XINJIANRFQLUNCI': 'Create New RFQ Round',//新建RFQ轮次
         'LK_XINJIANXINXIDANBEIZHU': 'Create new part info. remark',//新建信息单备注
         'LK_XINJIANXINXIDANLIUSHUIHAO': 'Part info. Sheet No.',//新建信息单流水号
@@ -714,9 +688,6 @@
         'LK_ZHONGXINSHENQING': 'Reapply',//重新申请
         'LK_ZHONGZHI': 'Reset',//重置
         'LK_ZHUANPAI': 'Handover',//转派
-        'LK_ZHUANPAIPINGFENRENWU': 'Transfer rating task',//转派评分任务
-        'LK_ZHUANTANPAN': 'To Negotiation',//转谈判
-        'LK_ZHUANXUNJIA': 'To inquiry',//转询价
         'LK_ZHUANGXIANGSHU': 'Number of Containers',//装箱数
         'LK_ZHUANGTAI': 'Status',//状态
         'LK_ZUIXINRWJIA': 'Latest RW Price',//最新RW价
@@ -772,7 +743,6 @@
         'LK_SHIFOUZUOGUOCOMMONSOURING': 'Common Sourcing',//是否做过Common Sourcing
         'LK_CommonSourcing': 'Common Sourcing',
         'LK_MOJUSHUXIN': 'Mold Property',//模具属性
-        // 'LK_LINIE': 'Linie',//LINIE
         'LK_ZP': 'ZP',//ZP
         'LK_CANKAOCHEXINXIANGMU': 'Refer Project',//参考⻋型项⽬
         'LK_CANKAOCHEXINXIANGMUYI': '1st Refer',//参考⻋型项⽬⼀
@@ -823,6 +793,8 @@
         'LK_SHENQINGREN': '申请人',//申请人
         'LK_SHENQINGSHIJIANQIZHI': '申请时间起止',//申请时间起止
         'LK_PIZHUAN': '批准',//批准
+        'LK_SHENQINGSHIJIANQI': '申请时间起',
+        'LK_SHENQINGSHIJIANZHI': '申请时间止',
 
         'LK_CHEXINGXIANGMUGAILAN': 'Project Overview',//车型项目概览
         'LK_YUSUANGUANLI': 'Budget Mgmt',//预算管理
@@ -923,6 +895,77 @@
         'LK_BAAPPLYTISP1': '请先勾选',  //  请先选择车型项目
         'LK_INPUTNUMBERORMORE1': '不能输入特殊字符',    //  不能输入特俗字符
 
+        'LK_ALLBMAPPLY': '所有BM申请',    //  所有BM申请
+        'LK_DAIQUERENBMDAN': '待确认BM单',    //  待确认BM单
+        'LK_AEKOZENGZHIBMDAN': 'AEKO增值BM单',  //  Aeko增值BM单
+        'LK_AEKOJIANZHIBMDAN': 'AEKO减值BM单',  //  Aeko减值BM单
+        'LK_BMDANZHUANGTAI': 'BM单状态',    //  BM单状态
+        'LK_AEKOLEIXING': 'AEKO类型',   //  AEKO类型
+        'LK_BMDANLIUSHUIHAO': 'BM单流⽔号',   //  BM单流⽔号
+        'LK_BMDANHAO': 'BM单号',    //  BM单号
+        'LK_WBSBIANHAO': 'WBS编号',   //  WBS编号
+        'LK_DAIBIAOLINGJIAN': '代表零件',  //  代表零件
+        'LK_BMDANJINE':  'BM单金额', //  BM单金额
+        'LK_BMZHUANGTAI': 'BM单状态',   //  BM单状态
+        'LK_DINGDIANLEIXING': '定点类型',   //  定点类型
+        'LK_AEKOZENGZHIJINE': 'AEKO增值金额',  //  Aeko增值金额
+        'LK_XIAZAIQINGDAN': '下载清单', //  下载清单
+        'LK_QUERENSHENQING': '确认申请',    //  确认申请
+        'LK_ZUOFEI': '作废', // 作废
+        'LK_DAIBIAOLINGJIANHAO': '代表零件号',  //  代表零件号
+        'LK_CAIGOUSHENQINGHAO': '采购申请号',   //  采购申请号
+        'LK_KEMU': '科目',  //  科目
+        'LK_CHENGBENZHONGXIN': '成本中心',  //  成本中心
+        'LK_CHENGBENKONGZHIYU': '成本控制域',   //  成本控制域
+        'LK_ZONGZHANGKEMU': '总账科目', //  总账科目
+        'LK_TONGJIDINGDAN': '统计订单', //  统计订单
+        'LK_WULIAOZHU': '物料组',   //  物料组
+        'LK_JIAOHUORIQI': '交货日期',   //  交货日期
+        'LK_CAIGOUZU': '采购组',    //  采购组
+        'LK_BUHANSUICHENGBEN':  '不含税成本',   //  不含税成本
+        'LK_HANSUICHENGBEN': '含税成本',    //  含税成本
+        'LK_DUANWENBEN': '短文本',  //  短文本
+        'LK_LINGJIANMINGCHENZHONG': '零件名称（中）',   //  零件名称（中）
+        'LK_LINGJIANMINGCHENDE': '零件名称（德）',  //  零件名称（德）
+        'LK_CSF': 'CSF',    //  CSF
+        'LK_BAOCUNWEIZUIXINBANBEN': '保存为最新版本',  //
+        'LK_SHUAXIN': '刷新',   //  刷新
+        'LK_SHUAXINRIQI': '刷新日期',   //  刷新日期
+        'LK_SHANGBANNIANSOPFUKUANDUIBI': '上半年SOP付款⽐',   //  上半年SOP付款⽐
+        'LK_XIABANNIANSOPFUKUANDUIBI': '下半年SOP付款⽐',   //  下半年SOP付款⽐
+        'LK_SOPSHIJIAN': 'SOP时间', //  SOP时间
+        'LK_YUSUANJINE': '预算⾦额',    //  预算⾦额
+        'LK_BMJINE': 'BM金额',  //  BM金额
+        'LK_YIFUKUANJINEWANGNIAN': '已付款⾦额-往年',   //  已付款⾦额-往年
+        'LK_YIFUKUAIJINEDANGNIAN': '已付款⾦额-当年',   //  已付款⾦额-当年
+        'LK_JIHUAFUKUANDANGNIAN': '计划付款-当年', // 计划付款-当年
+        'LK_JIHUAFUKUANCINIAN': '计划付款-次年', // 计划付款-次年
+        'LK_SOPFUKUANBI': 'SOP付款比',  //  SOP付款比
+        'LK_XIANGMUCAIGOUYUAN': '项目采购员',   //  项目采购员
+        'LK_XITONGJISUAN': '系统计算',  //  系统计算
+        'LK_RENMINBI': '人民币',    //  人民币
+        'LK_BUHANSUI': '不含税',    //  不含税
+        'LK_SHOUGONGTIAOZHENG': '手工调整', //  手工调整
+        'LK_QINGXUANZHE': '请先选择',   //  请先选择
+        'LK_XUQIUGENZHONGHAO': '需求跟踪号',    //  需求跟踪号
+        'LK_JILIANGDANWEI': '计量单位', //  计量单位
+        'LK_SHULIANG': '数量',  //  数量
+        'LK_LIZI': '例',    //  例
+        'LK_LIZISHUOMING': '代表零件号的车型项目/零件号/零件名称/供应商简称',  //  代表零件号的车型项目/零件号/零件名称/供应商简称
+        'LK_BMAPPLYBAOCUNMSG': '你有必填字段未填',  //  你有必填字段未填
+        'LK_FUKUANJIHUADINGZHIYUCHAKAN':  '付款计划制定与查看',   //  付款计划制定与查看
+        'LK_YUAN': '元',    //  元
+
+        'SPR_FRM_DEP_FINANA': '财报分析', //财报分析
+        'SPR_FRM_DEP_CXWHDX': '维护呈现对象', //维护呈现对象
+        'SPR_FRM_DEP_JRHYJZ': '加入行业均值', //加入行业均值
+        'SPR_FRM_DEP_WHHYJZ': '维护行业均值', //维护行业均值
+        'SPR_FRM_DEP_OBJPLACE': '请选择呈现对象', // 请选择呈现对象
+        'SPR_FRM_DEP_AVGPLACE': '请选择行业均值', // 请选择行业均值
+
+        'LK_FUKUANKANBAN': '付款看板',  //  付款看板
+        'LK_NIANDUJIHUA': '年度计划',   //  年度计划
+
         // 定点管理
         'nominationLanguage': {
             'DingDianGuanLi': '定点管理',
@@ -965,43 +1008,114 @@
             'LK_QINGXUANZEYITIAORFQ': '请选择一条RFQ', // 请选择一条RFQ
             'LK_QINGXUANZEDINGDIANSHENQINGLEIXING': '请选择定点申请类型', // 请选择定点申请类型
             'LK_DINGDIANSHENQINGLEIXING': '定点申请类型', // 定点申请类型
+            'LK_GAIDINGDIANSHENQINGZHONGYOUDANYIGONGYINGSHANG': '该定点申请中有单一供应商', // 该定点申请中有单一供应商
+            'LK_DINGDIANXINLOI':'定点信 / LOI', // 定点信 / LOI
+            'LK_DINGDIANXIN':'定点信', // 定点信
+            'LK_LOI':'LOI', // LOI
+            'LK_DINGDIANXINBIANHAO':'定点信编号', // 定点信编号
+            'LK_DINGDIANXINZHUANGTAI':'定点信状态',//  定点信状态
+            'LK_DINGDIANXINDANHAO':'定点申请单号', // 定点申请单号
+            'LK_DINGDIANSHIJIANQIZHI':'定点时间起⽌', //  定点时间起⽌
+            'LK_SHIFOUXIANSHIZIJI':'是否显⽰⾃⼰', //  是否显⽰⾃⼰
+            'LK_GONGYINGSHANGFANKUI':'供应商反馈', // 供应商反馈
+            'LK_SHIFOUQIANSHUXIEYI':'是否签署协议', // 是否签署协议
+            'LK_DINGDIANRIQI':'定点⽇期', //定点⽇期
+            'LK_LOIBIANHAO':'LOI编号', // LOI编号
+            'LK_LOIZHUANGTAI':'LOI状态', // LOI状态
+            'LK_LOISHENGCHENGSHIJIAN':'LOI⽣成时间', // LOI⽣成时间
+            'LK_QUERENBINGTIJIAO':'确认并提交', // 确认并提交
+            'LK_LINEQUEREN':'LINIE确认', // LINIE确认
+            'LK_LINETUIHUI':'LINIE退回', // LINIE退回
+            'LK_GUANBI':'关闭', // 关闭
+            'LK_JIHUO':'激活', // 激活
+            'LK_GUANBIDINGDIANXIN':'关闭定点信' , // 关闭定点信
+            'LK_QINGSHURUGUANBIYUANYIN':'请输⼊关闭原因', // 请输⼊关闭原因
+            'LK_MUBIAOXUNJIACAIGOUYUAN':'目标询价采购员', // 目标询价采购员
+            'LK_MUBIAOLINE':'⽬标LINIE', // ⽬标LINIE
+            'LK_GAILAN':'概览', // 概览
+            'LK_BAOBIAOGUANLI':'报表管理', // 报表管理
+            'LK_WANCHENGDINGDIANXIN':'完成定点信', // 完成定点信
+            'LK_DAOCHUBIAOZHUNDINGDIANXIN':'导出标准定点信', // 导出标准定点信
+            'LK_LISHIDINGDIANXIN':'历史定点信', // 历史定点信
+            'LK_BIAOZHUNDINGDIANXIN':'标准定点信', // 标准定点信
+            'LK_FEIBIAOZHUNDINGDIANXIN':'⾮标准定点信',  // ⾮标准定点信
+            'LK_GONGYINGSHANGLIANXIR':'供应商联系⼈', // 供应商联系⼈
+            'LK_SHANGCHUANSHIWENJIANQINGXUANZHUANZHIZHENGCHANGFANGXIANGHOUSHANGCHUAN':'上传时文件请旋转至正常方向后上传', // 上传时文件请旋转至正常方向后上传
+            'LK_BIANJIBEIZHU':'编辑备注', // 编辑备注
+            'LK_GUANBILOI':'关闭LOI', // 关闭LOI
+            'LK_WANCHENGLOI':'完成LOI', // 完成LOI
+            'LK_DAOCHUBIAOZHUNLOI':'导出标准LOI', // 导出标准LOI
+            'LK_LISHILOI':'历史LOI', // 历史LOI
+            'LK_BIAOZHUNLOI':'标准LOI', // 标准LOI
+            'LK_FEIBIAOZHUNLOI':'⾮标准LOI', // ⾮标准LOI
+            'LK_PILIANGLOI':'批量LOI', // 批量LOI
+            'LK_KAIFALOI':'开发LOI', // 开发LOI
+            'LK_KAIFAPILIANGLOI':'开发+批量LOI' , // 开发+批量LOI
+            'LK_FRMPINGJI':'FRM评级', // FRM评级
+            'LK_CBDSTATUS':'CBD状态', // CBD状态
         },
-
-        // 定点建议
-        'nominationSuggestion': {
-            "MoJuYuSuanGuanLi": "模具预算管理",
-            "BiLi": "比例(%)",
-            "TouZiYuSuan": "投资预算(RMB)",
-            "CSFuZeRen": "CSF(P)负责人",
-            "YeWuFenPeiMoNi": "业务分配模拟",
-            "ShuaXinShiJian": "刷新时间",
-            "FanAnXuanZhe": "方案选择",
-            "ZuHe": '组合',
-            "QuXiaoZuHe": "取消组合",
-            "TuiChuBianJi": "退出编辑",
-            'GengXinShiJian': '更新时间',
-            'TiJiao': '提交', // 提交
-            'CheHui': '撤回', // 撤回
-            'QingXuanZeZhiShaoYiTiaoShuJu': '请选择至少一条数据', // 请选择至少一条数据
-            'QingWuXuanZeYiFaSongDeShuJu': '请勿选择已发送的数据', // 请勿选择已发送的数据
-            'QingWuXuanZeWeiFaSongDeShuJu': '请勿选择未发送的数据', // 请勿选择未发送的数据
-            'LingJianHao': '零件号', // 零件号
-            'FsnrGsnr': 'FSNR/GSNR', // FSNR/GSNR
-            'RfqBianHao': 'RFQ编号', // RFQ编号
-            'ShenQingRiQi': '申请日期', // 申请日期
-            'CheXingXiangMu': '车型项目', // 车型项目
-            'TouZiYuSuanRmb': '投资预算(RMB)', // 投资预算(RMB)
-            'CsfPFuZeRen': 'CSF(P)负责人', // CSF(P)负责人
-            'ShenPiZhuangTai': '审批状态', // 审批状态
-            'ShenPiYiJian': '审批意见', // 审批意见
-            'ChongFuTiJiao': '重复提交', // 重复提交
-            'QiYuShuJuZhengChangTiJiao': '其余数据正常提交', // 其余数据正常提交
-            'ChongFuCheHui': '重复撤回', // 重复撤回
-            'QiYuShuJuZhengChangCheHui': '其余数据正常撤回', // 其余数据正常撤回 
-            'QingXuanZeCbdCengJiWeiL3DeShuJu': '请选择CBD层级为L3的数据', // 请选择CBD层级为L3的数据
-        },
+        'LK_TUICHUBIANJI': '退出编辑',    //  退出编辑
+        'LK_SHANGCHUANQINGDAN': '上传清单',    //  上传清单
+        'LK_YUEDUJIHUA': '月度计划',    //  月度计划
+        'LK_DANGNIANFUKUANJIHUA': '当年付款计划',    //  当年付款计划
+        'LK_CINIANFUKUANJIHUA': '次年付款计划',    //  次年付款计划
+        'LK_YIYUE': 'Jan',    //  一月
+        'LK_ERYUE': 'Feb',    //  二月
+        'LK_SANYUE': 'Mar',    //  三月
+        'LK_SIYUE': 'Apr',    //  四月
+        'LK_WUYUE': 'May',    //  五月
+        'LK_LIUYUE': 'Jun',    //  六月
+        'LK_QIYUE': 'Jul',    //  七月
+        'LK_BAYUE': 'Aug',    //  八月
+        'LK_JIUYUE': 'Sep',    //  九月
+        'LK_SHIYUE': 'Oct',    //  十月
+        'LK_SHIYIYUE': 'Nov',    //  十一月
+        'LK_SHIERYUE': 'Dec',    //  十二月
         "BJZS":{
-            "LK_BAOJIAZUSHOU_MJ":"报价助手-模具"
+            "LK_BAOJIAZUSHOU_MJ":"报价分析汇总-模具",
+            "LK_BAOJIAZUSHOU_MJDANWEIYUAN":"报价分析汇总-模具（单元：元）"
+        },
+        //谈判助手
+        "TPZS": {
+            'FENXI': ' Analyze', //分析
+            'YULAN': 'preview', //预览
+            'GONGYINGSHANG': 'Supplier', //供应商
+            'CHEXINGXIANGMU': 'Model project', //车型项目
+            'CHEXING': 'Model', //车型
+            'GONGCHANG': 'Factory', //工厂
+            'ZONGDANJIA': 'Total unit price', //总单价
+            'GUDINGCHENGBENZHANBI': 'Percentage of fixed costs', //固定成本占比
+            'FEIYONGLEIXING': 'Types of fee', //费用类型
+            'FEIYONGZONGE': 'Total cost', //费用总额
+            'FENTANSHULIANG': 'Apportioned quantity', //分摊数量
+            'YINGXIANGDANJIA': 'Affect the unit price', //影响单价
+            'YINGXIANGCHENGBENZHANBI': 'Affect the proportion of cost', //影响成本占比
+            'XIANSHIYINGCANG': 'show/hide', //显示/隐藏
+            'WANCHENG': 'finish', //完成
+            'QINGSHURUBIANHAOMINGCHENG': 'Please enter the number/name', //请输入编号/名称
+            'QINGSHURUCHUANGJIANRENMINGCHENG': 'Please enter the name of the creator', //请输入创建人名称,
+            'PCAZONGLAN': 'PCA overview', //PCA总览
+            'BAOGAOMINGCHENG': 'Report name', //报告名称
+            'QUXIAN': ' curve', //曲线
+            'ZUIXINDINGDIANDANJIA': 'The latest fixed-point unit price', //最新定点单价
+            'MUBIAODANJIA': 'Target unit price', //目标单价,
         }
-    })
+    }
+    var xmlHttp = ''
+    if(window.XMLHttpRequest){
+        xmlHttp = new XMLHttpRequest();
+    }else{
+        // eslint-disable-next-line no-undef
+        xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    xmlHttp.onreadystatechange = function() {
+        if (xmlHttp.readyState==4 && xmlHttp.status==200){
+            const data = JSON.parse(xmlHttp.responseText)
+            i18n.setLocaleMessage('en', Object.assign(oldLanguage,data.data.cn))
+        }
+    }
+    xmlHttp.open("GET", "http://10.122.18.136:8088/i18n/getTranslationMap?from=sourcing",false);
+    xmlHttp.setRequestHeader("Content-type","application/json");
+    xmlHttp.setRequestHeader("Accept","*/*");
+    xmlHttp.send()
 }))

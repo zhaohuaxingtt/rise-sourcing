@@ -9,7 +9,7 @@ import axios from '@/utils/axios'
 import store from "@/store";
 
 const requst = axios(process.env.VUE_APP_RFQ)
-const partsRequst = axios(process.env.VUE_APP_PARTSPROCURE_STATIC)
+const partsRequst = axios(process.env.VUE_APP_PARTSPROCURE)
 
 export function getRfqDataList(parmars) {
     return requst({
@@ -77,17 +77,18 @@ export function getAllScoringDepartmentInfo(parmars) {
 }
 
 // 获取寻源执行子菜单待办数
-export function getAgentTasksNum() {
+export function getAgentTasksNum(options) {
     return requst({
         url: '/getAgentTasksNum',
         method: 'GET',
+        ...options
     })
 }
 
 // 获取车型字典
 export function getCartypeDict() {
     return partsRequst({
-        url: '/api/cartypeDict',
+        url: '/cartypeDict',
         method: 'GET',
     })
 }

@@ -7,6 +7,7 @@ const INVESTMENTVERSION = axios(process.env.VUE_APP_INVESTMENTVERSION)
 const BUILDINVESTMENT = axios(process.env.VUE_APP_BUILDINVESTMENT)
 const INVESTMENTORDER = axios(process.env.VUE_APP_INVESTMENTORDER)
 const VUE_APP_REFCARTYPEPRO = axios(process.env.VUE_APP_REFCARTYPEPRO)
+ const VUE_APP_CSBUDGET = axios(process.env.VUE_APP_CSBUDGET)
 //获取专业科室下拉列表
 export function getDepartmentsList(parmars) {
     return INVESTMENT({
@@ -19,7 +20,7 @@ export function getDepartmentsList(parmars) {
 export function proDeptPullDown(parmars) {
     return INVESTMENT({
         url: '/proDeptPullDown',
-        method: 'POST',
+        method: 'GET',
         params: parmars
     })
 }
@@ -104,6 +105,21 @@ export function relationMainCarType(parmars) {
         params: parmars
     })
 }
+ //获取车型预算
+export function getCarTypeBudget(parmars) {
+    return VUE_APP_CSBUDGET({
+        url: '/getCarTypeBudget/' + parmars,
+        method: 'GET',
+    })
+}
+//预算合并
+export function budgetMerge(parmars) {
+    return VUE_APP_CSBUDGET({
+        url: '/budgetMerge/' + parmars,
+    method: 'GET',
+    })
+}
+
 //生成投资清单条件查询
 export function findInvestmentBuild(parmars) {
     return BUILDINVESTMENT({
@@ -140,6 +156,14 @@ export function relationCarTypePartsList(parmars) {
 export function applyRefCarType(id, data) {
     return INVESTMENT({
         url: '/applyRefCarType/' + id,
+        method: 'POST',
+        data: data
+    })
+}
+//Common预算保存
+export function commonSave(data) {
+    return VUE_APP_CSBUDGET({
+        url: '/commonSave',
         method: 'POST',
         data: data
     })

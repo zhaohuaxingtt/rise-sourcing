@@ -1,8 +1,8 @@
 /*
  * @Author: Luoshuang
  * @Date: 2021-06-04 14:41:32
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-08 12:45:52
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-07-07 15:42:49
  * @Description: rs单相关接口
  * @FilePath: \front-web\src\api\designate\decisiondata\rs.js
  */
@@ -68,5 +68,20 @@ export function downloadRSDoc(params) {
     url: '/rs/downLoadNomiRsDoc',
     method: 'POST',
     data: params
+  })
+}
+// 修改RS单
+export function getPrototypeList(params) {
+  return requst({
+    url: `/rs/queryRsSampleById/${params}`,
+    method: 'GET'
+  })
+}
+
+// 获取部门审批列表
+export function getDepartApproval(nominateAppId) {
+  return requst({
+    url: `/nominate/nomi-approval-process/depart-approval/${nominateAppId}`,
+    method: 'GET'
   })
 }

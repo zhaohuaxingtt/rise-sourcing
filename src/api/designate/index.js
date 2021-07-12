@@ -1,21 +1,21 @@
 /*
  * @Author: your name
  * @Date: 2021-05-28 17:30:52
- * @LastEditTime: 2021-06-11 10:47:45
- * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-07-02 15:19:52
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\api\designate\index.js
  */
 import axios from "@/utils/axios"
+import { serialize } from "@/utils"
 
 const requst = axios(process.env.VUE_APP_RFQ)
 
 // 获取模具预算管理列表
 export function getMouldBudget(params) {
   return requst({
-      url: `/mould-budget/${ params.currPage }/${ params.pageSize }`,
-      method: "GET",
-      params: params
+      url: `/mould-budget/${ params.currPage }/${ params.pageSize }?${ serialize(params.fsIds, Array) }`,
+      method: "GET"
   })
 }
 
@@ -46,6 +46,31 @@ export function updatePresenPageSeat(data) {
       data,
   })
 }
+
+// 上会类型提交之前的校验1
+export function checkNomiMeetingSubmit1(data) {
+  return requst({
+      url: "/nominate-apps/submit-check",
+      method: "POST",
+      data,
+  })
+}
+export function checkNomiMeetingSubmit2(data) {
+  return requst({
+      url: "/nominate-apps/submit-meeting-check",
+      method: "POST",
+      data,
+  })
+}
+
+export function getMeetingPage(params) {
+  return requst({
+      url: "/nominate-apps/meeting-page",
+      method: "GET",
+      params,
+  })
+}
+
 
 // 定点管理-提交
 export function nominateAppSsubmit(data) {
@@ -100,11 +125,29 @@ export function sugesstionInit(params) {
   })
 }
 
+// rfq零件清单下一步前保存
+export function supplierInitReCord(params) {
+  return requst({
+      url: "/supplier/initSupplier",
+      method: "GET",
+      params,
+  })
+}
+
 // 定点建议下一步前保存
 export function sugesstionInitReCord(params) {
   return requst({
       url: "suggestion/initRecord",
       method: "GET",
       params,
+  })
+}
+
+
+// 决策资料tablist的重置
+export function tabPageLayoutsReset(nominateId) {
+  return requst({
+      url: `tabPageLayouts/findTabPageInitStatus?nominateId=${nominateId}`,
+      method: "GET",
   })
 }

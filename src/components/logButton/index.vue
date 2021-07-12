@@ -1,3 +1,11 @@
+<!--
+ * @Author: your name
+ * @Date: 2021-06-22 11:07:21
+ * @LastEditTime: 2021-06-22 11:07:21
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: \front-web\src\components\logButton\index.vue
+-->
 <template>
   <div class="logButton" @click="$emit('click')">
     <icon symbol name="iconrizhiwuzi" class="icon" />
