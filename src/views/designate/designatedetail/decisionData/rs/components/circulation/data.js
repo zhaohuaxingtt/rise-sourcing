@@ -1,8 +1,8 @@
 /*
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:50:41
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-08 15:22:03
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-07-12 14:28:43
  * @Description: 
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\rs\components\circulation\data.js
  */
@@ -61,6 +61,7 @@ export const nomalTableTitle = [
   {props:'packPrice',name:'Packing', key: "", minWidth: 80},
   {props:'transportPrice',name:'Transportation', key: "", minWidth: 80},
   {props:'operatePrice',name:'Operation', key: "", minWidth: 65},
+  {props:'originalPrice',name: 'Original Price', key: "", minWidth:80},
   {props:'investFee',name:'Invest(no tax)', key: "", minWidth: 120},
   {props:'share',name:'Share(%)', key: "", minWidth: 90},
   {props:'ltcRateOfThree',name:'LTC', key: "", minWidth: 90},
