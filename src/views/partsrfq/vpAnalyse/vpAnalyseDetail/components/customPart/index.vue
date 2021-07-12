@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-06-18 16:03:35
- * @LastEditTime: 2021-07-12 14:02:11
+ * @LastEditTime: 2021-07-12 14:14:57
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\vpAnalyse\vpAnalyseDetail\components\customPart\index.vue
@@ -286,6 +286,7 @@ export default {
       const endObj = this.tableListData[this.tableListData.length - 1]
       if(!maxSortObj) maxSortObj = 0
       endObj['sort'] = maxSortObj.sort + 1
+      endObj['isShow'] = true
       this.addMode = false
       this.initInsertPartData()
     },
