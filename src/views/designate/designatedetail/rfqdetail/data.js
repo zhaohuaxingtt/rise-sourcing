@@ -2,7 +2,7 @@
  * @Descripttion: RFQ & 零件清单数据
  * @Author: Luoshuang
  * @Date: 2021-05-21 11:30:46
- * @LastEditTime: 2021-06-28 17:07:41
+ * @LastEditTime: 2021-07-12 18:17:33
  */
 
 export const rfqListTitle = [
@@ -11,8 +11,8 @@ export const rfqListTitle = [
   {props:'rfqType',name:'RFQ类型', key: "RFQLEIXING", tooltip: true},
   {props:'createDate',name:'创建日期', key: "CHUANGJIANRIQI", tooltip: true, width: 120},
   {props:'currentRounds',name:'当前轮次', key: "DANGQIANLUNCI", tooltip: true},
-  {props:'suppliers',name:'已询价供应商（数量）', key: "YIXUNJIAGONGYINGSHANG_SHULIANG", tooltip: true, width: 150},
-  {props:'quotations',name:'已报价供应商（数量）', key: "YIBAOJIAGONGYINGSHANG_SHULINAG", tooltip: true, width: 150},
+  {props:'suppliers',name:'已询价供应商（数量）', key: "YIXUNJIAGONGYINGSHANG_SHULIANG", tooltip: true, width: 150, type: 'number'},
+  {props:'quotations',name:'已报价供应商（数量）', key: "YIBAOJIAGONGYINGSHANG_SHULINAG", tooltip: true, width: 150, type: 'number'},
   {props:'currentStatus',name:'RFQ状态', key: "RFQZHUANGTAI", tooltip: true},
   {props:'currentRoundsEndTime',name:'报价截止日期', key: "BAOJIAJIEZHIRIQI", tooltip: true, width: 120},
   {props:'buyerName',name:'询价采购员', key: "XUNJIACAIGOUYUAN", tooltip: true},
@@ -32,7 +32,7 @@ export const partsListTitle = [
   {props:'partNum',name:'零件号', key: "LINGJIANHAO", tooltip: true},
   {props:'partNameZh',name:'零件名（中）', key: "LINGJIANMING_ZH", tooltip: true, width: 120},
   {props:'partNameDe',name:'零件名（德）', key: "LINGJIANMING_DE", tooltip: true, width: 120},
-  {props:'procureFactory',name:'采购工厂', key: "CAIGOUGONGCHANG", tooltip: true},
+  {props:'procureFactoryName',name:'采购工厂', key: "CAIGOUGONGCHANG", tooltip: true},
   {props:'partProjectType',name:'零件项目类型', key: "LINGJIANXIANGMULEIXING", tooltip: true, width: 120, isObject: true},
   {props:'cartypeCategory',name:'车型大类', key: "CHEXINGDALEI", tooltip: true},
   {props:'cartypeProjectZh',name:'车型项目', key: "CHEXINGXIANGMU", tooltip: true},
