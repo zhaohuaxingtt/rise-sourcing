@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-25 15:16:38
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-25 13:48:23
+ * @LastEditTime: 2021-07-12 17:05:42
  * @Description: 配件详情
  * @FilePath: \front-web\src\views\accessoryPart\accessoryPartDetail\index.vue
 -->
@@ -17,7 +17,7 @@
     <iCard :title="language('JICHUXINXI','基础信息')">
       <iFormGroup row="4" class="accessoryPartDetail">
         <iFormItem v-for="(item, index) in detailList" :key="index" :label="language(item.key,item.label)" :class="item.row ? 'row'+item.row : ''">
-          <iText>{{detailData[item.value]}}</iText>
+          <iText>{{detailData[item.value] ? detailData[item.value].desc || detailData[item.value] : ''}}</iText>
         </iFormItem>
       </iFormGroup>
     </iCard>
