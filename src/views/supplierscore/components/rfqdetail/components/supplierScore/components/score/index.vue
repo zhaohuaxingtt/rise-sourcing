@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-22 16:16:26
- * @LastEditTime: 2021-07-02 18:08:30
+ * @LastEditTime: 2021-07-12 10:29:12
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\supplierscore\components\rfqdetail\components\supplierScore\components\score\index.vue
@@ -339,7 +339,7 @@ export default {
       const route = this.$router.resolve({
         path: "/supplierscore/partscore",
         query: {
-          rfqId: row.id,
+          rfqId: row.rfqId,
           supplierId: row.supplierId
         }
       })
