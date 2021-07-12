@@ -949,6 +949,10 @@ export default {
       })
     },
     saveCommon(){
+      if(!this.tableListData || this.tableListData.length === 0){
+        iMessage.warn('无数据可保存')
+        return
+      }
       this.tableLoading = true
       commonSave({budgetAndInListIdVOList: this.tableListData}).then((res) => {
         const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
