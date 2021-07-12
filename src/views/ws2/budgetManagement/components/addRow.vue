@@ -18,12 +18,12 @@
       >
         <el-form>
           <el-form-item :label="$t('LK_CAILIAOZUBIANHAOZHONGWENMINGDEWEN')">
-            <iInput v-model="zhEnNo" :placeholder="$t('LK_QINGSHURU')">
+            <iInput v-model="zhEnNo" :placeholder="$t('LK_QINGSHURU')" @keyup.enter.native="findAddColumnInvestmentBuild">
               <i slot="suffix" class="el-input__icon el-icon-search" @click="sure"></i>
             </iInput>
           </el-form-item>
           <el-form-item :label="$t('LK_LINJIANLIUWEIHAO')">
-            <iInput v-model="materialName" :placeholder="$t('LK_QINGSHURU')" maxlength="6">
+            <iInput v-model="materialName" :placeholder="$t('LK_QINGSHURU')" maxlength="6" @keyup.enter.native="findAddColumnInvestmentBuild">
               <i slot="suffix" class="el-input__icon el-icon-search" @click="sure"></i>
             </iInput>
           </el-form-item>
@@ -55,8 +55,8 @@
                 @change="sure"
             >
               <el-option
-                  :value="item.commodityName"
-                  :label="item.commodityName"
+                  :value="item.commodity"
+                  :label="item.commodity"
                   v-for="(item, index) in DeptPullDown"
                   :key="index"
               ></el-option>

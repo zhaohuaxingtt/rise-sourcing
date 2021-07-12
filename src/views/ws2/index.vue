@@ -19,6 +19,8 @@
           @click="log"
           :nextStepLoading="nextStepLoading"
           :dataBaseInit="dataBaseInit"
+          :navList="budgetManagement3rd"
+          :isIconShow="isIconShow"
           @nextStep="nextStep"
           @changeDataBase="$refs.iNavMvpRef.activeIndex = 999"
       ></iNavWS2>
@@ -47,6 +49,7 @@ import {
   getRelationCarTypeById,
   saveInvestBuildBottom,
 } from "@/api/ws2/budgetManagement/edit";
+import {budgetManagement3rd} from "pages/ws2/budgetManagement/components/data";
 
 export default {
   components: {
@@ -55,6 +58,30 @@ export default {
     iDialog,
     iButton,
     iNavMvp
+  },
+  watch: {
+    $route: {
+      deep: true,
+      immediate: true, // 一旦监听到路由的变化立即执行
+      handler(to, from) {
+        const index = to.name.indexOf('investmentAdmin');
+        let list = [];
+        if(index >= 0){
+          list = budgetManagement3rd.filter(item => item.value >=3 && item.value <= 5);
+          this.isIconShow = to.name.indexOf('PayBlock') >= 0 ? true : false
+        }else{
+          list = budgetManagement3rd.filter(item => item.value === 1 || item.value === 2);
+          this.isIconShow = false;
+        }
+
+        list = list.map((item, index) => ({
+          ...item,
+          value: index + 1
+        }))
+
+        this.budgetManagement3rd = list;
+      },
+    },
   },
   data() {
     return {
@@ -66,6 +93,8 @@ export default {
       iDialogLoading: false,
       nextStepLoading: false,
       dataBaseInit: false,
+      budgetManagement3rd,
+      isIconShow: false,
     };
   },
   computed: {
@@ -92,7 +121,7 @@ export default {
       const ksy1 = store.state.permission.whiteBtnList['TOOLING_BUDGET_BAAPPLICATION_TOTAL'];  //  是否有汇总页面权限
       const ksy2 = store.state.permission.whiteBtnList['TOOLING_BUDGET_BAAPPLICATION_DETAILS'];  //  是否有详情页权限
       const list = tabtitle.map(item => {
-        if(item.value === 4){ //  ba申请
+        if(item.activePath === '/tooling/baApplyIndex'){ //  ba申请
           const url = ksy1 ? '/tooling/baApplyIndex' : (!ksy1 && !ksy2 ? '/views/404' : '/tooling/modelDetails');
           item.activePath = url;
           item.url = url;
@@ -100,7 +129,6 @@ export default {
 
         return item;
       })
-      console.log('list', list, ksy1, ksy2);
       return list;
     }
   },
@@ -148,7 +176,7 @@ export default {
                   //     'investmentListParams'
                   // )
                   this.$router.push({
-                    path: '/tooling/budgetManagement/investmentList',
+                    path: '/tooling/budgetManagement/investmentListJV',
                     query: {
                       id: carTypeProject,
                       sourceStatus: sourceStatus,
@@ -193,7 +221,7 @@ export default {
       //     'investmentListParams'
       // )
       this.$router.push({
-        path: '/tooling/budgetManagement/investmentList',
+        path: '/tooling/budgetManagement/investmentListJV',
         query: {
           id: this.$store.state.mouldManagement.budgetManagement.carTypeProject,
           sourceStatus: this.$store.state.mouldManagement.budgetManagement.sourceStatus,
@@ -210,6 +238,10 @@ export default {
 .navBar{
   display: flex;
   justify-content: space-between;
+  border-bottom: 1px solid #E3E3E3;
+  padding-bottom: 5px;
+  position: relative;
+  z-index: 1;
 }
 .iDialogNextStep {
   ::v-deep .el-dialog {

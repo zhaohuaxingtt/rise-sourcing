@@ -1,24 +1,24 @@
 <!--
 * @author:shujie
 * @Date: 2021-3-5 10:56:32
- * @LastEditors: ldh
+ * @LastEditors: Please set LastEditors
 * @Description: BDL列表
  -->
 <template>
   <iCard>
     <div class="header flex-between-center">
       <div class="input">
-        <iInput :placeholder="$t('LK_QINGSHURUCHANXUANGONGYINGSHANGMINGCHENG')" suffix-icon="iconfont iconshaixuankuangsousuo" v-model="searchKey"></iInput>
+        <iInput :placeholder="language('LK_QINGSHURUCHANXUANGONGYINGSHANGMINGCHENG','请输入查询供应商名称')" suffix-icon="iconfont iconshaixuankuangsousuo" v-model="searchKey"></iInput>
       </div>
       <div>
         <div v-if="!addCustomStatus">
-          <iButton @click="handleSave" v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_BDLSAVEBDL" :loading="saveLoading">{{ $t('LK_QUEREN') }}</iButton>
-          <iButton @click="handleDelete" v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_DELETESUPPLIER" :loading="deleteLoading">{{ $t('LK_SHANCHUGONGYINGSHANG') }}</iButton>
-          <iButton @click="addCustom" v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_ADDCUSTOM">{{ $t('LK_TIANJIAZIDINGYIPINGFENXIANG') }}</iButton>
+          <iButton @click="handleSave" v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_BDLSAVEBDL" :loading="saveLoading">{{ language('LK_QUEREN','确认') }}</iButton>
+          <iButton @click="handleDelete" v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_DELETESUPPLIER" :loading="deleteLoading">{{ language('LK_SHANCHUGONGYINGSHANG','删除供应商') }}</iButton>
+          <iButton @click="addCustom" v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_ADDCUSTOM">{{ language('LK_TIANJIAZIDINGYIPINGFENXIANG','添加自定义评分项') }}</iButton>
         </div>
         <div v-else>
-          <iButton @click="handleSaveCustom" v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_SAVECUSTOM">{{ $t('LK_BAOCUN') }}</iButton>
-          <iButton @click="handleBack" v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_BACKCUSTOM">{{ $t('LK_FANHUI') }}</iButton>
+          <iButton @click="handleSaveCustom" v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_SAVECUSTOM">{{ language('LK_BAOCUN','保存') }}</iButton>
+          <iButton @click="handleBack" v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_BACKCUSTOM">{{ language('LK_FANHUI','返回') }}</iButton>
         </div>
       </div>
     </div>
@@ -89,7 +89,7 @@ export default {
      **************************/
     // 保存
     handleSave() {
-      if(this.editSelectTableDataCache.length == 0) return iMessage.warn(this.$t('LK_NHWXZBDL')) 
+      if(this.editSelectTableDataCache.length == 0) return iMessage.warn(this.language('LK_NHWXZBDL','您还未选择BDL')) 
       this.saveLoading = true
       updateRfq({
         updateRfqBdlPackage: {
@@ -118,8 +118,8 @@ export default {
     },
     // 删除
     handleDelete() {
-      if(this.noEditSelectTableDataCache.length == 0) return iMessage.warn(this.$t('LK_NHWXZBDL')) 
-      iMessageBox(this.$t('deleteSure'),this.$t('LK_WENXINTISHI')).then(()=>{
+      if(this.noEditSelectTableDataCache.length == 0) return iMessage.warn(this.language('LK_NHWXZBDL','您还未选择BDL')) 
+      iMessageBox(this.language('deleteSure','您确定要执行删除操作吗？'),this.language('LK_WENXINTISHI','温馨提示')).then(()=>{
         this.deleteLoading = true
         updateRfq({
           deleteBdlPackage: {
@@ -208,7 +208,7 @@ export default {
       }
     },
     handleSelectAll(selection) {
-      if (selection.length !== this.tableData.length) { // 当前页取消选中操作
+      if (!selection.length) { // 当前页取消选中操作
         const editNoSelectTableData = [] // 没有保存过的bdl
         const noEditNoSelectTableData = [] // 保存过的bdl
         for (let i = 0, item; (item = this.tableData[i++]); ) {
@@ -225,8 +225,8 @@ export default {
       }
     },
     // 跳转
-    openPage() {
-
+    openPage(row) {
+      window.open(`${ process.env.VUE_APP_PORTAL_URL }/supplier/supplierList/details?subSupplierId=${row.supplierSubId}&supplierType=${row.supplierType}&nameZh=${row.supplierNameZh}&nameEn=${row.supplierNameEn}`, '_blank')
     },
     log() {
       // this.logVisible = true

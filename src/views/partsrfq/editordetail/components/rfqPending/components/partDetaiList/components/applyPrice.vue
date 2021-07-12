@@ -1,12 +1,12 @@
 <template>
-	<iDialog class="dialog" :title="$t('LK_SHENQINGCAIWUMUBIAOJIA')" :visible.sync="applyPriceShow">
+	<iDialog class="dialog" :title="language('LK_SHENQINGCAIWUMUBIAOJIA','申请财务目标价')" :visible.sync="applyPriceShow">
 		<div class="btn">
-			<iButton v-if="againApply" @click="save">{{ $t('LK_ZHONGXINSHENQING') }}</iButton>
-			<iButton v-else @click="save">{{$t('LK_SHENQING')}}</iButton>
+			<iButton v-if="againApply" @click="save" :loading="saveLoading">{{ language('LK_ZHONGXINSHENQING','重新申请') }}</iButton>
+			<iButton v-else @click="save" :loading="saveLoading">{{language('LK_SHENQING','申请')}}</iButton>
 		</div>
 		
 		<iFormGroup row="2" icon inline>
-			<iFormItem :label="$t('LK_SHENQINGLEIXING')" name="test">
+			<iFormItem :label="language('LK_SHENQINGLEIXING','申请类型')" name="test">
 				<el-radio-group v-model="targetprice.cfTargetPriceDetail.applyType">
 					<el-radio label="LC">LC</el-radio>
 					<el-radio label="SKD">SKD</el-radio>
@@ -14,22 +14,35 @@
 				</el-radio-group>
 				<span class="start">*</span>
 			</iFormItem>
-			<iFormItem :label="$t('LK_QIWANGMUBIAOJIA')" name="test">
-				<iInput v-model="targetprice.cfTargetPriceDetail.lcPrice" onkeyup="value=value.replace(/[^\d]/g,'')"  maxlength="20"></iInput>
+			<iFormItem :label="language('LK_QIWANGMUBIAOJIA','期望目标价')" name="test">
+				<iInput v-model="targetprice.cfTargetPriceDetail.expTargetpri" onkeyup="value=value.replace(/[^\d]/g,'')"  maxlength="20"></iInput>
 			</iFormItem>
 		</iFormGroup>
 		<iFormGroup row="2" icon inline>
-			<iFormItem :label="$t('LK_SHENQINGYUANYIN')" name="test">
+			<iFormItem :label="language('LK_SHENQINGYUANYIN','申请原因')" name="test">
 				<iInput type="textarea" rows="6" resize="none" v-model="targetprice.cfTargetPriceDetail.applyReason">
 				</iInput>
 			</iFormItem>
-			<iFormItem :label="$t('LK_SHENQINGBEIZHU')" name="test">
-				<iInput type="textarea" rows="6" resize="none" v-model="targetprice.cfTargetPriceDetail.applyMemo">
+			<iFormItem :label="language('LK_SHENQINGBEIZHU','申请备注')" name="test">
+				<iInput type="textarea" rows="6" resize="none" v-model="targetprice.cfTargetPriceDetail.memo">
 				</iInput>
 			</iFormItem>
 		</iFormGroup>
-			<tablelist  v-if="againApply" :tableData='tableListData' :tableTitle='targeTitle' :loading='tableLoading'
+			<tablelist  v-if="againApply" :tableData='tableListData' :tableTitle='targeTitle' v-loading='tableLoading'
 				@handleSelectionChange='handleSelectionChange'></tablelist>
+			<iPagination
+				v-if="againApply"
+        v-update
+        @size-change="handleSizeChange($event, againShow)"
+        @current-change="handleCurrentChange($event, againShow)"
+        background
+        :page-sizes="page.pageSizes"
+        :page-size="page.pageSize"
+        :layout="page.layout"
+        :current-page="page.currPage"
+        :total="page.totalCount"
+				style="margin: 20px 0;"
+    ></iPagination>
 	</iDialog>
 </template>
 
@@ -39,31 +52,50 @@
 		iFormItem,
 		iInput,
 		iDialog,
-		iButton
+		iButton,
+		iMessage,
+		iPagination
 	} from "@/components";
 	import tablelist from '@/views/partsprocure/editordetail/components/targetPrice/components/tablelist'
 	import {
 		targeTitle,
 		targetPriceDetail
 	} from '@/views/partsprocure/editordetail/components/targetPrice/components/data';
+	import { applyCFTarget, getCfTargetApplyHistory } from '@/api/financialTargetPrice/index'
 	import {
-		getTabelData,
-		changeProcure
-	} from '@/api/partsprocure/home'
+  pageMixins
+} from "@/utils/pageMixins";
 	export default {
+		mixins: [pageMixins],
 		components: {
 			iFormGroup,
 			iFormItem,
 			iInput,
 			tablelist,
 			iDialog,
-			iButton
+			iButton,
+			iPagination
 		},
 		props: {
 			handleSelectArr:{
 				type:Object,
 				default:()=>{
 					return {}
+				}
+			}
+		},
+		watch: {
+			applyPriceShow(val) {
+				if (val) {
+					if (this.handleSelectArr[0] && (this.handleSelectArr[0].partProjectType === 'PT19' || this.handleSelectArr[0].partProjectType === 'PT04')) {
+						this.targetprice = {
+							...this.targetprice,
+							cfTargetPriceDetail: {
+								...this.targetprice.cfTargetPriceDetail,
+								applyType: 'SKD'
+							}
+						}
+					}
 				}
 			}
 		},
@@ -75,22 +107,29 @@
 				selectTableData: [],
 				tableListData: [],
 				targeTitle: targeTitle,
-				targetprice:targetPriceDetail
+				targetprice:targetPriceDetail,
+				saveLoading: false
 			}
 		},
 		methods: {
 			// 申请财务目标价
 			save() {
-				let targetprice = {
-					purchaseProjectIds: this.handleSelectArr[0].purchasePrjectId,
-					cfTargetPriceDetail: this.targetprice.cfTargetPriceDetail,
-				};
-				changeProcure({
-					targetprice,
-				}).then((res) => {
-					this.applyPriceShow = false
-					this.$emit("refresh")
-				});
+				this.saveLoading = true
+				const params = {
+					...this.targetprice.cfTargetPriceDetail,
+					purchasingProjectId: this.handleSelectArr[0].purchasePrjectId
+				}
+				applyCFTarget(params).then((res) => {
+					if (res?.result) {
+						iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+						this.applyPriceShow = false
+						this.$emit("refresh")
+					} else {
+						iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+					}
+				}).finally(() => {
+					this.saveLoading = false
+				})
 			},
 			show() {
 				this.againApply=false
@@ -99,20 +138,27 @@
 			againShow(){
 				this.againApply=true
 				this.applyPriceShow = true
+				this.tableLoading = true
 				let data = {
-					"cfTargetpriceReq.purchaseProjectId": this.handleSelectArr[0].purchasePrjectId,
+					fsNum: this.handleSelectArr[0].fsnrGsnrNum,
+					pageNo: this.page.currPage,
+					pageSize: this.page.pageSize
 				};
-				getTabelData(data).then((res) => {
-					let price=res.data.targetprice
-					if (price.cfTargetPriceDetail) {
-						this.targetprice.cfTargetPriceDetail=price.cfTargetPriceDetail
-						this.tableListData=[price.cfTargetPriceDetail]
+				getCfTargetApplyHistory(data).then((res) => {
+					if (res?.result) {
+						this.page = {
+							...this.page,
+							totalCount: Number(res.total),
+							currPage: Number(res.pageNum),
+							pageSize: Number(res.pageSize)
+						}
+						this.tableListData = res.data || []
+					} else {
+						iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
 					}
-					if (price.rwApplication) {
-						this.targetprice.rwApplication=price.rwApplication
-						this.targeRwData=[price.rwApplication]
-					}
-				});
+				}).finally(() => {
+					this.tableLoading = false
+				})
 			},
 			handleSelectionChange(e) {
 				this.$emit('targetHand',e)

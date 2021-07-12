@@ -1,0 +1,151 @@
+/*
+ * @Author: HaoJiang
+ * @Date: 2021-05-20 14:29:09
+ * @LastEditTime: 2021-07-05 16:57:10
+ * @LastEditors: Please set LastEditors
+ * @Description: sel上会复核
+ *
+ */
+
+// 筛选参数
+export const form = {
+}
+
+// 表单表头
+export const tableTitle = [{
+  //export const tableTitle = permissionTitle("nominationLanguage_nominationLanguageLIST",[{
+  props: 'id',
+  name: '申请单号',
+  width: 150,
+  key: 'nominationLanguage_ShenQingDanHao',
+  tooltip: false
+},
+{
+  props: 'nominateName',
+  name: '申请单名',
+  width: 200,
+  key: 'nominationLanguage_ShenQingDanMing',
+  tooltip: false
+},
+{
+  props: 'carTypeProj',
+  name: 'PROJECT',
+  key: 'PROJECT',
+  tooltip: false
+},
+{
+	props: 'applicationStatus',
+	name: '状态',
+	key: 'LK_ZHUANGTAI',
+	tooltip:false
+},
+{
+  props: 'partProjType',
+  name: '零件项目类型',
+  key: 'LINGJIANXIANGMULEIXING',
+  width: 150,
+  tooltip: true
+},
+{
+  props: 'meetingName',
+  name: '会议',
+  key: 'nominationLanguage_HuiYi',
+  tooltip: true
+},
+{
+  props: 'nominateUserName',
+  name: '询价采购员',
+  width: 150,
+  key: 'nominationLanguage_XunJiaCaiGouYuan',
+  tooltip: true
+},
+{
+  props: 'linieName',
+  name: 'LINIE',
+  key: 'LINIE',
+  tooltip: false
+},
+{
+  props: 'rsStatus',
+  name: 'RS单状态',
+  key: 'nominationLanguage_RSZhuangTai',
+  tooltip: false
+},
+{
+  props: 'rsFreezeDate',
+  name: 'RS冻结日期',
+  width: 150,
+  key: 'nominationLanguage_RSDongJieRiQi',
+  tooltip: false
+},
+{
+  props: 'isPriceConsistent',
+  name: '报价一致性校验状态',
+  width: 150,
+  key: 'nominationLanguage_BaoJiaYiZhiXingZhuangTai',
+  tooltip: false
+},
+{
+  props: 'selStatus',
+  name: 'SEL单据确认状态',
+  width: 150,
+  key: 'nominationLanguage_SELDanJuQUeRenZH',
+  tooltip: false
+},
+{
+	props: 'checkDueDate',
+	name: '复核截止日期',
+  width: 150,
+	key: 'nominationLanguage.FuHeJieZhiRiQi',
+	tooltip:false
+},
+{
+	props: 'signId',
+	name: '签字单号',
+	key: 'nominationLanguage.QianZiDanHao',
+	tooltip:false
+},
+{
+  props: 'signStatus',
+  name: '签字单状态',
+  width: 150,
+  key: 'nominationLanguage.QianZiDanZhuangTai',
+  tooltip: false
+},
+{
+  props: 'freezeDate',
+  name: '冻结日期',
+  width: 150,
+  key: 'nominationLanguage_DongJieRiQi',
+  tooltip: false
+},
+]
+
+export const mokeResData = [
+  {
+    id: '762345662',
+    selStatus: '未分摊'
+  },
+  {
+    id: '762345664',
+    selStatus: '已确认'
+  },
+  {
+    id: '762345665',
+    selStatus: '未确认'
+  }
+]
+
+// 签字单下拉菜单
+export const signMenu = [
+  {
+    name: '新建签字单',
+    key: 'XINJIANQIANZIDAN',
+    path: '/sourcing/partsnomination/signSheet/details?mode=add'
+  },
+  {
+    name: 'M签字单列表',
+    key: 'MQIANZIDANLIEBIAO',
+    path: '/sourcing/partsnomination/signSheet'
+  },
+]

@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-24 14:39:43
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-15 10:28:43
+ * @LastEditTime: 2021-06-25 12:12:24
  * @Description: RS单维护界面
  * @FilePath: \front-web\src\views\designate\designatedetail\rsSingleMaintenance\index.vue
 -->
@@ -14,7 +14,7 @@
     <!------------------------------------------------------------------------>
     <detailTop right lev='2' :pageMenu='detailPage' :query='$route.query'>
       <span slot="left" class="floatleft font20 font-weight">
-        RS单维护
+        {{language('RSDANWEIHU','RS单维护')}}
       </span>
     </detailTop>
     <!------------------------------------------------------------------------>
@@ -22,20 +22,20 @@
     <!------------------------------------------------------------------------>
     <iSearch class="margin-bottom20 margin-top20" icon @reset="handleSearchReset" @sure="filterTableData">
       <el-form>
-        <el-form-item :label="'零件采购项目编号'" >
-          <iInput :placeholder="$t('LK_QINGSHURU')" v-model="form.fsnrGsnrNum"></iInput>
+        <el-form-item :label="language('LINGJIANCAIGOUXIANGMUBIANHAO','零件采购项目编号')" >
+          <iInput :placeholder="language('LK_QINGSHURU','请输入')" v-model="form.fsnrGsnrNum"></iInput>
         </el-form-item>
-        <el-form-item :label="'零件号'" >
-          <iInput :placeholder="$t('LK_QINGSHURU')" v-model="form.partNo"></iInput>
+        <el-form-item :label="language('LINGJIANHAO','零件号')" >
+          <iInput :placeholder="language('LK_QINGSHURU','请输入')" v-model="form.partNo"></iInput>
         </el-form-item>
-        <el-form-item :label="'零件名称'" >
-          <iInput :placeholder="$t('LK_QINGSHURU')" v-model="form.partName"></iInput>
+        <el-form-item :label="language('LINGJIANMINGCHENG','零件名称')" >
+          <iInput :placeholder="language('LK_QINGSHURU','请输入')" v-model="form.partName"></iInput>
         </el-form-item>
-        <el-form-item :label="'供应商编号'" >
-          <iInput :placeholder="$t('LK_QINGSHURU')" v-model="form.supplierNo"></iInput>
+        <el-form-item :label="language('GONGYINGSHANGBIANHAO','供应商编号')" >
+          <iInput :placeholder="language('LK_QINGSHURU','请输入')" v-model="form.supplierNo"></iInput>
         </el-form-item>
-        <el-form-item :label="'供应商名称'" >
-          <iInput :placeholder="$t('LK_QINGSHURU')" v-model="form.supplierName"></iInput>
+        <el-form-item :label="language('GONGYINGSHANGMINGCHENG','供应商名称')" >
+          <iInput :placeholder="language('LK_QINGSHURU','请输入')" v-model="form.supplierName"></iInput>
         </el-form-item>
       </el-form>
     </iSearch>
@@ -43,9 +43,9 @@
       <div class="margin-bottom20 clearFloat">
           <div class="floatright">
             <!--------------------返回按钮----------------------------------->
-            <iButton @click="handleSave" :loading="saveLoading">保存</iButton>
+            <iButton @click="handleSave" :loading="saveLoading">{{language('BAOCUN','保存')}}</iButton>
             <!--------------------选择按钮----------------------------------->
-            <iButton @click="downloadTemp" :loading="downloadLoading">下载模板</iButton>
+            <iButton @click="downloadTemp" :loading="downloadLoading">{{language('XIAZAIMOBAN','下载模板')}}</iButton>
             <!--------------------返回按钮----------------------------------->
             <!-- <iButton @click="goBack">上传</iButton> -->
             <el-upload
@@ -55,15 +55,15 @@
               style="display:inline-block;"
               :show-file-list='false'
               :on-progress='()=>{uploadLoading=true}'
-              :on-error='()=>{uploadLoading=false;iMessage.error("上传失败！")}'
+              :on-error='()=>{uploadLoading=false;iMessage.error(language("SHANGCHUANSHIBAI","上传失败！"))}'
               :on-success='fileSuccess'
             >
-              <iButton :loading='uploadLoading' >上传</iButton>
+              <iButton :loading='uploadLoading' >{{language('SHANGCHUAN','上传')}}</iButton>
             </el-upload>
             <!--------------------选择按钮----------------------------------->
-            <iButton @click="handleReadQuotation" :loading="readQuotationLoading">读取报价单</iButton>
-            <!--------------------返回按钮----------------------------------->
-            <iButton @click="handlePreviewRS">RS单预览</iButton>
+            <iButton @click="handleReadQuotation" :loading="readQuotationLoading">{{language('DUQUBAOJIADAN','读取报价单')}}</iButton>
+            <!--------------------RS单预览按钮----------------------------------->
+            <iButton @click="handlePreviewRS">{{language('RSDANYULAN','RS单预览')}}</iButton>
             
           </div>
       </div>
@@ -79,7 +79,7 @@
 <script>
 import { iPage, iCard, iButton, iSearch, iInput, iMessage } from 'rise'
 import tableList from '../components/tableList'
-import { rsTableTitle, rsMockData, defaultLtcs } from './data'
+import { rsTableTitle, defaultLtcs } from './data'
 import detailTop from '../components/topComponents'
 import rsDialog from '@/views/partsprocure/editordetail/components/designateInfo/components/rsEEdition'
 import { getList, readQuotation, downloadRSDoc, updateRS } from '@/api/designate/decisiondata/rs'
@@ -89,7 +89,7 @@ export default {
   components: { iPage, iCard, iButton, tableList, iSearch, iInput, detailTop, rsDialog },
   data() {
     return {
-      tableListData: rsMockData,
+      tableListData: [],
       tableTitle: rsTableTitle,
       tableLoading: false,
       form: {
@@ -118,16 +118,17 @@ export default {
   methods: {
     handlePreviewRS() {
       if (this.selectedTableData.length < 1) {
-        iMessage.warn('请选择需要预览的RS单')
+        iMessage.warn(this.language('QINGXUANZEXUYAOYULANDERSDAN','请选择需要预览的RS单'))
         return
       }
       if (this.selectedTableData.length > 1) {
-        iMessage.warn('只能选择一条RS单预览')
+        iMessage.warn(this.language('ZHINENGXUANZEYITIAORSDANYULAN','只能选择一条RS单预览'))
         return
       }
       this.otherNominationId = this.selectedTableData[0].nominateAppId
       this.otherNominationType = this.selectedTableData[0].nominateProcessType
       this.otherPartProjectType = this.selectedTableData[0].partProjectType
+      this.changersEeditionDialogVisible(true)
     },
     /**
      * @Description: 修改表格
@@ -144,7 +145,7 @@ export default {
       if(res.code == 200){
         // this.vm.init()
         this.uploadLoading=false;
-        iMessage.success("上传成功！")
+        iMessage.success(this.language('SHANGCHUANCHENGGONG',"上传成功！"))
         this.getTableList()
       }else{
         this.uploadLoading = false;
@@ -159,7 +160,7 @@ export default {
      */    
     async downloadTemp() {
       if (this.tableListData.length < 1) {
-        iMessage.warn('请选择需要下载的数据')
+        iMessage.warn(this.language('QINGXUANZEXUYAOXIAZAIDESHUJU','请选择需要下载的数据'))
         return
       }
       this.downloadLoading = true
@@ -174,6 +175,10 @@ export default {
      * @return {*}
      */    
     handleReadQuotation() {
+      if (this.selectedTableData.length < 1) {
+        iMessage.warn(this.language('QINGXUANZEXUYAODUQUDEBAOJIADAN','请选择需要读取的报价单'))
+        return
+      }
       this.readQuotationLoading = true
       const params = {
         nominateId: this.$route.query.desinateId,
@@ -269,7 +274,7 @@ export default {
           result = result && item.partName.includes(this.form.partName)
         }
         if (this.form.supplierNo) {
-          result = result && item.supplierNo.includes(this.form.supplierNo)
+          result = result && item.supplierId.includes(this.form.supplierNo)
         }
         if (this.form.supplierName) {
           result = result && item.supplierName.includes(this.form.supplierName)
@@ -286,7 +291,7 @@ export default {
     getTableList() {
       getList(this.$route.query.desinateId).then(res => {
         if (res?.result) {
-          this.otherNominationType = res.data.nominateProcessType
+          this.otherNominationType = res.data?.nominateProcessType
           const cloneData = cloneDeep(res.data?.lines).map(item => {
             const singleItem = { ...item }
             const watchChangeData = ['aprice','bprice','investFee','investFeeIsShared','devFee','devFeeIsShared']

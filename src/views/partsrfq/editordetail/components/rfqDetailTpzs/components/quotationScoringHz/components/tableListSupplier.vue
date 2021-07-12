@@ -1,19 +1,20 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-28 15:03:47
- * @LastEditTime: 2021-06-08 19:36:02
+ * @LastEditTime: 2021-07-12 14:43:53
  * @LastEditors: Please set LastEditors
  * @Description: 特殊表格实现
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\table.vue
 -->
 <template>
-<div class="selsTable">
+<div class="selsTable" :style="{paddingTop:paddingTop}">
   <el-table
     tooltip-effect="light"
     :height="height"
     :data="tableData"
     v-loading="loading"
     :empty-text="$t('LK_ZANWUSHUJU')"
+    ref='table'
   >
     <template v-for='(item,index) in tableTitle'>
       <!-----------------表格中内容模块------------------------>
@@ -27,24 +28,40 @@
       >
         <!----------在表头上方需要显示评分的点，插入表头标签------>
         <template slot="header" slot-scope="scope">
-          <span>{{scope.column.label}}</span>
+          <el-tooltip :content="scope.column.label" effect='light'><span class="labelHader">{{scope.column.label}}</span></el-tooltip>
           <div class="headerContent" v-if='scope.column.label == "Supplier"'>
             <div class="c" :style="{width:cWidth}">
-              <ul class="ca" style="width:200px;">
+              <ul class="ca" :style="{width:tableTitle.find(i=>i.label == 'Ratings').list.length * 50 + 100 + 'PX'}">
                 <li v-for='(items,index) in supplierLeftLit' :key='index'>
                   {{items.name}}
                 </li>
               </ul>
               <ul class="cb" v-for='(items,index) in centerSupplierData' :key='index'>
                 <template v-for="(itemss,index) in supplierLeftLit">
-                    <li :key='index'>{{items[itemss.props]}}</li>
+                    <li :key='index' v-if='itemss.name != "F-Target"'>{{items[itemss.props]}}</li>
+                    <li :key="index" v-else class="ftaget">
+                      <span>{{items['cfPartAPrice']}}</span>
+                      <span></span>
+                      <span>{{items['cfPartBPrice']}}</span>
+                    </li>
                 </template>
               </ul>
               <div class="cc" style="width:100px">
-                450.000
+                <ul>
+                  <template v-for="(itemss,index) in supplierLeftLit">
+                      <li :key='index' v-if='itemss.name == "KM"'>{{kmAPrice}}</li>
+                      <li :key="index" v-else class=""></li>
+                  </template>
+                </ul>
               </div>
               <div class="cd" style="width:100px">
-                450.000
+                <ul>
+                  <template v-for="(itemss,index) in supplierLeftLit">
+                      <li :key='index' v-if='itemss.name == "KM"'>{{kmTooling}}</li>
+                      <li :key='index' v-else-if='itemss.name == "Planned Invest"'>{{budget}}</li>
+                      <li :key="index" v-else class=""></li>
+                  </template>
+                </ul>
               </div>
             </div>
           </div>
@@ -62,15 +79,41 @@
               />
           </template>
         </template>
+        <!--------------时间格式------------>
+        <template slot-scope="scope">
+          <template v-if='removeKeysNumber(item.props) == "ltcStaringDate" || removeKeysNumber(item.props) == "supplierSopDate"'>
+            <span>{{scope.row[item.props]?moment(scope.row[item.props]).format("YYYY-MM-DD"):''}}</span>
+          </template>
+          <template v-else-if='removeKeysNumber(item.props) == "Quotationdetails"'>
+             <span class="link" @click="optionPage(scope.row,getPorpsNumber(item.props))">查看详情</span>
+          </template>
+          <template v-else slot-scope="scope">
+            <span>{{scope.row[item.props]}}</span>
+          </template>
+        </template>
+
       </el-table-column>
     </template>
   </el-table>
   </div>
 </template>
 <script>
-import {supplierTableTop} from './data'
+import {supplierTableTop,removeKeysNumber,getPorpsNumber} from './data'
 export default{
+  inject:['getbaseInfoData'],
   props:{
+    kmAPrice:{
+      type:String,
+      default:''
+    },
+    kmTooling:{
+      type:String,
+      default:''
+    },
+    budget:{
+      type:String,
+      default:''
+    },
     tableData:{
       type:Array,
       default:()=>[]
@@ -86,30 +129,69 @@ export default{
     supplierLeftLit:{
       type:Array,
       default:()=>[]
+    },
+    cWidth:{
+      type:String,
+      default:'0px'
     }
   },
   data(){
     return {
-    cWidth:'0px',
     supplierTableTop:supplierTableTop
   }},
   watch:{
-    tableTitle(){
-      this.$nextTick(()=>{
+    tableData(){
         setTimeout(() => {
            this.getTopWidth() 
-        }, 500);
-      })
+        }, 2000);
     }
   },
   methods:{
-    getTopWidth(){
-      this.cWidth = this.$el.querySelector('.el-table__header').offsetWidth - 100 + 'px'
+    getPorpsNumber(props){return getPorpsNumber(props)},
+    optionPage(items,index){
+      const router = this.$router.resolve({
+        path:'/supplier/quotationdetail',
+        query:{
+          rfqId:this.$route.query.id,
+          round:this.getbaseInfoData().currentRounds,
+          supplierId:items.supplierId,
+          fsNum:items[index+'partPrjCode'],
+          fix:true,
+          sourcing:true
+        }
+      })
+      window.open(router.href,'_blank')
+    },
+    moment(date){
+      // eslint-disable-next-line no-undef
+      return moment(date)
+    },
+    removeKeysNumber(key){
+      return removeKeysNumber(key)
+    },
+    doLayout(){
+      this.$refs.table.doLayout()
+    },
+  },
+  computed:{
+    paddingTop:function(){
+      return this.supplierLeftLit.length * 30 + 20 + 'PX'
     }
   }
 }
 </script>
 <style lang='scss' scoped>
+  .ftaget{
+    text-align: left;
+    span{
+      width: 100PX;
+      display: inline-block;
+      height: 100%;
+      border-right: 1px solid #C5CCD6;
+      text-align: center;
+      float: left;
+    }
+  }
   .el-table {
     overflow: visible;
     ::v-deep.cell{
@@ -117,6 +199,13 @@ export default{
     }
     ::v-deep .el-table__header-wrapper{
       overflow: visible;
+      .labelHader{
+        width: 100%;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        display: inherit;
+      }
     }
     ::v-deep.el-table__header{
       th{
@@ -135,7 +224,7 @@ export default{
       width: 100px;
       //background-color: red;
       z-index: 123;
-      bottom: 58px;
+      bottom: 56PX;
       left:-13px;
       border: 1px solid #C5CCD6;
       border-bottom: none;
@@ -166,18 +255,31 @@ export default{
         align-items: center;
         justify-content: center;
         background-color:rgba(22, 99, 246, 0.17);
+        ul{
+          background-color: transparent;
+          border-right: none;
+          li{
+            border-bottom: none;
+          }
+        }
       }
       .cd{
         display: flex;
         align-items: center;
         justify-content: center;
+        ul{
+          background-color: transparent;
+          border-right: none;
+          li{
+            border-bottom: none;
+          }
+        }
       }
     }
   }
   .selsTable{
     width: 100%;
     overflow-x: scroll;
-    padding-top: 320px;
   }
 
 </style>

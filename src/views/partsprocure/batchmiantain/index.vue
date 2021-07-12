@@ -1,10 +1,10 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 15:12:41
- * @LastEditTime: 2021-04-01 20:10:49
+ * @LastEditTime: 2021-07-09 14:48:23
  * @LastEditors: Please set LastEditors
  * @Description: 零件采购项目批量维护界面
- * @FilePath: \rise\src\views\partsprocure\batchmiantain\index.vue
+ * @FilePath: \front-web\src\views\partsprocure\batchmiantain\index.vue
 -->
 
 <template>
@@ -14,11 +14,11 @@
   >
     <div class="margin-bottom20 clearFloat">
       <span class="font18 font-weight">{{
-        $t("LK_PILIANGWEIHULINGJIANCAIGOUXIANGMU")
+        language("LK_PILIANGWEIHULINGJIANCAIGOUXIANGMU",'批量维护零件采购项目')
       }}</span>
       <div class="floatright">
         <iButton @click="back" v-permission="PARTSPROCURE_BATCHMIANTAIN_SAVE">{{
-          $t("LK_FANHUI")
+          language("LK_FANHUI",'返回')
         }}</iButton>
         <!-- 	<iButton @click="creatFs" v-permission="PARTSPROCURE_BATCHMIANTAIN_GENERATEFSNUMBER">
 					{{ $t("LK_SHENGCHENGFSHAO") }}
@@ -32,30 +32,30 @@
           :loading="startLoding"
           v-permission="PARTSPROCURE_BATCHMIANTAIN_STARTINQUIRY"
         >
-          {{ $t("LK_QIDONGXUNJIA") }}
+          {{ language("LK_QIDONGXUNJIA",'启动询价') }}
         </iButton>
       </div>
     </div>
     <iSearch
       class="margin-bottom20"
-      :title="$t('LK_CAIGOUXIANGMUXINXI')"
+      :title="language('LK_CAIGOUXIANGMUXINXI','采购项目信息')"
       tabCard
     >
       <el-form>
-        <el-form-item :label="$t('LK_LINGJIANCAIGOUXIANGMULEIXING')">
-          <iSelect :placeholder="$t('LK_QINGXUANZE')" v-model="batch.type">
+        <el-form-item :label="language('LK_LINGJIANCAIGOUXIANGMULEIXING','零件采购项目类型')">
+          <iSelect :placeholder="language('LK_QINGXUANZE','请选择')" v-model="batch.type">
             <el-option
-              :value="item.id"
+              :value="item.code"
               :label="item.name"
               v-for="(item, index) in fromGroup.PART_PROJECT_TYPE"
               :key="index"
             ></el-option>
           </iSelect>
         </el-form-item>
-        <el-form-item :label="$t('LK_LINIEBUMEN')">
-          <iSelect :placeholder="$t('LK_QINGXUANZE')" v-model="batch.linieDept">
+        <el-form-item :label="language('LK_LINIEBUMEN','LINIE部门')">
+          <iSelect :placeholder="language('LK_QINGXUANZE','请选择')" v-model="batch.linieDept">
             <el-option
-              :value="item.id"
+              :value="item.code"
               :label="item.name"
               v-for="(item, index) in fromGroup.LINIE_DEPT"
               :key="index"
@@ -64,7 +64,7 @@
         </el-form-item>
         <el-form-item label="LINIE">
           <iSelect
-            :placeholder="$t('LK_QINGXUANZE')"
+            :placeholder="language('LK_QINGXUANZE','请选择')"
             v-model="linie"
             value-key="id"
           >
@@ -76,21 +76,21 @@
             ></el-option>
           </iSelect>
         </el-form-item>
-        <el-form-item :label="$t('LK_LINGJIANLEIXING')">
-          <iSelect :placeholder="$t('LK_QINGXUANZE')" v-model="batch.partType">
+        <el-form-item :label="language('LK_LINGJIANLEIXING','零件类型')">
+          <iSelect :placeholder="language('LK_QINGXUANZE','请选择')" v-model="batch.partType">
             <el-option
-              :value="item.id"
+              :value="item.code"
               :label="item.name"
               v-for="(item, index) in fromGroup.PART_TYPE"
               :key="index"
             ></el-option>
           </iSelect>
         </el-form-item>
-        <el-form-item :label="$t('LK_CHEXINGXIANGMU')">
+        <el-form-item :label="language('LK_CHEXINGXIANGMU','车型项目')">
           <iSelect
-            :placeholder="$t('LK_QINGXUANZE')"
+            :placeholder="language('LK_QINGXUANZE','请选择')"
             v-model="cartypeProject"
-            value-key="id"
+            value-key="code"
           >
             <el-option
               :value="item"
@@ -100,32 +100,32 @@
             ></el-option>
           </iSelect>
         </el-form-item>
-        <el-form-item :label="$t('LK_CAIGOUGONGCHANG')">
+        <el-form-item :label="language('LK_CAIGOUGONGCHANG','采购工厂')">
           <iSelect
-            :placeholder="$t('LK_QINGXUANZE')"
+            :placeholder="language('LK_QINGXUANZE','请选择')"
             v-model="batch.procureFactory"
           >
             <el-option
-              :value="item.id"
+              :value="item.code"
               :label="item.name"
               v-for="(item, index) in fromGroup.PURCHASE_FACTORY"
               :key="index"
             ></el-option>
           </iSelect>
         </el-form-item>
-        <el-form-item :label="$t('LK_DANWEI')">
-          <iSelect :placeholder="$t('LK_QINGXUANZE')" v-model="batch.unit">
+        <el-form-item :label="language('LK_DANWEI','价格单位')">
+          <iSelect :placeholder="language('LK_QINGXUANZE','请选择')" v-model="batch.unit">
             <el-option
-              :value="item.id"
+              :value="item.code"
               :label="item.name"
               v-for="(item, index) in fromGroup.UNIT"
               :key="index"
             ></el-option>
           </iSelect>
         </el-form-item>
-        <el-form-item :label="$t('LK_CFKONGZHIYUAN')">
+        <el-form-item :label="language('LK_CFKONGZHIYUAN','CF控制员')">
           <iSelect
-            :placeholder="$t('LK_QINGXUANZE')"
+            :placeholder="language('LK_QINGXUANZE','请选择')"
             v-model="batch.cfController"
           >
             <el-option
@@ -141,26 +141,26 @@
         <iButton
           @click="save"
           v-permission="PARTSPROCURE_BATCHMIANTAIN_PURCHASINGCONFIRM"
-          >{{ $t("LK_QUEREN") }}
+          >{{ language("LK_QUEREN",'确认') }}
         </iButton>
         <iButton
           @click="reset"
           v-permission="PARTSPROCURE_BATCHMIANTAIN_PURCHASERESET"
-          >{{ $t("LK_ZHONGZHI") }}
+          >{{ language("LK_ZHONGZHI",'重置') }}
         </iButton>
       </template>
     </iSearch>
     <iSearch
       class="margin-bottom20"
-      :title="$t('LK_GONGYISHEZHI')"
+      :title="language('LK_GONGYISHEZHI','工艺设置')"
       tabCard
       icon
     >
     <!-- LK_CAILIAOZUGONGYISHEZHI -->
       <el-form>
-        <el-form-item :label="$t('LK_CAILIAOZUSHAIXUAN')"><!-- LK_CAILIAOZU -->
+        <el-form-item :label="language('LK_CAILIAOZUSHAIXUAN','材料组筛选')"><!-- LK_CAILIAOZU -->
           <iSelect
-            :placeholder="$t('LK_QINGXUANZE')"
+            :placeholder="language('LK_QINGXUANZE','请选择')"
             v-model="categoryObj"
             @change="changeSelect"
             value-key="categoryId"
@@ -173,9 +173,9 @@
             ></el-option>
           </iSelect>
         </el-form-item>
-        <el-form-item :label="$t('LK_GONGYIZUXUANDING')"><!-- LK_GONGYI -->
+        <el-form-item :label="language('LK_GONGYIZUXUANDING','工艺组选定')"><!-- LK_GONGYI -->
           <iSelect
-            :placeholder="$t('LK_QINGXUANZHEXIANCAILIAOZU')"
+            :placeholder="language('LK_QINGXUANZHEXIANCAILIAOZU','请选择先材料组')"
             v-model="stuff"
             value-key="stuffCode"
           >
@@ -194,13 +194,13 @@
           @click="save"
           v-permission="PARTSPROCURE_BATCHMIANTAIN_MATERIALGROUPCONFIRM"
         >
-          {{ $t("LK_QUEREN") }}
+          {{ language("LK_QUEREN",'确认') }}
         </iButton>
         <iButton
           @click="resetStuff"
           v-permission="PARTSPROCURE_BATCHMIANTAIN_MATERIALGROUPRESET"
         >
-          {{ $t("LK_ZHONGZHI") }}
+          {{ language("LK_ZHONGZHI",'重置') }}
         </iButton>
       </template>
     </iSearch>
@@ -256,7 +256,7 @@ export default {
         type: "", //零件采购项目类型
         unit: "", //单位
         purchaseProjectIds: [], //采购项目id
-        categoryId: {}, // 材料组id
+        categoryId: '', // 材料组id
       },
       stuff: {},
       categoryObj: {},
@@ -298,7 +298,7 @@ export default {
     // },
     // 更新材料组值域
     updateCategoryGroup(group) {
-      this.categoryObj = null
+      this.categoryObj = {}
       this.resetStuff()
       this.category = group
     },
@@ -325,7 +325,7 @@ export default {
     save() {
       if (this.batch.purchaseProjectIds.length == 0) {
         iMessage.warn(
-          this.$t("LK_QINGXUANZHEXUYAOXIUGAIDELINGJIANCAIGOUXIANGMU")
+          this.language("LK_QINGXUANZHEXUYAOXIUGAIDELINGJIANCAIGOUXIANGMU",'请选择需要修改的零件采购项目')
         );
         return;
       }
@@ -338,7 +338,7 @@ export default {
         batch,
       }).then((res) => {
         if (res.data) {
-          iMessage.success(this.$t("LK_XIUGAICHENGGONG"));
+          iMessage.success(this.language("LK_XIUGAICHENGGONG",'修改成功'));
           this.$refs.outputPlan.getData()
         } else {
           iMessage.error(res.desZh);
@@ -346,15 +346,17 @@ export default {
       });
     },
     pushKey() {
+      const factoryItems = this.fromGroup.PURCHASE_FACTORY.find(items=>items.code == this.batch.procureFactory)
       this.batch.stuffName = this.stuff.stuffName;
       this.batch.stuffCode = this.stuff.stuffCode;
       this.batch.stuffId = this.stuff.id;
       this.batch.cartypeProjectZh = this.cartypeProject.name;
-      this.batch.cartypeProjectNum = this.cartypeProject.id;
+      this.batch.cartypeProjectNum = this.cartypeProject.code;
       this.batch.linieName = this.linie.name;
-      this.batch.linieNum = this.linie.id;
-      this.batch.categoryCode = this.categoryObj.categoryCode;
-      this.batch.categoryName = this.categoryObj.categoryNameZh;
+      this.batch.linieNum = this.linie.code;
+      this.batch.categoryCode = this.categoryObj.categoryCode?this.categoryObj.categoryCode:'';
+      this.batch.categoryName = this.categoryObj.categoryNameZh?this.categoryObj.categoryNameZh:'';
+      this.batch['procureFactoryName'] = factoryItems?factoryItems.name:''
     },
     // 重置采购信息数据
     reset() {
@@ -378,8 +380,9 @@ export default {
     creatFs() {
       if (this.selectTableData.length == 0)
         return iMessage.warn(
-          this.$t(
-            "LK_NINDANGQIANHAIWEIXUANZENINXUYAOSHENGCHENGFSHAODELINGJIANCAIGOUXIANGMU"
+          this.language(
+            "LK_NINDANGQIANHAIWEIXUANZENINXUYAOSHENGCHENGFSHAODELINGJIANCAIGOUXIANGMU",
+            '抱歉，您当前还未选择您需要生成FS号的零件采购项目！'
           )
         );
       let fs = {
@@ -389,7 +392,7 @@ export default {
         fs,
       }).then((res) => {
         if (res.data) {
-          iMessage.success(this.$t("LK_CAOZUOCHENGGONG"));
+          iMessage.success(this.language("LK_CAOZUOCHENGGONG",'操作成功'));
         } else {
           iMessage.error(res.desZh);
         }
@@ -400,8 +403,9 @@ export default {
         if (this.selectTableData.length == 0) {
           r(false);
           iMessage.warn(
-            this.$t(
-              "LK_NINDANGQIANHAIWEIXUANZEXUYAOQIDONGXUNJIADECAIGOUXIANGMU"
+            this.language(
+              "LK_NINDANGQIANHAIWEIXUANZEXUYAOQIDONGXUNJIADECAIGOUXIANGMU",
+              '抱歉，您当前还未选择需要启动询价的采购项目！'
             )
           );
           return;
@@ -409,8 +413,9 @@ export default {
         if (this.selectTableData.find((items) => items.fsnrGsnrNum == "")) {
           r(false);
           iMessage.warn(
-            this.$t(
-              "LK_DANGQIANCAIGOUXIANGMUZHONGCUNZAIHAIWEISHENGCHENGFSNRDESHUJUWUFAWEININQIDONGXUNJIA"
+            this.language(
+              "LK_DANGQIANCAIGOUXIANGMUZHONGCUNZAIHAIWEISHENGCHENGFSNRDESHUJUWUFAWEININQIDONGXUNJIA",
+              '抱歉，当前采购项目中存在还未生成FSNR的数据，无法为您启动询价！'
             )
           );
           return;

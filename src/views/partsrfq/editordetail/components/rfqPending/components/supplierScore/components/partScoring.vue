@@ -2,13 +2,13 @@
   <i-page>
     <div class="pageTitle flex-between-center-center">
       <div class="flex nav-box">
-        <span>{{ $t('LK_LINGJIANPINGFEN') }}</span>
+        <span>{{ language('LK_LINGJIANPINGFEN','零件评分') }}</span>
       </div>
       <div class="btnList">
-        <iButton @click="backPage">{{ $t('LK_FANHUI') }}</iButton>
+        <iButton @click="backPage">{{ language('LK_FANHUI','返回') }}</iButton>
         <iButton type="text" @click="log">
           <icon symbol name="iconrizhiwuzi" class="log-icon"/>
-          <span class="log-word">{{ $t('LK_RIZHI') }}</span>
+          <span class="log-word">{{ language('LK_RIZHI','日志') }}</span>
         </iButton>
         <span>
 					<icon symbol name="icondatabaseweixuanzhong"></icon>
@@ -24,7 +24,7 @@
           :index="true"
           @openMultiHeaderPropsPage="openMultiHeaderPropsPage"
           multi-header-props="tpbMemo"
-          :multi-header-props-text="$t('LK_CHAKAN')"
+          :multi-header-props-text="language('LK_CHAKAN','查看')"
           action-props=""
       ></tablelist>
       <!------------------------------------------------------------------------>
@@ -61,7 +61,9 @@ import {partScroingTitle} from "./data";
 import {pageMixins} from "@/utils/pageMixins";
 import tpbRemarks from './tpbRemarks'
 import {getSupplierAllParts} from "@/api/partsrfq/editordetail";
+import { getRfqPartRatingsByCurrentDept } from "@/api/supplierscore"
 import store from '@/store'
+import { cloneDeep } from "lodash"
 export default {
   components: {
     iCard,
@@ -76,7 +78,7 @@ export default {
   data() {
     return {
       tableListData: [],
-      tableTitle: partScroingTitle,
+      tableTitle: cloneDeep(partScroingTitle),
       tableLoading: false,
       selectTableData: [],
       dialogRemarks: false,
@@ -93,19 +95,30 @@ export default {
       if (rfqId && supplierId) {
         this.tableLoading = true;
         try {
-          const req = {
-            supplierId,
+          const res = await getRfqPartRatingsByCurrentDept({
             rfqId,
-            userId:store.state.permission.userInfo.id,
-            isFake: 1
+            supplierId
+          })
+          this.tableListData = Array.isArray(res.data) ? res.data : []
+          this.tableTitle = cloneDeep(partScroingTitle)
+          if (this.tableListData[0]) {
+            this.tableTitle[this.tableTitle.length - 1].name = this.tableListData[0].rateTag
           }
-          const res = await getSupplierAllParts(req)
-          this.tableListData = res.records;
-          this.page.currPage = res.current
-          this.page.pageSize = res.size
-          this.page.totalCount = res.total
+          // const req = {
+          //   supplierId,
+          //   rfqId,
+          //   userId:store.state.permission.userInfo.id,
+          //   isFake: 1
+          // }
+          // const res = await getSupplierAllParts(req)
+          // this.tableListData = res.records;
+          // this.page.currPage = res.current
+          // this.page.pageSize = res.size
+          // this.page.totalCount = res.total
           this.tableLoading = false;
         } catch {
+          this.tableLoading = false;
+        } finally {
           this.tableLoading = false;
         }
       }

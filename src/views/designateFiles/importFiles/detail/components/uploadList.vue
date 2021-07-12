@@ -5,15 +5,22 @@
 -->
 
 <template>
+<iDialog     
+    :title="language('LK_SHANGCHUANWENJIAN','上传文件')"
+    :visible.sync="dialogVisible"
+    @close="clearDialog"
+    width="90%"
+    class="uploadListDialog"
+>
   <div class="uploadList">
       <!-- 按钮区域 -->
       <p class="btn-list">
-          <iButton @click="download">{{$t('LK_XIAZAI')}}</iButton>
-          <iButton @click="deleteFiles">{{$t('LK_SHANCHU')}}</iButton>
+          <iButton @click="download">{{language('LK_XIAZAI','下载')}}</iButton>
+          <iButton @click="deleteFiles">{{language('LK_SHANCHU','删除')}}</iButton>
             <span class="margin-left10">
                 <Upload 
                     hideTip
-                    :buttonText="$t('LK_SHANGCHUANWENJIAN')"
+                    :buttonText="language('LK_SHANGCHUANWENJIAN','上传文件')"
                     :request="uploadImportFile"
                     @on-success="onDraingUploadsucess"
                 />
@@ -23,6 +30,7 @@
         <tableList
             class="table"
             index
+            :lang="true"
             :tableData="tableListData"
             :tableTitle="tableTitle"
             :tableLoading="loading"
@@ -34,14 +42,14 @@
             </template>
             <!-- 附件 -->
             <template #LK_FUJIAN="scope">
-            <span @click="checkUploadList(scope.row.id)" class="link-underline" >{{$t('LK_SHANGCHUAN')}}</span>
+            <span @click="checkUploadList(scope.row.id)" class="link-underline" >{{language('LK_SHANGCHUAN','上传')}}</span>
             </template>
         </tableList>
         <!-- 分页 -->
         <iPagination
             class="margin-bottom20"
-            @size-change="handleSizeChange($event, purchaseFactory)"
-            @current-change="handleCurrentChange($event, purchaseFactory)"
+            @size-change="handleSizeChange($event, getList)"
+            @current-change="handleCurrentChange($event, getList)"
             background
             :page-sizes="page.pageSizes"
             :page-size="page.pageSize"
@@ -50,6 +58,8 @@
             :total="page.totalCount" v-update
         />
   </div>
+
+</iDialog>
 </template>
 
 <script>
@@ -57,8 +67,8 @@ import {
     iPagination,
     iButton,
     iMessage,
+    iDialog,
 } from 'rise';
-import uploadButton from 'pages/partsrfq/components/uploadButton'
 import {pageMixins} from '@/utils/pageMixins'
 import { filesTableTitle } from '../data'
 import tableList from "@/views/partsign/editordetail/components/tableList";
@@ -74,24 +84,25 @@ export default {
     name:'uploadList',
     mixins:[pageMixins],
     components:{
-        uploadButton,
         iPagination,
         iButton,
         tableList,
         Upload,
-        iMessage,
+        iDialog,
     },
     props:{
         uploadId:{
             type:String,
             default:'',
+        },
+        dialogVisible:{
+            type:Boolean,
+            default:false,
         }
     },
     data(){
         return{
-            tableListData:[
-                {fileName:'xxx.png',uploadDate:'2021-01-10',uploadBy:'xxx'},
-            ],
+            tableListData:[],
             tableTitle:filesTableTitle,
             loading:false,
             selectItems:[],
@@ -102,10 +113,6 @@ export default {
         this.getList();
     },
     methods:{
-        // 上传附件
-        uploadAttachments(data,size){
-            console.log(data,size);
-        },
 
         // 获取列表
         async getList(){
@@ -129,17 +136,27 @@ export default {
         },
         // 上传附件
         async onDraingUploadsucess(data){
-            const filesData = data.data;
+            console.log(data,'data');
             const { uploadId } = this;
-            const sendData = {
-                affixId:uploadId,
-                ...filesData,
-            }
-            await uploadAttachments(sendData).then((res)=>{
+            const filesData = data.data;
+            const {id,fileName,filePath} = filesData;
+            const formData = new FormData(); 
+            formData.append('file', data.file);
+            formData.append('affixId', uploadId);
+            formData.append('id', id);
+            formData.append('fileName', fileName);
+            formData.append('filePath', filePath);
+            // const sendData = {
+            //     affixId:uploadId,
+            //     ...filesData,
+            // }
+            await uploadAttachments(formData).then((res)=>{
                 const { code } = res;
                 if(code == 200) this.getList();
 
-            }).catch((err)=>{});
+            }).catch((e)=>{
+                iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
+            });
         },
         
         handleSelectionChange(val) {
@@ -149,15 +166,15 @@ export default {
         async deleteFiles(){
             const { selectItems } = this;
             if(!selectItems.length){
-                iMessage.warn(this.$t('LK_QINGXUANZHEXUYAOSHANCHUYOUJIAN'));
+                iMessage.warn(this.language('LK_QINGXUANZHEXUYAOSHANCHUYOUJIAN','请选择需要删除的附件'));
             }else{
-                const confirmInfo = await this.$confirm(this.$t('deleteSure'))
+                const confirmInfo = await this.$confirm(this.language('deleteSure','您确定要执行删除操作吗？'))
                 if (confirmInfo !== 'confirm') return;
                 const attachmentIds = selectItems.map((item)=>item.id);
                 await deleteattachments({attachmentIds}).then((res)=>{
                     const {code} = res;
                     if(code == 200 ){
-                        iMessage.success(this.$t('LK_CAOZUOCHENGGONG'));
+                        iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
                         this.getList();
                     } else {
                         iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
@@ -170,15 +187,18 @@ export default {
         async download(){
             const  {selectItems } = this;
             if(!selectItems.length){
-             iMessage.warn(this.$t('LK_QINGXUANZHEXUYAOXIAZHAIDEFUJIAN'));
+             iMessage.warn(this.language('LK_QINGXUANZHEXUYAOXIAZHAIDEFUJIAN','请选择需要下载的附件'));
             }else{
-                const list = selectItems.map((item)=>item.id);
+                const list = selectItems.map((item)=>item.fileName);
                 const data = {
                     applicationName: 'rise',
                     fileList:list.join(),
                 };
                 await downloadFile(data);
             }
+        },
+        clearDialog() {
+        this.$emit('changeShowStatus');
         },
     }
 }
@@ -187,6 +207,7 @@ export default {
 <style lang="scss" scoped>
     .uploadList{
         position: relative;
+        padding-bottom: 20px;
         .btn-list{
             position: absolute;
             right: 40px;

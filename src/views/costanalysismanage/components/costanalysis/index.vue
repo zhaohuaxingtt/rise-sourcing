@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-05-28 16:01:25
- * @LastEditTime: 2021-06-11 17:37:41
+ * @LastEditTime: 2021-06-25 14:10:25
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\costanalysismanage\components\costanalysis\index.vue
@@ -9,14 +9,14 @@
 <template>
   <iPage class="analysis">
     <div class="header clearFloat">
-      <div class="title">{{ $t("costanalysismanage.ChengBenFenXi") }}</div>
+      <div class="title">{{ language("CHENGBENFENXI", "成本分析") }}</div>
       <div class="control">
         <!-- <iButton @click="back">{{ $t("costanalysismanage.FanHui") }}</iButton> -->
         <uploadButton uploadClass="uploadButton" :params="uploadParams" :beforeUpload="beforeUpload" @success="uploadSuccess" @error="uploadError">
-          <iButton :loading="uploadLoading">{{ $t("costanalysismanage.ShangChuan") }}</iButton>
+          <iButton :loading="uploadLoading">{{ language("SHANGCHUAN", "上传") }}</iButton>
         </uploadButton>
-        <iButton @click="handleDownload">{{ $t("costanalysismanage.XiaZai") }}</iButton>
-        <iButton :loading="deleteLoading" @click="handleDelete">{{ $t("costanalysismanage.ShanChu") }}</iButton>
+        <iButton @click="handleDownload">{{ language("XIAZAI", "下载") }}</iButton>
+        <iButton :loading="deleteLoading" @click="handleDelete">{{ language("SHANCHU", "删除") }}</iButton>
         <logButton class="margin-left20" />
         <span class="margin-left20">
           <icon symbol name="icondatabaseweixuanzhong" class="font24"></icon>
@@ -28,6 +28,7 @@
         <tableList
           class="table"
           index
+          :lang="true"
           :tableData="tableListData"
           :tableTitle="tableTitle"
           :tableLoading="loading"
@@ -59,7 +60,7 @@
 
 <script>
 import { iPage, iButton, icon, iCard, iPagination, iMessage } from "rise"
-import logButton from "@/views/partsign/editordetail/components/logButton"
+import logButton from "@/components/logButton"
 import uploadButton from "../uploadButton"
 import tableList from "@/views/partsign/editordetail/components/tableList"
 import { tableTitle } from "./components/data"
@@ -162,7 +163,7 @@ export default {
       } else {
         this.fileList = []
         clearTimeout(this.timer)
-        iMessage.success(`${ file.name } ${ this.$t("LK_SHANGCHUANCHENGGONG") }`)
+        iMessage.success(`${ file.name } ${ this.language("SHANGCHUANCHENGGONG", "上传成功") }`)
         this.fileList.push({ tpPartAttachmentName: res.data[0].fileName, tpPartAttachmentPath: res.data[0].filePath, size: file.size })
         this.timer = setTimeout(() => {
           this.uploadFiles()
@@ -172,7 +173,7 @@ export default {
     },
     uploadError(err, file) {
       this.uploadLoading = false
-      iMessage.error(`${ file.name } ${ this.$t('LK_SHANGCHUANSHIBAI') }`)
+      iMessage.error(`${ file.name } ${ this.language("SHANGCHUANSHIBAI", "上传失败") }`)
     },
     // 返回
     back() {
@@ -180,7 +181,7 @@ export default {
     },
     // 多选下载
     handleDownload() {
-      if (this.multipleSelection.length < 1) return iMessage.warn(this.$t("costanalysismanage.QingXuanZeXuYaoXiaZaiDeWenJian"))
+      if (this.multipleSelection.length < 1) return iMessage.warn(this.language("QINGXUANZEXUYAOXIAZAIDEWENJIAN", "请选择需要下载的文件"))
 
       downloadFile({
         applicationName: "rise",
@@ -196,7 +197,7 @@ export default {
     },
     // 删除
     handleDelete() {
-      if (this.multipleSelection.length < 1) return iMessage.warn(this.$t("costanalysismanage.QingXuanZeXuYaoShanChuDeWenJian"))
+      if (this.multipleSelection.length < 1) return iMessage.warn(this.language("QINGXUANZEXUYAOSHANCHUDEWENJIAN", "请选择需要删除的文件"))
       this.deleteLoading = true
       deleteFileHistory({
         idList: this.multipleSelection.map(item => item.id)

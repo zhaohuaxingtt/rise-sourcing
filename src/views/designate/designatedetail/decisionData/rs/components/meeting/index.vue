@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:17:25
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-08 16:38:10
+ * @LastEditTime: 2021-07-10 09:56:31
  * @Description: 上会/备案RS单
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\rs\components\meeting\index.vue
 -->
@@ -36,73 +36,97 @@
         </div>
       </div>
       <tableList v-update :selection="false" :tableTitle="tableTitle" :tableData="tableData" class="rsTable" />
-      <div class="beizhu">备注 Remarks:<div class="beizhu-value" v-if="isPreview">
-        <p v-for="(item,index) in remarkItem" :key="index">{{item.value}}</p>
-      </div></div>
+      <div class="beizhu">
+        备注 Remarks:
+        <div class="beizhu-value" v-if="isPreview">
+          <p v-for="(item,index) in remarkItem" :key="index">{{item.value}}</p>
+        </div>
+      </div>
+      <div v-if="projectType === 'PT04' || projectType === 'PT19'" style="text-align:right;">汇率：Exchange rate: 1{{basicData.currency}}={{basicData.cfExchangeRate}}RMB</div>
     </iCard>
-    <iCard v-if="!isPreview" title="上会备注" class="margin-top20">
-      <iButton slot="header-control" @click="handleSaveRemarks">保存</iButton>
+    <iCard v-if="!isPreview && !showSignatureForm" :title="language('SHANGHUIBEIZHU','上会备注')" class="margin-top20">
+      <iButton slot="header-control" @click="handleSaveRemarks" :loading="saveLoading">{{language('BAOCUN','保存')}}</iButton>
       <div class="meetingRemark">
         <div class="meetingRemark-item" v-for="(item, index) in remarkItem" :key="index">
-          <span class="meetingRemark-item-title">{{item.label}}</span>
-          <iInput class="margin-top10" type="textarea" :rows="10" resize="none" v-model="item.value" @input="val => handleInput(val, item.type)"></iInput>
+          <span class="meetingRemark-item-title">{{language(item.key,item.label)}}</span>
+          <iInput class="margin-top10" type="textarea" :rows="10" resize="none" v-model="remarks[item.type]" @input="val => handleInput(val, item.type)"></iInput>
         </div>
       </div>
     </iCard>
-    <iCard class="checkDate" :class="!isPreview && 'margin-top20'" :title="'申请日期：2020-01-01'">
+    <iCard v-if="!showSignatureForm" class="checkDate" :class="!isPreview && 'margin-top20'" :title="language('SHENQINGRIQI','申请日期')+'：'+processApplyDate">
       <div class="checkList">
         <div class="checkList-item" v-for="(item, index) in checkList" :key="index">
-          <icon v-if="item.status === '1'" symle name="iconrs-wancheng"></icon>
-          <icon v-else-if="item.status === '2'" symle name="iconrs-quxiao"></icon>
+          <icon v-if="item.approveStatus == '1'" symbol name="iconrs-wancheng"></icon>
+          <icon v-else-if="item.approveStatus == '2'" symbol name="iconrs-quxiao"></icon>
           <div v-else class="" >-</div>
           <div class="checkList-item-info">
-            <span>部门:</span>
-            <span class="checkList-item-info-depart">{{item.department}}</span>
+            <span>{{language('BUMEN','部门')}}:</span>
+            <span class="checkList-item-info-depart">{{item.approveDeptNumName}}</span>
           </div>
           <div class="checkList-item-info">
-            <span>日期:</span>
-            <span>{{item.date}}</span>
+            <span>{{language('RIQI','日期')}}:</span>
+            <span>{{item.approveDate}}</span>
           </div>
         </div>
       </div>
+    </iCard>
+    <iCard title="Prototype Cost List" class="margin-top20" v-if='!showSignatureForm && PrototypeList.length > 5'>
+      <el-table :data='PrototypeList'>
+        <template v-for="(items,index) in prototypeTitleList">
+          <el-table-column :key="index" :prop="items.props" align="center" :label="language(items.i18nKey,items.i18nName)"></el-table-column>
+        </template>
+      </el-table>
     </iCard>
   </div>
 </template>
 
 <script>
 import { iCard, iButton, iInput, icon, iMessage } from 'rise'
-import { nomalDetailTitle, nomalDetailTitleBlue, nomalTableTitle, meetingRemark, checkList } from './data'
+import { nomalDetailTitle, nomalDetailTitleBlue, nomalTableTitle, meetingRemark, checkList, gsDetailTitleBlue, gsTableTitle,sparePartTableTitle,accessoryTableTitle,prototypeTitleList,dbTableTitle } from './data'
 import tableList from '@/views/designate/designatedetail/components/tableList'
-import { getList, getRemark, updateRemark } from '@/api/designate/decisiondata/rs'
+import { getList, getRemark, updateRemark,getPrototypeList, getDepartApproval } from '@/api/designate/decisiondata/rs'
 export default {
   props: {
     isPreview: {type:Boolean, default:false},
     nominateId: {type:String},
-    projectType: {type:String}
+    // projectType: {type:String},
+    showSignatureForm: {type:Boolean, default:false}
   },
   components: { iCard, tableList, iButton, iInput, icon },
   data() {
     return {
       remarks: {},
       leftTitle: nomalDetailTitle,
-      rightTitle: nomalDetailTitleBlue,
+      // rightTitle: nomalDetailTitleBlue,
       // tableTitle: nomalTableTitle,
       tableData: [],
-      basicData: {
-        partName: '发动机控制器 STEUERGERAET, MOTOR',
-        partNum: 'See below'
-      },
-      remarkItem: meetingRemark,
+      basicData: {},
+      remarkItem: [],
       checkList: checkList,
-      resetRemarkType: ''
+      resetRemarkType: '',
+      saveLoading: false,
+      PrototypeList:[],
+      prototypeTitleList:prototypeTitleList,
+      processApplyDate: '',
+      projectType: ''
     }
   },
   computed: {
+    rightTitle() {
+      if (['PT11','PT04','PT19','PT17','PT18'].includes(this.projectType)) {
+        return gsDetailTitleBlue
+      }
+      return nomalDetailTitleBlue
+    },
     tableTitle() {
       if (this.projectType === 'PT17') {
         return sparePartTableTitle
       } else if (this.projectType === 'PT18') {
         return accessoryTableTitle
+      } else if (this.projectType === 'PT11') { //GS零件
+        return gsTableTitle
+      } else if (this.projectType === 'PT04' || this.projectType === 'PT19') { //DB零件,DB一次性采购
+        return dbTableTitle
       }
       return nomalTableTitle
     },
@@ -118,7 +142,36 @@ export default {
       return this.remarkItem.map(item => item.value).join('\n')
     }
   },
+  created(){this.getPrototypeList()},
   methods: {
+    /**
+     * @Description: 获取部门审批记录
+     * @Author: Luoshuang
+     * @param n*o
+     * @return n*o
+     */    
+    getDepartApproval() {
+      getDepartApproval(this.nominateId).then(res => {
+        if (res?.result) {
+          this.checkList = res.data.nomiApprovalProcessNodeVOList
+          this.processApplyDate = res.data.processApplyDate || ''
+        } else {
+          iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+        }
+      })
+    },
+    /**
+     * @description: US 描述当大于5条的时候则需要显示这个card 不管任何零件采购项目。任何linie
+     * @param {*}
+     * @return {*}
+     */
+    getPrototypeList(){
+      getPrototypeList(this.$route.query.desinateId).then(res=>{
+          this.PrototypeList = res.data.list || res.data.getQuotationSampleVOList || []
+      }).catch(err=>{
+        console.warn(err)
+      })
+    },
     /**
      * @Description: 保存备注
      * @Author: Luoshuang
@@ -126,6 +179,7 @@ export default {
      * @return {*}
      */    
     handleSaveRemarks() {
+      this.saveLoading = true
       const params = {
         meetRemark: this.remarks[this.resetRemarkType],
         nominateAppId: this.nominateId,
@@ -138,6 +192,8 @@ export default {
         } else {
           iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
         }
+      }).finally(() => {
+        this.saveLoading = false
       })
     },
     /**
@@ -148,6 +204,12 @@ export default {
      * @return {*}
      */    
     handleInput(val, type) {
+      this.remarkItem = this.remarkItem.map(item => {
+        return {
+          ...item,
+          value: item.type === type ? val : item.value
+        }
+      })
       this.remarks[type] = val
       this.resetRemarkType = type
     },
@@ -160,6 +222,7 @@ export default {
     init() {
       this.getTopList()
       this.getRemark()
+      this.getDepartApproval()
     },
     /**
      * @Description: 获取表格初始数据
@@ -170,11 +233,13 @@ export default {
     getTopList() {
       getList(this.nominateId).then(res => {
         if (res?.result) {
-          this.basicData = res.data
-          this.tableData = res.data.lines
+          this.basicData = res.data || {}
+          this.tableData = res.data?.lines
+          this.projectType = res.data.partProjectType || ''
         } else {
           this.basicData = {}
           this.tableData = []
+          this.projectType = ''
           iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
         }
       })
@@ -189,8 +254,8 @@ export default {
       getRemark(this.nominateId).then(res => {
         if (res?.result) {
           res.data.forEach(element => {
-            this.remarks[element.remarkType] = element.remark
-            this.remarkItem = this.remarkItem.map(item => {
+            this.remarks[element.remarkType] = element.remark || ''
+            this.remarkItem = meetingRemark.map(item => {
               return {...item, value: this.remarks[item.type]}
             })
           })

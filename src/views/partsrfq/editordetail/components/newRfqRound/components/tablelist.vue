@@ -2,7 +2,7 @@
   <el-table
       :height="height"
       :data='tableData'
-      :empty-text="$t('LK_ZANWUSHUJU')"
+      :empty-text="language('LK_ZANWUSHUJU','暂无数据')"
       v-loading='tableLoading'
       @selection-change="handleSelectionChange"
       ref="newRoundTable"
@@ -13,7 +13,7 @@
     <!--    <el-table-column v-if='index' type='index' width='50' align='center' :label="$t('LK_BIANHAO')"></el-table-column>-->
     <template v-for="(items,index) in tableTitle">
       <el-table-column :key="index" align='center' v-if='items.props === openPageProps' :prop="items.props"
-                       :label="$t(items.key)">
+                       :label="language(items.key,items.name)">
         <template slot-scope="scope">
             <span class="openLinkText cursor"
                   @click="openPage(openPageGetRowData ?  scope.row : scope.row[items.props])">{{
@@ -21,22 +21,22 @@
               }}</span>
         </template>
       </el-table-column>
-      <el-table-column :key="index" align='center' :label="$t(items.key)" v-else-if="items.props === 'isMbdl'">
+      <el-table-column :key="index" align='center' :label="language(items.key,items.name)" v-else-if="items.props === 'isMbdl'">
         <template slot-scope="scope">
           {{ scope.row.isMbdl == 2 ? 'M' : '' }}
         </template>
       </el-table-column>
       <el-table-column :key="index" align='center'
                        v-else-if='selectProps.includes(items.props)' :prop="items.props"
-                       :label="$t(items.key)">
+                       :label="language(items.key,items.name)">
         <template slot-scope="scope">
           <i-select v-model="scope.row[items.props]">
-            <el-option v-for="items in scope.row.roundCbdVOS" :key='items.id' :value='items.id'
-                       :label="$t(items.name)"/>
+            <el-option v-for="items in scope.row.roundCbdVOS" :key='items.code' :value='items.code'
+                       :label="$t(items.desc)"/>
           </i-select>
         </template>
       </el-table-column>
-      <el-table-column :key="index" align='center' v-else :label="$t(items.key)" :prop="items.props"></el-table-column>
+      <el-table-column :key="index" align='center' v-else :label="language(items.key,items.name)" :prop="items.props"></el-table-column>
     </template>
   </el-table>
 </template>

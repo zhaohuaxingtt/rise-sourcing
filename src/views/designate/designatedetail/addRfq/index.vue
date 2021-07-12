@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-24 11:27:22
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-10 20:59:59
+ * @LastEditTime: 2021-07-09 13:39:10
  * @Description: 
  * @FilePath: \front-web\src\views\designate\designatedetail\addRfq\index.vue
 -->
@@ -14,25 +14,25 @@
     <!------------------------------------------------------------------------>
     <iSearch class="margin-bottom20" icon @reset="handleSearchReset" @sure="getTableList">
       <el-form>
-        <el-form-item :label="$t('LK_LINGJIANHAO_FSNR_RFQBIANHAO_CAIGOUYUAN')" style="width: 340px">
-          <iInput :placeholder="$t('LK_QINGXUANZE')" v-model="form.fsnrGsnrNum"></iInput>
+        <el-form-item :label="language('LINGJIANHAO_FSNR_RFQBIANHAO_CAIGOUYUAN','零件号/FSNR/RFQ编号/采购员')" style="width: 340px">
+          <iInput :placeholder="language('QINGXUANZE','请选择')" v-model="form.fsnrGsnrNum"></iInput>
         </el-form-item>
-        <el-form-item :label="$t('LK_CHEXINGXIANGMU')">
-          <iSelect :placeholder="$t('LK_QINGXUANZE')" v-model="form.cartypeProjectZh">
-            <el-option value="" :label="$t('all')"></el-option>
+        <el-form-item :label="language('CHEXINGXIANGMU', '车型项目')">
+          <iSelect :placeholder="language('QINGXUANZE','请选择')" v-model="form.cartypeProjectZh">
+            <el-option value="" :label="language('ALL', '全部')"></el-option>
             <el-option v-for="items in carTypeOptions" :key='items.code' :value='items.code' :label="items.name"/>
           </iSelect>
         </el-form-item>
-        <el-form-item :label="$t('LK_LINGJIANXIANGMULEIXING')">
-          <iSelect :placeholder="$t('LK_QINGXUANZE')" v-model="form.partProjectType">
-            <el-option value="" :label="$t('all')"></el-option>
+        <el-form-item :label="language('LINGJIANXIANGMULEIXING','零件项目类型')">
+          <iSelect :placeholder="language('QINGXUANZE','请选择')" v-model="form.partProjectType">
+            <el-option value="" :label="language('ALL','全部')"></el-option>
             <el-option v-for="items in partTypeOptions" :key='items.code' :value='items.code'
                         :label="items.name"/>
           </iSelect>
         </el-form-item>
-        <el-form-item :label="$t('LK_RFQZHUANGTAI')">
-          <iSelect :placeholder="$t('LK_QINGXUANZE')" v-model="form.currentStatus">
-            <el-option value="" :label="$t('all')"></el-option>
+        <el-form-item :label="language('RFQZHUANGTAI','RFQ状态')">
+          <iSelect :placeholder="language('QINGXUANZE','请选择')" v-model="form.currentStatus">
+            <el-option value="" :label="language('ALL','全部')"></el-option>
             <el-option v-for="items in rfqStatusOptions" :key='items.code' :value='items.code'
                         :label="items.name"/>
           </iSelect>
@@ -43,9 +43,9 @@
       <div class="margin-bottom20 clearFloat">
           <div class="floatright">
             <!--------------------返回按钮----------------------------------->
-            <iButton @click="goBack">返回</iButton>
+            <iButton @click="goBack">{{language('FANHUI','返回')}}</iButton>
             <!--------------------选择按钮----------------------------------->
-            <iButton @click="handleSelect">选择</iButton>
+            <iButton @click="handleSelect">{{language('XUANZE','选择')}}</iButton>
           </div>
       </div>
         <!------------------------------------------------------------------------>
@@ -158,7 +158,7 @@ export default {
     toTop() {},
     handleSelect() {
       if (this.selectedRfqs.length < 1) {
-        iMessage.warn('请选择RFQ')
+        iMessage.warn(this.language('QINGXUANZERFQ','请选择RFQ'))
         return
       }
       this.tableLoading = true
@@ -170,7 +170,7 @@ export default {
       selectRfq(params).then(res => {
         if (res?.result) {
           iMessage.success(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
-          this.$router.push({path: '/designate/rfqdetail', query: {desinateId: res.data, designateType: this.$route.query.designateType ? this.$route.query.designateType : this.$store.getters.nominationType}})
+          this.$router.push({path: '/designate/rfqdetail', query: {desinateId: res.data.nominateId, designateType: res.data.nominateProcessType}})
         } else {
           iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
         }

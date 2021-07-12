@@ -1,8 +1,8 @@
 <!--
  * @Author: ldh
  * @Date: 2021-05-29 16:29:00
- * @LastEditTime: 2021-06-14 16:32:10
- * @LastEditors: ldh
+ * @LastEditTime: 2021-06-25 14:48:29
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqPending\components\partDetaiList\components\kmDialog.vue
 -->
@@ -16,7 +16,7 @@
     <template #title>
       <p class="title"></p>
       <div class="control" id="control">
-        <iButton :loading="sendLoading" @click="handleSend">{{ $t("partsprocure.FaSong") }}</iButton>
+        <iButton :loading="sendLoading" @click="handleSend">{{ language("FASONG", "发送") }}</iButton>
         <!-- 2021/06/02 取消撤回功能 -->
         <!-- <iButton :loading="recallLoading" @click="handleRecall">{{ $t("partsprocure.CheHui") }}</iButton> -->
       </div>
@@ -27,6 +27,7 @@
         height="100%"
         v-show="visible"
         class="table"
+        :lang="true"
         :tableData="tableListData"
         :tableTitle="tableTitle"
         :tableLoading="loading"
@@ -148,9 +149,9 @@ export default {
     },
     // 提交
     handleSend() {
-      if (this.multipleSelection.length < 1) return iMessage.warn(this.$t("nominationSuggestion.QingXuanZeZhiShaoYiTiaoShuJu"))
-      if (this.multipleSelection.some(item => item.cbdLevel != "L3")) return iMessage.warn(this.$t("nominationSuggestion.QingXuanZeCbdCengJiWeiL3DeShuJu"))
-      if (this.multipleSelection.some(item => item.sendKmFlag == 1)) return iMessage.warn(this.$t("nominationSuggestion.QingWuXuanZeYiFaSongDeShuJu"))
+      if (this.multipleSelection.length < 1) return iMessage.warn(this.language("QINGXUANZEZHISHAOYITIAOSHUJU", "请选择至少一条数据"))
+      if (this.multipleSelection.some(item => item.cbdLevel != "L3")) return iMessage.warn(this.language("QINGXUANZECBDCENGJIWEIL3DESHUJU", "请选择CBD层级为L3的数据"))
+      if (this.multipleSelection.some(item => item.sendKmFlag == 1)) return iMessage.warn(this.language("QINGWUXUANZEYIFASONGDESHUJU", "请勿选择已发送的数据"))
 
       this.sendLoading = true
       sendKm({
@@ -159,7 +160,8 @@ export default {
           quotationId: item.quotationId,
           rfqId: this.rfqId,
           round: item.round,
-          supplierId: item.supplierId
+          supplierId: item.supplierId,
+          cbdSubDate: item.cbdSubDate
         }))
       })
       .then(res => {
@@ -178,9 +180,9 @@ export default {
     },
     // 撤回
     handleRecall() {
-      if (this.multipleSelection.length < 1) return iMessage.warn(this.$t("nominationSuggestion.QingXuanZeZhiShaoYiTiaoShuJu"))
-      if (this.multipleSelection.some(item => item.cbdLevel != "L3")) return iMessage.warn(this.$t("nominationSuggestion.QingXuanZeCbdCengJiWeiL3DeShuJu"))
-      if (this.multipleSelection.some(item => item.sendKmFlag == 0)) return iMessage.warn(this.$t("nominationSuggestion.QingWuXuanZeWeiFaSongDeShuJu"))
+      if (this.multipleSelection.length < 1) return iMessage.warn(this.language("QINGXUANZEZHISHAOYITIAOSHUJU", "请选择至少一条数据"))
+      if (this.multipleSelection.some(item => item.cbdLevel != "L3")) return iMessage.warn(this.language("QINGXUANZECBDCENGJIWEIL3DESHUJU", "请选择CBD层级为L3的数据"))
+      if (this.multipleSelection.some(item => item.sendKmFlag == 0)) return iMessage.warn(this.language("QINGWUXUANZEWEIFASONGDESHUJU", "请勿选择未发送的数据"))
 
       this.recallLoading = true
       cancelKm({

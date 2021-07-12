@@ -1,7 +1,7 @@
 <!--
  * @Author: 业务分配模拟
  * @Date: 2021-06-09 22:25:34
- * @LastEditTime: 2021-06-10 16:27:05
+ * @LastEditTime: 2021-07-07 19:02:08
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\qutaionScoringBusses\index.vue
@@ -17,7 +17,7 @@ export default {
     },
     cardTitle:{
       type:String,
-      default:'报价分析汇总-业务分配模拟'
+      default:'业务分配模拟'
     },
     title:{
       type:String,

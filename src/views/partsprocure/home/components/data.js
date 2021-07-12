@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-25 10:14:46
- * @LastEditTime: 2021-04-19 14:56:21
+ * @LastEditTime: 2021-07-06 12:19:03
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsprocure\home\component\data.js

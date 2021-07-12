@@ -103,7 +103,8 @@
           <div class="linkStyle"><span @click="clickRfqId(scope.row.rfqId)">{{ scope.row.rfqId }}</span></div>
         </template>
         <template #categoryBudget="scope">
-          <div class="linkStyle"><span @click="clickCategoryBudget(scope.row)">{{ getTousandNum(scope.row.categoryBudget) }}</span></div>
+          <div class="linkStyle"><span @click="clickCategoryBudget(scope.row)">{{ scope.row.categoryBudget }}</span>
+          </div>
         </template>
         <template #budgetApplyAmount="scope">
           <div class="linkStyle" :class="(Number(scope.row.budgetApplyAmount) > Number(scope.row.budgetLeftoverAmount)) && 'red'"><span
@@ -121,6 +122,7 @@
           </div>
         </template>
       </iTableList>
+      <div style="color: #999999;font-size: 14px;text-align: right;margin: 10px 0;">{{ $t('货币：人民币  |  单位：元  |  不含税 ') }}</div>
       <iPagination
           v-update
           @size-change="handleSizeChange($event, getTableListFn)"

@@ -5,15 +5,15 @@
 * @Description: RFQ待办事项
  -->
 <template>
-  <iTabsList type="border-card" @tab-click="handleTabClick">
-    <el-tab-pane :label="$t(item.key)" v-for="item of tabList" :key="item.label" v-permisstion='item.permissionKey'>
+  <iTabsList type="card" @tab-click="handleTabClick"  class="margin-top20">
+    <el-tab-pane :label="language(item.key,item.label)" v-for="item of tabList" :key="item.label" v-permisstion='item.permissionKey'>
       <component :is="item.component" v-if="activityTabIndex === item.index"/>
     </el-tab-pane>
   </iTabsList>
 </template>
 
 <script>
-import {iTabsList} from "@/components";
+import {iTabsList} from "rise";
 import partDetailList from "./components/partDetaiList";
 import BDL from "./components/BDL";
 import supplierScore from "./components/supplierScore";

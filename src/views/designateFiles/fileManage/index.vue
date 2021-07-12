@@ -2,27 +2,27 @@
  * @Author: Luoshuang
  * @Date: 2021-05-26 16:20:16
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-10 20:57:54
+ * @LastEditTime: 2021-07-10 16:42:15
  * @Description: 附件综合管理
  * @FilePath: \front-web\src\views\designateFiles\fileManage\index.vue
 -->
 
 <template>
-  <iPage class="signForParts" v-permission="PARTSIGN_INDEXPAGE">
+  <iPage class="signForParts" >
     <el-tabs v-model="tab" class="tab">
-      <el-tab-pane :label="$t('LK_XUNYUANZHIHANG')" name="source">
+      <el-tab-pane :label="language('LK_XUNYUANZHIHANG','寻源')" name="source">
         <div>
           <div class="margin-bottom33">
-            <iNavMvp @change="change" right routerPage lev="2" :list="navList" />
+            <iNavMvp @change="change" right routerPage lev="2" :list="navList" @message="clickMessage" />
           </div>
           <!----------------------------------------------------------------->
           <!---------------------------搜索区域------------------------------->
           <!----------------------------------------------------------------->
-          <iSearch @sure="getTableList" @reset="reset">
+          <iSearch @sure="sure" @reset="reset">
             <el-form>
-              <el-form-item v-for="(item, index) in searchList" :key="index" :label="item.label">
-                <iSelect v-if="item.type === 'select'" v-model="searchParams[item.value]">
-                  <el-option value="" :label="$t('all')"></el-option>
+              <el-form-item v-for="(item, index) in searchList" :key="index" :label="language(item.key,item.label)">
+                <iSelect v-if="item.type === 'select'" :filterable="item.filterable" v-model="searchParams[item.value]">
+                  <el-option value="" :label="language('ALL','全部')"></el-option>
                   <el-option
                     v-for="item in getOptions(item)"
                     :key="item.value"
@@ -57,18 +57,18 @@
           <!----------------------------------------------------------------->
           <iCard class="margin-top20">
             <div class="margin-bottom20 clearFloat">
-              <span class="font18 font-weight">附件综合查询</span>
+              <span class="font18 font-weight">{{language('FUJIANZONGHECHAXUN','附件综合查询')}}</span>
                 <div class="floatright">
                   <!--------------------分配LINIE/CSS----------------------------------->
-                  <iButton @click="handleSendLinie" >分配LINIE/CSS</iButton>
+                  <iButton @click="handleSendLinie" >{{language('FENPEILINIECSS','分配LINIE/CSS')}}</iButton>
                   <!--------------------退回按钮----------------------------------->
-                  <iButton @click="changebackDialogVisible(true)" >退回</iButton>
+                  <iButton @click="changebackDialogVisible(true)" >{{language('TUIHUI','退回')}}</iButton>
                   <!--------------------创建RFQ----------------------------------->
-                  <iButton @click="handleCreateRFQ">创建RFQ</iButton>
+                  <iButton @click="handleCreateRFQ">{{language('CHUANGJIANRFQ','创建RFQ')}}</iButton>
                   <!--------------------加入已有RFQ----------------------------------->
-                  <iButton @click="handleJoinRFQ">加入已有RFQ</iButton>
+                  <iButton @click="handleJoinRFQ">{{language('JIARUYIYOURFQ','加入已有RFQ')}}</iButton>
                   <!--------------------删除按钮----------------------------------->
-                  <iButton @click="remove" >删除</iButton>
+                  <iButton @click="handleDelete" >{{language('SHANCHU','删除')}}</iButton>
                 </div>
             </div>
             <tableList :activeItems='"rfqId"' selection indexKey :tableData="tableData" :tableTitle="tableTitle" :tableLoading="tableLoading" @handleSelectionChange="handleSelectionChange" @openPage="openPage" @handleFileDownload="handleFileDownload"></tableList>
@@ -93,7 +93,7 @@
           <!------------------------------------------------------------------------>
           <!--                    加入已有RFQ弹窗                                  --->
           <!------------------------------------------------------------------------>
-          <joinRfqDialog ref="joinRfq" :dialogVisible="joinRfqDialogVisible" @changeVisible="changeJoinRfqDialogVisible" @joinRfq="joinRfq" partType="13" />
+          <joinRfqDialog ref="joinRfq" :dialogVisible="joinRfqDialogVisible" @changeVisible="changeJoinRfqDialogVisible" @joinRfq="joinRfq" partType="PT18" />
         </div>
       </el-tab-pane>
       <!-- <el-tab-pane label="进度监控" name="progress"></el-tab-pane> -->
@@ -105,22 +105,26 @@
 import { iPage, iSearch, iSelect, iInput, iCard, iButton, iPagination, iMessage, iNavMvp, iDatePicker } from 'rise'
 import { pageMixins } from "@/utils/pageMixins"
 import tableList from '@/views/designate/designatedetail/components/tableList'
-import { tableTitle, tableMockData, searchList } from './data'
+import { tableTitle, searchList } from './data'
 import linieDialog from './components/setLinie'
 import backDialog from './components/back'
-import { navList } from "@/views/partsign/home/components/data"
 import { cloneDeep, uniq } from 'lodash'
-import { getAffixList, updateAffixList, findBuyer } from '@/api/designateFiles/index'
+import { getAffixList, updateAffixList, findBuyer, deleteAffix } from '@/api/designateFiles/index'
 import { downloadFile } from '@/api/file'
 import { insertRfq } from '@/api/accessoryPart/index'
 import joinRfqDialog from '@/views/designateFiles/fileManage/components/joinRfq'
 import { getDictByCode } from '@/api/dictionary'
+import { clickMessage } from "@/views/partsign/home/components/data"
+
+// eslint-disable-next-line no-undef
+const { mapState, mapActions } = Vuex.createNamespacedHelpers("sourcing")
+
 export default {
   mixins: [pageMixins],
   components: { iPage, iSearch, iSelect, iInput, iCard, iButton, iPagination, tableList, linieDialog, backDialog, iNavMvp, joinRfqDialog, iDatePicker },
   data() {
     return {
-      tableData: tableMockData,
+      tableData: [],
       tableTitle: tableTitle,
       tableLoading: false,
       searchList: searchList,
@@ -128,15 +132,14 @@ export default {
         partStatus: '',
         status: '',
         isShow: '',
-        linie: ''
+        linieId: ''
       },
       linieDialogVisible: false,
       backDialogVisible: false,
       selectParts: [],
-      navList: cloneDeep(navList),
       tab: "source",
       selectOptions: {
-        yesOrNoOption: [{value: '1', label: '是'},{value: 0, label: '否'}]
+        yesOrNoOption: [{value: '1', label: this.language('YES','是')},{value: '0', label: this.language('NO','否')}]
       },
       joinRfqDialogVisible: false,
       selectLinie: '',
@@ -147,8 +150,61 @@ export default {
   },
   created() {
     this.init()
+    this.updateNavList
+  },
+  computed: {
+    ...mapState(["navList"]),
+    ...mapActions(["updateNavList"])
   },
   methods: {
+    sure() {
+      this.page.currPage = 1
+      this.getTableList()
+    },
+    /**
+     * @Description: 删除附件
+     * @Author: Luoshuang
+     * @param {*}
+     * @return {*}
+     */    
+    handleDelete() {
+      if (this.selectParts.length < 1) {
+        iMessage.warn(this.language('QINGXUANZEXUYAOSHANCHUDEFUJIAN','请选择需要删除的附件'))
+        return
+      }
+      const params = this.selectParts.map(item => item.id)
+      deleteAffix(params).then(res => {
+        if (res?.result) {
+          iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+          this.getTableList()
+        } else {
+          iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+        }
+      })
+    },
+    /**
+     * @Description: 获取linie下拉框
+     * @Author: Luoshuang
+     * @param {*}
+     * @return {*}
+     */    
+    getLinieOption() {
+      findBuyer().then(res => {
+        if (res?.result) {
+          this.selectOptions.linieOptions = (res.data || []).map(item => {
+            return { value: item.id, label: item.nameZh }
+          })
+        } else {
+          // iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+        }
+      })
+    },
+    /**
+     * @Description: 模糊搜索LINIE
+     * @Author: Luoshuang
+     * @param {*} query
+     * @return {*}
+     */    
     remoteMethod(query) {
       if (query !== '') {
         this.loading = true;
@@ -168,6 +224,7 @@ export default {
     },
     async init() {
        this.getSelectOptions()
+       this.getLinieOption()
       this.getTableList()
     },
     
@@ -184,10 +241,10 @@ export default {
     getDictionary(optionName, optionType) {
       getDictByCode(optionType).then(res => {
         if(res?.result) {
-          this.selectOptions[optionName] = res.data[0].subDictResultVo.map(item => {
+          this.selectOptions[optionName] = res.data[0]?.subDictResultVo?.map(item => {
             return { value: item.code, label: item.name }
           })
-          console.log(this.selectOptions)
+          // console.log(this.selectOptions)
         }
       })
     },
@@ -205,12 +262,12 @@ export default {
     },
     handleSendLinie() {
       if (this.selectParts.length < 1) {
-        iMessage.warn('请选择附件')
+        iMessage.warn(this.language('QINGXUANZEFUJIAN','请选择附件'))
         return
       }
       const selectLINIE = uniq(this.selectParts.map(item => item.csfuserId))
       if (selectLINIE.length > 1 || selectLINIE[0]) {
-        iMessage.warn('请选择未分配LINIE的附件')
+        iMessage.warn(this.language('QINGXUANZEWEIFENPEILINIEDEFUJIAN','请选择未分配LINIE的附件'))
         return
       }
       this.changeLinieDialogVisible(true)
@@ -223,21 +280,21 @@ export default {
      */    
     handleJoinRFQ() {
       if (this.selectParts.length < 1) {
-        iMessage.warn('请选择附件')
+        iMessage.warn(this.language('QINGXUANZEFUJIAN','请选择附件'))
         return
       }
       const selectLINIE = uniq(this.selectParts.map(item => item.csfuserId))
       const selectRfq = uniq(this.selectParts.map(item => item.rfqId))
       if (selectLINIE.length > 1) {
-        iMessage.warn('请选择相同LINIE的附件')
+        iMessage.warn(this.language('QINGXUANZEXIANGTONGLINIEDEFUJIAN','请选择相同LINIE的附件'))
         return
       } 
       if (!selectLINIE[0]) {
-        iMessage.warn('请选择已分配LINIE的附件')
+        iMessage.warn(this.language('QINGXUANZEYIFENPEILINIEDEFUJIAN','请选择已分配LINIE的附件'))
         return
       }
       if (selectRfq.length > 1 || selectRfq[0]) {
-        iMessage.warn('请选择未分配RFQ的附件')
+        iMessage.warn(this.language('QINGXUANZEWEIFENPEIRFQDEFUJIAN','请选择未分配RFQ的附件'))
         return
       }
       this.selectLinie = selectLINIE[0]
@@ -252,7 +309,7 @@ export default {
     joinRfq(rfq) {
       const params = {
         insertRfqPackage: {
-          rfqId: rfq.rfqId,
+          rfqId: rfq.id,
           operationType: '1',
           rfqPartDTOList: this.selectParts.map(item => {
             return {
@@ -263,9 +320,12 @@ export default {
               fsnrGsnrNum: item.spnrNum, // fs号
               stuffId: item.stuffId, // 工艺组ID
               stuffName: item.stuffName, // 工艺组name
+              purchasePrjectId: item.purchasingProjectId,
+              partNameZh: item.partNameCh,
+              partPrejectType: 'PT18',
             }
           }),
-          userId: store.state.permission.userInfo.id
+          userId: this.$store.state.permission.userInfo.id
         }
       }
       insertRfq(params).then(res => {
@@ -299,11 +359,13 @@ export default {
       if (fileList.length < 1) {
         return
       }
+      this.tableLoading = true
       const params = {
         applicationName: 'rise',
         fileList: fileList
       }
       await downloadFile(params)
+      this.tableLoading = false
     },
     /**
      * @Description: 更新配件信息
@@ -427,7 +489,7 @@ export default {
      */    
     changeLinieDialogVisible(visible) {
       if (this.selectParts.length < 1) {
-        iMessage.warn('请选择配件')
+        iMessage.warn(this.language('QINGXUANZEFUJIAN','请选择附件'))
         return
       }
       this.linieDialogVisible = visible
@@ -440,7 +502,7 @@ export default {
      */    
     changebackDialogVisible(visible) {
       if (this.selectParts.length < 1) {
-        iMessage.warn('请选择配件')
+        iMessage.warn(this.language('QINGXUANZEFUJIAN','请选择附件'))
         return
       }
       this.backDialogVisible = visible
@@ -453,22 +515,26 @@ export default {
      */    
     handleCreateRFQ() {
       if (this.selectParts.length < 1) {
-        iMessage.warn('请选择附件')
+        iMessage.warn(this.language('QINGXUANZEFUJIAN','请选择附件'))
         return
       }
       const selectLINIE = uniq(this.selectParts.map(item => item.csfuserId))
-      const selectLINIEDept = uniq(this.selectParts.map(item => item.csfuserDeptId))
+      const selectLINIEName = uniq(this.selectParts.map(item => item.csfUser))
+      const selectLINIEDept = uniq(this.selectParts.map(item => item.csfuserDept))
+      const selectLINIEDeptName = uniq(this.selectParts.map(item => item.csfuserDeptName))
       if (selectLINIE.length > 1) {
-        iMessage.warn('请选择相同LINIE的附件')
+        iMessage.warn(this.language('QINGXUANZEXIANGTONGLINIEDEFUJIAN','请选择相同LINIE的附件'))
         return
       } if (!selectLINIE[0]) {
-        iMessage.warn('请选择已分配LINIE的附件')
+        iMessage.warn(this.language('QINGXUANZEYIFENPEILINIEDEFUJIAN','请选择已分配LINIE的附件'))
         return
       }
       this.selectLinieDept = selectLINIEDept[0]
-      const router =  this.$router.resolve({path: '/sourcing/createrfq', query: { type: '2', ids: this.selectParts.map(item => item.spnrNum).join(','),linie:selectLINIE[0], linieDept:selectLINIEDept[0]}})
+      const router =  this.$router.resolve({path: '/sourcing/createrfq', query: { type: '2', ids: this.selectParts.map(item => item.spnrNum).join(','),linie:selectLINIE[0], linieName: selectLINIEName[0], linieDept:selectLINIEDept[0], linieDeptName: selectLINIEDeptName[0]}})
       window.open(router.href,'_blank')
-    }
+    },
+    // 通过待办数跳转
+    clickMessage,
   }
 }
 </script>

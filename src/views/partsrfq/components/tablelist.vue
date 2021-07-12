@@ -6,11 +6,11 @@
 -->
 <template>
   <el-table :height="height" tooltip-effect='light' :data='tableData' :empty-text="$t('LK_ZANWUSHUJU')" v-loading='tableLoading' @selection-change="handleSelectionChange">
-    <el-table-column v-if="selection" type='selection' width="50" align='center'></el-table-column>
+    <el-table-column v-if="selection" type='selection' width="56" align='center'></el-table-column>
 <!--    <el-table-column v-if='index' type='index' width='50' align='center' label='#'></el-table-column>-->
     <template v-for="(items,index) in tableTitle">
       <el-table-column :key="index" align='center' :width="items.width" :show-overflow-tooltip='items.tooltip' v-if='items.props === openPageProps' :prop="items.props"
-                       :label="items.key ? $t(items.key) : items.name" :fixed="items.fixed">
+                       :label="lang ? language(items.key, items.name) : (items.key ? $t(items.key) : items.name)" :fixed="items.fixed">
         <template slot-scope="scope">
             <span class="openLinkText cursor"
                   @click="openPage(openPageGetRowData ?  scope.row : scope.row[items.props])">{{
@@ -19,7 +19,7 @@
         </template>
       </el-table-column>
       <el-table-column :width="items.width" :show-overflow-tooltip='items.tooltip' :key="index" align='center' v-else-if='inputProps.includes(items.props)' :prop="items.props"
-                       :label="items.key ? $t(items.key) : items.name">
+                       :label="lang ? language(items.key, items.name) : (items.key ? $t(items.key) : items.name)">
         <template slot-scope="scope">
           <i-input v-model="scope.row[items.props]" v-if="inputType" :type="inputType"/>
           <i-input v-model="scope.row[items.props]" v-else/>
@@ -27,39 +27,39 @@
       </el-table-column>
       <el-table-column :width="items.width" :show-overflow-tooltip='items.tooltip' :key="index" align='center'
                        v-else-if='isSelectOptionsLinkage && selectProps.includes(items.props)' :prop="items.props"
-                       :label="items.key ? $t(items.key) : items.name">
+                       :label="lang ? language(items.key, items.name) : (items.key ? $t(items.key) : items.name)">
         <template slot-scope="scope">
           <i-select v-model="scope.row[items.props]"
                     @change="(val)=>handleSelectChange(items.props,val, scope.row.time)">
             <el-option v-for="items in selectPropsOptionsObject[scope.row.time][items.props]" :key='items.code'
                        :value='items.code'
-                       :label="items.key ? $t(items.key) : items.name"/>
+                       :label="lang ? language(items.key, items.name) : (items.key ? $t(items.key) : items.name)"/>
           </i-select>
         </template>
       </el-table-column>
       <el-table-column :width="items.width" :show-overflow-tooltip='items.tooltip' :key="index" align='center'
                        v-else-if='!isSelectOptionsLinkage && selectProps.includes(items.props)' :prop="items.props"
-                       :label="items.key ? $t(items.key) : items.name">
+                       :label="lang ? language(items.key, items.name) : (items.key ? $t(items.key) : items.name)">
         <template slot-scope="scope">
           <i-select v-model="scope.row[items.props]">
             <el-option v-for="items in selectPropsOptionsObject[items.props]" :key='items.code' :value='items.code'
-                       :label="items.key ? $t(items.key) : items.name"/>
+                       :label="lang ? language(items.key, items.name) : (items.key ? $t(items.key) : items.name)"/>
           </i-select>
         </template>
       </el-table-column>
       <el-table-column :width="items.width" :show-overflow-tooltip='items.tooltip' :key="index" align='center' v-else-if='items.props === iconProps' :prop="items.props"
-                       :label="items.key ? $t(items.key) : items.name">
+                       :label="lang ? language(items.key, items.name) : (items.key ? $t(items.key) : items.name)">
         <template slot-scope="scope">
           <slot name="icon" :data="scope.row"></slot>
         </template>
       </el-table-column>
       <el-table-column :width="items.width" :show-overflow-tooltip='items.tooltip' :key="index" align='center' v-else-if='items.props === fileSizeProps' :prop="items.props"
-                       :label="items.key ? $t(items.key) : items.name">
+                       :label="lang ? language(items.key, items.name) : (items.key ? $t(items.key) : items.name)">
         <template slot-scope="scope">
           {{ scope.row[items.props] ? scope.row[items.props] / 1024 / 1024 : '' }}
         </template>
       </el-table-column>
-      <el-table-column :width="items.width" :show-overflow-tooltip='items.tooltip' :key="index" align='center' v-else :label="items.key ? $t(items.key) : items.name"
+      <el-table-column :width="items.width" :show-overflow-tooltip='items.tooltip' :key="index" align='center' v-else :label="lang ? language(items.key, items.name) : (items.key ? $t(items.key) : items.name)"
                        :prop="items.props" :fixed="items.fixed">
         <template v-if="$scopedSlots[items.props] || $slots[items.props]" v-slot="scope">
           <slot :name="items.props" :row="scope.row"></slot>
@@ -102,7 +102,8 @@ export default {
     customOpenPageWord: {type: String, default: ''},
     openPageGetRowData: {type: Boolean, default: false},
     fileSizeProps: {type: String, default: 'fileSize'},
-    inputType: {type: String, default: ''}
+    inputType: {type: String, default: ''},
+    lang: {type: Boolean, default: false}
   },
   components: {
     iInput,

@@ -2,9 +2,9 @@
 	<iCard>
 		<!-- 价格明细 -->
 		<div class="header flex-between-center-center">
-			<span class="title">{{ $t('LK_JIAGEMINGXI') }}</span>
+			<span class="title">{{ language('LK_JIAGEMINGXI','价格明细') }}</span>
 			<div class="control">
-				<iButton  @click="save('save')" v-permission="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_SAVE">{{ $t('LK_BAOCUN') }}</iButton>
+				<iButton  @click="save('save')" v-permission="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_SAVE">{{ language('LK_BAOCUN','保存') }}</iButton>
 			</div>
 		</div>
 		<iFormGroup row="3" icon inline>
@@ -45,13 +45,13 @@
 		<div class="line"></div>
 		<!-- 申请财务目标价 -->
 		<div class="header flex-between-center-center">
-			<span class="title">{{ $t('LK_SHENQINGCAIWUMUBIAOJIA') }}</span>
+			<span class="title">{{ language('LK_SHENQINGCAIWUMUBIAOJIA','申请财务目标价') }}</span>
 			<div class="control">
-				<iButton @click="save('apply')" v-permission="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_APPLY">{{ $t('LK_SHENQING') }}</iButton>
+				<iButton @click="saveApply" :loading="applyLoading" v-permission="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_APPLY">{{ language('LK_SHENQING','申请') }}</iButton>
 			</div>
 		</div>
 		<iFormGroup row="2" icon inline>
-			<iFormItem :label="$t('LK_SHENQINGLEIXING')" name="test" v-permission="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_SQLX">
+			<iFormItem :label="language('LK_SHENQINGLEIXING','申请类型')" name="test" v-permission="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_SQLX">
 				<el-radio-group v-model="targetprice.cfTargetPriceDetail.applyType">
 					<iRadio label="LC" size="small" border>LC</iRadio>
 					<iRadio label="SKD" size="small" border>SKD</iRadio>
@@ -59,17 +59,17 @@
 				</el-radio-group>
 				<!-- <span class="start">*</span> -->
 			</iFormItem>
-			<iFormItem :label="$t('LK_QIWANGMUBIAOJIA')" name="test"  v-permission="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_QWMBJ">
+			<iFormItem :label="language('LK_QIWANGMUBIAOJIA','期望目标价')" name="test"  v-permission="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_QWMBJ">
 				<iInput v-model="targetprice.cfTargetPriceDetail.expTargetpri" v-Int  maxlength="20"></iInput>
 			</iFormItem>
 		</iFormGroup>
 		<iFormGroup row="2" icon inline>
-			<iFormItem :label="$t('LK_SHENQINGYUANYIN')" name="test" v-permission="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_SQYY">
+			<iFormItem :label="language('LK_SHENQINGYUANYIN','申请原因')" name="test" v-permission="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_SQYY">
 				<iInput type="textarea" rows="6" resize="none" maxlength="500" v-model="targetprice.cfTargetPriceDetail.applyReason">
 				</iInput>
 			</iFormItem>
-			<iFormItem :label="$t('LK_SHENQINGBEIZHU')" name="test" v-permission="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_SQBZ">
-				<iInput type="textarea" rows="6" resize="none" maxlength="1000" v-model="targetprice.cfTargetPriceDetail.applyMemo">
+			<iFormItem :label="language('LK_SHENQINGBEIZHU','申请备注')" name="test" v-permission="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_SQBZ">
+				<iInput type="textarea" rows="6" resize="none" maxlength="1000" v-model="targetprice.cfTargetPriceDetail.memo">
 				</iInput>
 			</iFormItem>
 		</iFormGroup>
@@ -89,35 +89,35 @@
 		<div class="line"></div>
 		<!-- 申请RW价 -->
 		<div class="header flex-between-center-center">
-			<span class="title">{{ $t('LK_SHENQINGRWJIA') }}</span>
+			<span class="title">{{ language('LK_SHENQINGRWJIA','申请RW价') }}</span>
 			<div class="control">
-				<iButton @click="targeRw" v-permission="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_RWAPPLY">{{ $t('LK_SHENQING') }}</iButton>
+				<iButton @click="targeRw" v-permission="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_RWAPPLY">{{ language('LK_SHENQING','申请') }}</iButton>
 			</div>
 		</div>
 		<iFormGroup row="2" icon inline v-permission="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_APPLYRWTXT">
-			<iFormItem :label="$t('LK_ZUIXINRWJIA')" name="test">
+			<iFormItem :label="language('LK_ZUIXINRWJIA','最新RW价')" name="test">
 				<iText>
 					{{targetprice.rwApplication.price}}
 				</iText>
 			</iFormItem>
-			<iFormItem :label="$t('LK_ZUIXINFANHUIRIQI')" name="test">
+			<iFormItem :label="language('LK_ZUIXINFANHUIRIQI','最新返回日期')" name="test">
 				<iText>
 					{{targetprice.rwApplication.responseDate}}
 				</iText>
 			</iFormItem>
-			<iFormItem :label="$t('LK_ZUIXINSHENQINGZHUANGTAI')" name="test">
+			<iFormItem :label="language('LK_ZUIXINSHENQINGZHUANGTAI','最新申请状态')" name="test">
 				<iText>
 					{{targetprice.rwApplication.applyStatus}}
 				</iText>
 			</iFormItem>
-			<iFormItem :label="$t('LK_ZUIXINSHENQINGRIQI')" name="test">
+			<iFormItem :label="language('LK_ZUIXINSHENQINGRIQI','最新申请日期')" name="test">
 				<iText>
 					{{targetprice.rwApplication.applyDate}}
 				</iText>
 			</iFormItem>
 		</iFormGroup>
 		<iFormGroup row="1" icon inline>
-			<iFormItem :label="$t('LK_SHENQINGBEIZHU')" name="test">
+			<iFormItem :label="language('LK_SHENQINGBEIZHU','申请备注')" name="test">
 				<iInput type="textarea" rows="6" resize="none" maxlength="1000" v-model="targetprice.rwApplication.memo" v-permission="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_RWAPPLYREMARK"></iInput>
 			</iFormItem>
 		</iFormGroup>
@@ -151,6 +151,7 @@
 	} from '@/api/partsprocure/home'
 import { iMessageBox } from '../../../../../components';
 import { pageMixins } from '@/utils/pageMixins'
+import { applyCFTarget, getCfTargetApplyHistory, getTargetPriceDd, savePriceDetail } from '@/api/financialTargetPrice/index'
 import { cloneDeep } from 'lodash'
 	export default {
 		components: {
@@ -168,6 +169,24 @@ import { cloneDeep } from 'lodash'
 		props: {
 			purchaseProjectId: {
 				type: String
+			},
+			fsnrGsnrNum: {type: String},
+			partProjectType: {type:String}
+		},
+		watch: {
+			partProjectType: {
+				handler(val) {
+					if (val === 'PT19' || val === 'PT04') {
+						this.targetprice = {
+							...this.targetprice,
+							cfTargetPriceDetail: {
+								...this.targetprice.cfTargetPriceDetail,
+								applyType: 'SKD'
+							}
+						}
+					}
+				},
+				immediate: true
 			}
 		},
 		data() {
@@ -181,34 +200,45 @@ import { cloneDeep } from 'lodash'
 				targetprice:targetPriceDetail,
 				cfTableData:[],//cf表格数据
 				rwTableData:[],//RW表格数据
+				applyLoading: false
 			}
 		},
 		created() {
+			this.getTargetPriceDetail()
 			this.getTargetPrice()
 			this.targePriceDetail()
 		},
 		methods: {
+			getTargetPriceDetail() {
+				getTargetPriceDd(this.purchaseProjectId).then(res => {
+					if (res?.result) {
+						this.targetprice = {
+							...this.targetprice,
+							cfTargetPriceDetail: {
+								...this.targetprice.cfTargetPriceDetail,
+								...res.data
+							}
+						}
+					} else {
+						iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+					}
+				})
+			},
 			getTargetPrice() {
-				getTargetPrice({
-					purchaseProjectId: this.purchaseProjectId,
-					current: this.page.currPage,
-  				size: this.page.pageSize
+				getCfTargetApplyHistory({
+					fsNum: this.fsnrGsnrNum,
+					pageNo: this.page.currPage,
+  				pageSize: this.page.pageSize
 				})
 				.then(res => {
 					if (res.code == 200) {
-						if (res.data.left) {
-							this.tableListData = []
-							this.targetprice.cfTargetPriceDetail = cloneDeep(res.data.left)
-							this.page.totalCount = 0
-						} else if (Array.isArray(res.data.right.records) && res.data.right.records.length > 0) {
-							this.tableListData = cloneDeep(res.data.right.records)
-							this.targetprice.cfTargetPriceDetail = cloneDeep(this.tableListData[0] || {})
-							this.page.totalCount = res.data.right.total || 0
-						} else {
-							this.tableListData = []
-							this.targetprice.cfTargetPriceDetail = {}
-							this.page.totalCount = 0
+						this.page = {
+							...this.page,
+							totalCount: Number(res.total),
+							currPage: Number(res.pageNum),
+							pageSize: Number(res.pageSize)
 						}
+						this.tableListData = res.data || []
 					} else {
 						iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
 					}
@@ -239,18 +269,16 @@ import { cloneDeep } from 'lodash'
 			// 保存 ,申请财务目标价
 			save(type) {
 				let targetprice = {
-					purchaseProjectId: this.purchaseProjectId,
-					cfTargetPriceDetail: { ...this.targetprice.cfTargetPriceDetail, type }, // save 保存  apply 申请
-					rwApplication:null
+					id: this.targetprice.cfTargetPriceDetail.applyId,
+					purchasingProjectId: this.purchaseProjectId,
+					ckdDuty: this.targetprice.cfTargetPriceDetail.ckdDuty,
+					ckdExwork: this.targetprice.cfTargetPriceDetail.ckdExwork,
+					ckdLanded: this.targetprice.cfTargetPriceDetail.ckdLanded
 				};
-				if(!targetprice.cfTargetPriceDetail.expTargetpri){
-					targetprice.cfTargetPriceDetail.expTargetpri = 0
-				}
-				changeProcure({
-					targetprice,
-				}).then((res) => {
-					if (res.data) {
-						iMessage.success(this.$t('LK_CAOZUOCHENGGONG'))
+				savePriceDetail(targetprice).then((res) => {
+					if (res.result) {
+						iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'))
+						this.getTargetPriceDetail()
 						this.targePriceDetail()
 						this.getTargetPrice()
 					}else{
@@ -270,7 +298,7 @@ import { cloneDeep } from 'lodash'
 					targetprice,
 				}).then((res) => {
 					if(res.code == 200){
-						iMessage.success(this.$t('LK_CAOZUOCHENGGONG'))
+						iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'))
 						this.targePriceDetail()
 					}else{
 						iMessage.error(res.desZh)
@@ -278,6 +306,30 @@ import { cloneDeep } from 'lodash'
 				}).catch(err=>{
 					iMessage.error(err.desZh)
 				});
+			},
+			saveApply() {
+				if (!this.targetprice.cfTargetPriceDetail.applyType) {
+					iMessage.warn(this.language('LK_QINGXUANZESHENQINGDECAIWUMUBIAOJIALEIXING','请选择申请的财务目标价类型'))
+					return
+				}
+				this.applyLoading = true
+				const params = {
+					...this.targetprice.cfTargetPriceDetail,
+					purchasingProjectId: this.purchaseProjectId
+				}
+				applyCFTarget(params).then((res) => {
+					if (res?.result) {
+						iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+						this.applyPriceShow = false
+						this.getTargetPriceDetail()
+						this.targePriceDetail()
+						this.getTargetPrice()
+					} else {
+						iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+					}
+				}).finally(() => {
+					this.applyLoading = false
+				})
 			}
 		}
 	}

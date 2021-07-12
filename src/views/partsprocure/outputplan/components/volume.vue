@@ -1,7 +1,7 @@
 <template>
-  <iCard class="volume" tabCard :title="$t('LK_LINGJIANMEICHEYONGLIANG')" collapse>
+  <iCard class="volume" tabCard :title="language('LK_LINGJIANMEICHEYONGLIANG','零件每车用量')" collapse>
     <template v-slot:header-control>
-      <iButton @click="download" v-permission="PARTSPROCURE_OUTPUTPLAN_OUTPUTRECORD_EXPORT">{{$t('LK_DAOCHU')}}</iButton>
+      <iButton @click="download" v-permission="PARTSPROCURE_OUTPUTPLAN_OUTPUTRECORD_EXPORT">{{language('LK_DAOCHU','导出')}}</iButton>
     </template>
     <div class="body">
       <tablelist
@@ -71,7 +71,7 @@ export default {
             currPage: 1,
             pageSize: 10,
             status: 1,
-            purchasingRequirementId: this.$route.query.purchasingRequirementId,
+            purchasingRequirementId: this.$route.query.purchasingRequirementId || '',
           });
 
           this.version = "V1";
@@ -118,7 +118,7 @@ export default {
       this.multipleSelection = list
     },
     download() {
-      if (!this.multipleSelection.length) return iMessage.warn(this.$t('LK_QINGXUANZHEXUYAODAOCHUDEMEINIANYONGCHELIANG'))
+      if (!this.multipleSelection.length) return iMessage.warn(this.language('LK_QINGXUANZHEXUYAODAOCHUDEMEINIANYONGCHELIANG','请选择需要导出的每车用量'))
       excelExport(this.multipleSelection, this.tableTitle)
     }
   },

@@ -8,11 +8,11 @@
         <!-- 按钮区域 -->
         <div class="timeLine-btn-list" v-if="isPreview=='0'">
             <span v-if="isEdit">
-                <iButton :loading="isLoading" @click="save">{{$t('LK_BAOCUN')}}</iButton>
-                <iButton @click="edit">{{$t('LK_QUXIAO')}}</iButton>
-                <iButton>{{$t('LK_ZHANSHI')}}</iButton>
+                <iButton :loading="isLoading" @click="save">{{language('LK_BAOCUN','保存')}}</iButton>
+                <iButton @click="edit">{{language('LK_QUXIAO','取 消')}}</iButton>
+                <iButton>{{language('LK_ZHANSHI','展示')}}</iButton>
             </span>
-            <iButton v-else @click="edit">{{$t('LK_BIANJI')}}</iButton>
+            <iButton v-else @click="edit">{{language('LK_BIANJI','编辑')}}</iButton>
         </div>
         <div v-for="(item,index) in detailData" :key="'timeLine_'+index">
             <!-- 编辑状态 -->
@@ -36,7 +36,7 @@
                     <!-- 供应商编辑列表 -->
                     <ul class="supplier-edit-list">
                         <li  v-for="(supplierItem,supplierIndex) in item.nomiTimeAxisSupplierResultVOList" :key="'nomiTimeAxisSupplierResultVOListEdit_'+supplierIndex">
-                            <supplierItem :itemIndex="supplierIndex" :supplierData="supplierItem" @editSupplierLine="editSupplierLine"/>
+                            <supplierItem :itemIndex="supplierIndex" :key="'nomiTimeAxisSupplierResultVOListEdit_item_'+supplierIndex" :supplierData="supplierItem" @editSupplierLine="editSupplierLine"/>
                         </li>
                     </ul>
                 </iCard>
@@ -96,7 +96,6 @@ import groupStep from './components/groupStep'
 import supplierStep from './components/supplierStep'
 import supplierLine from './components/supplierLine'
 import supplierItem from './components/supplierItem'
-import { cloneDeep } from 'lodash'
 import {
     getTimeaxis,
     saveTimeaxis,
@@ -129,7 +128,7 @@ export default {
         // 编辑 取消
         edit(){
             const {isEdit} = this;
-            if(!isEdit){
+            if(isEdit){
                 this.getDetail();
             }
             this.isEdit = !isEdit;

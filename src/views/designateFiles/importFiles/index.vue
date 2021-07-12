@@ -6,9 +6,9 @@
 <template>
     <iPage class="importFiles">
         <el-tabs v-model="tab" class="tab">
-            <el-tab-pane :label="$t('LK_XUNYUANZHIHANG')" name="source">
+            <el-tab-pane :label="language('LK_XUNYUANZHIHANG','寻源')" name="source">
                  <div class="margin-bottom33">
-                    <iNavMvp right routerPage lev="2" :list="navList" />
+                    <iNavMvp right routerPage lev="2" :list="navList" @message="clickMessage" />
                 </div>
                 <!-- 内容区 -->
                 <iCard>
@@ -17,20 +17,21 @@
                       <span class="margin-right10">
                           <Upload 
                               hideTip
-                              :buttonText="$t('LK_DAORU')"
+                              :buttonText="language('LK_DAORU','导入')"
                               accept=" .xls,.xlsx"
                               :request="uploadImportFile"
                               :onHttpUploaded="onHttpUploaded"
                               @on-success="onDraingUploadsucess"
                           />
                       </span>
-                      <iButton  @click="downloadTemplate" > {{$t('LK_FUJIANMUBANXIAZAI')}} </iButton>
+                      <iButton  @click="downloadTemplate" > {{language('LK_FUJIANMUBANXIAZAI','附件模板下载')}} </iButton>
                     </div>
                   </div>
                   <!-- 表格区域 -->
                   <tableList
                       class="table"
                       index
+                      :lang="true"
                       :tableData="tableListData"
                       :tableTitle="tableTitle"
                       :tableLoading="loading"
@@ -43,8 +44,8 @@
                   <!-- 分页 -->
                    <iPagination
                       v-update
-                      @size-change="handleSizeChange($event, getTableListFn)"
-                      @current-change="handleCurrentChange($event, getTableListFn)"
+                      @size-change="handleSizeChange($event, getList)"
+                      @current-change="handleCurrentChange($event, getList)"
                       background
                       :current-page="page.currPage"
                       :page-sizes="page.pageSizes"
@@ -67,8 +68,6 @@ import {
   iPagination,
 } from "rise";
 import Upload from '@/components/Upload'
-import { navList } from "@/views/partsign/home/components/data";
-import { cloneDeep } from "lodash";
 import { pageMixins } from "@/utils/pageMixins";
 import tableList from "@/views/partsign/editordetail/components/tableList";
 import { tableTitle } from "./data";
@@ -78,6 +77,12 @@ import {
   uploadImportFile,
   downloadImportFile,
 } from '@/api/designateFiles/importFiles'
+import { iMessage } from 'rise';
+import { clickMessage } from "@/views/partsign/home/components/data"
+
+// eslint-disable-next-line no-undef
+const { mapState, mapActions } = Vuex.createNamespacedHelpers("sourcing")
+
 export default {
     name:'importFiles',
     mixins: [pageMixins],
@@ -93,7 +98,6 @@ export default {
     data(){
         return{
             tab:'source',
-            navList: cloneDeep(navList),
             loading: false,
             tableTitle:tableTitle,
             selectItems:[],
@@ -102,7 +106,13 @@ export default {
         }
     },
     created(){
+      console.log(this.$route.path);
       this.getList();
+      this.updateNavList
+    },
+    computed: {
+      ...mapState(["navList"]),
+      ...mapActions(["updateNavList"])
     },
     methods:{
       // 跳转附件清单页
@@ -153,8 +163,18 @@ export default {
         const newFormData = new FormData()
         newFormData.append('file', content.file)
         newFormData.append('applicationName', 'rise')
-        const res = await uploadImportFile(newFormData);
-      }
+        await uploadImportFile(newFormData).then((res)=>{
+          const {code} = res;
+          if(code!=200){
+            iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+          }
+        }).catch((e)=>{
+          iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
+        });
+      },
+
+      // 通过待办数跳转
+      clickMessage,
     }
 
 }

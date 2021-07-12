@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-05-28 14:32:26
- * @LastEditTime: 2021-06-14 16:28:40
+ * @LastEditTime: 2021-07-07 18:35:17
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\data.js
@@ -9,12 +9,12 @@
 import {_getMathNumber} from '@/utils'
 //表格全集。
 export const fstitle = [
-  {type:'selection',props:'groupProps',label:'Group',i18n:'',width:'50',tooltip:false},
+  {type:'selection',props:'groupName',label:'Group',i18n:'',width:'80',tooltip:false},
   {type:'',props:'partNo',label:'Part No.',i18n:'',width:'100',tooltip:false},
   {type:'',props:'partName',label:'Part Name',i18n:'',width:'100',tooltip:false},
   {type:'',props:'partPrjCode',label:'FS/GS/SP No.',i18n:'',width:'100',tooltip:false},
   {type:'',props:'factory',label:'Factory',i18n:'',width:'100',tooltip:false},
-  {type:'',props:'cfPartAPrice',label:'CF Part A Price',i18n:'',width:'100',tooltip:false},
+  {type:'',props:'cfPartAPrice',label:'CF Part A Price',i18n:'',width:'130',tooltip:false},
   {type:'',props:'cfPartBPrice',label:'CF Part B Price',i18n:'',width:'100',tooltip:false},
   {type:'',props:'pca',label:'PCA',i18n:'',width:'100',tooltip:false},
   {type:'',props:'tia',label:'TIA',i18n:'',width:'100',tooltip:false},
@@ -25,8 +25,8 @@ export const fstitle = [
 export const fstableTileXh = function(index){
   return [
     {type:'',props:`${index?index:''}lcAPrice`,label:'LC A Price',i18n:'',width:'100',tooltip:false},
-    {type:'',props:`${index?index:''}lcBPrice`,label:'LC B Price ',i18n:'',width:'100',tooltip:false},
     {type:'',props:`${index?index:''}skdAPrice`,label:'SKD A Price',i18n:'',width:'100',tooltip:false},
+    {type:'',props:`${index?index:''}lcBPrice`,label:'LC B Price ',i18n:'',width:'100',tooltip:false},
     {type:'',props:`${index?index:''}skdBPrice`,label:'SKD B Price',i18n:'',width:'100',tooltip:false},
     {type:'',props:`${index?index:''}lcAPriceWithoutAllocation`,label:'LC A Price without allocation',i18n:'',width:'100',tooltip:false},
     {type:'',props:`${index?index:''}skdAPriceWithoutAllocation`,label:'SKD A Price without allocation',i18n:'',width:'100',tooltip:false},
@@ -47,7 +47,7 @@ export const fstableTileXh = function(index){
   ]
 }
 //cache list
-export const whiteList = ['groupProps','partNo','partName','cfPartAPrice','cfPartBPrice','pca','tia','ebr','lcAPrice','lcBPrice','tooling','ltc','ltcStaringDate','tto'] //默认需要显示的数据
+export const whiteList = ['groupName','partNo','partName','cfPartAPrice','cfPartBPrice','pca','tia','ebr','lcAPrice','lcBPrice','tooling','ltc','ltcStaringDate','tto'] //默认需要显示的数据
 /**
  * @description：通过需要循环的表格和基础表格，在通过白名单将需要所有的百名单删选出来
  * @param {*} whiteList
@@ -69,7 +69,7 @@ export function backChooseList(type) {
      allTablelist = [...fstitle,...fstableTileXh(0)]
   }else{ //supplier as list
     whiteLists = supplierWhiteList
-    allTablelist = [...supplierTile,...centerSupplierList(0),...lastSupplier]
+    allTablelist = [...supplierTile,...centerSupplierList(0),...lastSupplier,...leftSideData]
   }
   const arrayList = []
   allTablelist.forEach(items=>{
@@ -124,10 +124,10 @@ export function getRenderTableTile(whiteListService,supplierLength){
  * @param {*} supplierLength
  * @return {*}
  */
- export function getRenderTableTileSupplier(whiteListService,supplierDataList){
+ export function getRenderTableTileSupplier(whiteListService=[],supplierDataList){
    try {
     const relWhiteList = [...supplierWhiteList,...whiteListService] //
-    const xuhTable = centerSupplierList(0)
+    const xuhTable =  JSON.parse(JSON.stringify(centerSupplierList(0,supplierDataList[0].partInfoList)))
     const relTabelListDefault = []
     let relTableListXh = []
     let templateListxh = []
@@ -135,7 +135,7 @@ export function getRenderTableTile(whiteListService,supplierLength){
       if(items.props == 'supplierName'){
         relTabelListDefault.push(items)
       }else{
-        supplierDataList[0].bdlRateInfoList.forEach((itemss,index)=>{
+        supplierDataList[0].bdlRateInfoList.filter(i=>i.supplierId ==supplierDataList[0].bdlRateInfoList[0].supplierId).forEach((itemss,index)=>{
           const ratess = JSON.parse(JSON.stringify(rateTitelList))
           ratess.props = (index == 0?'':index) + 'rate';
           ratess.label = itemss.rateDepart
@@ -163,7 +163,7 @@ export function getRenderTableTile(whiteListService,supplierLength){
     }
     for(let i = 0; i<supplierDataList[0].partInfoList.length;i++){
       if(i>0){
-        relTableListXh = [...relTableListXh,...addtitle(templateListxh,i)]
+        relTableListXh = [...relTableListXh,...addtitle(JSON.parse(JSON.stringify(templateListxh)),i,supplierDataList[0].partInfoList)]
       }
     }
     return [...relTabelListDefault,...relTableListXh,...lastSupplier]
@@ -178,7 +178,11 @@ export function getRenderTableTile(whiteListService,supplierLength){
  * @param {*} index
  * @return {*}
  */
-export function addtitle(list,index){
+export function addtitle(list,index,factoryList=[]){
+  let factory = ''
+  if(factoryList.length > 0){
+    factory = factoryList[index].factory
+  }
   const templateMap = []
   list.forEach(items=>{
     const newMap = {}
@@ -188,6 +192,18 @@ export function addtitle(list,index){
       }else{
         newMap[keys] = items[keys]
       }
+    }
+    if(removeKeysNumber(newMap.props) == 'factory'){
+      newMap.label = factory
+    }
+    if(newMap.list && newMap.list.length >0){
+      newMap.list.forEach(itemss=>{
+        for (let keys in itemss) {
+          if(keys == 'props'){
+            itemss.props = index+itemss[keys]
+          }
+        }
+      })
     }
     templateMap.push(newMap)
   })
@@ -218,7 +234,7 @@ export function translateRating(supplierList,ratingList) {
         titleList.push(itemsq.rateDepart)
       })
      }
-     maps.push({rate:c[0].supplierName,isAllPartRateConsistent:c[0].rfmRate})
+     maps.push({rate:c[0].supplierName,isAllPartRateConsistent:c[0].rfmRate,isRateRisk:c[0].isRateRisk})
      //拿到评分部门list 为每个部门设置评分
      titleList.forEach(itemsbb=>{
        const map = c.find(it=>it.rateDepart == itemsbb)
@@ -239,6 +255,7 @@ export function translateRating(supplierList,ratingList) {
 
 export function translateData(list){
   list.forEach(items=>{
+    items['active'] = false;
     items.bdlInfoList.forEach((bdl,index)=>{
       for(let keys in bdl){
         items[index>0?(index+keys):keys] = bdl[keys]
@@ -265,6 +282,9 @@ export function subtotal(tableHeader,dataList,priceInfo){
   try {
     const total = {}
     tableHeader.forEach(items=>{
+      if(items.props == 'groupName'){
+        total["groupId"] = '-'
+      }
       if(items.props == 'partNo'){
         total[items.props] = 'Subtotal'
       }else{
@@ -272,7 +292,12 @@ export function subtotal(tableHeader,dataList,priceInfo){
           dataList.forEach(element => {
             for(let key in element){
                 if(items.props == key){
-                  total[key] = _getMathNumber(`${total[key] || 0}+${element[key] || 0}*${element['ebr']}`)
+                  //需要 Lc Aprice . Lc Bprice TTo 
+                  if(removeKeysNumber(key) == "lcAPrice" || removeKeysNumber(key) == "lcBPrice" || removeKeysNumber(key) == "tto"){
+                    total[key] = parseFloat(_getMathNumber(`${total[key] || 0}+${element[key] || 0}*${element['ebr'] || 1}`)).toFixed(2)
+                  }else{
+                    total[key] = parseFloat(_getMathNumber(`${total[key] || 0}+${element[key] || 0}`)).toFixed(2)
+                  }
                 }
               }
           });
@@ -280,16 +305,32 @@ export function subtotal(tableHeader,dataList,priceInfo){
       }
       
     })
-    return [total,kmOrbukeage('KM',priceInfo,dataList[0]),kmOrbukeage('Budget',priceInfo,dataList[0])]
+    return [getLowNumber(total),kmOrbukeage('KM',priceInfo,dataList[0]),kmOrbukeage('Budget',priceInfo,dataList[0])]
   } catch (error) {
     console.warn(error)
     return {partNo:'Subtotal'}
   }
 }
 
+export function getLowNumber(totalList){
+  const templateData = JSON.parse(JSON.stringify(totalList))
+  const temLits = []
+  for(let i in templateData){
+    if(removeKeysNumber(i) == "tto"){
+      temLits.push({
+        tto:templateData[i],
+        number:getPorpsNumber(i)
+      })
+    }
+  }
+  temLits.sort((a,b)=>{a.tto - b.tto})
+  templateData[temLits[0].number+'ttoStatus'] = 1
+  return templateData
+}
+
 /**
  * @description:追加一个km数据和bukege 
- * @param {*} type
+ * @param {*} type exampleDatas 某一列的数据
  * @return {*}
  */
 export function kmOrbukeage(type,priceInfo,exampleDatas){
@@ -299,6 +340,9 @@ export function kmOrbukeage(type,priceInfo,exampleDatas){
     for(let key in exampleData){
       if(removeKeysNumber(key) != 'supplierId'){
         exampleData[key] = ''
+      }
+      if(key == 'groupId'){
+        exampleData[key] = '-'
       }
     }
     for(let key in exampleData){
@@ -343,19 +387,34 @@ export const supplierTile = [
   {type:'',props:'supplierName',label:'Supplier',i18n:'',width:'100',tooltip:false},
   {type:'',props:'rating',label:'Ratings',i18n:'',width:'',tooltip:false,list:[]},
 ]
-
-export const centerSupplierList = function(index){
+/**
+ * @description: 动态拿到表头factory，在供应商横轴中，从第一条到最后一条里面包含的factoryList实际上是一样的。
+ *                所以只需要拿到第一条供应商的factoryList 拿出每个factory 对应起来  
+ * @param {*}
+ * @return {*}
+ */
+function factoryListFn(factoryList,index){
+  try {
+    if(index == ''){
+      index = 0
+    }
+    return factoryList[index].factory
+  } catch (error) {
+    return '暂无'
+  }
+}
+export const centerSupplierList = function(index,factoryList=[]){
   index = index?index:''
   return [
-    {type:'',props:`${index}lcAPrice`,label:'A Price',i18n:'',width:'100',tooltip:false},
-    {type:'',props:`${index}skdAPrice`,label:'SKDAPrice',i18n:'',width:'100',tooltip:false},
-    {type:'',props:`${index}factory`,label:'SH',i18n:'',width:'',tooltip:false,list:[
-      {type:'',props:`${index}lcBPrice`,label:'B Price',i18n:'',width:'100',tooltip:false},
+    {type:'',props:`${index}lcAPrice`,label:'LC A Price',i18n:'',width:'100',tooltip:false},
+    {type:'',props:`${index}skdAPrice`,label:'SKD A Price',i18n:'',width:'100',tooltip:false},
+    {type:'',props:`${index}factory`,label:`${factoryListFn(factoryList,index)}`,i18n:'',width:'',tooltip:false,list:[
+      {type:'',props:`${index}lcBPrice`,label:'LC B Price',i18n:'',width:'100',tooltip:false},
       {type:'',props:`${index}skdBPrice`,label:'SKD B Price',i18n:'',width:'100',tooltip:false},
       {type:'',props:`${index}productionLocation`,label:'Prod.Loc.',i18n:'',width:'100',tooltip:false},
     ]},
     {type:'',props:`${index}lcAPriceWithoutAllocation`,label:'LC A Price without allocation',i18n:'',width:'120',tooltip:false},
-    {type:'',props:`${index}skdBPriceWithoutAllocation`,label:'SKD A Price without allocation',i18n:'',width:'120',tooltip:false},
+    {type:'',props:`${index}skdAPriceWithoutAllocation`,label:'SKD A Price without allocation',i18n:'',width:'120',tooltip:false},
     {type:'',props:`${index}lcBPriceWithoutAllocation`,label:'LC B Price without allocation',i18n:'',width:'120',tooltip:false},
     {type:'',props:`${index}skdBPriceWithoutAllocation`,label:'SKD B Price without allocation',i18n:'',width:'120',tooltip:false}, 
     {type:'',props:`${index}bnk`,label:'BNK',i18n:'',width:'120',tooltip:false},
@@ -368,20 +427,21 @@ export const centerSupplierList = function(index){
     {type:'',props:`${index}prototypePrice`,label:'Prototype price',i18n:'',width:'100',tooltip:false},
     {type:'',props:`${index}tto`,label:'TTO',i18n:'',width:'100',tooltip:false},
     {type:'',props:`${index}externalDevelopmentCost`,label:'External Development cost',i18n:'',width:'100',tooltip:false},
-    {type:'',props:`${index}releaseCost`,label:'release cost',i18n:'',width:'100',tooltip:false}
+    {type:'',props:`${index}releaseCost`,label:'release cost',i18n:'',width:'100',tooltip:false},
+    {type:'',props:`${index}Quotationdetails`,label:'Quo.details',i18n:'',width:'100',tooltip:false},
   ]
 }
 
 export const lastSupplier = [
   {type:'',props:'mixPrice',label:'Mix Price',i18n:'',width:'100',tooltip:false},
   {type:'',props:'totalInvest',label:'Total Invest',i18n:'',width:'100',tooltip:false},
-  {type:'',props:'totalTurnover',label:'Total Turnover',i18n:'',width:'100',tooltip:false},
+  {type:'',props:'totalTto',label:'Total Turnover',i18n:'',width:'100',tooltip:false},
 ]
 
 export function concactTitlle(supplier){
   return [...supplierTile,...supplier,...lastSupplier]
 }
-export const supplierWhiteList = ['supplierName','lcAPrice','bnkApprovalStatus','lcBPrice','productionLocation','tooling','ltc','ltcStaringDate','tto','mixPrice','totalInvest','totalTurnover','partNo','partName','project','tia','fTarget']
+export const supplierWhiteList = ['supplierName','lcAPrice','bnkApprovalStatus','lcBPrice','productionLocation','tooling','ltc','ltcStaringDate','tto','mixPrice','totalInvest','totalTurnover','partNo','partName','project','tia','fTarget','factory']
 export const supplierTableTop = []
 /**
  * @description: 转换供应商数据
@@ -393,13 +453,15 @@ export const translateDataListSupplier = function(supplierlist) {
   let topData = []
   try {
     supplierlist.forEach((items,wcIndex)=>{
-      if(wcIndex == 0) topData = items.partInfoList
-      const map = {}
-      for(let i = 0;i<items.bdlRateInfoList.length;i++){
-         for(let key in items.bdlRateInfoList[i]){
-           map[(i==0?'':i)+key] = items.bdlRateInfoList[i][key]
-        }
-      }
+      if(wcIndex == 0) topData = items.partInfoList //每个供应商对应的零件数据都可以是一样的
+      const map = items
+      items.bdlRateInfoList.filter(filterRate=>filterRate.supplierId == items.supplierId).forEach((items,index)=>{
+        for(let key in items){
+          if(key != 'supplierName' || key != 'supplierId'){
+           map[(index==0?'':index)+key] = items[key]
+          }
+       }
+      })
       for(let ii = 0; ii<items.partInfoList.length;ii++){  
         for(let keys in items.partInfoList[ii]){
           map[(ii==0?'':ii) + keys] = items.partInfoList[ii][keys]

@@ -5,28 +5,28 @@
  * @Description: RFQ-table组件。
 -->
 <template>
-  <el-table :height="height" :data='tableData' :empty-text="$t('LK_ZANWUSHUJU')" v-loading='tableLoading'
+  <el-table :height="height" :data='tableData' :empty-text="language('LK_ZANWUSHUJU','暂无数据')" v-loading='tableLoading'
             @selection-change="handleSelectionChange">
-    <el-table-column v-if="selection" type='selection' width="50" align='center'></el-table-column>
+    <el-table-column v-if="selection" type='selection' width="56" align='center'></el-table-column>
     <!--    <el-table-column v-if='index' type='index' width='50' align='center' label='#'></el-table-column>-->
     <template v-for="(items,index) in tableTitle">
       <template v-if="items.list && Array.isArray(items.list)">
-        <el-table-column :label="items.key ? $t(items.key) : items.name" :key="index" align="center">
+        <el-table-column :label="items.key ? language(items.key,items.name) : items.name" :key="index" align="center">
           <template v-for="(items2, index2) in items.list">
             <el-table-column :key="index2" align='center' v-if="items2.props.indexOf('memo') > -1" :prop="items2.props"
-                             :label="items2.key ? $t(items2.key) : items2.name">
+                             :label="items2.key ? language(items2.key,items2.name) : items2.name">
               <template slot-scope="scope">
                 <span class="openLinkText cursor"
                       @click="openMultiHeaderPropsPage(scope.row, items2.props)">{{ $t(multiHeaderPropsText) }}</span>
               </template>
             </el-table-column>
-            <el-table-column :key="index2" align='center' v-else :label="items2.key ? $t(items2.key) : items2.name"
+            <el-table-column :key="index2" align='center' v-else :label="items2.key ? language(items2.key,items2.name) : items2.name"
                              :prop="items2.props"></el-table-column>
           </template>
         </el-table-column>
       </template>
       <template v-else>
-        <el-table-column width="240" :key="index" align="center" fixed="left" :label="items.key ? $t(items.key) : items.name" v-if="items.props == 'companyAddress'">
+        <el-table-column width="240" :key="index" align="center" fixed="left" :label="items.key ? language(items.key,items.name) : items.name" v-if="items.props == 'companyAddress'">
           <template v-slot="scope">
             <iSelect v-if="!disabled" class="supplierProducePlaces input-center" v-model="scope.row.companyAddressCode" clearable popper-class="supplierProducePlacesDropdown" :loading="supplierProducePlacesLoading" @visible-change="supplierProducePlacesVisibleChange($event, scope.row)" @change="supplierProducePlacesChange($event, scope.row)">
               <el-option
@@ -43,13 +43,18 @@
           </template>
         </el-table-column>
         <el-table-column :key="index" align='center' fixed="left" v-else-if="items.props == actionProps" :prop="items.props"
-                         :label="items.key ? $t(items.key) : items.name">
+                         :label="items.key ? language(items.key,items.name) : items.name">
           <template slot-scope="scope">
-            <span class="openLinkText cursor" @click="openActionPropsPage(scope.row)">{{$t('LK_CHAKAN')}}</span>
+            <span class="openLinkText cursor" @click="openActionPropsPage(scope.row)">{{language('LK_CHAKAN','查看')}}</span>
           </template>
         </el-table-column>
-        <el-table-column :key="index" align='center' v-else :label="items.key ? $t(items.key) : items.name"
-                         :prop="items.props" fixed="left"></el-table-column>
+        <el-table-column :key="index" align='center' v-else :label="items.key ? language(items.key,items.name) : items.name"
+                         :prop="items.props" fixed="left">
+          <template v-slot="scope">
+            <span class="link-underline" v-if="items.type === 'link'" @click="handleClickByLink(scope.row, items.props)">{{ scope.row[items.props] }}</span>
+            <span v-else>{{ scope.row[items.props] }}</span>
+          </template>                 
+        </el-table-column>
       </template>
     </template>
   </el-table>
@@ -85,20 +90,21 @@ export default {
       this.$emit('openMultiHeaderPropsPage', row, key)
     },
     supplierProducePlacesVisibleChange(status, row) {
-      if (status) {
-        this.$emit('supplierProducePlacesVisibleChange', row)
-      }
+      this.$emit('supplierProducePlacesVisibleChange', status, row)
     },
     supplierProducePlacesChange(value, row) {
+
       if (value) {
         const current = this.supplierProducePlaces.filter(item => item.value === value)[0]
-
         this.$set(row, "companyAddressCode", value),
         this.$set(row, "companyAddress", current.label)
       } else {
         this.$set(row, "companyAddressCode", ""),
         this.$set(row, "companyAddress", "")
       }
+    },
+    handleClickByLink(row, key) {
+      this.$emit("link", row, key)
     }
   }
 }

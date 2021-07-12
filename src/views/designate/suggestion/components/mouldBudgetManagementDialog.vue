@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-05-24 13:45:08
- * @LastEditTime: 2021-06-03 11:12:34
+ * @LastEditTime: 2021-06-25 11:36:14
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\designate\suggestion\components\mouldBudgetManagementDialog.vue
@@ -14,10 +14,10 @@
     v-on="$listeners"
   >
     <template #title>
-      <p class="title">{{ $t("nominationSuggestion.MoJuYuSuanGuanLi") }}</p>
+      <p class="title">{{ language("MUJUYUSUANGUANLI", "模具预算管理") }}</p>
       <div class="control" id="control">
-        <iButton :loading="submitLoading" @click="handleSubmit">{{ $t("nominationSuggestion.TiJiao") }}</iButton>
-        <iButton :loading="recallLoading" @click="handleRecall">{{ $t("nominationSuggestion.CheHui") }}</iButton>
+        <iButton :loading="submitLoading" @click="handleSubmit">{{ language("TIJIAO", "提交") }}</iButton>
+        <iButton :loading="recallLoading" @click="handleRecall">{{ language("CHEHUI", "撤回") }}</iButton>
       </div>
     </template>
     <div class="body">
@@ -29,6 +29,7 @@
         :tableData="tableListData"
         :tableTitle="tableTitle"
         :tableLoading="loading"
+        :lang="true"
         @handleSelectionChange="handleSelectionChange"
       >
         <template #partNum="scope">
@@ -78,6 +79,10 @@ export default {
     rfqIds: {
       type: Array,
       require: true
+    },
+    fsIds: {
+      type: Array,
+      require: true
     }
   },
   watch: {
@@ -114,16 +119,14 @@ export default {
     getMouldBudget() {
       this.loading = true
 
-      const rfqIds = [
-        { rfqId: "50002000" },
-        { rfqId: "50002001" },
-      ]
-
-      getMouldBudget({
+      const form = {
         currPage: this.page.currPage,
         pageSize: this.page.pageSize,
-        rfqIds: rfqIds.map(item => item.rfqId).join('&rfqIds=')
-      })
+        // rfqIds: this.rfqIds.map(item => ({ rfqIds: item })),
+        fsIds: this.fsIds.map(item => ({ fsIds: item }))
+      }
+
+      getMouldBudget(form)
       .then(res => {
         if (res.code == 200) {
           this.tableListData = Array.isArray(res.data.records) ? res.data.records : []
@@ -148,7 +151,7 @@ export default {
     // 提交
     handleSubmit() {
       if (this.multipleSelection.length < 1) {
-        return iMessage.warn(this.$t("nominationSuggestion.QingXuanZeZhiShaoYiTiaoShuJu"))
+        return iMessage.warn(this.language("QINGXUANZEZHISHAOYITIAOSHUJU", "请选择至少一条数据"))
       }
 
       this.submitLoading = true
@@ -163,9 +166,9 @@ export default {
             this.getMouldBudget()
           } else {
             if (this.multipleSelection.length === res.data.length) {
-              iMessage.warn(`${ this.$t("nominationSuggestion.RfqBianHao") }: ${ res.data.join(", ") } ${ this.$t("nominationSuggestion.ChongFuTiJiao") }`)
+              iMessage.warn(`${ this.language("RFQBIANHAO", "RFQ编号") }: ${ res.data.join(", ") } ${ this.language("CHONGFUTIJIAO", "重复提交") }`)
             } else {
-              iMessage.warn(`${ this.$t("nominationSuggestion.RfqBianHao") }: ${ res.data.join(", ") } ${ this.$t("nominationSuggestion.ChongFuTiJiao") }, ${ this.$t("nominationSuggestion.QiYuShuJuZhengChangTiJiao") }`)
+              iMessage.warn(`${ this.language("RFQBIANHAO", "RFQ编号") }: ${ res.data.join(", ") } ${ this.language("CHONGFUTIJIAO", "重复提交") }, ${ this.language("QIYUSHUJUZHENGCHANGTIJIAO", "其余数据正常提交") }`)
               this.getMouldBudget()
             }
           }
@@ -183,7 +186,7 @@ export default {
     // 撤回
     handleRecall() {
       if (this.multipleSelection.length < 1) {
-        return iMessage.warn(this.$t("nominationSuggestion.QingXuanZeZhiShaoYiTiaoShuJu"))
+        return iMessage.warn(this.language("QINGXUANZEZHISHAOYITIAOSHUJU", "请选择至少一条数据"))
       }
 
       this.recallLoading = true
@@ -198,9 +201,9 @@ export default {
             this.getMouldBudget()
           } else {
             if (this.multipleSelection.length === res.data.length) {
-              iMessage.warn(`${ this.$t("nominationSuggestion.RfqBianHao") }: ${ res.data.join(", ") } ${ this.$t("nominationSuggestion.ChongFuCheHui") }`)
+              iMessage.warn(`${ this.language("RFQBIANHAO", "RFQ编号") }: ${ res.data.join(", ") } ${ this.language("CHONGFUCHEHUI", "重复撤回") }`)
             } else {
-              iMessage.warn(`${ this.$t("nominationSuggestion.RfqBianHao") }: ${ res.data.join(", ") } ${ this.$t("nominationSuggestion.ChongFuCheHui") }, ${ this.$t("nominationSuggestion.QiYuShuJuZhengChangCheHui") }`)
+              iMessage.warn(`${ this.language("RFQBIANHAO", "RFQ编号") }: ${ res.data.join(", ") } ${ this.language("CHONGFUCHEHUI", "重复撤回") }, ${ this.language("QIYUSHUJUZHENGCHANGCHEHUI", "其余数据正常撤回") }`)
               this.getMouldBudget()
             }
           }

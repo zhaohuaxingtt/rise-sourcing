@@ -2,7 +2,7 @@
   <iCard
     class="volume"
     tabCard
-    :title="`${$t('LK_LINGJIANMEICHEYONGLIANG')}（${ $t('LK_DANGQIANBANBEN') } ：${version}）`"
+    :title="`${language('LK_LINGJIANMEICHEYONGLIANG','零件每车用量')}（${ language('LK_DANGQIANBANBEN','当前版本') } ：${version}）`"
   >
     <div class="body">
       <tableList
@@ -22,7 +22,7 @@
         :page-size="page.pageSize"
         :layout="page.layout"
         :total="page.totalCount"
-		v-update
+		    v-update
       />
     </div>
   </iCard>
@@ -71,7 +71,7 @@ export default {
             currPage: 1,
             pageSize: 10,
             status: 1,
-            purchasingRequirementId: this.params.purchasingRequirementId,
+            purchasingRequirementId: this.params.purchasingRequirementId || '',
           });
 
           this.version = "V1";

@@ -1,0 +1,312 @@
+<!--
+ * @Author: haojiang
+ * @Date: 2021-05-20 14:07:50
+ * @Description: 
+-->
+<template>
+  <iSearch
+    class="designateSearch margin-bottom20"
+    @sure="sure"
+    @reset="reset"
+    :resetKey="NORNIMATION_RESETBUTTON"
+    :searchKey="NORNIMATION_CONFIRMBUTTON"
+  >
+    <el-form>
+      <!-- 零件号 -->
+      <el-form-item :label="language('nominationLanguage_LingJianHao','零件号')">
+        <iInput
+          v-model="form.partNum"
+          :placeholder="language('LK_QINGSHURU','请输入')"
+        ></iInput>
+      </el-form-item>
+      <!-- 零件名 -->
+      <el-form-item :label="language('nominationLanguage_LingJianMing','零件名')">
+        <iInput
+          v-model="form.partName"
+          :placeholder="language('LK_QINGSHURU','请输入')"
+        ></iInput>
+      </el-form-item>
+      <!-- FSNR/GSNR -->
+      <el-form-item :label="language('FsnrGsnr','FsnrGsnr')">
+        <iInput
+          v-model="form.fsnrGsnrNum"
+          :placeholder="language('LK_QINGSHURU','请输入')"
+        ></iInput>
+      </el-form-item>
+      <!-- 车型项目 -->
+      <el-form-item :label="language('CHEXINGXIANGMU','车型项目')">
+        <iSelect
+          v-model="form.carTypeProj"
+          :placeholder="language('LK_QINGXUANZE','请选择')"
+          filterable
+          clearable
+        >
+          <el-option
+            value=""
+            :label="language('all','全部') | capitalizeFilter"
+          ></el-option>
+          <el-option
+            :value="items.code"
+            :label="items.value"
+            v-for="(items, index) in ($attrs && $attrs.carTypeList) || []"
+            :key="index"
+            style="max-width: 190px"
+          ></el-option>
+        </iSelect>
+      </el-form-item>
+      <!-- 询价采购员 -->
+      <el-form-item :label="language('XUNJIACAIGOUYUAN','询价采购员')">
+        <iInput
+          v-model="form.buyerName"
+          :placeholder="language('LK_QINGSHURU','请输入')"
+        ></iInput>
+      </el-form-item>
+      <!-- LINIE -->
+      <el-form-item label="LINIE">
+        <iInput
+          v-model="form.linieName"
+          :placeholder="language('LK_QINGSHURU','请输入')"
+        ></iInput>
+      </el-form-item>
+      <!-- 申请单号 -->
+      <el-form-item :label="language('SHENGQINGDANHAO','申请单号')">
+        <iInput
+          v-model="form.nominateId"
+          :placeholder="language('LK_QINGSHURU','请输入')"
+        ></iInput>
+      </el-form-item>
+        <!-- RFQ编号 -->
+      <el-form-item :label="language('nominationLanguage.RFQBianHao','RFQ编号')">
+        <iInput
+          v-model="form.rfqIq"
+          :placeholder="language('LK_QINGSHURU','请输入')"
+        ></iInput>
+      </el-form-item>
+      <!-- 会议 -->
+      <el-form-item :label="language('nominationLanguage_HuiYi','会议')">
+        <iInput
+          v-model="form.meetingName"
+          :placeholder="language('LK_QINGSHURU','请输入')"
+        ></iInput>
+      </el-form-item>
+      <!-- 签字单号 -->
+      <el-form-item :label="language('QIANZIDANHAO','签字单号')">
+        <iInput
+          v-model="form.signId"
+          :placeholder="language('LK_QINGSHURU','请输入')"
+        ></iInput>
+      </el-form-item>
+      <!-- rs冻结日期 -->
+      <el-form-item :label="language('RSDONGJIERIQI','rs冻结日期')">
+        <iDatePicker
+          v-model='form.rsFreezeDate'
+          value-format="yyyy-MM-dd HH:mm:ss">
+        </iDatePicker>
+      </el-form-item>
+      <!-- 冻结日期 -->
+      <el-form-item :label="language('nominationLanguage_DongJieRiQi','冻结日期')">
+        <iDatePicker
+          v-model='form.freezeDate'
+          value-format="yyyy-MM-dd">
+        </iDatePicker>
+      </el-form-item>
+      <!-- 定点日期 -->
+      <el-form-item :label="language('nominationLanguage_DingDianRiQi','定点日期')">
+        <iDatePicker
+          v-model='form.nominateDate'
+          value-format="yyyy-MM-dd">
+        </iDatePicker>
+      </el-form-item>
+       <!-- 复核截止日期 -->
+      <el-form-item :label="language('FUHEJIEZHIRIQI','复核截止日期')">
+        <iDatePicker
+          v-model='form.recheckDueDate'
+          @change="oncheckDateChange"
+          type="daterange"
+          value-format="yyyy-MM-dd"
+          clearable>
+        </iDatePicker>
+      </el-form-item>
+      <!-- 申请状态 -->
+      <el-form-item :label="language('SHENGQINGZHUANGTAI','申请状态')">
+        <iSelect
+          v-model="form.applicationStatus"
+          :placeholder="language('LK_QINGXUANZE','请选择')"
+        >
+          <el-option
+            value=""
+            :label="language('all','全部') | capitalizeFilter"
+          ></el-option>
+          <el-option
+            :value="items.id"
+            :label="language(items.key, items.name)"
+            v-for="(items, index) in applicationStatus"
+            :key="index"
+          ></el-option>
+        </iSelect>
+      </el-form-item>
+      <!-- 报价一致性校验 -->
+      <el-form-item :label="language('nominationLanguage_BaoJiaYiZhiXingJiaoYan','报价一致性校验')">
+        <iSelect
+          v-model="form.isPriceConsistent"
+          :placeholder="language('LK_QINGXUANZE','请选择')"
+        >
+          <el-option
+            value=""
+            :label="language('all','全部') | capitalizeFilter"
+          ></el-option>
+          <el-option
+            :value="items.id"
+            :label="language(items.key, items.name)"
+            v-for="(items, index) in priceConsistentStatus"
+            :key="index"
+          ></el-option>
+        </iSelect>
+      </el-form-item>
+      <!-- SEL单据确认状态 -->
+      <el-form-item :label="language('SELDANJUQUERENZHUANGTAI','SEL单据确认状态')">
+        <iSelect
+          v-model="form.selStatus"
+          :placeholder="language('LK_QINGXUANZE','请选择')"
+        >
+          <el-option
+            value=""
+            :label="language('all','全部') | capitalizeFilter"
+          ></el-option>
+          <el-option
+            :value="items.key"
+            :label="language(items.key, items.name)"
+            v-for="(items, index) in selStatus"
+            :key="index"
+          ></el-option>
+        </iSelect>
+      </el-form-item>
+      <!-- 是否单一供应商 -->
+      <el-form-item :label="language('nominationLanguage_ShiFouDnaYiGongYingShang','是否单一供应商')">
+        <iSelect
+          v-model="form.singleSourcing"
+          :placeholder="language('LK_QINGXUANZE','请选择')"
+        >
+          <el-option
+            value=""
+            :label="language('all','全部') | capitalizeFilter"
+          ></el-option>
+          <el-option :value="true" :label="language('YES','是')"
+          ></el-option>
+          <el-option :value="false" :label="language('NO','否')"
+          ></el-option>
+        </iSelect>
+      </el-form-item>
+      <!-- 签字单状态 -->
+      <el-form-item :label="language('QIANZIDANZHUANGTAI', '签字单状态')">
+        <iSelect
+          v-model="form.signStatus"
+          :placeholder="language('LK_QINGXUANZE','请选择')"
+        >
+          <el-option
+            value=""
+            :label="language('all','全部') | capitalizeFilter"
+          ></el-option>
+          <el-option
+            :value="items.id"
+            :label="language(items.key, items.name)"
+            v-for="(items, index) in signSheetStatus"
+            :key="index"
+          ></el-option>
+        </iSelect>
+      </el-form-item>
+    </el-form>
+  </iSearch>
+</template>
+
+<script>
+
+import { applyType } from '@/layout/nomination/components/data'
+import { form } from '../data'
+import {
+  applicationStatus,
+  selStatus,
+  signSheetStatus,
+  priceConsistentStatus 
+} from '@/views/designate/home/components/options'
+import { getDictByCode } from '@/api/dictionary'
+import {
+  iSearch,
+  iInput,
+  iSelect,
+  iDatePicker
+} from "rise";
+import _ from 'lodash'
+
+export default {
+  data() {
+    return {
+      form,
+      ptocessType: applyType,
+      applicationStatus,
+      selStatus,
+      signSheetStatus,
+      priceConsistentStatus,
+      selectOptions: {}
+    }
+  },
+  components: {
+    iSearch,
+    iInput,
+    iSelect,
+    iDatePicker
+  },
+  mounted() {
+    // 获取下拉枚举值
+    this.getOptions()
+  },
+  methods: {
+    sure() {
+      const form = _.cloneDeep(this.form)
+      delete form.recheckDueDate
+      this.$emit('search', form)
+    },
+    reset() {
+      this.form = {}
+      this.$emit('search', {})
+    },
+    oncheckDateChange(data) {
+      console.log(data)
+      this.form.startRecheckDueDate = data[0]
+      this.form.endRecheckDueDate = data[1]
+    },
+    getOptions() {
+      this.getDictionary('signStatus', 'signStatus')
+      this.getDictionary('selStatus', 'selStatus')
+      this.getDictionary('applicationStatus', 'applicationStatus')
+    },
+    // 获取数据字典
+    getDictionary(optionName, optionType, key = {value: 'code', label: 'name'}) {
+      getDictByCode(optionType).then(res => {
+        if(res?.result) {
+          this.selectOptions[optionName] = res.data[0].subDictResultVo.map(item => {
+            return { value: item.code, label: item.name }
+          })
+        }
+      })
+    },
+  },
+  // watch: {
+  //   form: {
+  //     handler(newVal) {
+  //       this.$nextTick(() => {
+          
+  //       })
+  //     },
+  //     immediate: true,
+  //     deep: true
+  //   }
+  // }
+}
+</script>
+
+<style lang="scss" scoped>
+.designateSearch {
+  margin-top: 20px;
+}
+</style>

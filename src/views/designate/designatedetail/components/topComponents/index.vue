@@ -10,7 +10,7 @@
   <div class="topcomponents">
     <slot name='left'></slot>
     <slot name='items'>
-      <iNavMvp :query='query' :class="[{'padding':right}]" routerPage :lev='lev' :list='pageMenu' :right='right'></iNavMvp>
+      <iNavMvp :query='query' lang :class="[{'padding':right}]" routerPage :lev='lev' :list='pageMenu' :right='right'></iNavMvp>
     </slot>  
     <span class="right-cc">
       <span class="riz"><icon symbol class="rizhi" name="iconrizhiwuzi"></icon>日志</span>

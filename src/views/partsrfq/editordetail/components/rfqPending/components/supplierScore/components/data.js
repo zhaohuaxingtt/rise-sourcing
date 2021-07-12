@@ -1,7 +1,7 @@
 /*
  * @Author: moxuan
  * @Date: 2021-03-04 17:40:00
- * @LastEditors: Please set LastEditors
+ * @LastEditors: Luoshuang
  * @Description: In User Settings Edit
  */
 import {permissionTitle} from '@/utils'
@@ -25,7 +25,7 @@ import {permissionTitle} from '@/utils'
 //权限key暂时先去掉
 export const supplierScoreTitle = [
     {props: 'svwCode', name: 'SVW号', key: 'LK_SWHAO'},
-    {props: 'shortNameZh', name: '供应商名', key: 'LK_GONGYINGSHANGMING'},
+    {props: 'shortNameZh', name: '供应商名', key: 'LK_GONGYINGSHANGMING', disabled: true},
     {props: 'companyAddress', name: '供应商生产场地', key: 'LK_GONGYINGSHANGSHENGCHANCHANGDI'},
     {props: 'action', name: '零件评分', key: 'LK_LINGJIANPINGFEN'},
 ]
@@ -59,11 +59,11 @@ export const partScroingTitle = [
     {
         name: 'TPB',
         list: [
-            {props: 'tpGrade', name: '评分', key: 'LK_PINGFEN'},
-            {props: 'tpbExternaFee', name: '外部开发费（元）', key: 'LK_WAIBUKAIFAFEIYUAN'},
-            {props: 'tpbAddFee', name: '增加的认可费（元）', key: 'LK_ZENGJIADERENKEFEIYUAN'},
-            {props: 'tpbConfirmCycle', name: '认可周期（周）', key: 'LK_RENKEZHOUQIZHOU'},
-            {props: 'tpbMemo', name: '备注', key: 'LK_BEIZHU'},
+            {props: 'grade', name: '评分', key: 'LK_PINGFEN'},
+            {props: 'externaFee', name: '外部开发费（元）', key: 'LK_WAIBUKAIFAFEIYUAN'},
+            {props: 'addFee', name: '增加的认可费（元）', key: 'LK_ZENGJIADERENKEFEIYUAN'},
+            {props: 'confirmCycle', name: '认可周期（周）', key: 'LK_RENKEZHOUQIZHOU'},
+            {props: 'remark', name: '备注', key: 'LK_BEIZHU'},
         ]
     }
 ]

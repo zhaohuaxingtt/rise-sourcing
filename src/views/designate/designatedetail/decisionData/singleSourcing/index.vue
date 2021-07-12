@@ -7,7 +7,7 @@
     <iCard title="⽣产采购单⼀供应商说明 Single Sourcing for Production Purchasing">
         <div class="decision-data-singleSourcing-content">
             <div class="margin-top30 margin-bottom30">
-                <iFormGroup inline>
+                <iFormGroup inline row="2">
                     <iFormItem label-width="130px"  label="项⽬名称 Project:">
                         <iText tooltip style="width:250px">{{projectName}}</iText>
                     </iFormItem>
@@ -26,6 +26,24 @@
                     :tableTitle="tableTitle"
                     :tableLoading="loading"
                 >
+                    <template #suppliersName="scope">
+                        <div>
+                            <span class="factoryDesc margin-right5">{{scope.row.suppliersName }}</span>
+                            <el-tooltip effect="light" :content="`${language('LK_FRMPINGJI','FRM评级')}：${scope.row.frmRate}`" v-if="scope.row.isFRMRate === 1">
+                            <span>
+                                <icon symbol name="iconzhongyaoxinxitishi" />
+                            </span>
+                            </el-tooltip>
+                            <br>
+                            <span >{{scope.row.suppliersNameEn }}</span>
+                        </div>
+                    </template>
+                    <!-- 零件名称 -->
+                    <template #partNameCh="scope">
+                        <span>{{scope.row.partNameCh}}</span>
+                        <br/>
+                        <span>{{scope.row.partNameEn}}</span>
+                    </template>
                 </tableList>
                 <iPagination
                     class="margin-bottom20"
@@ -51,9 +69,12 @@ import {
   iFormItem,
   iText,
   iMessage,
+  icon,
 } from "rise";
 import {pageMixins} from '@/utils/pageMixins'
-import tableList from "@/views/partsign/editordetail/components/tableList"
+// import tableList from "@/views/partsign/editordetail/components/tableList"
+
+import tableList from '../../components/tableList'
 import {
     getSingleSourcing,
 } from '@/api/designate/decisiondata/singleSourcing'
@@ -66,6 +87,7 @@ export default {
         iFormItem,
         iText,
         tableList,
+        icon,
     },
     name:'SingleSourcing',
     data(){
@@ -73,13 +95,13 @@ export default {
             loading: false,
             tableListData:[],
             tableTitle:[
-                {name:'FS号\nFS No',key:'FSNo',props:'fsnrGsnrNum'},
-                {name:'零件号\nPart No.',key:'PARTNO',props:'partNum'},
-                {name:'零件名称\nPart Name',key:'PartName',props:'partNameCh'},
-                {name:'供应商名称\nSupplier Name',key:'SupplierName',props:'suppliersName'},
-                {name:'供应商编码\nSupplier No.',key:'SupplierNo.',props:'supplierId'},
-                {name:'原因\nReason',key:'Reason',props:'singleReason'},
-                {name:'原因部⻔\nCaused by',key:'Causedby',props:'department'},
+                {name:'FS号',enName:'FS No',props:'fsnrGsnrNum'},
+                {name:'零件号',enName:'Part No.',props:'partNum'},
+                {name:'零件名称',enName:'Part Name',props:'partNameCh'},
+                {name:'供应商名称',enName:'Supplier Name',props:'suppliersName'},
+                {name:'供应商编码',enName:'Supplier No.',props:'supplierId'},
+                {name:'原因',enName:'Reason',props:'singleReason'},
+                {name:'原因部⻔',enName:'Caused by',props:'department'},
             ],
             projectName:'',
             nominateId:'',
@@ -106,21 +128,21 @@ export default {
                 size:page.pageSize,
             };
             await getSingleSourcing(params).then((res)=>{
-                const {code,data} =res;
-                if(code == '200' && data){
+                const {code,data={}} =res;
+                if(code == '200'){
                     const {resultPage={},nominateId='',cartypeProjectZhList=[]} = data;
                     const {total} = resultPage;
                     this.tableListData = resultPage.data || [];
                     this.page.totalCount = total;
                     this.nominateId = nominateId;
-                    this.projectName = cartypeProjectZhList.join();
+                    this.projectName = cartypeProjectZhList ? cartypeProjectZhList.join() : '';
                 }else{
                     iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
                 }
                 this.loading =  false;
 
             }).catch((e)=>{
-                    iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn) 
+                    e && iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
                     this.loading =  false; 
                 });
         },

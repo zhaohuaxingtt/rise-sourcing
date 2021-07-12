@@ -1,13 +1,13 @@
 <!--
  * @Author: moxuan
  * @Date: 2021-03-04 11:24:15
- * @LastEditTime: 2021-04-16 16:42:41
+ * @LastEditTime: 2021-07-07 17:34:26
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
 -->
 <template>
   <iDialog
-    :title="$t(title)"
+    :title="title || language('LK_ZHUANPAIPINGFENRENWU','转派评分任务')"
     :visible.sync="value"
     width="80%"
     @close="clearDiolog"
@@ -18,10 +18,10 @@
           <iButton
             @click="add"
             v-permission="PARTSRFQ_ASSIGNMENTOFSCORINGTASKS_SAVE"
-            >{{ $t("LK_TIANJIA") }}</iButton
+            >{{ language("LK_TIANJIA",'添加') }}</iButton
           >
-          <iButton @click="deleteItems">{{ $t("LK_SHANCHU") }}</iButton>
-          <iButton @click="save">{{ $t("LK_ZHUANPAI") }}</iButton>
+          <iButton @click="deleteItems">{{ language("LK_SHANCHU",'删除') }}</iButton>
+          <iButton @click="save">{{ language("LK_ZHUANPAI",'转派') }}</iButton>
         </div>
       </div>
       <tablelist
@@ -38,7 +38,7 @@
       ></tablelist>
     </div>
     <span slot="footer" class="dialog-footer">
-      <iButton @click="$emit('input', false)">{{ $t("LK_QUXIAO") }}</iButton>
+      <iButton @click="$emit('input', false)">{{ language("LK_QUXIAO",'取 消') }}</iButton>
     </span>
   </iDialog>
 </template>
@@ -55,7 +55,7 @@ import { rfqCommonFunMixins } from "pages/partsrfq/components/commonFun";
 export default {
   components: { iButton, iDialog, tablelist },
   props: {
-    title: { type: String, default: "LK_ZHUANPAIPINGFENRENWU" },
+    title: { type: String, default: "" },
     value: { type: Boolean },
     repeatClick: Boolean,
     rfqId: {
@@ -92,7 +92,7 @@ export default {
     },
     async save() {
       if (this.selectTableData.length == "")
-        return iMessage.warn(this.$t("LK_NINDANGQIANHAIWEIXUANZE"));
+        return iMessage.warn(this.language("LK_NINDANGQIANHAIWEIXUANZE",'抱歉！您当前还未选择！'));
       const req = {
         ratingInfoPackage: {
           ratingInfoList: this.selectTableData,
@@ -168,7 +168,7 @@ export default {
     deleteItems() {
       if (this.selectTableData.length === 0) {
         // return iMessage.warn("抱歉，您当前还未选择！");
-        return iMessage.warn(this.$t("LK_NINDANGQIANHAIWEIXUANZE"));
+        return iMessage.warn(this.language("LK_NINDANGQIANHAIWEIXUANZE",'抱歉！您当前还未选择！'));
       }
       const indexList = this.selectTableData.map((item) => {
         return item.time;

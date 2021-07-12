@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 09:50:42
- * @LastEditTime: 2021-06-09 18:05:27
+ * @LastEditTime: 2021-07-12 16:27:17
  * @LastEditors: Please set LastEditors
  * @Description: 零件采购项目建立首页。
  * @FilePath: \rise\src\views\partsprocure\home\index.vue
@@ -9,10 +9,10 @@
 <template>
   <iPage class="partsprocureHome">
     <el-tabs v-model="tab" class="tab">
-      <el-tab-pane :label="$t('LK_XUNYUANZHIHANG')" name="source">
+      <el-tab-pane :label="language('LK_XUNYUANZHIHANG','寻源')" name="source">
         <div>
           <div class="margin-bottom33">
-            <iNavMvp @change="change" right routerPage lev="2" :list="navList" />
+            <iNavMvp @change="change" lang right routerPage lev="2" :list="navList" @message="clickMessage" />
           </div>
           <!------------------------------------------------------------------------>
           <!--                  search 搜索模块                                   --->
@@ -25,30 +25,30 @@
             :searchKey="PARTSPROCURE_CONFIRM"
           >
             <el-form>
-              <el-form-item :label="$t('partsprocure.PARTSPROCUREPARTNUMBER')">
+              <el-form-item :label="language('partsprocure.PARTSPROCUREPARTNUMBER','零件号')">
                 <iInput
-                  :placeholder="$t('partsprocure.PARTSPROCURE')"
+                  :placeholder="language('partsprocure.PARTSPROCURE','请输入零件号，多个逗号分隔')"
                   v-model="form['search.partNum']"
                   v-permission="PARTSPROCURE_PARTNUMBER"
                 ></iInput>
               </el-form-item>
-              <el-form-item :label="$t('partsprocure.PARTSPROCUREPARTNAMEZH')">
+              <el-form-item :label="language('partsprocure.PARTSPROCUREPARTNAMEZH','零件名（中）')">
                 <iInput
                   :placeholder="
-                    $t('partsprocure.PLEENTER') +
-                    $t('partsprocure.PARTSPROCUREPARTNAMEZH')
+                    language('partsprocure.PLEENTER','请输入') +
+                    language('partsprocure.PARTSPROCUREPARTNAMEZH','零件名（中）')
                   "
                   v-model="form['search.partNameZh']"
                   v-permission="PARTSPROCURE_PARTNAMEZH"
                 ></iInput>
               </el-form-item>
               <el-form-item
-                :label="$t('partsprocure.PARTSPROCUREFSNFGSNFSPNR')"
+                :label="language('partsprocure.PARTSPROCUREFSNFGSNFSPNR','零件采购项目号')"
               >
                 <iInput
                   :placeholder="
-                    $t('partsprocure.PLEENTER') +
-                    $t('partsprocure.PARTSPROCUREFSNFGSNFSPNR')
+                    language('partsprocure.PLEENTER','请输入') +
+                    language('partsprocure.PARTSPROCUREFSNFGSNFSPNR','零件采购项目号')
                   "
                   v-model="form['search.fsnrGsnrNum']"
                   v-permission="PARTSPROCURE_FSINPUT"
@@ -56,40 +56,40 @@
                 </iInput>
               </el-form-item>
               <el-form-item
-                :label="$t('partsprocure.PARTSPROCUREINQUIRYBUYER')"
+                :label="language('partsprocure.PARTSPROCUREINQUIRYBUYER','询价采购员')"
               >
                 <iInput
                   :placeholder="
-                    $t('partsprocure.PLEENTER') +
-                    $t('partsprocure.PARTSPROCUREINQUIRYBUYER')
+                    language('partsprocure.PLEENTER','请输入') +
+                    language('partsprocure.PARTSPROCUREINQUIRYBUYER','询价采购员')
                   "
                   v-model="form['search.buyerName']"
                   v-permission="PARTSPROCURE_INQUIRYBUYER"
                 >
                 </iInput>
               </el-form-item>
-              <el-form-item :label="$t('partsprocure.PARTSPROCURELINIE')">
+              <el-form-item :label="language('partsprocure.PARTSPROCURELINIE','LINIE')">
                 <iInput
                   :placeholder="
-                    $t('partsprocure.PLEENTER') +
-                    $t('partsprocure.PARTSPROCURELINIE')
+                    language('partsprocure.PLEENTER','请输入') +
+                    language('partsprocure.PARTSPROCURELINIE','LINIE')
                   "
                   v-model="form['search.linieName']"
                   v-permission="PARTSPROCURE_LINIEINPUT"
                 ></iInput>
               </el-form-item>
-              <el-form-item :label="$t('partsprocure.PARTSPROCUREPARTSTATUS')">
+              <el-form-item :label="language('partsprocure.PARTSPROCUREPARTSTATUS','零件状态')">
                 <iSelect
                   :placeholder="
-                    $t('partsprocure.CHOOSE') +
-                    $t('partsprocure.PARTSPROCUREPARTSTATUS')
+                    language('partsprocure.CHOOSE','请选择') +
+                    language('partsprocure.PARTSPROCUREPARTSTATUS','零件状态')
                   "
-                  v-model="form['search.partStatus']"
+                  v-model="form['search.projectStatus']"
                   v-permission="PARTSPROCURE_PARTSTATUS"
                 >
                   <el-option
                     value=""
-                    :label="$t('all') | capitalizeFilter"
+                    :label="language('all','全部') | capitalizeFilter"
                   ></el-option>
                   <el-option
                     :value="item.key"
@@ -100,19 +100,19 @@
                 </iSelect>
               </el-form-item>
               <el-form-item
-                :label="$t('partsprocure.PARTSPROCUREVEHICLECATEGORIES')"
+                :label="language('partsprocure.PARTSPROCUREVEHICLECATEGORIES','车型大类')"
               >
                 <iSelect
                   :placeholder="
-                    $t('partsprocure.CHOOSE') +
-                    $t('partsprocure.PARTSPROCUREVEHICLECATEGORIES')
+                    language('partsprocure.CHOOSE','请选择') +
+                    language('partsprocure.PARTSPROCUREVEHICLECATEGORIES','车型大类')
                   "
                   v-model="form['search.cartypeCategory']"
                   v-permission="PARTSPROCURE_VEHICLECATEGORIES"
                 >
                   <el-option
                     value=""
-                    :label="$t('all') | capitalizeFilter"
+                    :label="language('all','全部') | capitalizeFilter"
                   ></el-option>
                   <el-option
                     :value="item.key"
@@ -124,19 +124,19 @@
                 </iSelect>
               </el-form-item>
               <el-form-item
-                :label="$t('partsprocure.PARTSPROCUREMODELPROJECT')"
+                :label="language('partsprocure.PARTSPROCUREMODELPROJECT','车型项目')"
               >
                 <iSelect
                   :placeholder="
-                    $t('partsprocure.CHOOSE') +
-                    $t('partsprocure.PARTSPROCUREMODELPROJECT')
+                    language('partsprocure.CHOOSE','请选择') +
+                    language('partsprocure.PARTSPROCUREMODELPROJECT','车型项目')
                   "
                   v-model="form['search.cartypeProjectZh']"
                   v-permission="PARTSPROCURE_MODELPROJECT"
                 >
                   <el-option
                     value=""
-                    :label="$t('all') | capitalizeFilter"
+                    :label="language('all','全部') | capitalizeFilter"
                   ></el-option>
                   <el-option
                     :value="item.key"
@@ -148,19 +148,19 @@
                 </iSelect>
               </el-form-item>
               <el-form-item
-                :label="$t('partsprocure.PARTSPROCUREPARTITEMTYPE')"
+                :label="language('partsprocure.PARTSPROCUREPARTITEMTYPE','零件项目类型')"
               >
                 <iSelect
                   :placeholder="
-                    $t('partsprocure.CHOOSE') +
-                    $t('partsprocure.PARTSPROCUREPARTITEMTYPE')
+                    language('partsprocure.CHOOSE','请选择') +
+                    language('partsprocure.PARTSPROCUREPARTITEMTYPE','零件项目类型')
                   "
                   v-model="form['search.partPrejectType']"
                   v-permission="PARTSPROCURE_PARTITEMTYPE"
                 >
                   <el-option
                     value=""
-                    :label="$t('all') | capitalizeFilter"
+                    :label="language('all','全部') | capitalizeFilter"
                   ></el-option>
                   <el-option
                     :value="item.key"
@@ -172,19 +172,19 @@
                 </iSelect>
               </el-form-item>
               <el-form-item
-                :label="$t('partsprocure.PARTSPROCUREPURCHASINGFACTORY')"
+                :label="language('partsprocure.PARTSPROCUREPURCHASINGFACTORY','采购工厂')"
               >
                 <iSelect
                   :placeholder="
-                    $t('partsprocure.CHOOSE') +
-                    $t('partsprocure.PARTSPROCUREPURCHASINGFACTORY')
+                    language('partsprocure.CHOOSE','请选择') +
+                    language('partsprocure.PARTSPROCUREPURCHASINGFACTORY','采购工厂')
                   "
                   v-model="form['search.procureFactory']"
                   v-permission="PARTSPROCURE_PURCHASINGFACTORY"
                 >
                   <el-option
                     value=""
-                    :label="$t('all') | capitalizeFilter"
+                    :label="language('all','全部') | capitalizeFilter"
                   ></el-option>
                   <el-option
                     :value="item.key"
@@ -203,16 +203,16 @@
             <!------------------------------------------------------------------------>
             <div class="margin-bottom20 clearFloat">
               <span class="font18 font-weight">
-                {{ $t("partsprocure.PARTSPROCURENEWPROCUREMENTPROJECT") }}</span
+                {{ language("partsprocure.PARTSPROCURENEWPROCUREMENTPROJECT",'零件采购项目管理') }}</span
               >
               <div class="floatright">
                 <!-- 手工采购项目创建 -->
-                <iButton @click="openCreateParts">{{ $t("partsprocure.SHOUGONGCAIGOUXIANGMUCHUANGJIAN") }}</iButton>
+                <iButton @click="openCreateParts">{{ language("SHOUGONGCAIGOUXIANGMUCHUANGJIAN", "手工采购项目创建") }}</iButton>
                 <iButton
                   @click="openDiologChangeItems"
                   v-permission="PARTSPROCURE_TRANSFER"
                 >
-                  {{ $t("partsprocure.PARTSPROCURETRANSFER") }}
+                  {{ language("partsprocure.PARTSPROCURETRANSFER",'转派') }}
                 </iButton>
                 <creatFs
                   :projectIds="projectIds"
@@ -226,20 +226,20 @@
                   @click="openDiologBack"
                   v-permission="PARTSPROCURE_CANCELPROCUREMENTITEMS"
                 >
-                  {{ $t("partsprocure.PARTSPROCURECANCELPARTSPURCHASE") }}
+                  {{ language("partsprocure.PARTSPROCURECANCELPARTSPURCHASE",'取消零件采购项目') }}
                 </iButton>
                 <iButton
                   @click="openBatchmiantain"
                   v-permission="PARTSPROCURE_BATCHMAINTENANCE"
                 >
-                  {{ $t("partsprocure.PARTSPROCUREBATCHMAINTENANCE") }}
+                  {{ language("partsprocure.PARTSPROCUREBATCHMAINTENANCE",'批量维护') }}
                 </iButton>
                 <iButton
                   @click="start"
                   :loading="startLoding"
                   v-permission="PARTSPROCURE_STARTINQUIRY"
                 >
-                  {{ $t("partsprocure.PARTSPROCURESTARTINQUIRY") }}
+                  {{ language("partsprocure.PARTSPROCURESTARTINQUIRY",'启动询价') }}
                 </iButton>
               </div>
             </div>
@@ -273,12 +273,12 @@
           <changeItems
             v-model="diologChangeItems"
             @sure="sureChangeItems"
-            :title="$t('LK_LINGJIANCAIGOUXIANGMUZHUANPAI')"
+            :title="language('LK_LINGJIANCAIGOUXIANGMUZHUANPAI','零件采购项目转派')"
           ></changeItems>
           <backItems
             v-model="diologBack"
             @sure="cancel"
-            :title="$t('LK_QUXIAOLINGJIANCAIGOUXIANGMU')"
+            :title="language('LK_QUXIAOLINGJIANCAIGOUXIANGMU','取消零件采购项目')"
           ></backItems>
         </div>
       </el-tab-pane>
@@ -310,8 +310,11 @@ import { insertRfq } from "@/api/partsrfq/home";
 import changeItems from "../../partsign/home/components/changeItems";
 import filters from "@/utils/filters";
 import creatFs from "./components/creatFs";
-import { navList } from "@/views/partsign/home/components/data";
-import { cloneDeep } from "lodash";
+import { cloneDeep } from "lodash"
+import { clickMessage } from "@/views/partsign/home/components/data"
+
+// eslint-disable-next-line no-undef
+const { mapState, mapActions } = Vuex.createNamespacedHelpers("sourcing")
 
 export default {
   mixins: [pageMixins, filters],
@@ -336,18 +339,19 @@ export default {
       tableTitle: tableTitle,
       selectTableData: [],
       diologChangeItems: false,
-      form: form,
+      form: cloneDeep(form),
       fromGroup: [],
       diologBack: false, //退回
       startLoding: false,
       tab: "source",
-      navList: cloneDeep(navList)
     };
   },
   computed: {
     projectIds() {
       return this.getPurchasePrjectId();
     },
+    ...mapState(["navList"]),
+    ...mapActions(["updateNavList"])
   },
   created() {
     Object.keys(this.$route.query).forEach(key => {
@@ -356,6 +360,7 @@ export default {
 
     this.getTableListFn();
     this.getProcureGroup();
+    this.updateNavList
   },
   methods: {
     // 跳转详情
@@ -399,8 +404,9 @@ export default {
     openDiologChangeItems() {
       if (this.selectTableData.length == 0)
         return iMessage.warn(
-          this.$t(
-            "LK_NINDANGQIANHAIWEIXUANZENINXUYAOZHUANPAIDELINGJIANCAIGOUXIANGMU"
+          this.language(
+            "LK_NINDANGQIANHAIWEIXUANZENINXUYAOZHUANPAIDELINGJIANCAIGOUXIANGMU",
+            '抱歉，您当前还未选择您需要转派的零件采购项目！'
           )
         );
       this.diologChangeItems = true;
@@ -418,7 +424,7 @@ export default {
         .then((res) => {
           this.diologChangeItems = false;
           if (res.data) {
-            iMessage.success(this.$t("LK_ZHUANPAICHENGGONG"));
+            iMessage.success(this.language("LK_ZHUANPAICHENGGONG",'转派成功'));
             this.getTableListFn();
           } else {
             iMessage.error(res.desZh);
@@ -462,8 +468,9 @@ export default {
     openDiologBack() {
       if (this.selectTableData.length == 0)
         return iMessage.warn(
-          this.$t(
-            "LK_NINDANGQIANHAIWEIXUANZENINXUYAOQUXIAODELINGJIANCAIGOUXIANGMU"
+          this.language(
+            "LK_NINDANGQIANHAIWEIXUANZENINXUYAOQUXIAODELINGJIANCAIGOUXIANGMU",
+            '抱歉，您当前还未选择您需要取消的零件采购项目！'
           )
         );
       this.diologBack = true;
@@ -479,7 +486,7 @@ export default {
       })
         .then((res) => {
           if (res.data) {
-            iMessage.success(this.$t("LK_CAOZUOCHENGGONG"));
+            iMessage.success(this.language("LK_CAOZUOCHENGGONG",'操作成功'));
             this.getTableListFn();
           } else {
             iMessage.error(res.desZh);
@@ -498,8 +505,9 @@ export default {
         if (this.selectTableData.length == 0) {
           r(false);
           iMessage.warn(
-            this.$t(
-              "LK_NINDANGQIANHAIWEIXUANZEXUYAOQIDONGXUNJIADECAIGOUXIANGMU"
+            this.language(
+              "LK_NINDANGQIANHAIWEIXUANZEXUYAOQIDONGXUNJIADECAIGOUXIANGMU",
+              '抱歉，您当前还未选择需要启动询价的采购项目！'
             )
           );
           return;
@@ -507,8 +515,9 @@ export default {
         if (this.selectTableData.find((items) => items.fsnrGsnrNum == "")) {
           r(false);
           iMessage.warn(
-            this.$t(
-              "LK_DANGQIANCAIGOUXIANGMUZHONGCUNZAIHAIWEISHENGCHENGFSNRDESHUJUWUFAWEININQIDONGXUNJIA"
+            this.language(
+              "LK_DANGQIANCAIGOUXIANGMUZHONGCUNZAIHAIWEISHENGCHENGFSNRDESHUJUWUFAWEININQIDONGXUNJIA",
+              '抱歉，当前采购项目中存在还未生成FSNR的数据，无法为您启动询价！'
             )
           );
           return;
@@ -562,8 +571,9 @@ export default {
     openBatchmiantain() {
       if (this.selectTableData.length == 0)
         return iMessage.warn(
-          this.$t(
-            "LK_NINDANGQIANHAIWEIXUANZENINXUYAOSHENGPILIANGWEIHUDEXIANGMU"
+          this.language(
+            "LK_NINDANGQIANHAIWEIXUANZENINXUYAOSHENGPILIANGWEIHUDEXIANGMU",
+            '抱歉，您当前还未选择您需要生批量维护的项目！'
           )
         );
       this.$router.push({
@@ -575,16 +585,20 @@ export default {
     },
     openCreateParts() {
       this.$router.push({ path: "/sourcing/createparts/home" })
-    }
+    },
+    // 通过待办数跳转
+    clickMessage,
   },
   beforeRouteUpdate(to, from, next) {
-    Object.keys(this.$route.query).forEach(key => {
+    this.form = cloneDeep(form)
+
+    Object.keys(to.query).forEach(key => {
       this.$set(this.form, `search.${ key }`, to.query[key])
     })
 
     this.getTableListFn()
     next()
-  }
+  },
 };
 </script>
 <style lang="scss" scoped>

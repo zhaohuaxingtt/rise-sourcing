@@ -1,7 +1,7 @@
 <!--
  * @Author: moxuan
  * @Date: 2021-02-25 09:59:25
- * @LastEditTime: 2021-06-11 17:49:18
+ * @LastEditTime: 2021-07-07 17:29:23
  * @LastEditors: Please set LastEditors
  * @Description: RFQ模块首页
  * @FilePath: \rise\src\views\partsrfq\home\index.vue
@@ -9,10 +9,10 @@
 <template>
   <iPage class="partsrfqHome" v-permission="PARTSRFQ_INDEXPAGE">
     <el-tabs v-model="tab" class="tab">
-      <el-tab-pane :label="$t('LK_XUNYUANZHIHANG')" name="source">
+      <el-tab-pane :label="language('LK_XUNYUANZHIHANG','寻源')" name="source">
         <div>
           <div class="margin-bottom33">
-            <iNavMvp @change="change" right routerPage lev="2" :list="navList" />
+            <iNavMvp lang @change="change" right routerPage lev="2" :list="navList" @message="clickMessage" />
           </div>
           <!------------------------------------------------------------------------>
           <!--                  search 搜索模块                                   --->
@@ -20,36 +20,36 @@
           <iSearch class="margin-bottom20" :icon="false" @reset="handleSearchReset" @sure="getTableList"
                    :resetKey="PARTSRFQ_RESET" :searchKey="PARTSRFQ_SEARCH">
             <el-form>
-              <el-form-item :label="$t('LK_LINGJIANHAO_FSNR_RFQBIANHAO_CAIGOUYUAN')" style="width: 340px">
-                <iInput :placeholder="$t('LK_QINGXUANZE')" v-model="form.searchConditions"
+              <el-form-item :label="language('LK_LINGJIANHAO_FSNR_RFQBIANHAO_CAIGOUYUAN','零件号/FSNR/RFQ编号/采购员')" style="width: 340px">
+                <iInput :placeholder="language('LK_QINGXUANZE','请选择')" v-model="form.searchConditions"
                         v-permission="PARTSRFQ_SEARCHBOX"></iInput>
               </el-form-item>
-              <el-form-item :label="$t('LK_CHEXINGXIANGMU')">
-                <iSelect :placeholder="$t('LK_QINGXUANZE')" v-model="form.carType"
+              <el-form-item :label="language('LK_CHEXINGXIANGMU','车型项目')">
+                <iSelect :placeholder="language('LK_QINGXUANZE','请选择')" v-model="form.carType"
                          v-permission="PARTSRFQ_MODELPROJECT">
-                  <el-option value="" :label="$t('all') | capitalizeFilter"></el-option>
+                  <el-option value="" :label="language('all','全部') | capitalizeFilter"></el-option>
                   <el-option v-for="items in carTypeOptions" :key='items.code' :value='items.code' :label="items.name"/>
                 </iSelect>
               </el-form-item>
-              <el-form-item :label="$t('LK_LINGJIANXIANGMULEIXING')">
-                <iSelect :placeholder="$t('LK_QINGXUANZE')" v-model="form.partType"
+              <el-form-item :label="language('LK_LINGJIANXIANGMULEIXING','零件项目类型')">
+                <iSelect :placeholder="language('LK_QINGXUANZE','请选择')" v-model="form.partType"
                          v-permission="PARTSRFQ_PARTITEMTYPE">
-                  <el-option value="" :label="$t('all') | capitalizeFilter"></el-option>
+                  <el-option value="" :label="language('all','全部') | capitalizeFilter"></el-option>
                   <el-option v-for="items in partTypeOptions" :key='items.code' :value='items.code'
                              :label="items.name"/>
                 </iSelect>
               </el-form-item>
-              <el-form-item :label="$t('LK_RFQZHUANGTAI')">
-                <iSelect :placeholder="$t('LK_QINGXUANZE')" v-model="form.rfqStatus"
+              <el-form-item :label="language('LK_RFQZHUANGTAI','RFQ状态')">
+                <iSelect :placeholder="language('LK_QINGXUANZE','请选择')" v-model="form.rfqStatus"
                          v-permission="PARTSRFQ_RFQSTATUS">
-                  <el-option value="" :label="$t('all') | capitalizeFilter"></el-option>
+                  <el-option value="" :label="language('all','全部') | capitalizeFilter"></el-option>
                   <el-option v-for="items in rfqStatusOptions" :key='items.code' :value='items.code'
                              :label="items.name"/>
                 </iSelect>
               </el-form-item>
-              <el-form-item :label="$t('LK_CHEXING')">
-                <iSelect :placeholder="$t('LK_QINGXUANZE')" v-model="form.modelCode" filterable>
-                  <el-option value="" :label="$t('all') | capitalizeFilter"></el-option>
+              <el-form-item :label="language('LK_CHEXING','车型')">
+                <iSelect :placeholder="language('LK_QINGXUANZE','请选择')" v-model="form.modelCode" filterable>
+                  <el-option value="" :label="language('all','全部') | capitalizeFilter"></el-option>
                   <el-option v-for="item in cartTypeOptions" :key="item.key" :value="item.value" :label="item.label"/>
                 </iSelect>
               </el-form-item>
@@ -60,35 +60,35 @@
             <!--                  table模块，向外入参表格数据，表头                    --->
             <!------------------------------------------------------------------------>
             <div class="margin-bottom20 clearFloat">
-              <span class="font18 font-weight">{{ $t('LK_RFQZONGHEGUANLI') }}</span>
+              <span class="font18 font-weight">{{ language('LK_RFQZONGHEGUANLI','RFQ综合管理') }}</span>
               <div class="floatright">
                 <!--激活RFQ：仅前期采购员有该按钮权限。已经关闭的RFQ，如果需要再次打开时，点击该键-->
                 <iButton @click="editRfq('02')" :loading="activateButtonLoading" v-permission="PARTSRFQ_ACTIVATERFQ">
-                  {{ $t('LK_JIHUORFQ') }}
+                  {{ language('LK_JIHUORFQS','激活RFQ') }}
                 </iButton>
                 <!--新建RFQ：点击该键，系统会跳到下一界面。具体新建RFQ见另一user story，当RFQ类型为FS时，仅前期采购员有该按钮权限-->
-                <iButton @click="newRfq" v-permission="PARTSRFQ_NEWRFQ">{{ $t('LK_XINJIANRFQ') }}</iButton>
+                <iButton @click="newRfq" v-permission="PARTSRFQ_NEWRFQ">{{ language('LK_XINJIANRFQS','新建RFQ') }}</iButton>
                 <!--关闭RFQ：仅前期采购员有该按钮权限。以下情况可关闭：RFQ零件状态是全部定点或全部结束，当前RFQ没有零件-->
                 <iButton @click="editRfq('01')" :loading="closeButtonLoading" v-permission="PARTSRFQ_CLOSERFQ">
-                  {{ $t('LK_GUANBIRFQ') }}
+                  {{ language('LK_GUANBIRFQS','关闭RFQ') }}
                 </iButton>
                 <!--转派评分任务：选中RFQ之后，可以手动转派任务给EP/MQ同事-->
                 <iButton @click="assignmentOfScoringTasks" v-permission="PARTSRFQ_ASSIGNMENTTASKS">
-                  {{ $t('LK_ZHUANPAIPINGFENRENWU') }}
+                  {{ language('LK_ZHUANPAIPINGFENRENWUS','转派任务评分') }}
                 </iButton>
                 <!--转谈判：只会出现在前期采购员界面-->
                 <iButton @click="editRfq('03')" :loading="transferNegotiationButtonLoading"
-                         v-permission="PARTSRFQ_TRANSFERNEGOTIATION">{{ $t('LK_ZHUANTANPAN') }}
+                         v-permission="PARTSRFQ_TRANSFERNEGOTIATION">{{ language('LK_ZHUANTANPANS','转谈判') }}
                 </iButton>
                 <!--转询价：只会出现在专业采购员界面-->
                 <iButton @click="editRfq('04')" :loading="transferInquiryButtonLoading"
-                         v-permission="PARTSRFQ_REINQUIRY">{{ $t('LK_ZHUANXUNJIA') }}
+                         v-permission="PARTSRFQ_REINQUIRY">{{ language('LK_ZHUANXUNJIAS','转询价') }}
                 </iButton>
                 <!--创建定点申请：在列表中选择RFQ，点击该键，会跳转到定点申请创建页面，RFQ的内容会自动带入到定点申请的各页签中-->
                 <iButton v-permission="PARTSRFQ_CREATEAPPLICATION" :loading="createDesignateLoading" @click="openNominateTypeDialog">
-                  {{ $t('LK_CHUANGJIANDINGDIANSHENQING') }}
+                  {{ language('LK_CHUANGJIANDINGDIANSHENQINGS','创建定点申请') }}
                 </iButton>
-                <iButton @click="exportTable" v-permission="PARTSRFQ_EXPORT">{{ $t('LK_DAOCHU') }}</iButton>
+                <iButton @click="exportTable" v-permission="PARTSRFQ_EXPORT">{{ language('LK_DAOCHUS','导出') }}</iButton>
               </div>
             </div>
             <tablelist
@@ -101,6 +101,7 @@
                 open-page-props="id"
                 :index="true"
                 icon-props="recordId"
+                :lang="true"
             >
               <template v-slot:icon="scope">
                 <div @click="toTop(scope.data)" class="icon-style">
@@ -109,7 +110,7 @@
                   <icon symbol class="icon" name="iconliebiaoweizhiding" v-else></icon>
                 </div>
               </template>
-              <template #b="scope">
+              <template #kmAnalysis="scope">
                 <el-popover
                   v-if="scope.row.kmAnalysis"
                   placement="left"
@@ -173,12 +174,14 @@ import {rfqCommonFunMixins} from "pages/partsrfq/components/commonFun";
 import {getAllScoringDepartmentInfo} from '@/api/partsrfq/home'
 import { getProcureGroup } from "@/api/partsprocure/home";
 import scoringDeptDialog from "@/views/partsrfq/editordetail/components/rfqPending/components/supplierScore/components/scoringDeptDialog"
-import { navList } from "@/views/partsign/home/components/data";
-import { cloneDeep } from "lodash";
 import { getKmFileHistory } from "@/api/costanalysismanage/costanalysis"
 import { downloadFile } from "@/api/file"
 import { selectRfq } from "@/api/designate/designatedetail/addRfq"
 import nominateTypeDialog from "./components/nominateTypeDialog"
+import { clickMessage } from "@/views/partsign/home/components/data"
+
+// eslint-disable-next-line no-undef
+const { mapState, mapActions } = Vuex.createNamespacedHelpers("sourcing")
 
 export default {
   components: {
@@ -225,7 +228,6 @@ export default {
       selectDatalist:[],
       scoringDeptVisible: false,
       rfqIds: [],
-      navList: cloneDeep(navList),
       attachmentLoading: false,
       attachmentTableTitle,
       attachmentTableListData: [], 
@@ -240,6 +242,12 @@ export default {
     this.getCarTypeOptions()
     this.getPartTypeOptions()
     this.getRfqStatusOptions()
+
+    this.updateNavList
+  },
+  computed: {
+    ...mapState(["navList"]),
+    ...mapActions(["updateNavList"])
   },
   methods: {
     //获取转派评分任务列表
@@ -259,7 +267,7 @@ export default {
     //动态获取转派评分任务
     openPage(row) {
       this.$router.push({
-        path: `/sourcing/partsrfq/editordetail?id=${row.id}&round=${row.currentRounds}`
+        path: `/sourcing/partsrfq/editordetail?id=${row.id}&round=${row.currentRounds}&carTypeNames=${row.carTypeNames}`
       })
     },
     //获取表格数据
@@ -298,7 +306,7 @@ export default {
     },
     async editRfq(updateType) {
       if (this.selectTableData.length === 0) {
-        return iMessage.warn(this.$t('LK_NINDANGQIANHAIWEIXUANZE'));
+        return iMessage.warn(this.language('LK_NINDANGQIANHAIWEIXUANZE','抱歉！您当前还未选择！'));
       }
       const idList = this.selectTableData.map(item => {
         return item.id
@@ -321,7 +329,7 @@ export default {
       if (this.selectTableData.length > 0) {
         this.rfqIds = this.selectTableData.map(item => item.id)
       } else {
-        return iMessage.warn(this.$t('LK_NINDANGQIANHAIWEIXUANZENINXUYAOZHUANPAIDEPINGFENRENWU'));
+        return iMessage.warn(this.language('LK_NINDANGQIANHAIWEIXUANZENINXUYAOZHUANPAIDEPINGFENRENWU','抱歉，您当前还未选择您需要转派的评分任务！'));
       }
 
       console.log(this.rfqIds)
@@ -360,7 +368,7 @@ export default {
       try {
         const res = await editRfqData(req);
         if (res.code == 200) {
-          iMessage.success(this.$t('LK_ZHUANPAICHENGGONG'))
+          iMessage.success(this.language('LK_ZHUANPAICHENGGONG','转派成功'))
         } else {
           iMessage.error(`${ this.$i18n.locale === 'zh' ? res.desZh : res.desEn }`)
         }
@@ -381,15 +389,14 @@ export default {
       this.resultMessage(res)
       this.getTableList()
     },
-    change() {
-    },
+    change() {},
     handleSearchReset() {
       this.form = {}
       this.getTableList()
     },
     exportTable() {
       if (this.selectTableData.length == 0)
-        return iMessage.warn(this.$t('LK_QINGXUANZHEXUYAODAOCHUSHUJU'));
+        return iMessage.warn(this.language('LK_QINGXUANZHEXUYAODAOCHUSHUJU','请选择需要导出的数据'));
       excelExport(this.selectTableData, this.tableTitle)
     },
     setOperationButtonLoading(updateType, boolean) {
@@ -436,7 +443,8 @@ export default {
 
       this.attachmentLoading = true
       getKmFileHistory({
-        rfqId: rfqId,
+        hostId: rfqId,
+        type: 1,
         currPage: 1,
         pageSize: 99999999
       })
@@ -462,23 +470,23 @@ export default {
               ...item,
               key: item.code,
               label: item.name,
-              value: item.value
+              value: item.name
             })) :
             []
         }
       })
     },
     openNominateTypeDialog() {
-      if (this.selectTableData.length !== 1) return iMessage.warn(this.$t("LK_QINGXUANZEYITIAORFQ"))
-      this.nominateTypeDialogVisible = true
+      if (this.selectTableData.length !== 1) return iMessage.warn(this.language("LK_QINGXUANZEYITIAORFQ","请选择一条RFQ"))
+      // this.nominateTypeDialogVisible = true
+      this.createDesignate()
     },
     // 创建定点申请
-    createDesignate(nominateProcessType) {
+    createDesignate() {
       this.nominateTypeDialogVisible = false
       this.createDesignateLoading = true
 
       selectRfq({
-        nominateProcessType,
         rfqIdArr: [ this.selectTableData[0].id ]
       })
       .then(res => {
@@ -489,8 +497,8 @@ export default {
           this.$router.push({
             path: "/designate/rfqdetail", 
             query: {
-              desinateId: res.data, 
-              designateType: nominateProcessType
+              desinateId: res.data.nominateId, 
+              designateType: res.data.nominateProcessType
             }
           })
         } else {
@@ -500,7 +508,9 @@ export default {
         this.createDesignateLoading = false
       })
       .catch(() => this.createDesignateLoading = false)
-    }
+    },
+    // 通过待办数跳转
+    clickMessage,
   }
 }
 </script>

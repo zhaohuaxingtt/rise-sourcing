@@ -1,5 +1,5 @@
 <template>
-	<iCard class="outputPlan" :title="$t('LK_LINGJIANCHANLIANGJIHUA')" tabCard>
+	<iCard class="outputPlan" :title="language('LK_LINGJIANCHANLIANGJIHUA','零件产量计划')" tabCard>
 		<div class="body">
 			<tablelist class="table" index :tableData="tableListData" :tableTitle="tableTitle"
 				:tableLoading="loading" @handleSelectionChange="handleSelectionChange" activeItems="partNum" @openPage="openPage"/>

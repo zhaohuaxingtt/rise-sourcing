@@ -13,63 +13,63 @@
   >
     <el-form>
       <!-- 零件号 -->
-      <el-form-item :label="$t('nominationLanguage.LingJianHao')">
+      <el-form-item :label="language('nominationLanguage_LingJianHao', '零件号')">
         <iInput
           v-model="form.partNum"
-          :placeholder="$t('LK_QINGSHURU')"
-          v-permission="PARTSPROCURE_PARTNUMBER"
+          :placeholder="language('LK_QINGSHURU','请输入')"
+          clearable
         ></iInput>
       </el-form-item>
       <!-- 申请单号 -->
-      <el-form-item :label="$t('nominationLanguage.ShenQingDanHao')">
+      <el-form-item :label="language('nominationLanguage_ShenQingDanHao','申请单号')">
         <iInput
           v-model="form.nominateId"
-          :placeholder="$t('LK_QINGSHURU')"
-          v-permission="PARTSPROCURE_PARTNUMBER"
+          :placeholder="language('LK_QINGSHURU','请输入')"
+          clearable
         ></iInput>
       </el-form-item>
         <!-- RFQ编号 -->
-      <el-form-item :label="$t('nominationLanguage.RFQBianHao')">
+      <el-form-item :label="language('nominationLanguage_RFQBianHao','RFQ编号')">
         <iInput
-          v-model="form.rfqIq"
-          :placeholder="$t('LK_QINGSHURU')"
-          v-permission="PARTSPROCURE_PARTNUMBER"
+          v-model="form.rfqId"
+          :placeholder="language('LK_QINGSHURU','请输入')"
+          clearable
         ></iInput>
       </el-form-item>
       <!-- 流程类型 -->
-      <el-form-item :label="$t('nominationLanguage.LiuChengLeiXing')">
+      <el-form-item :label="language('nominationLanguage_LiuChengLeiXing','流程类型')">
         <iSelect
           v-model="form.nominateProcessType"
-          :placeholder="$t('LK_QINGXUANZE')"
-          v-permission="PARTSPROCURE_PARTNUMBER"
+          :placeholder="language('LK_QINGXUANZE','请选择')"
+          clearable
         >
           <el-option
             value=""
-            :label="$t('all') | capitalizeFilter"
+            :label="language('all','全部') | capitalizeFilter"
           ></el-option>
           <el-option
             :value="items.id"
-            :label="items.name"
+            :label="language(items.key, items.name)"
             v-for="(items, index) in ptocessType"
             :key="index"
           ></el-option>
         </iSelect>
       </el-form-item>
       <!-- 申请状态 -->
-      <el-form-item :label="$t('nominationLanguage.ShenQingZhuangTai')">
+      <el-form-item :label="language('nominationLanguage_ShenQingZhuangTai','申请状态')">
         <iSelect
           v-model="form.applicationStatus"
-          :placeholder="$t('LK_QINGXUANZE')"
-          v-permission="PARTSPROCURE_PARTNUMBER"
+          :placeholder="language('LK_QINGXUANZE','请选择')"
+          clearable
         >
           <el-option
             value=""
-            :label="$t('all') | capitalizeFilter"
+            :label="language('all','全部') | capitalizeFilter"
           ></el-option>
           <el-option
             :value="items.id"
-            :label="items.name"
-            v-for="(items, index) in applyStates"
+            :label="language(items.key, items.name)"
+            v-for="(items, index) in nomiApplicationStatus"
             :key="index"
           ></el-option>
         </iSelect>
@@ -77,47 +77,46 @@
         <!-- FSNR/GSNR -->
       <el-form-item label="FSNR/GSNR">
         <iInput
-          v-model="form.buyerName"
-          :placeholder="$t('LK_QINGSHURU')"
-          v-permission="PARTSPROCURE_PARTNUMBER"
+          v-model="form.fsnrGsnrNum"
+          :placeholder="language('LK_QINGSHURU','请输入')"
+          clearable
         ></iInput>
       </el-form-item>
       <!-- 零件名 -->
-      <el-form-item :label="$t('nominationLanguage.LingJianMing')">
+      <el-form-item :label="language('nominationLanguage_LingJianMing','零件名')">
         <iInput
-          v-model="form.partNameZh"
-          :placeholder="$t('LK_QINGSHURU')"
-          v-permission="PARTSPROCURE_PARTNUMBER"
+          v-model="form.partNameCn"
+          :placeholder="language('LK_QINGSHURU','请输入')"
+          clearable
         ></iInput>
       </el-form-item>
       <!-- 询价采购员 -->
-      <el-form-item :label="$t('nominationLanguage.XunJiaCaiGouYuan')">
+      <el-form-item :label="language('nominationLanguage_XunJiaCaiGouYuan','询价采购员')">
         <iInput
           v-model="form.buyerName"
-          :placeholder="$t('LK_QINGSHURU')"
-          v-permission="PARTSPROCURE_PARTNUMBER"
+          :placeholder="language('LK_QINGSHURU','请输入')"
+          clearable
         ></iInput>
       </el-form-item>
-      <!-- LINE -->
-      <el-form-item label="LINE">
+      <!-- LINIE -->
+      <el-form-item label="LINIE">
         <iInput
-          v-model="form.linieNameZh"
-          :placeholder="$t('LK_QINGSHURU')"
-          v-permission="PARTSPROCURE_PARTNUMBER"
+          v-model="form.linieName"
+          :placeholder="language('LK_QINGSHURU','请输入')"
+          clearable
         ></iInput>
       </el-form-item>
       <!-- 车型项目 -->
-      <el-form-item :label="$t('nominationLanguage.CheXingXiangMu')">
+      <el-form-item :label="language('nominationLanguage_CheXingXiangMu','车型项目')">
         <iSelect
           v-model="form.carTypeProj"
-          :placeholder="$t('LK_QINGXUANZE')"
-          v-permission="PARTSPROCURE_PARTNUMBER"
+          :placeholder="language('LK_QINGXUANZE','请选择')"
           filterable
           clearable
         >
           <el-option
             value=""
-            :label="$t('all') | capitalizeFilter"
+            :label="language('all','全部') | capitalizeFilter"
           ></el-option>
           <el-option
             :value="items.code"
@@ -129,55 +128,55 @@
         </iSelect>
       </el-form-item>
       <!-- 报价一致性校验 -->
-      <el-form-item :label="$t('nominationLanguage.BaoJiaYiZhiXingJiaoYan')">
+      <el-form-item :label="language('nominationLanguage_BaoJiaYiZhiXingJiaoYan','报价一致性校验')">
         <iSelect
           v-model="form.isPriceConsistent"
-          :placeholder="$t('LK_QINGXUANZE')"
-          v-permission="PARTSPROCURE_PARTNUMBER"
+          :placeholder="language('LK_QINGXUANZE','请选择')"
+          clearable
         >
           <el-option
             value=""
-            :label="$t('all') | capitalizeFilter"
+            :label="language('all','全部') | capitalizeFilter"
           ></el-option>
           <el-option
-            :value="items.key"
-            :label="items.value"
-            v-for="(items, index) in []"
+            :value="items.id"
+            :label="language(items.key, items.name)"
+            v-for="(items, index) in priceConsistentStatus"
             :key="index"
           ></el-option>
         </iSelect>
       </el-form-item>
       <!-- 是否单一供应商 -->
-      <el-form-item :label="$t('nominationLanguage.ShiFouDnaYiGongYingShang')">
+      <el-form-item :label="language('nominationLanguage_ShiFouDnaYiGongYingShang','是否单一供应商')">
         <iSelect
           v-model="form.singleSourcing"
-          :placeholder="$t('LK_QINGXUANZE')"
-          v-permission="PARTSPROCURE_PARTNUMBER"
+          :placeholder="language('LK_QINGXUANZE','请选择')"
+          clearable
         >
           <el-option
             value=""
-            :label="$t('all') | capitalizeFilter"
+            :label="language('all','全部') | capitalizeFilter"
           ></el-option>
-          <el-option :value="true" :label="$t('nominationLanguage.Yes')"
+          <el-option :value="true" :label="language('YES','是')"
           ></el-option>
-          <el-option :value="false" :label="$t('nominationLanguage.No')"
+          <el-option :value="false" :label="language('NO','否')"
           ></el-option>
         </iSelect>
       </el-form-item>
       <!-- 显示自己 -->
-      <el-form-item :label="$t('nominationLanguage.XianShiZiJi')">
+      <el-form-item :label="language('nominationLanguage_XianShiZiJi','显示自己')">
         <iSelect
           v-model="form.showMe"
-          :placeholder="$t('LK_QINGXUANZE')"
-          v-permission="PARTSPROCURE_PARTNUMBER"
+          :placeholder="language('LK_QINGXUANZE','请选择')"
+          clearable
         >
           <el-option
             value=""
-            :label="$t('all') | capitalizeFilter"
+            :label="language('all','全部') | capitalizeFilter"
           ></el-option>
-          <el-option :value="true" :label="$t('nominationLanguage.Yes')"
+          <el-option :value="true" :label="language('YES','是')"
           ></el-option>
-          <el-option :value="false" :label="$t('nominationLanguage.No')"
+          <el-option :value="false" :label="language('NO','否')"
           ></el-option>
         </iSelect>
       </el-form-item>
@@ -188,7 +187,11 @@
 <script>
 
 import { applyType } from '@/layout/nomination/components/data'
-import { form, applyStates } from '../data'
+import {
+  priceConsistentStatus,
+  nomiApplicationStatus
+} from '@/views/designate/home/components/options'
+import { form } from '../data'
 import {
   iSearch,
   iInput,
@@ -200,7 +203,8 @@ export default {
     return {
       form,
       ptocessType: applyType,
-      applyStates
+      nomiApplicationStatus,
+      priceConsistentStatus
     }
   },
   components: {
@@ -217,6 +221,7 @@ export default {
     },
     reset() {
       this.form = {}
+      this.$emit('search', {})
     }
   },
   // watch: {

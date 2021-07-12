@@ -32,9 +32,6 @@ export default {
             default:''
         },
     },
-    created(){
-        console.log(this.percent,'percent');
-    },
     data(){
         return{
             left:0,

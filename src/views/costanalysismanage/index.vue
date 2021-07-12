@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-05-27 11:30:28
- * @LastEditTime: 2021-05-27 13:43:33
+ * @LastEditTime: 2021-06-25 14:05:57
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\costanalysismanage\index.vue
@@ -9,7 +9,7 @@
 <!-- 成本分析管理 -->
 <template>
   <iPage class="costanalysismanage">
-    <iNavMvp :lev="1" :list="navList" routerPage class="nav" />
+    <iNavMvp :lev="1" :list="navList" :lang="true" routerPage class="nav" />
     <router-view></router-view>
   </iPage>
 </template>

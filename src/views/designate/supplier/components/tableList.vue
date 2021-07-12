@@ -1,19 +1,19 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-02-24 09:42:07
- * @LastEditTime: 2021-04-19 17:15:37
+ * @LastEditTime: 2021-07-12 18:08:05
  * @LastEditors: Please set LastEditors
  * @Description: 来自零件签收-table组件，新增了单列的异常配置
 -->
 <template>
   <el-table fit tooltip-effect='light' :height="height" :data='tableData' default-expand-all  v-bind="treeProps" v-loading='tableLoading' @selection-change="handleSelectionChange" :empty-text="$t('LK_ZANWUSHUJU')" ref="moviesTable" :class="{'moviesTable': true, 'radio': radio}">
-    <el-table-column v-if="selection" type='selection' width="50" align='center'></el-table-column>
+    <el-table-column v-if="selection" type='selection' width="56" align='center'></el-table-column>
     <el-table-column v-if='index' type='index' width='50' align='center' :label='indexLabel'></el-table-column>
     <template v-for="(items,index) in tableTitle">
-      <el-table-column :key="index" align='center' :width="items.width" :show-overflow-tooltip='items.tooltip' v-if='items.props == activeItems' :prop="items.props" :label="items.key ? $t(items.key) : items.name">
+      <el-table-column :key="index" align='center' :width="items.width" :show-overflow-tooltip='items.tooltip' v-if='items.props == activeItems' :prop="items.props" :label="lang ? language(items.key, items.name) : $t(items.key)">
         <template slot-scope="row"><span class="openLinkText cursor" @click="openPage(row.row)">{{row.row[activeItems]}}</span></template>
       </el-table-column>
-      <el-table-column :key="index" align='center' :show-overflow-tooltip='items.tooltip'  v-else-if='items.props == "tpInfoType"' :label="items.key ? $t(items.key) : items.name" :prop="items.props">
+      <el-table-column :key="index" align='center' :show-overflow-tooltip='items.tooltip'  v-else-if='items.props == "tpInfoType"' :label="lang ? language(items.key, items.name) : $t(items.key)" :prop="items.props">
         <template slot-scope="scope">
           <span>{{translateData('tp_info_type',scope.row[items.props])}}</span>
         </template>
@@ -24,8 +24,7 @@
         align='center' 
         :width="items.width" 
         :show-overflow-tooltip='items.tooltip'
-        :label="items.key ? $t(items.key) 
-        :items.name" 
+        :label="lang ? language(items.key, items.name) : $t(items.key)" 
         :prop="items.props"
         :class-name="items.tree ? 'tree' : ''">
         <template slot-scope="scope">
@@ -51,7 +50,8 @@ export default{
     height:{type:Number||String},
     activeItems:{type:String,default:'b'},
     radio:{type:Boolean,default:false}, //是否单选
-    treeProps: {type:Object}
+    treeProps: {type:Object},
+    lang: {type: Boolean}
   },
   inject:['vm'],
   methods:{
