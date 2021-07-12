@@ -1,7 +1,7 @@
 <!--
  * @Author: lyujiahong
  * @Date: 2021-02-24 09:42:07
- * @LastEditTime: 2021-07-12 14:17:13
+ * @LastEditTime: 2021-07-12 13:52:38
  * @LastEditors: Please set LastEditors
  * @Description: 零件签收-table组件。
  * @FilePath: \rise\src\views\partsign\components\tableList.vue
@@ -30,7 +30,7 @@
         :show-overflow-tooltip="items.tooltip"
         v-if="items.props == activeItems"
         :prop="items.props"
-        :label="$t(items.key)"
+        :label="items.key ? language(items.key,items.name) : items.name"
       >
         <template slot-scope="row"
           ><span class="openLinkText cursor" @click="openPage(row.row)">{{
@@ -43,7 +43,7 @@
         align="center"
         :show-overflow-tooltip="items.tooltip"
         v-else-if="items.props == 'tpInfoType'"
-        :label="items.name"
+        :label="items.key ? language(items.key,items.name) : items.name"
         :prop="items.props"
       >
         <template slot-scope="scope">
@@ -57,29 +57,13 @@
         align="center"
         :show-overflow-tooltip="items.tooltip"
         v-else
-        :label="items.name"
+        :label="items.key ? language(items.key,items.name) : items.name"
         :prop="items.props"
-        :min-width="items.props == 'linie' ? 120 : 'auto'"
-      >
-        <template slot="header">
-          <Popover
-              placement="top-start"
-              :content="$t(items.key)"
-              trigger="hover">
-            <div slot="reference" class="tableHeader">{{ $t(items.key) }}</div>
-          </Popover>
-        </template>
-        <template v-if="$scopedSlots[items.props] || $slots[items.props]" v-slot="scope">
-          <slot :name="items.props" :row="scope.row"></slot>
-        </template>
-      </el-table-column>
+      ></el-table-column>
     </template>
   </el-table>
 </template>
-
 <script>
-import {Popover} from "element-ui"
-
 export default {
   props: {
     tableData: { type: Array },
@@ -93,9 +77,6 @@ export default {
     radio: { type: Boolean, default: false }, // 是否单选
   },
   inject: ["vm"],
-  components: {
-    Popover
-  },
   methods: {
     handleSelectionChange(val) {
       if (this.radio) {
@@ -128,12 +109,6 @@ export default {
 };
 </script>
 <style lang='scss' scoped>
-.tableHeader{
-  max-width: 100%;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap;
-}
 .openLinkText {
   color: $color-blue;
 }

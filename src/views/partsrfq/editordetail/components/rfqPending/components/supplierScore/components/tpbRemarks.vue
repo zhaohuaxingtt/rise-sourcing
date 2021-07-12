@@ -11,13 +11,13 @@
     <div class="changeContent">
       <iFormGroup row="1" icon>
         <iFormItem label="" name="memo">
-          <i-input type="textarea" :rows="8" resize="none" :placeholder="!disabled ? $t('LK_QINGSHURUBEIZHU') : ''" v-model="memo" :disabled="disabled"></i-input>
+          <i-input type="textarea" :rows="8" resize="none" :placeholder="!disabled ? language('LK_QINGSHURUBEIZHU','请输入备注') : ''" v-model="memo" :disabled="disabled"></i-input>
         </iFormItem>
       </iFormGroup>
     </div>
     <span slot="footer" class="dialog-footer">
-       <iButton @click="submit" v-if="!disabled">{{ $t('LK_QUEREN') }}</iButton>
-       <iButton @click="clearDiolog">{{$t('LK_QUXIAO')}}</iButton>
+       <iButton @click="submit" v-if="!disabled">{{ language('LK_QUEREN','确认') }}</iButton>
+       <iButton @click="clearDiolog">{{language('LK_QUXIAO','取 消')}}</iButton>
     </span>
   </iDialog>
 </template>
@@ -47,7 +47,7 @@ export default {
       this.$emit('input', false)
     },
     submit() {
-      if(this.memo == '' || this.memo == null) return iMessage.warn(this.$t('LK_BEIZHUBUNENGWEIKONG'))
+      if(this.memo == '' || this.memo == null) return iMessage.warn(this.language('LK_BEIZHUBUNENGWEIKONG','抱歉，备注不能为空！'))
       this.$emit('submit', this.memo)
     }
   }
