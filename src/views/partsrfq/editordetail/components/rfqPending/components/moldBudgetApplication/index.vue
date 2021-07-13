@@ -39,7 +39,7 @@ import {iCard, iButton, iPagination, iMessage} from "@/components";
 import tablelist from 'pages/partsrfq/components/tablelist'
 import {tableTitle} from "./components/data";
 import {pageMixins} from "@/utils/pageMixins";
-import {getModelBudgetList, submitMoldBudget, cancelMoldBudget} from "@/api/partsrfq/editordetail";
+import {getModelBudgetList, patchMouldBudget, cancelMoldBudget} from "@/api/partsrfq/editordetail";
 import store from '@/store'
 import {rfqCommonFunMixins} from "pages/partsrfq/components/commonFun";
 
@@ -99,7 +99,10 @@ export default {
         return item
       })
       const req = this.selectTableData
-      const res = await submitMoldBudget(req)
+      const res = await patchMouldBudget({
+        updateType: 1,
+        mouldBudgetDTOS: req
+      })
       this.resultMessage(res)
       this.getTableList()
     },
@@ -113,7 +116,10 @@ export default {
         return item
       })
       const req = this.selectTableData
-      const res = await cancelMoldBudget(req)
+      const res = await patchMouldBudget({
+        updateType: 0,
+        mouldBudgetDTOS: req
+      })
       this.resultMessage(res)
       this.getTableList()
     },
