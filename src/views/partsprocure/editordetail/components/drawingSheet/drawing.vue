@@ -110,7 +110,7 @@ export default {
         this.fileList = []
         clearTimeout(this.timer)
         iMessage.success(`${ file.name } ${ this.language('LK_SHANGCHUANCHENGGONG','上传成功') }`)
-        this.fileList.push({ tpPartAttachmentName: res.data[0].fileName, tpPartAttachmentPath: res.data[0].filePath, size: (file.size / 1024 / 1024).toFixed(3) })
+        this.fileList.push({ tpPartAttachmentName: res.data[0].fileName, tpPartAttachmentPath: res.data[0].filePath, size: file.size })
         this.timer = setTimeout(() => {
           this.patchTpInfoByAttachment()
           clearTimeout(this.timer)

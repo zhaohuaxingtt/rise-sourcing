@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:17:25
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-10 09:56:31
+ * @LastEditTime: 2021-07-13 15:30:38
  * @Description: 上会/备案RS单
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\rs\components\meeting\index.vue
 -->
@@ -142,7 +142,7 @@ export default {
       return this.remarkItem.map(item => item.value).join('\n')
     }
   },
-  created(){this.getPrototypeList()},
+  // created(){this.getPrototypeList()},
   methods: {
     /**
      * @Description: 获取部门审批记录
@@ -166,7 +166,7 @@ export default {
      * @return {*}
      */
     getPrototypeList(){
-      getPrototypeList(this.$route.query.desinateId).then(res=>{
+      getPrototypeList(this.nominateId).then(res=>{
           this.PrototypeList = res.data.list || res.data.getQuotationSampleVOList || []
       }).catch(err=>{
         console.warn(err)
@@ -223,6 +223,7 @@ export default {
       this.getTopList()
       this.getRemark()
       this.getDepartApproval()
+      this.getPrototypeList()
     },
     /**
      * @Description: 获取表格初始数据

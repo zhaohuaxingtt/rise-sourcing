@@ -47,10 +47,6 @@
             {{language('nominationLanguage_DINGDIAN', '定点')}}
           </iButton>
 
-
-          <!--  <iButton @click="creatFs" v-permission="PARTSPROCURE_GENERATEFSBUTTON">
-            {{ language('partsprocure.PARTSPROCUREGENERATEFSGSNR') }}
-          </iButton> -->
           <!-- 撤回 -->
           <iButton
             @click="handleBatchRevoke"
@@ -63,6 +59,13 @@
           >
             {{ language("nominationLanguage_ShanChu", '删除') }}
           </iButton>
+          <!-- 会外流转 -->
+          <iButton
+            @click="mettingTransform"
+          >
+            {{ language("HUIWAILIUZHUAN", '会外流转') }}
+          </iButton>
+          <!-- 提交一致性校验 -->
           <iButton
             @click="consistenceCheck"
           >
@@ -165,7 +168,8 @@ import {
   getCarTypePro,
   rsFrozen,
   rsUnFrozen,
-  consistenceCheck
+  consistenceCheck,
+  nomiApprovalProcess
 } from '@/api/designate/nomination'
 // 前端配置文件里面的定点类型
 // import { applyType } from '@/layout/nomination/components/data'
@@ -430,6 +434,32 @@ export default {
         }).catch((e)=>{
           iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
         })
+      }
+    },
+    // 会外流转
+    async mettingTransform(){
+      const {selectTableData} = this;
+      if(!selectTableData.length){
+        iMessage.warn(this.language('nominationSuggestion_QingXuanZeZhiShaoYiTiaoShuJu','请选择至少一条数据'));
+      }else{
+        let confirmInfo = confirmInfo = await this.$confirm(this.language('LK_NINQUERENZHIXINGLIUZHUANCAOZUOMA', '您确定要执行流转操作吗？'));
+        if (confirmInfo !== 'confirm') return;
+        const nomiAppIdList = selectTableData.map((item)=>Number(item.id));
+        const data = {
+          nomiAppIds: nomiAppIdList,
+        };
+        try {
+          const res = await nomiApprovalProcess(data)
+          const { code } = res;
+          if(code == 200){
+            iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
+            this.getFetchData()
+          }else{
+            iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+          }
+        } catch(e) {
+          iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
+        }
       }
     },
     // sel附件列表弹窗

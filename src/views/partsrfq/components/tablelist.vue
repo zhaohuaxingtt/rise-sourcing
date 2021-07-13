@@ -56,7 +56,7 @@
       <el-table-column :width="items.width" :show-overflow-tooltip='items.tooltip' :key="index" align='center' v-else-if='items.props === fileSizeProps' :prop="items.props"
                        :label="lang ? language(items.key, items.name) : (items.key ? $t(items.key) : items.name)">
         <template slot-scope="scope">
-          {{ scope.row[items.props] ? scope.row[items.props] / 1024 / 1024 : '' }}
+          {{ scope.row[items.props] }}
         </template>
       </el-table-column>
       <el-table-column :width="items.width" :show-overflow-tooltip='items.tooltip' :key="index" align='center' v-else :label="lang ? language(items.key, items.name) : (items.key ? $t(items.key) : items.name)"

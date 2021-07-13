@@ -186,7 +186,7 @@ export default {
     //  跳转详情
     jumpDetails(scope){
       // this.$router.push({name: 'toolingModelDetails', params: {id: scope.row.tmCartypeProId}})
-      this.$router.push({path: '/tooling/modelDetails', query: {id: scope.row.tmCartypeProId}});
+      this.$router.push({path: '/tooling/modelDetails', query: {id: scope.row.tmCartypeProId, isBa: true}});
     },
 
     handleSelectionChange(val) {

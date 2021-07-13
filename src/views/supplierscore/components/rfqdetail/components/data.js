@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-06-22 11:13:08
- * @LastEditTime: 2021-07-02 18:29:40
+ * @LastEditTime: 2021-07-13 14:15:12
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\supplierscore\components\rfqdetail\components\data.js
@@ -24,5 +24,5 @@ export const partListTableTitle = [
   { props: "partNameZh", name: "零件名(中)", key: "LINGJIANMINGZHONG", tooltip: true },
   { props: "partNameDe", name: "零件名(德)", key: "LINGJIANMINGDE", tooltip: true },
   { props: "cartypeProjectZh", name: "车型项目", key: "CHEXINGXIANGMU", tooltip: true },
-  { props: "modelNameZhName", name: "相关车型", key: "XIANGGUANCHEXING", tooltip: true }
+  { props: "modelNameZh", name: "相关车型", key: "XIANGGUANCHEXING", tooltip: true }
 ]
