@@ -2,7 +2,7 @@
  * @Descripttion: RFQ & 零件清单数据
  * @Author: Luoshuang
  * @Date: 2021-05-21 11:30:46
- * @LastEditTime: 2021-07-12 18:17:33
+ * @LastEditTime: 2021-07-13 10:49:28
  */
 
 export const rfqListTitle = [
@@ -33,7 +33,7 @@ export const partsListTitle = [
   {props:'partNameZh',name:'零件名（中）', key: "LINGJIANMING_ZH", tooltip: true, width: 120},
   {props:'partNameDe',name:'零件名（德）', key: "LINGJIANMING_DE", tooltip: true, width: 120},
   {props:'procureFactoryName',name:'采购工厂', key: "CAIGOUGONGCHANG", tooltip: true},
-  {props:'partProjectType',name:'零件项目类型', key: "LINGJIANXIANGMULEIXING", tooltip: true, width: 120, isObject: true},
+  {props:'partProjectType',name:'零件项目类型', key: "LINGJIANXIANGMULEIXING", tooltip: true, width: 120},
   {props:'cartypeCategory',name:'车型大类', key: "CHEXINGDALEI", tooltip: true},
   {props:'cartypeProjectZh',name:'车型项目', key: "CHEXINGXIANGMU", tooltip: true},
   {props:'partStatus',name:'零件状态', key: "LINGJIANZHUANGTAI", tooltip: true},
