@@ -1,8 +1,8 @@
 /*
  * @Author: Luoshuang
  * @Date: 2021-05-26 13:54:09
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-25 13:50:39
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-07-12 22:58:06
  * @Description: 
  * @FilePath: \front-web\src\views\accessoryPart\createRfq\data.js
  */
@@ -22,7 +22,7 @@ export const tableTitle = [
   {props:'modelNameZh',name:'车型', key: "CHEXING", tooltip: true},
   {props:'partNum',name:'零件号', key: "LINGJIANHAO", tooltip: true},
   {props:'partNameZh',name:'零件名(中)', key: "LINGJIANMING_ZH", tooltip: true},
-  {props:'procureFactory',name:'采购工厂', key: "CAIGOUGONGCHANG", tooltip: true},
+  {props:'procureFactoryName',name:'采购工厂', key: "CAIGOUGONGCHANG", tooltip: true},
   {props:'consigneeWarehouse',name:'送货仓库', key: "SONGHUOCANGKU", tooltip: true},
   {props:'annualQuantity',name:'年需求量', key: "NIANXUQIULIANG", tooltip: true}
 ]
@@ -31,7 +31,7 @@ export const fileTableTitle = [
   {props:'modelNameZh',name:'车型', key: "CHEXING", tooltip: true},
   {props:'partNum',name:'零件号', key: "LINGJIANHAO", tooltip: true},
   {props:'partNameZh',name:'零件名(中)', key: "LINGJIANMING_ZH", tooltip: true},
-  {props:'procureFactory',name:'采购工厂', key: "CAIGOUGONGCHANG", tooltip: true},
+  {props:'procureFactoryName',name:'采购工厂', key: "CAIGOUGONGCHANG", tooltip: true},
   {props:'consigneeWarehouse',name:'送货仓库', key: "SONGHUOCANGKU", tooltip: true},
   {props:'channeng',name:'产能计划', key: "CHANNENGJIHUA", tooltip: true}
 ]
