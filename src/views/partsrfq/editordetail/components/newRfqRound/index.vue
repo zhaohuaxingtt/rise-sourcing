@@ -1,7 +1,7 @@
 <!--
  * @Author: moxuan
  * @Date: 2021-03-05 17:24:15
- * @LastEditTime: 2021-07-07 17:47:09
+ * @LastEditTime: 2021-07-13 17:49:47
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
 -->
@@ -101,7 +101,11 @@ export default {
     // title: {type: String, default: '新建RFQ轮次'},
     title: {type: String, default: ''},
     value: {type: Boolean},
-    repeatClick: Boolean
+    repeatClick: Boolean,
+    dataRes:{
+      type:Object,
+      default:()=>{},
+    }
   },
   data() {
     return {
@@ -127,17 +131,18 @@ export default {
     async getTableList() {
       const id = this.$route.query.id
       if (id) {
-        this.tableLoading = true;
-        const req = {
-          otherInfoPackage: {
-            findType: '10',
-            rfqId: id,
-            current: this.page.currPage,
-            size: this.page.pageSize,
-          }
-        }
-        try {
-          const res = await getRfqDataList(req)
+        // this.tableLoading = true;
+        // const req = {
+        //   otherInfoPackage: {
+        //     findType: '10',
+        //     rfqId: id,
+        //     current: this.page.currPage,
+        //     size: this.page.pageSize,
+        //   }
+        // }
+        // try {
+          // const res = await getRfqDataList(req)
+          const res = this.dataRes;
           this.tableListData = res.data.rfqRoundBdlVO.rfqBdlVOList;
           this.roundsPhase = this.tableListData[0].roundsPhase
           this.page.currPage = res.data.rfqRoundBdlVO.pageNum
@@ -146,9 +151,9 @@ export default {
           this.setTableRowSelected()
           this.tableLoading = false;
           this.initTimeData()
-        } catch {
-          this.tableLoading = false;
-        }
+        // } catch {
+        //   this.tableLoading = false;
+        // }
       }
     },
     sureChangeItems() {
