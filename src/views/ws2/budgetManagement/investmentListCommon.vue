@@ -996,7 +996,7 @@ export default {
 }
 
 #chart1 {
-  width: 200px;
+  width: 150px;
   height: 200px;
   align-self: flex-end;
 }
