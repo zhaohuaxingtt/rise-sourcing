@@ -1,7 +1,7 @@
 /*
  * @Author: HaoJiang
  * @Date: 2021-05-20 14:29:09
- * @LastEditTime: 2021-07-05 16:42:20
+ * @LastEditTime: 2021-07-13 14:31:27
  * @LastEditors: Please set LastEditors
  * @Description: 定点表格信息
  *
@@ -135,7 +135,7 @@ export const seltTableTitle = [
   {
     props: 'fileSize',
     name: '大小',
-    key: 'LK_DAXIAO',
+    key: 'DAXIAO',
     tooltip: false
   },
   {
