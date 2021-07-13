@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-26 14:48:50
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-25 14:01:50
+ * @LastEditTime: 2021-07-13 19:35:44
  * @Description: 添加配件弹窗
  * @FilePath: \front-web\src\views\accessoryPart\createRfq\components\addAccessoryPart.vue
 -->
@@ -255,11 +255,11 @@ export default {
   }
   ::v-deep .el-dialog {
     margin-top: 30px !important;
-    height: 90%;
-    .el-dialog__body {
-      height: calc(100% - 70px);
-      overflow: auto;
-    }
+    // height: 90%;
+    // .el-dialog__body {
+    //   height: calc(100% - 70px);
+    //   overflow: auto;
+    // }
   }
 }
 </style>
