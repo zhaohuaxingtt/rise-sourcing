@@ -1,7 +1,7 @@
 /*
  * @Author: HaoJiang
  * @Date: 2021-05-20 14:29:09
- * @LastEditTime: 2021-06-25 15:24:50
+ * @LastEditTime: 2021-07-12 22:59:30
  * @LastEditors: Please set LastEditors
  * @Description: 定点表格信息
  *
@@ -236,7 +236,7 @@ export const partTitle = [
     tooltip: false
   },
   {
-    props: 'procureFactory',
+    props: 'procureFactoryName',
     name: '采购工厂',
     key: 'nominationSupplier_CaiGouGongChang',
     tooltip: false
