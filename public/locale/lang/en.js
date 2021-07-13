@@ -967,6 +967,9 @@
         'LK_NIANDUJIHUA': '年度计划',   //  年度计划
         'LK_CHEXINGXIANGMUXIANGQ': '车型项目详情',
 
+        'DAXIAO': 'Size', // 大小
+        'WENJIANDAXIAO': 'File Size', // 文件大小
+
         // 定点管理
         'nominationLanguage': {
             'DingDianGuanLi': '定点管理',

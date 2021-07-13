@@ -1,3 +1,11 @@
+/*
+ * @Author: your name
+ * @Date: 2021-05-29 09:21:13
+ * @LastEditTime: 2021-07-13 10:54:53
+ * @LastEditors: your name
+ * @Description: In User Settings Edit
+ * @FilePath: /front-web/src/views/designate/designatedetail/tasks/components/data.js
+ */
 // 单一供应商表头
 export const tasksTitle = [
   {
@@ -24,12 +32,12 @@ export const tasksTitle = [
     key: 'STATUS',
     tooltip: false
   },
-  {
-    props: 'edit',
-    name: 'HIDE/UNHIDE',
-    key: 'HIDE/UNHIDE',
-    tooltip: false
-  }
+  // {
+  //   props: 'edit',
+  //   name: 'HIDE/UNHIDE',
+  //   key: 'HIDE/UNHIDE',
+  //   tooltip: false
+  // }
 ]
 
 export const taskStatus = [
