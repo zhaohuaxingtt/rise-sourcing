@@ -1,7 +1,7 @@
 /*
  * @Author: shujie
  * @Date: 2021-02-24 10:17:53
- * @LastEditTime: 2021-04-03 13:58:57
+ * @LastEditTime: 2021-07-13 14:32:32
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsign\editordetail\components\data.js
@@ -107,7 +107,7 @@ export const partDetailTitle=[
 
 export const enquiryTableTitle = [
   { props: 'tpPartAttachmentName', name: '文件名', key: 'LK_WENJIANMING', tooltip: true },
-  { props: 'size', name: '文件大小（MB）', key: 'LK_WENJIANDAXIAOMB', tooltip: true },
+  { props: 'size', name: '文件大小', key: 'WENJIANDAXIAO', tooltip: true },
   { props: 'updateDate', name: '上传日期', key: 'LK_SHANGCHUANRIQI', tooltip: true },
   { props: 'uploadBy', name: '上传人', key: 'LK_SHANGCHUANREN', tooltip: true }
 ]

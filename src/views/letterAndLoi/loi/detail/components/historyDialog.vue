@@ -52,9 +52,10 @@ import tableList from "@/views/partsign/editordetail/components/tableList"
 import { historyLoiListTitle as  tableTitle } from '../../../data'
 import { pageMixins } from "@/utils/pageMixins"
 import {
-    historyLoiPage
+    historyLoiPage,
+    getFileDownload,
 } from '@/api/letterAndLoi/loi'
-import { downloadFile } from '@/api/file'
+// import { downloadFile } from '@/api/file'
 export default {
     name:'historyDialog',
     mixins: [ pageMixins ],
@@ -117,11 +118,17 @@ export default {
         },
         // 下载附件
         async downloadLine(row){
+          //   const params = {
+          //   applicationName: 'rise',
+          //   fileList:[row.fileName]
+          // };
+          // await downloadFile(params);
+          const {hostId,fileType} = row;
             const params = {
-            applicationName: 'rise',
-            fileList:[row.fileName]
-          };
-          await downloadFile(params);
+                hostId,
+                fileType,
+            }
+            await getFileDownload(params);
         },
     }
 }
