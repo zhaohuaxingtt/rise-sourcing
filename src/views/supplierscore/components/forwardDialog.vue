@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-30 17:46:28
- * @LastEditTime: 2021-07-02 17:51:38
+ * @LastEditTime: 2021-07-13 17:27:44
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\supplierscore\components\forwardDialog.vue
@@ -41,6 +41,9 @@ export default {
     visible: {
       type: Boolean,
       default: false
+    },
+    userDeptType: {
+      type: String,
     }
   },
   watch: {
@@ -95,6 +98,22 @@ export default {
               label: item.nameZh,
               value: item.id
             }))
+          }
+
+          switch(this.userDeptType) {
+            case "EP":
+              this.options = [
+                { key: "45", label: "谈和玉", value: "45" },
+                { key: "51", label: "姜谷兰", value: "51" },
+              ]
+              break
+            case "MQ":
+              this.options = [
+                { key: "43", label: "刘财", value: "43" },
+                { key: "47", label: "冉兴腾", value: "47" },
+              ]
+              break
+            default:
           }
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)

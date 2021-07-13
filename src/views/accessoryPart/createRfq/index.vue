@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-26 13:54:01
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-10 16:05:34
+ * @LastEditTime: 2021-07-13 19:31:41
  * @Description: 创建RFQ界面
        配件：选择的配件需要是分配了询价采购员的且是同一个询价采购员, 创建时能选择LINIE
        附件：选择的附件需要时分配了LINIE且为同一个LINIE, 创建时不能再选择LINIE
@@ -21,12 +21,20 @@
         <iFormItem v-for="(item, index) in basicInfo" :key="index" :label="language(item.key,item.label)" :class="item.row ? 'row'+item.row : ''">
           <iText v-if="!item.editable">{{detailData[item.value]}}</iText>
           <iInput v-else-if="item.type === 'input'" v-model="detailData[item.value]"></iInput>
-          <iSelect v-else-if="item.type === 'select'" v-model="detailData[item.value]" :disabled="linieAndDeptDisable(item.value)" @change="val => handleDeptChange(item.value, val)">
+          <iSelect v-else-if="item.type === 'select' && item.value === 'linie'" v-model="linie" :disabled="linieAndDeptDisable(item.value)" @change="val => handleDeptChange(item.value, val)">
             <el-option
               :value="item.value"
               :label="item.label"
-              v-for="(item, index) in fromGroup[item.selectOption]"
-              :key="index"
+              v-for="(item) in fromGroup[item.selectOption]"
+              :key="item.value"
+            ></el-option>
+          </iSelect>
+          <iSelect v-else-if="item.type === 'select' && item.value === 'linieDept'" v-model="linieDept" :disabled="linieAndDeptDisable(item.value)" @change="val => handleDeptChange(item.value, val)">
+            <el-option
+              :value="item.value"
+              :label="item.label"
+              v-for="(item) in fromGroup[item.selectOption]"
+              :key="item.value"
             ></el-option>
           </iSelect>
         </iFormItem>
@@ -129,9 +137,9 @@ export default {
     }
     if (this.$route.query.linie && this.$route.query.linieDept) {
       this.detailData.linie = this.$route.query.linieName
-      this.linie = this.$route.query.linie
+      this.linie = this.$route.query.linieName
       this.detailData.linieDept = this.$route.query.linieDeptName
-      this.linieDept = this.$route.query.linieDept
+      this.linieDept = this.$route.query.linieDeptName
     }
   },
   methods: {
@@ -145,6 +153,13 @@ export default {
       this.ids = this.tableData.map(item => item.spnrNum).join(',')
     },
     handleDeptChange(type, val) {
+      // console.log(type, val)
+      // this.detailData[type] = val
+      // console.log(this.detailData)
+      // this.$nextTick(() => {
+      //   this.detailData[type] = val
+      // })
+      this.detailData[type] = val
       if (type === 'linieDept') {
         this.getUserOptions()
       }
@@ -171,6 +186,7 @@ export default {
      * @return {*}
      */    
     getUserOptions() {
+      this.detailData.linie = ''
       getUserList({deptId:this.detailData.linieDept,tag:'4'}).then(res => {
         if (res?.result) {
           this.fromGroup = {...this.fromGroup, LINIE: res.data?.map(item => {return {value:item.id, label:item.nameZh}})}
@@ -270,9 +286,9 @@ export default {
       }
       this.saveLoading = true
       const params = {
-        linieDept: this.detailData.linieDept,
-        linieId: this.detailData.linie,
-        linieName: this.fromGroup.LINIE.find(item => item.value === this.detailData.linie)?.label || this.tableData[0].linieName,
+        linieDept: this.detailData.linieDept === this.$route.query.linieDeptName ? this.$route.query.linieDept : this.detailData.linieDept,
+        linieId: this.detailData.linie === this.$route.query.linieName ? this.$route.query.linie : this.detailData.linie,
+        linieName: this.detailData.linie === this.$route.query.linieName ? this.$route.query.linieName : this.fromGroup.LINIE.find(item => item.value === this.detailData.linie)?.label || this.tableData[0].linieName,
         rfqId: this.detailData.rfqId,
         spNums: this.tableData.map(item => item.spnrNum),
         stuffId: this.tableData[0].stuffId,
@@ -350,6 +366,10 @@ export default {
      * @return {*}
      */    
     handleSave() {
+      if (!this.detailData.rfqId) {
+        iMessage.warn(this.language('QINGXIANBAOCUNRFQXINXI','请先保存rfq的信息'))
+        return
+      }
       if (this.$route.query.type === '1') {
         this.handleAccessorySave()
       } else {

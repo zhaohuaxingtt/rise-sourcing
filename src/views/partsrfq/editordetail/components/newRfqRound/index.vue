@@ -1,7 +1,7 @@
 <!--
  * @Author: moxuan
  * @Date: 2021-03-05 17:24:15
- * @LastEditTime: 2021-07-07 17:47:09
+ * @LastEditTime: 2021-07-13 19:46:31
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
 -->
@@ -101,7 +101,11 @@ export default {
     // title: {type: String, default: '新建RFQ轮次'},
     title: {type: String, default: ''},
     value: {type: Boolean},
-    repeatClick: Boolean
+    repeatClick: Boolean,
+    dataRes:{
+      type:Object,
+      default:()=>{},
+    }
   },
   data() {
     return {
@@ -123,6 +127,16 @@ export default {
     this.getRoundTypeOptions()
   },
   methods: {
+    init(){
+      const res = this.dataRes;
+      this.tableListData = res.data.rfqRoundBdlVO.rfqBdlVOList;
+      this.roundsPhase = this.tableListData[0].roundsPhase
+      this.page.currPage = res.data.rfqRoundBdlVO.pageNum
+      this.page.pageSize = res.data.rfqRoundBdlVO.pageSize
+      this.page.totalCount = res.data.rfqRoundBdlVO.total
+      this.setTableRowSelected()
+      this.initTimeData()
+    },
     //获取表格数据
     async getTableList() {
       const id = this.$route.query.id
@@ -256,8 +270,9 @@ export default {
   watch: {
     value(val) {
       if (val) {
-        this.saveStaus = false
-        this.getTableList()
+        this.saveStaus = false;
+        // this.getTableList()
+        this.init();
       }
     }
   }
