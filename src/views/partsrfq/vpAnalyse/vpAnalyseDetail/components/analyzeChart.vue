@@ -257,13 +257,15 @@ export default {
   }
 
   .iconStyle {
+    width: 20px;
+    height: 20px;
     font-size: 20px;
   }
 
   .massProductionTime {
     text-align: center;
     position: absolute;
-    bottom: -66px;
+    bottom: -4.15rem;
     height: 80px;
     .iconColor {
       color: #ED7D31
@@ -273,7 +275,7 @@ export default {
   .achievementRate {
     text-align: center;
     position: absolute;
-    top: -57px;
+    top: -3.55rem;
     height: 80px;
 
     .iconColor {
