@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-23 11:59:22
- * @LastEditTime: 2021-07-13 19:44:11
+ * @LastEditTime: 2021-07-13 20:56:45
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\editordetail\components\currentSupplier\index.vue
@@ -123,13 +123,12 @@ export default{
       this.supplierCurentTop()
       this.supplierCurentBottom()
       this.purchaseFactory()
+      this.searchForm.partNum = JSON.parse(this.$route.query.item).partNum
     }
-  },
-  created(){
-    this.searchForm.partNum = JSON.parse(this.$route.query.item).partNum
   },
   methods:{
     deleteRow(){
+      if(this.topSelect.length == 0) return iMessage.warn(this.language('QINGXUANZEYIGELIE','请选择一条数据！'))
       this.dataListTop.forEach((value,index)=>{
         this.topSelect.forEach(i=>{
             if(i.deleteFlag == value.deleteFlag){
@@ -160,7 +159,11 @@ export default{
     },  
     addTop(){
       if(this.bottomSelect.length == 0) return iMessage.warn(this.language('QINGXUANZEYIGELIE','请选择一条数据！'))
-      this.bottomSelect.forEach(items=>this.dataListTop.push(items))
+      this.bottomSelect.forEach(items=>{
+        if(!this.dataListTop.find(i=>i.supplierId == items.supplierId)){
+          this.dataListTop.push(items)
+        }
+      })
       this.dataListTop = Array.from(new Set(this.dataListTop))
     },
     handleSelectionChangeTop(res){this.topSelect = res},
