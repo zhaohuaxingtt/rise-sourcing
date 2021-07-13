@@ -363,7 +363,14 @@ module.exports = {
         pathRewrite: {
           '^/risemessage': ''
         }
-      }
+      },
+      '/newCommonApi': {
+				target: 'http://10.122.17.38:8034',
+				changeOrigin: true,
+				pathRewrite: {
+					"^/newCommonApi": ""
+				}
+			}
     }
   }
 }
