@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-26 19:46:16
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-13 19:36:19
+ * @LastEditTime: 2021-07-13 20:50:56
  * @Description: 添加附件弹窗
  * @FilePath: \front-web\src\views\accessoryPart\createRfq\components\addFile.vue
 -->
@@ -76,6 +76,14 @@ export default {
     }
   },
   methods: {
+    reset() {
+      this.searchParams = {}
+      this.sure()
+    },
+    sure() {
+      this.page.currPage = 1
+      this.getTableList()
+    },
     /**
      * @Description: 获取表格数据
      * @Author: Luoshuang

@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-26 11:16:51
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-13 18:38:52
+ * @LastEditTime: 2021-07-13 20:44:53
  * @Description: 配件综合管理页面
  * @FilePath: \front-web\src\views\accessoryPart\integratedManage\index.vue
 -->
@@ -343,6 +343,7 @@ export default {
         nomiType: '',
         idState: ''
       }
+      this.sure()
     },
     sure() {
       this.page.currPage = 1
