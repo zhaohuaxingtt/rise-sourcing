@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-06-16 20:44:29
- * @LastEditTime: 2021-07-12 14:39:52
+ * @LastEditTime: 2021-07-13 14:29:38
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\analysisTool\components\analysisTable.vue
@@ -306,6 +306,13 @@ export default {
 ::v-deep  .el-table .el-table__row .el-input .el-input__inner {
   text-align: center!important;
 }
+
+::v-deep .cell {
+  .el-table__indent, .el-table__placeholder{
+    display: none;
+  }
+}
+
 
 .vpMainBox {
   ::v-deep .el-table__expand-icon{

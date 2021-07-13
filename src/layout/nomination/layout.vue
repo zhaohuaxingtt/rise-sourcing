@@ -41,6 +41,7 @@ export default {
     const {query} = this.$route;
     const {isPreview = '0'} = query;
     this.isPreview = isPreview;
+    this.$store.dispatch('setPreviewState', isPreview)
     // 缓存当前步骤
     this.getStepStatus();
   },

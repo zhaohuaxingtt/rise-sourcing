@@ -1,14 +1,14 @@
 /*
  * @Author: your name
  * @Date: 2021-04-12 10:12:38
- * @LastEditTime: 2021-05-11 13:41:01
+ * @LastEditTime: 2021-07-13 14:32:48
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\editordetail\components\drawingSheet\data.js
  */
 export const tableTitle = [
   { 'props': 'tpPartAttachmentName', name: '文件名称', key: 'LK_WENJIANMINGCHENG', tooltip: true },
-  { 'props': 'size', name: '大小（MB）', key: 'LK_DAXIAOMB', tooltip: true },
+  { 'props': 'size', name: '大小', key: 'DAXIAO', tooltip: true },
   { 'props': 'updateDate', name: '上传日期', key: 'LK_SHANGCHUANRIQI', tooltip: true },
   { 'props': 'uploadBy', name: '上传人', key: 'LK_SHANGCHUANREN', tooltip: true }
 ]

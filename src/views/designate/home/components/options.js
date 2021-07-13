@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-07-05 16:17:39
- * @LastEditTime: 2021-07-05 17:41:24
+ * @LastEditTime: 2021-07-13 14:12:55
  * @LastEditors: Please set LastEditors
  * @Description: 通用下拉值
  * @FilePath: /front-web/src/views/designate/home/components/options.js
@@ -9,13 +9,27 @@
 
 // 定点管理申请状态
 export const nomiApplicationStatus = [
-  {id:'DRAFT',name:'草稿',key:'LK_CAOGAO'},
-  {id:'SUBMIT',name:'提交中',key:'LK_TIJIAOZHONG'},
-  {id:'FREERE',name:'已冻结',key:'LK_YIDONGJIE'},
-  {id:'ONFLOW',name:'审批中/流转中',key:'LK_SHENPILIUZHUAN'},
-  {id:'FINISHFLOW',name:'审批完成/流转完成',key:'LK_SHENPILIUZHUANWANCHENG'},
-  {id:'NOMINATE',name:'已定点',key:'LK_YIDINGDIAN'},
+  {id:'NEW',name:'草稿',key:'LK_CAOGAO'},
+  {id:'SUBMIT',name:'提交',key:'LK_TIJIAO'},
+  {id:'NOTPASS',name:'未通过',key:'LK_WEITONGGUO'},
+  {id:'PASS',name:'通过',key:'LK_TONGGUO'},
+  {id:'CHECK_INPROCESS',name:'复核中',key:'LK_FUHEZHONG'},
+  {id:'CHECK_PASS',name:'复核通过',key:'LK_FUHETONGGUO'},
+  {id:'CHECK_FAIL',name:'复核未通过',key:'LK_FUHEWEITONGGUO'},
+  {id:'FREERE',name:'冻结',key:'LK_DONGJIE'},
+  {id:'M_CHECK_INPROCESS',name:'M审批中',key:'LK_MSHENPIZHONG'},
+  {id:'M_CHECK_FAIL',name:'M退回',key:'LK_NOMIMTUIHUI'},
+  {id:'ONFLOW',name:'流转中',key:'LK_SHENPILIUZHUAN'},
+  {id:'FINISHFLOW',name:'流转完成',key:'LK_LIUZHUANWANCHENG'},
+  {id:'NOMINATE',name:'定点',key:'LK_NOMIDINGDIANTITLE'},
 ]
+// 申请状态与定点类型之间的联动
+export const nomiApplicationObject = {
+  MEETING: ['NEW', 'SUBMIT', 'NOTPASS', 'PASS', 'CHECK_INPROCESS', 'CHECK_PASS', 'CHECK_FAIL', 'FREERE', 'M_CHECK_INPROCESS', 'M_CHECK_FAIL', 'NOMINATE'],
+  TRANFORM: ['NEW', 'SUBMIT', 'FREERE', 'ONFLOW', 'FINISHFLOW', 'NOMINATE'],
+  RECORD: ['NEW', 'SUBMIT', 'FREERE', 'NOMINATE']
+}
+
 // 签字单详情，定点申请单 申请状态
 export const applicationStatus = [
   {id:'NEW',name:'草稿',key:'LK_CAOGAO'},

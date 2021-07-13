@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2021-05-27 13:45:35
- * @LastEditTime: 2021-06-14 16:48:28
- * @LastEditors: ldh
+ * @LastEditTime: 2021-07-13 14:30:42
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\costanalysismanage\components\home\components\data.js
  */
@@ -11,7 +11,7 @@ import { permissionTitle } from "@/utils"
 // 技术资料下载弹窗---询价附件表单头
 export const FilesTitle = [
     {props:'fileName',name:'文件名称', key: "LK_WENJIANMINGCHENG", tooltip: true},
-    {props:'fileSize',name:'大小(MB)', key: "LK_DAXIAOMB", tooltip: true},
+    {props:'fileSize',name:'大小', key: "DAXIAO", tooltip: true},
     {props:'createDate',name:'上传日期', key: "LK_SHANGCHUANRIQI", tooltip: true},
     {props:'createBy',name:'上传人', key: "LK_SHANGCHUANREN", tooltip: true},
   ]
@@ -21,7 +21,7 @@ export const FilesTitle = [
   export const DrawingTitle = [
     {props:'partNum',name:'零件号', key: "LK_LINGJIANHAO", tooltip: true},
     {props:'tpPartAttachmentName',name:'文件名称', key: "LK_WENJIANMINGCHENG", tooltip: true},
-    {props:'size',name:'大小(MB)', key: "LK_DAXIAOMB", tooltip: true},
+    {props:'size',name:'大小', key: "DAXIAO", tooltip: true},
     {props:'createDate',name:'上传日期', key: "LK_SHANGCHUANRIQI", tooltip: true},
     {props:'userName',name:'上传人', key: "LK_SHANGCHUANREN", tooltip: true},
   ]
