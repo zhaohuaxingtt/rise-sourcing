@@ -2,11 +2,11 @@
  * @Descripttion: 
  * @Author: Luoshuang
  * @Date: 2021-05-21 14:30:41
- * @LastEditTime: 2021-07-12 11:11:30
+ * @LastEditTime: 2021-07-12 18:21:55
 -->
 <template>
   <el-table ref="multipleTable" fit tooltip-effect='light' :height="height" :data='tableData' v-loading='tableLoading' @selection-change="handleSelectionChange" :empty-text="language('ZANWUSHUJU', '暂无数据')" >
-    <el-table-column v-if="selection" type='selection' width="50" align='center'></el-table-column>
+    <el-table-column v-if="selection" type='selection' width="56" align='center'></el-table-column>
     <el-table-column v-if='indexKey' type='index' width='50' align='center' label='#'>
       <template slot-scope="scope">
         {{tableIndexString+(scope.$index+1)}}
@@ -86,7 +86,7 @@
           <!------------------枚举列--------------------------->
           <span v-else-if="items.isObject">{{scope.row[items.props].name || scope.row[items.props] }}</span>
           <!------------------正常--------------------------->
-          <span v-else>{{scope.row[items.props] ? scope.row[items.props].desc || scope.row[items.props] : ''}}</span>
+          <span v-else>{{scope.row[items.props] || scope.row[items.props] === 0 ? scope.row[items.props].desc || scope.row[items.props] : ''}}</span>
         </template>
         <template v-if="items.children">
           <el-table-column v-for="(childItem, childIndex) in items.children" :key="childIndex" align='center' :width="childItem.width" :show-overflow-tooltip='childItem.tooltip'  :label="childItem.key ? language(childItem.key, childItem.name) : childItem.name" :prop="childItem.props">

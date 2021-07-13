@@ -169,7 +169,8 @@ export default {
           rfqId: this.rfqId,
           round: row.round,
           fsNum: row.fsnrGsnrNum,
-          supplierId: row.supplierId
+          supplierId: row.supplierId,
+          sourcing: true
         }
       })
       window.open(route.href, "_blank")
