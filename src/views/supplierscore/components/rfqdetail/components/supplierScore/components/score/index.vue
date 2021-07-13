@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-22 16:16:26
- * @LastEditTime: 2021-07-12 16:55:36
+ * @LastEditTime: 2021-07-13 17:32:57
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\supplierscore\components\rfqdetail\components\supplierScore\components\score\index.vue
@@ -72,7 +72,7 @@
         </template>
       </el-table>
     </div>
-    <forwardDialog ref="forwardDialog" :visible.sync="forwardDialogVisible" @confirm="confirmForward" />
+    <forwardDialog ref="forwardDialog" :visible.sync="forwardDialogVisible" @confirm="confirmForward" :userDeptType="userDeptType" />
     <rejectDialog ref="rejectDialog" :visible.sync="rejectDialogVisible" @confirm="confirmReject" />
     <remarkDialog ref="remarkDialog" :visible.sync="remarkDialogVisible" :data="currentRow.memo" @confirm="confirmRemark" @cancel="currentRow = {}" />
   </iCard>
@@ -86,7 +86,7 @@ import remarkDialog from "@/views/supplierscore/components/remarkDialog"
 import { pageMixins } from "@/utils/pageMixins"
 import { scoreTableTitle as tableTitle, deptScoreTableTitle } from "../data"
 import { cloneDeep, isEqual } from "lodash"
-import { getRfqBdlRatingsByCurrentDept, forward, backRfqBdlRatings, submitRfqBdlRatings, approveRfqBdlRatings, rejectRfqBdlRatings, updateRfqBdlRatings, updateRfqBdlRatingMemo } from "@/api/supplierscore"
+import { getRfqBdlRatingsByCurrentDept, forward, backRfqBdlRatings, submitRfqBdlRatings, approveRfqBdlRatings, rejectRfqBdlRatings, updateRfqBdlRatings, updateRfqBdlRatingMemo, findRateTagForCurrentUser } from "@/api/supplierscore"
 
 export default {
   components: {
@@ -123,9 +123,18 @@ export default {
       approveLoading: false,
       rejectDialogVisible: false,
       saveLoading: false,
+      userDeptType: ""
     }
   },
   methods: {
+    findRateTagForCurrentUser() {
+      findRateTagForCurrentUser()
+      .then(res => {
+        if (res.code == 200 && res.data) {
+          this.userDeptType = res.data
+        }
+      })
+    },
     getRfqBdlRatingsByCurrentDept() {
       this.loading = true
       getRfqBdlRatingsByCurrentDept({
