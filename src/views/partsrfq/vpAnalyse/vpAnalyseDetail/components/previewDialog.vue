@@ -14,7 +14,7 @@
       </div>
       <baseInfo :dataInfo="dataInfo" :disabledSupplier="true"/>
       <el-divider class="margin-top20 margin-bottom20"/>
-      <totalUnitPriceTable :dataInfo="dataInfo" class="margin-bottom20" :showEditButton="false" ref="1"/>
+      <totalUnitPriceTable :dataInfo="dataInfo" class="margin-bottom20" :showEditButton="false"/>
       <div class="chartContainer margin-top20">
         <div class="left">
           <div class="font18 font-weight margin-bottom20">Volume Pricing{{ this.$t('TPZS.QUXIAN') }}</div>
@@ -28,7 +28,7 @@
         </div>
         <div class="right">
           <div class="font18 font-weight margin-bottom20">Volume Pricing{{ this.$t('TPZS.FENXI') }}</div>
-          <analyzeChart :dataInfo="dataInfo"/>
+          <analyzeChart :dataInfo="dataInfo" :disabledEstimatedActualTotalPro="true"/>
         </div>
       </div>
     </div>
