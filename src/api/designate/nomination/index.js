@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-05-28 17:30:52
- * @LastEditTime: 2021-07-02 16:36:05
+ * @LastEditTime: 2021-07-13 14:38:56
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\api\designate\index.js
@@ -113,6 +113,15 @@ export function getCarTypePro(data) {
 export function consistenceCheck(data) {
   return requst({
     url: "/nominate-apps/consistence-check",
+    method: "POST",
+    data,
+  })
+}
+
+// 会外流转
+export function nomiApprovalProcess(data) {
+  return requst({
+    url: "/nominate/nomi-approval-process/submitApproval",
     method: "POST",
     data,
   })

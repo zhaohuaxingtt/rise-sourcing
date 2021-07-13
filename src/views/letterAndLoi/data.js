@@ -77,7 +77,7 @@ export const loiListTitle = [
 
 export const historyListTitle=[
   { props: "fileName", name: "文件名称", key: "LK_WENJIANMINGCHENG", tooltip: true },
-  { props: "fileSize", name: "大小", key: "LK_DAXIAOMB", tooltip: true },
+  { props: "fileSize", name: "大小", key: "DAXIAO", tooltip: true },
   { props: "uploadDate", name: "上传日期", key: "LK_SHANGCHUANRIQI", tooltip: true },
   { props: "uploadBy", name: "上传人", key: "LK_SHANGCHUANREN", tooltip: true },
 ]
@@ -87,7 +87,7 @@ export const historyListTitle=[
 export const letterHistoryTitle=[
   { props: "letterNum", name: "定点信编号", key: "LK_DINGDIANXINBIANHAO", tooltip: true },
   { props: "fileName", name: "文件名称", key: "LK_WENJIANMINGCHENG", tooltip: true },
-  { props: "fileSize", name: "大小", key: "LK_DAXIAOMB", tooltip: true },
+  { props: "fileSize", name: "大小", key: "DAXIAO", tooltip: true },
   { props: "uploadDate", name: "上传日期", key: "LK_SHANGCHUANRIQI", tooltip: true },
   { props: "uploadBy", name: "上传人", key: "LK_SHANGCHUANREN", tooltip: true },
 ]
@@ -96,7 +96,7 @@ export const letterHistoryTitle=[
 export const historyLoiListTitle=[
   { props: "loiNum", name: "LOI编号", key: "LK_LOIBIANHAO", tooltip: true },
   { props: "fileName", name: "文件名称", key: "LK_WENJIANMINGCHENG", tooltip: true },
-  { props: "fileSize", name: "大小", key: "LK_DAXIAOMB", tooltip: true },
+  { props: "fileSize", name: "大小", key: "DAXIAO", tooltip: true },
   { props: "uploadDate", name: "上传日期", key: "LK_SHANGCHUANRIQI", tooltip: true },
   { props: "uploadUserName", name: "上传人", key: "LK_SHANGCHUANREN", tooltip: true },
 ]
