@@ -3,8 +3,8 @@
     <iCard>
       <div class="margin-bottom20 clearFloat">
         <div class="floatright">
-          <iButton @click="submit" v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_MOLDBUDGETAPPLICATION_SUBMIT">{{ $t('LK_TIJIAO') }}</iButton>
-          <iButton @click="recall" v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_MOLDBUDGETAPPLICATION_RECALL">{{ $t('LK_CHEHUI') }}</iButton>
+          <iButton @click="submit" v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_MOLDBUDGETAPPLICATION_SUBMIT">{{ language('LK_TIJIAO','提交') }}</iButton>
+          <iButton @click="recall" v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_MOLDBUDGETAPPLICATION_RECALL">{{ language('LK_CHEHUI','撤回') }}</iButton>
         </div>
       </div>
       <tablelist
@@ -91,7 +91,7 @@ export default {
     },
     async submit() {
       if(this.selectTableData.length == 0) {
-        iMessage.warn(this.$t('partsignLanguage.QingXuanZe'))
+        iMessage.warn(this.language('partsignLanguage.QingXuanZe','请选择'))
         return false
       }
       this.selectTableData = this.selectTableData.map(item => {
@@ -105,7 +105,7 @@ export default {
     },
     async recall() {
       if(this.selectTableData.length == 0) {
-        iMessage.warn(this.$t('partsignLanguage.QingXuanZe'))
+        iMessage.warn(this.language('partsignLanguage.QingXuanZe','请选择'))
         return false
       }
       this.selectTableData = this.selectTableData.map(item => {

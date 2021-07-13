@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-06-16 20:44:29
- * @LastEditTime: 2021-07-08 16:40:55
+ * @LastEditTime: 2021-07-12 14:39:52
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\analysisTool\components\analysisTable.vue
@@ -37,13 +37,13 @@
           <div class="openPage">
             <el-row :gutter="20">
               <el-col :span="18">
-                <span v-if="!editMode">
+                <span v-if="!editMode" style="textAlgin: center">
                   <span v-if="scope.row.type == $t('TPZS.SCHEME_TYPE')" @click="clickScheme(scope.row)">{{scope.row.analysisSchemeName}}</span>
                   <span v-if="scope.row.type == $t('TPZS.REPORT_TYPE')" @click="clickReport(scope.row)">{{scope.row.reportName}}</span>
                 </span>
                 <span v-else>
-                  <iInput v-if="scope.row.type == $t('TPZS.SCHEME_TYPE')" v-model="scope.row.analysisSchemeName"></iInput>
-                  <iInput v-if="scope.row.type == $t('TPZS.REPORT_TYPE')" v-model="scope.row.reportName"></iInput>
+                  <iInput class="nameInput" v-if="scope.row.type == $t('TPZS.SCHEME_TYPE')" v-model="scope.row.analysisSchemeName"></iInput>
+                  <iInput class="nameInput" v-if="scope.row.type == $t('TPZS.REPORT_TYPE')" v-model="scope.row.reportName"></iInput>
                 </span>
               </el-col>
               <el-col :span="6">
@@ -145,6 +145,8 @@ import {getVpAnalysisDataList, fetchStaick, fetchEdit, fetchDel} from '@/api/par
 import {iMessage} from '@/components';
 import {pageMixins} from '@/utils/pageMixins';
 import reportPreview from './reportPreview'
+// import '@/assets/style/global/element-ui.scss'
+
 export default {
   name: 'analysisTable',
   mixins: [pageMixins],
@@ -194,10 +196,13 @@ export default {
         createByName: searchData ? searchData.createByName : null,
         materialGroup: searchData ? searchData.materialGroup : null,
         partsNo: searchData ? searchData.partsNo : null,
-        rfqNo: searchData ? searchData.rfqNo : null,
+        rfqNo: searchData ? searchData.rfqNo : this.$store.state.rfq.rfqId,
       }
       getVpAnalysisDataList(params).then(res => {
         if(res && res.code == 200) {
+          if(!res.data || res.data.length == 0) {
+            iMessage.error('抱歉，无法查询到结果（输入错误或不存在），请确认后重新输入')
+          }
           this.page.totalCount = res.total
           this.tableListData = res.data
           this.handleTableNumber(this.tableListData, 1, null)
@@ -298,11 +303,13 @@ export default {
 </script>
 
 <style lang='scss' scoped>
+::v-deep  .el-table .el-table__row .el-input .el-input__inner {
+  text-align: center!important;
+}
+
 .vpMainBox {
   ::v-deep .el-table__expand-icon{
     float: right!important;
-    // line-height: 31px!important;
-    // width: 10px!important;
   }
 
   ::v-deep .el-tree .el-tree-node__expand-icon.expanded 
@@ -333,8 +340,6 @@ export default {
       transform: rotate(270deg);
     }
   }
-
-
   .openPage{
     position: relative;
     color: $color-blue;

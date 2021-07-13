@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-22 09:12:31
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-03 16:11:10
+ * @LastEditTime: 2021-07-12 12:32:39
  * @Description: 财务目标价-目标价维护
  * @FilePath: \front-web\src\views\financialTargetPrice\maintenance\index.vue
 -->
@@ -48,13 +48,11 @@
           <!--------------------导入批量维护按钮----------------------------------->
           <el-upload
             class=" margin-left10 margin-right10"
-            :action="uploadUrl + '/cf-target-price-applies/export/import'"
             accept='.xlsx'
             style="display:inline-block;"
+            :http-request="upload"
             :show-file-list='false'
-            :on-progress='()=>{uploadLoading=true}'
-            :on-error='fileError'
-            :on-success='fileSuccess'
+            :before-upload="beforeUpload"
           >
             <iButton :loading='uploadLoading'>{{language('DAORUPILIANGWEIHU','导入批量维护')}}</iButton>
           </el-upload>
@@ -112,7 +110,7 @@ import modificationRecordDialog from './components/modificationRecord'
 import attachmentDialog from '@/views/costanalysismanage/components/home/components/downloadFiles/index'
 import approvalRecordDialog from './components/approvalRecord'
 import { dictkey } from "@/api/partsprocure/editordetail"
-import { getTargetPriceList, exportTargetPriceList, setPrice, getCFList, getPartStatus } from "@/api/financialTargetPrice/index"
+import { getTargetPriceList, exportTargetPriceList, setPrice, getCFList, getPartStatus, importTargetPriceList } from "@/api/financialTargetPrice/index"
 import { getDictByCode } from '@/api/dictionary'
 import {omit} from 'lodash'
 import moment from 'moment'
@@ -158,6 +156,21 @@ export default {
     this.getTableList()
   },
   methods: {
+    beforeUpload() {
+      this.uploadLoading = true
+    },
+    upload(content) {
+      const formData = new FormData()
+      formData.append('file', content.file)
+      // formData.append('applicationName', 'procurereq-service')
+      importTargetPriceList(formData)
+        .then(res => {
+          this.fileSuccess(res)
+        })
+        .catch(rej => {
+          this.fileError(rej)
+        })
+    },
     getPartStatus() {
       getPartStatus().then(res => {
         if(res?.result) {
@@ -228,6 +241,7 @@ export default {
       this.selectItems = val
     },
     fileError(err) {
+      this.uploadLoading = false;
       console.log(err.message)
       const errRes = JSON.parse(err.message)
       this.uploadLoading=false;iMessage.error(this.$i18n.locale === 'zh' ? errRes?.desZh : errRes?.desEn || '上传失败')

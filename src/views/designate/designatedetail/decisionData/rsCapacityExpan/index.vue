@@ -1,7 +1,7 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-07-06 22:11:41
- * @LastEditTime: 2021-07-08 13:48:11
+ * @LastEditTime: 2021-07-09 10:34:27
  * @LastEditors: Please set LastEditors
  * @Description: 决策资料 - 扩产能
  * @FilePath: /front-web/src/views/designate/designatedetail/decisionData/rsCapacityExpan/index.vue
@@ -11,13 +11,13 @@
     <div class="caexpan-title"></div>
     <basicForm :form.sync="basicFormData" />
     <!-- 扩产能表格 -->
-    <capacity />
+    <capacity :data="capacityExpPlanVOList" />
     <!-- BentchMark Investment -->
-    <investment class="margin-top20" />
+    <investment :data="InvestmentData" class="margin-top20" />
     <!-- Part infomation -->
-    <partInfomation class="margin-top20" />
+    <partInfomation :data="PartTableData" class="margin-top20" />
     <!-- Economic Assessment -->
-    <ecoAssessment class="margin-top20" />
+    <ecoAssessment :data="assesmentList" :timeList="yearList" class="margin-top20" />
     <!-- footer -->
     <div class="caexpan-footer">
       <span><strong>{{language('TOTALINVESTMENTVAT','Total Investment(Excel VAT)不含税')}}：</strong>
@@ -52,11 +52,14 @@ import investment from './components/investment'
 import partInfomation from './components/partInfomation'
 import ecoAssessment from './components/ecoAssessment'
 // import tablelist from "@/views/designate/supplier/components/tableList";
-import {
-  InvestmentTableTitle,
-  PartTableTitle
-} from './components/data'
-import {iCard} from 'rise'
+// import {
+//   InvestmentTableTitle,
+//   PartTableTitle
+// } from './components/data'
+import {iCard, iMessage} from 'rise'
+import { 
+  getCapacityExtPlan
+} from '@/api/designate/nomination/capacityExt'
 
 export default {
   components: {
@@ -71,11 +74,44 @@ export default {
   data() {
     return {
       basicFormData: {},
+      // 扩产能计划
+      capacityExpPlanVOList: [],
       tableLoading: false,
-      InvestmentTableTitle,
       InvestmentData: [],
-      PartTableTitle,
-      PartTableData: []
+      PartTableData: [],
+      yearList: [],
+      assesmentList: []
+
+    }
+  },
+  mounted(){
+    this.getFetchData()
+  },
+  methods: {
+    async getFetchData() {
+      try {
+        // const res = require('./components/moke.json')
+        const res = await getCapacityExtPlan({
+          nominateId: this.$store.getters.nomiAppId,
+        })
+        if (res.code === '200') {
+          // 基础信息
+          this.basicFormData = res.data.capacityExpHeaderVO || {}
+          // 扩产能计划
+          this.capacityExpPlanVOList = res.data.capacityExpPlanVOList || []
+          // 投资计划
+          this.InvestmentData = res.data.capacityExpInvestmentFeeVOList || []
+          // 零件计划
+          this.PartTableData = res.data.capacityExpPartInfoVOList || []
+          // 
+          this.assesmentList = res.data.capacityExpEconomicAssessmentVOList || []
+          this.yearList = res.data.capacityExpCarTypeProPlanVOList || []
+        } else {
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
+      } catch(e) {
+        iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
+      }
     }
   }
 }

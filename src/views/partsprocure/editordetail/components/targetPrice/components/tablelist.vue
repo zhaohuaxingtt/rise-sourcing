@@ -1,17 +1,17 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-24 16:57:16
- * @LastEditTime: 2021-07-05 17:52:52
- * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-07-09 15:40:36
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\editordetail\components\targetPrice\components\tablelist.vue
 -->
 <template>
-	<el-table class="table" :data="tableData" :empty-text="$t('LK_ZANWUSHUJU')" v-loading="tableLoading" @selection-change="handleSelectionChange">
+	<el-table class="table" :data="tableData" :empty-text="language('LK_ZANWUSHUJU','暂无数据')" v-loading="tableLoading" @selection-change="handleSelectionChange">
 		<el-table-column type="selection" align="center"></el-table-column>
 		<el-table-column type="index" align="center" label="#"></el-table-column>
 		<template v-for="(item, index) in tableTitle">
-			<el-table-column :key="index" align='center' :label="$t(item.key)" :prop="item.props">
+			<el-table-column :key="index" align='center' :label="item.key ? language(item.key,item.name) : item.name" :prop="item.props">
 				<template slot-scope="scope">
 					<span>{{scope.row[item.props] ? scope.row[item.props].desc || scope.row[item.props] : ''}}</span>
 				</template>

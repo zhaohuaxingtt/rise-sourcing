@@ -1,7 +1,7 @@
 <!--
  * @Author: lyujiahong
  * @Date: 2021-02-24 09:42:07
- * @LastEditTime: 2021-05-31 15:07:10
+ * @LastEditTime: 2021-07-12 14:17:13
  * @LastEditors: Please set LastEditors
  * @Description: 零件签收-table组件。
  * @FilePath: \rise\src\views\partsign\components\tableList.vue
@@ -13,7 +13,7 @@
     :data="tableData"
     v-loading="tableLoading"
     @selection-change="handleSelectionChange"
-    :empty-text="$t('LK_ZANWUSHUJU')"
+    :empty-text="language('LK_ZANWUSHUJU','暂无数据')"
     ref="moviesTable"
     :class="radio && 'radio'"
   >

@@ -15,7 +15,7 @@
       ></tablelist>
     </div>
     <span slot="footer" class="dialog-footer">
-       <iButton @click="clearDiolog">{{ $t('LK_QUXIAO') }}</iButton>
+       <iButton @click="clearDiolog">{{ language('LK_QUXIAO','取 消') }}</iButton>
     </span>
   </iDialog>
 </template>

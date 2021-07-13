@@ -127,14 +127,14 @@
             <iButton v-show="pageEdit" @click="pageEdit = false"
                      :disabled="versionList[0] && form['search.version'] != versionList[0].id">{{ $t('退出编辑') }}
             </iButton>
+            <iButton v-show="pageEdit" @click="saveRow">{{ $t('LK_BAOCUN') }}</iButton>
+            <iButton v-show="pageEdit" @click="saveAsRow">{{ $t('LK_BAOCUNWEIXINBANBEN') }}</iButton>
             <iButton v-show="!pageEdit" @click="pageEdit = true"
                      :disabled="versionList[0] && form['search.version'] != versionList[0].id">{{ $t('LK_BIANJI') }}
             </iButton>
             <iButton v-show="pageEdit" @click="addRow">{{ $t('LK_TIANJIAHANG') }}</iButton>
             <iButton v-show="pageEdit" @click="deleteIRow">{{ $t('LK_SHANCHUHANG') }}</iButton>
             <iButton v-show="pageEdit" @click="referenceModelShow = true">{{ $t('LK_CANKAOCHEXIN') }}</iButton>
-            <iButton v-show="pageEdit" @click="saveRow">{{ $t('LK_BAOCUN') }}</iButton>
-            <iButton v-show="pageEdit" @click="saveAsRow">{{ $t('LK_BAOCUNWEIXINBANBEN') }}</iButton>
             <iButton @click="downloadList">下载投资清单</iButton>
             <iButton v-show="pageEdit" @click="conversionRatioShow = true">{{ $t('LK_ANBILIZHESUAN') }}</iButton>
             <iButton @click="toJV">{{ $t('查看Common预算') }}</iButton>
@@ -1412,7 +1412,7 @@ export default {
 
     .infoIcard {
       margin-left: 49px;
-      max-width: 170px;
+      max-width: 200px;
 
       > div {
         display: flex;

@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-22 11:14:02
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-05 16:06:45
+ * @LastEditTime: 2021-07-09 19:27:02
  * @Description: 财务目标价-目标价查询
  * @FilePath: \front-web\src\views\financialTargetPrice\query\index.vue
 -->
@@ -17,7 +17,7 @@
       <el-form>
         <el-form-item v-for="(item, index) in searchList" :key="index" :label="language(item.i18n_label, item.label)">
           <iSelect v-if="item.type === 'select'" v-model="searchParams[item.value]">
-            <el-option value="" :label="$t('all')"></el-option>
+            <el-option value="" :label="language('all','全部')"></el-option>
             <el-option
               v-for="item in selectOptions[item.selectOption] || []"
               :key="item.code"
@@ -385,7 +385,11 @@ export default {
       this.isEdit = isEdit
     },
     handleExport() {
-      excelExport(this.tableData, this.tableTitle)
+      if (this.selectItems.length < 1) {
+        iMessage.warn(this.language('ZHISHAOXUANZEYITIAOJILU','至少选择一条记录'))
+        return
+      }
+      excelExport(this.selectItems, this.tableTitle)
     },
     handleUpload() {},
     /**

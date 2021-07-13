@@ -3,7 +3,7 @@
  * @Date: 2021-03-16 17:24:15
 -->
 <template>
-  <iDialog :title="$t(title)" :visible.sync="value" width="500px" @close='clearDiolog'>
+  <iDialog :title="title || language('LK_SHANGCHUAN','上传')" :visible.sync="value" width="500px" @close='clearDiolog'>
     <div class="changeContent">
       <el-upload
           class="avatar-uploader"
@@ -16,13 +16,13 @@
           :limit="1"
           accept=".xlsx"
       >
-        <iButton>{{$t('LK_DIANJISHANGCHUAN')}}</iButton>
-        <div slot="tip" class="el-upload__tip">{{$t('LK_ZHINENGSHANGCHUANWENJIAN')}}</div>
+        <iButton>{{language('LK_DIANJISHANGCHUAN','点击上传')}}</iButton>
+        <div slot="tip" class="el-upload__tip">{{language('LK_ZHINENGSHANGCHUANWENJIAN','只能上传.xlsx文件')}}</div>
       </el-upload>
     </div>
     <span slot="footer" class="dialog-footer">
-       <iButton @click="submit">{{$t('LK_QUEREN')}}</iButton>
-       <iButton @click="clearDiolog">{{$t('LK_QUXIAO')}}</iButton>
+       <iButton @click="submit">{{language('LK_QUEREN','确认')}}</iButton>
+       <iButton @click="clearDiolog">{{language('LK_QUXIAO','取 消')}}</iButton>
     </span>
   </iDialog>
 </template>
@@ -35,7 +35,7 @@ export default {
     iDialog
   },
   props: {
-    title: {type: String, default: 'LK_SHANGCHUAN'},
+    title: {type: String, default: ''},
     value: {type: Boolean},
     repeatClick: Boolean,
     fileList: {

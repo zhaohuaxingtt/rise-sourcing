@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-28 15:03:47
- * @LastEditTime: 2021-06-26 15:26:11
+ * @LastEditTime: 2021-07-12 14:43:53
  * @LastEditors: Please set LastEditors
  * @Description: 特殊表格实现
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\table.vue
@@ -47,10 +47,21 @@
                 </template>
               </ul>
               <div class="cc" style="width:100px">
-                {{leftData}}
+                <ul>
+                  <template v-for="(itemss,index) in supplierLeftLit">
+                      <li :key='index' v-if='itemss.name == "KM"'>{{kmAPrice}}</li>
+                      <li :key="index" v-else class=""></li>
+                  </template>
+                </ul>
               </div>
               <div class="cd" style="width:100px">
-                {{rightData}}
+                <ul>
+                  <template v-for="(itemss,index) in supplierLeftLit">
+                      <li :key='index' v-if='itemss.name == "KM"'>{{kmTooling}}</li>
+                      <li :key='index' v-else-if='itemss.name == "Planned Invest"'>{{budget}}</li>
+                      <li :key="index" v-else class=""></li>
+                  </template>
+                </ul>
               </div>
             </div>
           </div>
@@ -91,11 +102,15 @@ import {supplierTableTop,removeKeysNumber,getPorpsNumber} from './data'
 export default{
   inject:['getbaseInfoData'],
   props:{
-    leftData:{
+    kmAPrice:{
       type:String,
       default:''
     },
-    rightData:{
+    kmTooling:{
+      type:String,
+      default:''
+    },
+    budget:{
       type:String,
       default:''
     },
@@ -141,7 +156,8 @@ export default{
           round:this.getbaseInfoData().currentRounds,
           supplierId:items.supplierId,
           fsNum:items[index+'partPrjCode'],
-          fix:true
+          fix:true,
+          sourcing:true
         }
       })
       window.open(router.href,'_blank')
@@ -239,11 +255,25 @@ export default{
         align-items: center;
         justify-content: center;
         background-color:rgba(22, 99, 246, 0.17);
+        ul{
+          background-color: transparent;
+          border-right: none;
+          li{
+            border-bottom: none;
+          }
+        }
       }
       .cd{
         display: flex;
         align-items: center;
         justify-content: center;
+        ul{
+          background-color: transparent;
+          border-right: none;
+          li{
+            border-bottom: none;
+          }
+        }
       }
     }
   }

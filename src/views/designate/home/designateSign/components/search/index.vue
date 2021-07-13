@@ -72,7 +72,7 @@
       <el-form-item :label="language('nominationLanguage_HuiYi', '会议')">
         <iInput
           v-model="form.meetingName"
-          :placeholder="$t('LK_QINGSHURU')"
+          :placeholder="language('LK_QINGSHURU','请输入')"
         ></iInput>
       </el-form-item>
       <!-- 复核截止日期 -->
@@ -122,11 +122,11 @@
       <el-form-item :label="language('SELDANJUQUERENZHUANGTAI','SEL单据确认状态')">
         <iSelect
           v-model="form.selStatus"
-          :placeholder="$t('LK_QINGXUANZE')"
+          :placeholder="language('LK_QINGXUANZE','请选择')"
         >
           <el-option
             value=""
-            :label="$t('all') | capitalizeFilter"
+            :label="language('all','全部') | capitalizeFilter"
           ></el-option>
           <el-option
             :value="items.id"

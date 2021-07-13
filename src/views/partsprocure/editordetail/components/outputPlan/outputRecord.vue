@@ -1,7 +1,7 @@
 <template>
-  <iCard class="outputRecord" tabCard collapse :title="$t('LK_LINGJIANCHANLIANGJILU')">
+  <iCard class="outputRecord" tabCard collapse :title="language('LK_LINGJIANCHANLIANGJILU','零件产量记录')">
     <template v-slot:header-control>
-      <iButton v-permission="PARTSPROCURE_OUTPUTPLAN_OUTPUTRECORD_UPDATE" @click="updateOutput">{{$t('LK_GENGXINZHIXUNJIACHANLIANG')}}</iButton>
+      <iButton v-permission="PARTSPROCURE_OUTPUTPLAN_OUTPUTRECORD_UPDATE" @click="updateOutput">{{language('LK_GENGXINZHIXUNJIACHANLIANG','更新至询价产量')}}</iButton>
     </template>
     <div class="body">
       <tablelist
@@ -104,7 +104,7 @@ export default {
       this.multipleSelection = list
     },
     updateOutput() {
-      if (this.multipleSelection.length !== 1) return iMessage.warn(this.$t('LK_QINGXUANZHEYITIAOJIHUAGENGXIN'))
+      if (this.multipleSelection.length !== 1) return iMessage.warn(this.language('LK_QINGXUANZHEYITIAOJIHUAGENGXIN','请选择一条计划更新至询价产量'))
       this.$emit('updateOutput', this.multipleSelection[0])
       console.log(this.tableListData)
     },
