@@ -41,6 +41,7 @@
         <iSelect
           v-model="form.nominateProcessType"
           :placeholder="language('LK_QINGXUANZE','请选择')"
+          @change="onNomiProcessTypeChange"
           clearable
         >
           <el-option
@@ -69,7 +70,7 @@
           <el-option
             :value="items.id"
             :label="language(items.key, items.name)"
-            v-for="(items, index) in nomiApplicationStatus"
+            v-for="(items, index) in applicationStatus"
             :key="index"
           ></el-option>
         </iSelect>
@@ -189,7 +190,8 @@
 import { applyType } from '@/layout/nomination/components/data'
 import {
   priceConsistentStatus,
-  nomiApplicationStatus
+  nomiApplicationStatus,
+  nomiApplicationObject
 } from '@/views/designate/home/components/options'
 import { form } from '../data'
 import {
@@ -204,7 +206,8 @@ export default {
       form,
       ptocessType: applyType,
       nomiApplicationStatus,
-      priceConsistentStatus
+      priceConsistentStatus,
+      applicationStatus: []
     }
   },
   components: {
@@ -222,6 +225,10 @@ export default {
     reset() {
       this.form = {}
       this.$emit('search', {})
+    },
+    onNomiProcessTypeChange(type) {
+      const types = nomiApplicationObject[type] || []
+      this.applicationStatus = this.nomiApplicationStatus.filter(o => types.includes(o.id))
     }
   },
   // watch: {

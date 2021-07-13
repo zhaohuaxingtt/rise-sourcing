@@ -1,7 +1,7 @@
 /*
  * @Author: moxuan
  * @Date: 2021-03-04 17:40:00
- * @LastEditors: Luoshuang
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  */
 import {permissionTitle} from '@/utils'
@@ -41,7 +41,7 @@ export const templateScoreTitle = {
 }
 export const supplierRatingAttachmentTitle = [
     {props: 'fileName', name: '文件名称', key: 'LK_WENJIANMINGCHENG'},
-    {props: 'fileSize', name: '大小（MB）', key: 'LK_DAXIAOMB'},
+    {props: 'fileSize', name: '大小', key: 'DAXIAO'},
     {props: 'createDate', name: '上传日期', key: 'LK_SHANGCHUANRIQI'},
     {props: 'createBy', name: '上传人', key: 'LK_SHANGCHUANREN'},
     {props: 'operateType', name: '操作', key: 'LK_CAOZUO'}
