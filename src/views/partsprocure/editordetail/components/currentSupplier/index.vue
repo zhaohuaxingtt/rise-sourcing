@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-23 11:59:22
- * @LastEditTime: 2021-07-13 20:56:45
+ * @LastEditTime: 2021-07-13 21:33:46
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\editordetail\components\currentSupplier\index.vue
@@ -120,10 +120,17 @@ export default{
   },
   watch:{
     'dialogVisible.show':function(){
+      this.topSelect = []
+      this.bottomSelect = []
+      this.dataListTop = []
+      this.dataListBottom = []
+      Object.keys(this.searchForm).forEach(element => {
+        this.searchForm[element] = ''
+      });
+      this.searchForm.partNum = JSON.parse(this.$route.query.item).partNum
       this.supplierCurentTop()
       this.supplierCurentBottom()
       this.purchaseFactory()
-      this.searchForm.partNum = JSON.parse(this.$route.query.item).partNum
     }
   },
   methods:{
@@ -177,6 +184,7 @@ export default{
       Object.keys(this.searchForm).forEach(element => {
         this.searchForm[element] = ''
       });
+      this.searchForm.partNum = JSON.parse(this.$route.query.item).partNum
       this.supplierCurentBottom()
     },
     /**
@@ -185,6 +193,9 @@ export default{
      * @return {*}
      */
     sure(){
+      if(this.searchForm.procureFactoryId != '' && this.searchForm.supplierName == '' && this.searchForm.supplierSapCode == ''){
+        iMessage.warn(this.language('QINGXUANZEQITAXINXI','请选择其他信息共同筛选!'))
+      }
       this.supplierCurentBottom()
     },
     /**
