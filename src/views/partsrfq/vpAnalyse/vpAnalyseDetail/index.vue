@@ -84,7 +84,6 @@
     <previewDialog
         v-model="previewDialog"
         :dataInfo="dataInfo"
-        v-if="previewDialog"
         :newestScatterData="curveChartData.newestScatterData"
         :targetScatterData="curveChartData.targetScatterData"
         :lineData="curveChartData.lineData"

@@ -38,6 +38,9 @@ export default {
       },
     },
   },
+  mounted() {
+    this.initEcharts()
+  },
   data () {
     return {}
   },
