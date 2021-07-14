@@ -150,9 +150,9 @@ export default{
         const sortData = this.oldExampelData.filter(items=> items.groupId == null && items.groupId != '-')
         const totalData = this.oldExampelData.filter((items)=> items.groupId == '-')
         if(props == "ascending"){
-          this.exampelData = [...notSortData,...sortData.sort((a,b)=>a[prop] - b[prop]),...totalData]
+          this.exampelData = [...notSortData,...sortData.sort((a,b)=>b[prop].toString().localeCompare(a[prop].toString())),...totalData]
         }else if(props == "descending"){
-          this.exampelData = [...notSortData,...sortData.sort((a,b)=>b[prop] - a[prop]),...totalData]
+          this.exampelData = [...notSortData,...sortData.sort((a,b)=>a[prop].toString().localeCompare(b[prop].toString())),...totalData]
         }else{
           this.exampelData = this.oldExampelData
         }
