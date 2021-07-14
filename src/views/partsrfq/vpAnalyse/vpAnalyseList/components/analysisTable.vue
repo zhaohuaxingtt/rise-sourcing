@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-06-16 20:44:29
- * @LastEditTime: 2021-07-13 14:29:38
+ * @LastEditTime: 2021-07-13 16:13:30
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\analysisTool\components\analysisTable.vue
@@ -28,7 +28,6 @@
         width="50">
       </el-table-column>
       <el-table-column
-        prop="analysisSchemeName"
         align="center"
         header-align="center"
         label="分析名称"

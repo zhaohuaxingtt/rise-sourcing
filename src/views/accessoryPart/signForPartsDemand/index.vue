@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-25 13:57:11
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-10 16:41:16
+ * @LastEditTime: 2021-07-13 20:45:23
  * @Description: 
  * @FilePath: \front-web\src\views\accessoryPart\signForPartsDemand\index.vue
 -->
@@ -387,6 +387,7 @@ export default {
         csfUserDept: '',
         csfUserId: ''
       }
+      this.sure()
     },
     /**
      * @Description: 点击SP号跳转事件

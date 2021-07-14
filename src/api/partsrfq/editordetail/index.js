@@ -83,6 +83,15 @@ export function submitMoldBudget(parmars) {
     })
 }
 
+// 提交/撤回 模具预算
+export function patchMouldBudget(params) {
+    return requst({
+        url: "/mould-budget",
+        method: "PATCH",
+        data: params
+    })
+}
+
 export function cancelMoldBudget(parmars) {
     return requst({
         url: '/modelbudget/cancelMoldBudget',

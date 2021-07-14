@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-26 16:20:16
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-10 16:42:15
+ * @LastEditTime: 2021-07-13 20:52:04
  * @Description: 附件综合管理
  * @FilePath: \front-web\src\views\designateFiles\fileManage\index.vue
 -->
@@ -434,6 +434,7 @@ export default {
         isShow: '',
         linie: ''
       }
+      this.sure()
     },
     /**
      * @Description: 获取表格数据

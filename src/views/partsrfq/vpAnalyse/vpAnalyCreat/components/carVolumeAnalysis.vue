@@ -25,16 +25,16 @@
           <el-row>
             <el-col :span="20">
               <div class="flex">
-                <div class="per-0" :style="'width:'+scope.row.actualProEndLastMonthValue+'%'">
+                <div class="per-0" :style="'width:'+scope.row.planTotalProValue+'%'">
                 </div>
                 <div>
-                  {{scope.row.actualProEndLastMonth}}
+                  {{scope.row.planTotalPro}}
                 </div>
               </div>
               <div class="flex">
-                <div class="per-1" :style="'width:'+scope.row.planTotalProValue+'%'"></div>
+                <div class="per-1" :style="'width:'+scope.row.actualProEndLastMonthValue+'%'"></div>
                 <div>
-                  {{scope.row.planTotalPro}}
+                  {{scope.row.actualProEndLastMonth}}
                 </div>
               </div>
             </el-col>

@@ -161,16 +161,18 @@ export default {
         const templateTitleLast = JSON.parse(JSON.stringify(this.templateScoreTitle))
         this.translateTile(vmindex,vmitems,parmars,templateTitleLast)
       })
+
       data.forEach((items,index)=>{
         vmdata.forEach((vmitems,vmindex)=>{
           const obj = {}
           parmars.forEach(item=>{
             // vmitems[item+(vmindex?vmindex:'')] = vmitems[item]
-            obj[item+(vmindex?vmindex:'')] = items.rateEntity[vmindex][item]
+            obj[item+(vmindex?vmindex:'')] = items.rateEntity[vmindex] ? items.rateEntity[vmindex][item] : items.rateEntity[vmindex]
           })
           items = Object.assign(items,obj)
         })
       })
+
       return data
     },
     translateTile(index,data,parmars,templateTitleLast){

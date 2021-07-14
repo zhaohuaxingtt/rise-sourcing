@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-26 11:16:51
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-12 11:09:19
+ * @LastEditTime: 2021-07-13 20:44:53
  * @Description: 配件综合管理页面
  * @FilePath: \front-web\src\views\accessoryPart\integratedManage\index.vue
 -->
@@ -343,6 +343,7 @@ export default {
         nomiType: '',
         idState: ''
       }
+      this.sure()
     },
     sure() {
       this.page.currPage = 1
@@ -621,8 +622,10 @@ export default {
         iMessage.warn(this.language('QINGXUANZEPEIJIAN','请选择配件'))
         return
       }
-      const selectLINIE = uniq(this.selectParts.map(item => item.respLinie))
-      const selectLINIEDept = uniq(this.selectParts.map(item => item.respDept))
+      const selectLINIE = uniq(this.selectParts.map(item => item.respLinie)).filter(item => !!item)
+      const selectLINIEName = uniq(this.selectParts.map(item => item.respLinieName)).filter(item => !!item)
+      const selectLINIEDept = uniq(this.selectParts.map(item => item.respDept)).filter(item => !!item)
+      const selectLINIEDeptName = uniq(this.selectParts.map(item => item.respDeptName)).filter(item => !!item)
       const selectStuffId = uniq(this.selectParts.map(item => item.stuffId))
       if (selectStuffId.length > 1) {
         iMessage.warn(this.language('QINGXUANZEXIANGTONGGONGYIZUDEPEIJIAN','请选择相同工艺组的配件'))
@@ -632,7 +635,15 @@ export default {
         return
       }
       this.selectLinieDept = selectLINIEDept[0]
-      const router =  this.$router.resolve({path: '/sourcing/createrfq', query: { type: '1', ids: this.selectParts.map(item => item.spnrNum).join(','),linie:selectLINIE[0], linieDept:selectLINIEDept[0] }})
+      const query = {
+        type: '1',
+        ids: this.selectParts.map(item => item.spnrNum).join(','),
+        linie: selectLINIE.length === 1 ? selectLINIE[0] : null,
+        linieName: selectLINIE.length === 1 ? selectLINIEName[0] : null,
+        linieDept: selectLINIE.length === 1 ? selectLINIEDept[0] : null,
+        linieDeptName: selectLINIE.length === 1 ? selectLINIEDeptName[0] : null
+      }
+      const router =  this.$router.resolve({path: '/sourcing/createrfq', query})
       window.open(router.href,'_blank')
     },
     // 通过待办数跳转

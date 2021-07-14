@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-22 14:14:49
- * @LastEditTime: 2021-07-06 11:50:18
+ * @LastEditTime: 2021-07-13 17:31:02
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\supplierscore\index.vue
@@ -165,7 +165,7 @@
           :layout="page.layout"
           :total="page.totalCount" />
       </div>
-      <forwardDialog ref="forwardDialog" :visible.sync="forwardDialogVisible" @confirm="confirmForward" />
+      <forwardDialog ref="forwardDialog" :visible.sync="forwardDialogVisible" @confirm="confirmForward" :userDeptType="userDeptType" />
     </iCard>
   </iPage>
 </template>
@@ -179,7 +179,7 @@ import filters from "@/utils/filters"
 import { pageMixins } from "@/utils/pageMixins"
 import { navList, queryForm, tableTitle } from "./components/data"
 import { cloneDeep } from "lodash"
-import { findDropDownBox, findLinieByName, findInquiryBuyerByName, searchRfqBdlRatings, forward } from "@/api/supplierscore"
+import { findDropDownBox, findLinieByName, findInquiryBuyerByName, searchRfqBdlRatings, forward, findRateTagForCurrentUser } from "@/api/supplierscore"
 import { getCartypeDict, findBySearches } from "@/api/partsrfq/home"
 import axios from "axios"
 
@@ -217,15 +217,25 @@ export default {
       tableListData: [],
       multipleSelection: [],
       forwardDialogVisible: false,
+      userDeptType: "",
     }
   },
   created() {
+    this.findRateTagForCurrentUser()
     this.findDropDownBox()
     this.getCartypeDict()
     this.findBySearches()
     this.searchRfqBdlRatings()
   },
   methods: {
+    findRateTagForCurrentUser() {
+      findRateTagForCurrentUser()
+      .then(res => {
+        if (res.code == 200 && res.data) {
+          this.userDeptType = res.data
+        }
+      })
+    },
     // 获取评分状态
     findDropDownBox() {
       findDropDownBox({

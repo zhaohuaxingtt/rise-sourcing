@@ -350,8 +350,8 @@ module.exports = {
       },
       '/aonApi': {
         // target: 'http://10.160.138.185:8036',
-        // target: 'http://10.160.137.32:8036',
-        target: 'http://10.122.18.166:8036',
+        target: 'http://192.168.50.230:8036',
+        // target: 'http://10.122.18.166:8036',
         changeOrigin: true,
         pathRewrite: {
           '^/aonApi': ''
@@ -363,7 +363,14 @@ module.exports = {
         pathRewrite: {
           '^/risemessage': ''
         }
-      }
+      },
+      '/newCommonApi': {
+				target: 'http://10.122.17.38:8034',
+				changeOrigin: true,
+				pathRewrite: {
+					"^/newCommonApi": ""
+				}
+			}
     }
   }
 }
