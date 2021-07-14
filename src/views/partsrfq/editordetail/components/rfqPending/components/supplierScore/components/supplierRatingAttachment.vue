@@ -47,7 +47,7 @@ import {pageMixins} from "@/utils/pageMixins";
 import {getAllAnnex, deleteAnnex, uploadRfqAnnex} from "@/api/partsrfq/editordetail";
 import uploadButton from 'pages/partsrfq/components/uploadButton'
 import store from '@/store'
-import {downloadFile} from "@/api/file";
+import {downloadFile, downloadUdFile} from "@/api/file";
 import {rfqCommonFunMixins} from "pages/partsrfq/components/commonFun";
 
 export default {
@@ -137,11 +137,12 @@ export default {
       }
     },
     async handleDownload(row) {
-      const req = {
-        applicationName: 'rise',
-        fileList: [row.fileName]
-      }
-      await downloadFile(req)
+      // const req = {
+      //   applicationName: 'rise',
+      //   fileList: [row.fileName]
+      // }
+      // await downloadFile(req)
+      await downloadUdFile(row.uploadId)
     }
   }
 }
