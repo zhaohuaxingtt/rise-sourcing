@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-26 11:16:51
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-13 20:44:53
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-07-14 14:19:44
  * @Description: 配件综合管理页面
  * @FilePath: \front-web\src\views\accessoryPart\integratedManage\index.vue
 -->
@@ -116,6 +116,7 @@ import {
   dictkey,
 } from "@/api/partsprocure/editordetail";
 import { clickMessage } from "@/views/partsign/home/components/data"
+import {partProjTypes} from '@/config'
 
 // eslint-disable-next-line no-undef
 const { mapState, mapActions } = Vuex.createNamespacedHelpers("sourcing")
@@ -125,6 +126,8 @@ export default {
   components: { iPage, iSearch, iSelect, iInput, iCard, iButton, iPagination, tableList, assignInquiryDepartmentDialog, assignInquiryBuyerDialog,backEpsDialog, backDialog, iNavMvp, joinRfqDialog },
   data() {
     return {
+      // 零件项目类型
+      partProjTypes,
       tableData: [],
       tableTitle: tableTitle,
       tableLoading: false,
@@ -220,7 +223,7 @@ export default {
               stuffName: item.stuffName, // 工艺组name
               purchasePrjectId: item.purchasingProjectId,
               partNameZh: item.partNameCh,
-              partPrejectType: 'PT17',
+              partPrejectType: partProjTypes.PEIJIAN,
             }
           }),
           userId: this.$store.state.permission.userInfo.id
