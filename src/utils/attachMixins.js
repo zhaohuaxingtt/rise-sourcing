@@ -1,7 +1,7 @@
 /*
  * @Author: haojiang
  * @Date: 2021-02-24 14:28:34
- * @LastEditTime: 2021-07-14 18:08:41
+ * @LastEditTime: 2021-07-14 21:15:30
  * @LastEditors: Please set LastEditors
  * @Description: 针对所有的分页插件，实行方法混入。
  * @FilePath: \rise\src\utils\attachMixins.js
@@ -15,7 +15,7 @@ import {
   getdDecisiondataListAll
 } from '@/api/designate/decisiondata/attach'
 // 下载文件api
-import { downloadFile } from '@/api/file'
+import { downloadUdFile as downloadFile } from '@/api/file'
 import filters from '@/utils/filters'
 
 export const attachMixins = {
@@ -46,12 +46,13 @@ export const attachMixins = {
         }, params))
         if (res1.code === '200') {
           const list = res1.data || []
-          const fileList = list.map(o => o.fileName)
+          const fileList = list.map(o => o.uploadId)
           if (fileList.length) {
-            const params = {
-              applicationName: 'rise',
-              fileList
-            }
+            // const params = {
+            //   applicationName: 'rise',
+            //   fileList
+            // }
+            const params = fileList;
             console.log('批量下载', params)
             downloadFile(params)
           }
@@ -156,15 +157,16 @@ export const attachMixins = {
     },
     // 下载文件
     downloadFile() {
-      const fileList = this.multipleSelection.map(o => o.fileName)
+      const fileList = this.multipleSelection.map(o => o.uploadId)
       if (!fileList.length) return iMessage.error(this.language('nominationSuggestion_QingXuanZeZhiShaoYiTiaoShuJu','请选择至少一条数据'))
       try {
         console.log(fileList)
         if (fileList.length) {
-          const params = {
-            applicationName: 'rise',
-            fileList
-          }
+          // const params = {
+          //   applicationName: 'rise',
+          //   fileList
+          // }
+          const params = fileList;
           downloadFile(params)
         }
       } catch (e) {
@@ -173,10 +175,11 @@ export const attachMixins = {
     },
     // 
     dowloadSingleFile(item) {
-      const params = {
-        applicationName: 'rise',
-        fileList: [item.fileName]
-      }
+      // const params = {
+      //   applicationName: 'rise',
+      //   fileList: [item.fileName]
+      // }
+      const params = [item.uploadId]
       downloadFile(params)
     },
   }
