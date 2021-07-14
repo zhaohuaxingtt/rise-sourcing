@@ -266,7 +266,8 @@ export default {
       getNominateTaskList({
         nominateId: this.$store.getters.nomiAppId,
         current: this.page.currPage,
-        size: this.page.pageSize
+        size: this.page.pageSize,
+        isPreview: this.$store.getters.isPreview
       }).then(res => {
         if (res.code === '200') {
           this.data = res.data || []

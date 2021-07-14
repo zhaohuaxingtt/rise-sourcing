@@ -87,7 +87,7 @@ import { getRfqList, getPartList, updatePart, deleteRfq } from '@/api/designate/
 import { cloneDeep } from 'lodash'
 import { getKmFileHistory } from "@/api/costanalysismanage/costanalysis"
 import { attachmentTableTitle} from "@/views/partsrfq/home/components/data";
-import { downloadFile } from "@/api/file"
+import { downloadFile, downloadUdFile } from "@/api/file"
 export default {
   mixins: [pageMixins],
   components:{ iPage, iCard, tableList, iButton, iInput, icon },
@@ -123,10 +123,11 @@ export default {
   methods: {
     // 分析报告下载
     downLoad(row) {
-      downloadFile({
-        applicationName: "rise",
-        fileList: row.fileName
-      })
+      // downloadFile({
+      //   applicationName: "rise",
+      //   fileList: row.fileName
+      // })
+      downloadUdFile(row.uploadId)
     },
     showAttachmentTable(row) {
       this.getKmFileHistory(row.id)
