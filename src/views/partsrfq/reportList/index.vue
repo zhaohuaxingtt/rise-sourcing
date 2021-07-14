@@ -68,12 +68,8 @@
 			}
 		},
 		created() {
-			if (this.$route.query.rfq) {
-				this.searchCriteria.rfq=this.$route.query.rfq
-				this.inside=true
-			}else{
-				this.inside=false
-			}
+			this.searchCriteria.rfq=this.$store.state.rfq.rfqId
+			this.inside=this.$store.state.rfq.entryStatus===1?true:false
 			this.getAllSelect()
 		},
 		methods:{

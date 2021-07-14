@@ -88,17 +88,16 @@ export default {
         if (res.result) {
           this.handleCurrentChange(res.data[0])
           this.tableListData = res.data;
-          var actualProEndLastMonthSum = 0
-          var planTotalProSum = 0
+          var sum = 0
           // 求和-》百分比
           res.data.forEach((item) => {
-            actualProEndLastMonthSum = actualProEndLastMonthSum + item.actualProEndLastMonth
-            planTotalProSum = planTotalProSum + item.planTotalPro
+            sum = sum + item.actualProEndLastMonth
+            sum = sum + item.planTotalPro
           })
           res.data.map((item) => {
             item.increaseRate = item.increaseRate.toFixed(2)//保留2位小数
-            item.actualProEndLastMonthValue = item.actualProEndLastMonth / actualProEndLastMonthSum * 100//计算百分比
-            item.planTotalProValue = item.planTotalPro / planTotalProSum * 100
+            item.actualProEndLastMonthValue = item.actualProEndLastMonth / sum * 100//计算百分比
+            item.planTotalProValue = item.planTotalPro / sum * 100
             item.actualProEndLastMonth = String(item.actualProEndLastMonth).replace(/\B(?=(\d{3})+(?!\d))/g, ',')//千位符
             return item.planTotalPro = String(item.planTotalPro).replace(/\B(?=(\d{3})+(?!\d))/g, ',')
           })
@@ -160,6 +159,7 @@ export default {
   .cell {
     padding-left: 0;
     .flex {
+      white-space: nowrap;
       align-items: center;
     }
     .per-0 {
