@@ -2,7 +2,7 @@
   <div>
     <div class="header">
       <el-radio-group v-model="leftModel">
-        <el-radio-button label="mouldInvestment">{{ $t('模具投资') }}</el-radio-button>
+        <el-radio-button label="mouldInvestment" v-permissionArr="['TOOLING_DATABASE_SUMMARY', 'TOOLING_DATABASE_PARTNO']">{{ $t('模具投资') }}</el-radio-button>
         <el-radio-button label="modelBag" v-permission="TOOLING_DATABASE_MODELBAG">{{ $t('车型包') }}</el-radio-button>
       </el-radio-group>
       <div class="rightModel" v-if="leftModel === 'mouldInvestment'">
