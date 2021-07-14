@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 10:50:38
- * @LastEditTime: 2021-07-13 20:56:00
+ * @LastEditTime: 2021-07-14 10:39:24
  * @LastEditors: Please set LastEditors
  * @Description: 费用详情
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails.vue
@@ -218,9 +218,19 @@ export default {
       this.visible = flag;
     },
     reduction () {
+      const loading = this.$loading({
+        lock: true,
+        text: 'Loading',
+        spinner: 'el-icon-loading',
+        background: 'rgba(0, 0, 0, 0.7)'
+      });
       groupTerms({
-        analysisSchemeId: this.$route.query.rfqId
-      }).then(res => { })
+        analysisSchemeId: this.rfqCode
+      }).then(res => {
+        loading.close();
+        iMessage.success('还原成功')
+        this.chargeRetrieve("all");
+      })
 
     },
     sure (val, flag) {

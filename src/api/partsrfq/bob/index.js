@@ -63,7 +63,7 @@ export function addComponentToGroup(parmars) {
 //还原分组
 export function groupTerms(parmars) {
   return requst({
-    url: '/api/aon/hanlp/groupTerms',
+    url: '/hanlp/groupTerms',
     method: 'POST',
     data: parmars,
   })
