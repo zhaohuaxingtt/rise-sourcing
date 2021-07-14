@@ -46,7 +46,7 @@ import tableList from "@/views/partsign/editordetail/components/tableList"
 import { pageMixins } from "@/utils/pageMixins"
 import { inquiryAttachmentTableTitle as tableTitle } from "../data"
 import { getAllAnnex } from "@/api/partsrfq/editordetail"
-import { downloadFile } from "@/api/file"
+import { downloadFile, downloadUdFile } from "@/api/file"
 
 export default {
   components: {
@@ -109,19 +109,21 @@ export default {
       if (this.multipleSelection.length < 1) return iMessage.warn(this.language("QINGXUANZEXUYAOXIAZAIDEWENJIAN", "请选择需要下载的文件"))
 
       this.downloadLoading = true
-      await downloadFile({
-        applicationName: "rise",
-        fileList: this.multipleSelection.map(item => item.fileName)
-      })
+      // await downloadFile({
+      //   applicationName: "rise",
+      //   fileList: this.multipleSelection.map(item => item.fileName)
+      // })
+      await downloadUdFile(this.multipleSelection.map(item => item.uploadId))
 
       this.downloadLoading = false
     },
     // 单个下载
     download(row) {
-      downloadFile({
-        applicationName: "rise",
-        fileList: row.fileName
-      })
+      // downloadFile({
+      //   applicationName: "rise",
+      //   fileList: row.fileName
+      // })
+      downloadUdFile(row.uploadId)
     },
   },
 }
