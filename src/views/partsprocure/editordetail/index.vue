@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2021-07-12 17:52:42
+ * @LastEditTime: 2021-07-14 14:39:58
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\editordetail\index.vue
@@ -85,7 +85,7 @@
 								v-permission="PARTSPROCURE_EDITORDETAIL_EVENTITEMTYPE"
 								@change="onPartProjectTypeChange">
 								<el-option :value="item.code" :label="item.name"
-									v-for="(item, index) in fromGroup.PART_PROJECT_TYPE" :key="index">
+									v-for="(item, index) in partProjectTypeArray" :key="index">
 								</el-option>
 							</iSelect>
 						</iFormItem>
@@ -106,14 +106,14 @@
 							</iSelect>
 						</iFormItem> -->
 						<!------------------------零件采购项目类型为一次性采购/DB一次性采购类型时与是否DB件联动--------------------------------------->
-						<iFormItem v-if="['PT06', 'PT19'].includes(detailData.partProjectType)" :label="language('SHIFOUDBJIAN','是否DB件') + ':'" name="test">
+						<iFormItem v-if="[partProjTypes.YICIXINGCAIGOU, partProjTypes.DBYICHIXINGCAIGOU].includes(detailData.partProjectType)" :label="language('SHIFOUDBJIAN','是否DB件') + ':'" name="test">
 							<iSelect v-model="detailData.isDB" @change="onIsDBChange">
 								<el-option :value="1" :label="language('YES', '是')"></el-option>
 								<el-option :value="0" :label="language('NO', '否')"></el-option>
 							</iSelect>
 						</iFormItem>
 						<!------------------------零件采购项目类型为DB类型时--------------------------------------->
-						<iFormItem v-if="['PT04'].includes(detailData.partProjectType) || (['PT19', 'PT06'].includes(detailData.partProjectType) && detailData.isDB)" :label="language('LK_HUOBI','货币') + ':'" name="test">
+						<iFormItem v-if="[partProjTypes.DBLINGJIAN].includes(detailData.partProjectType) || ([partProjTypes.DBYICHIXINGCAIGOU, partProjTypes.YICIXINGCAIGOU].includes(detailData.partProjectType) && detailData.isDB)" :label="language('LK_HUOBI','货币') + ':'" name="test">
 							<iSelect v-model="detailData.currencyCode" >
 								<el-option :value="item.code" :label="item.name"
 									v-for="(item, index) in fromGroup.CURRENCY_TYPE" :key="index">
@@ -121,7 +121,7 @@
 							</iSelect>
 						</iFormItem>
 						<!----------------------零件采购项目类型为DB零件时----------------------------------->
-						<iFormItem v-if="['PT04'].includes(detailData.partProjectType) || (['PT19', 'PT06'].includes(detailData.partProjectType) && detailData.isDB)" :label="language('ZHIFUTIAOKUAN', '支付条款') + ':'" name="test">
+						<iFormItem v-if="[partProjTypes.DBLINGJIAN].includes(detailData.partProjectType) || ([partProjTypes.DBYICHIXINGCAIGOU, partProjTypes.YICIXINGCAIGOU].includes(detailData.partProjectType) && detailData.isDB)" :label="language('ZHIFUTIAOKUAN', '支付条款') + ':'" name="test">
 							<iSelect v-model="detailData.payClause" >
 								<el-option :value="item.code" :label="item.name"
 									v-for="(item, index) in fromGroup.TERMS_PAYMENT" :key="index">
@@ -178,7 +178,7 @@
 							</iSelect>
 						</iFormItem> -->
 						<!----------------------零件采购项目类型为DB零件时----------------------------------->
-						<iFormItem v-if="['PT04'].includes(detailData.partProjectType) || (['PT19', 'PT06'].includes(detailData.partProjectType) && detailData.isDB)" :label="language('CAIGOUTIAOKUAN','采购条款') + ':'" name="test">
+						<iFormItem v-if="[partProjTypes.DBLINGJIAN].includes(detailData.partProjectType) || ([partProjTypes.DBYICHIXINGCAIGOU, partProjTypes.YICIXINGCAIGOU].includes(detailData.partProjectType) && detailData.isDB)" :label="language('CAIGOUTIAOKUAN','采购条款') + ':'" name="test">
 							<iSelect v-model="detailData.purchaseClause" >
 								<el-option :value="item.code" :label="item.name"
 									v-for="(item, index) in fromGroup.TERMS_PURCHASE" :key="index">
@@ -330,6 +330,7 @@
 	</iPage>
 </template>
 <script>
+	import Vuex from 'vuex'
 	import {
 		iPage,
 		iFormGroup,
@@ -371,6 +372,7 @@
 	import splitFactory from "./components/splitFactory";
 import designateInfo from './components/designateInfo'
 import { getDictByCode } from '@/api/dictionary'
+import {partProjTypes, BKMROLETAGID} from '@/config'
 	export default {
 		components: {
 			iPage,
@@ -402,6 +404,9 @@ import { getDictByCode } from '@/api/dictionary'
 			return {detailData:this.getDetailData}
 		},
 		computed: {
+			...Vuex.mapState({
+				userInfo: state => state.permission.userInfo,
+			}),
 			/**
 				* @description: 现供供应商按钮逻辑。
 				* @param {*}
@@ -412,10 +417,26 @@ import { getDictByCode } from '@/api/dictionary'
 			},
 			isAssembly() {
 				return this.detailData.partType === "A"
+			},
+			// 根据角色控制零件项目类型下拉值
+			partProjectTypeArray() {
+				// 扩产能的角色值，由CF提供
+				const BKMID = BKMROLETAGID
+				// 获取用户角色列表
+				const tagList = (this.userInfo && this.userInfo.tagList) || []
+				// 该用户只是BKM人员
+				const isBKM = tagList.find(o => o.id === BKMID) && tagList.length === 1
+				let types = this.fromGroup.PART_PROJECT_TYPE || []
+				// 获取扩产能下拉
+				let BKMITEM = types.find(o => o.code === partProjTypes.KUOCHANNENG)
+				BKMITEM = BKMITEM ? [BKMITEM] : []
+				return isBKM ? BKMITEM : types
 			}
 		},
 		data() {
 			return {
+				// 零件项目类型
+				partProjTypes,
 				firstId:'',
 				checkFactoryString:'',
 				infoItem: {},
@@ -712,8 +733,8 @@ import { getDictByCode } from '@/api/dictionary'
 			* @return {*}
 			*/
 			onIsDBChange(data) {
-				this.detailData.partProjectType = data ? 'PT19' : 'PT06'
-				this.detailData.partProjectType === 'PT19' && (this.detailData.isDB = 1)
+				this.detailData.partProjectType = data ? partProjTypes.DBYICHIXINGCAIGOU : partProjTypes.YICIXINGCAIGOU
+				this.detailData.partProjectType === partProjTypes.DBYICHIXINGCAIGOU && (this.detailData.isDB = 1)
 			},
 			/**
 			* @description: 零件项目类型,当类型为db一次性采购，isDB默认选是
@@ -722,7 +743,7 @@ import { getDictByCode } from '@/api/dictionary'
 			*/
 			onPartProjectTypeChange(data) {
 				console.log(data)
-				this.detailData.isDB = data === 'PT19' ? 1: 0
+				this.detailData.isDB = data === partProjTypes.DBYICHIXINGCAIGOU ? 1: 0
 			}
 		}
 }
