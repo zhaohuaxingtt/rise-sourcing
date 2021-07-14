@@ -21,7 +21,7 @@
             </div>
             <div class="btnList flex-align-center">
                 <iButton @click="gotoRsMainten">{{language('LK_RSWEIHUDAN','RS单维护')}}</iButton>
-                <iButton @click="exportNominate">{{language('LK_DAOCHU','导出')}}</iButton>
+                <iButton v-if="showExport" @click="doExport">{{language('LK_DAOCHU','导出')}}</iButton>
                 <iButton @click="submit" :loading="submitting">{{language('LK_TIJIAO','提交')}}</iButton>
                 <iButton @click="toNextStep">{{language('LK_XIAYIBU','下一步')}}</iButton>
                 <iButton v-if="isDecision" @click="preview">{{language('LK_YULAN','预览')}}</iButton>
@@ -88,7 +88,8 @@ import {
     sugesstionInit,
     sugesstionInitReCord,
     supplierInitReCord,
-    checkNomiMeetingSubmit1
+    checkNomiMeetingSubmit1,
+    rsAttachExport
 } from '@/api/designate'
 import { applyStep } from './data'
 export default {
@@ -136,6 +137,10 @@ export default {
         },
         isSingle(){
             return this.$store.getters.isSingle;
+        },
+        // 是否显示下载按钮
+        showExport() {
+            return this.supportExportPath.includes(this.$route.name)
         }
     },
     data(){
@@ -145,7 +150,11 @@ export default {
             applyType:[],
             applyStep:applyStep,
             mettingDialogVisible: false,
-            submitting: false
+            submitting: false,
+            // 需要展示导出按钮的页面name
+            supportExportPath: [
+                'designateDecisionRS'
+            ]
         }
     },
     methods:{
@@ -425,18 +434,49 @@ export default {
             })
             
         },
-        // 导出
-        async exportNominate(){
+        // 定点导出---后端功能未做
+        exportNominate(){
             const { query } = this.$route;
             const {desinateId} = query;
             const data = {
                 nominateIdArr:[Number(desinateId)],
             }
             nominateAppSExport(data).then((res)=>{
-                iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
+                if (res.code === '200') {
+                    iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
+                } else {
+                    iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+                }
             }).catch(e => {
-                iMessage.error(this.$i18n.locale === "zh" ? e.desZh : event.desEn)
+                iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
             })
+        },
+        // rs单导出
+        rsAttachExport() {
+            const { query } = this.$route;
+            const {desinateId} = query;
+            const data = {
+                capacityExpRsDTO: {
+                    nominateAppId:Number(desinateId),
+                },
+                nominateAppId:Number(desinateId),
+            }
+            rsAttachExport(data).then((res)=>{
+                if (res.code === '200') {
+                    iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
+                } else {
+                    iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+                }
+                
+            }).catch(e => {
+                iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
+            })
+        },
+        doExport() {
+            const pathName = this.$route.name
+            if (pathName === 'designateDecisionRS') {
+                this.rsAttachExport()
+            }
         },
 
         // 获取定点管理详情 --- 取定点申请类型字段
@@ -473,7 +513,7 @@ export default {
         }
         .desinateId {
             display: inline-block;
-            min-width: 80px;
+            min-width: 100PX;
         }
     }
     .step-list{

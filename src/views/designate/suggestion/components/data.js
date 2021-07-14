@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-05-24 13:53:50
- * @LastEditTime: 2021-06-25 11:28:05
+ * @LastEditTime: 2021-07-14 18:18:52
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\designate\suggestion\components\data.js
@@ -18,7 +18,7 @@ export const supplierTitle = [
   {
     props: 'fsnrGsnrNum',
     name: 'FSNR/GSNR',
-    key: '',
+    key: 'FSNR/GSNR',
     tooltip: false
   },
   {
