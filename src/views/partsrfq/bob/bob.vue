@@ -6,22 +6,20 @@
 -->
 <template>
   <div class="bob-main">
-    <iSearch @reset="handleSearchReset" @sure="getTableList" :icon="false">
+    <iSearch @reset="handleSearchReset"
+             @sure="getTableList"
+             :icon="false">
       <el-form label-position="top">
         <el-row class="margin-bottom20">
           <!--材料组-->
           <el-form-item :label="$t('LK_CAILIAOZU')">
-            <iInput
-              :placeholder="$t('请输入材料组编号/名称')"
-              v-model="form.group"
-            ></iInput>
+            <iInput :placeholder="$t('请输入材料组编号/名称')"
+                    v-model="form.group"></iInput>
           </el-form-item>
           <!--零件号-->
           <el-form-item :label="$t('LK_SPAREPARTSNUMBER')">
-            <iInput
-              :placeholder="$t('请输入零件号')"
-              v-model="form.num"
-            ></iInput>
+            <iInput :placeholder="$t('请输入零件号')"
+                    v-model="form.num"></iInput>
           </el-form-item>
           <!--供应商状态-->
           <el-form-item :label="$t('RFQ号/名称')">
@@ -29,16 +27,18 @@
           </el-form-item>
           <!--集团打包-->
           <el-form-item :label="$t('创建人')">
-            <iInput :placeholder="$t('请输入零件号')" v-model="form.owner" />
+            <iInput :placeholder="$t('请输入零件号')"
+                    v-model="form.owner" />
           </el-form-item>
         </el-row>
       </el-form>
     </iSearch>
-    <iCard :title="$t('BoB分析库')" class="margin-top20">
+    <iCard :title="$t('BoB分析库')"
+           class="margin-top20">
       <template v-slot:header-control>
         <div v-if="!edit">
           <iButton @click="editBob">{{ $t("LK_BIANJI") }}</iButton>
-          <iButton @click="newBob" >{{ $t("新建") }}</iButton>
+          <iButton @click="newBob">{{ $t("新建") }}</iButton>
           <iButton @click="deleteBob">{{ $t("delete") }}</iButton>
         </div>
         <div v-else>
@@ -46,65 +46,68 @@
           <iButton @click="saveEdit">{{ $t("LK_BAOCUN") }}</iButton>
         </div>
       </template>
-      <el-table
-        ref="multipleTable"
-        :data="tableListData"
-        style="width: 100%; margin-bottom: 20px"
-        row-key="id"
-        :max-height="450"
-        border
-        default-expand-all
-        :tree-props="{ children: 'children' }"
-        @selection-change="handleSelectionChange"
-        @select="checkChildren"
-        @select-all="checkAll"
-      >
-        <el-table-column type="selection" width="55"> </el-table-column>
-        <el-table-column
-          label="#"
-          type="index"
-          :index="indexMethod"
-          align="center"
-          header-align="center"
-          width="50"
-        >
+      <el-table ref="multipleTable"
+                :data="tableListData"
+                style="width: 100%; margin-bottom: 20px"
+                row-key="id"
+                :max-height="450"
+                border
+                default-expand-all
+                :tree-props="{ children: 'children' }"
+                @selection-change="handleSelectionChange"
+                @select="checkChildren"
+                @select-all="checkAll">
+        <el-table-column type="selection"
+                         width="55"> </el-table-column>
+        <el-table-column label="#"
+                         type="index"
+                         :index="indexMethod"
+                         align="center"
+                         header-align="center"
+                         width="50">
         </el-table-column>
-        <el-table-column :label="$t('分析名称')" width="200">
+        <el-table-column :label="$t('分析名称')"
+                         width="200">
           <template slot-scope="scope">
-            <el-row type="flex" align="middle">
+            <el-row type="flex"
+                    align="middle">
               <el-col :span="scope.row.reportList !== null ? 20 : 16">
                 <div v-if="edit">
                   <iInput v-model="scope.row.name" />
                 </div>
                 <div v-else>
-                  <iButton type="text" @click="pre = true">{{
+                  <iButton type="text"
+                           @click="pre = true">{{
                     scope.row.name
                   }}</iButton>
                 </div>
               </el-col>
               <el-col :span="4">
-                <iNumIcon
-                  style="margin-top: 20px"
-                  v-if="scope.row.reportList"
-                  :num="
+                <iNumIcon style="margin-top: 20px"
+                          v-if="scope.row.reportList"
+                          :num="
                     scope.row.reportList !== null
                       ? scope.row.reportList.length
                       : 0
-                  "
-                />
+                  " />
               </el-col>
             </el-row>
           </template>
         </el-table-column>
-        <el-table-column :label="$t('LK_CAILIAOZU')" prop="materialGroup">
+        <el-table-column :label="$t('LK_CAILIAOZU')"
+                         prop="materialGroup">
         </el-table-column>
-        <el-table-column :label="$t('RFQ')" prop="rfqNo"> </el-table-column>
+        <el-table-column :label="$t('RFQ')"
+                         prop="rfqNo"> </el-table-column>
         <el-table-column :label="$t('默认项')">
           <template slot-scope="scope">
             <div v-if="edit && scope.row.fileType == '方案'">
-              <iSelect v-model="scope.row.isDefault" @change="setDefault">
-                <el-option value="是" label="是" />
-                <el-option value="否" label="否" />
+              <iSelect v-model="scope.row.isDefault"
+                       @change="setDefault">
+                <el-option value="是"
+                           label="是" />
+                <el-option value="否"
+                           label="否" />
               </iSelect>
             </div>
             <div v-else>
@@ -112,44 +115,43 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column :label="$t('文件类型')" prop="fileType">
+        <el-table-column :label="$t('文件类型')"
+                         prop="fileType">
         </el-table-column>
-        <el-table-column :label="$t('创建人')" prop="createNameZh">
+        <el-table-column :label="$t('创建人')"
+                         prop="createNameZh">
         </el-table-column>
-        <el-table-column :label="$t('LK_CHUANGJIANRIQI')" prop="createDate">
+        <el-table-column :label="$t('LK_CHUANGJIANRIQI')"
+                         prop="createDate">
         </el-table-column>
-        <el-table-column :label="$t('上次修改日期')" prop="updateDate">
+        <el-table-column :label="$t('上次修改日期')"
+                         prop="updateDate">
         </el-table-column>
         <el-table-column width="50">
           <template slot-scope="scope">
-            <div @click="handleStick(scope.row)" class="stickIcon">
-              <icon
-                v-if="scope.row.fileType === '方案' && scope.row.isTop"
-                name="iconliebiaoyizhiding"
-                class="iconliebiaoyizhiding"
-                symbol
-              />
-              <icon
-                v-else-if="scope.row.fileType === '方案' && !scope.row.isTop"
-                name="iconliebiaoweizhiding"
-                class="iconliebiaoweizhiding"
-                symbol
-              />
+            <div @click="handleStick(scope.row)"
+                 class="stickIcon">
+              <icon v-if="scope.row.fileType === '方案' && scope.row.isTop"
+                    name="iconliebiaoyizhiding"
+                    class="iconliebiaoyizhiding"
+                    symbol />
+              <icon v-else-if="scope.row.fileType === '方案' && !scope.row.isTop"
+                    name="iconliebiaoweizhiding"
+                    class="iconliebiaoweizhiding"
+                    symbol />
             </div>
           </template>
         </el-table-column>
       </el-table>
-      <iPagination
-        v-update
-        @size-change="handleSizeChange($event, getTableList)"
-        @current-change="handleCurrentChange($event, getTableList)"
-        background
-        :page-sizes="page.pageSizes"
-        :page-size="page.pageSize"
-        :layout="page.layout"
-        :current-page="page.currPage"
-        :total="page.totalCount"
-      />
+      <iPagination v-update
+                   @size-change="handleSizeChange($event, getTableList)"
+                   @current-change="handleCurrentChange($event, getTableList)"
+                   background
+                   :page-sizes="page.pageSizes"
+                   :page-size="page.pageSize"
+                   :layout="page.layout"
+                   :current-page="page.currPage"
+                   :total="page.totalCount" />
     </iCard>
     <!-- <preview :value="pre" @close="closePreView"></preview> -->
   </div>
@@ -190,10 +192,10 @@ export default {
     iNumIcon,
     // preview,
   },
-  data() {
+  data () {
     return {
       form: {},
-      rfqID: "220",
+      rfqID: '220',
       edit: false,
       tableListData: [],
       backUpData: [],
@@ -201,7 +203,8 @@ export default {
       pre: false,
     };
   },
-  mounted() {
+  mounted () {
+    console.log(this.$store.state.rfq)
     this.form = {
       ...this.form,
       rfq: this.rfqID,
@@ -210,10 +213,10 @@ export default {
     this.getTableList();
   },
   methods: {
-    closePreView(val) {
+    closePreView (val) {
       this.pre = val;
     },
-    indexMethod(e) {
+    indexMethod (e) {
       const rows = [];
       this.tableListData.forEach((r) => {
         rows.push(r.number);
@@ -225,7 +228,7 @@ export default {
       });
       return rows[e];
     },
-    initData() {
+    initData () {
       this.tableListData = [
         {
           id: 1,
@@ -270,14 +273,14 @@ export default {
         },
       ];
     },
-    handleSearchReset() {
+    handleSearchReset () {
       this.form = {
         rfq: this.rfqID,
       };
       this.getTableList();
     },
     //获取表格数据
-    getTableList() {
+    getTableList () {
       const params = {
         pageNo: this.page.currPage,
         pageSize: this.page.pageSize,
@@ -295,7 +298,7 @@ export default {
       });
     },
     //递归处理树结构数据的序号
-    handleTableNumber(data, suffix, prefix) {
+    handleTableNumber (data, suffix, prefix) {
       data.forEach((item) => {
         const number = prefix ? prefix + "." + suffix : suffix;
         item["number"] = number;
@@ -307,34 +310,45 @@ export default {
       });
     },
     // 点击编辑按钮
-    editBob() {
+    editBob () {
       if (!this.edit) this.backUpData = window._.cloneDeep(this.tableListData);
       else this.tableListData = window._.cloneDeep(this.backUpData);
       this.edit = !this.edit;
     },
-    newBob() {
-       const loading = this.$loading({
-          lock: true,
-          text: 'Loading',
-          spinner: 'el-icon-loading',
-          background: 'rgba(0, 0, 0, 0.7)'
+    newBob () {
+      const loading = this.$loading({
+        lock: true,
+        text: 'Loading',
+        spinner: 'el-icon-loading',
+        background: 'rgba(0, 0, 0, 0.7)'
+      });
+      if (this.rfqID) {
+        initIn({
+          rfqId: this.rfqID,
+        }).then((res) => {
+          this.$router.push({
+            path: "/sourcing/partsrfq/bobNew",
+            query: {
+              rfqId: res.data,
+              newBuild: true
+            },
+          });
+          loading.close()
+
         });
-      initIn({
-        rfqId: this.rfqID,
-      }).then((res) => {
+      } else {
         this.$router.push({
           path: "/sourcing/partsrfq/bobNew",
           query: {
-            rfqId: res.data,
-            newBuild:true
+            newBuild: true
           },
         });
-         loading.close()
-       
-      });
+        loading.close()
+      }
+
     },
     // 点击删除按钮
-    deleteBob() {
+    deleteBob () {
       if (!this.selection || this.selection.length == 0) {
         iMessage.error("请选中要删除的数据");
         return;
@@ -346,7 +360,7 @@ export default {
       });
     },
     //保存编辑
-    saveEdit() {
+    saveEdit () {
       let count = 0;
       this.tableListData.forEach((item) => {
         if (item.isDefault == "是") count++;
@@ -366,13 +380,13 @@ export default {
         }
       });
     },
-    handleSizeChange(e, fn) {},
-    handleCurrentChange(e, fn) {},
+    handleSizeChange (e, fn) { },
+    handleCurrentChange (e, fn) { },
     // 选中项发生改变
-    handleSelectionChange(val) {
+    handleSelectionChange (val) {
       this.selection = val;
     },
-    checkAll(currentSelect) {
+    checkAll (currentSelect) {
       const haschild = currentSelect.filter(
         (r) => r.reportList && r.reportList !== null && r.reportList.length > 0
       );
@@ -393,7 +407,7 @@ export default {
         this.$refs.multipleTable.clearSelection();
       }
     },
-    checkChildren(currentSelect, row) {
+    checkChildren (currentSelect, row) {
       let action = currentSelect.indexOf(row) !== -1 ? true : false;
       if (
         row.reportList &&
@@ -406,7 +420,7 @@ export default {
       }
     },
     // 点击置顶按钮
-    handleStick(val) {
+    handleStick (val) {
       const params = window._.cloneDeep(val);
       params.isTop = !val.isTop;
       fetchStaick(params).then((res) => {

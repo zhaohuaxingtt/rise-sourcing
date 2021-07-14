@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 11:38:57
- * @LastEditTime: 2021-07-08 16:55:51
+ * @LastEditTime: 2021-07-13 16:16:41
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails\table1.vue
@@ -12,50 +12,50 @@
       <div class="flex-between-center titleBox">
         <div>
           <span>待分配区域</span>
-          <span v-if="remark" class="margin-left40">{{ remark }}</span>
+          <span v-if="remark"
+                class="margin-left40">{{ remark }}</span>
         </div>
         <div>
           <iButton @click="groupBy">分组至</iButton>
         </div>
       </div>
     </template>
-    <el-tabs v-model="activeName" @tab-click="handleClick">
-      <el-tab-pane label="原材料/散件" name="first">
-        <el-table
-          ref="treeList"
-          :data="tableList.dataList"
-          :tree-props="{ hasChildren: 'hasChildren', children: 'children' }"
-          :row-key="getRowKey"
-          :expand-row-keys="expends"
-          v-loading="loading"
-          :max-height="maxHeight"
-          @selection-change="handleSelectionChange"
-          @row-click="rowClick"
-          @row-dblclick="rowDblclick"
-          @cell-dblclick="cellBbClick"
-          @cell-click="cellClick"
-          @header-click="headerClick"
-          @expand-change="expandChange"
-        >
+    <el-tabs v-model="activeName"
+             @tab-click="handleClick">
+      <el-tab-pane label="原材料/散件"
+                   name="rawUngrouped">
+        <el-table ref="treeList"
+                  v-if='activeName==="rawUngrouped"'
+                  :data="tableList.element"
+                  :tree-props="{ hasChildren: 'hasChildren', children: 'child' }"
+                  :row-key="getRowKey"
+                  :expand-row-keys="expends"
+                  v-loading="loading"
+                  :max-height="maxHeight"
+                  @selection-change="handleSelectionChange"
+                  @row-click="rowClick"
+                  @row-dblclick="rowDblclick"
+                  @cell-dblclick="cellBbClick"
+                  @cell-click="cellClick"
+                  @header-click="headerClick"
+                  @expand-change="expandChange">
           <!-- <el-table-column label="" prop="title" width="250"> </el-table-column> -->
-          <el-table-column
-            v-for="i in tableList.headerList"
-            :key="i.id"
-            :label="i.label"
-            :prop="i.prop"
-            :align="i.prop == 'title' ? 'left' : 'center'"
-            :width="i.prop == 'title' ? '200' : ''"
-            
-          >
-            <template v-if="i.children">
-              <el-table-column
-                v-for="item in i.children"
-                :key="item.id"
-                :label="item.label"
-                :prop="item.prop"
-                align="center"
-                :render-header="renderHeader"
-              >
+          <el-table-column v-for="i in tableList.title"
+                           :key="i.index"
+                           :label="i.title"
+                           :prop="i.label"
+                           :align="i.label == 'title' ? 'left' : 'center'"
+                           :width="i.label == 'title' ? '200' : ''">
+            <template v-if="i.child">
+              <el-table-column v-for="item in i.child"
+                               :key="item.index"
+                               :label="item.title"
+                               :prop="item.label"
+                               align="center">
+                <template slot="header"
+                          slot-scope="scope">
+                  <el-checkbox @change="check=>select(check,scope.column)"></el-checkbox>
+                </template>
               </el-table-column>
             </template>
             <!-- <template slot-scope="scope">
@@ -80,41 +80,40 @@
           </el-table-column>
         </el-table>
       </el-tab-pane>
-      <el-tab-pane label="制造费" name="second">
-        <el-table
-          ref="treeList1"
-          :data="tableList.dataList"
-          :tree-props="{ hasChildren: 'hasChildren', children: 'children' }"
-          :row-key="getRowKey"
-          :expand-row-keys="expends"
-          v-loading="loading"
-          :max-height="maxHeight"
-          @selection-change="handleSelectionChange"
-          @row-click="rowClick"
-          @row-dblclick="rowDblclick"
-          @cell-dblclick="cellBbClick"
-          @cell-click="cellClick"
-          @header-click="headerClick"
-          @expand-change="expandChange"
-        >
+      <el-tab-pane label="制造费"
+                   name="maUngrouped">
+        <el-table ref="treeList1"
+                  v-if='activeName==="maUngrouped"'
+                  :data="tableList.element"
+                  :tree-props="{ hasChildren: 'hasChildren', children: 'child' }"
+                  :row-key="getRowKey"
+                  :expand-row-keys="expends"
+                  v-loading="loading"
+                  :max-height="maxHeight"
+                  @selection-change="handleSelectionChange"
+                  @row-click="rowClick"
+                  @row-dblclick="rowDblclick"
+                  @cell-dblclick="cellBbClick"
+                  @cell-click="cellClick"
+                  @header-click="headerClick"
+                  @expand-change="expandChange">
           <!-- <el-table-column label="" prop="title" width="250"> </el-table-column> -->
-          <el-table-column
-            v-for="i in tableList.headerList"
-            :key="i.id"
-            :label="i.label"
-            :prop="i.prop"
-            :align="i.prop == 'title' ? 'left' : 'center'"
-            :width="i.prop == 'title' ? '200' : ''"
-          >
-            <template v-if="i.children">
-              <el-table-column
-                v-for="item in i.children"
-                :key="item.id"
-                :label="item.label"
-                :prop="item.prop"
-                align="center"
-                :render-header="renderHeader"
-              >
+          <el-table-column v-for="i in tableList.title"
+                           :key="i.index"
+                           :label="i.title"
+                           :prop="i.label"
+                           :align="i.label == 'title' ? 'left' : 'center'"
+                           :width="i.label == 'title' ? '200' : ''">
+            <template v-if="i.child">
+              <el-table-column v-for="item in i.child"
+                               :key="item.index"
+                               :label="item.title"
+                               :prop="item.label"
+                               align="center">
+                <template slot="header"
+                          slot-scope="scope">
+                  <el-checkbox @change="check=>select(check,scope.column)"></el-checkbox>
+                </template>
               </el-table-column>
             </template>
             <!-- <template slot-scope="scope">
@@ -145,7 +144,8 @@
 
 <script>
 import { iCard, iButton } from "rise";
-
+import { chargeRetrieve } from "@/api/partsrfq/bob";
+// import { set } from "vue/types/umd";
 export default {
   components: {
     iCard,
@@ -158,71 +158,53 @@ export default {
         return [];
       },
     },
-
-    tableList: {
-      type: Object,
-      default: function () {
-        return {};
-      },
-    },
+    // tableList: {
+    //   type: Object,
+    //   default: function () {
+    //     return {};
+    //   },
+    // },
   },
   computed: {
-    testing(val) {
+    testing (val) {
       return function (val) {
         if (val instanceof Array) {
           return true;
         }
       };
     },
-    checkClass(a, b, c) {
-      return function (a, b, c) {
-        const id = b.row.id;
-        let check = this.checkList.findIndex((item) => {
-          return item.index === c;
-        });
-        if (check > -1) {
-          switch (id) {
-            case "1-2-1":
-              return "top";
-            case "1-2-7":
-              return "bottom";
-            case "1-2":
-              return "nocolor";
-            default:
-              return "middle";
-          }
-        }
-        return "nocolor";
-      };
-    },
   },
-  mounted() {
-    this.$nextTick(() => {
-      // this.chargeRetrieve();
-      this.open();
-    });
+  mounted () {
+    setTimeout(() => {
+      this.$nextTick(() => {
+        this.chargeRetrieve(this.activeName);
+        // this.open();
+      });
+    }, 100);
   },
   watch: {
     expends: {
-      handler(val) {
+      handler (val) {
         if (val.length === 0)
           this.$refs.treeList.expandRowKeys = Array.from(val);
       },
     },
+    activeName: {
+      handler (val) {
+        this.chargeRetrieve(val);
+        this.$EventBus.$emit("activeName", val);
+      },
+    },
     // tableList: {
-    //   handler(val) {
-    //     let newArr = [];
-    //     val.dataList.forEach((value, index) => {
-    //       newArr[index] = value;
-    //       newArr[index].children = value.children.filter(
-    //         (item) => !item.isShow
-    //       );
-    //     });
+    //   handler (val) {
+    //     this.$set(this.tableList, 'title', val.title);
+    //     this.$set(this.tableList, 'element', val.element);
     //   },
-    //   immediate: true,
+    //   deep: true
     // },
+
   },
-  data() {
+  data () {
     return {
       checkList: [],
       auditData: [], //表格行内容数据
@@ -234,13 +216,17 @@ export default {
       checkOptionCount: [], //实时记录当前列 选中数量
       checkAll: [], //表头全选按钮 选中控制
       isIndeterminate: [], //表头 不确定状态控制
-      activeName: "first",
+      activeName: "rawUngrouped",
+      tableList: {},
+      flattenDeep: window._.flattenDeep,
+      result: [],
+      check: false
     };
   },
   methods: {
-    open() {
+    open () {
       let els = this.$el.getElementsByClassName("el-table__expand-icon");
-      if (this.tableList.dataList.length != 0 && els.length != 0) {
+      if (this.tableList.element.length != 0 && els.length != 0) {
         this.flag = false;
         this.flag1 = true;
         for (let j1 = 0; j1 < els.length; j1++) {
@@ -262,8 +248,8 @@ export default {
         }
       }
     },
-    close() {
-      if (this.tableList.dataList.length != 0) {
+    close () {
+      if (this.tableList.element.length != 0) {
         this.flag = true;
         this.flag1 = false;
         const elsopen = this.$el.getElementsByClassName(
@@ -278,13 +264,13 @@ export default {
         }
       }
     },
-    addclass(row) {
+    addclass (row) {
       var that = this;
       if (row.columnIndex == that.num) {
         return "addcss";
       }
     },
-    clickCol(a, b, c) {
+    clickCol (a, b, c) {
       const i = this.checkList.findIndex((item) => item.index == c);
 
       if (i > -1) this.checkList.splice(i, i + 1);
@@ -295,14 +281,28 @@ export default {
         });
       console.log("checkList", this.checkList);
     },
-
-    getRowKey(row) {
-      return row.id;
+    //获取表格数据
+    chargeRetrieve (type) {
+      chargeRetrieve({
+        schemaId: 135,
+        viewType: type,
+      })
+        .then((res) => {
+          this.tableList = res;
+          this.result = []
+          this.$nextTick(() => {
+            this.open();
+          });
+        })
+        .catch((err) => { });
     },
-    handleClick(val) {
+    getRowKey (row) {
+      return row.index;
+    },
+    handleClick (val) {
       // this.activeName = val;
     },
-    renderHeader(h, { column }) {
+    renderHeader (h, { column }) {
       return h("div", [
         h("el-checkbox", {
           // style: "display:inline-flex;margin-right:15px;",
@@ -314,9 +314,9 @@ export default {
       ]);
     },
     /** 是否勾选表头 */
-    select(col, checked) {
+    select (checked, col) {
       // 如果checked为true则是勾选了对应的表头
-      console.log(col, checked);
+      // console.log(col, checked);
       this.$nextTick(() => {
         const els = this.$el.getElementsByClassName(col.id);
         for (let i = 0; i < els.length; i++) {
@@ -326,43 +326,56 @@ export default {
             els[i].style.backgroundColor = "";
           }
         }
-
-        console.log(this.$el.getElementsByClassName(col.id));
+        if (checked) {
+          this.result.push(col.property.split('#')[1])
+        } else {
+          this.result.forEach((value, index, array) => {
+            if (value.indexOf(col.property.split('#')[1]) > -1) {
+              this.result.splice(index, 1)
+            }
+          })
+        }
         // this.$el.getElementsByClassName(col.id).style.backgroudColor = "#0EBADD";
       });
     },
-    rowClick(row, event, column) {
+
+
+
+
+
+
+    rowClick (row, event, column) {
       this.$emit("row-click", row, event, column);
     },
 
-    cellClick(row, column, cell, event) {
+    cellClick (row, column, cell, event) {
       console.log(row, column, cell);
       this.$emit("cell-click", row, column, cell, event);
     },
-    headerClick(column, event) {
-      console.log(column);
-    },
+    // headerClick (column, event) {
+    //   console.log(column);
+    // },
 
     // 格子双击事件
-    cellBbClick(row, column, cell, event) {
+    cellBbClick (row, column, cell, event) {
       this.$emit("cell-dblclick", row, column, cell, event);
     },
     // 行双击事件
-    rowDblclick(row, enent) {
+    rowDblclick (row, enent) {
       this.$emit("row-dblclick", row, enent);
     },
     // 行单击事件
-    handleSelectionChange(val) {
+    handleSelectionChange (val) {
       this.$emit("selection-change", val);
     },
-    expandChange(row, expanded) {
+    expandChange (row, expanded) {
       if (expanded.length > 0) {
         this.$emit("expand-change", row, expanded);
       }
       // console.log(row, expanded)
     },
-    groupBy() {
-      this.$emit("groupBy", true);
+    groupBy () {
+      this.$emit("groupBy", true, this.result, this.activeName);
     },
   },
 };
