@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-05-25 21:01:30
- * @LastEditTime: 2021-07-14 21:51:55
+ * @LastEditTime: 2021-07-14 21:52:26
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringTracking\components\data.js
@@ -154,7 +154,7 @@ export function buildTableData(data){
           element[key] = rateList.detailVOMap[key]
         }
       }
-      datas.push(Object.assign(element,{ep:'A',mq:'A',pl:'A'}))
+      datas.push(element)
     })
     return datas
   } catch (error) {
