@@ -114,7 +114,14 @@ export default {
       }
     },
     jump() {
-      window.open(`/#/sourcing/partsign/enquiryVersion?purchasingRequirementTargetId=${ this.data.purchasingRequirementTargetId }`, '_blank')
+      // window.open(`/#/sourcing/partsign/enquiryVersion?purchasingRequirementTargetId=${ this.data.purchasingRequirementTargetId }`, '_blank')
+      const route = this.$router.resolve({
+        path: "/sourcing/partsign/enquiryVersion",
+        query: {
+          purchasingRequirementTargetId: this.data.purchasingRequirementTargetId
+        }
+      })
+      window.open(route.href, "_blank")
     },
     handleSelectionChange(list) {
       this.multipleSelection = list
