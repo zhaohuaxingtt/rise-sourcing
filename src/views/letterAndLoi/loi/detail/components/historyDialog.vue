@@ -15,6 +15,7 @@
         <tableList
             class="table"
             index
+            :selection="false"
             :lang="true"
             :tableData="tableListData"
             :tableTitle="tableTitle"
