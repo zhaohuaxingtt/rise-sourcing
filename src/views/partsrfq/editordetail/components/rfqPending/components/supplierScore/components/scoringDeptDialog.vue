@@ -111,7 +111,7 @@ export default {
                   "right": [
                     {
                       nameZh: "姜谷兰",
-                      id: "52",
+                      id: "51",
                       tagName: "技术部门"
                     }
                   ]

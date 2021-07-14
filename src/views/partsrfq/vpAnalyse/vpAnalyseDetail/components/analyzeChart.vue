@@ -118,7 +118,8 @@
         <div class="itemBox">
           <!--          预计总产量-->
           <iLabel :label="$t('TPZS.YJZCL')" slot="label" class="labelWidth"></iLabel>
-          <iInput class="valueWidth" v-model="dataInfo.estimatedActualTotalPro"></iInput>
+          <iInput class="valueWidth" v-model="dataInfo.estimatedActualTotalPro" v-if="!disabledEstimatedActualTotalPro"></iInput>
+          <iText class="valueWidth" v-else>{{ dataInfo.estimatedActualTotalPro }}</iText>
         </div>
         <div class="itemBox">
           <div class="warpBox">
@@ -159,6 +160,10 @@ export default {
         return {};
       },
     },
+    disabledEstimatedActualTotalPro: {
+      type: Boolean,
+      default: false
+    }
   },
   computed: {
     dropPotentialTips() {
@@ -176,6 +181,9 @@ export default {
       =${this.additionalPriceReduction.totalPriceReduction}\\%\\;-（${this.additionalPriceReduction.priceReduction}\\%）\\\\\\\\
       =${this.additionalPriceReduction.result}\\%\\\\\\end{array}`;
     },
+  },
+  mounted() {
+    this.getMathematicalFormulaData()
   },
   data() {
     return {
@@ -257,13 +265,15 @@ export default {
   }
 
   .iconStyle {
+    width: 20px;
+    height: 20px;
     font-size: 20px;
   }
 
   .massProductionTime {
     text-align: center;
     position: absolute;
-    bottom: -66px;
+    bottom: -4.15rem;
     height: 80px;
     .iconColor {
       color: #ED7D31
@@ -273,7 +283,7 @@ export default {
   .achievementRate {
     text-align: center;
     position: absolute;
-    top: -57px;
+    top: -3.45rem;
     height: 80px;
 
     .iconColor {

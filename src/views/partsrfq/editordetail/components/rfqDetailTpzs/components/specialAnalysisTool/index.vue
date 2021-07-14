@@ -25,6 +25,7 @@ import VPIndex from '@/assets/images/VPIndex.png'
 import BoBIndex from '@/assets/images/BoBIndex.png'
 import TIAIndex from '@/assets/images/TIAIndex.png'
 import PCAIndex from '@/assets/images/PCAIndex.png'
+import soon from '@/assets/images/soon.png'
 
 export default {
   components: { card, iPage, enterSpecificAnalysisToolsDialog, iButton },
@@ -43,10 +44,10 @@ export default {
       if (param.isDefault) {
         switch (param.title) {
           case 'BoB(Best of Best)':
-            this.$router.push({ path: '/sourcing/partsrfq/bobNew', query: { chemeId: param.reportId } })
+            this.$router.push({ path: '/sourcing/partsrfq/bobNew', query: { chemeId: param.reportId, round: this.$route.query.round } })
             break;
           case 'Volume Pricing':
-            this.$router.push({ path: '/sourcing/partsrfq/vpAnalyseDetail', query: { type: 'edit', chemeId: param.reportId } })
+            this.$router.push({ path: '/sourcing/partsrfq/vpAnalyseDetail', query: { type: 'edit', chemeId: param.reportId, round: this.$route.query.round } })
             break;
           default:
             break;
@@ -66,7 +67,13 @@ export default {
       if (res.result) {
         this.viewModelDialog = false
         this.cardData = res.data
-        this.cardData.push({ title: 'PCA', analysisTotal: '', reportTotal: '', analysisLastUpdateDate: '', reportLastUpdateDate: '' }, { title: 'TIA', analysisTotal: '', reportTotal: '', analysisLastUpdateDate: '', reportLastUpdateDate: '' })
+        this.cardData.push(
+          { title: 'Pricing Index', analysisTotal: '', reportTotal: '', analysisLastUpdateDate: '', reportLastUpdateDate: '' },
+          { title: 'MEX', analysisTotal: '', reportTotal: '', analysisLastUpdateDate: '', reportLastUpdateDate: '' },
+          { title: 'PCA', analysisTotal: '', reportTotal: '', analysisLastUpdateDate: '', reportLastUpdateDate: '' },
+          { title: 'TIA', analysisTotal: '', reportTotal: '', analysisLastUpdateDate: '', reportLastUpdateDate: '' },
+          { title: 'Bid-Link', analysisTotal: '', reportTotal: '', analysisLastUpdateDate: '', reportLastUpdateDate: '' }
+        )
         this.cardData.map((item) => {
           if (!item.analysisTotal) {
             item.analysisTotal = ''
@@ -87,11 +94,21 @@ export default {
             case 'Volume Pricing':
               item.imgUrl = VPIndex
               break;
+            // 
+            case 'Pricing Index':
+              item.imgUrl = soon
+              break;
+            case 'MEX':
+              item.imgUrl = soon
+              break;
             case 'TIA':
               item.imgUrl = TIAIndex
               break;
             case 'PCA':
               item.imgUrl = PCAIndex
+              break;
+            case 'Bid-Link':
+              item.imgUrl = soon
               break;
             default:
               break;
