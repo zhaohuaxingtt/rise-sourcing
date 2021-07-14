@@ -1,37 +1,34 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 11:38:57
- * @LastEditTime: 2021-07-08 10:10:19
+ * @LastEditTime: 2021-07-13 19:18:45
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails\table1.vue
 -->
 <template>
   <div>
-    <el-table
-      ref="treeList"
-      :data="tableList.element"
-      :tree-props="{ hasChildren: 'hasChildren', children: 'child' }"
-      :row-key="getRowKey"
-      :expand-row-keys="expends"
-      v-loading="loading"
-      :max-height="maxHeight"
-      @selection-change="handleSelectionChange"
-      @row-click="rowClick"
-      @row-dblclick="rowDblclick"
-      @cell-dblclick="cellBbClick"
-      @cell-click="cellClick"
-      @expand-change="expandChange"
-    >
+    <el-table ref="treeList"
+              :data="tableList.element"
+              :tree-props="{ hasChildren: 'hasChildren', children: 'child' }"
+              :row-key="getRowKey"
+              :expand-row-keys="expends"
+              v-loading="loading"
+              :max-height="maxHeight"
+              @selection-change="handleSelectionChange"
+              @row-click="rowClick"
+              @row-dblclick="rowDblclick"
+              @cell-dblclick="cellBbClick"
+              @cell-click="cellClick"
+              @expand-change="expandChange">
       <!-- <el-table-column label="" prop="title" width="200"> </el-table-column> -->
-      <el-table-column
-        v-for="i in tableList.title"
-        :key="i.index"
-        :label="i.title"
-        :prop="i.label"
-        :align="i.label=='title'?'left':'center'"
-        :width="i.label=='title'?'220':''"
-      >
+      <el-table-column v-for="i in tableList.title"
+                       :key="i.index"
+                       :label="i.title"
+                       :prop="i.label"
+                       :align="i.label=='title'?'left':'center'"
+                       :width="i.label=='title'?'230':''"
+                       show-overflow-tooltip>
         <!-- <template>
           <el-table-column
             v-for="item in i.children"
@@ -45,19 +42,15 @@
         </template> -->
 
         <template slot-scope="scope">
-          <span v-if="testing(scope.row[i.label])" class=" scopeBox">
-            <span
-              v-for="(item,index) in scope.row[i.label]"
-              :key="index"
-              class="flexSpan"
-              >{{ item }}</span
-            >
+          <span v-if="testing(scope.row[i.label])"
+                class=" scopeBox">
+            <span v-for="(item,index) in scope.row[i.label]"
+                  :key="index"
+                  class="flexSpan">{{ item }}</span>
           </span>
-          <span v-else class="flex-center">
-            <span
-              class="flexSpan"
-              >{{ scope.row[i.label] }}</span
-            >
+          <span v-else
+                class="flex-center">
+            <span class="flexSpan">{{ scope.row[i.label] }}</span>
           </span>
         </template>
       </el-table-column>
@@ -83,7 +76,7 @@ export default {
     },
   },
   computed: {
-    testing(val) {
+    testing (val) {
       return function (val) {
         if (val instanceof Array) {
           return true;
@@ -93,30 +86,30 @@ export default {
   },
   watch: {
     expends: {
-      handler(val) {
+      handler (val) {
         if (val.length === 0)
           this.$refs.treeList.expandRowKeys = Array.from(val);
       },
     },
     "tableList.headerList": {
-      handler(val) {
+      handler (val) {
         this.$set(this.tableList, val);
       },
       immediate: true,
       deep: true,
     },
   },
-  mounted() {
-  
+  mounted () {
+
   },
-  data() {
+  data () {
     return {
       checkList: [],
       hasChildren: true,
     };
   },
   methods: {
-    objectSpanMethod({ row, column, rowIndex, columnIndex }) {
+    objectSpanMethod ({ row, column, rowIndex, columnIndex }) {
       if (rowIndex === 0) {
         if (columnIndex % 2 === 0) {
           return {
@@ -131,13 +124,13 @@ export default {
         }
       }
     },
-    addclass(row) {
+    addclass (row) {
       var that = this;
       if (row.columnIndex == that.num) {
         return "addcss";
       }
     },
-    checkClass(a, b, c) {
+    checkClass (a, b, c) {
       return function (a, b, c) {
         const id = b.row.id;
         let check = this.checkList.findIndex((item) => {
@@ -162,7 +155,7 @@ export default {
         return "nocolor";
       };
     },
-    clickCol(a, b, c) {
+    clickCol (a, b, c) {
       const i = this.checkList.findIndex((item) => item.index == c);
       if (i > -1) this.checkList.splice(i, i + 1);
       else
@@ -172,30 +165,30 @@ export default {
         });
     },
 
-    getRowKey(row) {
+    getRowKey (row) {
       return row.index;
     },
-    render(h, { column, $index }) {},
-    rowClick(row, event, column) {
+    render (h, { column, $index }) { },
+    rowClick (row, event, column) {
       this.$emit("row-click", row, event, column);
     },
 
-    cellClick(row, column, cell, event) {
+    cellClick (row, column, cell, event) {
       this.$emit("cell-click", row, column, cell, event);
     },
     // 格子双击事件
-    cellBbClick(row, column, cell, event) {
+    cellBbClick (row, column, cell, event) {
       this.$emit("cell-dblclick", row, column, cell, event);
     },
     // 行双击事件
-    rowDblclick(row, enent) {
+    rowDblclick (row, enent) {
       this.$emit("row-dblclick", row, enent);
     },
     // 行单击事件
-    handleSelectionChange(val) {
+    handleSelectionChange (val) {
       this.$emit("selection-change", val);
     },
-    expandChange(row, expanded) {
+    expandChange (row, expanded) {
       if (expanded.length > 0) {
         this.$emit("expand-change", row, expanded);
       }
@@ -230,13 +223,13 @@ export default {
   border: 1px solid blue;
   border-top: none;
 }
-.scopeBox{
+.scopeBox {
   display: flex;
-  justify-content:space-around;
+  justify-content: space-around;
   flex-direction: row;
   flex-wrap: nowrap;
 }
-.flexSpan{
+.flexSpan {
   padding: 0 10px;
 }
 </style>

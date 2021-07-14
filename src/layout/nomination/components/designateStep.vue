@@ -32,7 +32,7 @@
         <!-- 步骤栏 -->
         <div class="step-list flex-between-center-center margin-top30 margin-bottom30">
             <div class="step-list-item flex-center-center" v-for="(item,index) in applyStep" :key="'applyStep'+index">
-                <div :class="phaseType >=item.id ? 'click-item step-list-item' : 'step-list-item' " @click="toAnyNomiStep(item)">
+                <div :class="phaseType + 1 >=item.id ? 'click-item step-list-item' : 'step-list-item' " @click="toAnyNomiStep(item)">
                     <p class="step-icon-box">
                         <!-- 正在进行中 -->
                         <icon v-if="phaseType == item.id" symbol name="icondingdianguanlijiedian-jinhangzhong"  class="step-icon"></icon> 

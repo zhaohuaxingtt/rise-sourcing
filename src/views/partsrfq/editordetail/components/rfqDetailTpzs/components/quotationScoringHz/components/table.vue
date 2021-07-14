@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-28 15:03:47
- * @LastEditTime: 2021-07-12 14:43:41
+ * @LastEditTime: 2021-07-13 20:08:45
  * @LastEditors: Please set LastEditors
  * @Description: 特殊表格实现
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\table.vue
@@ -163,7 +163,7 @@ export default{
   },
   methods:{
     sortChangeTable({column, prop, order}){
-      this.$emit('sortChangeTabless',order)
+      this.$emit('sortChangeTabless',{prop:prop,props:order})
     },
     moment(date){
       return moment(date)

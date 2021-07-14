@@ -144,3 +144,12 @@ export function getloiList(data) {
       params,
     })
   }
+
+  export function getFileDownload(params) {
+    const {hostId,fileType} = params;
+    console.log(params);
+    return requestDownload({
+        url: `/fileDownload/${hostId}/${fileType}`,
+        method: "GET",
+    })
+  }

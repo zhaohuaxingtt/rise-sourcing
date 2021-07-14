@@ -90,7 +90,7 @@ export default {
       if (!!data) {
         this.carType = data.carType
       }
-      this.activityTabIndex='unSelect'
+      this.activityTabIndex = 'unSelect'
       this.tableLoading = true;
       try {
         const req = {
@@ -184,7 +184,7 @@ export default {
       const res = await saveCarParts(this.middleListData)
       this.resultMessage(res, () => {
         this.tableLoading = false
-        this.$router.push({ path: '/sourcing/partsrfq/vpAnalyseDetail', query: { type: 'add', batchNumber: res.data } })
+        this.$router.push({ path: '/sourcing/partsrfq/vpAnalyseDetail', query: { type: 'add', batchNumber: String(res.data) } })
       }, () => {
         this.tableLoading = false
       })
