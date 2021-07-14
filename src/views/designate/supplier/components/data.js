@@ -1,7 +1,7 @@
 /*
  * @Author: HaoJiang
  * @Date: 2021-05-20 14:29:09
- * @LastEditTime: 2021-07-12 22:59:30
+ * @LastEditTime: 2021-07-14 18:03:14
  * @LastEditors: Please set LastEditors
  * @Description: 定点表格信息
  *
@@ -124,7 +124,7 @@ export const singleSupplierTitle = [
   {
     props: 'fsnrGsnrNum',
     name: 'FS/GS/SP NO.',
-    key: '',
+    key: 'FS/GS/SP NO.',
     tooltip: false
   },
   {

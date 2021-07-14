@@ -1,3 +1,11 @@
+/*
+ * @Author: Luoshuang
+ * @Date: 2021-04-20 19:16:52
+ * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-07-14 19:25:55
+ * @Description: 
+ * @FilePath: \front-web\src\api\file\index.js
+ */
 import axios from '@/utils/axios.download'
 import { serialize } from '@/utils'
 
@@ -13,7 +21,7 @@ export function downloadFile(parmars) {
 
 export function downloadUdFile(params) {
     return fileRequst({
-        url: `/fileud/udDown?${ serialize(params.map(id => ({ fileIds: id })), Array) }`,
+        url: `/fileud/udDown?${ Array.isArray(params) ? serialize(params.map(id => ({ fileIds: id })), Array) : 'fileIds=' + params }`,
         method: 'POST'
     })
 }

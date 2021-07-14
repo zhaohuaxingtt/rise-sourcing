@@ -23,7 +23,7 @@
 </template>
 <script>
 import {iButton} from '@/components'
-import {uploadFile} from "@/api/file/upload";
+import {uploadUdFile as uploadFile} from "@/api/file/upload";
 
 export default {
   props: {
@@ -54,8 +54,12 @@ export default {
       formData.append('multipartFile', content.file)
       formData.append('applicationName', 'rise')
       this.loading = true
+
+      const params = {
+        multifile:content.file
+      }
       try {
-        const res = this.onHttpUploaded ? await this.onHttpUploaded(formData,content) : await uploadFile(formData)
+        const res = this.onHttpUploaded ? await this.onHttpUploaded(formData,content) : await uploadFile(params)
         this.$emit('on-success', {
           data: (res && res.data && res.data[0]) || {} ,
           file: content.file || {}
