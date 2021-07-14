@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-26 13:54:01
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-14 10:26:04
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-07-14 14:29:47
  * @Description: 创建RFQ界面
        配件：选择的配件需要是分配了询价采购员的且是同一个询价采购员, 创建时能选择LINIE
        附件：选择的附件需要时分配了LINIE且为同一个LINIE, 创建时不能再选择LINIE
@@ -95,6 +95,7 @@ import {
   dictkey,
 } from "@/api/partsprocure/editordetail";
 import { uniq } from 'lodash'
+import {partProjTypes} from '@/config'
 export default {
   mixins: [pageMixins],
   components: { iPage, topComponents, iCard, iFormGroup, iFormItem, iText, iButton, iInput, iSelect, iPagination, tableList, addAccessoryPartDialog, updateFactoryDialog, addFileDialog, capacityPlanningDialog },
@@ -103,6 +104,8 @@ export default {
   },
   data() {
     return {
+      // 零件项目类型
+      partProjTypes,
       basicInfo,
       detailData: {},
       // tableTitle: tableTitle,
@@ -344,7 +347,7 @@ export default {
               stuffName: item.stuffName, // 工艺组name，还没有
               purchasePrjectId: item.purchasingProjectId,
               partNameZh: item.partNameZh,
-              partPrejectType: 'PT18',
+              partPrejectType: partProjTypes.FUJIAN,
             }
           }),
           userId: this.$store.state.permission.userInfo.id
