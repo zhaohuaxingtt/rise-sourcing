@@ -24,9 +24,7 @@ import { iCard, iButton, } from "rise";
 import * as pbi from 'powerbi-client';
 import remarkDialog from "./remarkDialog.vue";
 import { getRfqToRemark, getRfqSupplierAndCategory, powerBiUrl } from "@/api/partsrfq/negotiateBasicInfor/negotiateBasicInfor.js";
-import { items } from '../../../../../../../partsprocure/editordetail/components/drawingSheet/data';
 
-// import pie from "./pie";
 export default {
   components: { iCard, iButton, remarkDialog },
   data() {

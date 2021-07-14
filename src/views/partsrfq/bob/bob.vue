@@ -330,7 +330,7 @@ export default {
       })
       if (this.entryStatus === 1) {
         initIn({
-          rfqId: this.rfqID,
+          rfqId: this.form.rfq,
         }).then((res) => {
           this.$router.push({
             path: '/sourcing/partsrfq/bobNew',

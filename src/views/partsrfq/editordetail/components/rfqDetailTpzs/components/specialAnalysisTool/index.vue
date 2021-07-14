@@ -8,7 +8,7 @@
 <template>
   <div>
     <enterSpecificAnalysisToolsDialog @getDataList='getDataList' v-model="viewModelDialog" />
-    <el-row :gutter="16" class="margin-top30">
+    <el-row :gutter="16">
       <el-col v-for="(item,index) in cardData" :key="index" :span="12">
         <card @click.native="entrance(item)" :cardData="item" />
       </el-col>
