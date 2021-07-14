@@ -7,7 +7,12 @@
           <iSelect
             v-model="form.singleReason"
             :placeholder="language('LK_QINGXUANZE','请选择')"
+            clearable
           >
+            <el-option
+              value=""
+              :label="language('all','全部') | capitalizeFilter"
+            ></el-option>
             <el-option
               :value="items.label"
               :label="items.label"
@@ -21,7 +26,12 @@
           <iSelect
             v-model="form.department"
             :placeholder="language('LK_QINGXUANZE','请选择')"
+            clearable
           >
+            <el-option
+              value=""
+              :label="language('all','全部') | capitalizeFilter"
+            ></el-option>
             <el-option
               :value="items.value"
               :label="items.value"
