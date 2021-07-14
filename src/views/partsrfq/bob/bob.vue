@@ -203,7 +203,8 @@ export default {
     //初始化查询数据
     initSearchData() {
       const data = this.$store.state.rfq.rfqId
-      if(data) this.rfqStatus = true
+      const status = this.$store.state.rfq.entryStatus
+      if(data && status == 0) this.rfqStatus = true
       this.form = {
         ...this.form,
         rfq: data
