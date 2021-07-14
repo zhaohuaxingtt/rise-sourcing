@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-26 11:16:51
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-07-14 14:19:44
+ * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-07-14 14:56:45
  * @Description: 配件综合管理页面
  * @FilePath: \front-web\src\views\accessoryPart\integratedManage\index.vue
 -->
@@ -634,7 +634,7 @@ export default {
         iMessage.warn(this.language('QINGXUANZEXIANGTONGGONGYIZUDEPEIJIAN','请选择相同工艺组的配件'))
         return
       } if (!selectStuffId[0]) {
-        iMessage.warn(this.language('QINGXUANZEYIFENPEIGONGYIZUDEPEIJIAN','请选择已分配工艺组的配件'))
+        iMessage.warn(this.language('GAIGONGYINGSHANGBUZAIGONGYIZUBDLNEI','该供应商不在工艺组BDL内，请与EPS确认'))
         return
       }
       this.selectLinieDept = selectLINIEDept[0]
