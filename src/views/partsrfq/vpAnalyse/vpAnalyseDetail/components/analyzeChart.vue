@@ -2,7 +2,7 @@
   <div>
     <div class="chartBox">
       <div class="supplyingTime">
-        <div>{{ dataInfo.supplyBeginTime }}</div>
+        <div>{{ dataInfo.supplyBeginTime ? moment(dataInfo.supplyBeginTime).format("YYYY-MM") : '' }}</div>
         <!--        供货起始时间-->
         <div>{{ $t('TPZS.GHQSSJ') }}</div>
       </div>
@@ -19,7 +19,7 @@
         <icon symbol name="iconVP-jihuazongchanliang" class="iconStyle margin-top6"/>
       </div>
       <div class="supplyingEndTime">
-        <div>{{ dataInfo.supplyEndTime }}</div>
+        <div>{{ dataInfo.supplyEndTime ? moment(dataInfo.supplyEndTime).format("YYYY-MM") : '' }}</div>
         <!--        供货结束时间-->
         <div>{{ $t('TPZS.GHJSSJ') }}</div>
       </div>
@@ -143,6 +143,7 @@
 
 <script>
 import {icon, iInput, iLabel, iText} from 'rise';
+import moment from 'moment'
 import VueKatex from 'vue-katex';
 import 'katex/dist/katex.min.css';
 
@@ -207,6 +208,9 @@ export default {
     };
   },
   methods: {
+    moment(date){
+      return moment(date)
+    },
     getMathematicalFormulaData() {
       this.achievementRate = this.dataInfo.achievementRate ? this.dataInfo.achievementRate : '';
       this.massProductionTimeRate = this.dataInfo.massProductionRatio ? this.dataInfo.massProductionRatio : '';
@@ -219,7 +223,7 @@ export default {
             : '',
         fixedCost: this.dataInfo.costProportion ? this.dataInfo.costProportion : '',
         result: this.dataInfo.reductionPotential ? this.dataInfo.reductionPotential : '',
-        costReductionUnitPrice: this.dataInfo.costReductionPrice ? this.dataInfo.costReductionPrice : '',
+        costReductionUnitPrice: this.dataInfo.costReductionPrice ? this.dataInfo.costReductionPrice : 0,
       };
       this.additionalPriceReduction = {
         totalPriceReduction: this.dataInfo.totalPriceReduction ? this.dataInfo.totalPriceReduction : '',

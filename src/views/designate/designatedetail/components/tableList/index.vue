@@ -2,7 +2,7 @@
  * @Descripttion: 
  * @Author: Luoshuang
  * @Date: 2021-05-21 14:30:41
- * @LastEditTime: 2021-07-12 18:21:55
+ * @LastEditTime: 2021-07-14 16:43:02
 -->
 <template>
   <el-table ref="multipleTable" fit tooltip-effect='light' :height="height" :data='tableData' v-loading='tableLoading' @selection-change="handleSelectionChange" :empty-text="language('ZANWUSHUJU', '暂无数据')" >
@@ -67,7 +67,7 @@
         <template v-if="$scopedSlots[items.props] || $slots[items.props]" v-slot="scope">
           <slot :name="items.props" :row="scope.row"></slot>
         </template>
-        <template slot-scope="scope">
+        <template v-else slot-scope="scope">
           <!----------------------------附件综合管理-创建RFQ-产能计划列-------------------------------->
           <span v-if="items.props === 'channeng'" class="openLinkText cursor" @click="$emit('openPlan', scope.row)">编辑</span>
           <!----------------------------附件综合管理-附件列-------------------------------->
@@ -93,7 +93,7 @@
             <template slot-scope="scope">
               <!----------------------------备注列-------------------------------->
               <span v-if="childItem.props === 'beizhu'" class="openLinkText cursor">查看</span>
-              <span v-else-if="childItem.type === 'rate'">{{getRate(scope.row, childItem.props).rate}}</span>
+              <span v-else-if="childItem.type === 'rate'">{{getRate(scope.row, childItem.props).partSupplierRate}}</span>
               <icon v-if="childItem.type === 'rate' && getRate(scope.row, childItem.props).partSupplierRate === 0" symbol class="cursor" name='icontishi-cheng' style="margin-left:8px" @click.native="$emit('openDialog', scope.row)"></icon>
             </template>
           </el-table-column>
@@ -128,7 +128,7 @@ export default{
   inject:['vm'],
   methods:{
     getRate(row, props) {
-      const findItem = row.departmentRate.find(item => item.rateDepart === props)
+      const findItem = row.departmentRate?.find(item => item.rateDepart === props)
       return findItem || {}
     },
     handleAttachmentDonwload(row) {

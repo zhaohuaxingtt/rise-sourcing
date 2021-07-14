@@ -3,7 +3,7 @@
     <div class="margin-bottom20 clearFloat">
       <span class="font18 font-weight" v-if="pageType === 'PCA'">{{ $t('TPZS.PCAZONGLAN') }}</span>
       <span class="font18 font-weight" v-else-if="pageType === 'TIA'">{{ $t('TPZS.TIAZONGLAN') }}</span>
-      <!--      <div class="floatright">
+<!--            <div class="floatright">
               <template v-if="!tableStatus">
                 &lt;!&ndash;编辑&ndash;&gt;
                 <iButton @click="handleEdit">{{ $t('LK_BIANJI') }}</iButton>
@@ -58,7 +58,7 @@
 </template>
 
 <script>
-import {iCard, iPagination, icon} from 'rise';
+import {iCard, iPagination, icon, iButton} from 'rise';
 import tableList from '@/components/ws3/commonTable';
 import {pageMixins} from '@/utils/pageMixins';
 import resultMessageMixin from '@/utils/resultMessageMixin';
@@ -74,6 +74,7 @@ export default {
     iPagination,
     icon,
     previewDialog,
+    iButton
   },
   props: {
     pageType: {

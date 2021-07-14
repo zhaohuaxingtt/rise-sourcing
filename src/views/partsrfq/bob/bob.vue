@@ -189,11 +189,13 @@ export default {
   data () {
     return {
       form: {},
-      rfqID: null,
+      rfqID: '220',
       edit: false,
       tableListData: [],
       backUpData: [],
       selection: [],
+      //进入状态 1内部 2外部
+      entryStatus: this.$store.state.rfq.entryStatus,
       pre: false,
       defaultData: [
         { value: '是', label: this.$t('nominationLanguage.Yes') },
@@ -212,7 +214,8 @@ export default {
     //初始化查询数据
     initSearchData () {
       const data = this.$store.state.rfq.rfqId
-      if (data) this.rfqStatus = true
+      const status = this.$store.state.rfq.entryStatus
+      if(data && status == 1) this.rfqStatus = true
       this.form = {
         ...this.form,
         rfq: data
@@ -325,17 +328,29 @@ export default {
         spinner: 'el-icon-loading',
         background: 'rgba(0, 0, 0, 0.7)',
       })
-      initIn({
-        rfqId: this.form.rfq,
-      }).then((res) => {
-        this.$router.push({
-          path: '/sourcing/partsrfq/bobNew',
-          query: {
-            newBuild: true,
-          },
+      if (this.entryStatus === 1) {
+        initIn({
+          rfqId: this.form.rfq,
+        }).then((res) => {
+          this.$router.push({
+            path: '/sourcing/partsrfq/bobNew',
+            query: {
+              rfqId:res.data,
+              newBuild: true,
+            },
+          })
+          loading.close()
         })
-        loading.close()
-      })
+      }else{
+          this.$router.push({
+            path: '/sourcing/partsrfq/bobNew',
+            query: {
+              newBuild: true,
+            },
+          })
+          loading.close()
+      }
+
     },
     // 点击删除按钮
     deleteBob () {

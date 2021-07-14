@@ -109,7 +109,7 @@
                 :file-list="fileList">
               <iButton :disabled="!currentVersion">{{ $t('上传清单') }}</iButton>
             </Upload>
-            <iButton :disabled="!currentVersion" @click="hanldeDownload">{{$t('下载清单')}}</iButton>
+            <iButton @click="hanldeDownload">{{$t('下载清单')}}</iButton>
             <iButton :disabled="!currentVersion" @click="sendToAdmin">{{$t('发送项目采购员')}}</iButton>
           </div>
         </div>

@@ -152,6 +152,7 @@
 import { iMessageBox } from '../../../../../components';
 import { pageMixins } from '@/utils/pageMixins'
 import { applyCFTarget, getCfTargetApplyHistory, getTargetPriceDd, savePriceDetail } from '@/api/financialTargetPrice/index'
+import {partProjTypes} from '@/config'
 import { cloneDeep } from 'lodash'
 	export default {
 		components: {
@@ -176,7 +177,7 @@ import { cloneDeep } from 'lodash'
 		watch: {
 			partProjectType: {
 				handler(val) {
-					if (val === 'PT19' || val === 'PT04') {
+					if (val === partProjTypes.DBYICHIXINGCAIGOU || val === partProjTypes.DBLINGJIAN) {
 						this.targetprice = {
 							...this.targetprice,
 							cfTargetPriceDetail: {
@@ -191,6 +192,8 @@ import { cloneDeep } from 'lodash'
 		},
 		data() {
 			return {
+				// 零件项目类型
+				partProjTypes,
 				tableLoading: false,
 				selectTableData: [],
 				tableListData: [],
