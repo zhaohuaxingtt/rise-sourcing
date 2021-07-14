@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-26 14:48:50
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-13 20:49:37
+ * @LastEditTime: 2021-07-14 09:39:31
  * @Description: 添加配件弹窗
  * @FilePath: \front-web\src\views\accessoryPart\createRfq\components\addAccessoryPart.vue
 -->
@@ -174,7 +174,7 @@ export default {
     getDictionary(optionName, optionType) {
       getDictByCode(optionType).then(res => {
         if(res?.result) {
-          this.selectOptions[optionName] = res.data[0].subDictResultVo.map(item => {
+          this.selectOptions[optionName] = res.data[0]?.subDictResultVo.map(item => {
             return { value: item.code, label: item.name }
           })
         }
