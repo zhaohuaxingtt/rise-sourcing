@@ -213,7 +213,7 @@ export default {
     initSearchData () {
       const data = this.$store.state.rfq.rfqId
       const status = this.$store.state.rfq.entryStatus
-      if(data && status == 0) this.rfqStatus = true
+      if(data && status == 1) this.rfqStatus = true
       this.form = {
         ...this.form,
         rfq: data
