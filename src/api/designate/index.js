@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-05-28 17:30:52
- * @LastEditTime: 2021-07-02 15:19:52
+ * @LastEditTime: 2021-07-14 20:02:25
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\api\designate\index.js
@@ -149,5 +149,14 @@ export function tabPageLayoutsReset(nominateId) {
   return requst({
       url: `tabPageLayouts/findTabPageInitStatus?nominateId=${nominateId}`,
       method: "GET",
+  })
+}
+
+// 决策资料-RS - 导出
+export function rsAttachExport(data) {
+  return requst({
+      url: "/rs/downCapacityExpRs",
+      method: "POST",
+      data,
   })
 }
