@@ -1,7 +1,7 @@
 /*
  * @Author: haojiang
  * @Date: 2021-02-24 14:28:34
- * @LastEditTime: 2021-06-26 23:00:37
+ * @LastEditTime: 2021-07-14 18:08:41
  * @LastEditors: Please set LastEditors
  * @Description: 针对所有的分页插件，实行方法混入。
  * @FilePath: \rise\src\utils\attachMixins.js
@@ -91,7 +91,7 @@ export const attachMixins = {
     // 上传成功回调，配合@/components/Upload 食用
     onUploadsucess(data, callback) {
       console.log(data)
-      if (!data.data.fileName && !data.data.filePath) {
+      if (!data.data.name && !data.data.path) {
         this.tableLoading = false
         // 上传发生错误，oss无文件名，路径返回
         iMessage.error(this.language('strategicdoc_ShangChuanFaShengCuoWu','上传发生错误，请稍后重试'))
@@ -104,10 +104,11 @@ export const attachMixins = {
         hostId: data.hostId || this.$store.getters.nomiAppId || '',
         fileCode: data.fileCode || '0',
         // 文件内容🇭相关
-        fileName: data.data.fileName || '',
-        filePath: data.data.filePath || '',
+        fileName: data.data.name || '',
+        filePath: data.data.path || '',
         fileSize: data.file.size || 0,
-        size: data.file.size || 0
+        size: data.file.size || 0,
+        uploadId:data.data.id,
       }
       console.log(params, data)
       uploadfile(params).then(res => {
