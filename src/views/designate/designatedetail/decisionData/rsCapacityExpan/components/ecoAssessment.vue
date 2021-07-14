@@ -1,7 +1,7 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-07-07 16:53:18
- * @LastEditTime: 2021-07-09 10:28:37
+ * @LastEditTime: 2021-07-14 17:43:27
  * @LastEditors: Please set LastEditors
  * @Description: Economic Assessment
  * @FilePath: /front-web/src/views/designate/designatedetail/decisionData/rsCapacityExpan/components/ecoAssessment.vue
@@ -43,6 +43,11 @@
             align='center'
             prop="nomiSuggestAPrice"
             label="New A Price[RMB]">
+          </el-table-column>
+          <el-table-column
+            align='center'
+            prop="nomiSuggestBPrice"
+            label="New B Price[RMB]">
           </el-table-column>
           <el-table-column
             align='center'
@@ -112,11 +117,11 @@ export default {
   },
   methods: {
     getCellClass({columnIndex}) {
-      return (columnIndex === 0 || columnIndex === 4) ? 'pin' : ''
+      return (columnIndex === 0 || columnIndex === 5) ? 'pin' : ''
     },
     getHeaderCellClass({columnIndex}) {
-      if (columnIndex === 4) return 'yearHeader'
-      if (columnIndex === 5) return 'yearValueHeader'
+      if (columnIndex === 5) return 'yearHeader'
+      if (columnIndex === 6) return 'yearValueHeader'
     },
     async getFetchData() {
       // const res = require('./ecoassessment.json')

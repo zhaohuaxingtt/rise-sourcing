@@ -9,6 +9,12 @@
     </div>
     <div class="body">
       <tableList index :height="controlHeight ? '91%' : '100%'" v-show="visible" class="table margin-top20" :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="loading" :lang="true" @handleSelectionChange="handleSelectionChange">
+        <template #partProjectType="scope">
+          <span>{{scope.row.partProjectType && scope.row.partProjectType.desc ? scope.row.partProjectType.desc : scope.row.partProjectType}}</span>
+        </template>
+        <template #partStatus="scope">
+          <span>{{scope.row.partStatus && scope.row.partStatus.desc ? scope.row.partStatus.desc : scope.row.partStatus}}</span>
+        </template>
         <!-- <template #isTop="scope">
           <a class="link-underline" v-if="scope.row.isTop">
             <icon symbol name="iconliebiaoyizhiding" class="icon" />
@@ -36,7 +42,7 @@
 
 <script>
 import { iPagination, iDialog, iMessage, iButton, icon } from '@/components'
-import tableList from './tableList'
+import tableList from "@/views/designate/supplier/components/tableList";
 import { partTitle as tableTitle, mokeSingleSupplierData } from './data'
 import { pageMixins } from '@/utils/pageMixins'
 import filters from '@/utils/filters'
