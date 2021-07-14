@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2021-07-14 14:39:58
+ * @LastEditTime: 2021-07-14 15:10:33
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\editordetail\index.vue
@@ -413,24 +413,28 @@ import {partProjTypes, BKMROLETAGID} from '@/config'
 				* @return {*}
 				*/
 			currentSupplierButton:function(){
-				return (this.detailData.partProjectType == "PT11" || this.detailData.partProjectType == "PT10") && this.detailData.fsnrGsnrNum
+				return (this.detailData.partProjectType == partProjTypes.GSLINGJIAN || this.detailData.partProjectType == partProjTypes.GSCOMMONSOURCING) && this.detailData.fsnrGsnrNum
 			},
 			isAssembly() {
 				return this.detailData.partType === "A"
 			},
-			// 根据角色控制零件项目类型下拉值
-			partProjectTypeArray() {
+			// 是否只是BKM角色
+			isBKM() {
 				// 扩产能的角色值，由CF提供
 				const BKMID = BKMROLETAGID
 				// 获取用户角色列表
 				const tagList = (this.userInfo && this.userInfo.tagList) || []
 				// 该用户只是BKM人员
 				const isBKM = tagList.find(o => o.id === BKMID) && tagList.length === 1
-				let types = this.fromGroup.PART_PROJECT_TYPE || []
+				return isBKM
+			},
+			// 根据角色控制零件项目类型下拉值
+			partProjectTypeArray() {
+				const types = this.fromGroup.PART_PROJECT_TYPE || []
 				// 获取扩产能下拉
 				let BKMITEM = types.find(o => o.code === partProjTypes.KUOCHANNENG)
 				BKMITEM = BKMITEM ? [BKMITEM] : []
-				return isBKM ? BKMITEM : types
+				return this.isBKM ? BKMITEM : types
 			}
 		},
 		data() {
@@ -719,7 +723,7 @@ import {partProjTypes, BKMROLETAGID} from '@/config'
 				* @return {*}
 				*/
 			fsProjectTypeAnIscommonSroucing(callBack){
-				if((!this.detailData.isCommonSourcing) && this.detailData.partProjectType == "PT09"){
+				if((!this.detailData.isCommonSourcing) && this.detailData.partProjectType == partProjTypes.FSCOMMONSOURCING){
 					iMessageBox(this.language('SPIRNT11COMMONSS','当前零件采购项目类型与commonSourcing为[否]不统一，是否继续？')).then(res=>{
 						callBack()
 					})

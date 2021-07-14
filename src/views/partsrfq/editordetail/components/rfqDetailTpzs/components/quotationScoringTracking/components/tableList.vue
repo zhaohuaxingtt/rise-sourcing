@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-26 19:14:39
- * @LastEditTime: 2021-07-12 14:43:10
+ * @LastEditTime: 2021-07-14 16:13:11
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringTracking\components\tableList.vue
@@ -14,7 +14,7 @@
         <!--------------------------------------------------------->
         <!------------------------ep模块---------------------------->
         <!--------------------------------------------------------->
-        <el-table-column v-if='item.props == "ep"' :key="index" align="center" :label="item.key ? $t(item.key) : item.name" :prop="item.props" :show-overflow-tooltip="item.tooltip" :width="item.width">
+        <el-table-column v-if='item.props == "ep"' :key="index" align="center" :label="item.key ? $t(item.key) : item.name" :prop="item.props" :show-overflow-tooltip="item.tooltip">
           <template slot="header" slot-scope="scope">
               <div class="mineTile">{{scope.column.label}} <span class="line" :style='`height:${height}px;`'></span></div> 
           </template>
@@ -28,18 +28,18 @@
             </span>
           </template>
         </el-table-column>
-        <el-table-column v-if='item.props == "mq" || item.props == "pl"' :key="index" :label="item.key ? $t(item.key) : item.name" :prop="item.props" :show-overflow-tooltip="item.tooltip" :width="item.width" align="center">
+        <el-table-column v-if='item.props == "mq" || item.props == "pl"' :key="index" :label="item.key ? $t(item.key) : item.name" :prop="item.props" :show-overflow-tooltip="item.tooltip" align="center">
           <template slot-scope="scope">
             <!-- <span>{{scope.row[item.props]?scope.row[item.props].rate:""}}</span> -->
             <span>{{scope.row[item.props]}}</span>
           </template>
         </el-table-column>
-        <el-table-column v-if="item.props == 'supplierName'" :key="index" :label="item.key ? $t(item.key) : item.name" :prop="item.props" :show-overflow-tooltip="item.tooltip" :width="item.width" align="center">
+        <el-table-column v-if="item.props == 'supplierName'" :key="index" :label="item.key ? $t(item.key) : item.name" :prop="item.props" :show-overflow-tooltip="item.tooltip" :width="200" align="center">
           <template slot-scope="scope">
             {{scope.row[item.props]?scope.row[item.props]:"-"}}
           </template>
         </el-table-column>
-        <el-table-column v-if="(item.props+'').indexOf('round') > -1" :key="index" align="center" :label="item.key ? $t(item.key) : item.name" :prop="item.props" :show-overflow-tooltip="item.tooltip" :width="item.width">
+        <el-table-column v-if="(item.props+'').indexOf('round') > -1" :key="index" align="center" :label="item.key ? $t(item.key) : item.name" :prop="item.props" :show-overflow-tooltip="item.tooltip" :width="160">
           <template slot="header">
             <el-tooltip effect="light">
               <template slot="content">
