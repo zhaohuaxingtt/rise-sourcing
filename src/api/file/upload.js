@@ -1,6 +1,7 @@
 import axios from '@/utils/axios'
 
 const requst = axios(process.env.VUE_APP_COMMON)
+const fileRequst = axios(process.env.VUE_APP_NEW_COMMON)
 
 export function uploadFile(parmars) {
     return requst({
@@ -16,5 +17,13 @@ export function downloadFiles(params) {
         url: `/download`,
         method: 'GET',
         params
+    })
+}
+
+export function uploadUdFile(params) {
+    return fileRequst({
+        url: `/fileud/udMutilfilesController`,
+        method: 'POST',
+        data: params
     })
 }
