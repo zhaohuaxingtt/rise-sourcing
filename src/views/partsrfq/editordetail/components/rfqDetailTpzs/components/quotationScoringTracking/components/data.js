@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-05-25 21:01:30
- * @LastEditTime: 2021-06-12 15:21:11
+ * @LastEditTime: 2021-07-14 18:42:38
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringTracking\components\data.js
@@ -148,12 +148,12 @@ export function buildTableData(data){
       for(let key in element.detailVOMap){
         element[key] = element.detailVOMap[key]
       }
-      // const rateList = data.rateDepartInfoVOS.find(e=>e.supplierId == element.supplierId)
-      // if(rateList){
-      //   for(let key in rateList.detailVOMap){
-      //     element[key] = rateList.detailVOMap[key]
-      //   }
-      // }
+      const rateList = data.rateDepartInfoVOS.find(e=>e.supplierId == element.supplierId)
+      if(rateList){
+        for(let key in rateList.detailVOMap){
+          element[key] = rateList.detailVOMap[key]
+        }
+      }
       datas.push(Object.assign(element,{ep:'A',mq:'A',pl:'A'}))
     })
     return datas
