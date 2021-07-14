@@ -327,7 +327,7 @@ export default {
     onBatchEdit(form) {
       this.selectSingleData.forEach(item => {
         Object.keys(form).forEach(key => {
-          Vue.set(item, key, form[key])
+          form[key] && (Vue.set(item, key, form[key]))
         })
       })
     },
