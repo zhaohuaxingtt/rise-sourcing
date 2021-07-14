@@ -51,6 +51,7 @@ import {
 import tableList from "@/views/partsign/editordetail/components/tableList"
 import { letterHistoryTitle } from '../../../data'
 import { pageMixins } from "@/utils/pageMixins"
+import { downloadUdFile as downloadFile } from '@/api/file'
 import {
   getHistoryLetter,
 } from '@/api/letterAndLoi/letter'
@@ -108,6 +109,12 @@ export default {
           }).catch((err)=>{
             this.loading = false;
           })
+        },
+
+        // 下载附件
+        async downloadLine(row){
+           const params = [row.uploadId]
+          await downloadFile(params);
         },
     }
 }
