@@ -1,8 +1,8 @@
 @font-face {
   font-family: "iconfont"; /* Project id 2285260 */
-  src: url('iconfont.woff2?t=1625190634625') format('woff2'),
-       url('iconfont.woff?t=1625190634625') format('woff'),
-       url('iconfont.ttf?t=1625190634625') format('truetype');
+  src: url('iconfont.woff2?t=1626228516483') format('woff2'),
+       url('iconfont.woff?t=1626228516483') format('woff'),
+       url('iconfont.ttf?t=1626228516483') format('truetype');
 }
 
 .iconfont {
@@ -11,6 +11,70 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.iconCPARTbiaoji:before {
+  content: "\e6ca";
+}
+
+.iconmorentouxiang:before {
+  content: "\e6c9";
+}
+
+.iconlingjianshanchu:before {
+  content: "\e6c8";
+}
+
+.iconlingjiantianlan:before {
+  content: "\e6c3";
+}
+
+.iconlingjianzi:before {
+  content: "\e6c4";
+}
+
+.iconlingjianju:before {
+  content: "\e6c5";
+}
+
+.iconlingjianlan:before {
+  content: "\e6c6";
+}
+
+.iconlingjianlv:before {
+  content: "\e6c7";
+}
+
+.icona-Icon-Arrowshouqi:before {
+  content: "\e6c2";
+}
+
+.icona-Icon-ArrowDropDown:before {
+  content: "\e6c1";
+}
+
+.iconhuiyix:before {
+  content: "\e6c0";
+}
+
+.iconxiaoxi-hui:before {
+  content: "\e6bb";
+}
+
+.icontongzhi-lan:before {
+  content: "\e6bc";
+}
+
+.iconyiti:before {
+  content: "\e6bd";
+}
+
+.iconxiaoxi-lan:before {
+  content: "\e6be";
+}
+
+.icontongzhi-hui:before {
+  content: "\e6bf";
 }
 
 .iconshangqidazhong:before {
