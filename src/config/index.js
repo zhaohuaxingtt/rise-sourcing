@@ -1,14 +1,14 @@
 /*
  * @Author: your name
  * @Date: 2021-07-14 11:46:46
- * @LastEditTime: 2021-07-14 13:41:51
+ * @LastEditTime: 2021-07-14 14:39:22
  * @LastEditors: Please set LastEditors
  * @Description: 配置
  * @FilePath: /front-web/src/config/index.js
  */
 
 // 零件项目类型
-export const partProjectType = {
+export const partProjTypes = {
   // DB零件一次性采购
   DBLINGJIANYICIXCAIGOU: '50005000',
   // DB一次性采购（PT19）
@@ -35,7 +35,7 @@ export const partProjectType = {
   ZHANGJIALINGJIAN: '50001150',
   // CKD零件
   CKDLINGJIAN: '1000008',
-  // DB零件（PT20）
+  // DB零件（PT04）
   DBLINGJIAN: '1000009',
   // FS小零件（PT05）
   FSXIAOLINGJIAN: '1000001',
@@ -62,3 +62,6 @@ export const partProjectType = {
   // 附件（PT18）
   FUJIAN: '1000061'
 }
+
+// 扩产能角色tag id，cf提供
+export const BKMROLETAGID = 122
