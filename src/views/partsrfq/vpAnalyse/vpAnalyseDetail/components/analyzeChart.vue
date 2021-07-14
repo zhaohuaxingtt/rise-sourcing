@@ -208,6 +208,9 @@ export default {
     };
   },
   methods: {
+    moment(date){
+      return moment(date)
+    },
     getMathematicalFormulaData() {
       this.achievementRate = this.dataInfo.achievementRate ? this.dataInfo.achievementRate : '';
       this.massProductionTimeRate = this.dataInfo.massProductionRatio ? this.dataInfo.massProductionRatio : '';
