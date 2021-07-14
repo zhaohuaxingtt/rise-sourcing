@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:17:25
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-07-14 14:25:29
+ * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-07-14 17:31:50
  * @Description: 上会/备案RS单
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\rs\components\meeting\index.vue
 -->
@@ -116,17 +116,17 @@ export default {
   },
   computed: {
     rightTitle() {
-      if ([partProjTypes.GSLINGJIAN,partProjTypes.DBLINGJIAN,partProjTypes.DBYICHIXINGCAIGOU,partProjTypes.PEIJIAN,partProjTypes.FUJIAN].includes(this.projectType)) {
+      if ([partProjTypes.GSLINGJIAN,partProjTypes.GSCOMMONSOURCING,partProjTypes.DBLINGJIAN,partProjTypes.DBYICHIXINGCAIGOU,partProjTypes.PEIJIAN,partProjTypes.FUJIAN].includes(this.projectType)) {
         return gsDetailTitleBlue
       }
-      return nomalDetailTitleBlue
+      return gsDetailTitleBlue
     },
     tableTitle() {
       if (this.projectType === partProjTypes.PEIJIAN) {
         return sparePartTableTitle
       } else if (this.projectType === partProjTypes.FUJIAN) {
         return accessoryTableTitle
-      } else if (this.projectType === partProjTypes.GSLINGJIAN) { //GS零件
+      } else if (this.projectType === partProjTypes.GSLINGJIAN || this.projectType === partProjTypes.GSCOMMONSOURCING) { //GS零件
         return gsTableTitle
       } else if (this.projectType === partProjTypes.DBLINGJIAN || this.projectType === partProjTypes.DBYICHIXINGCAIGOU) { //DB零件,DB一次性采购
         return dbTableTitle

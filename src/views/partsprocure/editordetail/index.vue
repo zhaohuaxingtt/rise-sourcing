@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2021-07-14 15:10:33
+ * @LastEditTime: 2021-07-14 17:21:24
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\editordetail\index.vue
@@ -243,6 +243,7 @@
 							<!--------预设值会有一个联动，如果 为是  零件采购项目类型是fs commonsourcing  如果是否，则是fs零件 ps:和设计刘洋沟通前端不做联动，仅仅在数据初始化时做----------> 
 							<!--------预设置联动第二版：如果零件采购项目为FS common sourcing，但是否common sourcing选择否，则在保存/生成FS号时提示采购员：“[零件采购项目]与[是否common sourcing]不统一，请确认是否继续”---->
 							<iSelect v-model="detailData.isCommonSourcing"
+								:disabled='canSelectCommonSourcing'
 								v-permission="PARTSPROCURE_EDITORDETAIL_COMMONSOURCING">
 								<el-option :value="true" label="是"></el-option>
 								<el-option :value="false" label="否"></el-option>
@@ -435,6 +436,15 @@ import {partProjTypes, BKMROLETAGID} from '@/config'
 				let BKMITEM = types.find(o => o.code === partProjTypes.KUOCHANNENG)
 				BKMITEM = BKMITEM ? [BKMITEM] : []
 				return this.isBKM ? BKMITEM : types
+			},
+   /**
+    * @description: 是否可以选择commonSourcing的逻辑。如果当前用户更改零件采购系项目类型为 fsCommonSourcing gsCommonSourcing fs零件 GS零件 FS总成件  其他零件不能选择
+    * @param {*}
+    * @return {*}
+    */
+			canSelectCommonSourcing(){
+				const userSelectProjectCode = this.detailData.partProjectType
+				return !(userSelectProjectCode == this.partProjTypes.GSCOMMONSOURCING || userSelectProjectCode == this.partProjTypes.FSCOMMONSOURCING || userSelectProjectCode == this.partProjTypes.FSXIAOLINGJIAN || userSelectProjectCode == this.partProjTypes.GSLINGJIAN || userSelectProjectCode == this.partProjTypes.FSZONGCHENGJIAN) 
 			}
 		},
 		data() {
@@ -599,6 +609,9 @@ import {partProjTypes, BKMROLETAGID} from '@/config'
 			},
 			saveFn(){
 				this.fsProjectTypeAnIscommonSroucing(this.save)
+				//刷新零件产量逻辑。1.如果当前零件是gs零件 则sop时间用户是可以自己选择的。一旦选择过后零件产量里面的开始时间。后端得重新默认一个
+				//所以需要刷新一下零件产量页签
+				this.updateTabs()
 			},
 			//修改详情。
 			save(val) {
@@ -704,7 +717,12 @@ import {partProjTypes, BKMROLETAGID} from '@/config'
 					"_blank"
 				);
 			},
-			// 更新页签
+
+   /**
+    * @description: 更新零件产量计划页签。为sop时间更新过后做方法铺垫。
+    * @param {*}
+    * @return {*}
+    */
 			updateTabs() {
 				this.$refs.outputPlan.getData();
 				this.$refs.outputRecord.getData();
@@ -723,7 +741,7 @@ import {partProjTypes, BKMROLETAGID} from '@/config'
 				* @return {*}
 				*/
 			fsProjectTypeAnIscommonSroucing(callBack){
-				if((!this.detailData.isCommonSourcing) && this.detailData.partProjectType == partProjTypes.FSCOMMONSOURCING){
+				if((!this.detailData.isCommonSourcing) && (this.detailData.partProjectType == partProjTypes.FSCOMMONSOURCING || this.detailData.partProjectType == partProjTypes.GSCOMMONSOURCING)){
 					iMessageBox(this.language('SPIRNT11COMMONSS','当前零件采购项目类型与commonSourcing为[否]不统一，是否继续？')).then(res=>{
 						callBack()
 					})
