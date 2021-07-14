@@ -27,9 +27,9 @@
               <i slot="suffix" class="el-input__icon el-icon-search" @click="sure"></i>
             </iInput>
           </el-form-item>
-          <el-form-item :label="language('LK_MOJUSHUXIN','模具属性')">
+          <el-form-item :label="$t('LK_MOJUSHUXIN')">
             <iSelect
-                :placeholder="language('LK_QINGXUANZE','请选择')"
+                :placeholder="$t('LK_QINGXUANZE')"
                 v-model="mouldAttr"
                 filterable
                 clearable
@@ -46,9 +46,9 @@
             <!--              <i slot="suffix" class="el-input__icon el-icon-search" @click="sure"></i>-->
             <!--            </iInput>-->
           </el-form-item>
-          <el-form-item :label="language('LK_ZHUANYEKESHI','专业科室')">
+          <el-form-item :label="$t('LK_ZHUANYEKESHI')">
             <iSelect
-                :placeholder="language('LK_QINGXUANZE','请选择')"
+                :placeholder="$t('LK_QINGXUANZE')"
                 v-model="professionalDepartments"
                 filterable
                 clearable
@@ -189,7 +189,9 @@ export default {
     addList() {
       if (this.multipleSelection.length == 0) {
         return iMessage.warn(
-            this.language( 'LK_QINGXIANGOUXUAN',"请先勾选")
+            this.$t(
+                "请先勾选"
+            )
         );
       }
       this.tableLoading = true

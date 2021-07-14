@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-26 19:46:16
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-25 14:00:18
+ * @LastEditTime: 2021-07-13 20:50:56
  * @Description: 添加附件弹窗
  * @FilePath: \front-web\src\views\accessoryPart\createRfq\components\addFile.vue
 -->
@@ -76,6 +76,14 @@ export default {
     }
   },
   methods: {
+    reset() {
+      this.searchParams = {}
+      this.sure()
+    },
+    sure() {
+      this.page.currPage = 1
+      this.getTableList()
+    },
     /**
      * @Description: 获取表格数据
      * @Author: Luoshuang
@@ -156,11 +164,11 @@ export default {
   }
   ::v-deep .el-dialog {
     margin-top: 30px !important;
-    height: 90%;
-    .el-dialog__body {
-      height: calc(100% - 70px);
-      overflow: auto;
-    }
+    // height: 90%;
+    // .el-dialog__body {
+    //   height: calc(100% - 70px);
+    //   overflow: auto;
+    // }
   }
 }
 </style>

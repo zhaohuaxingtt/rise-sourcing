@@ -1,19 +1,19 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-22 16:16:26
- * @LastEditTime: 2021-07-12 10:29:12
+ * @LastEditTime: 2021-07-13 17:32:57
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\supplierscore\components\rfqdetail\components\supplierScore\components\score\index.vue
 -->
 <template>
-  <iCard class="score" :title="language('GONGYINGSHANGPINGFEN', '供应商评分')">
+  <iCard class="score" :title="language('LK_GONGYINGSHANGPINGFEN', '供应商评分')">
     <template #header-control>
       <div v-if="!editStatus">
-        <iButton @click="forwardDialogVisible = true">{{ language("ZHUANPAI", "转派") }}</iButton>
+        <iButton @click="forwardDialogVisible = true">{{ language("LK_ZHUANPAI", "转派") }}</iButton>
         <iButton :loading="backLoading" @click="handleBack">{{ language("TUIHUIZHICAIGOUYUAN", "退回至采购员") }}</iButton>
         <iButton @click="editStatus = true">{{ language("BIANJI", "编辑") }}</iButton>
-        <iButton :loading="submitLoading" @click="handleSubmit">{{ language("TIJIAO", "提交") }}</iButton>
+        <iButton :loading="submitLoading" @click="handleSubmit">{{ language("LK_TIJIAO", "提交") }}</iButton>
         <iButton :loading="approveLoading" @click="handleApprove">{{ language("PIZHUN", "批准") }}</iButton>
         <iButton @click="handleReject">{{ language("JUJUE", "拒绝") }}</iButton>
       </div>
@@ -61,8 +61,8 @@
                 <span v-else>{{ scope.row.confirmCycle }}</span>
               </template>
               <template v-else-if="item.props === 'remark'" v-slot="scope">
-                <span v-if="editStatus" class="link-underline" @click="editRemark(scope.row)">{{ language("BIANJI", "编辑") }}</span>
-                <span v-else class="link-underline" @click="editRemark(scope.row)">{{ language("CHAKAN", "查看") }}</span>
+                <span v-if="scope.row.memo" class="link-underline" @click="editRemark(scope.row)">{{ language("CHAKAN", "查看") }}</span>
+                <span v-else class="link-underline" @click="editRemark(scope.row)">{{ language("BIANJI", "编辑") }}</span>
               </template>
               <template v-else v-slot="scope">
                 <span>{{ scope.row[item.props] }}</span>
@@ -72,9 +72,9 @@
         </template>
       </el-table>
     </div>
-    <forwardDialog ref="forwardDialog" :visible.sync="forwardDialogVisible" @confirm="confirmForward" />
+    <forwardDialog ref="forwardDialog" :visible.sync="forwardDialogVisible" @confirm="confirmForward" :userDeptType="userDeptType" />
     <rejectDialog ref="rejectDialog" :visible.sync="rejectDialogVisible" @confirm="confirmReject" />
-    <remarkDialog ref="remarkDialog" :visible.sync="remarkDialogVisible" :data="currentRow.memo" :disabled="!editStatus" @confirm="confirmRemark" @cancel="currentRow = {}" />
+    <remarkDialog ref="remarkDialog" :visible.sync="remarkDialogVisible" :data="currentRow.memo" @confirm="confirmRemark" @cancel="currentRow = {}" />
   </iCard>
 </template>
 
@@ -86,7 +86,7 @@ import remarkDialog from "@/views/supplierscore/components/remarkDialog"
 import { pageMixins } from "@/utils/pageMixins"
 import { scoreTableTitle as tableTitle, deptScoreTableTitle } from "../data"
 import { cloneDeep, isEqual } from "lodash"
-import { getRfqBdlRatingsByCurrentDept, forward, backRfqBdlRatings, submitRfqBdlRatings, approveRfqBdlRatings, rejectRfqBdlRatings, updateRfqBdlRatings, updateRfqBdlRatingMemo } from "@/api/supplierscore"
+import { getRfqBdlRatingsByCurrentDept, forward, backRfqBdlRatings, submitRfqBdlRatings, approveRfqBdlRatings, rejectRfqBdlRatings, updateRfqBdlRatings, updateRfqBdlRatingMemo, findRateTagForCurrentUser } from "@/api/supplierscore"
 
 export default {
   components: {
@@ -123,9 +123,18 @@ export default {
       approveLoading: false,
       rejectDialogVisible: false,
       saveLoading: false,
+      userDeptType: ""
     }
   },
   methods: {
+    findRateTagForCurrentUser() {
+      findRateTagForCurrentUser()
+      .then(res => {
+        if (res.code == 200 && res.data) {
+          this.userDeptType = res.data
+        }
+      })
+    },
     getRfqBdlRatingsByCurrentDept() {
       this.loading = true
       getRfqBdlRatingsByCurrentDept({

@@ -60,7 +60,7 @@ import {iCard, iButton, iPagination, iMessage} from "@/components";
 import tablelist from 'pages/partsrfq/components/tablelist'
 import {timePlanableTitle} from "./data";
 import {pageMixins} from "@/utils/pageMixins";
-import {getRfqDataList, editRfqData} from "@/api/partsrfq/home";
+import {getTimePlanList, saveTimePlanList} from "@/api/partsrfq/home";
 import {excelExport} from "@/utils/filedowLoad";
 import store from '@/store'
 import {rfqCommonFunMixins} from "pages/partsrfq/components/commonFun";
@@ -93,19 +93,24 @@ export default {
       if (id) {
         this.tableLoading = true;
         const req = {
-          otherInfoPackage: {
-            findType: '07',
-            rfqId: id,
-            current: this.page.currPage,
-            size: this.page.pageSize,
-          }
+          rfqId: id,
+          pageNo: this.page.currPage,
+          pageSize: this.page.pageSize,
         }
         try {
-          const res = await getRfqDataList(req)
-          this.tableListData = res.data.timePlanVO.timePlanVOList;
-          this.page.currPage = res.data.timePlanVO.pageNum
-          this.page.pageSize = res.data.timePlanVO.pageSize
-          this.page.totalCount = res.data.timePlanVO.total
+          const res = await getTimePlanList(req)
+          if (res.result) {
+            this.tableListData = res.data
+            this.page.currPage = res.pageNum
+            this.page.pageSize = res.pageSize
+            this.page.totalCount = res.total
+          } else {
+            this.tableListData = []
+            this.page.totalCount = 0
+            this.page.currPage = 1
+            iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
+          }
+          
           this.tableLoading = false;
         } catch {
           this.tableLoading = false;
@@ -118,24 +123,26 @@ export default {
     },
     edit() {
       this.editStatus = true
-      this.inputProps = ['svwFirst', 'svwRequestEm', 'svwRequestOts']
+      this.inputProps = ['svwRequeseFirstTestMode', 'svwRequestEm', 'svwRequestOts']
       this.reRenderTable()
     },
     async save() {
-      const reqList = this.tableListData.map(item => {
-        return {
-          userId: store.state.permission.userInfo.id,
-          id: item.id,
-          svwFirst: Number(item.svwFirst) ? Number(item.svwFirst) : 0,
-          svwRequestEm: Number(item.svwRequestEm) ? Number(item.svwRequestEm) : 0,
-          svwRequestOts: Number(item.svwRequestOts) ? Number(item.svwRequestOts) : 0,
-        }
-      })
       const req = {
-        updateTimePlanPackage: reqList
+        updateTimePlanPackage: this.tableListData.map(item => {
+          return {
+            ...item,
+            svwRequeseFirstTestMode: Number(item.svwRequeseFirstTestMode) ? Number(item.svwRequeseFirstTestMode) : 0,
+            svwRequestEm: Number(item.svwRequestEm) ? Number(item.svwRequestEm) : 0,
+            svwRequestOts: Number(item.svwRequestOts) ? Number(item.svwRequestOts) : 0,
+          }
+        })
       }
-      const res = await editRfqData(req)
-      this.resultMessage(res)
+      const res = await saveTimePlanList(req)
+      if (res.result) {
+        iMessage.success(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
+      } else {
+        iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
+      }
       this.editStatus = false
       this.inputProps = []
       this.reRenderTable()
@@ -145,6 +152,7 @@ export default {
       this.editStatus = false
       this.inputProps = []
       this.reRenderTable()
+      this.getTableList()
     },
     reRenderTable() {
       this.showTable = false

@@ -32,7 +32,7 @@
         <!-- 步骤栏 -->
         <div class="step-list flex-between-center-center margin-top30 margin-bottom30">
             <div class="step-list-item flex-center-center" v-for="(item,index) in applyStep" :key="'applyStep'+index">
-                <div :class="phaseType >=item.id ? 'click-item step-list-item' : 'step-list-item' ">
+                <div :class="phaseType + 1 >=item.id ? 'click-item step-list-item' : 'step-list-item' " @click="toAnyNomiStep(item)">
                     <p class="step-icon-box">
                         <!-- 正在进行中 -->
                         <icon v-if="phaseType == item.id" symbol name="icondingdianguanlijiedian-jinhangzhong"  class="step-icon"></icon> 
@@ -149,6 +149,25 @@ export default {
         }
     },
     methods:{
+        // 跳转到任何已完成的定点步骤
+        toAnyNomiStep(item) {
+            console.log(item, this.phaseType)
+            const id = item.id
+            const path = item.path
+            // 不允许跳转到未开始的步骤
+            if (id > this.phaseType + 1) return
+            // 合理的跳转到下一步
+            if (id === this.phaseType + 1) {
+                this.toNextStep()
+                return
+            }
+            // 已完成的步骤随便跳
+            const query = Object.assign(this.$route.query, {route: 'force'})
+            this.$router.push({
+                path,
+                query
+            })
+        },
         getApplyType() {
             getNominateType().then(res => {
                 if (res?.result) {
@@ -494,9 +513,9 @@ export default {
                 height: 36px;
             }
             .click-item{
-                // &:hover{
-                //     cursor: pointer;
-                // }
+                &:hover{
+                    cursor: pointer;
+                }
             }
             .step-between-icon{
                 width: 100%;

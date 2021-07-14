@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:17:25
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-10 09:56:31
+ * @LastEditTime: 2021-07-14 17:31:50
  * @Description: 上会/备案RS单
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\rs\components\meeting\index.vue
 -->
@@ -42,7 +42,7 @@
           <p v-for="(item,index) in remarkItem" :key="index">{{item.value}}</p>
         </div>
       </div>
-      <div v-if="projectType === 'PT04' || projectType === 'PT19'" style="text-align:right;">汇率：Exchange rate: 1{{basicData.currency}}={{basicData.cfExchangeRate}}RMB</div>
+      <div v-if="projectType === partProjTypes.DBLINGJIAN || projectType === partProjTypes.DBYICHIXINGCAIGOU" style="text-align:right;">汇率：Exchange rate: 1{{basicData.currency}}={{basicData.cfExchangeRate}}RMB</div>
     </iCard>
     <iCard v-if="!isPreview && !showSignatureForm" :title="language('SHANGHUIBEIZHU','上会备注')" class="margin-top20">
       <iButton slot="header-control" @click="handleSaveRemarks" :loading="saveLoading">{{language('BAOCUN','保存')}}</iButton>
@@ -85,6 +85,7 @@ import { iCard, iButton, iInput, icon, iMessage } from 'rise'
 import { nomalDetailTitle, nomalDetailTitleBlue, nomalTableTitle, meetingRemark, checkList, gsDetailTitleBlue, gsTableTitle,sparePartTableTitle,accessoryTableTitle,prototypeTitleList,dbTableTitle } from './data'
 import tableList from '@/views/designate/designatedetail/components/tableList'
 import { getList, getRemark, updateRemark,getPrototypeList, getDepartApproval } from '@/api/designate/decisiondata/rs'
+import {partProjTypes} from '@/config'
 export default {
   props: {
     isPreview: {type:Boolean, default:false},
@@ -95,6 +96,8 @@ export default {
   components: { iCard, tableList, iButton, iInput, icon },
   data() {
     return {
+      // 零件项目类型
+      partProjTypes,
       remarks: {},
       leftTitle: nomalDetailTitle,
       // rightTitle: nomalDetailTitleBlue,
@@ -113,27 +116,27 @@ export default {
   },
   computed: {
     rightTitle() {
-      if (['PT11','PT04','PT19','PT17','PT18'].includes(this.projectType)) {
+      if ([partProjTypes.GSLINGJIAN,partProjTypes.GSCOMMONSOURCING,partProjTypes.DBLINGJIAN,partProjTypes.DBYICHIXINGCAIGOU,partProjTypes.PEIJIAN,partProjTypes.FUJIAN].includes(this.projectType)) {
         return gsDetailTitleBlue
       }
-      return nomalDetailTitleBlue
+      return gsDetailTitleBlue
     },
     tableTitle() {
-      if (this.projectType === 'PT17') {
+      if (this.projectType === partProjTypes.PEIJIAN) {
         return sparePartTableTitle
-      } else if (this.projectType === 'PT18') {
+      } else if (this.projectType === partProjTypes.FUJIAN) {
         return accessoryTableTitle
-      } else if (this.projectType === 'PT11') { //GS零件
+      } else if (this.projectType === partProjTypes.GSLINGJIAN || this.projectType === partProjTypes.GSCOMMONSOURCING) { //GS零件
         return gsTableTitle
-      } else if (this.projectType === 'PT04' || this.projectType === 'PT19') { //DB零件,DB一次性采购
+      } else if (this.projectType === partProjTypes.DBLINGJIAN || this.projectType === partProjTypes.DBYICHIXINGCAIGOU) { //DB零件,DB一次性采购
         return dbTableTitle
       }
       return nomalTableTitle
     },
     cardTitle() {
-      if (this.projectType === 'PT17') {
+      if (this.projectType === partProjTypes.PEIJIAN) {
         return '配件采购 CSC Nomination Recommendation - Spare Part Purchasing'
-      } else if (this.projectType === 'PT18') {
+      } else if (this.projectType === partProjTypes.FUJIAN) {
         return '附件采购 CSC Nomination Recommendation – Accessory Purchasing'
       }
       return '生产采购 CSC Nomination Recommendation - Production Purchasing'
@@ -142,7 +145,7 @@ export default {
       return this.remarkItem.map(item => item.value).join('\n')
     }
   },
-  created(){this.getPrototypeList()},
+  // created(){this.getPrototypeList()},
   methods: {
     /**
      * @Description: 获取部门审批记录
@@ -166,7 +169,7 @@ export default {
      * @return {*}
      */
     getPrototypeList(){
-      getPrototypeList(this.$route.query.desinateId).then(res=>{
+      getPrototypeList(this.nominateId).then(res=>{
           this.PrototypeList = res.data.list || res.data.getQuotationSampleVOList || []
       }).catch(err=>{
         console.warn(err)
@@ -223,6 +226,7 @@ export default {
       this.getTopList()
       this.getRemark()
       this.getDepartApproval()
+      this.getPrototypeList()
     },
     /**
      * @Description: 获取表格初始数据

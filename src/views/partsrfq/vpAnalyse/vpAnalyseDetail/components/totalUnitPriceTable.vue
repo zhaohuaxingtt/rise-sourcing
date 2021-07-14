@@ -187,6 +187,9 @@ export default {
       fiexedApportionedNum: '',
     };
   },
+  created() {
+    this.getTableList()
+  },
   methods: {
     handleSelectionChange(val) {
       this.selectTableData = val;

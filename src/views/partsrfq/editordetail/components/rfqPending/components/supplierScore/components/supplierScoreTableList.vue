@@ -7,7 +7,7 @@
 <template>
   <el-table :height="height" :data='tableData' :empty-text="language('LK_ZANWUSHUJU','暂无数据')" v-loading='tableLoading'
             @selection-change="handleSelectionChange">
-    <el-table-column v-if="selection" type='selection' width="50" align='center'></el-table-column>
+    <el-table-column v-if="selection" type='selection' width="56" align='center'></el-table-column>
     <!--    <el-table-column v-if='index' type='index' width='50' align='center' label='#'></el-table-column>-->
     <template v-for="(items,index) in tableTitle">
       <template v-if="items.list && Array.isArray(items.list)">

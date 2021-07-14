@@ -2,14 +2,14 @@
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:18:01
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-07-12 14:41:11
+ * @LastEditTime: 2021-07-14 14:24:54
  * @Description: 流转RS单
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\rs\components\circulation\index.vue
 -->
 
 <template>
   <div :class="isPreview && 'isPreview'">
-    <iCard v-if="projectType === 'PT17' || projectType === 'PT18'" :title="'CSC推荐表/CSC Recommendation Sheet会外流转'">
+    <iCard v-if="projectType === partProjTypes.PEIJIAN || projectType === partProjTypes.FUJIAN" :title="'CSC推荐表/CSC Recommendation Sheet会外流转'">
       <iFormGroup row="4" class="csc">
         <div class="col">
           <iFormItem v-for="(item,index) in titleData" :key="'titleData'+index"  :label="item.label+':'">
@@ -49,6 +49,8 @@ import { nomalTableTitle, checkList } from './data'
 import tableList from '@/views/designate/designatedetail/components/tableList'
 import { getList, getRemark, updateRemark } from '@/api/designate/decisiondata/rs'
 import { cloneDeep } from "lodash"
+import {partProjTypes} from '@/config'
+
 export default {
   components: { iCard, tableList, iButton, iInput, iFormGroup, iFormItem, iText },
   props: {
@@ -58,6 +60,8 @@ export default {
   },
   data() {
     return {
+      // 零件项目类型
+      partProjTypes,
       titleData:[
         {label:'零件关系',value:'配件', props: ''},
         {label:'询价采购员',value:'胡伟', props: ''},
@@ -78,9 +82,9 @@ export default {
   },
   computed: {
     cardTitle() {
-      if (this.projectType === 'PT17') {
+      if (this.projectType === partProjTypes.PEIJIAN) {
         return '配件采购 Nomination Recommendation - Spare Part Purchasing'
-      } else if (this.projectType === 'PT18') {
+      } else if (this.projectType === partProjTypes.FUJIAN) {
         return '附件采购 Nomination Recommendation – Accessory Purchasing'
       }
       return '生产采购 Nomination Recommendation - Production Purchasing'

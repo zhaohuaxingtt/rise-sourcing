@@ -12,7 +12,7 @@ export const tableTitle = [
     { props: 'id', name: 'RFQ编号', key: 'RFQBIANHAO', tooltip: false, width:80 },
     { props: 'rfqName', name: 'RFQ名称', key: 'RFQMINGCHENG', tooltip: true, width: 100 },
     { props: 'rfqType', name: 'RFQ类型', key: 'RFQLEIXING', tooltip: false },
-    { props: 'carType', name: '车型项目', key: 'CHEXINGXIANGMU', tooltip: true, width: 120 },
+    // { props: 'carType', name: '车型项目', key: 'CHEXINGXIANGMU', tooltip: true, width: 120 },
     { props: 'createDate', name: '创建日期', key: 'CHUANGJIANRIQI', tooltip: false,width:100 },
     { props: 'currentRounds', name: '当前轮次', key: 'DANGQIANLUNCI', tooltip: false },
     { props: 'suppliers', name: '已询价供应商', key: 'YIXUNJIAGONGYINGSHANG', tooltip: false,width:100 },

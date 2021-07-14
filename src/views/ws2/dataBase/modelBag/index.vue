@@ -252,7 +252,7 @@ export default {
             this.page.totalCount = res.data.total;
             this.tableListData = res.data.records.map((item, index) => {
               item.index = index
-              item.nomiAmountTotal = this.getTousandNum(Number(item.nomiAmountTotal).toFixed(2))
+              item.nomiAmountTotal = item.nomiAmountTotal != null ? this.getTousandNum(item.nomiAmountTotal.toFixed(2)) : ''
               let start = item.hisPartsList.length
               item.hisPartsList = item.hisPartsList.map(a => {
                 a.nomiAmount = this.getTousandNum(Number(a.nomiAmount).toFixed(2))

@@ -65,6 +65,7 @@
 	import {
   pageMixins
 } from "@/utils/pageMixins";
+	import {partProjTypes} from '@/config'
 	export default {
 		mixins: [pageMixins],
 		components: {
@@ -87,7 +88,7 @@
 		watch: {
 			applyPriceShow(val) {
 				if (val) {
-					if (this.handleSelectArr[0] && (this.handleSelectArr[0].partProjectType === 'PT19' || this.handleSelectArr[0].partProjectType === 'PT04')) {
+					if (this.handleSelectArr[0] && (this.handleSelectArr[0].partProjectType === partProjTypes.DBYICHIXINGCAIGOU || this.handleSelectArr[0].partProjectType === partProjTypes.DBLINGJIAN)) {
 						this.targetprice = {
 							...this.targetprice,
 							cfTargetPriceDetail: {
@@ -101,6 +102,8 @@
 		},
 		data() {
 			return {
+				// 零件项目类型
+				partProjTypes,
 				applyPriceShow: false,
 				againApply:false,//是否重新申请目标价
 				tableLoading: false,

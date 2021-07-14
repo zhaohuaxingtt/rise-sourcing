@@ -133,7 +133,6 @@ export default{
       }, 500);
     },
     getTopWidth(){
-      console.log(this.$refs.tableSupplier)
       this.cWidth = this.$refs.tableSupplier.$el.querySelector('.el-table__body').offsetWidth - 100 + 'px'
     },
     removeTags(){
@@ -142,17 +141,18 @@ export default{
     /**
      * @description: 排除group total km buget 列不需要排序外，其他的都是需要排序的列。
      * @param {*} props -表格中返回的标识。正排序 还是 反排序 还是 默认
+     *            prop  - 表格中的排序字段 名字叫啥
      * @return {*}
      */
-    sortChange(props){
+    sortChange({props,prop}){
       try {
         const notSortData = this.oldExampelData.filter(items=> items.groupId != null && items.groupId != '-')
         const sortData = this.oldExampelData.filter(items=> items.groupId == null && items.groupId != '-')
         const totalData = this.oldExampelData.filter((items)=> items.groupId == '-')
         if(props == "ascending"){
-          this.exampelData = [...notSortData,...sortData.sort((a,b)=>a.cfPartAPrice - b.cfPartAPrice),...totalData]
+          this.exampelData = [...notSortData,...sortData.sort((a,b)=>b[prop].toString().localeCompare(a[prop].toString())),...totalData]
         }else if(props == "descending"){
-          this.exampelData = [...notSortData,...sortData.sort((a,b)=>b.cfPartAPrice - a.cfPartAPrice),...totalData]
+          this.exampelData = [...notSortData,...sortData.sort((a,b)=>a[prop].toString().localeCompare(b[prop].toString())),...totalData]
         }else{
           this.exampelData = this.oldExampelData
         }

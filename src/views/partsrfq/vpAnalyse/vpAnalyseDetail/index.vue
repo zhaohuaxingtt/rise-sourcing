@@ -81,24 +81,30 @@
                 :Key="customDialog.key" @saveCustomPart="saveCustomPart"
                 @handleCloseCustomPart="handleCloseCustomPart"/>
 
-    <previewDialog v-model="previewDialog"/>
+    <previewDialog
+        v-model="previewDialog"
+        :dataInfo="dataInfo"
+        :newestScatterData="curveChartData.newestScatterData"
+        :targetScatterData="curveChartData.targetScatterData"
+        :lineData="curveChartData.lineData"
+    />
   </iPage>
 </template>
 
 <script>
-import { iPage, iButton, icon, iCard, iMessageBox } from 'rise'
-import baseInfo from './components/baseInfo'
-import totalUnitPriceTable from './components/totalUnitPriceTable'
-import curveChart from './components/curveChart'
-import analyzeChart from './components/analyzeChart'
-import customPart from './components/customPart'
-import previewDialog from './components/previewDialog'
+import {iPage, iButton, icon, iCard, iMessageBox} from 'rise';
+import baseInfo from './components/baseInfo';
+import totalUnitPriceTable from './components/totalUnitPriceTable';
+import curveChart from './components/curveChart';
+import analyzeChart from './components/analyzeChart';
+import customPart from './components/customPart';
+import previewDialog from './components/previewDialog';
 import {
   getAnalysisProcessing,
   saveOrUpdateScheme,
   deletePartsCustomerList,
-} from '../../../../api/partsrfq/vpAnalysis/vpAnalyseDetail'
-import resultMessageMixin from '@/utils/resultMessageMixin'
+} from '../../../../api/partsrfq/vpAnalysis/vpAnalyseDetail';
+import resultMessageMixin from '@/utils/resultMessageMixin';
 
 export default {
   mixins: [resultMessageMixin],
@@ -114,10 +120,10 @@ export default {
     customPart,
     previewDialog,
   },
-  created () {
-    this.getDataInfo()
+  created() {
+    this.getDataInfo();
   },
-  data () {
+  data() {
     return {
       partList: [],
       originPartList: [],
@@ -137,72 +143,73 @@ export default {
         lineData: [],
       },
       analyzeLoading: false,
-      currentSupplierId: '1',
-    }
+      currentSupplierId: '',
+    };
   },
   methods: {
-    handlePartItemClick (item, index) {
-      this.partItemCurrent = index
-      this.currentBatchNumber = item.batchNumber
-      this.currentPartsId = item.id
-      this.getDataInfo()
+    handlePartItemClick(item, index) {
+      this.partItemCurrent = index;
+      this.currentBatchNumber = item.batchNumber;
+      this.currentPartsId = item.id;
+      this.getDataInfo();
     },
-    handlePartItemClose (e, item) {
-      e.stopPropagation()
+    handlePartItemClose(e, item) {
+      e.stopPropagation();
       iMessageBox(
           this.$t('LK_SHIFOUQUERENSHANCHU'),
           this.$t('LK_WENXINTISHI'),
-          { confirmButtonText: this.$t('LK_QUEDING'), cancelButtonText: this.$t('LK_QUXIAO') },
+          {confirmButtonText: this.$t('LK_QUEDING'), cancelButtonText: this.$t('LK_QUXIAO')},
       ).then(async () => {
         const req = {
           id: item.id,
-        }
-        const res = await deletePartsCustomerList(req)
+        };
+        const res = await deletePartsCustomerList(req);
         if (res.result) {
-          this.partItemCurrent = 0
-          this.currentBatchNumber = this.partList[0].batchNumber
-          this.currentPartsId = this.partList[0].id
-          this.getDataInfo()
+          this.partItemCurrent = 0;
+          this.currentBatchNumber = this.partList[0].batchNumber;
+          this.currentPartsId = this.partList[0].id;
+          this.getDataInfo();
         }
-        this.resultMessage(res)
-      })
+        this.resultMessage(res);
+      });
     },
     //点击跳转自定义零件弹窗
-    handleOpenCustomDialog () {
-      this.customDialog.key = new Date().getTime()
-      this.customDialog.visible = true
+    handleOpenCustomDialog() {
+      this.customDialog.key = new Date().getTime();
+      this.customDialog.visible = true;
     },
-    async getDataInfo () {
+    async getDataInfo() {
       try {
-        this.pageLoading = true
+        this.pageLoading = true;
         let req = {
           partsId: this.currentPartsId,
           supplierId: this.currentSupplierId,
-        }
+        };
         if (this.$route.query.type === 'edit') {
-          req.id = this.$route.query.schemeId
+          req.id = this.$route.query.schemeId;
         }
-        req.batchNumber = this.currentBatchNumber
+        req.batchNumber = this.currentBatchNumber;
         if (this.$route.query.type === 'add') {
-          req.batchNumber = this.$route.query.batchNumber
+          req.batchNumber = this.$route.query.batchNumber;
         }
-        const res = await getAnalysisProcessing(req)
-        this.dataInfo = res.data
-        this.originPartList = res.data.partsList
+        const res = await getAnalysisProcessing(req);
+        this.dataInfo = res.data;
+        this.originPartList = res.data.partsList;
         this.partList = res.data.partsList.filter(item => {
-          return item.isShow
-        })
-        this.currentPartsId = this.partList[0] ? this.partList[0].id : ''
-        this.currentBatchNumber = this.partList[0] ? this.partList[0].batchNumber : ''
-        const analysisCurveData = Array.isArray(this.dataInfo.analysisCurve) ? this.dataInfo.analysisCurve : []
-        this.handleCurveData(analysisCurveData)
-        this.pageLoading = false
+          return item.isShow;
+        });
+        this.currentPartsId = this.partList[0] ? this.partList[0].id : '';
+        this.currentBatchNumber = this.partList[0] ? this.partList[0].batchNumber : '';
+        this.currentSupplierId = res.data.supplierId;
+        const analysisCurveData = Array.isArray(this.dataInfo.analysisCurve) ? this.dataInfo.analysisCurve : [];
+        this.handleCurveData(analysisCurveData);
+        this.pageLoading = false;
       } catch {
-        this.dataInfo = {}
-        this.pageLoading = false
+        this.dataInfo = {};
+        this.pageLoading = false;
       }
     },
-    async saveOrUpdateScheme (params) {
+    async saveOrUpdateScheme(params) {
       try {
         const req = {
           userId: this.$store.state.permission.userInfo.id,
@@ -210,73 +217,102 @@ export default {
           supplierId: this.currentSupplierId,
           batchNumber: this.currentBatchNumber,
           partsList: [this.partList[this.partItemCurrent]],
-        }
+        };
         if (this.$route.query.type === 'edit') {
-          req.id = this.$route.query.schemeId
+          req.id = this.$route.query.schemeId;
         }
         if (params === 'all') {
-          this.pageLoading = true
+          this.pageLoading = true;
           req.costDetailList = this.$refs.totalUnitPriceTable.tableListData.concat(
-              this.$refs.totalUnitPriceTable.hideTableData)
-          req.estimatedActualTotalPro = this.$refs.analyzeChart.dataInfo.estimatedActualTotalPro
+              this.$refs.totalUnitPriceTable.hideTableData);
+          req.estimatedActualTotalPro = this.$refs.analyzeChart.dataInfo.estimatedActualTotalPro;
         } else if (params === 'analyze') {
-          this.analyzeLoading = true
-          req.estimatedActualTotalPro = this.$refs.analyzeChart.dataInfo.estimatedActualTotalPro
+          this.analyzeLoading = true;
+          req.estimatedActualTotalPro = this.$refs.analyzeChart.dataInfo.estimatedActualTotalPro;
         } else if (params === 'table') {
-          this.tableLoading = true
+          this.tableLoading = true;
           req.costDetailList = this.$refs.totalUnitPriceTable.tableListData.concat(
-              this.$refs.totalUnitPriceTable.hideTableData)
+              this.$refs.totalUnitPriceTable.hideTableData);
         }
-        const res = await saveOrUpdateScheme(req)
-        this.resultMessage(res)
-        this.getDataInfo()
-        this.pageLoading = false
-        this.analyzeLoading = false
-        this.tableLoading = false
+        const res = await saveOrUpdateScheme(req);
+        this.resultMessage(res);
+        this.getDataInfo();
+        this.pageLoading = false;
+        this.analyzeLoading = false;
+        this.tableLoading = false;
+        if (res.result) {
+          if (this.$route.query.type === 'add') {
+            this.$router.push({
+              path: '/sourcing/partsrfq/vpAnalyseDetail',
+              query: {
+                type: 'edit',
+                schemeId: res.data,
+                round: this.$route.query.round,
+              },
+            });
+          }
+        }
       } catch {
-        this.pageLoading = false
-        this.analyzeLoading = false
-        this.tableLoading = false
+        this.pageLoading = false;
+        this.analyzeLoading = false;
+        this.tableLoading = false;
       }
     },
-    handlePreview () {
-      this.previewDialog = true
+    handlePreview() {
+      this.previewDialog = true;
     },
-    handleCurveData (data) {
-      this.curveChartData.newestScatterData = []
-      this.curveChartData.targetScatterData = []
-      this.curveChartData.lineData = []
+    handleCurveData(data) {
+      this.curveChartData.newestScatterData = [];
+      this.curveChartData.targetScatterData = [];
+      this.curveChartData.lineData = [];
       data.map(item => {
         if (item.priceFlag === 'LP') {
-          this.curveChartData.newestScatterData.push([item.production, item.price])
-          this.curveChartData.lineData.push([item.production, item.price])
+          this.curveChartData.newestScatterData.push([item.production, item.price]);
+          this.curveChartData.lineData.push([item.production, item.price]);
         } else if (item.priceFlag === 'TP') {
-          this.curveChartData.targetScatterData.push([item.production, item.price])
-          this.curveChartData.lineData.push([item.production, item.price])
+          this.curveChartData.targetScatterData.push([item.production, item.price]);
+          this.curveChartData.lineData.push([item.production, item.price]);
         } else {
-          this.curveChartData.lineData.push([item.production, item.price])
+          this.curveChartData.lineData.push([item.production, item.price]);
         }
-      })
+      });
     },
     // 保存自定义零件
-    saveCustomPart () {
-      this.$set(this.customDialog, 'visible', false)
-      this.getDataInfo()
+    saveCustomPart() {
+      this.$set(this.customDialog, 'visible', false);
+      this.getDataInfo();
     },
     // 关闭自定义零件弹窗
-    handleCloseCustomPart () {
-      this.$set(this.customDialog, 'visible', false)
+    handleCloseCustomPart() {
+      this.$set(this.customDialog, 'visible', false);
     },
     //供应商值改变
-    handleSupplierChange (val) {
-      this.currentSupplierId = val
-      this.getDataInfo()
+    handleSupplierChange(val) {
+      this.currentSupplierId = val;
+      this.getDataInfo();
     },
-    handleBack () {
-      this.$router.go(-1)
+    handleBack() {
+      const type = this.$route.query.type;
+      if (type === 'edit') {
+        this.$router.push({
+          path: '/sourcing/partsrfq/assistant',
+          query: {
+            id: this.$store.state.rfq.rfqId,
+            round: this.$route.query.round,
+            pageType: 'Volume Pricing',
+            activityTabIndex: 'two',
+          },
+        });
+      } else if (type === 'add') {
+        this.$router.push({
+          path: '/sourcing/partsrfq/vpAnalyCreat',
+        });
+      } else {
+        this.$router.go(-1);
+      }
     },
   },
-}
+};
 </script>
 
 <style scoped lang="scss">

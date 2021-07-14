@@ -1,171 +1,151 @@
 <template>
   <iPage class="new-bob">
     <div id="content">
-      <div class="navBox flex-between-center" v-if="!reportSave">
-        <span class="title"
-          >BOB{{ $t("TPZS.FENXI")
-          }}<span v-if="inside">-RFQ {{ rfq }}</span></span
-        >
+      <div class="navBox flex-between-center"
+           v-if="!reportSave">
+        <span class="title">BOB{{ $t("TPZS.FENXI")
+          }}<span v-if="inside">-RFQ {{ rfq }}</span></span>
         <div class="flex-align-center">
           <!--预览-->
-          <iButton class="margin-left30" @click="pre = true">{{
+          <iButton class="margin-left30"
+                   @click="pre = true">{{
             $t("LK_YULAN")
           }}</iButton>
           <!--保存-->
-          <iButton class="margin-left30" @click="saveDialog">{{
+          <iButton class="margin-left30"
+                   @click="saveDialog">{{
             $t("LK_BAOCUN")
           }}</iButton>
           <!--BoB分析库-->
           <iButton @click="goToBob">BoB{{ $t("分析库") }}</iButton>
           <!--查找零件-->
-          <iButton class="margin-left30" @click="findPart">{{
+          <iButton class="margin-left30"
+                   @click="findPart">{{
             $t("查找零件")
           }}</iButton>
         </div>
       </div>
-      <el-row :gutter="20" class="margin-top20">
+      <el-row :gutter="20"
+              class="margin-top20">
         <el-col :span="4">
-          <iCard :collapse="false" style="height: 500px" v-if="!reportSave">
-            <el-form label-position="top" :model="form" style="height: 460px">
+          <iCard :collapse="false"
+                 style="height: 500px"
+                 v-if="!reportSave">
+            <el-form label-position="top"
+                     :model="form"
+                     style="height: 460px">
               <el-row class="margin-bottom20">
                 <!--比较类型-->
                 <el-form-item :label="$t('比较类型')">
-                  <iSelect v-model="chartType" @change="changeBy">
-                    <el-option value="supplier" :label="$t('按供应商比较')">
+                  <iSelect v-model="chartType"
+                           @change="changeBy">
+                    <el-option value="supplier"
+                               :label="$t('按供应商比较')">
                     </el-option>
-                    <el-option
-                      value="turn"
-                      :label="$t('按轮次比较')"
-                    ></el-option>
-                    <el-option
-                      value="spareParts"
-                      :label="$t('按零件号比较')"
-                    ></el-option>
+                    <el-option value="turn"
+                               :label="$t('按轮次比较')"></el-option>
+                    <el-option value="spareParts"
+                               :label="$t('按零件号比较')"></el-option>
                   </iSelect>
                 </el-form-item>
                 <!--供应商-->
                 <el-form-item :label="$t('TPZS.GONGYINGSHANG')">
-                  <el-select
-                    multiple
-                    clearable
-                    value-key
-                    :multiple-limit="chartType === 'supplier' ? 5 : 1"
-                    v-model="form.supplier"
-                  >
-                    <el-option
-                      v-for="(i, index) in supplierList"
-                      :key="index"
-                      :value="i.supplierId"
-                      :label="i.nameZh"
-                    >
+                  <el-select multiple
+                             clearable
+                             value-key
+                             :multiple-limit="chartType === 'supplier' ? 5 : 1"
+                             v-model="form.supplier">
+                    <el-option v-for="(i, index) in supplierList"
+                               :key="index"
+                               :value="i.supplierId"
+                               :label="i.nameZh">
                       <span style="float: left">{{ i.nameZh }}</span>
-                      <span
-                        style="float: right; color: #8492a6; font-size: 13px"
-                        ><i class="el-icon-error"></i>
-                        </span>
+                      <span style="float: right; color: #8492a6; font-size: 13px"><i class="el-icon-error"></i>
+                      </span>
                     </el-option>
                   </el-select>
                 </el-form-item>
                 <!--轮次-->
                 <el-form-item :label="$t('轮次')">
-                  <el-select
-                    multiple
-                    clearable
-                    value-key
-                    :multiple-limit="chartType === 'turn' ? 5 : 1"
-                    v-model="form.turn"
-                  >
-                    <el-option value="-1" label="最新"></el-option>
-                    <el-option
-                      v-for="(i, index) in turnList"
-                      :key="index"
-                      :value="i.turn"
-                      :label="'第' + i.turn + '轮'"
-                    ></el-option>
+                  <el-select multiple
+                             clearable
+                             value-key
+                             :multiple-limit="chartType === 'turn' ? 5 : 1"
+                             v-model="form.turn">
+                    <el-option value="-1"
+                               label="最新"></el-option>
+                    <el-option v-for="(i, index) in turnList"
+                               :key="index"
+                               :value="i.turn"
+                               :label="'第' + i.turn + '轮'"></el-option>
                   </el-select>
                 </el-form-item>
                 <!--零件号-->
-                <el-form-item
-                  :label="$t('LK_SPAREPARTSNUMBER') + '/' + $t('LK_FSHAO')"
-                >
-                  <el-select
-                    multiple
-                    clearable
-                    value-key
-                    :multiple-limit="chartType === 'spareParts' ? 5 : 1"
-                    v-model="form.spareParts"
-                  >
-                    <el-option
-                      v-for="(i, index) in partList"
-                      :key="index"
-                      :value="i.fsNo"
-                      :label="i.spareParts"
-                    ></el-option>
+                <el-form-item :label="$t('LK_SPAREPARTSNUMBER') + '/' + $t('LK_FSHAO')">
+                  <el-select multiple
+                             clearable
+                             value-key
+                             :multiple-limit="chartType === 'spareParts' ? 5 : 1"
+                             v-model="form.spareParts">
+                    <el-option v-for="(i, index) in partList"
+                               :key="index"
+                               :value="i.fsNo"
+                               :label="i.spareParts"></el-option>
                   </el-select>
                 </el-form-item>
               </el-row>
             </el-form>
             <div class="end">
-              <iButton type="primary" @click="searchChartData">{{
+              <iButton type="primary"
+                       @click="searchChartData">{{
                 $t("LK_QUEDING")
               }}</iButton>
-              <iButton type="primary" @click="handleSearchReset">{{
+              <iButton type="primary"
+                       @click="handleSearchReset">{{
                 $t("LK_ZHONGZHI")
               }}</iButton>
             </div>
           </iCard>
         </el-col>
         <el-col :span="reportSave ? 24 : 20">
-          <iCard style="height: 500px" collapse>
+          <iCard style="height: 500px"
+                 collapse>
             <iRow>
               <el-col :span="inside ? 18 : 24">
-                <crown-bar
-                  :chartData="chartData"
-                  :title="chartTitle"
-                  @select="showSelect"
-                  :type="bobType"
-                  :by="chartType"
-                />
-                <div
-                  class="toolTip-div"
-                  ref="toolTipDiv"
-                  v-show="showSelectDiv"
-                >
-                  <iSelect
-                    v-model="bobType"
-                    ref="toolTipSelect"
-                    @blur="closeDiv"
-                    @change="changeType"
-                  >
-                    <el-option
-                      value="Best of Best"
-                      label="Best of Best"
-                    ></el-option>
-                    <el-option
-                      value="Best of Average"
-                      label="Best of Average"
-                    ></el-option>
-                    <el-option
-                      value="Best of Second"
-                      label="Best of Second"
-                    ></el-option>
+                <crown-bar :chartData="chartData"
+                           :title="chartTitle"
+                           @select="showSelect"
+                           :type="bobType"
+                           :by="chartType" />
+                <div class="toolTip-div"
+                     ref="toolTipDiv"
+                     v-show="showSelectDiv">
+                  <iSelect v-model="bobType"
+                           ref="toolTipSelect"
+                           @blur="closeDiv"
+                           @change="changeType">
+                    <el-option value="Best of Best"
+                               label="Best of Best"></el-option>
+                    <el-option value="Best of Average"
+                               label="Best of Average"></el-option>
+                    <el-option value="Best of Second"
+                               label="Best of Second"></el-option>
                   </iSelect>
                 </div>
               </el-col>
-              <el-col :span="6" v-if="inside">
+              <el-col :span="6"
+                      v-if="inside">
                 <div class="left-dash1">
-                  <out-bar
-                    v-if="chartData1.length > 0"
-                    :chartData="chartData1"
-                    @del="delOut"
-                    @change="changeOut"
-                  ></out-bar>
-                  <div v-else @click="findPart" class="icon-add">
-                    <icon
-                      style="font-size: 260px"
-                      name="iconbob-daitianjia"
-                      symbol
-                    ></icon>
+                  <out-bar v-if="chartData1.length > 0"
+                           :chartData="chartData1"
+                           @del="delOut"
+                           @change="changeOut"></out-bar>
+                  <div v-else
+                       @click="findPart"
+                       class="icon-add">
+                    <icon style="font-size: 260px"
+                          name="iconbob-daitianjia"
+                          symbol></icon>
                     <div style="text-align: center">{{ $t("待添加") }}</div>
                   </div>
                 </div>
@@ -174,39 +154,49 @@
           </iCard>
         </el-col>
       </el-row>
-      <el-row :gutter="20" class="margin-top20">
+      <el-row :gutter="20"
+              class="margin-top20">
         <el-col :span="4">
-          <iCard :collapse="false" style="height: 500px" v-if="!reportSave">
-            <el-form label-position="top" :model="form" style="height: 460px">
+          <iCard :collapse="false"
+                 style="height: 500px"
+                 v-if="!reportSave">
+            <el-form label-position="top"
+                     :model="form"
+                     style="height: 460px">
               <el-row class="margin-bottom20">
                 <!--比较类型-->
                 <el-form-item :label="$t('比较类型')">
                   <iSelect v-model="chartType">
-                    <el-option
-                      value="supplier"
-                      label="按供应商比较"
-                    ></el-option>
-                    <el-option value="round" label="按轮次比较"></el-option>
-                    <el-option value="num" label="按零件号比较"></el-option>
+                    <el-option value="supplier"
+                               label="按供应商比较"></el-option>
+                    <el-option value="round"
+                               label="按轮次比较"></el-option>
+                    <el-option value="num"
+                               label="按零件号比较"></el-option>
                   </iSelect>
                 </el-form-item>
                 <!--供应商-->
                 <el-form-item :label="$t('TPZS.GONGYINGSHANG')">
-                  <iSelect multiple v-model="form.supplier"> </iSelect>
+                  <iSelect multiple
+                           v-model="form.supplier"> </iSelect>
                 </el-form-item>
                 <!--轮次-->
                 <el-form-item :label="$t('轮次')">
-                  <iSelect multiple v-model="form.round"></iSelect>
+                  <iSelect multiple
+                           v-model="form.round"></iSelect>
                 </el-form-item>
                 <!--零件号-->
                 <el-form-item :label="$t('LK_SPAREPARTSNUMBER')">
-                  <iSelect multiple v-model="form.num"></iSelect>
+                  <iSelect multiple
+                           v-model="form.num"></iSelect>
                 </el-form-item>
               </el-row>
             </el-form>
             <div class="end">
-              <iButton type="primary" @click="getChartData">确定</iButton>
-              <iButton type="primary" @click="handleSearchReset">重置</iButton>
+              <iButton type="primary"
+                       @click="getChartData">确定</iButton>
+              <iButton type="primary"
+                       @click="handleSearchReset">重置</iButton>
             </div>
           </iCard>
         </el-col>
@@ -215,32 +205,38 @@
         </el-col>
       </el-row>
     </div>
-    <findingParts
-      v-if="value"
-      v-show="value"
-      :value="value"
-      @sure="sure"
-      @close="closeDialog"
-      @add="add"
-    ></findingParts>
-    <preview ref="preview" :value="pre" @closeDialog="closePreView"></preview>
-    <iDialog title="保存" :visible.sync="dialogVisible" width="20%">
+    <findingParts v-if="value"
+                  v-show="value"
+                  :value="value"
+                  @sure="sure"
+                  @close="closeDialog"
+                  @add="add"></findingParts>
+    <preview ref="preview"
+             :value="pre"
+             @closeDialog="closePreView"></preview>
+    <iDialog title="保存"
+             :visible.sync="dialogVisible"
+             width="20%">
       <div>
         <div class="margin-bottom15 flex-between-center">
           <label for="">保存在分析库</label>
           <el-checkbox v-model="analysisSave"></el-checkbox>
         </div>
-        <iInput v-model="analysisName" placeholder="请输入文件名称" />
+        <iInput v-model="analysisName"
+                placeholder="请输入文件名称" />
       </div>
       <div class="margin-top20">
         <div class="margin-bottom15 flex-between-center">
           <label for="">保存为报告</label>
           <el-checkbox v-model="reportSave"></el-checkbox>
         </div>
-        <iInput v-model="reportName" placeholder="请输入文件名称" />
+        <iInput v-model="reportName"
+                placeholder="请输入文件名称" />
       </div>
-      <span slot="footer" class="dialog-footer">
-        <iButton type="primary" @click="save">确 定</iButton>
+      <span slot="footer"
+            class="dialog-footer">
+        <iButton type="primary"
+                 @click="save">确 定</iButton>
       </span>
     </iDialog>
   </iPage>
@@ -261,16 +257,9 @@ import CrownBar from "./components/crownBar.vue";
 import bobAnalysis from "@/views/partsrfq/bob/bobAnalysis/index.vue";
 import findingParts from "@/views/partsrfq/components/findingParts.vue";
 import { getBobLevelOne, removeBobOut, addBobOut } from "@/api/partsrfq/bob";
-import {
-  part,
-  supplier,
-  turn,
-  update,
-  add,
-} from "@/api/partsrfq/bob/analysisList";
+import { part, supplier, turn, update, add } from "@/api/partsrfq/bob/analysisList";
 import { downloadPDF, dataURLtoFile } from "@/utils/pdf";
 import { uploadFile } from "@/api/file/upload";
-
 import preview from "./preview.vue";
 import OutBar from "./components/outBar.vue";
 
@@ -290,10 +279,10 @@ export default {
     iDialog,
     iInput,
   },
-  data() {
+  data () {
     return {
       rfq: "2222",
-      inside: true,
+      inside: false,
       chartData: [],
       chartData1: [],
       chartType: "supplier",
@@ -318,17 +307,21 @@ export default {
       reportSave: false,
     };
   },
-  created() {
-    this.inside = true;
+  created () {
+    
+    if (this.$route.query.rfqId) {
+      this.inside = true;
+      this.rfq = this.$route.query.rfqId
+    }
     this.analysisSchemeId = this.$route.query.rfqId;
     this.newBuild = this.$route.query.newBuild;
     if (this.newBuild) this.analysisSave = true;
     this.getChartData();
     // this.getOptions();
   },
-  mounted() {},
+  mounted () { },
   methods: {
-    getOptions() {
+    getOptions () {
       part({
         analysisSchemeId: this.analysisSchemeId,
         data: {},
@@ -343,17 +336,17 @@ export default {
       }).then((res) => (this.turnList = res.data));
     },
 
-    findPart() {
+    findPart () {
       this.value = true;
     },
-    closeDialog(val) {
+    closeDialog (val) {
       this.value = val;
     },
-    closePreView(val) {
+    closePreView (val) {
       this.pre = val;
     },
-    sure() {},
-    changeBy(e) {
+    sure () { },
+    changeBy (e) {
       this.chartType = e;
       this.form = {
         supplier: [],
@@ -361,29 +354,29 @@ export default {
         spareParts: [],
       };
     },
-    changeType(e) {
+    changeType (e) {
       this.bobType = e;
       this.initChartData();
       this.closeDiv();
     },
-    goToBob() {
+    goToBob () {
       this.$router.push("bob");
     },
-    closeDiv() {
+    closeDiv () {
       this.showSelectDiv = false;
     },
-    showSelect(e) {
+    showSelect (e) {
       const position = e.event.target.position;
       this.showSelectDiv = true;
       this.$refs.toolTipDiv.style.left = position[0] + 210 + "px";
       this.$refs.toolTipDiv.style.top = position[1] + 15 + "px";
       this.$refs.toolTipSelect.focus();
     },
-    initChartData() {
+    initChartData () {
       // const data=require('./data.json')
       // this.chartData = data
     },
-    handleSearchReset() {
+    handleSearchReset () {
       this.form = {
         supplier: [],
         turn: [],
@@ -391,7 +384,7 @@ export default {
       };
       this.getChartData();
     },
-    add(val) {
+    add (val) {
       addBobOut({
         analysisSchemeId: this.analysisSchemeId,
         fs: val[0].fsNum,
@@ -407,7 +400,7 @@ export default {
         }
       });
     },
-    searchChartData() {
+    searchChartData () {
       getBobLevelOne({
         analysisSchemeId: this.analysisSchemeId,
         analysisDimension: this.chartType,
@@ -426,7 +419,7 @@ export default {
         this.bobType = allData.defaultBobOptions;
       });
     },
-    async getChartData() {
+    async getChartData () {
       await this.getOptions();
       getBobLevelOne({
         analysisSchemeId: this.analysisSchemeId,
@@ -451,7 +444,7 @@ export default {
         this.form.spareParts = this.Split(allData.spareParts, ",");
       });
     },
-    delOut() {
+    delOut () {
       removeBobOut({
         id: this.chartData1[0].id,
       }).then((res) => {
@@ -463,16 +456,16 @@ export default {
         }
       });
     },
-    changeOut() {
+    changeOut () {
       removeBobOut({
         id: this.chartData1[0].id,
       });
       this.findPart();
     },
-    saveDialog() {
+    saveDialog () {
       this.dialogVisible = true;
     },
-    save() {
+    save () {
       let that = this;
       const form = {
         analysisDimension: this.chartType,
@@ -530,7 +523,7 @@ export default {
     },
   },
   computed: {
-    chartTitle() {
+    chartTitle () {
       if (this.chartType === "supplier") {
         return this.form.spareParts;
       } else if (this.chartType === "turn") {
@@ -581,7 +574,9 @@ export default {
   overflow: hidden; //超出隐藏
   text-overflow: ellipsis; //变成...
 }
-::v-deep .el-select-dropdown.is-multiple .el-select-dropdown__item.selected::after{
-  content:none
+::v-deep
+  .el-select-dropdown.is-multiple
+  .el-select-dropdown__item.selected::after {
+  content: none;
 }
 </style>

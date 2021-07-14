@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-26 11:16:58
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-10 11:58:29
+ * @LastEditTime: 2021-07-14 09:53:28
  * @Description: 
  * @FilePath: \front-web\src\views\accessoryPart\integratedManage\data.js
  */
@@ -23,7 +23,7 @@ export const tableTitle = [
   {props:'deliveryWarehouse',name:'送货仓库', key: "SONGHUOCANGKU", tooltip: true},
   {props:'brand',name:'品牌', key: "PINPAI", tooltip: true},
   {props:'state',name:'配件状态', key: "PEIJIANZHUANGTAI", tooltip: true, width: 120},
-  {props:'isEop',name:'零件状态', key: "LINGJIANZHUANGTAI", tooltip: true, width: 120},
+  {props:'accessoryStatus',name:'零件状态', key: "LINGJIANZHUANGTAI", tooltip: true, width: 120},
   {props:'signDate',name:'需求签收日期', key: "XUQIUQIANSHOURIQI", tooltip: true, width: 120},
   {props:'carType',name:'配件车型', key: "PEIJIANCHEXING", tooltip: true},
   {props:'carProject',name:'配件车型项目', key: "PEIJIANCHEXINGXIANGMU", tooltip: true},

@@ -6,7 +6,7 @@
 -->
 <template>
   <el-table :height="height" tooltip-effect='light' :data='tableData' :empty-text="$t('LK_ZANWUSHUJU')" v-loading='tableLoading' @selection-change="handleSelectionChange">
-    <el-table-column v-if="selection" type='selection' width="50" align='center'></el-table-column>
+    <el-table-column v-if="selection" type='selection' width="56" align='center'></el-table-column>
 <!--    <el-table-column v-if='index' type='index' width='50' align='center' label='#'></el-table-column>-->
     <template v-for="(items,index) in tableTitle">
       <el-table-column :key="index" align='center' :width="items.width" :show-overflow-tooltip='items.tooltip' v-if='items.props === openPageProps' :prop="items.props"
@@ -56,7 +56,7 @@
       <el-table-column :width="items.width" :show-overflow-tooltip='items.tooltip' :key="index" align='center' v-else-if='items.props === fileSizeProps' :prop="items.props"
                        :label="lang ? language(items.key, items.name) : (items.key ? $t(items.key) : items.name)">
         <template slot-scope="scope">
-          {{ scope.row[items.props] ? scope.row[items.props] / 1024 / 1024 : '' }}
+          {{ scope.row[items.props] }}
         </template>
       </el-table-column>
       <el-table-column :width="items.width" :show-overflow-tooltip='items.tooltip' :key="index" align='center' v-else :label="lang ? language(items.key, items.name) : (items.key ? $t(items.key) : items.name)"

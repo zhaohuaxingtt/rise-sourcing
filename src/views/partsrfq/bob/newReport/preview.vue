@@ -1,42 +1,38 @@
 <template>
-  <iDialog
-    :title="reportName"
-    :visible.sync="value"
-    width="95%"
-    @close="closeDialog"
-    @opened="open"
-  >
-    <iCard :collapse="false" id="downloadRef">
+  <iDialog :title="reportName"
+           :visible.sync="value"
+           width="95%"
+           @close="closeDialog"
+           @opened="open">
+    <iCard :collapse="false"
+           id="downloadRef">
       <div class="clearfix">
-        <iButton
-          class="margin-left10 "
-          style="float: right"
-          @click="handleDownload"
-          >{{ $t("LK_XIAZAI") }}</iButton
-        >
+        <iButton class="margin-left10 "
+                 style="float: right"
+                 @click="handleDownload">{{ $t("LK_XIAZAI") }}</iButton>
       </div>
       <el-row :gutter="40">
         <el-col :span="inside ? 18 : 24">
-          <crown-bar
-            :chartData="chartData"
-            :title="chartTitle"
-            :type="bobType"
-            :by="chartType"
-          />
+          <crown-bar :chartData="chartData"
+                     :title="chartTitle"
+                     :type="bobType"
+                     :by="chartType" />
         </el-col>
-        <el-col :span="6" v-if="inside">
+        <el-col :span="6"
+                v-if="inside">
           <div class="left-dash1">
-            <out-bar :chartData="chartData1" :preview="false"></out-bar>
+            <out-bar :chartData="chartData1"
+                     :preview="false"></out-bar>
           </div>
         </el-col>
       </el-row>
       <div>{{ $t("费用详情") }}</div>
       <table1 :tableList="tableList"></table1>
-      <table2 :dataList="dataList2"></table2>
+      <!-- <table2 :dataList="dataList2"></table2>
       <table3 :dataList="dataList3"></table3>
       <table4 :dataList="dataList4"></table4>
       <table5 :dataList="dataList5"></table5>
-      <table6 :dataList="dataList6"></table6>
+      <table6 :dataList="dataList6"></table6> -->
     </iCard>
   </iDialog>
 </template>
@@ -45,7 +41,7 @@
 import { iPage, iButton, iCard, iSelect, icon, iDialog } from "rise";
 import CrownBar from "./components/crownBar.vue";
 // import bobAnalysis from "@/views/partsrfq/bob/bobAnalysis/index.vue";
-import { getBobLevelOne } from "@/api/partsrfq/bob";
+import { getBobLevelOne, chargeRetrieve } from "@/api/partsrfq/bob";
 import { downloadPDF, dataURLtoFile } from "@/utils/pdf";
 import {
   dataList1,
@@ -71,11 +67,11 @@ export default {
     CrownBar,
     OutBar,
     table1,
-    table2,
-    table3,
-    table4,
-    table5,
-    table6,
+    // table2,
+    // table3,
+    // table4,
+    // table5,
+    // table6,
   },
   props: {
     value: {
@@ -83,7 +79,7 @@ export default {
       default: false,
     },
   },
-  data() {
+  data () {
     return {
       rfq: "2222",
       inside: true,
@@ -113,18 +109,19 @@ export default {
       chartTitle: "",
     };
   },
-  mounted() {
+  mounted () {
     this.inside = true;
     this.reportName = this.$route.query.name;
     this.id = this.$route.query.id;
+    this.chargeRetrieve("all");
     // this.initChartData()
     // this.analysisSchemeId = this.$route.query.analysisSchemeId;
     this.getChartData();
   },
   methods: {
-    open() {
+    open () {
       let els = this.$el.getElementsByClassName("el-table__expand-icon");
-      if (this.tableList.dataList.length != 0 && els.length != 0) {
+      if (this.tableList.element.length != 0 && els.length != 0) {
         this.flag = false;
         this.flag1 = true;
         for (let j1 = 0; j1 < els.length; j1++) {
@@ -146,28 +143,57 @@ export default {
         }
       }
     },
-    findPart() {
+    close () {
+      if (this.tableList.element.length != 0) {
+        this.flag = true;
+        this.flag1 = false;
+        const elsopen = this.$el.getElementsByClassName(
+          "el-table__expand-icon--expanded"
+        );
+        if (
+          this.$el.getElementsByClassName("el-table__expand-icon--expanded")
+        ) {
+          for (let i = 0; i < elsopen.length; i++) {
+            elsopen[i].click();
+          }
+        }
+      }
+    },
+    chargeRetrieve (type) {
+      chargeRetrieve({
+        schemaId: 135,
+        viewType: type,
+      })
+        .then((res) => {
+          this.tableList = res;
+          this.$nextTick(() => {
+            this.open();
+          });
+        })
+        .catch((err) => { });
+    },
+    findPart () {
       this.value = true;
     },
-    closeDialog(val) {
+    closeDialog (val) {
       this.$emit('closeDialog', false);
       // this.value = val;
     },
-    sure() {},
-    handleDownload() {
+    sure () { },
+    handleDownload () {
       downloadPDF({
         idEle: "downloadRef",
         pdfName: "BOB Preview",
       });
-      
+
     },
-    goToBob() {
+    goToBob () {
       this.$router.push("bob");
     },
-    closeDiv() {
+    closeDiv () {
       this.showSelectDiv = false;
     },
-    showSelect(e) {
+    showSelect (e) {
 
       const position = e.event.target.position;
       this.showSelectDiv = true;
@@ -175,11 +201,11 @@ export default {
       this.$refs.toolTipDiv.style.top = position[1] + 15 + "px";
       this.$refs.toolTipSelect.focus();
     },
-    initChartData() {
+    initChartData () {
       // const data=require('./data.json')
       // this.chartData = data
     },
-    handleSearchReset() {
+    handleSearchReset () {
       this.form = {
         supplier: [],
         turn: [],
@@ -187,7 +213,7 @@ export default {
       };
       this.getChartData();
     },
-    searchChartData() {
+    searchChartData () {
       getBobLevelOne({
         analysisSchemeId: this.analysisSchemeId,
         analysisDimension: this.chartType,
@@ -206,7 +232,7 @@ export default {
         this.bobType = allData.defaultBobOptions;
       });
     },
-    getChartData() {
+    getChartData () {
       getBobLevelOne({
         analysisSchemeId: this.analysisSchemeId,
       }).then((res) => {
@@ -258,7 +284,7 @@ export default {
   }
 }
 .clearfix::after {
-  content: '';
+  content: "";
   display: block;
   font-size: 0;
   height: 0;
