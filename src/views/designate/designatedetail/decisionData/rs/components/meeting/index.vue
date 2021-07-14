@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:17:25
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-14 17:31:50
+ * @LastEditTime: 2021-07-14 19:48:22
  * @Description: 上会/备案RS单
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\rs\components\meeting\index.vue
 -->
@@ -53,18 +53,18 @@
         </div>
       </div>
     </iCard>
-    <iCard v-if="!showSignatureForm" class="checkDate" :class="!isPreview && 'margin-top20'" :title="language('SHENQINGRIQI','申请日期')+'：'+processApplyDate">
+    <iCard v-if="!showSignatureForm" class="checkDate" :class="!isPreview && 'margin-top20'" :title="'Application Date：'+processApplyDate">
       <div class="checkList">
         <div class="checkList-item" v-for="(item, index) in checkList" :key="index">
           <icon v-if="item.approveStatus == '1'" symbol name="iconrs-wancheng"></icon>
           <icon v-else-if="item.approveStatus == '2'" symbol name="iconrs-quxiao"></icon>
           <div v-else class="" >-</div>
           <div class="checkList-item-info">
-            <span>{{language('BUMEN','部门')}}:</span>
+            <span>Dept.:</span>
             <span class="checkList-item-info-depart">{{item.approveDeptNumName}}</span>
           </div>
           <div class="checkList-item-info">
-            <span>{{language('RIQI','日期')}}:</span>
+            <span>Date:</span>
             <span>{{item.approveDate}}</span>
           </div>
         </div>
