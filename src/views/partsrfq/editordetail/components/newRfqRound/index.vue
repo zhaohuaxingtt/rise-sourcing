@@ -1,7 +1,7 @@
 <!--
  * @Author: moxuan
  * @Date: 2021-03-05 17:24:15
- * @LastEditTime: 2021-07-13 17:49:47
+ * @LastEditTime: 2021-07-13 19:46:31
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
 -->
@@ -127,22 +127,31 @@ export default {
     this.getRoundTypeOptions()
   },
   methods: {
+    init(){
+      const res = this.dataRes;
+      this.tableListData = res.data.rfqRoundBdlVO.rfqBdlVOList;
+      this.roundsPhase = this.tableListData[0].roundsPhase
+      this.page.currPage = res.data.rfqRoundBdlVO.pageNum
+      this.page.pageSize = res.data.rfqRoundBdlVO.pageSize
+      this.page.totalCount = res.data.rfqRoundBdlVO.total
+      this.setTableRowSelected()
+      this.initTimeData()
+    },
     //获取表格数据
     async getTableList() {
       const id = this.$route.query.id
       if (id) {
-        // this.tableLoading = true;
-        // const req = {
-        //   otherInfoPackage: {
-        //     findType: '10',
-        //     rfqId: id,
-        //     current: this.page.currPage,
-        //     size: this.page.pageSize,
-        //   }
-        // }
-        // try {
-          // const res = await getRfqDataList(req)
-          const res = this.dataRes;
+        this.tableLoading = true;
+        const req = {
+          otherInfoPackage: {
+            findType: '10',
+            rfqId: id,
+            current: this.page.currPage,
+            size: this.page.pageSize,
+          }
+        }
+        try {
+          const res = await getRfqDataList(req)
           this.tableListData = res.data.rfqRoundBdlVO.rfqBdlVOList;
           this.roundsPhase = this.tableListData[0].roundsPhase
           this.page.currPage = res.data.rfqRoundBdlVO.pageNum
@@ -151,9 +160,9 @@ export default {
           this.setTableRowSelected()
           this.tableLoading = false;
           this.initTimeData()
-        // } catch {
-        //   this.tableLoading = false;
-        // }
+        } catch {
+          this.tableLoading = false;
+        }
       }
     },
     sureChangeItems() {
@@ -261,8 +270,9 @@ export default {
   watch: {
     value(val) {
       if (val) {
-        this.saveStaus = false
-        this.getTableList()
+        this.saveStaus = false;
+        // this.getTableList()
+        this.init();
       }
     }
   }

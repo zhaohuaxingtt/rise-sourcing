@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-26 14:48:50
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-25 14:01:50
+ * @LastEditTime: 2021-07-14 09:39:31
  * @Description: 添加配件弹窗
  * @FilePath: \front-web\src\views\accessoryPart\createRfq\components\addAccessoryPart.vue
 -->
@@ -152,6 +152,7 @@ export default {
         nomiType: '',
         idState: ''
       }
+      this.sure()
     },
     /**
      * @Description: 车型项目下拉框
@@ -173,7 +174,7 @@ export default {
     getDictionary(optionName, optionType) {
       getDictByCode(optionType).then(res => {
         if(res?.result) {
-          this.selectOptions[optionName] = res.data[0].subDictResultVo.map(item => {
+          this.selectOptions[optionName] = res.data[0]?.subDictResultVo.map(item => {
             return { value: item.code, label: item.name }
           })
         }
@@ -255,11 +256,11 @@ export default {
   }
   ::v-deep .el-dialog {
     margin-top: 30px !important;
-    height: 90%;
-    .el-dialog__body {
-      height: calc(100% - 70px);
-      overflow: auto;
-    }
+    // height: 90%;
+    // .el-dialog__body {
+    //   height: calc(100% - 70px);
+    //   overflow: auto;
+    // }
   }
 }
 </style>
