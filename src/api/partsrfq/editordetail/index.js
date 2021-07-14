@@ -362,3 +362,10 @@ export function hasShowDelegate(params) {
     })
 }
 
+// 根据部门类型获取评分部门、评分人、协调人
+export function findRateDeptInfo(params) {
+    return requst({
+        url: `/rfq-bdl-ratings/findRateDeptInfo/${ params.rateTag }`,
+        method: 'GET'
+    })
+}
