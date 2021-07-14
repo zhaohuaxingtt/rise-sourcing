@@ -13,7 +13,7 @@
                     accept=".pdf"
                     @on-success="onDraingUploadsucess"
                 /> -->
-                <uploadButton uploadClass="uploadButton" :params="uploadParams" :beforeUpload="beforeUpload" @success="uploadSuccess" @error="uploadError">
+                <uploadButton uploadClass="uploadButton" :beforeUpload="beforeUpload" @success="uploadSuccess" @error="uploadError">
                     <iButton :loading="uploadLoading">{{ language("SHANGCHUAN", "上传") }}</iButton>
                 </uploadButton>
             </span>
@@ -71,7 +71,7 @@ import {
   batchDeleteDaring,
 } from '@/api/designate/decisiondata/drawing'
 import { uploadDaring } from '@/api/costanalysismanage/rfqdetail'
-// import { downloadFile } from '@/api/file'
+import { downloadFile, downloadUdFile } from '@/api/file'
 import { getKmFileHistory, uploadFiles } from "@/api/costanalysismanage/costanalysis"
 import filters from "@/utils/filters"
 import uploadButton from "@/views/costanalysismanage/components/uploadButton"
@@ -98,22 +98,22 @@ export default {
         selectItems:[],
         uploadLoading: false,
         fileList: [],
-        uploadParams: { applicationName: "rise" },
         }
     },
     methods:{
         // 下载附件
-        async download(fileList){
-             const data = {
-              applicationName: 'rise',
-              fileList:fileList.join(),
-            };
-            await downloadFile(data);
-        },
+        // async download(fileList){
+        //      const data = {
+        //       applicationName: 'rise',
+        //       fileList:fileList.join(),
+        //     };
+        //     await downloadFile(data);
+        // },
         // 单文件下载
         downloadLine(row){
-            const {tpPartAttachmentName} = row;
-            this.download([tpPartAttachmentName]);
+            // const {tpPartAttachmentName} = row;
+            // this.download([tpPartAttachmentName]);
+            downloadUdFile(row.uploadId)
         },
         // 批量下载附件
         downloadList(){
@@ -121,8 +121,9 @@ export default {
             if(!selectItems.length){
             iMessage.warn(this.language('LK_QINGXUANZHEXUYAOXIAZHAIDEFUJIAN','请选择需要下载的附件'));
             }else{
-                const list = selectItems.map((item)=>item.tpPartAttachmentName);
-                this.download(list);
+                // const list = selectItems.map((item)=>item.tpPartAttachmentName);
+                // this.download(list);
+                downloadUdFile(selectItems.map(item => item.uploadId))
             }
         },
         
@@ -207,10 +208,11 @@ export default {
             uploadFiles({
                 fileHistoryDTOS: this.fileList.map(item => ({
                     fileCode: "0",
-                    fileName: item.tpPartAttachmentName,
-                    filePath: item.tpPartAttachmentPath,
+                    fileName: item.fileName,
+                    filePath: item.filePath,
                     fileSize: item.size,
                     hostId: this.$route.query.rfqId,
+                    uploadId: item.id,
                     source: 0
                 })),
                 type: 1
@@ -237,7 +239,7 @@ export default {
                 this.fileList = []
                 clearTimeout(this.timer)
                 iMessage.success(`${ file.name } ${ this.language("SHANGCHUANCHENGGONG", "上传成功") }`)
-                this.fileList.push({ tpPartAttachmentName: res.data[0].fileName, tpPartAttachmentPath: res.data[0].filePath, size: file.size })
+                this.fileList.push({ id: res.data[0].id, fileName: res.data[0].name, filePath: res.data[0].path, size: file.size })
                 this.timer = setTimeout(() => {
                     this.uploadFiles()
                     clearTimeout(this.timer)
