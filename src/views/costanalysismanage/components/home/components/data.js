@@ -13,7 +13,7 @@ export const FilesTitle = [
     {props:'fileName',name:'文件名称', key: "LK_WENJIANMINGCHENG", tooltip: true},
     {props:'fileSize',name:'大小', key: "DAXIAO", tooltip: true},
     {props:'createDate',name:'上传日期', key: "LK_SHANGCHUANRIQI", tooltip: true},
-    {props:'createBy',name:'上传人', key: "LK_SHANGCHUANREN", tooltip: true},
+    {props:'uploader',name:'上传人', key: "LK_SHANGCHUANREN", tooltip: true},
   ]
 
 
