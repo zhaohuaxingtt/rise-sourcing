@@ -66,6 +66,13 @@ export default {
         this.$emit('update:visible', false)
       })
     }
+  },
+  watch: {
+    visible() {
+      if (!this.visible) {
+        this.form = {}
+      }
+    }
   }
 }
 </script>
