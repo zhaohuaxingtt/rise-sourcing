@@ -43,7 +43,7 @@ export const supplierRatingAttachmentTitle = [
     {props: 'fileName', name: '文件名称', key: 'LK_WENJIANMINGCHENG'},
     {props: 'fileSize', name: '大小', key: 'DAXIAO'},
     {props: 'createDate', name: '上传日期', key: 'LK_SHANGCHUANRIQI'},
-    {props: 'createBy', name: '上传人', key: 'LK_SHANGCHUANREN'},
+    {props: 'uploader', name: '上传人', key: 'LK_SHANGCHUANREN'},
     {props: 'operateType', name: '操作', key: 'LK_CAOZUO'}
 ]
 
