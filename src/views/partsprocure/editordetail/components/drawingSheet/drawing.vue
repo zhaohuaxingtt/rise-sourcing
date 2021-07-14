@@ -54,8 +54,8 @@ import { pageMixins } from '@/utils/pageMixins'
 import { tableTitle } from './data'
 import { getInfoAnnexPage, deleteFile, patchTpInfoByAttachment } from "@/api/partsprocure/editordetail";
 import filters from '@/utils/filters'
-import { downloadFile } from "@/api/file";
-import { uploadFile } from "@/api/file/upload";
+import { downloadFile, downloadUdFile } from "@/api/file";
+import { uploadFile, uploadUdFile } from "@/api/file/upload";
 import { getToken } from "@/utils";
 import { iMessageBox } from '../../../../../components'
 
@@ -88,16 +88,25 @@ export default {
   },
   methods: {
     upload(content) {
-      const formData = new FormData()
-      formData.append('multipartFile', content.file)
-      formData.append('applicationName', 'procurereq-service')
-      uploadFile(formData)
-        .then(res => {
-          this.uploadSuccess(res, content.file)
-        })
-        .catch(rej => {
-          this.uploadError(rej, content.file)
-        })
+      // const formData = new FormData()
+      // formData.append('multipartFile', content.file)
+      // formData.append('applicationName', 'procurereq-service')
+      // uploadFile(formData)
+      //   .then(res => {
+      //     this.uploadSuccess(res, content.file)
+      //   })
+      //   .catch(rej => {
+      //     this.uploadError(rej, content.file)
+      //   })
+      uploadUdFile({
+        multifile: content.file
+      })
+      .then(res => {
+        this.uploadSuccess(res, content.file)
+      })
+      .catch(rej => {
+        this.uploadError(rej, content.file)
+      })
     },
     beforeUpload() {
       this.uploadLoading = true
@@ -107,10 +116,9 @@ export default {
       if (res.code != 200) {
         iMessage.error(`${ this.$i18n.locale === 'zh' ? res.desZh : res.desEn }`)
       } else {
-        this.fileList = []
         clearTimeout(this.timer)
         iMessage.success(`${ file.name } ${ this.language('LK_SHANGCHUANCHENGGONG','上传成功') }`)
-        this.fileList.push({ tpPartAttachmentName: res.data[0].fileName, tpPartAttachmentPath: res.data[0].filePath, size: file.size })
+        this.fileList.push({ tpPartAttachmentId: res.data[0].id, tpPartAttachmentName: res.data[0].name, tpPartAttachmentPath: res.data[0].path, size: file.size })
         this.timer = setTimeout(() => {
           this.patchTpInfoByAttachment()
           clearTimeout(this.timer)
@@ -128,6 +136,7 @@ export default {
       })
         .then(res => {
           if (res.code == 200) {
+            this.fileList = []
             this.getInfoAnnexPage()
           } else {
             iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
@@ -180,19 +189,22 @@ export default {
       })
     },
     preview(row) {
-      downloadFile({
-        applicationName: 'procurereq-service',
-        fileList: row.tpPartAttachmentName
-      })
+      // downloadFile({
+      //   applicationName: 'procurereq-service',
+      //   fileList: row.tpPartAttachmentName
+      // })
+
+      downloadUdFile(row.id)
     },
     async handleDownload() {
       if (!this.multipleSelection.length) return iMessage.warn(this.language('LK_QINGXUANZHEXUYAOXIAZHAIDEFUJIAN','请选择需要下载的附件'))
 
       this.downloadLoading = true
-      await downloadFile({
-        applicationName: 'procurereq-service',
-        fileList: this.multipleSelection.map(item => item.tpPartAttachmentName).join('&fileList=')
-      })
+      // await downloadFile({
+      //   applicationName: 'procurereq-service',
+      //   fileList: this.multipleSelection.map(item => item.tpPartAttachmentName).join('&fileList=')
+      // })
+      await downloadUdFile(this.multipleSelection.map(item => item.id))
 
       this.downloadLoading = false
     }
