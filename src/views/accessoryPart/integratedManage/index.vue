@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-26 11:16:51
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-07-14 14:19:44
+ * @LastEditTime: 2021-07-14 15:05:34
  * @Description: 配件综合管理页面
  * @FilePath: \front-web\src\views\accessoryPart\integratedManage\index.vue
 -->
@@ -89,7 +89,7 @@
           <!------------------------------------------------------------------------>
           <!--                    加入已有RFQ弹窗                                  --->
           <!------------------------------------------------------------------------>
-          <joinRfqDialog ref="joinRfq" :dialogVisible="joinRfqDialogVisible" @changeVisible="changeJoinRfqDialogVisible" @joinRfq="joinRfq" partType="PT17" />
+          <joinRfqDialog ref="joinRfq" :dialogVisible="joinRfqDialogVisible" @changeVisible="changeJoinRfqDialogVisible" @joinRfq="joinRfq" :partType="partProjTypes.PEIJIAN" />
         </div>
       </el-tab-pane>
       <!-- <el-tab-pane label="进度监控" name="progress"></el-tab-pane> -->
