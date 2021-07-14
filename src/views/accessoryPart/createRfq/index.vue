@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-26 13:54:01
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-14 09:38:00
+ * @LastEditTime: 2021-07-14 10:26:04
  * @Description: 创建RFQ界面
        配件：选择的配件需要是分配了询价采购员的且是同一个询价采购员, 创建时能选择LINIE
        附件：选择的附件需要时分配了LINIE且为同一个LINIE, 创建时不能再选择LINIE
@@ -63,7 +63,7 @@
     <!------------------------------------------------------------------------>
     <!--                  添加配件弹窗                                          --->
     <!------------------------------------------------------------------------>
-    <addAccessoryPartDialog :dialogVisible="accDialogVisible" @changeVisible="changeAccDialogVisible" @selectPart="selectPart" />
+    <addAccessoryPartDialog :dialogVisible="accDialogVisible" @changeVisible="changeAccDialogVisible" @selectPart="selectPart" :stuffId="stuffId" />
     <!------------------------------------------------------------------------>
     <!--                  批量更新采购工厂弹窗                                          --->
     <!------------------------------------------------------------------------>
@@ -94,6 +94,7 @@ import { changeProcure } from "@/api/partsprocure/home";
 import {
   dictkey,
 } from "@/api/partsprocure/editordetail";
+import { uniq } from 'lodash'
 export default {
   mixins: [pageMixins],
   components: { iPage, topComponents, iCard, iFormGroup, iFormItem, iText, iButton, iInput, iSelect, iPagination, tableList, addAccessoryPartDialog, updateFactoryDialog, addFileDialog, capacityPlanningDialog },
@@ -118,7 +119,8 @@ export default {
       fromGroup: {},
       linie: '',
       linieDept: '',
-      saveLoading: false
+      saveLoading: false,
+      stuffId: ''
     }
   },
   computed: {
@@ -383,7 +385,7 @@ export default {
      * @return {*}
      */    
     selectPart(selectParts) {
-      this.ids = [...this.ids.split(','), ...selectParts].join(',')
+      this.ids = uniq([...this.ids.split(','), ...selectParts]).join(',')
       this.changeAccDialogVisible(false)
       this.changefileDialogVisible(false)
       this.getList()
@@ -404,6 +406,7 @@ export default {
         if (res?.result) {
           this.tableData = res.data
           this.detailData.rfqName = res.data[0] ? res.data[0].partNum + (res.data[0].partNameZh && ('-'+res.data[0].partNameZh)) + (res.data[0].partNameDe && ('-'+res.data[0].partNameDe)) : ''
+          this.stuffId = res.data[0].stuffId
         } else {
           this.tableData = []
           iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
