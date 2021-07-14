@@ -124,9 +124,10 @@ export default {
           rfqId: id,
           userId: store.state.permission.userInfo.id,
           fileType: 1,
-          fileName: data.fileName,
+          fileName: data.name,
           fileSize: size,
-          filePath: data.filePath
+          filePath: data.path,
+          uploadId: data.id
         }
         const res = await uploadRfqAnnex(req)
         this.resultMessage(res)
