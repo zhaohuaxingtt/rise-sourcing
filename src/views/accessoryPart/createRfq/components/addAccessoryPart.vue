@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-26 14:48:50
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-25 14:01:50
+ * @LastEditTime: 2021-07-14 10:21:32
  * @Description: 添加配件弹窗
  * @FilePath: \front-web\src\views\accessoryPart\createRfq\components\addAccessoryPart.vue
 -->
@@ -18,7 +18,15 @@
     <iSearch @sure="getTableList" @reset="reset">
       <el-form>
         <el-form-item v-for="(item, index) in searchList" :key="index" :label="language(item.key,item.label)">
-          <iSelect v-if="item.type === 'select'" v-model="searchParams[item.value]"></iSelect> 
+          <iSelect v-if="item.type === 'select'" v-model="searchParams[item.value]">
+            <el-option value="" :label="language('ALL','全部')"></el-option>
+            <el-option
+              v-for="item in selectOptions[item.selectOption] || []"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </iSelect> 
           <iInput v-else v-model="searchParams[item.value]"></iInput> 
         </el-form-item>
       </el-form>
@@ -51,11 +59,16 @@ import { tableTitle, searchList } from '../../integratedManage/data'
 import {findBySearches, getCartypeDict} from "@/api/partsrfq/home";
 import { getDictByCode } from '@/api/dictionary'
 import { getAccessoryManageList } from '@/api/accessoryPart/index'
+import { uniq } from 'lodash'
+import {
+  dictkey,
+} from "@/api/partsprocure/editordetail";
 export default {
   mixins: [pageMixins],
   components: { iDialog, iButton, iSelect, iInput, tableList, iSearch, iPagination },
   props: {
-    dialogVisible: { type: Boolean, default: false }
+    dialogVisible: { type: Boolean, default: false },
+    stuffId: {type: String}
   },
   data() {
     return {
@@ -92,16 +105,33 @@ export default {
   },
   created() {
     this.getSelectOptions()
-    this.getCarTypeOptions()
+    // this.getCarTypeOptions()
     this.getCartypeDict()
+    this.getProcureGroup()
   },
   methods: {
+    //获取上方group信息
+    getProcureGroup() {
+      dictkey().then((res) => {
+        if (res.data) {
+          this.fromGroup = res.data;
+          this.selectOptions.carTypeProjectOptions = res.data.CAR_TYPE_PRO.map(item => {
+            return {
+              ...item,
+              value: item.code,
+              key: item.code,
+              name: item.name
+            }
+          })
+        }
+      });
+    },
     // 获取车型字典
     getCartypeDict() {
       getCartypeDict()
       .then(res => {
         if (res.code == 200) {
-          this.selectOptions.cartTypeOptions = 
+          this.selectOptions.carTypeOptions = 
             Array.isArray(res.data) ?
             res.data.map(item => ({
               ...item,
@@ -122,6 +152,14 @@ export default {
     handleSelectPart() {
       if (this.selectParts.length < 1) {
         iMessage.warn(this.language('QINGXUANZEPEIJIAN','请选择配件'))
+        return
+      }
+      const selectStuffId = uniq(this.selectParts.map(item => item.stuffId))
+      if (selectStuffId.length > 1 || selectStuffId[0] !== this.stuffId) {
+        iMessage.warn(this.language('QINGXUANZEXIANGTONGGONGYIZUDEPEIJIAN','请选择相同工艺组的配件'))
+        return
+      } if (!selectStuffId[0]) {
+        iMessage.warn(this.language('QINGXUANZEYIFENPEIGONGYIZUDEPEIJIAN','请选择已分配工艺组的配件'))
         return
       }
       this.$emit('selectPart', this.selectParts.map(item => item.spnrNum))
@@ -152,6 +190,7 @@ export default {
         nomiType: '',
         idState: ''
       }
+      this.sure()
     },
     /**
      * @Description: 车型项目下拉框
@@ -173,7 +212,7 @@ export default {
     getDictionary(optionName, optionType) {
       getDictByCode(optionType).then(res => {
         if(res?.result) {
-          this.selectOptions[optionName] = res.data[0].subDictResultVo.map(item => {
+          this.selectOptions[optionName] = res.data[0]?.subDictResultVo.map(item => {
             return { value: item.code, label: item.name }
           })
         }
@@ -187,7 +226,7 @@ export default {
      */    
     getSelectOptions() {
       // 配件状态
-      this.getDictionary('accessoryTypeOption', 'ACCESSORY_STAT')
+      this.getDictionary('accessoryTypeOption', 'ACCESSORY_STATE')
       // ID状态
       this.getDictionary('accessoryIdStateOption', 'ACCESSORY_ID_STATE')
       // 定点状态
@@ -255,11 +294,11 @@ export default {
   }
   ::v-deep .el-dialog {
     margin-top: 30px !important;
-    height: 90%;
-    .el-dialog__body {
-      height: calc(100% - 70px);
-      overflow: auto;
-    }
+    // height: 90%;
+    // .el-dialog__body {
+    //   height: calc(100% - 70px);
+    //   overflow: auto;
+    // }
   }
 }
 </style>

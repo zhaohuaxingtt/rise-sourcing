@@ -1,7 +1,7 @@
 /*
  * @Author: moxuan
  * @Date: 2021-03-15 17:07:22
- * @LastEditors: Please set LastEditors
+ * @LastEditors: Luoshuang
  * @Description: rfq列表
  */
 
@@ -98,6 +98,23 @@ export function updateBatchSupplierProducePlace(params) {
     return requst({
         url: '/supplier/updateBatchSupplierProducePlace',
         method: 'PUT',
+        data: params
+    })
+}
+
+// 查询时间计划列表
+export function getTimePlanList({rfqId, pageSize, pageNo}) {
+    return requst({
+        url: `/time-plan/list/${rfqId}/${pageSize}/${pageNo}`,
+        method: 'GET'
+    })
+}
+
+// 保存时间计划列表
+export function saveTimePlanList(params) {
+    return requst({
+        url: '/time-plan/save',
+        method: 'POST',
         data: params
     })
 }

@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-25 10:09:50
- * @LastEditTime: 2021-07-09 10:17:32
+ * @LastEditTime: 2021-07-13 17:48:29
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsrfq\editordetail\index.vue
@@ -130,7 +130,7 @@
     <!-------------------------报价助手------------------------------->
     <!--------------------------------------------------------------->
     <rfq-detail-tpzs v-if='navActivtyValue == 2'></rfq-detail-tpzs>
-    <new-rfq-round v-model="newRfqRoundDialog" @refreshBaseInfo="getBaseInfo" v-if="tabShowStatus"/>
+    <new-rfq-round v-model="newRfqRoundDialog" @refreshBaseInfo="getBaseInfo" :dataRes="newRfqRoundDialogRes" v-if="tabShowStatus"/>
 
     <nominateTypeDialog :visible.sync="nominateTypeDialogVisible" @confirm="createDesignate" />
   </iPage>
@@ -196,6 +196,7 @@ export default {
       newRfqOpenValidateLoading: false,
       nominateTypeDialogVisible: false,
       parmarsHasRfq: JSON.parse(JSON.stringify(form)),
+      newRfqRoundDialogRes:{}, 
     }
   },
   created() {
@@ -369,6 +370,7 @@ export default {
         }
         try {
           const res = await getRfqDataList(req)
+          this.newRfqRoundDialogRes = res;
           this.newRfqRoundList = res.data.rfqRoundBdlVO.rfqBdlVOList;
         } catch {
           this.newRfqOpenValidateLoading = false

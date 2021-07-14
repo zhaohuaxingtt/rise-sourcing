@@ -10,7 +10,7 @@ export const inquiryAttachmentTableTitle = [
   { props: "fileName", name: "文件名称", key: "WENJIANMINGCHENG", tooltip: true },
   { props: "fileSize", name: "大小", key: "DAXIAO", tooltip: true },
   { props: "createDate", name: "上传日期", key: "SHANGCHUANRIQI", tooltip: true },
-  { props: "createBy", name: "上传人", key: "SHANGCHUANREN", tooltip: true }
+  { props: "uploader", name: "上传人", key: "SHANGCHUANREN", tooltip: true }
 ]
 
 export const inquiryDrawingTableTitle = [
