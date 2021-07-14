@@ -29,7 +29,7 @@
                     <template #suppliersName="scope">
                         <div>
                             <span class="factoryDesc margin-right5">{{scope.row.suppliersName }}</span>
-                            <el-tooltip effect="light" :content="`${language('LK_FRMPINGJI','FRM评级')}：${scope.row.frmRate}`" v-if="scope.row.isFRMRate === 1">
+                            <el-tooltip effect="light" :content="`${language('LK_FRMPINGJI','FRM评级')}：${scope.row.frmRate}`" v-if="scope.row.isFRMRate === 1 && isPreview!==1">
                             <span>
                                 <icon symbol name="iconzhongyaoxinxitishi" />
                             </span>
