@@ -44,11 +44,11 @@
               </template>
               <template v-if="item.props === 'rate'" v-slot="scope">
                 <div v-if="editStatus">
-                  <iInput v-model="scope.row.rate" />
-                  <!-- <iSelect v-model="scope.row.rate">
+                  <iInput v-if="userInfo.id != 51 && userInfo.id != 42" v-model="scope.row.rate" />
+                  <iSelect v-else v-model="scope.row.rate">
                     <el-option value="合格" :label="language('HEGE', '合格')" />
                     <el-option value="不合格" :label="language('BUHEGE', '不合格')" />
-                  </iSelect> -->
+                  </iSelect>
                 </div>
                 <span v-else>{{ scope.row.rate }}</span>
               </template>
@@ -103,6 +103,17 @@ export default {
     rfqId: {
       type: String,
       require: true
+    }
+  },
+  computed: {
+    // eslint-disable-next-line no-undef
+    ...Vuex.mapState({
+      userInfo: state => state.permission.userInfo,
+    })
+  },
+  created() {
+    if (this.userInfo.id == 51 || this.userInfo.id == 42) {
+      this.deptScoreTableTitle = this.deptScoreTableTitle.filter(item => item.props === "rate" || item.props === "remark" || item.props === "rateStatus")
     }
   },
   data() {
