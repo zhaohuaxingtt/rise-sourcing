@@ -1,7 +1,7 @@
 /*
  * @Author: HaoJiang
  * @Date: 2021-05-27 14:29:09
- * @LastEditTime: 2021-06-17 17:47:42
+ * @LastEditTime: 2021-07-15 11:38:20
  * @LastEditors: Please set LastEditors
  * @Description: 定点管理状态管理，缓存定点管理 - 决策资料 - 预览状态，
  * 其他页面统一通过isPreview这个状态，禁用自己页面编辑
@@ -11,6 +11,11 @@ import {
   findFrontPageSeat,
   updatePresenPageSeat,
 } from '@/api/designate'
+
+// 获取零件列表，用于零件非空校验
+import { 
+  getPartList 
+} from '@/api/designate/designatedetail/rfqdetail/index'
 
 const state = {
   // 定点管理，决策资料 是否处于预览状态
@@ -27,6 +32,8 @@ const state = {
   nomiAppId: '',
   // 该定点申请中是否有单一供应商
   isSingle:false,
+  // 该定点申请RFQ是否加入了零件，前4步进行零件非空校验
+  isPartListNull: false
 };
 
 const mutations = {
@@ -50,6 +57,9 @@ const mutations = {
   },
   SET_SINGLE_STATUS(state,type){
     state.isSingle = type
+  },
+  SET_PART_LIST_NULL(state,type){
+    state.isPartListNull = type
   }
 };
 
@@ -65,6 +75,21 @@ const actions = {
   },
   setNominateId({commit}, id) {
     commit('SET_NOMIAPP_ID', id)
+  },
+  setPartListNull({commit}, isPartListNull) {
+    commit('SET_PART_LIST_NULL', isPartListNull)
+  },
+  // 检查零件清单是否为空
+  checkPartNull({commit, state}) {
+    getPartList(state.nomiAppId).then((res)=>{
+      if(res.code === '200'){
+        commit('SET_PART_LIST_NULL', !(res.data && res.data.length))
+      } else {
+        commit('SET_PART_LIST_NULL', true)
+      }
+    }).catch(e => {
+      commit('SET_PART_LIST_NULL', true)
+    })
   },
   // 定点管理顶部步骤状态
   setNominationStep({commit},params){
@@ -113,7 +138,7 @@ const actions = {
       })
     })
     
-  },
+  }
 }
 
 const getters = {
@@ -124,6 +149,7 @@ const getters = {
   disableNominationType: (state) => state.disableNominationType,
   nomiAppId: (state) => state.nomiAppId,
   isSingle: (state) => state.isSingle,
+  isPartListNull: (state) => state.isPartListNull
 };
 
 export default {

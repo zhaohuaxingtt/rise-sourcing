@@ -44,11 +44,11 @@
               </template>
               <template v-if="item.props === 'rate'" v-slot="scope">
                 <div v-if="editStatus">
-                  <iInput v-model="scope.row.rate" />
-                  <!-- <iSelect v-model="scope.row.rate">
+                  <iInput v-if="userInfo.id != 51 && userInfo.id != 42" v-model="scope.row.rate" />
+                  <iSelect v-else v-model="scope.row.rate">
                     <el-option value="合格" :label="language('HEGE', '合格')" />
                     <el-option value="不合格" :label="language('BUHEGE', '不合格')" />
-                  </iSelect> -->
+                  </iSelect>
                 </div>
                 <span v-else>{{ scope.row.rate }}</span>
               </template>
@@ -72,7 +72,7 @@
         </template>
       </el-table>
     </div>
-    <forwardDialog ref="forwardDialog" :visible.sync="forwardDialogVisible" @confirm="confirmForward" :userDeptType="userDeptType" />
+    <forwardDialog ref="forwardDialog" :visible.sync="forwardDialogVisible" @confirm="confirmForward" />
     <rejectDialog ref="rejectDialog" :visible.sync="rejectDialogVisible" @confirm="confirmReject" />
     <remarkDialog ref="remarkDialog" :visible.sync="remarkDialogVisible" :data="currentRow.memo" @confirm="confirmRemark" @cancel="currentRow = {}" />
   </iCard>
@@ -86,7 +86,7 @@ import remarkDialog from "@/views/supplierscore/components/remarkDialog"
 import { pageMixins } from "@/utils/pageMixins"
 import { scoreTableTitle as tableTitle, deptScoreTableTitle } from "../data"
 import { cloneDeep, isEqual } from "lodash"
-import { getRfqBdlRatingsByCurrentDept, forward, backRfqBdlRatings, submitRfqBdlRatings, approveRfqBdlRatings, rejectRfqBdlRatings, updateRfqBdlRatings, updateRfqBdlRatingMemo, findRateTagForCurrentUser } from "@/api/supplierscore"
+import { getRfqBdlRatingsByCurrentDept, forward, backRfqBdlRatings, submitRfqBdlRatings, approveRfqBdlRatings, rejectRfqBdlRatings, updateRfqBdlRatings, updateRfqBdlRatingMemo } from "@/api/supplierscore"
 
 export default {
   components: {
@@ -103,6 +103,17 @@ export default {
     rfqId: {
       type: String,
       require: true
+    }
+  },
+  computed: {
+    // eslint-disable-next-line no-undef
+    ...Vuex.mapState({
+      userInfo: state => state.permission.userInfo,
+    })
+  },
+  created() {
+    if (this.userInfo.id == 51 || this.userInfo.id == 42) {
+      this.deptScoreTableTitle = this.deptScoreTableTitle.filter(item => item.props === "rate" || item.props === "remark" || item.props === "rateStatus")
     }
   },
   data() {
@@ -123,18 +134,9 @@ export default {
       approveLoading: false,
       rejectDialogVisible: false,
       saveLoading: false,
-      userDeptType: ""
     }
   },
   methods: {
-    findRateTagForCurrentUser() {
-      findRateTagForCurrentUser()
-      .then(res => {
-        if (res.code == 200 && res.data) {
-          this.userDeptType = res.data
-        }
-      })
-    },
     getRfqBdlRatingsByCurrentDept() {
       this.loading = true
       getRfqBdlRatingsByCurrentDept({

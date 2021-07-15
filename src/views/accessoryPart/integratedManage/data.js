@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-26 11:16:58
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-14 09:53:28
+ * @LastEditTime: 2021-07-15 15:04:41
  * @Description: 
  * @FilePath: \front-web\src\views\accessoryPart\integratedManage\data.js
  */
@@ -52,7 +52,7 @@ export const searchList = [
   {value: 'respLINIE', label: 'LINIE', type: 'input', key: 'LINIE',},
   {value: 'csfUserDept', label: '询价科室', type: 'input',key: 'XUNJIAKESHI'},
   {value: 'csfUserId', label: '询价采购员', type: 'input', key: 'XUNJIACAIGOUYUAN',},
-  {value: 'partStatus', label: '零件状态', type: 'select', key: 'LINGJIANZHUANGTAI', selectOption: 'partStateOption'},
+  {value: 'accessoryStatus', label: '零件状态', type: 'select', key: 'LINGJIANZHUANGTAI', selectOption: 'partStateOption'},
   // {value: 'partState', label: '合同状态', type: 'select', key: 'HETONGZHUANGTAI', selectOption: 'contactStateOption'},
   // {value: 'cfTargetPrice', label: '是否有财务目标价', type: 'select', key: 'SHIFOUYOUCAIWUMUBIAOJIA', selectOption: 'yesOrNoOption'},
   // {value: 'nomiType', label: '定点状态', type: 'select', key: 'DINGDIANZHUANGTAI', selectOption: 'nominateStateOption'},

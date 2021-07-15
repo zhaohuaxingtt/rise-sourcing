@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-07 09:35:37
- * @LastEditTime: 2021-07-08 17:31:30
+ * @LastEditTime: 2021-07-15 14:29:49
  * @LastEditors: Please set LastEditors
  * @Description: 扩产能天，周，年表格
  * @FilePath: /front-web/src/views/designate/designatedetail/decisionData/rsCapacityExpan/components/capacity.vue
@@ -110,10 +110,10 @@ export default {
         this.dataList.map((o, index) => {
           Vue.set(o, 'capacityNormDay', data[index] && data[index].capacityNormDay)
           Vue.set(o, 'capacityMaxDay', data[index] && data[index].capacityMaxDay)
-          Vue.set(o, 'capacityNormWeek', data[index] && data[index].capacityMaxDay)
-          Vue.set(o, 'capacityMaxWeek', data[index] && data[index].capacityMaxDay)
-          Vue.set(o, 'capacityNormYear', data[index] && data[index].capacityMaxDay)
-          Vue.set(o, 'capacityMaxYear', data[index] && data[index].capacityMaxDay)
+          Vue.set(o, 'capacityNormWeek', data[index] && data[index].capacityNormWeek)
+          Vue.set(o, 'capacityMaxWeek', data[index] && data[index].capacityMaxWeek)
+          Vue.set(o, 'capacityNormYear', data[index] && data[index].capacityNormYear)
+          Vue.set(o, 'capacityMaxYear', data[index] && data[index].capacityMaxYear)
           return o
         })
       }
