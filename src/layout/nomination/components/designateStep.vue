@@ -168,14 +168,15 @@ export default {
             const path = item.path
             // 不允许跳转到未开始的步骤
             if (id > this.phaseType + 1) return
-            // 合理的跳转到下一步
-            if (id === this.phaseType + 1) {
-                this.toNextStep()
-                return
-            }
+            console.log(this.$store.getters.isPartListNull, item.path)
             // 前4步零件非空校验不通过
             if (this.$store.getters.isPartListNull && item.path !== '/designate/rfqdetail') {
                 iMessage.warn(this.language('NOMILINGJIANWEIKONGJINXAIYIBUTIXING','当前零件清单未勾选任何零件，请至少勾选一个零件后再进行操作！'))
+                return
+            }
+             // 合理的跳转到下一步
+            if (id === this.phaseType + 1) {
+                this.toNextStep()
                 return
             }
             // 已完成的步骤随便跳
