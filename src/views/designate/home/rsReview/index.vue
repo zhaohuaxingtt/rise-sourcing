@@ -10,7 +10,7 @@
     <!-- 筛选框 -->
     <div style="clear: both"></div>
     <!-- 搜索区 -->
-    <search @search="getFetchData" :carTypeList="carTypeList" ref="searchForm" />
+    <search @search="handSearch" :carTypeList="carTypeList" ref="searchForm" />
     <!-- 表格 -->
     <iCard class="designateTable">
       <div class="margin-bottom20 clearFloat">
@@ -94,7 +94,7 @@
       
       <!-- 一致性校验 -->
       <template #isPriceConsistent="scope">
-        <span>{{scope.row.isPriceConsistent ? '通过' : '不通过'}}</span>
+        <span>{{[null, undefined].includes(scope.row.isPriceConsistent) ? '' : (scope.row.isPriceConsistent ? '通过' : '不通过')}}</span>
       </template>
 
       <!-- 定点日期 -->
@@ -108,8 +108,8 @@
       <!-- SEL单据确认状态 -->
       <template #selStatus="scope">
         <div>
-          <a href="javascript:;" class="selStatus-link" @click="confirmSelSheet(scope.row)" v-if="scope.row.selStatus && scope.row.selStatus.code === 'Confirmed'">{{scope.row.selStatus && scope.row.selStatus.desc || scope.row.selStatus}}</a>
-          <a href="javascript:;" class="selStatus-link" @click="confirmSelSheet(scope.row)" v-else-if="scope.row.selStatus && scope.row.selStatus.code === 'Unconfirmed'">{{scope.row.selStatus && scope.row.selStatus.desc || scope.row.selStatus}}</a>
+          <a href="javascript:;" class="selStatus-link" @click="confirmSelSheet(scope.row)" v-if="scope.row.selStatus && scope.row.selStatus.code === 'CONFIRMED'">{{scope.row.selStatus && scope.row.selStatus.desc || scope.row.selStatus}}</a>
+          <a href="javascript:;" class="selStatus-link" @click="confirmSelSheet(scope.row)" v-else-if="scope.row.selStatus && scope.row.selStatus.code === 'UNCONFIRMED'">{{scope.row.selStatus && scope.row.selStatus.desc || scope.row.selStatus}}</a>
           <span v-else>{{scope.row.selStatus && scope.row.selStatus.desc || scope.row.selStatus}}</span>
         </div>
       </template>
@@ -185,6 +185,7 @@ export default {
       selDialogVisibal: false,
       // 签字单菜单
       signMenu,
+      params: {}
     }
   },
   components: {
@@ -204,6 +205,10 @@ export default {
     this.getCarTypePro()
   },
   methods: {
+    handSearch() {
+      this.page.currPage = 1
+      this.getFetchData()
+    },
     toPath(path) {
       // 新增签字单
       if (path === '/sourcing/partsnomination/signSheet/details?mode=add') {

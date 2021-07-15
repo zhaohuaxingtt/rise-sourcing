@@ -257,8 +257,12 @@ export default {
     iDatePicker
   },
   mounted() {
+    this.form = {}
     // 获取下拉枚举值
     this.getOptions()
+  },
+  beforeDestroy() {
+    this.form = {}
   },
   methods: {
     sure() {

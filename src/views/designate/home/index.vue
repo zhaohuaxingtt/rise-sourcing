@@ -10,7 +10,7 @@
     <!-- 筛选框 -->
     <div style="clear: both"></div>
     <!-- 搜索区 -->
-    <search @search="handSearch" :carTypeList="carTypeList" />
+    <search @search="handSearch" :carTypeList="carTypeList" ref="searchForm" />
     <!-- 表格 -->
     <iCard class="designateTable">
       <div class="margin-bottom20 clearFloat">
@@ -96,9 +96,17 @@
       <template #nominateProcessType="scope">
         <span>{{(scope.row.nominateProcessType && scope.row.nominateProcessType.desc) || ''}}</span>
       </template>
-      <!-- 定点类型 -->
+      <!-- 状态 -->
       <template #applicationStatus="scope">
         <span>{{(scope.row.applicationStatus && scope.row.applicationStatus.desc) || ''}}</span>
+      </template>
+      <!-- 项目类型 -->
+      <template #partProjType="scope">
+        <span>{{(scope.row.partProjType && scope.row.partProjType.desc) || ''}}</span>
+      </template>
+      <!-- 会议状态 -->
+      <template #meetingStatus="scope">
+        <span>{{(scope.row.meetingStatus && scope.row.meetingStatus.desc) || ''}}</span>
       </template>
 
       <!-- re冻结日期 -->
@@ -108,7 +116,7 @@
       
       <!-- 一致性校验 -->
       <template #isPriceConsistent="scope">
-        <span>{{scope.row.isPriceConsistent === null ? '' : (scope.row.isPriceConsistent ? '通过' : '不通过')}}</span>
+        <span>{{[null, undefined].includes(scope.row.isPriceConsistent) ? '' : (scope.row.isPriceConsistent ? '通过' : '不通过')}}</span>
       </template>
       <!-- SEL单据确认状态 -->
       <template #selStatus="scope">
@@ -117,7 +125,7 @@
             href="javascript:;" 
             class="selStatus-link" 
             @click="confirmSelSheet(scope.row)" 
-            v-if="scope.row.selStatus && scope.row.selStatus.code === 'Unconfirmed' && curentUserRole.includes('9')">
+            v-if="scope.row.selStatus && scope.row.selStatus.code === 'UNCONFIRMED'">
           {{scope.row.selStatus && scope.row.selStatus.desc || scope.row.selStatus}}
         </a>
           <span v-else>{{scope.row.selStatus && scope.row.selStatus.desc || scope.row.selStatus}}</span>
@@ -198,8 +206,7 @@ export default {
       carTypeList: [],
       // 定点管理员上传sel状态待确认的sel附件列表
       selNominateId: '',
-      selDialogVisibal: false,
-      params: {}
+      selDialogVisibal: false
     }
   },
   components: {
@@ -254,7 +261,6 @@ export default {
       })
     },
     handSearch(data) {
-      this.params = data
       this.page.currPage = 1
       this.getFetchData()
     },
@@ -262,7 +268,7 @@ export default {
     getFetchData() {
       this.tableLoading = true
       getNominationList({
-        ...this.params,
+        ...this.$refs.searchForm.form,
         current: this.page.currPage,
         size: this.page.pageSize
       }).then(res => {
