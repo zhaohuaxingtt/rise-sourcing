@@ -463,22 +463,9 @@ export default {
         rsAttachExport() {
             const { query } = this.$route;
             const {desinateId} = query;
-            const data = {
-                capacityExpRsDTO: {
-                    nominateAppId:Number(desinateId),
-                },
-                nominateAppId:Number(desinateId),
-            }
-            rsAttachExport(data).then((res)=>{
-                if (res.code === '200') {
-                    iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
-                } else {
-                    iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
-                }
-                
-            }).catch(e => {
-                iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
-            })
+            const BASEURL = window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' + window.location.port : '')
+            const fileURL = `${BASEURL}${process.env.VUE_APP_RFQ}/rs/downCapacityExpRs?nominateAppId=${desinateId}`
+            window.open(fileURL)
         },
         doExport() {
             const pathName = this.$route.name
