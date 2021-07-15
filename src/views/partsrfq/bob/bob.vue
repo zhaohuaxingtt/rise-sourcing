@@ -215,7 +215,7 @@ export default {
     initSearchData () {
       const data = this.$store.state.rfq.rfqId
       const status = this.$store.state.rfq.entryStatus
-      if(data && status == 1) this.rfqStatus = true
+      if (data && status == 1) this.rfqStatus = true
       this.form = {
         ...this.form,
         rfq: data
@@ -332,23 +332,24 @@ export default {
         initIn({
           rfqId: this.form.rfq,
         }).then((res) => {
+          // this.$store.dispatch('setSchemeId', res.data);
           this.$router.push({
             path: '/sourcing/partsrfq/bobNew',
             query: {
-              rfqId:res.data,
+              rfqId: res.data,
               newBuild: true,
             },
           })
           loading.close()
         })
-      }else{
-          this.$router.push({
-            path: '/sourcing/partsrfq/bobNew',
-            query: {
-              newBuild: true,
-            },
-          })
-          loading.close()
+      } else {
+        this.$router.push({
+          path: '/sourcing/partsrfq/bobNew',
+          query: {
+            newBuild: true,
+          },
+        })
+        loading.close()
       }
 
     },
