@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-21 09:23:11
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-14 14:27:09
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-07-15 11:29:21
  * @Description: RFQ & 零件清单界面
  * @FilePath: \front-web\src\views\designate\designatedetail\rfqdetail\index.vue
 -->
@@ -179,10 +179,10 @@ export default {
      * @return {*}
      */    
     saveParts() {
-      // if (this.partsSelectedItems.length < 1) {
-      //   iMessage.warn('请选择需要保存的零件')
-      //   return
-      // }
+      if (this.partsSelectedItems.length < 1) {
+        iMessage.warn(this.language('NOMILINGJIANWEIKONGTIXING','定点管理零件不能为空，请选择后再保存'))
+        return
+      }
       this.partsTableLoading = true
       const params = {
         nominateAppId: this.desinateId,
@@ -317,6 +317,8 @@ export default {
      */    
     handlePartsSelectionChange(selectItems){
       this.partsSelectedItems = selectItems
+      // 零件清单标记为空
+      this.$store.dispatch('setPartListNull', !this.partsSelectedItems.length)
     },
     /**
      * @Description: 零件列表点击零件号跳转事件
