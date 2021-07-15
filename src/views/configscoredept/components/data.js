@@ -19,12 +19,12 @@ export const tableTitle = [
 
 export const deptDialogQueryForm = {
   deptNum: "",
-  nameZh: "",
-  nameEn: ""
+  deptNameZh: "",
+  deptNameEn: ""
 }
 
 export const deptDialogTableTitle = [
   { props: "deptNum", name: "部门编号", key: "BUMENBIANHAO", tooltip: true },
-  { props: "nameZh", name: "部门中文名", key: "BUMENZHONGWENMING", tooltip: true },
-  { props: "nameEn", name: "部门英文名", key: "BUMENYINGWENMING", tooltip: true },
+  { props: "deptNameZh", name: "部门中文名", key: "BUMENZHONGWENMING", tooltip: true },
+  { props: "deptNameEn", name: "部门英文名", key: "BUMENYINGWENMING", tooltip: true },
 ]

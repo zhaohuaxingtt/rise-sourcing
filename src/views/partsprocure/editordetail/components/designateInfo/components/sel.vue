@@ -43,7 +43,7 @@ import { iDialog, iButton, iPagination, iMessage } from 'rise'
 import tableList from '@/views/designate/designatedetail/components/tableList'
 import { fileTableTitle } from '../data'
 import { pageMixins } from "@/utils/pageMixins"
-import { downloadFile } from '@/api/file'
+import { downloadFile, downloadUdFile } from '@/api/file'
 import { getNominateFileInfo } from "@/api/partsprocure/editordetail"
 export default {
   mixins: [pageMixins],
@@ -69,7 +69,7 @@ export default {
   },
   methods: {
     openPage(row) {
-      this.handleFileDownload([row.fileName])
+      this.handleFileDownload([row.uploadId])
     },
     /**
      * @Description: 文件下载
@@ -81,11 +81,12 @@ export default {
       if (fileList.length < 1) {
         return
       }
-      const params = {
-        applicationName: 'rise',
-        fileList: fileList
-      }
-      await downloadFile(params)
+      // const params = {
+      //   applicationName: 'rise',
+      //   fileList: fileList
+      // }
+      // await downloadFile(params)
+      await downloadUdFile(fileList)
     },
     /**
      * @Description: 下载文件
@@ -98,7 +99,7 @@ export default {
         iMessage.warn(this.language('QINGXUANZEXUYAOXIAZAIDEWENJIAN','请选择需要下载的文件'))
         return
       }
-      this.handleFileDownload(this.selectData.map(item => item.fileName))
+      this.handleFileDownload(this.selectData.map(item => item.uploadId))
     },
     /**
      * @Description: 处理表格选中

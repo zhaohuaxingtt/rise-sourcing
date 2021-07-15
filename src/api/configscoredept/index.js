@@ -37,10 +37,18 @@ export function deleteRfqRateDeparts(params) {
 }
 
 // 获取所有部门列表
+// export function getAllDept(params) {
+//   return requst({
+//     url: "/rfq-rate-departs/getAllDept",
+//     method: "POST",
+//     data: params
+//   })
+// }
+
 export function getAllDept(params) {
   return requst({
-    url: "/rfq-rate-departs/getAllDept",
-    method: "POST",
-    data: params
+    url: "/rfq-bdl-ratings/findAllRateDeptInfo",
+    method: "GET",
+    params
   })
 }

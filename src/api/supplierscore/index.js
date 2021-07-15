@@ -18,9 +18,17 @@ export function findDropDownBox(params) {
 }
 
 // 获取评分人列表
-export function getRater() {
+// export function getRater() {
+//   return requst({
+//     url: `/rfq-bdl-ratings/getRater`,
+//     method: "GET"
+//   })
+// }
+
+// 获取评分人列表
+export function findRaterByCurrentUser() {
   return requst({
-    url: `/rfq-bdl-ratings/getRater`,
+    url: `/rfq-bdl-ratings/findRaterByCurrentUser`,
     method: "GET"
   })
 }

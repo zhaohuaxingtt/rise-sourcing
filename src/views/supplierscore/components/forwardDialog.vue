@@ -32,7 +32,7 @@
 
 <script>
 import { iDialog, iSelect, iFormGroup, iFormItem, iButton, iMessage } from "@/components"
-import { getRater } from "@/api/supplierscore"
+import { getRater, findRaterByCurrentUser } from "@/api/supplierscore"
 
 export default {
   components: { iDialog, iSelect, iFormGroup, iFormItem, iButton },
@@ -49,7 +49,8 @@ export default {
   watch: {
     status(nv) {
       if (nv) {
-        this.getRater()
+        // this.getRater()
+        this.findRaterByCurrentUser()
       } else {
         this.userId = ""
         this.options = []
@@ -114,6 +115,27 @@ export default {
               ]
               break
             default:
+          }
+        } else {
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
+
+        this.loading = false
+      })
+      .catch(() => this.loading = false)
+    },
+    findRaterByCurrentUser() {
+      this.loading = true
+      findRaterByCurrentUser()
+      .then(res => {
+        if (res.code == 200) {
+          if (Array.isArray(res.data.raterList) && res.data.raterList.length > 0) {
+            this.options = res.data.raterList.map(item => ({
+              ...item,
+              key: item.id,
+              label: item.nameZh,
+              value: item.id
+            }))
           }
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
