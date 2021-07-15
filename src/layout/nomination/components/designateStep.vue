@@ -126,6 +126,10 @@ export default {
         this.designateType && (this.$store.dispatch('setNominationType', this.designateType || 'MEETING'))
         // 缓存定点ID
         this.$store.dispatch('setNominateId', this.desinateId || '')
+        // 校验定点下面是否有零件，前4步需要零件非空校验
+        if(['designateRfqdetail', 'designateSuggestion', 'designateSupplier', 'approvalPersonAndRecord','designateDecisionData'].includes(name)) {
+            this.$store.dispatch('checkPartNull', {})
+        }
 
     },
      computed:{
@@ -160,7 +164,6 @@ export default {
     methods:{
         // 跳转到任何已完成的定点步骤
         toAnyNomiStep(item) {
-            console.log(item, this.phaseType)
             const id = item.id
             const path = item.path
             // 不允许跳转到未开始的步骤
@@ -168,6 +171,11 @@ export default {
             // 合理的跳转到下一步
             if (id === this.phaseType + 1) {
                 this.toNextStep()
+                return
+            }
+            // 前4步零件非空校验不通过
+            if (this.$store.getters.isPartListNull && item.path !== '/designate/rfqdetail') {
+                iMessage.warn(this.language('NOMILINGJIANWEIKONGJINXAIYIBUTIXING','当前零件清单未勾选任何零件，请至少勾选一个零件后再进行操作！'))
                 return
             }
             // 已完成的步骤随便跳
