@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-21 09:23:11
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-07-15 11:29:21
+ * @LastEditTime: 2021-07-15 13:37:26
  * @Description: RFQ & 零件清单界面
  * @FilePath: \front-web\src\views\designate\designatedetail\rfqdetail\index.vue
 -->
@@ -181,7 +181,7 @@ export default {
      */    
     saveParts() {
       if (this.partsSelectedItems.length < 1) {
-        iMessage.warn(this.language('NOMILINGJIANWEIKONGTIXING','定点管理零件不能为空，请选择后再保存'))
+        iMessage.warn(this.language('NOMILINGJIANWEIKONGTIXING','当前零件清单未勾选任何零件，请至少勾选一个零件后再进行操作！'))
         return
       }
       this.partsTableLoading = true

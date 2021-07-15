@@ -175,7 +175,7 @@ export default {
             }
             // 前4步零件非空校验不通过
             if (this.$store.getters.isPartListNull && item.path !== '/designate/rfqdetail') {
-                iMessage.warn(this.language('NOMILINGJIANWEIKONGJINXAIYIBUTIXING','定点管理零件为空，请在RFQ&零件清单添加零件再重试'))
+                iMessage.warn(this.language('NOMILINGJIANWEIKONGJINXAIYIBUTIXING','当前零件清单未勾选任何零件，请至少勾选一个零件后再进行操作！'))
                 return
             }
             // 已完成的步骤随便跳
