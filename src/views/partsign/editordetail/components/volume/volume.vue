@@ -114,8 +114,15 @@ export default {
     },
     jump() {
       // this.versionVisible = true
-      window.open(`/#/sourcing/partsign/volumeVersion?tpId=${ this.data.tpPartID }`, '_blank')
+      // window.open(`/#/sourcing/partsign/volumeVersion?tpId=${ this.data.tpPartID }`, '_blank')
       // this.$router.push('/partsign/version')
+      const route = this.$router.resolve({
+        path: "/sourcing/partsign/volumeVersion",
+        query: {
+          tpId: this.data.tpPartID
+        }
+      })
+      window.open(route.href, "_blank")
     },
     handleSelectionChange(list) {
       this.multipleSelection = list

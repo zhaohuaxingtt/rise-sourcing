@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-05-25 21:01:30
- * @LastEditTime: 2021-07-14 21:52:26
+ * @LastEditTime: 2021-07-15 00:03:20
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringTracking\components\data.js
@@ -122,7 +122,7 @@ export function buildTitleTabel(params) {
    //评分数据
    let supplierRateTitle = []
    try {
-    if(params.rateTableHead) throw 'rateTableHead 无数据';
+    if(!params.rateTableHead) throw 'rateTableHead 无数据';
     params.rateTableHead.forEach(items=>{
       const temlateData = JSON.parse(JSON.stringify(tableTile))
       temlateData.name = items.rateTableHeadDetailVO.rateDepartName
@@ -130,9 +130,9 @@ export function buildTitleTabel(params) {
       supplierRateTitle.push(temlateData)
    })
    } catch (error) {
+    console.log(error)
     supplierRateTitle = [{props:'ep',name:'EP',key: '',tooltip:false, width:'100'},{props:'mq',name:'MQ',key: '',tooltip:false, width:'100'},{props:'pl',name:'PL',key: '',tooltip:false, width:'100'}]
    }
-   console.log([...supplierTitle,...supplierRateTitle])
    return [...supplierTitle,...supplierRateTitle]
 }
 

@@ -55,7 +55,7 @@ import {
   // getdDecisiondataDaringList,
   getdDecisiondataDaringListAll
 } from '@/api/designate/decisiondata/drawing'
-import { downloadFile } from '@/api/file'
+import { downloadFile, downloadUdFile } from '@/api/file'
 import { attachMixins } from '@/utils/attachMixins'
 
 export default {
@@ -107,11 +107,12 @@ export default {
 
     // 下载
     dowloadSingleFile(item){
-      const { fileName } = item;
-      downloadFile({
-        applicationName: "rise",
-        fileList: fileName
-      });
+      // const { fileName } = item;
+      // downloadFile({
+      //   applicationName: "rise",
+      //   fileList: fileName
+      // });
+      downloadUdFile(item.uploadId)
     }
   },
   watch: {
