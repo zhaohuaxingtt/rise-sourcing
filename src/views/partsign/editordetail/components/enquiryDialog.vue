@@ -34,7 +34,7 @@ import tableList from './tableList'
 import { enquiryTableTitle as tableTitle } from './data'
 import { getAttachment } from '@/api/partsign/editordetail'
 import { pageMixins } from '@/utils/pageMixins'
-import { downloadFile } from '@/api/file'
+import { downloadFile, downloadUdFile } from '@/api/file'
 import filters from '@/utils/filters'
 
 export default {
@@ -110,16 +110,18 @@ export default {
         return iMessage.warn(this.language('LK_QINGXUANZHEXUYAOXIAZHAIWENJIAN','请选择需要下载文件'))
       }
 
-      downloadFile({
-        applicationName: 'rise-procurereq-service',
-        fileList: this.multipleSelection.map(item => item.tpPartAttachmentName).join('&fileList=')
-      })
+      // downloadFile({
+      //   applicationName: 'rise-procurereq-service',
+      //   fileList: this.multipleSelection.map(item => item.tpPartAttachmentName).join('&fileList=')
+      // })
+      downloadUdFile(this.multipleSelection.map(item => item.uploadId))
     },
     preview(row) {
-      downloadFile({
-        applicationName: 'rise-procurereq-service',
-        fileList: row.tpPartAttachmentName
-      })
+      // downloadFile({
+      //   applicationName: 'rise-procurereq-service',
+      //   fileList: row.tpPartAttachmentName
+      // })
+      downloadUdFile(row.item.uploadId)
     },
   }
 }

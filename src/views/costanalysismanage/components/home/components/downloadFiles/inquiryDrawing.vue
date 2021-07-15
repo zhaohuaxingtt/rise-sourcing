@@ -47,7 +47,7 @@ import { pageMixins } from "@/utils/pageMixins"
 import { DrawingTitle } from '../data'
 // import { getFileHistory } from "@/api/costanalysismanage/rfqdetail"
 import { findByRfqs } from "@/api/rfqManageMent/rfqDetail"
-import { downloadFile } from '@/api/file'
+import { downloadFile, downloadUdFile } from '@/api/file'
 
 export default {
     name:'inquiryDrawing',
@@ -93,14 +93,16 @@ export default {
             if(!selectItems.length){
             iMessage.warn(this.language('LK_QINGXUANZHEXUYAOXIAZHAIDEFUJIAN','请选择需要下载的附件'));
             }else{
-                const list = selectItems.map((item)=>item.tpPartAttachmentName);
-                this.download(list);
+                // const list = selectItems.map((item)=>item.tpPartAttachmentName);
+                // this.download(list);
+                downloadUdFile(selectItems.map(item => item.uploadId))
             }
         },
         // 单文件下载
         downloadLine(row){
-            const {tpPartAttachmentName} = row;
-            this.download([tpPartAttachmentName]);
+            // const {tpPartAttachmentName} = row;
+            // this.download([tpPartAttachmentName]);
+            downloadUdFile(row.uploadId)
         },
         // 获取列表
         async getList(){

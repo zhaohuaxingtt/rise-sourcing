@@ -44,7 +44,7 @@ import tablelist from 'pages/partsrfq/components/tablelist'
 import {inquiryDrawingTableTitle} from "./data";
 import {pageMixins} from "@/utils/pageMixins";
 import {getRfqDataList} from "@/api/partsrfq/home";
-import {downloadFile} from "@/api/file";
+import {downloadFile, downloadUdFile} from "@/api/file";
 
 
 export default {
@@ -95,28 +95,30 @@ export default {
     async download() {
       if (this.selectTableData.length == 0)
         return iMessage.warn(this.language('LK_QINGXUANZE','请选择'))
-      const fileList = this.selectTableData.map(item => {
-        return item.tpPartAttachmentName
-      })
-      const req = {
-        applicationName: 'procurereq-service',
-        fileList,
-        /*applicationName: 'common-function-test',
-        fileList: ['test (4).txt']*/
-      }
-      await downloadFile(req)
+      // const fileList = this.selectTableData.map(item => {
+      //   return item.tpPartAttachmentName
+      // })
+      // const req = {
+      //   applicationName: 'procurereq-service',
+      //   fileList,
+      //   /*applicationName: 'common-function-test',
+      //   fileList: ['test (4).txt']*/
+      // }
+      // await downloadFile(req)
+      await downloadUdFile(this.selectTableData.map(item => item.uploadId))
     },
     //修改表格改动列
     handleSelectionChange(val) {
       this.selectTableData = val;
     },
     async handleOpenPage(row) {
-      const req = {
-        applicationName: 'procurereq-service',
-        fileList: [row.tpPartAttachmentName]
-      }
+      // const req = {
+      //   applicationName: 'procurereq-service',
+      //   fileList: [row.tpPartAttachmentName]
+      // }
       this.downloadLoading = true
-      await downloadFile(req)
+      // await downloadFile(req)
+      await downloadUdFile(row.uploadId)
       this.downloadLoading = false
     }
   }

@@ -44,11 +44,11 @@
               </template>
               <template v-if="item.props === 'rate'" v-slot="scope">
                 <div v-if="editStatus">
-                  <iInput v-if="userInfo.id != 51 && userInfo.id != 49" v-model="scope.row.rate" />
-                  <iSelect v-else v-model="scope.row.rate">
+                  <iInput v-model="scope.row.rate" />
+                  <!-- <iSelect v-model="scope.row.rate">
                     <el-option value="合格" :label="language('HEGE', '合格')" />
                     <el-option value="不合格" :label="language('BUHEGE', '不合格')" />
-                  </iSelect>
+                  </iSelect> -->
                 </div>
                 <span v-else>{{ scope.row.rate }}</span>
               </template>
@@ -110,11 +110,6 @@ export default {
     ...Vuex.mapState({
       userInfo: state => state.permission.userInfo,
     })
-  },
-  created() {
-    if (this.userInfo.id == 51 || this.userInfo.id == 49) {
-      this.deptScoreTableTitle = this.deptScoreTableTitle.filter(item => item.props === "rate" || item.props === "remark" || item.props === "rateStatus")
-    }
   },
   data() {
     return {
@@ -234,6 +229,8 @@ export default {
     },
     // 批准
     handleApprove() {
+      // if () {}
+
       this.approveLoading = true
 
       approveRfqBdlRatings({
@@ -256,6 +253,8 @@ export default {
     },
     // 拒绝
     handleReject() {
+      // if () {}
+
       this.rejectDialogVisible = true
     },
     // 确认拒绝
