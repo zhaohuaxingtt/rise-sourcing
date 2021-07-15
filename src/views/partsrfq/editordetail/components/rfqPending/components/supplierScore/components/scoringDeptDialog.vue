@@ -8,29 +8,29 @@
         <iButton @click="handleSave" :loading="saveLoading">{{ language('LK_BAOCUN','保存') }}</iButton>
       </div>
       <tableList index height="83%" class="table margin-top20" :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="loading" :cellClassName="deleteLine" @handleSelectionChange="handleSelectionChange">
-        <template #rateDepart="scope">
+        <template #tagName="scope">
           <!-- <iSelect v-model="scope.row.rateDepart" :disabled="scope.row.deleteStatus || customAction" @change="handleClearAll(scope.row)">
             <el-option v-for="(item, $index) in Object.keys(deptScoringMap)" :key="$index" :label="item" :value="item"></el-option>
           </iSelect> -->
-          <iSelect v-model="scope.row.rateDepart" :disabled="scope.row.deleteStatus || customAction" @change="handleClearAll($event, scope.row)">
+          <iSelect v-model="scope.row.tagName" :disabled="scope.row.deleteStatus || customAction" @change="handleClearAll($event, scope.row)">
             <el-option v-for="(item, $index) in scoreDeptOptions" :key="$index" :label="item.label" :value="item.value"></el-option>
           </iSelect>
         </template>
         <template #rateDepartNum="scope">
-          <iSelect v-if="scope.row.rateDepart" v-model="scope.row.rateDepartNum" :disabled="scope.row.deleteStatus || customAction" @change="handleClearCoordinatorAndRater(scope.row)">
-            <el-option v-for="(item, $index) in deptMap[scope.row.rateDepart] ? Object.values(deptMap[scope.row.rateDepart]) : []" :key="$index" :label="item.label" :value="item.value"></el-option>
+          <iSelect v-if="scope.row.tagName" v-model="scope.row.rateDepartNum" :disabled="scope.row.deleteStatus || customAction" @change="handleClearCoordinatorAndRater(scope.row)">
+            <el-option v-for="(item, $index) in deptMap[scope.row.tagName] ? Object.values(deptMap[scope.row.tagName]) : []" :key="$index" :label="item.label" :value="item.value"></el-option>
           </iSelect>
         </template>
         <!-- right 评分人 -->
         <template #raterId="scope">
-          <iSelect v-if="scope.row.rateDepartNum" v-model="scope.row.raterId" :disabled="scope.row.deleteStatus" @change="handleChange($event, deptMap[scope.row.rateDepart][scope.row.rateDepartNum].raterList, scope.row, 'rater')">
-            <el-option v-for="(item, $index) in deptMap[scope.row.rateDepart] && deptMap[scope.row.rateDepart][scope.row.rateDepartNum] ? deptMap[scope.row.rateDepart][scope.row.rateDepartNum].raterList : []" :key="$index" :label="item.label" :value="item.value"></el-option>
+          <iSelect v-if="scope.row.rateDepartNum" v-model="scope.row.raterId" :disabled="scope.row.deleteStatus" @change="handleChange($event, deptMap[scope.row.tagName][scope.row.rateDepartNum].raterList, scope.row, 'rater')">
+            <el-option v-for="(item, $index) in deptMap[scope.row.tagName] && deptMap[scope.row.tagName][scope.row.rateDepartNum] ? deptMap[scope.row.tagName][scope.row.rateDepartNum].raterList : []" :key="$index" :label="item.label" :value="item.value"></el-option>
           </iSelect>
         </template>
         <!-- left 评分人 -->
         <template #coordinatorId="scope"> 
-          <iSelect v-if="scope.row.rateDepartNum" v-model="scope.row.coordinatorId" :disabled="scope.row.deleteStatus" @change="handleChange($event, deptMap[scope.row.rateDepart][scope.row.rateDepartNum].coordinatorList, scope.row, 'coordinator')">
-            <el-option v-for="(item, $index) in deptMap[scope.row.rateDepart] && deptMap[scope.row.rateDepart][scope.row.rateDepartNum] ? deptMap[scope.row.rateDepart][scope.row.rateDepartNum].coordinatorList : []" :key="$index" :label="item.label" :value="item.value"></el-option>
+          <iSelect v-if="scope.row.rateDepartNum" v-model="scope.row.coordinatorId" :disabled="scope.row.deleteStatus" @change="handleChange($event, deptMap[scope.row.tagName][scope.row.rateDepartNum].coordinatorList, scope.row, 'coordinator')">
+            <el-option v-for="(item, $index) in deptMap[scope.row.tagName] && deptMap[scope.row.tagName][scope.row.rateDepartNum] ? deptMap[scope.row.tagName][scope.row.rateDepartNum].coordinatorList : []" :key="$index" :label="item.label" :value="item.value"></el-option>
           </iSelect>
         </template>
       </tableList>
@@ -221,7 +221,7 @@ export default {
           this.tableListData = Array.isArray(res.data) ? res.data : []
 
           if (this.tableListData.length > 0) {
-            this.tableListData.forEach(item => this.findRateDeptInfo(item.rateDepart))
+            this.tableListData.forEach(item => this.findRateDeptInfo(item.tagName))
           }
         } else {
           iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
@@ -236,7 +236,7 @@ export default {
     },
     handleAdd() {
       this.tableListData.push({
-        rateDepart: "", // 评分部门类型
+        // tagName: "", // 评分部门类型
       })
     },
     // 前端样式删除（删除数据不传给后端，保存后刷新数据重绘掉）
@@ -257,19 +257,19 @@ export default {
     handleChange(val, list, row, key) {
       for (let i = 0, item; (item = list[i++]); ) {
         if (item.id == val) {
-          this.$set(row, key, item.value)
-          this.$set(row, 'tagName', item.tagName)
+          this.$set(row, key, item.nameZh)
+          this.$set(row, 'rateDepart', item.rateDepart)
         }
       }
     },
     handleClearAll(value, row) {
       this.findRateDeptInfo(value)
 
-      const keys = ['coordinator', 'coordinatorId', 'rateDepartNum', 'rater', 'raterId', 'tagName']
+      const keys = ['coordinator', 'coordinatorId', 'rateDepartNum', 'rater', 'raterId', 'rateDepart']
       keys.forEach(key => this.$set(row, key, undefined))
     },
     handleClearCoordinatorAndRater(row) {
-      const keys = ['coordinator', 'coordinatorId', 'rater', 'raterId', 'tagName']
+      const keys = ['coordinator', 'coordinatorId', 'rater', 'raterId', 'rateDepart']
       keys.forEach(key => this.$set(row, key, undefined))
     },
     handleSave() {
@@ -342,14 +342,14 @@ export default {
                 label: item.nameZh,
                 value: item.id,
                 key: item.id,
-                tagName: dept.rateTag.desc
+                rateDepart: dept.deptNameZh
               })),
               coordinatorList: dept.coordinatorList.map(item => ({
                 ...item,
                 label: item.nameZh,
                 value: item.id,
                 key: item.id,
-                tagName: dept.rateTag.desc
+                rateDepart: dept.deptNameZh
               }))
             })
           })

@@ -72,7 +72,7 @@
         </template>
       </el-table>
     </div>
-    <forwardDialog ref="forwardDialog" :visible.sync="forwardDialogVisible" @confirm="confirmForward" :userDeptType="userDeptType" />
+    <forwardDialog ref="forwardDialog" :visible.sync="forwardDialogVisible" @confirm="confirmForward" />
     <rejectDialog ref="rejectDialog" :visible.sync="rejectDialogVisible" @confirm="confirmReject" />
     <remarkDialog ref="remarkDialog" :visible.sync="remarkDialogVisible" :data="currentRow.memo" @confirm="confirmRemark" @cancel="currentRow = {}" />
   </iCard>
@@ -86,7 +86,7 @@ import remarkDialog from "@/views/supplierscore/components/remarkDialog"
 import { pageMixins } from "@/utils/pageMixins"
 import { scoreTableTitle as tableTitle, deptScoreTableTitle } from "../data"
 import { cloneDeep, isEqual } from "lodash"
-import { getRfqBdlRatingsByCurrentDept, forward, backRfqBdlRatings, submitRfqBdlRatings, approveRfqBdlRatings, rejectRfqBdlRatings, updateRfqBdlRatings, updateRfqBdlRatingMemo, findRateTagForCurrentUser } from "@/api/supplierscore"
+import { getRfqBdlRatingsByCurrentDept, forward, backRfqBdlRatings, submitRfqBdlRatings, approveRfqBdlRatings, rejectRfqBdlRatings, updateRfqBdlRatings, updateRfqBdlRatingMemo } from "@/api/supplierscore"
 
 export default {
   components: {
@@ -123,18 +123,9 @@ export default {
       approveLoading: false,
       rejectDialogVisible: false,
       saveLoading: false,
-      userDeptType: ""
     }
   },
   methods: {
-    findRateTagForCurrentUser() {
-      findRateTagForCurrentUser()
-      .then(res => {
-        if (res.code == 200 && res.data) {
-          this.userDeptType = res.data
-        }
-      })
-    },
     getRfqBdlRatingsByCurrentDept() {
       this.loading = true
       getRfqBdlRatingsByCurrentDept({
