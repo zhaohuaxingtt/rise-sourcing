@@ -6,10 +6,10 @@
       @close="clearDiolog"
   >
     <div slot="title">
-      <span class="font18 font-weight">{{ $t('TPZS.BAOGAOMINGCHENG') }}</span>
-<!--      <div class="floatright margin-right40">
-        <iButton @click="handleDownload">{{ $t('LK_XIAZAI') }}</iButton>
-      </div>-->
+      <span class="font18 font-weight">{{ fileName }}</span>
+      <!--      <div class="floatright margin-right40">
+              <iButton @click="handleDownload">{{ $t('LK_XIAZAI') }}</iButton>
+            </div>-->
     </div>
     <div class="content" id="content">
       <iframe :src="fileUrl" width="100%" height="700px"/>
@@ -22,7 +22,7 @@ import {iDialog} from 'rise';
 
 export default {
   components: {
-    iDialog
+    iDialog,
   },
   props: {
     value: {type: Boolean},
@@ -30,15 +30,18 @@ export default {
       type: String,
       default: '',
     },
+    fileName: {
+      type: String,
+      default: '',
+    },
   },
   data() {
-    return {
-    };
+    return {};
   },
   methods: {
     clearDiolog() {
       this.$emit('input', false);
-    }
+    },
   },
   watch: {
     value(val) {
