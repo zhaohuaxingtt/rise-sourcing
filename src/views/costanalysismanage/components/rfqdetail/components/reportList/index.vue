@@ -102,13 +102,13 @@ export default {
     },
     methods:{
         // 下载附件
-        // async download(fileList){
-        //      const data = {
-        //       applicationName: 'rise',
-        //       fileList:fileList.join(),
-        //     };
-        //     await downloadFile(data);
-        // },
+        async download(fileList){
+             const data = {
+              applicationName: 'rise',
+              fileList:fileList.join(),
+            };
+            await downloadFile(data);
+        },
         // 单文件下载
         downloadLine(row){
             // const {tpPartAttachmentName} = row;
