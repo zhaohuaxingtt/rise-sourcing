@@ -486,11 +486,11 @@ export const tabtitle = [
 ]
 
 export const budgetManagement3rd = [
-    {value: 1, message: 0, name: "车型项目", activePath: 'carTypeOverview', url: '/tooling/budgetManagement/carTypeOverview', key: "LK_CHEXINGXIANGMU"},
-    {value: 2, message: 0, name: "Common Sourcing", activePath: 'commonSourcing', url: '/tooling/budgetManagement/commonSourcing', key: "Common Sourcing"},
-    {value: 3, message: 0, name: "付款看板", activePath: 'payBlock', url: '/tooling/investmentAdmin/payBlock', key: "LK_FUKUANKANBAN"},
-    {value: 4, message: 0, name: "年度计划", activePath: 'yearlyPlan', url: '/tooling/investmentAdmin/yearlyPlan', key: "LK_NIANDUJIHUA"},
-    {value: 5, message: 0, name: "月度计划", activePath: 'monthlyPlan', url: '/tooling/investmentAdmin/monthlyPlan', key: "LK_YUEDUJIHUA"},
+    {value: 1, message: 0, name: "车型项目", activePath: 'carTypeOverview', url: '/tooling/budgetManagement/carTypeOverview', key: "LK_CHEXINGXIANGMU", permissionKey: "TOOLING_BUDGET_OVERVIEW"},
+    {value: 2, message: 0, name: "Common Sourcing", activePath: 'commonSourcing', url: '/tooling/budgetManagement/commonSourcing', key: "Common Sourcing", permissionKey: "TOOLING_BUDGET_COMMONSOURCING_MODELBAGBUDGET"},
+    {value: 3, message: 0, name: "付款看板", activePath: 'payBlock', url: '/tooling/investmentAdmin/payBlock', key: "LK_FUKUANKANBAN", permissionKey: "TOOLING_PAYMENTPLAN_PAYMENTBOARD"},
+    {value: 4, message: 0, name: "年度计划", activePath: 'yearlyPlan', url: '/tooling/investmentAdmin/yearlyPlan', key: "LK_NIANDUJIHUA", permissionKey: "TOOLING_PAYMENTPLAN_YEAR"},
+    {value: 5, message: 0, name: "月度计划", activePath: 'monthlyPlan', url: '/tooling/investmentAdmin/monthlyPlan', key: "LK_YUEDUJIHUA", permissionKey: "TOOLING_PAYMENTPLAN_MONTH"},
 ]
 
 export const dataBaseData = [
