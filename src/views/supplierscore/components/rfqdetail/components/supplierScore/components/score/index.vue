@@ -44,7 +44,7 @@
               </template>
               <template v-if="item.props === 'rate'" v-slot="scope">
                 <div v-if="editStatus">
-                  <iInput v-if="userInfo.id != 51 && userInfo.id != 42" v-model="scope.row.rate" />
+                  <iInput v-if="userInfo.id != 51 && userInfo.id != 49" v-model="scope.row.rate" />
                   <iSelect v-else v-model="scope.row.rate">
                     <el-option value="合格" :label="language('HEGE', '合格')" />
                     <el-option value="不合格" :label="language('BUHEGE', '不合格')" />
@@ -112,7 +112,7 @@ export default {
     })
   },
   created() {
-    if (this.userInfo.id == 51 || this.userInfo.id == 42) {
+    if (this.userInfo.id == 51 || this.userInfo.id == 49) {
       this.deptScoreTableTitle = this.deptScoreTableTitle.filter(item => item.props === "rate" || item.props === "remark" || item.props === "rateStatus")
     }
   },

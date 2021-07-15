@@ -1,7 +1,7 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-07-06 22:11:41
- * @LastEditTime: 2021-07-09 10:34:27
+ * @LastEditTime: 2021-07-15 17:27:57
  * @LastEditors: Please set LastEditors
  * @Description: 决策资料 - 扩产能
  * @FilePath: /front-web/src/views/designate/designatedetail/decisionData/rsCapacityExpan/index.vue
@@ -34,12 +34,15 @@
           <div class="signItem"><span class="label">Commodity:</span><span class="line"></span></div>
         </el-col>
         <el-col :span="8">
-          <div class="signItem"><span class="label">CSS:</span><span class="line"></span></div>
+          <div class="signItem" style="text-align: right"><span class="label">CSS:</span><span class="line"></span></div>
         </el-col>
-        <el-col :span="8">
-          <div class="signItem"><span class="label">CFC:</span><span class="line"></span></div>
+        <el-col :span="8" style="padding-right: 0px;">
+          <div class="signItem" style="text-align: right"><span class="label">CFC:</span><span class="line"></span></div>
         </el-col>
       </el-row>
+    </div>
+    <div class="caexpan-approvedate margin-top20">
+      <div class="signItem"><span class="label">Approve Date:</span><span class="line"></span></div>
     </div>
     
   </iCard>
@@ -134,17 +137,31 @@ export default {
     align-items: center;
   }
   .caexpan-sign {
+    overflow: hidden;
+  }
+  .signItem {
+    span {
+      font-weight: bold;
+      color: #000;
+    }
+    .line {
+      display: inline-block;
+      width: 315px;
+      height: 20px;
+      border-bottom: 1px solid #d4d4d4;
+      margin-left: 20px;
+    }
+  }
+  .caexpan-approvedate {
+    height: 80px;
+    padding-top: 50px;
+    text-align: right;
     .signItem {
       span {
-        font-weight: bold;
-        color: #000;
+        color: rgb(183, 183, 183);
       }
       .line {
-        display: inline-block;
-        width: 315px;
-        height: 20px;
-        border-bottom: 1px solid #d4d4d4;
-        margin-left: 20px;
+        width: 150px
       }
     }
   }
