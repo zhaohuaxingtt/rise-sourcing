@@ -35,64 +35,94 @@
                      :model="form"
                      style="height: 460px">
               <el-row class="margin-bottom20">
-                <!--比较类型-->
-                <el-form-item :label="$t('比较类型')">
-                  <iSelect v-model="chartType"
-                           @change="changeBy">
-                    <el-option value="supplier"
-                               :label="$t('按供应商比较')">
-                    </el-option>
-                    <el-option value="turn"
-                               :label="$t('按轮次比较')"></el-option>
-                    <el-option value="spareParts"
-                               :label="$t('按零件号比较')"></el-option>
-                  </iSelect>
-                </el-form-item>
-                <!--供应商-->
-                <el-form-item :label="$t('TPZS.GONGYINGSHANG')">
-                  <el-select multiple
-                             clearable
-                             value-key
-                             :multiple-limit="chartType === 'supplier' ? 5 : 1"
-                             v-model="form.supplier">
-                    <el-option v-for="(i, index) in supplierList"
-                               :key="index"
-                               :value="i.supplierId"
-                               :label="i.nameZh">
-                      <span style="float: left">{{ i.nameZh }}</span>
-                      <span style="float: right; color: #8492a6; font-size: 13px"><i class="el-icon-error"></i>
-                      </span>
-                    </el-option>
-                  </el-select>
-                </el-form-item>
-                <!--轮次-->
-                <el-form-item :label="$t('轮次')">
-                  <el-select multiple
-                             clearable
-                             value-key
-                             :multiple-limit="chartType === 'turn' ? 5 : 1"
-                             v-model="form.turn">
-                    <el-option value="-1"
-                               label="最新"></el-option>
-                    <el-option v-for="(i, index) in turnList"
-                               :key="index"
-                               :value="i.turn"
-                               :label="'第' + i.turn + '轮'"></el-option>
-                  </el-select>
-                </el-form-item>
-                <!--零件号-->
-                <el-form-item :label="$t('LK_SPAREPARTSNUMBER') + '/' + $t('LK_FSHAO')">
-                  <el-select multiple
-                             clearable
-                             value-key
-                             :multiple-limit="chartType === 'spareParts' ? 5 : 1"
-                             v-model="form.spareParts">
-                    <el-option v-for="(i, index) in partList"
-                               :key="index"
-                               :value="i.fsNo"
-                               :label="i.spareParts"></el-option>
-                  </el-select>
-                </el-form-item>
+                <div v-if="inside">
+                  <!--比较类型-->
+                  <el-form-item :label="$t('比较类型')">
+                    <iSelect v-model="chartType"
+                             @change="changeBy">
+
+                      <el-option value="supplier"
+                                 :label="$t('按供应商比较')">
+                      </el-option>
+                      <el-option value="turn"
+                                 :label="$t('按轮次比较')"></el-option>
+                      <el-option value="spareParts"
+                                 :label="$t('按零件号比较')"></el-option>
+                    </iSelect>
+                  </el-form-item>
+                  <!--供应商-->
+                  <el-form-item :label="$t('TPZS.GONGYINGSHANG')">
+                    <el-select multiple
+                               clearable
+                               value-key
+                               :multiple-limit="chartType === 'supplier' ? 5 : 1"
+                               v-model="form.supplier">
+                      <el-option v-for="(i, index) in supplierList"
+                                 :key="index"
+                                 :value="i.supplierId"
+                                 :label="i.nameZh">
+                        <span style="float: left">{{ i.nameZh }}</span>
+                        <span style="float: right; color: #8492a6; font-size: 13px"><i class="el-icon-error"></i>
+                        </span>
+                      </el-option>
+                    </el-select>
+                  </el-form-item>
+                  <!--轮次-->
+                  <el-form-item :label="$t('轮次')">
+                    <el-select multiple
+                               clearable
+                               value-key
+                               :multiple-limit="chartType === 'turn' ? 5 : 1"
+                               v-model="form.turn">
+                      <el-option value="-1"
+                                 label="最新"></el-option>
+                      <el-option v-for="(i, index) in turnList"
+                                 :key="index"
+                                 :value="i.turn"
+                                 :label="'第' + i.turn + '轮'"></el-option>
+                    </el-select>
+                  </el-form-item>
+                  <!--零件号-->
+                  <el-form-item :label="$t('LK_SPAREPARTSNUMBER') + '/' + $t('LK_FSHAO')">
+                    <el-select multiple
+                               clearable
+                               value-key
+                               :multiple-limit="chartType === 'spareParts' ? 5 : 1"
+                               v-model="form.spareParts">
+                      <el-option v-for="(i, index) in partList"
+                                 :key="index"
+                                 :value="i.fsNo"
+                                 :label="i.spareParts"></el-option>
+                    </el-select>
+                  </el-form-item>
+                </div>
+                <div v-else>
+                  <el-form-item :label="$t('比较类型')">
+                    <iSelect v-model="chartType"
+                             @change="changeBy">
+                      <el-option value="combination"
+                                 :label="$t('混合比较')">
+                      </el-option>
+
+                    </iSelect>
+                  </el-form-item>
+                  <el-form-item :label="$t('FS号-零件号-供应商')">
+                    <el-select multiple
+                               clearable
+                               value-key
+                               :multiple-limit="chartType === 'combination' ? 6 : 1"
+                               v-model="form.combination">
+                      <el-option v-for="(i) in options"
+                                 :key="i.key"
+                                 :value="i.key"
+                                 v-html="'<span class=xxxx>'+i.nameZh+'<br/>'+i.value+'</span>'">
+                        <!-- <p >{{ i.nameZh }}</p>
+                        <p >{{ i.value }}</p> -->
+                      </el-option>
+                    </el-select>
+                  </el-form-item>
+                </div>
+
               </el-row>
             </el-form>
             <div class="end">
@@ -201,7 +231,7 @@
           </iCard>
         </el-col>
         <el-col :span="reportSave ? 24 : 20">
-          <bobAnalysis></bobAnalysis>
+          <bobAnalysis ref="bobAnalysis"></bobAnalysis>
         </el-col>
       </el-row>
     </div>
@@ -212,6 +242,7 @@
                   @close="closeDialog"
                   @add="add"></findingParts>
     <preview ref="preview"
+             v-if="analysisSchemeId"
              :value="pre"
              @closeDialog="closePreView"></preview>
     <iDialog title="保存"
@@ -257,7 +288,7 @@ import CrownBar from "./components/crownBar.vue";
 import bobAnalysis from "@/views/partsrfq/bob/bobAnalysis/index.vue";
 import findingParts from "@/views/partsrfq/components/findingParts.vue";
 import { getBobLevelOne, removeBobOut, addBobOut } from "@/api/partsrfq/bob";
-import { part, supplier, turn, update, add } from "@/api/partsrfq/bob/analysisList";
+import { part, supplier, turn, update, add, initOut, querySupplierTurnPartList } from "@/api/partsrfq/bob/analysisList";
 import { downloadPDF, dataURLtoFile } from "@/utils/pdf";
 import { uploadFile } from "@/api/file/upload";
 import preview from "./preview.vue";
@@ -281,11 +312,11 @@ export default {
   },
   data () {
     return {
-      rfq: "2222",
+      rfq: "",
       inside: false,
       chartData: [],
       chartData1: [],
-      chartType: "supplier",
+      chartType: this.inside ? "supplier" : "mixComp",
       bobType: "Best of Best",
       form: {
         supplier: [],
@@ -299,6 +330,7 @@ export default {
       partList: [],
       supplierList: [],
       turnList: [],
+      options: [],
       analysisName: "",
       reportName: "",
       Split: window._.split,
@@ -308,15 +340,23 @@ export default {
     };
   },
   created () {
-    
-    if (this.$route.query.rfqId) {
+    if (this.$store.state.rfq.entryStatus === 1) {
       this.inside = true;
-      this.rfq = this.$route.query.rfqId
+      this.analysisSchemeId = this.$route.query.rfqId;
+      this.getChartData();
+    } else {
+      if (this.$route.query.rfqId) {
+        this.value = false
+        this.analysisSchemeId = this.$route.query.rfqId;
+        this.getChartData();
+      } else {
+        this.findPart()
+        this.analysisSchemeId = this.$store.state.rfq.SchemeId;
+      }
     }
-    this.analysisSchemeId = this.$route.query.rfqId;
+    // if (!this.inside)
     this.newBuild = this.$route.query.newBuild;
     if (this.newBuild) this.analysisSave = true;
-    this.getChartData();
     // this.getOptions();
   },
   mounted () { },
@@ -335,7 +375,27 @@ export default {
         data: {},
       }).then((res) => (this.turnList = res.data));
     },
+    querySupplierTurnPartList () {
+      querySupplierTurnPartList({
+        data: {},
+        analysisSchemeId: this.analysisSchemeId,
+      }).then((res) => {
+        this.options = res.data
+        this.$nextTick(() => {
+          console.log(this.$el.querySelector('.el-select__tags'), 2222)
+          let html = ""
+          this.options.forEach((value, index) => {
+            html += `<div class="el-tag el-tag--info el-tag--small el-tag--light">
+          <p class="el-select__tags-text">${value.nameZh}</p>
+          <p class="el-select__tags-text">${value.value}</p>
+          <i class="el-tag__close el-icon-close"></i>
+          </div>`
+          })
+          this.$el.querySelector('.el-select__tags').innerHTML = `<div>${html}</div>`
 
+        });
+      })
+    },
     findPart () {
       this.value = true;
     },
@@ -348,6 +408,12 @@ export default {
     sure () { },
     changeBy (e) {
       this.chartType = e;
+      if (this.chartType === 'combination') {
+        this.form = {
+          combination: []
+        }
+        return
+      }
       this.form = {
         supplier: [],
         turn: [],
@@ -385,20 +451,64 @@ export default {
       this.getChartData();
     },
     add (val) {
-      addBobOut({
-        analysisSchemeId: this.analysisSchemeId,
-        fs: val[0].fsNum,
-        partNumber: val[0].partNum,
-        rfqId: val[0].rfqId,
-        supplierId: val[0].supplierId,
-      }).then((res) => {
-        if (res.code == 200) {
-          this.$message.success(res.desZh);
-          this.getChartData();
-        } else {
-          this.$message.error(res.desZh);
-        }
-      });
+      if (this.inside) {
+        addBobOut({
+          analysisSchemeId: this.analysisSchemeId,
+          fs: val[0].fsNum,
+          partNumber: val[0].partNum,
+          rfqId: val[0].rfqId,
+          supplierId: val[0].supplierId,
+        }).then((res) => {
+          if (res.code == 200) {
+            this.$message.success(res.desZh);
+            this.getChartData();
+            this.closeDialog()
+          } else {
+            this.$message.error(res.desZh);
+            this.closeDialog()
+          }
+        });
+      } else {
+        // let arr = []
+        // val.forEach((value, index, array) => {
+        //   arr.push({
+        //     fs: value.fsNum,
+        //     partNumber: value.partNum,
+        //     rfqId: value.rfqId,
+        //     supplierId: value.supplierId,
+        //   })
+        // })
+        initOut({
+          list: [{
+            fs: 'FS21-00409',
+            partNumber: '02V963554G3',
+            rfqId: '220',
+            supplierId: '11036',
+          }, {
+            fs: 'FS21-00410',
+            partNumber: '02V915681G3',
+            rfqId: '220',
+            supplierId: '11036',
+          }]
+        }).then(res => {
+          if (res.code === '200') {
+            this.$message.success(res.desZh);
+            this.analysisSchemeId = res.data
+            this.$store.dispatch('setSchemeId', this.analysisSchemeId);
+            this.$refs.bobAnalysis.SchemeId = res.data
+            console.log(this.$refs.bobAnalysis.SchemeId, 'gggg')
+            this.$refs.bobAnalysis.chargeRetrieve('all')
+            this.querySupplierTurnPartList()
+            this.getChartData()
+            this.closeDialog()
+          } else {
+            this.$message.error(res.desZh);
+            this.closeDialog()
+          }
+
+        })
+      }
+
     },
     searchChartData () {
       getBobLevelOne({
@@ -417,6 +527,21 @@ export default {
         );
         this.chartType = allData.analysisDimension;
         this.bobType = allData.defaultBobOptions;
+        if (this.chartType === 'combination') {
+          this.form = {
+            combination: []
+          }
+          this.form.combination = this.Split(allData.combination, ",");
+        } else {
+          this.form = {
+            supplier: [],
+            turn: [],
+            spareParts: [],
+          };
+          this.form.supplier = this.Split(allData.supplier, ",").map(Number);
+          this.form.turn = this.Split(allData.turn, ",");
+          this.form.spareParts = this.Split(allData.spareParts, ",");
+        }
       });
     },
     async getChartData () {
@@ -433,15 +558,22 @@ export default {
         );
         this.chartType = allData.analysisDimension;
         this.bobType = allData.defaultBobOptions;
-        this.form = {
-          supplier: [],
-          turn: [],
-          spareParts: [],
-        };
+        if (this.chartType === 'combination') {
+          this.form = {
+            combination: []
+          }
+          this.form.combination = this.Split(allData.combination, ",");
+        } else {
+          this.form = {
+            supplier: [],
+            turn: [],
+            spareParts: [],
+          };
+          this.form.supplier = this.Split(allData.supplier, ",").map(Number);
+          this.form.turn = this.Split(allData.turn, ",");
+          this.form.spareParts = this.Split(allData.spareParts, ",");
+        }
 
-        this.form.supplier = this.Split(allData.supplier, ",").map(Number);
-        this.form.turn = this.Split(allData.turn, ",");
-        this.form.spareParts = this.Split(allData.spareParts, ",");
       });
     },
     delOut () {
@@ -530,8 +662,10 @@ export default {
         return this.form.supplier + " " + this.form.spareParts;
       } else if (this.chartType === "spareParts") {
         return this.form.supplier;
+      } else if (this.chartType === 'combination') {
+        return this.form.combination;
       } else {
-        return "";
+        return ''
       }
     },
   },

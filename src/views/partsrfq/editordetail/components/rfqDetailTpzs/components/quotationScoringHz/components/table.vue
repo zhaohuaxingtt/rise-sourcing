@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-28 15:03:47
- * @LastEditTime: 2021-07-14 22:22:43
+ * @LastEditTime: 2021-07-15 18:10:29
  * @LastEditors: Please set LastEditors
  * @Description: 特殊表格实现
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\table.vue
@@ -61,7 +61,7 @@
         <template slot="header" slot-scope="scope">
           <el-tooltip :content="scope.column.label" effect='light'><span class="labelHader">{{scope.column.label}}</span></el-tooltip>
           <div class="headerContent" v-if='scope.column.label == "EBR"'>
-            <div class="c" :style="{width:cWidth}">
+            <div class="c" :style="{width:cWidth}" v-if='ratingList.firstTile.length > 0'>
               <ul style="width:99.5px">
                 <li></li>
                 <li v-for='(items,index) in ratingList.firstTile' :key='index'>{{items}}</li>

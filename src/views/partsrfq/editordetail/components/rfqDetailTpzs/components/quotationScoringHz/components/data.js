@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-05-28 14:32:26
- * @LastEditTime: 2021-07-07 18:35:17
+ * @LastEditTime: 2021-07-15 14:08:31
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\data.js
@@ -166,6 +166,7 @@ export function getRenderTableTile(whiteListService,supplierLength){
         relTableListXh = [...relTableListXh,...addtitle(JSON.parse(JSON.stringify(templateListxh)),i,supplierDataList[0].partInfoList)]
       }
     }
+    console.log([...relTabelListDefault,...relTableListXh,...lastSupplier])
     return [...relTabelListDefault,...relTableListXh,...lastSupplier]
    } catch (error) {
      console.log(error)
@@ -250,6 +251,10 @@ export function translateRating(supplierList,ratingList) {
    }
   }catch(err){
     console.log(err)
+    return {
+      'firstTile':[],
+      'ratingList':[]
+    }
   }
 }
 

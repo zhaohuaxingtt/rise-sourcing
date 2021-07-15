@@ -28,6 +28,7 @@
           <iSelect v-model="layout" @change="changeLayout">
             <el-option label="FS-Parts as Row" value="1"></el-option>
             <el-option label="FS-Supplier as Row" value="2"></el-option>
+            <el-option label="GS-Parts as Row" value="3"></el-option>
           </iSelect> 
         </div>            
       </div>
@@ -244,12 +245,13 @@ export default{
       },
     async init(){
         await this.negoAnalysisSummaryRound() //获取轮次
+        await this.negoAnalysisSummaryLayout(this.layout) //获取隐藏项
         if(this.layout == 1){
-          await this.negoAnalysisSummaryLayout(this.layout) //获取隐藏项
           await this.fsPartsAsRow()
-        }else{
-          await this.negoAnalysisSummaryLayout(this.layout) //获取隐藏项
+        }else if(this.layout == 2){
           await this.supplierfsSupplierAsRow()
+        }else{
+          await this.gsPartsAsRowTable()
         }
     },
     visibleChange(res){
@@ -387,6 +389,14 @@ export default{
           iMessage.error(err.desZh)
         })
       })
+    },
+    /**
+     * @description: 获取GS零件数据列表
+     * @param {*}
+     * @return {*}
+     */
+    gsPartsAsRowTable(){
+
     }
   }
 }

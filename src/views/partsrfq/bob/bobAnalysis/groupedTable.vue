@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 11:38:57
- * @LastEditTime: 2021-07-13 17:47:40
+ * @LastEditTime: 2021-07-15 18:28:49
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails\table1.vue
@@ -90,6 +90,7 @@
 import {
   chargeRetrieve,
 } from "@/api/partsrfq/bob";
+import { filterEmptyChildren } from '@/utils'
 export default {
   props: {
     expends: {
@@ -126,10 +127,22 @@ export default {
   data () {
     return {
       checkList: [],
-      tableList: {}
+      tableList: {},
+      SchemeId: ""
     };
   },
   created () {
+    if (this.$store.state.rfq.entryStatus === 1) {
+      this.SchemeId = this.$route.query.rfqId
+      this.chargeRetrieve("all");
+    } else {
+      if (this.$route.query.rfqId) {
+        this.SchemeId = this.$route.query.rfqId
+        this.chargeRetrieve("all");
+      } else {
+        this.SchemeId = this.$store.state.rfq.SchemeId;
+      }
+    }
     this.$nextTick(() => {
       this.chargeRetrieve('rawGrouped');
     });
@@ -202,7 +215,7 @@ export default {
     //获取表格数据
     chargeRetrieve (type) {
       chargeRetrieve({
-        schemaId: 135,
+        schemaId: this.SchemeId,
         viewType: type,
       })
         .then((res) => {
@@ -213,6 +226,8 @@ export default {
         })
         .catch((err) => { });
     },
+
+
     getRowKey (row) {
       return row.index;
     },

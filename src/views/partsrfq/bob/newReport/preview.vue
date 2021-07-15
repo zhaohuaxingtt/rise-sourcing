@@ -100,7 +100,7 @@ export default {
         spareParts: [],
       },
       showSelectDiv: false,
-      analysisSchemeId: 5,
+      analysisSchemeId: "",
       flag: true,
       flag1: false,
       expends: [],
@@ -110,13 +110,22 @@ export default {
     };
   },
   mounted () {
-    this.inside = true;
+    if (this.$store.state.rfq.entryStatus === 1) {
+      this.SchemeId = this.$route.query.rfqId
+      this.getChartData();
+      this.chargeRetrieve("all");
+    } else {
+      this.SchemeId = this.$store.state.rfq.SchemeId;
+    }
+    // if (this.inside === 0) {
+    //   this.analysisSchemeId = this.$parent.$options.parent.analysisSchemeId
+    // }
+    // this.analysisSchemeId = this.$store.state.rfq.SchemeId
     this.reportName = this.$route.query.name;
     this.id = this.$route.query.id;
-    this.chargeRetrieve("all");
     // this.initChartData()
     // this.analysisSchemeId = this.$route.query.analysisSchemeId;
-    this.getChartData();
+
   },
   methods: {
     open () {
@@ -161,7 +170,7 @@ export default {
     },
     chargeRetrieve (type) {
       chargeRetrieve({
-        schemaId: 135,
+        schemaId: this.SchemeId,
         viewType: type,
       })
         .then((res) => {
@@ -234,7 +243,7 @@ export default {
     },
     getChartData () {
       getBobLevelOne({
-        analysisSchemeId: this.analysisSchemeId,
+        analysisSchemeId: this.SchemeId,
       }).then((res) => {
 
         const allData = res.data || [];

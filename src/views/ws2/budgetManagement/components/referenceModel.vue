@@ -36,6 +36,7 @@
                 :placeholder="language('LK_QINGXUANZE','请选择')"
                 v-model="referenceModel1"
                 filterable
+                clearable
                 @change="changeCarTypeProject"
             >
               <el-option
@@ -51,6 +52,7 @@
                 :placeholder="language('LK_QINGXUANZE','请选择')"
                 v-model="referenceModel2"
                 filterable
+                clearable
                 @change="changeCarTypeProject"
             >
               <el-option
@@ -66,6 +68,7 @@
                 :placeholder="language('LK_QINGXUANZE','请选择')"
                 v-model="referenceModel3"
                 filterable
+                clearable
                 @change="changeCarTypeProject"
             >
               <el-option
@@ -81,6 +84,7 @@
                 :placeholder="language('LK_QINGXUANZE','请选择')"
                 v-model="otherModel"
                 filterable
+                clearable
                 @change="changeCarTypeProject"
             >
               <el-option
@@ -98,6 +102,7 @@
                 :placeholder="language('LK_QINGXUANZE','请选择')"
                 v-model="modelProject"
                 filterable
+                clearable
                 @change="changeCarTypeProject"
             >
               <el-option

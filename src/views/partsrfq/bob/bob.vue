@@ -152,6 +152,8 @@
                    :layout="page.layout"
                    :current-page="page.currPage"
                    :total="page.totalCount" />
+
+      <reportPreview :visible="reportVisible" :reportUrl="reportUrl"/>
     </iCard>
   </div>
 </template>
@@ -175,6 +177,7 @@ import {
   initIn,
 } from "@/api/partsrfq/bob/analysisList";
 import { pageMixins } from "@/utils/pageMixins";
+import reportPreview from '@/views/partsrfq/vpAnalyse/vpAnalyseList/components/reportPreview'
 export default {
   mixins: [pageMixins],
   components: {
@@ -185,6 +188,7 @@ export default {
     iPagination,
     iSelect,
     icon,
+    reportPreview
   },
   data () {
     return {
@@ -201,7 +205,9 @@ export default {
         { value: '是', label: this.$t('nominationLanguage.Yes') },
         { value: '否', label: this.$t('nominationLanguage.No') },
       ],
-      rfqStatus: false
+      rfqStatus: false,
+      reportVisible: false,
+      reportUrl: null,
     };
   },
   created () {
@@ -215,7 +221,7 @@ export default {
     initSearchData () {
       const data = this.$store.state.rfq.rfqId
       const status = this.$store.state.rfq.entryStatus
-      if(data && status == 1) this.rfqStatus = true
+      if (data && status == 1) this.rfqStatus = true
       this.form = {
         ...this.form,
         rfq: data
@@ -330,25 +336,26 @@ export default {
       })
       if (this.entryStatus === 1) {
         initIn({
-          rfqId: this.form.rfq,
+          rfqId: this.rfqID,
         }).then((res) => {
+          // this.$store.dispatch('setSchemeId', res.data);
           this.$router.push({
             path: '/sourcing/partsrfq/bobNew',
             query: {
-              rfqId:res.data,
+              rfqId: res.data,
               newBuild: true,
             },
           })
           loading.close()
         })
-      }else{
-          this.$router.push({
-            path: '/sourcing/partsrfq/bobNew',
-            query: {
-              newBuild: true,
-            },
-          })
-          loading.close()
+      } else {
+        this.$router.push({
+          path: '/sourcing/partsrfq/bobNew',
+          query: {
+            newBuild: true,
+          },
+        })
+        loading.close()
       }
 
     },
@@ -442,7 +449,17 @@ export default {
     },
     // 点击名称,触发跳转事件
     clickName (val) {
-
+      if(val.fileType == '方案') {
+        this.$router.push({
+          path: '/sourcing/partsrfq/bobNew',
+          query: {
+            rfqId: val.id,
+          },
+        })
+      } else if(val.fileType == '报告') {
+        this.reportVisible = true
+        if(val.path) this.reportUrl = val.path
+      }
     }
   },
 };

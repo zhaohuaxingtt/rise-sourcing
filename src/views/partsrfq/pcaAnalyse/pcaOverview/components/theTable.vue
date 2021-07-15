@@ -53,7 +53,7 @@
         :current-page='page.currPage'
         :total="page.totalCount"/>
     <!--    预览弹窗-->
-    <previewDialog v-model="previewDialog" :fileUrl="fileUrl"/>
+    <previewDialog v-model="previewDialog" :fileUrl="fileUrl" :fileName="fileName"/>
   </iCard>
 </template>
 
@@ -92,6 +92,7 @@ export default {
       tableStatus: '',
       previewDialog: false,
       fileUrl: '',
+      fileName: ''
     };
   },
   created() {
@@ -154,6 +155,7 @@ export default {
     handleOpenPreviewDialog(row) {
       this.previewDialog = true;
       this.fileUrl = row.filePath;
+      this.fileName = row.fileName.split('.pdf')[0];
     },
   },
 };

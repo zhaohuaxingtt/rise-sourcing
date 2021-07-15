@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-06-25 19:31:02
+ * @LastEditTime: 2021-07-14 18:36:57
  * @LastEditors: Please set LastEditors
  * @Description: 公共utils部分
  * @FilePath: \rise\src\utils\index.js
@@ -10,10 +10,12 @@ import router from '../router'
 import store from '../store'
 import localStoreage from './localstorage'
 import jsencrypt from 'jsencrypt'
-import {sendKey} from '@/api/usercenter'
+import { sendKey } from '@/api/usercenter'
 export function setCookie(cookieName, cookieData) {
   // eslint-disable-next-line no-undef
-  return Cookies.set(cookieName, cookieData, { domain: process.env.VUE_APP_ROOT_DOMAIN })
+  return Cookies.set(cookieName, cookieData, {
+    domain: process.env.VUE_APP_ROOT_DOMAIN,
+  })
 }
 export function removeCookie(cookieName) {
   // eslint-disable-next-line no-undef
@@ -71,20 +73,22 @@ export const math = window.math.create(window.math.all, {
 export function _getMathNumber(lamda) {
   return Number(math.format(math.evaluate(lamda), 14))
 }
-export function password(str,publicKey){
+export function password(str, publicKey) {
   const mathRsa = new jsencrypt()
-  mathRsa.setPublicKey('-----BEGIN PUBLIC KEY-----'+publicKey+'-----END PUBLIC KEY-----')
+  mathRsa.setPublicKey(
+    '-----BEGIN PUBLIC KEY-----' + publicKey + '-----END PUBLIC KEY-----'
+  )
   return mathRsa.encrypt(str)
 }
 
-export function closeCliantClearStoreage(){
-  let beginTime = null;
-  window.onbeforeunload = function (params) {
+export function closeCliantClearStoreage() {
+  let beginTime = null
+  window.onbeforeunload = function(params) {
     beginTime = new Date().getTime()
   }
-  window.onunload = function(){
+  window.onunload = function() {
     let endTime = new Date().getTime()
-    if(endTime - beginTime <=5){
+    if (endTime - beginTime <= 5) {
       removeToken()
       removeRefreshToken()
     }
@@ -92,17 +96,22 @@ export function closeCliantClearStoreage(){
 }
 
 //表头数据权限过滤
-export function permissionTitle(key,titleList){
+export function permissionTitle(key, titleList) {
   const permissionMap = store.state.permission.whiteBtnList[key]
   let newTitleList = JSON.parse(JSON.stringify(titleList))
-  if(permissionMap){
+  if (permissionMap) {
     const a = []
-    titleList.forEach(element => {
-       if(permissionMap.fieldList.find(items=>items.fieldName == element.props || element.list)) a.push(element)
-       if(element.list){
-        element.list = permissionTitle(key,element.list)
-       }
-    });
+    titleList.forEach((element) => {
+      if (
+        permissionMap.fieldList.find(
+          (items) => items.fieldName == element.props || element.list
+        )
+      )
+        a.push(element)
+      if (element.list) {
+        element.list = permissionTitle(key, element.list)
+      }
+    })
     newTitleList = a
   }
   return newTitleList
@@ -112,7 +121,7 @@ export function permissionTitle(key,titleList){
 export function serialize(data, type = Object) {
   let str = ''
 
-  switch(type) {
+  switch (type) {
     case Object:
       for (let key in data) {
         str += key + '=' + encodeURIComponent(data[key]) + '&'
@@ -122,54 +131,68 @@ export function serialize(data, type = Object) {
     case Array:
       if (Array.isArray(data)) {
         str = data
-          .map(item => {
+          .map((item) => {
             return serialize(item)
           })
-          .join("&")
+          .join('&')
       }
 
       return str
   }
-  
 }
 
 // 数字限制输入
 export const numberProcessor = function(val, precision = 4) {
-  let result = ""
+  let result = ''
   if (+precision > 0) {
-    result = (val + "").replace(/[^\d.]/g, "")
-      .replace(/^\.*/g, "")
-      .replace(".", "$#$")
-      .replace(/\./g, "")
-      .replace("$#$", ".")
-      .replace(/^0+([0-9].*)/, "$1")
-      .replace(new RegExp(`^(.+\\.\\d{0,${ precision }})\\d*$`), "$1")
+    result = (val + '')
+      .replace(/[^\d.]/g, '')
+      .replace(/^\.*/g, '')
+      .replace('.', '$#$')
+      .replace(/\./g, '')
+      .replace('$#$', '.')
+      .replace(/^0+([0-9].*)/, '$1')
+      .replace(new RegExp(`^(.+\\.\\d{0,${precision}})\\d*$`), '$1')
   } else {
-    result = (val + "").replace(/\D/g, "")
-      .replace(/^0+([0-9])/, "$1")
+    result = (val + '').replace(/\D/g, '').replace(/^0+([0-9])/, '$1')
   }
   return result
 }
+
+export function filterEmptyChildren(arr, target) {
+  arr.forEach((value, index) => {
+    if (value.code && value.code === target) {
+      arr.splice(index, 1)
+    }
+    if (value.child && value.child.length > 0) {
+      filterEmptyChildren(value.child, target)
+    }
+  })
+}
 //i18N 翻译
 // eslint-disable-next-line no-undef
-let languageList = [];
+let languageList = []
 // eslint-disable-next-line no-undef
-Vue.prototype.language = function(languageKey,name){
-  if(process.env.NODE_ENV == 'dev'){
-    languageList.push(languageKey+'----'+name+ '----' + this.$router.currentRoute.path)
+Vue.prototype.language = function(languageKey, name) {
+  if (process.env.NODE_ENV == 'dev') {
+    languageList.push(
+      languageKey + '----' + name + '----' + this.$router.currentRoute.path
+    )
   }
   return this.$t(languageKey)
 }
 // eslint-disable-next-line no-undef
-router.afterEach(()=>{
-  if(process.env.NODE_ENV == 'dev' && languageList.length !== 0){
+router.afterEach(() => {
+  if (process.env.NODE_ENV == 'dev' && languageList.length !== 0) {
     let languageLists = Array.from(new Set(languageList))
-    sendKey(languageLists).then(res=>{
-      if(res.code == 200){
+    sendKey(languageLists)
+      .then((res) => {
+        if (res.code == 200) {
+          languageList = []
+        }
+      })
+      .catch((err) => {
         languageList = []
-      }
-    }).catch(err=>{
-      languageList = []
-    })
+      })
   }
 })

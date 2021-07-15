@@ -10,7 +10,7 @@
     <iNavMvp
         :lev='2'
         :routerPage="true"
-        :list="navListTemp"
+        :list="navList"
         class="iNavMvp"
         v-if="($route.path.indexOf('budgetManagement') > -1 && $route.path.indexOf('addModelBag') === -1) || $route.path.indexOf('investmentAdmin') > -1"
     ></iNavMvp>
@@ -84,7 +84,6 @@ export default {
       dataBase: false,
       onleySelf: true,
       checkHistory: false,
-      navListTemp: [],
       budgetManagement3rd: budgetManagement3rd,
     }
   },
@@ -94,13 +93,23 @@ export default {
     }
   },
   created() {
-    let cloneNavList = cloneDeep(this.navList)
-    if(this.whiteBtnList['TOOLING_BUDGET_OVERVIEW']){
-      this.navListTemp.push(cloneNavList[0])
-    }
-    if(this.whiteBtnList['TOOLING_BUDGET_COMMONSOURCING_MODELBAGBUDGET']){
-      this.navListTemp.push(cloneNavList[1])
-    }
+    // let cloneNavList = cloneDeep(this.navList)
+    // if(this.whiteBtnList['TOOLING_BUDGET_OVERVIEW']){
+    //   this.navListTemp.push(cloneNavList[0])
+    // }
+    // if(this.whiteBtnList['TOOLING_BUDGET_COMMONSOURCING_MODELBAGBUDGET']){
+    //   this.navListTemp.push(cloneNavList[1])
+    // }
+
+    // if(this.whiteBtnList['TOOLING_PAYMENTPLAN_PAYMENTBOARD']){  //  付款看板
+    //   this.navListTemp.push(cloneNavList[2])
+    // }
+    // if(this.whiteBtnList['TOOLING_PAYMENTPLAN_YEAR']){  //  年度付款计划
+    //   this.navListTemp.push(cloneNavList[3])
+    // }
+    // if(this.whiteBtnList['TOOLING_PAYMENTPLAN_MONTH']){ //  月度付款计划
+    //   this.navListTemp.push(cloneNavList[4])
+    // }
     this.$store.commit('SET_onleySelf', this.onleySelf)
     this.$store.commit('SET_checkHistory', this.checkHistory)
     if(this.$route.path == '/tooling/dataBase'){
