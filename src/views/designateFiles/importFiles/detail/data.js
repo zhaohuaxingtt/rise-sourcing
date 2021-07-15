@@ -10,7 +10,7 @@ export const tableTitle = [
     {name:'导⼊项次',key:'LK_DAORUXIANGCI',props:'item'},
     {name:'RFQ编号',key:'LK_RFQBIANHAO',props:'rfqId'},
     {name:'CSF科室',key:'LK_CSFKESHI',props:'csfuserDept'},
-    {name:'CSF',key:'LK_CSF',props:'csfuser'},
+    {name:'CSF',key:'LK_CSF',props:'csfUser'},
     {name:'科室',key:'LK_KESHI',props:'respDept'},
     {name:'LINIE',key:'costanalysismanage.Linie',props:'respLinie'},
     {name:'状态',key:'LK_ZHUANGTAI',props:'status'},
