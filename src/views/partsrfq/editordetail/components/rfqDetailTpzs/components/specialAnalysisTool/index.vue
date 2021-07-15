@@ -21,10 +21,12 @@ import card from "./components/card";
 import { iPage, iButton } from "rise";
 import enterSpecificAnalysisToolsDialog from "./components/enterSpecificAnalysisToolsDialog";
 import { totalOverview } from "@/api/partsrfq/specialAnalysisTool/specialAnalysisTool.js";
-import VPIndex from '@/assets/images/VPIndex.png'
-import BoBIndex from '@/assets/images/BoBIndex.png'
-import TIAIndex from '@/assets/images/TIAIndex.png'
-import PCAIndex from '@/assets/images/PCAIndex.png'
+import BoB from '@/assets/images/BoB.svg'
+import VP from '@/assets/images/VP.svg'
+import PI from '@/assets/images/PI.svg'
+import MEK from '@/assets/images/MEK.svg'
+import PCA from '@/assets/images/PCA.svg'
+import TIA from '@/assets/images/TIA.svg'
 import soon from '@/assets/images/soon.png'
 
 export default {
@@ -69,7 +71,7 @@ export default {
         this.cardData = res.data
         this.cardData.push(
           { title: 'Pricing Index', analysisTotal: '', reportTotal: '', analysisLastUpdateDate: '', reportLastUpdateDate: '' },
-          { title: 'MEX', analysisTotal: '', reportTotal: '', analysisLastUpdateDate: '', reportLastUpdateDate: '' },
+          { title: 'MEK', analysisTotal: '', reportTotal: '', analysisLastUpdateDate: '', reportLastUpdateDate: '' },
           { title: 'PCA', analysisTotal: '', reportTotal: '', analysisLastUpdateDate: '', reportLastUpdateDate: '' },
           { title: 'TIA', analysisTotal: '', reportTotal: '', analysisLastUpdateDate: '', reportLastUpdateDate: '' },
           { title: 'Bid-Link', analysisTotal: '', reportTotal: '', analysisLastUpdateDate: '', reportLastUpdateDate: '' }
@@ -89,23 +91,23 @@ export default {
           }
           switch (item.title) {
             case 'BoB(Best of Best)':
-              item.imgUrl = BoBIndex
+              item.imgUrl = BoB
               break;
             case 'Volume Pricing':
-              item.imgUrl = VPIndex
+              item.imgUrl = VP
               break;
             // 
             case 'Pricing Index':
-              item.imgUrl = soon
+              item.imgUrl = PI
               break;
-            case 'MEX':
-              item.imgUrl = soon
+            case 'MEK':
+              item.imgUrl = MEK
               break;
             case 'TIA':
-              item.imgUrl = TIAIndex
+              item.imgUrl = TIA
               break;
             case 'PCA':
-              item.imgUrl = PCAIndex
+              item.imgUrl = PCA
               break;
             case 'Bid-Link':
               item.imgUrl = soon
