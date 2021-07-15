@@ -351,8 +351,8 @@ module.exports = {
       '/aonApi': {
         // target: 'http://10.160.138.185:8036',
         // target: 'http://192.168.50.230:8036',
-        target: 'http://10.160.137.83:8036',
-        // target: 'http://10.122.18.166:8036',
+        // target: 'http://10.160.137.83:8036',
+        target: 'http://192.168.8.122:18036',
         changeOrigin: true,
         pathRewrite: {
           '^/aonApi': ''

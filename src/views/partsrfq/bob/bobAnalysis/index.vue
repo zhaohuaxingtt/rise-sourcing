@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 10:50:38
- * @LastEditTime: 2021-07-15 17:44:15
+ * @LastEditTime: 2021-07-15 18:27:26
  * @LastEditors: Please set LastEditors
  * @Description: 费用详情
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails.vue
@@ -150,7 +150,12 @@ export default {
       this.SchemeId = this.$route.query.rfqId
       this.chargeRetrieve("all");
     } else {
-      this.SchemeId = this.$store.state.rfq.SchemeId;
+      if (this.$route.query.rfqId) {
+        this.SchemeId = this.$route.query.rfqId
+        this.chargeRetrieve("all");
+      } else {
+        this.SchemeId = this.$store.state.rfq.SchemeId;
+      }
     }
     this.getRfqToRemark();
   },

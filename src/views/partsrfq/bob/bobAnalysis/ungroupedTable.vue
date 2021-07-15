@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 11:38:57
- * @LastEditTime: 2021-07-15 17:24:25
+ * @LastEditTime: 2021-07-15 18:26:28
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails\table1.vue
@@ -180,7 +180,11 @@ export default {
     if (this.$store.state.rfq.entryStatus === 1) {
       this.SchemeId = this.$route.query.rfqId
     } else {
-      this.SchemeId = this.$store.state.rfq.SchemeId;
+      if (this.$route.query.rfqId) {
+        this.SchemeId = this.$route.query.rfqId
+      } else {
+        this.SchemeId = this.$store.state.rfq.SchemeId;
+      }
     }
     setTimeout(() => {
       this.$nextTick(() => {
