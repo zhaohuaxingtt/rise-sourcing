@@ -216,7 +216,10 @@ export default {
     iSelect
   },
   mounted() {
-    console.log(this)
+    this.form = {}
+  },
+  beforeDestroy() {
+    this.form = {}
   },
   methods: {
     sure() {

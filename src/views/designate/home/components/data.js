@@ -1,7 +1,7 @@
 /*
  * @Author: HaoJiang
  * @Date: 2021-05-20 14:29:09
- * @LastEditTime: 2021-07-13 14:31:27
+ * @LastEditTime: 2021-07-15 15:51:38
  * @LastEditors: Please set LastEditors
  * @Description: 定点表格信息
  *
@@ -28,7 +28,7 @@ export const tableTitle = [{
   tooltip: false
 },
 {
-  props: 'carType',
+  props: 'carTypeProj',
   name: 'PROJECT',
   key: 'PROJECT',
   tooltip: false
@@ -52,7 +52,7 @@ export const tableTitle = [{
 	tooltip:false
 },
 {
-  props: 'carType',
+  props: 'partProjType',
   name: '项目类型',
   key: 'nominationLanguage_XingMuLeiXing',
   tooltip: false
@@ -116,12 +116,12 @@ export const tableTitle = [{
   key: 'nominationLanguage_DingDianRiQi',
   tooltip: false
 },
-{
-  props: 'LK_CAOZUO',
-  name: '操作',
-  key: 'LK_CAOZUO',
-  tooltip: false
-}
+// {
+//   props: 'LK_CAOZUO',
+//   name: '操作',
+//   key: 'LK_CAOZUO',
+//   tooltip: false
+// }
 ]
 
 // sel确认单
