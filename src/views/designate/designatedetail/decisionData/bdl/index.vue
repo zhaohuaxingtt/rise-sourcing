@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-25 17:00:48
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-25 11:21:24
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-07-15 16:44:06
  * @Description: 定点管理-决策资料-BDL
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\bdl\index.vue
 -->
@@ -15,8 +15,8 @@
     <iCard v-for="(item, index) in rfqList" :key="index" :title="'RFQ NO.'+item.rfqNum+',RFQ Name:'+item.rfqName" class="margin-top20">
       <tableList :tableTitle="item.tableTitle" :selection="false" :tableData="item.tableData" class="doubleHeader" @openDialog="openRateDialog"></tableList>
       <iPagination v-update 
-        @size-change="handleSizeChange($event, getRfqTableList)" 
-        @current-change="handleCurrentChange($event, getRfqTableList)" 
+        @size-change="val => sizeChange(val, index)" 
+        @current-change="val => currentChange(val, index)" 
         background 
         :page-sizes="item.page.pageSizes"
         :page-size="item.page.pageSize"
@@ -57,6 +57,28 @@ export default {
     this.init()
   },
   methods: {
+    sizeChange(val, index) {
+      this.rfqList[index].page = {
+        ...this.rfqList[index].page,
+        pageSize: val
+      }
+      const element = {
+        id: this.rfqList[index].rfqNum,
+        rfq_name: this.rfqList[index].rfqName
+      }
+      this.getTableList(element, index)
+    },
+    currentChange(val, index) {
+      this.rfqList[index].page = {
+        ...this.rfqList[index].page,
+        currPage: val
+      }
+      const element = {
+        id: this.rfqList[index].rfqNum,
+        rfq_name: this.rfqList[index].rfqName
+      }
+      this.getTableList(element, index)
+    },
     openRateDialog(row) {
       this.rateTableData = row.partRatingList
       this.changeDialogVisible(true)
@@ -106,23 +128,24 @@ export default {
      * @return {*}
      */    
     async getTableList(element, index) {
-      const page = {...this.page, pageSize: 10, currPage: 1, totalCount: 0} 
       const params = {
-        rfqId:element.id, current:page.currPage, size:page.pageSize
+        rfqId:element.id, current:this.rfqList[index].page.currPage || 1, size:this.rfqList[index].page.pageSize || 10
       }
       const res = await findRfqSupplierQuotationPage(params)
       if (res?.result) {
-        this.rfqList.push({
+        this.rfqList = this.rfqList.map((item, rfqIndex) => {
+          return rfqIndex === index ? {
           rfqNum: element.id,
           rfqName: element.rfq_name,
           tableData: res?.data,
           tableTitle: this.getTableTitle(res.data),
           page: {
-            ...page,
+            ...item.page,
             pageSize: Number(res?.pageSize),
             currPage: Number(res?.pageNum),
             totalCount: Number(res?.total)
           }
+        } : item
         })
       } else {
         iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
@@ -136,8 +159,12 @@ export default {
      */    
     async getRfqAndTableList() {
       const res = await readQuotation(this.$route.query.desinateId)
+      this.rfqList = []
       if (res?.result) {
         res.data.forEach((element, index) => {
+          this.rfqList.push({
+            page: this.page
+          })
           this.getTableList(element, index)
         });
       } else {
@@ -160,7 +187,12 @@ export default {
      * @return {*}
      */    
     gotoSupplier() {
-      const router =  this.$router.resolve({path: '/designate/supplier', query: this.$route.query})
+      const router =  this.$router.resolve({path: '/designate/supplier', 
+      query: {
+        ...this.$route.query,
+        route:'force'
+        }
+      })
       window.open(router.href,'_blank')
     }
   }

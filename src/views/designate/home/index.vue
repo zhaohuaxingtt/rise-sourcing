@@ -10,7 +10,7 @@
     <!-- 筛选框 -->
     <div style="clear: both"></div>
     <!-- 搜索区 -->
-    <search @search="getFetchData" :carTypeList="carTypeList" />
+    <search @search="handSearch" :carTypeList="carTypeList" ref="searchForm" />
     <!-- 表格 -->
     <iCard class="designateTable">
       <div class="margin-bottom20 clearFloat">
@@ -96,9 +96,17 @@
       <template #nominateProcessType="scope">
         <span>{{(scope.row.nominateProcessType && scope.row.nominateProcessType.desc) || ''}}</span>
       </template>
-      <!-- 定点类型 -->
+      <!-- 状态 -->
       <template #applicationStatus="scope">
         <span>{{(scope.row.applicationStatus && scope.row.applicationStatus.desc) || ''}}</span>
+      </template>
+      <!-- 项目类型 -->
+      <template #partProjType="scope">
+        <span>{{(scope.row.partProjType && scope.row.partProjType.desc) || ''}}</span>
+      </template>
+      <!-- 会议状态 -->
+      <template #meetingStatus="scope">
+        <span>{{(scope.row.meetingStatus && scope.row.meetingStatus.desc) || ''}}</span>
       </template>
 
       <!-- re冻结日期 -->
@@ -108,7 +116,7 @@
       
       <!-- 一致性校验 -->
       <template #isPriceConsistent="scope">
-        <span>{{scope.row.isPriceConsistent === null ? '' : (scope.row.isPriceConsistent ? '通过' : '不通过')}}</span>
+        <span>{{[null, undefined].includes(scope.row.isPriceConsistent) ? '' : (scope.row.isPriceConsistent ? '通过' : '不通过')}}</span>
       </template>
       <!-- SEL单据确认状态 -->
       <template #selStatus="scope">
@@ -117,7 +125,7 @@
             href="javascript:;" 
             class="selStatus-link" 
             @click="confirmSelSheet(scope.row)" 
-            v-if="scope.row.selStatus && scope.row.selStatus.code === 'Unconfirmed' && curentUserRole.includes('9')">
+            v-if="scope.row.selStatus && scope.row.selStatus.code === 'UNCONFIRMED'">
           {{scope.row.selStatus && scope.row.selStatus.desc || scope.row.selStatus}}
         </a>
           <span v-else>{{scope.row.selStatus && scope.row.selStatus.desc || scope.row.selStatus}}</span>
@@ -237,8 +245,8 @@ export default {
           path: '/designate/rfqdetail',
           query: {
             desinateId: row.id, 
-            designateType: (row.nominateProcessType && row.nominateProcessType.code) || '',
-            partProjType: row.partProjType
+            designateType: (row.nominateProcessType && row.nominateProcessType.code) || row.nominateProcessType || '',
+            partProjType: (row.partProjType && row.partProjType.code) || row.partProjType || '',
           }
         })
         window.open(routeData.href, '_blank')
@@ -252,11 +260,15 @@ export default {
         }
       })
     },
+    handSearch(data) {
+      this.page.currPage = 1
+      this.getFetchData()
+    },
     // 获取定点管理列表
-    getFetchData(params = {}) {
+    getFetchData() {
       this.tableLoading = true
       getNominationList({
-        ...params,
+        ...this.$refs.searchForm.form,
         current: this.page.currPage,
         size: this.page.pageSize
       }).then(res => {
@@ -268,8 +280,8 @@ export default {
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }
-        console.log(res)
       }).catch(e => {
+        iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
         this.tableLoading = false
       })
     },

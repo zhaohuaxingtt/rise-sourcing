@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 10:50:38
- * @LastEditTime: 2021-07-14 10:39:24
+ * @LastEditTime: 2021-07-15 17:44:15
  * @LastEditors: Please set LastEditors
  * @Description: 费用详情
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails.vue
@@ -91,6 +91,7 @@ import table6 from "./components/table6.vue";
 import remarkDialog from "./components/remarkDialog.vue";
 import ungroupedTable from "@/views/partsrfq/bob/bobAnalysis/ungroupedTable.vue";
 import groupedTable from "@/views/partsrfq/bob/bobAnalysis/groupedTable.vue";
+import { filterEmptyChildren } from '@/utils'
 import {
   chargeRetrieve,
   getRfqToRemark,
@@ -123,7 +124,7 @@ export default {
     return {
       flag: true,
       flag1: false,
-      tableList,
+      tableList: [],
       ungroupList: [],
       ungroupByList,
       ungroupByHeader,
@@ -140,13 +141,18 @@ export default {
       options: [],
       result: [],
       activeName: "",
-      checkFLag: true
+      checkFLag: true,
+      SchemeId: ""
     };
   },
   created () {
-    this.rfqCode = this.$route.query.rfqId;
+    if (this.$store.state.rfq.entryStatus === 1) {
+      this.SchemeId = this.$route.query.rfqId
+      this.chargeRetrieve("all");
+    } else {
+      this.SchemeId = this.$store.state.rfq.SchemeId;
+    }
     this.getRfqToRemark();
-    this.chargeRetrieve("all");
   },
   mounted () { },
   methods: {
@@ -163,11 +169,13 @@ export default {
     },
     chargeRetrieve (type) {
       chargeRetrieve({
-        schemaId: 135,
+        schemaId: this.SchemeId,
         viewType: type,
       })
         .then((res) => {
           this.tableList = res;
+          filterEmptyChildren(this.tableList.element, 'detailId')
+          console.log(this.tableList, 23232332)
           this.$nextTick(() => {
             this.open();
           });
@@ -225,7 +233,7 @@ export default {
         background: 'rgba(0, 0, 0, 0.7)'
       });
       groupTerms({
-        analysisSchemeId: this.rfqCode
+        analysisSchemeId: this.SchemeId
       }).then(res => {
         loading.close();
         iMessage.success('还原成功')
@@ -290,7 +298,11 @@ export default {
         groupName: this.value1.groupName,
         roundDetailIdList: this.result
       }).then(res => {
-        this.$refs.ungroupedTable.chargeRetrieve(this.activeName)
+        this.$refs.ungroupedTable.activeName = ""
+        this.$nextTick(() => {
+          this.$refs.ungroupedTable.activeName = this.activeName
+          this.$refs.ungroupedTable.chargeRetrieve(this.activeName)
+        });
         this.$refs.groupedTable.chargeRetrieve(this.activeName === 'rawUngrouped' ? 'rawGrouped' : 'maGrouped')
         this.visible1 = false;
       })
