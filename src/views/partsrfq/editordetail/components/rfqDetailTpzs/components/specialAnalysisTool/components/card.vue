@@ -6,25 +6,29 @@
  * @Descripttion: your project
 -->
 <template>
-  <iCard style="min-height:400px" :title="labelData.title">
-    <div slot="header-control">
-      <el-popover placement="top-start" trigger="hover" :content="labelData.colourType===1?$t('TPZS.ZXFXGJNHYGLFXBG'):labelData.colourType===2?$t('TPZS.ZXFXGJNMYGLFXBGDHHILJ'):$t('TPZS.ZXFXGJNMYGLFXBGQBHHILJ')">
-        <icon slot="reference" :name="labelData.colourType===1?'iconzhuanxiangfenxigongju-landian':labelData.colourType===2?'iconbaojiapingfengenzong-jiedian-cheng':'iconbaojiapingfengenzong-jiedian-hui'" symbol></icon>
-      </el-popover>
-    </div>
-    <img class="cursor" :src="labelData.imgUrl" alt="" width="100%" height="250px">
-    <el-divider></el-divider>
-    <div class="buttom">
-      <div>
-        <div>{{$t('TPZS.FX')+labelData.analysisTotal}}</div>
-        <div>{{$t('TPZS.BG')+labelData.reportTotal}}</div>
-      </div>
-      <div>
-        <div>{{$t('TPZS.SCGXSJ')+labelData.analysisLastUpdateDate}}</div>
-        <div>{{$t('TPZS.SCDCSJ')+labelData.reportLastUpdateDate}}</div>
+  <div class="content">
+    <div class="bottom">
+      <div class="opacity"></div>
+      <div class="buttom-text">
+        <div>
+          <div v-if="labelData.title!=='PCA'&&labelData.title!=='TIA'&&labelData.title!=='Bid-Link'">{{$t('TPZS.FX')+labelData.analysisTotal}}</div>
+          <div>{{$t('TPZS.BG')+labelData.reportTotal}}</div>
+        </div>
+        <div>
+          <div>{{$t('TPZS.SCGXSJ')+labelData.analysisLastUpdateDate}}</div>
+          <div v-if="labelData.title!=='PCA'&&labelData.title!=='TIA'&&labelData.title!=='Bid-Link'">{{$t('TPZS.SCDCSJ')+labelData.reportLastUpdateDate}}</div>
+        </div>
       </div>
     </div>
-  </iCard>
+    <iCard style="min-height:346px" :title="labelData.title">
+      <div slot="header-control">
+        <el-popover placement="top-start" trigger="hover" :content="labelData.colourType===1?$t('TPZS.ZXFXGJNHYGLFXBG'):labelData.colourType===2?$t('TPZS.ZXFXGJNMYGLFXBGDHHILJ'):$t('TPZS.ZXFXGJNMYGLFXBGQBHHILJ')">
+          <icon slot="reference" :name="labelData.colourType===1?'iconzhuanxiangfenxigongju-landian':labelData.colourType===2?'iconbaojiapingfengenzong-jiedian-cheng':'iconbaojiapingfengenzong-jiedian-hui'" symbol></icon>
+        </el-popover>
+      </div>
+      <div class="cursor" :style="{background:'url('+labelData.imgUrl+') no-repeat',backgroundSize: '100% 100%'}"></div>
+    </iCard>
+  </div>
 </template>
 
 <script>
@@ -58,11 +62,34 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.buttom {
+.buttom-text {
   display: flex;
   justify-content: space-between;
+  padding: 1.5rem 2.5rem 0 2.5rem;
 }
 ::v-deep .el-divider--horizontal {
   margin: 1.25rem 0 !important;
+}
+.opacity {
+  border-top: 2px solid #d7dde8;
+  opacity: 0.3;
+  position: absolute;
+  background-color: #f5f5f5;
+  bottom: 0;
+  width: 100%;
+  height: 5rem;
+}
+.bottom {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 5rem;
+  z-index: 2;
+}
+.cursor {
+  height: 20rem;
+}
+.content {
+  position: relative;
 }
 </style>

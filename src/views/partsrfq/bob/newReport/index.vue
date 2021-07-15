@@ -345,9 +345,16 @@ export default {
       this.analysisSchemeId = this.$route.query.rfqId;
       this.getChartData();
     } else {
-      this.analysisSchemeId = this.$store.state.rfq.SchemeId;
+      if (this.$route.query.rfqId) {
+        this.value = false
+        this.analysisSchemeId = this.$route.query.rfqId;
+        this.getChartData();
+      } else {
+        this.findPart()
+        this.analysisSchemeId = this.$store.state.rfq.SchemeId;
+      }
     }
-    if (!this.inside) this.findPart()
+    // if (!this.inside)
     this.newBuild = this.$route.query.newBuild;
     if (this.newBuild) this.analysisSave = true;
     // this.getOptions();
@@ -384,7 +391,6 @@ export default {
           <i class="el-tag__close el-icon-close"></i>
           </div>`
           })
-          console.log(html, 22222)
           this.$el.querySelector('.el-select__tags').innerHTML = `<div>${html}</div>`
 
         });
@@ -521,6 +527,21 @@ export default {
         );
         this.chartType = allData.analysisDimension;
         this.bobType = allData.defaultBobOptions;
+        if (this.chartType === 'combination') {
+          this.form = {
+            combination: []
+          }
+          this.form.combination = this.Split(allData.combination, ",");
+        } else {
+          this.form = {
+            supplier: [],
+            turn: [],
+            spareParts: [],
+          };
+          this.form.supplier = this.Split(allData.supplier, ",").map(Number);
+          this.form.turn = this.Split(allData.turn, ",");
+          this.form.spareParts = this.Split(allData.spareParts, ",");
+        }
       });
     },
     async getChartData () {
