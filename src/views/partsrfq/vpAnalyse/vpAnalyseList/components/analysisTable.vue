@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-06-16 20:44:29
- * @LastEditTime: 2021-07-15 17:01:49
+ * @LastEditTime: 2021-07-15 19:59:20
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\analysisTool\components\analysisTable.vue
@@ -144,7 +144,6 @@ import {getVpAnalysisDataList, fetchStaick, fetchEdit, fetchDel} from '@/api/par
 import {iMessage} from '@/components';
 import {pageMixins} from '@/utils/pageMixins';
 import reportPreview from './reportPreview'
-// import '@/assets/style/global/element-ui.scss'
 
 export default {
   name: 'analysisTable',

@@ -53,7 +53,6 @@
                 style="width: 100%; margin-bottom: 20px"
                 row-key="id"
                 :max-height="450"
-                border
                 :tree-props="{ children: 'children' }"
                 @selection-change="handleSelectionChange">
         <el-table-column type="selection"
@@ -303,7 +302,7 @@ export default {
       };
       getBobAnalysisDataList(params).then((res) => {
         if (res && res.code == 200) {
-          this.page.total = res.totalCount;
+          this.page.totalCount = res.total;
           this.tableListData = res.data;
           this.handleTableNumber(this.tableListData, 1, null);
         }
@@ -366,7 +365,12 @@ export default {
         return;
       }
       fetchDel(this.selection).then((res) => {
-        if (res.code == 200) iMessage.success(res.desZh);
+        if (res.code == 200) {
+          if(!res.data || res.data.length == 0) {
+            iMessage.error('抱歉，无法查询到结果（输入错误或不存在），请确认后重新输入')
+          }
+          iMessage.success(res.desZh);
+        }
         else iMessage.error(res.desZh);
         this.getTableList();
       });
@@ -392,8 +396,6 @@ export default {
         }
       });
     },
-    handleSizeChange (e, fn) { },
-    handleCurrentChange (e, fn) { },
     // 选中项发生改变
     handleSelectionChange (val) {
       this.selection = val;
