@@ -10,7 +10,7 @@
     <!-- 筛选框 -->
     <div style="clear: both"></div>
     <!-- 搜索区 -->
-    <search @search="getFetchData" :carTypeList="carTypeList" />
+    <search @search="handSearch" :carTypeList="carTypeList" />
     <!-- 表格 -->
     <iCard class="designateTable">
       <div class="margin-bottom20 clearFloat">
@@ -198,7 +198,8 @@ export default {
       carTypeList: [],
       // 定点管理员上传sel状态待确认的sel附件列表
       selNominateId: '',
-      selDialogVisibal: false
+      selDialogVisibal: false,
+      params: {}
     }
   },
   components: {
@@ -252,11 +253,16 @@ export default {
         }
       })
     },
+    handSearch(data) {
+      this.params = data
+      this.page.currPage = 1
+      this.getFetchData()
+    },
     // 获取定点管理列表
-    getFetchData(params = {}) {
+    getFetchData() {
       this.tableLoading = true
       getNominationList({
-        ...params,
+        ...this.params,
         current: this.page.currPage,
         size: this.page.pageSize
       }).then(res => {
@@ -268,8 +274,8 @@ export default {
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }
-        console.log(res)
       }).catch(e => {
+        iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
         this.tableLoading = false
       })
     },
