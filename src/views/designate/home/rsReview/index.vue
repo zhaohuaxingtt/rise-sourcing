@@ -397,8 +397,7 @@ export default {
     },
     // sel附件列表弹窗
     confirmSelSheet(row) {
-      console.log(row)
-      this.selStatus = !(row.selStatus && row.selStatus.code === 'Confirmed')
+      this.selStatus = (row.selStatus && row.selStatus.code) || row.selStatus
       this.selNominateId = row.id
       this.selDialogVisibal = true
     }
