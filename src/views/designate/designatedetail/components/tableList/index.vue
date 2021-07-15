@@ -135,7 +135,7 @@ export default{
       if (row.fileList?.length < 1) {
         return
       }
-      this.$emit('handleFileDownload', row.fileList?.map(item => item.fileName))
+      this.$emit('handleFileDownload', row.fileList?.map(item => item.fileName), row.fileList)
     },
     getFileList(row) {
       return row.fileList?.map(item => item.fileName).join('\n')
