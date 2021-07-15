@@ -22,7 +22,7 @@
       <!-- 零件号 -->
       <el-form-item :label="language('nominationLanguage_LingJianMing', '零件名')">
         <iInput
-          v-model="form.partNum"
+          v-model="form.partName"
           :placeholder="language('LK_QINGSHURU','请输入')"
         ></iInput>
       </el-form-item>
@@ -57,7 +57,7 @@
       <!-- LINIE -->
       <el-form-item label="LINIE">
         <iInput
-          v-model="form.linieNameZh"
+          v-model="form.linieName"
           :placeholder="language('LK_QINGSHURU','请输入')"
         ></iInput>
       </el-form-item>
