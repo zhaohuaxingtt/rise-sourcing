@@ -245,8 +245,8 @@ export default {
           path: '/designate/rfqdetail',
           query: {
             desinateId: row.id, 
-            designateType: (row.nominateProcessType && row.nominateProcessType.code) || '',
-            partProjType: row.partProjType
+            designateType: (row.nominateProcessType && row.nominateProcessType.code) || row.nominateProcessType || '',
+            partProjType: (row.partProjType && row.partProjType.code) || row.partProjType || '',
           }
         })
         window.open(routeData.href, '_blank')
