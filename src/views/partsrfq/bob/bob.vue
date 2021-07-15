@@ -152,6 +152,8 @@
                    :layout="page.layout"
                    :current-page="page.currPage"
                    :total="page.totalCount" />
+
+      <reportPreview :visible="reportVisible" :reportUrl="reportUrl"/>
     </iCard>
   </div>
 </template>
@@ -175,6 +177,7 @@ import {
   initIn,
 } from "@/api/partsrfq/bob/analysisList";
 import { pageMixins } from "@/utils/pageMixins";
+import reportPreview from '@/views/partsrfq/vpAnalyse/vpAnalyseList/components/reportPreview'
 export default {
   mixins: [pageMixins],
   components: {
@@ -185,6 +188,7 @@ export default {
     iPagination,
     iSelect,
     icon,
+    reportPreview
   },
   data () {
     return {
@@ -201,7 +205,9 @@ export default {
         { value: '是', label: this.$t('nominationLanguage.Yes') },
         { value: '否', label: this.$t('nominationLanguage.No') },
       ],
-      rfqStatus: false
+      rfqStatus: false,
+      reportVisible: false,
+      reportUrl: null,
     };
   },
   created () {
@@ -442,7 +448,17 @@ export default {
     },
     // 点击名称,触发跳转事件
     clickName (val) {
-
+      if(val.fileType == '方案') {
+        this.$router.push({
+          path: '/sourcing/partsrfq/bobNew',
+          query: {
+            rfqId: val.id,
+          },
+        })
+      } else if(val.fileType == '报告') {
+        this.reportVisible = true
+        if(val.path) this.reportUrl = val.path
+      }
     }
   },
 };
