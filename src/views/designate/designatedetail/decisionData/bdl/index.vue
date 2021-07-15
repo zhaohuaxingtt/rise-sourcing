@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-25 17:00:48
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-15 14:21:19
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-07-15 16:44:06
  * @Description: 定点管理-决策资料-BDL
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\bdl\index.vue
 -->
@@ -187,7 +187,12 @@ export default {
      * @return {*}
      */    
     gotoSupplier() {
-      const router =  this.$router.resolve({path: '/designate/supplier', query: this.$route.query})
+      const router =  this.$router.resolve({path: '/designate/supplier', 
+      query: {
+        ...this.$route.query,
+        route:'force'
+        }
+      })
       window.open(router.href,'_blank')
     }
   }

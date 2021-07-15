@@ -22,7 +22,7 @@
 <script>
 import {iButton, iDialog} from '@/components'
 import {drawingTitle} from './data'
-import {downloadFile} from "@/api/file";
+import {downloadFile, downloadUdFile} from "@/api/file";
 import tablelist from "pages/partsrfq/components/tablelist";
 
 export default {
@@ -51,11 +51,12 @@ export default {
       this.$emit('input', false)
     },
     async downloadFile(row) {
-      const req = {
-        applicationName: 'rise-procurereq-service',
-        fileList: [row.fileName]
-      }
-      await downloadFile(req)
+      // const req = {
+      //   applicationName: 'rise-procurereq-service',
+      //   fileList: [row.fileName]
+      // }
+      // await downloadFile(req)
+      await downloadUdFile(row.uploadId)
     }
   }
 }
