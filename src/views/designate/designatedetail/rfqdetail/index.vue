@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-21 09:23:11
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-07-15 13:37:26
+ * @LastEditTime: 2021-07-15 21:17:17
  * @Description: RFQ & 零件清单界面
  * @FilePath: \front-web\src\views\designate\designatedetail\rfqdetail\index.vue
 -->
@@ -180,20 +180,24 @@ export default {
      * @return {*}
      */    
     saveParts() {
-      if (this.partsSelectedItems.length < 1) {
-        iMessage.warn(this.language('NOMILINGJIANWEIKONGTIXING','当前零件清单未勾选任何零件，请至少勾选一个零件后再进行操作！'))
-        return
-      }
+      // if (this.partsSelectedItems.length < 1) {
+      //   iMessage.warn(this.language('NOMILINGJIANWEIKONGTIXING','当前零件清单未勾选任何零件，请至少勾选一个零件后再进行操作！'))
+      //   return
+      // }
       this.partsTableLoading = true
+      // const params = {
+      //   nominateAppId: this.desinateId,
+      //   partPrjList: (this.partsSelectedItems.length > 0 ? this.partsSelectedItems : this.partsTableListData).map(item => {
+      //     return {
+      //       id: item.id,
+      //       partPrjCode: item.fsnrGsnrNum,
+      //       // partPrjId: item.
+      //     }
+      //   })
+      // }
       const params = {
         nominateAppId: this.desinateId,
-        partPrjList: (this.partsSelectedItems.length > 0 ? this.partsSelectedItems : this.partsTableListData).map(item => {
-          return {
-            id: item.id,
-            partPrjCode: item.fsnrGsnrNum,
-            // partPrjId: item.
-          }
-        })
+        partPrjList: this.partsSelectedItems
       }
       updatePart(params).then(res => {
         if (res?.result) {
