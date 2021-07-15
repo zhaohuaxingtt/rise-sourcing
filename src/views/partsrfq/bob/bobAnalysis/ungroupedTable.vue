@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 11:38:57
- * @LastEditTime: 2021-07-13 16:16:41
+ * @LastEditTime: 2021-07-15 17:24:25
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails\table1.vue
@@ -30,6 +30,7 @@
                   :tree-props="{ hasChildren: 'hasChildren', children: 'child' }"
                   :row-key="getRowKey"
                   :expand-row-keys="expends"
+                  :row-style="rowStyle"
                   v-loading="loading"
                   :max-height="maxHeight"
                   @selection-change="handleSelectionChange"
@@ -145,7 +146,8 @@
 <script>
 import { iCard, iButton } from "rise";
 import { chargeRetrieve } from "@/api/partsrfq/bob";
-// import { set } from "vue/types/umd";
+import { filterEmptyChildren } from '@/utils'
+
 export default {
   components: {
     iCard,
@@ -175,6 +177,11 @@ export default {
     },
   },
   mounted () {
+    if (this.$store.state.rfq.entryStatus === 1) {
+      this.SchemeId = this.$route.query.rfqId
+    } else {
+      this.SchemeId = this.$store.state.rfq.SchemeId;
+    }
     setTimeout(() => {
       this.$nextTick(() => {
         this.chargeRetrieve(this.activeName);
@@ -191,7 +198,7 @@ export default {
     },
     activeName: {
       handler (val) {
-        this.chargeRetrieve(val);
+        // this.chargeRetrieve(val);
         this.$EventBus.$emit("activeName", val);
       },
     },
@@ -220,7 +227,8 @@ export default {
       tableList: {},
       flattenDeep: window._.flattenDeep,
       result: [],
-      check: false
+      check: false,
+      SchemeId: ""
     };
   },
   methods: {
@@ -284,11 +292,12 @@ export default {
     //获取表格数据
     chargeRetrieve (type) {
       chargeRetrieve({
-        schemaId: 135,
+        schemaId: this.SchemeId,
         viewType: type,
       })
         .then((res) => {
           this.tableList = res;
+          filterEmptyChildren(this.tableList.element, 'detailId')
           this.result = []
           this.$nextTick(() => {
             this.open();
@@ -296,6 +305,8 @@ export default {
         })
         .catch((err) => { });
     },
+
+
     getRowKey (row) {
       return row.index;
     },
@@ -338,16 +349,12 @@ export default {
         // this.$el.getElementsByClassName(col.id).style.backgroudColor = "#0EBADD";
       });
     },
-
-
-
-
-
-
     rowClick (row, event, column) {
       this.$emit("row-click", row, event, column);
     },
+    rowStyle ({ row, rowIndex }) {
 
+    },
     cellClick (row, column, cell, event) {
       console.log(row, column, cell);
       this.$emit("cell-click", row, column, cell, event);

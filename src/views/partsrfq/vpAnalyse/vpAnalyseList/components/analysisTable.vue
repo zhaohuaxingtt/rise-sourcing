@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-06-16 20:44:29
- * @LastEditTime: 2021-07-13 16:13:30
+ * @LastEditTime: 2021-07-15 17:01:49
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\analysisTool\components\analysisTable.vue
@@ -166,11 +166,13 @@ export default {
       ],
       selectionData: [],
       reportVisible: false,
-      reportUrl: null
+      reportUrl: null,
+      round: null,        //round
     }
   },
   created() {
     this.getTableData()
+    this.round = this.$route.query.round ? this.$route.query.round : this.round
   },
   mounted() {
     
@@ -288,7 +290,8 @@ export default {
         path: schemeUrl,
         query: {
           type: 'edit',
-          schemeId: row.id
+          schemeId: row.id,
+          round: this.round
         }
       })
     },
