@@ -30,7 +30,6 @@ export default {
   },
   methods: {
     init() {
-      this.$refs.score.findRateTagForCurrentUser()
       this.$refs.score.getRfqBdlRatingsByCurrentDept()
       this.$refs.attachment.getAllAnnex()
     },
