@@ -68,7 +68,7 @@ import tableList from "@/views/partsign/editordetail/components/tableList"
 import { pageMixins } from "@/utils/pageMixins"
 import { historyListTitle as tableTitle } from '../../../data'
 import { attachMixins } from '@/utils/attachMixins'
-import { downloadFile } from '@/api/file'
+import { downloadUdFile as downloadFile } from '@/api/file'
 export default {
     name:'nonStandard',
     mixins: [ pageMixins,attachMixins ],
@@ -111,10 +111,11 @@ export default {
         
         // 下载
         async downloadLine(row){
-            const params = {
-            applicationName: 'rise',
-            fileList:[row.fileName]
-          };
+        //     const params = {
+        //     applicationName: 'rise',
+        //     fileList:[row.fileName]
+        //   };
+        const params = [row.uploadId]
           await downloadFile(params);
         },
     }

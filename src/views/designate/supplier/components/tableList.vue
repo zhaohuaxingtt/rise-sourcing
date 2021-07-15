@@ -1,7 +1,7 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-02-24 09:42:07
- * @LastEditTime: 2021-07-12 18:08:05
+ * @LastEditTime: 2021-07-14 18:06:01
  * @LastEditors: Please set LastEditors
  * @Description: 来自零件签收-table组件，新增了单列的异常配置
 -->
@@ -101,7 +101,7 @@ export default{
       box-sizing: border-box;
       padding-right: 40px;
       .normal {
-        width: 140px;
+        width: 280px;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;

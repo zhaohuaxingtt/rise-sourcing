@@ -67,7 +67,7 @@ import filters from "@/utils/filters"
 import { pageMixins } from "@/utils/pageMixins"
 import { excelExport } from "@/utils/filedowLoad"
 import { getKmFileHistory, uploadFiles, deleteFileHistory } from "@/api/costanalysismanage/costanalysis"
-import { downloadFile } from "@/api/file"
+import { downloadFile, downloadUdFile } from "@/api/file"
 
 export default {
   components: { 
@@ -94,7 +94,9 @@ export default {
       multipleSelection: [],
       uploadParams: { applicationName: "rise" },
       uploadLoading: false,
-      deleteLoading: false
+      deleteLoading: false,
+      timer: 0,
+      fileList: []
     }
   },
   created() {
@@ -144,16 +146,18 @@ export default {
       uploadFiles({
         fileHistoryDTOS: this.fileList.map(item => ({
           fileCode: "0",
-          fileName: item.tpPartAttachmentName,
-          filePath: item.tpPartAttachmentPath,
+          fileName: item.fileName,
+          filePath: item.filePath,
           fileSize: item.size,
           hostId: this.userInfo.id,
-          source: 0
+          source: 0,
+          uploadId: item.id
         })),
         type: 2
       })
       .then(res => {
         if (res.code == 200) {
+          this.fileList = []
           this.getKmFileHistory()
         } else {
           iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
@@ -171,10 +175,9 @@ export default {
       if (res.code != 200) {
         iMessage.error(`${ this.$i18n.locale === "zh" ? res.desZh : res.desEn }`)
       } else {
-        this.fileList = []
         clearTimeout(this.timer)
         iMessage.success(`${ file.name } ${ this.language("SHANGCHUANCHENGGONG", "上传成功") }`)
-        this.fileList.push({ tpPartAttachmentName: res.data[0].fileName, tpPartAttachmentPath: res.data[0].filePath, size: file.size })
+        this.fileList.push({ id: res.data[0].id, fileName: res.data[0].name, filePath: res.data[0].path, size: file.size })
         this.timer = setTimeout(() => {
           this.uploadFiles()
           clearTimeout(this.timer)
@@ -189,17 +192,19 @@ export default {
     handleDownload() {
       if (this.multipleSelection.length < 1) return iMessage.warn(this.language("QINGXUANZEXUYAOXIAZAIDEWENJIAN", "请选择需要下载的文件"))
 
-      downloadFile({
-        applicationName: "rise",
-        fileList: this.multipleSelection.map(item => item.fileName)
-      })
+      // downloadFile({
+      //   applicationName: "rise",
+      //   fileList: this.multipleSelection.map(item => item.fileName)
+      // })
+      downloadUdFile(this.multipleSelection.map(item => item.uploadId))
     },
     // 单个下载
     download(row) {
-      downloadFile({
-        applicationName: "rise",
-        fileList: row.fileName
-      })
+      // downloadFile({
+      //   applicationName: "rise",
+      //   fileList: row.fileName
+      // })
+      downloadUdFile(row.uploadId)
     },
     // 删除
     handleDelete() {

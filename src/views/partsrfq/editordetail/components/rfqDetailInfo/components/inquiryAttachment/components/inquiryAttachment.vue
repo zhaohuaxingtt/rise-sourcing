@@ -65,7 +65,7 @@ import {pageMixins} from "@/utils/pageMixins";
 import uploadButton from 'pages/partsrfq/components/uploadButton'
 import {deleteAnnex, getAllAnnex, uploadRfqAnnex, notifySuppliers} from "@/api/partsrfq/editordetail";
 import store from '@/store'
-import {downloadFile} from '@/api/file'
+import {downloadFile, downloadUdFile} from '@/api/file'
 import {rfqCommonFunMixins} from "pages/partsrfq/components/commonFun";
 
 export default {
@@ -138,9 +138,10 @@ export default {
           rfqId: id,
           userId: store.state.permission.userInfo.id,
           fileType: 2,
-          fileName: data.fileName,
+          fileName: data.name,
           fileSize: size,
-          filePath: data.filePath
+          filePath: data.path,
+          uploadId: data.id
         }
         const res = await uploadRfqAnnex(req)
         this.resultMessage(res)
@@ -161,24 +162,27 @@ export default {
       this.selectTableData = val;
     },
     async handleOpenPage(row) {
-      const req = {
-        applicationName: 'rise',
-        fileList: [row.fileName]
-      }
-      await downloadFile(req)
+      // const req = {
+      //   applicationName: 'rise',
+      //   fileList: [row.fileName]
+      // }
+      // await downloadFile(req)
+
+      await downloadUdFile(row.uploadId)
     },
     async download() {
       if (this.selectTableData.length == 0)
         return iMessage.warn(this.language('LK_QINGXUANZE','请选择'))
-      const fileList = this.selectTableData.map(item => {
-        return item.fileName
-      })
-      const req = {
-        applicationName: 'rise',
-        fileList
-      }
+      // const fileList = this.selectTableData.map(item => {
+      //   return item.fileName
+      // })
+      // const req = {
+      //   applicationName: 'rise',
+      //   fileList
+      // }
       this.downloadLoading = true
-      await downloadFile(req)
+      // await downloadFile(req)
+      await downloadUdFile(this.selectTableData.map(item => item.uploadId))
       this.downloadLoading = false
     }
   }

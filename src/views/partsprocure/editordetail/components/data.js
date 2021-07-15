@@ -1,11 +1,12 @@
 /*
  * @Author: your name
  * @Date: 2021-02-25 10:10:50
- * @LastEditTime: 2021-07-08 20:02:13
+ * @LastEditTime: 2021-07-14 20:32:10
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsprocure\editordetail\components\data.js
  */
+import {partProjTypes} from '@/config'
 //零件采购详情数据
 export const detailData = {
 	bmg: "", //Boolean
@@ -63,3 +64,16 @@ export const splitPurchTitle = [
 		key: 'LK_CHANLIANGZHANBI'
 	}
 ]
+
+//维护fs 和 gs对应的commonSourcing 枚举
+export const partsCommonSourcing = [
+	{
+		fs:partProjTypes.FSXIAOLINGJIAN,
+		common:partProjTypes.FSCOMMONSOURCING
+	},
+	{
+		fs:partProjTypes.GSLINGJIAN,
+		common:partProjTypes.GSCOMMONSOURCING
+	}
+]
+

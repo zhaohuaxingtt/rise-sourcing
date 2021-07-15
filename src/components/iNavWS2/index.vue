@@ -10,7 +10,7 @@
     <iNavMvp
         :lev='2'
         :routerPage="true"
-        :list="navList"
+        :list="navListTemp"
         class="iNavMvp"
         v-if="($route.path.indexOf('budgetManagement') > -1 && $route.path.indexOf('addModelBag') === -1) || $route.path.indexOf('investmentAdmin') > -1"
     ></iNavMvp>
@@ -26,7 +26,7 @@
     <!--        <icon symbol name="iconrizhiwuzi" class="icon"/>-->
     <!--        <span @click="changeDataBase">{{ $t("LK_RIZHI") }}</span>-->
     <!--      </div>-->
-    <span @click="changeDataBase" class="dataBase">
+    <span @click="changeDataBase" class="dataBase" v-permissionArr="['TOOLING_DATABASE_SUMMARY', 'TOOLING_DATABASE_PARTNO', 'TOOLING_DATABASE_MODELBAG']">
       <transition name="bounce">
         <Popover
             content="历史数据库"
@@ -56,6 +56,7 @@ import logButton from "pages/ws2/budgetManagement/components/logButton";
 import {budgetManagement3rd} from "pages/ws2/budgetManagement/components/data";
 import {iNavMvp} from "@/components";
 import store from '@/store';
+import {cloneDeep} from 'lodash'
 
 export default {
   props: {
@@ -83,10 +84,23 @@ export default {
       dataBase: false,
       onleySelf: true,
       checkHistory: false,
+      navListTemp: [],
       budgetManagement3rd: budgetManagement3rd,
     }
   },
+  computed: {
+    whiteBtnList: () => {
+      return store.state.permission.whiteBtnList
+    }
+  },
   created() {
+    let cloneNavList = cloneDeep(this.navList)
+    if(this.whiteBtnList['TOOLING_BUDGET_OVERVIEW']){
+      this.navListTemp.push(cloneNavList[0])
+    }
+    if(this.whiteBtnList['TOOLING_BUDGET_COMMONSOURCING_MODELBAGBUDGET']){
+      this.navListTemp.push(cloneNavList[1])
+    }
     this.$store.commit('SET_onleySelf', this.onleySelf)
     this.$store.commit('SET_checkHistory', this.checkHistory)
     if(this.$route.path == '/tooling/dataBase'){

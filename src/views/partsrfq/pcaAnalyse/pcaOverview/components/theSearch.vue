@@ -53,12 +53,21 @@ export default {
   },
   methods: {
     handleSearchReset() {
-      this.form = {
-        category: '',
-        partNum: '',
-        rfq: this.$store.state.rfq.rfqId,
-        createBy: '',
-      };
+      if (this.$route.path.indexOf('externalNegotiationAssistant') > 0) {
+        this.form = {
+          category: '',
+          partNum: '',
+          rfq: '',
+          createBy: '',
+        };
+      } else {
+        this.form = {
+          category: '',
+          partNum: '',
+          rfq: this.$store.state.rfq.rfqId,
+          createBy: '',
+        };
+      }
       this.getTableList();
     },
     getTableList() {

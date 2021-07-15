@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import { uploadFile } from "@/api/file/upload"
+import { uploadFile, uploadUdFile } from "@/api/file/upload"
 
 export default {
   props: {
@@ -33,10 +33,6 @@ export default {
       type: String,
       default: ".pdf,.xlsx,.docx"
     },
-    params: {
-      type: Object,
-      default: () => {}
-    },
     beforeUpload: {
       type: Function,
       default: () => file => { return true }
@@ -44,12 +40,9 @@ export default {
   },
   methods: {
     upload(content) {
-      const formData = new FormData()
-
-      formData.append("multipartFile", content.file)
-      Object.keys(this.params).forEach(key => formData.append(key, this.params[key]))
-
-      uploadFile(formData)
+      uploadUdFile({
+        multifile: content.file
+      })
       .then(res => {
         this.$emit("success", res, content.file)
       })

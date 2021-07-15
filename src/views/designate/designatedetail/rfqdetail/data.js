@@ -2,7 +2,7 @@
  * @Descripttion: RFQ & 零件清单数据
  * @Author: Luoshuang
  * @Date: 2021-05-21 11:30:46
- * @LastEditTime: 2021-07-14 14:02:25
+ * @LastEditTime: 2021-07-14 18:44:06
  */
 
 export const rfqListTitle = [
@@ -19,7 +19,7 @@ export const rfqListTitle = [
   {props:'linieNameZh',name:'LINIE', key: "LINIE", tooltip: true},
   {props:'tpGradeStatus',name:'TP评分状态', key: "TPPINGFENZHUANGTAI", tooltip: true, width: 120},
   {props:'mqGradeStatus',name:'MQ评分状态', key: "MQPINGFENZHUANGTAI", tooltip: true, width: 120},
-  {props:'carType',name:'车型项目', key: "CHEXINGXIANGMU", tooltip: true},
+  // {props:'carType',name:'车型项目', key: "CHEXINGXIANGMU", tooltip: true},
   {props:'targetGradeStatus',name:'CF目标价状态', key: "CFMUBIAOJIAZHUANGTAI", tooltip: true, width: 120},
   {props:'heavyItem',name:'Heavy Item', key: "HEAVYITEM", tooltip: true, width: 120},
   {props:'kmAnalysis',name:'分析报告', key: "FENXIBAOGAO", tooltip: true},

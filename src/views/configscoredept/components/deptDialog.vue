@@ -41,7 +41,7 @@
               <el-form-item :label="language('BUMENZHONGWENMING', '部门中文名')">
                 <iSelect
                   filterable
-                  v-model="form.nameZh"
+                  v-model="form.deptNameZh"
                   :placeholder="language('QINGXUANZEBUMENZHONGWENMING', '请选择部门中文名')"
                 >
                   <el-option
@@ -61,7 +61,7 @@
               <el-form-item :label="language('BUMENYINGWENMING', '部门英文名')">
                 <iSelect
                   filterable
-                  v-model="form.nameEn"
+                  v-model="form.deptNameEn"
                   :placeholder="language('QINGXUANZEBUMENYINGWENMING', '请选择部门英文名')"
                 >
                   <el-option
@@ -172,7 +172,7 @@ export default {
     getAllDept() {
       this.loading = true
 
-      getAllDept(this.form)
+      return getAllDept(this.form)
       .then(res => {
         if (res.code == 200) {
           this.selectRow = null
@@ -184,8 +184,8 @@ export default {
             this.nameEnOptions = []
             this.tableListData.forEach(item => {
               item.deptNum && this.deptNumOptions.push({ key: item.deptNum, label: item.deptNum, value: item.deptNum })
-              item.nameZh && this.nameZhOptions.push({ key: item.nameZh, label: item.nameZh, value: item.nameZh })
-              item.nameEn && this.nameEnOptions.push({ key: item.nameEn, label: item.nameEn, value: item.nameEn })
+              item.deptNameZh && this.nameZhOptions.push({ key: item.deptNameZh, label: item.deptNameZh, value: item.deptNameZh })
+              item.deptNameEn && this.nameEnOptions.push({ key: item.deptNameEn, label: item.deptNameEn, value: item.deptNameEn })
             })
           }
         } else {
@@ -201,7 +201,11 @@ export default {
     },
     // 确认
     handleQuery() {
-      this.getAllDept()
+      this.getAllDept().then(() => {
+        this.tableListData = this.tableListData.filter(item => {
+          return (this.form.deptNum ? (item.deptNum === this.form.deptNum) : true) && (this.form.deptNameZh ? (item.deptNameZh === this.form.deptNameZh) : true) && (this.form.deptNameEn ? (item.deptNameEn === this.form.deptNameEn) : true) 
+        })
+      })
     },
     // 重置
     handleReset() {

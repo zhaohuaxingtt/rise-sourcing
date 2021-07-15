@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2021-07-14 17:21:24
+ * @LastEditTime: 2021-07-14 20:33:03
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\editordetail\index.vue
@@ -208,7 +208,7 @@
 						</iFormItem>
 						<iFormItem :label="language('LK_CFKONGZHIYUAN','CF控制员') + ':'" name='cfczy'>
 							<iSelect v-model="detailData.cfController" v-permission="PARTSPROCURE_EDITORDETAIL_CFCONTROLLER">
-								<el-option :value="item.id" :label="item.name" v-for="item in fromGroup.CF_CONTROL" :key="item.name"></el-option>
+								<el-option :value="item.code" :label="item.name" v-for="item in fromGroup.CF_CONTROL" :key="item.name"></el-option>
 							</iSelect>
 						</iFormItem>
 						<iFormItem :label="language('LINGJIANCHENGBENFENXIYUAN', '零件成本分析员') + ':'" name=''>
@@ -242,8 +242,10 @@
 							</template>
 							<!--------预设值会有一个联动，如果 为是  零件采购项目类型是fs commonsourcing  如果是否，则是fs零件 ps:和设计刘洋沟通前端不做联动，仅仅在数据初始化时做----------> 
 							<!--------预设置联动第二版：如果零件采购项目为FS common sourcing，但是否common sourcing选择否，则在保存/生成FS号时提示采购员：“[零件采购项目]与[是否common sourcing]不统一，请确认是否继续”---->
+							<!--------选择联动：如果当前的零件采购项目为fs零件，和gs零件，如果选项为【是】需要反向设置当前采购项目类型为当前项对应的COMMONSOURCING 零件”---->
 							<iSelect v-model="detailData.isCommonSourcing"
 								:disabled='canSelectCommonSourcing'
+								@change="changeCommonSourcing"
 								v-permission="PARTSPROCURE_EDITORDETAIL_COMMONSOURCING">
 								<el-option :value="true" label="是"></el-option>
 								<el-option :value="false" label="否"></el-option>
@@ -368,7 +370,8 @@
 		checkFactory
 	} from "@/api/partsprocure/editordetail";
 	import {
-		detailData
+		detailData,
+		partsCommonSourcing
 	} from "./components/data";
 	import splitFactory from "./components/splitFactory";
 import designateInfo from './components/designateInfo'
@@ -479,6 +482,17 @@ import {partProjTypes, BKMROLETAGID} from '@/config'
 			this.getDicts()
 		},
 		methods: {
+   /**
+    * @description: 是否是commonsourcing的change选择框。 
+    * @param {*} e
+    * @return {*}
+    */
+			changeCommonSourcing(e){
+				const fsCommonSourcing = partsCommonSourcing.find(i=>i.fs == this.detailData.partProjectType)
+				if(e && fsCommonSourcing){
+					this.detailData.partProjectType = fsCommonSourcing.common
+				}
+			},
 			getDetailData(){
 				return this.detailData
 			},
