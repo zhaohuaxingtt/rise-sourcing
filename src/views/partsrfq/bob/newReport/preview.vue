@@ -243,7 +243,7 @@ export default {
     },
     getChartData () {
       getBobLevelOne({
-        analysisSchemeId: this.analysisSchemeId,
+        analysisSchemeId: this.SchemeId,
       }).then((res) => {
 
         const allData = res.data || [];

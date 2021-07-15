@@ -330,7 +330,7 @@ export default {
       })
       if (this.entryStatus === 1) {
         initIn({
-          rfqId: this.form.rfq,
+          rfqId: this.rfqID,
         }).then((res) => {
           // this.$store.dispatch('setSchemeId', res.data);
           this.$router.push({
