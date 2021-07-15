@@ -78,7 +78,7 @@ import {
     uploadAttachments,
     deleteattachments,
 } from '@/api/designateFiles/importFiles'
-import { downloadFile } from '@/api/file'
+import { downloadUdFile as downloadFile } from '@/api/file'
 
 export default {
     name:'uploadList',
@@ -139,13 +139,13 @@ export default {
             console.log(data,'data');
             const { uploadId } = this;
             const filesData = data.data;
-            const {id,fileName,filePath} = filesData;
+            const {id,name,path} = filesData;
             const formData = new FormData(); 
             formData.append('file', data.file);
             formData.append('affixId', uploadId);
-            formData.append('id', id);
-            formData.append('fileName', fileName);
-            formData.append('filePath', filePath);
+            formData.append('uploadId', id);
+            formData.append('fileName', name);
+            formData.append('filePath', path);
             // const sendData = {
             //     affixId:uploadId,
             //     ...filesData,
@@ -189,12 +189,12 @@ export default {
             if(!selectItems.length){
              iMessage.warn(this.language('LK_QINGXUANZHEXUYAOXIAZHAIDEFUJIAN','请选择需要下载的附件'));
             }else{
-                const list = selectItems.map((item)=>item.fileName);
-                const data = {
-                    applicationName: 'rise',
-                    fileList:list.join(),
-                };
-                await downloadFile(data);
+                const list = selectItems.map((item)=>item.uploadId);
+                // const data = {
+                //     applicationName: 'rise',
+                //     fileList:list.join(),
+                // };
+                await downloadFile(list);
             }
         },
         clearDialog() {
