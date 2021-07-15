@@ -1,7 +1,7 @@
 /*
  * @Author: HaoJiang
  * @Date: 2021-05-20 14:29:09
- * @LastEditTime: 2021-07-05 23:05:50
+ * @LastEditTime: 2021-07-15 21:41:47
  * @LastEditors: Please set LastEditors
  * @Description: 定点表格信息
  *
@@ -11,7 +11,7 @@
 export const form = {
   applicationStatus: 'CHECK_PASS',
   isPriceConsistent: 1,
-  selStatus: 'Confirmed'
+  selStatus: 'CONFIRMED'
 }
 
 // 表单表头
