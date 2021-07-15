@@ -108,8 +108,8 @@
       <!-- SEL单据确认状态 -->
       <template #selStatus="scope">
         <div>
-          <a href="javascript:;" class="selStatus-link" @click="confirmSelSheet(scope.row)" v-if="scope.row.selStatus && scope.row.selStatus.code === 'Confirmed'">{{scope.row.selStatus && scope.row.selStatus.desc || scope.row.selStatus}}</a>
-          <a href="javascript:;" class="selStatus-link" @click="confirmSelSheet(scope.row)" v-else-if="scope.row.selStatus && scope.row.selStatus.code === 'Unconfirmed'">{{scope.row.selStatus && scope.row.selStatus.desc || scope.row.selStatus}}</a>
+          <a href="javascript:;" class="selStatus-link" @click="confirmSelSheet(scope.row)" v-if="scope.row.selStatus && scope.row.selStatus.code === 'CONFIRMED'">{{scope.row.selStatus && scope.row.selStatus.desc || scope.row.selStatus}}</a>
+          <a href="javascript:;" class="selStatus-link" @click="confirmSelSheet(scope.row)" v-else-if="scope.row.selStatus && scope.row.selStatus.code === 'UNCONFIRMED'">{{scope.row.selStatus && scope.row.selStatus.desc || scope.row.selStatus}}</a>
           <span v-else>{{scope.row.selStatus && scope.row.selStatus.desc || scope.row.selStatus}}</span>
         </div>
       </template>
