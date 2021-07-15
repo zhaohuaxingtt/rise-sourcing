@@ -44,7 +44,7 @@ import { getAttachmentVersion, patchAttachmentVersion, getAttachment } from '@/a
 import { pageMixins } from '@/utils/pageMixins'
 import enquiryDialog from '../enquiryDialog'
 import filters from '@/utils/filters'
-import { downloadFile } from '@/api/file'
+import { downloadFile, downloadUdFile } from '@/api/file'
 
 export default {
   components: { iCard, iButton, iPagination, tableList, backItems, enquiryDialog },
@@ -179,10 +179,11 @@ export default {
           return iMessage.error(this.language('LK_SUOXUANBANBENWUFUJIAN','所选版本无附件'))
         }
 
-        await downloadFile({
-          applicationName: 'rise-procurereq-service',
-          fileList: list.map(item => item.tpPartAttachmentName).join('&fileList=')
-        })
+        // await downloadFile({
+        //   applicationName: 'rise-procurereq-service',
+        //   fileList: list.map(item => item.tpPartAttachmentName).join('&fileList=')
+        // })
+        await downloadUdFile(list.map(item => item.uploadId))
 
         this.downLoading = false
       } else {

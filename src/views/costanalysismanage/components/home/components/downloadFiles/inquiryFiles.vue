@@ -85,12 +85,11 @@ export default {
             this.selectItems = val;
         },// 下载附件
         async download(fileList){
-            //  const data = {
-            //   applicationName: 'rise',
-            //   fileList:fileList,
-            // };
-            // await downloadFile(data);
-            uploadId
+             const data = {
+              applicationName: 'rise',
+              fileList:fileList,
+            };
+            await downloadFile(data);
         },
         
         // 批量下载附件
