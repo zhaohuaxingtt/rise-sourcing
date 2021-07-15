@@ -486,7 +486,6 @@ export default {
           }]
         }).then(res => {
           if (res.code === '200') {
-            debugger
             this.$message.success(res.desZh);
             this.analysisSchemeId = res.data
             this.$store.dispatch('setSchemeId', this.analysisSchemeId);
