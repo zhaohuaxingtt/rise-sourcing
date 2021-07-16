@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-25 17:00:48
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-07-15 16:44:06
+ * @LastEditTime: 2021-07-16 16:11:19
  * @Description: 定点管理-决策资料-BDL
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\bdl\index.vue
 -->
@@ -60,6 +60,7 @@ export default {
     sizeChange(val, index) {
       this.rfqList[index].page = {
         ...this.rfqList[index].page,
+        currPage:1,
         pageSize: val
       }
       const element = {

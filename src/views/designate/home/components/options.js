@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-07-05 16:17:39
- * @LastEditTime: 2021-07-15 21:37:03
+ * @LastEditTime: 2021-07-16 15:36:53
  * @LastEditors: Please set LastEditors
  * @Description: 通用下拉值
  * @FilePath: /front-web/src/views/designate/home/components/options.js
@@ -10,7 +10,7 @@
 // 定点管理申请状态
 export const nomiApplicationStatus = [
   {id:'NEW',name:'草稿',key:'LK_CAOGAO'},
-  {id:'SUBMIT',name:'提交',key:'LK_TIJIAO'},
+  {id:'SUBMIT',name:'已提交',key:'LK_TIJIAO'},
   {id:'NOTPASS',name:'未通过',key:'LK_WEITONGGUO'},
   {id:'PASS',name:'通过',key:'LK_TONGGUO'},
   {id:'CHECK_INPROCESS',name:'复核中',key:'LK_FUHEZHONG'},
