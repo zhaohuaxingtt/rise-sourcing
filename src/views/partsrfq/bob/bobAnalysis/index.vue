@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 10:50:38
- * @LastEditTime: 2021-07-15 18:27:26
+ * @LastEditTime: 2021-07-16 10:26:12
  * @LastEditors: Please set LastEditors
  * @Description: 费用详情
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails.vue
@@ -27,6 +27,7 @@
                      @click="open">全部展开</iButton>
             <iButton v-show="flag1"
                      @click="close">全部收回</iButton>
+            <iButton @click="remarks">备注</iButton>
             <iButton @click="reduction">还原</iButton>
             <iButton @click="group">数据分组</iButton>
             <iButton @click="down">导出</iButton>

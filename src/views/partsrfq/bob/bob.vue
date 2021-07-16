@@ -152,7 +152,8 @@
                    :current-page="page.currPage"
                    :total="page.totalCount" />
 
-      <reportPreview :visible="reportVisible" :reportUrl="reportUrl"/>
+      <reportPreview :visible="reportVisible"
+                     :reportUrl="reportUrl" />
     </iCard>
   </div>
 </template>
@@ -291,9 +292,9 @@ export default {
       this.getTableList();
     },
     //检索事件
-    handleSearch() {
+    handleSearch () {
       this.getTableList().then(res => {
-        if(!res.data || res.data.length == 0) {
+        if (!res.data || res.data.length == 0) {
           iMessage.error('抱歉，无法查询到结果（输入错误或不存在），请确认后重新输入')
         }
       })
@@ -349,14 +350,18 @@ export default {
           rfqId: this.form.rfq,
         }).then((res) => {
           // this.$store.dispatch('setSchemeId', res.data);
-          this.$router.push({
-            path: '/sourcing/partsrfq/bobNew',
-            query: {
-              rfqId: res.data,
-              newBuild: true,
-            },
-          })
-          loading.close()
+          if (res.code === '200') {
+            this.$router.push({
+              path: '/sourcing/partsrfq/bobNew',
+              query: {
+                rfqId: res.data,
+                newBuild: true,
+              },
+            })
+          } else {
+            iMessage.error(res.desZh);
+            loading.close()
+          }
         })
       } else {
         this.$router.push({
@@ -459,16 +464,16 @@ export default {
     },
     // 点击名称,触发跳转事件
     clickName (val) {
-      if(val.fileType == '方案') {
+      if (val.fileType == '方案') {
         this.$router.push({
           path: '/sourcing/partsrfq/bobNew',
           query: {
             rfqId: val.id,
           },
         })
-      } else if(val.fileType == '报告') {
+      } else if (val.fileType == '报告') {
         this.reportVisible = true
-        if(val.path) this.reportUrl = val.path
+        if (val.path) this.reportUrl = val.path
       }
     }
   },
