@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-07-05 16:17:39
- * @LastEditTime: 2021-07-13 14:12:55
+ * @LastEditTime: 2021-07-15 21:37:03
  * @LastEditors: Please set LastEditors
  * @Description: 通用下拉值
  * @FilePath: /front-web/src/views/designate/home/components/options.js
@@ -50,9 +50,9 @@ export const applicationStatus = [
 ]
 // SEL单据确认状态
 export const selStatus = [
-  {id:'Unconfirmed',name:'未确认',key:'LK_SELWEIQUEREN'},
-  {id:'Confirmed',name:'已确认',key:'LK_SELYIQUEREN'},
-  {id:'No_SEL',name:'未分摊',key:'LK_SELWEIFENTAN'},
+  {id:'UNCONFIRMED',name:'未确认',key:'LK_SELWEIQUEREN'},
+  {id:'CONFIRMED',name:'已确认',key:'LK_SELYIQUEREN'},
+  {id:'UNAMORTIZED',name:'未分摊',key:'LK_SELWEIFENTAN'},
 ]
 // 报价一致性校验
 export const priceConsistentStatus = [
