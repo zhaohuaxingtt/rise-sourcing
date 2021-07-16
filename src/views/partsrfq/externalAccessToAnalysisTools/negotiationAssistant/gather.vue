@@ -25,8 +25,8 @@
     <specialAnalysisTool v-if="pageType === 'card'" @entrance="entrance" ref="specialAnalysisTool" />
     <pcaOverview v-else-if="pageType === 'PCA'" pageType="PCA" />
     <pcaOverview v-else-if="pageType === 'TIA'" pageType="TIA" />
-    <bobOverview v-else-if="pageType === 'BoB(Best of Best)'" />
-    <vpAnalyseList v-else-if="pageType==='Volume Pricing'" />
+    <bobOverview v-else-if="pageType === 'BoB'" />
+    <vpAnalyseList v-else-if="pageType==='VP'" />
   </div>
 </template>
 
@@ -66,7 +66,6 @@ export default {
     }
   },
   created() {
-
     if (!!this.$route.query.pageType) {
       this.pageType = this.$route.query.pageType
     }

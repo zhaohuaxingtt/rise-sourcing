@@ -190,9 +190,9 @@ export default {
             getNominateType().then(res => {
                 if (res?.result) {
                     const apply = []
-                    for (let keys in res.data) {
-                        apply.push({id:res.data[keys].code,name:res.data[keys].desc})
-                    }
+                    Array.from(res.data).forEach(item => {
+                        apply.push({id:item.code,name:item.desc,key:item.code})
+                    })
                     this.applyType = apply
                 } else {
                     this.applyType = []
