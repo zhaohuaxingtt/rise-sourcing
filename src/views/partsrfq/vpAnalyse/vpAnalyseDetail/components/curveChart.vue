@@ -114,6 +114,7 @@ export default {
         grid: {
           top: 40,
           right: 80,
+          left: 60
         },
       }
       chart.setOption(option)
