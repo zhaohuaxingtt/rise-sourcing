@@ -38,6 +38,9 @@
       @openPage="openPage"
       :activeItems="'partNum'"
     >
+    <template #_index="scope">
+      {{((page.currPage - 1)*page.pageSize + scope.$index + 1 )}}
+    </template>
     <template #descr="scope">
       <el-tooltip effect="light" :content="genHeaderTitle(scope)">
           <span>{{ genHeaderTitle(scope) }}</span>
@@ -61,8 +64,8 @@
     </tablelist>
     <iPagination
       v-update
-      @size-change="handleSizeChange($event, getTableListFn)"
-      @current-change="handleCurrentChange($event, getTableListFn)"
+      @size-change="handleSizeChange($event, getFetchDataList)"
+      @current-change="handleCurrentChange($event, getFetchDataList)"
       background
       :current-page="page.currPage"
       :page-sizes="page.pageSizes"
@@ -168,7 +171,9 @@ export default {
     getFetchDataList() {
       this.tableLoading = true
       getSupplierList({
-        nominateId: this.nomiAppId
+        nominateId: this.nomiAppId,
+        current: this.page.currPage,
+        size: this.page.pageSize
       }).then(res => {
         this.tableLoading = false
         if (res.code === '200') {
