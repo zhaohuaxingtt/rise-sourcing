@@ -190,23 +190,23 @@ export default {
     },
     // 初始化列表数据
     getTableData(searchData) {
-      const params = {
-        pageNo: this.page.currPage,
-        pageSize: this.page.pageSize,
-        createByName: searchData ? searchData.createByName : null,
-        materialGroup: searchData ? searchData.materialGroup : null,
-        partsNo: searchData ? searchData.partsNo : null,
-        rfqNo: searchData ? searchData.rfqNo : this.$store.state.rfq.rfqId,
-      }
-      getVpAnalysisDataList(params).then(res => {
-        if(res && res.code == 200) {
-          if(!res.data || res.data.length == 0) {
-            iMessage.error('抱歉，无法查询到结果（输入错误或不存在），请确认后重新输入')
-          }
-          this.page.totalCount = res.total
-          this.tableListData = res.data
-          this.handleTableNumber(this.tableListData, 1, null)
+      return new Promise(resolve => {
+        const params = {
+          pageNo: this.page.currPage,
+          pageSize: this.page.pageSize,
+          createByName: searchData ? searchData.createByName : null,
+          materialGroup: searchData ? searchData.materialGroup : null,
+          partsNo: searchData ? searchData.partsNo : null,
+          rfqNo: searchData ? searchData.rfqNo : this.$store.state.rfq.rfqId,
         }
+        getVpAnalysisDataList(params).then(res => {
+          if(res && res.code == 200) {
+            this.page.totalCount = res.total
+            this.tableListData = res.data
+            this.handleTableNumber(this.tableListData, 1, null)
+            resolve(res)
+          }
+        })
       })
     },
     //递归处理树结构数据的序号

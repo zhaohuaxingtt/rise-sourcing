@@ -96,8 +96,6 @@ export default {
         this.cardData.push(
           { title: 'Pricing Index', analysisTotal: '', reportTotal: '', analysisLastUpdateDate: '', reportLastUpdateDate: '' },
           { title: 'MEK', analysisTotal: '', reportTotal: '', analysisLastUpdateDate: '', reportLastUpdateDate: '' },
-          { title: 'PCA', analysisTotal: '', reportTotal: '', analysisLastUpdateDate: '', reportLastUpdateDate: '' },
-          { title: 'TIA', analysisTotal: '', reportTotal: '', analysisLastUpdateDate: '', reportLastUpdateDate: '' },
           { title: 'Bid-Link', analysisTotal: '', reportTotal: '', analysisLastUpdateDate: '', reportLastUpdateDate: '' }
         )
         this.cardData.map((item) => {

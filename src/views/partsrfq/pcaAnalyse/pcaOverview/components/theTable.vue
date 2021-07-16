@@ -58,7 +58,7 @@
 </template>
 
 <script>
-import {iCard, iPagination, icon, iButton} from 'rise';
+import {iCard, iPagination, icon} from 'rise';
 import tableList from '@/components/ws3/commonTable';
 import {pageMixins} from '@/utils/pageMixins';
 import resultMessageMixin from '@/utils/resultMessageMixin';
@@ -73,8 +73,7 @@ export default {
     tableList,
     iPagination,
     icon,
-    previewDialog,
-    iButton
+    previewDialog
   },
   props: {
     pageType: {
@@ -101,6 +100,10 @@ export default {
   methods: {
     handleSelectionChange(val) {
       this.selectTableData = val;
+    },
+    handleSearch() {
+      this.page.currPage = 1
+      this.getTableList()
     },
     async getTableList() {
       this.tableLoading = true;
