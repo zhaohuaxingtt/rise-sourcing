@@ -21,8 +21,8 @@ export default {
     theTable,
   },
   methods: {
-    getTableList(req) {
-      this.$refs.theTable.getTableList(req);
+    getTableList() {
+      this.$refs.theTable.handleSearch();
     },
   },
 };
