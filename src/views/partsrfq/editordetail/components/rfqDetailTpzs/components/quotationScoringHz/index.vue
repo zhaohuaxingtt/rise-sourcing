@@ -42,6 +42,7 @@
     </div>
     <tableList v-loading='fsTableLoading' @sortChangeTabless='sortChange' :round='round' :tableTitle='title' v-if='layout == "1"' :ratingList='ratingList' :tableData='exampelData' @handleSelectionChange='handleSelectionChange'></tableList>
     <tableListSupplier ref='tableSupplier' :cWidth='cWidth' :budget='budget' :kmAPrice='kmAPrice' :kmTooling='kmTooling' v-loading='supplierTableLoading' :centerSupplierData='suppliertopList' :supplierLeftLit='supplierLeftLit' :tableTitle='supplierTile'  :tableData='supplierData' v-if='layout == "2" && showTable'></tableListSupplier>
+    <tablelistGSasRow v-loading='fsTableLoading' @sortChangeTabless='sortChange' :round='round' :tableTitle='title' v-if='layout == "3"' :ratingList='ratingList' :tableData='exampelData' @handleSelectionChange='handleSelectionChange'></tablelistGSasRow>
     <!--------------弹窗-------------->
     <iDialog title="组合名" :visible.sync="groupVisble" width='25%' >
       <div class="mine_height">
@@ -58,12 +59,13 @@
 import {iButton,iSelect,iDialog,iInput,iMessage} from 'rise'
 import tableList from './components/table'
 import tableListSupplier from './components/tableListSupplier'
+import tablelistGSasRow from './components/tablelistGSasRow'
 import {exampelData,backChooseList,getRenderTableTile,translateData,translateRating,subtotal,defaultSort,getRenderTableTileSupplier,translateDataListSupplier,getleftTittleList} from './components/data'
-import {negoAnalysisSummaryLayout,negoAnalysisSummaryLayoutSave,negoAnalysisSummaryRound,fsPartsAsRow,negoAnalysisSummaryGroup,negoAnalysisSummaryGroupDelete,fsSupplierAsRow} from '@/api/partsrfq/editordetail'
+import {negoAnalysisSummaryLayout,negoAnalysisSummaryLayoutSave,negoAnalysisSummaryRound,fsPartsAsRow,gsPartsAsRow,negoAnalysisSummaryGroup,negoAnalysisSummaryGroupDelete,fsSupplierAsRow} from '@/api/partsrfq/editordetail'
 export default{
-  components:{iButton,iSelect,tableList,iDialog,iInput,tableListSupplier},
+  components:{iButton,iSelect,tableList,iDialog,iInput,tableListSupplier,tablelistGSasRow},
   data(){return {
-    title:getRenderTableTile([],0),
+    title:getRenderTableTile([],0,1),
     exampelData:exampelData,
     groupSelectData:[],
     groupVisble:false,
@@ -251,7 +253,7 @@ export default{
         }else if(this.layout == 2){
           await this.supplierfsSupplierAsRow()
         }else{
-          await this.gsPartsAsRowTable()
+          await this.fsPartsAsRow()
         }
     },
     visibleChange(res){
@@ -282,13 +284,7 @@ export default{
     negoAnalysisSummaryLayoutSave(){
       negoAnalysisSummaryLayoutSave(JSON.stringify(this.backChoose),this.layout).then(async res=>{
         if(res.code == 200){
-          if(this.layout == 1){
-            await this.negoAnalysisSummaryLayout(this.layout) //获取隐藏项
-            await this.fsPartsAsRow()
-          }else{
-            await this.negoAnalysisSummaryLayout(this.layout) //获取隐藏项
-            await this.supplierfsSupplierAsRow()
-          }
+          this.init()
         }
       }).catch(err=>{
         iMessage.warn(err.desZh)
@@ -323,12 +319,13 @@ export default{
      */
     fsPartsAsRow(){
       this.fsTableLoading = true
-      fsPartsAsRow(this.$route.query.id,this.round).then(res=>{
+      // eslint-disable-next-line no-unexpected-multiline
+      this.changeFnForGSandFS(this.layout).then(res=>{
         this.fsTableLoading = false
         if(res.data && res.data.partInfoList && res.data.partInfoList.length){
           this.partInfoList = res.data.partInfoList
           this.bdlPriceTotalInfoList = res.data.bdlPriceTotalInfoList
-          const relTitle = getRenderTableTile(this.backChoose,res.data.partInfoList[0].bdlInfoList.length)
+          const relTitle = getRenderTableTile(this.backChoose,res.data.partInfoList[0].bdlInfoList.length,this.layout)
           this.title = relTitle.title
           this.reRenderLastChild = relTitle.xhLastChildProps
           this.exampelData = defaultSort(translateData(res.data.partInfoList),'groupId')
@@ -390,13 +387,12 @@ export default{
         })
       })
     },
-    /**
-     * @description: 获取GS零件数据列表
-     * @param {*}
-     * @return {*}
-     */
-    gsPartsAsRowTable(){
-
+    changeFnForGSandFS(type){
+      if(type == 1){
+        return fsPartsAsRow(this.$route.query.id,this.round)
+      }else{
+        return gsPartsAsRow(this.$route.query.id,this.round)
+      }
     }
   }
 }

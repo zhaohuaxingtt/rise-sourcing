@@ -266,6 +266,13 @@ export function fsPartsAsRow(rfqId,round){
         method: 'GET'
     })
 }
+export function gsPartsAsRow(rfqId,round){
+    return nego({
+        url: `/nego-assistant/nego-analysis-summary/gs-parts-as-row/${rfqId}/${round}`,
+        method: 'GET'
+    })
+}
+
 //报价分析-供应商轴
 export function fsSupplierAsRow(rfqId,round){
     return nego({

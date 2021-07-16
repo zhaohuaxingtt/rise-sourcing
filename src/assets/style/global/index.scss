@@ -467,3 +467,9 @@ a{
     display: none!important;
   }
 }
+
+.el-select {
+  .el-input__inner {
+    backface-visibility: hidden!important;
+  }
+}
