@@ -1,6 +1,6 @@
 <!--
  * @Author: moxuan
- * @LastEditors: Please set LastEditors
+ * @LastEditors: zbin
  * @Description: VP分析详情
 -->
 <template>
@@ -299,7 +299,7 @@ export default {
           query: {
             id: this.$store.state.rfq.rfqId,
             round: this.$route.query.round,
-            pageType: 'Volume Pricing',
+            pageType: 'VP',
             activityTabIndex: 'two',
           },
         });
