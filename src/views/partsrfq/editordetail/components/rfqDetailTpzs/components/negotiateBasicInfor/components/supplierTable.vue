@@ -8,7 +8,11 @@
 <template>
   <div>
     <div class="info">{{$t('TPZS.GYSXX')}}</div>
-    <tableList class="margin-top20" :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="tableLoading" :selection='false' :index="true" @handleSelectionChange="handleSelectionChange" />
+    <tableList class="margin-top20" :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="tableLoading" :selection='false' :index="true" @handleSelectionChange="handleSelectionChange" >
+      <template #isSelectMbdl="scope">
+        <span>{{scope.row.isSelectMbdl?$t('nominationLanguage.Yes'):$t('nominationLanguage.No')}}</span>
+      </template>
+    </tableList>
   </div>
 </template>
 
