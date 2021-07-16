@@ -110,13 +110,23 @@ export default {
     };
   },
   mounted () {
+
     if (this.$store.state.rfq.entryStatus === 1) {
-      this.SchemeId = this.$route.query.rfqId
-      this.getChartData();
-      this.chargeRetrieve("all");
+      this.inside = true;
+      this.rfq = this.$store.state.rfq.rfqId
+      this.analysisSchemeId = this.$route.query.rfqId;
+
     } else {
-      this.SchemeId = this.$store.state.rfq.SchemeId;
+      if (this.$route.query.rfqId) {
+        this.value = false
+        this.analysisSchemeId = this.$route.query.rfqId;
+      } else {
+        this.analysisSchemeId = this.$store.state.rfq.SchemeId;
+
+      }
     }
+    this.getChartData();
+    this.chargeRetrieve('all')
     // if (this.inside === 0) {
     //   this.analysisSchemeId = this.$parent.$options.parent.analysisSchemeId
     // }
@@ -170,7 +180,7 @@ export default {
     },
     chargeRetrieve (type) {
       chargeRetrieve({
-        schemaId: this.SchemeId,
+        schemaId: this.analysisSchemeId,
         viewType: type,
       })
         .then((res) => {
@@ -243,9 +253,8 @@ export default {
     },
     getChartData () {
       getBobLevelOne({
-        analysisSchemeId: this.SchemeId,
+        analysisSchemeId: this.analysisSchemeId,
       }).then((res) => {
-
         const allData = res.data || [];
         this.chartData = allData.bobLevelOneVOList.filter(
           (r) => r.isIntroduce === 0

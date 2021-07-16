@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 11:38:57
- * @LastEditTime: 2021-07-13 19:18:45
+ * @LastEditTime: 2021-07-16 18:15:24
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails\table1.vue
@@ -15,6 +15,7 @@
               :expand-row-keys="expends"
               v-loading="loading"
               :max-height="maxHeight"
+              :cell-style="cellsytle"
               @selection-change="handleSelectionChange"
               @row-click="rowClick"
               @row-dblclick="rowDblclick"
@@ -164,7 +165,9 @@ export default {
           index: c,
         });
     },
-
+    cellStyle ({ row, column, rowIndex, columnIndex }) {
+      console.log(row, column,rowIndex,columnIndex)
+    },
     getRowKey (row) {
       return row.index;
     },
