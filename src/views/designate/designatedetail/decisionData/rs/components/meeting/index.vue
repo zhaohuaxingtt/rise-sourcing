@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:17:25
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-14 19:48:22
+ * @LastEditTime: 2021-07-16 12:04:15
  * @Description: 上会/备案RS单
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\rs\components\meeting\index.vue
 -->
@@ -10,7 +10,7 @@
 <template>
   <div :class="isPreview && 'isPreview'">
     <iCard :title="'CSC定点推荐 - ' + cardTitle">
-      <div slot="header-control" class="singleSourcing">Single Sourcing</div>
+      <div slot="header-control" class="singleSourcing" v-if="isSingle">Single Sourcing</div>
       <div class="rsTop">
         <div class="rsTop-left">
           <div class="rsTop-left-item" v-for="(item, index) in leftTitle" :key="index">
@@ -86,6 +86,7 @@ import { nomalDetailTitle, nomalDetailTitleBlue, nomalTableTitle, meetingRemark,
 import tableList from '@/views/designate/designatedetail/components/tableList'
 import { getList, getRemark, updateRemark,getPrototypeList, getDepartApproval } from '@/api/designate/decisiondata/rs'
 import {partProjTypes} from '@/config'
+import { findFrontPageSeat } from '@/api/designate'
 export default {
   props: {
     isPreview: {type:Boolean, default:false},
@@ -111,7 +112,8 @@ export default {
       PrototypeList:[],
       prototypeTitleList:prototypeTitleList,
       processApplyDate: '',
-      projectType: ''
+      projectType: '',
+      isSingle: false
     }
   },
   computed: {
@@ -147,6 +149,15 @@ export default {
   },
   // created(){this.getPrototypeList()},
   methods: {
+    getIsSingle() {
+      findFrontPageSeat({nominateId:this.nominateId}).then(res => {
+        if (res.result) {
+          this.isSingle = res.data.isSingle
+        } else {
+          this.isSingle = false
+        }
+      })
+    },
     /**
      * @Description: 获取部门审批记录
      * @Author: Luoshuang
@@ -227,6 +238,7 @@ export default {
       this.getRemark()
       this.getDepartApproval()
       this.getPrototypeList()
+      this.getIsSingle()
     },
     /**
      * @Description: 获取表格初始数据
@@ -354,18 +366,22 @@ export default {
         flex-direction: column;
         justify-content: center;
       }
-      &:nth-of-type(even) {
-        .rsTop-right-item-title {
-          width: 65%;
-        }
-      }
       &-value {
+        width: 40%;
         padding: 10px 24px;
         line-height: 29px;
         background-color: #fff;
         display: flex;
         flex-direction: column;
         justify-content: center;
+      }
+      &:nth-of-type(even) {
+        .rsTop-right-item-title {
+          width: 65%;
+        }
+        .rsTop-right-item-value {
+          width: 35%;
+        }
       }
     }
   }
