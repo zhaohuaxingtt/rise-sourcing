@@ -151,9 +151,13 @@ export default {
       myChart.setOption(option);
       const that = this;
       myChart.on("click", function (params) {
+        console.log(params)
         if (params.targetType === "axisLabel" && params.value === that.type) {
           that.$emit("select", params);
         }
+      });
+      myChart.on("legendselectchanged", function (params) {
+        console.log(params)
       });
     },
     initData(newVal) {

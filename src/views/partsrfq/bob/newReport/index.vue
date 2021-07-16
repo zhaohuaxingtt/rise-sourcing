@@ -111,11 +111,12 @@
                                clearable
                                value-key
                                :multiple-limit="chartType === 'combination' ? 6 : 1"
-                               v-model="form.combination">
+                               v-model="form.combination"
+                               @change="selectChange">
                       <el-option v-for="(i) in options"
                                  :key="i.key"
                                  :value="i.key"
-                                 v-html="'<span class=xxxx>'+i.nameZh+'<br/>'+i.value+'</span>'">
+                                 :label="i.nameZh+''+i.value">
                         <!-- <p >{{ i.nameZh }}</p>
                         <p >{{ i.value }}</p> -->
                       </el-option>
@@ -190,44 +191,13 @@
           <iCard :collapse="false"
                  style="height: 500px"
                  v-if="!reportSave">
-            <el-form label-position="top"
-                     :model="form"
-                     style="height: 460px">
-              <el-row class="margin-bottom20">
-                <!--比较类型-->
-                <el-form-item :label="$t('比较类型')">
-                  <iSelect v-model="chartType">
-                    <el-option value="supplier"
-                               label="按供应商比较"></el-option>
-                    <el-option value="round"
-                               label="按轮次比较"></el-option>
-                    <el-option value="num"
-                               label="按零件号比较"></el-option>
-                  </iSelect>
-                </el-form-item>
-                <!--供应商-->
-                <el-form-item :label="$t('TPZS.GONGYINGSHANG')">
-                  <iSelect multiple
-                           v-model="form.supplier"> </iSelect>
-                </el-form-item>
-                <!--轮次-->
-                <el-form-item :label="$t('轮次')">
-                  <iSelect multiple
-                           v-model="form.round"></iSelect>
-                </el-form-item>
-                <!--零件号-->
-                <el-form-item :label="$t('LK_SPAREPARTSNUMBER')">
-                  <iSelect multiple
-                           v-model="form.num"></iSelect>
-                </el-form-item>
-              </el-row>
-            </el-form>
-            <div class="end">
-              <iButton type="primary"
-                       @click="getChartData">确定</iButton>
-              <iButton type="primary"
-                       @click="handleSearchReset">重置</iButton>
-            </div>
+            <ul class="anchorList flex">
+              <li v-for="(i,index) in anchorList"
+                  :key="index"
+                  @click="doActive(index)"
+                  :class="{active:index==current}">{{i}}
+              </li>
+            </ul>
           </iCard>
         </el-col>
         <el-col :span="reportSave ? 24 : 20">
@@ -242,7 +212,7 @@
                   @close="closeDialog"
                   @add="add"></findingParts>
     <preview ref="preview"
-             v-if="analysisSchemeId"
+             v-if="pre"
              :value="pre"
              @closeDialog="closePreView"></preview>
     <iDialog title="保存"
@@ -337,11 +307,14 @@ export default {
       dialogVisible: false,
       analysisSave: false,
       reportSave: false,
+      anchorList: ['原材料/散件', '制造费', '保费成本', '管理费', '其他费用', '利润'],
+      current: 0
     };
   },
   created () {
     if (this.$store.state.rfq.entryStatus === 1) {
       this.inside = true;
+      this.rfq = this.$store.state.rfq.rfqId
       this.analysisSchemeId = this.$route.query.rfqId;
       this.getChartData();
     } else {
@@ -382,19 +355,43 @@ export default {
       }).then((res) => {
         this.options = res.data
         this.$nextTick(() => {
-          console.log(this.$el.querySelector('.el-select__tags'), 2222)
           let html = ""
           this.options.forEach((value, index) => {
-            html += `<div class="el-tag el-tag--info el-tag--small el-tag--light">
-          <p class="el-select__tags-text">${value.nameZh}</p>
-          <p class="el-select__tags-text">${value.value}</p>
-          <i class="el-tag__close el-icon-close"></i>
-          </div>`
+            html +=
+              `<div class="el-tag el-tag--info el-tag--small el-tag--light" style="display:flex;justify-content: center;align-items: center;">
+            <div >
+             <p class="el-select__tags-text">${value.nameZh}</p>
+             <p class="el-select__tags-text">${value.value}</p>
+            </div> 
+             <i class="el-tag__close el-icon-close"></i>
+           </div>`
           })
           this.$el.querySelector('.el-select__tags').innerHTML = `<div>${html}</div>`
 
         });
       })
+    },
+    selectChange (e) {
+      this.$nextTick(() => {
+        let html = ""
+        console.log(e)
+        this.options.forEach((value, index) => {
+          e.forEach((i, index) => {
+            if (value.key == i) {
+              html +=
+                `<div class="el-tag el-tag--info el-tag--small el-tag--light" style="display:flex;justify-content: center;align-items: center;">
+            <div >
+             <p class="el-select__tags-text">${value.nameZh}</p>
+             <p class="el-select__tags-text">${value.value}</p>
+            </div> 
+             <i class="el-tag__close el-icon-close"></i>
+           </div>`
+            }
+          })
+        })
+        this.$el.querySelector('.el-select__tags').innerHTML = `<div>${html}</div>`
+
+      });
     },
     findPart () {
       this.value = true;
@@ -511,13 +508,23 @@ export default {
 
     },
     searchChartData () {
-      getBobLevelOne({
-        analysisSchemeId: this.analysisSchemeId,
-        analysisDimension: this.chartType,
-        spareParts: this.form.spareParts.join(","),
-        supplier: this.form.supplier.join(","),
-        turn: this.form.turn.join(","),
-      }).then((res) => {
+      let params = {}
+      if (this.$store.state.rfq.entryStatus === 1) {
+        params = {
+          analysisSchemeId: this.analysisSchemeId,
+          analysisDimension: this.chartType,
+          spareParts: this.form.spareParts.join(","),
+          supplier: this.form.supplier.join(","),
+          turn: this.form.turn.join(","),
+        }
+      } else {
+        params = {
+          analysisSchemeId: this.analysisSchemeId,
+          analysisDimension: this.chartType,
+          combination: this.form.combination.join(",")
+        }
+      }
+      getBobLevelOne(params).then((res) => {
         const allData = res.data || [];
         this.chartData = allData.bobLevelOneVOList.filter(
           (r) => r.isIntroduce === 0
@@ -532,6 +539,7 @@ export default {
             combination: []
           }
           this.form.combination = this.Split(allData.combination, ",");
+          this.querySupplierTurnPartList()
         } else {
           this.form = {
             supplier: [],
@@ -653,6 +661,19 @@ export default {
         });
       }
     },
+    doActive (index) {
+      this.$nextTick(() => {
+        //页面滚动了的距离
+        let height = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
+        //指定dom到页面顶端的距离
+        let nodeList = this.$el.querySelectorAll('.el-table__row--level-0')
+        nodeList[index].scrollIntoView({
+          block: 'start',
+          behavior: 'smooth',
+        })
+      });
+      this.current = index
+    }
   },
   computed: {
     chartTitle () {
@@ -703,6 +724,11 @@ export default {
     }
   }
 }
+.el-tag .flex {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 ::v-deep .el-select .el-tag {
   white-space: nowrap; //不换行
   overflow: hidden; //超出隐藏
@@ -712,5 +738,22 @@ export default {
   .el-select-dropdown.is-multiple
   .el-select-dropdown__item.selected::after {
   content: none;
+}
+::v-deep .el-tag--small {
+  height: 3.5rem;
+}
+.anchorList {
+  width: 60%;
+  flex-direction: column;
+  text-align: center;
+  margin: 100px auto;
+  li {
+    padding: 10px 0;
+    color: #1b1d21;
+    list-style: disc !important;
+  }
+}
+.active {
+  color: #1660f1 !important;
 }
 </style>
