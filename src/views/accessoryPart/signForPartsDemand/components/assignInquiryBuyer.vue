@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-25 16:11:07
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-25 13:29:13
+ * @LastEditTime: 2021-07-16 22:26:38
  * @Description: 分配询价采购员弹窗
  * @FilePath: \front-web\src\views\accessoryPart\signForPartsDemand\components\assignInquiryBuyer.vue
 -->
@@ -80,7 +80,7 @@ export default {
         return
       }
       this.loading = true
-      this.$emit('sendAccessory', this.respLINIE)
+      this.$emit('sendAccessory', this.respLINIE, this.userOptions?.find(item => item.value === this.respLINIE)?.label)
     },
     changeLoading(loading) {
       this.loading = loading
