@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:17:25
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-16 21:52:38
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-07-17 16:48:10
  * @Description: 上会/备案RS单
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\rs\components\meeting\index.vue
 -->
@@ -184,6 +184,14 @@ export default {
     getPrototypeList(){
       getPrototypeList(this.nominateId).then(res=>{
           this.PrototypeList = res.data.list || res.data.getQuotationSampleVOList || []
+
+          // 获取上会备注
+          if(res.data && res.code==200){
+            this.remarkItem = meetingRemark.map(item => {
+                this.remarks[item.type] = res.data[item.remarkType] || ''
+                return {...item, value: res.data[item.remarkType] || ''}
+            })
+          }
       }).catch(err=>{
         console.warn(err)
       })
@@ -237,7 +245,7 @@ export default {
      */    
     init() {
       this.getTopList()
-      this.getRemark()
+      // this.getRemark()
       this.getDepartApproval()
       this.getPrototypeList()
       this.getIsSingle()
