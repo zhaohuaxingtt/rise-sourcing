@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:50:41
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-07-17 16:39:38
+ * @LastEditTime: 2021-07-17 22:57:24
  * @Description: 
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\rs\components\meeting\data.js
  */
@@ -70,8 +70,8 @@ export const nomalTableTitle = [
   {props:'status',name:'状态', enName: 'Status', key: "", minWidth: 45},
   {props:'aprice',name:'A价', enName: 'A Price', key: "", minWidth: 45},
   {props:'bprice',name:'B价', enName: 'B Price', key: "", minWidth: 45},
-  {props:'ltcRateOfThree',name:'年降', enName: 'LTC', key: "", minWidth: 35},
-  {props:'beginYearReduce',name:'年降开始时间', enName: 'Start Time of LTC', key: "", minWidth: 90},
+  {props:'ltc',name:'年降', enName: 'LTC', key: "", width: 120},
+  {props:'beginYearReduce',name:'年降开始时间', enName: 'Start Time of LTC', key: "", minWidth: 100},
   {props:'investFee',name:'投资费(不含税)', enName: 'Invest(excl.VAT)', key: "", minWidth: 80},
   {props:'devFee',name:'开发费(含税)', enName: 'Develop Cost',enName1:'(incl. VAT)', key: "", minWidth: 80},
   {props:'tto',name:'采购金额', enName: 'Turnover', key: "", minWidth: 65},
@@ -91,8 +91,8 @@ export const sparePartTableTitle = [
   {props:'bcfTargetPrice',name:'财务目标价', enName: 'CF Target Price', key: "", minWidth: 95},
   {props:'status',name:'状态', enName: 'Status', key: "", minWidth: 45},
   {props:'bprice',name:'B价', enName: 'B Price', key: "", minWidth: 45},
-  {props:'ltcRateOfThree',name:'年降', enName: 'LTC', key: "", minWidth: 35},
-  {props:'beginYearReduce',name:'年降开始时间', enName: 'Start Time of LTC', key: "", minWidth: 90},
+  {props:'ltc',name:'年降', enName: 'LTC', key: "", width: 120},
+  {props:'beginYearReduce',name:'年降开始时间', enName: 'Start Time of LTC', key: "", minWidth: 100},
   {props:'investFee',name:'投资费(不含税)', enName: 'Invest(excl.VAT)', key: "", minWidth: 80},
   {props:'devFee',name:'开发费(含税)', enName: 'Develop Cost',enName1:'(incl. VAT)', key: "", minWidth: 80},
   {props:'tto',name:'采购金额', enName: 'Turnover', key: "", minWidth: 65},
@@ -112,8 +112,8 @@ export const accessoryTableTitle = [
   {props:'bcfTargetPrice',name:'财务目标价', enName: 'CF Target Price', key: "", minWidth: 95},
   {props:'status',name:'状态', enName: 'Status', key: "", minWidth: 45},
   {props:'bprice',name:'B价', enName: 'B Price', key: "", minWidth: 45},
-  {props:'ltcRateOfThree',name:'年降', enName: 'LTC', key: "", minWidth: 35},
-  {props:'beginYearReduce',name:'年降开始时间', enName: 'Start Time of LTC', key: "", minWidth: 90},
+  {props:'ltc',name:'年降', enName: 'LTC', key: "", width: 120},
+  {props:'beginYearReduce',name:'年降开始时间', enName: 'Start Time of LTC', key: "", minWidth: 100},
   {props:'investFee',name:'投资费(不含税)', enName: 'Invest(excl.VAT)', key: "", minWidth: 80},
   {props:'devFee',name:'开发费(含税)', enName: 'Develop Cost',enName1:'(incl. VAT)', key: "", minWidth: 80},
   {props:'tto',name:'采购金额', enName: 'Turnover', key: "", minWidth: 65},
@@ -137,8 +137,8 @@ export const gsTableTitle = [
   {props:'status',name:'供货状态', enName: 'Status', key: "", minWidth: 45},
   {props:'aprice',name:'A价', enName: 'A Price', key: "", minWidth: 45},
   {props:'bprice',name:'B价', enName: 'B Price', key: "", minWidth: 45},
-  {props:'ltcRateOfThree',name:'年降', enName: 'LTC', key: "", minWidth: 35},
-  {props:'beginYearReduce',name:'年降开始时间', enName: 'Start Time of LTC', key: "", minWidth: 90},
+  {props:'ltc',name:'年降', enName: 'LTC', key: "", width: 120},
+  {props:'beginYearReduce',name:'年降开始时间', enName: 'Start Time of LTC', key: "", minWidth: 100},
   {props:'investFee',name:'投资费(不含税)', enName: 'Invest(excl.VAT)', key: "", minWidth: 80},
   {props:'devFee',name:'开发费(含税)', enName: 'Develop Cost',enName1:'(incl. VAT)', key: "", minWidth: 80},
   {props:'addFee',name:'认可费', enName: 'Release Cost', key: "", minWidth: 65},
@@ -166,8 +166,8 @@ export const dbTableTitle = [
   {props:'payClause',name:'支付条款', enName: 'Payment Term', key: "", minWidth: 45},
   {props:'aprice',name:'A价', enName: 'A Price', key: "", minWidth: 45},
   {props:'bprice',name:'B价', enName: 'B Price', key: "", minWidth: 45},
-  {props:'ltcRateOfThree',name:'年降', enName: 'LTC', key: "", minWidth: 35},
-  {props:'beginYearReduce',name:'年降开始时间', enName: 'Start Time of LTC', key: "", minWidth: 90},
+  {props:'ltc',name:'年降', enName: 'LTC', key: "", width: 120},
+  {props:'beginYearReduce',name:'年降开始时间', enName: 'Start Time of LTC', key: "", minWidth: 100},
   {props:'investFee',name:'投资费(不含税)', enName: 'Invest(excl.VAT)', key: "", minWidth: 80},
   {props:'devFee',name:'开发费(含税)', enName: 'Develop Cost',enName1:'(incl. VAT)', key: "", minWidth: 80},
   {props:'tto',name:'采购金额', enName: 'Turnover', key: "", minWidth: 65},
