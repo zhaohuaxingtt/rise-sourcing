@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-26 14:48:50
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-14 14:57:04
+ * @LastEditTime: 2021-07-17 01:56:42
  * @Description: 添加配件弹窗
  * @FilePath: \front-web\src\views\accessoryPart\createRfq\components\addAccessoryPart.vue
 -->
@@ -154,8 +154,12 @@ export default {
         iMessage.warn(this.language('QINGXUANZEPEIJIAN','请选择配件'))
         return
       }
+      if (this.selectParts.some(item => item.rfqNum)) {
+        iMessage.warn(this.language('LK_QINGXUANZEWEIFENPEIRFQDEPEIJIAN','请选择未分配RFQ的配件'))
+        return
+      }
       const selectStuffId = uniq(this.selectParts.map(item => item.stuffId))
-      if (selectStuffId.length > 1 || selectStuffId[0] !== this.stuffId) {
+      if (selectStuffId.length > 1 || (this.stuffId && selectStuffId[0] !== this.stuffId)) {
         iMessage.warn(this.language('QINGXUANZEXIANGTONGGONGYIZUDEPEIJIAN','请选择相同工艺组的配件'))
         return
       } if (!selectStuffId[0]) {

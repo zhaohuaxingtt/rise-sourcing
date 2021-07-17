@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-26 11:16:51
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-07-14 15:11:35
+ * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-07-16 23:39:29
  * @Description: 配件综合管理页面
  * @FilePath: \front-web\src\views\accessoryPart\integratedManage\index.vue
 -->
@@ -85,7 +85,7 @@
           <!------------------------------------------------------------------------>
           <!--                    退回弹窗                                        --->
           <!------------------------------------------------------------------------>
-          <backDialog :dialogVisible="backDialogVisible" @changeVisible="changebackDialogVisible" @handleBack="handleBack" />
+          <backDialog ref="back" :dialogVisible="backDialogVisible" @changeVisible="changebackDialogVisible" @handleBack="handleBack" />
           <!------------------------------------------------------------------------>
           <!--                    加入已有RFQ弹窗                                  --->
           <!------------------------------------------------------------------------>
@@ -263,7 +263,7 @@ export default {
       }
       const selectRfq = uniq(this.selectParts.map(item => item.rfqNum))
       if (selectRfq.length > 1 || selectRfq[0]) {
-        iMessage.warn(this.language('QINGXUANZEWEIFENPEIRFQDEPEIJIAN','请选择未分配RFQ的附件'))
+        iMessage.warn(this.language('LK_QINGXUANZEWEIFENPEIRFQDEPEIJIAN','请选择未分配RFQ的配件'))
         return
       }
       this.changeJoinRfqDialogVisible(true)
@@ -398,6 +398,8 @@ export default {
         } else {
           iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
         }
+      }).finally(() => {
+        this.$refs.back.changeSaveLoading && this.$refs.back.changeSaveLoading(false)
       })
     },
     /**
@@ -478,11 +480,13 @@ export default {
      * @param {*} respLINIE  询价采购员
      * @return {*}
      */    
-    sendAccessory({respDept, respLINIE}) {
+    sendAccessory({respDept, respLINIE, respDeptName, respLINIEName}) {
       const params = {
         accessoryIdList: this.selectParts.map(item => item.id),
         csfDept: respDept,
-        csfUserId: respLINIE
+        csfDeptName: respDeptName,
+        csfuserId: respLINIE,
+        csfuserName: respLINIEName
       }
       sendAccessoryInfo(params).then(res => {
         if (res.result) {
@@ -507,8 +511,8 @@ export default {
      * @param {*} respLINIE 询价科室ID
      * @return {*}
      */    
-    sendAccessoryLINIE(respLINIE) {
-      this.sendAccessory({respLINIE})
+    sendAccessoryLINIE(respLINIE, respLINIEName) {
+      this.sendAccessory({respLINIE, respLINIEName})
     },
     /**
      * @Description: 分配询价采购员
@@ -516,8 +520,8 @@ export default {
      * @param {*} respDept 询价采购员ID
      * @return {*}
      */    
-    sendAccessoryDept(respDept) {
-      this.sendAccessory({respDept})
+    sendAccessoryDept(respDept, respDeptName) {
+      this.sendAccessory({respDept, respDeptName})
     },
     /**
      * @Description: 下载报表
@@ -623,6 +627,10 @@ export default {
     handleCreateRFQ() {
       if (this.selectParts.length < 1) {
         iMessage.warn(this.language('QINGXUANZEPEIJIAN','请选择配件'))
+        return
+      }
+      if (this.selectParts.some(item => item.rfqNum)) {
+        iMessage.warn(this.language('LK_QINGXUANZEWEIFENPEIRFQDEPEIJIAN','请选择未分配RFQ的配件'))
         return
       }
       const selectLINIE = uniq(this.selectParts.map(item => item.respLinie)).filter(item => !!item)
