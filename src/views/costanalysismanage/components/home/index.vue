@@ -118,6 +118,8 @@
         <el-form-item label="LINIE">
           <iSelect
             v-model="form.linieId"
+            :loading="linieLoading"
+            :loading-text="language('JIAZAIZHONG', '加载中')"
             :placeholder="language('QINGXUANZELINIE', '请选择LINIE')"
           >
             <el-option
@@ -127,8 +129,8 @@
             <el-option
               v-for="item in list"
               :key="item.key"
-              :label="item.value"
-              :value="item.key"
+              :label="item.label"
+              :value="item.value"
             ></el-option>
           </iSelect>
         </el-form-item>
@@ -192,7 +194,7 @@ import cbdDialog from './components/cbdStatus'
 import { queryForm, tableTitle } from "./components/data"
 import filters from "@/utils/filters"
 import { pageMixins } from "@/utils/pageMixins"
-import { getSelectOptions, getKmRfqList, updateRfq, getCommodityOptions } from "@/api/costanalysismanage/home"
+import { getSelectOptions, getKmRfqList, updateRfq, getCommodityOptions, getLinieOptionsByCommodity } from "@/api/costanalysismanage/home"
 import { selectDictByKeys } from "@/api/dictionary"
 import { cloneDeep } from "lodash"
 
@@ -229,7 +231,9 @@ export default {
       tableTitle,
       tableListData: [],
       rfqNum:'', // 当前选择的rfq
-      commodityOptions: []
+      commodityOptions: [],
+      linieOptions: [],
+      linieLoading: false,
     }
   },
   created() {
@@ -238,6 +242,15 @@ export default {
     this.getDict()
     this.getCommodityOptions()
     this.getKmRfqList()
+  },
+  watch: {
+    "form.commodity"(nv) {
+      if (nv) {
+
+      } else {
+        this.linieOptions = []
+      }
+    }
   },
   methods: {
     getSelectOptions(type, optionsKey) {
@@ -295,6 +308,22 @@ export default {
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }
+      })
+      .catch(() => {})
+    },
+    getLinieOptionsByCommodity(deptId) {
+      this.linieLoading = true
+
+      getLinieOptionsByCommodity({ deptId })
+      .then(res => {
+        if (res.code == 200) {
+
+        } else {
+          this.linieOptions = []
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
+
+        this.linieLoading = false
       })
       .catch(() => {})
     },
