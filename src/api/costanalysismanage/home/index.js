@@ -47,3 +47,15 @@ export function getCommodityOptions() {
     }
   })
 }
+
+// 根据Commodity查询Linie
+export function getLinieOptionsByCommodity(params) {
+  return userCenterRequst({
+    url: '/api/getUserListByTag',
+    method: 'GET',
+    params: {
+      deptId: params.deptId,
+      tagId: 4
+    }
+  })
+}
