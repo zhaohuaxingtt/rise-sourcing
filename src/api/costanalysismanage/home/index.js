@@ -49,13 +49,14 @@ export function getCommodityOptions() {
 }
 
 // 根据Commodity查询Linie
-export function getLinieOptionsByCommodity(params) {
+export function getLinieOptionsByCommodity(params, options) {
   return userCenterRequst({
     url: '/api/getUserListByTag',
     method: 'GET',
     params: {
       deptId: params.deptId,
       tagId: 4
-    }
+    },
+    ...options
   })
 }

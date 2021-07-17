@@ -108,10 +108,10 @@
               :label="language('ALL', '全部') | capitalizeFilter"
             ></el-option>
             <el-option
-              :value="items.key"
-              :label="items.value"
-              v-for="(items, index) in commodityOptions"
-              :key="index"
+              v-for="item in commodityOptions"
+              :key="item.key"
+              :label="item.label"
+              :value="item.value"
             ></el-option>
           </iSelect>
         </el-form-item>
@@ -127,7 +127,7 @@
               :label="language('ALL', '全部') | capitalizeFilter"
             ></el-option>
             <el-option
-              v-for="item in list"
+              v-for="item in linieOptions"
               :key="item.key"
               :label="item.label"
               :value="item.value"
@@ -197,6 +197,7 @@ import { pageMixins } from "@/utils/pageMixins"
 import { getSelectOptions, getKmRfqList, updateRfq, getCommodityOptions, getLinieOptionsByCommodity } from "@/api/costanalysismanage/home"
 import { selectDictByKeys } from "@/api/dictionary"
 import { cloneDeep } from "lodash"
+import axios from "axios"
 
 export default {
   components: { 
@@ -234,6 +235,7 @@ export default {
       commodityOptions: [],
       linieOptions: [],
       linieLoading: false,
+      getLinieOptionsByCommoditySource: null
     }
   },
   created() {
@@ -246,7 +248,7 @@ export default {
   watch: {
     "form.commodity"(nv) {
       if (nv) {
-
+        this.getLinieOptionsByCommodity(nv)
       } else {
         this.linieOptions = []
       }
@@ -314,10 +316,17 @@ export default {
     getLinieOptionsByCommodity(deptId) {
       this.linieLoading = true
 
-      getLinieOptionsByCommodity({ deptId })
+      if (this.getLinieOptionsByCommoditySource) this.getLinieOptionsByCommoditySource.cancel()
+      this.getLinieOptionsByCommoditySource = axios.CancelToken.source()
+
+      getLinieOptionsByCommodity({ deptId }, { cancelToken: this.getLinieOptionsByCommoditySource.token })
       .then(res => {
         if (res.code == 200) {
-
+          this.linieOptions = res.data.map(item => ({
+            key: item.id,
+            label: item.nameZh,
+            value: item.id,
+          }))
         } else {
           this.linieOptions = []
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
