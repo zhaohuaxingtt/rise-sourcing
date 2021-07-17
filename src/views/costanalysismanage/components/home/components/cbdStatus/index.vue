@@ -14,17 +14,18 @@
           <span class="title">{{language('LK_CBDSTATUS','CBD状态')}}</span>
 
           <div class="floatright">
-              <iButton disabled>{{language('LK_XIAZAI','下载')}}</iButton>
+              <iButton :loading="downloadLoading" @click="handleDownload">{{language('LK_XIAZAI','下载')}}</iButton>
           </div>
       </div>
       <!-- 表格区域 -->
       <tableList 
         index
         :lang="true"
+        singleSelect
         :tableData="tableData"
         :tableTitle="tableTitle"
         :tableLoading="tableLoading"
-        @handleSelectionChange="handleSelectionChange"
+        @handleSingleSelectChange="handleSingleSelectChange"
         > 
       </tableList>
       <!-- 分页 -->
@@ -53,6 +54,8 @@ import tableList from "@/views/partsign/editordetail/components/tableList"
 import { pageMixins } from "@/utils/pageMixins"
 import { CbdTitle } from '../data'
 import { getKmCbdList } from "@/api/costanalysismanage/rfqdetail"
+import { partCbdKmFile } from "@/api/costanalysismanage/costanalysis"
+import { iMessage } from '../../../../../../components'
 export default {
     name:'cbdStatus',
     mixins: [pageMixins],
@@ -77,8 +80,9 @@ export default {
         return{
             tableData:[],
             tableTitle:CbdTitle,
-            selectItems:[],
             tableLoading:false,
+            downloadLoading: false,
+            currentRow: null
         }
     },
     created(){
@@ -89,8 +93,8 @@ export default {
             const router =  this.$router.resolve({path: '/sourcing/accessorypartdetail', query: {  }})
             window.open(router.href,'_blank')
         },
-        handleSelectionChange(val) {
-            this.selectItems = val;
+        handleSingleSelectChange(row) {
+            this.currentRow = row
         },
         
         clearDialog() {
@@ -110,13 +114,31 @@ export default {
             await getKmCbdList(data).then((res)=>{
                 const {code,data} = res;
                 if(code == 200 && data){
-                    console.log(data);
+                    this.currentRow = null
                     this.tableData = data;
                     this.page.totalCount = res.total;
+                } else {
+                    iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
                 }
                 this.tableLoading = false;
             }).catch((err)=>{ this.tableLoading = false; })
         },
+
+        async handleDownload() {
+            if (!this.currentRow) return iMessage.warn(this.language("QINGXUANZEXUYAOXIAZAIDESHUJU", "请选择需要下载的数据"))
+
+            this.downloadLoading = true
+
+            try {
+                await partCbdKmFile({
+                    quotationId: this.currentRow.quotationId
+                })
+            } catch(e) {
+                iMessage.error(this.language("XIAZAISHIBAI", "下载失败"))
+            } finally {
+                this.downloadLoading = false
+            }
+        }
     }
 }
 </script>

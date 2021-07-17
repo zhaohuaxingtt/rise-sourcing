@@ -1,7 +1,7 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-02-24 09:42:07
- * @LastEditTime: 2021-07-16 17:32:08
+ * @LastEditTime: 2021-07-17 14:18:17
  * @LastEditors: Please set LastEditors
 -->
 
@@ -587,12 +587,12 @@ export default {
       border-bottom: 1px solid #fff !important;
       border-right: 1px solid #fff !important;
       &.pin {
-        background: #e8f6fb;
+        background: #95f1ec;
         &.dbl {
-          background: #effbfb;
+          background: #95f1ec;
         }
         .cell {
-          color: #32cec7;
+          color: #094e4a;
         }
       }
     }
