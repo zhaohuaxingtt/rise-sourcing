@@ -110,7 +110,7 @@ import linieDialog from './components/setLinie'
 import backDialog from './components/back'
 import { cloneDeep, uniq } from 'lodash'
 import { getAffixList, updateAffixList, findBuyer, deleteAffix } from '@/api/designateFiles/index'
-import { downloadFile } from '@/api/file'
+import { downloadFile, downloadUdFile } from '@/api/file'
 import { insertRfq } from '@/api/accessoryPart/index'
 import joinRfqDialog from '@/views/designateFiles/fileManage/components/joinRfq'
 import { getDictByCode } from '@/api/dictionary'
@@ -358,16 +358,17 @@ export default {
      * @param {*} fileList
      * @return {*}
      */    
-    async handleFileDownload(fileList) {
+    async handleFileDownload(fileList, list) {
       if (fileList.length < 1) {
         return
       }
       this.tableLoading = true
-      const params = {
-        applicationName: 'rise',
-        fileList: fileList
-      }
-      await downloadFile(params)
+      // const params = {
+      //   applicationName: 'rise',
+      //   fileList: fileList
+      // }
+      // await downloadFile(params)
+      await downloadUdFile(list.map(item => item.uploadId))
       this.tableLoading = false
     },
     /**

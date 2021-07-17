@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-28 15:03:47
- * @LastEditTime: 2021-07-15 18:57:45
+ * @LastEditTime: 2021-07-17 18:24:48
  * @LastEditors: Please set LastEditors
  * @Description: 特殊表格实现
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\table.vue
@@ -72,7 +72,7 @@
                   <template v-for='(itemsss,indexss) in rating'>
                     <li :key='indexss' v-if='indexss > 0'>
                       <span style="margin-rigth:10px;">{{itemsss.rate}}</span>
-                      <span><icon v-if='itemsss.isAllPartRateConsistent && !isPreview' name='icontishi-cheng' symbol></icon></span>
+                      <span><icon v-if='!itemsss.isAllPartRateConsistent' name='icontishi-cheng' symbol></icon></span>
                     </li>
                     <li v-else :key='indexss'>
                       <span>

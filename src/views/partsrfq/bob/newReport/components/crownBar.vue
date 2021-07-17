@@ -1,6 +1,7 @@
 
 <template>
-  <div style="height: 460px" ref="chart"></div>
+  <div style="height: 460px"
+       ref="chart"></div>
 </template>
 <script >
 import echarts from "@/utils/echarts";
@@ -12,6 +13,14 @@ export default {
     chartData: {
       type: Array,
       default: () => [],
+    },
+    supplierList: {
+      type: Array,
+      default: () => []
+    },
+    partList: {
+      type: Array,
+      default: () => []
     },
     title: {
       type: String,
@@ -26,7 +35,7 @@ export default {
       default: "supplier",
     },
   },
-  data() {
+  data () {
     return {
       chartArray: [],
       labelArray: [],
@@ -63,7 +72,7 @@ export default {
     };
   },
   methods: {
-    bos(arr) {
+    bos (arr) {
       const min = this.min(arr);
       let send = this.max(arr);
       arr.forEach((i) => {
@@ -76,7 +85,7 @@ export default {
       // console.log(send)
       return send;
     },
-    initCharts() {
+    initCharts () {
       const myChart = echarts().init(this.$refs.chart);
       // 绘制图表
       const option = {
@@ -151,13 +160,17 @@ export default {
       myChart.setOption(option);
       const that = this;
       myChart.on("click", function (params) {
+        console.log(params)
         if (params.targetType === "axisLabel" && params.value === that.type) {
           that.$emit("select", params);
         }
       });
+      myChart.on("legendselectchanged", function (params) {
+        console.log(params)
+      });
     },
-    initData(newVal) {
-      if (newVal.length!==0) {
+    initData (newVal) {
+      if (newVal.length !== 0) {
         // console.log(newVal)
         this.chartArray = newVal;
         this.labelArray = [];
@@ -174,8 +187,18 @@ export default {
           const turn = row.turn === -1 ? "最新轮" : row.turn;
           //todo
           let name = row.supplierId;
+          this.supplierList.forEach(value => {
+            if (name == value.supplierId) {
+              name = value.shortNameZh
+            }
+          })
           if (this.by === "num") {
             name = row.spareParts;
+            this.partList.forEach(value => {
+              if (name == value.spareParts) {
+                name = value.shortNameZh
+              }
+            })
           }
           const str =
             name +
@@ -393,12 +416,12 @@ export default {
       }
     },
   },
-  mounted() {
+  mounted () {
     this.initCharts();
   },
   watch: {
     title: {
-      handler(str) {
+      handler (str) {
         if (this.$refs.chart && this.chartArray.length > 0) {
           this.initCharts();
         }
@@ -406,19 +429,19 @@ export default {
       immediate: true,
     },
     by: {
-      handler(str) {
+      handler (str) {
         this.initData(this.chartData);
       },
       immediate: true,
     },
     type: {
-      handler(str) {
+      handler (str) {
         this.initData(this.chartData);
       },
       immediate: true,
     },
     chartData: {
-      handler(newVal) {
+      handler (newVal) {
         this.initData(newVal);
       },
       immediate: true,

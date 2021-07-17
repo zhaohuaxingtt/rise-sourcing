@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 10:50:38
- * @LastEditTime: 2021-07-15 18:27:26
+ * @LastEditTime: 2021-07-17 16:58:08
  * @LastEditors: Please set LastEditors
  * @Description: 费用详情
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails.vue
@@ -27,6 +27,7 @@
                      @click="open">全部展开</iButton>
             <iButton v-show="flag1"
                      @click="close">全部收回</iButton>
+            <iButton @click="remarks">备注</iButton>
             <iButton @click="reduction">还原</iButton>
             <iButton @click="group">数据分组</iButton>
             <iButton @click="down">导出</iButton>
@@ -39,7 +40,8 @@
         </div>
       </template>
       <table1 :tableList="tableList"
-              v-if="totalTable"></table1>
+              v-if="totalTable"
+              v-bind="$attrs"></table1>
       <groupedTable ref="groupedTable"
                     class="margin-top20"
                     :tableList="groupList"
@@ -111,6 +113,7 @@ import {
 } from "./components/data.js";
 
 export default {
+  inheritAttrs: true,
   components: {
     iCard,
     iDialog,
@@ -146,6 +149,7 @@ export default {
     };
   },
   created () {
+
     if (this.$store.state.rfq.entryStatus === 1) {
       this.SchemeId = this.$route.query.rfqId
       this.chargeRetrieve("all");
@@ -159,7 +163,9 @@ export default {
     }
     this.getRfqToRemark();
   },
-  mounted () { },
+  mounted () {
+    console.log(this.$attrs, '传值')
+  },
   methods: {
     getRfqToRemark () {
       getRfqToRemark({
@@ -179,6 +185,13 @@ export default {
       })
         .then((res) => {
           this.tableList = res;
+          this.tableList.title.forEach(value => {
+            this.$attrs.supplierList.forEach(i => {
+              if (value.title == i.supplierId) {
+                value.title = i.shortNameZh
+              }
+            })
+          })
           filterEmptyChildren(this.tableList.element, 'detailId')
           console.log(this.tableList, 23232332)
           this.$nextTick(() => {

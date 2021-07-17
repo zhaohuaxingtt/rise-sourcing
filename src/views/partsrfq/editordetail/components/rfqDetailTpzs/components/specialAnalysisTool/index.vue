@@ -55,7 +55,31 @@ export default {
             break;
         }
       } else {
-        this.$emit('entrance', param.title)
+        switch (param.title) {
+          case 'BoB(Best of Best)':
+            this.$emit('entrance', 'BoB')
+            break;
+          case 'Volume Pricing':
+            this.$emit('entrance', 'VP')
+            break;
+          case 'Pricing Index':
+            this.$emit('entrance', 'PI')
+            break;
+          case 'MEK':
+            this.$emit('entrance', 'MEK')
+            break;
+          case 'PCA':
+            this.$emit('entrance', 'PCA')
+            break;
+          case 'TIA':
+            this.$emit('entrance', 'TIA')
+            break;
+          case 'Bid-Link':
+            this.$emit('entrance', 'BL')
+            break;
+          default:
+            break;
+        }
       }
     },
     async getDataList(val) {
@@ -72,8 +96,6 @@ export default {
         this.cardData.push(
           { title: 'Pricing Index', analysisTotal: '', reportTotal: '', analysisLastUpdateDate: '', reportLastUpdateDate: '' },
           { title: 'MEK', analysisTotal: '', reportTotal: '', analysisLastUpdateDate: '', reportLastUpdateDate: '' },
-          { title: 'PCA', analysisTotal: '', reportTotal: '', analysisLastUpdateDate: '', reportLastUpdateDate: '' },
-          { title: 'TIA', analysisTotal: '', reportTotal: '', analysisLastUpdateDate: '', reportLastUpdateDate: '' },
           { title: 'Bid-Link', analysisTotal: '', reportTotal: '', analysisLastUpdateDate: '', reportLastUpdateDate: '' }
         )
         this.cardData.map((item) => {

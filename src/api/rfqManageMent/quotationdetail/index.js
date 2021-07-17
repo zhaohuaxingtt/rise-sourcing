@@ -1,8 +1,8 @@
 /*
  * @Author: ldh
  * @Date: 2021-04-26 17:27:20
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-15 17:43:31
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-07-16 16:36:54
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\api\rfqManageMent\quotationdetail\index.js
  */
@@ -387,5 +387,13 @@ export function updateCostSummaryDB(params) {
     url: `/cost/updateCostSummary?supplierId=${supplierId()}`,
     method: 'POST',
     data: params
+  })
+}
+
+// 获取供应商token
+export function getSupplierToken(params) {
+  return requst({
+    url:`/supplier/${ params.supplierId }`,
+    method: 'GET',
   })
 }

@@ -7,26 +7,22 @@
 -->
 <template>
   <div>
-    <div class="margin-bottom15 flex-between-center-center" v-if="$route.path==='/sourcing/partsrfq/externalNegotiationAssistant'">
-      <div class="flex-between-center-center">
+    <div :class="$route.path==='/sourcing/partsrfq/externalNegotiationAssistant'?'margin-bottom20':''">
+      <div v-if="$route.path==='/sourcing/partsrfq/externalNegotiationAssistant'" class="flex-between-center-center">
         <iNavMvp :list="tabRouterList" routerPage :lev="1" :query='$route.query' @change='changeRouter' />
       </div>
-      <div class="floatright">
+      <div :class="$route.path==='/sourcing/partsrfq/externalNegotiationAssistant'?'btn':'right-btn'">
         <iButton v-if="pageType!=='card'" @click="entrance('card')">{{ $t('LK_FANHUI') }}</iButton>
-        <iButton v-if="pageType==='card'" @click="handleSearch">{{ $t('search') }}</iButton>
+        <iButton v-if="pageType==='card'&&$route.path==='/sourcing/partsrfq/externalNegotiationAssistant'" @click="handleSearch">{{ $t('search') }}</iButton>
         <iButton @click="handleReport">{{ $t('TPZS.BGQD') }}</iButton>
-        <icon class="icondatabaseweixuanzhong" name="icondatabaseweixuanzhong" symbol></icon>
+        <icon v-if="$route.path==='/sourcing/partsrfq/externalNegotiationAssistant'" class="icondatabaseweixuanzhong" name="icondatabaseweixuanzhong" symbol></icon>
       </div>
-    </div>
-    <div v-if="$route.path==='/sourcing/partsrfq/assistant'" class="right-btn">
-      <iButton v-if="pageType!=='card'" @click="entrance('card')">{{ $t('LK_FANHUI') }}</iButton>
-      <iButton @click="handleReport">{{ $t('TPZS.BGQD') }}</iButton>
     </div>
     <specialAnalysisTool v-if="pageType === 'card'" @entrance="entrance" ref="specialAnalysisTool" />
     <pcaOverview v-else-if="pageType === 'PCA'" pageType="PCA" />
     <pcaOverview v-else-if="pageType === 'TIA'" pageType="TIA" />
-    <bobOverview v-else-if="pageType === 'BoB(Best of Best)'" />
-    <vpAnalyseList v-else-if="pageType==='Volume Pricing'" />
+    <bobOverview v-else-if="pageType === 'BoB'" />
+    <vpAnalyseList v-else-if="pageType==='VP'" />
   </div>
 </template>
 
@@ -66,7 +62,6 @@ export default {
     }
   },
   created() {
-
     if (!!this.$route.query.pageType) {
       this.pageType = this.$route.query.pageType
     }

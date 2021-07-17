@@ -1,6 +1,6 @@
 <!--
  * @Author: moxuan
- * @LastEditors: Please set LastEditors
+ * @LastEditors: zbin
  * @Description: VP分析详情
 -->
 <template>
@@ -150,7 +150,7 @@ export default {
     handlePartItemClick(item, index) {
       this.partItemCurrent = index;
       this.currentBatchNumber = item.batchNumber;
-      this.currentPartsId = item.id;
+      this.currentPartsId = item.partsId;
       this.getDataInfo();
     },
     handlePartItemClose(e, item) {
@@ -167,7 +167,7 @@ export default {
         if (res.result) {
           this.partItemCurrent = 0;
           this.currentBatchNumber = this.partList[0].batchNumber;
-          this.currentPartsId = this.partList[0].id;
+          this.currentPartsId = this.partList[0].partsId;
           this.getDataInfo();
         }
         this.resultMessage(res);
@@ -198,7 +198,7 @@ export default {
         this.partList = res.data.partsList.filter(item => {
           return item.isShow;
         });
-        this.currentPartsId = this.partList[0] ? this.partList[0].id : '';
+        this.currentPartsId = this.partList[0] ? this.partList[0].partsId : '';
         this.currentBatchNumber = this.partList[0] ? this.partList[0].batchNumber : '';
         this.currentSupplierId = res.data.supplierId;
         const analysisCurveData = Array.isArray(this.dataInfo.analysisCurve) ? this.dataInfo.analysisCurve : [];
@@ -299,7 +299,7 @@ export default {
           query: {
             id: this.$store.state.rfq.rfqId,
             round: this.$route.query.round,
-            pageType: 'Volume Pricing',
+            pageType: 'VP',
             activityTabIndex: 'two',
           },
         });
