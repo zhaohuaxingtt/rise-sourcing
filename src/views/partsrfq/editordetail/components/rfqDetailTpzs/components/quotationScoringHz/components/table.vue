@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-28 15:03:47
- * @LastEditTime: 2021-07-17 18:25:23
+ * @LastEditTime: 2021-07-17 20:37:33
  * @LastEditors: Please set LastEditors
  * @Description: 特殊表格实现
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\table.vue
@@ -96,10 +96,10 @@
               <span :class="{chengse:scope.row['cfPartBPriceStatus'] == 2}">{{scope.row[item.props]}}</span>
           </template>
           <template v-else-if='removeKeysNumber(item.props) == "lcAPrice"'>
-              <span :class="{lvse:lvseFn(scope.row,item.props,'lcAPriceStatus')}">{{scope.row[item.props]}}</span>
+              <span :class="{lvse:lvseFn(scope.row,item.props,'lcAPriceStatus')}">{{scope.row[item.props] | zeroTonull}}</span>
           </template>
           <template v-else-if='removeKeysNumber(item.props) == "lcBPrice"'>
-              <span :class="{lvse:lvseFn(scope.row,item.props,'lcBPriceStatus')}">{{scope.row[item.props]}}</span>
+              <span :class="{lvse:lvseFn(scope.row,item.props,'lcBPriceStatus')}">{{scope.row[item.props] | zeroTonull}}</span>
           </template>
           <template v-else-if='removeKeysNumber(item.props) == "tto"'>
               <span :class="{lvse:lvseFn(scope.row,item.props,'ttoStatus')}">{{scope.row[item.props]}}</span>
@@ -152,6 +152,11 @@ export default{
     }
   },
   inject:['vm','getbaseInfoData'],
+  filters:{
+    zeroTonull:function(val){
+      if(val == 0){ return ''}
+    }
+  },
   computed:{
     cWidth(){
       const index = this.tableTitle.findIndex((item)=>item.label == 'EBR')
