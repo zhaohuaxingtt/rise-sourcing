@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-27 14:55:03
- * @LastEditTime: 2021-07-17 10:55:40
+ * @LastEditTime: 2021-07-17 11:07:26
  * @LastEditors: Please set LastEditors
  * @Description: 采购员报价与基本分析模具界面
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringMj\index.vue
@@ -77,7 +77,7 @@ export default {
     },
     getFee(res){
       if(this.dgysBj && this.tableListData.length > 0){
-        iMessageBox("您确定要切换供应商吗？").then(res=>{
+        iMessageBox("编辑状态下，切换供应商不会保存！您确定要切换供应商吗？").then(res=>{
           this.tableListData = []
           this.getAllMouldFee()
           this.getAllPartForMould()
