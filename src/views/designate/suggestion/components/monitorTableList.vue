@@ -1,7 +1,7 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-02-24 09:42:07
- * @LastEditTime: 2021-07-05 11:10:41
+ * @LastEditTime: 2021-07-17 14:18:17
  * @LastEditors: Please set LastEditors
 -->
 
@@ -82,7 +82,7 @@
           </div>
         </template>
         <template slot-scope="scope">
-          <div @click="handleCellClick(scope.row, hindex)">
+          <div class="supplier-tto" @click="handleCellClick(scope.row, hindex)">
             {{scope.row.TTo && scope.row.TTo[hindex] || '' }}
           </div>
         </template>
@@ -576,18 +576,23 @@ export default {
 .monitorTable {
   ::v-deep .el-table {
     height: 450px;
+    .supplier-tto {
+      display: block;
+      width: 100%;
+      min-height:40px
+    }
   }
   ::v-deep .el-table--border {
     th,td {
       border-bottom: 1px solid #fff !important;
       border-right: 1px solid #fff !important;
       &.pin {
-        background: #e8f6fb;
+        background: #95f1ec;
         &.dbl {
-          background: #effbfb;
+          background: #95f1ec;
         }
         .cell {
-          color: #32cec7;
+          color: #094e4a;
         }
       }
     }
