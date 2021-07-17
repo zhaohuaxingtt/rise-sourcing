@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-26 13:43:37
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-25 13:41:36
+ * @LastEditTime: 2021-07-16 22:46:06
  * @Description: 
  * @FilePath: \front-web\src\views\accessoryPart\integratedManage\components\back.vue
 -->
@@ -15,7 +15,7 @@
     width="878px"
   >
     <template slot="footer">
-      <iButton @click="handleConfirm">{{language('BAOCUN','保存')}}</iButton>
+      <iButton @click="handleConfirm" :loading="saveLoading">{{language('BAOCUN','保存')}}</iButton>
       <iButton @click="clearDialog">{{language('QUXIAO','取消')}}</iButton>
     </template>
     <el-form>
@@ -43,7 +43,8 @@ export default {
   data() {
     return {
       backType: '',
-      reasonDescription: ''
+      reasonDescription: '',
+      saveLoading: false
     }
   },
   methods: {
@@ -52,7 +53,11 @@ export default {
       this.$emit('changeVisible', false)
     },
     handleConfirm() {
+      this.saveLoading = true
       this.$emit('handleBack', this.reasonDescription)
+    },
+    changeSaveLoading(loading) {
+      this.saveLoading = loading
     }
   }
 }

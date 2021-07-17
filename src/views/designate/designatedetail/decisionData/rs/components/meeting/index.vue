@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:17:25
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-16 12:04:15
+ * @LastEditTime: 2021-07-16 21:52:38
  * @Description: 上会/备案RS单
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\rs\components\meeting\index.vue
 -->
@@ -118,10 +118,12 @@ export default {
   },
   computed: {
     rightTitle() {
-      if ([partProjTypes.GSLINGJIAN,partProjTypes.GSCOMMONSOURCING,partProjTypes.DBLINGJIAN,partProjTypes.DBYICHIXINGCAIGOU,partProjTypes.PEIJIAN,partProjTypes.FUJIAN].includes(this.projectType)) {
+      // GS
+      if ([partProjTypes.GSLINGJIAN,partProjTypes.GSCOMMONSOURCING].includes(this.projectType)) {
         return gsDetailTitleBlue
       }
-      return gsDetailTitleBlue
+      // 其他
+      return nomalDetailTitleBlue
     },
     tableTitle() {
       if (this.projectType === partProjTypes.PEIJIAN) {
