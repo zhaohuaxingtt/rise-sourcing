@@ -308,7 +308,8 @@ export default {
       analysisSave: false,
       reportSave: false,
       anchorList: ['原材料/散件', '制造费', '保费成本', '管理费', '其他费用', '利润'],
-      current: 0
+      current: 0,
+      isCover: true
     };
   },
   created () {
@@ -331,6 +332,18 @@ export default {
     this.newBuild = this.$route.query.newBuild;
     if (this.newBuild) this.analysisSave = true;
     // this.getOptions();
+  },
+  watch: {
+    analysisName: {
+      handler (newval) {
+        this.isCover = false
+      }
+    },
+    reportName: {
+      handler (newval) {
+        this.isCover = false
+      }
+    }
   },
   mounted () { },
   methods: {
@@ -448,6 +461,7 @@ export default {
       this.getChartData();
     },
     add (val) {
+      console.log(val)
       if (this.inside) {
         addBobOut({
           analysisSchemeId: this.analysisSchemeId,
@@ -466,28 +480,16 @@ export default {
           }
         });
       } else {
-        // let arr = []
-        // val.forEach((value, index, array) => {
-        //   arr.push({
-        //     fs: value.fsNum,
-        //     partNumber: value.partNum,
-        //     rfqId: value.rfqId,
-        //     supplierId: value.supplierId,
-        //   })
-        // })
-        initOut({
-          list: [{
-            fs: 'FS21-00409',
-            partNumber: '02V963554G3',
-            rfqId: '220',
-            supplierId: '11036',
-          }, {
-            fs: 'FS21-00410',
-            partNumber: '02V915681G3',
-            rfqId: '220',
-            supplierId: '11036',
-          }]
-        }).then(res => {
+        let arr = []
+        val.forEach((value, index, array) => {
+          arr.push({
+            fs: value.fsNum,
+            partNumber: value.partNum,
+            rfqId: value.rfqId,
+            supplierId: value.supplierId,
+          })
+        })
+        initOut({ list: arr }).then(res => {
           if (res.code === '200') {
             this.$message.success(res.desZh);
             this.analysisSchemeId = res.data
@@ -534,6 +536,7 @@ export default {
         );
         this.chartType = allData.analysisDimension;
         this.bobType = allData.defaultBobOptions;
+
         if (this.chartType === 'combination') {
           this.form = {
             combination: []
@@ -566,6 +569,8 @@ export default {
         );
         this.chartType = allData.analysisDimension;
         this.bobType = allData.defaultBobOptions;
+        this.analysisName = allData.name
+        this.reportName = allData.name + '_' + window.moment(new Date()).format("yyyy.MM");
         if (this.chartType === 'combination') {
           this.form = {
             combination: []
@@ -607,6 +612,7 @@ export default {
     },
     save () {
       let that = this;
+      // if()
       const form = {
         analysisDimension: this.chartType,
         defaultBobOptions: this.bobType,
@@ -615,6 +621,7 @@ export default {
         spareParts: this.form.spareParts.join(","),
         supplierId: this.form.supplier.join(","),
         turn: this.form.turn.join(","),
+        isCover: this.isCover
       };
       if (this.analysisSave) {
         update(form)
@@ -689,6 +696,7 @@ export default {
         return ''
       }
     },
+
   },
 };
 </script>

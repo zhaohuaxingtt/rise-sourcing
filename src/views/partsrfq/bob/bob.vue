@@ -358,6 +358,7 @@ export default {
                 newBuild: true,
               },
             })
+            loading.close()
           } else {
             iMessage.error(res.desZh);
             loading.close()
