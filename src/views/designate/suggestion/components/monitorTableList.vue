@@ -1,7 +1,7 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-02-24 09:42:07
- * @LastEditTime: 2021-07-17 14:18:17
+ * @LastEditTime: 2021-07-17 21:23:44
  * @LastEditors: Please set LastEditors
 -->
 
@@ -222,6 +222,8 @@ export default {
         supplierChosen.splice(cIndex, 1)
         percent.splice(cIndex, 1)
       } else {
+        // 当前供应商TTO为空不能被选中
+        if (!_.sum(curSupplier.TTo || [])) return
         supplierChosen.push(curSupplier)
       }
       // 添加未保存警告
@@ -336,8 +338,8 @@ export default {
       return spanArr
     },
     spanMethod({row, column, rowIndex, columnIndex}) {
-      // 只做第一列合并操作
-      if (columnIndex === 0 ) {
+      // 只做第一列合并操作 - 只针对有推荐供应商的处理
+      if (_.sum(row.TTo || []) && columnIndex === 0 ) {
         const _row = this.spanArr[rowIndex];
         const _col = _row > 0 ? 1 : 0;
         return {
