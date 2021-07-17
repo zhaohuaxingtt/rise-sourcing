@@ -397,20 +397,11 @@ export default {
     },
     //取消保存編輯狀態下的數據
     cancelEditBob() {
-      console.log('tableListData', this.tableListData);
-      // console.log('backUpData', this.backUpData);
-      // this.$delete(this.tableListData, 'isDefault')
-      // this.$set(this, "tableListData", window._.cloneDeep(this.backUpData));
-
       this.backUpData.map((item, index) => {
-        // this.$set(this.tableListData, index, item)
         this.$set(this.tableListData[index], 'name', item.name)
         this.$set(this.tableListData[index], 'isDefault', item.isDefault)
       })
-    
-      console.log('tableListData2', this.tableListData);
       this.edit = !this.edit;
-      // this.getTableList()
     },
     // 点击新建按钮
     newBob() {
