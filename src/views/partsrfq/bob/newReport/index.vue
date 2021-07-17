@@ -92,7 +92,7 @@
                       <el-option v-for="(i, index) in partList"
                                  :key="index"
                                  :value="i.fsNo"
-                                 :label="i.spareParts"></el-option>
+                                 :label="i.fsNo+'/'+i.spareParts"></el-option>
                     </el-select>
                   </el-form-item>
                 </div>
@@ -144,6 +144,8 @@
             <iRow>
               <el-col :span="inside ? 18 : 24">
                 <crown-bar :chartData="chartData"
+                           :supplierList="supplierList"
+                           :partList="partList"
                            :title="chartTitle"
                            @select="showSelect"
                            :type="bobType"
@@ -201,7 +203,9 @@
           </iCard>
         </el-col>
         <el-col :span="reportSave ? 24 : 20">
-          <bobAnalysis ref="bobAnalysis"></bobAnalysis>
+          <bobAnalysis ref="bobAnalysis"
+                       :supplierList="supplierList"
+                       :partList="partList"></bobAnalysis>
         </el-col>
       </el-row>
     </div>
@@ -308,7 +312,8 @@ export default {
       analysisSave: false,
       reportSave: false,
       anchorList: ['原材料/散件', '制造费', '保费成本', '管理费', '其他费用', '利润'],
-      current: 0
+      current: 0,
+      isCover: true
     };
   },
   created () {
@@ -332,7 +337,27 @@ export default {
     if (this.newBuild) this.analysisSave = true;
     // this.getOptions();
   },
-  mounted () { },
+  watch: {
+    analysisName: {
+      handler (val, newval) {
+        if (newval && !this.newBuild) {
+          this.isCover = false
+        }
+      },
+      immediate: true
+    },
+    reportName: {
+      handler (val, newval) {
+        if (newval && !this.newBuild) {
+          this.isCover = false
+        }
+      },
+      immediate: true
+    }
+
+  },
+  mounted () {
+  },
   methods: {
     getOptions () {
       part({
@@ -358,7 +383,7 @@ export default {
           let html = ""
           this.options.forEach((value, index) => {
             html +=
-              `<div class="el-tag el-tag--info el-tag--small el-tag--light" style="display:flex;justify-content: center;align-items: center;">
+              `<div class="el-tag el-tag--info el-tag--large el-tag--light" style="display:flex;justify-content: center;align-items: center;">
             <div >
              <p class="el-select__tags-text">${value.nameZh}</p>
              <p class="el-select__tags-text">${value.value}</p>
@@ -379,7 +404,7 @@ export default {
           e.forEach((i, index) => {
             if (value.key == i) {
               html +=
-                `<div class="el-tag el-tag--info el-tag--small el-tag--light" style="display:flex;justify-content: center;align-items: center;">
+                `<div class="el-tag el-tag--info el-tag--large el-tag--light" style="display:flex;justify-content: center;align-items: center;">
             <div >
              <p class="el-select__tags-text">${value.nameZh}</p>
              <p class="el-select__tags-text">${value.value}</p>
@@ -448,6 +473,11 @@ export default {
       this.getChartData();
     },
     add (val) {
+      console.log(val, 2222)
+      if (val.constructor === Object) {
+        iMessage.error('请选择数据')
+        return
+      }
       if (this.inside) {
         addBobOut({
           analysisSchemeId: this.analysisSchemeId,
@@ -466,34 +496,21 @@ export default {
           }
         });
       } else {
-        // let arr = []
-        // val.forEach((value, index, array) => {
-        //   arr.push({
-        //     fs: value.fsNum,
-        //     partNumber: value.partNum,
-        //     rfqId: value.rfqId,
-        //     supplierId: value.supplierId,
-        //   })
-        // })
-        initOut({
-          list: [{
-            fs: 'FS21-00409',
-            partNumber: '02V963554G3',
-            rfqId: '220',
-            supplierId: '11036',
-          }, {
-            fs: 'FS21-00410',
-            partNumber: '02V915681G3',
-            rfqId: '220',
-            supplierId: '11036',
-          }]
-        }).then(res => {
+        let arr = []
+        val.forEach((value, index, array) => {
+          arr.push({
+            fs: value.fsNum,
+            partNumber: value.partNum,
+            rfqId: value.rfqId,
+            supplierId: value.supplierId,
+          })
+        })
+        initOut({ list: arr }).then(res => {
           if (res.code === '200') {
             this.$message.success(res.desZh);
             this.analysisSchemeId = res.data
             this.$store.dispatch('setSchemeId', this.analysisSchemeId);
             this.$refs.bobAnalysis.SchemeId = res.data
-            console.log(this.$refs.bobAnalysis.SchemeId, 'gggg')
             this.$refs.bobAnalysis.chargeRetrieve('all')
             this.querySupplierTurnPartList()
             this.getChartData()
@@ -534,6 +551,7 @@ export default {
         );
         this.chartType = allData.analysisDimension;
         this.bobType = allData.defaultBobOptions;
+
         if (this.chartType === 'combination') {
           this.form = {
             combination: []
@@ -566,6 +584,8 @@ export default {
         );
         this.chartType = allData.analysisDimension;
         this.bobType = allData.defaultBobOptions;
+        this.analysisName = allData.name
+        this.reportName = allData.name + '_' + window.moment(new Date()).format("yyyy.MM");
         if (this.chartType === 'combination') {
           this.form = {
             combination: []
@@ -615,24 +635,40 @@ export default {
         spareParts: this.form.spareParts.join(","),
         supplierId: this.form.supplier.join(","),
         turn: this.form.turn.join(","),
+        isCover: this.isCover
       };
-      if (this.analysisSave) {
-        update(form)
-          .then((res) => {
-            iMessage.success("保存成功");
-            this.dialogVisible = false;
-            this.reportSave = false;
-          })
-          .catch((err) => {
-            iMessage.err("保存失败");
-            this.dialogVisible = false;
-            this.reportSave = false;
+      if (this.isCover) {
+        this.$confirm('此样式/报告已存在, 是否覆盖?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          if (this.analysisSave) {
+            update(form)
+              .then((res) => {
+                iMessage.success("保存成功");
+                this.dialogVisible = false;
+                this.reportSave = false;
+              })
+              .catch((err) => {
+                iMessage.err("保存失败");
+                this.dialogVisible = false;
+                this.reportSave = false;
+              });
+          }
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消'
           });
+        });
       }
+
+
       if (this.reportSave) {
         downloadPDF({
           idEle: "content",
-          pdfName: "Volume Pricing Overview",
+          pdfName: this.reportName,
           callback: async (pdf, pdfName) => {
             try {
               const time = new Date().getTime();
@@ -651,9 +687,11 @@ export default {
                 reportName: that.reportName,
               };
               await add(req);
+              iMessage.success("保存成功");
               that.dialogVisible = false;
               that.reportSave = false;
             } catch {
+              iMessage.err("保存失败");
               that.dialogVisible = false;
               that.reportSave = false;
             }
@@ -689,6 +727,7 @@ export default {
         return ''
       }
     },
+
   },
 };
 </script>
@@ -739,7 +778,7 @@ export default {
   .el-select-dropdown__item.selected::after {
   content: none;
 }
-::v-deep .el-tag--small {
+::v-deep .el-tag--large {
   height: 3.5rem;
 }
 .anchorList {
