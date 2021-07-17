@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-23 11:59:22
- * @LastEditTime: 2021-07-17 22:04:07
+ * @LastEditTime: 2021-07-17 22:00:56
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\editordetail\components\currentSupplier\index.vue
@@ -120,7 +120,6 @@ export default{
   },
   watch:{
     'dialogVisible.show':function(){
-      this.edit = true
       this.topSelect = []
       this.bottomSelect = []
       this.dataListTop = []
