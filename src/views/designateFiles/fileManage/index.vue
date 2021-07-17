@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-26 16:20:16
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-07-14 15:04:49
+ * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-07-17 01:24:00
  * @Description: 附件综合管理
  * @FilePath: \front-web\src\views\designateFiles\fileManage\index.vue
 -->
@@ -521,6 +521,10 @@ export default {
     handleCreateRFQ() {
       if (this.selectParts.length < 1) {
         iMessage.warn(this.language('QINGXUANZEFUJIAN','请选择附件'))
+        return
+      }
+      if (this.selectParts.some(item => item.rfqId)) {
+        iMessage.warn(this.language('LK_QINGXUANZEWEIFENPEIRFQDEFUJIAN','请选择未分配RFQ的附件'))
         return
       }
       const selectLINIE = uniq(this.selectParts.map(item => item.csfuserId))

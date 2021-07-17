@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:50:41
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-15 10:45:29
+ * @LastEditTime: 2021-07-16 21:50:59
  * @Description: 
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\rs\components\meeting\data.js
  */
@@ -21,6 +21,7 @@ export const nomalDetailTitle = [
   {props: 'lifeTime', name: '生命周期', enName: 'Lifetime', key: 'SHENGMINGZHOUQI'}
 ]
 
+// GS
 export const nomalDetailTitleBlue = [
   [
     {props: 'currency', name: '货币', enName: 'Currency', key: 'HUOBI'},
@@ -35,7 +36,6 @@ export const nomalDetailTitleBlue = [
   {props: 'quantity', name: '每车用量', enName: 'Quantity', key: 'MEICHEYONGLIANG'}
 ]
 
-// GS
 export const gsDetailTitleBlue = [
   [
     {props: 'currency', name: '货币', enName: 'Currency', key: 'HUOBI'},
