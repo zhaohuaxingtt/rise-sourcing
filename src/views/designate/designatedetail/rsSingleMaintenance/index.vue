@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-24 14:39:43
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-07-17 18:35:11
+ * @LastEditTime: 2021-07-17 19:43:07
  * @Description: RS单维护界面
  * @FilePath: \front-web\src\views\designate\designatedetail\rsSingleMaintenance\index.vue
 -->
@@ -117,6 +117,7 @@ export default {
   },
   methods: {
     handlePreviewRS() {
+      
       // 当前界面的table中 是当前定点ID所包含的所有零件。预览基于定点ID 不需要勾选。
       // if (this.selectedTableData.length < 1) {
       //   iMessage.warn(this.language('QINGXUANZEXUYAOYULANDERSDAN','请选择需要预览的RS单'))
