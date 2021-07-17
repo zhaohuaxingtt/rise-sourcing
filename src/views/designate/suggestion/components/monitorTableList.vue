@@ -1,7 +1,7 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-02-24 09:42:07
- * @LastEditTime: 2021-07-17 20:46:35
+ * @LastEditTime: 2021-07-17 21:23:44
  * @LastEditors: Please set LastEditors
 -->
 
@@ -222,6 +222,8 @@ export default {
         supplierChosen.splice(cIndex, 1)
         percent.splice(cIndex, 1)
       } else {
+        // 当前供应商TTO为空不能被选中
+        if (!_.sum(curSupplier.TTo || [])) return
         supplierChosen.push(curSupplier)
       }
       // 添加未保存警告
