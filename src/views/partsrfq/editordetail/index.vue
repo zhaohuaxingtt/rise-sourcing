@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-25 10:09:50
- * @LastEditTime: 2021-07-13 17:48:29
+ * @LastEditTime: 2021-07-17 14:11:35
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsrfq\editordetail\index.vue
@@ -20,14 +20,14 @@
           language('LK_XINJIANRFQLUNCI','新建RFQ轮次')
           }}
         </iButton>
-        <iButton @click="updateRfqStatus('06')" v-permission="PARTSRFQ_EDITORDETAIL_SENDINQUIRY">{{
+        <iButton :loading='rfqloading' @click="updateRfqStatus('06')" v-permission="PARTSRFQ_EDITORDETAIL_SENDINQUIRY">{{
             language('LK_FACHUXUNJIA','发出询价')
           }}
         </iButton>
-        <iButton @click="updateRfqStatus('05')" v-permission="PARTSRFQ_EDITORDETAIL_ENDQUOTATION">
+        <iButton  @click="updateRfqStatus('05')" v-permission="PARTSRFQ_EDITORDETAIL_ENDQUOTATION">
           {{ language('LK_JIESHUBENLUNXUNJIA','结束本轮询价') }}
         </iButton>
-        <iButton @click="updateRfqStatus('03')" v-permission="PARTSRFQ_EDITORDETAIL_TRANSFERNEGOTIATION">
+        <iButton  @click="updateRfqStatus('03')" v-permission="PARTSRFQ_EDITORDETAIL_TRANSFERNEGOTIATION">
           {{ language('LK_ZHUANTANPAN','转谈判') }}
         </iButton>
         <iButton v-permission="PARTSRFQ_EDITORDETAIL_CREATEAPPLICATION" :loading="createDesignateLoading" @click="createDesignate">
@@ -197,6 +197,7 @@ export default {
       nominateTypeDialogVisible: false,
       parmarsHasRfq: JSON.parse(JSON.stringify(form)),
       newRfqRoundDialogRes:{}, 
+      rfqloading:false
     }
   },
   created() {
@@ -289,6 +290,7 @@ export default {
     },
     async updateRfqStatus(updateType) {
       const query = this.$route.query
+      this.rfqloading = true
       const req = {
         updateRfqStatusPackage: {
           updateType,
@@ -299,6 +301,7 @@ export default {
       const res = await editRfqData(req)
       this.resultMessage(res)
       this.getBaseInfo()
+      this.rfqloading = false
     },
     edit() {
       const rfqName = this.baseInfo.rfqName

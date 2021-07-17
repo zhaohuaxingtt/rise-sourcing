@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-06-09 15:26:57
- * @LastEditTime: 2021-06-26 16:11:17
+ * @LastEditTime: 2021-07-17 20:31:30
  * @LastEditors: Please set LastEditors
  * @Description: fs 供应商 横轴纵轴界面。基于报价分析界面组件。
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\abPrice\index.vue
@@ -22,6 +22,14 @@ export default{
     }
   },
   methods:{
+    /**
+     * @description: 重写报价助手中的获取最新轮次方法。当前界面不需要最新轮次。
+     * @param {*}
+     * @return {*}
+     */
+    getbaseInfoData(){
+      return {}
+    },
     /**
      * @description: 重构获取供应商横轴方法 
      * @param {*}

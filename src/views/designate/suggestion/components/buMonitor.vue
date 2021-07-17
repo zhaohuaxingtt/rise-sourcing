@@ -1,7 +1,7 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-05-25 09:42:07
- * @LastEditTime: 2021-07-09 14:57:34
+ * @LastEditTime: 2021-07-17 20:31:02
  * @Description: 业务分配模拟
 -->
 
@@ -324,8 +324,8 @@ export default {
             o.percentCalc = []
             const suppDataList = o.bdlInfoList || []
             this.supplierList.forEach((suppName, index) => {
-              const supplier = suppDataList.find(o => o.supplierName === suppName) || {}
-              const recommendSupplier = o.recommendBdlInfoList.find(o => o.recommendSupplier === suppName) || {}
+              const supplier = (suppDataList && suppDataList.find(o => o.supplierName === suppName)) || {}
+              const recommendSupplier = (o.recommendBdlInfoList && o.recommendBdlInfoList.find(o => o.recommendSupplier === suppName)) || {}
               o.TTo[index] = supplier.tto || 0
               o.percentCalc[index] = Number(recommendSupplier.share).toFixed(2) || 0
             })
