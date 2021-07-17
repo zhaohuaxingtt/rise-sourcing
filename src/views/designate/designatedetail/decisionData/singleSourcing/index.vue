@@ -5,6 +5,9 @@
 -->
 <template>
     <iCard title="⽣产采购单⼀供应商说明 Single Sourcing for Production Purchasing">
+        <template slot="header-control">
+             <iButton @click="gotoSupplier">{{language('TIAOZHUANGONGYINGSHANGWEIHU','跳转供应商维护')}}</iButton>
+        </template>
         <div class="decision-data-singleSourcing-content">
             <div class="margin-top30 margin-bottom30">
                 <iFormGroup inline row="2">
@@ -29,7 +32,7 @@
                     <template #suppliersName="scope">
                         <div>
                             <span class="factoryDesc margin-right5">{{scope.row.suppliersName }}</span>
-                            <el-tooltip effect="light" :content="`${language('LK_FRMPINGJI','FRM评级')}：${scope.row.frmRate}`" v-if="scope.row.isFRMRate === 1">
+                            <el-tooltip effect="light" :content="`${language('LK_FRMPINGJI','FRM评级')}：${scope.row.frmRate}`" v-if="scope.row.isFRMRate === 1 && !isPreview">
                             <span>
                                 <icon symbol name="iconzhongyaoxinxitishi" />
                             </span>
@@ -70,6 +73,7 @@ import {
   iText,
   iMessage,
   icon,
+  iButton,
 } from "rise";
 import {pageMixins} from '@/utils/pageMixins'
 // import tableList from "@/views/partsign/editordetail/components/tableList"
@@ -88,6 +92,7 @@ export default {
         iText,
         tableList,
         icon,
+        iButton,
     },
     name:'SingleSourcing',
     data(){
@@ -146,6 +151,21 @@ export default {
                     this.loading =  false; 
                 });
         },
+
+        
+      // 跳转至跳转供应商维护
+      gotoSupplier(){
+         const { query } = this.$route;
+         console.log(query);
+         const router =  this.$router.resolve({
+            path: '/designate/supplier',
+            query:{
+               ...query,
+               route:'force'
+            }
+         })
+         window.open(router.href,'_blank');
+      }
     }
 
 }

@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:50:41
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-05 10:37:09
+ * @LastEditTime: 2021-07-16 21:50:59
  * @Description: 
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\rs\components\meeting\data.js
  */
@@ -21,6 +21,7 @@ export const nomalDetailTitle = [
   {props: 'lifeTime', name: '生命周期', enName: 'Lifetime', key: 'SHENGMINGZHOUQI'}
 ]
 
+// GS
 export const nomalDetailTitleBlue = [
   [
     {props: 'currency', name: '货币', enName: 'Currency', key: 'HUOBI'},
@@ -35,7 +36,6 @@ export const nomalDetailTitleBlue = [
   {props: 'quantity', name: '每车用量', enName: 'Quantity', key: 'MEICHEYONGLIANG'}
 ]
 
-// GS
 export const gsDetailTitleBlue = [
   [
     {props: 'currency', name: '货币', enName: 'Currency', key: 'HUOBI'},
@@ -74,7 +74,7 @@ export const nomalTableTitle = [
   {props:'beginYearReduce',name:'年降开始时间', enName: 'Start Time of LTC', key: "", minWidth: 90},
   {props:'investFee',name:'投资费(不含税)', enName: 'Invest(excl.VAT)', key: "", minWidth: 80},
   {props:'devFee',name:'开发费(含税)', enName: 'Develop Cost',enName1:'(incl. VAT)', key: "", minWidth: 80},
-  {props:'turnover',name:'采购金额', enName: 'Turnover', key: "", minWidth: 65},
+  {props:'tto',name:'采购金额', enName: 'Turnover', key: "", minWidth: 65},
 ]
 
 // 配件
@@ -95,7 +95,7 @@ export const sparePartTableTitle = [
   {props:'beginYearReduce',name:'年降开始时间', enName: 'Start Time of LTC', key: "", minWidth: 90},
   {props:'investFee',name:'投资费(不含税)', enName: 'Invest(excl.VAT)', key: "", minWidth: 80},
   {props:'devFee',name:'开发费(含税)', enName: 'Develop Cost',enName1:'(incl. VAT)', key: "", minWidth: 80},
-  {props:'turnover',name:'采购金额', enName: 'Turnover', key: "", minWidth: 65},
+  {props:'tto',name:'采购金额', enName: 'Turnover', key: "", minWidth: 65},
 ]
 
 // 附件
@@ -116,7 +116,7 @@ export const accessoryTableTitle = [
   {props:'beginYearReduce',name:'年降开始时间', enName: 'Start Time of LTC', key: "", minWidth: 90},
   {props:'investFee',name:'投资费(不含税)', enName: 'Invest(excl.VAT)', key: "", minWidth: 80},
   {props:'devFee',name:'开发费(含税)', enName: 'Develop Cost',enName1:'(incl. VAT)', key: "", minWidth: 80},
-  {props:'turnover',name:'采购金额', enName: 'Turnover', key: "", minWidth: 65},
+  {props:'tto',name:'采购金额', enName: 'Turnover', key: "", minWidth: 65},
 ]
 
 // GS零件
@@ -143,7 +143,7 @@ export const gsTableTitle = [
   {props:'devFee',name:'开发费(含税)', enName: 'Develop Cost',enName1:'(incl. VAT)', key: "", minWidth: 80},
   {props:'addFee',name:'认可费', enName: 'Release Cost', key: "", minWidth: 65},
   {props:'savingFee',name:'估算节约值', enName: 'Estimaled Savings', key: "", minWidth: 65},
-  {props:'turnover',name:'采购金额', enName: 'Turnover', key: "", minWidth: 65},
+  {props:'tto',name:'采购金额', enName: 'Turnover', key: "", minWidth: 65},
 ]
 
 // DB零件
@@ -170,7 +170,7 @@ export const dbTableTitle = [
   {props:'beginYearReduce',name:'年降开始时间', enName: 'Start Time of LTC', key: "", minWidth: 90},
   {props:'investFee',name:'投资费(不含税)', enName: 'Invest(excl.VAT)', key: "", minWidth: 80},
   {props:'devFee',name:'开发费(含税)', enName: 'Develop Cost',enName1:'(incl. VAT)', key: "", minWidth: 80},
-  {props:'turnover',name:'采购金额', enName: 'Turnover', key: "", minWidth: 65},
+  {props:'tto',name:'采购金额', enName: 'Turnover', key: "", minWidth: 65},
 ]
 
 export const meetingRemark = [

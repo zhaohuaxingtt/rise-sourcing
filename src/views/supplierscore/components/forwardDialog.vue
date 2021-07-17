@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-30 17:46:28
- * @LastEditTime: 2021-07-02 17:51:38
+ * @LastEditTime: 2021-07-13 17:27:44
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\supplierscore\components\forwardDialog.vue
@@ -32,7 +32,7 @@
 
 <script>
 import { iDialog, iSelect, iFormGroup, iFormItem, iButton, iMessage } from "@/components"
-import { getRater } from "@/api/supplierscore"
+import { getRater, findRaterByCurrentUser } from "@/api/supplierscore"
 
 export default {
   components: { iDialog, iSelect, iFormGroup, iFormItem, iButton },
@@ -41,12 +41,16 @@ export default {
     visible: {
       type: Boolean,
       default: false
+    },
+    userDeptType: {
+      type: String,
     }
   },
   watch: {
     status(nv) {
       if (nv) {
-        this.getRater()
+        // this.getRater()
+        this.findRaterByCurrentUser()
       } else {
         this.userId = ""
         this.options = []
@@ -90,6 +94,43 @@ export default {
 
           if (Array.isArray(res.data.mqList) && res.data.mqList.length > 0) {
             this.options = res.data.mqList.map(item => ({
+              ...item,
+              key: item.id,
+              label: item.nameZh,
+              value: item.id
+            }))
+          }
+
+          switch(this.userDeptType) {
+            case "EP":
+              this.options = [
+                { key: "45", label: "谈和玉", value: "45" },
+                { key: "51", label: "姜谷兰", value: "51" },
+              ]
+              break
+            case "MQ":
+              this.options = [
+                { key: "43", label: "刘财", value: "43" },
+                { key: "47", label: "冉兴腾", value: "47" },
+              ]
+              break
+            default:
+          }
+        } else {
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
+
+        this.loading = false
+      })
+      .catch(() => this.loading = false)
+    },
+    findRaterByCurrentUser() {
+      this.loading = true
+      findRaterByCurrentUser()
+      .then(res => {
+        if (res.code == 200) {
+          if (Array.isArray(res.data.raterList) && res.data.raterList.length > 0) {
+            this.options = res.data.raterList.map(item => ({
               ...item,
               key: item.id,
               label: item.nameZh,

@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-26 16:20:16
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-10 16:42:15
+ * @LastEditTime: 2021-07-17 01:24:00
  * @Description: 附件综合管理
  * @FilePath: \front-web\src\views\designateFiles\fileManage\index.vue
 -->
@@ -93,7 +93,7 @@
           <!------------------------------------------------------------------------>
           <!--                    加入已有RFQ弹窗                                  --->
           <!------------------------------------------------------------------------>
-          <joinRfqDialog ref="joinRfq" :dialogVisible="joinRfqDialogVisible" @changeVisible="changeJoinRfqDialogVisible" @joinRfq="joinRfq" partType="PT18" />
+          <joinRfqDialog ref="joinRfq" :dialogVisible="joinRfqDialogVisible" @changeVisible="changeJoinRfqDialogVisible" @joinRfq="joinRfq" :partType="partProjTypes.FUJIAN" />
         </div>
       </el-tab-pane>
       <!-- <el-tab-pane label="进度监控" name="progress"></el-tab-pane> -->
@@ -110,11 +110,12 @@ import linieDialog from './components/setLinie'
 import backDialog from './components/back'
 import { cloneDeep, uniq } from 'lodash'
 import { getAffixList, updateAffixList, findBuyer, deleteAffix } from '@/api/designateFiles/index'
-import { downloadFile } from '@/api/file'
+import { downloadFile, downloadUdFile } from '@/api/file'
 import { insertRfq } from '@/api/accessoryPart/index'
 import joinRfqDialog from '@/views/designateFiles/fileManage/components/joinRfq'
 import { getDictByCode } from '@/api/dictionary'
 import { clickMessage } from "@/views/partsign/home/components/data"
+import {partProjTypes} from '@/config'
 
 // eslint-disable-next-line no-undef
 const { mapState, mapActions } = Vuex.createNamespacedHelpers("sourcing")
@@ -124,6 +125,8 @@ export default {
   components: { iPage, iSearch, iSelect, iInput, iCard, iButton, iPagination, tableList, linieDialog, backDialog, iNavMvp, joinRfqDialog, iDatePicker },
   data() {
     return {
+      // 零件项目类型
+      partProjTypes,
       tableData: [],
       tableTitle: tableTitle,
       tableLoading: false,
@@ -322,7 +325,7 @@ export default {
               stuffName: item.stuffName, // 工艺组name
               purchasePrjectId: item.purchasingProjectId,
               partNameZh: item.partNameCh,
-              partPrejectType: 'PT18',
+              partPrejectType: partProjTypes.FUJIAN,
             }
           }),
           userId: this.$store.state.permission.userInfo.id
@@ -355,16 +358,17 @@ export default {
      * @param {*} fileList
      * @return {*}
      */    
-    async handleFileDownload(fileList) {
+    async handleFileDownload(fileList, list) {
       if (fileList.length < 1) {
         return
       }
       this.tableLoading = true
-      const params = {
-        applicationName: 'rise',
-        fileList: fileList
-      }
-      await downloadFile(params)
+      // const params = {
+      //   applicationName: 'rise',
+      //   fileList: fileList
+      // }
+      // await downloadFile(params)
+      await downloadUdFile(list.map(item => item.uploadId))
       this.tableLoading = false
     },
     /**
@@ -434,6 +438,7 @@ export default {
         isShow: '',
         linie: ''
       }
+      this.sure()
     },
     /**
      * @Description: 获取表格数据
@@ -516,6 +521,10 @@ export default {
     handleCreateRFQ() {
       if (this.selectParts.length < 1) {
         iMessage.warn(this.language('QINGXUANZEFUJIAN','请选择附件'))
+        return
+      }
+      if (this.selectParts.some(item => item.rfqId)) {
+        iMessage.warn(this.language('LK_QINGXUANZEWEIFENPEIRFQDEFUJIAN','请选择未分配RFQ的附件'))
         return
       }
       const selectLINIE = uniq(this.selectParts.map(item => item.csfuserId))

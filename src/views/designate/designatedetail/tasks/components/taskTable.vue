@@ -166,12 +166,12 @@ export default {
       selectedData: [],
       editControl: false,
       batchEditVisibal: false,
-      // editColumn: {
-      //   props: 'edit',
-      //   name: 'HIDE/UNHIDE',
-      //   key: 'HIDE/UNHIDE',
-      //   tooltip: false
-      // },
+      editColumn: {
+        props: 'edit',
+        name: 'HIDE/UNHIDE',
+        key: 'HIDE/UNHIDE',
+        tooltip: false
+      },
       page: {
         currPage: 1,
         pageSize: 10,
@@ -181,6 +181,7 @@ export default {
     }
   },
   mounted() {
+    this.toggleShowEditCol(!this.$store.getters.isPreview)
     this.getFetchData()
   },
   methods: {
@@ -243,7 +244,7 @@ export default {
         })
       }
       console.log(data)
-      const confirmInfo = await this.$confirm(this.language('saveSure'))
+      const confirmInfo = await this.$confirm(this.language('saveSure', '您确定要保存吗？'))
       if (confirmInfo !== 'confirm') return
       this.submiting = true
       addNominateTask(data).then(res => {
@@ -265,7 +266,8 @@ export default {
       getNominateTaskList({
         nominateId: this.$store.getters.nomiAppId,
         current: this.page.currPage,
-        size: this.page.pageSize
+        size: this.page.pageSize,
+        isPreview: this.$store.getters.isPreview
       }).then(res => {
         if (res.code === '200') {
           this.data = res.data || []
@@ -305,6 +307,17 @@ export default {
       // if (this.tasksTitle.find(o => o.props === 'edit')) {
       //   this.tasksTitle.pop()
       // }
+    },
+    toggleShowEditCol(state) {
+      if (state) {
+        if (!this.tasksTitle.find(o => o.props === 'edit')) {
+          this.tasksTitle.push(this.editColumn)
+        }
+      } else {
+        if (this.tasksTitle.find(o => o.props === 'edit')) {
+          this.tasksTitle.pop()
+        }
+      }
     },
     // 单一供应商
     handleSingleSelectionChange(data) {

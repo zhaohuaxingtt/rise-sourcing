@@ -8,6 +8,7 @@
  */
 import axios from '@/utils/axios'
 const requst = axios(process.env.VUE_APP_RFQ)
+const quotationRequst = axios(process.env.VUE_APP_QUOTATION)
 
 // 获取KM的RFQ列表
 export function getKmFileHistory(params) {
@@ -30,6 +31,15 @@ export function uploadFiles(params) {
 export function deleteFileHistory(params) {
   return requst({
     url: '/file-history',
+    method: 'POST',
+    data: params
+  })
+}
+
+// L3文件
+export function partCbdKmFile(params) {
+  return quotationRequst({
+    url: '/cbd-files/partCbdKmFile',
     method: 'POST',
     data: params
   })

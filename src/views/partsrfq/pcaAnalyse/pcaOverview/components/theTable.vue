@@ -3,7 +3,7 @@
     <div class="margin-bottom20 clearFloat">
       <span class="font18 font-weight" v-if="pageType === 'PCA'">{{ $t('TPZS.PCAZONGLAN') }}</span>
       <span class="font18 font-weight" v-else-if="pageType === 'TIA'">{{ $t('TPZS.TIAZONGLAN') }}</span>
-      <!--      <div class="floatright">
+<!--            <div class="floatright">
               <template v-if="!tableStatus">
                 &lt;!&ndash;编辑&ndash;&gt;
                 <iButton @click="handleEdit">{{ $t('LK_BIANJI') }}</iButton>
@@ -53,7 +53,7 @@
         :current-page='page.currPage'
         :total="page.totalCount"/>
     <!--    预览弹窗-->
-    <previewDialog v-model="previewDialog" :fileUrl="fileUrl"/>
+    <previewDialog v-model="previewDialog" :fileUrl="fileUrl" :fileName="fileName"/>
   </iCard>
 </template>
 
@@ -73,7 +73,7 @@ export default {
     tableList,
     iPagination,
     icon,
-    previewDialog,
+    previewDialog
   },
   props: {
     pageType: {
@@ -91,6 +91,7 @@ export default {
       tableStatus: '',
       previewDialog: false,
       fileUrl: '',
+      fileName: ''
     };
   },
   created() {
@@ -99,6 +100,10 @@ export default {
   methods: {
     handleSelectionChange(val) {
       this.selectTableData = val;
+    },
+    handleSearch() {
+      this.page.currPage = 1
+      this.getTableList()
     },
     async getTableList() {
       this.tableLoading = true;
@@ -153,6 +158,7 @@ export default {
     handleOpenPreviewDialog(row) {
       this.previewDialog = true;
       this.fileUrl = row.filePath;
+      this.fileName = row.fileName.split('.pdf')[0];
     },
   },
 };

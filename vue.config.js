@@ -307,7 +307,7 @@ module.exports = {
         // target: 'http://10.122.17.38:8022',	//	vmsit
         // target: 'http://192.168.50.160:8022', // 圆圆
         // target: 'http://192.168.50.40:8022',// 立立
-        // target: 'http://cbbbc967414f.ngrok.io',
+        // target: 'http://140cc4e9da89.ngrok.io',
         changeOrigin: true,
         pathRewrite: {
           '^/ws2Api': ''
@@ -350,7 +350,9 @@ module.exports = {
       },
       '/aonApi': {
         // target: 'http://10.160.138.185:8036',
-        // target: 'http://10.160.137.32:8036',
+        // target: 'http://192.168.50.230:8036',
+        // target: 'http://10.160.137.83:8036',
+        // target: 'http://10.160.137.179:8036',
         target: 'http://10.122.18.166:8036',
         changeOrigin: true,
         pathRewrite: {
@@ -363,7 +365,14 @@ module.exports = {
         pathRewrite: {
           '^/risemessage': ''
         }
-      }
+      },
+      '/newCommonApi': {
+				target: 'http://10.122.17.38:8034',
+				changeOrigin: true,
+				pathRewrite: {
+					"^/newCommonApi": ""
+				}
+			}
     }
   }
 }

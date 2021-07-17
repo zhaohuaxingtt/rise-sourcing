@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-06-18 16:03:35
- * @LastEditTime: 2021-07-12 14:14:57
+ * @LastEditTime: 2021-07-15 20:15:29
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\vpAnalyse\vpAnalyseDetail\components\customPart\index.vue
@@ -237,7 +237,6 @@ export default {
     add() {
       this.addMode = true
       this.tableListData.push(this.insertPartData)
-      console.log('tableListData', this.tableListData);
     },
     // 新增时，根据输入零件号检索
     remoteMethod(val) {
@@ -257,7 +256,6 @@ export default {
     // 新增时，改变选中零件编号
     changePartNum(val) {
       const data = this.partNumData.find(item => item.partsId == val)
-      console.log('tableListData', this.tableListData);
       this.tableListData.splice(this.tableListData.length - 1, this.tableListData.length, window._.cloneDeep(data))
       this.insertPartData = window._.cloneDeep(data)
     },
@@ -283,8 +281,13 @@ export default {
         return
       }
       let maxSortObj = window._.maxBy(this.tableListData, function(o) { return o.sort; });
+      console.log('maxSortObj', maxSortObj);
       const endObj = this.tableListData[this.tableListData.length - 1]
-      if(!maxSortObj) maxSortObj = 0
+      if(!maxSortObj) {
+        maxSortObj = {
+          sort: 0
+        }
+      }
       endObj['sort'] = maxSortObj.sort + 1
       endObj['isShow'] = true
       this.addMode = false

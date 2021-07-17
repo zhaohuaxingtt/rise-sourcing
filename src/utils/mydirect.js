@@ -24,6 +24,19 @@ Vue.directive('permission', {
             }
         }
     })
+Vue.directive('permissionArr', {
+    inserted: function(el, binding) {  // dist
+        if (binding.modifiers.disabled) {
+            if (binding.value.some(item => store.state.permission.whiteBtnList[item])) {
+                el.classList.add("is-disabled")
+            }
+        } else { //remov
+            if (!(binding.value.some(item => store.state.permission.whiteBtnList[item]))) {
+                el.parentNode.removeChild(el)
+            }
+        }
+    }
+})
     //切换I8n动态更新element值
     // eslint-disable-next-line no-undef
 Vue.directive('update', {

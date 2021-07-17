@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-06-16 20:44:29
- * @LastEditTime: 2021-07-12 14:39:52
+ * @LastEditTime: 2021-07-16 18:55:16
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\analysisTool\components\analysisTable.vue
@@ -9,6 +9,7 @@
 <template>
   <div class="vpMainBox">
     <el-table
+      tooltip-effect='light'
       :data="tableListData"
       style="width: 100%;margin-bottom: 20px;"
       row-key="number"
@@ -28,7 +29,6 @@
         width="50">
       </el-table-column>
       <el-table-column
-        prop="analysisSchemeName"
         align="center"
         header-align="center"
         label="分析名称"
@@ -37,9 +37,13 @@
           <div class="openPage">
             <el-row :gutter="20">
               <el-col :span="18">
-                <span v-if="!editMode" style="textAlgin: center">
-                  <span v-if="scope.row.type == $t('TPZS.SCHEME_TYPE')" @click="clickScheme(scope.row)">{{scope.row.analysisSchemeName}}</span>
-                  <span v-if="scope.row.type == $t('TPZS.REPORT_TYPE')" @click="clickReport(scope.row)">{{scope.row.reportName}}</span>
+                <span  v-if="!editMode" style="textAlgin: center">
+                  <el-tooltip :content="scope.row.analysisSchemeName" placement="top" effect="light">
+                    <p class="ellipsis" v-if="scope.row.type == $t('TPZS.SCHEME_TYPE')" @click="clickScheme(scope.row)">{{scope.row.analysisSchemeName}}</p>
+                  </el-tooltip>
+                  <el-tooltip :content="scope.row.reportName" placement="top" effect="light">
+                    <p class="ellipsis" v-if="scope.row.type == $t('TPZS.REPORT_TYPE')" @click="clickReport(scope.row)">{{scope.row.reportName}}</p>
+                  </el-tooltip>
                 </span>
                 <span v-else>
                   <iInput class="nameInput" v-if="scope.row.type == $t('TPZS.SCHEME_TYPE')" v-model="scope.row.analysisSchemeName"></iInput>
@@ -103,12 +107,14 @@
         prop="createDate"
         align="center"
         header-align="center"
+        show-overflow-tooltip
         label="创建日期">
       </el-table-column>
       <el-table-column
         prop="updateDate"
         align="center"
         header-align="center"
+        show-overflow-tooltip
         label="上次修改日期">
       </el-table-column>
       <el-table-column
@@ -145,7 +151,6 @@ import {getVpAnalysisDataList, fetchStaick, fetchEdit, fetchDel} from '@/api/par
 import {iMessage} from '@/components';
 import {pageMixins} from '@/utils/pageMixins';
 import reportPreview from './reportPreview'
-// import '@/assets/style/global/element-ui.scss'
 
 export default {
   name: 'analysisTable',
@@ -167,11 +172,13 @@ export default {
       ],
       selectionData: [],
       reportVisible: false,
-      reportUrl: null
+      reportUrl: null,
+      round: null,        //round
     }
   },
   created() {
     this.getTableData()
+    this.round = this.$route.query.round ? this.$route.query.round : this.round
   },
   mounted() {
     
@@ -190,23 +197,23 @@ export default {
     },
     // 初始化列表数据
     getTableData(searchData) {
-      const params = {
-        pageNo: this.page.currPage,
-        pageSize: this.page.pageSize,
-        createByName: searchData ? searchData.createByName : null,
-        materialGroup: searchData ? searchData.materialGroup : null,
-        partsNo: searchData ? searchData.partsNo : null,
-        rfqNo: searchData ? searchData.rfqNo : this.$store.state.rfq.rfqId,
-      }
-      getVpAnalysisDataList(params).then(res => {
-        if(res && res.code == 200) {
-          if(!res.data || res.data.length == 0) {
-            iMessage.error('抱歉，无法查询到结果（输入错误或不存在），请确认后重新输入')
-          }
-          this.page.totalCount = res.total
-          this.tableListData = res.data
-          this.handleTableNumber(this.tableListData, 1, null)
+      return new Promise(resolve => {
+        const params = {
+          pageNo: this.page.currPage,
+          pageSize: this.page.pageSize,
+          createByName: searchData ? searchData.createByName : null,
+          materialGroup: searchData ? searchData.materialGroup : null,
+          partsNo: searchData ? searchData.partsNo : null,
+          rfqNo: searchData ? searchData.rfqNo : this.$store.state.rfq.rfqId,
         }
+        getVpAnalysisDataList(params).then(res => {
+          if(res && res.code == 200) {
+            this.page.totalCount = res.total
+            this.tableListData = res.data
+            this.handleTableNumber(this.tableListData, 1, null)
+            resolve(res)
+          }
+        })
       })
     },
     //递归处理树结构数据的序号
@@ -289,7 +296,8 @@ export default {
         path: schemeUrl,
         query: {
           type: 'edit',
-          schemeId: row.id
+          schemeId: row.id,
+          round: this.round
         }
       })
     },
@@ -306,6 +314,28 @@ export default {
 ::v-deep  .el-table .el-table__row .el-input .el-input__inner {
   text-align: center!important;
 }
+
+::v-deep .cell {
+  .el-table__indent, .el-table__placeholder{
+    display: none;
+  }
+}
+
+::v-deep .el-tooltip__popper {
+  width: 80%;/*修改宽度*/
+  background: #fff !important;/*背景色  !important优先级*/
+  opacity: 0.5 !important;/*背景色透明度*/
+  color: black !important;/*字体颜色*/
+}
+
+.ellipsis {
+  text-overflow: ellipsis;
+  overflow: hidden;  
+  white-space: nowrap;
+  width: 150px;
+}
+
+
 
 .vpMainBox {
   ::v-deep .el-table__expand-icon{

@@ -46,7 +46,7 @@ import { pageMixins } from '@/utils/pageMixins'
 import filters from '@/utils/filters'
 import { getAttachmentVersion, getAttachment } from '@/api/partsign/editordetail'
 import { excelExport } from '@/utils/filedowLoad'
-import { downloadFile } from '@/api/file'
+import { downloadFile, downloadUdFile } from '@/api/file'
 
 export default {
   components: { iCard, iButton, iPagination, tableList },
@@ -114,7 +114,14 @@ export default {
       }
     },
     jump() {
-      window.open(`/#/sourcing/partsign/enquiryVersion?purchasingRequirementTargetId=${ this.data.purchasingRequirementTargetId }`, '_blank')
+      // window.open(`/#/sourcing/partsign/enquiryVersion?purchasingRequirementTargetId=${ this.data.purchasingRequirementTargetId }`, '_blank')
+      const route = this.$router.resolve({
+        path: "/sourcing/partsign/enquiryVersion",
+        query: {
+          purchasingRequirementTargetId: this.data.purchasingRequirementTargetId
+        }
+      })
+      window.open(route.href, "_blank")
     },
     handleSelectionChange(list) {
       this.multipleSelection = list
@@ -124,20 +131,22 @@ export default {
         return iMessage.warn(this.language('LK_QINGXUANZHEXUYAOXIAZHAIWENJIAN','请选择需要下载文件'))
       }
 
-      downloadFile({
-        applicationName: 'rise-procurereq-service',
-        fileList: this.multipleSelection.map(item => item.tpPartAttachmentName).join('&fileList=')
-      })
+      // downloadFile({
+      //   applicationName: 'rise-procurereq-service',
+      //   fileList: this.multipleSelection.map(item => item.tpPartAttachmentName).join('&fileList=')
+      // })
+      downloadUdFile(this.multipleSelection.map(item => item.uploadId))
     },
     exportFile() {
       if (!this.multipleSelection.length) return iMessage.warn(this.language('LK_QINGXUANZHEXUYAODAOCHUDEMEINIANYONGCHELIANG','请选择需要导出的每车用量'))
       excelExport(this.multipleSelection, this.tableTitle)
     },
     preview(row) {
-      downloadFile({
-        applicationName: 'rise-procurereq-service',
-        fileList: row.tpPartAttachmentName
-      })
+      // downloadFile({
+      //   applicationName: 'rise-procurereq-service',
+      //   fileList: row.tpPartAttachmentName
+      // })
+      downloadUdFile(row.uploadId)
     },
   }
 }

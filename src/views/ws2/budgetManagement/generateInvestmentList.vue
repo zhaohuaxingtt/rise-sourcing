@@ -20,9 +20,9 @@
           v-loading="loadingiSearch"
       >
         <el-form>
-          <el-form-item :label="language('LK_CHEXINXIANGMU','⻋型项⽬')">
+          <el-form-item :label="$t('LK_CHEXINXIANGMU')">
             <iSelect
-                :placeholder="language('partsprocure.PLEENTER','请输入')"
+                :placeholder="$t('partsprocure.PLEENTER')"
                 v-model="form['search.carTypeProject']"
                 filterable
                 @change="changeCarTypeProject"
@@ -30,7 +30,7 @@
             >
               <div class="addCarTypeProject">
                 <iInput v-model="addCarTypeProject" placeholder="请输入自定义名称"></iInput>
-                <iButton @click="handleAddCarTypeProject" v-loading="iDialogAddCarTypeProject">{{ language('LK_QUEREN','确认') }}</iButton>
+                <iButton @click="handleAddCarTypeProject" v-loading="iDialogAddCarTypeProject">{{ $t('LK_QUEREN') }}</iButton>
               </div>
               <el-option
                   :value="item.id"
@@ -40,9 +40,9 @@
               ></el-option>
             </iSelect>
           </el-form-item>
-          <el-form-item :label="language('LK_XIANGMULEIXIN','项⽬类型')">
+          <el-form-item :label="$t('LK_XIANGMULEIXIN')">
             <iSelect
-                :placeholder="language('partsprocure.PLEENTER','请输入')"
+                :placeholder="$t('partsprocure.PLEENTER')"
                 v-model="form['search.projectType']"
                 :disabled="carTypeProjectDisabled"
             >
@@ -55,9 +55,9 @@
               </el-option>
             </iSelect>
           </el-form-item>
-          <el-form-item :label="language('LK_DINGDIANLEIXIN','定点类型')">
+          <el-form-item :label="$t('LK_DINGDIANLEIXIN')">
             <iSelect
-                :placeholder="language('partsprocure.PLEENTER','请输入')"
+                :placeholder="$t('partsprocure.PLEENTER')"
                 v-model="form['search.fixedPointType']"
                 :disabled="carTypeProjectDisabled"
             >
@@ -70,9 +70,9 @@
               </el-option>
             </iSelect>
           </el-form-item>
-          <el-form-item :label="language('LK_RANLIAOLEIXING','燃料类型')">
+          <el-form-item label="燃料类型">
             <iSelect
-                :placeholder="language('partsprocure.PLEENTER','请输入')"
+                :placeholder="$t('partsprocure.PLEENTER')"
                 v-model="form['search.modelCategory']"
                 :disabled="carTypeProjectDisabled"
             >
@@ -87,7 +87,7 @@
           </el-form-item>
         </el-form>
         <div class="searchSure">
-          <iButton @click="saveAddCarType" :disabled="carTypeProjectObj.isBudget == 3" v-loading="addCarTypeLoading">{{language('LK_QUEREN','确认') }}</iButton>
+          <iButton @click="saveAddCarType" :disabled="carTypeProjectObj.isBudget == 3" v-loading="addCarTypeLoading">{{ $t('LK_QUEREN') }}</iButton>
 <!--          <iButton @click="sure">查询</iButton>-->
 <!--          <iButton @click="reset">重置</iButton>-->
         </div>
@@ -98,19 +98,19 @@
         <!------------------------------------------------------------------------>
         <div class="header margin-bottom20">
           <div class="search">
-            {{ language('LK_CAILIAOZUBIANHAOZHONGWENMINGDEWEN','材料组编号/中⽂名/德⽂名') }}:
-            <iInput v-model="form['search.materialName']" :placeholder="language('LK_KESHURUBIANHAOZHONGDEWENMINGCHENG','可输入编号中德文名称') ">
+            {{ $t('LK_CAILIAOZUBIANHAOZHONGWENMINGDEWEN') }}:
+            <iInput v-model="form['search.materialName']" :placeholder="$t('LK_QINGSHURU')">
               <i slot="suffix" class="el-input__icon el-icon-search" @click="sure"></i>
             </iInput>
-            {{ language('LK_LINJIANLIUWEIHAO','零件六位号') }}:
-            <iInput v-model="form['search.partNum']" :placeholder="language('LK_RFQPLEASEENTERQUERY','请输入查询')" maxlength="6">
+            {{ $t('LK_LINJIANLIUWEIHAO') }}:
+            <iInput v-model="form['search.partNum']" :placeholder="$t('LK_RFQPLEASEENTERQUERY')" maxlength="6">
               <i slot="suffix" class="el-input__icon el-icon-search" @click="sure"></i>
             </iInput>
           </div>
           <div>
-            <iButton @click="addRow" :disabled="(form['search.carTypeProject'] == '') || carTypeProjectObj.isBudget == 3">{{ language('LK_TIANJIAHANG','添加⾏') }}</iButton>
-            <iButton @click="deleteIRow" :disabled="(form['search.carTypeProject'] == '') || carTypeProjectObj.isBudget == 3">{{ language('LK_SHANCHUHANG','删除⾏') }}</iButton>
-            <iButton @click="referenceModelShow = true" :disabled="(form['search.carTypeProject'] == '') || carTypeProjectObj.isBudget == 3">{{ language('LK_CANKAOCHEXIN','参考⻋型') }}</iButton>
+            <iButton @click="addRow" :disabled="(form['search.carTypeProject'] == '') || carTypeProjectObj.isBudget == 3">{{ $t('LK_TIANJIAHANG') }}</iButton>
+            <iButton @click="deleteIRow" :disabled="(form['search.carTypeProject'] == '') || carTypeProjectObj.isBudget == 3">{{ $t('LK_SHANCHUHANG') }}</iButton>
+            <iButton @click="referenceModelShow = true" :disabled="(form['search.carTypeProject'] == '') || carTypeProjectObj.isBudget == 3">{{ $t('LK_CANKAOCHEXIN') }}</iButton>
             <!--                <iButton @click="saveRow" :disabled="(form['search.carTypeProject'] == '')">保存</iButton>-->
 <!--            <iButton @click="investmentList" :disabled="(form['search.carTypeProject'] == '')">下一步</iButton>-->
           </div>

@@ -11,8 +11,7 @@ s<!--
     <template v-slot:header-control>
       <iButton @click="handleSave" :loading="saveLoading">{{ language("BAOCUN", "保存") }}</iButton>
       <iButton @click="handleDownloadTechnicalData">{{ language("XIAZAIJISHUZILIAO", "下载技术资料") }}</iButton>
-      <!-- 涉及L3模板 -->
-      <iButton @click="handleDownloadCbd" disabled>{{ language("XIAZAICBD", "下载CBD") }}</iButton>
+      <iButton :loading="downloadLoading" @click="handleDownloadCbd">{{ language("XIAZAICBD", "下载CBD") }}</iButton>
     </template>
     <div class="body">
       <tableList
@@ -69,6 +68,7 @@ import { pageMixins } from "@/utils/pageMixins"
 import { numberProcessor } from "@/utils"
 import { getKmPartList, savePcaAndTia } from "@/api/costanalysismanage/rfqdetail"
 import downloadDialog from "../../../home/components/downloadFiles"
+import { partCbdKmFile } from "@/api/costanalysismanage/costanalysis"
 
 export default {
   components: {
@@ -93,7 +93,8 @@ export default {
       tableListData: [],
       saveLoading: false,
       downloadDialogVisible: false,
-      multipleSelection: []
+      multipleSelection: [],
+      downloadLoading: false
     }
   },
   mounted() {
@@ -158,7 +159,22 @@ export default {
       this.downloadDialogVisible = true
     },
     // 下载CBD
-    handleDownloadCbd() {},
+    async handleDownloadCbd() {
+      if (this.multipleSelection.length !== 1) return iMessage.warn(this.language("QINGXUANZEYITIAOSHUJU", "请选择一条数据"))
+      console.log("this.multipleSelection.length", this.multipleSelection.length)
+
+      this.downloadLoading = true
+
+      try {
+        await partCbdKmFile({
+          quotationId: this.multipleSelection[0].quotationId
+        })
+      } catch(e) {
+        iMessage.error(this.language("XIAZAISHIBAI", "下载失败"))
+      } finally {
+        this.downloadLoading = false
+      }
+    },
     // 跳转零件详情
     jumpPartDetail(row) {
       const route = this.$router.resolve({
@@ -169,7 +185,8 @@ export default {
           rfqId: this.rfqId,
           round: row.round,
           fsNum: row.fsnrGsnrNum,
-          supplierId: row.supplierId
+          supplierId: row.supplierId,
+          sourcing: true
         }
       })
       window.open(route.href, "_blank")

@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-06-16 20:44:29
- * @LastEditTime: 2021-07-09 10:34:55
+ * @LastEditTime: 2021-07-16 11:31:27
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\analysisTool\index.vue
@@ -30,6 +30,7 @@
 
 <script>
 import {iCard, iButton} from 'rise'
+import {iMessage} from '@/components';
 import analysisSearch from './components/analysisSearch'
 import analysisTable from './components/analysisTable'
 export default {
@@ -76,7 +77,11 @@ export default {
     },
     //点击搜索按钮
     handleSubmitSearch(searchData) {
-      this.$refs.analysisTable.getTableData(searchData)
+      this.$refs.analysisTable.getTableData(searchData).then(res => {
+        if(!res.data || res.data.length == 0) {
+          iMessage.error('抱歉，无法查询到结果（输入错误或不存在），请确认后重新输入')
+        }
+      })
     },
   }
 }

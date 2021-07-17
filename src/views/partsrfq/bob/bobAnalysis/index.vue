@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 10:50:38
- * @LastEditTime: 2021-07-08 17:05:34
+ * @LastEditTime: 2021-07-16 10:26:12
  * @LastEditors: Please set LastEditors
  * @Description: 费用详情
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails.vue
@@ -14,73 +14,70 @@
           <div class="flex-between-center">
             <span class="title">费用详情</span>
             <div class="wrap">
-              <span v-if="remark" class="margin-left40 remark">{{
+              <span v-if="remark"
+                    class="margin-left40 remark">{{
                 remark
               }}</span>
-              <span v-if="remark" class="margin-left40 remark2"
-                >备注：{{ remark }}</span
-              >
+              <span v-if="remark"
+                    class="margin-left40 remark2">备注：{{ remark }}</span>
             </div>
           </div>
-          <div>
-            <iButton v-show="flag" @click="open">全部展开</iButton>
-            <iButton v-show="flag1" @click="close">全部收回</iButton>
+          <div v-show="checkFLag">
+            <iButton v-show="flag"
+                     @click="open">全部展开</iButton>
+            <iButton v-show="flag1"
+                     @click="close">全部收回</iButton>
             <iButton @click="remarks">备注</iButton>
-            <iButton>还原</iButton>
+            <iButton @click="reduction">还原</iButton>
             <iButton @click="group">数据分组</iButton>
             <iButton @click="down">导出</iButton>
           </div>
+          <div v-show="!checkFLag">
+            <iButton @click="clear">移除</iButton>
+            <iButton @click="finish">完成</iButton>
+            <iButton @click="off">取消</iButton>
+          </div>
         </div>
       </template>
-      <table1 :tableList="tableList" v-if="totalTable"></table1>
-      <groupedTable
-        class="margin-top20"
-        :tableList="groupList"
-        v-if="!totalTable"
-        @groupBy="groupBtn"
-        v-areaSelect
-      ></groupedTable>
-      <iDialog :visible.sync="visible1" title="分组至" width="20%">
+      <table1 :tableList="tableList"
+              v-if="totalTable"></table1>
+      <groupedTable ref="groupedTable"
+                    class="margin-top20"
+                    :tableList="groupList"
+                    v-if="!totalTable"
+                    @groupBy="groupBtn"></groupedTable>
+      <iDialog :visible.sync="visible1"
+               title="分组至"
+               width="20%">
         <el-form>
-          <el-form-item label="选择组">
-            <el-input v-model="value" style="width: 160px" />
-            <!-- <el-cascader
-              v-model="value"
-              :options="ungroupList"
-              label="title"
-              value="prop"
-              @change="handleChange"
-            ></el-cascader> -->
-          </el-form-item>
           <el-form-item label="分组至">
-            <el-select v-model="value1" clearable placeholder="请选择">
-              <el-option
-                v-for="item in options"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-              >
+            <el-select v-model="value1"
+                       clearable
+                       placeholder="请选择"
+                       value-key="matchId">
+              <el-option v-for="(item) in options"
+                         :key="item.matchId"
+                         :label="item.groupName"
+                         :value="item">
               </el-option>
             </el-select>
           </el-form-item>
         </el-form>
-        <span slot="footer" class="dialog-footer">
-          <el-button type="primary" @click="groupToList">确 定</el-button>
+        <span slot="footer"
+              class="dialog-footer">
+          <el-button type="primary"
+                     @click="groupToList">确 定</el-button>
         </span>
       </iDialog>
-      <remarkDialog
-        :visible="visible"
-        @remake="sure"
-        @cancel="cancel"
-      ></remarkDialog>
+      <remarkDialog :visible="visible"
+                    @remake="sure"
+                    @cancel="cancel"></remarkDialog>
     </iCard>
-     <ungroupedTable
-          class="margin-top20"
-          :tableList="ungroupList"
-          v-if="groupby"
-          @groupBy="groupBtn"
-        ></ungroupedTable>
-    
+    <ungroupedTable ref="ungroupedTable"
+                    class="margin-top20"
+                    :tableList="ungroupList"
+                    v-if="groupby"
+                    @groupBy="groupBtn"></ungroupedTable>
   </div>
 </template>
 
@@ -95,11 +92,15 @@ import table6 from "./components/table6.vue";
 import remarkDialog from "./components/remarkDialog.vue";
 import ungroupedTable from "@/views/partsrfq/bob/bobAnalysis/ungroupedTable.vue";
 import groupedTable from "@/views/partsrfq/bob/bobAnalysis/groupedTable.vue";
+import { filterEmptyChildren } from '@/utils'
 import {
   chargeRetrieve,
   getRfqToRemark,
   modifyRfqToRemark,
   down,
+  getGroupInfo,
+  addComponentToGroup,
+  groupTerms
 } from "@/api/partsrfq/bob";
 import {
   tableList,
@@ -120,15 +121,15 @@ export default {
     groupedTable,
     remarkDialog,
   },
-  data() {
+  data () {
     return {
       flag: true,
       flag1: false,
-      tableList,
-      ungroupList,
+      tableList: [],
+      ungroupList: [],
       ungroupByList,
       ungroupByHeader,
-      groupList,
+      groupList: [],
       groupByList,
       expends: [],
       visible: false,
@@ -138,34 +139,30 @@ export default {
       totalTable: true,
       value: "",
       value1: "",
-
-      options: [
-        {
-          id: 1,
-          label: "散件2",
-          value: "2",
-        },
-        {
-          id: 2,
-          label: "散件3",
-          value: "3",
-        },
-        {
-          id: 4,
-          label: "散件4",
-          value: "4",
-        },
-      ],
+      options: [],
+      result: [],
+      activeName: "",
+      checkFLag: true,
+      SchemeId: ""
     };
   },
-  created() {
-    this.rfqCode = this.$route.query.rfqId;
+  created () {
+    if (this.$store.state.rfq.entryStatus === 1) {
+      this.SchemeId = this.$route.query.rfqId
+      this.chargeRetrieve("all");
+    } else {
+      if (this.$route.query.rfqId) {
+        this.SchemeId = this.$route.query.rfqId
+        this.chargeRetrieve("all");
+      } else {
+        this.SchemeId = this.$store.state.rfq.SchemeId;
+      }
+    }
     this.getRfqToRemark();
-    this.chargeRetrieve("all");
   },
-  mounted() {},
+  mounted () { },
   methods: {
-    getRfqToRemark() {
+    getRfqToRemark () {
       getRfqToRemark({
         rfqCode: this.rfqCode,
       }).then((res) => {
@@ -176,48 +173,23 @@ export default {
         }
       });
     },
-    async chargeRetrieve(type) {
-      if (type === "grouped" || type === "ungrouped") {
-        let res = await chargeRetrieve({
-          schemaId: 135,
-          viewType: "ungrouped",
-        });
-        this.ungroupList = res;
-        res.title.forEach((value, index) => {
-          if (value.rawUngroupedChild) {
-            value.rawUngroupedChild.forEach((item, i) => {
-              value.rawUngroupedChild.push({
-                label: item,
-                title: "",
-                index: Math.random(),
-              });
-            });
-            value.rawUngroupedChild.shift();
-          }
-        });
-        console.log(res, 223232323);
-        chargeRetrieve({
-          schemaId: 135,
-          viewType: "grouped",
-        }).then((res) => (this.groupList = res));
-      } else {
-        chargeRetrieve({
-          schemaId: 135,
-          viewType: type,
+    chargeRetrieve (type) {
+      chargeRetrieve({
+        schemaId: this.SchemeId,
+        viewType: type,
+      })
+        .then((res) => {
+          this.tableList = res;
+          filterEmptyChildren(this.tableList.element, 'detailId')
+          console.log(this.tableList, 23232332)
+          this.$nextTick(() => {
+            this.open();
+          });
         })
-          .then((res) => {
-            this.tableList = res;
-            this.$nextTick(() => {
-              this.open();
-            });
-          })
-          .catch((err) => {});
-      }
+        .catch((err) => { });
     },
-
-    open() {
+    open () {
       let els = this.$el.getElementsByClassName("el-table__expand-icon");
-      console.log(els.length, 2222);
       if (this.tableList.element.length != 0 && els.length != 0) {
         this.flag = false;
         this.flag1 = true;
@@ -240,7 +212,7 @@ export default {
         }
       }
     },
-    close() {
+    close () {
       if (this.tableList.element.length != 0) {
         this.flag = true;
         this.flag1 = false;
@@ -256,11 +228,26 @@ export default {
         }
       }
     },
-    cancel(flag) {
+    cancel (flag) {
       this.visible = flag;
     },
-   
-    sure(val, flag) {
+    reduction () {
+      const loading = this.$loading({
+        lock: true,
+        text: 'Loading',
+        spinner: 'el-icon-loading',
+        background: 'rgba(0, 0, 0, 0.7)'
+      });
+      groupTerms({
+        analysisSchemeId: this.SchemeId
+      }).then(res => {
+        loading.close();
+        iMessage.success('还原成功')
+        this.chargeRetrieve("all");
+      })
+
+    },
+    sure (val, flag) {
       this.visible = flag;
       this.remark = val;
       modifyRfqToRemark({
@@ -269,7 +256,7 @@ export default {
       }).then(() => iMessage.success("备注成功"));
     },
     // 递归获取checked属性方法
-    getTreeExpandKeys(obj) {
+    getTreeExpandKeys (obj) {
       // obj是传入的array
       if (obj && obj.length !== 0) {
         obj.forEach((item) => {
@@ -281,30 +268,69 @@ export default {
         });
       }
     },
-    remarks() {
+    remarks () {
       this.visible = true;
     },
-    group() {
+    group () {
       this.totalTable = false;
       this.groupby = true;
-      // this.chargeRetrieve("grouped");
+      this.checkFLag = false
     },
-    groupBtn(e) {
+    groupBtn (e, result, activeName) {
+      if (result.length === 0) {
+        this.$message.error('请选择数据');
+        return
+      }
       this.visible1 = e;
+      this.result = result
+      this.activeName = activeName
+      console.log(result, activeName, 222222222)
+      getGroupInfo({
+        schemaId: 135,
+        code: activeName === 'rawUngrouped' ? '1' : '2'
+      }).then(res => {
+        this.options = res.data
+      })
+
     },
-    groupToList() {
-      this.groupList.dataList[0].children.push(this.groupByList);
-      // this.ungroupList.dataList[0]=this.ungroupByList
-      this.$set(this.ungroupList.dataList, 0, this.ungroupByList);
-      this.$set(this.ungroupList, "headerList", this.ungroupByHeader);
+    groupToList () {
+      if (!this.value1) {
+        this.$message.error('请选择分组');
+        return
+      }
+
+      addComponentToGroup({
+        groupId: this.value1.matchId,
+        groupName: this.value1.groupName,
+        roundDetailIdList: this.result
+      }).then(res => {
+        this.$refs.ungroupedTable.activeName = ""
+        this.$nextTick(() => {
+          this.$refs.ungroupedTable.activeName = this.activeName
+          this.$refs.ungroupedTable.chargeRetrieve(this.activeName)
+        });
+        this.$refs.groupedTable.chargeRetrieve(this.activeName === 'rawUngrouped' ? 'rawGrouped' : 'maGrouped')
+        this.visible1 = false;
+      })
     },
-    handleChange(value) {},
-    down() {
-      // window.open('http://10.160.137.32:8036/aon/web/aon/bobRoundDetail/down?schemaId=5')
-      // window.location.href="/aonApi/aon/web/aon/bobRoundDetail/down?schemaId=5"
+    handleChange (value) { },
+    clear () { },
+    finish () {
+      this.finishGroup()
+    },
+    off () {
+      this.finishGroup()
+    },
+    finishGroup () {
+      this.totalTable = true
+      this.groupby = false
+      this.checkFLag = true
+      this.chargeRetrieve("all");
+    },
+    down () {
       down({
         schemaId: 5,
-      }).then((res) => {});
+      }).then((res) => { });
     },
   },
 };

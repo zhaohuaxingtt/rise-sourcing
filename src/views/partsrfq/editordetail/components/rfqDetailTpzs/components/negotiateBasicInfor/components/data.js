@@ -11,7 +11,7 @@ export const tableTitle = [
   {
     props: 'partNameZh', name: '零件名', key: 'TPZS.LJM', 
   },
-  { props: 'procureFactory', name: '工厂', key: 'TPZS.GC', },
+  { props: 'procureFactoryName', name: '工厂', key: 'TPZS.GC', },
   { props: 'ebrCalculatedValue', name: 'EBR%', key: 'TPZS.EBR', },
   { props: 'cycleOutput', name: '全生命周期产量', key: 'TPZS.QSMZQCL', },
   { props: 'maxOutput', name: '峰值年产量', key: 'TPZS.FZNCL', },
@@ -23,7 +23,7 @@ export const supplierTableTitle = [
   {
     props: 'sapNum', name: 'SAP号', key: 'nominationSupplier.SAPHao', width: 120,
   },
-  { props: 'pupplierProductionPlace', name: '所在地', key: 'TPZS.SZD', },
+  { props: 'supplierProductionPlace', name: '所在地', key: 'TPZS.SZD', },
   { props: 'isSelectMbdl', name: '是否MBDL', key: 'TPZS.SFMBDL', },
   { props: 'quotationStatusCode', name: '报价状态', key: 'TPZS.BJZT', },
   { props: 'mqRate', name: 'MQ打分', key: 'TPZS.MQDF', },

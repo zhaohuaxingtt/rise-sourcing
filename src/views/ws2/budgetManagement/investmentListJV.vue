@@ -13,10 +13,15 @@
         <img class="editIcon" src="../../../assets/images/editCar.png" alt="">
         <div class="infoIcard">
           <div class="search">
-            <label :title="language('LK_BANBENHAO','版本号')">{{ language('LK_BANBENHAO','版本号') }}:</label>
+            <Popover
+                :content="$t('LK_CHUANGJIANSHIJIAN') + ':' + createDate"
+                placement="top-start"
+                trigger="hover">
+              <label slot="reference">{{ $t('LK_BANBENHAO2') }}:</label>
+            </Popover>
             <iSelect
                 v-show="!pageEdit"
-                :placeholder="language('LK_QINGXUANZE','请选择')"
+                :placeholder="$t('LK_QINGXUANZE')"
                 v-model="form['search.version']"
                 filterable
                 @change="changeVersion"
@@ -31,13 +36,19 @@
             <span v-show="pageEdit" class="infoIcardValue">{{ versionName }}</span>
           </div>
           <div>
-            <label :title="language('LK_CHEXINMINGCENG','⻋型名称')">{{ language('LK_CHEXINMINGCENG','⻋型名称') }}:</label>
-            <span>{{ form['search.carTypeName'] }}</span>
+            <label>{{ $t('LK_CHEXINMINGCENG') }}:</label>
+            <Popover
+                class="infoIcardValue"
+                :content="form['search.carTypeName']"
+                placement="top-start"
+                trigger="hover">
+              <span slot="reference">{{ form['search.carTypeName'] }}</span>
+            </Popover>
           </div>
           <div class="search" v-show="(params.sourceStatus == 2) && pageEdit">
-            <label>{{ language('LK_GUANLIANCHEXIN','关联⻋型') }}:</label>
+            <label>{{ $t('LK_GUANLIANCHEXIN') }}:</label>
             <iSelect
-                :placeholder="language('LK_QINGXUANZE','请选择')"
+                :placeholder="$t('LK_QINGXUANZE')"
                 v-model="form['search.relatedCarType']"
                 filterable
                 @change="relationMainCarType"
@@ -52,16 +63,32 @@
             <!--            <span>V-PSK88</span>-->
           </div>
           <div v-show="params.sourceStatus == 1">
-            <label :title="language('LK_CAIGOUGONGCHANG','采购⼯⼚')">{{ language('LK_CAIGOUGONGCHANG','采购⼯⼚') }}:</label>
-            <span>{{ form['search.purchasingFactory'] }}</span>
+            <Popover
+                placement="top-start"
+                trigger="hover">
+              <div class="popoverDiv">
+                <p>{{ $t('生产工厂') }}</p>
+              </div>
+              <label slot="reference">{{ $t('生产工厂') }}:</label>
+            </Popover>
+            <!--            <label :title="$t('LK_CAIGOUGONGCHANG')">{{ $t('LK_CAIGOUGONGCHANG') }}:</label>-->
+            <span class="infoIcardValue">{{ form['search.purchasingFactory'] }}</span>
           </div>
           <div v-show="params.sourceStatus == 1">
-            <label title="SOP">SOP：</label>
-            <span>{{ form['search.sopDate'] }}</span>
+            <label :title="$t('SOP')">SOP：</label>
+            <span class="infoIcardValue">{{ form['search.sopDate'] }}</span>
           </div>
           <div class="search">
-            <label :title="language('LK_PIZHUNTOUZHI','批准投资')">{{ language('LK_PIZHUNTOUZHI','批准投资') }}:</label>
-            <span v-show="!pageEdit">{{ form['search.approvalInvestment'] }}</span>
+            <Popover
+                placement="top-start"
+                trigger="hover">
+              <div class="popoverDiv">
+                <p>{{ $t('LK_PIZHUNTOUZHI') }}</p>
+              </div>
+              <label slot="reference">{{ $t('LK_PIZHUNTOUZHI') }}:</label>
+            </Popover>
+            <!--            <label :title="$t('LK_PIZHUNTOUZHI')">{{ $t('LK_PIZHUNTOUZHI') }}:</label>-->
+            <span v-show="!pageEdit" class="infoIcardValue">{{ form['search.approvalInvestment'] }}</span>
             <iInput v-show="pageEdit" v-model="form['search.approvalInvestment']"></iInput>
           </div>
         </div>
@@ -69,10 +96,10 @@
         <div id="chart2"></div>
         <div id="chart3"></div>
         <div class="legend">
-          <div>{{ language('LK_FEIAEKO','⾮AEKO') }}</div>
+          <div>{{ $t('LK_FEIAEKO') }}</div>
           <div>AEKO</div>
           <div>Contingency</div>
-          <div>{{ language("LK_DANWEI",'价格单位') }}: {{ language("LK_BAIWANYUAN",'百万元') }}</div>
+          <div>{{ $t("LK_DANWEI") }}: {{ $t("LK_BAIWANYUAN") }}</div>
         </div>
       </iCard>
       <iCard v-loading="tableLoading">
@@ -103,15 +130,14 @@
             <iButton v-show="pageEdit" @click="saveRow">{{ $t('LK_BAOCUN') }}</iButton>
             <iButton v-show="pageEdit" @click="saveAsRow">{{ $t('LK_BAOCUNWEIXINBANBEN') }}</iButton>
             <iButton v-show="!pageEdit" @click="pageEdit = true"
-                     :disabled="versionList[0] && form['search.version'] != versionList[0].id">{{ language('LK_BIANJI','编辑') }}
+                     :disabled="versionList[0] && form['search.version'] != versionList[0].id">{{ $t('LK_BIANJI') }}
             </iButton>
-            <iButton v-show="pageEdit" @click="addRow">{{ language('LK_TIANJIAHANG','添加⾏') }}</iButton>
-            <iButton v-show="pageEdit" @click="deleteIRow">{{ language('LK_SHANCHUHANG','删除⾏') }}</iButton>
-            <iButton v-show="pageEdit" @click="referenceModelShow = true">{{ language('LK_CANKAOCHEXIN','参考⻋型') }}</iButton>
-            <iButton v-show="pageEdit" @click="saveRow">{{ language('LK_BAOCUN','保存') }}</iButton>
-            <iButton v-show="pageEdit" @click="saveAsRow">{{ language('LK_BAOCUNWEIXINBANBEN','保存为新版本') }}</iButton>
-            <!--            <iButton @click="saveRow">下载投资清单</iButton>-->
-            <iButton v-show="pageEdit" @click="conversionRatioShow = true">{{ language('LK_ANBILIZHESUAN','按⽐例折算') }}</iButton>
+            <iButton v-show="pageEdit" @click="addRow">{{ $t('LK_TIANJIAHANG') }}</iButton>
+            <iButton v-show="pageEdit" @click="deleteIRow">{{ $t('LK_SHANCHUHANG') }}</iButton>
+            <iButton v-show="pageEdit" @click="referenceModelShow = true">{{ $t('LK_CANKAOCHEXIN') }}</iButton>
+            <iButton @click="downloadList">下载投资清单</iButton>
+            <iButton v-show="pageEdit" @click="conversionRatioShow = true">{{ $t('LK_ANBILIZHESUAN') }}</iButton>
+            <iButton @click="toJV">{{ $t('查看Common预算') }}</iButton>
           </div>
         </div>
         <div>
@@ -247,21 +273,21 @@
               % of Sub-Total
             </div>
             <div>
-              <h4>{{ language('LK_AEKOJINE','AEKO⾦额') }}:</h4>
+              <h4>{{ $t('LK_AEKOJINE') }}:</h4>
               <iInput v-model="form['search.AEKOMoney']" disabled></iInput>
             </div>
             <div>
-              <h4>{{ language('LK_ZONGHEPIANCHA','综合偏差') }}:</h4>
+              <h4>{{ $t('LK_ZONGHEPIANCHA') }}:</h4>
               <iInput v-model="form['search.contingencyPercent']" @input="changePerent"
                       :disabled="isLocked || !pageEdit"></iInput>
               % of Sub-Total
             </div>
             <div>
-              <h4>{{ language('LK_ZHONGHEPIANCHAJINE','综合偏差⾦额') }}:</h4>
+              <h4>{{ $t('LK_ZHONGHEPIANCHAJINE') }}:</h4>
               <iInput v-model="form['search.contingencyAmount']" disabled></iInput>
             </div>
             <div>
-              <h4>{{ language('LK_ZONGYUSUAN','总预算') }}:</h4>
+              <h4>{{ $t('LK_ZONGYUSUAN') }}:</h4>
               <iInput v-model="form['search.totalBudget']" :disabled="isLocked || !pageEdit" @input="changeTotalBudget">
                 <div slot="suffix" @click="isLocked = !isLocked">
                   <icon symbol name="iconzongyusuansuoding" class="icon" v-if="isLocked"/>

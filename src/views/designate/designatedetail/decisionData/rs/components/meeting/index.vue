@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:17:25
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-10 09:56:31
+ * @LastEditTime: 2021-07-16 21:52:38
  * @Description: 上会/备案RS单
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\rs\components\meeting\index.vue
 -->
@@ -10,7 +10,7 @@
 <template>
   <div :class="isPreview && 'isPreview'">
     <iCard :title="'CSC定点推荐 - ' + cardTitle">
-      <div slot="header-control" class="singleSourcing">Single Sourcing</div>
+      <div slot="header-control" class="singleSourcing" v-if="isSingle">Single Sourcing</div>
       <div class="rsTop">
         <div class="rsTop-left">
           <div class="rsTop-left-item" v-for="(item, index) in leftTitle" :key="index">
@@ -42,7 +42,7 @@
           <p v-for="(item,index) in remarkItem" :key="index">{{item.value}}</p>
         </div>
       </div>
-      <div v-if="projectType === 'PT04' || projectType === 'PT19'" style="text-align:right;">汇率：Exchange rate: 1{{basicData.currency}}={{basicData.cfExchangeRate}}RMB</div>
+      <div v-if="projectType === partProjTypes.DBLINGJIAN || projectType === partProjTypes.DBYICHIXINGCAIGOU" style="text-align:right;">汇率：Exchange rate: 1{{basicData.currency}}={{basicData.cfExchangeRate}}RMB</div>
     </iCard>
     <iCard v-if="!isPreview && !showSignatureForm" :title="language('SHANGHUIBEIZHU','上会备注')" class="margin-top20">
       <iButton slot="header-control" @click="handleSaveRemarks" :loading="saveLoading">{{language('BAOCUN','保存')}}</iButton>
@@ -53,18 +53,18 @@
         </div>
       </div>
     </iCard>
-    <iCard v-if="!showSignatureForm" class="checkDate" :class="!isPreview && 'margin-top20'" :title="language('SHENQINGRIQI','申请日期')+'：'+processApplyDate">
+    <iCard v-if="!showSignatureForm" class="checkDate" :class="!isPreview && 'margin-top20'" :title="'Application Date：'+processApplyDate">
       <div class="checkList">
         <div class="checkList-item" v-for="(item, index) in checkList" :key="index">
           <icon v-if="item.approveStatus == '1'" symbol name="iconrs-wancheng"></icon>
           <icon v-else-if="item.approveStatus == '2'" symbol name="iconrs-quxiao"></icon>
           <div v-else class="" >-</div>
           <div class="checkList-item-info">
-            <span>{{language('BUMEN','部门')}}:</span>
+            <span>Dept.:</span>
             <span class="checkList-item-info-depart">{{item.approveDeptNumName}}</span>
           </div>
           <div class="checkList-item-info">
-            <span>{{language('RIQI','日期')}}:</span>
+            <span>Date:</span>
             <span>{{item.approveDate}}</span>
           </div>
         </div>
@@ -85,6 +85,8 @@ import { iCard, iButton, iInput, icon, iMessage } from 'rise'
 import { nomalDetailTitle, nomalDetailTitleBlue, nomalTableTitle, meetingRemark, checkList, gsDetailTitleBlue, gsTableTitle,sparePartTableTitle,accessoryTableTitle,prototypeTitleList,dbTableTitle } from './data'
 import tableList from '@/views/designate/designatedetail/components/tableList'
 import { getList, getRemark, updateRemark,getPrototypeList, getDepartApproval } from '@/api/designate/decisiondata/rs'
+import {partProjTypes} from '@/config'
+import { findFrontPageSeat } from '@/api/designate'
 export default {
   props: {
     isPreview: {type:Boolean, default:false},
@@ -95,6 +97,8 @@ export default {
   components: { iCard, tableList, iButton, iInput, icon },
   data() {
     return {
+      // 零件项目类型
+      partProjTypes,
       remarks: {},
       leftTitle: nomalDetailTitle,
       // rightTitle: nomalDetailTitleBlue,
@@ -108,32 +112,35 @@ export default {
       PrototypeList:[],
       prototypeTitleList:prototypeTitleList,
       processApplyDate: '',
-      projectType: ''
+      projectType: '',
+      isSingle: false
     }
   },
   computed: {
     rightTitle() {
-      if (['PT11','PT04','PT19','PT17','PT18'].includes(this.projectType)) {
+      // GS
+      if ([partProjTypes.GSLINGJIAN,partProjTypes.GSCOMMONSOURCING].includes(this.projectType)) {
         return gsDetailTitleBlue
       }
+      // 其他
       return nomalDetailTitleBlue
     },
     tableTitle() {
-      if (this.projectType === 'PT17') {
+      if (this.projectType === partProjTypes.PEIJIAN) {
         return sparePartTableTitle
-      } else if (this.projectType === 'PT18') {
+      } else if (this.projectType === partProjTypes.FUJIAN) {
         return accessoryTableTitle
-      } else if (this.projectType === 'PT11') { //GS零件
+      } else if (this.projectType === partProjTypes.GSLINGJIAN || this.projectType === partProjTypes.GSCOMMONSOURCING) { //GS零件
         return gsTableTitle
-      } else if (this.projectType === 'PT04' || this.projectType === 'PT19') { //DB零件,DB一次性采购
+      } else if (this.projectType === partProjTypes.DBLINGJIAN || this.projectType === partProjTypes.DBYICHIXINGCAIGOU) { //DB零件,DB一次性采购
         return dbTableTitle
       }
       return nomalTableTitle
     },
     cardTitle() {
-      if (this.projectType === 'PT17') {
+      if (this.projectType === partProjTypes.PEIJIAN) {
         return '配件采购 CSC Nomination Recommendation - Spare Part Purchasing'
-      } else if (this.projectType === 'PT18') {
+      } else if (this.projectType === partProjTypes.FUJIAN) {
         return '附件采购 CSC Nomination Recommendation – Accessory Purchasing'
       }
       return '生产采购 CSC Nomination Recommendation - Production Purchasing'
@@ -142,8 +149,17 @@ export default {
       return this.remarkItem.map(item => item.value).join('\n')
     }
   },
-  created(){this.getPrototypeList()},
+  // created(){this.getPrototypeList()},
   methods: {
+    getIsSingle() {
+      findFrontPageSeat({nominateId:this.nominateId}).then(res => {
+        if (res.result) {
+          this.isSingle = res.data.isSingle
+        } else {
+          this.isSingle = false
+        }
+      })
+    },
     /**
      * @Description: 获取部门审批记录
      * @Author: Luoshuang
@@ -166,7 +182,7 @@ export default {
      * @return {*}
      */
     getPrototypeList(){
-      getPrototypeList(this.$route.query.desinateId).then(res=>{
+      getPrototypeList(this.nominateId).then(res=>{
           this.PrototypeList = res.data.list || res.data.getQuotationSampleVOList || []
       }).catch(err=>{
         console.warn(err)
@@ -223,6 +239,8 @@ export default {
       this.getTopList()
       this.getRemark()
       this.getDepartApproval()
+      this.getPrototypeList()
+      this.getIsSingle()
     },
     /**
      * @Description: 获取表格初始数据
@@ -350,18 +368,22 @@ export default {
         flex-direction: column;
         justify-content: center;
       }
-      &:nth-of-type(even) {
-        .rsTop-right-item-title {
-          width: 65%;
-        }
-      }
       &-value {
+        width: 40%;
         padding: 10px 24px;
         line-height: 29px;
         background-color: #fff;
         display: flex;
         flex-direction: column;
         justify-content: center;
+      }
+      &:nth-of-type(even) {
+        .rsTop-right-item-title {
+          width: 65%;
+        }
+        .rsTop-right-item-value {
+          width: 35%;
+        }
       }
     }
   }

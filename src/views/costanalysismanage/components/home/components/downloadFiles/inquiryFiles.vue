@@ -47,7 +47,7 @@ import tableList from "@/views/partsign/editordetail/components/tableList"
 import { pageMixins } from "@/utils/pageMixins"
 import { FilesTitle } from '../data'
 import { getAllAnnex } from "@/api/partsrfq/editordetail";
-import { downloadFile } from '@/api/file'
+import { downloadFile, downloadUdFile } from '@/api/file'
 
 export default {
     name:'inquiryFiles',
@@ -98,14 +98,16 @@ export default {
             if(!selectItems.length){
             iMessage.warn(this.language('QINGXUANZHEXUYAOXIAZHAIDEFUJIAN', '请选择需要下载的附件'));
             }else{
-                const list = selectItems.map((item)=>item.fileName);
-                this.download(list);
+                // const list = selectItems.map((item)=>item.fileName);
+                // this.download(list);
+                downloadUdFile(selectItems.map(item => item.uploadId))
             }
         },
         // 单文件下载
         downloadLine(row){
-            const {fileName} = row;
-            this.download([fileName]);
+            // const {fileName} = row;
+            // this.download([fileName]);
+            downloadUdFile(row.uploadId)
         },
         // 获取列表
         async getList(){

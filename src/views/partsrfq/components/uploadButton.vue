@@ -20,7 +20,7 @@
 </template>
 <script>
 import {iButton} from '@/components'
-import {uploadFile} from "@/api/file/upload";
+import {uploadFile, uploadUdFile} from "@/api/file/upload";
 
 export default {
   components: {
@@ -40,10 +40,15 @@ export default {
     handleAvatarSuccess() {
     },
     async myUpload(content) {
-      const formData = new FormData()
-      formData.append('multipartFile', content.file)
-      formData.append('applicationName', 'rise')
-      const res = await uploadFile(formData)
+      // const formData = new FormData()
+      // formData.append('multipartFile', content.file)
+      // formData.append('applicationName', 'rise')
+      // const res = await uploadFile(formData)
+      // this.$emit('uploadedCallback', res.data[0], content.file.size)
+      const res = await uploadUdFile({
+        multifile: content.file
+      })
+      
       this.$emit('uploadedCallback', res.data[0], content.file.size)
     },
   }

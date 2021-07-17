@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-26 19:14:39
- * @LastEditTime: 2021-07-12 14:49:04
+ * @LastEditTime: 2021-07-15 11:33:04
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringTracking\components\tableList.vue
@@ -9,44 +9,37 @@
 
 <template>
   <div>
-    <el-table class="table" tooltip-effect="light"  :data="tableData" v-loading="tableLoading" :empty-text="language('LK_ZANWUSHUJU','暂无数据')">
+    <el-table class="table" tooltip-effect="light"  :data="tableData" v-loading="tableLoading" :empty-text="$t('LK_ZANWUSHUJU')">
       <template v-for="(item,index) in tableTile">
         <!--------------------------------------------------------->
         <!------------------------ep模块---------------------------->
         <!--------------------------------------------------------->
-        <el-table-column v-if='item.props == "ep"' :key="index" align="center" :label="item.key ? language(item.key,item.name) : item.name" :prop="item.props" :show-overflow-tooltip="item.tooltip" :width="item.width">
+        <!-- <el-table-column v-if='item.props == "ep"' :key="index" align="center" :label="item.key ? $t(item.key) : item.name" :prop="item.props" :show-overflow-tooltip="item.tooltip">
           <template slot="header" slot-scope="scope">
               <div class="mineTile">{{scope.column.label}} <span class="line" :style='`height:${height}px;`'></span></div> 
           </template>
-          <template slot-scope="scope">
+          <template slot-scope="scope"> -->
           <!--------------------------------------------------------->
           <!------------------------ep模块如果出现警告------------------>
           <!--------------------------------------------------------->
-            <span>
-              <!-- {{scope.row[item.props]?scope.row[item.props].rate:""}} <span @click="optionLog" class="cursor"><icon v-if='scope.row[item.props] == 1' name='iconzhongyaoxinxitishi' symbol></icon></span> -->
-              <span>{{scope.row[item.props]}}</span>
-            </span>
-          </template>
-        </el-table-column>
-        <el-table-column v-if='item.props == "mq" || item.props == "pl"' :key="index" :label="item.key ? language(item.key,item.name) : item.name" :prop="item.props" :show-overflow-tooltip="item.tooltip" :width="item.width" align="center">
-          <template slot-scope="scope">
-            <!-- <span>{{scope.row[item.props]?scope.row[item.props].rate:""}}</span> -->
-            <span>{{scope.row[item.props]}}</span>
-          </template>
-        </el-table-column>
-        <el-table-column v-if="item.props == 'supplierName'" :key="index" :label="item.key ? language(item.key,item.name) : item.name" :prop="item.props" :show-overflow-tooltip="item.tooltip" :width="item.width" align="center">
+              <!-- <span>{{scope.row[item.props]}}</span> -->
+            <!-- </span> -->
+          <!-- </template>
+        </el-table-column> -->
+
+        <el-table-column v-if="item.props == 'supplierName'" :key="index" :label="item.key ? $t(item.key) : item.name" :prop="item.props" :show-overflow-tooltip="item.tooltip" :width="200" align="center">
           <template slot-scope="scope">
             {{scope.row[item.props]?scope.row[item.props]:"-"}}
           </template>
         </el-table-column>
-        <el-table-column v-if="(item.props+'').indexOf('round') > -1" :key="index" align="center" :label="item.key ? language(item.key,item.name) : item.name" :prop="item.props" :show-overflow-tooltip="item.tooltip" :width="item.width">
+        <el-table-column v-else-if="(item.props+'').indexOf('round') > -1" :key="index" align="center" :label="item.key ? $t(item.key) : item.name" :prop="item.props" :show-overflow-tooltip="item.tooltip" :width="160">
           <template slot="header">
             <el-tooltip effect="light">
               <template slot="content">
                <p>{{`询价开始时间: ${item.roundHeadDetailVO.roundsStartTime || "-"}`}}</p>
                <p>{{`询价结束时间: ${item.roundHeadDetailVO.roundsEndTime || "-"}`}}</p>
               </template>
-              <span>{{item.key ? language(item.key,item.name) : item.name}}</span>
+              <span>{{item.key ? $t(item.key) : item.name}}</span>
             </el-tooltip>
           </template> 
           <template slot-scope="scope">
@@ -66,6 +59,13 @@
           <!------------------------内容是横岗百分比------------------->
           <!--------------------------------------------------------->
           <span v-else class="cursor" @click="openUrl('1',scope.row,item.props,scope.row[item.props].schedule)">{{scope.row[item.props].schedule}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column v-else :key="index" :label="item.key ? $t(item.key) : item.name" :prop="item.props" :show-overflow-tooltip="item.tooltip" align="center">
+          <template slot-scope="scope">
+            <template v-if="scope.row && scope.row[item.props]">
+               <span>{{scope.row[item.props].rate}} <span @click="optionLog" class="cursor"><icon v-if='scope.row[item.props].rate == "C"' name='iconzhongyaoxinxitishi' symbol></icon></span></span>
+            </template>
           </template>
         </el-table-column>
       </template>

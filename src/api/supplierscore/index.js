@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-06-28 11:18:30
- * @LastEditTime: 2021-06-30 15:49:55
+ * @LastEditTime: 2021-07-13 17:04:02
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\api\supplierscore\index.js
@@ -18,9 +18,17 @@ export function findDropDownBox(params) {
 }
 
 // 获取评分人列表
-export function getRater() {
+// export function getRater() {
+//   return requst({
+//     url: `/rfq-bdl-ratings/getRater`,
+//     method: "GET"
+//   })
+// }
+
+// 获取评分人列表
+export function findRaterByCurrentUser() {
   return requst({
-    url: `/rfq-bdl-ratings/getRater`,
+    url: `/rfq-bdl-ratings/findRaterByCurrentUser`,
     method: "GET"
   })
 }
@@ -153,5 +161,13 @@ export function updateRfqPartRatingMemo(params) {
     url: `/rfq-part-ratings/memo`,
     method: "POST",
     data: params
+  })
+}
+
+// 获取当前登陆人的部门类型
+export function findRateTagForCurrentUser() {
+  return requst({
+    url: `/rfq-bdl-ratings/findRateTagForCurrentUser`,
+    method: "GET",
   })
 }

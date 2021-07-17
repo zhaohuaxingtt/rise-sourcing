@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-26 11:16:51
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-12 11:09:19
+ * @LastEditTime: 2021-07-16 23:39:29
  * @Description: 配件综合管理页面
  * @FilePath: \front-web\src\views\accessoryPart\integratedManage\index.vue
 -->
@@ -85,11 +85,11 @@
           <!------------------------------------------------------------------------>
           <!--                    退回弹窗                                        --->
           <!------------------------------------------------------------------------>
-          <backDialog :dialogVisible="backDialogVisible" @changeVisible="changebackDialogVisible" @handleBack="handleBack" />
+          <backDialog ref="back" :dialogVisible="backDialogVisible" @changeVisible="changebackDialogVisible" @handleBack="handleBack" />
           <!------------------------------------------------------------------------>
           <!--                    加入已有RFQ弹窗                                  --->
           <!------------------------------------------------------------------------>
-          <joinRfqDialog ref="joinRfq" :dialogVisible="joinRfqDialogVisible" @changeVisible="changeJoinRfqDialogVisible" @joinRfq="joinRfq" partType="PT17" />
+          <joinRfqDialog ref="joinRfq" :dialogVisible="joinRfqDialogVisible" @changeVisible="changeJoinRfqDialogVisible" @joinRfq="joinRfq" :partType="partProjTypes.PEIJIAN" />
         </div>
       </el-tab-pane>
       <!-- <el-tab-pane label="进度监控" name="progress"></el-tab-pane> -->
@@ -116,6 +116,7 @@ import {
   dictkey,
 } from "@/api/partsprocure/editordetail";
 import { clickMessage } from "@/views/partsign/home/components/data"
+import {partProjTypes} from '@/config'
 
 // eslint-disable-next-line no-undef
 const { mapState, mapActions } = Vuex.createNamespacedHelpers("sourcing")
@@ -125,6 +126,8 @@ export default {
   components: { iPage, iSearch, iSelect, iInput, iCard, iButton, iPagination, tableList, assignInquiryDepartmentDialog, assignInquiryBuyerDialog,backEpsDialog, backDialog, iNavMvp, joinRfqDialog },
   data() {
     return {
+      // 零件项目类型
+      partProjTypes,
       tableData: [],
       tableTitle: tableTitle,
       tableLoading: false,
@@ -220,7 +223,7 @@ export default {
               stuffName: item.stuffName, // 工艺组name
               purchasePrjectId: item.purchasingProjectId,
               partNameZh: item.partNameCh,
-              partPrejectType: 'PT17',
+              partPrejectType: partProjTypes.PEIJIAN,
             }
           }),
           userId: this.$store.state.permission.userInfo.id
@@ -260,7 +263,7 @@ export default {
       }
       const selectRfq = uniq(this.selectParts.map(item => item.rfqNum))
       if (selectRfq.length > 1 || selectRfq[0]) {
-        iMessage.warn(this.language('QINGXUANZEWEIFENPEIRFQDEPEIJIAN','请选择未分配RFQ的附件'))
+        iMessage.warn(this.language('LK_QINGXUANZEWEIFENPEIRFQDEPEIJIAN','请选择未分配RFQ的配件'))
         return
       }
       this.changeJoinRfqDialogVisible(true)
@@ -343,6 +346,7 @@ export default {
         nomiType: '',
         idState: ''
       }
+      this.sure()
     },
     sure() {
       this.page.currPage = 1
@@ -394,6 +398,8 @@ export default {
         } else {
           iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
         }
+      }).finally(() => {
+        this.$refs.back.changeSaveLoading && this.$refs.back.changeSaveLoading(false)
       })
     },
     /**
@@ -474,11 +480,13 @@ export default {
      * @param {*} respLINIE  询价采购员
      * @return {*}
      */    
-    sendAccessory({respDept, respLINIE}) {
+    sendAccessory({respDept, respLINIE, respDeptName, respLINIEName}) {
       const params = {
         accessoryIdList: this.selectParts.map(item => item.id),
         csfDept: respDept,
-        csfUserId: respLINIE
+        csfDeptName: respDeptName,
+        csfuserId: respLINIE,
+        csfuserName: respLINIEName
       }
       sendAccessoryInfo(params).then(res => {
         if (res.result) {
@@ -503,8 +511,8 @@ export default {
      * @param {*} respLINIE 询价科室ID
      * @return {*}
      */    
-    sendAccessoryLINIE(respLINIE) {
-      this.sendAccessory({respLINIE})
+    sendAccessoryLINIE(respLINIE, respLINIEName) {
+      this.sendAccessory({respLINIE, respLINIEName})
     },
     /**
      * @Description: 分配询价采购员
@@ -512,8 +520,8 @@ export default {
      * @param {*} respDept 询价采购员ID
      * @return {*}
      */    
-    sendAccessoryDept(respDept) {
-      this.sendAccessory({respDept})
+    sendAccessoryDept(respDept, respDeptName) {
+      this.sendAccessory({respDept, respDeptName})
     },
     /**
      * @Description: 下载报表
@@ -621,18 +629,32 @@ export default {
         iMessage.warn(this.language('QINGXUANZEPEIJIAN','请选择配件'))
         return
       }
-      const selectLINIE = uniq(this.selectParts.map(item => item.respLinie))
-      const selectLINIEDept = uniq(this.selectParts.map(item => item.respDept))
+      if (this.selectParts.some(item => item.rfqNum)) {
+        iMessage.warn(this.language('LK_QINGXUANZEWEIFENPEIRFQDEPEIJIAN','请选择未分配RFQ的配件'))
+        return
+      }
+      const selectLINIE = uniq(this.selectParts.map(item => item.respLinie)).filter(item => !!item)
+      const selectLINIEName = uniq(this.selectParts.map(item => item.respLinieName)).filter(item => !!item)
+      const selectLINIEDept = uniq(this.selectParts.map(item => item.respDept)).filter(item => !!item)
+      const selectLINIEDeptName = uniq(this.selectParts.map(item => item.respDeptName)).filter(item => !!item)
       const selectStuffId = uniq(this.selectParts.map(item => item.stuffId))
       if (selectStuffId.length > 1) {
         iMessage.warn(this.language('QINGXUANZEXIANGTONGGONGYIZUDEPEIJIAN','请选择相同工艺组的配件'))
         return
       } if (!selectStuffId[0]) {
-        iMessage.warn(this.language('QINGXUANZEYIFENPEIGONGYIZUDEPEIJIAN','请选择已分配工艺组的配件'))
+        iMessage.warn(this.language('GAIGONGYINGSHANGBUZAIGONGYIZUBDLNEI','该供应商不在工艺组BDL内，请与EPS确认'))
         return
       }
       this.selectLinieDept = selectLINIEDept[0]
-      const router =  this.$router.resolve({path: '/sourcing/createrfq', query: { type: '1', ids: this.selectParts.map(item => item.spnrNum).join(','),linie:selectLINIE[0], linieDept:selectLINIEDept[0] }})
+      const query = {
+        type: '1',
+        ids: this.selectParts.map(item => item.spnrNum).join(','),
+        linie: selectLINIE.length === 1 ? selectLINIE[0] : null,
+        linieName: selectLINIE.length === 1 ? selectLINIEName[0] : null,
+        linieDept: selectLINIE.length === 1 ? selectLINIEDept[0] : null,
+        linieDeptName: selectLINIE.length === 1 ? selectLINIEDeptName[0] : null
+      }
+      const router =  this.$router.resolve({path: '/sourcing/createrfq', query})
       window.open(router.href,'_blank')
     },
     // 通过待办数跳转

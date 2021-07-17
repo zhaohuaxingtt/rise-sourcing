@@ -49,7 +49,11 @@ export default {
       this.$refs.partsTable.getTableList(data)
     },
     handleAnalysis() {
-      this.$router.push({ path: '/sourcing/partsrfq/assistant', query: { id: this.$store.state.rfq.rfqId, round: this.$route.query.round, pageType: 'Volume Pricing', activityTabIndex: 'two' } })
+      if (this.$store.state.rfq.entryStatus) {
+        this.$router.push({ path: '/sourcing/partsrfq/assistant', query: { id: this.$store.state.rfq.rfqId, round: this.$route.query.round, pageType: 'Volume Pricing', activityTabIndex: 'two' } })
+      } else {
+        this.$router.push({ path: '/sourcing/partsrfq/externalNegotiationAssistant', query: { pageType: 'Volume Pricing' } })
+      }
     }
   },
   // 生命周期 - 创建完成（可以访问当前this实例）

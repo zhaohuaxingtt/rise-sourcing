@@ -2,7 +2,7 @@
   <div>
     <div class="chartBox">
       <div class="supplyingTime">
-        <div>{{ dataInfo.supplyBeginTime }}</div>
+        <div>{{ dataInfo.supplyBeginTime ? moment(dataInfo.supplyBeginTime).format("YYYY-MM") : '' }}</div>
         <!--        供货起始时间-->
         <div>{{ $t('TPZS.GHQSSJ') }}</div>
       </div>
@@ -19,7 +19,7 @@
         <icon symbol name="iconVP-jihuazongchanliang" class="iconStyle margin-top6"/>
       </div>
       <div class="supplyingEndTime">
-        <div>{{ dataInfo.supplyEndTime }}</div>
+        <div>{{ dataInfo.supplyEndTime ? moment(dataInfo.supplyEndTime).format("YYYY-MM") : '' }}</div>
         <!--        供货结束时间-->
         <div>{{ $t('TPZS.GHJSSJ') }}</div>
       </div>
@@ -118,7 +118,8 @@
         <div class="itemBox">
           <!--          预计总产量-->
           <iLabel :label="$t('TPZS.YJZCL')" slot="label" class="labelWidth"></iLabel>
-          <iInput class="valueWidth" v-model="dataInfo.estimatedActualTotalPro"></iInput>
+          <iInput class="valueWidth" v-model="dataInfo.estimatedActualTotalPro" v-if="!disabledEstimatedActualTotalPro"></iInput>
+          <iText class="valueWidth" v-else>{{ dataInfo.estimatedActualTotalPro }}</iText>
         </div>
         <div class="itemBox">
           <div class="warpBox">
@@ -142,6 +143,7 @@
 
 <script>
 import {icon, iInput, iLabel, iText} from 'rise';
+import moment from 'moment'
 import VueKatex from 'vue-katex';
 import 'katex/dist/katex.min.css';
 
@@ -159,6 +161,10 @@ export default {
         return {};
       },
     },
+    disabledEstimatedActualTotalPro: {
+      type: Boolean,
+      default: false
+    }
   },
   computed: {
     dropPotentialTips() {
@@ -176,6 +182,9 @@ export default {
       =${this.additionalPriceReduction.totalPriceReduction}\\%\\;-（${this.additionalPriceReduction.priceReduction}\\%）\\\\\\\\
       =${this.additionalPriceReduction.result}\\%\\\\\\end{array}`;
     },
+  },
+  mounted() {
+    this.getMathematicalFormulaData()
   },
   data() {
     return {
@@ -199,6 +208,9 @@ export default {
     };
   },
   methods: {
+    moment(date){
+      return moment(date)
+    },
     getMathematicalFormulaData() {
       this.achievementRate = this.dataInfo.achievementRate ? this.dataInfo.achievementRate : '';
       this.massProductionTimeRate = this.dataInfo.massProductionRatio ? this.dataInfo.massProductionRatio : '';
@@ -211,7 +223,7 @@ export default {
             : '',
         fixedCost: this.dataInfo.costProportion ? this.dataInfo.costProportion : '',
         result: this.dataInfo.reductionPotential ? this.dataInfo.reductionPotential : '',
-        costReductionUnitPrice: this.dataInfo.costReductionPrice ? this.dataInfo.costReductionPrice : '',
+        costReductionUnitPrice: this.dataInfo.costReductionPrice ? this.dataInfo.costReductionPrice : 0,
       };
       this.additionalPriceReduction = {
         totalPriceReduction: this.dataInfo.totalPriceReduction ? this.dataInfo.totalPriceReduction : '',
@@ -257,13 +269,15 @@ export default {
   }
 
   .iconStyle {
+    width: 20px;
+    height: 20px;
     font-size: 20px;
   }
 
   .massProductionTime {
     text-align: center;
     position: absolute;
-    bottom: -66px;
+    bottom: -4.15rem;
     height: 80px;
     .iconColor {
       color: #ED7D31
@@ -273,7 +287,7 @@ export default {
   .achievementRate {
     text-align: center;
     position: absolute;
-    top: -57px;
+    top: -3.45rem;
     height: 80px;
 
     .iconColor {

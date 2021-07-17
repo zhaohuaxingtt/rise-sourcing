@@ -1,7 +1,7 @@
 <!--
  * @Author: Haojiang
  * @Date: 2021-06-28 09:29:08
- * @LastEditTime: 2021-07-05 23:06:37
+ * @LastEditTime: 2021-07-15 16:54:13
  * @LastEditors: Please set LastEditors
  * @Description: m签字单搜索
  * @FilePath: /front-web/src/views/designate/home/signSheet/components/search/index.vue
@@ -135,7 +135,10 @@ export default {
     iDatePicker
   },
   mounted() {
-    console.log(this)
+    this.form = {}
+  },
+  beforeDestroy() {
+    this.form = {}
   },
   methods: {
     sure() {

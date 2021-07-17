@@ -10,6 +10,7 @@
           <h1 class="flex-between-center margin-bottom20 font18">
               <span>Part List</span>
               <div v-if="isPreview!='1'">
+                  <iButton @click="goToRfq">{{language('LK_PARTLIST_TIAOZHUANZHILINGJIANQINGDANTIAOJIAN','跳转至零件清单添加')}}</iButton>
                   <iButton :loading="saveLoading" @click="save">{{language('LK_BAOCUN','保存')}}</iButton>
               </div>
           </h1>
@@ -154,6 +155,20 @@ export default {
              this.saveLoading = false;
          })
       },
+
+      // 跳转至零件清单添加
+      goToRfq(){
+         const { query } = this.$route;
+         console.log(query);
+         const router =  this.$router.resolve({
+            path: '/designate/rfqdetail',
+            query:{
+               ...query,
+               route:'force'
+            }
+         })
+         window.open(router.href,'_blank');
+      }
     },
 }
 </script>

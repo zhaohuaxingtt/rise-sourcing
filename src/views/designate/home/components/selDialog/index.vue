@@ -15,7 +15,7 @@
           />
         </span>
         <span v-if="selStatus">
-          <iButton @click="selConfirm">{{ language('LK_QUEREN','确认') }}</iButton>
+          <iButton v-if="selStatus === 'UNCONFIRMED'" @click="selConfirm">{{ language('LK_QUEREN','确认') }}</iButton>
           <iButton @click="downloadFile">{{ language('LK_XIAZAI','下载') }}</iButton>
         </span>
         <!-- <iButton>{{ language('strategicdoc.ShangChuanWenJian') }}</iButton> -->
@@ -72,8 +72,8 @@ export default {
       default: false
     },
     selStatus: {
-      type: Boolean,
-      default: false
+      type: String,
+      default: ''
     },
     nomiAppId: {
       type: String,

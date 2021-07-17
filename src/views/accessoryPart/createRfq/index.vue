@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-26 13:54:01
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-10 16:05:34
+ * @LastEditTime: 2021-07-17 01:56:17
  * @Description: 创建RFQ界面
        配件：选择的配件需要是分配了询价采购员的且是同一个询价采购员, 创建时能选择LINIE
        附件：选择的附件需要时分配了LINIE且为同一个LINIE, 创建时不能再选择LINIE
@@ -21,12 +21,20 @@
         <iFormItem v-for="(item, index) in basicInfo" :key="index" :label="language(item.key,item.label)" :class="item.row ? 'row'+item.row : ''">
           <iText v-if="!item.editable">{{detailData[item.value]}}</iText>
           <iInput v-else-if="item.type === 'input'" v-model="detailData[item.value]"></iInput>
-          <iSelect v-else-if="item.type === 'select'" v-model="detailData[item.value]" :disabled="linieAndDeptDisable(item.value)" @change="val => handleDeptChange(item.value, val)">
+          <iSelect v-else-if="item.type === 'select' && item.value === 'linie'" v-model="linie" :disabled="linieAndDeptDisable(item.value)" @change="val => handleDeptChange(item.value, val)">
             <el-option
               :value="item.value"
               :label="item.label"
-              v-for="(item, index) in fromGroup[item.selectOption]"
-              :key="index"
+              v-for="(item) in fromGroup[item.selectOption]"
+              :key="item.value"
+            ></el-option>
+          </iSelect>
+          <iSelect v-else-if="item.type === 'select' && item.value === 'linieDept'" v-model="linieDept" :disabled="linieAndDeptDisable(item.value)" @change="val => handleDeptChange(item.value, val)">
+            <el-option
+              :value="item.value"
+              :label="item.label"
+              v-for="(item) in fromGroup[item.selectOption]"
+              :key="item.value"
             ></el-option>
           </iSelect>
         </iFormItem>
@@ -55,7 +63,7 @@
     <!------------------------------------------------------------------------>
     <!--                  添加配件弹窗                                          --->
     <!------------------------------------------------------------------------>
-    <addAccessoryPartDialog :dialogVisible="accDialogVisible" @changeVisible="changeAccDialogVisible" @selectPart="selectPart" />
+    <addAccessoryPartDialog :dialogVisible="accDialogVisible" @changeVisible="changeAccDialogVisible" @selectPart="selectPart" :stuffId="stuffId" />
     <!------------------------------------------------------------------------>
     <!--                  批量更新采购工厂弹窗                                          --->
     <!------------------------------------------------------------------------>
@@ -86,6 +94,8 @@ import { changeProcure } from "@/api/partsprocure/home";
 import {
   dictkey,
 } from "@/api/partsprocure/editordetail";
+import { uniq } from 'lodash'
+import {partProjTypes} from '@/config'
 export default {
   mixins: [pageMixins],
   components: { iPage, topComponents, iCard, iFormGroup, iFormItem, iText, iButton, iInput, iSelect, iPagination, tableList, addAccessoryPartDialog, updateFactoryDialog, addFileDialog, capacityPlanningDialog },
@@ -94,6 +104,8 @@ export default {
   },
   data() {
     return {
+      // 零件项目类型
+      partProjTypes,
       basicInfo,
       detailData: {},
       // tableTitle: tableTitle,
@@ -110,7 +122,8 @@ export default {
       fromGroup: {},
       linie: '',
       linieDept: '',
-      saveLoading: false
+      saveLoading: false,
+      stuffId: ''
     }
   },
   computed: {
@@ -129,9 +142,9 @@ export default {
     }
     if (this.$route.query.linie && this.$route.query.linieDept) {
       this.detailData.linie = this.$route.query.linieName
-      this.linie = this.$route.query.linie
+      this.linie = this.$route.query.linieName
       this.detailData.linieDept = this.$route.query.linieDeptName
-      this.linieDept = this.$route.query.linieDept
+      this.linieDept = this.$route.query.linieDeptName
     }
   },
   methods: {
@@ -143,8 +156,16 @@ export default {
       // const selectIds = this.selectItems.map(item => item)
       this.tableData = this.tableData.filter(item => !this.selectItems.includes(item))
       this.ids = this.tableData.map(item => item.spnrNum).join(',')
+      this.stuffId = this.tableData[0]?.stuffId
     },
     handleDeptChange(type, val) {
+      // console.log(type, val)
+      // this.detailData[type] = val
+      // console.log(this.detailData)
+      // this.$nextTick(() => {
+      //   this.detailData[type] = val
+      // })
+      this.detailData[type] = val
       if (type === 'linieDept') {
         this.getUserOptions()
       }
@@ -171,6 +192,7 @@ export default {
      * @return {*}
      */    
     getUserOptions() {
+      this.detailData.linie = ''
       getUserList({deptId:this.detailData.linieDept,tag:'4'}).then(res => {
         if (res?.result) {
           this.fromGroup = {...this.fromGroup, LINIE: res.data?.map(item => {return {value:item.id, label:item.nameZh}})}
@@ -230,6 +252,26 @@ export default {
         this.$refs.updateFactory.changeLoading(false)
       });
     },
+    updateRfq() {
+      this.basicLoading = true
+      const params = {
+        updateRfqInfoPackage: {
+          rfqId: this.detailData.rfqId,
+          rfqName: this.detailData.rfqName,
+          rfqDesc: this.detailData.rfqDesc,
+          userId: this.$store.state.permission.userInfo.id
+        }
+      }
+      updateRfq(params).then(res => {
+        if (res.result) {
+          iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+        } else {
+          iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+        }
+      }).finally(() => {
+        this.basicLoading = false
+      })
+    },
     /**
      * @Description: 生成RFQ
      * @Author: Luoshuang
@@ -237,25 +279,30 @@ export default {
      * @return {*}
      */    
     handleSaveRfq() {
-      this.basicLoading = true
-      const params = {
-        insertRfqPackage:{
-          operationType: '2',
-          rfqName: this.detailData.rfqName,
-          rfqDesc: this.detailData.rfqDesc,
-          userId: this.$store.state.permission.userInfo.id
+      if(this.detailData.rfqId) {
+        // 如果rfq编号已存在则变为更新rfq
+        this.updateRfq()
+      } else {
+        this.basicLoading = true
+        const params = {
+          insertRfqPackage:{
+            operationType: '2',
+            rfqName: this.detailData.rfqName,
+            rfqDesc: this.detailData.rfqDesc,
+            userId: this.$store.state.permission.userInfo.id
+          }
         }
+        insertRfq(params).then(res => {
+          if (res?.result) {
+            iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+            this.detailData.rfqId = res.data.rfqId
+          } else {
+            iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+          }
+        }).finally(() => {
+          this.basicLoading = false
+        })
       }
-      insertRfq(params).then(res => {
-        if (res?.result) {
-          iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
-          this.detailData.rfqId = res.data.rfqId
-        } else {
-          iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
-        }
-      }).finally(() => {
-        this.basicLoading = false
-      })
     },
     /**
      * @Description: 配件保存
@@ -270,9 +317,10 @@ export default {
       }
       this.saveLoading = true
       const params = {
-        linieDept: this.detailData.linieDept,
-        linieId: this.detailData.linie,
-        linieName: this.fromGroup.LINIE.find(item => item.value === this.detailData.linie)?.label || this.tableData[0].linieName,
+        linieDeptName: this.detailData.linieDept === this.$route.query.linieDeptName ? this.$route.query.linieDeptName : this.fromGroup.LINIE_DEPT.find(item => item.value === this.detailData.linieDept)?.label || this.tableData[0].linieDeptName,
+        linieDept: this.detailData.linieDept === this.$route.query.linieDeptName ? this.$route.query.linieDept : this.detailData.linieDept,
+        linieId: this.detailData.linie === this.$route.query.linieName ? this.$route.query.linie : this.detailData.linie,
+        linieName: this.detailData.linie === this.$route.query.linieName ? this.$route.query.linieName : this.fromGroup.LINIE.find(item => item.value === this.detailData.linie)?.label || this.tableData[0].linieName,
         rfqId: this.detailData.rfqId,
         spNums: this.tableData.map(item => item.spnrNum),
         stuffId: this.tableData[0].stuffId,
@@ -280,24 +328,10 @@ export default {
       }
       const res = await autoInquiry(params)
       if (res?.result) {
-        const updateRfqParams = {
-          updateRfqStatusPackage: {
-            tmRfqIdList: [this.detailData.rfqId],
-            updateType: '06',
-            userId: this.$store.state.permission.userInfo.id
-          }
-        }
-        updateRfq(updateRfqParams).then(res => {
-          if(res?.result) {
-            iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
-            const router =  this.$router.resolve({path: `/sourcing/partsrfq/editordetail?id=${this.detailData.rfqId}`})
-            window.open(router.href,'_blank')
-          } else {
-            iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
-          }
-        }).finally(() => {
-          this.saveLoading = false
-        })
+        this.saveLoading = false
+        iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+        const router =  this.$router.resolve({path: `/sourcing/partsrfq/editordetail?id=${this.detailData.rfqId}`})
+        window.open(router.href,'_blank')
       } else {
         iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
         this.saveLoading = false
@@ -326,7 +360,7 @@ export default {
               stuffName: item.stuffName, // 工艺组name，还没有
               purchasePrjectId: item.purchasingProjectId,
               partNameZh: item.partNameZh,
-              partPrejectType: 'PT18',
+              partPrejectType: partProjTypes.FUJIAN,
             }
           }),
           userId: this.$store.state.permission.userInfo.id
@@ -350,6 +384,10 @@ export default {
      * @return {*}
      */    
     handleSave() {
+      if (!this.detailData.rfqId) {
+        iMessage.warn(this.language('QINGXIANBAOCUNRFQXINXI','请先保存rfq的信息'))
+        return
+      }
       if (this.$route.query.type === '1') {
         this.handleAccessorySave()
       } else {
@@ -363,7 +401,7 @@ export default {
      * @return {*}
      */    
     selectPart(selectParts) {
-      this.ids = [...this.ids.split(','), ...selectParts].join(',')
+      this.ids = uniq([...this.ids.split(','), ...selectParts]).join(',')
       this.changeAccDialogVisible(false)
       this.changefileDialogVisible(false)
       this.getList()
@@ -383,6 +421,8 @@ export default {
       getPartBySP(params).then(res => {
         if (res?.result) {
           this.tableData = res.data
+          this.detailData.rfqName = res.data[0] ? res.data[0].partNum + (res.data[0].partNameZh && ('-'+res.data[0].partNameZh)) + (res.data[0].partNameDe && ('-'+res.data[0].partNameDe)) : ''
+          this.stuffId = res.data[0].stuffId
         } else {
           this.tableData = []
           iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)

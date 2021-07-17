@@ -1,8 +1,8 @@
 /*
  * @Author: ldh
  * @Date: 2021-04-26 17:27:20
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-01 17:59:48
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-07-16 16:36:54
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\api\rfqManageMent\quotationdetail\index.js
  */
@@ -375,7 +375,7 @@ export function cancelQuoteBatchPrice(params) {
 // DB零件-报价分析列表
 export function getCostSummaryDB(params) {
   return requst({
-    url: '/cost/getCostSummary',
+    url: `/cost/getCostSummary?supplierId=${supplierId()}`,
     method: 'POST',
     data: params
   })
@@ -384,8 +384,16 @@ export function getCostSummaryDB(params) {
 // DB零件-报价分析列表修改
 export function updateCostSummaryDB(params) {
   return requst({
-    url: '/cost/updateCostSummary',
+    url: `/cost/updateCostSummary?supplierId=${supplierId()}`,
     method: 'POST',
     data: params
+  })
+}
+
+// 获取供应商token
+export function getSupplierToken(params) {
+  return requst({
+    url:`/supplier/${ params.supplierId }`,
+    method: 'GET',
   })
 }
