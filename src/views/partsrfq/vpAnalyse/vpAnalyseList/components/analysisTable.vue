@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-06-16 20:44:29
- * @LastEditTime: 2021-07-16 18:55:16
+ * @LastEditTime: 2021-07-17 15:26:58
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\analysisTool\components\analysisTable.vue
@@ -88,7 +88,6 @@
               <el-option :value="item.value" :label="item.label" v-for="(item, index) in defaultData" :key="index"></el-option>
             </iSelect>
           </div>
-          
         </template>
       </el-table-column>
       <el-table-column
