@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-26 13:54:01
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-07-14 14:29:47
+ * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-07-17 01:56:17
  * @Description: 创建RFQ界面
        配件：选择的配件需要是分配了询价采购员的且是同一个询价采购员, 创建时能选择LINIE
        附件：选择的附件需要时分配了LINIE且为同一个LINIE, 创建时不能再选择LINIE
@@ -156,6 +156,7 @@ export default {
       // const selectIds = this.selectItems.map(item => item)
       this.tableData = this.tableData.filter(item => !this.selectItems.includes(item))
       this.ids = this.tableData.map(item => item.spnrNum).join(',')
+      this.stuffId = this.tableData[0]?.stuffId
     },
     handleDeptChange(type, val) {
       // console.log(type, val)
@@ -251,6 +252,26 @@ export default {
         this.$refs.updateFactory.changeLoading(false)
       });
     },
+    updateRfq() {
+      this.basicLoading = true
+      const params = {
+        updateRfqInfoPackage: {
+          rfqId: this.detailData.rfqId,
+          rfqName: this.detailData.rfqName,
+          rfqDesc: this.detailData.rfqDesc,
+          userId: this.$store.state.permission.userInfo.id
+        }
+      }
+      updateRfq(params).then(res => {
+        if (res.result) {
+          iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+        } else {
+          iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+        }
+      }).finally(() => {
+        this.basicLoading = false
+      })
+    },
     /**
      * @Description: 生成RFQ
      * @Author: Luoshuang
@@ -258,25 +279,30 @@ export default {
      * @return {*}
      */    
     handleSaveRfq() {
-      this.basicLoading = true
-      const params = {
-        insertRfqPackage:{
-          operationType: '2',
-          rfqName: this.detailData.rfqName,
-          rfqDesc: this.detailData.rfqDesc,
-          userId: this.$store.state.permission.userInfo.id
+      if(this.detailData.rfqId) {
+        // 如果rfq编号已存在则变为更新rfq
+        this.updateRfq()
+      } else {
+        this.basicLoading = true
+        const params = {
+          insertRfqPackage:{
+            operationType: '2',
+            rfqName: this.detailData.rfqName,
+            rfqDesc: this.detailData.rfqDesc,
+            userId: this.$store.state.permission.userInfo.id
+          }
         }
+        insertRfq(params).then(res => {
+          if (res?.result) {
+            iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+            this.detailData.rfqId = res.data.rfqId
+          } else {
+            iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+          }
+        }).finally(() => {
+          this.basicLoading = false
+        })
       }
-      insertRfq(params).then(res => {
-        if (res?.result) {
-          iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
-          this.detailData.rfqId = res.data.rfqId
-        } else {
-          iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
-        }
-      }).finally(() => {
-        this.basicLoading = false
-      })
     },
     /**
      * @Description: 配件保存
@@ -291,6 +317,7 @@ export default {
       }
       this.saveLoading = true
       const params = {
+        linieDeptName: this.detailData.linieDept === this.$route.query.linieDeptName ? this.$route.query.linieDeptName : this.fromGroup.LINIE_DEPT.find(item => item.value === this.detailData.linieDept)?.label || this.tableData[0].linieDeptName,
         linieDept: this.detailData.linieDept === this.$route.query.linieDeptName ? this.$route.query.linieDept : this.detailData.linieDept,
         linieId: this.detailData.linie === this.$route.query.linieName ? this.$route.query.linie : this.detailData.linie,
         linieName: this.detailData.linie === this.$route.query.linieName ? this.$route.query.linieName : this.fromGroup.LINIE.find(item => item.value === this.detailData.linie)?.label || this.tableData[0].linieName,
@@ -301,24 +328,10 @@ export default {
       }
       const res = await autoInquiry(params)
       if (res?.result) {
-        const updateRfqParams = {
-          updateRfqStatusPackage: {
-            tmRfqIdList: [this.detailData.rfqId],
-            updateType: '06',
-            userId: this.$store.state.permission.userInfo.id
-          }
-        }
-        updateRfq(updateRfqParams).then(res => {
-          if(res?.result) {
-            iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
-            const router =  this.$router.resolve({path: `/sourcing/partsrfq/editordetail?id=${this.detailData.rfqId}`})
-            window.open(router.href,'_blank')
-          } else {
-            iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
-          }
-        }).finally(() => {
-          this.saveLoading = false
-        })
+        this.saveLoading = false
+        iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+        const router =  this.$router.resolve({path: `/sourcing/partsrfq/editordetail?id=${this.detailData.rfqId}`})
+        window.open(router.href,'_blank')
       } else {
         iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
         this.saveLoading = false
