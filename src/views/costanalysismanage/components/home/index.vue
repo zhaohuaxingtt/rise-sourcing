@@ -248,6 +248,7 @@ export default {
   watch: {
     "form.commodity"(nv) {
       if (nv) {
+        this.form.linieId = ""
         this.getLinieOptionsByCommodity(nv)
       } else {
         this.linieOptions = []
