@@ -73,7 +73,7 @@ export default{
     supplierData:[],
     supplierTile:[],
     //轮次选择
-    round:this.$route.query.round,
+    round:'',
     rundList:[],
     backChooseLists:[],
     backChoose:[],
@@ -119,7 +119,9 @@ export default{
     }
     }
   },
+  inject:['getbaseInfoData'],
   mounted(){
+    this.round = this.getbaseInfoData().currentRounds || 1
     this.init()
   },
   provide(){
