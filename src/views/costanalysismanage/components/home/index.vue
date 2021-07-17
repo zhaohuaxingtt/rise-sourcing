@@ -110,7 +110,7 @@
             <el-option
               :value="items.key"
               :label="items.value"
-              v-for="(items, index) in list"
+              v-for="(items, index) in commodityOptions"
               :key="index"
             ></el-option>
           </iSelect>
@@ -125,10 +125,10 @@
               :label="language('ALL', '全部') | capitalizeFilter"
             ></el-option>
             <el-option
-              :value="items.key"
-              :label="items.value"
-              v-for="(items, index) in list"
-              :key="index"
+              v-for="item in list"
+              :key="item.key"
+              :label="item.value"
+              :value="item.key"
             ></el-option>
           </iSelect>
         </el-form-item>
@@ -192,7 +192,7 @@ import cbdDialog from './components/cbdStatus'
 import { queryForm, tableTitle } from "./components/data"
 import filters from "@/utils/filters"
 import { pageMixins } from "@/utils/pageMixins"
-import { getSelectOptions, getKmRfqList, updateRfq } from "@/api/costanalysismanage/home"
+import { getSelectOptions, getKmRfqList, updateRfq, getCommodityOptions } from "@/api/costanalysismanage/home"
 import { selectDictByKeys } from "@/api/dictionary"
 import { cloneDeep } from "lodash"
 
@@ -229,12 +229,14 @@ export default {
       tableTitle,
       tableListData: [],
       rfqNum:'', // 当前选择的rfq
+      commodityOptions: []
     }
   },
   created() {
     this.getSelectOptions("01", "carTypeOptions")
     this.getSelectOptions("03", "rfqStatusOptions")
     this.getDict()
+    this.getCommodityOptions()
     this.getKmRfqList()
   },
   methods: {
@@ -275,6 +277,21 @@ export default {
               de: item.nameDe
             }))
           })
+        } else {
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
+      })
+      .catch(() => {})
+    },
+    getCommodityOptions() {
+      getCommodityOptions()
+      .then(res => {
+        if (res.code == 200) {
+          this.commodityOptions = res.data.map(item => ({
+            key: item.id,
+            label: item.nameZh,
+            value: item.id,
+          }))
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }
