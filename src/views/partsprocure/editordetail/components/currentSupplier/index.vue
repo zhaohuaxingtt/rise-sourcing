@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-23 11:59:22
- * @LastEditTime: 2021-07-13 21:33:46
+ * @LastEditTime: 2021-07-17 22:00:56
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\editordetail\components\currentSupplier\index.vue
@@ -131,6 +131,15 @@ export default{
       this.supplierCurentTop()
       this.supplierCurentBottom()
       this.purchaseFactory()
+    },
+    'edit':function(val){
+      if(val){
+        this.topSelect = []
+        this.bottomSelect = []
+        this.dataListTop = []
+        this.dataListBottom = []
+        this.supplierCurentTop()
+      }
     }
   },
   methods:{
@@ -193,7 +202,7 @@ export default{
      * @return {*}
      */
     sure(){
-      if(this.searchForm.procureFactoryId != '' && this.searchForm.supplierName == '' && this.searchForm.supplierSapCode == ''){
+      if(this.searchForm.procureFactoryId != '' && this.searchForm.supplierName == '' && this.searchForm.supplierSapCode == '' && this.partNum == ""){
         iMessage.warn(this.language('QINGXUANZEQITAXINXI','请选择其他信息共同筛选!'))
       }
       this.supplierCurentBottom()

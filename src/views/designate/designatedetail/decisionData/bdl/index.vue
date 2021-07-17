@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-25 17:00:48
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-07-16 16:11:19
+ * @LastEditTime: 2021-07-17 22:20:11
  * @Description: 定点管理-决策资料-BDL
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\bdl\index.vue
 -->
@@ -130,7 +130,7 @@ export default {
      */    
     async getTableList(element, index) {
       const params = {
-        rfqId:element.id, current:this.rfqList[index].page.currPage || 1, size:this.rfqList[index].page.pageSize || 10
+        nominateId:this.$route.query.desinateId,rfqId:element.id, current:this.rfqList[index].page.currPage || 1, size:this.rfqList[index].page.pageSize || 10
       }
       const res = await findRfqSupplierQuotationPage(params)
       if (res?.result) {
