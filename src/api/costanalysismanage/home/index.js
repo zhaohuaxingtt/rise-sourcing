@@ -8,6 +8,7 @@
  */
 import axios from '@/utils/axios'
 const requst = axios(process.env.VUE_APP_RFQ)
+const userCenterRequst = axios(process.env.VUE_APP_USER_CENTER_M)
 
 // 获取下拉框数据
 // type: 01-车型项目 02-零件项目类型  03-RFQ状态  04-轮次类型
@@ -31,7 +32,18 @@ export function getKmRfqList(params) {
 export function updateRfq(params) {
   return requst({
       url: '/rfqs/updateRfq',
-      method: 'PATCH',
+      method: 'POST',
       data: params
+  })
+}
+
+// 获取全量Commodity下拉列表
+export function getCommodityOptions() {
+  return userCenterRequst({
+    url: '/api/dept/dropDownList',
+    method: 'POST',
+    data: {
+      isCommodity: true
+    }
   })
 }

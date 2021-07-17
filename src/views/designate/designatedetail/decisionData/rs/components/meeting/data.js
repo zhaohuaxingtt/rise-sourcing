@@ -1,8 +1,8 @@
 /*
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:50:41
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-16 21:50:59
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-07-17 16:39:38
  * @Description: 
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\rs\components\meeting\data.js
  */
@@ -174,9 +174,9 @@ export const dbTableTitle = [
 ]
 
 export const meetingRemark = [
-  {label: '询价采购员上会备注', value: 'ww', type: 'CSF_MEET_MEMO', key: 'XUNJIACAIGOUYUANSHANGHUIBEIZHU'},
-  {label: 'LINIE上会备注', value: 'xxx', type: 'LINIE_MEET_MEMO', key: 'LINIESHANGHUIBEIZHU'},
-  {label: 'CS*1上会备注', value: 'ttt', type: 'CS1_MEET_MEMO', key: 'CS1SHANGHUIBEIZHU'}
+  {label: '询价采购员上会备注', value: 'ww', type: 'CSF_MEET_MEMO', remarkType:'csfMeetMemo', key: 'XUNJIACAIGOUYUANSHANGHUIBEIZHU'},
+  {label: 'LINIE上会备注', value: 'xxx', type: 'LINIE_MEET_MEMO', remarkType:'linieMeetMemo',key: 'LINIESHANGHUIBEIZHU'},
+  {label: 'CS*1上会备注', value: 'ttt', type: 'CS1_MEET_MEMO',remarkType:'cs1MeetMemo', key: 'CS1SHANGHUIBEIZHU'}
 ]
 
 export const checkList = [

@@ -29,7 +29,7 @@
                 <iButton @click="downloadFiles">{{language('LK_DAOCHUBIAOZHUNDINGDIANXIN','导出标准定点信')}}</iButton>
                 <iButton @click="changeShowHistory">{{language('LK_LISHIDINGDIANXIN','历史定点信')}} </iButton>
             </span>
-            <logButton class="margin-left20" />
+            <logButton class="margin-left20" @click="toLogPage"/>
         </div>
         </div>
         <iCard class="margin-top30">
@@ -323,6 +323,14 @@ export default {
                 }).catch((err)=>{
                     this.btnLoading.sureSubmit = false;
                 });
+        },
+
+        // 跳转查看日志
+        toLogPage() {
+        const id = this.$route.query.id
+        if (id) {
+            window.open(`/#/log?recordId=${id}`, '_blank')
+        }
         },
     }
 }
