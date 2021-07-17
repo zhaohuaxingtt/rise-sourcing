@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-25 14:41:07
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-09 21:02:06
+ * @LastEditTime: 2021-07-16 22:35:41
  * @Description: 
  * @FilePath: \front-web\src\views\accessoryPart\signForPartsDemand\data.js
  */
@@ -19,8 +19,8 @@ export const tableTitle = [
   {props:'sendDate',name:'需求发送日期', key: "XUQIUFASONGRIQI", tooltip: true, width: 120},
   {props:'state',name:'配件状态', key: "PEIJIANZHUANGTAI", tooltip: true, width: 120},
   {props:'annualQuantity',name:'年需求量', key: "NIANXUQIULIANG", tooltip: true},
-  {props:'csfUserDeptName',name:'询价科室', key: "XUJIAKESHI", tooltip: true},
-  {props:'csfUserIdName',name:'询价采购员', key: "XUJIACAIGOUYUAN", tooltip: true, width: 100},
+  {props:'csfuserDeptName',name:'询价科室', key: "XUJIAKESHI", tooltip: true},
+  {props:'csfuserName',name:'询价采购员', key: "XUJIACAIGOUYUAN", tooltip: true, width: 100},
   {props:'respDeptName',name:'LINIE科室', key: "LINIEKESHI", tooltip: true, width: 100},
   {props:'respLinieName',name:'LINIE', key: "LINIE", tooltip: true, width: 100},
   {props:'partNameDe',name:'配件零件德文名', key: "PEIJIANLINGJIANDEWENMING", tooltip: true, width: 120},
