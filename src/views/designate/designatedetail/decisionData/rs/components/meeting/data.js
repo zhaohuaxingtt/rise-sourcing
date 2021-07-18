@@ -1,8 +1,8 @@
 /*
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:50:41
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-07-17 22:57:24
+ * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-07-18 15:25:41
  * @Description: 
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\rs\components\meeting\data.js
  */
@@ -32,7 +32,7 @@ export const nomalDetailTitleBlue = [
   {props: 'rawMaterial', name: '原材料', enName: 'Raw Material', key: 'YUANCAILIAO'},
   {props: 'plannedInvest', name: '现供应商', enName: 'Current Supplier', key:'XIANGONGYINGSHANG'},
   {props: 'setPrice', name: '设定价格', enName: 'Set Price', key:'SHEDINGJIAGE'},
-  {props: 'emtermin', name: '分摊', enName: 'Amrtisiert', key: 'FENTAN'},
+  {props: 'isApportion', name: '分摊', enName: 'Amrtisiert', key: 'FENTAN'},
   {props: 'quantity', name: '每车用量', enName: 'Quantity', key: 'MEICHEYONGLIANG'}
 ]
 
@@ -132,7 +132,7 @@ export const gsTableTitle = [
   {props:'supplierId',name:'供应商', enName: 'Supplier', key: "", minWidth: 55},
   {props:'prodLocation',name:'产地', enName: 'Prod.Location', key: "", minWidth: 75},
   {props:'share',name:'份额', enName: 'Share(%)', key: "", minWidth: 55},
-  {props:'rw',name:'车型', enName: 'Carline', key: "", minWidth: 35},
+  {props:'carLine',name:'车型', enName: 'Carline', key: "", minWidth: 35},
   {props:'presentPrice',name:'现供价格', enName: 'Current Price', key: "", minWidth: 95},
   {props:'status',name:'供货状态', enName: 'Status', key: "", minWidth: 45},
   {props:'aprice',name:'A价', enName: 'A Price', key: "", minWidth: 45},
