@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:17:25
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-07-17 23:25:56
+ * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-07-18 10:07:47
  * @Description: 上会/备案RS单
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\rs\components\meeting\index.vue
 -->
@@ -131,10 +131,10 @@ export default {
     rightTitle() {
       // GS
       if ([partProjTypes.GSLINGJIAN,partProjTypes.GSCOMMONSOURCING].includes(this.projectType)) {
-        return gsDetailTitleBlue
+        return nomalDetailTitleBlue
       }
       // 其他
-      return nomalDetailTitleBlue
+      return gsDetailTitleBlue
     },
     tableTitle() {
       if (this.projectType === partProjTypes.PEIJIAN) {
