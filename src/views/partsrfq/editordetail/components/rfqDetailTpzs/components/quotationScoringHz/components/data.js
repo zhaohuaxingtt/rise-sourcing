@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-05-28 14:32:26
- * @LastEditTime: 2021-07-16 17:53:34
+ * @LastEditTime: 2021-07-19 13:28:39
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\data.js
@@ -429,11 +429,16 @@ export function getPorpsNumber(key){
 }
 
 export function defaultSort(list,key){
-  return [...list.filter(i=>i[key]).sort((a,b)=> a[key] == b[key]),...list.filter(i=>!i[key])]
+  try {
+    return [...list.filter(i=>i[key]).sort((a,b)=> a[key] == b[key]),...list.filter(i=>!i[key])]
+  } catch (error) {
+    return []
+  }
+  
 }
 
 //------------------------------------------fs数据构造供应商------------------------------------------------------
-export const rateTitelList = {type:'',props:'',label:'',i18n:'',width:'50',tooltip:false}
+export const rateTitelList = {type:'',props:'',label:'',i18n:'',width:'50',tooltip:true}
 
 export const supplierTile = [
   {type:'',props:'supplierName',label:'Supplier',i18n:'',width:'100',tooltip:false},
