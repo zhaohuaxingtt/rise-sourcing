@@ -166,6 +166,9 @@ a{
     background-color: $color-table-header;
     tr{
       background-color: transparent;
+      &:nth-child(even){
+        background-color: $color-table-header;
+      }
     }
   }
   th{
