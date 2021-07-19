@@ -370,6 +370,28 @@ export const staticRouter = [{
                 ]
             },
             {
+                path: '/purchase',
+                name: 'purchase',
+                meta: {
+                    title: '模具采购'
+                },
+                component: () => import (`@/views/ws2/purchase`),
+                children: [
+                    {
+                        path: '/purchase',
+                        redirect: '/purchase/investmentList',
+                    },
+                    {
+                        path: '/purchase/investmentList',
+                        name: 'investmentList',
+                        meta: {
+                            title: '模具投资清单'
+                        },
+                        component: () => import (`@/views/ws2/purchase/investmentList`),
+                    },
+                ]
+            },
+            {
                 path: "/ws3-register",
                 name: "/ws3Register",
                 component: () =>

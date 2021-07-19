@@ -3,6 +3,10 @@ const menuTooling = [
     title: '模具投资',
     url: '/tooling'
   },
+  {
+    title: '模具采购',
+    url: '/purchase'
+  },
 ]
 
 const menuPortal = [

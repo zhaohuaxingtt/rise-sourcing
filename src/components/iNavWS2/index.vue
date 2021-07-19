@@ -26,7 +26,26 @@
     <!--        <icon symbol name="iconrizhiwuzi" class="icon"/>-->
     <!--        <span @click="changeDataBase">{{ $t("LK_RIZHI") }}</span>-->
     <!--      </div>-->
-    <span @click="changeDataBase" class="dataBase" v-permissionArr="['TOOLING_DATABASE_SUMMARY', 'TOOLING_DATABASE_PARTNO', 'TOOLING_DATABASE_MODELBAG']">
+    <span v-if="historyDataBase" @click="changeDataBase" class="dataBase" v-permissionArr="['TOOLING_DATABASE_SUMMARY', 'TOOLING_DATABASE_PARTNO', 'TOOLING_DATABASE_MODELBAG']">
+      <transition name="bounce">
+        <Popover
+            content="历史数据库"
+            placement="top-start"
+            trigger="hover">
+            <icon slot="reference" v-if="!dataBase" symbol name="icondatabaseweixuanzhong"></icon>
+        </Popover>
+      </transition>
+      <transition name="bounceTo">
+        <Popover
+            content="历史数据库"
+            placement="top-start"
+            trigger="hover">
+            <icon slot="reference" v-if="dataBase" symbol name="icondatabasexuanzhongzhuangtai" class="openIcon"></icon>
+        </Popover>
+      </transition>
+    </span>
+
+    <span v-if="historyDataBase" @click="changeDataBase" class="dataBase" v-permissionArr="['TOOLING_DATABASE_SUMMARY', 'TOOLING_DATABASE_PARTNO', 'TOOLING_DATABASE_MODELBAG']">
       <transition name="bounce">
         <Popover
             content="历史数据库"
@@ -66,7 +85,11 @@ export default {
     isIconShow: {
       type: Boolean,
       default: false
-    }
+    },
+    historyDataBase: {
+      type: Boolean,
+      default: true
+    },
   },
   mounted() {
   },
