@@ -145,6 +145,8 @@ export default {
     },
     // 查看详情
     viewDetail(row) {
+      // 签字单状态
+      const statusCode = row.status && row.status.code || row.status
       const routeData = this.$router.resolve({
           path: '/sourcing/partsnomination/signSheet/details',
           query: {
@@ -152,7 +154,7 @@ export default {
             id: row.id,
             status: row.status && row.status.name || row.status,
             // 仅仅允许草稿或者已拒绝的单子编辑
-            mode: row.status && row.status.code && ['1', '2'].includes(row.status.code) ? 'add' : ''
+            mode: ['1', '2'].includes(statusCode) ? 'add' : ''
           }
         })
         window.open(routeData.href, '_blank')
