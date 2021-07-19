@@ -1,7 +1,7 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-05-25 09:42:07
- * @LastEditTime: 2021-07-18 02:46:01
+ * @LastEditTime: 2021-07-19 16:28:06
  * @Description: 业务分配模拟
 -->
 
@@ -310,11 +310,13 @@ export default {
         rfqId: this.rfqId
       }).then(res => {
         this.tableLoading = false
-        if (res.code === '200') {
+        if (res.code == '200') {
           this.params = _.cloneDeep(res.data)
+          this.supplierList = []
           this.supplierList = res.data.supplierSet
           const tableListData = res.data.partInfoList || []
-          const newTableList = tableListData.map(o => {
+          let newTableList = []
+          newTableList = tableListData.map(o => {
             // 绑定供应商
             o.id = this.randomid()
             o.groupId && (o.gid = o.groupId)
@@ -324,7 +326,7 @@ export default {
             o.percentCalc = []
             const suppDataList = o.bdlInfoList || []
             this.supplierList.forEach((suppName, index) => {
-              const supplier = (suppDataList && suppDataList.find(o => o.supplierName === suppName)) || {}
+              const supplier = (suppDataList && suppDataList.find(o => o.supplierName == suppName)) || {}
               const recommendSupplier = (o.recommendBdlInfoList && o.recommendBdlInfoList.find(o => o.recommendSupplier === suppName)) || {}
               o.TTo.push(supplier.tto || 0)
               o.percentCalc[index] = Number(recommendSupplier.share).toFixed(2) || 0
