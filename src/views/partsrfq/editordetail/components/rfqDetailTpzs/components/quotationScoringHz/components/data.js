@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-05-28 14:32:26
- * @LastEditTime: 2021-07-19 13:28:39
+ * @LastEditTime: 2021-07-19 18:02:01
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\data.js
@@ -476,7 +476,7 @@ export const centerSupplierList = function(index,factoryList=[]){
     {type:'',props:`${index}skdBPriceWithoutAllocation`,label:'SKD B Price without allocation',i18n:'',width:'120',tooltip:false}, 
     {type:'',props:`${index}bnk`,label:'BNK',i18n:'',width:'120',tooltip:false},
     {type:'',props:`${index}bnkApprovalStatus`,label:'BNK approval status',i18n:'',width:'120',tooltip:false},
-    {type:'',props:`${index}tooling`,label:'Tooling',i18n:'',width:'',tooltip:false},
+    {type:'',props:`${index}tooling`,label:'Tooling',i18n:'',width:'120',tooltip:false},
     {type:'',props:`${index}developmentCost`,label:'Development cost',i18n:'',width:'',tooltip:false},
     {type:'',props:`${index}supplierSopDate`,label:'Supplier SOP date',i18n:'',width:'100',tooltip:false},
     {type:'',props:`${index}ltc`,label:'LTC',i18n:'',width:'100',tooltip:false},
@@ -498,7 +498,7 @@ export const lastSupplier = [
 export function concactTitlle(supplier){
   return [...supplierTile,...supplier,...lastSupplier]
 }
-export const supplierWhiteList = ['supplierName','lcAPrice','bnkApprovalStatus','lcBPrice','productionLocation','tooling','ltc','ltcStaringDate','tto','mixPrice','totalInvest','totalTurnover','partNo','partName','project','tia','fTarget','factory']
+export const supplierWhiteList = ['supplierName','lcAPrice','lcBPrice','productionLocation','tooling','ltc','ltcStaringDate','tto','mixPrice','totalInvest','totalTurnover','partNo','partName','project','tia','fTarget','factory']
 export const supplierTableTop = []
 /**
  * @description: 转换供应商数据

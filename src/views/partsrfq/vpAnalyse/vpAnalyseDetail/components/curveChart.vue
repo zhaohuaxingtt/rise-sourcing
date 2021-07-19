@@ -37,6 +37,12 @@ export default {
         ];
       },
     },
+    cpLineData: {
+      type: Array,
+      default: () => {
+        return [];
+      },
+    }
   },
   mounted() {
     this.initEcharts();
@@ -51,6 +57,7 @@ export default {
       const targetScatterDataX = this.targetScatterData[0] ? this.targetScatterData[0][0] : 0;
       const newestScatterDataY = this.newestScatterData[0] ? this.newestScatterData[0][1] : 0;
       const targetScatterDataY = this.targetScatterData[0] ? this.targetScatterData[0][1] : 0;
+      const xMax = this.cpLineData[0]
       const option = {
         // ['最新定点单价', '目标单价']
         legend: {
@@ -60,6 +67,7 @@ export default {
         },
         xAxis: {
           // 产量（辆）
+          max: xMax,
           type: 'value',
           name: this.$t('TPZS.CHANLIANGLIANG'),
           splitLine: {
@@ -124,7 +132,8 @@ export default {
           this.createXline(this.newestScatterData[0], newestScatterDataX),
           this.createXline(this.targetScatterData[0], targetScatterDataX),
           this.createYline(this.newestScatterData[0], newestScatterDataY),
-          this.createYline(this.targetScatterData[0], targetScatterDataY)
+          this.createYline(this.targetScatterData[0], targetScatterDataY),
+          this.createYline(this.cpLineData, this.cpLineData[1]),
         ],
         grid: {
           top: 40,

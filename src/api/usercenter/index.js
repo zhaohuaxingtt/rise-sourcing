@@ -58,3 +58,12 @@ export function sendKey(data){
         }
     })
 }
+
+//根据条件，分页查询用户
+export function getSapUserPageList(data){
+    return requst({
+        url:'/sapUser/pageList',
+        method:"post",
+        data:data
+    })
+}
