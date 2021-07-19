@@ -1,7 +1,7 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-02-24 09:42:07
- * @LastEditTime: 2021-07-05 11:10:41
+ * @LastEditTime: 2021-07-18 07:47:08
  * @LastEditors: Please set LastEditors
 -->
 
@@ -82,7 +82,7 @@
           </div>
         </template>
         <template slot-scope="scope">
-          <div @click="handleCellClick(scope.row, hindex)">
+          <div class="supplier-tto" @click="handleCellClick(scope.row, hindex)">
             {{scope.row.TTo && scope.row.TTo[hindex] || '' }}
           </div>
         </template>
@@ -215,6 +215,10 @@ export default {
       const supplierChosen = row.supplierChosen && row.supplierChosen || []
       const percent = row.percent || []
       const cIndex = supplierChosen.findIndex(o => o === curSupplier)
+      // 当前supplier是否有TTo
+      const curTTo = row.TTo && row.TTo[Index]
+      // console.log(curTTo, curSupplier, supplierChosen, row)
+      // 非编辑模式下不允许编辑供应商
       if (!this.batchEdit) return
       if (supplierChosen.includes(curSupplier))  {
         // 只有一家供应商报价
@@ -222,6 +226,8 @@ export default {
         supplierChosen.splice(cIndex, 1)
         percent.splice(cIndex, 1)
       } else {
+        // 当前供应商TTO为空不能被选中
+        if (!curTTo) return
         supplierChosen.push(curSupplier)
       }
       // 添加未保存警告
@@ -336,8 +342,8 @@ export default {
       return spanArr
     },
     spanMethod({row, column, rowIndex, columnIndex}) {
-      // 只做第一列合并操作
-      if (columnIndex === 0 ) {
+      // 只做第一列合并操作 - 只针对有推荐供应商的处理
+      if (_.sum(row.TTo || []) && columnIndex === 0 ) {
         const _row = this.spanArr[rowIndex];
         const _col = _row > 0 ? 1 : 0;
         return {
@@ -576,18 +582,23 @@ export default {
 .monitorTable {
   ::v-deep .el-table {
     height: 450px;
+    .supplier-tto {
+      display: block;
+      width: 100%;
+      min-height:40px
+    }
   }
   ::v-deep .el-table--border {
     th,td {
       border-bottom: 1px solid #fff !important;
       border-right: 1px solid #fff !important;
       &.pin {
-        background: #e8f6fb;
+        background: #95f1ec;
         &.dbl {
-          background: #effbfb;
+          background: #95f1ec;
         }
         .cell {
-          color: #32cec7;
+          color: #094e4a;
         }
       }
     }

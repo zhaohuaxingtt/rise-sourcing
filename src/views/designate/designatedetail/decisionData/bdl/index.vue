@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-25 17:00:48
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-07-16 16:11:19
+ * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-07-19 09:23:44
  * @Description: 定点管理-决策资料-BDL
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\bdl\index.vue
 -->
@@ -13,7 +13,18 @@
       <iButton @click="gotoSupplier">{{language('TIAOZHUANGONGYINGSHANGWEIHU','跳转供应商维护')}}</iButton>
     </div>
     <iCard v-for="(item, index) in rfqList" :key="index" :title="'RFQ NO.'+item.rfqNum+',RFQ Name:'+item.rfqName" class="margin-top20">
-      <tableList :tableTitle="item.tableTitle" :selection="false" :tableData="item.tableData" class="doubleHeader" @openDialog="openRateDialog"></tableList>
+      <tableList :tableTitle="item.tableTitle" :selection="false" :tableData="item.tableData" class="doubleHeader" @openDialog="openRateDialog">
+        <template #supplierName="scope">
+          <div>
+            <span class="factoryDesc">{{scope.row.supplierName }}</span>
+            <el-tooltip effect="light" :content="`${language('LK_FRMPINGJI','FRM评级')}：${scope.row.frmRate}`" v-if="$route.query.isPreview != 1 && scope.row.isFRMRate === 1">
+              <span>
+                <icon symbol name="iconzhongyaoxinxitishi" />
+              </span>
+            </el-tooltip>
+          </div>
+        </template>
+      </tableList>
       <iPagination v-update 
         @size-change="val => sizeChange(val, index)" 
         @current-change="val => currentChange(val, index)" 
@@ -30,16 +41,16 @@
 </template>
 
 <script>
-import { iCard, iPage, iPagination, iButton, iMessage } from 'rise'
+import { iCard, iPage, iPagination, iButton, iMessage, icon } from 'rise'
 import tableList from '../../components/tableList'
-import { tableTitle, mockData } from './data'
+import { tableTitle } from './data'
 import partsRatingDialog from './partsRating'
 import { readQuotation, findRfqSupplierQuotationPage} from '@/api/designate/decisiondata/bdl'
 import { pageMixins } from "@/utils/pageMixins"
 import { cloneDeep, uniq } from 'lodash'
 export default {
   mixins: [pageMixins],
-  components: { iCard, iPage, tableList, iPagination, partsRatingDialog, iButton },
+  components: { iCard, iPage, tableList, iPagination, partsRatingDialog, iButton, icon },
   data() {
     return {
       rfqList: [],
@@ -130,7 +141,7 @@ export default {
      */    
     async getTableList(element, index) {
       const params = {
-        rfqId:element.id, current:this.rfqList[index].page.currPage || 1, size:this.rfqList[index].page.pageSize || 10
+        nominateId:this.$route.query.desinateId,rfqId:element.id, current:this.rfqList[index].page.currPage || 1, size:this.rfqList[index].page.pageSize || 10
       }
       const res = await findRfqSupplierQuotationPage(params)
       if (res?.result) {
@@ -201,6 +212,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.factoryDesc {
+  display: inline-block;
+  padding-right: 3px;
+}
 .decision-bdl {
   padding: 0;
 }
