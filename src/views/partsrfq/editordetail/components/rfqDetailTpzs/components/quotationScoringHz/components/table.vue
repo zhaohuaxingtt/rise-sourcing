@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-28 15:03:47
- * @LastEditTime: 2021-07-18 01:15:54
+ * @LastEditTime: 2021-07-19 14:58:28
  * @LastEditors: Please set LastEditors
  * @Description: 特殊表格实现
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\table.vue
@@ -64,16 +64,26 @@
             <div class="c" :style="{width:cWidth}" v-if='ratingList.firstTile.length > 0'>
               <ul style="width:99.5px">
                 <li></li>
-                <li v-for='(items,index) in ratingList.firstTile' :key='index'>{{items}}</li>
+                <template v-for='(items,index) in ratingList.firstTile'>
+                  <template v-if='ratingList.firstTile.length > 1'>
+                    <li :key='index' v-if='!items==""'>{{items}}</li>
+                  </template>
+                  <template v-else>
+                    <li :key='index'>{{items}}</li>
+                  </template>
+                </template>
               </ul>
         <!----------在表头上方动态循环点------------------------>
               <template v-for='(rating,index) in ratingList.ratingList'>
                 <ul :key="index" class="lastChild">
                   <template v-for='(itemsss,indexss) in rating'>
-                    <li :key='indexss' v-if='indexss > 0'>
-                      <span style="margin-rigth:10px;">{{itemsss.rate}}</span>
-                      <span><icon v-if='!itemsss.isAllPartRateConsistent' name='icontishi-cheng' symbol></icon></span>
-                    </li>
+                    <!--------------------------------判断逻辑：只要有评分，肯定是有评分部门，如果评分部门为空，则处理当前行不显示------------>
+                    <template v-if="indexss > 0">
+                      <li :key='indexss' v-if='ratingList.firstTile[indexss-1]'>
+                        <span style="margin-rigth:10px;">{{itemsss.rate}}</span>
+                        <span><icon v-if='!itemsss.isAllPartRateConsistent' name='icontishi-cheng' symbol></icon></span>
+                      </li>
+                    </template>
                     <li v-else :key='indexss'>
                       <span>
                         {{itemsss.rate}}
