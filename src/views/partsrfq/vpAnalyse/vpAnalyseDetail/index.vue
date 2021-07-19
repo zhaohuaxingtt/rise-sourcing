@@ -60,6 +60,7 @@
             chartHeight="260px"
             :newestScatterData="curveChartData.newestScatterData"
             :targetScatterData="curveChartData.targetScatterData"
+            :cpLineData="curveChartData.cpLineData"
             :lineData="curveChartData.lineData"
         />
       </iCard>
@@ -86,6 +87,7 @@
         :dataInfo="dataInfo"
         :newestScatterData="curveChartData.newestScatterData"
         :targetScatterData="curveChartData.targetScatterData"
+        :cpLineData="curveChartData.cpLineData"
         :lineData="curveChartData.lineData"
     />
   </iPage>
@@ -141,6 +143,7 @@ export default {
         newestScatterData: [],
         targetScatterData: [],
         lineData: [],
+        cpLineData: [],
       },
       analyzeLoading: false,
       currentSupplierId: '',
@@ -265,6 +268,7 @@ export default {
       this.curveChartData.newestScatterData = [];
       this.curveChartData.targetScatterData = [];
       this.curveChartData.lineData = [];
+      this.curveChartData.cpLineData = [];
       data.map(item => {
         if (item.priceFlag === 'LP') {
           this.curveChartData.newestScatterData.push([item.production, item.price]);
@@ -272,6 +276,8 @@ export default {
         } else if (item.priceFlag === 'TP') {
           this.curveChartData.targetScatterData.push([item.production, item.price]);
           this.curveChartData.lineData.push([item.production, item.price]);
+        } else if (item.priceFlag === 'CP') {
+          this.curveChartData.cpLineData = [item.production, item.price];
         } else {
           this.curveChartData.lineData.push([item.production, item.price]);
         }

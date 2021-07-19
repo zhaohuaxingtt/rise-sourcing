@@ -35,7 +35,7 @@
             'log': '操作日志'
         },
         'rfq': {
-            'RFQINQUIRE': '查询',
+            'RFQINQUIRE': '确认',
             'RFQRESET': '重置',
         },
         'partsprocure': {

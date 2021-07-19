@@ -65,7 +65,7 @@ export const externalTableSearch = [
     nameLanguage: 'TPZS.CJR',
     placeholder: '请输入创建人名称',
     placeholderLanguage: 'TPZS.QINGSHURUCHUANGJIANRENMINGCHENG',
-    type: 'input',
+    type: 'select',
   },
 ];
 
