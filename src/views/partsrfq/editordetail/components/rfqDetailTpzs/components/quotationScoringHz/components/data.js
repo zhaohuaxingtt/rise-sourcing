@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-05-28 14:32:26
- * @LastEditTime: 2021-07-19 18:02:01
+ * @LastEditTime: 2021-07-19 21:08:58
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\data.js
@@ -375,8 +375,15 @@ export function getLowNumber(totalList){
       })
     }
   }
-  temLits.sort((a,b)=>{a.tto - b.tto})
-  templateData[temLits[0].number+'ttoStatus'] = 1
+  const newtemLits = temLits.sort((a,b)=>a.tto - b.tto)
+  let minData = ''
+  for(let i=0;i<newtemLits.length-1;i++){
+    if(parseFloat(newtemLits[i].tto) > 0){
+      minData = newtemLits[i]
+      break;
+    }
+  }
+  templateData[minData.number+'ttoStatus'] = 1
   return templateData
 }
 
