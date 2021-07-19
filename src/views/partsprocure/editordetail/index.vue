@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2021-07-14 20:33:03
+ * @LastEditTime: 2021-07-19 17:29:41
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\editordetail\index.vue
@@ -623,6 +623,8 @@ import {partProjTypes, BKMROLETAGID} from '@/config'
 			},
 			saveFn(){
 				this.fsProjectTypeAnIscommonSroucing(this.save)
+				//刷新产量计划时间之前。得清空一下选择时间。
+				this.setYearNull()
 				//刷新零件产量逻辑。1.如果当前零件是gs零件 则sop时间用户是可以自己选择的。一旦选择过后零件产量里面的开始时间。后端得重新默认一个
 				//所以需要刷新一下零件产量页签
 				this.updateTabs()
@@ -740,6 +742,15 @@ import {partProjTypes, BKMROLETAGID} from '@/config'
 			updateTabs() {
 				this.$refs.outputPlan.getData();
 				this.$refs.outputRecord.getData();
+			},
+   /**
+    * @description: 清空当前时间，更改sop时间过后。需要置空产量计划的开始时间。将默认开始时间同步为sop时间（默认的动作后台已经判断）
+    * @param {*}
+    * @return {*}
+    */
+			setYearNull(){
+				this.$refs.outputPlan.clearTime()
+				this.$refs.outputPlan.clearTime()
 			},
 			// 下拉框逻辑提示
 			tips() {},

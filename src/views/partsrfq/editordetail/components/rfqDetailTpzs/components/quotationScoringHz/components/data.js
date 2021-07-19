@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-05-28 14:32:26
- * @LastEditTime: 2021-07-19 13:28:39
+ * @LastEditTime: 2021-07-19 17:02:23
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\data.js
@@ -498,7 +498,7 @@ export const lastSupplier = [
 export function concactTitlle(supplier){
   return [...supplierTile,...supplier,...lastSupplier]
 }
-export const supplierWhiteList = ['supplierName','lcAPrice','bnkApprovalStatus','lcBPrice','productionLocation','tooling','ltc','ltcStaringDate','tto','mixPrice','totalInvest','totalTurnover','partNo','partName','project','tia','fTarget','factory']
+export const supplierWhiteList = ['supplierName','lcAPrice','lcBPrice','productionLocation','tooling','ltc','ltcStaringDate','tto','mixPrice','totalInvest','totalTurnover','partNo','partName','project','tia','fTarget','factory']
 export const supplierTableTop = []
 /**
  * @description: 转换供应商数据
