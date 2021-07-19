@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-25 17:00:48
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-18 15:52:37
+ * @LastEditTime: 2021-07-19 09:23:44
  * @Description: 定点管理-决策资料-BDL
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\bdl\index.vue
 -->
@@ -17,7 +17,7 @@
         <template #supplierName="scope">
           <div>
             <span class="factoryDesc">{{scope.row.supplierName }}</span>
-            <el-tooltip effect="light" :content="`${language('LK_FRMPINGJI','FRM评级')}：${scope.row.frmRate}`" v-if="scope.row.isFRMRate === 1">
+            <el-tooltip effect="light" :content="`${language('LK_FRMPINGJI','FRM评级')}：${scope.row.frmRate}`" v-if="$route.query.isPreview != 1 && scope.row.isFRMRate === 1">
               <span>
                 <icon symbol name="iconzhongyaoxinxitishi" />
               </span>
