@@ -83,8 +83,10 @@ export default {
       }
     },
     async getDataList(val) {
-      window.sessionStorage.setItem('rfqId', val)
-      await this.$store.dispatch('setRfqId', val)
+      if (this.$store.state.rfq.entryStatus === 0) {
+        window.sessionStorage.setItem('rfqId', val)
+        await this.$store.dispatch('setRfqId', val)
+      }
       const pms = {
         isInsideEnter: this.$route.path === '/sourcing/partsrfq/assistant' ? true : false,
         rfq: this.$store.state.rfq.rfqId,
