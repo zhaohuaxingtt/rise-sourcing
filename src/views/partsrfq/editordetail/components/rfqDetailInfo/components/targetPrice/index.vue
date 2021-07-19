@@ -34,11 +34,12 @@
 </template>
 
 <script>
-import {iCard, iButton, iPagination, iMessage} from "@/components";
+import {iCard, iButton, iPagination, iMessage} from "rise";
 import tablelist from 'pages/partsrfq/components/tablelist'
 import {tableTitle} from "./components/data";
 import {pageMixins} from "@/utils/pageMixins";
-import {getRfqDataList} from "@/api/partsrfq/home";
+// import {getRfqDataList} from "@/api/partsrfq/home";
+import {getCfPrice} from "@/api/partsrfq/editordetail";
 import {excelExport} from "@/utils/filedowLoad";
 
 export default {
@@ -65,22 +66,30 @@ export default {
       const id = this.$route.query.id
       if (id) {
         this.tableLoading = true;
-        const req = {
-          otherInfoPackage: {
-            findType: '06',
-            rfqId: id,
-            current: this.page.currPage,
-            size: this.page.pageSize,
-          }
-        }
+        // const req = {
+        //   otherInfoPackage: {
+        //     findType: '06',
+        //     rfqId: id,
+        //     current: this.page.currPage,
+        //     size: this.page.pageSize,
+        //   }
+        // }
         try {
-          const res = await getRfqDataList(req)
-          this.tableListData = res.data.rfqCfPriceVO.rfqCfPriceVOList;
-          this.page.currPage = res.data.rfqCfPriceVO.pageNum
-          this.page.pageSize = res.data.rfqCfPriceVO.pageSize
-          this.page.totalCount = res.data.rfqCfPriceVO.total
+          // const res = await getRfqDataList(req)
+          const res = await getCfPrice({
+            rfqId: id,
+            currPage: this.page.currPage,
+            pageSize: this.page.pageSize,
+          })
+          // this.tableListData = res.data.rfqCfPriceVO.rfqCfPriceVOList;
+          // this.page.currPage = res.data.rfqCfPriceVO.pageNum
+          // this.page.pageSize = res.data.rfqCfPriceVO.pageSize
+          // this.page.totalCount = res.data.rfqCfPriceVO.total
+          this.tableListData = Array.isArray(res.data) ? res.data : []
+          this.page.totalCount = res.total || 0
+          // iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
           this.tableLoading = false;
-        } catch {
+        } finally {
           this.tableLoading = false;
         }
       }
