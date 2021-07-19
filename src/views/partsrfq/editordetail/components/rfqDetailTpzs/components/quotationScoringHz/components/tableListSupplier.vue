@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-28 15:03:47
- * @LastEditTime: 2021-07-19 18:26:06
+ * @LastEditTime: 2021-07-19 19:32:51
  * @LastEditors: Please set LastEditors
  * @Description: 特殊表格实现
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\table.vue
@@ -193,6 +193,7 @@ export default{
     white-space: nowrap;
     text-overflow: ellipsis;
     height: 15px;
+    line-height: 100%;
   }
   .ftaget{
     text-align: left;
