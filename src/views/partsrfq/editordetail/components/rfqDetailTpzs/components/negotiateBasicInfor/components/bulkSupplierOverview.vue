@@ -121,7 +121,7 @@ export default {
           $schema: "http://powerbi.com/product/schema#basic",
           target: {
             table: "sup",
-            column: "Supplier_Name"
+            column: "Supplier_ID"
           },
           operator: "In",
           values: rfqSupplierList,
@@ -133,7 +133,7 @@ export default {
           $schema: "http://powerbi.com/product/schema#basic",
           target: {
             table: "stu",
-            column: "Stuff_Name"
+            column: "Stuff_ID"
           },
           operator: "In",
           values: rfqCategoryList,
