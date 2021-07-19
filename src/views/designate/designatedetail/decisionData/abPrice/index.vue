@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-06-09 15:26:57
- * @LastEditTime: 2021-07-17 20:29:58
+ * @LastEditTime: 2021-07-19 12:56:42
  * @LastEditors: Please set LastEditors
  * @Description: fs 供应商 横轴纵轴界面。基于报价分析界面组件。
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\abPrice\index.vue
@@ -18,7 +18,7 @@ export default{
   components:{fsandsupplier,iCard},
   methods:{
     getbaseInfoData(){
-      return null
+      return {}
     }
   }
 }
