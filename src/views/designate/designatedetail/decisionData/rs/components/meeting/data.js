@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:50:41
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-18 15:25:41
+ * @LastEditTime: 2021-07-19 16:45:46
  * @Description: 
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\rs\components\meeting\data.js
  */
@@ -191,11 +191,11 @@ export const checkList = [
 
 
 export const prototypeTitleList = [
-  {i18nName: 'FS号', props: 'a', i18nKey: 'FSNUMBER'},
-  {i18nName: '零件号', props: 'b', i18nKey: 'LINGJIANHAO'},
-  {i18nName: '供应商SAP号', props: 'c', i18nKey: 'GONGYINGSHANGSAPHAO'},
-  {i18nName: '供应商名称', props: 'd', i18nKey: 'GONGYINGSMINGC'},
-  {i18nName: '工装样件状态（工装样件的备注）', props: 'e', i18nKey: 'GONGZHUANGYANGJIANZHUANGTAI'},
-  {i18nName: '单件价格（工装样件单件费用(RMB)', props: 'f', i18nKey: 'DANJIANJIAGE'},
-  {i18nName: '样件模具价格（附加工装样件模具价格(RMB)', props: 'g', i18nKey: 'YANGJIANMOKUJIAGE'}
+  {i18nName: 'FS号', props: 'fsGsNum', i18nKey: 'FSNUMBER'},
+  {i18nName: '零件号', props: 'partNum', i18nKey: 'LINGJIANHAO'},
+  {i18nName: '供应商SAP号', props: 'supplierCode', i18nKey: 'GONGYINGSHANGSAPHAO'},
+  {i18nName: '供应商名称', props: 'supplierName', i18nKey: 'GONGYINGSMINGC'},
+  {i18nName: '工装样件状态（工装样件的备注）', props: 'toolingSampleRemark', i18nKey: 'GONGZHUANGYANGJIANZHUANGTAI'},
+  {i18nName: '单件价格（工装样件单件费用(RMB)', props: 'sampleUnitPrice', i18nKey: 'DANJIANJIAGE'},
+  {i18nName: '样件模具价格（附加工装样件模具价格(RMB)', props: 'addionalMouldCost', i18nKey: 'YANGJIANMOKUJIAGE'}
 ]
