@@ -280,21 +280,6 @@ export function fsSupplierAsRow(rfqId,round){
         method: 'GET'
     })
 }
-
-//ab价-fs横轴
-export function fsPartsAsRowDd(mimoId){
-    return nego({
-        url: `/nego-assistant/nego-analysis-summary/nomi-fs-parts-as-row/${mimoId}`,
-        method: 'GET'
-    })
-}
-//ab价-供应商轴
-export function fsSupplierAsRowDd(mimoId){
-    return nego({
-        url: `/nego-assistant/nego-analysis-summary/nomi-fs-supplier-as-row/${mimoId}`,
-        method: 'GET'
-    })
-}
 //分析报价-组合
 export function negoAnalysisSummaryGroup(data){
     return nego({
@@ -373,6 +358,14 @@ export function hasShowDelegate(params) {
 export function findRateDeptInfo(params) {
     return requst({
         url: `/rfq-bdl-ratings/findRateDeptInfo/${ params.rateTag }`,
+        method: 'GET'
+    })
+}
+
+// 获取目标价
+export function getCfPrice(params) {
+    return requst({
+        url: `/cf-price/${ params.rfqId }/${ params.pageSize }/${ params.currPage }`,
         method: 'GET'
     })
 }
