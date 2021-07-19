@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-06-16 20:44:29
- * @LastEditTime: 2021-07-19 14:50:27
+ * @LastEditTime: 2021-07-19 16:13:39
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\analysisTool\index.vue
@@ -79,7 +79,7 @@ export default {
     handleSubmitSearch(searchData) {
       this.$refs.analysisTable.getTableData(searchData).then(res => {
         if(!res.data || res.data.length == 0) {
-          iMessage.error('抱歉，无法查询到结果（输入错误或不存在），请确认后重新输入')
+          iMessage.error(this.$t('TPZS.BQWFCXDJGSRCWHBCZQQRHCXSR'))
         }
       })
     },

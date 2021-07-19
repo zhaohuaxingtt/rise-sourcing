@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-06-16 20:44:29
- * @LastEditTime: 2021-07-19 14:50:40
+ * @LastEditTime: 2021-07-19 16:08:34
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\analysisTool\components\analysisTable.vue
@@ -31,7 +31,7 @@
       <el-table-column
         align="center"
         header-align="center"
-        label="分析名称"
+        :label="$t('TPZS.FXMC')"
         width="250">
         <template slot-scope="scope">
           <div class="openPage">
@@ -78,7 +78,7 @@
         prop="isDefault"
         align="center"
         header-align="center"
-        label="默认项">
+        :label="$t('MRX')">
         <template slot-scope="scope">
           <div v-if="!editMode">
             <!-- {{scope.row.isDefault === '是' || scope.row.isDefault === '否' ? scope.row.isDefault : null}} -->
@@ -95,27 +95,27 @@
         prop="type"
         align="center"
         header-align="center"
-        label="文件类型">
+        :label="$t('TPZS.WJLX')">
       </el-table-column>
       <el-table-column
         prop="createByName"
         align="center"
         header-align="center"
-        label="创建人">
+        :label="$t('TPZS.CJR')">
       </el-table-column>
       <el-table-column
         prop="createDate"
         align="center"
         header-align="center"
         show-overflow-tooltip
-        label="创建日期">
+        :label="$t('LK_CHUANGJIANRIQI')">
       </el-table-column>
       <el-table-column
         prop="updateDate"
         align="center"
         header-align="center"
         show-overflow-tooltip
-        label="上次修改日期">
+        :label="$t('TPZS.SCXGRQ')">
       </el-table-column>
       <el-table-column
         align="center"
@@ -191,7 +191,7 @@ export default {
           else if (!flag) flag = null;
           else flag = "否";
         }
-        return val.type == "方案" ? flag : null;
+        return val.type == this.$t('TPZS.SCHEME_TYPE') ? flag : null;
       };
     },
   },
@@ -295,7 +295,7 @@ export default {
     //点击取消编辑按钮事件
     cancelEditVP(backUpData) {
       backUpData.map((item, index) => {
-        if(item.type == this.$t('方案'))
+        if(item.type == this.$t('TPZS.SCHEME_TYPE'))
           this.$set(this.tableListData[index], 'analysisSchemeName', item.analysisSchemeName)
         else
           this.$set(this.tableListData[index], 'reportName', item.reportName)
