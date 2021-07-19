@@ -111,6 +111,9 @@ export default {
     updateStartYear(startYear) {
       this.startYear = startYear
       this.getData()
+    },
+    clearTime(){
+      this.startYear = ''
     }
   }
 }
