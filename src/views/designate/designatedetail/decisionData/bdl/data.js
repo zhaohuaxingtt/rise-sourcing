@@ -2,13 +2,13 @@
  * @Author: Luoshuang
  * @Date: 2021-05-25 17:06:56
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-25 11:21:15
+ * @LastEditTime: 2021-07-18 15:51:43
  * @Description: 
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\bdl\data.js
  */
 
 export const tableTitle = [
-  {props:'supplierName',name:'供应商', enName: 'Supplier Name', key: "GONGYINGSHANG", tooltip: true},
+  {props:'supplierName',name:'供应商', enName: 'Supplier Name', key: "GONGYINGSHANG", tooltip: true, width: 300},
   {props:'supplierNo',name:'供应商编号', enName: 'Supplier No.', key: "GONGYINGSHANGBIANHAO", tooltip: true},
   {props:'location',name:'所在地', enName: 'Location', key: "SUOZAIDI", tooltip: true},
   {props:'isMbdl',name:'是否MBDL', enName: 'MBDL', key: "MBDL", tooltip: true},

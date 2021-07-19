@@ -2,7 +2,7 @@
  * @Descripttion: 
  * @Author: Luoshuang
  * @Date: 2021-05-21 14:30:41
- * @LastEditTime: 2021-07-14 16:43:02
+ * @LastEditTime: 2021-07-19 10:26:14
 -->
 <template>
   <el-table ref="multipleTable" fit tooltip-effect='light' :height="height" :data='tableData' v-loading='tableLoading' @selection-change="handleSelectionChange" :empty-text="language('ZANWUSHUJU', '暂无数据')" >
@@ -202,5 +202,8 @@ export default{
       background: rgb(255 0 0 / 10%);
       border-color: red;
     }
+  }
+  ::v-deep .el-date-editor.el-input, .el-date-editor.el-input__inner {
+    width: 100%;
   }
 </style>
