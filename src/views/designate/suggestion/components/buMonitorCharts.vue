@@ -298,7 +298,7 @@ export default {
           textStyle: {
             color: '#485465'
           },
-          formatter: wholePackage
+          formatter: Number(wholePackage).toFixed(2)
         },
         itemStyle: {
           normal: {
@@ -337,7 +337,7 @@ export default {
             // const percent = parseFloat(fz/fm*100).toFixed(2)
             // totalGroupPercent += Number(percent)
             // return `${params.data}\n{p|${percent}%}`
-            return `${params.data}`
+            return `${Number(params.data).toFixed(2)}`
           },
           rich,
           interval: 0
@@ -450,7 +450,7 @@ export default {
             color: '#485465'
           },
           formatter: function() {
-            return minPartSupplierTToTotal
+            return Number(minPartSupplierTToTotal).toFixed(2)
           }
         },
         itemStyle: {
@@ -508,7 +508,7 @@ export default {
             color: '#485465'
           },
           formatter: function() {
-            return weightSupplierTotal
+            return Number(weightSupplierTotal).toFixed(2)
           }
         },
         itemStyle: {
