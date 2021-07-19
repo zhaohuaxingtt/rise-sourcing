@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-28 15:03:47
- * @LastEditTime: 2021-07-19 11:54:09
+ * @LastEditTime: 2021-07-19 18:26:06
  * @LastEditors: Please set LastEditors
  * @Description: 特殊表格实现
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\table.vue
@@ -71,13 +71,17 @@
           <template v-for="(levelTowItem,levelTowIndex) in item.list">
               <el-table-column
                 :key="levelTowIndex"
-                :label="levelTowItem.i18n ? $t(levelTowItem.i18n) : levelTowItem.label"
                 :width="levelTowItem.width"
                 :prop='levelTowItem.props'
-                :show-overflow-tooltip='levelTowItem.tooltip'
                 align="center"
                 :resizable="false"
-              />
+              >
+              <template slot="header">
+                <el-tooltip :content='levelTowItem.label' effect='light'>
+                  <span class="overText">{{levelTowItem.label}}</span>
+                </el-tooltip>
+              </template>
+              </el-table-column>
           </template>
         </template>
         <!--------------时间格式------------>
@@ -182,6 +186,14 @@ export default{
 }
 </script>
 <style lang='scss' scoped>
+  .overText{
+    overflow: hidden;
+    width: 100%;
+    display: inline-block;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    height: 15px;
+  }
   .ftaget{
     text-align: left;
     span{
