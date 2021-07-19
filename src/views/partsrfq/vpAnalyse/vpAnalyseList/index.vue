@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-06-16 20:44:29
- * @LastEditTime: 2021-07-16 11:31:27
+ * @LastEditTime: 2021-07-19 14:50:27
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\analysisTool\index.vue
@@ -53,7 +53,7 @@ export default {
       if(!this.editMode) 
         this.backUpData = window._.cloneDeep(this.$refs.analysisTable.tableListData)
       else 
-        this.$refs.analysisTable.tableListData = window._.cloneDeep(this.backUpData)
+        this.$refs.analysisTable.cancelEditVP(this.backUpData)
       this.editMode = !this.editMode
     },
     //点击保存编辑数据

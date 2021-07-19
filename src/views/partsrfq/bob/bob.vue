@@ -241,12 +241,12 @@ export default {
       rfqStatus: false,
       reportVisible: false,
       reportUrl: null,
-      currentDefaultObj: null, //当前编辑对象
       isRenderTable: true,
       defaultData: [
         { value: "是", label: this.$t("nominationLanguage.Yes") },
         { value: "否", label: this.$t("nominationLanguage.No") },
       ],
+      currentDefaultObj: null, //当前编辑对象
       updatedDefault: false //是否已更新默认项
     };
   },
