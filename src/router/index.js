@@ -188,6 +188,14 @@ export const staticRouter = [{
             },
             component: () => import (`@/views/ws2/baApply/details`),
         },
+        {
+            path: '/tooling/mouldBook/details',
+            name: 'mouldBook',
+            meta: {
+                title: '模具台账详情'
+            },
+            component: () => import (`@/views/ws2/mouldBook/details`),
+        },
         // {
         //     path: '/tooling/investmentAdmin',
         //     name: 'toolingModelDetails',
@@ -366,6 +374,14 @@ export const staticRouter = [{
                             title: '投资报告'
                         },
                         component: () => import (`@/views/ws2/investmentReport`),
+                    },
+                    {
+                        path: '/tooling/mouldBook',
+                        name: 'mouldBook',
+                        meta: {
+                            title: '模具台账'
+                        },
+                        component: () => import (`@/views/ws2/mouldBook`),
                     },
                 ]
             },

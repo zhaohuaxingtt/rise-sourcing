@@ -45,7 +45,7 @@
       </transition>
     </span>
 
-    <span v-if="historyDataBase" @click="changeDataBase" class="dataBase" v-permissionArr="['TOOLING_DATABASE_SUMMARY', 'TOOLING_DATABASE_PARTNO', 'TOOLING_DATABASE_MODELBAG']">
+    <span v-if="historyDataBase" @click="changeDataBase1" class="dataBase" v-permissionArr="['TOOLING_DATABASE_SUMMARY', 'TOOLING_DATABASE_PARTNO', 'TOOLING_DATABASE_MODELBAG']">
       <transition name="bounce">
         <Popover
             content="历史数据库"
@@ -151,7 +151,14 @@ export default {
       this.activeIndex = 999
       this.$router.push({path: '/tooling/dataBase'})
       this.$emit('changeDataBase')
-    }
+    },
+
+    changeDataBase1(){
+      this.dataBase = true
+      this.activeIndex = 999
+      this.$router.push({path: '/tooling/mouldBook'})
+      this.$emit('changeDataBase')
+    },
   },
   watch: {
     dataBaseInit(val){

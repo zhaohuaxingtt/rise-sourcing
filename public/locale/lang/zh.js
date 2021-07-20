@@ -1090,6 +1090,22 @@
         'DAXIAO': '大小', // 大小
         'WENJIANDAXIAO': '文件大小', // 文件大小
 
+        'LK_MUJUTOUZIJINE': '模具投资金额', //  模具投资金额
+        'LK_MUJUTOUZIQINGDANZHUANGTAI': '模具投资清单状态', //  模具投资清单状态
+        'LK_YEWUCHULIZHUANGTAI': '业务处理状态',    //  业务处理状态
+        'LK_XUHAO': '序号', //  序号
+        'LK_MUJUID': '模具ID',  //  模具ID
+        'LK_GUZIBIANHAO': '固资编号',   //  固资编号
+        'LK_MUJUZHIZHAOSHANG': '模具制造商',    //  模具制造商
+        'LK_GONGYILEIXING': '工艺类型', //  工艺类型
+        'LK_GONGMUJUZHONGLEI': '工模具种类',    //  工模具种类
+        'LK_ZICHANFENLEIBIANHAO': '资产分类编号',   //  资产分类编号
+        'LK_LINGJIANZONGCHENMINGCHEN': '零件总成名称',  //  零件总成名称
+        'LK_ZONGCHENLINGJIANHAO': '总成零件号', //  总成零件号
+        'LK_GONGXIANGLINGJIANHAO': '共享零件号',    //  共享零件号
+        'LK_LINGBUJIANMINGCHEN': '零部件名称',  //  零部件名称
+        'LK_ZICHANDAN': '资产单',   //  资产单
+
         // 定点管理
         'nominationLanguage': {
             "DingDianXiangQing": '定点详情', // 定点详情

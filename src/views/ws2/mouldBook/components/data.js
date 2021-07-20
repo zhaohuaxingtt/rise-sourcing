@@ -1,0 +1,177 @@
+//  bm单视图查询
+export const bmForm = {
+  tmCartypeProId: '', //  车型项目
+  bmStatus: '', //  Bm单状态
+  akeoType: '', //  akeo类型
+  deptId: '', //  专业科室
+  behalfPartsNum: '', //  零件号
+  startDate: '',  //  开始时间
+  endDate: '',  //  结束时间
+  linieId: '',  //  linie
+  bmNum: '',  //  BM单号
+}
+
+//  BM单视图table
+export const bmTableHead = [
+  {
+    props: 'data1',
+    name: 'BM单流⽔号',
+    key: 'LK_BMDANLIUSHUIHAO',
+    tooltip: false
+  },
+  {
+    props: 'data2',
+    name: 'BM单号',
+    key: 'LK_BMDANHAO',
+    tooltip: false
+  },
+  {
+    props: 'data3',
+    name: '车型项目',
+    key: 'LK_CHEXINGXIANGMU',
+    tooltip: false
+  },
+  {
+    props: 'data4',
+    name: '代表零件号',
+    key: 'LK_DAIBIAOLINGJIANHAO',
+    tooltip: false
+  },
+  {
+    props: 'data5',
+    name: '零件采购项目类型',
+    key: 'LK_LINGJIANCAIGOUXIANGMULEIXING',
+    tooltip: false
+  },
+  {
+    props: 'data6',
+    name: '供应商',
+    key: 'TPZS.GONGYINGSHANG',
+    tooltip: false
+  },
+  {
+    props: 'data7',
+    name: '模具投资金额',
+    key: 'LK_MUJUTOUZIJINE',
+    tooltip: false
+  },
+  {
+    props: 'data8',
+    name: '模具投资清单状态',
+    key: 'LK_MUJUTOUZIQINGDANZHUANGTAI',
+    tooltip: false
+  },
+  {
+    props: 'data9',
+    name: '业务处理状态',
+    key: 'LK_YEWUCHULIZHUANGTAI',
+    tooltip: false
+  },
+  {
+    props: 'data10',
+    name: '科室',
+    key: 'LK_KESHI',
+    tooltip: false
+  },
+  {
+    props: 'data11',
+    name: 'Linie',
+    key: 'LK_LINIE',
+    tooltip: false
+  },
+]
+
+//  详情表头
+export const detailsTableHead = [
+  {
+    props: '1',
+    name: '序号',
+    key: 'LK_XUHAO',
+    tooltip: false
+  },
+  {
+    props: '2',
+    name: '模具ID',
+    key: 'LK_MUJUID',
+    tooltip: false
+  },
+  {
+    props: '3',
+    name: '固资编号',
+    key: 'LK_GUZIBIANHAO',
+    tooltip: false
+  },
+  {
+    props: '4',
+    name: '模具制造商',
+    key: 'LK_MUJUZHIZHAOSHANG',
+    tooltip: false
+  },
+  {
+    props: '5',
+    name: '工艺类型',
+    key: 'LK_GONGYILEIXING',
+    tooltip: false
+  },
+  {
+    props: '6',
+    name: '工模具种类',
+    key: 'LK_GONGMUJUZHONGLEI',
+    tooltip: false
+  },
+  {
+    props: '7',
+    name: '资产分类编号',
+    key: 'LK_ZICHANFENLEIBIANHAO',
+    tooltip: false
+  },
+  {
+    props: '8',
+    name: '零件总成名称',
+    key: 'LK_LINGJIANZONGCHENMINGCHEN',
+    tooltip: false
+  },
+  {
+    props: '9',
+    name: '总成零件号',
+    key: 'LK_ZONGCHENLINGJIANHAO',
+    tooltip: false
+  },
+  {
+    props: '10',
+    name: '共享零件号',
+    key: 'LK_GONGXIANGLINGJIANHAO',
+    tooltip: false
+  },
+  {
+    props: '11',
+    name: 'FS号',
+    key: 'LK_FSHAO',
+    tooltip: false
+  },
+  {
+    props: '12',
+    name: '零部件名称',
+    key: 'LK_LINGBUJIANMINGCHEN',
+    tooltip: false
+  },
+  {
+    props: '13',
+    name: '零件号',
+    key: 'LK_LINGJIANHAO',
+    tooltip: false
+  },
+  {
+    props: '13',
+    name: '数量',
+    key: 'LK_SHULIANG',
+    tooltip: false
+  },
+  {
+    props: '14',
+    name: '资产单',
+    key: 'LK_ZICHANDAN',
+    tooltip: false
+  },
+]
+
