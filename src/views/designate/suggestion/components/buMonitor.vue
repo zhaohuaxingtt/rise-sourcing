@@ -1,7 +1,7 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-05-25 09:42:07
- * @LastEditTime: 2021-07-19 16:28:06
+ * @LastEditTime: 2021-07-19 22:29:49
  * @Description: 业务分配模拟
 -->
 
@@ -312,8 +312,9 @@ export default {
         this.tableLoading = false
         if (res.code == '200') {
           this.params = _.cloneDeep(res.data)
-          this.supplierList = []
-          this.supplierList = res.data.supplierSet
+          // this.supplierList = []
+          // 刷新的时候，会将新增的数据清除，数组传参无法识别变化无法传到子组件，故保持刷新前的顺序
+          !this.supplierList.length && (this.supplierList = res.data.supplierSet)
           const tableListData = res.data.partInfoList || []
           let newTableList = []
           newTableList = tableListData.map(o => {

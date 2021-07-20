@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-05-28 14:32:26
- * @LastEditTime: 2021-07-19 17:02:23
+ * @LastEditTime: 2021-07-19 21:08:58
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\data.js
@@ -375,8 +375,15 @@ export function getLowNumber(totalList){
       })
     }
   }
-  temLits.sort((a,b)=>{a.tto - b.tto})
-  templateData[temLits[0].number+'ttoStatus'] = 1
+  const newtemLits = temLits.sort((a,b)=>a.tto - b.tto)
+  let minData = ''
+  for(let i=0;i<newtemLits.length-1;i++){
+    if(parseFloat(newtemLits[i].tto) > 0){
+      minData = newtemLits[i]
+      break;
+    }
+  }
+  templateData[minData.number+'ttoStatus'] = 1
   return templateData
 }
 
@@ -476,7 +483,7 @@ export const centerSupplierList = function(index,factoryList=[]){
     {type:'',props:`${index}skdBPriceWithoutAllocation`,label:'SKD B Price without allocation',i18n:'',width:'120',tooltip:false}, 
     {type:'',props:`${index}bnk`,label:'BNK',i18n:'',width:'120',tooltip:false},
     {type:'',props:`${index}bnkApprovalStatus`,label:'BNK approval status',i18n:'',width:'120',tooltip:false},
-    {type:'',props:`${index}tooling`,label:'Tooling',i18n:'',width:'',tooltip:false},
+    {type:'',props:`${index}tooling`,label:'Tooling',i18n:'',width:'120',tooltip:false},
     {type:'',props:`${index}developmentCost`,label:'Development cost',i18n:'',width:'',tooltip:false},
     {type:'',props:`${index}supplierSopDate`,label:'Supplier SOP date',i18n:'',width:'100',tooltip:false},
     {type:'',props:`${index}ltc`,label:'LTC',i18n:'',width:'100',tooltip:false},

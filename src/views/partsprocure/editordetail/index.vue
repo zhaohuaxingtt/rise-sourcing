@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2021-07-19 17:29:41
+ * @LastEditTime: 2021-07-19 20:42:51
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\editordetail\index.vue
@@ -625,9 +625,6 @@ import {partProjTypes, BKMROLETAGID} from '@/config'
 				this.fsProjectTypeAnIscommonSroucing(this.save)
 				//刷新产量计划时间之前。得清空一下选择时间。
 				this.setYearNull()
-				//刷新零件产量逻辑。1.如果当前零件是gs零件 则sop时间用户是可以自己选择的。一旦选择过后零件产量里面的开始时间。后端得重新默认一个
-				//所以需要刷新一下零件产量页签
-				this.updateTabs()
 			},
 			//修改详情。
 			save(val) {
@@ -661,9 +658,15 @@ import {partProjTypes, BKMROLETAGID} from '@/config'
 							if(res.data.procureFactoryIds.length <= 1 ){
 								iMessage.success(this.language('LK_YIBAOCUN','已保存'));
 								this.getDatail();
+								//刷新零件产量逻辑。1.如果当前零件是gs零件 则sop时间用户是可以自己选择的。一旦选择过后零件产量里面的开始时间。后端得重新默认一个
+								//所以需要刷新一下零件产量页签
+								this.updateTabs()
 							}else{
 								iMessage.success(this.language('LK_YIBAOCUN','已保存'));
 								this.getDatail();
+								//刷新零件产量逻辑。1.如果当前零件是gs零件 则sop时间用户是可以自己选择的。一旦选择过后零件产量里面的开始时间。后端得重新默认一个
+								//所以需要刷新一下零件产量页签
+								this.updateTabs()
 								// iMessageBox(this.$t('LK_AREYOUSPLITE'),this.$t('LK_WENXINTISHI')).then(res=>{
 								// 	//如果这条ID存在 则默认查询出来的采购工厂将会为第一条
 								// 	this.firstId = this.detailData.procureFactory
