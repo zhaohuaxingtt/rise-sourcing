@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-25 15:24:07
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-14 09:57:46
+ * @LastEditTime: 2021-07-20 10:31:25
  * @Description: 
  * @FilePath: \front-web\src\views\accessoryPart\accessoryPartDetail\data.js
  */
@@ -20,8 +20,8 @@ export const detailList = [
   {value: 'state', label: '配件状态', type: 'select', key: 'PEIJIANZHUANGTAI', selectOption: []},
   {value: 'accessoryStatus', label: '零件状态', type: 'select', key: 'LINGJIANZHUANGTAI', selectOption: []},
   {value: 'idState', label: 'ID状态', type: 'select', key: 'IDZHUANGTAI', selectOption: []},
-  {value: 'csfUserDeptName', label: 'CSF科室', type: 'date', key: 'CSFKESHI',},
-  {value: 'csfUserIdName', label: 'CSF', type: 'input', key: 'CSF',},
+  {value: 'csfuserDeptName', label: 'CSF科室', type: 'date', key: 'CSFKESHI',},
+  {value: 'csfuserName', label: 'CSF', type: 'input', key: 'CSF',},
   {value: 'sendDate', label: '需求发送日期', type: 'input', key: 'XUQIUFASONGRIQI',},
   {value: 'respDeptName', label: 'LINIE科室', type: 'input', key: 'LINIEKESHI',},
   {value: 'respLinieName', label: 'LINIE', type: 'input', key: 'LINIE',},
