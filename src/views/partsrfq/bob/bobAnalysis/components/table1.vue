@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 11:38:57
- * @LastEditTime: 2021-07-17 16:55:17
+ * @LastEditTime: 2021-07-19 13:39:16
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails\table1.vue
@@ -172,8 +172,10 @@ export default {
           index: c,
         });
     },
-    cellStyle ({ row, column, rowIndex, columnIndex }) {
-      console.log(row, column, rowIndex, columnIndex)
+    cellsytle ({ row, column, rowIndex, columnIndex }) {
+      if (row.title == "原材料/散件" || row.title == '制造费' || row.title == '保费成本' || row.title == '管理费' || row.title == '其他费用' || row.title == '利润') {
+        return "font-weight: bold"
+      }
     },
     getRowKey (row) {
       return row.index;

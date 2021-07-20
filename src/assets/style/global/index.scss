@@ -11,8 +11,8 @@
   box-sizing: border-box;
   font-family: 'VWTEXTOFFICE-REGULAR','VWHEADOFFICE-REGULAR','VWAGTHESANS-BOLD','VWHEADOFFICE-BOLD','VWHEADOFFICE-BOLDITALIC','VWHEADOFFICE-REGULARITALIC','VWTEXTOFFICE-BOLD','VWTEXTOFFICE-BOLDITALIC','VWTEXTOFFICE-REGULARITALIC';
   &::-webkit-scrollbar {
-        width:9px;
-        height:9px;
+        width:12px;
+        height:12px;
     }
     &::-webkit-scrollbar-track {
         width: 8px;
@@ -162,10 +162,17 @@ a{
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
   font-size: 14px;
+  .el-table__body-wrapper {
+    height: 422px;  
+    overflow: auto;
+  }
   .el-table__header{
     background-color: $color-table-header;
     tr{
       background-color: transparent;
+      &:nth-child(even){
+        background-color: $color-table-header;
+      }
     }
   }
   th{
@@ -202,7 +209,7 @@ a{
  ---------------------------------------
 */
 .el-checkbox__inner{
-  border:1px solid $color-blue
+  // border:1px solid $color-blue
 }
 .el-radio__inner{
   border:1px solid $color-blue
@@ -214,6 +221,7 @@ a{
  ---------------------------------------
 */
 .el-table__row{
+  height: 38px !important;
   .el-input{
     height: $input-height24!important;
     .el-input__inner{

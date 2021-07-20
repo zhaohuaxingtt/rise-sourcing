@@ -74,7 +74,7 @@ export const tableTitle = [
   {props: 'fileName', name: '报告名称', key: 'TPZS.BGMC', tooltip: true},
   {props: 'categoryName', name: '材料组', key: 'LK_CAILIAOZU', tooltip: true},
   {props: 'rfqName', name: 'RFQ', tooltip: true},
-  {props: 'createBy', name: '创建人', key: 'TPZS.CJR', tooltip: true},
+  {props: 'createName', name: '创建人', key: 'TPZS.CJR', tooltip: true},
   {props: 'createDate2', name: '创建日期', key: 'LK_CHUANGJIANRIQI', tooltip: true},
   {props: 'updateDate2', name: '上次修改日期', key: 'TPZS.SCXGRQ', tooltip: true},
 ];

@@ -41,6 +41,14 @@
           </template>
         </div>
       </template>
+      <template #createName="scope">
+        <template v-if="scope.row.fileList">
+          <span>{{scope.row.createName}}</span>
+        </template>
+        <template v-else>
+          <span>{{scope.row.uploadBy}}</span>
+        </template>
+      </template>
     </tableList>
     <iPagination
         v-update

@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-18 15:11:44
- * @LastEditTime: 2021-07-02 18:24:27
+ * @LastEditTime: 2021-07-20 16:09:29
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\configscoredept\components\deptDialog.vue
@@ -41,7 +41,7 @@
               <el-form-item :label="language('BUMENZHONGWENMING', '部门中文名')">
                 <iSelect
                   filterable
-                  v-model="form.deptNameZh"
+                  v-model="form.nameZh"
                   :placeholder="language('QINGXUANZEBUMENZHONGWENMING', '请选择部门中文名')"
                 >
                   <el-option
@@ -61,7 +61,7 @@
               <el-form-item :label="language('BUMENYINGWENMING', '部门英文名')">
                 <iSelect
                   filterable
-                  v-model="form.deptNameEn"
+                  v-model="form.nameEn"
                   :placeholder="language('QINGXUANZEBUMENYINGWENMING', '请选择部门英文名')"
                 >
                   <el-option
@@ -180,13 +180,20 @@ export default {
 
           if (Object.keys(this.form).every(key => !this.form[key])) {
             this.deptNumOptions = []
+            const deptNumSet = new Set()
             this.nameZhOptions = []
+            const nameZhSet = new Set()
             this.nameEnOptions = []
+            const nameEnSet = new Set()
             this.tableListData.forEach(item => {
-              item.deptNum && this.deptNumOptions.push({ key: item.deptNum, label: item.deptNum, value: item.deptNum })
-              item.deptNameZh && this.nameZhOptions.push({ key: item.deptNameZh, label: item.deptNameZh, value: item.deptNameZh })
-              item.deptNameEn && this.nameEnOptions.push({ key: item.deptNameEn, label: item.deptNameEn, value: item.deptNameEn })
+              item.deptNum && deptNumSet.add(item.deptNum)
+              item.nameZh && nameZhSet.add(item.nameZh)
+              item.nameEn && nameEnSet.add(item.nameEn)
             })
+
+            deptNumSet.forEach(deptNum => this.deptNumOptions.push({ key: deptNum, label: deptNum, value: deptNum }))
+            nameZhSet.forEach(nameZh => this.nameZhOptions.push({ key: nameZh, label: nameZh, value: nameZh }))
+            nameEnSet.forEach(nameEn => this.nameEnOptions.push({ key: nameEn, label: nameEn, value: nameEn }))
           }
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
@@ -201,11 +208,7 @@ export default {
     },
     // 确认
     handleQuery() {
-      this.getAllDept().then(() => {
-        this.tableListData = this.tableListData.filter(item => {
-          return (this.form.deptNum ? (item.deptNum === this.form.deptNum) : true) && (this.form.deptNameZh ? (item.deptNameZh === this.form.deptNameZh) : true) && (this.form.deptNameEn ? (item.deptNameEn === this.form.deptNameEn) : true) 
-        })
-      })
+      this.getAllDept()
     },
     // 重置
     handleReset() {
