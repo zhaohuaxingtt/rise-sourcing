@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-28 15:03:47
- * @LastEditTime: 2021-07-20 17:01:02
+ * @LastEditTime: 2021-07-20 20:05:30
  * @LastEditors: Please set LastEditors
  * @Description: 特殊表格实现
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\table.vue
@@ -86,7 +86,15 @@
         </template>
         <!--------------时间格式------------>
         <template slot-scope="scope">
-          <template v-if='removeKeysNumber(item.props) == "ltcStaringDate" || removeKeysNumber(item.props) == "supplierSopDate"'>
+          <template v-if ='removeKeysNumber(item.props) == "developmentCost"'>
+            <span>{{scope.row[item.props]}}</span>
+            <span style="color:red;" v-if='scope.row[getPorpsNumber(item.props)+"developmentCostHasShare"]'>*</span>
+          </template>
+          <template v-else-if ='removeKeysNumber(item.props) == "tooling"'>
+            <span>{{scope.row[item.props]}}</span>
+            <span style="color:red;" v-if='scope.row[getPorpsNumber(item.props)+"toolingHasShare"]'>*</span>
+          </template>
+          <template v-else-if='removeKeysNumber(item.props) == "ltcStaringDate" || removeKeysNumber(item.props) == "supplierSopDate"'>
             <span>{{scope.row[item.props]?moment(scope.row[item.props]).format("YYYY-MM-DD"):''}}</span>
           </template>
           <template v-else-if='removeKeysNumber(item.props) == "Quotationdetails"'>
