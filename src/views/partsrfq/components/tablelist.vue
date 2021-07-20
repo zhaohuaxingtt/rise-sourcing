@@ -5,27 +5,30 @@
  * @Description: RFQ-table组件。
 -->
 <template>
-  <el-table :height="height" tooltip-effect='light' :data='tableData' :empty-text="$t('LK_ZANWUSHUJU')" v-loading='tableLoading' @selection-change="handleSelectionChange">
+  <el-table :height="height" tooltip-effect='light' :data='tableData' :empty-text="$t('LK_ZANWUSHUJU')" v-loading='tableLoading' @selection-change="handleSelectionChange" @select="handleSelect"  @select-all="handleSelectAll" :cell-style="borderLeft">
     <el-table-column v-if="selection" type='selection' width="56" align='center'></el-table-column>
 <!--    <el-table-column v-if='index' type='index' width='50' align='center' label='#'></el-table-column>-->
     <template v-for="(items,index) in tableTitle">
-      <el-table-column :key="index" align='center' :width="items.width" :show-overflow-tooltip='items.tooltip' v-if='items.props === openPageProps' :prop="items.props"
+      <el-table-column :key="index" align='center' :width="items.width" :min-width="items.minWidth ? items.minWidth.toString():''" :show-overflow-tooltip='items.tooltip' v-if='items.props === openPageProps' :prop="items.props"
                        :label="lang ? language(items.key, items.name) : (items.key ? $t(items.key) : items.name)" :fixed="items.fixed">
         <template slot-scope="scope">
-            <span class="openLinkText cursor"
-                  @click="openPage(openPageGetRowData ?  scope.row : scope.row[items.props])">{{
-                customOpenPageWord ? customOpenPageWord : scope.row[openPageProps]
-              }}</span>
+          <span class="flexRow">
+            <span class="openLinkText cursor" @click="openPage(openPageGetRowData ?  scope.row : scope.row[items.props])">{{customOpenPageWord ? customOpenPageWord : scope.row[openPageProps]}}</span>
+              <span class="icon-gray  cursor "  @click="openPage(openPageGetRowData ?  scope.row : scope.row[items.props])">
+                <icon symbol class="show" name="icontiaozhuananniu" />
+                <icon symbol class="active" name="icontiaozhuanxuanzhongzhuangtai" />
+              </span>
+          </span>  
         </template>
       </el-table-column>
-      <el-table-column :width="items.width" :show-overflow-tooltip='items.tooltip' :key="index" align='center' v-else-if='inputProps.includes(items.props)' :prop="items.props"
+      <el-table-column :width="items.width" :min-width="items.minWidth ? items.minWidth.toString():''" :show-overflow-tooltip='items.tooltip' :key="index" align='center' v-else-if='inputProps.includes(items.props)' :prop="items.props"
                        :label="lang ? language(items.key, items.name) : (items.key ? $t(items.key) : items.name)">
         <template slot-scope="scope">
           <i-input v-model="scope.row[items.props]" v-if="inputType" :type="inputType"/>
           <i-input v-model="scope.row[items.props]" v-else/>
         </template>
       </el-table-column>
-      <el-table-column :width="items.width" :show-overflow-tooltip='items.tooltip' :key="index" align='center'
+      <el-table-column :width="items.width" :min-width="items.minWidth ? items.minWidth.toString():''" :show-overflow-tooltip='items.tooltip' :key="index" align='center'
                        v-else-if='isSelectOptionsLinkage && selectProps.includes(items.props)' :prop="items.props"
                        :label="lang ? language(items.key, items.name) : (items.key ? $t(items.key) : items.name)">
         <template slot-scope="scope">
@@ -37,7 +40,7 @@
           </i-select>
         </template>
       </el-table-column>
-      <el-table-column :width="items.width" :show-overflow-tooltip='items.tooltip' :key="index" align='center'
+      <el-table-column :min-width="items.minWidth ? items.minWidth.toString():''" :show-overflow-tooltip='items.tooltip' :key="index" align='center'
                        v-else-if='!isSelectOptionsLinkage && selectProps.includes(items.props)' :prop="items.props"
                        :label="lang ? language(items.key, items.name) : (items.key ? $t(items.key) : items.name)">
         <template slot-scope="scope">
@@ -47,19 +50,19 @@
           </i-select>
         </template>
       </el-table-column>
-      <el-table-column :width="items.width" :show-overflow-tooltip='items.tooltip' :key="index" align='center' v-else-if='items.props === iconProps' :prop="items.props"
+      <el-table-column :width="items.width" :min-width="items.minWidth ? items.minWidth.toString():''" :show-overflow-tooltip='items.tooltip' :key="index" align='center' v-else-if='items.props === iconProps' :prop="items.props"
                        :label="lang ? language(items.key, items.name) : (items.key ? $t(items.key) : items.name)">
         <template slot-scope="scope">
           <slot name="icon" :data="scope.row"></slot>
         </template>
       </el-table-column>
-      <el-table-column :width="items.width" :show-overflow-tooltip='items.tooltip' :key="index" align='center' v-else-if='items.props === fileSizeProps' :prop="items.props"
+      <el-table-column :min-width="items.minWidth ? items.minWidth.toString():''" :show-overflow-tooltip='items.tooltip' :key="index" align='center' v-else-if='items.props === fileSizeProps' :prop="items.props"
                        :label="lang ? language(items.key, items.name) : (items.key ? $t(items.key) : items.name)">
         <template slot-scope="scope">
           {{ scope.row[items.props] }}
         </template>
       </el-table-column>
-      <el-table-column :width="items.width" :show-overflow-tooltip='items.tooltip' :key="index" align='center' v-else :label="lang ? language(items.key, items.name) : (items.key ? $t(items.key) : items.name)"
+      <el-table-column :width="items.width" :min-width="items.minWidth ? items.minWidth.toString():''" :show-overflow-tooltip='items.tooltip' :key="index" align='center' v-else :label="lang ? language(items.key, items.name) : (items.key ? $t(items.key) : items.name)"
                        :prop="items.props" :fixed="items.fixed">
         <template v-if="$scopedSlots[items.props] || $slots[items.props]" v-slot="scope">
           <slot :name="items.props" :row="scope.row"></slot>
@@ -70,7 +73,7 @@
 </template>
 <script>
 import {iInput, iSelect} from '@/components'
-
+import {icon} from "rise"
 export default {
   props: {
     tableData: {type: Array},
@@ -107,7 +110,8 @@ export default {
   },
   components: {
     iInput,
-    iSelect
+    iSelect,
+    icon
   },
   methods: {
     handleSelectionChange(val) {
@@ -123,6 +127,25 @@ export default {
     },
     openPage(params) {
       this.$emit('openPage', params)
+    },
+    handleSelect(selection,row){
+      const selectdBorder = row.selectedBorder
+      this.$set(row,'selectedBorder',!selectdBorder)
+    },
+    handleSelectAll(selection){  
+      const flag = selection.length
+      for(let i= 0  ; i<flag;i++){
+        this.$set(selection[i],'selectedBorder',!!flag)
+      }
+      !flag? this.tableData.forEach(i=>{i.selectedBorder=!i.selectedBorder}):''
+    },
+    borderLeft({row, column, rowIndex, columnIndex}){
+      if(columnIndex === 0 && row.selectedBorder === true){
+         return "border-left:2px solid #1660F1;"
+      }
+      else{
+        return ""
+      }
     }
   }
 }
@@ -145,6 +168,29 @@ export default {
 }
 
 .icon {
-  color: $color-blue;
+  // color: $color-blue;
+}
+.icon-gray{
+  cursor: pointer;
+  .active{
+    display: none;
+  }
+    .show{
+      display: block;
+    }
+  }
+.flexRow{
+  display: flex;
+  justify-content: space-between ;
+  align-items: center;  
+}
+.icon-gray:hover{
+  cursor: pointer;
+  .show{
+    display: none;
+  }
+  .active{
+    display: block;
+  }
 }
 </style>

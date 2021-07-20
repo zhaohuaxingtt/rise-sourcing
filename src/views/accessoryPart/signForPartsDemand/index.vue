@@ -9,11 +9,12 @@
 
 <template>
   <iPage class="signForParts" >
-    <el-tabs v-model="tab" class="tab">
-      <el-tab-pane :label="language('XUNYUANZHIHANG','寻源执行')" name="source">
+    <!-- <el-tabs v-model="tab" class="tab"> -->
+      <!-- <el-tab-pane :label="language('XUNYUANZHIHANG','寻源执行')" name="source"> -->
         <div>
-          <div class="margin-bottom33">
-            <iNavMvp @change="change" right routerPage lev="2" :list="navList" @message="clickMessage" />
+          <div class="topMenu">
+            <iNavMvp class="margin-bottom30" :list="list" lang @change="change" :lev="1" routerPage></iNavMvp>
+            <iNavMvp class="margin-bottom30" @change="change" right routerPage lev="2" :list="navList" @message="clickMessage" />
           </div>
           <!----------------------------------------------------------------->
           <!---------------------------搜索区域------------------------------->
@@ -78,9 +79,9 @@
           <!------------------------------------------------------------------------>
           <backDialog ref="backEPS" :dialogVisible="backDialogVisible" @changeVisible="changebackDialogVisible" @handleBack="handleBackEPS" />
         </div>
-      </el-tab-pane>
+      <!-- </el-tab-pane> -->
       <!-- <el-tab-pane label="进度监控" name="progress"></el-tab-pane> -->
-    </el-tabs>
+    <!-- </el-tabs> -->
   </iPage>
 </template>
 
@@ -88,7 +89,7 @@
 import { iPage, iSearch, iSelect, iInput, iCard, iButton, iPagination, iDatePicker, iMessage, iNavMvp } from 'rise'
 import { pageMixins } from "@/utils/pageMixins"
 import tableList from '../../designate/designatedetail/components/tableList'
-import { tableTitle, searchList } from '../signForPartsDemand/data'
+import { tableTitle, searchList, TAB} from '../signForPartsDemand/data'
 import assignInquiryDepartmentDialog from './components/assignInquiryDepartment'
 import assignInquiryBuyerDialog from './components/assignInquiryBuyer'
 import backDialog from '../integratedManage/components/backEps'
@@ -133,7 +134,8 @@ export default {
       },
       selectDeptId: '',
       downloadLoading: false,
-      signLoading: false
+      signLoading: false,
+      list: TAB,
     }
   },
   created() {
@@ -491,7 +493,10 @@ export default {
 <style lang="scss" scoped>
 .signForParts {
   position: relative;
-
+  .topMenu{
+    display: flex;
+    justify-content: space-between;
+  }  
   .tab {
     ::v-deep .el-tabs__header {
       position: absolute;

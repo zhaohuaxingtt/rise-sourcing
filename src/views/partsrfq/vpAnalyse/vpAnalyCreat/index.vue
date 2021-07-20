@@ -7,7 +7,7 @@
 -->
 <template>
   <iPage>
-    <div class="header">{{$t('TPZS.VPFX')}}{{!!$route.query.rfqId?'-'+$route.query.rfqId:''}}
+    <div class="header">{{$t('TPZS.VPFX')}}{{!!$store.state.rfq.rfqId?'-'+$store.state.rfq.rfqId:''}}
       <div>
         <iButton @click="handleAnalysis">{{$t('TPZS.VPFXK')}}</iButton>
         <icon class="icon-x" name='icondatabaseweixuanzhong' symbol></icon>

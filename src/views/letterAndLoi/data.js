@@ -61,8 +61,8 @@ export const letterListTitle=[
 ]
 
 export const loiListTitle = [
-  { props: "nominateAppId", name: "定点申请单号", key: "LK_DINGDIANXINDANHAO", tooltip: true },
-  { props: "loiNum", name: "LOI编号", key: "LK_LOIBIANHAO", tooltip: true },
+  { props: "nominateAppId", name: "定点申请单号", key: "LK_DINGDIANXINDANHAO", tooltip: false,width:100 },
+  { props: "loiNum", name: "LOI编号", key: "LK_LOIBIANHAO", tooltip: false,width:140 },
   { props: "rfqId", name: "RFQ编号", key: "costanalysismanage.RfqBianHao", tooltip: true },
   { props: "supplierId", name: "供应商号", key: "nominationSupplier.GongYingShangHao", tooltip: true },
   { props: "sapNum", name: "供应商SAP号", key: "LK_GONGYINGSHANGSAPHAO", tooltip: true },
@@ -85,7 +85,7 @@ export const historyListTitle=[
 
 // 历史定点信表头
 export const letterHistoryTitle=[
-  { props: "letterNum", name: "定点信编号", key: "LK_DINGDIANXINBIANHAO", tooltip: true },
+  { props: "letterNum", name: "定点信编号", key: "LK_DINGDIANXINBIANHAO", tooltip: true},
   { props: "fileName", name: "文件名称", key: "LK_WENJIANMINGCHENG", tooltip: true },
   { props: "fileSize", name: "大小", key: "DAXIAO", tooltip: true },
   { props: "uploadDate", name: "上传日期", key: "LK_SHANGCHUANRIQI", tooltip: true },
@@ -94,9 +94,27 @@ export const letterHistoryTitle=[
 
 //历史LOI表头
 export const historyLoiListTitle=[
-  { props: "loiNum", name: "LOI编号", key: "LK_LOIBIANHAO", tooltip: true },
+  { props: "loiNum", name: "LOI编号", key: "LK_LOIBIANHAO", tooltip: true},
   { props: "fileName", name: "文件名称", key: "LK_WENJIANMINGCHENG", tooltip: true },
   { props: "fileSize", name: "大小", key: "DAXIAO", tooltip: true },
   { props: "uploadDate", name: "上传日期", key: "LK_SHANGCHUANRIQI", tooltip: true },
   { props: "uploadUserName", name: "上传人", key: "LK_SHANGCHUANREN", tooltip: true },
+]
+
+export const TAB = [
+  {
+    value: 1,
+    name: '寻源执行',
+    message: 0,
+    url: '/sourcing/partsign',
+    activePath: 'partsign',
+    key: 'XUANYUANCAIDAN'
+  },
+  // {
+  //   value: 2,
+  //   label: '进度监控',
+  //   key: Vue.prototype.$t('partsignLanguage.JinDuJianKong'),
+  //   url: '/nomination',
+  //   message: 0
+  // }
 ]

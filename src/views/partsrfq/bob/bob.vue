@@ -6,7 +6,9 @@
 -->
 <template>
   <div class="bob-main">
-    <iSearch @reset="handleSearchReset" @sure="handleSearch" :icon="false">
+    <iSearch @reset="handleSearchReset"
+             @sure="handleSearch"
+             :icon="false">
       <el-form label-position="top">
         <el-row class="margin-bottom20">
           <!--材料组-->
@@ -52,26 +54,23 @@
           <iButton @click="saveEdit">{{ $t("LK_BAOCUN") }}</iButton>
         </div>
       </template>
-      <el-table
-        tooltip-effect='light'
-        v-if="isRenderTable"
-        ref="multipleTable"
-        :data="tableListData"
-        style="width: 100%; margin-bottom: 20px"
-        row-key="id"
-        :max-height="450"
-        :tree-props="{ children: 'children' }"
-        @selection-change="handleSelectionChange"
-      >
-        <el-table-column type="selection" width="55"> </el-table-column>
-        <el-table-column
-          label="#"
-          type="index"
-          :index="indexMethod"
-          align="center"
-          header-align="center"
-          width="50"
-        >
+      <el-table tooltip-effect='light'
+                v-if="isRenderTable"
+                ref="multipleTable"
+                :data="tableListData"
+                style="width: 100%; margin-bottom: 20px"
+                row-key="id"
+                :max-height="450"
+                :tree-props="{ children: 'children' }"
+                @selection-change="handleSelectionChange">
+        <el-table-column type="selection"
+                         width="55"> </el-table-column>
+        <el-table-column label="#"
+                         type="index"
+                         :index="indexMethod"
+                         align="center"
+                         header-align="center"
+                         width="50">
         </el-table-column>
         <el-table-column
           align="center"
@@ -82,42 +81,45 @@
           <template slot-scope="scope">
             <div class="openPage">
               <el-row :gutter="20">
-                <el-col :span="18" style="textalgin: center">
-                  <el-tooltip v-if="!edit" :content="scope.row.name" placement="top" effect="light">
-                    <p v-if="!edit" class="ellipsis"  @click="clickName(scope.row)">
+                <el-col :span="18"
+                        style="textalgin: center">
+                  <el-tooltip v-if="!edit"
+                              :content="scope.row.name"
+                              placement="top"
+                              effect="light">
+                    <p v-if="!edit"
+                       class="ellipsis"
+                       @click="clickName(scope.row)">
                       {{
                         scope.row.name
                     }}
                     </p>
                   </el-tooltip>
-                  <iInput
-                    v-else
-                    class="nameInput"
-                    v-model="scope.row.name"
-                  ></iInput>
+                  <iInput v-else
+                          class="nameInput"
+                          v-model="scope.row.name"></iInput>
                 </el-col>
                 <el-col :span="6">
                   <span v-if="scope.row.fileType == $t('TPZS.SCHEME_TYPE')">
                     <span class="number">
                       <p>{{ scope.row.reportList.length }}</p>
                     </span>
-                    <icon
-                      class="numberIcon"
-                      style="
+                    <icon class="numberIcon"
+                          style="
                          {
                           font-size: 24px;
                         }
                       "
-                      symbol
-                      name="iconwenjianshuliangbeijing"
-                    ></icon>
+                          symbol
+                          name="iconwenjianshuliangbeijing"></icon>
                   </span>
                 </el-col>
               </el-row>
             </div>
           </template>
         </el-table-column>
-        <el-table-column :label="$t('LK_CAILIAOZU')" prop="materialGroup">
+        <el-table-column :label="$t('LK_CAILIAOZU')"
+                         prop="materialGroup">
         </el-table-column>
         <el-table-column :label="$t('RFQ')" prop="rfqNo"> </el-table-column>
         <el-table-column
@@ -127,26 +129,20 @@
         >
           <template slot-scope="scope">
             <div v-if="!edit">
-              {{ defaultStatus(scope.row, scope.row.isDefault) }}  
+              {{ defaultStatus(scope.row, scope.row.isDefault) }}
             </div>
-            <div
-              v-else-if="
+            <div v-else-if="
                 edit &&
                 scope.row.fileType == $t('TPZS.SCHEME_TYPE') &&
                 scope.row.isDefault != '空' &&
                 scope.row.isDefault
-              "
-            >
-              <iSelect
-                :value="defaultStatus(scope.row, scope.row.isDefault)"
-                @change="changeDefault($event, scope.row)"
-              >
-                <el-option
-                  :value="item.value"
-                  :label="item.label"
-                  v-for="(item, index) in defaultData"
-                  :key="index"
-                ></el-option>
+              ">
+              <iSelect :value="defaultStatus(scope.row, scope.row.isDefault)"
+                       @change="changeDefault($event, scope.row)">
+                <el-option :value="item.value"
+                           :label="item.label"
+                           v-for="(item, index) in defaultData"
+                           :key="index"></el-option>
               </iSelect>
             </div>
           </template>
@@ -155,7 +151,9 @@
         </el-table-column>
         <el-table-column :label="$t('TPZS.CJR')" prop="createNameZh">
         </el-table-column>
-        <el-table-column :label="$t('LK_CHUANGJIANRIQI')" prop="createDate" show-overflow-tooltip>
+        <el-table-column :label="$t('LK_CHUANGJIANRIQI')"
+                         prop="createDate"
+                         show-overflow-tooltip>
         </el-table-column>
         <el-table-column :label="$t('TPZS.SCXGRQ')" prop="updateDate" show-overflow-tooltip>
         </el-table-column>
@@ -178,19 +176,18 @@
           </template>
         </el-table-column>
       </el-table>
-      <iPagination
-        v-update
-        @size-change="handleSizeChange($event, getTableList)"
-        @current-change="handleCurrentChange($event, getTableList)"
-        background
-        :page-sizes="page.pageSizes"
-        :page-size="page.pageSize"
-        :layout="page.layout"
-        :current-page="page.currPage"
-        :total="page.totalCount"
-      />
+      <iPagination v-update
+                   @size-change="handleSizeChange($event, getTableList)"
+                   @current-change="handleCurrentChange($event, getTableList)"
+                   background
+                   :page-sizes="page.pageSizes"
+                   :page-size="page.pageSize"
+                   :layout="page.layout"
+                   :current-page="page.currPage"
+                   :total="page.totalCount" />
 
-      <reportPreview :visible="reportVisible" :reportUrl="reportUrl" />
+      <reportPreview :visible="reportVisible"
+                     :reportUrl="reportUrl" />
     </iCard>
   </div>
 </template>
@@ -227,7 +224,7 @@ export default {
     icon,
     reportPreview,
   },
-  data() {
+  data () {
     return {
       form: {},
       rfqID: "220",
@@ -249,18 +246,18 @@ export default {
       updatedDefault: false //是否已更新默认项
     };
   },
-  created() {
+  created () {
     this.initSearchData();
   },
-  mounted() {
+  mounted () {
     this.getTableList();
   },
   computed: {
-    defaultStatus() {
+    defaultStatus () {
       return function (val, status) {
         let flag = status === "是" || status === "否" ? status : null;
         if (this.currentDefaultObj && this.currentDefaultObj.isDefault == "是") {
-          if (val.id == this.currentDefaultObj.id )
+          if (val.id == this.currentDefaultObj.id)
             flag = "是";
           else if (!flag) flag = null;
           else flag = "否";
@@ -271,7 +268,7 @@ export default {
   },
   methods: {
     //初始化查询数据
-    initSearchData() {
+    initSearchData () {
       const data = this.$store.state.rfq.rfqId;
       if (this.$store.state.rfq.entryStatus == 1) this.rfqStatus = true;
       this.form = {
@@ -283,7 +280,7 @@ export default {
       };
     },
     //表格序号函数
-    indexMethod(e) {
+    indexMethod (e) {
       const rows = [];
       this.tableListData.forEach((r) => {
         rows.push(r.number);
@@ -296,7 +293,7 @@ export default {
       return rows[e];
     },
     //初始化测试数据
-    initData() {
+    initData () {
       this.tableListData = [
         {
           id: 1,
@@ -342,12 +339,12 @@ export default {
       ];
     },
     //重置查询事件
-    handleSearchReset() {
+    handleSearchReset () {
       this.initSearchData();
       this.getTableList();
     },
     //检索事件
-    handleSearch() {
+    handleSearch () {
       this.getTableList().then((res) => {
         if (!res.data || res.data.length == 0) {
           iMessage.error(this.$t('TPZS.BQWFCXDJGSRCWHBCZQQRHCXSR'));
@@ -355,7 +352,7 @@ export default {
       });
     },
     //获取表格数据
-    getTableList() {
+    getTableList () {
       return new Promise((resolve) => {
         const params = {
           pageNo: this.page.currPage,
@@ -401,7 +398,7 @@ export default {
       }
     },
     //递归处理树结构数据的序号
-    handleTableNumber(data, suffix, prefix) {
+    handleTableNumber (data, suffix, prefix) {
       data.forEach((item) => {
         const number = prefix ? prefix + "." + suffix : suffix;
         item["number"] = number;
@@ -413,12 +410,12 @@ export default {
       });
     },
     // 点击编辑按钮
-    editBob() {
+    editBob () {
       this.backUpData = window._.cloneDeep(this.tableListData);
       this.edit = !this.edit;
     },
     //取消保存編輯狀態下的數據
-    cancelEditBob() {
+    cancelEditBob () {
       this.backUpData.map((item, index) => {
         this.$set(this.tableListData[index], 'name', item.name)
         this.$set(this.tableListData[index], 'isDefault', item.isDefault)
@@ -426,7 +423,7 @@ export default {
       this.edit = !this.edit;
     },
     // 点击新建按钮
-    newBob() {
+    newBob () {
       const loading = this.$loading({
         lock: true,
         text: "Loading",
@@ -438,14 +435,19 @@ export default {
           rfqId: this.form.rfq,
         }).then((res) => {
           // this.$store.dispatch('setSchemeId', res.data);
-          this.$router.push({
-            path: "/sourcing/partsrfq/bobNew",
-            query: {
-              rfqId: res.data,
-              newBuild: true,
-            },
-          });
-          loading.close();
+          if (res.code === '200') {
+            this.$router.push({
+              path: '/sourcing/partsrfq/bobNew',
+              query: {
+                rfqId: res.data,
+                newBuild: true,
+              },
+            })
+            loading.close()
+          } else {
+            iMessage.error(res.desZh);
+            loading.close()
+          }
         });
       } else {
         this.$router.push({
@@ -458,7 +460,7 @@ export default {
       }
     },
     // 点击删除按钮
-    deleteBob() {
+    deleteBob () {
       if (!this.selection || this.selection.length == 0) {
         iMessage.error(this.$t('TPZS.QXZYSCDSJ'));
         return;
@@ -490,11 +492,11 @@ export default {
       });
     },
     // 选中项发生改变
-    handleSelectionChange(val) {
+    handleSelectionChange (val) {
       this.selection = val;
     },
     // 点击置顶按钮
-    handleStick(val) {
+    handleStick (val) {
       const params = window._.cloneDeep(val);
       params.isTop = !val.isTop;
       fetchStaick(params).then((res) => {
@@ -543,7 +545,7 @@ export default {
 
 .ellipsis {
   text-overflow: ellipsis;
-  overflow: hidden;  
+  overflow: hidden;
   white-space: nowrap;
   width: 150px;
 }

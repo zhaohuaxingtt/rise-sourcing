@@ -76,17 +76,24 @@
       
       <!-- 定点单号 -->
       <template #id="scope">
-        <a
-          href="javascript:;"
-          @click="viewRsSheetDetail(scope.row)">
-          {{scope.row.id}}
-        </a>
+        <span class="flexRow">
+            <span class="openLinkText cursor "  @click="viewRsSheetDetail(scope.row)"> {{ scope.row.id}}</span>
+            <span class="icon-gray  cursor " v-if="scope.row.id"  @click="viewRsSheetDetail(scope.row)">
+                <icon symbol class="show" name="icontiaozhuananniu" />
+                <icon symbol class="active" name="icontiaozhuanxuanzhongzhuangtai" />
+            </span>
+          </span> 
       </template>
       <!-- 状态 -->
       <template #applicationStatus="scope">
         <span>{{(scope.row.applicationStatus && scope.row.applicationStatus.desc) || scope.row.applicationStatus}}</span>
       </template>
-
+      <!-- rs状态 -->
+      <template #rsStatus="scope">
+        <div>
+          <span>{{scope.row.rsStatus && scope.row.rsStatus.desc || scope.row.rsStatus}}</span>
+        </div>
+      </template>
       <!-- re冻结日期 -->
       <template #rsFreezeDate="scope">
         <span>{{scope.row.rsFreezeDate | dateFilter("YYYY-MM-DD")}}</span>
@@ -166,7 +173,8 @@ import {
   iButton,
   iPagination,
   iDropdown,
-  iMessage
+  iMessage,
+  icon
 } from "rise";
 
 export default {
@@ -197,7 +205,8 @@ export default {
     headerNav,
     search,
     tablelist,
-    selDialog
+    selDialog,
+    icon
   },
   mounted() {
     this.getFetchData()
@@ -407,11 +416,37 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.designateSearch {
-  margin-top: 20px;
-}
-.selStatus-link {
-  font-size: 12px;
-  text-decoration: underline;
-}
+  .openLinkText{
+    color:$color-blue;
+  }
+  .designateSearch {
+    margin-top: 20px;
+  }
+  .selStatus-link {
+    font-size: 12px;
+    text-decoration: underline;
+  }
+  .icon-gray{
+    cursor: pointer;
+    .active{
+      display: none;
+    }
+    .show{
+      display: block;
+    }
+  }
+  .flexRow{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .icon-gray:hover{
+    cursor: pointer;
+    .show{
+      display: none;
+    }
+    .active{
+      display: block;
+    }
+  }
 </style>

@@ -8,11 +8,15 @@
 -->
 <template>
   <iPage class="partsprocureHome">
-    <el-tabs v-model="tab" class="tab">
-      <el-tab-pane :label="language('LK_XUNYUANZHIHANG','寻源')" name="source">
+    <!-- <el-tabs v-model="tab" class="tab"> -->
+      <!-- <el-tab-pane :label="language('LK_XUNYUANZHIHANG','寻源')" name="source"> -->
         <div>
-          <div class="margin-bottom33">
+          <!-- <div class="margin-bottom33">
             <iNavMvp @change="change" lang right routerPage lev="2" :list="navList" @message="clickMessage" />
+          </div> -->
+          <div class="topMenu">
+            <iNavMvp class="margin-bottom30" :list="list" lang @change="change" :lev="1" routerPage></iNavMvp>
+            <iNavMvp class="margin-bottom30" lang @change="change"  right routerPage lev="2" :list="navList" @message="clickMessage" />
           </div>
           <!------------------------------------------------------------------------>
           <!--                  search 搜索模块                                   --->
@@ -281,8 +285,8 @@
             :title="language('LK_QUXIAOLINGJIANCAIGOUXIANGMU','取消零件采购项目')"
           ></backItems>
         </div>
-      </el-tab-pane>
-    </el-tabs>
+      <!-- </el-tab-pane> -->
+    <!-- </el-tabs> -->
   </iPage>
 </template>
 <script>
@@ -311,7 +315,7 @@ import changeItems from "../../partsign/home/components/changeItems";
 import filters from "@/utils/filters";
 import creatFs from "./components/creatFs";
 import { cloneDeep } from "lodash"
-import { clickMessage } from "@/views/partsign/home/components/data"
+import { clickMessage,TAB } from "@/views/partsign/home/components/data"
 
 // eslint-disable-next-line no-undef
 const { mapState, mapActions } = Vuex.createNamespacedHelpers("sourcing")
@@ -344,6 +348,7 @@ export default {
       diologBack: false, //退回
       startLoding: false,
       tab: "source",
+      list:TAB
     };
   },
   computed: {
@@ -610,7 +615,10 @@ export default {
 
 .partsprocureHome {
   position: relative;
-
+  .topMenu{
+    display: flex;
+    justify-content: space-between;
+  }
   .tab {
     ::v-deep .el-tabs__header {
       position: absolute;
