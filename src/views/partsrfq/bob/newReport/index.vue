@@ -176,7 +176,7 @@
                   <div v-else
                        @click="findPart"
                        class="icon-add">
-                    <icon style="font-size: 260px"
+                    <icon style="font-size:300px;width:230px"
                           name="iconbob-daitianjia"
                           symbol></icon>
                     <div style="text-align: center">{{ $t("待添加") }}</div>
@@ -311,7 +311,7 @@ export default {
       dialogVisible: false,
       analysisSave: false,
       reportSave: false,
-      anchorList: ['原材料/散件', '制造费', '保费成本', '管理费', '其他费用', '利润'],
+      anchorList: ['原材料/散件', '制造费', '报废成本', '管理费', '其他费用', '利润'],
       current: 0,
       isCover: true
     };
@@ -706,7 +706,7 @@ export default {
         //指定dom到页面顶端的距离
         let nodeList = this.$el.querySelectorAll('.el-table__row--level-0')
         nodeList[index].scrollIntoView({
-          block: 'start',
+          top: nodeList[index].offsetTop - 40,
           behavior: 'smooth',
         })
       });
@@ -755,9 +755,10 @@ export default {
   }
   .left-dash1 {
     border: none;
-    border-left: 5px dashed grey;
+    border-left: 2px dashed #CED4E1;
+    padding-left: 40px;
     .icon-add {
-      margin-top: 100px;
+      margin-top: 80px;
       margin-bottom: 20px;
       text-align: center;
     }
@@ -787,6 +788,8 @@ export default {
   text-align: center;
   margin: 100px auto;
   li {
+    width: 100%;
+    cursor: pointer;
     padding: 10px 0;
     color: #1b1d21;
     list-style: disc !important;
@@ -794,5 +797,11 @@ export default {
 }
 .active {
   color: #1660f1 !important;
+}
+::v-deep .el-form-item{
+  margin-bottom: 20px;
+  .el-form-item__label{
+    padding: 0;
+  }
 }
 </style>

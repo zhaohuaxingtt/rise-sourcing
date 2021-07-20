@@ -154,6 +154,7 @@ export default {
       this.partItemCurrent = index;
       this.currentBatchNumber = item.batchNumber;
       this.currentPartsId = item.partsId;
+      this.currentSupplierId = item.supplierId
       this.getDataInfo();
     },
     handlePartItemClose(e, item) {
