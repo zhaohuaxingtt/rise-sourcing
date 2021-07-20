@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-22 16:16:26
- * @LastEditTime: 2021-07-19 18:17:18
+ * @LastEditTime: 2021-07-20 17:24:03
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\supplierscore\components\rfqdetail\components\supplierScore\components\score\index.vue
@@ -44,7 +44,7 @@
               </template>
               <template v-if="item.props === 'rate'" v-slot="scope">
                 <div v-if="editStatus">
-                  <iInput v-if="userInfo.id != 197 && userInfo.id != 198 && userInfo.id != 199" v-model="scope.row.rate" />
+                  <iInput v-if="userInfo.id != 199 && userInfo.id != 207 && userInfo.id != 208" v-model="scope.row.rate" />
                   <iSelect v-else v-model="scope.row.rate">
                     <el-option value="合格" :label="language('HEGE', '合格')" />
                     <el-option value="不合格" :label="language('BUHEGE', '不合格')" />
@@ -112,7 +112,7 @@ export default {
     })
   },
   created() {
-    if (this.userInfo.id == 197 || this.userInfo.id == 198 || this.userInfo.id == 199) {
+    if (this.userInfo.id == 199 || this.userInfo.id == 207 || this.userInfo.id == 208) {
       this.deptScoreTableTitle = this.deptScoreTableTitle.filter(item => item.props === "rate" || item.props === "remark" || item.props === "rateStatus")
     }
   },
