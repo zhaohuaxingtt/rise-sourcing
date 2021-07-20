@@ -86,7 +86,12 @@
       <template #applicationStatus="scope">
         <span>{{(scope.row.applicationStatus && scope.row.applicationStatus.desc) || scope.row.applicationStatus}}</span>
       </template>
-
+      <!-- rs状态 -->
+      <template #rsStatus="scope">
+        <div>
+          <span>{{scope.row.rsStatus && scope.row.rsStatus.desc || scope.row.rsStatus}}</span>
+        </div>
+      </template>
       <!-- re冻结日期 -->
       <template #rsFreezeDate="scope">
         <span>{{scope.row.rsFreezeDate | dateFilter("YYYY-MM-DD")}}</span>
