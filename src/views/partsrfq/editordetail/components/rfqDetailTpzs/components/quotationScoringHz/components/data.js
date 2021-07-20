@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-05-28 14:32:26
- * @LastEditTime: 2021-07-19 21:08:58
+ * @LastEditTime: 2021-07-20 16:02:56
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\data.js
@@ -89,7 +89,7 @@ export const gstableTileXh = function(index){
   ]
 }
 //cache list
-export const whiteList = ['groupName','partNo','partName','cfPartAPrice','cfPartBPrice','pca','tia','ebr','lcAPrice','lcBPrice','tooling','ltc','ltcStaringDate','tto'] //默认需要显示的数据
+export const whiteList = ['groupName','partNo','partName','cfPartAPrice','cfPartBPrice','ebr','lcAPrice','lcBPrice','tooling','ltc','ltcStaringDate','tto'] //默认需要显示的数据
 export const whiteListGs = ['groupName','partNo','partName','currentSupplier','currentAPrice','currentBPrice','currentLtc','currentTto','currentSupplierSaving','ebr','lcAPrice','lcBPrice','bnkApprovalStatus','tooling','supplierSopDate','ltc','ltcStaringDate','tto','developmentCost','releaseCost','saving'] //默认需要显示的数据
 /**
  * @description：通过需要循环的表格和基础表格，在通过白名单将需要所有的百名单删选出来
