@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-28 15:03:47
- * @LastEditTime: 2021-07-19 19:32:51
+ * @LastEditTime: 2021-07-20 17:01:02
  * @LastEditors: Please set LastEditors
  * @Description: 特殊表格实现
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\table.vue
@@ -213,6 +213,7 @@ export default{
     }
     ::v-deep .el-table__header-wrapper{
       overflow: visible;
+      
       .labelHader{
         width: 100%;
         overflow: hidden;
@@ -227,7 +228,8 @@ export default{
       }
     }
     ::v-deep.el-table__body-wrapper{
-      overflow:visible
+      overflow:visible;
+      height: auto!important;
     }
   }
   .headerContent{
@@ -238,7 +240,7 @@ export default{
       width: 100px;
       //background-color: red;
       z-index: 123;
-      bottom: 56PX;
+      bottom: 49PX;
       left:-13px;
       border: 1px solid #C5CCD6;
       border-bottom: none;

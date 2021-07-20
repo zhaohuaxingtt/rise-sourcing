@@ -1,7 +1,7 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-05-25 09:42:07
- * @LastEditTime: 2021-07-20 10:51:07
+ * @LastEditTime: 2021-07-20 12:39:53
  * @Description: 业务分配模拟
 -->
 
@@ -218,6 +218,10 @@ export default {
       const selectedData = this.$refs.monitorTable.selectedData
       if (!(selectedData && selectedData.length)) {
         iMessage.error(this.language('nominationSuggestion_QingXuanZeZhiShaoYiTiaoShuJu','请选择至少一条数据'))
+        return
+      }
+      if ((selectedData && selectedData.length === 1)) {
+        iMessage.error(this.language('QINGZHISHAOXUANZELIANGXIANGZUHE','请至少选择两项组合'))
         return
       }
       this.combineVisible = !this.combineVisible
