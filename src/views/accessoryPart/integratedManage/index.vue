@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-26 11:16:51
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-16 23:39:29
+ * @LastEditTime: 2021-07-20 16:08:08
  * @Description: 配件综合管理页面
  * @FilePath: \front-web\src\views\accessoryPart\integratedManage\index.vue
 -->
@@ -107,7 +107,7 @@ import assignInquiryBuyerDialog from '../signForPartsDemand/components/assignInq
 import backEpsDialog from './components/backEps'
 import backDialog from './components/back'
 import { uniq } from 'lodash'
-import { getAccessoryManageList, sendAccessoryInfo, downLoadAccessoryList, downLoadAccessoryAll, back, backEPS } from '@/api/accessoryPart/index'
+import { getAccessoryManageList, sendAccessoryInfo, downloadManageList, downLoadAccessoryAll, back, backEPS } from '@/api/accessoryPart/index'
 import { getDictByCode } from '@/api/dictionary'
 import {findBySearches,getCartypeDict} from "@/api/partsrfq/home";
 import joinRfqDialog from '@/views/designateFiles/fileManage/components/joinRfq'
@@ -545,7 +545,7 @@ export default {
       const params = {
         ...this.searchParams
       }
-      await downLoadAccessoryList(params)
+      await downloadManageList(params)
       this.downloadLoading = false
     },
     /**
