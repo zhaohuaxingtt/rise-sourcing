@@ -5,10 +5,11 @@
 -->
 <template>
     <iPage class="importFiles">
-        <el-tabs v-model="tab" class="tab">
-            <el-tab-pane :label="language('LK_XUNYUANZHIHANG','寻源')" name="source">
-                 <div class="margin-bottom33">
-                    <iNavMvp right routerPage lev="2" :list="navList" @message="clickMessage" />
+        <!-- <el-tabs v-model="tab" class="tab"> -->
+            <!-- <el-tab-pane :label="language('LK_XUNYUANZHIHANG','寻源')" name="source"> -->
+                 <div class="topMenu">
+                    <iNavMvp class="margin-bottom30" :list="list" lang @change="change" :lev="1" routerPage></iNavMvp>
+                    <iNavMvp class="margin-bottom30" right routerPage lev="2" :list="navList" @message="clickMessage" />
                 </div>
                 <!-- 内容区 -->
                 <iCard>
@@ -38,7 +39,13 @@
                       @handleSelectionChange="handleSelectionChange"
                   >
                       <template #code="scope">
-                        <span @click="goFilesList(scope.row.code)" class="link-underline" >{{scope.row.code}}</span>
+                        <span class="flexRow">
+                          <span class="openLinkText cursor " @click="goFilesList(scope.row.code)"> {{scope.row.code}}</span>
+                          <span class="icon-gray  cursor  " v-if="scope.row.code"  @click="goFilesList(scope.row.code)">
+                              <icon symbol class="show" name="icontiaozhuananniu" />
+                              <icon symbol class="active" name="icontiaozhuanxuanzhongzhuangtai" />
+                          </span>
+                        </span>  
                       </template>
                   </tableList>
                   <!-- 分页 -->
@@ -54,8 +61,8 @@
                       :total="page.totalCount"
                     />
                 </iCard>
-            </el-tab-pane>
-        </el-tabs>
+            <!-- </el-tab-pane> -->
+        <!-- </el-tabs> -->
     </iPage>
 </template>
 
@@ -66,6 +73,7 @@ import {
   iCard,
   iButton,
   iPagination,
+  icon
 } from "rise";
 import Upload from '@/components/Upload'
 import { pageMixins } from "@/utils/pageMixins";
@@ -78,7 +86,7 @@ import {
   downloadImportFile,
 } from '@/api/designateFiles/importFiles'
 import { iMessage } from 'rise';
-import { clickMessage } from "@/views/partsign/home/components/data"
+import { clickMessage, TAB} from "@/views/partsign/home/components/data"
 
 // eslint-disable-next-line no-undef
 const { mapState, mapActions } = Vuex.createNamespacedHelpers("sourcing")
@@ -94,6 +102,7 @@ export default {
         iPagination,
         Upload,
         tableList,
+        icon
     },
     data(){
         return{
@@ -103,6 +112,7 @@ export default {
             selectItems:[],
             uploadImportFile:uploadImportFile,
             tableListData:[],
+            list:TAB
         }
     },
     created(){
@@ -182,6 +192,13 @@ export default {
 
 <style lang="scss" scoped>
 .importFiles {
+  .topMenu{
+    display: flex;
+    justify-content: space-between;
+  }
+  .openLinkText{
+    color:$color-blue;
+  }
   position: relative;
 
   .tab {
@@ -217,6 +234,29 @@ export default {
         opacity: 1;
         font-weight: bold;
       }
+    }
+  }
+  .icon-gray{
+    cursor: pointer;
+    .active{
+      display: none;
+    }
+    .show{
+      display: block;
+    }
+  }
+  .flexRow{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .icon-gray:hover{
+    cursor: pointer;
+    .show{
+      display: none;
+    }
+    .active{
+      display: block;
     }
   }
 }
