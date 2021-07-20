@@ -6,7 +6,7 @@
  * @Description: 来自零件签收-table组件，新增了单列的异常配置
 -->
 <template>
-  <el-table fit tooltip-effect='light' :height="height" :data='tableData' default-expand-all  v-bind="treeProps" v-loading='tableLoading' @selection-change="handleSelectionChange" :empty-text="$t('LK_ZANWUSHUJU')" ref="moviesTable" :class="{'moviesTable': true, 'radio': radio}">
+  <el-table fit tooltip-effect='light' :height="height" :data='tableData' default-expand-all  v-bind="treeProps" v-loading='tableLoading' @selection-change="handleSelectionChange" :empty-text="$t('LK_ZANWUSHUJU')" ref="moviesTable" :class="{'moviesTable': true, 'radio': radio}" @select="handleSelect"  @select-all="handleSelectAll" :cell-style="borderLeft">
     <el-table-column v-if="selection" type='selection' width="56" align='center'></el-table-column>
     <el-table-column v-if='index' type='index' width='50' align='center' :label='indexLabel'>
       <template slot-scope="scope">
@@ -16,8 +16,16 @@
       </template>
     </el-table-column>
     <template v-for="(items,index) in tableTitle">
-      <el-table-column :key="index" align='center' :width="items.width" :show-overflow-tooltip='items.tooltip' v-if='items.props == activeItems' :prop="items.props" :label="lang ? language(items.key, items.name) : $t(items.key)">
-        <template slot-scope="row"><span class="openLinkText cursor" @click="openPage(row.row)">{{row.row[activeItems]}}</span></template>
+      <el-table-column :key="index" align='center' :width="items.width" :min-width="items.minWidth ? items.minWidth.toString():''" :show-overflow-tooltip='items.tooltip' v-if='items.props == activeItems' :prop="items.props" :label="lang ? language(items.key, items.name) : $t(items.key)">
+        <template slot-scope="row">
+           <span class="flexRow">
+            <span class="openLinkText cursor "  @click="openPage(row.row)"> {{ row.row[activeItems]}}</span>
+            <span class="icon-gray  cursor " v-if="row.row[activeItems]"  @click="openPage(row.row)">
+                <icon symbol class="show" name="icontiaozhuananniu" />
+                <icon symbol class="active" name="icontiaozhuanxuanzhongzhuangtai" />
+            </span>
+          </span> 
+          </template>
       </el-table-column>
       <el-table-column :key="index" align='center' :show-overflow-tooltip='items.tooltip'  v-else-if='items.props == "tpInfoType"' :label="lang ? language(items.key, items.name) : $t(items.key)" :prop="items.props">
         <template slot-scope="scope">
@@ -28,7 +36,8 @@
         v-else 
         :key="index" 
         align='center' 
-        :width="items.width" 
+        :width="items.width"
+        :min-width="items.minWidth ? items.minWidth.toString():''" 
         :show-overflow-tooltip='items.tooltip'
         :label="lang ? language(items.key, items.name) : $t(items.key)" 
         :prop="items.props"
@@ -45,6 +54,7 @@
   </el-table>
 </template>
 <script>
+import {icon} from "rise"
 export default{
   props:{
     tableData:{type:Array},
@@ -60,6 +70,7 @@ export default{
     lang: {type: Boolean}
   },
   inject:['vm'],
+  components:{icon},
   methods:{
     handleSelectionChange(val){
 		if (this.radio) {
@@ -88,7 +99,25 @@ export default{
         return ''
       }
     },
-	
+	handleSelect(selection,row){
+      const selectdBorder = row.selectedBorder
+      this.$set(row,'selectedBorder',!selectdBorder)
+    },
+    handleSelectAll(selection){  
+      const flag = selection.length
+      for(let i= 0  ; i<flag;i++){
+        this.$set(selection[i],'selectedBorder',!!flag)
+      }
+      !flag? this.tableData.forEach(i=>{i.selectedBorder=!i.selectedBorder}):''
+    },
+    borderLeft({row, column, rowIndex, columnIndex}){
+      if(columnIndex === 0 && row.selectedBorder === true){
+         return "border-left:2px solid #1660F1;"
+      }
+      else{
+        return ""
+      }
+    }
   }
 }
 </script>
@@ -129,5 +158,27 @@ export default{
       }
     }
   }
-  
+  .icon-gray{
+    cursor: pointer;
+    .active{
+      display: none;
+    }
+    .show{
+      display: block;
+    }
+  }
+  .flexRow{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .icon-gray:hover{
+    cursor: pointer;
+    .show{
+      display: none;
+    }
+    .active{
+      display: block;
+    }
+  }
 </style>

@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-06-18 10:40:28
- * @LastEditTime: 2021-07-02 18:19:24
+ * @LastEditTime: 2021-07-20 16:07:48
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\configscoredept\components\data.js
@@ -19,12 +19,12 @@ export const tableTitle = [
 
 export const deptDialogQueryForm = {
   deptNum: "",
-  deptNameZh: "",
-  deptNameEn: ""
+  nameZh: "",
+  nameEn: ""
 }
 
 export const deptDialogTableTitle = [
   { props: "deptNum", name: "部门编号", key: "BUMENBIANHAO", tooltip: true },
-  { props: "deptNameZh", name: "部门中文名", key: "BUMENZHONGWENMING", tooltip: true },
-  { props: "deptNameEn", name: "部门英文名", key: "BUMENYINGWENMING", tooltip: true },
+  { props: "nameZh", name: "部门中文名", key: "BUMENZHONGWENMING", tooltip: true },
+  { props: "nameEn", name: "部门英文名", key: "BUMENYINGWENMING", tooltip: true },
 ]

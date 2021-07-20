@@ -16,28 +16,30 @@ export const tableTitle = [{
   //export const tableTitle = permissionTitle("nominationLanguage_nominationLanguageLIST",[{
   props: 'id',
   name: '申请单号',
-  width: 150,
+  width: 80,
   key: 'nominationLanguage_ShenQingDanHao',
-  tooltip: false
+  tooltip: true
 },
 {
   props: 'nominateName',
   name: '申请单名',
-  width: 200,
+  width: 400,
   key: 'nominationLanguage_ShenQingDanMing',
-  tooltip: false
+  tooltip: true
 },
 {
   props: 'carTypeProj',
   name: 'PROJECT',
   key: 'PROJECT',
-  tooltip: false
+  tooltip: true,
+  minWidth:100
 },
 {
 	props: 'applicationStatus',
 	name: '状态',
 	key: 'LK_ZHUANGTAI',
-	tooltip:false
+	tooltip:true,
+  width:120
 },
 {
   props: 'partProjType',
@@ -63,61 +65,62 @@ export const tableTitle = [{
   props: 'linieName',
   name: 'LINIE',
   key: 'LINIE',
-  tooltip: false
+  tooltip: true,
+  width:120
 },
 {
   props: 'rsStatus',
   name: 'RS单状态',
   key: 'nominationLanguage_RSZhuangTai',
-  tooltip: false
+  tooltip: true
 },
 {
   props: 'rsFreezeDate',
   name: 'RS冻结日期',
   width: 150,
   key: 'nominationLanguage_RSDongJieRiQi',
-  tooltip: false
+  tooltip: true
 },
 {
   props: 'isPriceConsistent',
   name: '报价一致性校验状态',
   width: 150,
   key: 'nominationLanguage_BaoJiaYiZhiXingZhuangTai',
-  tooltip: false
+  tooltip: true
 },
 {
   props: 'selStatus',
   name: 'SEL单据确认状态',
   width: 150,
   key: 'nominationLanguage_SELDanJuQUeRenZH',
-  tooltip: false
+  tooltip: true
 },
 {
 	props: 'checkDueDate',
 	name: '复核截止日期',
   width: 150,
 	key: 'nominationLanguage.FuHeJieZhiRiQi',
-	tooltip:false
+	tooltip:true
 },
 {
 	props: 'signId',
 	name: '签字单号',
 	key: 'nominationLanguage.QianZiDanHao',
-	tooltip:false
+	tooltip:true
 },
 {
   props: 'signStatus',
   name: '签字单状态',
   width: 150,
   key: 'nominationLanguage.QianZiDanZhuangTai',
-  tooltip: false
+  tooltip: true
 },
 {
   props: 'freezeDate',
   name: '冻结日期',
   width: 150,
   key: 'nominationLanguage_DongJieRiQi',
-  tooltip: false
+  tooltip: true
 },
 ]
 

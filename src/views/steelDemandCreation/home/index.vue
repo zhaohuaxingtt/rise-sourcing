@@ -9,8 +9,8 @@
 <template>
   <iPage>
     <div class="topMenu">
-      <iNavMvp class="margin-bottom33" lang @change="change" :list='navListLeft' routerPage lev="1" @message="clickMessage" />
-      <iNavMvp class="margin-bottom33" lang @change="change" right routerPage lev="2" :list="navList" @message="clickMessage" />
+      <iNavMvp class="margin-bottom30" lang @change="change" :list='navListLeft' routerPage lev="1" @message="clickMessage" />
+      <iNavMvp class="margin-bottom30" lang @change="change" right routerPage lev="2" :list="navList" @message="clickMessage" />
     </div>
     <iSearch class="margin-bottom20">
       <el-form>

@@ -6,10 +6,10 @@
  */
 import {permissionTitle} from '@/utils'
 export const partsProductionTableTitle = permissionTitle("PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_TIMEPLAN_PRODUCTIONLIST",[
-    {props:'rfqPlanId',name:'FS号',key: 'LK_FSHAO', fixed: true},
+    {props:'rfqPlanId',name:'FS号',key: 'LK_FSHAO', fixed: true,minWidth:100},
     {props:'procureFactory',name:'采购工厂',key: 'LK_CAIGOUGONGCHANG',fixed: true},
-    {props:'ninePartNum',name:'零件号',key: 'LK_LINGJIANHAO',fixed: true},
-    {props:'partNameZh',name:'零件名称',key: 'LK_LINGJIANMINGCHENG',fixed: true},
+    {props:'ninePartNum',name:'零件号',key: 'LK_LINGJIANHAO',fixed: true,minWidth:120},
+    {props:'partNameZh',name:'零件名称',key: 'LK_LINGJIANMINGCHENG',fixed: true,minWidth:140},
     {props:'unit',name:'价格单位',key: 'LK_DANWEI',fixed: true},
     /*{props:'year',name:'2020'},
     {props:'year1',name:'2021'},
