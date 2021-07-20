@@ -7,7 +7,7 @@
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\index.vue
 -->
 <template>
-  <div>
+  <div style="position: relative;">
     <div class="quotationHz margin-bottom20">
       <!--------------输入框模块-------------->
       <div class='search'>
