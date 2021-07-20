@@ -1,7 +1,7 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-02-24 09:42:07
- * @LastEditTime: 2021-07-17 21:23:44
+ * @LastEditTime: 2021-07-19 16:42:12
  * @LastEditors: Please set LastEditors
 -->
 
@@ -215,6 +215,10 @@ export default {
       const supplierChosen = row.supplierChosen && row.supplierChosen || []
       const percent = row.percent || []
       const cIndex = supplierChosen.findIndex(o => o === curSupplier)
+      // 当前supplier是否有TTo
+      const curTTo = row.TTo && row.TTo[Index]
+      // console.log(curTTo, curSupplier, supplierChosen, row)
+      // 非编辑模式下不允许编辑供应商
       if (!this.batchEdit) return
       if (supplierChosen.includes(curSupplier))  {
         // 只有一家供应商报价
@@ -223,7 +227,7 @@ export default {
         percent.splice(cIndex, 1)
       } else {
         // 当前供应商TTO为空不能被选中
-        if (!_.sum(curSupplier.TTo || [])) return
+        if (!curTTo) return
         supplierChosen.push(curSupplier)
       }
       // 添加未保存警告
@@ -385,8 +389,9 @@ export default {
     // 筛选出分组最低的供应商
     filterBestGrouper(data) {
       let bestGroup = []
+      const supplierTemlate = JSON.parse(JSON.stringify(this.supplier))
       // 循环供应商
-      this.supplier.forEach((supplierName, index) => {
+      supplierTemlate.forEach((supplierName, index) => {
         // 以纵向供应商维度，每个零件都必须有报价
         const cstStatus = !data.map(dataItem => dataItem.TTo[index]).filter(p => p === 0).length
         // 取出该供应商所有零件报价的TTo
@@ -425,7 +430,8 @@ export default {
       // 'Best TTO \n for Whole Package'
       // 根据供应商
       let countSupplier = []
-      this.supplier.forEach((supplierName, index) => {
+      const supplierTemlate = JSON.parse(JSON.stringify(this.supplier))
+      supplierTemlate.forEach((supplierName, index) => {
         // 检查该供应商是否支持汇总，这个供应商对所有零件都有报价才支持
         const cstStatus = !data.map(dataItem => dataItem.TTo[index]).filter(p => p === 0).length
         const wholePackageData = data.map(o => o.TTo[index])
@@ -511,7 +517,7 @@ export default {
         }
       })
       bestPartList = bestPartList.sort((a,b)=>a-b)
-      this.supplier.forEach((supplierName, index) => {
+      supplierTemlate.forEach((supplierName, index) => {
         const sup = bestPartList.filter(o => o.index === index)
         const dataCount = _.sum(sup.map(supItem => supItem.data))
         
@@ -529,7 +535,8 @@ export default {
       // Recommend \n Scenario
       // 加权汇总
       let weightSupplier = []
-      this.supplier.forEach((supplierName, index) => {
+      
+      supplierTemlate.forEach((supplierName, index) => {
         // 分供应商筛选出报价最高和最低的零件
         let baojiaArray = []
         data.forEach((dataItem) => {
@@ -568,7 +575,6 @@ export default {
         isShowWeightStick,
         supplier
       }
-      console.log('res', res, supplier)
       return res
     }
   }

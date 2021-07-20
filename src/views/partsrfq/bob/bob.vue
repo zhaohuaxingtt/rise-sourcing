@@ -235,6 +235,7 @@ export default {
         { value: "是", label: this.$t("nominationLanguage.Yes") },
         { value: "否", label: this.$t("nominationLanguage.No") },
       ],
+      updatedDefault: false //是否已更新默认项
     };
   },
   created () {
@@ -246,10 +247,7 @@ export default {
   computed: {
     defaultStatus () {
       return function (val, status) {
-        let flag =
-          status === "是" || status === "否"
-            ? status
-            : null;
+        let flag = status === "是" || status === "否" ? status : null;
         if (this.currentDefaultObj && this.currentDefaultObj.isDefault == "是") {
           if (val.id == this.currentDefaultObj.id)
             flag = "是";
@@ -361,10 +359,26 @@ export default {
             this.page.totalCount = res.total;
             this.tableListData = res.data;
             this.handleTableNumber(this.tableListData, 1, null);
+            this.updateTableData()
             resolve(res);
           }
         });
       });
+    },
+    //更新表格数据
+    updateTableData() {
+      if(this.updatedDefault) {
+        this.tableListData.map((item, index) => {
+          let flag = item.isDefault === "是" || item.isDefault === "否" ? item.isDefault : null;
+          if (this.currentDefaultObj && this.currentDefaultObj.isDefault == "是") {
+            if (item.id == this.currentDefaultObj.id )
+              flag = "是";
+            else if (!flag) flag = null;
+            else flag = "否";
+          }
+          this.$set(this.tableListData[index], 'isDefault', flag)
+        })
+      }
     },
     //递归处理树结构数据的序号
     handleTableNumber (data, suffix, prefix) {
@@ -442,27 +456,16 @@ export default {
       });
     },
     //编辑时，改变默认项事件
-    changeDefault (val, row) {
-      // if (row.id == 1) {
-      //   debugger;
-      // }
+    changeDefault(val, row) {
       this.$set(row, "isDefault", val);
       this.$set(this, "currentDefaultObj", row);
-      // this.currentDefaultObj = row
+      if(val == '是') this.updatedDefault = true
+      this.updateTableData()
     },
     //保存编辑
-    saveEdit () {
-      let count = 0;
-      this.tableListData.forEach((item) => {
-        if (item.isDefault == "是") count++;
-      });
-      if (count > 1) {
-        iMessage.error(this.$t("只能存在一个默认方案"));
-        return;
-      }
+    saveEdit() {
       this.edit = false;
       const params = this.tableListData;
-
       fetchEdit(params).then((res) => {
         if (res) {
           if (res.code == 200) iMessage.success(res.desZh);

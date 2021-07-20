@@ -168,6 +168,9 @@ export default {
           return window.math.add(acc, this.tableListData[0][cur.year])
         }, 0)
       }
+    },
+    clearTime(){
+      this.startYear = ''
     }
   }
 }

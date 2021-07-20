@@ -1,7 +1,7 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-05-25 09:42:07
- * @LastEditTime: 2021-07-17 20:31:02
+ * @LastEditTime: 2021-07-19 16:28:06
  * @Description: 业务分配模拟
 -->
 
@@ -310,11 +310,13 @@ export default {
         rfqId: this.rfqId
       }).then(res => {
         this.tableLoading = false
-        if (res.code === '200') {
+        if (res.code == '200') {
           this.params = _.cloneDeep(res.data)
+          this.supplierList = []
           this.supplierList = res.data.supplierSet
           const tableListData = res.data.partInfoList || []
-          tableListData.map(o => {
+          let newTableList = []
+          newTableList = tableListData.map(o => {
             // 绑定供应商
             o.id = this.randomid()
             o.groupId && (o.gid = o.groupId)
@@ -324,9 +326,9 @@ export default {
             o.percentCalc = []
             const suppDataList = o.bdlInfoList || []
             this.supplierList.forEach((suppName, index) => {
-              const supplier = (suppDataList && suppDataList.find(o => o.supplierName === suppName)) || {}
+              const supplier = (suppDataList && suppDataList.find(o => o.supplierName == suppName)) || {}
               const recommendSupplier = (o.recommendBdlInfoList && o.recommendBdlInfoList.find(o => o.recommendSupplier === suppName)) || {}
-              o.TTo[index] = supplier.tto || 0
+              o.TTo.push(supplier.tto || 0)
               o.percentCalc[index] = Number(recommendSupplier.share).toFixed(2) || 0
             })
             // 绑定推荐供应商
@@ -343,10 +345,10 @@ export default {
             // })
             return o
           })
-          this.tableListData = tableListData
+          this.tableListData = newTableList
           this.updateTime = res.data.refreshTime || ''
           this.updateTime = this.updateTime ? window.moment(this.updateTime).format('YYYY-MM-DD HH:mm:ss') : ''
-          console.log('tableListData', tableListData)
+          console.log('tableListData', newTableList)
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }
