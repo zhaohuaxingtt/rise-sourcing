@@ -118,6 +118,12 @@
       <template #isPriceConsistent="scope">
         <span>{{[null, undefined].includes(scope.row.isPriceConsistent) ? '' : (scope.row.isPriceConsistent ? '通过' : '不通过')}}</span>
       </template>
+      <!-- RS状态 -->
+      <template #rsStatus="scope">
+        <div>
+          <span>{{scope.row.rsStatus && scope.row.rsStatus.desc || scope.row.rsStatus}}</span>
+        </div>
+      </template>
       <!-- SEL单据确认状态 -->
       <template #selStatus="scope">
         <div>
