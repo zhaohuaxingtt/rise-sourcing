@@ -10,7 +10,7 @@
 import router from './router'
 import App from './App.vue'
 import store from './store'
-// import '../public/theme/index.css'
+import '../public/theme/index.css'  
 import '@/assets/style/global/index.scss'
 import './utils/mydirect'
 import './permission'

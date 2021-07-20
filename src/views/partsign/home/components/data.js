@@ -9,18 +9,18 @@
 import store from '@/store'
 import {permissionTitle} from '@/utils'
 export const tableTitle = permissionTitle("PERMISSION_TESTTABLE",[
-  {props:'tpPartID',name:'信息单流水号',key: 'LK_XINXIDANLIUSHUIHAO',tooltip:false },
-  {props:'partNum',name:'零件号',key: 'LK_LINGJIANHAO',tooltip:false},
-  {props:'partNameCn',name:'零件名（中）',key: 'LK_LINGJIANMINGZHONG',tooltip:false},
-  {props:'partNameDe',name:'零件名（德）',key: 'LK_LINGJIANMINGDE',tooltip:true},
-  {props:'projectCarType',name:'车型项目',key: 'LK_CHEXINGXIANGMU',tooltip:false},
-  {props:'buyerName',name:'前期采购员',key: 'LK_CAIGOUYUAN',tooltip:false},
-  {props:'tpDeptNum',name:'设计科室',key: 'LK_SHEJIKESHI',tooltip:false},
-  {props:'tpPrincepalName',name:'工程师',key: 'LK_GONGCHENGSHI',tooltip:false},
-  {props:'tpInfoType',name:'信息单类型',key: 'LK_XINXIDANLEIXING',tooltip:false},
-  {props:'status',name:'信息单状态',key: 'LK_XINXIDANZHUANGTAI',tooltip:false},
-  {props:'attachmentStatus',name:'询价资料状态',key: 'LK_XUNJIAZILIAOZHUANGTAI',tooltip:false},
-  {props:'partDosageStatus',name:'每车用量状态',key: 'LK_MEICHEYONGLIANGZHUANGTAI',tooltip:false}
+  {props:'tpPartID',name:'信息单流水号',key: 'LK_XINXIDANLIUSHUIHAO',tooltip:false ,width:100},
+  {props:'partNum',name:'零件号',key: 'LK_LINGJIANHAO',tooltip:false,width:130},
+  {props:'partNameCn',name:'零件名（中）',key: 'LK_LINGJIANMINGZHONG',tooltip:true,width:140},
+  {props:'partNameDe',name:'零件名（德）',key: 'LK_LINGJIANMINGDE',tooltip:true,width:160},
+  {props:'projectCarType',name:'车型项目',key: 'LK_CHEXINGXIANGMU',tooltip:true,width:160},
+  {props:'buyerName',name:'前期采购员',key: 'LK_CAIGOUYUAN',tooltip:true,width:140},
+  {props:'tpDeptNum',name:'设计科室',key: 'LK_SHEJIKESHI',tooltip:true,width:100},
+  {props:'tpPrincepalName',name:'工程师',key: 'LK_GONGCHENGSHI',tooltip:true,width:120},
+  {props:'tpInfoType',name:'信息单类型',key: 'LK_XINXIDANLEIXING',tooltip:true,width:20},
+  {props:'status',name:'信息单状态',key: 'LK_XINXIDANZHUANGTAI',tooltip:true,width:80},
+  {props:'attachmentStatus',name:'询价资料状态',key: 'LK_XUNJIAZILIAOZHUANGTAI',tooltip:true,minWidth:100},
+  {props:'partDosageStatus',name:'每车用量状态',key: 'LK_MEICHEYONGLIANGZHUANGTAI',tooltip:true,minWidth:100}
 ])
 export const needTranslate = [
   {name:'tpInfoType',key:'tp_info_type'}
@@ -127,3 +127,20 @@ export const clickMessage = function(data) {
     })
   }
 }
+export const TAB = [
+  {
+    value: 1,
+    name: '寻源执行',
+    message: 0,
+    url: '/sourcing/partsign',
+    activePath: 'partsign',
+    key: 'XUANYUANCAIDAN'
+  },
+  // {
+  //   value: 2,
+  //   label: '进度监控',
+  //   key: Vue.prototype.$t('partsignLanguage.JinDuJianKong'),
+  //   url: '/nomination',
+  //   message: 0
+  // }
+]

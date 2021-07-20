@@ -55,15 +55,27 @@ export default{
       if( key.key == 'first') this.iconChangeClass = 'type-first';
       if( key.key == 'tow') this.iconChangeClass = 'type-tow';
       if( key.key == 'three') this.iconChangeClass = 'type-last';
+      if(key.key == 'tow'){
+        this.hiddenMenu = !this.hiddenMenu
+        console.log('dd');
+      }
       this.iconDataList.forEach(items=>{
         if (items.key == key.key) {
-          items.active = true
+          if(items.key == 'five' || items.key == 'four'){
+            items.active = false
+          }
+          else{
+            items.active = true
+          }
         } else {items.active = false}
       })
     },
     hideMeun(){
       this.hiddenMenu = !this.hiddenMenu
-    }
+    },
+    clickhfalseMenu(){
+      this.hiddenMenu =false
+    },
   }
 }
 </script>
@@ -104,30 +116,36 @@ export default{
       opacity: 0;
       transform: translateX(-30px);
     } 
-    .type-first{
-      span{
-        &:nth-child(2){
-          border-top-right-radius: 15px;
-        }
+  .type-first{
+    span{
+      &:nth-child(3){
+        border-top-right-radius: 15px;
+      }
+      &:nth-child(1){
+        border-bottom-right-radius: 15px;
       }
     }
-    .type-tow{
-      span{
-        &:nth-child(1){
-          border-bottom-right-radius: 15px;
-        }
-        &:nth-child(3){
-          border-top-right-radius: 15px;
-        }
+  }
+  .type-tow{
+    span{
+      &:nth-child(2){
+        border-bottom-right-radius: 15px;
+      }
+      &:nth-child(4){
+        border-top-right-radius: 15px;
       }
     }
-    .type-last{
-      span{
-       &:nth-child(2){
-           border-bottom-right-radius: 15px;
-        }
+  }
+  .type-last{
+    span{
+      &:nth-child(3){
+        border-bottom-right-radius: 15px;
+      }
+      &:nth-child(5){
+        border-top-right-radius: 15px;
       }
     }
+  }
     .centerBtn{
       background-color:#F1F5FF;
       display: flex;
@@ -135,16 +153,19 @@ export default{
       align-items: center;
       width: 100%;
       span{
-        height: 120px;
+        height: 90px;
         width: 100%;
         display: inline-block;
         text-align: center;
-        line-height: 120px;
+        line-height: 90px;
         background-color:$color-white;
         font-size: 32px;
         cursor: pointer;
         transition: all 0.2s;
         color:#001847;
+        &:nth-child(1),&:nth-child(5){
+          cursor: default;
+        }
       }
       .transparent{
         background-color:transparent;
