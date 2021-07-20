@@ -31,7 +31,13 @@
             >
             <!-- 编号 -->
             <template #code="scope">
-            <span @click="goFilesList(scope.row.code)" class="link-underline" >{{scope.row.code}}</span>
+            <span class="flexRow">
+                <span class="openLinkText cursor " @click="goFilesList(scope.row.code)"> {{scope.row.code}}</span>
+                <span class="icon-gray  cursor  " v-if="scope.row.code"  @click="goFilesList(scope.row.code)">
+                    <icon symbol class="show" name="icontiaozhuananniu" />
+                    <icon symbol class="active" name="icontiaozhuanxuanzhongzhuangtai" />
+                </span>
+            </span>  
             </template>
             <!-- 附件 -->
             <template #LK_FUJIAN="scope">
@@ -187,6 +193,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+    .openLinkText{
+        color:$color-blue;
+    }
     .uploadList{
         position: relative;
         .btn-list{
@@ -196,4 +205,27 @@ export default {
             text-align: right;
         }
     }
+    .icon-gray{
+        cursor: pointer;
+        .active{
+        display: none;
+        }
+        .show{
+        display: block;
+        }
+    }
+    .flexRow{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .icon-gray:hover{
+        cursor: pointer;
+        .show{
+        display: none;
+        }
+        .active{
+        display: block;
+    }
+  }
 </style>

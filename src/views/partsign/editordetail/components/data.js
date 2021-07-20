@@ -106,14 +106,14 @@ export const partDetailTitle=[
 ]
 
 export const enquiryTableTitle = [
-  { props: 'tpPartAttachmentName', name: '文件名', key: 'LK_WENJIANMING', tooltip: true },
+  { props: 'tpPartAttachmentName', name: '文件名', key: 'LK_WENJIANMING', tooltip: true ,minWidth: 90},
   { props: 'size', name: '文件大小（MB）', key: 'LK_WENJIANDAXIAOMB', tooltip: true },
   { props: 'updateDate', name: '上传日期', key: 'LK_SHANGCHUANRIQI', tooltip: true },
   { props: 'uploadBy', name: '上传人', key: 'LK_SHANGCHUANREN', tooltip: true }
 ]
 
 export const volumeUnconfirmedTableTitle = [
-  { props: 'version', name: '版本号', key: 'LK_BANBENHAO', tooltip: true },
+  { props: 'version', name: '版本号', key: 'LK_BANBENHAO', tooltip: true ,minWidth:15},
   { props: 'tpId', name: '信息流水单号', key: 'LK_XINXILIUSHUIDANHAO', tooltip: true },
   { props: 'maintainerId', name: '维护人', key: 'LK_WEIHUREN', tooltip: true },
   { props: 'publishDate', name: '推送时间', key: 'LK_TUISONGSHIJIAN', tooltip: true },
@@ -148,7 +148,7 @@ export const logTableTitle = [
 ]
 
 export const enquiryUnconfirmedTableTitle = [
-	{ props: 'version', name: '版本号', key: 'LK_BANBENHAO', tooltip: true },
+	{ props: 'version', name: '版本号', key: 'LK_BANBENHAO', tooltip: true ,minWidth:15},
   { props: 'tpId', name: '信息流水单号', key: 'LK_XINXILIUSHUIDANHAO', tooltip: true },
   { props: 'uploadBy', name: '上传人', key: 'LK_SHANGCHUANREN', tooltip: true },
   { props: 'createDate', name: '上传日期', key: 'LK_SHANGCHUANRIQI', tooltip: true },

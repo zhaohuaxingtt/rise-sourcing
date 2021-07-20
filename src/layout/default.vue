@@ -15,7 +15,9 @@
       </template>
     </leftLayout>
     <div class="app-content">
-      <router-view></router-view>
+      <div class="clickhiddenMenu" @click='clickhiddenMenu'>
+        <router-view></router-view>
+      </div>
     </div>
   </div>
 </template>
@@ -34,6 +36,9 @@ export default {
   methods:{
     activeMeun(){
       this.$refs.pup.hideMeun()
+    },
+    clickhiddenMenu(){
+      this.$refs.pup.clickhfalseMenu()
     }
   }
 };
@@ -47,6 +52,12 @@ export default {
     padding-top: 60px;
     height: 100%;
     width: 100%;
+    position: absolute;
+    .clickhiddenMenu{
+      height: 100%;
+      width: 100%;
+      position: relative;
+    }
   }
 }
 </style>

@@ -39,7 +39,13 @@
                 >
                     <!-- RFQ编号 -->
                     <template #rfqId="scope">
-                        <span @click="goFilesList(scope.row.rfqId)" class="link-underline" >{{scope.row.rfqId}}</span>
+                        <span class="flexRow">
+                          <span class="openLinkText cursor " @click="goFilesList(scope.row.rfqId)"> {{scope.row.rfqId}}</span>
+                          <span class="icon-gray  cursor  " v-if="scope.row.rfqId"  @click="goFilesList(scope.row.rfqId)">
+                              <icon symbol class="show" name="icontiaozhuananniu" />
+                              <icon symbol class="active" name="icontiaozhuanxuanzhongzhuangtai" />
+                          </span>
+                        </span>  
                     </template>
                     <!-- 附件 -->
                     <template #LK_FUJIAN="scope">
@@ -195,6 +201,9 @@ export default {
 
 <style lang="scss" scoped>
     .filesDetailList{
+        .openLinkText{
+            color:$color-blue;
+        }
         .title{
         font-size: 20px;
         font-weight: bold;
@@ -204,6 +213,29 @@ export default {
             .close-icon{
                 width: 24px;
                 height: 24px;
+            }
+        }
+        .icon-gray{
+            cursor: pointer;
+            .active{
+                display: none;
+            }
+            .show{
+                display: block;
+            }
+        }
+        .flexRow{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .icon-gray:hover{
+            cursor: pointer;
+            .show{
+                display: none;
+            }
+            .active{
+                display: block;
             }
         }
     }

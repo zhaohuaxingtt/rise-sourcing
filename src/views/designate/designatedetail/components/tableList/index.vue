@@ -5,7 +5,7 @@
  * @LastEditTime: 2021-07-08 09:51:24
 -->
 <template>
-  <el-table ref="multipleTable" fit tooltip-effect='light' :height="height" :data='tableData' v-loading='tableLoading' @selection-change="handleSelectionChange" :empty-text="language('ZANWUSHUJU', '暂无数据')" >
+  <el-table fit ref="multipleTable"  tooltip-effect='light' :height="height" :data='tableData' v-loading='tableLoading' @selection-change="handleSelectionChange"  @select="handleSelect"  @select-all="handleSelectAll" :cell-style="borderLeft" :empty-text="language('ZANWUSHUJU', '暂无数据')" >
     <el-table-column v-if="selection" type='selection' width="50" align='center'></el-table-column>
     <el-table-column v-if='indexKey' type='index' width='50' align='center' label='#'>
       <template slot-scope="scope">
@@ -15,7 +15,15 @@
     <template v-for="(items,index) in tableTitle">
       <!----------------------需要高亮的列并且带有打开详情事件------------------------>
       <el-table-column :key="index" align='center' :width="items.width" :min-width="items.minWidth" :show-overflow-tooltip='items.tooltip' v-if='items.props == activeItems' :prop="items.props" :label="items.key ? language(items.key, items.name) : items.name">
-        <template slot-scope="row"><span class="openLinkText cursor" @click="openPage(row.row)">{{row.row[activeItems]}}</span></template>
+        <template slot-scope="row">
+          <span class="flexRow">
+            <span class="openLinkText cursor " @click="openPage(row.row)"> {{ row.row[activeItems] }}</span>
+            <span v-if="row.row[activeItems]" class="icon-gray  cursor "  @click="openPage(row.row)">
+                <icon symbol class="show" name="icontiaozhuananniu" />
+                <icon symbol class="active" name="icontiaozhuanxuanzhongzhuangtai" />
+            </span>
+          </span>  
+        </template>
       </el-table-column>
       <!----------------------需要进行排序的列------------------------>
       <el-table-column :key="index" align='center' :width="items.width" :min-width="items.minWidth"  v-else-if='items.props == "paixu"'>
@@ -172,13 +180,32 @@ export default{
     updateSlot(e,a){
       this.$emit('updateSlot',[e,a])
     },
+    handleSelect(selection,row){
+      const selectdBorder = row.selectedBorder
+      this.$set(row,'selectedBorder',!selectdBorder)
+    },
+    handleSelectAll(selection){  
+      const flag = selection.length
+      for(let i= 0  ; i<flag;i++){
+        this.$set(selection[i],'selectedBorder',!!flag)
+      }
+      !flag? this.tableData.forEach(i=>{i.selectedBorder=!i.selectedBorder}):''
+    },
+    borderLeft({row, column, rowIndex, columnIndex}){
+      if(columnIndex === 0 && row.selectedBorder === true){
+         return "border-left:2px solid #1660F1;"
+      }
+      else{
+        return ""
+      }
+    }
   }
 }
 </script>
 <style lang='scss' scoped>
   .openLinkText{
     color:$color-blue;
-    text-decoration: underline;
+    // text-decoration: underline;
   }
   .radio{
     ::v-deep thead .el-table-column--selection .cell {
@@ -191,6 +218,29 @@ export default{
       color: red;
       background: rgb(255 0 0 / 10%);
       border-color: red;
+    }
+  }
+  .icon-gray{
+    cursor: pointer;
+    .active{
+      display: none;
+    }
+    .show{
+      display: block;
+    }
+  }
+  .flexRow{
+    display: flex;
+    justify-content: space-between ;
+    align-items: center;
+  }
+  .icon-gray:hover{
+    cursor: pointer;
+    .show{
+      display: none;
+    }
+    .active{
+      display: block;
     }
   }
 </style>

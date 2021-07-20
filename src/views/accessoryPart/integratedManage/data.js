@@ -10,23 +10,23 @@
 export const tableTitle = [
   {props:'sparePartCode',name:'编号', key: "BIANHAO", tooltip: true, width: 120},
   {props:'spnrNum',name:'SP号', key: "SPHAO", tooltip: true, width: 120},
-  {props:'rfqNum',name:'RFQ编号', key: "RFQBIANHAO", tooltip: true, width: 120},
-  {props:'assemblyPartNum',name:'批量供货总成号', key: "PILIANGGONGHUOZONGCHENGHAO", tooltip: true, width: 120},
-  {props:'partNum',name:'配件零件号', key: "PEIJIANLINGJIANHAO", tooltip: true, width: 100},
-  {props:'partNameCh',name:'配件零件名称', key: "PEIJIANLINGJIANMINGCHENG", tooltip: true, width: 120},
+  {props:'rfqNum',name:'RFQ编号', key: "RFQBIANHAO", tooltip: true, width: 80},
+  {props:'assemblyPartNum',name:'批量供货总成号', key: "PILIANGGONGHUOZONGCHENGHAO", tooltip: true, width: 140},
+  {props:'partNum',name:'配件零件号', key: "PEIJIANLINGJIANHAO", tooltip: true, width: 140},
+  {props:'partNameCh',name:'配件零件名称', key: "PEIJIANLINGJIANMINGCHENG", tooltip: true, width: 140},
   {props:'supplierSapCode',name:'供应商SAP号', key: "GONGYINGSHANGSAPHAO", tooltip: true, width: 120},
-  {props:'supplierNameZh',name:'供应商中文名', key: "GONGYINGSHANGMINGCHENG", tooltip: true, width: 120},
-  {props:'respDeptName',name:'LINIE科室', key: "LINIEKESHI", tooltip: true, width: 100},
+  {props:'supplierNameZh',name:'供应商中文名', key: "GONGYINGSHANGMINGCHENG", tooltip: true, width: 240},
+  {props:'respDeptName',name:'LINIE科室', key: "LINIEKESHI", tooltip: true, width: 140},
   {props:'respLinieName',name:'LINIE', key: "LINIE", tooltip: true, width: 100},
-  {props:'csfUserDeptName',name:'询价科室', key: "XUNJIAKESHI", tooltip: true},
+  {props:'csfUserDeptName',name:'询价科室', key: "XUNJIAKESHI", tooltip: true, width: 100},
   {props:'csfUserIdName',name:'询价采购员', key: "XUNJIACAIGOUYUAN", tooltip: true, width: 100},
   {props:'deliveryWarehouse',name:'送货仓库', key: "SONGHUOCANGKU", tooltip: true},
   {props:'brand',name:'品牌', key: "PINPAI", tooltip: true},
   {props:'state',name:'配件状态', key: "PEIJIANZHUANGTAI", tooltip: true, width: 120},
   {props:'isEop',name:'零件状态', key: "LINGJIANZHUANGTAI", tooltip: true, width: 120},
   {props:'signDate',name:'需求签收日期', key: "XUQIUQIANSHOURIQI", tooltip: true, width: 120},
-  {props:'carType',name:'配件车型', key: "PEIJIANCHEXING", tooltip: true},
-  {props:'carProject',name:'配件车型项目', key: "PEIJIANCHEXINGXIANGMU", tooltip: true},
+  {props:'carType',name:'配件车型', key: "PEIJIANCHEXING", tooltip: true, width: 120},
+  {props:'carProject',name:'配件车型项目', key: "PEIJIANCHEXINGXIANGMU", tooltip: true, width: 140},
   {props:'idState',name:'ID状态', key: "IDZHUANGTAI", tooltip: true},
   {props:'e',name:'价格类型', key: "JIAGELEIXING", tooltip: true},
   {props:'tcUnitId',name:'单位', key: "DANWEI", tooltip: true},
@@ -57,4 +57,21 @@ export const searchList = [
   {value: 'cfTargetPrice', label: '是否有财务目标价', type: 'select', key: 'SHIFOUYOUCAIWUMUBIAOJIA', selectOption: 'yesOrNoOption'},
   {value: 'nomiType', label: '定点状态', type: 'select', key: 'DINGDIANZHUANGTAI', selectOption: 'nominateStateOption'},
   {value: 'idState', label: 'ID状态', type: 'select', key: 'IDZHUANGTAI', selectOption: 'accessoryIdStateOption'}
+]
+export const TAB = [
+  {
+    value: 1,
+    name: '寻源执行',
+    message: 0,
+    url: '/sourcing/partsign',
+    activePath: 'partsign',
+    key: 'XUANYUANCAIDAN'
+  },
+  // {
+  //   value: 2,
+  //   label: '进度监控',
+  //   key: Vue.prototype.$t('partsignLanguage.JinDuJianKong'),
+  //   url: '/nomination',
+  //   message: 0
+  // }
 ]

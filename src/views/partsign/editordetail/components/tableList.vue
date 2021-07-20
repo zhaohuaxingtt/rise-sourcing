@@ -7,11 +7,11 @@
  * @FilePath: \front-web\src\views\partsign\editordetail\components\tableList.vue
 -->
 <template>
-  <el-table ref="table" class="table" :class="singleSelect ? 'singleSelectTable' : ''" :height="height" :data="tableData" :cell-class-name="cellClassName" v-loading="tableLoading" @selection-change="handleSelectionChange" @select="handleSelect" :empty-text="language('LK_ZANWUSHUJU','暂无数据')">
+  <el-table fit ref="table" class="table" :class="singleSelect ? 'singleSelectTable' : ''" :height="height" :data="tableData" :cell-class-name="cellClassName" v-loading="tableLoading" @selection-change="handleSelectionChange" @select="handleSelect"   @select-all="handleSelectAll" :cell-style="borderLeft" :empty-text="language('LK_ZANWUSHUJU','暂无数据')">
     <el-table-column v-if="selection || singleSelect" type="selection" align="center"></el-table-column>
     <el-table-column v-if="index" type="index" align="center" :label="indexLabel"></el-table-column>
     <template v-for="(item, $index) in tableTitle">
-      <el-table-column :key="$index" align="center" :label="lang ? language(item.key, item.name) : $t(item.key)" :prop="item.props" :show-overflow-tooltip="item.tooltip" :width="item.width">
+      <el-table-column :key="$index" align="center" :label="lang ? language(item.key, item.name) : $t(item.key)" :prop="item.props" :show-overflow-tooltip="item.tooltip" :width="item.width" :min-width="item.minWidth ? item.minWidth.toString():''">
         <template v-if="$scopedSlots[item.props] || $slots[item.props]" v-slot="scope">
           <slot :name="item.props" :row="scope.row"></slot>
         </template>
@@ -82,6 +82,23 @@ export default {
 
         this.$refs.table.toggleRowSelection(row, !!selection.length)
         this.$emit('handleSingleSelectChange', selection.length ? row : null)
+      }
+      const selectdBorder = row.selectedBorder
+      this.$set(row,'selectedBorder',!selectdBorder)
+    },
+    handleSelectAll(selection){  
+      const flag = selection.length
+      for(let i= 0  ; i<flag;i++){
+        this.$set(selection[i],'selectedBorder',!!flag)
+      }
+      !flag? this.tableData.forEach(i=>{i.selectedBorder=!i.selectedBorder}):''
+    },
+    borderLeft({row, column, rowIndex, columnIndex}){
+      if(columnIndex === 0 && row.selectedBorder === true){
+         return "border-left:2px solid #1660F1;"
+      }
+      else{
+        return ""
       }
     }
   }

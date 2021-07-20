@@ -18,12 +18,13 @@ export const tableTitle = [{
   props: 'id',
   name: '申请单号',
   key: 'nominationLanguage_ShenQingDanHao',
-  tooltip: false
+  tooltip: true,
+  width:80
 },
 {
   props: 'nominateName',
   name: '申请单名',
-  width: 200,
+  width: 110,
   key: 'nominationLanguage_ShenQingDanMing',
   tooltip: false
 },
@@ -31,13 +32,14 @@ export const tableTitle = [{
   props: 'carType',
   name: 'PROJECT',
   key: 'PROJECT',
-  tooltip: false
+  tooltip: true
 },
 {
   props: 'nominateProcessType',
   name: '类型',
   key: 'nominationLanguage_LeiXing',
-  tooltip: true
+  tooltip: true,
+  width:100
 },
 {
 	props: 'applicationStatus',
@@ -49,13 +51,14 @@ export const tableTitle = [{
 	props: 'freezeDate',
 	name: '冻结日期',
 	key: 'nominationLanguage_DongJieRiQi',
-	tooltip:false
+	tooltip: true,
+  width:120
 },
 {
   props: 'carType',
   name: '项目类型',
   key: 'nominationLanguage_XingMuLeiXing',
-  tooltip: false
+  tooltip: true
 },
 {
   props: 'meetingPresentId',
@@ -80,47 +83,48 @@ export const tableTitle = [{
   props: 'linieName',
   name: 'LINIE',
   key: 'LINIE',
-  tooltip: false
+  tooltip: true,
+  width:100
 },
 {
   props: 'rsStatus',
   name: 'RS单状态',
   key: 'nominationLanguage_RSZhuangTai',
-  tooltip: false
+  tooltip: true
 },
 {
   props: 'rsFreezeDate',
   name: 'RS冻结日期',
   width: 150,
   key: 'nominationLanguage_RSDongJieRiQi',
-  tooltip: false
+  tooltip: true
 },
 {
   props: 'isPriceConsistent',
   name: '报价一致性校验状态',
-  width: 150,
+  width: 160,
   key: 'nominationLanguage_BaoJiaYiZhiXingZhuangTai',
-  tooltip: false
+  tooltip: true
 },
 {
   props: 'selStatus',
   name: 'SEL单据确认状态',
-  width: 150,
+  width: 160,
   key: 'nominationLanguage_SELDanJuQUeRenZH',
-  tooltip: false
+  tooltip: true
 },
 {
   props: 'nominateDate',
   name: '定点日期',
   width: 150,
   key: 'nominationLanguage_DingDianRiQi',
-  tooltip: false
+  tooltip: true
 },
 {
   props: 'LK_CAOZUO',
   name: '操作',
   key: 'LK_CAOZUO',
-  tooltip: false
+  tooltip: true
 }
 ]
 
@@ -130,24 +134,24 @@ export const seltTableTitle = [
     props: 'fileName',
     name: '文件名称',
     key: 'LK_WENJIANMING',
-    tooltip: false
+    tooltip: true
   },
   {
     props: 'fileSize',
     name: '大小',
     key: 'LK_DAXIAO',
-    tooltip: false
+    tooltip: true
   },
   {
     props: 'uploadDate',
     name: '上传日期',
     key: 'LK_SHANGCHUANRIQI',
-    tooltip: false
+    tooltip: true
   },
   {
     props: 'uploadBy',
     name: '上传人',
     key: 'LK_SHANGCHUANREN',
-    tooltip: false
+    tooltip: true
   }
 ]

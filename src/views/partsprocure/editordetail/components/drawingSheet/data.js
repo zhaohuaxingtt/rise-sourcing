@@ -7,7 +7,7 @@
  * @FilePath: \front-web\src\views\partsprocure\editordetail\components\drawingSheet\data.js
  */
 export const tableTitle = [
-  { 'props': 'tpPartAttachmentName', name: '文件名称', key: 'LK_WENJIANMINGCHENG', tooltip: true },
+  { 'props': 'tpPartAttachmentName', name: '文件名称', key: 'LK_WENJIANMINGCHENG', tooltip: true ,minWidth:90},
   { 'props': 'size', name: '大小（MB）', key: 'LK_DAXIAOMB', tooltip: true },
   { 'props': 'updateDate', name: '上传日期', key: 'LK_SHANGCHUANRIQI', tooltip: true },
   { 'props': 'uploadBy', name: '上传人', key: 'LK_SHANGCHUANREN', tooltip: true }

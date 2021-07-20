@@ -8,11 +8,17 @@
 -->
 <template>
   <iPage class="partsignHome" v-permission="PARTSIGN_INDEXPAGE">
-    <el-tabs v-model="tab" class="tab">
-      <el-tab-pane :label="language('LK_XUNYUANZHIHANG','寻源')" name="source">
+    <!-- <el-tabs v-model="tab" class="tab"> -->
+      <!-- <el-tab-pane :label="language('LK_XUNYUANZHIHANG','寻源')" name="source"> -->
+      <!-- <el-tab-pane  name="source"> -->
         <div>
-          <div class="margin-bottom33">
+          <!-- <div class="margin-bottom33">
+
             <iNavMvp @change="change" lang right routerPage lev="2" :list="navList" @message="clickMessage" />
+          </div> -->
+          <div class="topMenu">
+            <iNavMvp class="margin-bottom30" :list="list" lang @change="change" :lev="1" routerPage></iNavMvp>
+            <iNavMvp class="margin-bottom30" lang @change="change"  right routerPage lev="2" :list="navList" @message="clickMessage" />
           </div>
           <!------------------------------------------------------------------------>
           <!--                  search 搜索模块                                   --->
@@ -213,9 +219,9 @@
           <!------------------------------------------------------------------------>
           <backItems v-model="diologBack" @sure="sureBackmark"></backItems>
         </div>
-      </el-tab-pane>
+      <!-- </el-tab-pane> -->
       <!-- <el-tab-pane label="进度监控" name="progress"></el-tab-pane> -->
-    </el-tabs>
+    <!-- </el-tabs> -->
   </iPage>
 </template>
 <script>
@@ -230,7 +236,7 @@ import {
   iSelect,
 } from "@/components";
 import tablelist from "./components/tableList";
-import { tableTitle, form, needTranslate, clickMessage } from "./components/data";
+import { tableTitle, form, needTranslate, clickMessage, TAB} from "./components/data";
 import { getTabelData, getPageGroup, patchRecords } from "@/api/partsign/home";
 import { pageMixins } from "@/utils/pageMixins";
 import backItems from "./components/backItems";
@@ -274,6 +280,7 @@ export default {
       fromGroup: [],
       tab: "source",
       needTranslate: needTranslate,
+      list:TAB,
     };
   },
   created() {
@@ -497,7 +504,10 @@ export default {
 <style lang="scss" scoped>
 .partsignHome {
   position: relative;
-
+  .topMenu{
+    display: flex;
+    justify-content: space-between;
+  }
   .tab {
     ::v-deep .el-tabs__header {
       position: absolute;
@@ -531,5 +541,6 @@ export default {
       }
     }
   }
+  
 }
 </style>

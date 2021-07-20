@@ -25,7 +25,13 @@
         :tableLoading="loading"
         @handleSelectionChange="handleSelectionChange">
         <template #tpPartAttachmentName="scope">
-          <span class="link-underline" @click="preview(scope.row)">{{ scope.row.tpPartAttachmentName }}</span>
+          <span class="flexRow">
+            <span class="openLinkText cursor" @click="preview(scope.row)"> {{scope.row.tpPartAttachmentName}}</span>
+            <span class="icon-gray  cursor  " v-if="scope.row.tpPartAttachmentName"  @click="gpreview(scope.row)">
+              <icon symbol class="show" name="icontiaozhuananniu" />
+              <icon symbol class="active" name="icontiaozhuanxuanzhongzhuangtai" />
+            </span>
+          </span>  
         </template>
         <template #updateDate="scope">
           <span>{{ scope.row.updateDate | dateFilter }}</span>
@@ -48,7 +54,7 @@
 </template>
 
 <script>
-import { iCard, iButton, iPagination, iMessage } from '@/components'
+import { iCard, iButton, iPagination, iMessage, icon} from '@/components'
 import tableList from '@/views/partsign/editordetail/components/tableList'
 import { pageMixins } from '@/utils/pageMixins'
 import { tableTitle } from './data'
@@ -60,7 +66,7 @@ import { getToken } from "@/utils";
 import { iMessageBox } from '../../../../../components'
 
 export default {
-  components: { iCard, iButton, tableList, iPagination },
+  components: { iCard, iButton, tableList, iPagination, icon},
   mixins: [ pageMixins, filters ],
   props: {
     params: {
@@ -202,6 +208,9 @@ export default {
 
 <style lang="scss" scoped>
 .outputRecord {
+  .openLinkText{
+    color:$color-blue;
+  }
   .deleteBtn {
     & + .uploadBtn {
       margin-left: 10px;
@@ -210,6 +219,29 @@ export default {
 
   .uploadBtn {
     display: inline-block;
+  }
+    .icon-gray{
+    cursor: pointer;
+    .active{
+      display: none;
+    }
+    .show{
+      display: block;
+    }
+  }
+  .flexRow{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .icon-gray:hover{
+    cursor: pointer;
+    .show{
+      display: none;
+    }
+    .active{
+      display: block;
+    }
   }
 }
 </style>

@@ -18,7 +18,14 @@
     <div class="body margin-top27">
       <tableList index class="table" :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="loading" @handleSelectionChange="handleSelectionChange">
         <template #tpPartAttachmentName="scope">
-          <span class="link-underline" @click="preview(scope.row)">{{ scope.row.tpPartAttachmentName }}</span>
+          <span class="flexRow">
+            <span class="openLinkText cursor"   @click="preview(scope.row)" >{{ scope.row.tpPartAttachmentName }}</span>
+            <span v-if=" scope.row.tpPartAttachmentName" class="icon-gray  cursor " @click="preview(scope.row)">
+              <icon symbol class="show" name="icontiaozhuananniu" />
+              <icon symbol class="active" name="icontiaozhuanxuanzhongzhuangtai" />
+            </span>
+          </span>  
+          <!-- <span class="link-underline" @click="preview(scope.row)">{{ scope.row.tpPartAttachmentName }}</span> -->
         </template>
         <template #updateDate="scope">
           <span>{{ scope.row.updateDate | dateFilter }}</span>
@@ -40,6 +47,7 @@
 
 <script>
 import { iCard, iButton, iPagination, iMessage } from '@/components'
+import { icon } from 'rise'
 import tableList from '../tableList'
 import { enquiryTableTitle as tableTitle } from '../data'
 import { pageMixins } from '@/utils/pageMixins'
@@ -49,7 +57,7 @@ import { excelExport } from '@/utils/filedowLoad'
 import { downloadFile } from '@/api/file'
 
 export default {
-  components: { iCard, iButton, iPagination, tableList },
+  components: { iCard, iButton, iPagination, tableList, icon },
   mixins: [ pageMixins, filters ],
   props: {
     data: {
@@ -165,6 +173,32 @@ export default {
  .body {
     .pagination {
       margin-top: 30px;
+    }
+  }
+  .openLinkText{
+    color:$color-blue;
+  }
+  .icon-gray{
+    cursor: pointer;
+    .active{
+      display: none;
+    }
+    .show{
+      display: block;
+    }
+  }
+  .flexRow{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .icon-gray:hover{
+    cursor: pointer;
+    .show{
+      display: none;
+    }
+    .active{
+      display: block;
     }
   }
 }
