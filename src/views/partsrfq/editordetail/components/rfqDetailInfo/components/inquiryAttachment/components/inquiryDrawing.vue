@@ -2,12 +2,12 @@
 
   <iCard>
     <div class="margin-bottom20 clearFloat">
-      <span class="font18 font-weight">{{$t('LK_XUNJIATUZHI')}}</span>
+      <span class="font18 font-weight">{{language('LK_XUNJIATUZHI','询价图纸')}}</span>
       <div class="floatright">
         <iButton @click="download"
                  :loading="downloadLoading"
                  v-permission="PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_INQUIRYATTACHMENT_INQUIRYATTACHMENT_DRAWINGDOWNLOAD">
-          {{ $t('LK_XIAZAI') }}
+          {{ language('LK_XIAZAI','下载') }}
         </iButton>
       </div>
     </div>
@@ -44,7 +44,7 @@ import tablelist from 'pages/partsrfq/components/tablelist'
 import {inquiryDrawingTableTitle} from "./data";
 import {pageMixins} from "@/utils/pageMixins";
 import {getRfqDataList} from "@/api/partsrfq/home";
-import {downloadFile} from "@/api/file";
+import {downloadFile, downloadUdFile} from "@/api/file";
 
 
 export default {
@@ -94,29 +94,31 @@ export default {
     },
     async download() {
       if (this.selectTableData.length == 0)
-        return iMessage.warn(this.$t('LK_QINGXUANZE'))
-      const fileList = this.selectTableData.map(item => {
-        return item.fileName
-      })
-      const req = {
-        applicationName: 'rise',
-        fileList,
-        /*applicationName: 'common-function-test',
-        fileList: ['test (4).txt']*/
-      }
-      await downloadFile(req)
+        return iMessage.warn(this.language('LK_QINGXUANZE','请选择'))
+      // const fileList = this.selectTableData.map(item => {
+      //   return item.tpPartAttachmentName
+      // })
+      // const req = {
+      //   applicationName: 'procurereq-service',
+      //   fileList,
+      //   /*applicationName: 'common-function-test',
+      //   fileList: ['test (4).txt']*/
+      // }
+      // await downloadFile(req)
+      await downloadUdFile(this.selectTableData.map(item => item.uploadId))
     },
     //修改表格改动列
     handleSelectionChange(val) {
       this.selectTableData = val;
     },
     async handleOpenPage(row) {
-      const req = {
-        applicationName: 'rise',
-        fileList: [row.fileName]
-      }
+      // const req = {
+      //   applicationName: 'procurereq-service',
+      //   fileList: [row.tpPartAttachmentName]
+      // }
       this.downloadLoading = true
-      await downloadFile(req)
+      // await downloadFile(req)
+      await downloadUdFile(row.uploadId)
       this.downloadLoading = false
     }
   }

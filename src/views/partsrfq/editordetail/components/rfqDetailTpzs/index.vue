@@ -1,14 +1,13 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-25 13:01:23
- * @LastEditTime: 2021-07-07 19:02:52
- * @LastEditors: Please set LastEditors
+ * @LastEditors: zbin
  * @Description: 报价助手界面
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\index.vue
 -->
 <template>
-  <iTabsList type="card" slot="components" class='margin-top20'>
-    <el-tab-pane label="报价分析">
+  <iTabsList v-model="activityTabIndex" @tab-click="handleTabClick" type="card" slot="components" class='margin-top20'>
+    <el-tab-pane name="one" label="报价分析">
       <template>
          <!--------------------报价评分跟踪----------------------------------------->
          <iCard title="报价与评分跟踪" @handleCollapse='handleCollapse($event,"1")' collapse>
@@ -25,19 +24,15 @@
          <quotationScoringEcartsCard v-if='cardShow.find(items=>items.key == "4").show'></quotationScoringEcartsCard>
          <iCard title="报价趋势" v-else class="margin-top20" @handleCollapse='handleCollapse($event,"4")' collapse :defalutCollVal='false'></iCard>
           <!--------------------报价分析汇总-业务分配模拟----------------------------------------->
-         <buMonitor cardTitle='业务分配模拟' @handleCollapse='handleCollapse($event,"5")' :collapse='true' v-if='cardShow.find(items=>items.key == "5").show' class="margin-top20"></buMonitor>
+         <buMonitor @handleCollapse='handleCollapse($event,"5")' :collapse='true' v-if='cardShow.find(items=>items.key == "5").show' class="margin-top20"></buMonitor>
          <iCard title="业务分配模拟" v-else class="margin-top20" @handleCollapse='handleCollapse($event,"5")' collapse :defalutCollVal='false'></iCard>
       </template>
     </el-tab-pane>
     <el-tab-pane label="专项分析工具">
-      <iCard>
-        <div>开发中...</div> 
-      </iCard>
+      <gather />
     </el-tab-pane>
     <el-tab-pane label="谈判基本信息">
-      <iCard>
-        <div>开发中...</div> 
-      </iCard>
+      <negotiateBasicInfor></negotiateBasicInfor>
     </el-tab-pane>
   </iTabsList>
 </template>
@@ -49,8 +44,12 @@ import quotationScoringHZ from './components/quotationScoringHz'
 import quotationScoringEcartsCard from './components/quotationScoringEcartsCard'
 import buMonitor from './components/qutaionScoringBusses'
 import {icardData} from './components/data'
+import gather from "@/views/partsrfq/externalAccessToAnalysisTools/negotiationAssistant/index.vue";
+import negotiateBasicInfor from "./components/negotiateBasicInfor";
+
+
 export default{
-  components:{iTabsList,iCard,quotationScoringTracking,quotationScoringMj,quotationScoringHZ,quotationScoringEcartsCard,buMonitor},
+  components:{iTabsList,iCard,quotationScoringTracking,quotationScoringMj,quotationScoringHZ,quotationScoringEcartsCard,buMonitor, gather, negotiateBasicInfor},
   data(){
     return {
       cardShow:icardData
@@ -58,20 +57,34 @@ export default{
   },
   methods:{
     /**
-     * @description: 报价折叠 
+     * @description: 报价折叠
      * @param {*} e
      * @param {*} key
      * @return {*}
      */
+
+
+
     handleCollapse(e,key){
       this.cardShow.forEach(i=>{
         if(i.key == key){
           i.show = e
         }
       })
+    },
+    //点击返回
+    clickReturn() {
+
+    },
+    //点击报告清单
+    clickReport() {
+
     }
   }
 }
 </script>
 <style lang='scss' scoped>
+.el-tabs--card {
+  position: relative;
+}
 </style>

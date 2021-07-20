@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-06-16 15:25:24
- * @LastEditTime: 2021-07-02 17:53:28
+ * @LastEditTime: 2021-07-02 18:40:12
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\store\module\sourcing.js
@@ -85,7 +85,7 @@ const state = {
       key: "GANGCAIXUQIUCHUANGJIAN"
     },
     {
-      value: 9,
+      value: 10,
       name: "定点信/LOI",
       message: 0,
       url: "/sourcing/partsletter",

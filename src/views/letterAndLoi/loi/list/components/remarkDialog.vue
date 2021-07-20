@@ -5,7 +5,7 @@
 -->
 <template>
   <iDialog
-    :title="$t('LK_BIANJIBEIZHU')"
+    :title="language('LK_BIANJIBEIZHU','编辑备注')"
     :visible.sync="dialogVisible"
     @close="clearDialog"
     width="50%"
@@ -13,14 +13,14 @@
     >
     <iInput
         type="textarea"
-        :placeholder="$t('LK_QINGSHURUBEIZHU')"
+        :placeholder="language('LK_QINGSHURUBEIZHU','请输入备注')"
         rows="10" 
         resize="none"
         v-model="remark"
      />
      <div class="confirmBtn padding-bottom20 padding-top20">
-         <iButton :loading="isLoading" @click="submit">{{$t('LK_QUEDING')}}</iButton>
-         <iButton @click="clearDialog">{{$t('LK_QUXIAO')}}</iButton>
+         <iButton :loading="isLoading" @click="submit">{{language('LK_QUEDING','确定')}}</iButton>
+         <iButton @click="clearDialog">{{language('LK_QUXIAO','取 消')}}</iButton>
      </div>
     </iDialog>
 </template>

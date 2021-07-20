@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-23 11:59:22
- * @LastEditTime: 2021-07-06 12:01:50
+ * @LastEditTime: 2021-07-19 19:29:34
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\editordetail\components\currentSupplier\index.vue
@@ -18,8 +18,8 @@
         <iButton @click="edit = true">{{language('REMOVE','取消')}}</iButton>
       </template>
     </div>
-    <el-table :data='dataListTop' v-loading='loadingTop' @selection-change="handleSelectionChangeTop">
-      <el-table-column type='selection' v-if='!edit' align="center"></el-table-column>
+    <el-table :data='dataListTop.filter(items=>!items.isDelete)' v-loading='loadingTop' @selection-change="handleSelectionChangeTop">
+      <el-table-column type='selection' v-if='!edit' align="center" width="56"></el-table-column>
       <template v-for='(items,index) in titleListTop'>
         <el-table-column align="center" :key='index' :label='language(items.key,items.name)' :prop='items.props'>
           <template slot-scope="scope">
@@ -48,7 +48,7 @@
         <el-form-item :label="language('CAIGOUGONGC1','采购工厂')">
           <iSelect v-model="searchForm.procureFactoryId">
             <template v-for="(items,index) in factoryList">
-                <el-option :key='index' :label="items.factoryName" :value="items.id"></el-option>
+                <el-option :key='index' :label="items.factoryName" :value="items.procureFactory"></el-option>
             </template>
           </iSelect>
         </el-form-item>
@@ -61,7 +61,7 @@
       </el-form>
     </iSearch> 
     <el-table :data='dataListBottom' v-loading='loadingBottom' @selection-change="handleSelectionChangeBottom">
-      <el-table-column type="selection" align="center"></el-table-column>
+      <el-table-column type="selection" align="center" width="56"></el-table-column>
       <template v-for='(items,index) in titleListBottom'>
         <el-table-column align="center" :key='index' :label='language(items.key,items.name)' :prop='items.props'></el-table-column>
       </template>
@@ -120,20 +120,38 @@ export default{
   },
   watch:{
     'dialogVisible.show':function(){
+      this.topSelect = []
+      this.bottomSelect = []
+      this.dataListTop = []
+      this.dataListBottom = []
+      Object.keys(this.searchForm).forEach(element => {
+        this.searchForm[element] = ''
+      });
+      this.searchForm.partNum = JSON.parse(this.$route.query.item).partNum
       this.supplierCurentTop()
       this.supplierCurentBottom()
       this.purchaseFactory()
+    },
+    'edit':function(val){
+      if(val){
+        this.topSelect = []
+        this.bottomSelect = []
+        this.dataListTop = []
+        this.dataListBottom = []
+        this.supplierCurentTop()
+      }
     }
-  },
-  created(){
-    this.searchForm.partNum = JSON.parse(this.$route.query.item).partNum
   },
   methods:{
     deleteRow(){
+      if(this.topSelect.length == 0) return iMessage.warn(this.language('QINGXUANZEYIGELIE','请选择一条数据！'))
       this.dataListTop.forEach((value,index)=>{
-        if(this.topSelect.find(i=>i.deleteFlag == value.deleteFlag)){
-          this.dataListTop.splice(index,1)
-        }
+        this.topSelect.forEach(i=>{
+            if(i.deleteFlag == value.deleteFlag){
+              value['isDelete'] = true
+              this.$set(this.dataListTop,index,value)
+            }
+        })
       })
     },
     /**
@@ -142,7 +160,7 @@ export default{
      * @return {*}
      */
     saveAll(){
-      if(this.dataListTop.length == 0 ) return iMessage.warn(this.language('NIHAWEIXUNAZXIAFANGGYS','请先添加供应商！'))
+      //if(this.dataListTop.length == 0 ) return iMessage.warn(this.language('NIHAWEIXUNAZXIAFANGGYS','请先添加供应商！'))
       updateCurrentSupplierPage({fsnrGsnrNum:this.detailData().fsnrGsnrNum,effectingSupplierDTOList:this.dataListTop}).then(res=>{
         console.log(res)
         if(res.code == 200){
@@ -157,7 +175,11 @@ export default{
     },  
     addTop(){
       if(this.bottomSelect.length == 0) return iMessage.warn(this.language('QINGXUANZEYIGELIE','请选择一条数据！'))
-      this.bottomSelect.forEach(items=>this.dataListTop.push(items))
+      this.bottomSelect.forEach(items=>{
+        if(!this.dataListTop.find(i=>i.supplierId == items.supplierId)){
+          this.dataListTop.push(items)
+        }
+      })
       this.dataListTop = Array.from(new Set(this.dataListTop))
     },
     handleSelectionChangeTop(res){this.topSelect = res},
@@ -171,6 +193,7 @@ export default{
       Object.keys(this.searchForm).forEach(element => {
         this.searchForm[element] = ''
       });
+      this.searchForm.partNum = JSON.parse(this.$route.query.item).partNum
       this.supplierCurentBottom()
     },
     /**
@@ -179,6 +202,9 @@ export default{
      * @return {*}
      */
     sure(){
+      if(this.searchForm.procureFactoryId != '' && this.searchForm.supplierName == '' && this.searchForm.supplierSapCode == '' && this.searchForm.partNum == ""){
+        iMessage.warn(this.language('QINGXUANZEQITAXINXI','请选择其他信息共同筛选!'))
+      }
       this.supplierCurentBottom()
     },
     /**

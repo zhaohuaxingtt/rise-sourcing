@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-27 14:55:03
- * @LastEditTime: 2021-07-07 18:50:22
+ * @LastEditTime: 2021-07-17 11:07:26
  * @LastEditors: Please set LastEditors
  * @Description: 采购员报价与基本分析模具界面
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringMj\index.vue
@@ -14,6 +14,11 @@ import {iMessageBox,iMessage} from 'rise'
 export default {
   extends:quotationMj,
   inject:['getbaseInfoData'],
+  provide(){
+    return {
+      supplierId: this.supplierId
+    }
+  },
   data(){
     return {
       useCardSlot:false,
@@ -64,6 +69,7 @@ export default {
       }).then(res=>{
         if(res.code == 200){
           this.quotationSupplierState = res.data
+          if(this.dgysBj) this.dgysBj = res.data
         }
       }).catch(err=>{
         iMessage.error(err.desZh)
@@ -71,7 +77,7 @@ export default {
     },
     getFee(res){
       if(this.dgysBj && this.tableListData.length > 0){
-        iMessageBox("您确定要切换供应商吗？").then(res=>{
+        iMessageBox("编辑状态下，切换供应商不会保存！您确定要切换供应商吗？").then(res=>{
           this.tableListData = []
           this.getAllMouldFee()
           this.getAllPartForMould()
@@ -98,7 +104,46 @@ export default {
          r()
        })
      })
-    }
+    },
+    // 零件号选择-重写父方法供应商Id
+    handleChangeByAssembledPartCode(partNum, row) {
+      this.$set(row, "assembledPartPrjCode", "")
+      const fsObj = this.partNumMap[partNum][0]
+      if (fsObj) {
+        this.$set(row, "assembledPartName", fsObj.partName)
+        this.handleInputByAssembledPartName(fsObj.partName, row)
+      }
+
+      const mouldIdIndexes = this.tableListData.map(item => {
+        const list = item.mouldId.split("_")
+        return +list[list.length - 1].replace(/\D/g, "") || 0
+      })
+
+      mouldIdIndexes.sort((a, b) => b - a)
+      const index = mouldIdIndexes[0] ? (mouldIdIndexes[0] >= 10 ? (mouldIdIndexes[0] + 1) + "" : "0" + (mouldIdIndexes[0] + 1)) : "01"
+    
+      this.$set(row, "mouldId", `${ this.partInfo.rfqId }_${ this.supplierId }_${ partNum }_T${ index }`)
+    },
+    // fs号选择--重写父方法。供应商ID
+    handleChangeByAssembledPartPrjCode(fsNum, row) {
+      const fsObj = this.fsNums.filter(item => item.fsnrGsnrNum === fsNum)[0]
+      this.$set(row, "quotationId", fsObj.quotationId)
+      if (!row.assembledPartCode) {
+        this.$set(row, "assembledPartCode", fsObj.partNum)
+        this.$set(row, "assembledPartName", fsObj.partName)
+        this.handleInputByAssembledPartName(fsObj.partName, row)
+        
+        const mouldIdIndexes = this.tableListData.map(item => {
+          const list = item.mouldId.split("_")
+          return +list[list.length - 1].replace(/\D/g, "") || 0
+        })
+
+        mouldIdIndexes.sort((a, b) => b - a)
+        const index = mouldIdIndexes[0] ? (mouldIdIndexes[0] >= 10 ? (mouldIdIndexes[0] + 1) + "" : "0" + (mouldIdIndexes[0] + 1)) : "01"
+      
+        this.$set(row, "mouldId", `${ this.partInfo.rfqId }_${ this.supplierId }_${ fsObj.partNum }_T${ index }`)
+      }
+    },
   }
 }
 </script>

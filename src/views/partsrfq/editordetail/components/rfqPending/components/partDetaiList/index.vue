@@ -8,26 +8,26 @@
   <iCard>
     <div class="header flex-align-center">
       <iButton @click="deleteItems" v-permission="PARTSRFQ_EDITORDETAIL_PARTDETAILIST_DELETE">{{
-          $t('delete')
+          language('delete','删除')
         }}
       </iButton>
       <iButton @click="sendKM">{{ language('FASONGKM', '发送KM') }}</iButton>
       <iButton @click="showApplyPrice" v-permission="PARTSRFQ_EDITORDETAIL_PARTDETAILIST_NEWPRICE">
-        {{ $t('LK_XINSHENQINGCAIWUMUBIAOJIA') }}
+        {{ language('LK_XINSHENQINGCAIWUMUBIAOJIA','新申请财务目标价') }}
       </iButton>
       <iButton @click="againApply" v-permission="PARTSRFQ_EDITORDETAIL_PARTDETAILIST_REAPPLYPRICE">
-        {{ $t('LK_ZAICISHENGQINGCAIWUMUBIAOJIA') }}
+        {{ language('LK_ZAICISHENGQINGCAIWUMUBIAOJIA','再申请财务目标价') }}
       </iButton>
     </div>
     <tableList :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="confirmTableLoading"
-               @handleSelectionChange="handleSelectionChange" @openPage="openPage" radio></tableList>
+               @handleSelectionChange="handleSelectionChange" @openPage="openPage"></tableList>
     <iPagination v-update @size-change="handleSizeChange($event, getTableList)"
                  @current-change="handleCurrentChange($event, getTableList)" background :page-sizes="page.pageSizes"
                  :page-size="page.pageSize" :current-page="page.currPage" :layout="page.layout"
                  :total="page.totalCount"></iPagination>
     <div class="addFs flex-align-center">
       <iButton @click="start" :loading="addLoding" v-permission="PARTSRFQ_EDITORDETAIL_PARTDETAILIST_ADD">
-        {{ $t('LK_TIANJIA') }}
+        {{ language('LK_TIANJIA','添加') }}
       </iButton>
     </div>
     <partsTable ref="partsTable" :rfqId="rfqId" @targetHand="waitSelect"></partsTable>
@@ -120,13 +120,13 @@ export default {
       return new Promise((r) => {
         if (this.waitHandleSelectArr.length == 0) {
           r(false);
-          iMessage.warn(this.$t('LK_NINDANGQIANHAIWEIXUANZEXUYAOTIANJIADECAIGOUXIANGMU'));
+          iMessage.warn(this.language('LK_NINDANGQIANHAIWEIXUANZEXUYAOTIANJIADECAIGOUXIANGMU','抱歉，您当前还未选择需要添加的采购项目！'));
           return;
         }
         if (this.waitHandleSelectArr.find((items) => items.fsnrGsnrNum == "")) {
           r(false);
           iMessage.warn(
-              this.$t('LK_DANGQIANCAIGOUXIANGMUZHONGCUNZAIHAIWEISHENGCHENGFSNRDESHUJUWUFAWEININTIANJIA')
+              this.language('LK_DANGQIANCAIGOUXIANGMUZHONGCUNZAIHAIWEISHENGCHENGFSNRDESHUJUWUFAWEININTIANJIA','抱歉，当前采购项目中存在还未生成FSNR的数据，无法为您添加！')
           );
           return;
         }
@@ -183,7 +183,7 @@ export default {
     showApplyPrice() {
       console.log(this.handleSelectArr.length);
       if (this.handleSelectArr.length == 0) {
-        iMessage.warn(this.$t('LK_NINDANGQIANHAIWEIXUANZEXUYAOSHENQINGMUBIAOJIADECAIGOUXIANGMU'));
+        iMessage.warn(this.language('LK_NINDANGQIANHAIWEIXUANZEXUYAOSHENQINGMUBIAOJIADECAIGOUXIANGMU','抱歉，您当前还未选择需要申请目标价的采购项目！'));
         return
       }
       this.$refs.applyPrice.show()
@@ -191,17 +191,17 @@ export default {
     // 再次申请财务目标价
     againApply() {
       if (this.handleSelectArr.length == 0) {
-        iMessage.warn(this.$t('LK_NINDANGQIANHAIWEIXUANZEXUYAOSHENQINGMUBIAOJIADECAIGOUXIANGMU'));
+        iMessage.warn(this.language('LK_NINDANGQIANHAIWEIXUANZEXUYAOSHENQINGMUBIAOJIADECAIGOUXIANGMU','抱歉，您当前还未选择需要申请目标价的采购项目！'));
         return
       }
       this.$refs.applyPrice.againShow()
     },
     async deleteItems() {
       if (this.handleSelectArr.length == 0) {
-        iMessage.warn(this.$t('LK_NINDANGQIANHAIWEIXUANZEXUYAOSHENQINGMUBIAOJIADECAIGOUXIANGMU'));
+        iMessage.warn(this.language('LK_NINDANGQIANHAIWEIXUANZEXUYAOSHENQINGMUBIAOJIADECAIGOUXIANGMU','抱歉，您当前还未选择需要申请目标价的采购项目！'));
         return
       }
-      iMessageBox(this.$t('deleteSure'),this.$t('LK_WENXINTISHI')).then(async ()=>{
+      iMessageBox(this.language('deleteSure','确定要执行删除操作吗？'),this.language('LK_WENXINTISHI','温馨提示')).then(async ()=>{
         const idList = this.handleSelectArr.map(item => {
         return item.id
         })
@@ -220,7 +220,7 @@ export default {
     },
     // 发送KM
     sendKM() {
-      if (!this.handleSelectArr.length) return iMessage.warn(this.$t("LK_QINGXUANZEZHISHAOYITIAOSHUJU"))
+      if (!this.handleSelectArr.length) return iMessage.warn(this.language("LK_QINGXUANZEZHISHAOYITIAOSHUJU",'请选择至少一条数据'))
 
       this.kmDialogVisible = true
     }

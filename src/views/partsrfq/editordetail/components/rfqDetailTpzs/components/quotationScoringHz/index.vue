@@ -28,6 +28,7 @@
           <iSelect v-model="layout" @change="changeLayout">
             <el-option label="FS-Parts as Row" value="1"></el-option>
             <el-option label="FS-Supplier as Row" value="2"></el-option>
+            <el-option label="GS-Parts as Row" value="3"></el-option>
           </iSelect> 
         </div>            
       </div>
@@ -39,8 +40,9 @@
       </div>
       <!--------------表格模块-------------->
     </div>
-    <tableList v-loading='fsTableLoading' @sortChangeTabless='sortChange' :round='round' :tableTitle='title' v-if='layout == "1"' :ratingList='ratingList' :tableData='exampelData' @handleSelectionChange='handleSelectionChange'></tableList>
-    <tableListSupplier ref='tableSupplier' :cWidth='cWidth' :leftData='leftData' :rightData='rightData' v-loading='supplierTableLoading' :centerSupplierData='suppliertopList' :supplierLeftLit='supplierLeftLit' :tableTitle='supplierTile'  :tableData='supplierData' v-if='layout == "2" && showTable'></tableListSupplier>
+    <tableList v-loading='fsTableLoading' @sortChangeTabless='sortChange' :round='round' :tableTitle='title' v-if='layout == "1" || layout == "3"' :ratingList='ratingList' :tableData='exampelData' @handleSelectionChange='handleSelectionChange'></tableList>
+    <tableListSupplier ref='tableSupplier' :cWidth='cWidth' :budget='budget' :kmAPrice='kmAPrice' :kmTooling='kmTooling' v-loading='supplierTableLoading' :centerSupplierData='suppliertopList' :supplierLeftLit='supplierLeftLit' :tableTitle='supplierTile'  :tableData='supplierData' v-if='layout == "2" && showTable'></tableListSupplier>
+    <!-- <tablelistGSasRow v-loading='fsTableLoading' @sortChangeTabless='sortChange' :round='round' :tableTitle='title' v-if='layout == "3"' :ratingList='ratingList' :tableData='exampelData' @handleSelectionChange='handleSelectionChange'></tablelistGSasRow> -->
     <!--------------弹窗-------------->
     <iDialog title="组合名" :visible.sync="groupVisble" width='25%' >
       <div class="mine_height">
@@ -57,12 +59,13 @@
 import {iButton,iSelect,iDialog,iInput,iMessage} from 'rise'
 import tableList from './components/table'
 import tableListSupplier from './components/tableListSupplier'
+import tablelistGSasRow from './components/tablelistGSasRow'
 import {exampelData,backChooseList,getRenderTableTile,translateData,translateRating,subtotal,defaultSort,getRenderTableTileSupplier,translateDataListSupplier,getleftTittleList} from './components/data'
-import {negoAnalysisSummaryLayout,negoAnalysisSummaryLayoutSave,negoAnalysisSummaryRound,fsPartsAsRow,negoAnalysisSummaryGroup,negoAnalysisSummaryGroupDelete,fsSupplierAsRow} from '@/api/partsrfq/editordetail'
+import {negoAnalysisSummaryLayout,negoAnalysisSummaryLayoutSave,negoAnalysisSummaryRound,fsPartsAsRow,gsPartsAsRow,negoAnalysisSummaryGroup,negoAnalysisSummaryGroupDelete,fsSupplierAsRow} from '@/api/partsrfq/editordetail'
 export default{
   components:{iButton,iSelect,tableList,iDialog,iInput,tableListSupplier},
   data(){return {
-    title:getRenderTableTile([],0),
+    title:getRenderTableTile([],0,1),
     exampelData:exampelData,
     groupSelectData:[],
     groupVisble:false,
@@ -70,7 +73,7 @@ export default{
     supplierData:[],
     supplierTile:[],
     //轮次选择
-    round:this.$route.query.round,
+    round:'',
     rundList:[],
     backChooseLists:[],
     backChoose:[],
@@ -93,7 +96,10 @@ export default{
     disabel:false,
     showTable:true,
     cWidth:'0px',
-    abPrice:false
+    abPrice:false,
+    kmAPrice:'',
+    budget:'',
+    kmTooling:''
   }},
   watch:{
     /**
@@ -113,7 +119,9 @@ export default{
     }
     }
   },
+  inject:['getbaseInfoData'],
   mounted(){
+    this.round = this.getbaseInfoData().currentRounds || 1
     this.init()
   },
   provide(){
@@ -130,7 +138,6 @@ export default{
       }, 500);
     },
     getTopWidth(){
-      console.log(this.$refs.tableSupplier)
       this.cWidth = this.$refs.tableSupplier.$el.querySelector('.el-table__body').offsetWidth - 100 + 'px'
     },
     removeTags(){
@@ -139,17 +146,18 @@ export default{
     /**
      * @description: 排除group total km buget 列不需要排序外，其他的都是需要排序的列。
      * @param {*} props -表格中返回的标识。正排序 还是 反排序 还是 默认
+     *            prop  - 表格中的排序字段 名字叫啥
      * @return {*}
      */
-    sortChange(props){
+    sortChange({props,prop}){
       try {
         const notSortData = this.oldExampelData.filter(items=> items.groupId != null && items.groupId != '-')
         const sortData = this.oldExampelData.filter(items=> items.groupId == null && items.groupId != '-')
         const totalData = this.oldExampelData.filter((items)=> items.groupId == '-')
         if(props == "ascending"){
-          this.exampelData = [...notSortData,...sortData.sort((a,b)=>a.cfPartAPrice - b.cfPartAPrice),...totalData]
+          this.exampelData = [...notSortData,...sortData.sort((a,b)=>b[prop].toString().localeCompare(a[prop].toString())),...totalData]
         }else if(props == "descending"){
-          this.exampelData = [...notSortData,...sortData.sort((a,b)=>b.cfPartAPrice - a.cfPartAPrice),...totalData]
+          this.exampelData = [...notSortData,...sortData.sort((a,b)=>a[prop].toString().localeCompare(b[prop].toString())),...totalData]
         }else{
           this.exampelData = this.oldExampelData
         }
@@ -166,6 +174,7 @@ export default{
      * @return {*}
      */
     changeLayout(res){
+      this.layout = res
       this.init()
     },
     removeGroup(){
@@ -241,12 +250,13 @@ export default{
       },
     async init(){
         await this.negoAnalysisSummaryRound() //获取轮次
+        await this.negoAnalysisSummaryLayout(this.layout) //获取隐藏项
         if(this.layout == 1){
-          await this.negoAnalysisSummaryLayout(this.layout) //获取隐藏项
           await this.fsPartsAsRow()
-        }else{
-          await this.negoAnalysisSummaryLayout(this.layout) //获取隐藏项
+        }else if(this.layout == 2){
           await this.supplierfsSupplierAsRow()
+        }else{
+          await this.fsPartsAsRow()
         }
     },
     visibleChange(res){
@@ -277,13 +287,7 @@ export default{
     negoAnalysisSummaryLayoutSave(){
       negoAnalysisSummaryLayoutSave(JSON.stringify(this.backChoose),this.layout).then(async res=>{
         if(res.code == 200){
-          if(this.layout == 1){
-            await this.negoAnalysisSummaryLayout(this.layout) //获取隐藏项
-            await this.fsPartsAsRow()
-          }else{
-            await this.negoAnalysisSummaryLayout(this.layout) //获取隐藏项
-            await this.supplierfsSupplierAsRow()
-          }
+          this.init()
         }
       }).catch(err=>{
         iMessage.warn(err.desZh)
@@ -318,12 +322,14 @@ export default{
      */
     fsPartsAsRow(){
       this.fsTableLoading = true
-      fsPartsAsRow(this.$route.query.id,this.round).then(res=>{
+      // eslint-disable-next-line no-unexpected-multiline
+      this.changeFnForGSandFS(this.layout).then(res=>{
         this.fsTableLoading = false
-        if(res.data && res.data.partInfoList && res.data.partInfoList.length){
+        this.clearDataFs()
+        if(res.data && res.data.partInfoList && res.data.partInfoList){
           this.partInfoList = res.data.partInfoList
           this.bdlPriceTotalInfoList = res.data.bdlPriceTotalInfoList
-          const relTitle = getRenderTableTile(this.backChoose,res.data.partInfoList[0].bdlInfoList.length)
+          const relTitle = getRenderTableTile(this.backChoose,res.data.partInfoList[0].bdlInfoList.length,this.layout)
           this.title = relTitle.title
           this.reRenderLastChild = relTitle.xhLastChildProps
           this.exampelData = defaultSort(translateData(res.data.partInfoList),'groupId')
@@ -332,6 +338,7 @@ export default{
           this.oldExampelData = JSON.parse(JSON.stringify(this.exampelData))
         }
       }).catch(err=>{
+        this.clearDataFs()
         this.fsTableLoading = false
         iMessage.warn(err.desZh)
       })
@@ -373,8 +380,9 @@ export default{
             this.supplierTile = getRenderTableTileSupplier(this.backChoose,res.data.bdlInfoList)
             this.supplierLeftLit = getleftTittleList(this.backChoose)
             this.suppliertopList = data.topList
-            this.leftData = res.data.kmAPrice
-            this.rightData = res.data.kmTooling
+            this.kmAPrice = res.data.kmAPrice
+            this.kmTooling = res.data.kmTooling
+            this.budget = res.data.budget
             this.reRenderTable() 
             r()
           } 
@@ -383,6 +391,21 @@ export default{
           iMessage.error(err.desZh)
         })
       })
+    },
+    changeFnForGSandFS(type){
+      if(type == 1){
+        return fsPartsAsRow(this.$route.query.id,this.round)
+      }else{
+        return gsPartsAsRow(this.$route.query.id,this.round)
+      }
+    },
+    clearDataFs(){
+        this.partInfoList = []
+        this.bdlPriceTotalInfoList = []
+        this.title = []
+        this.reRenderLastChild = []
+        this.exampelData = []
+        this.ratingList = []
     }
   }
 }

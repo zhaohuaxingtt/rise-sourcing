@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-26 21:04:49
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-03 12:20:31
+ * @LastEditTime: 2021-07-10 13:05:31
  * @Description: 定点-审批人&审批记录
  * @FilePath: \front-web\src\views\designate\approvalPersonAndRecord\index.vue
 -->
@@ -10,17 +10,17 @@
   <iPage class="approvalFlow">
     <iCard class="margin-top20">
       <div class="margin-bottom20 clearFloat">
-        <span class="font18 font-weight">{{'审批人&审批记录'}}</span>
+        <span class="font18 font-weight">{{language('LK_SHENPIRENANDSHENPIJILU','审批人&审批记录')}}</span>
           <!------------------------------------------------------------------------------->
           <!-------------------------未编辑状态下的按钮---------------------------------------->
           <!------------------------------------------------------------------------------->
           <div class="floatright"  v-if="!isEdit">
             <!--------------------同步按钮----------------------------------->
-            <span class="cursor tongbu" @click="synchronization" :loading="approvalSyncLoading"><icon symbol class="margin-right8" name='icontongbu' ></icon>同步</span>
+            <span class="cursor tongbu" @click="synchronization" :loading="approvalSyncLoading"><icon symbol class="margin-right8" name='icontongbu' ></icon>{{language('LK_TONGBU','同步')}}</span>
             <!--------------------审批流按钮----------------------------------->
-            <iButton @click="openAprroveFlow" >审批流</iButton>
+            <iButton @click="openAprroveFlow" >{{language('SHENPILIU','审批流')}}</iButton>
             <!--------------------编辑按钮----------------------------------->
-            <iButton @click="handleEdit" >编辑</iButton>
+            <iButton @click="handleEdit" >{{language('LK_BIANJI','编辑')}}</iButton>
             
           </div>
           <!------------------------------------------------------------------------------->
@@ -28,15 +28,15 @@
           <!------------------------------------------------------------------------------->
           <div class="floatright" v-else>
             <!--------------------新增按钮----------------------------------->
-            <iButton @click="handleAdd" >新增</iButton>
+            <iButton @click="handleAdd" >{{language('LK_XINZENG','新增')}}</iButton>
             <!--------------------删除按钮----------------------------------->
-            <iButton @click="handleDelete" >删除</iButton>
+            <iButton @click="handleDelete" >{{language('LK_SHANCHU','删除')}}</iButton>
             <!--------------------恢复按钮----------------------------------->
-            <iButton @click="handleRecover" >恢复</iButton>
+            <iButton @click="handleRecover" >{{language('LK_HUIFU','恢复')}}</iButton>
             <!--------------------保存按钮----------------------------------->
-            <iButton @click="handleSave" :loading="saveLoading">保存</iButton>
+            <iButton @click="handleSave" :loading="saveLoading">{{language('LK_BAOCUN','保存')}}</iButton>
             <!--------------------取消按钮----------------------------------->
-            <iButton @click="handleCancelEdit" >结束编辑</iButton>
+            <iButton @click="handleCancelEdit" >{{language('LK_JIESHUBIANJI','结束编辑')}}</iButton>
           </div>
       </div>
       <tableList 
@@ -129,7 +129,7 @@ export default {
      */    
     handleDelete() {
       if (this.selectItems.length < 1) {
-        iMessage.warn('请选择需要删除的行')
+        iMessage.warn(this.language('LK_QINGXUANZEXUYAOSHANCHUDEHANG','请选择需要删除的行'))
         return
       }
       this.tableDataTemp = this.tableDataTemp.map(item => {
@@ -168,6 +168,7 @@ export default {
       if (res?.result) {
         this.parentDeptOptions = res.data.map(item => {
           return {
+            ...item,
             label: item.nameZh,
             value: item.id
           }

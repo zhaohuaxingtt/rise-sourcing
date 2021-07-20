@@ -1,7 +1,7 @@
 /*
  * @Author: moxuan
  * @Date: 2021-03-04 17:40:00
- * @LastEditors: Please set LastEditors
+ * @LastEditors: Luoshuang
  * @Description: In User Settings Edit
  */
 import {permissionTitle} from '@/utils'
@@ -21,16 +21,17 @@ export const partsProductionTableTitle = permissionTitle("PARTSRFQ_EDITORDETAIL_
     {props:'versionNum',name:'版本号',key: 'LK_BANBENHAO'},*/
 ])
 
-export const timePlanableTitle = permissionTitle("PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_TIMEPLAN_TIMELIST",[
-    {props:'fsNum',name:'FS号',key: 'LK_FSHAO'},
-    {props:'procureFactoryId',name:'采购工厂',key: 'LK_CAIGOUGONGCHANG'},
+//permissionTitle("PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_TIMEPLAN_TIMELIST",
+export const timePlanableTitle = [
+    {props:'fsnrGsnrNum',name:'FS号',key: 'LK_FSHAO'},
+    {props:'procureFactoryName',name:'采购工厂',key: 'LK_CAIGOUGONGCHANG'},
     {props:'partNum',name:'零件号',key: 'LK_LINGJIANHAO'},
-    {props:'partZh',name:'零件名（中）',key: 'LK_LINGJIANMINGZHONG'},
+    {props:'partNameZh',name:'零件名（中）',key: 'LK_LINGJIANMINGZHONG'},
     {props:'cartypeProPvs',name:'车型项目PVS',key: 'LK_CHEXINGXIANGMUPVS'},
-    {props:'cartypePro0s',name:'车型项目0S',key: 'LK_CHEXINGXIANGMU0S'},
+    {props:'cartypeProOs',name:'车型项目0S',key: 'LK_CHEXINGXIANGMU0S'},
     {props:'cartypeProSop',name:'车型项目SOP',key: 'LK_CHEXINGXIANGMUSOP'},
     {props:'productiveLife',name:'车型生产年限',key: 'LK_CHEXINGSHENGCHANNIANXIAN'},
-    {props:'svwFirst',name:'SVW要求首次试模',key: 'LK_SVWYAOQIUSHOUCISHIMO'},
+    {props:'svwRequeseFirstTestMode',name:'SVW要求首次试模',key: 'LK_SVWYAOQIUSHOUCISHIMO'},
     {props:'svwRequestEm',name:'SVW要求EM（周）',key: 'LK_SVWYAOQIUEMZHOU'},
     {props:'svwRequestOts',name:'SVW要求OTS(周)',key: 'LK_SVWYAOQIUOTSZHOU'}
-])
+]

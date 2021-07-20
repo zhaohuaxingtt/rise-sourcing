@@ -83,6 +83,15 @@ export function submitMoldBudget(parmars) {
     })
 }
 
+// 提交/撤回 模具预算
+export function patchMouldBudget(params) {
+    return requst({
+        url: "/mould-budget",
+        method: "PATCH",
+        data: params
+    })
+}
+
 export function cancelMoldBudget(parmars) {
     return requst({
         url: '/modelbudget/cancelMoldBudget',
@@ -257,25 +266,17 @@ export function fsPartsAsRow(rfqId,round){
         method: 'GET'
     })
 }
-//报价分析-供应商轴
-export function fsSupplierAsRow(rfqId,round){
+export function gsPartsAsRow(rfqId,round){
     return nego({
-        url: `/nego-assistant/nego-analysis-summary/fs-supplier-as-row/${rfqId}/${round}`,
+        url: `/nego-assistant/nego-analysis-summary/gs-parts-as-row/${rfqId}/${round}`,
         method: 'GET'
     })
 }
 
-//ab价-fs横轴
-export function fsPartsAsRowDd(mimoId){
+//报价分析-供应商轴
+export function fsSupplierAsRow(rfqId,round){
     return nego({
-        url: `/nego-assistant/nego-analysis-summary/nomi-fs-parts-as-row/${mimoId}`,
-        method: 'GET'
-    })
-}
-//ab价-供应商轴
-export function fsSupplierAsRowDd(mimoId){
-    return nego({
-        url: `/nego-assistant/nego-analysis-summary/nomi-fs-supplier-as-row/${mimoId}`,
+        url: `/nego-assistant/nego-analysis-summary/fs-supplier-as-row/${rfqId}/${round}`,
         method: 'GET'
     })
 }
@@ -353,3 +354,18 @@ export function hasShowDelegate(params) {
     })
 }
 
+// 根据部门类型获取评分部门、评分人、协调人
+export function findRateDeptInfo(params) {
+    return requst({
+        url: `/rfq-bdl-ratings/findRateDeptInfo/${ params.rateTag }`,
+        method: 'GET'
+    })
+}
+
+// 获取目标价
+export function getCfPrice(params) {
+    return requst({
+        url: `/cf-price/${ params.rfqId }/${ params.pageSize }/${ params.currPage }`,
+        method: 'GET'
+    })
+}

@@ -2,11 +2,11 @@
  * @Descripttion: 
  * @Author: Luoshuang
  * @Date: 2021-05-21 14:30:41
- * @LastEditTime: 2021-07-08 09:51:24
+ * @LastEditTime: 2021-07-19 10:26:14
 -->
 <template>
-  <el-table fit ref="multipleTable"  tooltip-effect='light' :height="height" :data='tableData' v-loading='tableLoading' @selection-change="handleSelectionChange"  @select="handleSelect"  @select-all="handleSelectAll" :cell-style="borderLeft" :empty-text="language('ZANWUSHUJU', '暂无数据')" >
-    <el-table-column v-if="selection" type='selection' width="50" align='center'></el-table-column>
+  <el-table ref="multipleTable" fit tooltip-effect='light' :height="height" :data='tableData' v-loading='tableLoading' @selection-change="handleSelectionChange" :empty-text="language('ZANWUSHUJU', '暂无数据')" @select="handleSelect"  @select-all="handleSelectAll" :cell-style="borderLeft" >
+    <el-table-column v-if="selection" type='selection' width="56" align='center'></el-table-column>
     <el-table-column v-if='indexKey' type='index' width='50' align='center' label='#'>
       <template slot-scope="scope">
         {{tableIndexString+(scope.$index+1)}}
@@ -24,6 +24,9 @@
             </span>
           </span>  
         </template>
+      </el-table-column>
+      <el-table-column :key="index" align='center' :width="items.width" :min-width="items.minWidth" :show-overflow-tooltip='items.tooltip' v-else-if='items.props == activeItems2' :prop="items.props" :label="items.key ? language(items.key, items.name) : items.name">
+        <template slot-scope="row"><span class="openLinkText cursor" @click="openPage2(row.row)">{{row.row[activeItems2]}}</span></template>
       </el-table-column>
       <!----------------------需要进行排序的列------------------------>
       <el-table-column :key="index" align='center' :width="items.width" :min-width="items.minWidth"  v-else-if='items.props == "paixu"'>
@@ -69,7 +72,10 @@
           <span v-if="items.enName">{{items.name}}<span><br />{{items.enName}}<br v-if="items.enName1" />{{items.enName1}}</span></span>
           <span v-else>{{items.key ? language(items.key, items.name) : items.name}}</span>
         </template>
-        <template slot-scope="scope">
+        <template v-if="$scopedSlots[items.props] || $slots[items.props]" v-slot="scope">
+          <slot :name="items.props" :row="scope.row"></slot>
+        </template>
+        <template v-else slot-scope="scope">
           <!----------------------------附件综合管理-创建RFQ-产能计划列-------------------------------->
           <span v-if="items.props === 'channeng'" class="openLinkText cursor" @click="$emit('openPlan', scope.row)">编辑</span>
           <!----------------------------附件综合管理-附件列-------------------------------->
@@ -88,14 +94,14 @@
           <!------------------枚举列--------------------------->
           <span v-else-if="items.isObject">{{scope.row[items.props].name || scope.row[items.props] }}</span>
           <!------------------正常--------------------------->
-          <span v-else>{{scope.row[items.props] ? scope.row[items.props].desc || scope.row[items.props] : ''}}</span>
+          <span v-else>{{scope.row[items.props] || scope.row[items.props] === 0 ? scope.row[items.props].desc || scope.row[items.props] : ''}}</span>
         </template>
         <template v-if="items.children">
           <el-table-column v-for="(childItem, childIndex) in items.children" :key="childIndex" align='center' :width="childItem.width" :show-overflow-tooltip='childItem.tooltip'  :label="childItem.key ? language(childItem.key, childItem.name) : childItem.name" :prop="childItem.props">
             <template slot-scope="scope">
               <!----------------------------备注列-------------------------------->
               <span v-if="childItem.props === 'beizhu'" class="openLinkText cursor">查看</span>
-              <span v-else-if="childItem.type === 'rate'">{{getRate(scope.row, childItem.props).rate}}</span>
+              <span v-else-if="childItem.type === 'rate'">{{getRate(scope.row, childItem.props).partSupplierRate}}</span>
               <icon v-if="childItem.type === 'rate' && getRate(scope.row, childItem.props).partSupplierRate === 0" symbol class="cursor" name='icontishi-cheng' style="margin-left:8px" @click.native="$emit('openDialog', scope.row)"></icon>
             </template>
           </el-table-column>
@@ -124,19 +130,20 @@ export default{
     notEdit:Boolean,
     doubleHeader:Boolean,
     selectedItems:{type:Array},
-    editCompare: {type: Boolean, default: true}
+    editCompare: {type: Boolean, default: true},
+    activeItems2:{type:String,default:'b'},
   },
   inject:['vm'],
   methods:{
     getRate(row, props) {
-      const findItem = row.departmentRate.find(item => item.rateDepart === props)
+      const findItem = row.departmentRate?.find(item => item.rateDepart === props)
       return findItem || {}
     },
     handleAttachmentDonwload(row) {
       if (row.fileList?.length < 1) {
         return
       }
-      this.$emit('handleFileDownload', row.fileList?.map(item => item.fileName))
+      this.$emit('handleFileDownload', row.fileList?.map(item => item.fileName), row.fileList)
     },
     getFileList(row) {
       return row.fileList?.map(item => item.fileName).join('\n')
@@ -173,6 +180,9 @@ export default{
     },
     openPage(e){
       this.$emit('openPage',e)
+    },
+    openPage2(e){
+      this.$emit('openPage2',e)
     },	
     activeTop(e){
       this.$emit('activeTop',e)
@@ -242,5 +252,8 @@ export default{
     .active{
       display: block;
     }
+  }
+  ::v-deep .el-date-editor.el-input, .el-date-editor.el-input__inner {
+    width: 100%;
   }
 </style>

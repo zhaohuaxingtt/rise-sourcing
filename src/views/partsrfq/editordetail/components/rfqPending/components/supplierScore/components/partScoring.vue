@@ -2,13 +2,13 @@
   <i-page>
     <div class="pageTitle flex-between-center-center">
       <div class="flex nav-box">
-        <span>{{ $t('LK_LINGJIANPINGFEN') }}</span>
+        <span>{{ language('LK_LINGJIANPINGFEN','零件评分') }}</span>
       </div>
       <div class="btnList">
-        <iButton @click="backPage">{{ $t('LK_FANHUI') }}</iButton>
+        <iButton @click="backPage">{{ language('LK_FANHUI','返回') }}</iButton>
         <iButton type="text" @click="log">
           <icon symbol name="iconrizhiwuzi" class="log-icon"/>
-          <span class="log-word">{{ $t('LK_RIZHI') }}</span>
+          <span class="log-word">{{ language('LK_RIZHI','日志') }}</span>
         </iButton>
         <span>
 					<icon symbol name="icondatabaseweixuanzhong"></icon>
@@ -24,7 +24,7 @@
           :index="true"
           @openMultiHeaderPropsPage="openMultiHeaderPropsPage"
           multi-header-props="tpbMemo"
-          :multi-header-props-text="$t('LK_CHAKAN')"
+          :multi-header-props-text="language('LK_CHAKAN','查看')"
           action-props=""
       ></tablelist>
       <!------------------------------------------------------------------------>

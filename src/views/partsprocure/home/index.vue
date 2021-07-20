@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 09:50:42
- * @LastEditTime: 2021-07-07 16:55:03
+ * @LastEditTime: 2021-07-12 16:27:17
  * @LastEditors: Please set LastEditors
  * @Description: 零件采购项目建立首页。
  * @FilePath: \rise\src\views\partsprocure\home\index.vue
@@ -88,7 +88,7 @@
                     language('partsprocure.CHOOSE','请选择') +
                     language('partsprocure.PARTSPROCUREPARTSTATUS','零件状态')
                   "
-                  v-model="form['search.partStatus']"
+                  v-model="form['search.projectStatus']"
                   v-permission="PARTSPROCURE_PARTSTATUS"
                 >
                   <el-option

@@ -2,9 +2,9 @@
 	<iCard>
 		<!-- 价格明细 -->
 		<div class="header flex-between-center-center">
-			<span class="title">{{ $t('LK_JIAGEMINGXI') }}</span>
+			<span class="title">{{ language('LK_JIAGEMINGXI','价格明细') }}</span>
 			<div class="control">
-				<iButton  @click="save('save')" v-permission="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_SAVE">{{ $t('LK_BAOCUN') }}</iButton>
+				<iButton  @click="save('save')" v-permission="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_SAVE">{{ language('LK_BAOCUN','保存') }}</iButton>
 			</div>
 		</div>
 		<iFormGroup row="3" icon inline>
@@ -45,13 +45,13 @@
 		<div class="line"></div>
 		<!-- 申请财务目标价 -->
 		<div class="header flex-between-center-center">
-			<span class="title">{{ $t('LK_SHENQINGCAIWUMUBIAOJIA') }}</span>
+			<span class="title">{{ language('LK_SHENQINGCAIWUMUBIAOJIA','申请财务目标价') }}</span>
 			<div class="control">
-				<iButton @click="saveApply" :loading="applyLoading" v-permission="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_APPLY">{{ $t('LK_SHENQING') }}</iButton>
+				<iButton @click="saveApply" :loading="applyLoading" v-permission="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_APPLY">{{ language('LK_SHENQING','申请') }}</iButton>
 			</div>
 		</div>
 		<iFormGroup row="2" icon inline>
-			<iFormItem :label="$t('LK_SHENQINGLEIXING')" name="test" v-permission="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_SQLX">
+			<iFormItem :label="language('LK_SHENQINGLEIXING','申请类型')" name="test" v-permission="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_SQLX">
 				<el-radio-group v-model="targetprice.cfTargetPriceDetail.applyType">
 					<iRadio label="LC" size="small" border>LC</iRadio>
 					<iRadio label="SKD" size="small" border>SKD</iRadio>
@@ -59,16 +59,16 @@
 				</el-radio-group>
 				<!-- <span class="start">*</span> -->
 			</iFormItem>
-			<iFormItem :label="$t('LK_QIWANGMUBIAOJIA')" name="test"  v-permission="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_QWMBJ">
+			<iFormItem :label="language('LK_QIWANGMUBIAOJIA','期望目标价')" name="test"  v-permission="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_QWMBJ">
 				<iInput v-model="targetprice.cfTargetPriceDetail.expTargetpri" v-Int  maxlength="20"></iInput>
 			</iFormItem>
 		</iFormGroup>
 		<iFormGroup row="2" icon inline>
-			<iFormItem :label="$t('LK_SHENQINGYUANYIN')" name="test" v-permission="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_SQYY">
+			<iFormItem :label="language('LK_SHENQINGYUANYIN','申请原因')" name="test" v-permission="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_SQYY">
 				<iInput type="textarea" rows="6" resize="none" maxlength="500" v-model="targetprice.cfTargetPriceDetail.applyReason">
 				</iInput>
 			</iFormItem>
-			<iFormItem :label="$t('LK_SHENQINGBEIZHU')" name="test" v-permission="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_SQBZ">
+			<iFormItem :label="language('LK_SHENQINGBEIZHU','申请备注')" name="test" v-permission="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_SQBZ">
 				<iInput type="textarea" rows="6" resize="none" maxlength="1000" v-model="targetprice.cfTargetPriceDetail.memo">
 				</iInput>
 			</iFormItem>
@@ -89,35 +89,35 @@
 		<div class="line"></div>
 		<!-- 申请RW价 -->
 		<div class="header flex-between-center-center">
-			<span class="title">{{ $t('LK_SHENQINGRWJIA') }}</span>
+			<span class="title">{{ language('LK_SHENQINGRWJIA','申请RW价') }}</span>
 			<div class="control">
-				<iButton @click="targeRw" v-permission="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_RWAPPLY">{{ $t('LK_SHENQING') }}</iButton>
+				<iButton @click="targeRw" v-permission="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_RWAPPLY">{{ language('LK_SHENQING','申请') }}</iButton>
 			</div>
 		</div>
 		<iFormGroup row="2" icon inline v-permission="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_APPLYRWTXT">
-			<iFormItem :label="$t('LK_ZUIXINRWJIA')" name="test">
+			<iFormItem :label="language('LK_ZUIXINRWJIA','最新RW价')" name="test">
 				<iText>
 					{{targetprice.rwApplication.price}}
 				</iText>
 			</iFormItem>
-			<iFormItem :label="$t('LK_ZUIXINFANHUIRIQI')" name="test">
+			<iFormItem :label="language('LK_ZUIXINFANHUIRIQI','最新返回日期')" name="test">
 				<iText>
 					{{targetprice.rwApplication.responseDate}}
 				</iText>
 			</iFormItem>
-			<iFormItem :label="$t('LK_ZUIXINSHENQINGZHUANGTAI')" name="test">
+			<iFormItem :label="language('LK_ZUIXINSHENQINGZHUANGTAI','最新申请状态')" name="test">
 				<iText>
 					{{targetprice.rwApplication.applyStatus}}
 				</iText>
 			</iFormItem>
-			<iFormItem :label="$t('LK_ZUIXINSHENQINGRIQI')" name="test">
+			<iFormItem :label="language('LK_ZUIXINSHENQINGRIQI','最新申请日期')" name="test">
 				<iText>
 					{{targetprice.rwApplication.applyDate}}
 				</iText>
 			</iFormItem>
 		</iFormGroup>
 		<iFormGroup row="1" icon inline>
-			<iFormItem :label="$t('LK_SHENQINGBEIZHU')" name="test">
+			<iFormItem :label="language('LK_SHENQINGBEIZHU','申请备注')" name="test">
 				<iInput type="textarea" rows="6" resize="none" maxlength="1000" v-model="targetprice.rwApplication.memo" v-permission="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_RWAPPLYREMARK"></iInput>
 			</iFormItem>
 		</iFormGroup>
@@ -152,6 +152,7 @@
 import { iMessageBox } from '../../../../../components';
 import { pageMixins } from '@/utils/pageMixins'
 import { applyCFTarget, getCfTargetApplyHistory, getTargetPriceDd, savePriceDetail } from '@/api/financialTargetPrice/index'
+import {partProjTypes} from '@/config'
 import { cloneDeep } from 'lodash'
 	export default {
 		components: {
@@ -171,12 +172,12 @@ import { cloneDeep } from 'lodash'
 				type: String
 			},
 			fsnrGsnrNum: {type: String},
-			partPrejectType: {type:String}
+			partProjectType: {type:String}
 		},
 		watch: {
-			partPrejectType: {
+			partProjectType: {
 				handler(val) {
-					if (val === 'PT19' || val === 'PT04') {
+					if (val === partProjTypes.DBYICHIXINGCAIGOU || val === partProjTypes.DBLINGJIAN) {
 						this.targetprice = {
 							...this.targetprice,
 							cfTargetPriceDetail: {
@@ -191,6 +192,8 @@ import { cloneDeep } from 'lodash'
 		},
 		data() {
 			return {
+				// 零件项目类型
+				partProjTypes,
 				tableLoading: false,
 				selectTableData: [],
 				tableListData: [],
@@ -277,7 +280,7 @@ import { cloneDeep } from 'lodash'
 				};
 				savePriceDetail(targetprice).then((res) => {
 					if (res.result) {
-						iMessage.success(this.$t('LK_CAOZUOCHENGGONG'))
+						iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'))
 						this.getTargetPriceDetail()
 						this.targePriceDetail()
 						this.getTargetPrice()
@@ -298,7 +301,7 @@ import { cloneDeep } from 'lodash'
 					targetprice,
 				}).then((res) => {
 					if(res.code == 200){
-						iMessage.success(this.$t('LK_CAOZUOCHENGGONG'))
+						iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'))
 						this.targePriceDetail()
 					}else{
 						iMessage.error(res.desZh)
@@ -309,7 +312,7 @@ import { cloneDeep } from 'lodash'
 			},
 			saveApply() {
 				if (!this.targetprice.cfTargetPriceDetail.applyType) {
-					iMessage.warn(this.language('请选择申请的财务目标价类型'))
+					iMessage.warn(this.language('LK_QINGXUANZESHENQINGDECAIWUMUBIAOJIALEIXING','请选择申请的财务目标价类型'))
 					return
 				}
 				this.applyLoading = true

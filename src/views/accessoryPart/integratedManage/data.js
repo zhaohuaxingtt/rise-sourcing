@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-26 11:16:58
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-25 13:33:24
+ * @LastEditTime: 2021-07-16 23:15:01
  * @Description: 
  * @FilePath: \front-web\src\views\accessoryPart\integratedManage\data.js
  */
@@ -18,17 +18,17 @@ export const tableTitle = [
   {props:'supplierNameZh',name:'供应商中文名', key: "GONGYINGSHANGMINGCHENG", tooltip: true, width: 240},
   {props:'respDeptName',name:'LINIE科室', key: "LINIEKESHI", tooltip: true, width: 140},
   {props:'respLinieName',name:'LINIE', key: "LINIE", tooltip: true, width: 100},
-  {props:'csfUserDeptName',name:'询价科室', key: "XUNJIAKESHI", tooltip: true, width: 100},
-  {props:'csfUserIdName',name:'询价采购员', key: "XUNJIACAIGOUYUAN", tooltip: true, width: 100},
+  {props:'csfuserDeptName',name:'询价科室', key: "XUNJIAKESHI", tooltip: true},
+  {props:'csfuserName',name:'询价采购员', key: "XUNJIACAIGOUYUAN", tooltip: true, width: 100},
   {props:'deliveryWarehouse',name:'送货仓库', key: "SONGHUOCANGKU", tooltip: true},
   {props:'brand',name:'品牌', key: "PINPAI", tooltip: true},
   {props:'state',name:'配件状态', key: "PEIJIANZHUANGTAI", tooltip: true, width: 120},
-  {props:'isEop',name:'零件状态', key: "LINGJIANZHUANGTAI", tooltip: true, width: 120},
+  {props:'accessoryStatus',name:'零件状态', key: "LINGJIANZHUANGTAI", tooltip: true, width: 120},
   {props:'signDate',name:'需求签收日期', key: "XUQIUQIANSHOURIQI", tooltip: true, width: 120},
   {props:'carType',name:'配件车型', key: "PEIJIANCHEXING", tooltip: true, width: 120},
   {props:'carProject',name:'配件车型项目', key: "PEIJIANCHEXINGXIANGMU", tooltip: true, width: 140},
   {props:'idState',name:'ID状态', key: "IDZHUANGTAI", tooltip: true},
-  {props:'e',name:'价格类型', key: "JIAGELEIXING", tooltip: true},
+  {props:'priceType',name:'价格类型', key: "JIAGELEIXING", tooltip: true},
   {props:'tcUnitId',name:'单位', key: "DANWEI", tooltip: true},
   {props:'sendDate',name:'需求发送日期', key: "XUQIUFASONGRIQI", tooltip: true, width: 120},
 ]
@@ -48,14 +48,14 @@ export const searchList = [
   {value: 'carType', label: '配件车型', type: 'select', key: 'PEIJIANCHEXING', selectOption: 'carTypeOptions'},
   {value: 'carProject', label: '配件车型项目', type: 'select', key: 'PEIJIANCHEXINGXIANGMU', selectOption: 'carTypeProjectOptions', width: 150},
   {value: 'state', label: '配件状态', type: 'select', key: 'PEIJIANZHUANGTAI', selectOption: 'accessoryTypeOption'},
-  {value: 'respDept', label: 'LINIE科室', type: 'input', key: 'LINIEKESHI',},
-  {value: 'respLINIE', label: 'LINIE', type: 'input', key: 'LINIE',},
-  {value: 'csfUserDept', label: '询价科室', type: 'input',key: 'XUNJIAKESHI'},
-  {value: 'csfUserId', label: '询价采购员', type: 'input', key: 'XUNJIACAIGOUYUAN',},
-  {value: 'partStatus', label: '零件状态', type: 'select', key: 'LINGJIANZHUANGTAI', selectOption: 'partStateOption'},
-  {value: 'partState', label: '合同状态', type: 'select', key: 'HETONGZHUANGTAI', selectOption: 'contactStateOption'},
-  {value: 'cfTargetPrice', label: '是否有财务目标价', type: 'select', key: 'SHIFOUYOUCAIWUMUBIAOJIA', selectOption: 'yesOrNoOption'},
-  {value: 'nomiType', label: '定点状态', type: 'select', key: 'DINGDIANZHUANGTAI', selectOption: 'nominateStateOption'},
+  {value: 'respDeptName', label: 'LINIE科室', type: 'input', key: 'LINIEKESHI',},
+  {value: 'respLinieName', label: 'LINIE', type: 'input', key: 'LINIE',},
+  {value: 'csfuserDeptName', label: '询价科室', type: 'input',key: 'XUNJIAKESHI'},
+  {value: 'csfuserName', label: '询价采购员', type: 'input', key: 'XUNJIACAIGOUYUAN',},
+  {value: 'accessoryStatus', label: '零件状态', type: 'select', key: 'LINGJIANZHUANGTAI', selectOption: 'partStateOption'},
+  // {value: 'partState', label: '合同状态', type: 'select', key: 'HETONGZHUANGTAI', selectOption: 'contactStateOption'},
+  // {value: 'cfTargetPrice', label: '是否有财务目标价', type: 'select', key: 'SHIFOUYOUCAIWUMUBIAOJIA', selectOption: 'yesOrNoOption'},
+  // {value: 'nomiType', label: '定点状态', type: 'select', key: 'DINGDIANZHUANGTAI', selectOption: 'nominateStateOption'},
   {value: 'idState', label: 'ID状态', type: 'select', key: 'IDZHUANGTAI', selectOption: 'accessoryIdStateOption'}
 ]
 export const TAB = [

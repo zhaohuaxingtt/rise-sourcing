@@ -150,9 +150,7 @@ export default {
                 ],
             },
             loading:false,
-            tableListData:[
-                // {nominateAppId:'50912471',rfqId:'NL21-10180',supplierId:'51120086',sapNum:'068',supplierName:'博世汽⻋技术服务(中国)有限公司',loiStatusValue:'前期处理中',supplierResult:'供应商反馈',csfName:'⾼真',remark:'备注',}
-            ],
+            tableListData:[],
             tableTitle:loiListTitle,
             selectItems:[],
             closeLoiVisible:false,
@@ -223,7 +221,8 @@ export default {
             this.searchParams = {
                 show:'true',
                 loiStatus:'',
-            }
+            };
+            this.getList();
         },
         
         handleSelectionChange(val) {

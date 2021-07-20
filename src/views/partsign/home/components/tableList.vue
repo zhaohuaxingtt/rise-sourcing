@@ -1,14 +1,14 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-24 09:42:07
- * @LastEditTime: 2021-07-07 15:45:23
+ * @LastEditTime: 2021-07-12 18:08:43
  * @LastEditors: Please set LastEditors
  * @Description: 零件签收-table组件。
  * @FilePath: \rise\src\views\partsign\components\tableList.vue
 -->
 <template>
-  <el-table fit tooltip-effect='light' :height="height" :data='tableData' v-loading='tableLoading' @selection-change="handleSelectionChange"  @select="handleSelect"  @select-all="handleSelectAll" :cell-style="borderLeft" :empty-text="language('LK_ZANWUSHUJU','暂无数据')" ref="moviesTable" :class="radio && 'radio'">
-    <el-table-column v-if="selection" type='selection' width="50" align='center'></el-table-column>
+  <el-table fit tooltip-effect='light' :height="height" :data='tableData' v-loading='tableLoading' @selection-change="handleSelectionChange" :empty-text="language('LK_ZANWUSHUJU','暂无数据')" ref="moviesTable" :class="radio && 'radio'" @select="handleSelect"  @select-all="handleSelectAll" :cell-style="borderLeft">
+    <el-table-column v-if="selection" type='selection' width="56" align='center'></el-table-column>
     <el-table-column v-if='index' type='index' width='50' align='center' :label='indexLabel'></el-table-column>
     <template v-for="(items,index) in tableTitle">
       <el-table-column :key="index" align='center' :width="items.width" :min-width="items.minWidth ? items.minWidth.toString():''" :show-overflow-tooltip='items.tooltip' v-if='items.props == activeItems' :prop="items.props" :label="items.key ? language(items.key,items.name) : items.name">

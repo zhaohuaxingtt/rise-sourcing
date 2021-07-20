@@ -41,14 +41,18 @@ export default {
     const {query} = this.$route;
     const {isPreview = '0'} = query;
     this.isPreview = isPreview;
+    this.$store.dispatch('setPreviewState', isPreview)
     // 缓存当前步骤
     this.getStepStatus();
   },
   methods: {
     // 获取步骤状态
     async getStepStatus(){
-      const nominateId = this.$store.getters.nomiAppId || this.$route.query.desinateId
-      await this.$store.dispatch('setNominationStep',{nominateId})
+      const nominateId = this.$route.query.desinateId || this.$store.getters.nomiAppId
+      // 临时跳转，将不调接口更新当前步骤
+      if (this.$route.query.route !== 'temp') {
+        await this.$store.dispatch('setNominationStep',{nominateId})
+      }
       // 检查是否带强制路由参数，force表示不做step检测跳转
       if (this.$route.query.route === 'force') return
       this.$nextTick(() => {

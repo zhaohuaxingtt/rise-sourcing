@@ -170,6 +170,9 @@ a{
     background-color: $color-table-header;
     tr{
       background-color: transparent;
+      &:nth-child(even){
+        background-color: $color-table-header;
+      }
     }
   }
   th{
@@ -470,5 +473,11 @@ a{
 .hideCheckbox {
   .el-checkbox { 
     display: none!important;
+  }
+}
+
+.el-select {
+  .el-input__inner {
+    backface-visibility: hidden!important;
   }
 }

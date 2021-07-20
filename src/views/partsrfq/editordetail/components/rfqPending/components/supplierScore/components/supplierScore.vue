@@ -1,14 +1,14 @@
 <template>
   <iCard>
     <div class="margin-bottom20 clearFloat">
-      <span class="font18 font-weight">{{ $t('LK_GONGYINGSHANGPINGFEN') }}</span>
+      <span class="font18 font-weight">{{ language('LK_GONGYINGSHANGPINGFEN','供应商评分') }}</span>
       <div class="floatright">
         <!-- v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_SUPPLIERSCORE_PARTSCORING_DELETE" -->
-        <iButton v-if="!editStatus" @click="editStatus = true">{{ $t('LK_BIANJI') }}</iButton>
-        <iButton v-if="editStatus" @click="editStatus = false">{{ $t('LK_QUXIAO') }}</iButton>
-        <iButton v-if="editStatus" :loading="saveLoading" @click="handleSave">{{ $t('LK_BAOCUN') }}</iButton>
-        <iButton @click="setScoringDept">{{ $t('LK_SHEZHIPINGFENBUMEN') }}</iButton>
-        <iButton @click="sendTaskForRating" :loading="pushLoading">{{ $t('LK_TUISONGPINGFENRENWU') }}</iButton>
+        <iButton v-if="!editStatus" @click="editStatus = true">{{ language('LK_BIANJI','编辑') }}</iButton>
+        <iButton v-if="editStatus" @click="editStatus = false">{{ language('LK_QUXIAO','取 消') }}</iButton>
+        <iButton v-if="editStatus" :loading="saveLoading" @click="handleSave">{{ language('LK_BAOCUN','保存') }}</iButton>
+        <iButton @click="setScoringDept">{{ language('LK_SHEZHIPINGFENBUMEN','设置评分部门') }}</iButton>
+        <iButton @click="sendTaskForRating" :loading="pushLoading">{{ language('LK_TUISONGPINGFENRENWU','推送评分任务') }}</iButton>
       </div>
     </div>
     <tablelist
@@ -161,16 +161,18 @@ export default {
         const templateTitleLast = JSON.parse(JSON.stringify(this.templateScoreTitle))
         this.translateTile(vmindex,vmitems,parmars,templateTitleLast)
       })
+
       data.forEach((items,index)=>{
         vmdata.forEach((vmitems,vmindex)=>{
           const obj = {}
           parmars.forEach(item=>{
             // vmitems[item+(vmindex?vmindex:'')] = vmitems[item]
-            obj[item+(vmindex?vmindex:'')] = items.rateEntity[vmindex][item]
+            obj[item+(vmindex?vmindex:'')] = items.rateEntity[vmindex] ? items.rateEntity[vmindex][item] : items.rateEntity[vmindex]
           })
           items = Object.assign(items,obj)
         })
       })
+
       return data
     },
     translateTile(index,data,parmars,templateTitleLast){

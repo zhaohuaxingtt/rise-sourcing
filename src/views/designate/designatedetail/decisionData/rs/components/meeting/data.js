@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:50:41
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-05 10:37:09
+ * @LastEditTime: 2021-07-19 16:45:46
  * @Description: 
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\rs\components\meeting\data.js
  */
@@ -21,6 +21,7 @@ export const nomalDetailTitle = [
   {props: 'lifeTime', name: '生命周期', enName: 'Lifetime', key: 'SHENGMINGZHOUQI'}
 ]
 
+// GS
 export const nomalDetailTitleBlue = [
   [
     {props: 'currency', name: '货币', enName: 'Currency', key: 'HUOBI'},
@@ -31,11 +32,10 @@ export const nomalDetailTitleBlue = [
   {props: 'rawMaterial', name: '原材料', enName: 'Raw Material', key: 'YUANCAILIAO'},
   {props: 'plannedInvest', name: '现供应商', enName: 'Current Supplier', key:'XIANGONGYINGSHANG'},
   {props: 'setPrice', name: '设定价格', enName: 'Set Price', key:'SHEDINGJIAGE'},
-  {props: 'emtermin', name: '分摊', enName: 'Amrtisiert', key: 'FENTAN'},
+  {props: 'isApportion', name: '分摊', enName: 'Amrtisiert', key: 'FENTAN'},
   {props: 'quantity', name: '每车用量', enName: 'Quantity', key: 'MEICHEYONGLIANG'}
 ]
 
-// GS
 export const gsDetailTitleBlue = [
   [
     {props: 'currency', name: '货币', enName: 'Currency', key: 'HUOBI'},
@@ -70,11 +70,11 @@ export const nomalTableTitle = [
   {props:'status',name:'状态', enName: 'Status', key: "", minWidth: 45},
   {props:'aprice',name:'A价', enName: 'A Price', key: "", minWidth: 45},
   {props:'bprice',name:'B价', enName: 'B Price', key: "", minWidth: 45},
-  {props:'ltcRateOfThree',name:'年降', enName: 'LTC', key: "", minWidth: 35},
-  {props:'beginYearReduce',name:'年降开始时间', enName: 'Start Time of LTC', key: "", minWidth: 90},
+  {props:'ltc',name:'年降', enName: 'LTC', key: "", width: 120},
+  {props:'beginYearReduce',name:'年降开始时间', enName: 'Start Time of LTC', key: "", minWidth: 100},
   {props:'investFee',name:'投资费(不含税)', enName: 'Invest(excl.VAT)', key: "", minWidth: 80},
   {props:'devFee',name:'开发费(含税)', enName: 'Develop Cost',enName1:'(incl. VAT)', key: "", minWidth: 80},
-  {props:'turnover',name:'采购金额', enName: 'Turnover', key: "", minWidth: 65},
+  {props:'tto',name:'采购金额', enName: 'Turnover', key: "", minWidth: 65},
 ]
 
 // 配件
@@ -91,11 +91,11 @@ export const sparePartTableTitle = [
   {props:'bcfTargetPrice',name:'财务目标价', enName: 'CF Target Price', key: "", minWidth: 95},
   {props:'status',name:'状态', enName: 'Status', key: "", minWidth: 45},
   {props:'bprice',name:'B价', enName: 'B Price', key: "", minWidth: 45},
-  {props:'ltcRateOfThree',name:'年降', enName: 'LTC', key: "", minWidth: 35},
-  {props:'beginYearReduce',name:'年降开始时间', enName: 'Start Time of LTC', key: "", minWidth: 90},
+  {props:'ltc',name:'年降', enName: 'LTC', key: "", width: 120},
+  {props:'beginYearReduce',name:'年降开始时间', enName: 'Start Time of LTC', key: "", minWidth: 100},
   {props:'investFee',name:'投资费(不含税)', enName: 'Invest(excl.VAT)', key: "", minWidth: 80},
   {props:'devFee',name:'开发费(含税)', enName: 'Develop Cost',enName1:'(incl. VAT)', key: "", minWidth: 80},
-  {props:'turnover',name:'采购金额', enName: 'Turnover', key: "", minWidth: 65},
+  {props:'tto',name:'采购金额', enName: 'Turnover', key: "", minWidth: 65},
 ]
 
 // 附件
@@ -112,11 +112,11 @@ export const accessoryTableTitle = [
   {props:'bcfTargetPrice',name:'财务目标价', enName: 'CF Target Price', key: "", minWidth: 95},
   {props:'status',name:'状态', enName: 'Status', key: "", minWidth: 45},
   {props:'bprice',name:'B价', enName: 'B Price', key: "", minWidth: 45},
-  {props:'ltcRateOfThree',name:'年降', enName: 'LTC', key: "", minWidth: 35},
-  {props:'beginYearReduce',name:'年降开始时间', enName: 'Start Time of LTC', key: "", minWidth: 90},
+  {props:'ltc',name:'年降', enName: 'LTC', key: "", width: 120},
+  {props:'beginYearReduce',name:'年降开始时间', enName: 'Start Time of LTC', key: "", minWidth: 100},
   {props:'investFee',name:'投资费(不含税)', enName: 'Invest(excl.VAT)', key: "", minWidth: 80},
   {props:'devFee',name:'开发费(含税)', enName: 'Develop Cost',enName1:'(incl. VAT)', key: "", minWidth: 80},
-  {props:'turnover',name:'采购金额', enName: 'Turnover', key: "", minWidth: 65},
+  {props:'tto',name:'采购金额', enName: 'Turnover', key: "", minWidth: 65},
 ]
 
 // GS零件
@@ -132,18 +132,18 @@ export const gsTableTitle = [
   {props:'supplierId',name:'供应商', enName: 'Supplier', key: "", minWidth: 55},
   {props:'prodLocation',name:'产地', enName: 'Prod.Location', key: "", minWidth: 75},
   {props:'share',name:'份额', enName: 'Share(%)', key: "", minWidth: 55},
-  {props:'rw',name:'车型', enName: 'Carline', key: "", minWidth: 35},
+  {props:'carLine',name:'车型', enName: 'Carline', key: "", minWidth: 35},
   {props:'presentPrice',name:'现供价格', enName: 'Current Price', key: "", minWidth: 95},
   {props:'status',name:'供货状态', enName: 'Status', key: "", minWidth: 45},
   {props:'aprice',name:'A价', enName: 'A Price', key: "", minWidth: 45},
   {props:'bprice',name:'B价', enName: 'B Price', key: "", minWidth: 45},
-  {props:'ltcRateOfThree',name:'年降', enName: 'LTC', key: "", minWidth: 35},
-  {props:'beginYearReduce',name:'年降开始时间', enName: 'Start Time of LTC', key: "", minWidth: 90},
+  {props:'ltc',name:'年降', enName: 'LTC', key: "", width: 120},
+  {props:'beginYearReduce',name:'年降开始时间', enName: 'Start Time of LTC', key: "", minWidth: 100},
   {props:'investFee',name:'投资费(不含税)', enName: 'Invest(excl.VAT)', key: "", minWidth: 80},
   {props:'devFee',name:'开发费(含税)', enName: 'Develop Cost',enName1:'(incl. VAT)', key: "", minWidth: 80},
   {props:'addFee',name:'认可费', enName: 'Release Cost', key: "", minWidth: 65},
   {props:'savingFee',name:'估算节约值', enName: 'Estimaled Savings', key: "", minWidth: 65},
-  {props:'turnover',name:'采购金额', enName: 'Turnover', key: "", minWidth: 65},
+  {props:'tto',name:'采购金额', enName: 'Turnover', key: "", minWidth: 65},
 ]
 
 // DB零件
@@ -166,17 +166,17 @@ export const dbTableTitle = [
   {props:'payClause',name:'支付条款', enName: 'Payment Term', key: "", minWidth: 45},
   {props:'aprice',name:'A价', enName: 'A Price', key: "", minWidth: 45},
   {props:'bprice',name:'B价', enName: 'B Price', key: "", minWidth: 45},
-  {props:'ltcRateOfThree',name:'年降', enName: 'LTC', key: "", minWidth: 35},
-  {props:'beginYearReduce',name:'年降开始时间', enName: 'Start Time of LTC', key: "", minWidth: 90},
+  {props:'ltc',name:'年降', enName: 'LTC', key: "", width: 120},
+  {props:'beginYearReduce',name:'年降开始时间', enName: 'Start Time of LTC', key: "", minWidth: 100},
   {props:'investFee',name:'投资费(不含税)', enName: 'Invest(excl.VAT)', key: "", minWidth: 80},
   {props:'devFee',name:'开发费(含税)', enName: 'Develop Cost',enName1:'(incl. VAT)', key: "", minWidth: 80},
-  {props:'turnover',name:'采购金额', enName: 'Turnover', key: "", minWidth: 65},
+  {props:'tto',name:'采购金额', enName: 'Turnover', key: "", minWidth: 65},
 ]
 
 export const meetingRemark = [
-  {label: '询价采购员上会备注', value: 'ww', type: 'CSF_MEET_MEMO', key: 'XUNJIACAIGOUYUANSHANGHUIBEIZHU'},
-  {label: 'LINIE上会备注', value: 'xxx', type: 'LINIE_MEET_MEMO', key: 'LINIESHANGHUIBEIZHU'},
-  {label: 'CS*1上会备注', value: 'ttt', type: 'CS1_MEET_MEMO', key: 'CS1SHANGHUIBEIZHU'}
+  {label: '询价采购员上会备注', value: 'ww', type: 'CSF_MEET_MEMO', remarkType:'csfMeetMemo', key: 'XUNJIACAIGOUYUANSHANGHUIBEIZHU'},
+  {label: 'LINIE上会备注', value: 'xxx', type: 'LINIE_MEET_MEMO', remarkType:'linieMeetMemo',key: 'LINIESHANGHUIBEIZHU'},
+  {label: 'CS*1上会备注', value: 'ttt', type: 'CS1_MEET_MEMO',remarkType:'cs1MeetMemo', key: 'CS1SHANGHUIBEIZHU'}
 ]
 
 export const checkList = [
@@ -191,11 +191,11 @@ export const checkList = [
 
 
 export const prototypeTitleList = [
-  {i18nName: 'FS号', props: 'a', i18nKey: 'FSNUMBER'},
-  {i18nName: '零件号', props: 'b', i18nKey: 'LINGJIANHAO'},
-  {i18nName: '供应商SAP号', props: 'c', i18nKey: 'GONGYINGSHANGSAPHAO'},
-  {i18nName: '供应商名称', props: 'd', i18nKey: 'GONGYINGSMINGC'},
-  {i18nName: '工装样件状态（工装样件的备注）', props: 'e', i18nKey: 'GONGZHUANGYANGJIANZHUANGTAI'},
-  {i18nName: '单件价格（工装样件单件费用(RMB)', props: 'f', i18nKey: 'DANJIANJIAGE'},
-  {i18nName: '样件模具价格（附加工装样件模具价格(RMB)', props: 'g', i18nKey: 'YANGJIANMOKUJIAGE'}
+  {i18nName: 'FS号', props: 'fsGsNum', i18nKey: 'FSNUMBER'},
+  {i18nName: '零件号', props: 'partNum', i18nKey: 'LINGJIANHAO'},
+  {i18nName: '供应商SAP号', props: 'supplierCode', i18nKey: 'GONGYINGSHANGSAPHAO'},
+  {i18nName: '供应商名称', props: 'supplierName', i18nKey: 'GONGYINGSMINGC'},
+  {i18nName: '工装样件状态（工装样件的备注）', props: 'toolingSampleRemark', i18nKey: 'GONGZHUANGYANGJIANZHUANGTAI'},
+  {i18nName: '单件价格（工装样件单件费用(RMB)', props: 'sampleUnitPrice', i18nKey: 'DANJIANJIAGE'},
+  {i18nName: '样件模具价格（附加工装样件模具价格(RMB)', props: 'addionalMouldCost', i18nKey: 'YANGJIANMOKUJIAGE'}
 ]

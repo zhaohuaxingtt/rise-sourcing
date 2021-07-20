@@ -3,8 +3,8 @@
     <iCard>
       <div class="margin-bottom20 clearFloat">
         <div class="floatright">
-          <iButton @click="submit" v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_MOLDBUDGETAPPLICATION_SUBMIT">{{ $t('LK_TIJIAO') }}</iButton>
-          <iButton @click="recall" v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_MOLDBUDGETAPPLICATION_RECALL">{{ $t('LK_CHEHUI') }}</iButton>
+          <iButton @click="submit" v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_MOLDBUDGETAPPLICATION_SUBMIT">{{ language('LK_TIJIAO','提交') }}</iButton>
+          <iButton @click="recall" v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_MOLDBUDGETAPPLICATION_RECALL">{{ language('LK_CHEHUI','撤回') }}</iButton>
         </div>
       </div>
       <tablelist
@@ -39,7 +39,7 @@ import {iCard, iButton, iPagination, iMessage} from "@/components";
 import tablelist from 'pages/partsrfq/components/tablelist'
 import {tableTitle} from "./components/data";
 import {pageMixins} from "@/utils/pageMixins";
-import {getModelBudgetList, submitMoldBudget, cancelMoldBudget} from "@/api/partsrfq/editordetail";
+import {getModelBudgetList, patchMouldBudget, cancelMoldBudget} from "@/api/partsrfq/editordetail";
 import store from '@/store'
 import {rfqCommonFunMixins} from "pages/partsrfq/components/commonFun";
 
@@ -91,7 +91,7 @@ export default {
     },
     async submit() {
       if(this.selectTableData.length == 0) {
-        iMessage.warn(this.$t('partsignLanguage.QingXuanZe'))
+        iMessage.warn(this.language('partsignLanguage.QingXuanZe','请选择'))
         return false
       }
       this.selectTableData = this.selectTableData.map(item => {
@@ -99,13 +99,16 @@ export default {
         return item
       })
       const req = this.selectTableData
-      const res = await submitMoldBudget(req)
+      const res = await patchMouldBudget({
+        updateType: 1,
+        mouldBudgetDTOS: req
+      })
       this.resultMessage(res)
       this.getTableList()
     },
     async recall() {
       if(this.selectTableData.length == 0) {
-        iMessage.warn(this.$t('partsignLanguage.QingXuanZe'))
+        iMessage.warn(this.language('partsignLanguage.QingXuanZe','请选择'))
         return false
       }
       this.selectTableData = this.selectTableData.map(item => {
@@ -113,7 +116,10 @@ export default {
         return item
       })
       const req = this.selectTableData
-      const res = await cancelMoldBudget(req)
+      const res = await patchMouldBudget({
+        updateType: 0,
+        mouldBudgetDTOS: req
+      })
       this.resultMessage(res)
       this.getTableList()
     },

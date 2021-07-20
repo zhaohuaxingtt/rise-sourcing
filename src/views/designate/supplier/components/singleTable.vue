@@ -2,7 +2,7 @@
   <iCard class="supplierTable singleSupplier margin-top20">
     <div class="margin-bottom20 clearFloat">
         <span class="font18 font-weight">
-          {{ language("DANYIGONGYINGSHANG",'单一供应商') }}</span
+          {{ language("LK_DANYIGONGYINGSHANG",'单一供应商') }}</span
         >
         <div class="floatright" v-if="singleEditControl">
           <!-- 批量编辑 -->
@@ -55,7 +55,7 @@
         </template>
         <!-- 供应商名 -->
         <template #suppliersName="scope">
-          <div v-if="singleEditControl || scope.row.isEdit">
+          <div v-if="singleEditControl || scope.row.isEdit" class="required">
             <iSelect
               v-model="scope.row.suppliersName"
               @focus="getRfqDepartment(scope.row)"
@@ -73,7 +73,7 @@
         </template>
         <!-- 单一原因 -->
         <template #singleReason="scope">
-          <div v-if="singleEditControl || scope.row.isEdit">
+          <div v-if="singleEditControl || scope.row.isEdit" class="required">
             <iSelect
               v-model="scope.row.singleReason"
               :placeholder="language('LK_QINGXUANZE','请选择')">
@@ -89,7 +89,7 @@
         </template>
         <!-- 部门 -->
         <template #department="scope">
-          <div v-if="singleEditControl || scope.row.isEdit">
+          <div v-if="singleEditControl || scope.row.isEdit" class="required">
             <iSelect
               v-model="scope.row.department"
               :placeholder="language('LK_QINGXUANZE','请选择')">
@@ -199,11 +199,22 @@ export default {
       })
     },
     async submit() {
+      const items = [...this.singleListData, ...this.deletedRowList];
+      let state = true
+      items.forEach(item => {
+        if (state && (!item.suppliersName || !item.singleReason || !item.department)) {
+          state = false
+        }
+      })
+      if (!state) {
+        iMessage.error(this.language('DANYIGONGYINGSHANGXINXISHURUBUWANZHENG','单一供应商信息输入不完整'))
+        return
+      }
       const confirmInfo = await this.$confirm(this.language('submitSure','您确定要执行提交操作吗？'))
       if (confirmInfo !== 'confirm') return
       this.submiting = true
       addsingleSuppliersInfo({
-        items: [...this.singleListData, ...this.deletedRowList],
+        items,
         nominateId: this.$store.getters.nomiAppId
       }).then(res => {
         if (res.code === '200') {
@@ -327,7 +338,7 @@ export default {
     onBatchEdit(form) {
       this.selectSingleData.forEach(item => {
         Object.keys(form).forEach(key => {
-          Vue.set(item, key, form[key])
+          form[key] && (Vue.set(item, key, form[key]))
         })
       })
     },
@@ -352,4 +363,15 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+.required {
+  display: flex;
+  &::before {
+    display: inline-block;
+    content: '*';
+    padding-right: 10px;
+    color: rgb(253, 87, 58);
+    box-sizing: border-box;
+    padding-top: 5px;
+  }
+}
 </style>

@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-04-12 10:12:38
- * @LastEditTime: 2021-05-28 14:50:36
+ * @LastEditTime: 2021-07-19 11:48:42
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\utils\filters.js
@@ -19,6 +19,17 @@ export default {
     // boolean 转 是/否
     boolFilter(val) {
       return typeof val === 'boolean' ? (val ? '是' : '否') : val
-    }
+    },
+    weekFilter(val) {
+      return typeof val === 'string' ? window.moment(val).format('YYYY')+'-CW'+ window.moment(val).format('WW'): val
+    },
+    numberStatusFilter(val) {
+      const map = {
+        0: '否',
+        1: '是'
+      }
+
+      return map[val] ? map[val] : val
+    },
   },
 }

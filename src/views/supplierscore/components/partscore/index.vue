@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-24 10:38:09
- * @LastEditTime: 2021-07-02 18:33:52
+ * @LastEditTime: 2021-07-19 18:20:10
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\supplierscore\components\partscore\index.vue
@@ -9,7 +9,7 @@
 <template>
   <iPage class="partscore">
     <div class="header clearFloat">
-      <div class="title">{{ language("LINGJIANPINGFEN", "零件评分") }}</div>
+      <div class="title">{{ language("LK_LINGJIANPINGFEN", "零件评分") }}</div>
       <div class="control">
         <div v-if="editStatus">
           <iButton @click="handleCloseEdit">{{ language("JIESHUBIANJI", "结束编辑") }}</iButton>
@@ -41,11 +41,11 @@
                 </template>
                 <template v-if="item.props === 'grade'" v-slot="scope">
                   <div v-if="editStatus">
-                    <iInput v-model="scope.row.grade" />
-                    <!-- <iSelect v-model="scope.row.grade">
+                    <iInput v-if="userInfo.id != 197 && userInfo.id != 198 && userInfo.id != 199" v-model="scope.row.grade" />
+                    <iSelect v-else v-model="scope.row.grade">
                       <el-option value="合格" :label="language('HEGE', '合格')" />
                       <el-option value="不合格" :label="language('BUHEGE', '不合格')" />
-                    </iSelect> -->
+                    </iSelect>
                   </div>
                   <span v-else>{{ scope.row.grade }}</span>
                 </template>
@@ -58,8 +58,8 @@
                   <span v-else>{{ scope.row.confirmCycle }}</span>
                 </template>
                 <template v-else-if="item.props === 'remark'" v-slot="scope">
-                  <span v-if="editStatus" class="link-underline" @click="editRemark(scope.row)">{{ language("BIANJI", "编辑") }}</span>
-                  <span v-else class="link-underline" @click="editRemark(scope.row)">{{ language("CHAKAN", "查看") }}</span>
+                  <span v-if="scope.row.memo" class="link-underline" @click="editRemark(scope.row)">{{ language("CHAKAN", "查看") }}</span>
+                  <span v-else class="link-underline" @click="editRemark(scope.row)">{{ language("BIANJI", "编辑") }}</span>
                 </template>
                 <template v-else v-slot="scope">
                   <span>{{ scope.row[item.props] }}</span>
@@ -69,7 +69,7 @@
           </template>
         </el-table>
       </div>
-      <remarkDialog ref="remarkDialog" :visible.sync="remarkDialogVisible" :data="currentRow.memo" :disabled="!editStatus" @confirm="confirmRemark" @cancel="currentRow = {}" />
+      <remarkDialog ref="remarkDialog" :visible.sync="remarkDialogVisible" :data="currentRow.memo" @confirm="confirmRemark" @cancel="currentRow = {}" />
     </iCard>
   </iPage>
 </template>
@@ -109,10 +109,20 @@ export default {
       currentRow: {}
     }
   },
+  computed: {
+    // eslint-disable-next-line no-undef
+    ...Vuex.mapState({
+      userInfo: state => state.permission.userInfo,
+    })
+  },
   created() {
     this.rfqId = this.$route.query.rfqId
     this.supplierId = this.$route.query.supplierId
     this.getRfqPartRatingsByCurrentDept()
+
+    if (this.userInfo.id == 197 || this.userInfo.id == 198 || this.userInfo.id == 199) {
+      this.deptScoreTableTitle = this.deptScoreTableTitle.filter(item => item.props === "grade" || item.props === "remark")
+    }
   },
   methods: {
     getRfqPartRatingsByCurrentDept() {

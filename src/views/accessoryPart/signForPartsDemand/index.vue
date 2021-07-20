@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-25 13:57:11
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-25 13:23:26
+ * @LastEditTime: 2021-07-16 23:05:28
  * @Description: 
  * @FilePath: \front-web\src\views\accessoryPart\signForPartsDemand\index.vue
 -->
@@ -19,7 +19,7 @@
           <!----------------------------------------------------------------->
           <!---------------------------搜索区域------------------------------->
           <!----------------------------------------------------------------->
-          <iSearch @sure="getTableList" @reset="reset">
+          <iSearch @sure="sure" @reset="reset">
             <el-form>
               <el-form-item v-for="(item, index) in searchList" :key="index" :label="language(item.key,item.label)">
                 <iSelect v-if="item.type === 'select'" v-model="searchParams[item.value]">
@@ -101,6 +101,7 @@ import {
   dictkey,
 } from "@/api/partsprocure/editordetail";
 import { clickMessage } from "@/views/partsign/home/components/data"
+import moment from 'moment'
 
 // eslint-disable-next-line no-undef
 const { mapState, mapActions } = Vuex.createNamespacedHelpers("sourcing")
@@ -210,7 +211,7 @@ export default {
      */    
     getSelectOptions() {
       // 配件状态
-      this.getDictionary('accessoryTypeOption', 'SPARE_PART_STATE')
+      this.getDictionary('accessoryTypeOption', 'ACCESSORY_STATE')
     },
     /**
      * @Description: 车型项目下拉框
@@ -308,11 +309,13 @@ export default {
      * @param {*} respLINIE  询价采购员
      * @return {*}
      */    
-    sendAccessory({respDept, respLINIE}) {
+    sendAccessory({respDept, respLINIE, respDeptName, respLINIEName}) {
       const params = {
         accessoryIdList: this.selectParts.map(item => item.id),
         csfDept: respDept,
-        csfUserId: respLINIE
+        csfDeptName: respDeptName,
+        csfuserId: respLINIE,
+        csfuserName: respLINIEName
       }
       sendAccessoryInfo(params).then(res => {
         if (res.result) {
@@ -337,8 +340,8 @@ export default {
      * @param {*} respLINIE 询价科室ID
      * @return {*}
      */    
-    sendAccessoryLINIE(respLINIE) {
-      this.sendAccessory({respLINIE})
+    sendAccessoryLINIE(respLINIE, respLINIEName) {
+      this.sendAccessory({respLINIE, respLINIEName})
     },
     /**
      * @Description: 分配询价采购员
@@ -346,8 +349,8 @@ export default {
      * @param {*} respDept 询价采购员ID
      * @return {*}
      */    
-    sendAccessoryDept(respDept) {
-      this.sendAccessory({respDept})
+    sendAccessoryDept(respDept, respDeptName) {
+      this.sendAccessory({respDept, respDeptName})
     },
     /**
      * @Description: 配件签收
@@ -389,6 +392,7 @@ export default {
         csfUserDept: '',
         csfUserId: ''
       }
+      this.sure()
     },
     /**
      * @Description: 点击SP号跳转事件
@@ -447,6 +451,11 @@ export default {
         return
       }
       this.backDialogVisible = visible
+    },
+    sure() {
+      this.page.currPage = 1
+      this.searchParams.sendDate = this.searchParams.sendDate ? moment.utc(this.searchParams.sendDate) : null
+      this.getTableList()
     },
     /**
      * @Description: 获取配件列表

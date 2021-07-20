@@ -1,10 +1,10 @@
 <template>
   <iCard>
     <div class="margin-bottom20 clearFloat">
-      <span class="font18 font-weight">{{ $t('LK_GONGYINGSHANGPINGFENFUJIAN') }}</span>
+      <span class="font18 font-weight">{{ language('LK_GONGYINGSHANGPINGFENFUJIAN','供应商评分附件') }}</span>
       <div class="floatright">
         <iButton @click="deleteItems" v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_SUPPLIERSCORE_PARTSCORING_DELETE">
-         {{ $t('LK_SHANCHU') }}
+         {{ language('LK_SHANCHU','删除') }}
         </iButton>
         <upload-button
             @uploadedCallback="uploadAttachments"
@@ -47,7 +47,7 @@ import {pageMixins} from "@/utils/pageMixins";
 import {getAllAnnex, deleteAnnex, uploadRfqAnnex} from "@/api/partsrfq/editordetail";
 import uploadButton from 'pages/partsrfq/components/uploadButton'
 import store from '@/store'
-import {downloadFile} from "@/api/file";
+import {downloadFile, downloadUdFile} from "@/api/file";
 import {rfqCommonFunMixins} from "pages/partsrfq/components/commonFun";
 
 export default {
@@ -98,9 +98,9 @@ export default {
     },
     deleteItems() {
       iMessageBox(
-        this.$t('LK_SHIFOUQUERENSHANCHU'), // 暂时处理
-        this.$t('LK_WENXINTISHI'),
-        { confirmButtonText: this.$t('LK_QUEDING'), cancelButtonText: this.$t('LK_QUXIAO') }
+        this.language('LK_SHIFOUQUERENSHANCHU','是否确认删除?'), // 暂时处理
+        this.language('LK_WENXINTISHI','温馨提示'),
+        { confirmButtonText: this.language('LK_QUEDING','确定'), cancelButtonText: this.language('LK_QUXIAO','取 消') }
       ).then(async () => {
         const annexIds = this.selectTableData.map(item => {
           return item.id
@@ -124,9 +124,10 @@ export default {
           rfqId: id,
           userId: store.state.permission.userInfo.id,
           fileType: 1,
-          fileName: data.fileName,
+          fileName: data.name,
           fileSize: size,
-          filePath: data.filePath
+          filePath: data.path,
+          uploadId: data.id
         }
         const res = await uploadRfqAnnex(req)
         this.resultMessage(res)
@@ -136,11 +137,12 @@ export default {
       }
     },
     async handleDownload(row) {
-      const req = {
-        applicationName: 'rise',
-        fileList: [row.fileName]
-      }
-      await downloadFile(req)
+      // const req = {
+      //   applicationName: 'rise',
+      //   fileList: [row.fileName]
+      // }
+      // await downloadFile(req)
+      await downloadUdFile(row.uploadId)
     }
   }
 }

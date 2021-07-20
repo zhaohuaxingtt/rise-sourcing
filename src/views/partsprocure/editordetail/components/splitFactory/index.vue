@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-03-24 18:12:23
- * @LastEditTime: 2021-04-14 01:06:11
+ * @LastEditTime: 2021-07-09 15:33:09
  * @LastEditors: Please set LastEditors
  * @Description: 拆分采购工厂
  * @FilePath: \rise\src\views\partsprocure\editordetail\components\splitFactory\index.vue
@@ -9,14 +9,14 @@
 <template>
     <iDialog class="dialog" :visible="splitPurchBoolean.splitPurchBoolean" @close='close'>
       <template slot="title">
-        <span class="el-dialog__title">{{ $t('LK_CHAIFENCAIGOUGONGCHANG') }}</span>
+        <span class="el-dialog__title">{{ language('LK_CHAIFENCAIGOUGONGCHANG','拆分采购工厂') }}</span>
         <el-tooltip effect="light">
           <i class="iconxinxitishi iconfont color"></i>
           <template slot="content">
             保存后将按照您所维护的工厂份<br />额拆分询价产量。 如果已经维护<br />车型产量，请确保为该零件的所<br />有工厂产量。
           </template>
         </el-tooltip>
-        <iButton class="float-right marginleft300" @click='save' :btnLoding='btnLoding'>{{ $t('LK_BAOCUN') }}</iButton>
+        <iButton class="float-right marginleft300" @click='save' :btnLoding='btnLoding'>{{ language('LK_BAOCUN','保存') }}</iButton>
       </template>
       <template>
         <el-form ref='form' :model="splitPurchList">
@@ -27,7 +27,7 @@
           @selection-change="handleSelectionChange"
           width="500"
           class="margin-right30"
-          :empty-text="$t('LK_ZANWUSHUJU')"
+          :empty-text="language('LK_ZANWUSHUJU','暂无数据')"
         >
           <el-table-column
             type="selection"
@@ -38,14 +38,14 @@
             <el-table-column
               :key="index"
               v-if="items.props == 'factoryName'"
-              :label="$t(items.key)"
+              :label="language(items.key,items.name)"
               :prop="items.props"
               width="200"
             ></el-table-column>
             <el-table-column
               v-else
               :key="index"
-              :label="$t(items.key)"
+              :label="language(items.key,items.name)"
               width="250"
             >
               <template slot-scope="scope">
@@ -110,12 +110,12 @@ export default{
     validateNumberPersiont(){
      return new Promise((r)=>{
         if(!this.selectSplitPurchList.every(items=>items.share>0)){
-          iMessage.warn(this.$t('LK_CHAIFENFACTORY'))
+          iMessage.warn(this.language('LK_CHAIFENFACTORY','选中的工厂中,存在未分配的份额，请填写后重试！'))
           r(false)
           return
         }
         if(this.selectSplitPurchList.length == 0){
-          iMessage.warn(this.$t('LK_HAIWEIXUANZHEGONGCHANG'))
+          iMessage.warn(this.language('LK_HAIWEIXUANZHEGONGCHANG','您还未选择工厂！'))
           r(false)
           return
         }
@@ -125,17 +125,17 @@ export default{
         });
         const total = persiontData.reduce((a,b)=> _getMathNumber(`${a || 0}+${b || 0}`))
         if(total > 100){
-          iMessage.warn(this.$t('LK_CAIGOUFENEFENPEICHAOGUO'))
+          iMessage.warn(this.language('LK_CAIGOUFENEFENPEICHAOGUO','当前分配已超过100%，请重新分配！'))
           r(false)
           return
         }
         if(total < 100){
-          iMessage.warn(this.$t('LK_CAIGOUFENEFENPEIWEIDADAO'))
+          iMessage.warn(this.language('LK_CAIGOUFENEFENPEIWEIDADAO','当前分配未达到100%，请重新分配！'))
           r(false)
           return
         }
         if(this.selectSplitPurchList.find(items=>items.share == 0 || items.share == '')){
-          iMessage.warn(this.$t('LK_CAIGOUFENEFENPEIWEIDADAODANGQIAN'))
+          iMessage.warn(this.language('LK_CAIGOUFENEFENPEIWEIDADAODANGQIAN','当前分配未达到100%当前分配的工厂中存在为0的情况，请重新分配！'))
           r(false)
           return
         }
@@ -161,7 +161,7 @@ export default{
       changeProcure(this.translateDataForService()).then(res=>{
                 if(res.data){
                   this.btnLoding = false
-                  iMessage.success(this.$t('LK_CAOZUOCHENGGONG'))
+                  iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'))
                   this.updateTabs()
                   this.close()
                 }else{

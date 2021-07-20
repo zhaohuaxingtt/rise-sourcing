@@ -28,7 +28,7 @@
           <iButton
             @click="showMouldVisibal"
           >
-            {{ language("nominationSuggestion_MoJuYuSuanGuanLi","磨具预算管理") }}
+            {{ language("MOJUYUSUANGUANLI","模具预算管理") }}
           </iButton>
         </div>
       </div>

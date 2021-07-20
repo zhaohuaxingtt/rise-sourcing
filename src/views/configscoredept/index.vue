@@ -264,6 +264,8 @@ export default {
     },
     // 保存
     handleSave() {
+      if (!this.tableListData.every(item => item.rateTag && item.rateDepartNum && (item.isCheck || item.isCheck === 0))) return iMessage.warn(this.language("QINGJIANGSHUJUTIANXIEWANZHENG", "请将数据填写完整"))
+
       this.saveLoading = true
       saveRfqRateDeparts(
         this.tableListData

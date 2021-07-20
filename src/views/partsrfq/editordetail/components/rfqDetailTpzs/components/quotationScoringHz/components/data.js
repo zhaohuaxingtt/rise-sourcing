@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-05-28 14:32:26
- * @LastEditTime: 2021-07-07 18:35:17
+ * @LastEditTime: 2021-07-19 21:08:58
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\data.js
@@ -20,7 +20,24 @@ export const fstitle = [
   {type:'',props:'tia',label:'TIA',i18n:'',width:'100',tooltip:false},
   {type:'',props:'ebr',label:'EBR',i18n:'',width:'100',tooltip:false}
 ]
-
+export const gstitle = [
+  {type:'selection',props:'groupName',label:'Group',i18n:'',width:'80',tooltip:false},
+  {type:'',props:'partNo',label:'Part No.',i18n:'',width:'100',tooltip:false},
+  {type:'',props:'partName',label:'Part Name',i18n:'',width:'100',tooltip:false},
+  {type:'',props:'partPrjCode',label:'FS/GS/SP No.',i18n:'',width:'100',tooltip:false},
+  {type:'',props:'factory',label:'Factory',i18n:'',width:'100',tooltip:false},
+  {type:'',props:'cfPartAPrice',label:'F-target A Price',i18n:'',width:'130',tooltip:false},
+  {type:'',props:'cfPartBPrice',label:'F-target B Price',i18n:'',width:'100',tooltip:false},
+  {type:'',props:'pca',label:'PCA',i18n:'',width:'100',tooltip:false},
+  {type:'',props:'tia',label:'TIA',i18n:'',width:'100',tooltip:false},
+  {type:'',props:'currentSupplier',label:'CurrentSupplier',i18n:'',width:'100',tooltip:false},
+  {type:'',props:'currentAPrice',label:'Current A Price',i18n:'',width:'100',tooltip:false},
+  {type:'',props:'currentBPrice',label:'Current B Price',i18n:'',width:'100',tooltip:false},
+  {type:'',props:'currentLtc',label:'LTC',i18n:'',width:'100',tooltip:false},
+  {type:'',props:'currentTto',label:'Current TTO',i18n:'',width:'100',tooltip:false},
+  {type:'',props:'currentSupplierSaving',label:'Cur. Supplier Saving',i18n:'',width:'100',tooltip:false},
+  {type:'',props:'ebr',label:'EBR',i18n:'',width:'100',tooltip:false}
+]
 //表格循环部分
 export const fstableTileXh = function(index){
   return [
@@ -28,14 +45,14 @@ export const fstableTileXh = function(index){
     {type:'',props:`${index?index:''}skdAPrice`,label:'SKD A Price',i18n:'',width:'100',tooltip:false},
     {type:'',props:`${index?index:''}lcBPrice`,label:'LC B Price ',i18n:'',width:'100',tooltip:false},
     {type:'',props:`${index?index:''}skdBPrice`,label:'SKD B Price',i18n:'',width:'100',tooltip:false},
-    {type:'',props:`${index?index:''}lcAPriceWithoutAllocation`,label:'LC A Price without allocation',i18n:'',width:'100',tooltip:false},
-    {type:'',props:`${index?index:''}skdAPriceWithoutAllocation`,label:'SKD A Price without allocation',i18n:'',width:'100',tooltip:false},
-    {type:'',props:`${index?index:''}lcBPriceWithoutAllocation`,label:'LC B Price without allocation',i18n:'',width:'100',tooltip:false},
-    {type:'',props:`${index?index:''}skdBPriceWithoutAllocation`,label:'SKD B Price without allocation',i18n:'',width:'100',tooltip:false},
+    {type:'',props:`${index?index:''}lcAPriceWithoutAllocation`,label:'LC A Price w/o alloc.',i18n:'',width:'100',tooltip:false},
+    {type:'',props:`${index?index:''}skdAPriceWithoutAllocation`,label:'SKD A Price w/o alloc.',i18n:'',width:'100',tooltip:false},
+    {type:'',props:`${index?index:''}lcBPriceWithoutAllocation`,label:'LC B Price w/o alloc.',i18n:'',width:'100',tooltip:false},
+    {type:'',props:`${index?index:''}skdBPriceWithoutAllocation`,label:'SKD B Price w/o alloc.',i18n:'',width:'100',tooltip:false},
     {type:'',props:`${index?index:''}bnk`,label:'BNK',i18n:'',width:'100',tooltip:false},
-    {type:'',props:`${index?index:''}bnkApprovalStatus`,label:'BNK approcval status',i18n:'',width:'100',tooltip:false},
+    {type:'',props:`${index?index:''}bnkApprovalStatus`,label:'BNK status',i18n:'',width:'100',tooltip:false},
     {type:'',props:`${index?index:''}tooling`,label:'Tooling',i18n:'',width:'100',tooltip:false},
-    {type:'',props:`${index?index:''}developmentCost`,label:'Development cost',i18n:'',width:'100',tooltip:false},
+    {type:'',props:`${index?index:''}developmentCost`,label:'Dev. cost',i18n:'',width:'100',tooltip:false},
     {type:'',props:`${index?index:''}supplierSopDate`,label:'Supplier SOP date',i18n:'',width:'100',tooltip:true},
     {type:'',props:`${index?index:''}ltc`,label:'LTC',i18n:'',width:'100',tooltip:false},
     {type:'',props:`${index?index:''}ltcStaringDate`,label:'LTC Star.Date',i18n:'',width:'100',tooltip:true},
@@ -46,8 +63,34 @@ export const fstableTileXh = function(index){
     {type:'',props:`Quotationdetails`,label:'Quo.details',i18n:'',width:'100',tooltip:false},
   ]
 }
+export const gstableTileXh = function(index){
+  return [
+    {type:'',props:`${index?index:''}lcAPrice`,label:'LC A Price',i18n:'',width:'100',tooltip:false},
+    {type:'',props:`${index?index:''}skdAPrice`,label:'SKD A Price',i18n:'',width:'100',tooltip:false},
+    {type:'',props:`${index?index:''}lcBPrice`,label:'LC B Price ',i18n:'',width:'100',tooltip:false},
+    {type:'',props:`${index?index:''}skdBPrice`,label:'SKD B Price',i18n:'',width:'100',tooltip:false},
+    {type:'',props:`${index?index:''}lcAPriceWithoutAllocation`,label:'LC A Price w/o alloc.',i18n:'',width:'100',tooltip:false},
+    {type:'',props:`${index?index:''}skdAPriceWithoutAllocation`,label:'SKD A Price w/o alloc.',i18n:'',width:'100',tooltip:false},
+    {type:'',props:`${index?index:''}lcBPriceWithoutAllocation`,label:'LC B Price w/o alloc.',i18n:'',width:'100',tooltip:false},
+    {type:'',props:`${index?index:''}skdBPriceWithoutAllocation`,label:'SKD B Price w/o alloc.',i18n:'',width:'100',tooltip:false},
+    {type:'',props:`${index?index:''}bnk`,label:'BNK',i18n:'',width:'100',tooltip:false},
+    {type:'',props:`${index?index:''}bnkApprovalStatus`,label:'BNK status',i18n:'',width:'100',tooltip:false},
+    {type:'',props:`${index?index:''}tooling`,label:'Tooling',i18n:'',width:'100',tooltip:false},
+    {type:'',props:`${index?index:''}developmentCost`,label:'Dev. cost',i18n:'',width:'100',tooltip:false},
+    {type:'',props:`${index?index:''}supplierSopDate`,label:'Supplier SOP date',i18n:'',width:'100',tooltip:true},
+    {type:'',props:`${index?index:''}ltc`,label:'LTC',i18n:'',width:'100',tooltip:false},
+    {type:'',props:`${index?index:''}ltcStaringDate`,label:'LTC Star.Date',i18n:'',width:'100',tooltip:true},
+    {type:'',props:`${index?index:''}prototypePrice`,label:'Prototype price',i18n:'',width:'100',tooltip:false},
+    {type:'',props:`${index?index:''}tto`,label:'TTO',i18n:'',width:'100',tooltip:false},
+    {type:'',props:`${index?index:''}externalDevelopmentCost`,label:'External Development cost',i18n:'',width:'100',tooltip:false},
+    {type:'',props:`${index?index:''}releaseCost`,label:'release cost',i18n:'',width:'100',tooltip:false},
+    {type:'',props:`${index?index:''}saving`,label:'Saving',i18n:'',width:'100',tooltip:false},
+    {type:'',props:`Quotationdetails`,label:'Quo.details',i18n:'',width:'100',tooltip:false},
+  ]
+}
 //cache list
 export const whiteList = ['groupName','partNo','partName','cfPartAPrice','cfPartBPrice','pca','tia','ebr','lcAPrice','lcBPrice','tooling','ltc','ltcStaringDate','tto'] //默认需要显示的数据
+export const whiteListGs = ['groupName','partNo','partName','currentSupplier','currentAPrice','currentBPrice','currentLtc','currentTto','currentSupplierSaving','ebr','lcAPrice','lcBPrice','bnkApprovalStatus','tooling','supplierSopDate','ltc','ltcStaringDate','tto','developmentCost','releaseCost','saving'] //默认需要显示的数据
 /**
  * @description：通过需要循环的表格和基础表格，在通过白名单将需要所有的百名单删选出来
  * @param {*} whiteList
@@ -67,9 +110,12 @@ export function backChooseList(type) {
   if(type == 1){ //fs as list
      whiteLists = whiteList
      allTablelist = [...fstitle,...fstableTileXh(0)]
-  }else{ //supplier as list
+  }else if(type == 2){ //supplier as list
     whiteLists = supplierWhiteList
     allTablelist = [...supplierTile,...centerSupplierList(0),...lastSupplier,...leftSideData]
+  }else{
+    whiteLists = whiteListGs
+    allTablelist = [...gstitle,...gstableTileXh(0)]
   }
   const arrayList = []
   allTablelist.forEach(items=>{
@@ -93,13 +139,14 @@ export function backChooseList(type) {
  * @param {*} supplierLength
  * @return {*}
  */
-export function getRenderTableTile(whiteListService,supplierLength){
-  const relWhiteList = [...whiteList,...whiteListService]
-  const xuhTable = fstableTileXh(0)
+export function getRenderTableTile(whiteListService,supplierLength,layout){
+  const relWhiteList = layout==1?[...whiteList,...whiteListService]:[...whiteListGs,...whiteListService]
+  const xuhTable = layout==1?fstableTileXh(0):gstableTileXh(0)
+  const fstitleFn = layout==1?fstitle:gstitle
   const relTabelListDefault = []
   let relTableListXh = []
   let templateListxh = []
-  fstitle.forEach(items=>{
+  fstitleFn.forEach(items=>{
     if(relWhiteList.find(i=>i == items.props)){
       relTabelListDefault.push(items)
     }
@@ -166,6 +213,7 @@ export function getRenderTableTile(whiteListService,supplierLength){
         relTableListXh = [...relTableListXh,...addtitle(JSON.parse(JSON.stringify(templateListxh)),i,supplierDataList[0].partInfoList)]
       }
     }
+    console.log([...relTabelListDefault,...relTableListXh,...lastSupplier])
     return [...relTabelListDefault,...relTableListXh,...lastSupplier]
    } catch (error) {
      console.log(error)
@@ -250,6 +298,10 @@ export function translateRating(supplierList,ratingList) {
    }
   }catch(err){
     console.log(err)
+    return {
+      'firstTile':[],
+      'ratingList':[]
+    }
   }
 }
 
@@ -323,8 +375,15 @@ export function getLowNumber(totalList){
       })
     }
   }
-  temLits.sort((a,b)=>{a.tto - b.tto})
-  templateData[temLits[0].number+'ttoStatus'] = 1
+  const newtemLits = temLits.sort((a,b)=>a.tto - b.tto)
+  let minData = ''
+  for(let i=0;i<newtemLits.length-1;i++){
+    if(parseFloat(newtemLits[i].tto) > 0){
+      minData = newtemLits[i]
+      break;
+    }
+  }
+  templateData[minData.number+'ttoStatus'] = 1
   return templateData
 }
 
@@ -377,11 +436,16 @@ export function getPorpsNumber(key){
 }
 
 export function defaultSort(list,key){
-  return [...list.filter(i=>i[key]).sort((a,b)=> a[key] == b[key]),...list.filter(i=>!i[key])]
+  try {
+    return [...list.filter(i=>i[key]).sort((a,b)=> a[key] == b[key]),...list.filter(i=>!i[key])]
+  } catch (error) {
+    return []
+  }
+  
 }
 
 //------------------------------------------fs数据构造供应商------------------------------------------------------
-export const rateTitelList = {type:'',props:'',label:'',i18n:'',width:'50',tooltip:false}
+export const rateTitelList = {type:'',props:'',label:'',i18n:'',width:'50',tooltip:true}
 
 export const supplierTile = [
   {type:'',props:'supplierName',label:'Supplier',i18n:'',width:'100',tooltip:false},
@@ -419,7 +483,7 @@ export const centerSupplierList = function(index,factoryList=[]){
     {type:'',props:`${index}skdBPriceWithoutAllocation`,label:'SKD B Price without allocation',i18n:'',width:'120',tooltip:false}, 
     {type:'',props:`${index}bnk`,label:'BNK',i18n:'',width:'120',tooltip:false},
     {type:'',props:`${index}bnkApprovalStatus`,label:'BNK approval status',i18n:'',width:'120',tooltip:false},
-    {type:'',props:`${index}tooling`,label:'Tooling',i18n:'',width:'',tooltip:false},
+    {type:'',props:`${index}tooling`,label:'Tooling',i18n:'',width:'120',tooltip:false},
     {type:'',props:`${index}developmentCost`,label:'Development cost',i18n:'',width:'',tooltip:false},
     {type:'',props:`${index}supplierSopDate`,label:'Supplier SOP date',i18n:'',width:'100',tooltip:false},
     {type:'',props:`${index}ltc`,label:'LTC',i18n:'',width:'100',tooltip:false},
@@ -441,7 +505,7 @@ export const lastSupplier = [
 export function concactTitlle(supplier){
   return [...supplierTile,...supplier,...lastSupplier]
 }
-export const supplierWhiteList = ['supplierName','lcAPrice','bnkApprovalStatus','lcBPrice','productionLocation','tooling','ltc','ltcStaringDate','tto','mixPrice','totalInvest','totalTurnover','partNo','partName','project','tia','fTarget','factory']
+export const supplierWhiteList = ['supplierName','lcAPrice','lcBPrice','productionLocation','tooling','ltc','ltcStaringDate','tto','mixPrice','totalInvest','totalTurnover','partNo','partName','project','tia','fTarget','factory']
 export const supplierTableTop = []
 /**
  * @description: 转换供应商数据

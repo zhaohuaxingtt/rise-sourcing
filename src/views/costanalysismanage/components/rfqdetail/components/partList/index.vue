@@ -11,8 +11,7 @@ s<!--
     <template v-slot:header-control>
       <iButton @click="handleSave" :loading="saveLoading">{{ language("BAOCUN", "保存") }}</iButton>
       <iButton @click="handleDownloadTechnicalData">{{ language("XIAZAIJISHUZILIAO", "下载技术资料") }}</iButton>
-      <!-- 涉及L3模板 -->
-      <iButton @click="handleDownloadCbd" disabled>{{ language("XIAZAICBD", "下载CBD") }}</iButton>
+      <iButton :loading="downloadLoading" @click="handleDownloadCbd">{{ language("XIAZAICBD", "下载CBD") }}</iButton>
     </template>
     <div class="body">
       <tableList
@@ -26,12 +25,14 @@ s<!--
         @handleSelectionChange="handleSelectionChange"
       >
         <template #partNum="scope">
-          <!-- <span v-if="scope.row.sendKmFlag == 1" class="link-underline" @click="jumpPartDetail(scope.row)">{{ scope.row.partNum }}</span>
-          <span v-else>{{ scope.row.partNum }}</span> -->
-          <span class="link-underline" @click="jumpPartDetail(scope.row)">{{ scope.row.partNum }}</span>
+          <span v-if="scope.row.sendKmFlag == 1" class="link-underline" @click="jumpPartDetail(scope.row)">{{ scope.row.partNum }}</span>
+          <span v-else>{{ scope.row.partNum }}</span>
+        </template>
+        <template #round="scope">
+          <span v-if="scope.row.sendKmFlag == 1">{{ scope.row.round }}</span>
         </template>
         <template #cbdStatus="scope">
-          <span class="link-underline-disabled">{{ scope.row.cbdStatus | dateFilter("YYYY-MM-DD") }}</span>
+          <span v-if="scope.row.sendKmFlag == 1" class="link-underline" @click="donwloadCbd(scope.row)">{{ scope.row.cbdStatus | dateFilter("YYYY-MM-DD") }}</span>
         </template>
         <template #pcaResult="scope">
           <iInput v-if="scope.row.sendKmFlag == 1" v-model="scope.row.pcaResult" @input="handleInputByPcaResult($event, scope.row)" />
@@ -67,6 +68,7 @@ import { pageMixins } from "@/utils/pageMixins"
 import { numberProcessor } from "@/utils"
 import { getKmPartList, savePcaAndTia } from "@/api/costanalysismanage/rfqdetail"
 import downloadDialog from "../../../home/components/downloadFiles"
+import { partCbdKmFile } from "@/api/costanalysismanage/costanalysis"
 
 export default {
   components: {
@@ -91,7 +93,8 @@ export default {
       tableListData: [],
       saveLoading: false,
       downloadDialogVisible: false,
-      multipleSelection: []
+      multipleSelection: [],
+      downloadLoading: false
     }
   },
   mounted() {
@@ -156,10 +159,42 @@ export default {
       this.downloadDialogVisible = true
     },
     // 下载CBD
-    handleDownloadCbd() {},
+    async handleDownloadCbd() {
+      if (this.multipleSelection.length !== 1) return iMessage.warn(this.language("QINGXUANZEYITIAOSHUJU", "请选择一条数据"))
+      console.log("this.multipleSelection.length", this.multipleSelection.length)
+
+      this.downloadLoading = true
+
+      try {
+        await partCbdKmFile({
+          quotationId: this.multipleSelection[0].quotationId
+        })
+      } catch(e) {
+        iMessage.error(this.language("XIAZAISHIBAI", "下载失败"))
+      } finally {
+        this.downloadLoading = false
+      }
+    },
+    donwloadCbd(row) {
+      partCbdKmFile({
+        quotationId: row.quotationId
+      })
+    },
     // 跳转零件详情
     jumpPartDetail(row) {
-      window.open(`/#/supplier/quotationdetail?partNum=${ row.partNum }&fix=true&rfqId=${ this.rfqId }&round=${ row.round }&fsNum=${ row.fsnrGsnrNum }&supplierId=${ row.supplierId }`, "_blank")
+      const route = this.$router.resolve({
+        path: "/supplier/quotationdetail",
+        query: { 
+          partNum: row.partNum,
+          fix: true,
+          rfqId: this.rfqId,
+          round: row.round,
+          fsNum: row.fsnrGsnrNum,
+          supplierId: row.supplierId,
+          sourcing: true
+        }
+      })
+      window.open(route.href, "_blank")
     },
     handleInputByPcaResult(value, row) {
       this.$set(row, "pcaResult", numberProcessor(value, 2))

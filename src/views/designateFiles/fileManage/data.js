@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-26 11:16:58
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-15 17:51:30
+ * @LastEditTime: 2021-07-10 11:23:36
  * @Description: 
  * @FilePath: \front-web\src\views\designateFiles\fileManage\data.js
  */
@@ -46,7 +46,7 @@ export const tableMockData = [
 ]
 
 export const searchList = [
-  {value: 'partNum', label: '附件零件编号', type: 'input', key: 'FUJIANLINGJIANBIANHAO',},
+  {value: 'partNum', label: '附件零件号', type: 'input', key: 'FUJIANLINGJIANHAO',},
   {value: 'partNameCh', label: '附件零件名称', type: 'input', key: 'FUJIANLINGJIANMINGCHENG',},
   {value: 'carType', label: '使用车型', type: 'input', key: 'SHIYONGCHEXING',},
   {value: 'timeToMarket', label: '附件上市时间', type: 'date', key: 'FUJIANSHANGSHISHIJIAN',},

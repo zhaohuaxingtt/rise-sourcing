@@ -78,7 +78,7 @@ export default {
   },
   methods: {
     onUploadsucess(data) {
-      this.content += `<p><img src="${data && data.data && data.data.filePath || ''}" /></p>`
+      this.content += `<p><img src="${data && data.data && data.data.path || ''}" /></p>`
       this.$refs.editor.html(this.content)
     },
     getFetchData() {

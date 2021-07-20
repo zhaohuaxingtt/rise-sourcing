@@ -15,14 +15,14 @@
       ></tablelist>
     </div>
     <span slot="footer" class="dialog-footer">
-       <iButton @click="clearDiolog">{{ $t('LK_QUXIAO') }}</iButton>
+       <iButton @click="clearDiolog">{{ language('LK_QUXIAO','取 消') }}</iButton>
     </span>
   </iDialog>
 </template>
 <script>
 import {iButton, iDialog} from '@/components'
 import {drawingTitle} from './data'
-import {downloadFile} from "@/api/file";
+import {downloadFile, downloadUdFile} from "@/api/file";
 import tablelist from "pages/partsrfq/components/tablelist";
 
 export default {
@@ -51,11 +51,12 @@ export default {
       this.$emit('input', false)
     },
     async downloadFile(row) {
-      const req = {
-        applicationName: 'rise-procurereq-service',
-        fileList: [row.fileName]
-      }
-      await downloadFile(req)
+      // const req = {
+      //   applicationName: 'rise-procurereq-service',
+      //   fileList: [row.fileName]
+      // }
+      // await downloadFile(req)
+      await downloadUdFile(row.uploadId)
     }
   }
 }

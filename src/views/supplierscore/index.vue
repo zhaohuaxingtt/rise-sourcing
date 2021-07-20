@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-22 14:14:49
- * @LastEditTime: 2021-07-06 11:50:18
+ * @LastEditTime: 2021-07-13 17:31:02
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\supplierscore\index.vue
@@ -239,7 +239,7 @@ export default {
               key: item.key,
               label: item.name,
               value: item.key
-            })):
+            })).filter(item => item.key != "4"):
             []
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
@@ -400,7 +400,13 @@ export default {
     },
     // 跳转RFQ详情
     jumpRfqDetail(row) {
-      window.open(`/#/supplierscore/rfqdetail?rfqId=${ row.rfqId }`, "_blank")
+      const route = this.$router.resolve({
+        path: "/supplierscore/rfqdetail",
+        query: {
+          rfqId: row.rfqId
+        }
+      })
+      window.open(route.href, "_blank")
     }
   }
 }

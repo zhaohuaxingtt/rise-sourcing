@@ -5,7 +5,7 @@
 -->
 <template>
     <iPage class="filesDetailList">
-        <div v-if="!showUploadList">
+        <div>
             <p class="title margin-bottom10">{{language('LK_FUJIANQINGDAN','附件清单')}}：{{importfilesId}}</p>
             <iCard collapse>
                 <!-- 搜索区域 -->
@@ -47,6 +47,10 @@
                           </span>
                         </span>  
                     </template>
+                    <!-- 状态 -->
+                    <template #status="scope">
+                        <span>{{scope.row.status && ($i18n.locale === "zh" ? scope.row.status.desc : scope.row.status.name )}}</span>
+                    </template>
                     <!-- 附件 -->
                     <template #LK_FUJIAN="scope">
                         <span @click="checkUploadList(scope.row.id)" class="link-underline" >{{language('LK_SHANGCHUAN','上传')}}</span>
@@ -66,16 +70,13 @@
                 />
             </iCard>
         </div>
-        <div v-else>
-            <iCard>
-                <p class="uploadList-icon margin-bottom20">
-                    <span @click="changeShowStatus">
-                        <icon symbol name="iconguanbixiaoxiliebiaokapiannei" class="close-icon" ></icon>
-                    </span>
-                </p>
-                <uploadList  :uploadId="uploadId" />
-            </iCard>
-        </div>
+
+        <uploadList
+            v-if="dialogVisible"  
+            :uploadId="uploadId" 
+            :dialogVisible="dialogVisible"
+            @changeShowStatus="changeShowStatus"
+        />
     </iPage>
 </template>
 
@@ -87,7 +88,6 @@ import {
     iInput,
     iDatePicker,
     iPagination,
-    icon,
 } from 'rise'
 import { tableTitle } from './data'
 import {pageMixins} from '@/utils/pageMixins'
@@ -108,7 +108,6 @@ export default {
         iInput,
         iDatePicker,
         iPagination,
-        icon,
         tableList,
     },
     data(){
@@ -120,13 +119,11 @@ export default {
                 timeToMarket:'',
             },
             tableTitle:tableTitle,
-            tableListData:[
-                {code:'Z00856102',b:'SP123',c:'SVAA432',d:'1',e:'1111'}
-            ],
-            showUploadList:false,
+            tableListData:[],
             loading:false,
             uploadId:'',
             importfilesId:'',
+            dialogVisible:false,
         }
     },
     created(){
@@ -152,8 +149,8 @@ export default {
         },
         // 改变弹窗是否显示状态
         changeShowStatus(){
-            const {showUploadList} = this;
-            this.showUploadList = !showUploadList;
+            const {dialogVisible} = this;
+            this.dialogVisible = !dialogVisible;
         },
         // 查看上传列表
         checkUploadList(id){

@@ -2,9 +2,9 @@
   <iPage class="version">
     <iCard class="card">
       <div class="header clearFloat">
-        <span class="title">{{ $t('LK_QUANBUBANBEN') }}</span>
+        <span class="title">{{ language('LK_QUANBUBANBEN','全部版本') }}</span>
         <div class="control">
-          <iButton v-permission="PARTSIGN_EDITORDETAIL_ENQUIRY_VERSION_DOWNLOAD" @click="download">{{ $t('LK_XIAZAI') }}</iButton>
+          <iButton v-permission="PARTSIGN_EDITORDETAIL_ENQUIRY_VERSION_DOWNLOAD" @click="download">{{ language('LK_XIAZAI','下载') }}</iButton>
         </div>
       </div>
       <div class="body margin-top25">
@@ -42,7 +42,7 @@ import { getAttachmentVersion, getAttachment } from '@/api/partsign/editordetail
 import { enquiryTableTitle as tableTitle } from './components/data'
 import { pageMixins } from '@/utils/pageMixins'
 import filters from '@/utils/filters'
-import { downloadFile } from '@/api/file'
+import { downloadFile, downloadUdFile } from '@/api/file'
 
 export default {
   components: { iPage, iCard, iPagination, tableList, enquiryDialog, iButton },
@@ -90,7 +90,7 @@ export default {
       this.multipleSelection = list
     },
     async download() {
-      if (this.multipleSelection.length !== 1) return iMessage.warn(this.$t('LK_QINGXUANZHEYIGEXUYAOXIAZAIBANBEN'))
+      if (this.multipleSelection.length !== 1) return iMessage.warn(this.language('LK_QINGXUANZHEYIGEXUYAOXIAZAIBANBEN','请选择一个需要下载的版本'))
       const data = this.multipleSelection[0]
       
       this.downLoading = true
@@ -111,17 +111,18 @@ export default {
         const list = infoRes.data.attachmentVOS.tpRecordList
         if (list.length == 0) {
           this.downLoading = false
-          return iMessage.error(this.$t('LK_SUOXUANBANBENWUFUJIAN'))
+          return iMessage.error(this.language('LK_SUOXUANBANBENWUFUJIAN','所选版本无附件'))
         }
 
-        await downloadFile({
-          applicationName: 'rise-procurereq-service',
-          fileList: list.map(item => item.tpPartAttachmentName).join('&fileList=')
-        })
+        // await downloadFile({
+        //   applicationName: 'rise-procurereq-service',
+        //   fileList: list.map(item => item.tpPartAttachmentName).join('&fileList=')
+        // })
+        await downloadUdFile(list.map(item => item.uploadId))
 
         this.downLoading = false
       } else {
-        iMessage.error(this.$t('LK_SUOXUANBANBENWUFUJIAN'))
+        iMessage.error(this.language('LK_SUOXUANBANBENWUFUJIAN','所选版本无附件'))
         this.downLoading = false
       }
     },

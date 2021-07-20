@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-25 10:09:50
- * @LastEditTime: 2021-07-07 17:42:20
+ * @LastEditTime: 2021-07-17 14:11:35
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsrfq\editordetail\index.vue
@@ -20,17 +20,17 @@
           language('LK_XINJIANRFQLUNCI','新建RFQ轮次')
           }}
         </iButton>
-        <iButton @click="updateRfqStatus('06')" v-permission="PARTSRFQ_EDITORDETAIL_SENDINQUIRY">{{
+        <iButton :loading='rfqloading' @click="updateRfqStatus('06')" v-permission="PARTSRFQ_EDITORDETAIL_SENDINQUIRY">{{
             language('LK_FACHUXUNJIA','发出询价')
           }}
         </iButton>
-        <iButton @click="updateRfqStatus('05')" v-permission="PARTSRFQ_EDITORDETAIL_ENDQUOTATION">
+        <iButton  @click="updateRfqStatus('05')" v-permission="PARTSRFQ_EDITORDETAIL_ENDQUOTATION">
           {{ language('LK_JIESHUBENLUNXUNJIA','结束本轮询价') }}
         </iButton>
-        <iButton @click="updateRfqStatus('03')" v-permission="PARTSRFQ_EDITORDETAIL_TRANSFERNEGOTIATION">
+        <iButton  @click="updateRfqStatus('03')" v-permission="PARTSRFQ_EDITORDETAIL_TRANSFERNEGOTIATION">
           {{ language('LK_ZHUANTANPAN','转谈判') }}
         </iButton>
-        <iButton v-permission="PARTSRFQ_EDITORDETAIL_CREATEAPPLICATION" :loading="createDesignateLoading" @click="nominateTypeDialogVisible = true">
+        <iButton v-permission="PARTSRFQ_EDITORDETAIL_CREATEAPPLICATION" :loading="createDesignateLoading" @click="createDesignate">
           {{ language('LK_CHUANGJIANDINGDIANSHENQING','创建定点申请') }}
         </iButton>
         <iButton @click="backPage">{{ language('LK_FANHUI','返回') }}</iButton>
@@ -130,7 +130,7 @@
     <!-------------------------报价助手------------------------------->
     <!--------------------------------------------------------------->
     <rfq-detail-tpzs v-if='navActivtyValue == 2'></rfq-detail-tpzs>
-    <new-rfq-round v-model="newRfqRoundDialog" @refreshBaseInfo="getBaseInfo" v-if="tabShowStatus"/>
+    <new-rfq-round v-model="newRfqRoundDialog" @refreshBaseInfo="getBaseInfo" :dataRes="newRfqRoundDialogRes" v-if="tabShowStatus"/>
 
     <nominateTypeDialog :visible.sync="nominateTypeDialogVisible" @confirm="createDesignate" />
   </iPage>
@@ -196,6 +196,8 @@ export default {
       newRfqOpenValidateLoading: false,
       nominateTypeDialogVisible: false,
       parmarsHasRfq: JSON.parse(JSON.stringify(form)),
+      newRfqRoundDialogRes:{}, 
+      rfqloading:false
     }
   },
   created() {
@@ -288,6 +290,7 @@ export default {
     },
     async updateRfqStatus(updateType) {
       const query = this.$route.query
+      this.rfqloading = true
       const req = {
         updateRfqStatusPackage: {
           updateType,
@@ -298,6 +301,7 @@ export default {
       const res = await editRfqData(req)
       this.resultMessage(res)
       this.getBaseInfo()
+      this.rfqloading = false
     },
     edit() {
       const rfqName = this.baseInfo.rfqName
@@ -369,6 +373,7 @@ export default {
         }
         try {
           const res = await getRfqDataList(req)
+          this.newRfqRoundDialogRes = res;
           this.newRfqRoundList = res.data.rfqRoundBdlVO.rfqBdlVOList;
         } catch {
           this.newRfqOpenValidateLoading = false
@@ -378,12 +383,11 @@ export default {
     // eslint-disable-next-line no-undef
     moment,
     // 创建定点申请
-    createDesignate(nominateProcessType) {
-      this.nominateTypeDialogVisible = false
+    createDesignate() {
+      // this.nominateTypeDialogVisible = false
       this.createDesignateLoading = true
 
       selectRfq({
-        nominateProcessType,
         rfqIdArr: [ this.$route.query.id ]
       })
       .then(res => {
@@ -394,8 +398,8 @@ export default {
           this.$router.push({
             path: "/designate/rfqdetail", 
             query: {
-              desinateId: res.data, 
-              designateType: nominateProcessType
+              desinateId: res.data.nominateId, 
+              designateType: res.data.nominateProcessType
             }
           })
         } else {

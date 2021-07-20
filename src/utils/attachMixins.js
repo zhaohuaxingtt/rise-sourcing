@@ -1,7 +1,7 @@
 /*
  * @Author: haojiang
  * @Date: 2021-02-24 14:28:34
- * @LastEditTime: 2021-06-26 23:00:37
+ * @LastEditTime: 2021-07-14 21:15:30
  * @LastEditors: Please set LastEditors
  * @Description: 针对所有的分页插件，实行方法混入。
  * @FilePath: \rise\src\utils\attachMixins.js
@@ -15,7 +15,7 @@ import {
   getdDecisiondataListAll
 } from '@/api/designate/decisiondata/attach'
 // 下载文件api
-import { downloadFile } from '@/api/file'
+import { downloadUdFile as downloadFile } from '@/api/file'
 import filters from '@/utils/filters'
 
 export const attachMixins = {
@@ -46,12 +46,13 @@ export const attachMixins = {
         }, params))
         if (res1.code === '200') {
           const list = res1.data || []
-          const fileList = list.map(o => o.fileName)
+          const fileList = list.map(o => o.uploadId)
           if (fileList.length) {
-            const params = {
-              applicationName: 'rise',
-              fileList
-            }
+            // const params = {
+            //   applicationName: 'rise',
+            //   fileList
+            // }
+            const params = fileList;
             console.log('批量下载', params)
             downloadFile(params)
           }
@@ -91,7 +92,7 @@ export const attachMixins = {
     // 上传成功回调，配合@/components/Upload 食用
     onUploadsucess(data, callback) {
       console.log(data)
-      if (!data.data.fileName && !data.data.filePath) {
+      if (!data.data.name && !data.data.path) {
         this.tableLoading = false
         // 上传发生错误，oss无文件名，路径返回
         iMessage.error(this.language('strategicdoc_ShangChuanFaShengCuoWu','上传发生错误，请稍后重试'))
@@ -104,10 +105,11 @@ export const attachMixins = {
         hostId: data.hostId || this.$store.getters.nomiAppId || '',
         fileCode: data.fileCode || '0',
         // 文件内容🇭相关
-        fileName: data.data.fileName || '',
-        filePath: data.data.filePath || '',
+        fileName: data.data.name || '',
+        filePath: data.data.path || '',
         fileSize: data.file.size || 0,
-        size: data.file.size || 0
+        size: data.file.size || 0,
+        uploadId:data.data.id,
       }
       console.log(params, data)
       uploadfile(params).then(res => {
@@ -155,15 +157,16 @@ export const attachMixins = {
     },
     // 下载文件
     downloadFile() {
-      const fileList = this.multipleSelection.map(o => o.fileName)
+      const fileList = this.multipleSelection.map(o => o.uploadId)
       if (!fileList.length) return iMessage.error(this.language('nominationSuggestion_QingXuanZeZhiShaoYiTiaoShuJu','请选择至少一条数据'))
       try {
         console.log(fileList)
         if (fileList.length) {
-          const params = {
-            applicationName: 'rise',
-            fileList
-          }
+          // const params = {
+          //   applicationName: 'rise',
+          //   fileList
+          // }
+          const params = fileList;
           downloadFile(params)
         }
       } catch (e) {
@@ -172,10 +175,11 @@ export const attachMixins = {
     },
     // 
     dowloadSingleFile(item) {
-      const params = {
-        applicationName: 'rise',
-        fileList: [item.fileName]
-      }
+      // const params = {
+      //   applicationName: 'rise',
+      //   fileList: [item.fileName]
+      // }
+      const params = [item.uploadId]
       downloadFile(params)
     },
   }

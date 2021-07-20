@@ -2,14 +2,14 @@
  * @Author: Luoshuang
  * @Date: 2021-06-28 18:27:56
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-06 18:59:58
+ * @LastEditTime: 2021-07-10 13:09:37
  * @Description: 
  * @FilePath: \front-web\src\views\designate\approvalPersonAndRecord\tableList.vue
 -->
 
 <template>
   <el-table ref="multipleTable" fit tooltip-effect='light' :height="height" :data='tableData' v-loading='tableLoading' @selection-change="handleSelectionChange" :empty-text="language('ZANWUSHUJU', '暂无数据')" >
-    <el-table-column v-if="selection" type='selection' width="50" align='center'></el-table-column>
+    <el-table-column v-if="selection" type='selection' width="56" align='center'></el-table-column>
     <el-table-column v-if='indexKey' type='index' width='50' align='center' label='#'>
       <template slot-scope="scope">
         {{tableIndexString+(scope.$index+1)}}
@@ -72,8 +72,8 @@ export default{
   methods:{
     getDeptLeader(deptId, row) {
       getDeptLeader(deptId).then(res => {
-        this.$set(row, 'deptManager', res.data?.id)
-        this.$set(row, 'deptManagerName', res.data?.nameZh)
+        this.$set(row, 'deptManager', res.data?.positionList?.reduce((accu,curr)=>{return[...accu,...curr?.userDTOList?.map(item => item.id)]},[]).join(','))
+        this.$set(row, 'deptManagerName', res.data?.positionList?.reduce((accu,curr)=>{return[...accu,...curr?.userDTOList?.map(item => item.nameZh)]},[]).join(','))
       })
     },
     getDeptSubOptions(deptId, row) {
@@ -95,10 +95,16 @@ export default{
       this.$set(row, item.props, val)
       if (item.props === 'approveParentDeptNum') {
         this.getDeptSubOptions(val, row)
-        this.getDeptLeader(val, row)
-        this.$emit('handleDeptChange')
+        const dept = row.deptOptions.find(item => item.value === val)
+        if (dept) {
+          this.getDeptLeader(dept.deptNum, row)
+        }
       } else {
-        this.getDeptLeader(val, row)
+        const dept = row.deptSubOptions.find(item => item.value === val)
+        if (dept) {
+          this.getDeptLeader(dept.deptNum, row)
+        }
+        
         // console.log(val, row, item)
         // const dept = row.deptSubOptions.find(item => item.value === val)
         // if  (dept) {

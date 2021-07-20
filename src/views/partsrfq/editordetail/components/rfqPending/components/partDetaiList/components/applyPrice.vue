@@ -1,12 +1,12 @@
 <template>
-	<iDialog class="dialog" :title="$t('LK_SHENQINGCAIWUMUBIAOJIA')" :visible.sync="applyPriceShow">
+	<iDialog class="dialog" :title="language('LK_SHENQINGCAIWUMUBIAOJIA','申请财务目标价')" :visible.sync="applyPriceShow">
 		<div class="btn">
-			<iButton v-if="againApply" @click="save" :loading="saveLoading">{{ $t('LK_ZHONGXINSHENQING') }}</iButton>
-			<iButton v-else @click="save" :loading="saveLoading">{{$t('LK_SHENQING')}}</iButton>
+			<iButton v-if="againApply" @click="save" :loading="saveLoading">{{ language('LK_ZHONGXINSHENQING','重新申请') }}</iButton>
+			<iButton v-else @click="save" :loading="saveLoading">{{language('LK_SHENQING','申请')}}</iButton>
 		</div>
 		
 		<iFormGroup row="2" icon inline>
-			<iFormItem :label="$t('LK_SHENQINGLEIXING')" name="test">
+			<iFormItem :label="language('LK_SHENQINGLEIXING','申请类型')" name="test">
 				<el-radio-group v-model="targetprice.cfTargetPriceDetail.applyType">
 					<el-radio label="LC">LC</el-radio>
 					<el-radio label="SKD">SKD</el-radio>
@@ -14,16 +14,16 @@
 				</el-radio-group>
 				<span class="start">*</span>
 			</iFormItem>
-			<iFormItem :label="$t('LK_QIWANGMUBIAOJIA')" name="test">
+			<iFormItem :label="language('LK_QIWANGMUBIAOJIA','期望目标价')" name="test">
 				<iInput v-model="targetprice.cfTargetPriceDetail.expTargetpri" onkeyup="value=value.replace(/[^\d]/g,'')"  maxlength="20"></iInput>
 			</iFormItem>
 		</iFormGroup>
 		<iFormGroup row="2" icon inline>
-			<iFormItem :label="$t('LK_SHENQINGYUANYIN')" name="test">
+			<iFormItem :label="language('LK_SHENQINGYUANYIN','申请原因')" name="test">
 				<iInput type="textarea" rows="6" resize="none" v-model="targetprice.cfTargetPriceDetail.applyReason">
 				</iInput>
 			</iFormItem>
-			<iFormItem :label="$t('LK_SHENQINGBEIZHU')" name="test">
+			<iFormItem :label="language('LK_SHENQINGBEIZHU','申请备注')" name="test">
 				<iInput type="textarea" rows="6" resize="none" v-model="targetprice.cfTargetPriceDetail.memo">
 				</iInput>
 			</iFormItem>
@@ -65,6 +65,7 @@
 	import {
   pageMixins
 } from "@/utils/pageMixins";
+	import {partProjTypes} from '@/config'
 	export default {
 		mixins: [pageMixins],
 		components: {
@@ -87,7 +88,7 @@
 		watch: {
 			applyPriceShow(val) {
 				if (val) {
-					if (this.handleSelectArr[0] && (this.handleSelectArr[0].partProjectType === 'PT19' || this.handleSelectArr[0].partProjectType === 'PT04')) {
+					if (this.handleSelectArr[0] && (this.handleSelectArr[0].partProjectType === partProjTypes.DBYICHIXINGCAIGOU || this.handleSelectArr[0].partProjectType === partProjTypes.DBLINGJIAN)) {
 						this.targetprice = {
 							...this.targetprice,
 							cfTargetPriceDetail: {
@@ -101,6 +102,8 @@
 		},
 		data() {
 			return {
+				// 零件项目类型
+				partProjTypes,
 				applyPriceShow: false,
 				againApply:false,//是否重新申请目标价
 				tableLoading: false,

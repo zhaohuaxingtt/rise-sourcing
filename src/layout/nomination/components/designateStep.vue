@@ -8,7 +8,7 @@
         <!-- 顶部信息栏 -->
         <div class="pageTitle flex-between-center-center">
             <div class="flex flex-between-center-center">
-                <span class="title-text margin-left10">{{language('nominationLanguage.DingDianGuanLi','定点管理')}}: {{desinateId}}</span>
+                <span class="title-text margin-left10">{{language('nominationLanguage.DingDianGuanLi','定点管理')}}: <span class="desinateId">{{desinateId}}</span></span>
                 <span class="select-text margin-left10">{{language('nominationLanguage.DINGDIANSHENQINGLEIXING','定点申请类型')}}：</span>
                 <iSelect v-model="designateType" @change="onDesignateTypeChange" :disabled="disableNominationType">
                     <el-option
@@ -21,9 +21,9 @@
             </div>
             <div class="btnList flex-align-center">
                 <iButton @click="gotoRsMainten">{{language('LK_RSWEIHUDAN','RS单维护')}}</iButton>
-                <iButton @click="exportNominate">{{language('LK_DAOCHU','导出')}}</iButton>
+                <iButton v-if="showExport" @click="doExport">{{language('LK_DAOCHU','导出')}}</iButton>
                 <iButton @click="submit" :loading="submitting">{{language('LK_TIJIAO','提交')}}</iButton>
-                <iButton @click="toNextStep">{{language('LK_XIAYIBU','下一步')}}</iButton>
+                <!-- <iButton @click="toNextStep">{{language('LK_XIAYIBU','下一步')}}</iButton> -->
                 <iButton v-if="isDecision" @click="preview">{{language('LK_YULAN','预览')}}</iButton>
                 <logButton class="margin-left20" @click="log"  />
                 <span class="title-font margin-left20"><icon symbol name="icondatabaseweixuanzhong"></icon></span>
@@ -32,7 +32,8 @@
         <!-- 步骤栏 -->
         <div class="step-list flex-between-center-center margin-top30 margin-bottom30">
             <div class="step-list-item flex-center-center" v-for="(item,index) in applyStep" :key="'applyStep'+index">
-                <div :class="phaseType >=item.id ? 'click-item step-list-item' : 'step-list-item' ">
+                <!-- 下一步的图标或者是决策资料的图标支持灰色可点击 -->
+                <div :class="(item.id === 5 || phaseType + 1 >=item.id) ? 'click-item step-list-item' : 'step-list-item' " @click="toAnyNomiStep(item)">
                     <p class="step-icon-box">
                         <!-- 正在进行中 -->
                         <icon v-if="phaseType == item.id" symbol name="icondingdianguanlijiedian-jinhangzhong"  class="step-icon"></icon> 
@@ -88,7 +89,8 @@ import {
     sugesstionInit,
     sugesstionInitReCord,
     supplierInitReCord,
-    checkNomiMeetingSubmit1
+    checkNomiMeetingSubmit1,
+    rsAttachExport
 } from '@/api/designate'
 import { applyStep } from './data'
 export default {
@@ -125,6 +127,10 @@ export default {
         this.designateType && (this.$store.dispatch('setNominationType', this.designateType || 'MEETING'))
         // 缓存定点ID
         this.$store.dispatch('setNominateId', this.desinateId || '')
+        // 校验定点下面是否有零件，前4步需要零件非空校验
+        if(['designateRfqdetail', 'designateSuggestion', 'designateSupplier', 'approvalPersonAndRecord','designateDecisionData'].includes(name)) {
+            this.$store.dispatch('checkPartNull', {})
+        }
 
     },
      computed:{
@@ -136,6 +142,10 @@ export default {
         },
         isSingle(){
             return this.$store.getters.isSingle;
+        },
+        // 是否显示下载按钮
+        showExport() {
+            return this.supportExportPath.includes(this.$route.name)
         }
     },
     data(){
@@ -145,17 +155,51 @@ export default {
             applyType:[],
             applyStep:applyStep,
             mettingDialogVisible: false,
-            submitting: false
+            submitting: false,
+            // 需要展示导出按钮的页面name
+            supportExportPath: [
+                'designateDecisionRS'
+            ]
         }
     },
     methods:{
+        // 临时跳转到决策资料，不更新当前步骤
+        gotoNomiAttach() {
+            this.$router.push({path: '/designate/decisiondata/title', query: Object.assign(this.$route.query, {desinateId:this.$route.query.desinateId, route: 'temp'})})
+        },
+        // 跳转到任何已完成的定点步骤
+        toAnyNomiStep(item) {
+            const id = item.id
+            const path = item.path
+            // 决策资料允许，特例跳转，不更新当前步骤
+            if (id === 5) this.gotoNomiAttach()
+            // 不允许跳转到未开始的步骤
+            if (id > this.phaseType + 1) return
+            console.log(this.$store.getters.isPartListNull, item.path)
+            // 前4步零件非空校验不通过
+            if (this.$store.getters.isPartListNull && item.path !== '/designate/rfqdetail') {
+                iMessage.warn(this.language('NOMILINGJIANWEIKONGJINXAIYIBUTIXING','当前零件清单未勾选任何零件，请至少勾选一个零件后再进行操作！'))
+                return
+            }
+             // 合理的跳转到下一步
+            if (id === this.phaseType + 1) {
+                this.toNextStep()
+                return
+            }
+            // 已完成的步骤随便跳
+            const query = Object.assign(this.$route.query, {route: 'force'})
+            this.$router.push({
+                path,
+                query
+            })
+        },
         getApplyType() {
             getNominateType().then(res => {
                 if (res?.result) {
                     const apply = []
-                    for (let keys in res.data) {
-                        apply.push({id:keys,name:res.data[keys]})
-                    }
+                    Array.from(res.data).forEach(item => {
+                        apply.push({id:item.code,name:item.desc,key:item.code})
+                    })
                     this.applyType = apply
                 } else {
                     this.applyType = []
@@ -406,18 +450,36 @@ export default {
             })
             
         },
-        // 导出
-        async exportNominate(){
+        // 定点导出---后端功能未做
+        exportNominate(){
             const { query } = this.$route;
             const {desinateId} = query;
             const data = {
                 nominateIdArr:[Number(desinateId)],
             }
             nominateAppSExport(data).then((res)=>{
-                iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
+                if (res.code === '200') {
+                    iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
+                } else {
+                    iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+                }
             }).catch(e => {
-                iMessage.error(this.$i18n.locale === "zh" ? e.desZh : event.desEn)
+                iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
             })
+        },
+        // rs单导出
+        rsAttachExport() {
+            const { query } = this.$route;
+            const {desinateId} = query;
+            const BASEURL = window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' + window.location.port : '')
+            const fileURL = `${BASEURL}${process.env.VUE_APP_RFQ}/rs/downCapacityExpRs?nominateAppId=${desinateId}`
+            window.open(fileURL)
+        },
+        doExport() {
+            const pathName = this.$route.name
+            if (pathName === 'designateDecisionRS') {
+                this.rsAttachExport()
+            }
         },
 
         // 获取定点管理详情 --- 取定点申请类型字段
@@ -451,6 +513,10 @@ export default {
         }
         .title-font{
             font-size: 20px;
+        }
+        .desinateId {
+            display: inline-block;
+            min-width: 100PX;
         }
     }
     .step-list{
@@ -490,9 +556,9 @@ export default {
                 height: 36px;
             }
             .click-item{
-                // &:hover{
-                //     cursor: pointer;
-                // }
+                &:hover{
+                    cursor: pointer;
+                }
             }
             .step-between-icon{
                 width: 100%;

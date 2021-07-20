@@ -1,7 +1,7 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-07-07 16:53:18
- * @LastEditTime: 2021-07-07 17:06:47
+ * @LastEditTime: 2021-07-08 17:35:49
  * @LastEditors: Please set LastEditors
  * @Description: Bentchmark - Investment(RMB) 
  * @FilePath: /front-web/src/views/designate/designatedetail/decisionData/rsCapacityExpan/components/investment.vue
@@ -50,9 +50,20 @@
 </template>
 <script>
 export default {
+  props: {
+    data: {
+      type: Array,
+      default: () => ([])
+    },
+  },
   data() {
     return {
       dataList: [],
+    }
+  },
+  watch: {
+    data() {
+      this.dataList = this.data
     }
   }
 }

@@ -175,7 +175,7 @@ import {getAllScoringDepartmentInfo} from '@/api/partsrfq/home'
 import { getProcureGroup } from "@/api/partsprocure/home";
 import scoringDeptDialog from "@/views/partsrfq/editordetail/components/rfqPending/components/supplierScore/components/scoringDeptDialog"
 import { getKmFileHistory } from "@/api/costanalysismanage/costanalysis"
-import { downloadFile } from "@/api/file"
+import { downloadFile, downloadUdFile } from "@/api/file"
 import { selectRfq } from "@/api/designate/designatedetail/addRfq"
 import nominateTypeDialog from "./components/nominateTypeDialog"
 import { clickMessage } from "@/views/partsign/home/components/data"
@@ -429,10 +429,11 @@ export default {
     },
     // 分析报告下载
     downLoad(row) {
-      downloadFile({
-        applicationName: "rise",
-        fileList: row.fileName
-      })
+      // downloadFile({
+      //   applicationName: "rise",
+      //   fileList: row.fileName
+      // })
+      downloadUdFile(row.uploadId)
     },
     showAttachmentTable(row) {
       this.getKmFileHistory(row.id)
@@ -443,7 +444,8 @@ export default {
 
       this.attachmentLoading = true
       getKmFileHistory({
-        rfqId: rfqId,
+        hostId: rfqId,
+        type: 1,
         currPage: 1,
         pageSize: 99999999
       })
