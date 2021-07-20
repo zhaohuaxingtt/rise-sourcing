@@ -31,7 +31,6 @@
               :placeholder="$t('TPZS.QSRRFQH')"
             ></iInput>
           </el-form-item>
-          <!--集团打包-->
           <el-form-item :label="$t('TPZS.CJR')">
             <iInput
               :placeholder="$t('TPZS.QINGSHURUCHUANGJIANRENMINGCHENG')"
@@ -274,10 +273,12 @@ export default {
     //初始化查询数据
     initSearchData() {
       const data = this.$store.state.rfq.rfqId;
-      const status = this.$store.state.rfq.entryStatus;
-      if (data && status == 1) this.rfqStatus = true;
+      if (this.$store.state.rfq.entryStatus == 1) this.rfqStatus = true;
       this.form = {
         ...this.form,
+        group: null,
+        num: null,
+        owner: null,
         rfq: data,
       };
     },
@@ -362,8 +363,17 @@ export default {
           createByName: this.form.owner ? this.form.owner : null,
           materialGroup: this.form.group ? this.form.group : null,
           partsNo: this.form.num ? this.form.num : null,
-          rfqNo: this.form.rfq ? this.form.rfq : null,
+          
         };
+        const status = this.$store.state.rfq.entryStatus
+        const rfq = this.form.rfq ? this.form.rfq : null
+        if(status == 0) {
+          //外部进入
+          params['rfqName'] = rfq
+        } else if (status == 1) {
+          //内部进入
+          params['rfqNo'] = rfq
+        }
         getBobAnalysisDataList(params).then((res) => {
           if (res && res.code == 200) {
             this.page.totalCount = res.total;
