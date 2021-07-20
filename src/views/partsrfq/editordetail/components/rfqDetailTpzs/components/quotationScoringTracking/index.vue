@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-25 15:32:38
- * @LastEditTime: 2021-07-19 22:04:04
+ * @LastEditTime: 2021-07-20 09:59:40
  * @LastEditors: Please set LastEditors
  * @Description: 报价评分跟踪
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringTracking\index.vue
@@ -73,7 +73,6 @@ export default{
         if(res.code == 200){
           this.tableTile = buildTitleTabel(res.data)
           this.tableDatas = buildTableData(res.data)
-          console.log(this.tableDatas)
         }
       }).catch(err=>{
         iMessage.warn(err.desZh)
