@@ -27,7 +27,7 @@ export const supplierTableTitle = [
   { props: 'epRate', name: 'EP打分', key: 'TPZS.EPDF', tooltip: true },
 ]
 export const fixedRecordTableTitle = [
-  { props: 'partProjectType', name: 'FS号', key: 'LK_FSHAO', tooltip: true },
+  { props: 'fsnrGsnrNum', name: 'FS号', key: 'LK_FSHAO', tooltip: true },
   { props: 'partNum', name: '零件号', key: 'TPZS.LJH', tooltip: true },
   { props: 'rfqId', name: 'RFQ编号', key: 'costanalysismanage.RfqBianHao', width: 120, tooltip: true },
   { props: 'rfqName', name: 'RFQ名称', key: 'costanalysismanage.RfqMingCheng', tooltip: true },
