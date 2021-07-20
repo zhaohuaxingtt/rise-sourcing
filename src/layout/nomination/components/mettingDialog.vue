@@ -1,7 +1,7 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-06-30 16:51:56
- * @LastEditTime: 2021-07-02 20:07:09
+ * @LastEditTime: 2021-07-20 17:41:23
  * @LastEditors: Please set LastEditors
  * @Description: 提交定点申请，如果是上会类型，上会弹窗
  * @FilePath: /front-web/src/views/designate/home/components/mettingDialog/index.vue
@@ -80,7 +80,6 @@ import filters from '@/utils/filters'
 import { pageMixins } from '@/utils/pageMixins'
 
 import {
-    checkNomiMeetingSubmit2,
     getMeetingPage
 } from '@/api/designate'
 
@@ -184,38 +183,40 @@ export default {
         iMessage.error(this.language('LK_QINGXUANZEHUIYI','请选择会议'))
         return
       }
-      try {
-        this.loading = true
-        const res = await checkNomiMeetingSubmit2(data)
-        if (res && res.code === '200') {
-          let dataInfo = ''
-          if (res.data && res.data.length) {
-            res.data.forEach((item) => {
-            if (this.$i18n.locale === "zh") {
-              dataInfo+= `${item.zhMsg}\n`
-            } else {
-              dataInfo+= `${item.engMsg}\n`
-            }              
-          })
-          this.$confirm(dataInfo,'提示', {
-            confirmButtonText: '确定',
-            showCancelButton: false,
-            type: 'warning'
-          })
-        } else {
-          // 校验成功
-          this.$emit('success', data)
-          this.$emit('update:visible', false)
-        }
+      this.$emit('success', data)
+      this.$emit('update:visible', false)
+      // try {
+      //   this.loading = true
+      //   const res = await checkNomiMeetingSubmit3(data)
+      //   if (res && res.code === '200') {
+      //     let dataInfo = ''
+      //     if (res.data && res.data.length) {
+      //       res.data.forEach((item) => {
+      //       if (this.$i18n.locale === "zh") {
+      //         dataInfo+= `${item.zhMsg}\n`
+      //       } else {
+      //         dataInfo+= `${item.engMsg}\n`
+      //       }              
+      //     })
+      //     this.$confirm(dataInfo,'提示', {
+      //       confirmButtonText: '确定',
+      //       showCancelButton: false,
+      //       type: 'warning'
+      //     })
+      //   } else {
+      //     // 校验成功
+      //     this.$emit('success', data)
+      //     this.$emit('update:visible', false)
+      //   }
         
-        } else {
-            iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
-        }
-        this.loading = false
-      } catch(e) {
-        this.loading = false
-        iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
-      }
+      //   } else {
+      //       iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+      //   }
+      //   this.loading = false
+      // } catch(e) {
+      //   this.loading = false
+      //   iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
+      // }
     }
     
   }

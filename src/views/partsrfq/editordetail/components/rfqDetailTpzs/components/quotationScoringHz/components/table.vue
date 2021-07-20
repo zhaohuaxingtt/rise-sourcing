@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-28 15:03:47
- * @LastEditTime: 2021-07-20 18:22:43
+ * @LastEditTime: 2021-07-20 18:23:24
  * @LastEditors: Please set LastEditors
  * @Description: 特殊表格实现
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\table.vue
@@ -379,7 +379,8 @@ export default{
       }
     }
     ::v-deep.el-table__body-wrapper{
-      overflow:visible
+      overflow:visible;
+      height:auto!important;
     }
     ::v-deep.blueclass{
       background-color: rgba(197, 215, 253, 1);
@@ -431,8 +432,8 @@ export default{
       width: 100px;
       //background-color: red;
       z-index: 123;
-      bottom: 45px;
-      left:-14px;
+      bottom: 36px;
+      left:-11px;
       border: 1px solid #C5CCD6;
       border-bottom: none;
       border-top-left-radius: 5px;
