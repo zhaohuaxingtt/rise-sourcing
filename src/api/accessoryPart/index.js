@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-01 14:50:12
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-23 10:01:25
+ * @LastEditTime: 2021-07-20 16:07:36
  * @Description: 配件相关接口
  * @FilePath: \front-web\src\api\accessoryPart\index.js
  */
@@ -87,6 +87,14 @@ export function getUserList({deptId, tag}) {
 export function downLoadAccessoryList(params) {
   return requestDownload({
     url: '/tp-records/accessoryInfo/downloadAccessoryList/',
+    method: 'POST',
+    data: params
+  })
+}
+
+export function downloadManageList(params) {
+  return requestDownload({
+    url: '/tp-records/accessoryInfo/downloadManageList',
     method: 'POST',
     data: params
   })
