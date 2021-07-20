@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-24 10:38:09
- * @LastEditTime: 2021-07-19 18:20:10
+ * @LastEditTime: 2021-07-20 17:25:42
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\supplierscore\components\partscore\index.vue
@@ -41,7 +41,7 @@
                 </template>
                 <template v-if="item.props === 'grade'" v-slot="scope">
                   <div v-if="editStatus">
-                    <iInput v-if="userInfo.id != 197 && userInfo.id != 198 && userInfo.id != 199" v-model="scope.row.grade" />
+                    <iInput v-if="userInfo.id != 199 && userInfo.id != 207 && userInfo.id != 208" v-model="scope.row.grade" />
                     <iSelect v-else v-model="scope.row.grade">
                       <el-option value="合格" :label="language('HEGE', '合格')" />
                       <el-option value="不合格" :label="language('BUHEGE', '不合格')" />
@@ -120,7 +120,7 @@ export default {
     this.supplierId = this.$route.query.supplierId
     this.getRfqPartRatingsByCurrentDept()
 
-    if (this.userInfo.id == 197 || this.userInfo.id == 198 || this.userInfo.id == 199) {
+    if (this.userInfo.id == 199 || this.userInfo.id == 207 || this.userInfo.id == 208) {
       this.deptScoreTableTitle = this.deptScoreTableTitle.filter(item => item.props === "grade" || item.props === "remark")
     }
   },
