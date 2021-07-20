@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-03-01 10:29:09
- * @LastEditTime: 2021-07-17 11:08:53
+ * @LastEditTime: 2021-07-20 19:39:56
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\editordetail\components\materialGroupInfo\index.vue
@@ -149,13 +149,16 @@ export default {
       this.confirmLoading = true
       changeProcure({
         batch: {
-          categoryId: data.categoryId,
-          categoryCode: data.categoryCode,
-          categoryName: data.categoryNameZh,
+          operator: this.userInfo.id,
           purchaseProjectIds: [ this.params.purchasePrjectId ],
-          stuffCode: data.stuffCode,
-          stuffId: data.id,
-          stuffName: data.materialStuffGroupName
+          partSrcProjectDTO: {
+            categoryId: data.categoryId,
+            categoryCode: data.categoryCode,
+            categoryName: data.categoryNameZh,
+            stuffCode: data.stuffCode,
+            stuffId: data.id,
+            stuffName: data.materialStuffGroupName
+          }
         }
       })
         .then((res) => {
