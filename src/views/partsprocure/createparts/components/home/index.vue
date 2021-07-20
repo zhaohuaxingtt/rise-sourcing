@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-05-24 17:06:01
- * @LastEditTime: 2021-06-22 11:09:41
+ * @LastEditTime: 2021-07-20 16:31:31
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\createparts\components\home\index.vue
@@ -90,6 +90,7 @@
 </template>
 
 <script>
+import Vuex from 'vuex'
 import { icon, iSearch, iInput, iSelect, iCard, iButton, iPagination, iMessage } from "rise"
 import logButton from "@/components/logButton"
 import tableList from "@/views/partsign/editordetail/components/tableList";
@@ -100,6 +101,7 @@ import { getParts, createParts } from "@/api/partsprocure/editordetail"
 import { selectDictByKeys } from "@/api/dictionary"
 import { cloneDeep } from "lodash"
 import { serialize } from "@/utils"
+import {BKMROLETAGID} from '@/config'
 
 export default {
   components: { 
@@ -127,6 +129,21 @@ export default {
       multipleSelection: [],
       createPartsLoading: false
     }
+  },
+  computed: {
+    ...Vuex.mapState({
+      userInfo: state => state.permission.userInfo,
+    }),
+    // 是否只是BKM角色
+    isBKM() {
+      // 扩产能的角色值，由CF提供
+      const BKMID = BKMROLETAGID
+      // 获取用户角色列表
+      const tagList = (this.userInfo && this.userInfo.tagList) || []
+      // 该用户只是BKM人员
+      const isBKM = tagList.find(o => o.id === BKMID) && tagList.length === 1
+      return isBKM
+    },
   },
   created() {
     this.getDict()
@@ -204,6 +221,7 @@ export default {
       createParts({
         manuallyCreatePartProjectDTOList: this.multipleSelection.map(item => ({
           partNum: item.partNum,
+          isBKM: this.isBKM
           // partProjectType: item.partType
         }))
       })

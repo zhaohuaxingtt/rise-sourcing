@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-06-16 20:44:29
- * @LastEditTime: 2021-07-17 15:26:58
+ * @LastEditTime: 2021-07-19 16:08:34
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\analysisTool\components\analysisTable.vue
@@ -31,7 +31,7 @@
       <el-table-column
         align="center"
         header-align="center"
-        label="分析名称"
+        :label="$t('TPZS.FXMC')"
         width="250">
         <template slot-scope="scope">
           <div class="openPage">
@@ -78,13 +78,14 @@
         prop="isDefault"
         align="center"
         header-align="center"
-        label="默认项">
+        :label="$t('MRX')">
         <template slot-scope="scope">
           <div v-if="!editMode">
-            {{scope.row.isDefault === '是' || scope.row.isDefault === '否' ? scope.row.isDefault : null}}
+            <!-- {{scope.row.isDefault === '是' || scope.row.isDefault === '否' ? scope.row.isDefault : null}} -->
+             {{ defaultStatus(scope.row, scope.row.isDefault) }}
           </div>
           <div v-else-if="editMode && scope.row.type == $t('TPZS.SCHEME_TYPE') && scope.row.isDefault != '空' && scope.row.isDefault" >
-            <iSelect v-model="scope.row.isDefault">
+            <iSelect :value="defaultStatus(scope.row, scope.row.isDefault)" @change="changeDefault($event, scope.row)">
               <el-option :value="item.value" :label="item.label" v-for="(item, index) in defaultData" :key="index"></el-option>
             </iSelect>
           </div>
@@ -94,27 +95,27 @@
         prop="type"
         align="center"
         header-align="center"
-        label="文件类型">
+        :label="$t('TPZS.WJLX')">
       </el-table-column>
       <el-table-column
         prop="createByName"
         align="center"
         header-align="center"
-        label="创建人">
+        :label="$t('TPZS.CJR')">
       </el-table-column>
       <el-table-column
         prop="createDate"
         align="center"
         header-align="center"
         show-overflow-tooltip
-        label="创建日期">
+        :label="$t('LK_CHUANGJIANRIQI')">
       </el-table-column>
       <el-table-column
         prop="updateDate"
         align="center"
         header-align="center"
         show-overflow-tooltip
-        label="上次修改日期">
+        :label="$t('TPZS.SCXGRQ')">
       </el-table-column>
       <el-table-column
         align="center"
@@ -173,14 +174,26 @@ export default {
       reportVisible: false,
       reportUrl: null,
       round: null,        //round
+      currentDefaultObj: null, //当前编辑对象
+      updatedDefault: false //是否已更新默认项
     }
   },
   created() {
     this.getTableData()
     this.round = this.$route.query.round ? this.$route.query.round : this.round
   },
-  mounted() {
-    
+  computed: {
+    defaultStatus() {
+      return function (val, status) {
+        let flag = status === "是" || status === "否" ? status : null;
+        if (this.currentDefaultObj && this.currentDefaultObj.isDefault == "是") {
+          if (val.number == this.currentDefaultObj.number ) flag = "是";
+          else if (!flag) flag = null;
+          else flag = "否";
+        }
+        return val.type == this.$t('TPZS.SCHEME_TYPE') ? flag : null;
+      };
+    },
   },
   methods: {
     //初始化测试数据（静态数据）
@@ -210,10 +223,26 @@ export default {
             this.page.totalCount = res.total
             this.tableListData = res.data
             this.handleTableNumber(this.tableListData, 1, null)
+            this.updateTableData()
             resolve(res)
           }
         })
       })
+    },
+    //更新表格数据
+    updateTableData() {
+      if(this.updatedDefault) {
+        this.tableListData.map((item, index) => {
+          let flag = item.isDefault === "是" || item.isDefault === "否" ? item.isDefault : null;
+          if (this.currentDefaultObj && this.currentDefaultObj.isDefault == "是") {
+            if (item.number == this.currentDefaultObj.number )
+              flag = "是";
+            else if (!flag) flag = null;
+            else flag = "否";
+          }
+          this.$set(this.tableListData[index], 'isDefault', flag)
+        })
+      }
     },
     //递归处理树结构数据的序号
     handleTableNumber(data, suffix, prefix) {
@@ -255,6 +284,24 @@ export default {
           this.getTableData()
         }
       })
+    },
+    //编辑时，改变默认项事件
+    changeDefault(val, row) {
+      this.$set(row, "isDefault", val);
+      this.$set(this, "currentDefaultObj", row);
+      if(val == '是') this.updatedDefault = true
+      this.updateTableData()
+    },
+    //点击取消编辑按钮事件
+    cancelEditVP(backUpData) {
+      backUpData.map((item, index) => {
+        if(item.type == this.$t('TPZS.SCHEME_TYPE'))
+          this.$set(this.tableListData[index], 'analysisSchemeName', item.analysisSchemeName)
+        else
+          this.$set(this.tableListData[index], 'reportName', item.reportName)
+        this.$set(this.tableListData[index], 'isDefault', item.isDefault)
+      })
+      this.edit = !this.edit;
     },
     //点击提交保存编辑事件
     clickSaveEdit() {

@@ -82,10 +82,10 @@ export default {
       if (res.data && res1.result) {
         this.url = res.data
         res1.data.rfqCategoryList.forEach(item => {
-          rfqCategoryList.push(item.categoryName)
+          rfqCategoryList.push(item.categoryId)
         })
         res1.data.rfqSupplierList.forEach(item => {
-          rfqSupplierList.push(item.supplierNameZh)
+          rfqSupplierList.push(item.supplierId)
         })
         this.renderBi(rfqCategoryList, rfqSupplierList)
       }
@@ -121,7 +121,7 @@ export default {
           $schema: "http://powerbi.com/product/schema#basic",
           target: {
             table: "sup",
-            column: "Supplier_Name"
+            column: "Supplier_ID"
           },
           operator: "In",
           values: rfqSupplierList,
@@ -133,7 +133,7 @@ export default {
           $schema: "http://powerbi.com/product/schema#basic",
           target: {
             table: "stu",
-            column: "Stuff_Name"
+            column: "Stuff_ID"
           },
           operator: "In",
           values: rfqCategoryList,

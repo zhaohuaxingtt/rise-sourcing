@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:17:25
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-16 21:52:38
+ * @LastEditTime: 2021-07-20 09:23:35
  * @Description: 上会/备案RS单
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\rs\components\meeting\index.vue
 -->
@@ -25,7 +25,7 @@
                 <div v-for="(subItem, subIndex) in item" :key="subIndex">{{subItem.name}} {{subItem.enName}}<br v-if="subIndex < item.length - 1" /></div>
               </div>
               <div class="rsTop-right-item-value">
-                <div v-for="(subItem, subIndex) in item" :key="subIndex">{{basicData[subItem.props]}}<br v-if="subIndex < item.length - 1" /></div>
+                <div v-for="(subItem, subIndex) in item" :key="subIndex">{{subItem.props === 'currency' ? basicData.currencyMap && basicData.currencyMap[basicData.currency] ? basicData.currencyMap[basicData.currency].name : '' : basicData[subItem.props]}}<br v-if="subIndex < item.length - 1" /></div>
               </div>
             </template>
             <template v-else>
@@ -35,14 +35,25 @@
           </div>
         </div>
       </div>
-      <tableList v-update :selection="false" :tableTitle="tableTitle" :tableData="tableData" class="rsTable" />
+      <tableList v-update :selection="false" :tableTitle="tableTitle" :tableData="tableData" class="rsTable" >
+        <!-- 年降 -->
+        <template #ltc="scope">
+          <span>{{resetLtcData(scope.row.ltcs,'ltc')}}</span>
+        </template>
+
+        <!-- 年降开始时间 -->
+        <template #beginYearReduce="scope">
+          <span>{{resetLtcData(scope.row.ltcs,'beginYearReduce')}}</span>
+        </template>
+
+      </tableList>
       <div class="beizhu">
         备注 Remarks:
         <div class="beizhu-value" v-if="isPreview">
           <p v-for="(item,index) in remarkItem" :key="index">{{item.value}}</p>
         </div>
       </div>
-      <div v-if="projectType === partProjTypes.DBLINGJIAN || projectType === partProjTypes.DBYICHIXINGCAIGOU" style="text-align:right;">汇率：Exchange rate: 1{{basicData.currency}}={{basicData.cfExchangeRate}}RMB</div>
+      <div v-if="projectType === partProjTypes.DBLINGJIAN || projectType === partProjTypes.DBYICHIXINGCAIGOU" style="text-align:right;">汇率：Exchange rate: 1{{basicData.currencyMap && basicData.currencyMap[basicData.currency] ? basicData.currencyMap[basicData.currency].name : ''}}={{basicData.cfExchangeRate}}RMB</div>
     </iCard>
     <iCard v-if="!isPreview && !showSignatureForm" :title="language('SHANGHUIBEIZHU','上会备注')" class="margin-top20">
       <iButton slot="header-control" @click="handleSaveRemarks" :loading="saveLoading">{{language('BAOCUN','保存')}}</iButton>
@@ -120,10 +131,10 @@ export default {
     rightTitle() {
       // GS
       if ([partProjTypes.GSLINGJIAN,partProjTypes.GSCOMMONSOURCING].includes(this.projectType)) {
-        return gsDetailTitleBlue
+        return nomalDetailTitleBlue
       }
       // 其他
-      return nomalDetailTitleBlue
+      return gsDetailTitleBlue
     },
     tableTitle() {
       if (this.projectType === partProjTypes.PEIJIAN) {
@@ -184,6 +195,14 @@ export default {
     getPrototypeList(){
       getPrototypeList(this.nominateId).then(res=>{
           this.PrototypeList = res.data.list || res.data.getQuotationSampleVOList || []
+
+          // 获取上会备注
+          if(res.data && res.code==200){
+            this.remarkItem = meetingRemark.map(item => {
+                this.remarks[item.type] = res.data[item.remarkType] || ''
+                return {...item, value: res.data[item.remarkType] || ''}
+            })
+          }
       }).catch(err=>{
         console.warn(err)
       })
@@ -237,7 +256,7 @@ export default {
      */    
     init() {
       this.getTopList()
-      this.getRemark()
+      // this.getRemark()
       this.getDepartApproval()
       this.getPrototypeList()
       this.getIsSingle()
@@ -282,6 +301,29 @@ export default {
           iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
         }
       })
+    },
+
+    // 单独处理下年降或年降计划
+    resetLtcData(row=[],type){
+      // 年降开始时间
+      if(type == 'beginYearReduce'){
+        // 取第一个非0的年份
+        const list = row.filter((item)=> item.ltcRate!='0.00');
+        return list.length ? list[0].ltcDate : '-'
+      }else{ // 年降
+       // 从非0开始至非0截至的数据 不包含0
+       let strList = [];
+       let strFlag = false;
+       for(let i =0;i<row.length;i++){
+         if(row[i].ltcRate !='0.00'){
+            strFlag = true;
+           strList.push(row[i].ltcRate);
+         }else if(strFlag && row[i].ltcRate == '0.00'){
+           break
+         }
+       }
+       return strList.length ? strList.join('/') : '-'
+      }
     }
   }
 }

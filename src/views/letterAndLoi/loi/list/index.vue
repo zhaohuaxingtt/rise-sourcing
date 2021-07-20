@@ -45,15 +45,23 @@
         >
             <!-- 定点申请单号 -->
             <template #nominateAppId="scope">
-                <a class="trigger" href="javascript:;" @click="goToDesignate(scope.row)">
-                    <span class="link" >{{ scope.row.nominateAppId }}</span>
-                </a>
+                <span class="flexRow">
+                    <span class="openLinkText cursor"   @click="goToDesignate(scope.row)" >{{ scope.row.nominateAppId }}</span>
+                    <span v-if=" scope.row.loiNum" class="icon-gray  cursor " @click="goToDesignate(scope.row)">
+                        <icon symbol class="show" name="icontiaozhuananniu" />
+                        <icon symbol class="active" name="icontiaozhuanxuanzhongzhuangtai" />
+                    </span>
+                </span>  
             </template>
             <!-- LOI编号 -->
             <template #loiNum="scope">
-                <a class="trigger" href="javascript:;" @click="goToDetail(scope.row)">
-                    <span class="link" >{{ scope.row.loiNum }}</span>
-                </a>
+                    <span class="flexRow">
+                        <span class="openLinkText cursor"   @click="goToDetail(scope.row)">{{ scope.row.loiNum }}</span>
+                        <span v-if=" scope.row.loiNum" class="icon-gray  cursor "  @click="goToDetail(scope.row)">
+                            <icon symbol class="show" name="icontiaozhuananniu" />
+                            <icon symbol class="active" name="icontiaozhuanxuanzhongzhuangtai" />
+                        </span>
+                    </span>  
             </template>
             <!-- LOI状态 -->
             <template #loiStatus="scope">
@@ -92,6 +100,7 @@ import {
     iButton,
     iMessage,
     iCard,
+    icon
 } from 'rise';
 import {
     loiListSearch,
@@ -124,6 +133,7 @@ export default {
         iCard,
         closeLoiDialog,
         remarkDialog,
+        icon
     },
     data(){
         return{
@@ -405,6 +415,9 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+    .openLinkText{
+     color:$color-blue;
+    }
     .loiList{
         ::v-deep .el-date-editor .el-range__close-icon{
             display: block;
@@ -417,4 +430,27 @@ export default {
             }
         }
     }
+    .icon-gray{
+        cursor: pointer;
+    .active{
+        display: none;
+    }
+    .show{
+        display: block;
+    }
+  }
+   .flexRow{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+  }
+    .icon-gray:hover{
+        cursor: pointer;
+    .show{
+        display: none;
+    }
+    .active{
+        display: block;
+    }
+  }
 </style>

@@ -5,24 +5,43 @@
 -->
 <template>
   <iPage class="letterAndLoi">
-    <el-tabs v-model="tab" class="tab">
-      <!-- <el-tab-pane :label="language('LK_GAILAN','概览')" name="overview"></el-tab-pane> -->
+    <!-- <el-tabs v-model="tab" class="tab">
       <el-tab-pane :label="language('LK_XUNYUANZHIHANG','寻源')" name="source">
         <div class="margin-bottom33">
             <iNavMvp right routerPage lev="2" :list="navList" @message="clickMessage" />
         </div>
       </el-tab-pane>
-      <!-- <el-tab-pane :label="language('LK_BAOBIAOGUANLI','报表管理')" name="report"></el-tab-pane> -->
-    </el-tabs>
+    </el-tabs> -->
+    <div class="headerNav">
+    <iNavMvp :list="list" lang @change="change" :lev="1" routerPage></iNavMvp>
+    <!-- <div class="ext">
+      <div class="pull-right">
+        <a href="javascript:;" class="iconMenu">
+          <icon symbol
+            name="iconrizhi"
+          ></icon>
+        </a>
+        <a href="javascript:;" class="iconDatabase">
+          <icon symbol
+            name="icondatabaseweixuanzhong"
+          ></icon>
+        </a>
+      </div> -->
+<!--       
+    </div> -->
+    <iNavMvp @change="change" lang class="pull-right" right routerPage lev="2" :list="navList" @message="clickMessage" />
+  </div>
     <!-- 类型TAB -->
-    <iTabsList type="card" v-model="cardType">
+    <div class="headerNav-sub margin-top30">
+      <iTabsList type="card" v-model="cardType">
       <template v-for="(item,index) in tabData">
         <el-tab-pane  :key="'tabData_'+index" :label="language(item.label,item.name)" :name="item.key"></el-tab-pane>
       </template>
-    </iTabsList>
+      </iTabsList>
+    </div>
 
-    <letterList v-if="cardType=='letter'"/>
-    <loiList v-if="cardType=='LOI'"/>
+    <letterList  class="margin-top30" v-if="cardType=='letter'"/>
+    <loiList  class="margin-top30" v-if="cardType=='LOI'"/>
   </iPage>
 </template>
 
@@ -33,7 +52,7 @@ import {
   iTabsList,
 } from 'rise';
 import { clickMessage } from "@/views/partsign/home/components/data"
-import { letterAndLoiType } from './data';
+import { TAB,letterAndLoiType } from './data';
 import letterList from './letter/list';
 import loiList from './loi/list';
 
@@ -60,6 +79,7 @@ export default {
         tab:'source',
         cardType:'letter',
         tabData:letterAndLoiType,
+        list: TAB,
       }
     },
     created(){
@@ -76,7 +96,13 @@ export default {
 <style lang="scss" scoped>
   .letterAndLoi {
   position: relative;
-
+  .headerNav-sub {
+  ::v-deep.el-tabs {
+    .el-tabs__header {
+      margin-bottom: 0px;
+    }
+  }
+}
   .tab {
     ::v-deep .el-tabs__header {
       position: absolute;
@@ -112,5 +138,82 @@ export default {
       }
     }
   }
+  .headerNav {
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+  &:after {
+    content: '';
+    width: 100%;
+    height: 1px;
+    display: block;
+    background: rgba(197, 206, 229, 0.5);
+    position: absolute;
+    left: 0px;
+    bottom: -0.5rem;
+  }
+  .ext {
+    ul {
+      display: inline-block;
+      vertical-align: middle;
+      li {
+        position: relative;
+        display: inline-block;
+        padding: 0 17px;
+        line-height: 25px;
+        &:after {
+          display: inline-block;
+          content: '';
+          width: 1px;
+          height: 16px;
+          background: #000000;
+          opacity: 0.42;
+          position: absolute;
+          right: 0px;
+          top: 50%;
+          margin-top: -8px
+        }
+        &:last-child {
+          padding-right: 0px;
+          &:after {
+            display: none;
+          }
+        }
+        a {
+          font-size: 18px;
+          color: #000000;
+          opacity: 0.42;
+        }
+      }
+    }
+    .iconMenu {
+      display: inline-block;
+      vertical-align: middle;
+      padding: 0px 5px;
+      // height: 21px;
+      // overflow: hidden;
+      svg {
+        width: 80px;
+        font-size: 16px;
+        font-size: 1.175rem;
+        vertical-align: middle;
+      }
+    }
+    .iconDatabase {
+      display: inline-block;
+      vertical-align: middle;
+      color: #f8f9fa !important;
+      // height: 21px;
+      // overflow: hidden;
+      svg {
+        width: 20px;
+        font-size: 20px;
+        font-size: 1.4rem;
+        vertical-align: middle;
+        color: #f8f9fa !important;
+      }
+    }
+  }
+}
 }
 </style>

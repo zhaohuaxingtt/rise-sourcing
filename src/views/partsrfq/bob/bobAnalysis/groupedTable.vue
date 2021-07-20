@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 11:38:57
- * @LastEditTime: 2021-07-15 18:28:49
+ * @LastEditTime: 2021-07-19 21:34:57
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails\table1.vue
@@ -15,7 +15,7 @@
               :expand-row-keys="expends"
               v-loading="loading"
               :max-height="maxHeight"
-              :cell-style="cellFunction"
+              :cell-style="cellsytle"
               @selection-change="handleSelectionChange"
               @row-click="rowClick"
               @row-dblclick="rowDblclick"
@@ -29,6 +29,16 @@
                        :prop="i.label"
                        :align="i.prop == 'title' ? 'left' : 'center'"
                        :width="i.prop == 'title' ? '200' : ''">
+        <template slot-scope="scope">
+          <div v-if="scope.row.checkRow&&scope.row.level===2&&scope.column.label">
+            <el-checkbox @change="check=>checkChang(check,scope)"></el-checkbox>
+          </div>
+
+          <div v-else>
+            <div v-if="scope.column.selected == 'Y'"></div>
+            {{scope.row[i.label]}}
+          </div>
+        </template>
         <!-- <template slot-scope="scope">
          
           <div style="display:flex">
@@ -220,6 +230,8 @@ export default {
       })
         .then((res) => {
           this.tableList = res;
+          this.tableList.element = this.arrayTreeSetLevel(this.tableList.element)
+          console.log(this.tableList.element, 23232)
           this.$nextTick(() => {
             this.open();
           });
@@ -227,9 +239,42 @@ export default {
         .catch((err) => { });
     },
 
-
+    arrayTreeSetLevel (array, levelName = 'level', childrenName = 'child') {
+      if (!Array.isArray(array)) return []
+      const recursive = (array, level = 0) => {
+        level++
+        return array.map(v => {
+          v[levelName] = level
+          if (level === 2) {
+            array.unshift({
+              'label#0': "",
+              'label#1': "",
+              'label#2': "",
+              'label#3': "",
+              'label#4': "",
+              'title': "",
+              level,
+              index: Math.random(),
+              checkRow: true
+            })
+          }
+          const child = v[childrenName]
+          if (child && child.length) recursive(child, level)
+          return v
+        })
+      }
+      return recursive(array)
+    },
     getRowKey (row) {
       return row.index;
+    },
+    checkChang (flag, scope) {
+      console.log(flag, scope)
+    },
+    cellsytle ({ row, column, rowIndex, columnIndex }) {
+      if (row.title == "原材料/散件" || row.title == '制造费' || row.title == '保费成本' || row.title == '管理费' || row.title == '其他费用' || row.title == '利润') {
+        return "font-weight: bold"
+      }
     },
     render (h, { column, $index }) { },
     rowClick (row, event, column) {

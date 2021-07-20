@@ -12,25 +12,29 @@ export const tableTitle = [{
 		props: 'fsnrGsnrNum',
 		name: 'FSNF/GSNF/SPNR',
 		key: 'partsprocure.PARTSPROCUREFSNFGSNFSPNR',
-		tooltip: false
+		tooltip: true,
+		width:120
 	},
 	{
 		props: 'partNum',
 		name: '零件号',
 		key: 'partsprocure.PARTSPROCUREPARTNUMBER',
-		tooltip: false
+		tooltip: true,
+		width:130
 	},
 	{
 		props: 'partNameZh',
 		name: '零件名（中）',
 		key: 'partsprocure.PARTSPROCUREPARTNAMEZH',
-		tooltip: false
+		tooltip: true,
+		width:150
 	},
 	{
 		props: 'partNameDe',
 		name: '零件名（德）',
 		key: 'partsprocure.PARTSPROCUREPARTNAMEDE',
-		tooltip: true
+		tooltip: true,
+		width:150
 	},
 	// {
 	// 	props: 'statusName',
@@ -42,49 +46,57 @@ export const tableTitle = [{
 		props: 'procureFactoryName',
 		name: '采购工厂',
 		key: 'partsprocure.PARTSPROCUREPURCHASINGFACTORY',
-		tooltip: true
+		tooltip: true,
+		width:120
 	},
 	{
 		props: 'partProjectTypeName',
 		name: '零件项目类型',
 		key: 'partsprocure.PARTSPROCUREPARTITEMTYPE',
-		tooltip: false
+		tooltip: true,
+		width:150
 	},
 	{
 		props: 'cartypeCategory',
 		name: '车型大类',
 		key: 'partsprocure.PARTSPROCUREVEHICLECATEGORIES',
-		tooltip: true
+		tooltip: true,
+		width:150
 	},
 	{
 		props: 'cartypeProjectZh',
 		name: '车型项目',
 		key: 'partsprocure.PARTSPROCUREMODELPROJECT',
-		tooltip: true
+		tooltip: true,
+		width:150
 	},
 	{
 		props: 'statusName',
 		name: '零件状态',
 		key: 'partsprocure.PARTSPROCUREPARTSTATUS',
-		tooltip: false
+		tooltip: true,
+		width:150
 	},
 	{
 		props: 'buyerName',
 		name: '询价采购员',
 		key: 'partsprocure.PARTSPROCUREINQUIRYBUYER',
-		tooltip: false
+		tooltip: true,
+		width:90
 	},
 	{
 		props: 'linieName',
 		name: 'LINIE',
 		key: 'partsprocure.PARTSPROCURELINIE',
-		tooltip: false
+		tooltip: true,
+		width:90
 	},
 	{
 		props: 'cfControllerZh',
 		name: 'CF',
 		key: 'partsprocure.CF',
-		tooltip: false
+		tooltip: true,
+		width:90
 	}
 ]
 //)

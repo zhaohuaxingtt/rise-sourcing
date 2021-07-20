@@ -32,7 +32,7 @@ s<!--
           <span v-if="scope.row.sendKmFlag == 1">{{ scope.row.round }}</span>
         </template>
         <template #cbdStatus="scope">
-          <span class="link-underline-disabled">{{ scope.row.cbdStatus | dateFilter("YYYY-MM-DD") }}</span>
+          <span v-if="scope.row.sendKmFlag == 1" class="link-underline" @click="donwloadCbd(scope.row)">{{ scope.row.cbdStatus | dateFilter("YYYY-MM-DD") }}</span>
         </template>
         <template #pcaResult="scope">
           <iInput v-if="scope.row.sendKmFlag == 1" v-model="scope.row.pcaResult" @input="handleInputByPcaResult($event, scope.row)" />
@@ -174,6 +174,11 @@ export default {
       } finally {
         this.downloadLoading = false
       }
+    },
+    donwloadCbd(row) {
+      partCbdKmFile({
+        quotationId: row.quotationId
+      })
     },
     // 跳转零件详情
     jumpPartDetail(row) {
