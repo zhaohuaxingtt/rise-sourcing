@@ -20,20 +20,21 @@ export const tableTitle = [{
   props: 'id',
   name: '申请单号',
   key: 'nominationLanguage_ShenQingDanHao',
-  tooltip: false
+  tooltip: false,
+  minWidth:80
 },
 {
   props: 'nominateName',
   name: '申请单名',
-  width: 200,
+  minWidth: 500,
   key: 'nominationLanguage_ShenQingDanMing',
-  tooltip: false
+  tooltip: true
 },
 {
   props: 'carTypeProj',
   name: 'PROJECT',
   key: 'PROJECT',
-  tooltip: false
+  tooltip: true
 },
 // {
 //   props: 'nominateProcessType',
@@ -45,13 +46,13 @@ export const tableTitle = [{
 	props: 'applicationStatus',
 	name: '状态',
 	key: 'LK_ZHUANGTAI',
-	tooltip:false
+	tooltip: true 
 },
 {
   props: 'carType',
   name: '项目类型',
   key: 'nominationLanguage_XingMuLeiXing',
-  tooltip: false
+  tooltip: true
 },
 {
   props: 'meetingPresentId',
@@ -62,7 +63,7 @@ export const tableTitle = [{
 {
   props: 'nominateUserName',
   name: '询价采购员',
-  width: 150,
+  minWidth: 160,
   key: 'nominationLanguage_XunJiaCaiGouYuan',
   tooltip: true
 },
@@ -70,27 +71,27 @@ export const tableTitle = [{
   props: 'linieName',
   name: 'LINIE',
   key: 'LINIE',
-  tooltip: false
+  tooltip: true
 },
 {
   props: 'rsStatus',
   name: 'RS单状态',
   key: 'nominationLanguage_RSZhuangTai',
-  tooltip: false
+  tooltip: true
 },
 {
   props: 'rsFreezeDate',
   name: 'RS冻结日期',
-  width: 150,
+  minWidth: 160,
   key: 'nominationLanguage_RSDongJieRiQi',
-  tooltip: false
+  tooltip: true
 },
 
 // {
 // 	props: 'freezeDate',
 // 	name: '冻结日期',
 // 	key: 'nominationLanguage_DongJieRiQi',
-// 	tooltip:false
+// 	tooltip: true
 // },
 // {
 //   props: 'meetingStatus',
@@ -103,26 +104,26 @@ export const tableTitle = [{
 //   name: '报价一致性校验状态',
 //   width: 150,
 //   key: 'nominationLanguage_BaoJiaYiZhiXingZhuangTai',
-//   tooltip: false
+//   tooltip: true
 // },
 // {
 //   props: 'selStatus',
 //   name: 'SEL单据确认状态',
 //   width: 150,
 //   key: 'nominationLanguage_SELDanJuQUeRenZH',
-//   tooltip: false
+//   tooltip: true
 // },
 // {
 //   props: 'nominateDate',
 //   name: '定点日期',
 //   width: 150,
 //   key: 'nominationLanguage_DingDianRiQi',
-//   tooltip: false
+//   tooltip: true
 // },
 // {
 //   props: 'LK_CAOZUO',
 //   name: '操作',
 //   key: 'LK_CAOZUO',
-//   tooltip: false
+//   tooltip: true
 // }
 ]
