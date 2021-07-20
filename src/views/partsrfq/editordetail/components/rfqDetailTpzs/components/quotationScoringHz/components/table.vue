@@ -1,130 +1,145 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-28 15:03:47
- * @LastEditTime: 2021-07-17 18:29:37
+ * @LastEditTime: 2021-07-20 18:20:28
  * @LastEditors: Please set LastEditors
  * @Description: 特殊表格实现
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\table.vue
 -->
 <template>
-<div class="selsTable">
-  <el-table 
-    tooltip-effect="light"
-    :height="height"
-    :data="tableData"
-    v-loading="loading"
-    @cell-click="handleCellClick"
-    :empty-text="$t('LK_ZANWUSHUJU')"
-    :row-class-name="tableRowClassName"
-    :header-cell-class-name='headerClassName'
-    :cell-class-name='cellClassName'
-    :span-method="spanMethod"
-    @sort-change="sortChangeTable"
-  >
-    <template v-for='(item,index) in tableTitle'>
-      <!-----------------存在index selection情况------------------------>
-      <el-table-column
-        :key="index"
-        v-if="item.props == 'groupName'"
-        :label="item.i18n ? $t(item.i18n) : item.label"
-        :width="item.width || 50"
-        align="center"
-        :prop='item.prop'
+  <div class="conent">
+    <div class="selsTable">
+      <el-table 
+        tooltip-effect="light"
+        :height="height"
+        :data="tableData"
+        v-loading="loading"
+        @cell-click="handleCellClick"
+        :empty-text="$t('LK_ZANWUSHUJU')"
+        :row-class-name="tableRowClassName"
+        :header-cell-class-name='headerClassName'
+        :cell-class-name='cellClassName'
+        :span-method="spanMethod"
+        @sort-change="sortChangeTable"
       >
-        <template slot-scope="scope">
-            <el-checkbox @change="handleSelectionChange(scope.row,scope.$index)" class="checkBox" v-model="scope.row.active"><span>{{scope.row[item.props]}}</span></el-checkbox>
-        </template>
-      </el-table-column>
-      <el-table-column
-        v-else-if="item.props == 'cfPartAPrice' || item.props == 'partNo'"
-        :key="index"
-        :label="item.i18n ? $t(item.i18n) : item.label"
-        :width="item.width"
-        :prop='item.props'
-        align="center"
-        :sortable='"custom"'
-      >
-        <template slot-scope="scope">
-          <span :class="{chengse:(scope.row['cfPartAPriceStatus'] == 2 && item.props != 'partNo')}">{{scope.row[item.props]}}</span>
-        </template>
-      </el-table-column>
-      <!-----------------表格中内容模块------------------------>
-      <el-table-column
-        v-else
-        :key="index"
-        :label="item.i18n ? $t(item.i18n) : item.label"
-        :width="item.width"
-        :prop='item.props'
-        align="center"
-      >
-        <!----------在表头上方需要显示评分的点，插入表头标签------>
-        <template slot="header" slot-scope="scope">
-          <el-tooltip :content="scope.column.label" effect='light'><span class="labelHader">{{scope.column.label}}</span></el-tooltip>
-          <div class="headerContent" v-if='scope.column.label == "EBR"'>
-            <div class="c" :style="{width:cWidth}" v-if='ratingList.firstTile.length > 0'>
-              <ul style="width:99.5px">
-                <li></li>
-                <li v-for='(items,index) in ratingList.firstTile' :key='index'>{{items}}</li>
-              </ul>
-        <!----------在表头上方动态循环点------------------------>
-              <template v-for='(rating,index) in ratingList.ratingList'>
-                <ul :key="index" class="lastChild">
-                  <template v-for='(itemsss,indexss) in rating'>
-                    <li :key='indexss' v-if='indexss > 0'>
-                      <span style="margin-rigth:10px;">{{itemsss.rate}}</span>
-                      <span><icon v-if='!itemsss.isAllPartRateConsistent' name='icontishi-cheng' symbol></icon></span>
-                    </li>
-                    <li v-else :key='indexss'>
-                      <span>
-                        {{itemsss.rate}}
-                      </span>
-                      <el-tooltip  effect="light" v-if='itemsss.isRateRisk && !isPreview' :content="`FRM评级：${itemsss.isAllPartRateConsistent}`">
-                          <icon name='icontishi-cheng' symbol></icon>
-                      </el-tooltip>
-                    </li>
+        <template v-for='(item,index) in tableTitle'>
+          <!-----------------存在index selection情况------------------------>
+          <el-table-column
+            :key="index"
+            v-if="item.props == 'groupName'"
+            :label="item.i18n ? $t(item.i18n) : item.label"
+            :width="item.width || 50"
+            align="center"
+            fixed
+            :prop='item.prop'
+          >
+            <template slot-scope="scope">
+                <el-checkbox @change="handleSelectionChange(scope.row,scope.$index)" class="checkBox" v-model="scope.row.active"><span>{{scope.row[item.props]}}</span></el-checkbox>
+            </template>
+          </el-table-column>
+          <el-table-column
+            fixed
+            v-else-if="item.props == 'cfPartAPrice' || item.props == 'partNo'"
+            :key="index"
+            :label="item.i18n ? $t(item.i18n) : item.label"
+            :width="item.width"
+            :prop='item.props'
+            align="center"
+            :sortable='"custom"'
+          >
+            <template slot-scope="scope">
+              <span :class="{chengse:(scope.row['cfPartAPriceStatus'] == 2 && item.props != 'partNo')}">{{scope.row[item.props]}}</span>
+            </template>
+          </el-table-column>
+          <!-----------------表格中内容模块------------------------>
+          <el-table-column
+            v-else
+            :fixed='item.props == "partName" || item.props == "cfPartBPrice"'
+            :key="index"
+            :label="item.i18n ? $t(item.i18n) : item.label"
+            :width="item.width"
+            :prop='item.props'
+            align="center"
+          >
+            <!----------在表头上方需要显示评分的点，插入表头标签------>
+            <template slot="header" slot-scope="scope">
+              <el-tooltip :content="scope.column.label" effect='light'><span class="labelHader">{{scope.column.label}}</span></el-tooltip>
+              <div class="headerContent" v-if='scope.column.label == "EBR"'>
+                <div class="c" :style="{width:cWidth}" v-if='ratingList.firstTile.length > 0'>
+                  <ul style="width:99.5px">
+                    <li></li>
+                    <template v-for='(items,index) in ratingList.firstTile'>
+                      <template v-if='ratingList.firstTile.length > 1'>
+                        <li :key='index' v-if='!items==""'>{{items}}</li>
+                      </template>
+                      <template v-else>
+                        <li :key='index'>{{items}}</li>
+                      </template>
+                    </template>
+                  </ul>
+            <!----------在表头上方动态循环点------------------------>
+                  <template v-for='(rating,index) in ratingList.ratingList'>
+                    <ul :key="index" class="lastChild">
+                      <template v-for='(itemsss,indexss) in rating'>
+                        <!--------------------------------判断逻辑：只要有评分，肯定是有评分部门，如果评分部门为空，则处理当前行不显示------------>
+                        <template v-if="indexss > 0">
+                          <li :key='indexss' v-if='ratingList.firstTile[indexss-1]'>
+                            <span style="margin-rigth:10px;">{{itemsss.rate}}</span>
+                            <span><icon v-if='!itemsss.isAllPartRateConsistent' name='icontishi-cheng' symbol></icon></span>
+                          </li>
+                        </template>
+                        <li v-else :key='indexss'>
+                          <span>
+                            {{itemsss.rate}}
+                          </span>
+                          <el-tooltip  effect="light" v-if='itemsss.isRateRisk && !isPreview' :content="`FRM评级：${itemsss.isAllPartRateConsistent}`">
+                              <icon name='icontishi-cheng' symbol></icon>
+                          </el-tooltip>
+                        </li>
+                      </template>
+                    </ul>
                   </template>
-                </ul>
+                </div>
+              </div>
+            </template>
+            <template slot-scope="scope">
+              <template v-if='removeKeysNumber(item.props) == "cfPartAPrice"'>
+                  <span :class="{chengse:scope.row['cfPartAPriceStatus'] == 2}">{{scope.row[item.props]}}</span>
               </template>
-            </div>
-          </div>
+              <template v-else-if='removeKeysNumber(item.props) == "cfPartBPrice"'>
+                  <span :class="{chengse:scope.row['cfPartBPriceStatus'] == 2}">{{scope.row[item.props]}}</span>
+              </template>
+              <template v-else-if='removeKeysNumber(item.props) == "lcAPrice"'>
+                  <span :class="{lvse:lvseFn(scope.row,item.props,'lcAPriceStatus')}">{{scope.row[item.props]}}</span>
+              </template>
+              <template v-else-if='removeKeysNumber(item.props) == "lcBPrice"'>
+                  <span :class="{lvse:lvseFn(scope.row,item.props,'lcBPriceStatus')}">{{scope.row[item.props]}}</span>
+              </template>
+              <template v-else-if='removeKeysNumber(item.props) == "tto"'>
+                  <span :class="{lvse:lvseFn(scope.row,item.props,'ttoStatus')}">{{scope.row[item.props]}}</span>
+              </template>
+              <template v-else-if='removeKeysNumber(item.props) == "Quotationdetails" && scope.$index < tableData.length -3'>
+                <span class="link" @click="optionPage(scope.row,getPorpsNumber(item.props))">查看详情</span>
+              </template>
+              <template v-else-if='removeKeysNumber(item.props) == "supplierSopDate" || removeKeysNumber(item.props) == "ltcStaringDate"'>
+                <span>{{scope.row[item.props]?moment(scope.row[item.props]).format("YYYY-MM-DD"):''}}</span>
+              </template>
+              <template v-else-if ='removeKeysNumber(item.props) == "developmentCost"'>
+                <span>{{scope.row[item.props]}}</span>
+                <span style="color:red;" v-if='scope.row[getPorpsNumber(item.props)+"developmentCostHasShare"]'>*</span>
+              </template>
+              <template v-else-if ='removeKeysNumber(item.props) == "tooling"'>
+                <span>{{scope.row[item.props]}}</span>
+                <span style="color:red;" v-if='scope.row[getPorpsNumber(item.props)+"toolingHasShare"]'>*</span>
+              </template>
+              <template v-else>
+                <span>{{scope.row[item.props]}}</span>
+              </template>
+            </template>
+          </el-table-column>
         </template>
-        <template slot-scope="scope">
-          <template v-if='removeKeysNumber(item.props) == "cfPartAPrice"'>
-              <span :class="{chengse:scope.row['cfPartAPriceStatus'] == 2}">{{scope.row[item.props]}}</span>
-          </template>
-          <template v-else-if='removeKeysNumber(item.props) == "cfPartBPrice"'>
-              <span :class="{chengse:scope.row['cfPartBPriceStatus'] == 2}">{{scope.row[item.props]}}</span>
-          </template>
-          <template v-else-if='removeKeysNumber(item.props) == "lcAPrice"'>
-              <span :class="{lvse:lvseFn(scope.row,item.props,'lcAPriceStatus')}">{{scope.row[item.props]}}</span>
-          </template>
-          <template v-else-if='removeKeysNumber(item.props) == "lcBPrice"'>
-              <span :class="{lvse:lvseFn(scope.row,item.props,'lcBPriceStatus')}">{{scope.row[item.props]}}</span>
-          </template>
-          <template v-else-if='removeKeysNumber(item.props) == "tto"'>
-              <span :class="{lvse:lvseFn(scope.row,item.props,'ttoStatus')}">{{scope.row[item.props]}}</span>
-          </template>
-          <template v-else-if='removeKeysNumber(item.props) == "Quotationdetails" && scope.$index < tableData.length -3'>
-             <span class="link" @click="optionPage(scope.row,getPorpsNumber(item.props))">查看详情</span>
-          </template>
-          <template v-else-if='removeKeysNumber(item.props) == "supplierSopDate" || removeKeysNumber(item.props) == "ltcStaringDate"'>
-            <span>{{scope.row[item.props]?moment(scope.row[item.props]).format("YYYY-MM-DD"):''}}</span>
-          </template>
-          <template v-else-if ='removeKeysNumber(item.props) == "developmentCost"'>
-            <span>{{scope.row[item.props]}}</span>
-            <span style="color:red;" v-if='scope.row[getPorpsNumber(item.props)+"developmentCostHasShare"]'>*</span>
-          </template>
-          <template v-else-if ='removeKeysNumber(item.props) == "tooling"'>
-            <span>{{scope.row[item.props]}}</span>
-            <span style="color:red;" v-if='scope.row[getPorpsNumber(item.props)+"toolingHasShare"]'>*</span>
-          </template>
-          <template v-else>
-            <span>{{scope.row[item.props]}}</span>
-          </template>
-        </template>
-      </el-table-column>
-    </template>
-  </el-table>
+      </el-table>
+    </div>
   </div>
 </template>
 <script>
@@ -152,6 +167,15 @@ export default{
     }
   },
   inject:['vm','getbaseInfoData'],
+  filters:{
+    zeroTonull:function(val){
+      if(val == 0){ 
+        return ''
+      }else{
+        return val
+      }
+    }
+  },
   computed:{
     cWidth(){
       const index = this.tableTitle.findIndex((item)=>item.label == 'EBR')
@@ -319,9 +343,14 @@ export default{
     color: $color-orange;
   }
   .el-table {
+    position: initial;
     overflow: visible;
     ::v-deep.cell{
       overflow: visible;
+    }
+    ::v-deep .el-table__fixed{
+      top: 200px!important;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.12)!important;
     }
     ::v-deep .el-table__header-wrapper{
       overflow: visible;
@@ -382,10 +411,16 @@ export default{
     }
     ::v-deep .is-sortable{
       .cell{
-        display: flex;
-        .caret-wrapper{
-          top: -7px;
-        }
+          display: flex;
+          .caret-wrapper{
+            height: 20px;
+            .ascending{
+              top: -2px;
+            }
+            .descending{
+              bottom: -6px;
+            }
+          }
       }
     }
   }
@@ -432,7 +467,11 @@ export default{
   }
   .selsTable{
     width: 100%;
-    overflow-x: scroll;
     padding-top: 200px;
+    overflow-x: scroll;
+  }
+  .conent{
+    height: auto;
+    position: relative;
   }
 </style>

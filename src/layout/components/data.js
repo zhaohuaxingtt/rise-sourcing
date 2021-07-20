@@ -9,6 +9,14 @@
 
 //界面左边条目btn列表
 export const iconData = [{
+        icon: '',
+        acIcon: '',
+        active: false,
+        key: 'four',
+        // path: '/partsign',
+        path: "",
+    },
+    {
         icon: 'iconhomeweixuanzhong',
         acIcon: 'iconhomexuanzhong',
         active: false,
@@ -43,7 +51,15 @@ export const iconData = [{
             path: '/taskcenter',
             languagekey: 'LK_RENWUZHONGXIN'
         }, ]
-    }
+    },
+    {
+        icon: '',
+        acIcon: '',
+        active: false,
+        key: 'five',
+        // path: '/partsign',
+        path: "",
+    },
 ]
 
 

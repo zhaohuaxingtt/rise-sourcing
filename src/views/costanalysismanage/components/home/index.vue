@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-05-27 12:32:54
- * @LastEditTime: 2021-06-25 14:27:38
+ * @LastEditTime: 2021-07-19 16:14:20
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\costanalysismanage\components\home\index.vue
@@ -39,7 +39,7 @@
             ></el-option>
             <el-option
               :value="item.value"
-              :label="item.label"
+              :label="item[$i18n.locale]"
               v-for="item in rfqStatusOptions"
               :key="item.key"
             ></el-option>
@@ -108,16 +108,18 @@
               :label="language('ALL', '全部') | capitalizeFilter"
             ></el-option>
             <el-option
-              :value="items.key"
-              :label="items.value"
-              v-for="(items, index) in commodityOptions"
-              :key="index"
+              v-for="item in commodityOptions"
+              :key="item.key"
+              :label="item.label"
+              :value="item.value"
             ></el-option>
           </iSelect>
         </el-form-item>
         <el-form-item label="LINIE">
           <iSelect
             v-model="form.linieId"
+            :loading="linieLoading"
+            :loading-text="language('JIAZAIZHONG', '加载中')"
             :placeholder="language('QINGXUANZELINIE', '请选择LINIE')"
           >
             <el-option
@@ -125,10 +127,10 @@
               :label="language('ALL', '全部') | capitalizeFilter"
             ></el-option>
             <el-option
-              v-for="item in list"
+              v-for="item in linieOptions"
               :key="item.key"
-              :label="item.value"
-              :value="item.key"
+              :label="item.label"
+              :value="item.value"
             ></el-option>
           </iSelect>
         </el-form-item>
@@ -192,9 +194,11 @@ import cbdDialog from './components/cbdStatus'
 import { queryForm, tableTitle } from "./components/data"
 import filters from "@/utils/filters"
 import { pageMixins } from "@/utils/pageMixins"
-import { getSelectOptions, getKmRfqList, updateRfq, getCommodityOptions } from "@/api/costanalysismanage/home"
+import { getSelectOptions, getKmRfqList, updateRfq, getCommodityOptions, getLinieOptionsByCommodity } from "@/api/costanalysismanage/home"
 import { selectDictByKeys } from "@/api/dictionary"
+import { getCarTypePro } from "@/api/designate/nomination"
 import { cloneDeep } from "lodash"
+import axios from "axios"
 
 export default {
   components: { 
@@ -229,24 +233,36 @@ export default {
       tableTitle,
       tableListData: [],
       rfqNum:'', // 当前选择的rfq
-      commodityOptions: []
+      commodityOptions: [],
+      linieOptions: [],
+      linieLoading: false,
+      getLinieOptionsByCommoditySource: null
     }
   },
   created() {
-    this.getSelectOptions("01", "carTypeOptions")
-    this.getSelectOptions("03", "rfqStatusOptions")
+    this.getCarTypePro()
     this.getDict()
     this.getCommodityOptions()
     this.getKmRfqList()
   },
+  watch: {
+    "form.commodity"(nv) {
+      if (nv) {
+        this.form.linieId = ""
+        this.getLinieOptionsByCommodity(nv)
+      } else {
+        this.linieOptions = []
+      }
+    }
+  },
   methods: {
-    getSelectOptions(type, optionsKey) {
-      getSelectOptions(type)
+    getCarTypePro() {
+      getCarTypePro()
       .then(res => {
         if (res.code == 200) {
-          this[optionsKey] = 
-            Array.isArray(res.data) ?
-            res.data.map(item => ({
+          this.carTypeOptions = 
+            Array.isArray(res.data.data) ?
+            res.data.data.map(item => ({
               key: item.code,
               label: item.name,
               value: item.code
@@ -262,20 +278,36 @@ export default {
       selectDictByKeys(
         [
           { keys: "HEAVY_ITEM" },
+          { keys: "RFQ_STATE" }
         ]
       )
       .then(res => {
         if (res.code == 200) {
-          this.dictMap = {}
           Object.keys(res.data).forEach(key => {
-            this.heavyItemOptions = res.data["HEAVY_ITEM"].map(item => ({
-              ...item,
-              key: item.code,
-              value: item.code,
-              zh: item.name,
-              en: item.nameEn,
-              de: item.nameDe
-            }))
+            switch(key) {
+              case "HEAVY_ITEM":
+                this.heavyItemOptions = res.data["HEAVY_ITEM"].map(item => ({
+                  ...item,
+                  key: item.code,
+                  value: item.code,
+                  zh: item.name,
+                  en: item.nameEn,
+                  de: item.nameDe
+                }))
+                break
+              case "RFQ_STATE":
+                this.rfqStatusOptions = res.data["RFQ_STATE"].map(item => ({
+                  ...item,
+                  key: item.code,
+                  value: item.code,
+                  zh: item.name,
+                  en: item.nameEn,
+                  de: item.nameDe
+                }))
+                break
+              default:
+            }
+            
           })
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
@@ -295,6 +327,29 @@ export default {
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }
+      })
+      .catch(() => {})
+    },
+    getLinieOptionsByCommodity(deptId) {
+      this.linieLoading = true
+
+      if (this.getLinieOptionsByCommoditySource) this.getLinieOptionsByCommoditySource.cancel()
+      this.getLinieOptionsByCommoditySource = axios.CancelToken.source()
+
+      getLinieOptionsByCommodity({ deptId }, { cancelToken: this.getLinieOptionsByCommoditySource.token })
+      .then(res => {
+        if (res.code == 200) {
+          this.linieOptions = res.data.map(item => ({
+            key: item.id,
+            label: item.nameZh,
+            value: item.id,
+          }))
+        } else {
+          this.linieOptions = []
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
+
+        this.linieLoading = false
       })
       .catch(() => {})
     },

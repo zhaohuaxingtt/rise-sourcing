@@ -11,7 +11,13 @@
     <div class="body margin-top27">
       <tableList class="table" index :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="loading" @handleSelectionChange="handleSelectionChange">
         <template #version="scope">
-          <span class="link-underline" @click="enquiry(scope.row)">{{ scope.row.version }}</span>
+          <span class="flexRow">
+            <span class="openLinkText cursor " @click="enquiry(scope.row)"> {{ scope.row.version }}</span>
+            <span v-if="scope.row.version" class="icon-gray  cursor "  @click="enquiry(scope.row)">
+                <icon symbol class="show" name="icontiaozhuananniu" />
+                <icon symbol class="active" name="icontiaozhuanxuanzhongzhuangtai" />
+            </span>
+          </span>  
         </template>
         <template #createDate="scope">
           <span>{{ scope.row.createDate | dateFilter }}</span>
@@ -37,6 +43,7 @@
 
 <script>
 import { iCard, iButton, iPagination, iMessage } from '@/components'
+import { icon} from 'rise'
 import tableList from '../tableList'
 import { enquiryUnconfirmedTableTitle as tableTitle } from '../data'
 import backItems from '@/views/partsign/home/components/backItems'
@@ -47,7 +54,7 @@ import filters from '@/utils/filters'
 import { downloadFile, downloadUdFile } from '@/api/file'
 
 export default {
-  components: { iCard, iButton, iPagination, tableList, backItems, enquiryDialog },
+  components: { iCard, iButton, iPagination, tableList, backItems, enquiryDialog, icon},
   mixins: [ pageMixins, filters ],
   props: {
     data: {
@@ -201,6 +208,9 @@ export default {
 
 <style lang="scss" scoped>
 .unconfirmed {
+  .openLinkText{
+    color:$color-blue;
+  }
   .header {
     position: relative;
 
@@ -247,6 +257,29 @@ export default {
         padding-top: 45px;
         padding-bottom: 60px;
       }
+    }
+  }
+  .icon-gray{
+    cursor: pointer;
+    .active{
+      display: none;
+    }
+    .show{
+      display: block;
+    }
+  }
+  .flexRow{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .icon-gray:hover{
+    cursor: pointer;
+    .show{
+      display: none;
+    }
+    .active{
+      display: block;
     }
   }
 }

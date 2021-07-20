@@ -35,7 +35,7 @@
             'log': '操作日志'
         },
         'rfq': {
-            'RFQINQUIRE': '查询',
+            'RFQINQUIRE': '确认',
             'RFQRESET': '重置',
         },
         'partsprocure': {
@@ -459,6 +459,7 @@
         'LK_GONGYINGSHANGCHANPINGAIYAO': '供应商产品概要', //供应商产品概要!
         'LK_GONGYINGSHANGGONGSIJIESHAO': '供应商公司介绍', //供应商公司介绍!
         'LK_GONGYINGSHANGMING': '供应商名', //供应商名
+        'LK_SAPHAO': 'SAP号', // SAP号
         'LK_GONGYINGSHANGMINGCHENG': '供应商名称', //供应商名称
         'LK_GONGYINGSHANGPINGFEN': '供应商评分', //供应商评分
         'LK_GONGYINGSHANGPINGFENFUJIAN': '供应商评分附件', //供应商评分附件

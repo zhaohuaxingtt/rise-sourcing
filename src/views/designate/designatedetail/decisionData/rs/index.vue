@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-28 13:35:30
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-08 15:37:02
+ * @LastEditTime: 2021-07-20 16:44:03
  * @Description: 定点管理-决策资料-RS
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\rs\index.vue
 -->
@@ -47,7 +47,7 @@ export default {
      * @return {*}
      */    
     isPreview() {
-      return this.$store.getters.isPreview || this.$route.query.isPreview || this.otherPreview
+      return this.$route.query.isPreview == 1 || this.otherPreview
     },
     /**
      * @Description: 定点id，如果从其他页面点击预览，则从props里取定点id，如是定点流程中的rs，则从url上获取定点id

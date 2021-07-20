@@ -1,8 +1,8 @@
 /*
  * @Author: Luoshuang
  * @Date: 2021-06-08 15:56:59
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-08 17:29:37
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-07-17 22:20:19
  * @Description: 
  * @FilePath: \front-web\src\api\designate\decisiondata\bdl.js
  */
@@ -19,9 +19,9 @@ export function readQuotation(nominateId) {
 }
 
 // 根据rfq获取供应商报价列表
-export function findRfqSupplierQuotationPage({rfqId, current, size}) {
+export function findRfqSupplierQuotationPage({nominateId,rfqId, current, size}) {
   return requst({
-    url: `/supplier/findRfqSupplierQuotationPage?rfqId=${rfqId}&current=${current}&size=${size}`,
+    url: `/supplier/findRfqSupplierQuotationPage?nominateId=${nominateId}&rfqId=${rfqId}&current=${current}&size=${size}`,
     method: "GET",
   })
 }
