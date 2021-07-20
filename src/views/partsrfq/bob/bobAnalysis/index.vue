@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 10:50:38
- * @LastEditTime: 2021-07-17 16:58:08
+ * @LastEditTime: 2021-07-19 20:19:13
  * @LastEditors: Please set LastEditors
  * @Description: 费用详情
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails.vue
@@ -75,7 +75,7 @@
                     @cancel="cancel"></remarkDialog>
     </iCard>
     <ungroupedTable ref="ungroupedTable"
-                    class="margin-top20"
+                    class="margin-top10"
                     :tableList="ungroupList"
                     v-if="groupby"
                     @groupBy="groupBtn"></ungroupedTable>
