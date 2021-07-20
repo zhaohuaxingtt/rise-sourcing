@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-17 13:44:35
- * @LastEditTime: 2021-07-02 18:25:36
+ * @LastEditTime: 2021-07-20 16:09:57
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\configscoredept\index.vue
@@ -341,7 +341,6 @@ export default {
     selectDeptNum(data) {
       this.currentRow.rateDepartNum = data.deptNum
       
-      console.log(this.currentRow)
       this.currentRow = null
     }
   }

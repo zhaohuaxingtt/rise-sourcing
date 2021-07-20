@@ -1,7 +1,7 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-02-24 09:42:07
- * @LastEditTime: 2021-07-19 16:42:12
+ * @LastEditTime: 2021-07-19 22:32:45
  * @LastEditors: Please set LastEditors
 -->
 
@@ -443,7 +443,7 @@ export default {
       // wholePackage 排序
       countSupplier = countSupplier.sort((a, b) => a.data - b.data)
       // console.log('countSupplier', countSupplier)
-      const wholePackage = (countSupplier[0] && countSupplier[0].data) || 0
+      const wholePackage = Number(countSupplier[0] && countSupplier[0].data).toFixed(2) || 0
       const wholePackageIndex = (countSupplier[0] && countSupplier[0].index) || 0
       // 记录该供应商
       supplier.push(wholePackageIndex)

@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-05-28 14:32:26
- * @LastEditTime: 2021-07-19 17:02:23
+ * @LastEditTime: 2021-07-20 16:19:11
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\data.js
@@ -88,8 +88,18 @@ export const gstableTileXh = function(index){
     {type:'',props:`Quotationdetails`,label:'Quo.details',i18n:'',width:'100',tooltip:false},
   ]
 }
-//cache list
-export const whiteList = ['groupName','partNo','partName','cfPartAPrice','cfPartBPrice','pca','tia','ebr','lcAPrice','lcBPrice','tooling','ltc','ltcStaringDate','tto'] //默认需要显示的数据
+
+/**
+ * @description: fs 横纵默认展示项的配置项
+ * @param {*}
+ * @return {*}
+ */
+export const whiteList = ['groupName','partNo','partName','cfPartAPrice','cfPartBPrice','ebr','lcAPrice','lcBPrice','tooling','ltc','ltcStaringDate','tto'] //默认需要显示的数据
+/**
+ * @description: gs横轴默认配置项
+ * @param {*}
+ * @return {*}
+ */
 export const whiteListGs = ['groupName','partNo','partName','currentSupplier','currentAPrice','currentBPrice','currentLtc','currentTto','currentSupplierSaving','ebr','lcAPrice','lcBPrice','bnkApprovalStatus','tooling','supplierSopDate','ltc','ltcStaringDate','tto','developmentCost','releaseCost','saving'] //默认需要显示的数据
 /**
  * @description：通过需要循环的表格和基础表格，在通过白名单将需要所有的百名单删选出来
@@ -100,8 +110,8 @@ export const whiteListGs = ['groupName','partNo','partName','currentSupplier','c
  */
 export const needSubTotal = ['cfPartAPrice','cfPartBPrice','lcAPrice','lcBPrice','tooling','tto']
 /**
- * @description:根据不通type获取options列表 
- * @param {*} type
+ * @description:根据不同type获取options列表，这个方法适用于所有模板
+ * @param {*} type 想要获取的type类型
  * @return {*}
  */
 export function backChooseList(type) {
@@ -137,6 +147,7 @@ export function backChooseList(type) {
  * @description: 获取表格真实表头。请求完白名单和数据之后，拿到供应商的个数反推表头数 fs横轴
  * @param {*} whiteListService
  * @param {*} supplierLength
+ * @param {*} layout
  * @return {*}
  */
 export function getRenderTableTile(whiteListService,supplierLength,layout){
@@ -364,6 +375,11 @@ export function subtotal(tableHeader,dataList,priceInfo){
   }
 }
 
+/**
+ * @description: 在tto的合并计算中。需要将最低的tto计算出来，将他的颜色表示为绿色。
+ * @param {*} totalList
+ * @return {*}
+ */
 export function getLowNumber(totalList){
   const templateData = JSON.parse(JSON.stringify(totalList))
   const temLits = []
@@ -375,8 +391,15 @@ export function getLowNumber(totalList){
       })
     }
   }
-  temLits.sort((a,b)=>{a.tto - b.tto})
-  templateData[temLits[0].number+'ttoStatus'] = 1
+  const newtemLits = temLits.sort((a,b)=>a.tto - b.tto)
+  let minData = ''
+  for(let i=0;i<newtemLits.length-1;i++){
+    if(parseFloat(newtemLits[i].tto) > 0){
+      minData = newtemLits[i]
+      break;
+    }
+  }
+  templateData[minData.number+'ttoStatus'] = 1
   return templateData
 }
 
@@ -420,7 +443,7 @@ export function kmOrbukeage(type,priceInfo,exampleDatas){
 }
 
 /**
- * @description: 获取表头上的循环后的titleNumber
+ * @description: 获取表头上的循环后的titleNumber，获得当前字段是在那一列
  * @param {*} key
  * @return {*}
  */
@@ -428,6 +451,12 @@ export function getPorpsNumber(key){
   return parseInt(key)?parseInt(key):''
 }
 
+/**
+ * @description: 排序方法，默认为当前数据进行一次排序。
+ * @param {*} list 后台数据
+ * @param {*} key  需要排序的特殊字符串
+ * @return {*}
+ */
 export function defaultSort(list,key){
   try {
     return [...list.filter(i=>i[key]).sort((a,b)=> a[key] == b[key]),...list.filter(i=>!i[key])]
@@ -437,7 +466,7 @@ export function defaultSort(list,key){
   
 }
 
-//------------------------------------------fs数据构造供应商------------------------------------------------------
+//------------------------------------------fs数据构造供应商评分部门表头-------------------
 export const rateTitelList = {type:'',props:'',label:'',i18n:'',width:'50',tooltip:true}
 
 export const supplierTile = [
@@ -476,7 +505,7 @@ export const centerSupplierList = function(index,factoryList=[]){
     {type:'',props:`${index}skdBPriceWithoutAllocation`,label:'SKD B Price without allocation',i18n:'',width:'120',tooltip:false}, 
     {type:'',props:`${index}bnk`,label:'BNK',i18n:'',width:'120',tooltip:false},
     {type:'',props:`${index}bnkApprovalStatus`,label:'BNK approval status',i18n:'',width:'120',tooltip:false},
-    {type:'',props:`${index}tooling`,label:'Tooling',i18n:'',width:'',tooltip:false},
+    {type:'',props:`${index}tooling`,label:'Tooling',i18n:'',width:'120',tooltip:false},
     {type:'',props:`${index}developmentCost`,label:'Development cost',i18n:'',width:'',tooltip:false},
     {type:'',props:`${index}supplierSopDate`,label:'Supplier SOP date',i18n:'',width:'100',tooltip:false},
     {type:'',props:`${index}ltc`,label:'LTC',i18n:'',width:'100',tooltip:false},
@@ -498,6 +527,11 @@ export const lastSupplier = [
 export function concactTitlle(supplier){
   return [...supplierTile,...supplier,...lastSupplier]
 }
+/**
+ * @description: 供应商横轴默认显示数据
+ * @param {*}
+ * @return {*}
+ */
 export const supplierWhiteList = ['supplierName','lcAPrice','lcBPrice','productionLocation','tooling','ltc','ltcStaringDate','tto','mixPrice','totalInvest','totalTurnover','partNo','partName','project','tia','fTarget','factory']
 export const supplierTableTop = []
 /**

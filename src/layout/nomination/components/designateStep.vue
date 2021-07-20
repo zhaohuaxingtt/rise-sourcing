@@ -32,7 +32,8 @@
         <!-- 步骤栏 -->
         <div class="step-list flex-between-center-center margin-top30 margin-bottom30">
             <div class="step-list-item flex-center-center" v-for="(item,index) in applyStep" :key="'applyStep'+index">
-                <div :class="phaseType + 1 >=item.id ? 'click-item step-list-item' : 'step-list-item' " @click="toAnyNomiStep(item)">
+                <!-- 下一步的图标或者是决策资料的图标支持灰色可点击 -->
+                <div :class="(item.id === 5 || phaseType + 1 >=item.id) ? 'click-item step-list-item' : 'step-list-item' " @click="toAnyNomiStep(item)">
                     <p class="step-icon-box">
                         <!-- 正在进行中 -->
                         <icon v-if="phaseType == item.id" symbol name="icondingdianguanlijiedian-jinhangzhong"  class="step-icon"></icon> 
@@ -162,10 +163,16 @@ export default {
         }
     },
     methods:{
+        // 临时跳转到决策资料，不更新当前步骤
+        gotoNomiAttach() {
+            this.$router.push({path: '/designate/decisiondata/title', query: Object.assign(this.$route.query, {desinateId:this.$route.query.desinateId, route: 'temp'})})
+        },
         // 跳转到任何已完成的定点步骤
         toAnyNomiStep(item) {
             const id = item.id
             const path = item.path
+            // 决策资料允许，特例跳转，不更新当前步骤
+            if (id === 5) this.gotoNomiAttach()
             // 不允许跳转到未开始的步骤
             if (id > this.phaseType + 1) return
             console.log(this.$store.getters.isPartListNull, item.path)
