@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-25 15:32:38
- * @LastEditTime: 2021-07-20 09:59:40
+ * @LastEditTime: 2021-07-20 21:48:17
  * @LastEditors: Please set LastEditors
  * @Description: 报价评分跟踪
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringTracking\index.vue
@@ -52,6 +52,19 @@ export default{
     this.negoScoreReport();
   },
   methods:{
+    /**
+     * @description: 获取有效状态周。 
+     * @param {*}
+     * @return {*}
+     */
+    getTypeWeek(list){
+      const lowNumberStatus = list.sort((a,b)=>a.taskStatus - b.taskStatus)
+      if(lowNumberStatus.taskStatus == -1){
+        return lowNumberStatus.donePeriod
+      }else{
+        return list[list.length -1].donePeriod
+      }
+    },
     /**
      * @description: 判断当前年是不是跨年。 
      * @param {*} year
@@ -109,7 +122,7 @@ export default{
       try {
         // eslint-disable-next-line no-debugger
         const copeList = []
-        const startWeek = list[list.length -1].donePeriod
+        const startWeek = this.getTypeWeek(list)
         for(let i = list[0].donePeriod;i<=(list[list.length -1].donePeriod<=24?24:this.getYear(list[list.length -1]));i++){
           const matchItems = list.find(item=>item.donePeriod == i)
           copeList.push(
