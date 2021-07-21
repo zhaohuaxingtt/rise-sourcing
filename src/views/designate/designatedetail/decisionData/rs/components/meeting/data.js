@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:50:41
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-19 16:45:46
+ * @LastEditTime: 2021-07-21 11:31:40
  * @Description: 
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\rs\components\meeting\data.js
  */
@@ -30,7 +30,7 @@ export const nomalDetailTitleBlue = [
   {props: 'mtz', name: '原材料补差价', enName: 'MTZ', key: 'YUANCAILIAOBUCHAJIA'},
   {props: 'materialGroup', name: '材料组', enName: 'Material Group', key: 'CAILIAOZU'},
   {props: 'rawMaterial', name: '原材料', enName: 'Raw Material', key: 'YUANCAILIAO'},
-  {props: 'plannedInvest', name: '现供应商', enName: 'Current Supplier', key:'XIANGONGYINGSHANG'},
+  {props: 'suppliersNow', name: '现供应商', enName: 'Current Supplier', key:'XIANGONGYINGSHANG'},
   {props: 'setPrice', name: '设定价格', enName: 'Set Price', key:'SHEDINGJIAGE'},
   {props: 'isApportion', name: '分摊', enName: 'Amrtisiert', key: 'FENTAN'},
   {props: 'quantity', name: '每车用量', enName: 'Quantity', key: 'MEICHEYONGLIANG'}
