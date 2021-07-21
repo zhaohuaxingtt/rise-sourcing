@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-24 20:14:24
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-07-09 14:15:42
+ * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-07-21 10:52:28
  * @Description: 添加规则弹窗
  * @FilePath: \front-web\src\views\designate\defaultLogic\addRule.vue
 -->
@@ -236,9 +236,10 @@ export default {
 
       this.loading = true
       const params = {
+        fuelTypeValue: this.rules.find(item => item.input1 === 4).input2,
         nomiType: this.ddType,
         partTermType: this.rules[0].input2,
-        presetLogic:this.rules.reduce((accu, curr, index) => {
+        presetLogic:this.rules.filter(item => item.input1 != 4).reduce((accu, curr, index) => {
           if(index === 0) {
             return accu
           }
