@@ -292,7 +292,10 @@ export default {
         this.tableListData = [];
         this.hideTableData = [];
         this.copyDataInfo = _.cloneDeep(this.dataInfo);
-        this.copyDataInfo.costDetailList.map(item => {
+        this.copyDataInfo.costDetailList.map((item, index) => {
+          if(!item.id) {
+            item.time = new Date().getTime() + index
+          }
           if (item.isShow) {
             this.tableListData.push(item);
           } else {
