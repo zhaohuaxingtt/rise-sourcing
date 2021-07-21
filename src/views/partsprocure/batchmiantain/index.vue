@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 15:12:41
- * @LastEditTime: 2021-07-21 18:01:59
+ * @LastEditTime: 2021-07-21 18:18:00
  * @LastEditors: Please set LastEditors
  * @Description: 零件采购项目批量维护界面
  * @FilePath: \front-web\src\views\partsprocure\batchmiantain\index.vue
@@ -340,7 +340,7 @@ export default {
           linieDept: this.batch.linieDept,
           linieName: this.linie.name, 
           linieUserId: this.linie.id,
-          // partProjectType: 
+          partProjectType: this.batch.type,
           partType: this.batch.partType,
           procureFactory: this.batch.procureFactory,
           procureFactoryName: factoryItems ? factoryItems.name : '',
