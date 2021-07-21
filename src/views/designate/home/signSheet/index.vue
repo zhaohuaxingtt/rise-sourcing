@@ -147,17 +147,19 @@ export default {
     viewDetail(row) {
       // 签字单状态
       const statusCode = row.status && row.status.code || row.status
-      const routeData = this.$router.resolve({
+      this.$router.push({
           path: '/sourcing/partsnomination/signSheet/details',
           query: {
             signCode: row.signCode,
             id: row.id,
             status: row.status && row.status.name || row.status,
+            desc: encodeURIComponent(row.description),
             // 仅仅允许草稿或者已拒绝的单子编辑
             mode: ['1', '2'].includes(statusCode) ? 'add' : ''
           }
         })
-        window.open(routeData.href, '_blank')
+        
+        // window.open(routeData.href, '_blank')
     },
     // 获取定点管理列表
     getFetchData(params = {}) {

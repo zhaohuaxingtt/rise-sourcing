@@ -90,6 +90,8 @@ import {
     sugesstionInitReCord,
     supplierInitReCord,
     checkNomiMeetingSubmit1,
+    checkNomiMeetingSubmit2,
+    checkNomiMeetingSubmit3,
     rsAttachExport
 } from '@/api/designate'
 import { applyStep } from './data'
@@ -353,18 +355,20 @@ export default {
                 }
             })
         },
-        // 进行上会类型定点申请第一轮校验
-        async checkNomiMeetingSubmit() {
+        // 提交定点申请三轮校验
+        async checkNomiMeetingSubmit(level = 1) {
             const { query } = this.$route;
             const {desinateId} = query;
             const data = {
-                nominateIdArr:[Number(desinateId)],
-                // meetingId: this.$store.getters.nominationType || ''
+                nominateId:Number(desinateId)
             }
             let state = true
             let dataInfo = ''
             try {
-                const res = await checkNomiMeetingSubmit1(data)
+                let res = {}
+                if (level === 1) res = await checkNomiMeetingSubmit1(data)
+                if (level === 2) res = await checkNomiMeetingSubmit2(data)
+                if (level === 3) res = await checkNomiMeetingSubmit3(data)
                 if (res && res.code === '200') {
                     state = true
                     if (res.data && res.data.length) {
@@ -389,6 +393,7 @@ export default {
             return {state, dataInfo}
         },
         // 提交
+        // 提交逻辑需求有变化，所有类型的定点申请都要进行三轮校验，且第三轮为强制
         async submit(params = {}, check = true){
             const { query } = this.$route;
             const {desinateId} = query;
@@ -396,58 +401,98 @@ export default {
             const data = Object.assign({
                 nominateIdArr:[Number(desinateId)],
             }, params)
-            console.log('params', data)
+            console.log('params', data, nominationType)
             this.submitting = true
-            if (check && nominationType === 'MEETING') {
-                const res = await this.checkNomiMeetingSubmit(data)
-                console.log( res)
-                if (!res.state) {
-                    this.submitting = false
-                    return
-                }
-                if (res.state) {
-                    try {
-                        const confirmNextInfo = await this.$confirm(res.dataInfo,this.language('LK_NOTICE','提示'), {
-                            confirmButtonText: this.language('LK_JIXU','继续'),
-                            cancelButtonText: this.language('QUXIAO','取消'),
-                            type: 'warning'
-                        })
-                        
-                        if (confirmNextInfo !== 'confirm') {
+            try {
+                if (check) {
+                    // 进行第一轮校验
+                    let res = await this.checkNomiMeetingSubmit(1)
+                    console.log('第一轮校验',res)
+                    if (res.state) {
+                        try {
+                            const confirmNextInfo = await this.$confirm(res.dataInfo,this.language('LK_NOTICE','提示'), {
+                                confirmButtonText: this.language('LK_JIXU','继续'),
+                                cancelButtonText: this.language('QUXIAO','取消'),
+                                type: 'warning'
+                            })
+                            if (confirmNextInfo !== 'confirm') {
+                                this.submitting = false
+                                return
+                            }
+                        } catch (e) {
                             this.submitting = false
                             return
-                        } 
-                        // 打开上会确认弹窗
+                        }
+                    }
+                    // 进行第二轮校验
+                    res = await this.checkNomiMeetingSubmit(2)
+                    console.log('第二轮校验',res)
+                    if (res.state) {
+                        try {
+                            const confirmNextInfo = await this.$confirm(res.dataInfo,this.language('LK_NOTICE','提示'), {
+                                confirmButtonText: this.language('LK_JIXU','继续'),
+                                cancelButtonText: this.language('QUXIAO','取消'),
+                                type: 'warning'
+                            })
+                            if (confirmNextInfo !== 'confirm') {
+                                this.submitting = false
+                                return
+                            }
+                        } catch (e) {
+                            this.submitting = false
+                            return
+                        }
+                    }
+                    // 进行第二轮校验
+                    res = await this.checkNomiMeetingSubmit(3)
+                    console.log('第三轮校验',res)
+                    if (res.state) {
+                        try {
+                            const confirmNextInfo = await this.$confirm(res.dataInfo,this.language('LK_NOTICE','提示'), {
+                                confirmButtonText: this.language('LK_JIXU','继续'),
+                                cancelButtonText: this.language('QUXIAO','取消'),
+                                type: 'warning'
+                            })
+                            if (confirmNextInfo !== 'confirm') {
+                                this.submitting = false
+                                return
+                            }
+                        } catch (e) {
+                            this.submitting = false
+                            return
+                        }
+                    }
+
+                    // 打开上会确认弹窗
+                    if (nominationType === 'MEETING') {
                         this.mettingDialogVisible = true
                         this.submitting = false
                         return
-                    } catch (e) {
+                    }
+                }
+                
+                this.$confirm(this.language('submitSure','您确定要执行提交操作吗？')).then(confirmInfo => {
+                    if (confirmInfo !== 'confirm') {
                         this.submitting = false
                         return
                     }
-                    
-                }
-            }
-            
-            this.$confirm(this.language('submitSure','您确定要执行提交操作吗？')).then(confirmInfo => {
-                if (confirmInfo !== 'confirm') {
-                    this.submitting = false
-                    return
-                }
-                nominateAppSsubmit(data).then((res)=>{
-                    if (res.code === '200') {
-                        iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
-                    } else {
-                        iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
-                    }
-                    this.submitting = false
+                    nominateAppSsubmit(data).then((res)=>{
+                        if (res.code === '200') {
+                            iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
+                        } else {
+                            iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+                        }
+                        this.submitting = false
+                    }).catch(e => {
+                        this.submitting = false
+                        iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
+                    })
                 }).catch(e => {
                     this.submitting = false
-                    iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
                 })
-            }).catch(e => {
+            } catch (e) {
                 this.submitting = false
-            })
+            }
             
         },
         // 定点导出---后端功能未做

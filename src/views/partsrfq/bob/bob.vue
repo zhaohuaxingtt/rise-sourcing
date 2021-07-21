@@ -13,33 +13,39 @@
         <el-row class="margin-bottom20">
           <!--材料组-->
           <el-form-item :label="$t('LK_CAILIAOZU')">
-            <iInput :placeholder="$t('请输入材料组编号/名称')"
-                    v-model="form.group"></iInput>
+            <iInput
+              :placeholder="$t('TPZS.QSRCLZBHMC')"
+              v-model="form.group"
+            ></iInput>
           </el-form-item>
           <!--零件号-->
           <el-form-item :label="$t('LK_SPAREPARTSNUMBER')">
-            <iInput :placeholder="$t('请输入零件号')"
-                    v-model="form.num"></iInput>
+            <iInput
+              :placeholder="$t('LK_QINGSHURULINGJIANHAO')"
+              v-model="form.num"
+            ></iInput>
           </el-form-item>
           <!--供应商状态-->
-          <el-form-item :label="$t('RFQ号/名称')">
-            <iInput v-model="form.rfq"
-                    :disabled="rfqStatus"
-                    :placeholder="$t('请输入RFQ号')"></iInput>
+          <el-form-item :label="$t('TPZS.RFQHMC')">
+            <iInput
+              v-model="form.rfq"
+              :disabled="rfqStatus"
+              :placeholder="$t('TPZS.QSRRFQH')"
+            ></iInput>
           </el-form-item>
-          <!--集团打包-->
-          <el-form-item :label="$t('创建人')">
-            <iInput :placeholder="$t('请输入创建人名称')"
-                    v-model="form.owner" />
+          <el-form-item :label="$t('TPZS.CJR')">
+            <iInput
+              :placeholder="$t('TPZS.QINGSHURUCHUANGJIANRENMINGCHENG')"
+              v-model="form.owner"
+            />
           </el-form-item>
         </el-row>
       </el-form>
     </iSearch>
-    <iCard :title="$t('BoB分析库')"
-           class="margin-top20">
+    <iCard :title="$t('TPZS.BOBFXK')" class="margin-top20">
       <template v-slot:header-control>
         <div v-if="!edit">
-          <iButton @click="newBob">{{ $t("新建") }}</iButton>
+          <iButton @click="newBob">{{ $t("TPZS.LK_CREATE") }}</iButton>
           <iButton @click="editBob">{{ $t("LK_BIANJI") }}</iButton>
           <iButton @click="deleteBob">{{ $t("delete") }}</iButton>
         </div>
@@ -49,7 +55,6 @@
         </div>
       </template>
       <el-table tooltip-effect='light'
-                v-if="isRenderTable"
                 ref="multipleTable"
                 :data="tableListData"
                 style="width: 100%; margin-bottom: 20px"
@@ -66,10 +71,12 @@
                          header-align="center"
                          width="50">
         </el-table-column>
-        <el-table-column align="center"
-                         header-align="center"
-                         label="分析名称"
-                         width="250">
+        <el-table-column
+          align="center"
+          header-align="center"
+          :label="$t('TPZS.FXMC')"
+          width="250"
+        >
           <template slot-scope="scope">
             <div class="openPage">
               <el-row :gutter="20">
@@ -113,11 +120,12 @@
         <el-table-column :label="$t('LK_CAILIAOZU')"
                          prop="materialGroup">
         </el-table-column>
-        <el-table-column :label="$t('RFQ')"
-                         prop="rfqNo"> </el-table-column>
-        <el-table-column :label="$t('默认项')"
-                         align="center"
-                         header-align="center">
+        <el-table-column :label="$t('RFQ')" prop="rfqNo"> </el-table-column>
+        <el-table-column
+          :label="$t('TPZS.MRX')"
+          align="center"
+          header-align="center"
+        >
           <template slot-scope="scope">
             <div v-if="!edit">
               {{ defaultStatus(scope.row, scope.row.isDefault) }}
@@ -138,32 +146,31 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column :label="$t('文件类型')"
-                         prop="fileType">
+        <el-table-column :label="$t('TPZS.WJLX')" prop="fileType">
         </el-table-column>
-        <el-table-column :label="$t('创建人')"
-                         prop="createNameZh">
+        <el-table-column :label="$t('TPZS.CJR')" prop="createNameZh">
         </el-table-column>
         <el-table-column :label="$t('LK_CHUANGJIANRIQI')"
                          prop="createDate"
                          show-overflow-tooltip>
         </el-table-column>
-        <el-table-column :label="$t('上次修改日期')"
-                         prop="updateDate"
-                         show-overflow-tooltip>
+        <el-table-column :label="$t('TPZS.SCXGRQ')" prop="updateDate" show-overflow-tooltip>
         </el-table-column>
         <el-table-column width="50">
           <template slot-scope="scope">
-            <div @click="handleStick(scope.row)"
-                 class="stickIcon">
-              <icon v-if="scope.row.fileType === '方案' && scope.row.isTop"
-                    name="iconliebiaoyizhiding"
-                    class="iconliebiaoyizhiding"
-                    symbol />
-              <icon v-else-if="scope.row.fileType === '方案' && !scope.row.isTop"
-                    name="iconliebiaoweizhiding"
-                    class="iconliebiaoweizhiding"
-                    symbol />
+            <div @click="handleStick(scope.row)" class="stickIcon">
+              <icon
+                v-if="scope.row.fileType === $t('TPZS.SCHEME_TYPE') && scope.row.isTop"
+                name="iconliebiaoyizhiding"
+                class="iconliebiaoyizhiding"
+                symbol
+              />
+              <icon
+                v-else-if="scope.row.fileType === $t('TPZS.SCHEME_TYPE') && !scope.row.isTop"
+                name="iconliebiaoweizhiding"
+                class="iconliebiaoweizhiding"
+                symbol
+              />
             </div>
           </template>
         </el-table-column>
@@ -179,7 +186,9 @@
                    :total="page.totalCount" />
 
       <reportPreview :visible="reportVisible"
-                     :reportUrl="reportUrl" />
+                     :reportUrl="reportUrl"
+                     :title="reportTitle"
+                     type="1"/>
     </iCard>
   </div>
 </template>
@@ -229,12 +238,12 @@ export default {
       rfqStatus: false,
       reportVisible: false,
       reportUrl: null,
-      currentDefaultObj: null, //当前编辑对象
-      isRenderTable: true,
+      reportTitle: null,
       defaultData: [
         { value: "是", label: this.$t("nominationLanguage.Yes") },
         { value: "否", label: this.$t("nominationLanguage.No") },
       ],
+      currentDefaultObj: null, //当前编辑对象
       updatedDefault: false //是否已更新默认项
     };
   },
@@ -254,7 +263,7 @@ export default {
           else if (!flag) flag = null;
           else flag = "否";
         }
-        return val.fileType == "方案" ? flag : null;
+        return val.fileType == this.$t('TPZS.SCHEME_TYPE') ? flag : null;
       };
     },
   },
@@ -262,10 +271,12 @@ export default {
     //初始化查询数据
     initSearchData () {
       const data = this.$store.state.rfq.rfqId;
-      const status = this.$store.state.rfq.entryStatus;
-      if (data && status == 1) this.rfqStatus = true;
+      if (this.$store.state.rfq.entryStatus == 1) this.rfqStatus = true;
       this.form = {
         ...this.form,
+        group: null,
+        num: null,
+        owner: null,
         rfq: data,
       };
     },
@@ -337,9 +348,7 @@ export default {
     handleSearch () {
       this.getTableList().then((res) => {
         if (!res.data || res.data.length == 0) {
-          iMessage.error(
-            "抱歉，无法查询到结果（输入错误或不存在），请确认后重新输入"
-          );
+          iMessage.error(this.$t('TPZS.BQWFCXDJGSRCWHBCZQQRHCXSR'));
         }
       });
     },
@@ -352,8 +361,17 @@ export default {
           createByName: this.form.owner ? this.form.owner : null,
           materialGroup: this.form.group ? this.form.group : null,
           partsNo: this.form.num ? this.form.num : null,
-          rfqNo: this.form.rfq ? this.form.rfq : null,
+          
         };
+        const status = this.$store.state.rfq.entryStatus
+        const rfq = this.form.rfq ? this.form.rfq : null
+        if(status == 0) {
+          //外部进入
+          params['rfqName'] = rfq
+        } else if (status == 1) {
+          //内部进入
+          params['rfqNo'] = rfq
+        }
         getBobAnalysisDataList(params).then((res) => {
           if (res && res.code == 200) {
             this.page.totalCount = res.total;
@@ -445,7 +463,7 @@ export default {
     // 点击删除按钮
     deleteBob () {
       if (!this.selection || this.selection.length == 0) {
-        iMessage.error("请选中要删除的数据");
+        iMessage.error(this.$t('TPZS.QXZYSCDSJ'));
         return;
       }
       fetchDel(this.selection).then((res) => {
@@ -493,15 +511,16 @@ export default {
       });
     },
     // 点击名称,触发跳转事件
-    clickName (val) {
-      if (val.fileType == "方案") {
+    clickName(val) {
+      if (val.fileType == this.$t('TPZS.SCHEME_TYPE')) {
         this.$router.push({
           path: "/sourcing/partsrfq/bobNew",
           query: {
             rfqId: val.id,
           },
         });
-      } else if (val.fileType == "报告") {
+      } else if (val.fileType == this.$t('TPZS.REPORT_TYPE')) {
+        this.reportTitle = val.name
         this.reportVisible = true;
         if (val.path) this.reportUrl = val.path;
       }
