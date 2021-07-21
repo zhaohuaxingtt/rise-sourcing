@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-06-16 20:44:29
- * @LastEditTime: 2021-07-19 16:08:34
+ * @LastEditTime: 2021-07-21 14:53:48
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\analysisTool\components\analysisTable.vue
@@ -141,7 +141,7 @@
       :current-page='page.currPage'
       :total="page.totalCount"/>
 
-      <reportPreview :visible="reportVisible" :reportUrl="reportUrl"/>
+      <reportPreview :visible="reportVisible" :reportUrl="reportUrl" :title="reportTitle"/>
   </div>
 </template>
 
@@ -173,6 +173,7 @@ export default {
       selectionData: [],
       reportVisible: false,
       reportUrl: null,
+      reportTitle: null,
       round: null,        //round
       currentDefaultObj: null, //当前编辑对象
       updatedDefault: false //是否已更新默认项
@@ -349,8 +350,9 @@ export default {
     },
     //点击报告名称，打开报告预览弹窗
     clickReport(row) {
-      this.reportVisible = true
+      this.reportTitle = row.reportName
       if(row.downloadUrl) this.reportUrl = row.downloadUrl
+      this.reportVisible = true
     }
   }
 }
