@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-25 15:16:38
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-12 17:05:42
+ * @LastEditTime: 2021-07-21 13:59:03
  * @Description: 配件详情
  * @FilePath: \front-web\src\views\accessoryPart\accessoryPartDetail\index.vue
 -->
@@ -40,14 +40,14 @@ export default {
     }
   },
   created() {
-    if (this.$route.query.accessoryId) {
+    if (this.$route.query.spNum) {
       this.getDetail()
     }
   },
   methods: {
     getDetail() {
       this.pageLoading = true
-      getAccessoryOneInfo(this.$route.query.accessoryId).then(res => {
+      getAccessoryOneInfo(this.$route.query.spNum).then(res => {
         if (res.result) {
           this.detailData = res.data
         } else {
