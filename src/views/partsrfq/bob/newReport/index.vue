@@ -3,7 +3,7 @@
     <div id="content">
       <div class="navBox flex-between-center"
            v-if="!reportSave">
-        <span class="title">BOB{{ $t("TPZS.FENXI")
+        <span class="title font-weight">BOB{{ $t("TPZS.FENXI")
           }}<span v-if="inside">-RFQ {{ rfq }}</span></span>
         <div class="flex-align-center">
           <!--预览-->
@@ -27,13 +27,13 @@
       </div>
       <el-row :gutter="20"
               class="margin-top20">
-        <el-col :span="4">
+        <el-col :span="inside?4:5">
           <iCard :collapse="false"
-                 style="height: 500px"
+                 style="height: 579px"
                  v-if="!reportSave">
             <el-form label-position="top"
                      :model="form"
-                     style="height: 460px">
+                     style="height: 530px">
               <el-row class="margin-bottom20">
                 <div v-if="inside">
                   <!--比较类型-->
@@ -138,8 +138,8 @@
             </div>
           </iCard>
         </el-col>
-        <el-col :span="reportSave ? 24 : 20">
-          <iCard style="height: 500px"
+        <el-col :span="inside?20:19">
+          <iCard style="height: 579px"
                  collapse>
             <iRow>
               <el-col :span="inside ? 18 : 24">
@@ -190,9 +190,9 @@
       </el-row>
       <el-row :gutter="20"
               class="margin-top20">
-        <el-col :span="4">
+        <el-col :span="inside?4:5">
           <iCard :collapse="false"
-                 style="height: 500px"
+                 style="height: 579px"
                  v-if="!reportSave">
             <ul class="anchorList flex">
               <li v-for="(i,index) in anchorList"
@@ -203,7 +203,7 @@
             </ul>
           </iCard>
         </el-col>
-        <el-col :span="reportSave ? 24 : 20">
+        <el-col :span="inside ? 20 : 19">
           <bobAnalysis ref="bobAnalysis"
                        :supplierList="supplierList"
                        :partList="partList"></bobAnalysis>
@@ -291,7 +291,7 @@ export default {
       inside: false,
       chartData: [],
       chartData1: [],
-      chartType: this.inside ? "supplier" : "mixComp",
+      chartType: "",
       bobType: "Best of Best",
       form: {
         supplier: [],
@@ -354,8 +354,18 @@ export default {
         }
       },
       immediate: true
+    },
+    chartType: {
+      handler (newval) {
+        console.log(this.inside, "hahahah")
+        if (this.inside) {
+          this.chartType = 'supplier'
+        } else {
+          this.chartType = 'combination'
+        }
+        // this.inside ? "supplier" : "mixComp"
+      },
     }
-
   },
   mounted () {
   },
@@ -573,8 +583,11 @@ export default {
       this.$refs.bobAnalysis.chargeRetrieve("all");
     },
     async getChartData () {
-      if (this.inside) await this.getOptions();
-      else await this.querySupplierTurnPartList()
+      if (this.inside) {
+        await this.getOptions();
+      } else {
+        await this.querySupplierTurnPartList()
+      }
       getBobLevelOne({
         analysisSchemeId: this.analysisSchemeId,
       }).then((res) => {
@@ -590,6 +603,7 @@ export default {
         this.analysisName = allData.name
         this.reportName = allData.name + '_' + window.moment(new Date()).format("yyyy.MM");
         if (this.chartType === 'combination') {
+
           this.form = {
             combination: []
           }
@@ -753,7 +767,7 @@ export default {
   .end {
     text-align: center;
     position: relative;
-    bottom: 50px;
+    bottom: 30px;
   }
   .toolTip-div {
     z-index: 20;
@@ -780,6 +794,15 @@ export default {
     }
   }
 }
+::v-deep .el-select {
+  width: 100%;
+  .el-select-dropdown.is-multiple
+    .el-select-dropdown__item.selected
+    .hover::after {
+    font-size: 0 !important;
+  }
+}
+
 .el-tag .flex {
   display: flex;
   justify-content: center;
@@ -819,5 +842,20 @@ export default {
   .el-form-item__label {
     padding: 0;
   }
+}
+.title {
+  font-family: Arial;
+  font-size: $font-size20;
+  color: black;
+}
+.cardBody .end {
+  display: flex;
+  justify-content: space-around;
+  .el-button {
+    width: 100px;
+  }
+}
+::v-deep.el-form-item {
+  margin-bottom: 20px;
 }
 </style>
