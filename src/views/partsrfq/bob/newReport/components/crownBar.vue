@@ -114,7 +114,7 @@ export default {
         },
         grid: {
           right: '0%',
-          bottom:"5%",
+          bottom: "5%",
           containLabel: true,
         },
         xAxis: [
@@ -211,11 +211,11 @@ export default {
           }
           const str =
             name +
-            "\n\n 第{Blue|" +
+            "\n\n 第  {Blue|" +
             row.turn +
-            "}/" +
+            "} / " +
             row.totalTurn +
-            "轮\n\n" +
+            " 轮\n\n" +
             temp;
           this.labelArray.push({
             value: str,

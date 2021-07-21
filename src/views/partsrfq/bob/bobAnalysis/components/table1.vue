@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 11:38:57
- * @LastEditTime: 2021-07-19 13:39:16
+ * @LastEditTime: 2021-07-21 16:25:09
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails\table1.vue
@@ -132,46 +132,6 @@ export default {
         }
       }
     },
-    addclass (row) {
-      var that = this;
-      if (row.columnIndex == that.num) {
-        return "addcss";
-      }
-    },
-    checkClass (a, b, c) {
-      return function (a, b, c) {
-        const id = b.row.id;
-        let check = this.checkList.findIndex((item) => {
-          return item.index === c;
-        });
-        if (check > -1) {
-          switch (id) {
-            case "1-2-1":
-              console.log(id);
-              return "top";
-            case "1-2-7":
-              console.log(id);
-              return "bottom";
-            case "1-2":
-              console.log(id);
-              return "nocolor";
-            default:
-              console.log(id);
-              return "middle";
-          }
-        }
-        return "nocolor";
-      };
-    },
-    clickCol (a, b, c) {
-      const i = this.checkList.findIndex((item) => item.index == c);
-      if (i > -1) this.checkList.splice(i, i + 1);
-      else
-        this.checkList.push({
-          id: b.row.id,
-          index: c,
-        });
-    },
     cellsytle ({ row, column, rowIndex, columnIndex }) {
       if (row.title == "原材料/散件" || row.title == '制造费' || row.title == '保费成本' || row.title == '管理费' || row.title == '其他费用' || row.title == '利润') {
         return "font-weight: bold"
@@ -214,6 +174,9 @@ export default {
 // ::v-deep .el-table tr:nth-child(even){
 //     display: none;
 // }
+::v-deep .el-table .el-table__body-wrapper {
+  height: auto;
+}
 </style>
 <style lang="scss">
 .addcss {
