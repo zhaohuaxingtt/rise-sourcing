@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-25 15:32:38
- * @LastEditTime: 2021-07-20 21:48:17
+ * @LastEditTime: 2021-07-21 13:36:13
  * @LastEditors: Please set LastEditors
  * @Description: 报价评分跟踪
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringTracking\index.vue
@@ -9,12 +9,15 @@
 <template>
   <div class="timeline">
       <div class="topline">
-        <span class="margin-right20">整体任务进度: <el-tooltip placement="right" effect="light">
+        <span class="margin-right20">整体任务进度: 
+          <!-- <el-tooltip placement="right" effect="light">
           <icon symbol style="font-size:20px;position:relative;top:2px;" :color='"#eff9fd"' :name="iconList_all_times['a'+allJdu].icon"></icon>
             <template slot='content'>
               <dalyWeeks :daliyTime='allJdu' ></dalyWeeks>
             </template>
-          </el-tooltip></span>
+          </el-tooltip> -->
+           <icon symbol style="font-size:20px;position:relative;top:2px;" :color='"#eff9fd"' :name="iconList_all_times['a'+allJdu].icon"></icon>
+          </span>
         <span>整车进度风险: <el-tooltip placement="right" effect="light">
           <icon symbol style="font-size:20px;position:relative;top:2px;" :name="iconList_car['a'+daliyTime].icon"></icon>
             <template slot='content'>
@@ -99,8 +102,8 @@ export default{
     getTimeLine(qutaitonId,rfqId){
       getTimeLine(qutaitonId,rfqId).then(res=>{
         if(res.data){
-          this.daliyTime = res.data.wholeTaskProgress || 0 //整车进度风险
-          this.allJdu = res.data.wholeProgressRisk || 0 //整体任务进度
+          this.daliyTime = res.data.wholeProgressRisk || 0 //整车进度风险
+          this.allJdu = res.data.wholeTaskProgress || 0 //整体任务进度
           this.timeListdata = this.translateTimeLine(res.data.rfqTimeAxisProgressVOList)
         }
       }).catch(err=>{
