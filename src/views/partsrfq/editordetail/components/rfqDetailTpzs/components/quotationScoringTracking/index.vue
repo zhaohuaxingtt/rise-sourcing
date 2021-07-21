@@ -1,8 +1,8 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-25 15:32:38
- * @LastEditTime: 2021-07-21 13:33:19
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-07-21 14:53:50
+ * @LastEditors: Luoshuang
  * @Description: 报价评分跟踪
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringTracking\index.vue
 -->
