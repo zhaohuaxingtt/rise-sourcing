@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-17 13:44:35
- * @LastEditTime: 2021-07-20 16:09:57
+ * @LastEditTime: 2021-07-21 11:55:48
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\configscoredept\index.vue
@@ -299,6 +299,7 @@ export default {
     // 新增行
     handleAdd() {
       this.tableListData.unshift({
+        isCache: true,
         rateTag: "",
         rateDepartNum: "",
         isCheck: ""
