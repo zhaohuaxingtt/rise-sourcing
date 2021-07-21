@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-26 11:16:51
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-20 16:08:08
+ * @LastEditTime: 2021-07-21 13:59:25
  * @Description: 配件综合管理页面
  * @FilePath: \front-web\src\views\accessoryPart\integratedManage\index.vue
 -->
@@ -557,7 +557,7 @@ export default {
      * @return {*}
      */    
     openPage(row) {
-      const router =  this.$router.resolve({path: '/sourcing/accessorypartdetail', query: { accessoryId: row.id }})
+      const router =  this.$router.resolve({path: '/sourcing/accessorypartdetail', query: { spNum: row.spnrNum }})
       window.open(router.href,'_blank')
     },
     /**

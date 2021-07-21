@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-03-26 18:37:44
- * @LastEditTime: 2021-04-02 13:55:29
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-07-21 11:21:47
+ * @LastEditors: Luoshuang
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqPending\components\partDetaiList\components\partsTable.vue
 -->
@@ -14,7 +14,12 @@
         :tableLoading="tableLoading"
         @handleSelectionChange="handleSelectionChange"
         @openPage="openPage"
-    ></tableList>
+    >
+      <template #fsnrGsnrNum="scope">
+        <span v-if="scope.row.partProjectType === partProjTypes.PEIJIAN" class="openLinkText cursor " @click="$emit('gotoAccessoryDetail', scope.row)"> {{ scope.row.fsnrGsnrNum }}</span>
+        <span v-else>{{ scope.row.fsnrGsnrNum }}</span>
+      </template>
+    </tableList>
     <iPagination
         v-update
         @size-change="handleSizeChange($event, getTableList)"
@@ -44,6 +49,7 @@ import {
 import {
   getPartSrcPrjs,
 } from '@/api/partsrfq/editordetail';
+import {partProjTypes} from '@/config'
 
 export default {
   mixins: [pageMixins],
@@ -63,6 +69,7 @@ export default {
       parmarsNotHasRfq: JSON.parse(JSON.stringify(form)),
       // handleSelectArr: [],
       tableTitle,
+      partProjTypes
     }
   },
   created() {
@@ -106,5 +113,8 @@ export default {
 <style lang="scss" scoped>
 .notPushRfq {
   width: 100%;
+}
+.openLinkText{
+  color:$color-blue;
 }
 </style>

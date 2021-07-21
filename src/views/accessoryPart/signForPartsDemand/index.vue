@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-25 13:57:11
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-16 23:05:28
+ * @LastEditTime: 2021-07-21 14:00:05
  * @Description: 
  * @FilePath: \front-web\src\views\accessoryPart\signForPartsDemand\index.vue
 -->
@@ -401,7 +401,7 @@ export default {
      * @return {*}
      */    
     openPage(row) {
-      const router =  this.$router.resolve({path: '/sourcing/accessorypartdetail', query: { accessoryId: row.id }})
+      const router =  this.$router.resolve({path: '/sourcing/accessorypartdetail', query: { spnrNum: row.spnrNum }})
       window.open(router.href,'_blank')
     },
     /**
