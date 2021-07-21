@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 11:38:57
- * @LastEditTime: 2021-07-19 13:39:16
+ * @LastEditTime: 2021-07-21 16:03:16
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails\table1.vue
@@ -214,6 +214,9 @@ export default {
 // ::v-deep .el-table tr:nth-child(even){
 //     display: none;
 // }
+::v-deep .el-table .el-table__body-wrapper {
+  height: auto
+}
 </style>
 <style lang="scss">
 .addcss {

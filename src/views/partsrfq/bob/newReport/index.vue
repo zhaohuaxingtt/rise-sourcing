@@ -166,6 +166,7 @@
                   </iSelect>
                 </div>
               </el-col>
+
               <el-col :span="6"
                       v-if="inside">
                 <div class="left-dash1">
@@ -536,7 +537,7 @@ export default {
         }
       } else {
         params = {
-          analysisSchemeId: this.analysisSchemeId,
+          analysisSchemeId: this.$store.state.rfq.SchemeId,
           analysisDimension: this.chartType,
           combination: this.form.combination.join(",")
         }
@@ -569,9 +570,11 @@ export default {
           this.form.spareParts = this.Split(allData.spareParts, ",");
         }
       });
+      this.$refs.bobAnalysis.chargeRetrieve("all");
     },
     async getChartData () {
-      await this.getOptions();
+      if (this.inside) await this.getOptions();
+      else await this.querySupplierTurnPartList()
       getBobLevelOne({
         analysisSchemeId: this.analysisSchemeId,
       }).then((res) => {
@@ -591,6 +594,7 @@ export default {
             combination: []
           }
           this.form.combination = this.Split(allData.combination, ",");
+
         } else {
           this.form = {
             supplier: [],
@@ -627,48 +631,60 @@ export default {
     },
     save () {
       let that = this;
-      const form = {
-        analysisDimension: this.chartType,
-        defaultBobOptions: this.bobType,
-        id: this.analysisSchemeId,
-        name: this.analysisName,
-        spareParts: this.form.spareParts.join(","),
-        supplierId: this.form.supplier.join(","),
-        turn: this.form.turn.join(","),
-        isCover: this.isCover
-      };
-      if (this.isCover) {
-        this.$confirm('此样式/报告已存在, 是否覆盖?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          if (this.analysisSave) {
-            update(form)
-              .then((res) => {
-                iMessage.success("保存成功");
-                this.dialogVisible = false;
-                this.reportSave = false;
-              })
-              .catch((err) => {
-                iMessage.err("保存失败");
-                this.dialogVisible = false;
-                this.reportSave = false;
-              });
-          }
-        }).catch(() => {
-          this.$message({
-            type: 'info',
-            message: '已取消'
-          });
-        });
+      let form = {}
+      if (this.inside) {
+        form = {
+          analysisDimension: this.chartType,
+          defaultBobOptions: this.bobType,
+          id: this.analysisSchemeId,
+          name: this.analysisName,
+          spareParts: this.form.spareParts.join(","),
+          supplierId: this.form.supplier.join(","),
+          turn: this.form.turn.join(","),
+          isCover: this.isCover
+        };
+      } else {
+        form = {
+          analysisDimension: this.chartType,
+          defaultBobOptions: this.bobType,
+          id: this.analysisSchemeId,
+          name: this.analysisName,
+          combination: this.form.combination.join(','),
+          isCover: this.isCover
+        };
       }
-
-
+      if (this.isCover) {
+        if (this.analysisSave) {
+          this.$confirm('此样式/报告已存在, 是否覆盖?', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(() => {
+            if (this.analysisSave) {
+              update(form)
+                .then((res) => {
+                  iMessage.success("保存成功");
+                  this.dialogVisible = false;
+                  this.reportSave = false;
+                })
+                .catch((err) => {
+                  iMessage.err("保存失败");
+                  this.dialogVisible = false;
+                  this.reportSave = false;
+                });
+            }
+          }).catch(() => {
+            this.$message({
+              type: 'info',
+              message: '已取消'
+            });
+          });
+        }
+      }
       if (this.reportSave) {
         downloadPDF({
           idEle: "content",
-          pdfName: this.reportName,
+          pdfName: that.reportName,
           callback: async (pdf, pdfName) => {
             try {
               const time = new Date().getTime();
@@ -681,15 +697,15 @@ export default {
               const res = await uploadFile(formData);
               const data = res.data[0];
               const req = {
-                analysisSchemeId: 1,
-                downloadName: data.fileName,
-                downloadUrl: data.filePath,
-                reportName: that.reportName,
+                analysisSchemeId: this.analysisSchemeId,
+                name: data.fileName,
+                path: data.filePath,
+                remark: that.reportName,
               };
               await add(req);
-              iMessage.success("保存成功");
               that.dialogVisible = false;
               that.reportSave = false;
+              iMessage.success("保存成功");
             } catch {
               iMessage.err("保存失败");
               that.dialogVisible = false;
@@ -737,7 +753,7 @@ export default {
   .end {
     text-align: center;
     position: relative;
-    bottom: 30px;
+    bottom: 50px;
   }
   .toolTip-div {
     z-index: 20;
@@ -755,7 +771,7 @@ export default {
   }
   .left-dash1 {
     border: none;
-    border-left: 2px dashed #CED4E1;
+    border-left: 2px dashed #ced4e1;
     padding-left: 40px;
     .icon-add {
       margin-top: 80px;
@@ -798,9 +814,9 @@ export default {
 .active {
   color: #1660f1 !important;
 }
-::v-deep .el-form-item{
+::v-deep .el-form-item {
   margin-bottom: 20px;
-  .el-form-item__label{
+  .el-form-item__label {
     padding: 0;
   }
 }
