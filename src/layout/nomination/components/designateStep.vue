@@ -383,12 +383,14 @@ export default {
                         state = false
                     }
                 } else {
-                    state = false
-                    iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+                    state = true
+                    dataInfo = this.$i18n.locale === "zh" ? res.desZh : res.desEn
+                    // iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
                 }
             } catch(e) {
-                state = false
-                iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
+                state = true
+                dataInfo = this.$i18n.locale === "zh" ? e.desZh : e.desEn
+                // iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
             }
             return {state, dataInfo}
         },
