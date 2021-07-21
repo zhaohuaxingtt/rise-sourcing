@@ -1,7 +1,7 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-05-25 09:42:07
- * @LastEditTime: 2021-07-20 12:39:53
+ * @LastEditTime: 2021-07-21 11:29:00
  * @Description: 业务分配模拟
 -->
 
@@ -117,6 +117,7 @@ import * as nomi from '@/api/designate/suggestion/nomi'
 
 export default {
   props: {
+    // 模式：nomi，定点建议；nego，谈判助手；
     mode: {
       type: String,
       default: 'nego'
