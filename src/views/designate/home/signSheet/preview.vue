@@ -1,7 +1,7 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-07-01 14:30:59
- * @LastEditTime: 2021-07-21 14:55:24
+ * @LastEditTime: 2021-07-21 16:16:48
  * @LastEditors: Please set LastEditors
  * @Description: M签字单预览导出 jira-1571
  * @FilePath: /front-web/src/views/designate/home/signSheet/signView.vue
@@ -33,11 +33,18 @@
             v-loading="tableLoading"
             @handleSelectionChange="handleSelectionChange"
           >
+          <template #rsRemark="scope">
+            <span>
+              <p v-if="scope.row.csfMeetMemo">{{scope.row.csfMeetMemo}}</p>
+              <p v-if="scope.row.linieMeetMemo">{{scope.row.linieMeetMemo}}</p>
+              <p v-if="scope.row.cs1MeetMemo">{{scope.row.cs1MeetMemo}}</p>
+            </span>
+          </template>
           </tablelist>
         </div>
         <div class="signPreview-footer">
           <div class="tit"><span class="label">Approver:</span><span class="line"></span></div>
-          <div class="time">2021-06-30</div>
+          <div class="time">{{currentDate}}</div>
         </div>
       </div>
     </iCard>
@@ -85,6 +92,9 @@ export default {
   computed: {
     tableTitle() {
       return [...tableTitle, ...this.ltcTitle]
+    },
+    currentDate() {
+      return window.moment().format('YYYY-MM-DD')
     }
   },
   methods: {

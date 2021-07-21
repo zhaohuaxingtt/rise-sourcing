@@ -1,7 +1,7 @@
 /*
  * @Author: Haojiang
  * @Date: 2021-06-28 09:26:28
- * @LastEditTime: 2021-07-21 14:40:13
+ * @LastEditTime: 2021-07-21 16:17:48
  * @LastEditors: Please set LastEditors
  * @Description: 签字单
  * @FilePath: /front-web/src/views/designate/home/signSheet/components/data.js
@@ -203,6 +203,7 @@ export const signsheetViewTableTitle = [
     props: 'rsRemark',
     name: 'Remark',
     key: 'Remark',
+    width: 200,
     tooltip: false
   },
 ]
