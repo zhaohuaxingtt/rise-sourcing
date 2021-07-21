@@ -1,10 +1,10 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-24 09:42:07
- * @LastEditTime: 2021-07-12 18:08:43
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-07-21 10:37:31
+ * @LastEditors: Luoshuang
  * @Description: 零件签收-table组件。
- * @FilePath: \rise\src\views\partsign\components\tableList.vue
+ * @FilePath: \front-web\src\views\partsign\home\components\tableList.vue
 -->
 <template>
   <el-table fit tooltip-effect='light' :height="height" :data='tableData' v-loading='tableLoading' @selection-change="handleSelectionChange" :empty-text="language('LK_ZANWUSHUJU','暂无数据')" ref="moviesTable" :class="radio && 'radio'" @select="handleSelect"  @select-all="handleSelectAll" :cell-style="borderLeft">
@@ -27,7 +27,11 @@
           <span>{{translateData('tp_info_type',scope.row[items.props])}}</span>
         </template>
       </el-table-column>
-      <el-table-column :key="index" align='center' :width="items.width" :min-width="items.minWidth ? items.minWidth.toString():''" :show-overflow-tooltip='items.tooltip'  v-else :label="items.key ? language(items.key,items.name) : items.name" :prop="items.props"></el-table-column>
+      <el-table-column :key="index" align='center' :width="items.width" :min-width="items.minWidth ? items.minWidth.toString():''" :show-overflow-tooltip='items.tooltip'  v-else :label="items.key ? language(items.key,items.name) : items.name" :prop="items.props">
+        <template v-if="$scopedSlots[items.props] || $slots[items.props]" v-slot="scope">
+          <slot :name="items.props" :row="scope.row"></slot>
+        </template>
+      </el-table-column>
     </template>
   </el-table>
 </template>
