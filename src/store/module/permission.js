@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-05-14 20:11:00
+ * @LastEditTime: 2021-07-21 15:29:11
  * @LastEditors: Please set LastEditors
  * @Description: 用户信息保存。
  * @FilePath: \rise\src\store\module\permission.js
@@ -38,11 +38,31 @@ function initMeun(data){
   })
   return data
 }
+/**
+ * @description: 拿到用户权限过渡方法。==> 后期用户中心会处理为一层 roleList [] 
+ * @param {*} userInfo
+ * @return {*}
+ */
+function translateUserRole(userInfo){
+  try {
+    const roleList = []
+    userInfo.positionList.forEach(i=>{
+      i.roleDTOList.forEach(u=>{
+        roleList.push(u.code)
+      })
+    })
+    return  roleList
+  } catch (error) {
+    console.log(error)
+    return []
+  }
+}
 const state = {
   menuList: [],
   vueRouter:[],
   //系统登录用户信息。存入store，前台不存储用户的敏感信息。
-  roleList:'',
+  roleList:[],
+  userInfo:{},
   whiteBtnList:[]
 };
 const mutations = {
@@ -90,16 +110,16 @@ const actions = {
           // eslint-disable-next-line no-debugger
           if(res.code == 200 && res.data){
             commit('SET_USER_INFO',res.data)
-            commit('SET_ROLE_INFO',res.data.userName)
+            commit('SET_ROLE_INFO',translateUserRole(res.data))
             resole(res.data)
           }else{
             commit('SET_USER_INFO',{})
-            commit('SET_ROLE_INFO',{})
+            commit('SET_ROLE_INFO',[])
             reject({})
           }
         }).catch(err=>{
           commit('SET_USER_INFO',{})
-          commit('SET_ROLE_INFO',{})
+          commit('SET_ROLE_INFO',[])
           reject(err)
         })
       })

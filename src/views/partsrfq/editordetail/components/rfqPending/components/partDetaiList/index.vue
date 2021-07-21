@@ -1,7 +1,7 @@
 <!--
 * @author:shujie
 * @Date: 2021-2-25 11:42:11
- * @LastEditors: Luoshuang
+ * @LastEditors: Please set LastEditors
 * @Description: 待办事项-零件清单
  -->
 <template>
@@ -58,10 +58,11 @@ import {
 } from "@/views/partsprocure/home/components/data";
 import {
   getPartSrcPrjs,
+  deleteRfqPart
 } from '@/api/partsrfq/editordetail';
 import {
   addRfq,
-  editRfqData
+  // editRfqData
 } from '@/api/partsrfq/home';
 import {
   pageMixins
@@ -217,13 +218,14 @@ export default {
         return item.id
         })
         const req = {
-          deletePartPackage: {
+          // deletePartPackage: {
             userId: store.state.permission.userInfo.id,
             rfqId: this.rfqId,
             idList
-          }
+          // }
         }
-        const res = await editRfqData(req)
+        // const res = await editRfqData(req)
+        const res = await deleteRfqPart(req)
         this.resultMessage(res)
         this.getTableList()
         this.$refs.partsTable.getTableList()
