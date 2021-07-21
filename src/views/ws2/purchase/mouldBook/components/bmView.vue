@@ -176,7 +176,7 @@ export default {
 
     openBMDetail(row){ //  跳转详情
       //  如当前用户没有查看“模具投资金额”的权限，点击流水号后提示“对不起，您所在的岗位没有该材料组权限”
-      this.$router.push({path: '/tooling/mouldBook/details'})
+      this.$router.push({path: '/purchase/mouldBook/details'})
     },
   }
 }

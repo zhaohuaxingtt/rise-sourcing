@@ -3,6 +3,7 @@
  * 
  */
 export function getTousandNum(num){
+    console.log(num)
     /** 格式化金额数据 */
     if (num === undefined || num === null) return;
     return num.toString().replace(/\d+/, (n) => {

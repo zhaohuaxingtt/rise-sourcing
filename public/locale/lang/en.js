@@ -985,6 +985,9 @@
         'LK_GONGXIANGLINGJIANHAO': '共享零件号',    //  共享零件号
         'LK_LINGBUJIANMINGCHEN': '零部件名称',  //  零部件名称
         'LK_ZICHANDAN': '资产单',   //  资产单
+        'LK_FASONGGONGYIUNGSHANGQUEREN': '发送供应商确认',   //  资产单
+        'LK_FAQIBIANGENG': '发起变更',   //  资产单
+        'LK_ZHUANPAIZIJI': '转派自己',   //  转派自己
 
         // 定点管理
         'nominationLanguage': {

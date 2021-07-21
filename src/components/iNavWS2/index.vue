@@ -12,7 +12,7 @@
         :routerPage="true"
         :list="navList"
         class="iNavMvp"
-        v-if="($route.path.indexOf('budgetManagement') > -1 && $route.path.indexOf('addModelBag') === -1) || $route.path.indexOf('investmentAdmin') > -1"
+        v-if="($route.path.indexOf('budgetManagement') > -1 && $route.path.indexOf('addModelBag') === -1) || $route.path.indexOf('investmentAdmin') > -1 || $route.path.indexOf('purchase/investmentList') > -1"
     ></iNavMvp>
     <iButton
         v-if="$route.path.indexOf('budgetManagement/generateInvestmentList') > -1"
@@ -45,7 +45,7 @@
       </transition>
     </span>
 
-    <span v-if="historyDataBase" @click="changeDataBase1" class="dataBase" v-permissionArr="['TOOLING_DATABASE_SUMMARY', 'TOOLING_DATABASE_PARTNO', 'TOOLING_DATABASE_MODELBAG']">
+    <span v-if="mouldBook" @click="changeDataBase1" class="dataBase">
       <transition name="bounce">
         <Popover
             content="历史数据库"
@@ -89,6 +89,10 @@ export default {
     historyDataBase: {
       type: Boolean,
       default: true
+    },
+    mouldBook: {
+      type: Boolean,
+      default: false
     },
   },
   mounted() {
@@ -138,6 +142,9 @@ export default {
     if(this.$route.path == '/tooling/dataBase'){
       this.dataBase = true
     }
+    if(this.$route.path == '/purchase/mouldBook'){
+      this.dataBase = true
+    }
   },
   methods: {
 
@@ -156,7 +163,7 @@ export default {
     changeDataBase1(){
       this.dataBase = true
       this.activeIndex = 999
-      this.$router.push({path: '/tooling/mouldBook'})
+      this.$router.push({path: '/purchase/mouldBook'})
       this.$emit('changeDataBase')
     },
   },
