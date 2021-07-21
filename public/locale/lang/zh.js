@@ -1398,6 +1398,13 @@
             'ZXFXGJNMYGLFXBGDHHILJ': '专项分析工具内没有相关的分析报告，且含Heavy Item零件', //专项分析工具内没有关联分析报告，但含heavy item零件
             'ZXFXGJNMYGLFXBGQBHHILJ': '专项分析工具内没有相关的分析报告，且不含Heavy Item零件', //专项分析工具内没有关联分析报告，且不含heavy item零件
             'FEIYONGZONGEHEYINGXIANGDANJIABUENGWEIKONG': '费用总额和影响单价不能为空', //费用总额和影响单价不能为空
+
+            'QSRCLZBHMC': '请输入材料组编号/名称',//请输入材料组编号/名称
+            'QSRRFQH': '请输入RFQ号',//请输入RFQ号
+            'BOBFXK': 'BoB分析库',//BoB分析库
+            'FXMC': '分析名称',//分析名称
+            'BQWFCXDJGSRCWHBCZQQRHCXSR': '抱歉，无法查询到结果（输入错误或不存在），请确认后重新输入',//抱歉，无法查询到结果（输入错误或不存在），请确认后重新输入
+            'QXZYSCDSJ': '请选中要删除的数据', //请选中要删除的数据 
         },
     }
     var xmlHttp = ''
