@@ -23,7 +23,7 @@
           @handleSelectionChange="handleSelectionChange"
           :index="true"
           @openMultiHeaderPropsPage="openMultiHeaderPropsPage"
-          multi-header-props="tpbMemo"
+          multi-header-props="memo"
           :multi-header-props-text="language('LK_CHAKAN','查看')"
           action-props=""
       ></tablelist>
@@ -47,7 +47,7 @@
     <!------------------------------------------------------------------------>
     <tpb-remarks
         v-model="dialogRemarks"
-        :memo="selectedRowData.tpbMemo"
+        :memo="selectedRowData.memo"
         :disabled="true"
     />
   </i-page>
