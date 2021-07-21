@@ -364,6 +364,7 @@ export default {
             }
             let state = true
             let dataInfo = ''
+            let systemerror = false
             try {
                 let res = {}
                 if (level === 1) res = await checkNomiMeetingSubmit1(data)
@@ -389,10 +390,12 @@ export default {
                 }
             } catch(e) {
                 state = true
+                systemerror = true
                 dataInfo = this.$i18n.locale === "zh" ? e.desZh : e.desEn
+                !dataInfo && (dataInfo = this.language('NETWORKERROR', '网络错误，请稍后重试'))
                 // iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
             }
-            return {state, dataInfo}
+            return {state, dataInfo, systemerror}
         },
         // 提交
         // 提交逻辑需求有变化，所有类型的定点申请都要进行三轮校验，且第三轮为强制
@@ -414,8 +417,10 @@ export default {
                         try {
                             const confirmNextInfo = await this.$confirm(res.dataInfo,this.language('LK_NOTICE','提示'), {
                                 confirmButtonText: this.language('LK_JIXU','继续'),
-                                cancelButtonText: this.language('QUXIAO','取消'),
-                                type: 'warning'
+                                cancelButtonText: this.language('QUXIAO', res.systemerror ? this.language('SURE','确定') : this.language('QUXIAO','取消')),
+                                showCancelButton: true,
+                                showConfirmButton: res.systemerror ? false : true,
+                                type: res.systemerror? 'error' : 'warning'
                             })
                             if (confirmNextInfo !== 'confirm') {
                                 this.submitting = false
@@ -433,8 +438,10 @@ export default {
                         try {
                             const confirmNextInfo = await this.$confirm(res.dataInfo,this.language('LK_NOTICE','提示'), {
                                 confirmButtonText: this.language('LK_JIXU','继续'),
-                                cancelButtonText: this.language('QUXIAO','取消'),
-                                type: 'warning'
+                                cancelButtonText: this.language('QUXIAO', res.systemerror ? this.language('SURE','确定') : this.language('QUXIAO','取消')),
+                                showCancelButton: true,
+                                showConfirmButton: res.systemerror ? false : true,
+                                type: res.systemerror? 'error' : 'warning'
                             })
                             if (confirmNextInfo !== 'confirm') {
                                 this.submitting = false
