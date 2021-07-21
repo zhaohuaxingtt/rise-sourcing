@@ -309,16 +309,28 @@ export default {
       }
     },
     handleHide(row) {
-      this.tableListData = this.tableListData.filter(item => {
-        return item.id !== row.id;
-      });
+      if(row.time) {
+        this.tableListData = this.tableListData.filter(item => {
+          return item.time !== row.time;
+        });
+      } else {
+        this.tableListData = this.tableListData.filter(item => {
+          return item.id !== row.id;
+        });
+      }
       row.isShow = false;
       this.hideTableData.push(row);
     },
     handleShow(row) {
-      this.hideTableData = this.hideTableData.filter(item => {
-        return item.id !== row.id;
-      });
+      if(row.time) {
+        this.hideTableData = this.hideTableData.filter(item => {
+          return item.time !== row.time;
+        });
+      } else {
+        this.hideTableData = this.hideTableData.filter(item => {
+          return item.id !== row.id;
+        });
+      }
       row.isShow = true;
       this.tableListData.push(row);
     },
