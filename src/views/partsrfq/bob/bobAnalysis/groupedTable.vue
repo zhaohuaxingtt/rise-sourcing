@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 11:38:57
- * @LastEditTime: 2021-07-21 16:22:31
+ * @LastEditTime: 2021-07-21 16:29:51
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails\table1.vue
@@ -166,6 +166,13 @@ export default {
         .then((res) => {
           this.tableList = res;
           this.tableList.element = this.arrayTreeSetLevel(this.tableList.element)
+          this.tableList.title.forEach(value => {
+            this.$attrs.supplierList.forEach(i => {
+              if (value.title == i.supplierId) {
+                value.title = i.shortNameZh
+              }
+            })
+          })
           console.log('----------------', this.tableList.element)
           // filterEmptyChildren(this.tableList.element, 'detailId')
           this.$nextTick(() => {
