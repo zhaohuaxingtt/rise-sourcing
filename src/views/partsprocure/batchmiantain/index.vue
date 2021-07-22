@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 15:12:41
- * @LastEditTime: 2021-07-21 18:18:00
+ * @LastEditTime: 2021-07-22 11:50:07
  * @LastEditors: Please set LastEditors
  * @Description: 零件采购项目批量维护界面
  * @FilePath: \front-web\src\views\partsprocure\batchmiantain\index.vue
@@ -255,7 +255,7 @@ export default {
         stuffId: "", //工艺组id
         stuffName: "", //工艺组名称
         type: "", //零件采购项目类型
-        unit: "", //单位
+        unit: "PC", //单位
         purchaseProjectIds: [], //采购项目id
         categoryId: '', // 材料组id
       },
