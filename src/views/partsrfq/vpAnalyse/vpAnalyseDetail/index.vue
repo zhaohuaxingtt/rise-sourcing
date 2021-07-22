@@ -233,6 +233,8 @@ export default {
           supplierId: this.currentSupplierId,
           batchNumber: this.currentBatchNumber,
           partsList: [this.partList[this.partItemCurrent]],
+          totalPrice: this.dataInfo.totalPrice,
+          costProportion: this.dataInfo.costProportion
         };
         if (this.$route.query.type === 'edit') {
           req.id = this.$route.query.schemeId;
