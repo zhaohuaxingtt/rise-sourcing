@@ -83,6 +83,7 @@
                 @handleCloseCustomPart="handleCloseCustomPart"/>
 
     <previewDialog
+        ref="previewDialog"
         v-model="previewDialog"
         :dataInfo="dataInfo"
         :newestScatterData="curveChartData.newestScatterData"
@@ -91,8 +92,12 @@
         :lineData="curveChartData.lineData"
     />
 
-<!--    保存弹框-->
-    <saveDialog v-model="saveDialog"/>
+    <!--    保存弹框-->
+    <saveDialog
+        ref="saveDialog"
+        v-model="saveDialog"
+        @handleSaveDialog="handleSaveDialog"
+    />
   </iPage>
 </template>
 
@@ -110,7 +115,7 @@ import {
   deletePartsCustomerList,
 } from '../../../../api/partsrfq/vpAnalysis/vpAnalyseDetail';
 import resultMessageMixin from '@/utils/resultMessageMixin';
-import saveDialog from './components/saveDialog'
+import saveDialog from './components/saveDialog';
 
 export default {
   mixins: [resultMessageMixin],
@@ -125,7 +130,7 @@ export default {
     analyzeChart,
     customPart,
     previewDialog,
-    saveDialog
+    saveDialog,
   },
   created() {
     this.getDataInfo();
@@ -152,7 +157,7 @@ export default {
       },
       analyzeLoading: false,
       currentSupplierId: '',
-      saveDialog: false
+      saveDialog: false,
     };
   },
   methods: {
@@ -160,7 +165,7 @@ export default {
       this.partItemCurrent = index;
       this.currentBatchNumber = item.batchNumber;
       this.currentPartsId = item.partsId;
-      this.currentSupplierId = item.supplierId
+      this.currentSupplierId = item.supplierId;
       this.getDataInfo();
     },
     handlePartItemClose(e, item) {
@@ -220,7 +225,7 @@ export default {
       }
     },
     async saveOrUpdateScheme(params) {
-      //this.saveDialog = true
+      //this.saveDialog = true;
       try {
         const req = {
           userId: this.$store.state.permission.userInfo.id,
@@ -269,6 +274,21 @@ export default {
         this.tableLoading = false;
       }
     },
+    handleSaveAsReport() {
+      this.previewDialog = true;
+      this.$nextTick(async () => {
+        const res = await this.$refs.previewDialog.getDownloadFile({
+          callBack: () => {
+            this.previewDialog = false;
+          },
+        });
+        const downloadName = res.downloadName
+        const downloadUrl = res.downloadUrl
+      })
+    },
+    handleSaveDialog() {
+
+    },
     handlePreview() {
       this.previewDialog = true;
     },
@@ -308,15 +328,24 @@ export default {
     handleBack() {
       const type = this.$route.query.type;
       if (type === 'edit') {
-        this.$router.push({
-          path: '/sourcing/partsrfq/assistant',
-          query: {
-            id: this.$store.state.rfq.rfqId,
-            round: this.$route.query.round,
-            pageType: 'VP',
-            activityTabIndex: 'two',
-          },
-        });
+        if(this.$store.state.rfq.entryStatus === 1) {
+          this.$router.push({
+            path: '/sourcing/partsrfq/assistant',
+            query: {
+              id: this.$store.state.rfq.rfqId,
+              round: this.$route.query.round,
+              pageType: 'VP',
+              activityTabIndex: 'two',
+            },
+          });
+        } else {
+          this.$router.push({
+            path: '/sourcing/partsrfq/externalNegotiationAssistant',
+            query: {
+              pageType: 'VP'
+            },
+          });
+        }
       } else if (type === 'add') {
         this.$router.push({
           path: '/sourcing/partsrfq/vpAnalyCreat',
