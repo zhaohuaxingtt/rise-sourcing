@@ -116,8 +116,8 @@ export default {
           // const tpb = await getRaterAndCoordinatorByDepartmentId({'rfqId':id})
           // ,tpb.data ||
           this.tableTitle = JSON.parse(JSON.stringify(supplierScoreTitle))
-          const tpb = res.records[0] ? (res.records[0].rateEntity ? res.records[0].rateEntity : []) : []
-          this.tableListData = this.trnaslateDataForView(res.records || [], tpb);
+          const tpb = res.data[0] ? (res.data[0].rateEntity ? res.data[0].rateEntity : []) : []
+          this.tableListData = this.trnaslateDataForView(res.data || [], tpb);
           // this.page.currPage = res.current
           // this.page.pageSize = res.size
           this.page.totalCount = res.total
