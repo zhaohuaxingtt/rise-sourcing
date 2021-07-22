@@ -1,7 +1,7 @@
 /*
  * @Author: Haojiang
  * @Date: 2021-06-28 09:26:28
- * @LastEditTime: 2021-07-01 17:33:59
+ * @LastEditTime: 2021-07-21 16:17:48
  * @LastEditors: Please set LastEditors
  * @Description: 签字单
  * @FilePath: /front-web/src/views/designate/home/signSheet/components/data.js
@@ -163,14 +163,14 @@ export const signsheetViewTableTitle = [
     tooltip: false
   },
   {
-    props: 'partNameEn',
-    name: 'Part Name(EN)',
-    key: 'Part Name(EN)',
+    props: 'partNameDe',
+    name: 'Part Name(DE)',
+    key: 'Part Name(DE)',
     width: 150,
     tooltip: false
   },
   {
-    props: 'CarLine',
+    props: 'carTypeProj',
     name: 'Carline',
     key: 'Carline',
     tooltip: false
@@ -182,7 +182,7 @@ export const signsheetViewTableTitle = [
     tooltip: false
   },
   {
-    props: 'supplier',
+    props: 'supplierNameCn',
     name: 'Supplier',
     key: 'Supplier',
     tooltip: false
@@ -203,6 +203,7 @@ export const signsheetViewTableTitle = [
     props: 'rsRemark',
     name: 'Remark',
     key: 'Remark',
+    width: 200,
     tooltip: false
   },
 ]

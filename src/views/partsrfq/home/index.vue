@@ -1,7 +1,7 @@
 <!--
  * @Author: moxuan
  * @Date: 2021-02-25 09:59:25
- * @LastEditTime: 2021-07-07 17:29:23
+ * @LastEditTime: 2021-07-22 14:46:52
  * @LastEditors: Please set LastEditors
  * @Description: RFQ模块首页
  * @FilePath: \rise\src\views\partsrfq\home\index.vue
@@ -20,7 +20,11 @@
           <iSearch class="margin-bottom20" :icon="false" @reset="handleSearchReset" @sure="getTableList"
                    :resetKey="PARTSRFQ_RESET" :searchKey="PARTSRFQ_SEARCH">
             <el-form>
-              <el-form-item :label="language('LK_LINGJIANHAO_FSNR_RFQBIANHAO_CAIGOUYUAN','零件号/FSNR/RFQ编号/采购员')" style="width: 340px">
+              <!-- <el-form-item :label="language('LK_LINGJIANHAO_FSNR_RFQBIANHAO_CAIGOUYUAN','零件号/FSNR/RFQ编号/采购员')" style="width: 340px">
+                <iInput :placeholder="language('LK_QINGXUANZE','请选择')" v-model="form.searchConditions"
+                        v-permission="PARTSRFQ_SEARCHBOX"></iInput>
+              </el-form-item> -->
+              <el-form-item :label="language('LK_LINGJIANHAO_FSNR_RFQBIANHAO_CAIGOUYUAN_SAP_SUPPLIERNAME','零件号/FSNR/RFQ编号/采购员/供应商SAP号/供应商名称')" style="width: 380px">
                 <iInput :placeholder="language('LK_QINGXUANZE','请选择')" v-model="form.searchConditions"
                         v-permission="PARTSRFQ_SEARCHBOX"></iInput>
               </el-form-item>

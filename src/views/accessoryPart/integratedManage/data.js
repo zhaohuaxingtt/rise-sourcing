@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-26 11:16:58
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-16 23:15:01
+ * @LastEditTime: 2021-07-21 17:33:55
  * @Description: 
  * @FilePath: \front-web\src\views\accessoryPart\integratedManage\data.js
  */
@@ -29,7 +29,7 @@ export const tableTitle = [
   {props:'carProject',name:'配件车型项目', key: "PEIJIANCHEXINGXIANGMU", tooltip: true, width: 140},
   {props:'idState',name:'ID状态', key: "IDZHUANGTAI", tooltip: true},
   {props:'priceType',name:'价格类型', key: "JIAGELEIXING", tooltip: true},
-  {props:'tcUnitId',name:'单位', key: "DANWEI", tooltip: true},
+  {props:'tcUnitName',name:'单位', key: "DANWEI", tooltip: true},
   {props:'sendDate',name:'需求发送日期', key: "XUQIUFASONGRIQI", tooltip: true, width: 120},
 ]
 

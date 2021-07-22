@@ -20,7 +20,12 @@
       </iButton>
     </div>
     <tableList :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="confirmTableLoading"
-               @handleSelectionChange="handleSelectionChange" @openPage="openPage"></tableList>
+               @handleSelectionChange="handleSelectionChange" @openPage="openPage">
+      <template #fsnrGsnrNum="scope">
+        <span v-if="scope.row.partProjectType === partProjTypes.PEIJIAN" class="openLinkText cursor " @click="gotoAccessoryDetail(scope.row)"> {{ scope.row.fsnrGsnrNum }}</span>
+        <span v-else>{{ scope.row.fsnrGsnrNum }}</span>
+      </template>
+    </tableList>
     <iPagination v-update @size-change="handleSizeChange($event, getTableList)"
                  @current-change="handleCurrentChange($event, getTableList)" background :page-sizes="page.pageSizes"
                  :page-size="page.pageSize" :current-page="page.currPage" :layout="page.layout"
@@ -30,7 +35,7 @@
         {{ language('LK_TIANJIA','添加') }}
       </iButton>
     </div>
-    <partsTable ref="partsTable" :rfqId="rfqId" @targetHand="waitSelect"></partsTable>
+    <partsTable ref="partsTable" :rfqId="rfqId" @targetHand="waitSelect" @gotoAccessoryDetail="gotoAccessoryDetail"></partsTable>
     <!-- 新申请财务目标价 -->
     <applyPrice ref="applyPrice" @refresh="getTableList" :handleSelectArr="handleSelectArr"></applyPrice>
     <!-- 发送KM -->
@@ -53,10 +58,11 @@ import {
 } from "@/views/partsprocure/home/components/data";
 import {
   getPartSrcPrjs,
+  deleteRfqPart
 } from '@/api/partsrfq/editordetail';
 import {
   addRfq,
-  editRfqData
+  // editRfqData
 } from '@/api/partsrfq/home';
 import {
   pageMixins
@@ -68,6 +74,7 @@ import {
   rfqCommonFunMixins
 } from "pages/partsrfq/components/commonFun";
 import kmDialog from "./components/kmDialog";
+import {partProjTypes} from '@/config'
 
 export default {
   mixins: [pageMixins, rfqCommonFunMixins],
@@ -95,10 +102,15 @@ export default {
       parmarsHasRfq: JSON.parse(JSON.stringify(form)),
       rfqId: "",
       addLoding: false,
-      kmDialogVisible: false
+      kmDialogVisible: false,
+      partProjTypes
     };
   },
   methods: {
+    gotoAccessoryDetail(row) {
+      const router =  this.$router.resolve({path: '/sourcing/accessorypartdetail', query: { spNum: row.fsnrGsnrNum }})
+      window.open(router.href,'_blank')
+    },
     // 已在RFQ中零件选中数据
     handleSelectionChange(rows) {
       this.handleSelectArr = rows;
@@ -206,13 +218,14 @@ export default {
         return item.id
         })
         const req = {
-          deletePartPackage: {
+          // deletePartPackage: {
             userId: store.state.permission.userInfo.id,
             rfqId: this.rfqId,
             idList
-          }
+          // }
         }
-        const res = await editRfqData(req)
+        // const res = await editRfqData(req)
+        const res = await deleteRfqPart(req)
         this.resultMessage(res)
         this.getTableList()
         this.$refs.partsTable.getTableList()
@@ -237,5 +250,8 @@ export default {
 .addFs {
   height: 85px;
   justify-content: flex-end;
+}
+.openLinkText{
+  color:$color-blue;
 }
 </style>

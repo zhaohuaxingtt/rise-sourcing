@@ -1,7 +1,7 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-05-25 09:42:07
- * @LastEditTime: 2021-07-20 12:39:53
+ * @LastEditTime: 2021-07-22 15:42:09
  * @Description: 业务分配模拟
 -->
 
@@ -117,6 +117,7 @@ import * as nomi from '@/api/designate/suggestion/nomi'
 
 export default {
   props: {
+    // 模式：nomi，定点建议；nego，谈判助手；
     mode: {
       type: String,
       default: 'nego'
@@ -227,6 +228,11 @@ export default {
       this.combineVisible = !this.combineVisible
       
     },
+    // 情况表格数据
+    clearSelected() {
+      this.$refs.monitorTable && (this.$refs.monitorTable.clearSelected())
+      this.groupForm.groupName = ''
+    },
     // 组合
     async summaryGroup() {
       const selectedData = this.$refs.monitorTable.selectedData || []
@@ -240,12 +246,17 @@ export default {
         return
       }
       // 零件号数组
-      const partPrjCode = selectedData.map(o => o.partPrjCode)
+      let groupInfoList = selectedData.map(o => {
+        return {
+          rfqId: o.rfqId,
+          partPrjCode: o.partPrjCode
+        }
+      }) || []
+      groupInfoList = _.uniqBy(groupInfoList, o => o.partPrjCode)
       const params = {
-        rfqId: this.rfqId,
         scenarioType: this.scenarioType[this.mode],
         groupName: this.groupForm.groupName,
-        partPrjCode
+        groupInfoList
       }
       console.log(params)
       const confirmInfo = await this.$confirm(this.language('submitSure','您确定要执行提交操作吗？'))
@@ -255,6 +266,7 @@ export default {
         if (res.code === '200') {
           iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'))
           this.combineVisible = false
+          this.clearSelected()
           this.refresh()
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
@@ -270,11 +282,13 @@ export default {
         iMessage.error(this.language('nominationSuggestion_QingXuanZeZhiShaoYiTiaoShuJu','请选择至少一条数据'))
         return
       }
+      const groupName = selectedData && selectedData[0] && selectedData[0].groupName || ''
       // 零件号数组
-      let groupIdList = _.uniq(selectedData.filter(o => o.groupId).map(o => o.groupId)) || []
+      let groupIdList = selectedData.map(o => o.groupId) || []
+      groupIdList = _.uniq(groupIdList.filter(o => o))
       const params = {
-        rfqId: this.rfqId,
         scenarioType: this.scenarioType[this.mode],
+        groupName,
         groupIdList
       }
       console.log(params)
@@ -285,6 +299,7 @@ export default {
         if (res.code === '200') {
           iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'))
           this.combineVisible = false
+          this.clearSelected()
           this.refresh()
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
@@ -327,6 +342,7 @@ export default {
             o.id = this.randomid()
             o.groupId && (o.gid = o.groupId)
             o.supplier = this.supplierList
+            o.selected = false
             // 绑定对应供应商TTO
             o.TTo = []
             o.percentCalc = []
