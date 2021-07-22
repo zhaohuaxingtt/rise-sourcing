@@ -91,7 +91,7 @@
                   <div class="result">{{this.dropPotential.result}}%</div>
                 </div>
               </div>
-<!--              <div v-katex="dropPotentialTips"></div>-->
+              <!--              <div v-katex="dropPotentialTips"></div>-->
               <div class="margin-left32 margin-top10">
                 <!--                降本单价-->
                 <span class="font-weight" style="color:#000305">{{ $t('TPZS.JBDJ') }}</span>
@@ -386,7 +386,7 @@ export default {
     font-size: 40px;
   }
   .item{
-   padding: 0 20px;
+    padding: 0 20px;
   }
   .item-top{
     border-bottom: 1px solid black;
