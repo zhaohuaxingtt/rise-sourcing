@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-26 11:16:51
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-21 13:59:25
+ * @LastEditTime: 2021-07-22 15:10:03
  * @Description: 配件综合管理页面
  * @FilePath: \front-web\src\views\accessoryPart\integratedManage\index.vue
 -->
@@ -307,9 +307,10 @@ export default {
     getDictionary(optionName, optionType) {
       getDictByCode(optionType).then(res => {
         if(res?.result) {
-          this.selectOptions[optionName] = res.data[0]?.subDictResultVo.map(item => {
+          const options = res.data[0].subDictResultVo.map(item => {
             return { value: item.code, label: item.name }
           })
+          this.selectOptions[optionName] = optionType === 'ACCESSORY_STATE' ? options.filter(item => !['NOTACCEPTED','REFUSED'].includes(item.value)) : options
         }
       })
     },
