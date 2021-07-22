@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-24 14:39:43
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-07-17 19:43:07
+ * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-07-22 17:22:35
  * @Description: RS单维护界面
  * @FilePath: \front-web\src\views\designate\designatedetail\rsSingleMaintenance\index.vue
 -->
@@ -70,9 +70,14 @@
         <!------------------------------------------------------------------------>
         <!--                  表格模块                                          --->
         <!------------------------------------------------------------------------>
-        <tableList :activeItems='"rfqId"' selection indexKey :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="tableLoading" @handleSelectionChange="handleSelectionChange" @openPage="openPage" @updateSlot='toTop' @changeTableValue="changeTableValue"></tableList>
+        <tableList :activeItems='"rfqId"' selection indexKey :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="tableLoading" @handleSelectionChange="handleSelectionChange" @openPage="openPage" @updateSlot='toTop' @changeTableValue="changeTableValue">
+          <!-- 年降开始时间 -->
+          <template #beginYearReduce="scope">
+            <span>{{resetLtcData(scope.row.ltcs,'beginYearReduce')}}</span>
+          </template>
+        </tableList>
     </iCard>
-    <rsDialog :dialogVisible="rsEeditionDialogVisible" @changeVisible="changersEeditionDialogVisible" :otherPreview="true" :otherNominationType="otherNominationType" :otherNominationId="otherNominationId" :otherPartProjectType="otherPartProjectType" />
+    <rsDialog :dialogVisible="rsEeditionDialogVisible" @changeVisible="changersEeditionDialogVisible" :otherPreview="false" :otherNominationType="otherNominationType" :otherNominationId="otherNominationId" :otherPartProjectType="otherPartProjectType" />
   </iPage>
 </template>
 
@@ -85,12 +90,13 @@ import rsDialog from '@/views/partsprocure/editordetail/components/designateInfo
 import { getList, readQuotation, downloadRSDoc, updateRS } from '@/api/designate/decisiondata/rs'
 import { cloneDeep } from 'lodash'
 import moment from 'moment'
+import {partProjTypes} from '@/config'
 export default {
   components: { iPage, iCard, iButton, tableList, iSearch, iInput, detailTop, rsDialog },
   data() {
     return {
       tableListData: [],
-      tableTitle: rsTableTitle,
+      // tableTitle: rsTableTitle,
       tableLoading: false,
       form: {
         fsnrGsnrNum: '',
@@ -108,7 +114,16 @@ export default {
       otherNominationId: '',
       otherPartProjectType: '',
       saveLoading: false,
-      downloadLoading: false
+      downloadLoading: false,
+      partProjectType: ''
+    }
+  },
+  computed: {
+    tableTitle() {
+      if ([partProjTypes.GSLINGJIAN,partProjTypes.GSCOMMONSOURCING].includes(this.partProjectType)) {
+        return rsTableTitle
+      }
+      return rsTableTitle.filter(item => !['addFee','savingFee','presentPrice'].includes(item.props))
     }
   },
   created() {
@@ -116,6 +131,28 @@ export default {
     this.getTableList()
   },
   methods: {
+    // 单独处理下年降或年降计划
+    resetLtcData(row=[],type){
+      // 年降开始时间
+      if(type == 'beginYearReduce'){
+        // 取第一个非0的年份
+        const list = row.filter((item)=> item.ltcRate!='0.00');
+        return list.length ? list[0].ltcDate : '-'
+      }else{ // 年降
+       // 从非0开始至非0截至的数据 不包含0
+       let strList = [];
+       let strFlag = false;
+       for(let i =0;i<row.length;i++){
+         if(row[i].ltcRate !='0.00'){
+            strFlag = true;
+           strList.push(row[i].ltcRate);
+         }else if(strFlag && row[i].ltcRate == '0.00'){
+           break
+         }
+       }
+       return strList.length ? strList.join('/') : '-'
+      }
+    },
     handlePreviewRS() {
       
       // 当前界面的table中 是当前定点ID所包含的所有零件。预览基于定点ID 不需要勾选。
@@ -293,6 +330,7 @@ export default {
     getTableList() {
       getList(this.$route.query.desinateId).then(res => {
         if (res?.result) {
+          this.partProjectType = res.data?.partProjectType
           this.otherNominationType = res.data?.nominateProcessType
           const cloneData = cloneDeep(res.data?.lines).map(item => {
             const singleItem = { ...item }
