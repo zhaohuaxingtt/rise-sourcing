@@ -1,7 +1,7 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-07-06 22:11:41
- * @LastEditTime: 2021-07-15 17:27:57
+ * @LastEditTime: 2021-07-21 16:07:24
  * @LastEditors: Please set LastEditors
  * @Description: 决策资料 - 扩产能
  * @FilePath: /front-web/src/views/designate/designatedetail/decisionData/rsCapacityExpan/index.vue
@@ -121,6 +121,11 @@ export default {
 </script>
 <style lang="scss" scoped>
 .caexpan {
+  ::v-deep.el-table {
+    .el-table__body-wrapper {
+      height: auto !important;
+    }
+  }
   .caexpan-card {
     .tit {
       padding: 15px 0;
