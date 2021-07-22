@@ -53,7 +53,13 @@ export default {
       this.$emit('input', false);
     },
     save() {
-
+      const req = {
+        analysisSave: this.analysisSave,
+        reportSave: this.reportSave,
+        analysisName: this.analysisName,
+        reportName: this.reportName,
+      }
+      this.$emit('handleSaveDialog')
     },
   },
 };

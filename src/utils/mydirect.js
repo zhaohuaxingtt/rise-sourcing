@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-07-08 19:22:07
+ * @LastEditTime: 2021-07-22 17:44:54
  * @LastEditors: Please set LastEditors
  * @Description: 自定义指令文件。
  * @FilePath: \rise\src\utils\mydirect.js
@@ -19,7 +19,7 @@ Vue.directive('permission', {
                 }
             } else { //remov
                 if (!store.state.permission.whiteBtnList[binding.expression]) {
-                    el.parentNode.removeChild(el)
+                    //el.parentNode.removeChild(el)
                 }
             }
         }

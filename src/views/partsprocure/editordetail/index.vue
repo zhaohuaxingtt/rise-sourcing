@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2021-07-21 16:04:56
+ * @LastEditTime: 2021-07-22 17:39:23
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\editordetail\index.vue
@@ -288,7 +288,7 @@
 				</div>
 			</iFormGroup>
 		</iCard>
-		<iTabsList  class="margin-top20" type='card'>
+		<iTabsList  class="margin-top20" type='card' v-if='infoItem'>
 			<!-------------------------已定点时显示定点信息tab-  ----------------------------------------->
 			<el-tab-pane :label="language('LK_DINGDIANXINXI','定点信息')" v-if="detailData.status == '15'">
 				<designateInfo :params="infoItem" />
@@ -386,7 +386,12 @@
     */
 			canSelectCommonSourcing(){
 				const userSelectProjectCode = this.detailData.partProjectType
-				return !(userSelectProjectCode == this.partProjTypes.GSCOMMONSOURCING || userSelectProjectCode == this.partProjTypes.FSCOMMONSOURCING || userSelectProjectCode == this.partProjTypes.FSXIAOLINGJIAN || userSelectProjectCode == this.partProjTypes.GSLINGJIAN || userSelectProjectCode == this.partProjTypes.FSZONGCHENGJIAN) 
+				const choseState = !(userSelectProjectCode == this.partProjTypes.GSCOMMONSOURCING || userSelectProjectCode == this.partProjTypes.FSCOMMONSOURCING || userSelectProjectCode == this.partProjTypes.FSXIAOLINGJIAN || userSelectProjectCode == this.partProjTypes.GSLINGJIAN || userSelectProjectCode == this.partProjTypes.FSZONGCHENGJIAN) 
+				if(choseState){
+					// eslint-disable-next-line vue/no-side-effects-in-computed-properties
+					this.detailData.isCommonSourcing = false
+				}
+				return choseState
 			}
 		},
 		data() {
@@ -395,7 +400,7 @@
 				partProjTypes,
 				firstId:'',
 				checkFactoryString:'',
-				infoItem: {},
+				infoItem: null,
 				detailData: detailData, //顶部详情数据
 				targetprice: {}, //申请目标价数据
 				fromGroup: [], //上方筛选列表

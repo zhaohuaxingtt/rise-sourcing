@@ -1,7 +1,7 @@
 <!--
  * @Author: Haojiang
  * @Date: 2021-06-24 17:53:08
- * @LastEditTime: 2021-07-20 17:06:20
+ * @LastEditTime: 2021-07-22 17:55:44
  * @LastEditors: Please set LastEditors
  * @Description: m签字单新增、详情
  * @FilePath: /front-web/src/views/designate/home/signSheet/newSignSheet.vue
@@ -153,7 +153,7 @@ import {
   saveSignSheet,
   submitSignSheet,
   removeSignsheetItems,
-  
+  getsignSheetDetails
 } from '@/api/designate/nomination/signsheet'
 
 import {
@@ -197,7 +197,8 @@ export default {
     this.form.signId = id
     this.form.signCode = signCode
     this.form.status = status
-    this.form.description = decodeURIComponent(desc)
+    this.form.description = decodeURIComponent(desc || '')
+    this.getSignSheetDetails()
     this.getChooseData()
   },
   methods: {
@@ -208,6 +209,25 @@ export default {
     // 多选
     handleSelectionChange(data) {
       this.selectTableData = data
+    },
+    getSignSheetDetails() {
+      this.tableLoading = true
+      getsignSheetDetails({
+        signId: Number(this.$route.query.id) || ''
+      }).then(res => {
+        this.tableLoading = false
+        if (res.code === '200') {
+          const data = res.data || {}
+          const status = data.status && data.status.name ? data.status.name : ''
+          status && (this.form.status = status)
+          data.signCode && (this.form.signCode = data.signCode)
+          data.description && (this.form.description = data.description)
+        } else {
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
+      }).catch(e => {
+        this.tableLoading = false
+      })
     },
     // 获取已经选择的数据
     getChooseData(params) {
@@ -233,13 +253,13 @@ export default {
     },
     // 保存
     async handleSave() {
-      if (!this.selectTableData.length) {
-        iMessage.error(this.language('nominationSuggestion_QingXuanZeZhiShaoYiTiaoShuJu','请选择至少一条数据'))
-        return
-      }
+      // if (!this.selectTableData.length) {
+      //   iMessage.error(this.language('nominationSuggestion_QingXuanZeZhiShaoYiTiaoShuJu','请选择至少一条数据'))
+      //   return
+      // }
       const confirmInfo = await this.$confirm(this.language('LK_SAVESURE','您确定要执行保存操作吗？'))
       if (confirmInfo !== 'confirm') return
-      const idList = this.selectTableData.map(o => Number(o.id))
+      const idList = this.tableListData.map(o => Number(o.id))
       
       try {
         const params = {
@@ -259,16 +279,17 @@ export default {
       }
     },
     async handleSubmit() {
-      if (!this.selectTableData.length) {
-        iMessage.error(this.language('nominationSuggestion_QingXuanZeZhiShaoYiTiaoShuJu','请选择至少一条数据'))
-        return
-      }
+      // if (!this.selectTableData.length) {
+      //   iMessage.error(this.language('nominationSuggestion_QingXuanZeZhiShaoYiTiaoShuJu','请选择至少一条数据'))
+      //   return
+      // }
+      console.log('this.tableListData', this.tableListData)
       const confirmInfo = await this.$confirm(this.language('submitSure','您确定要执行提交操作吗？'))
       if (confirmInfo !== 'confirm') return
-      const idList = this.selectTableData.map(o => Number(o.id))
+      const idList = this.tableListData.map(o => Number(o.id))
       try {
         const res = await submitSignSheet({
-          signIdArr: idList
+          signIdArr: [Number(this.form.signId)]
         })
         if (res.code === '200') {
           iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'))

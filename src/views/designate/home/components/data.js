@@ -1,7 +1,7 @@
 /*
  * @Author: HaoJiang
  * @Date: 2021-05-20 14:29:09
- * @LastEditTime: 2021-07-15 15:51:38
+ * @LastEditTime: 2021-07-22 15:47:04
  * @LastEditors: Please set LastEditors
  * @Description: 定点表格信息
  *
@@ -29,7 +29,7 @@ export const tableTitle = [{
   tooltip: false
 },
 {
-  props: 'carTypeProj',
+  props: 'carType',
   name: 'PROJECT',
   key: 'PROJECT',
   tooltip: true
