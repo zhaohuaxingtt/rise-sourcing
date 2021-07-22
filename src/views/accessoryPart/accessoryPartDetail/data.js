@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-25 15:24:07
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-20 10:31:25
+ * @LastEditTime: 2021-07-21 17:34:05
  * @Description: 
  * @FilePath: \front-web\src\views\accessoryPart\accessoryPartDetail\data.js
  */
@@ -30,7 +30,7 @@ export const detailList = [
   {value: 'supplierSvwCode', label: '供应商SVW号', type: 'input', key: 'GONGYINGSHANGSVWHAO',},
   {value: 'supplierSvwTempCode', label: '供应商名临时号', type: 'input', key: 'GONGYINGSHANGMINGLINSHIHAO',},
   {value: 'supplierNameZh', label: '供应商名(中)', type: 'input', key: 'GONGYINGSHANGMING_ZH',},
-  {value: 'tcUnitId', label: '单位', type: 'input', key: 'DANWEI',},
+  {value: 'tcUnitName', label: '单位', type: 'input', key: 'DANWEI',},
   {value: 'deliveryWarehouse', label: '送货仓库', type: 'input', key: 'SONGHUOCANGKU',},
   {value: 'signDate', label: '需求签收日期', type: 'input', key: 'XUQIUQIANSHOURIQI',},
   {value: 'demandRecoveryDate', label: '需求恢复日期', type: 'input', key: 'XUQIUHUIFURIQI',},

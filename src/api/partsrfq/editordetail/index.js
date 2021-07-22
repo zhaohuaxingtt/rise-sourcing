@@ -369,3 +369,20 @@ export function getCfPrice(params) {
         method: 'GET'
     })
 }
+
+// 移除RFQ下的零件采购项目
+export function deleteRfqPart(params) {
+    return requst({
+        url: `/rfq-part/delete`,
+        method: 'POST',
+        data: params
+    })
+}
+
+// 零件评分
+export function getAllParts(params) {
+    return requst({
+        url: `/supplier/${ params.rfqId }/${ params.supplierId }/getAllParts`,
+        method: 'GET'
+    })
+}
