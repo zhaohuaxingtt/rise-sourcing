@@ -1,7 +1,7 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-02-24 09:42:07
- * @LastEditTime: 2021-07-19 22:32:45
+ * @LastEditTime: 2021-07-22 15:37:43
  * @LastEditors: Please set LastEditors
 -->
 
@@ -167,6 +167,14 @@ export default {
     }
   },
   methods: {
+    // 清空选中的项目
+    clearSelected() {
+      this.data.map(o => {
+        Vue.set(o, 'selected', false)
+        return o
+      })
+      this.selectedData = []
+    },
     getCellClass(row, Index) {
       let pin = ''
       // 厂商列从第offset列开始
