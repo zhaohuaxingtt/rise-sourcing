@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-03-04 11:13:18
- * @LastEditTime: 2021-07-09 15:07:53
+ * @LastEditTime: 2021-07-21 20:12:00
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsprocure\editordetail\components\drawingSheet\sheet.vue
@@ -74,6 +74,7 @@ export default {
   },
   methods: {
     getTpInfo() {
+      if (this.parmas.partProjectSource == 2) return // 手工创建的采购项目不调用该接口
       if (!this.params.purchasingRequirementId) return
 
       this.loading = true

@@ -60,7 +60,7 @@ import tablelist from './supplierScoreTableList'
 import {partScroingTitle} from "./data";
 import {pageMixins} from "@/utils/pageMixins";
 import tpbRemarks from './tpbRemarks'
-import {getSupplierAllParts} from "@/api/partsrfq/editordetail";
+import {getSupplierAllParts, getAllParts} from "@/api/partsrfq/editordetail";
 import { getRfqPartRatingsByCurrentDept } from "@/api/supplierscore"
 import store from '@/store'
 import { cloneDeep } from "lodash"
@@ -95,7 +95,7 @@ export default {
       if (rfqId && supplierId) {
         this.tableLoading = true;
         try {
-          const res = await getRfqPartRatingsByCurrentDept({
+          const res = await getAllParts({
             rfqId,
             supplierId
           })

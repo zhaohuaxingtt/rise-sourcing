@@ -1,7 +1,8 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-07-22 11:02:48
+ * @LastEditTime: 2021-07-22 11:03:50
+ * @LastEditTime: 2021-07-22 10:56:12
  * @LastEditors: Please set LastEditors
  * @Description: 公共utils部分
  * @FilePath: \rise\src\utils\index.js
@@ -203,6 +204,7 @@ router.afterEach(() => {
  * 1.如果当前的采购项目属于：【仅零件号变更，钢材一次性采购，钢材批量采购，配件，附件，一次性采购，DB一次性采购，工序委外，AEKO零件】 则过滤只有当前另加自己。
  * 2.剩下的零件只要出现一种，都要出现当前这个类型的全集：【FS零件，GS零件，COP零件，SPECIAL零件，DB零件，涨价，FS common sourcing，GS common sourcing，扩产能】
  * 3.如果当前当如果当前角色仅为扩产能角色则返回：【扩产能】
+ * 4.如果单项选择中 存在 【一次性采购，DB一次性采购】 则这两个要成对出现
  * @param {*} projectList - 徐睿数据字典返回的全量options
  * @param {*} currentProjectType - 当前的零件采购项目。
  * @return {*}
