@@ -1,13 +1,13 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-25 16:11:34
- * @LastEditTime: 2021-07-21 11:05:55
+ * @LastEditTime: 2021-07-22 20:29:55
  * @LastEditors: Please set LastEditors
  * @Description: timeline
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringTracking\components\timeline.vue
 -->
 <template>
-  <div class="timeLine">
+  <div class="timeLine" :style="{paddingTop:paddingTop,paddingBottom:paddingBottom}">
     <div v-for='(items,index) in timeList' :key='index' class="lineitems">
       <p class="itemsa">
         <span v-if='items.week % 2 != 0'>
@@ -17,14 +17,14 @@
       </p>
       <p :class="{itemsb:true,active:items.active,width:'70px'}"></p>
       <template v-if='items.oneWeekList && items.oneWeekList.length<=1'>
-        <p class="itemsc" :style='{top:"40px",left:(items.doneDay-1) * 10 + "px"}' v-if='items.progressTypeDesc'>
+        <p class="itemsc" :style='{top:`${(index%2==0?"":"-")}40px`,left:(items.doneDay-1) * 10 + "px"}' v-if='items.progressTypeDesc'>
           <span><icon symbol :name='iconList_all_times["a"+items.taskStatus].icon' class="margin-right5"></icon>{{items.progressTypeDesc}}</span>
           <span>{{items.doneYear}}CW{{items.week}}</span>
         </p>
       </template>
       <template v-else>
         <template v-for="(itemss,indexs) in items.oneWeekList">
-          <p class="itemsc" :style='{top:`${40*(indexs+1)}px`,left:(itemss.doneDay-1) * 10 + "px"}' v-if='itemss.progressTypeDesc' :key="indexs">
+          <p class="itemsc" :style='{top:`${(index%2==0?"":"-")+40*(indexs+1)}px`,left:(itemss.doneDay-1) * 10 + "px"}' v-if='itemss.progressTypeDesc' :key="indexs">
             <span><icon symbol :name='iconList_all_times["a"+itemss.taskStatus].icon' class="margin-right5"></icon>{{itemss.progressTypeDesc}}</span>
             <span>{{itemss.doneYear}}CW{{itemss.donePeriod}}</span>
           </p>
@@ -44,19 +44,35 @@ export default{
       default:()=>[]
     }
   },
+  watch:{
+    'timeList':function(){this.topPaddingBottomPadding()}
+  },
   data(){
     return {
-      iconList_all_times:iconList_all_times
+      iconList_all_times:iconList_all_times,
+      paddingTop:'40px',
+      paddingBottom:'40px'
+    }
+  },
+  methods:{
+    /**
+     * @description: 根据每周最大值。拿到上下的最大间距
+     * @param {*}
+     * @return {*}
+     */
+    topPaddingBottomPadding(){
+      this.paddingBottom = JSON.parse(JSON.stringify(this.timeList)).filter((i,d)=>d%2==0).sort((a,b)=>b.oneWeekList.length - a.oneWeekList.length)[0].oneWeekList.length * 45 + 'px'
+      this.paddingTop = JSON.parse(JSON.stringify(this.timeList)).filter((i,d)=>!(d%2==0)).sort((a,b)=>b.oneWeekList.length - a.oneWeekList.length)[0].oneWeekList.length * 45 + 'px'
     }
   }
 }
 </script>
 <style lang='scss' scoped>
   .timeLine{
-    min-height:150px;
-    overflow: auto;
+    overflow-x: auto;
     margin-top: 30px;
     white-space: nowrap;
+    overflow-y: hidden;
     .lineitems{
       display: inline-block;
       margin-right: 2px;
