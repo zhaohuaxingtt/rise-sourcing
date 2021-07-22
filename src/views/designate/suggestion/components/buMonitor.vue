@@ -1,7 +1,7 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-05-25 09:42:07
- * @LastEditTime: 2021-07-22 11:09:18
+ * @LastEditTime: 2021-07-22 15:42:09
  * @Description: 业务分配模拟
 -->
 
@@ -228,6 +228,11 @@ export default {
       this.combineVisible = !this.combineVisible
       
     },
+    // 情况表格数据
+    clearSelected() {
+      this.$refs.monitorTable && (this.$refs.monitorTable.clearSelected())
+      this.groupForm.groupName = ''
+    },
     // 组合
     async summaryGroup() {
       const selectedData = this.$refs.monitorTable.selectedData || []
@@ -247,6 +252,7 @@ export default {
           partPrjCode: o.partPrjCode
         }
       }) || []
+      groupInfoList = _.uniqBy(groupInfoList, o => o.partPrjCode)
       const params = {
         scenarioType: this.scenarioType[this.mode],
         groupName: this.groupForm.groupName,
@@ -260,6 +266,7 @@ export default {
         if (res.code === '200') {
           iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'))
           this.combineVisible = false
+          this.clearSelected()
           this.refresh()
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
@@ -278,6 +285,7 @@ export default {
       const groupName = selectedData && selectedData[0] && selectedData[0].groupName || ''
       // 零件号数组
       let groupIdList = selectedData.map(o => o.groupId) || []
+      groupIdList = _.uniq(groupIdList.filter(o => o))
       const params = {
         scenarioType: this.scenarioType[this.mode],
         groupName,
@@ -291,6 +299,7 @@ export default {
         if (res.code === '200') {
           iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'))
           this.combineVisible = false
+          this.clearSelected()
           this.refresh()
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
@@ -333,6 +342,7 @@ export default {
             o.id = this.randomid()
             o.groupId && (o.gid = o.groupId)
             o.supplier = this.supplierList
+            o.selected = false
             // 绑定对应供应商TTO
             o.TTo = []
             o.percentCalc = []
