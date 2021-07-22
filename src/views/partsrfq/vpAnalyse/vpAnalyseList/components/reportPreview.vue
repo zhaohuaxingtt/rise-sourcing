@@ -1,14 +1,14 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-24 17:51:32
- * @LastEditTime: 2021-07-21 14:54:26
+ * @LastEditTime: 2021-07-22 20:13:57
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\vpAnalyse\vpAnalyseList\components\reportPreview.vue
 -->
 <template>
   <div>
-    <iDialog :title="reportTitle" :visible.sync="visible" width="90%">
+    <iDialog :title="reportTitle" :visible.sync="visible" width="90%" @close="handleClose">
       <iframe :src="reportUrl" class="report"></iframe>
     </iDialog>
   </div>
@@ -47,7 +47,9 @@ export default {
 
   },
   methods: {
-
+    handleClose() {
+      this.$emit('handleCloseReport')
+    }
   }
 }
 </script>
