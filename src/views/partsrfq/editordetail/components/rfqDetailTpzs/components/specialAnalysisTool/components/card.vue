@@ -20,7 +20,7 @@
         </div>
       </div>
     </div>
-    <iCard style="min-height:346px" :title="labelData.title">
+    <iCard :class="labelData.colourType===1?'border':'min-height'" :title="labelData.title">
       <div slot="header-control">
         <el-popover placement="top-start" trigger="hover" :content="labelData.colourType===1?$t('TPZS.ZXFXGJNHYGLFXBG'):labelData.colourType===2?$t('TPZS.ZXFXGJNMYGLFXBGDHHILJ'):$t('TPZS.ZXFXGJNMYGLFXBGQBHHILJ')">
           <icon slot="reference" :name="labelData.colourType===1?'iconzhuanxiangfenxigongju-landian':labelData.colourType===2?'iconbaojiapingfengenzong-jiedian-cheng':'iconbaojiapingfengenzong-jiedian-hui'" symbol></icon>
@@ -66,13 +66,15 @@ export default {
   display: flex;
   justify-content: space-between;
   padding: 1.5rem 2.5rem 0 2.5rem;
+  font-size: 14px;
+  color: #000;
 }
 ::v-deep .el-divider--horizontal {
   margin: 1.25rem 0 !important;
 }
 .opacity {
   border-top: 2px solid #d7dde8;
-  opacity: 0.3;
+  opacity: 0.2;
   position: absolute;
   background-color: #f5f5f5;
   bottom: 0;
@@ -91,5 +93,12 @@ export default {
 }
 .content {
   position: relative;
+}
+.border {
+  min-height: 28rem;
+  border: 1px solid #c6deff;
+}
+.min-height {
+  min-height: 28rem;
 }
 </style>
