@@ -56,6 +56,7 @@ export default {
     params: {
       type: Object,
       require: true,
+      default:()=>{}
     },
   },
   created() {
