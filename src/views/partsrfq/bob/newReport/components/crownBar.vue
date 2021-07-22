@@ -1,6 +1,6 @@
 
 <template>
-  <div style="height: 460px;width:100%"
+  <div style="height: 540px;width:100%"
        ref="chart"></div>
 </template>
 <script >
@@ -91,7 +91,7 @@ export default {
       const option = {
         title: {
           text: this.title,
-          subtext: "Unit: CNY/pcs",
+          subtext: "\n\n Unit: CNY/pcs",
           textStyle: {
             fontSize: 18,
             fontFamily: 'Arial',
@@ -102,6 +102,7 @@ export default {
             fontSize: 12,
             fontFamily: "Arial",
           },
+          left: 0
         },
         legend: {
           top: "10",
@@ -113,9 +114,10 @@ export default {
           data: this.legendArray,
         },
         grid: {
-          right: '0%',
-          bottom:"5%",
-          containLabel: true,
+          top: '20%',
+          right: '0',
+          bottom: "25%",
+          // containLabel: true,
         },
         xAxis: [
           {
@@ -133,12 +135,13 @@ export default {
               interval: 0,
             },
             triggerEvent: true,
+            offset: 10
           },
         ],
         yAxis: [
           {
             type: "value",
-            name: "\n\n\n\n车型项目名称\n\n\nCBD报价时间",
+            name: "\n\n\n\n\n\n车型项目名称\n\nCBD报价时间",
             axisLabel: {
               color: "#7E84A3",
             },
@@ -191,7 +194,7 @@ export default {
           // console.log(row)
           const temp =
             row.vehicleType +
-            "\n\n\n" +
+            "\n\n" +
             window.moment(row.cbdQuotationTime).format("yyyy.MM");
           const turn = row.turn === -1 ? "最新轮" : row.turn;
           //todo
@@ -211,11 +214,11 @@ export default {
           }
           const str =
             name +
-            "\n\n 第{Blue|" +
+            "\n\n第 {Blue|" +
             row.turn +
-            "}/" +
+            "} / " +
             row.totalTurn +
-            "轮\n\n" +
+            " 轮\n\n" +
             temp;
           this.labelArray.push({
             value: str,

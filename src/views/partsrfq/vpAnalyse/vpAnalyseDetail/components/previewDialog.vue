@@ -4,7 +4,7 @@
       width="95%"
       @close="clearDiolog"
   >
-    <iButton class="downloadButton" @click="handleDownload" :loading="downloadButtonLoading">{{
+    <iButton class="downloadButton" @click="getDownloadFile" :loading="downloadButtonLoading">{{
         $t('LK_XIAZAI')
       }}
     </iButton>
@@ -36,39 +36,39 @@
 </template>
 
 <script>
-import { iButton, iDialog } from 'rise'
-import baseInfo from './baseInfo'
-import totalUnitPriceTable from './totalUnitPriceTable'
-import curveChart from './curveChart'
-import analyzeChart from './analyzeChart'
-import { downloadPDF, dataURLtoFile } from '@/utils/pdf'
-import { uploadFile } from '@/api/file/upload'
-import { addVpReports } from '../../../../../api/partsrfq/vpAnalysis/vpAnalyseDetail'
+import {iButton, iDialog} from 'rise';
+import baseInfo from './baseInfo';
+import totalUnitPriceTable from './totalUnitPriceTable';
+import curveChart from './curveChart';
+import analyzeChart from './analyzeChart';
+import {dataURLtoFile, downloadPDF} from '@/utils/pdf';
+import {uploadFile} from '@/api/file/upload';
+import {addVpReports} from '../../../../../api/partsrfq/vpAnalysis/vpAnalyseDetail';
 
 export default {
   props: {
     dataInfo: {
       type: Object,
       default: () => {
-        return {}
+        return {};
       },
     },
     newestScatterData: {
       type: Object,
       default: () => {
-        return {}
+        return {};
       },
     },
     targetScatterData: {
       type: Object,
       default: () => {
-        return {}
+        return {};
       },
     },
     lineData: {
       type: Object,
       default: () => {
-        return {}
+        return {};
       },
     },
     cpLineData: {
@@ -77,7 +77,7 @@ export default {
         return [];
       },
     },
-    value: { type: Boolean },
+    value: {type: Boolean},
   },
   components: {
     iButton,
@@ -87,46 +87,76 @@ export default {
     curveChart,
     analyzeChart,
   },
-  data () {
+  data() {
     return {
       downloadButtonLoading: false,
-    }
+    };
   },
   methods: {
-    clearDiolog () {
-      this.$emit('input', false)
+    clearDiolog() {
+      this.$emit('input', false);
     },
-    handleDownload () {
+    /*handleDownload({callBack}) {
       downloadPDF({
         idEle: 'content',
         pdfName: 'Volume Pricing Overview',
         callback: async (pdf, pdfName) => {
           try {
-            this.downloadButtonLoading = true
-            const time = new Date().getTime()
-            const filename = pdfName + time + '.pdf'
-            const pdfFile = pdf.output('datauristring')
-            const blob = dataURLtoFile(pdfFile, filename)
-            const formData = new FormData()
-            formData.append('multipartFile', blob)
-            formData.append('applicationName', 'rise')
-            const res = await uploadFile(formData)
-            const data = res.data[0]
+            this.downloadButtonLoading = true;
+            const time = new Date().getTime();
+            const filename = pdfName + time + '.pdf';
+            const pdfFile = pdf.output('datauristring');
+            const blob = dataURLtoFile(pdfFile, filename);
+            const formData = new FormData();
+            formData.append('multipartFile', blob);
+            formData.append('applicationName', 'rise');
+            const res = await uploadFile(formData);
+            const data = res.data[0];
             const req = {
-              analysisSchemeId: 1,
+              analysisSchemeId: this.$route.query.schemeId,
               downloadName: data.fileName,
               downloadUrl: data.filePath,
+            };
+            await addVpReports(req);
+            this.downloadButtonLoading = false;
+            if (callBack) {
+              callBack();
             }
-            await addVpReports(req)
-            this.downloadButtonLoading = false
           } catch {
-            this.downloadButtonLoading = false
+            this.downloadButtonLoading = false;
           }
         },
-      })
+      });
+    },*/
+    getDownloadFile({callBack}) {
+      return new Promise((resolve => {
+        downloadPDF({
+          idEle: 'content',
+          pdfName: 'Volume Pricing Overview',
+          callback: async (pdf, pdfName) => {
+            const time = new Date().getTime();
+            const filename = pdfName + time + '.pdf';
+            const pdfFile = pdf.output('datauristring');
+            const blob = dataURLtoFile(pdfFile, filename);
+            const formData = new FormData();
+            formData.append('multipartFile', blob);
+            formData.append('applicationName', 'rise');
+            const res = await uploadFile(formData);
+            const data = res.data[0];
+            const req = {
+              downloadName: data.fileName,
+              downloadUrl: data.filePath,
+            };
+            resolve(req);
+            if (callBack) {
+              callBack();
+            }
+          },
+        });
+      }));
     },
-  }
-}
+  },
+};
 </script>
 
 <style scoped lang="scss">
