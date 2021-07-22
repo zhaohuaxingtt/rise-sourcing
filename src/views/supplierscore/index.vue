@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-22 14:14:49
- * @LastEditTime: 2021-07-13 17:31:02
+ * @LastEditTime: 2021-07-22 11:18:46
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\supplierscore\index.vue
@@ -70,10 +70,10 @@
         <el-form-item :label="language('PINGFENZHUANGTAI', '评分状态')">
           <iSelect
             v-model="form.rateStatus"
-            :placeholder="language('QINGXUANZEPINGFENZHUANGTAI', '请选择评分状态')"
+            :placeholder="language('MORENPINGFENZHUANGTAI', '默认评分状态')"
           >
             <el-option
-              value=""
+              :value="-1"
               :label="language('ALL', '全部') | capitalizeFilter"
             ></el-option>
             <el-option

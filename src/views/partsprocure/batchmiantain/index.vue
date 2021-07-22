@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 15:12:41
- * @LastEditTime: 2021-07-20 19:10:25
+ * @LastEditTime: 2021-07-22 13:39:41
  * @LastEditors: Please set LastEditors
  * @Description: 零件采购项目批量维护界面
  * @FilePath: \front-web\src\views\partsprocure\batchmiantain\index.vue
@@ -24,7 +24,7 @@
 					{{ $t("LK_SHENGCHENGFSHAO") }}
 				</iButton> -->
         <creatFs
-          :projectIds="batch.purchaseProjectIds"
+          :projectIds="purchaseProjectIds"
           v-permission="PARTSPROCURE_BATCHMIANTAIN_GENERATEFSNUMBER"
         ></creatFs>
         <iButton
@@ -47,7 +47,7 @@
             <el-option
               :value="item.code"
               :label="item.name"
-              v-for="(item, index) in fromGroup.PART_PROJECT_TYPE"
+              v-for="(item, index) in filterProjectList(fromGroup.PART_PROJECT_TYPE,batch.type)"
               :key="index"
             ></el-option>
           </iSelect>
@@ -225,6 +225,7 @@ import {
 } from "@/api/partsprocure/editordetail";
 import { getPageGroup } from "@/api/partsign/home";
 import creatFs from "../home/components/creatFs";
+import {filterProjectList} from '@/utils'
 export default {
   components: {
     iPage,
@@ -254,7 +255,7 @@ export default {
         stuffId: "", //工艺组id
         stuffName: "", //工艺组名称
         type: "", //零件采购项目类型
-        unit: "", //单位
+        unit: "PC", //单位
         purchaseProjectIds: [], //采购项目id
         categoryId: '', // 材料组id
       },
@@ -264,10 +265,12 @@ export default {
       cartypeProject: {}, //车型项目
       selectTableData: [],
       startLoding: false,
+      purchaseProjectIds: []
     };
   },
   created() {
     this.getProcureGroup();
+    this.purchaseProjectIds = this.$route.query.ids
     // this.getMaterialGroupByLinie();
   },
   computed: {
@@ -277,6 +280,9 @@ export default {
     }),
   },
   methods: {
+    filterProjectList(a,b){
+      return filterProjectList(a,b)
+    },
     //获取上方group信息
     getProcureGroup() {
       dictkey().then((res) => {
@@ -336,7 +342,7 @@ export default {
           linieDept: this.batch.linieDept,
           linieName: this.linie.name, 
           linieUserId: this.linie.id,
-          // partProjectType: 
+          partProjectType: this.batch.type,
           partType: this.batch.partType,
           procureFactory: this.batch.procureFactory,
           procureFactoryName: factoryItems ? factoryItems.name : '',

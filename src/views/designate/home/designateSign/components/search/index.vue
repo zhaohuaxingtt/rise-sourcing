@@ -125,10 +125,6 @@
           :placeholder="language('LK_QINGXUANZE','请选择')"
         >
           <el-option
-            value=""
-            :label="language('all','全部') | capitalizeFilter"
-          ></el-option>
-          <el-option
             :value="items.id"
             :label="language(items.key, items.name)"
             v-for="(items, index) in selStatus"
@@ -165,7 +161,7 @@ import { applyType } from '@/layout/nomination/components/data'
 import { form } from '../data'
 import {
   applicationStatus,
-  selStatus,
+  signSheetselStatus,
   priceConsistentStatus 
 } from '@/views/designate/home/components/options'
 
@@ -182,7 +178,7 @@ export default {
       form,
       ptocessType: applyType,
       applicationStatus,
-      selStatus,
+      selStatus: signSheetselStatus,
       priceConsistentStatus
     }
   },

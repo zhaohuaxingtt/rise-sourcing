@@ -46,6 +46,7 @@ import {pageMixins} from "@/utils/pageMixins";
 import {getRfqDataList} from "@/api/partsrfq/home";
 import {excelExport} from "@/utils/filedowLoad";
 import {serialize} from '@/utils'
+import {partProjTypes} from '@/config'
 
 export default {
   components: {
@@ -120,29 +121,34 @@ export default {
       this.selectTableData = val;
     },
     openPage(row) {
-      const rfqId = this.$route.query.id;
-      const rfqPlanId = row.rfqPlanId;
-      const purchasePrjectId = row.purchaseProjectId;
-      const purchasingRequirementId = row.purchasingRequirementId
-      const partNum = row.ninePartNum
-      const categoryCode = row.categoryCode
-      const purchasingRequirementObjectId = row.purchasingRequirementObjectId
-      const tab = 'outputPlan'
+      if (row.partPurchaseProType === partProjTypes.PEIJIAN) {
+        const router =  this.$router.resolve({path: '/sourcing/accessorypartdetail', query: { spNum: row.rfqPlanId }})
+        window.open(router.href,'_blank')
+      } else {
+        const rfqId = this.$route.query.id;
+        const rfqPlanId = row.rfqPlanId;
+        const purchasePrjectId = row.purchaseProjectId;
+        const purchasingRequirementId = row.purchasingRequirementId
+        const partNum = row.ninePartNum
+        const categoryCode = row.categoryCode
+        const purchasingRequirementObjectId = row.purchasingRequirementObjectId
+        const tab = 'outputPlan'
 
-      const req = {
-        rfqId,
-        rfqPlanId,
-        purchasePrjectId,
-        purchasingRequirementId,
-        categoryCode,
-        purchasingRequirementObjectId,
-        partNum,
-        tab
+        const req = {
+          rfqId,
+          rfqPlanId,
+          purchasePrjectId,
+          purchasingRequirementId,
+          categoryCode,
+          purchasingRequirementObjectId,
+          partNum,
+          tab
+        }
+        // const params = serialize(req)
+        this.$router.push({
+          path: `/sourcing/partsprocure/editordetail?item=${JSON.stringify(req)}`
+        })
       }
-      // const params = serialize(req)
-      this.$router.push({
-        path: `/sourcing/partsprocure/editordetail?item=${JSON.stringify(req)}`
-      })
     }
   }
 }

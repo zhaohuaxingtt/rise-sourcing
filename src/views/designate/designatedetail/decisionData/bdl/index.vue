@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-25 17:00:48
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-19 09:23:44
+ * @LastEditTime: 2021-07-22 15:27:50
  * @Description: 定点管理-决策资料-BDL
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\bdl\index.vue
 -->
@@ -13,7 +13,7 @@
       <iButton @click="gotoSupplier">{{language('TIAOZHUANGONGYINGSHANGWEIHU','跳转供应商维护')}}</iButton>
     </div>
     <iCard v-for="(item, index) in rfqList" :key="index" :title="'RFQ NO.'+item.rfqNum+',RFQ Name:'+item.rfqName" class="margin-top20">
-      <tableList :tableTitle="item.tableTitle" :selection="false" :tableData="item.tableData" class="doubleHeader" @openDialog="openRateDialog">
+      <tableList :tableTitle="item.tableTitle" :selection="false" :tableData="item.tableData" class="doubleHeader" @openDialog="openRateDialog($event, item.rfqNum)">
         <template #supplierName="scope">
           <div>
             <span class="factoryDesc">{{scope.row.supplierName }}</span>
@@ -36,7 +36,7 @@
         :total="item.page.totalCount"
       />
     </iCard>
-    <partsRatingDialog :dialogVisible="dialogVisible" @changeVisible="changeDialogVisible" :tableData="rateTableData" />
+    <partsRatingDialog :dialogVisible="dialogVisible" @changeVisible="changeDialogVisible" :rfqId="rfqId" :supplierId="supplierId" />
   </iPage>
 </template>
 
@@ -91,7 +91,9 @@ export default {
       }
       this.getTableList(element, index)
     },
-    openRateDialog(row) {
+    openRateDialog(row, rfqId) {
+      this.rfqId = rfqId
+      this.supplierId = row.supplierNo
       this.rateTableData = row.partRatingList
       this.changeDialogVisible(true)
     },
