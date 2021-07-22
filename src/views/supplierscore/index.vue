@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-22 14:14:49
- * @LastEditTime: 2021-07-22 10:55:53
+ * @LastEditTime: 2021-07-22 11:01:33
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\supplierscore\index.vue
@@ -69,7 +69,6 @@
         </el-form-item>
         <el-form-item :label="language('PINGFENZHUANGTAI', '评分状态')">
           <iSelect
-            clearable
             v-model="form.rateStatus"
             :placeholder="language('MORENPINGFENZHUANGTAI', '默认评分状态')"
           >
