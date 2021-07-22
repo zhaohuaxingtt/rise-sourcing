@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-07-14 11:46:46
- * @LastEditTime: 2021-07-21 17:25:41
+ * @LastEditTime: 2021-07-22 17:52:47
  * @LastEditors: Please set LastEditors
  * @Description: 配置
  * @FilePath: /front-web/src/config/index.js

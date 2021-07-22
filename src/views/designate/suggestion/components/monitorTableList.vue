@@ -1,7 +1,7 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-02-24 09:42:07
- * @LastEditTime: 2021-07-22 15:37:43
+ * @LastEditTime: 2021-07-22 17:22:38
  * @LastEditors: Please set LastEditors
 -->
 
@@ -459,6 +459,8 @@ export default {
       // 'Best TTO \n by Group'
       // 分组汇总
       let bestGroup = []
+      // 是否显示分组最低
+      const isShowGroupStick = Boolean(data.filter(o => o.groupId).length)
       // 取出所有已分组的组名，没有分组的零件当单独一个分组
       const groups = _.uniq(data.filter(o => o[GroupKey]).map(o => o[GroupKey]))
       // console.log('groups', groups)
@@ -573,6 +575,8 @@ export default {
         // 分组最佳
         bestGroupSupplier,
         bestGroupSupplierIndex,
+        // 是否显示分组最佳，默认在无分组的情况下不显示
+        isShowGroupStick,
         // 报价都是最低的供应商
         minPartSupplierTToArray,
         minPartSupplierTToTotal,

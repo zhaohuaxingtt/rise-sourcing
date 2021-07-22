@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-03-04 11:13:18
- * @LastEditTime: 2021-07-21 20:12:00
+ * @LastEditTime: 2021-07-22 17:57:54
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsprocure\editordetail\components\drawingSheet\sheet.vue
@@ -34,7 +34,8 @@ export default {
   props: {
     params: {
       type: Object,
-      require: true
+      require: true,
+      default:()=>{}
     }
   },
   watch: {

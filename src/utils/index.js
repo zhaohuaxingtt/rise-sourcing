@@ -1,8 +1,8 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-07-22 11:00:37
- * @LastEditTime: 2021-07-22 10:56:12
+ * @LastEditTime: 2021-07-22 18:00:18
+ * @LastEditTime: 2021-07-21 17:57:58
  * @LastEditors: Please set LastEditors
  * @Description: 公共utils部分
  * @FilePath: \rise\src\utils\index.js
@@ -226,7 +226,7 @@ export function filterProjectList(oldProjectList,currentProjectType){
       newProjectLists = oldProjectList.filter(i=>allreturnlist.find(ii=>i.code==ii))
       if(store.state.permission.roleList.length == 1){
         if(store.state.permission.roleList.find(i=>i == BKMROLETAGID)){
-          newProjectLists = oldProjectList.filter(i=>allreturnlist[i] == allitemsList['KUOCHANNENG'])
+          newProjectLists = newProjectLists.filter(i=>i.code == allitemsList['KUOCHANNENG'])
         }else{
           newProjectLists = newProjectLists.filter(ii=>!(ii.code == allitemsList['KUOCHANNENG']))
         }
