@@ -239,17 +239,14 @@ export default {
         }
         if (params === 'all') {
           this.pageLoading = true;
-          req.costDetailList = this.$refs.totalUnitPriceTable.tableListData.concat(
-              this.$refs.totalUnitPriceTable.hideTableData);
-          req.estimatedActualTotalPro = this.$refs.analyzeChart.dataInfo.estimatedActualTotalPro;
         } else if (params === 'analyze') {
           this.analyzeLoading = true;
-          req.estimatedActualTotalPro = this.$refs.analyzeChart.dataInfo.estimatedActualTotalPro;
         } else if (params === 'table') {
           this.tableLoading = true;
-          req.costDetailList = this.$refs.totalUnitPriceTable.tableListData.concat(
-              this.$refs.totalUnitPriceTable.hideTableData);
         }
+        req.costDetailList = this.$refs.totalUnitPriceTable.tableListData.concat(
+            this.$refs.totalUnitPriceTable.hideTableData);
+        req.estimatedActualTotalPro = this.$refs.analyzeChart.dataInfo.estimatedActualTotalPro;
         const res = await saveOrUpdateScheme(req);
         this.resultMessage(res);
         this.getDataInfo();
@@ -282,9 +279,9 @@ export default {
             this.previewDialog = false;
           },
         });
-        const downloadName = res.downloadName
-        const downloadUrl = res.downloadUrl
-      })
+        const downloadName = res.downloadName;
+        const downloadUrl = res.downloadUrl;
+      });
     },
     handleSaveDialog() {
 
@@ -328,7 +325,7 @@ export default {
     handleBack() {
       const type = this.$route.query.type;
       if (type === 'edit') {
-        if(this.$store.state.rfq.entryStatus === 1) {
+        if (this.$store.state.rfq.entryStatus === 1) {
           this.$router.push({
             path: '/sourcing/partsrfq/assistant',
             query: {
@@ -342,7 +339,7 @@ export default {
           this.$router.push({
             path: '/sourcing/partsrfq/externalNegotiationAssistant',
             query: {
-              pageType: 'VP'
+              pageType: 'VP',
             },
           });
         }

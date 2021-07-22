@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-01 14:50:12
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-20 16:07:36
+ * @LastEditTime: 2021-07-21 13:58:51
  * @Description: 配件相关接口
  * @FilePath: \front-web\src\api\accessoryPart\index.js
  */
@@ -42,9 +42,9 @@ export function getSelectOptions(type) {
 }
 
 // 获取配件信息详情
-export function getAccessoryOneInfo(accessoryId) {
+export function getAccessoryOneInfo(spNum) {
   return requst({
-    url: `/tp-records/accessoryInfo/getAccessoryOneInfo/${accessoryId}`,
+    url: `/tp-records/accessoryInfo/getAccessoryOneInfo/${spNum}`,
     method: 'GET'
   })
 }

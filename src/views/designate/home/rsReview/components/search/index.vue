@@ -27,7 +27,7 @@
         ></iInput>
       </el-form-item>
       <!-- FSNR/GSNR -->
-      <el-form-item :label="language('FsnrGsnr','FsnrGsnr')">
+      <el-form-item :label="language('FSNR/GSNR','FSNR/GSNR')">
         <iInput
           v-model="form.fsnrGsnrNum"
           :placeholder="language('LK_QINGSHURU','请输入')"
@@ -97,7 +97,7 @@
         ></iInput>
       </el-form-item>
       <!-- rs冻结日期 -->
-      <el-form-item :label="language('RSDONGJIERIQI','rs冻结日期')">
+      <el-form-item :label="language('RSDONGJIERIQI','RS冻结日期')">
         <iDatePicker
           v-model='form.rsFreezeDate'
           value-format="yyyy-MM-dd HH:mm:ss">

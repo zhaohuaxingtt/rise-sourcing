@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2021-07-19 20:42:51
+ * @LastEditTime: 2021-07-22 17:39:23
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\editordetail\index.vue
@@ -85,7 +85,7 @@
 								v-permission="PARTSPROCURE_EDITORDETAIL_EVENTITEMTYPE"
 								@change="onPartProjectTypeChange">
 								<el-option :value="item.code" :label="item.name"
-									v-for="(item, index) in partProjectTypeArray" :key="index">
+									v-for="(item, index) in filterProjectList(partProjectTypeArray,detailData.partProjectType)" :key="index">
 								</el-option>
 							</iSelect>
 						</iFormItem>
@@ -288,7 +288,7 @@
 				</div>
 			</iFormGroup>
 		</iCard>
-		<iTabsList  class="margin-top20" type='card'>
+		<iTabsList  class="margin-top20" type='card' v-if='infoItem'>
 			<!-------------------------已定点时显示定点信息tab-  ----------------------------------------->
 			<el-tab-pane :label="language('LK_DINGDIANXINXI','定点信息')" v-if="detailData.status == '15'">
 				<designateInfo :params="infoItem" />
@@ -334,20 +334,7 @@
 </template>
 <script>
 	import Vuex from 'vuex'
-	import {
-		iPage,
-		iFormGroup,
-		iFormItem,
-		iCard,
-		iText,
-		iSelect,
-		iButton,
-		iTabsList,
-		iMessage,
-		iDatePicker,
-		icon,
-		iMessageBox
-	} from "rise";
+	import {iPage,iFormGroup,iFormItem,iCard,iText,iSelect,iButton,iTabsList,iMessage,iDatePicker,icon,iMessageBox } from "rise";
 	import logistics from "./components/logistics";
 	import targePrice from "./components/targetPrice";
 	import materialGroupInfo from "./components/materialGroupInfo";
@@ -360,56 +347,22 @@
 	import backItems from "@/views/partsign/home/components/backItems";
 	import logButton from "@/components/logButton";
 	import currentSupplier from './components/currentSupplier'
-	import {
-		getTabelData,
-		changeProcure,
-		getProcureGroup,
-	} from "@/api/partsprocure/home";
-	import {
-		dictkey,
-		checkFactory
-	} from "@/api/partsprocure/editordetail";
-	import {
-		detailData,
-		partsCommonSourcing
-	} from "./components/data";
+	import {getTabelData,changeProcure,getProcureGroup} from "@/api/partsprocure/home";
+	import {dictkey,checkFactory} from "@/api/partsprocure/editordetail";
+	import {detailData,partsCommonSourcing } from "./components/data";
 	import splitFactory from "./components/splitFactory";
-import designateInfo from './components/designateInfo'
-import { getDictByCode } from '@/api/dictionary'
-import {partProjTypes, BKMROLETAGID} from '@/config'
+	import designateInfo from './components/designateInfo'
+	import { getDictByCode } from '@/api/dictionary'
+	import {partProjTypes} from '@/config'
+	import {filterProjectList} from '@/utils'
 	export default {
-		components: {
-			iPage,
-			iFormGroup,
-			iFormItem,
-			iCard,
-			iText,
-			iSelect,
-			iButton,
-			iTabsList,
-			logistics,
-			targePrice,
-			materialGroupInfo,
-			outputPlan,
-			outputRecord,
-			volume,
-			drawing,
-			sheet,
-			remarks,
-			logButton,
-			backItems,
-			splitFactory,
-			designateInfo,
-			currentSupplier,
-			iDatePicker,
-			icon
-		},
+		components: { iPage,iFormGroup,iFormItem,iCard,iText,iSelect,iButton,iTabsList,logistics,targePrice,materialGroupInfo,outputPlan,outputRecord,volume,drawing,sheet,remarks,logButton,backItems,splitFactory,designateInfo,currentSupplier,iDatePicker,icon},
 		provide:function(){
 			return {detailData:this.getDetailData}
 		},
 		computed: {
 			...Vuex.mapState({
-				userInfo: state => state.permission.userInfo,
+				userInfo: state => state.permission.userInfo
 			}),
 			/**
 				* @description: 现供供应商按钮逻辑。
@@ -422,23 +375,9 @@ import {partProjTypes, BKMROLETAGID} from '@/config'
 			isAssembly() {
 				return this.detailData.partType === "A"
 			},
-			// 是否只是BKM角色
-			isBKM() {
-				// 扩产能的角色值，由CF提供
-				const BKMID = BKMROLETAGID
-				// 获取用户角色列表
-				const tagList = (this.userInfo && this.userInfo.tagList) || []
-				// 该用户只是BKM人员
-				const isBKM = tagList.find(o => o.id === BKMID) && tagList.length === 1
-				return isBKM
-			},
 			// 根据角色控制零件项目类型下拉值
 			partProjectTypeArray() {
-				const types = this.fromGroup.PART_PROJECT_TYPE || []
-				// 获取扩产能下拉
-				let BKMITEM = types.find(o => o.code === partProjTypes.KUOCHANNENG)
-				BKMITEM = BKMITEM ? [BKMITEM] : []
-				return this.isBKM ? BKMITEM : types
+				return this.fromGroup.PART_PROJECT_TYPE || []
 			},
    /**
     * @description: 是否可以选择commonSourcing的逻辑。如果当前用户更改零件采购系项目类型为 fsCommonSourcing gsCommonSourcing fs零件 GS零件 FS总成件  其他零件不能选择
@@ -447,7 +386,12 @@ import {partProjTypes, BKMROLETAGID} from '@/config'
     */
 			canSelectCommonSourcing(){
 				const userSelectProjectCode = this.detailData.partProjectType
-				return !(userSelectProjectCode == this.partProjTypes.GSCOMMONSOURCING || userSelectProjectCode == this.partProjTypes.FSCOMMONSOURCING || userSelectProjectCode == this.partProjTypes.FSXIAOLINGJIAN || userSelectProjectCode == this.partProjTypes.GSLINGJIAN || userSelectProjectCode == this.partProjTypes.FSZONGCHENGJIAN) 
+				const choseState = !(userSelectProjectCode == this.partProjTypes.GSCOMMONSOURCING || userSelectProjectCode == this.partProjTypes.FSCOMMONSOURCING || userSelectProjectCode == this.partProjTypes.FSXIAOLINGJIAN || userSelectProjectCode == this.partProjTypes.GSLINGJIAN || userSelectProjectCode == this.partProjTypes.FSZONGCHENGJIAN) 
+				if(choseState){
+					// eslint-disable-next-line vue/no-side-effects-in-computed-properties
+					this.detailData.isCommonSourcing = false
+				}
+				return choseState
 			}
 		},
 		data() {
@@ -456,7 +400,7 @@ import {partProjTypes, BKMROLETAGID} from '@/config'
 				partProjTypes,
 				firstId:'',
 				checkFactoryString:'',
-				infoItem: {},
+				infoItem: null,
 				detailData: detailData, //顶部详情数据
 				targetprice: {}, //申请目标价数据
 				fromGroup: [], //上方筛选列表
@@ -482,6 +426,9 @@ import {partProjTypes, BKMROLETAGID} from '@/config'
 			this.getDicts()
 		},
 		methods: {
+			filterProjectList(a,b){
+				return filterProjectList(a,b)
+			},
    /**
     * @description: 是否是commonsourcing的change选择框。 
     * @param {*} e
@@ -687,12 +634,8 @@ import {partProjTypes, BKMROLETAGID} from '@/config'
 				this.fsProjectTypeAnIscommonSroucing(this.sendRequsetToCreateFS)
 			},
 			sendRequsetToCreateFS(){
-				let fs = {
-					purchaseProjectIds: [this.infoItem.purchasePrjectId],
-				};
-				changeProcure({
-					fs,
-				}).then((res) => {
+				let fs = { purchaseProjectIds: [this.infoItem.purchasePrjectId]};
+				changeProcure({fs}).then((res) => {
 					if (res.data) {
 						this.getDatail();
 					} else {
@@ -792,7 +735,6 @@ import {partProjTypes, BKMROLETAGID} from '@/config'
 			* @return {*}
 			*/
 			onPartProjectTypeChange(data) {
-				console.log(data)
 				this.detailData.isDB = data === partProjTypes.DBYICHIXINGCAIGOU ? 1: 0
 			}
 		}
