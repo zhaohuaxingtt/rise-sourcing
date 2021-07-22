@@ -1,11 +1,8 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
-<<<<<<< HEAD
- * @LastEditTime: 2021-07-21 18:21:30
-=======
- * @LastEditTime: 2021-07-21 17:57:58
->>>>>>> workStream1
+ * @LastEditTime: 2021-07-22 11:00:37
+ * @LastEditTime: 2021-07-22 10:56:12
  * @LastEditors: Please set LastEditors
  * @Description: 公共utils部分
  * @FilePath: \rise\src\utils\index.js
@@ -14,12 +11,8 @@ import router from '../router'
 import store from '../store'
 import localStoreage from './localstorage'
 import jsencrypt from 'jsencrypt'
-<<<<<<< HEAD
-import { sendKey } from '@/api/usercenter'
-=======
 import {sendKey} from '@/api/usercenter'
 import {onlyselfProject,allitemsList,BKMROLETAGID} from '@/config'
->>>>>>> workStream1
 export function setCookie(cookieName, cookieData) {
   // eslint-disable-next-line no-undef
   return Cookies.set(cookieName, cookieData, {
@@ -211,6 +204,7 @@ router.afterEach(() => {
  * 1.如果当前的采购项目属于：【仅零件号变更，钢材一次性采购，钢材批量采购，配件，附件，一次性采购，DB一次性采购，工序委外，AEKO零件】 则过滤只有当前另加自己。
  * 2.剩下的零件只要出现一种，都要出现当前这个类型的全集：【FS零件，GS零件，COP零件，SPECIAL零件，DB零件，涨价，FS common sourcing，GS common sourcing，扩产能】
  * 3.如果当前当如果当前角色仅为扩产能角色则返回：【扩产能】
+ * 4.如果单项选择中 存在 【一次性采购，DB一次性采购】 则这两个要成对出现
  * @param {*} projectList - 徐睿数据字典返回的全量options
  * @param {*} currentProjectType - 当前的零件采购项目。
  * @return {*}
@@ -220,8 +214,14 @@ export function filterProjectList(oldProjectList,currentProjectType){
     let newProjectLists = []
     const onlyselfList = Object.keys(JSON.parse(JSON.stringify(onlyselfProject))).map(i=> onlyselfProject[i])
     const allreturnlist = Object.keys(JSON.parse(JSON.stringify(allitemsList))).map(i=> allitemsList[i])
+    const needHuc = [onlyselfProject.DBYICHIXINGCAIGOU,onlyselfProject.YICIXINGCAIGOU]
     if(currentProjectType == ""){newProjectLists = oldProjectList}
-    if(onlyselfList.includes(currentProjectType)){newProjectLists = oldProjectList.filter(i=>i.code == currentProjectType)}
+    if(onlyselfList.includes(currentProjectType)){
+      newProjectLists = oldProjectList.filter(i=>i.code == currentProjectType)
+      if(needHuc.includes(currentProjectType)){
+        newProjectLists = oldProjectList.filter(i=>needHuc.find((ii)=>ii == i.code))
+      }
+    }
     if(allreturnlist.includes(currentProjectType)){
       newProjectLists = oldProjectList.filter(i=>allreturnlist.find(ii=>i.code==ii))
       if(store.state.permission.roleList.length == 1){

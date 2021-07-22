@@ -118,7 +118,6 @@ import {
     fsRecall,
     liniereturn,
     fsActivate,
-    downloadLetterFile,
     letterExport,
 } from '@/api/letterAndLoi/letter'
 import { getDictByCode } from '@/api/dictionary'
