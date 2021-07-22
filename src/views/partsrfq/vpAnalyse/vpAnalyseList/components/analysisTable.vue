@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-06-16 20:44:29
- * @LastEditTime: 2021-07-22 09:29:38
+ * @LastEditTime: 2021-07-22 16:53:06
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\analysisTool\components\analysisTable.vue
@@ -321,6 +321,10 @@ export default {
     clickSaveDel() {
       const ids = []
       const reportIds = []
+      if (!this.selectionData || this.selectionData.length == 0) {
+        iMessage.error(this.$t('TPZS.QXZYSCDSJ'));
+        return;
+      }
       this.selectionData.map(item => {
         if(item.type == this.$t('TPZS.SCHEME_TYPE')) ids.push(item.id)
         else reportIds.push(item.id)
