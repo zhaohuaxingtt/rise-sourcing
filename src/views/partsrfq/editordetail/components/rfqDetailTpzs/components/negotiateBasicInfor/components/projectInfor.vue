@@ -23,7 +23,7 @@
       </iFormItem>
       <iFormItem>
         <iLabel :label="'FOP'" slot="label"></iLabel>
-        <iText>{{  form.fop }}</iText>
+        <iText>{{  form.ep }}</iText>
       </iFormItem>
       <iFormItem>
         <iLabel :label="$t('TPZS.MQXTY')" slot="label"></iLabel>

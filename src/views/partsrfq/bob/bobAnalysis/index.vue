@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 10:50:38
- * @LastEditTime: 2021-07-21 16:23:37
+ * @LastEditTime: 2021-07-21 18:05:18
  * @LastEditors: Please set LastEditors
  * @Description: 费用详情
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails.vue
@@ -325,7 +325,6 @@ export default {
         this.$message.error('请选择分组');
         return
       }
-
       addComponentToGroup({
         groupId: this.value1.matchId,
         groupName: this.value1.groupName,
@@ -346,7 +345,7 @@ export default {
       removeComponentFromGroup({
         roundDetailIdList: params
       }).then(res => {
-
+        this.$refs.groupedTable.chargeRetrieve(this.activeName === 'rawUngrouped' ? 'rawGrouped' : 'maGrouped')
       })
     },
     finish () {
