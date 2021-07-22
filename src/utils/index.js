@@ -1,11 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
-<<<<<<< HEAD
- * @LastEditTime: 2021-07-22 10:49:03
-=======
- * @LastEditTime: 2021-07-21 17:57:58
->>>>>>> workStream1
+ * @LastEditTime: 2021-07-22 11:02:48
  * @LastEditors: Please set LastEditors
  * @Description: 公共utils部分
  * @FilePath: \rise\src\utils\index.js
@@ -14,12 +10,8 @@ import router from '../router'
 import store from '../store'
 import localStoreage from './localstorage'
 import jsencrypt from 'jsencrypt'
-<<<<<<< HEAD
-import { sendKey } from '@/api/usercenter'
-=======
 import {sendKey} from '@/api/usercenter'
 import {onlyselfProject,allitemsList,BKMROLETAGID} from '@/config'
->>>>>>> workStream1
 export function setCookie(cookieName, cookieData) {
   // eslint-disable-next-line no-undef
   return Cookies.set(cookieName, cookieData, {
