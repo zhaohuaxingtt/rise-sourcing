@@ -1,7 +1,7 @@
 <!--
  * @Author: Haojiang
  * @Date: 2021-06-24 17:53:08
- * @LastEditTime: 2021-07-20 17:06:20
+ * @LastEditTime: 2021-07-22 16:38:58
  * @LastEditors: Please set LastEditors
  * @Description: m签字单新增、详情
  * @FilePath: /front-web/src/views/designate/home/signSheet/newSignSheet.vue
@@ -153,7 +153,7 @@ import {
   saveSignSheet,
   submitSignSheet,
   removeSignsheetItems,
-  
+  getsignSheetDetails
 } from '@/api/designate/nomination/signsheet'
 
 import {
@@ -197,7 +197,8 @@ export default {
     this.form.signId = id
     this.form.signCode = signCode
     this.form.status = status
-    this.form.description = decodeURIComponent(desc)
+    this.form.description = decodeURIComponent(desc || '')
+    this.getSignSheetDetails()
     this.getChooseData()
   },
   methods: {
@@ -208,6 +209,25 @@ export default {
     // 多选
     handleSelectionChange(data) {
       this.selectTableData = data
+    },
+    getSignSheetDetails() {
+      this.tableLoading = true
+      getsignSheetDetails({
+        signId: Number(this.$route.query.id) || ''
+      }).then(res => {
+        this.tableLoading = false
+        if (res.code === '200') {
+          const data = res.data || {}
+          const status = data.status && data.status.name ? data.status.name : ''
+          status && (this.form.status = status)
+          data.signCode && (this.form.signCode = data.signCode)
+          data.description && (this.form.description = data.description)
+        } else {
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
+      }).catch(e => {
+        this.tableLoading = false
+      })
     },
     // 获取已经选择的数据
     getChooseData(params) {
