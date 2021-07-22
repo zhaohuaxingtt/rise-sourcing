@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:50:41
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-21 11:31:40
+ * @LastEditTime: 2021-07-22 11:17:12
  * @Description: 
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\rs\components\meeting\data.js
  */
@@ -20,6 +20,22 @@ export const nomalDetailTitle = [
   {props: 'carLine', name: '车型', enName: 'Carline', key: 'CHEXING'},
   {props: 'lifeTime', name: '生命周期', enName: 'Lifetime', key: 'SHENGMINGZHOUQI'}
 ]
+
+// GS
+export const nomalDetailTitleGS = [
+  {props: 'partName', name: '零件名称', enName: 'Part Name', key:'LINGJIANMINGCHENG'},
+  {props: 'partNo', name: '零件号', enName: 'Part-No', key: 'LINGJIANHAO'},
+  {props: 'fsnrGsnrNum', name: 'GS号', enName: 'GS-No', key: 'FSNO'},
+  {props: 'rfqDocDate', name: '询价资料日期', enName: 'RFQ Doc. Date', key: 'XUNJIAZILIAORIQI'},
+  {props: 'fsBuyer', name: '前期采购员', enName: 'FS', key: 'QIANQICAIGOUYUAN'},
+  {props: 'project', name: '项目', enName: 'Project', key: 'XIANGMU'},
+  {props: 'buyer', name: '采购员', enName: 'Buyer', key: 'CAIGOUYUAN'},
+  {props: 'sop', name: '投产时间', enName: 'SOP', key: 'TOUCHANSHIJIAN'},
+  {props: 'epen', name: '工程师', enName: 'EP/EN', key: 'GONGCHENGSHI'},
+  {props: 'carLine', name: '车型', enName: 'Carline', key: 'CHEXING'},
+  {props: 'lifeTime', name: '生命周期', enName: 'Lifetime', key: 'SHENGMINGZHOUQI'}
+]
+
 
 // GS
 export const nomalDetailTitleBlue = [
