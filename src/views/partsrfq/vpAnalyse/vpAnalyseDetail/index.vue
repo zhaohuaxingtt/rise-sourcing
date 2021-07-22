@@ -90,6 +90,9 @@
         :cpLineData="curveChartData.cpLineData"
         :lineData="curveChartData.lineData"
     />
+
+<!--    保存弹框-->
+    <saveDialog v-model="saveDialog"/>
   </iPage>
 </template>
 
@@ -107,6 +110,7 @@ import {
   deletePartsCustomerList,
 } from '../../../../api/partsrfq/vpAnalysis/vpAnalyseDetail';
 import resultMessageMixin from '@/utils/resultMessageMixin';
+import saveDialog from './components/saveDialog'
 
 export default {
   mixins: [resultMessageMixin],
@@ -121,6 +125,7 @@ export default {
     analyzeChart,
     customPart,
     previewDialog,
+    saveDialog
   },
   created() {
     this.getDataInfo();
@@ -147,6 +152,7 @@ export default {
       },
       analyzeLoading: false,
       currentSupplierId: '',
+      saveDialog: false
     };
   },
   methods: {
@@ -214,6 +220,7 @@ export default {
       }
     },
     async saveOrUpdateScheme(params) {
+      //this.saveDialog = true
       try {
         const req = {
           userId: this.$store.state.permission.userInfo.id,
