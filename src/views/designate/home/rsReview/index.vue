@@ -75,10 +75,10 @@
       </template> -->
       
       <!-- 定点单号 -->
-      <template #id="scope">
+      <template #nominateName="scope">
         <span class="flexRow">
-            <span class="openLinkText cursor "  @click="viewRsSheetDetail(scope.row)"> {{ scope.row.id}}</span>
-            <span class="icon-gray  cursor " v-if="scope.row.id"  @click="viewRsSheetDetail(scope.row)">
+            <span class="openLinkText cursor "  @click="viewRsSheetDetail(scope.row)"> {{ scope.row.nominateName}}</span>
+            <span class="icon-gray  cursor " v-if="scope.row.nominateName"  @click="viewRsSheetDetail(scope.row)">
                 <icon symbol class="show" name="icontiaozhuananniu" />
                 <icon symbol class="active" name="icontiaozhuanxuanzhongzhuangtai" />
             </span>
@@ -108,9 +108,12 @@
       <template #nominateDate="scope">
         <span>{{scope.row.nominateDate | dateFilter("YYYY-MM-DD")}}</span>
       </template>
-
       <template #freezeDate="scope">
         <span>{{scope.row.freezeDate | dateFilter("YYYY-MM-DD")}}</span>
+      </template>
+
+      <template #signId="scope">
+        <a href="javascript:;" class="selStatus-link" @click="$router.push({path: '/sourcing/partsnomination/signSheet/details', query: {id: scope.row.signId}})">{{scope.row.signId}}</a>
       </template>
       <!-- SEL单据确认状态 -->
       <template #selStatus="scope">

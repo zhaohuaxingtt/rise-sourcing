@@ -210,7 +210,7 @@ export default {
             })
         },
         gotoRsMainten() {
-            this.$router.push({path: '/sourcing/designate/rsSingleMaintenance', query: {desinateId:this.$route.query.desinateId}})
+            this.$router.push({path: '/sourcing/designate/rsSingleMaintenance', query: this.$route.query})
         },
         // 预览
         preview(){
