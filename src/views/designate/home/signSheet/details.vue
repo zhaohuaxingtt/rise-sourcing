@@ -1,7 +1,7 @@
 <!--
  * @Author: Haojiang
  * @Date: 2021-06-24 17:53:08
- * @LastEditTime: 2021-07-22 16:38:58
+ * @LastEditTime: 2021-07-22 17:55:44
  * @LastEditors: Please set LastEditors
  * @Description: m签字单新增、详情
  * @FilePath: /front-web/src/views/designate/home/signSheet/newSignSheet.vue
@@ -253,13 +253,13 @@ export default {
     },
     // 保存
     async handleSave() {
-      if (!this.selectTableData.length) {
-        iMessage.error(this.language('nominationSuggestion_QingXuanZeZhiShaoYiTiaoShuJu','请选择至少一条数据'))
-        return
-      }
+      // if (!this.selectTableData.length) {
+      //   iMessage.error(this.language('nominationSuggestion_QingXuanZeZhiShaoYiTiaoShuJu','请选择至少一条数据'))
+      //   return
+      // }
       const confirmInfo = await this.$confirm(this.language('LK_SAVESURE','您确定要执行保存操作吗？'))
       if (confirmInfo !== 'confirm') return
-      const idList = this.selectTableData.map(o => Number(o.id))
+      const idList = this.tableListData.map(o => Number(o.id))
       
       try {
         const params = {
@@ -279,16 +279,17 @@ export default {
       }
     },
     async handleSubmit() {
-      if (!this.selectTableData.length) {
-        iMessage.error(this.language('nominationSuggestion_QingXuanZeZhiShaoYiTiaoShuJu','请选择至少一条数据'))
-        return
-      }
+      // if (!this.selectTableData.length) {
+      //   iMessage.error(this.language('nominationSuggestion_QingXuanZeZhiShaoYiTiaoShuJu','请选择至少一条数据'))
+      //   return
+      // }
+      console.log('this.tableListData', this.tableListData)
       const confirmInfo = await this.$confirm(this.language('submitSure','您确定要执行提交操作吗？'))
       if (confirmInfo !== 'confirm') return
-      const idList = this.selectTableData.map(o => Number(o.id))
+      const idList = this.tableListData.map(o => Number(o.id))
       try {
         const res = await submitSignSheet({
-          signIdArr: idList
+          signIdArr: [Number(this.form.signId)]
         })
         if (res.code === '200') {
           iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'))
