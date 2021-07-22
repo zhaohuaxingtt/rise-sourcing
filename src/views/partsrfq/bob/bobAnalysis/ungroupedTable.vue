@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 11:38:57
- * @LastEditTime: 2021-07-15 18:26:28
+ * @LastEditTime: 2021-07-21 16:39:57
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails\table1.vue
@@ -21,7 +21,8 @@
       </div>
     </template>
     <el-tabs v-model="activeName"
-             @tab-click="handleClick">
+             @tab-click="handleClick"
+             style="margin-top:-10px">
       <el-tab-pane label="原材料/散件"
                    name="rawUngrouped">
         <el-table ref="treeList"
@@ -33,6 +34,7 @@
                   :row-style="rowStyle"
                   v-loading="loading"
                   :max-height="maxHeight"
+                  :cell-style="cellsytle"
                   @selection-change="handleSelectionChange"
                   @row-click="rowClick"
                   @row-dblclick="rowDblclick"
@@ -202,7 +204,7 @@ export default {
     },
     activeName: {
       handler (val) {
-        // this.chargeRetrieve(val);
+        this.chargeRetrieve(val);
         this.$EventBus.$emit("activeName", val);
       },
     },
@@ -336,7 +338,8 @@ export default {
         const els = this.$el.getElementsByClassName(col.id);
         for (let i = 0; i < els.length; i++) {
           if (checked) {
-            els[i].style.backgroundColor = "#0EBADD";
+            els[i].style.backgroundColor = "#94C8FC";
+            els[i].style.opacity = "0.6";
           } else {
             els[i].style.backgroundColor = "";
           }
@@ -366,7 +369,11 @@ export default {
     // headerClick (column, event) {
     //   console.log(column);
     // },
-
+    cellsytle ({ row }) {
+      if (row.title == "原材料/散件" || row.title == '制造费' || row.title == '保费成本' || row.title == '管理费' || row.title == '其他费用' || row.title == '利润') {
+        return "font-weight: bold"
+      }
+    },
     // 格子双击事件
     cellBbClick (row, column, cell, event) {
       this.$emit("cell-dblclick", row, column, cell, event);
@@ -397,6 +404,15 @@ export default {
 // ::v-deep .el-table tr:nth-child(even){
 //     display: none;
 // }
+.card .cardHeader {
+  padding-bottom: 0px !important;
+}
+::v-deep .el-table .el-table__body-wrapper {
+  height: auto !important;
+}
+.new-bob .end {
+  bottom: 50px !important;
+}
 </style>
 <style lang="scss">
 .addcss {
@@ -423,5 +439,6 @@ export default {
   color: #000000;
   font-size: 18px;
   font-weight: bold;
+  padding-bottom: 10px;
 }
 </style>

@@ -1,29 +1,42 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-24 09:42:07
- * @LastEditTime: 2021-07-12 18:08:43
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-07-21 10:37:31
+ * @LastEditors: Luoshuang
  * @Description: 零件签收-table组件。
- * @FilePath: \rise\src\views\partsign\components\tableList.vue
+ * @FilePath: \front-web\src\views\partsign\home\components\tableList.vue
 -->
 <template>
-  <el-table fit tooltip-effect='light' :height="height" :data='tableData' v-loading='tableLoading' @selection-change="handleSelectionChange" :empty-text="language('LK_ZANWUSHUJU','暂无数据')" ref="moviesTable" :class="radio && 'radio'">
+  <el-table fit tooltip-effect='light' :height="height" :data='tableData' v-loading='tableLoading' @selection-change="handleSelectionChange" :empty-text="language('LK_ZANWUSHUJU','暂无数据')" ref="moviesTable" :class="radio && 'radio'" @select="handleSelect"  @select-all="handleSelectAll" :cell-style="borderLeft">
     <el-table-column v-if="selection" type='selection' width="56" align='center'></el-table-column>
     <el-table-column v-if='index' type='index' width='50' align='center' :label='indexLabel'></el-table-column>
     <template v-for="(items,index) in tableTitle">
-      <el-table-column :key="index" align='center' :width="items.width" :show-overflow-tooltip='items.tooltip' v-if='items.props == activeItems' :prop="items.props" :label="items.key ? language(items.key,items.name) : items.name">
-        <template slot-scope="row"><span class="openLinkText cursor" @click="openPage(row.row)">{{row.row[activeItems]}}</span></template>
+      <el-table-column :key="index" align='center' :width="items.width" :min-width="items.minWidth ? items.minWidth.toString():''" :show-overflow-tooltip='items.tooltip' v-if='items.props == activeItems' :prop="items.props" :label="items.key ? language(items.key,items.name) : items.name">
+        <template slot-scope="row">
+          <span class="flexRow">
+            <span class="openLinkText cursor " @click="openPage(row.row)"> {{ row.row[activeItems] }}</span>
+            <span v-if="row.row[activeItems]" class="icon-gray  cursor "  @click="openPage(row.row)">
+                <icon symbol class="show" name="icontiaozhuananniu" />
+                <icon symbol class="active" name="icontiaozhuanxuanzhongzhuangtai" />
+            </span>
+          </span>  
+        </template>
       </el-table-column>
       <el-table-column :key="index" align='center' :show-overflow-tooltip='items.tooltip'  v-else-if='items.props == "tpInfoType"' :label="items.key ? language(items.key,items.name) : items.name" :prop="items.props">
         <template slot-scope="scope">
           <span>{{translateData('tp_info_type',scope.row[items.props])}}</span>
         </template>
       </el-table-column>
-      <el-table-column :key="index" align='center' :width="items.width" :show-overflow-tooltip='items.tooltip'  v-else :label="items.key ? language(items.key,items.name) : items.name" :prop="items.props"></el-table-column>
+      <el-table-column :key="index" align='center' :width="items.width" :min-width="items.minWidth ? items.minWidth.toString():''" :show-overflow-tooltip='items.tooltip'  v-else :label="items.key ? language(items.key,items.name) : items.name" :prop="items.props">
+        <template v-if="$scopedSlots[items.props] || $slots[items.props]" v-slot="scope">
+          <slot :name="items.props" :row="scope.row"></slot>
+        </template>
+      </el-table-column>
     </template>
   </el-table>
 </template>
 <script>
+import {icon} from "rise"
 export default{
   props:{
     tableData:{type:Array},
@@ -37,6 +50,7 @@ export default{
 	  radio:{type:Boolean,default:false}// 是否单选
   },
   inject:['vm'],
+  components: { icon } ,
   methods:{
     handleSelectionChange(val){
 		if (this.radio) {
@@ -65,7 +79,25 @@ export default{
         return ''
       }
     },
-	
+    handleSelect(selection,row){
+      const selectdBorder = row.selectedBorder
+      this.$set(row,'selectedBorder',!selectdBorder)
+    },
+    handleSelectAll(selection){  
+      const flag = selection.length
+      for(let i= 0  ; i<flag;i++){
+        this.$set(selection[i],'selectedBorder',!!flag)
+      }
+      !flag? this.tableData.forEach(i=>{i.selectedBorder=!i.selectedBorder}):''
+    },
+    borderLeft({row, column, rowIndex, columnIndex}){
+      if(columnIndex === 0 && row.selectedBorder === true){
+         return "border-left:2px solid #1660F1;"
+      }
+      else{
+        return ""
+      }
+    }
   }
 }
 </script>
@@ -77,5 +109,28 @@ export default{
 	  ::v-deep thead .el-table-column--selection .cell {
 	  	display: none;
 	  }
+  }
+  .icon-gray{
+    cursor: pointer;
+    .active{
+      display: none;
+    }
+    .show{
+      display: block;
+    }
+  }
+  .flexRow{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .icon-gray:hover{
+    cursor: pointer;
+    .show{
+      display: none;
+    }
+    .active{
+      display: block;
+    }
   }
 </style>

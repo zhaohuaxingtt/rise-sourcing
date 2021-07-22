@@ -22,7 +22,8 @@
             <icon symbol name="iconguanbixiaoxiliebiaokapiannei"></icon>
         </span>
         <!-- 设置按钮 -->
-        <span class="tab-icon" @click="sortDialogVisibal = true" v-else><icon symbol name="iconSetting"></icon></span>
+        <!-- 临时跳转的时候，当前步骤不在决策资料，不支持排序 -->
+        <span class="tab-icon" @click="sortDialogVisibal = true" v-else-if="!isTemp"><icon symbol name="iconSetting"></icon></span>
         <!-- 排序弹窗 -->
         <sortDialog :visible.sync="sortDialogVisibal" />
     </div>
@@ -70,6 +71,8 @@ export default {
         const { path } = this.$route;
         // 解决刷新页面时当前tab的高亮条歪了的情况
         setTimeout(()=>{
+            // 临时跳转的时候，直接取前端写死的配置
+            if (this.isTemp) this.decisionType = decisionType
             this.defaultTab = path;
         },50)
         
@@ -77,10 +80,16 @@ export default {
     computed: {
         ...mapGetters({
             'nominationStep': 'nominationStep'
-        })
+        }),
+        // 临时跳转，不更新步骤
+        isTemp() {
+            return this.$route.query.route === 'temp'
+        }
     },
     methods:{
         init() {
+            // 临时跳转不更新步骤
+            if (this.isTemp) return
             const nominationStep = this.nominationStep
             let tableListData = nominationStep.nodeList || []
             tableListData = tableListData.filter(o => !o.flag)
@@ -120,6 +129,9 @@ export default {
         },
         // 更新进度
         updateSteps() {
+            // 临时跳转不更新步骤
+            if (this.isTemp) return
+
             const nominationStep = this.$store.getters.nominationStep
             const nodeList = nominationStep.nodeList || []
             const { path } = this.$route;

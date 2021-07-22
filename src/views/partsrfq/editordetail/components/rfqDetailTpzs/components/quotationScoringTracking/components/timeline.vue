@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-25 16:11:34
- * @LastEditTime: 2021-06-09 23:50:46
+ * @LastEditTime: 2021-07-21 11:05:55
  * @LastEditors: Please set LastEditors
  * @Description: timeline
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringTracking\components\timeline.vue
@@ -19,14 +19,14 @@
       <template v-if='items.oneWeekList && items.oneWeekList.length<=1'>
         <p class="itemsc" :style='{top:"40px",left:(items.doneDay-1) * 10 + "px"}' v-if='items.progressTypeDesc'>
           <span><icon symbol :name='iconList_all_times["a"+items.taskStatus].icon' class="margin-right5"></icon>{{items.progressTypeDesc}}</span>
-          <span>{{items.doneYear}}Cw{{items.week}}</span>
+          <span>{{items.doneYear}}CW{{items.week}}</span>
         </p>
       </template>
       <template v-else>
         <template v-for="(itemss,indexs) in items.oneWeekList">
           <p class="itemsc" :style='{top:`${40*(indexs+1)}px`,left:(itemss.doneDay-1) * 10 + "px"}' v-if='itemss.progressTypeDesc' :key="indexs">
             <span><icon symbol :name='iconList_all_times["a"+itemss.taskStatus].icon' class="margin-right5"></icon>{{itemss.progressTypeDesc}}</span>
-            <span>{{itemss.doneYear}}Cw{{itemss.donePeriod}}</span>
+            <span>{{itemss.doneYear}}CW{{itemss.donePeriod}}</span>
           </p>
         </template>
       </template>

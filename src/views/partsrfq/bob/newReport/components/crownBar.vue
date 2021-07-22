@@ -1,12 +1,12 @@
 
 <template>
-  <div style="height: 460px"
+  <div style="height: 540px;width:100%"
        ref="chart"></div>
 </template>
 <script >
 import echarts from "@/utils/echarts";
 import crown from "@/assets/images/bob.png";
-import lv from "@/assets/images/lv.png";
+import lv1 from "@/assets/images/lv.png";
 import ball from "@/assets/images/ball.png";
 export default {
   props: {
@@ -67,7 +67,7 @@ export default {
       cloneDeep: window._.cloneDeep,
       take: window._.take,
       crown: crown,
-      lv: lv,
+      lv: lv1,
       ball: ball,
     };
   },
@@ -91,21 +91,33 @@ export default {
       const option = {
         title: {
           text: this.title,
-          subtext: "Unit: CNY/pcs",
+          subtext: "\n\n Unit: CNY/pcs",
+          textStyle: {
+            fontSize: 18,
+            fontFamily: 'Arial',
+            lineHeight: 21,
+          },
           subtextStyle: {
             color: "#7E84A3",
             fontSize: 12,
+            fontFamily: "Arial",
           },
+          left: 0
         },
         legend: {
           top: "10",
-          left: "right",
+          right: "0",
           icon: "circle",
           fontSize: "10",
+          fontFamily: "Arial",
+          selectedMode: false, //取消图例上的点击事件
           data: this.legendArray,
         },
         grid: {
-          containLabel: true,
+          top: '20%',
+          right: '0',
+          bottom: "25%",
+          // containLabel: true,
         },
         xAxis: [
           {
@@ -119,15 +131,17 @@ export default {
               alignWithLabel: true,
             },
             axisLabel: {
+              fontFamily: "Arial",
               interval: 0,
             },
             triggerEvent: true,
+            offset: 10
           },
         ],
         yAxis: [
           {
             type: "value",
-            name: "\n\n\n车型项目名称\n\nCBD报价时间",
+            name: "\n\n\n\n\n\n车型项目名称\n\nCBD报价时间",
             axisLabel: {
               color: "#7E84A3",
             },
@@ -165,9 +179,7 @@ export default {
           that.$emit("select", params);
         }
       });
-      myChart.on("legendselectchanged", function (params) {
-        console.log(params)
-      });
+
     },
     initData (newVal) {
       if (newVal.length !== 0) {
@@ -202,11 +214,11 @@ export default {
           }
           const str =
             name +
-            "\n第{Blue|" +
+            "\n\n第 {Blue|" +
             row.turn +
-            "}/" +
+            "} / " +
             row.totalTurn +
-            "轮\n\n" +
+            " 轮\n\n" +
             temp;
           this.labelArray.push({
             value: str,
@@ -216,6 +228,7 @@ export default {
                   fontSize: 20,
                   fontWeight: 500,
                   color: "#1763F7",
+                  fontFamily: "Arial",
                 },
               },
             },
@@ -268,6 +281,7 @@ export default {
               position: "insideTop",
               fontSize: 14,
               color: "white",
+              fontFamily: "Arial",
               formatter: (params) => {
                 // console.log(params)
                 if (params.name === this.type) {
@@ -281,7 +295,7 @@ export default {
                   height: 15,
                   align: "right",
                   backgroundColor: {
-                    image: this.lv,
+                    image: this.lv1,
                   },
                 },
               },
@@ -305,6 +319,7 @@ export default {
             label: {
               show: true,
               position: "right",
+              fontFamily: "Arial",
               formatter: (params) => {
                 if (
                   data === params.value &&
@@ -322,7 +337,7 @@ export default {
                   height: 10,
                   align: "right",
                   backgroundColor: {
-                    image: this.lv,
+                    image: this.lv1,
                   },
                 },
               },
@@ -351,6 +366,7 @@ export default {
             color: "#7E84A3",
             fontSize: 14,
             align: "center",
+            fontFamily: "Arial",
             formatter: (params) => {
               // console.log(params)
               const min = this.min(dataList1["利润"]);
@@ -359,18 +375,18 @@ export default {
               if (params.name === this.type) {
                 const sum = this.sum(minList);
                 // console.log(sum)
-                return sum;
+                return sum.toFixed(2);
                 // return '{bold|'+sum+'}'
               } else if (min) {
                 const sum = dataList1["利润"][index];
                 if (min === sum) {
-                  return "{Ball|} {BB|Best Ball}\n" + sum;
+                  return "{Ball|}   {BB|Best Ball}\n\n" + sum;
                 } else {
-                  return sum;
+                  return sum.toFixed(2);
                 }
               } else {
                 const sum = dataList1["利润"][index];
-                return sum;
+                return sum.toFixed(2);
               }
             },
             rich: {
@@ -381,7 +397,7 @@ export default {
               },
               bold: {
                 fontSize: 18,
-                fontWeight: "bold",
+                fontWeight: 400,
                 color: "#000",
               },
               Crown: {

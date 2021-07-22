@@ -119,7 +119,7 @@
         </iSelect>
       </el-form-item>
       <!-- SEL单据确认状态 -->
-      <el-form-item :label="language('SELDANJUQUERENZHUANGTAI','SEL单据确认状态')">
+      <el-form-item :label="language('SELDANJUQUERENZHUANGTAI','SEL单据确认状态')" style="clear: left">
         <iSelect
           v-model="form.selStatus"
           :placeholder="language('LK_QINGXUANZE','请选择')"

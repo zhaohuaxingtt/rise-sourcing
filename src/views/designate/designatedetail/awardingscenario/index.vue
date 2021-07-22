@@ -2,6 +2,7 @@
   <div class="awardingscenario">
     <buMonitor
       title="Awarding Scenario"
+      :mode="'nomi'"
       :hideUpdateTime="true"
       readOnly />
   </div>

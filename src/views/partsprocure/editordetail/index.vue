@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2021-07-14 20:33:03
+ * @LastEditTime: 2021-07-21 16:04:56
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\editordetail\index.vue
@@ -85,7 +85,7 @@
 								v-permission="PARTSPROCURE_EDITORDETAIL_EVENTITEMTYPE"
 								@change="onPartProjectTypeChange">
 								<el-option :value="item.code" :label="item.name"
-									v-for="(item, index) in partProjectTypeArray" :key="index">
+									v-for="(item, index) in filterProjectList(partProjectTypeArray,detailData.partProjectType)" :key="index">
 								</el-option>
 							</iSelect>
 						</iFormItem>
@@ -334,20 +334,7 @@
 </template>
 <script>
 	import Vuex from 'vuex'
-	import {
-		iPage,
-		iFormGroup,
-		iFormItem,
-		iCard,
-		iText,
-		iSelect,
-		iButton,
-		iTabsList,
-		iMessage,
-		iDatePicker,
-		icon,
-		iMessageBox
-	} from "rise";
+	import {iPage,iFormGroup,iFormItem,iCard,iText,iSelect,iButton,iTabsList,iMessage,iDatePicker,icon,iMessageBox } from "rise";
 	import logistics from "./components/logistics";
 	import targePrice from "./components/targetPrice";
 	import materialGroupInfo from "./components/materialGroupInfo";
@@ -360,56 +347,22 @@
 	import backItems from "@/views/partsign/home/components/backItems";
 	import logButton from "@/components/logButton";
 	import currentSupplier from './components/currentSupplier'
-	import {
-		getTabelData,
-		changeProcure,
-		getProcureGroup,
-	} from "@/api/partsprocure/home";
-	import {
-		dictkey,
-		checkFactory
-	} from "@/api/partsprocure/editordetail";
-	import {
-		detailData,
-		partsCommonSourcing
-	} from "./components/data";
+	import {getTabelData,changeProcure,getProcureGroup} from "@/api/partsprocure/home";
+	import {dictkey,checkFactory} from "@/api/partsprocure/editordetail";
+	import {detailData,partsCommonSourcing } from "./components/data";
 	import splitFactory from "./components/splitFactory";
-import designateInfo from './components/designateInfo'
-import { getDictByCode } from '@/api/dictionary'
-import {partProjTypes, BKMROLETAGID} from '@/config'
+	import designateInfo from './components/designateInfo'
+	import { getDictByCode } from '@/api/dictionary'
+	import {partProjTypes} from '@/config'
+	import {filterProjectList} from '@/utils'
 	export default {
-		components: {
-			iPage,
-			iFormGroup,
-			iFormItem,
-			iCard,
-			iText,
-			iSelect,
-			iButton,
-			iTabsList,
-			logistics,
-			targePrice,
-			materialGroupInfo,
-			outputPlan,
-			outputRecord,
-			volume,
-			drawing,
-			sheet,
-			remarks,
-			logButton,
-			backItems,
-			splitFactory,
-			designateInfo,
-			currentSupplier,
-			iDatePicker,
-			icon
-		},
+		components: { iPage,iFormGroup,iFormItem,iCard,iText,iSelect,iButton,iTabsList,logistics,targePrice,materialGroupInfo,outputPlan,outputRecord,volume,drawing,sheet,remarks,logButton,backItems,splitFactory,designateInfo,currentSupplier,iDatePicker,icon},
 		provide:function(){
 			return {detailData:this.getDetailData}
 		},
 		computed: {
 			...Vuex.mapState({
-				userInfo: state => state.permission.userInfo,
+				userInfo: state => state.permission.userInfo
 			}),
 			/**
 				* @description: 现供供应商按钮逻辑。
@@ -422,23 +375,9 @@ import {partProjTypes, BKMROLETAGID} from '@/config'
 			isAssembly() {
 				return this.detailData.partType === "A"
 			},
-			// 是否只是BKM角色
-			isBKM() {
-				// 扩产能的角色值，由CF提供
-				const BKMID = BKMROLETAGID
-				// 获取用户角色列表
-				const tagList = (this.userInfo && this.userInfo.tagList) || []
-				// 该用户只是BKM人员
-				const isBKM = tagList.find(o => o.id === BKMID) && tagList.length === 1
-				return isBKM
-			},
 			// 根据角色控制零件项目类型下拉值
 			partProjectTypeArray() {
-				const types = this.fromGroup.PART_PROJECT_TYPE || []
-				// 获取扩产能下拉
-				let BKMITEM = types.find(o => o.code === partProjTypes.KUOCHANNENG)
-				BKMITEM = BKMITEM ? [BKMITEM] : []
-				return this.isBKM ? BKMITEM : types
+				return this.fromGroup.PART_PROJECT_TYPE || []
 			},
    /**
     * @description: 是否可以选择commonSourcing的逻辑。如果当前用户更改零件采购系项目类型为 fsCommonSourcing gsCommonSourcing fs零件 GS零件 FS总成件  其他零件不能选择
@@ -482,6 +421,9 @@ import {partProjTypes, BKMROLETAGID} from '@/config'
 			this.getDicts()
 		},
 		methods: {
+			filterProjectList(a,b){
+				return filterProjectList(a,b)
+			},
    /**
     * @description: 是否是commonsourcing的change选择框。 
     * @param {*} e
@@ -623,9 +565,8 @@ import {partProjTypes, BKMROLETAGID} from '@/config'
 			},
 			saveFn(){
 				this.fsProjectTypeAnIscommonSroucing(this.save)
-				//刷新零件产量逻辑。1.如果当前零件是gs零件 则sop时间用户是可以自己选择的。一旦选择过后零件产量里面的开始时间。后端得重新默认一个
-				//所以需要刷新一下零件产量页签
-				this.updateTabs()
+				//刷新产量计划时间之前。得清空一下选择时间。
+				this.setYearNull()
 			},
 			//修改详情。
 			save(val) {
@@ -659,9 +600,15 @@ import {partProjTypes, BKMROLETAGID} from '@/config'
 							if(res.data.procureFactoryIds.length <= 1 ){
 								iMessage.success(this.language('LK_YIBAOCUN','已保存'));
 								this.getDatail();
+								//刷新零件产量逻辑。1.如果当前零件是gs零件 则sop时间用户是可以自己选择的。一旦选择过后零件产量里面的开始时间。后端得重新默认一个
+								//所以需要刷新一下零件产量页签
+								this.updateTabs()
 							}else{
 								iMessage.success(this.language('LK_YIBAOCUN','已保存'));
 								this.getDatail();
+								//刷新零件产量逻辑。1.如果当前零件是gs零件 则sop时间用户是可以自己选择的。一旦选择过后零件产量里面的开始时间。后端得重新默认一个
+								//所以需要刷新一下零件产量页签
+								this.updateTabs()
 								// iMessageBox(this.$t('LK_AREYOUSPLITE'),this.$t('LK_WENXINTISHI')).then(res=>{
 								// 	//如果这条ID存在 则默认查询出来的采购工厂将会为第一条
 								// 	this.firstId = this.detailData.procureFactory
@@ -682,12 +629,8 @@ import {partProjTypes, BKMROLETAGID} from '@/config'
 				this.fsProjectTypeAnIscommonSroucing(this.sendRequsetToCreateFS)
 			},
 			sendRequsetToCreateFS(){
-				let fs = {
-					purchaseProjectIds: [this.infoItem.purchasePrjectId],
-				};
-				changeProcure({
-					fs,
-				}).then((res) => {
+				let fs = { purchaseProjectIds: [this.infoItem.purchasePrjectId]};
+				changeProcure({fs}).then((res) => {
 					if (res.data) {
 						this.getDatail();
 					} else {
@@ -741,6 +684,15 @@ import {partProjTypes, BKMROLETAGID} from '@/config'
 				this.$refs.outputPlan.getData();
 				this.$refs.outputRecord.getData();
 			},
+   /**
+    * @description: 清空当前时间，更改sop时间过后。需要置空产量计划的开始时间。将默认开始时间同步为sop时间（默认的动作后台已经判断）
+    * @param {*}
+    * @return {*}
+    */
+			setYearNull(){
+				this.$refs.outputPlan.clearTime()
+				this.$refs.outputPlan.clearTime()
+			},
 			// 下拉框逻辑提示
 			tips() {},
 			updateStartYear(startYear) {
@@ -778,7 +730,6 @@ import {partProjTypes, BKMROLETAGID} from '@/config'
 			* @return {*}
 			*/
 			onPartProjectTypeChange(data) {
-				console.log(data)
 				this.detailData.isDB = data === partProjTypes.DBYICHIXINGCAIGOU ? 1: 0
 			}
 		}

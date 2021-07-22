@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-06-30 19:37:04
- * @LastEditTime: 2021-06-30 20:03:04
+ * @LastEditTime: 2021-07-20 14:43:47
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\api\configscoredept\index.js
@@ -37,18 +37,10 @@ export function deleteRfqRateDeparts(params) {
 }
 
 // 获取所有部门列表
-// export function getAllDept(params) {
-//   return requst({
-//     url: "/rfq-rate-departs/getAllDept",
-//     method: "POST",
-//     data: params
-//   })
-// }
-
 export function getAllDept(params) {
   return requst({
-    url: "/rfq-bdl-ratings/findAllRateDeptInfo",
-    method: "GET",
-    params
+    url: "/rfq-rate-departs/getAllDept",
+    method: "POST",
+    data: params
   })
 }

@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:50:41
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-18 15:25:41
+ * @LastEditTime: 2021-07-21 11:31:40
  * @Description: 
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\rs\components\meeting\data.js
  */
@@ -30,7 +30,7 @@ export const nomalDetailTitleBlue = [
   {props: 'mtz', name: '原材料补差价', enName: 'MTZ', key: 'YUANCAILIAOBUCHAJIA'},
   {props: 'materialGroup', name: '材料组', enName: 'Material Group', key: 'CAILIAOZU'},
   {props: 'rawMaterial', name: '原材料', enName: 'Raw Material', key: 'YUANCAILIAO'},
-  {props: 'plannedInvest', name: '现供应商', enName: 'Current Supplier', key:'XIANGONGYINGSHANG'},
+  {props: 'suppliersNow', name: '现供应商', enName: 'Current Supplier', key:'XIANGONGYINGSHANG'},
   {props: 'setPrice', name: '设定价格', enName: 'Set Price', key:'SHEDINGJIAGE'},
   {props: 'isApportion', name: '分摊', enName: 'Amrtisiert', key: 'FENTAN'},
   {props: 'quantity', name: '每车用量', enName: 'Quantity', key: 'MEICHEYONGLIANG'}
@@ -191,11 +191,11 @@ export const checkList = [
 
 
 export const prototypeTitleList = [
-  {i18nName: 'FS号', props: 'a', i18nKey: 'FSNUMBER'},
-  {i18nName: '零件号', props: 'b', i18nKey: 'LINGJIANHAO'},
-  {i18nName: '供应商SAP号', props: 'c', i18nKey: 'GONGYINGSHANGSAPHAO'},
-  {i18nName: '供应商名称', props: 'd', i18nKey: 'GONGYINGSMINGC'},
-  {i18nName: '工装样件状态（工装样件的备注）', props: 'e', i18nKey: 'GONGZHUANGYANGJIANZHUANGTAI'},
-  {i18nName: '单件价格（工装样件单件费用(RMB)', props: 'f', i18nKey: 'DANJIANJIAGE'},
-  {i18nName: '样件模具价格（附加工装样件模具价格(RMB)', props: 'g', i18nKey: 'YANGJIANMOKUJIAGE'}
+  {i18nName: 'FS号', props: 'fsGsNum', i18nKey: 'FSNUMBER'},
+  {i18nName: '零件号', props: 'partNum', i18nKey: 'LINGJIANHAO'},
+  {i18nName: '供应商SAP号', props: 'supplierCode', i18nKey: 'GONGYINGSHANGSAPHAO'},
+  {i18nName: '供应商名称', props: 'supplierName', i18nKey: 'GONGYINGSMINGC'},
+  {i18nName: '工装样件状态（工装样件的备注）', props: 'toolingSampleRemark', i18nKey: 'GONGZHUANGYANGJIANZHUANGTAI'},
+  {i18nName: '单件价格（工装样件单件费用(RMB)', props: 'sampleUnitPrice', i18nKey: 'DANJIANJIAGE'},
+  {i18nName: '样件模具价格（附加工装样件模具价格(RMB)', props: 'addionalMouldCost', i18nKey: 'YANGJIANMOKUJIAGE'}
 ]

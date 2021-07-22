@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-25 15:32:38
- * @LastEditTime: 2021-06-10 00:16:26
+ * @LastEditTime: 2021-07-21 13:36:13
  * @LastEditors: Please set LastEditors
  * @Description: 报价评分跟踪
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringTracking\index.vue
@@ -9,12 +9,15 @@
 <template>
   <div class="timeline">
       <div class="topline">
-        <span class="margin-right20">整体任务进度: <el-tooltip placement="right" effect="light">
+        <span class="margin-right20">整体任务进度: 
+          <!-- <el-tooltip placement="right" effect="light">
           <icon symbol style="font-size:20px;position:relative;top:2px;" :color='"#eff9fd"' :name="iconList_all_times['a'+allJdu].icon"></icon>
             <template slot='content'>
               <dalyWeeks :daliyTime='allJdu' ></dalyWeeks>
             </template>
-          </el-tooltip></span>
+          </el-tooltip> -->
+           <icon symbol style="font-size:20px;position:relative;top:2px;" :color='"#eff9fd"' :name="iconList_all_times['a'+allJdu].icon"></icon>
+          </span>
         <span>整车进度风险: <el-tooltip placement="right" effect="light">
           <icon symbol style="font-size:20px;position:relative;top:2px;" :name="iconList_car['a'+daliyTime].icon"></icon>
             <template slot='content'>
@@ -52,12 +55,40 @@ export default{
     this.negoScoreReport();
   },
   methods:{
+    /**
+     * @description: 获取有效状态周。 
+     * @param {*}
+     * @return {*}
+     */
+    getTypeWeek(list){
+      const lowNumberStatus = list.sort((a,b)=>a.taskStatus - b.taskStatus)
+      if(lowNumberStatus.taskStatus == -1){
+        return lowNumberStatus.donePeriod
+      }else{
+        return list[list.length -1].donePeriod
+      }
+    },
+    /**
+     * @description: 判断当前年是不是跨年。 
+     * @param {*} year
+     * @return {*}
+     */
+    getYear(yearQuerys){
+      let number = 0
+      // eslint-disable-next-line no-undef
+      const year = new moment().format('YYYY')
+      if(year < yearQuerys.doneYear){
+        number = 52 + yearQuerys.donePeriod
+      }else {
+        number = yearQuerys.donePeriod < 24? (24-yearQuerys.donePeriod) + yearQuerys.donePeriod : yearQuerys.donePeriod + (52 - yearQuerys.donePeriod) 
+      }
+      return number
+    },
     negoScoreReport(){
       negoScoreReport(this.$route.query.id).then(res=>{
         if(res.code == 200){
           this.tableTile = buildTitleTabel(res.data)
           this.tableDatas = buildTableData(res.data)
-          console.log(this.tableDatas)
         }
       }).catch(err=>{
         iMessage.warn(err.desZh)
@@ -71,8 +102,8 @@ export default{
     getTimeLine(qutaitonId,rfqId){
       getTimeLine(qutaitonId,rfqId).then(res=>{
         if(res.data){
-          this.daliyTime = res.data.wholeTaskProgress || 0 //整车进度风险
-          this.allJdu = res.data.wholeProgressRisk || 0 //整体任务进度
+          this.daliyTime = res.data.wholeProgressRisk || 0 //整车进度风险
+          this.allJdu = res.data.wholeTaskProgress || 0 //整体任务进度
           this.timeListdata = this.translateTimeLine(res.data.rfqTimeAxisProgressVOList)
         }
       }).catch(err=>{
@@ -94,12 +125,12 @@ export default{
       try {
         // eslint-disable-next-line no-debugger
         const copeList = []
-        const startWeek = list[list.length -1].donePeriod
-        for(let i = list[0].donePeriod;i<=(list[list.length -1].donePeriod<=24?24:list[list.length -1].donePeriod);i++){
+        const startWeek = this.getTypeWeek(list)
+        for(let i = list[0].donePeriod;i<=(list[list.length -1].donePeriod<=24?24:this.getYear(list[list.length -1]));i++){
           const matchItems = list.find(item=>item.donePeriod == i)
           copeList.push(
             {
-              week:i,
+              week:i>52?52-i:i,
               progressTypeDesc:matchItems?matchItems.progressTypeDesc:'',
               active:i <= startWeek,
               taskStatus:matchItems?matchItems.taskStatus:'default',

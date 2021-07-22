@@ -60,6 +60,16 @@ export function addComponentToGroup(parmars) {
     data: parmars,
   })
 }
+
+//移除分组
+export function removeComponentFromGroup(parmars) {
+  return requst({
+    url: '/bobRoundDetail/removeComponentFromGroup',
+    method: 'POST',
+    data: parmars,
+  })
+}
+
 //还原分组
 export function groupTerms(parmars) {
   return requst({

@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-25 15:24:07
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-14 09:57:46
+ * @LastEditTime: 2021-07-21 17:34:05
  * @Description: 
  * @FilePath: \front-web\src\views\accessoryPart\accessoryPartDetail\data.js
  */
@@ -20,8 +20,8 @@ export const detailList = [
   {value: 'state', label: '配件状态', type: 'select', key: 'PEIJIANZHUANGTAI', selectOption: []},
   {value: 'accessoryStatus', label: '零件状态', type: 'select', key: 'LINGJIANZHUANGTAI', selectOption: []},
   {value: 'idState', label: 'ID状态', type: 'select', key: 'IDZHUANGTAI', selectOption: []},
-  {value: 'csfUserDeptName', label: 'CSF科室', type: 'date', key: 'CSFKESHI',},
-  {value: 'csfUserIdName', label: 'CSF', type: 'input', key: 'CSF',},
+  {value: 'csfuserDeptName', label: 'CSF科室', type: 'date', key: 'CSFKESHI',},
+  {value: 'csfuserName', label: 'CSF', type: 'input', key: 'CSF',},
   {value: 'sendDate', label: '需求发送日期', type: 'input', key: 'XUQIUFASONGRIQI',},
   {value: 'respDeptName', label: 'LINIE科室', type: 'input', key: 'LINIEKESHI',},
   {value: 'respLinieName', label: 'LINIE', type: 'input', key: 'LINIE',},
@@ -30,7 +30,7 @@ export const detailList = [
   {value: 'supplierSvwCode', label: '供应商SVW号', type: 'input', key: 'GONGYINGSHANGSVWHAO',},
   {value: 'supplierSvwTempCode', label: '供应商名临时号', type: 'input', key: 'GONGYINGSHANGMINGLINSHIHAO',},
   {value: 'supplierNameZh', label: '供应商名(中)', type: 'input', key: 'GONGYINGSHANGMING_ZH',},
-  {value: 'tcUnitId', label: '单位', type: 'input', key: 'DANWEI',},
+  {value: 'tcUnitName', label: '单位', type: 'input', key: 'DANWEI',},
   {value: 'deliveryWarehouse', label: '送货仓库', type: 'input', key: 'SONGHUOCANGKU',},
   {value: 'signDate', label: '需求签收日期', type: 'input', key: 'XUQIUQIANSHOURIQI',},
   {value: 'demandRecoveryDate', label: '需求恢复日期', type: 'input', key: 'XUQIUHUIFURIQI',},

@@ -7,7 +7,7 @@
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\index.vue
 -->
 <template>
-  <div>
+  <div style="position: relative;">
     <div class="quotationHz margin-bottom20">
       <!--------------输入框模块-------------->
       <div class='search'>
@@ -40,9 +40,9 @@
       </div>
       <!--------------表格模块-------------->
     </div>
-    <tableList v-loading='fsTableLoading' @sortChangeTabless='sortChange' :round='round' :tableTitle='title' v-if='layout == "1"' :ratingList='ratingList' :tableData='exampelData' @handleSelectionChange='handleSelectionChange'></tableList>
+    <tableList v-loading='fsTableLoading' @sortChangeTabless='sortChange' :round='round' :tableTitle='title' v-if='layout == "1" || layout == "3"' :ratingList='ratingList' :tableData='exampelData' @handleSelectionChange='handleSelectionChange'></tableList>
     <tableListSupplier ref='tableSupplier' :cWidth='cWidth' :budget='budget' :kmAPrice='kmAPrice' :kmTooling='kmTooling' v-loading='supplierTableLoading' :centerSupplierData='suppliertopList' :supplierLeftLit='supplierLeftLit' :tableTitle='supplierTile'  :tableData='supplierData' v-if='layout == "2" && showTable'></tableListSupplier>
-    <tablelistGSasRow v-loading='fsTableLoading' @sortChangeTabless='sortChange' :round='round' :tableTitle='title' v-if='layout == "3"' :ratingList='ratingList' :tableData='exampelData' @handleSelectionChange='handleSelectionChange'></tablelistGSasRow>
+    <!-- <tablelistGSasRow v-loading='fsTableLoading' @sortChangeTabless='sortChange' :round='round' :tableTitle='title' v-if='layout == "3"' :ratingList='ratingList' :tableData='exampelData' @handleSelectionChange='handleSelectionChange'></tablelistGSasRow> -->
     <!--------------弹窗-------------->
     <iDialog title="组合名" :visible.sync="groupVisble" width='25%' >
       <div class="mine_height">
@@ -63,7 +63,7 @@ import tablelistGSasRow from './components/tablelistGSasRow'
 import {exampelData,backChooseList,getRenderTableTile,translateData,translateRating,subtotal,defaultSort,getRenderTableTileSupplier,translateDataListSupplier,getleftTittleList} from './components/data'
 import {negoAnalysisSummaryLayout,negoAnalysisSummaryLayoutSave,negoAnalysisSummaryRound,fsPartsAsRow,gsPartsAsRow,negoAnalysisSummaryGroup,negoAnalysisSummaryGroupDelete,fsSupplierAsRow} from '@/api/partsrfq/editordetail'
 export default{
-  components:{iButton,iSelect,tableList,iDialog,iInput,tableListSupplier,tablelistGSasRow},
+  components:{iButton,iSelect,tableList,iDialog,iInput,tableListSupplier},
   data(){return {
     title:getRenderTableTile([],0,1),
     exampelData:exampelData,
@@ -174,6 +174,7 @@ export default{
      * @return {*}
      */
     changeLayout(res){
+      this.layout = res
       this.init()
     },
     removeGroup(){
@@ -324,7 +325,8 @@ export default{
       // eslint-disable-next-line no-unexpected-multiline
       this.changeFnForGSandFS(this.layout).then(res=>{
         this.fsTableLoading = false
-        if(res.data && res.data.partInfoList && res.data.partInfoList.length){
+        this.clearDataFs()
+        if(res.data && res.data.partInfoList && res.data.partInfoList){
           this.partInfoList = res.data.partInfoList
           this.bdlPriceTotalInfoList = res.data.bdlPriceTotalInfoList
           const relTitle = getRenderTableTile(this.backChoose,res.data.partInfoList[0].bdlInfoList.length,this.layout)
@@ -336,6 +338,7 @@ export default{
           this.oldExampelData = JSON.parse(JSON.stringify(this.exampelData))
         }
       }).catch(err=>{
+        this.clearDataFs()
         this.fsTableLoading = false
         iMessage.warn(err.desZh)
       })
@@ -395,6 +398,14 @@ export default{
       }else{
         return gsPartsAsRow(this.$route.query.id,this.round)
       }
+    },
+    clearDataFs(){
+        this.partInfoList = []
+        this.bdlPriceTotalInfoList = []
+        this.title = []
+        this.reRenderLastChild = []
+        this.exampelData = []
+        this.ratingList = []
     }
   }
 }

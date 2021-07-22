@@ -2,18 +2,19 @@
  * @Author: Luoshuang
  * @Date: 2021-05-26 11:16:51
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-16 23:39:29
+ * @LastEditTime: 2021-07-21 13:59:25
  * @Description: 配件综合管理页面
  * @FilePath: \front-web\src\views\accessoryPart\integratedManage\index.vue
 -->
 
 <template>
   <iPage class="signForParts" >
-    <el-tabs v-model="tab" class="tab">
-      <el-tab-pane :label="language('LK_XUNYUANZHIHANG','寻源')" name="source">
+    <!-- <el-tabs v-model="tab" class="tab"> -->
+      <!-- <el-tab-pane :label="language('LK_XUNYUANZHIHANG','寻源')" name="source"> -->
         <div>
-          <div class="margin-bottom33">
-            <iNavMvp lang @change="change" right routerPage lev="2" :list="navList" @message="clickMessage" />
+          <div class="topMenu">
+            <iNavMvp class="margin-bottom30" :list="list" lang @change="change" :lev="1" routerPage></iNavMvp>
+            <iNavMvp class="margin-bottom30" lang @change="change" right routerPage lev="2" :list="navList" @message="clickMessage" />
           </div>
           <!----------------------------------------------------------------->
           <!---------------------------搜索区域------------------------------->
@@ -91,9 +92,9 @@
           <!------------------------------------------------------------------------>
           <joinRfqDialog ref="joinRfq" :dialogVisible="joinRfqDialogVisible" @changeVisible="changeJoinRfqDialogVisible" @joinRfq="joinRfq" :partType="partProjTypes.PEIJIAN" />
         </div>
-      </el-tab-pane>
+      <!-- </el-tab-pane> -->
       <!-- <el-tab-pane label="进度监控" name="progress"></el-tab-pane> -->
-    </el-tabs>
+    <!-- </el-tabs> -->
   </iPage>
 </template>
 
@@ -101,13 +102,13 @@
 import { iPage, iSearch, iSelect, iInput, iCard, iButton, iPagination, iMessage, iNavMvp } from 'rise'
 import { pageMixins } from "@/utils/pageMixins"
 import tableList from '@/views/designate/designatedetail/components/tableList'
-import { tableTitle, searchList } from './data'
+import { tableTitle, searchList, TAB } from './data'
 import assignInquiryDepartmentDialog from '../signForPartsDemand/components/assignInquiryDepartment'
 import assignInquiryBuyerDialog from '../signForPartsDemand/components/assignInquiryBuyer'
 import backEpsDialog from './components/backEps'
 import backDialog from './components/back'
 import { uniq } from 'lodash'
-import { getAccessoryManageList, sendAccessoryInfo, downLoadAccessoryList, downLoadAccessoryAll, back, backEPS } from '@/api/accessoryPart/index'
+import { getAccessoryManageList, sendAccessoryInfo, downloadManageList, downLoadAccessoryAll, back, backEPS } from '@/api/accessoryPart/index'
 import { getDictByCode } from '@/api/dictionary'
 import {findBySearches,getCartypeDict} from "@/api/partsrfq/home";
 import joinRfqDialog from '@/views/designateFiles/fileManage/components/joinRfq'
@@ -156,7 +157,8 @@ export default {
       selectDeptId: '',
       downloadAllLoading: false,
       downloadLoading: false,
-      joinRfqDialogVisible: false
+      joinRfqDialogVisible: false,
+      list:TAB,
     }
   },
   created() {
@@ -545,7 +547,7 @@ export default {
       const params = {
         ...this.searchParams
       }
-      await downLoadAccessoryList(params)
+      await downloadManageList(params)
       this.downloadLoading = false
     },
     /**
@@ -555,7 +557,7 @@ export default {
      * @return {*}
      */    
     openPage(row) {
-      const router =  this.$router.resolve({path: '/sourcing/accessorypartdetail', query: { accessoryId: row.id }})
+      const router =  this.$router.resolve({path: '/sourcing/accessorypartdetail', query: { spNum: row.spnrNum }})
       window.open(router.href,'_blank')
     },
     /**
@@ -666,7 +668,10 @@ export default {
 <style lang="scss" scoped>
 .signForParts {
   position: relative;
-
+  .topMenu{
+    display: flex;
+    justify-content: space-between;
+  }
   .tab {
     ::v-deep .el-tabs__header {
       position: absolute;

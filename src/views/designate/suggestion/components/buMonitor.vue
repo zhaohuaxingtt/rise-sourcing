@@ -1,7 +1,7 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-05-25 09:42:07
- * @LastEditTime: 2021-07-18 02:46:01
+ * @LastEditTime: 2021-07-21 11:29:00
  * @Description: 业务分配模拟
 -->
 
@@ -117,6 +117,7 @@ import * as nomi from '@/api/designate/suggestion/nomi'
 
 export default {
   props: {
+    // 模式：nomi，定点建议；nego，谈判助手；
     mode: {
       type: String,
       default: 'nego'
@@ -220,6 +221,10 @@ export default {
         iMessage.error(this.language('nominationSuggestion_QingXuanZeZhiShaoYiTiaoShuJu','请选择至少一条数据'))
         return
       }
+      if ((selectedData && selectedData.length === 1)) {
+        iMessage.error(this.language('QINGZHISHAOXUANZELIANGXIANGZUHE','请至少选择两项组合'))
+        return
+      }
       this.combineVisible = !this.combineVisible
       
     },
@@ -310,11 +315,15 @@ export default {
         rfqId: this.rfqId
       }).then(res => {
         this.tableLoading = false
-        if (res.code === '200') {
+        if (res.code == '200') {
           this.params = _.cloneDeep(res.data)
-          this.supplierList = res.data.supplierSet
+          // this.supplierList = []
+          // 刷新的时候，会将新增的数据清除，数组传参无法识别变化无法传到子组件，故保持刷新前的顺序
+          const supplierSet = res.data.supplierSet || []
+          !this.supplierList.length && supplierSet.length !== this.supplierList.length && (this.supplierList = res.data.supplierSet)
           const tableListData = res.data.partInfoList || []
-          const newTableList = tableListData.map(o => {
+          let newTableList = []
+          newTableList = tableListData.map(o => {
             // 绑定供应商
             o.id = this.randomid()
             o.groupId && (o.gid = o.groupId)
@@ -324,7 +333,7 @@ export default {
             o.percentCalc = []
             const suppDataList = o.bdlInfoList || []
             this.supplierList.forEach((suppName, index) => {
-              const supplier = (suppDataList && suppDataList.find(o => o.supplierName === suppName)) || {}
+              const supplier = (suppDataList && suppDataList.find(o => o.supplierName == suppName)) || {}
               const recommendSupplier = (o.recommendBdlInfoList && o.recommendBdlInfoList.find(o => o.recommendSupplier === suppName)) || {}
               o.TTo.push(supplier.tto || 0)
               o.percentCalc[index] = Number(recommendSupplier.share).toFixed(2) || 0
