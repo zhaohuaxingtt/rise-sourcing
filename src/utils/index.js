@@ -1,11 +1,11 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-07-22 18:00:18
+ * @LastEditTime: 2021-07-22 18:01:17
  * @LastEditTime: 2021-07-21 17:57:58
  * @LastEditors: Please set LastEditors
  * @Description: 公共utils部分
- * @FilePath: \rise\src\utils\index.js
+ * @FilePath: \front-web\src\utils\index.js
  */
 import router from '../router'
 import store from '../store'
