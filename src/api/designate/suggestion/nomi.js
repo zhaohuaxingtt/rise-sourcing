@@ -1,7 +1,7 @@
 /*
  * @Author: haojiang
  * @Date: 2021-05-28 17:30:52
- * @LastEditTime: 2021-06-03 11:12:59
+ * @LastEditTime: 2021-07-21 16:38:13
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  */
@@ -20,7 +20,7 @@ export function getSimulateRecord(params) {
 // 组合
 export function setSummaryGroup(data) {
   return requst({
-      url: `/nego-assistant/nego-analysis-summary-group`,
+      url: `/nego-assistant/nego-analysis-summary-nomi-group`,
       method: "POST",
       data
   })
@@ -29,7 +29,7 @@ export function setSummaryGroup(data) {
 // 取消组合
 export function cancelSummaryGroup(data) {
   return requst({
-      url: `/nego-assistant/nego-analysis-summary-group`,
+      url: `/nego-assistant/nego-analysis-summary-nomi-group`,
       method: "DELETE",
       data
   })
