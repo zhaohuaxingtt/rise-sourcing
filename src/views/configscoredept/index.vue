@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-17 13:44:35
- * @LastEditTime: 2021-07-21 11:55:48
+ * @LastEditTime: 2021-07-22 13:49:55
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\configscoredept\index.vue
@@ -254,7 +254,8 @@ export default {
       if (!isEqual(this.tableListData, this.tableListDataCache)) {
         this.$confirm(this.language("NOSAVEISQUIT", "您还有数据更改尚未保存, 请确认是否需要退出编辑模式"))
         .then(() => {
-          this.tableListData = this.tableListData.filter(item => !item.isCache)
+          // this.tableListData = this.tableListData.filter(item => !item.isCache)
+          this.tableListData = cloneDeep(this.tableListDataCache)
           this.editStauts = false
         })
         .catch(() => {})
