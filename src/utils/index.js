@@ -2,7 +2,7 @@
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
 <<<<<<< HEAD
- * @LastEditTime: 2021-07-21 18:21:30
+ * @LastEditTime: 2021-07-22 10:49:03
 =======
  * @LastEditTime: 2021-07-21 17:57:58
 >>>>>>> workStream1
@@ -220,8 +220,14 @@ export function filterProjectList(oldProjectList,currentProjectType){
     let newProjectLists = []
     const onlyselfList = Object.keys(JSON.parse(JSON.stringify(onlyselfProject))).map(i=> onlyselfProject[i])
     const allreturnlist = Object.keys(JSON.parse(JSON.stringify(allitemsList))).map(i=> allitemsList[i])
+    const needHuc = [onlyselfProject.DBYICHIXINGCAIGOU,onlyselfProject.YICIXINGCAIGOU]
     if(currentProjectType == ""){newProjectLists = oldProjectList}
-    if(onlyselfList.includes(currentProjectType)){newProjectLists = oldProjectList.filter(i=>i.code == currentProjectType)}
+    if(onlyselfList.includes(currentProjectType)){
+      newProjectLists = oldProjectList.filter(i=>i.code == currentProjectType)
+      if(needHuc.includes(currentProjectType)){
+        newProjectLists = oldProjectList.filter(i=>needHuc.find((ii)=>ii == i.code))
+      }
+    }
     if(allreturnlist.includes(currentProjectType)){
       newProjectLists = oldProjectList.filter(i=>allreturnlist.find(ii=>i.code==ii))
       if(store.state.permission.roleList.length == 1){
