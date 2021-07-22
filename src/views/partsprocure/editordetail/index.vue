@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2021-07-21 16:04:56
+ * @LastEditTime: 2021-07-22 16:18:33
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\editordetail\index.vue
@@ -386,7 +386,12 @@
     */
 			canSelectCommonSourcing(){
 				const userSelectProjectCode = this.detailData.partProjectType
-				return !(userSelectProjectCode == this.partProjTypes.GSCOMMONSOURCING || userSelectProjectCode == this.partProjTypes.FSCOMMONSOURCING || userSelectProjectCode == this.partProjTypes.FSXIAOLINGJIAN || userSelectProjectCode == this.partProjTypes.GSLINGJIAN || userSelectProjectCode == this.partProjTypes.FSZONGCHENGJIAN) 
+				const choseState = !(userSelectProjectCode == this.partProjTypes.GSCOMMONSOURCING || userSelectProjectCode == this.partProjTypes.FSCOMMONSOURCING || userSelectProjectCode == this.partProjTypes.FSXIAOLINGJIAN || userSelectProjectCode == this.partProjTypes.GSLINGJIAN || userSelectProjectCode == this.partProjTypes.FSZONGCHENGJIAN) 
+				if(choseState){
+					// eslint-disable-next-line vue/no-side-effects-in-computed-properties
+					this.detailData.isCommonSourcing = false
+				}
+				return choseState
 			}
 		},
 		data() {
