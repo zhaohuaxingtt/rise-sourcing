@@ -1,7 +1,7 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-05-25 09:42:07
- * @LastEditTime: 2021-07-21 11:29:00
+ * @LastEditTime: 2021-07-22 11:09:18
  * @Description: 业务分配模拟
 -->
 
@@ -241,12 +241,16 @@ export default {
         return
       }
       // 零件号数组
-      const partPrjCode = selectedData.map(o => o.partPrjCode)
+      let groupInfoList = selectedData.map(o => {
+        return {
+          rfqId: o.rfqId,
+          partPrjCode: o.partPrjCode
+        }
+      }) || []
       const params = {
-        rfqId: this.rfqId,
         scenarioType: this.scenarioType[this.mode],
         groupName: this.groupForm.groupName,
-        partPrjCode
+        groupInfoList
       }
       console.log(params)
       const confirmInfo = await this.$confirm(this.language('submitSure','您确定要执行提交操作吗？'))
@@ -271,11 +275,12 @@ export default {
         iMessage.error(this.language('nominationSuggestion_QingXuanZeZhiShaoYiTiaoShuJu','请选择至少一条数据'))
         return
       }
+      const groupName = selectedData && selectedData[0] && selectedData[0].groupName || ''
       // 零件号数组
-      let groupIdList = _.uniq(selectedData.filter(o => o.groupId).map(o => o.groupId)) || []
+      let groupIdList = selectedData.map(o => o.groupId) || []
       const params = {
-        rfqId: this.rfqId,
         scenarioType: this.scenarioType[this.mode],
+        groupName,
         groupIdList
       }
       console.log(params)
