@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-22 14:14:49
- * @LastEditTime: 2021-07-22 11:01:33
+ * @LastEditTime: 2021-07-22 11:18:46
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\supplierscore\index.vue
@@ -73,7 +73,7 @@
             :placeholder="language('MORENPINGFENZHUANGTAI', '默认评分状态')"
           >
             <el-option
-              value="all"
+              :value="-1"
               :label="language('ALL', '全部') | capitalizeFilter"
             ></el-option>
             <el-option
