@@ -163,7 +163,7 @@ a{
   border-top-right-radius: 5px;
   font-size: 14px;
   .el-table__body-wrapper {
-    height: inherit;  
+    min-height: 422px;  
     overflow: auto;
   }
   .el-table__header{
