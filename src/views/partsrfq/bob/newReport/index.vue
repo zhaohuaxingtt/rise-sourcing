@@ -3,7 +3,7 @@
     <div id="content">
       <div class="navBox flex-between-center"
            v-if="!reportSave">
-        <span class="title">BOB{{ $t("TPZS.FENXI")
+        <span class="title font-weight">BOB{{ $t("TPZS.FENXI")
           }}<span v-if="inside">-RFQ {{ rfq }}</span></span>
         <div class="flex-align-center">
           <!--预览-->
@@ -27,13 +27,13 @@
       </div>
       <el-row :gutter="20"
               class="margin-top20">
-        <el-col :span="4">
+        <el-col :span="inside?4:5">
           <iCard :collapse="false"
-                 style="height: 500px"
+                 style="height: 579px"
                  v-if="!reportSave">
             <el-form label-position="top"
                      :model="form"
-                     style="height: 460px">
+                     style="height: 530px">
               <el-row class="margin-bottom20">
                 <div v-if="inside">
                   <!--比较类型-->
@@ -138,8 +138,8 @@
             </div>
           </iCard>
         </el-col>
-        <el-col :span="reportSave ? 24 : 20">
-          <iCard style="height: 500px"
+        <el-col :span="inside?20:19">
+          <iCard style="height: 579px"
                  collapse>
             <iRow>
               <el-col :span="inside ? 18 : 24">
@@ -166,6 +166,7 @@
                   </iSelect>
                 </div>
               </el-col>
+
               <el-col :span="6"
                       v-if="inside">
                 <div class="left-dash1">
@@ -189,9 +190,9 @@
       </el-row>
       <el-row :gutter="20"
               class="margin-top20">
-        <el-col :span="4">
+        <el-col :span="inside?4:5">
           <iCard :collapse="false"
-                 style="height: 500px"
+                 style="height: 579px"
                  v-if="!reportSave">
             <ul class="anchorList flex">
               <li v-for="(i,index) in anchorList"
@@ -202,7 +203,7 @@
             </ul>
           </iCard>
         </el-col>
-        <el-col :span="reportSave ? 24 : 20">
+        <el-col :span="inside ? 20 : 19">
           <bobAnalysis ref="bobAnalysis"
                        :supplierList="supplierList"
                        :partList="partList"></bobAnalysis>
@@ -290,7 +291,7 @@ export default {
       inside: false,
       chartData: [],
       chartData1: [],
-      chartType: this.inside ? "supplier" : "mixComp",
+      chartType: "",
       bobType: "Best of Best",
       form: {
         supplier: [],
@@ -353,8 +354,18 @@ export default {
         }
       },
       immediate: true
+    },
+    chartType: {
+      handler (newval) {
+        console.log(this.inside, "hahahah")
+        if (this.inside) {
+          this.chartType = 'supplier'
+        } else {
+          this.chartType = 'combination'
+        }
+        // this.inside ? "supplier" : "mixComp"
+      },
     }
-
   },
   mounted () {
   },
@@ -536,7 +547,7 @@ export default {
         }
       } else {
         params = {
-          analysisSchemeId: this.analysisSchemeId,
+          analysisSchemeId: this.$store.state.rfq.SchemeId,
           analysisDimension: this.chartType,
           combination: this.form.combination.join(",")
         }
@@ -569,9 +580,14 @@ export default {
           this.form.spareParts = this.Split(allData.spareParts, ",");
         }
       });
+      this.$refs.bobAnalysis.chargeRetrieve("all");
     },
     async getChartData () {
-      await this.getOptions();
+      if (this.inside) {
+        await this.getOptions();
+      } else {
+        await this.querySupplierTurnPartList()
+      }
       getBobLevelOne({
         analysisSchemeId: this.analysisSchemeId,
       }).then((res) => {
@@ -587,10 +603,12 @@ export default {
         this.analysisName = allData.name
         this.reportName = allData.name + '_' + window.moment(new Date()).format("yyyy.MM");
         if (this.chartType === 'combination') {
+
           this.form = {
             combination: []
           }
           this.form.combination = this.Split(allData.combination, ",");
+
         } else {
           this.form = {
             supplier: [],
@@ -627,48 +645,60 @@ export default {
     },
     save () {
       let that = this;
-      const form = {
-        analysisDimension: this.chartType,
-        defaultBobOptions: this.bobType,
-        id: this.analysisSchemeId,
-        name: this.analysisName,
-        spareParts: this.form.spareParts.join(","),
-        supplierId: this.form.supplier.join(","),
-        turn: this.form.turn.join(","),
-        isCover: this.isCover
-      };
-      if (this.isCover) {
-        this.$confirm('此样式/报告已存在, 是否覆盖?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          if (this.analysisSave) {
-            update(form)
-              .then((res) => {
-                iMessage.success("保存成功");
-                this.dialogVisible = false;
-                this.reportSave = false;
-              })
-              .catch((err) => {
-                iMessage.err("保存失败");
-                this.dialogVisible = false;
-                this.reportSave = false;
-              });
-          }
-        }).catch(() => {
-          this.$message({
-            type: 'info',
-            message: '已取消'
-          });
-        });
+      let form = {}
+      if (this.inside) {
+        form = {
+          analysisDimension: this.chartType,
+          defaultBobOptions: this.bobType,
+          id: this.analysisSchemeId,
+          name: this.analysisName,
+          spareParts: this.form.spareParts.join(","),
+          supplierId: this.form.supplier.join(","),
+          turn: this.form.turn.join(","),
+          isCover: this.isCover
+        };
+      } else {
+        form = {
+          analysisDimension: this.chartType,
+          defaultBobOptions: this.bobType,
+          id: this.analysisSchemeId,
+          name: this.analysisName,
+          combination: this.form.combination.join(','),
+          isCover: this.isCover
+        };
       }
-
-
+      if (this.isCover) {
+        if (this.analysisSave) {
+          this.$confirm('此样式/报告已存在, 是否覆盖?', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(() => {
+            if (this.analysisSave) {
+              update(form)
+                .then((res) => {
+                  iMessage.success("保存成功");
+                  this.dialogVisible = false;
+                  this.reportSave = false;
+                })
+                .catch((err) => {
+                  iMessage.err("保存失败");
+                  this.dialogVisible = false;
+                  this.reportSave = false;
+                });
+            }
+          }).catch(() => {
+            this.$message({
+              type: 'info',
+              message: '已取消'
+            });
+          });
+        }
+      }
       if (this.reportSave) {
         downloadPDF({
           idEle: "content",
-          pdfName: this.reportName,
+          pdfName: that.reportName,
           callback: async (pdf, pdfName) => {
             try {
               const time = new Date().getTime();
@@ -681,15 +711,15 @@ export default {
               const res = await uploadFile(formData);
               const data = res.data[0];
               const req = {
-                analysisSchemeId: 1,
-                downloadName: data.fileName,
-                downloadUrl: data.filePath,
-                reportName: that.reportName,
+                analysisSchemeId: this.analysisSchemeId,
+                name: data.fileName,
+                path: data.filePath,
+                remark: that.reportName,
               };
               await add(req);
-              iMessage.success("保存成功");
               that.dialogVisible = false;
               that.reportSave = false;
+              iMessage.success("保存成功");
             } catch {
               iMessage.err("保存失败");
               that.dialogVisible = false;
@@ -755,7 +785,7 @@ export default {
   }
   .left-dash1 {
     border: none;
-    border-left: 2px dashed #CED4E1;
+    border-left: 2px dashed #ced4e1;
     padding-left: 40px;
     .icon-add {
       margin-top: 80px;
@@ -764,6 +794,15 @@ export default {
     }
   }
 }
+::v-deep .el-select {
+  width: 100%;
+  .el-select-dropdown.is-multiple
+    .el-select-dropdown__item.selected
+    .hover::after {
+    font-size: 0 !important;
+  }
+}
+
 .el-tag .flex {
   display: flex;
   justify-content: center;
@@ -798,10 +837,25 @@ export default {
 .active {
   color: #1660f1 !important;
 }
-::v-deep .el-form-item{
+::v-deep .el-form-item {
   margin-bottom: 20px;
-  .el-form-item__label{
+  .el-form-item__label {
     padding: 0;
   }
+}
+.title {
+  font-family: Arial;
+  font-size: $font-size20;
+  color: black;
+}
+.cardBody .end {
+  display: flex;
+  justify-content: space-around;
+  .el-button {
+    width: 100px;
+  }
+}
+::v-deep.el-form-item {
+  margin-bottom: 20px;
 }
 </style>

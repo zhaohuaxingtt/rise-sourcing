@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:17:25
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-20 09:23:35
+ * @LastEditTime: 2021-07-22 17:27:52
  * @Description: 上会/备案RS单
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\rs\components\meeting\index.vue
 -->
@@ -53,7 +53,12 @@
           <p v-for="(item,index) in remarkItem" :key="index">{{item.value}}</p>
         </div>
       </div>
-      <div v-if="projectType === partProjTypes.DBLINGJIAN || projectType === partProjTypes.DBYICHIXINGCAIGOU" style="text-align:right;">汇率：Exchange rate: 1{{basicData.currencyMap && basicData.currencyMap[basicData.currency] ? basicData.currencyMap[basicData.currency].name : ''}}={{basicData.cfExchangeRate}}RMB</div>
+      <div v-if="projectType === partProjTypes.DBLINGJIAN || projectType === partProjTypes.DBYICHIXINGCAIGOU" style="text-align:right;">
+        汇率：Exchange rate: 
+        <span class="exchangeRageCurrency" v-for="item in exchangeRageCurrency" :key="item">
+          1{{basicData.currencyMap && basicData.currencyMap[item] ? basicData.currencyMap[item].name : item}}={{basicData.currencyRateMap[item]}}{{basicData.currencyMap.RMB ? basicData.currencyMap.RMB.name : 'RMB'}}
+        </span>
+      </div>
     </iCard>
     <iCard v-if="!isPreview && !showSignatureForm" :title="language('SHANGHUIBEIZHU','上会备注')" class="margin-top20">
       <iButton slot="header-control" @click="handleSaveRemarks" :loading="saveLoading">{{language('BAOCUN','保存')}}</iButton>
@@ -93,7 +98,7 @@
 
 <script>
 import { iCard, iButton, iInput, icon, iMessage } from 'rise'
-import { nomalDetailTitle, nomalDetailTitleBlue, nomalTableTitle, meetingRemark, checkList, gsDetailTitleBlue, gsTableTitle,sparePartTableTitle,accessoryTableTitle,prototypeTitleList,dbTableTitle } from './data'
+import { nomalDetailTitle,nomalDetailTitleGS,nomalDetailTitlePF, nomalDetailTitleBlue, nomalTableTitle, meetingRemark, checkList, gsDetailTitleBlue, gsTableTitle,sparePartTableTitle,accessoryTableTitle,prototypeTitleList,dbTableTitle } from './data'
 import tableList from '@/views/designate/designatedetail/components/tableList'
 import { getList, getRemark, updateRemark,getPrototypeList, getDepartApproval } from '@/api/designate/decisiondata/rs'
 import {partProjTypes} from '@/config'
@@ -111,7 +116,7 @@ export default {
       // 零件项目类型
       partProjTypes,
       remarks: {},
-      leftTitle: nomalDetailTitle,
+      // leftTitle: nomalDetailTitle,
       // rightTitle: nomalDetailTitleBlue,
       // tableTitle: nomalTableTitle,
       tableData: [],
@@ -128,6 +133,30 @@ export default {
     }
   },
   computed: {
+    exchangeRageCurrency() {
+      if (this.basicData.currencyRateMap) {
+        const exchangeRageCurrency = []
+        for (var key in this.basicData.currencyRateMap) {
+          if (key) {
+            exchangeRageCurrency.push(key)
+          }
+        }
+        return exchangeRageCurrency
+      }
+      return []
+    },
+    leftTitle() {
+      // GS
+      if ([partProjTypes.GSLINGJIAN,partProjTypes.GSCOMMONSOURCING].includes(this.projectType)) {
+        return nomalDetailTitleGS
+      }
+      // 配附件
+      if ([partProjTypes.PEIJIAN,partProjTypes.FUJIAN].includes(this.projectType)) {
+        return nomalDetailTitlePF
+      }
+      // 其他
+      return nomalDetailTitle
+    },
     rightTitle() {
       // GS
       if ([partProjTypes.GSLINGJIAN,partProjTypes.GSCOMMONSOURCING].includes(this.projectType)) {
@@ -330,6 +359,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.exchangeRageCurrency + .exchangeRageCurrency {
+  margin-left: 20px;
+}
 .singleSourcing {
   padding: 8px 12px;
   font-size: 15px;

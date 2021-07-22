@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-25 17:06:56
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-18 15:51:43
+ * @LastEditTime: 2021-07-22 15:46:55
  * @Description: 
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\bdl\data.js
  */
@@ -41,6 +41,6 @@ export const partsRatingTableTitle = [
     {props: 'externaFee', name: '外部开发费(元)', key: "WAIBUKAIFAFEI_YUAN"},
     {props: 'addFee', name: '增加的认可费(元)', key: "ZENGJIARENKEFEI_YUAN"},
     {props: 'confirmCycle', name: '认可周期(周)', key: "RENKEZHOUQI_ZHOU"},
-    {props: 'beizhu', name: '备注', key: "BEIZHU"}
+    // {props: 'beizhu', name: '备注', key: "BEIZHU"}
   ]}
 ]

@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:50:41
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-19 16:45:46
+ * @LastEditTime: 2021-07-22 13:41:55
  * @Description: 
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\rs\components\meeting\data.js
  */
@@ -22,6 +22,36 @@ export const nomalDetailTitle = [
 ]
 
 // GS
+export const nomalDetailTitleGS = [
+  {props: 'partName', name: '零件名称', enName: 'Part Name', key:'LINGJIANMINGCHENG'},
+  {props: 'partNo', name: '零件号', enName: 'Part-No', key: 'LINGJIANHAO'},
+  {props: 'fsnrGsnrNum', name: 'GS号', enName: 'GS-No', key: 'FSNO'},
+  {props: 'rfqDocDate', name: '询价资料日期', enName: 'RFQ Doc. Date', key: 'XUNJIAZILIAORIQI'},
+  {props: 'fsBuyer', name: '前期采购员', enName: 'FS', key: 'QIANQICAIGOUYUAN'},
+  {props: 'project', name: '项目', enName: 'Project', key: 'XIANGMU'},
+  {props: 'buyer', name: '采购员', enName: 'Buyer', key: 'CAIGOUYUAN'},
+  {props: 'sop', name: '投产时间', enName: 'SOP', key: 'TOUCHANSHIJIAN'},
+  {props: 'epen', name: '工程师', enName: 'EP/EN', key: 'GONGCHENGSHI'},
+  {props: 'carLine', name: '车型', enName: 'Carline', key: 'CHEXING'},
+  {props: 'lifeTime', name: '生命周期', enName: 'Lifetime', key: 'SHENGMINGZHOUQI'}
+]
+
+export const nomalDetailTitlePF = [
+  {props: 'partName', name: '零件名称', enName: 'Part Name', key:'LINGJIANMINGCHENG'},
+  {props: 'partNo', name: '零件号', enName: 'Part-No', key: 'LINGJIANHAO'},
+  {props: 'fsnrGsnrNum', name: 'SP号', enName: 'SP-No', key: 'FSNO'},
+  {props: 'rfqDocDate', name: '询价资料日期', enName: 'RFQ Doc. Date', key: 'XUNJIAZILIAORIQI'},
+  {props: 'fsBuyer', name: '前期采购员', enName: 'FS', key: 'QIANQICAIGOUYUAN'},
+  {props: 'project', name: '项目', enName: 'Project', key: 'XIANGMU'},
+  {props: 'buyer', name: '采购员', enName: 'Buyer', key: 'CAIGOUYUAN'},
+  {props: 'sop', name: '投产时间', enName: 'SOP', key: 'TOUCHANSHIJIAN'},
+  {props: 'epen', name: '工程师', enName: 'EP/EN', key: 'GONGCHENGSHI'},
+  {props: 'carLine', name: '车型', enName: 'Carline', key: 'CHEXING'},
+  {props: 'lifeTime', name: '生命周期', enName: 'Lifetime', key: 'SHENGMINGZHOUQI'}
+]
+
+
+// GS
 export const nomalDetailTitleBlue = [
   [
     {props: 'currency', name: '货币', enName: 'Currency', key: 'HUOBI'},
@@ -30,7 +60,7 @@ export const nomalDetailTitleBlue = [
   {props: 'mtz', name: '原材料补差价', enName: 'MTZ', key: 'YUANCAILIAOBUCHAJIA'},
   {props: 'materialGroup', name: '材料组', enName: 'Material Group', key: 'CAILIAOZU'},
   {props: 'rawMaterial', name: '原材料', enName: 'Raw Material', key: 'YUANCAILIAO'},
-  {props: 'plannedInvest', name: '现供应商', enName: 'Current Supplier', key:'XIANGONGYINGSHANG'},
+  {props: 'suppliersNow', name: '现供应商', enName: 'Current Supplier', key:'XIANGONGYINGSHANG'},
   {props: 'setPrice', name: '设定价格', enName: 'Set Price', key:'SHEDINGJIAGE'},
   {props: 'isApportion', name: '分摊', enName: 'Amrtisiert', key: 'FENTAN'},
   {props: 'quantity', name: '每车用量', enName: 'Quantity', key: 'MEICHEYONGLIANG'}
@@ -79,7 +109,7 @@ export const nomalTableTitle = [
 
 // 配件
 export const sparePartTableTitle = [
-  {props:'fsnrGsnrNum',name:'SP号', enName: 'FS-NO.', key: "", minWidth: 60},
+  {props:'fsnrGsnrNum',name:'SP号', enName: 'SP-NO.', key: "", minWidth: 60},
   {props:'output',name:'年产量', enName: 'Demand(K)', key: "", minWidth: 60},
   {props:'partNo',name:'零件号', enName: 'Part No.', key: "", minWidth: 55},
   {props:'partName',name:'零件名称', enName: 'Part Name', key: "", minWidth: 85},
@@ -100,7 +130,7 @@ export const sparePartTableTitle = [
 
 // 附件
 export const accessoryTableTitle = [
-  {props:'fsnrGsnrNum',name:'SP号', enName: 'FS-NO.', key: "", minWidth: 60},
+  {props:'fsnrGsnrNum',name:'SP号', enName: 'SP-NO.', key: "", minWidth: 60},
   {props:'output',name:'年产量', enName: 'Demand(K)', key: "", minWidth: 60},
   {props:'partNo',name:'零件号', enName: 'Part No.', key: "", minWidth: 55},
   {props:'partName',name:'零件名称', enName: 'Part Name', key: "", minWidth: 85},

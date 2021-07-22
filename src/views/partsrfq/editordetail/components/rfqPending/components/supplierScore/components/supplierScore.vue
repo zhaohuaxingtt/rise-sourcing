@@ -176,7 +176,7 @@ export default {
       return data
     },
     translateTile(index,data,parmars,templateTitleLast){
-      templateTitleLast.name = data.rateDepart
+      templateTitleLast.name = data.rateDepartNum
       templateTitleLast.list.forEach(items=>{
           // parmars.forEach(v=>{
             items.props = items.props+(index?index:'')

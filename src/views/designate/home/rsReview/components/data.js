@@ -1,7 +1,7 @@
 /*
  * @Author: HaoJiang
  * @Date: 2021-05-20 14:29:09
- * @LastEditTime: 2021-07-05 16:57:10
+ * @LastEditTime: 2021-07-22 15:48:34
  * @LastEditors: Please set LastEditors
  * @Description: sel上会复核
  *
@@ -28,11 +28,11 @@ export const tableTitle = [{
   tooltip: true
 },
 {
-  props: 'carTypeProj',
+  props: 'carType',
   name: 'PROJECT',
   key: 'PROJECT',
   tooltip: true,
-  minWidth:100
+  width:200
 },
 {
 	props: 'applicationStatus',

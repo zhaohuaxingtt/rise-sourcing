@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 11:38:57
- * @LastEditTime: 2021-07-19 20:20:44
+ * @LastEditTime: 2021-07-21 16:39:57
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails\table1.vue
@@ -204,7 +204,7 @@ export default {
     },
     activeName: {
       handler (val) {
-        // this.chargeRetrieve(val);
+        this.chargeRetrieve(val);
         this.$EventBus.$emit("activeName", val);
       },
     },
@@ -338,7 +338,8 @@ export default {
         const els = this.$el.getElementsByClassName(col.id);
         for (let i = 0; i < els.length; i++) {
           if (checked) {
-            els[i].style.backgroundColor = "#0EBADD";
+            els[i].style.backgroundColor = "#94C8FC";
+            els[i].style.opacity = "0.6";
           } else {
             els[i].style.backgroundColor = "";
           }
@@ -405,6 +406,12 @@ export default {
 // }
 .card .cardHeader {
   padding-bottom: 0px !important;
+}
+::v-deep .el-table .el-table__body-wrapper {
+  height: auto !important;
+}
+.new-bob .end {
+  bottom: 50px !important;
 }
 </style>
 <style lang="scss">

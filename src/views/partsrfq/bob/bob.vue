@@ -55,7 +55,6 @@
         </div>
       </template>
       <el-table tooltip-effect='light'
-                v-if="isRenderTable"
                 ref="multipleTable"
                 :data="tableListData"
                 style="width: 100%; margin-bottom: 20px"
@@ -187,7 +186,9 @@
                    :total="page.totalCount" />
 
       <reportPreview :visible="reportVisible"
-                     :reportUrl="reportUrl" />
+                     :reportUrl="reportUrl"
+                     :title="reportTitle"
+                     type="1"/>
     </iCard>
   </div>
 </template>
@@ -237,7 +238,7 @@ export default {
       rfqStatus: false,
       reportVisible: false,
       reportUrl: null,
-      isRenderTable: true,
+      reportTitle: null,
       defaultData: [
         { value: "是", label: this.$t("nominationLanguage.Yes") },
         { value: "否", label: this.$t("nominationLanguage.No") },
@@ -519,6 +520,7 @@ export default {
           },
         });
       } else if (val.fileType == this.$t('TPZS.REPORT_TYPE')) {
+        this.reportTitle = val.name
         this.reportVisible = true;
         if (val.path) this.reportUrl = val.path;
       }

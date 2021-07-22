@@ -11,7 +11,7 @@
     <el-form>
       <el-form-item :label="$t('partsignLanguage.QingShuRu')">
         <iSelect :multiple="false" remote reserve-keyword :remote-method="handleKeyword" :loading="keyLoading" filterable :placeholder="$t('TPZS.CLZRFQLJH')" v-model="form.keyword">
-          <el-option v-for="(item,index) in formGroup.keywordList" :key="index" :label="item.rfqName" :value="item.id">
+          <el-option v-for="(item,index) in formGroup.keywordList" :key="index" :label="item.categoryCode+'|'+item.categoryName+'|'+item.id+'|'+item.rfqName+'|'+item.partNum" :value="item.id">
           </el-option>
         </iSelect>
         <div class="icon-search">

@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:18:01
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-07-14 14:24:54
+ * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-07-21 16:38:01
  * @Description: 流转RS单
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\rs\components\circulation\index.vue
 -->
@@ -64,11 +64,11 @@ export default {
       partProjTypes,
       titleData:[
         {label:'零件关系',value:'配件', props: ''},
-        {label:'询价采购员',value:'胡伟', props: ''},
+        {label:'询价采购员',value:'胡伟', props: 'fsBuyer'},
         {label:'货币单位',value:'RMB', props: ''},
         {label:'申请单号',value:'', props: ''},
         {label:'申请日期',value:'2020-01-01', props: ''},
-        {label:'LINIE采购员',value:'胡伟', props: ''},
+        {label:'LINIE采购员',value:'胡伟', props: 'buyer'},
         {label:'Exchange rate',value:'1 RMB=1.00 RMB', props: ''},
       ],
       tableTitle: cloneDeep(nomalTableTitle),

@@ -23,7 +23,7 @@
           @handleSelectionChange="handleSelectionChange"
           :index="true"
           @openMultiHeaderPropsPage="openMultiHeaderPropsPage"
-          multi-header-props="tpbMemo"
+          multi-header-props="memo"
           :multi-header-props-text="language('LK_CHAKAN','查看')"
           action-props=""
       ></tablelist>
@@ -47,7 +47,7 @@
     <!------------------------------------------------------------------------>
     <tpb-remarks
         v-model="dialogRemarks"
-        :memo="selectedRowData.tpbMemo"
+        :memo="selectedRowData.memo"
         :disabled="true"
     />
   </i-page>
@@ -60,7 +60,7 @@ import tablelist from './supplierScoreTableList'
 import {partScroingTitle} from "./data";
 import {pageMixins} from "@/utils/pageMixins";
 import tpbRemarks from './tpbRemarks'
-import {getSupplierAllParts} from "@/api/partsrfq/editordetail";
+import {getSupplierAllParts, getAllParts} from "@/api/partsrfq/editordetail";
 import { getRfqPartRatingsByCurrentDept } from "@/api/supplierscore"
 import store from '@/store'
 import { cloneDeep } from "lodash"
@@ -95,7 +95,7 @@ export default {
       if (rfqId && supplierId) {
         this.tableLoading = true;
         try {
-          const res = await getRfqPartRatingsByCurrentDept({
+          const res = await getAllParts({
             rfqId,
             supplierId
           })

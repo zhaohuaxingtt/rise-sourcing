@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 10:50:38
- * @LastEditTime: 2021-07-19 20:19:13
+ * @LastEditTime: 2021-07-21 18:05:18
  * @LastEditors: Please set LastEditors
  * @Description: 费用详情
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails.vue
@@ -46,7 +46,9 @@
                     class="margin-top20"
                     :tableList="groupList"
                     v-if="!totalTable"
-                    @groupBy="groupBtn"></groupedTable>
+                    @removeList="removeList"
+                    @groupBy="groupBtn"
+                    v-bind="$attrs"></groupedTable>
       <iDialog :visible.sync="visible1"
                title="分组至"
                width="20%">
@@ -78,7 +80,8 @@
                     class="margin-top10"
                     :tableList="ungroupList"
                     v-if="groupby"
-                    @groupBy="groupBtn"></ungroupedTable>
+                    @groupBy="groupBtn"
+                    v-bind="$attrs"></ungroupedTable>
   </div>
 </template>
 
@@ -101,7 +104,8 @@ import {
   down,
   getGroupInfo,
   addComponentToGroup,
-  groupTerms
+  groupTerms,
+  removeComponentFromGroup
 } from "@/api/partsrfq/bob";
 import {
   tableList,
@@ -250,13 +254,24 @@ export default {
         spinner: 'el-icon-loading',
         background: 'rgba(0, 0, 0, 0.7)'
       });
-      groupTerms({
-        analysisSchemeId: this.SchemeId
-      }).then(res => {
+      this.$confirm('是否还原？', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        groupTerms({
+          analysisSchemeId: this.SchemeId
+        }).then(res => {
+          loading.close();
+          iMessage.success('还原成功')
+          this.chargeRetrieve("all");
+        })
+      }).catch(() => {
         loading.close();
-        iMessage.success('还原成功')
+        iMessage.error('还原失败')
         this.chargeRetrieve("all");
-      })
+      });
+
 
     },
     sure (val, flag) {
@@ -298,7 +313,7 @@ export default {
       this.activeName = activeName
       console.log(result, activeName, 222222222)
       getGroupInfo({
-        schemaId: 135,
+        schemaId: this.SchemeId,
         code: activeName === 'rawUngrouped' ? '1' : '2'
       }).then(res => {
         this.options = res.data
@@ -310,7 +325,6 @@ export default {
         this.$message.error('请选择分组');
         return
       }
-
       addComponentToGroup({
         groupId: this.value1.matchId,
         groupName: this.value1.groupName,
@@ -326,7 +340,14 @@ export default {
       })
     },
     handleChange (value) { },
-    clear () { },
+    clear () {
+      const params = this.$refs.groupedTable.checkLists
+      removeComponentFromGroup({
+        roundDetailIdList: params
+      }).then(res => {
+        this.$refs.groupedTable.chargeRetrieve(this.activeName === 'rawUngrouped' ? 'rawGrouped' : 'maGrouped')
+      })
+    },
     finish () {
       this.finishGroup()
     },
@@ -341,7 +362,7 @@ export default {
     },
     down () {
       down({
-        schemaId: 5,
+        schemaId: this.SchemeId,
       }).then((res) => { });
     },
   },
