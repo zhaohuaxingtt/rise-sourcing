@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-06-28 11:18:30
- * @LastEditTime: 2021-07-13 17:04:02
+ * @LastEditTime: 2021-07-22 19:17:23
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\api\supplierscore\index.js
@@ -168,6 +168,14 @@ export function updateRfqPartRatingMemo(params) {
 export function findRateTagForCurrentUser() {
   return requst({
     url: `/rfq-bdl-ratings/findRateTagForCurrentUser`,
+    method: "GET",
+  })
+}
+
+// 获取rfq下的零件列表
+export function getPartsForRfq(params) {
+  return requst({
+    url: `/part-for-rfq/${ params.rfqId }/${ params.pageSize }/${ params.currPage }`,
     method: "GET",
   })
 }
