@@ -6,17 +6,17 @@
         <!--        供货起始时间-->
         <div>{{ $t('TPZS.GHQSSJ') }}</div>
       </div>
-      <div class="massProductionTime" :style="{'left': (this.massProductionTimeRateDot - this.OffsetData) + '%'}">
+      <div class="massProductionTime" :style="{'left': (this.massProductionTimeRateDot) + '%'}">
         <icon symbol name="iconbaojiapingfengenzong-jiedian-cheng" class="iconStyle"/>
         <div class="margin-top26 iconColor" style="line-height: 16px">{{ this.massProductionTimeRate }}%</div>
         <!--        量产时间-->
-        <div style="line-height: 16px">{{ $t('TPZS.LCSJ') }}</div>
+        <div style="line-height: 16px;white-space: nowrap">{{ $t('TPZS.LCSJ') }}</div>
       </div>
-      <div class="achievementRate" :style="{'left': (this.achievementRateDot - this.OffsetData) + '%'}">
+      <div class="achievementRate" :style="{'left': (this.achievementRateDot) + '%'}">
         <icon symbol name="iconVP-jihuazongchanliang" class="iconStyle"/>
         <div class="iconColor" style="line-height: 16px; margin-top: -36px">{{ this.achievementRate }}%</div>
         <!--        计划量产达成率-->
-        <div style="line-height: 16px">{{ $t('TPZS.JHLCDCL') }}</div>
+        <div style="line-height: 16px;white-space: nowrap">{{ $t('TPZS.JHLCDCL') }}</div>
       </div>
       <div class="supplyingEndTime">
         <div>{{ dataInfo.supplyEndTime ? moment(dataInfo.supplyEndTime).format("YYYY-MM") : '' }}</div>
@@ -192,7 +192,6 @@ export default {
       massProductionTimeRateDot: 0,
       achievementRate: '',
       achievementRateDot: '',
-      OffsetData: 1,
       dropPotential: {
         totalPlannedOutputTipsData: 200000,
         estimatedTotalProductionTipsData: 250000,
@@ -212,33 +211,34 @@ export default {
       return moment(date)
     },
     getMathematicalFormulaData() {
-      this.achievementRate = this.dataInfo.achievementRate ? this.dataInfo.achievementRate : '';
-      this.massProductionTimeRate = this.dataInfo.massProductionRatio ? this.dataInfo.massProductionRatio : '';
+      this.achievementRate = this.dataInfo.achievementRate;
+      this.massProductionTimeRate = this.dataInfo.massProductionRatio;
       this.achievementRateDot = this.getDotRange(this.achievementRate);
       this.massProductionTimeRateDot = this.getDotRange(this.massProductionTimeRate);
       this.dropPotential = {
-        totalPlannedOutputTipsData: this.dataInfo.planTotalPro ? this.dataInfo.planTotalPro : '',
+        totalPlannedOutputTipsData: this.dataInfo.planTotalPro,
         estimatedTotalProductionTipsData: this.dataInfo.estimatedActualTotalPro
             ? this.dataInfo.estimatedActualTotalPro
             : '',
-        fixedCost: this.dataInfo.costProportion ? this.dataInfo.costProportion : '',
-        result: this.dataInfo.reductionPotential ? this.dataInfo.reductionPotential : '',
-        costReductionUnitPrice: this.dataInfo.costReductionPrice ? this.dataInfo.costReductionPrice : 0,
+        fixedCost: this.dataInfo.costProportion,
+        result: this.dataInfo.reductionPotential,
+        costReductionUnitPrice: this.dataInfo.costReductionPrice,
       };
       this.additionalPriceReduction = {
-        totalPriceReduction: this.dataInfo.totalPriceReduction ? this.dataInfo.totalPriceReduction : '',
-        priceReduction: this.dataInfo.ltcPriceReduction ? this.dataInfo.ltcPriceReduction : '',
-        result: this.dataInfo.achievedReductionPrice ? this.dataInfo.achievedReductionPrice : '',
+        totalPriceReduction: this.dataInfo.totalPriceReduction,
+        priceReduction: this.dataInfo.ltcPriceReduction,
+        result: this.dataInfo.achievedReductionPrice,
       };
     },
     getDotRange(num) {
-      if (num < 10) {
+      /*if (num < 10) {
         return 10;
       } else if (num > 82) {
         return 82;
       } else {
         return num;
-      }
+      }*/
+      return num;
     },
   },
   watch: {
@@ -255,7 +255,7 @@ export default {
 <style scoped lang="scss">
 .chartBox {
   position: relative;
-  width: 90%;
+  width: 65%;
   margin: 60px auto 0;
   height: 5px;
   background: #E8EFFE;
@@ -264,21 +264,21 @@ export default {
   .supplyingTime {
     text-align: center;
     position: absolute;
-    bottom: -60px;
-    left: -50px;
+    bottom: -3.45rem;
+    left: -140px;
   }
 
   .iconStyle {
     position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
+    /*left: 50%;
+    transform: translateX(-50%);*/
     width: 20px;
     height: 20px;
     font-size: 20px;
   }
 
   .massProductionTime {
-    text-align: center;
+    text-align: left;
     position: absolute;
     bottom: -4.15rem;
     height: 80px;
@@ -288,11 +288,13 @@ export default {
   }
 
   .achievementRate {
-    text-align: center;
+    text-align: left;
     position: absolute;
     bottom: -4.15rem;
     height: 80px;
-
+    .iconStyle{
+      left: 18px;
+    }
     .iconColor {
       color: #4C6C9C
     }
@@ -301,8 +303,8 @@ export default {
   .supplyingEndTime {
     text-align: center;
     position: absolute;
-    bottom: -60px;
-    right: -50px;
+    bottom: -3.45rem;
+    right: -180px;
   }
 }
 
