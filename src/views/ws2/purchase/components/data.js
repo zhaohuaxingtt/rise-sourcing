@@ -174,7 +174,7 @@ export const bmInfoTitle = [
         tooltip: false
     },
     {
-        props: 'approvalStatus',
+        props: 'aa',
         name: '照片',
         key: '照片',
         width: 200,

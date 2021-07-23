@@ -101,13 +101,24 @@
             </div>
             <div class="item">
               <div class="txt">
-                <span>{{ language('LK_TOUZIQINGDANZHUANGTAI', '投资清单状态') }}</span>
+                <span>
+                  {{ language('LK_TOUZIQINGDANZHUANGTAI', '投资清单状态') }}
+                     <Popover
+                          class="popover"
+                          placement="bottom-start"
+                          content="孔鹏飞在2021-06-06代确认"
+                          trigger="hover">
+                        <div slot="reference">
+                          <icon symbol name="iconxinxitishi"></icon>
+                        </div>
+                    </Popover>
+                </span>
               </div>
               <div class="disabled">123123123</div>
             </div>
           </div>
         </div>
-        
+
       </div>
     </iCard>
 
@@ -155,9 +166,9 @@
 
         <div class="top-r">
           <iButton @click="exportList">{{ language('LK_DAOCHU', '导出') }}</iButton>
-          <iButton @click="exportList">{{ language('LK_CAIGOUYUANQUEREN', '采购员确认') }}</iButton>
+          <iButton @click="confirm">{{ language('LK_CAIGOUYUANQUEREN', '采购员确认') }}</iButton>
         </div>
-        
+
       </div>
 
       <iTableList
@@ -168,8 +179,8 @@
           :typeIndex="true"
       >
         <!-- BM单流⽔号 -->
-        <template #data1="scope">
-          <div class="table-link" @click="openBMDetail(scope.row)">{{scope.row.data1}}</div>
+        <template #aa="scope">
+          <div class="table-link" @click="openBMDetail(scope.row)">{{scope.row.aa}}</div>
         </template>
       </iTableList>
       <div style="color: #999999;font-size: 14px;text-align: right;margin: 10px 0;">{{ $t('货币：人民币  |  单位：元  |  不含税 ') }}</div>
@@ -178,7 +189,7 @@
 <!--        <UnitExplain />-->
 <!--      </div>-->
     </iCard>
-
+    <confirm v-model="confirmShow"></confirm>
   </iPage>
 </template>
 
@@ -190,6 +201,8 @@ import {iPage, iMessage, iDialog, iButton, iSelect, iSearch, iInput,
   iCard, icon
 } from "rise";
 import {bmInfoTitle} from "../components/data"
+import confirm from "../components/confirm"
+import { Popover } from "element-ui"
 
 export default {
   components: {
@@ -199,6 +212,8 @@ export default {
     icon,
     iTableList,
     iButton,
+    Popover,
+    confirm,
   },
 
   data(){
@@ -208,8 +223,9 @@ export default {
       technologyTypeList: [], //  工艺类型
       assetsTypeList: [], //  资产分类编号
       tableTitle: bmInfoTitle,
-      tableListData: [],
+      tableListData: [{aa: '查看'}],
       isOpen: false,
+      confirmShow: false,
       detailsTableLoading: false,
     }
   },
@@ -222,11 +238,20 @@ export default {
     exportList(){ //  导出
 
     },
+    confirm(){
+      this.confirmShow = true
+    }
   }
 }
 </script>
 
 <style lang="scss" scoped>
+.table-link{
+  color: #1663F6;
+  text-decoration: underline;
+  font-family: Arial;
+  cursor: pointer;
+}
 .changeList{
 
 }
@@ -260,7 +285,7 @@ export default {
       }
     }
 
-    
+
   }
 }
 
@@ -274,7 +299,7 @@ export default {
       .disabled1{
         background-color: #fff !important;
       }
-      
+
       .disabled{
         width: 250px;
         height: 35px;
@@ -296,7 +321,10 @@ export default {
       .txt{
         font-size: 16px;
         color: #4B4B4C;
-        width: 116px;
+        width: 125px;
+        .popover{
+          display: inline-block;
+        }
       }
     }
   }
@@ -319,7 +347,7 @@ export default {
       font-weight: bold;
     }
   }
-  
+
 }
 .head{
   display: flex;
