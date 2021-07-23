@@ -1,12 +1,15 @@
 
 <template>
-  <div style="height: 540px;width:100%"
-       ref="chart"></div>
+  <div>
+    <div style="height: 540px;width:100%"
+         ref="chart">
+    </div>
+  </div>
 </template>
 <script >
 import echarts from "@/utils/echarts";
 import crown from "@/assets/images/bob.png";
-import lv1 from "@/assets/images/lv.png";
+import lv1 from "@/assets/images/lv1.png";
 import ball from "@/assets/images/ball.png";
 export default {
   props: {
@@ -39,6 +42,7 @@ export default {
     return {
       chartArray: [],
       labelArray: [],
+      labelArray1: [],
       legendKeys: {
         "原材料/散件": "rawMaterialSummary",
         制造费: "manufacturingCostSummary",
@@ -56,6 +60,7 @@ export default {
         "利润",
       ],
       dataArray: [],
+      subtext: "",
       sum: window._.sum,
       min: window._.min,
       max: window._.max,
@@ -82,7 +87,7 @@ export default {
           }
         }
       });
-      // console.log(send)
+
       return send;
     },
     initCharts () {
@@ -91,31 +96,65 @@ export default {
       const option = {
         title: {
           text: this.title,
-          subtext: "\n\n Unit: CNY/pcs",
+          subtext: "Unit: CNY/PC",
           textStyle: {
             fontSize: 18,
             fontFamily: 'Arial',
-            lineHeight: 21,
+            lineHeight: 16,
+            fontWeight: 'bold'
           },
           subtextStyle: {
             color: "#7E84A3",
-            fontSize: 12,
+            fontSize: 14,
             fontFamily: "Arial",
+            left: -10
           },
           left: 0
         },
-        legend: {
-          top: "10",
-          right: "0",
-          icon: "circle",
-          fontSize: "10",
-          fontFamily: "Arial",
-          selectedMode: false, //取消图例上的点击事件
-          data: this.legendArray,
+        tooltip: {
+          trigger: 'axis',
+          axisPointer: {            // 坐标轴指示器，坐标轴触发有效
+            type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+          },
+          formatter (params) {
+
+            let result = ''
+            let domHtml = ''
+            let arr = params.filter((value, index) => {
+              return value.seriesName.indexOf('lv') > -1
+            })
+            let arr1 = params.filter((value, index) => {
+              return !(value.seriesName.indexOf('lv') > -1)
+            })
+            arr.forEach(value => {
+              arr1.forEach(i => {
+
+                if (value.seriesName.replace("lv", "") === i.seriesName) {
+                  domHtml = '<span style="display:inline-block;margin-right:5px;border-radius:10px;width:10px;height:10px;background-color:' + i.color + '"></span>'
+                  result += domHtml + i.seriesName + ":" + value.value.toFixed(2) + '<br/>'
+                }
+              })
+            })
+            return result
+          },
+          textStyle: {
+            fontSize: 12,
+            color: "#e1e1e2"
+          }
         },
+        // legend: {
+        //   top: "10",
+        //   right: "0",
+        //   icon: "circle",
+        //   fontSize: "10",
+        //   fontFamily: "Arial",
+        //   selectedMode: false, //取消图例上的点击事件
+        //   data: this.legendArray,
+        // },
         grid: {
+          left: "6%",
           top: '20%',
-          right: '0',
+          right: '0%',
           bottom: "25%",
           // containLabel: true,
         },
@@ -130,9 +169,45 @@ export default {
               show: false,
               alignWithLabel: true,
             },
+            axisLine: {
+              lineStyle: {
+                type: "dashed",
+                width: 1,
+                color: '#ccc'
+              },
+            },
             axisLabel: {
               fontFamily: "Arial",
               interval: 0,
+              fontSize: 12,
+              fontWeight: 400,
+              lineHeight: 18,
+              color: '#3C4F74'
+            },
+            triggerEvent: true,
+            offset: 6
+          },
+          {
+            type: "category",
+            data: [...this.labelArray1, { value: "" }],
+            nameTextStyle: {
+              verticalAlign: "bottom",
+            },
+            axisLine: {
+              show: false
+            },
+            axisTick: {
+              show: false,
+              alignWithLabel: true,
+            },
+            axisLabel: {
+              align: 'center',
+              fontFamily: "Arial",
+              interval: 0,
+              fontSize: 12,
+              fontWeight: 400,
+              lineHeight: 18,
+              color: '#3C4F74'
             },
             triggerEvent: true,
             offset: 10
@@ -141,9 +216,12 @@ export default {
         yAxis: [
           {
             type: "value",
-            name: "\n\n\n\n\n\n车型项目名称\n\nCBD报价时间",
+            offset: 15,
+            name: "\n\n\n\n\n车型项目\n\n报价时间",
             axisLabel: {
-              color: "#7E84A3",
+              fontSize: 12,
+              color: "#3C4F74",
+              fontWeight: 400,
             },
             axisTick: {
               show: false,
@@ -153,28 +231,24 @@ export default {
             },
             splitNumber: 4,
             nameLocation: "start",
-            offset: 40,
           },
         ],
         emphasis: {
           focus: "series",
         },
         color: [
-          "#1F33CC",
-          "#404FC3",
-          "#0E2C90",
-          "#0040BE",
-          "#1763F7",
-          "#5993FF",
+          "#C6DEFF",
+          "#9BBEFF",
           "#72AEFF",
-          "#94C8FC",
+          "#5993FF",
+          "#1763F7",
+          "#0040BE",
         ],
         series: this.dataArray,
       };
       myChart.setOption(option);
       const that = this;
       myChart.on("click", function (params) {
-        console.log(params)
         if (params.targetType === "axisLabel" && params.value === that.type) {
           that.$emit("select", params);
         }
@@ -183,27 +257,30 @@ export default {
     },
     initData (newVal) {
       if (newVal.length !== 0) {
-        // console.log(newVal)
+
         this.chartArray = newVal;
         this.labelArray = [];
+        this.labelArray1 = [];
         this.dataArray = [];
         const tempArr = [];
         const dataList1 = [];
         const typeList = [];
         newVal.forEach((row, i) => {
-          // console.log(row)
+          console.log(row, 2222)
           const temp =
             row.vehicleType +
-            "\n\n" +
+            "\n" +
             window.moment(row.cbdQuotationTime).format("yyyy.MM");
           const turn = row.turn === -1 ? "最新轮" : row.turn;
+          const subtext = row.spareParts + '\n' + row.fs
           //todo
-          let name = row.supplierId;
-          this.supplierList.forEach(value => {
-            if (name == value.supplierId) {
-              name = value.shortNameZh
-            }
-          })
+          let name = row.supplierName
+          // this.supplierList.forEach(value => {
+          //   if (name == value.supplierId) {
+          //     name = value.shortNameZh
+          //   }
+          // })
+
           if (this.by === "num") {
             name = row.spareParts;
             this.partList.forEach(value => {
@@ -214,25 +291,40 @@ export default {
           }
           const str =
             name +
-            "\n\n第 {Blue|" +
+            "\n第{Blue|" +
             row.turn +
-            "} / " +
+            "}/" +
             row.totalTurn +
-            " 轮\n\n" +
-            temp;
+            "轮\n\n" +
+            "{font|" + temp + "}";
+
+
+
           this.labelArray.push({
             value: str,
             textStyle: {
               rich: {
                 Blue: {
-                  fontSize: 20,
+                  fontSize: 16,
                   fontWeight: 500,
                   color: "#1763F7",
                   fontFamily: "Arial",
                 },
+                font: {
+                  fontSize: 12,
+                  fontWeight: 400,
+                  color: "#7E84A3",
+                  fontFamily: "Arial",
+                  lineHeight: 23
+                }
               },
+
             },
           });
+          this.labelArray1.push({
+            value: subtext,
+          });
+
           // console.log(this.labelArray)
           this.legendArray.map((v, i) => {
             if (!tempArr[v]) {
@@ -279,9 +371,11 @@ export default {
             label: {
               show: true,
               position: "insideTop",
-              fontSize: 14,
+              fontSize: 12,
               color: "white",
               fontFamily: "Arial",
+              distance: 15,
+              offset: [-2, 0],
               formatter: (params) => {
                 // console.log(params)
                 if (params.name === this.type) {
@@ -295,7 +389,7 @@ export default {
                   height: 15,
                   align: "right",
                   backgroundColor: {
-                    image: this.lv1,
+                    image: this.lv,
                   },
                 },
               },
@@ -337,7 +431,7 @@ export default {
                   height: 10,
                   align: "right",
                   backgroundColor: {
-                    image: this.lv1,
+                    image: this.lv,
                   },
                 },
               },
@@ -364,7 +458,7 @@ export default {
             show: true,
             position: "top",
             color: "#7E84A3",
-            fontSize: 14,
+            fontSize: 12,
             align: "center",
             fontFamily: "Arial",
             formatter: (params) => {
@@ -391,25 +485,29 @@ export default {
             },
             rich: {
               BB: {
-                fontSize: 16,
+                fontSize: 12,
+                height: 14,
                 fontWeight: 400,
+
+                padding: [0, 10, 4, 0],
+                verticalAlign: "top",
                 color: "#7E84A3",
               },
               bold: {
-                fontSize: 18,
+                fontSize: 12,
                 fontWeight: 400,
                 color: "#000",
               },
               Crown: {
                 height: 15,
-                align: "center",
+                align: "top",
                 backgroundColor: {
                   image: this.crown,
                 },
               },
               Ball: {
-                height: 15,
-                align: "center",
+                height: 14,
+                align: "top",
                 backgroundColor: {
                   image: this.ball,
                 },
@@ -425,7 +523,7 @@ export default {
           barWidth: 50,
           data: this.labelArray.map((i) => 0),
         });
-        console.log(this.dataArray)
+
         if (this.$refs.chart && this.chartArray.length > 0) {
           this.initCharts();
         }

@@ -141,8 +141,19 @@
         <el-col :span="inside?20:19">
           <iCard style="height: 579px"
                  collapse>
+            <div class="legend">
+              <ul>
+                <li v-for="(item,index) in anchorList"
+                    :key="index">
+                  <i class="circle"
+                     :style="color(item)"></i>
+                  <span style="vertical-align: baseline">{{item}}</span>
+                </li>
+              </ul>
+            </div>
             <iRow>
-              <el-col :span="inside ? 18 : 24">
+              <el-col :span="inside ? 18 : 24"
+                      style="padding-left:0px">
                 <crown-bar :chartData="chartData"
                            :supplierList="supplierList"
                            :partList="partList"
@@ -166,23 +177,27 @@
                   </iSelect>
                 </div>
               </el-col>
-
               <el-col :span="6"
                       v-if="inside">
+
+                <!-- <div style="border: 1px dashed #ccc;width: 1px;height:320px;"></div> -->
                 <div class="left-dash1">
-                  <out-bar v-if="chartData1.length > 0"
-                           :chartData="chartData1"
-                           @del="delOut"
-                           @change="changeOut"></out-bar>
+                  <div v-if="chartData1.length > 0"
+                       style="flex:1">
+                    <out-bar :chartData="chartData1"
+                             @del="delOut"
+                             @change="changeOut"></out-bar>
+                  </div>
                   <div v-else
                        @click="findPart"
                        class="icon-add">
-                    <icon style="font-size:300px;width:230px"
-                          name="iconbob-daitianjia"
-                          symbol></icon>
-                    <div style="text-align: center">{{ $t("待添加") }}</div>
+                    <img src="@/assets/images/newZhu.png"
+                         alt=""
+                         style="width:220px;height:300px">
+                    <div style="text-align: center;color:#8F8F90">{{ $t("待添加") }}</div>
                   </div>
                 </div>
+
               </el-col>
             </iRow>
           </iCard>
@@ -757,6 +772,23 @@ export default {
         return ''
       }
     },
+    color (item) {
+      return function (item) {
+        if (item === '原材料/散件') {
+          return 'background: #C6DEFF'
+        } else if (item === '制造费') {
+          return 'background: #9BBEFF'
+        } else if (item === '报废成本') {
+          return 'background: #72AEFF'
+        } else if (item === '管理费') {
+          return 'background: #5993FF'
+        } else if (item === '其他费用') {
+          return 'background: #1763F7'
+        } else if (item === '利润') {
+          return 'background: #0040BE'
+        }
+      }
+    }
 
   },
 };
@@ -767,7 +799,7 @@ export default {
   .end {
     text-align: center;
     position: relative;
-    bottom: 30px;
+    bottom: 60px;
   }
   .toolTip-div {
     z-index: 20;
@@ -783,13 +815,18 @@ export default {
     left: 0;
     padding: 10px;
   }
+
   .left-dash1 {
+    display: flex;
+    height: auto;
     border: none;
-    border-left: 2px dashed #ced4e1;
     padding-left: 40px;
+    justify-content: center;
+    align-items: center;
     .icon-add {
-      margin-top: 80px;
-      margin-bottom: 20px;
+      flex:1;
+      height: 560px;
+      // border-left: 2px dashed #ccc;
       text-align: center;
     }
   }
@@ -828,6 +865,7 @@ export default {
   margin: 100px auto;
   li {
     width: 100%;
+    font-weight: 600;
     cursor: pointer;
     padding: 10px 0;
     color: #1b1d21;
@@ -857,5 +895,32 @@ export default {
 }
 ::v-deep.el-form-item {
   margin-bottom: 20px;
+}
+.legend {
+  position: absolute;
+  right: 95px;
+  top: 26px;
+  font-family: "Arial";
+  font-size: 16px;
+  color: #0d2451;
+  ul {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    li {
+      padding-right: 20px;
+    }
+  }
+}
+.card {
+  position: relative;
+}
+.circle {
+  display: inline-block;
+  border-radius: 50%;
+  width: 14px;
+  height: 14px;
+  vertical-align: baseline;
+  margin-right: 10px;
 }
 </style>
