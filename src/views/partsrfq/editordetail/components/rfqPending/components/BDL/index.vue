@@ -59,7 +59,7 @@ export default {
     // eslint-disable-next-line no-undef
     ...Vuex.mapState({
       userInfo: state => state.permission.userInfo,
-    })
+    }),
   },
   data() {
     return {
