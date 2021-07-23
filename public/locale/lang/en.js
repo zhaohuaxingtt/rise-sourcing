@@ -973,6 +973,7 @@
 
         'LK_MUJUTOUZIJINE': '模具投资金额', //  模具投资金额
         'LK_MUJUTOUZIQINGDANZHUANGTAI': '模具投资清单状态', //  模具投资清单状态
+        'LK_TOUZIQINGDANZHUANGTAI': '投资清单状态', //  投资清单状态
         'LK_YEWUCHULIZHUANGTAI': '业务处理状态',    //  业务处理状态
         'LK_XUHAO': '序号', //  序号
         'LK_MUJUID': '模具ID',  //  模具ID

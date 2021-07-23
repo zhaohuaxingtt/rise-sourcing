@@ -55,9 +55,13 @@
               </div>
               <div class="disabled">123123123</div>
             </div>
-          </div>
 
-          <div class="c-line">
+            <div class="item">
+              <div class="txt">
+                <span>{{ language('LK_GONGYINGSHANG', '供应商') }}</span>
+              </div>
+              <div class="disabled">123123123</div>
+            </div>
             <div class="item">
               <div class="txt">
                 <span>{{ language('LK_KESHI', '科室') }}</span>
@@ -72,19 +76,11 @@
             </div>
             <div class="item">
               <div class="txt">
-                <span>{{ language('LK_GONGYINGSHANG', '供应商') }}</span>
+                <span>{{ language('LK_XIANGMUCAIGOUYUAN', '项目采购员') }}</span>
               </div>
               <div class="disabled">123123123</div>
             </div>
-            <div class="item">
-              <div class="txt">
-                <span>{{ language('LK_RUZHANGRIQI', '入账日期') }}</span>
-              </div>
-              <div class="disabled">123123123</div>
-            </div>
-          </div>
 
-          <div class="c-line">
             <div class="item">
               <div class="txt">
                 <span>{{ language('LK_WBSBIANHAO', 'WBS编号') }}</span>
@@ -93,7 +89,7 @@
             </div>
             <div class="item">
               <div class="txt">
-                <span>{{ language('LK_DINGDANHAO', '订单号') }}</span>
+                <span>{{ language('LK_CHEXINGXIANGMU', '车型项目') }}</span>
               </div>
               <div class="disabled">123123123</div>
             </div>
@@ -105,36 +101,9 @@
             </div>
             <div class="item">
               <div class="txt">
-                <span>{{ language('LK_RUZHANGDANHAO', '入账单号') }}</span>
+                <span>{{ language('LK_TOUZIQINGDANZHUANGTAI', '投资清单状态') }}</span>
               </div>
               <div class="disabled">123123123</div>
-            </div>
-          </div>
-
-          <div class="c-line">
-            <div class="item">
-              <div class="txt">
-                <span>{{ language('LK_CHEXINGXIANGMU', '车型项目') }}</span>
-              </div>
-              <div class="disabled">123123123</div>
-            </div>
-            <div class="item">
-              <div class="txt">
-                <span>{{ language('LK_SAPDINGDANHAO', 'SAP订单号') }}</span>
-              </div>
-              <div class="disabled">123123123</div>
-            </div>
-            <div class="item">
-              <div class="txt">
-                <span></span>
-              </div>
-              <div class="disabled disabled1"></div>
-            </div>
-            <div class="item">
-              <div class="txt">
-                <span></span>
-              </div>
-              <div class="disabled disabled1"></div>
             </div>
           </div>
         </div>
@@ -186,30 +155,30 @@
 
         <div class="top-r">
           <iButton @click="exportList">{{ language('LK_DAOCHU', '导出') }}</iButton>
+          <iButton @click="exportList">{{ language('LK_CAIGOUYUANQUEREN', '采购员确认') }}</iButton>
         </div>
         
       </div>
 
       <iTableList
-        :tableData="detailsTableList"
-        :tableTitle="detailsTableHead"
-        :tableLoading="detailsTableLoading"
-        :selection="false"
+          :tableData="tableListData"
+          :tableTitle="tableTitle"
+          :tableLoading="tableLoading"
+          :selection="false"
+          :typeIndex="true"
       >
         <!-- BM单流⽔号 -->
         <template #data1="scope">
           <div class="table-link" @click="openBMDetail(scope.row)">{{scope.row.data1}}</div>
         </template>
       </iTableList>
-      
-<!--      <div class="UnitExplain">-->
+      <div style="color: #999999;font-size: 14px;text-align: right;margin: 10px 0;">{{ $t('货币：人民币  |  单位：元  |  不含税 ') }}</div>
+
+      <!--      <div class="UnitExplain">-->
 <!--        <UnitExplain />-->
 <!--      </div>-->
     </iCard>
 
-    <iCard class="changeList">
-      <div class="title">{{language('LK_BIANGENDANJIALIEBIAO', '变更单列表')}}</div>
-    </iCard>
   </iPage>
 </template>
 
@@ -220,7 +189,7 @@ import {
 import {iPage, iMessage, iDialog, iButton, iSelect, iSearch, iInput,
   iCard, icon
 } from "rise";
-import { detailsTableHead } from "../components/data";
+import {bmInfoTitle} from "../components/data"
 
 export default {
   components: {
@@ -238,9 +207,9 @@ export default {
       versionList: [],  //  版本列表
       technologyTypeList: [], //  工艺类型
       assetsTypeList: [], //  资产分类编号
-      detailsTableList: [],
+      tableTitle: bmInfoTitle,
+      tableListData: [],
       isOpen: false,
-      detailsTableHead,
       detailsTableLoading: false,
     }
   },
@@ -273,7 +242,7 @@ export default {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
 
     .top-l{
       display: flex;
@@ -300,7 +269,7 @@ export default {
     .c-line{
       display: flex;
       justify-content: space-between;
-      margin-bottom: 20px;
+      flex-wrap: wrap;
 
       .disabled1{
         background-color: #fff !important;
@@ -321,6 +290,7 @@ export default {
         display: flex;
         flex: 0 1 auto;
         line-height: 35px;
+        margin-bottom: 20px;
       }
 
       .txt{
