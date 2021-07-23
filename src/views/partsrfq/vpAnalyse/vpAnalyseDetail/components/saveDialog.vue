@@ -7,7 +7,7 @@
   >
     <div>
       <div class="margin-bottom15 flex-between-center">
-        <label for="">{{language('TPZS.BCZFXK','保存在分析库')}}</label>
+        <label for="">{{ language('TPZS.BCZFXK', '保存在分析库') }}</label>
         <el-checkbox v-model="analysisSave"></el-checkbox>
       </div>
       <iInput v-model="analysisName"
@@ -15,7 +15,7 @@
     </div>
     <div class="margin-top20">
       <div class="margin-bottom15 flex-between-center">
-        <label for="">{{language('TPZS.BCWBK','保存为报告')}}</label>
+        <label for="">{{ language('TPZS.BCWBK', '保存为报告') }}</label>
         <el-checkbox v-model="reportSave"></el-checkbox>
       </div>
       <iInput v-model="reportName"
@@ -23,17 +23,23 @@
     </div>
     <div slot="footer"
          class="dialog-footer">
-      <iButton type="primary" @click="save">{{$t('LK_QUEDING')}}</iButton>
+      <iButton type="primary" @click="save">{{ $t('LK_QUEDING') }}</iButton>
     </div>
   </iDialog>
 </template>
 
 <script>
-import {iButton, iDialog, iInput} from 'rise';
+import {iButton, iDialog, iInput, iMessage} from 'rise';
 
 export default {
   props: {
     value: {type: Boolean},
+    dataInfo: {
+      type: Object,
+      default: () => {
+        return {};
+      },
+    },
   },
   components: {
     iButton,
@@ -53,13 +59,38 @@ export default {
       this.$emit('input', false);
     },
     save() {
+      if (this.$route.query.type === 'add' && !this.analysisSave) {
+        iMessage.warn(this.language('TPZS.MYFXFAQGXBCZFXK', '没有分析方案，请勾选保存在分析库'));
+        return false
+      }
       const req = {
         analysisSave: this.analysisSave,
         reportSave: this.reportSave,
         analysisName: this.analysisName,
         reportName: this.reportName,
+      };
+      this.$emit('handleSaveDialog', req);
+    },
+    initData() {
+      //1 内部 0外部
+      const rfqId = this.dataInfo.rfqId ? this.dataInfo.rfqId : '';
+      const rfqName = this.dataInfo.rfqName ? this.dataInfo.rfqName : '';
+      const partsId = this.dataInfo.partsId ? this.dataInfo.partsId : '';
+      const partsNameZh = this.dataInfo.partsNameZh ? this.dataInfo.partsNameZh : '';
+      if (this.$store.state.rfq.entryStatus === 1) {
+        this.analysisName = `${rfqId}-${rfqName}`;
+        this.reportName = `${rfqId}-${rfqName}-${window.moment(new Date()).
+            format('yyyy.MM.DD')}`;
+      } else {
+        this.analysisName = `${partsId}-${partsNameZh}`;
+        this.reportName = `${partsId}-${partsNameZh}-${window.moment(new Date()).
+            format('yyyy.MM.DD')}`;
       }
-      this.$emit('handleSaveDialog')
+    },
+  },
+  watch: {
+    value(val) {
+      val && this.initData();
     },
   },
 };

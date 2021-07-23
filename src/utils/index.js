@@ -7,12 +7,13 @@
  * @Description: 公共utils部分
  * @FilePath: \front-web\src\utils\index.js
  */
-import router from '../router'
-import store from '../store'
-import localStoreage from './localstorage'
-import jsencrypt from 'jsencrypt'
-import {sendKey} from '@/api/usercenter'
-import {onlyselfProject,allitemsList,BKMROLETAGID} from '@/config'
+import router from '../router';
+import store from '../store';
+import localStoreage from './localstorage';
+import jsencrypt from 'jsencrypt';
+import {sendKey} from '@/api/usercenter';
+import {allitemsList, BKMROLETAGID, onlyselfProject} from '@/config';
+
 export function setCookie(cookieName, cookieData) {
   // eslint-disable-next-line no-undef
   return Cookies.set(cookieName, cookieData, {
@@ -241,4 +242,38 @@ export function filterProjectList(oldProjectList,currentProjectType){
     console.log(error)
     return []
   }
+}
+
+//小数点精确
+export function toFixedNumber(number, m) {
+  if (typeof number !== 'number') {
+    throw new Error("number不是数字");
+  }
+  number = Number(number)
+  let result = Math.round(Math.pow(10, m) * number) / Math.pow(10, m);
+  result = String(result);
+  if (result.indexOf(".") === -1) {
+    result += ".";
+    result += new Array(m + 1).join('0');
+  } else {
+    let arr = result.split('.');
+    if (arr[1].length < m) {
+      arr[1] = arr[1] += new Array(m - arr[1].length + 1).join('0')
+    }
+    result = arr.join('.')
+  }
+  return result
+}
+
+//转千分位
+export function toThousands (number) {
+  return (number + '').replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g, '$1,')
+}
+
+//去除千分位
+export function deleteThousands (number) {
+  if(!number) return number;
+  number = number.toString();
+  number = number.replace(/,/gi, '');
+  return number;
 }
