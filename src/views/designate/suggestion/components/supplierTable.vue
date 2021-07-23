@@ -290,14 +290,14 @@ export default {
     },
     // 保存修改记录
     async submit() {
-      if (!this.selectData.length) {
-        iMessage.error(this.language('nominationSuggestion_QingXuanZeZhiShaoYiTiaoShuJu','请选择至少一条数据'))
-        return
-      }
+      // if (!this.selectData.length) {
+      //   iMessage.error(this.language('nominationSuggestion_QingXuanZeZhiShaoYiTiaoShuJu','请选择至少一条数据'))
+      //   return
+      // }
       const confirmInfo = await this.$confirm(this.language('submitSure','您确定要执行提交操作吗？'))
       if (confirmInfo !== 'confirm') return
       this.submiting = true
-      const data = this.selectData.map(o => {
+      const data = this.data && this.data.map(o => {
         return {
           fsnrGsnrNum: o.fsnrGsnrNum,
           id: o.id,
@@ -307,7 +307,7 @@ export default {
           supplierId: o.supplierId,
           supplierName: o.supplierName
         }
-      })
+      }) || []
       updateSuggestion(data).then(res => {
         if (res.code === '200') {
           iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'))

@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-17 13:44:35
- * @LastEditTime: 2021-07-21 11:55:48
+ * @LastEditTime: 2021-07-23 10:04:15
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\configscoredept\index.vue
@@ -87,7 +87,7 @@
           <template #rateTag="scope">
             <iSelect
               v-if="editStauts"
-              v-model="scope.row.rateTag"
+              v-model="scope.row.rateTag.code"
               :placeholder="language('QINGXUANZEBUMENPINGFENLEIXING', '请选择部门评分类型')"
               class="deptScoreTypeSelect"
             >
@@ -98,7 +98,7 @@
                 :key="item.key"
               ></el-option>
             </iSelect>
-            <span v-else>{{ scope.row.rateTag }}</span>
+            <span v-else>{{ scope.row.rateTag.desc }}</span>
           </template>
           <template #rateDepartNum="scope">
             <iInput v-if="editStauts" class="deptNumSelect" :placeholder="language('QINGXUANZEBUMENBIANHAO', '请选择部门编号')" v-model="scope.row.rateDepartNum" readonly @click.native="handleSelectDeptNum(scope.row)">
@@ -254,7 +254,8 @@ export default {
       if (!isEqual(this.tableListData, this.tableListDataCache)) {
         this.$confirm(this.language("NOSAVEISQUIT", "您还有数据更改尚未保存, 请确认是否需要退出编辑模式"))
         .then(() => {
-          this.tableListData = this.tableListData.filter(item => !item.isCache)
+          // this.tableListData = this.tableListData.filter(item => !item.isCache)
+          this.tableListData = cloneDeep(this.tableListDataCache)
           this.editStauts = false
         })
         .catch(() => {})
@@ -268,7 +269,10 @@ export default {
 
       this.saveLoading = true
       saveRfqRateDeparts(
-        this.tableListData
+        this.tableListData.map(item => ({
+          ...item,
+          rateTag: item.rateTag.code
+        }))
       )
       .then(res => {
         const message = this.$i18n.locale === "zh" ? res.desZh : res.desEn
@@ -300,7 +304,9 @@ export default {
     handleAdd() {
       this.tableListData.unshift({
         isCache: true,
-        rateTag: "",
+        rateTag: {
+          code: ""
+        },
         rateDepartNum: "",
         isCheck: ""
       })

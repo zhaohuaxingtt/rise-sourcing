@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-06-16 20:44:29
- * @LastEditTime: 2021-07-22 13:01:08
+ * @LastEditTime: 2021-07-23 10:14:44
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\analysisTool\components\analysisTable.vue
@@ -89,7 +89,7 @@
       <el-table-column prop="isDefault"
                        align="center"
                        header-align="center"
-                       :label="$t('MRX')">
+                       :label="$t('TPZS.MRX')">
         <template slot-scope="scope">
           <div v-if="!editMode">
             <!-- {{scope.row.isDefault === '是' || scope.row.isDefault === '否' ? scope.row.isDefault : null}} -->
@@ -159,9 +159,11 @@
                  :current-page='page.currPage'
                  :total="page.totalCount" />
 
-    <reportPreview :visible="reportVisible"
+    <reportPreview :key="reportKey"
+                   :visible="reportVisible"
                    :reportUrl="reportUrl"
-                   :title="reportTitle" />
+                   :title="reportTitle"
+                   @handleCloseReport="handleCloseReport" />
   </div>
 </template>
 
@@ -194,6 +196,7 @@ export default {
       reportVisible: false,
       reportUrl: null,
       reportTitle: null,
+      reportKey: 0,
       round: null,        //round
       currentDefaultObj: null, //当前编辑对象
       updatedDefault: false //是否已更新默认项
@@ -343,6 +346,10 @@ export default {
     clickSaveDel () {
       const ids = []
       const reportIds = []
+      if (!this.selectionData || this.selectionData.length == 0) {
+        iMessage.error(this.$t('TPZS.QXZYSCDSJ'));
+        return;
+      }
       this.selectionData.map(item => {
         if (item.type == this.$t('TPZS.SCHEME_TYPE')) ids.push(item.id)
         else reportIds.push(item.id)
@@ -373,6 +380,9 @@ export default {
     //点击报告名称，打开报告预览弹窗
     clickReport (row) {
       this.reportTitle = row.reportName
+      if (row.downloadUrl) this.reportUrl = row.downloadUrl
+      this.reportVisible = true
+      this.reportKey = Math.random()
       if (row.downloadUrl) this.reportUrl = row.downloadUrl
       this.reportVisible = true
     },
@@ -426,7 +436,13 @@ export default {
         }
       });
       // console.log(this.orgs)
+
+    },
+    //点击关闭报告预览弹窗
+    handleCloseReport () {
+      this.reportVisible = false
     }
+
   }
 }
 </script>

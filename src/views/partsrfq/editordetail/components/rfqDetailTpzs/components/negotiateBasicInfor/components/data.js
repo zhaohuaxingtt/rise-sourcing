@@ -14,7 +14,7 @@ export const tableTitle = [
   { props: 'cycleOutput', name: '全生命周期产量', key: 'TPZS.QSMZQCL', tooltip: true },
   { props: 'maxOutput', name: '峰值年产量', key: 'TPZS.FZNCL', tooltip: true },
   { props: 'cartypeProjectZh', name: '项目名称', key: 'TPZS.XMMC', tooltip: true },
-  { props: 'sopDate', name: 'SOP日期', key: 'LK_SOPRIQI', tooltip: true },
+  { props: 'sopLocalDate', name: 'SOP日期', key: 'LK_SOPRIQI', tooltip: true },
 ]
 export const supplierTableTitle = [
   { props: 'supplierNameZh', name: '供应商', key: 'costanalysismanage.GongYingShang', tooltip: true },
@@ -36,5 +36,5 @@ export const fixedRecordTableTitle = [
   { props: 'carTypeProj', name: '车型项目名称', key: 'LK_CHEXINGXIANGMUMINGCHENG', tooltip: true },
   { props: 'supplierNameCn', name: '定点供应商', key: 'LK_FIXEDPOINTSUPPLIER', tooltip: true },
   { props: 'apriceModel', name: '定点金额', key: 'TPZS.DDJE', tooltip: true },
-  { props: 'nominateTime', name: '定点时间', key: 'TPZS.DDSJ', tooltip: true },
+  { props: 'nominateDate', name: '定点时间', key: 'TPZS.DDSJ', tooltip: true },
 ]

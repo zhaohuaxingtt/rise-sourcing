@@ -108,6 +108,18 @@ export default {
         const res = await getPartsList(req);
         if (res.result) {
           this.tableListData = res.data;
+          // 通过分析库的零件号 查找对应的零件，进入已选零件
+          var partsIds = []
+          this.middleListData.forEach(val => {
+            partsIds.push(val.partsId)
+          })
+          if (!partsIds.includes(this.$route.query.partsNo)) {
+            this.tableListData.forEach(item => {
+              if (item.partsId === this.$route.query.partsNo) {
+                this.middleListData.push(item)
+              }
+            })
+          }
           this.pageData.totalCount = res.data.length
           this.setPageTableData()
         }
@@ -184,12 +196,12 @@ export default {
       this.handleTabClick({ name: 'selected' })
     },
     async handleAnalyse() {
-      if (!this.middleListData.length) {
+      if (!this.selectTableData.length) {
         iMessage.warn(this.$t('TPZS.BQYXLJMYSJQZQLLJZTJZYXLJ'))
         return false
       }
       this.tableLoading = true
-      const res = await saveCarParts(this.middleListData)
+      const res = await saveCarParts(this.selectTableData)
       this.resultMessage(res, () => {
         this.tableLoading = false
         this.$router.push({ path: '/sourcing/partsrfq/vpAnalyseDetail', query: { type: 'add', batchNumber: String(res.data) } })
