@@ -1,7 +1,7 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-07-06 22:11:41
- * @LastEditTime: 2021-07-23 14:33:15
+ * @LastEditTime: 2021-07-23 15:37:26
  * @LastEditors: Please set LastEditors
  * @Description: 决策资料 - 扩产能
  * @FilePath: /front-web/src/views/designate/designatedetail/decisionData/rsCapacityExpan/index.vue
@@ -17,7 +17,7 @@
     <!-- Part infomation -->
     <partInfomation :data="PartTableData" class="margin-top20" />
     <!-- Economic Assessment -->
-    <ecoassessment :data="assesmentList" :timeList="yearList" class="margin-top20" />
+    <ecoAssessment :data="assesmentList" :timeList="yearList" class="margin-top20" />
     <!-- footer -->
     <div class="caexpan-footer">
       <span><strong>{{language('TOTALINVESTMENTVAT','Total Investment(Excel VAT)不含税')}}：</strong>
@@ -53,7 +53,7 @@ import basicForm from './components/basicForm'
 import capacity from './components/capacity'
 import investment from './components/investment'
 import partInfomation from './components/partInfomation'
-import ecoassessment from './components/ecoassessment'
+import ecoAssessment from './components/ecoAssessment'
 // import tablelist from "@/views/designate/supplier/components/tableList";
 // import {
 //   InvestmentTableTitle,
@@ -70,7 +70,7 @@ export default {
     capacity,
     partInfomation,
     investment,
-    ecoassessment,
+    ecoAssessment,
     // tablelist,
     iCard
   },
