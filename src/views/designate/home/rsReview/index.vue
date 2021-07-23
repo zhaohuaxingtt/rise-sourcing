@@ -121,6 +121,14 @@
       <template #signId="scope">
         <a href="javascript:;" class="selStatus-link" @click="$router.push({path: '/sourcing/partsnomination/signSheet/details', query: {id: scope.row.signId}})">{{scope.row.signId}}</a>
       </template>
+      <!-- 签字单零件项目类型 -->
+      <template #partProjType="scope">
+        <span>{{scope.row.partProjType && scope.row.partProjType.name || scope.row.partProjType || ''}}</span>
+      </template>
+      <!-- 签字单状态 -->
+      <template #signStatus="scope">
+        <span>{{scope.row.signStatus && scope.row.signStatus.name || scope.row.signStatus || ''}}</span>
+      </template>
       <!-- SEL单据确认状态 -->
       <template #selStatus="scope">
         <div>
