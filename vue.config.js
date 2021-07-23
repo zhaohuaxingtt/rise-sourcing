@@ -112,7 +112,7 @@ module.exports = {
     host: '0.0.0.0',
     port: 8080,
     https: false,
-    hotOnly: true,
+    hot: true,
     proxy: {
       '/approvalApi': {
         target: 'http://10.122.17.38:8012',
@@ -351,7 +351,7 @@ module.exports = {
       '/aonApi': {
         // target: 'http://10.160.138.185:8036',
         // target: 'http://192.168.43.217:8036',
-        target: 'http://10.160.137.88:8036',
+        target: 'http://10.160.141.213:8036',
         // target: 'http://10.160.137.179:8036',
         changeOrigin: true,
         pathRewrite: {
