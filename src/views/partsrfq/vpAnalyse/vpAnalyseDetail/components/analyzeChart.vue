@@ -2,7 +2,7 @@
   <div>
     <div class="chartBox">
       <div class="supplyingTime">
-        <div>{{ dataInfo.supplyBeginTime ? moment(dataInfo.supplyBeginTime).format("YYYY-MM") : '' }}</div>
+        <div>{{ dataInfo.supplyBeginTime ? moment(dataInfo.supplyBeginTime).format('YYYY-MM') : '' }}</div>
         <!--        供货起始时间-->
         <div>{{ $t('TPZS.GHQSSJ') }}</div>
       </div>
@@ -19,7 +19,7 @@
         <div style="line-height: 16px;white-space: nowrap">{{ $t('TPZS.JHLCDCL') }}</div>
       </div>
       <div class="supplyingEndTime">
-        <div>{{ dataInfo.supplyEndTime ? moment(dataInfo.supplyEndTime).format("YYYY-MM") : '' }}</div>
+        <div>{{ dataInfo.supplyEndTime ? moment(dataInfo.supplyEndTime).format('YYYY-MM') : '' }}</div>
         <!--        供货结束时间-->
         <div>{{ $t('TPZS.GHJSSJ') }}</div>
       </div>
@@ -29,12 +29,12 @@
         <div class="itemBox">
           <!--          计划产量（截至上月末）-->
           <iLabel :label="$t('TPZS.JHCLJZSYM')" slot="label" class="labelWidth"></iLabel>
-          <iText class="valueWidth">{{ dataInfo.planProEndLastMonth }}</iText>
+          <iText class="valueWidth">{{ toThousands(dataInfo.planProEndLastMonth) }}</iText>
         </div>
         <div class="itemBox">
           <!--          实际累计产量（截至上月末）-->
           <iLabel :label="$t('TPZS.SJLJCL')" slot="label" class="labelWidth"></iLabel>
-          <iText class="valueWidth">{{ dataInfo.actualProEndLastMonth }}</iText>
+          <iText class="valueWidth">{{ toThousands(dataInfo.actualProEndLastMonth) }}</iText>
           <template v-if="dataInfo.proGrowthRate > 0">
             <div class="flex-align-center">
               <icon symbol name="iconshangsheng-VP" class="margin-left15 margin-right5"></icon>
@@ -65,30 +65,30 @@
                   <div class="left-bracket">（</div>
                   <div class="division">
                     <div class="item item-top">{{ this.$t('TPZS.JIHUAZHONGCHANLIANG') }}</div>
-                    <div class="item">{{this.$t('TPZS.YUJIZONGCHANLIANG')}}</div>
+                    <div class="item">{{ this.$t('TPZS.YUJIZONGCHANLIANG') }}</div>
                   </div>
                   <div class="subduction"></div>
                   <div class="subduction-num">1</div>
                   <div class="right-bracket">）</div>
                   <div class="multiply">✖️</div>
-                  <div class="multiply-num">{{this.$t('TPZS.GUDINGCHENGBEN')}}%</div>
+                  <div class="multiply-num">{{ this.$t('TPZS.GUDINGCHENGBEN') }}%</div>
                 </div>
                 <div class="row2">
                   <div class="equal">=</div>
                   <div class="left-bracket">（</div>
                   <div class="division">
                     <div class="item item-top">{{ this.dropPotential.totalPlannedOutputTipsData }}</div>
-                    <div class="item">{{this.dropPotential.estimatedTotalProductionTipsData}}</div>
+                    <div class="item">{{ this.dropPotential.estimatedTotalProductionTipsData }}</div>
                   </div>
                   <div class="subduction"></div>
                   <div class="subduction-num">1</div>
                   <div class="right-bracket">）</div>
                   <div class="multiply">✖️</div>
-                  <div class="multiply-num">{{this.dropPotential.fixedCost}}%</div>
+                  <div class="multiply-num">{{ this.dropPotential.fixedCost }}%</div>
                 </div>
                 <div class="row2">
                   <div class="equal">=</div>
-                  <div class="result">{{this.dropPotential.result}}%</div>
+                  <div class="result">{{ this.dropPotential.result }}%</div>
                 </div>
               </div>
               <!--              <div v-katex="dropPotentialTips"></div>-->
@@ -113,13 +113,17 @@
         <div class="itemBox">
           <!--          计划总产量-->
           <iLabel :label="$t('TPZS.JHZCL')" slot="label" class="labelWidth"></iLabel>
-          <iText class="valueWidth">{{ dataInfo.planTotalPro }}</iText>
+          <iText class="valueWidth">{{ toThousands(dataInfo.planTotalPro) }}</iText>
         </div>
         <div class="itemBox">
           <!--          预计总产量-->
           <iLabel :label="$t('TPZS.YJZCL')" slot="label" class="labelWidth"></iLabel>
-          <iInput class="valueWidth" v-model="dataInfo.estimatedActualTotalPro" v-if="!disabledEstimatedActualTotalPro"></iInput>
-          <iText class="valueWidth" v-else>{{ dataInfo.estimatedActualTotalPro }}</iText>
+          <iInput class="valueWidth estimatedActualTotalPro"
+                  v-model="dropPotential.estimatedActualTotalPro"
+                  v-if="!disabledEstimatedActualTotalPro"
+                  @blur="inputMoneyFormat($event, 'estimatedActualTotalPro')"
+          ></iInput>
+          <iText class="valueWidth" v-else>{{ toThousands(dropPotential.estimatedActualTotalPro) }}</iText>
         </div>
         <div class="itemBox">
           <div class="warpBox">
@@ -134,7 +138,7 @@
               <icon symbol name="iconxinxitishi" class="tipIcon2" slot="reference"></icon>
             </el-popover>
           </div>
-          <iText class="valueWidth font-weight">{{ dataInfo.achievedReductionPrice }}</iText>
+          <iText class="valueWidth font-weight">{{ toThousands(dataInfo.achievedReductionPrice) }}</iText>
         </div>
       </div>
     </div>
@@ -143,9 +147,10 @@
 
 <script>
 import {icon, iInput, iLabel, iText} from 'rise';
-import moment from 'moment'
+import moment from 'moment';
 import VueKatex from 'vue-katex';
 import 'katex/dist/katex.min.css';
+import {toThousands, deleteThousands} from '@/utils';
 
 export default {
   components: {
@@ -163,28 +168,31 @@ export default {
     },
     disabledEstimatedActualTotalPro: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   computed: {
     dropPotentialTips() {
       //计划总产量
       //预计总产量
       //固定成本
-      return `\\begin{array}{l}\\\\\\Delta\\%\\;\\;\\;=\\;\\left(\\frac{\\mathrm{${this.$t('TPZS.JIHUAZHONGCHANLIANG')}}}{\\mathrm{${this.$t('TPZS.YUJIZONGCHANLIANG')}}}\\;\\;-\\;1\\right)\\times\\mathrm{${this.$t('TPZS.GUDINGCHENGBEN')}}\\%\\\\\\\\\\;\\;\\;\\;\\;\\;\\;\\;\\;
+      return `\\begin{array}{l}\\\\\\Delta\\%\\;\\;\\;=\\;\\left(\\frac{\\mathrm{${this.$t(
+          'TPZS.JIHUAZHONGCHANLIANG')}}}{\\mathrm{${this.$t(
+          'TPZS.YUJIZONGCHANLIANG')}}}\\;\\;-\\;1\\right)\\times\\mathrm{${this.$t('TPZS.GUDINGCHENGBEN')}}\\%\\\\\\\\\\;\\;\\;\\;\\;\\;\\;\\;\\;
       =\\left(\\frac{${this.dropPotential.totalPlannedOutputTipsData}}{${this.dropPotential.estimatedTotalProductionTipsData}}-\\;1\\right)\\times${this.dropPotential.fixedCost}\\%\\\\\\\\\\;\\;\\;\\;\\;\\;\\;\\;\\;
       =${this.dropPotential.result}\\%\\\\\\end{array}`;
     },
     additionalPriceReductionTips() {
       //总降价
       //降价
-      return `\\begin{array}{l}\\\\=\\;\\mathrm{${this.$t('TPZS.ZONGJIANGJIA')}}\\;-\\;LTC\\mathrm{${this.$t('TPZS.JIANGJIA')}}\\\\\\\\
+      return `\\begin{array}{l}\\\\=\\;\\mathrm{${this.$t('TPZS.ZONGJIANGJIA')}}\\;-\\;LTC\\mathrm{${this.$t(
+          'TPZS.JIANGJIA')}}\\\\\\\\
       =${this.additionalPriceReduction.totalPriceReduction}\\%\\;-（${this.additionalPriceReduction.priceReduction}\\%）\\\\\\\\
       =${this.additionalPriceReduction.result}\\%\\\\\\end{array}`;
     },
   },
   mounted() {
-    this.getMathematicalFormulaData()
+    this.getMathematicalFormulaData();
   },
   data() {
     return {
@@ -207,8 +215,9 @@ export default {
     };
   },
   methods: {
-    moment(date){
-      return moment(date)
+    toThousands,
+    moment(date) {
+      return moment(date);
     },
     getMathematicalFormulaData() {
       this.achievementRate = this.dataInfo.achievementRate;
@@ -220,6 +229,7 @@ export default {
         estimatedTotalProductionTipsData: this.dataInfo.estimatedActualTotalPro
             ? this.dataInfo.estimatedActualTotalPro
             : '',
+        estimatedActualTotalPro: toThousands(this.dataInfo.estimatedActualTotalPro),
         fixedCost: this.dataInfo.costProportion,
         result: this.dataInfo.reductionPotential,
         costReductionUnitPrice: this.dataInfo.costReductionPrice,
@@ -231,15 +241,21 @@ export default {
       };
     },
     getDotRange(num) {
-      /*if (num < 10) {
-        return 10;
-      } else if (num > 82) {
-        return 82;
+      if (num < 0) {
+        return 0;
+      } else if (num > 100) {
+        return 100;
       } else {
         return num;
-      }*/
-      return num;
+      }
     },
+    getInputValue(el) {
+      let inputVal = el.target.value || '';
+      return toThousands(deleteThousands(inputVal));
+    },
+    inputMoneyFormat(el, name) {
+      this.dropPotential[name] = this.getInputValue(el)
+    }
   },
   watch: {
     dataInfo: {
@@ -282,6 +298,7 @@ export default {
     position: absolute;
     bottom: -4.15rem;
     height: 80px;
+
     .iconColor {
       color: #ED7D31
     }
@@ -292,9 +309,11 @@ export default {
     position: absolute;
     bottom: -4.15rem;
     height: 80px;
-    .iconStyle{
+
+    .iconStyle {
       left: 18px;
     }
+
     .iconColor {
       color: #4C6C9C
     }
@@ -371,66 +390,88 @@ export default {
     margin-top: 20px;
   }
 }
-.formula{
-  .row1{
+
+.formula {
+  .row1 {
     display: flex;
-    .subduction{
+
+    .subduction {
       width: 10px;
       height: 2px;
       background: black;
       margin: 22px 10px 0;
     }
   }
-  .left-bracket{
+
+  .left-bracket {
     margin-left: -15px;
   }
-  .left-bracket,.right-bracket{
+
+  .left-bracket, .right-bracket {
     font-size: 40px;
   }
-  .item{
+
+  .item {
     padding: 0 20px;
   }
-  .item-top{
+
+  .item-top {
     border-bottom: 1px solid black;
   }
-  .subduction-num{
+
+  .subduction-num {
     margin-top: 12px;
   }
-  .multiply{
+
+  .multiply {
     margin-left: -10px;
     margin-top: 15px;
   }
-  .multiply-num{
+
+  .multiply-num {
     margin-left: 5px;
     margin-top: 14px;
   }
-  .icon{
+
+  .icon {
     margin-top: 13px;
     width: 22px;
   }
-  .equal{
+
+  .equal {
     margin-top: 9px;
     margin-left: 7px;
     font-size: 20px;
   }
-  .row2{
+
+  .row2 {
     display: flex;
-    .equal{
+
+    .equal {
       margin-left: 29px;
     }
-    .subduction{
+
+    .subduction {
       width: 10px;
       height: 2px;
       background: black;
       margin: 20px 10px 0;
     }
-    .subduction-num{
+
+    .subduction-num {
       margin-top: 10px;
     }
-    .result{
+
+    .result {
       margin-left: 10px;
       margin-top: 13px;
     }
+  }
+}
+
+::v-deep .estimatedActualTotalPro {
+  .el-input__inner {
+    text-align: center !important;
   }
 }
 </style>

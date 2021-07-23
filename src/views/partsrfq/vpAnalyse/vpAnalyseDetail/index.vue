@@ -226,52 +226,52 @@ export default {
     },
     async saveOrUpdateScheme(params) {
       //this.saveDialog = true;
-      try {
-        const req = {
-          userId: this.$store.state.permission.userInfo.id,
-          partsId: this.currentPartsId,
-          supplierId: this.currentSupplierId,
-          batchNumber: this.currentBatchNumber,
-          partsList: [this.partList[this.partItemCurrent]],
-          totalPrice: this.dataInfo.totalPrice,
-          costProportion: this.dataInfo.costProportion
-        };
-        if (this.$route.query.type === 'edit') {
-          req.id = this.$route.query.schemeId;
-        }
-        if (params === 'all') {
-          this.pageLoading = true;
-        } else if (params === 'analyze') {
-          this.analyzeLoading = true;
-        } else if (params === 'table') {
-          this.tableLoading = true;
-        }
-        req.costDetailList = this.$refs.totalUnitPriceTable.tableListData.concat(
-            this.$refs.totalUnitPriceTable.hideTableData);
-        req.estimatedActualTotalPro = this.$refs.analyzeChart.dataInfo.estimatedActualTotalPro;
-        const res = await saveOrUpdateScheme(req);
-        this.resultMessage(res);
-        this.getDataInfo();
-        this.pageLoading = false;
-        this.analyzeLoading = false;
-        this.tableLoading = false;
-        if (res.result) {
-          if (this.$route.query.type === 'add') {
-            this.$router.push({
-              path: '/sourcing/partsrfq/vpAnalyseDetail',
-              query: {
-                type: 'edit',
-                schemeId: res.data,
-                round: this.$route.query.round,
-              },
-            });
-          }
-        }
-      } catch {
-        this.pageLoading = false;
-        this.analyzeLoading = false;
-        this.tableLoading = false;
-      }
+       try {
+         const req = {
+           userId: this.$store.state.permission.userInfo.id,
+           partsId: this.currentPartsId,
+           supplierId: this.currentSupplierId,
+           batchNumber: this.currentBatchNumber,
+           partsList: [this.partList[this.partItemCurrent]],
+           totalPrice: this.dataInfo.totalPrice,
+           costProportion: this.dataInfo.costProportion
+         };
+         if (this.$route.query.type === 'edit') {
+           req.id = this.$route.query.schemeId;
+         }
+         if (params === 'all') {
+           this.pageLoading = true;
+         } else if (params === 'analyze') {
+           this.analyzeLoading = true;
+         } else if (params === 'table') {
+           this.tableLoading = true;
+         }
+         req.costDetailList = this.$refs.totalUnitPriceTable.tableListData.concat(
+             this.$refs.totalUnitPriceTable.hideTableData);
+         req.estimatedActualTotalPro = this.$refs.analyzeChart.dataInfo.estimatedActualTotalPro;
+         const res = await saveOrUpdateScheme(req);
+         this.resultMessage(res);
+         this.getDataInfo();
+         this.pageLoading = false;
+         this.analyzeLoading = false;
+         this.tableLoading = false;
+         if (res.result) {
+           if (this.$route.query.type === 'add') {
+             this.$router.push({
+               path: '/sourcing/partsrfq/vpAnalyseDetail',
+               query: {
+                 type: 'edit',
+                 schemeId: res.data,
+                 round: this.$route.query.round,
+               },
+             });
+           }
+         }
+       } catch {
+         this.pageLoading = false;
+         this.analyzeLoading = false;
+         this.tableLoading = false;
+       }
     },
     handleSaveAsReport() {
       this.previewDialog = true;
@@ -286,7 +286,14 @@ export default {
       });
     },
     handleSaveDialog() {
+      this.saveDialog = false
+      iMessageBox(
+          this.language('TPZS.CBGYCZSFFG', '此样式/报告已存在，是否覆盖？'),
+          this.$t('LK_WENXINTISHI'),
+          {confirmButtonText: this.$t('LK_QUEDING'), cancelButtonText: this.$t('LK_QUXIAO')},
+      ).then(async () => {
 
+      });
     },
     handlePreview() {
       this.previewDialog = true;
