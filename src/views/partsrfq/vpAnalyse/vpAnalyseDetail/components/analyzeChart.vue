@@ -8,13 +8,13 @@
       </div>
       <div class="massProductionTime" :style="{'left': (this.massProductionTimeRateDot) + '%'}">
         <icon symbol name="iconbaojiapingfengenzong-jiedian-cheng" class="iconStyle"/>
-        <div class="margin-top26 iconColor" style="line-height: 16px">{{ this.massProductionTimeRate }}%</div>
+        <div class="margin-top26 iconColor" style="line-height: 16px;text-align: center">{{ this.massProductionTimeRate }}%</div>
         <!--        量产时间-->
         <div style="line-height: 16px;white-space: nowrap">{{ $t('TPZS.LCSJ') }}</div>
       </div>
       <div class="achievementRate" :style="{'left': (this.achievementRateDot) + '%'}">
         <icon symbol name="iconVP-jihuazongchanliang" class="iconStyle"/>
-        <div class="iconColor" style="line-height: 16px; margin-top: -36px">{{ this.achievementRate }}%</div>
+        <div class="iconColor" style="line-height: 16px; margin-top: -36px;text-align: center">{{ this.achievementRate }}%</div>
         <!--        计划量产达成率-->
         <div style="line-height: 16px;white-space: nowrap">{{ $t('TPZS.JHLCDCL') }}</div>
       </div>
