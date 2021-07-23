@@ -56,6 +56,7 @@ export const partScroingTitle = [
     {props: 'partNameDe', name: '零件名称（德）', key: 'LK_LINGJIANMINGCHENGDE'},
     {props: 'carProjectType', name: '车型项目', key: 'LK_CHEXINGXIANGMU'},
     {props: 'relatedModels', name: '相关车型', key: 'LK_XIANGGUANCHEXING'},
+    {props: 'rateDepartNum', name: '评分部门编号', key: 'PINGFENBUMENBIANHAO'},
     {
         name: 'TPB',
         list: [
