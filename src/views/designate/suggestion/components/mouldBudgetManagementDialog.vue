@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-05-24 13:45:08
- * @LastEditTime: 2021-06-25 11:36:14
+ * @LastEditTime: 2021-07-23 10:41:50
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\designate\suggestion\components\mouldBudgetManagementDialog.vue
@@ -78,11 +78,18 @@ export default {
     },
     rfqIds: {
       type: Array,
-      require: true
+      require: true,
+      default: () => ([])
     },
     fsIds: {
       type: Array,
-      require: true
+      require: true,
+      default: () => ([])
+    },
+    supplierIds: {
+      type: Array,
+      require: true,
+      default: () => ([])
     }
   },
   watch: {
@@ -123,7 +130,8 @@ export default {
         currPage: this.page.currPage,
         pageSize: this.page.pageSize,
         // rfqIds: this.rfqIds.map(item => ({ rfqIds: item })),
-        fsIds: this.fsIds.map(item => ({ fsIds: item }))
+        fsIds: this.fsIds.map(item => ({ fsIds: item })),
+        supplierIds: this.supplierIds.map(item => ({ supplierIds: item })),
       }
 
       getMouldBudget(form)
