@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-22 11:35:46
- * @LastEditTime: 2021-07-02 18:03:24
+ * @LastEditTime: 2021-07-22 19:20:27
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\supplierscore\components\rfqdetail\components\partList\index.vue
@@ -37,7 +37,7 @@ import { iCard, iPagination, iMessage } from "rise"
 import tableList from "@/views/partsign/editordetail/components/tableList"
 import { partListTableTitle as tableTitle } from "../data"
 import { pageMixins } from "@/utils/pageMixins"
-import { getPartSrcPrjs } from "@/api/partsrfq/editordetail"
+import { getPartsForRfq } from "@/api/supplierscore"
 
 export default {
   components: {
@@ -62,20 +62,15 @@ export default {
   methods: {
     init() {
       this.loading = true
-      getPartSrcPrjs({
-        "search.current": this.page.currPage,
-        "search.size": this.page.pageSize,
-        "search.rfqId": this.rfqId
+      getPartsForRfq({
+        currPage: this.page.currPage,
+        pageSize: this.page.pageSize,
+        rfqId: this.rfqId
       })
       .then(res => {
         if (res.code == 200) {
-          if (res.data && res.data.pageData) {
-            this.tableListData = Array.isArray(res.data.pageData.data) ? res.data.pageData.data : []
-            this.page.totalCount = res.data.pageData.total || 0
-          } else {
-            this.tableListData = []
-            this.page.totalCount = 0
-          }
+          this.tableListData = Array.isArray(res.data) ? res.data : []
+          this.page.totalCount = res.total || 0
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }

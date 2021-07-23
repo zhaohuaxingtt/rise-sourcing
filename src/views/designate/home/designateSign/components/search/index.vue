@@ -26,6 +26,14 @@
           :placeholder="language('LK_QINGSHURU','请输入')"
         ></iInput>
       </el-form-item>
+      <!-- FSNR/GSNR -->
+      <el-form-item label="FSNR/GSNR">
+        <iInput
+          v-model="form.fsnrGsnrNum"
+          :placeholder="language('LK_QINGSHURU','请输入')"
+          clearable
+        ></iInput>
+      </el-form-item>
       <!-- 车型项目 -->
       <el-form-item :label="language('nominationLanguage_CheXingXiangMu','车型项目')">
         <iSelect

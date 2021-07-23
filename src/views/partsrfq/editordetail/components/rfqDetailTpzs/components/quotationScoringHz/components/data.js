@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-05-28 14:32:26
- * @LastEditTime: 2021-07-20 16:19:11
+ * @LastEditTime: 2021-07-22 19:56:26
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\data.js
