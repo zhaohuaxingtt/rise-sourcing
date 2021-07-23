@@ -197,6 +197,42 @@
           ></el-option>
         </iSelect>
       </el-form-item>
+      <!-- 单一原因 -->
+      <el-form-item :label="language('DANYIYUANYIN','单一原因')">
+        <iSelect
+          v-model="form.singleReason"
+          :placeholder="language('LK_QINGXUANZE','请选择')"
+        >
+          <el-option
+            value=""
+            :label="language('all','全部') | capitalizeFilter"
+          ></el-option>
+          <el-option
+            :value="items.value"
+            :label="$i18n.locale === 'zh' ? items.label : items.labelEN"
+            v-for="(items, index) in (selectOptions.reason || [])"
+            :key="index"
+          ></el-option>
+        </iSelect>
+      </el-form-item>
+      <!-- 原因部门 -->
+      <el-form-item :label="language('YUANYINBUMEN','原因部门')">
+        <iSelect
+          v-model="form.singleDepartment"
+          :placeholder="language('LK_QINGXUANZE','请选择')"
+        >
+          <el-option
+            value=""
+            :label="language('all','全部') | capitalizeFilter"
+          ></el-option>
+          <el-option
+            :value="items.value"
+            :label="items.value"
+            v-for="(items, index) in (selectOptions.dept || [])"
+            :key="index"
+          ></el-option>
+        </iSelect>
+      </el-form-item>
       <!-- 签字单状态 -->
       <el-form-item :label="language('QIANZIDANZHUANGTAI', '签字单状态')">
         <iSelect
@@ -224,7 +260,7 @@
 import { applyType } from '@/layout/nomination/components/data'
 import { form } from '../data'
 import {
-  applicationStatus,
+  RSReviewApplicationStatus,
   selStatus,
   signSheetStatus,
   priceConsistentStatus 
@@ -243,7 +279,7 @@ export default {
     return {
       form,
       ptocessType: applyType,
-      applicationStatus,
+      applicationStatus: RSReviewApplicationStatus,
       selStatus,
       signSheetStatus,
       priceConsistentStatus,
@@ -283,13 +319,17 @@ export default {
       this.getDictionary('signStatus', 'signStatus')
       this.getDictionary('selStatus', 'selStatus')
       this.getDictionary('applicationStatus', 'applicationStatus')
+      // 获取单一原因部门
+      this.getDictionary('dept', 'score_dept')
+      // 获取单一原因数据字典
+      this.getDictionary('reason', 'SINGLE_SOURCING_REASON')
     },
     // 获取数据字典
     getDictionary(optionName, optionType, key = {value: 'code', label: 'name'}) {
       getDictByCode(optionType).then(res => {
         if(res?.result) {
           this.selectOptions[optionName] = res.data[0].subDictResultVo.map(item => {
-            return { value: item.code, label: item.name }
+            return { value: item.code, label: item.name, labelEN: item.nameEn }
           })
         }
       })

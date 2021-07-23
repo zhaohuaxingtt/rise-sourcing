@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-25 20:57:31
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-22 15:34:21
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-07-23 11:21:11
  * @Description: 零件评分弹窗
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\bdl\partsRating.vue
 -->
