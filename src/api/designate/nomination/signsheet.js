@@ -1,7 +1,7 @@
 /*
  * @Author: haojiang
  * @Date: 2021-06-30 10:09:30
- * @LastEditTime: 2021-07-08 18:12:34
+ * @LastEditTime: 2021-07-20 16:43:27
  * @LastEditors: Please set LastEditors
  * @Description: 签字单
  * @FilePath: /front-web/src/api/designate/nomination/signsheet.js
@@ -59,6 +59,14 @@ export function getNomiNotSelectedPage(params) {
 export function saveSignSheet(params) {
   return requst({
       url: `/nominate/sign/save`,
+      method: "post",
+      data: params
+  })
+}
+// 提交签字单
+export function submitSignSheet(params) {
+  return requst({
+      url: `/nominate/sign/submit`,
       method: "post",
       data: params
   })

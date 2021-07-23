@@ -1,14 +1,15 @@
 /*
  * @Author: your name
  * @Date: 2021-06-03 15:59:56
- * @LastEditTime: 2021-06-07 18:10:10
+ * @LastEditTime: 2021-07-19 18:49:40
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\api\costanalysismanage\costanalysis\index.js
  */
 import axios from '@/utils/axios'
+import download from '@/utils/axios.download'
 const requst = axios(process.env.VUE_APP_RFQ)
-const quotationRequst = axios(process.env.VUE_APP_QUOTATION)
+const quotationRequst = download(process.env.VUE_APP_QUOTATION)
 
 // 获取KM的RFQ列表
 export function getKmFileHistory(params) {

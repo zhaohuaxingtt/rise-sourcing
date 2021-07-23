@@ -71,6 +71,12 @@ export default {
         return {}
       },
     },
+    cpLineData: {
+      type: Array,
+      default: () => {
+        return [];
+      },
+    },
     value: { type: Boolean },
   },
   components: {

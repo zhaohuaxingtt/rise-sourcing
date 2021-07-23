@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 15:12:41
- * @LastEditTime: 2021-07-09 14:48:23
+ * @LastEditTime: 2021-07-21 18:18:00
  * @LastEditors: Please set LastEditors
  * @Description: 零件采购项目批量维护界面
  * @FilePath: \front-web\src\views\partsprocure\batchmiantain\index.vue
@@ -47,7 +47,7 @@
             <el-option
               :value="item.code"
               :label="item.name"
-              v-for="(item, index) in fromGroup.PART_PROJECT_TYPE"
+              v-for="(item, index) in filterProjectList(fromGroup.PART_PROJECT_TYPE,batch.type)"
               :key="index"
             ></el-option>
           </iSelect>
@@ -139,7 +139,7 @@
       </el-form>
       <template slot="button">
         <iButton
-          @click="save"
+          @click="save('partSrcProjec')"
           v-permission="PARTSPROCURE_BATCHMIANTAIN_PURCHASINGCONFIRM"
           >{{ language("LK_QUEREN",'确认') }}
         </iButton>
@@ -225,6 +225,7 @@ import {
 } from "@/api/partsprocure/editordetail";
 import { getPageGroup } from "@/api/partsign/home";
 import creatFs from "../home/components/creatFs";
+import {filterProjectList} from '@/utils'
 export default {
   components: {
     iPage,
@@ -270,7 +271,16 @@ export default {
     this.getProcureGroup();
     // this.getMaterialGroupByLinie();
   },
+  computed: {
+    // eslint-disable-next-line no-undef
+    ...Vuex.mapState({
+      userInfo: (state) => state.permission.userInfo,
+    }),
+  },
   methods: {
+    filterProjectList(a,b){
+      return filterProjectList(a,b)
+    },
     //获取上方group信息
     getProcureGroup() {
       dictkey().then((res) => {
@@ -315,25 +325,52 @@ export default {
 
     handleSelectionChange(e) {
       this.selectTableData = e;
-      let arr = [];
-      this.selectTableData.map((res) => {
-        arr.push(res.purchaseProjectId);
-      });
-      this.batch.purchaseProjectIds = arr;
+      this.batch.purchaseProjectIds = this.selectTableData.map(item => item.purchaseProjectId)
     },
     // 批量修改
-    save() {
-      if (this.batch.purchaseProjectIds.length == 0) {
-        iMessage.warn(
-          this.language("LK_QINGXUANZHEXUYAOXIUGAIDELINGJIANCAIGOUXIANGMU",'请选择需要修改的零件采购项目')
-        );
-        return;
+    save(type) {
+      const batch = { operator: this.userInfo.id }
+      if (type === "partSrcProjec") {
+        const factoryItems = this.fromGroup.PURCHASE_FACTORY.find(items => items.code == this.batch.procureFactory)
+
+        batch.partSrcProjectDTO = {
+          carTypeProjectNum: this.cartypeProject.code,
+          carTypeProjectZh: this.cartypeProject.name,
+          cfController: this.batch.cfController,
+          linieDept: this.batch.linieDept,
+          linieName: this.linie.name, 
+          linieUserId: this.linie.id,
+          partProjectType: this.batch.type,
+          partType: this.batch.partType,
+          procureFactory: this.batch.procureFactory,
+          procureFactoryName: factoryItems ? factoryItems.name : '',
+          unit: this.batch.unit
+        }
+        batch.purchaseProjectIds = this.$refs.outputPlan.tableListData.map(item => item.purchaseProjectId)
+      } else {
+        if (this.batch.purchaseProjectIds.length == 0) {
+          iMessage.warn(
+            this.language("LK_QINGXUANZHEXUYAOXIUGAIDELINGJIANCAIGOUXIANGMU",'请选择需要修改的零件采购项目')
+          );
+          return;
+        }
+
+        batch.stuffDTO = {
+          categoryCode: this.categoryObj.categoryCode ? this.categoryObj.categoryCode : "",
+          categoryId: this.categoryObj.categoryId ? this.categoryObj.categoryId : "",
+          categoryName: this.categoryObj.categoryNameZh ? this.categoryObj.categoryNameZh : "",
+          stuffCode: this.stuff.stuffCode,
+          stuffId: this.stuff.id,
+          stuffName: this.stuff.stuffName
+        }
+        batch.purchaseProjectIds = this.batch.purchaseProjectIds
       }
-      this.pushKey();
+      
+      // this.pushKey();
       // 复制参数对应key
-      let batch = {
-        ...this.batch,
-      };
+      // let batch = {
+      //   ...this.batch,
+      // };
       changeProcure({
         batch,
       }).then((res) => {
@@ -345,19 +382,18 @@ export default {
         }
       });
     },
-    pushKey() {
-      const factoryItems = this.fromGroup.PURCHASE_FACTORY.find(items=>items.code == this.batch.procureFactory)
-      this.batch.stuffName = this.stuff.stuffName;
-      this.batch.stuffCode = this.stuff.stuffCode;
-      this.batch.stuffId = this.stuff.id;
-      this.batch.cartypeProjectZh = this.cartypeProject.name;
-      this.batch.cartypeProjectNum = this.cartypeProject.code;
-      this.batch.linieName = this.linie.name;
-      this.batch.linieNum = this.linie.code;
-      this.batch.categoryCode = this.categoryObj.categoryCode?this.categoryObj.categoryCode:'';
-      this.batch.categoryName = this.categoryObj.categoryNameZh?this.categoryObj.categoryNameZh:'';
-      this.batch['procureFactoryName'] = factoryItems?factoryItems.name:''
-    },
+    // pushKey() {
+    //   const factoryItems = this.fromGroup.PURCHASE_FACTORY.find(items=>items.code == this.batch.procureFactory)
+    //   this.batch.stuffName = this.stuff.stuffName;
+    //   this.batch.stuffCode = this.stuff.stuffCode;
+    //   this.batch.stuffId = this.stuff.id;
+    //   this.batch.cartypeProjectZh = this.cartypeProject.name;
+    //   this.batch.cartypeProjectNum = this.cartypeProject.code;
+    //   this.batch.linieName = this.linie.name;
+    //   this.batch.linieNum = this.linie.code;
+    //   this.batch.categoryName = this.categoryObj.categoryNameZh?this.categoryObj.categoryNameZh:'';
+    //   this.batch['procureFactoryName'] = factoryItems?factoryItems.name:''
+    // },
     // 重置采购信息数据
     reset() {
       for (let i in this.batch) {

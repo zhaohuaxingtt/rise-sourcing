@@ -63,7 +63,7 @@ export const partScroingTitle = [
             {props: 'externaFee', name: '外部开发费（元）', key: 'LK_WAIBUKAIFAFEIYUAN'},
             {props: 'addFee', name: '增加的认可费（元）', key: 'LK_ZENGJIADERENKEFEIYUAN'},
             {props: 'confirmCycle', name: '认可周期（周）', key: 'LK_RENKEZHOUQIZHOU'},
-            {props: 'remark', name: '备注', key: 'LK_BEIZHU'},
+            {props: 'memo', name: '备注', key: 'LK_BEIZHU'},
         ]
     }
 ]

@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 11:38:57
- * @LastEditTime: 2021-07-15 18:28:49
+ * @LastEditTime: 2021-07-21 16:29:51
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails\table1.vue
@@ -15,7 +15,7 @@
               :expand-row-keys="expends"
               v-loading="loading"
               :max-height="maxHeight"
-              :cell-style="cellFunction"
+              :cell-style="cellsytle"
               @selection-change="handleSelectionChange"
               @row-click="rowClick"
               @row-dblclick="rowDblclick"
@@ -27,60 +27,17 @@
                        :key="i.id"
                        :label="i.title"
                        :prop="i.label"
-                       :align="i.prop == 'title' ? 'left' : 'center'"
-                       :width="i.prop == 'title' ? '200' : ''">
-        <!-- <template slot-scope="scope">
-         
-          <div style="display:flex">
-            <el-input v-if="scope.row[i.label]==='新组别'"
-                      v-model="scope.row[i.label]"></el-input>
-            <div v-else>
-              <span v-if="testing(scope.row[i.label])">
-                <span v-for="(item) in scope.row[i.label]"
-                      :key="item.id"
-                      class="margin-right20">{{ item }}</span>
-              </span>
-              <span v-else>{{scope.row[i.label]}}</span>
-            </div>
+                       :align="i.label=='title'?'left':'center'"
+                       :width="i.label == 'title' ? '200' : ''"
+                       show-overflow-tooltip>
+        <template slot-scope="scope">
+          <div v-if="scope.row.checkRow&&scope.row.level===2&&scope.column.label">
+            <el-checkbox @change="check=>checkChang(check,scope,i.label)"></el-checkbox>
           </div>
-
-        </template> -->
-
-        <!-- <div v-for="item in scope.row"
-               :key="item.index">
-            <p v-for="j in item.child"
-               :key="j.index"
-               class="margin-right20">
-              <el-input v-if="j.title==='新组别'"></el-input>
-              <span v-else>{{j[i.label]}}</span>
-            </p>
-          </div> -->
-
-        <!-- <el-table-column
-          v-for="item in i.children"
-          :key="item.id"
-          :label="item.label"
-          :prop="item.prop"
-          align="left"
-          :render-header="render"
-        >
-        </el-table-column> -->
-
-        <!-- <template slot-scope="scope">
-          <span v-if="testing(scope.row[i.prop])" >
-            <span
-              v-for="(item, index) in scope.row[i.prop]"
-              :key="item.id"
-              class="margin-right20"
-              :class="checkClass(item, scope, index)"
-              @click="clickCol(item, scope, index)"
-              >{{ item }}</span>
-          </span>
           <span v-else>
-            <span  :class="checkClass(item, scope, index)"
-              @click="clickCol(item, scope, index)">{{ scope.row[i.prop] }}</span>
+            {{scope.row[i.label]}}
           </span>
-        </template> -->
+        </template>
       </el-table-column>
     </el-table>
   </div>
@@ -128,27 +85,28 @@ export default {
     return {
       checkList: [],
       tableList: {},
-      SchemeId: ""
+      SchemeId: "",
+      usercheckedColumnIndex: [],
+      checkedIds: [8],
+      checkLists: []
     };
   },
   created () {
     if (this.$store.state.rfq.entryStatus === 1) {
       this.SchemeId = this.$route.query.rfqId
-      this.chargeRetrieve("all");
     } else {
       if (this.$route.query.rfqId) {
         this.SchemeId = this.$route.query.rfqId
-        this.chargeRetrieve("all");
       } else {
         this.SchemeId = this.$store.state.rfq.SchemeId;
       }
     }
+    this.$EventBus.$on("acitveName", res => {
+    })
     this.$nextTick(() => {
       this.chargeRetrieve('rawGrouped');
     });
-    this.$EventBus.$on("acitveName", res => {
-      console.log(res, 'hahahah')
-    })
+
   },
   mounted () { },
   methods: {
@@ -194,24 +152,11 @@ export default {
         }
       }
     },
-    addclass (row) {
-      var that = this;
-      if (row.columnIndex == that.num) {
-        return "addcss";
-      }
-    },
+
     cellFunction ({ row, column, rowIndex, columnIndex }) {
       // console.log(row, column, rowIndex, columnIndex)
     },
-    clickCol (a, b, c) {
-      const i = this.checkList.findIndex((item) => item.index == c);
-      if (i > -1) this.checkList.splice(i, i + 1);
-      else
-        this.checkList.push({
-          id: b.row.id,
-          index: c,
-        });
-    },
+
     //获取表格数据
     chargeRetrieve (type) {
       chargeRetrieve({
@@ -220,6 +165,16 @@ export default {
       })
         .then((res) => {
           this.tableList = res;
+          this.tableList.element = this.arrayTreeSetLevel(this.tableList.element)
+          this.tableList.title.forEach(value => {
+            this.$attrs.supplierList.forEach(i => {
+              if (value.title == i.supplierId) {
+                value.title = i.shortNameZh
+              }
+            })
+          })
+          console.log('----------------', this.tableList.element)
+          // filterEmptyChildren(this.tableList.element, 'detailId')
           this.$nextTick(() => {
             this.open();
           });
@@ -227,9 +182,105 @@ export default {
         .catch((err) => { });
     },
 
+    arrayTreeSetLevel (array, levelName = 'level', childrenName = 'child') {
+      if (!Array.isArray(array)) return []
 
+      this.recursiveArray(array)
+      console.log("new point")
+      console.log(array)
+      return array;
+    },
+
+    recursiveArray (parentObj, level) {
+      if (!level) level = 0;
+      level++
+      if (level === 2) {
+        let addDatas = {}
+        parentObj.child.forEach((value, index) => {
+          const numOfCols = Object.keys(value).filter((key) => {
+            return key.indexOf("label#") >= 0
+          })
+          const checkboxRow = { index: Math.random(), checkRow: true, level, title: "", checkIndex: value.index, checked: false }
+          numOfCols.forEach((colNum) => {
+            checkboxRow[colNum] = ""
+          })
+          addDatas[index] = checkboxRow;
+        })
+        const allInsertPoint = Object.keys(addDatas)
+        for (var i = allInsertPoint.length - 1; i >= 0; i--) {
+          parentObj.child.splice(allInsertPoint[i], 0, addDatas[allInsertPoint[i]])
+        }
+        addDatas = {}
+      } else {
+
+        if (parentObj && parentObj.length) {
+          parentObj.forEach((child, index) => {
+            this.recursiveArray(child, level)
+          })
+        }
+      }
+    },
     getRowKey (row) {
       return row.index;
+    },
+    checkChang (flag, scope, labelIndex) {
+      Array.prototype.remove = function (val) {
+        var index = this.indexOf(val);
+        if (index > -1) {
+          this.splice(index, 1);
+        }
+      };
+      console.log(labelIndex)
+      if (flag) {
+        this.usercheckedColumnIndex.push(parseInt(labelIndex.split("#")[1]) + 1)
+      } else {
+        this.usercheckedColumnIndex.remove(parseInt(labelIndex.split("#")[1]) + 1)
+      }
+      console.log(this.usercheckedColumnIndex)
+      const selectedIndex = scope.row.checkIndex
+      let newArr = this.tableList.element[0].child.map((value, index) => {
+        if (selectedIndex == value.index) {
+          if (this.usercheckedColumnIndex.length === 0) {
+            value.checked = false
+          } else {
+            value.checked = true
+          }
+          if (value.child && value.child.length) {
+            this.recursiveChildChecked(value.child, flag)
+          }
+        }
+        return value
+      })
+      if (flag) {
+        this.checkLists.push(newArr[1].child[0][labelIndex])
+      } else {
+        this.checkLists.remove(newArr[1].child[0][labelIndex])
+      }
+
+      this.$set(this.tableList.element[0], 'child', newArr);
+    },
+    recursiveChildChecked (parentObj, checked) {
+      parentObj.forEach((child, index) => {
+        if (this.usercheckedColumnIndex.length === 0) {
+          child.checked = false
+        } else {
+          child.checked = true
+        }
+        if (child.child && child.child.length) {
+          this.recursiveChildChecked(child.child, checked)
+        }
+      })
+    },
+    cellsytle ({ row, column, rowIndex, columnIndex }) {
+      let styleStr = {}
+      if (row.title == "原材料/散件" || row.title == '制造费' || row.title == '保费成本' || row.title == '管理费' || row.title == '其他费用' || row.title == '利润') {
+        styleStr.fontWeight = "bold"
+      }
+      if (row.checked && this.usercheckedColumnIndex.indexOf(columnIndex) > -1) {
+        styleStr.backgroundColor = "#94C8FC"
+        styleStr.opacity = "0.6"
+      }
+      return styleStr
     },
     render (h, { column, $index }) { },
     rowClick (row, event, column) {
@@ -237,7 +288,6 @@ export default {
     },
 
     cellClick (row, column, cell, event) {
-      console.log(row, column, cell, event);
       this.$emit("cell-click", row, column, cell, event);
     },
     // 格子双击事件
@@ -266,8 +316,11 @@ export default {
 // ::v-deep .el-table tr:nth-child(even){
 //     display: none;
 // }
-::v-deep .el-table .cell {
-  display: flex;
+// ::v-deep .el-table .cell {
+//   display: flex;
+// }
+::v-deep .el-table .el-table__body-wrapper {
+  height: auto;
 }
 </style>
 <style lang="scss">
@@ -289,5 +342,8 @@ export default {
 .bottom {
   border: 1px solid blue;
   border-top: none;
+}
+.add {
+  background-color: red;
 }
 </style>

@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-28 15:03:47
- * @LastEditTime: 2021-07-12 14:43:53
+ * @LastEditTime: 2021-07-21 11:33:22
  * @LastEditors: Please set LastEditors
  * @Description: 特殊表格实现
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\table.vue
@@ -71,19 +71,35 @@
           <template v-for="(levelTowItem,levelTowIndex) in item.list">
               <el-table-column
                 :key="levelTowIndex"
-                :label="levelTowItem.i18n ? $t(levelTowItem.i18n) : levelTowItem.label"
                 :width="levelTowItem.width"
                 :prop='levelTowItem.props'
                 align="center"
                 :resizable="false"
-              />
+              >
+              <template slot="header">
+                <el-tooltip :content='levelTowItem.label' effect='light'>
+                  <span class="overText">{{levelTowItem.label}}</span>
+                </el-tooltip>
+              </template>
+              </el-table-column>
           </template>
         </template>
         <!--------------时间格式------------>
         <template slot-scope="scope">
-          <template v-if='removeKeysNumber(item.props) == "ltcStaringDate" || removeKeysNumber(item.props) == "supplierSopDate"'>
+          <template v-if ='removeKeysNumber(item.props) == "developmentCost"'>
+            <span>{{scope.row[item.props]}}</span>
+            <span style="color:red;" v-if='scope.row[getPorpsNumber(item.props)+"developmentCostHasShare"]'>*</span>
+          </template>
+          <template v-else-if ='removeKeysNumber(item.props) == "tooling"'>
+            <span>{{scope.row[item.props]}}</span>
+            <span style="color:red;" v-if='scope.row[getPorpsNumber(item.props)+"toolingHasShare"]'>*</span>
+          </template>
+          <template v-else-if='removeKeysNumber(item.props) == "supplierSopDate"'>
             <span>{{scope.row[item.props]?moment(scope.row[item.props]).format("YYYY-MM-DD"):''}}</span>
           </template>
+          <template v-else-if='removeKeysNumber(item.props) == "ltcStaringDate"'>
+                <span>{{scope.row[item.props]?moment(scope.row[item.props]).format("YYYY-MM"):''}}</span>
+              </template>
           <template v-else-if='removeKeysNumber(item.props) == "Quotationdetails"'>
              <span class="link" @click="optionPage(scope.row,getPorpsNumber(item.props))">查看详情</span>
           </template>
@@ -181,6 +197,15 @@ export default{
 }
 </script>
 <style lang='scss' scoped>
+  .overText{
+    overflow: hidden;
+    width: 100%;
+    display: inline-block;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    height: 15px;
+    line-height: 100%;
+  }
   .ftaget{
     text-align: left;
     span{
@@ -199,6 +224,7 @@ export default{
     }
     ::v-deep .el-table__header-wrapper{
       overflow: visible;
+      
       .labelHader{
         width: 100%;
         overflow: hidden;
@@ -213,7 +239,8 @@ export default{
       }
     }
     ::v-deep.el-table__body-wrapper{
-      overflow:visible
+      overflow:visible;
+      height: auto!important;
     }
   }
   .headerContent{
@@ -224,7 +251,7 @@ export default{
       width: 100px;
       //background-color: red;
       z-index: 123;
-      bottom: 56PX;
+      bottom: 49PX;
       left:-13px;
       border: 1px solid #C5CCD6;
       border-bottom: none;

@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-04-23 09:16:48
- * @LastEditTime: 2021-07-12 10:46:51
+ * @LastEditTime: 2021-07-19 11:10:00
  * @LastEditors: Please set LastEditors
  * @Description: 供应商维度展示
  * @FilePath: \front-supplier\src\views\rfqManageMent\partsOffer\components\ecartsCard\index.vue
@@ -40,7 +40,7 @@
             </iSelect>
           </el-form-item>
           <el-form-item :label="language('LK_DANGQIANLUNCI','当前轮次')">
-            <iSelect style="width:140px;" :placeholder="language('partsprocure.CHOOSE','请选择')" multiple collapse-tags v-model="luncSelect"  @visible-change="removeOther($event,'luncSelect')">
+            <iSelect style="width:100px;" :placeholder="language('partsprocure.CHOOSE','请选择')" multiple collapse-tags v-model="luncSelect"  @visible-change="removeOther($event,'luncSelect')">
               <el-option label="All" value="all"></el-option>
               <el-option v-for="(items,index) in RoundList" :key='index' :label="items" :value='items'></el-option>
             </iSelect>
@@ -224,9 +224,11 @@ export default{
 }
 </script>
 <style lang='scss' scoped>
+  .laschildwidth{
+    width: 350px;
+  }
   .echarts{
     height: 50px;
-    overflow: hidden;
     ::v-deep .el-form-item{
       margin-right: 30px!important;
     }

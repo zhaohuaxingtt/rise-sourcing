@@ -32,7 +32,8 @@
         <!-- 步骤栏 -->
         <div class="step-list flex-between-center-center margin-top30 margin-bottom30">
             <div class="step-list-item flex-center-center" v-for="(item,index) in applyStep" :key="'applyStep'+index">
-                <div :class="phaseType + 1 >=item.id ? 'click-item step-list-item' : 'step-list-item' " @click="toAnyNomiStep(item)">
+                <!-- 下一步的图标或者是决策资料的图标支持灰色可点击 -->
+                <div :class="(item.id === 5 || phaseType + 1 >=item.id) ? 'click-item step-list-item' : 'step-list-item' " @click="toAnyNomiStep(item)">
                     <p class="step-icon-box">
                         <!-- 正在进行中 -->
                         <icon v-if="phaseType == item.id" symbol name="icondingdianguanlijiedian-jinhangzhong"  class="step-icon"></icon> 
@@ -89,6 +90,8 @@ import {
     sugesstionInitReCord,
     supplierInitReCord,
     checkNomiMeetingSubmit1,
+    checkNomiMeetingSubmit2,
+    checkNomiMeetingSubmit3,
     rsAttachExport
 } from '@/api/designate'
 import { applyStep } from './data'
@@ -162,10 +165,16 @@ export default {
         }
     },
     methods:{
+        // 临时跳转到决策资料，不更新当前步骤
+        gotoNomiAttach() {
+            this.$router.push({path: '/designate/decisiondata/title', query: Object.assign(this.$route.query, {desinateId:this.$route.query.desinateId, route: 'temp'})})
+        },
         // 跳转到任何已完成的定点步骤
         toAnyNomiStep(item) {
             const id = item.id
             const path = item.path
+            // 决策资料允许，特例跳转，不更新当前步骤
+            if (id === 5) this.gotoNomiAttach()
             // 不允许跳转到未开始的步骤
             if (id > this.phaseType + 1) return
             console.log(this.$store.getters.isPartListNull, item.path)
@@ -346,18 +355,21 @@ export default {
                 }
             })
         },
-        // 进行上会类型定点申请第一轮校验
-        async checkNomiMeetingSubmit() {
+        // 提交定点申请三轮校验
+        async checkNomiMeetingSubmit(level = 1) {
             const { query } = this.$route;
             const {desinateId} = query;
             const data = {
-                nominateIdArr:[Number(desinateId)],
-                // meetingId: this.$store.getters.nominationType || ''
+                nominateId:Number(desinateId)
             }
             let state = true
             let dataInfo = ''
+            let systemerror = false
             try {
-                const res = await checkNomiMeetingSubmit1(data)
+                let res = {}
+                if (level === 1) res = await checkNomiMeetingSubmit1(data)
+                if (level === 2) res = await checkNomiMeetingSubmit2(data)
+                if (level === 3) res = await checkNomiMeetingSubmit3(data)
                 if (res && res.code === '200') {
                     state = true
                     if (res.data && res.data.length) {
@@ -372,16 +384,21 @@ export default {
                         state = false
                     }
                 } else {
-                    state = false
-                    iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+                    state = true
+                    dataInfo = this.$i18n.locale === "zh" ? res.desZh : res.desEn
+                    // iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
                 }
             } catch(e) {
-                state = false
-                iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
+                state = true
+                systemerror = true
+                dataInfo = this.$i18n.locale === "zh" ? e.desZh : e.desEn
+                !dataInfo && (dataInfo = this.language('NETWORKERROR', '网络错误，请稍后重试'))
+                // iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
             }
-            return {state, dataInfo}
+            return {state, dataInfo, systemerror}
         },
         // 提交
+        // 提交逻辑需求有变化，所有类型的定点申请都要进行三轮校验，且第三轮为强制
         async submit(params = {}, check = true){
             const { query } = this.$route;
             const {desinateId} = query;
@@ -389,58 +406,102 @@ export default {
             const data = Object.assign({
                 nominateIdArr:[Number(desinateId)],
             }, params)
-            console.log('params', data)
+            console.log('params', data, nominationType)
             this.submitting = true
-            if (check && nominationType === 'MEETING') {
-                const res = await this.checkNomiMeetingSubmit(data)
-                console.log( res)
-                if (!res.state) {
-                    this.submitting = false
-                    return
-                }
-                if (res.state) {
-                    try {
-                        const confirmNextInfo = await this.$confirm(res.dataInfo,this.language('LK_NOTICE','提示'), {
-                            confirmButtonText: this.language('LK_JIXU','继续'),
-                            cancelButtonText: this.language('QUXIAO','取消'),
-                            type: 'warning'
-                        })
-                        
-                        if (confirmNextInfo !== 'confirm') {
+            try {
+                if (check) {
+                    // 进行第一轮校验
+                    let res = await this.checkNomiMeetingSubmit(1)
+                    console.log('第一轮校验',res)
+                    if (res.state) {
+                        try {
+                            const confirmNextInfo = await this.$confirm(res.dataInfo,this.language('LK_NOTICE','提示'), {
+                                confirmButtonText: this.language('LK_JIXU','继续'),
+                                cancelButtonText: this.language('QUXIAO', res.systemerror ? this.language('SURE','确定') : this.language('QUXIAO','取消')),
+                                showCancelButton: true,
+                                showConfirmButton: res.systemerror ? false : true,
+                                type: res.systemerror? 'error' : 'warning'
+                            })
+                            if (confirmNextInfo !== 'confirm') {
+                                this.submitting = false
+                                return
+                            }
+                        } catch (e) {
                             this.submitting = false
                             return
-                        } 
-                        // 打开上会确认弹窗
+                        }
+                    }
+                    // 进行第二轮校验
+                    res = await this.checkNomiMeetingSubmit(2)
+                    console.log('第二轮校验',res)
+                    if (res.state) {
+                        try {
+                            const confirmNextInfo = await this.$confirm(res.dataInfo,this.language('LK_NOTICE','提示'), {
+                                confirmButtonText: this.language('LK_JIXU','继续'),
+                                cancelButtonText: this.language('QUXIAO', res.systemerror ? this.language('SURE','确定') : this.language('QUXIAO','取消')),
+                                showCancelButton: true,
+                                showConfirmButton: res.systemerror ? false : true,
+                                type: res.systemerror? 'error' : 'warning'
+                            })
+                            if (confirmNextInfo !== 'confirm') {
+                                this.submitting = false
+                                return
+                            }
+                        } catch (e) {
+                            this.submitting = false
+                            return
+                        }
+                    }
+                    // 进行第二轮校验
+                    res = await this.checkNomiMeetingSubmit(3)
+                    console.log('第三轮校验',res)
+                    if (res.state) {
+                        try {
+                            const confirmNextInfo = await this.$confirm(res.dataInfo,this.language('LK_NOTICE','提示'), {
+                                confirmButtonText: this.language('LK_JIXU','继续'),
+                                cancelButtonText: this.language('QUXIAO','取消'),
+                                type: 'warning'
+                            })
+                            if (confirmNextInfo !== 'confirm') {
+                                this.submitting = false
+                                return
+                            }
+                        } catch (e) {
+                            this.submitting = false
+                            return
+                        }
+                    }
+
+                    // 打开上会确认弹窗
+                    if (nominationType === 'MEETING') {
                         this.mettingDialogVisible = true
                         this.submitting = false
                         return
-                    } catch (e) {
+                    }
+                }
+                
+                this.$confirm(this.language('submitSure','您确定要执行提交操作吗？')).then(confirmInfo => {
+                    if (confirmInfo !== 'confirm') {
                         this.submitting = false
                         return
                     }
-                    
-                }
-            }
-            
-            this.$confirm(this.language('submitSure','您确定要执行提交操作吗？')).then(confirmInfo => {
-                if (confirmInfo !== 'confirm') {
-                    this.submitting = false
-                    return
-                }
-                nominateAppSsubmit(data).then((res)=>{
-                    if (res.code === '200') {
-                        iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
-                    } else {
-                        iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
-                    }
-                    this.submitting = false
+                    nominateAppSsubmit(data).then((res)=>{
+                        if (res.code === '200') {
+                            iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
+                        } else {
+                            iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+                        }
+                        this.submitting = false
+                    }).catch(e => {
+                        this.submitting = false
+                        iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
+                    })
                 }).catch(e => {
                     this.submitting = false
-                    iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
                 })
-            }).catch(e => {
+            } catch (e) {
                 this.submitting = false
-            })
+            }
             
         },
         // 定点导出---后端功能未做

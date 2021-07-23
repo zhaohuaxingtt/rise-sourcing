@@ -1,7 +1,7 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-02-24 09:42:07
- * @LastEditTime: 2021-07-18 07:47:08
+ * @LastEditTime: 2021-07-19 22:32:45
  * @LastEditors: Please set LastEditors
 -->
 
@@ -389,8 +389,9 @@ export default {
     // 筛选出分组最低的供应商
     filterBestGrouper(data) {
       let bestGroup = []
+      const supplierTemlate = JSON.parse(JSON.stringify(this.supplier))
       // 循环供应商
-      this.supplier.forEach((supplierName, index) => {
+      supplierTemlate.forEach((supplierName, index) => {
         // 以纵向供应商维度，每个零件都必须有报价
         const cstStatus = !data.map(dataItem => dataItem.TTo[index]).filter(p => p === 0).length
         // 取出该供应商所有零件报价的TTo
@@ -429,7 +430,8 @@ export default {
       // 'Best TTO \n for Whole Package'
       // 根据供应商
       let countSupplier = []
-      this.supplier.forEach((supplierName, index) => {
+      const supplierTemlate = JSON.parse(JSON.stringify(this.supplier))
+      supplierTemlate.forEach((supplierName, index) => {
         // 检查该供应商是否支持汇总，这个供应商对所有零件都有报价才支持
         const cstStatus = !data.map(dataItem => dataItem.TTo[index]).filter(p => p === 0).length
         const wholePackageData = data.map(o => o.TTo[index])
@@ -441,7 +443,7 @@ export default {
       // wholePackage 排序
       countSupplier = countSupplier.sort((a, b) => a.data - b.data)
       // console.log('countSupplier', countSupplier)
-      const wholePackage = (countSupplier[0] && countSupplier[0].data) || 0
+      const wholePackage = Number(countSupplier[0] && countSupplier[0].data).toFixed(2) || 0
       const wholePackageIndex = (countSupplier[0] && countSupplier[0].index) || 0
       // 记录该供应商
       supplier.push(wholePackageIndex)
@@ -515,7 +517,7 @@ export default {
         }
       })
       bestPartList = bestPartList.sort((a,b)=>a-b)
-      this.supplier.forEach((supplierName, index) => {
+      supplierTemlate.forEach((supplierName, index) => {
         const sup = bestPartList.filter(o => o.index === index)
         const dataCount = _.sum(sup.map(supItem => supItem.data))
         
@@ -533,7 +535,8 @@ export default {
       // Recommend \n Scenario
       // 加权汇总
       let weightSupplier = []
-      this.supplier.forEach((supplierName, index) => {
+      
+      supplierTemlate.forEach((supplierName, index) => {
         // 分供应商筛选出报价最高和最低的零件
         let baojiaArray = []
         data.forEach((dataItem) => {
@@ -572,7 +575,6 @@ export default {
         isShowWeightStick,
         supplier
       }
-      console.log('res', res, supplier)
       return res
     }
   }

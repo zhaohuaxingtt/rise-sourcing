@@ -426,6 +426,7 @@
         'LK_GONGYINGSHANGCHANPINGAIYAO': 'Supplier Product Profile',//供应商产品概要!
         'LK_GONGYINGSHANGGONGSIJIESHAO': 'Supplier Company Introduction',//供应商公司介绍!
         'LK_GONGYINGSHANGMING': 'Supplier',//供应商名
+        'LK_SAPHAO': 'SAP ID', // SAP号
         'LK_GONGYINGSHANGMINGCHENG': 'Supplier',//供应商名称
         'LK_GONGYINGSHANGPINGFEN': 'Supplier Rating',//供应商评分
         'LK_GONGYINGSHANGPINGFENFUJIAN': 'Supplier Rating Attachment',//供应商评分附件
@@ -972,6 +973,7 @@
 
         'LK_MUJUTOUZIJINE': '模具投资金额', //  模具投资金额
         'LK_MUJUTOUZIQINGDANZHUANGTAI': '模具投资清单状态', //  模具投资清单状态
+        'LK_TOUZIQINGDANZHUANGTAI': '投资清单状态', //  投资清单状态
         'LK_YEWUCHULIZHUANGTAI': '业务处理状态',    //  业务处理状态
         'LK_XUHAO': '序号', //  序号
         'LK_MUJUID': '模具ID',  //  模具ID
