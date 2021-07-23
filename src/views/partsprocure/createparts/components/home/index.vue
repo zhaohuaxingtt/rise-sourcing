@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-05-24 17:06:01
- * @LastEditTime: 2021-07-20 16:31:31
+ * @LastEditTime: 2021-07-23 17:48:53
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\createparts\components\home\index.vue
@@ -139,9 +139,11 @@ export default {
       // 扩产能的角色值，由CF提供
       const BKMID = BKMROLETAGID
       // 获取用户角色列表
-      const tagList = (this.userInfo && this.userInfo.tagList) || []
+      let roleList = (this.userInfo && this.userInfo.positionList) || []
+      roleList = roleList.map(o => o.roleDTOList || [])
+      roleList = Array.from(new Set(roleList.flat(Infinity)))
       // 该用户只是BKM人员
-      const isBKM = tagList.find(o => o.id === BKMID) && tagList.length === 1
+      const isBKM = roleList.find(o => o.code === BKMID) && roleList.length === 1
       return isBKM
     },
   },
