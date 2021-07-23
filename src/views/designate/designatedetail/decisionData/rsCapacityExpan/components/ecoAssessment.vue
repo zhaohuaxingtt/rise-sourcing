@@ -1,10 +1,9 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-07-07 16:53:18
- * @LastEditTime: 2021-07-23 14:14:57
+ * @LastEditTime: 2021-07-23 15:36:42
  * @LastEditors: Please set LastEditors
  * @Description: Economic Assessment
- * @FilePath: /front-web/src/views/designate/designatedetail/decisionData/rsCapacityExpan/components/ecoassessment.vue
 -->
 <template>
   <div class="caexpan-card">
