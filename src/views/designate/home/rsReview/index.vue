@@ -59,6 +59,12 @@
           >
             {{ language("nominationLanguage_DINGDIAN", "定点") }}
           </iButton>
+          <!-- 导出 -->
+          <iButton
+            @click="rsexport"
+          >
+            {{ language("DAOCHU", "导出") }}
+          </iButton>
 
           
         </div>
@@ -115,6 +121,14 @@
       <template #signId="scope">
         <a href="javascript:;" class="selStatus-link" @click="$router.push({path: '/sourcing/partsnomination/signSheet/details', query: {id: scope.row.signId}})">{{scope.row.signId}}</a>
       </template>
+      <!-- 签字单零件项目类型 -->
+      <template #partProjType="scope">
+        <span>{{scope.row.partProjType && scope.row.partProjType.name || scope.row.partProjType || ''}}</span>
+      </template>
+      <!-- 签字单状态 -->
+      <template #signStatus="scope">
+        <span>{{scope.row.signStatus && scope.row.signStatus.name || scope.row.signStatus || ''}}</span>
+      </template>
       <!-- SEL单据确认状态 -->
       <template #selStatus="scope">
         <div>
@@ -159,7 +173,8 @@ import {
   selSheetSubmit,
   batchRevoke,
   batchRevokeToPass,
-  batchConfirmSelSheet
+  batchConfirmSelSheet,
+  // batchExportSelSheet
 } from '@/api/designate/nomination/selsheet'
 import { 
   createSignSheet
@@ -381,6 +396,38 @@ export default {
         console.log('e', e)
         iMessage.error(e && e.message ? e.message : this.$i18n.locale === "zh" ? e.desZh : e.desEn)
       }
+    },
+    // 导出
+    async rsexport() {
+      if (!this.selectTableData.length) {
+        iMessage.warn(this.language('nominationSuggestion_QingXuanZeZhiShaoYiTiaoShuJu','请选择至少一条数据'))
+        return
+      }
+      const confirmInfo = await this.$confirm(this.language('LK_EXCUTESURE','您确定要执行该操作吗？'))
+      if (confirmInfo !== 'confirm') return
+      const idList = this.selectTableData.map(o => Number(o.id))
+      const BASEURL = window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' + window.location.port : '')
+      const fileURL = `${BASEURL}${process.env.VUE_APP_RFQ}/nominate/check/export?nomiAppIds=${idList.join(',')}`
+      console.log(fileURL)
+      window.open(fileURL)
+      // try {
+      //   const res = await batchExportSelSheet({nomiAppIds: idList})
+      //   if (res) {
+      //     iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'))
+      //     let url = window.URL.createObjectURL(new Blob([res]))
+      //     let link = document.createElement('a')
+      //     link.style.display = 'none'
+      //     link.href = url
+      //     link.setAttribute('download', 'rsexport.xlsx')// 文件名
+      //     document.body.appendChild(link)
+      //     link.click()
+      //     document.body.removeChild(link) // 下载完成移除元素
+      //     window.URL.revokeObjectURL(url) // 释放掉blob对象
+      //   }
+      // } catch (e) {
+      //   console.log('e', e)
+      //   iMessage.error(e && e.message ? e.message : this.$i18n.locale === "zh" ? e.desZh : e.desEn)
+      // }
     },
     // 定点
     async confirm(){
