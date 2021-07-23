@@ -22,7 +22,7 @@
         </div>
       </div>
     </div>
-    <tableList :tableData="tableData.filter(item => !searchKey || item.supplierNameZh.toLowerCase().includes(searchKey.trim().toLowerCase()))" :tableTitle="tableTitle" :tableLoading="tableLoading"
+    <tableList v-update :tableData="tableData.filter(item => !searchKey || item.supplierNameZh.toLowerCase().includes(searchKey.trim().toLowerCase()))" :tableTitle="tableTitle" :tableLoading="tableLoading"
                @handleSelectionChange="handleSelectionChange"
                @openPage="openPage"
                @log="log" ref="table"
@@ -60,7 +60,7 @@ export default {
     // eslint-disable-next-line no-undef
     ...Vuex.mapState({
       userInfo: state => state.permission.userInfo,
-    })
+    }),
   },
   data() {
     return {
