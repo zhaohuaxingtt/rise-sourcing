@@ -96,7 +96,7 @@
     <!-- 批量编辑弹窗 -->
     <batchEditDialog :visible.sync="batchEditVisibal" :supplierList="supplierList" @submit="onBatchEdit" />
     <!-- 模具弹窗 -->
-    <mouldDialog :visible.sync="mouldVisibal" :rfqIds="rfqIds" :fsIds="fsIds" />
+    <mouldDialog :visible.sync="mouldVisibal" :rfqIds="rfqIds" :fsIds="fsIds" :supplierIds="supplierIds" />
   </iCard>
 </template>
 
@@ -177,7 +177,8 @@ export default {
       },
       // 全量rfqId，用于模具预算管理列表查询
       rfqIds: [],
-      fsIds: []
+      fsIds: [],
+      supplierIds: []
     }
   },
   mounted() {
@@ -290,14 +291,14 @@ export default {
     },
     // 保存修改记录
     async submit() {
-      if (!this.selectData.length) {
-        iMessage.error(this.language('nominationSuggestion_QingXuanZeZhiShaoYiTiaoShuJu','请选择至少一条数据'))
-        return
-      }
+      // if (!this.selectData.length) {
+      //   iMessage.error(this.language('nominationSuggestion_QingXuanZeZhiShaoYiTiaoShuJu','请选择至少一条数据'))
+      //   return
+      // }
       const confirmInfo = await this.$confirm(this.language('submitSure','您确定要执行提交操作吗？'))
       if (confirmInfo !== 'confirm') return
       this.submiting = true
-      const data = this.selectData.map(o => {
+      const data = this.data && this.data.map(o => {
         return {
           fsnrGsnrNum: o.fsnrGsnrNum,
           id: o.id,
@@ -307,7 +308,7 @@ export default {
           supplierId: o.supplierId,
           supplierName: o.supplierName
         }
-      })
+      }) || []
       updateSuggestion(data).then(res => {
         if (res.code === '200') {
           iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'))
@@ -399,13 +400,26 @@ export default {
       })
     },
     showMouldVisibal() {
+      this.rfqIds = []
+      this.fsIds = []
+      this.supplierIds = []
+
+      let list = []
       if (this.selectData.length > 0) {
-        this.rfqIds = _.uniq(this.selectData.map(item => item.rfqId))
-        this.fsIds = this.selectData.map(item => item.fsnrGsnrNum)
+        list = this.selectData
       } else {
-        this.rfqIds = _.uniq(this.data.map(item => item.rfqId))
-        this.fsIds = this.data.map(item => item.fsnrGsnrNum)
+        list = this.data
       }
+
+      list.forEach(item => {
+        this.rfqIds.push(item.rfqId)
+        this.fsIds.push(item.fsnrGsnrNum)
+        this.supplierIds.push(item.supplierId)
+      })
+
+      this.rfqIds = _.uniq(this.rfqIds)
+      this.fsIds = _.uniq(this.fsIds)
+      this.supplierIds = _.uniq(this.supplierIds)
 
       this.mouldVisibal = true
     }
