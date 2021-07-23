@@ -196,9 +196,9 @@
         :tableLoading="detailsTableLoading"
         :selection="false"
       >
-        <!-- BM单流⽔号 -->
-        <template #data1="scope">
-          <div class="table-link" @click="openBMDetail(scope.row)">{{scope.row.data1}}</div>
+        <!-- 照片 -->
+        <template #img="scope">
+          <div class="table-link" @click="openPhoto(scope.row)">{{scope.row.img}}</div>
         </template>
       </iTableList>
       
@@ -209,7 +209,20 @@
 
     <iCard class="changeList">
       <div class="title">{{language('LK_BIANGENDANJIALIEBIAO', '变更单列表')}}</div>
+      <iTableList
+        :tableData="detailsBottomTableList"
+        :tableTitle="detailsBottomTableHead"
+        :tableLoading="detailsBottomTableLoading"
+        :selection="false"
+      >
+        <!-- BM单流⽔号 -->
+        <template #data1="scope">
+          <div class="table-link">{{scope.row.data1}}</div>
+        </template>
+      </iTableList>
     </iCard>
+
+    <PhotoList :imgList="imgList" :visible="visible" @changeLayer="() => visible = false" />
   </iPage>
 </template>
 
@@ -220,8 +233,9 @@ import {
 import {iPage, iMessage, iDialog, iButton, iSelect, iSearch, iInput,
   iCard, icon
 } from "rise";
-import { detailsTableHead } from "./components/data";
+import { detailsTableHead, detailsBottomTableHead } from "./components/data";
 import UnitExplain from "./components/unitExplain";
+import PhotoList from "../components/photoList";
 
 export default {
   components: {
@@ -231,7 +245,8 @@ export default {
     icon,
     iTableList,
     iButton,
-    UnitExplain
+    UnitExplain,
+    PhotoList
   },
 
   data(){
@@ -240,14 +255,28 @@ export default {
       versionList: [],  //  版本列表
       technologyTypeList: [], //  工艺类型
       assetsTypeList: [], //  资产分类编号
-      detailsTableList: [],
+      detailsTableList: [{'img': '照片'}],
+      detailsBottomTableList: [
+        {data1: 'TC0000000004', data2: 'V05-20210303', data3: 'CBD变更', data4: '张三', data5: '2021-03-03'},
+        {data1: 'TC0000000003', data2: 'V04-20210204', data3: 'Aeko减值(Aeko号)', data4: '系统自动', data5: '2021-02-04'},
+      ],
       isOpen: false,
       detailsTableHead,
+      detailsBottomTableHead,
       detailsTableLoading: false,
+      detailsBottomTableLoading: false,
+      visible: false,
+      imgList: ['https://cdn6-banquan.ituchong.com/weili/l/919767005971611831.webp', 'https://cdn6-banquan.ituchong.com/weili/l/915608610047000641.webp', 'https://cdn9-banquan.ituchong.com/weili/l/903371741418749965.webp'],
     }
   },
 
   methods: {
+
+    //  照片
+    openPhoto(){
+      this.visible = true;
+    },
+
     changeSerch(type){
       this.isOpen = type;
     },
@@ -260,8 +289,19 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.table-link{
+  color: #1763F7;
+  cursor: pointer;
+  text-decoration: underline;
+}
 .changeList{
+  margin-top: 20px;
 
+  .title{
+    color: #020918;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
 }
 .UnitExplain{
   display: flex;

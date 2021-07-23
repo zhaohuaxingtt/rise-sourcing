@@ -6,11 +6,32 @@
   "description": "",
   "glyphs": [
     {
-      "icon_id": "22821783",
-      "name": "CPART标记",
-      "font_class": "CPARTbiaoji",
+      "icon_id": "23075261",
+      "name": "照片查看左",
+      "font_class": "zhaopianchakanzuo",
+      "unicode": "e6a5",
+      "unicode_decimal": 59045
+    },
+    {
+      "icon_id": "23075262",
+      "name": "照片查看右",
+      "font_class": "zhaopianchakanyou",
+      "unicode": "e6cb",
+      "unicode_decimal": 59083
+    },
+    {
+      "icon_id": "22893075",
+      "name": "默认消息",
+      "font_class": "morenxiaoxi",
       "unicode": "e6ca",
       "unicode_decimal": 59082
+    },
+    {
+      "icon_id": "22873706",
+      "name": "主联系人",
+      "font_class": "zhulianxiren",
+      "unicode": "e6b4",
+      "unicode_decimal": 59060
     },
     {
       "icon_id": "22780221",
@@ -146,13 +167,6 @@
       "unicode_decimal": 59059
     },
     {
-      "icon_id": "22552984",
-      "name": "状态提示-未完成",
-      "font_class": "zhuangtaitishi-weiwancheng",
-      "unicode": "e6b4",
-      "unicode_decimal": 59060
-    },
-    {
       "icon_id": "22552985",
       "name": "跳转按钮",
       "font_class": "tiaozhuananniu",
@@ -277,13 +291,6 @@
       "font_class": "bob-zhihuan",
       "unicode": "e6a4",
       "unicode_decimal": 59044
-    },
-    {
-      "icon_id": "22202834",
-      "name": "bob-待添加",
-      "font_class": "bob-daitianjia",
-      "unicode": "e6a5",
-      "unicode_decimal": 59045
     },
     {
       "icon_id": "22186417",

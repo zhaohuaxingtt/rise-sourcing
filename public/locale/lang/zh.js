@@ -1104,10 +1104,19 @@
         'LK_ZONGCHENLINGJIANHAO': '总成零件号', //  总成零件号
         'LK_GONGXIANGLINGJIANHAO': '共享零件号',    //  共享零件号
         'LK_LINGBUJIANMINGCHEN': '零部件名称',  //  零部件名称
-        'LK_ZICHANDAN': '资产单',   //  资产单
+        'LK_ZICHANDANJIA': '资产单价',   //  资产单价
         'LK_FASONGGONGYIUNGSHANGQUEREN': '发送供应商确认',   //  发送供应商确认
         'LK_FAQIBIANGENG': '发起变更',   //  发起变更
         'LK_ZHUANPAIZIJI': '转派自己',   //  转派自己
+        'LK_BIANGENDANHAO': '变更单号', //  变更单号
+        'LK_BIANGENHOUBANBEN': '变更后版本',    //  变更后版本
+        'LK_BIANGENLEIXING': '变更类型',    //  变更类型
+        'LK_FAQIREN': '发起人', //  发起人
+        'LK_BIANGENRIQI': '变更日期',   //  变更日期
+        'LK_ZICHANZONGE': '资产总额',   //  资产总额
+        'LK_TIAOZHENGSHUOMING': '调整说明', //  调整说明
+        'LK_ZHAOPIAN': '照片',  //  照片
+        'LK_GUZIMINGCHEN': '固资名称',  //  固资名称
 
         // 定点管理
         'nominationLanguage': {

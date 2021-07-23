@@ -1,8 +1,8 @@
 @font-face {
   font-family: "iconfont"; /* Project id 2285260 */
-  src: url('iconfont.woff2?t=1626228516483') format('woff2'),
-       url('iconfont.woff?t=1626228516483') format('woff'),
-       url('iconfont.ttf?t=1626228516483') format('truetype');
+  src: url('iconfont.woff2?t=1627009753277') format('woff2'),
+       url('iconfont.woff?t=1627009753277') format('woff'),
+       url('iconfont.ttf?t=1627009753277') format('truetype');
 }
 
 .iconfont {
@@ -13,8 +13,20 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-.iconCPARTbiaoji:before {
+.iconzhaopianchakanzuo:before {
+  content: "\e6a5";
+}
+
+.iconzhaopianchakanyou:before {
+  content: "\e6cb";
+}
+
+.iconmorenxiaoxi:before {
   content: "\e6ca";
+}
+
+.iconzhulianxiren:before {
+  content: "\e6b4";
 }
 
 .iconmorentouxiang:before {
@@ -93,10 +105,6 @@
   content: "\e6b3";
 }
 
-.iconzhuangtaitishi-weiwancheng:before {
-  content: "\e6b4";
-}
-
 .icontiaozhuananniu:before {
   content: "\e6b5";
 }
@@ -167,10 +175,6 @@
 
 .iconbob-zhihuan:before {
   content: "\e6a4";
-}
-
-.iconbob-daitianjia:before {
-  content: "\e6a5";
 }
 
 .iconbob:before {
