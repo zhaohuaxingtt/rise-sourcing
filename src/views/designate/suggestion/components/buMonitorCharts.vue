@@ -29,7 +29,7 @@
           <el-option
             :value="items.key"
             :label="items.value"
-            v-for="(items, index) in mapOptions"
+            v-for="(items, index) in mapOptionsArray"
             :key="index"
           ></el-option>
         </iSelect>
@@ -69,6 +69,7 @@ export default {
   data() {
     return {
       mapControl: [],
+      mapOptionsArray: [],
       mapOptions: [
         {
           key: 0,
@@ -121,6 +122,11 @@ export default {
       if (isShowGroupStick) {
         this.mapControl.push(1)
       }
+      const mapOptionsArray = []
+      this.mapControl.forEach(key => {
+        mapOptionsArray.push(this.mapOptions[key])
+      })
+      this.mapOptionsArray = mapOptionsArray
       // this.mapControl = isShowWeightStick ? [] : [0, 1, 2]
       this.load()
     },
