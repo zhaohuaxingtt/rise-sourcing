@@ -8,15 +8,24 @@
       </div>
       <div class="massProductionTime" :style="{'left': (this.massProductionTimeRateDot) + '%'}">
         <icon symbol name="iconbaojiapingfengenzong-jiedian-cheng" class="iconStyle"/>
-        <div class="margin-top26 iconColor" style="line-height: 16px;text-align: center">{{ this.massProductionTimeRate }}%</div>
-        <!--        量产时间-->
-        <div style="line-height: 16px;white-space: nowrap">{{ $t('TPZS.LCSJ') }}</div>
+        <div style="margin-left: -50%; text-align: center">
+          <div class="margin-top26 iconColor" style="line-height: 16px;text-align: center">
+            {{ this.massProductionTimeRate }}%
+          </div>
+          <!--        量产时间-->
+          <div style="line-height: 16px;white-space: nowrap">{{ $t('TPZS.LCSJ') }}</div>
+        </div>
       </div>
       <div class="achievementRate" :style="{'left': (this.achievementRateDot) + '%'}">
         <icon symbol name="iconVP-jihuazongchanliang" class="iconStyle"/>
-        <div class="iconColor" style="line-height: 16px; margin-top: -36px;text-align: center">{{ this.achievementRate }}%</div>
-        <!--        计划量产达成率-->
-        <div style="line-height: 16px;white-space: nowrap">{{ $t('TPZS.JHLCDCL') }}</div>
+        <div style="margin-left: -50%; text-align: center">
+          <div class="iconColor" style="line-height: 16px; margin-top: -36px;text-align: center">{{
+              this.achievementRate
+            }}%
+          </div>
+          <!--        计划量产达成率-->
+          <div style="line-height: 16px;white-space: nowrap">{{ $t('TPZS.JHLCDCL') }}</div>
+        </div>
       </div>
       <div class="supplyingEndTime">
         <div>{{ dataInfo.supplyEndTime ? moment(dataInfo.supplyEndTime).format('YYYY-MM') : '' }}</div>
@@ -254,8 +263,8 @@ export default {
       return toThousands(deleteThousands(inputVal));
     },
     inputMoneyFormat(el, name) {
-      this.dropPotential[name] = this.getInputValue(el)
-    }
+      this.dropPotential[name] = this.getInputValue(el);
+    },
   },
   watch: {
     dataInfo: {
