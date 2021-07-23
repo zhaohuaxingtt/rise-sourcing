@@ -1,8 +1,8 @@
 /*
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:50:41
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-07-22 15:01:31
+ * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-07-23 10:20:16
  * @Description: 
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\rs\components\circulation\data.js
  */
@@ -73,8 +73,8 @@ export const nomalTableTitle = [
 
 // 附件列表
 export const accessoryTableTitle = [
-  {props:'fsnrGsnrNum',name:'FS No.', key: "", minWidth: 60},
-  {props:'supplierNo',name:'Series Part No.', key: "", minWidth: 60},
+  {props:'fsnrGsnrNum',name:'SP No.', key: "", minWidth: 60},
+  // {props:'supplierNo',name:'Series Part No.', key: "", minWidth: 60},
   {props:'location',name:'Accessory Part No.', key: "", minWidth: 100},
   {props:'c',name:'Accessory Part Name', key: "", minWidth: 60},
   {props:'d',name:'Carline', key: "", minWidth: 85},
@@ -86,19 +86,18 @@ export const accessoryTableTitle = [
   {props:'e',name:'CF B Price',  key: "", minWidth: 90},
   {props:'f',name:'Old B Price',  key: "", minWidth: 95},
   {props:'g',name:'Sales Price', key: "", minWidth: 95},
-  {props:'f',name:'Series B Price', key: "", minWidth: 95},
+  // {props:'f',name:'Series B Price', key: "", minWidth: 95},
   {props:'g',name:'Price Start Date', key: "", minWidth: 80},
   {props:'c',name:'Turnover(K)', key: "", minWidth: 45},
   {props:'d',name:'Share(%)', key: "", minWidth: 90},
   {props:'e',name:'LTC', key: "", minWidth: 90},
-  {props:'f',name:'Start', key: "", minWidth: 80},
-  {props:'beginYearReduce',name:'Time of LTC', key: "", minWidth: 80},
+  {props:'beginYearReduce',name:'Start Time of LTC', key: "", minWidth: 80},
   {props:'g',name:'Remark', key: "", minWidth: 65}
 ]
 
 // 配件列表
 export const sparePartTableTitle = [
-  {props:'supplier',name:'FS No.', key: "", minWidth: 60},
+  {props:'supplier',name:'SP No.', key: "", minWidth: 60},
   {props:'supplierNo',name:'Series Part No.', key: "", minWidth: 60},
   {props:'location',name:'Spare Part No.', key: "", minWidth: 100},
   {props:'c',name:'Spare Part Name', key: "", minWidth: 60},
