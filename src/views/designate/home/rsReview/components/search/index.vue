@@ -260,7 +260,7 @@
 import { applyType } from '@/layout/nomination/components/data'
 import { form } from '../data'
 import {
-  applicationStatus,
+  RSReviewApplicationStatus,
   selStatus,
   signSheetStatus,
   priceConsistentStatus 
@@ -279,7 +279,7 @@ export default {
     return {
       form,
       ptocessType: applyType,
-      applicationStatus,
+      applicationStatus: RSReviewApplicationStatus,
       selStatus,
       signSheetStatus,
       priceConsistentStatus,
