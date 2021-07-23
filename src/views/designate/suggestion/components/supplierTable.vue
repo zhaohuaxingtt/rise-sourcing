@@ -96,7 +96,7 @@
     <!-- 批量编辑弹窗 -->
     <batchEditDialog :visible.sync="batchEditVisibal" :supplierList="supplierList" @submit="onBatchEdit" />
     <!-- 模具弹窗 -->
-    <mouldDialog :visible.sync="mouldVisibal" :rfqIds="rfqIds" :fsIds="fsIds" />
+    <mouldDialog :visible.sync="mouldVisibal" :rfqIds="rfqIds" :fsIds="fsIds" :supplierIds="supplierIds" />
   </iCard>
 </template>
 
@@ -177,7 +177,8 @@ export default {
       },
       // 全量rfqId，用于模具预算管理列表查询
       rfqIds: [],
-      fsIds: []
+      fsIds: [],
+      supplierIds: []
     }
   },
   mounted() {
@@ -399,13 +400,26 @@ export default {
       })
     },
     showMouldVisibal() {
+      this.rfqIds = []
+      this.fsIds = []
+      this.supplierIds = []
+
+      let list = []
       if (this.selectData.length > 0) {
-        this.rfqIds = _.uniq(this.selectData.map(item => item.rfqId))
-        this.fsIds = this.selectData.map(item => item.fsnrGsnrNum)
+        list = this.selectData
       } else {
-        this.rfqIds = _.uniq(this.data.map(item => item.rfqId))
-        this.fsIds = this.data.map(item => item.fsnrGsnrNum)
+        list = this.data
       }
+
+      list.forEach(item => {
+        this.rfqIds.push(item.rfqId)
+        this.fsIds.push(item.fsnrGsnrNum)
+        this.supplierIds.push(item.supplierId)
+      })
+
+      this.rfqIds = _.uniq(this.rfqIds)
+      this.fsIds = _.uniq(this.fsIds)
+      this.supplierIds = _.uniq(this.supplierIds)
 
       this.mouldVisibal = true
     }
