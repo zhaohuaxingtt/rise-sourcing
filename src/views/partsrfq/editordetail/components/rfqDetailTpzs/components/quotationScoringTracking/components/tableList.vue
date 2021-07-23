@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-26 19:14:39
- * @LastEditTime: 2021-07-22 16:05:55
+ * @LastEditTime: 2021-07-23 11:16:30
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringTracking\components\tableList.vue
@@ -156,7 +156,7 @@ export default{
      */
     optionLog(items){
       this.supplierId = items.supplierId
-      this.dialogVisible = true
+      this.dialogVisible = !this.dialogVisible
     },
     /**
      * @description: 跳转逻辑。第一 出现在界面上的所有图标都可以跳转。
