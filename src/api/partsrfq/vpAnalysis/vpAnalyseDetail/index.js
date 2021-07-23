@@ -51,3 +51,12 @@ export function deletePartsCustomerList(params) {
     data: params
   })
 }
+
+//判断方案名称是否已存在
+export function checkSchemeName(params) {
+  return request({
+    url: '/vpAnalysisScheme/checkSchemeName',
+    method: 'POST',
+    data: params
+  })
+}
