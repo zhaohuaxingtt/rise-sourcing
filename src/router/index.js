@@ -1,8 +1,8 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-07-07 15:20:12
- * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-07-26 16:54:29
+ * @LastEditors: Please set LastEditors
  * @Description: 系统静态路由.
  * @FilePath: \front-web\src\router\index.js
  *
@@ -573,6 +573,13 @@ export const staticRouter = [{
             name: "loidetail",
             component: () => import ("@/views/letterAndLoi/loi/detail")
         },
+        // AEKO相关路由
+        {
+            path: "/sourcing/aeko/managelist",
+            name: "aekoManageList",
+            component: () => import ("@/views/aeko/manage")
+        },
+
     ],
 },
     {
