@@ -284,7 +284,7 @@ export default {
     },
     async handleSaveAsReport(callback) {
       this.previewDialog = true;
-      await this.$nextTick(async () => {
+      setTimeout(async () => {
         const res = await this.$refs.previewDialog.getDownloadFile({
           callBack: () => {
             this.previewDialog = false;
@@ -295,7 +295,7 @@ export default {
         if (callback) {
           callback(downloadName, downloadUrl);
         }
-      });
+      }, 1000);
     },
     async handleSaveDialog(reqParams) {
       const resCheckName = await this.checkName(reqParams);
