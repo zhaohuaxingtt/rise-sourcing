@@ -76,7 +76,8 @@
                                :multiple-limit="chartType === 'turn' ? 5 : 1"
                                v-model="form.turn">
                       <el-option value="-1"
-                                 label="最新"></el-option>
+                                 label="最新"
+                                 v-if="chartType!=='turn'"></el-option>
                       <el-option v-for="(i, index) in turnList"
                                  :key="index"
                                  :value="i.turn"
@@ -413,9 +414,7 @@ export default {
     chartType: {
       handler (newval) {
         console.log(this.inside, "hahahah")
-        if (this.inside) {
-          this.chartType = 'supplier'
-        } else {
+        if (!this.inside) {
           this.chartType = 'combination'
         }
         // this.inside ? "supplier" : "mixComp"
@@ -495,6 +494,7 @@ export default {
     },
     sure () { },
     changeBy (e) {
+      console.log(e)
       this.chartType = e;
       if (this.chartType === 'combination') {
         this.form = {
@@ -559,6 +559,7 @@ export default {
           if (res.code == 200) {
             this.$message.success(res.desZh);
             this.getChartData();
+            this.$refs.bobAnalysis.chargeRetrieve('all')
             this.closeDialog()
           } else {
             this.$message.error(res.desZh);
@@ -606,12 +607,14 @@ export default {
           spareParts: this.form.spareParts.join(","),
           supplier: this.form.supplier.join(","),
           turn: this.form.turn.join(","),
+          defaultBobOptions: this.bobType
         }
       } else {
         params = {
           analysisSchemeId: this.$store.state.rfq.SchemeId,
           analysisDimension: this.chartType,
-          combination: this.form.combination.join(",")
+          combination: this.form.combination.join(","),
+          defaultBobOptions: this.bobType
         }
       }
       getBobLevelOne(params).then((res) => {
@@ -690,6 +693,7 @@ export default {
       }).then((res) => {
         if (res.code == 200) {
           this.$message.success(res.desZh);
+          this.$refs.bobAnalysis.chargeRetrieve('all')
           this.getChartData();
         } else {
           this.$message.error(res.desZh);

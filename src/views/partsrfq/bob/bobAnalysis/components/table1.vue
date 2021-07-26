@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 11:38:57
- * @LastEditTime: 2021-07-23 17:43:04
+ * @LastEditTime: 2021-07-26 10:53:13
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails\table1.vue
@@ -32,18 +32,6 @@
                        :align="i.label=='title'?'left':'center'"
                        :width="i.label=='title'?'230':''"
                        show-overflow-tooltip>
-        <!-- <template>
-          <el-table-column
-            v-for="item in i.children"
-            :key="item.id"
-            :label="item.label"
-            :prop="item.prop"
-            align="left"
-            :render-header="render"
-          >
-          </el-table-column>
-        </template> -->
-
         <template slot-scope="scope">
           <span v-if="testing(scope.row[i.label])"
                 class=" scopeBox">
@@ -224,5 +212,8 @@ export default {
 }
 .flexSpan {
   padding: 0 10px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 </style>

@@ -342,8 +342,6 @@ export default {
         const minList = [];
         this.legendArray.forEach((row, i) => {
           const dataList0 = this.cloneDeep(tempArr[row]);
-
-
           const min = this.min(tempArr[row]);
           let data = min;
           if (this.type === "Best of Average") {
