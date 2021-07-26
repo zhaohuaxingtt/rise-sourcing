@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 10:50:38
- * @LastEditTime: 2021-07-21 18:05:18
+ * @LastEditTime: 2021-07-23 18:40:33
  * @LastEditors: Please set LastEditors
  * @Description: 费用详情
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails.vue
@@ -153,19 +153,21 @@ export default {
     };
   },
   created () {
-
-    if (this.$store.state.rfq.entryStatus === 1) {
-      this.SchemeId = this.$route.query.rfqId
-      this.chargeRetrieve("all");
-    } else {
-      if (this.$route.query.rfqId) {
-        this.SchemeId = this.$route.query.rfqId
-        this.chargeRetrieve("all");
-      } else {
-        this.SchemeId = this.$store.state.rfq.SchemeId;
-      }
-    }
+    this.SchemeId = this.$attrs.analysisSchemeId
+    this.chargeRetrieve("all");
     this.getRfqToRemark();
+    // if (this.$store.state.rfq.entryStatus === 1) {
+    //   this.SchemeId = this.$route.query.rfqId
+    //   this.chargeRetrieve("all");
+    // } else {
+    //   if (this.$route.query.rfqId) {
+    //     this.SchemeId = this.$route.query.rfqId
+    //     this.chargeRetrieve("all");
+    //   } else {
+    //     this.SchemeId = this.$store.state.rfq.SchemeId;
+    //   }
+    // }
+    // this.getRfqToRemark();
   },
   mounted () {
     console.log(this.$attrs, '传值')
@@ -188,21 +190,40 @@ export default {
         viewType: type,
       })
         .then((res) => {
-          this.tableList = res;
-          this.tableList.title.forEach(value => {
-            this.$attrs.supplierList.forEach(i => {
-              if (value.title == i.supplierId) {
-                value.title = i.shortNameZh
-              }
+          try {
+            this.tableList = res;
+            this.tableList.title.forEach(value => {
+              this.$attrs.supplierList.forEach(i => {
+                if (value.title == i.supplierId) {
+                  value.title = i.shortNameZh
+                }
+              })
             })
-          })
-          filterEmptyChildren(this.tableList.element, 'detailId')
-          console.log(this.tableList, 23232332)
-          this.$nextTick(() => {
-            this.open();
-          });
+            filterEmptyChildren(this.tableList.element, 'detailId')
+            this.tableList.element = this.arrayTreeAddLevel(this.tableList.element)
+            this.$nextTick(() => {
+              this.open();
+            });
+          } catch (err) {
+            console.log(err)
+          }
         })
-        .catch((err) => { });
+        .catch((err) => {
+          iMessage.error(err.desZh)
+        });
+    },
+    arrayTreeAddLevel (array, levelName = 'level', childrenName = 'child') {
+      if (!Array.isArray(array)) return []
+      const recursive = (array, level = 0) => {
+        level++
+        return array.map(v => {
+          v[levelName] = level
+          const child = v[childrenName]
+          if (child && child.length) recursive(child, level)
+          return v
+        })
+      }
+      return recursive(array)
     },
     open () {
       let els = this.$el.getElementsByClassName("el-table__expand-icon");
@@ -311,7 +332,7 @@ export default {
       this.visible1 = e;
       this.result = result
       this.activeName = activeName
-      console.log(result, activeName, 222222222)
+
       getGroupInfo({
         schemaId: this.SchemeId,
         code: activeName === 'rawUngrouped' ? '1' : '2'
@@ -341,6 +362,7 @@ export default {
     },
     handleChange (value) { },
     clear () {
+      console.log(this.activeName)
       const params = this.$refs.groupedTable.checkLists
       removeComponentFromGroup({
         roundDetailIdList: params

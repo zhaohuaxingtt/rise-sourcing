@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 11:38:57
- * @LastEditTime: 2021-07-21 16:29:51
+ * @LastEditTime: 2021-07-23 15:19:46
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails\table1.vue
@@ -92,14 +92,12 @@ export default {
     };
   },
   created () {
-    if (this.$store.state.rfq.entryStatus === 1) {
-      this.SchemeId = this.$route.query.rfqId
+    this.newBuild = this.$route.query.newBuild;
+    this.entryStatus = this.$store.state.rfq.entryStatus
+    if (this.newBuild && this.entryStatus === 0) {
+      this.SchemeId = this.$store.state.rfq.SchemeId;
     } else {
-      if (this.$route.query.rfqId) {
-        this.SchemeId = this.$route.query.rfqId
-      } else {
-        this.SchemeId = this.$store.state.rfq.SchemeId;
-      }
+      this.SchemeId = this.$attrs.analysisSchemeId;
     }
     this.$EventBus.$on("acitveName", res => {
     })

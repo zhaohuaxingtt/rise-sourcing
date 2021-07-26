@@ -110,29 +110,16 @@ export default {
     };
   },
   mounted () {
-
-    if (this.$store.state.rfq.entryStatus === 1) {
-      this.inside = true;
-      this.rfq = this.$store.state.rfq.rfqId
-      this.analysisSchemeId = this.$route.query.rfqId;
-
-    } else {
-      if (this.$route.query.rfqId) {
-        this.value = false
-        this.analysisSchemeId = this.$route.query.rfqId;
-      } else {
-        this.analysisSchemeId = this.$store.state.rfq.SchemeId;
-
-      }
-    }
+    this.analysisSchemeId = this.$attrs.analysisSchemeId
+    this.chargeRetrieve("all");
     this.getChartData();
-    this.chargeRetrieve('all')
+
     // if (this.inside === 0) {
     //   this.analysisSchemeId = this.$parent.$options.parent.analysisSchemeId
     // }
     // this.analysisSchemeId = this.$store.state.rfq.SchemeId
-    this.reportName = this.$route.query.name;
-    this.id = this.$route.query.id;
+    // this.reportName = this.$route.query.name;
+    // this.id = this.$route.query.id;
     // this.initChartData()
     // this.analysisSchemeId = this.$route.query.analysisSchemeId;
 
@@ -270,7 +257,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .new-bob {
   .end {
     text-align: center;
@@ -308,4 +295,5 @@ export default {
   height: 0;
   clear: both;
 }
+
 </style>

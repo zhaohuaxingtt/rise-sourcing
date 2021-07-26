@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 11:38:57
- * @LastEditTime: 2021-07-21 16:25:09
+ * @LastEditTime: 2021-07-23 17:43:04
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails\table1.vue
@@ -14,8 +14,10 @@
               :row-key="getRowKey"
               :expand-row-keys="expends"
               v-loading="loading"
+              stripe
               :max-height="maxHeight"
               :cell-style="cellsytle"
+              :row-style="rowStyle"
               @selection-change="handleSelectionChange"
               @row-click="rowClick"
               @row-dblclick="rowDblclick"
@@ -133,8 +135,17 @@ export default {
       }
     },
     cellsytle ({ row, column, rowIndex, columnIndex }) {
-      if (row.title == "原材料/散件" || row.title == '制造费' || row.title == '保费成本' || row.title == '管理费' || row.title == '其他费用' || row.title == '利润') {
+      if (row.title == "原材料/散件" || row.title == '制造费' || row.title == '报废成本' || row.title == '管理费' || row.title == '其他费用' || row.title == '利润') {
         return "font-weight: bold"
+      }
+    },
+    rowStyle ({ row, rowIndex }) {
+      let styleJson
+      if (row.level === 1 || row.level === 2) {
+        styleJson = {
+          'background': 'rgb(231 239 255) !important'
+        }
+        return styleJson
       }
     },
     getRowKey (row) {
@@ -171,11 +182,18 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-// ::v-deep .el-table tr:nth-child(even){
-//     display: none;
-// }
 ::v-deep .el-table .el-table__body-wrapper {
   height: auto;
+}
+
+::v-deep .el-table tr:nth-child(even) {
+  background-color: #fff;
+}
+
+::v-deep.el-table__body-wrapper.el-table__row.el-table__row--level-0
+  .el-table__row
+  .el-table__row--level-1 {
+  background: #e7efff !important;
 }
 </style>
 <style lang="scss">

@@ -172,7 +172,7 @@ export default {
       myChart.setOption(option);
       const that = this
       myChart.on('click', function (params) {
-        console.log(params)
+      
         if (params.componentType === 'title') {
           that.$emit('del')
         }
@@ -300,7 +300,7 @@ export default {
           barWidth: '20%',
           data: [dataList1['利润'][0]]
         })
-        console.log(this.dataArray)
+
 
         if (this.$refs.chart && this.chartArray.length > 0) {
           this.initCharts();
@@ -314,7 +314,7 @@ export default {
   watch: {
     title: {
       handler (str) {
-        console.log()
+
         if (this.$refs.chart && this.chartArray.length > 0) {
           this.initCharts();
         }

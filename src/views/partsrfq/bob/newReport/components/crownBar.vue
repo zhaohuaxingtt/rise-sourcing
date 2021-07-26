@@ -266,7 +266,7 @@ export default {
         const dataList1 = [];
         const typeList = [];
         newVal.forEach((row, i) => {
-          console.log(row, 2222)
+
           const temp =
             row.vehicleType +
             "\n" +
@@ -342,7 +342,7 @@ export default {
         const minList = [];
         this.legendArray.forEach((row, i) => {
           const dataList0 = this.cloneDeep(tempArr[row]);
-          console.log(dataList0)
+
 
           const min = this.min(tempArr[row]);
           let data = min;
@@ -357,8 +357,7 @@ export default {
           if (i === 0) {
             tempArr[this.type] = [];
           }
-          // console.log(dataList0)
-          // console.log(dataList1)
+
           this.dataArray.push({
             name: row,
             type: "bar",

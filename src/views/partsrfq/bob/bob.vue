@@ -433,7 +433,7 @@ export default {
             this.$router.push({
               path: '/sourcing/partsrfq/bobNew',
               query: {
-                rfqId: res.data,
+                SchemeId: res.data,
                 newBuild: true,
               },
             })
@@ -560,7 +560,8 @@ export default {
         this.$router.push({
           path: "/sourcing/partsrfq/bobNew",
           query: {
-            rfqId: val.id,
+            SchemeId: val.id,
+            rfqId: val.rfqNo || ''
           },
         });
       } else if (val.fileType == this.$t('TPZS.REPORT_TYPE')) {

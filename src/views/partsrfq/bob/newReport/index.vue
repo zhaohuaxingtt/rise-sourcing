@@ -20,7 +20,8 @@
           <iButton @click="goToBob">BoB{{ $t("分析库") }}</iButton>
           <!--查找零件-->
           <iButton class="margin-left30"
-                   @click="findPart">{{
+                   @click="findPart"
+                   v-if="!inside">{{
             $t("查找零件")
           }}</iButton>
         </div>
@@ -29,7 +30,7 @@
               class="margin-top20">
         <el-col :span="inside?4:5">
           <iCard :collapse="false"
-                 style="height: 579px"
+                 style="height: 560px"
                  v-if="!reportSave">
             <el-form label-position="top"
                      :model="form"
@@ -112,7 +113,8 @@
                                value-key
                                :multiple-limit="chartType === 'combination' ? 6 : 1"
                                v-model="form.combination"
-                               @change="selectChange">
+                               @change="selectChange"
+                               @remove-tag="closeTag">
                       <el-option v-for="(i) in options"
                                  :key="i.key"
                                  :value="i.key"
@@ -139,7 +141,7 @@
           </iCard>
         </el-col>
         <el-col :span="inside?20:19">
-          <iCard style="height: 579px"
+          <iCard style="height: 560px"
                  collapse>
             <div class="legend">
               <ul>
@@ -191,10 +193,13 @@
                   <div v-else
                        @click="findPart"
                        class="icon-add">
-                    <img src="@/assets/images/newZhu.png"
-                         alt=""
-                         style="width:220px;height:300px">
-                    <div style="text-align: center;color:#8F8F90">{{ $t("待添加") }}</div>
+                    <div>
+                      <img src="@/assets/images/newZhu.png"
+                           alt=""
+                           style="width:220px;height:300px">
+                      <div style="text-align: center;color:#8F8F90">{{ $t("待添加") }}</div>
+                    </div>
+
                   </div>
                 </div>
 
@@ -207,7 +212,7 @@
               class="margin-top20">
         <el-col :span="inside?4:5">
           <iCard :collapse="false"
-                 style="height: 579px"
+                 style="height: 560px"
                  v-if="!reportSave">
             <ul class="anchorList flex">
               <li v-for="(i,index) in anchorList"
@@ -221,7 +226,9 @@
         <el-col :span="inside ? 20 : 19">
           <bobAnalysis ref="bobAnalysis"
                        :supplierList="supplierList"
-                       :partList="partList"></bobAnalysis>
+                       :partList="partList"
+                       :analysisSchemeId="analysisSchemeId"
+                       :reportSave="reportSave"></bobAnalysis>
         </el-col>
       </el-row>
     </div>
@@ -234,6 +241,9 @@
     <preview ref="preview"
              v-if="pre"
              :value="pre"
+             :supplierList="supplierList"
+             :partList="partList"
+             :analysisSchemeId="analysisSchemeId"
              @closeDialog="closePreView"></preview>
     <iDialog title="保存"
              :visible.sync="dialogVisible"
@@ -295,7 +305,7 @@ export default {
     bobAnalysis,
     findingParts,
     OutBar,
-    icon,
+    // icon,
     preview,
     iDialog,
     iInput,
@@ -333,25 +343,55 @@ export default {
     };
   },
   created () {
-    if (this.$store.state.rfq.entryStatus === 1) {
-      this.inside = true;
-      this.rfq = this.$store.state.rfq.rfqId
-      this.analysisSchemeId = this.$route.query.rfqId;
-      this.getChartData();
-    } else {
-      if (this.$route.query.rfqId) {
-        this.value = false
-        this.analysisSchemeId = this.$route.query.rfqId;
-        this.getChartData();
-      } else {
-        this.findPart()
-        this.analysisSchemeId = this.$store.state.rfq.SchemeId;
-      }
-    }
-    // if (!this.inside)
     this.newBuild = this.$route.query.newBuild;
-    if (this.newBuild) this.analysisSave = true;
-    // this.getOptions();
+    this.entryStatus = this.$store.state.rfq.entryStatus
+    if (this.newBuild) {
+      if (this.entryStatus === 1) {
+        this.inside = true
+        this.rfq = this.$store.state.rfq.rfqId
+        this.analysisSchemeId = this.$route.query.SchemeId
+        this.getChartData()
+      } else if (this.entryStatus === 0) {
+        this.findPart()
+      }
+      this.analysisSave = true;
+    } else {
+      if (this.entryStatus === 1) {
+        this.inside = true
+        this.rfq = this.$store.state.rfq.rfqId
+      } else {
+        if (this.$route.query.rfqId) {
+          this.inside = true
+        } else {
+          this.inside = false
+        }
+      }
+      this.analysisSchemeId = this.$route.query.SchemeId
+      this.getChartData()
+    }
+
+
+
+    // console.log(this.$route.query, "query")
+    // if (this.$store.state.rfq.entryStatus === 1) {
+    //   this.inside = true;
+    //   this.rfq = this.$store.state.rfq.rfqId
+    //   this.analysisSchemeId = this.$route.query.rfqId;
+    //   this.getChartData();
+    // } else {
+    //   if (this.$route.query.SchemeId) {
+    //     this.value = false
+    //     this.analysisSchemeId = this.$route.query.SchemeId;
+    //     this.getChartData();
+    //   } else {
+    //     this.findPart()
+    //     this.analysisSchemeId = this.$store.state.rfq.SchemeId;
+    //   }
+    // }
+    // this.newBuild = this.$route.query.newBuild;
+    // if (this.newBuild) {
+    //   this.analysisSave = true;
+    // }
   },
   watch: {
     analysisName: {
@@ -362,14 +402,14 @@ export default {
       },
       immediate: true
     },
-    reportName: {
-      handler (val, newval) {
-        if (newval && !this.newBuild) {
-          this.isCover = false
-        }
-      },
-      immediate: true
-    },
+    // reportName: {
+    //   handler (val, newval) {
+    //     if (newval && !this.newBuild) {
+    //       this.isCover = false
+    //     }
+    //   },
+    //   immediate: true
+    // },
     chartType: {
       handler (newval) {
         console.log(this.inside, "hahahah")
@@ -414,7 +454,7 @@ export default {
              <p class="el-select__tags-text">${value.nameZh}</p>
              <p class="el-select__tags-text">${value.value}</p>
             </div> 
-             <i class="el-tag__close el-icon-close"></i>
+             <i class="el-tag__close el-icon-close" style="z-index:1000" @click="closeTag"></i>
            </div>`
           })
           this.$el.querySelector('.el-select__tags').innerHTML = `<div>${html}</div>`
@@ -425,7 +465,6 @@ export default {
     selectChange (e) {
       this.$nextTick(() => {
         let html = ""
-        console.log(e)
         this.options.forEach((value, index) => {
           e.forEach((i, index) => {
             if (value.key == i) {
@@ -435,14 +474,15 @@ export default {
              <p class="el-select__tags-text">${value.nameZh}</p>
              <p class="el-select__tags-text">${value.value}</p>
             </div> 
-             <i class="el-tag__close el-icon-close"></i>
+             <i class="el-tag__close el-icon-close" style="z-index:1000" @click="closeTag(${e})"></i>
            </div>`
             }
           })
         })
         this.$el.querySelector('.el-select__tags').innerHTML = `<div>${html}</div>`
-
       });
+    },
+    closeTag (e) {
     },
     findPart () {
       this.value = true;
@@ -481,8 +521,9 @@ export default {
     },
     showSelect (e) {
       const position = e.event.target.position;
+      console.log(position)
       this.showSelectDiv = true;
-      this.$refs.toolTipDiv.style.left = position[0] + 210 + "px";
+      this.$refs.toolTipDiv.style.left = position[0] + -20 + "px";
       this.$refs.toolTipDiv.style.top = position[1] + 15 + "px";
       this.$refs.toolTipSelect.focus();
     },
@@ -499,8 +540,11 @@ export default {
       this.getChartData();
     },
     add (val) {
-      console.log(val, 2222)
       if (val.constructor === Object) {
+        iMessage.error('请选择数据')
+        return
+      }
+      if (val.length && val.length === 0) {
         iMessage.error('请选择数据')
         return
       }
@@ -520,10 +564,13 @@ export default {
             this.$message.error(res.desZh);
             this.closeDialog()
           }
+        }).catch((error) => {
+          this.$message.error(error.desZh);
+          this.closeDialog()
         });
       } else {
         let arr = []
-        val.forEach((value, index, array) => {
+        val.forEach(value => {
           arr.push({
             fs: value.fsNum,
             partNumber: value.partNum,
@@ -538,7 +585,7 @@ export default {
             this.$store.dispatch('setSchemeId', this.analysisSchemeId);
             this.$refs.bobAnalysis.SchemeId = res.data
             this.$refs.bobAnalysis.chargeRetrieve('all')
-            this.querySupplierTurnPartList()
+            // this.querySupplierTurnPartList()
             this.getChartData()
             this.closeDialog()
           } else {
@@ -682,32 +729,43 @@ export default {
           isCover: this.isCover
         };
       }
-      if (this.isCover) {
-        if (this.analysisSave) {
+      if (this.analysisSave) {
+        this.dialogVisible = false
+        if (this.isCover && !this.newBuild) {
           this.$confirm('此样式/报告已存在, 是否覆盖?', '提示', {
             confirmButtonText: '确定',
             cancelButtonText: '取消',
             type: 'warning'
           }).then(() => {
-            if (this.analysisSave) {
-              update(form)
-                .then((res) => {
-                  iMessage.success("保存成功");
-                  this.dialogVisible = false;
-                  this.reportSave = false;
-                })
-                .catch((err) => {
-                  iMessage.err("保存失败");
-                  this.dialogVisible = false;
-                  this.reportSave = false;
-                });
-            }
+            update(form)
+              .then((res) => {
+                iMessage.success("保存成功");
+                this.dialogVisible = false;
+                this.reportSave = false;
+              })
+              .catch((err) => {
+                iMessage.err("保存失败");
+                this.dialogVisible = false;
+                this.reportSave = false;
+              });
           }).catch(() => {
             this.$message({
               type: 'info',
               message: '已取消'
             });
           });
+        } else {
+          update(form)
+            .then((res) => {
+              iMessage.success("保存成功");
+              this.dialogVisible = false;
+              this.reportSave = false;
+            })
+            .catch((err) => {
+              iMessage.err("保存失败");
+              this.dialogVisible = false;
+              this.reportSave = false;
+            });
         }
       }
       if (this.reportSave) {
@@ -824,19 +882,26 @@ export default {
     justify-content: center;
     align-items: center;
     .icon-add {
-      flex:1;
+      display: flex;
+      flex: 1;
       height: 560px;
       // border-left: 2px dashed #ccc;
       text-align: center;
+      & > div {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        margin-top: 90px;
+      }
     }
   }
 }
+
 ::v-deep .el-select {
   width: 100%;
-  .el-select-dropdown.is-multiple
-    .el-select-dropdown__item.selected
-    .hover::after {
-    font-size: 0 !important;
+  .el-select-dropdown.is-multiple .el-select-dropdown__item.selected::after {
+    right: 60px !important;
   }
 }
 
@@ -850,11 +915,7 @@ export default {
   overflow: hidden; //超出隐藏
   text-overflow: ellipsis; //变成...
 }
-::v-deep
-  .el-select-dropdown.is-multiple
-  .el-select-dropdown__item.selected::after {
-  content: none;
-}
+
 ::v-deep .el-tag--large {
   height: 3.5rem;
 }
