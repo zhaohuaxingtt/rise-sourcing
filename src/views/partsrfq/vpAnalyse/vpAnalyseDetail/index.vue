@@ -114,7 +114,7 @@ import {
   getAnalysisProcessing,
   saveOrUpdateScheme,
   deletePartsCustomerList,
-  checkSchemeName,
+  checkName,
 } from '../../../../api/partsrfq/vpAnalysis/vpAnalyseDetail';
 import resultMessageMixin from '@/utils/resultMessageMixin';
 import saveDialog from './components/saveDialog';
@@ -298,7 +298,26 @@ export default {
       });
     },
     async handleSaveDialog(reqParams) {
-      const req = {};
+      const resCheckName = await this.checkName(reqParams);
+      if (resCheckName) {
+        this.saveDialog = false;
+        iMessageBox(
+            this.language('TPZS.CBGYCZSFFG', '此样式/报告已存在，是否覆盖？'),
+            this.$t('LK_WENXINTISHI'),
+            {confirmButtonText: this.$t('LK_QUEDING'), cancelButtonText: this.$t('LK_QUXIAO')},
+        ).then(async () => {
+          await this.handleSaveProcess(reqParams, true);
+        }).catch(async () => {
+          await this.handleSaveProcess(reqParams);
+        });
+      } else {
+        await this.handleSaveProcess(reqParams);
+      }
+    },
+    async handleSaveProcess(reqParams, isCover = false) {
+      const req = {
+        isCover,
+      };
       if (reqParams.analysisSave && reqParams.reportSave) {
         req.analysisSchemeName = reqParams.analysisName;
         req.reportName = reqParams.reportName;
@@ -318,15 +337,23 @@ export default {
         await this.saveOrUpdateScheme('all', req);
         this.saveDialog = false;
       }
-      /*const res = await checkSchemeName(req);
-      this.saveDialog = false;
-      iMessageBox(
-          this.language('TPZS.CBGYCZSFFG', '此样式/报告已存在，是否覆盖？'),
-          this.$t('LK_WENXINTISHI'),
-          {confirmButtonText: this.$t('LK_QUEDING'), cancelButtonText: this.$t('LK_QUXIAO')},
-      ).then(async () => {
-
-      });*/
+    },
+    async checkName(reqParams) {
+      let isRepeat = false;
+      const req = {};
+      if (reqParams.analysisSave && reqParams.reportSave) {
+        req.analysisSchemeName = reqParams.analysisName;
+        req.reportName = reqParams.reportName;
+      } else if (reqParams.analysisSave) {
+        req.analysisSchemeName = reqParams.analysisName;
+      } else if (reqParams.reportSave) {
+        req.reportName = reqParams.reportName;
+      }
+      const res = await checkName(req);
+      if (res.data) {
+        isRepeat = true;
+      }
+      return isRepeat;
     },
     handlePreview() {
       this.previewDialog = true;
