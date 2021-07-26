@@ -3,7 +3,7 @@
     <iSearch
         class="margin-bottom20 giSearch"
         style="margin-top: 20px"
-        @sure="getTableListFn"
+        @sure="conditionConfirmTskList"
         @reset="reset"
         :icon="false"
         :resetKey="PARTSPROCURE_RESET"
@@ -12,19 +12,20 @@
     >
       <el-form>
         <el-form-item :label="language('LK_LINGJIANHAO', '零件号')">
-          <iInput :placeholder="language('LK_QINGSHURU', '请输入')"></iInput>
+          <iInput v-model="partsNum" :placeholder="language('LK_QINGSHURU', '请输入')"></iInput>
         </el-form-item>
         <el-form-item :label="language('TPZS.GONGYINGSHANG', '供应商')">
-          <iInput :placeholder="language('LK_QINGSHURU', '请输入')"></iInput>
+          <iInput v-model="supplier" :placeholder="language('LK_QINGSHURU', '请输入')"></iInput>
         </el-form-item>
         <el-form-item :label="language('LK_BMDANLIUSHUIHAO', 'BM单流水号')">
-          <iInput :placeholder="language('LK_QINGSHURU', '请输入')"></iInput>
+          <iInput v-model="bmSerial" :placeholder="language('LK_QINGSHURU', '请输入')"></iInput>
         </el-form-item>
         <el-form-item :label="language('LK_MUJUTOUZIQINGDANZHUANGTAI', '模具投资清单状态')">
           <iSelect
               :placeholder="language('LK_QINGXUANZHE', '请选择')"
               filterable
               clearable
+              multiple
               v-model="moldInvestmentStatus"
           >
             <el-option
@@ -40,6 +41,7 @@
               :placeholder="language('LK_QINGXUANZHE', '请选择')"
               filterable
               clearable
+              multiple
               v-model="carTypeProject"
           >
             <el-option
@@ -55,6 +57,7 @@
               :placeholder="language('LK_QINGXUANZHE', '请选择')"
               filterable
               clearable
+              multiple
               v-model="department"
           >
             <el-option
@@ -66,14 +69,15 @@
           </iSelect>
         </el-form-item>
         <el-form-item label="Linie">
-          <iInput :placeholder="language('LK_QINGSHURU', '请输入')"></iInput>
+          <iInput v-model="linieName" :placeholder="language('LK_QINGSHURU', '请输入')"></iInput>
         </el-form-item>
       </el-form>
     </iSearch>
-    <iCard>
+    <iCard v-loading="tableLoading">
       <div class="icardHeader">
         <el-switch
             v-model="onleySelf"
+            @change="conditionConfirmTskList"
             inactive-text="仅看自己">
         </el-switch>
         <div>
@@ -86,11 +90,26 @@
       <iTableList
           :tableData="tableListData"
           :tableTitle="tableTitle"
-          :tableLoading="tableLoading"
           @handleSelectionChange="handleSelectionChange"
       >
-        <template #aa="scope">
-          <div class="table-link" @click="toBmInfo">{{scope.row.aa}}</div>
+        <template #bmSerial="scope">
+          <div class="table-link" @click="toBmInfo">{{scope.row.bmSerial}}</div>
+        </template>
+        <template #moldInvestmentStatus="scope">
+          <div>{{
+              scope.row.moldInvestmentStatus === '1' ?  '已定点待确认' :
+                  (scope.row.moldInvestmentStatus === '2' ? '待供应商确认' :
+                      (scope.row.moldInvestmentStatus === '3' ? '待采购员确认' :
+                          (scope.row.moldInvestmentStatus === '4' ? '变更中' :
+                              (scope.row.moldInvestmentStatus === '5' ? '供应商已变更待采购员确认' :
+                                  (scope.row.moldInvestmentStatus === '6' ? '供应商已退回' :
+                                      (scope.row.moldInvestmentStatus === '7' ? '模具投资清单已确认' : '')
+                                  )
+                              )
+                          )
+                      )
+                  )
+            }}</div>
         </template>
       </iTableList>
       <div style="color: #999999;font-size: 14px;text-align: right;margin: 10px 0;">{{ $t('货币：人民币  |  单位：元  |  不含税 ') }}</div>
@@ -106,7 +125,7 @@
           :total="page.totalCount"
       />
     </iCard>
-    <handover v-model="handoverShow"></handover>
+    <handover v-model="handoverShow" :handoverParams="handoverParams"></handover>
   </div>
 </template>
 
@@ -150,19 +169,33 @@ export default {
       onleySelf: false,
       handoverShow: false,
       tableTitle: investmentListTitle,
-      tableListData: [{aa: 'E1276A46'}],
-      department: '',
+      tableListData: [],
+      department: [],
       departmentsList: [],
-      carTypeProject: '',
+      carTypeProject: [],
       carTypeProjectList: [],
-      moldInvestmentStatus: '',
+      moldInvestmentStatus: [],
       moldInvestmentStatusList: [],
+      multipleSelection: [],
+      bmSerial: '',
+      partsNum: '',
+      supplier: '',
+      linieName: '',
+      handoverParams: {
+        bmid: [],
+        moldInvestmentStatus: [],
+        departmentsList: [],
+      }
     }
   },
   created() {
     this.getAllSelect()
+    this.conditionConfirmTskList()
   },
   methods: {
+    handleSelectionChange(list) {
+      this.multipleSelection = list
+    },
     async getAllSelect() {
       this.loadingiSearch = true
       await Promise.all([getDepartmentsCombo(), carCombo(), moldInvestmentStatusCombo()]).then((res) => {
@@ -171,6 +204,7 @@ export default {
         const result2 = this.$i18n.locale === 'zh' ? res[2].desZh : res[2].desEn
         if (Number(res[0].code) === 0) {
           this.departmentsList = res[0].data
+          this.handoverParams.departmentsList = this.departmentsList
         } else {
           iMessage.error(result0);
         }
@@ -191,35 +225,31 @@ export default {
 
     },
     conditionConfirmTskList(){
-      this.iDialogAddCarTypeProject = true
+      this.tableLoading = true
       conditionConfirmTskList({
-        current: this.addCarTypeProject,
-        size: this.addCarTypeProject,
+        current: this.page.currPage,
+        size: this.page.pageSize,
         bmSerial: this.bmSerial,
-        deptId: [],
-        isOneself: this.addCarTypeProject,
-        linieName: this.addCarTypeProject,
-        moldInvestmentStatus: [],
-        partsNum: '',
-        supplier: '',
-        tmCartypeProId: [],
+        deptId: this.department.join(),
+        isOneself: this.onleySelf ? 1 : 2,
+        linieName: this.linieName,
+        moldInvestmentStatus: this.moldInvestmentStatus.join(),
+        partsNum: this.partsNum,
+        supplier: this.supplier,
+        tmCartypeProId: this.carTypeProject.join(),
       }).then((res) => {
         const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
         if (Number(res.code) === 0) {
-          iMessage.success(result);
-          this.addCarTypeProject = ''
-          this.addAialog = false
-          this.params.id = res.data.id
-          this.params.sourceStatus = res.data.sourceStatus
-          // 隐藏下拉框
-          this.$refs.carTypeProjectRef.blur()
-          this.getProcureGroup();
+          this.page.currPage = res.pageNum;
+          this.page.pageSize = res.pageSize;
+          this.page.totalCount = res.total;
+          this.tableListData = res.data
         } else {
           iMessage.error(result);
         }
-        this.iDialogAddCarTypeProject = false
+        this.tableLoading = false
       }).catch(() => {
-        this.iDialogAddCarTypeProject = false
+        this.tableLoading = false
       });
     },
     toBmInfo(){

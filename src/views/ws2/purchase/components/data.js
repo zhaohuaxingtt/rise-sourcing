@@ -12,62 +12,62 @@ export const navList = [
 ]
 export const investmentListTitle = [
     {
-        props: 'aa',
+        props: 'bmSerial',
         name: 'BM单流水号',
         key: 'BM单流水号',
         isMoney: true,
         tooltip: false
     },
     {
-        props: 'tmCartypeProName',
+        props: 'akeoType',
         name: 'BM单类型',
         key: 'BM单类型',
         tooltip: false
     },
     {
-        props: 'fsName',
+        props: 'tmCartypeProName',
         name: '车型项目',
         key: '车型项目',
         tooltip: false
     },
     {
-        props: 'linieName',
+        props: 'designatedSupplierName',
         name: '供应商',
         key: '供应商',
         tooltip: false
     },
     {
-        props: 'categoryName',
+        props: 'moldInvestmentAmount',
         name: '模具投资金额',
         key: '模具投资金额',
         tooltip: false
     },
     {
-        props: 'categoryBudget',
+        props: 'behalfPartsNum',
         name: '代表零件号',
         key: '代表零件号',
         tooltip: false
     },
     {
-        props: 'budgetLeftoverAmount',
+        props: 'partsPurchaseType',
         name: '零件采购项目类型',
         key: '零件采购项目类型',
         tooltip: false
     },
     {
-        props: 'budgetApplyAmount',
+        props: 'nomiApplyNum',
         name: '定点申请单号',
         key: '定点申请单号',
         tooltip: false
     },
     {
-        props: 'approvalStatus',
+        props: 'linieName',
         name: 'Linie',
         key: 'Linie',
         tooltip: false
     },
     {
-        props: 'approvalStatus',
+        props: 'moldInvestmentStatus',
         name: '模具投资清单状态',
         key: '模具投资清单状态',
         tooltip: false

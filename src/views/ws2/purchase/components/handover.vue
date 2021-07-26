@@ -3,7 +3,7 @@
  * @Date: 2021-04-21 17:24:15
 -->
 <template>
-  <iDialog :title="$t(title)" :visible.sync="value" width="381px" top="0" @close='clearDiolog' class="iDialogCon">
+  <iDialog :title="$t(title)" :visible.sync="value" width="381px" top="0" @close='clearDiolog' class="iDialogCon" v-loading="dialogLoading">
     <div slot="title" class="title">
       <div class="text">
         {{ $t(title) }}
@@ -15,11 +15,13 @@
               :placeholder="language('LK_QINGXUANZHE', '请选择')"
               filterable
               clearable
+              v-model="deptId"
+              @change="changeDept"
           >
             <el-option
-                :value="item.id"
-                :label="item.carTypeProjectName"
-                v-for="(item, index) in carTypeList"
+                :value="item.deptId"
+                :label="item.commodity"
+                v-for="(item, index) in handoverParams.departmentsList"
                 :key="index"
             ></el-option>
           </iSelect>
@@ -29,11 +31,12 @@
               :placeholder="language('LK_QINGXUANZHE', '请选择')"
               filterable
               clearable
+              v-model="linieID"
           >
             <el-option
-                :value="item.id"
-                :label="item.carTypeProjectName"
-                v-for="(item, index) in carTypeList"
+                :value="item.linieID"
+                :label="item.linieName"
+                v-for="(item, index) in linieList"
                 :key="index"
             ></el-option>
           </iSelect>
@@ -46,33 +49,47 @@
   </iDialog>
 </template>
 <script>
-import {iDialog, iSearch, iSelect, iInput, iButton, icon} from 'rise'
+import {iDialog, iSearch, iSelect, iInput, iButton, icon, iMessage} from 'rise'
 import {Popover} from "element-ui"
 import {pageMixins} from "@/utils/pageMixins";
+import {
+  liniePullDownByDept,
+  assign,
+  assignOneself,
+} from "@/api/ws2/purchase/investmentList";
 
 export default {
   mixins: [pageMixins],
   components: {
     iDialog,
-    iSearch,
-    iInput,
     iButton,
-    Popover,
-    icon,
     iSelect
   },
   props: {
     title: {type: String, default: 'LK_ZHUANPAI'},
     value: {type: Boolean},
+    handoverParams: {
+      type: Object,
+      default: () => ({
+            bmid: [],
+            moldInvestmentStatus: [],
+            departmentsList: [],
+      })
+    },
   },
   data() {
     return {
+      deptId: '',
+      linieID: '',
+      linieList: [],
       conversionVal: '',
       handoverSelfLoading: false,
       saveLoading: false,
+      dialogLoading: false,
     }
   },
   mounted() {
+
   },
   methods: {
     clearDiolog() {
@@ -82,8 +99,67 @@ export default {
       this.$emit('input', false)
       this.$emit('conversionSave', this.conversionVal)
     },
+    changeDept(val){
+      if(val){
+        this.deptId = ''
+        this.liniePullDownByDept()
+      }
+    },
+    liniePullDownByDept(){
+      this.dialogLoading = true
+      liniePullDownByDept({deptId: this.deptId}).then((res) => {
+        const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
+        if (Number(res.code) === 0) {
+          this.linieList = res.data
+        } else {
+          iMessage.error(result);
+        }
+        this.dialogLoading = false
+      }).catch(() => {
+        this.dialogLoading = false
+      });
+    },
+    assign(){
+      this.handoverSelfLoading = true
+      assign({
+        bmid: this.handoverParams.bmid,
+        deptId: this.deptId,
+        linieID: this.linieID,
+        moldInvestmentStatus: this.handoverParams.moldInvestmentStatus,
+      }).then((res) => {
+        const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
+        if (Number(res.code) === 0) {
+          iMessage.success(result);
+        } else {
+          iMessage.error(result);
+        }
+        this.handoverSelfLoading = false
+      }).catch(() => {
+        this.handoverSelfLoading = false
+      });
+    },
+    assignOneself(){
+      this.saveLoading = true
+      assignOneself().then((res) => {
+        const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
+        if (Number(res.code) === 0) {
+          iMessage.success(result);
+        } else {
+          iMessage.error(result);
+        }
+        this.saveLoading = false
+      }).catch(() => {
+        this.saveLoading = false
+      });
+    },
   },
-  watch: {}
+  watch: {
+    value(val){
+      if(val){
+        this.liniePullDownByDept()
+      }
+    }
+  }
 }
 </script>
 <style lang='scss' scoped>
