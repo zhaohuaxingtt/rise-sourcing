@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-06-22 14:36:13
- * @LastEditTime: 2021-07-02 17:52:10
+ * @LastEditTime: 2021-07-26 15:31:51
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\supplierscore\components\data.js
@@ -42,3 +42,5 @@ export const tableTitle = [
   { props: "rateStatus", name: "评分状态", key: "PINGFENZHUANGTAI", tooltip: true },
   { props: "currentRoundsEndTime", name: "报价截止日期", key: "BAOJIAJIEZHIRIQI", tooltip: true }
 ]
+
+export const afterSaleLeaderIds = [ 1016, 1018, 1023, 1024, 1025, 1026 ]
