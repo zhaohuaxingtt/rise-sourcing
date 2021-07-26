@@ -7,7 +7,8 @@
         <div>{{ $t('TPZS.GHQSSJ') }}</div>
       </div>
       <div class="massProductionTime" :style="{'left': (this.massProductionTimeRateDot) + '%'}">
-        <icon symbol name="iconbaojiapingfengenzong-jiedian-cheng" class="iconStyle"/>
+<!--        <icon symbol name="iconbaojiapingfengenzong-jiedian-cheng" class="iconStyle"/>-->
+        <img src="./images/orange.png" class="iconStyle" style="width: 16px; height: 16px">
         <div style="margin-left: -50%; text-align: center">
           <div class="margin-top26 iconColor" style="line-height: 16px;text-align: center">
             {{ this.massProductionTimeRate }}%
@@ -17,7 +18,8 @@
         </div>
       </div>
       <div class="achievementRate" :style="{'left': (this.achievementRateDot) + '%'}">
-        <icon symbol name="iconVP-jihuazongchanliang" class="iconStyle"/>
+<!--        <icon symbol name="iconVP-jihuazongchanliang" class="iconStyle"/>-->
+        <img src="./images/blue.png" class="iconStyle" style="width: 16px; height: 16px">
         <div style="margin-left: -50%; text-align: center">
           <div class="iconColor" style="line-height: 16px; margin-top: -36px;text-align: center">{{
               this.achievementRate
@@ -46,13 +48,15 @@
           <iText class="valueWidth">{{ toThousands(dataInfo.actualProEndLastMonth) }}</iText>
           <template v-if="dataInfo.proGrowthRate > 0">
             <div class="flex-align-center">
-              <icon symbol name="iconshangsheng-VP" class="margin-left15 margin-right5"></icon>
+<!--              <icon symbol name="iconshangsheng-VP" class="margin-left15 margin-right5"></icon>-->
+              <img src="./images/upload.png" class="margin-left15 margin-right5" style="width: 10px; height: 10px">
               <span class="up">{{ dataInfo.proGrowthRate }}%</span>
             </div>
           </template>
           <template v-else-if="dataInfo.proGrowthRate < 0">
             <div class="flex-align-center">
-              <icon symbol name="iconxiajiang-VP" class="margin-left15 margin-right5"></icon>
+<!--              <icon symbol name="iconxiajiang-VP" class="margin-left15 margin-right5"></icon>-->
+              <img src="./images/down.png" class="margin-left15 margin-right5" style="width: 10px; height: 10px">
               <span class="down">{{ dataInfo.proGrowthRate }}%</span>
             </div>
           </template>
