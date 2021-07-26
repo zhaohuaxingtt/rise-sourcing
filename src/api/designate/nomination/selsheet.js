@@ -1,7 +1,7 @@
 /*
  * @Author: Hao Jiang
  * @Date: 2021-06-22 17:30:52
- * @LastEditTime: 2021-07-02 20:09:08
+ * @LastEditTime: 2021-07-23 13:00:11
  * @LastEditors: Please set LastEditors
  * @Description: sel 上会复核列表部分
  */
@@ -53,6 +53,15 @@ export function batchConfirmSelSheet(params) {
       url: `/nominate/sel/comfirm-batch`,
       method: "post",
       data: params
+  })
+}
+
+// sel单导出
+export function batchExportSelSheet(params) {
+  return requst({
+      url: `/nominate/check/export`,
+      method: "GET",
+      params
   })
 }
 

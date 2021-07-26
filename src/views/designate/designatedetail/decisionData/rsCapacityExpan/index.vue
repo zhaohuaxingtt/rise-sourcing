@@ -1,7 +1,7 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-07-06 22:11:41
- * @LastEditTime: 2021-07-21 16:07:24
+ * @LastEditTime: 2021-07-23 15:37:26
  * @LastEditors: Please set LastEditors
  * @Description: 决策资料 - 扩产能
  * @FilePath: /front-web/src/views/designate/designatedetail/decisionData/rsCapacityExpan/index.vue
@@ -124,6 +124,19 @@ export default {
   ::v-deep.el-table {
     .el-table__body-wrapper {
       height: auto !important;
+      min-height: auto !important;
+      &::-webkit-scrollbar {
+        width: 0px !important;
+      }
+      &::-webkit-scrollbar-thumb {
+        display: none;
+      }
+      &::-webkit-scrollbar-track {
+        display: none;
+      }
+      ::-webkit-scrollbar-corner {
+        background-color: #111;
+      }
     }
   }
   .caexpan-card {

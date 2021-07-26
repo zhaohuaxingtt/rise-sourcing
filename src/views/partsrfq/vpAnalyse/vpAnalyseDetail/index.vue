@@ -13,7 +13,7 @@
         <!--预览-->
         <iButton @click="handlePreview">{{ $t('TPZS.YULAN') }}</iButton>
         <!--保存-->
-        <iButton @click="saveOrUpdateScheme('all')">{{ $t('LK_BAOCUN') }}</iButton>
+        <iButton @click="() => saveDialog = true">{{ $t('LK_BAOCUN') }}</iButton>
       </div>
     </div>
     <div class="partBox margin-bottom20">
@@ -97,6 +97,7 @@
         ref="saveDialog"
         v-model="saveDialog"
         @handleSaveDialog="handleSaveDialog"
+        :dataInfo="dataInfo"
     />
   </iPage>
 </template>
@@ -113,6 +114,7 @@ import {
   getAnalysisProcessing,
   saveOrUpdateScheme,
   deletePartsCustomerList,
+  checkSchemeName,
 } from '../../../../api/partsrfq/vpAnalysis/vpAnalyseDetail';
 import resultMessageMixin from '@/utils/resultMessageMixin';
 import saveDialog from './components/saveDialog';
@@ -224,20 +226,27 @@ export default {
         this.pageLoading = false;
       }
     },
-    async saveOrUpdateScheme(params) {
+    async saveOrUpdateScheme(params, extraParams = {}) {
       //this.saveDialog = true;
       try {
         const req = {
+          ...this.dataInfo,
           userId: this.$store.state.permission.userInfo.id,
           partsId: this.currentPartsId,
           supplierId: this.currentSupplierId,
           batchNumber: this.currentBatchNumber,
           partsList: [this.partList[this.partItemCurrent]],
-          totalPrice: this.dataInfo.totalPrice,
-          costProportion: this.dataInfo.costProportion
+          ...extraParams,
         };
         if (this.$route.query.type === 'edit') {
           req.id = this.$route.query.schemeId;
+        }
+        if (req.supplierId) {
+          this.dataInfo.supplierList.map(item => {
+            if (item.supplierId === req.supplierId) {
+              req.supplierName = item.supplierName;
+            }
+          });
         }
         if (params === 'all') {
           this.pageLoading = true;
@@ -273,9 +282,9 @@ export default {
         this.tableLoading = false;
       }
     },
-    handleSaveAsReport() {
+    async handleSaveAsReport(callback) {
       this.previewDialog = true;
-      this.$nextTick(async () => {
+      await this.$nextTick(async () => {
         const res = await this.$refs.previewDialog.getDownloadFile({
           callBack: () => {
             this.previewDialog = false;
@@ -283,10 +292,41 @@ export default {
         });
         const downloadName = res.downloadName;
         const downloadUrl = res.downloadUrl;
+        if (callback) {
+          callback(downloadName, downloadUrl);
+        }
       });
     },
-    handleSaveDialog() {
+    async handleSaveDialog(reqParams) {
+      const req = {};
+      if (reqParams.analysisSave && reqParams.reportSave) {
+        req.analysisSchemeName = reqParams.analysisName;
+        req.reportName = reqParams.reportName;
+      } else if (reqParams.analysisSave) {
+        req.analysisSchemeName = reqParams.analysisName;
+      } else if (reqParams.reportSave) {
+        req.reportName = reqParams.reportName;
+      }
+      if (reqParams.reportSave) {
+        await this.handleSaveAsReport(async (downloadName, downloadUrl) => {
+          req.downloadName = downloadName;
+          req.downloadUrl = downloadUrl;
+          await this.saveOrUpdateScheme('all', req);
+          this.saveDialog = false;
+        });
+      } else {
+        await this.saveOrUpdateScheme('all', req);
+        this.saveDialog = false;
+      }
+      /*const res = await checkSchemeName(req);
+      this.saveDialog = false;
+      iMessageBox(
+          this.language('TPZS.CBGYCZSFFG', '此样式/报告已存在，是否覆盖？'),
+          this.$t('LK_WENXINTISHI'),
+          {confirmButtonText: this.$t('LK_QUEDING'), cancelButtonText: this.$t('LK_QUXIAO')},
+      ).then(async () => {
 
+      });*/
     },
     handlePreview() {
       this.previewDialog = true;

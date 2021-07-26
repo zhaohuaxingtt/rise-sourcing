@@ -202,7 +202,7 @@ export default {
       const items = [...this.singleListData, ...this.deletedRowList];
       let state = true
       items.forEach(item => {
-        if (state && (!item.suppliersName || !item.singleReason || !item.department)) {
+        if (state && !item.isDelete && (!item.suppliersName || !item.singleReason || !item.department)) {
           state = false
         }
       })
@@ -235,19 +235,31 @@ export default {
         iMessage.error(this.language('nominationSuggestion_QingXuanZeZhiShaoYiTiaoShuJu','请选择至少一条数据'))
         return
       }
+      const isFullDelete = this.singleListData.length === this.selectSingleData.length
       const confirmInfo = await this.$confirm(this.language('deleteSure','您确定要执行删除操作吗？'))
       if (confirmInfo !== 'confirm') return
-      this.selectSingleData.forEach(item => {
-        const dIndex = this.selectSingleData.findIndex(o => o.sid === item.sid)
-        const row = this.selectSingleData[dIndex]
-        
-        if (dIndex >= 0) {
-          this.singleListData.splice(dIndex, 1)
-          row.isDelete = 1
-          if (!this.deletedRowList.find(o => o.sid === row.sid)) {
-            this.deletedRowList.push(row)
+      // 判断是全部删除
+      if (isFullDelete) {
+        this.singleListData = []
+        this.selectSingleData.forEach((subItem) => {
+          subItem.isDelete = 1
+          if (!this.deletedRowList.find(o => o.sid === subItem.sid)) {
+            this.deletedRowList.push(subItem)
           }
-        }
+        })
+        return
+      }
+      // 普通删除
+      this.singleListData.forEach((item, index) => {
+        this.selectSingleData.forEach((subItem) => {
+          if (item.sid === subItem.sid) {
+            subItem.isDelete = 1
+            if (!this.deletedRowList.find(o => o.sid === subItem.sid)) {
+              this.deletedRowList.push(subItem)
+            }
+            this.singleListData.splice(index, 1)
+          }
+        })
       })
       
     },

@@ -1,14 +1,16 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-24 09:47:32
- * @LastEditTime: 2021-06-16 17:16:53
+ * @LastEditTime: 2021-07-23 15:27:46
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsign\home\components\data.js
  */
 import store from '@/store'
 import {permissionTitle} from '@/utils'
-export const tableTitle = permissionTitle("PERMISSION_TESTTABLE",[
+// 暂时注释掉表头权限
+// export const tableTitle = permissionTitle("PERMISSION_TESTTABLE",[
+  export const tableTitle = [
   {props:'tpPartID',name:'信息单流水号',key: 'LK_XINXIDANLIUSHUIHAO',tooltip:false ,width:100},
   {props:'partNum',name:'零件号',key: 'LK_LINGJIANHAO',tooltip:false,width:130},
   {props:'partNameCn',name:'零件名（中）',key: 'LK_LINGJIANMINGZHONG',tooltip:true,width:140},
@@ -21,7 +23,7 @@ export const tableTitle = permissionTitle("PERMISSION_TESTTABLE",[
   {props:'status',name:'信息单状态',key: 'LK_XINXIDANZHUANGTAI',tooltip:true,width:80},
   {props:'attachmentStatus',name:'询价资料状态',key: 'LK_XUNJIAZILIAOZHUANGTAI',tooltip:true,minWidth:100},
   {props:'partDosageStatus',name:'每车用量状态',key: 'LK_MEICHEYONGLIANGZHUANGTAI',tooltip:true,minWidth:100}
-])
+]
 export const needTranslate = [
   {name:'tpInfoType',key:'tp_info_type'}
 ]
