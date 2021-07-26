@@ -78,11 +78,11 @@ export default {
       const partsId = this.dataInfo.partsId ? this.dataInfo.partsId : '';
       const partsNameZh = this.dataInfo.partsNameZh ? this.dataInfo.partsNameZh : '';
       if (this.$store.state.rfq.entryStatus === 1) {
-        this.analysisName = `${rfqId}_${rfqName}`;
+        this.analysisName = this.dataInfo.analysisSchemeName ? this.dataInfo.analysisSchemeName : `${rfqId}_${rfqName}`;
         this.reportName = `${rfqId}_${rfqName}_${window.moment(new Date()).
             format('YYYYMMDD')}`;
       } else {
-        this.analysisName = `${partsId}_${partsNameZh}`;
+        this.analysisName = this.dataInfo.analysisSchemeName ? this.dataInfo.analysisSchemeName : `${partsId}_${partsNameZh}`;
         this.reportName = `${partsId}_${partsNameZh}_${window.moment(new Date()).
             format('YYYYMMDD')}`;
       }
