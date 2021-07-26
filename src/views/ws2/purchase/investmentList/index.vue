@@ -25,11 +25,12 @@
               :placeholder="language('LK_QINGXUANZHE', '请选择')"
               filterable
               clearable
+              v-model="moldInvestmentStatus"
           >
             <el-option
-                :value="item.id"
-                :label="item.carTypeProjectName"
-                v-for="(item, index) in carTypeList"
+                :value="item.code"
+                :label="item.zhMsg"
+                v-for="(item, index) in moldInvestmentStatusList"
                 :key="index"
             ></el-option>
           </iSelect>
@@ -39,17 +40,30 @@
               :placeholder="language('LK_QINGXUANZHE', '请选择')"
               filterable
               clearable
+              v-model="carTypeProject"
           >
             <el-option
                 :value="item.id"
                 :label="item.carTypeProjectName"
-                v-for="(item, index) in carTypeList"
+                v-for="(item, index) in carTypeProjectList"
                 :key="index"
             ></el-option>
           </iSelect>
         </el-form-item>
         <el-form-item :label="language('LK_KESHI', '科室')">
-          <iInput :placeholder="language('LK_QINGSHURU', '请输入')"></iInput>
+          <iSelect
+              :placeholder="language('LK_QINGXUANZHE', '请选择')"
+              filterable
+              clearable
+              v-model="department"
+          >
+            <el-option
+                :value="item.deptId"
+                :label="item.commodity"
+                v-for="(item, index) in departmentsList"
+                :key="index"
+            ></el-option>
+          </iSelect>
         </el-form-item>
         <el-form-item label="Linie">
           <iInput :placeholder="language('LK_QINGSHURU', '请输入')"></iInput>
@@ -101,8 +115,21 @@ import {iCard, iSearch, iSelect, iPagination, iButton, iInput, iMessage} from 'r
 import {iTableList} from "@/components";
 import {investmentListTitle} from "../components/data"
 import handover from "../components/handover"
+import {
+  getDepartmentsCombo,
+  carCombo,
+  moldInvestmentStatusCombo,
+  conditionConfirmTskList,
+} from "@/api/ws2/purchase/investmentList";
 import {pageMixins} from "@/utils/pageMixins";
 import {Switch, Popover} from "element-ui"
+import {
+  getModelProtitesPullDown,
+  liniePullDownByDept,
+  proDeptPullDown
+} from "@/api/ws2/budgetManagement/investmentList";
+import {getCartypePulldown, saveCustomCart} from "@/api/ws2/budgetManagement/edit";
+import {cloneDeep} from "lodash";
 
 export default {
   mixins: [pageMixins],
@@ -124,9 +151,77 @@ export default {
       handoverShow: false,
       tableTitle: investmentListTitle,
       tableListData: [{aa: 'E1276A46'}],
+      department: '',
+      departmentsList: [],
+      carTypeProject: '',
+      carTypeProjectList: [],
+      moldInvestmentStatus: '',
+      moldInvestmentStatusList: [],
     }
   },
+  created() {
+    this.getAllSelect()
+  },
   methods: {
+    async getAllSelect() {
+      this.loadingiSearch = true
+      await Promise.all([getDepartmentsCombo(), carCombo(), moldInvestmentStatusCombo()]).then((res) => {
+        const result0 = this.$i18n.locale === 'zh' ? res[0].desZh : res[0].desEn
+        const result1 = this.$i18n.locale === 'zh' ? res[1].desZh : res[1].desEn
+        const result2 = this.$i18n.locale === 'zh' ? res[2].desZh : res[2].desEn
+        if (Number(res[0].code) === 0) {
+          this.departmentsList = res[0].data
+        } else {
+          iMessage.error(result0);
+        }
+        if (res[1].data) {
+          this.carTypeProjectList = res[1].data;
+        } else {
+          iMessage.error(result1);
+        }
+        if (res[2].data) {
+          this.moldInvestmentStatusList = res[2].data;
+        } else {
+          iMessage.error(result1);
+        }
+        this.loadingiSearch = false
+      }).catch(() => {
+        this.loadingiSearch = false
+      });
+
+    },
+    conditionConfirmTskList(){
+      this.iDialogAddCarTypeProject = true
+      conditionConfirmTskList({
+        current: this.addCarTypeProject,
+        size: this.addCarTypeProject,
+        bmSerial: this.bmSerial,
+        deptId: [],
+        isOneself: this.addCarTypeProject,
+        linieName: this.addCarTypeProject,
+        moldInvestmentStatus: [],
+        partsNum: '',
+        supplier: '',
+        tmCartypeProId: [],
+      }).then((res) => {
+        const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
+        if (Number(res.code) === 0) {
+          iMessage.success(result);
+          this.addCarTypeProject = ''
+          this.addAialog = false
+          this.params.id = res.data.id
+          this.params.sourceStatus = res.data.sourceStatus
+          // 隐藏下拉框
+          this.$refs.carTypeProjectRef.blur()
+          this.getProcureGroup();
+        } else {
+          iMessage.error(result);
+        }
+        this.iDialogAddCarTypeProject = false
+      }).catch(() => {
+        this.iDialogAddCarTypeProject = false
+      });
+    },
     toBmInfo(){
       //  如当前用户没有查看“模具投资金额”的权限，点击流水号后提示“对不起，您所在的岗位没有该材料组权限”
       this.$router.push({path: '/purchase/investmentList/bmInfo'})

@@ -180,7 +180,7 @@
       >
         <!-- BM单流⽔号 -->
         <template #aa="scope">
-          <div class="table-link" @click="openBMDetail(scope.row)">{{scope.row.aa}}</div>
+          <div class="table-link" @click="openPhotoList(scope.row)">{{scope.row.aa}}</div>
         </template>
       </iTableList>
       <div style="color: #999999;font-size: 14px;text-align: right;margin: 10px 0;">{{ $t('货币：人民币  |  单位：元  |  不含税 ') }}</div>
@@ -190,6 +190,7 @@
 <!--      </div>-->
     </iCard>
     <confirm v-model="confirmShow"></confirm>
+    <photoList :imgList="imgList" :visible="photoListShow" @changeLayer="() => photoListShow = false"></photoList>
   </iPage>
 </template>
 
@@ -202,6 +203,7 @@ import {iPage, iMessage, iDialog, iButton, iSelect, iSearch, iInput,
 } from "rise";
 import {bmInfoTitle} from "../components/data"
 import confirm from "../components/confirm"
+import photoList from "../components/photoList"
 import { Popover } from "element-ui"
 
 export default {
@@ -214,6 +216,7 @@ export default {
     iButton,
     Popover,
     confirm,
+    photoList,
   },
 
   data(){
@@ -224,8 +227,10 @@ export default {
       assetsTypeList: [], //  资产分类编号
       tableTitle: bmInfoTitle,
       tableListData: [{aa: '查看'}],
+      imgList: ['https://cdn6-banquan.ituchong.com/weili/l/919767005971611831.webp', 'https://cdn6-banquan.ituchong.com/weili/l/915608610047000641.webp', 'https://cdn9-banquan.ituchong.com/weili/l/903371741418749965.webp'],
       isOpen: false,
       confirmShow: false,
+      photoListShow: false,
       detailsTableLoading: false,
     }
   },
@@ -240,6 +245,9 @@ export default {
     },
     confirm(){
       this.confirmShow = true
+    },
+    openPhotoList(){
+      this.photoListShow = true
     }
   }
 }
