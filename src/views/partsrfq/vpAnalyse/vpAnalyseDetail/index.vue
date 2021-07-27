@@ -242,7 +242,7 @@ export default {
           ...extraParams,
         };
         if (this.$route.query.type === 'edit') {
-          req.id = this.$route.query.schemeId;
+          req.id = this.currentSchemeId;
         }
         if (req.supplierId) {
           this.dataInfo.supplierList.map(item => {
