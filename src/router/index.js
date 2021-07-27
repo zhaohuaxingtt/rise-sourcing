@@ -398,15 +398,15 @@ export const staticRouter = [{
                         },
                         component: () => import (`@/views/ws2/purchase/mouldBook`),
                     },
-                    {
-                        path: '/purchase/mouldBook/details',
-                        name: 'mouldBook',
-                        meta: {
-                            title: '模具台账详情'
-                        },
-                        component: () => import (`@/views/ws2/purchase/mouldBook/details`),
-                    },
                 ]
+            },
+            {
+                path: '/purchase/mouldBook/details',
+                name: 'mouldBook',
+                meta: {
+                    title: '模具台账详情'
+                },
+                component: () => import (`@/views/ws2/purchase/mouldBook/details`),
             },
             {
                 path: '/purchase/investmentList/bmInfo',

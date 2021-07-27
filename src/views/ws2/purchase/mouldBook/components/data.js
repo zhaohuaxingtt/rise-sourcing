@@ -1,14 +1,15 @@
 //  bm单视图查询
 export const bmForm = {
-  tmCartypeProId: '', //  车型项目
-  bmStatus: '', //  Bm单状态
-  akeoType: '', //  akeo类型
-  deptId: '', //  专业科室
   behalfPartsNum: '', //  零件号
-  startDate: '',  //  开始时间
-  endDate: '',  //  结束时间
-  linieId: '',  //  linie
-  bmNum: '',  //  BM单号
+  aekoNum: '', //  AEKO号
+  bmNum: '', //  Bm单号
+  sapOrder: '', //  SAP订单号
+  enterAccountNum: '', //  入账单号
+  tmCartypeProId: '',  //  车型项目
+  designatedSupplierId: [],  //  供应商id数组
+  deptId: '',  //  科室
+  linieId: [],  //  line
+  moldInvestmentStatus: '', //  摸具投资状态
 }
 
 //  模具视图查询
@@ -27,67 +28,67 @@ export const mouldForm = {
 //  BM单视图table
 export const bmTableHead = [
   {
-    props: 'data1',
+    props: 'bmSerial',
     name: 'BM单流⽔号',
     key: 'LK_BMDANLIUSHUIHAO',
     tooltip: false
   },
   {
-    props: 'data2',
+    props: 'bmNum',
     name: 'BM单号',
     key: 'LK_BMDANHAO',
     tooltip: false
   },
   {
-    props: 'data3',
+    props: 'tmCartypeProName',
     name: '车型项目',
     key: 'LK_CHEXINGXIANGMU',
     tooltip: false
   },
   {
-    props: 'data4',
+    props: 'behalfPartsName',
     name: '代表零件号',
     key: 'LK_DAIBIAOLINGJIANHAO',
     tooltip: false
   },
   {
-    props: 'data5',
+    props: 'partsPurchaseType',
     name: '零件采购项目类型',
     key: 'LK_LINGJIANCAIGOUXIANGMULEIXING',
     tooltip: false
   },
   {
-    props: 'data6',
+    props: 'designatedSupplierName',
     name: '供应商',
     key: 'TPZS.GONGYINGSHANG',
     tooltip: false
   },
   {
-    props: 'data7',
+    props: 'moldInvestmentAmount',
     name: '模具投资金额',
     key: 'LK_MUJUTOUZIJINE',
     tooltip: false
   },
   {
-    props: 'data8',
+    props: 'moldInvestmentStatusName',
     name: '模具投资清单状态',
     key: 'LK_MUJUTOUZIQINGDANZHUANGTAI',
     tooltip: false
   },
   {
-    props: 'data9',
+    props: 'bmStatusName',
     name: '业务处理状态',
     key: 'LK_YEWUCHULIZHUANGTAI',
     tooltip: false
   },
   {
-    props: 'data10',
+    props: 'deptName',
     name: '科室',
     key: 'LK_KESHI',
     tooltip: false
   },
   {
-    props: 'data11',
+    props: 'linieName',
     name: 'Linie',
     key: 'LK_LINIE',
     tooltip: false
