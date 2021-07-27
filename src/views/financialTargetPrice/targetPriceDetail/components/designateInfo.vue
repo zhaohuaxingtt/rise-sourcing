@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-23 15:37:22
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-01 15:47:58
+ * @LastEditTime: 2021-07-27 09:50:13
  * @Description: 定点信息
  * @FilePath: \front-web\src\views\financialTargetPrice\targetPriceDetail\components\designateInfo.vue
 -->
@@ -59,6 +59,7 @@ import { getNomiRecords } from "@/api/financialTargetPrice/index"
 import { getDictByCode } from '@/api/dictionary'
 import { dictkey } from "@/api/partsprocure/editordetail"
 import { getCartypeDict} from "@/api/partsrfq/home"
+import { cloneDeep } from 'lodash'
 export default {
   mixins: [pageMixins],
   components: {iCard,iPagination,iButton,tableList,iInput,iSelect,iSearch,iDatePicker},
@@ -75,7 +76,8 @@ export default {
         isManCreate: '',
         priceStatus: '',
         partProjectType: '',
-        carTypeCode: ''
+        carTypeCode: '',
+        partNum: this.partNum
       },
       selectOptions: {
         yesOrNoOption: [
@@ -86,7 +88,8 @@ export default {
     }
   },
   props: {
-    partProjId: {type:String}
+    partProjId: {type:String},
+    partNum: {type: String}
   },
   watch: {
     partProjId:{
@@ -99,6 +102,10 @@ export default {
      }
   },
   created() {
+    // const params = JSON.parse(this.$route.query.item)
+    // if(params) {
+    //   this.searchParams.partNum = cloneDeep(params.partNum)
+    // }
     this.getCartypeDict()
     this.getProcureGroup()
     this.getDicts()
@@ -133,6 +140,7 @@ export default {
         partProjectType: '',
         carTypeCode: ''
       }
+      this.sure()
     },
     getDicts() {
       getDictByCode('PRICE_STATE').then(res => {
@@ -209,7 +217,7 @@ export default {
       position: relative;
       overflow: hidden;
       .el-form-item {
-        margin-right: 4.125rem;
+        margin-right: 3.125rem;
       }
       .searchBtns {
         position: absolute;
