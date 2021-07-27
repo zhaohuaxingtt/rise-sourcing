@@ -306,7 +306,7 @@ export default {
             this.hideTableData.push(item);
           }
         });
-        this.fiexedApportionedNum = this.tableListData[0].apportionedNum;
+        this.fiexedApportionedNum = this.tableListData.length > 0 ? this.tableListData[0].apportionedNum : this.hideTableData[0].apportionedNum;
       } catch {
         this.tableListData = [];
         this.hideTableData = [];
