@@ -573,12 +573,6 @@ export const staticRouter = [{
             name: "loidetail",
             component: () => import ("@/views/letterAndLoi/loi/detail")
         },
-        // AEKO相关路由
-        {
-            path: "/sourcing/aeko/managelist",
-            name: "aekoManageList",
-            component: () => import ("@/views/aeko/manage")
-        },
 
     ],
 },
