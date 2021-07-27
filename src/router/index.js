@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-07-26 16:54:29
+ * @LastEditTime: 2021-07-26 18:12:51
  * @LastEditors: Please set LastEditors
  * @Description: 系统静态路由.
  * @FilePath: \front-web\src\router\index.js
@@ -18,7 +18,7 @@ import supplierscoreRoutes from './modules/supplierscore'
 import financialtargetpriceRoutes from './modules/financialtargetprice'
 import steeldemandcreation from './modules/steeldemandcreation'
 import negotiationAssistant from './modules/negotiationAssistant'
-
+import aekoRoutes from './modules/aeko'
 
 Vue.use(VueRouter);
 const originalPush = VueRouter.prototype.push
@@ -623,6 +623,7 @@ export default new VueRouter({
         ...financialtargetpriceRoutes,
         ...steeldemandcreation,
         //谈判助手
-        ...negotiationAssistant
+        ...negotiationAssistant,
+        ...aekoRoutes
     ]
 });
