@@ -30,16 +30,30 @@
       </iSearch>
       <iCard class="contain margin-top20" :title="language('LK_AEKOGUANLI','AEKO管理')">
       <!-- 按钮区域 -->
-       <template v-slot:header-control>
-            <iButton>{{language('LK_YUQIBIBAOBIAO','逾期BI报表')}} </iButton>
-            <iButton>{{language('LK_AEKOHUIYITONGGUO','会议通过')}} </iButton>
-            <iButton>{{language('LK_XIAZAIMOBAN','下载模板')}} </iButton>
-            <iButton>{{language('LK_DAORUAEKO','导⼊AEKO')}} </iButton>
-            <iButton>{{language('LK_SHANCHUAEKO','删除AEKO')}} </iButton>
-            <iButton @click="revoke">{{language('LK_CHEXIAOAEKO','撤销AEKO')}} </iButton>
-            <iButton>{{language('LK_DAORUFUJIAN','导⼊附件')}} </iButton>
-            <iButton>{{language('LK_AEKODAOCHU','导出')}} </iButton>
-        </template>
+      <template v-slot:header-control>
+          <iButton>{{language('LK_YUQIBIBAOBIAO','逾期BI报表')}} </iButton>
+          <iButton>{{language('LK_AEKOHUIYITONGGUO','会议通过')}} </iButton>
+          <iButton>{{language('LK_XIAZAIMOBAN','下载模板')}} </iButton>
+          <iButton >{{language('LK_DAORUAEKO','导⼊AEKO')}} </iButton>
+          <iButton>{{language('LK_SHANCHUAEKO','删除AEKO')}} </iButton>
+          <iButton @click="revoke">{{language('LK_CHEXIAOAEKO','撤销AEKO')}} </iButton>
+          <el-upload
+            class=" margin-left10 margin-right10"
+            :action="uploadUrl + '/rs/uploadNomiRsDoc'"
+            accept='.doc,.docx,.xls,.xlsx,.ppt,.pptx,.jpg,.jpeg,.png,.pdf,.tif,.pptx,.zip'
+            style="display:none;"
+            ref="aekoUpload"
+            multiple
+            :show-file-list='false'
+            :on-progress='()=>{btnLoading.uploadFiles=true}'
+            :on-error='()=>{btnLoading.uploadFiles=false;iMessage.error(language("SHANGCHUANSHIBAI","上传失败！"))}'
+            :on-success='fileSuccess'
+          >
+          </el-upload>
+
+          <iButton class="margin-left10" :loading="btnLoading.uploadFiles" @click="importFiles">{{language('LK_DAORUFUJIAN','导⼊附件')}} </iButton>
+          <iButton>{{language('LK_AEKODAOCHU','导出')}} </iButton>
+      </template>
       <!-- 表单区域 -->
       <tableList
         class="table"
@@ -54,7 +68,8 @@
       <template #a="scope">
         <icon class="margin-right5" symbol name="iconAEKO_TOP"></icon>
         <span class="link" @click="goToDetail(scope.row)">{{scope.row.a}}-6666</span>
-        <icon class="margin-left5" symbol name="iconshenpi-fujian"></icon>
+        <a @click="checkFiles(scope.row)"><icon class="margin-left5" symbol name="iconshenpi-fujian" ></icon></a>
+        
       </template>
 
       <!-- 日志 -->
@@ -84,7 +99,9 @@
 
       <!-- 核销原因弹窗 -->
       <revokeDialog v-if="revokeVisible" :dialogVisible="revokeVisible" @changeVisible="changeVisible" @getList="getList" :selectItems="selectItems" />
-      </div>
+      <!-- 附件列表查看 -->
+      <filesListDialog v-if="filesVisible" :dialogVisible="filesVisible" @changeVisible="changeVisible"/>
+    </div>
   </iPage>
 </template>
 
@@ -107,6 +124,7 @@ import { pageMixins } from "@/utils/pageMixins";
 import { TAB } from '../data';
 import tableList from "@/views/partsign/editordetail/components/tableList"
 import revokeDialog from './components/revokeDialog'
+import filesListDialog from './components/filesListDialog'
 export default {
     name:'aekoManageList',
     mixins: [pageMixins],
@@ -123,6 +141,7 @@ export default {
       iPagination,
       icon,
       revokeDialog,
+      filesListDialog,
     },
     data(){
       return{
@@ -151,11 +170,18 @@ export default {
           ]
         },
         tableListData:[
-          {'a':'AE19221','b':'1',c:'2','d':'3','e':'4','f':'5','g':'6','h':'7','i':'8','j':'9','k':'10'}
+          {'a':'AE19221','b':'1',c:'2','d':'3','e':'4','f':'5','g':'6','h':'7','i':'8','j':'9','k':'10'},
+          {'a':'AE19222','b':'1',c:'2','d':'3','e':'4','f':'5','g':'6','h':'7','i':'8','j':'9','k':'10'},
+          {'a':'AE19223','b':'1',c:'2','d':'3','e':'4','f':'5','g':'6','h':'7','i':'8','j':'9','k':'10'},
         ],
         tableTitle:tableTitle,
         loading:false,
-        revokeVisible:false
+        revokeVisible:false,
+        filesVisible:false,
+        uploadUrl: process.env.VUE_APP_SOURCING_MH,
+        btnLoading:{
+          uploadFiles:false,
+        }
       }
     },
     methods:{
@@ -191,7 +217,9 @@ export default {
       checkDescribe(row){
         const routeData = this.$router.resolve({
           path: '/aeko/describe',
-          query: {},
+          query: {
+            id:'1'
+          },
         })
         window.open(routeData.href, '_blank')
       },
@@ -220,8 +248,42 @@ export default {
      async revoke(){
         const isNext  = await this.isSelectItem(true);
         if(!isNext) return;
+        // 一次只能撤销一个AEKO
+        const {selectItems} = this;
+        if(selectItems.length > 1) return iMessage.warn(this.language('LK_AEKO_YICIZHINENGCHEXIAOYIGEAEKO','一次只能撤销一个AEKO，请修改！'));
         console.log(isNext,'isNext');
         this.changeVisible('revokeVisible',true);
+      },
+
+      // 查看附件列表
+      async checkFiles(row){
+        this.changeVisible('filesVisible',true);
+      },
+
+      // 导入AEKO附件
+      async importFiles(){
+        const isNext  = await this.isSelectItem(true);
+        if(!isNext) return;
+        // 多选多个AEKO后弹出提示
+        const {selectItems} = this;
+        if(selectItems.length > 1){
+          await this.$confirm(
+          this.language('LK_TIPS_IMPORFILES_AEKO','你选择的附件将被引⽤到多个AEKO中，请确认是否继续上传？'),
+          this.language('LK_AEKO_DAORUFUJIAN','导⼊附件'),
+          {
+            confirmButtonText: this.language('nominationLanguage.Yes','是'),
+            cancelButtonText: this.language('nominationLanguage.No','否'),
+          }
+          ).then(()=>{
+            this.$refs['aekoUpload'].$refs['upload-inner'].handleClick()
+            console.log('是')
+          }).catch(()=>{
+            console.log('否')
+          })
+        }else{
+          this.$refs['aekoUpload'].$refs['upload-inner'].handleClick()
+        }
+        
       },
     }
 }

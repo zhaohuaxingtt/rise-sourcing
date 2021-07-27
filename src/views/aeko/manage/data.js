@@ -29,3 +29,12 @@ export const tableTitle = [
     { props: "h", name: "截⽌⽇期", key: "LK_AEKOJIEZHIRIQI", tooltip: true },
     { props: "i", name: "冻结⽇期", key: "LK_AEKODONGJIERIQI", tooltip: true },
 ]
+
+// 查看附件表头
+export const filesTableTitle = [
+  {name:'文件名',key:'LK_WENJIANMING',props:'fileName'},
+  {name:'上传日期',key:'LK_SHANGCHUANRIQI',props:'uploadDate'},
+  {name:'来源',key:'LK_AEKO_FILES_LAIYUAN',props:'a'},
+  {name:'上传人',key:'LK_SHANGCHUANREN',props:'uploadBy'},
+  {name:'大小',key:'LK_DAXIAO',props:'size'},
+]
