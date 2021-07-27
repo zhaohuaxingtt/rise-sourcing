@@ -161,7 +161,7 @@ export default {
       analyzeLoading: false,
       currentSupplierId: '',
       saveDialog: false,
-      currentSchemeId: this.$route.query.schemeId
+      currentSchemeId: this.$route.query.schemeId,
     };
   },
   methods: {
@@ -201,6 +201,8 @@ export default {
     async getDataInfo() {
       try {
         this.pageLoading = true;
+        this.analyzeLoading = true;
+        this.tableLoading = true;
         let req = {
           partsId: this.currentPartsId,
           supplierId: this.currentSupplierId,
@@ -224,9 +226,13 @@ export default {
         const analysisCurveData = Array.isArray(this.dataInfo.analysisCurve) ? this.dataInfo.analysisCurve : [];
         this.handleCurveData(analysisCurveData);
         this.pageLoading = false;
+        this.analyzeLoading = false;
+        this.tableLoading = false;
       } catch {
         this.dataInfo = {};
         this.pageLoading = false;
+        this.analyzeLoading = false;
+        this.tableLoading = false;
       }
     },
     async saveOrUpdateScheme(params, extraParams = {}) {
@@ -262,11 +268,9 @@ export default {
             this.$refs.totalUnitPriceTable.hideTableData);
         req.estimatedActualTotalPro = deleteThousands(this.$refs.analyzeChart.dropPotential.estimatedActualTotalPro);
         const res = await saveOrUpdateScheme(req);
-        this.resultMessage(res);
-        this.getDataInfo();
-        this.pageLoading = false;
-        this.analyzeLoading = false;
-        this.tableLoading = false;
+        this.resultMessage(res, () => {
+          this.currentSchemeId = res.data;
+        });
         if (res.result) {
           if (this.$route.query.type === 'add') {
             this.$router.push({
@@ -278,6 +282,11 @@ export default {
               },
             });
           }
+        } else {
+          await this.getDataInfo();
+          this.pageLoading = false;
+          this.analyzeLoading = false;
+          this.tableLoading = false;
         }
       } catch {
         this.pageLoading = false;
