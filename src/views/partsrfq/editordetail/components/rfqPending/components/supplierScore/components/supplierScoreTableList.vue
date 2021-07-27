@@ -93,7 +93,6 @@ export default {
       this.$emit('supplierProducePlacesVisibleChange', status, row)
     },
     supplierProducePlacesChange(value, row) {
-
       if (value) {
         const current = this.supplierProducePlaces.filter(item => item.value === value)[0]
         this.$set(row, "companyAddressCode", value),
