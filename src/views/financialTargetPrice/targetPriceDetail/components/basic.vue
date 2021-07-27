@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-23 15:16:47
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-03 12:09:49
+ * @LastEditTime: 2021-07-23 15:04:48
  * @Description: 基础信息
  * @FilePath: \front-web\src\views\financialTargetPrice\targetPriceDetail\components\basic.vue
 -->
@@ -12,7 +12,7 @@
     <iFormGroup row="4" class="targetPriceDetail">
       <iFormItem v-for="(item, index) in detailList" :key="index" :label="language(item.i18n_label, item.label)+':'" :class="item.row ? 'row'+item.row : ''">
         <template v-if="item.editable && isEdit">
-          <iInput v-if="item.type === 'input'" v-model="detailData[item.value]" :type="item.number ? 'number' : 'string'" :disabled="isDisabled(item.value)" />
+          <iInput v-if="item.type === 'input'" :value="detailData[item.value]" @input="handleInput($event, item.number, item.value)" :disabled="isDisabled(item.value)" />
           <iSelect v-else-if="item.type === 'select'" v-model="detailData[item.value]" :disabled="isDisabled(item.value)">
             <el-option
               :value="item.code"
@@ -68,6 +68,15 @@ export default {
     this.getDict()
   },
   methods: {
+    handleInput(value, isNumber, name) {
+      if (isNumber) {
+        if (/^\d*\.?\d*$/.test(value)) {
+          this.$set(this.detailData, name, value)
+        }
+      } else {
+        this.$set(this.detailData, name, value)
+      }
+    },
     isDisabled(type) {
       const lcs = ['lcTcCurrencyId','lcBPrice','lcAPrice']
       const skds = ['skdTcCurrencyId','skdBPrice','skdAPrice']

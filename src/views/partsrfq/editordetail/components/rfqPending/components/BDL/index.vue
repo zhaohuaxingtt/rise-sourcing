@@ -8,12 +8,12 @@
   <iCard>
     <div class="header flex-between-center">
       <div class="input">
-        <iInput :placeholder="language('LK_QINGSHURUCHANXUANGONGYINGSHANGMINGCHENG','请输入查询供应商名称')" suffix-icon="iconfont iconshaixuankuangsousuo" v-model="searchKey"></iInput>
+        <iInput :placeholder="language('LK_QINGSHURUCHANXUANGONGYINGSHANGMINGCHENG','请输入查询供应商名称')" suffix-icon="iconfont iconshaixuankuangsousuo" v-model="searchKey" @input="handleInputBySearchKey"></iInput>
       </div>
       <div>
         <div v-if="!addCustomStatus">
-          <iButton @click="handleSave" v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_BDLSAVEBDL" :loading="saveLoading">{{ language('LK_QUEREN','确认') }}</iButton>
-          <iButton @click="handleDelete" v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_DELETESUPPLIER" :loading="deleteLoading">{{ language('LK_SHANCHUGONGYINGSHANG','删除供应商') }}</iButton>
+          <iButton v-if="editSelectTableDataCache.length" @click="handleSave" v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_BDLSAVEBDL" :loading="saveLoading">{{ language('LK_QUEREN','确认') }}</iButton>
+          <iButton v-if="noEditSelectTableDataCache.length" @click="handleDelete" v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_DELETESUPPLIER" :loading="deleteLoading">{{ language('LK_SHANCHUGONGYINGSHANG','删除供应商') }}</iButton>
           <iButton @click="addCustom" v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_ADDCUSTOM">{{ language('LK_TIANJIAZIDINGYIPINGFENXIANG','添加自定义评分项') }}</iButton>
         </div>
         <div v-else>
@@ -22,7 +22,7 @@
         </div>
       </div>
     </div>
-    <tableList v-update :tableData="tableData.filter(item => !searchKey || item.supplierNameZh.toLowerCase().includes(searchKey.trim().toLowerCase()))" :tableTitle="tableTitle" :tableLoading="tableLoading"
+    <tableList :tableData="tableData" :tableTitle="tableTitle" :tableLoading="tableLoading"
                @handleSelectionChange="handleSelectionChange"
                @openPage="openPage"
                @log="log" ref="table"
@@ -36,7 +36,7 @@
 </template>
 
 <script>
-import {iCard, iButton, iInput,iPagination, iMessage} from "rise"
+import {iCard, iButton, iInput,iPagination, iMessage, iMessageBox } from "rise"
 import tableList from "./tableList"
 import {tableTitle} from "./data"
 import {getBdlList, updateRfq} from "@/api/partsrfq/editordetail";
@@ -44,7 +44,6 @@ import logDialog from '@/views/partsign/editordetail/components/logDialog'
 import {pageMixins} from '@/utils/pageMixins'
 import {rfqCommonFunMixins} from "pages/partsrfq/components/commonFun";
 import { cloneDeep } from 'lodash'
-import { iMessageBox } from '../../../../../../../components';
 
 export default {
   mixins:[pageMixins, rfqCommonFunMixins],
@@ -66,6 +65,7 @@ export default {
     return {
       tableTitle: cloneDeep(tableTitle),
       tableData: [],
+      tableDataCache: [],
       tableLoading: false,
       searchKey: "",//搜索关键词	
       logVisible: false,
@@ -158,6 +158,7 @@ export default {
       getBdlList(this.translateParmars()).then((res) => {
         if(res.data && res.data.rfqBdlVO && res.data.rfqBdlVO.rfqBdlVOList){
           this.tableData = res.data.rfqBdlVO.rfqBdlVOList || []
+          this.tableDataCache = this.tableData
           this.page.totalCount = res.data.rfqBdlVO.total || 0
 
           if (!this.$refs.table.addCustomShow && this.tableData[0] && this.tableData[0].userDefinedGradeField) {
@@ -271,6 +272,22 @@ export default {
       if (!this.$refs.table.addTitle) {
         this.$refs.table.addCustom()
       }
+    },
+
+    handleInputBySearchKey(value) {
+      if (value) {
+        this.tableData = this.tableDataCache.filter(item => !value || (item.supplierNameZh && item.supplierNameZh.toLowerCase().includes(value.trim().toLowerCase())))
+      } else {
+        this.tableData = this.tableDataCache
+      }
+
+      this.tableData.forEach(item => {
+        if (item.isEdit) {
+          if (this.editSelectTableDataCache.some(cacheItem => cacheItem.supplierId === item.supplierId)) this.$nextTick(() => this.$refs.table.$refs.multipleTable.toggleRowSelection(item, true))
+        } else {
+          if (this.noEditSelectTableDataCache.some(cacheItem => cacheItem.supplierId === item.supplierId)) this.$nextTick(() => this.$refs.table.$refs.multipleTable.toggleRowSelection(item, true))
+        }
+      })
     }
   }
 }

@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-22 16:16:26
- * @LastEditTime: 2021-07-20 17:24:03
+ * @LastEditTime: 2021-07-26 15:30:19
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\supplierscore\components\rfqdetail\components\supplierScore\components\score\index.vue
@@ -44,7 +44,7 @@
               </template>
               <template v-if="item.props === 'rate'" v-slot="scope">
                 <div v-if="editStatus">
-                  <iInput v-if="userInfo.id != 199 && userInfo.id != 207 && userInfo.id != 208" v-model="scope.row.rate" />
+                  <iInput v-if="afterSaleLeaderIds.every(id => id != userInfo.id)" v-model="scope.row.rate" />
                   <iSelect v-else v-model="scope.row.rate">
                     <el-option value="合格" :label="language('HEGE', '合格')" />
                     <el-option value="不合格" :label="language('BUHEGE', '不合格')" />
@@ -87,6 +87,7 @@ import { pageMixins } from "@/utils/pageMixins"
 import { scoreTableTitle as tableTitle, deptScoreTableTitle } from "../data"
 import { cloneDeep, isEqual } from "lodash"
 import { getRfqBdlRatingsByCurrentDept, forward, backRfqBdlRatings, submitRfqBdlRatings, approveRfqBdlRatings, rejectRfqBdlRatings, updateRfqBdlRatings, updateRfqBdlRatingMemo } from "@/api/supplierscore"
+import { afterSaleLeaderIds } from "@/views/supplierscore/components/data"
 
 export default {
   components: {
@@ -112,7 +113,7 @@ export default {
     })
   },
   created() {
-    if (this.userInfo.id == 199 || this.userInfo.id == 207 || this.userInfo.id == 208) {
+    if (this.afterSaleLeaderIds.some(id => id == this.userInfo.id)) {
       this.deptScoreTableTitle = this.deptScoreTableTitle.filter(item => item.props === "rate" || item.props === "remark" || item.props === "rateStatus")
     }
   },
@@ -134,6 +135,7 @@ export default {
       approveLoading: false,
       rejectDialogVisible: false,
       saveLoading: false,
+      afterSaleLeaderIds,
     }
   },
   methods: {

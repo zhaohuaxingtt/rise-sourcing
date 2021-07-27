@@ -15,7 +15,7 @@
 				<span class="start">*</span>
 			</iFormItem>
 			<iFormItem :label="language('LK_QIWANGMUBIAOJIA','期望目标价')" name="test">
-				<iInput v-model="targetprice.cfTargetPriceDetail.expTargetpri" onkeyup="value=value.replace(/[^\d]/g,'')"  maxlength="20"></iInput>
+				<iInput :value="targetprice.cfTargetPriceDetail.expTargetpri" @input="handleInput($event, 'expTargetpri')"  maxlength="20"></iInput>
 			</iFormItem>
 		</iFormGroup>
 		<iFormGroup row="2" icon inline>
@@ -115,6 +115,11 @@
 			}
 		},
 		methods: {
+			handleInput(val, key) {
+				if (/^\d*\.?\d*$/.test(val)) {
+          this.$set(this.targetprice.cfTargetPriceDetail, key, val)
+        }
+			},
 			// 申请财务目标价
 			save() {
 				this.saveLoading = true

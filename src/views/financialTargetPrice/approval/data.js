@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-22 17:03:48
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-01 18:47:42
+ * @LastEditTime: 2021-07-27 09:32:03
  * @Description: 
  * @FilePath: \front-web\src\views\financialTargetPrice\approval\data.js
  */
@@ -17,8 +17,8 @@ export const tableTitle = [
   {props:'modiferName',name:'修改人', key: "XIUGAIREN", tooltip: true, width: 120},
   {props:'cfControllerZh',name:'CF', key: "CF", tooltip: true, width: 120},
   {props:'rwPrice',name:'RW价', key: "RWJIA", tooltip: true},
-  {props:'lcVary',name:'LC变化', key: "LCBIANHUA", tooltip: true},
-  {props:'lcAVary',name:'LC_A变化', key: "LCABIANHUA", tooltip: true},
+  {props:'lcVary',name:'LC_B变化', key: "LCBBIANHUA", tooltip: true, width: 120},
+  {props:'lcAVary',name:'LC_A变化', key: "LCABIANHUA", tooltip: true, width: 120},
   {props:'skdVary',name:'SKD变化', key: "SKDBIANHUA", tooltip: true, width: 100},
   {props:'skdAVary',name:'SKD_A变化', key: "SKDABIANHUA", tooltip: true, width: 120},
   {props:'ckdLanded',name:'CKD Landed', key: "CKDLANDED", tooltip: true, width: 120},
