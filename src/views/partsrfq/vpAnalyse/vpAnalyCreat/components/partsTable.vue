@@ -30,6 +30,15 @@
             <template #supplyBeginTime="scope">
               <span>{{scope.row.supplyBeginTime.slice(0, 7)}}</span>
             </template>
+            <template #currentPlannedPro="scope">
+              <span>{{toThousands(scope.row.currentPlannedPro)}}</span>
+            </template>
+            <template #currentActualPro="scope">
+              <span>{{toThousands(scope.row.currentActualPro)}}</span>
+            </template>
+            <template #increaseRate="scope">
+              <span>{{scope.row.increaseRate}}%</span>
+            </template>
           </tableList>
           <iPagination :pager-count='3' v-update @size-change="handleSizeChange($event)" @current-change="handleCurrentChange($event)" background :page-sizes="page.pageSizes" :page-size="pageData.pageSize" :layout="page.layout" :current-page='pageData.currPage' :total="pageData.totalCount" />
         </el-tab-pane>
@@ -37,6 +46,15 @@
           <tableList ref="tableList" :tableData="tablePageData" :tableTitle="tableTitle" :tableLoading="tableLoading" :selection='true' @handleSelectionChange="handleSelectionChange">
             <template #supplyBeginTime="scope">
               <span>{{scope.row.supplyBeginTime.slice(0, 7)}}</span>
+            </template>
+            <template #currentPlannedPro="scope">
+              <span>{{toThousands(scope.row.currentPlannedPro)}}</span>
+            </template>
+            <template #currentActualPro="scope">
+              <span>{{toThousands(scope.row.currentActualPro)}}</span>
+            </template>
+            <template #increaseRate="scope">
+              <span>{{scope.row.increaseRate}}%</span>
             </template>
           </tableList>
           <iPagination :pager-count='3' v-update @size-change="handleSizeChange($event)" @current-change="handleCurrentChange($event)" background :page-sizes="page.pageSizes" :page-size="pageData.pageSize" :layout="page.layout" :current-page='pageData.currPage' :total="pageData.totalCount" />
@@ -57,6 +75,7 @@ import { pageMixins } from '@/utils/pageMixins';
 import resultMessageMixin from '@/utils/resultMessageMixin.js';
 import searchPartDialog from "./searchPartDialog.vue";
 import { getPartsList, saveCarParts } from "@/api/partsrfq/vpAnalysis/vpAnalyseCreate/index.js";
+import {toThousands} from '@/utils';
 
 export default {
   // import引入的组件需要注入到对象中才能使用
@@ -91,6 +110,7 @@ export default {
   watch: {},
   // 方法集合
   methods: {
+    toThousands,
     hanleParts() {
       this.partsDialog = true
     },
