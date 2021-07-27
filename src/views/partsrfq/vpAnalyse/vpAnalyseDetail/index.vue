@@ -162,6 +162,7 @@ export default {
       currentSupplierId: '',
       saveDialog: false,
       currentSchemeId: this.$route.query.schemeId,
+      tableLoading: false
     };
   },
   methods: {
@@ -284,10 +285,10 @@ export default {
           }
         } else {
           await this.getDataInfo();
-          this.pageLoading = false;
-          this.analyzeLoading = false;
-          this.tableLoading = false;
         }
+        this.pageLoading = false;
+        this.analyzeLoading = false;
+        this.tableLoading = false;
       } catch {
         this.pageLoading = false;
         this.analyzeLoading = false;
