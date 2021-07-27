@@ -118,6 +118,7 @@ import {
 } from '../../../../api/partsrfq/vpAnalysis/vpAnalyseDetail';
 import resultMessageMixin from '@/utils/resultMessageMixin';
 import saveDialog from './components/saveDialog';
+import {deleteThousands} from '@/utils';
 
 export default {
   mixins: [resultMessageMixin],
@@ -257,7 +258,7 @@ export default {
         }
         req.costDetailList = this.$refs.totalUnitPriceTable.tableListData.concat(
             this.$refs.totalUnitPriceTable.hideTableData);
-        req.estimatedActualTotalPro = this.$refs.analyzeChart.dataInfo.estimatedActualTotalPro;
+        req.estimatedActualTotalPro = deleteThousands(this.$refs.analyzeChart.dropPotential.estimatedActualTotalPro);
         const res = await saveOrUpdateScheme(req);
         this.resultMessage(res);
         this.getDataInfo();

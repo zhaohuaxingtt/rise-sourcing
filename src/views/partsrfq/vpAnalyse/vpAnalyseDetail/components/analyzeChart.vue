@@ -151,7 +151,7 @@
               <icon symbol name="iconxinxitishi" class="tipIcon2" slot="reference"></icon>
             </el-popover>
           </div>
-          <iText class="valueWidth font-weight">{{ toThousands(dataInfo.achievedReductionPrice) }}</iText>
+          <iText class="valueWidth font-weight">{{ toThousands(dataInfo.achievedReductionPrice) }}%</iText>
         </div>
       </div>
     </div>
