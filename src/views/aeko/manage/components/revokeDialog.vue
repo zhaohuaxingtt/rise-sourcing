@@ -15,7 +15,7 @@
     </template>
     <iInput
         type="textarea"
-        :placeholder="language('LK_QINGSHURUCHEXIAOYUANYIN','请输⼊撤销原因')"
+        :placeholder="language('LK_WEITIANXIECHEXIAOYUANYIN','未填写撤销原因，无法保存')"
         rows="10" 
         resize="none"
         v-model="reason"
