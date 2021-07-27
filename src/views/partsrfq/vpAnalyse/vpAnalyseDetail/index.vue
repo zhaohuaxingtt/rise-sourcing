@@ -161,6 +161,7 @@ export default {
       analyzeLoading: false,
       currentSupplierId: '',
       saveDialog: false,
+      currentSchemeId: this.$route.query.schemeId
     };
   },
   methods: {
@@ -169,6 +170,7 @@ export default {
       this.currentBatchNumber = item.batchNumber;
       this.currentPartsId = item.partsId;
       this.currentSupplierId = item.supplierId;
+      this.currentSchemeId = item.analysisSchemeId;
       this.getDataInfo();
     },
     handlePartItemClose(e, item) {
@@ -204,7 +206,7 @@ export default {
           supplierId: this.currentSupplierId,
         };
         if (this.$route.query.type === 'edit') {
-          req.id = this.$route.query.schemeId;
+          req.id = this.currentSchemeId;
         }
         req.batchNumber = this.currentBatchNumber;
         if (this.$route.query.type === 'add') {
