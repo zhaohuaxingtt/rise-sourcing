@@ -20,7 +20,7 @@
       <div class="achievementRate" :style="{'left': (this.achievementRateDot) + '%'}">
 <!--        <icon symbol name="iconVP-jihuazongchanliang" class="iconStyle"/>-->
         <img src="./images/blue.png" class="iconStyle" style="width: 16px; height: 16px">
-        <div style="margin-left: -50%; text-align: center">
+        <div style="margin-left: -75%; text-align: center">
           <div class="iconColor" style="line-height: 16px; margin-top: -36px;text-align: center">{{
               this.achievementRate
             }}%
@@ -324,7 +324,7 @@ export default {
     height: 80px;
 
     .iconStyle {
-      left: 18px;
+      //left: 18px;
     }
 
     .iconColor {
