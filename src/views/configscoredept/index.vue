@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-17 13:44:35
- * @LastEditTime: 2021-07-23 10:04:15
+ * @LastEditTime: 2021-07-26 19:39:07
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\configscoredept\index.vue
@@ -401,10 +401,17 @@ export default {
     }
   }
 
-  .inputSearchIcon {
-    display: inline-block;
-    width: 30px;
-    font-size: 16px;
+  ::v-deep .el-input__suffix {
+    .inputSearchIcon {
+      display: inline-block;
+      width: 30px;
+      font-size: 16px;
+      height: 100%;
+
+      .icon {
+        height: 100% !important;
+      }
+    }
   }
 
   .isAuditSelect {
