@@ -72,9 +72,9 @@ export function modifyRfqToRemark(parmars) {
   })
 }
 //map
-export function batchSupplierMapOverview(parmars) {
+export function negotiateBasicInfor(parmars) {
   return requst({
-    url: `/batchOverview/batchSupplierMapOverview`,
+    url: `/batchOverview/negotiateBasicInfor`,
     method: 'POST',
     data: parmars
   })

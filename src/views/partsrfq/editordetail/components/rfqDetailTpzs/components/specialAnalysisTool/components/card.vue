@@ -66,7 +66,7 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1.5rem 2.5rem 0 2.5rem;
+  padding: 0 2.5rem;
   font-size: 14px;
   color: #000;
   width: 100%;
