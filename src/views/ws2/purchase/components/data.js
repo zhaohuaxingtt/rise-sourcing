@@ -49,7 +49,7 @@ export const investmentListTitle = [
         tooltip: false
     },
     {
-        props: 'partsPurchaseType',
+        props: 'partsPurchaseTypeName',
         name: '零件采购项目类型',
         key: '零件采购项目类型',
         tooltip: false
@@ -70,6 +70,7 @@ export const investmentListTitle = [
         props: 'moldInvestmentStatus',
         name: '模具投资清单状态',
         key: '模具投资清单状态',
+        width: 220,
         tooltip: false
     },
 ]

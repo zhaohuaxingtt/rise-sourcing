@@ -66,4 +66,13 @@ export function assignOneself(data) {
     })
 }
 
+//发送供应商
+export function sendSupplier(data) {
+    return VUE_APP_BMCONFIRMTASK({
+        url: '/sendSupplier',
+        method: 'POST',
+        data: data
+    })
+}
+
 

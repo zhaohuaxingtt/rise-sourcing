@@ -43,8 +43,8 @@
         </el-form-item>
       </el-form>
     <span slot="footer" class="dialog-footer">
-      <iButton @click="handoverSelfBtn" :loading='handoverSelfLoading'>{{ language('LK_ZHUANPAIZIJI', '转派自己') }}</iButton>
-      <iButton @click="save" :loading='saveLoading'>{{ language('LK_QUEREN', '确认') }}</iButton>
+      <iButton @click="assignOneself" :loading='handoverSelfLoading'>{{ language('LK_ZHUANPAIZIJI', '转派自己') }}</iButton>
+      <iButton @click="assign" :loading='saveLoading'>{{ language('LK_QUEREN', '确认') }}</iButton>
     </span>
   </iDialog>
 </template>
@@ -120,7 +120,7 @@ export default {
       });
     },
     assign(){
-      this.handoverSelfLoading = true
+      this.saveLoading = true
       assign({
         bmid: this.handoverParams.bmid,
         deptId: this.deptId,
@@ -129,27 +129,31 @@ export default {
       }).then((res) => {
         const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
         if (Number(res.code) === 0) {
+          this.$emit('input', false)
+          this.$emit('handoverClose')
           iMessage.success(result);
         } else {
           iMessage.error(result);
         }
-        this.handoverSelfLoading = false
+        this.saveLoading = false
       }).catch(() => {
-        this.handoverSelfLoading = false
+        this.saveLoading = false
       });
     },
     assignOneself(){
-      this.saveLoading = true
+      this.handoverSelfLoading = true
       assignOneself().then((res) => {
         const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
         if (Number(res.code) === 0) {
+          this.linieID = res.data.linieID
+          this.deptId = res.data.deptId
           iMessage.success(result);
         } else {
           iMessage.error(result);
         }
-        this.saveLoading = false
+        this.handoverSelfLoading = false
       }).catch(() => {
-        this.saveLoading = false
+        this.handoverSelfLoading = false
       });
     },
   },
