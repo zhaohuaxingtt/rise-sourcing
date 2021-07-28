@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-06-16 20:44:29
- * @LastEditTime: 2021-07-22 20:01:41
+ * @LastEditTime: 2021-07-28 16:19:34
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\analysisTool\index.vue
@@ -68,7 +68,8 @@ export default {
         path: targetUrl,
         query: {
           round: this.round,
-          partsNo: this.searchData ? this.searchData.partsNo : null 
+          partsNo: this.searchData ? this.searchData.partsNo : null,
+          materialGroup: this.searchData ? this.searchData.materialGroup : null,
         }
       })
     },

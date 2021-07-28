@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-06-18 16:03:35
- * @LastEditTime: 2021-07-27 20:27:55
+ * @LastEditTime: 2021-07-28 15:43:53
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\vpAnalyse\vpAnalyseDetail\components\customPart\index.vue
@@ -13,13 +13,13 @@
         v-if="!addMode" 
         :addStatus="addStatus"
         :partList="customPartList" 
+        @saveCustomPart="saveCustomPart"
         @handleReturnAdd="handleReturnAdd"/>
 
       <customPartAdd 
         v-if="addMode" 
         :defaultList="selectionList"
         @handleCloseAdd="handleCloseAdd"
-        @saveCustomPart="saveCustomPart"
         @handleSubmitAdd="handleSubmitAdd"/>
     </iDialog>
   </div>
@@ -66,7 +66,6 @@ export default {
     },
     //点击新增按钮事件，跳转新增弹窗
     handleReturnAdd(val) {
-      console.log('val', val);
       this.addMode = true
       this.selectionList = window._.cloneDeep(val)
     },

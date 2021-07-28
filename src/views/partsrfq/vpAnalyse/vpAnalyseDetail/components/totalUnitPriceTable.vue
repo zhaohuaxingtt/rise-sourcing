@@ -2,10 +2,10 @@
   <div>
     <div class="margin-bottom20 clearFloat">
       <span class="font18 font-weight">
-        <span class="margin-right30">{{ $t('TPZS.ZONGDANJIA') }}：{{ dataInfo.totalPrice }}{{
+        <span class="margin-right30">{{ $t('TPZS.ZONGDANJIA') }}：{{ toFixedNumber(dataInfo.totalPrice, 2) }}{{
             language('TPZS.YUANKUAHAO', '（元）')
           }}</span>
-        <span>{{ $t('TPZS.GUDINGCHENGBENZHANBI') }}：{{ dataInfo.costProportion }}%</span>
+        <span>{{ $t('TPZS.GUDINGCHENGBENZHANBI') }}：{{ toFixedNumber(dataInfo.costProportion, 2) }}%</span>
       </span>
       <div class="floatright">
         <template v-if="tableStatus === 'edit'">
@@ -68,7 +68,7 @@
         </template>
       </template>
       <template #proportionOfAffectedCost="scope">
-        {{ toFixedNumber(scope.row.proportionOfAffectedCost, 1) }}%
+        {{ toFixedNumber(scope.row.proportionOfAffectedCost, 2) }}%
       </template>
       <!--自定义列结束-->
       <template #isShow="scope">
@@ -125,7 +125,7 @@
         </template>
       </template>
       <template #proportionOfAffectedCost="scope">
-        {{ toFixedNumber(scope.row.proportionOfAffectedCost, 1) }}%
+        {{ toFixedNumber(scope.row.proportionOfAffectedCost, 2) }}%
       </template>
       <!--自定义列结束-->
       <template #isShow="scope">
@@ -306,7 +306,9 @@ export default {
             this.hideTableData.push(item);
           }
         });
-        this.fiexedApportionedNum = this.tableListData.length > 0 ? this.tableListData[0].apportionedNum : this.hideTableData[0].apportionedNum;
+        this.fiexedApportionedNum = this.tableListData.length > 0
+            ? this.tableListData[0].apportionedNum
+            : this.hideTableData[0].apportionedNum;
       } catch {
         this.tableListData = [];
         this.hideTableData = [];
@@ -371,6 +373,10 @@ export default {
 ::v-deep .el-form-item {
   margin-top: 0;
   margin-bottom: 0;
+}
+
+::v-deep .el-table .el-table__body-wrapper{
+  min-height: auto;
 }
 
 .iconStyle {
