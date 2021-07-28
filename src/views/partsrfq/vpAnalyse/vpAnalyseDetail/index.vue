@@ -1,6 +1,6 @@
 <!--
  * @Author: moxuan
- * @LastEditors: zbin
+ * @LastEditors: Please set LastEditors
  * @Description: VP分析详情
 -->
 <template>
@@ -397,6 +397,7 @@ export default {
     },
     // 保存自定义零件
     saveCustomPart() {
+      console.log('visible', this.customDialog.visible);
       this.$set(this.customDialog, 'visible', false);
       this.getDataInfo();
     },

@@ -1,7 +1,7 @@
 <!--
  * @Author: yourname
  * @Date: 2021-04-13 17:30:36
- * @LastEditTime: 2021-07-28 13:42:44
+ * @LastEditTime: 2021-07-28 15:26:34
  * @LastEditors: Please set LastEditors
  * @Description: 通用表格
 -->
@@ -305,9 +305,6 @@ export default {
         }
       });
       // console.log(this.orgs)
-    },
-    toggleSelection(row, target) {
-      this.$refs.dataTable.toggleRowSelection(row, target)
     }
   },
 };

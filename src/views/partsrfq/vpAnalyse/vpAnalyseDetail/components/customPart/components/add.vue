@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-23 16:47:14
- * @LastEditTime: 2021-07-28 13:36:58
+ * @LastEditTime: 2021-07-28 16:11:56
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\vpAnalyse\vpAnalyseDetail\components\customPart\components\add.vue
@@ -35,6 +35,9 @@
         :tableLoading="false"
         :index="true"
         @select="rowSelect">
+        <template #isNominate="scope">
+          {{scope.row.isNominate ? "已定点" : "未定点"}}
+        </template>
       </tableList>
       <iPagination
         v-update
@@ -112,10 +115,9 @@ export default {
       this.$nextTick(() => {
         this.tableListData.forEach(item => {
           const obj = this.defaultList.find(defaultItem => defaultItem.supplierId == item.supplierId && defaultItem.partsId == item.partsId)
-          if(obj) this.$refs.addTable.toggleSelection(item, true)
+          if(obj) this.$refs.addTable.$refs.dataTable.toggleRowSelection(item, true)
         })
       })
-      // this.$refs.addTable.$refs.dataTable.toggleAllSelection()
     },
     // 取消新增零件
     handleCloseAdd() {
